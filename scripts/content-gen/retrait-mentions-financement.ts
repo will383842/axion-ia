@@ -38,6 +38,7 @@ import {
   rapportRestauration,
   resume,
 } from "../../src/server/content-gen/retrait-financement/plan";
+import { construireRapport } from "../../src/server/content-gen/retrait-financement/rapport";
 
 const prisma = new PrismaClient();
 const ACTEUR = "script:retrait-financement";
@@ -294,7 +295,7 @@ async function restaurer(
 
 // ───────────────────────────── rapport ─────────────────────────────
 
-/** Rapport : textes PUBLICS seulement (ce qui est retiré), jamais le contenu intégral ni le dump. */
+/** Rapport : textes PUBLICS seulement (passage retiré + contexte + remplacement), jamais le dump. */
 function ecrireRapport(
   fichier: string,
   o: Options,
@@ -302,34 +303,7 @@ function ecrireRapport(
   ignores: string[],
   sha: string,
 ): void {
-  const coupe = (v: unknown) =>
-    typeof v === "string" ? v.replace(/\s+/g, " ").slice(0, 200) : "(structure JSON)";
-  const l: string[] = [
-    `# Retrait des mentions de financement — ${o.mode}`,
-    "",
-    `Empreinte du plan : \`${sha}\``,
-    "",
-  ];
-  const r = resume(p);
-  l.push(
-    `Contenus concernés : ${r.total} · à réécrire : ${r.a_reecrire} · ambigus : ${r.ambigus}`,
-    "",
-  );
-  l.push("## Modifications");
-  for (const x of p)
-    for (const c of Object.keys(x.apres))
-      l.push(`- \`${x.cle}\` · ${c} : « ${coupe(x.avant[c])} » → « ${coupe(x.apres[c])} »`);
-  l.push("", "## Cas ambigus (à trancher dans `retrait-financement-overrides.json`)");
-  for (const x of p) for (const a of x.ambigus) l.push(`- ${a}`);
-  l.push("", "## « prise en charge » conservées (hors financement)");
-  for (const x of p) for (const c of x.conserves) l.push(`- \`${x.cle}\` : ${c}`);
-  if (ignores.length > 0) l.push("", "## Overrides ignorés", ...ignores.map((i) => `- ${i}`));
-  l.push(
-    "",
-    "## Hors périmètre (listés, non traités)",
-    "- texte dans les images ; titres d'ExternalReference ; slugs contenant « opco » / « certification » (inchangés).",
-  );
-  fs.writeFileSync(fichier, `${l.join("\n")}\n`);
+  fs.writeFileSync(fichier, construireRapport(o.mode, p, ignores, sha));
 }
 
 // ───────────────────────────── main ─────────────────────────────

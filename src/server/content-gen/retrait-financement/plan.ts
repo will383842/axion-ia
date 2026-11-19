@@ -7,9 +7,11 @@
 import { createHash } from "node:crypto";
 import {
   type Langue,
+  capterRegles,
   classer,
   estVisee,
   htmlVersTexte,
+  jsonContientMention,
   reecrireFaq,
   reecrireHtml,
   reecrireJson,
@@ -45,6 +47,8 @@ export interface Proposition {
   ambigus: string[];
   /** Phrases « prise en charge » conservées (hors financement), listées à part dans le rapport. */
   conserves: string[];
+  /** Règles ciblées appliquées (fragment retiré, décompte corrigé, cellule, question…). */
+  regles?: string[];
 }
 
 /** Valeurs de remplacement validées par un humain pour un cas ambigu. */
@@ -68,6 +72,7 @@ class Collecteur {
   apres: Champs = {};
   ambigus: string[] = [];
   conserves: string[] = [];
+  regles: string[] = [];
 
   constructor(private readonly nom: string) {}
 
@@ -92,7 +97,8 @@ class Collecteur {
     this.garder(champ, valeur);
     if (typeof valeur !== "string" || valeur === "") return;
     this.conserves.push(...conservees(valeur));
-    const r = reecrireTexte(valeur, langue, { titre });
+    const { valeur: r, regles } = capterRegles(() => reecrireTexte(valeur, langue, { titre }));
+    this.noterRegles(champ, regles);
     this.champ(champ, valeur, r.valeur, r.modifie, r.ambigus);
   }
 
@@ -100,7 +106,8 @@ class Collecteur {
     this.garder(champ, valeur);
     if (typeof valeur !== "string" || valeur === "") return null;
     this.conserves.push(...conservees(htmlVersTexte(valeur)));
-    const r = reecrireHtml(valeur, langue);
+    const { valeur: r, regles } = capterRegles(() => reecrireHtml(valeur, langue));
+    this.noterRegles(champ, regles);
     this.champ(champ, valeur, r.valeur, r.modifie, r.ambigus);
     return r.modifie ? r.valeur : null;
   }
@@ -108,8 +115,25 @@ class Collecteur {
   json(champ: string, valeur: unknown, langue: Langue): void {
     this.garder(champ, valeur);
     if (valeur === null || valeur === undefined) return;
-    const r = reecrireJson(valeur, langue);
-    this.champ(champ, valeur, r.valeur, r.modifie, r.ambigus);
+    const { valeur: r, regles } = capterRegles(() => reecrireJson(valeur, langue));
+    this.noterRegles(champ, regles);
+    const ambigus = [...r.ambigus];
+    // Jamais de silence : une mention encore présente dans bodyJson (structure inattendue)
+    // réintroduirait l'ancien texte dans l'éditeur ; on la signale au lieu de la laisser passer.
+    if (jsonContientMention(r.valeur))
+      ambigus.push("mention encore présente dans le JSON après réécriture (structure inattendue)");
+    this.champ(champ, valeur, r.valeur, r.modifie, ambigus);
+  }
+
+  noterRegles(champ: string, regles: string[]): void {
+    for (const x of regles) this.regles.push(`${this.nom}.${champ} : ${x}`);
+  }
+
+  /** Règles ciblées appliquées à un champ calculé hors de `texte` / `html` / `json`. */
+  capter<T>(champ: string, f: () => T): T {
+    const { valeur, regles } = capterRegles(f);
+    this.noterRegles(champ, regles);
+    return valeur;
   }
 
   resultat(table: Table, id: string): Proposition | null {
@@ -122,6 +146,7 @@ class Collecteur {
       apres: this.apres,
       ambigus: this.ambigus,
       conserves: this.conserves,
+      regles: this.regles,
     };
   }
 }
@@ -185,7 +210,9 @@ export function proposerArticle(l: LigneArticle): Proposition | null {
       if (!it || typeof it !== "object") return it;
       const o = it as Record<string, unknown>;
       if (typeof o.question !== "string" || typeof o.answer !== "string") return it;
-      const r = reecrireFaq({ question: o.question, reponse: o.answer }, "fr");
+      const r = c.capter("faqJson", () =>
+        reecrireFaq({ question: o.question as string, reponse: o.answer as string }, "fr"),
+      );
       if (r.modifie) modifie = true;
       ambigus.push(...r.ambigus);
       return r.modifie ? { ...o, question: r.valeur.question, answer: r.valeur.reponse } : it;
@@ -211,7 +238,7 @@ export function proposerFaq(l: LigneFaq): Proposition | null {
     ["fr", l.questionFr, l.answerFr, "questionFr", "answerFr"],
     ["en", l.questionEn, l.answerEn, "questionEn", "answerEn"],
   ] as const) {
-    const r = reecrireFaq({ question: q, reponse: a }, langue);
+    const r = c.capter(kq, () => reecrireFaq({ question: q, reponse: a }, langue));
     c.champ(kq, q, r.valeur.question, r.valeur.question !== q, r.ambigus);
     c.champ(ka, a, r.valeur.reponse, r.valeur.reponse !== a, []);
   }

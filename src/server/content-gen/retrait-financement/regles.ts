@@ -78,6 +78,12 @@ const SENS_FINANCIER = new RegExp(
     "subvention",
     "[ée]ligible",
     "\\beligible",
+    // « La prise en charge dépend de la certification de l'organisme formateur » : sens financier.
+    "certification de l'organisme",
+    "organisme formateur",
+    "organisme de formation",
+    "modalit[ée]s? de (?:la )?prise en charge",
+    "(?:dossier|demande|accord) de prise en charge",
     "pris(?:e|es)? en charge (?:totale|partielle|financi[èe]re)",
     "(?:totally|fully|partially) covered",
     "pris(?:e|es)? en charge par (?:l'|le |la |les )?(?:organisme|op[ée]rateur|r[ée]gion|[ÉEée]tat|employeur|branche|agefiph|conseil r[ée]gional)",
@@ -100,11 +106,74 @@ function doc(): Document {
   return documentPartage;
 }
 
-/** Texte brut (entités décodées, balises retirées) d'un fragment HTML. */
+const BLOCS_TEXTE = new Set([
+  "P",
+  "H1",
+  "H2",
+  "H3",
+  "H4",
+  "H5",
+  "H6",
+  "LI",
+  "UL",
+  "OL",
+  "TD",
+  "TH",
+  "TR",
+  "TABLE",
+  "THEAD",
+  "TBODY",
+  "TFOOT",
+  "DIV",
+  "BLOCKQUOTE",
+  "SECTION",
+  "ARTICLE",
+  "ASIDE",
+  "HEADER",
+  "FOOTER",
+  "DL",
+  "DT",
+  "DD",
+  "FIGURE",
+  "FIGCAPTION",
+  "DETAILS",
+  "SUMMARY",
+  "PRE",
+  "HR",
+  "BR",
+  "NAV",
+  "MAIN",
+]);
+
+/** Texte d'un nœud ; chaque frontière de bloc (et chaque <br>) devient `sep`. */
+function texteNoeudHtml(n: Node, sep: string): string {
+  if (n.nodeType === 3) return n.nodeValue ?? "";
+  if (n.nodeType !== 1) return "";
+  const el = n as Element;
+  const interieur = Array.from(el.childNodes)
+    .map((c) => texteNoeudHtml(c, sep))
+    .join("");
+  return BLOCS_TEXTE.has(el.tagName) ? `${sep}${interieur}${sep}` : interieur;
+}
+
+/**
+ * Texte brut (entités décodées, balises retirées) d'un fragment HTML. Les blocs (p, titres, li,
+ * td, br, div…) sont séparés par UN espace : « objectifs</p><p>Notre » → « objectifs Notre ».
+ */
 export function htmlVersTexte(html: string): string {
   const d = doc().createElement("div");
   d.innerHTML = html;
-  return (d.textContent ?? "").replace(/\s+/g, " ").trim();
+  return texteNoeudHtml(d, " ").replace(/\s+/g, " ").trim();
+}
+
+/** Blocs de texte d'un fragment HTML (un par paragraphe, titre, puce, cellule…). */
+export function htmlVersBlocs(html: string): string[] {
+  const d = doc().createElement("div");
+  d.innerHTML = html;
+  return texteNoeudHtml(d, "\n")
+    .split(/\n+/)
+    .map((x) => x.replace(/\s+/g, " ").trim())
+    .filter((x) => x !== "");
 }
 
 /** Une phrase (texte brut) est-elle visée ? */
@@ -123,10 +192,15 @@ const FRAGMENT_PARENTHESE = new RegExp(
   "gi",
 );
 const FRAGMENT_FINANCABLES = /,\s*finan[cç]ables?\s+(?:par|via)\s+(?:les\s+)?OPCOs?\s*,/gi;
+/** Libellé « (financement) » seul (offres d'emploi, titres, descriptions) : retiré où qu'il soit. */
+const LIBELLE_FINANCEMENT = /\s*\((?:financements?|funding)\)/gi;
 
 /** Retire les fragments qui se suffisent à eux-mêmes : « (CPF, OPCO, France Travail) ». */
 function retirerFragments(s: string): string {
-  return s.replace(FRAGMENT_PARENTHESE, "").replace(FRAGMENT_FINANCABLES, ",");
+  return s
+    .replace(FRAGMENT_PARENTHESE, "")
+    .replace(FRAGMENT_FINANCABLES, ",")
+    .replace(LIBELLE_FINANCEMENT, "");
 }
 
 /** Découpe en phrases sur une chaîne HTML ou texte (la balise fermante après le point est permise). */
@@ -137,6 +211,220 @@ function phrases(s: string): string[] {
     .filter((x) => x.length > 0);
 }
 
+// ───────────────────────────── journal des règles ciblées ─────────────────────────────
+
+let journal: string[] | null = null;
+function noter(regle: string): void {
+  journal?.push(regle);
+}
+/** Exécute `f` en recueillant les règles ciblées appliquées (pour le rapport). */
+export function capterRegles<T>(f: () => T): { valeur: T; regles: string[] } {
+  const precedent = journal;
+  const regles: string[] = [];
+  journal = regles;
+  try {
+    return { valeur: f(), regles };
+  } finally {
+    journal = precedent;
+  }
+}
+
+// ───────────────────────────── retrait d'un FRAGMENT ─────────────────────────────
+
+const NOMBRES: Record<string, number> = {
+  deux: 2,
+  trois: 3,
+  quatre: 4,
+  cinq: 5,
+  six: 6,
+  sept: 7,
+  huit: 8,
+  neuf: 9,
+  dix: 10,
+  onze: 11,
+  douze: 12,
+};
+const MOTS_NOMBRES = Object.keys(NOMBRES);
+const DECOMPTE = new RegExp(
+  `\\b(\\d{1,2}|${MOTS_NOMBRES.join("|")})\\s+((?:é|e)tapes?|points?|leviers?|piliers?|axes?|phases?|crit[èe]res?|[ée]l[ée]ments?|facteurs?|principes?|volets?|dimensions?|moyens?|actions?|domaines?|modules?|blocs?|cl[ée]s|bonnes pratiques|r[èe]gles?|conseils?|raisons?|avantages?|b[ée]n[ée]fices?)\\b`,
+  "gi",
+);
+
+function valeurNombre(m: string): number {
+  return /^\d/.test(m) ? Number(m) : (NOMBRES[m.toLowerCase()] ?? 0);
+}
+function ecrireNombre(n: number, modele: string): string {
+  if (/^\d/.test(modele)) return String(n);
+  const mot = MOTS_NOMBRES.find((k) => NOMBRES[k] === n) ?? String(n);
+  return /^[A-ZÀ-Ý]/.test(modele) ? mot.charAt(0).toUpperCase() + mot.slice(1) : mot;
+}
+
+const MOTS_PENDANTS =
+  /(?:^|[\s'])(?:et|ou|de|du|des|la|le|les|à|au|aux|par|via|pour|avec|sur|en|un|une|qui|que|dont|and|or|the|of|by|with|to|for)$|\b[ldLD]'$/i;
+
+/** Le texte obtenu après retrait d'un fragment est-il encore une phrase correcte ? */
+function phraseCorrecte(resultat: string, origine: string, motsMin = 4): boolean {
+  const corps = resultat.replace(/[\s.!?…:;,]+$/, "");
+  if (corps.split(/\s+/).filter(Boolean).length < motsMin) return false;
+  if (estVisee(resultat)) return false;
+  if (/,\s*,|\(\s*\)|\s[,.]|,\s*[.!?]\s*$|\s{2,}/.test(resultat)) return false;
+  if (MOTS_PENDANTS.test(corps)) return false;
+  const base = origine.replace(/[\s.!?…]+$/, "");
+  return corps.length >= base.length * 0.4;
+}
+
+interface Fragment {
+  texte: string;
+  ambigu?: string;
+}
+
+/** Corrige « sept étapes : a, b, x, c » quand `retires` éléments de la liste sont retirés. */
+function corrigerDecompte(
+  corps: string,
+  resultat: string,
+  debutRetrait: number,
+  retires: number,
+): { texte: string; ambigu?: string } {
+  const avant = corps.slice(0, debutRetrait);
+  let dernier: RegExpMatchArray | null = null;
+  for (const m of avant.matchAll(DECOMPTE)) dernier = m;
+  if (!dernier || dernier.index === undefined) return { texte: resultat };
+  const suite = corps.slice(dernier.index + dernier[0].length);
+  if (!/^\s*[:：]/.test(suite)) return { texte: resultat };
+  const n = valeurNombre(dernier[1]!);
+  const elements = suite
+    .replace(/^\s*[:：]\s*/, "")
+    .split(/,\s+(?:et\s+)?|\s+et\s+/)
+    .filter((x) => x.trim() !== "").length;
+  if (elements !== n || n - retires < 2)
+    return {
+      texte: resultat,
+      ambigu: `décompte à vérifier : « ${dernier[0]} » (${elements} éléments)`,
+    };
+  const nouveau = ecrireNombre(n - retires, dernier[1]!);
+  noter(`décompte corrigé : « ${dernier[1]} ${dernier[2]} » → « ${nouveau} ${dernier[2]} »`);
+  return {
+    texte:
+      resultat.slice(0, dernier.index) +
+      `${nouveau} ${dernier[2]}` +
+      resultat.slice(dernier.index + dernier[0].length),
+  };
+}
+
+const MOT_CERTIF =
+  /\s*(?:[-–—:&/|+,]\s*|\b(?:et|ou)\s+)?(?:certifi[ée]e?s?\s+|certification\s+|label\s+)?(?:Qualiopi|Datadock)\b/gi;
+/** Titre : mot de financement ou de certification en FIN de libellé seulement. */
+const MOT_TITRE =
+  /\s*(?:[-–—:&/|+,]\s*|\b(?:et|ou)\s+)?(?:certifi[ée]e?s?\s+|certification\s+|label\s+)?(?:Qualiopi|Datadock|OPCOs?|EDOF|FNE-Formation|AIF)\s*$/i;
+
+/**
+ * Retire le FRAGMENT visé d'une phrase, pas la phrase : parenthèse, élément d'énumération entre
+ * virgules (avec correction du décompte « sept étapes »), fin de phrase après « et », mot de
+ * certification isolé. `null` : aucune coupure propre. `ambigu` : coupure possible mais le
+ * décompte annoncé ne se vérifie pas.
+ */
+function fragmenter(phrase: string): Fragment | null {
+  const m = /^([\s\S]*?)([.!?…]*)\s*$/.exec(phrase);
+  const corps0 = m?.[1] ?? phrase;
+  const fin = m?.[2] ?? "";
+  const ok = (c: string): boolean => phraseCorrecte(c + fin, phrase);
+
+  // 1. Parenthèse visée.
+  const sansParenthese = corps0.replace(/\s*\(([^()]*)\)/g, (tout, dedans: string) =>
+    estVisee(dedans) ? "" : tout,
+  );
+  if (sansParenthese !== corps0 && ok(sansParenthese)) {
+    noter("fragment entre parenthèses retiré");
+    return { texte: sansParenthese + fin };
+  }
+  const base = sansParenthese !== corps0 ? sansParenthese : corps0;
+
+  // 2. Segments entre virgules (jamais le premier : il porte le sujet).
+  const segments = base.split(/,\s+/);
+  if (segments.length > 1 && !estVisee(segments[0]!)) {
+    const visees = segments.map((s) => estVisee(s));
+    if (visees.some(Boolean)) {
+      let sortie = "";
+      let retires = 0;
+      let premierRetire = -1;
+      segments.forEach((s, i) => {
+        if (visees[i]) {
+          retires++;
+          if (premierRetire < 0) premierRetire = i;
+          return;
+        }
+        if (sortie === "") sortie = s;
+        else if (visees[i - 1] && /^(?:et|ou)\s/i.test(s)) sortie += ` ${s}`;
+        else sortie += `, ${s}`;
+      });
+      if (ok(sortie)) {
+        const debut = segments.slice(0, premierRetire).join(", ").length;
+        const c = corrigerDecompte(base, sortie, debut, retires);
+        if (c.ambigu) return { texte: phrase, ambigu: c.ambigu };
+        noter(`fragment retiré : ${retires} élément(s) d'énumération`);
+        return { texte: c.texte + fin };
+      }
+    }
+  }
+
+  // 3. Fin de phrase après « et » / « ou ».
+  const re = /\s+(?:et|ou|and|or)\s+/gi;
+  const coupures = [...base.matchAll(re)].reverse();
+  for (const c of coupures) {
+    const tete = base.slice(0, c.index);
+    const queue = base.slice((c.index ?? 0) + c[0].length);
+    if (estVisee(queue) && !estVisee(tete) && ok(tete)) {
+      noter("fin de phrase retirée après « et »");
+      return { texte: tete + fin };
+    }
+  }
+
+  // 4. Mot de certification isolé (« audits Qualiopi » → « audits »).
+  const sansMot = base.replace(MOT_CERTIF, "");
+  if (sansMot !== base && ok(sansMot)) {
+    noter("mot de certification retiré");
+    return { texte: sansMot + fin };
+  }
+  return null;
+}
+
+/** La phrase est-elle consacrée au financement (le sujet est dans ses premiers mots) ? */
+function estPur(texte: string): boolean {
+  const debut = normaliser(texte).split(/\s+/).slice(0, 8).join(" ");
+  return /financ|\bfund|pris(?:e|es)? en charge|OPCO|\bCPF\b|France Travail|P[ôo]le[- ]emploi|qualiopi|[ée]ligible|rembours|subvention|\bAIF\b|datadock|\bEDOF\b|subrogation|mon ?compte ?formation|FNE/i.test(
+    debut,
+  );
+}
+
+interface SortiePhrase {
+  type: "garde" | "modifie" | "retire" | "ambigu";
+  texte: string;
+  pur?: boolean;
+  ambigu?: string;
+}
+
+/**
+ * Une phrase : gardée, fragment retiré, retirée en entier (`court: false`, corps d'article) ou
+ * ambiguë (`court: true`, champ court : une phrase mixte sans coupure propre n'est jamais retirée).
+ */
+function traiterPhrase(p: string, estHtml: boolean, court: boolean): SortiePhrase {
+  const brut = estHtml ? htmlVersTexte(p) : p;
+  if (!estVisee(brut)) return { type: "garde", texte: p };
+  if (!p.includes("<") && !p.includes("&")) {
+    const f = fragmenter(p);
+    if (f?.ambigu) return { type: "ambigu", texte: p, ambigu: f.ambigu };
+    if (f) return { type: "modifie", texte: f.texte };
+  }
+  const pur = estPur(brut);
+  if (court && !pur)
+    return {
+      type: "ambigu",
+      texte: p,
+      ambigu: `phrase mixte sans coupure propre : « ${brut.slice(0, 160)} »`,
+    };
+  return { type: "retire", texte: "", pur };
+}
+
 interface Bloc {
   /** Contenu (HTML ou texte) après réécriture. */
   contenu: string;
@@ -145,37 +433,55 @@ interface Bloc {
   visee: boolean;
   /** Vide après réécriture : l'élément doit être retiré. */
   vide: boolean;
+  ambigus: string[];
 }
 
 /**
- * Règle d'un paragraphe (ou d'un champ long) :
- * - ≥ la moitié des phrases visées (ou ≥ 2 sur un paragraphe de 4 phrases ou moins), ou ouverture
- *   sur le financement avec au moins une phrase visée → phrase standard ;
- * - sinon retrait des seules phrases visées.
+ * Règle d'un paragraphe (ou d'un champ long) : on retire le FRAGMENT visé, sinon la PHRASE visée.
+ * La phrase standard ne remplace le paragraphe que si TOUTES ses phrases sont consacrées au
+ * financement : un paragraphe qui parle d'autre chose n'est jamais remplacé en entier.
  */
 function traiterBloc(contenu: string, langue: Langue, estHtml: boolean): Bloc {
   const sansFragments = retirerFragments(contenu);
-  const brut = (x: string) => (estHtml ? htmlVersTexte(x) : x);
   const liste = phrases(sansFragments);
-  const marques = liste.map((p) => estVisee(brut(p)));
-  const v = marques.filter(Boolean).length;
-  if (v === 0) {
+  const sorties = liste.map((p) => traiterPhrase(p, estHtml, false));
+  const visees = sorties.filter((x) => x.type !== "garde").length;
+  if (visees === 0) {
     const modifie = sansFragments !== contenu;
     return {
       contenu: modifie ? sansFragments.replace(/\s{2,}/g, " ").trim() : contenu,
       modifie,
       visee: false,
       vide: false,
+      ambigus: [],
     };
   }
-  const n = liste.length;
-  const ouverture = MARQUEUR.test(normaliser(brut(liste[0] ?? "")));
-  if (ouverture || v * 2 >= n || (v >= 2 && n <= 4)) {
-    return { contenu: phrase(langue), modifie: true, visee: true, vide: false };
+  const ambigus = sorties.flatMap((x) => (x.ambigu ? [x.ambigu] : []));
+  if (ambigus.length > 0) return { contenu, modifie: false, visee: true, vide: false, ambigus };
+  if (sorties.every((x) => x.type === "retire")) {
+    if (sorties.some((x) => x.pur))
+      return { contenu: phrase(langue), modifie: true, visee: true, vide: false, ambigus: [] };
+    return {
+      contenu,
+      modifie: false,
+      visee: true,
+      vide: false,
+      ambigus: [
+        `paragraphe visé sans coupure propre : « ${htmlVersTexte(contenu).slice(0, 160)} »`,
+      ],
+    };
   }
-  const gardees = liste.filter((_, i) => !marques[i]);
-  const resultat = gardees.join(" ");
-  return { contenu: resultat, modifie: true, visee: true, vide: resultat.trim() === "" };
+  const resultat = sorties
+    .filter((x) => x.type !== "retire")
+    .map((x) => x.texte)
+    .join(" ");
+  return {
+    contenu: resultat,
+    modifie: true,
+    visee: true,
+    vide: resultat.trim() === "",
+    ambigus: [],
+  };
 }
 
 // ───────────────────────────── résultats ─────────────────────────────
@@ -205,9 +511,21 @@ export function reecrireTexte(
   const origine = texte;
   let courant = options.titre ? sansSuffixeFinancement(texte) : texte;
   courant = retirerFragments(courant);
+  if (options.titre && estVisee(courant)) {
+    // Titre : seul un mot de certification en fin de libellé peut être retiré ; sinon ambigu.
+    const sansMot = courant
+      .replace(MOT_TITRE, "")
+      .replace(/\s{2,}/g, " ")
+      .trim();
+    if (sansMot !== courant && phraseCorrecte(sansMot, courant, 2)) {
+      noter("mot de certification retiré du titre");
+      return { valeur: sansMot, modifie: true, ambigus: [] };
+    }
+    return { valeur: origine, modifie: false, ambigus: [`titre à reformuler : « ${origine} »`] };
+  }
   const liste = phrases(courant);
-  const visees = liste.filter((p) => estVisee(p));
-  if (visees.length === 0) {
+  const sorties = liste.map((p) => traiterPhrase(p, false, true));
+  if (sorties.every((x) => x.type === "garde")) {
     const modifie = courant !== origine;
     return {
       valeur: modifie ? courant.replace(/\s{2,}/g, " ").trim() : origine,
@@ -215,11 +533,11 @@ export function reecrireTexte(
       ambigus: [],
     };
   }
-  if (options.titre) {
-    return { valeur: origine, modifie: false, ambigus: [`titre à reformuler : « ${origine} »`] };
-  }
-  const gardees = liste
-    .filter((p) => !estVisee(p))
+  const ambigus = sorties.flatMap((x) => (x.ambigu ? [x.ambigu] : []));
+  if (ambigus.length > 0) return { valeur: origine, modifie: false, ambigus };
+  const gardees = sorties
+    .filter((x) => x.type !== "retire")
+    .map((x) => x.texte)
     .join(" ")
     .trim();
   if (gardees === "") {
@@ -237,16 +555,30 @@ export interface Faq {
   reponse: string;
 }
 
+/**
+ * Organisme de financement cité dans une QUESTION (« reconnu par France Compétences ? ») : le
+ * complément est retiré, la question reste (« est-il reconnu ? »).
+ */
+const COMPLEMENT_ORGANISME =
+  /\s+(?:par|via|auprès (?:de|des|d')|grâce (?:à|aux?))\s*(?:l'|le |la |les )?(?:France Comp[ée]tences|OPCOs?|CPF|France Travail|P[ôo]le[- ]emploi)(?=\s*\?|\s*$)/i;
+
+function nettoyerQuestion(q: string): string {
+  const sans = q.replace(COMPLEMENT_ORGANISME, "");
+  if (sans === q) return q;
+  noter(`question reformulée sans organisme de financement : « ${q} » → « ${sans} »`);
+  return sans;
+}
+
 /** Question/réponse : visée → « Comment se passe le financement ? » + phrase standard. */
 export function reecrireFaq(f: Faq, langue: Langue): Resultat<Faq> {
   const qVisee = estVisee(f.question);
   const rVisee = estVisee(htmlVersTexte(f.reponse));
   if (!qVisee && !rVisee) {
-    const q = reecrireTexte(f.question, langue);
+    const q = reecrireTexte(nettoyerQuestion(f.question), langue);
     const r = reecrireBloc(f.reponse, langue);
     return {
       valeur: { question: q.valeur, reponse: r.valeur },
-      modifie: q.modifie || r.modifie,
+      modifie: q.modifie || r.modifie || q.valeur !== f.question,
       ambigus: [...q.ambigus, ...r.ambigus],
     };
   }
@@ -259,17 +591,21 @@ export function reecrireFaq(f: Faq, langue: Langue): Resultat<Faq> {
     };
   }
   // Question sans rapport, réponse visée : réécriture de la réponse seule, sinon ambigu.
+  const questionPropre = nettoyerQuestion(f.question);
   const r = reecrireBloc(f.reponse, langue);
-  if (r.valeur.trim() === "" || r.valeur === phrase(langue)) {
+  if (r.ambigus.length > 0 || r.valeur.trim() === "" || r.valeur === phrase(langue)) {
     return {
       valeur: f,
       modifie: false,
-      ambigus: [`FAQ à relire (question étrangère au financement) : « ${f.question} »`],
+      ambigus: [
+        ...r.ambigus,
+        `FAQ à relire (question étrangère au financement) : « ${f.question} »`,
+      ],
     };
   }
   return {
-    valeur: { question: f.question, reponse: r.valeur },
-    modifie: r.modifie,
+    valeur: { question: questionPropre, reponse: r.valeur },
+    modifie: r.modifie || questionPropre !== f.question,
     ambigus: r.ambigus,
   };
 }
@@ -282,7 +618,7 @@ function reecrireBloc(contenu: string, langue: Langue): Resultat {
     return {
       valeur: b.vide ? contenu : b.contenu,
       modifie: b.vide ? false : b.modifie,
-      ambigus: b.vide ? ["bloc vide après retrait"] : [],
+      ambigus: b.vide ? ["bloc vide après retrait"] : b.ambigus,
     };
   }
   return reecrireHtml(contenu, langue);
@@ -437,7 +773,35 @@ function traiterDetails(racine: Element, d: Document, langue: Langue): boolean {
   return modifie;
 }
 
-function traiterListes(racine: Element, d: Document, langue: Langue): boolean {
+/** Intro d'une liste (« les sept étapes : ») : corrige le décompte quand des puces sont retirées. */
+function corrigerIntroDecompte(
+  intro: Element | null,
+  avant: number,
+  retirees: number,
+  ambigus: string[],
+): void {
+  if (!intro || intro.tagName !== "P" || retirees === 0) return;
+  const html = intro.innerHTML;
+  let dernier: RegExpMatchArray | null = null;
+  for (const m of html.matchAll(DECOMPTE)) dernier = m;
+  if (!dernier || dernier.index === undefined) return;
+  if (!/[:：]\s*$/.test(htmlVersTexte(html))) return;
+  const n = valeurNombre(dernier[1]!);
+  if (n !== avant || n - retirees < 2) {
+    ambigus.push(`décompte à vérifier : « ${dernier[0]} » (${avant} puces)`);
+    return;
+  }
+  const nouveau = ecrireNombre(n - retirees, dernier[1]!);
+  noter(`décompte corrigé : « ${dernier[1]} ${dernier[2]} » → « ${nouveau} ${dernier[2]} »`);
+  intro.innerHTML =
+    html.slice(0, dernier.index) +
+    `${nouveau} ${dernier[2]}` +
+    html.slice(dernier.index + dernier[0].length);
+}
+
+const INTRO_FINANCEMENT = /financ|\bfund|prise en charge/i;
+
+function traiterListes(racine: Element, d: Document, langue: Langue, ambigus: string[]): boolean {
   let modifie = false;
   for (const liste of Array.from(racine.querySelectorAll("ul, ol"))) {
     if (!liste.isConnected || liste.querySelector("ul, ol, table")) continue;
@@ -454,16 +818,46 @@ function traiterListes(racine: Element, d: Document, langue: Langue): boolean {
       !!intro &&
       intro.tagName === "P" &&
       /:\s*$/.test((intro.textContent ?? "").trim()) &&
-      MARQUEUR.test(normaliser(intro.textContent ?? ""));
-    if (visees.length === items.length || introFinancement) {
-      if (introFinancement && intro) intro.remove();
+      INTRO_FINANCEMENT.test(normaliser(intro.textContent ?? ""));
+    if (introFinancement && intro) {
+      intro.remove();
       liste.replaceWith(creerP(d, langue));
-    } else {
-      visees.forEach((li) => li.remove());
+      modifie = true;
+      continue;
     }
+    // Une puce : fragment retiré (texte simple), sinon puce retirée.
+    let retirees = 0;
+    for (const li of visees) {
+      const t = li.children.length === 0 ? (li.textContent ?? "") : "";
+      const sortie = t === "" ? null : traiterPhrase(t, false, false);
+      if (sortie && sortie.type === "modifie") li.textContent = sortie.texte;
+      else if (sortie && sortie.type === "ambigu") ambigus.push(sortie.ambigu ?? "puce ambiguë");
+      else {
+        li.remove();
+        retirees++;
+      }
+    }
+    if (retirees === items.length) liste.replaceWith(creerP(d, langue));
+    else corrigerIntroDecompte(intro, items.length, retirees, ambigus);
     modifie = true;
   }
   return modifie;
+}
+
+/**
+ * Cellule de tableau dont le texte ne porte qu'un mot de financement : « Sur devis OPCO » →
+ * « Sur devis », « Oui (OPCO) » → « Oui ». `null` si le résultat n'est pas propre.
+ */
+function nettoyerCellule(texte: string): string | null {
+  const t = retirerFragments(texte).trim();
+  const sans = t
+    .replace(
+      /\s*(?:[-–—/+&,]\s*|\b(?:et|ou)\s+)?(?:OPCOs?|CPF|France Travail|Qualiopi|FNE-Formation|\bAIF)\s*$/i,
+      "",
+    )
+    .trim();
+  if (sans === "" || estVisee(sans) || MOTS_PENDANTS.test(sans)) return null;
+  return sans;
 }
 
 function traiterTableaux(racine: Element, ambigus: string[]): boolean {
@@ -477,6 +871,19 @@ function traiterTableaux(racine: Element, ambigus: string[]): boolean {
       tr.remove();
       modifie = true;
     } else if (v === "ambigu") {
+      // Cellule hors première colonne : retrait ciblé du mot de financement, sinon ambigu.
+      const aNettoyer = cellules.slice(1).filter((c) => estVisee(c.textContent ?? ""));
+      const propres = aNettoyer.map((c) => nettoyerCellule(c.innerHTML));
+      if (propres.every((x) => x !== null)) {
+        aNettoyer.forEach((c, i) => {
+          noter(
+            `cellule de tableau : « ${(c.textContent ?? "").trim()} » → « ${htmlVersTexte(propres[i]!)} »`,
+          );
+          c.innerHTML = propres[i]!;
+        });
+        modifie = true;
+        continue;
+      }
       const autre = autres.find((c) => estVisee(c)) ?? "";
       ambigus.push(
         `tableau : cellule visée hors première colonne : « ${autre.trim().slice(0, 100)} »`,
@@ -501,6 +908,7 @@ function traiterFeuilles(racine: Element, langue: Langue, ambigus: string[]): bo
       continue;
     }
     const b = traiterBloc(el.innerHTML, langue, true);
+    ambigus.push(...b.ambigus);
     if (!b.modifie) continue;
     if (b.vide) el.remove();
     else el.innerHTML = b.contenu;
@@ -536,7 +944,7 @@ export function reecrireHtml(html: string, langue: Langue): Resultat {
   modifie = reecrireLiens(racine, langue) || modifie;
   modifie = traiterDetails(racine, d, langue) || modifie;
   modifie = traiterTitres(racine, d, langue, ambigus) || modifie;
-  modifie = traiterListes(racine, d, langue) || modifie;
+  modifie = traiterListes(racine, d, langue, ambigus) || modifie;
   modifie = traiterTableaux(racine, ambigus) || modifie;
   modifie = traiterFeuilles(racine, langue, ambigus) || modifie;
   modifie = dedoublonner(racine) || modifie;
@@ -571,6 +979,27 @@ function paragrapheStandard(langue: Langue): NoeudTiptap {
  * conservé tel quel.
  */
 export function reecrireJson(documentJson: unknown, langue: Langue): Resultat<unknown> {
+  // JSON stocké sous forme de CHAÎNE : on l'analyse, on réécrit, on re-sérialise (même type).
+  if (typeof documentJson === "string") {
+    let analyse: unknown;
+    try {
+      analyse = JSON.parse(documentJson);
+    } catch {
+      return { valeur: documentJson, modifie: false, ambigus: [] };
+    }
+    if (!analyse || typeof analyse !== "object")
+      return { valeur: documentJson, modifie: false, ambigus: [] };
+    const r = reecrireJson(analyse, langue);
+    return { ...r, valeur: r.modifie ? JSON.stringify(r.valeur) : documentJson };
+  }
+  // Tableau de nœuds sans racine « doc » : on l'enveloppe, puis on le déballe.
+  if (Array.isArray(documentJson)) {
+    const r = reecrireJson({ type: "doc", content: documentJson }, langue);
+    return {
+      ...r,
+      valeur: r.modifie ? ((r.valeur as NoeudTiptap).content ?? []) : documentJson,
+    };
+  }
   if (!documentJson || typeof documentJson !== "object")
     return { valeur: documentJson, modifie: false, ambigus: [] };
   const racine = structuredClone(documentJson) as NoeudTiptap;
@@ -603,6 +1032,16 @@ export function reecrireJson(documentJson: unknown, langue: Langue): Resultat<un
         return false;
       }
       if (v === "ambigu") {
+        const aNettoyer = cellules.slice(1).filter((c) => estVisee(texteNoeud(c)));
+        const propres = aNettoyer.map((c) => nettoyerCellule(texteNoeud(c)));
+        if (propres.every((x) => x !== null)) {
+          aNettoyer.forEach((c, i) => {
+            noter(`cellule de tableau : « ${texteNoeud(c).trim()} » → « ${propres[i]} »`);
+            c.content = [{ type: "paragraph", content: [{ type: "text", text: propres[i]! }] }];
+          });
+          modifie = true;
+          return true;
+        }
         const autre =
           cellules
             .slice(1)
@@ -620,11 +1059,18 @@ export function reecrireJson(documentJson: unknown, langue: Langue): Resultat<un
     const t = texteNoeud(n);
     if (t === PHRASE_FR || t === PHRASE_EN) return "garde";
     const b = traiterBloc(t, langue, false);
+    ambigus.push(...b.ambigus);
     if (!b.modifie) return "garde";
     if (b.vide) return "vide";
     n.content = [{ type: "text", text: b.contenu }];
     return "modifie";
   };
+
+  /** Bloc de texte « inattendu » (listItem, tableCell… portant directement du texte). */
+  const estBlocTexte = (n: NoeudTiptap): boolean =>
+    !!n.content &&
+    n.content.length > 0 &&
+    n.content.every((x) => x.type === "text" || x.type === "hardBreak");
 
   const traiterConteneur = (n: NoeudTiptap): void => {
     const enfants = n.content ?? [];
@@ -694,19 +1140,69 @@ export function reecrireJson(documentJson: unknown, langue: Langue): Resultat<un
           !!prec &&
           prec.type === "paragraph" &&
           /:\s*$/.test(texteNoeud(prec).trim()) &&
-          MARQUEUR.test(normaliser(texteNoeud(prec)));
-        if (visees.length === items.length || introFinancement) {
-          if (introFinancement) sortie.pop();
+          INTRO_FINANCEMENT.test(normaliser(texteNoeud(prec)));
+        if (introFinancement) {
+          sortie.pop();
           sortie.push(paragrapheStandard(langue));
-        } else {
-          c.content = items.filter((li) => !visees.includes(li));
+          modifie = true;
+          continue;
+        }
+        const retirees: NoeudTiptap[] = [];
+        for (const li of visees) {
+          const sortiePhrase = traiterPhrase(texteNoeud(li), false, false);
+          if (sortiePhrase.type === "modifie") {
+            li.content = [
+              { type: "paragraph", content: [{ type: "text", text: sortiePhrase.texte }] },
+            ];
+          } else if (sortiePhrase.type === "ambigu") {
+            ambigus.push(sortiePhrase.ambigu ?? "puce ambiguë");
+          } else retirees.push(li);
+        }
+        c.content = items.filter((li) => !retirees.includes(li));
+        if (c.content.length === 0) sortie.push(paragrapheStandard(langue));
+        else {
           sortie.push(c);
+          const prev = sortie[sortie.length - 2];
+          if (retirees.length > 0 && prev?.type === "paragraph") {
+            const t = texteNoeud(prev);
+            let dernier: RegExpMatchArray | null = null;
+            for (const m of t.matchAll(DECOMPTE)) dernier = m;
+            if (dernier && dernier.index !== undefined && /[:：]\s*$/.test(t.trim())) {
+              const n = valeurNombre(dernier[1]!);
+              if (n === items.length && n - retirees.length >= 2) {
+                const nouveau = ecrireNombre(n - retirees.length, dernier[1]!);
+                noter(
+                  `décompte corrigé : « ${dernier[1]} ${dernier[2]} » → « ${nouveau} ${dernier[2]} »`,
+                );
+                prev.content = [
+                  {
+                    type: "text",
+                    text:
+                      t.slice(0, dernier.index) +
+                      `${nouveau} ${dernier[2]}` +
+                      t.slice(dernier.index + dernier[0].length),
+                  },
+                ];
+              } else
+                ambigus.push(`décompte à vérifier : « ${dernier[0]} » (${items.length} puces)`);
+            }
+          }
         }
         modifie = true;
         continue;
       }
       if (c.type === "table") {
         traiterTableauJson(c);
+        sortie.push(c);
+        continue;
+      }
+      if (c.type !== "heading" && estBlocTexte(c)) {
+        const r = traiterParagraphe(c);
+        if (r === "vide") {
+          modifie = true;
+          continue;
+        }
+        if (r === "modifie") modifie = true;
         sortie.push(c);
         continue;
       }
@@ -737,4 +1233,38 @@ export type Classe = "propre" | "a-reecrire" | "ambigu";
 export function classer(r: Resultat<unknown>): Classe {
   if (r.ambigus.length > 0) return "ambigu";
   return r.modifie ? "a-reecrire" : "propre";
+}
+
+// ───────────────────────────── bodyJson : mention restante ─────────────────────────────
+
+/** Blocs de texte d'un document Tiptap (ou d'une chaîne JSON) : un par nœud portant du texte. */
+export function blocsTexteJson(valeur: unknown): string[] {
+  if (typeof valeur === "string") {
+    try {
+      const a: unknown = JSON.parse(valeur);
+      return a && typeof a === "object" ? blocsTexteJson(a) : [];
+    } catch {
+      return [];
+    }
+  }
+  const blocs: string[] = [];
+  const marcher = (n: unknown): void => {
+    if (Array.isArray(n)) return n.forEach(marcher);
+    if (!n || typeof n !== "object") return;
+    const nt = n as NoeudTiptap;
+    const enfants = Array.isArray(nt.content) ? nt.content : [];
+    if (enfants.some((c) => c && typeof c.text === "string")) {
+      blocs.push(texteNoeud(nt));
+      return;
+    }
+    // Structure inattendue : on descend dans toutes les valeurs (content, data, attrs…).
+    for (const v of Object.values(nt)) if (v && typeof v === "object") marcher(v);
+  };
+  marcher(valeur);
+  return blocs;
+}
+
+/** Le document Tiptap porte-t-il encore (ou déjà) une phrase visée ? */
+export function jsonContientMention(valeur: unknown): boolean {
+  return blocsTexteJson(valeur).some((b) => phrases(b).some((p) => estVisee(p)) || estVisee(b));
 }

@@ -101,7 +101,11 @@ describe("reecrireTexte / reecrireHtml — extraits RÉELS de la production (18/
       "<p>Des dispositifs comme les aides BPI France, les fonds de votre OPCO ou les programmes France Num peuvent être mobilisés. Nous vous accompagnons sur place. Le rapport est remis sous trois jours. Un conseiller vous répond.</p>";
     const r = reecrireHtml(html, "fr");
     expect(r.valeur).not.toMatch(MOTIFS);
-    expect(r.valeur).toContain(PHRASE_FR); // la 1re phrase parle de financement : ouverture
+    // Seule la phrase visée est retirée : le paragraphe parle d'autre chose, il n'est pas remplacé.
+    expect(r.valeur).not.toContain(PHRASE_FR);
+    expect(r.valeur).toBe(
+      "<p>Nous vous accompagnons sur place. Le rapport est remis sous trois jours. Un conseiller vous répond.</p>",
+    );
   });
 
   it("phrase isolée dans un long paragraphe : seules les phrases visées sont retirées", () => {
