@@ -72,7 +72,10 @@ export function ChoixModele({ etat, dispatch }: PropsChoixModele) {
                   />
                 </span>
                 <span className="font-medium">{m.libelle}</span>
-                <span id={`${id}-detail`} className="sr-only">
+                <span
+                  id={`${id}-detail`}
+                  className="text-[length:var(--text-admin-xs)] font-normal text-[color:var(--color-admin-fg-muted)]"
+                >
                   {m.detail}
                 </span>
               </label>

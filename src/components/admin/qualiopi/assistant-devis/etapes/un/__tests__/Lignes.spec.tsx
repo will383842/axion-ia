@@ -190,6 +190,19 @@ describe("ListeLignes", () => {
     expect(lignesDe()[0]!.champsLibres).toEqual([]);
   });
 
+  it("« Plus d'options » reste ouvert quand on décoche la dernière case « Nécessite »", () => {
+    render(<Hote initial={etat([L("a"), L("b")])} />);
+    const blocs = document.querySelectorAll("li details");
+    const bloc = blocs[0] as HTMLDetailsElement;
+    bloc.open = true;
+    const laCase = () => bloc.querySelector('input[type="checkbox"]') as HTMLInputElement;
+    fireEvent.click(laCase());
+    expect(lignesDe()[0]!.necessite).toHaveLength(1);
+    fireEvent.click(laCase());
+    expect(lignesDe()[0]!.necessite).toHaveLength(0);
+    expect(bloc.open).toBe(true);
+  });
+
   it("supprimer une ligne vide : immédiat ; remplie : confirmation d'abord", () => {
     render(<Hote initial={etat([L("a", { libelle: "Alpha", prixEur: "10" }), L("b")])} />);
     fireEvent.click(screen.getAllByRole("button", { name: /supprimer la ligne/i })[0]!);

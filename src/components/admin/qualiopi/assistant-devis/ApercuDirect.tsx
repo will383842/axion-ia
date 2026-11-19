@@ -8,8 +8,6 @@
  */
 import { useDeferredValue, useEffect, useRef, useState } from "react";
 
-import { AdminBadge } from "@/components/admin/ui/AdminBadge";
-
 import { totauxLignes } from "./calculs";
 import type { EtatAssistant } from "./types";
 
@@ -54,7 +52,6 @@ export function ApercuDirect({ etat, tvaStandardPct, clientNom }: PropsApercuDir
     >
       <div className="flex items-center justify-between gap-2">
         <p className="font-semibold">Devis · brouillon</p>
-        <AdminBadge tone="neutral">Brouillon</AdminBadge>
       </div>
       {clientNom ? (
         <div className="mt-3 flex items-center gap-3">

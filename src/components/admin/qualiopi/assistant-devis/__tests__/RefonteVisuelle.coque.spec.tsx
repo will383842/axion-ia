@@ -36,7 +36,8 @@ describe("refonte visuelle — rôles et noms accessibles inchangés", () => {
     expect(radios).toHaveLength(5);
     for (const r of radios) {
       const detail = document.getElementById(r.getAttribute("aria-describedby") ?? "");
-      expect(detail?.className).toContain("sr-only");
+      expect(detail?.className).not.toContain("sr-only");
+      expect(detail?.className).toContain("--text-admin-xs");
       expect(r.closest("label")?.querySelector('svg[aria-hidden="true"]')).toBeTruthy();
     }
     fireEvent.click(radios[0]!);

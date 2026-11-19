@@ -8,7 +8,7 @@
  * dans le prix. Un prix ou une quantité illisible est signalé, jamais ramené à 0.
  */
 import { Plus, Trash2 } from "lucide-react";
-import { memo, useCallback, useEffect, useRef, type Dispatch } from "react";
+import { memo, useCallback, useEffect, useRef, useState, type Dispatch } from "react";
 
 import { AdminButton } from "@/components/admin/ui/AdminButton";
 
@@ -92,8 +92,12 @@ function LigneContenuBrut({
   }, [confirmation]);
 
   const total = totauxLignes([l], 0);
-  const ouvertParDefaut =
-    l.offreCode !== "" || l.necessite.length > 0 || l.champsLibres.length > 0 || sansPrixFerme;
+  // Fixé au montage (comme BlocMotsDuClient) : décocher la dernière case ou retirer le dernier
+  // champ libre ne referme pas le bloc sous les doigts de la personne.
+  const [ouvert] = useState(
+    () =>
+      l.offreCode !== "" || l.necessite.length > 0 || l.champsLibres.length > 0 || sansPrixFerme,
+  );
   const LIBELLE_COL = "lg:sr-only";
 
   return (
@@ -208,7 +212,7 @@ function LigneContenuBrut({
       ) : null}
 
       <details
-        open={ouvertParDefaut}
+        open={ouvert}
         className="mt-3 rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)]"
       >
         <summary className="flex min-h-[44px] cursor-pointer list-none items-center gap-2 px-3 font-medium select-none focus-visible:ring-2 focus-visible:ring-[color:var(--color-admin-ring)] focus-visible:outline-none">
