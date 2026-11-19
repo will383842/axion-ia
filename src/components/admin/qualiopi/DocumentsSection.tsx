@@ -237,6 +237,13 @@ export interface DocumentsSectionProps {
    */
   contexte: ContexteSession;
   /**
+   * Certification Qualiopi obtenue (`isQualiopiCertificationObtenue()`, calculé
+   * côté serveur par la page). Tant qu'elle ne l'est pas, l'option de condition
+   * suspensive liée au financement n'est pas proposée (le serveur la refuse).
+   * Défaut : `false`.
+   */
+  certificationObtenue?: boolean | undefined;
+  /**
    * CHANTIER QNC, L13 — notes en ajout seul par pièce (« ne pas envoyer »,
    * « établie hors délai », pièce vierge, pièce rectificative). ABSENT quand
    * l'interrupteur est éteint pour cette session : rien ne s'affiche de plus.
@@ -986,7 +993,9 @@ function ConventionDocButton({
   onDone,
   dejaGenereLe,
   variante = "convention",
+  certificationObtenue = false,
 }: {
+  certificationObtenue?: boolean;
   sessionId: string;
   onDone: (piece: PieceProduite) => void;
   /** Cf. SessionDocButton. */
@@ -1100,11 +1109,13 @@ function ConventionDocButton({
           <span>vide ou 0 = totalité à réception de facture</span>
         </label>
       )}
-      <ConditionSuspensiveOpcoChamps
-        onChange={setCondition}
-        disabled={isPending}
-        idPrefixe={`condition-opco-${variante}`}
-      />
+      {certificationObtenue === true && (
+        <ConditionSuspensiveOpcoChamps
+          onChange={setCondition}
+          disabled={isPending}
+          idPrefixe={`condition-opco-${variante}`}
+        />
+      )}
       <button
         type="button"
         onClick={handleClick}
@@ -1469,6 +1480,7 @@ export function DocumentsSection({
   documentsExistants,
   contexte,
   notesPieces,
+  certificationObtenue = false,
 }: DocumentsSectionProps): React.ReactElement {
   const fige = useDossierFige();
   const [selectedEnrollmentId, setSelectedEnrollmentId] = useState<string>(
@@ -1609,6 +1621,7 @@ export function DocumentsSection({
                   key="convention"
                   sessionId={sessionId}
                   onDone={handleDone}
+                  certificationObtenue={certificationObtenue}
                   dejaGenereLe={dernierSessionParType.get("convention")}
                 />
               ),
@@ -1654,6 +1667,7 @@ export function DocumentsSection({
                   variante="convention_tripartite"
                   sessionId={sessionId}
                   onDone={handleDone}
+                  certificationObtenue={certificationObtenue}
                   dejaGenereLe={dernierSessionParType.get("convention_tripartite")}
                 />
               ),
