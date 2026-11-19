@@ -15,11 +15,11 @@ import React from "react";
 import { Document, View, Text } from "@react-pdf/renderer";
 import {
   QualiopiPage,
-  pdfStyles,
   DocSection,
   FieldRow,
   BulletList,
-} from "@/server/qualiopi/documents/base-layout";
+} from "@/server/qualiopi/documents/cadre-pieces";
+import { pdfStylesPieces } from "@/server/qualiopi/documents/cadre-pieces/styles-blocs";
 import type { OrganismeIdentite } from "@/server/qualiopi/documents/organisme";
 import {
   LIBELLE_MODALITE_HYBRIDE_MINUSCULE,
@@ -149,7 +149,7 @@ export function ConvocationPdf({
       >
         {/* Mention "À conserver" */}
         <View style={{ marginBottom: 12 }}>
-          <Text style={[pdfStyles.paragraph, { fontWeight: "bold" }]}>
+          <Text style={[pdfStylesPieces.paragraph, { fontWeight: "bold" }]}>
             Document à conserver — merci de le présenter le jour de la formation.
           </Text>
         </View>
@@ -206,7 +206,7 @@ export function ConvocationPdf({
         {/* Section 3a : Matériel à prévoir sur place — la fiche de la formation */}
         {data.modalite !== "distanciel" && data.materielAPrevoir ? (
           <DocSection title="Matériel à prévoir sur place">
-            <Text style={pdfStyles.paragraph}>{data.materielAPrevoir}</Text>
+            <Text style={pdfStylesPieces.paragraph}>{data.materielAPrevoir}</Text>
           </DocSection>
         ) : null}
 
@@ -215,7 +215,7 @@ export function ConvocationPdf({
             fiches : la convocation exige ce que le site annonce. */}
         {isDistanciel ? (
           <DocSection title="Équipement requis (distanciel)">
-            <Text style={pdfStyles.paragraph}>
+            <Text style={pdfStylesPieces.paragraph}>
               Pour participer dans de bonnes conditions, veuillez disposer de :
             </Text>
             <BulletList
@@ -234,7 +234,7 @@ export function ConvocationPdf({
         {isDistanciel ? (
           <DocSection title="Assistance à distance">
             <BulletList items={[ASSISTANCE_PENDANT_SESSION, ASSISTANCE_HORS_SESSION]} />
-            <Text style={[pdfStyles.paragraph, { fontWeight: "bold" }]}>
+            <Text style={[pdfStylesPieces.paragraph, { fontWeight: "bold" }]}>
               Si la visioconférence tombe
             </Text>
             <BulletList items={[...ASSISTANCE_COUPURE]} />
@@ -260,7 +260,7 @@ export function ConvocationPdf({
         */}
         {v2 ? (
           <DocSection title="Documents joints à cette convocation">
-            <Text style={pdfStyles.paragraph}>
+            <Text style={pdfStylesPieces.paragraph}>
               Les documents suivants sont joints en PDF au courriel qui accompagne cette
               convocation. Ils restent disponibles dans votre espace stagiaire, par le lien
               personnel du même courriel :
@@ -273,7 +273,7 @@ export function ConvocationPdf({
                 "Livret d'accueil stagiaire",
               ]}
             />
-            <Text style={pdfStyles.paragraph}>
+            <Text style={pdfStylesPieces.paragraph}>
               Le questionnaire de positionnement (à remplir avant la formation) se trouve dans votre
               espace stagiaire. Si une pièce jointe ne s'ouvre pas, signalez-le au contact indiqué
               ci-dessus : elle vous sera adressée par un autre moyen.
@@ -281,7 +281,7 @@ export function ConvocationPdf({
           </DocSection>
         ) : (
           <DocSection title="Documents mis à votre disposition">
-            <Text style={pdfStyles.paragraph}>
+            <Text style={pdfStylesPieces.paragraph}>
               Les documents suivants sont mis à votre disposition dans votre espace stagiaire,
               accessible par le lien personnel qui vous est adressé par courriel avec cette
               convocation :
@@ -294,7 +294,7 @@ export function ConvocationPdf({
                 "Questionnaire de positionnement (à remplir avant la formation)",
               ]}
             />
-            <Text style={pdfStyles.paragraph}>
+            <Text style={pdfStylesPieces.paragraph}>
               Si vous ne parvenez pas à accéder à votre espace stagiaire, signalez-le au contact
               indiqué ci-dessus : ces documents vous seront adressés par un autre moyen.
             </Text>
@@ -317,7 +317,7 @@ export function ConvocationPdf({
 
         {/* Section 5 : Situation handicap */}
         <DocSection title="Situation de handicap — référent dédié">
-          <Text style={pdfStyles.paragraph}>
+          <Text style={pdfStylesPieces.paragraph}>
             Si vous êtes en situation de handicap et nécessitez un aménagement, contactez notre
             référent handicap au plus tôt avant la session :
           </Text>
@@ -338,7 +338,7 @@ export function ConvocationPdf({
           {identite.referentHandicapTelephone ? (
             <FieldRow label="Téléphone" value={identite.referentHandicapTelephone} />
           ) : null}
-          <Text style={[pdfStyles.legalNote]}>{LEGAL_MENTIONS.referentHandicap}</Text>
+          <Text style={[pdfStylesPieces.legalNote]}>{LEGAL_MENTIONS.referentHandicap}</Text>
         </DocSection>
 
         {/* Prévention des violences (indicateur 12, décret n° 2026-728) —
@@ -347,7 +347,7 @@ export function ConvocationPdf({
             d'entrer : elle lui dit à qui signaler, sans détour par le règlement. */}
         <DocSection title={TITRE_ENCART_VIOLENCES}>
           {ENCART_VIOLENCES.map((paragraphe) => (
-            <Text key={paragraphe.slice(0, 12)} style={pdfStyles.paragraph}>
+            <Text key={paragraphe.slice(0, 12)} style={pdfStylesPieces.paragraph}>
               {paragraphe}
             </Text>
           ))}
@@ -355,7 +355,7 @@ export function ConvocationPdf({
 
         {/* Section 6 : Absence / retard */}
         <DocSection title="Absence ou retard">
-          <Text style={pdfStyles.paragraph}>
+          <Text style={pdfStylesPieces.paragraph}>
             Tout retard ou absence devra être signalé dès que possible auprès du contact indiqué
             ci-dessus. En cas d'annulation tardive, les conditions prévues aux Conditions Générales
             de Vente (CGV) s'appliquent.
@@ -368,7 +368,7 @@ export function ConvocationPdf({
             deux mentions contradictoires, dont une fausse. L'en-tête suffit. */}
         {identite.nda ? (
           <View style={{ marginTop: 8 }}>
-            <Text style={pdfStyles.legalNote}>{LEGAL_MENTIONS.declarationActivite}</Text>
+            <Text style={pdfStylesPieces.legalNote}>{LEGAL_MENTIONS.declarationActivite}</Text>
           </View>
         ) : null}
       </QualiopiPage>

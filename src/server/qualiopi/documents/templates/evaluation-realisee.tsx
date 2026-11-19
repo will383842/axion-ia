@@ -20,12 +20,12 @@ import React from "react";
 import { Document, View, Text } from "@react-pdf/renderer";
 import {
   QualiopiPage,
-  pdfStyles,
   DocSection,
   FieldRow,
   DataTable,
   LegalCallout,
-} from "@/server/qualiopi/documents/base-layout";
+} from "@/server/qualiopi/documents/cadre-pieces";
+import { pdfStylesPieces } from "@/server/qualiopi/documents/cadre-pieces/styles-blocs";
 import type { OrganismeIdentite } from "@/server/qualiopi/documents/organisme";
 
 export interface CompetenceEvaluee {
@@ -83,7 +83,7 @@ export function EvaluationRealiseePdf({
           <FieldRow label="Stagiaire" value={data.nomStagiaire} />
           <FieldRow label="Formation" value={data.intituleFormation} />
           <FieldRow label="Évaluation réalisée le" value={data.evalueeLe} />
-          <Text style={pdfStyles.paragraph}>{`Pièce tirée le ${data.tireeLe}.`}</Text>
+          <Text style={pdfStylesPieces.paragraph}>{`Pièce tirée le ${data.tireeLe}.`}</Text>
         </View>
 
         <DocSection title="Résultat">
@@ -113,7 +113,7 @@ export function EvaluationRealiseePdf({
         ) : null}
 
         <DocSection title="Recommandations">
-          <Text style={pdfStyles.paragraph}>{data.recommandations ?? "Non renseigné"}</Text>
+          <Text style={pdfStylesPieces.paragraph}>{data.recommandations ?? "Non renseigné"}</Text>
         </DocSection>
 
         <LegalCallout variant="legal">

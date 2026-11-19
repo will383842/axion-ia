@@ -33,8 +33,8 @@ import {
   DocSection,
   DataTable,
   FieldRow,
-  pdfStyles,
-} from "@/server/qualiopi/documents/base-layout";
+} from "@/server/qualiopi/documents/cadre-pieces";
+import { pdfStylesPieces } from "@/server/qualiopi/documents/cadre-pieces/styles-blocs";
 import type { OrganismeIdentite } from "@/server/qualiopi/documents/organisme";
 
 // ============================================================
@@ -114,7 +114,7 @@ export function ListeFormateursPdf({
         {...(data.estSpecimen ? { estSpecimen: true as const } : {})}
         {...(data.specimenMotif ? { specimenMotif: data.specimenMotif } : {})}
       >
-        <Text style={pdfStyles.legalNote}>
+        <Text style={pdfStylesPieces.legalNote}>
           Liste établie au titre de l&apos;article R.6351-5 du Code du travail (personnes
           intervenant dans les actions de formation : titres et qualités, lien avec la prestation
           réalisée, nature du lien contractuel avec l&apos;organisme) et de l&apos;indicateur 21 du
@@ -166,13 +166,13 @@ export function ListeFormateursPdf({
               }))}
             />
           ) : (
-            <Text style={pdfStyles.paragraph}>Aucun intervenant enregistré à ce jour.</Text>
+            <Text style={pdfStylesPieces.paragraph}>Aucun intervenant enregistré à ce jour.</Text>
           )}
         </DocSection>
 
         {/* 3. Pièces justificatives détenues */}
         <DocSection title="3. Pièces justificatives au dossier">
-          <Text style={pdfStyles.paragraph}>
+          <Text style={pdfStylesPieces.paragraph}>
             Les pièces ci-dessous sont conservées au dossier de chaque intervenant et communicables
             sur demande.
           </Text>
@@ -194,7 +194,7 @@ export function ListeFormateursPdf({
           ))}
         </DocSection>
 
-        <Text style={pdfStyles.legalNote}>
+        <Text style={pdfStylesPieces.legalNote}>
           Aucun diplôme n&apos;est légalement exigé pour dispenser une action de formation
           professionnelle : la maîtrise des compétences s&apos;apprécie au regard du parcours, de
           l&apos;expérience et des réalisations de l&apos;intervenant, documentés par les pièces

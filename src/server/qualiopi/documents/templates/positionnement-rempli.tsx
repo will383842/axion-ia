@@ -35,13 +35,13 @@ import React from "react";
 import { Document, View, Text, StyleSheet } from "@react-pdf/renderer";
 import {
   QualiopiPage,
-  pdfStyles,
   DocSection,
   FieldRow,
   LegalCallout,
-} from "@/server/qualiopi/documents/base-layout";
+} from "@/server/qualiopi/documents/cadre-pieces";
+import { pdfStylesPieces } from "@/server/qualiopi/documents/cadre-pieces/styles-blocs";
 import type { OrganismeIdentite } from "@/server/qualiopi/documents/organisme";
-import { brandColor } from "@/server/qualiopi/brand/brand-tokens";
+import { couleurPiece } from "@/server/qualiopi/brand/jetons-pieces";
 import {
   libelleBesoinAdaptation,
   PRECISION_DANS_LA_REPONSE,
@@ -53,13 +53,13 @@ const NON_RENSEIGNE = "Non renseigné";
 const localStyles = StyleSheet.create({
   question: {
     fontSize: 9,
-    color: brandColor("fg-soft"),
+    color: couleurPiece("fg-soft"),
     fontWeight: "bold",
     marginBottom: 2,
   },
   reponse: {
     fontSize: 10,
-    color: brandColor("fg"),
+    color: couleurPiece("fg"),
     marginBottom: 8,
   },
   niveauRow: {
@@ -68,13 +68,13 @@ const localStyles = StyleSheet.create({
   },
   niveauObjectif: {
     fontSize: 10,
-    color: brandColor("fg"),
+    color: couleurPiece("fg"),
     flex: 1,
     paddingRight: 8,
   },
   niveauValeur: {
     fontSize: 10,
-    color: brandColor("fg"),
+    color: couleurPiece("fg"),
     width: 150,
   },
 });
@@ -138,9 +138,9 @@ export function PositionnementRempliPdf({
             label={p.saisieAdmin ? "Saisie enregistrée le" : "Réponse enregistrée le"}
             value={`${data.reponduLe}, ${data.chronologie}`}
           />
-          <Text style={pdfStyles.paragraph}>{`Pièce tirée le ${data.tireeLe}.`}</Text>
+          <Text style={pdfStylesPieces.paragraph}>{`Pièce tirée le ${data.tireeLe}.`}</Text>
           {p.saisieAdmin ? (
-            <Text style={[pdfStyles.paragraph, { fontWeight: "bold" }]}>
+            <Text style={[pdfStylesPieces.paragraph, { fontWeight: "bold" }]}>
               Éléments saisis par l&apos;organisme, et non par le ou la stagiaire : ils ne valent
               pas réponse du stagiaire.
             </Text>

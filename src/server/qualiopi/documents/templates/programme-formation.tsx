@@ -23,11 +23,12 @@ import {
   DocSection,
   FieldRow,
   BulletList,
-  pdfStyles,
-} from "@/server/qualiopi/documents/base-layout";
+} from "@/server/qualiopi/documents/cadre-pieces";
+import { pdfStylesPieces } from "@/server/qualiopi/documents/cadre-pieces/styles-blocs";
 import type { OrganismeIdentite } from "@/server/qualiopi/documents/organisme";
 import { formaterDuree, type ModuleProgramme } from "@/server/qualiopi/documents/programme-modules";
-import { brandColor, QUALIOPI_PDF_TYPE } from "@/server/qualiopi/brand/brand-tokens";
+import { QUALIOPI_PDF_TYPE } from "@/server/qualiopi/brand/brand-tokens";
+import { couleurPiece } from "@/server/qualiopi/brand/jetons-pieces";
 import { titreModuleSansPrefixe } from "@/server/qualiopi/documents/programme-modules";
 
 // ============================================================
@@ -96,7 +97,7 @@ const local = StyleSheet.create({
     marginBottom: 10,
     paddingLeft: 6,
     borderLeftWidth: 2,
-    borderLeftColor: brandColor("border-strong"),
+    borderLeftColor: couleurPiece("border-strong"),
   },
   moduleTitre: {
     fontSize: QUALIOPI_PDF_TYPE.md,
@@ -105,7 +106,7 @@ const local = StyleSheet.create({
   },
   moduleDuree: {
     fontSize: QUALIOPI_PDF_TYPE.sm,
-    color: brandColor("fg-muted"),
+    color: couleurPiece("fg-muted"),
     marginBottom: 3,
   },
   sequenceItem: {
@@ -122,7 +123,7 @@ const local = StyleSheet.create({
   absent: {
     fontSize: QUALIOPI_PDF_TYPE.sm,
     fontStyle: "italic",
-    color: brandColor("fg-soft"),
+    color: couleurPiece("fg-soft"),
     lineHeight: 1.5,
   },
 });
@@ -263,7 +264,7 @@ export function ProgrammeFormationPdf({
           <FieldRow label="Sanction de la formation" value={data.sanction} />
         </DocSection>
 
-        <Text style={pdfStyles.legalNote}>
+        <Text style={pdfStylesPieces.legalNote}>
           Ce programme constitue l&apos;annexe pédagogique de la convention de formation
           professionnelle (articles L.6353-1 et D.6353-1 du Code du travail : intitulé, objectif,
           contenu, moyens, durée et modalités de déroulement, de suivi et de sanction de

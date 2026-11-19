@@ -10,12 +10,8 @@
 
 import React from "react";
 import { Document, Text, View } from "@react-pdf/renderer";
-import {
-  QualiopiPage,
-  DataTable,
-  pdfStyles,
-  type DataColumn,
-} from "@/server/qualiopi/documents/base-layout";
+import { QualiopiPage, DataTable, type DataColumn } from "@/server/qualiopi/documents/cadre-pieces";
+import { pdfStylesPieces } from "@/server/qualiopi/documents/cadre-pieces/styles-blocs";
 import type { OrganismeIdentite } from "@/server/qualiopi/documents/organisme";
 
 // ============================================================
@@ -71,18 +67,18 @@ export function RegistrePdf({
         docNumber={`Édité le ${data.dateEdition}`}
         identite={identite}
       >
-        {data.sousTitre ? <Text style={pdfStyles.paragraph}>{data.sousTitre}</Text> : null}
+        {data.sousTitre ? <Text style={pdfStylesPieces.paragraph}>{data.sousTitre}</Text> : null}
 
         {data.lignes.length === 0 ? (
-          <Text style={pdfStyles.legalNote}>Aucune entrée enregistrée à ce jour.</Text>
+          <Text style={pdfStylesPieces.legalNote}>Aucune entrée enregistrée à ce jour.</Text>
         ) : (
           <DataTable columns={columns} rows={rows} />
         )}
 
         {(data.sections ?? []).map((section, i) => (
-          <View key={`section-${i}`} style={pdfStyles.section}>
-            <Text style={pdfStyles.sectionTitle}>{section.titre}</Text>
-            {section.texte ? <Text style={pdfStyles.paragraph}>{section.texte}</Text> : null}
+          <View key={`section-${i}`} style={pdfStylesPieces.section}>
+            <Text style={pdfStylesPieces.sectionTitle}>{section.titre}</Text>
+            {section.texte ? <Text style={pdfStylesPieces.paragraph}>{section.texte}</Text> : null}
             {section.lignes.length > 0 ? (
               <DataTable
                 columns={section.colonnes.map((header, j) => ({ key: `c${j}`, header }))}
@@ -95,7 +91,7 @@ export function RegistrePdf({
         ))}
 
         {data.mentionBasDePage ? (
-          <Text style={pdfStyles.legalNote}>{data.mentionBasDePage}</Text>
+          <Text style={pdfStylesPieces.legalNote}>{data.mentionBasDePage}</Text>
         ) : null}
       </QualiopiPage>
     </Document>

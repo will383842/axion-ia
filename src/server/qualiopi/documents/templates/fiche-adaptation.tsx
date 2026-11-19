@@ -17,8 +17,8 @@ import {
   FieldRow,
   BulletList,
   LegalCallout,
-  pdfStyles,
-} from "@/server/qualiopi/documents/base-layout";
+} from "@/server/qualiopi/documents/cadre-pieces";
+import { pdfStylesPieces } from "@/server/qualiopi/documents/cadre-pieces/styles-blocs";
 import type { OrganismeIdentite } from "@/server/qualiopi/documents/organisme";
 
 // ============================================================
@@ -72,9 +72,9 @@ export function FicheAdaptationPdf({
         {/* Adaptations réalisées */}
         <DocSection title="Adaptations réalisées">
           {data.adaptationsRealisees.trim() ? (
-            <Text style={pdfStyles.paragraph}>{data.adaptationsRealisees}</Text>
+            <Text style={pdfStylesPieces.paragraph}>{data.adaptationsRealisees}</Text>
           ) : (
-            <Text style={pdfStyles.legalNote}>
+            <Text style={pdfStylesPieces.legalNote}>
               Aucune adaptation renseignée pour cette inscription à ce jour.
             </Text>
           )}

@@ -14,13 +14,13 @@ import React from "react";
 import { Document, View, Text, StyleSheet } from "@react-pdf/renderer";
 import {
   QualiopiPage,
-  pdfStyles,
   DocSection,
   FieldRow,
   DataTable,
-} from "@/server/qualiopi/documents/base-layout";
+} from "@/server/qualiopi/documents/cadre-pieces";
+import { pdfStylesPieces } from "@/server/qualiopi/documents/cadre-pieces/styles-blocs";
 import type { OrganismeIdentite } from "@/server/qualiopi/documents/organisme";
-import { brandColor } from "@/server/qualiopi/brand/brand-tokens";
+import { couleurPiece } from "@/server/qualiopi/brand/jetons-pieces";
 
 // ============================================================
 // Styles locaux
@@ -41,18 +41,18 @@ const localStyles = StyleSheet.create({
     width: 12,
     height: 12,
     borderWidth: 1,
-    borderColor: brandColor("border-strong"),
+    borderColor: couleurPiece("border-strong"),
   },
   checkBoxChecked: {
     width: 12,
     height: 12,
     borderWidth: 1,
-    borderColor: brandColor("terracotta"),
-    backgroundColor: brandColor("terracotta"),
+    borderColor: couleurPiece("terracotta"),
+    backgroundColor: couleurPiece("terracotta"),
   },
-  typeLabel: { fontSize: 10, color: brandColor("fg") },
+  typeLabel: { fontSize: 10, color: couleurPiece("fg") },
   summaryBox: {
-    backgroundColor: brandColor("sand"),
+    backgroundColor: couleurPiece("sand"),
     borderRadius: 2,
     padding: 8,
     marginTop: 8,
@@ -68,7 +68,7 @@ const localStyles = StyleSheet.create({
     alignItems: "center",
     gap: 5,
   },
-  levelLabel: { fontSize: 10, color: brandColor("fg") },
+  levelLabel: { fontSize: 10, color: couleurPiece("fg") },
 });
 
 // ============================================================
@@ -169,7 +169,7 @@ export function GrilleEvaluationPdf({
       >
         {/* Mention indicateur */}
         <View style={{ marginBottom: 10 }}>
-          <Text style={pdfStyles.legalNote}>
+          <Text style={pdfStylesPieces.legalNote}>
             Indicateur Qualiopi n°11 — Évaluation des acquis à l'issue de la formation.
           </Text>
         </View>
@@ -231,7 +231,7 @@ export function GrilleEvaluationPdf({
             ))}
           </View>
           <View style={{ marginTop: 6 }}>
-            <Text style={{ fontSize: 9, color: brandColor("fg-soft") }}>
+            <Text style={{ fontSize: 9, color: couleurPiece("fg-soft") }}>
               Seuils : Non acquis {"<"} 50 % | Partiellement acquis 50–80 % | Acquis {">"} 80 %
             </Text>
           </View>
@@ -242,37 +242,41 @@ export function GrilleEvaluationPdf({
           <View
             style={{
               borderWidth: 1,
-              borderColor: brandColor("border"),
+              borderColor: couleurPiece("border"),
               minHeight: 50,
               padding: 6,
               borderRadius: 2,
             }}
           >
             {data.recommandations ? (
-              <Text style={pdfStyles.paragraph}>{data.recommandations}</Text>
+              <Text style={pdfStylesPieces.paragraph}>{data.recommandations}</Text>
             ) : null}
           </View>
         </DocSection>
 
         {/* Signatures */}
-        <View style={pdfStyles.signatureZone}>
-          <View style={pdfStyles.signatureBox}>
+        <View style={pdfStylesPieces.signatureZone}>
+          <View style={pdfStylesPieces.signatureBox}>
             <Text style={{ fontSize: 9, fontWeight: "bold", marginBottom: 4 }}>
               Signature du formateur / de la formatrice
             </Text>
-            <Text style={{ fontSize: 8, color: brandColor("fg-soft") }}>
+            <Text style={{ fontSize: 8, color: couleurPiece("fg-soft") }}>
               Nom : {data.nomFormateur}
             </Text>
-            <Text style={{ fontSize: 8, color: brandColor("fg-soft"), marginTop: 4 }}>Date :</Text>
+            <Text style={{ fontSize: 8, color: couleurPiece("fg-soft"), marginTop: 4 }}>
+              Date :
+            </Text>
           </View>
-          <View style={pdfStyles.signatureBox}>
+          <View style={pdfStylesPieces.signatureBox}>
             <Text style={{ fontSize: 9, fontWeight: "bold", marginBottom: 4 }}>
               Signature du / de la stagiaire
             </Text>
-            <Text style={{ fontSize: 8, color: brandColor("fg-soft") }}>
+            <Text style={{ fontSize: 8, color: couleurPiece("fg-soft") }}>
               Nom : {data.nomStagiaire}
             </Text>
-            <Text style={{ fontSize: 8, color: brandColor("fg-soft"), marginTop: 4 }}>Date :</Text>
+            <Text style={{ fontSize: 8, color: couleurPiece("fg-soft"), marginTop: 4 }}>
+              Date :
+            </Text>
           </View>
         </View>
       </QualiopiPage>
