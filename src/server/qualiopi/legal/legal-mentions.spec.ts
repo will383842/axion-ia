@@ -88,16 +88,23 @@ describe("Pénalités de retard — concordance CGV ↔ facture (F52)", () => {
 
   it("le taux imprimé sur la facture est celui stipulé aux CGV (FR)", () => {
     expect(LEGAL_MENTIONS.facturePenalitesRetard).toContain(TAUX_PENALITES_RETARD_FR);
-    expect(clauseCgv("fr", "Retard de paiement")).toContain(TAUX_PENALITES_RETARD_FR);
+    // v3 art. 10.1 : même taux que la facture, formulé plus court (« majoré de 10 points ») ;
+    // le sens (BCE, opération de refinancement la plus récente, + 10 points) est celui de la facture.
+    const clause = clauseCgv("fr", "Article 10. Retard de paiement");
+    expect(clause).toMatch(
+      /au taux appliqué par la Banque centrale européenne à son opération de refinancement la plus récente, majoré de 10 points/,
+    );
+    expect(TAUX_PENALITES_RETARD_FR).toContain("majoré de 10 points");
   });
 
-  it("le miroir EN des CGV porte le même taux", () => {
-    // Le miroir EN de ce fichier a déjà dérivé du FR sur d'autres clauses : un
-    // garde-fou FR-only ne verrait pas la prochaine divergence.
-    const clause = clauseCgv("en", "Late payment");
-    expect(clause).toContain("European Central Bank");
-    expect(clause).toContain("plus 10 percentage points");
-    expect(clause).not.toContain("three times");
+  it("les CGV EN ne portent plus de taux : le texte français seul fait foi (v3)", () => {
+    // La v3 n'a pas de traduction : la page EN renvoie au texte français. Elle ne peut donc plus
+    // diverger du taux de la facture ; ce test verrouille qu'elle n'en réintroduit pas un autre.
+    const en = getLegal("conditions-generales")
+      .en.sections.map((x) => x.body)
+      .join(" ");
+    expect(en).toContain("that French text alone governs the contract");
+    expect(en).not.toMatch(/three times|percentage points/);
   });
 
   it("le taux partagé dit bien BCE + 10 points", () => {

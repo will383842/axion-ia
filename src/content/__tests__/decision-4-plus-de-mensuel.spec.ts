@@ -36,7 +36,6 @@ const LISTE_FERMEE = [
   "src/lib/email/templates/guide-ia-envoi.tsx",
   "src/lib/email/templates/newsletter-confirm-optin.tsx",
   "src/content/imprimes.ts",
-  "src/content/legal.ts",
   // Gabarit de référence des futures lettres (MailWizz) : son en-tête annonce
   // la cadence à chaque lecteur.
   "docs/newsletter/gabarit-lettre-reference.html",
@@ -81,6 +80,20 @@ describe("🔴 plus aucune promesse « mensuelle »", () => {
       }
     });
   }
+});
+
+describe("🔴 plus aucune promesse « mensuelle » : pages légales", () => {
+  // `legal.ts` porte aussi les CGV v3, où « mensuel » désigne légitimement le prix d'un
+  // abonnement. La règle y porte donc sur la LETTRE : aucun paragraphe ne peut parler à la fois
+  // d'une newsletter et d'une cadence mensuelle (même règle que pour les fichiers de messages).
+  it("src/content/legal.ts", () => {
+    const fautifs = texteServi("src/content/legal.ts")
+      .split(/\n|\\n/)
+      .filter(
+        (l) => /newsletter|lettre d'information|letter/i.test(l) && /mensuel|monthly/i.test(l),
+      );
+    expect(fautifs).toEqual([]);
+  });
 });
 
 describe("la cadence réelle est écrite, et depuis UNE source", () => {

@@ -6,18 +6,30 @@
  * client a accepté un texte qu'il n'a pas lu. Ce test lie donc l'empreinte du texte
  * français à la version : modifier l'un oblige à toucher l'autre, ici, en revue.
  */
-import { describe, it, expect } from "vitest";
+import { afterEach, describe, it, expect, vi } from "vitest";
 import { empreinteTexteCgv } from "@/content/cgv-empreinte";
 import { getLegal } from "@/content/legal";
 import { CGV_VERSION, CGV_VERSION_LIBELLE, CGV_VERSION_LIBELLE_EN } from "@/content/cgv-version";
 
-/** Empreinte du texte FR pour la version courante. À mettre à jour AVEC CGV_VERSION. */
-const EMPREINTE_TEXTE_FR = "f01365341d95733c97f4bbba52bc96d4aa7094cc159ae42cf594ed9413a971b2";
-const VERSION_DE_L_EMPREINTE = "2026-11-18";
+/**
+ * Empreinte du texte FR pour la version courante. À mettre à jour AVEC CGV_VERSION.
+ * Deux variantes existent (`cgv-passages-financement.ts`) : chacune a sa paire figée.
+ */
+const EMPREINTE_TEXTE_FR = "208a917e4b12ecf35bdab676a9b57cd1fb55ab8197a74c683cd22604154a9c48";
+const VERSION_DE_L_EMPREINTE = "2026-11-20";
+/** Variante « certifiée » (QUALIOPI_CERTIFICATION_OBTENUE=true) : version suffixée « -f ». */
+const EMPREINTE_TEXTE_FR_CERTIFIEE =
+  "c41f87dffeea7a753b5822e5e79362adec74615a7147e3e47ac8a67817ff578a";
+const VERSION_DE_L_EMPREINTE_CERTIFIEE = "2026-11-20-f";
+
+afterEach(() => {
+  vi.unstubAllEnvs();
+  vi.resetModules();
+});
 
 describe("cgv-version : source unique de la version des CGV", () => {
   it("la version est une date ISO, le libellé la reflète", () => {
-    expect(CGV_VERSION).toMatch(/^\d{4}-\d{2}-\d{2}$/);
+    expect(CGV_VERSION).toMatch(/^\d{4}-\d{2}-\d{2}(-f)?$/);
     expect(CGV_VERSION.length).toBeLessThanOrEqual(40);
     expect(CGV_VERSION_LIBELLE.length).toBeGreaterThan(0);
     expect(CGV_VERSION_LIBELLE_EN.length).toBeGreaterThan(0);
@@ -32,15 +44,24 @@ describe("cgv-version : source unique de la version des CGV", () => {
     expect(empreinte).toBe(EMPREINTE_TEXTE_FR);
   });
 
-  it("la section « Signature électronique du devis » ne promet les garanties renforcées qu'au devis à formules", () => {
-    for (const [langue, motif] of [
-      ["fr", /devis à formules.*Pour tout autre devis/s],
-      ["en", /options quote.*any other quote/s],
-    ] as const) {
-      const section = getLegal("conditions-generales")[langue].sections.find((s) =>
-        /signature of the quote|Signature électronique du devis/.test(s.title),
-      );
-      expect(section?.body).toMatch(motif);
-    }
+  it("cliquet, variante certifiée : le texte et la version « -f » bougent ensemble", async () => {
+    vi.stubEnv("QUALIOPI_CERTIFICATION_OBTENUE", "true");
+    vi.resetModules();
+    const { empreinteTexteCgv: empreinteCertifiee } = await import("@/content/cgv-empreinte");
+    const { CGV_VERSION: versionCertifiee } = await import("@/content/cgv-version");
+    expect(versionCertifiee).toBe(VERSION_DE_L_EMPREINTE_CERTIFIEE);
+    expect(empreinteCertifiee()).toBe(EMPREINTE_TEXTE_FR_CERTIFIEE);
+    expect(EMPREINTE_TEXTE_FR_CERTIFIEE).not.toBe(EMPREINTE_TEXTE_FR);
+  });
+
+  it("l'article 6.3 (v3) ne promet les garanties du code qu'au devis à formules ; l'EN renvoie au texte français", () => {
+    const legal = getLegal("conditions-generales");
+    const art63 = legal.fr.sections.find((s) => /Article 6\. /.test(s.title))?.body ?? "";
+    expect(art63).toMatch(
+      /6\.3 Le devis à formules est signé en ligne[\s\S]*Pour tout autre devis/,
+    );
+    const en = legal.en.sections.map((s) => s.title + s.body).join(" ");
+    expect(en).toMatch(/French text only/);
+    expect(en).toMatch(/that French text alone governs the contract/);
   });
 });

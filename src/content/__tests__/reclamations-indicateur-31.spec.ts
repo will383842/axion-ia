@@ -157,16 +157,15 @@ describe("off.31 — aucun délai de dépôt opposé au réclamant", () => {
   });
 
   it("la frontière avec le délai contractuel des CGV est dite", () => {
-    // Les CGV portent un délai de forclusion de 90 jours réservé au Client
-    // professionnel. Sans cette phrase, les deux textes publiés se démentent.
+    // Les CGV (v3, art. 58.1) portent un délai de signalement de 90 jours qui ne prive le Client
+    // d'aucune action. Sans cette phrase, les deux textes publiés se démentent.
     const b = section(REC_FR, "Comment signaler une difficulté ou déposer une réclamation");
     expect(b).toMatch(/responsabilité contractuelle/);
     expect(b).toMatch(/sans effet sur la recevabilité/);
     // Le délai contractuel existe toujours côté CGV — s'il disparaît, cette
     // phrase de délimitation devient orpheline et doit être relue.
-    expect(section(CGV_FR, "Délai de réclamation sur une prestation")).toMatch(
-      /quatre-vingt-dix \(90\) jours/,
-    );
+    const art58 = CGV_FR.sections.find((x) => /Article 58\. /.test(x.title))?.body ?? "";
+    expect(art58).toMatch(/dans les 90 jours suivant le jour où il l'a connue/);
   });
 
   it("les délais de RÉPONSE, eux, restent publiés", () => {
@@ -232,8 +231,11 @@ describe("off.31 — voies de recours externes publiées", () => {
       "/reclamations → Voies de recours externes": CONSTAT_SANS_ADHESION.test(
         section(REC_FR, "Voies de recours externes"),
       ),
-      "/conditions-generales → Particulier — médiation de la consommation":
-        CONSTAT_SANS_ADHESION.test(section(CGV_FR, "Particulier — médiation de la consommation")),
+      // Entrée « /conditions-generales → Particulier — médiation de la consommation » RETIRÉE
+      // (CGV v3) : Axion-IA contracte exclusivement avec des professionnels (art. 2.2) et le texte
+      // ne porte plus de section de médiation de la consommation ; l'art. 59.3 organise une
+      // médiation conventionnelle entre professionnels, sans rapport avec l'adhésion à un
+      // médiateur de la consommation que cette comparaison vérifie.
       "/mentions-legales → Médiation de la consommation": CONSTAT_SANS_ADHESION.test(
         section(MENTIONS_FR, "Médiation de la consommation"),
       ),
