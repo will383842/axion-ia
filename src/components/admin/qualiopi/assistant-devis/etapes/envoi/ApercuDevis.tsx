@@ -62,7 +62,7 @@ export function ApercuDevis({ vue, urlPdf }: { vue: VueApercuDevis; urlPdf: stri
           href={urlPdf}
           target="_blank"
           rel="noopener noreferrer"
-          className="admin-button-secondary"
+          className="admin-button-secondary admin-button-lg"
         >
           Ouvrir le PDF
         </a>

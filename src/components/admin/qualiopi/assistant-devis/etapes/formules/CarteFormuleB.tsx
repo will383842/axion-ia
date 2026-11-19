@@ -14,6 +14,7 @@ import { useId, type Dispatch } from "react";
 import { AdminBadge } from "@/components/admin/ui/AdminBadge";
 import { AdminCard } from "@/components/admin/ui/AdminCard";
 import { eurosEnCents, miseEnServiceIgnoree, totauxMiseEnServiceB } from "../../calculs";
+import { LibelleSegment } from "../LibelleSegment";
 import { propositionEffective, type ActionAssistant } from "../../etat";
 import type { EtatAssistant } from "../../types";
 
@@ -26,7 +27,7 @@ export interface PropsCarteFormuleB {
 // Contrôle segmenté : vrai bouton radio masqué visuellement mais focusable ; le choix retenu porte
 // une bordure d'accent de même épaisseur que les autres (pas de saut de mise en page).
 const SEGMENT =
-  "relative flex min-h-[44px] cursor-pointer items-center rounded-[var(--radius-admin-md)] border-2 border-[color:var(--color-admin-border-strong)] bg-[color:var(--color-admin-paper)] px-[var(--space-admin-5)] text-[length:var(--text-admin-sm)] motion-safe:transition-colors has-[:checked]:border-[color:var(--color-admin-accent)] has-[:checked]:shadow-[0_0_0_3px_var(--color-admin-accent-track)] has-[:focus-visible]:outline has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-2 has-[:focus-visible]:outline-[color:var(--color-admin-accent)] has-[:disabled]:cursor-not-allowed has-[:disabled]:text-[color:var(--color-admin-fg-muted)]";
+  "relative flex min-h-[44px] cursor-pointer items-center rounded-[var(--radius-admin-md)] border-2 border-[color:var(--color-admin-border-strong)] bg-[color:var(--color-admin-paper)] pl-[calc(var(--space-admin-4)+1.375rem)] pr-[var(--space-admin-5)] text-[length:var(--text-admin-sm)] motion-safe:transition-colors has-[:checked]:border-[color:var(--color-admin-accent)] has-[:checked]:shadow-[0_0_0_3px_var(--color-admin-accent-track)] has-[:focus-visible]:outline has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-2 has-[:focus-visible]:outline-[color:var(--color-admin-accent)] has-[:disabled]:cursor-not-allowed has-[:disabled]:text-[color:var(--color-admin-fg-muted)] has-[:checked]:font-semibold forced-colors:has-[:checked]:outline forced-colors:has-[:checked]:outline-2";
 const GROUPE_SEGMENTS =
   "inline-flex flex-wrap gap-1 rounded-[var(--radius-admin-lg)] bg-[color:var(--color-admin-surface-sunken)] p-1";
 const CHAMP =
@@ -167,7 +168,7 @@ export function CarteFormuleB({ etat, dispatch, tvaStandardPct }: PropsCarteForm
                   checked={etat.ia.abonnement.niveau === n.valeur}
                   onChange={() => majIA({ niveau: n.valeur })}
                 />
-                {n.libelle}
+                <LibelleSegment coche={etat.ia.abonnement.niveau === n.valeur} texte={n.libelle} />
               </label>
             ))}
           </div>
@@ -184,7 +185,10 @@ export function CarteFormuleB({ etat, dispatch, tvaStandardPct }: PropsCarteForm
                 checked={etat.ia.abonnement.mode === "incluse"}
                 onChange={() => majIA({ mode: "incluse" })}
               />
-              Incluse dans l&apos;abonnement
+              <LibelleSegment
+                coche={etat.ia.abonnement.mode === "incluse"}
+                texte={"Incluse dans l'abonnement"}
+              />
             </label>
             <label className={SEGMENT}>
               <input
@@ -194,7 +198,10 @@ export function CarteFormuleB({ etat, dispatch, tvaStandardPct }: PropsCarteForm
                 checked={etat.ia.abonnement.mode === "non_incluse"}
                 onChange={() => majIA({ mode: "non_incluse" })}
               />
-              Non incluse
+              <LibelleSegment
+                coche={etat.ia.abonnement.mode === "non_incluse"}
+                texte={"Non incluse"}
+              />
             </label>
           </div>
         </fieldset>

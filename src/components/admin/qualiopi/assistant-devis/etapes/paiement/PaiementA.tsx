@@ -11,6 +11,7 @@ import { useId, type Dispatch } from "react";
 
 import { AdminCard } from "@/components/admin/ui/AdminCard";
 import type { ActionAssistant } from "../../etat";
+import { LibelleSegment } from "../LibelleSegment";
 import type { EtatAssistant, MoisPeriode } from "../../types";
 import { RappelPhases } from "./RappelPhases";
 
@@ -24,7 +25,7 @@ export interface PropsPaiementA {
 // Contrôle segmenté : vraie case à cocher masquée visuellement mais focusable ; bordure d'accent
 // de même épaisseur dans les deux états.
 const SEGMENT =
-  "relative flex min-h-[44px] cursor-pointer items-center rounded-[var(--radius-admin-md)] border-2 border-[color:var(--color-admin-border-strong)] bg-[color:var(--color-admin-paper)] px-[var(--space-admin-5)] text-[length:var(--text-admin-sm)] motion-safe:transition-colors has-[:checked]:border-[color:var(--color-admin-accent)] has-[:checked]:shadow-[0_0_0_3px_var(--color-admin-accent-track)] has-[:focus-visible]:outline has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-2 has-[:focus-visible]:outline-[color:var(--color-admin-accent)] has-[:disabled]:cursor-not-allowed has-[:disabled]:text-[color:var(--color-admin-fg-muted)]";
+  "relative flex min-h-[44px] cursor-pointer items-center rounded-[var(--radius-admin-md)] border-2 border-[color:var(--color-admin-border-strong)] bg-[color:var(--color-admin-paper)] pl-[calc(var(--space-admin-4)+1.375rem)] pr-[var(--space-admin-5)] text-[length:var(--text-admin-sm)] motion-safe:transition-colors has-[:checked]:border-[color:var(--color-admin-accent)] has-[:checked]:shadow-[0_0_0_3px_var(--color-admin-accent-track)] has-[:focus-visible]:outline has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-2 has-[:focus-visible]:outline-[color:var(--color-admin-accent)] has-[:disabled]:cursor-not-allowed has-[:disabled]:text-[color:var(--color-admin-fg-muted)] has-[:checked]:font-semibold forced-colors:has-[:checked]:outline forced-colors:has-[:checked]:outline-2";
 
 export const RYTHMES_MAINTENANCE: ReadonlyArray<{ mois: MoisPeriode; libelle: string }> = [
   { mois: 1, libelle: "Chaque mois" },
@@ -68,7 +69,7 @@ export function PaiementA({ etat, dispatch, montants }: PropsPaiementA) {
                     aria-describedby={`${uid}-aide`}
                     onChange={() => bascule(r.mois)}
                   />
-                  {r.libelle}
+                  <LibelleSegment coche={m.periodes.includes(r.mois)} texte={r.libelle} />
                 </label>
               ))}
             </div>

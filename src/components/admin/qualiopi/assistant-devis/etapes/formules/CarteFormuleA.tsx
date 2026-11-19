@@ -11,6 +11,7 @@ import { Server } from "lucide-react";
 import { useId, type Dispatch } from "react";
 
 import { eurosEnCents, totauxFormuleA } from "../../calculs";
+import { LibelleSegment } from "../LibelleSegment";
 import { AdminBadge } from "@/components/admin/ui/AdminBadge";
 import { AdminCard } from "@/components/admin/ui/AdminCard";
 import type { ActionAssistant } from "../../etat";
@@ -26,7 +27,7 @@ export interface PropsCarteFormuleA {
 // Contrôle segmenté : vrai bouton radio masqué visuellement mais focusable ; le choix retenu porte
 // une bordure d'accent de même épaisseur que les autres (pas de saut de mise en page).
 const SEGMENT =
-  "relative flex min-h-[44px] cursor-pointer items-center rounded-[var(--radius-admin-md)] border-2 border-[color:var(--color-admin-border-strong)] bg-[color:var(--color-admin-paper)] px-[var(--space-admin-5)] text-[length:var(--text-admin-sm)] motion-safe:transition-colors has-[:checked]:border-[color:var(--color-admin-accent)] has-[:checked]:shadow-[0_0_0_3px_var(--color-admin-accent-track)] has-[:focus-visible]:outline has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-2 has-[:focus-visible]:outline-[color:var(--color-admin-accent)] has-[:disabled]:cursor-not-allowed has-[:disabled]:text-[color:var(--color-admin-fg-muted)]";
+  "relative flex min-h-[44px] cursor-pointer items-center rounded-[var(--radius-admin-md)] border-2 border-[color:var(--color-admin-border-strong)] bg-[color:var(--color-admin-paper)] pl-[calc(var(--space-admin-4)+1.375rem)] pr-[var(--space-admin-5)] text-[length:var(--text-admin-sm)] motion-safe:transition-colors has-[:checked]:border-[color:var(--color-admin-accent)] has-[:checked]:shadow-[0_0_0_3px_var(--color-admin-accent-track)] has-[:focus-visible]:outline has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-2 has-[:focus-visible]:outline-[color:var(--color-admin-accent)] has-[:disabled]:cursor-not-allowed has-[:disabled]:text-[color:var(--color-admin-fg-muted)] has-[:checked]:font-semibold forced-colors:has-[:checked]:outline forced-colors:has-[:checked]:outline-2";
 const GROUPE_SEGMENTS =
   "inline-flex flex-wrap gap-1 rounded-[var(--radius-admin-lg)] bg-[color:var(--color-admin-surface-sunken)] p-1";
 const CHAMP =
@@ -107,7 +108,10 @@ export function CarteFormuleA({ etat, dispatch, tvaStandardPct }: PropsCarteForm
                 checked={achat.hebergement === "client"}
                 onChange={() => dispatch({ type: "achat", patch: { hebergement: "client" } })}
               />
-              Sur le serveur du client
+              <LibelleSegment
+                coche={achat.hebergement === "client"}
+                texte={"Sur le serveur du client"}
+              />
             </label>
             <label className={SEGMENT}>
               <input
@@ -117,7 +121,10 @@ export function CarteFormuleA({ etat, dispatch, tvaStandardPct }: PropsCarteForm
                 checked={achat.hebergement === "axion"}
                 onChange={() => dispatch({ type: "achat", patch: { hebergement: "axion" } })}
               />
-              Sur le serveur d&apos;Axion-IA (hébergement)
+              <LibelleSegment
+                coche={achat.hebergement === "axion"}
+                texte={"Sur le serveur d'Axion-IA (hébergement)"}
+              />
             </label>
           </div>
         </fieldset>
@@ -160,7 +167,10 @@ export function CarteFormuleA({ etat, dispatch, tvaStandardPct }: PropsCarteForm
                 checked={ia.achat.mode === "compte_client"}
                 onChange={() => majIA({ mode: "compte_client" })}
               />
-              Compte du client chez son fournisseur
+              <LibelleSegment
+                coche={ia.achat.mode === "compte_client"}
+                texte={"Compte du client chez son fournisseur"}
+              />
             </label>
             <label className={SEGMENT}>
               <input
@@ -170,7 +180,10 @@ export function CarteFormuleA({ etat, dispatch, tvaStandardPct }: PropsCarteForm
                 checked={ia.achat.mode === "incluse"}
                 onChange={() => majIA({ mode: "incluse" })}
               />
-              Incluse pendant quelques mois
+              <LibelleSegment
+                coche={ia.achat.mode === "incluse"}
+                texte={"Incluse pendant quelques mois"}
+              />
             </label>
             <label className={SEGMENT}>
               <input
@@ -182,7 +195,7 @@ export function CarteFormuleA({ etat, dispatch, tvaStandardPct }: PropsCarteForm
                 readOnly
                 aria-describedby={`${uid}-ia-raison`}
               />
-              Via Axion-IA : forfait mensuel
+              <LibelleSegment coche={false} texte={"Via Axion-IA : forfait mensuel"} />
             </label>
           </div>
           <p

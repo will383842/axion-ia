@@ -127,6 +127,7 @@ export function EmailEnvoi({ destinataire, salutation, envoyer }: PropsEmailEnvo
         </p>
         <div className="mt-[var(--space-admin-5)] flex flex-wrap gap-[var(--space-admin-3)]">
           <AdminButton
+            size="lg"
             icon={Send}
             onClick={() => void lancerEnvoi()}
             disabled={envoye || enCours}

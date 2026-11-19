@@ -9,6 +9,7 @@
 import { useId, type Dispatch } from "react";
 
 import { propositionEffective, raisonPrixUniqueImpose, type ActionAssistant } from "../../etat";
+import { LibelleSegment } from "../LibelleSegment";
 import type { EtatAssistant, Proposition } from "../../types";
 
 export interface PropsChoixFormules {
@@ -26,7 +27,7 @@ const CHOIX: ReadonlyArray<{ valeur: Proposition; libelle: string }> = [
 // Contrôle segmenté : vrai bouton radio masqué visuellement mais focusable ; le choix retenu porte
 // une bordure d'accent de même épaisseur que les autres (pas de saut de mise en page).
 const SEGMENT =
-  "relative flex min-h-[44px] cursor-pointer items-center rounded-[var(--radius-admin-md)] border-2 border-[color:var(--color-admin-border-strong)] bg-[color:var(--color-admin-paper)] px-[var(--space-admin-5)] text-[length:var(--text-admin-sm)] motion-safe:transition-colors has-[:checked]:border-[color:var(--color-admin-accent)] has-[:checked]:shadow-[0_0_0_3px_var(--color-admin-accent-track)] has-[:focus-visible]:outline has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-2 has-[:focus-visible]:outline-[color:var(--color-admin-accent)] has-[:disabled]:cursor-not-allowed has-[:disabled]:text-[color:var(--color-admin-fg-muted)]";
+  "relative flex min-h-[44px] cursor-pointer items-center rounded-[var(--radius-admin-md)] border-2 border-[color:var(--color-admin-border-strong)] bg-[color:var(--color-admin-paper)] pl-[calc(var(--space-admin-4)+1.375rem)] pr-[var(--space-admin-5)] text-[length:var(--text-admin-sm)] motion-safe:transition-colors has-[:checked]:border-[color:var(--color-admin-accent)] has-[:checked]:shadow-[0_0_0_3px_var(--color-admin-accent-track)] has-[:focus-visible]:outline has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-2 has-[:focus-visible]:outline-[color:var(--color-admin-accent)] has-[:disabled]:cursor-not-allowed has-[:disabled]:text-[color:var(--color-admin-fg-muted)] has-[:checked]:font-semibold forced-colors:has-[:checked]:outline forced-colors:has-[:checked]:outline-2";
 
 export function ChoixFormules({ etat, dispatch }: PropsChoixFormules) {
   const uid = useId();
@@ -52,7 +53,7 @@ export function ChoixFormules({ etat, dispatch }: PropsChoixFormules) {
                   aria-describedby={grise ? `${uid}-raison` : undefined}
                   onChange={() => dispatch({ type: "proposer", proposition: c.valeur })}
                 />
-                {c.libelle}
+                <LibelleSegment coche={actif === c.valeur} texte={c.libelle} />
               </label>
             );
           })}

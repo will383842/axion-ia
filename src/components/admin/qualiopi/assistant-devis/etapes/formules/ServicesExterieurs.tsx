@@ -13,6 +13,7 @@ import { AdminBadge } from "@/components/admin/ui/AdminBadge";
 import { AdminButton } from "@/components/admin/ui/AdminButton";
 import { AdminCard } from "@/components/admin/ui/AdminCard";
 import { eurosEnCents } from "../../calculs";
+import { LibelleSegment } from "../LibelleSegment";
 import type { ActionAssistant } from "../../etat";
 import type { EtatAssistant } from "../../types";
 
@@ -26,7 +27,7 @@ export interface PropsServicesExterieurs {
 // Contrôle segmenté : vrai bouton radio masqué visuellement mais focusable ; le choix retenu porte
 // une bordure d'accent de même épaisseur que les autres (pas de saut de mise en page).
 const SEGMENT =
-  "relative flex min-h-[44px] cursor-pointer items-center rounded-[var(--radius-admin-md)] border-2 border-[color:var(--color-admin-border-strong)] bg-[color:var(--color-admin-paper)] px-[var(--space-admin-5)] text-[length:var(--text-admin-sm)] motion-safe:transition-colors has-[:checked]:border-[color:var(--color-admin-accent)] has-[:checked]:shadow-[0_0_0_3px_var(--color-admin-accent-track)] has-[:focus-visible]:outline has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-2 has-[:focus-visible]:outline-[color:var(--color-admin-accent)] has-[:disabled]:cursor-not-allowed has-[:disabled]:text-[color:var(--color-admin-fg-muted)]";
+  "relative flex min-h-[44px] cursor-pointer items-center rounded-[var(--radius-admin-md)] border-2 border-[color:var(--color-admin-border-strong)] bg-[color:var(--color-admin-paper)] pl-[calc(var(--space-admin-4)+1.375rem)] pr-[var(--space-admin-5)] text-[length:var(--text-admin-sm)] motion-safe:transition-colors has-[:checked]:border-[color:var(--color-admin-accent)] has-[:checked]:shadow-[0_0_0_3px_var(--color-admin-accent-track)] has-[:focus-visible]:outline has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-2 has-[:focus-visible]:outline-[color:var(--color-admin-accent)] has-[:disabled]:cursor-not-allowed has-[:disabled]:text-[color:var(--color-admin-fg-muted)] has-[:checked]:font-semibold forced-colors:has-[:checked]:outline forced-colors:has-[:checked]:outline-2";
 const GROUPE_SEGMENTS =
   "inline-flex flex-wrap gap-1 rounded-[var(--radius-admin-lg)] bg-[color:var(--color-admin-surface-sunken)] p-1";
 const CHAMP =
@@ -199,7 +200,7 @@ export function ServicesExterieurs({ etat, dispatch, textePlafond }: PropsServic
                       checked={s.obligatoire}
                       onChange={() => maj(i, { obligatoire: true })}
                     />
-                    Obligatoire
+                    <LibelleSegment coche={s.obligatoire} texte={"Obligatoire"} />
                   </label>
                   <label className={SEGMENT}>
                     <input
@@ -209,13 +210,17 @@ export function ServicesExterieurs({ etat, dispatch, textePlafond }: PropsServic
                       checked={!s.obligatoire}
                       onChange={() => maj(i, { obligatoire: false })}
                     />
-                    Facultatif
+                    <LibelleSegment coche={!s.obligatoire} texte={"Facultatif"} />
                   </label>
                 </div>
                 {s.obligatoire ? (
-                  <AdminBadge tone="warning">Obligatoire</AdminBadge>
+                  <span aria-hidden="true">
+                    <AdminBadge tone="warning">Obligatoire</AdminBadge>
+                  </span>
                 ) : (
-                  <AdminBadge tone="neutral">Facultatif</AdminBadge>
+                  <span aria-hidden="true">
+                    <AdminBadge tone="neutral">Facultatif</AdminBadge>
+                  </span>
                 )}
               </div>
             </fieldset>
@@ -231,19 +236,24 @@ export function ServicesExterieurs({ etat, dispatch, textePlafond }: PropsServic
                       checked={s.rythme === r}
                       onChange={() => maj(i, { rythme: r })}
                     />
-                    {r === "ponctuel" ? "Une fois" : r === "mensuel" ? "Par mois" : "Par an"}
+                    <LibelleSegment
+                      coche={s.rythme === r}
+                      texte={
+                        r === "ponctuel" ? "Une fois" : r === "mensuel" ? "Par mois" : "Par an"
+                      }
+                    />
                   </label>
                 ))}
               </div>
             </fieldset>
             <div className="sm:col-span-2">
-              <AdminButton variant="secondary" size="sm" onClick={() => retirer(i)}>
+              <AdminButton variant="secondary" size="lg" onClick={() => retirer(i)}>
                 Retirer le service {i + 1}
               </AdminButton>
             </div>
           </div>
         ))}
-        <AdminButton variant="secondary" onClick={ajouter}>
+        <AdminButton variant="secondary" size="lg" onClick={ajouter}>
           + Ajouter un service
         </AdminButton>
 

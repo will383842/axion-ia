@@ -100,7 +100,7 @@ export function EtapeEnvoi({
         {chargement.etat === "erreur" ? (
           <div role="alert" className="p-[var(--space-admin-5)]">
             <p className="mb-[var(--space-admin-3)]">{chargement.message}</p>
-            <AdminButton variant="secondary" onClick={() => void charger()}>
+            <AdminButton variant="secondary" size="lg" onClick={() => void charger()}>
               Réessayer
             </AdminButton>
           </div>
@@ -123,7 +123,7 @@ export function EtapeEnvoi({
         ) : null}
         {onModifier ? (
           <div>
-            <AdminButton variant="secondary" icon={ChevronLeft} onClick={onModifier}>
+            <AdminButton variant="secondary" size="lg" icon={ChevronLeft} onClick={onModifier}>
               Modifier le devis
             </AdminButton>
           </div>
