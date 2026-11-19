@@ -9,7 +9,11 @@
  * au client », qui appelle l'action UNE fois (verrou immédiat contre le double clic). Aucun
  * envoi à l'affichage, aucune relance.
  */
+import { Send } from "lucide-react";
 import { useId, useRef, useState } from "react";
+
+import { AdminButton } from "@/components/admin/ui/AdminButton";
+import { AdminCard } from "@/components/admin/ui/AdminCard";
 
 export interface EmailAEnvoyer {
   a: string;
@@ -65,51 +69,85 @@ export function EmailEnvoi({ destinataire, salutation, envoyer }: PropsEmailEnvo
   }
 
   return (
-    <section aria-labelledby={`${uid}-t`} className="mt-4">
-      <h3 id={`${uid}-t`}>L&apos;e-mail envoyé au client</h3>
-      <label className="flex flex-col">
-        À
-        <input
-          type="email"
-          className="min-h-[44px] rounded border px-2"
-          value={a}
-          readOnly
-          aria-describedby={`${uid}-adresse`}
-        />
-      </label>
-      <p id={`${uid}-adresse`} className="text-[length:var(--text-admin-sm)]">
-        Adresse lue sur la fiche du client ; elle ne se modifie pas ici.
-      </p>
-      <p className="text-[length:var(--text-admin-sm)]">
-        Pièce jointe : le devis en PDF, avec le bouton pour choisir et signer. Selon le réglage en
-        vigueur, l&apos;e-mail part tout de suite ou attend votre validation dans « Emails, À
-        valider » ; dans ce second cas, le devis reste en brouillon tant que l&apos;e-mail
-        n&apos;est pas validé. Le client reçoit uniquement ce message, jamais de relance
-        automatique.
-      </p>
-      <p className="text-[length:var(--text-admin-sm)]" data-testid="salutation-email">
-        {salutation !== undefined && salutation.trim() !== ""
-          ? `L'e-mail commencera par : ${salutation}`
-          : "La salutation suit la fiche du client."}
-      </p>
-      <div className="mt-3 flex flex-wrap gap-3">
-        <button
-          type="button"
-          className="min-h-[44px] rounded bg-[color:var(--color-admin-accent)] px-4 text-white"
-          onClick={() => void lancerEnvoi()}
-          disabled={envoye || enCours}
+    <AdminCard as="div">
+      <section aria-labelledby={`${uid}-t`}>
+        <h3
+          id={`${uid}-t`}
+          className="mb-[var(--space-admin-5)] text-[length:var(--text-admin-lg)] font-semibold"
         >
-          {enCours ? "Envoi…" : "Envoyer au client"}
-        </button>
-      </div>
-      {erreur ? (
-        <p role="alert" className="mt-2">
-          {erreur}
+          L&apos;e-mail envoyé au client
+        </h3>
+        <div className="grid gap-[var(--space-admin-4)]">
+          <label className="grid items-center gap-1 sm:grid-cols-[4rem_minmax(0,1fr)]">
+            À
+            <input
+              type="email"
+              className="min-h-[44px] rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-control-border)] bg-[color:var(--color-admin-surface-sunken)] px-[var(--space-admin-4)]"
+              value={a}
+              readOnly
+              aria-describedby={`${uid}-adresse`}
+            />
+          </label>
+        </div>
+        <p
+          id={`${uid}-adresse`}
+          className="mt-[var(--space-admin-2)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]"
+        >
+          Adresse lue sur la fiche du client ; elle ne se modifie pas ici.
         </p>
-      ) : null}
-      <p role="status" className="mt-2">
-        {statut ?? ""}
-      </p>
-    </section>
+        <div className="mt-[var(--space-admin-3)] flex items-center gap-[var(--space-admin-1)]">
+          <details className="relative inline-block">
+            <summary
+              aria-label="En savoir plus sur la pièce jointe"
+              className="grid h-11 w-11 cursor-pointer list-none place-items-center rounded-full focus-visible:ring-2 focus-visible:ring-[color:var(--color-admin-ring)] [&::-webkit-details-marker]:hidden"
+            >
+              <span
+                aria-hidden="true"
+                className="grid h-[22px] w-[22px] place-items-center rounded-full border border-[color:var(--color-admin-control-border)] text-[length:var(--text-admin-xs)] font-bold"
+              >
+                ?
+              </span>
+            </summary>
+            <div className="absolute top-11 left-0 z-10 w-80 rounded-[var(--radius-admin-lg)] border border-[color:var(--color-admin-border-strong)] bg-[color:var(--color-admin-paper)] p-[var(--space-admin-5)] text-[length:var(--text-admin-sm)] shadow-[var(--shadow-admin-2)]">
+              Pièce jointe : le devis en PDF, avec le bouton pour choisir et signer. Selon le
+              réglage en vigueur, l&apos;e-mail part tout de suite ou attend votre validation dans «
+              Emails, À valider » ; dans ce second cas, le devis reste en brouillon tant que
+              l&apos;e-mail n&apos;est pas validé. Le client reçoit uniquement ce message, jamais de
+              relance automatique.
+            </div>
+          </details>
+        </div>
+        <p
+          className="text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]"
+          data-testid="salutation-email"
+        >
+          {salutation !== undefined && salutation.trim() !== ""
+            ? `L'e-mail commencera par : ${salutation}`
+            : "La salutation suit la fiche du client."}
+        </p>
+        <div className="mt-[var(--space-admin-5)] flex flex-wrap gap-[var(--space-admin-3)]">
+          <AdminButton
+            size="lg"
+            icon={Send}
+            onClick={() => void lancerEnvoi()}
+            disabled={envoye || enCours}
+            loading={enCours}
+          >
+            {enCours ? "Envoi…" : "Envoyer au client"}
+          </AdminButton>
+        </div>
+        {erreur ? (
+          <p
+            role="alert"
+            className="mt-[var(--space-admin-3)] text-[color:var(--color-admin-destructive-fg)]"
+          >
+            {erreur}
+          </p>
+        ) : null}
+        <p role="status" className="mt-[var(--space-admin-3)]">
+          {statut ?? ""}
+        </p>
+      </section>
+    </AdminCard>
   );
 }
