@@ -134,7 +134,7 @@ export function AuthorByline(props: AuthorBylineProps) {
             <>
               {publishedAt ? <span aria-hidden="true">·</span> : null}
               <span>
-                {isFr ? "Dernière revue " : "Last reviewed "}
+                {isFr ? "Mis à jour le " : "Updated "}
                 <time dateTime={lastReviewedAt.toISOString()} className="tabular-nums">
                   {lastReviewedAt.toISOString().slice(0, 10)}
                 </time>

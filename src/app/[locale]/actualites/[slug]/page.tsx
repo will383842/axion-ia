@@ -391,9 +391,8 @@ export default async function NewsArticlePage({ params }: Props) {
   // Accent éditorial du titre (parité /blog) — la queue rend en serif italique
   // terracotta via `titleEm` du <Section spacing="compact">.
   const titleParts = splitTitleEm(t.title);
-  // Bannière « Dernière révision » (parité /blog) — signal de fraîcheur E-E-A-T.
-  // Date de référence = updatedAt sinon publishedAt.
-  const lastReviewed = article.updatedAt ?? article.publishedAt;
+  // Un seul « Mis à jour le » visible : celui de l'en-tête (près du titre).
+  // Pas de bannière ni de date dans AuthorByline (doublons retirés).
 
   return (
     <>
@@ -456,7 +455,7 @@ export default async function NewsArticlePage({ params }: Props) {
             <>
               <span aria-hidden="true">·</span>
               <time dateTime={article.publishedAt.toISOString()} className="tabular-nums">
-                Publié le {article.publishedAt.toLocaleDateString("fr-FR")}
+                Publié le {article.publishedAt.toLocaleDateString("fr-FR", { timeZone: "UTC" })}
               </time>
             </>
           ) : null}
@@ -464,7 +463,7 @@ export default async function NewsArticlePage({ params }: Props) {
             <>
               <span aria-hidden="true">·</span>
               <time dateTime={article.updatedAt.toISOString()} className="tabular-nums">
-                Mis à jour le {article.updatedAt.toLocaleDateString("fr-FR")}
+                Mis à jour le {article.updatedAt.toLocaleDateString("fr-FR", { timeZone: "UTC" })}
               </time>
             </>
           ) : null}
@@ -489,34 +488,6 @@ export default async function NewsArticlePage({ params }: Props) {
             </>
           ) : null}
         </Container>
-        {/* Bannière « Dernière révision » (parité /blog) — signal de fraîcheur
-            E-E-A-T visible (Article.dateModified déjà émis côté JSON-LD).
-            Toujours affichée dès qu'une date de référence existe. */}
-        {lastReviewed ? (
-          <Container className="mt-4 max-w-3xl">
-            <div className="border-border bg-sand-50 text-fg-muted flex items-center gap-2 rounded-md border px-3 py-2 text-sm">
-              <svg
-                aria-hidden="true"
-                className="text-terracotta-deep h-4 w-4 shrink-0"
-                viewBox="0 0 20 20"
-                fill="currentColor"
-              >
-                <path
-                  fillRule="evenodd"
-                  d="M16.704 4.153a.75.75 0 0 1 .143 1.052l-8 10.5a.75.75 0 0 1-1.127.075l-4.5-4.5a.75.75 0 0 1 1.06-1.06l3.894 3.893 7.477-9.817a.75.75 0 0 1 1.053-.143Z"
-                  clipRule="evenodd"
-                />
-              </svg>
-              <span>
-                Dernière révision :{" "}
-                <time dateTime={lastReviewed.toISOString()} className="tabular-nums">
-                  {lastReviewed.toLocaleDateString("fr-FR")}
-                </time>
-                {showUpdated ? <span className="text-fg-muted ml-1">(mis à jour)</span> : null}
-              </span>
-            </div>
-          </Container>
-        ) : null}
       </Section>
 
       {/* Layout 2 colonnes (parité blog 2026-06-25) : rail SOMMAIRE sticky à
@@ -577,7 +548,6 @@ export default async function NewsArticlePage({ params }: Props) {
                   ? { authorAvatarUrl: manonByline.avatarUrl, authorBio: manonByline.bio }
                   : {})}
                 publishedAt={article.publishedAt ?? null}
-                lastReviewedAt={article.updatedAt ?? null}
                 emitJsonLd={false}
                 locale="fr"
               />

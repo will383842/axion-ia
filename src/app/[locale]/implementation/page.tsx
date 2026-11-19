@@ -22,6 +22,7 @@ import { Container } from "@/components/layout/Container";
 import { StickyMobileCta } from "@/components/marketing/StickyMobileCta";
 import { VisibiliteCallout } from "@/components/visibilite/VisibiliteCallout";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
+import { MisAJourLe } from "@/components/marketing/MisAJourLe";
 import { JsonLd } from "@/components/marketing/JsonLd";
 import {
   buildProductMetadata,
@@ -285,6 +286,8 @@ export default async function ImplementationListing({ params }: Props) {
       <VisibiliteCallout isFr={isFr} />
 
       <ImplementationContactBand isFr={isFr} trackSuffix="-final" finale />
+
+      <MisAJourLe locale={loc} chemin="/implementation" />
 
       {/* CTA flottant mobile — visible < lg */}
       <StickyMobileCta

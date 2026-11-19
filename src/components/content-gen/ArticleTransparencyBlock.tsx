@@ -34,6 +34,7 @@ export function ArticleTransparencyBlock({
     day: "numeric",
     month: "long",
     year: "numeric",
+    timeZone: "UTC",
   }).format(date);
   const iso = date.toISOString().slice(0, 10);
 
@@ -54,7 +55,7 @@ export function ArticleTransparencyBlock({
             <span className="bg-sage h-2 w-2 rounded-full" />
           </span>
           <p>
-            {isFr ? "Dernière vérification le " : "Last reviewed on "}
+            {isFr ? "Sources vérifiées le " : "Sources checked on "}
             <time dateTime={iso} className="text-fg-soft font-semibold">
               {formatted}
             </time>
@@ -63,8 +64,8 @@ export function ArticleTransparencyBlock({
               <>
                 {" "}
                 {isFr
-                  ? `Ce contenu est revu tous les ${updateCycleDays} jours.`
-                  : `This content is reviewed every ${updateCycleDays} days.`}
+                  ? `Ce contenu est actualisé tous les ${updateCycleDays} jours.`
+                  : `This content is updated every ${updateCycleDays} days.`}
               </>
             ) : null}
           </p>

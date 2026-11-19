@@ -18,6 +18,7 @@ import {
 import type { Locale } from "@/i18n/routing";
 import { Container } from "@/components/layout/Container";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
+import { MisAJourLe } from "@/components/marketing/MisAJourLe";
 import { ProductPageTemplate } from "@/components/sections/ProductPageTemplate";
 import { DetailHeroSchema } from "@/components/sections/DetailHeroSchema";
 import { SitesWebContactBand } from "@/components/services/sites-web/SitesWebContactBand";
@@ -151,6 +152,7 @@ export function SitesWebLandingPage({
         jsonLd={jsonLd}
       />
       <SitesWebSubPageExtras isFr={isFr} slug={slug} />
+      <MisAJourLe locale={locale} chemin={path} />
     </>
   );
 }
