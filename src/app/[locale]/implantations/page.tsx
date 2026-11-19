@@ -137,7 +137,7 @@ export default async function ImplantationsHub({ params }: Props) {
                 shape="pill"
                 track="hub_cta_diagnostic"
               >
-                Réserver le diagnostic gratuit
+                Réserver un Diagnostic IA
                 <ArrowRight className="h-4 w-4" aria-hidden="true" />
               </Cta>
               <Cta
@@ -283,7 +283,7 @@ export default async function ImplantationsHub({ params }: Props) {
               data-cta-tracking="hub_cta_final_diagnostic"
               className="bg-paper text-terracotta cta-lift focus-visible:ring-paper inline-flex h-14 items-center justify-center gap-2 rounded-full px-7 text-base font-semibold focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
             >
-              Réserver le diagnostic gratuit
+              Réserver un Diagnostic IA
               <ArrowRight className="h-4 w-4" aria-hidden="true" />
             </Link>
           </div>
@@ -292,7 +292,7 @@ export default async function ImplantationsHub({ params }: Props) {
 
       <StickyMobileCta
         href={lienRendezVous("implantations-bas")}
-        label="Réserver le diagnostic gratuit"
+        label="Réserver un Diagnostic IA"
         track="hub-sticky-mobile"
         threshold={600}
       />

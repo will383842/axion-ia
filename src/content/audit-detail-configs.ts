@@ -224,8 +224,8 @@ const FLASH_BENEFITS: ReadonlyArray<AuditBenefit> = [
 const FLASH_SCHEDULE: ReadonlyArray<AuditScheduleItem> = [
   {
     time: "Jour J",
-    titleFr: "Cadrage par appel 15 min",
-    titleEn: "15-min framing call",
+    titleFr: "Point téléphonique de 15 min",
+    titleEn: "15-min phone check-in",
     descriptionFr: "Vous nous décrivez votre contexte, on cale la zone d'usage prioritaire.",
     descriptionEn: "You describe your context, we lock the priority use area.",
   },

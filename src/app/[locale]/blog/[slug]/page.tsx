@@ -707,7 +707,6 @@ export default async function BlogArticle({ params }: Props) {
                   ? { authorAvatarUrl: manonByline.avatarUrl, authorBio: manonByline.bio }
                   : {})}
                 publishedAt={view.publishedAt ? new Date(view.publishedAt) : null}
-                lastReviewedAt={view.updatedAt ? new Date(view.updatedAt) : null}
                 emitJsonLd={!isDbHtml}
                 locale={loc}
               />

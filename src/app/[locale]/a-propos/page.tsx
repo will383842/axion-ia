@@ -195,7 +195,7 @@ export default async function About({ params }: Props) {
           id: "contact",
           question: "Comment contacter Axion-IA ?",
           answer:
-            "Le plus simple est de passer par la page Contact : un formulaire unique couvre les devis, audits, formations, implémentations, 1-à-1 et partenariats, avec une réponse humaine. Vous pouvez aussi réserver directement un appel de découverte.",
+            "Le plus simple est de passer par la page Contact : un formulaire unique couvre les devis, audits, formations, implémentations, 1-à-1 et partenariats, avec une réponse humaine. Vous pouvez aussi réserver directement un Diagnostic IA de 45 minutes.",
         },
         // Q/R Qualiopi / financement — émises UNIQUEMENT en Phase B (flag OF).
         // Doctrine financement : jamais de CPF, jamais « 100 % / gratuit »,
