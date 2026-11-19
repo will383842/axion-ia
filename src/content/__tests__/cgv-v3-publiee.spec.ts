@@ -10,6 +10,10 @@ import { afterEach, describe, expect, it, vi } from "vitest";
 const INTERDIT_SANS_CERTIFICATION =
   /\bOPCO\b|opérateur de compétences|qualiopi|certification|france travail|\bCPF\b|subrogation|demande de financement|financeurs?\b|financée par un tiers/i;
 
+// Variante normale : ni « financement » ni « prise en charge » (consigne du fondateur). « refinancement »
+// (art. 10.1, mention légale obligatoire) n'est pas visé : \b n'y trouve pas de frontière avant « financement ».
+const INTERDIT_MOTS_FONDATEUR = /\bfinancements?\b|prise en charge/i;
+
 type Page = {
   title: string;
   titleEm?: string;
@@ -33,6 +37,24 @@ describe("CGV v3 publiées : variante normale (environnement non défini)", () =
     const cg = getLegal("conditions-generales");
     expect(texteComplet(cg.fr)).not.toMatch(INTERDIT_SANS_CERTIFICATION);
     expect(texteComplet(cg.en)).not.toMatch(INTERDIT_SANS_CERTIFICATION);
+    expect(texteComplet(cg.fr)).not.toMatch(INTERDIT_MOTS_FONDATEUR);
+  });
+
+  it("l'article 47.7 fige les valeurs validées : 90 jours, 0 euro", async () => {
+    const { getLegal } = await import("@/content/legal");
+    const t = texteComplet(getLegal("conditions-generales").fr as Page);
+    expect(t).toContain(
+      "(délai : valeur fixée au devis ; à défaut : 90 jours) suivant la remise du rapport",
+    );
+    expect(t).toContain(
+      "(montant déduit : valeur fixée au devis ; à défaut : 0 euro) du prix de la journée est déduit",
+    );
+  });
+
+  it("l'article 19.3 liste les valeurs de maintenance fixées au devis", async () => {
+    const { getLegal } = await import("@/content/legal");
+    const t = texteComplet(getLegal("conditions-generales").fr as Page);
+    expect(t).toContain("valeurs fixées au devis ; à défaut : facultative, 0 mois offert");
   });
 
   it("le texte FR est la v3 : professionnels seulement, 60 articles, annexes", async () => {
