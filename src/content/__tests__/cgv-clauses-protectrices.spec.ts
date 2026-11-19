@@ -1,5 +1,5 @@
 /**
- * Garde-fou — clauses limitatives des CGV (2026-08-14, réécrit pour la v3 du 20 novembre 2026).
+ * Garde-fou — clauses limitatives des CGV (2026-08-14, réécrit pour la v3 du 19 novembre 2026).
  *
  * Les CGV publiées sur /conditions-generales sont annexées à la convention de
  * formation, à la convention tripartite et au contrat de formation, et

@@ -42,7 +42,7 @@ export const revalidate = 3600;
 // compétences (OPCO) » (FR + EN) — dépôt de la demande, subrogation, refus,
 // heures d'absence, non-paiement par l'OPCO. Le texte rendu change, la date suit.
 //
-// 2026-11-20 : CGV v3 (60 articles, annexes) en remplacement du texte du 18 novembre 2026,
+// 2026-11-19 : CGV v3 (60 articles, annexes) en remplacement du texte du 18 novembre 2026,
 // archivé. Les passages relatifs au financement et à la certification restent cachés tant que
 // `QUALIOPI_CERTIFICATION_OBTENUE` n'est pas « true » (`@/content/cgv-passages-financement`).
 // La date elle-même vit dans `@/content/cgv-version` (source unique, enregistrée à la signature).

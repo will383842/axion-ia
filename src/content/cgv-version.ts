@@ -22,7 +22,7 @@
 export const CGV_AVEC_PASSAGES_FINANCEMENT =
   process.env["QUALIOPI_CERTIFICATION_OBTENUE"] === "true";
 
-export const CGV_DATE_ISO = "2026-11-20";
+export const CGV_DATE_ISO = "2026-11-19";
 export const CGV_VERSION = CGV_AVEC_PASSAGES_FINANCEMENT ? `${CGV_DATE_ISO}-f` : CGV_DATE_ISO;
-export const CGV_VERSION_LIBELLE = "20 novembre 2026";
-export const CGV_VERSION_LIBELLE_EN = "November 20, 2026";
+export const CGV_VERSION_LIBELLE = "19 novembre 2026";
+export const CGV_VERSION_LIBELLE_EN = "November 19, 2026";
