@@ -644,6 +644,11 @@ const ALLOWED_PATTERNS: ReadonlyArray<RegExp> = [
   /^src\/server\/visio\/openai\/(client|cout|erreurs|tarifs)\.ts$/,
   /^src\/server\/visio\/openai\/__tests__\/(chaque-modele-a-son-tarif|tout-appel-openai-passe-par-le-plafond-et-le-registre-des-couts|un-plafond-atteint-suspend-le-circuit-sans-toucher-au-kill-switch-de-content-gen|un-quota-epuise-suspend-toutes-les-etapes)\.spec\.ts$/,
   /^tests\/outils\/faux-openai-visio\.ts$/,
+  // GEO V2-11 (2026-11-19) — garde « un seul « Mis à jour le » par page article » : le
+  // marqueur est le CHEMIN du bloc de transparence (`src/components/content-gen/
+  // ArticleTransparencyBlock.tsx`), lu en texte pour compter ses étiquettes. Aucun import,
+  // aucun code du pipeline : même cas que `services-ssot.spec.ts` ci-dessus. Nominatif.
+  /^tests\/unit\/seo\/un-seul-mis-a-jour-par-article\.spec\.ts$/,
 ];
 
 /**
