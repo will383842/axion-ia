@@ -236,10 +236,10 @@ export async function chargerAssistantDevis(
         : !formulesOn
           ? versFiche(message)
           : {
-            redirection: `${fiche}/modifier?sans-assistant=1`,
-            message,
-            libelleLien: "Modifier sans l'assistant",
-          };
+              redirection: `${fiche}/modifier?sans-assistant=1`,
+              message,
+              libelleLien: "Modifier sans l'assistant",
+            };
     const sansAssistant = "Ce devis a été préparé sans l'assistant : ";
     if (!lie) {
       // JAMAIS vers /modifier (il renvoie ici : boucle).
