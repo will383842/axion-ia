@@ -557,6 +557,20 @@ describe("chargerAssistantDevis — l'assistant ne rouvre que ses propres devis"
     aucuneEcriture();
   });
 
+  it("formules ÉTEINTES : un refus d'un devis à formules lié mène à la fiche, jamais à /modifier (boucle)", async () => {
+    formules.mockResolvedValue(false);
+    db.devis.findUnique.mockResolvedValue(devisBrouillon({ offre: { v: 1 } }));
+    db.devisAssistantBrouillon.findUnique.mockResolvedValue(
+      lie({ createdByAdminId: "99999999-9999-4999-8999-999999999999" }),
+    );
+    const r = (await chargerAssistantDevis({ adminId: ADMIN, devisId: DEVIS })) as {
+      redirection: string;
+    };
+    expect(r.redirection).toBe(FICHE);
+    expect(r.redirection).not.toMatch(/modifier|new\?devis=/);
+    aucuneEcriture();
+  });
+
   it("CONTRE-TÉMOIN : une fiche d'essai est respectée (le client reste dans la liste, marqué essai)", async () => {
     db.client.findMany.mockResolvedValue([{ id: CLIENT }] as never);
     db.devisAssistantBrouillon.findUnique.mockResolvedValue(lie());
