@@ -161,7 +161,13 @@ const GABARITS = [
     rendre: (cond?: unknown) =>
       collectPdfText(
         <ConventionPdf
-          data={{ ...bipartite, conditionSuspensiveOpco: cond } as ConventionData}
+          data={
+            {
+              ...bipartite,
+              certificationObtenue: true,
+              conditionSuspensiveOpco: cond,
+            } as ConventionData
+          }
           identite={identite}
         />,
       ),
