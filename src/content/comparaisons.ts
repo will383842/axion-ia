@@ -45,14 +45,14 @@ export const COMPARISONS: ReadonlyArray<Comparison> = [
     fr: {
       title: "Cabinet IA vs SaaS générique : quand choisir quoi ?",
       excerpt:
-        "Le SaaS IA générique couvre 60-70 % des besoins standards. Le cabinet adresse les 30 % spécifiques métier.",
-      body: "Le SaaS IA générique (ChatGPT Enterprise, Microsoft Copilot, Gemini for Workspace) couvre 60-70 % des besoins productivité standards : rédaction, résumés, traduction, analyse de documents génériques. Coût 20-30 €/user/mois. Le cabinet IA opérationnel comme Axion-IA adresse les 30 % spécifiques métier non couverts : intégration aux process internes, RAG sur documents propriétaires, agents adaptés à votre stack outil. Coût ponctuel 5-50 k€ par projet, ROI mesurable sur 6-12 mois. Règle simple : commencez par le SaaS générique, escaladez au cabinet quand un besoin spécifique justifie un projet > 5 k€.",
+        "Le SaaS IA générique couvre l'essentiel des besoins standards. Le cabinet adresse les besoins spécifiques au métier.",
+      body: "Le SaaS IA générique (ChatGPT Enterprise, Microsoft Copilot, Gemini for Workspace) couvre l'essentiel des besoins productivité standards : rédaction, résumés, traduction, analyse de documents génériques. Coût 20-30 €/user/mois. Le cabinet IA opérationnel comme Axion-IA adresse les besoins spécifiques métier non couverts : intégration aux process internes, RAG sur documents propriétaires, agents adaptés à votre stack outil. Coût ponctuel 5-50 k€ par projet, ROI mesurable sur 6-12 mois. Règle simple : commencez par le SaaS générique, escaladez au cabinet quand un besoin spécifique justifie un projet > 5 k€.",
     },
     en: {
       title: "AI consultancy vs generic SaaS: when to pick what?",
       excerpt:
-        "Generic AI SaaS covers 60-70% of standard needs. Consultancy addresses the 30% domain-specific.",
-      body: "Generic AI SaaS (ChatGPT Enterprise, Microsoft Copilot, Gemini for Workspace) covers 60-70% of standard productivity needs: writing, summaries, translation, generic document analysis. Cost €20-30/user/month. An operational AI consultancy like Axion-IA addresses the 30% domain-specific not covered: internal process integration, RAG on proprietary documents, agents adapted to your tool stack. One-off cost €5-50k per project, measurable ROI over 6-12 months. Simple rule: start with generic SaaS, escalate to consultancy when a specific need justifies a > €5k project.",
+        "Generic AI SaaS covers most standard needs. Consultancy addresses the domain-specific ones.",
+      body: "Generic AI SaaS (ChatGPT Enterprise, Microsoft Copilot, Gemini for Workspace) covers most standard productivity needs: writing, summaries, translation, generic document analysis. Cost €20-30/user/month. An operational AI consultancy like Axion-IA addresses the domain-specific needs not covered: internal process integration, RAG on proprietary documents, agents adapted to your tool stack. One-off cost €5-50k per project, measurable ROI over 6-12 months. Simple rule: start with generic SaaS, escalate to consultancy when a specific need justifies a > €5k project.",
     },
   },
   {
@@ -60,13 +60,13 @@ export const COMPARISONS: ReadonlyArray<Comparison> = [
     fr: {
       title: "Fine-tuning vs RAG : la décision technique en 2026",
       excerpt:
-        "Le RAG couvre 80 % des cas. Le fine-tuning n'est justifié qu'au-delà de 10 k exemples métier.",
-      body: "Le RAG (Retrieval-Augmented Generation) ancre les réponses IA sur vos documents via recherche vectorielle. Avantages : déploiement en 2-4 semaines, ~3-5 k€, mises à jour instantanées. Couvre 80 % des besoins B2B. Le fine-tuning spécialise un modèle sur vos données. Avantages : latence ultra-faible, style propriétaire, fonctionne offline. Inconvénients : 8-50 k€, 6-12 semaines, drift de qualité au fil des évolutions du modèle de base, mises à jour douloureuses. Règle : choisir le fine-tuning UNIQUEMENT si (1) volume de données métier > 10 k exemples, (2) latence sub-100 ms requise, (3) contraintes de souveraineté empêchant l'usage d'API externe.",
+        "Le RAG couvre la plupart des cas. Le fine-tuning n'est justifié qu'au-delà de 10 k exemples métier.",
+      body: "Le RAG (Retrieval-Augmented Generation) ancre les réponses IA sur vos documents via recherche vectorielle. Avantages : déploiement en 2-4 semaines, ~3-5 k€, mises à jour instantanées. Couvre la plupart des besoins B2B. Le fine-tuning spécialise un modèle sur vos données. Avantages : latence ultra-faible, style propriétaire, fonctionne offline. Inconvénients : 8-50 k€, 6-12 semaines, drift de qualité au fil des évolutions du modèle de base, mises à jour douloureuses. Règle : choisir le fine-tuning UNIQUEMENT si (1) volume de données métier > 10 k exemples, (2) latence sub-100 ms requise, (3) contraintes de souveraineté empêchant l'usage d'API externe.",
     },
     en: {
       title: "Fine-tuning vs RAG: the technical decision in 2026",
-      excerpt: "RAG covers 80% of cases. Fine-tuning is only justified beyond 10k domain examples.",
-      body: "RAG (Retrieval-Augmented Generation) grounds AI answers on your documents via vector search. Pros: 2-4 week deployment, ~€3-5k, instant updates. Covers 80% of B2B needs. Fine-tuning specialises a model on your data. Pros: ultra-low latency, proprietary style, works offline. Cons: €8-50k, 6-12 weeks, quality drift as base model evolves, painful updates. Rule: choose fine-tuning ONLY if (1) domain data volume > 10k examples, (2) sub-100ms latency required, (3) sovereignty constraints preventing external API usage.",
+      excerpt: "RAG covers most cases. Fine-tuning is only justified beyond 10k domain examples.",
+      body: "RAG (Retrieval-Augmented Generation) grounds AI answers on your documents via vector search. Pros: 2-4 week deployment, ~€3-5k, instant updates. Covers most B2B needs. Fine-tuning specialises a model on your data. Pros: ultra-low latency, proprietary style, works offline. Cons: €8-50k, 6-12 weeks, quality drift as base model evolves, painful updates. Rule: choose fine-tuning ONLY if (1) domain data volume > 10k examples, (2) sub-100ms latency required, (3) sovereignty constraints preventing external API usage.",
     },
   },
   {
@@ -101,19 +101,19 @@ const ENRICHED: Record<string, ComparisonEnrichment> = {
     optionA: { fr: "Cabinet IA", en: "AI consultancy" },
     optionB: { fr: "SaaS générique", en: "Generic SaaS" },
     directAnswer: {
-      fr: "Commencez par le SaaS IA générique, qui couvre 60-70 % des besoins productivité standards pour 20-30 €/user/mois ; escaladez vers un cabinet IA opérationnel uniquement quand un besoin spécifique métier justifie un projet de plus de 5 k€.",
-      en: "Start with generic AI SaaS, which covers 60-70% of standard productivity needs for €20-30/user/month; escalate to an operational AI consultancy only when a domain-specific need justifies a project above €5k.",
+      fr: "Commencez par le SaaS IA générique, qui couvre l'essentiel des besoins productivité standards pour 20-30 €/user/mois ; escaladez vers un cabinet IA opérationnel uniquement quand un besoin spécifique métier justifie un projet de plus de 5 k€.",
+      en: "Start with generic AI SaaS, which covers most standard productivity needs for €20-30/user/month; escalate to an operational AI consultancy only when a domain-specific need justifies a project above €5k.",
     },
     criteria: [
       {
         label: { fr: "Couverture des besoins", en: "Needs coverage" },
         optionA: {
-          fr: "30 % spécifiques métier non couverts par le SaaS",
-          en: "The 30% domain-specific not covered by SaaS",
+          fr: "Besoins spécifiques métier non couverts par le SaaS",
+          en: "Domain-specific needs not covered by SaaS",
         },
         optionB: {
-          fr: "60-70 % des besoins productivité standards",
-          en: "60-70% of standard productivity needs",
+          fr: "L'essentiel des besoins productivité standards",
+          en: "Most standard productivity needs",
         },
       },
       {
@@ -161,8 +161,8 @@ const ENRICHED: Record<string, ComparisonEnrichment> = {
           en: "Your needs are standard productivity tasks (writing, summaries, translation, generic document analysis)",
         },
         choose: {
-          fr: "Le SaaS IA générique, à 20-30 €/user/mois, qui couvre 60-70 % de ces besoins",
-          en: "Generic AI SaaS, at €20-30/user/month, which covers 60-70% of these needs",
+          fr: "Le SaaS IA générique, à 20-30 €/user/mois, qui couvre l'essentiel de ces besoins",
+          en: "Generic AI SaaS, at €20-30/user/month, which covers most of these needs",
         },
       },
       {
@@ -177,8 +177,8 @@ const ENRICHED: Record<string, ComparisonEnrichment> = {
       },
       {
         when: {
-          fr: "Vous démarrez et n'avez pas encore identifié de besoin spécifique au-delà des 30 % métier",
-          en: "You are starting out and have not yet identified a specific need beyond the 30% domain-specific",
+          fr: "Vous démarrez et n'avez pas encore identifié de besoin spécifique au-delà des besoins spécifiques métier",
+          en: "You are starting out and have not yet identified a specific need beyond the domain-specific needs",
         },
         choose: {
           fr: "Commencez par le SaaS générique, puis escaladez au cabinet quand un besoin dépasse 5 k€",
@@ -193,8 +193,8 @@ const ENRICHED: Record<string, ComparisonEnrichment> = {
           en: "Is a generic AI SaaS enough for my company?",
         },
         answer: {
-          fr: "Il suffit pour les besoins productivité standards, qu'il couvre à 60-70 % (rédaction, résumés, traduction, analyse de documents génériques) pour 20-30 €/user/mois. Il ne couvre pas les 30 % spécifiques métier comme l'intégration à vos process internes ou le RAG sur vos documents propriétaires.",
-          en: "It is enough for standard productivity needs, which it covers at 60-70% (writing, summaries, translation, generic document analysis) for €20-30/user/month. It does not cover the 30% domain-specific such as integration with your internal processes or RAG on your proprietary documents.",
+          fr: "Il suffit pour les besoins productivité standards, qu'il couvre en grande partie (rédaction, résumés, traduction, analyse de documents génériques) pour 20-30 €/user/mois. Il ne couvre pas les besoins spécifiques métier comme l'intégration à vos process internes ou le RAG sur vos documents propriétaires.",
+          en: "It is enough for standard productivity needs, which it covers for the most part (writing, summaries, translation, generic document analysis) for €20-30/user/month. It does not cover the domain-specific needs such as integration with your internal processes or RAG on your proprietary documents.",
         },
       },
       {
@@ -223,8 +223,8 @@ const ENRICHED: Record<string, ComparisonEnrichment> = {
           en: "Are an AI consultancy and a generic SaaS complementary?",
         },
         answer: {
-          fr: "Oui : le SaaS générique couvre les 60-70 % de besoins productivité standards, tandis que le cabinet adresse les 30 % spécifiques métier non couverts, comme le RAG sur documents propriétaires ou les agents adaptés à votre stack outil.",
-          en: "Yes: the generic SaaS covers the 60-70% of standard productivity needs, while the consultancy addresses the 30% domain-specific not covered, such as RAG on proprietary documents or agents adapted to your tool stack.",
+          fr: "Oui : le SaaS générique couvre l'essentiel des besoins productivité standards, tandis que le cabinet adresse les besoins spécifiques métier non couverts, comme le RAG sur documents propriétaires ou les agents adaptés à votre stack outil.",
+          en: "Yes: the generic SaaS covers most standard productivity needs, while the consultancy addresses the domain-specific needs not covered, such as RAG on proprietary documents or agents adapted to your tool stack.",
         },
       },
     ],
@@ -234,8 +234,8 @@ const ENRICHED: Record<string, ComparisonEnrichment> = {
     optionA: { fr: "Fine-tuning", en: "Fine-tuning" },
     optionB: { fr: "RAG", en: "RAG" },
     directAnswer: {
-      fr: "Optez pour le RAG par défaut : il couvre 80 % des besoins B2B, se déploie en 2-4 semaines pour ~3-5 k€ avec mises à jour instantanées. Ne choisissez le fine-tuning que si vos données métier dépassent 10 k exemples, qu'une latence sub-100 ms est requise, ou que des contraintes de souveraineté interdisent toute API externe.",
-      en: "Default to RAG: it covers 80% of B2B needs, deploys in 2-4 weeks for ~€3-5k with instant updates. Only choose fine-tuning if your domain data exceeds 10k examples, sub-100ms latency is required, or sovereignty constraints rule out any external API.",
+      fr: "Optez pour le RAG par défaut : il couvre la plupart des besoins B2B, se déploie en 2-4 semaines pour ~3-5 k€ avec mises à jour instantanées. Ne choisissez le fine-tuning que si vos données métier dépassent 10 k exemples, qu'une latence sub-100 ms est requise, ou que des contraintes de souveraineté interdisent toute API externe.",
+      en: "Default to RAG: it covers most B2B needs, deploys in 2-4 weeks for ~€3-5k with instant updates. Only choose fine-tuning if your domain data exceeds 10k examples, sub-100ms latency is required, or sovereignty constraints rule out any external API.",
     },
     criteria: [
       {
@@ -256,7 +256,7 @@ const ENRICHED: Record<string, ComparisonEnrichment> = {
       {
         label: { fr: "Couverture besoins B2B", en: "B2B needs coverage" },
         optionA: { fr: "Cas spécifiques uniquement", en: "Specific cases only" },
-        optionB: { fr: "80 % des besoins", en: "80% of needs" },
+        optionB: { fr: "La plupart des besoins", en: "Most needs" },
       },
       {
         label: { fr: "Atouts clés", en: "Key strengths" },
@@ -285,8 +285,8 @@ const ENRICHED: Record<string, ComparisonEnrichment> = {
           en: "You are starting a B2B AI project grounded on your documents, tight budget and timeline, frequently changing content",
         },
         choose: {
-          fr: "RAG — 2-4 semaines, ~3-5 k€, mises à jour instantanées, couvre 80 % des besoins B2B",
-          en: "RAG — 2-4 weeks, ~€3-5k, instant updates, covers 80% of B2B needs",
+          fr: "RAG — 2-4 semaines, ~3-5 k€, mises à jour instantanées, couvre la plupart des besoins B2B",
+          en: "RAG — 2-4 weeks, ~€3-5k, instant updates, covers most B2B needs",
         },
       },
       {
@@ -317,8 +317,8 @@ const ENRICHED: Record<string, ComparisonEnrichment> = {
           en: "RAG or fine-tuning: which should be the default choice?",
         },
         answer: {
-          fr: "Le RAG est le choix par défaut : il couvre 80 % des besoins B2B, se déploie en 2-4 semaines pour ~3-5 k€ et offre des mises à jour instantanées. Réservez le fine-tuning aux cas qui remplissent au moins un des trois critères de bascule.",
-          en: "RAG is the default choice: it covers 80% of B2B needs, deploys in 2-4 weeks for ~€3-5k and offers instant updates. Reserve fine-tuning for cases meeting at least one of the three switch criteria.",
+          fr: "Le RAG est le choix par défaut : il couvre la plupart des besoins B2B, se déploie en 2-4 semaines pour ~3-5 k€ et offre des mises à jour instantanées. Réservez le fine-tuning aux cas qui remplissent au moins un des trois critères de bascule.",
+          en: "RAG is the default choice: it covers most B2B needs, deploys in 2-4 weeks for ~€3-5k and offers instant updates. Reserve fine-tuning for cases meeting at least one of the three switch criteria.",
         },
       },
       {
