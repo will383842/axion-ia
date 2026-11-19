@@ -21,7 +21,7 @@ import { TYPES_RESERVABLES } from "@/server/calendly/types-reservables";
 const NOM = "Diagnostic IA";
 
 const ANCIENS_NOMS =
-  /appel\s+(?:de\s+)?cadrage|diagnostic\s+gratuit\s+de\s+45|appel\s+(?:de\s+)?d[ée]couverte|appel\s+strat[ée]gique|cadrage\s+45|[ée]change\s+d[ée]couverte|(?:réserver|reserver|lancer)\s+(?:le|mon|votre)\s+diagnostic\s+gratuit/i;
+  /appel\s+(?:de\s+)?cadrage|cadrage\s+par\s+appel|diagnostic\s+gratuit\s+de\s+45|appel\s+(?:de\s+)?d[ée]couverte|appel\s+strat[ée]gique|cadrage\s+45|[ée]change\s+d[ée]couverte|(?:réserver|reserver|lancer)\s+(?:le|mon|votre)\s+diagnostic\s+gratuit/i;
 
 const RACINES = [
   "src/app",
@@ -48,20 +48,13 @@ const HORS_PERIMETRE: ReadonlyArray<RegExp> = [
   /src\/app\/\[locale\]\/demande-devis\/page\.tsx$/,
   /src\/app\/\[locale\]\/demande-devis\/confirmation\/page\.tsx$/,
   /src\/lib\/email\/templates\/quote-request-received\.tsx$/,
-  // EN ATTENTE (même appel de 45 min, à passer en « Diagnostic IA ») : ces fichiers sont modifiés par
-  // d'autres PR ouvertes (réécriture ou lots anciens) ; les toucher ici créerait des conflits.
-  // À VIDER, une fois ces PR fusionnées : transversal.ts, secteurs/[secteur]/page.tsx, kb/un-a-un.ts,
-  // kb/interventions-formations.ts, kb/sites-web-augmentes.ts, category-hub-content.ts.
+  // EN ATTENTE (même appel de 45 min, à passer en « Diagnostic IA ») : transversal.ts est modifié par
+  // les PR ouvertes 1979 et 1861 (1979 aussi pour _accueil/contenu.ts) ; les kb et category-hub-content, par d'autres lots.
+  // À VIDER une fois ces PR fusionnées.
   /src\/content\/transversal\.ts$/,
-  /src\/app\/\[locale\]\/secteurs\/\[secteur\]\/page\.tsx$/,
+  /src\/app\/\[locale\]\/_accueil\/contenu\.ts$/,
   /src\/server\/content[-]gen\/kb\/(?:un-a-un|interventions-formations|sites-web-augmentes)\.ts$/,
   /src\/server\/content[-]gen\/lib\/category-hub-content\.ts$/,
-  // EN ATTENTE de fusion de PR ouvertes (à vider, une fois fusionnées) : PR 2134 (implantations),
-  // PR 2136 (accueil, a-propos), PR 2137 (positionnement du générateur).
-  /src\/app\/\[locale\]\/implantations\/page\.tsx$/,
-  /src\/app\/\[locale\]\/_accueil\/contenu\.ts$/,
-  /src\/app\/\[locale\]\/a-propos\/page\.tsx$/,
-  /brand\/positionnement\.ts$/,
 ];
 
 function lister(dossier: string, sortie: string[]): void {

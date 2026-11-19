@@ -432,7 +432,7 @@ export default async function SecteurPilier({ params }: Props) {
                   href={`/${loc}/appel`}
                   className="text-terracotta hover:text-terracotta-deep inline-flex items-center gap-1 text-sm font-semibold underline-offset-4 hover:underline"
                 >
-                  {isFr ? "Réserver un appel de cadrage" : "Book a scoping call"}
+                  {isFr ? "Réserver un Diagnostic IA" : "Book a scoping call"}
                   <ArrowRight className="h-4 w-4" aria-hidden="true" />
                 </Link>
               </p>
@@ -494,7 +494,7 @@ export default async function SecteurPilier({ params }: Props) {
         title={isFr ? "Par où commencer ?" : "Where to start?"}
         description={
           isFr
-            ? "Le plus simple : un appel de cadrage. On regarde votre contexte, on identifie le gisement de temps le plus rapide à récupérer, et on vous dit honnêtement par quelle activité commencer."
+            ? "Le plus simple : un Diagnostic IA de 45 minutes. On regarde votre contexte, on identifie le gisement de temps le plus rapide à récupérer, et on vous dit honnêtement par quelle activité commencer."
             : "The simplest: a scoping call. We look at your context, identify the fastest time saving, and honestly tell you which activity to start with."
         }
       >
