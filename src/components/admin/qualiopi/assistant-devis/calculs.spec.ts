@@ -152,9 +152,12 @@ describe("abonnement B (T2)", () => {
     expect(p[1]!.engagementMinimalCents).toBe(227988);
   });
 
-  it("indemnité maximale 119 994 ; aucune sans engagement", () => {
-    expect(indemniteSortieMax(etatT2())).toBe(119994);
-    const sans = reducteur(etatT2(), { type: "abonnement", patch: { engagementMois: 0 } });
+  it("calcul pur (anciens devis) : indemnité maximale 119 994 à 50 % ; 0 % → aucune ; aucune sans engagement", () => {
+    // D4 : un nouveau devis est à 0 ; le calcul pur reste juste pour un taux hérité (surcharge locale).
+    const herite = reducteur(etatT2(), { type: "abonnement", patch: { indemniteTauxPct: "50" } });
+    expect(indemniteSortieMax(herite)).toBe(119994);
+    expect(indemniteSortieMax(etatT2())).toBeNull();
+    const sans = reducteur(herite, { type: "abonnement", patch: { engagementMois: 0 } });
     expect(indemniteSortieMax(sans)).toBeNull();
   });
 

@@ -122,7 +122,7 @@ function formules(modele: "A" | "B" | "AB" = "AB"): PayloadAssistantV1 {
     { mois: 12, remisePct: "5" },
   ];
   p.formules.abonnement.engagementMois = 12;
-  p.formules.abonnement.indemniteTauxPct = "50";
+  p.formules.abonnement.indemniteTauxPct = "0";
   p.formules.abonnement.lignes = [
     { libelle: "Mise en service et adaptation", quantite: "1", prixEur: "1 900", tauxTvaPct: "20" },
   ];
