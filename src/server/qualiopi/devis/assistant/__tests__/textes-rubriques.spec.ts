@@ -13,7 +13,7 @@ const TEXTES = {
   TEXTE_PLAFOND_RESPONSABILITE,
 };
 const INTERDIT =
-  /qualiopi|opco|financ|prise en charge|aucun gain garanti|(?:certif\w*|conforme)\s+(?:à l')?ai act|ai act|chatgpt|openai|claude|mistral|gemini|copilot|grenoble|€/i;
+  /qualiopi|opco|financement|prise en charge|certifi|grenoble|aucun gain garanti|(?:certif\w*|conforme)\s+(?:à l')?ai act|ai act|chatgpt|openai|claude|mistral|gemini|copilot|€/i;
 
 describe("textes des rubriques du devis", () => {
   for (const [nom, texte] of Object.entries(TEXTES)) {

@@ -189,10 +189,12 @@ export async function chargerAssistantDevis(
     ? await prisma.devisTexteBibliotheque.findMany({
         where: { archiveAt: null, actifParDefaut: true },
         orderBy: [{ formule: "asc" }, { nature: "asc" }, { ordre: "asc" }],
-        select: { id: true, version: true, texte: true },
+        select: { id: true, version: true, nature: true, texte: true },
       })
     : [];
-  const textesActifs = lignesParDefaut.map((t) => t.texte);
+  // Seules les clauses déclenchent le dédoublonnage : un avantage « sans frais » ou un à-savoir
+  // « délai de préavis » ne couvre pas la rubrique correspondante.
+  const textesActifs = lignesParDefaut.filter((t) => t.nature === "clause").map((t) => t.texte);
   // Dédoublonnage : une clause active de la bibliothèque sur la même rubrique l'emporte.
   if (rubriqueDejaCouverte(textesActifs, MOTIFS_RUBRIQUES.delais)) bibliotheque.delais = "";
   if (rubriqueDejaCouverte(textesActifs, MOTIFS_RUBRIQUES.garantie)) bibliotheque.garantie = "";

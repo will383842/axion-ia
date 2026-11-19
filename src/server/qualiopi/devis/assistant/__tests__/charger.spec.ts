@@ -189,8 +189,8 @@ describe("chargerAssistantDevis", () => {
 
   it("dédoublonnage : clause active de même rubrique dans la bibliothèque → pas de seconde clause", async () => {
     db.devisTexteBibliotheque.findMany.mockResolvedValue([
-      { id: "t1", version: 1, texte: "Notre responsabilité est limitée." },
-      { id: "t2", version: 1, texte: "Délais estimatifs." },
+      { id: "t1", version: 1, nature: "clause", texte: "Notre responsabilité est limitée." },
+      { id: "t2", version: 1, nature: "clause", texte: "Délais estimatifs." },
     ] as never);
     const c = await charge();
     expect(c.textesParDefaut.map((t) => t.texte)).toEqual([
@@ -199,6 +199,28 @@ describe("chargerAssistantDevis", () => {
     ]);
     expect(c.bibliotheque.delais).toBe("");
     expect(c.bibliotheque.garantie).toBe(TEXTE_GARANTIE);
+  });
+
+  it("dédoublonnage : un avantage « frais » ne retire pas le texte des frais", async () => {
+    db.devisTexteBibliotheque.findMany.mockResolvedValue([
+      { id: "t1", version: 1, nature: "avantage", texte: "Pas de frais de mise en service" },
+    ] as never);
+    expect((await charge()).bibliotheque.plafond).toBe(TEXTE_PLAFOND_FRAIS);
+  });
+
+  it("dédoublonnage : un inconvénient « délai » ne retire pas le texte des délais", async () => {
+    db.devisTexteBibliotheque.findMany.mockResolvedValue([
+      { id: "t1", version: 1, nature: "inconvenient", texte: "Délai de préavis à respecter" },
+    ] as never);
+    expect((await charge()).bibliotheque.delais).toBe(TEXTE_DELAIS);
+  });
+
+  it("dédoublonnage : une clause active de responsabilité retire le texte du code", async () => {
+    db.devisTexteBibliotheque.findMany.mockResolvedValue([
+      { id: "t1", version: 1, nature: "clause", texte: "Notre responsabilité est limitée." },
+    ] as never);
+    const c = await charge();
+    expect(c.textesParDefaut.map((t) => t.texte)).toEqual(["Notre responsabilité est limitée."]);
   });
 
   it("?modele inconnu ignoré ; connu appliqué (structure, aucun prix)", async () => {
