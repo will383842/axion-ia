@@ -193,13 +193,10 @@ export default async function QualiopiDevisNewPage({ params, searchParams }: Pag
                   <>
                     <AdminBadge tone="neutral">{clientChoisi.raisonSociale}</AdminBadge>
                     <AdminBadge tone="outline">
-                      {clientChoisi.type === "particulier" ? "Particulier" : "Entreprise"}
+                      {clientChoisi.type === "particulier" ? "Particulier" : "Professionnel"}
                     </AdminBadge>
                   </>
                 ) : null}
-                <AdminBadge tone="warning" dot>
-                  Brouillon
-                </AdminBadge>
               </>
             }
             actions={
