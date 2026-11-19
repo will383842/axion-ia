@@ -16,7 +16,6 @@ import { redirect } from "next/navigation";
 
 import { auth } from "@/auth";
 import { AssistantDevisDiffere } from "@/components/admin/qualiopi/assistant-devis/AssistantDevisDiffere";
-import { payloadVersEtat } from "@/components/admin/qualiopi/assistant-devis/vers-payload";
 import { CGV_VERSION_LIBELLE } from "@/content/cgv-version";
 import { dayKeyInParis } from "@/lib/calendar-grid";
 import { chargerAssistantDevis } from "@/server/qualiopi/devis/assistant/charger";
@@ -89,16 +88,20 @@ export default async function QualiopiDevisNewPage({ params, searchParams }: Pag
     return <AccesRefuse motif={acces.motif} retourHref={`/${locale}/${adminPrefix}`} />;
   }
 
+  // `?devis=` n'est retenu que s'il est un UUID (colonne `@db.Uuid`) : sinon il est ignoré.
+  const devisParam = isUuid(sp.devis) ? sp.devis : undefined;
   // Assistant : état BRUT de l'interrupteur (éteint = page d'avant, à l'identique).
   const etatAssistant = await lireInterrupteurQualiopi(LOT_DEVIS_ASSISTANT);
+  if (etatAssistant === "eteint" && devisParam !== undefined) {
+    // Jamais un DevisForm vide pour un devis existant : sa fiche.
+    redirect(`/${locale}/${adminPrefix}/qualiopi/devis/${devisParam}`);
+  }
   if (etatAssistant !== "eteint") {
     const session = await auth();
     const adminId = session?.user?.id;
     if (!adminId) redirect(`/${locale}/${adminPrefix}/login`);
     const base = `/${locale}/${adminPrefix}`;
     const basePath = `${base}/qualiopi/devis`;
-    // `?devis=` n'est retenu que s'il est un UUID (colonne `@db.Uuid`) : sinon il est ignoré.
-    const devisParam = isUuid(sp.devis) ? sp.devis : undefined;
     // Nom envoyé par « Nouvelle vente » : `venteBrouillonId` ; `vente` reste lu en repli.
     const venteParam = sp.venteBrouillonId ?? sp.vente;
     const ctx = await chargerAssistantDevis({
@@ -124,7 +127,7 @@ export default async function QualiopiDevisNewPage({ params, searchParams }: Pag
               href={`${base}${ctx.redirection}`}
               className="mt-[var(--space-admin-3)] inline-block text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-accent)] underline-offset-2 hover:underline"
             >
-              Ouvrir la fiche du devis
+              {ctx.libelleLien ?? "Ouvrir la fiche du devis"}
             </Link>
           </div>
         </AdminPageShell>
@@ -138,49 +141,23 @@ export default async function QualiopiDevisNewPage({ params, searchParams }: Pag
       (retenu !== null && ctx.clients.some((c) => c.id === retenu && c.ficheEssai));
 
     if (monter) {
-      // Un devis rouvert sans brouillon d'assistant : classique → /corriger ; à formules →
-      // carte. JAMAIS vers /modifier (il renvoie ici : boucle).
+      // Ceinture : un devis demandé sans brouillon d'assistant lié ne monte JAMAIS l'assistant
+      // (le chargeur ne renvoie un contexte pour `?devis=` qu'avec un brouillon lié lisible).
       if (devisParam !== undefined && ctx.brouillon === null) {
-        if (payloadVersEtat(ctx.payloadInitial).source === "payload") {
-          const d = await prisma.devis.findUnique({
-            where: { id: ctx.payloadInitial.sync.devisId ?? devisParam },
-            select: { id: true, offre: true },
-          });
-          if (d !== null && d.offre === null) redirect(`${basePath}/${d.id}/corriger`);
-          if (d === null) {
-            return (
-              <AdminPageShell width="narrow">
-                <AdminPageHeader title="Nouveau devis" />
-                <div className="rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)] p-[var(--space-admin-5)]">
-                  <p>Devis introuvable.</p>
-                  <Link
-                    href={basePath}
-                    className="mt-[var(--space-admin-3)] inline-block text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-accent)] underline-offset-2 hover:underline"
-                  >
-                    Retour à la liste des devis
-                  </Link>
-                </div>
-              </AdminPageShell>
-            );
-          }
-          return (
-            <AdminPageShell width="narrow">
-              <AdminPageHeader title="Nouveau devis" />
-              <div className="rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)] p-[var(--space-admin-5)]">
-                <p>
-                  Ce brouillon a été créé avant l&apos;assistant : il ne s&apos;ouvre pas encore
-                  ici.
-                </p>
-                <Link
-                  href={`${basePath}/${d.id}`}
-                  className="mt-[var(--space-admin-3)] inline-block text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-accent)] underline-offset-2 hover:underline"
-                >
-                  Ouvrir la fiche du devis
-                </Link>
-              </div>
-            </AdminPageShell>
-          );
-        }
+        return (
+          <AdminPageShell width="narrow">
+            <AdminPageHeader title="Nouveau devis" />
+            <div className="rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)] p-[var(--space-admin-5)]">
+              <p>Devis introuvable.</p>
+              <Link
+                href={basePath}
+                className="mt-[var(--space-admin-3)] inline-block text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-accent)] underline-offset-2 hover:underline"
+              >
+                Retour à la liste des devis
+              </Link>
+            </div>
+          </AdminPageShell>
+        );
       }
 
       const aujourdhui = dayKeyInParis(new Date());
@@ -228,7 +205,6 @@ export default async function QualiopiDevisNewPage({ params, searchParams }: Pag
             urlAssistant={`${basePath}/new`}
             baseDevis={basePath}
             modeEssai={etatAssistant === "essai"}
-            {...(devisParam !== undefined && ctx.brouillon === null ? { devisId: devisParam } : {})}
             aide={
               ctx.aide !== null ? (
                 <CeQueLeClientADit aide={ctx.aide.aide} projetTitre={ctx.aide.titre} />
@@ -238,6 +214,9 @@ export default async function QualiopiDevisNewPage({ params, searchParams }: Pag
         </AdminPageShell>
       );
     }
+    // Assistant non monté (essai sur une vraie fiche) : un devis existant va à sa fiche,
+    // jamais à un DevisForm vide.
+    if (devisParam !== undefined) redirect(`${basePath}/${devisParam}`);
   }
 
   const [clients, offresWithPrice] = await Promise.all([

@@ -57,7 +57,6 @@ function monter(
     etape?: Etape;
     brouillon?: { id: string; revision: number } | null;
     clients?: ClientOption[];
-    devisId?: string;
     salutations?: Record<string, string>;
     onEnvoye?: (r: { devisId: string }) => void;
   } = {},
@@ -76,7 +75,6 @@ function monter(
       validiteParDefaut="2026-12-08"
       versionCgv="version lue en configuration"
       urlAssistant="/fr/adm/qualiopi/devis/new"
-      devisId={o.devisId}
       onEnvoye={o.onEnvoye}
       rendreEtape={({ etape, etat: e, dispatch }) => (
         <div>
@@ -143,13 +141,13 @@ describe("sauvegarde : la révision du serveur suit chaque sauvegarde (jeton opa
     expect(A.creer).not.toHaveBeenCalled();
   });
 
-  it("sans brouillon : création (avec le devis rouvert), puis sauvegardes sur la révision créée", async () => {
+  it("sans brouillon : création (jamais de devisId : seul le finaliseur lie un devis), puis sauvegardes sur la révision créée", async () => {
     A.creer.mockResolvedValue({ data: { id: BROUILLON, revision: 2 } });
-    monter({ brouillon: null, devisId: "33333333-3333-4333-8333-333333333333" });
+    monter({ brouillon: null });
     fireEvent.click(screen.getByRole("button", { name: "Saisir le devis" }));
     continuer();
     await waitFor(() => expect(A.creer).toHaveBeenCalledTimes(1));
-    expect(A.creer.mock.calls[0]![0].devisId).toBe("33333333-3333-4333-8333-333333333333");
+    expect(A.creer.mock.calls[0]![0]).not.toHaveProperty("devisId");
     expect(A.sauver).not.toHaveBeenCalled();
     await screen.findByText(/étape 1b/);
     continuer();
@@ -420,7 +418,7 @@ describe("étape 4 : sauver → numéroter → aperçu → envoyer", () => {
 });
 
 describe("brouillon fourni mais illisible", () => {
-  it("est remplacé AVEC le message, sans envoyer devisId à la création (le lien existe déjà)", async () => {
+  it("est remplacé AVEC le message, sans envoyer devisId à la création", async () => {
     const etat = etatT1();
     const payload = etatVersPayload(etat, 1, CTX);
     payload.nonImprime = { ecran: { v: 99 } };
@@ -435,7 +433,6 @@ describe("brouillon fourni mais illisible", () => {
         validiteParDefaut="2026-12-08"
         versionCgv="v"
         urlAssistant="/fr/adm/qualiopi/devis/new"
-        devisId="33333333-3333-4333-8333-333333333333"
         rendreEtape={({ dispatch }) => (
           <button type="button" onClick={() => dispatch({ type: "remplacer", etat })}>
             Saisir le devis

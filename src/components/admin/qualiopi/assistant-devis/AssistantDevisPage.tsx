@@ -44,8 +44,6 @@ export interface PropsAssistantDevisPage {
   versionCgv: string;
   aujourdhui: string;
   urlAssistant: string;
-  /** Devis brouillon rouvert (`?devis=`). */
-  devisId?: string | undefined;
   /** Panneau « Ce que le client a dit », rendu par le serveur. */
   aide?: ReactNode;
   /** Interrupteur en « essai » : aucune création de fiche, seules les fiches d'essai sont proposées. */
@@ -92,7 +90,6 @@ export function AssistantDevisPage(p: PropsAssistantDevisPage) {
       versionCgv={p.versionCgv}
       urlAssistant={p.urlAssistant}
       salutations={salutations}
-      devisId={p.devisId}
       onEnvoye={({ devisId }) => router.push(`${p.baseDevis}/${devisId}`)}
       rendreEtape={({ etape, etat, dispatch }) => {
         if (etape === 1)

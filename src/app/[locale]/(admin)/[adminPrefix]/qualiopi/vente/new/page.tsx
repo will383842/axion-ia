@@ -151,6 +151,8 @@ export default async function QualiopiVenteNewPage({ params, searchParams }: Pag
         docusealSubmissionId: string | null;
         signatureMaison: boolean;
         montantTotalHtCents: number;
+        parAssistant: boolean;
+        classique: boolean;
       }
     | undefined;
   let sessionInitiale:
@@ -201,6 +203,8 @@ export default async function QualiopiVenteNewPage({ params, searchParams }: Pag
               docusealSubmissionId: true,
               documentGenereId: true,
               montantTotalHtCents: true,
+              offre: true,
+              devisAssistantBrouillon: { select: { id: true } },
             },
           })
           .catch(() => null);
@@ -220,6 +224,8 @@ export default async function QualiopiVenteNewPage({ params, searchParams }: Pag
             docusealSubmissionId: d.docusealSubmissionId,
             signatureMaison,
             montantTotalHtCents: d.montantTotalHtCents,
+            parAssistant: d.devisAssistantBrouillon !== null,
+            classique: d.offre === null,
           };
         }
       }

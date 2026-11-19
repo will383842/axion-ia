@@ -66,8 +66,6 @@ export interface PropsAssistantDevisBranche {
   /** Salutation des e-mails par identifiant de client (lue sur la fiche, côté serveur). */
   salutations?: Readonly<Record<string, string>> | undefined;
   defaultClientId?: string | undefined;
-  /** Devis brouillon rouvert : lié au brouillon d'assistant à sa création. */
-  devisId?: string | undefined;
   /** Étapes 1, 1b, 2 et 3 (assemblées par la page). */
   rendreEtape: (ctx: ContexteEtape) => ReactNode;
   onEnvoye?: ((r: { devisId: string }) => void) | undefined;
@@ -252,7 +250,7 @@ export function AssistantDevisBranche(props: PropsAssistantDevisBranche) {
   const contexte = (devisId?: string) => ({
     tvaStandardPct: props.tauxStandard,
     textes: props.textesParDefaut,
-    devisId: devisId ?? props.devisId ?? props.payloadInitial.sync.devisId ?? undefined,
+    devisId: devisId ?? props.payloadInitial.sync.devisId ?? undefined,
     refClient: props.payloadInitial.refClient,
     venteBrouillonId: props.payloadInitial.venteBrouillonId,
     modeleId: props.payloadInitial.modeleId,
@@ -262,12 +260,8 @@ export function AssistantDevisBranche(props: PropsAssistantDevisBranche) {
   async function sauverBrouillon(i: EntreeSauvegarde): Promise<ReponseSauvegarde> {
     const payload = etatVersPayload(i.donnees.etat, i.donnees.etape, contexte());
     if (i.id === undefined) {
-      const r = await creerBrouillonAssistantAction({
-        payload,
-        // Avec un brouillon fourni (même illisible), le lien au devis existe déjà : le renvoyer
-        // ferait rendre le brouillon lié SANS écrire le payload.
-        ...(props.devisId && !props.brouillon ? { devisId: props.devisId } : {}),
-      });
+      // Jamais de `devisId` : seul le finaliseur lie un devis à son brouillon.
+      const r = await creerBrouillonAssistantAction({ payload });
       if ("error" in r) return { error: r.error };
       dernier.current = { id: r.data.id, revision: r.data.revision };
       return { data: { id: r.data.id, majLe: String(r.data.revision) } };

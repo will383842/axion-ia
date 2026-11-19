@@ -97,6 +97,10 @@ export interface VenteDevisEtat {
   /** Lien de signature maison émis pour la pièce du devis. */
   signatureMaison?: boolean;
   montantTotalHtCents: number;
+  /** Devis créé par l'assistant (brouillon d'assistant lié) : seul celui-là s'y rouvre. */
+  parAssistant: boolean;
+  /** Devis classique (sans offre à formules) : il se corrige depuis `/corriger`. */
+  classique?: boolean;
 }
 
 export interface VenteSessionEtat {
@@ -469,6 +473,8 @@ export function VenteWizard({
         fichierPdfUrl: null,
         docusealSubmissionId: null,
         montantTotalHtCents: montantCents,
+        parAssistant: false,
+        classique: true,
       };
       setDevis(nouveau);
       setSale(true);
@@ -1183,12 +1189,24 @@ export function VenteWizard({
               {devis.statut === "brouillon" ? (
                 <div>
                   {assistantDevisActif ? (
-                    <Link
-                      href={`${base}/qualiopi/devis/new?devis=${devis.id}`}
-                      className="text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-accent)] underline hover:no-underline"
-                    >
-                      Ouvrir dans l&apos;assistant
-                    </Link>
+                    // L'assistant ne rouvre QUE ses propres devis ; un devis classique se corrige
+                    // ailleurs, un devis à formules hors assistant n'a pas de lien ici. Jamais
+                    // « Envoyer le devis » quand l'interrupteur est allumé.
+                    devis.parAssistant ? (
+                      <Link
+                        href={`${base}/qualiopi/devis/new?devis=${devis.id}`}
+                        className="text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-accent)] underline hover:no-underline"
+                      >
+                        Ouvrir dans l&apos;assistant
+                      </Link>
+                    ) : devis.classique === true ? (
+                      <Link
+                        href={`${base}/qualiopi/devis/${devis.id}/corriger`}
+                        className="text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-accent)] underline hover:no-underline"
+                      >
+                        Corriger le brouillon
+                      </Link>
+                    ) : null
                   ) : (
                     <AdminButton onClick={envoyerDevis} loading={isPending}>
                       Envoyer le devis

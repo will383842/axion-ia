@@ -59,7 +59,6 @@ import {
 import { payloadVide } from "@/server/qualiopi/devis/assistant/payload";
 
 const ADMIN = "550e8400-e29b-41d4-a716-446655440010";
-const AUTRE = "550e8400-e29b-41d4-a716-446655440011";
 const ID = "550e8400-e29b-41d4-a716-446655440020";
 const CLIENT = "550e8400-e29b-41d4-a716-446655440001";
 const DEVIS = "550e8400-e29b-41d4-a716-446655440002";
@@ -139,34 +138,22 @@ describe("creerBrouillonAssistantAction", () => {
     expect(m.create.mock.calls[0]![0].data.payload.venteBrouillonId).toBeNull();
   });
 
-  it("devisId déjà lié à un brouillon de l'admin → renvoie l'existant, sans créer", async () => {
-    m.findUnique.mockResolvedValue({ id: ID, revision: 4, createdByAdminId: ADMIN });
+  it("devisId REFUSÉ (seul le finaliseur lie un devis), aucune écriture ni lecture de devis", async () => {
     const r = await creerBrouillonAssistantAction({ payload: base(), devisId: DEVIS });
-    expect(r).toEqual({ data: { id: ID, revision: 4 } });
+    expect(r).toEqual({ error: "Seul un devis préparé dans l'assistant se rouvre ici." });
     expect(m.create).not.toHaveBeenCalled();
+    expect(m.update).not.toHaveBeenCalled();
+    expect(m.updateMany).not.toHaveBeenCalled();
+    expect(m.findUnique).not.toHaveBeenCalled();
+    expect(m.devisFindUnique).not.toHaveBeenCalled();
+    expect(m.log).not.toHaveBeenCalled();
   });
 
-  it("devisId déjà lié au brouillon d'un AUTRE admin → introuvable, sans fuite", async () => {
-    m.findUnique.mockResolvedValue({ id: ID, revision: 4, createdByAdminId: AUTRE });
-    const r = await creerBrouillonAssistantAction({ payload: base(), devisId: DEVIS });
-    expect(r).toEqual({ error: "Brouillon introuvable" });
-    expect(m.create).not.toHaveBeenCalled();
-  });
-
-  it("devisId libre : le lien et la date de mise à jour viennent de la base", async () => {
-    m.findUnique.mockResolvedValue(null);
-    m.create.mockResolvedValue({ id: ID, revision: 0 });
-    await creerBrouillonAssistantAction({ payload: base(), devisId: DEVIS });
-    const data = m.create.mock.calls[0]![0].data;
-    expect(data.devisId).toBe(DEVIS);
-    expect(data.payload.sync).toEqual({ devisId: DEVIS, devisMajLe: "2026-11-08T10:00:00.000Z" });
-  });
-
-  it("devisId inexistant → erreur, rien d'écrit", async () => {
-    m.findUnique.mockResolvedValue(null);
-    m.devisFindUnique.mockResolvedValue(null);
-    const r = await creerBrouillonAssistantAction({ payload: base(), devisId: DEVIS });
-    expect("error" in r).toBe(true);
+  it("devisId refusé même s'il est invalide ou que le payload est illisible", async () => {
+    for (const devisId of ["pas-un-uuid", "", DEVIS]) {
+      const r = await creerBrouillonAssistantAction({ payload: base(), devisId });
+      expect(r).toEqual({ error: "Seul un devis préparé dans l'assistant se rouvre ici." });
+    }
     expect(m.create).not.toHaveBeenCalled();
   });
 });
@@ -338,64 +325,6 @@ describe("listerMesBrouillonsAssistantAction", () => {
         },
       ],
     });
-  });
-});
-
-describe("creerBrouillonAssistantAction — S06 correctifs de fond", () => {
-  it("impose le client du devis quand le payload n'en porte pas", async () => {
-    m.findUnique.mockResolvedValue(null);
-    m.create.mockResolvedValue({ id: ID, revision: 0 });
-    await creerBrouillonAssistantAction({ payload: base(), devisId: DEVIS });
-    const arg = m.create.mock.calls[0]![0];
-    expect(arg.data.clientId).toBe(CLIENT);
-    expect(arg.data.payload.clientId).toBe(CLIENT);
-  });
-
-  it("refuse un payload dont le client diffère de celui du devis, sans écrire", async () => {
-    m.findUnique.mockResolvedValue(null);
-    const p = { ...base(), clientId: "550e8400-e29b-41d4-a716-446655440099" };
-    const r = await creerBrouillonAssistantAction({ payload: p, devisId: DEVIS });
-    expect("error" in r).toBe(true);
-    expect(m.create).not.toHaveBeenCalled();
-  });
-
-  it("refuse un devis qui n'est plus en brouillon", async () => {
-    m.findUnique.mockResolvedValue(null);
-    m.devisFindUnique.mockResolvedValue({
-      id: DEVIS,
-      clientId: CLIENT,
-      statut: "envoye",
-      updatedAt: new Date("2026-11-08T10:00:00.000Z"),
-    });
-    const r = await creerBrouillonAssistantAction({ payload: base(), devisId: DEVIS });
-    expect("error" in r).toBe(true);
-    expect(m.create).not.toHaveBeenCalled();
-  });
-
-  it("double clic : P2002 sur devis_id → relit et renvoie le brouillon existant", async () => {
-    m.findUnique
-      .mockResolvedValueOnce(null)
-      .mockResolvedValueOnce({ id: ID, revision: 2, createdByAdminId: ADMIN });
-    m.create.mockRejectedValue(Object.assign(new Error("unique"), { code: "P2002" }));
-    const r = await creerBrouillonAssistantAction({ payload: base(), devisId: DEVIS });
-    expect(r).toEqual({ data: { id: ID, revision: 2 } });
-  });
-
-  it("P2002 dont le gagnant appartient à un autre admin → introuvable", async () => {
-    m.findUnique
-      .mockResolvedValueOnce(null)
-      .mockResolvedValueOnce({ id: ID, revision: 2, createdByAdminId: AUTRE });
-    m.create.mockRejectedValue(Object.assign(new Error("unique"), { code: "P2002" }));
-    const r = await creerBrouillonAssistantAction({ payload: base(), devisId: DEVIS });
-    expect(r).toEqual({ error: "Brouillon introuvable" });
-  });
-
-  it("une autre erreur de création est propagée", async () => {
-    m.findUnique.mockResolvedValue(null);
-    m.create.mockRejectedValue(new Error("panne"));
-    await expect(
-      creerBrouillonAssistantAction({ payload: base(), devisId: DEVIS }),
-    ).rejects.toThrow("panne");
   });
 });
 
