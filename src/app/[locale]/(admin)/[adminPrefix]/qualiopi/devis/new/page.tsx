@@ -24,6 +24,8 @@ import { lireInterrupteurQualiopi } from "@/server/qualiopi/socle/interrupteurs"
 
 import { AdminPageShell } from "@/components/admin/ui/AdminPageShell";
 import { AdminPageHeader } from "@/components/admin/ui/AdminPageHeader";
+import { AdminBadge } from "@/components/admin/ui/AdminBadge";
+import { AdminButton } from "@/components/admin/ui/AdminButton";
 import { DevisForm } from "@/components/admin/qualiopi/DevisForm";
 import { listClients } from "@/server/qualiopi/crm/clients";
 import { listOffres } from "@/server/qualiopi/offres/offres";
@@ -162,6 +164,8 @@ export default async function QualiopiDevisNewPage({ params, searchParams }: Pag
 
       const aujourdhui = dayKeyInParis(new Date());
       const clientsAssistant = ctx.clients.filter((c) => etatAssistant === "actif" || c.ficheEssai);
+      // En-tête « ton dossier » : données déjà chargées (aucune requête de plus).
+      const clientChoisi = clientsAssistant.find((c) => c.id === ctx.payloadInitial.clientId);
       return (
         <AdminPageShell width="wide">
           <div className="mb-[var(--space-admin-4)] flex flex-wrap items-center gap-x-[var(--space-admin-4)] gap-y-[var(--space-admin-2)]">
@@ -183,6 +187,29 @@ export default async function QualiopiDevisNewPage({ params, searchParams }: Pag
           <AdminPageHeader
             title="Nouveau devis"
             description="Le numéro est alloué automatiquement (AXI-DEV-AAAA-NNN). La TVA suit le régime configuré."
+            meta={
+              <>
+                {clientChoisi !== undefined ? (
+                  <>
+                    <AdminBadge tone="neutral">{clientChoisi.raisonSociale}</AdminBadge>
+                    <AdminBadge tone="outline">
+                      {clientChoisi.type === "particulier" ? "Particulier" : "Professionnel"}
+                    </AdminBadge>
+                  </>
+                ) : null}
+              </>
+            }
+            actions={
+              clientChoisi !== undefined ? (
+                <AdminButton
+                  variant="secondary"
+                  size="lg"
+                  href={`${base}/qualiopi/clients/${clientChoisi.id}`}
+                >
+                  Ouvrir la fiche client
+                </AdminButton>
+              ) : undefined
+            }
           />
           <AssistantDevisDiffere
             payloadInitial={ctx.payloadInitial}
