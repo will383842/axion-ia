@@ -79,6 +79,7 @@ function deps(over: Partial<DependancesConfirmation> & { devis?: unknown } = {})
     versionCgvAcceptee: async () => CGV_VERSION,
     cgvExiste: async () => false,
     pdfCgv: async () => Buffer.from("pdf"),
+    pdfCgvArchivee: async (v) => (v === "2026-11-18" ? Buffer.from("pdf-archive") : null),
     deposer,
     dejaEnvoyee: async () => false,
     enfiler: enfiler as never,
@@ -153,6 +154,28 @@ describe("envoyerConfirmationCommande", () => {
     ]);
     expect(payload["cgvVersionLabel"]).toBe("1 mai 2026");
     expect(JSON.stringify(opts)).not.toContain(CGV_VERSION);
+  });
+  it("version 2026-11-18 absente de R2 : son PDF est déposé puis joint (archive dès qu'elle n'est plus en vigueur)", async () => {
+    const archivee = vi.fn(async () => Buffer.from("pdf-archive"));
+    const { d, enfiler, deposer } = deps({
+      versionCgvAcceptee: async () => "2026-11-18",
+      pdfCgvArchivee: archivee,
+    });
+    const r = await envoyerConfirmationCommande(DEMANDE, d);
+    expect(deposer).toHaveBeenCalledWith(cleCgvAcceptees("2026-11-18"), expect.any(Buffer));
+    // Version en vigueur : rendu courant ; sortie de vigueur : texte archivé.
+    expect(archivee).toHaveBeenCalledTimes(CGV_VERSION === "2026-11-18" ? 0 : 1);
+    expect(r).toMatchObject({ envoye: true, cgvJointes: true, cgvVersionAcceptee: "2026-11-18" });
+    const opts = (
+      enfiler.mock.calls[0] as unknown as [string, string, string, unknown, never]
+    )[4] as { attachments: { r2Key: string }[] };
+    expect(opts.attachments[1]?.r2Key).toBe("documents/cgv/CGV-2026-11-18.pdf");
+  });
+  it("version 2026-10-04 (ni en R2 ni archivée) : rien n'est joint ni déposé", async () => {
+    const { d, deposer } = deps({ versionCgvAcceptee: async () => "2026-10-04" });
+    const r = await envoyerConfirmationCommande(DEMANDE, d);
+    expect(deposer).not.toHaveBeenCalled();
+    expect(r).toMatchObject({ envoye: true, cgvJointes: false });
   });
   it("version antérieure NON archivée : CGV non jointes, le retour le dit, rien n'est déposé", async () => {
     const { d, enfiler, deposer } = deps({ versionCgvAcceptee: async () => "2026-05-01" });

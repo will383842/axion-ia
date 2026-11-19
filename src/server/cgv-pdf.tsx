@@ -15,6 +15,7 @@ import React from "react";
 import { Document, Page, StyleSheet, Text, View, pdf } from "@react-pdf/renderer";
 
 import { CGV_VERSION, CGV_VERSION_LIBELLE } from "@/content/cgv-version";
+import { texteArchiveCgv, type TexteCgvFr } from "@/content/cgv-archives";
 import { getLegal } from "@/content/legal";
 
 const s = StyleSheet.create({
@@ -61,7 +62,11 @@ let enMemoire: { version: string; pdf: Promise<Buffer> } | null = null;
 /** Le texte ne change qu'au déploiement : un seul rendu par version et par processus. */
 export function rendreCgvPdf(): Promise<Buffer> {
   if (enMemoire === null || enMemoire.version !== CGV_VERSION) {
-    const pdf = produireCgvPdf();
+    const pdf = produireCgvPdf(
+      getLegal("conditions-generales").fr,
+      CGV_VERSION,
+      CGV_VERSION_LIBELLE,
+    );
     // Un rendu raté ne doit pas rester en mémoire.
     pdf.catch(() => {
       enMemoire = null;
@@ -71,13 +76,22 @@ export function rendreCgvPdf(): Promise<Buffer> {
   return enMemoire.pdf;
 }
 
-async function produireCgvPdf(): Promise<Buffer> {
-  const fr = getLegal("conditions-generales").fr;
+/**
+ * PDF d'une version ARCHIVÉE des CGV (texte exact sorti de vigueur), `null` si la version
+ * n'est pas archivée : le texte d'alors n'est pas reconstituable.
+ */
+export async function rendreCgvPdfArchivee(version: string): Promise<Buffer | null> {
+  const archive = texteArchiveCgv(version);
+  if (archive === null) return null;
+  return produireCgvPdf(archive.fr, version, archive.libelle);
+}
+
+async function produireCgvPdf(fr: TexteCgvFr, version: string, libelle: string): Promise<Buffer> {
   const doc = (
     <Document title={`${fr.title} ${fr.titleEm ?? ""}`.trim()} author="Axion-IA">
       <Page size="A4" style={s.page} wrap>
         <Text style={s.titre}>{nettoyer(`${fr.title}${fr.titleEm ? ` ${fr.titleEm}` : ""}`)}</Text>
-        <Text style={s.version}>{`Version du ${CGV_VERSION_LIBELLE} (${CGV_VERSION})`}</Text>
+        <Text style={s.version}>{`Version du ${libelle} (${version})`}</Text>
         {paragraphes(fr.intro).map((l, i) => (
           <Text key={`i${i}`} style={s.intro}>
             {l}
@@ -94,7 +108,7 @@ async function produireCgvPdf(): Promise<Buffer> {
           </View>
         ))}
         <View style={s.pied} fixed>
-          <Text>{`Conditions générales de vente · Axion-IA · version du ${CGV_VERSION_LIBELLE}`}</Text>
+          <Text>{`Conditions générales de vente · Axion-IA · version du ${libelle}`}</Text>
           <Text render={({ pageNumber, totalPages }) => `${pageNumber} / ${totalPages}`} />
         </View>
       </Page>

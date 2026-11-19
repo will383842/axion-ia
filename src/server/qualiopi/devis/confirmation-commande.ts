@@ -40,7 +40,7 @@ import { prisma } from "@/lib/prisma";
 import { existsInR2, uploadToR2 } from "@/lib/r2-storage";
 import { enqueueEmail } from "@/server/queue/queues";
 import { jobIdDejaGare } from "@/server/email/outbox-service";
-import { rendreCgvPdf } from "@/server/cgv-pdf";
+import { rendreCgvPdf, rendreCgvPdfArchivee } from "@/server/cgv-pdf";
 import { lirePhotoDevis, totauxDepuisPhoto } from "../documents/signature/photo-devis";
 import { getQualiopiConfig } from "@/server/qualiopi/config/site-settings";
 import {
@@ -81,6 +81,8 @@ export interface DependancesConfirmation {
   /** Le PDF des CGV de cette version existe-t-il déjà dans R2 ? */
   cgvExiste(key: string): Promise<boolean>;
   pdfCgv(): Promise<Buffer>;
+  /** PDF d'une version ARCHIVÉE (texte sorti de vigueur), `null` si non archivée. */
+  pdfCgvArchivee(version: string): Promise<Buffer | null>;
   deposer(key: string, buffer: Buffer): Promise<void>;
   /** `true` : déjà gardé en corbeille ou déjà journalisé. `null` : base muette, état inconnu. */
   dejaEnvoyee(jobId: string): Promise<boolean | null>;
@@ -191,6 +193,7 @@ const dependancesParDefaut: DependancesConfirmation = {
   },
   cgvExiste: (key) => existsInR2(key),
   pdfCgv: () => rendreCgvPdf(),
+  pdfCgvArchivee: (version) => rendreCgvPdfArchivee(version),
   deposer: async (key, buffer) => {
     await uploadToR2(key, buffer, "application/pdf");
   },
@@ -335,8 +338,15 @@ export async function envoyerConfirmationCommande(
     } else if (versionAcceptee === CGV_VERSION) {
       await deps.deposer(cle, await deps.pdfCgv());
       cleCgv = cle;
+    } else {
+      // Version sortie de vigueur mais archivée : on redépose son texte exact.
+      const archive = await deps.pdfCgvArchivee(versionAcceptee);
+      if (archive !== null) {
+        await deps.deposer(cle, archive);
+        cleCgv = cle;
+      }
     }
-    // Version antérieure sans PDF archivé : le texte d'alors n'est pas reconstituable.
+    // Version antérieure ni en R2 ni archivée : le texte d'alors n'est pas reconstituable.
   }
   const cgvJointes = cleCgv !== null;
 
