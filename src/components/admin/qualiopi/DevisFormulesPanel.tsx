@@ -624,7 +624,9 @@ export function DevisFormulesPanel({
             role="status"
             className="mt-[var(--space-admin-3)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg)]"
           >
-            Aucune indemnité de sortie anticipée : le client peut arrêter avec le préavis choisi.
+            Aucune indemnité de sortie anticipée : le client peut arrêter avec le préavis choisi ;
+            les périodes payées d&apos;avance ne sont pas remboursées et le service continue
+            jusqu&apos;à leur terme.
           </p>
         </section>
       ) : null}

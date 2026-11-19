@@ -146,7 +146,7 @@ describe("PaiementB", () => {
     render(<Hote initial={etatT2()} vue="b" />);
     expect(screen.queryByLabelText(/Indemnité/)).toBeNull();
     expect(screen.getByTestId("indemnite").textContent!.replace(/\s+/g, " ").trim()).toBe(
-      "Aucune indemnité de sortie anticipée : le client peut arrêter avec le préavis choisi.",
+      "Aucune indemnité de sortie anticipée : le client peut arrêter avec le préavis choisi ; les périodes payées d'avance ne sont pas remboursées et le service continue jusqu'à leur terme.",
     );
   });
 

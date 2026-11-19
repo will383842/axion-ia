@@ -225,7 +225,9 @@ export function PaiementB({ etat, dispatch, montants }: PropsPaiementB) {
       </fieldset>
 
       <p data-testid="indemnite">
-        Aucune indemnité de sortie anticipée : le client peut arrêter avec le préavis choisi.
+        Aucune indemnité de sortie anticipée : le client peut arrêter avec le préavis choisi ; les
+        périodes payées d&apos;avance ne sont pas remboursées et le service continue jusqu&apos;à
+        leur terme.
       </p>
       <p className="text-[length:var(--text-admin-sm)]">
         Le texte exact (reconduction, préavis, frais de sortie, restitution des données) est écrit
