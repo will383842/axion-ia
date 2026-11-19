@@ -74,10 +74,7 @@ export function lignesVisibles(source: string): { n: number; ligne: string }[] {
  * Les données brutes (`villes/data`, `villes/economic-data`) ne sont pas de la prose : elles
  * nomment des lieux et des employeurs, et ne sont pas lues ici.
  */
-const ECARTES: ReadonlyArray<RegExp> = [
-  /src\/content\/villes\/copy\/grenoble\.ts$/,
-  /src\/content\/villes\/copy\/dunkerque\.ts$/,
-];
+const ECARTES: ReadonlyArray<RegExp> = [/src\/content\/villes\/copy\/grenoble\.ts$/];
 
 const TOUS: string[] = [];
 for (const c of CIBLES) fichiers(c, TOUS);

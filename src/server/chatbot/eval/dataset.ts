@@ -102,7 +102,7 @@ export const GUARD_EVAL: ReadonlyArray<GuardEvalItem> = [
   },
   {
     id: "G-11",
-    text: "Je peux vous orienter vers un échange découverte si besoin.",
+    text: "Je peux vous orienter vers un Diagnostic IA, 45 min, si besoin.",
     mustBlock: false,
   },
 ];

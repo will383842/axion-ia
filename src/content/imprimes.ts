@@ -260,7 +260,7 @@ export const IMPRIMES: ReadonlyArray<Imprime> = [
   {
     id: "trame-echange-apporteur",
     icon: "MessagesSquare",
-    nom: "Trame de l'échange découverte apporteur (15 min)",
+    nom: "Trame de l'entretien apporteur (15 min)",
     format: "A4 portrait · 8 pages · usage interne",
     resume:
       "La trame pour conduire et noter l'échange de 15 minutes avec un candidat apporteur d'affaires : déroulé minute par minute, questions sur des faits vécus, présentation du réseau, réponses aux questions fréquentes, mots à dire et à bannir, critères éliminatoires fixés avant l'appel, et une fiche de notes à grille qui débouche sur une décision structurée juste après l'échange.",

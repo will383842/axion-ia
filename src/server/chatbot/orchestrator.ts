@@ -267,7 +267,7 @@ export async function handleTurn(
       return {
         ...base,
         intent,
-        text: "Avec plaisir — vous pouvez réserver un échange découverte ici :",
+        text: "Avec plaisir — vous pouvez réserver un Diagnostic IA, 45 min, ici :",
         cards: [],
         sendLinks: false,
         rdvUrl: RDV_URL,

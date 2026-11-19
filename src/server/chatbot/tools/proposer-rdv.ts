@@ -23,7 +23,7 @@ export function proposerRdv(rawInput: unknown): ProposerRdvResult {
   const { type_rdv } = ProposerRdvInputSchema.parse(rawInput);
   switch (type_rdv) {
     case "decouverte":
-      return { url: "/fr/appel", label: "Réserver un échange découverte" };
+      return { url: "/fr/appel", label: "Réserver un Diagnostic IA, 45 min" };
     case "audit":
     case "formation":
       return { url: "/fr/appel", label: "Réserver un appel" };

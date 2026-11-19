@@ -21,7 +21,7 @@ import { TYPES_RESERVABLES } from "@/server/calendly/types-reservables";
 const NOM = "Diagnostic IA";
 
 const ANCIENS_NOMS =
-  /appel\s+(?:de\s+)?cadrage|diagnostic\s+gratuit\s+de\s+45|appel\s+(?:de\s+)?d[ée]couverte|appel\s+strat[ée]gique|(?:réserver|reserver|lancer)\s+(?:le|mon|votre)\s+diagnostic\s+gratuit/i;
+  /appel\s+(?:de\s+)?cadrage|diagnostic\s+gratuit\s+de\s+45|appel\s+(?:de\s+)?d[ée]couverte|appel\s+strat[ée]gique|cadrage\s+45|[ée]change\s+d[ée]couverte|(?:réserver|reserver|lancer)\s+(?:le|mon|votre)\s+diagnostic\s+gratuit/i;
 
 const RACINES = [
   "src/app",
@@ -89,6 +89,8 @@ describe("V1-19 — un seul nom pour l'appel : « Diagnostic IA, 45 min »", () 
       "appel découverte",
       "Appel de découverte",
       "Réserver mon diagnostic gratuit",
+      "Cadrage 45 min",
+      "un échange découverte",
     ]) {
       expect(ANCIENS_NOMS.test(ancien), ancien).toBe(true);
     }

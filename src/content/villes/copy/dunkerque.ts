@@ -132,10 +132,6 @@ export const DUNKERQUE_COPY: VilleCopy = {
             a: "Oui, systématiquement. Le cadrage en amont nous permet d'ajuster vocabulaire, exemples et démos. Une session pour une PME de sous-traitance du Grand Port Maritime n'a rien à voir avec une session pour un cabinet de services ou un atelier de maintenance industrielle.",
           },
           {
-            q: "Vos formations sont-elles éligibles aux fonds de formation ?",
-            a: "Nos interventions sont facturées en direct sur devis HT. Elles s'intègrent dans votre plan de développement des compétences : votre service RH ou comptable peut les traiter comme une prestation. Les modalités de prise en charge dépendent de votre situation, que nous examinons ensemble.",
-          },
-          {
             q: "Sous quel délai intervenez-vous à Dunkerque et quelles communes couvrez-vous ?",
             a: "Williams se déplace sur Dunkerque sous 5 jours ouvrés en moyenne après validation du devis, parfois plus vite selon disponibilités. Nous intervenons à Grande-Synthe, Coudekerque-Branche, Leffrinckoucke, Bourbourg, Gravelines et dans l'ensemble de la Communauté Urbaine de Dunkerque.",
           },
@@ -222,10 +218,6 @@ export const DUNKERQUE_COPY: VilleCopy = {
           {
             q: "Pouvez-vous adapter le contenu à notre secteur portuaire ou industriel ?",
             a: "Oui, systématiquement. Le cadrage en amont nous permet d'ajuster vocabulaire, exemples et démos. Une session pour une PME de sous-traitance du Grand Port Maritime n'a rien à voir avec une session pour un cabinet de services ou un atelier de maintenance industrielle.",
-          },
-          {
-            q: "Vos formations sont-elles éligibles aux fonds de formation ?",
-            a: "Nos interventions sont facturées en direct sur devis HT. Elles s'intègrent dans votre plan de développement des compétences : votre service RH ou comptable peut les traiter comme une prestation. Les modalités de prise en charge dépendent de votre situation, que nous examinons ensemble.",
           },
           {
             q: "Sous quel délai intervenez-vous à Dunkerque et quelles communes couvrez-vous ?",
