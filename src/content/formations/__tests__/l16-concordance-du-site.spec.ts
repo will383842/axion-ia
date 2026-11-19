@@ -237,19 +237,24 @@ describe("L16 — prix : les conditions réelles remplacent « prix fixe, sans s
   it("🔴 chaque seuil de la liste est celui des conditions générales de vente (opposables)", () => {
     const cgv = getLegal("conditions-generales");
     const texte = cgv.fr.sections.map((s) => `${s.title} ${s.body}`).join("\n");
-    // Les CGV disent ces seuils ; si elles changent, la liste doit suivre.
-    expect(texte).toMatch(/inférieures à 5 000 € HT, le paiement intervient à la commande/);
-    expect(texte).toMatch(/à plus de 15 jours ouvrés, aucune somme n'est due/);
-    expect(texte).toMatch(/entre 8 et 15 jours ouvrés, 50 % du prix HT restent dus/);
-    expect(texte).toMatch(/à moins de 8 jours ouvrés, le prix HT reste dû en totalité/);
-    expect(texte).toMatch(/reportable une fois sans frais/);
+    // Les CGV (v3) disent ces seuils ; si elles changent, la liste doit suivre.
+    // Paiement : plus de seuil à 5 000 € HT, des phases fixées au devis (art. 9.1).
+    expect(texte).toMatch(/Le devis découpe le travail en phases/);
+    // Barème d'annulation à date convenue : v3 art. 46.2.
+    expect(texte).toMatch(/plus de 15 jours, aucune somme due/);
+    expect(texte).toMatch(/entre 8 et 15 jours, 50 % du prix HT reste dû/);
+    expect(texte).toMatch(/moins de 8 jours, 100 % du prix HT reste dû/);
+    // Report : v3 art. 46.3.
+    expect(texte).toMatch(/reportée une fois sans frais, à une date convenue dans les 3 mois/);
     const liste = CONDITIONS_TARIFAIRES_FR.map((c) => c.texte)
       .join("\n")
       .toLowerCase();
-    expect(liste).toContain("5 000 € ht");
+    expect(liste).toContain("selon les phases et l'échéancier fixés au devis");
+    expect(liste).not.toContain("5 000 € ht");
     expect(liste).toContain("15 jours ouvrés");
     expect(liste).toContain("entre 8 et 15 jours ouvrés, 50 % du prix ht");
     expect(liste).toContain("moins de 8 jours ouvrés");
+    expect(liste).toContain("dans les 3 mois");
     expect(liste).toContain("reportable une fois sans frais");
   });
 });
