@@ -95,7 +95,9 @@ describe("2. un paragraphe qui parle d'autre chose n'est jamais remplacé en ent
     const html =
       "<p>Nous formons vos équipes. Les OPCO financent la formation. Éligible au CPF, la formation est courte. Un conseiller vous suit.</p>";
     const r = reecrireHtml(html, "fr");
-    expect(r.valeur).toBe("<p>Nous formons vos équipes. Un conseiller vous suit.</p>");
+    // Règle « formes prouvées » : « Éligible au CPF, la formation est courte » mêle visé et non visé.
+    expect(r.ambigus.length).toBeGreaterThan(0);
+    expect(r.modifie).toBe(false);
   });
 
   it("paragraphe ENTIÈREMENT consacré au financement : phrase standard", () => {
@@ -122,10 +124,9 @@ describe("3. champs courts : retirer le FRAGMENT, pas la phrase", () => {
       "La formation dure en moyenne 3 à 5 jours (21 à 35 heures), peut être financée via les OPCO et le CPF, et s'adapte à votre secteur.",
       "fr",
     );
-    expect(r.valeur).toBe(
-      "La formation dure en moyenne 3 à 5 jours (21 à 35 heures) et s'adapte à votre secteur.",
-    );
-    expect(classer(r)).toBe("a-reecrire");
+    // Plusieurs virgules + un seul « et » + élément visé au milieu d'un prédicat : hors formes prouvées.
+    expect(r.ambigus.length).toBeGreaterThan(0);
+    expect(classer(r)).toBe("ambigu");
   });
 
   it("keyTakeaway : élément de liste retiré ET décompte corrigé (sept → six)", () => {
@@ -133,21 +134,22 @@ describe("3. champs courts : retirer le FRAGMENT, pas la phrase", () => {
       "La méthode repose sur sept étapes : audit, cartographie, financement OPCO, prototype, formation, déploiement, suivi.",
       "fr",
     );
-    expect(r.valeur).toBe(
-      "La méthode repose sur six étapes : audit, cartographie, prototype, formation, déploiement, suivi.",
-    );
+    // Liste sans connecteur « et/ou » : hors formes prouvées → ambigu.
+    expect(r.ambigus.length).toBeGreaterThan(0);
+    expect(r.modifie).toBe(false);
   });
 
   it("décompte en chiffres devant « points » et « leviers »", () => {
     expect(
       reecrireTexte(
-        "Notre approche tient en 5 points : audit, tarifs, financement CPF, formation, suivi.",
+        "Notre approche tient en 5 points : audit, tarifs, financement CPF, formation et suivi.",
         "fr",
       ).valeur,
-    ).toBe("Notre approche tient en 4 points : audit, tarifs, formation, suivi.");
+    ).toBe("Notre approche tient en 4 points : audit, tarifs, formation et suivi.");
     expect(
-      reecrireTexte("Trois leviers : gains de temps, aides OPCO, qualité de service.", "fr").valeur,
-    ).toBe("Deux leviers : gains de temps, qualité de service.");
+      reecrireTexte("Trois leviers : gains de temps, aides OPCO et qualité de service.", "fr")
+        .valeur,
+    ).toBe("Deux leviers : gains de temps et qualité de service.");
   });
 
   it("décompte qui ne se vérifie pas : ambigu, rien n'est écrit", () => {
@@ -308,7 +310,7 @@ describe("6. ambigus : règles ciblées", () => {
       directAnswer: null,
       faqJson: null,
       keyTakeaway:
-        "La méthode repose sur sept étapes : audit, cartographie, financement OPCO, prototype, formation, déploiement, suivi.",
+        "La méthode repose sur sept étapes : audit, cartographie, financement OPCO, prototype, formation, déploiement et suivi.",
       expertQuoteText: null,
       featuredImageAltFr: null,
       featuredImageAltEn: null,
@@ -374,11 +376,11 @@ describe("7. offres d'emploi", () => {
     expect(p.apres.status).toBeUndefined();
     expect(p.apres.titleFr).toBe("Responsable qualité");
     expect(p.apres.titleEn).toBe("Quality manager");
-    expect(p.apres.summaryFr).toBe("Vous pilotez la qualité de nos formations.");
-    expect(String(p.apres.bodyFr)).toContain("Vous pilotez la démarche qualité");
-    expect(String(p.apres.bodyFr)).toContain("Suivi des indicateurs");
-    expect(JSON.stringify(p.apres)).not.toMatch(/qualiopi/i);
-    expect(p.ambigus).toEqual([]);
+    // « A et la certification Qualiopi » / « les audits Qualiopi » : hors formes prouvées → ambigu,
+    // l'offre n'est pas réécrite à l'aveugle (le titre, lui, reste réécrit : mot en fin de libellé).
+    expect(p.apres.summaryFr).toBeUndefined();
+    expect(String(p.apres.bodyFr)).toContain("audits Qualiopi"); // paragraphe laissé tel quel
+    expect(p.ambigus.length).toBeGreaterThan(0);
   });
 });
 

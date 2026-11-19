@@ -92,20 +92,19 @@ describe("reecrireTexte / reecrireHtml — extraits RÉELS de la production (18/
     const html =
       "<p>Ces formations peuvent être financées par les OPCO ou le plan de développement des compétences de l'entreprise, mais pas par le CPF.</p><p>Elles se déroulent chez vous.</p>";
     const r = reecrireHtml(html, "fr");
-    expect(r.modifie).toBe(true);
-    expect(r.valeur).toBe(`<p>${PHRASE_FR}</p><p>Elles se déroulent chez vous.</p>`);
+    // Énumération « OPCO ou plan de développement… mais pas par le CPF » : hors formes prouvées.
+    expect(r.ambigus.length).toBeGreaterThan(0);
+    expect(r.modifie).toBe(false);
   });
 
   it("accompagnement-ia-aubervilliers : fonds de votre OPCO", () => {
     const html =
       "<p>Des dispositifs comme les aides BPI France, les fonds de votre OPCO ou les programmes France Num peuvent être mobilisés. Nous vous accompagnons sur place. Le rapport est remis sous trois jours. Un conseiller vous répond.</p>";
     const r = reecrireHtml(html, "fr");
-    expect(r.valeur).not.toMatch(MOTIFS);
-    // Seule la phrase visée est retirée : le paragraphe parle d'autre chose, il n'est pas remplacé.
-    expect(r.valeur).not.toContain(PHRASE_FR);
-    expect(r.valeur).toBe(
-      "<p>Nous vous accompagnons sur place. Le rapport est remis sous trois jours. Un conseiller vous répond.</p>",
-    );
+    // « les aides BPI France, les fonds de votre OPCO ou les programmes France Num » : éléments non
+    // visés dans l'énumération → ambigu (rien n'est écrit).
+    expect(r.ambigus.length).toBeGreaterThan(0);
+    expect(r.modifie).toBe(false);
   });
 
   it("phrase isolée dans un long paragraphe : seules les phrases visées sont retirées", () => {
@@ -292,7 +291,9 @@ describe("offres d'emploi", () => {
       "<p>Vous montez et pilotez les dossiers de financement qui font décoller nos projets IA : CPF, OPCO, France 2030, BPI, aides régionales.</p>",
       "fr",
     );
-    expect(r.valeur).toBe(`<p>${PHRASE_FR}</p>`);
+    // Accroche + liste « CPF, OPCO, France 2030, BPI… » sans connecteur : hors formes prouvées.
+    expect(r.ambigus.length).toBeGreaterThan(0);
+    expect(r.modifie).toBe(false);
   });
 });
 

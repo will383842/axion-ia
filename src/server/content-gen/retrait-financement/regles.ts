@@ -384,6 +384,53 @@ const MOT_CERTIF =
 const MOT_TITRE =
   /\s*(?:[-–—:&/|+,]\s*|\b(?:et|ou)\s+)?(?:certifi[ée]e?s?\s+|certification\s+|label\s+)?(?:Qualiopi|Datadock|OPCOs?|EDOF|FNE-Formation|AIF)\s*$/i;
 
+const HORS_FORME = (phrase: string): string =>
+  `forme non prouvée (hors « A, B et X. », parenthèse, phrase entière) : « ${phrase.slice(0, 160)} »`;
+
+/** Connecteurs : au-delà d'un seul « et/ou » avant le dernier élément, la phrase n'est plus simple. */
+const CONNECTEURS =
+  /\b(?:et\/ou|and\/or|ainsi que|tandis que|et|ou|puis|and|or|plus|mais|sinon|voire)\b/gi;
+const MOTS_ANGLAIS =
+  /\b(?:the|we|our|you|your|with|for|of|to|is|are|and|or|in|on|by|offers?|funding|training|follow-up)\b/i;
+
+/**
+ * Forme prouvée (c) : énumération FRANÇAISE « A, B, X et C », « A, X et C » ou « A, B et X » :
+ * éléments séparés par des virgules, UN SEUL connecteur « et »/« ou » juste avant le dernier
+ * élément, rien après le dernier élément, aucun « : » de liste ni « ; », aucune balise ni entité.
+ */
+function formeSimple(corps: string): boolean {
+  if (/[<>&;]/.test(corps) || MOTS_ANGLAIS.test(corps)) return false;
+  if ((corps.match(CONNECTEURS) ?? []).length !== 1) return false;
+  const segs = corps.split(/,\s+/);
+  if (segs.length < 2) return false;
+  const dernier = segs[segs.length - 1]!;
+  const ouvre = /^(?:et|ou)\s+\S/i.test(dernier);
+  const milieu = /^\S[\s\S]*?\s(?:et|ou)\s+\S/i.test(dernier);
+  if (!ouvre && !milieu) return false;
+  // Rien après le dernier élément : il ne porte ni verbe (« … ou France Num existent »), ni suite longue.
+  const mots = dernier.replace(/^(?:et|ou)\s+/i, "").split(/\s+/);
+  const dernierMot = mots[mots.length - 1]!;
+  if (/(?:ent|ont|ez|ons|ait|ent)$/i.test(dernierMot) && !/ment$/i.test(dernierMot)) return false;
+  return mots.length <= 8;
+}
+
+/**
+ * La phrase mêle des éléments visés et des éléments non visés (énumération, segments liés) :
+ * la retirer en entier perdrait des mots non visés. Hors forme prouvée → ambiguë.
+ */
+function melange(brut: string): boolean {
+  const segs = brut
+    .replace(/[.!?…\s]+$/, "")
+    .split(/,\s+|;\s+|\s+(?:et\/ou|and\/or|ainsi que|tandis que|et|ou|puis|and|or)\s+/i)
+    .map((x) => x.trim())
+    .filter((x) => x !== "");
+  if (segs.length < 2 || !segs.some((x) => estVisee(x))) return false;
+  return segs.some(
+    (x, i) =>
+      !estVisee(x) && !MOT_FINANCEMENT.test(normaliser(x)) && (i > 0 || x.split(/\s+/).length >= 2),
+  );
+}
+
 /**
  * Retire le FRAGMENT visé d'une phrase, pas la phrase : parenthèse, élément d'énumération entre
  * virgules (avec correction du décompte « sept étapes »), fin de phrase après « et », mot de
@@ -421,7 +468,8 @@ function fragmenter(phrase: string): Fragment | null {
     /\b(?:peu(?:t|vent)|sont|est|[êe]tre|permet(?:tent)?|sera|seront|ont|sera|devr(?:a|ont)|doivent|doit|d[ée]pend(?:ent)?)\b/i.test(
       segments[segments.length - 1]!,
     );
-  if (segments.length > 1 && !predicat) {
+  const simple = formeSimple(base) && !predicat;
+  if (simple && segments.length > 1) {
     const dernierSeg = segments.pop()!;
     const tete = /^(et|ou)\s+([\s\S]+)$/i.exec(dernierSeg);
     const milieu = tete ? null : /^([\s\S]+?)\s+(et|ou)\s+([\s\S]+)$/i.exec(dernierSeg);
@@ -433,9 +481,9 @@ function fragmenter(phrase: string): Fragment | null {
       segments.push(milieu[1]!, milieu[3]!);
     } else segments.push(dernierSeg);
   }
-  if (segments.length > 1 && !estVisee(segments[0]!)) {
+  if (simple && segments.length > 2 && !estVisee(segments[0]!)) {
     const visees = segments.map((s) => estVisee(s));
-    if (visees.some(Boolean)) {
+    if (visees.filter(Boolean).length === 1) {
       const gardes = segments.filter((_, i) => !visees[i]);
       const retires = segments.length - gardes.length;
       const premierRetire = visees.indexOf(true);
@@ -466,27 +514,25 @@ function fragmenter(phrase: string): Fragment | null {
   for (const c of coupures) {
     const tete = base.slice(0, c.index);
     const queue = base.slice((c.index ?? 0) + c[0].length);
-    if (estVisee(queue) && !estVisee(tete) && ok(tete)) {
-      noter("fin de phrase retirée après « et »");
-      return { texte: tete + fin };
-    }
+    if (estVisee(queue) && !estVisee(tete) && ok(tete))
+      return { texte: phrase, ambigu: HORS_FORME(phrase) };
   }
 
   // 4. Mot de certification isolé (« audits Qualiopi » → « audits »).
   const sansMot = base.replace(MOT_CERTIF, "");
-  if (sansMot !== base && ok(sansMot)) {
-    noter("mot de certification retiré");
-    return { texte: sansMot + fin };
-  }
+  if (sansMot !== base && ok(sansMot)) return { texte: phrase, ambigu: HORS_FORME(phrase) };
   return null;
 }
 
 /** La phrase est-elle consacrée au financement (le sujet est dans ses premiers mots) ? */
-function estPur(texte: string): boolean {
+const MOT_FINANCEMENT =
+  /financ|\bfund|pris(?:e|es)? en charge|OPCO|\bCPF\b|France Travail|P[ôo]le[- ]emploi|qualiopi|[ée]ligible|rembours|subvention|\bAIF\b|datadock|\bEDOF\b|subrogation|mon ?compte ?formation|FNE/i;
+
+function estPur(texte: string, html = ""): boolean {
+  // Balise en ligne : « pur » seulement si la phrase visée est entière (aucun élément non visé).
+  if (/<[a-z][^>]*>/i.test(html) && melange(texte)) return false;
   const debut = normaliser(texte).split(/\s+/).slice(0, 8).join(" ");
-  return /financ|\bfund|pris(?:e|es)? en charge|OPCO|\bCPF\b|France Travail|P[ôo]le[- ]emploi|qualiopi|[ée]ligible|rembours|subvention|\bAIF\b|datadock|\bEDOF\b|subrogation|mon ?compte ?formation|FNE/i.test(
-    debut,
-  );
+  return MOT_FINANCEMENT.test(debut);
 }
 
 interface SortiePhrase {
@@ -508,7 +554,8 @@ function traiterPhrase(p: string, estHtml: boolean, court: boolean): SortiePhras
     if (f?.ambigu) return { type: "ambigu", texte: p, ambigu: f.ambigu };
     if (f) return { type: "modifie", texte: f.texte };
   }
-  const pur = estPur(brut);
+  if (melange(brut)) return { type: "ambigu", texte: p, ambigu: HORS_FORME(brut) };
+  const pur = estPur(brut, p);
   if (court && !pur)
     return {
       type: "ambigu",
