@@ -81,6 +81,12 @@ import { lireHorodatagesDeSignatures } from "@/server/qualiopi/documents/signatu
 import { PastilleHorodatage } from "@/components/admin/qualiopi/PastilleHorodatage";
 import { RelanceDevisDepuisLaPage } from "@/components/admin/qualiopi/RelanceDevisDepuisLaPage";
 import { lireMessageDeRetour } from "@/features/dossier-client/message-de-retour";
+import { verserScanDevisSigneAction } from "@/server/actions/qualiopi/devis-scan-papier";
+import {
+  DevisScanPapierEntree,
+  libelleSignaturePapier,
+} from "@/components/admin/qualiopi/DevisScanPapierEntree";
+import { peutSignerPourOrganisme } from "@/server/qualiopi/documents/signature/garde-engagement";
 
 export const dynamic = "force-dynamic";
 
@@ -299,6 +305,20 @@ export default async function QualiopiDevisDetailPage({ params, searchParams }: 
     },
   });
   const signeParClient = clientASigne && !organismeASigne;
+  const signatureClientPapier = signatures.some(
+    (s) => s.partie === "client" && s.methode === "papier_scanne",
+  );
+  const pieceDuDevis =
+    devis.statut === "envoye" && devis.documentGenereId !== null && !clientASigne
+      ? await prisma.devis.findUnique({
+          where: { id: devis.id },
+          select: { documentGenere: { select: { annuleeAt: true } } },
+        })
+      : null;
+  const pieceAnnulee = pieceDuDevis?.documentGenere?.annuleeAt != null;
+  // Même règle que l'action serveur : le signataire est celui de la fiche client.
+  const signataireNomFiche = (client?.contactNom ?? client?.raisonSociale ?? "").trim();
+  const peutVoirScan = peutSignerPourOrganisme(acces.role);
   // Devis CLASSIQUE seulement : pour un devis à formules, `acceptDevisAction` refuse l'acceptation
   // manuelle et la reprise est le bloc « relancer l'acceptation » (`repriseParRelance`).
   const signeDesDeuxParties =
@@ -511,7 +531,7 @@ export default async function QualiopiDevisDetailPage({ params, searchParams }: 
                 data-testid="mention-signe-par-client"
                 className="mt-1 text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]"
               >
-                Signé par le client, à contresigner
+                {`Signé par le client${signatureClientPapier ? " sur papier" : ""}, à contresigner`}
               </p>
             )}
             {signeDesDeuxParties && (
@@ -776,11 +796,21 @@ export default async function QualiopiDevisDetailPage({ params, searchParams }: 
                   {s.signataireQualite !== null ? ` — ${s.signataireQualite}` : ""}
                 </p>
                 <p className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
-                  {`Signé le ${s.signeAt.toLocaleString("fr-FR", { timeZone: "Europe/Paris" })}`}
+                  {s.methode === "papier_scanne"
+                    ? libelleSignaturePapier(s.signeAt, identiteOrganisme.raisonSociale)
+                    : `Signé le ${s.signeAt.toLocaleString("fr-FR", { timeZone: "Europe/Paris" })}`}
                   {s.methode === "confirmation_accessible"
                     ? " — confirmation nominative, sans tracé manuscrit"
                     : ""}
                 </p>
+                {s.methode === "papier_scanne" && s.partie === "client" && peutVoirScan && (
+                  <a
+                    href={`/api/qualiopi/devis/${devis.id}/scan-signe`}
+                    className="inline-flex min-h-[var(--target-admin-min-mobile)] items-center text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-accent)] underline underline-offset-4"
+                  >
+                    Ouvrir le scan versé (PDF)
+                  </a>
+                )}
                 {s.partie === "client" && devis.offre !== null && devis.offreSha256 !== null ? (
                   <ChoixClientSigne
                     resultat={choixImprimable(
@@ -911,6 +941,24 @@ export default async function QualiopiDevisDetailPage({ params, searchParams }: 
               : "Le client n'a pas encore signé. Le lien de signature lui a été envoyé avec le devis ; renvoyer l'email émet un nouveau lien et invalide l'ancien IMMÉDIATEMENT, avant même la validation de l'e-mail en corbeille : si l'e-mail est refusé ou supprimé, le client n'a plus de lien valable (il faudra alors renvoyer à nouveau)."}
           </p>
         )}
+        <div className="mt-[var(--space-admin-4)]">
+          <DevisScanPapierEntree
+            etat={{
+              statut: devis.statut,
+              offre: devis.offre,
+              offreSha256: devis.offreSha256,
+              documentGenereId: devis.documentGenereId,
+              pieceAnnulee,
+              clientASigne,
+            }}
+            role={acces.role}
+            devisId={devis.id}
+            signataireNom={signataireNomFiche}
+            organismeNom={identiteOrganisme.raisonSociale}
+            validiteDepassee={isExpired ? formatDate(devis.dateValidite) : null}
+            verserAction={verserScanDevisSigneAction}
+          />
+        </div>
       </section>
 
       {/* ── Actions de cycle de vie ──────────────────────────────────────── */}

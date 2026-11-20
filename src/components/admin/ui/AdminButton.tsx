@@ -65,6 +65,8 @@ type AdminButtonAsButton = AdminButtonOwnProps & {
   title?: string;
   "aria-label"?: string;
   "aria-describedby"?: string;
+  "aria-expanded"?: boolean;
+  "aria-controls"?: string;
 };
 
 type AdminButtonAsLink = AdminButtonOwnProps & {
