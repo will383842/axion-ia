@@ -27,21 +27,28 @@ import { getClientIp } from "@/lib/client-ip";
 import { hashIp } from "@/lib/security/ip-hash";
 import { verifyTurnstile } from "@/lib/turnstile";
 import {
-  SECTOR_SLUGS,
-  REGION_SLUGS,
   USE_CASE_VALUES,
   TOOL_VALUES,
-  BARRIER_VALUES,
   BARRIERS_MAX_SELECTIONS,
 } from "@/content/observatoire/questions";
-import { CONSENT_VERSION, RATE_LIMIT_PREFIX, SOURCE_SCORE } from "@/lib/score-ia-pme/constantes";
+import {
+  BARRIER_VALUES_SCORE,
+  REGION_SLUGS_SCORE,
+  SECTOR_SLUGS_SCORE,
+} from "@/lib/score-ia-pme/libelles";
+import {
+  CONSENT_VERSION,
+  QUESTIONNAIRE_VERSION,
+  RATE_LIMIT_PREFIX,
+  SOURCE_SCORE,
+} from "@/lib/score-ia-pme/constantes";
 
 export type AjoutObservatoireState = { ok: true } | { ok: false; error: string };
 
 const MIN_FILL_MS = 3000;
 
-const sectorSchema = z.string().refine((s) => SECTOR_SLUGS.includes(s), "secteur invalide");
-const regionSchema = z.string().refine((s) => REGION_SLUGS.includes(s), "région invalide");
+const sectorSchema = z.string().refine((s) => SECTOR_SLUGS_SCORE.includes(s), "secteur invalide");
+const regionSchema = z.string().refine((s) => REGION_SLUGS_SCORE.includes(s), "région invalide");
 
 /** « none » est exclusif : seul, ou absent. */
 const choixExclusif = <T extends readonly [string, ...string[]]>(valeurs: T, max: number) =>
@@ -64,11 +71,8 @@ const inputSchema = z
     useCases: choixExclusif(USE_CASE_VALUES, USE_CASE_VALUES.length),
     tools: choixExclusif(TOOL_VALUES, TOOL_VALUES.length),
     annualBudget: z.nativeEnum(AnnualBudget),
-    barriers: z
-      .array(z.enum(BARRIER_VALUES))
-      .min(1)
-      .max(BARRIERS_MAX_SELECTIONS)
-      .refine((a) => new Set(a).size === a.length, "doublon"),
+    // « none » (Aucun frein particulier) : exclusif, accepté par le Score seulement.
+    barriers: choixExclusif(BARRIER_VALUES_SCORE, BARRIERS_MAX_SELECTIONS),
     timeSavedPerDay: z.nativeEnum(TimeSavedPerDay),
     rgpdConcern: z.nativeEnum(RgpdConcern),
     teamTrained: z.nativeEnum(TeamTrained),
@@ -134,6 +138,7 @@ export async function ajouterALObservatoire(input: unknown): Promise<AjoutObserv
       rgpdConcern: data.rgpdConcern,
       teamTrained: data.teamTrained,
       investmentIntent: data.investmentIntent,
+      _questionnaire: QUESTIONNAIRE_VERSION,
     };
 
     await prisma.barometerResponse.create({

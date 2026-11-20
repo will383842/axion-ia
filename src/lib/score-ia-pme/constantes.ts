@@ -11,6 +11,19 @@ export const SCORE_VERSION = "score-ia-pme-v1";
  */
 export const CONSENT_VERSION = "obs-score-v1";
 
+/**
+ * Texte EXACT de la case de consentement (décision de Williams, 20/11/2026), version `obs-score-v1`.
+ * Toute retouche, même d'une virgule, impose `obs-score-v2`.
+ */
+export const TEXTE_CONSENTEMENT =
+  "J'accepte que mes réponses, sans nom ni e-mail, rejoignent l'Observatoire de l'IA dans les PME d'Axion-IA. Je peux les retirer avec mon code.";
+
+/**
+ * Version des LIBELLÉS du questionnaire (I6), écrite dans `raw_answers._questionnaire` :
+ * sans elle, on ne saurait plus quelle formulation a produit quelle ligne.
+ */
+export const QUESTIONNAIRE_VERSION = "q-score-v1";
+
 /** Valeur de `barometer_responses.source` pour les réponses données au Score. */
 export const SOURCE_SCORE = "score-ia-pme";
 
@@ -19,6 +32,12 @@ export const SOURCE_SCORE = "score-ia-pme";
  * Valeur prudente par défaut (Williams n'a pas tranché, 20/11/2026) : facile à changer ici.
  */
 export const N_MIN_COMPARAISON = 30;
+
+/**
+ * Plancher de TOUTE statistique publiée (protection des personnes) : jamais de pourcentage
+ * sur moins de 5 réponses, quel que soit le segment.
+ */
+export const N_MIN_STATISTIQUE = 5;
 
 /**
  * Durée de conservation (années) des réponses ajoutées depuis le Score.

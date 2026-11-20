@@ -148,4 +148,19 @@ describe("calculerSnapshotScore", () => {
     expect(upsertMock).toHaveBeenCalledTimes(1);
     expect(upsertMock.mock.calls[0]![0].where).toEqual({ key: "score-ia-pme-v1" });
   });
+
+  it("secteur « autre » : jamais de comparaison par secteur, même au-dessus du seuil", async () => {
+    etat.lignes = lots(40, { sector: "autre" });
+    const p = await snapshot();
+    expect(p.parSecteur.autre).toBeUndefined();
+    expect(p.global?.n).toBe(40);
+  });
+
+  it("seuils : 30 pour la comparaison, jamais en dessous du plancher de 5", async () => {
+    const { N_MIN_COMPARAISON, N_MIN_STATISTIQUE } = await import("@/lib/score-ia-pme/constantes");
+    expect(N_MIN_COMPARAISON).toBe(30);
+    expect(N_MIN_STATISTIQUE).toBe(5);
+    etat.lignes = lots(5);
+    expect((await snapshot()).global).toBeNull();
+  });
 });

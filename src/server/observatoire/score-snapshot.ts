@@ -14,11 +14,12 @@ import type { Prisma } from "../../../prisma/generated/client";
 import { calculerScore, tranche } from "@/lib/score-ia-pme/formule";
 import {
   N_MIN_COMPARAISON,
+  N_MIN_STATISTIQUE,
   SCORE_VERSION,
   SNAPSHOT_KEY_SCORE,
   SOURCE_SCORE,
 } from "@/lib/score-ia-pme/constantes";
-import { MIN_SEGMENT_N } from "./snapshot";
+import { SECTEUR_AUTRE } from "@/lib/score-ia-pme/libelles";
 
 export interface SegmentScore {
   readonly n: number;
@@ -57,7 +58,7 @@ function construire(effectifs: number[], n: number, seuil: number): SegmentScore
 }
 
 export async function calculerSnapshotScore(): Promise<SnapshotScore> {
-  const seuil = Math.max(MIN_SEGMENT_N, N_MIN_COMPARAISON);
+  const seuil = Math.max(N_MIN_STATISTIQUE, N_MIN_COMPARAISON);
   const vide = () => Array<number>(10).fill(0);
   const glob = vide();
   let nGlob = 0;
@@ -106,10 +107,10 @@ export async function calculerSnapshotScore(): Promise<SnapshotScore> {
       }
       glob[t] = (glob[t] ?? 0) + 1;
       nGlob += 1;
-      for (const [map, cle] of [
-        [taille, String(l.companySize)],
-        [secteur, l.sector],
-      ] as const) {
+      // « autre » : aucun groupe homogène, donc aucune comparaison par secteur.
+      const groupes: Array<readonly [typeof taille, string]> = [[taille, String(l.companySize)]];
+      if (l.sector !== SECTEUR_AUTRE) groupes.push([secteur, l.sector]);
+      for (const [map, cle] of groupes) {
         const e = map.get(cle) ?? { n: 0, t: vide() };
         e.n += 1;
         e.t[t] = (e.t[t] ?? 0) + 1;
