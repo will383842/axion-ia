@@ -11597,6 +11597,10 @@ model BarometerResponse {
   rawAnswers       Json             @map("raw_answers")
   submittedAt      DateTime         @default(now()) @map("submitted_at")
   createdAt        DateTime         @default(now()) @map("created_at")
+  // GEO V2-10 PR-1 : Score IA PME. Nullables, NULL = canal historique.
+  source           String?          @db.VarChar(40)
+  consentVersion   String?          @map("consent_version") @db.VarChar(64)
+  codeRetraitHash  String?          @unique @map("code_retrait_hash") @db.VarChar(64)
 
   @@index([companySize])
   @@index([sector])
