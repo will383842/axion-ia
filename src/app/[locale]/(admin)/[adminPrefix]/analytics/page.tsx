@@ -10,10 +10,13 @@
 // Pas d'écriture DB ici — purement read-only + ping moteurs externes.
 
 import { auth } from "@/auth";
+import { Suspense } from "react";
 import { redirect } from "next/navigation";
+import { AdminCard } from "@/components/admin/ui";
 import { env } from "@/env";
 import { SITE_URL } from "@/lib/seo";
 import { AnalyticsV2 } from "./_v2/AnalyticsV2";
+import { VisitesIA } from "./_v2/VisitesIA";
 
 export const dynamic = "force-dynamic";
 
@@ -153,6 +156,18 @@ export default async function AdminAnalyticsPage({ params }: PageProps) {
       indexNowConfigured={Boolean(env.INDEXNOW_KEY)}
       pingAction={pingIndexNowAction}
       pagesNotifiees={CHEMINS_NOTIFIES}
+      blocVisitesIA={
+        <Suspense
+          fallback={
+            <AdminCard className="mb-[var(--space-admin-5)]">
+              <h2 className="admin-h2">Visites venues des IA</h2>
+              <p className="admin-meta-block">Chargement…</p>
+            </AdminCard>
+          }
+        >
+          <VisitesIA />
+        </Suspense>
+      }
     />
   );
 }
