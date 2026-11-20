@@ -5,6 +5,7 @@ import {
   CONSIGNE_SANS_FINANCEMENT,
   MOTIFS_INTERDITS_GENERATEUR,
 } from "./motifs-interdits-generateur";
+import { PHRASE_FR } from "./phrases-standard";
 import { estVisee } from "./regles";
 
 describe("motifs interdits du générateur", () => {
@@ -41,12 +42,10 @@ describe("motifs interdits du générateur", () => {
       "France Travail",
     ])
       expect(CONSIGNE_SANS_FINANCEMENT).toContain(m);
-    expect(CONSIGNE_SANS_FINANCEMENT).toContain(
-      "Financement : solutions indiquées au premier échange.",
-    );
+    expect(CONSIGNE_SANS_FINANCEMENT).toContain(PHRASE_FR);
   });
   it("la phrase standard n'est pas elle-même visée (idempotence)", () => {
-    expect(estVisee("Financement : solutions indiquées au premier échange.")).toBe(false);
+    expect(estVisee(PHRASE_FR)).toBe(false);
   });
 });
 

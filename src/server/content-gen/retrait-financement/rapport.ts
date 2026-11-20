@@ -5,7 +5,7 @@
  * texte de remplacement. Un diff par phrase, dans le corps HTML, le texte, le JSON Tiptap et les
  * FAQ (question / réponse concernées). Le rapport ne montre que des textes publics.
  */
-import { htmlVersBlocs, blocsTexteJson } from "./regles";
+import { htmlVersBlocs, blocsTexteJson, blocsDeSection } from "./regles";
 import type { Proposition } from "./plan";
 import { ambigusNonCouverts, gabaritOverrides, resume } from "./plan";
 
@@ -206,6 +206,8 @@ export function passagesModifies(avant: unknown, apres: unknown): Passage[] {
         reduit && entier.length - reduit.retire.length >= 30
           ? reduit
           : { debut: 0, retire: entier, ajoute: ajouteBrut };
+      // A9 : un « retiré » et un « remplacé par » qui ne diffèrent que par des espaces est un faux signal.
+      if (r.retire.replace(/\s+/g, "") === r.ajoute.replace(/\s+/g, "")) continue;
       const debut = debutRetire + r.debut;
       const apresPos = debut + r.retire.length;
       const ctx = (s: string) => s.replace(/\n/g, " ¶ ").trim();
@@ -224,6 +226,13 @@ export function passagesModifies(avant: unknown, apres: unknown): Passage[] {
 
 const coupe = (s: string, max: number): string => (s.length > max ? `${s.slice(0, max)}…` : s);
 
+const STATUTS: Record<string, string> = {
+  published: "publiée",
+  archived: "archivée",
+  draft: "brouillon",
+};
+const libelleStatut = (v: unknown): string => STATUTS[String(v)] ?? String(v);
+
 /** Lignes Markdown du rapport pour un champ modifié. */
 export function lignesModification(
   cle: string,
@@ -231,9 +240,19 @@ export function lignesModification(
   avant: unknown,
   apres: unknown,
 ): string[] {
+  if (champ === "status")
+    return [`- \`${cle}\` · statut : ${libelleStatut(avant)} → ${libelleStatut(apres)}`];
   const passages = passagesModifies(avant, apres);
-  if (passages.length === 0)
-    return [`- \`${cle}\` · ${champ} : modifié (aucune différence de texte visible)`];
+  if (passages.length === 0) {
+    // Espaces seuls (A9) : rien à relire, rien à afficher.
+    const t = (v: unknown): string =>
+      blocsDe(v)
+        .map((b) => b.texte.replace(/\s+/g, ""))
+        .join("");
+    return t(avant) === t(apres)
+      ? []
+      : [`- \`${cle}\` · ${champ} : modifié (aucune différence de texte visible)`];
+  }
   const lignes: string[] = [];
   for (const p of passages) {
     lignes.push(`- \`${cle}\` · ${champ}${p.etiquette ? ` (${p.etiquette})` : ""}`);
@@ -249,6 +268,12 @@ export function lignesModification(
 
 /** Passage ambigu COMPLET : le bloc de texte qui contient l'extrait cité, sinon tout le champ. */
 function texteComplet(valeur: unknown, message: string): string[] {
+  // Ambigu de SECTION : seule la section est imprimée, jamais l'article entier (A9).
+  const titre = /^(?:section|titre H\d)\s*«\s*([^»]+?)\s*»/.exec(message)?.[1];
+  if (titre && typeof valeur === "string" && /<h[2-4][\s>]/i.test(valeur)) {
+    const sec = blocsDeSection(valeur, titre);
+    if (sec.length > 0) return sec;
+  }
   const blocs = blocsDe(valeur).map((b) => b.texte);
   const cite = /«\s*([\s\S]*?)\s*(?:»|…)?\s*$/.exec(message)?.[1]?.replace(/…$/, "") ?? "";
   const amorce = cite.slice(0, 60);
@@ -301,7 +326,7 @@ export function construireRapport(
   ];
   const r = resume(propositions);
   l.push(
-    `Contenus concernés : ${r.total} · à réécrire : ${r.a_reecrire} · ambigus : ${r.ambigus}`,
+    `Contenus concernés : ${r.total} · à réécrire : ${r.a_reecrire}${r.partiels > 0 ? ` + ${r.partiels} partiels` : ""} · ambigus : ${r.ambigus}`,
     "",
   );
   l.push("## Modifications (passage retiré, contexte, remplacement)");
@@ -311,6 +336,13 @@ export function construireRapport(
   l.push("", "## Règles ciblées appliquées (fragments, décomptes, cellules, questions)");
   for (const x of propositions) for (const g of x.regles ?? []) l.push(`- \`${x.cle}\` · ${g}`);
   l.push(...sectionAmbigus(propositions));
+  const avecPertes = propositions.filter((x) => Object.keys(x.pertes ?? {}).length > 0);
+  if (avecPertes.length > 0) {
+    l.push("", "## Pertes acceptées par les overrides (mots non financiers, relues par un humain)");
+    for (const x of avecPertes)
+      for (const [c, mots] of Object.entries(x.pertes ?? {}))
+        l.push(`- \`${x.cle}\` · ${c} : ${mots.join(", ")}`);
+  }
   l.push("", "## « prise en charge » conservées (hors financement)");
   for (const x of propositions) for (const c of x.conserves) l.push(`- \`${x.cle}\` : ${c}`);
   if (ignores.length > 0) l.push("", "## Overrides ignorés", ...ignores.map((i) => `- ${i}`));
