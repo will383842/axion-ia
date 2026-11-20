@@ -17,7 +17,8 @@
  * Logique pure — aucun import Prisma, aucune horloge.
  */
 
-export const MENTION_VERSION_PAPIER = "papier-manuscrit-v1" as const;
+// Identifiant de version (pas un secret) : gitleaks le prend pour une clé d'API.
+export const MENTION_VERSION_PAPIER = "papier-manuscrit-v1" as const; // gitleaks:allow
 export const CONSENTEMENT_VERSION_PAPIER = "papier-aucun" as const;
 
 export type VersionMentionPapier = typeof MENTION_VERSION_PAPIER;
