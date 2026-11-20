@@ -17,6 +17,7 @@ import { BadgeEmailDevis } from "@/components/admin/qualiopi/BadgeEmailDevis";
 import { prisma } from "@/lib/prisma";
 import {
   devisAvecRelanceRecente,
+  devisRemisEnMainPropreParmi,
   estCandidatARelance,
   estDevisARelancer,
 } from "@/server/qualiopi/devis/devis-a-relancer";
@@ -115,13 +116,13 @@ export default async function QualiopiDevisPage({ params, searchParams }: PagePr
 
   // Pastille « À relancer » : UNE lecture groupée des relances déjà garées ou envoyées.
   const maintenant = new Date();
-  const relancesRecentes = await devisAvecRelanceRecente(
-    prisma,
-    devisList
-      .filter((d) => estCandidatARelance(d, etatListeDevis(d, piecesAContresigner), maintenant))
-      .map((d) => d.id),
-    maintenant,
-  ).catch(() => new Set<string>());
+  const idsCandidats = devisList
+    .filter((d) => estCandidatARelance(d, etatListeDevis(d, piecesAContresigner), maintenant))
+    .map((d) => d.id);
+  const [relancesRecentes, remisMainPropre] = await Promise.all([
+    devisAvecRelanceRecente(prisma, idsCandidats, maintenant).catch(() => new Set<string>()),
+    devisRemisEnMainPropreParmi(prisma, idsCandidats).catch(() => new Set<string>()),
+  ]);
 
   // Index clients par id pour affichage rapide
   const clientIndex = new Map(clients.map((c) => [c.id, c.raisonSociale]));
@@ -271,7 +272,7 @@ export default async function QualiopiDevisPage({ params, searchParams }: PagePr
                           {estDevisARelancer(
                             devis,
                             etatListeDevis(devis, piecesAContresigner),
-                            relancesRecentes.has(devis.id),
+                            relancesRecentes.has(devis.id) || remisMainPropre.has(devis.id),
                             maintenant,
                           ) && (
                             <AdminBadge tone="warning" dot>

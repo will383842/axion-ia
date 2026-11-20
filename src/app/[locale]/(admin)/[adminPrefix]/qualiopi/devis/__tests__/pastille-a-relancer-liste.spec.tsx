@@ -11,6 +11,8 @@ const etat = vi.hoisted(() => ({
   relances: new Set<string>(),
   demandes: [] as string[][],
   contresigner: new Set<string>(),
+  mainPropre: new Set<string>(),
+  demandesMainPropre: [] as string[][],
 }));
 
 const il_y_a = (j: number) => new Date(Date.now() - j * 86_400_000);
@@ -39,6 +41,7 @@ vi.mock("@/server/qualiopi/crm/devis", () => ({
       ligne("perime", { dateValidite: new Date(Date.now() - JOUR) }),
       ligne("deja-relance"),
       ligne("signe"),
+      ligne("main-propre"),
       ligne("accepte", { statut: "accepte" }),
     ]),
 }));
@@ -50,6 +53,16 @@ vi.mock("@/server/qualiopi/documents/signature/pieces-en-attente", () => ({
 }));
 vi.mock("@/lib/prisma", () => ({
   prisma: {
+    activityLog: {
+      findMany: (args: { where: { targetId: { in: string[] } } }) => {
+        etat.demandesMainPropre.push(args.where.targetId.in);
+        return Promise.resolve(
+          args.where.targetId.in
+            .filter((i) => etat.mainPropre.has(i))
+            .map((targetId) => ({ targetId })),
+        );
+      },
+    },
     emailOutbox: {
       findMany: (args: { where: { template: string; entityId: { in: string[] } } }) => {
         if (args.where.template !== "relance-devis-client") return Promise.resolve([]);
@@ -86,6 +99,8 @@ describe("liste des devis : pastille « À relancer »", () => {
     etat.relances = new Set(["deja-relance"]);
     etat.contresigner = new Set(["doc-signe"]);
     etat.demandes = [];
+    etat.mainPropre = new Set(["main-propre"]);
+    etat.demandesMainPropre = [];
   });
 
   it("présente seulement sur le devis envoyé, non signé, valide, vieux de 3 jours, sans relance récente", async () => {
@@ -95,6 +110,12 @@ describe("liste des devis : pastille « À relancer »", () => {
   it("une seule lecture groupée, limitée aux candidats", async () => {
     await afficher();
     expect(etat.demandes).toHaveLength(1);
-    expect(etat.demandes[0]?.sort()).toEqual(["deja-relance", "ok"]);
+    expect(etat.demandes[0]?.sort()).toEqual(["deja-relance", "main-propre", "ok"]);
+  });
+
+  it("pas de pastille sur un devis remis en main propre, une seule lecture groupée", async () => {
+    expect(avecPastille(await afficher())).not.toContain("main-propre");
+    expect(etat.demandesMainPropre).toHaveLength(1);
+    expect(etat.demandesMainPropre[0]?.sort()).toEqual(["deja-relance", "main-propre", "ok"]);
   });
 });
