@@ -368,8 +368,8 @@ export interface GeneratorBaseInputExtension {
     beforeScenario: string;
     afterScenario: string;
     sectorLexicon: string[];
-    objection: string;
-    objectionReply: string;
+    objection?: string;
+    objectionReply?: string;
     kpiLabel: string;
   };
 

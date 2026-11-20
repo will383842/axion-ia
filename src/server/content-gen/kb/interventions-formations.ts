@@ -37,7 +37,7 @@ export const KB_INTERVENTIONS_FORMATIONS: readonly KbFact[] = [
   },
   {
     id: "form-003",
-    text: "L'accompagnement Axion-IA dans la durée combine une formation intensive (1 à 3 jours) puis un suivi individuel via le coaching 1-to-1 régulier — structuré en 3 phases : découverte, expérimentation, intégration opérationnelle.",
+    text: "L'accompagnement Axion-IA dans la durée combine une formation intensive (1 à 3 jours) puis le coaching 1-to-1 régulier — structuré en 3 phases : découverte, expérimentation, intégration opérationnelle.",
     source: "Axion-IA — Catalogue formations 2026",
     sourceUrl: "https://axion-ia.com/interventions-formations",
     verifiedAt: "2026-05-01",
@@ -122,15 +122,6 @@ export const KB_INTERVENTIONS_FORMATIONS: readonly KbFact[] = [
   {
     id: "form-011",
     text: "Formation journée complète en entreprise (1 journée, groupe de 2 à 15 personnes) — sur devis selon la catégorie (offre générale, par métier ou par secteur d'activité) ; parlons-en lors du rendez-vous gratuit de 45 minutes.",
-    source: "Axion-IA — Catalogue des offres 2026",
-    sourceUrl: "https://axion-ia.com/interventions-formations",
-    verifiedAt: "2026-05-01",
-    verticales: ["interventions_formations"],
-    confidence: 0.92,
-  },
-  {
-    id: "form-012",
-    text: "Pour ancrer les acquis après une formation, Axion-IA propose un suivi hybride : session de formation (1 à 2 jours, présentiel ou distanciel) puis coaching 1-to-1 régulier — incluant un cadrage initial des usages IA existants.",
     source: "Axion-IA — Catalogue des offres 2026",
     sourceUrl: "https://axion-ia.com/interventions-formations",
     verifiedAt: "2026-05-01",

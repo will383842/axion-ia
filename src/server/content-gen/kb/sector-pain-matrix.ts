@@ -30,8 +30,10 @@ export interface SectorPainContext {
   beforeScenario: string; // Vie d'avant (1-2 phrases concrètes)
   afterScenario: string; // Vie d'après (1-2 phrases concrètes)
   sectorLexicon: string[]; // Mots du MÉTIER, pas de la tech
-  objection: string; // "Oui mais..."
-  objectionReply: string; // La réponse courte et cash
+  // Paire facultative : une entrée dont la réponse n'est pas publiable n'en porte pas
+  // (les pages n'affichent alors ni bloc objection ni entrée FAQ). Les deux vont ensemble.
+  objection?: string; // "Oui mais..."
+  objectionReply?: string; // La réponse courte et cash
   kpiLabel: string; // Le KPI qui parle à CE secteur
   typicalBudgetSignal: string; // Signal budget pour calibrer le ROI
 }
@@ -114,9 +116,6 @@ export const SECTOR_PAIN_MATRIX: SectorPainContext[] = [
       "validation",
       "conformité",
     ],
-    objection: "Une journée de formation, ça ne suffit pas pour changer les habitudes.",
-    objectionReply:
-      "La formation est suivie de 30 jours d'accompagnement à distance — on ne vous lâche pas après le présentiel.",
     kpiLabel: "tâches IA maîtrisées par collaborateur",
     typicalBudgetSignal: "Une seule erreur de saisie évitée par mois rentabilise la journée",
   },
@@ -1136,8 +1135,7 @@ export const SECTOR_PAIN_MATRIX: SectorPainContext[] = [
     ],
     objection:
       "Une journée de formation, ça ne suffit pas pour que mes opérateurs changent leurs habitudes en atelier.",
-    objectionReply:
-      "La journée est suivie de 30 jours d'accompagnement à distance et travaille sur vos vrais OF, pas sur des exemples génériques. On ne vous lâche pas après le présentiel.",
+    objectionReply: "La journée travaille sur vos vrais OF, pas sur des exemples génériques.",
     kpiLabel: "usages IA maîtrisés par rôle (ordonnancement, prépa, atelier)",
     typicalBudgetSignal: "Moins qu'une heure de ligne arrêtée, pour toute l'équipe formée",
   },
@@ -1248,7 +1246,7 @@ export const SECTOR_PAIN_MATRIX: SectorPainContext[] = [
     ],
     objection: "Une heure, c'est trop court pour que ça change quoi que ce soit à mon entreprise.",
     objectionReply:
-      "Une heure suffit pour repérer le gros gisement de temps perdu et le premier outil à mettre en place. Vous testez derrière, et on ajuste si besoin — pas de blabla, du concret.",
+      "Une heure suffit pour repérer le gros gisement de temps perdu et le premier outil à mettre en place. Pas de blabla, du concret.",
     kpiLabel: "heures/semaine récupérées sur l'administratif",
     typicalBudgetSignal: "Moins qu'une demi-journée de votre temps facturé client",
   },
@@ -1448,6 +1446,18 @@ export const SECTOR_PAIN_MATRIX: SectorPainContext[] = [
       "Inscriptible au marché public via le budget DSI ou les dispositifs de transformation numérique des collectivités en vigueur — à vérifier au cas par cas avec la collectivité",
   },
 ];
+
+/**
+ * Entrée FAQ « objection / réponse » d'une entrée de la matrice, ou `null` si la paire
+ * manque (ou est incomplète) : les pages ne rendent alors ni bloc ni JSON-LD FAQ.
+ */
+export function getObjectionFaq(
+  pain: Pick<SectorPainContext, "objection" | "objectionReply">,
+): { question: string; answer: string } | null {
+  const question = pain.objection?.trim();
+  const answer = pain.objectionReply?.trim();
+  return question && answer ? { question, answer } : null;
+}
 
 /**
  * Récupère le contexte douleur pour une combinaison secteur × verticale
