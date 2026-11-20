@@ -89,7 +89,13 @@ import { PdfExportButton } from "@/components/admin/qualiopi/PdfExportButton";
 import { VerserFicheFormateurButton } from "@/components/admin/qualiopi/VerserFicheFormateurButton";
 import { AdminBadge } from "@/components/admin/ui/AdminBadge";
 import { AdminBloc } from "@/components/admin/ui/AdminBloc";
-import { BlocActivite, BlocConformite, BlocFiabilite, BlocMissions } from "./FicheFormateurBlocs";
+import {
+  BlocActivite,
+  BlocConformite,
+  BlocFiabilite,
+  BlocMissions,
+  TuilesFormateur,
+} from "./FicheFormateurBlocs";
 import { AccesRefuse } from "@/components/admin/ui/AccesRefuse";
 import { SessionsLieesSection } from "@/components/admin/qualiopi/SessionsLiees";
 import { listerSessionsLiees } from "@/server/qualiopi/sessions/sessions-liees";
@@ -616,6 +622,14 @@ export default async function FicheFormateurPage({ params, searchParams }: PageP
           du registre n&apos;a pas été refait.
         </p>
       ) : null}
+
+      <TuilesFormateur
+        sessionsAnimees={sessionsAnimees}
+        sessionsAVenir={sessionsAVenir}
+        nbBloquants={bloquants.length}
+        nbAlertes={alertes.length}
+        missionsRefusees={missions.refusees}
+      />
 
       <BlocActivite sessionsAnimees={sessionsAnimees} sessionsAVenir={sessionsAVenir} />
 

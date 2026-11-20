@@ -6,21 +6,114 @@
  * affiche. Composants serveur, aucun JavaScript client.
  */
 
-import { Ban, TriangleAlert } from "lucide-react";
+import { Ban, CalendarClock, CircleCheck, TriangleAlert, UserX } from "lucide-react";
 
 import { AdminBadge } from "@/components/admin/ui/AdminBadge";
 import { AdminBloc } from "@/components/admin/ui/AdminBloc";
 import { AdminBlocRepliable } from "@/components/admin/ui/AdminBlocRepliable";
 import { AdminEmptyState } from "@/components/admin/ui/AdminEmptyState";
+import { AdminStatCard } from "@/components/admin/ui/AdminStatCard";
 
-const COLONNE =
-  "px-[var(--space-admin-3)] py-[var(--space-admin-2)] text-left text-[length:var(--text-admin-xs)] font-semibold text-[color:var(--color-admin-fg-muted)]";
-const CELLULE =
-  "px-[var(--space-admin-3)] py-[var(--space-admin-2)] align-top text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg)]";
 const TEXTE = "text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg)]";
 const TEXTE_DISCRET = "text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]";
 
 const ICONE = "inline-block shrink-0 align-[-0.125em]";
+
+type TonCarte = "destructive" | "warning" | "success" | "neutre";
+const BORDURE_CARTE: Record<TonCarte, string> = {
+  destructive: "border-l-[color:var(--color-admin-destructive)]",
+  warning: "border-l-[color:var(--color-admin-warning)]",
+  success: "border-l-[color:var(--color-admin-success)]",
+  neutre: "border-l-[color:var(--color-admin-border)]",
+};
+
+/** Liste de cartes (remplace les tableaux serrés). */
+function ListeCartes({
+  titre,
+  children,
+}: {
+  titre: string;
+  children: React.ReactNode;
+}): React.ReactElement {
+  return (
+    <ul
+      aria-label={titre}
+      className="m-0 mt-[var(--space-admin-4)] flex list-none flex-col gap-[var(--space-admin-4)] p-0"
+    >
+      {children}
+    </ul>
+  );
+}
+
+function Carte({
+  ton,
+  children,
+}: {
+  ton: TonCarte;
+  children: React.ReactNode;
+}): React.ReactElement {
+  return (
+    <li
+      data-ton={ton}
+      className={`flex flex-col gap-[var(--space-admin-2)] rounded-[var(--radius-admin-lg)] border border-l-4 border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)] p-[var(--space-admin-4)] sm:flex-row sm:items-start sm:gap-[var(--space-admin-4)] ${BORDURE_CARTE[ton]}`}
+    >
+      {children}
+    </li>
+  );
+}
+
+/** Encadré teinté lisible (motifs, remarques). */
+function Encadre({ children }: { children: React.ReactNode }): React.ReactElement {
+  return (
+    <p className="m-0 rounded-[var(--radius-admin-md)] border-l-4 border-l-[color:var(--color-admin-warning)] bg-[color:var(--color-admin-warning-soft)] p-[var(--space-admin-3)] text-[length:var(--text-admin-base)] text-[color:var(--color-admin-warning-fg)]">
+      {children}
+    </p>
+  );
+}
+
+/* ----------------------------------------------------------------- Tuiles */
+
+export function TuilesFormateur({
+  sessionsAnimees,
+  sessionsAVenir,
+  nbBloquants,
+  nbAlertes,
+  missionsRefusees,
+}: {
+  sessionsAnimees: number;
+  sessionsAVenir: number;
+  nbBloquants: number;
+  nbAlertes: number;
+  missionsRefusees: number;
+}): React.ReactElement {
+  return (
+    <div
+      data-testid="tuiles-formateur"
+      className="mb-[var(--space-admin-5)] grid grid-cols-1 gap-[var(--space-admin-4)] sm:grid-cols-2 lg:grid-cols-4"
+    >
+      <AdminStatCard
+        label="Sessions animées"
+        value={sessionsAnimees}
+        tone="info"
+        icon={CircleCheck}
+      />
+      <AdminStatCard label="Sessions à venir" value={sessionsAVenir} icon={CalendarClock} />
+      <AdminStatCard
+        label="Manquements bloquants"
+        value={nbBloquants}
+        tone={nbBloquants > 0 ? "destructive" : "success"}
+        icon={Ban}
+        {...(nbAlertes > 0 ? { meta: `${nbAlertes} alerte${nbAlertes > 1 ? "s" : ""}` } : {})}
+      />
+      <AdminStatCard
+        label="Missions refusées"
+        value={missionsRefusees}
+        tone={missionsRefusees > 0 ? "warning" : "success"}
+        icon={UserX}
+      />
+    </div>
+  );
+}
 
 /* ---------------------------------------------------------------- Activité */
 
@@ -96,45 +189,30 @@ export function BlocConformite({
           </p>
 
           {bloquants.length + alertes.length > 0 && (
-            <div className="mt-[var(--space-admin-3)] overflow-x-auto">
-              <table className="w-full min-w-[28rem] border-collapse">
-                <caption className="sr-only">Manquements du dossier documentaire</caption>
-                <thead>
-                  <tr>
-                    <th scope="col" className={COLONNE}>
-                      Gravité
-                    </th>
-                    <th scope="col" className={COLONNE}>
-                      Manquement
-                    </th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {bloquants.map((m) => (
-                    <tr key={m.code} className="border-t border-[color:var(--color-admin-border)]">
-                      <td className={CELLULE}>
-                        <AdminBadge tone="destructive">
-                          <Ban size={14} aria-hidden="true" className={ICONE} /> Bloquant
-                        </AdminBadge>
-                      </td>
-                      <td className={CELLULE}>{m.message}</td>
-                    </tr>
-                  ))}
-                  {alertes.map((m) => (
-                    <tr key={m.code} className="border-t border-[color:var(--color-admin-border)]">
-                      <td className={CELLULE}>
-                        <AdminBadge tone="warning">
-                          <TriangleAlert size={14} aria-hidden="true" className={ICONE} /> Alerte
-                        </AdminBadge>
-                      </td>
-                      <td className={`${CELLULE} text-[color:var(--color-admin-fg-muted)]`}>
-                        {m.message}
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
+            <ListeCartes titre="Manquements du dossier documentaire">
+              {bloquants.map((m) => (
+                <Carte key={m.code} ton="destructive">
+                  <AdminBadge tone="destructive" plein>
+                    <Ban size={16} aria-hidden="true" className={ICONE} /> Bloquant
+                  </AdminBadge>
+                  <span className="text-[length:var(--text-admin-base)] font-semibold text-[color:var(--color-admin-fg)]">
+                    {m.message}
+                  </span>
+                </Carte>
+              ))}
+              {alertes.map((m) => (
+                <Carte key={m.code} ton="warning">
+                  <AdminBadge tone="warning" plein>
+                    <TriangleAlert size={16} aria-hidden="true" className={ICONE} /> Alerte
+                  </AdminBadge>
+                  <span
+                    className={`text-[length:var(--text-admin-base)] font-semibold text-[color:var(--color-admin-fg)]`}
+                  >
+                    {m.message}
+                  </span>
+                </Carte>
+              ))}
+            </ListeCartes>
           )}
         </>
       )}
@@ -205,33 +283,24 @@ export function BlocFiabilite({
       )}
 
       {incidents.length > 0 && (
-        <div className="mt-[var(--space-admin-3)] overflow-x-auto">
-          <table className="w-full min-w-[28rem] border-collapse">
-            <caption className="sr-only">Incidents consignés</caption>
-            <thead>
-              <tr>
-                <th scope="col" className={COLONNE}>
-                  Date
-                </th>
-                <th scope="col" className={COLONNE}>
-                  Incident
-                </th>
-                <th scope="col" className={COLONNE}>
-                  Session
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              {incidents.map((i) => (
-                <tr key={i.id} className="border-t border-[color:var(--color-admin-border)]">
-                  <td className={CELLULE}>{i.dateIncident.toLocaleDateString("fr-FR")}</td>
-                  <td className={CELLULE}>{i.titre}</td>
-                  <td className={CELLULE}>{i.session !== null ? i.session.numero : "—"}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+        <ListeCartes titre="Incidents consignés">
+          {incidents.map((i) => (
+            <Carte key={i.id} ton="warning">
+              <AdminBadge tone="warning" plein>
+                <TriangleAlert size={16} aria-hidden="true" className={ICONE} />{" "}
+                {i.dateIncident.toLocaleDateString("fr-FR")}
+              </AdminBadge>
+              <div className="flex flex-col gap-[var(--space-admin-1)]">
+                <span className="text-[length:var(--text-admin-base)] font-semibold text-[color:var(--color-admin-fg)]">
+                  {i.titre}
+                </span>
+                <span className={TEXTE_DISCRET}>
+                  Session : {i.session !== null ? i.session.numero : "—"}
+                </span>
+              </div>
+            </Carte>
+          ))}
+        </ListeCartes>
       )}
 
       <AdminBlocRepliable titre="Où consigner un incident" className="mt-[var(--space-admin-3)]">
@@ -307,40 +376,27 @@ export function BlocMissions({
       )}
 
       {!independant && missions.derniersRefus.length > 0 && (
-        <div className="mt-[var(--space-admin-3)] overflow-x-auto">
-          <table className="w-full min-w-[28rem] border-collapse">
-            <caption className="sr-only">Derniers refus de mission</caption>
-            <thead>
-              <tr>
-                <th scope="col" className={COLONNE}>
-                  Date
-                </th>
-                <th scope="col" className={COLONNE}>
-                  Mission refusée
-                </th>
-                <th scope="col" className={COLONNE}>
-                  Motif
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              {missions.derniersRefus.map((r, i) => (
-                <tr
-                  key={`${r.session.numero}-${i}`}
-                  className="border-t border-[color:var(--color-admin-border)]"
-                >
-                  <td className={CELLULE}>
-                    {r.reponduAt !== null ? r.reponduAt.toLocaleDateString("fr-FR") : "—"}
-                  </td>
-                  <td className={CELLULE}>
-                    {r.session.titreSession} ({r.session.numero})
-                  </td>
-                  <td className={CELLULE}>{r.motifRefus !== null ? `« ${r.motifRefus} »` : "—"}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+        <ListeCartes titre="Derniers refus de mission">
+          {missions.derniersRefus.map((r, i) => (
+            <Carte key={`${r.session.numero}-${i}`} ton="destructive">
+              <AdminBadge tone="destructive" plein>
+                <UserX size={16} aria-hidden="true" className={ICONE} /> Refusée
+                {r.reponduAt !== null ? ` le ${r.reponduAt.toLocaleDateString("fr-FR")}` : ""}
+              </AdminBadge>
+              <div className="flex flex-col gap-[var(--space-admin-2)]">
+                <span className="text-[length:var(--text-admin-base)] font-semibold text-[color:var(--color-admin-fg)]">
+                  {r.session.titreSession}{" "}
+                  <AdminBadge tone="neutral">{r.session.numero}</AdminBadge>
+                </span>
+                {r.motifRefus !== null ? (
+                  <Encadre>
+                    <strong>Motif :</strong> {`« ${r.motifRefus} »`}
+                  </Encadre>
+                ) : null}
+              </div>
+            </Carte>
+          ))}
+        </ListeCartes>
       )}
 
       <AdminBlocRepliable titre="Où consigner une absence" className="mt-[var(--space-admin-3)]">

@@ -7,6 +7,7 @@ import {
   BlocConformite,
   BlocFiabilite,
   BlocMissions,
+  TuilesFormateur,
   type MissionsLues,
 } from "../FicheFormateurBlocs";
 
@@ -28,6 +29,40 @@ const conf = {
   approcheVigilanceCents: 400000,
   seuilVigilanceCents: 500000,
 };
+
+describe("TuilesFormateur", () => {
+  it("chiffres clés et tons selon l'état", () => {
+    const { container } = render(
+      <TuilesFormateur
+        sessionsAnimees={7}
+        sessionsAVenir={2}
+        nbBloquants={1}
+        nbAlertes={3}
+        missionsRefusees={0}
+      />,
+    );
+    const t = container.querySelector("[data-testid='tuiles-formateur']")!;
+    expect(t.children).toHaveLength(4);
+    expect(t.textContent).toContain("7");
+    expect(t.textContent).toContain("Manquements bloquants");
+    expect(t.textContent).toContain("3 alertes");
+    expect(t.querySelectorAll("svg").length).toBeGreaterThanOrEqual(4);
+    expect(t.innerHTML).toContain("--color-admin-destructive");
+    expect(t.innerHTML).toContain("--color-admin-success");
+  });
+  it("aucune iframe", () => {
+    const { container } = render(
+      <TuilesFormateur
+        sessionsAnimees={0}
+        sessionsAVenir={0}
+        nbBloquants={0}
+        nbAlertes={0}
+        missionsRefusees={0}
+      />,
+    );
+    expect(container.querySelector("iframe")).toBeNull();
+  });
+});
 
 describe("BlocActivite", () => {
   it("titre de bloc et compteurs, pluriel et « à venir »", () => {
@@ -61,11 +96,18 @@ describe("BlocConformite", () => {
       />,
     );
     expect(container.querySelector("section")?.getAttribute("data-teinte")).toBe("terracotta");
-    expect(container.querySelector("div.overflow-x-auto table")).not.toBeNull();
-    expect(container.querySelectorAll("th[scope='col']")).toHaveLength(2);
-    const lignes = screen.getAllByRole("row");
-    expect(lignes).toHaveLength(3);
-    expect(within(lignes[1]!).getByText("RC pro absente")).toBeTruthy();
+    expect(container.querySelector("table")).toBeNull();
+    const cartes = screen.getAllByRole("listitem");
+    expect(cartes).toHaveLength(2);
+    expect(cartes[0]!.getAttribute("data-ton")).toBe("destructive");
+    expect(cartes[0]!.className).toContain("border-l-4");
+    expect(within(cartes[0]!).getByText("RC pro absente").className).toContain("font-semibold");
+    expect(
+      within(cartes[0]!)
+        .getByText(/Bloquant/)
+        .closest("span")
+        ?.querySelector("svg"),
+    ).not.toBeNull();
     expect(container.textContent).toContain("1 manquement bloquant — ce formateur ne devrait pas");
     expect(container.textContent).toContain("12 345 € HT".replace(" ", " "));
   });
@@ -117,7 +159,8 @@ describe("BlocFiabilite", () => {
     );
     expect(container.textContent).toContain("Soit 10 % des missions.");
     expect(screen.getByText("Vigilance forte")).toBeTruthy();
-    expect(screen.getAllByRole("row")).toHaveLength(3);
+    expect(screen.getAllByRole("listitem")).toHaveLength(2);
+    expect(container.querySelector("table")).toBeNull();
     expect(container.querySelector("details")?.hasAttribute("open")).toBe(false);
   });
   it("aucune vigilance, aucun incident : ni mention ni tableau", () => {
@@ -164,7 +207,11 @@ describe("BlocMissions", () => {
     );
     expect(container.textContent).toContain("3 proposées · 1 acceptée · 1 refusée");
     expect(container.textContent).toContain("2 absences consignées");
-    expect(screen.getAllByRole("row")).toHaveLength(2);
+    expect(screen.getAllByRole("listitem")).toHaveLength(1);
+    expect(container.querySelector("table")).toBeNull();
+    expect(screen.getByText("Motif :")).toBeTruthy();
+    expect(screen.getByText("Motif :").closest("p")?.className).toContain("border-l-4");
+    expect(screen.getByText("S-9")).toBeTruthy();
     expect(container.textContent).toContain("« indisponible »");
   });
   it("indépendant : libellé fourni, titre sans « proposées », pas de tableau de refus", () => {
@@ -190,6 +237,7 @@ describe("page : structure et actions inchangées", () => {
   it("en-tête avec badges d'état, blocs teintés, pas de marge posée sur un bloc", () => {
     expect(src).toContain("meta={");
     expect(src).toContain("<BlocActivite");
+    expect(src).toContain("<TuilesFormateur");
     expect(src).toMatch(/<AdminBloc\s+teinte="terracotta"/);
     expect(src).not.toMatch(/<AdminBloc[^>]*className="mb-/);
     expect(src).not.toContain('className="admin-card');
