@@ -147,22 +147,21 @@ describe("Émargement d'une session — refonte visuelle", () => {
     expect(lu(3)).toMatch(/À suivre.*1/);
   });
 
-  it("récapitulatif : une carte par stagiaire, pastille large avec icône, bordure colorée", async () => {
+  it("récapitulatif : une ligne-carte par stagiaire, pastille large avec icône, bordure colorée", async () => {
     const { container } = await rendre();
-    const bloc = screen.getByRole("heading", {
-      level: 2,
-      name: "Récapitulatif des taux de présence",
-    }).parentElement as HTMLElement;
-    const cartes = within(bloc).getAllByRole("listitem");
-    expect(cartes).toHaveLength(2);
-    expect(cartes[0]?.className).toContain("border-l-[color:var(--color-admin-success)]");
-    expect(cartes[1]?.className).toContain("border-l-[color:var(--color-admin-destructive)]");
-    expect(cartes[0]?.querySelector("svg")).not.toBeNull();
-    expect(cartes[0]?.querySelector(".admin-badge-plein")).not.toBeNull();
-    expect(within(cartes[0] as HTMLElement).getByText("90 %")).toBeTruthy();
-    expect(within(cartes[0] as HTMLElement).getByText("Complète")).toBeTruthy();
-    expect(within(cartes[1] as HTMLElement).getByText("Aucune")).toBeTruthy();
-    expect(screen.queryByRole("table")).toBeNull();
+    const table = screen.getByRole("table");
+    expect(within(table).getAllByRole("columnheader")).toHaveLength(4);
+    const lignes = within(table).getAllByRole("row").slice(1);
+    expect(lignes).toHaveLength(2);
+    const entete = (i: number) => lignes[i]?.querySelector("th") as HTMLElement;
+    expect(entete(0).className).toContain("border-l-[color:var(--color-admin-success)]");
+    expect(entete(1).className).toContain("border-l-[color:var(--color-admin-destructive)]");
+    expect(lignes[0]?.querySelector("svg")).not.toBeNull();
+    expect(lignes[0]?.querySelector(".admin-badge-plein")).not.toBeNull();
+    expect(within(lignes[0] as HTMLElement).getByText("90 %")).toBeTruthy();
+    expect(within(lignes[0] as HTMLElement).getByText("Complète")).toBeTruthy();
+    expect(within(lignes[1] as HTMLElement).getByText("Aucune")).toBeTruthy();
+    expect(table.parentElement?.className).toContain("overflow-x-auto");
     expect(container.querySelector("iframe")).toBeNull();
   });
 

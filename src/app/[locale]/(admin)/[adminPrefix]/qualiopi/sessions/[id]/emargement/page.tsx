@@ -92,6 +92,11 @@ const TAUX_LABELS: Record<"complete" | "partielle" | "aucune", string> = {
   aucune: "Aucune",
 };
 
+const COLONNE =
+  "px-[var(--space-admin-4)] text-left text-[length:var(--text-admin-xs)] font-semibold text-[color:var(--color-admin-fg-muted)]";
+const CELLULE =
+  "border-y border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)] px-[var(--space-admin-4)] py-[var(--space-admin-4)] align-middle text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg)] first:border-l last:border-r";
+
 const ICONE_CATEGORIE = {
   complete: CheckCircle2,
   partielle: CircleAlert,
@@ -457,40 +462,71 @@ export default async function EmargementPage({ params, searchParams }: PageProps
         {/* Récapitulatif taux de présence */}
         {enrollments.length > 0 && (
           <AdminBloc teinte="bleu" niveau={2} titre="Récapitulatif des taux de présence">
-            <ul className="m-0 flex list-none flex-col gap-[var(--space-admin-4)] p-0">
-              {enrollments.map((e) => {
-                const cat = classifierPresence(e.tauxPresencePct ?? 0, seuilPresencePct);
-                const libelle = libelleParInscription.get(e.id);
-                const Icone = ICONE_CATEGORIE[cat];
-                return (
-                  <li
-                    key={e.id}
-                    className={`flex flex-col gap-[var(--space-admin-3)] rounded-[var(--radius-admin-md)] border border-l-4 border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)] p-[var(--space-admin-4)] sm:flex-row sm:items-center sm:justify-between ${BORDURE_CATEGORIE[cat]}`}
-                  >
-                    <div className="min-w-0">
-                      <p className="m-0 text-[length:var(--text-admin-base)] font-semibold text-[color:var(--color-admin-fg)]">
-                        {e.trainee.prenom} {e.trainee.nom}
-                      </p>
-                      <p className="m-0 text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]">
-                        {e.trainee.email}
-                      </p>
-                    </div>
-                    <div className="flex flex-wrap items-center gap-[var(--space-admin-2)]">
-                      <AdminBadge tone={tonCategorie[cat]} compact={false} plein>
-                        <span className="inline-flex items-center gap-[var(--space-admin-2)]">
-                          <Icone aria-hidden="true" size={16} />
-                          {e.tauxPresencePct !== null ? `${e.tauxPresencePct} %` : "—"}
-                        </span>
-                      </AdminBadge>
-                      <AdminBadge tone={tonCategorie[cat]}>{TAUX_LABELS[cat]}</AdminBadge>
-                      <AdminBadge tone={tonBadge[libelle?.ton ?? "neutre"]}>
-                        {libelle?.texte ?? "Non"}
-                      </AdminBadge>
-                    </div>
-                  </li>
-                );
-              })}
-            </ul>
+            {/* Chaque ligne se lit comme une carte (cellules bordées, espacement entre
+                lignes, bordure gauche colorée), mais reste un vrai <table> : la garde
+                `ecran-emargement-signe.spec.ts` lit la dernière cellule de la ligne. */}
+            <div className="overflow-x-auto">
+              <table className="w-full min-w-[40rem] border-separate border-spacing-y-[var(--space-admin-3)]">
+                <thead>
+                  <tr>
+                    <th scope="col" className={COLONNE}>
+                      Stagiaire
+                    </th>
+                    <th scope="col" className={COLONNE}>
+                      Taux présence
+                    </th>
+                    <th scope="col" className={COLONNE}>
+                      Qualification
+                    </th>
+                    <th scope="col" className={COLONNE}>
+                      Émargement signé
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {enrollments.map((e) => {
+                    const cat = classifierPresence(e.tauxPresencePct ?? 0, seuilPresencePct);
+                    const libelle = libelleParInscription.get(e.id);
+                    const Icone = ICONE_CATEGORIE[cat];
+                    return (
+                      <tr key={e.id}>
+                        <th
+                          scope="row"
+                          className={`${CELLULE} rounded-l-[var(--radius-admin-md)] border-l-4 text-left ${BORDURE_CATEGORIE[cat]}`}
+                        >
+                          <div className="text-[length:var(--text-admin-base)] font-semibold">
+                            {e.trainee.prenom} {e.trainee.nom}
+                          </div>
+                          <div className="text-[length:var(--text-admin-sm)] font-normal text-[color:var(--color-admin-fg-muted)]">
+                            {e.trainee.email}
+                          </div>
+                        </th>
+                        <td className={CELLULE}>
+                          {e.tauxPresencePct !== null ? (
+                            <AdminBadge tone={tonCategorie[cat]} compact={false} plein>
+                              <span className="inline-flex items-center gap-[var(--space-admin-2)]">
+                                <Icone aria-hidden="true" size={16} />
+                                {e.tauxPresencePct} %
+                              </span>
+                            </AdminBadge>
+                          ) : (
+                            <span className="text-[color:var(--color-admin-fg-muted)]">—</span>
+                          )}
+                        </td>
+                        <td className={CELLULE}>
+                          <AdminBadge tone={tonCategorie[cat]}>{TAUX_LABELS[cat]}</AdminBadge>
+                        </td>
+                        <td className={`${CELLULE} rounded-r-[var(--radius-admin-md)]`}>
+                          <AdminBadge tone={tonBadge[libelle?.ton ?? "neutre"]}>
+                            {libelle?.texte ?? "Non"}
+                          </AdminBadge>
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </div>
           </AdminBloc>
         )}
       </div>
