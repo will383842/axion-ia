@@ -110,6 +110,7 @@ const LISTE_BLANCHE = new Set([
   "@/components/admin/qualiopi/EmailOutboxItem",
   "@/components/admin/qualiopi/EmailAutomationSettings",
   "@/server/actions/qualiopi/email-outbox",
+  "@/components/admin/qualiopi/emails-devis-details",
 ]);
 const FICHIERS = [
   "src/components/admin/qualiopi/EmailOutboxItem.tsx",

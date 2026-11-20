@@ -36,6 +36,12 @@ import {
   libelleTemplateEmail,
   reglesRetenantDesEnvoisReglementaires,
 } from "@/server/email/outbox-policy";
+import {
+  estEnvoiDevis,
+  lireDetailsDevis,
+  messageDejaSaisi,
+  presenterDevis,
+} from "@/components/admin/qualiopi/emails-devis-details";
 import { lireReponsesSurRelancesGarees } from "@/server/relances/reponse-relance-garee";
 
 /**
@@ -76,6 +82,7 @@ function construireApercu(payload: unknown): Array<{ label: string; valeur: stri
     soldePartiel: "Solde après versement partiel",
     titreFormation: "Formation",
     numeroSession: "Session",
+    numero: "Devis n°",
   };
   const out: Array<{ label: string; valeur: string }> = [];
   for (const [cle, libelle] of Object.entries(LIBELLES)) {
@@ -145,6 +152,9 @@ export default async function EmailsAValiderPage({
   ]);
 
   // Lot 8A — une relance formateur garée ici peut encore partir après sa réponse : on le dit.
+  // Une seule requête groupée pour tous les devis en attente (pas de N+1).
+  const detailsDevis = await lireDetailsDevis(prisma, enAttente);
+
   const reponduLe = await lireReponsesSurRelancesGarees(enAttente);
 
   // S5 (2026-08-26) — le gel réglementaire par règle NOMMÉE reste permis (la
@@ -230,32 +240,40 @@ export default async function EmailsAValiderPage({
           </p>
         ) : (
           <div className="flex flex-col gap-[var(--space-admin-4)]">
-            {enAttente.map((e) => (
-              <EmailOutboxItem
-                key={e.id}
-                id={e.id}
-                template={e.template}
-                destinataire={e.recipient}
-                sujet={e.sujet}
-                clientNom={e.client?.raisonSociale ?? null}
-                creeLe={dateFr(e.createdAt)}
-                apercu={[
-                  ...(reponduLe.has(e.id)
-                    ? [
-                        {
-                          label: "Attention",
-                          valeur: `le formateur a répondu le ${dateFr(reponduLe.get(e.id)!)}, après la mise en attente de cette relance`,
-                        },
-                      ]
-                    : []),
-                  ...construireApercu(e.payload),
-                ]}
-                nbPiecesJointes={Array.isArray(e.attachments) ? e.attachments.length : 0}
-                accepteMessagePersonnalise={gabaritLitLeMessage(e.template)}
-                approuverAction={approuverEmailAction}
-                refuserAction={refuserEmailAction}
-              />
-            ))}
+            {enAttente.map((e) => {
+              const brut = estEnvoiDevis(e) ? detailsDevis.get(e.entityId as string) : undefined;
+              const dv = brut ? presenterDevis(brut, e.entityId as string, adminPrefix) : null;
+              return (
+                <EmailOutboxItem
+                  key={e.id}
+                  id={e.id}
+                  template={e.template}
+                  destinataire={e.recipient}
+                  sujet={e.sujet}
+                  clientNom={e.client?.raisonSociale ?? null}
+                  creeLe={dateFr(e.createdAt)}
+                  apercu={[
+                    ...(reponduLe.has(e.id)
+                      ? [
+                          {
+                            label: "Attention",
+                            valeur: `le formateur a répondu le ${dateFr(reponduLe.get(e.id)!)}, après la mise en attente de cette relance`,
+                          },
+                        ]
+                      : []),
+                    ...construireApercu(e.payload),
+                    ...(dv?.montantTtc ? [{ label: "Montant TTC", valeur: dv.montantTtc }] : []),
+                  ]}
+                  messageInitial={messageDejaSaisi(e.payload)}
+                  lienDevis={dv?.lienDevis ?? null}
+                  lienPdf={dv?.lienPdf ?? null}
+                  nbPiecesJointes={Array.isArray(e.attachments) ? e.attachments.length : 0}
+                  accepteMessagePersonnalise={gabaritLitLeMessage(e.template)}
+                  approuverAction={approuverEmailAction}
+                  refuserAction={refuserEmailAction}
+                />
+              );
+            })}
           </div>
         )}
       </AdminBloc>

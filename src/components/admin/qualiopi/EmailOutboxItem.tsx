@@ -34,6 +34,12 @@ export interface EmailOutboxItemProps {
   /** Résumé lisible de la charge utile, rendu côté serveur. */
   apercu: readonly { label: string; valeur: string }[];
   nbPiecesJointes: number;
+  /** Message déjà saisi dans la charge de l'e-mail (pré-remplit le champ). */
+  messageInitial?: string;
+  /** Page console du devis (e-mail d'envoi de devis seulement). */
+  lienDevis?: string | null;
+  /** PDF du devis, route admin de documents. */
+  lienPdf?: string | null;
   /** Vrai si le gabarit lit le message personnalisé (liste : `outbox-policy.ts`). */
   accepteMessagePersonnalise: boolean;
   approuverAction: (input: {
@@ -56,13 +62,16 @@ export function EmailOutboxItem({
   creeLe,
   apercu,
   nbPiecesJointes,
+  messageInitial = "",
+  lienDevis = null,
+  lienPdf = null,
   accepteMessagePersonnalise,
   approuverAction,
   refuserAction,
 }: EmailOutboxItemProps): React.ReactElement {
   const router = useRouter();
   const [sujet, setSujet] = useState(sujetInitial);
-  const [message, setMessage] = useState("");
+  const [message, setMessage] = useState(messageInitial);
   const [motifRefus, setMotifRefus] = useState("");
   const [modeRefus, setModeRefus] = useState(false);
   const [confirmeEnvoi, setConfirmeEnvoi] = useState(false);
@@ -159,6 +168,31 @@ export function EmailOutboxItem({
             </div>
           ))}
         </dl>
+      )}
+
+      {(lienDevis || lienPdf) && (
+        <p className="m-0 flex flex-wrap gap-[var(--space-admin-2)]">
+          {lienDevis && (
+            <a
+              href={lienDevis}
+              target="_blank"
+              rel="noopener"
+              className={`${bouton} inline-flex items-center border border-[color:var(--color-admin-border)] text-[color:var(--color-admin-fg)]`}
+            >
+              Voir le devis
+            </a>
+          )}
+          {lienPdf && (
+            <a
+              href={lienPdf}
+              target="_blank"
+              rel="noopener"
+              className={`${bouton} inline-flex items-center border border-[color:var(--color-admin-border)] text-[color:var(--color-admin-fg)]`}
+            >
+              Ouvrir le PDF
+            </a>
+          )}
+        </p>
       )}
 
       <label className="block">
