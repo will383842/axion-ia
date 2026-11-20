@@ -20,7 +20,7 @@ describe("lot 3 — une seule source de données", () => {
   it("l'aperçu et l'envoi construisent le PDF par donneesPdfDevis + lireContextePdfDevis", () => {
     for (const src of [route, envoi]) {
       expect(src).toContain("donneesPdfDevis(");
-      expect(src).toContain("lireContextePdfDevis()");
+      expect(src).toContain("lireContextePdfDevis(");
     }
     // ni l'un ni l'autre ne fabrique un DevisData à la main
     expect(route).not.toMatch(/regimeTva\s*:/);
@@ -44,7 +44,7 @@ describe("lot 3 — une seule source de données", () => {
 
   it("l'interrupteur est lu par le contexte du PDF (inerte s'il est éteint)", () => {
     const ctx = lire("src/server/qualiopi/documents/donnees-pdf-devis.ts");
-    expect(ctx).toContain("formulesActives: await formulesActives()");
+    expect(ctx).toContain("await formulesActives(undefined, formules)");
   });
 });
 

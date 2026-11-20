@@ -81,9 +81,16 @@ export async function modifierDevisBrouillonAction(
     return { error: "Indisponible pendant le build" };
   }
   const session = await requireAdminWrite();
-  if (!(await formulesActives())) return { error: MSG_ETEINT };
   const p = modifierSchema.safeParse(input);
   if (!p.success) return { error: "Données invalides" };
+  // Lecture seule AVANT la garde : la cible de l'interrupteur est le client du devis.
+  const existant = await prisma.devis.findUnique({
+    where: { id: p.data.id },
+    select: { clientId: true, client: { select: { type: true } } },
+  });
+  if (!(await formulesActives(undefined, { clientId: existant?.clientId ?? null }))) {
+    return { error: MSG_ETEINT };
+  }
   const d = deriver(p.data.offre);
   if (!d.ok) return { error: d.error };
 
@@ -91,10 +98,6 @@ export async function modifierDevisBrouillonAction(
   if (await emailDevisEnAttente(prisma, p.data.id)) return { error: MSG_EMAIL_EN_ATTENTE_MODIF };
 
   // D4/D6 côté serveur : le type du client est lu AVANT toute écriture (devis absent → refus).
-  const existant = await prisma.devis.findUnique({
-    where: { id: p.data.id },
-    select: { client: { select: { type: true } } },
-  });
   if (!existant) return { error: "Devis introuvable" };
   const refus = refusReglesFormules(d.offre, existant.client.type);
   if (refus) return { error: refus };
@@ -158,9 +161,11 @@ export async function creerDevisFormulesAction(
     return { error: "Indisponible pendant le build" };
   }
   const session = await requireAdminWrite();
-  if (!(await formulesActives())) return { error: MSG_ETEINT };
   const p = creerSchema.safeParse(input);
   if (!p.success) return { error: "Données invalides" };
+  if (!(await formulesActives(undefined, { clientId: p.data.clientId }))) {
+    return { error: MSG_ETEINT };
+  }
   const d = deriver(p.data.offre);
   if (!d.ok) return { error: d.error };
 

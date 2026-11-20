@@ -290,7 +290,8 @@ export default async function QualiopiDevisNewPage({ params, searchParams }: Pag
 
   // Mode formules : proposé SEULEMENT si l'interrupteur est allumé (éteint par défaut) ;
   // les textes copiés dans l'offre sont ceux de la bibliothèque « actifs par défaut ».
-  const formulesOn = await formulesActives();
+  // Essai : seulement si le client PRÉSÉLECTIONNÉ est une fiche d'essai (sans client : faux).
+  const formulesOn = await formulesActives(undefined, { clientId: defaultClientId ?? null });
   const textesParDefaut = formulesOn
     ? await prisma.devisTexteBibliotheque.findMany({
         where: { archiveAt: null, actifParDefaut: true },
