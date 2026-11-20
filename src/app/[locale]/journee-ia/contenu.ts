@@ -105,7 +105,7 @@ export const CONTENU = {
     titreOui: "C’est pour vous",
     titreNon: "Pas pour vous",
     pourVous: [
-      "PME ou TPE, de 5 à 249 salariés",
+      "PME ou TPE, de 2 à 250 salariés",
       "Des heures perdues sur des tâches qui reviennent",
       "Chacun utilise l’IA dans son coin",
     ],
@@ -276,6 +276,7 @@ export const CONTENU = {
       id: "faq-audit-cout",
       question: "Combien coûte un audit IA pour une PME\u202f?",
       reponse: reponseReference("ref-audit-prix"),
+      liens: [{ href: "/prix-audit-ia", libelle: "Le détail du prix" }],
     },
     {
       id: "faq-garantie",
@@ -305,7 +306,7 @@ export const CONTENU = {
       liens: [{ href: "/formations", libelle: "Nos formations IA" }],
       question: "Combien de personnes peuvent être formées\u202f?",
       reponse:
-        "Du dirigeant aux collaborateurs\u202f: jusqu’à 15 personnes. Pour d’autres équipes, ou pour des formations par métier, nous vous proposons une suite sur devis\u00a0: nos formations IA.",
+        "L’audit du matin convient aux entreprises de 2 à 250 salariés\u00a0; la formation de l’après-midi accueille, du dirigeant aux collaborateurs, jusqu’à 15 personnes. Pour d’autres équipes, ou pour des formations par métier, nous vous proposons une suite sur devis\u00a0: nos formations IA.",
     },
     {
       id: "faq-apres",

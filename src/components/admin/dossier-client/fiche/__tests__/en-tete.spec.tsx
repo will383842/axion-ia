@@ -114,6 +114,7 @@ const enTete = (surcharge: Partial<EnTete> = {}): EnTete => ({
   prochainRendezVous: ok(null),
   dernierEmail: ok({ le: null, incomplet: false }),
   pipeline: ok({ nb: 1, htCents: 100_000, chancesPct: 40 }),
+  devisEnAttente: ok(null),
   sante: ok({ niveau: "bonne" as const, raisons: [] }),
   encours: ok({ ttcCents: 0, avantLe: null, enRetard: false }),
   questionnaire: ok(null),
@@ -125,6 +126,63 @@ const enTete = (surcharge: Partial<EnTete> = {}): EnTete => ({
 });
 const tuiles = (e: EnTete): string =>
   renderToStaticMarkup(<TuilesFiche enTete={e} ficheHref="/f" qBase="/q" />);
+
+describe("TuilesFiche — devis en attente", () => {
+  const attente = (surcharge = {}) =>
+    ok({
+      nb: 1,
+      htCents: 100_000,
+      ttcCents: 120_000,
+      aPartirDe: false,
+      dernierDevisId: "dv9",
+      illisibles: 0,
+      ...surcharge,
+    });
+  it("un devis envoyé : « 1 000 € HT / 1 200 € TTC » et lien vers le devis", () => {
+    const h = tuiles(
+      enTete({ devisEnAttente: attente(), pipeline: ok({ nb: 0, htCents: 0, chancesPct: null }) }),
+    );
+    expect(h).toContain("1 000 € HT");
+    expect(h).toContain("1 200 € TTC");
+    expect(h).toContain("1 devis en attente");
+    expect(h).toContain("Voir le devis");
+    expect(h).toContain("/q/devis/dv9");
+    expect(h).not.toContain("estimation saisie");
+    expect(h).not.toContain("chances non estimées");
+  });
+  it("plusieurs devis : le nombre ; formules : « à partir de »", () => {
+    const h = tuiles(enTete({ devisEnAttente: attente({ nb: 2, aPartirDe: true }) }));
+    expect(h).toContain("2 devis en attente");
+    expect(h).toContain("à partir de 1 000 € HT");
+  });
+  it("montant saisi à la main : affiché en second, le devis prime", () => {
+    const h = tuiles(
+      enTete({
+        devisEnAttente: attente({ htCents: 250_000, ttcCents: 300_000 }),
+        pipeline: ok({ nb: 1, htCents: 100_000, chancesPct: 40 }),
+      }),
+    );
+    expect(h).toContain("2 500 € HT");
+    expect(h).toContain("estimation saisie : 1 000 € HT");
+  });
+  it("aucun devis envoyé : affichage d'avant", () => {
+    const h = tuiles(enTete({ devisEnAttente: ok(null) }));
+    expect(h).toContain("40 % de chances de signer");
+    expect(h).not.toContain("Voir le devis");
+  });
+  it("lecture des devis en panne : état de panne, pas l'estimation saisie", () => {
+    const h = tuiles(enTete({ devisEnAttente: { ok: false as const } }));
+    expect(h).toContain("Lecture impossible");
+    expect(h).not.toContain("40 % de chances de signer");
+    expect(h).not.toContain("1 000 € HT");
+    expect(h).not.toContain("Voir le devis");
+  });
+  it("devis illisibles : « dont N illisible(s) »", () => {
+    const h = tuiles(enTete({ devisEnAttente: attente({ nb: 2, illisibles: 1 }) }));
+    expect(h).toContain("dont 1 illisible");
+    expect(tuiles(enTete({ devisEnAttente: attente() }))).not.toContain("illisible");
+  });
+});
 
 describe("TuilesFiche", () => {
   it("pipeline en HT avec le TTC dessous, sans « Probabilité »", () => {

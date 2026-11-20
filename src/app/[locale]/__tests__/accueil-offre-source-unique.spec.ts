@@ -12,9 +12,9 @@ describe("accueil — textes branchés sur la source unique de l'offre", () => {
     expect(CONTENU.rendezVous.reassurance).toBe(attendu);
   });
 
-  it("la cible « de 5 à 249 salariés »", () => {
+  it("la cible « de 2 à 250 salariés »", () => {
     expect(CONTENU.pmeTpe.chapeau).toBe(
-      "Axion-IA aide les PME et les TPE françaises, de 5 à 249 salariés, à commencer avec l’IA\u202f: une journée sur place pour cartographier l’entreprise, chiffrer ses plus gros gains et former les équipes, puis la mise en place.",
+      "Axion-IA aide les PME et les TPE françaises, de 2 à 250 salariés, à commencer avec l’IA\u202f: une journée sur place pour cartographier l’entreprise, chiffrer ses plus gros gains et former les équipes, puis la mise en place.",
     );
   });
 });

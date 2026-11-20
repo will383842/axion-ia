@@ -107,13 +107,17 @@ describe("garde « formule retenue »", () => {
     expect(h.genererFactureLibre).not.toHaveBeenCalled();
   });
 
-  it("interrupteur éteint : la garde est inerte (comportement d'avant)", async () => {
-    h.actif.mockResolvedValue(false);
-    h.devisFind.mockResolvedValue(devis({ formuleRetenue: null }));
-    const r = await genererFactureDepuisDevisAction({ devisId: DEVIS_ID });
-    expect("data" in r).toBe(true);
-    expect(h.genererFactureLibre).toHaveBeenCalledTimes(1);
-  });
+  it.each(["eteint", "essai", "actif"] as const)(
+    "interrupteur %s : aucune formule retenue → facturation refusée (l'argent ne dépend pas du réglage)",
+    async (etat) => {
+      h.actif.mockResolvedValue(etat === "actif");
+      h.devisFind.mockResolvedValue(devis({ formuleRetenue: null }));
+      const r = await genererFactureDepuisDevisAction({ devisId: DEVIS_ID });
+      expect(r).toMatchObject({ error: expect.stringContaining("aucune formule retenue") });
+      expect(h.genererFactureLibre).not.toHaveBeenCalled();
+      expect(h.actif).not.toHaveBeenCalled();
+    },
+  );
 
   it("devis classique (offre NULL) : jamais de lecture de l'interrupteur, facturation inchangée", async () => {
     h.devisFind.mockResolvedValue(devis({ offre: null, formuleRetenue: null }));

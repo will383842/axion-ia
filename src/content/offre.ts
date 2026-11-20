@@ -29,8 +29,8 @@ export interface RendezVousGratuit {
 /** La cible : les PME et TPE, bornes d'effectif incluses. */
 export interface CibleOffre {
   readonly libelle: "PME et TPE";
-  readonly effectifMin: 5;
-  readonly effectifMax: 249;
+  readonly effectifMin: 2;
+  readonly effectifMax: 250;
 }
 
 /** Le déroulé de la journée, dans les locaux de l'entreprise. */
@@ -76,7 +76,7 @@ export const OFFRE_JOURNEE_IA: OffreJourneeIa = {
     rapportJoursOuvres: 3,
     planActionJours: 90,
   },
-  cible: { libelle: "PME et TPE", effectifMin: 5, effectifMax: 249 },
+  cible: { libelle: "PME et TPE", effectifMin: 2, effectifMax: 250 },
   rendezVous: {
     nom: "Diagnostic IA",
     dureeMinutes: 45,
@@ -101,7 +101,7 @@ export const DUREE_RDV = `${OFFRE_JOURNEE_IA.rendezVous.dureeMinutes} minutes`;
 /** « 45 min » */
 export const DUREE_RDV_COURTE = `${OFFRE_JOURNEE_IA.rendezVous.dureeMinutes} min`;
 
-/** « de 5 à 249 salariés » */
+/** « de 2 à 250 salariés » */
 export const EFFECTIF_CIBLE = `de ${OFFRE_JOURNEE_IA.cible.effectifMin} à ${OFFRE_JOURNEE_IA.cible.effectifMax} salariés`;
 
 /** « Diagnostic IA · 45 minutes · en visio ou par téléphone · sans engagement » */

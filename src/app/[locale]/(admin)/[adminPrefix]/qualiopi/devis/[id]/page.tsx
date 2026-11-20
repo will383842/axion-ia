@@ -72,6 +72,15 @@ import {
 } from "@/components/admin/qualiopi/devis-validite";
 import { SiretEtablissementDevis } from "@/components/admin/qualiopi/SiretEtablissementDevis";
 import { lireSiretsDevis } from "@/features/apporteurs-reseau/etablissement-presentation";
+import {
+  aideAdresseDevis,
+  etatHorodatageDevis,
+  urlPdfDevisEmis,
+} from "@/server/qualiopi/devis/console-chaine-devis";
+import { lireHorodatagesDeSignatures } from "@/server/qualiopi/documents/signature/lire-horodatages";
+import { PastilleHorodatage } from "@/components/admin/qualiopi/PastilleHorodatage";
+import { RelanceDevisDepuisLaPage } from "@/components/admin/qualiopi/RelanceDevisDepuisLaPage";
+import { lireMessageDeRetour } from "@/features/dossier-client/message-de-retour";
 
 export const dynamic = "force-dynamic";
 
@@ -171,10 +180,15 @@ function parseLignes(raw: unknown): DevisLigne[] {
 
 interface PageProps {
   params: Promise<{ locale: "fr" | "en"; adminPrefix: string; id: string }>;
+  searchParams?: Promise<Record<string, string | string[] | undefined>>;
 }
 
-export default async function QualiopiDevisDetailPage({ params }: PageProps) {
+export default async function QualiopiDevisDetailPage({ params, searchParams }: PageProps) {
   const { locale, adminPrefix, id } = await params;
+  const sp = (await searchParams) ?? {};
+  // Résultat scellé de « Préparer une relance » (un message forgé ne s'affiche pas).
+  const messageRelance = lireMessageDeRetour(sp, "message");
+  const erreurRelance = lireMessageDeRetour(sp, "erreur");
   const acces = await gardePage("consultation", `/${locale}/${adminPrefix}/login`);
   if (!acces.autorise) {
     return <AccesRefuse motif={acces.motif} retourHref={`/${locale}/${adminPrefix}`} />;
@@ -212,7 +226,7 @@ export default async function QualiopiDevisDetailPage({ params }: PageProps) {
     devis.offre !== null &&
     devis.formuleRetenue !== null &&
     totalLignesHtCents !== null &&
-    (await formulesActives())
+    (await formulesActives(undefined, { clientId: devis.clientId }))
       ? lirePalierSuivant({
           offre: devis.offre,
           formuleRetenue: devis.formuleRetenue,
@@ -227,7 +241,7 @@ export default async function QualiopiDevisDetailPage({ params }: PageProps) {
     devis.offreSha256 !== null &&
     devis.formuleRetenue !== null &&
     (devis.statut === "accepte" || devis.statut === "transforme_convention") &&
-    (await formulesActives());
+    (await formulesActives(undefined, { clientId: devis.clientId }));
   // 🔴 « Aucun plan en base » ne suffit PAS : une formule « achat » sans maintenance donne
   // normalement ZÉRO plan. Règle pure et testée : `evaluerPlansManquants`. `null` attendu = les
   // plans ne peuvent pas être calculés : message DISTINCT, jamais silencieux.
@@ -271,6 +285,11 @@ export default async function QualiopiDevisDetailPage({ params }: PageProps) {
           orderBy: [{ createdAt: "asc" }, { id: "asc" }],
         })
       : [];
+  // Horodatage : lecture SEULE, une requête pour toutes les signatures de la pièce.
+  const etatHorodatage = etatHorodatageDevis(
+    await lireHorodatagesDeSignatures(signatures.map((s) => s.id)).catch(() => []),
+  );
+  const urlPdfEmis = urlPdfDevisEmis(devis);
   // UN SEUL calcul, partagé par le bloc « Signature électronique » et le bloc « Actions » :
   // signature non révoquée ET pièce non annulée (`signatureClientDuDevis`, comme les gardes serveur).
   const { clientASigne, organismeASigne } = signatureClientDuDevis({
@@ -315,7 +334,9 @@ export default async function QualiopiDevisDetailPage({ params }: PageProps) {
   const devisBase = `/${locale}/${adminPrefix}/qualiopi/devis`;
   // Édition d'un brouillon à formules : lien proposé seulement interrupteur allumé.
   const peutModifierFormules =
-    devis.statut === "brouillon" && devis.offreSha256 !== null && (await formulesActives());
+    devis.statut === "brouillon" &&
+    devis.offreSha256 !== null &&
+    (await formulesActives(undefined, { clientId: devis.clientId }));
   // Brouillon CLASSIQUE : « Modifier le brouillon » mène à /corriger (REPLI D7).
   const estClassique = devis.offre === null && devis.offreSha256 === null;
   const peutCorrigerClassique = peutCorrigerBrouillonClassique(devis);
@@ -349,7 +370,7 @@ export default async function QualiopiDevisDetailPage({ params }: PageProps) {
     try {
       resumeFormules = formulesDuDevis(
         devis.offre,
-        await formulesActives(),
+        await formulesActives(undefined, { clientId: devis.clientId }),
         regimeTvaDepuisConfig(await getQualiopiConfig("regime_tva")),
       );
     } catch (err) {
@@ -357,6 +378,12 @@ export default async function QualiopiDevisDetailPage({ params }: PageProps) {
       resumeFormules = undefined; // offre illisible : la fiche garde son affichage d'avant
     }
   }
+
+  const aideAdresse = aideAdresseDevis({
+    classique: estClassique,
+    adresse: client?.contactEmail ?? null,
+    statut: devis.statut,
+  });
 
   const isExpired =
     (devis.statut === "brouillon" || devis.statut === "envoye") && devis.dateValidite < new Date();
@@ -416,6 +443,16 @@ export default async function QualiopiDevisDetailPage({ params }: PageProps) {
                 rel="noopener noreferrer"
               >
                 Voir l&apos;aperçu PDF
+              </AdminButton>
+            ) : null}
+            {urlPdfEmis !== null ? (
+              <AdminButton
+                variant="secondary"
+                href={urlPdfEmis}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Ouvrir le devis (PDF)
               </AdminButton>
             ) : null}
             {peutModifierFormules ? (
@@ -721,6 +758,8 @@ export default async function QualiopiDevisDetailPage({ params }: PageProps) {
       <section className="mb-[var(--space-admin-8)]">
         <h2 className={sectionHeadCls}>Signature électronique</h2>
 
+        {signatures.length > 0 ? <PastilleHorodatage etat={etatHorodatage} /> : null}
+
         {/* Signatures RÉELLEMENT apposées, avec ce dont elles sont faites. */}
         {signatures.length > 0 && (
           <ul className="mb-[var(--space-admin-4)] space-y-[var(--space-admin-3)]">
@@ -891,6 +930,31 @@ export default async function QualiopiDevisDetailPage({ params }: PageProps) {
           signeDesDeuxParties={signeDesDeuxParties}
           repriseParRelance={repriseParRelance}
         />
+        {aideAdresse !== null ? (
+          <p
+            role="note"
+            className="mt-[var(--space-admin-3)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-soft)]"
+          >
+            {aideAdresse.texte}{" "}
+            {aideAdresse.lienFiche && client ? (
+              <Link
+                href={`/${locale}/${adminPrefix}/qualiopi/clients/${client.id}`}
+                className="admin-link"
+              >
+                Ouvrir la fiche du client
+              </Link>
+            ) : null}
+          </p>
+        ) : null}
+        {devis.statut === "envoye" && !clientASigne && client ? (
+          <RelanceDevisDepuisLaPage
+            clientId={client.id}
+            devisId={devis.id}
+            emailsHref={`/${locale}/${adminPrefix}/qualiopi/emails`}
+            message={messageRelance}
+            erreur={erreurRelance}
+          />
+        ) : null}
         <DevisSuiviLivraison
           devisId={devis.id}
           peutDemarrer={peutDemarrerLivraison(devis)}

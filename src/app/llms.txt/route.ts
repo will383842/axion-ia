@@ -119,6 +119,8 @@ ${pagesEssentiellesLlms(SITE_URL)}
 
 - [Cartographie de l'entreprise](${SITE_URL}/fr/cartographie) — le matin de la Journée IA, l'entreprise est passée en revue service par service, avec chiffrage des gains en heures et en euros. Par vos tâches, pas par un outil.
 
+- [Combien coûte un audit IA](${SITE_URL}/fr/prix-audit-ia) — l'audit IA est compris dans la Journée IA, au prix unique de ${remplacerJetons("{{PRIX}}")} ; l'audit convient aux entreprises de 2 à 250 salariés, la formation de l'après-midi accueille jusqu'à 15 personnes ; formation et automatisation sur devis écrit.
+
 ## Modules — 5 prestations
 
 - [${SERVICE_BY_ID.formations.officialFr}](${SITE_URL}/fr/formations) — formations intra-entreprise sur site ou à distance : offres générales, par métier (${SITE_URL}/fr/formations/metiers) et par secteur d'activité (${SITE_URL}/fr/formations/secteurs), 4 h à 2 jours, dès ${formationsMinPrice} par groupe (2-15 pers.). Tarifs HT : ${SITE_URL}/fr/tarifs.
