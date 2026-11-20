@@ -387,3 +387,37 @@ describe("DevisPdf — choix scellé du client (exemplaire signé d'un devis à 
     expect(sans).not.toContain("Choix scellé");
   });
 });
+
+describe("🔴 DevisPdf — « Signé le » (M1)", () => {
+  const base = {
+    signataireNom: "Camille Durand",
+    signeAtLisible: "30/07/2026 à 14:32 (heure de Paris)",
+    empreinte: "a".repeat(64),
+  };
+  it("ligne papier : pas de « Signé le » (l'heure est celle du versement)", () => {
+    const text = devisText(
+      makeDevis({
+        signatures: {
+          client: {
+            ...base,
+            methode: "papier_scanne",
+            imageSrc: null,
+            mentionPapier: "Signature manuscrite sur papier, versée au dossier le 30/07/2026.",
+          },
+        },
+      }),
+    );
+    expect(text).not.toContain("Signé le");
+    expect(text).toContain("versée au dossier le 30/07/2026");
+  });
+  it("signature électronique : « Signé le » présent", () => {
+    const text = devisText(
+      makeDevis({
+        signatures: {
+          client: { ...base, methode: "trace", imageSrc: "data:image/png;base64,AAAA" },
+        },
+      }),
+    );
+    expect(text).toContain("Signé le 30/07/2026 à 14:32 (heure de Paris)");
+  });
+});

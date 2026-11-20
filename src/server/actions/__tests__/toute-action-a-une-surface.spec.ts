@@ -76,6 +76,10 @@ function fichiers(...segments: string[]): string[] {
 const SANS_SURFACE_CONNUS: ReadonlyArray<string> = [
   // Lot 1 de l'aperçu de l'e-mail du devis : l'écran reçoit l'aperçu en prop (`apercuEmail`),
   // le branchement dans AssistantDevisBranche vient au lot 2 — retirer cette ligne alors.
+  // Lot I3 (scan d'un devis signé sur papier), étapes 1 à 5 : l'action est livrée côté serveur ;
+  // son écran (bouton « Verser le scan » dans devis/[id]/page.tsx) est l'étape 6, livrée à part —
+  // retirer cette ligne alors (le test « les lignes soldées se retirent » la rougira).
+  "server/actions/qualiopi/devis-scan-papier.ts",
   "server/actions/image-bank/publish.action.ts",
   "server/actions/image-bank/translate.action.ts",
   "server/actions/knowledge/add-relation.ts",

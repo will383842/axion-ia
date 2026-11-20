@@ -48,3 +48,5 @@ dbdfd2dec2a5386019804ca8b7c6229e22e8178d:src/server/qualiopi/devis/confirmation-
 # 18/11 — faux positif : jeton factice (qrToken) des fixtures de test des documents de formation, PR #2145 ; la valeur a été remplacée dans un commit suivant, mais l'ancien commit reste dans l'historique de la branche.
 459d2893b00b46c8319b6ef185fdce0e96f898f3:src/server/qualiopi/documents/templates/__tests__/fixtures-documents-formation.tsx:generic-api-key:131
 459d2893b00b46c8319b6ef185fdce0e96f898f3:src/server/qualiopi/documents/templates/__tests__/fixtures-documents-formation.tsx:generic-api-key:162
+# Lot I3 (scan papier) : FAUX POSITIF, constante d'identifiant de version (aucune clé réelle). Exemptée par `gitleaks:allow` au commit suivant ; le commit d'origine porte toujours la ligne nue et l'historique ne se réécrit pas.
+a2d5b24a2ef7c325d13d728fa41017dfcd5e1ec8:src/server/qualiopi/documents/signature/mentions-papier.ts:generic-api-key:20
