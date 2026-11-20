@@ -46,6 +46,17 @@
  */
 
 import { prisma } from "@/lib/prisma";
+import {
+  AGE_APPROUVE_ABANDONNE_MIN,
+  FileInjoignable,
+  MOTIF_CONSTAT_TACHE_ABSENTE,
+  MOTIF_ORPHELIN_CLOS,
+  cleTacheOutbox,
+  trancherApprouveAncien,
+  type EtatTacheOutbox,
+} from "./outbox-en-cours";
+import { marquerAnnule } from "./email-log";
+import { masquerLienSignaturePayload } from "./masquer-lien-signature-payload";
 import { lireDernierAppelRecu, lireDernierAppelWebhook } from "./webhook-battement";
 import {
   creerOuActualiser,
@@ -61,6 +72,7 @@ import {
   type SerieEchecs,
 } from "./serie-echecs";
 import { EmailLogStatus } from "../../../prisma/generated/client";
+import type { Prisma } from "../../../prisma/generated/client";
 
 function estStub(): boolean {
   return process.env["DATABASE_URL"]?.includes("stub.invalid") === true;
@@ -240,12 +252,14 @@ export const FENETRE_REBONDS_H = 24;
  */
 export const SEUIL_REBONDS = 1;
 
-/** Un « approuvé » sans envoi au-delà de ce délai est un tombeau (lot 3). */
-export const AGE_APPROUVE_ABANDONNE_MIN = 15;
+/** Un « approuvé » sans envoi au-delà de ce délai est un tombeau (lot 3). Définie dans `outbox-en-cours.ts` (OUT-1). */
+export { AGE_APPROUVE_ABANDONNE_MIN };
 
 export interface SanteEmails {
   /** Lignes de corbeille remises en attente parce que bloquées en « approuvé » (lot 3). */
   approuvesRemisEnAttente: number;
+  /** OUT-1 : « approuvé » anciens dont l'issue d'envoi est inconnue (laissés tels quels). */
+  approuvesEnvoiIncertain: number;
   echecsRecents: number;
   bloquesEnFile: number;
   /**
@@ -366,6 +380,7 @@ export interface SanteEmails {
 export async function verifierSanteEmails(maintenant: Date = new Date()): Promise<SanteEmails> {
   const resultat: SanteEmails = {
     approuvesRemisEnAttente: 0,
+    approuvesEnvoiIncertain: 0,
     echecsRecents: 0,
     bloquesEnFile: 0,
     rebondsRecents: 0,
@@ -596,26 +611,161 @@ export async function verifierSanteEmails(maintenant: Date = new Date()): Promis
   // Le contrôle horaire la remet en attente et le dit.
   try {
     const avantApprouve = new Date(maintenant.getTime() - AGE_APPROUVE_ABANDONNE_MIN * 60_000);
-    const remis = await prisma.emailOutbox.updateMany({
+    // OUT-1 — UNE règle (`trancherApprouveAncien`) : état RÉEL de la tâche `outbox-<id>` dans la
+    // file, puis dernière ligne du journal. On ne remet « à valider » que ce dont on SAIT que rien
+    // n'est parti ; ce qui est parti est constaté (lien masqué) ; le reste est signalé.
+    const anciens = await prisma.emailOutbox.findMany({
       where: { statut: "approuve", approuveAt: { lt: avantApprouve } },
-      data: { statut: "a_valider", approuveAt: null, approuveById: null },
+      // Balayage borné : les plus anciennes d'abord ; le reste est repris au passage suivant.
+      orderBy: { approuveAt: "asc" },
+      take: 200,
+      select: {
+        id: true,
+        template: true,
+        payload: true,
+        approuveAt: true,
+        entityType: true,
+        entityId: true,
+      },
     });
-    resultat.approuvesRemisEnAttente = remis.count;
-    if (remis.count > 0) {
+    // Lecture du journal AVANT toute écriture : une panne ici lève, donc rien n'est écrit.
+    const dernierParTache = new Map<string, { id: string; status: string; error: string | null }>();
+    if (anciens.length > 0) {
+      const journaux = await prisma.emailLog.findMany({
+        where: { jobId: { in: anciens.map((a) => cleTacheOutbox(a.id)) } },
+        orderBy: { createdAt: "desc" },
+        select: { id: true, jobId: true, status: true, error: true },
+      });
+      for (const j of journaux) {
+        if (j.jobId !== null && !dernierParTache.has(j.jobId)) {
+          dernierParTache.set(j.jobId, { id: j.id, status: j.status, error: j.error });
+        }
+      }
+    }
+    const aRemettre: Array<{ id: string; approuveAt: Date }> = [];
+    const numerosDevisBrouillon: string[] = [];
+    let incertains = 0;
+    let constates = 0;
+    let fileJoignable = true;
+    for (const a of anciens) {
+      if (a.approuveAt === null) continue;
+      const cle = cleTacheOutbox(a.id);
+      const journal = dernierParTache.get(cle) ?? null;
+      // File non « ready » (à la première lecture ou plus tard) : AUCUNE écriture sur cette ligne.
+      let tache: EtatTacheOutbox = "absente";
+      if (fileJoignable) {
+        try {
+          // Import tardif : `queues.ts` (BullMQ) n'est chargé que si une ligne est à trancher.
+          const { lireEtatTacheOutbox } = await import("@/server/queue/queues");
+          tache = await lireEtatTacheOutbox(cle);
+        } catch (e) {
+          if (!(e instanceof FileInjoignable)) throw e;
+          fileJoignable = false;
+        }
+      }
+      if (!fileJoignable) {
+        incertains++;
+        continue;
+      }
+      const decision = trancherApprouveAncien({
+        tache,
+        journal,
+        approuveAt: a.approuveAt,
+        maintenant,
+      });
+      if (decision === "parti") {
+        const masque = masquerLienSignaturePayload(a.template, a.payload);
+        const m = await prisma.emailOutbox.updateMany({
+          where: { id: a.id, statut: "approuve" },
+          data: {
+            statut: "envoye",
+            envoyeAt: maintenant,
+            ...(masque.modifie ? { payload: masque.payload as Prisma.InputJsonValue } : {}),
+          },
+        });
+        if (m.count === 1) {
+          constates++;
+          if (
+            tache === "presente" &&
+            journal !== null &&
+            journal.error === MOTIF_CONSTAT_TACHE_ABSENTE
+          ) {
+            await prisma.emailLog.updateMany({
+              where: { id: journal.id, error: MOTIF_CONSTAT_TACHE_ABSENTE },
+              data: { error: null },
+            });
+          }
+          if (a.template === "devis-envoi" && a.entityType === "Devis" && a.entityId) {
+            const devis = await prisma.devis.findUnique({
+              where: { id: a.entityId },
+              select: { numero: true, statut: true },
+            });
+            if (devis?.statut === "brouillon") numerosDevisBrouillon.push(devis.numero);
+          }
+        }
+      } else if (decision === "rien_parti") {
+        aRemettre.push({ id: a.id, approuveAt: a.approuveAt });
+      } else if (decision === "orphelin") {
+        // Remis « à valider » seulement si le journal a VRAIMENT été clos (1 ligne). Sinon (0 : ligne
+        // déjà close ailleurs, ou plus `pending`) on ne sait pas : la ligne reste « approuvé ».
+        if ((await marquerAnnule(cle, MOTIF_ORPHELIN_CLOS)) === 1) {
+          aRemettre.push({ id: a.id, approuveAt: a.approuveAt });
+        } else {
+          incertains++;
+        }
+      } else {
+        if (decision === "constat_1" && journal !== null) {
+          await prisma.emailLog.updateMany({
+            where: { id: journal.id, status: EmailLogStatus.pending },
+            data: { error: MOTIF_CONSTAT_TACHE_ABSENTE },
+          });
+        }
+        incertains++;
+      }
+    }
+    let remis = 0;
+    for (const r of aRemettre) {
+      const u = await prisma.emailOutbox.updateMany({
+        where: { id: r.id, statut: "approuve", approuveAt: r.approuveAt },
+        data: { statut: "a_valider", approuveAt: null, approuveById: null },
+      });
+      remis += u.count;
+    }
+    resultat.approuvesEnvoiIncertain = incertains + constates;
+    if (resultat.approuvesEnvoiIncertain > 0) {
+      const devisBrouillon =
+        numerosDevisBrouillon.length > 0
+          ? ` Devis restés brouillon alors que l'e-mail est parti : ${numerosDevisBrouillon.join(", ")}. ` +
+            `Un seul e-mail est parti : si le lien de signature qu'il porte ne marche plus, le client ` +
+            `ne peut pas signer. Renvoyer le devis depuis sa fiche envoie un second e-mail et coupe ` +
+            `le lien du premier. Le devis redevient modifiable dès que sa ligne passe « envoyé ».`
+          : "";
+      await leverAlerte(
+        "emails_envoi_incertain",
+        `${resultat.approuvesEnvoiIncertain} e-mail(s) d'issue inconnue : vérifier avant toute nouvelle approbation`,
+        `${resultat.approuvesEnvoiIncertain} e-mail(s) d'issue inconnue ou partis sans trace dans la corbeille.` +
+          `${devisBrouillon} Ne pas les approuver de nouveau ; vérifier d'abord dans E-mails envoyés.`,
+        resultat.approuvesEnvoiIncertain,
+      );
+      resultat.alertesLevees.push("emails_envoi_incertain");
+    }
+    resultat.approuvesRemisEnAttente = remis;
+    if (remis > 0) {
       await leverAlerte(
         "emails_approuves_abandonnes",
-        `${remis.count} e-mail(s) approuvé(s) jamais partis, remis en attente`,
+        `${remis} e-mail(s) approuvé(s) jamais partis, remis en attente`,
         `Ils avaient été approuvés il y a plus de ${AGE_APPROUVE_ABANDONNE_MIN} minutes sans être ` +
           `mis en file (conteneur redéployé entre l'approbation et l'envoi, ou Redis coupé). Ils sont ` +
           `de retour dans la corbeille « E-mails à valider » : les relire et les approuver de nouveau.`,
-        remis.count,
+        remis,
       );
       resultat.alertesLevees.push("emails_approuves_abandonnes");
     }
   } catch (e) {
+    // Le nom de la classe seulement : un message d'erreur peut porter une adresse ou un lien.
     console.error(
       "[email-sante] balayage des « approuvé » abandonnés impossible :",
-      e instanceof Error ? e.message : String(e),
+      e instanceof Error ? e.name : "inconnue",
     );
   }
 

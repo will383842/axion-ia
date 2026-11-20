@@ -14,7 +14,23 @@ import { getBullConnection, isBullmqDisabled } from "./connection";
 import { resoudreMode, garerPourValidation } from "@/server/email/outbox-service";
 import { verdictAvantEnvoi, signalerRetenue, type MotifRetenue } from "@/server/email/suppression";
 import { estSollicitationSoumiseAOpposition } from "@/server/email/verdict-envoi";
-import { journaliserEnAttente, marquerEchecMiseEnFile } from "@/server/email/email-log";
+import {
+  journaliserEnAttente,
+  lireDernierJournal,
+  marquerEchecMiseEnFile,
+} from "@/server/email/email-log";
+import { cleLienSignature } from "@/server/email/masquer-lien-signature-payload";
+import {
+  DELAI_CONNEXION_FILE_MS,
+  DELAI_ECRITURE_JOURNAL_MS,
+  DELAI_LECTURE_FILE_MS,
+  DELAI_LECTURE_JOURNAL_MS,
+  DELAI_MISE_EN_FILE_OUTBOX_MS,
+  FileInjoignable,
+  MiseEnFileIncertaine,
+  estDejaFait,
+  type EtatTacheOutbox,
+} from "@/server/email/outbox-en-cours";
 import type {
   EmailJobData,
   EmailJobName,
@@ -947,6 +963,137 @@ async function signalerCorbeilleIndisponible(template: EmailJobName, to: string)
   }
 }
 
+// OUT-1 — classes définies dans un module léger, ré-exportées ici pour les appelants de la file.
+export { FileInjoignable, MiseEnFileIncertaine };
+
+/** Résultat d'une course contre la montre ; le minuteur est toujours défait. */
+async function avecDelai<T>(
+  promesse: Promise<T>,
+  ms: number,
+): Promise<{ delaiDepasse: true } | { valeur: T }> {
+  let minuteur: ReturnType<typeof setTimeout> | undefined;
+  try {
+    return await Promise.race([
+      promesse.then((valeur) => ({ valeur })),
+      new Promise<{ delaiDepasse: true }>((resolve) => {
+        minuteur = setTimeout(() => resolve({ delaiDepasse: true }), ms);
+      }),
+    ]);
+  } finally {
+    if (minuteur !== undefined) clearTimeout(minuteur);
+  }
+}
+
+/**
+ * OUT-1 — la file est-elle joignable ? Attend la connexion (≤ `DELAI_CONNEXION_FILE_MS`) puis
+ * vérifie qu'elle est « ready » : sinon `FileInjoignable`, aucune commande n'a été émise.
+ */
+async function exigerFileJoignable(): Promise<void> {
+  if (!emailsQueue) throw new FileInjoignable();
+  const prete = await avecDelai(
+    emailsQueue.waitUntilReady().then(
+      () => true,
+      () => false,
+    ),
+    DELAI_CONNEXION_FILE_MS,
+  );
+  if ("delaiDepasse" in prete || prete.valeur !== true || getBullConnection()?.status !== "ready") {
+    throw new FileInjoignable();
+  }
+}
+
+/**
+ * OUT-1 — état réel de la tâche `outbox-<id>` dans la file : « presente » (attente, différée,
+ * active, priorisée, terminée), « echouee » ou « absente ». La connexion (≤ 5 s) et la lecture
+ * (≤ 5 s) ont chacune leur borne ; au-delà, ou file indisponible : `FileInjoignable`.
+ */
+export async function lireEtatTacheOutbox(cle: string): Promise<EtatTacheOutbox> {
+  return (await lireTacheOutbox(cle)).etat;
+}
+
+/**
+ * Le lien de signature porté par la charge d'une tâche, ou `null`. Il n'est lu QUE pour les
+ * gabarits connus de `cleLienSignature` et sous SA clé : la clé `lien` d'un autre gabarit n'est
+ * jamais lue (ni rendue, ni comparée).
+ */
+function urlSignatureDeLaCharge(data: unknown): string | null {
+  if (data === null || typeof data !== "object") return null;
+  const { template, payload } = data as { template?: unknown; payload?: unknown };
+  if (typeof template !== "string") return null;
+  const cle = cleLienSignature(template);
+  if (cle === null) return null;
+  if (payload === null || typeof payload !== "object") return null;
+  const v = (payload as Record<string, unknown>)[cle];
+  return typeof v === "string" && v !== "" ? v : null;
+}
+
+/**
+ * OUT-1 — état de la tâche `outbox-<id>` ET lien de signature que sa charge porte (forme du job
+ * inchangée : on lit `data.payload`). Mêmes bornes que `lireEtatTacheOutbox`. ⚠️ Le lien vaut
+ * signature : il n'est ni journalisé ni mis dans un message.
+ */
+export async function lireTacheOutbox(
+  cle: string,
+): Promise<{ etat: EtatTacheOutbox; urlSignature: string | null }> {
+  await exigerFileJoignable();
+  const file = emailsQueue;
+  if (!file) throw new FileInjoignable();
+  const lecture = await avecDelai(
+    (async (): Promise<{ etat: EtatTacheOutbox; urlSignature: string | null }> => {
+      const job = await file.getJob(cle);
+      if (!job) return { etat: "absente", urlSignature: null };
+      const etat: EtatTacheOutbox = (await job.getState()) === "failed" ? "echouee" : "presente";
+      return { etat, urlSignature: urlSignatureDeLaCharge(job.data) };
+    })(),
+    DELAI_LECTURE_FILE_MS,
+  ).catch(() => {
+    throw new FileInjoignable();
+  });
+  if ("delaiDepasse" in lecture) throw new FileInjoignable();
+  return lecture.valeur;
+}
+
+/**
+ * OUT-1 — l'envoi sous cette clé est-il déjà fait ou en file ? Tâche présente non échouée, ou
+ * tâche absente (purgée) avec une dernière ligne de journal `sent` / `bounced`. Rend aussi le
+ * lien de signature de la tâche (`null` si purgée ou sans lien). Lève `FileInjoignable` si la
+ * file ou le journal ne répondent pas (rien n'est écrit).
+ */
+export async function sonderEnvoiOutboxAvecLien(
+  cle: string,
+): Promise<{ dejaFait: boolean; urlEnFile: string | null }> {
+  const { etat, urlSignature } = await lireTacheOutbox(cle);
+  // Lecture en base bornée (comme la file) : au-delà, `FileInjoignable`, rien n'est écrit.
+  const lectureJournal = await avecDelai(lireDernierJournal(cle), DELAI_LECTURE_JOURNAL_MS).catch(
+    () => {
+      throw new FileInjoignable();
+    },
+  );
+  if ("delaiDepasse" in lectureJournal) throw new FileInjoignable();
+  const journal = lectureJournal.valeur;
+  return { dejaFait: estDejaFait(etat, journal), urlEnFile: urlSignature };
+}
+
+/**
+ * OUT-1 — relit la charge de la tâche juste après l'ajout : son lien de signature, `null` si elle
+ * n'en porte pas (ou n'existe plus : purgée, donc rien à comparer), `"illisible"` si la lecture
+ * échoue ou dépasse son délai.
+ */
+async function lireChargeApresAjout(cle: string): Promise<string | null | "illisible"> {
+  const file = emailsQueue;
+  if (!file) return "illisible";
+  const lecture = await avecDelai(
+    file.getJob(cle).then((job) => (job ? urlSignatureDeLaCharge(job.data) : null)),
+    DELAI_LECTURE_FILE_MS,
+  ).catch(() => ({ delaiDepasse: true as const }));
+  if ("delaiDepasse" in lecture) return "illisible";
+  return lecture.valeur;
+}
+
+export async function sonderEnvoiOutbox(cle: string): Promise<"deja_fait" | "a_faire"> {
+  return (await sonderEnvoiOutboxAvecLien(cle)).dejaFait ? "deja_fait" : "a_faire";
+}
+
 export async function enqueueEmail(
   template: EmailJobName,
   to: string,
@@ -1003,9 +1150,23 @@ export async function enqueueEmail(
      * sans — soient toujours servis d'abord quand le limiteur de 40/h mord.
      */
     priority?: number;
+    /**
+     * OUT-1 — identifiant de tâche d'un envoi approuvé depuis la corbeille (`outbox-<id>`).
+     * Avec lui : la file doit répondre AVANT tout (sinon `FileInjoignable`, rien n'est en vol),
+     * une tâche déjà là n'est pas dupliquée, une tâche échouée est retirée (« Réessayer »), et
+     * un ajout sans réponse à temps lève `MiseEnFileIncertaine` (l'issue est inconnue).
+     */
+    cleOutbox?: string;
   },
 ): Promise<{
   enqueued: boolean;
+  /** OUT-1 : la tâche `outbox-<id>` existait déjà, rien n'a été ajouté. */
+  dejaEnFile?: boolean;
+  /**
+   * OUT-1 : avec `dejaEnFile`, le lien de signature que porte la tâche en file (jamais journalisé :
+   * il vaut signature). Absent si la tâche est purgée ou sans lien.
+   */
+  urlEnFile?: string;
   garePourValidation?: boolean;
   outboxId?: string;
   /** Envoi RETENU par la liste de suppression (adresse morte, désabonnement). */
@@ -1113,7 +1274,8 @@ export async function enqueueEmail(
       : {}),
   };
   const journalise = template !== "submission-reply" && template !== "candidature-reponse";
-  const jobId = options?.jobId ?? (journalise ? `email-${randomUUID()}` : undefined);
+  const cleOutbox = options?.cleOutbox;
+  const jobId = cleOutbox ?? options?.jobId ?? (journalise ? `email-${randomUUID()}` : undefined);
   const addOptions: Record<string, unknown> = {};
   if (options?.delayMs) addOptions["delay"] = options.delayMs;
   if (jobId) addOptions["jobId"] = jobId;
@@ -1160,16 +1322,44 @@ export async function enqueueEmail(
   // Le fait que la page « E-mails envoyés » omette les réponses admin reste un
   // constat OUVERT de l'audit — il se corrige côté lecture, pas en fabriquant
   // ici des lignes qui ne seront jamais closes.
+  // OUT-1 — envoi depuis la corbeille : on s'assure AVANT toute écriture que la file répond.
+  // Connexion non prête : aucune commande n'entre dans la file hors ligne d'ioredis, donc aucun
+  // ajout ne peut rester en vol après la fermeture de la transaction de l'appelant.
+  const debutOutbox = Date.now();
+  if (cleOutbox !== undefined) {
+    // Sonde (qui vérifie d'abord la connexion) sous le même budget : tâche présente, ou purgée mais journal `sent` / `bounced` →
+    // déjà fait, ni ajout ni journal.
+    const sonde = await sonderEnvoiOutboxAvecLien(cleOutbox);
+    if (sonde.dejaFait) {
+      return {
+        enqueued: true,
+        dejaEnFile: true,
+        ...(sonde.urlEnFile !== null ? { urlEnFile: sonde.urlEnFile } : {}),
+      };
+    }
+    const retrait = await avecDelai(
+      (async () => {
+        const existant = await emailsQueue.getJob(cleOutbox);
+        // « Réessayer » : BullMQ ignorerait sinon l'ajout sous un identifiant existant.
+        if (existant && (await existant.getState()) === "failed") await existant.remove();
+      })(),
+      DELAI_LECTURE_FILE_MS,
+    ).catch(() => {
+      throw new FileInjoignable();
+    });
+    if ("delaiDepasse" in retrait) throw new FileInjoignable();
+  }
+
   let lignePosee: string | null = null;
   if (journalise) {
-    lignePosee = await journaliserEnAttente({
+    const ecritureJournal = journaliserEnAttente({
       template,
       recipient: to,
       locale,
       marketing: options?.marketing === true,
       jobId,
       // Le verrou anti-doublon ne sert qu'à une clé de l'appelant : `email-<uuid>` est unique.
-      cleAppelant: options?.jobId !== undefined,
+      cleAppelant: options?.jobId !== undefined || cleOutbox !== undefined,
       // L'échéance, et non la seule date de création : sans elle, un envoi
       // différé volontairement (relances apporteur J+2 / J+7) se lit comme une
       // file non consommée dès la 16e minute. `delayMs` absent ⇒ échéance
@@ -1178,15 +1368,78 @@ export async function enqueueEmail(
       ...(options?.entityType ? { entityType: options.entityType } : {}),
       ...(options?.entityId ? { entityId: options.entityId } : {}),
     });
+    if (cleOutbox === undefined) {
+      lignePosee = await ecritureJournal;
+    } else {
+      // OUT-1 (R6) — borne de l'écriture du journal en mode outbox, AVANT tout ajout : au-delà,
+      // `FileInjoignable` et rien n'est ajouté. L'écriture déjà en vol peut encore aboutir : on
+      // lui accroche donc la clôture en échec de sa ligne (la sonde vient de confirmer qu'aucune
+      // tâche n'existe et rien n'a été ajouté). Sans cela, la ligne « en attente » resterait
+      // sans tâche, hors de portée du balayage (qui ne lit que les lignes « approuvé ») et
+      // l'alerte « e-mails bloqués en file » partirait à tort. Sans borne, la transaction de
+      // l'appelant pouvait être fermée par Prisma pendant que cette écriture attendait.
+      const cloreSiAboutit = (): void => {
+        ecritureJournal
+          .then((id) =>
+            id
+              ? marquerEchecMiseEnFile(id, "Mise en file impossible : l'e-mail n'est pas parti.")
+              : undefined,
+          )
+          .catch(() => undefined);
+      };
+      ecritureJournal.catch(() => undefined);
+      const ecrite = await avecDelai(ecritureJournal, DELAI_ECRITURE_JOURNAL_MS).catch(() => {
+        throw new FileInjoignable();
+      });
+      if ("delaiDepasse" in ecrite) {
+        cloreSiAboutit();
+        throw new FileInjoignable();
+      }
+      lignePosee = ecrite.valeur;
+    }
+  }
+
+  // OUT-1 (C3) — en mode outbox, pas de ligne « en attente » rendue = journal en panne ou ligne
+  // déjà close ailleurs : on n'ajoute RIEN (le balayage ne saurait pas qu'un ajout est en vol).
+  if (cleOutbox !== undefined && journalise && lignePosee === null) {
+    throw new FileInjoignable();
   }
 
   try {
-    await emailsQueue.add(
+    const ajout = emailsQueue.add(
       template,
       data,
       Object.keys(addOptions).length > 0 ? addOptions : undefined,
     );
+    if (cleOutbox !== undefined) {
+      // Un ajout resté sans réponse peut encore aboutir : on ne le tient pas pour un échec.
+      ajout.catch(() => undefined);
+      // Budget GLOBAL : le reste de l'enveloppe, jamais moins de 10 s (connexion et lecture
+      // comprises, l'ajout garde de quoi aboutir : pas d'« incertaine » artificielle).
+      const reste = Math.max(
+        DELAI_MISE_EN_FILE_OUTBOX_MS - DELAI_CONNEXION_FILE_MS - DELAI_LECTURE_FILE_MS,
+        DELAI_MISE_EN_FILE_OUTBOX_MS - (Date.now() - debutOutbox),
+      );
+      const issue = await avecDelai(ajout, reste);
+      // La ligne du journal reste « en attente » : vraie tant qu'on ne sait pas.
+      if ("delaiDepasse" in issue) throw new MiseEnFileIncertaine();
+      // Contrôle APRÈS l'ajout : BullMQ ignore sans rien dire un ajout sous un `jobId` existant
+      // (une tentative précédente arrivée tard). La tâche qui vit porte-t-elle NOTRE lien ?
+      const urlPassee = urlSignatureDeLaCharge(data);
+      if (urlPassee !== null) {
+        const relue = await lireChargeApresAjout(cleOutbox);
+        // Relecture impossible : on ne sait pas quel lien porte la tâche → issue inconnue
+        // (aucun jeton n'est défait, rien n'est marqué ; le balayage tranche).
+        if (relue === "illisible") throw new MiseEnFileIncertaine();
+        if (relue !== null && relue !== urlPassee) {
+          return { enqueued: true, dejaEnFile: true, urlEnFile: relue };
+        }
+      }
+    } else {
+      await ajout;
+    }
   } catch (e) {
+    if (e instanceof MiseEnFileIncertaine) throw e;
     // File injoignable : aucun job n'existe, donc aucun worker ne clora la ligne. On
     // referme celle que CET enfilage a posée, désignée par son `id` (jamais celle d'un
     // autre enfilage de la même clé, dont le job vit peut-être), puis l'erreur de la file

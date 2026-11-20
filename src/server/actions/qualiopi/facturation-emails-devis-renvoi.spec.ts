@@ -41,10 +41,14 @@ vi.mock("@/lib/prisma", () => ({
         activityLog: { findFirst: async () => null },
         emailOutbox: {
           findFirst: (...a: unknown[]) => {
-            d.ordre.push("garde");
+            // La garde « déjà garé » : une seule question (a_valider / approuvé, sans âge).
+            if ((a[0] as { where?: { statut?: unknown } })?.where?.statut !== undefined) {
+              d.ordre.push("garde");
+            }
             return d.outboxFindFirst(...a);
           },
         },
+        emailLog: { findFirst: async () => null },
       };
       try {
         return await f(tx);

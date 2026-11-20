@@ -27,6 +27,13 @@ interface Ligne {
 }
 
 const h = vi.hoisted(() => ({
+  /** OUT-1 : résultat de la sonde « envoi déjà fait ? » (sous le verrou du devis, avant tout jeton). */
+  sonde: {
+    v: "a_faire" as "a_faire" | "deja_fait",
+    url: null as string | null,
+    // Le lien que porte la tâche en file : vivant (cette pièce, partie client) ou non.
+    vivant: true,
+  },
   mode: { v: "validation" as "validation" | "auto" },
   lignes: [] as Array<Record<string, unknown>>,
   devis: { v: {} as Record<string, unknown> },
@@ -40,6 +47,8 @@ const h = vi.hoisted(() => ({
     options: Record<string, unknown>;
   }>,
   verdictForce: { v: null as null | Record<string, unknown> },
+  /** OUT-1 : erreur que la file lève à l'approbation (issue inconnue, file coupée…). */
+  erreurEnqueue: { v: null as null | Error },
   emettre: vi.fn(),
   log: vi.fn(),
   sentryExc: vi.fn(),
@@ -83,8 +92,10 @@ vi.mock("@/server/partners-sync/producteurs/devis", () => ({
   transactionDevisSigne: vi.fn(),
   devisConcernesPourEmission: vi.fn(async () => []),
 }));
-vi.mock("@/server/qualiopi/documents/signature/lien-precedent", () => ({
-  ligneDuLien: vi.fn().mockResolvedValue(null),
+vi.mock("@/server/qualiopi/documents/signature/lien-precedent", async (importOriginal) => ({
+  ...(await importOriginal<
+    typeof import("@/server/qualiopi/documents/signature/lien-precedent")
+  >()),
   rendreLienPrecedent: async (url: string) => {
     h.vivants.delete(url.split("/").pop() as string);
     return true;
@@ -108,6 +119,10 @@ vi.mock("@/server/qualiopi/documents/signature/token-document", () => ({
   },
 }));
 vi.mock("@/server/queue/queues", () => ({
+  sonderEnvoiOutboxAvecLien: async () => ({
+    dejaFait: h.sonde.v === "deja_fait",
+    urlEnFile: h.sonde.url,
+  }),
   enqueueEmail: async (
     template: string,
     to: string,
@@ -116,6 +131,7 @@ vi.mock("@/server/queue/queues", () => ({
     options: Record<string, unknown> = {},
   ) => {
     h.appelsEnqueue.push({ payload, options });
+    if (h.erreurEnqueue.v !== null && options["bypassValidation"] === true) throw h.erreurEnqueue.v;
     if (h.verdictForce.v !== null) {
       // Le verdict imposé peut déposer la ligne que le vrai `enqueueEmail` aurait garée.
       const { ligne, ...verdict } = h.verdictForce.v as { ligne?: Record<string, unknown> };
@@ -189,6 +205,8 @@ function tx() {
   return {
     $queryRaw: async () => [{ locked: true }],
     emailOutbox: modele(),
+    // OUT-1 : journal des envois (aucune ligne `pending` : l'envoi abandonné n'a rien laissé en vol).
+    emailLog: { findFirst: async () => null },
     devis: {
       findUnique: async ({ where }: { where: { id: string } }) =>
         where.id === ID ? { ...devisVivant(), replacesDevis: h.ancien.v } : null,
@@ -243,6 +261,19 @@ vi.mock("@/lib/prisma", () => ({
       return modele();
     },
     devis: { findUnique: async () => null, count: async () => 1 },
+    documentSignatureToken: {
+      // R4 : lecture locale du lien de la tâche (échéance et usage compris).
+      findUnique: async () =>
+        h.sonde.vivant
+          ? {
+              documentGenereId: "piece-1",
+              partie: "client",
+              revokedAt: null,
+              usedAt: null,
+              expiresAt: new Date(Date.now() + 86_400_000),
+            }
+          : null,
+    },
     $transaction: async (f: (t: unknown) => unknown) => f(tx()),
   },
 }));
@@ -250,6 +281,7 @@ vi.mock("@/lib/prisma", () => ({
 import { sendDevisAction } from "../devis";
 import { donneesPdfDevis } from "@/server/qualiopi/documents/donnees-pdf-devis";
 import { approuverEmailAction, refuserEmailAction } from "../email-outbox";
+import { MiseEnFileIncertaine } from "@/server/email/outbox-en-cours";
 
 const devisBrouillon = () => ({
   id: ID,
@@ -281,6 +313,9 @@ const devisBrouillon = () => ({
 });
 
 beforeEach(() => {
+  h.sonde.v = "a_faire";
+  h.sonde.url = null;
+  h.sonde.vivant = true;
   vi.clearAllMocks();
   vi.spyOn(console, "warn").mockImplementation(() => undefined);
   h.mode.v = "validation";
@@ -291,6 +326,7 @@ beforeEach(() => {
   h.vivants.clear();
   h.nbJetons.v = 0;
   h.verdictForce.v = null;
+  h.erreurEnqueue.v = null;
   h.devis.v = devisBrouillon();
   h.ancien.v = { statut: "envoye", documentGenereId: "piece-0" };
 });
@@ -361,15 +397,15 @@ describe("clic « Envoyer au client » en mode validation", () => {
     expect(lignes()).toHaveLength(1);
   });
 
-  it("une ligne « approuvée » abandonnée (plus de 15 min) ne bloque plus le devis", async () => {
+  it("OUT-1 : une ligne « approuvée » bloque le devis QUEL QUE SOIT SON ÂGE (le balayage tranche seul)", async () => {
     await sendDevisAction(ID);
     lignes()[0]!.statut = "approuve";
     (lignes()[0] as unknown as Record<string, unknown>)["approuveAt"] = new Date(
       Date.now() - 16 * 60_000,
     );
     const r2 = await sendDevisAction(ID);
-    expect("error" in r2).toBe(false);
-    expect(lignes()).toHaveLength(2);
+    expect("error" in r2).toBe(true);
+    expect(lignes()).toHaveLength(1);
   });
 
   it("verdict autre que « garé » (corbeille indisponible) : refus, aucune écriture, aucun jeton", async () => {
@@ -418,6 +454,50 @@ describe("approbation de l'e-mail garé (vrai module à l'envoi)", () => {
     expect(lignes()[0]!.statut).toBe("envoye");
     // La ligne ne garde ni lien ni marqueur exploitable en clair.
     expect(JSON.stringify(lignes()[0]!.payload)).not.toContain("/portail/signer/");
+  });
+});
+
+describe("OUT-1 — envoi déjà fait ou en file à l'approbation du premier envoi", () => {
+  it("la sonde dit « déjà fait » : aucun jeton forgé, aucun ajout, devis marqué envoyé, ligne « envoyé », message `dejaFait`", async () => {
+    await sendDevisAction(ID);
+    h.sonde.v = "deja_fait";
+    h.sonde.url = "https://exemple.test/fr/portail/signer/JETON-EN-FILE";
+    const r = await approuverEmailAction({ id: lignes()[0]!.id });
+    expect(r).toEqual({ data: { id: lignes()[0]!.id, envoye: true, dejaFait: true } });
+    expect(h.nbJetons.v).toBe(0);
+    expect(h.partis).toHaveLength(0);
+    expect(devisVivant()["statut"]).toBe("envoye");
+    expect(lignes()[0]!.statut).toBe("envoye");
+    expect(JSON.stringify(lignes()[0]!.payload)).not.toContain("/portail/signer/");
+  });
+});
+
+describe("OUT-1 — issue de mise en file inconnue à l'approbation du premier envoi", () => {
+  it("le lien a pu partir : jeton NON révoqué, erreur de la même classe remontée, ligne laissée « approuvée », devis brouillon", async () => {
+    await sendDevisAction(ID);
+    h.erreurEnqueue.v = new MiseEnFileIncertaine();
+    const r = await approuverEmailAction({ id: lignes()[0]!.id });
+    expect(r).toEqual({
+      error:
+        "L'envoi n'a pas pu être confirmé. Ne l'approuvez pas de nouveau : vérifiez dans E-mails envoyés.",
+    });
+    // Le jeton du lien (peut-être déjà reçu) reste vivant.
+    expect(h.nbJetons.v).toBe(1);
+    expect(h.vivants.has("JETON-1")).toBe(true);
+    // Remontée telle quelle : la classe vue par Sentry est MiseEnFileIncertaine, jamais EnvoiNonParti.
+    expect(JSON.stringify(h.sentryExc.mock.calls)).toContain("MiseEnFileIncertaine");
+    expect(JSON.stringify(h.sentryExc.mock.calls)).not.toContain("EnvoiNonParti");
+    expect(lignes()[0]!.statut).toBe("approuve");
+    expect(devisVivant()["statut"]).toBe("brouillon");
+  });
+
+  it("à titre de contraste : une autre erreur de la file défait le jeton et remet « à valider »", async () => {
+    await sendDevisAction(ID);
+    h.erreurEnqueue.v = new Error("file coupée");
+    const r = await approuverEmailAction({ id: lignes()[0]!.id });
+    expect("error" in r).toBe(true);
+    expect(h.vivants.has("JETON-1")).toBe(false);
+    expect(lignes()[0]!.statut).toBe("a_valider");
   });
 });
 

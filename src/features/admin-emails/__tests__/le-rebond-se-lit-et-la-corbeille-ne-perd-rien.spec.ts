@@ -16,6 +16,7 @@ import { EmailLogStatus } from "../../../../prisma/generated/client";
 
 const countMock = vi.fn();
 const outboxUpdateMany = vi.fn();
+const outboxFindMany = vi.fn();
 const creerOuDedup = vi.fn();
 
 vi.mock("@/lib/prisma", () => ({
@@ -29,7 +30,10 @@ vi.mock("@/lib/prisma", () => ({
       findFirst: vi.fn(async () => null),
       findMany: vi.fn(async () => []),
     },
-    emailOutbox: { updateMany: (...a: unknown[]) => outboxUpdateMany(...a) },
+    emailOutbox: {
+      updateMany: (...a: unknown[]) => outboxUpdateMany(...a),
+      findMany: (...a: unknown[]) => outboxFindMany(...a),
+    },
   },
 }));
 vi.mock("@/lib/redis", () => ({ redis: { get: vi.fn(async () => null), set: vi.fn() } }));
@@ -39,6 +43,8 @@ vi.mock("@/server/qualiopi/alertes/alertes-service", () => ({
   resoudreAlertesParCode: vi.fn(async () => 0),
 }));
 vi.mock("@/server/notifications", () => ({ notify: vi.fn(async () => ({ ok: true })) }));
+// OUT-1 : le balayage lit l'état réel de la tâche dans la file ; ici elle est absente (rien n'est parti).
+vi.mock("@/server/queue/queues", () => ({ lireEtatTacheOutbox: async () => "absente" }));
 
 import { LIBELLES_STATUT_EMAIL, STATUTS_EMAILS, libelleStatutLigne } from "../query";
 import { verifierSanteEmails, AGE_APPROUVE_ABANDONNE_MIN } from "@/server/email/health";
@@ -101,21 +107,41 @@ describe("contrôle horaire — les « approuvé » abandonnés", () => {
   });
 
   it("🔴 remet en attente ceux approuvés depuis plus de 15 minutes, et le dit", async () => {
-    outboxUpdateMany.mockResolvedValue({ count: 2 });
+    // OUT-1 : le balayage lit d'abord les « approuvé » anciens, puis le journal (vide ici : rien
+    // n'est parti), et ne remet « à valider » que ceux-là.
     const maintenant = new Date("2026-09-02T10:00:00Z");
-    const sante = await verifierSanteEmails(maintenant);
-    expect(sante.approuvesRemisEnAttente).toBe(2);
-    expect(outboxUpdateMany).toHaveBeenCalledWith({
-      where: {
-        statut: "approuve",
-        approuveAt: { lt: new Date(maintenant.getTime() - AGE_APPROUVE_ABANDONNE_MIN * 60_000) },
-      },
-      data: { statut: "a_valider", approuveAt: null, approuveById: null },
+    const approuveAt = new Date("2026-09-02T09:00:00Z");
+    const ligne = (id: string) => ({
+      id,
+      template: "facture-envoi",
+      payload: {},
+      approuveAt,
+      entityType: null,
+      entityId: null,
     });
+    outboxFindMany.mockResolvedValue([ligne("a"), ligne("b")]);
+    outboxUpdateMany.mockResolvedValue({ count: 1 });
+    const sante = await verifierSanteEmails(maintenant);
+    expect(outboxFindMany).toHaveBeenCalledWith(
+      expect.objectContaining({
+        where: {
+          statut: "approuve",
+          approuveAt: { lt: new Date(maintenant.getTime() - AGE_APPROUVE_ABANDONNE_MIN * 60_000) },
+        },
+      }),
+    );
+    expect(sante.approuvesRemisEnAttente).toBe(2);
+    for (const id of ["a", "b"]) {
+      expect(outboxUpdateMany).toHaveBeenCalledWith({
+        where: { id, statut: "approuve", approuveAt },
+        data: { statut: "a_valider", approuveAt: null, approuveById: null },
+      });
+    }
     expect(sante.alertesLevees).toContain("emails_approuves_abandonnes");
   });
 
   it("rien à remettre : aucune alerte", async () => {
+    outboxFindMany.mockResolvedValue([]);
     outboxUpdateMany.mockResolvedValue({ count: 0 });
     const sante = await verifierSanteEmails(new Date());
     expect(sante.approuvesRemisEnAttente).toBe(0);
@@ -123,7 +149,7 @@ describe("contrôle horaire — les « approuvé » abandonnés", () => {
   });
 
   it("une base qui refuse le balayage ne fait pas tomber le contrôle", async () => {
-    outboxUpdateMany.mockRejectedValue(new Error("base morte"));
+    outboxFindMany.mockRejectedValue(new Error("base morte"));
     vi.spyOn(console, "error").mockImplementation(() => {});
     const sante = await verifierSanteEmails(new Date());
     expect(sante.mesureIndisponible).toBe(false);

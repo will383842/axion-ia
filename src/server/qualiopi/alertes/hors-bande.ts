@@ -56,6 +56,7 @@ export const CODES_HORS_BANDE: readonly string[] = [
   "emails_bloques_en_file",
   "emails_sante_non_mesurable",
   "emails_approuves_abandonnes",
+  "emails_envoi_incertain",
   "emails_rebonds",
   "emails_rebonds_non_detectes",
 ] as const;

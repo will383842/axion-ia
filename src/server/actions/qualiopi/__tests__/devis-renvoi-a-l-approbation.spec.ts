@@ -28,6 +28,13 @@ interface Ligne {
 }
 
 const h = vi.hoisted(() => ({
+  /** OUT-1 : résultat de la sonde « envoi déjà fait ? » (sous le verrou du devis, avant tout jeton). */
+  sonde: {
+    v: "a_faire" as "a_faire" | "deja_fait",
+    url: null as string | null,
+    // Le lien que porte la tâche en file : vivant (cette pièce, partie client) ou non.
+    vivant: true,
+  },
   mode: { v: "validation" as "validation" | "auto" },
   lignes: [] as Array<Record<string, unknown>>,
   devis: { v: {} as Record<string, unknown> },
@@ -87,8 +94,10 @@ vi.mock("@/server/partners-sync/producteurs/devis", () => ({
   transactionDevisSigne: vi.fn(),
   devisConcernesPourEmission: vi.fn(async () => []),
 }));
-vi.mock("@/server/qualiopi/documents/signature/lien-precedent", () => ({
-  ligneDuLien: vi.fn().mockResolvedValue(null),
+vi.mock("@/server/qualiopi/documents/signature/lien-precedent", async (importOriginal) => ({
+  ...(await importOriginal<
+    typeof import("@/server/qualiopi/documents/signature/lien-precedent")
+  >()),
   rendreLienPrecedent: async (url: string) => {
     const neuf = url.split("/").pop() as string;
     h.vivants.delete(neuf);
@@ -116,6 +125,10 @@ vi.mock("@/server/qualiopi/documents/signature/token-document", () => ({
   },
 }));
 vi.mock("@/server/queue/queues", () => ({
+  sonderEnvoiOutboxAvecLien: async () => ({
+    dejaFait: h.sonde.v === "deja_fait",
+    urlEnFile: h.sonde.url,
+  }),
   enqueueEmail: async (
     template: string,
     to: string,
@@ -209,6 +222,8 @@ function tx(acquis: string[]) {
     },
     activityLog: { findFirst: async () => null },
     emailOutbox: modele(),
+    // OUT-1 : journal des envois (aucune ligne `pending` : l'envoi abandonné n'a rien laissé en vol).
+    emailLog: { findFirst: async () => null },
     devis: {
       findUnique: async ({ where }: { where: { id: string } }) =>
         where.id === ID ? { ...devisVivant(), replacesDevis: h.ancien.v } : null,
@@ -268,6 +283,19 @@ vi.mock("@/lib/prisma", () => ({
       count: async () => 1,
     },
     documentGenere: { findUnique: async () => ({ metadata: null }) },
+    documentSignatureToken: {
+      // R4 : lecture locale du lien de la tâche (échéance et usage compris).
+      findUnique: async () =>
+        h.sonde.vivant
+          ? {
+              documentGenereId: "piece-1",
+              partie: "client",
+              revokedAt: null,
+              usedAt: null,
+              expiresAt: new Date(Date.now() + 86_400_000),
+            }
+          : null,
+    },
     $transaction: async (f: (t: unknown) => unknown) => {
       const acquis: string[] = [];
       try {
@@ -306,6 +334,9 @@ const devisEnvoye = () => ({
 
 const espions: ReturnType<typeof vi.spyOn>[] = [];
 beforeEach(() => {
+  h.sonde.v = "a_faire";
+  h.sonde.url = null;
+  h.sonde.vivant = true;
   vi.clearAllMocks();
   espions.push(
     ...(["log", "warn", "error"] as const).map((m) =>
@@ -373,12 +404,27 @@ describe("garde « déjà garé »", () => {
     expect(lignes()).toHaveLength(1);
   });
 
-  it("une ligne approuvée récemment bloque aussi ; abandonnée (plus de 15 min), non", async () => {
+  it("OUT-1 : une ligne approuvée bloque aussi, quel que soit son âge", async () => {
     await envoyerDevisEmailAction({ devisId: ID });
     Object.assign(lignes()[0]!, { statut: "approuve", approuveAt: new Date() });
     expect("error" in (await envoyerDevisEmailAction({ devisId: ID }))).toBe(true);
     Object.assign(lignes()[0]!, { approuveAt: new Date(Date.now() - 20 * 60_000) });
-    expect("data" in (await envoyerDevisEmailAction({ devisId: ID }))).toBe(true);
+    expect("error" in (await envoyerDevisEmailAction({ devisId: ID }))).toBe(true);
+  });
+});
+
+describe("OUT-1 — renvoi : envoi déjà fait ou en file", () => {
+  it("la sonde dit « déjà fait » : aucun jeton neuf, ancien lien intact, aucune écriture de devis, ligne « envoyé »", async () => {
+    await envoyerDevisEmailAction({ devisId: ID });
+    h.sonde.v = "deja_fait";
+    h.sonde.url = "https://exemple.test/fr/portail/signer/JETON-EN-FILE";
+    const r = await approuverEmailAction({ id: lignes()[0]!.id });
+    expect(r).toEqual({ data: { id: lignes()[0]!.id, envoye: true, dejaFait: true } });
+    expect(h.nbJetons.v).toBe(0);
+    expect(h.vivants.has(ANCIEN_JETON)).toBe(true);
+    expect(h.partis).toHaveLength(0);
+    expect(ecritures()).toEqual([]);
+    expect(lignes()[0]!.statut).toBe("envoye");
   });
 });
 
