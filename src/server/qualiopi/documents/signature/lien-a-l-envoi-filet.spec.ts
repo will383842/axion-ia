@@ -30,48 +30,41 @@ const h = vi.hoisted(() => ({
 }));
 const base = () => h.jetons as unknown as Jeton[];
 
+type Where = Record<string, unknown>;
+const estDate = (v: unknown): v is Date => v instanceof Date;
+/** Un filtre Prisma : valeur nue = égalité stricte (Date : à la milliseconde), ou `not`/`gt`/`lte`. */
+function egal(valeur: unknown, filtre: unknown): boolean {
+  if (filtre !== null && typeof filtre === "object" && !estDate(filtre)) {
+    const f = filtre as { not?: unknown; gt?: Date; lte?: Date };
+    if ("not" in f) return !egal(valeur, f.not);
+    if (f.gt !== undefined) return estDate(valeur) && valeur.getTime() > f.gt.getTime();
+    if (f.lte !== undefined) return estDate(valeur) && valeur.getTime() <= f.lte.getTime();
+    throw new Error("filtre Prisma non simulé : " + JSON.stringify(filtre));
+  }
+  if (estDate(filtre)) return estDate(valeur) && valeur.getTime() === filtre.getTime();
+  return valeur === filtre;
+}
+/** Toutes les clés du `where` doivent correspondre : un champ inconnu du faux ne passe jamais « oui ». */
+function correspond(j: Jeton, where: Where): boolean {
+  return Object.entries(where).every(([k, f]) => egal((j as Record<string, unknown>)[k], f));
+}
+
 vi.mock("@/lib/prisma", () => {
   const dt = {
     findUnique: async ({ where }: { where: { tokenHash: string } }) =>
       base().find((j) => j.tokenHash === where.tokenHash) ?? null,
-    findFirst: async ({
-      where,
-    }: {
-      where: {
-        documentGenereId: string;
-        partie: string;
-        id: { not: string };
-        revokedMotif: string;
-        revokedAt: { lte: Date };
-        expiresAt: { gt: Date };
-      };
-    }) => {
+    // Depuis #2232, `rendreLienPrecedent` lit par `findMany` (égalité EXACTE de `revokedAt` avec
+    // `createdAt` du jeton neuf, `take: 2`) puis écrit par `updateMany` sous les mêmes conditions.
+    findMany: async ({ where, take }: { where: Where; take?: number }) => {
       const trouves = base()
-        .filter(
-          (j) =>
-            j.documentGenereId === where.documentGenereId &&
-            j.partie === where.partie &&
-            j.id !== where.id.not &&
-            j.revokedMotif === where.revokedMotif &&
-            j.revokedById === null &&
-            j.revokedAt !== null &&
-            j.revokedAt <= where.revokedAt.lte &&
-            j.expiresAt > where.expiresAt.gt,
-        )
-        .sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
-      return trouves[0] ?? null;
+        .filter((j) => correspond(j, where))
+        .sort((x, y) => x.createdAt.getTime() - y.createdAt.getTime());
+      return (take === undefined ? trouves : trouves.slice(0, take)).map((j) => ({ id: j.id }));
     },
-    updateMany: async ({
-      where,
-      data,
-    }: {
-      where: { id: string; revokedAt: null };
-      data: Partial<Jeton>;
-    }) => {
-      const j = base().find((x) => x.id === where.id && x.revokedAt === null);
-      if (!j) return { count: 0 };
-      Object.assign(j, data);
-      return { count: 1 };
+    updateMany: async ({ where, data }: { where: Where; data: Partial<Jeton> }) => {
+      const touches = base().filter((j) => correspond(j, where));
+      for (const j of touches) Object.assign(j, data);
+      return { count: touches.length };
     },
     update: async ({ where, data }: { where: { id: string }; data: Partial<Jeton> }) => {
       Object.assign(
