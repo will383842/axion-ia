@@ -404,7 +404,7 @@ export function DevisLifecycleButtons({
             ci-dessus pour le conclure.
           </p>
         )}
-        {statut === "envoye" && signeDesDeuxParties && (
+        {peutConclure && statut === "envoye" && signeDesDeuxParties && (
           <p
             data-testid="note-signe-des-deux-parties"
             className="basis-full text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]"
@@ -456,7 +456,8 @@ export function DevisLifecycleButtons({
               {isPending ? "…" : "Renvoyer par email"}
             </button>
           )}
-        {statut === "envoye" &&
+        {peutEcrire &&
+          statut === "envoye" &&
           !signeParClient &&
           !signeDesDeuxParties &&
           !repriseParRelance &&
