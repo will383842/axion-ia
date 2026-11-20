@@ -228,6 +228,9 @@ export async function creerTokenDocument(input: {
       data: {
         documentGenereId: input.documentGenereId,
         partie: input.partie,
+        // Même instant que la révocation du lien remplacé ci-dessus : c'est ce qui permet à
+        // rendreLienPrecedent de ne rendre que CE lien-là (audit S1). Ne pas retirer.
+        createdAt: maintenant,
         tokenHash,
         signataireNom: nom,
         signataireEmail: email,

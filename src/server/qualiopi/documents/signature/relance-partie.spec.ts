@@ -13,7 +13,8 @@ import { partieARelancer } from "./relance-partie";
 
 describe("partieARelancer — statut en_attente (personne n'a signé)", () => {
   const attendu: Record<string, string | null> = {
-    devis: "client",
+    // Décision du fondateur : un devis se relance depuis SA fiche, avec le vrai e-mail de devis.
+    devis: null,
     convention: "client",
     convention_tripartite: "client",
     // Mandat OPCO (INT-T66-A) : l'entreprise signe par lien, puis l'organisme

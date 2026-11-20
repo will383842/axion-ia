@@ -9,9 +9,11 @@
  *   · `supprimer` (le passage, l'e-mail n'a jamais été enfilé) : la ligne du lien neuf
  *     disparaît, comme s'il n'avait pas été émis ;
  *   · `revoquer` (le départ, l'e-mail a existé) : le lien neuf est révoqué, avec son motif.
- * Dans les deux cas, le lien remplacé par lui redevient vivant, s'il n'a pas expiré ni été
- * révoqué par l'administrateur. Sans lien précédent rendable, RIEN ne bouge : le lien neuf
- * reste le seul vivant (mieux qu'aucun).
+ * Dans les deux cas, le lien remplacé PAR CE lien neuf (même instant de révocation que sa
+ * création, posé dans la même transaction), et lui seul, redevient vivant, s'il n'a pas
+ * expiré ni été révoqué par l'administrateur. Jetons créés avant le correctif : rien n'est
+ * rendu. Sans lien précédent rendable, RIEN ne bouge : le lien neuf reste le seul vivant
+ * (mieux qu'aucun).
  *
  * Module neutre (ni `server-only`, ni Next) : il est sur le trajet du worker d'e-mails.
  * Lève si la base ne répond pas (l'appelant décide).
@@ -67,8 +69,10 @@ export async function ligneDuLien(url: unknown): Promise<{
 }
 
 /**
- * Défait l'émission du lien porté par `url` et rend vivant celui qu'il a remplacé. Rend
- * `true` si le lien précédent a été rendu.
+ * Défait l'émission du lien porté par `url` et rend vivant celui qu'IL a remplacé : le jeton
+ * dont `revokedAt` est égal à `createdAt` du neuf (même instant, même transaction dans
+ * `creerTokenDocument`), et lui seul — exactement un candidat, sinon rien n'est rendu.
+ * Rend `true` si le lien précédent a été rendu.
  */
 export async function rendreLienPrecedent(
   url: unknown,
@@ -77,20 +81,26 @@ export async function rendreLienPrecedent(
 ): Promise<boolean> {
   const neuf = await ligneDuLien(url);
   if (neuf === null || neuf.revokedAt !== null) return false;
-  const precedent = await prisma.documentSignatureToken.findFirst({
-    where: {
-      documentGenereId: neuf.documentGenereId,
-      partie: neuf.partie as never,
-      id: { not: neuf.id },
-      revokedMotif: MOTIF_REMPLACE,
-      revokedById: null,
-      revokedAt: { not: null, lte: neuf.createdAt },
-      expiresAt: { gt: maintenant },
-    },
-    orderBy: { createdAt: "desc" },
+  const conditions = {
+    documentGenereId: neuf.documentGenereId,
+    partie: neuf.partie as never,
+    id: { not: neuf.id },
+    revokedMotif: MOTIF_REMPLACE,
+    revokedById: null,
+    // EXACTEMENT l'instant de création du neuf : posé dans la même transaction que la
+    // révocation par creerTokenDocument. Un lien révoqué autrement, ou remplacé par un
+    // autre lien, ne correspond pas (audit S1).
+    revokedAt: neuf.createdAt,
+    expiresAt: { gt: maintenant },
+  };
+  const candidats = await prisma.documentSignatureToken.findMany({
+    where: conditions,
     select: { id: true },
+    take: 2,
   });
-  if (precedent === null) return false;
+  // Aucun lien remplacé par CE lien neuf, ou ambiguïté : rien n'est rendu.
+  if (candidats.length !== 1) return false;
+  const precedent = candidats[0]!;
   // Une partie déjà signataire n'a plus besoin d'aucun lien.
   const signee = await prisma.documentSignature.count({
     where: {
@@ -114,10 +124,11 @@ export async function rendreLienPrecedent(
             data: { revokedAt: maintenant, revokedMotif: MOTIF_RELANCE_NON_PARTIE },
           });
     if (retire.count !== 1) throw new LienDejaUtilise();
-    await tx.documentSignatureToken.update({
-      where: { id: precedent.id },
+    const rendu = await tx.documentSignatureToken.updateMany({
+      where: { ...conditions, id: precedent.id },
       data: { revokedAt: null, revokedMotif: null },
     });
+    if (rendu.count !== 1) throw new LienDejaUtilise();
   });
   return true;
 }

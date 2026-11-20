@@ -134,12 +134,39 @@ const lireEnAttente = cache(async () => {
         // Parties DÉJÀ signataires (signatures non révoquées) : c'est ce qui
         // permet à `partieARelancer` de viser la PROCHAINE partie du circuit.
         signatures: { where: { revokedAt: null }, select: { partie: true } },
+        // Devis porté par la pièce — lu dans la MÊME requête (relation groupée par Prisma),
+        // jamais une requête par ligne.
+        // Même tri que le moteur de signature (document-signature-service.ts) : déterministe.
+        devisPortes: {
+          select: { id: true, statut: true },
+          orderBy: [{ createdAt: "asc" }, { id: "asc" }],
+          take: 2,
+        },
       },
     });
   } catch {
     return [];
   }
-  return retirerPiecesRemplacees(brutes);
+  // Un devis refusé, ou périmé sans signature du client, n'attend plus rien : il ne se
+  // signe ni ne se relance. Même ensemble pour la liste et la pastille.
+  const vivantes = brutes.filter((p) => {
+    if (p.type !== "devis") return true;
+    const lies = p.devisPortes ?? [];
+    if (lies.length === 0) return true;
+    // Écartée seulement si TOUS les devis liés sont réglés : un seul devis à traiter la garde.
+    const aSigneClient = p.signatures.some((s) => s.partie === "client");
+    const tousClos = lies.every(
+      (d) => d.statut === "refuse" || (d.statut === "expire" && !aSigneClient),
+    );
+    if (tousClos) return false;
+    return true;
+  });
+  const gardees = await retirerPiecesRemplacees(vivantes);
+  return gardees.map((p) => ({
+    ...p,
+    // Pour un devis : id de SA fiche (une seule fiche liée, sinon `null`).
+    devisId: p.type === "devis" && p.devisPortes?.length === 1 ? p.devisPortes[0]!.id : null,
+  }));
 });
 
 /** Nombre de lignes affichées par la page « À traiter ». */
