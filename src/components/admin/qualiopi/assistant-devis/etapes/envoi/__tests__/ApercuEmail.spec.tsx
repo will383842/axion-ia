@@ -33,6 +33,7 @@ function monter(
       envoyer={envoyer}
       apercuEmail={apercuEmail}
       lienFiche="/fr/admin/qualiopi/clients/c1/edit"
+      modifiable
       {...over}
     />,
   );
@@ -122,5 +123,26 @@ describe("aperçu de l'e-mail du devis", () => {
     render(<EmailEnvoi destinataire="x@example.test" envoyer={vi.fn()} />);
     expect(screen.queryByLabelText("Objet")).toBeNull();
     expect(screen.queryByTestId("apercu-email")).toBeNull();
+  });
+
+  it("sans `modifiable` : aperçu en LECTURE SEULE, aucun champ, rien de modifié n'est envoyé", async () => {
+    const { envoyer } = monter({}, { modifiable: false });
+    await screen.findByText(/Bouton « Signer le devis en ligne » : lien créé à l'envoi/);
+    expect(screen.queryByLabelText("Objet")).toBeNull();
+    expect(screen.queryByLabelText("Message personnel")).toBeNull();
+    expect(screen.queryByRole("button", { name: "Actualiser l'aperçu" })).toBeNull();
+    await waitFor(() => expect(boutonEnvoi().disabled).toBe(false));
+    fireEvent.click(boutonEnvoi());
+    await waitFor(() => expect(envoyer).toHaveBeenCalledWith({ a: "client@example.test" }));
+  });
+
+  it("par défaut (prop absente) : lecture seule", async () => {
+    const apercuEmail = vi.fn(async () => ({ data: DONNEES }));
+    render(
+      <EmailEnvoi destinataire="x@example.test" envoyer={vi.fn()} apercuEmail={apercuEmail} />,
+    );
+    await screen.findByText(/lien créé à l'envoi/);
+    expect(screen.queryByLabelText("Objet")).toBeNull();
+    expect(screen.queryByLabelText("Message personnel")).toBeNull();
   });
 });

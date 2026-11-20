@@ -8,6 +8,8 @@
  * Le lien de signature n'existe pas encore (il est créé à l'envoi) : le rendu reçoit un lien
  * fictif, puis `masquerSecretsEmail` et `rendreLiensInertes` ôtent tout lien actif.
  */
+import { z } from "zod";
+
 import { isUuid } from "@/lib/is-uuid";
 import { enveloppeExpedition } from "@/lib/email/enveloppe";
 import { rendreLiensInertes } from "@/lib/email/apercu-lecteur";
@@ -16,7 +18,11 @@ import { masquerSecretsEmail } from "@/lib/email/masquer-secrets";
 import { renderEmailTemplate, sujetDuGabarit } from "@/lib/email/templates";
 import { prisma } from "@/lib/prisma";
 import { requireAdminWrite } from "@/server/actions/qualiopi/_guards";
-import { contenuEmailDevis } from "@/server/qualiopi/devis/contenu-email-devis";
+import {
+  contenuEmailDevis,
+  messageEntreeSchema,
+  objetEntreeSchema,
+} from "@/server/qualiopi/devis/contenu-email-devis";
 import { GABARIT_DEVIS_ENVOI } from "@/server/qualiopi/devis/email-devis-en-attente";
 import {
   donneesPdfDevis,
@@ -44,6 +50,12 @@ export interface ApercuEmailDevis {
 // Lien FICTIF : il n'ouvre rien et n'est jamais un jeton. Il est rendu inerte avant d'être renvoyé.
 const LIEN_FICTIF = "https://axion-ia.com/fr/portail/signer/apercu";
 
+const entreeSchema = z.object({
+  devisId: z.string({ message: "Devis invalide." }),
+  sujet: objetEntreeSchema,
+  message: messageEntreeSchema,
+});
+
 export async function apercuEmailDevisAction(input: {
   devisId: string;
   sujet?: string | undefined;
@@ -53,6 +65,9 @@ export async function apercuEmailDevisAction(input: {
     return { error: "Indisponible pendant le build" };
   }
   await requireAdminWrite();
+  const lu = entreeSchema.safeParse(input);
+  if (!lu.success) return { error: lu.error.issues[0]?.message ?? "Demande invalide." };
+  input = lu.data;
   if (!isUuid(input.devisId)) return { error: "Devis invalide." };
 
   // Interrupteur relu à l'appel ; l'état « essai » ne vaut que pour une fiche d'essai.

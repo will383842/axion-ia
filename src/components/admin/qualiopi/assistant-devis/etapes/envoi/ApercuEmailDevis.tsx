@@ -49,6 +49,12 @@ export interface PropsApercuEmailDevis {
   apercuEmail: (m: ModificationsEmail) => Promise<Resultat<DonneesApercuEmail>>;
   /** Fiche du client (modification de l'adresse), ouverte dans un nouvel onglet. */
   lienFiche?: string | undefined;
+  /**
+   * Faux par défaut : l'aperçu est en LECTURE SEULE (aucun champ). Vrai UNIQUEMENT quand l'appelant
+   * relaie l'objet et le message jusqu'à `sendDevisAction` — sinon le fondateur croirait modifier
+   * un e-mail dont les modifications ne partiraient pas.
+   */
+  modifiable?: boolean | undefined;
   onEtat: (e: EtatApercuEmail) => void;
 }
 
@@ -67,7 +73,12 @@ function Squelette() {
   );
 }
 
-export function ApercuEmailDevis({ apercuEmail, lienFiche, onEtat }: PropsApercuEmailDevis) {
+export function ApercuEmailDevis({
+  apercuEmail,
+  lienFiche,
+  modifiable = false,
+  onEtat,
+}: PropsApercuEmailDevis) {
   const uid = useId();
   const [donnees, setDonnees] = useState<DonneesApercuEmail | null>(null);
   const [erreur, setErreur] = useState<string | null>(null);
@@ -192,7 +203,19 @@ export function ApercuEmailDevis({ apercuEmail, lienFiche, onEtat }: PropsApercu
           ) : null}
         </p>
       ) : null}
-      {donnees !== null ? (
+      {donnees !== null && !modifiable && lienFiche ? (
+        <div>
+          <AdminButton
+            variant="secondary"
+            size="lg"
+            disabled={occupe}
+            onClick={() => void charger(null, "")}
+          >
+            Relire la fiche
+          </AdminButton>
+        </div>
+      ) : null}
+      {donnees !== null && modifiable ? (
         <div className="grid gap-[var(--space-admin-3)]">
           <label htmlFor={`${uid}-objet`} className="grid gap-1">
             Objet

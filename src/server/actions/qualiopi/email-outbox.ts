@@ -22,6 +22,7 @@ import { prisma } from "@/lib/prisma";
 import { requireAdminWrite, logQualiopiActivity } from "@/server/actions/qualiopi/_guards";
 import { enqueueEmail } from "@/server/queue/queues";
 import type { MotifRetenue } from "@/server/email/suppression";
+import { CLE_SUJET_CHOISI } from "@/server/qualiopi/devis/contenu-email-devis";
 import type { EmailJobName } from "@/server/queue/types";
 import { estSuperAdmin } from "@/server/auth/habilitations";
 import { gabaritEnSommeil, MESSAGE_EMAIL_EN_SOMMEIL } from "@/server/qualiopi/financements/sommeil";
@@ -54,29 +55,29 @@ const approuverSchema = z.object({
 });
 
 /**
- * L'objet que le worker doit imposer, ou `undefined` (le gabarit décide). Candidat : l'objet
- * demandé à l'approbation, sinon celui de la ligne. Écarté s'il est vide, s'il est le nom
- * technique du gabarit (vieux garage) ou s'il est celui que le gabarit produirait déjà.
+ * L'objet que le worker doit imposer, ou `undefined` (le gabarit décide).
+ *
+ * Règle d'origine : seul un objet retouché à l'approbation s'impose. Exception unique : un devis
+ * (`devis-envoi`) dont l'objet a été choisi à l'envoi — la ligne porte alors le marqueur
+ * `sujetChoisi` égal à son objet. Sans marqueur, l'objet de la ligne n'est qu'une étiquette de
+ * corbeille (« Devis N — Axion-IA », « Convention à signer — … ») : jamais envoyée au client.
  */
-async function sujetAImposerALEnvoi(
-  email: { template: string; locale: string; sujet: string },
+function sujetAImposerALEnvoi(
+  email: { template: string; sujet: string },
   payload: Record<string, unknown>,
   sujetDemande: string | undefined,
-): Promise<string | undefined> {
-  const candidat = sujetDemande ?? email.sujet;
-  if (candidat.trim() === "" || candidat === email.template) return undefined;
-  try {
-    const { sujetDuGabarit } = await import("@/lib/email/templates");
-    const duGabarit = sujetDuGabarit(
-      email.template as EmailJobName,
-      email.locale === "en" ? "en" : "fr",
-      payload,
-    );
-    return candidat === duGabarit ? undefined : candidat;
-  } catch {
-    // Gabarit illisible : comportement d'origine (on ne force que l'objet retouché ici).
-    return sujetDemande !== undefined && sujetDemande !== email.sujet ? sujetDemande : undefined;
+): string | undefined {
+  if (sujetDemande !== undefined) {
+    return sujetDemande !== email.sujet ? sujetDemande : undefined;
   }
+  if (
+    email.template === "devis-envoi" &&
+    email.sujet.trim() !== "" &&
+    payload[CLE_SUJET_CHOISI] === email.sujet
+  ) {
+    return email.sujet;
+  }
+  return undefined;
 }
 
 /**
@@ -146,9 +147,7 @@ export async function approuverEmailAction(
     ...(v.messagePersonnalise ? { messagePersonnalise: v.messagePersonnalise } : {}),
   };
 
-  // L'objet se compare à celui du GABARIT, pas à celui enregistré sur la ligne : un objet modifié,
-  // garé, puis approuvé sans retouche, est l'objet de la ligne — il doit partir tel quel.
-  const sujetAImposer = await sujetAImposerALEnvoi(email, payload, v.sujet);
+  const sujetAImposer = sujetAImposerALEnvoi(email, payload, v.sujet);
 
   const attachments = Array.isArray(email.attachments)
     ? (email.attachments as Array<{ filename: string; r2Key: string; contentType?: string }>)

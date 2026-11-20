@@ -108,3 +108,29 @@ describe("contenuEmailDevis", () => {
     expect(sans).not.toHaveProperty("salutation");
   });
 });
+
+describe("contenuEmailDevis — objet et mots interdits", () => {
+  it("refuse tout caractère de contrôle dans l'objet (tabulation, NUL, U+2028…)", () => {
+    for (const c of ["\t", "\u0000", "\u0007", "\u007f", "\u2028", "\u2029", "\r", "\n"]) {
+      expect(contenuEmailDevis({ ...BASE, sujet: `Votre${c}devis` }).ok).toBe(false);
+    }
+  });
+
+  it("« directeur financier » est accepté, « financement » et « financé » refusés", () => {
+    expect(contenuEmailDevis({ ...BASE, sujet: "Pour le directeur financier" }).ok).toBe(true);
+    expect(contenuEmailDevis({ ...BASE, message: "Service financier et finances" }).ok).toBe(true);
+    for (const t of [
+      "Plan de financement",
+      "Formation financée",
+      "Stage FINANCÉ",
+      "Dossiers financés",
+      "Finance par un tiers",
+      "Prise en charge",
+      "Qualiopi",
+      "OPCO",
+      "CPF",
+    ]) {
+      expect(contenuEmailDevis({ ...BASE, sujet: t }).ok, t).toBe(false);
+    }
+  });
+});

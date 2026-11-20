@@ -61,7 +61,12 @@ import {
 import { formulesActives } from "@/server/qualiopi/devis/interrupteur-formules";
 import { offreDevisV1 } from "@/server/qualiopi/devis/offre-devis";
 import { refusReglesFormules } from "@/server/qualiopi/devis/regles-commerciales";
-import { contenuEmailDevis } from "@/server/qualiopi/devis/contenu-email-devis";
+import {
+  CLE_SUJET_CHOISI,
+  contenuEmailDevis,
+  messageEntreeSchema,
+  objetEntreeSchema,
+} from "@/server/qualiopi/devis/contenu-email-devis";
 import {
   donneesPdfDevis,
   lireContextePdfDevis,
@@ -326,6 +331,15 @@ export async function sendDevisAction(
   const idParsed = z.string().uuid().safeParse(id);
   if (!idParsed.success) return { error: "Identifiant invalide" };
   const devisId = idParsed.data;
+  // Objet et message : valeurs non textuelles ou trop longues refusées ICI, avec une erreur claire.
+  const optsParsed = z
+    .object({ sujet: objetEntreeSchema, messagePersonnalise: messageEntreeSchema })
+    .optional()
+    .safeParse(opts);
+  if (!optsParsed.success) {
+    return { error: optsParsed.error.issues[0]?.message ?? "Objet ou message invalide." };
+  }
+  const optsOk = optsParsed.data;
 
   // État visible depuis le `catch` : ce qui a déjà été produit, donc ce qu'il faut défaire.
   // (Objet : TypeScript ne suit pas les affectations faites dans le rappel de la transaction.)
@@ -468,14 +482,14 @@ export async function sendDevisAction(
         if (dejaGare) throw new EnvoiRefuse(MSG_DEJA_GARE, "deja_gare");
 
         // Objet et message du fondateur relus ICI, avant tout effet externe (PDF, jeton, courriel).
-        if (opts !== undefined) {
+        if (optsOk !== undefined) {
           const controle = contenuEmailDevis({
             devis,
             client: devis.client,
-            ...(opts.messagePersonnalise !== undefined
-              ? { message: opts.messagePersonnalise }
+            ...(optsOk.messagePersonnalise !== undefined
+              ? { message: optsOk.messagePersonnalise }
               : {}),
-            ...(opts.sujet !== undefined ? { sujet: opts.sujet } : {}),
+            ...(optsOk.sujet !== undefined ? { sujet: optsOk.sujet } : {}),
           });
           if (!controle.ok) throw new EnvoiRefuse(controle.error, "contenu_invalide");
         }
@@ -585,14 +599,18 @@ export async function sendDevisAction(
           devis,
           client: devis.client,
           formules: data.formules,
-          ...(opts?.messagePersonnalise !== undefined ? { message: opts.messagePersonnalise } : {}),
-          ...(opts?.sujet !== undefined ? { sujet: opts.sujet } : {}),
+          ...(optsOk?.messagePersonnalise !== undefined
+            ? { message: optsOk.messagePersonnalise }
+            : {}),
+          ...(optsOk?.sujet !== undefined ? { sujet: optsOk.sujet } : {}),
           // Validation : ABSENT (aucun jeton n'existe).
           ...(signatureUrl !== undefined ? { signatureUrl } : {}),
         });
         if (!contenu.ok) throw new EnvoiRefuse(contenu.error, "contenu_invalide");
         const payloadCourriel = contenu.payload;
         const sujetEmail = contenu.sujet;
+        // Marqueur : à l'approbation, c'est lui qui distingue l'objet CHOISI de l'étiquette de corbeille.
+        if (sujetEmail !== undefined) payloadCourriel[CLE_SUJET_CHOISI] = sujetEmail;
         if (parValidation) {
           // Marqueur sans identité, sans URL, sans jeton : contrat v1 de `lien-a-l-envoi`.
           payloadCourriel[CLE_MARQUEUR] = {
