@@ -10,7 +10,9 @@ vi.mock("@/server/qualiopi/documents/signature/token-document", () => ({
 }));
 vi.mock("@/lib/prisma", () => ({}));
 vi.mock("@/lib/r2-storage", () => ({}));
-vi.mock("@/server/qualiopi/documents/organisme", () => ({}));
+vi.mock("@/server/qualiopi/documents/organisme", () => ({
+  getOrganismeIdentite: async () => ({ raisonSociale: "O", email: "", telephone: "" }),
+}));
 vi.mock("@/server/qualiopi/config/site-settings", () => ({}));
 vi.mock("@/server/qualiopi/documents/signature/devis-signature-queries", () => ({}));
 vi.mock("@/server/qualiopi/documents/signature/parties-requises", () => ({}));
