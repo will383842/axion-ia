@@ -200,6 +200,14 @@ export async function envoyerLienSignatureParEmailAction(
   });
   if (piece === null) return { error: "Pièce introuvable." };
 
+  // 🔴 Un devis ne se relance pas par l'e-mail de convention : aucun jeton, rien en file.
+  if (piece.type === "devis") {
+    return {
+      error:
+        "Pour un devis, utilisez « Renvoyer par email » ou « Préparer une relance » sur la fiche du devis.",
+    };
+  }
+
   // S6b (d) — le gabarit suit le TYPE de pièce. Le contrat-cadre d'un formateur
   // indépendant (sans organisme rattaché) part par son propre e-mail (F16), et
   // seulement quand ce texte est validé : sinon, rien n'est émis (le lien

@@ -57,11 +57,15 @@ import {
   MSG_RELANCE_DEVIS_EMAIL_EN_ATTENTE,
   MSG_RELANCE_DEVIS_ENVOI_EN_COURS,
   MSG_RELANCE_DEVIS_SANS_DEVIS,
+  MSG_RELANCE_DEVIS_PAS_ENVOYE,
+  MSG_RELANCE_DEVIS_VALIDITE_DEPASSEE,
   emettreLienSignature,
+  emettreLienSignatureSystem,
 } from "./emettre-lien-signature";
 import { TokenDocumentError } from "./token-document";
 
 const DOC = "33333333-3333-4333-8333-333333333333";
+const DANS_LE_FUTUR = new Date(Date.now() + 30 * 86_400_000);
 const ADMIN = { userId: "adm-1", role: "admin" } as never;
 
 function piece(type = "devis") {
@@ -101,7 +105,9 @@ beforeEach(() => {
     tokenId: "id",
     expiresAt: new Date("2027-01-01T00:00:00Z"),
   });
-  h.TX.devis.findMany.mockResolvedValue([{ id: "dv1" }]);
+  h.TX.devis.findMany.mockResolvedValue([
+    { id: "dv1", statut: "envoye", dateValidite: DANS_LE_FUTUR },
+  ]);
   h.verrou.mockResolvedValue(true);
   h.enAttente.mockResolvedValue(false);
 });
@@ -144,7 +150,10 @@ describe("relance d'une pièce de devis", () => {
   it("(c ter) pièce sans devis, ou avec plusieurs : refus, aucun jeton", async () => {
     h.TX.devis.findMany.mockResolvedValueOnce([]);
     expect(await relancer()).toEqual({ error: MSG_RELANCE_DEVIS_SANS_DEVIS });
-    h.TX.devis.findMany.mockResolvedValueOnce([{ id: "a" }, { id: "b" }]);
+    h.TX.devis.findMany.mockResolvedValueOnce([
+      { id: "a", statut: "envoye", dateValidite: DANS_LE_FUTUR },
+      { id: "b", statut: "envoye", dateValidite: DANS_LE_FUTUR },
+    ]);
     expect(await relancer()).toEqual({ error: MSG_RELANCE_DEVIS_SANS_DEVIS });
     expect(h.creerToken).not.toHaveBeenCalled();
   });
@@ -162,5 +171,51 @@ describe("relance d'une pièce de devis", () => {
   it("(e) un refus du jeton dans la transaction est rendu tel quel", async () => {
     h.creerToken.mockRejectedValue(new TokenDocumentError("lien_non_vivant", "x"));
     expect(await relancer()).toEqual({ error: "x" });
+  });
+});
+
+describe("relance d'une pièce de devis — état du devis", () => {
+  it.each(["brouillon", "accepte", "refuse", "expire", "transforme_convention"])(
+    "(f) devis au statut %s : refus, ni verrou ni jeton",
+    async (statut) => {
+      h.TX.devis.findMany.mockResolvedValue([{ id: "dv1", statut, dateValidite: DANS_LE_FUTUR }]);
+      expect(await relancer()).toEqual({ error: MSG_RELANCE_DEVIS_PAS_ENVOYE });
+      expect(h.creerToken).not.toHaveBeenCalled();
+      expect(h.verrou).not.toHaveBeenCalled();
+      expect(h.log).not.toHaveBeenCalled();
+    },
+  );
+
+  it("(g) validité dépassée : refus, aucun jeton", async () => {
+    h.TX.devis.findMany.mockResolvedValue([
+      { id: "dv1", statut: "envoye", dateValidite: new Date(Date.now() - 86_400_000) },
+    ]);
+    expect(await relancer()).toEqual({ error: MSG_RELANCE_DEVIS_VALIDITE_DEPASSEE });
+    expect(h.creerToken).not.toHaveBeenCalled();
+  });
+
+  it("(h) le jeton est borné à la date de validité du devis", async () => {
+    await relancer();
+    expect(h.creerToken).toHaveBeenCalledWith(
+      expect.objectContaining({ borneMetier: DANS_LE_FUTUR }),
+    );
+  });
+
+  it("(i) la transaction du devis porte un timeout de 60 s", async () => {
+    await relancer();
+    expect(h.p.$transaction).toHaveBeenCalledWith(expect.any(Function), {
+      maxWait: 5_000,
+      timeout: 60_000,
+    });
+  });
+});
+
+describe("emettreLienSignatureSystem — devis", () => {
+  it("refuse une pièce de type devis, aucun jeton", async () => {
+    h.p.documentGenere.findUnique.mockResolvedValue(piece());
+    expect(await emettreLienSignatureSystem(DOC, "client")).toEqual({
+      error: "Un lien de devis ne s'émet pas par ce chemin.",
+    });
+    expect(h.creerToken).not.toHaveBeenCalled();
   });
 });
