@@ -166,6 +166,10 @@ describe("relance d'une pièce de devis", () => {
     expect(h.verrou).not.toHaveBeenCalled();
     expect(h.enAttente).not.toHaveBeenCalled();
     expect(h.creerToken).toHaveBeenCalledTimes(1);
+    // La borne reste celle d'avant (suppressionPrevueAt de la pièce), pas une validité de devis.
+    expect(h.creerToken).toHaveBeenCalledWith(
+      expect.objectContaining({ borneMetier: new Date("2031-01-01T00:00:00Z") }),
+    );
   });
 
   it("(e) un refus du jeton dans la transaction est rendu tel quel", async () => {
