@@ -61,6 +61,7 @@ import { getClient } from "@/server/qualiopi/crm/clients";
 import { libelleReglementDevis } from "@/server/qualiopi/devis/libelles-reglement";
 import { prisma } from "@/lib/prisma";
 import { lireCanalEmission } from "@/server/qualiopi/devis/canal-emission";
+import { peutEngager } from "@/server/auth/habilitations";
 import { peutOuvrirPiecePdf } from "@/server/qualiopi/documents/acces-piece";
 import { LOT_DEVIS_ASSISTANT } from "@/server/qualiopi/devis/interrupteur-assistant";
 import { estActifPour, lireInterrupteurQualiopi } from "@/server/qualiopi/socle/interrupteurs";
@@ -957,6 +958,8 @@ export default async function QualiopiDevisDetailPage({ params, searchParams }: 
           signeDesDeuxParties={signeDesDeuxParties}
           repriseParRelance={repriseParRelance}
           remisEnMainPropre={remisEnMainPropre}
+          peutConclure={peutEngager(acces.role, "conclure_devis")}
+          peutEcrire={acces.peutEcrire}
         />
         {aideAdresse !== null ? (
           <p
