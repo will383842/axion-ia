@@ -92,6 +92,22 @@ const ctx = (etape: unknown) => ({ etape, etat: { e: 1 }, dispatch: vi.fn() });
 beforeEach(() => vi.clearAllMocks());
 
 describe("AssistantDevisPage", () => {
+  it("étape 3 : les montants des phases du contexte sont transmis à EtapePaiement", () => {
+    render(<AssistantDevisPage {...base} />);
+    const { rendreEtape } = derniere();
+    render(
+      <>
+        {rendreEtape({
+          ...ctx(3),
+          montantsPhases: { A: [36000, 36000, 48000] },
+        } as never)}
+      </>,
+    );
+    expect(m.paiement.mock.calls.at(-1)![0]).toMatchObject({
+      montantsPhases: { A: [36000, 36000, 48000] },
+    });
+  });
+
   it("monte les étapes 1, 1b, 2 et 3 (et rien d'autre)", () => {
     render(<AssistantDevisPage {...base} />);
     const { rendreEtape } = derniere();

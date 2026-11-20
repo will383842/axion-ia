@@ -117,7 +117,7 @@ export const entreeDevisClassiqueSchema = z.object({
    */
   projetId: z.string().uuid().optional(),
   /**
-   * Conditions particulières (texte simple, devis CLASSIQUE seulement). Normalisé à la lecture ;
+   * Conditions particulières (texte simple, devis CLASSIQUE seulement ; l'assistant y écrit l'échéancier, les délais, la garantie et le plafond). Normalisé à la lecture ;
    * vide → `null`. CLÉ ABSENTE ≠ `null` : à la modification, l'absence laisse la colonne intacte
    * (l'assistant appelle l'action sans le champ), `null` l'efface.
    */

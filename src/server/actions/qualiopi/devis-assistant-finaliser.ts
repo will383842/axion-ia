@@ -47,7 +47,8 @@ import { projetOuvrableDuClient } from "@/server/qualiopi/crm/devis-projet";
 import { formulesActives } from "@/server/qualiopi/devis/interrupteur-formules";
 import { LOT_DEVIS_ASSISTANT } from "@/server/qualiopi/devis/interrupteur-assistant";
 import { estActifPour, lireInterrupteurQualiopi } from "@/server/qualiopi/socle/interrupteurs";
-import { TAUX_TVA_STANDARD } from "@/server/qualiopi/legal/tva";
+import { regimeTvaDepuisConfig, TAUX_TVA_STANDARD } from "@/server/qualiopi/legal/tva";
+import { TITRE_ECHEANCIER } from "@/server/qualiopi/devis/assistant/conditions-prix-unique";
 import {
   payloadVersCreation,
   type ContexteConversion,
@@ -256,6 +257,7 @@ async function numeroter(i: unknown): Promise<Interne> {
     clientId: string;
     offreSha256: string | null;
     offre: unknown;
+    conditionsParticulieres: string | null;
     updatedAt: Date;
   } | null = null;
   if (row.devisId) {
@@ -268,6 +270,7 @@ async function numeroter(i: unknown): Promise<Interne> {
         clientId: true,
         offreSha256: true,
         offre: true,
+        conditionsParticulieres: true,
         updatedAt: true,
       },
     });
@@ -303,6 +306,7 @@ async function numeroter(i: unknown): Promise<Interne> {
     formulesActives: await formulesActives(),
     typeClient,
     maintenant: new Date(),
+    regime: regimeTvaDepuisConfig(await getQualiopiConfig("regime_tva")),
     tauxStandard: Number(await getQualiopiConfig("taux_tva_standard_percent")) || TAUX_TVA_STANDARD,
     ...(Array.isArray(heritees) ? { automatisationsHeritees: heritees } : {}),
     clientIdDuProjet:
@@ -329,6 +333,16 @@ async function numeroter(i: unknown): Promise<Interne> {
         .slice(0, 3)
         .map((x) => x.message)
         .join(" "),
+    };
+  }
+
+  // Prix unique : l'assistant réécrit les conditions particulières, jamais un texte écrit à la
+  // main (clause négociée) : on refuse avant toute écriture plutôt que de l'écraser.
+  const existantes = devisLie?.conditionsParticulieres?.trim() ?? "";
+  if (conv.type === "classique" && existantes !== "" && !existantes.startsWith(TITRE_ECHEANCIER)) {
+    return {
+      error:
+        "Ce devis porte des conditions particulières écrites à la main : l'assistant ne les remplace pas. Modifiez-le depuis sa fiche.",
     };
   }
 

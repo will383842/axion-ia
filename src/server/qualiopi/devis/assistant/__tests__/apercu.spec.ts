@@ -184,6 +184,34 @@ describe("égalité avec le PDF (donneesPdfDevis)", () => {
   });
 });
 
+describe("classique : montants des phases (une seule source)", () => {
+  it("phasesCents = [36000, 36000, 48000] et égalité avec les montants du texte imprimé", () => {
+    const p = base();
+    p.typeDevis = "classique";
+    p.lignesClassiques = [{ designation: "Prestation", quantite: "1", prixEur: "1000" }];
+    p.formules.achat.phases = [
+      { libelle: "Acompte", pourcentage: "30", declencheur: "signature" },
+      { libelle: "Étape", pourcentage: "30", declencheur: "avancement" },
+      { libelle: "Solde", pourcentage: "40", declencheur: "livraison" },
+    ];
+    const ap = calculerApercu(p, CTX);
+    expect(ap.classique!.phasesCents).toEqual([36000, 36000, 48000]);
+    const r = payloadVersCreation(p, {
+      formulesActives: true,
+      typeClient: "entreprise",
+      maintenant: new Date("2026-11-08T10:00:00Z"),
+      tauxStandard: 20,
+      regime: "assujetti",
+    });
+    if ("erreurs" in r || r.type !== "classique") throw new Error("conversion");
+    const montants = [
+      ...(r.input.conditionsParticulieres ?? "").matchAll(/soit ([\d\s\u00A0,]+€)/g),
+    ];
+    expect(montants).toHaveLength(3);
+    expect(montants.map((m) => m[1]!.replace(/[^\d]/g, ""))).toEqual(["36000", "36000", "48000"]);
+  });
+});
+
 describe("classique", () => {
   it("totaux = computeTotauxFacture (T1 : HT 448 393, TVA 89 679, TTC 538 072 ; ligne 3 = 28 393)", () => {
     const p = base();

@@ -70,6 +70,24 @@ describe("EtapePaiement : onglets par formule", () => {
   });
 });
 
+describe("EtapePaiement : prix unique", () => {
+  it("les montants du serveur arrivent dans les versements (TTC), plus de tiret", () => {
+    const e = etatT4();
+    const montants = e.achat.phases.map((_, i) => 10000 * (i + 1));
+    render(<Hote initial={e} montants={{ A: montants }} />);
+    const lignes = within(screen.getByRole("list", { name: /Phases et versements/ })).getAllByRole(
+      "listitem",
+    );
+    expect(nettoyer(lignes[0]!.textContent!)).toContain("100,00€");
+    expect(lignes[0]!.textContent).toContain("TTC");
+    expect(screen.queryByText("—")).toBeNull();
+  });
+  it("formules : mention HT", () => {
+    render(<Hote initial={etatT1()} vue="a" montants={{ A: [100000, 100000, 100000] }} />);
+    expect(screen.getAllByText("HT").length).toBeGreaterThan(0);
+  });
+});
+
 describe("PaiementA", () => {
   it("rappelle les phases de l'étape 1b avec les montants du SERVEUR, sans les calculer", () => {
     const e = etatT1();

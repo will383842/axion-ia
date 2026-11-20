@@ -50,6 +50,7 @@ export function PaiementA({ etat, dispatch, montants }: PropsPaiementA) {
         nom="Phases de la mise en place"
         phases={etat.achat.phases}
         montants={montants}
+        mention="HT"
       />
       <AdminCard as="div" className="mb-[var(--space-admin-8)]">
         <fieldset>

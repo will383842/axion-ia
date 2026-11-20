@@ -4,7 +4,12 @@ import { calculerApercu } from "@/server/qualiopi/devis/assistant/apercu";
 
 import { etatT1, etatT2, etatT3, etatT4 } from "./fixtures";
 import { etatVersPayload } from "./vers-payload";
-import { libelleDate, versApercuPrepare, type Numerotation } from "./vers-vue-apercu";
+import {
+  libelleDate,
+  versApercuPrepare,
+  type ContexteVueApercu,
+  type Numerotation,
+} from "./vers-vue-apercu";
 import type { EtatAssistant } from "./types";
 
 const TVA = 20;
@@ -21,7 +26,7 @@ const CTX = {
   versionCgv: "version lue en configuration",
 };
 
-function vue(etat: EtatAssistant, ctx = CTX) {
+function vue(etat: EtatAssistant, ctx: ContexteVueApercu = CTX) {
   const apercu = calculerApercu(etatVersPayload(etat, 4, { tvaStandardPct: TVA, textes: [] }), {
     regime: "assujetti",
     tauxStandard: TVA,
@@ -50,8 +55,22 @@ describe("versApercuPrepare : les centimes du serveur sont recopiés, rien n'est
   it("T4 (prix unique) : 31 402 HT · 6 280 TVA · 37 682 TTC, ni phase ni formule", () => {
     const v = vue(etatT4()).prepare.vue;
     expect([v.totalHtCents, v.tvaCents, v.totalTtcCents]).toEqual([31402, 6280, 37682]);
-    expect(v.phases).toEqual([]);
     expect(v.formules).toEqual([]);
+  });
+
+  it("T4 : les versements du prix unique viennent de apercu.classique.phasesCents, libellés TTC", () => {
+    const { apercu, prepare } = vue(etatT4(), {
+      ...CTX,
+      phasesPrixUnique: etatT4().achat.phases.map((p) => ({
+        libelle: p.libelle,
+        pourcentage: Number(p.pourcentage),
+      })),
+    });
+    const v = prepare.vue;
+    expect(v.phases.map((p) => p.montantCents)).toEqual(apercu.classique!.phasesCents);
+    expect(v.phases.length).toBeGreaterThan(0);
+    expect(v.phases.every((p) => p.libelle.endsWith("(TTC)"))).toBe(true);
+    expect(v.phases.reduce((s, p) => s + p.montantCents, 0)).toBe(v.totalTtcCents);
   });
 
   it("T2 (B seule) : mise en service 190 000 HT, abonnement au tarif catalogue", () => {

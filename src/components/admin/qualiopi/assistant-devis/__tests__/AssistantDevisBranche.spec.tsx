@@ -35,7 +35,7 @@ import { lirePayload } from "@/server/qualiopi/devis/assistant/payload";
 
 import { AssistantDevisBranche } from "../AssistantDevisBranche";
 import type { ClientOption } from "../etapes/un/BlocClient";
-import { etatT1 } from "../fixtures";
+import { etatT1, etatT4 } from "../fixtures";
 import type { Etape, EtatAssistant } from "../types";
 import { etatVersPayload } from "../vers-payload";
 
@@ -122,6 +122,42 @@ beforeEach(() => {
 });
 
 const continuer = () => fireEvent.click(screen.getByRole("button", { name: "Continuer" }));
+
+describe("étape 3 : montants des phases relus au serveur", () => {
+  it("prix unique : 400 ms après le dernier changement, A reçoit phasesCents ; aucun appel hors étape 3", async () => {
+    vi.useFakeTimers({ shouldAdvanceTime: true });
+    try {
+      const etat = etatT4();
+      const payload = etatVersPayload(etat, 3, CTX);
+      render(
+        <AssistantDevisBranche
+          payloadInitial={payload}
+          brouillon={{ id: BROUILLON, revision: 5 }}
+          clients={[CLIENT]}
+          textesParDefaut={[]}
+          tauxStandard={20}
+          formulesActives
+          validiteParDefaut="2026-12-08"
+          versionCgv="v"
+          urlAssistant="/fr/adm/qualiopi/devis/new"
+          rendreEtape={({ etape, montantsPhases }) => (
+            <p data-testid="m">
+              {String(etape)}:{JSON.stringify(montantsPhases ?? null)}
+            </p>
+          )}
+        />,
+      );
+      expect(A.apercu).not.toHaveBeenCalled();
+      await act(async () => {
+        await vi.advanceTimersByTimeAsync(500);
+      });
+      expect(A.apercu).toHaveBeenCalledTimes(1);
+      expect(screen.getByTestId("m").textContent).toMatch(/^3:.*"A":\[\d+/);
+    } finally {
+      vi.useRealTimers();
+    }
+  });
+});
 
 describe("sauvegarde : la révision du serveur suit chaque sauvegarde (jeton opaque)", () => {
   it("chaque envoi porte la révision rendue par le précédent, avec un sauvegardeId neuf", async () => {

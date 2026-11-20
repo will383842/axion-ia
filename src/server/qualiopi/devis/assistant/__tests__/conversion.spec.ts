@@ -32,6 +32,7 @@ import { sha256Offre } from "@/server/qualiopi/devis/offre-calculs";
 import { offreDevisV1, type OffreDevisV1 } from "@/server/qualiopi/devis/offre-devis";
 import { offreFictive } from "@/server/qualiopi/devis/offre-fixtures.spec-util";
 import { payloadVide, type PayloadAssistantV1 } from "../payload";
+import { TEXTE_DELAIS, TEXTE_GARANTIE, TEXTE_PLAFOND_RESPONSABILITE } from "../textes-rubriques";
 import {
   devisVersPayload as devisVersPayloadBrut,
   payloadVersCreation,
@@ -139,6 +140,53 @@ describe("classique", () => {
     p.typeDevis = "classique";
     p.clientId = null;
     expect(payloadVersCreation(p, CTX)).toHaveProperty("erreurs");
+  });
+});
+
+describe("classique : conditions particulières (échéancier, délais, garantie, plafond)", () => {
+  const classiquePhases = () => {
+    const p = base();
+    p.typeDevis = "classique";
+    p.lignesClassiques = [{ designation: "Prestation", quantite: "1", prixEur: "1000" }];
+    p.formules.achat.phases = [
+      { libelle: "Acompte", pourcentage: "30", declencheur: "signature" },
+      { libelle: "Étape", pourcentage: "30", declencheur: "avancement" },
+      { libelle: "Solde", pourcentage: "40", declencheur: "livraison" },
+    ];
+    return p;
+  };
+  it("l'entrée porte l'échéancier TTC, les délais par défaut, la garantie et le plafond", () => {
+    const p = classiquePhases();
+    p.formules.garantieJours = "60";
+    const r = creation(p);
+    if (r.type !== "classique") throw new Error("type");
+    const t = r.input.conditionsParticulieres ?? "";
+    expect(t).toMatch(/360,00\s€ TTC/);
+    expect(t).toMatch(/480,00\s€ TTC/);
+    expect(t).toContain(TEXTE_DELAIS);
+    expect(t).toContain("Garantie de 60 jours.");
+    expect(t).toContain(TEXTE_GARANTIE);
+    expect(t).toContain(TEXTE_PLAFOND_RESPONSABILITE);
+  });
+  it("délais saisis et garantie saisie remplacent les défauts ; régime transmis", () => {
+    const p = classiquePhases();
+    p.formules.garantieJours = "30";
+    p.nonImprime = {
+      delais: { texte: "Délais saisis.", fourchette: "4 semaines" },
+      phraseGarantie: "Phrase saisie.",
+    };
+    const r = creation(p, { ...CTX, regime: "franchise_293b" });
+    if (r.type !== "classique") throw new Error("type");
+    const t = r.input.conditionsParticulieres ?? "";
+    expect(t).toContain("Délais saisis. Délai estimé : 4 semaines.");
+    expect(t).toContain("Phrase saisie.");
+    expect(t).not.toContain("TTC");
+  });
+  it("pourcentages ≠ 100 : erreur sur formules.achat.phases", () => {
+    const p = classiquePhases();
+    p.formules.achat.phases[2]!.pourcentage = "30";
+    const r = payloadVersCreation(p, CTX);
+    expect("erreurs" in r && r.erreurs[0]?.champ).toBe("formules.achat.phases");
   });
 });
 
@@ -375,7 +423,8 @@ describe("textes d'IA par formule (liste blanche, préfixe « Formule A/B : »)"
     const c = base();
     c.typeDevis = "classique";
     c.nonImprime = { ia: { achat: "compte_client" } };
-    expect(JSON.stringify(creation(c))).not.toContain("IA");
+    // Le texte de garantie (conditions particulières) cite l'IA ; seule la phrase du CHOIX d'IA est exclue.
+    expect(JSON.stringify(creation(c))).not.toContain("L'utilisation de l'IA");
   });
   it("réouverture : intitulé déjà injecté, jamais dupliqué (comparaison rognée)", () => {
     const p = formules("A");

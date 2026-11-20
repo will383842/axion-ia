@@ -13,10 +13,13 @@ export function RappelPhases({
   nom,
   phases,
   montants,
+  mention,
 }: {
   nom: string;
   phases: readonly PhaseAssistant[];
   montants?: ReadonlyArray<number | null> | undefined;
+  /** « TTC » en prix unique, « HT » en formules : précise ce que le montant du serveur couvre. */
+  mention?: "TTC" | "HT" | undefined;
 }) {
   const parts = phases.map((p) => {
     const n = Number.parseFloat(p.pourcentage.replace(",", "."));
@@ -51,6 +54,11 @@ export function RappelPhases({
             </span>
             <span className="text-right font-semibold whitespace-nowrap tabular-nums">
               {montants?.[i] == null ? "—" : EUROS.format(montants[i]! / 100)}
+              {montants?.[i] != null && mention ? (
+                <span className="ml-1 text-[length:var(--text-admin-xs)] font-normal">
+                  {mention}
+                </span>
+              ) : null}
             </span>
           </li>
         ))}

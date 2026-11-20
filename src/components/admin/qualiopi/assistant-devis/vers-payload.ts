@@ -93,6 +93,11 @@ export function etatVersPayload(
   };
   if (etat.garantie.afficher && etat.garantie.phrase.trim() !== "")
     nonImprime["phraseGarantie"] = etat.garantie.phrase.trim();
+  // Délais saisis à l'écran : lus par le serveur pour les conditions particulières du prix unique.
+  const delaisTexte = etat.delais.texte.trim();
+  const delaisFourchette = etat.delais.fourchette.trim();
+  if (delaisTexte !== "" || delaisFourchette !== "")
+    nonImprime["delais"] = { texte: delaisTexte, fourchette: delaisFourchette };
 
   return {
     v: 1,

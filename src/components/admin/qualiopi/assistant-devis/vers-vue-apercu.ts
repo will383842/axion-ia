@@ -30,6 +30,8 @@ export interface ContexteVueApercu {
   versionCgv: string;
   /** Livrables saisis à l'écran, par formule et par rang (information, sans montant). */
   livrables?: { A?: readonly string[]; B?: readonly string[] };
+  /** Libellé et pourcentage des versements du prix unique (les montants viennent du serveur). */
+  phasesPrixUnique?: ReadonlyArray<{ libelle: string; pourcentage: number }>;
 }
 
 export function urlApercuPdf(devisId: string): string {
@@ -148,7 +150,14 @@ export function versApercuPrepare(
       totalHtCents: t.totalHtCents,
       tvaCents: t.totalTvaCents,
       totalTtcCents: t.totalTtcCents,
-      phases: [],
+      // Montants du serveur (TTC si assujetti) : même source que le texte imprimé au PDF.
+      phases: apercu.classique.phasesCents.map((montantCents, i) => ({
+        rang: i + 1,
+        libelle: `${ctx.phasesPrixUnique?.[i]?.libelle || `Versement ${i + 1}`} (TTC)`,
+        livrable: ctx.livrables?.A?.[i] ?? "",
+        pourcentage: ctx.phasesPrixUnique?.[i]?.pourcentage ?? 0,
+        montantCents,
+      })),
       formules: [],
       servicesExterieurs: [],
     };
