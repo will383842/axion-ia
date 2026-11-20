@@ -10,6 +10,7 @@ import path from "node:path";
 import { describe, expect, it } from "vitest";
 
 import { LEGAL_PAGES } from "../legal";
+import { IDENTITE_LEGALE } from "@/lib/identite-legale-ssot";
 import { DUREE_CONSERVATION_ANS, N_MIN_STATISTIQUE } from "@/lib/score-ia-pme/constantes";
 
 const RACINE = path.resolve(__dirname, "../../..");
@@ -96,5 +97,31 @@ describe("politique de confidentialité : section Observatoire de l'IA", () => {
     expect(lire("src/app/[locale]/politique-confidentialite/page.tsx")).toContain(
       'LAST_UPDATED_ISO = "2026-11-20"',
     );
+  });
+});
+
+describe("audit PR-4 : transfert de l'IP, responsable, droits, promesse de comparaison", () => {
+  it("FR et EN : IP chez Cloudflare (États-Unis) et empreinte gardée 10 minutes", () => {
+    expect(section("fr").body).toMatch(/adresse IP est transmise à Cloudflare \(États-Unis/);
+    expect(section("fr").body).toContain("gardée 10 minutes");
+    expect(section("en").body).toMatch(/IP address is sent to Cloudflare \(United States/);
+    expect(section("en").body).toContain("kept for 10 minutes");
+  });
+  it("le responsable porte la raison sociale lue de la source unique", () => {
+    for (const l of ["fr", "en"] as const) {
+      expect(section(l).body).toContain(`Axion-IA (${IDENTITE_LEGALE.legalName})`);
+    }
+  });
+  it("droits : retrait du consentement et portabilité", () => {
+    expect(section("fr").body).toMatch(/retirer votre consentement.*portabilité/);
+    expect(section("en").body).toMatch(/withdraw your consent.*portability/);
+  });
+  it("le bouton de l'Observatoire ne promet plus de comparaison aux dirigeants interrogés", () => {
+    for (const f of ["src/messages/fr.json", "src/messages/en.json"]) {
+      const j = JSON.parse(lire(f)) as { observatoire: { form: { subhook: string } } };
+      expect(j.observatoire.form.subhook).not.toMatch(
+        /dirigeants d[ée]j[àa] interrog|executives already/i,
+      );
+    }
   });
 });
