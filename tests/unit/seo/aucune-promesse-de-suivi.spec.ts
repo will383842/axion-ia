@@ -60,6 +60,11 @@ const PROMESSES: ReadonlyArray<readonly [string, RegExp]> = [
   ["« les suit avec vous »", /les suit avec vous/i],
   ["suivi continu", /suivi continu/i],
   ["accompagnement supplémentaire", /accompagnement supplémentaire/i],
+  [
+    "révisions périodiques / pendant N premiers mois",
+    /r[ée]visions? (?:trimestrielle|mensuelle|semestrielle)s?|pendant les \d+ premiers mois/i,
+  ],
+  ["suivi régulier", /suivi r[ée]gulier|regular follow-up/i],
 ];
 
 function* fichiers(dossier: string): Generator<string> {
