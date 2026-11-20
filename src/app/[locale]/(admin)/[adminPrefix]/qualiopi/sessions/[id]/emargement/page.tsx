@@ -29,6 +29,10 @@ import { BandeauContresignatureFinanceur } from "@/components/admin/qualiopi/Ban
 import { constatContresignatureSession } from "@/server/qualiopi/emargement/constat-financeur-session";
 import { DossierSessionButton } from "@/components/admin/qualiopi/DossierSessionButton";
 import { AdminButton } from "@/components/admin/ui/AdminButton";
+import { AdminBadge } from "@/components/admin/ui/AdminBadge";
+import { AdminBloc } from "@/components/admin/ui/AdminBloc";
+import { AdminBlocRepliable } from "@/components/admin/ui/AdminBlocRepliable";
+import { AdminEmptyState } from "@/components/admin/ui/AdminEmptyState";
 import type { DemiJourneeLabel } from "@/server/qualiopi/presence/types";
 import {
   generateSessionCreneauxAction,
@@ -159,22 +163,30 @@ export default async function EmargementPage({ params, searchParams }: PageProps
   // date de la première signature au registre. Toute la règle vit dans
   // `presence/provenance.ts`, testée sans rendu.
   const libelleParInscription = libellesEmargementParInscription(enrollments, creneaux);
-  const tonCls: Record<LibelleEmargement["ton"], string> = {
-    succes: "text-[color:var(--color-admin-success)]",
-    alerte: "text-[color:var(--color-admin-warning)]",
-    neutre: "text-[color:var(--color-admin-fg-muted)]",
+  const tonBadge: Record<LibelleEmargement["ton"], "success" | "warning" | "neutral"> = {
+    succes: "success",
+    alerte: "warning",
+    neutre: "neutral",
   };
 
   const hasCreneaux = creneauxRows.length > 0;
   const isDistanciel = session.modalite === "distanciel" || session.modalite === "hybride";
 
-  const sectionHeadCls =
-    "text-[length:var(--text-admin-base)] font-semibold text-[color:var(--color-admin-fg)] mb-[var(--space-admin-3)]";
-  const badgeCls = (cat: "complete" | "partielle" | "aucune") => {
-    if (cat === "complete") return "text-[color:var(--color-admin-success)]";
-    if (cat === "partielle") return "text-[color:var(--color-admin-warning)]";
-    return "text-[color:var(--color-admin-error)]";
-  };
+  const tonCategorie: Record<
+    "complete" | "partielle" | "aucune",
+    "success" | "warning" | "destructive"
+  > = { complete: "success", partielle: "warning", aucune: "destructive" };
+
+  const COLONNE =
+    "px-[var(--space-admin-3)] py-[var(--space-admin-2)] text-left text-[length:var(--text-admin-xs)] font-semibold text-[color:var(--color-admin-fg-muted)]";
+  const CELLULE =
+    "px-[var(--space-admin-3)] py-[var(--space-admin-2)] align-top text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg)]";
+  const TEXTE_AIDE =
+    "m-0 text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]";
+  const LIBELLE_ID =
+    "text-[length:var(--text-admin-xs)] tracking-wide text-[color:var(--color-admin-fg-muted)] uppercase";
+  const VALEUR_ID =
+    "m-0 text-[length:var(--text-admin-sm)] font-medium text-[color:var(--color-admin-fg)]";
 
   return (
     <>
@@ -182,257 +194,282 @@ export default async function EmargementPage({ params, searchParams }: PageProps
           sont portés par `sessions/[id]/layout.tsx` : une seule façon de revenir,
           la même sur les quatre sous-pages. */}
       {/* `admin-page-header` : repère sans style, lu par les parcours E2E
-          (tests/e2e/qualiopi/parcours) qui y vérifient la modalité RÉELLE. */}
-      <header className="admin-page-header mb-[var(--space-admin-5)]">
+          (tests/e2e/qualiopi/parcours) qui y vérifient la modalité RÉELLE : la
+          description garde donc ses séparateurs « · ». Pas d'`AdminPageHeader` :
+          l'en-tête de la fiche (h1) est porté par `sessions/[id]/layout.tsx`
+          (garde `fiche-lecture-seule.spec.tsx`). */}
+      <header className="admin-page-header mb-[var(--space-admin-5)] border-b border-[color:var(--color-admin-border)] pb-[var(--space-admin-4)]">
         <h2 className="mb-[var(--space-admin-1)] text-[length:var(--text-admin-lg)] font-semibold text-[color:var(--color-admin-fg)]">
           Émargement
         </h2>
         <p className="text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]">
           {`Session ${session.numero} · ${MODALITE_LABELS[session.modalite] ?? session.modalite} · ${formatDateFR(session.dateDebut)} → ${formatDateFR(session.dateFin)}`}
         </p>
+        <div className="mt-[var(--space-admin-3)] flex flex-wrap gap-[var(--space-admin-2)]">
+          <AdminBadge tone={session.statut === "annulee" ? "destructive" : "info"}>
+            {STATUT_LABELS[session.statut] ?? session.statut}
+          </AdminBadge>
+          <AdminBadge tone="neutral">
+            {enrollments.length} stagiaire{enrollments.length > 1 ? "s" : ""}
+          </AdminBadge>
+          <AdminBadge tone={hasCreneaux ? "success" : "warning"}>
+            {hasCreneaux ? "Créneaux générés" : "Créneaux à générer"}
+          </AdminBadge>
+        </div>
       </header>
 
-      {/* Informations session */}
-      <div className="mb-[var(--space-admin-6)] grid grid-cols-2 gap-[var(--space-admin-4)] rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)] p-[var(--space-admin-5)] sm:grid-cols-4">
-        <div>
-          <p className="text-[length:var(--text-admin-xs)] tracking-wide text-[color:var(--color-admin-fg-muted)] uppercase">
-            Statut
-          </p>
-          <p className="mt-0.5 text-[length:var(--text-admin-sm)] font-medium text-[color:var(--color-admin-fg)]">
-            {STATUT_LABELS[session.statut] ?? session.statut}
-          </p>
-        </div>
-        <div>
-          <p className="text-[length:var(--text-admin-xs)] tracking-wide text-[color:var(--color-admin-fg-muted)] uppercase">
-            Modalité
-          </p>
-          <p className="mt-0.5 text-[length:var(--text-admin-sm)] font-medium text-[color:var(--color-admin-fg)]">
-            {MODALITE_LABELS[session.modalite] ?? session.modalite}
-          </p>
-        </div>
-        <div>
-          <p className="text-[length:var(--text-admin-xs)] tracking-wide text-[color:var(--color-admin-fg-muted)] uppercase">
-            Durée réelle
-          </p>
-          <p className="mt-0.5 text-[length:var(--text-admin-sm)] font-medium text-[color:var(--color-admin-fg)]">
-            {session.dureeReelleHeures ?? "—"} h
-          </p>
-        </div>
-        <div>
-          <p className="text-[length:var(--text-admin-xs)] tracking-wide text-[color:var(--color-admin-fg-muted)] uppercase">
-            Stagiaires
-          </p>
-          <p className="mt-0.5 text-[length:var(--text-admin-sm)] font-medium text-[color:var(--color-admin-fg)]">
-            {enrollments.length}
-          </p>
-        </div>
-      </div>
+      <div className="flex flex-col gap-[var(--space-admin-6)]">
+        {/* Informations session */}
+        <AdminBloc teinte="gris" niveau={2} titre="La session en bref">
+          <dl className="m-0 grid grid-cols-2 gap-[var(--space-admin-4)] sm:grid-cols-4">
+            <div>
+              <dt className={LIBELLE_ID}>Statut</dt>
+              <dd className={VALEUR_ID}>{STATUT_LABELS[session.statut] ?? session.statut}</dd>
+            </div>
+            <div>
+              <dt className={LIBELLE_ID}>Modalité</dt>
+              <dd className={VALEUR_ID}>{MODALITE_LABELS[session.modalite] ?? session.modalite}</dd>
+            </div>
+            <div>
+              <dt className={LIBELLE_ID}>Durée réelle</dt>
+              <dd className={VALEUR_ID}>{session.dureeReelleHeures ?? "—"} h</dd>
+            </div>
+            <div>
+              <dt className={LIBELLE_ID}>Stagiaires</dt>
+              <dd className={VALEUR_ID}>{enrollments.length}</dd>
+            </div>
+          </dl>
+        </AdminBloc>
 
-      {/* Ce que le financeur réclamera — en tête, AVANT les journées et la
-          grille : c'est la seule information de cet écran qui se paie en
-          argent, et la lire après avoir tout fermé ne sert à rien.
-          Il disparaît de lui-même quand tout est contresigné, et ne s'affiche
-          jamais sur une session en financement direct. */}
-      {/* `id` stables : le fil conducteur de la fiche (« Où en est ce dossier »)
-          mène ICI en un clic — `/emargement#contresignature`, `#journees`,
-          `#liens`, `#feuille`. Garde : `le-suivi-mene-au-geste.spec.ts`. */}
-      <div id="contresignature" className={CLASSE_ANCRE_SECTION}>
-        <BandeauContresignatureFinanceur
-          constat={constatFinanceur}
-          href={`/${locale}/${adminPrefix}/qualiopi/sessions/${id}#formateur`}
-          libelleLien="Voir le formateur désigné (il contresigne depuis son espace)"
-        />
-      </div>
-
-      {/* Section : Journées réellement animées (D14) — AVANT la génération des
-          créneaux, parce qu'elle en dépend : sans journées déclarées, les
-          créneaux sont déduits de la plage de dates, ce qui est faux dès que les
-          journées ne se suivent pas. */}
-      <div id="journees" className={CLASSE_ANCRE_SECTION}>
-        <SessionJoursEditor
-          sessionId={id}
-          joursInitiaux={jours}
-          hasCreneaux={hasCreneaux}
-          saveAction={saveSessionJoursAction}
-        />
-      </div>
-
-      {/* Liens de signature — après les journées (dont ils dépendent) et avant
-          la grille : c'est l'ordre dans lequel l'admin travaille. */}
-      <div id="liens" className={CLASSE_ANCRE_SECTION}>
-        <LiensEmargement
-          sessionId={id}
-          hasCreneaux={hasCreneaux}
-          emettreAction={emettreLiensSessionAction}
-          envoyerAction={envoyerLiensEmargementAction}
-          revoquerAction={revoquerLiensSessionAction}
-        />
-      </div>
-
-      {suiviDemiJournee !== null && (
-        <div className={CLASSE_ANCRE_SECTION}>
-          <EmargementDemiJournee
-            sessionId={id}
-            retour={`/${locale}/${adminPrefix}/qualiopi/sessions/${id}/emargement`}
-            suivi={suiviDemiJournee}
-            ok={premier(retoursFormulaire["ok"])}
-            erreur={premier(retoursFormulaire["erreur"])}
-            rattrapageAction={saisirRattrapageFormAction}
-            ficheJourAction={cocherFicheJourFormAction}
+        {/* Ce que le financeur réclamera — en tête, AVANT les journées et la
+            grille : c'est la seule information de cet écran qui se paie en
+            argent, et la lire après avoir tout fermé ne sert à rien.
+            Il disparaît de lui-même quand tout est contresigné, et ne s'affiche
+            jamais sur une session en financement direct. */}
+        {/* `id` stables : le fil conducteur de la fiche (« Où en est ce dossier »)
+            mène ICI en un clic — `/emargement#contresignature`, `#journees`,
+            `#liens`, `#feuille`. Garde : `le-suivi-mene-au-geste.spec.ts`. */}
+        <div id="contresignature" className={CLASSE_ANCRE_SECTION}>
+          <BandeauContresignatureFinanceur
+            constat={constatFinanceur}
+            href={`/${locale}/${adminPrefix}/qualiopi/sessions/${id}#formateur`}
+            libelleLien="Voir le formateur désigné (il contresigne depuis son espace)"
           />
         </div>
-      )}
 
-      {/* Section : Générer les créneaux */}
-      <section className="mb-[var(--space-admin-8)]">
-        <h2 className={sectionHeadCls}>Créneaux de présence</h2>
-        <GenererCreneauxButton
-          sessionId={id}
-          genererAction={generateSessionCreneauxAction}
-          hasCreneaux={hasCreneaux}
-        />
-      </section>
-
-      {/* Section : Dossier d'audit de la session (oubli M2) */}
-      <section className="mb-[var(--space-admin-8)]">
-        <h2 className={sectionHeadCls}>Dossier d&apos;audit</h2>
-        <p className="mb-[var(--space-admin-3)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]">
-          Un ZIP rangé sous le numéro de cette session : ses documents, sa feuille
-          d&apos;émargement, et la vérification d&apos;intégrité de chaque chaîne de signatures.
-          C&apos;est ce que vous remettez à un auditeur qui demande « le dossier de cette session ».
-        </p>
-        <DossierSessionButton sessionId={id} />
-      </section>
-
-      {/* Section : tirage à jour de la feuille d'émargement.
-          La feuille du registre est figée à son émission — tirée AVANT la
-          session, comme l'usage le veut, elle porte « Signatures enregistrées au
-          tirage : 0 » à vie. Ce lien la rejoue avec les signatures réellement
-          recueillies, sans créer de pièce ni renuméroter.
-          Passe par AdminButton, et non par un <a> habillé : le cliquet de
-          design (admin-design-tokens) n'admet que les combinaisons
-          `.admin-*` + utilitaire déjà déclarées. */}
-      <section className="mb-[var(--space-admin-8)]">
-        <h2 className={sectionHeadCls}>Feuille d&apos;émargement à jour</h2>
-        <p className="mb-[var(--space-admin-3)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]">
-          Réimpression de la feuille avec les signatures recueillies à cet instant. La pièce du
-          registre, elle, reste figée à sa date d&apos;émission : si vous l&apos;avez générée avant
-          la session, elle affiche une feuille vierge. C&apos;est ce tirage-ci qu&apos;il faut
-          joindre à une preuve de présence — il ne crée aucun document et ne renumérote rien.
-        </p>
-        <AdminButton href={`/api/qualiopi/sessions/${id}/emargement`} variant="secondary">
-          Télécharger la feuille à jour (PDF)
-        </AdminButton>
-      </section>
-
-      {/* Section : Grille émargement */}
-      <section id="feuille" className={`mb-[var(--space-admin-8)] ${CLASSE_ANCRE_SECTION}`}>
-        <h2 className={sectionHeadCls}>Feuille d&apos;émargement présentiel</h2>
-        {/* 🔴 `G-prerequis-02` — la grille se faisait passer pour un émargement
-            signé. Elle DÉCLARE une présence ; l'écran doit le dire avant le clic. */}
-        <p className="mb-[var(--space-admin-3)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]">
-          Cocher une case ici <strong>déclare</strong> une présence : ce n&apos;est pas une
-          signature. Toute case modifiée est enregistrée comme saisie manuelle — y compris sur un
-          créneau issu d&apos;un relevé de connexion, qui cesse alors d&apos;être compté comme
-          relevé —, n&apos;est jamais comptée comme émargement signé, et apparaît comme telle dans
-          le récapitulatif ci-dessous et dans le dossier d&apos;audit. Les signatures se recueillent
-          par les liens d&apos;émargement ci-dessus ou sur le poste du formateur ; un créneau déjà
-          signé n&apos;est pas modifié par cette grille, et une case que vous n&apos;avez pas
-          changée n&apos;est pas réécrite.
-        </p>
-        {enrollments.length === 0 ? (
-          <p className="text-[length:var(--text-admin-base)] text-[color:var(--color-admin-fg-soft)]">
-            Aucun stagiaire inscrit à cette session.
-          </p>
-        ) : (
-          <EmargementGrid
+        {/* Journées réellement animées (D14) — AVANT la génération des
+            créneaux, parce qu'elle en dépend : sans journées déclarées, les
+            créneaux sont déduits de la plage de dates, ce qui est faux dès que
+            les journées ne se suivent pas. */}
+        <div id="journees" className={CLASSE_ANCRE_SECTION}>
+          <SessionJoursEditor
             sessionId={id}
-            enrollments={enrollmentRows}
-            creneaux={creneauxRows}
-            seuilCompletePct={seuilPresencePct}
-            hasJours={jours.length > 0}
-            saveAction={saveEmargementAction}
+            joursInitiaux={jours}
+            hasCreneaux={hasCreneaux}
+            saveAction={saveSessionJoursAction}
           />
-        )}
-      </section>
+        </div>
 
-      {/* Section : Import relevé de connexion (distanciel / hybride) */}
-      {isDistanciel && (
-        <section className="mb-[var(--space-admin-8)]">
-          <h2 className={sectionHeadCls}>Relevé de connexion distanciel</h2>
-          <p className="mb-[var(--space-admin-3)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]">
-            Importez le rapport d&apos;export de votre plateforme de visioconférence. Le
-            rapprochement automatique est effectué par email puis par nom.
-          </p>
-          <ImportReleveForm
+        {/* Liens de signature — après les journées (dont ils dépendent) et avant
+            la grille : c'est l'ordre dans lequel l'admin travaille. */}
+        <div id="liens" className={CLASSE_ANCRE_SECTION}>
+          <LiensEmargement
             sessionId={id}
-            importAction={importReleveConnexionAction}
-            genererReleveAction={genererReleveConnexionDocumentAction}
+            hasCreneaux={hasCreneaux}
+            emettreAction={emettreLiensSessionAction}
+            envoyerAction={envoyerLiensEmargementAction}
+            revoquerAction={revoquerLiensSessionAction}
           />
-        </section>
-      )}
+        </div>
 
-      {/* Section : Récapitulatif taux de présence */}
-      {enrollments.length > 0 && (
-        <section>
-          <h2 className={sectionHeadCls}>Récapitulatif des taux de présence</h2>
-          <div className="overflow-x-auto rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)]">
-            <table className="w-full border-collapse bg-[color:var(--color-admin-paper)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg)]">
-              <thead className="border-b border-[color:var(--color-admin-border)]">
-                <tr>
-                  <th className="px-[var(--space-admin-4)] py-[var(--space-admin-3)] text-left text-[length:var(--text-admin-xs)] font-semibold tracking-wide text-[color:var(--color-admin-fg-muted)] uppercase">
-                    Stagiaire
-                  </th>
-                  <th className="px-[var(--space-admin-4)] py-[var(--space-admin-3)] text-left text-[length:var(--text-admin-xs)] font-semibold tracking-wide text-[color:var(--color-admin-fg-muted)] uppercase">
-                    Taux présence
-                  </th>
-                  <th className="px-[var(--space-admin-4)] py-[var(--space-admin-3)] text-left text-[length:var(--text-admin-xs)] font-semibold tracking-wide text-[color:var(--color-admin-fg-muted)] uppercase">
-                    Qualification
-                  </th>
-                  <th className="px-[var(--space-admin-4)] py-[var(--space-admin-3)] text-left text-[length:var(--text-admin-xs)] font-semibold tracking-wide text-[color:var(--color-admin-fg-muted)] uppercase">
-                    Émargement signé
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                {enrollments.map((e) => {
-                  const cat = classifierPresence(e.tauxPresencePct ?? 0, seuilPresencePct);
-                  return (
-                    <tr
-                      key={e.id}
-                      className="border-b border-[color:var(--color-admin-border)] last:border-b-0"
-                    >
-                      <td className="px-[var(--space-admin-4)] py-[var(--space-admin-3)]">
-                        <div className="font-medium">
-                          {e.trainee.prenom} {e.trainee.nom}
-                        </div>
-                        <div className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
-                          {e.trainee.email}
-                        </div>
-                      </td>
-                      <td className="px-[var(--space-admin-4)] py-[var(--space-admin-3)]">
-                        {e.tauxPresencePct !== null ? (
-                          <span className={badgeCls(cat)}>{e.tauxPresencePct} %</span>
-                        ) : (
-                          <span className="text-[color:var(--color-admin-fg-muted)]">—</span>
-                        )}
-                      </td>
-                      <td className="px-[var(--space-admin-4)] py-[var(--space-admin-3)]">
-                        <span className={badgeCls(cat)}>{TAUX_LABELS[cat]}</span>
-                      </td>
-                      <td className="px-[var(--space-admin-4)] py-[var(--space-admin-3)]">
-                        <span className={tonCls[libelleParInscription.get(e.id)?.ton ?? "neutre"]}>
-                          {libelleParInscription.get(e.id)?.texte ?? "Non"}
-                        </span>
-                      </td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
+        {suiviDemiJournee !== null && (
+          <div className={CLASSE_ANCRE_SECTION}>
+            <EmargementDemiJournee
+              sessionId={id}
+              retour={`/${locale}/${adminPrefix}/qualiopi/sessions/${id}/emargement`}
+              suivi={suiviDemiJournee}
+              ok={premier(retoursFormulaire["ok"])}
+              erreur={premier(retoursFormulaire["erreur"])}
+              rattrapageAction={saisirRattrapageFormAction}
+              ficheJourAction={cocherFicheJourFormAction}
+            />
           </div>
-        </section>
-      )}
+        )}
+
+        {/* Générer les créneaux */}
+        <AdminBloc teinte="gris" niveau={2} titre="Créneaux de présence">
+          <GenererCreneauxButton
+            sessionId={id}
+            genererAction={generateSessionCreneauxAction}
+            hasCreneaux={hasCreneaux}
+          />
+        </AdminBloc>
+
+        {/* Dossier d'audit de la session (oubli M2) */}
+        <AdminBloc teinte="gris" niveau={2} titre="Dossier d'audit">
+          <div className="flex flex-col gap-[var(--space-admin-3)]">
+            <AdminBlocRepliable titre="À quoi sert ce dossier">
+              <p className={TEXTE_AIDE}>
+                Un ZIP rangé sous le numéro de cette session : ses documents, sa feuille
+                d&apos;émargement, et la vérification d&apos;intégrité de chaque chaîne de
+                signatures. C&apos;est ce que vous remettez à un auditeur qui demande « le dossier
+                de cette session ».
+              </p>
+            </AdminBlocRepliable>
+            <div>
+              <DossierSessionButton sessionId={id} />
+            </div>
+          </div>
+        </AdminBloc>
+
+        {/* Tirage à jour de la feuille d'émargement.
+            La feuille du registre est figée à son émission — tirée AVANT la
+            session, comme l'usage le veut, elle porte « Signatures enregistrées
+            au tirage : 0 » à vie. Ce lien la rejoue avec les signatures
+            réellement recueillies, sans créer de pièce ni renuméroter.
+            Passe par AdminButton, et non par un <a> habillé : le cliquet de
+            design (admin-design-tokens) n'admet que les combinaisons
+            `.admin-*` + utilitaire déjà déclarées. */}
+        <AdminBloc teinte="gris" niveau={2} titre="Feuille d'émargement à jour">
+          <div className="flex flex-col gap-[var(--space-admin-3)]">
+            <AdminBlocRepliable titre="Ce que fait ce tirage">
+              <p className={TEXTE_AIDE}>
+                Réimpression de la feuille avec les signatures recueillies à cet instant. La pièce
+                du registre, elle, reste figée à sa date d&apos;émission : si vous l&apos;avez
+                générée avant la session, elle affiche une feuille vierge. C&apos;est ce tirage-ci
+                qu&apos;il faut joindre à une preuve de présence — il ne crée aucun document et ne
+                renumérote rien.
+              </p>
+            </AdminBlocRepliable>
+            <div>
+              <AdminButton href={`/api/qualiopi/sessions/${id}/emargement`} variant="secondary">
+                Télécharger la feuille à jour (PDF)
+              </AdminButton>
+            </div>
+          </div>
+        </AdminBloc>
+
+        {/* Grille émargement */}
+        <AdminBloc
+          teinte="terracotta"
+          niveau={2}
+          titre="Feuille d'émargement présentiel"
+          id="feuille"
+          className={CLASSE_ANCRE_SECTION}
+        >
+          <div className="flex flex-col gap-[var(--space-admin-3)]">
+            {/* 🔴 `G-prerequis-02` — la grille se faisait passer pour un émargement
+                signé. Elle DÉCLARE une présence ; l'écran doit le dire avant le clic. */}
+            <p className={TEXTE_AIDE}>
+              Cocher une case ici <strong>déclare</strong> une présence : ce n&apos;est pas une
+              signature.
+            </p>
+            <AdminBlocRepliable titre="Lire les règles de saisie">
+              <p className={TEXTE_AIDE}>
+                Toute case modifiée est enregistrée comme saisie manuelle — y compris sur un créneau
+                issu d&apos;un relevé de connexion, qui cesse alors d&apos;être compté comme relevé
+                —, n&apos;est jamais comptée comme émargement signé, et apparaît comme telle dans le
+                récapitulatif ci-dessous et dans le dossier d&apos;audit. Les signatures se
+                recueillent par les liens d&apos;émargement ci-dessus ou sur le poste du formateur ;
+                un créneau déjà signé n&apos;est pas modifié par cette grille, et une case que vous
+                n&apos;avez pas changée n&apos;est pas réécrite.
+              </p>
+            </AdminBlocRepliable>
+            {enrollments.length === 0 ? (
+              <AdminEmptyState
+                variant="inline"
+                title="Aucun stagiaire inscrit à cette session."
+                description="La feuille apparaît dès qu'un stagiaire est inscrit."
+              />
+            ) : (
+              <EmargementGrid
+                sessionId={id}
+                enrollments={enrollmentRows}
+                creneaux={creneauxRows}
+                seuilCompletePct={seuilPresencePct}
+                hasJours={jours.length > 0}
+                saveAction={saveEmargementAction}
+              />
+            )}
+          </div>
+        </AdminBloc>
+
+        {/* Import relevé de connexion (distanciel / hybride) */}
+        {isDistanciel && (
+          <AdminBloc teinte="gris" niveau={2} titre="Relevé de connexion distanciel">
+            <div className="flex flex-col gap-[var(--space-admin-3)]">
+              <p className={TEXTE_AIDE}>
+                Importez le rapport d&apos;export de votre plateforme de visioconférence. Le
+                rapprochement automatique est effectué par email puis par nom.
+              </p>
+              <ImportReleveForm
+                sessionId={id}
+                importAction={importReleveConnexionAction}
+                genererReleveAction={genererReleveConnexionDocumentAction}
+              />
+            </div>
+          </AdminBloc>
+        )}
+
+        {/* Récapitulatif taux de présence */}
+        {enrollments.length > 0 && (
+          <AdminBloc teinte="bleu" niveau={2} titre="Récapitulatif des taux de présence">
+            <div className="overflow-x-auto">
+              <table className="w-full min-w-[40rem] border-collapse">
+                <thead>
+                  <tr>
+                    <th scope="col" className={COLONNE}>
+                      Stagiaire
+                    </th>
+                    <th scope="col" className={COLONNE}>
+                      Taux présence
+                    </th>
+                    <th scope="col" className={COLONNE}>
+                      Qualification
+                    </th>
+                    <th scope="col" className={COLONNE}>
+                      Émargement signé
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {enrollments.map((e) => {
+                    const cat = classifierPresence(e.tauxPresencePct ?? 0, seuilPresencePct);
+                    const libelle = libelleParInscription.get(e.id);
+                    return (
+                      <tr key={e.id} className="border-t border-[color:var(--color-admin-border)]">
+                        <th scope="row" className={`${CELLULE} text-left font-medium`}>
+                          <div>
+                            {e.trainee.prenom} {e.trainee.nom}
+                          </div>
+                          <div className="text-[length:var(--text-admin-xs)] font-normal text-[color:var(--color-admin-fg-muted)]">
+                            {e.trainee.email}
+                          </div>
+                        </th>
+                        <td className={CELLULE}>
+                          {e.tauxPresencePct !== null ? (
+                            <AdminBadge tone={tonCategorie[cat]}>{e.tauxPresencePct} %</AdminBadge>
+                          ) : (
+                            <span className="text-[color:var(--color-admin-fg-muted)]">—</span>
+                          )}
+                        </td>
+                        <td className={CELLULE}>
+                          <AdminBadge tone={tonCategorie[cat]}>{TAUX_LABELS[cat]}</AdminBadge>
+                        </td>
+                        <td className={CELLULE}>
+                          <AdminBadge tone={tonBadge[libelle?.ton ?? "neutre"]}>
+                            {libelle?.texte ?? "Non"}
+                          </AdminBadge>
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </div>
+          </AdminBloc>
+        )}
+      </div>
     </>
   );
 }
