@@ -17,7 +17,7 @@
  */
 
 import { Worker, type Job } from "bullmq";
-import { submitToIndexNow } from "@/lib/indexnow";
+import { signalerAuxMoteurs } from "@/lib/indexnow";
 import { readContentGenConfig } from "@/server/actions/content-gen/_settings";
 import { redis } from "@/lib/redis";
 import { alertIndexNowFailStreak } from "@/server/content-gen/shared/content-gen-alerts";
@@ -106,9 +106,22 @@ async function processJob(job: Job<IndexNowJobPayload>): Promise<void> {
     // Cascade d'endpoints (SSOT `src/lib/indexnow.ts`) : `api.indexnow.org`
     // refuse ce domaine (403 `UserForbiddedToAccessSite`). Sans bascule, chaque
     // publication tier-1 alimentait le streak d'échec sans notifier personne.
-    const result = await submitToIndexNow(host, key, validUrls, { timeoutMs: 20_000 });
-    if (!result.accepted) {
-      const reason = `aucun endpoint accepté sur ${validUrls.length} urls — ${result.attempts.join(" | ")}`;
+    //
+    // V1-07 : si aucun endpoint n'accepte, l'API Bing prend le relais (repli) ;
+    // le refus est journalisé en structuré et alerté (une fois par heure et par
+    // type d'erreur). La forme du job BullMQ ne change pas.
+    const { indexnow: result } = await signalerAuxMoteurs(
+      host,
+      key,
+      validUrls,
+      "content-indexnow",
+      {
+        bing: "repli",
+        timeoutMs: 20_000,
+      },
+    );
+    if (!result?.accepted) {
+      const reason = `aucun endpoint accepté sur ${validUrls.length} urls — ${(result?.attempts ?? []).join(" | ")}`;
       console.warn(`[indexnow-worker] ${reason}`);
       // Audit indexation 2026-05-15 P0-10 — track fail streak + alerte Telegram.
       await recordIndexNowFail(reason);
