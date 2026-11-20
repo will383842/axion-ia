@@ -10,6 +10,7 @@
  * Server Component — auth + redirect, force-dynamic, noindex.
  */
 
+import { Fragment } from "react";
 import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 
@@ -17,6 +18,9 @@ import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
 import { AdminPageShell } from "@/components/admin/ui/AdminPageShell";
 import { AdminPageHeader } from "@/components/admin/ui/AdminPageHeader";
+import { AdminBadge } from "@/components/admin/ui/AdminBadge";
+import { AdminBloc } from "@/components/admin/ui/AdminBloc";
+import { AdminBlocRepliable } from "@/components/admin/ui/AdminBlocRepliable";
 import { EmailOutboxItem } from "@/components/admin/qualiopi/EmailOutboxItem";
 import { EmailAutomationSettings } from "@/components/admin/qualiopi/EmailAutomationSettings";
 import {
@@ -143,45 +147,84 @@ export default async function EmailsAValiderPage({
   // Lot 8A — une relance formateur garée ici peut encore partir après sa réponse : on le dit.
   const reponduLe = await lireReponsesSurRelancesGarees(enAttente);
 
-  const carte =
-    "rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-surface)] p-[var(--space-admin-4)]";
-
   // S5 (2026-08-26) — le gel réglementaire par règle NOMMÉE reste permis (la
   // règle nommée est souveraine, c'est documenté dans `outbox-policy.ts`) mais
   // il ne doit jamais être SILENCIEUX : tant qu'une telle règle est active, la
   // page le dit — en persistance, pas seulement au moment du clic.
   const naturesRetenues = reglesRetenantDesEnvoisReglementaires(reglages);
 
+  const COLONNE =
+    "px-[var(--space-admin-3)] py-[var(--space-admin-2)] text-left text-[length:var(--text-admin-xs)] font-semibold text-[color:var(--color-admin-fg-muted)]";
+  const CELLULE =
+    "px-[var(--space-admin-3)] py-[var(--space-admin-2)] align-top text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg)]";
+
   return (
     <AdminPageShell>
       <AdminPageHeader
         title="E-mails à valider"
-        description="Les emails commerciaux attendent votre relecture avant de partir. La chaîne formation — convocation, rappel, questionnaires, attestation — part automatiquement et n'apparaît pas ici."
+        description="Relisez puis envoyez les e-mails commerciaux."
+        meta={
+          <>
+            {enAttente.length > 0 ? (
+              <AdminBadge tone="warning">{enAttente.length} à relire</AdminBadge>
+            ) : (
+              <AdminBadge tone="success">Rien à relire</AdminBadge>
+            )}
+            <AdminBadge tone="neutral">
+              {reglages.length} règle{reglages.length > 1 ? "s" : ""} personnalisée
+              {reglages.length > 1 ? "s" : ""}
+            </AdminBadge>
+            {naturesRetenues.length > 0 && (
+              <AdminBadge tone="destructive">Envois retenus</AdminBadge>
+            )}
+          </>
+        }
       />
 
+      <AdminBlocRepliable titre="Comment ça marche" className="mb-[var(--space-admin-6)]">
+        <p className="text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]">
+          Les emails commerciaux attendent votre relecture avant de partir. La chaîne formation —
+          convocation, rappel, questionnaires, attestation — part automatiquement et n&apos;apparaît
+          pas ici. Une règle plus précise l&apos;emporte sur une règle plus générale — un réglage
+          par client prime sur le réglage global.
+        </p>
+      </AdminBlocRepliable>
+
       {naturesRetenues.length > 0 && (
-        <p
+        <div
           role="alert"
           className="mb-[var(--space-admin-6)] rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-warning)] bg-[color:var(--color-admin-surface)] p-[var(--space-admin-4)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg)]"
         >
-          <span className="font-semibold">
-            Cette règle retient des envois réglementaires (convocations, attestations…) : ils
-            partiront seulement après validation manuelle.
-          </span>{" "}
-          Natures concernées : {naturesRetenues.map((t) => libelleTemplateEmail(t)).join(", ")}.
-          Retirez la règle correspondante ci-dessous pour rétablir l&apos;envoi automatique.
-        </p>
+          <p className="m-0">
+            <span className="font-semibold">
+              Cette règle retient des envois réglementaires (convocations, attestations…) : ils
+              partiront seulement après validation manuelle.
+            </span>{" "}
+            Natures concernées :
+          </p>
+          <p className="my-[var(--space-admin-2)] flex flex-wrap gap-[var(--space-admin-2)]">
+            {naturesRetenues.map((t, i) => (
+              <Fragment key={t}>
+                <AdminBadge tone="outline">{libelleTemplateEmail(t)}</AdminBadge>
+                <span className="sr-only">{i < naturesRetenues.length - 1 ? ", " : "."}</span>
+              </Fragment>
+            ))}
+          </p>
+          <p className="m-0">
+            Retirez la règle correspondante ci-dessous pour rétablir l&apos;envoi automatique.
+          </p>
+        </div>
       )}
 
-      <section className="mb-[var(--space-admin-8)]">
-        <h2 className="mb-[var(--space-admin-3)] text-[length:var(--text-admin-base)] font-semibold text-[color:var(--color-admin-fg)]">
-          En attente ({enAttente.length})
-        </h2>
-
+      <AdminBloc teinte="ambre" niveau={2} titre={`À relire (${enAttente.length})`}>
         {enAttente.length === 0 ? (
           <p
-            className={`${carte} text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]`}
+            role="status"
+            className="m-0 text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]"
           >
+            <span className="font-semibold text-[color:var(--color-admin-fg)]">
+              Aucun e-mail à relire
+            </span>{" "}
             Aucun email en attente. Les relances d&apos;impayé, devis et factures apparaîtront ici
             avant leur envoi.
           </p>
@@ -215,69 +258,83 @@ export default async function EmailsAValiderPage({
             ))}
           </div>
         )}
-      </section>
-
-      <section className="mb-[var(--space-admin-8)]">
-        <h2 className="mb-[var(--space-admin-3)] text-[length:var(--text-admin-base)] font-semibold text-[color:var(--color-admin-fg)]">
-          Règles d&apos;envoi
-        </h2>
-        <div className={carte}>
-          <p className="mb-[var(--space-admin-3)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]">
-            Par défaut, ces natures d&apos;email passent par la validation :{" "}
-            <span>
-              {EMAILS_A_VALIDER_PAR_DEFAUT.map((t) => libelleTemplateEmail(t)).join(", ")}
-            </span>
-            . Une règle plus précise l&apos;emporte sur une règle plus générale — un réglage par
-            client prime sur le réglage global.
-          </p>
-
-          <EmailAutomationSettings
-            reglages={reglages.map((r) => ({
-              id: r.id,
-              scope: r.scope,
-              clientNom: r.client?.raisonSociale ?? null,
-              template: r.template,
-              mode: r.mode,
-            }))}
-            clients={clients}
-            templates={TEMPLATES_REGLABLES}
-            definirAction={definirReglageEmailAction}
-            supprimerAction={supprimerReglageEmailAction}
-          />
-        </div>
-      </section>
+      </AdminBloc>
 
       {traitesRecents.length > 0 && (
-        <section>
-          <h2 className="mb-[var(--space-admin-3)] text-[length:var(--text-admin-base)] font-semibold text-[color:var(--color-admin-fg)]">
-            Traités récemment
-          </h2>
-          <ul className={`${carte} flex flex-col gap-[var(--space-admin-2)]`}>
-            {traitesRecents.map((e) => (
-              <li key={e.id} className="text-[length:var(--text-admin-sm)]">
-                <span
-                  className={
-                    e.statut === "envoye"
-                      ? "text-[color:var(--color-admin-success)]"
-                      : "text-[color:var(--color-admin-fg-muted)]"
-                  }
-                >
-                  {e.statut === "envoye" ? "Envoyé" : "Refusé"}
-                </span>
-                <span className="text-[color:var(--color-admin-fg-muted)]">
-                  {" "}
-                  · {e.recipient} · {e.sujet}
-                </span>
-                {e.statut === "refuse" && e.refuseMotif ? (
-                  <span className="block pl-[var(--space-admin-4)] text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)] italic">
-                    Motif : {e.refuseMotif}
-                  </span>
-                ) : null}
-              </li>
-            ))}
-          </ul>
-        </section>
+        <AdminBloc teinte="gris" niveau={2} titre="Envoyés ou refusés récemment">
+          <div className="overflow-x-auto">
+            <table className="w-full min-w-[40rem] border-collapse">
+              <thead>
+                <tr>
+                  <th scope="col" className={COLONNE}>
+                    Statut
+                  </th>
+                  <th scope="col" className={COLONNE}>
+                    Date
+                  </th>
+                  <th scope="col" className={COLONNE}>
+                    Destinataire
+                  </th>
+                  <th scope="col" className={COLONNE}>
+                    Objet
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                {traitesRecents.map((e) => {
+                  const date = e.statut === "envoye" ? e.envoyeAt : e.refuseAt;
+                  return (
+                    <tr key={e.id} className="border-t border-[color:var(--color-admin-border)]">
+                      <td className={CELLULE}>
+                        <AdminBadge tone={e.statut === "envoye" ? "success" : "neutral"}>
+                          {e.statut === "envoye" ? "Envoyé" : "Refusé"}
+                        </AdminBadge>
+                      </td>
+                      <td className={CELLULE}>{date ? dateFr(date) : "—"}</td>
+                      <td className={CELLULE}>{e.recipient}</td>
+                      <td className={CELLULE}>
+                        {e.sujet}
+                        {e.statut === "refuse" && e.refuseMotif ? (
+                          <span className="block text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)] italic">
+                            Motif : {e.refuseMotif}
+                          </span>
+                        ) : null}
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
+        </AdminBloc>
       )}
+
+      <AdminBloc teinte="bleu" niveau={2} titre="Règles d'envoi">
+        <p className="mb-[var(--space-admin-2)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]">
+          Par défaut, relecture requise pour :
+        </p>
+        <p className="mb-[var(--space-admin-4)] flex flex-wrap gap-[var(--space-admin-2)]">
+          {EMAILS_A_VALIDER_PAR_DEFAUT.map((t) => (
+            <AdminBadge key={t} tone="neutral">
+              {libelleTemplateEmail(t)}
+            </AdminBadge>
+          ))}
+        </p>
+
+        <EmailAutomationSettings
+          reglages={reglages.map((r) => ({
+            id: r.id,
+            scope: r.scope,
+            clientNom: r.client?.raisonSociale ?? null,
+            template: r.template,
+            mode: r.mode,
+          }))}
+          clients={clients}
+          templates={TEMPLATES_REGLABLES}
+          definirAction={definirReglageEmailAction}
+          supprimerAction={supprimerReglageEmailAction}
+        />
+      </AdminBloc>
     </AdminPageShell>
   );
 }
