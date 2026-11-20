@@ -45,7 +45,15 @@ function ecouter(page: Page): Request[] {
   return requetes;
 }
 
-async function parcourir(page: Page): Promise<void> {
+/**
+ * Âge minimal du parcours exigé par le serveur (`MIN_FILL_MS` = 3 s dans la Server Action,
+ * anti-robot : en dessous, elle rend `{ ok: true }` SANS écrire). Marge de 0,5 s : l'instant
+ * mesuré ici précède de quelques ms celui que l'écran retient au clic sur « Commencer ».
+ */
+const AGE_MINIMAL_PARCOURS_MS = 3500;
+
+async function parcourir(page: Page): Promise<number> {
+  const debut = Date.now();
   await page.getByRole("button", { name: "Commencer" }).click();
   for (const [nom, valeurs] of REPONSES) {
     for (const v of valeurs) {
@@ -54,6 +62,7 @@ async function parcourir(page: Page): Promise<void> {
     await page.getByRole("button", { name: /Suivant|Voir mon score/ }).click();
   }
   await expect(page.getByRole("heading", { name: "Votre score" })).toBeVisible();
+  return debut;
 }
 
 /** Clique au centre de l'écran : l'en-tête collant du site ne doit pas intercepter le clic. */
@@ -124,8 +133,11 @@ test.describe("Score IA TPE-PME — rien ne part sans la case", () => {
     const requetes = ecouter(page);
 
     await page.goto(PAGE);
-    await parcourir(page);
+    const debut = await parcourir(page);
     await page.getByRole("checkbox", { name: /J'accepte que mes réponses/ }).check();
+    // Un parcours plus court que `MIN_FILL_MS` serait pris pour un robot (succès sans écriture) :
+    // on attend l'âge réel du parcours, pas un délai fixe.
+    await expect.poll(() => Date.now() - debut).toBeGreaterThanOrEqual(AGE_MINIMAL_PARCOURS_MS);
     // La Server Action n'est tentée qu'une fois le jeton prêt (clé de site absente : sans widget).
     await cliquerAuCentre(page, "Ajouter mes réponses");
     await expect
