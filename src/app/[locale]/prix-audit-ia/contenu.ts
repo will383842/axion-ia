@@ -2,19 +2,19 @@
 //
 // 🔑 Aucun montant n'est écrit ici : le seul chiffre en euros de la page est le prix de la Journée IA,
 // lu dans `pricing.ts` (`JOURNEE_IA_TIER`) via le jeton `{{PRIX}}` que résout `remplacerJetons()`.
-// Il n'y a PAS de prix d'audit séparé : l'audit est compris dans la Journée IA. Formation et
-// automatisation sont sur devis écrit, sans fourchette ni exemple chiffré.
+// L'audit de la Journée IA est compris dans son prix ; un audit plus approfondi, au-delà de la
+// Journée IA, se chiffre sur devis (aucun autre montant). Formation et automatisation sont sur devis
+// écrit, sans fourchette ni exemple chiffré.
 // Les phrases déjà en ligne sont importées (`journee-ia-commun.ts`, landing de la Journée IA), jamais
 // recopiées.
 
 import { DATE_MISE_A_JOUR_PRIX_AUDIT_IA } from "@/content/prix-audit-ia-date";
 import { RAPPORT_COMPLET } from "@/content/journee-ia-commun";
-
-import { LIBELLE_CTA } from "../journee-ia/contenu";
+import { reponseReference } from "@/content/questions-reference";
 
 export const PATH = "/prix-audit-ia";
 
-export { DATE_MISE_A_JOUR_PRIX_AUDIT_IA, LIBELLE_CTA };
+export { DATE_MISE_A_JOUR_PRIX_AUDIT_IA };
 
 export const TITRE = "Combien coûte un audit IA pour une TPE ou une PME ? · Axion-IA";
 
@@ -32,14 +32,14 @@ export const TEXTES = {
   filAriane: "Combien coûte un audit IA",
   surtitre: "Prix de l’audit IA",
   h1: "Combien coûte un audit IA pour une TPE ou une PME ?",
-  cta: LIBELLE_CTA,
+  cta: "Réserver un Diagnostic IA",
   microTexte: "Diagnostic IA · 45 minutes · en visio ou par téléphone · sans engagement",
   tva: "Prix hors taxes : la TVA au taux en vigueur s’ajoute sur la facture.",
 
   compris: {
     titre: "Ce que comprend la Journée IA",
     intro:
-      "L’audit n’a pas de prix à part : il est compris dans la Journée IA. Une seule somme, pour toute l’équipe.",
+      "L’audit de la Journée IA n’a pas de prix à part : il est compris dans la Journée IA. Une seule somme, pour toute l’équipe. Un audit plus approfondi, au-delà de la Journée IA, se chiffre sur devis.",
     elements: [
       "L’audit le matin, 2 à 4 h selon l’entreprise : l’entreprise est passée en revue service par service, avec vous.",
       "La formation l’après-midi, pour votre équipe (jusqu’à 15 personnes), sur vos propres dossiers.",
@@ -105,14 +105,13 @@ export const FAQ: ReadonlyArray<QuestionPrix> = [
   {
     id: "prix-audit-ia-combien",
     question: "Combien coûte un audit IA pour une TPE ou une PME ?",
-    reponse:
-      "Un audit IA chez Axion-IA coûte {{PRIX}}, prix unique, parce qu’il est compris dans la Journée IA : il n’y a pas de prix d’audit séparé. La Journée IA s’adresse à une équipe jusqu’à 15 personnes. Elle comprend l’audit le matin (2 à 4 h selon l’entreprise), la formation l’après-midi et le rapport complet sous 3 jours ouvrés.",
+    reponse: reponseReference("ref-audit-prix"),
   },
   {
     id: "prix-audit-ia-separe",
     question: "L’audit IA est-il facturé en plus de la formation ?",
     reponse:
-      "Non. L’audit IA le matin et la formation de l’après-midi font partie de la même Journée IA, au même prix unique de {{PRIX}}. Aucun prix d’audit ne s’y ajoute.",
+      "Non. L’audit IA le matin et la formation de l’après-midi font partie de la même Journée IA, au même prix unique de {{PRIX}}. L’audit de la Journée IA n’est pas facturé à part. Un audit plus approfondi, au-delà de la Journée IA, se chiffre sur devis.",
   },
   {
     id: "prix-audit-ia-par-personne",
@@ -128,15 +127,15 @@ export const FAQ: ReadonlyArray<QuestionPrix> = [
   },
   {
     id: "prix-audit-ia-formation",
-    question: "Combien coûte une formation IA pour une PME ?",
+    question: "Combien coûte une formation IA pour une TPE ou une PME ?",
     reponse:
-      "Une formation IA pour une PME est facturée sur devis écrit, par groupe de 2 à 15 personnes et jamais par personne. Le prix dépend de la formation retenue, de sa durée (de 4 heures à 2 jours) et du format, sur site ou à distance.",
+      "Une formation IA pour une TPE ou une PME est facturée sur devis écrit, par groupe de 2 à 15 personnes et jamais par personne. Le prix dépend de la formation retenue, de sa durée (de 4 heures à 2 jours) et du format, sur site ou à distance.",
   },
   {
     id: "prix-audit-ia-automatisation",
-    question: "Combien coûte une automatisation IA pour une PME ?",
+    question: "Combien coûte une automatisation IA pour une TPE ou une PME ?",
     reponse:
-      "Une automatisation IA pour une PME est facturée sur devis écrit. Le forfait est fixé avant de commencer, sans heures qui tournent, et il dépend des outils à relier et du volume traité.",
+      "Une automatisation IA pour une TPE ou une PME est facturée sur devis écrit. Le forfait est fixé avant de commencer, sans heures qui tournent, et il dépend des outils à relier et du volume traité.",
   },
   {
     id: "prix-audit-ia-premier-pas",

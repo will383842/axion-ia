@@ -276,6 +276,7 @@ export const CONTENU = {
       id: "faq-audit-cout",
       question: "Combien coûte un audit IA pour une PME\u202f?",
       reponse: reponseReference("ref-audit-prix"),
+      liens: [{ href: "/prix-audit-ia", libelle: "Le détail du prix" }],
     },
     {
       id: "faq-garantie",

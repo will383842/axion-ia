@@ -55,16 +55,30 @@ describe("contenu /prix-audit-ia", () => {
     expect(page.indexOf("REPONSE_DIRECTE")).toBeLessThan(page.indexOf("h-compris"));
   });
 
+  it("aucun pourcentage, chiffre de gain, jeton de gain ni « k€ » (texte rendu et source)", () => {
+    expect(rendu).not.toMatch(/%|pour\s?cent|k€|\bROI\b/i);
+    for (const j of ["{{GAIN_EXEMPLE}}", "{{TAUX_HORAIRE}}", "{{HEURES_EXEMPLE}}"]) {
+      expect(sourceContenu).not.toContain(j);
+    }
+  });
+
   it("dit la TVA en sus et l'absence de prix d'audit séparé", () => {
     expect(TEXTES.tva).toMatch(/hors taxes/);
     expect(JSON.stringify(FAQ)).toMatch(/hors taxes/);
-    expect(JSON.stringify(FAQ)).toMatch(/pas de prix d’audit séparé/);
+    expect(JSON.stringify(FAQ)).toMatch(
+      /audit plus approfondi, au-delà de la Journée IA, se chiffre sur devis/,
+    );
+    expect(JSON.stringify(FAQ)).not.toMatch(/pas de prix d’audit séparé|Aucun prix d’audit/);
   });
 
   it("formation et automatisation : sur devis écrit, sans chiffre de prix", () => {
     expect(TEXTES.surDevis.formation.texte).toMatch(/sur devis écrit/i);
     expect(TEXTES.surDevis.formation.texte).toMatch(/2 à 15 personnes/);
     expect(TEXTES.surDevis.automatisation.texte).toMatch(/forfait est fixé avant de commencer/);
+  });
+
+  it("le bouton principal dit « Réserver un Diagnostic IA »", () => {
+    expect(TEXTES.cta).toBe("Réserver un Diagnostic IA");
   });
 
   it("compte de 5 à 7 questions, liens internes et bouton vers le Diagnostic IA", () => {
@@ -103,6 +117,12 @@ describe("JSON-LD /prix-audit-ia", () => {
     const prix = [...tout.matchAll(/"price":\s*"?([\d.]+)/g)].map((m) => m[1]);
     for (const p of prix) expect(p).toBe("1490");
     expect(tout).not.toMatch(MOTS_INTERDITS);
+    // Texte des réponses FAQ : seul 1 490 € en euros, ni pourcentage ni chiffre de gain.
+    const texteFaq = remplacerJetons(JSON.stringify((faq as { mainEntity: unknown[] }).mainEntity));
+    expect(texteFaq).not.toMatch(/%|pour\s?cent|k€|\bROI\b|\{\{/i);
+    for (const m of texteFaq.match(/\d[\d\s  .,]*\s*(€|euros?\b|EUR\b)/gi) ?? []) {
+      expect(m.replace(/[\s  .,]/g, "")).toMatch(/^1490(€|euros?|EUR)$/i);
+    }
   });
 
   it("est émis dans le HTML serveur (composant sans « use client »)", () => {
