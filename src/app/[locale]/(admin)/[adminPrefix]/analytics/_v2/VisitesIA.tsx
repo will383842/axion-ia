@@ -82,11 +82,7 @@ export async function VisitesIA(): Promise<React.ReactElement> {
       <h3 className="admin-h3 mt-[var(--space-admin-5)]">
         Semaine par semaine (12 dernières semaines, semaine en cours partielle)
       </h3>
-      {!v.serieHebdo ? (
-        <p className="admin-meta-block">
-          Le détail par semaine n&apos;est pas proposé par cette version de Plausible.
-        </p>
-      ) : v.semaines.length === 0 ? (
+      {v.semaines.length === 0 ? (
         <p className="admin-meta-block">Aucune visite venue d&apos;une IA sur 12 semaines.</p>
       ) : (
         <div className="admin-table-wrapper">
@@ -124,9 +120,7 @@ export async function VisitesIA(): Promise<React.ReactElement> {
       )}
 
       <h3 className="admin-h3 mt-[var(--space-admin-5)]">Pages d&apos;arrivée (30 jours)</h3>
-      {!v.serieHebdo ? (
-        <p className="admin-meta-block">Non proposé par cette version de Plausible.</p>
-      ) : v.pages.length === 0 ? (
+      {v.pages.length === 0 ? (
         <p className="admin-meta-block">Aucune page d&apos;arrivée à afficher.</p>
       ) : (
         <div className="admin-table-wrapper">

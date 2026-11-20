@@ -13,10 +13,11 @@
 //   « Google Gemini » (`custom_sources.json`) : les deux noms sont listés.
 // - Périodes : `7d` / `30d` natifs (alignés sur la v1) ; hebdo = lundi d'il y a 11
 //   semaines → aujourd'hui, fuseau Europe/Paris (semaine en cours partielle).
-// - Repli v1 (`/api/v1/stats/breakdown`) si la v2 répond 404 : par source (`visit:source==…`)
-//   + un second passage par référent Gemini (`visit:referrer=~…`, sources déjà comptées
-//   exclues). Totaux 7 j / 30 j seulement (ni série hebdomadaire, ni pages d'arrivée,
-//   ni bing.com/chat : Copilot via Bing n'y est compté que si la source l'indique).
+// - Pas de repli v1 : son parseur de filtres (Plausible v3.0.1, `stats_api_filter_parser.ex`) ne
+//   connaît ni `=~` ni `!=` sur une liste, donc le décompte serait faux. Un 404 de la v2 rend
+//   « indisponible » (version trop ancienne) ; la production parle la v2.
+// - Filtres insensibles à la casse (`case_sensitive: false`) : un `utm_source=ChatGPT.com` est
+//   stocké tel quel par Plausible.
 // - Échec silencieux : clé absente, stubs de build, API injoignable ou en erreur →
 //   `{ statut: "indisponible" }`, jamais d'exception. Aucun appel réseau au build.
 // - Cache mémoire court (5 min) : la page admin est force-dynamic.
@@ -61,7 +62,6 @@ const DOMAINES_REFERENT: readonly string[] = [
   ...REFERENTS_IA.flatMap((ia) => ia.domaines),
   "bing.com/chat",
 ];
-const REFERENTS_GEMINI = ["gemini.google.com", "bard.google.com"];
 
 const TOUTES_SOURCES: readonly string[] = Object.values(SOURCES_PLAUSIBLE).flat();
 const IA_PAR_SOURCE: ReadonlyMap<string, IdIA> = new Map(
@@ -103,8 +103,6 @@ export type VisitesIA =
       readonly trente: PeriodeIA;
       readonly semaines: readonly SemaineIA[];
       readonly pages: readonly PageArriveeIA[];
-      /** Faux si l'instance n'offre que l'API v1 (pas de courbe hebdomadaire). */
-      readonly serieHebdo: boolean;
     }
   | { readonly statut: "indisponible"; readonly raison: string };
 
@@ -225,47 +223,14 @@ function requete(site: string, plage: "7d" | "30d" | [string, string], dimension
       [
         "or",
         [
-          ["is", "visit:source", [...TOUTES_SOURCES]],
-          ["contains", "visit:referrer", [...DOMAINES_REFERENT]],
+          ["is", "visit:source", [...TOUTES_SOURCES], { case_sensitive: false }],
+          ["contains", "visit:referrer", [...DOMAINES_REFERENT], { case_sensitive: false }],
         ],
       ],
     ],
     order_by: [["visitors", "desc"]],
     pagination: { limit: 1000, offset: 0 },
   };
-}
-
-async function breakdownV1(
-  api: string,
-  cle: string,
-  site: string,
-  jours: number,
-  propriete: string,
-  filtres: string,
-): Promise<unknown[]> {
-  const p = new URLSearchParams({
-    site_id: site,
-    period: `${jours}d`,
-    property: propriete,
-    metrics: "visitors,visits",
-    limit: "1000",
-    filters: filtres,
-  });
-  const res = await fetch(`${api}/api/v1/stats/breakdown?${p.toString()}`, {
-    headers: { authorization: `Bearer ${cle}` },
-    signal: AbortSignal.timeout(DELAI_MS),
-    cache: "no-store",
-  });
-  if (!res.ok) throw new Error(`HTTP ${res.status}`);
-  const json = (await res.json()) as { results?: Array<Record<string, unknown>> };
-  return (json.results ?? []).map((r) => ({
-    // Passage « référent » : source vide, le référent est classé par domaine.
-    dimensions:
-      propriete === "visit:referrer"
-        ? ["", String(r.referrer ?? "")]
-        : [String(r[propriete.replace(/^[a-z]+:/, "")] ?? "")],
-    metrics: [r.visitors, r.visits],
-  }));
 }
 
 export async function lireVisitesIA(): Promise<VisitesIA> {
@@ -293,45 +258,28 @@ export async function lireVisitesIA(): Promise<VisitesIA> {
   ).replace(/\/+$/, "");
   let resultat: VisitesIA;
   try {
-    try {
-      const [r7, r30, rSem, rPages] = await Promise.all([
-        post(api, cle, requete(site, "7d", SRC)),
-        post(api, cle, requete(site, "30d", SRC)),
-        post(api, cle, requete(site, plageHebdoParis(), ["time:week", ...SRC])),
-        post(api, cle, requete(site, "30d", ["visit:entry_page", ...SRC])),
-      ]);
-      resultat = {
-        statut: "ok",
-        sept: agregerParIA(r7),
-        trente: agregerParIA(r30),
-        semaines: agregerSemainesIA(rSem),
-        pages: agregerPagesIA(rPages),
-        serieHebdo: true,
-      };
-    } catch (e) {
-      if (!(e instanceof V2Absente)) throw e;
-      const parSource = `visit:source==${TOUTES_SOURCES.join("|")}`;
-      // Gemini arrive avec la source « Google » : second passage par référent, hors sources déjà comptées.
-      const parReferent = `visit:referrer=~${REFERENTS_GEMINI.map((d) => d.replace(/\./g, "\\.")).join("|")};visit:source!=${TOUTES_SOURCES.join("|")}`;
-      const [s7, g7, s30, g30] = await Promise.all([
-        breakdownV1(api, cle, site, 7, "visit:source", parSource),
-        breakdownV1(api, cle, site, 7, "visit:referrer", parReferent),
-        breakdownV1(api, cle, site, 30, "visit:source", parSource),
-        breakdownV1(api, cle, site, 30, "visit:referrer", parReferent),
-      ]);
-      const r7 = [...s7, ...g7];
-      const r30 = [...s30, ...g30];
-      // v1 ne croise pas deux propriétés : pages d'arrivée non disponibles en repli.
-      resultat = {
-        statut: "ok",
-        sept: agregerParIA(r7),
-        trente: agregerParIA(r30),
-        semaines: [],
-        pages: [],
-        serieHebdo: false,
-      };
-    }
+    const [r7, r30, rSem, rPages] = await Promise.all([
+      post(api, cle, requete(site, "7d", SRC)),
+      post(api, cle, requete(site, "30d", SRC)),
+      post(api, cle, requete(site, plageHebdoParis(), ["time:week", ...SRC])),
+      post(api, cle, requete(site, "30d", ["visit:entry_page", ...SRC])),
+    ]);
+    resultat = {
+      statut: "ok",
+      sept: agregerParIA(r7),
+      trente: agregerParIA(r30),
+      semaines: agregerSemainesIA(rSem),
+      pages: agregerPagesIA(rPages),
+    };
   } catch (err) {
+    if (err instanceof V2Absente) {
+      const v: VisitesIA = {
+        statut: "indisponible",
+        raison: "API v2 de Plausible absente (version trop ancienne).",
+      };
+      cache = { a: Date.now(), ttl: TTL_ECHEC_MS, v };
+      return v;
+    }
     console.warn(
       "[visites-ia] lecture Plausible impossible :",
       err instanceof Error ? err.message : err,

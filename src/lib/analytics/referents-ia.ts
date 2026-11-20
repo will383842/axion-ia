@@ -4,6 +4,8 @@
 // `tracking-referer.ts` (bundle public) ne l'importe PAS — sa liste d'expressions régulières
 // est inchangée ; `referents-ia.spec.ts` vérifie que les deux restent alignées.
 
+import "server-only";
+
 export type IdIA =
   | "chatgpt"
   | "perplexity"

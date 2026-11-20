@@ -117,6 +117,17 @@ describe("lireVisitesIA — échec silencieux", () => {
     expect(f).not.toHaveBeenCalled();
   });
 
+  it("stub.invalid seul (sans SKIP_ENV_VALIDATION ni NEXT_PHASE) → indisponible, sans appel réseau", async () => {
+    process.env.PLAUSIBLE_API_KEY = "cle-de-test";
+    process.env.PLAUSIBLE_SITE_ID = "site-test";
+    delete process.env.SKIP_ENV_VALIDATION;
+    delete process.env.NEXT_PHASE;
+    process.env.DATABASE_URL = "postgresql://stub:stub@stub.invalid:5432/stub";
+    const f = vi.spyOn(globalThis, "fetch").mockRejectedValue(new Error("ne doit pas être appelé"));
+    expect((await lireVisitesIA()).statut).toBe("indisponible");
+    expect(f).not.toHaveBeenCalled();
+  });
+
   it("SKIP_ENV_VALIDATION seule (exécution, hors build) n'éteint pas la mesure", async () => {
     process.env.PLAUSIBLE_API_KEY = "cle-de-test";
     process.env.PLAUSIBLE_SITE_ID = "site-test";
@@ -186,7 +197,7 @@ describe("lireVisitesIA — échec silencieux", () => {
         unknown[][],
       ];
       expect(ou).toBe("or");
-      expect(filtreSource).toEqual(["is", "visit:source", sources]);
+      expect(filtreSource).toEqual(["is", "visit:source", sources, { case_sensitive: false }]);
       expect(filtreBing).toEqual([
         "contains",
         "visit:referrer",
@@ -205,6 +216,7 @@ describe("lireVisitesIA — échec silencieux", () => {
           "phind.com",
           "bing.com/chat",
         ],
+        { case_sensitive: false },
       ]);
       expect(q.dimensions as string[]).toContain("visit:source");
     }
@@ -215,45 +227,23 @@ describe("lireVisitesIA — échec silencieux", () => {
     expect(init.method).toBe("POST");
   });
 
-  it("repli v1 : 404 sur la v2 → breakdown v1 7d/30d sur visit:source, sans courbe", async () => {
+  it("404 sur la v2 → indisponible (version trop ancienne), aucun appel /api/v1/", async () => {
     process.env.PLAUSIBLE_API_KEY = "cle-de-test";
     process.env.PLAUSIBLE_SITE_ID = "site-test";
     delete process.env.SKIP_ENV_VALIDATION;
     const urls: string[] = [];
     vi.spyOn(globalThis, "fetch").mockImplementation(async (u) => {
-      const url = String(u);
-      urls.push(url);
-      if (url.includes("/api/v2/query")) return new Response("{}", { status: 404 });
-      return new Response(
-        JSON.stringify({ results: [{ source: "ChatGPT", visitors: 4, visits: 5 }] }),
-        {
-          status: 200,
-        },
-      );
+      urls.push(String(u));
+      return new Response("{}", { status: 404 });
     });
     const r = await lireVisitesIA();
-    expect(r.statut).toBe("ok");
-    if (r.statut === "ok") {
-      expect(r.serieHebdo).toBe(false);
-      expect(r.sept.visiteurs).toBe(4);
-      expect(r.semaines).toEqual([]);
-      expect(r.pages).toEqual([]);
-    }
-    const sources = SOURCES_ATTENDUES;
-    const v1 = urls
-      .filter((u) => u.includes("/api/v1/stats/breakdown"))
-      .map((u) => new URL(u).searchParams);
-    expect(v1.map((p) => p.get("period")).sort()).toEqual(["30d", "30d", "7d", "7d"]);
-    expect(v1).toHaveLength(4);
-    for (const p of v1) {
-      expect(p.get("site_id")).toBe("site-test");
-      const parSource = p.get("property") === "visit:source";
-      expect(p.get("filters")).toBe(
-        parSource
-          ? `visit:source==${sources.join("|")}`
-          : `visit:referrer=~gemini\\.google\\.com|bard\\.google\\.com;visit:source!=${sources.join("|")}`,
-      );
-    }
+    expect(r).toEqual({
+      statut: "indisponible",
+      raison: "API v2 de Plausible absente (version trop ancienne).",
+    });
+    expect(urls.length).toBeGreaterThan(0);
+    expect(urls.every((u) => u.includes("/api/v2/query"))).toBe(true);
+    expect(urls.some((u) => u.includes("/api/v1/"))).toBe(false);
   });
 
   it("met aussi en cache l'indisponibilité (60 s)", async () => {
@@ -313,26 +303,17 @@ const champ = (l: Ligne, p: string) => (p === "visit:source" ? l[0] : l[1]);
 
 /** Évalue un filtre v2 (`or`, `is`, `contains`) comme Plausible. */
 function v2Retient(f: unknown[], l: Ligne): boolean {
-  const [op, a, b] = f as [string, unknown, unknown];
+  const [op, a, b, mod] = f as [string, unknown, unknown, { case_sensitive?: boolean }?];
   if (op === "or") return (a as unknown[][]).some((x) => v2Retient(x, l));
-  const v = champ(l, a as string);
-  if (op === "is") return (b as string[]).includes(v);
-  if (op === "contains") return (b as string[]).some((s) => v.includes(s));
+  const ci = mod?.case_sensitive === false;
+  const v = ci ? champ(l, a as string).toLowerCase() : champ(l, a as string);
+  const liste = ci ? (b as string[]).map((x) => x.toLowerCase()) : (b as string[]);
+  if (op === "is") return liste.includes(v);
+  if (op === "contains") return liste.some((x) => v.includes(x));
   throw new Error(`opérateur inconnu ${op}`);
 }
 
-/** Évalue un filtre v1 (`prop==a|b`, `prop=~re`, `prop!=a|b`, séparés par `;`). */
-function v1Retient(filtre: string, l: Ligne): boolean {
-  return filtre.split(";").every((c) => {
-    const m = /^(visit:[a-z_]+)(==|=~|!=)(.*)$/.exec(c)!;
-    const v = champ(l, m[1]!);
-    if (m[2] === "==") return m[3]!.split("|").includes(v);
-    if (m[2] === "!=") return !m[3]!.split("|").includes(v);
-    return new RegExp(m[3]!).test(v);
-  });
-}
-
-describe("Plausible simulé : toutes les IA arrivent jusqu'au décompte (v2 puis repli v1)", () => {
+describe("Plausible simulé : toutes les IA arrivent jusqu'au décompte (API v2)", () => {
   const sauve = { ...process.env };
   beforeEach(() => {
     _viderCacheVisitesIA();
@@ -376,40 +357,6 @@ describe("Plausible simulé : toutes les IA arrivent jusqu'au décompte (v2 puis
     expect(r.sept.visiteurs).toBe(attendu(tous));
     expect(r.sept.parIA.find((x) => x.id === "gemini")?.visiteurs).toBe(2);
     expect(r.sept.parIA.find((x) => x.id === "copilot")?.visiteurs).toBe(3);
-  });
-
-  it("repli v1 : Gemini (source « Google ») est aussi compté", async () => {
-    vi.spyOn(globalThis, "fetch").mockImplementation(async (u) => {
-      const url = String(u);
-      if (url.includes("/api/v2/query")) return new Response("{}", { status: 404 });
-      const p = new URL(url).searchParams;
-      const prop = p.get("property")!;
-      const cle = prop.replace("visit:", "");
-      const m = new Map<string, number>();
-      for (const l of REELLES) {
-        if (!v1Retient(p.get("filters")!, l)) continue;
-        m.set(champ(l, prop), (m.get(champ(l, prop)) ?? 0) + l[3]);
-      }
-      const results = [...m].map(([v, n]) => ({ [cle]: v, visitors: n, visits: n }));
-      return new Response(JSON.stringify({ results }), { status: 200 });
-    });
-    const r = await lireVisitesIA();
-    if (r.statut !== "ok") throw new Error("attendu ok");
-    expect(r.serieHebdo).toBe(false);
-    expect(r.sept.parIA.find((x) => x.id === "gemini")?.visiteurs).toBe(2);
-    // Pas de double compte : la v1 ne peut compter Bing/chat (copilot) que par la source.
-    const tous = [
-      "chatgpt",
-      "perplexity",
-      "copilot",
-      "gemini",
-      "claude",
-      "mistral",
-      "deepseek",
-      "you",
-      "phind",
-    ];
-    expect(r.sept.visiteurs).toBe(attendu(tous) - 1); // tout sauf la ligne Bing/chat
   });
 });
 
