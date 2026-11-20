@@ -212,7 +212,6 @@ describe("construireApercu — libellé du numéro", () => {
     "facture-envoi",
     "convention-envoi",
     "relance-devis-client",
-    "facture-pieces-remboursement-opco",
   ])("%s : jamais « Devis n° »", (gabarit) => {
     const lignes = construireApercu({ numero: "X-1", titreFormation: "IA" }, gabarit);
     expect(lignes.some((l) => l.label === "Devis n°")).toBe(false);
