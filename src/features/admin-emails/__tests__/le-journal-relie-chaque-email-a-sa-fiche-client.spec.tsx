@@ -194,8 +194,12 @@ describe("le journal lit l'heure de Paris et propose le filtre par client", () =
     "utf8",
   );
   it("la date de la liste porte timeZone Europe/Paris", () => {
-    const debut = vue.indexOf("const quand =");
-    expect(vue.slice(debut, debut + 400)).toContain('timeZone: "Europe/Paris"');
+    // Refonte en cartes : l'ancienne `quand` est remplacée par trois helpers de date, tous en Paris.
+    for (const nom of ["const jourParis =", "const cleJourParis =", "const heureParis ="]) {
+      const debut = vue.indexOf(nom);
+      expect(debut).toBeGreaterThan(-1);
+      expect(vue.slice(debut, debut + 400)).toContain('timeZone: "Europe/Paris"');
+    }
   });
   it("la liste montre l'objet et le lien vers la fiche, le filtre garde le client", () => {
     expect(vue).toContain("r.objet");
