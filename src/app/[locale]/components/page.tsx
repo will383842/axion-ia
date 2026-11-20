@@ -189,7 +189,7 @@ export default function ComponentsPage() {
             {
               id: "outcome",
               question: "Que reste-t-il après l'intervention ?",
-              answer: "Un plan d'implémentation chiffré + 30 jours de support pour itérer.",
+              answer: "Un plan d'implémentation chiffré, avec le code et la documentation remis.",
             },
           ]}
         />

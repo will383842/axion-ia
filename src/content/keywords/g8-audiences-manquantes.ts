@@ -469,7 +469,6 @@ const KW_COLLECTIVITE: KeywordSeed[] = [
       h2Variants: [
         "Contenu de la formation IA agents municipaux",
         "IA et service public : ce qui est permis, ce qui est interdit",
-        "Suivi post-formation et mesure des acquis agents",
       ],
     },
     variables: {

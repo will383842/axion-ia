@@ -79,9 +79,9 @@ export const VENISSIEUX_COPY: VilleCopy = {
               "Tests d'acceptation sur vos vrais flux à Vénissieux, hébergement provisionné en UE (OVHcloud, Scaleway), bascule en production, et transfert documenté (runbook) à votre IT ou à votre prestataire habituel.",
           },
           {
-            step: "Suivi et autonomie",
+            step: "Autonomie",
             detail:
-              "Monitoring post-lancement (performance, disponibilité, qualité des réponses IA), correctifs, puis passation : votre équipe ou tout intégrateur de la Métropole de Lyon peut reprendre le code. Aucun verrou Axion-IA.",
+              "Passation : votre équipe ou tout intégrateur de la Métropole de Lyon peut reprendre le code. Aucun verrou Axion-IA.",
           },
         ],
         pricing: [
@@ -165,9 +165,9 @@ export const VENISSIEUX_COPY: VilleCopy = {
               "User acceptance testing on your real flows in Vénissieux, EU hosting provisioned (OVHcloud, Scaleway), production cutover, and documented handover (runbook) to your IT or usual provider.",
           },
           {
-            step: "Follow-up and autonomy",
+            step: "Autonomy",
             detail:
-              "Post-launch monitoring (performance, availability, AI answer quality), fixes, then handover: your team or any Métropole de Lyon integrator can take over the code. No Axion-IA lock-in.",
+              "Handover: your team or any Métropole de Lyon integrator can take over the code. No Axion-IA lock-in.",
           },
         ],
         pricing: [

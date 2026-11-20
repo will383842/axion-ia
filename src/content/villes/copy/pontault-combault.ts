@@ -82,9 +82,9 @@ export const PONTAULT_COMBAULT_COPY: VilleCopy = {
               "Ajout d'un chatbot de devis et de conseil produit, d'une recherche sémantique sur le catalogue, de fiches et descriptions générées par IA et de relances panier — calibrés sur vos références (carrelage, déstockage, grande conso).",
           },
           {
-            step: "Mise en ligne, formation et suivi",
+            step: "Mise en ligne et formation",
             detail:
-              "Recette dans vos locaux à Pontault-Combault, formation de votre équipe à la gestion du contenu et des commandes, puis suivi des performances (vitesse, conversion, recherche locale). Vous gardez la main, code et données transférables.",
+              "Recette dans vos locaux à Pontault-Combault, formation de votre équipe à la gestion du contenu et des commandes. Vous gardez la main, code et données transférables.",
           },
         ],
         pricing: [
@@ -168,9 +168,9 @@ export const PONTAULT_COMBAULT_COPY: VilleCopy = {
               "Adding a quote and product-advice chatbot, semantic catalogue search, AI-generated product copy and cart recovery — calibrated on your references (tiles, off-price, fast-moving goods).",
           },
           {
-            step: "Go-live, training and follow-up",
+            step: "Go-live and training",
             detail:
-              "Acceptance at your Pontault-Combault premises, training your team on content and order management, then performance monitoring (speed, conversion, local search). You stay in control, code and data transferable.",
+              "Acceptance at your Pontault-Combault premises, training your team on content and order management. You stay in control, code and data transferable.",
           },
         ],
         pricing: [

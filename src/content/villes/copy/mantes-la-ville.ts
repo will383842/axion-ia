@@ -80,7 +80,7 @@ export const MANTES_LA_VILLE_COPY: VilleCopy = {
           {
             step: "Livraison + autonomie",
             detail:
-              "Code, bases et modèles livrés chez vous (hébergement UE possible), documentés et transférables. Vos équipes du Mantois pilotent l'outil en autonomie, sans verrou ni abonnement imposé ; on forme vos référents et on reste disponible pour un transfert vers un prestataire local francilien si besoin.",
+              "Code, bases et modèles livrés chez vous (hébergement UE possible), documentés et transférables. Vos équipes du Mantois pilotent l'outil en autonomie, sans verrou ni abonnement imposé ; on forme vos référents, et la documentation est transférable à un prestataire local francilien si besoin.",
           },
         ],
         pricing: [
@@ -166,7 +166,7 @@ export const MANTES_LA_VILLE_COPY: VilleCopy = {
           {
             step: "Livraison + autonomie",
             detail:
-              "Code, bases et modèles livrés chez vous (hébergement UE possible), documentés et transférables. Vos équipes du Mantois pilotent l'outil en autonomie, sans verrou ni abonnement imposé ; on forme vos référents et on reste disponible pour un transfert vers un prestataire local francilien si besoin.",
+              "Code, bases et modèles livrés chez vous (hébergement UE possible), documentés et transférables. Vos équipes du Mantois pilotent l'outil en autonomie, sans verrou ni abonnement imposé ; on forme vos référents, et la documentation est transférable à un prestataire local francilien si besoin.",
           },
         ],
         pricing: [

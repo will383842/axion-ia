@@ -1560,7 +1560,7 @@ export const KW_AUDIT_G1: KeywordSeed[] = [
       h1: "Comment choisir son cabinet IA quand on est une PME française — 7 critères objectifs",
       metaTitle: "Choisir cabinet IA PME France | Guide Axion-IA",
       metaDescription:
-        "7 critères pour choisir le bon cabinet IA pour votre PME : expertise sectorielle, références, méthode, délais, prix, accompagnement post-audit.",
+        "7 critères pour choisir le bon cabinet IA pour votre PME : expertise sectorielle, références, méthode, délais, prix, livrables.",
       h2Variants: [
         "Les 7 critères pour choisir un cabinet IA adapté à une PME",
         "Questions à poser à un cabinet IA avant de signer",

@@ -518,11 +518,6 @@ export const VILLEURBANNE_COPY: VilleCopy = {
             detail:
               "Sur site Villeurbanne : tests d'acceptation utilisateurs, formation des ambassadeurs internes, livraison du runbook documentation, plan de monitoring de plusieurs semaines.",
           },
-          {
-            step: "Suivi post-go-live",
-            detail:
-              "À distance : surveillance des métriques de production, ajustements fins, mesure du ROI réel par rapport à la prédiction du SOW. Rapport final remis à clôture de mission.",
-          },
         ],
         pricing: [
           {
@@ -609,11 +604,6 @@ export const VILLEURBANNE_COPY: VilleCopy = {
             step: "Acceptance + training",
             detail:
               "On site Villeurbanne: user acceptance tests, training of internal ambassadors, runbook documentation delivery, multi-week monitoring plan.",
-          },
-          {
-            step: "Post-go-live follow-up",
-            detail:
-              "Remote: production metrics monitoring, fine adjustments, real ROI vs SOW prediction measurement. Final report delivered at mission closure.",
           },
         ],
         pricing: [
@@ -844,7 +834,7 @@ export const VILLEURBANNE_COPY: VilleCopy = {
           },
           {
             q: "Do sessions take place in Villeurbanne or remotely?",
-            a: "Both are possible. On-site sessions in Villeurbanne (your offices, campus Doua, or shared space) are preferred for practical phases with your real tools. Strategic and follow-up sessions can be on video.",
+            a: "Both are possible. On-site sessions in Villeurbanne (your offices, campus Doua, or shared space) are preferred for practical phases with your real tools. Strategic and later sessions can be on video.",
           },
           {
             q: "Is this programme confidential?",

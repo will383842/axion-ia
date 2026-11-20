@@ -102,7 +102,7 @@ export const KW_NOTORIETE_H: KeywordSeed[] = [
         "Résultats typiques par type de mission",
       ],
     },
-    variables: { resultat: "ROI documenté mission par mission", delai: "à 30 et 90 jours" },
+    variables: { resultat: "ROI documenté mission par mission" },
     urlCible: "/fr/cas-concrets/resultats",
     source: "manuel",
     note: "Schéma ItemList + Claim recommandé — relier vers pages mission détaillées",
@@ -148,7 +148,6 @@ export const KW_NOTORIETE_H: KeywordSeed[] = [
       h2Variants: [
         "Ce que les participants disent de nos formations IA",
         "Formats adaptés à chaque équipe",
-        "De la formation à l'usage réel — le suivi post-formation",
       ],
     },
     variables: { resultat: "équipes autonomes sur les outils IA ciblés", delai: "dès J+30" },
@@ -298,7 +297,7 @@ export const KW_NOTORIETE_H: KeywordSeed[] = [
         "Exemples de gains obtenus par des PME similaires à la vôtre",
       ],
     },
-    variables: { resultat: "ROI documenté à 30-90 jours", delai: "dès le 1er mois" },
+    variables: { resultat: "ROI documenté mission par mission" },
     urlCible: "/fr/cas-concrets/",
     source: "manuel",
     note: "Transactionnel tardif — ancrer sur les preuves, pas sur la promesse",
@@ -317,13 +316,12 @@ export const KW_NOTORIETE_H: KeywordSeed[] = [
       metaTitle: "Agence IA résultats mesurables France | Axion-IA",
       metaDescription:
         "Axion-IA s'engage sur des résultats mesurables. Découvrez comment nous documentons chaque projet IA et ce que cela change pour vos décisions.",
-      h2Variants: [
-        "Pourquoi l'engagement sur les résultats est notre différenciateur",
-        "Notre méthode de mesure d'impact post-mission",
-        "Ce que nos clients vérifient à 30, 60 et 90 jours",
-      ],
+      h2Variants: ["Pourquoi l'engagement sur les résultats est notre différenciateur"],
     },
-    variables: { resultat: "KPIs définis avant chaque mission", delai: "bilan à 30 jours inclus" },
+    variables: {
+      resultat: "KPIs définis avant chaque mission",
+      delai: "avant le début de la mission",
+    },
     urlCible: "/fr/cas-concrets/",
     source: "manuel",
     note: "Couvrir les deux termes 'agence IA' et 'cabinet IA' — positionnement double Will",
@@ -794,8 +792,7 @@ export const KW_NOTORIETE_H: KeywordSeed[] = [
     injection: {
       h1: "Un cabinet IA qui s'engage sur des résultats mesurables — Pas de promesses vagues",
       metaTitle: "Cabinet IA résultats mesurables | Axion-IA France",
-      metaDescription:
-        "Axion-IA définit des KPIs dès le départ et les suit avec vous. Résultats documentés à 30, 60 et 90 jours.",
+      metaDescription: "Axion-IA définit des KPIs dès le départ, avant la mission.",
       h2Variants: [
         "Notre engagement contractuel sur les livrables",
         "Comment nous définissons les KPIs avant chaque mission",
@@ -803,7 +800,7 @@ export const KW_NOTORIETE_H: KeywordSeed[] = [
       ],
     },
     variables: {
-      resultat: "KPIs définis avant la mission, mesurés à 30-90 jours",
+      resultat: "KPIs définis avant la mission",
       delai: "dès la phase de cadrage",
     },
     urlCible: "/fr/a-propos/engagement-resultats",

@@ -490,11 +490,6 @@ export const STRASBOURG_COPY: VilleCopy = {
             detail:
               "Sur site Strasbourg : tests d'acceptation utilisateurs, formation des ambassadeurs internes dans leur langue de travail, livraison du runbook documentation (FR/DE si requis), plan de monitoring.",
           },
-          {
-            step: "Suivi post-go-live",
-            detail:
-              "À distance : surveillance des métriques de production, ajustements fins, mesure du ROI réel par rapport à la prédiction du SOW. Rapport final remis à clôture, mission close.",
-          },
         ],
         pricing: [
           {
@@ -581,11 +576,6 @@ export const STRASBOURG_COPY: VilleCopy = {
             step: "Acceptance + training",
             detail:
               "On site Strasbourg: user acceptance tests, training of internal ambassadors in their working language, runbook documentation delivery (FR/DE if required), monitoring plan.",
-          },
-          {
-            step: "Post-go-live follow-up",
-            detail:
-              "Remote: production metrics monitoring, fine adjustments, real ROI vs SOW prediction measurement. Final report delivered at closure, mission closed.",
           },
         ],
         pricing: [

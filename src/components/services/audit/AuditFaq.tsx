@@ -57,7 +57,7 @@ function buildFrFaqs(): ReadonlyArray<AuditFaqItem> {
       id: "after",
       question: "Que se passe-t-il après un audit IA ?",
       answer:
-        "Après un audit IA, vous repartez avec un plan d'action chiffré et priorisé par phases. Vous déployez ensuite à votre rythme, avec vos équipes ou avec Axion-IA grâce au module Implémentation, sur devis écrit. Un suivi peut être programmé après la livraison, pour vérifier que les premières priorités avancent comme prévu.",
+        "Après un audit IA, vous repartez avec un plan d'action chiffré et priorisé par phases. Vous déployez ensuite à votre rythme, avec vos équipes ou avec Axion-IA grâce au module Implémentation, sur devis écrit.",
     },
     {
       id: "eu-jurisdiction",
@@ -108,7 +108,7 @@ function buildEnFaqs(): ReadonlyArray<AuditFaqItem> {
       id: "after",
       question: "What happens after the audit?",
       answer:
-        "You leave with a costed action plan, prioritised by phase. You deploy at your pace — with your teams or with us (Implementation module). A follow-up can be scheduled after delivery.",
+        "You leave with a costed action plan, prioritised by phase. You deploy at your pace — with your teams or with us (Implementation module).",
     },
     {
       id: "eu-jurisdiction",
