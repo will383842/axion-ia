@@ -25,18 +25,24 @@ vi.mock("@/lib/redis", () => ({
   },
 }));
 
-import { signalerAuxMoteurs } from "@/lib/indexnow";
+import { pingIndexNow, signalerAuxMoteurs } from "@/lib/indexnow";
 import { classerErreur, reinitialiserAntiBruit } from "@/lib/seo/signalement-moteurs";
 
 const URLS = ["https://axion-ia.com/fr/blog/essai"];
 const ENV = { ...process.env };
 
 type Reponse = number | "timeout" | "reseau";
-function simulerReseau(opts: { indexnow: Reponse; bing: Reponse }) {
+function simulerReseau(opts: {
+  indexnow: Reponse;
+  bing: Reponse;
+  /** Réponse propre à un endpoint IndexNow (sous-chaîne de l'URL), prioritaire. */
+  parEndpoint?: Record<string, Reponse>;
+}) {
   const appels: string[] = [];
   vi.stubGlobal("fetch", async (url: string) => {
     appels.push(url);
-    const r = url.includes("ssl.bing.com") ? opts.bing : opts.indexnow;
+    const propre = Object.entries(opts.parEndpoint ?? {}).find(([k]) => url.includes(k));
+    const r = propre ? propre[1] : url.includes("ssl.bing.com") ? opts.bing : opts.indexnow;
     if (r === "timeout")
       throw Object.assign(new Error("The operation was aborted"), { name: "TimeoutError" });
     if (r === "reseau") throw new Error("ECONNRESET");
@@ -172,5 +178,106 @@ describe("aucune alerte au build", () => {
     simulerReseau({ indexnow: 403, bing: 500 });
     await signalerAuxMoteurs("axion-ia.com", "k".repeat(32), URLS, "blog");
     expect(sendTelegram).not.toHaveBeenCalled();
+  });
+});
+
+describe("V1-07 relecture point 1 : l'alerte IndexNow dit la vraie cause", () => {
+  it("api.indexnow.org 403 (Microsoft, permanent) + Yandex et Naver 503 : erreur-5xx, pas refus-4xx", async () => {
+    simulerReseau({
+      indexnow: 503,
+      bing: 200,
+      parEndpoint: { "api.indexnow.org": 403 },
+    });
+    await signalerAuxMoteurs("axion-ia.com", "k".repeat(32), URLS, "blog");
+    expect(sendTelegram).toHaveBeenCalledTimes(1);
+    const corps = sendTelegram.mock.calls[0]![0].body;
+    expect(corps).toContain("erreur-5xx");
+    expect(corps).not.toContain("refus-4xx");
+    // le détail garde les codes de TOUS les endpoints
+    expect(corps).toContain("403");
+    expect(corps).toContain("503");
+    const ligne = erreurs
+      .flat()
+      .find((x) => typeof x === "string" && x.includes('"signalement-moteur"'));
+    expect(JSON.parse(String(ligne).replace(/^[^{]*/, ""))).toMatchObject({
+      moteur: "indexnow",
+      type: "erreur-5xx",
+    });
+  });
+
+  it("anti-bruit par type : 403+503 puis 403+timeout réalertent (types différents)", async () => {
+    simulerReseau({ indexnow: 503, bing: 200, parEndpoint: { "api.indexnow.org": 403 } });
+    await signalerAuxMoteurs("axion-ia.com", "k".repeat(32), URLS, "blog");
+    simulerReseau({ indexnow: "timeout", bing: 200, parEndpoint: { "api.indexnow.org": 403 } });
+    await signalerAuxMoteurs("axion-ia.com", "k".repeat(32), URLS, "blog");
+    expect(sendTelegram).toHaveBeenCalledTimes(2);
+    expect(sendTelegram.mock.calls[1]![0].body).toMatch(/timeout/i);
+  });
+
+  it("403 partout : reste refus-4xx", async () => {
+    simulerReseau({ indexnow: 403, bing: 200 });
+    await signalerAuxMoteurs("axion-ia.com", "k".repeat(32), URLS, "blog");
+    expect(sendTelegram.mock.calls[0]![0].body).toContain("refus-4xx");
+  });
+});
+
+describe("V1-07 relecture point 2 : mode « repli » (worker)", () => {
+  it("IndexNow accepte (202) : AUCUN appel Bing, rapport.bing === null", async () => {
+    const appels = simulerReseau({ indexnow: 202, bing: 200 });
+    const rapport = await signalerAuxMoteurs("axion-ia.com", "k".repeat(32), URLS, "blog", {
+      bing: "repli",
+    });
+    expect(appels.some((u) => u.includes("ssl.bing.com"))).toBe(false);
+    expect(rapport.bing).toBeNull();
+    expect(sendTelegram).not.toHaveBeenCalled();
+  });
+
+  it("IndexNow échoue partout : exactement UN appel Bing", async () => {
+    const appels = simulerReseau({ indexnow: 403, bing: 200 });
+    const rapport = await signalerAuxMoteurs("axion-ia.com", "k".repeat(32), URLS, "blog", {
+      bing: "repli",
+    });
+    expect(appels.filter((u) => u.includes("ssl.bing.com"))).toHaveLength(1);
+    expect(rapport.bing?.submitted).toBe(1);
+  });
+
+  it("le défaut est « toujours » : Bing appelé même si IndexNow accepte", async () => {
+    const appels = simulerReseau({ indexnow: 202, bing: 200 });
+    await signalerAuxMoteurs("axion-ia.com", "k".repeat(32), URLS, "blog");
+    expect(appels.filter((u) => u.includes("ssl.bing.com"))).toHaveLength(1);
+  });
+});
+
+describe("V1-07 relecture point 3 : pingIndexNow (point d'entrée des publications)", () => {
+  it("IndexNow 403 partout : exactement une alerte et un appel Bing", async () => {
+    process.env["INDEXNOW_KEY"] = "k".repeat(32);
+    process.env["NEXT_PUBLIC_SITE_URL"] = "https://axion-ia.com";
+    const appels = simulerReseau({ indexnow: 403, bing: 200 });
+    pingIndexNow(URLS, "blog");
+    await vi.waitFor(() => expect(sendTelegram).toHaveBeenCalledTimes(1));
+    expect(appels.filter((u) => u.includes("ssl.bing.com"))).toHaveLength(1);
+  });
+
+  it("tout va bien : un appel IndexNow accepté, un appel Bing, ni alerte ni erreur", async () => {
+    process.env["INDEXNOW_KEY"] = "k".repeat(32);
+    process.env["NEXT_PUBLIC_SITE_URL"] = "https://axion-ia.com";
+    const appels = simulerReseau({ indexnow: 202, bing: 200 });
+    pingIndexNow(URLS, "blog");
+    await vi.waitFor(() => expect(appels.length).toBe(2));
+    await new Promise((r) => setTimeout(r, 20));
+    expect(appels.filter((u) => u.includes("ssl.bing.com"))).toHaveLength(1);
+    expect(appels.filter((u) => !u.includes("ssl.bing.com"))).toHaveLength(1);
+    expect(sendTelegram).not.toHaveBeenCalled();
+    expect(erreurs).toEqual([]);
+  });
+});
+
+describe("V1-07 relecture point 6 : aucune clé dans les journaux ni l'alerte", () => {
+  it("ni la clé IndexNow ni la clé Bing ne fuient", async () => {
+    simulerReseau({ indexnow: 403, bing: 500 });
+    await signalerAuxMoteurs("axion-ia.com", "k".repeat(32), URLS, "blog");
+    const sortie = JSON.stringify(erreurs) + JSON.stringify(sendTelegram.mock.calls);
+    expect(sortie).not.toContain("k".repeat(32));
+    expect(sortie).not.toContain("cle-de-test");
   });
 });

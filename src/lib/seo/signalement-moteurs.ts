@@ -12,7 +12,9 @@
 //
 // Anti-bruit : au plus UNE alerte par heure et par couple (moteur, type
 // d'erreur). Le journal, lui, n'est jamais étouffé. Verrou Redis `SET NX EX`,
-// avec repli en mémoire si Redis est indisponible (jamais de rafale pour autant).
+// avec repli en mémoire si Redis est indisponible. ⚠️ Ce repli est propre à chaque
+// processus : site et worker étant deux conteneurs, Redis en panne peut laisser
+// passer jusqu'à 2 alertes par heure et par type (pas de rafale pour autant).
 //
 // Aucune alerte au build : stubs Prisma/Redis (`stub.invalid`),
 // `BULLMQ_DISABLED=true`, phase de build Next. Le journal reste émis.

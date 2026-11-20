@@ -138,6 +138,20 @@ export interface RapportSignalement {
 const DELAI_INDEXNOW_PAR_DEFAUT_MS = 15_000;
 
 /**
+ * Échec qui classe l'alerte IndexNow. Le premier endpoint (`api.indexnow.org`,
+ * Microsoft) répond 403 en PERMANENT depuis le 2026-08-11 : le prendre pour
+ * classer ferait dire « refus-4xx » à toute alerte, quelle que soit la vraie
+ * panne (Yandex en 5xx, timeout…), et figerait la clé d'anti-bruit. On écarte
+ * donc ce 403 connu ; s'il ne reste rien, c'est que tout n'est que 403 et on
+ * prend le dernier échec.
+ */
+function echecRepresentatif(echecs: ReadonlyArray<EchecEndpoint> | undefined) {
+  if (!echecs?.length) return undefined;
+  const inconnu = echecs.find((e) => !(e.endpoint === ENDPOINTS[0] && e.statut === 403));
+  return inconnu ?? echecs[echecs.length - 1];
+}
+
+/**
  * GEO V1-07 — signale des URLs aux deux portes (IndexNow, API Bing) et NE LAISSE
  * PLUS un refus passer inaperçu : journal structuré + alerte (anti-bruit : une
  * par heure et par type), et repli sur l'autre porte.
@@ -147,7 +161,8 @@ const DELAI_INDEXNOW_PAR_DEFAUT_MS = 15_000;
  * - `bing: "repli"` (worker `content-indexnow`) : Bing n'est appelé que si
  *   IndexNow n'a été accepté par aucun endpoint (ménage du quota partagé).
  *
- * Alerte IndexNow : seulement quand AUCUN endpoint n'accepte. Le 403 permanent
+ * Alerte IndexNow : seulement quand AUCUN endpoint n'accepte ; son type est celui
+ * de la panne réelle, hors 403 connu de Microsoft (`echecRepresentatif`). Le 403 permanent
  * de Microsoft, rattrapé par Yandex, reste au journal (sinon : une alerte par
  * heure et par publication, à vie).
  * Ne throw jamais.
@@ -187,11 +202,12 @@ export async function signalerAuxMoteurs(
   const bingOk = bing != null && bing.configured && bing.failed === 0 && bing.submitted > 0;
   try {
     if (indexnow && !indexnow.accepted) {
-      const premier = indexnow.echecs?.[0];
+      const premier = echecRepresentatif(indexnow.echecs);
       await alerterEchecSignalement({
         moteur: "indexnow",
         type: premier?.type ?? "reseau",
         statut: premier?.statut ?? null,
+        // `attempts` porte le code de CHAQUE endpoint essayé.
         detail: indexnow.attempts.join(" | "),
         nbUrls: urls.length,
         contexte: label,

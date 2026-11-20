@@ -110,6 +110,9 @@ async function processJob(job: Job<IndexNowJobPayload>): Promise<void> {
     // V1-07 : si aucun endpoint n'accepte, l'API Bing prend le relais (repli) ;
     // le refus est journalisé en structuré et alerté (une fois par heure et par
     // type d'erreur). La forme du job BullMQ ne change pas.
+    // Si IndexNow échoue entièrement, `recordIndexNowFail` ci-dessous alerte
+    // aussi (3, 10, 30 échecs) : deux alertes pour un même incident, la
+    // première signale l'événement, la seconde suit la série.
     const { indexnow: result } = await signalerAuxMoteurs(
       host,
       key,
