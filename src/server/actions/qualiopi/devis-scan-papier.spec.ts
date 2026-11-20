@@ -327,6 +327,18 @@ describe("F1 / F2 — après le scellement", () => {
     expect(r).toMatchObject({ ok: true, activationRefusee: expect.stringContaining("motif X") });
   });
 
+  it("D3 : refus d'activation sans prefixe : texte propre au devis, jamais « formateur »", async () => {
+    h.apres.mockResolvedValue({ activationRefusee: { message: "motif X" } });
+    const r = await verserScanDevisSigneAction(formulaire());
+    expect(r).toMatchObject({
+      ok: true,
+      activationRefusee: expect.stringContaining(
+        "Devis enregistré comme signé, mais la suite n'a pas pu être lancée automatiquement.",
+      ),
+    });
+    expect((r as { activationRefusee: string }).activationRefusee).not.toMatch(/formateur/i);
+  });
+
   it("F2 : sans refus, pas de champ activationRefusee", async () => {
     const r = await verserScanDevisSigneAction(formulaire());
     expect(r).not.toHaveProperty("activationRefusee");

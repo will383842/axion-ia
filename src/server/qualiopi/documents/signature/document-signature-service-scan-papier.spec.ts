@@ -278,6 +278,20 @@ describe("scan papier — refus", () => {
     },
   );
 
+  it.each([
+    ["confirmation_accessible sans image", { methode: "confirmation_accessible" }],
+    ["trace + image PNG", { methode: "trace", imageDataUrl: "data:image/png;base64,AAAA" }],
+    ["papier_scanne + image PNG sans scanPdf", { imageDataUrl: "data:image/png;base64,AAAA" }],
+  ])(
+    "porteur reversement_papier hors scan PDF (%s) : porteur_non_autorise, sans R2 ni base",
+    async (_n, extra) => {
+      const res = await signerDocument(entree({ scanPdf: undefined, ...extra }));
+      attendRefus(res, "porteur_non_autorise");
+      expect(mockSupprimerScan).not.toHaveBeenCalled();
+      expect(m.$transaction).not.toHaveBeenCalled();
+    },
+  );
+
   it("scanPdf avec une autre méthode que papier_scanne : refus", async () => {
     attendRefus(await signerDocument(entree({ methode: "trace" })), "image_interdite");
   });

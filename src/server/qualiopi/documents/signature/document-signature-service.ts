@@ -1091,6 +1091,12 @@ export async function signerDocument(
   if (scanFourni && (porteur.type !== "reversement_papier" || !papier || imageFournie)) {
     return refus("image_interdite");
   }
+  // Sens inverse : le reversement papier ne signe que par scan PDF. Placée après les gardes de pièce, avant tout R2.
+  // Sans scan, une méthode autre que papier_scanne, ou une image jointe, ferait afficher comme image une ligne papier (« Signé le »).
+  // `papier_scanne` sans rien reste à `image_requise` plus bas ; un scan fourni garde ses refus propres.
+  if (porteur.type === "reversement_papier" && !scanFourni && (!papier || imageFournie)) {
+    return refus("porteur_non_autorise");
+  }
   // D1 (option c) — versions papier IMPOSÉES en papier, refusées ailleurs : l'appelant ne choisit
   // jamais ce que la ligne dit du consentement.
   if (papier && input.consentementVersion !== undefined) return refus("porteur_non_autorise");

@@ -24,10 +24,7 @@ import { z } from "zod";
 import { prisma } from "@/lib/prisma";
 import type { AdminSession } from "@/server/actions/knowledge/_guards";
 import { requireAdminWrite, logQualiopiActivity } from "./_guards";
-import {
-  apresSignature,
-  PREFIXE_ACTIVATION_REFUSEE,
-} from "@/server/qualiopi/documents/signature/apres-signature";
+import { apresSignature } from "@/server/qualiopi/documents/signature/apres-signature";
 import { contexteRequete } from "@/server/qualiopi/documents/signature/contexte-requete";
 import { signerDocument } from "@/server/qualiopi/documents/signature/document-signature-service";
 import { peutSignerPourOrganisme } from "@/server/qualiopi/documents/signature/garde-engagement";
@@ -55,6 +52,8 @@ const MSG_ETAT =
 const MSG_FICHE = "La fiche client ne porte pas de nom de signataire : renseignez-la d'abord.";
 const MSG_DEJA_SIGNE = "Ce devis est déjà signé par le client.";
 const MSG_SCAN_VU = "Ce scan a déjà été versé.";
+const PREFIXE_ACTIVATION_DEVIS =
+  "Devis enregistré comme signé, mais la suite n'a pas pu être lancée automatiquement.";
 const MSG_STOCKAGE = "Le scan n'a pas pu être enregistré. Rien n'a été versé : réessayez.";
 
 const entreeSchema = z.object({
@@ -180,6 +179,8 @@ export async function verserScanDevisSigneAction(
     await journaliserRefus(session, "deja_signe", devisId);
     return refus(MSG_DEJA_SIGNE);
   }
+  // Contrôle « même empreinte » : confort sans garantie en base (deux versements simultanés du même
+  // scan sur deux devis passeraient) ; la preuve reste protégée par l'index unique par devis.
   const scanSha256 = createHash("sha256").update(octets).digest("hex");
   const dejaVu = await prisma.documentSignature.findFirst({
     where: { signatureSha256: scanSha256, revokedAt: null },
@@ -257,7 +258,7 @@ export async function verserScanDevisSigneAction(
 
     const activationRefusee =
       apres?.activationRefusee != null
-        ? `${apres.activationRefusee.prefixe ?? PREFIXE_ACTIVATION_REFUSEE} ${apres.activationRefusee.message}`
+        ? `${apres.activationRefusee.prefixe ?? PREFIXE_ACTIVATION_DEVIS} ${apres.activationRefusee.message}`
         : undefined;
 
     return {
