@@ -32,6 +32,38 @@ import {
 /** Plafond de lecture par source : les compteurs s'arrêtent là, et l'interface le dit. */
 export const PAR_SOURCE = 100;
 
+/** « Devis signé par le client le … » / « Devis contresigné le … » (pièce non annulée). */
+function evenementsSignatureDevis(d: {
+  id: string;
+  documentGenere: {
+    annuleeAt: Date | null;
+    signatures: ReadonlyArray<{ partie: string; signeAt: Date }>;
+  } | null;
+}): EvenementActivite[] {
+  if (!d.documentGenere || d.documentGenere.annuleeAt !== null) return [];
+  const jour = (x: Date): string => x.toLocaleDateString("fr-FR", { timeZone: "Europe/Paris" });
+  const evts: EvenementActivite[] = [];
+  for (const [partie, libelle] of [
+    ["client", "Devis signé par le client"],
+    ["axionia", "Devis contresigné"],
+  ] as const) {
+    const s = d.documentGenere.signatures
+      .filter((x) => x.partie === partie)
+      .sort((a, b) => a.signeAt.getTime() - b.signeAt.getTime())[0];
+    if (s === undefined) continue;
+    evts.push({
+      cle: `devis-signature:${d.id}:${partie}`,
+      type: "argent",
+      date: s.signeAt,
+      titre: `${libelle} le ${jour(s.signeAt)}`,
+      etat: libelle,
+      nuance: "argent",
+      lien: null,
+    });
+  }
+  return evts;
+}
+
 const ETAT_DEVIS: Readonly<Record<string, string>> = {
   envoye: "Devis envoyé",
   accepte: "Devis accepté",
@@ -251,22 +283,35 @@ export async function lireChronologie(
           montantTotalHtCents: true,
           sentAt: true,
           acceptedAt: true,
+          // Signatures de la pièce : même requête (pas de N+1), lecture seule.
+          documentGenere: {
+            select: {
+              annuleeAt: true,
+              signatures: {
+                where: { revokedAt: null },
+                select: { partie: true, signeAt: true },
+              },
+            },
+          },
         },
       })
       .then((ds) =>
-        ds.map((d): EvenementActivite => ({
-          cle: `devis:${d.id}`,
-          type: "argent",
-          date: d.sentAt as Date,
-          titre:
-            d.statut === "refuse" || d.statut === "expire"
-              ? `Devis n° ${d.numero}`
-              : `Devis envoyé n° ${d.numero}`,
-          etat: ETAT_DEVIS[d.statut] ?? "Devis envoyé",
-          nuance: "argent",
-          lien: null,
-          montant: { cents: d.montantTotalHtCents, base: "ht" },
-        })),
+        ds.flatMap((d): EvenementActivite[] => [
+          {
+            cle: `devis:${d.id}`,
+            type: "argent",
+            date: d.sentAt as Date,
+            titre:
+              d.statut === "refuse" || d.statut === "expire"
+                ? `Devis n° ${d.numero}`
+                : `Devis envoyé n° ${d.numero}`,
+            etat: ETAT_DEVIS[d.statut] ?? "Devis envoyé",
+            nuance: "argent",
+            lien: null,
+            montant: { cents: d.montantTotalHtCents, base: "ht" },
+          },
+          ...evenementsSignatureDevis(d),
+        ]),
       ),
   );
 

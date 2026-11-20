@@ -46,6 +46,18 @@ export interface BingSubmitResult {
   readonly failed: number;
 }
 
+/** Détail d'un échec de lot, pour le journal et l'alerte (V1-07). */
+export interface BingEchec {
+  /** Code HTTP, `null` pour un timeout ou une panne réseau. */
+  readonly statut: number | null;
+  readonly detail: string;
+  readonly erreur?: unknown;
+}
+
+export interface BingSubmitDetail extends BingSubmitResult {
+  readonly echecs: ReadonlyArray<BingEchec>;
+}
+
 /** True si `BING_WMT_API_KEY` est renseignée. */
 export function isBingSubmitReady(): boolean {
   return Boolean(process.env["BING_WMT_API_KEY"]?.trim());
@@ -70,12 +82,22 @@ export async function submitUrlsToBing(
   urls: ReadonlyArray<string>,
   context = "publication",
 ): Promise<BingSubmitResult> {
+  const { configured, submitted, failed } = await submitUrlsToBingDetaille(urls, context);
+  return { configured, submitted, failed };
+}
+
+/** Comme `submitUrlsToBing`, avec la cause de chaque lot en échec (V1-07). */
+export async function submitUrlsToBingDetaille(
+  urls: ReadonlyArray<string>,
+  context = "publication",
+): Promise<BingSubmitDetail> {
+  const echecs: BingEchec[] = [];
   const apiKey = process.env["BING_WMT_API_KEY"]?.trim();
   if (!apiKey) {
-    return { configured: false, submitted: 0, failed: 0 };
+    return { configured: false, submitted: 0, failed: 0, echecs };
   }
   if (urls.length === 0) {
-    return { configured: true, submitted: 0, failed: 0 };
+    return { configured: true, submitted: 0, failed: 0, echecs };
   }
 
   const siteUrl = process.env["NEXT_PUBLIC_SITE_URL"] ?? DEFAULT_SITE_URL;
@@ -99,15 +121,21 @@ export async function submitUrlsToBing(
         // Le corps de Bing porte souvent la cause exacte (quota, site non
         // vérifié, clé invalide) : le journaliser evite un aller-retour.
         const corps = await res.text().catch(() => "");
+        echecs.push({ statut: res.status, detail: corps.slice(0, 200) });
         console.warn(
           `[bing-submit] ${context} — HTTP ${res.status} sur ${lot.length} URLs : ${corps.slice(0, 200)}`,
         );
       }
     } catch (err) {
       failed += lot.length;
+      echecs.push({
+        statut: null,
+        detail: err instanceof Error ? err.message : String(err),
+        erreur: err,
+      });
       console.warn(`[bing-submit] ${context} — echec reseau sur ${lot.length} URLs :`, err);
     }
   }
 
-  return { configured: true, submitted, failed };
+  return { configured: true, submitted, failed, echecs };
 }

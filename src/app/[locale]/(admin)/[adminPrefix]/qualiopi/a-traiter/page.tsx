@@ -41,6 +41,8 @@ import {
 } from "lucide-react";
 
 import { auth } from "@/auth";
+import { BlocHorodatagesEnRetard } from "@/components/admin/qualiopi/BlocHorodatagesEnRetard";
+import { listerHorodatagesEnRetard } from "@/server/qualiopi/documents/signature/lire-horodatages";
 import { AdminPageShell } from "@/components/admin/ui/AdminPageShell";
 import { AdminPageHeader } from "@/components/admin/ui/AdminPageHeader";
 import { AdminButton } from "@/components/admin/ui/AdminButton";
@@ -121,23 +123,26 @@ export default async function ATraiterPage({ params }: PageProps) {
 
   const base = `/${locale}/${adminPrefix}`;
 
-  const [compteurs, signatures, alertesBrutes, retours, parcours, rouverts] = await Promise.all([
-    compterQualiopiNav(),
-    listerPiecesEnAttente(),
-    listAlertes({ resolue: false, limit: 50 }).catch(() => []),
-    listerRetoursEnAttente(),
-    // 🔴 Lot 1 §1.4 — cette page EXISTAIT et IGNORAIT les sessions. Il fallait
-    // ouvrir chaque dossier pour apprendre qu'une convention n'etait pas signee
-    // a J-3. Meme service que la pastille de nav : deux calculs diraient un
-    // jour deux chiffres, et un badge qui ment n'est plus jamais regarde.
-    prochainesEcheances().catch(() => ({
-      echeances: [],
-      parSession: new Map(),
-      troncature: null,
-    })),
-    // Lot L4 — `null` = registre illisible : dit à l'écran, jamais tu.
-    listerDossiersRouvertsAnciens().catch(() => null),
-  ]);
+  const [compteurs, signatures, alertesBrutes, retours, parcours, rouverts, horodatagesEnRetard] =
+    await Promise.all([
+      compterQualiopiNav(),
+      listerPiecesEnAttente(),
+      listAlertes({ resolue: false, limit: 50 }).catch(() => []),
+      listerRetoursEnAttente(),
+      // 🔴 Lot 1 §1.4 — cette page EXISTAIT et IGNORAIT les sessions. Il fallait
+      // ouvrir chaque dossier pour apprendre qu'une convention n'etait pas signee
+      // a J-3. Meme service que la pastille de nav : deux calculs diraient un
+      // jour deux chiffres, et un badge qui ment n'est plus jamais regarde.
+      prochainesEcheances().catch(() => ({
+        echeances: [],
+        parSession: new Map(),
+        troncature: null,
+      })),
+      // Lot L4 — `null` = registre illisible : dit à l'écran, jamais tu.
+      listerDossiersRouvertsAnciens().catch(() => null),
+      // Horodatages en attente depuis plus de 24 h — lecture seule ; `null` = illisible (dit).
+      listerHorodatagesEnRetard().catch(() => null),
+    ]);
 
   // On ne montre ici que ce qui PRESSE : echeance depassee, encore rattrapable
   // ou deja hors delai. Les etapes « a faire » d'une session de decembre n'ont
@@ -184,6 +189,8 @@ export default async function ATraiterPage({ params }: PageProps) {
   const rienAFaire =
     rouverts !== null &&
     rouverts.length === 0 &&
+    horodatagesEnRetard !== null &&
+    horodatagesEnRetard.length === 0 &&
     retours.length === 0 &&
     signatures.length === 0 &&
     compteurs.emails === 0 &&
@@ -268,6 +275,8 @@ export default async function ATraiterPage({ params }: PageProps) {
           </ul>
         </div>
       ) : null}
+
+      <BlocHorodatagesEnRetard lignes={horodatagesEnRetard} base={base} />
 
       {/* Retours en attente — questionnaires envoyés restés sans réponse.
           🔴 Constaté sur le premier dossier réel : les questionnaires partaient
