@@ -59,10 +59,6 @@ type Evaluation =
 
 /** Lit le devis et calcule (fonction pure du lot 5) les plans ATTENDUS. N'écrit rien. */
 async function evaluerPlansDuDevis(devisId: string): Promise<Evaluation> {
-  if (!(await formulesActives())) {
-    return { fin: { statut: "inerte", raison: "interrupteur_eteint" } };
-  }
-
   const devis = await prisma.devis.findUnique({
     where: { id: devisId },
     select: {
@@ -80,6 +76,10 @@ async function evaluerPlansDuDevis(devisId: string): Promise<Evaluation> {
     },
   });
   if (devis === null) return { fin: refuse("devis_introuvable", "Devis introuvable.") };
+  // Contrôle APRÈS la lecture : la cible est le client du devis (fiche d'essai en mode « essai »).
+  if (!(await formulesActives(undefined, { clientId: devis.clientId }))) {
+    return { fin: { statut: "inerte", raison: "interrupteur_eteint" } };
+  }
   if (devis.offre === null) return { fin: { statut: "inerte", raison: "sans_offre" } };
   if (devis.statut !== "accepte" && devis.statut !== "transforme_convention") {
     return { fin: refuse("devis_non_accepte", "Seul un devis accepté propose des plans.") };

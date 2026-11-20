@@ -167,7 +167,7 @@ export async function marquerRemisEnMainPropreAction(input: {
         // (c) Pièce PDF numérotée : un échec refuse tout (le devis reste en brouillon).
         let data: DevisData;
         try {
-          const contexte = await lireContextePdfDevis();
+          const contexte = await lireContextePdfDevis({ clientId: devis.clientId, tx });
           data = donneesPdfDevis(devis, contexte, new Date());
         } catch (err) {
           if (err instanceof OffreDevisInvalideError) {

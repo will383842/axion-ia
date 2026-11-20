@@ -325,7 +325,7 @@ async function numeroter(i: unknown): Promise<Interne> {
       ? (devisLie.offre as { automatisations?: unknown }).automatisations
       : undefined;
   const ctx: ContexteConversion = {
-    formulesActives: await formulesActives(),
+    formulesActives: await formulesActives(undefined, { clientId: payload.clientId ?? null }),
     typeClient,
     maintenant: new Date(),
     regime: regimeTvaDepuisConfig(await getQualiopiConfig("regime_tva")),

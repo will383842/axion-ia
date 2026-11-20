@@ -51,7 +51,7 @@ export async function apercuAssistantAction(
     data: calculerApercu(p, {
       regime,
       tauxStandard,
-      formulesActives: await formulesActives(),
+      formulesActives: await formulesActives(undefined, { clientId: p.clientId ?? null }),
       typeClient: client ? (client.type === "particulier" ? "particulier" : "entreprise") : null,
       maintenant: new Date(),
       ...(offre?.automatisations ? { automatisationsHeritees: offre.automatisations } : {}),
