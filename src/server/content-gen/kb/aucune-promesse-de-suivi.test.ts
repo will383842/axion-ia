@@ -17,6 +17,13 @@ const PROMESSES_KB: ReadonlyArray<readonly [string, RegExp]> = [
   ["suivi post-formation", /suivi post-formation/i],
   ["évaluation à froid à 30 et 90 jours", /évaluation à froid à 30 et 90 jours/i],
   ["30 jours de support", /(?:30|trente) (?:jours|j) de support/i],
+  ["accompagnement à distance (après la prestation)", /accompagnement à distance/i],
+  ["« on ne vous lâche pas »", /on ne vous lâche pas/i],
+  ["réentraînement trimestriel", /réentraînement trimestriel/i],
+  ["suivi individuel (coaching présenté comme suite)", /un suivi individuel/i],
+  ["suivi hybride", /suivi hybride/i],
+  ["tableau de bord mensuel pour le client", /tableau de bord mensuel pour le client/i],
+  ["suivi post-déploiement", /suivi post-déploiement/i],
 ];
 
 function* fichiers(dossier: string): Generator<string> {
