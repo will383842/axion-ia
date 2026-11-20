@@ -48,14 +48,26 @@ const HORS_PERIMETRE: ReadonlyArray<RegExp> = [
   /src\/app\/\[locale\]\/demande-devis\/page\.tsx$/,
   /src\/app\/\[locale\]\/demande-devis\/confirmation\/page\.tsx$/,
   /src\/lib\/email\/templates\/quote-request-received\.tsx$/,
-  // EN ATTENTE (même appel de 45 min, à passer en « Diagnostic IA ») : transversal.ts est modifié par
-  // les PR ouvertes 1979 et 1861 (1979 aussi pour _accueil/contenu.ts) ; les kb et category-hub-content, par d'autres lots.
-  // À VIDER une fois ces PR fusionnées.
-  /src\/content\/transversal\.ts$/,
+  // EN ATTENTE (même appel de 45 min, à passer en « Diagnostic IA ») : 1979 modifie _accueil/contenu.ts ;
+  // les kb et category-hub-content, par d'autres lots. transversal.ts n'est PLUS exclu en entier :
+  // seule une phrase est tolérée (voir TOLERES_EN_ATTENTE). À VIDER une fois ces PR fusionnées.
   /src\/app\/\[locale\]\/_accueil\/contenu\.ts$/,
   /src\/server\/content[-]gen\/kb\/(?:un-a-un|interventions-formations|sites-web-augmentes)\.ts$/,
   /src\/server\/content[-]gen\/lib\/category-hub-content\.ts$/,
 ];
+
+/** Phrases précises tolérées en attente d'une autre PR (le reste du fichier reste gardé). */
+const TOLERES_EN_ATTENTE: ReadonlyArray<[RegExp, string]> = [
+  // PR 1861 (CGV) réécrit cette FAQ « facturation » : à retirer une fois 1861 fusionnée.
+  [
+    /src\/content\/transversal\.ts$/,
+    "établi sous 48 h ouvrées après l'appel de cadrage. Et si un imprévu",
+  ],
+];
+
+function estTolere(chemin: string, ligne: string): boolean {
+  return TOLERES_EN_ATTENTE.some(([re, phrase]) => re.test(chemin) && ligne.includes(phrase));
+}
 
 function lister(dossier: string, sortie: string[]): void {
   for (const nom of readdirSync(dossier)) {
@@ -107,10 +119,19 @@ describe("V1-19 — un seul nom pour l'appel : « Diagnostic IA, 45 min »", () 
         .split("\n")
         .forEach((ligne, i) => {
           if (/^\s*(\/\/|\*|\/\*|\{\/\*)/.test(ligne)) return;
+          if (estTolere(chemin, ligne)) return;
           if (ANCIENS_NOMS.test(ligne))
             fautes.push(`${chemin}:${i + 1} → ${ligne.trim().slice(0, 110)}`);
         });
     }
     expect(fautes, fautes.join("\n")).toEqual([]);
+  });
+
+  it("témoin : l'exception de transversal.ts vaut exactement 1 ligne (rougit quand la PR 1861 la retire)", () => {
+    const chemin = "src/content/transversal.ts";
+    const n = readFileSync(chemin, "utf8")
+      .split("\n")
+      .filter((l) => estTolere(chemin, l)).length;
+    expect(n).toBe(1);
   });
 });
