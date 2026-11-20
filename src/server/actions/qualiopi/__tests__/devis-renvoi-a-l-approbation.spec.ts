@@ -207,6 +207,7 @@ function tx(acquis: string[]) {
       acquis.push(cle);
       return [{ locked: true }];
     },
+    activityLog: { findFirst: async () => null },
     emailOutbox: modele(),
     devis: {
       findUnique: async ({ where }: { where: { id: string } }) =>

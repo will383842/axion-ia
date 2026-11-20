@@ -1,7 +1,13 @@
 import { AdminBadge } from "@/components/admin/ui/AdminBadge";
 import type { EtatHorodatageDevis } from "@/server/qualiopi/devis/console-chaine-devis";
 
-const TON = { obtenu: "success", attente: "warning", non_configure: "neutral" } as const;
+const TON = {
+  obtenu: "success",
+  attente: "warning",
+  echec: "destructive",
+  illisible: "warning",
+  non_configure: "neutral",
+} as const;
 
 /** Pastille « Horodatage : … » (lecture seule). */
 export function PastilleHorodatage({ etat }: { etat: EtatHorodatageDevis }): React.ReactElement {

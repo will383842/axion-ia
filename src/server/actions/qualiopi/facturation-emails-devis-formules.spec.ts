@@ -23,6 +23,7 @@ vi.mock("@/lib/prisma", () => ({
     $transaction: async (f: (t: unknown) => unknown) =>
       f({
         $queryRaw: async () => [{ locked: true }],
+        activityLog: { findFirst: async () => null },
         emailOutbox: { findFirst: async () => null },
       }),
   },

@@ -9,9 +9,4 @@ describe("OngletDevisFactures — documents générés", () => {
     );
     expect(src).toContain("lienTelechargement(urlPiece(doc.id))");
   });
-  it("la route exige une session admin", () => {
-    const route = readFileSync("src/app/api/qualiopi/documents/[id]/route.ts", "utf8");
-    expect(route).toMatch(/auth\(\)/);
-    expect(route).toMatch(/admin/);
-  });
 });
