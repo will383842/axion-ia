@@ -203,6 +203,24 @@ describe("fiche devis : liens PDF et rôle", () => {
     expect(c.textContent).not.toContain("Préparer une relance");
   });
 
+  it("lecteur, devis envoyé non signé, canal email : pas de « Préparer une relance »", async () => {
+    etat.role = "reader";
+    etat.peutEcrire = false;
+    etat.signatures = [];
+    etat.canal = "email";
+    const c = await afficher();
+    expect(c.textContent).not.toContain("Préparer une relance");
+  });
+
+  it("rôle qui peut écrire, même état : le bouton est là", async () => {
+    etat.role = "admin";
+    etat.peutEcrire = true;
+    etat.signatures = [];
+    etat.canal = "email";
+    const c = await afficher();
+    expect(c.textContent).toContain("Préparer une relance");
+  });
+
   it("lecteur, brouillon : pas d'aperçu PDF", async () => {
     etat.role = "reader";
     etat.devis = { ...base, statut: "brouillon", sentAt: null };
