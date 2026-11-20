@@ -1,0 +1,115 @@
+// @vitest-environment node
+import { readFileSync } from "node:fs";
+import { describe, it, expect } from "vitest";
+
+// La page est un composant serveur lié à Prisma : on garde sa STRUCTURE par lecture du source
+// (même procédé que le test de `qualiopi/emails`), les composants ui ayant leurs propres tests.
+const CHEMIN = "src/app/[locale]/(admin)/[adminPrefix]/qualiopi/sessions/[id]/page.tsx";
+const SRC = readFileSync(CHEMIN, "utf8");
+
+describe("fiche d'une session : refonte visuelle", () => {
+  it("pose la peau dossier sur la racine de la page", () => {
+    expect(SRC).toContain('<div className="admin-ton-dossier">');
+  });
+
+  it("chaque bloc de la fiche est un AdminBloc dans sa section ancrée, plus de titre maison", () => {
+    expect(SRC).toMatch(/<section\s+id="infos"/);
+    expect(SRC).toContain("admin-bloc admin-bloc--bleu ${CLASSE_ANCRE_SECTION}");
+    for (const id of [
+      "checklist",
+      "cycle-de-vie",
+      "dates",
+      "lieu",
+      "formateur",
+      "inter-entreprises",
+      "sous-pages",
+      "stagiaires",
+      "documents",
+      "questionnaires",
+      "cloture",
+    ]) {
+      expect(SRC).toMatch(
+        new RegExp(
+          `<section id="${id}" className=\\{\`\\$\\{CLASSE_ANCRE_SECTION\\}\`\\}>\\s*<AdminBloc\\b`,
+        ),
+      );
+    }
+    expect(SRC).not.toContain("sectionHeadCls");
+    expect((SRC.match(/<AdminBloc\b/g) ?? []).length).toBe(
+      (SRC.match(/<\/AdminBloc>/g) ?? []).length,
+    );
+  });
+
+  it("informations générales : cellules div (contrat E2E), pas de liste de définitions", () => {
+    expect(SRC).toContain("<CellulesInfosSession");
+    expect(SRC).not.toContain("<dl ");
+  });
+
+  it("état vide du verrou et explications repliées en composants partagés", () => {
+    expect(SRC).toMatch(
+      /<AdminEmptyState\s+variant="inline"\s+icon=\{<Lock [^>]*\/>\}\s+title="Dossier jamais rouvert\."/,
+    );
+    expect(SRC).toMatch(/<AdminBlocRepliable\s+titre="À quoi sert le dossier d'audit"/);
+  });
+
+  it("actions et composants métier inchangés", () => {
+    for (const a of [
+      "enrollAction={enrollTraineeAction}",
+      "genererAction={genererSortiesAction}",
+      "signerAction={contresignerLettreMissionAction}",
+      "envoyerAction={envoyerQuestionnaireAction}",
+      "<SessionLifecycleButtons",
+      "<DocumentsSection",
+      "<QuestionnairesSection",
+      "<AncresHubSession",
+      "<OngletsPhase",
+    ]) {
+      expect(SRC).toContain(a);
+    }
+  });
+
+  it("garde de vocabulaire : titres de blocs ajoutés sans mot réservé", () => {
+    const INTERDIT = /qualiopi|opco|financement|prise en charge|certification|cpf/i;
+    const titres = [...SRC.matchAll(/(?:titre|title)=(?:\{?"([^"]*)"|\{`([^`]*)`)/g)].map(
+      (m) => m[1] ?? m[2] ?? "",
+    );
+    expect(titres.length).toBeGreaterThan(10);
+    expect(titres.filter((t) => INTERDIT.test(t))).toEqual([]);
+  });
+
+  describe("niveau visuel v2", () => {
+    it("tuiles de chiffres clés : composant dédié, alimenté par les données déjà chargées", () => {
+      expect(SRC).toContain("<TuilesSession");
+      expect(SRC).toContain("checklistRendue={checklistRendue}");
+      const T = readFileSync(CHEMIN.replace("page.tsx", "TuilesSession.tsx"), "utf8");
+      expect(T).toContain('data-testid="tuiles-session"');
+      expect((T.match(/<AdminStatCard\b/g) ?? []).length).toBe(4);
+    });
+
+    it("historique du verrou en cartes à pastille large avec icône, bordure gauche colorée", () => {
+      expect(SRC).not.toContain("<table");
+      expect(SRC).toMatch(
+        /<AdminBadge tone=\{reouv \? "warning" : "success"\} plein compact=\{false\}>/,
+      );
+      expect(SRC).toContain('<LockOpen size={16} aria-hidden="true" />');
+      expect(SRC).toContain("border-l-[color:var(--color-admin-warning)]");
+      expect(SRC).toContain("border-l-[color:var(--color-admin-success)]");
+    });
+
+    it("motif dans un encadré teinté, préfixe en gras, plus d'italique grise", () => {
+      expect(SRC).toContain("<strong>Motif :</strong>");
+      expect(SRC).toContain("bg-[color:var(--color-admin-warning-soft)]");
+    });
+
+    it("jetons admin seulement : aucune couleur Tailwind par défaut dans les ajouts", () => {
+      expect(SRC).not.toMatch(
+        /\b(?:bg|text|border)-(?:red|green|amber|yellow|blue|gray|slate)-\d{2,3}\b/,
+      );
+    });
+
+    it("icônes lucide importées par nom, aucune iframe", () => {
+      expect(SRC).toMatch(/import \{[^}]*LockOpen[^}]*\} from "lucide-react"/);
+      expect(SRC).not.toContain("<iframe");
+    });
+  });
+});
