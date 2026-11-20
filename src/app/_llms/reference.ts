@@ -25,6 +25,7 @@ import {
   STUDY_QUESTION_COUNT,
 } from "@/content/observatoire/study";
 import { DEFINITION_CARTOGRAPHIE } from "@/content/cartographie-date";
+import { OFFRES_SUITE } from "@/content/offres-suite";
 import { EFFECTIF_PLAGE_FR } from "@/content/formations/effectif";
 import { routing } from "@/i18n/routing";
 
@@ -78,6 +79,8 @@ const OFFRES: readonly OffreLlms[] = [
     nom: "Cartographie de l’entreprise",
     definition: () => DEFINITION_CARTOGRAPHIE,
   },
+  // GEO V2-05 / V2-06 : les quatre offres de la suite (définition = celle de la page).
+  ...OFFRES_SUITE.map((o) => ({ cle: o.path, nom: o.nom, definition: () => o.definition })),
 ];
 
 /** Vrai si la clé est une route déclarée (donc servie). */
