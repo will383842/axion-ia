@@ -76,7 +76,7 @@ export const DESCRIPTION_SITE_EN =
 
 /** Les trois paragraphes du « En bref » de la landing (le prix est un jeton). */
 export const EN_BREF_JOURNEE_IA_PARAGRAPHES = [
-  "La Journée IA est une journée d’audit et de formation à l’IA, menée par Axion-IA dans les locaux d’une PME ou d’une TPE (5 à 249 salariés), partout en France.",
+  "La Journée IA est une journée d’audit et de formation à l’IA, menée par Axion-IA dans les locaux d’une PME ou d’une TPE (2 à 250 salariés), partout en France.",
   "Le matin, l’audit cartographie l’entreprise, fait le point avec le dirigeant sur ses priorités et chiffre ses plus gros gains, en heures et en euros. L’après-midi, les équipes sont formées 4 heures sur leurs propres dossiers, avec une attestation par participant.",
   "Rapport chiffré sous 3 jours ouvrés. Prix\u202f: {{PRIX}}, garantie écrite sous condition.",
 ] as const;

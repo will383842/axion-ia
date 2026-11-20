@@ -13,7 +13,10 @@ const RACINE = resolve(__dirname, "../../..");
 // « jusqu'à 15 », « 15 personnes », « 15 participants » — mais pas « 2 à 15 » / « 2-15 » (formation).
 const LIMITE_15 =
   /(?<!\d\s?(?:à|-|to)\s?)(?:jusqu.{1,3}(?:à|a)\s?15\b|\b15\s+(?:personnes|participants|pers\b|people)|up to 15\b)/i;
-const SUJET_AUDIT_OU_JOURNEE = /\baudit\b|journ[ée]e\s+ia/i;
+const SUJET_AUDIT_OU_JOURNEE = /\baudit\b|\bjourn[ée]e\b/i;
+// La limite est excusée seulement si « formation » la PRÉCÈDE dans la même proposition.
+const LIMITE_PORTEE_PAR_LA_FORMATION =
+  /formation[^.;]{0,90}?(?:jusqu.{1,3}(?:à|a)\s?15\b|\b15\s+(?:personnes|participants))/i;
 
 function fichiersPublics(): string[] {
   const sortie = execFileSync(
@@ -40,8 +43,13 @@ function fichiersPublics(): string[] {
 /** Phrases : on coupe sur « . » et « ; » suivis d'une espace (les deux-points restent dans la phrase). */
 function phrasesFautives(texte: string): string[] {
   return texte
-    .split(/[.;!?](?:\s|$)|["`\n]/)
-    .filter((p) => LIMITE_15.test(p) && SUJET_AUDIT_OU_JOURNEE.test(p) && !/formation/i.test(p))
+    .split(/[.;!?](?:\s|$)|\n/)
+    .filter(
+      (p) =>
+        LIMITE_15.test(p) &&
+        SUJET_AUDIT_OU_JOURNEE.test(p) &&
+        !LIMITE_PORTEE_PAR_LA_FORMATION.test(p),
+    )
     .map((p) => p.trim().slice(0, 160));
 }
 

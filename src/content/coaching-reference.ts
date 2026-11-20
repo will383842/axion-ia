@@ -85,7 +85,7 @@ export function comparaisonCoachingFr() {
       titre: "La Journée IA",
       lien: { href: "/journee-ia", libelle: "Découvrir la Journée IA" },
       texte: remplacerJetons(
-        "Toute l’entreprise, en une journée chez vous : un audit le matin (entreprises de 2 à 250 salariés, 2 à 4 h selon l’entreprise), une formation de 4 h l’après-midi pour jusqu’à 15 personnes. {{PRIX}} la journée.",
+        "Toute l’entreprise, en une journée chez vous : un audit le matin (entreprises de 2 à 250 salariés, 2 à 4 h selon l’entreprise), une formation de 4 h l’après-midi, jusqu’à 15 personnes. {{PRIX}} la journée.",
       ),
     },
     {

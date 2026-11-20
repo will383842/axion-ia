@@ -105,7 +105,7 @@ export const CONTENU = {
     titreOui: "C’est pour vous",
     titreNon: "Pas pour vous",
     pourVous: [
-      "PME ou TPE, de 5 à 249 salariés",
+      "PME ou TPE, de 2 à 250 salariés",
       "Des heures perdues sur des tâches qui reviennent",
       "Chacun utilise l’IA dans son coin",
     ],
