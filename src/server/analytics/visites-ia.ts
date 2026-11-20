@@ -1,11 +1,13 @@
 // Visites venues des assistants IA — lecture SEULE de l'API Stats de Plausible
 // auto-hébergé (fiche GEO V1-10). Aucun réglage de Plausible n'est touché.
 //
-// - API v2 (`POST /api/v2/query`), dimension `visit:referrer`, filtrée par la liste
-//   unique `referents-ia.ts` ; le classement par IA se fait ICI (sous-domaines,
-//   casse), pas dans la requête.
-// - Repli v1 (`/api/v1/stats/breakdown`) si l'instance répond 404 à la v2 : totaux
-//   7 j / 30 j et pages d'arrivée seulement (pas de série hebdomadaire).
+// - API v2 (`POST /api/v2/query`), dimension `visit:source` (référent reconnu OU
+//   `utm_source`, même sans en-tête Referer), filtre EXACT `is` sur `SOURCES_PLAUSIBLE`
+//   (+ `visit:referrer` contient `bing.com/chat`). Le classement par IA se fait ICI.
+// - Périodes : `7d` / `30d` natifs (alignés sur la v1) ; hebdo = lundi d'il y a 11
+//   semaines → aujourd'hui, fuseau Europe/Paris (semaine en cours partielle).
+// - Repli v1 (`/api/v1/stats/breakdown`, `visit:source==…`) si la v2 répond 404 :
+//   totaux 7 j / 30 j seulement (ni série hebdomadaire, ni pages d'arrivée, ni bing.com/chat).
 // - Échec silencieux : clé absente, stubs de build, API injoignable ou en erreur →
 //   `{ statut: "indisponible" }`, jamais d'exception. Aucun appel réseau au build.
 // - Cache mémoire court (5 min) : la page admin est force-dynamic.
@@ -13,7 +15,45 @@
 // Note : les visiteurs d'une période sont additionnés d'une IA à l'autre ; une
 // personne venue de deux IA différentes est comptée deux fois (écart négligeable).
 
-import { classerReferentIA, FILTRES_REFERENT_IA, type IdIA } from "@/lib/analytics/referents-ia";
+import { classerReferentIA, type IdIA } from "@/lib/analytics/referents-ia";
+
+// Libellés et sources Plausible : côté SERVEUR uniquement (zéro octet dans le bundle public).
+export const LIBELLES_IA: Readonly<Record<IdIA, string>> = {
+  chatgpt: "ChatGPT",
+  perplexity: "Perplexity",
+  copilot: "Copilot",
+  gemini: "Gemini",
+  mistral: "Le Chat (Mistral)",
+  claude: "Claude",
+  deepseek: "DeepSeek",
+  you: "You.com",
+  phind: "Phind",
+};
+
+/** Valeurs EXACTES de `visit:source` : nom reconnu par Plausible + domaine (utm_source). */
+export const SOURCES_PLAUSIBLE: Readonly<Record<IdIA, readonly string[]>> = {
+  chatgpt: ["ChatGPT", "chatgpt.com", "chat.openai.com"],
+  perplexity: ["Perplexity", "perplexity.ai"],
+  copilot: ["Copilot", "copilot.microsoft.com"],
+  gemini: ["Gemini", "gemini.google.com", "bard.google.com"],
+  mistral: ["Mistral", "chat.mistral.ai", "mistral.ai"],
+  claude: ["Claude", "claude.ai"],
+  deepseek: ["DeepSeek", "chat.deepseek.com"],
+  you: ["You.com", "you.com"],
+  phind: ["Phind", "phind.com"],
+};
+
+const TOUTES_SOURCES: readonly string[] = Object.values(SOURCES_PLAUSIBLE).flat();
+const IA_PAR_SOURCE: ReadonlyMap<string, IdIA> = new Map(
+  (Object.entries(SOURCES_PLAUSIBLE) as Array<[IdIA, readonly string[]]>).flatMap(([id, l]) =>
+    l.map((x) => [x.toLowerCase(), id] as const),
+  ),
+);
+
+/** Source d'abord (exacte), référent en secours (bing.com/chat). */
+function iaDe(source: string, referent: string): IdIA | null {
+  return IA_PAR_SOURCE.get(source.trim().toLowerCase()) ?? classerReferentIA(referent)?.id ?? null;
+}
 
 export interface LigneIA {
   readonly id: IdIA;
@@ -53,6 +93,7 @@ interface LigneBrute {
   metrics?: unknown;
 }
 
+const SRC = ["visit:source", "visit:referrer"];
 const num = (v: unknown): number => (typeof v === "number" && Number.isFinite(v) ? v : 0);
 const dim = (l: LigneBrute, i: number): string => {
   const d = Array.isArray(l?.dimensions) ? l.dimensions[i] : undefined;
@@ -62,16 +103,16 @@ const met = (l: LigneBrute, i: number): number =>
   Array.isArray(l?.metrics) ? num(l.metrics[i]) : 0;
 const lignes = (r: unknown): LigneBrute[] => (Array.isArray(r) ? (r as LigneBrute[]) : []);
 
-/** Lignes `[référent]` → totaux + répartition par IA (référents non IA ignorés). */
+/** Lignes `[source, référent?]` → totaux + répartition par IA (référents non IA ignorés). */
 export function agregerParIA(rows: unknown): PeriodeIA {
   const m = new Map<IdIA, { libelle: string; visiteurs: number; visites: number }>();
   for (const l of lignes(rows)) {
-    const ia = classerReferentIA(dim(l, 0));
-    if (!ia) continue;
-    const c = m.get(ia.id) ?? { libelle: ia.libelle, visiteurs: 0, visites: 0 };
+    const id = iaDe(dim(l, 0), dim(l, 1));
+    if (!id) continue;
+    const c = m.get(id) ?? { libelle: LIBELLES_IA[id], visiteurs: 0, visites: 0 };
     c.visiteurs += met(l, 0);
     c.visites += met(l, 1);
-    m.set(ia.id, c);
+    m.set(id, c);
   }
   const parIA = [...m.entries()]
     .map(([id, c]) => ({ id, ...c }))
@@ -83,11 +124,11 @@ export function agregerParIA(rows: unknown): PeriodeIA {
   };
 }
 
-/** Lignes `[semaine, référent]` → une ligne par semaine, ordre chronologique. */
+/** Lignes `[semaine, source, référent?]` → une ligne par semaine, ordre chronologique. */
 export function agregerSemainesIA(rows: unknown): SemaineIA[] {
   const m = new Map<string, { visiteurs: number; visites: number }>();
   for (const l of lignes(rows)) {
-    if (!classerReferentIA(dim(l, 1))) continue;
+    if (!iaDe(dim(l, 1), dim(l, 2))) continue;
     const debut = dim(l, 0).slice(0, 10);
     if (!debut) continue;
     const c = m.get(debut) ?? { visiteurs: 0, visites: 0 };
@@ -100,11 +141,11 @@ export function agregerSemainesIA(rows: unknown): SemaineIA[] {
     .map(([debut, c]) => ({ debut, ...c }));
 }
 
-/** Lignes `[page d'arrivée, référent]` → top 10 des pages. */
+/** Lignes `[page d'arrivée, source, référent?]` → top 10 des pages. */
 export function agregerPagesIA(rows: unknown): PageArriveeIA[] {
   const m = new Map<string, { visiteurs: number; visites: number }>();
   for (const l of lignes(rows)) {
-    if (!classerReferentIA(dim(l, 1))) continue;
+    if (!iaDe(dim(l, 1), dim(l, 2))) continue;
     const page = dim(l, 0);
     if (!page) continue;
     const c = m.get(page) ?? { visiteurs: 0, visites: 0 };
@@ -120,16 +161,23 @@ export function agregerPagesIA(rows: unknown): PageArriveeIA[] {
 
 // ─── Appels réseau ──────────────────────────────────────────────────────────
 
-const DELAI_MS = 6_000;
+const DELAI_MS = 4_000;
 const TTL_MS = 5 * 60_000;
-let cache: { a: number; v: VisitesIA } | null = null;
+const TTL_ECHEC_MS = 60_000;
+let cache: { a: number; ttl: number; v: VisitesIA } | null = null;
 
 export function _viderCacheVisitesIA(): void {
   cache = null;
 }
 
-const iso = (d: Date) => d.toISOString().slice(0, 10);
-const joursAvant = (n: number) => iso(new Date(Date.now() - n * 86_400_000));
+/** `[lundi d'il y a 11 semaines, aujourd'hui]`, dates `AAAA-MM-JJ` du fuseau Europe/Paris. */
+export function plageHebdoParis(maintenant: Date = new Date()): [string, string] {
+  const auj = new Intl.DateTimeFormat("en-CA", { timeZone: "Europe/Paris" }).format(maintenant);
+  const t = Date.parse(`${auj}T00:00:00Z`);
+  const joursDepuisLundi = (new Date(t).getUTCDay() + 6) % 7;
+  const debut = new Date(t - (joursDepuisLundi + 11 * 7) * 86_400_000);
+  return [debut.toISOString().slice(0, 10), auj];
+}
 
 class V2Absente extends Error {}
 
@@ -147,13 +195,21 @@ async function post(api: string, cle: string, corps: unknown): Promise<unknown> 
   return json.results ?? [];
 }
 
-function requete(site: string, plage: [string, string], dimensions: string[]) {
+function requete(site: string, plage: "7d" | "30d" | [string, string], dimensions: string[]) {
   return {
     site_id: site,
     metrics: ["visitors", "visits"],
     date_range: plage,
     dimensions,
-    filters: [["contains", "visit:referrer", [...FILTRES_REFERENT_IA]]],
+    filters: [
+      [
+        "or",
+        [
+          ["is", "visit:source", [...TOUTES_SOURCES]],
+          ["contains", "visit:referrer", ["bing.com/chat"]],
+        ],
+      ],
+    ],
     order_by: [["visitors", "desc"]],
     pagination: { limit: 1000, offset: 0 },
   };
@@ -172,7 +228,7 @@ async function breakdownV1(
     property: propriete,
     metrics: "visitors,visits",
     limit: "1000",
-    filters: `visit:referrer~${FILTRES_REFERENT_IA.join("|")}`,
+    filters: `visit:source==${TOUTES_SOURCES.join("|")}`,
   });
   const res = await fetch(`${api}/api/v1/stats/breakdown?${p.toString()}`, {
     headers: { authorization: `Bearer ${cle}` },
@@ -202,24 +258,19 @@ export async function lireVisitesIA(): Promise<VisitesIA> {
       raison: "Mesure non disponible pendant la construction du site.",
     };
   }
-  if (cache && Date.now() - cache.a < TTL_MS) return cache.v;
+  if (cache && Date.now() - cache.a < cache.ttl) return cache.v;
 
   const api = (
     process.env.NEXT_PUBLIC_PLAUSIBLE_API_URL ?? "https://plausible.axion-ia.com"
   ).replace(/\/+$/, "");
-  const auj = joursAvant(0);
   let resultat: VisitesIA;
   try {
     try {
       const [r7, r30, rSem, rPages] = await Promise.all([
-        post(api, cle, requete(site, [joursAvant(7), auj], ["visit:referrer"])),
-        post(api, cle, requete(site, [joursAvant(30), auj], ["visit:referrer"])),
-        post(api, cle, requete(site, [joursAvant(83), auj], ["time:week", "visit:referrer"])),
-        post(
-          api,
-          cle,
-          requete(site, [joursAvant(30), auj], ["visit:entry_page", "visit:referrer"]),
-        ),
+        post(api, cle, requete(site, "7d", SRC)),
+        post(api, cle, requete(site, "30d", SRC)),
+        post(api, cle, requete(site, plageHebdoParis(), ["time:week", ...SRC])),
+        post(api, cle, requete(site, "30d", ["visit:entry_page", ...SRC])),
       ]);
       resultat = {
         statut: "ok",
@@ -232,8 +283,8 @@ export async function lireVisitesIA(): Promise<VisitesIA> {
     } catch (e) {
       if (!(e instanceof V2Absente)) throw e;
       const [r7, r30] = await Promise.all([
-        breakdownV1(api, cle, site, 7, "visit:referrer"),
-        breakdownV1(api, cle, site, 30, "visit:referrer"),
+        breakdownV1(api, cle, site, 7, "visit:source"),
+        breakdownV1(api, cle, site, 30, "visit:source"),
       ]);
       // v1 ne croise pas deux propriétés : pages d'arrivée non disponibles en repli.
       resultat = {
@@ -250,8 +301,13 @@ export async function lireVisitesIA(): Promise<VisitesIA> {
       "[visites-ia] lecture Plausible impossible :",
       err instanceof Error ? err.message : err,
     );
-    return { statut: "indisponible", raison: "Plausible ne répond pas pour le moment." };
+    const v: VisitesIA = {
+      statut: "indisponible",
+      raison: "Plausible ne répond pas pour le moment.",
+    };
+    cache = { a: Date.now(), ttl: TTL_ECHEC_MS, v };
+    return v;
   }
-  cache = { a: Date.now(), v: resultat };
+  cache = { a: Date.now(), ttl: TTL_MS, v: resultat };
   return resultat;
 }

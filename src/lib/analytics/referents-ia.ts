@@ -1,11 +1,11 @@
 // Liste UNIQUE des référents « assistants IA » (fiche GEO V1-10).
 //
-// Partagée par deux consommateurs qui ne doivent jamais diverger :
-//  - `src/lib/tracking-referer.ts` (détection côté navigateur) ;
-//  - `src/server/analytics/visites-ia.ts` (lecture de l'API Stats Plausible).
+// Partagée par `tracking-referer.ts` (détection côté navigateur) et la console
+// (`src/server/analytics/visites-ia.ts`, qui y ajoute libellés et sources Plausible).
 //
 // ⚠️ Module volontairement minuscule et sans import : `tracking-referer` est dans le
-// bundle public (cliquet « Poids du bundle »).
+// bundle public (cliquet « Poids du bundle ») : n'y mettre que ce que le navigateur utilise
+// (ni libellés d'affichage, ni filtres d'API — ils vivent côté serveur).
 
 export type IdIA =
   | "chatgpt"
@@ -20,8 +20,6 @@ export type IdIA =
 
 export interface ReferentIA {
   readonly id: IdIA;
-  /** Nom affiché dans la console. */
-  readonly libelle: string;
   /** Domaines ; un sous-domaine (`www.`, `fr.`…) d'un domaine listé correspond aussi. */
   readonly domaines: readonly string[];
   /** Préfixes de chemin qui rattachent un domaine ambigu à cette IA (ex. bing.com/chat). */
@@ -29,20 +27,19 @@ export interface ReferentIA {
 }
 
 export const REFERENTS_IA: readonly ReferentIA[] = [
-  { id: "chatgpt", libelle: "ChatGPT", domaines: ["chatgpt.com", "chat.openai.com"] },
-  { id: "perplexity", libelle: "Perplexity", domaines: ["perplexity.ai"] },
+  { id: "chatgpt", domaines: ["chatgpt.com", "chat.openai.com"] },
+  { id: "perplexity", domaines: ["perplexity.ai"] },
   {
     id: "copilot",
-    libelle: "Copilot",
     domaines: ["copilot.microsoft.com"],
     chemins: [{ domaine: "bing.com", prefixe: "/chat" }],
   },
-  { id: "gemini", libelle: "Gemini", domaines: ["gemini.google.com", "bard.google.com"] },
-  { id: "mistral", libelle: "Le Chat (Mistral)", domaines: ["chat.mistral.ai", "mistral.ai"] },
-  { id: "claude", libelle: "Claude", domaines: ["claude.ai"] },
-  { id: "deepseek", libelle: "DeepSeek", domaines: ["chat.deepseek.com"] },
-  { id: "you", libelle: "You.com", domaines: ["you.com"] },
-  { id: "phind", libelle: "Phind", domaines: ["phind.com"] },
+  { id: "gemini", domaines: ["gemini.google.com", "bard.google.com"] },
+  { id: "mistral", domaines: ["chat.mistral.ai", "mistral.ai"] },
+  { id: "claude", domaines: ["claude.ai"] },
+  { id: "deepseek", domaines: ["chat.deepseek.com"] },
+  { id: "you", domaines: ["you.com"] },
+  { id: "phind", domaines: ["phind.com"] },
 ];
 
 /** Extrait `{ hote, chemin }` d'une URL complète ou d'un référent nu (`chatgpt.com/c/x`). */
@@ -82,9 +79,3 @@ export function classerReferentIA(referent: string | null | undefined): Referent
   }
   return null;
 }
-
-/** Valeurs à passer à un filtre « contient » côté API Plausible (domaines + chemins). */
-export const FILTRES_REFERENT_IA: readonly string[] = REFERENTS_IA.flatMap((ia) => [
-  ...ia.domaines,
-  ...(ia.chemins ?? []).map((c) => `${c.domaine}${c.prefixe}`),
-]);
