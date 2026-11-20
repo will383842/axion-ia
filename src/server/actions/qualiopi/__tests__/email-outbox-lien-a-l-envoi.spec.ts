@@ -30,8 +30,6 @@ vi.mock("@sentry/nextjs", () => ({
   captureException: (...a: unknown[]) => h.sentryExc(...a),
   captureMessage: (...a: unknown[]) => h.sentryMsg(...a),
 }));
-// Objet du gabarit = objet de la ligne (« s ») : rien à imposer sans retouche.
-vi.mock("@/lib/email/templates", () => ({ sujetDuGabarit: () => "s" }));
 vi.mock("@/lib/telegram", () => ({ sendTelegram: vi.fn().mockResolvedValue(undefined) }));
 vi.mock("@/lib/public-url", () => ({
   publicUrl: (p: string) => new URL(p, "https://exemple.test"),

@@ -179,4 +179,32 @@ describe("apercuEmailDevisAction", () => {
     h.devisFindUnique.mockResolvedValue(null);
     expect(await apercuEmailDevisAction({ devisId: ID })).toHaveProperty("error");
   });
+
+  it("salutation : la vraie du contenu (prénom seul), pas la raison sociale", async () => {
+    h.devisFindUnique.mockResolvedValue(
+      devis({}, { contactCivilite: null, contactNomFamille: null, contactPrenom: "Léa" }),
+    );
+    expect(ok(await apercuEmailDevisAction({ devisId: ID })).salutation).toBe("Bonjour Léa,");
+  });
+
+  it("entrée non textuelle ou trop longue : erreur claire, jamais d'exception", async () => {
+    const mauvaises = [
+      { devisId: ID, sujet: 42 },
+      { devisId: ID, message: { a: 1 } },
+      { devisId: ID, sujet: "x".repeat(301) },
+      { devisId: ID, message: "x".repeat(4001) },
+      { devisId: 12 },
+    ] as unknown as Array<Parameters<typeof apercuEmailDevisAction>[0]>;
+    for (const m of mauvaises) {
+      const r = await apercuEmailDevisAction(m);
+      expect(r).toHaveProperty("error");
+      expect((r as { error: string }).error).not.toBe("");
+    }
+  });
+
+  it("objet avec caractère de contrôle : refusé", async () => {
+    expect(await apercuEmailDevisAction({ devisId: ID, sujet: "Objet\u0007x" })).toHaveProperty(
+      "error",
+    );
+  });
 });

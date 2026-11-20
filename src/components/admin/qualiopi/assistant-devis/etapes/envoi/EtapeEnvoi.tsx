@@ -44,6 +44,8 @@ export interface PropsEtapeEnvoi {
   apercuEmail?: PropsEmailEnvoi["apercuEmail"];
   /** Fiche du client, pour ajouter l'adresse manquante (nouvel onglet). */
   lienFiche?: string | undefined;
+  /** Faux par défaut : aperçu en lecture seule tant que le relais objet+message n'est pas branché. */
+  modifiable?: boolean | undefined;
 }
 
 type Chargement =
@@ -59,6 +61,7 @@ export function EtapeEnvoi({
   onModifier,
   apercuEmail,
   lienFiche,
+  modifiable = false,
 }: PropsEtapeEnvoi) {
   const [chargement, setChargement] = useState<Chargement>({ etat: "attente" });
   const lance = useRef(false);
@@ -126,6 +129,7 @@ export function EtapeEnvoi({
             salutation={salutation}
             apercuEmail={apercuEmail}
             lienFiche={lienFiche}
+            modifiable={modifiable}
             envoyer={(email) => envoyer(prete.devisId, prete.majLe, email)}
           />
         ) : null}

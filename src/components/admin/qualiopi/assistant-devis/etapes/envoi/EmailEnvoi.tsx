@@ -41,6 +41,8 @@ export interface PropsEmailEnvoi {
   apercuEmail?: PropsApercuEmailDevis["apercuEmail"] | undefined;
   /** Fiche du client (`/qualiopi/clients/[id]/edit`), pour ajouter l'adresse manquante. */
   lienFiche?: string | undefined;
+  /** Faux par défaut : l'aperçu est en lecture seule (le relais objet+message n'est pas branché). */
+  modifiable?: boolean | undefined;
 }
 
 export function EmailEnvoi({
@@ -49,6 +51,7 @@ export function EmailEnvoi({
   envoyer,
   apercuEmail,
   lienFiche,
+  modifiable = false,
 }: PropsEmailEnvoi) {
   const uid = useId();
   const [apercu, setApercu] = useState<EtatApercuEmail | null>(null);
@@ -120,7 +123,12 @@ export function EmailEnvoi({
         </div>
         {apercuEmail !== undefined ? (
           <div className="mt-[var(--space-admin-4)]">
-            <ApercuEmailDevis apercuEmail={apercuEmail} lienFiche={lienFiche} onEtat={setApercu} />
+            <ApercuEmailDevis
+              apercuEmail={apercuEmail}
+              lienFiche={lienFiche}
+              modifiable={modifiable}
+              onEtat={setApercu}
+            />
           </div>
         ) : null}
         {apercuEmail === undefined && adresseVide ? (

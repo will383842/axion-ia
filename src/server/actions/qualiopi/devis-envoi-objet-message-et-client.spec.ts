@@ -234,4 +234,32 @@ describe("sendDevisAction — objet et message du fondateur", () => {
     expect(payload["messagePersonnalise"]).toBe("Bonjour à vous");
     expect(h.creerToken).not.toHaveBeenCalled();
   });
+
+  it("l'objet choisi est écrit dans le payload sous le marqueur `sujetChoisi`", async () => {
+    await sendDevisAction(ID, { sujet: "Votre devis sur mesure" });
+    const [, , , payload] = appelEnqueue();
+    expect(payload["sujetChoisi"]).toBe("Votre devis sur mesure");
+  });
+
+  it("sans objet choisi : pas de marqueur", async () => {
+    await sendDevisAction(ID, { messagePersonnalise: "Merci" });
+    const [, , , payload] = appelEnqueue();
+    expect(payload).not.toHaveProperty("sujetChoisi");
+  });
+
+  it("valeur non textuelle ou trop longue : erreur claire, rien n'est fait", async () => {
+    const mauvaises = [
+      { sujet: 5 },
+      { messagePersonnalise: ["a"] },
+      { sujet: "x".repeat(301) },
+      { messagePersonnalise: "x".repeat(4001) },
+      null,
+    ] as unknown as Array<Parameters<typeof sendDevisAction>[1]>;
+    for (const o of mauvaises) {
+      const r = await sendDevisAction(ID, o);
+      expect(r).toHaveProperty("error");
+    }
+    expect(h.enqueueEmail).not.toHaveBeenCalled();
+    expect(h.creerToken).not.toHaveBeenCalled();
+  });
 });

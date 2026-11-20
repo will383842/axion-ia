@@ -6,6 +6,8 @@
  * Ce qui est modifiable : l'objet et un message personnel. Le corps du gabarit ne l'est pas.
  * ⛔ Rien de ce que voit le client ne contient les mots du financement ni de la certification.
  */
+import { z } from "zod";
+
 import { salutationPourPayload } from "@/server/qualiopi/crm/salutation-payload";
 
 import {
@@ -17,6 +19,18 @@ import type { VueFormules } from "./vue-formules";
 
 export const OBJET_MAX = 300;
 export const MESSAGE_MAX = 4000;
+/** Entrée brute (action serveur) : jamais d'erreur 500 sur une valeur non textuelle ou trop longue. */
+export const objetEntreeSchema = z
+  .string({ message: "L'objet doit être un texte." })
+  .max(OBJET_MAX, `L'objet dépasse ${OBJET_MAX} caractères.`)
+  .optional();
+export const messageEntreeSchema = z
+  .string({ message: "Le message doit être un texte." })
+  .max(MESSAGE_MAX, `Le message dépasse ${MESSAGE_MAX} caractères.`)
+  .optional();
+
+/** Clé du payload par laquelle `sendDevisAction` marque l'objet CHOISI par le fondateur. */
+export const CLE_SUJET_CHOISI = "sujetChoisi";
 
 export interface EntreeContenuEmailDevis {
   readonly devis: {
@@ -41,7 +55,10 @@ export type ContenuEmailDevis =
     }
   | { readonly ok: false; readonly error: string };
 
-const MOTS_INTERDITS = /qualiopi|opco|financ|prise\s+en\s+charge|\bcpf\b/;
+// Mots du financement et de la certification. « financier » (directeur financier…) reste permis.
+const MOTS_INTERDITS = /qualiopi|opco|\bcpf\b|prise\s+en\s+charge|financement|\bfinance\s+par\b/;
+// « financé(e)(s) » : testé AVEC l'accent (sans lui, « finances » du directeur financier serait pris).
+const FINANCE_ACCENTUE = /\bfinanc\u00e9(?:e|s|es)?(?![\p{L}])/u;
 
 /** Minuscules, sans accents ni diacritiques : « FINANCÉ » et « financé » se valent. */
 function normaliser(texte: string): string {
@@ -52,7 +69,10 @@ function normaliser(texte: string): string {
 }
 
 export function contientMotInterdit(texte: string): boolean {
-  return MOTS_INTERDITS.test(normaliser(texte));
+  return (
+    MOTS_INTERDITS.test(normaliser(texte)) ||
+    FINANCE_ACCENTUE.test(texte.normalize("NFC").toLowerCase())
+  );
 }
 
 const eurHt = (cents: number): string =>
@@ -63,7 +83,9 @@ export function contenuEmailDevis(e: EntreeContenuEmailDevis): ContenuEmailDevis
   if (sujet !== undefined && sujet !== "") {
     if (sujet.length > OBJET_MAX)
       return { ok: false, error: `L'objet dépasse ${OBJET_MAX} caractères.` };
-    if (/[\r\n]/.test(sujet)) return { ok: false, error: "L'objet tient sur une seule ligne." };
+    if (/[\p{Cc}\u2028\u2029]/u.test(sujet)) {
+      return { ok: false, error: "L'objet tient sur une seule ligne, sans caractère de contrôle." };
+    }
     if (contientMotInterdit(sujet)) {
       return { ok: false, error: "L'objet contient un mot qui n'a pas sa place dans un devis." };
     }
