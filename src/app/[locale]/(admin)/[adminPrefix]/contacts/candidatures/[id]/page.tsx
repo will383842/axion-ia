@@ -11,7 +11,25 @@ import { Fragment } from "react";
 import { redirect, notFound } from "next/navigation";
 import { auth } from "@/auth";
 import { markInboxRead } from "@/features/admin-inbox/reads";
-import { AdminPageShell, AdminPageHeader, AdminCard, AdminBadge } from "@/components/admin/ui";
+import {
+  AdminPageShell,
+  AdminPageHeader,
+  AdminCard,
+  AdminBadge,
+  AdminEmptyState,
+} from "@/components/admin/ui";
+import { AdminBlocRepliable } from "@/components/admin/ui/AdminBlocRepliable";
+import { Film, MessageSquare, CalendarClock, HelpCircle } from "lucide-react";
+import type { EtatMedia } from "./FicheVisuelle";
+import { LIBELLE_MOTIF_REFUS } from "@/content/recrutement/statuts";
+import {
+  TuilesCandidature,
+  CarteEtat,
+  PastilleEtat,
+  PastilleStatut,
+  EncadreTeinte,
+  tonDeEtat,
+} from "./FicheVisuelle";
 import { getApplicationDetailAction } from "@/features/admin-job-applications/actions";
 import { getJobOfferDetailAction } from "@/features/admin-job-offers/actions";
 import { ApplicationStatusForm } from "./ApplicationStatusForm";
@@ -226,6 +244,47 @@ export default async function ApplicationDetailPage({ params }: PageProps) {
         }
       />
 
+      <div className="flex flex-wrap items-center gap-[var(--space-admin-3)]">
+        <PastilleStatut statut={a.status} />
+      </div>
+
+      {/* Le motif de la décision reste VISIBLE, jamais replié : c'est ce que
+          le fondateur doit relire avant de répondre au candidat. */}
+      {a.rejectionReason && (a.status === "rejected" || a.status === "withdrawn") ? (
+        <EncadreTeinte ton="error" titre="Motif :">
+          {LIBELLE_MOTIF_REFUS[a.rejectionReason]}
+        </EncadreTeinte>
+      ) : null}
+
+      <TuilesCandidature
+        tuiles={[
+          {
+            libelle: "Travaux à voir",
+            valeur: videos.length + liens.length,
+            ton: videos.length + liens.length > 0 ? "success" : "default",
+            icone: Film,
+          },
+          {
+            libelle: "Entretiens",
+            valeur: entretiens.length,
+            ton: entretiens.length > 0 ? "info" : "default",
+            icone: CalendarClock,
+          },
+          {
+            libelle: "Événements au journal",
+            valeur: frise.length,
+            ton: "default",
+            icone: MessageSquare,
+          },
+          {
+            libelle: "Réponses aux questions",
+            valeur: Object.keys(a.answers).length,
+            ton: "default",
+            icone: HelpCircle,
+          },
+        ]}
+      />
+
       <AdminCard>
         <dl className="grid grid-cols-[10rem_1fr] gap-y-2 text-sm">
           <dt className="font-medium">Email</dt>
@@ -328,16 +387,13 @@ export default async function ApplicationDetailPage({ params }: PageProps) {
         {videos.length > 0 ? (
           <div className="mb-[var(--space-admin-4)] space-y-[var(--space-admin-4)]">
             {videos.map((v) => (
-              <div key={v.id}>
+              <CarteEtat key={v.id} ton={tonDeEtat(v.statut as EtatMedia)}>
                 <p className="text-sm font-medium">
                   {v.nomOriginal}{" "}
                   <span className="admin-meta-small">· {tailleLisible(v.taille)}</span>{" "}
-                  {v.statut === "analyse" ? (
-                    <AdminBadge tone="warning">analyse antivirus en cours</AdminBadge>
-                  ) : v.statut === "rejetee" ? (
-                    <AdminBadge tone="destructive">
-                      refusée — {v.motifRejet ?? "motif inconnu"}
-                    </AdminBadge>
+                  <PastilleEtat etat={v.statut as EtatMedia} />
+                  {v.statut === "rejetee" ? (
+                    <span className="admin-meta-small"> · {v.motifRejet ?? "motif inconnu"}</span>
                   ) : null}
                 </p>
                 {v.statut === "disponible" ? (
@@ -348,14 +404,17 @@ export default async function ApplicationDetailPage({ params }: PageProps) {
                     style={{ width: "100%", maxWidth: 360, maxHeight: 480, background: "black" }}
                   />
                 ) : null}
-              </div>
+              </CarteEtat>
             ))}
           </div>
         ) : null}
         {!montreVideo ? (
-          <p className="admin-alert admin-alert-warning mb-[var(--space-admin-3)]">
-            Aucune vidéo ni lien vers son travail. Vous pouvez lui demander 2 ou 3 montages.
-          </p>
+          <AdminEmptyState
+            variant="inline"
+            icon={<Film size={20} />}
+            title="Aucune vidéo ni lien vers son travail"
+            description="Vous pouvez lui demander 2 ou 3 montages."
+          />
         ) : null}
         {liens.length > 0 ? (
           <ul className="space-y-2 text-sm">
@@ -506,13 +565,17 @@ export default async function ApplicationDetailPage({ params }: PageProps) {
           />
           {/* V2-N-6 — l'issue de l'échange (« Retenu »…) se note dans Rendez-vous : la
               fiche n'y menait pas, il fallait savoir où chercher. */}
-          <p className="admin-meta-small mt-2">
-            L&apos;échange a eu lieu ? Notez son issue dans{" "}
-            <Link href={`/fr/${adminPrefix}/rendez-vous?vue=point`} className="admin-link">
-              Rendez-vous › À faire le point
-            </Link>
-            .
-          </p>
+          <div className="mt-[var(--space-admin-4)]">
+            <AdminBlocRepliable titre="L'échange a eu lieu ?">
+              <p className="admin-meta-small">
+                Notez son issue dans{" "}
+                <Link href={`/fr/${adminPrefix}/rendez-vous?vue=point`} className="admin-link">
+                  Rendez-vous › À faire le point
+                </Link>
+                .
+              </p>
+            </AdminBlocRepliable>
+          </div>
         </AdminCard>
       ) : null}
       {montrerFicheFormateur ? (

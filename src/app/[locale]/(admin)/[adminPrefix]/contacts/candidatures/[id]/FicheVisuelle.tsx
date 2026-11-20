@@ -6,11 +6,13 @@ import { AlertTriangle } from "lucide-react";
 import { Check } from "lucide-react";
 import { Clock } from "lucide-react";
 import { Link2Off } from "lucide-react";
-import { Film } from "lucide-react";
+import { Archive, CalendarClock, Eye, Handshake, Inbox, ListChecks, LogOut } from "lucide-react";
 import { ShieldAlert } from "lucide-react";
 import { AdminStatCard } from "@/components/admin/ui/AdminStatCard";
 import { AdminBadge } from "@/components/admin/ui/AdminBadge";
 import { cn } from "@/lib/utils";
+import { LIBELLE_STATUT, TON_STATUT } from "@/content/recrutement/statuts";
+import type { JobApplicationStatus } from "../../../../../../../../prisma/generated/client";
 
 type Ton = "success" | "warning" | "destructive" | "info" | "neutral";
 
@@ -73,7 +75,15 @@ export function CarteEtat({
   );
 }
 
-const ICONES_ETAT: Record<string, { icone: LucideIcon; ton: Ton; libelle: string }> = {
+/**
+ * Les états que la page affiche réellement : ceux d'une vidéo déposée
+ * (`analyse`, `disponible`, `rejetee`) et ceux d'un lien (`mort`, `vivant`).
+ * Une valeur hors de cette liste ne compile pas : aucune valeur brute
+ * d'énumération ne peut donc atteindre l'écran.
+ */
+export type EtatMedia = "disponible" | "analyse" | "rejetee" | "mort" | "vivant";
+
+const ICONES_ETAT: Record<EtatMedia, { icone: LucideIcon; ton: Ton; libelle: string }> = {
   disponible: { icone: Check, ton: "success", libelle: "Disponible" },
   analyse: { icone: Clock, ton: "warning", libelle: "Analyse en cours" },
   rejetee: { icone: ShieldAlert, ton: "destructive", libelle: "Refusée" },
@@ -81,19 +91,44 @@ const ICONES_ETAT: Record<string, { icone: LucideIcon; ton: Ton; libelle: string
   vivant: { icone: Check, ton: "success", libelle: "Lien vivant" },
 };
 
-export function tonDeEtat(etat: string): Ton {
-  return ICONES_ETAT[etat]?.ton ?? "neutral";
+export function tonDeEtat(etat: EtatMedia): Ton {
+  return ICONES_ETAT[etat].ton;
 }
 
 /** Pastille d'état LARGE : icône + libellé, ton franc. */
-export function PastilleEtat({ etat }: { etat: string }): React.ReactElement {
-  const d = ICONES_ETAT[etat] ?? { icone: Film, ton: "neutral" as Ton, libelle: etat };
+export function PastilleEtat({ etat }: { etat: EtatMedia }): React.ReactElement {
+  const d = ICONES_ETAT[etat];
   const Icone = d.icone;
   return (
     <AdminBadge tone={d.ton} compact={false} plein>
       <span className="inline-flex items-center gap-[var(--space-admin-2)]">
         <Icone size={16} aria-hidden="true" />
         {d.libelle}
+      </span>
+    </AdminBadge>
+  );
+}
+
+const ICONES_STATUT: Record<JobApplicationStatus, LucideIcon> = {
+  new: Inbox,
+  reviewing: Eye,
+  shortlisted: ListChecks,
+  interview: CalendarClock,
+  offer: Handshake,
+  hired: Check,
+  rejected: ShieldAlert,
+  withdrawn: LogOut,
+  archived: Archive,
+};
+
+/** Grande pastille de l'état de la candidature : libellé français, icône, ton franc. */
+export function PastilleStatut({ statut }: { statut: JobApplicationStatus }): React.ReactElement {
+  const Icone = ICONES_STATUT[statut];
+  return (
+    <AdminBadge tone={TON_STATUT[statut]} compact={false} plein>
+      <span className="inline-flex items-center gap-[var(--space-admin-2)]">
+        <Icone size={16} aria-hidden="true" />
+        {LIBELLE_STATUT[statut]}
       </span>
     </AdminBadge>
   );

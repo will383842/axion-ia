@@ -6,6 +6,7 @@ import {
   TuilesCandidature,
   CarteEtat,
   PastilleEtat,
+  PastilleStatut,
   EncadreTeinte,
   tonDeEtat,
 } from "../FicheVisuelle";
@@ -76,5 +77,19 @@ describe("garde de vocabulaire", () => {
   it("FicheVisuelle.tsx (nouveau) ne contient aucun mot réservé", () => {
     const f = PAGE.replace("page.tsx", "FicheVisuelle.tsx");
     expect(chainesVisibles(readFileSync(f, "utf8")).filter((c) => INTERDIT.test(c))).toEqual([]);
+  });
+});
+
+describe("pastille de statut : un libellé français par état", () => {
+  it.each([
+    ["new", "Nouvelle"],
+    ["reviewing", "En revue"],
+    ["interview", "En entretien"],
+    ["withdrawn", "Retirée par le candidat"],
+    ["archived", "Archivée"],
+  ] as const)("%s → %s", (statut, libelle) => {
+    const { container } = render(<PastilleStatut statut={statut} />);
+    expect(container.textContent).toBe(libelle);
+    expect(container.querySelector("svg")).not.toBeNull();
   });
 });
