@@ -142,7 +142,7 @@ export const FICHE_MONTPELLIER: FicheLocale = {
     },
     {
       q: "Comment la journée s’articule-t-elle avec l’université locale ?",
-      a: "Elle ne s’y articule pas : l’Université de Montpellier est un repère institutionnel pour situer le territoire, sans partenariat avec nous. La Journée IA reste centrée sur votre entreprise, avec jusqu’à 15 personnes formées sur leurs propres dossiers. Les liens vers chaque site officiel figurent en bas de page, avec la date de consultation.",
+      a: "Elle ne s’y articule pas : l’Université de Montpellier est un repère institutionnel pour situer le territoire, sans partenariat avec nous. La Journée IA reste centrée sur votre entreprise : l’audit du matin convient aux entreprises de 2 à 250 salariés, et la formation de l’après-midi accueille jusqu’à 15 personnes, sur leurs propres dossiers. Les liens vers chaque site officiel figurent en bas de page, avec la date de consultation.",
     },
   ],
 };

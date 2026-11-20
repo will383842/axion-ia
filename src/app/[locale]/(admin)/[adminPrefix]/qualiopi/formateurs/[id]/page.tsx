@@ -87,7 +87,15 @@ import {
 import { SignatureDocument } from "@/components/espace-formateur/SignatureDocument";
 import { PdfExportButton } from "@/components/admin/qualiopi/PdfExportButton";
 import { VerserFicheFormateurButton } from "@/components/admin/qualiopi/VerserFicheFormateurButton";
-import { Ban, TriangleAlert } from "lucide-react";
+import { AdminBadge } from "@/components/admin/ui/AdminBadge";
+import { AdminBloc } from "@/components/admin/ui/AdminBloc";
+import {
+  BlocActivite,
+  BlocConformite,
+  BlocFiabilite,
+  BlocMissions,
+  TuilesFormateur,
+} from "./FicheFormateurBlocs";
 import { AccesRefuse } from "@/components/admin/ui/AccesRefuse";
 import { SessionsLieesSection } from "@/components/admin/qualiopi/SessionsLiees";
 import { listerSessionsLiees } from "@/server/qualiopi/sessions/sessions-liees";
@@ -542,6 +550,26 @@ export default async function FicheFormateurPage({ params, searchParams }: PageP
       <AdminPageHeader
         title={`${trainer.prenom} ${trainer.nom}`}
         description={trainer.email}
+        meta={
+          <>
+            <AdminBadge tone="info">
+              {trainer.statut === "salarie"
+                ? "Salarié"
+                : trainer.statut === "dirigeant"
+                  ? "Dirigeant"
+                  : "Sous-traitant"}
+            </AdminBadge>
+            <AdminBadge tone={trainer.actif ? "success" : "neutral"}>
+              {trainer.actif ? "Actif" : "Inactif"}
+            </AdminBadge>
+            {bloquants.length > 0 ? (
+              <AdminBadge tone="destructive">
+                {bloquants.length} manquement{bloquants.length > 1 ? "s" : ""} bloquant
+                {bloquants.length > 1 ? "s" : ""}
+              </AdminBadge>
+            ) : null}
+          </>
+        }
         actions={
           <div className="flex flex-wrap items-start gap-[var(--space-admin-3)]">
             <PdfExportButton
@@ -595,20 +623,15 @@ export default async function FicheFormateurPage({ params, searchParams }: PageP
         </p>
       ) : null}
 
-      <div className="admin-card mb-[var(--space-admin-5)]">
-        <p className="admin-meta">Activité (calculée automatiquement)</p>
-        <p className="text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg)]">
-          <strong>{sessionsAnimees}</strong> session{sessionsAnimees > 1 ? "s" : ""} Qualiopi animée
-          {sessionsAnimees > 1 ? "s" : ""}
-          {sessionsAVenir > 0 ? (
-            <>
-              {" "}
-              · <strong>{sessionsAVenir}</strong> à venir
-            </>
-          ) : null}
-          .
-        </p>
-      </div>
+      <TuilesFormateur
+        sessionsAnimees={sessionsAnimees}
+        sessionsAVenir={sessionsAVenir}
+        nbBloquants={bloquants.length}
+        nbAlertes={alertes.length}
+        missionsRefusees={missions.refusees}
+      />
+
+      <BlocActivite sessionsAnimees={sessionsAnimees} sessionsAVenir={sessionsAVenir} />
 
       {panneauxMasques.length > 0 ? (
         <p className="admin-meta-small">
@@ -651,80 +674,16 @@ export default async function FicheFormateurPage({ params, searchParams }: PageP
       />
 
       {conformite !== null && (
-        <div className="admin-card mb-[var(--space-admin-5)]">
-          <p className="admin-meta">Conformité documentaire</p>
-
-          {conformite.manquements.length === 0 ? (
-            <p className="text-[length:var(--text-admin-sm)]">
-              Dossier complet — aucun manquement.
-            </p>
-          ) : (
-            <>
-              <p className="text-[length:var(--text-admin-sm)]">
-                {bloquants.length > 0 ? (
-                  <strong>
-                    <Ban
-                      size={14}
-                      aria-hidden="true"
-                      className="inline-block shrink-0 align-[-0.125em]"
-                    />{" "}
-                    {bloquants.length} manquement{bloquants.length > 1 ? "s" : ""} bloquant
-                    {bloquants.length > 1 ? "s" : ""} — ce formateur ne devrait pas être affecté.
-                  </strong>
-                ) : (
-                  <strong>Aucun manquement bloquant.</strong>
-                )}
-              </p>
-
-              {bloquants.length > 0 && (
-                <ul className="mt-2 space-y-1 text-[length:var(--text-admin-sm)]">
-                  {bloquants.map((m) => (
-                    <li key={m.code}>
-                      <Ban
-                        size={14}
-                        aria-hidden="true"
-                        className="inline-block shrink-0 align-[-0.125em]"
-                      />{" "}
-                      {m.message}
-                    </li>
-                  ))}
-                </ul>
-              )}
-
-              {alertes.length > 0 && (
-                <ul className="mt-2 space-y-1 text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]">
-                  {alertes.map((m) => (
-                    <li key={m.code}>
-                      <TriangleAlert
-                        size={14}
-                        aria-hidden="true"
-                        className="inline-block shrink-0 align-[-0.125em]"
-                      />{" "}
-                      {m.message}
-                    </li>
-                  ))}
-                </ul>
-              )}
-            </>
-          )}
-
-          {trainer.statut === "sous_traitant" && (
-            <p className="admin-meta mt-3">
-              Cumul retenu pour le seuil URSSAF :{" "}
-              {conformite.cumulIllisible ? (
-                <strong>illisible (seuil réputé atteint)</strong>
-              ) : (
-                <strong>
-                  {(conformite.montantRetenuCents / 100).toLocaleString("fr-FR")} € HT
-                </strong>
-              )}{" "}
-              (honoraires facturés : relevés validés, reçus ou payés). L&apos;attestation est
-              demandée à partir de {(APPROCHE_VIGILANCE_CENTS / 100).toLocaleString("fr-FR")} € HT
-              et exigée à partir de {(SEUIL_VIGILANCE_CENTS / 100).toLocaleString("fr-FR")} € HT — y
-              compris avant une mission qui ferait atteindre ce montant.
-            </p>
-          )}
-        </div>
+        <BlocConformite
+          nbManquements={conformite.manquements.length}
+          bloquants={bloquants}
+          alertes={alertes}
+          estSousTraitant={trainer.statut === "sous_traitant"}
+          cumulIllisible={conformite.cumulIllisible}
+          montantRetenuCents={conformite.montantRetenuCents}
+          approcheVigilanceCents={APPROCHE_VIGILANCE_CENTS}
+          seuilVigilanceCents={SEUIL_VIGILANCE_CENTS}
+        />
       )}
 
       {/*
@@ -907,91 +866,22 @@ export default async function FicheFormateurPage({ params, searchParams }: PageP
         donnée, et l'arbitrage lui revient.
       */}
       {fiabilite !== null && (
-        <div className="admin-card mb-[var(--space-admin-5)]">
-          <p className="admin-meta">Fiabilité (24 derniers mois)</p>
-
-          <p className="text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg)]">
-            {fiabilite.resume}
-            {fiabilite.tauxIncidentsBloquants !== null && fiabilite.incidentsBloquants > 0 && (
-              <> Soit {fiabilite.tauxIncidentsBloquants} % des missions.</>
-            )}
-          </p>
-
-          {fiabilite.niveauVigilance !== "aucune" && (
-            <p className="mt-2 text-[length:var(--text-admin-sm)]">
-              <strong>
-                {fiabilite.niveauVigilance === "vigilance_forte"
-                  ? "Vigilance forte"
-                  : "À surveiller"}
-              </strong>{" "}
-              — à prendre en compte lors de la reconduction (article 8). Cette mention
-              n&apos;empêche pas de l&apos;affecter.
-            </p>
-          )}
-
-          {incidents.length > 0 && (
-            <ul className="mt-3 space-y-1 text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]">
-              {incidents.map((i) => (
-                <li key={i.id}>
-                  {i.dateIncident.toLocaleDateString("fr-FR")} — {i.titre}
-                  {i.session !== null && <> (session {i.session.numero})</>}
-                </li>
-              ))}
-            </ul>
-          )}
-
-          <p className="admin-meta mt-3">
-            Les incidents se consignent depuis le registre des incidents, en désignant
-            l&apos;intervenant mis en cause.
-          </p>
-        </div>
+        <BlocFiabilite
+          resume={fiabilite.resume}
+          tauxIncidentsBloquants={fiabilite.tauxIncidentsBloquants}
+          incidentsBloquants={fiabilite.incidentsBloquants}
+          niveauVigilance={fiabilite.niveauVigilance}
+          incidents={incidents}
+        />
       )}
 
       {/* Missions — refus et absences (2026-09-03). Des FAITS, datés et motivés. */}
-      <div className="admin-card mb-[var(--space-admin-5)]">
-        <p className="admin-meta">
-          {missionsIndependant !== null
-            ? "Missions (24 derniers mois)"
-            : "Missions proposées (24 derniers mois)"}
-        </p>
-        {missionsIndependant !== null ? (
-          <p className="text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg)]">
-            {libelleMissionsIndependant(missionsIndependant)}.{" "}
-            {missions.absences > 0
-              ? `${missions.absences} absence${missions.absences > 1 ? "s" : ""} consignée${missions.absences > 1 ? "s" : ""} (désistement ou annulation tardive).`
-              : "Aucune absence consignée."}
-          </p>
-        ) : (
-          <p className="text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg)]">
-            {missions.proposees === 0
-              ? "Aucune mission proposée par l'outil à ce jour."
-              : `${missions.proposees} proposée${missions.proposees > 1 ? "s" : ""} · ` +
-                `${missions.acceptees} acceptée${missions.acceptees > 1 ? "s" : ""} · ` +
-                `${missions.refusees} refusée${missions.refusees > 1 ? "s" : ""} · ` +
-                `${missions.enAttente} en attente de réponse · ` +
-                `${missions.sansReponse} sans réponse dans le délai · ` +
-                `${missions.expirees} expirée${missions.expirees > 1 ? "s" : ""}.`}{" "}
-            {missions.absences > 0
-              ? `${missions.absences} absence${missions.absences > 1 ? "s" : ""} consignée${missions.absences > 1 ? "s" : ""} (désistement ou annulation tardive).`
-              : "Aucune absence consignée."}
-          </p>
-        )}
-        {missionsIndependant === null && missions.derniersRefus.length > 0 && (
-          <ul className="mt-3 space-y-1 text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]">
-            {missions.derniersRefus.map((r, i) => (
-              <li key={`${r.session.numero}-${i}`}>
-                {r.reponduAt !== null ? `${r.reponduAt.toLocaleDateString("fr-FR")} — ` : ""}
-                refus de {r.session.titreSession} ({r.session.numero})
-                {r.motifRefus !== null ? ` : « ${r.motifRefus} »` : ""}
-              </li>
-            ))}
-          </ul>
-        )}
-        <p className="admin-meta mt-3">
-          Une absence se consigne depuis la fiche de session (« Déclarer une absence ») ou depuis le
-          registre des incidents.
-        </p>
-      </div>
+      <BlocMissions
+        missions={missions}
+        libelleIndependant={
+          missionsIndependant !== null ? libelleMissionsIndependant(missionsIndependant) : null
+        }
+      />
 
       {/*
         Compétences ÉVALUÉES (2026-08-02).
@@ -1043,10 +933,11 @@ export default async function FicheFormateurPage({ params, searchParams }: PageP
         empreinte. C'est le « traçage » demandé, et il n'est pas ailleurs.
       */}
       {contratsConsole.length > 0 && (
-        <div className="mb-[var(--space-admin-6)] rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-surface)] p-[var(--space-admin-4)]">
-          <h2 className="mb-[var(--space-admin-3)] text-[length:var(--text-admin-base)] font-semibold text-[color:var(--color-admin-fg)]">
-            Contrat de travail — signature de l&apos;employeur
-          </h2>
+        <AdminBloc
+          teinte="terracotta"
+          niveau={2}
+          titre="Contrat de travail — signature de l'employeur"
+        >
           <div className="flex flex-col gap-[var(--space-admin-4)]">
             {contratsConsole.map((contrat) => (
               <div key={contrat.documentGenereId}>
@@ -1073,14 +964,11 @@ export default async function FicheFormateurPage({ params, searchParams }: PageP
               </div>
             ))}
           </div>
-        </div>
+        </AdminBloc>
       )}
 
       {lettresConsole.length > 0 && (
-        <div className="mb-[var(--space-admin-6)] rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-surface)] p-[var(--space-admin-4)]">
-          <h2 className="mb-[var(--space-admin-3)] text-[length:var(--text-admin-base)] font-semibold text-[color:var(--color-admin-fg)]">
-            Lettres de mission — contreseing de l&apos;organisme
-          </h2>
+        <AdminBloc teinte="vert" niveau={2} titre="Lettres de mission — contreseing de l'organisme">
           <div className="flex flex-col gap-[var(--space-admin-4)]">
             {lettresConsole.map((lettre) => (
               <div key={lettre.documentGenereId}>
@@ -1105,7 +993,7 @@ export default async function FicheFormateurPage({ params, searchParams }: PageP
               </div>
             ))}
           </div>
-        </div>
+        </AdminBloc>
       )}
 
       <TrainerAvailabilityPanel trainerId={trainer.id} indispos={indispos} />
@@ -1119,19 +1007,15 @@ export default async function FicheFormateurPage({ params, searchParams }: PageP
       {/* Développement des compétences dans le temps (indicateur 22). L'ancre
           est la cible du « Où vérifier » du mode auditeur
           (`ANCRE_DEVELOPPEMENT_COMPETENCES`). */}
-      <div
-        id={ANCRE_DEVELOPPEMENT_COMPETENCES}
-        className="mb-[var(--space-admin-6)] scroll-mt-[var(--space-admin-8)] rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-surface)] p-[var(--space-admin-4)]"
-      >
-        <h2 className="mb-[var(--space-admin-3)] text-[length:var(--text-admin-base)] font-semibold text-[color:var(--color-admin-fg)]">
-          Développement des compétences (ind. 22)
-        </h2>
-        <TrainerDevelopmentPanel
-          trainerId={trainer.id}
-          actions={devActions}
-          addAction={addTrainerDevelopmentActionAction}
-          deleteAction={deleteTrainerDevelopmentActionAction}
-        />
+      <div id={ANCRE_DEVELOPPEMENT_COMPETENCES} className="scroll-mt-[var(--space-admin-8)]">
+        <AdminBloc teinte="bleu" niveau={2} titre="Développement des compétences (ind. 22)">
+          <TrainerDevelopmentPanel
+            trainerId={trainer.id}
+            actions={devActions}
+            addAction={addTrainerDevelopmentActionAction}
+            deleteAction={deleteTrainerDevelopmentActionAction}
+          />
+        </AdminBloc>
       </div>
 
       <div className="mb-[var(--space-admin-6)]">

@@ -128,7 +128,7 @@ export const ARTICLES: readonly Article[] = [
     numero: 9,
     titre: "Organisation de la journée",
     blocs: [
-      "L’entreprise assure la présence du dirigeant ou d’un responsable pendant l’audit du matin, une salle équipée, une connexion internet, et accueille 15 participants au maximum l’après-midi.",
+      "L’entreprise assure la présence du dirigeant ou d’un responsable pendant l’audit du matin, une salle équipée, une connexion internet, et accueille, pour la formation de l’après-midi, 15 participants au maximum. L’audit du matin convient aux entreprises de 2 à 250 salariés.",
     ],
   },
   {
