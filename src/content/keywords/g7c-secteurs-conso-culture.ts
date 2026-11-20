@@ -1988,7 +1988,6 @@ const KW_ADMINISTRATION: KeywordSeed[] = [
       h2Variants: [
         "Programme formation IA agents publics — contenu et pédagogie",
         "IA et service public : usages autorisés et interdits",
-        "Accompagnement post-formation : ancrage dans les pratiques quotidiennes",
       ],
     },
     variables: {

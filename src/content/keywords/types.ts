@@ -127,7 +127,7 @@ export type KeywordMaturiteCible = "decouverte" | "avance" | "transverse";
  *     événement de formation isolé. Intentions « formation IA une journée »,
  *     « séminaire IA dirigeants ».
  *   - `recurrent` : abonnement / accompagnement dans la durée (formateur dédié,
- *     formation mensuelle, suivi continu) — différenciant Axion-IA. Intentions
+ *     formation mensuelle, coaching régulier sur devis) — différenciant Axion-IA. Intentions
  *     « accompagnement IA continu », « formation IA mensuelle entreprise ».
  *   - `transverse`: indépendant du rythme (par outil, par fonction, par public,
  *     piliers de routage, AEO).

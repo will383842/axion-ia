@@ -80,7 +80,7 @@ export const KW_COMPARATIFS_G5: KeywordSeed[] = [
     urlCible: "/fr/comparaisons/agence-ia-vs-consultant-independant",
     canonicalParent: "/fr/comparaisons",
     source: "manuel",
-    note: "Audience ETI + DG ; différenciateur : suivi post-mission structuré",
+    note: "Audience ETI + DG ; différenciateur : méthode documentée",
   },
 
   {
@@ -386,7 +386,7 @@ export const KW_COMPARATIFS_G5: KeywordSeed[] = [
       h1: "Mission IA ponctuelle ou contrat de maintenance mensuel : ce que chaque modèle garantit",
       metaTitle: "Mission IA ponctuelle vs maintenance mensuelle — Comparatif",
       metaDescription:
-        "Intervention one-shot ou suivi continu ? Comparez les deux modèles d'engagement IA pour PME selon vos objectifs 6-12 mois.",
+        "Intervention ponctuelle ou coaching régulier sur devis ? Comparez les deux modèles d'engagement IA pour PME selon vos objectifs 6-12 mois.",
       h2Variants: [
         "La mission ponctuelle : quand elle est suffisante",
         "La maintenance mensuelle : ce qu'elle couvre au-delà du projet",
@@ -411,7 +411,7 @@ export const KW_COMPARATIFS_G5: KeywordSeed[] = [
       h1: "Formation IA 1 jour ou 2 jours : ce qui change vraiment dans les résultats",
       metaTitle: "Formation IA 1 jour vs 2 jours | Axion-IA",
       metaDescription:
-        "Immersion, pratique, suivi post-formation : comparez les formats 1 et 2 jours pour choisir selon vos objectifs et contraintes agenda.",
+        "Immersion et pratique : comparez les formats 1 et 2 jours pour choisir selon vos objectifs et contraintes agenda.",
       h2Variants: [
         "1 jour : sensibilisation et cas d'usage immédiats",
         "2 jours : pratique approfondie et plan d'action personnalisé",

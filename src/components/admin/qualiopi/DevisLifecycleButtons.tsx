@@ -69,6 +69,15 @@ export interface DevisLifecycleButtonsProps {
    * (`acceptDevisAction` refuserait de toute façon).
    */
   repriseParRelance?: boolean;
+  /**
+   * Devis remis en main propre : aucun e-mail n'est parti et aucun lien n'existe. Le renvoi par
+   * e-mail et son avertissement sont masqués (le serveur le refuse aussi).
+   */
+  remisEnMainPropre?: boolean;
+  /** L'utilisateur peut conclure un devis (`conclure_devis`) : sans cela, ni « Marquer accepté » ni « Transformer ». */
+  peutConclure?: boolean;
+  /** L'utilisateur peut écrire dans la console : sans cela, aucun bouton d'écriture n'est rendu. */
+  peutEcrire?: boolean;
 }
 
 type MotifRemise = "sans_email" | "adresse_bloquee" | "remis_en_rendez_vous";
@@ -96,6 +105,9 @@ export function DevisLifecycleButtons({
   signeParClient = false,
   signeDesDeuxParties = false,
   repriseParRelance = false,
+  remisEnMainPropre = false,
+  peutConclure = true,
+  peutEcrire = true,
 }: DevisLifecycleButtonsProps): React.ReactElement {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
@@ -226,29 +238,49 @@ export function DevisLifecycleButtons({
   }
 
   function handleAccept() {
-    resetMessages();
-    startTransition(async () => {
-      const result = await acceptDevisAction(devisId);
-      if ("error" in result) {
-        setError(result.error);
-      } else {
-        setSuccessMsg("Devis accepté.");
-        router.refresh();
-      }
-    });
+    demander(
+      {
+        titre: `Marquer le devis${numero ? ` ${numero}` : ""} accepté ?`,
+        description:
+          "À faire seulement si le client a signé le devis papier ou donné son accord écrit. La fiche passe client et la suite est lancée.",
+        libelleConfirmer: "Marquer accepté",
+      },
+      () => {
+        resetMessages();
+        startTransition(async () => {
+          const result = await acceptDevisAction(devisId);
+          if ("error" in result) {
+            setError(result.error);
+          } else {
+            setSuccessMsg("Devis accepté.");
+            router.refresh();
+          }
+        });
+      },
+    );
   }
 
   function handleDecline() {
-    resetMessages();
-    startTransition(async () => {
-      const result = await declineDevisAction(devisId);
-      if ("error" in result) {
-        setError(result.error);
-      } else {
-        setSuccessMsg("Devis refusé.");
-        router.refresh();
-      }
-    });
+    demander(
+      {
+        titre: `Marquer le devis${numero ? ` ${numero}` : ""} refusé ?`,
+        description: "Le lien de signature envoyé au client est désactivé immédiatement.",
+        libelleConfirmer: "Marquer refusé",
+        destructif: true,
+      },
+      () => {
+        resetMessages();
+        startTransition(async () => {
+          const result = await declineDevisAction(devisId);
+          if ("error" in result) {
+            setError(result.error);
+          } else {
+            setSuccessMsg("Devis refusé.");
+            router.refresh();
+          }
+        });
+      },
+    );
   }
 
   function handleTransform() {
@@ -277,17 +309,20 @@ export function DevisLifecycleButtons({
     <div className="flex flex-col gap-[var(--space-admin-3)]">
       {dialogue}
       <div className="flex flex-wrap gap-[var(--space-admin-3)]">
-        {statut === "brouillon" && !(estClassique && !destinataire) && !emailEnAttente && (
-          <button
-            type="button"
-            onClick={handleSend}
-            disabled={isPending}
-            className="admin-button"
-            aria-label="Marquer le devis comme envoyé au client"
-          >
-            {isPending ? "…" : "Envoyer au client"}
-          </button>
-        )}
+        {peutEcrire &&
+          statut === "brouillon" &&
+          !(estClassique && !destinataire) &&
+          !emailEnAttente && (
+            <button
+              type="button"
+              onClick={handleSend}
+              disabled={isPending}
+              className="admin-button"
+              aria-label="Marquer le devis comme envoyé au client"
+            >
+              {isPending ? "…" : "Envoyer au client"}
+            </button>
+          )}
         {statut === "brouillon" && emailEnAttente && (
           <p
             data-testid="email-en-attente"
@@ -308,7 +343,7 @@ export function DevisLifecycleButtons({
           </p>
         )}
 
-        {statut === "brouillon" && estClassique && (
+        {peutEcrire && statut === "brouillon" && estClassique && (
           <>
             <label className="flex items-center gap-[var(--space-admin-2)] text-[length:var(--text-admin-sm)]">
               <span>Motif</span>
@@ -349,7 +384,7 @@ export function DevisLifecycleButtons({
           </a>
         )}
 
-        {statut === "envoye" && estClassique && !clientASigne && (
+        {peutEcrire && statut === "envoye" && estClassique && !clientASigne && (
           <button
             type="button"
             onClick={handleCorriger}
@@ -369,7 +404,7 @@ export function DevisLifecycleButtons({
             ci-dessus pour le conclure.
           </p>
         )}
-        {statut === "envoye" && signeDesDeuxParties && (
+        {peutConclure && statut === "envoye" && signeDesDeuxParties && (
           <p
             data-testid="note-signe-des-deux-parties"
             className="basis-full text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]"
@@ -378,17 +413,19 @@ export function DevisLifecycleButtons({
             Cliquez sur « Marquer accepté » pour la finir.
           </p>
         )}
-        {statut === "envoye" && !signeParClient && !repriseParRelance && (
+        {peutEcrire && statut === "envoye" && !signeParClient && !repriseParRelance && (
           <>
-            <button
-              type="button"
-              onClick={handleAccept}
-              disabled={isPending}
-              className="admin-button"
-              aria-label="Marquer le devis comme accepté"
-            >
-              {isPending ? "…" : "Marquer accepté"}
-            </button>
+            {peutConclure && (
+              <button
+                type="button"
+                onClick={handleAccept}
+                disabled={isPending}
+                className="admin-button"
+                aria-label="Marquer le devis comme accepté"
+              >
+                {isPending ? "…" : "Marquer accepté"}
+              </button>
+            )}
             {!signeDesDeuxParties && (
               <button
                 type="button"
@@ -403,29 +440,39 @@ export function DevisLifecycleButtons({
           </>
         )}
 
-        {statut === "envoye" && !signeParClient && !signeDesDeuxParties && !repriseParRelance && (
-          <button
-            type="button"
-            onClick={handleResend}
-            disabled={isPending}
-            className="admin-button"
-            aria-label="Renvoyer le devis au client par email (PDF joint)"
-          >
-            {isPending ? "…" : "Renvoyer par email"}
-          </button>
-        )}
-        {statut === "envoye" && !signeParClient && !signeDesDeuxParties && !repriseParRelance && (
-          <p
-            data-testid="avertissement-renvoi-lien"
-            className="basis-full text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]"
-          >
-            Renvoyer par email désactive dès maintenant l&apos;ancien lien de signature, avant
-            l&apos;approbation de l&apos;e-mail en corbeille : s&apos;il est refusé ou supprimé, le
-            client n&apos;a plus de lien valable.
-          </p>
-        )}
+        {peutEcrire &&
+          statut === "envoye" &&
+          !signeParClient &&
+          !signeDesDeuxParties &&
+          !repriseParRelance &&
+          !remisEnMainPropre && (
+            <button
+              type="button"
+              onClick={handleResend}
+              disabled={isPending}
+              className="admin-button"
+              aria-label="Renvoyer le devis au client par email (PDF joint)"
+            >
+              {isPending ? "…" : "Renvoyer par email"}
+            </button>
+          )}
+        {peutEcrire &&
+          statut === "envoye" &&
+          !signeParClient &&
+          !signeDesDeuxParties &&
+          !repriseParRelance &&
+          !remisEnMainPropre && (
+            <p
+              data-testid="avertissement-renvoi-lien"
+              className="basis-full text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]"
+            >
+              Renvoyer par email désactive dès maintenant l&apos;ancien lien de signature, avant
+              l&apos;approbation de l&apos;e-mail en corbeille : s&apos;il est refusé ou supprimé,
+              le client n&apos;a plus de lien valable.
+            </p>
+          )}
 
-        {statut === "accepte" && (
+        {peutEcrire && peutConclure && statut === "accepte" && (
           <button
             type="button"
             onClick={handleTransform}

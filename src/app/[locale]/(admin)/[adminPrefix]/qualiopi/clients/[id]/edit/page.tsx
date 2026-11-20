@@ -19,6 +19,10 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 
+import { AlertTriangle, Building2, CheckCircle2, Mail, MapPin, User } from "lucide-react";
+
+import { AdminStatCard } from "@/components/admin/ui/AdminStatCard";
+import { AdminBlocRepliable } from "@/components/admin/ui/AdminBlocRepliable";
 import { AdminPageShell } from "@/components/admin/ui/AdminPageShell";
 import { AdminPageHeader } from "@/components/admin/ui/AdminPageHeader";
 import { lireMessageDeRetour } from "@/features/dossier-client/message-de-retour";
@@ -78,29 +82,72 @@ export default async function ModifierClientPage({ params, searchParams }: PageP
       <div className="mb-[var(--space-admin-4)]">
         <Link
           href={ficheHref}
-          className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-accent)] underline-offset-2 hover:underline"
+          className="inline-flex min-h-[var(--target-admin-min-desktop)] items-center text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-accent)] underline-offset-2 hover:underline"
         >
           ← {client.raisonSociale}
         </Link>
       </div>
 
-      <AdminPageHeader
-        title={`Modifier ${client.raisonSociale}`}
-        description={`${client.numero} — entreprise, adresse, contact et facturation. La branche (IDCC, effectif) se modifie sur la fiche, bloc « ${libelleBlocBranche()} ».`}
-      />
+      <AdminPageHeader title={`Modifier ${client.raisonSociale}`} description={client.numero} />
+
+      {/* Chiffres clés : calculés sur la fiche déjà chargée, aucune requête de plus. */}
+      <div className="mb-[var(--space-admin-6)] grid gap-[var(--space-admin-4)] sm:grid-cols-2 lg:grid-cols-4">
+        <AdminStatCard
+          label="Type de fiche"
+          value={client.type === "particulier" ? "Particulier" : "Entreprise"}
+          icon={client.type === "particulier" ? User : Building2}
+          tone="info"
+        />
+        <AdminStatCard
+          label="SIRET"
+          value={
+            client.type === "particulier"
+              ? "Sans objet"
+              : client.siret
+                ? "Renseigné"
+                : "À compléter"
+          }
+          icon={client.type === "particulier" ? User : client.siret ? CheckCircle2 : AlertTriangle}
+          tone={client.type === "particulier" ? "default" : client.siret ? "success" : "warning"}
+        />
+        <AdminStatCard
+          label="E-mail de contact"
+          value={client.contactEmail ? "Renseigné" : "Manquant"}
+          icon={client.contactEmail ? Mail : AlertTriangle}
+          tone={client.contactEmail ? "success" : "warning"}
+        />
+        <AdminStatCard
+          label="Adresse"
+          value={client.adresseRue && client.adresseVille ? "Complète" : "À compléter"}
+          icon={MapPin}
+          tone={client.adresseRue && client.adresseVille ? "success" : "warning"}
+        />
+      </div>
+
+      <AdminBlocRepliable titre="À savoir avant de modifier" className="mb-[var(--space-admin-6)]">
+        <p className="text-[length:var(--text-admin-base)] text-[color:var(--color-admin-fg-soft)]">
+          Entreprise, adresse, contact et facturation. La branche (IDCC, effectif) se modifie sur la
+          fiche, bloc « {libelleBlocBranche()} ».
+        </p>
+      </AdminBlocRepliable>
 
       {erreurType !== null ? (
-        <p
+        <div
           role="alert"
-          className="mb-[var(--space-admin-3)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-danger)]"
+          className="mb-[var(--space-admin-4)] flex items-start gap-[var(--space-admin-4)] rounded-[var(--radius-admin-md)] border border-l-4 border-[color:var(--color-admin-border)] border-l-[color:var(--color-admin-destructive)] bg-[color:var(--color-admin-destructive-soft)] p-[var(--space-admin-5)] text-[length:var(--text-admin-base)] font-medium text-[color:var(--color-admin-destructive-fg)]"
         >
-          {erreurType}
-        </p>
+          <AlertTriangle size={20} aria-hidden="true" className="mt-[2px] shrink-0" />
+          <p>{erreurType}</p>
+        </div>
       ) : null}
       {messageType !== null ? (
-        <p role="status" className="mb-[var(--space-admin-3)] text-[length:var(--text-admin-sm)]">
-          {messageType}
-        </p>
+        <div
+          role="status"
+          className="mb-[var(--space-admin-4)] flex items-start gap-[var(--space-admin-4)] rounded-[var(--radius-admin-md)] border border-l-4 border-[color:var(--color-admin-border)] border-l-[color:var(--color-admin-success)] bg-[color:var(--color-admin-success-soft)] p-[var(--space-admin-5)] text-[length:var(--text-admin-base)] font-medium text-[color:var(--color-admin-success-fg)]"
+        >
+          <CheckCircle2 size={20} aria-hidden="true" className="mt-[2px] shrink-0" />
+          <p>{messageType}</p>
+        </div>
       ) : null}
       <ChangerTypeClient
         clientId={client.id}

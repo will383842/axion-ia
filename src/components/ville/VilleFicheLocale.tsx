@@ -219,7 +219,7 @@ export function VilleFicheLocale({ fiche }: { fiche: FicheLocale }) {
               {`Nos accompagnements à ${v}`}
             </h2>
             <p className="text-fg-soft mt-5 text-base leading-relaxed">
-              {`Le matin : audit (2 à 4 h selon l’entreprise) ; l’après-midi : formation de 4 h. ${prix} la journée, jusqu’à 15 personnes.`}
+              {`Le matin : audit (entreprises de 2 à 250 salariés, 2 à 4 h selon l’entreprise) ; l’après-midi : formation de 4 h, jusqu’à 15 personnes. ${prix} la journée.`}
             </p>
             <ul className="mt-4 space-y-2 text-[15px]">
               <li>

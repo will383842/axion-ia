@@ -82,9 +82,9 @@ export const MEUDON_COPY: VilleCopy = {
               "Tests d'acceptation dans vos locaux meudonnais, formation de vos équipes à l'administration de la plateforme, remise de la documentation runbook. Vos collaborateurs deviennent autonomes — pas de dépendance Axion-IA.",
           },
           {
-            step: "Mise en ligne et suivi",
+            step: "Mise en ligne",
             detail:
-              "Déploiement, surveillance des Web Vitals et des métriques d'usage, ajustements UX et performance. Vous gardez le code, les modèles et les accès, transférables à tout intégrateur du Grand Paris Seine Ouest ou repris en interne.",
+              "Déploiement. Vous gardez le code, les modèles et les accès, transférables à tout intégrateur du Grand Paris Seine Ouest ou repris en interne.",
           },
         ],
         pricing: [
@@ -168,9 +168,9 @@ export const MEUDON_COPY: VilleCopy = {
               "Acceptance tests at your Meudon offices, training of your teams to administer the platform, runbook documentation handed over. Your staff become autonomous — no Axion-IA dependency.",
           },
           {
-            step: "Go-live and follow-up",
+            step: "Go-live",
             detail:
-              "Deployment, Web Vitals and usage monitoring, UX and performance adjustments. You keep the code, models and access, transferable to any Grand Paris Seine Ouest integrator or taken in-house.",
+              "Deployment. You keep the code, models and access, transferable to any Grand Paris Seine Ouest integrator or taken in-house.",
           },
         ],
         pricing: [

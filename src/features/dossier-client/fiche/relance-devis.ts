@@ -23,6 +23,8 @@ export const ERREUR_GARAGE = "La relance n'a pas pu être préparée. Rien n'a �
 export const ERREUR_DEVIS_INTROUVABLE = "Ce devis n'est pas un devis envoyé de ce client.";
 export const ERREUR_DEVIS_PERIME =
   "La date de validité de ce devis est dépassée : relancer un devis périmé n'a pas de sens.";
+export const ERREUR_DEVIS_REMIS_MAIN_PROPRE =
+  "Ce devis a été remis en main propre : aucun e-mail n'est parti, une relance par e-mail serait trompeuse. Contactez le client directement.";
 
 /** Clé d'idempotence du brouillon : un seul par devis. */
 export const jobIdRelanceDevis = (devisId: string): string => `relance-devis:${devisId}`;

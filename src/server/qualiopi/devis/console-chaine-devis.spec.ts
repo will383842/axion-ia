@@ -80,3 +80,53 @@ describe("urlPiece", () => {
     expect(urlPiece("p1")).toBe("/api/qualiopi/documents/p1");
   });
 });
+
+describe("etatHorodatageDevis : lecture impossible, échec, illisible (I1)", () => {
+  const NOW = new Date("2026-11-20T12:00:00Z");
+  it("null : illisible, lecture impossible", () => {
+    const e = etatHorodatageDevis(null, NOW);
+    expect(e.genre).toBe("illisible");
+    expect(e.libelle).toBe("Horodatage : lecture impossible, à vérifier");
+  });
+  it("en_attente avec derniereErreur : échec ; le texte de l'erreur n'est jamais affiché", () => {
+    const e = etatHorodatageDevis(
+      [
+        {
+          statut: "en_attente",
+          horodateAt: null,
+          creeAt: new Date("2026-11-18T08:00:00Z"),
+          derniereErreur: "TSA 503 SECRET-DETAIL",
+        },
+        {
+          statut: "en_attente",
+          horodateAt: null,
+          creeAt: new Date("2026-11-19T08:00:00Z"),
+          derniereErreur: "autre",
+        },
+      ],
+      NOW,
+    );
+    expect(e.genre).toBe("echec");
+    expect(e.libelle).toBe("Horodatage : en échec depuis le 18/11/2026, nouvel essai automatique");
+    expect(e.libelle).not.toContain("SECRET");
+  });
+  it("en_attente sans erreur (ou erreur vide) : attente, inchangé", () => {
+    const e = etatHorodatageDevis(
+      [{ statut: "en_attente", horodateAt: null, creeAt: NOW, derniereErreur: "" }],
+      NOW,
+    );
+    expect(e.genre).toBe("attente");
+  });
+  it("statut inconnu seul, ou obtenu sans date : illisible", () => {
+    expect(etatHorodatageDevis([{ statut: "zzz", horodateAt: null, creeAt: NOW }], NOW)).toEqual({
+      genre: "illisible",
+      libelle: "Horodatage : illisible, à vérifier",
+    });
+    expect(
+      etatHorodatageDevis([{ statut: "obtenu", horodateAt: null, creeAt: NOW }], NOW).genre,
+    ).toBe("illisible");
+  });
+  it("[] : toujours non configuré", () => {
+    expect(etatHorodatageDevis([], NOW).libelle).toBe("Horodatage : non configuré");
+  });
+});

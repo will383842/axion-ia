@@ -125,7 +125,7 @@ describe("buildJourneeIaServiceJsonLd : le nœud partagé", () => {
     expect(noeud.audience).toStrictEqual({
       "@type": "BusinessAudience",
       audienceType: "PME et TPE",
-      numberOfEmployees: { "@type": "QuantitativeValue", minValue: 5, maxValue: 249 },
+      numberOfEmployees: { "@type": "QuantitativeValue", minValue: 2, maxValue: 250 },
     });
     expect(noeud.availableChannel).toStrictEqual([
       { "@type": "ServiceChannel", name: "Dans les locaux du client, partout en France" },

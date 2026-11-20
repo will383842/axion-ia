@@ -36,7 +36,7 @@ export const COACHING_TITRES_FR = {
 } as const;
 
 export const COACHING_DEROULE_INTRO_FR =
-  "Cinq étapes, de la préparation au point de suivi. Les délais ci-dessous sont ceux du devis.";
+  "Quatre étapes, de la préparation au livrable écrit. Les délais ci-dessous sont ceux du devis.";
 
 const dirigeant = COACHING_1TO1_FORMULES.find((f) => f.id === "dirigeant");
 const membre = COACHING_1TO1_FORMULES.find((f) => f.id === "membre-equipe");
@@ -85,7 +85,7 @@ export function comparaisonCoachingFr() {
       titre: "La Journée IA",
       lien: { href: "/journee-ia", libelle: "Découvrir la Journée IA" },
       texte: remplacerJetons(
-        "Toute l’entreprise, en une journée chez vous : un audit le matin (2 à 4 h selon l’entreprise), une formation de 4 h l’après-midi. {{PRIX}} la journée, jusqu’à 15 personnes.",
+        "Toute l’entreprise, en une journée chez vous : un audit le matin (entreprises de 2 à 250 salariés, 2 à 4 h selon l’entreprise), une formation de 4 h l’après-midi, jusqu’à 15 personnes. {{PRIX}} la journée.",
       ),
     },
     {

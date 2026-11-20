@@ -479,11 +479,6 @@ export const NIMES_COPY: VilleCopy = {
             detail:
               "Sur site à Nîmes : tests d'acceptation utilisateurs, formation des ambassadeurs internes, livraison du runbook, plan de monitoring.",
           },
-          {
-            step: "Suivi post-go-live",
-            detail:
-              "À distance : surveillance des métriques de production, ajustements fins, mesure du ROI réel par rapport à la prédiction du SOW. Rapport final remis à clôture, mission close.",
-          },
         ],
         pricing: [
           {
@@ -570,11 +565,6 @@ export const NIMES_COPY: VilleCopy = {
             step: "Acceptance + training",
             detail:
               "On site in Nîmes: user acceptance tests, training of internal ambassadors, runbook documentation delivery, monitoring plan.",
-          },
-          {
-            step: "Post-go-live follow-up",
-            detail:
-              "Remote: production metrics monitoring, fine adjustments, real ROI vs SOW prediction measurement. Final report delivered at closure, mission closed.",
           },
         ],
         pricing: [

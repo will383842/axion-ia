@@ -450,13 +450,13 @@ export const KW_AEO_G4: KeywordSeed[] = [
     priorite: 2,
     niveau: 3,
     injection: {
-      h1: "Mesurer les progrès post-formation IA : méthode et indicateurs",
+      h1: "Mesurer les progrès après une formation IA : méthode et indicateurs pour votre équipe",
       metaTitle: "Mesurer progrès formation IA | Axion-IA",
       metaDescription:
         "3 indicateurs simples : taux d'adoption (outils utilisés semaine 4), temps gagné déclaré par l'équipe, et nombre de cas d'usage autonomes.",
       h2Variants: [
         "Les 3 KPI post-formation IA",
-        "Grille de suivi autonomie à J+30",
+        "Grille d'autonomie à remplir par votre équipe",
         "Que faire si les progrès sont insuffisants ?",
       ],
     },
@@ -625,14 +625,14 @@ export const KW_AEO_G4: KeywordSeed[] = [
     priorite: 1,
     niveau: 2,
     injection: {
-      h1: "Former ses équipes à l'IA : la méthode en 4 étapes",
+      h1: "Former ses équipes à l'IA : la méthode en 3 étapes",
       metaTitle: "Former équipes IA entreprise : méthode | Axion-IA",
       metaDescription:
-        "4 étapes : 1. Auditer les besoins (0,5 jour), 2. Former par cas d'usage métier (1-2 jours), 3. Pratiquer avec un suivi (30 jours), 4. Mesurer et ancrer.",
+        "3 étapes : 1. Auditer les besoins (0,5 jour), 2. Former par cas d'usage métier (1-2 jours), 3. Pratiquer sur vos dossiers réels.",
       h2Variants: [
         "Étape 1 : identifier les besoins par métier",
         "Étape 2 : la formation sur cas d'usage réels",
-        "Étape 3 : l'ancrage post-formation (J+30)",
+        "Étape 3 : la pratique sur vos dossiers réels",
       ],
     },
     variables: { chiffre: "60", unite: "% des acquis perdus sans ancrage" },
@@ -1281,7 +1281,7 @@ export const KW_AEO_G4: KeywordSeed[] = [
       h1: "Choisir un prestataire IA en France : 7 critères en 2026",
       metaTitle: "Choisir prestataire IA France 2026 | Axion-IA",
       metaDescription:
-        "7 critères : indépendance des outils, références vérifiables, méthode documentée, devis détaillé et ferme, accompagnement post-déploiement, conformité",
+        "7 critères : indépendance des outils, références vérifiables, méthode documentée, devis détaillé et ferme, livrables documentés, conformité",
       h2Variants: [
         "Les 7 questions à poser avant de signer",
         "Red flags d'un mauvais prestataire IA",

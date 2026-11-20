@@ -19,6 +19,8 @@ import { z } from "zod";
 import { prisma } from "@/lib/prisma";
 import { adminPath } from "@/lib/admin-path";
 import { requireAdminWrite, logQualiopiActivity } from "@/server/actions/qualiopi/_guards";
+import { devisRemisEnMainPropre } from "@/server/qualiopi/devis/canal-emission";
+import { motifRelanceDevisSansObjet } from "@/server/qualiopi/devis/relance-devis-sans-objet";
 import { garerPourValidation } from "@/server/email/outbox-service";
 import { exigerAccesEchanges } from "../acces";
 import { messageAffichable } from "../message-affichable";
@@ -28,6 +30,7 @@ import {
   ENTITE_DEVIS,
   ERREUR_DEVIS_INTROUVABLE,
   ERREUR_DEVIS_PERIME,
+  ERREUR_DEVIS_REMIS_MAIN_PROPRE,
   ERREUR_GARAGE,
   jobIdRelanceDevis,
   MESSAGE_RELANCE_GAREE,
@@ -92,6 +95,15 @@ export async function preparerRelanceDevisAction(fd: FormData): Promise<void> {
     });
     if (!devis) return r("erreur", ERREUR_DEVIS_INTROUVABLE);
     if (devis.dateValidite < new Date()) return r("erreur", ERREUR_DEVIS_PERIME);
+
+    // Lot I1 : aucun e-mail n'est parti pour un devis remis en main propre ; pas de relance par e-mail.
+    if (await devisRemisEnMainPropre(prisma, devis.id)) {
+      return r("erreur", ERREUR_DEVIS_REMIS_MAIN_PROPRE);
+    }
+
+    // Relance sans objet (signé, accepté, refusé, périmé…) : on le dit, on ne gare rien.
+    const sansObjet = await motifRelanceDevisSansObjet(prisma, devis.id, new Date());
+    if (sansObjet !== null) return r("erreur", sansObjet);
 
     // Anti-doublon : un brouillon déjà à valider pour ce devis.
     const existant = await prisma.emailOutbox.findFirst({

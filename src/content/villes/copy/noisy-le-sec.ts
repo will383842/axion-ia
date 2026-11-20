@@ -80,7 +80,7 @@ export const NOISY_LE_SEC_COPY: VilleCopy = {
               "Tests d'acceptation sur vos volumes réels, conformité RGPD (registre, minimisation, droit à l'effacement), optimisation Web Vitals et SEO local Est parisien. Mise en production et transfert des accès à votre nom.",
           },
           {
-            step: "Autonomie et suivi",
+            step: "Autonomie",
             detail:
               "Formation de vos équipes (gérant, responsable d'agence, commerçant), remise de la documentation et du runbook. Vous restez propriétaire du code et des contenus, repris en interne ou par tout intégrateur — sans dépendance Axion-IA.",
           },
@@ -166,7 +166,7 @@ export const NOISY_LE_SEC_COPY: VilleCopy = {
               "Acceptance testing on your real volumes, GDPR compliance (register, minimisation, right to erasure), Web Vitals optimisation and East-Paris local SEO. Production launch and handover of access in your name.",
           },
           {
-            step: "Autonomy and follow-up",
+            step: "Autonomy",
             detail:
               "Training of your teams (manager, branch lead, shopkeeper), handover of documentation and runbook. You own the code and content, taken in-house or by any integrator — no Axion-IA lock-in.",
           },

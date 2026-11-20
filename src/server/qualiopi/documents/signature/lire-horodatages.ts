@@ -23,7 +23,7 @@ export async function lireHorodatagesDeSignatures(
   try {
     return await prisma.documentSignatureHorodatage.findMany({
       where: { signatureId: { in: [...signatureIds] } },
-      select: { statut: true, horodateAt: true, creeAt: true },
+      select: { statut: true, horodateAt: true, creeAt: true, derniereErreur: true },
     });
   } catch (err) {
     if (tableAbsente(err)) return [];

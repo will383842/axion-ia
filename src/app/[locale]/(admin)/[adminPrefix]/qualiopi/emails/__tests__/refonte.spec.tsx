@@ -110,6 +110,7 @@ const LISTE_BLANCHE = new Set([
   "@/components/admin/qualiopi/EmailOutboxItem",
   "@/components/admin/qualiopi/EmailAutomationSettings",
   "@/server/actions/qualiopi/email-outbox",
+  "@/components/admin/qualiopi/emails-devis-details",
 ]);
 const FICHIERS = [
   "src/components/admin/qualiopi/EmailOutboxItem.tsx",
@@ -216,5 +217,80 @@ describe("correctifs après relecture", () => {
     expect(src).toContain(
       '<span className="sr-only">{i < naturesRetenues.length - 1 ? ", " : "."}</span>',
     );
+  });
+});
+
+describe("page E-mails à valider — rendu visuel", () => {
+  const ligne = (o: Record<string, unknown>) => ({
+    id: "x",
+    template: "devis-envoi",
+    recipient: "a@b.fr",
+    sujet: "Votre devis",
+    statut: "envoye",
+    refuseMotif: null,
+    envoyeAt: null,
+    refuseAt: null,
+    ...o,
+  });
+  const traites = [
+    ligne({
+      id: "t1",
+      sujet: "Devis AXI-DEV-2026-012 pour vous",
+      envoyeAt: new Date("2026-11-18T09:00:00Z"),
+    }),
+    ligne({
+      id: "t2",
+      statut: "refuse",
+      refuseMotif: "Montant à revoir",
+      refuseAt: new Date("2026-11-18T13:30:00Z"),
+    }),
+    ligne({ id: "t3", statut: "refuse", refuseAt: new Date("2026-11-17T10:00:00Z") }),
+  ];
+
+  async function rendrePage(enAttente: unknown[]) {
+    vi.resetModules();
+    vi.doMock("@/auth", () => ({ auth: async () => ({ user: { id: "u" } }) }));
+    vi.doMock("@/lib/prisma", () => ({
+      prisma: {
+        emailOutbox: {
+          findMany: async (a: { where: { statut: unknown } }) =>
+            typeof a.where.statut === "string" ? enAttente : traites,
+        },
+        emailAutomationSetting: { findMany: async () => [] },
+        client: { findMany: async () => [] },
+      },
+    }));
+    vi.doMock("@/server/relances/reponse-relance-garee", () => ({
+      lireReponsesSurRelancesGarees: async () => new Map(),
+    }));
+    vi.doMock("@/components/admin/qualiopi/emails-devis-details", async (orig) => ({
+      ...(await orig<object>()),
+      lireDetailsDevis: async () => new Map(),
+    }));
+    const { default: Page } = await import("../page");
+    return render(await Page({ params: Promise.resolve({ locale: "fr", adminPrefix: "a" }) }));
+  }
+
+  it("tuiles, jours groupés, pastilles, motif, puce du devis, pas d'iframe", async () => {
+    const { container } = await rendrePage([]);
+    expect(screen.getByText("Rien à relire", { selector: "h2" })).toBeTruthy();
+    expect(
+      screen.getByText("Envoyés récemment").parentElement?.parentElement?.textContent,
+    ).toContain("1");
+    expect(
+      screen.getByText("Refusés récemment").parentElement?.parentElement?.textContent,
+    ).toContain("2");
+    // 18 nov (2 e-mails) → un seul titre de jour ; 17 nov → un autre.
+    expect(screen.getAllByText(/^Mercredi 18 novembre 2026$/)).toHaveLength(1);
+    expect(screen.getAllByText(/^Mardi 17 novembre 2026$/)).toHaveLength(1);
+    const refus = container.querySelector('li[data-statut="refuse"]') as HTMLElement;
+    expect(
+      within(refus).getByText("Refusé").closest(".admin-badge-plein--destructive"),
+    ).not.toBeNull();
+    expect(refus.querySelector("svg")).not.toBeNull();
+    const motif = refus.querySelector("[data-motif]") as HTMLElement;
+    expect(motif.textContent).toBe("Motif : Montant à revoir");
+    expect(screen.getByText("AXI-DEV-2026-012")).toBeTruthy();
+    expect(container.querySelector("iframe")).toBeNull();
   });
 });

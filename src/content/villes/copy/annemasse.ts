@@ -196,7 +196,7 @@ export const ANNEMASSE_COPY: VilleCopy = {
             sizeLabel: "Large enterprise",
             price: "Platform program and dedicated governance",
             detail:
-              "For large accounts operating across Annemasse and Geneva: design of AI-native platforms, cross-border data governance, multi-team deployment and long-term support.",
+              "For large accounts operating across Annemasse and Geneva: design of AI-native platforms, cross-border data governance, multi-team deployment.",
           },
         ],
         faq: [

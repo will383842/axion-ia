@@ -14,6 +14,10 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
+import { AlertTriangle, CalendarClock, FileText, ListChecks } from "lucide-react";
+
+import { AdminStatCard } from "@/components/admin/ui/AdminStatCard";
+import { AdminBlocRepliable } from "@/components/admin/ui/AdminBlocRepliable";
 import { AdminPageShell } from "@/components/admin/ui/AdminPageShell";
 import { AdminPageHeader } from "@/components/admin/ui/AdminPageHeader";
 import { AccesRefuse } from "@/components/admin/ui/AccesRefuse";
@@ -88,33 +92,57 @@ export default async function QualiopiDevisCorrigerPage({ params }: PageProps) {
   // effacerait. Le formulaire n'est pas ouvert.
   const reglementTiers = porteUnReglementParUnTiers(devis);
 
+  // Chiffres clés : lus sur les données déjà chargées, aucun montant recalculé.
+  const majLe = new Intl.DateTimeFormat("fr-FR", {
+    dateStyle: "medium",
+    timeZone: "Europe/Paris",
+  }).format(devis.updatedAt);
+
   const entete = (
     <>
       <div className="mb-[var(--space-admin-4)]">
         <Link
           href={retourHref}
-          className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-accent)] underline-offset-2 hover:underline"
+          className="inline-flex min-h-[var(--target-admin-min-desktop)] items-center text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-accent)] underline-offset-2 hover:underline"
         >
           ← Retour au devis
         </Link>
       </div>
-      <AdminPageHeader
-        title={`Corriger le brouillon ${devis.numero}`}
-        description="Un devis envoyé ne se modifie pas : il se révise. Si ce brouillon a été enregistré depuis un autre onglet, la page demandera de recharger."
-      />
+      <AdminPageHeader title={`Corriger le brouillon ${devis.numero}`} />
+      <div className="mb-[var(--space-admin-6)] grid gap-[var(--space-admin-4)] sm:grid-cols-2 lg:grid-cols-4">
+        <AdminStatCard label="Devis" value={devis.numero} icon={FileText} tone="info" />
+        <AdminStatCard
+          label="Lignes"
+          value={lignes === null ? "—" : lignes.length}
+          icon={ListChecks}
+          tone={lignes === null ? "warning" : "default"}
+        />
+        <AdminStatCard label="Dernière modification" value={majLe} icon={CalendarClock} />
+      </div>
+      <AdminBlocRepliable titre="À savoir avant de corriger" className="mb-[var(--space-admin-6)]">
+        <p className="text-[length:var(--text-admin-base)] text-[color:var(--color-admin-fg-soft)]">
+          Un devis envoyé ne se modifie pas : il se révise. Si ce brouillon a été enregistré depuis
+          un autre onglet, la page demandera de recharger.
+        </p>
+      </AdminBlocRepliable>
     </>
+  );
+
+  const encadreAlerte = (children: React.ReactNode) => (
+    <div
+      role="alert"
+      className="flex items-start gap-[var(--space-admin-4)] rounded-[var(--radius-admin-md)] border border-l-4 border-[color:var(--color-admin-border)] border-l-[color:var(--color-admin-destructive)] bg-[color:var(--color-admin-destructive-soft)] p-[var(--space-admin-5)] text-[length:var(--text-admin-base)] text-[color:var(--color-admin-destructive-fg)]"
+    >
+      <AlertTriangle size={20} aria-hidden="true" className="mt-[2px] shrink-0" />
+      <p className="font-medium">{children}</p>
+    </div>
   );
 
   if (reglementTiers) {
     return (
       <AdminPageShell width="narrow">
         {entete}
-        <p
-          role="alert"
-          className="text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-error)]"
-        >
-          {MSG_BROUILLON_REGLEMENT_TIERS}
-        </p>
+        {encadreAlerte(MSG_BROUILLON_REGLEMENT_TIERS)}
       </AdminPageShell>
     );
   }
@@ -123,13 +151,12 @@ export default async function QualiopiDevisCorrigerPage({ params }: PageProps) {
     return (
       <AdminPageShell width="narrow">
         {entete}
-        <p
-          role="alert"
-          className="text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-error)]"
-        >
-          Les lignes de ce brouillon ne peuvent pas être relues : le formulaire n&apos;est pas
-          ouvert, pour ne rien écraser. Le devis reste tel quel.
-        </p>
+        {encadreAlerte(
+          <>
+            Les lignes de ce brouillon ne peuvent pas être relues : le formulaire n&apos;est pas
+            ouvert, pour ne rien écraser. Le devis reste tel quel.
+          </>,
+        )}
       </AdminPageShell>
     );
   }

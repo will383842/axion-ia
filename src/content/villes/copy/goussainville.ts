@@ -81,11 +81,6 @@ export const GOUSSAINVILLE_COPY: VilleCopy = {
             detail:
               "Tests d'acceptation dans vos locaux goussainvillois, mise en ligne, puis formation de vos équipes exploitation/administration pour qu'elles restent autonomes — pas de dépendance technique imposée à Axion-IA.",
           },
-          {
-            step: "Suivi & itérations",
-            detail:
-              "Après mise en ligne, suivi des performances (Web Vitals, conversions, requêtes IA), corrections et évolutions. Le code, les modèles et la documentation restent intégralement chez vous, repris en interne ou par tout intégrateur du Val-d'Oise.",
-          },
         ],
         pricing: [
           {
@@ -166,11 +161,6 @@ export const GOUSSAINVILLE_COPY: VilleCopy = {
             step: "On-site acceptance & training",
             detail:
               "Acceptance tests at your Goussainville premises, go-live, then training of your operations/admin teams so they stay autonomous — no technical dependency imposed on Axion-IA.",
-          },
-          {
-            step: "Follow-up & iterations",
-            detail:
-              "After go-live, monitoring of performance (Web Vitals, conversions, AI queries), fixes and evolutions. The code, models and documentation remain entirely yours, taken over in-house or by any Val-d'Oise integrator.",
           },
         ],
         pricing: [

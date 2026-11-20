@@ -11,6 +11,7 @@
  */
 
 import { Fragment } from "react";
+import { CheckCircle2, Send, XCircle } from "lucide-react";
 import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 
@@ -19,6 +20,8 @@ import { prisma } from "@/lib/prisma";
 import { AdminPageShell } from "@/components/admin/ui/AdminPageShell";
 import { AdminPageHeader } from "@/components/admin/ui/AdminPageHeader";
 import { AdminBadge } from "@/components/admin/ui/AdminBadge";
+import { AdminStatCard } from "@/components/admin/ui/AdminStatCard";
+import { AdminEmptyState } from "@/components/admin/ui/AdminEmptyState";
 import { AdminBloc } from "@/components/admin/ui/AdminBloc";
 import { AdminBlocRepliable } from "@/components/admin/ui/AdminBlocRepliable";
 import { EmailOutboxItem } from "@/components/admin/qualiopi/EmailOutboxItem";
@@ -36,6 +39,13 @@ import {
   libelleTemplateEmail,
   reglesRetenantDesEnvoisReglementaires,
 } from "@/server/email/outbox-policy";
+import {
+  estEnvoiDevis,
+  construireApercu,
+  lireDetailsDevis,
+  messageDejaSaisi,
+  presenterDevis,
+} from "@/components/admin/qualiopi/emails-devis-details";
 import { lireReponsesSurRelancesGarees } from "@/server/relances/reponse-relance-garee";
 
 /**
@@ -58,33 +68,20 @@ export const metadata: Metadata = {
 const dateFr = (d: Date): string =>
   d.toLocaleDateString("fr-FR", { day: "2-digit", month: "2-digit", year: "numeric" });
 
-/**
- * Résumé lisible de la charge utile, pour que l'admin voie ce qui part sans
- * avoir à rendre le HTML complet.
- *
- * On liste des couples label/valeur plutôt que le JSON brut : un admin ne doit
- * pas avoir à décoder une structure technique pour décider d'un envoi.
- */
-function construireApercu(payload: unknown): Array<{ label: string; valeur: string }> {
-  if (payload === null || typeof payload !== "object") return [];
-  const LIBELLES: Record<string, string> = {
-    destinataireNom: "Destinataire",
-    numeroFacture: "Facture",
-    montantDu: "Montant dû",
-    dateEcheance: "Échéance",
-    joursRetard: "Jours de retard",
-    soldePartiel: "Solde après versement partiel",
-    titreFormation: "Formation",
-    numeroSession: "Session",
-  };
-  const out: Array<{ label: string; valeur: string }> = [];
-  for (const [cle, libelle] of Object.entries(LIBELLES)) {
-    const v = (payload as Record<string, unknown>)[cle];
-    if (v === undefined || v === null || v === "") continue;
-    out.push({ label: libelle, valeur: typeof v === "boolean" ? (v ? "oui" : "non") : String(v) });
-  }
-  return out;
-}
+const FUSEAU = "Europe/Paris";
+const jourFr = (d: Date): string => {
+  const t = d.toLocaleDateString("fr-FR", {
+    weekday: "long",
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+    timeZone: FUSEAU,
+  });
+  return t.charAt(0).toUpperCase() + t.slice(1);
+};
+const heureFr = (d: Date): string =>
+  d.toLocaleTimeString("fr-FR", { hour: "2-digit", minute: "2-digit", timeZone: FUSEAU });
+const NUMERO_DEVIS = /AXI-DEV-\d{4}-\d{3}/;
 
 export default async function EmailsAValiderPage({
   params,
@@ -145,6 +142,9 @@ export default async function EmailsAValiderPage({
   ]);
 
   // Lot 8A — une relance formateur garée ici peut encore partir après sa réponse : on le dit.
+  // Une seule requête groupée pour tous les devis en attente (pas de N+1).
+  const detailsDevis = await lireDetailsDevis(prisma, enAttente);
+
   const reponduLe = await lireReponsesSurRelancesGarees(enAttente);
 
   // S5 (2026-08-26) — le gel réglementaire par règle NOMMÉE reste permis (la
@@ -153,10 +153,17 @@ export default async function EmailsAValiderPage({
   // page le dit — en persistance, pas seulement au moment du clic.
   const naturesRetenues = reglesRetenantDesEnvoisReglementaires(reglages);
 
-  const COLONNE =
-    "px-[var(--space-admin-3)] py-[var(--space-admin-2)] text-left text-[length:var(--text-admin-xs)] font-semibold text-[color:var(--color-admin-fg-muted)]";
-  const CELLULE =
-    "px-[var(--space-admin-3)] py-[var(--space-admin-2)] align-top text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg)]";
+  // Historique : jour (Europe/Paris) → cartes, dans l'ordre déjà trié par la requête.
+  const nbEnvoyes = traitesRecents.filter((e) => e.statut === "envoye").length;
+  const nbRefuses = traitesRecents.length - nbEnvoyes;
+  const parJour: { jour: string; items: typeof traitesRecents }[] = [];
+  for (const e of traitesRecents) {
+    const date = e.statut === "envoye" ? e.envoyeAt : e.refuseAt;
+    const jour = date ? jourFr(date) : "Date inconnue";
+    const groupe = parJour.find((g) => g.jour === jour);
+    if (groupe) groupe.items.push(e);
+    else parJour.push({ jour, items: [e] });
+  }
 
   return (
     <AdminPageShell>
@@ -180,6 +187,27 @@ export default async function EmailsAValiderPage({
           </>
         }
       />
+
+      <div className="mb-[var(--space-admin-6)] grid gap-[var(--space-admin-4)] sm:grid-cols-3">
+        <AdminStatCard
+          label="À relire"
+          value={enAttente.length}
+          tone={enAttente.length > 0 ? "warning" : "success"}
+          icon={enAttente.length > 0 ? Send : CheckCircle2}
+        />
+        <AdminStatCard
+          label="Envoyés récemment"
+          value={nbEnvoyes}
+          tone="success"
+          icon={CheckCircle2}
+        />
+        <AdminStatCard
+          label="Refusés récemment"
+          value={nbRefuses}
+          tone={nbRefuses > 0 ? "destructive" : "default"}
+          icon={XCircle}
+        />
+      </div>
 
       <AdminBlocRepliable titre="Comment ça marche" className="mb-[var(--space-admin-6)]">
         <p className="text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]">
@@ -218,93 +246,120 @@ export default async function EmailsAValiderPage({
 
       <AdminBloc teinte="ambre" niveau={2} titre={`À relire (${enAttente.length})`}>
         {enAttente.length === 0 ? (
-          <p
-            role="status"
-            className="m-0 text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]"
-          >
-            <span className="font-semibold text-[color:var(--color-admin-fg)]">
-              Aucun e-mail à relire
-            </span>{" "}
-            Aucun email en attente. Les relances d&apos;impayé, devis et factures apparaîtront ici
-            avant leur envoi.
-          </p>
+          <AdminEmptyState
+            icon={<CheckCircle2 size={24} />}
+            title="Rien à relire"
+            description="Aucun email en attente. Les relances d'impayé, devis et factures apparaîtront ici avant leur envoi."
+            className="min-h-[12rem] justify-center"
+          />
         ) : (
           <div className="flex flex-col gap-[var(--space-admin-4)]">
-            {enAttente.map((e) => (
-              <EmailOutboxItem
-                key={e.id}
-                id={e.id}
-                template={e.template}
-                destinataire={e.recipient}
-                sujet={e.sujet}
-                clientNom={e.client?.raisonSociale ?? null}
-                creeLe={dateFr(e.createdAt)}
-                apercu={[
-                  ...(reponduLe.has(e.id)
-                    ? [
-                        {
-                          label: "Attention",
-                          valeur: `le formateur a répondu le ${dateFr(reponduLe.get(e.id)!)}, après la mise en attente de cette relance`,
-                        },
-                      ]
-                    : []),
-                  ...construireApercu(e.payload),
-                ]}
-                nbPiecesJointes={Array.isArray(e.attachments) ? e.attachments.length : 0}
-                accepteMessagePersonnalise={gabaritLitLeMessage(e.template)}
-                approuverAction={approuverEmailAction}
-                refuserAction={refuserEmailAction}
-              />
-            ))}
+            {enAttente.map((e) => {
+              const brut = estEnvoiDevis(e) ? detailsDevis.get(e.entityId as string) : undefined;
+              const dv = brut ? presenterDevis(brut, e.entityId as string, adminPrefix) : null;
+              return (
+                <EmailOutboxItem
+                  key={e.id}
+                  id={e.id}
+                  template={e.template}
+                  destinataire={e.recipient}
+                  sujet={e.sujet}
+                  clientNom={e.client?.raisonSociale ?? null}
+                  creeLe={dateFr(e.createdAt)}
+                  apercu={[
+                    ...(reponduLe.has(e.id)
+                      ? [
+                          {
+                            label: "Attention",
+                            valeur: `le formateur a répondu le ${dateFr(reponduLe.get(e.id)!)}, après la mise en attente de cette relance`,
+                          },
+                        ]
+                      : []),
+                    ...construireApercu(e.payload, e.template),
+                    ...(dv?.montantTtc ? [{ label: "Montant TTC", valeur: dv.montantTtc }] : []),
+                  ]}
+                  messageInitial={messageDejaSaisi(e.payload)}
+                  lienDevis={dv?.lienDevis ?? null}
+                  lienPdf={dv?.lienPdf ?? null}
+                  nbPiecesJointes={Array.isArray(e.attachments) ? e.attachments.length : 0}
+                  accepteMessagePersonnalise={gabaritLitLeMessage(e.template)}
+                  approuverAction={approuverEmailAction}
+                  refuserAction={refuserEmailAction}
+                />
+              );
+            })}
           </div>
         )}
       </AdminBloc>
 
       {traitesRecents.length > 0 && (
         <AdminBloc teinte="gris" niveau={2} titre="Envoyés ou refusés récemment">
-          <div className="overflow-x-auto">
-            <table className="w-full min-w-[40rem] border-collapse">
-              <thead>
-                <tr>
-                  <th scope="col" className={COLONNE}>
-                    Statut
-                  </th>
-                  <th scope="col" className={COLONNE}>
-                    Date
-                  </th>
-                  <th scope="col" className={COLONNE}>
-                    Destinataire
-                  </th>
-                  <th scope="col" className={COLONNE}>
-                    Objet
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                {traitesRecents.map((e) => {
-                  const date = e.statut === "envoye" ? e.envoyeAt : e.refuseAt;
-                  return (
-                    <tr key={e.id} className="border-t border-[color:var(--color-admin-border)]">
-                      <td className={CELLULE}>
-                        <AdminBadge tone={e.statut === "envoye" ? "success" : "neutral"}>
-                          {e.statut === "envoye" ? "Envoyé" : "Refusé"}
-                        </AdminBadge>
-                      </td>
-                      <td className={CELLULE}>{date ? dateFr(date) : "—"}</td>
-                      <td className={CELLULE}>{e.recipient}</td>
-                      <td className={CELLULE}>
-                        {e.sujet}
-                        {e.statut === "refuse" && e.refuseMotif ? (
-                          <span className="block text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)] italic">
-                            Motif : {e.refuseMotif}
+          <div className="flex flex-col gap-[var(--space-admin-6)]">
+            {parJour.map((g) => (
+              <section key={g.jour} className="flex flex-col gap-[var(--space-admin-4)]">
+                <h3 className="m-0 text-[length:var(--text-admin-base)] font-semibold text-[color:var(--color-admin-fg)]">
+                  {g.jour}
+                </h3>
+                <ul className="m-0 flex list-none flex-col gap-[var(--space-admin-4)] p-0">
+                  {g.items.map((e) => {
+                    const envoye = e.statut === "envoye";
+                    const date = envoye ? e.envoyeAt : e.refuseAt;
+                    const numero = NUMERO_DEVIS.exec(e.sujet)?.[0];
+                    return (
+                      <li
+                        key={e.id}
+                        data-statut={e.statut}
+                        className={`flex flex-col gap-[var(--space-admin-3)] rounded-[var(--radius-admin-md)] border border-l-4 border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)] p-[var(--space-admin-4)] ${
+                          envoye
+                            ? "border-l-[color:var(--color-admin-success)]"
+                            : "border-l-[color:var(--color-admin-destructive)]"
+                        }`}
+                      >
+                        <div className="flex flex-wrap items-start gap-[var(--space-admin-4)]">
+                          <AdminBadge
+                            tone={envoye ? "success" : "destructive"}
+                            plein
+                            compact={false}
+                          >
+                            {envoye ? (
+                              <Send aria-hidden="true" size={16} className="mr-1 inline" />
+                            ) : (
+                              <XCircle aria-hidden="true" size={16} className="mr-1 inline" />
+                            )}
+                            {envoye ? "Envoyé" : "Refusé"}
+                          </AdminBadge>
+                          <div className="min-w-0 flex-1">
+                            <p className="m-0 text-[length:var(--text-admin-base)] font-semibold text-[color:var(--color-admin-fg)]">
+                              {e.sujet}
+                              {numero ? (
+                                <>
+                                  {" "}
+                                  <AdminBadge tone="neutral">{numero}</AdminBadge>
+                                </>
+                              ) : null}
+                            </p>
+                            <p className="m-0 text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]">
+                              {e.recipient}
+                            </p>
+                          </div>
+                          <span className="text-[length:var(--text-admin-sm)] font-medium text-[color:var(--color-admin-fg-soft)] tabular-nums">
+                            {date ? heureFr(date) : "—"}
                           </span>
+                        </div>
+                        {!envoye && e.refuseMotif ? (
+                          <p
+                            data-motif
+                            className="m-0 rounded-[var(--radius-admin-md)] border-l-4 border-[color:var(--color-admin-warning)] bg-[color:var(--color-admin-warning-soft)] px-[var(--space-admin-3)] py-[var(--space-admin-2)] text-[length:var(--text-admin-base)] text-[color:var(--color-admin-warning-fg)]"
+                          >
+                            <span className="font-bold">Motif :</span> {e.refuseMotif}
+                          </p>
                         ) : null}
-                      </td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
+                      </li>
+                    );
+                  })}
+                </ul>
+              </section>
+            ))}
           </div>
         </AdminBloc>
       )}
@@ -315,7 +370,7 @@ export default async function EmailsAValiderPage({
         </p>
         <p className="mb-[var(--space-admin-4)] flex flex-wrap gap-[var(--space-admin-2)]">
           {EMAILS_A_VALIDER_PAR_DEFAUT.map((t) => (
-            <AdminBadge key={t} tone="neutral">
+            <AdminBadge key={t} tone="warning" plein>
               {libelleTemplateEmail(t)}
             </AdminBadge>
           ))}

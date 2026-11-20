@@ -100,7 +100,6 @@ describe("garde de source", () => {
     "questionnaire-relance-equipe.tsx",
     "rappel-confirme.tsx",
     "recueil-besoin.tsx",
-    "relance-devis-client.tsx",
     "roi-report.tsx",
     "visio-email-suivi.tsx",
     "vivier-information.tsx",

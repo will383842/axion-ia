@@ -35,6 +35,7 @@ import {
   payloadDevisEnvoi,
 } from "@/server/qualiopi/devis/email-devis-envoi";
 import { resoudreMode } from "@/server/email/outbox-service";
+import { devisRemisEnMainPropre } from "@/server/qualiopi/devis/canal-emission";
 import { CLE_MARQUEUR } from "@/server/qualiopi/documents/signature/lien-a-l-envoi";
 import { rendreLienPrecedent } from "@/server/qualiopi/documents/signature/lien-precedent";
 import { formulesActives } from "@/server/qualiopi/devis/interrupteur-formules";
@@ -54,6 +55,8 @@ const dateFr = (d: Date): string => d.toLocaleDateString("fr-FR");
 
 const MSG_RENVOI_DEJA_GARE =
   "Un e-mail de ce devis attend déjà dans Emails → À valider : validez-le ou refusez-le avant de renvoyer.";
+const MSG_RENVOI_MAIN_PROPRE =
+  "Ce devis a été remis en main propre : aucun e-mail n'est parti et aucun lien de signature n'existe. Pour l'envoyer par e-mail, créez une nouvelle version avec « Corriger et renvoyer ».";
 const MSG_ENVOI_EN_COURS = "Un envoi de ce devis est déjà en cours, réessayez dans un instant.";
 const NOTE_RENVOI_GARE =
   "Renvoi garé dans Emails → À valider : le lien actuel reste valable jusqu'au départ réel ; le nouveau lien naît à l'approbation et remplace alors l'ancien.";
@@ -230,6 +233,8 @@ export async function envoyerDevisEmailAction(
         SELECT pg_try_advisory_xact_lock(hashtext(${"devis.envoi:" + devis.id})) AS locked
       `;
       if (!verrou?.locked) return { error: MSG_ENVOI_EN_COURS };
+      // Lot I1 : un devis remis en main propre n'a jamais eu d'e-mail ni de lien ; on ne le « renvoie » pas.
+      if (await devisRemisEnMainPropre(tx, devis.id)) return { error: MSG_RENVOI_MAIN_PROPRE };
       let signatureUrl: string | null = null;
       let tokenId: string | null = null;
       let signatureNote: string | null = null;

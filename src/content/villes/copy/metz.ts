@@ -483,11 +483,6 @@ export const METZ_COPY: VilleCopy = {
             detail:
               "Sur site Metz : tests d'acceptation utilisateurs, formation des ambassadeurs internes, livraison du runbook documentation, plan de monitoring.",
           },
-          {
-            step: "Suivi post-go-live",
-            detail:
-              "À distance : surveillance des métriques de production, ajustements fins, mesure du ROI réel par rapport Ã  la prédiction du SOW. Rapport final remis Ã  clôture de mission.",
-          },
         ],
         pricing: [
           {
@@ -574,11 +569,6 @@ export const METZ_COPY: VilleCopy = {
             step: "Acceptance + training",
             detail:
               "On site Metz: user acceptance tests, training of internal ambassadors, runbook documentation delivery, monitoring plan.",
-          },
-          {
-            step: "Post-go-live follow-up",
-            detail:
-              "Remote: production metrics monitoring, fine adjustments, real ROI vs SOW prediction measurement. Final report delivered at mission closure.",
           },
         ],
         pricing: [
