@@ -5,7 +5,8 @@
 // Aucun montant, aucune promesse : le prix figurait dans le devis. Vouvoiement, ton courtois.
 
 import { Text } from "@react-email/components";
-import { BASE_URL, EmailLayout, emailStyles } from "./_layout";
+import { EmailLayout, emailStyles } from "./_layout";
+import { SITE_URL } from "@/lib/site-url";
 import { CLOTURE_DEVIS_FR } from "./devis-envoi";
 import { salutation, type IdentiteSalutation } from "../salutation";
 import type { Locale } from "../../../../prisma/generated/client";
@@ -17,7 +18,7 @@ interface Payload {
   salutation?: IdentiteSalutation;
   /**
    * Lien de signature `https://<hôte du site>/fr/portail/signer/<jeton>`, posé à l'envoi (jeton
-   * porteur : jamais journalisé). Ignoré s'il ne passe pas `estLienSignatureValide` : alors ni
+   * porteur : jamais journalisé). Ignoré s'il ne passe pas `lienSignatureValide` : alors ni
    * bouton ni phrase « signer ».
    */
   signatureUrl?: string;
@@ -32,29 +33,32 @@ interface Payload {
 
 /**
  * Lien de signature admis : exactement ce que le code vérifie, rien de plus.
- *  - `https:` ; même hôte (avec port) que `BASE_URL` du gabarit commun ;
+ *  - `https:` ; même hôte (avec port) que `SITE_URL` (`@/lib/site-url`), la source qui FABRIQUE le
+ *    lien (`publicUrl()`), et non `BASE_URL` du gabarit commun, qui peut différer ;
  *  - ni identifiant ni mot de passe, ni `?…`, ni `#…` ;
  *  - chemin `[/fr|/en]/portail/signer/<jeton>` où le jeton est de la forme réelle
  *    `<base64url>.<base64url>` (lettres, chiffres, `_`, `-`, `.`).
  * Toute analyse impossible (`new URL()` lève) vaut refus.
+ * Renvoie l'URL NORMALISÉE (`href`, espaces de bord retirés) ou `null` : c'est elle, et non la
+ * valeur brute, qui sert de `href` au bouton.
  */
 const CHEMIN_SIGNATURE = /^(\/(fr|en))?\/portail\/signer\/[A-Za-z0-9_.-]+$/;
 
-export function estLienSignatureValide(valeur: unknown): valeur is string {
-  if (typeof valeur !== "string") return false;
+export function lienSignatureValide(valeur: unknown): string | null {
+  if (typeof valeur !== "string") return null;
   try {
     const u = new URL(valeur);
-    return (
+    const ok =
       u.protocol === "https:" &&
-      u.host === new URL(BASE_URL).host &&
+      u.host === new URL(SITE_URL).host &&
       u.username === "" &&
       u.password === "" &&
       u.search === "" &&
       u.hash === "" &&
-      CHEMIN_SIGNATURE.test(u.pathname)
-    );
+      CHEMIN_SIGNATURE.test(u.pathname);
+    return ok ? u.href : null;
   } catch {
-    return false;
+    return null;
   }
 }
 
@@ -75,7 +79,12 @@ export function RelanceDevisClientEmail({
 }) {
   const p = payload as Partial<Payload>;
   const numero = p.numero ?? "";
-  const signatureValide = estLienSignatureValide(p.signatureUrl);
+  const lienSignature = lienSignatureValide(p.signatureUrl);
+  const signatureValide = lienSignature !== null;
+  if (!signatureValide && typeof p.signatureUrl === "string" && p.signatureUrl !== "") {
+    // Une seule fois par rendu ; ni le jeton ni l'URL ne sont journalisés.
+    console.warn("[relance-devis-client] lien de signature refusé : bouton masqué");
+  }
   // Clé présente (même vide) : « Bonjour Monsieur Dupont, » ; absente : « Bonjour, ».
   const sal = p.salutation as unknown;
   const bonjour = salutation(
@@ -95,7 +104,7 @@ export function RelanceDevisClientEmail({
       preview={`Un mot au sujet du devis ${numero}.`}
       {...(signatureValide
         ? {
-            cta: { label: "Signer le devis en ligne", href: p.signatureUrl as string },
+            cta: { label: "Signer le devis en ligne", href: lienSignature },
             ctaSecret: true,
           }
         : {})}

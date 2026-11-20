@@ -28,7 +28,7 @@
  */
 
 import { SEUIL_VIGILANCE_LIBELLE } from "@/lib/vigilance";
-import { BASE_URL } from "@/lib/email/templates/_layout";
+import { SITE_URL } from "@/lib/site-url";
 
 export const PAYLOAD_EXEMPLE: Readonly<Record<string, unknown>> = {
   amountTtc: "1 450,00 €",
@@ -185,7 +185,7 @@ export const PAYLOAD_EXEMPLE: Readonly<Record<string, unknown>> = {
   sectorLabel: "Industrie",
   signataireNom: "Camille Dupont",
   signature: "Williams\nAxion-IA",
-  signatureUrl: `${BASE_URL}/fr/portail/signer/jeton-de-demonstration`,
+  signatureUrl: `${SITE_URL}/fr/portail/signer/jeton-de-demonstration`,
   // Identité structurée : « Bonjour Monsieur Dupont, » (devis-envoi, relance-devis-client).
   salutation: { civilite: "monsieur", nomFamille: "Dupont" },
   pieceJointe: true,

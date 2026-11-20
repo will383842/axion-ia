@@ -240,7 +240,7 @@ describe("le jeu de données d'exemple couvre tous les gabarits", () => {
     // Un aperçu de console qui afficherait un vrai prospect, ou un lien vers la
     // production, transformerait une page de documentation en fuite.
     // Exception unique : `signatureUrl`. Le gabarit n'affiche le bouton de signature que si le lien
-    // est sur l'hôte du site (`estLienSignatureValide`) ; l'exemple y porte donc le domaine du site
+    // est sur l'hôte du site (`lienSignatureValide`, hôte de `SITE_URL`) ; l'exemple y porte donc le domaine du site
     // avec un faux jeton lisible (`jeton-de-demonstration`), jamais un vrai jeton.
     const valeurs = Object.entries(PAYLOAD_EXEMPLE)
       .filter(([cle]) => cle !== "signatureUrl")
