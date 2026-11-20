@@ -19,8 +19,18 @@ import {
   reecrireHtml,
   reecrireJson,
   reecrireTexte,
+  retirerFragments,
   motsNonRetirables,
 } from "./regles";
+import {
+  INTERDITS_PUBLICS,
+  LEXIQUE_DUR,
+  normaliserPourPorte2,
+  termeRefuse,
+  termesRefuses,
+} from "./porte2";
+
+export { INTERDITS_PUBLICS, normaliserPourPorte2 };
 
 export const ACTION_RETRAIT = "retrait-financement-2026-11";
 export const ACTION_RESTAURATION = "retrait-financement-2026-11-restauration";
@@ -64,6 +74,11 @@ export interface Proposition {
   surcharges?: string[];
   /** Mots non financiers perdus et ACCEPTÉS par l'override, par champ (`pertesAcceptees`). */
   pertes?: Record<string, string[]>;
+  /**
+   * Champs CONSERVÉS tels quels sur décision du dirigeant (entrée d'override avec `admis`), et les termes
+   * de la porte 2 qu'il a admis. Rien n'est écrit pour ces champs : seuls leurs ambigus sont levés.
+   */
+  conservesSurDecision?: Record<string, string[]>;
 }
 
 /** Valeurs de remplacement validées par un humain pour un cas ambigu. */
@@ -79,115 +94,17 @@ export type Overrides = Record<
        * ignorés). Tout mot perdu hors lexique et hors de cette liste fait ignorer l'override (A8).
        */
       pertesAcceptees?: string[];
+      /**
+       * « Conservé sur décision » : le champ est un FAUX POSITIF de la porte 2 (« services financiers ») et
+       * reste tel quel. Liste des termes exacts refusés par la porte 2 et admis par le dirigeant. Acceptée
+       * seulement si `valeur` est l'original, si le champ n'a que des ambigus « mention restante
+       * (porte 2 : …) », si chaque terme refusé est listé, et sans aucun mot du lexique dur
+       * (`refusDeConservation`).
+       */
+      admis?: string[];
     }
   >
 >;
-
-/**
- * Familles de la porte 2 (contre-audit v3) : on REFUSE la famille entière, puis on admet une courte liste
- * d'emplois explicitement non financiers. Un filtre « mots exacts suivis de n'importe quoi » ne ferme que
- * les exemples cités.
- */
-
-/** « prise(s) en charge », « prendrait en charge », « prise intégralement en charge », « prise-en-charge ». */
-const PRISE_EN_CHARGE =
-  "\\b(?:pr[ie]\\w*|pren\\w*)(?:[\\s-]+[^\\s.,;:!?\\n]+){0,3}?[\\s-]+en[\\s-]+charges?\\b";
-/** Fin de groupe qui clôt un emploi non financier (« … est rapide », « … se fait », « … par l'équipe »). */
-const FIN_DE_GROUPE = "(?:\\s*(?:[.,;:!?)]|$)|\\s+(?:est|sont|se|en|et|par\\s+l['’]équipe)\\b)";
-const COMPLEMENT_NON_FINANCIER =
-  "(?:(?:des?|du|d['’]|de\\s+la|un|une|le|la|les)\\s*)?(?:appels?|tickets?|incidents?|requ[êe]tes?|clients?|patients?|demandes?|projets?)";
-/**
- * Emplois NON financiers admis, listés un à un : un complément de la liste (appels, tickets, incidents,
- * requêtes, clients, patients, demandes, projet(s)), éventuellement suivi d'un seul mot, puis une fin de
- * groupe ; ou « rapide / immédiate / technique » (« technique du projet ») suivi d'une fin de groupe.
- * « rapide de vos frais » et « des projets de formation » ne ferment pas le groupe : refusés.
- */
-const PEC_ADMISE =
-  "(?:\\s+(?:" +
-  COMPLEMENT_NON_FINANCIER +
-  "(?:\\s+[a-zà-ÿ]+)?|(?:rapide|imm[ée]diate|technique)(?:\\s+du\\s+projet)?|l['’]int[ée]gralit[ée]\\s+de\\s+la\\s+partie\\s+technique)" +
-  FIN_DE_GROUPE +
-  ")";
-/** Terme budgétaire dans la même phrase qu'« en charge » : refus, même pour un emploi de la liste. */
-const PEC_ET_BUDGET =
-  "(?:^|[.!?]\\s+)(?=[^.!?\\n]*\\ben[\\s-]+charge\\b)[^.!?\\n]*\\b(?:formations?|frais|co[uû]ts?|employeurs?|budgets?|tarifs?)\\b";
-
-/** Un seul « financ… » est admis quand il désigne le SECTEUR d'activité (liste fermée, audit v3). */
-const ADJ = "financi(?:er|[èe]re|ers|[èe]res)\\b";
-const SECTEUR_AVANT =
-  "(?:secteurs?|reporting|impacts?|donn[ée]es|analyses?|rapports?|pr[ée]visions?|engagements?|b[ée]n[ée]fices?|directeurs?|directrices?|int[ée]r[êe]ts?)\\s+(?:non\\s+)?";
-const FINANCE_SECTEUR =
-  "(?:(?<=(?:^|\\n))finance(?=\\s*[:,]|\\s+et\\b)" +
-  "|(?<=(?:(?<![a-zà-ÿ])(?:la|en|de|du|des|et|ou|[ée]quipes?|fonctions?|m[ée]tiers?|secteurs?|banques?|assurances?)\\s+|[(,]\\s*))finance\\b" +
-  "|finance(?=\\s+d['’]entreprise\\b)" +
-  "|(?<=\\b" +
-  SECTEUR_AVANT +
-  ")" +
-  ADJ +
-  "|" +
-  "financi(?:er|[èe]re|ers|[èe]res)(?=\\s+(?:secteur|reporting|donn[ée]es|analyses?|rapports?|pr[ée]visions?|impact|b[ée]n[ée]fices?|engagement)))";
-
-/**
- * Interdits PUBLICS : contrôle LEXICAL strict d'un override (porte 2). Plus strict que les règles de
- * réécriture, qui laissent passer « France Travail » sans marqueur de financement (A4).
- * - « prise(s) en charge » et « à la charge de » : refusés partout, sauf emplois non financiers listés
- *   (`PEC_ADMISE`) et sans terme budgétaire dans la phrase (`PEC_ET_BUDGET`).
- * - « financ… » : refusé sous toutes ses formes (verbe, adverbe, « ressources / participation financière »),
- *   sauf les emplois de secteur de `FINANCE_SECTEUR` (« la finance », « directeur financier »…).
- * - « rembours… », « éligib… », « plan de développement des compétences » : refusés sans complément exigé.
- */
-export const INTERDITS_PUBLICS = new RegExp(
-  [
-    "\\b(?:OPCOs?|OPCA|O\\.P\\.C\\.O\\.)(?![\\w])",
-    "qualiopi",
-    "\\bCPF\\b",
-    "compte[\\s-]+personnel[\\s-]+de[\\s-]+formation",
-    "personal training account",
-    "mon[\\s-]?compte[\\s-]?formation",
-    "france[\\s-]+travail",
-    "p[ôo]le[- ]emploi",
-    "\\bAIF\\b",
-    // V3-2 : toute la famille « financ… » (finançait, financièrement, ressources financières, cofinancé…),
-    // hors emplois de secteur.
-    "(?!" + FINANCE_SECTEUR + ")(?:\\b|(?<=co|auto-?))finan[cç]\\w*",
-    // Verbe « financer » suivi d'un déterminant, même si « finance » est précédé d'un mot admis (« en finance une part »).
-    "\\bfinances?\\s+(?:(?:la|les|le|leurs?|votre|vos|son|sa|ses|une|des|cette|ces|tout|ta|tes|ton|notre|nos)\\b|l['’]|jusqu|\\d|[àa]\\s+(?:hauteur|100|\\d)|en\\s+partie|int[ée]gral|totalement|enti[èe]rement)",
-    "op[ée]rateurs?[\\s-]+de[\\s-]+comp[ée]tences",
-    "rembours\\w*",
-    "[ée]ligib\\w*",
-    "plan\\s+de\\s+d[ée]veloppement\\s+des\\s+comp[ée]tences",
-    "\\bfund(?:s|ing|ed)?\\b",
-    "subvention",
-    "subrogation",
-    "\\bEDOF\\b",
-    "FNE[- ]Formation",
-    "datadock",
-    "(?:aides?|appuis?|leviers?|dispositifs?|soutiens?)\\s+financi",
-    // V3-1 : « prise(s) en charge » sous TOUTES ses formes, sauf emploi non financier listé.
-    PRISE_EN_CHARGE + "(?!" + PEC_ADMISE + ")",
-    PEC_ET_BUDGET,
-    "reste[\\s-]+[àa][\\s-]+charge",
-    "[àa]\\s+la\\s+charge\\s+d",
-    "[àa]\\s+(?:sa|votre|vos|leur|leurs|ma|mon)\\s+charge",
-    // V4-1 : la famille « aide(s) » au sens financement (« l'Aide Individuelle à la Formation », « aides
-    // régionales », « dispositifs d'aide »). Le verbe « aide à / aide les » n'est pas touché.
-    "\\baides\\b",
-    "\\baide\\s+(?:individuelle|r[ée]gionale|publique|de\\s+l['’][ée]tat|[àa]\\s+la\\s+formation|au\\s+(?:financement|diagnostic))",
-    "dispositifs?\\s+d['’]aide",
-    // V4-2 : reprises indirectes « couvrent tout ou partie des frais », « réduire le coût de la formation ».
-    "tout\\s+ou\\s+partie\\s+d(?:es|u)\\s+(?:frais|co[uû]ts?)",
-    "\\b(?:dispositifs?|options?|leviers?|aides?)\\b[^.!?\\n]{0,60}\\b(?:r[ée]duire|all[ée]ger|couvr\\w*)\\b[^.!?\\n]{0,30}\\b(?:co[uû]ts?|frais)",
-    "assum\\w*\\s+la\\s+charge",
-    // V5-1 : « dispositif(s) » repris au sens financement, « mobilisable / mobilisation ». `adapt\\w*` et non
-    // `adapt[ée]s?\\b` : sans drapeau `u`, `é` n'est pas un caractère de mot et `adapté\\b` ne correspond jamais.
-    "\\bmobilis(?:ables?|ation)\\b|\\bpeu(?:ven)?t\\s+mobiliser\\s*:",
-    "\\b(?:ce|cet|ces)\\s+dispositifs?\\b(?!\\s+(?:de\\s+suivi|consulaires|p[ée]dagogiques?))",
-    "\\bdispositifs?\\s+(?:(?:le|les)\\s+plus\\s+|locaux\\s+)?adapt\\w*|\\b(?:bons?|meilleurs?)\\s+dispositifs?\\b|identification\\s+d(?:u|es)\\s+dispositifs?",
-    "\\bdispositifs?\\s+(?:disponibles|compl[ée]mentaires|publics)\\b|\\bdispositifs?\\s+d['’]accompagnement\\b|\\bdispositifs?\\s+de\\s+France\\s+Num",
-    "\\bappels?\\s+[àa]\\s+projets?\\b|certification\\s+qualit[ée]\\s+via",
-  ].join("|"),
-  "i",
-);
 
 export function empreinte(valeur: unknown): string {
   return createHash("sha256")
@@ -351,6 +268,20 @@ function reporterTexteBrut(
   else c.champ(champ, bodyTextOrigine, nouveau, nouveau !== bodyTextOrigine, []);
 }
 
+/** Forme comparable d'une phrase (espaces, casse, parenthèses) pour ne pas citer deux fois la même. */
+const reduitPorte2 = (s: string): string => s.replace(/\s+/g, " ").trim().toLowerCase();
+
+/** Phrases d'un texte brut (fin de phrase suivie d'une majuscule ou d'un chiffre) ; chaque ligne à part. */
+const decouperPhrases = (t: string): string[] =>
+  t
+    .split(/\n+/)
+    .flatMap((l) => l.split(/(?<=[.!?…])\s+(?=[A-ZÀ-ÝÉ«"“0-9])/))
+    .map((x) => x.trim())
+    .filter((x) => x !== "");
+
+/** Début du message d'un ambigu levé par le filet « valeur finale » (et lui seul). */
+const MENTION_PORTE2 = "mention restante (porte 2 : ";
+
 class Collecteur {
   avant: Champs = {};
   apres: Champs = {};
@@ -358,7 +289,16 @@ class Collecteur {
   conserves: string[] = [];
   regles: string[] = [];
 
-  constructor(private readonly nom: string) {}
+  /**
+   * `controlerPorte2` : le filet « valeur finale » ne s'applique qu'aux contenus du BLOG (traductions,
+   * articles, FAQ). Une offre d'emploi ne parle pas de formation : « Responsable administratif et
+   * financier », « tenir la maison côté finances » y sont légitimes, et un override ne pourrait jamais les
+   * garder. Le moteur (règles de réécriture) continue, lui, de traiter les offres.
+   */
+  constructor(
+    private readonly nom: string,
+    private readonly options: { controlerPorte2: boolean },
+  ) {}
 
   /** Garde la valeur d'origine d'un champ dans la sauvegarde, qu'il soit modifié ou non. */
   garder(champ: string, original: unknown): void {
@@ -375,6 +315,43 @@ class Collecteur {
     this.garder(champ, original);
     if (modifie) this.apres[champ] = nouveau;
     for (const a of ambigus) this.ambigus.push(`${this.nom}.${champ} : ${a}`);
+    if (this.options.controlerPorte2)
+      this.filetPorte2(champ, modifie ? nouveau : original, ambigus);
+  }
+
+  /**
+   * B1 (essai à blanc n° 2) : la valeur FINALE du champ (réécrite ou non) passe la porte 2, la même règle
+   * que celle des overrides humains. Chaque phrase refusée devient un ambigu « mention restante (porte 2) »
+   * qui la cite : le moteur et les overrides n'ont plus qu'UNE règle, et « ambigus : 0 » après l'apply
+   * prouve vraiment qu'aucune phrase de financement ne reste.
+   * - une phrase déjà citée par un ambigu du même champ n'est pas répétée, y compris quand le moteur la cite
+   *   SANS le fragment qu'il sait retirer (« (CPF) ») ;
+   * - une FAQ (question, réponse, `faqJson`) déjà ambiguë est bloquée en bloc : on ne la découpe pas.
+   */
+  private filetPorte2(champ: string, valeur: unknown, ambigusDuChamp: string[]): void {
+    if (valeur === null || valeur === undefined) return;
+    if (ambigusDuChamp.length > 0 && /^(?:question|answer|faqJson)/.test(champ)) return;
+    const cites = this.ambigus
+      .filter((a) => a.startsWith(`${this.nom}.${champ} : `))
+      .map(reduitPorte2);
+    const vus = new Set<string>();
+    for (const t of textesDe(valeur)) {
+      for (const phrase of decouperPhrases(t)) {
+        const normalise = normaliserPourPorte2(phrase);
+        const interdit = INTERDITS_PUBLICS.exec(normalise);
+        if (!interdit) continue;
+        const r = reduitPorte2(phrase);
+        // Le moteur cite parfois la phrase sans le fragment retiré : on compare aussi cette forme.
+        const sansFragment = reduitPorte2(retirerFragments(phrase));
+        const formes = sansFragment.length >= 8 && sansFragment !== r ? [r, sansFragment] : [r];
+        if (vus.has(r) || formes.some((f) => cites.some((a) => a.includes(f.slice(0, 80)))))
+          continue;
+        vus.add(r);
+        this.ambigus.push(
+          `${this.nom}.${champ} : ${MENTION_PORTE2}${termeRefuse(normalise, interdit)}) : « ${phrase.slice(0, 160)} »`,
+        );
+      }
+    }
   }
 
   texte(champ: string, valeur: string | null | undefined, langue: Langue, titre = false): void {
@@ -451,7 +428,7 @@ export interface LigneTraduction {
 }
 
 export function proposerTraduction(l: LigneTraduction): Proposition | null {
-  const c = new Collecteur(`article_translation:${l.id}`);
+  const c = new Collecteur(`article_translation:${l.id}`, { controlerPorte2: true });
   const langue: Langue = l.locale;
   c.texte("title", l.title, langue, true);
   c.texte("excerpt", l.excerpt, langue);
@@ -481,7 +458,7 @@ export interface LigneArticle {
 }
 
 export function proposerArticle(l: LigneArticle): Proposition | null {
-  const c = new Collecteur(`article:${l.id}`);
+  const c = new Collecteur(`article:${l.id}`, { controlerPorte2: true });
   c.texte("directAnswer", l.directAnswer, "fr");
   c.texte("keyTakeaway", l.keyTakeaway, "fr");
   c.texte("expertQuoteText", l.expertQuoteText, "fr");
@@ -517,7 +494,7 @@ export interface LigneFaq {
 }
 
 export function proposerFaq(l: LigneFaq): Proposition | null {
-  const c = new Collecteur(`faq:${l.id}`);
+  const c = new Collecteur(`faq:${l.id}`, { controlerPorte2: true });
   for (const [langue, q, a, kq, ka] of [
     ["fr", l.questionFr, l.answerFr, "questionFr", "answerFr"],
     ["en", l.questionEn, l.answerEn, "questionEn", "answerEn"],
@@ -646,7 +623,7 @@ export function reecrirePerks(perks: unknown): {
 }
 
 export function proposerOffre(l: LigneOffre): Proposition | null {
-  const c = new Collecteur(`job_offer:${l.id}`);
+  const c = new Collecteur(`job_offer:${l.id}`, { controlerPorte2: false });
   if (SLUGS_OFFRES_ARCHIVEES.includes(l.slug)) {
     // Arbitrage 1 : poste que nous ne proposons pas → statut existant « archived », données gardées.
     if (l.status === "archived") return null;
@@ -740,14 +717,6 @@ function motsPerdus(origine: unknown, valeur: unknown): string[] {
   return [...new Set(motsNonRetirables(textesDe(origine).join(" "), textesDe(valeur).join(" ")))];
 }
 
-/** Tirets Unicode ramenés au tiret ASCII, espaces insécables à l'espace (sauts de ligne conservés). */
-export function normaliserPourPorte2(t: string): string {
-  return t
-    .normalize("NFC")
-    .replace(/[‐-―­]/g, "-")
-    .replace(/[^\S\n]+/g, " ");
-}
-
 /**
  * Une valeur d'override est-elle PROPRE ? Elle repasse dans les mêmes règles que le contenu : si le
  * résultat n'est pas « propre » (mention restante, ambigu), l'override est ignoré. Rend la raison,
@@ -796,6 +765,56 @@ function reecrireFaqs(
 }
 
 /**
+ * « Conservé sur décision » (relecture des correctifs de l'essai à blanc n° 2, bloquant 1, voie 2). La
+ * porte 2 refuse des textes légitimes du blog (« services financiers », « équipes juridiques, RH et
+ * financières ») ; un override ordinaire ne peut jamais les garder (`valeurSale`). Une entrée qui porte
+ * `admis` garde le champ TEL QUEL, et seulement si TOUT ce qui suit est vrai :
+ *  1. `valeur` est strictement égale à l'original lu maintenant (et l'empreinte `origine` correspond) :
+ *     cette voie ne réécrit rien, elle ne sert jamais à faire passer un autre texte ;
+ *  2. tous les ambigus du champ sont des « mention restante (porte 2 : …) » : si le MOTEUR vise ou réécrit
+ *     le champ, ce n'est pas un faux positif de la porte ;
+ *  3. chaque terme que la porte 2 refuse dans la valeur figure, mot pour mot, dans `admis` ;
+ *  4. aucun mot du lexique dur (`LEXIQUE_DUR`), ni dans la valeur, ni dans `admis`.
+ * Rend la raison du refus, ou `null` si la conservation est acceptée.
+ */
+function refusDeConservation(
+  p: Proposition,
+  champ: string,
+  o: { origine: string; valeur: unknown; admis?: unknown },
+  courant: unknown,
+): string | null {
+  const admis = o.admis;
+  if (
+    !Array.isArray(admis) ||
+    admis.length === 0 ||
+    !admis.every((t) => typeof t === "string" && t.trim() !== "")
+  )
+    return "admis doit lister au moins un terme";
+  if (empreinte(courant) !== o.origine) return "l'empreinte de l'original ne correspond plus";
+  if (empreinte(o.valeur) !== empreinte(courant))
+    return "valeur différente de l'original : une conservation ne réécrit rien";
+  if (champ in p.apres) return "le moteur réécrit ce champ";
+  const prefixe = `${p.cle}.${champ} : `;
+  const duChamp = p.ambigus.filter((a) => a.startsWith(prefixe));
+  if (duChamp.length === 0) return "aucun ambigu de porte 2 sur ce champ : rien à conserver";
+  if (!duChamp.every((a) => a.startsWith(prefixe + MENTION_PORTE2)))
+    return "un ambigu du moteur reste sur ce champ";
+  const textes = textesDe(o.valeur);
+  const dur = [...textes, ...(admis as string[])]
+    .map((t) => LEXIQUE_DUR.exec(normaliserPourPorte2(t))?.[0])
+    .find((x) => x !== undefined);
+  if (dur !== undefined) return `mot du lexique dur « ${dur} »`;
+  // Les deux lectures de la porte 2 : le champ entier (celle des overrides) et phrase à phrase (celle du filet).
+  const refuses = new Set<string>(termesRefuses(textes.join("\n")));
+  for (const t of textes)
+    for (const ph of decouperPhrases(t)) for (const x of termesRefuses(ph)) refuses.add(x);
+  const manquants = [...refuses].filter((t) => !(admis as string[]).includes(t));
+  if (manquants.length > 0)
+    return `terme(s) refusé(s) par la porte 2 absent(s) de admis (${manquants.join(", ")})`;
+  return null;
+}
+
+/**
  * Applique les remplacements humains aux cas ambigus. Un override n'est pris que si l'empreinte
  * de la valeur d'ORIGINE correspond à la valeur lue maintenant : si le texte a changé depuis,
  * il est ignoré et signalé (jamais appliqué à l'aveugle).
@@ -813,9 +832,25 @@ export function appliquerOverrides(
   const appliques: string[] = [];
   const pertes: Record<string, string[]> = { ...(p.pertes ?? {}) };
   const resynchro: string[] = [];
+  const conserves: Record<string, string[]> = { ...(p.conservesSurDecision ?? {}) };
   for (const [champ, o] of Object.entries(surcharges)) {
     if (o.valeur === "" || o.valeur === null || o.valeur === undefined) {
       ignores.push(`${p.cle}.${champ} : valeur vide (gabarit non rempli), override ignoré`);
+      continue;
+    }
+    // Voie « conservé sur décision » : une entrée qui porte `admis` ne passe JAMAIS par la voie ordinaire.
+    if (o.admis !== undefined) {
+      const refus = refusDeConservation(
+        p,
+        champ,
+        o,
+        champ in originaux ? originaux[champ] : undefined,
+      );
+      if (refus)
+        ignores.push(
+          `${p.cle}.${champ} : conservation sur décision refusée (${refus}), override ignoré`,
+        );
+      else conserves[champ] = [...o.admis];
       continue;
     }
     const sale = valeurSale(champ, o.valeur);
@@ -886,6 +921,7 @@ export function appliquerOverrides(
       ambigus,
       surcharges: [...(p.surcharges ?? []), ...appliques],
       ...(Object.keys(pertes).length > 0 ? { pertes } : {}),
+      ...(Object.keys(conserves).length > 0 ? { conservesSurDecision: conserves } : {}),
     },
     ignores,
   };

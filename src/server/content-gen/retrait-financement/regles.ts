@@ -10,6 +10,7 @@
  * HTML (href, src, id…) — sauf les deux liens vers les pages retirées (cf. `LIENS_RETIRES`).
  */
 import { JSDOM } from "jsdom";
+import { INTERDITS_PUBLICS, normaliserPourPorte2, termeRefuse } from "./porte2";
 
 export type Langue = "fr" | "en";
 
@@ -195,7 +196,7 @@ const FRAGMENT_FINANCABLES = /,\s*finan[cç]ables?\s+(?:par|via)\s+(?:les\s+)?OP
 const LIBELLE_FINANCEMENT = /\s*\((?:financements?|funding)\)/gi;
 
 /** Retire les fragments qui se suffisent à eux-mêmes : « (CPF, OPCO, France Travail) ». */
-function retirerFragments(s: string): string {
+export function retirerFragments(s: string): string {
   const r = s
     .replace(FRAGMENT_PARENTHESE, "")
     .replace(FRAGMENT_FINANCABLES, ",")
@@ -640,9 +641,22 @@ function conditionnelsRestants(origine: string, estHtml: boolean): string[] {
     const sans = retirerFragments(p);
     if (sans === p) continue;
     const apres = estHtml ? htmlVersTexte(sans) : sans;
-    if (CONDITIONNELS.some((r) => r.test(normaliser(apres))))
+    if (CONDITIONNELS.some((r) => r.test(normaliser(apres)))) {
       out.push(
         `mention restante après retrait d'un fragment (France Travail, CPF…) : « ${avant.slice(0, 160)} »`,
+      );
+      continue;
+    }
+    // B1 (essai à blanc n° 2) : la porte 2 (`INTERDITS_PUBLICS`, la règle des overrides humains) s'applique
+    // aussi au RESTE de la phrase. « mobilisez les financements disponibles », « ouvre des droits à
+    // financement » survivent au retrait de « (OPCO, CPF) » sans être vus par `CONDITIONNELS`. Une phrase que
+    // le moteur ne verrait plus (`estVisee` faux) mais que la porte 2 refuse devient AMBIGUË. Si elle reste
+    // visée, la suite du moteur la traite (retrait entier d'une phrase pure) : on ne change rien.
+    const normalise = normaliserPourPorte2(apres);
+    const interdit = INTERDITS_PUBLICS.exec(normalise);
+    if (interdit && !estVisee(apres))
+      out.push(
+        `mention restante après retrait d'un fragment (porte 2 : ${termeRefuse(normalise, interdit)}) : « ${avant.slice(0, 160)} »`,
       );
   }
   return out;

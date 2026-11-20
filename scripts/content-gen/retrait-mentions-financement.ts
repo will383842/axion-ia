@@ -286,6 +286,9 @@ async function main() {
   );
   console.log(`PLAN_SHA=${sha}`);
   for (const i of ignores) console.log(`⚠ override ignoré : ${i}`);
+  for (const p of propositions)
+    for (const [champ, termes] of Object.entries(p.conservesSurDecision ?? {}))
+      console.log(`✔ conservé sur décision : ${p.cle}.${champ} (${termes.join(", ")})`);
   for (const x of ambigusNonCouverts(propositions))
     console.log(`⛔ ambigu non couvert : ${x.cle}.${x.champ}`);
   if (o.rapport) ecrireRapport(o.rapport, o, propositions, ignores, sha);

@@ -343,6 +343,21 @@ export function construireRapport(
       for (const [c, mots] of Object.entries(x.pertes ?? {}))
         l.push(`- \`${x.cle}\` · ${c} : ${mots.join(", ")}`);
   }
+  const conserves = propositions.filter(
+    (x) => Object.keys(x.conservesSurDecision ?? {}).length > 0,
+  );
+  if (conserves.length > 0) {
+    l.push(
+      "",
+      "## Conservés sur décision du dirigeant",
+      "",
+      "Champs laissés TELS QUELS : la porte 2 y refuse un terme sans rapport avec le financement de la formation (entrée `admis` du fichier d'overrides). Rien n'est écrit pour eux.",
+      "",
+    );
+    for (const x of conserves)
+      for (const [c, termes] of Object.entries(x.conservesSurDecision ?? {}))
+        l.push(`- \`${x.cle}\` · ${c} : termes admis : ${termes.join(", ")}`);
+  }
   l.push("", "## « prise en charge » conservées (hors financement)");
   for (const x of propositions) for (const c of x.conserves) l.push(`- \`${x.cle}\` : ${c}`);
   if (ignores.length > 0) l.push("", "## Overrides ignorés", ...ignores.map((i) => `- ${i}`));

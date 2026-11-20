@@ -222,7 +222,7 @@ jobs:
           D=/tmp/retrait-financement
           ssh -o BatchMode=yes root@178.105.55.15 "rm -rf $D && mkdir -p $D/rules"
           scp -o BatchMode=yes scripts/content-gen/retrait-mentions-financement.ts scripts/content-gen/retrait-financement-overrides.json root@178.105.55.15:$D/
-          for f in regles.ts plan.ts; do
+          for f in regles.ts plan.ts porte2.ts; do
             scp -o BatchMode=yes "src/server/content-gen/retrait-financement/$f" root@178.105.55.15:$D/rules/
           done
           ssh -o BatchMode=yes root@178.105.55.15 "
@@ -232,6 +232,7 @@ jobs:
             docker cp $D/retrait-financement-overrides.json '$WORKER':/app/scripts/content-gen/retrait-financement-overrides.json
             docker cp $D/rules/regles.ts '$WORKER':/app/src/server/content-gen/retrait-financement/regles.ts
             docker cp $D/rules/plan.ts '$WORKER':/app/src/server/content-gen/retrait-financement/plan.ts
+            docker cp $D/rules/porte2.ts '$WORKER':/app/src/server/content-gen/retrait-financement/porte2.ts
             rm -rf $D
           "
 
