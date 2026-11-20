@@ -198,7 +198,7 @@ export function EmailAutomationSettings({
                     </td>
                     <td className={cellule}>{nature}</td>
                     <td className={cellule}>
-                      <AdminBadge tone={r.mode === "auto" ? "success" : "warning"}>
+                      <AdminBadge tone={r.mode === "auto" ? "success" : "warning"} plein>
                         {r.mode === "auto" ? "Envoi automatique" : "Relecture requise"}
                       </AdminBadge>
                     </td>
