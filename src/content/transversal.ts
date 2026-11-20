@@ -2611,7 +2611,7 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
     fr: {
       question: "Comment se déroule une mission avec Axion-IA ?",
       answer:
-        "En quatre temps, chacun produisant un livrable et chacun pouvant être le dernier. Tout commence par un Diagnostic IA pour cerner le besoin, avec un devis sous 48 heures ouvrées. Viennent ensuite les quatre étapes : identifier, auditer, implémenter, mesurer.\n\nIdentifier, c'est une journée sur site : 3 à 5 process candidats, des démonstrations sur vos données anonymisées, des quick-wins déployables sous trente jours, et une cartographie terrain en sortie. Auditer, c'est cinq jours pour chiffrer chaque opportunité et remettre un plan priorisé, sous forme d'un document de 25 à 40 pages et d'un atelier de restitution. Implémenter, c'est six à huit semaines du cadrage technique à la mise en production. Mesurer, c'est revenir compter les heures et les coûts réellement économisés, sur des indicateurs convenus avant le déploiement.\n\nLa méthode est découplée du contrat long : vous pouvez vous arrêter à la fin de n'importe quelle étape, et le même intervenant senior vous suit du cadrage à la livraison.",
+        "En quatre temps, chacun produisant un livrable et chacun pouvant être le dernier. Tout commence par un Diagnostic IA pour cerner le besoin, avec un devis sous 48 heures ouvrées. Viennent ensuite les quatre étapes : identifier, auditer, implémenter, mesurer.\n\nIdentifier, c'est une journée sur site : 3 à 5 process candidats, des démonstrations sur vos données anonymisées, des quick-wins déployables sous trente jours, et une cartographie terrain en sortie. Auditer, c'est cinq jours pour chiffrer chaque opportunité et remettre un plan priorisé, sous forme d'un document de 25 à 40 pages et d'un atelier de restitution. Implémenter, c'est six à huit semaines du cadrage technique à la mise en production. Mesurer, c'est vous remettre les indicateurs convenus avant le déploiement, pour compter vous-même les heures et les coûts économisés.\n\nLa méthode est découplée du contrat long : vous pouvez vous arrêter à la fin de n'importe quelle étape, et le même intervenant senior vous suit du cadrage à la livraison.",
       keyPoints: [
         "Quatre temps séparés, un livrable concret à chaque étape",
         "Diagnostic IA puis devis sous 48 h ouvrées",
@@ -2643,7 +2643,7 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
         {
           title: "Mesurer",
           detail:
-            "Retour sur les indicateurs convenus avant le déploiement — heures et coûts économisés, impact qualitatif — et itération si une dérive de qualité apparaît. Livrable : le ROI mesuré.",
+            "Les indicateurs convenus avant le déploiement vous sont remis pour compter vous-même les heures et les coûts économisés, ainsi que l'impact qualitatif. Livrable : les indicateurs de mesure du ROI.",
         },
       ],
       nuances: [
@@ -2667,7 +2667,7 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
     en: {
       question: "How does a mission with Axion-IA unfold?",
       answer:
-        "A mission follows four simple steps: a first conversation to scope your need, an audit identifying high-ROI use cases, delivery (session, intervention or custom implementation), then a measurement of the gains. You stay in control at every step, deliverables are concrete, and the goal remains measurable ROI — not a demo with no result.",
+        "A mission follows four simple steps: a first conversation to scope your need, an audit identifying high-ROI use cases, delivery (session, intervention or custom implementation), then the indicators to measure the gains yourself. You stay in control at every step, deliverables are concrete, and the goal remains measurable ROI — not a demo with no result.",
     },
   },
   // ── Batch perfection FAQ 2026-05-31 #2 — secteurs, cas d'usage, comparatifs ────
@@ -4334,7 +4334,7 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
         {
           title: "Mesurer",
           detail:
-            "On revient compter ce que ça a rapporté, sur les indicateurs convenus au départ : heures et coûts économisés, impact qualitatif. Itération si une dérive apparaît.",
+            "Les indicateurs convenus au départ vous sont remis pour compter vous-même ce que ça rapporte : heures et coûts économisés, impact qualitatif.",
         },
       ],
       nuances: [
@@ -5041,7 +5041,7 @@ export const HELP_ARTICLES: ReadonlyArray<HelpArticle> = [
     fr: {
       title: "Quelles sont les phases d'un projet d'implémentation ?",
       excerpt: "4 phases clés : cadrage, prototype, tests, déploiement.",
-      body: "Un projet d'implémentation IA Axion-IA suit 4 phases : (1) cadrage technique 1 semaine — choix du modèle, architecture, données ; (2) prototype 2-4 semaines — version fonctionnelle sur jeu de données réel ; (3) tests utilisateurs 1-2 semaines — validation par 3-5 opérationnels ; (4) déploiement production 1 semaine — mise en service progressive . Total 6-8 semaines pour la majorité des cas.",
+      body: "Un projet d'implémentation IA Axion-IA suit 4 phases : (1) cadrage technique 1 semaine — choix du modèle, architecture, données ; (2) prototype 2-4 semaines — version fonctionnelle sur jeu de données réel ; (3) tests utilisateurs 1-2 semaines — validation par 3-5 opérationnels ; (4) déploiement production 1 semaine — mise en service progressive. Total 6-8 semaines pour la majorité des cas.",
     },
     en: {
       title: "What are the phases of an implementation project?",

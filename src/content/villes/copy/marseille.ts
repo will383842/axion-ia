@@ -475,7 +475,7 @@ export const MARSEILLE_COPY: VilleCopy = {
           {
             step: "Recette + formation",
             detail:
-              "Sur site Marseille : tests d'acceptation utilisateurs, formation des ambassadeurs internes sur leur poste, livraison du runbook documentation, plan de monitoring post-go-live.",
+              "Sur site Marseille : tests d'acceptation utilisateurs, formation des ambassadeurs internes sur leur poste, livraison du runbook documentation, plan de surveillance remis à la recette.",
           },
         ],
         pricing: [
@@ -562,7 +562,7 @@ export const MARSEILLE_COPY: VilleCopy = {
           {
             step: "Acceptance + training",
             detail:
-              "On site Marseille: user acceptance tests, internal ambassador training at their workstations, runbook documentation delivery, post-go-live monitoring plan.",
+              "On site Marseille: user acceptance tests, internal ambassador training at their workstations, runbook documentation delivery, monitoring plan handed over at acceptance.",
           },
         ],
         pricing: [

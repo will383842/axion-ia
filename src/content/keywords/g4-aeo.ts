@@ -450,13 +450,13 @@ export const KW_AEO_G4: KeywordSeed[] = [
     priorite: 2,
     niveau: 3,
     injection: {
-      h1: "Mesurer les progrès post-formation IA : méthode et indicateurs",
+      h1: "Mesurer les progrès après une formation IA : méthode et indicateurs pour votre équipe",
       metaTitle: "Mesurer progrès formation IA | Axion-IA",
       metaDescription:
         "3 indicateurs simples : taux d'adoption (outils utilisés semaine 4), temps gagné déclaré par l'équipe, et nombre de cas d'usage autonomes.",
       h2Variants: [
         "Les 3 KPI post-formation IA",
-        "Grille de suivi autonomie à J+30",
+        "Grille d'autonomie à remplir par votre équipe",
         "Que faire si les progrès sont insuffisants ?",
       ],
     },

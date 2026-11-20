@@ -247,20 +247,20 @@ describe("L4c — suivi J+30 : bouton vers le questionnaire", () => {
     numeroSession: "AXI-SESS-2026-004",
   };
 
-  it("avec lienQuestionnaire : bouton « Répondre au questionnaire de suivi » vers ce lien", async () => {
+  it("avec lienQuestionnaire : bouton « Répondre au questionnaire » vers ce lien", async () => {
     const lien = `https://axion-ia.com/fr/portail/acces/${"d".repeat(64)}`;
     const r = await renderEmailTemplate("qualiopi-suivi-j30", "fr", {
       ...J30,
       lienQuestionnaire: lien,
     });
-    expect(r.html).toContain("Répondre au questionnaire de suivi");
+    expect(r.html).toContain("Répondre au questionnaire");
     expect(r.html).toContain(lien);
   });
 
   it("sans lienQuestionnaire : le portail, bouton inchangé", async () => {
     const r = await renderEmailTemplate("qualiopi-suivi-j30", "fr", J30);
     expect(r.html).toContain("Accéder à mon espace");
-    expect(r.html).not.toContain("Répondre au questionnaire de suivi");
+    expect(r.html).not.toContain("Répondre au questionnaire");
   });
 });
 

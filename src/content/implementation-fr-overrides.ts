@@ -56,7 +56,7 @@ export const IMPL_FR_OVERRIDES: Record<ImplementationSlug, ImplementationFrOverr
       {
         title: "Exploitation et évolution",
         description:
-          "Les indicateurs de dérive et la procédure de ré-entraînement vous sont remis, pour faire évoluer prompts et modèles à mesure que vos données et vos besoins changent.",
+          "La documentation d'exploitation vous est remise pour faire évoluer prompts et modèles.",
       },
     ],
     metrics: [

@@ -490,7 +490,7 @@ export const RENNES_COPY: VilleCopy = {
           {
             step: "Recette + formation",
             detail:
-              "Sur site Rennes : tests d'acceptation utilisateurs, formation des ambassadeurs internes, livraison du runbook documentation, plan de monitoring post-go-live.",
+              "Sur site Rennes : tests d'acceptation utilisateurs, formation des ambassadeurs internes, livraison du runbook documentation, plan de surveillance remis à la recette.",
           },
         ],
         pricing: [
@@ -577,7 +577,7 @@ export const RENNES_COPY: VilleCopy = {
           {
             step: "Acceptance + training",
             detail:
-              "On site Rennes: user acceptance tests, training of internal ambassadors, runbook documentation delivery, post-go-live monitoring plan.",
+              "On site Rennes: user acceptance tests, training of internal ambassadors, runbook documentation delivery, monitoring plan handed over at acceptance.",
           },
         ],
         pricing: [

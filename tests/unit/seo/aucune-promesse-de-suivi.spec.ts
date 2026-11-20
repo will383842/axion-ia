@@ -19,7 +19,13 @@ import { join, relative } from "node:path";
 import { describe, expect, it } from "vitest";
 
 const RACINE = process.cwd();
-const DOSSIERS = ["src/content", "src/app", "src/components", "src/messages"];
+const DOSSIERS = [
+  "src/content",
+  "src/app",
+  "src/components",
+  "src/messages",
+  "src/lib/email/templates",
+];
 const EXTENSIONS = /\.(ts|tsx|json)$/;
 const EXCLUS = /(\.test\.|\.spec\.|__tests__|\/node_modules\/)/;
 
@@ -28,6 +34,14 @@ const FICHIERS_CONSEIL_CLIENT = new Set([
   "src/content/formations/modules/ia-pour-les-equipes.ts",
   "src/content/formations/modules/seminaire-ia-toute-l-entreprise-1j.ts",
 ]);
+
+/**
+ * Gabarits d'e-mail INTERNES (formateurs, apporteurs, alertes, relances de dossier) : ils ne
+ * s'adressent pas à un client après une prestation, « suivi » y désigne un traitement interne.
+ * Seuls les gabarits adressés aux clients/stagiaires restent scannés.
+ */
+const GABARITS_EMAIL_INTERNES =
+  /^src\/lib\/email\/templates\/(?:_formateur|_infos-pratiques-formateur|_kit-apporteur|_bareme-apporteur|formateur-|apporteur-|lead-apporteur-|candidature-|qualiopi-alerte-interne|alerte-demande-client|opco-suivi-entreprise)/;
 
 const PROMESSES: ReadonlyArray<readonly [string, RegExp]> = [
   ["point de suivi", /point de suivi/i],
@@ -42,6 +56,10 @@ const PROMESSES: ReadonlyArray<readonly [string, RegExp]> = [
   ],
   ["30 jours de support", /(?:30|trente) (?:jours|j) de support/i],
   ["30-day support", /30[- ]days? (?:of )?(?:post-delivery )?support/i],
+  ["bilan à N jours", /bilan à \d+ jours/i],
+  ["« les suit avec vous »", /les suit avec vous/i],
+  ["suivi continu", /suivi continu/i],
+  ["accompagnement supplémentaire", /accompagnement supplémentaire/i],
 ];
 
 function* fichiers(dossier: string): Generator<string> {
@@ -56,7 +74,7 @@ function* fichiers(dossier: string): Generator<string> {
 describe("décision du 20/11 — aucune promesse de suivi après prestation", () => {
   const corpus = DOSSIERS.flatMap((d) => [...fichiers(join(RACINE, d))])
     .map((chemin) => relative(RACINE, chemin).replaceAll("\\", "/"))
-    .filter((rel) => !FICHIERS_CONSEIL_CLIENT.has(rel));
+    .filter((rel) => !FICHIERS_CONSEIL_CLIENT.has(rel) && !GABARITS_EMAIL_INTERNES.test(rel));
 
   it("le corpus est bien lu (garde-fou contre un test qui ne regarde rien)", () => {
     expect(corpus.length).toBeGreaterThan(500);

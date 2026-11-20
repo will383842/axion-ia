@@ -791,7 +791,7 @@ export const ORLEANS_COPY: VilleCopy = {
           },
           {
             q: "Do sessions take place in Orléans or remotely?",
-            a: "Both are possible. On-site sessions at your Orléans offices for tool installation needs, or video call for follow-up sessions. The hybrid format is most common.",
+            a: "Both are possible. On-site sessions at your Orléans offices for tool installation needs, or video call for later sessions. The hybrid format is most common.",
           },
           {
             q: "Does my information and data remain confidential?",

@@ -102,7 +102,7 @@ export const KW_NOTORIETE_H: KeywordSeed[] = [
         "Résultats typiques par type de mission",
       ],
     },
-    variables: { resultat: "ROI documenté mission par mission", delai: "à 30 et 90 jours" },
+    variables: { resultat: "ROI documenté mission par mission" },
     urlCible: "/fr/cas-concrets/resultats",
     source: "manuel",
     note: "Schéma ItemList + Claim recommandé — relier vers pages mission détaillées",
@@ -297,7 +297,7 @@ export const KW_NOTORIETE_H: KeywordSeed[] = [
         "Exemples de gains obtenus par des PME similaires à la vôtre",
       ],
     },
-    variables: { resultat: "ROI documenté à 30-90 jours", delai: "dès le 1er mois" },
+    variables: { resultat: "ROI documenté mission par mission" },
     urlCible: "/fr/cas-concrets/",
     source: "manuel",
     note: "Transactionnel tardif — ancrer sur les preuves, pas sur la promesse",
@@ -792,8 +792,7 @@ export const KW_NOTORIETE_H: KeywordSeed[] = [
     injection: {
       h1: "Un cabinet IA qui s'engage sur des résultats mesurables — Pas de promesses vagues",
       metaTitle: "Cabinet IA résultats mesurables | Axion-IA France",
-      metaDescription:
-        "Axion-IA définit des KPIs dès le départ et les suit avec vous. Résultats documentés à 30, 60 et 90 jours.",
+      metaDescription: "Axion-IA définit des KPIs dès le départ, avant la mission.",
       h2Variants: [
         "Notre engagement contractuel sur les livrables",
         "Comment nous définissons les KPIs avant chaque mission",
@@ -801,7 +800,7 @@ export const KW_NOTORIETE_H: KeywordSeed[] = [
       ],
     },
     variables: {
-      resultat: "KPIs définis avant la mission, mesurés à 30-90 jours",
+      resultat: "KPIs définis avant la mission",
       delai: "dès la phase de cadrage",
     },
     urlCible: "/fr/a-propos/engagement-resultats",

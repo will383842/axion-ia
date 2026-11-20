@@ -2233,7 +2233,7 @@ export const KW_COACHING_G6: KeywordSeed[] = [
       h1: "Accompagnement IA 1 pour 1 pour dirigeants : votre expert IA dédié, votre agenda",
       metaTitle: "Accompagnement IA dirigeant 1 pour 1 — Axion-IA",
       metaDescription:
-        "Un expert IA Axion-IA dédié uniquement à vous : sessions à la demande, suivi continu, décisions IA éclairées. Formule 1-to-1 premium pour dirigeants.",
+        "Un expert IA Axion-IA dédié uniquement à vous : sessions à la demande, coaching régulier sur devis, décisions IA éclairées. Formule 1-to-1 premium pour dirigeants.",
       h2Variants: [
         "En quoi l'accompagnement IA 1 pour 1 diffère d'une formation",
         "Votre expert IA dédié : profil et méthode de travail",
@@ -2337,7 +2337,6 @@ export const KW_COACHING_G6: KeywordSeed[] = [
         "Découvrez les résultats concrets obtenus par les dirigeants coachés par Axion-IA en 1-to-1 : projets IA lancés, heures économisées, CA impacté.",
       h2Variants: [
         "Études de cas : dirigeants PME coachés en IA 1-to-1",
-        "KPIs mesurés post-coaching IA dirigeant",
         "Témoignages dirigeants : leur bilan après 4 séances coaching IA",
       ],
     },
@@ -2387,7 +2386,7 @@ export const KW_COACHING_G6: KeywordSeed[] = [
       h1: "Combien coûte une séance de coaching IA pour dirigeant ? Tarifs Axion-IA 2026",
       metaTitle: "Séance coaching IA dirigeant tarif — Axion-IA France",
       metaDescription:
-        "Tarifs et formules de coaching IA 1-to-1 pour dirigeants par Axion-IA : séance unique, forfait 4 séances, accompagnement continu. Demandez un devis.",
+        "Tarifs et formules de coaching IA 1-to-1 pour dirigeants par Axion-IA : séance unique, forfait 4 séances, coaching régulier sur devis. Demandez un devis.",
       h2Variants: [
         "Formules et tarifs coaching IA dirigeant Axion-IA",
         "Séance découverte coaching IA dirigeant : ce qui est inclus",

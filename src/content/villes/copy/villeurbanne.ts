@@ -834,7 +834,7 @@ export const VILLEURBANNE_COPY: VilleCopy = {
           },
           {
             q: "Do sessions take place in Villeurbanne or remotely?",
-            a: "Both are possible. On-site sessions in Villeurbanne (your offices, campus Doua, or shared space) are preferred for practical phases with your real tools. Strategic and follow-up sessions can be on video.",
+            a: "Both are possible. On-site sessions in Villeurbanne (your offices, campus Doua, or shared space) are preferred for practical phases with your real tools. Strategic and later sessions can be on video.",
           },
           {
             q: "Is this programme confidential?",

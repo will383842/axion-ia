@@ -223,7 +223,7 @@ Pages : ${SITE_URL}/fr/devenir-commercial-ia · dossier de 3 minutes : ${SITE_UR
 1. **Identifier** — Cartographie terrain en 1 j (intervention).
 2. **Auditer** — Audit IA, plan chiffré priorisé.
 3. **Implémenter** — Mise en production 6-8 semaines.
-4. **Mesurer** — ROI mesuré post-déploiement.
+4. **Mesurer** — indicateurs de ROI remis pour mesurer vous-même les gains.
 
 URL : ${SITE_URL}/fr/methodologie
 ${sectionVideos}

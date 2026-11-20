@@ -75,7 +75,7 @@ export function MethodologyHeroSchema({
         {
           icon: LineChart,
           title: "Mesurer",
-          detail: "ROI réel post-déploiement. Itération si besoin. Pas d'engagement long.",
+          detail: "Indicateurs de ROI remis pour mesurer vous-même. Pas d'engagement long.",
         },
       ]
     : [
@@ -97,7 +97,7 @@ export function MethodologyHeroSchema({
         {
           icon: LineChart,
           title: "Measure",
-          detail: "Real ROI post-deployment. Iterate if needed. No long-term lock-in.",
+          detail: "ROI indicators handed over so you can measure yourself. No long-term lock-in.",
         },
       ];
 

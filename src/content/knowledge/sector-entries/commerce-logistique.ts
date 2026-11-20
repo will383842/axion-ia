@@ -357,12 +357,6 @@ Contrairement aux grandes entreprises dotées de centres de compétences data, l
 
 ---
 
-### Phase 3 — Accompagnement post-déploiement (optionnel, 12 mois)
-
-Contrat de support incluant : monitoring mensuel des KPIs modèle, réentraînement trimestriel, accès à un référent Axion-IA pour les questions d'usage, revue semestrielle d'extension du périmètre.
-
----
-
 ## Facteurs clés de succès
 
 ### 1. Sponsoring du dirigeant

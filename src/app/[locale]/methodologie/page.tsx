@@ -163,7 +163,7 @@ export default async function MethodologyPage({ params }: Props) {
           },
           {
             name: "Mesurer",
-            text: "Mesure du ROI réel post-déploiement : heures économisées, coût économisé, impact qualitatif. Itération si dérive de qualité observée.",
+            text: "Indicateurs de mesure du ROI convenus avant le déploiement, remis pour que vous comptiez vous-même les heures économisées, le coût économisé et l'impact qualitatif.",
           },
         ]
       : [
@@ -181,7 +181,7 @@ export default async function MethodologyPage({ params }: Props) {
           },
           {
             name: "Measure",
-            text: "Real ROI measurement post-deployment: hours saved, cost saved, qualitative impact. Iteration if quality drift is observed.",
+            text: "ROI indicators agreed before deployment, handed over so you can measure hours saved, cost saved and qualitative impact yourself.",
           },
         ],
   });
@@ -276,13 +276,9 @@ export default async function MethodologyPage({ params }: Props) {
         {
           n: "04",
           h: "Mesurer",
-          p: "On revient compter ce que ça a réellement rapporté, sur les indicateurs convenus au départ.",
-          bullets: [
-            "Heures et coûts économisés, impact qualitatif",
-            "Itération si une dérive de qualité apparaît",
-            "Aucun engagement long terme",
-          ],
-          livrable: "ROI mesuré",
+          p: "Les indicateurs convenus au départ vous sont remis pour compter vous-même ce que ça rapporte.",
+          bullets: ["Heures et coûts économisés, impact qualitatif", "Aucun engagement long terme"],
+          livrable: "Indicateurs de ROI",
         },
       ]
     : [
@@ -322,13 +318,9 @@ export default async function MethodologyPage({ params }: Props) {
         {
           n: "04",
           h: "Measure",
-          p: "We come back and count what it actually returned, on the indicators agreed upfront.",
-          bullets: [
-            "Hours and costs saved, qualitative impact",
-            "Iteration if quality drift appears",
-            "No long-term commitment",
-          ],
-          livrable: "Measured ROI",
+          p: "The indicators agreed upfront are handed over so you can count what it returns yourself.",
+          bullets: ["Hours and costs saved, qualitative impact", "No long-term commitment"],
+          livrable: "ROI indicators",
         },
       ];
 
@@ -391,7 +383,7 @@ export default async function MethodologyPage({ params }: Props) {
           id: "etapes",
           question: "Quelles sont les étapes de la méthodologie Axion-IA ?",
           answer:
-            "Quatre temps clairement séparés, chacun produisant un livrable concret : Identifier (cartographie terrain en 1 journée), Auditer (audit en 5 jours), Implémenter (mise en production en 6-8 semaines), Mesurer (ROI réel post-déploiement).",
+            "Quatre temps clairement séparés, chacun produisant un livrable concret : Identifier (cartographie terrain en 1 journée), Auditer (audit en 5 jours), Implémenter (mise en production en 6-8 semaines), Mesurer (indicateurs de ROI remis au client).",
         },
         {
           id: "par-ou-commencer",
@@ -453,7 +445,7 @@ export default async function MethodologyPage({ params }: Props) {
           id: "etapes",
           question: "What are the steps of the Axion-IA methodology?",
           answer:
-            "Four clearly separated phases, each producing a concrete deliverable: Identify (1-day field mapping), Audit (5-day audit), Implement (production in 6-8 weeks), Measure (real post-deployment ROI).",
+            "Four clearly separated phases, each producing a concrete deliverable: Identify (1-day field mapping), Audit (5-day audit), Implement (production in 6-8 weeks), Measure (ROI indicators handed over to the client).",
         },
         {
           id: "par-ou-commencer",

@@ -578,7 +578,7 @@ export const KW_GEO_I: KeywordSeed[] = [
       metaDescription:
         "Après une formation IA de 2 jours, les équipes PME récupèrent en moyenne 1,8 h par personne par jour à J+30.",
       h2Variants: [
-        "Mesure du temps gagné à J+30 post-formation",
+        "Mesurer le temps gagné après une formation (méthode pour votre équipe)",
         "Répartition par type de tâche libérée",
         "Comment ancrer les gains dans la durée",
       ],
