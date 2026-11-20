@@ -76,7 +76,6 @@ function fichiers(...segments: string[]): string[] {
 const SANS_SURFACE_CONNUS: ReadonlyArray<string> = [
   // Lot 1 de l'aperçu de l'e-mail du devis : l'écran reçoit l'aperçu en prop (`apercuEmail`),
   // le branchement dans AssistantDevisBranche vient au lot 2 — retirer cette ligne alors.
-  "server/actions/qualiopi/devis-assistant-apercu-email.ts",
   "server/actions/image-bank/publish.action.ts",
   "server/actions/image-bank/translate.action.ts",
   "server/actions/knowledge/add-relation.ts",

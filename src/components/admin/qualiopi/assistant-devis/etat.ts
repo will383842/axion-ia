@@ -46,7 +46,8 @@ function phaseSolde(id: string): PhaseAssistant {
     id,
     libelle: "Solde",
     pourcentage: "100",
-    declencheur: "signature",
+    // Acompte par défaut = 0 % (décision du fondateur) : le solde tombe à la livraison, modifiable.
+    declencheur: "livraison",
     livrable: "",
     delaiSemaines: "",
   };

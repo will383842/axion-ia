@@ -40,7 +40,6 @@ import {
   dateDepartDansLePasse,
   planifierFacturationDevis,
 } from "@/server/qualiopi/financements/facture-libre-pur";
-import { formulesActives } from "@/server/qualiopi/devis/interrupteur-formules";
 import { lirePalierSuivant } from "@/server/qualiopi/devis/palier-suivant";
 import { exigerIdccConfirme } from "@/server/qualiopi/financements/blocage-idcc";
 // SSOT du plafond légal (art. L6353-6) : la même constante que `calculerAcompte`
@@ -244,8 +243,8 @@ export async function genererFactureDepuisDevisAction(
 
   // Devis à formules (lot 5) — GARDE : une offre non NULL sans formule retenue n'a pas de
   // montant convenu (deux formules = lignes vides tant que le client n'a pas choisi). On
-  // refuse AVANT toute lecture des lignes. Inerte interrupteur éteint.
-  const devisAFormules = devis.offre != null && (await formulesActives());
+  // refuse AVANT toute lecture des lignes. Ne dépend PAS de l'interrupteur : l'argent suit l'offre figée, pas un réglage.
+  const devisAFormules = devis.offre != null;
   if (devisAFormules && devis.formuleRetenue === null) {
     return {
       error:

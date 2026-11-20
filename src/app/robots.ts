@@ -53,6 +53,32 @@ const COMMON_DISALLOW = [
   // Disallow longest-match > Allow `/` : empêche Googlebot-Image de les fetcher.
   // Les logos restent visibles pour les visiteurs (le navigateur ignore robots.txt).
   "/logos/clients/",
+  // PIÈGE À ROBOTS /appel (2026-11-20, Cloudflare AI Crawl Control) : 548 580 des
+  // 628 610 requêtes de robots d'IA en 7 jours visaient `/fr/appel/reserver`.
+  // Chaque créneau du calendrier est un lien unique (`?debut=<instant>&rdv&depuis
+  // &utm_*`), renouvelé tous les quarts d'heure sur un horizon de 32 jours ; un
+  // créneau expiré répond 307 vers `/appel?…`, qui émet une nouvelle fournée de
+  // créneaux. Les variantes à paramètres de `/appel` (UTM libres, `depuis`) la
+  // multiplient encore. Aucune de ces URL n'est un document : ce sont des étapes
+  // de transaction, toutes déjà en `noindex`.
+  //
+  // 🔑 Ne bloque NI `/fr/appel`, NI ses variantes à paramètres SIMPLES
+  // (`/fr/appel?depuis=entete`, `?rdv=diagnostic&depuis=pied` : cibles des CTA
+  // d'en-tête et de pied de page de tout le site, dont le canonical consolide la
+  // page de conversion), NI les pages d'offre nues (`/fr/appel/<type>`). Dans
+  // robots.txt, `?` est littéral. Seuls les paramètres LIBRES (`utm_*`, `ref=`),
+  // qui viennent de liens externes, sont fermés. L'espace infini, ce sont les
+  // créneaux : `/*/appel/reserver` et `/reporter`.
+  // Variante EN (`/*/book-a-call`) : `/en/*` répond 301 vers FR tant que
+  // EN_LOCALE_ENABLED n'est pas rétabli ; à ce moment-là, ajouter
+  // `/*/book-a-call?*utm_` et `/*/book-a-call?*ref=`.
+  "/*/appel/reserver",
+  "/*/appel/reporter",
+  "/*/appel/annuler",
+  "/*/appel/confirme",
+  "/*/appel?*utm_",
+  "/*/appel?*ref=",
+  "/*/appel/*?",
 ];
 
 // Audit GSC 2026-05-18 — "Bloquée par robots.txt" sur `/api/og?title=...`.

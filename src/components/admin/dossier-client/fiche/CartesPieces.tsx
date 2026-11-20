@@ -9,6 +9,7 @@ import { Bell } from "lucide-react";
 import { AdminBadge } from "@/components/admin/ui/AdminBadge";
 import { AdminButton } from "@/components/admin/ui/AdminButton";
 import { BadgeEmailDevis } from "@/components/admin/qualiopi/BadgeEmailDevis";
+import { PastilleAContresigner } from "@/components/admin/qualiopi/PastilleAContresigner";
 import { dayKeyInParis } from "@/lib/calendar-grid";
 import { htEtTtc } from "./montants";
 import {
@@ -53,6 +54,7 @@ export function CartesDevis({
   qBase,
   statuts,
   emailsEnAttente,
+  piecesAContresigner,
 }: {
   devis: ReadonlyArray<{
     id: string;
@@ -60,11 +62,14 @@ export function CartesDevis({
     statut: string;
     montantTotalHtCents: number;
     createdAt: Date;
+    documentGenereId?: string | null;
   }>;
   qBase: string;
   statuts: CorrespondanceStatut;
   /** Devis dont un e-mail d'envoi attend : badge « E-mail à valider » (lecture seule). */
   emailsEnAttente?: ReadonlySet<string>;
+  /** Pièces de devis signées du client, pas de l'organisme : pastille « À contresigner ». */
+  piecesAContresigner?: ReadonlySet<string>;
 }): React.ReactElement {
   return (
     <ul className="grid grid-cols-1 gap-[var(--space-admin-3)] lg:grid-cols-2">
@@ -78,6 +83,9 @@ export function CartesDevis({
               </Link>
               <span className="inline-flex flex-wrap items-center gap-[var(--space-admin-2)]">
                 <Statut map={statuts} statut={d.statut} />
+                {piecesAContresigner ? (
+                  <PastilleAContresigner devis={d} pieces={piecesAContresigner} />
+                ) : null}
                 <BadgeEmailDevis
                   statut={d.statut}
                   enAttente={emailsEnAttente?.has(d.id) ?? false}

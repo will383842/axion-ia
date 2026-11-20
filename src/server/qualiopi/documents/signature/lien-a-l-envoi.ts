@@ -260,7 +260,11 @@ async function premierEnvoi<R extends VerdictEnfilage>(a: {
           ) {
             return refus(MSG_VERSION_REMPLACEE_ACCEPTEE);
           }
-          if (devis.offre !== null && devis.offre !== undefined && !(await formulesActives())) {
+          if (
+            devis.offre !== null &&
+            devis.offre !== undefined &&
+            !(await formulesActives(undefined, { clientId: devis.clientId, tx }))
+          ) {
             return refus(MSG_FORMULES);
           }
           // Règles commerciales D4/D6 à l'APPROBATION : un devis mis en attente avant leur mise
@@ -499,6 +503,7 @@ async function renvoi<R extends VerdictEnfilage>(a: {
           where: { id: marqueur.devisId },
           select: {
             id: true,
+            clientId: true,
             statut: true,
             offre: true,
             documentGenereId: true,
@@ -515,7 +520,11 @@ async function renvoi<R extends VerdictEnfilage>(a: {
         if ((await tx.devis.count({ where: { id: devis.id, ...pasSigneParLeClient } })) === 0) {
           return refus(MSG_SIGNE);
         }
-        if (devis.offre !== null && devis.offre !== undefined && !(await formulesActives())) {
+        if (
+          devis.offre !== null &&
+          devis.offre !== undefined &&
+          !(await formulesActives(undefined, { clientId: devis.clientId, tx }))
+        ) {
           return refus(MSG_FORMULES);
         }
 
