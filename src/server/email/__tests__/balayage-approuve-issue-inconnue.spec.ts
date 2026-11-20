@@ -9,8 +9,8 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
 const d = vi.hoisted(() => ({
-  anciens: [] as Array<{ id: string }>,
-  journaux: [] as Array<{ jobId: string; status: string }>,
+  anciens: [] as unknown[],
+  journaux: [] as Array<{ id?: string; jobId: string; status: string; error?: string | null }>,
   outboxUpdateMany: vi.fn(),
   alerte: vi.fn(),
 }));
@@ -21,8 +21,13 @@ vi.mock("@/lib/prisma", () => ({
       count: vi.fn(async () => 0),
       findFirst: vi.fn(async () => null),
       findMany: vi.fn(async (args: { where: { jobId?: { in: string[] } } }) =>
-        args.where.jobId ? d.journaux.filter((j) => args.where.jobId!.in.includes(j.jobId)) : [],
+        args.where.jobId
+          ? d.journaux
+              .filter((j) => args.where.jobId!.in.includes(j.jobId))
+              .map((j) => ({ id: "J1", error: null, ...j }))
+          : [],
       ),
+      updateMany: vi.fn(async () => ({ count: 1 })),
     },
     emailOutbox: {
       findMany: vi.fn(async () => d.anciens),
@@ -30,6 +35,9 @@ vi.mock("@/lib/prisma", () => ({
     },
   },
 }));
+// Règle du balayage : état réel de la tâche dans la file (ici absente), puis dernière ligne du journal.
+vi.mock("@/server/queue/queues", () => ({ lireEtatTacheOutbox: async () => "absente" }));
+vi.mock("@/server/email/email-log", () => ({ marquerAnnule: vi.fn(async () => 1) }));
 vi.mock("@/lib/redis", () => ({ redis: { get: vi.fn(async () => null), set: vi.fn() } }));
 vi.mock("@/server/qualiopi/alertes/alertes-service", () => ({
   creerOuDedup: (...a: unknown[]) => d.alerte(...a),
@@ -51,7 +59,16 @@ const ecritures = (statut: string) =>
 
 beforeEach(() => {
   vi.clearAllMocks();
-  d.anciens = [{ id: A }];
+  d.anciens = [
+    {
+      id: A,
+      template: "facture-envoi",
+      payload: {},
+      approuveAt: new Date("2026-11-20T08:00:00Z"),
+      entityType: null,
+      entityId: null,
+    },
+  ];
   d.journaux = [];
   d.outboxUpdateMany.mockResolvedValue({ count: 1 });
   d.alerte.mockResolvedValue(null);
