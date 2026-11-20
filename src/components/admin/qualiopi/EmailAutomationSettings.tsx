@@ -23,6 +23,8 @@ import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { libelleTemplateEmail, estEmailQualiopiAutomatique } from "@/server/email/outbox-policy";
 import { useConfirmation } from "@/components/admin/ui/useConfirmation";
+import { AdminBadge } from "@/components/admin/ui/AdminBadge";
+import { AdminBlocRepliable } from "@/components/admin/ui/AdminBlocRepliable";
 
 type ActionResult<T> = { data: T } | { error: string };
 
@@ -48,10 +50,15 @@ export interface EmailAutomationSettingsProps {
   supprimerAction: (input: { id: string }) => Promise<ActionResult<{ id: string }>>;
 }
 
+// Champs de 44 px, recopiés de l'assistant devis (pas d'import croisé entre composants).
 const champ =
-  "w-full rounded-[var(--radius-admin-sm)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-bg)] px-[var(--space-admin-2)] py-[var(--space-admin-1)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg)]";
+  "min-h-[44px] w-full rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border-strong)] bg-[color:var(--color-admin-paper)] px-3 text-[length:var(--text-admin-base)] focus-visible:ring-2 focus-visible:ring-[color:var(--color-admin-ring)] focus-visible:outline-none";
 const label =
   "mb-[var(--space-admin-1)] block text-[length:var(--text-admin-xs)] font-medium text-[color:var(--color-admin-fg-muted)]";
+const colonne =
+  "px-[var(--space-admin-3)] py-[var(--space-admin-2)] text-left text-[length:var(--text-admin-xs)] font-semibold text-[color:var(--color-admin-fg-muted)]";
+const cellule =
+  "px-[var(--space-admin-3)] py-[var(--space-admin-2)] align-middle text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg)]";
 
 export function EmailAutomationSettings({
   reglages,
@@ -151,134 +158,164 @@ export function EmailAutomationSettings({
     <div className="flex flex-col gap-[var(--space-admin-4)]">
       {dialogue}
       {reglages.length === 0 ? (
-        <p className="text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]">
-          Aucune règle personnalisée : le comportement par défaut s&apos;applique.
+        <p
+          role="status"
+          className="m-0 text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]"
+        >
+          <span className="font-semibold text-[color:var(--color-admin-fg)]">
+            Aucune règle personnalisée
+          </span>{" "}
+          <span>: le comportement par défaut s&apos;applique.</span>
         </p>
       ) : (
-        <ul className="flex flex-col gap-[var(--space-admin-2)]">
-          {reglages.map((r) => (
-            <li
-              key={r.id}
-              className="flex flex-wrap items-baseline gap-[var(--space-admin-2)] text-[length:var(--text-admin-sm)]"
-            >
-              <span className="font-medium text-[color:var(--color-admin-fg)]">
-                {r.scope === "global" ? "Tous les clients" : (r.clientNom ?? "—")}
-              </span>
-              <span className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
-                {r.template === null ? "toutes natures d'email" : libelleTemplateEmail(r.template)}
-              </span>
-              <span
-                className={
-                  r.mode === "auto"
-                    ? "text-[color:var(--color-admin-success)]"
-                    : "text-[color:var(--color-admin-warning)]"
-                }
-              >
-                {r.mode === "auto" ? "envoi automatique" : "validation requise"}
-              </span>
-              <button
-                type="button"
-                onClick={() => supprimer(r.id)}
-                disabled={enCours}
-                className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)] underline disabled:opacity-50"
-              >
-                retirer
-              </button>
-            </li>
-          ))}
-        </ul>
+        <div className="overflow-x-auto">
+          <table className="w-full min-w-[40rem] border-collapse">
+            <thead>
+              <tr>
+                <th scope="col" className={colonne}>
+                  Portée
+                </th>
+                <th scope="col" className={colonne}>
+                  Nature
+                </th>
+                <th scope="col" className={colonne}>
+                  Mode
+                </th>
+                <th scope="col" className={colonne}>
+                  Action
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              {reglages.map((r) => {
+                const portee = r.scope === "global" ? "Tous les clients" : (r.clientNom ?? "—");
+                const nature =
+                  r.template === null ? "toutes natures d'email" : libelleTemplateEmail(r.template);
+                return (
+                  <tr key={r.id} className="border-t border-[color:var(--color-admin-border)]">
+                    <td className={cellule}>
+                      <AdminBadge tone="neutral">{portee}</AdminBadge>
+                    </td>
+                    <td className={cellule}>{nature}</td>
+                    <td className={cellule}>
+                      <AdminBadge tone={r.mode === "auto" ? "success" : "warning"}>
+                        {r.mode === "auto" ? "Envoi automatique" : "Relecture requise"}
+                      </AdminBadge>
+                    </td>
+                    <td className={cellule}>
+                      <button
+                        type="button"
+                        onClick={() => supprimer(r.id)}
+                        disabled={enCours}
+                        aria-label={`Retirer la règle ${portee} · ${nature}`}
+                        className="min-h-[44px] rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] px-[var(--space-admin-4)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg)] disabled:opacity-50"
+                      >
+                        Retirer
+                      </button>
+                    </td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        </div>
       )}
 
-      <div className="grid grid-cols-1 gap-[var(--space-admin-3)] border-t border-[color:var(--color-admin-border)] pt-[var(--space-admin-4)] sm:grid-cols-4">
-        <div>
-          <label className={label} htmlFor="reglage-scope">
-            Portée
-          </label>
-          <select
-            id="reglage-scope"
-            className={champ}
-            value={scope}
-            disabled={enCours}
-            onChange={(e) => setScope(e.target.value as "global" | "client")}
-          >
-            <option value="global">Tous les clients</option>
-            <option value="client">Un client précis</option>
-          </select>
-        </div>
-
-        <div>
-          <label className={label} htmlFor="reglage-client">
-            Client
-          </label>
-          <select
-            id="reglage-client"
-            className={champ}
-            value={clientId}
-            disabled={enCours || scope === "global"}
-            onChange={(e) => setClientId(e.target.value)}
-          >
-            <option value="">—</option>
-            {clients.map((c) => (
-              <option key={c.id} value={c.id}>
-                {c.raisonSociale}
-              </option>
-            ))}
-          </select>
-        </div>
-
-        <div>
-          <label className={label} htmlFor="reglage-template">
-            Nature d&apos;email
-          </label>
-          <select
-            id="reglage-template"
-            className={champ}
-            value={template}
-            disabled={enCours}
-            onChange={(e) => setTemplate(e.target.value)}
-          >
-            <option value="">Toutes</option>
-            {templates.map((t) => (
-              <option key={t} value={t}>
-                {libelleTemplateEmail(t)}
-              </option>
-            ))}
-          </select>
-        </div>
-
-        <div>
-          <label className={label} htmlFor="reglage-mode">
-            Mode
-          </label>
-          <select
-            id="reglage-mode"
-            className={champ}
-            value={mode}
-            disabled={enCours}
-            onChange={(e) => setMode(e.target.value as "auto" | "validation")}
-          >
-            <option value="validation">Validation requise</option>
-            <option value="auto">Envoi automatique</option>
-          </select>
-        </div>
-      </div>
-
       {erreur !== null && (
-        <p className="text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-danger)]">
+        <p
+          role="alert"
+          className="m-0 text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-danger)]"
+        >
           {erreur}
         </p>
       )}
 
-      <div>
-        <button
-          type="button"
-          onClick={enregistrer}
-          disabled={enCours}
-          className="rounded-[var(--radius-admin-sm)] bg-[color:var(--color-admin-accent)] px-[var(--space-admin-4)] py-[var(--space-admin-2)] text-[length:var(--text-admin-sm)] font-medium text-[color:var(--color-admin-accent-fg)] disabled:opacity-50"
-        >
-          {enCours ? "Enregistrement…" : "Enregistrer la règle"}
-        </button>
-      </div>
+      <AdminBlocRepliable titre="Ajouter une règle" ouvertParDefaut={reglages.length === 0}>
+        <div className="mb-[var(--space-admin-4)] grid grid-cols-1 gap-[var(--space-admin-3)] sm:grid-cols-2">
+          <div>
+            <label className={label} htmlFor="reglage-scope">
+              Portée
+            </label>
+            <select
+              id="reglage-scope"
+              className={champ}
+              value={scope}
+              disabled={enCours}
+              onChange={(e) => setScope(e.target.value as "global" | "client")}
+            >
+              <option value="global">Tous les clients</option>
+              <option value="client">Un client précis</option>
+            </select>
+          </div>
+
+          <div>
+            <label className={label} htmlFor="reglage-client">
+              Client
+            </label>
+            <select
+              id="reglage-client"
+              className={champ}
+              value={clientId}
+              disabled={enCours || scope === "global"}
+              onChange={(e) => setClientId(e.target.value)}
+            >
+              <option value="">—</option>
+              {clients.map((c) => (
+                <option key={c.id} value={c.id}>
+                  {c.raisonSociale}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          <div>
+            <label className={label} htmlFor="reglage-template">
+              Nature d&apos;email
+            </label>
+            <select
+              id="reglage-template"
+              className={champ}
+              value={template}
+              disabled={enCours}
+              onChange={(e) => setTemplate(e.target.value)}
+            >
+              <option value="">Toutes</option>
+              {templates.map((t) => (
+                <option key={t} value={t}>
+                  {libelleTemplateEmail(t)}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          <div>
+            <label className={label} htmlFor="reglage-mode">
+              Mode
+            </label>
+            <select
+              id="reglage-mode"
+              className={champ}
+              value={mode}
+              disabled={enCours}
+              onChange={(e) => setMode(e.target.value as "auto" | "validation")}
+            >
+              <option value="validation">Relecture requise</option>
+              <option value="auto">Envoi automatique</option>
+            </select>
+          </div>
+        </div>
+
+        <div>
+          <button
+            type="button"
+            onClick={enregistrer}
+            disabled={enCours}
+            className="min-h-[44px] rounded-[var(--radius-admin-md)] bg-[color:var(--color-admin-accent)] px-[var(--space-admin-4)] text-[length:var(--text-admin-sm)] font-medium text-[color:var(--color-admin-accent-fg)] disabled:opacity-50"
+          >
+            {enCours ? "Enregistrement…" : "Enregistrer la règle"}
+          </button>
+        </div>
+      </AdminBlocRepliable>
     </div>
   );
 }
