@@ -151,7 +151,7 @@ export default async function PricingPage({ params }: Props) {
     ? `${RAPPORT_COMPLET} ${GARANTIE_PHRASE} Tout le reste — formations, audit approfondi, accompagnement individuel, mise en place de l'IA — est sur devis écrit, sous 48 h ouvrées.`
     : `Full report within 3 business days after the day. If the gains identified do not exceed 3 times the price of the day, we refund you within 30 days. Everything else — trainings, in-depth audit, 1-to-1 support, AI deployment — is on written quote, within 48 business hours.`;
 
-  // Accompagnement individuel : Collaborateur & Dirigeant × 1 jour + suivi régulier.
+  // Accompagnement individuel : Collaborateur & Dirigeant × 1 jour + coaching régulier.
   // Les formats 2 jours ont été RETIRÉS de la vente (décision Will 2026-07-17).
   const unAUnDisplayTiers: ReadonlyArray<PricingTier> = [
     getTierById(INTERVENTION_TIERS, "intervention-membre-equipe"),
@@ -186,8 +186,8 @@ export default async function PricingPage({ params }: Props) {
       eyebrow: isFr ? "Accompagnement individuel" : "1-to-1 support",
       title: serviceOfficial(SERVICE_BY_ID.unAUn, isFr),
       description: isFr
-        ? "Une journée en tête-à-tête avec le dirigeant ou un collaborateur clé, ou un suivi régulier."
-        : "A one-to-one day with the executive or a key team member, or regular follow-up.",
+        ? "Une journée en tête-à-tête avec le dirigeant ou un collaborateur clé, ou un coaching régulier."
+        : "A one-to-one day with the executive or a key team member, or regular coaching.",
       detail: isFr
         ? "Chaque format est établi sur devis écrit, selon la personne accompagnée et la durée."
         : "Each format is on written quote, according to the person and the duration.",
@@ -213,8 +213,8 @@ export default async function PricingPage({ params }: Props) {
       eyebrow: isFr ? "Mise en production" : "Production deployment",
       title: serviceOfficial(SERVICE_BY_ID.implementation, isFr),
       description: isFr
-        ? "Pilote, assistant sur vos documents, agents IA, automatisations, IA sur mesure. Mise en production en 4 à 12 semaines, support de 30 jours inclus."
-        : "Pilot, assistant on your documents, AI agents, automations, custom AI. In production in 4 to 12 weeks, 30-day support included.",
+        ? "Pilote, assistant sur vos documents, agents IA, automatisations, IA sur mesure. Mise en production en 4 à 12 semaines."
+        : "Pilot, assistant on your documents, AI agents, automations, custom AI. In production in 4 to 12 weeks.",
       detail: isFr
         ? "Chaque chantier est chiffré sur devis écrit, après un cadrage de 45 minutes."
         : "Each build is priced on written quote, after a 45-minute scoping call.",
@@ -261,7 +261,7 @@ export default async function PricingPage({ params }: Props) {
           id: "engagement",
           question: "Y a-t-il un engagement dans la durée ?",
           answer:
-            "Aucun engagement annuel : chaque prestation est un livrable autonome. Les conditions de règlement sont précisées au devis et dans les CGV. Maintenance optionnelle après la période de support incluse.",
+            "Aucun engagement annuel : chaque prestation est un livrable autonome. Les conditions de règlement sont précisées au devis et dans les CGV. Maintenance optionnelle sur devis.",
         },
         {
           id: "devis-personnalise",
@@ -296,7 +296,7 @@ export default async function PricingPage({ params }: Props) {
           id: "engagement",
           question: "Is there a long-term commitment?",
           answer:
-            "No annual commitment: each engagement is a standalone deliverable. Payment terms are detailed in the quote and Terms. Optional maintenance after the included support window.",
+            "No annual commitment: each engagement is a standalone deliverable. Payment terms are detailed in the quote and Terms. Optional maintenance on quote.",
         },
         {
           id: "devis-personnalise",

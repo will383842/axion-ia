@@ -935,9 +935,7 @@ export default async function FormationsHub({ params }: Props) {
                 : "Why recurring corporate AI training?"}
             </h3>
             <p className="text-fg-soft mx-auto mt-3 max-w-2xl text-center text-[15px] leading-relaxed">
-              {isFr
-                ? "Un accompagnement dans la durée, pas une intervention ponctuelle — les résultats se cumulent session après session."
-                : "Long-term support, not a one-off intervention — results compound session after session."}
+              {isFr ? "Coaching régulier, sur devis." : "Regular coaching, on quote."}
             </p>
             <div className="mt-8 grid gap-4 sm:grid-cols-2 md:grid-cols-3 md:gap-5">
               {(isFr

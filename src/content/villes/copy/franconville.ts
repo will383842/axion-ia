@@ -82,9 +82,8 @@ export const FRANCONVILLE_COPY: VilleCopy = {
               "Tests d'acceptation dans vos locaux franconvillois, formation de vos équipes à l'administration du site et au pilotage des automatisations, remise de la documentation. Vous gardez la main, sans dépendance Axion-IA.",
           },
           {
-            step: "Mise en ligne et suivi",
-            detail:
-              "Mise en production, hébergement UE conforme RGPD, suivi des performances (référencement local Franconville / Val Parisis, conversions e-commerce, demandes qualifiées) et ajustements selon les retours terrain.",
+            step: "Mise en ligne",
+            detail: "Mise en production et hébergement UE conforme RGPD.",
           },
         ],
         pricing: [
@@ -168,9 +167,8 @@ export const FRANCONVILLE_COPY: VilleCopy = {
               "Acceptance testing at your Franconville premises, training your teams on site administration and automation control, documentation handover. You keep control, with no Axion-IA dependency.",
           },
           {
-            step: "Go-live and follow-up",
-            detail:
-              "Production launch, EU GDPR-compliant hosting, performance tracking (local Franconville / Val Parisis SEO, e-commerce conversions, qualified leads) and adjustments based on field feedback.",
+            step: "Go-live",
+            detail: "Production launch and EU GDPR-compliant hosting.",
           },
         ],
         pricing: [

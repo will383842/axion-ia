@@ -244,11 +244,6 @@ const IMPLEMENTATION_FR: VilleServiceCopyLocale = {
       detail:
         "Sur site Saint-Denis : tests d'acceptation utilisateurs, formation des ambassadeurs internes, livraison du runbook documentation, plan de monitoring sur les premières semaines d'exploitation.",
     },
-    {
-      step: "Suivi post-go-live",
-      detail:
-        "À distance : surveillance des métriques de production, ajustements fins, mesure du ROI réel par rapport à la prédiction du SOW. Rapport final remis à clôture de mission.",
-    },
   ],
   pricing: [
     {
@@ -314,7 +309,7 @@ const UN_A_UN_FR: VilleServiceCopyLocale = {
     "Chaque session est construite autour de VOS cas métier réels : bons de livraison, scripts, devis BTP, dossiers ESS, emails — pas de générique.",
     "Flexibilité maximale : le format s'adapte à votre emploi du temps de dirigeant ou de manager — matinée, journée complète, séances étalées.",
     "De la Plaine Saint-Denis au hub Pleyel Grand Paris Express : si vous avez des rendez-vous clients dans tout le Grand Paris, nous adaptons les sessions à votre géographie professionnelle.",
-    "Suivi dans la durée possible : plusieurs séances progressives pour ancrer les pratiques IA dans votre quotidien opérationnel.",
+    "Coaching dans la durée possible : plusieurs séances progressives pour ancrer les pratiques IA dans votre quotidien opérationnel.",
     "Tarif d'entrée accessible aux indépendants et structures ESS dyonisiennes — voir la grille tarifaire publique.",
   ],
   methodology: [
@@ -332,11 +327,6 @@ const UN_A_UN_FR: VilleServiceCopyLocale = {
       step: "Installation et prise en main",
       detail:
         "Chaque outil est installé, configuré et testé avec vous. Vous partez autonome, avec des prompts personnalisés sauvegardés pour vos tâches récurrentes.",
-    },
-    {
-      step: "Suivi et ajustements",
-      detail:
-        "Une session de suivi quelques semaines après pour ancrer les habitudes, corriger les difficultés rencontrées et ouvrir de nouveaux cas d'usage.",
     },
     {
       step: "Bilan de progression",
@@ -397,7 +387,7 @@ const UN_A_UN_FR: VilleServiceCopyLocale = {
     },
   ],
   guarantees:
-    "Sessions sur mesure : chaque séance est construite autour de VOS cas métier réels. Outils opérationnels en fin de séance : vous repartez autonome avec des outils configurés, pas avec des slides. Suivi garanti : une séance de suivi incluse dans tout programme multi-séances.",
+    "Sessions sur mesure : chaque séance est construite autour de VOS cas métier réels. Outils opérationnels en fin de séance : vous repartez autonome avec des outils configurés, pas avec des slides.",
 };
 
 // === SITES WEB AUGMENTÉS ===

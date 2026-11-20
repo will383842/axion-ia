@@ -15,9 +15,9 @@
 // chaque page (choix produit : variations par contexte).
 //
 // 2026-08-15 — le module porte aussi désormais les FAITS DE VALEUR : ce qui est
-// remis au client, le déroulé réel et le suivi. Même raison que pour les chemins :
+// remis au client et le déroulé réel. Même raison que pour les chemins :
 // ces éléments (45 min d'échange préalable, journée de 7 à 8 h, livrable écrit
-// sous 7 jours, point à 30 jours) étaient RETAPÉS dans `un-a-un/page.tsx`,
+// sous 7 jours) étaient RETAPÉS dans `un-a-un/page.tsx`,
 // `IndividualCoachingPage.tsx`, `un-a-un-subpages.ts` et `booking-catalog.ts` —
 // un délai modifié à un endroit laissait les autres périmés, sur des éléments
 // qui engagent contractuellement. Ce sont des faits, pas de la copie : les
@@ -62,8 +62,6 @@ export interface Coaching1to1Formule {
   /** Ce que la personne emporte de la journée elle-même (travail effectué, pas
    *  résultat promis). */
   takeaways: ReadonlyArray<string>;
-  /** Suivi prévu après la remise du livrable, quand il y en a un. */
-  followUp?: string;
 }
 
 export const COACHING_1TO1_FORMULES: ReadonlyArray<Coaching1to1Formule> = [
@@ -91,7 +89,6 @@ export const COACHING_1TO1_FORMULES: ReadonlyArray<Coaching1to1Formule> = [
       "La cartographie de vos tâches répétitives, reprises une à une",
       "Vos prompts, testés sur vos cas et rangés pour être réutilisés",
     ],
-    followUp: "Point de suivi à 30 jours : ce qui a été mis en place, ce qui coince encore.",
   },
 ];
 
@@ -180,12 +177,6 @@ export const COACHING_1TO1_DEROULE: ReadonlyArray<Coaching1to1Etape> = [
     title: "Livrable écrit sous 7 jours",
     detail:
       "Note de cadrage stratégique pour un dirigeant, cahier de prompts et plan d'action pour un collaborateur. Écrit, nominatif, réutilisable sans nous.",
-  },
-  {
-    id: "suivi",
-    title: "Point de suivi à 30 jours",
-    detail:
-      "Prévu pour le coaching collaborateur : on regarde ce qui a été mis en place et ce qui coince encore.",
   },
 ];
 

@@ -82,7 +82,7 @@ export const CONFLANS_SAINTE_HONORINE_COPY: VilleCopy = {
               "Tests d'acceptation avec vos équipes conflanaises, contrôle SEO local (vous devez ressortir sur les recherches du nord des Yvelines : Conflans, Andrésy, Maurecourt, Achères, Poissy), vérification performance et accessibilité, puis mise en production avec passation documentée.",
           },
           {
-            step: "Autonomie et suivi",
+            step: "Autonomie",
             detail:
               "Formation de vos équipes à l'administration du site ou de la plateforme, runbook remis, accès et noms de domaine à votre nom. Vous restez maître de votre outil : reprise en interne ou par tout prestataire des Yvelines possible, sans dépendance contractuelle à Axion-IA.",
           },
@@ -168,7 +168,7 @@ export const CONFLANS_SAINTE_HONORINE_COPY: VilleCopy = {
               "Acceptance tests with your Conflans teams, local SEO control (you must rank on northern-Yvelines searches: Conflans, Andrésy, Maurecourt, Achères, Poissy), performance and accessibility checks, then production go-live with documented handover.",
           },
           {
-            step: "Autonomy and follow-up",
+            step: "Autonomy",
             detail:
               "Training your teams to administer the site or platform, runbook delivered, access and domain names in your name. You stay in control of your tool: in-house takeover or by any Yvelines provider is possible, with no contractual dependency on Axion-IA.",
           },

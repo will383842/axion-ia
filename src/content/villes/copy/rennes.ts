@@ -490,12 +490,7 @@ export const RENNES_COPY: VilleCopy = {
           {
             step: "Recette + formation",
             detail:
-              "Sur site Rennes : tests d'acceptation utilisateurs, formation des ambassadeurs internes, livraison du runbook documentation, plan de monitoring post-go-live.",
-          },
-          {
-            step: "Suivi post-go-live",
-            detail:
-              "À distance : surveillance des métriques de production, ajustements fins, mesure du ROI réel par rapport à la prédiction du SOW. Rapport final remis à clôture de mission.",
+              "Sur site Rennes : tests d'acceptation utilisateurs, formation des ambassadeurs internes, livraison du runbook documentation, plan de surveillance remis à la recette.",
           },
         ],
         pricing: [
@@ -582,12 +577,7 @@ export const RENNES_COPY: VilleCopy = {
           {
             step: "Acceptance + training",
             detail:
-              "On site Rennes: user acceptance tests, training of internal ambassadors, runbook documentation delivery, post-go-live monitoring plan.",
-          },
-          {
-            step: "Post-go-live follow-up",
-            detail:
-              "Remote: production metrics monitoring, fine adjustments, real ROI vs SOW prediction measurement. Final report delivered at mission closure.",
+              "On site Rennes: user acceptance tests, training of internal ambassadors, runbook documentation delivery, monitoring plan handed over at acceptance.",
           },
         ],
         pricing: [

@@ -129,11 +129,10 @@ const KW_JURIDIQUE: KeywordSeed[] = [
       h1: "Déployer l'IA dans toute votre équipe juridique — formation collective Axion-IA",
       metaTitle: "Formation IA équipe juridique PME & ETI — Axion-IA",
       metaDescription:
-        "Formez vos juristes, paralégaux et secrétaires juridiques à l'IA. Session sur site, cas concrets cabinet, suivi 30 jours inclus.",
+        "Formez vos juristes, paralégaux et secrétaires juridiques à l'IA. Session sur site, cas concrets cabinet.",
       h2Variants: [
         "Pourquoi former l'équipe entière plutôt que 1 référent ?",
         "Modules adaptés : juriste, paralégal, secrétariat",
-        "Suivi post-formation et ancrage des usages IA",
       ],
     },
     variables: {
@@ -717,7 +716,6 @@ const KW_BTP: KeywordSeed[] = [
       h2Variants: [
         "Programme formation IA conducteur de travaux — contenu et durée",
         "IA et planification chantier : exercice pratique en temps réel",
-        "Certification et suivi post-formation",
       ],
     },
     variables: {
@@ -1324,7 +1322,6 @@ const KW_RH: KeywordSeed[] = [
       h2Variants: [
         "Programme formation IA RH — 1 jour ou 2 jours selon profil",
         "IA et éthique RH : formation au bon usage des algorithmes",
-        "Suivi post-formation et mesure des gains RH",
       ],
     },
     variables: {
@@ -1351,7 +1348,7 @@ const KW_RH: KeywordSeed[] = [
       h1: "Automatiser l'onboarding des salariés avec l'IA : parcours personnalisé en 1 clic",
       metaTitle: "IA onboarding salariés PME — Axion-IA France",
       metaDescription:
-        "Parcours d'intégration automatisé, chatbot RH répondant aux 50 questions fréquentes, suivi 90 jours : l'IA transforme l'onboarding PME.",
+        "Parcours d'intégration automatisé, chatbot RH répondant aux 50 questions fréquentes : l'IA transforme l'onboarding PME.",
       h2Variants: [
         "Chatbot RH onboarding : ce qu'il sait répondre automatiquement",
         "Personnaliser le parcours d'intégration avec l'IA",
@@ -1991,7 +1988,6 @@ const KW_SANTE: KeywordSeed[] = [
       h2Variants: [
         "Programme formation IA équipe médicale — contenu et durée",
         "Ce que l'IA peut faire (et ne peut pas faire) en médecine",
-        "Certification et suivi post-formation équipe médicale",
       ],
     },
     variables: {
@@ -2094,7 +2090,6 @@ const KW_AGRO: KeywordSeed[] = [
       h2Variants: [
         "Programme formation IA agroalimentaire — niveaux et durées",
         "IA et HACCP : comment l'IA accélère la mise en conformité",
-        "Certification post-formation et suivi terrain",
       ],
     },
     variables: {
@@ -2238,7 +2233,7 @@ export const KW_COACHING_G6: KeywordSeed[] = [
       h1: "Accompagnement IA 1 pour 1 pour dirigeants : votre expert IA dédié, votre agenda",
       metaTitle: "Accompagnement IA dirigeant 1 pour 1 — Axion-IA",
       metaDescription:
-        "Un expert IA Axion-IA dédié uniquement à vous : sessions à la demande, suivi continu, décisions IA éclairées. Formule 1-to-1 premium pour dirigeants.",
+        "Un expert IA Axion-IA dédié uniquement à vous : sessions à la demande, coaching régulier sur devis. Formule 1-to-1 premium pour dirigeants.",
       h2Variants: [
         "En quoi l'accompagnement IA 1 pour 1 diffère d'une formation",
         "Votre expert IA dédié : profil et méthode de travail",
@@ -2342,7 +2337,6 @@ export const KW_COACHING_G6: KeywordSeed[] = [
         "Découvrez les résultats concrets obtenus par les dirigeants coachés par Axion-IA en 1-to-1 : projets IA lancés, heures économisées, CA impacté.",
       h2Variants: [
         "Études de cas : dirigeants PME coachés en IA 1-to-1",
-        "KPIs mesurés post-coaching IA dirigeant",
         "Témoignages dirigeants : leur bilan après 4 séances coaching IA",
       ],
     },
@@ -2392,7 +2386,7 @@ export const KW_COACHING_G6: KeywordSeed[] = [
       h1: "Combien coûte une séance de coaching IA pour dirigeant ? Tarifs Axion-IA 2026",
       metaTitle: "Séance coaching IA dirigeant tarif — Axion-IA France",
       metaDescription:
-        "Tarifs et formules de coaching IA 1-to-1 pour dirigeants par Axion-IA : séance unique, forfait 4 séances, accompagnement continu. Demandez un devis.",
+        "Tarifs et formules de coaching IA 1-to-1 pour dirigeants par Axion-IA : séance unique, forfait 4 séances, coaching régulier sur devis. Demandez un devis.",
       h2Variants: [
         "Formules et tarifs coaching IA dirigeant Axion-IA",
         "Séance découverte coaching IA dirigeant : ce qui est inclus",

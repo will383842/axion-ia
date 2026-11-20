@@ -319,7 +319,7 @@ function makeFr(args: {
       },
       {
         title: "Hand-off documenté",
-        description: "Code, documentation, runbook et 30 j de support après livraison.",
+        description: "Code, documentation et runbook remis à la livraison.",
       },
     ],
     processTitle: "Comment ça se déroule",
@@ -327,7 +327,6 @@ function makeFr(args: {
       { title: "Cadrage", description: "1 sprint de cadrage technique + budget chiffré." },
       { title: "Build", description: "Sprints itératifs avec démo et validation." },
       { title: "Déploiement", description: "Mise en production progressive, tests utilisateurs." },
-      { title: "Support 30 j", description: "Maintenance corrective + évolutions mineures." },
     ],
     // « Repères chiffrés » et non « Résultats observés » : ces chiffres sont des
     // ordres de grandeur de LIVRAISON (délais, couverture, périmètre), pas des
@@ -337,7 +336,6 @@ function makeFr(args: {
     metrics: args.metrics ?? [
       { number: "4-12", suffix: "sem", label: "Délai de livraison" },
       { number: "100", suffix: "%", label: "Livrables documentés" },
-      { number: "30", suffix: "j", label: "Support post-livraison" },
     ],
     faqTitle: "Questions fréquentes",
     faqs: args.faqs ?? [
@@ -416,20 +414,21 @@ function makeEn(args: { eyebrow: string; title: string; answer: string }): PageC
         title: "Guided implementation",
         description: "Short sprints, weekly demos, continuous validation.",
       },
-      { title: "Documented hand-off", description: "Docs, runbook, 30-day post-delivery support." },
+      {
+        title: "Documented hand-off",
+        description: "Code, docs and runbook handed over at delivery.",
+      },
     ],
     processTitle: "How it runs",
     processSteps: [
       { title: "Framing", description: "1 framing sprint + costed budget." },
       { title: "Build", description: "Iterative sprints with demos and validation." },
       { title: "Deployment", description: "Gradual rollout, user tests." },
-      { title: "30-day support", description: "Bug fixes + minor enhancements." },
     ],
     metricsTitle: "Observed results",
     metrics: [
       { number: "4-12", suffix: "wk", label: "Delivery window" },
       { number: "+40", suffix: "%", label: "Average productivity" },
-      { number: "30", suffix: "d", label: "Post-delivery support" },
     ],
     faqTitle: "Frequently asked",
     faqs: [

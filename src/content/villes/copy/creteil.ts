@@ -88,11 +88,6 @@ export const CRETEIL_COPY: VilleCopy = {
             detail:
               "Chaque participant repart avec les outils IA installés et configurés pour son cas d'usage personnel, utilisables dès le lendemain matin sans aide extérieure. Un temps de debrief cadre les prochaines étapes pour l'équipe et identifie les usages à approfondir.",
           },
-          {
-            step: "Suivi après la session",
-            detail:
-              "Un point de suivi à distance permet de lever les blocages rencontrés une fois les outils en usage réel et de consolider les automatisations mises en place. Vous restez autonome : aucun abonnement ni licence Axion-IA n'est imposé pour continuer à utiliser ce qui a été installé.",
-          },
         ],
         pricing: [
           {
@@ -189,11 +184,6 @@ export const CRETEIL_COPY: VilleCopy = {
             step: "Outils installés et debrief",
             detail:
               "Chaque participant repart avec les outils IA installés et configurés pour son cas d'usage personnel, utilisables dès le lendemain matin sans aide extérieure. Un temps de debrief cadre les prochaines étapes pour l'équipe et identifie les usages à approfondir.",
-          },
-          {
-            step: "Suivi après la session",
-            detail:
-              "Un point de suivi à distance permet de lever les blocages rencontrés une fois les outils en usage réel et de consolider les automatisations mises en place. Vous restez autonome : aucun abonnement ni licence Axion-IA n'est imposé pour continuer à utiliser ce qui a été installé.",
           },
         ],
         pricing: [

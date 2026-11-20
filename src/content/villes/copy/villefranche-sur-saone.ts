@@ -82,9 +82,9 @@ export const VILLEFRANCHE_SUR_SAONE_COPY: VilleCopy = {
               "Tests sur vos vraies données et formation de votre équipe (commercial, web, expédition) à l'administration du site. Vous repartez autonome, avec la documentation et les accès à votre nom.",
           },
           {
-            step: "Mise en ligne et suivi",
+            step: "Mise en ligne",
             detail:
-              "Déploiement sur hébergement Union européenne conforme RGPD, suivi des performances (Web Vitals, conversion) et ajustements. Maintenance optionnelle, jamais imposée.",
+              "Déploiement sur hébergement Union européenne conforme RGPD. Maintenance optionnelle, jamais imposée.",
           },
         ],
         pricing: [
@@ -168,9 +168,9 @@ export const VILLEFRANCHE_SUR_SAONE_COPY: VilleCopy = {
               "Testing on your real data and training your team (sales, web, shipping) to administer the site. You leave autonomous, with documentation and access in your name.",
           },
           {
-            step: "Go-live and follow-up",
+            step: "Go-live",
             detail:
-              "Deployment on GDPR-compliant European Union hosting, performance tracking (Web Vitals, conversion) and adjustments. Optional maintenance, never imposed.",
+              "Deployment on GDPR-compliant European Union hosting. Optional maintenance, never imposed.",
           },
         ],
         pricing: [

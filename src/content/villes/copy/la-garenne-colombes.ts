@@ -196,7 +196,7 @@ export const LA_GARENNE_COLOMBES_COPY: VilleCopy = {
             sizeLabel: "Grande entreprise",
             price: "Multi-site platform programme",
             detail:
-              "For head offices and large subsidiaries in the business district (software publishers like Sage, importers like Hyundai Motor France, pharma groups like Bayer): multi-site design and rollout, AI-native platforms, advanced data integrations and long-term support.",
+              "For head offices and large subsidiaries in the business district (software publishers like Sage, importers like Hyundai Motor France, pharma groups like Bayer): multi-site design and rollout, AI-native platforms, advanced data integrations.",
           },
         ],
         faq: [

@@ -184,7 +184,7 @@ ${DESCRIPTION_AUDIT_LLMS} Cartographie, scoring ROI/complexité par opportunité
 URL : ${SITE_URL}/fr/audit
 
 ### Module 3 — ${SERVICE_BY_ID.implementation.officialFr} (${implEntry})
-Mise en production en 6-8 semaines : cadrage, prototype, tests, déploiement, support 30 j inclus. 9 prestations dont l'IA Custom premium (sur devis).
+Mise en production en 6-8 semaines : cadrage, prototype, tests, déploiement. 9 prestations dont l'IA Custom premium (sur devis).
 URL : ${SITE_URL}/fr/implementation
 
 ### Module 4 — ${SERVICE_BY_ID.unAUn.officialFr} (à partir de ${coachingEntry})
@@ -223,7 +223,7 @@ Pages : ${SITE_URL}/fr/devenir-commercial-ia · dossier de 3 minutes : ${SITE_UR
 1. **Identifier** — Cartographie terrain en 1 j (intervention).
 2. **Auditer** — Audit IA, plan chiffré priorisé.
 3. **Implémenter** — Mise en production 6-8 semaines.
-4. **Mesurer** — ROI mesuré post-déploiement.
+4. **Mesurer** — indicateurs de ROI remis pour mesurer vous-même les gains.
 
 URL : ${SITE_URL}/fr/methodologie
 ${sectionVideos}

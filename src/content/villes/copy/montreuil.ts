@@ -509,11 +509,6 @@ export const MONTREUIL_COPY: VilleCopy = {
             detail:
               "Sur site Montreuil : tests d'acceptation utilisateurs, formation des ambassadeurs internes, livraison du runbook documentation, plan de monitoring post-déploiement.",
           },
-          {
-            step: "Suivi post-go-live",
-            detail:
-              "À distance : surveillance des métriques de production, ajustements fins, mesure du ROI réel par rapport à la prédiction du SOW. Rapport final remis à clôture de mission.",
-          },
         ],
         pricing: [
           {
@@ -601,11 +596,6 @@ export const MONTREUIL_COPY: VilleCopy = {
             detail:
               "On site Montreuil: user acceptance tests, training of internal ambassadors, runbook documentation delivery, post-deployment monitoring plan.",
           },
-          {
-            step: "Post-go-live follow-up",
-            detail:
-              "Remote: production metrics monitoring, fine adjustments, real ROI vs SOW prediction measurement. Final report delivered at mission closure.",
-          },
         ],
         pricing: [
           {
@@ -669,7 +659,7 @@ export const MONTREUIL_COPY: VilleCopy = {
         whyHere: [
           "Montreuil concentre des profils dirigeants et managers aux profils très variés — studio jeu vidéo, direction financière, équipe IT, ESS — pour lesquels un format individuel est souvent plus efficace qu'un collectif.",
           "La confidentialité est totale : vos données, vos projets et vos enjeux stratégiques restent dans le cadre de la session. Confidentialité stricte avant chaque accompagnement.",
-          "Le rythme est le vôtre : sessions ponctuelles à la demande, suivi régulier mensuel ou intensif sur quelques semaines selon votre objectif.",
+          "Le rythme est le vôtre : sessions ponctuelles à la demande, coaching régulier mensuel ou intensif sur quelques semaines selon votre objectif.",
           "Chaque session part de vos vrais documents et de vos vrais workflows — pas d'exercices fictifs. Vous repartez avec des outils et des pratiques opérationnels.",
           "Accessible depuis Montreuil sans contrainte : sessions sur site dans vos locaux ou en visio selon votre préférence.",
           "Tarif d'entrée accessible aux profils indépendants et TPE — pas réservé aux grandes structures.",
@@ -734,7 +724,7 @@ export const MONTREUIL_COPY: VilleCopy = {
           },
           {
             q: "Combien de sessions sont nécessaires pour être autonome sur l'IA ?",
-            a: "Cela dépend de votre objectif et de votre niveau de départ. Certains profils atteignent une autonomie opérationnelle en une poignée de sessions, d'autres préfèrent un suivi régulier sur plusieurs mois. Nous calons le rythme ensemble au diagnostic initial.",
+            a: "Cela dépend de votre objectif et de votre niveau de départ. Certains profils atteignent une autonomie opérationnelle en une poignée de sessions, d'autres préfèrent un coaching régulier sur plusieurs mois. Nous calons le rythme ensemble au diagnostic initial.",
           },
           {
             q: "Les sessions sont-elles confidentielles ?",
@@ -757,7 +747,7 @@ export const MONTREUIL_COPY: VilleCopy = {
         whyHere: [
           "Montreuil concentrates executives and managers with very diverse profiles — gaming studio, financial directorate, IT team, social economy — for whom an individual format is often more effective than a group one.",
           "Full confidentiality: your data, your projects and your strategic issues stay within the session framework. Strict confidentiality before each engagement.",
-          "The pace is yours: ad-hoc sessions on demand, regular monthly follow-up or intensive over a few weeks depending on your goal.",
+          "The pace is yours: ad-hoc sessions on demand, regular monthly coaching or intensive over a few weeks depending on your goal.",
           "Each session starts from your real documents and your real workflows — no fictional exercises. You leave with operational tools and practices.",
           "Accessible from Montreuil without constraints: on-site sessions at your offices or video call depending on your preference.",
           "Entry price accessible to freelancers and micro-businesses — not reserved for large organisations.",
@@ -822,7 +812,7 @@ export const MONTREUIL_COPY: VilleCopy = {
           },
           {
             q: "How many sessions are needed to become autonomous on AI?",
-            a: "It depends on your goal and starting level. Some profiles reach operational autonomy in a handful of sessions; others prefer regular follow-up over several months. We agree on the pace together at the initial diagnostic.",
+            a: "It depends on your goal and starting level. Some profiles reach operational autonomy in a handful of sessions; others prefer regular coaching over several months. We agree on the pace together at the initial diagnostic.",
           },
           {
             q: "Are sessions confidential?",
