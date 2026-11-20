@@ -67,10 +67,14 @@ describe.skipIf(SKIP_IN_CI)("VilleCopy quality gate — anti-doorway HCU 2024", 
 
     it("faqGeolocalisee : 5 Q/R minimum si présent", () => {
       if (!copy.faqGeolocalisee) return;
+      // Herblay : la 5e Q/R (« suivi à distance après l'intervention ») a été retirée le
+      // 20/11/2026 (décision : aucun suivi après prestation). Elle n'est pas remplacée :
+      // le champ n'est lu par aucune page, et on n'invente pas de réponse. Plancher 4.
+      const minimum = slug === "herblay-sur-seine" ? 4 : 5;
       expect(
         copy.faqGeolocalisee.length,
-        `${slug} faqGeolocalisee ${copy.faqGeolocalisee.length}/5`,
-      ).toBeGreaterThanOrEqual(5);
+        `${slug} faqGeolocalisee ${copy.faqGeolocalisee.length}/${minimum}`,
+      ).toBeGreaterThanOrEqual(minimum);
     });
 
     it("topSectorsNaf : 5 secteurs minimum si présent", () => {

@@ -211,16 +211,6 @@ export const KB_INTERVENTIONS_FORMATIONS: readonly KbFact[] = [
     verticales: ["interventions_formations"],
     confidence: 0.95,
   },
-  // ── Accompagnement post-formation ────────────────────────────────────────
-  {
-    id: "form-022",
-    text: "Axion-IA propose un suivi post-formation de 90 jours : accès à la communauté Slack dédiée, 2 sessions Q&A d'une heure et librairie de prompts sectoriels — inclus dans les parcours de 3 jours et plus.",
-    source: "Axion-IA — Catalogue formations 2026",
-    sourceUrl: "https://axion-ia.com/interventions-formations",
-    verifiedAt: "2026-05-01",
-    verticales: ["interventions_formations"],
-    confidence: 0.95,
-  },
   // ── Compétences transmises ────────────────────────────────────────────────
   {
     id: "form-023",
@@ -606,15 +596,6 @@ export const KB_INTERVENTIONS_FORMATIONS: readonly KbFact[] = [
     verifiedAt: "2026-05-22",
     verticales: ["interventions_formations"],
     confidence: 0.92,
-  },
-  {
-    id: "form-070",
-    text: "Axion-IA pratique systématiquement une évaluation à froid à 30 et 90 jours via questionnaire automatisé — mesurant l'ancrage des apprentissages et les blocages post-formation, complétant l'évaluation à chaud réalisée en fin de session.",
-    source: "Axion-IA — Méthode pédagogique v2.0",
-    sourceUrl: "https://axion-ia.com/interventions-formations",
-    verifiedAt: "2026-05-22",
-    verticales: ["interventions_formations"],
-    confidence: 0.91,
   },
   // ── Personnalisation et contenu sur mesure ────────────────────────────────
   {
