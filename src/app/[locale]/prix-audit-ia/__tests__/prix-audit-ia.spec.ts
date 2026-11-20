@@ -45,9 +45,9 @@ describe("contenu /prix-audit-ia", () => {
     expect(rendu).not.toContain("{{");
   });
 
-  it("répond en deux phrases, en tête, avec le prix et ce qui est compris", () => {
+  it("répond en trois phrases, en tête, avec le prix et ce qui est compris", () => {
     const reponse = remplacerJetons(REPONSE_DIRECTE);
-    expect(reponse.match(/\.(\s|$)/g)).toHaveLength(2);
+    expect(reponse.match(/\.(\s|$)/g)).toHaveLength(3);
     expect(reponse).toContain("1 490");
     expect(reponse).toMatch(/Journée IA/);
     expect(reponse).toMatch(/audit/);

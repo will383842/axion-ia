@@ -18,12 +18,12 @@ export { DATE_MISE_A_JOUR_PRIX_AUDIT_IA };
 
 export const TITRE = "Combien coûte un audit IA pour une TPE ou une PME ? · Axion-IA";
 
-/** Réponse directe en deux phrases : première ligne de la page, de la meta description et de l'extrait. */
+/** Réponse directe en trois phrases : première ligne de la page, de la meta description et de l'extrait. */
 export const REPONSE_DIRECTE =
-  "L’audit IA d’Axion-IA est compris dans la Journée IA, au prix unique de {{PRIX}}, pour une équipe jusqu’à 15 personnes. La journée comprend l’audit le matin (2 à 4 h selon l’entreprise), la formation l’après-midi, puis le rapport complet sous 3 jours ouvrés.";
+  "L’audit IA d’Axion-IA est compris dans la Journée IA, au prix unique de {{PRIX}}. L’audit du matin convient aux entreprises de 2 à 250 salariés ; seule la formation de l’après-midi est limitée à 15 personnes. La journée comprend l’audit le matin (2 à 4 h selon l’entreprise), la formation l’après-midi, puis le rapport complet sous 3 jours ouvrés.";
 
 export const DESCRIPTION_META =
-  "Un audit IA pour une TPE ou une PME : {{PRIX}}, prix unique, compris dans la Journée IA (équipe jusqu’à 15 personnes). Formation et automatisation : sur devis écrit.";
+  "Un audit IA pour une TPE ou une PME : {{PRIX}}, prix unique, compris dans la Journée IA (audit pour 2 à 250 salariés, formation de l’après-midi jusqu’à 15 personnes). Formation et automatisation : sur devis écrit.";
 
 export const OG_IMAGE_ALT =
   "Combien coûte un audit IA pour une TPE ou une PME : la Journée IA, prix unique";
@@ -115,7 +115,7 @@ export const FAQ: ReadonlyArray<QuestionPrix> = [
     id: "prix-audit-ia-par-personne",
     question: "Le prix de la Journée IA est-il calculé par personne ?",
     reponse:
-      "Non. Le prix de {{PRIX}} est unique, pour une équipe jusqu’à 15 personnes : il ne change pas avec le nombre de participants dans cette limite.",
+      "Non. Le prix de {{PRIX}} est unique : il ne change pas avec le nombre de participants à la formation, limitée à 15 personnes. L’audit du matin convient aux entreprises de 2 à 250 salariés.",
   },
   {
     id: "prix-audit-ia-tva",
