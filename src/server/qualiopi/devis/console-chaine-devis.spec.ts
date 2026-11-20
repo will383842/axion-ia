@@ -1,6 +1,11 @@
 import { describe, expect, it } from "vitest";
 
-import { aideAdresseDevis, etatHorodatageDevis, urlPdfDevisEmis } from "./console-chaine-devis";
+import {
+  aideAdresseDevis,
+  etatHorodatageDevis,
+  urlPdfDevisEmis,
+  urlPiece,
+} from "./console-chaine-devis";
 
 describe("urlPdfDevisEmis", () => {
   it("brouillon : aucun lien (l'aperçu existe déjà)", () => {
@@ -67,5 +72,11 @@ describe("aideAdresseDevis", () => {
   });
   it("devis déjà parti : rien", () => {
     expect(aideAdresseDevis({ classique: false, adresse: null, statut: "accepte" })).toBeNull();
+  });
+});
+
+describe("urlPiece", () => {
+  it("route de téléchargement existante", () => {
+    expect(urlPiece("p1")).toBe("/api/qualiopi/documents/p1");
   });
 });

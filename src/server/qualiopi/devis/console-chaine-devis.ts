@@ -7,12 +7,16 @@
  */
 
 /** Route existante `GET /api/qualiopi/documents/[id]` (session admin exigée). */
+export function urlPiece(documentGenereId: string): string {
+  return `/api/qualiopi/documents/${documentGenereId}`;
+}
+
 export function urlPdfDevisEmis(d: {
   statut: string;
   documentGenereId: string | null;
 }): string | null {
   if (d.statut === "brouillon" || d.documentGenereId === null) return null;
-  return `/api/qualiopi/documents/${d.documentGenereId}`;
+  return urlPiece(d.documentGenereId);
 }
 
 export interface LigneHorodatage {
