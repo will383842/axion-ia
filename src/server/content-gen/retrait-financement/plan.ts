@@ -178,6 +178,13 @@ export const INTERDITS_PUBLICS = new RegExp(
     "tout\\s+ou\\s+partie\\s+d(?:es|u)\\s+(?:frais|co[uû]ts?)",
     "\\b(?:dispositifs?|options?|leviers?|aides?)\\b[^.!?\\n]{0,60}\\b(?:r[ée]duire|all[ée]ger|couvr\\w*)\\b[^.!?\\n]{0,30}\\b(?:co[uû]ts?|frais)",
     "assum\\w*\\s+la\\s+charge",
+    // V5-1 : « dispositif(s) » repris au sens financement, « mobilisable / mobilisation ». `adapt\\w*` et non
+    // `adapt[ée]s?\\b` : sans drapeau `u`, `é` n'est pas un caractère de mot et `adapté\\b` ne correspond jamais.
+    "\\bmobilis(?:ables?|ation)\\b|\\bpeu(?:ven)?t\\s+mobiliser\\s*:",
+    "\\b(?:ce|cet|ces)\\s+dispositifs?\\b(?!\\s+(?:de\\s+suivi|consulaires|p[ée]dagogiques?))",
+    "\\bdispositifs?\\s+(?:(?:le|les)\\s+plus\\s+|locaux\\s+)?adapt\\w*|\\b(?:bons?|meilleurs?)\\s+dispositifs?\\b|identification\\s+d(?:u|es)\\s+dispositifs?",
+    "\\bdispositifs?\\s+(?:disponibles|compl[ée]mentaires|publics)\\b|\\bdispositifs?\\s+d['’]accompagnement\\b|\\bdispositifs?\\s+de\\s+France\\s+Num",
+    "\\bappels?\\s+[àa]\\s+projets?\\b|certification\\s+qualit[ée]\\s+via",
   ].join("|"),
   "i",
 );
@@ -733,11 +740,7 @@ function motsPerdus(origine: unknown, valeur: unknown): string[] {
   return [...new Set(motsNonRetirables(textesDe(origine).join(" "), textesDe(valeur).join(" ")))];
 }
 
-/**
- * Une valeur d'override est-elle PROPRE ? Elle repasse dans les mêmes règles que le contenu : si le
- * résultat n'est pas « propre » (mention restante, ambigu), l'override est ignoré. Rend la raison,
- * ou `null` si la valeur est propre.
- */
+/** Tirets Unicode ramenés au tiret ASCII, espaces insécables à l'espace (sauts de ligne conservés). */
 export function normaliserPourPorte2(t: string): string {
   return t
     .normalize("NFC")
@@ -745,6 +748,11 @@ export function normaliserPourPorte2(t: string): string {
     .replace(/[^\S\n]+/g, " ");
 }
 
+/**
+ * Une valeur d'override est-elle PROPRE ? Elle repasse dans les mêmes règles que le contenu : si le
+ * résultat n'est pas « propre » (mention restante, ambigu), l'override est ignoré. Rend la raison,
+ * ou `null` si la valeur est propre.
+ */
 function valeurSale(champ: string, valeur: unknown): string | null {
   // Porte 2 : contrôle lexical strict, AVANT les règles de réécriture (A4).
   // V4-4 : tirets Unicode ramenés au tiret ASCII, espaces insécables à l'espace (sauts de ligne conservés).
