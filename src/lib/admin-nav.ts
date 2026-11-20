@@ -1225,6 +1225,16 @@ function buildAdminNavSocle(adminPrefix: string): ReadonlyArray<AdminNavItem> {
       subGroup: "reglages",
       tier: "advanced",
     },
+    // Demande de Williams du 20/11/2026 : un onglet qui ouvre la console de
+    // l'usine à contenu (le Studio) dans un nouvel onglet du navigateur.
+    // Aucun identifiant ici : ce dépôt est PUBLIC, la session est celle du navigateur.
+    {
+      href: "https://studio.axion-ia.com",
+      label: "Usine à contenu (Studio)",
+      icon: "ExternalLink",
+      group: "content",
+      external: true,
+    },
     { href: `${base}/blog`, label: "Blog", icon: "PenLine", group: "content" },
     { href: `${base}/categories`, label: "Catégories", icon: "Tag", group: "content" },
     { href: `${base}/case-studies`, label: "Cas concrets", icon: "Trophy", group: "content" },
