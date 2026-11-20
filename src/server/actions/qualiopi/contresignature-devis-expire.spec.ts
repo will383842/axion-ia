@@ -42,10 +42,12 @@ vi.mock("./_guards", () => ({
 }));
 
 import { prisma } from "@/lib/prisma";
+import { signeParLeClient } from "@/server/qualiopi/devis/pas-signe-par-le-client";
 import {
   contresignerParLotAction,
   contresignerPieceAction,
   demanderCodeDevisAction,
+  signerPieceParJetonAction,
 } from "./piece-signature";
 
 type Mock = ReturnType<typeof vi.fn>;
@@ -89,6 +91,38 @@ describe("contresignature d'un devis expiré", () => {
     // La version suivante se compte hors brouillon, sur CE devis.
     const calls = p.devis.count.mock.calls.map((c) => c[0].where);
     expect(calls).toContainEqual({ replacesDevisId: DEVIS_ID, statut: { not: "brouillon" } });
+    // Le « signé du client » se compte avec le VRAI filtre, sur CE devis (un where faux passerait).
+    expect(calls).toContainEqual({ id: DEVIS_ID, ...signeParLeClient });
+    expect(p.devis.count).toHaveBeenCalledTimes(2);
+  });
+
+  it.each(["accepte", "transforme_convention"])(
+    "refuse_%s_contresigne_par_l_organisme",
+    async (statut) => {
+      etat({ statut, signeClient: 1, successeurs: 0 });
+      const r = await contresigner();
+      expect(r.ok).toBe(false);
+      expect(signer).not.toHaveBeenCalled();
+    },
+  );
+
+  it("refuse_client_jeton_signature_sur_expire_deja_signe_client", async () => {
+    jeton.verifierTokenDocument.mockResolvedValue({
+      ok: true,
+      tokenId: "t",
+      documentGenereId: DOC,
+      partie: "client",
+      signataireNom: "C",
+      signataireEmail: "c@x.test",
+      signataireQualite: "G",
+    });
+    etat({ statut: "expire", signeClient: 1, successeurs: 0 });
+    const r = await signerPieceParJetonAction({ token: "tok", methode: "confirmation_accessible" });
+    expect(r.ok).toBe(false);
+    expect(r.ok === false && r.raison).toBe("piece_non_signable_maintenant");
+    expect(r.ok === false && r.message).toContain(REFUS);
+    expect(signer).not.toHaveBeenCalled();
+    expect(p.devis.count).not.toHaveBeenCalled();
   });
 
   it("refuse_expire_non_signe_client", async () => {
