@@ -193,6 +193,24 @@ describe("A1 — bodyText : seuls les passages modifiés dans body sont reporté
       ),
     ).toBe("Premier bloc . Second bloc .");
   });
+  it("Q3 — deux fragments identiques, ponctuation écrite autrement dans le texte brut", () => {
+    expect(
+      reporterDansTexteBrut(
+        "Intro . Ateliers (OPCO) sur ChatGPT . Modules (OPCO) en ligne .",
+        "<p>Intro. Ateliers (OPCO) sur ChatGPT. Modules (OPCO) en ligne.</p>",
+        "<p>Intro. Ateliers sur ChatGPT. Modules en ligne.</p>",
+      ),
+    ).toBe("Intro . Ateliers sur ChatGPT . Modules en ligne .");
+  });
+  it("Q4 (documenté) — la virgule devant « et » d'un bloc touché est retirée, même légitime", () => {
+    const r = proposerTraduction(
+      traduction({
+        body: "<p>Nous formons les équipes RH, et les dirigeants (OPCO) aussi.</p>",
+        bodyText: "Nous formons les équipes RH, et les dirigeants (OPCO) aussi.",
+      }),
+    );
+    expect(r?.apres.body).toBe("<p>Nous formons les équipes RH et les dirigeants aussi.</p>");
+  });
   it("P4 — un morceau introuvable reste null", () => {
     expect(
       reporterDansTexteBrut(
@@ -314,6 +332,19 @@ describe("A4 (porte 2) — interdits publics : contrôle lexical strict des over
     "Le plafond de prise en charge est atteint.",
     "Les prises en charge varient selon le dossier.",
     "Votre employeur prend en charge les frais.",
+    // Q1 : le verbe « financer » et ses voisins (phrases réelles du rapport du 20/11).
+    "L'entreprise finance la formation dans le cadre de son plan annuel.",
+    "L'employeur finance la formation.",
+    "Il est conseillé de consulter les organismes financeurs.",
+    "Quels soutiens financiers sont disponibles ?",
+    "Un dispositif financier existe pour vous.",
+    // Q2 : « prise en charge » sous TOUTES ses formes, sans liste blanche par préfixe.
+    "Les frais sont pris en charge rapidement par l'État.",
+    "Une prise en charge immédiatement après la signature.",
+    "Une prise en charge techniquement complète.",
+    "La formation est prise en charge des projets de formation.",
+    "Prenez en charge votre formation avec votre employeur.",
+    "Prenons en charge vos frais.",
   ])("override « %s » → ignoré par la porte 2 seule", (valeur) => {
     expect(INTERDITS_PUBLICS.test(valeur)).toBe(true);
     const r = surcharge("excerpt", valeur);
@@ -327,6 +358,9 @@ describe("A4 (porte 2) — interdits publics : contrôle lexical strict des over
     "L'IA dans la finance progresse.",
     "Les banques et la finance adoptent l'IA.",
     "Le secteur financier recrute.",
+    "Dans la finance, l'IA automatise le reporting.",
+    "La finance et les RH adoptent l'IA.",
+    "La prise en charge des projets web est rapide.",
   ])("« %s » n'est pas un interdit public", (valeur) => {
     expect(INTERDITS_PUBLICS.test(valeur)).toBe(false);
   });
@@ -451,10 +485,10 @@ describe("A7 — gabarit FAQ : la question de financement est aussi proposée", 
   });
 });
 
-describe("A5 — phrase et question standard sans mot interdit (en ATTENTE de validation de Williams)", () => {
-  it("valeurs proposées par l'analyse", () => {
+describe("A5 — phrase et question standard sans mot interdit (validées par Williams le 20/11)", () => {
+  it("valeurs validées par Williams (P8)", () => {
     expect(PHRASE_FR).toBe(
-      "Tarifs : devis ferme en forfait fixe, établi après un Diagnostic IA de 45 minutes.",
+      "Tarifs : sur devis, établi après un Diagnostic IA gratuit de 45 minutes.",
     );
     expect(QUESTION_FR).toBe("Comment obtenir un devis ?");
     expect(PHRASE_EN).toBe(

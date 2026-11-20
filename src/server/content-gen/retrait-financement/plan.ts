@@ -102,6 +102,13 @@ export const INTERDITS_PUBLICS = new RegExp(
     // P6 : le financement, pas « la finance » / « financier » (secteur d'activité).
     "finan[cç](?:ement|ements|er|ons|ez|ent|ant|ante|ants|é(?:e|s|es)?|able|ables|ing)",
     "aides? financi[èe]res?",
+    // Q1 : le VERBE « financer » à l'indicatif présent (« finance la formation »), les « financeurs » et
+    // les « soutiens/dispositifs financiers » ; le NOM « la finance » (secteur) n'est jamais suivi d'un
+    // déterminant, donc reste permis.
+    "\\bfinanceurs?\\b",
+    "\\bfinances?\\s+(?:la|les|le|l['’]|leurs?|votre|vos|son|sa|ses|une|des|cette|ces|tout|jusqu)",
+    "soutiens?\\s+financiers?",
+    "(?:aides?|appuis?|leviers?|dispositifs?)\\s+financi",
     "op[ée]rateurs? de comp[ée]tences",
     "frais\\s+(?:p[ée]dagogiques\\s+)?rembours",
     "rembours\\w*\\s+(?:des?\\s+|les\\s+)?(?:frais|formations?)",
@@ -113,7 +120,9 @@ export const INTERDITS_PUBLICS = new RegExp(
     "datadock",
     // P1 : TOUTE forme de « prise(s) en charge » / « prend en charge » est interdite, sauf si le
     // complément est dans une courte liste blanche non financière (appels, projet, demandes…).
-    "(?:pris(?:e|es)?|prend(?:re|ra|ront)?|prennent|prenant)\\s+en\\s+charge(?!\\s+(?:rapide|imm[ée]diate|technique|des?\\s+(?:appels?|projets?|demandes?|tickets?|incidents?|requ[êe]tes?|clients?|patients?)|du\\s+(?:projet|client|patient|ticket)|de\\s+la\\s+demande|d['’](?:appels?|un\\s+projet)))",
+    // Q2 : pas de liste blanche par préfixe : chaque mot de la liste est borné par `\\b`, et « projets de
+    // formation » reste refusé (sens financier).
+    "(?:pris(?:e|es)?|prend(?:re|ra|ront)?|prennent|prenant|pren(?:ez|ons|ais|ait|aient|drai|dras|drons|drez))\\s+en\\s+charge(?!\\s+(?:(?:rapide|imm[ée]diate|technique)\\b|des?\\s+(?:appels?|projets?(?!\\s+de\\s+formation)|demandes?|tickets?|incidents?|requ[êe]tes?|clients?|patients?)\\b|du\\s+(?:projet|client|patient|ticket)\\b|de\\s+la\\s+demande\\b|d['’](?:appels?|un\\s+projet)\\b))",
   ].join("|"),
   "i",
 );
@@ -180,13 +189,19 @@ export function reporterDansTexteBrut(
       for (const k of [0, 20, 40, 80]) {
         const gauche = k === 0 ? "" : gaucheTexte.slice(-k);
         const droite = k === 0 ? "" : droiteTexte.slice(0, k);
-        const motif = gauche + retire + droite;
-        if (motif.trim() === "") continue;
-        const re = new RegExp(motif.split(/\s+/).map(echapperRegExp).join("\\s+"), "g");
+        if ((gauche + retire + droite).trim() === "") continue;
+        // Q3 : la ponctuation peut être écrite « Intro. » dans le corps et « Intro . » dans le texte
+        // brut : une espace est tolérée devant chaque ponctuation. Le contexte est CAPTURÉ et recopié
+        // tel qu'il est stocké (seul le fragment retiré change).
+        const re = new RegExp(
+          `(${motifTolerant(gauche)})(${motifTolerant(retire)})(${motifTolerant(droite)})`,
+          "g",
+        );
         const n = courant.match(re)?.length ?? 0;
-        if (n === 0) return null;
-        if (n > 1) continue;
-        courant = courant.replace(re, () => gauche + ajoute + droite);
+        // Un contexte qui ne se retrouve pas n'est pas fatal : on essaie le contexte plus large.
+        if (n === 0 && k === 0) return null;
+        if (n !== 1) continue;
+        courant = courant.replace(re, (_m, g: string, _r: string, d: string) => g + ajoute + d);
         fait = true;
         break;
       }
@@ -194,6 +209,30 @@ export function reporterDansTexteBrut(
     }
   }
   return courant;
+}
+
+/** Motif d'un texte : espaces quelconques entre mots, espace tolérée devant la ponctuation. */
+function motifTolerant(texte: string): string {
+  // Les espaces aux extrémités comptent (elles séparent le contexte du fragment retiré).
+  const debut = /^\s/.test(texte) ? "\\s+" : "";
+  const fin = /\s$/.test(texte) ? "\\s+" : "";
+  return (
+    debut +
+    texte
+      .split(/\s+/)
+      .filter((x) => x !== "")
+      .map((mot) =>
+        mot
+          .split(/([.,;:!?])/)
+          .filter((x) => x !== "")
+          .map((part) =>
+            /^[.,;:!?]$/.test(part) ? `\\s*${echapperRegExp(part)}` : echapperRegExp(part),
+          )
+          .join(""),
+      )
+      .join("\\s+") +
+    fin
+  );
 }
 
 const echapperRegExp = (x: string): string => x.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
