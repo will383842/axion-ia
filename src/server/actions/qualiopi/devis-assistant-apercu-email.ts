@@ -11,6 +11,7 @@
 import { isUuid } from "@/lib/is-uuid";
 import { enveloppeExpedition } from "@/lib/email/enveloppe";
 import { rendreLiensInertes } from "@/lib/email/apercu-lecteur";
+import { salutation } from "@/lib/email/salutation";
 import { masquerSecretsEmail } from "@/lib/email/masquer-secrets";
 import { renderEmailTemplate, sujetDuGabarit } from "@/lib/email/templates";
 import { prisma } from "@/lib/prisma";
@@ -117,8 +118,6 @@ export async function apercuEmailDevisAction(input: {
       html: rendu.html,
       text: rendu.text,
     });
-    const clientNom =
-      typeof modifie.payload["clientNom"] === "string" ? modifie.payload["clientNom"] : "";
     return {
       data: {
         a: adresse,
@@ -128,7 +127,15 @@ export async function apercuEmailDevisAction(input: {
         html: rendreLiensInertes(masque.html),
         piecesJointes: [`${devis.numero}.pdf`],
         lienSignature: "créé à l'envoi",
-        salutation: clientNom !== "" ? `Bonjour ${clientNom},` : "Bonjour,",
+        // Même fonction que le gabarit : « Bonjour Monsieur Dupont, », « Bonjour Léa, » ou « Bonjour, ».
+        salutation: salutation(
+          {
+            civilite: devis.client.contactCivilite,
+            prenom: devis.client.contactPrenom,
+            nomFamille: devis.client.contactNomFamille,
+          },
+          "fr",
+        ),
         adresseManquante: adresse === "",
       },
     };
