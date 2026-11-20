@@ -39,6 +39,8 @@ vi.mock("@/lib/prisma", () => ({
       findUnique: (...a: unknown[]) => h.devisFindUnique(...a),
       count: (...a: unknown[]) => h.devisCount(...a),
     },
+    // R4 : le lien de la tâche est lu localement (échéance et usage compris).
+    documentSignatureToken: { findUnique: (...a: unknown[]) => h.ligne(...a) },
     $transaction: async (f: (t: unknown) => unknown, options?: unknown) => {
       h.txOptions(options);
       let r: unknown;
@@ -78,8 +80,10 @@ vi.mock("@/server/qualiopi/documents/signature/token-document", () => ({
     motif = "signataire_non_identifie";
   },
 }));
-vi.mock("@/server/qualiopi/documents/signature/lien-precedent", () => ({
-  ligneDuLien: (...a: unknown[]) => h.ligne(...a),
+vi.mock("@/server/qualiopi/documents/signature/lien-precedent", async (importOriginal) => ({
+  ...(await importOriginal<
+    typeof import("@/server/qualiopi/documents/signature/lien-precedent")
+  >()),
   rendreLienPrecedent: (...a: unknown[]) => h.rendrePrecedent(...a),
 }));
 vi.mock("@/server/qualiopi/devis/marquer-devis-envoye", () => ({
@@ -96,6 +100,7 @@ vi.mock("@/lib/public-url", () => ({
   publicUrl: (p: string) => new URL(p, "https://exemple.test"),
 }));
 
+import { empreinteJeton } from "./lien-precedent";
 import { offreFictive } from "@/server/qualiopi/devis/offre-fixtures.spec-util";
 import {
   MSG_FORMULES_PARTICULIER,
@@ -174,15 +179,17 @@ function pieceLue(over: Record<string, unknown> = {}) {
 
 const enfileOk = async () => ({ enqueued: true });
 
-/** La ligne du lien que porte la tâche en file : cette pièce, partie client, non révoqué. */
+/** La ligne du lien que porte la tâche en file : cette pièce, partie client, ni révoqué, ni expiré, ni utilisé. */
 const ligneVivante = (over: Record<string, unknown> = {}) => ({
-  id: "t-en-file",
   documentGenereId: PIECE_ID,
   partie: "client",
-  createdAt: new Date("2026-11-01T09:00:00Z"),
   revokedAt: null,
+  usedAt: null,
+  expiresAt: new Date(Date.now() + 86_400_000),
   ...over,
 });
+const lectureDuLienEnFile = () =>
+  expect.objectContaining({ where: { tokenHash: empreinteJeton("JETON-EN-FILE") } });
 const URL_EN_FILE = `https://exemple.test/fr/portail/signer/JETON-EN-FILE`;
 const journauxLienEmis = () =>
   h.log.mock.calls.filter((c) =>
@@ -1140,14 +1147,14 @@ describe("OUT-1 — envoi déjà fait ou en file (dejaEnFile)", () => {
     expect(h.rendrePrecedent).toHaveBeenCalledTimes(1);
     expect(h.rendrePrecedent.mock.calls[0]?.[0]).toBe(URL_NEUVE);
     expect(h.revoquerPrecis).not.toHaveBeenCalled();
-    expect(h.ligne).toHaveBeenCalledWith(URL_EN_FILE);
+    expect(h.ligne).toHaveBeenCalledWith(lectureDuLienEnFile());
     expect(h.marquer).toHaveBeenCalledTimes(1);
     // Aucun lien neuf n'a été émis : le journal « lien émis » ne doit pas être écrit.
     expect(journauxLienEmis()).toHaveLength(0);
     expect(toutSerialise()).not.toContain("JETON-EN-FILE");
   });
 
-  it("ajout concurrent (premier envoi) : la tâche porte un lien révoqué → filet déclenché, devis NON marqué, alerte au numéro, refus", async () => {
+  it("ajout concurrent (premier envoi) : la tâche porte un lien révoqué → filet déclenché, devis NON marqué, alerte au numéro, ligne « envoyé » (pas de refus)", async () => {
     h.ligne.mockResolvedValue(ligneVivante({ revokedAt: new Date() }));
     const r = await envoyerAvecLienALEnvoi({
       ligne: LIGNE,
@@ -1155,7 +1162,8 @@ describe("OUT-1 — envoi déjà fait ou en file (dejaEnFile)", () => {
       acteur: ACTEUR,
       enfiler: dejaEnFile as never,
     });
-    expect(r).toEqual({ type: "refus", motif: "Un envoi de ce devis est déjà en file." });
+    // R1 : l'e-mail est parti ou en file, ce n'est pas un refus : la ligne passe « envoyé ».
+    expect(r).toEqual({ type: "envoi", res: { enqueued: true, dejaEnFile: true } });
     expect(h.rendrePrecedent).toHaveBeenCalledTimes(1); // le filet a rendu l'ancien lien
     expect(h.marquer).not.toHaveBeenCalled();
     expect(JSON.stringify(h.sentryMsg.mock.calls)).toContain("AXI-DEV-2026-001");
@@ -1191,13 +1199,13 @@ describe("OUT-1 — envoi déjà fait ou en file (dejaEnFile)", () => {
     expect(r).toEqual({ type: "envoi", res: { enqueued: true, dejaEnFile: true } });
     expect(h.creerToken).not.toHaveBeenCalled();
     expect(enfiler).not.toHaveBeenCalled();
-    expect(h.ligne).toHaveBeenCalledWith(URL_EN_FILE);
+    expect(h.ligne).toHaveBeenCalledWith(lectureDuLienEnFile());
     expect(h.marquer).toHaveBeenCalledTimes(1);
     expect(h.ordre.indexOf("verrou")).toBeLessThan(h.ordre.indexOf("marquer"));
     expect(journauxLienEmis()).toHaveLength(0);
   });
 
-  it("relance de la pièce entre deux tentatives (lien de la tâche révoqué) : devis NON marqué, alerte au numéro, refus, aucun jeton", async () => {
+  it("relance de la pièce entre deux tentatives (lien de la tâche révoqué) : devis NON marqué, alerte au numéro, e-mail en file donc pas de refus, aucun jeton", async () => {
     h.ligne.mockResolvedValue(ligneVivante({ revokedAt: new Date() }));
     const r = await envoyerAvecLienALEnvoi({
       ligne: LIGNE,
@@ -1206,7 +1214,8 @@ describe("OUT-1 — envoi déjà fait ou en file (dejaEnFile)", () => {
       enfiler: vi.fn(enfileOk) as never,
       sonder: sondeDeja(),
     });
-    expect(r).toEqual({ type: "refus", motif: "Un envoi de ce devis est déjà en file." });
+    // R1 : l'e-mail est parti ou en file, ce n'est pas un refus : la ligne passe « envoyé ».
+    expect(r).toEqual({ type: "envoi", res: { enqueued: true, dejaEnFile: true } });
     expect(h.creerToken).not.toHaveBeenCalled();
     expect(h.marquer).not.toHaveBeenCalled();
     expect(JSON.stringify(h.sentryMsg.mock.calls)).toContain("AXI-DEV-2026-001");
@@ -1217,7 +1226,7 @@ describe("OUT-1 — envoi déjà fait ou en file (dejaEnFile)", () => {
   it.each([
     ["autre pièce", { documentGenereId: "autre-piece" }],
     ["autre partie", { partie: "client_signataire" }],
-  ])("lien de la tâche rattaché à %s : devis NON marqué, refus", async (_nom, over) => {
+  ])("lien de la tâche rattaché à %s : devis NON marqué, pas de refus", async (_nom, over) => {
     h.ligne.mockResolvedValue(ligneVivante(over));
     const r = await envoyerAvecLienALEnvoi({
       ligne: LIGNE,
@@ -1226,11 +1235,11 @@ describe("OUT-1 — envoi déjà fait ou en file (dejaEnFile)", () => {
       enfiler: vi.fn(enfileOk) as never,
       sonder: sondeDeja(),
     });
-    expect(r.type).toBe("refus");
+    expect(r).toEqual({ type: "envoi", res: { enqueued: true, dejaEnFile: true } });
     expect(h.marquer).not.toHaveBeenCalled();
   });
 
-  it("tâche purgée (seul le journal `sent` reste, aucun lien lu) : devis NON marqué, alerte au numéro, refus", async () => {
+  it("tâche purgée (seul le journal `sent` reste, aucun lien lu) : devis NON marqué, alerte au numéro, pas de refus", async () => {
     const r = await envoyerAvecLienALEnvoi({
       ligne: LIGNE,
       payload: payloadAvec(marqueurPremier()),
@@ -1238,7 +1247,8 @@ describe("OUT-1 — envoi déjà fait ou en file (dejaEnFile)", () => {
       enfiler: vi.fn(enfileOk) as never,
       sonder: sondeDeja(null),
     });
-    expect(r).toEqual({ type: "refus", motif: "Un envoi de ce devis est déjà en file." });
+    // R1 : l'e-mail est parti ou en file, ce n'est pas un refus : la ligne passe « envoyé ».
+    expect(r).toEqual({ type: "envoi", res: { enqueued: true, dejaEnFile: true } });
     expect(h.ligne).not.toHaveBeenCalled();
     expect(h.marquer).not.toHaveBeenCalled();
     expect(JSON.stringify(h.sentryMsg.mock.calls)).toContain("AXI-DEV-2026-001");
@@ -1309,5 +1319,130 @@ describe("OUT-1 — envoi déjà fait ou en file (dejaEnFile)", () => {
     expect(r).toEqual({ type: "envoi", res: { enqueued: true, dejaEnFile: true } });
     expect(h.log).not.toHaveBeenCalled();
     expect(h.sentryMsg).not.toHaveBeenCalled();
+  });
+});
+
+describe("OUT-1 passe 3 — retouches R1, R4, R5, R7, R8", () => {
+  const sondeDeja = (urlEnFile: string | null = URL_EN_FILE) =>
+    (async () => ({ verdict: { enqueued: true, dejaEnFile: true }, urlEnFile })) as never;
+  const ENVOI_DEJA = { type: "envoi", res: { enqueued: true, dejaEnFile: true } };
+  const lancerPremier = (sonder: ReturnType<typeof sondeDeja> | undefined = sondeDeja()) =>
+    envoyerAvecLienALEnvoi({
+      ligne: LIGNE,
+      payload: payloadAvec(marqueurPremier()),
+      acteur: ACTEUR,
+      enfiler: vi.fn(enfileOk) as never,
+      ...(sonder ? { sonder } : {}),
+    });
+
+  it("R1 : tâche en file au lien révoqué → ligne « envoyé » (envoi), devis non marqué, alerte au numéro", async () => {
+    h.ligne.mockResolvedValue(ligneVivante({ revokedAt: new Date() }));
+    const r = await lancerPremier();
+    expect(r).toEqual(ENVOI_DEJA);
+    expect(h.marquer).not.toHaveBeenCalled();
+    expect(JSON.stringify(h.sentryMsg.mock.calls)).toContain("AXI-DEV-2026-001");
+    expect(journauxLienEmis()).toHaveLength(0);
+  });
+
+  it("R1 : tâche purgée (journal `sent`) → « envoyé », devis non marqué, alerte au numéro", async () => {
+    const r = await lancerPremier(sondeDeja(null));
+    expect(r).toEqual(ENVOI_DEJA);
+    expect(h.marquer).not.toHaveBeenCalled();
+    expect(JSON.stringify(h.sentryMsg.mock.calls)).toContain("AXI-DEV-2026-001");
+  });
+
+  it("R1 (filet) : la tâche portée par l'ajout tardif a un lien révoqué → « envoyé », devis non marqué, alerte au numéro", async () => {
+    h.ligne.mockResolvedValue(ligneVivante({ revokedAt: new Date() }));
+    const r = await envoyerAvecLienALEnvoi({
+      ligne: LIGNE,
+      payload: payloadAvec(marqueurPremier()),
+      acteur: ACTEUR,
+      enfiler: (async () => ({
+        enqueued: true,
+        dejaEnFile: true,
+        urlEnFile: URL_EN_FILE,
+      })) as never,
+    });
+    expect(r).toEqual(ENVOI_DEJA);
+    expect(h.marquer).not.toHaveBeenCalled();
+    expect(JSON.stringify(h.sentryMsg.mock.calls)).toContain("AXI-DEV-2026-001");
+  });
+
+  it.each([
+    ["expiré", { expiresAt: new Date(Date.now() - 1000) }],
+    ["déjà utilisé", { usedAt: new Date() }],
+  ])(
+    "R4 : lien de la tâche %s → pas « vivant » : devis non marqué, alerte au numéro",
+    async (_n, over) => {
+      h.ligne.mockResolvedValue(ligneVivante(over));
+      const r = await lancerPremier();
+      expect(r).toEqual(ENVOI_DEJA);
+      expect(h.marquer).not.toHaveBeenCalled();
+      expect(JSON.stringify(h.sentryMsg.mock.calls)).toContain("AXI-DEV-2026-001");
+      expect(toutSerialise()).not.toContain("JETON-EN-FILE");
+    },
+  );
+
+  it.each(["accepte", "refuse", "expire", "transforme_convention"])(
+    "R5 : devis `%s` et envoi déjà fait → ni écriture ni alerte ni journal",
+    async (statut) => {
+      h.txDevisFindUnique.mockImplementation(async () => devisRelu({ statut }));
+      // Même lien non vivant : un devis qui n'est plus brouillon ne reçoit AUCUNE alerte « renvoyer ».
+      h.ligne.mockResolvedValue(ligneVivante({ revokedAt: new Date() }));
+      const r = await lancerPremier();
+      expect(r).toEqual(ENVOI_DEJA);
+      expect(h.marquer).not.toHaveBeenCalled();
+      expect(h.sentryMsg).not.toHaveBeenCalled();
+      expect(h.sentryExc).not.toHaveBeenCalled();
+      expect(h.telegram).not.toHaveBeenCalled();
+      expect(h.log).not.toHaveBeenCalled();
+    },
+  );
+
+  it("R7 : renvoi, lien de la tâche révoqué → alerte au numéro seulement, aucune écriture, « envoyé »", async () => {
+    h.ligne.mockResolvedValue(ligneVivante({ revokedAt: new Date() }));
+    const r = await envoyerAvecLienALEnvoi({
+      ligne: LIGNE,
+      payload: payloadAvec(marqueurRenvoi()),
+      acteur: ACTEUR,
+      enfiler: vi.fn(enfileOk) as never,
+      sonder: sondeDeja(),
+    });
+    expect(r).toEqual(ENVOI_DEJA);
+    expect(h.creerToken).not.toHaveBeenCalled();
+    expect(h.marquer).not.toHaveBeenCalled();
+    expect(h.log).not.toHaveBeenCalled();
+    expect(JSON.stringify(h.sentryMsg.mock.calls)).toContain("AXI-DEV-2026-001");
+    expect(h.telegram).toHaveBeenCalledTimes(1);
+    expect(toutSerialise()).not.toContain("JETON-EN-FILE");
+    expect(toutSerialise()).not.toContain(ADRESSE);
+  });
+
+  it("R7 : renvoi, lien de la tâche vivant → aucune alerte", async () => {
+    const r = await envoyerAvecLienALEnvoi({
+      ligne: LIGNE,
+      payload: payloadAvec(marqueurRenvoi()),
+      acteur: ACTEUR,
+      enfiler: vi.fn(enfileOk) as never,
+      sonder: sondeDeja(),
+    });
+    expect(r).toEqual(ENVOI_DEJA);
+    expect(h.sentryMsg).not.toHaveBeenCalled();
+    expect(h.telegram).not.toHaveBeenCalled();
+  });
+
+  it("R8 : chemin sans marqueur (autre gabarit) : le lien de la tâche n'est jamais rendu à l'appelant", async () => {
+    const r = await envoyerAvecLienALEnvoi({
+      ligne: { ...LIGNE, template: "facture-envoi" },
+      payload: { numero: "AXI-1" },
+      acteur: ACTEUR,
+      enfiler: (async () => ({
+        enqueued: true,
+        dejaEnFile: true,
+        urlEnFile: URL_EN_FILE,
+      })) as never,
+    });
+    expect(r).toEqual(ENVOI_DEJA);
+    expect(JSON.stringify(r)).not.toContain("JETON-EN-FILE");
   });
 });

@@ -42,6 +42,12 @@ export class MiseEnFileIncertaine extends Error {
 /** Lecture de l'état d'une tâche dans la file (hors ajout) : borne de la lecture (ms). */
 export const DELAI_LECTURE_FILE_MS = 5_000;
 
+/** Lecture du dernier journal d'une tâche (sondes, ms) : au-delà, la file est tenue pour injoignable. */
+export const DELAI_LECTURE_JOURNAL_MS = 4_000;
+
+/** Écriture de la ligne « en attente » avant l'ajout, en mode outbox (ms) : au-delà, `FileInjoignable`. */
+export const DELAI_ECRITURE_JOURNAL_MS = 4_000;
+
 /** Un journal `pending` sans tâche n'est tranché qu'à partir de cet âge (minutes). */
 export const AGE_JOURNAL_ORPHELIN_MIN = 60;
 

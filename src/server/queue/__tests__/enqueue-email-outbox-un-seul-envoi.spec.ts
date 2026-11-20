@@ -21,6 +21,8 @@ const d = vi.hoisted(() => ({
   /** Dernière ligne du journal de la tâche (sonde d'envoi). */
   dernier: { v: null as null | { id: string; status: string; error: string | null } },
   lireDernier: vi.fn(),
+  /** Lenteur simulée (ms) de l'écriture de la ligne « en attente ». */
+  delaiEcriture: { v: 0 },
 }));
 
 vi.mock("bullmq", () => ({
@@ -53,6 +55,7 @@ vi.mock("@/server/email/suppression", () => ({
 vi.mock("@/server/email/email-log", () => ({
   journaliserEnAttente: async (e: unknown) => {
     d.journalCree(e);
+    if (d.delaiEcriture.v > 0) await new Promise((r) => setTimeout(r, d.delaiEcriture.v));
     return d.ligne.v;
   },
   marquerEchecMiseEnFile: (...a: unknown[]) => d.marquerEchec(...a),
@@ -98,6 +101,7 @@ beforeEach(() => {
   d.journalCree.mockReset();
   d.marquerEchec.mockReset();
   d.ligne.v = "log-1";
+  d.delaiEcriture.v = 0;
   d.dernier.v = null;
   d.lireDernier.mockReset().mockImplementation(async () => d.dernier.v);
   delete process.env["DATABASE_URL"];
@@ -237,7 +241,7 @@ describe("OUT-1 — le lien que porte la tâche (vérification explicite du jeto
   it("sonde interne : tâche déjà en file → son lien est rendu avec `dejaEnFile`, rien n'est ajouté", async () => {
     d.getJob.mockResolvedValue({
       getState: async () => "waiting",
-      data: { payload: { signatureUrl: URL_ANCIENNE } },
+      data: { template: "devis-envoi", payload: { signatureUrl: URL_ANCIENNE } },
     });
     const r = await approuverAvecLien();
     expect(r).toEqual({ enqueued: true, dejaEnFile: true, urlEnFile: URL_ANCIENNE });
@@ -252,7 +256,10 @@ describe("OUT-1 — le lien que porte la tâche (vérification explicite du jeto
     });
     d.getJob.mockImplementation(async () =>
       ajoute
-        ? { getState: async () => "waiting", data: { payload: { signatureUrl: URL_ANCIENNE } } }
+        ? {
+            getState: async () => "waiting",
+            data: { template: "devis-envoi", payload: { signatureUrl: URL_ANCIENNE } },
+          }
         : undefined,
     );
     const r = await approuverAvecLien();
@@ -267,7 +274,10 @@ describe("OUT-1 — le lien que porte la tâche (vérification explicite du jeto
     });
     d.getJob.mockImplementation(async () =>
       ajoute
-        ? { getState: async () => "waiting", data: { payload: { signatureUrl: URL_NEUVE } } }
+        ? {
+            getState: async () => "waiting",
+            data: { template: "devis-envoi", payload: { signatureUrl: URL_NEUVE } },
+          }
         : undefined,
     );
     expect(await approuverAvecLien()).toEqual({ enqueued: true });
@@ -293,5 +303,83 @@ describe("OUT-1 — le lien que porte la tâche (vérification explicite du jeto
     const avant = d.getJob.mock.calls.length;
     expect(avant).toBeLessThanOrEqual(3);
     expect(d.getJob.mock.calls.every(([cle]) => cle === CLE)).toBe(true);
+  });
+});
+
+describe("OUT-1 passe 3 — lectures et écriture en base bornées (R6), lien lu seulement pour les gabarits connus (R8)", () => {
+  it("R6 : lecture du journal qui traîne (15 s) : FileInjoignable à 4 s, ni ligne posée ni ajout", async () => {
+    d.lireDernier.mockImplementation(() => apresMs(15_000, null));
+    const p = approuver();
+    const verdict = expect(p).rejects.toBeInstanceOf(FileInjoignable);
+    await avancer(p, 4_000);
+    await verdict;
+    expect(d.add).not.toHaveBeenCalled();
+    expect(d.journalCree).not.toHaveBeenCalled();
+  });
+
+  it("R6 : écriture du journal en attente qui traîne (15 s) : FileInjoignable à 4 s, AVANT tout ajout", async () => {
+    d.delaiEcriture.v = 15_000;
+    const p = approuver();
+    const verdict = expect(p).rejects.toBeInstanceOf(FileInjoignable);
+    await avancer(p, 4_000);
+    await verdict;
+    expect(d.add).not.toHaveBeenCalled();
+  });
+
+  const URL_ANCIENNE = "https://exemple.test/fr/portail/signer/JETON-ANCIEN";
+
+  it("R8 : gabarit hors de la liste (clé `lien`) : aucune URL lue dans la charge de la tâche", async () => {
+    d.getJob.mockResolvedValue({
+      getState: async () => "completed",
+      data: {
+        template: "facture-envoi",
+        payload: { lien: URL_ANCIENNE, signatureUrl: URL_ANCIENNE },
+      },
+    });
+    const r = await enqueueEmail(
+      "facture-envoi" as never,
+      "client@exemple.fr",
+      "fr",
+      {},
+      { bypassValidation: true, cleOutbox: CLE },
+    );
+    expect(r).toEqual({ enqueued: true, dejaEnFile: true });
+    expect(JSON.stringify(r)).not.toContain("JETON-ANCIEN");
+  });
+
+  it("R8 : gabarit formateur connu : le lien est lu sous SA clé (`lien`), pas sous `signatureUrl`", async () => {
+    d.getJob.mockResolvedValue({
+      getState: async () => "waiting",
+      data: {
+        template: "formateur-contrat-relance",
+        payload: { lien: URL_ANCIENNE, signatureUrl: "https://exemple.test/autre" },
+      },
+    });
+    const r = await enqueueEmail(
+      "formateur-contrat-relance" as never,
+      "f@exemple.fr",
+      "fr",
+      {},
+      { bypassValidation: true, cleOutbox: CLE },
+    );
+    expect(r).toEqual({ enqueued: true, dejaEnFile: true, urlEnFile: URL_ANCIENNE });
+  });
+
+  it("relecture après l'ajout qui rend `null` (tâche déjà purgée) : rien à comparer, `{ enqueued: true }`", async () => {
+    let ajoute = false;
+    d.add.mockImplementation(async () => {
+      ajoute = true;
+      return { id: CLE };
+    });
+    d.getJob.mockImplementation(async () => (ajoute ? null : undefined));
+    expect(
+      await enqueueEmail(
+        "devis-envoi" as never,
+        "client@exemple.fr",
+        "fr",
+        { signatureUrl: "https://exemple.test/fr/portail/signer/JETON-NEUF" },
+        { bypassValidation: true, cleOutbox: CLE },
+      ),
+    ).toEqual({ enqueued: true });
   });
 });

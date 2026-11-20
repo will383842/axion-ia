@@ -151,6 +151,7 @@ describe("balayage des « approuvé » anciens — OUT-1", () => {
 
   it("`pending` avec repère (2e constat) : journal clos puis « à valider »", async () => {
     h.journaux = [journal("pending", MOTIF_1)];
+    h.marquerAnnule.mockResolvedValue(1);
     const s = await verifierSanteEmails(MAINT);
     expect(h.marquerAnnule).toHaveBeenCalledWith(
       "outbox-L1",
@@ -158,6 +159,59 @@ describe("balayage des « approuvé » anciens — OUT-1", () => {
     );
     expect(donnees().map((d) => d.statut)).toEqual(["a_valider"]);
     expect(s.approuvesRemisEnAttente).toBe(1);
+  });
+
+  it("R2 : `marquerAnnule` rend 0 (journal pas clos) → la ligne reste « approuvé », comptée incertaine", async () => {
+    h.journaux = [journal("pending", MOTIF_1)];
+    h.marquerAnnule.mockResolvedValue(0);
+    const s = await verifierSanteEmails(MAINT);
+    expect(h.marquerAnnule).toHaveBeenCalledTimes(1);
+    expect(h.outboxUpdateMany).not.toHaveBeenCalled();
+    expect(s.approuvesRemisEnAttente).toBe(0);
+    expect(s.approuvesEnvoiIncertain).toBe(1);
+    expect(codes()).toContain("emails_envoi_incertain");
+    expect(codes()).not.toContain("emails_approuves_abandonnes");
+  });
+
+  it("R9 : le balayage lit au plus 200 lignes, les plus anciennes d'abord", async () => {
+    const findMany = (await import("@/lib/prisma")).prisma.emailOutbox.findMany as unknown as {
+      mock: { calls: Array<[Record<string, unknown>]> };
+    };
+    await verifierSanteEmails(MAINT);
+    const appel = findMany.mock.calls.at(-1)?.[0];
+    expect(appel?.["take"]).toBe(200);
+    expect(appel?.["orderBy"]).toEqual({ approuveAt: "asc" });
+  });
+
+  it("R9 : 250 lignes en base → 200 traitées (la requête borne, le reste attend le passage suivant)", async () => {
+    // La requête simulée applique `take` comme la base : on rend 250 lignes, elle n'en livre que 200.
+    const toutes = Array.from({ length: 250 }, (_, i) =>
+      ancien({ id: `L${i}`, approuveAt: ilYA(500 - i) }),
+    );
+    const prisma = (await import("@/lib/prisma")).prisma;
+    (
+      prisma.emailOutbox.findMany as unknown as { mockImplementationOnce: (f: unknown) => void }
+    ).mockImplementationOnce(async (a: { take?: number }) => toutes.slice(0, a.take ?? 1e9));
+    h.journaux = [];
+    h.tache.v = "echouee";
+    await verifierSanteEmails(MAINT);
+    expect(h.outboxUpdateMany).toHaveBeenCalledTimes(200);
+  });
+
+  it("R9 : erreur du balayage → seul le NOM de la classe est journalisé, jamais le message", async () => {
+    const prisma = (await import("@/lib/prisma")).prisma;
+    (
+      prisma.emailOutbox.findMany as unknown as { mockImplementationOnce: (f: unknown) => void }
+    ).mockImplementationOnce(async () => {
+      throw new Error("dest@client.test /portail/signer/JETON");
+    });
+    const espion = vi.spyOn(console, "error").mockImplementation(() => undefined);
+    await verifierSanteEmails(MAINT);
+    const sortie = JSON.stringify(espion.mock.calls);
+    expect(sortie).toContain("Error");
+    expect(sortie).not.toContain("dest@client.test");
+    expect(sortie).not.toContain("JETON");
+    espion.mockRestore();
   });
 
   it("`pending` de moins d'une heure, tâche absente : on attend, aucune écriture", async () => {

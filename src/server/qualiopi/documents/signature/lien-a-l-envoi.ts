@@ -22,7 +22,9 @@ import { z } from "zod";
 import { prisma } from "@/lib/prisma";
 import {
   DELAI_CONNEXION_FILE_MS,
+  DELAI_ECRITURE_JOURNAL_MS,
   DELAI_LECTURE_FILE_MS,
+  DELAI_LECTURE_JOURNAL_MS,
   DELAI_MISE_EN_FILE_OUTBOX_MS,
   MiseEnFileIncertaine,
 } from "@/server/email/outbox-en-cours";
@@ -40,7 +42,7 @@ import {
   versionRemplaceeBloqueEmission,
   VersionRemplaceeSigneeEntreTempsError,
 } from "@/server/qualiopi/devis/version-remplacee";
-import { ligneDuLien, rendreLienPrecedent } from "./lien-precedent";
+import { empreinteJeton, jetonDuLienSignature, rendreLienPrecedent } from "./lien-precedent";
 import { creerTokenDocument, revoquerJetonPrecis, TokenDocumentError } from "./token-document";
 
 export const CLE_MARQUEUR = "lienSignatureALEnvoi" as const;
@@ -154,21 +156,34 @@ function sansLien<R extends VerdictEnfilage>(v: R): R {
 /**
  * OUT-1 — le lien que porte la tâche en file est-il celui de CETTE pièce, partie client, encore
  * vivant ? Sans cela on ne sait pas que l'e-mail porte un lien qui fonctionne (une relance de la
- * pièce l'a peut-être révoqué entre deux tentatives). Une lecture qui échoue vaut « non ». Ni
- * l'URL ni le jeton ne sont journalisés.
+ * pièce l'a peut-être révoqué entre deux tentatives). « Vivant » : ni révoqué, ni expiré, ni déjà
+ * utilisé. Lecture LOCALE (la ligne partagée de `lien-precedent.ts` ne porte ni l'échéance ni
+ * l'usage). Une lecture qui échoue vaut « non ». Ni l'URL ni le jeton ne sont journalisés.
  */
 async function lienEnFileVivant(
   url: string | null | undefined,
   documentGenereId: string,
 ): Promise<boolean> {
-  if (typeof url !== "string") return false;
+  const jeton = jetonDuLienSignature(url);
+  if (jeton === null) return false;
   try {
-    const ligne = await ligneDuLien(url);
+    const ligne = await prisma.documentSignatureToken.findUnique({
+      where: { tokenHash: empreinteJeton(jeton) },
+      select: {
+        documentGenereId: true,
+        partie: true,
+        revokedAt: true,
+        expiresAt: true,
+        usedAt: true,
+      },
+    });
     return (
       ligne !== null &&
       ligne.documentGenereId === documentGenereId &&
       ligne.partie === "client" &&
-      ligne.revokedAt === null
+      ligne.revokedAt === null &&
+      ligne.usedAt === null &&
+      ligne.expiresAt.getTime() > Date.now()
     );
   } catch {
     return false;
@@ -186,8 +201,6 @@ export interface LigneALEnvoi {
   entityId: string;
 }
 
-const MSG_ENVOI_DEJA_EN_FILE = "Un envoi de ce devis est déjà en file.";
-
 /** Le verrou d'envoi de ce devis est déjà pris (autre clic, remise en main propre…). */
 export class EnvoiOccupe extends Error {
   constructor() {
@@ -197,24 +210,26 @@ export class EnvoiOccupe extends Error {
 }
 
 /** Délai de la transaction qui enfile (Prisma la ferme au-delà : le verrou consultatif tombe). */
-const TIMEOUT_TRANSACTION_ENVOI_MS = 60_000;
+export const TIMEOUT_TRANSACTION_ENVOI_MS = 60_000;
 
 // OUT-1 : la mise en file doit tenir dans la transaction, sinon Prisma la ferme pendant que l'ajout
-// est encore en vol. Somme RÉELLE du pire cas, étape par étape (lue par
-// `lien-a-l-envoi-delai-file.spec.ts`) :
-//   sonde externe (`sonder` : connexion + lecture)             10 s
-//   sonde interne d'`enqueueEmail` (connexion + lecture)        10 s
-//   retrait d'une tâche échouée                                   5 s
-//   journal (lecture + écriture en base)                          5 s
-//   ajout, jamais moins de                                       10 s
-//   relecture de la charge après l'ajout                          5 s
-//   marge                                                         5 s
-const BUDGET_ENVOI_REEL_MS =
+// est encore en vol. Somme RÉELLE du pire cas, étape par étape (constante exportée, lue par
+// `lien-a-l-envoi-delai-file.spec.ts`). Toute lecture ou écriture du chemin outbox est bornée :
+//   sonde externe : connexion 5 s + lecture de la file 5 s + lecture du journal 4 s    14 s
+//   sonde interne d'`enqueueEmail` : mêmes trois bornes                                14 s
+//   retrait d'une tâche échouée                                                         5 s
+//   écriture du journal « en attente » (course, `FileInjoignable` au-delà)              4 s
+//   ajout, jamais moins de                                                             10 s
+//   relecture de la charge après l'ajout                                                5 s
+//   marge                                                                               5 s
+// L'écriture du journal peut rester en vol après sa borne : voir le commentaire d'`enqueueEmail`.
+export const BUDGET_ENVOI_REEL_MS =
   DELAI_CONNEXION_FILE_MS +
   DELAI_LECTURE_FILE_MS +
-  (DELAI_CONNEXION_FILE_MS + DELAI_LECTURE_FILE_MS) +
+  DELAI_LECTURE_JOURNAL_MS +
+  (DELAI_CONNEXION_FILE_MS + DELAI_LECTURE_FILE_MS + DELAI_LECTURE_JOURNAL_MS) +
   DELAI_LECTURE_FILE_MS +
-  5_000 +
+  DELAI_ECRITURE_JOURNAL_MS +
   (DELAI_MISE_EN_FILE_OUTBOX_MS - DELAI_CONNEXION_FILE_MS - DELAI_LECTURE_FILE_MS) +
   DELAI_LECTURE_FILE_MS +
   5_000;
@@ -259,7 +274,9 @@ export async function envoyerAvecLienALEnvoi<R extends VerdictEnfilage = Verdict
   const marqueur = lireMarqueur(payload);
 
   // Lignes anciennes et autres gabarits : INCHANGÉ.
-  if (marqueur === null) return { type: "envoi", res: await enfiler(payload, ligne.recipient) };
+  if (marqueur === null) {
+    return { type: "envoi", res: sansLien(await enfiler(payload, ligne.recipient)) };
+  }
 
   if (
     "invalide" in marqueur ||
@@ -351,15 +368,16 @@ async function premierEnvoi<R extends VerdictEnfilage>(a: {
             etat.dejaFait = true;
             // Déjà marqué envoyé (autre chemin) : ni écriture ni alerte.
             if (devis.statut === "envoye") return { type: "envoi", res: sansLien(deja.verdict) };
-            if (!(await lienEnFileVivant(deja.urlEnFile, marqueur.documentGenereId))) {
-              etat.alerteSansMarquage = true;
-              return refus(MSG_ENVOI_DEJA_EN_FILE);
-            }
+            // Accepté, refusé, annulé, remplacé… : ni écriture ni alerte (rien à « renvoyer »).
+            if (devis.statut !== "brouillon") return { type: "envoi", res: sansLien(deja.verdict) };
             etat.verdict = sansLien(deja.verdict);
-            if (
-              devis.statut === "brouillon" &&
-              devis.updatedAt.getTime() === new Date(marqueur.devisUpdatedAt).getTime()
-            ) {
+            if (!(await lienEnFileVivant(deja.urlEnFile, marqueur.documentGenereId))) {
+              // L'e-mail est parti ou en file : la ligne passe « envoyé » (pas « refusé »), le devis
+              // reste brouillon, l'équipe est alertée au numéro du devis.
+              etat.alerteSansMarquage = true;
+              return { type: "envoi", res: etat.verdict };
+            }
+            if (devis.updatedAt.getTime() === new Date(marqueur.devisUpdatedAt).getTime()) {
               await marquerDevisEnvoye(tx, {
                 devisId: devis.id,
                 clientId: devis.clientId,
@@ -470,8 +488,10 @@ async function premierEnvoi<R extends VerdictEnfilage>(a: {
             etat.tokenId = null;
             etat.dejaFait = true;
             if (!(await lienEnFileVivant(urlEnFile, piece.id))) {
+              // L'e-mail est en file : « envoyé » pour la ligne, devis non marqué, alerte au numéro.
+              etat.verdict = verdict;
               etat.alerteSansMarquage = true;
-              return refus(MSG_ENVOI_DEJA_EN_FILE);
+              return { type: "envoi", res: verdict };
             }
           }
           etat.verdict = verdict;
@@ -497,7 +517,7 @@ async function premierEnvoi<R extends VerdictEnfilage>(a: {
           await journaliserEnvoi(acteur, marqueur);
         }
         // Envoi existant dont le lien n'est pas vérifié : le devis n'est pas marqué, on alerte.
-        if (r.type === "refus" && etat.alerteSansMarquage) {
+        if (etat.alerteSansMarquage) {
           await traiterEchecApresEnfilage({
             acteur,
             devisId: marqueur.devisId,
@@ -645,7 +665,9 @@ async function renvoi<R extends VerdictEnfilage>(a: {
     verdict: R | null;
     /** Aucun lien neuf émis (envoi déjà fait) : ni journal « lien émis » ni alerte de fin de transaction. */
     dejaFait: boolean;
-  } = { tokenId: null, url: null, verdict: null, dejaFait: false };
+    /** Le renvoi existe mais le lien de sa tâche n'est pas vivant : alerte au numéro, aucune écriture. */
+    numeroAAlerter: string | null;
+  } = { tokenId: null, url: null, verdict: null, dejaFait: false, numeroAAlerter: null };
 
   try {
     const res = await prisma.$transaction(
@@ -664,6 +686,15 @@ async function renvoi<R extends VerdictEnfilage>(a: {
         if (deja) {
           etat.dejaFait = true;
           etat.verdict = sansLien(deja.verdict);
+          // Le lien de la tâche est-il encore vivant (cette pièce, client, ni révoqué, expiré, utilisé) ?
+          // Sinon : alerte au numéro du devis seulement, aucune écriture ; la ligne passe « envoyé ».
+          if (!(await lienEnFileVivant(deja.urlEnFile, marqueur.documentGenereId))) {
+            const d = await tx.devis.findUnique({
+              where: { id: marqueur.devisId },
+              select: { numero: true },
+            });
+            etat.numeroAAlerter = d?.numero ?? "inconnu";
+          }
           return { type: "envoi", res: etat.verdict };
         }
 
@@ -744,6 +775,7 @@ async function renvoi<R extends VerdictEnfilage>(a: {
       { maxWait: 5_000, timeout: TIMEOUT_TRANSACTION_ENVOI_MS },
     );
     if (etat.verdict !== null && !etat.dejaFait) await journaliserRenvoi(acteur, marqueur);
+    if (etat.numeroAAlerter !== null) alerterLienDeRenvoiNonVivant(etat.numeroAAlerter);
     return res;
   } catch (err) {
     if (etat.verdict !== null && etat.dejaFait) {
@@ -771,6 +803,21 @@ async function renvoi<R extends VerdictEnfilage>(a: {
     // Rien n'est parti : le jeton neuf (s'il existe) est défait, l'ancien lien rendu.
     await annulerLeJeton(etat.tokenId, etat.url);
     throw err instanceof EnvoiNonParti ? err : new EnvoiNonParti(err);
+  }
+}
+
+/** Un renvoi est en file mais son lien n'est pas vivant : alerte au numéro (ni lien, ni adresse). Ne lève jamais. */
+function alerterLienDeRenvoiNonVivant(numero: string): void {
+  try {
+    signaler("lienALEnvoi.renvoi_lien_non_vivant", undefined);
+    const texte = `Devis ${numero} : un renvoi est déjà parti ou en file, mais le lien de signature qu'il porte n'est plus valable (révoqué, expiré ou utilisé). Vérifier le lien depuis la fiche du devis.`;
+    Sentry.captureMessage(texte, {
+      level: "error",
+      tags: { action: "lienALEnvoi.renvoi_lien_non_vivant_message" },
+    });
+    sendTelegram({ tag: "AUTO", body: `🔴 ${texte}` }).catch(() => {});
+  } catch {
+    // Une alerte qui échoue ne remonte pas : l'e-mail est parti.
   }
 }
 

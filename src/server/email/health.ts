@@ -616,6 +616,9 @@ export async function verifierSanteEmails(maintenant: Date = new Date()): Promis
     // n'est parti ; ce qui est parti est constaté (lien masqué) ; le reste est signalé.
     const anciens = await prisma.emailOutbox.findMany({
       where: { statut: "approuve", approuveAt: { lt: avantApprouve } },
+      // Balayage borné : les plus anciennes d'abord ; le reste est repris au passage suivant.
+      orderBy: { approuveAt: "asc" },
+      take: 200,
       select: {
         id: true,
         template: true,
@@ -703,8 +706,13 @@ export async function verifierSanteEmails(maintenant: Date = new Date()): Promis
       } else if (decision === "rien_parti") {
         aRemettre.push({ id: a.id, approuveAt: a.approuveAt });
       } else if (decision === "orphelin") {
-        await marquerAnnule(cle, MOTIF_ORPHELIN_CLOS);
-        aRemettre.push({ id: a.id, approuveAt: a.approuveAt });
+        // Remis « à valider » seulement si le journal a VRAIMENT été clos (1 ligne). Sinon (0 : ligne
+        // déjà close ailleurs, ou plus `pending`) on ne sait pas : la ligne reste « approuvé ».
+        if ((await marquerAnnule(cle, MOTIF_ORPHELIN_CLOS)) === 1) {
+          aRemettre.push({ id: a.id, approuveAt: a.approuveAt });
+        } else {
+          incertains++;
+        }
       } else {
         if (decision === "constat_1" && journal !== null) {
           await prisma.emailLog.updateMany({
@@ -754,9 +762,10 @@ export async function verifierSanteEmails(maintenant: Date = new Date()): Promis
       resultat.alertesLevees.push("emails_approuves_abandonnes");
     }
   } catch (e) {
+    // Le nom de la classe seulement : un message d'erreur peut porter une adresse ou un lien.
     console.error(
       "[email-sante] balayage des « approuvé » abandonnés impossible :",
-      e instanceof Error ? e.message : String(e),
+      e instanceof Error ? e.name : "inconnue",
     );
   }
 

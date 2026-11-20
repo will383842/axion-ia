@@ -54,6 +54,7 @@ import {
   lireDernierJournal,
 } from "./email-log";
 import { EmailLogStatus } from "../../../prisma/generated/client";
+import { MOTIF_CONSTAT_TACHE_ABSENTE } from "./outbox-en-cours";
 
 const BASE = {
   template: "qualiopi-convocation",
@@ -522,9 +523,16 @@ describe("OUT-1 — journal d'une tâche `outbox-<id>` : la ligne la plus récen
     expect(await journaliserEnAttente(ENTREE)).toBeNull();
   });
 
-  it("ligne `pending` : c'est elle (aucune écriture) ; `sent` ou `bounced` : null, rien posé", async () => {
+  it("ligne `pending` : c'est elle (seul le repère « tâche introuvable » est effacé) ; `sent` ou `bounced` : null, rien posé", async () => {
     findFirstMock.mockResolvedValue({ id: "log-p", status: "pending" });
     expect(await journaliserEnAttente(ENTREE)).toBe("log-p");
+    // R2 : la ré-approbation efface le repère du balayage, et lui seul (condition sur sa valeur).
+    expect(updateManyMock).toHaveBeenCalledTimes(1);
+    expect(updateManyMock).toHaveBeenCalledWith({
+      where: { id: "log-p", error: MOTIF_CONSTAT_TACHE_ABSENTE },
+      data: { error: null },
+    });
+    updateManyMock.mockClear();
     for (const statut of ["sent", "bounced"]) {
       findFirstMock.mockResolvedValue({ id: "log-s", status: statut });
       expect(await journaliserEnAttente(ENTREE)).toBeNull();

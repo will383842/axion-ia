@@ -26,6 +26,7 @@
  * en console, et on continue.
  */
 
+import { MOTIF_CONSTAT_TACHE_ABSENTE } from "@/server/email/outbox-en-cours";
 import { prisma } from "@/lib/prisma";
 import { redactEmailValue, sansAdresse } from "@/server/queue/lib/sanitize-job-data";
 import { EmailLogStatus } from "../../../prisma/generated/client";
@@ -130,7 +131,15 @@ export async function journaliserEnAttente(
           select: { id: true, status: true },
         });
         if (derniere) {
-          if (derniere.status === EmailLogStatus.pending) return derniere.id;
+          if (derniere.status === EmailLogStatus.pending) {
+            // Ré-approbation d'une ligne que le balayage avait notée « tâche introuvable » : le
+            // repère est effacé, la règle des deux constats repart de zéro.
+            await tx.emailLog.updateMany({
+              where: { id: derniere.id, error: MOTIF_CONSTAT_TACHE_ABSENTE },
+              data: { error: null },
+            });
+            return derniere.id;
+          }
           if (
             derniere.status === EmailLogStatus.failed ||
             derniere.status === EmailLogStatus.cancelled

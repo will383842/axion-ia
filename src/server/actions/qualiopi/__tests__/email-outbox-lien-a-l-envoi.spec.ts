@@ -57,17 +57,10 @@ vi.mock("@/server/qualiopi/devis/interrupteur-formules", () => ({
   formulesActives: async () => true,
 }));
 vi.mock("@/server/qualiopi/devis/marquer-devis-envoye", () => ({ marquerDevisEnvoye: vi.fn() }));
-vi.mock("@/server/qualiopi/documents/signature/lien-precedent", () => ({
-  ligneDuLien: async () =>
-    h.sonde.vivant
-      ? {
-          id: "lien-en-file",
-          documentGenereId: "piece-1",
-          partie: "client",
-          createdAt: new Date(),
-          revokedAt: null,
-        }
-      : null,
+vi.mock("@/server/qualiopi/documents/signature/lien-precedent", async (importOriginal) => ({
+  ...(await importOriginal<
+    typeof import("@/server/qualiopi/documents/signature/lien-precedent")
+  >()),
   // L'ancien lien est rendu : le jeton neuf ne vit plus.
   rendreLienPrecedent: async (url: string) => {
     h.vivants.delete(url.split("/").pop() as string);
@@ -112,6 +105,19 @@ vi.mock("@/lib/prisma", () => ({
     devis: {
       findUnique: (...a: unknown[]) => h.devisFindUnique(...a),
       count: (...a: unknown[]) => h.devisCount(...a),
+    },
+    documentSignatureToken: {
+      // R4 : lecture locale du lien de la tâche (échéance et usage compris).
+      findUnique: async () =>
+        h.sonde.vivant
+          ? {
+              documentGenereId: "piece-1",
+              partie: "client",
+              revokedAt: null,
+              usedAt: null,
+              expiresAt: new Date(Date.now() + 86_400_000),
+            }
+          : null,
     },
     $transaction: async (f: (t: unknown) => unknown) => {
       h.nbTransactions.v += 1;

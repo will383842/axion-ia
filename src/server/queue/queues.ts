@@ -19,9 +19,12 @@ import {
   lireDernierJournal,
   marquerEchecMiseEnFile,
 } from "@/server/email/email-log";
+import { cleLienSignature } from "@/server/email/masquer-lien-signature-payload";
 import {
   DELAI_CONNEXION_FILE_MS,
+  DELAI_ECRITURE_JOURNAL_MS,
   DELAI_LECTURE_FILE_MS,
+  DELAI_LECTURE_JOURNAL_MS,
   DELAI_MISE_EN_FILE_OUTBOX_MS,
   FileInjoignable,
   MiseEnFileIncertaine,
@@ -1008,17 +1011,20 @@ export async function lireEtatTacheOutbox(cle: string): Promise<EtatTacheOutbox>
   return (await lireTacheOutbox(cle)).etat;
 }
 
-/** Le lien de signature porté par la charge d'une tâche (`signatureUrl`, ou `lien`), ou `null`. */
+/**
+ * Le lien de signature porté par la charge d'une tâche, ou `null`. Il n'est lu QUE pour les
+ * gabarits connus de `cleLienSignature` et sous SA clé : la clé `lien` d'un autre gabarit n'est
+ * jamais lue (ni rendue, ni comparée).
+ */
 function urlSignatureDeLaCharge(data: unknown): string | null {
   if (data === null || typeof data !== "object") return null;
-  const payload = (data as { payload?: unknown }).payload;
+  const { template, payload } = data as { template?: unknown; payload?: unknown };
+  if (typeof template !== "string") return null;
+  const cle = cleLienSignature(template);
+  if (cle === null) return null;
   if (payload === null || typeof payload !== "object") return null;
-  const p = payload as Record<string, unknown>;
-  for (const cle of ["signatureUrl", "lien"]) {
-    const v = p[cle];
-    if (typeof v === "string" && v !== "") return v;
-  }
-  return null;
+  const v = (payload as Record<string, unknown>)[cle];
+  return typeof v === "string" && v !== "" ? v : null;
 }
 
 /**
@@ -1057,9 +1063,14 @@ export async function sonderEnvoiOutboxAvecLien(
   cle: string,
 ): Promise<{ dejaFait: boolean; urlEnFile: string | null }> {
   const { etat, urlSignature } = await lireTacheOutbox(cle);
-  const journal = await lireDernierJournal(cle).catch(() => {
-    throw new FileInjoignable();
-  });
+  // Lecture en base bornée (comme la file) : au-delà, `FileInjoignable`, rien n'est écrit.
+  const lectureJournal = await avecDelai(lireDernierJournal(cle), DELAI_LECTURE_JOURNAL_MS).catch(
+    () => {
+      throw new FileInjoignable();
+    },
+  );
+  if ("delaiDepasse" in lectureJournal) throw new FileInjoignable();
+  const journal = lectureJournal.valeur;
   return { dejaFait: estDejaFait(etat, journal), urlEnFile: urlSignature };
 }
 
@@ -1341,7 +1352,7 @@ export async function enqueueEmail(
 
   let lignePosee: string | null = null;
   if (journalise) {
-    lignePosee = await journaliserEnAttente({
+    const ecritureJournal = journaliserEnAttente({
       template,
       recipient: to,
       locale,
@@ -1357,6 +1368,22 @@ export async function enqueueEmail(
       ...(options?.entityType ? { entityType: options.entityType } : {}),
       ...(options?.entityId ? { entityId: options.entityId } : {}),
     });
+    if (cleOutbox === undefined) {
+      lignePosee = await ecritureJournal;
+    } else {
+      // OUT-1 (R6) — borne de l'écriture du journal en mode outbox, AVANT tout ajout : au-delà,
+      // `FileInjoignable` et rien n'est ajouté. L'écriture déjà en vol peut encore aboutir et
+      // laisser une ligne « en attente » sans tâche : c'est le cas que le balayage tranche (deux
+      // constats « tâche introuvable » la ferment, rien n'est parti) ; la ré-approbation la
+      // rouvre par le même chemin. Ce risque est accepté : sans borne, la transaction de
+      // l'appelant pouvait être fermée par Prisma pendant que cette écriture attendait.
+      ecritureJournal.catch(() => undefined);
+      const ecrite = await avecDelai(ecritureJournal, DELAI_ECRITURE_JOURNAL_MS).catch(() => {
+        throw new FileInjoignable();
+      });
+      if ("delaiDepasse" in ecrite) throw new FileInjoignable();
+      lignePosee = ecrite.valeur;
+    }
   }
 
   // OUT-1 (C3) — en mode outbox, pas de ligne « en attente » rendue = journal en panne ou ligne
