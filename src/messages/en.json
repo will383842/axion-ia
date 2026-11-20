@@ -535,7 +535,7 @@
     },
     "form": {
       "hook": "Where do you really stand with AI?",
-      "subhook": "4 minutes. Compare your company to the executives already surveyed.",
+      "subhook": "4 minutes, no email. Get your Score IA TPE-PME, then add your answers to the Observatory if you wish.",
       "stepOf": "Step {current} of {total}",
       "next": "Next",
       "previous": "Previous",
