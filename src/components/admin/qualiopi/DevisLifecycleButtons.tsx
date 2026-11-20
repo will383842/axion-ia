@@ -102,6 +102,29 @@ function jourParisIso(jours: number): string {
   return new Date(Date.UTC(y, mo - 1, d) + jours * JOUR_MS).toISOString().slice(0, 10);
 }
 
+/**
+ * Plus petite date proposée : le plus tard entre demain et le lendemain de la validité actuelle
+ * (le serveur refuse une date non postérieure à l'actuelle). Les dates `AAAA-MM-JJ` se comparent
+ * comme des chaînes.
+ */
+function minNouvelleDate(dateValiditeIso: string | undefined): string {
+  const demain = jourParisIso(1);
+  if (!dateValiditeIso) return demain;
+  const actuelle = new Date(dateValiditeIso);
+  if (Number.isNaN(actuelle.getTime())) return demain;
+  const [y, mo, d] = new Intl.DateTimeFormat("en-CA", {
+    timeZone: "Europe/Paris",
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+  })
+    .format(actuelle)
+    .split("-")
+    .map(Number) as [number, number, number];
+  const lendemain = new Date(Date.UTC(y, mo - 1, d) + JOUR_MS).toISOString().slice(0, 10);
+  return lendemain > demain ? lendemain : demain;
+}
+
 /** `AAAA-MM-JJ` → `JJ/MM/AAAA`. */
 function jourLisible(iso: string): string {
   const [y, mo, d] = iso.split("-");
@@ -540,7 +563,7 @@ export function DevisLifecycleButtons({
                 type="date"
                 name="nouvelleDate"
                 value={nouvelleDate}
-                min={jourParisIso(1)}
+                min={minNouvelleDate(dateValiditeIso)}
                 max={jourParisIso(90)}
                 onChange={(e) => setNouvelleDate(e.target.value)}
                 disabled={isPending}

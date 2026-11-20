@@ -31,6 +31,7 @@ import {
 } from "@/server/qualiopi/devis/date-validite";
 import { emailDevisEnAttente } from "@/server/qualiopi/devis/email-devis-en-attente";
 import { pasSigneParLeClient } from "@/server/qualiopi/devis/pas-signe-par-le-client";
+import { prendreVerrouEnvoiDevis } from "@/server/qualiopi/devis/marquer-devis-envoye";
 import {
   SELECT_SIGNATURES_PIECE,
   signatureClientDuDevis,
@@ -46,6 +47,15 @@ const entreeSchema = z.object({
 });
 
 class CourseDevisPerdue extends Error {}
+/** Refus levé DANS la transaction (annule tout) ; son message est rendu tel quel. */
+class RefusDansTransaction extends Error {}
+
+const MSG_VERSION_PLUS_RECENTE =
+  "Une version plus récente de ce devis a déjà été envoyée : c'est elle qu'il faut prolonger.";
+const MSG_VERROU =
+  "Un envoi de ce devis est déjà en cours : réessayez dans un instant. Rien n'a été émis ni envoyé.";
+const MSG_EMAIL_ATTENTE =
+  "Un e-mail de ce devis attend dans Emails → À valider : validez-le ou refusez-le avant de prolonger.";
 
 /** Chaîne brute imprimée sur le PDF scellé (`metadata.renderData.data.dateValidite`), ou null. */
 function dateImprimeeSurPdf(metadata: unknown): string | null {
@@ -74,7 +84,7 @@ export async function prolongerValiditeDevisAction(
   if (!jour) return { error: "Date invalide." };
 
   const aujourdhui = minuitParisUtc(new Date());
-  const jours = Math.round((Date.UTC(jour.y, jour.mo - 1, jour.d) - aujourdhui) / JOUR_MS);
+  const jours = (Date.UTC(jour.y, jour.mo - 1, jour.d) - aujourdhui) / JOUR_MS;
   if (jours < 1 || jours > VALIDITE_MAX_JOURS) {
     const limite = new Date(aujourdhui + VALIDITE_MAX_JOURS * JOUR_MS);
     const jj = String(limite.getUTCDate()).padStart(2, "0");
@@ -117,12 +127,7 @@ export async function prolongerValiditeDevisAction(
     where: { replacesDevisId: devisId, statut: { not: "brouillon" } },
     select: { id: true },
   });
-  if (successeur) {
-    return {
-      error:
-        "Une version plus récente de ce devis a déjà été envoyée : c'est elle qu'il faut prolonger.",
-    };
-  }
+  if (successeur) return { error: MSG_VERSION_PLUS_RECENTE };
   if (lu.documentGenere?.annuleeAt) {
     return { error: "La pièce de ce devis a été annulée : utilisez « Corriger et renvoyer »." };
   }
@@ -132,12 +137,6 @@ export async function prolongerValiditeDevisAction(
         "Ce devis porte une estimation de règlement par un tiers liée à sa date : pour changer la date, utilisez « Corriger et renvoyer ».",
     };
   }
-  if (await emailDevisEnAttente(prisma, devisId)) {
-    return {
-      error:
-        "Un e-mail de ce devis attend dans Emails → À valider : validez-le ou refusez-le avant de prolonger.",
-    };
-  }
   const nouvelle = finDeJourneeParis(jour.y, jour.mo, jour.d);
   if (nouvelle.getTime() <= lu.dateValidite.getTime()) {
     return {
@@ -145,13 +144,20 @@ export async function prolongerValiditeDevisAction(
     };
   }
 
-  const rouvert = lu.statut === "expire";
+  const statutLu = lu.statut; // rétréci à « envoye » | « expire » par les gardes ci-dessus
+  const rouvert = statutLu === "expire";
   try {
     await prisma.$transaction(async (tx) => {
+      // 1. Verrou d'envoi (même clé que l'envoi et le renvoi), tenu jusqu'à la fin de la transaction.
+      if (!(await prendreVerrouEnvoiDevis(tx, devisId))) throw new RefusDansTransaction(MSG_VERROU);
+      // 2. E-mail en attente, lu DANS la transaction, sous le verrou.
+      if (await emailDevisEnAttente(tx, devisId)) throw new RefusDansTransaction(MSG_EMAIL_ATTENTE);
+      // 3. Écriture (statut LU dans le `where`, `statut` littéral dans `data`).
       const { count } = await tx.devis.updateMany({
         where: {
           id: devisId,
-          statut: { in: ["envoye", "expire"] },
+          // Statut LU (pas une liste) : le journal (`statutAvant`, `rouvert`) dit toujours vrai.
+          statut: statutLu,
           dateValidite: lu.dateValidite,
           ...pasSigneParLeClient,
         },
@@ -159,6 +165,12 @@ export async function prolongerValiditeDevisAction(
         data: { dateValidite: nouvelle, statut: "envoye" },
       });
       if (count === 0) throw new CourseDevisPerdue();
+      // 4. Une version suivante émise entre la lecture et l'écriture annule tout.
+      const suivante = await tx.devis.findFirst({
+        where: { replacesDevisId: devisId, statut: { not: "brouillon" } },
+        select: { id: true },
+      });
+      if (suivante) throw new RefusDansTransaction(MSG_VERSION_PLUS_RECENTE);
       await emettreDevisEmis(tx, devisId);
       await tx.activityLog.create({
         data: await donneesJournalQualiopi({
@@ -180,6 +192,7 @@ export async function prolongerValiditeDevisAction(
       });
     });
   } catch (err) {
+    if (err instanceof RefusDansTransaction) return { error: err.message };
     if (err instanceof CourseDevisPerdue) {
       return {
         error:

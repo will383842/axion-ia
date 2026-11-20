@@ -95,8 +95,18 @@ describe("DevisLifecycleButtons — prolonger la validité", () => {
     expect(screen.getByText("Aucune action disponible pour ce statut.")).toBeTruthy();
   });
 
-  it("bornes_min_max_du_champ", async () => {
+  it("min_est_le_lendemain_de_la_validite_actuelle_si_elle_est_plus_tard_que_demain", async () => {
+    // Validité actuelle le 12/07 (Paris) : le serveur refuse une date non postérieure → min = 13/07.
     monter();
+    await userEvent.click(screen.getByRole("button", BOUTON));
+    const champ = screen.getByLabelText("Nouvelle date de validité") as HTMLInputElement;
+    expect(champ.min).toBe("2026-07-13");
+    expect(champ.max).toBe("2026-10-08");
+  });
+
+  it("bornes_min_max_du_champ", async () => {
+    // Validité actuelle déjà passée : le minimum reste demain.
+    monter({ dateValiditeIso: "2026-07-08T21:59:59.000Z" });
     await userEvent.click(screen.getByRole("button", BOUTON));
     const champ = screen.getByLabelText("Nouvelle date de validité") as HTMLInputElement;
     expect(champ.type).toBe("date");
