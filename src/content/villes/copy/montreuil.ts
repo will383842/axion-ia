@@ -747,7 +747,7 @@ export const MONTREUIL_COPY: VilleCopy = {
         whyHere: [
           "Montreuil concentrates executives and managers with very diverse profiles — gaming studio, financial directorate, IT team, social economy — for whom an individual format is often more effective than a group one.",
           "Full confidentiality: your data, your projects and your strategic issues stay within the session framework. Strict confidentiality before each engagement.",
-          "The pace is yours: ad-hoc sessions on demand, regular monthly follow-up or intensive over a few weeks depending on your goal.",
+          "The pace is yours: ad-hoc sessions on demand, regular monthly coaching or intensive over a few weeks depending on your goal.",
           "Each session starts from your real documents and your real workflows — no fictional exercises. You leave with operational tools and practices.",
           "Accessible from Montreuil without constraints: on-site sessions at your offices or video call depending on your preference.",
           "Entry price accessible to freelancers and micro-businesses — not reserved for large organisations.",

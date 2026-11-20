@@ -712,7 +712,7 @@ export const BESANCON_COPY: VilleCopy = {
         faq: [
           {
             q: "Combien de sessions comprend un accompagnement individuel à Besançon ?",
-            a: "Le nombre de sessions est défini ensemble en diagnostic initial selon vos objectifs et votre niveau de départ. Un Pack Découverte peut tenir en quelques sessions, un Pack Leadership IA en s'étale sur plus de temps avec un suivi régulier.",
+            a: "Le nombre de sessions est défini ensemble en diagnostic initial selon vos objectifs et votre niveau de départ. Un Pack Découverte peut tenir en quelques sessions, un Pack Leadership IA s'étale sur plus de temps avec un coaching régulier.",
           },
           {
             q: "Les sessions peuvent-elles se tenir à distance ?",
@@ -732,7 +732,7 @@ export const BESANCON_COPY: VilleCopy = {
           },
           {
             q: "Que se passe-t-il après la fin de l'accompagnement ?",
-            a: "Vous disposez de votre plan IA personnel documenté, de vos outils configurés et de vos prompts. Si vous souhaitez continuer, des sessions de suivi ponctuelles sont disponibles. Aucun engagement de durée minimum au-delà du pack initial.",
+            a: "Vous disposez de votre plan IA personnel documenté, de vos outils configurés et de vos prompts. Aucun engagement de durée minimum au-delà du pack initial.",
           },
         ],
         guarantees:
@@ -799,7 +799,7 @@ export const BESANCON_COPY: VilleCopy = {
         faq: [
           {
             q: "How many sessions does one-to-one coaching in Besançon include?",
-            a: "The number of sessions is defined together at the initial diagnosis based on your goals and starting level. A Discovery pack may fit in a few sessions, an AI Leadership pack spans more time with regular follow-up.",
+            a: "The number of sessions is defined together at the initial diagnosis based on your goals and starting level. A Discovery pack may fit in a few sessions, an AI Leadership pack spans more time with regular coaching.",
           },
           {
             q: "Can sessions take place remotely?",

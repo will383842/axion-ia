@@ -309,7 +309,7 @@ const UN_A_UN_FR: VilleServiceCopyLocale = {
     "Chaque session est construite autour de VOS cas métier réels : bons de livraison, scripts, devis BTP, dossiers ESS, emails — pas de générique.",
     "Flexibilité maximale : le format s'adapte à votre emploi du temps de dirigeant ou de manager — matinée, journée complète, séances étalées.",
     "De la Plaine Saint-Denis au hub Pleyel Grand Paris Express : si vous avez des rendez-vous clients dans tout le Grand Paris, nous adaptons les sessions à votre géographie professionnelle.",
-    "Suivi dans la durée possible : plusieurs séances progressives pour ancrer les pratiques IA dans votre quotidien opérationnel.",
+    "Coaching dans la durée possible : plusieurs séances progressives pour ancrer les pratiques IA dans votre quotidien opérationnel.",
     "Tarif d'entrée accessible aux indépendants et structures ESS dyonisiennes — voir la grille tarifaire publique.",
   ],
   methodology: [

@@ -661,7 +661,7 @@ export const LYON_COPY: VilleCopy = {
           {
             step: "Bilan et autonomie",
             detail:
-              "À l'issue du parcours convenu, un bilan écrit confidentiel : ce que vous maîtrisez, les usages à consolider, les ressources pour continuer seul. Vous êtes autonome. Si vous souhaitez un suivi ponctuel ultérieur, sessions à la carte disponibles sans engagement.",
+              "À l'issue du parcours convenu, un bilan écrit confidentiel : ce que vous maîtrisez, les usages à consolider, les ressources pour continuer seul. Vous êtes autonome.",
           },
         ],
         pricing: [
@@ -753,7 +753,7 @@ export const LYON_COPY: VilleCopy = {
           {
             step: "Assessment and autonomy",
             detail:
-              "At the end of the agreed programme, a confidential written assessment: what you have mastered, usages to consolidate, resources to continue alone. You are autonomous. If you want occasional follow-up later, on-demand sessions available without commitment.",
+              "At the end of the agreed programme, a confidential written assessment: what you have mastered, usages to consolidate, resources to continue alone. You are autonomous.",
           },
         ],
         pricing: [

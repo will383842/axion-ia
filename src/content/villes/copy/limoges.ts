@@ -690,8 +690,7 @@ export const LIMOGES_COPY: VilleCopy = {
           },
           {
             step: "Bilan et suite",
-            detail:
-              "Bilan en fin de programme : acquis consolidés, prochaines étapes autonomes, option de suivi ponctuel si nécessaire.",
+            detail: "Bilan en fin de programme : acquis consolidés, prochaines étapes autonomes.",
           },
         ],
         pricing: [
@@ -782,8 +781,7 @@ export const LIMOGES_COPY: VilleCopy = {
           },
           {
             step: "Review and next steps",
-            detail:
-              "End-of-programme review: consolidated skills, autonomous next steps, option of occasional follow-up if needed.",
+            detail: "End-of-programme review: consolidated skills, autonomous next steps.",
           },
         ],
         pricing: [

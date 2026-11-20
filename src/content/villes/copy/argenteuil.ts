@@ -661,7 +661,7 @@ export const ARGENTEUIL_COPY: VilleCopy = {
           "Chaque session est construite autour de VOS cas métier réels : devis, emails clients, qualification de chantiers, reporting, gestion administrative — pas de générique.",
           "Flexibilité maximale : le format s'adapte à votre emploi du temps de dirigeant — matinée, journée complète, séances étalées dans le temps.",
           "Accompagnement de la gare d'Argenteuil à La Défense : si vous avez des rendez-vous clients dans le Grand Paris, nous adaptons les sessions à votre géographie professionnelle.",
-          "Suivi dans la durée possible : plusieurs séances progressives pour ancrer les pratiques IA dans votre quotidien opérationnel.",
+          "Coaching dans la durée possible : plusieurs séances progressives pour ancrer les pratiques IA dans votre quotidien opérationnel.",
           "Tarif d'entrée accessible aux indépendants et micro-entrepreneurs argenteuillais — voir la grille tarifaire publique.",
         ],
         methodology: [
@@ -748,7 +748,7 @@ export const ARGENTEUIL_COPY: VilleCopy = {
           "Every session is built around YOUR real business cases: quotes, client emails, site qualification, reporting, admin management — nothing generic.",
           "Maximum flexibility: the format adapts to your executive schedule — morning, full day, staggered sessions over time.",
           "From Argenteuil station to La Défense: if you have client meetings across Grand Paris, we adapt sessions to your professional geography.",
-          "Long-term follow-up available: multiple progressive sessions to embed AI practices in your daily operations.",
+          "Long-term coaching available: multiple progressive sessions to embed AI practices in your daily operations.",
           "Entry-level pricing accessible to Argenteuil freelancers and micro-entrepreneurs — see public pricing grid.",
         ],
         methodology: [
