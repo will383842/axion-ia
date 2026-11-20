@@ -28,6 +28,7 @@ export interface ContexteEnTete {
 export type LireClient = (id: string) => Promise<Client360 | null>;
 
 import { calculerPipeline, type PipelineCalcule } from "./pipeline";
+import { signeParLeClient } from "@/server/qualiopi/devis/pas-signe-par-le-client";
 import { devisEnAttentePourPipeline, type DevisEnAttente } from "./pipeline-devis";
 import { santeDuCompte, type SanteDuCompte } from "./sante-du-compte";
 
@@ -171,10 +172,17 @@ async function construire(ctx: ContexteEnTete, lireClient: LireClient): Promise<
     // Lecture seule : mêmes totaux que le PDF (`montantsDevis` + `computeTotauxFacture`).
     proteger(async () => {
       const devis = await prisma.devis.findMany({
-        where: { clientId: id, statut: "envoye" },
+        // Échu = « Expiré » dans la liste : exclu, SAUF signé par le client (contresignature en
+        // attente : le job d'expiration ne l'expire jamais, c'est un devis gagné).
+        where: {
+          clientId: id,
+          statut: "envoye",
+          OR: [{ dateValidite: { gte: ctx.maintenant } }, signeParLeClient],
+        },
         select: {
           id: true,
           statut: true,
+          activite: true,
           offre: true,
           lignes: true,
           montantTotalHtCents: true,
@@ -187,7 +195,8 @@ async function construire(ctx: ContexteEnTete, lireClient: LireClient): Promise<
       const { getQualiopiConfig } = await import("@/server/qualiopi/config/site-settings");
       const regime = regimeTvaDepuisConfig(await getQualiopiConfig("regime_tva"));
       const taux = (await getQualiopiConfig("taux_tva_standard_percent")) || TAUX_TVA_STANDARD;
-      return devisEnAttentePourPipeline(devis, regime, taux);
+      const { formulesActives } = await import("@/server/qualiopi/devis/interrupteur-formules");
+      return devisEnAttentePourPipeline(devis, regime, taux, await formulesActives());
     }),
   ]);
 

@@ -1,4 +1,7 @@
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
+
+import { normaliserLignesPourActivite } from "@/server/qualiopi/financements/facture-libre-pur";
+import { computeTotauxFacture } from "@/server/qualiopi/legal/tva";
 
 import { offreFictive } from "@/server/qualiopi/devis/offre-fixtures.spec-util";
 
@@ -20,7 +23,8 @@ const devis = (surcharge: Partial<DevisPourPipeline> = {}): DevisPourPipeline =>
   createdAt: new Date("2026-10-30T10:00:00Z"),
   ...surcharge,
 });
-const calc = (d: DevisPourPipeline[]) => devisEnAttentePourPipeline(d, "assujetti", 20);
+const calc = (d: DevisPourPipeline[], formulesActives = true) =>
+  devisEnAttentePourPipeline(d, "assujetti", 20, formulesActives);
 
 describe("devisEnAttentePourPipeline", () => {
   it("aucun devis : null (affichage d'avant)", () => {
@@ -47,7 +51,7 @@ describe("devisEnAttentePourPipeline", () => {
     ]);
     expect(r).toMatchObject({ nb: 2, htCents: 150_000, ttcCents: 180_000, dernierDevisId: "b" });
   });
-  it.each(["accepte", "signe", "refuse", "decline", "expire", "annule", "brouillon"])(
+  it.each(["accepte", "refuse", "expire", "brouillon", "transforme_convention"])(
     "statut %s : non compté",
     (statut) => {
       expect(calc([devis({ statut })])).toBeNull();
@@ -66,8 +70,58 @@ describe("devisEnAttentePourPipeline", () => {
     // base 33 336 × 20 % = 6 667,2 → 6 667
     expect(r).toMatchObject({ htCents: 33_336, ttcCents: 40_003 });
   });
-  it("sans TVA hors régime assujetti : TTC = HT", () => {
+  it("devis classique hors régime assujetti : suit tauxTvaLigne comme le PDF (20 % saisi → TTC > HT)", () => {
     const r = devisEnAttentePourPipeline([devis()], "franchise_293b", 20);
+    expect(r).toMatchObject({ htCents: 100_000, ttcCents: 120_000 });
+  });
+  it("devis classique hors régime assujetti sans taux de ligne : TTC = HT", () => {
+    const l = { designation: "P", quantite: 1, prixUnitaireHtCents: 100_000 };
+    const r = devisEnAttentePourPipeline([devis({ lignes: [l] })], "franchise_293b", 20);
     expect(r).toMatchObject({ htCents: 100_000, ttcCents: 100_000 });
+  });
+  it("devis à formules hors régime assujetti : taux de ligne ignoré", () => {
+    const r = devisEnAttentePourPipeline(
+      [devis({ offre: offreFictive(), lignes: [], montantTotalHtCents: 0 })],
+      "franchise_293b",
+      20,
+      true,
+    );
+    expect(r).toMatchObject({ htCents: 30_000, ttcCents: 30_000 });
+  });
+  it("activité formation + ligne à 0 % : TTC identique au PDF (normalisation par activité)", () => {
+    const l0 = { designation: "F", quantite: 1, prixUnitaireHtCents: 100_000, tauxTvaPercent: 0 };
+    const attendu = computeTotauxFacture(
+      normaliserLignesPourActivite([l0], "formation", "assujetti", 20),
+      "assujetti",
+      20,
+    );
+    const r = devisEnAttentePourPipeline(
+      [devis({ lignes: [l0], activite: "formation" })],
+      "assujetti",
+      20,
+    );
+    expect(r).toMatchObject({ htCents: attendu.totalHtCents, ttcCents: attendu.totalTtcCents });
+    expect(r!.ttcCents).toBe(120_000);
+  });
+  it("interrupteur formules éteint : l'offre est ignorée, lecture comme le PDF (lignes)", () => {
+    const r = calc([devis({ offre: offreFictive() })], false);
+    expect(r).toMatchObject({ htCents: 100_000, ttcCents: 120_000, aPartirDe: false });
+  });
+  it("offre illisible : ignorée, comptée, les autres devis restent comptés", () => {
+    const warn = vi.spyOn(console, "warn").mockImplementation(() => {});
+    const r = devisEnAttentePourPipeline(
+      [devis({ id: "ok" }), devis({ id: "ko", offre: { n: "importe quoi" } })],
+      "assujetti",
+      20,
+      true,
+    );
+    expect(r).toMatchObject({ nb: 1, htCents: 100_000, illisibles: 1, dernierDevisId: "ok" });
+    expect(JSON.stringify(warn.mock.calls)).not.toContain("ko");
+    warn.mockRestore();
+  });
+  it("tous illisibles : aucun total, aucun lien", () => {
+    vi.spyOn(console, "warn").mockImplementation(() => {});
+    const r = devisEnAttentePourPipeline([devis({ offre: { n: 1 } })], "assujetti", 20, true);
+    expect(r).toMatchObject({ nb: 0, htCents: 0, illisibles: 1, dernierDevisId: null });
   });
 });

@@ -135,6 +135,7 @@ describe("TuilesFiche — devis en attente", () => {
       ttcCents: 120_000,
       aPartirDe: false,
       dernierDevisId: "dv9",
+      illisibles: 0,
       ...surcharge,
     });
   it("un devis envoyé : « 1 000 € HT / 1 200 € TTC » et lien vers le devis", () => {
@@ -164,12 +165,22 @@ describe("TuilesFiche — devis en attente", () => {
     expect(h).toContain("2 500 € HT");
     expect(h).toContain("estimation saisie : 1 000 € HT");
   });
-  it("aucun devis envoyé ou lecture en panne : affichage d'avant", () => {
-    for (const d of [ok(null), { ok: false as const }]) {
-      const h = tuiles(enTete({ devisEnAttente: d }));
-      expect(h).toContain("40 % de chances de signer");
-      expect(h).not.toContain("Voir le devis");
-    }
+  it("aucun devis envoyé : affichage d'avant", () => {
+    const h = tuiles(enTete({ devisEnAttente: ok(null) }));
+    expect(h).toContain("40 % de chances de signer");
+    expect(h).not.toContain("Voir le devis");
+  });
+  it("lecture des devis en panne : état de panne, pas l'estimation saisie", () => {
+    const h = tuiles(enTete({ devisEnAttente: { ok: false as const } }));
+    expect(h).toContain("Lecture impossible");
+    expect(h).not.toContain("40 % de chances de signer");
+    expect(h).not.toContain("1 000 € HT");
+    expect(h).not.toContain("Voir le devis");
+  });
+  it("devis illisibles : « dont N illisible(s) »", () => {
+    const h = tuiles(enTete({ devisEnAttente: attente({ nb: 2, illisibles: 1 }) }));
+    expect(h).toContain("dont 1 illisible");
+    expect(tuiles(enTete({ devisEnAttente: attente() }))).not.toContain("illisible");
   });
 });
 

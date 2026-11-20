@@ -11,8 +11,20 @@ vi.mock("@/lib/prisma", () => ({
     emailOutbox: { count: vi.fn().mockResolvedValue(0) },
     projetSuivi: { findMany: vi.fn().mockResolvedValue([]) },
     clientContact: { count: vi.fn().mockResolvedValue(0) },
-    devis: { count: vi.fn().mockResolvedValue(0), findMany: vi.fn().mockResolvedValue([]) },
+    devis: {
+      count: vi.fn().mockResolvedValue(0),
+      findMany: vi.fn().mockResolvedValue([]),
+      create: vi.fn(),
+      update: vi.fn(),
+      updateMany: vi.fn(),
+      upsert: vi.fn(),
+      delete: vi.fn(),
+      deleteMany: vi.fn(),
+    },
   },
+}));
+vi.mock("@/server/qualiopi/devis/interrupteur-formules", () => ({
+  formulesActives: vi.fn(async () => true),
 }));
 vi.mock("@/server/qualiopi/config/site-settings", () => ({
   getQualiopiConfig: vi.fn(async (cle: string) =>
@@ -234,8 +246,21 @@ describe("lireEnTete — devis en attente (lecture seule)", () => {
         ttcCents: 120_000,
         aPartirDe: false,
         dernierDevisId: "d1",
+        illisibles: 0,
       },
     });
+    expect(prisma.devis.findMany).toHaveBeenCalledWith(
+      expect.objectContaining({
+        where: expect.objectContaining({
+          clientId: "c1",
+          statut: "envoye",
+          OR: [
+            { dateValidite: { gte: MAINTENANT } },
+            expect.objectContaining({ documentGenere: expect.anything() }),
+          ],
+        }),
+      }),
+    );
     const ecritures = [
       "create",
       "update",
@@ -250,6 +275,15 @@ describe("lireEnTete — devis en attente (lecture seule)", () => {
         if (typeof modele[m] === "function") expect(modele[m]).not.toHaveBeenCalled();
       }
     }
+  });
+  it("offre illisible : le devis est ignoré et compté, la lecture ne tombe pas", async () => {
+    vi.spyOn(console, "warn").mockImplementation(() => {});
+    vi.mocked(prisma.devis.findMany).mockResolvedValueOnce([
+      devisEnvoye,
+      { ...devisEnvoye, id: "d2", offre: { n: 1 } },
+    ] as never);
+    const e = await lireEnTete(ctx(), async () => client);
+    expect(e!.devisEnAttente).toMatchObject({ ok: true, valeur: { nb: 1, illisibles: 1 } });
   });
   it("lecture des devis en panne : « Lecture impossible » côté devis seulement", async () => {
     vi.mocked(prisma.devis.findMany).mockRejectedValueOnce(new Error("panne"));

@@ -43,10 +43,27 @@ export function TuilesFiche(props: {
   const { enTete: e, ficheHref } = props;
 
   const pipeline = (() => {
-    const devis = e.devisEnAttente.ok ? e.devisEnAttente.valeur : null;
+    // Lecture des devis en panne : état de panne, jamais l'estimation saisie présentée comme sûre.
+    if (!e.devisEnAttente.ok) return panne("Pipeline", TrendingUp);
+    const devis = e.devisEnAttente.valeur;
     if (devis !== null) {
       const { ht, ttc } = htEtTtc(devis.htCents);
-      const nb = `${devis.nb} devis en attente`;
+      const illisibles =
+        devis.illisibles > 0
+          ? ` · dont ${devis.illisibles} illisible${devis.illisibles > 1 ? "s" : ""}`
+          : "";
+      const nb = `${devis.nb} devis en attente${illisibles}`;
+      if (devis.dernierDevisId === null) {
+        return (
+          <AdminStatCard
+            label="Pipeline"
+            value={PANNE}
+            meta={`Devis : lecture impossible (${devis.illisibles} illisible${devis.illisibles > 1 ? "s" : ""})`}
+            tone="default"
+            icon={TrendingUp}
+          />
+        );
+      }
       const saisie =
         e.pipeline.ok && e.pipeline.valeur.htCents > 0
           ? ` · estimation saisie : ${htEtTtc(e.pipeline.valeur.htCents).ht}`
