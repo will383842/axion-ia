@@ -78,6 +78,26 @@ describe("Modifier une fiche client — refonte visuelle", () => {
     expect(screen.getByText("Manquant")).toBeTruthy();
   });
 
+  it("particulier : la tuile SIRET dit « Sans objet », ton neutre", async () => {
+    m.client.mockResolvedValue(client({ type: "particulier", siret: null }));
+    const { container } = render(await Page(props()));
+    const tuile = Array.from(container.querySelectorAll(".admin-stat-card")).find((n) =>
+      n.textContent?.includes("SIRET"),
+    );
+    expect(tuile?.textContent).toContain("Sans objet");
+    expect(tuile?.textContent).not.toContain("À compléter");
+    expect(tuile?.className).not.toMatch(/warning|success|destructive/);
+  });
+
+  it("entreprise sans SIRET : « À compléter » en alerte", async () => {
+    m.client.mockResolvedValue(client({ siret: null }));
+    const { container } = render(await Page(props()));
+    const tuile = Array.from(container.querySelectorAll(".admin-stat-card")).find((n) =>
+      n.textContent?.includes("SIRET"),
+    );
+    expect(tuile?.textContent).toContain("À compléter");
+  });
+
   it("explication dans un repliable fermé", async () => {
     const { container } = render(await Page(props()));
     const d = container.querySelector("details");

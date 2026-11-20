@@ -100,9 +100,15 @@ export default async function ModifierClientPage({ params, searchParams }: PageP
         />
         <AdminStatCard
           label="SIRET"
-          value={client.siret ? "Renseigné" : "À compléter"}
-          icon={client.siret ? CheckCircle2 : AlertTriangle}
-          tone={client.siret ? "success" : "warning"}
+          value={
+            client.type === "particulier"
+              ? "Sans objet"
+              : client.siret
+                ? "Renseigné"
+                : "À compléter"
+          }
+          icon={client.type === "particulier" ? User : client.siret ? CheckCircle2 : AlertTriangle}
+          tone={client.type === "particulier" ? "default" : client.siret ? "success" : "warning"}
         />
         <AdminStatCard
           label="E-mail de contact"

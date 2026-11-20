@@ -14,7 +14,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
-import { AlertTriangle, CalendarClock, FileText, ListChecks, Wallet } from "lucide-react";
+import { AlertTriangle, CalendarClock, FileText, ListChecks } from "lucide-react";
 
 import { AdminStatCard } from "@/components/admin/ui/AdminStatCard";
 import { AdminBlocRepliable } from "@/components/admin/ui/AdminBlocRepliable";
@@ -92,15 +92,7 @@ export default async function QualiopiDevisCorrigerPage({ params }: PageProps) {
   // effacerait. Le formulaire n'est pas ouvert.
   const reglementTiers = porteUnReglementParUnTiers(devis);
 
-  // Chiffres clés : calculés sur les données déjà chargées, aucune requête de plus.
-  const totalHtCents =
-    lignes === null
-      ? null
-      : lignes.reduce(
-          (somme, l) => somme + Math.round(Number(l.quantite) * Number(l.prixUnitaireHtCents)),
-          0,
-        );
-  const euros = new Intl.NumberFormat("fr-FR", { style: "currency", currency: "EUR" });
+  // Chiffres clés : lus sur les données déjà chargées, aucun montant recalculé.
   const majLe = new Intl.DateTimeFormat("fr-FR", {
     dateStyle: "medium",
     timeZone: "Europe/Paris",
@@ -124,12 +116,6 @@ export default async function QualiopiDevisCorrigerPage({ params }: PageProps) {
           value={lignes === null ? "—" : lignes.length}
           icon={ListChecks}
           tone={lignes === null ? "warning" : "default"}
-        />
-        <AdminStatCard
-          label="Total HT"
-          value={totalHtCents === null ? "—" : euros.format(totalHtCents / 100)}
-          icon={Wallet}
-          tone={totalHtCents === null ? "warning" : "success"}
         />
         <AdminStatCard label="Dernière modification" value={majLe} icon={CalendarClock} />
       </div>

@@ -55,17 +55,24 @@ beforeEach(() => {
 describe("Corriger un devis — refonte visuelle", () => {
   it("affiche les tuiles de chiffres clés calculées sur les données chargées", async () => {
     const { container } = render(await Page(params));
-    expect(container.querySelectorAll(".admin-stat-card")).toHaveLength(4);
+    expect(container.querySelectorAll(".admin-stat-card")).toHaveLength(3);
     expect(screen.getAllByText("AXI-DEV-2026-007").length).toBeGreaterThan(0);
     expect(screen.getByText("2")).toBeTruthy(); // lignes
-    expect(screen.getByText(/2\s?500,00/)).toBeTruthy(); // total HT
+    expect(screen.queryByText("Total HT")).toBeNull();
+    expect(screen.queryByText(/2\s?500,00/)).toBeNull(); // aucun total recalculé
     expect(screen.getByText(/1 nov\. 2026|1 novembre 2026/)).toBeTruthy();
+  });
+
+  it("aucun total recalculé n'est affiché", async () => {
+    const { container } = render(await Page(params));
+    expect(screen.queryByText(/total ht/i)).toBeNull();
+    expect(container.textContent).not.toMatch(/2\s?500,00/);
   });
 
   it("les icônes des tuiles sont décoratives (svg masqués)", async () => {
     const { container } = render(await Page(params));
     const icones = container.querySelectorAll(".admin-stat-card svg");
-    expect(icones.length).toBeGreaterThanOrEqual(4);
+    expect(icones.length).toBeGreaterThanOrEqual(3);
     icones.forEach((i) => expect(i.closest("[aria-hidden='true']")).not.toBeNull());
   });
 
