@@ -39,16 +39,14 @@ describe("fiche d'une session : refonte visuelle", () => {
     );
   });
 
-  it("informations générales en liste de définitions ; historique du verrou en tableau", () => {
+  it("informations générales en liste de définitions", () => {
     expect(SRC).toContain("<dl ");
-    expect(SRC).toContain(
-      '<th\n                        key={c}\n                        scope="col"',
-    );
-    expect(SRC).toContain("overflow-x-auto");
   });
 
   it("état vide du verrou et explications repliées en composants partagés", () => {
-    expect(SRC).toContain('<AdminEmptyState variant="inline" title="Dossier jamais rouvert." />');
+    expect(SRC).toMatch(
+      /<AdminEmptyState\s+variant="inline"\s+icon=\{<Lock [^>]*\/>\}\s+title="Dossier jamais rouvert\."/,
+    );
     expect(SRC).toMatch(/<AdminBlocRepliable\s+titre="À quoi sert le dossier d'audit"/);
   });
 
@@ -75,5 +73,48 @@ describe("fiche d'une session : refonte visuelle", () => {
     );
     expect(titres.length).toBeGreaterThan(10);
     expect(titres.filter((t) => INTERDIT.test(t))).toEqual([]);
+  });
+
+  describe("niveau visuel v2", () => {
+    it("quatre tuiles de chiffres clés, calculées sur les données déjà chargées", () => {
+      expect(SRC).toContain('data-testid="tuiles-session"');
+      for (const l of [
+        "Stagiaires inscrits",
+        "Étapes faites",
+        "Montant HT",
+        "Conflits formateur",
+      ]) {
+        expect(SRC).toContain(`label="${l}"`);
+      }
+      expect((SRC.match(/<AdminStatCard\b/g) ?? []).length).toBe(4);
+      expect(SRC).toMatch(/tone=\{\s*trainingSession\._count\.enrollments === 0/);
+      expect(SRC).toContain('conflitsFormateur.conflits.length === 0 ? "success" : "destructive"');
+    });
+
+    it("historique du verrou en cartes à pastille large avec icône, bordure gauche colorée", () => {
+      expect(SRC).not.toContain("<table");
+      expect(SRC).toMatch(
+        /<AdminBadge tone=\{reouv \? "warning" : "success"\} plein compact=\{false\}>/,
+      );
+      expect(SRC).toContain('<LockOpen size={16} aria-hidden="true" />');
+      expect(SRC).toContain("border-l-[color:var(--color-admin-warning)]");
+      expect(SRC).toContain("border-l-[color:var(--color-admin-success)]");
+    });
+
+    it("motif dans un encadré teinté, préfixe en gras, plus d'italique grise", () => {
+      expect(SRC).toContain("<strong>Motif :</strong>");
+      expect(SRC).toContain("bg-[color:var(--color-admin-warning-soft)]");
+    });
+
+    it("jetons admin seulement : aucune couleur Tailwind par défaut dans les ajouts", () => {
+      expect(SRC).not.toMatch(
+        /\b(?:bg|text|border)-(?:red|green|amber|yellow|blue|gray|slate)-\d{2,3}\b/,
+      );
+    });
+
+    it("icônes lucide importées par nom, aucune iframe", () => {
+      expect(SRC).toMatch(/import \{[^}]*Users[^}]*\} from "lucide-react"/);
+      expect(SRC).not.toContain("<iframe");
+    });
   });
 });

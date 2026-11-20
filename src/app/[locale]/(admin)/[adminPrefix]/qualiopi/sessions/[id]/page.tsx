@@ -142,6 +142,17 @@ import { gardePage } from "@/server/auth/garde-page";
 import { AdminBloc } from "@/components/admin/ui/AdminBloc";
 import { AdminBlocRepliable } from "@/components/admin/ui/AdminBlocRepliable";
 import { AdminEmptyState } from "@/components/admin/ui/AdminEmptyState";
+import { AdminStatCard } from "@/components/admin/ui/AdminStatCard";
+import { AdminBadge } from "@/components/admin/ui/AdminBadge";
+import {
+  CircleCheck,
+  ListChecks,
+  Lock,
+  LockOpen,
+  TriangleAlert,
+  Users,
+  Wallet,
+} from "lucide-react";
 
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
@@ -1545,46 +1556,49 @@ export default async function SessionHubPage({ params, searchParams }: PageProps
             Historique du verrou
           </h3>
           {verrou.entree.evenements.length === 0 ? (
-            <AdminEmptyState variant="inline" title="Dossier jamais rouvert." />
+            <AdminEmptyState
+              variant="inline"
+              icon={<Lock size={28} aria-hidden="true" />}
+              title="Dossier jamais rouvert."
+            />
           ) : (
-            <div className="overflow-x-auto">
-              <table className="w-full min-w-[32rem] border-collapse text-[length:var(--text-admin-sm)]">
-                <thead>
-                  <tr>
-                    {["Événement", "Date", "Auteur", "Motif"].map((c) => (
-                      <th
-                        key={c}
-                        scope="col"
-                        className="px-[var(--space-admin-3)] py-[var(--space-admin-2)] text-left text-[length:var(--text-admin-xs)] font-semibold text-[color:var(--color-admin-fg-muted)]"
-                      >
-                        {c}
-                      </th>
-                    ))}
-                  </tr>
-                </thead>
-                <tbody>
-                  {verrou.entree.evenements.map((ev) => (
-                    <tr
-                      key={`${ev.type}-${ev.createdAt.toISOString()}`}
-                      className="border-t border-[color:var(--color-admin-border)]"
-                    >
-                      <td className="px-[var(--space-admin-3)] py-[var(--space-admin-2)] align-top">
-                        {ev.type === "reouverture" ? "Réouverture" : "Nouvelle clôture"}
-                      </td>
-                      <td className="px-[var(--space-admin-3)] py-[var(--space-admin-2)] align-top">
+            <ul className="m-0 flex list-none flex-col gap-[var(--space-admin-4)] p-0">
+              {verrou.entree.evenements.map((ev) => {
+                const reouv = ev.type === "reouverture";
+                return (
+                  <li
+                    key={`${ev.type}-${ev.createdAt.toISOString()}`}
+                    className={`flex flex-col gap-[var(--space-admin-2)] rounded-[var(--radius-admin-md)] border border-l-4 border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)] p-[var(--space-admin-4)] ${
+                      reouv
+                        ? "border-l-[color:var(--color-admin-warning)]"
+                        : "border-l-[color:var(--color-admin-success)]"
+                    }`}
+                  >
+                    <div className="flex flex-wrap items-center justify-between gap-[var(--space-admin-3)]">
+                      <AdminBadge tone={reouv ? "warning" : "success"} plein compact={false}>
+                        {reouv ? (
+                          <LockOpen size={16} aria-hidden="true" />
+                        ) : (
+                          <Lock size={16} aria-hidden="true" />
+                        )}
+                        {reouv ? "Réouverture" : "Nouvelle clôture"}
+                      </AdminBadge>
+                      <span className="text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]">
                         {dateHeureParis(ev.createdAt)}
-                      </td>
-                      <td className="px-[var(--space-admin-3)] py-[var(--space-admin-2)] align-top">
-                        {ev.auteurNom}
-                      </td>
-                      <td className="px-[var(--space-admin-3)] py-[var(--space-admin-2)] align-top">
-                        {ev.motif !== null && ev.motif !== "" ? `« ${ev.motif} »` : "—"}
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
+                      </span>
+                    </div>
+                    <p className="m-0 text-[length:var(--text-admin-base)] font-semibold text-[color:var(--color-admin-fg)]">
+                      {ev.auteurNom}
+                    </p>
+                    {ev.motif !== null && ev.motif !== "" ? (
+                      <p className="m-0 rounded-[var(--radius-admin-md)] border-l-4 border-[color:var(--color-admin-warning)] bg-[color:var(--color-admin-warning-soft)] px-[var(--space-admin-3)] py-[var(--space-admin-2)] text-[length:var(--text-admin-base)] text-[color:var(--color-admin-fg)]">
+                        <strong>Motif :</strong> {`« ${ev.motif} »`}
+                      </p>
+                    ) : null}
+                  </li>
+                );
+              })}
+            </ul>
           )}
         </AdminBloc>
       </section>
@@ -1624,6 +1638,50 @@ export default async function SessionHubPage({ params, searchParams }: PageProps
           </p>
         </div>
       )}
+
+      {/* Chiffres clés : calculés sur les données déjà chargées, aucune requête. */}
+      <div
+        data-testid="tuiles-session"
+        className="mb-[var(--space-admin-6)] grid grid-cols-1 gap-[var(--space-admin-4)] sm:grid-cols-2 lg:grid-cols-4"
+      >
+        <AdminStatCard
+          label="Stagiaires inscrits"
+          value={`${trainingSession._count.enrollments} / ${trainingSession.nbParticipantsPrevus}`}
+          meta="inscrits sur prévus"
+          icon={Users}
+          tone={
+            trainingSession._count.enrollments === 0
+              ? "warning"
+              : trainingSession._count.enrollments >= trainingSession.nbParticipantsPrevus
+                ? "success"
+                : "info"
+          }
+        />
+        {parcours !== null ? (
+          <AdminStatCard
+            label="Étapes faites"
+            value={`${parcours.fait} / ${parcours.total}`}
+            meta="avancement du dossier"
+            icon={ListChecks}
+            tone={parcours.fait >= parcours.total ? "success" : "info"}
+          />
+        ) : null}
+        <AdminStatCard
+          label="Montant HT"
+          value={(trainingSession.montantHtCents / 100).toLocaleString("fr-FR", {
+            style: "currency",
+            currency: "EUR",
+          })}
+          icon={Wallet}
+        />
+        <AdminStatCard
+          label="Conflits formateur"
+          value={conflitsFormateur.conflits.length}
+          meta={conflitsFormateur.conflits.length === 0 ? "aucun chevauchement" : "à résoudre"}
+          icon={conflitsFormateur.conflits.length === 0 ? CircleCheck : TriangleAlert}
+          tone={conflitsFormateur.conflits.length === 0 ? "success" : "destructive"}
+        />
+      </div>
 
       {/* Sommaire interne de l'ONGLET : seulement les blocs affichés. Une
           pastille vers un bloc replié mènerait dans un <details> fermé — un
