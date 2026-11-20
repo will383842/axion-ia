@@ -2,12 +2,13 @@
 // use-client: champ du destinataire et verrou anti double clic de l'envoi.
 
 /**
- * E-mail au client (fiche E16, décision D9 : PAS d'e-mail personnalisé en v1). Aucun modèle,
- * aucun objet ni message modifiable, aucun exemplaire pour l'administrateur : le contenu est
- * celui de la corbeille de relecture, côté serveur. Ne reste que le destinataire (affiché en
- * LECTURE SEULE : le serveur écrit à la fiche client) et « Envoyer
- * au client », qui appelle l'action UNE fois (verrou immédiat contre le double clic). Aucun
- * envoi à l'affichage, aucune relance.
+ * E-mail au client (fiche E16). Sans la prop `apercuEmail` : aucun modèle, aucun objet ni message
+ * modifiable, aucun exemplaire (décision D9) ; ne reste que le destinataire (LECTURE SEULE : le
+ * serveur écrit à la fiche client) et « Envoyer au client ».
+ * Avec `apercuEmail` (lot 1 de l'aperçu de l'e-mail) : l'e-mail complet est montré tel qu'il
+ * partira, avec un objet et un message personnel modifiables ; l'envoi est désactivé sans adresse
+ * sur la fiche ou tant que le brouillon n'est pas actualisé. « Envoyer au client » appelle
+ * l'action UNE fois (verrou immédiat contre le double clic). Aucun envoi à l'affichage.
  */
 import { Send } from "lucide-react";
 import { useId, useRef, useState } from "react";
@@ -15,8 +16,18 @@ import { useId, useRef, useState } from "react";
 import { AdminButton } from "@/components/admin/ui/AdminButton";
 import { AdminCard } from "@/components/admin/ui/AdminCard";
 
+import {
+  ApercuEmailDevis,
+  type EtatApercuEmail,
+  type PropsApercuEmailDevis,
+} from "./ApercuEmailDevis";
+
 export interface EmailAEnvoyer {
   a: string;
+  /** Objet choisi par le fondateur ; absent = l'objet du gabarit. */
+  sujet?: string | undefined;
+  /** Message personnel ; absent = aucun. */
+  message?: string | undefined;
 }
 
 type Resultat<T> = { data: T } | { error: string };
@@ -26,12 +37,26 @@ export interface PropsEmailEnvoi {
   /** Salutation lue sur la fiche du client (affichée en lecture seule) ; absente = suit la fiche. */
   salutation?: string | undefined;
   envoyer: (email: EmailAEnvoyer) => Promise<Resultat<{ enCorbeille: boolean; note?: string }>>;
+  /** Fournie : l'e-mail complet est montré et son objet et son message sont modifiables. */
+  apercuEmail?: PropsApercuEmailDevis["apercuEmail"] | undefined;
+  /** Fiche du client (`/qualiopi/clients/[id]/edit`), pour ajouter l'adresse manquante. */
+  lienFiche?: string | undefined;
 }
 
-export function EmailEnvoi({ destinataire, salutation, envoyer }: PropsEmailEnvoi) {
+export function EmailEnvoi({
+  destinataire,
+  salutation,
+  envoyer,
+  apercuEmail,
+  lienFiche,
+}: PropsEmailEnvoi) {
   const uid = useId();
+  const [apercu, setApercu] = useState<EtatApercuEmail | null>(null);
   // Lecture seule : le serveur écrit à la fiche client, aucune adresse n'est saisie ici.
-  const a = destinataire;
+  // Avec l'aperçu, c'est l'adresse relue sur la fiche par le serveur qui fait foi.
+  const a = apercuEmail !== undefined ? (apercu?.a ?? "") : destinataire;
+  const attendApercu = apercuEmail !== undefined && (apercu === null || apercu.nonActualise);
+  const adresseVide = a.trim() === "";
   const [erreur, setErreur] = useState<string | null>(null);
   const [statut, setStatut] = useState<string | null>(null);
   const [envoye, setEnvoye] = useState(false);
@@ -39,7 +64,7 @@ export function EmailEnvoi({ destinataire, salutation, envoyer }: PropsEmailEnvo
   const [enCours, setEnCours] = useState(false);
 
   async function lancerEnvoi() {
-    if (verrou.current || envoye) return;
+    if (verrou.current || envoye || attendApercu) return;
     if (a.trim() === "") {
       setErreur(
         "La fiche du client n'a pas d'adresse e-mail : complétez la fiche avant d'envoyer.",
@@ -50,7 +75,11 @@ export function EmailEnvoi({ destinataire, salutation, envoyer }: PropsEmailEnvo
     setEnCours(true);
     setErreur(null);
     try {
-      const r = await envoyer({ a: a.trim() });
+      const r = await envoyer({
+        a: a.trim(),
+        ...(apercu?.sujet !== undefined ? { sujet: apercu.sujet } : {}),
+        ...(apercu?.message !== undefined ? { message: apercu.message } : {}),
+      });
       if ("error" in r) {
         setErreur(r.error);
       } else {
@@ -89,6 +118,25 @@ export function EmailEnvoi({ destinataire, salutation, envoyer }: PropsEmailEnvo
             />
           </label>
         </div>
+        {apercuEmail !== undefined ? (
+          <div className="mt-[var(--space-admin-4)]">
+            <ApercuEmailDevis apercuEmail={apercuEmail} lienFiche={lienFiche} onEtat={setApercu} />
+          </div>
+        ) : null}
+        {apercuEmail === undefined && adresseVide ? (
+          <p
+            role="alert"
+            className="mt-[var(--space-admin-3)] text-[color:var(--color-admin-destructive-fg)]"
+          >
+            La fiche du client n&apos;a pas d&apos;adresse e-mail : complétez la fiche avant
+            d&apos;envoyer.{" "}
+            {lienFiche ? (
+              <a href={lienFiche} target="_blank" rel="noopener noreferrer" className="underline">
+                Ajouter l&apos;adresse sur la fiche
+              </a>
+            ) : null}
+          </p>
+        ) : null}
         <p
           id={`${uid}-adresse`}
           className="mt-[var(--space-admin-2)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]"
@@ -130,7 +178,7 @@ export function EmailEnvoi({ destinataire, salutation, envoyer }: PropsEmailEnvo
             size="lg"
             icon={Send}
             onClick={() => void lancerEnvoi()}
-            disabled={envoye || enCours}
+            disabled={envoye || enCours || adresseVide || attendApercu}
             loading={enCours}
           >
             {enCours ? "Envoi…" : "Envoyer au client"}

@@ -29,6 +29,15 @@ describe("assistant de devis — aucun mot interdit dans un texte visible", () =
     expect(liste.some((f) => f.endsWith("AssistantDevis.tsx"))).toBe(true);
   });
 
+  it("lit bien l'aperçu de l'e-mail du devis, et ses textes visibles sont propres", () => {
+    const f = liste.find((x) => x.endsWith("ApercuEmailDevis.tsx"));
+    expect(f).toBeDefined();
+    const textes = textesVisibles(f!, readFileSync(f!, "utf8")).map((t) => t.texte);
+    expect(textes.some((t) => /Actualiser l(&apos;|')aperçu/.test(t))).toBe(true);
+    expect(textes.some((t) => /Revenir au texte d(&apos;|')origine/.test(t))).toBe(true);
+    expect(textes.filter((t) => INTERDIT.test(t))).toEqual([]);
+  });
+
   it("détecte un mot interdit dans un texte JSX, un attribut et une phrase (anti-faux-vert)", () => {
     const src =
       'export const A = () => <p title="Un titre">Prise en charge OPCO{x}</p>;\n' +

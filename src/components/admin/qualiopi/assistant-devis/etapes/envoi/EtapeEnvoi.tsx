@@ -14,7 +14,7 @@ import { AdminButton } from "@/components/admin/ui/AdminButton";
 
 import type { Etape } from "../../types";
 import type { VueApercuDevis } from "./ApercuDevis";
-import { EmailEnvoi, type EmailAEnvoyer } from "./EmailEnvoi";
+import { EmailEnvoi, type EmailAEnvoyer, type PropsEmailEnvoi } from "./EmailEnvoi";
 
 // Chargé à la demande : l'aperçu n'existe qu'après la réponse du serveur.
 const ApercuDevis = lazy(() => import("./ApercuDevis").then((m) => ({ default: m.ApercuDevis })));
@@ -40,6 +40,10 @@ export interface PropsEtapeEnvoi {
   destinataire: string;
   salutation?: string | undefined;
   onModifier?: (() => void) | undefined;
+  /** Aperçu de l'e-mail (action serveur en lecture seule) ; absent = écran d'origine. */
+  apercuEmail?: PropsEmailEnvoi["apercuEmail"];
+  /** Fiche du client, pour ajouter l'adresse manquante (nouvel onglet). */
+  lienFiche?: string | undefined;
 }
 
 type Chargement =
@@ -53,6 +57,8 @@ export function EtapeEnvoi({
   destinataire,
   salutation,
   onModifier,
+  apercuEmail,
+  lienFiche,
 }: PropsEtapeEnvoi) {
   const [chargement, setChargement] = useState<Chargement>({ etat: "attente" });
   const lance = useRef(false);
@@ -118,6 +124,8 @@ export function EtapeEnvoi({
           <EmailEnvoi
             destinataire={destinataire}
             salutation={salutation}
+            apercuEmail={apercuEmail}
+            lienFiche={lienFiche}
             envoyer={(email) => envoyer(prete.devisId, prete.majLe, email)}
           />
         ) : null}

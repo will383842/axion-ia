@@ -27,7 +27,11 @@ describe("lot 3 — une seule source de données", () => {
   });
 
   it("l'envoi et le renvoi construisent l'e-mail par payloadDevisEnvoi (même contenu)", () => {
-    expect(envoi).toContain("payloadDevisEnvoi(");
+    // L'envoi passe par `contenuEmailDevis`, qui appelle `payloadDevisEnvoi` (une seule source).
+    expect(envoi).toContain("contenuEmailDevis(");
+    expect(
+      readFileSync(join(process.cwd(), "src/server/qualiopi/devis/contenu-email-devis.ts"), "utf8"),
+    ).toContain("payloadDevisEnvoi(");
     expect(renvoi).toContain("payloadDevisEnvoi(");
   });
 

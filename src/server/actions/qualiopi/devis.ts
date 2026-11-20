@@ -61,11 +61,7 @@ import {
 import { formulesActives } from "@/server/qualiopi/devis/interrupteur-formules";
 import { offreDevisV1 } from "@/server/qualiopi/devis/offre-devis";
 import { refusReglesFormules } from "@/server/qualiopi/devis/regles-commerciales";
-import { salutationPourPayload } from "@/server/qualiopi/crm/salutation-payload";
-import {
-  nomPourSalutationDevis,
-  payloadDevisEnvoi,
-} from "@/server/qualiopi/devis/email-devis-envoi";
+import { contenuEmailDevis } from "@/server/qualiopi/devis/contenu-email-devis";
 import {
   donneesPdfDevis,
   lireContextePdfDevis,
@@ -93,9 +89,6 @@ import type { MotifRetenue } from "@/server/email/verdict-envoi";
 import { genererConventionAction } from "@/server/actions/qualiopi/documents";
 
 type ActionResult<T> = { data: T } | { error: string };
-
-const eurHt = (cents: number): string =>
-  new Intl.NumberFormat("fr-FR", { style: "currency", currency: "EUR" }).format(cents / 100);
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Schémas Zod
@@ -312,7 +305,10 @@ const MOTIFS_RETENUE: Record<MotifRetenue, string> = {
  * — pas l'URL signée (expirée en 900 s). Révision : si `replacesDevisId` n'est pas null,
  * l'ancienne version passe `expire` dans la MÊME transaction.
  */
-export async function sendDevisAction(id: string): Promise<
+export async function sendDevisAction(
+  id: string,
+  opts?: { sujet?: string; messagePersonnalise?: string },
+): Promise<
   ActionResult<{
     id: string;
     emailEnvoye: boolean;
@@ -471,6 +467,19 @@ export async function sendDevisAction(id: string): Promise<
         const dejaGare = await emailDevisEnAttente(tx, devisId);
         if (dejaGare) throw new EnvoiRefuse(MSG_DEJA_GARE, "deja_gare");
 
+        // Objet et message du fondateur relus ICI, avant tout effet externe (PDF, jeton, courriel).
+        if (opts !== undefined) {
+          const controle = contenuEmailDevis({
+            devis,
+            client: devis.client,
+            ...(opts.messagePersonnalise !== undefined
+              ? { message: opts.messagePersonnalise }
+              : {}),
+            ...(opts.sujet !== undefined ? { sujet: opts.sujet } : {}),
+          });
+          if (!controle.ok) throw new EnvoiRefuse(controle.error, "contenu_invalide");
+        }
+
         // Données du PDF : même fonction pure que l'aperçu du brouillon.
         let data: DevisData;
         try {
@@ -537,7 +546,9 @@ export async function sendDevisAction(id: string): Promise<
         //     à l'approbation (`lien-a-l-envoi`), et le devis reste « brouillon » jusque-là.
         //   - auto : chemin d'origine (jeton, enfilage, puis « envoye »).
         // `null` : la règle globale du gabarit, comme le faisait `enqueueEmail`.
-        const mode = await resoudreMode(GABARIT_DEVIS_ENVOI, null);
+        // Règle PROPRE AU CLIENT lue avec lui, comme le renvoi — et `clientId` passé plus bas à
+        // `enqueueEmail` : les deux ENSEMBLE, sinon une règle du client déclenche `regle_changee`.
+        const mode = await resoudreMode(GABARIT_DEVIS_ENVOI, devis.clientId);
         const parValidation = mode === "validation";
 
         // ── 4 bis. Lien de signature MAISON « bon pour accord » (jeton `/portail/signer/`).
@@ -570,22 +581,18 @@ export async function sendDevisAction(id: string): Promise<
 
         // ── 5. Courriel : DERNIER effet externe, AVANT toute écriture. En validation : « parti »
         // = garé, rien d'autre. En auto : « parti » = enfilé ; tout le reste est un refus.
-        const payloadCourriel = payloadDevisEnvoi({
-          clientNom: nomPourSalutationDevis(devis.client),
-          salutation: salutationPourPayload({
-            clientNom: nomPourSalutationDevis(devis.client),
-            contactCivilite: devis.client.contactCivilite,
-            contactPrenom: devis.client.contactPrenom,
-            contactNomFamille: devis.client.contactNomFamille,
-          }),
-          numero: devis.numero,
-          montantTotalHtCents: devis.montantTotalHtCents,
-          montantLabel: `${eurHt(devis.montantTotalHtCents)} HT`,
-          dateValiditeLabel: devis.dateValidite.toLocaleDateString("fr-FR"),
+        const contenu = contenuEmailDevis({
+          devis,
+          client: devis.client,
           formules: data.formules,
+          ...(opts?.messagePersonnalise !== undefined ? { message: opts.messagePersonnalise } : {}),
+          ...(opts?.sujet !== undefined ? { sujet: opts.sujet } : {}),
           // Validation : ABSENT (aucun jeton n'existe).
           ...(signatureUrl !== undefined ? { signatureUrl } : {}),
         });
+        if (!contenu.ok) throw new EnvoiRefuse(contenu.error, "contenu_invalide");
+        const payloadCourriel = contenu.payload;
+        const sujetEmail = contenu.sujet;
         if (parValidation) {
           // Marqueur sans identité, sans URL, sans jeton : contrat v1 de `lien-a-l-envoi`.
           payloadCourriel[CLE_MARQUEUR] = {
@@ -604,6 +611,10 @@ export async function sendDevisAction(id: string): Promise<
             attachments: [{ filename: `${devis.numero}.pdf`, r2Key: pdfCle }],
             entityType: "Devis",
             entityId: devis.id,
+            clientId: devis.clientId,
+            // Objet choisi par le fondateur : lisible dans la corbeille (`sujet`) ET imposé à
+            // l'envoi direct (`sujetForce`). Absent = l'objet du gabarit, comme avant.
+            ...(sujetEmail !== undefined ? { sujet: sujetEmail, sujetForce: sujetEmail } : {}),
             ...(parValidation ? { exigerValidation: true } : {}),
           });
         } catch (err) {
