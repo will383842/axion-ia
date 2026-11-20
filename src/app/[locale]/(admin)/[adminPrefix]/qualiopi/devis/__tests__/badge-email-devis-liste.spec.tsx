@@ -50,7 +50,15 @@ vi.mock("@/lib/prisma", () => ({
         if (etat.panne) return Promise.reject(new Error("lecture indisponible"));
         etat.demandes.push(args.where.entityId.in);
         return Promise.resolve(
-          args.where.entityId.in.filter((i) => etat.ids.has(i)).map((entityId) => ({ entityId })),
+          // OUT-1 : la lecture rend aussi statut et date d'approbation ; ici, des lignes « à valider ».
+          args.where.entityId.in
+            .filter((i) => etat.ids.has(i))
+            .map((entityId) => ({
+              id: `ob-${entityId}`,
+              entityId,
+              statut: "a_valider",
+              approuveAt: null,
+            })),
         );
       },
     },
