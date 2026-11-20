@@ -392,3 +392,48 @@ describe("lireChronologie — lecture seule", () => {
     }
   });
 });
+
+describe("lireChronologie — signatures du devis", () => {
+  it("événements datés « signé par le client » et « contresigné », en UNE seule requête devis", async () => {
+    prismaMock["devis"]!["findMany"]!.mockResolvedValue([
+      {
+        id: "d1",
+        numero: "AXI-DEV-2026-001",
+        statut: "envoye",
+        montantTotalHtCents: 10000,
+        sentAt: new Date("2026-10-01T10:00:00Z"),
+        acceptedAt: null,
+        documentGenere: {
+          annuleeAt: null,
+          signatures: [
+            { partie: "client", signeAt: new Date("2026-10-02T09:00:00Z") },
+            { partie: "axionia", signeAt: new Date("2026-10-03T09:00:00Z") },
+          ],
+        },
+      },
+    ]);
+    const r = await lire();
+    const titres = r.evenements.map((e) => e.titre);
+    expect(titres).toContain("Devis signé par le client le 02/10/2026");
+    expect(titres).toContain("Devis contresigné le 03/10/2026");
+    expect(prismaMock["devis"]!["findMany"]).toHaveBeenCalledTimes(1);
+  });
+  it("pièce annulée : aucun événement de signature", async () => {
+    prismaMock["devis"]!["findMany"]!.mockResolvedValue([
+      {
+        id: "d1",
+        numero: "AXI-DEV-2026-001",
+        statut: "envoye",
+        montantTotalHtCents: 10000,
+        sentAt: new Date("2026-10-01T10:00:00Z"),
+        acceptedAt: null,
+        documentGenere: {
+          annuleeAt: new Date("2026-10-04T00:00:00Z"),
+          signatures: [{ partie: "client", signeAt: new Date("2026-10-02T09:00:00Z") }],
+        },
+      },
+    ]);
+    const r = await lire();
+    expect(r.evenements.map((e) => e.titre).join("|")).not.toMatch(/signé par le client/);
+  });
+});

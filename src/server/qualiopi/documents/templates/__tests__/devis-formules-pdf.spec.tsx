@@ -167,10 +167,18 @@ describe("même donnée pour l'aperçu et l'envoi, et interrupteur", () => {
   });
   const maintenant = new Date("2026-11-06T10:00:00Z");
 
-  it("interrupteur ÉTEINT (ou absent) : l'offre est ignorée, rien ne change", () => {
-    expect(donneesPdfDevis(devis(offre()), ctx(false), maintenant).formules).toBeUndefined();
-    expect(donneesPdfDevis(devis(offre()), ctx(undefined), maintenant).formules).toBeUndefined();
+  it("interrupteur ÉTEINT (ou absent) pour ce client : refus, jamais un devis classique vide", () => {
+    expect(() => donneesPdfDevis(devis(offre()), ctx(false), maintenant)).toThrow(
+      OffreDevisInvalideError,
+    );
+    expect(() => donneesPdfDevis(devis(offre()), ctx(undefined), maintenant)).toThrow(
+      OffreDevisInvalideError,
+    );
     expect(formulesDuDevis(offre(), false)).toBeUndefined();
+  });
+
+  it("devis classique, interrupteur éteint : rien ne change", () => {
+    expect(donneesPdfDevis(devis(null), ctx(false), maintenant).formules).toBeUndefined();
   });
 
   it("offre NULL / absente, même interrupteur allumé : pas de formules", () => {

@@ -15,6 +15,25 @@ export const REGION_SLUGS_SCORE: ReadonlyArray<string> = [
 ];
 export const BARRIER_VALUES_SCORE = [...BARRIER_VALUES, "none"] as const;
 
+const LIBELLES_VALEURS_AJOUTEES: Readonly<
+  Record<"sector" | "region", Readonly<Record<string, { fr: string; en: string }>>>
+> = {
+  sector: { [SECTEUR_AUTRE]: { fr: "Autre secteur", en: "Other sector" } },
+  region: {
+    "outre-mer": { fr: "Outre-mer", en: "Overseas territories" },
+    "non-precisee": { fr: "Non précisée", en: "Not specified" },
+  },
+};
+
+/** Libellé d'une valeur ajoutée par le Score (secteur / région), ou undefined si le slug n'en fait pas partie. */
+export function libelleValeurScore(
+  source: "sector" | "region",
+  slug: string,
+  lang: "fr" | "en",
+): string | undefined {
+  return LIBELLES_VALEURS_AJOUTEES[source][slug]?.[lang];
+}
+
 export interface LibelleQuestion {
   readonly label: string;
   readonly options?: Readonly<Record<string, string>>;

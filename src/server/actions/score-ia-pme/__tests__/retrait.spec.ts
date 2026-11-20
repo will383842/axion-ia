@@ -38,15 +38,25 @@ describe("retirerReponsesScore", () => {
     });
   });
 
-  it("même réponse pour un code connu, inconnu ou en erreur serveur", async () => {
+  it("même réponse pour un code connu ou inconnu", async () => {
     deleteManyMock.mockResolvedValueOnce({ count: 1 });
     const a = await retirerReponsesScore({ empreinte: HASH_OK, turnstileToken: "j" });
     deleteManyMock.mockResolvedValueOnce({ count: 0 });
     const b = await retirerReponsesScore({ empreinte: "b".repeat(64), turnstileToken: "j" });
-    deleteManyMock.mockRejectedValueOnce(new Error("db"));
-    const c = await retirerReponsesScore({ empreinte: "c".repeat(64), turnstileToken: "j" });
     expect(b).toEqual(a);
-    expect(c).toEqual(a);
+    expect(a.ok).toBe(true);
+  });
+
+  it("erreur serveur : ok false, message identique pour un code connu ou inconnu (art. 7.3)", async () => {
+    deleteManyMock.mockRejectedValueOnce(new Error("db"));
+    const c = await retirerReponsesScore({ empreinte: HASH_OK, turnstileToken: "j" });
+    deleteManyMock.mockRejectedValueOnce(new Error("db"));
+    const d = await retirerReponsesScore({ empreinte: "c".repeat(64), turnstileToken: "j" });
+    expect(c.ok).toBe(false);
+    expect(d).toEqual(c);
+    expect((c as { error: string }).error).toBe(
+      "Le retrait n'a pas pu être fait. Rien n'a changé : réessayez dans quelques minutes, avec le même code.",
+    );
   });
 
   it("entrée invalide ou Turnstile refusé : aucune suppression", async () => {

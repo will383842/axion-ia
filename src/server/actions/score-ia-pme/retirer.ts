@@ -48,7 +48,12 @@ export async function retirerReponsesScore(input: unknown): Promise<RetraitState
     return { ok: true, message: MESSAGE };
   } catch (e) {
     Sentry.captureException(e, { tags: { area: "score-ia-pme", action: "retirer" } });
-    // Même réponse qu'en succès : une erreur ne révèle rien sur l'existence du code.
-    return { ok: true, message: MESSAGE };
+    // Une panne doit être dite (RGPD art. 7.3 / 17) : la personne ne doit pas croire sa réponse
+    // retirée. Message identique pour tout code : l'échec ne dépend pas de son existence.
+    return {
+      ok: false,
+      error:
+        "Le retrait n'a pas pu être fait. Rien n'a changé : réessayez dans quelques minutes, avec le même code.",
+    };
   }
 }
