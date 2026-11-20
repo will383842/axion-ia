@@ -150,6 +150,7 @@ export function OngletDevisFactures({
   bandeauPartners,
   nbEmailsAValider,
   devisAvecEmailAttente,
+  piecesAContresigner,
 }: {
   ctx: ContexteFiche;
   client: Client360;
@@ -160,6 +161,8 @@ export function OngletDevisFactures({
   nbEmailsAValider: number;
   /** Devis dont un e-mail d'envoi attend (badge « E-mail à valider »). */
   devisAvecEmailAttente?: ReadonlySet<string>;
+  /** Pièces de devis à contresigner (règle de `a-contresigner.ts`) ; absent = pas de pastille. */
+  piecesAContresigner?: ReadonlySet<string>;
 }): React.ReactElement {
   const qBase = ctx.qBase;
   const sessionsEnCours = client.sessions.filter((s) => s.statut === "en_cours").length;
@@ -198,6 +201,7 @@ export function OngletDevisFactures({
             qBase={qBase}
             statuts={DEVIS_STATUT}
             {...(devisAvecEmailAttente ? { emailsEnAttente: devisAvecEmailAttente } : {})}
+            {...(piecesAContresigner ? { piecesAContresigner } : {})}
           />
         )}
       </section>
@@ -261,6 +265,15 @@ export function OngletDevisFactures({
                 </span>
                 <span className="font-mono text-[length:var(--text-admin-xs)]">{doc.numero}</span>
                 <span className={ligneMutedCls}>{formatDateFrShort(doc.createdAt)}</span>
+                {/* Route existante, session admin exigée. */}
+                <a
+                  href={`/api/qualiopi/documents/${doc.id}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={lienTexteCls}
+                >
+                  Télécharger (PDF)
+                </a>
               </li>
             ))}
           </ul>
