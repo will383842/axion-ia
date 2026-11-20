@@ -1476,6 +1476,17 @@ export function getSectorPainContext(
  * Appelé dans chaque générateur AVANT la construction du prompt
  */
 export function serializePainContextForPrompt(ctx: SectorPainContext): string {
+  // Sans paire objection/réponse, ni le bloc ni la consigne qui s'y rapporte ne sont émis
+  // (sinon le prompt recevrait « undefined »). Avec la paire, la sortie est inchangée.
+  const faq = getObjectionFaq(ctx);
+  const regles = [
+    "Chaque paragraphe doit utiliser au moins 1 mot du vocabulaire métier ci-dessus",
+    "Mentionner le bénéfice chiffré dans les 150 premiers mots",
+    "Inclure le scénario avant/après sous forme narrative (pas de liste)",
+    ...(faq ? ["Traiter l'objection principale dans le corps du texte"] : []),
+    'JAMAIS : "innovant", "révolutionnaire", "puissant", "solution IA", "intelligence artificielle de pointe"',
+    "TOUJOURS : nommer la tâche concrète, puis le gain, puis la preuve ou le chiffre",
+  ];
   return `
 === CONTEXTE MÉTIER OBLIGATOIRE — À UTILISER, PAS À PARAPHRASER ===
 
@@ -1497,18 +1508,9 @@ SCÉNARIO APRÈS (vie d'après — à rendre concret dans le contenu) :
 VOCABULAIRE MÉTIER À UTILISER (jamais le jargon tech) :
 ${ctx.sectorLexicon.join(", ")}
 
-OBJECTION PRINCIPALE ET RÉPONSE :
-Objection : "${ctx.objection}"
-Réponse : "${ctx.objectionReply}"
-
-KPI QUI PARLE À CE CLIENT : ${ctx.kpiLabel}
+${faq ? `OBJECTION PRINCIPALE ET RÉPONSE :\nObjection : "${faq.question}"\nRéponse : "${faq.answer}"\n\n` : ""}KPI QUI PARLE À CE CLIENT : ${ctx.kpiLabel}
 
 === RÈGLES RÉDACTIONNELLES ABSOLUES ===
-1. Chaque paragraphe doit utiliser au moins 1 mot du vocabulaire métier ci-dessus
-2. Mentionner le bénéfice chiffré dans les 150 premiers mots
-3. Inclure le scénario avant/après sous forme narrative (pas de liste)
-4. Traiter l'objection principale dans le corps du texte
-5. JAMAIS : "innovant", "révolutionnaire", "puissant", "solution IA", "intelligence artificielle de pointe"
-6. TOUJOURS : nommer la tâche concrète, puis le gain, puis la preuve ou le chiffre
+${regles.map((r, i) => `${i + 1}. ${r}`).join("\n")}
 `.trim();
 }

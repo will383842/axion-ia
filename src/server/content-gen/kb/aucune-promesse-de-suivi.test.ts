@@ -23,6 +23,7 @@ const PROMESSES_KB: ReadonlyArray<readonly [string, RegExp]> = [
   ["suivi individuel (coaching présenté comme suite)", /un suivi individuel/i],
   ["suivi hybride", /suivi hybride/i],
   ["tableau de bord mensuel pour le client", /tableau de bord mensuel pour le client/i],
+  ["suivi post-déploiement", /suivi post-déploiement/i],
 ];
 
 function* fichiers(dossier: string): Generator<string> {

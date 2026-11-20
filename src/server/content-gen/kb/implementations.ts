@@ -543,7 +543,7 @@ export const KB_IMPLEMENTATIONS: readonly KbFact[] = [
   {
     id: "impl-059",
     text: "Axion-IA intègre des mécanismes de monitoring MLOps dans toutes ses implémentations : alertes automatiques de dérive du modèle (data drift et concept drift), tableaux de bord hebdomadaires de qualité des réponses.",
-    source: "Axion-IA — Protocole MLOps et suivi post-déploiement v1.1",
+    source: "Axion-IA — Protocole MLOps v1.1",
     sourceUrl: "https://axion-ia.com/implementations",
     verifiedAt: "2026-05-22",
     verticales: ["implementations"],
