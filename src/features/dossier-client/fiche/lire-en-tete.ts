@@ -196,7 +196,12 @@ async function construire(ctx: ContexteEnTete, lireClient: LireClient): Promise<
       const regime = regimeTvaDepuisConfig(await getQualiopiConfig("regime_tva"));
       const taux = (await getQualiopiConfig("taux_tva_standard_percent")) || TAUX_TVA_STANDARD;
       const { formulesActives } = await import("@/server/qualiopi/devis/interrupteur-formules");
-      return devisEnAttentePourPipeline(devis, regime, taux, await formulesActives());
+      return devisEnAttentePourPipeline(
+        devis,
+        regime,
+        taux,
+        await formulesActives(undefined, { clientId: id }),
+      );
     }),
   ]);
 
