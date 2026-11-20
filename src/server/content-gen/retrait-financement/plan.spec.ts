@@ -12,7 +12,7 @@ import {
   rapportRestauration,
   reecrirePerks,
 } from "./plan";
-import { PHRASE_FR } from "./regles";
+import { PHRASE_EN, PHRASE_FR, QUESTION_FR } from "./regles";
 
 const offre = (o: Partial<Parameters<typeof proposerOffre>[0]> = {}) => ({
   id: "o1",
@@ -68,7 +68,7 @@ describe("plan — blog", () => {
     excerpt: "Un extrait.",
     body: "<p>Intro.</p><h2>Financement OPCO</h2><p>Via l'OPCO.</p>",
     bodyJson: null,
-    bodyText: "x",
+    bodyText: "Intro. Financement OPCO Via l'OPCO.",
     metaTitle: null,
     metaDescription: "Éligible au CPF.",
     ogImageAlt: null,
@@ -109,8 +109,8 @@ describe("plan — blog", () => {
       metaTitle: null,
       metaDescription: null,
     })!;
-    expect(p.apres.questionFr).toBe("Comment se passe le financement ?");
-    expect(p.apres.answerEn).toBe("Funding: options discussed at our first call.");
+    expect(p.apres.questionFr).toBe(QUESTION_FR);
+    expect(p.apres.answerEn).toBe(PHRASE_EN);
   });
 });
 
@@ -168,7 +168,7 @@ describe("sauvegarde complète (oldValue) et restauration partielle", () => {
       excerpt: "Un extrait.",
       body: "<p>Intro.</p><h2>Financement OPCO</h2><p>Via l'OPCO.</p>",
       bodyJson: { type: "doc", content: [] },
-      bodyText: "x",
+      bodyText: "Intro. Financement OPCO Via l'OPCO.",
       metaTitle: "Meta",
       metaDescription: "Desc",
       ogImageAlt: null,

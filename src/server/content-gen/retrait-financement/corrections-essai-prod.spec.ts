@@ -7,6 +7,7 @@ import { proposerArticle, proposerFaq, proposerOffre, proposerTraduction } from 
 import { construireRapport, lignesModification, passagesModifies } from "./rapport";
 import {
   PHRASE_FR,
+  QUESTION_FR,
   classer,
   estVisee,
   htmlVersTexte,
@@ -69,7 +70,7 @@ describe("1. rapport : passage retiré, contexte de ~150 caractères, remplaceme
     expect(rapport).toContain("question n°2");
     expect(rapport).toContain("Peut-on financer via le CPF ?");
     expect(rapport).toContain("réponse n°2");
-    expect(rapport).toContain("Comment se passe le financement ?");
+    expect(rapport).toContain(QUESTION_FR);
   });
 
   it("bodyText : texte long non tronqué à 200 caractères", () => {
@@ -211,7 +212,7 @@ describe("4. bodyText : blocs séparés, jamais de mots collés", () => {
       excerpt: null,
       body: "<p>Nos objectifs</p><p>Notre méthode</p><p>Les OPCO financent.</p>",
       bodyJson: null,
-      bodyText: "x",
+      bodyText: "Nos objectifs Notre méthode Les OPCO financent.",
       metaTitle: null,
       metaDescription: null,
       ogImageAlt: null,
@@ -422,7 +423,8 @@ describe("8. bodyJson", () => {
       excerpt: null,
       body: "<p>Intro.</p><p>Nous formons vos équipes. Le financement OPCO est possible. Un conseiller vous suit.</p>",
       bodyJson: doc,
-      bodyText: "x",
+      bodyText:
+        "Intro. Nous formons vos équipes. Le financement OPCO est possible. Un conseiller vous suit.",
       metaTitle: null,
       metaDescription: null,
       ogImageAlt: null,
