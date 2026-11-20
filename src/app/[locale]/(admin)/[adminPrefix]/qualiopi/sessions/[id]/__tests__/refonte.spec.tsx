@@ -76,19 +76,12 @@ describe("fiche d'une session : refonte visuelle", () => {
   });
 
   describe("niveau visuel v2", () => {
-    it("quatre tuiles de chiffres clés, calculées sur les données déjà chargées", () => {
-      expect(SRC).toContain('data-testid="tuiles-session"');
-      for (const l of [
-        "Stagiaires inscrits",
-        "Étapes faites",
-        "Montant HT",
-        "Conflits formateur",
-      ]) {
-        expect(SRC).toContain(`label="${l}"`);
-      }
-      expect((SRC.match(/<AdminStatCard\b/g) ?? []).length).toBe(4);
-      expect(SRC).toMatch(/tone=\{\s*trainingSession\._count\.enrollments === 0/);
-      expect(SRC).toContain('conflitsFormateur.conflits.length === 0 ? "success" : "destructive"');
+    it("tuiles de chiffres clés : composant dédié, alimenté par les données déjà chargées", () => {
+      expect(SRC).toContain("<TuilesSession");
+      expect(SRC).toContain("checklistRendue={checklistRendue}");
+      const T = readFileSync(CHEMIN.replace("page.tsx", "TuilesSession.tsx"), "utf8");
+      expect(T).toContain('data-testid="tuiles-session"');
+      expect((T.match(/<AdminStatCard\b/g) ?? []).length).toBe(4);
     });
 
     it("historique du verrou en cartes à pastille large avec icône, bordure gauche colorée", () => {
@@ -113,7 +106,7 @@ describe("fiche d'une session : refonte visuelle", () => {
     });
 
     it("icônes lucide importées par nom, aucune iframe", () => {
-      expect(SRC).toMatch(/import \{[^}]*Users[^}]*\} from "lucide-react"/);
+      expect(SRC).toMatch(/import \{[^}]*LockOpen[^}]*\} from "lucide-react"/);
       expect(SRC).not.toContain("<iframe");
     });
   });

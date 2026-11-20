@@ -142,17 +142,9 @@ import { gardePage } from "@/server/auth/garde-page";
 import { AdminBloc } from "@/components/admin/ui/AdminBloc";
 import { AdminBlocRepliable } from "@/components/admin/ui/AdminBlocRepliable";
 import { AdminEmptyState } from "@/components/admin/ui/AdminEmptyState";
-import { AdminStatCard } from "@/components/admin/ui/AdminStatCard";
+import { TuilesSession } from "./TuilesSession";
 import { AdminBadge } from "@/components/admin/ui/AdminBadge";
-import {
-  CircleCheck,
-  ListChecks,
-  Lock,
-  LockOpen,
-  TriangleAlert,
-  Users,
-  Wallet,
-} from "lucide-react";
+import { Lock, LockOpen } from "lucide-react";
 
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
@@ -1141,7 +1133,7 @@ export default async function SessionHubPage({ params, searchParams }: PageProps
               registre. Voisiner avec les boutons de report ferait choisir le
               marteau-pilon pour une faute de frappe. */}
         <section id="dates" className={`${CLASSE_ANCRE_SECTION}`}>
-          <AdminBloc teinte="ambre" niveau={2} titre="Dates de déroulement">
+          <AdminBloc teinte="gris" niveau={2} titre="Dates de déroulement">
             <SessionDatesForm
               sessionId={id}
               initialDateDebut={pourInputDateTimeLocal(trainingSession.dateDebut)}
@@ -1177,7 +1169,7 @@ export default async function SessionHubPage({ params, searchParams }: PageProps
       <>
         {/* ── Formateur principal (R9 — assignation bloquée si non habilité) ─── */}
         <section id="formateur" className={`${CLASSE_ANCRE_SECTION}`}>
-          <AdminBloc teinte="violet" niveau={2} titre="Formateur principal">
+          <AdminBloc teinte="gris" niveau={2} titre="Formateur principal">
             {/* Lot L11b — cartes « 1er · 2e · 3e choix » derrière l'interrupteur
                 `formateurs.choix_cartes` ; coupé, la liste d'avant seule. */}
             <SectionChoixFormateur sessionId={id}>
@@ -1224,7 +1216,7 @@ export default async function SessionHubPage({ params, searchParams }: PageProps
       <>
         {/* ── Inter-entreprises (R-INTER — financement/facture par participant) ─ */}
         <section id="inter-entreprises" className={`${CLASSE_ANCRE_SECTION}`}>
-          <AdminBloc teinte="vert" niveau={2} titre="Inter-entreprises">
+          <AdminBloc teinte="gris" niveau={2} titre="Inter-entreprises">
             <InterEntreprisesSection
               sessionId={id}
               interEntreprises={trainingSession.interEntreprises}
@@ -1305,7 +1297,7 @@ export default async function SessionHubPage({ params, searchParams }: PageProps
       <>
         {/* ── Stagiaires : inscrire, statut, adaptations, accès portail ──── */}
         <section id="stagiaires" className={`${CLASSE_ANCRE_SECTION}`}>
-          <AdminBloc teinte="bleu" niveau={2} titre="Stagiaires">
+          <AdminBloc teinte="gris" niveau={2} titre="Stagiaires">
             <EnrollmentsSection
               sessionId={id}
               debutSession={trainingSession.dateDebut.toISOString()}
@@ -1333,7 +1325,7 @@ export default async function SessionHubPage({ params, searchParams }: PageProps
       <>
         {/* ── Documents : dossier d'audit, génération, registre, signatures ─ */}
         <section id="documents" className={`${CLASSE_ANCRE_SECTION}`}>
-          <AdminBloc teinte="violet" niveau={2} titre="Documents">
+          <AdminBloc teinte="gris" niveau={2} titre="Documents">
             {/* Dossier d'audit de la session — REMONTÉ ici (2026-08-05) : le bouton
                 n'était monté QUE sur la sous-page émargement, alors que « le dossier
                 de cette session » est la demande d'auditeur type ; il doit être
@@ -1524,7 +1516,7 @@ export default async function SessionHubPage({ params, searchParams }: PageProps
         {/* ── Questionnaires : générer, envoyer, relancer, saisir ──────────── */}
         <section id="questionnaires" className={`${CLASSE_ANCRE_SECTION}`}>
           <AdminBloc
-            teinte="vert"
+            teinte="gris"
             niveau={2}
             titre="Questionnaires — positionnement et satisfaction"
           >
@@ -1640,48 +1632,14 @@ export default async function SessionHubPage({ params, searchParams }: PageProps
       )}
 
       {/* Chiffres clés : calculés sur les données déjà chargées, aucune requête. */}
-      <div
-        data-testid="tuiles-session"
-        className="mb-[var(--space-admin-6)] grid grid-cols-1 gap-[var(--space-admin-4)] sm:grid-cols-2 lg:grid-cols-4"
-      >
-        <AdminStatCard
-          label="Stagiaires inscrits"
-          value={`${trainingSession._count.enrollments} / ${trainingSession.nbParticipantsPrevus}`}
-          meta="inscrits sur prévus"
-          icon={Users}
-          tone={
-            trainingSession._count.enrollments === 0
-              ? "warning"
-              : trainingSession._count.enrollments >= trainingSession.nbParticipantsPrevus
-                ? "success"
-                : "info"
-          }
-        />
-        {parcours !== null ? (
-          <AdminStatCard
-            label="Étapes faites"
-            value={`${parcours.fait} / ${parcours.total}`}
-            meta="avancement du dossier"
-            icon={ListChecks}
-            tone={parcours.fait >= parcours.total ? "success" : "info"}
-          />
-        ) : null}
-        <AdminStatCard
-          label="Montant HT"
-          value={(trainingSession.montantHtCents / 100).toLocaleString("fr-FR", {
-            style: "currency",
-            currency: "EUR",
-          })}
-          icon={Wallet}
-        />
-        <AdminStatCard
-          label="Conflits formateur"
-          value={conflitsFormateur.conflits.length}
-          meta={conflitsFormateur.conflits.length === 0 ? "aucun chevauchement" : "à résoudre"}
-          icon={conflitsFormateur.conflits.length === 0 ? CircleCheck : TriangleAlert}
-          tone={conflitsFormateur.conflits.length === 0 ? "success" : "destructive"}
-        />
-      </div>
+      <TuilesSession
+        inscrits={trainingSession._count.enrollments}
+        prevus={trainingSession.nbParticipantsPrevus}
+        etapes={parcours}
+        checklistRendue={checklistRendue}
+        montantHtCents={trainingSession.montantHtCents}
+        nbConflits={conflitsFormateur.conflits.length}
+      />
 
       {/* Sommaire interne de l'ONGLET : seulement les blocs affichés. Une
           pastille vers un bloc replié mènerait dans un <details> fermé — un
