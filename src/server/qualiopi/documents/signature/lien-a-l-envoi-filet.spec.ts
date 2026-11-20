@@ -142,12 +142,14 @@ import {
 } from "./lien-precedent";
 
 const UPDATED = new Date("2026-11-01T10:00:00.000Z");
+let statutDevis = "brouillon";
 function devisRelu() {
   return {
     id: "d-1",
     numero: "AXI-DEV-2026-001",
     clientId: "c-1",
-    statut: "brouillon",
+    statut: statutDevis,
+    documentGenereId: "piece-1",
     updatedAt: UPDATED,
     offre: null,
     replacesDevisId: null,
@@ -215,6 +217,7 @@ beforeEach(() => {
   vi.clearAllMocks();
   h.jetons.length = 0;
   horloge = 0;
+  statutDevis = "brouillon";
   vi.mocked(creerTokenDocument).mockImplementation(async () => {
     const t = emettre("JETON-T2");
     return { token: "JETON-T2", tokenId: t.id, expiresAt: t.expiresAt } as never;
@@ -244,6 +247,32 @@ describe("OUT-1 — le filet, avec le vrai lien-precedent", () => {
     expect(h.marquer).not.toHaveBeenCalled();
     expect(JSON.stringify(h.sentryMsg.mock.calls)).toContain("AXI-DEV-2026-001");
     expect(JSON.stringify([h.sentryMsg.mock.calls, h.telegram.mock.calls])).not.toContain("JETON-");
+  });
+
+  it("(b renvoi) une relance de pièce intercalée : le lien de la tâche est mort → alerte au numéro, aucune écriture de devis", async () => {
+    emettre("JETON-T1");
+    emettre("JETON-T1B");
+    statutDevis = "envoye";
+    const r = await envoyerAvecLienALEnvoi({
+      ligne: LIGNE,
+      payload: {
+        lienSignatureALEnvoi: {
+          v: 1,
+          nature: "devis-renvoi",
+          documentGenereId: "piece-1",
+          partie: "client",
+          devisId: "d-1",
+        },
+      },
+      acteur: { session: { userId: "a", role: "super_admin" } } as never,
+      enfiler: tacheDejaLa as never,
+    });
+    expect(r).toEqual({ type: "envoi", res: { enqueued: true, dejaEnFile: true } });
+    expect(h.marquer).not.toHaveBeenCalled();
+    const alertes = JSON.stringify([h.sentryMsg.mock.calls, h.telegram.mock.calls]);
+    expect(alertes).toContain("AXI-DEV-2026-001");
+    expect(alertes).toContain("n'a pas pu être vérifié");
+    expect(alertes).not.toContain("JETON-");
   });
 
   it("issue inconnue de l'ajout (MiseEnFileIncertaine) : remontée telle quelle, T2 n'est pas défait, rien n'est marqué", async () => {

@@ -1372,16 +1372,29 @@ export async function enqueueEmail(
       lignePosee = await ecritureJournal;
     } else {
       // OUT-1 (R6) — borne de l'écriture du journal en mode outbox, AVANT tout ajout : au-delà,
-      // `FileInjoignable` et rien n'est ajouté. L'écriture déjà en vol peut encore aboutir et
-      // laisser une ligne « en attente » sans tâche : c'est le cas que le balayage tranche (deux
-      // constats « tâche introuvable » la ferment, rien n'est parti) ; la ré-approbation la
-      // rouvre par le même chemin. Ce risque est accepté : sans borne, la transaction de
+      // `FileInjoignable` et rien n'est ajouté. L'écriture déjà en vol peut encore aboutir : on
+      // lui accroche donc la clôture en échec de sa ligne (la sonde vient de confirmer qu'aucune
+      // tâche n'existe et rien n'a été ajouté). Sans cela, la ligne « en attente » resterait
+      // sans tâche, hors de portée du balayage (qui ne lit que les lignes « approuvé ») et
+      // l'alerte « e-mails bloqués en file » partirait à tort. Sans borne, la transaction de
       // l'appelant pouvait être fermée par Prisma pendant que cette écriture attendait.
+      const cloreSiAboutit = (): void => {
+        ecritureJournal
+          .then((id) =>
+            id
+              ? marquerEchecMiseEnFile(id, "Mise en file impossible : l'e-mail n'est pas parti.")
+              : undefined,
+          )
+          .catch(() => undefined);
+      };
       ecritureJournal.catch(() => undefined);
       const ecrite = await avecDelai(ecritureJournal, DELAI_ECRITURE_JOURNAL_MS).catch(() => {
         throw new FileInjoignable();
       });
-      if ("delaiDepasse" in ecrite) throw new FileInjoignable();
+      if ("delaiDepasse" in ecrite) {
+        cloreSiAboutit();
+        throw new FileInjoignable();
+      }
       lignePosee = ecrite.valeur;
     }
   }

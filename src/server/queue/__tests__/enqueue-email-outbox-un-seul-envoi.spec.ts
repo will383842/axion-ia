@@ -326,6 +326,19 @@ describe("OUT-1 passe 3 — lectures et écriture en base bornées (R6), lien lu
     expect(d.add).not.toHaveBeenCalled();
   });
 
+  it("P1 : écriture du journal qui aboutit à 6 s (après la borne de 4 s) : FileInjoignable, `add` jamais appelé, la ligne tardive est close en échec", async () => {
+    d.delaiEcriture.v = 6_000;
+    const p = approuver();
+    const verdict = expect(p).rejects.toBeInstanceOf(FileInjoignable);
+    await avancer(p, 4_000);
+    await verdict;
+    expect(d.add).not.toHaveBeenCalled();
+    expect(d.marquerEchec).not.toHaveBeenCalled(); // l'écriture est encore en vol
+    await vi.advanceTimersByTimeAsync(3_000); // elle aboutit
+    expect(d.marquerEchec).toHaveBeenCalledTimes(1);
+    expect(d.marquerEchec).toHaveBeenCalledWith("log-1", expect.stringContaining("pas parti"));
+  });
+
   const URL_ANCIENNE = "https://exemple.test/fr/portail/signer/JETON-ANCIEN";
 
   it("R8 : gabarit hors de la liste (clé `lien`) : aucune URL lue dans la charge de la tâche", async () => {

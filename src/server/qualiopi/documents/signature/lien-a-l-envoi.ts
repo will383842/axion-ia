@@ -703,6 +703,7 @@ async function renvoi<R extends VerdictEnfilage>(a: {
           where: { id: marqueur.devisId },
           select: {
             id: true,
+            numero: true,
             clientId: true,
             statut: true,
             offre: true,
@@ -764,10 +765,15 @@ async function renvoi<R extends VerdictEnfilage>(a: {
         }
         // OUT-1 (filet) : la tâche existait malgré la sonde : le jeton neuf n'est dans aucun e-mail.
         if (verdict.dejaEnFile === true) {
+          const urlEnFile = verdict.urlEnFile;
           verdict = sansLien(verdict);
           await annulerLeJeton(etat.tokenId, etat.url);
           etat.tokenId = null;
           etat.dejaFait = true;
+          // Fin de R7 : le lien que porte la tâche en file doit être vivant, sinon alerte au numéro.
+          if (!(await lienEnFileVivant(urlEnFile, marqueur.documentGenereId))) {
+            etat.numeroAAlerter = devis.numero;
+          }
         }
         etat.verdict = verdict;
         return { type: "envoi", res: verdict };
@@ -810,7 +816,7 @@ async function renvoi<R extends VerdictEnfilage>(a: {
 function alerterLienDeRenvoiNonVivant(numero: string): void {
   try {
     signaler("lienALEnvoi.renvoi_lien_non_vivant", undefined);
-    const texte = `Devis ${numero} : un renvoi est déjà parti ou en file, mais le lien de signature qu'il porte n'est plus valable (révoqué, expiré ou utilisé). Vérifier le lien depuis la fiche du devis.`;
+    const texte = `Devis ${numero} : un renvoi est déjà parti ou en file, mais le lien de signature qu'il porte n'a pas pu être vérifié (envoi ancien) ou n'est plus valable (révoqué, expiré ou utilisé). Vérifier le lien depuis la fiche du devis.`;
     Sentry.captureMessage(texte, {
       level: "error",
       tags: { action: "lienALEnvoi.renvoi_lien_non_vivant_message" },
