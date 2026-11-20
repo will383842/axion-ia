@@ -32,6 +32,7 @@ import {
   CalendarClock,
   CheckCheck,
   CircleAlert,
+  Clock,
   Euro,
   LockOpen,
   Mail,
@@ -46,6 +47,10 @@ import { listerHorodatagesEnRetard } from "@/server/qualiopi/documents/signature
 import { AdminPageShell } from "@/components/admin/ui/AdminPageShell";
 import { AdminPageHeader } from "@/components/admin/ui/AdminPageHeader";
 import { AdminButton } from "@/components/admin/ui/AdminButton";
+import { AdminBadge } from "@/components/admin/ui/AdminBadge";
+import { AdminBlocRepliable } from "@/components/admin/ui/AdminBlocRepliable";
+import { AdminEmptyState } from "@/components/admin/ui/AdminEmptyState";
+import { AdminStatCard } from "@/components/admin/ui/AdminStatCard";
 import { RelancerSignatureButton } from "@/components/admin/qualiopi/RelancerSignatureButton";
 import { ContresignerLotButton } from "@/components/admin/qualiopi/ContresignerLotButton";
 import { estContresignable } from "@/server/qualiopi/documents/signature/contresignables";
@@ -199,34 +204,129 @@ export default async function ATraiterPage({ params }: PageProps) {
     critiques.length === 0 &&
     importantes.length === 0;
 
-  const carte =
-    "mb-[var(--space-admin-6)] rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-surface)] p-[var(--space-admin-4)]";
-  const titreCarte =
-    "mb-[var(--space-admin-3)] flex items-center gap-[var(--space-admin-2)] text-[length:var(--text-admin-base)] font-semibold text-[color:var(--color-admin-fg)]";
-  const pastille =
-    "inline-flex min-w-[1.5rem] items-center justify-center rounded-full bg-[color:var(--color-admin-error)] px-[var(--space-admin-1)] text-[length:var(--text-admin-xs)] font-bold text-white";
-  const ligne =
-    "flex flex-wrap items-center justify-between gap-[var(--space-admin-2)] border-b border-[color:var(--color-admin-border)] py-[var(--space-admin-2)] last:border-b-0";
+  // ── Présentation (refonte visuelle) ────────────────────────────────────────
+  // Aucun calcul nouveau : les nombres des tuiles sont les longueurs des listes
+  // déjà chargées ci-dessus.
+  const nbAlertes = critiques.length + importantes.length;
+  const nbRouverts = rouverts?.length ?? 0;
+  const nbHorodatages = horodatagesEnRetard?.length ?? 0;
+  const nbAFaire =
+    signatures.length +
+    retours.length +
+    compteurs.emails +
+    compteurs.relances +
+    echeancesUrgentes.length +
+    nbAlertes +
+    nbRouverts +
+    nbHorodatages;
+
+  const tonDe = (n: number, tonSiPositif: "warning" | "destructive" = "warning") =>
+    n > 0 ? tonSiPositif : "success";
+
+  const titreSection =
+    "mb-[var(--space-admin-3)] flex flex-wrap items-center gap-[var(--space-admin-3)] text-[length:var(--text-admin-lg)] font-semibold text-[color:var(--color-admin-fg)]";
+  const section = "mb-[var(--space-admin-8)] scroll-mt-[var(--space-admin-6)]";
+  const liste = "m-0 flex list-none flex-col gap-[var(--space-admin-3)] p-0";
+  const meta = "text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]";
+  const encadreWarning =
+    "mt-[var(--space-admin-2)] rounded-[var(--radius-admin-md)] bg-[color:var(--color-admin-warning-soft)] px-[var(--space-admin-3)] py-[var(--space-admin-2)] text-[length:var(--text-admin-sm)] font-medium text-[color:var(--color-admin-warning-fg)]";
+  const encadreDanger =
+    "rounded-[var(--radius-admin-md)] bg-[color:var(--color-admin-destructive-soft)] p-[var(--space-admin-4)] text-[length:var(--text-admin-sm)] font-medium text-[color:var(--color-admin-destructive-fg)]";
+
+  type Ton = "warning" | "destructive" | "info" | "success";
+  const bordureGauche: Record<Ton, string> = {
+    warning: "border-l-[color:var(--color-admin-warning)]",
+    destructive: "border-l-[color:var(--color-admin-destructive)]",
+    info: "border-l-[color:var(--color-admin-info)]",
+    success: "border-l-[color:var(--color-admin-success)]",
+  };
+  const carteElement = (ton: Ton) =>
+    `flex flex-wrap items-center justify-between gap-[var(--space-admin-4)] rounded-[var(--radius-admin-lg)] border border-l-4 border-[color:var(--color-admin-border)] ${bordureGauche[ton]} bg-[color:var(--color-admin-surface)] p-[var(--space-admin-5)]`;
 
   return (
     <AdminPageShell>
       <AdminPageHeader
         title="À traiter"
         description="Tout ce qui attend une action, au même endroit — signatures, e-mails, relances, alertes. Quand cette page est vide, tout est à jour."
+        meta={
+          nbAFaire > 0 ? (
+            <AdminBadge tone="warning" plein>
+              {nbAFaire} à traiter
+            </AdminBadge>
+          ) : (
+            <AdminBadge tone="success" plein>
+              Tout est à jour
+            </AdminBadge>
+          )
+        }
       />
 
+      {/* Chiffres clés — une tuile par type de tâche, cliquable vers sa section. */}
+      <div className="mb-[var(--space-admin-8)] grid grid-cols-2 gap-[var(--space-admin-4)] lg:grid-cols-4">
+        <AdminStatCard
+          label="Signatures"
+          value={signatures.length}
+          icon={Signature}
+          tone={tonDe(signatures.length)}
+          href="#signatures"
+        />
+        <AdminStatCard
+          label="Retours en attente"
+          value={retours.length}
+          icon={MessageSquareReply}
+          tone={tonDe(retours.length)}
+          href="#retours"
+        />
+        <AdminStatCard
+          label="E-mails à valider"
+          value={compteurs.emails}
+          icon={Mail}
+          tone={tonDe(compteurs.emails)}
+          href="#emails"
+        />
+        <AdminStatCard
+          label="Échéances dépassées"
+          value={echeancesUrgentes.length}
+          icon={CalendarClock}
+          tone={tonDe(echeancesUrgentes.length, "destructive")}
+          href="#echeances"
+        />
+        <AdminStatCard
+          label="Relances à envoyer"
+          value={compteurs.relances}
+          icon={Euro}
+          tone={tonDe(compteurs.relances)}
+          href="#relances"
+        />
+        <AdminStatCard
+          label="Alertes"
+          value={nbAlertes}
+          icon={TriangleAlert}
+          tone={tonDe(nbAlertes, critiques.length > 0 ? "destructive" : "warning")}
+          href="#alertes"
+        />
+        <AdminStatCard
+          label="Dossiers rouverts"
+          value={rouverts === null ? "—" : nbRouverts}
+          icon={LockOpen}
+          tone={rouverts === null ? "default" : tonDe(nbRouverts)}
+          href="#rouverts"
+        />
+        <AdminStatCard
+          label="Horodatages en retard"
+          value={horodatagesEnRetard === null ? "—" : nbHorodatages}
+          icon={Clock}
+          tone={horodatagesEnRetard === null ? "default" : tonDe(nbHorodatages)}
+        />
+      </div>
+
       {rienAFaire && (
-        <div className={carte}>
-          <p className="text-[length:var(--text-admin-base)] text-[color:var(--color-admin-fg)]">
-            <CheckCheck
-              size={16}
-              aria-hidden="true"
-              className="mr-[var(--space-admin-2)] inline-block align-[-3px]"
-            />
-            Rien à traiter — tout est à jour. Les pastilles rouges de la navigation vous ramèneront
-            ici dès que quelque chose attendra.
-          </p>
-        </div>
+        <AdminEmptyState
+          icon={<CheckCheck size={24} aria-hidden="true" />}
+          title="Rien à traiter — tout est à jour."
+          description="Les pastilles rouges de la navigation vous ramèneront ici dès que quelque chose attendra."
+          className="mb-[var(--space-admin-8)]"
+        />
       )}
 
       {/* Dossiers rouverts depuis plus de 7 jours (lot L4, ADR 0060 D5).
@@ -234,38 +334,44 @@ export default async function ATraiterPage({ params }: PageProps) {
           et l'auteur sont écrits en entier — ce sont eux que l'auditeur lira
           dans le dossier d'audit. */}
       {rouverts === null ? (
-        <div className={carte}>
-          <p className="text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-danger)]">
-            Le registre des réouvertures n&apos;a pas pu être lu : l&apos;absence de dossier rouvert
-            ci-dessous n&apos;est PAS un constat.
-          </p>
+        <div role="alert" className={`${encadreDanger} mb-[var(--space-admin-8)]`}>
+          Le registre des réouvertures n&apos;a pas pu être lu : l&apos;absence de dossier rouvert
+          ci-dessous n&apos;est PAS un constat.
         </div>
       ) : rouverts.length > 0 ? (
-        <div className={carte}>
-          <h2 className={titreCarte}>
-            <LockOpen size={18} aria-hidden="true" className="shrink-0" />
+        <section id="rouverts" className={section}>
+          <h2 className={titreSection}>
+            <LockOpen size={20} aria-hidden="true" className="shrink-0" />
             Dossiers rouverts depuis plus de {DELAI_ALERTE_ROUVERT_JOURS} jours{" "}
-            <span className={pastille}>{rouverts.length}</span>
+            <AdminBadge tone="warning" plein>
+              {rouverts.length}
+            </AdminBadge>
           </h2>
-          <p className="mb-[var(--space-admin-2)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]">
-            Un dossier rouvert ne se referme pas tout seul. Une fois la correction faite, « Clore à
-            nouveau » depuis la fiche session.
-          </p>
-          <ul>
+          <AdminBlocRepliable
+            titre="Pourquoi ces dossiers sont ici"
+            className="mb-[var(--space-admin-4)]"
+          >
+            <p className={meta}>
+              Un dossier rouvert ne se referme pas tout seul. Une fois la correction faite, « Clore
+              à nouveau » depuis la fiche session.
+            </p>
+          </AdminBlocRepliable>
+          <ul className={liste}>
             {rouverts.map((d) => (
-              <li key={d.sessionId} className={ligne}>
-                <span className="min-w-0 text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg)]">
-                  <strong>
+              <li key={d.sessionId} className={carteElement("warning")}>
+                <div className="min-w-0 flex-1">
+                  <p className="m-0 font-semibold text-[color:var(--color-admin-fg)]">
                     {d.numero} · {d.titre}
-                  </strong>
-                  <span className="block text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
-                    {`Rouvert le ${dateHeureParis(d.depuis)} par ${d.par} (il y a ${d.jours} jour${d.jours > 1 ? "s" : ""}) — motif : « ${d.motif} »`}
-                  </span>
-                </span>
+                  </p>
+                  <p className={`${meta} m-0 mt-[var(--space-admin-1)]`}>
+                    {`Rouvert le ${dateHeureParis(d.depuis)} par ${d.par} (il y a ${d.jours} jour${d.jours > 1 ? "s" : ""})`}
+                  </p>
+                  <p className={encadreWarning}>{`Motif : « ${d.motif} »`}</p>
+                </div>
                 <AdminButton
                   href={`${base}/qualiopi/sessions/${d.sessionId}`}
                   variant="secondary"
-                  size="sm"
+                  size="md"
                   iconAfter={ArrowRight}
                 >
                   Ouvrir le dossier
@@ -273,27 +379,183 @@ export default async function ATraiterPage({ params }: PageProps) {
               </li>
             ))}
           </ul>
-        </div>
+        </section>
       ) : null}
 
       <BlocHorodatagesEnRetard lignes={horodatagesEnRetard} base={base} />
 
-      {/* Retours en attente — questionnaires envoyés restés sans réponse.
-          🔴 Constaté sur le premier dossier réel : les questionnaires partaient
-          (crons J+1/J+30), puis PLUS RIEN — aucun écran ne montrait qui n'avait
-          pas répondu, personne ne relançait. Le cron relance à J+3 puis J+10
-          (plafond 2) ; au-delà, la ligne reste ICI, marquée « à reprendre au
-          téléphone » — la relance téléphonique est un acte humain. Le compteur
-          de relances est la PREUVE, devant l'auditeur, que le recueil est
-          organisé : une non-réponse d'un tiers n'est pas une faute, l'absence
-          de tentative tracée, si. */}
-      {retours.length > 0 && (
-        <div className={carte}>
-          <h2 className={titreCarte}>
-            <MessageSquareReply size={18} aria-hidden="true" className="shrink-0" />
-            Retours en attente <span className={pastille}>{retours.length}</span>
+      {/* Sessions — échéances (Lot 1 §1.4).
+          🔴 Le bloc qui manquait, et il manquait en entier : la page « À
+          traiter » ne parlait pas des sessions. Une convention non signée à
+          J-3, une évaluation finale jamais saisie, un émargement resté vide —
+          rien de tout cela n'apparaissait avant d'ouvrir le dossier concerné.
+          Ce sont les seules lignes de cette page dont l'échéance est déjà
+          passée. */}
+      {echeancesUrgentes.length > 0 && (
+        <section id="echeances" className={section}>
+          <h2 className={titreSection}>
+            <CalendarClock size={20} aria-hidden="true" className="shrink-0" />
+            Sessions — échéances dépassées{" "}
+            <AdminBadge tone="destructive" plein>
+              {echeancesUrgentes.length}
+            </AdminBadge>
           </h2>
-          <ul>
+          {/* La chronologie EST un ordre : une liste ordonnée. */}
+          <ol className={liste}>
+            {echeancesUrgentes.slice(0, 20).map((e) => (
+              <li
+                key={`${e.sessionId}-${e.etape.cle}`}
+                className={carteElement(e.etape.etat === "hors_delai" ? "destructive" : "warning")}
+              >
+                <div className="min-w-0 flex-1">
+                  <p className="m-0 font-semibold text-[color:var(--color-admin-fg)]">
+                    {e.etape.libelle}
+                  </p>
+                  <p className={`${meta} m-0 mt-[var(--space-admin-1)]`}>
+                    {e.numero} · {e.titre}
+                  </p>
+                  {/* 🔴 L'état est dans le TEXTE, jamais dans la seule couleur
+                      (WCAG 1.4.1). */}
+                  <p className={encadreWarning}>
+                    {e.etape.mention} ·{" "}
+                    {etapeBloqueeParLeVerrou(e.etape, figeSession(e.sessionId))
+                      ? MENTION_GESTE_VERROUILLE
+                      : e.etape.geste}
+                  </p>
+                </div>
+                {/* 🔴 L3 (30/09/2026) — mène à l'onglet de la phase et à la
+                    section qui porte le geste (`hrefEtape`). */}
+                <AdminButton
+                  href={hrefEtape(e.sessionId, e.etape, `${base}/qualiopi/sessions`)}
+                  variant="secondary"
+                  size="md"
+                >
+                  Ouvrir le dossier <ArrowRight size={14} aria-hidden="true" />
+                </AdminButton>
+              </li>
+            ))}
+          </ol>
+          {echeancesUrgentes.length > 20 && (
+            /* 🔴 Une liste coupée en silence se lit comme une liste complète. */
+            <p className={`${meta} mt-[var(--space-admin-3)]`}>
+              {echeancesUrgentes.length - 20} autre
+              {echeancesUrgentes.length - 20 > 1 ? "s" : ""} échéance
+              {echeancesUrgentes.length - 20 > 1 ? "s" : ""} dépassée
+              {echeancesUrgentes.length - 20 > 1 ? "s" : ""} — voir la liste des sessions.
+            </p>
+          )}
+          {parcours.troncature !== null && (
+            <p className={`${meta} mt-[var(--space-admin-3)]`}>
+              Balayage plafonné à {parcours.troncature.plafond} sessions : cette liste peut être
+              incomplète.
+            </p>
+          )}
+        </section>
+      )}
+
+      {/* Signatures */}
+      {signatures.length > 0 && (
+        <section id="signatures" className={section}>
+          <h2 className={titreSection}>
+            <Signature size={20} aria-hidden="true" className="shrink-0" />
+            Signatures en attente{" "}
+            <AdminBadge tone="warning" plein>
+              {signatures.length}
+            </AdminBadge>
+          </h2>
+          {/* S6a (i) — ce qu'il ne reste qu'à l'organisme de signer, d'un geste. */}
+          {peutSignerPourOrganisme(role) && (
+            <div className="mb-[var(--space-admin-4)]">
+              <ContresignerLotButton
+                ids={signatures
+                  .filter(
+                    (s) =>
+                      s.statutSignature === "partielle" &&
+                      estContresignable(
+                        s.type,
+                        s.signatures.map((sig) => sig.partie),
+                      ),
+                  )
+                  .map((s) => s.id)}
+              />
+            </div>
+          )}
+          <ul className={liste}>
+            {signatures.map((s) => {
+              const label = TYPE_LABELS[s.type] ?? s.type;
+              const contexte = s.session ? `${s.session.titreSession} · ${s.session.numero}` : null;
+              // partielle = une partie a signé → c'est (souvent) TON contreseing
+              // qui manque. en_attente = personne n'a signé → relancer.
+              const partielle = s.statutSignature === "partielle";
+              const consigne = partielle
+                ? "une signature est posée — il manque la contrepartie"
+                : "aucune signature — relancer le signataire";
+              const jours = joursDepuis(s.updatedAt);
+              const attente = `en attente depuis ${jours} jour${jours > 1 ? "s" : ""}`;
+              // 🔴 L3 (30/09/2026) — une pièce de session ouvre la fiche AU
+              // bloc « Signature des pièces contractuelles ».
+              const cible = s.sessionId
+                ? hrefEtape(
+                    s.sessionId,
+                    { phase: "preparer", cible: CIBLE_SIGNATURE_PIECES },
+                    `${base}/qualiopi/sessions`,
+                  )
+                : s.trainerId
+                  ? `${base}/qualiopi/formateurs/${s.trainerId}`
+                  : `${base}/qualiopi/sessions`;
+              // Partie à relancer, décidée ICI (côté serveur) par le module pur.
+              const partieRelance = partieARelancer(
+                s.type,
+                s.statutSignature,
+                s.signatures.map((sig) => sig.partie),
+              );
+              return (
+                <li key={s.id} className={carteElement(partielle ? "info" : "warning")}>
+                  <div className="min-w-0 flex-1">
+                    <p className="m-0 flex flex-wrap items-center gap-[var(--space-admin-2)]">
+                      <AdminBadge tone={partielle ? "info" : "warning"} plein>
+                        <Signature size={14} aria-hidden="true" />
+                        {partielle ? "Contresignature" : "À relancer"}
+                      </AdminBadge>
+                      <span className="font-semibold text-[color:var(--color-admin-fg)]">
+                        {label} {s.numero}
+                      </span>
+                    </p>
+                    {contexte && (
+                      <p className={`${meta} m-0 mt-[var(--space-admin-2)]`}>{contexte}</p>
+                    )}
+                    <p className={`${meta} m-0 mt-[var(--space-admin-1)]`}>
+                      {consigne} — {attente}
+                    </p>
+                  </div>
+                  <span className="flex flex-wrap items-center gap-[var(--space-admin-2)]">
+                    {partieRelance !== null && (
+                      <RelancerSignatureButton documentGenereId={s.id} partie={partieRelance} />
+                    )}
+                    <AdminButton href={cible} variant="ghost" size="md" iconAfter={ArrowRight}>
+                      Ouvrir
+                    </AdminButton>
+                  </span>
+                </li>
+              );
+            })}
+          </ul>
+        </section>
+      )}
+
+      {/* Retours en attente — questionnaires envoyés restés sans réponse.
+          Le compteur de relances est la PREUVE, devant l'auditeur, que le
+          recueil est organisé ; la relance téléphonique est un acte humain. */}
+      {retours.length > 0 && (
+        <section id="retours" className={section}>
+          <h2 className={titreSection}>
+            <MessageSquareReply size={20} aria-hidden="true" className="shrink-0" />
+            Retours en attente{" "}
+            <AdminBadge tone="warning" plein>
+              {retours.length}
+            </AdminBadge>
+          </h2>
+          <ul className={liste}>
             {retours.map((r) => {
               const TYPE_QUESTIONNAIRE: Record<string, string> = {
                 positionnement: "Positionnement",
@@ -311,17 +573,20 @@ export default async function ATraiterPage({ params }: PageProps) {
                         : ""
                     }`;
               return (
-                <li key={r.questionnaireId} className={ligne}>
-                  <div className="min-w-0">
-                    <p className="text-[length:var(--text-admin-sm)] font-medium text-[color:var(--color-admin-fg)]">
+                <li
+                  key={r.questionnaireId}
+                  className={carteElement(r.relancesEpuisees ? "destructive" : "warning")}
+                >
+                  <div className="min-w-0 flex-1">
+                    <p className="m-0 font-semibold text-[color:var(--color-admin-fg)]">
                       {TYPE_QUESTIONNAIRE[r.type] ?? r.type} — {r.destinataire}
                       {r.estEntreprise && (
-                        <span className="ml-[var(--space-admin-2)] text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
+                        <span className={`${meta} ml-[var(--space-admin-2)] font-normal`}>
                           (contact client)
                         </span>
                       )}
                     </p>
-                    <p className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
+                    <p className={`${meta} m-0 mt-[var(--space-admin-1)]`}>
                       {r.sessionTitre} · {/* Lot L4 — la ligne mène à LA fiche session. */}
                       <Link
                         href={`${base}/qualiopi/sessions/${r.sessionId}`}
@@ -331,12 +596,12 @@ export default async function ATraiterPage({ params }: PageProps) {
                       </Link>{" "}
                       — envoyé il y a {jours} jour
                       {jours > 1 ? "s" : ""} · {relances}
-                      {r.relancesEpuisees && (
-                        <span className="ml-[var(--space-admin-1)] font-semibold text-[color:var(--color-admin-warning)]">
-                          — relances email épuisées, à reprendre au téléphone
-                        </span>
-                      )}
                     </p>
+                    {r.relancesEpuisees && (
+                      <p className={encadreWarning}>
+                        relances email épuisées, à reprendre au téléphone
+                      </p>
+                    )}
                   </div>
                   <RelancerQuestionnaireButton
                     questionnaireId={r.questionnaireId}
@@ -346,267 +611,118 @@ export default async function ATraiterPage({ params }: PageProps) {
               );
             })}
           </ul>
-        </div>
-      )}
-
-      {/* Signatures */}
-      {signatures.length > 0 && (
-        <div className={carte}>
-          <h2 className={titreCarte}>
-            <Signature size={18} aria-hidden="true" className="shrink-0" />
-            Signatures en attente <span className={pastille}>{signatures.length}</span>
-          </h2>
-          {/* S6a (i) — ce qu'il ne reste qu'à l'organisme de signer, d'un geste. */}
-          {peutSignerPourOrganisme(role) && (
-            <ContresignerLotButton
-              ids={signatures
-                .filter(
-                  (s) =>
-                    s.statutSignature === "partielle" &&
-                    estContresignable(
-                      s.type,
-                      s.signatures.map((sig) => sig.partie),
-                    ),
-                )
-                .map((s) => s.id)}
-            />
-          )}
-          <ul>
-            {signatures.map((s) => {
-              const label = TYPE_LABELS[s.type] ?? s.type;
-              const contexte = s.session ? `${s.session.titreSession} · ${s.session.numero}` : null;
-              // partielle = une partie a signé → c'est (souvent) TON contreseing
-              // qui manque. en_attente = personne n'a signé → relancer.
-              const consigne =
-                s.statutSignature === "partielle"
-                  ? "une signature est posée — il manque la contrepartie"
-                  : "aucune signature — relancer le signataire";
-              const jours = joursDepuis(s.updatedAt);
-              const attente = `en attente depuis ${jours} jour${jours > 1 ? "s" : ""}`;
-              // 🔴 L3 (30/09/2026) — une pièce de session ouvre la fiche AU
-              // bloc « Signature des pièces contractuelles », pas en haut d'une
-              // page de huit écrans. Même helper que la checklist de la fiche.
-              const cible = s.sessionId
-                ? hrefEtape(
-                    s.sessionId,
-                    { phase: "preparer", cible: CIBLE_SIGNATURE_PIECES },
-                    `${base}/qualiopi/sessions`,
-                  )
-                : s.trainerId
-                  ? `${base}/qualiopi/formateurs/${s.trainerId}`
-                  : `${base}/qualiopi/sessions`;
-              // Partie à relancer, décidée ICI (côté serveur) par le module pur
-              // adossé au SSOT des circuits. `null` = pas de bouton : soit la
-              // prochaine signature est celle de l'organisme (contreseing de
-              // Will), soit la partie signe authentifiée (formateur) et un lien
-              // public serait refusé par l'action.
-              const partieRelance = partieARelancer(
-                s.type,
-                s.statutSignature,
-                s.signatures.map((sig) => sig.partie),
-              );
-              return (
-                <li key={s.id} className={ligne}>
-                  <span className="text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg)]">
-                    <strong>
-                      {label} {s.numero}
-                    </strong>
-                    {contexte ? ` — ${contexte}` : ""}{" "}
-                    <span className="text-[color:var(--color-admin-fg-muted)]">
-                      ({consigne} — {attente})
-                    </span>
-                  </span>
-                  <span className="flex flex-wrap items-center gap-[var(--space-admin-2)]">
-                    {partieRelance !== null && (
-                      <RelancerSignatureButton documentGenereId={s.id} partie={partieRelance} />
-                    )}
-                    <AdminButton href={cible} variant="ghost" size="sm" iconAfter={ArrowRight}>
-                      Ouvrir
-                    </AdminButton>
-                  </span>
-                </li>
-              );
-            })}
-          </ul>
-        </div>
+        </section>
       )}
 
       {/* E-mails à valider */}
       {compteurs.emails > 0 && (
-        <div className={carte}>
-          <h2 className={titreCarte}>
-            <Mail size={18} aria-hidden="true" className="shrink-0" />
-            E-mails à valider <span className={pastille}>{compteurs.emails}</span>
+        <section id="emails" className={section}>
+          <h2 className={titreSection}>
+            <Mail size={20} aria-hidden="true" className="shrink-0" />
+            E-mails à valider{" "}
+            <AdminBadge tone="warning" plein>
+              {compteurs.emails}
+            </AdminBadge>
           </h2>
-          <p className="mb-[var(--space-admin-2)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]">
-            Des e-mails (devis, conventions, relances…) attendent votre relecture avant de partir.
-          </p>
-          <AdminButton
-            href={`${base}/qualiopi/emails`}
-            variant="ghost"
-            size="sm"
-            iconAfter={ArrowRight}
-          >
-            Ouvrir la corbeille de validation
-          </AdminButton>
-        </div>
+          <div className={carteElement("warning")}>
+            <p className={`${meta} m-0 min-w-0 flex-1`}>
+              Des e-mails (devis, conventions, relances…) attendent votre relecture avant de partir.
+            </p>
+            <AdminButton
+              href={`${base}/qualiopi/emails`}
+              variant="secondary"
+              size="md"
+              iconAfter={ArrowRight}
+            >
+              Ouvrir la corbeille de validation
+            </AdminButton>
+          </div>
+        </section>
       )}
 
-      {/* Sessions — échéances (Lot 1 §1.4).
-          🔴 Le bloc qui manquait, et il manquait en entier : la page « À
-          traiter » ne parlait pas des sessions. Une convention non signée à
-          J-3, une évaluation finale jamais saisie, un émargement resté vide —
-          rien de tout cela n'apparaissait avant d'ouvrir le dossier concerné.
-          C'est la cause racine des défauts du premier dossier réel.
-
-          Placé EN PREMIER : ce sont les seules lignes de cette page dont
-          l'échéance est déjà passée. */}
-      {echeancesUrgentes.length > 0 && (
-        <div className={carte}>
-          <h2 className={titreCarte}>
-            <CalendarClock size={18} aria-hidden="true" className="shrink-0" />
-            Sessions — échéances dépassées{" "}
-            <span className={pastille}>{echeancesUrgentes.length}</span>
-          </h2>
-          {/* La chronologie EST un ordre : une liste ordonnée, pas une pile de
-              div. Le lecteur d'écran annonce « 1 sur 7 ». */}
-          <ol className="list-none p-0">
-            {echeancesUrgentes.slice(0, 20).map((e) => (
-              <li key={`${e.sessionId}-${e.etape.cle}`} className={ligne}>
-                <span className="min-w-0 text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg)]">
-                  <strong>{e.etape.libelle}</strong>{" "}
-                  <span className="text-[color:var(--color-admin-fg-muted)]">
-                    — {e.numero} · {e.titre}
-                  </span>
-                  <br />
-                  {/* 🔴 L'état est dans le TEXTE, jamais dans la seule couleur
-                      (WCAG 1.4.1) : « rattrapable avant le … » et « hors délai :
-                      +N j » ne se confondent pas, même en noir et blanc. */}
-                  <span className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
-                    {e.etape.mention} ·{" "}
-                    {etapeBloqueeParLeVerrou(e.etape, figeSession(e.sessionId))
-                      ? MENTION_GESTE_VERROUILLE
-                      : e.etape.geste}
-                  </span>
-                </span>
-                {/* 🔴 L3 (30/09/2026) — « Ouvrir le dossier » menait en haut de
-                    la fiche, sans rien de plus : il fallait retrouver l'étape
-                    parmi huit écrans. Il mène désormais à l'onglet de sa phase
-                    et à la section qui porte le geste — ou directement à la
-                    sous-page (`hrefEtape`, le même lien que la checklist). */}
-                <AdminButton
-                  href={hrefEtape(e.sessionId, e.etape, `${base}/qualiopi/sessions`)}
-                  variant="secondary"
-                  size="sm"
-                >
-                  Ouvrir le dossier <ArrowRight size={14} aria-hidden="true" />
-                </AdminButton>
-              </li>
-            ))}
-          </ol>
-          {echeancesUrgentes.length > 20 && (
-            /* 🔴 Une liste coupée en silence se lit comme une liste complète.
-               On dit combien il en reste. */
-            <p className="mt-[var(--space-admin-2)] text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
-              {echeancesUrgentes.length - 20} autre
-              {echeancesUrgentes.length - 20 > 1 ? "s" : ""} échéance
-              {echeancesUrgentes.length - 20 > 1 ? "s" : ""} dépassée
-              {echeancesUrgentes.length - 20 > 1 ? "s" : ""} — voir la liste des sessions.
-            </p>
-          )}
-          {parcours.troncature !== null && (
-            /* Et si le SERVICE lui-même a tronqué, on le dit aussi : sinon la
-               page affirmerait la complétude d'un balayage plafonné. */
-            <p className="mt-[var(--space-admin-2)] text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
-              Balayage plafonné à {parcours.troncature.plafond} sessions : cette liste peut être
-              incomplète.
-            </p>
-          )}
-        </div>
-      )}
-
-      {/* Relances de recouvrement.
-          Bloc absent jusqu'ici : les relances proposées n'existaient QUE dans
-          le hub facturation. Un impayé ne se signalait donc nulle part tant
-          qu'on n'ouvrait pas cet écran — sur le sujet où l'oubli coûte le plus
-          cher. L'envoi reste un clic (et une double validation) dans le hub :
-          ce bloc y renvoie, il ne relance rien lui-même. */}
+      {/* Relances de recouvrement. L'envoi reste un clic (et une double
+          validation) dans le hub : ce bloc y renvoie, il ne relance rien. */}
       {compteurs.relances > 0 && (
-        <div className={carte}>
-          <h2 className={titreCarte}>
-            <Euro size={18} aria-hidden="true" className="shrink-0" />
-            Relances à envoyer <span className={pastille}>{compteurs.relances}</span>
+        <section id="relances" className={section}>
+          <h2 className={titreSection}>
+            <Euro size={20} aria-hidden="true" className="shrink-0" />
+            Relances à envoyer{" "}
+            <AdminBadge tone="warning" plein>
+              {compteurs.relances}
+            </AdminBadge>
           </h2>
-          <p className="mb-[var(--space-admin-2)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]">
-            Des factures échues attendent une relance. Rien ne part sans votre clic : le hub vous
-            demandera de confirmer avoir pointé votre relevé bancaire.
-          </p>
-          <AdminButton
-            href={`${base}/qualiopi/facturation`}
-            variant="ghost"
-            size="sm"
-            iconAfter={ArrowRight}
-          >
-            Ouvrir le hub facturation
-          </AdminButton>
-        </div>
+          <div className={carteElement("warning")}>
+            <p className={`${meta} m-0 min-w-0 flex-1`}>
+              Des factures échues attendent une relance. Rien ne part sans votre clic : le hub vous
+              demandera de confirmer avoir pointé votre relevé bancaire.
+            </p>
+            <AdminButton
+              href={`${base}/qualiopi/facturation`}
+              variant="secondary"
+              size="md"
+              iconAfter={ArrowRight}
+            >
+              Ouvrir le hub facturation
+            </AdminButton>
+          </div>
+        </section>
       )}
 
       {/* Alertes & relances */}
-      {(critiques.length > 0 || importantes.length > 0) && (
-        <div className={carte}>
-          <h2 className={titreCarte}>
-            <TriangleAlert size={18} aria-hidden="true" className="shrink-0" />
+      {nbAlertes > 0 && (
+        <section id="alertes" className={section}>
+          <h2 className={titreSection}>
+            <TriangleAlert size={20} aria-hidden="true" className="shrink-0" />
             Alertes &amp; relances{" "}
-            <span className={pastille}>{critiques.length + importantes.length}</span>
+            <AdminBadge tone={critiques.length > 0 ? "destructive" : "warning"} plein>
+              {nbAlertes}
+            </AdminBadge>
           </h2>
-          <ul>
-            {[...critiques, ...importantes].map((a) => (
-              <li key={a.id} className={ligne}>
-                <span className="text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg)]">
-                  {/* Le niveau se lisait contre 🟠 : deux ronds que SEULE la
-                      couleur distinguait — illisible en vision des couleurs
-                      déficiente, sur l'information la plus urgente de la page.
-                      Deux SILHOUETTES différentes le disent sans la couleur. */}
-                  {a.niveau === "critique" ? (
-                    <CircleAlert
-                      size={15}
-                      aria-label="Critique"
-                      className="mr-[var(--space-admin-2)] inline-block shrink-0 align-[-2px] text-[color:var(--color-admin-destructive)]"
-                    />
-                  ) : (
-                    <TriangleAlert
-                      size={15}
-                      aria-label="Important"
-                      className="mr-[var(--space-admin-2)] inline-block shrink-0 align-[-2px] text-[color:var(--color-admin-warning)]"
-                    />
-                  )}
-                  <strong>{a.titre}</strong>
-                  {/* Certaines alertes recopient une réponse d'API brute — un
-                      échec de job IA fait des centaines de caractères de JSON
-                      (vu en production le 2026-08-02). Deux lignes ici ; le
-                      texte complet vit dans l'infobulle et sur la page Alertes. */}
-                  <span
-                    title={a.message}
-                    className="line-clamp-2 block text-[color:var(--color-admin-fg-muted)]"
-                  >
-                    {a.message}
-                  </span>
-                </span>
-              </li>
-            ))}
+          <ul className={liste}>
+            {[...critiques, ...importantes].map((a) => {
+              const critique = a.niveau === "critique";
+              return (
+                <li key={a.id} className={carteElement(critique ? "destructive" : "warning")}>
+                  <div className="min-w-0 flex-1">
+                    {/* Le niveau se lit par la SILHOUETTE et le libellé, pas par
+                        la seule couleur. */}
+                    <p className="m-0 flex flex-wrap items-center gap-[var(--space-admin-2)]">
+                      <AdminBadge tone={critique ? "destructive" : "warning"} plein>
+                        {critique ? (
+                          <CircleAlert size={14} aria-hidden="true" />
+                        ) : (
+                          <TriangleAlert size={14} aria-hidden="true" />
+                        )}
+                        {critique ? "Critique" : "Important"}
+                      </AdminBadge>
+                      <span className="font-semibold text-[color:var(--color-admin-fg)]">
+                        {a.titre}
+                      </span>
+                    </p>
+                    {/* Certaines alertes recopient une réponse d'API brute :
+                        deux lignes ici, le texte complet dans l'infobulle. */}
+                    <p
+                      title={a.message}
+                      className={`${meta} m-0 mt-[var(--space-admin-2)] line-clamp-2`}
+                    >
+                      {a.message}
+                    </p>
+                  </div>
+                </li>
+              );
+            })}
           </ul>
-          <p className="mt-[var(--space-admin-2)]">
+          <p className="mt-[var(--space-admin-4)]">
             <AdminButton
               href={`${base}/qualiopi/alertes`}
-              variant="ghost"
-              size="sm"
+              variant="secondary"
+              size="md"
               iconAfter={ArrowRight}
             >
               Gérer les alertes (marquer lu / résoudre)
             </AdminButton>
           </p>
-        </div>
+        </section>
       )}
     </AdminPageShell>
   );
