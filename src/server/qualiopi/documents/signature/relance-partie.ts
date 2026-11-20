@@ -65,6 +65,11 @@ export function partieARelancer(
   // règlent pas par un e-mail de relance.
   if (statutSignature !== "en_attente" && statutSignature !== "partielle") return null;
 
+  // 🔴 Un DEVIS ne se relance pas d'ici : ce bouton envoyait le gabarit « Convention à
+  // signer » et émettait un lien sans regarder l'état ni la validité du devis. Il se
+  // relance depuis SA fiche, avec le vrai e-mail de devis (décision du fondateur).
+  if (documentType === "devis") return null;
+
   const circuit = circuitPour(documentType);
   if (circuit === null) return null;
 

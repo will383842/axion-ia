@@ -50,7 +50,6 @@ vi.mock("./_guards", () => ({
   logQualiopiActivity: vi.fn(),
 }));
 
-import { MSG_RELANCE_DEVIS_EMAIL_EN_ATTENTE } from "@/server/qualiopi/documents/signature/emettre-lien-signature";
 import { envoyerLienSignatureParEmailAction } from "./piece-lien-signature";
 
 const DOC = "11111111-1111-4111-8111-111111111111";
@@ -86,10 +85,14 @@ beforeEach(() => {
 });
 
 describe("envoyerLienSignatureParEmailAction — pièce de devis", () => {
-  it("un e-mail du devis en attente : erreur rendue, rien mis en file, aucun jeton", async () => {
+  it("un devis ne se relance pas par l'e-mail de convention : refus, aucun jeton, rien en file", async () => {
     const r = await envoyerLienSignatureParEmailAction({ documentGenereId: DOC, partie: "client" });
-    expect(r).toEqual({ error: MSG_RELANCE_DEVIS_EMAIL_EN_ATTENTE });
+    expect(r).toEqual({
+      error:
+        "Pour un devis, utilisez « Renvoyer par email » ou « Préparer une relance » sur la fiche du devis.",
+    });
     expect(h.enqueue).not.toHaveBeenCalled();
     expect(h.creerToken).not.toHaveBeenCalled();
+    expect(h.p.$transaction).not.toHaveBeenCalled();
   });
 });
