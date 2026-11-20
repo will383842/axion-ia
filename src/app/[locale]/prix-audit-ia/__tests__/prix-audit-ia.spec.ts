@@ -142,8 +142,8 @@ describe("sitemap et llms", () => {
     expect(sitemap).not.toMatch(/"\/prix-audit-ia"/); // non exclue
   });
 
-  it("figure dans llms.txt", () => {
-    const src = readFileSync(path.join(process.cwd(), "src/app/llms.txt/route.ts"), "utf8");
-    expect(src).toContain("/fr/prix-audit-ia");
+  it("figure dans llms.txt (fichier servi)", async () => {
+    const { GET } = await import("@/app/llms.txt/route");
+    expect(await (await GET()).text()).toMatch(/\/fr\/prix-audit-ia(?![\w/-])/);
   });
 });

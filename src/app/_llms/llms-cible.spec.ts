@@ -8,6 +8,8 @@
  * que chaque lien mène à une page qui existe. Les deux routes sont appelées pour de vrai :
  * seules les deux lectures de base (vidéos, avis) sont simulées.
  */
+import { existsSync } from "node:fs";
+import path from "node:path";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
 vi.mock("@/lib/seo", async (importOriginal) => {
@@ -32,6 +34,16 @@ import {
 } from "@/content/journee-ia-commun";
 import { JOURNEE_IA_TIER, formatTierPrice } from "@/content/pricing";
 import { QUESTIONS_REFERENCE } from "@/content/questions-reference";
+import { GLOSSAIRE_DATE_MISE_A_JOUR } from "@/content/glossaire-reference";
+import { FAQ_GLOBAL } from "@/content/transversal";
+import { CONTENU as ACCUEIL } from "@/app/[locale]/_accueil/contenu";
+import {
+  DATE_MISE_A_JOUR_LLMS,
+  SLOGAN_LLMS,
+  auFormatNorme,
+  propreLlms,
+} from "@/app/_llms/faits-communs";
+import { deuxPremieresPhrases, phrasesDe } from "@/app/_llms/reference";
 import { routing } from "@/i18n/routing";
 
 import { uneVideo } from "@/app/[locale]/videos/__tests__/fixture";
@@ -408,7 +420,11 @@ describe("8. Chaque lien mène à une page qui existe", () => {
   const motifs = cles.map(
     (c) => new RegExp(`^${c.replace(/\[\.\.\.[^\]]+\]/g, ".+").replace(/\[[^\]]+\]/g, "[^/]+")}$`),
   );
-  const routeFr = (chemin: string) => chemin === "" || motifs.some((m) => m.test(chemin));
+  /** Une page existe si sa route est déclarée, ou si son dossier porte un `page.tsx`. */
+  const routeFr = (chemin: string) =>
+    chemin === "" ||
+    motifs.some((m) => m.test(chemin)) ||
+    existsSync(path.join(process.cwd(), "src/app/[locale]", chemin, "page.tsx"));
 
   /** Les adresses hors `/fr` que les fichiers ont le droit de citer : liste fermée. */
   const HORS_FR = [
@@ -450,7 +466,80 @@ describe("8. Chaque lien mène à une page qui existe", () => {
   it("le contrôle distingue une route d'une adresse inventée", () => {
     expect(routeFr("/journee-ia")).toBe(true);
     expect(routeFr("/equipe/williams")).toBe(true);
+    expect(routeFr("/devenir-commercial-ia")).toBe(true);
     expect(routeFr("/passer-a-l-ia-pme")).toBe(false);
     expect(routeFr("/journee-ia/inexistante")).toBe(false);
+  });
+});
+
+describe("9. Les outils de la refonte", () => {
+  it("la date de mise à jour est une vraie date, ni future ni antérieure à celle du glossaire", () => {
+    expect(DATE_MISE_A_JOUR_LLMS).toMatch(/^\d{4}-\d{2}-\d{2}$/);
+    expect(Number.isNaN(Date.parse(DATE_MISE_A_JOUR_LLMS))).toBe(false);
+    expect(Date.parse(DATE_MISE_A_JOUR_LLMS)).toBeLessThanOrEqual(Date.now());
+    expect(DATE_MISE_A_JOUR_LLMS >= GLOSSAIRE_DATE_MISE_A_JOUR).toBe(true);
+  });
+
+  it("le slogan est lu dans le contenu de l'accueil", () => {
+    expect(SLOGAN_LLMS).toBe(`${ACCUEIL.heros.titrePartie1} ${ACCUEIL.heros.titreEm}`);
+  });
+
+  it("deuxPremieresPhrases coupe aux fins de phrase, pas aux abréviations ni aux parenthèses", () => {
+    expect(deuxPremieresPhrases("Un. Deux ! Trois ?")).toBe("Un. Deux !");
+    expect(
+      deuxPremieresPhrases(
+        "L’audit dure 2 à 4 h selon l’entreprise (art. 4). Ensuite, la suite. Fin.",
+      ),
+    ).toBe("L’audit dure 2 à 4 h selon l’entreprise (art. 4). Ensuite, la suite.");
+    expect(phrasesDe("Non, rien. « Oui », dit-elle. À demain.")).toHaveLength(3);
+  });
+
+  it("auFormatNorme passe une ligne « — » au format « : » sans toucher au reste", () => {
+    expect(auFormatNorme("- [A](https://axion-ia.com/fr/a) — texte — suite\nligne — libre")).toBe(
+      "- [A](https://axion-ia.com/fr/a): texte — suite\nligne — libre",
+    );
+  });
+
+  it("propreLlms écarte ce que les deux fichiers ne servent pas", () => {
+    for (const texte of [
+      "Un contrat de maintenance optionnel existe sur devis.",
+      "Les frais de déplacement sont facturés en sus.",
+      "Hébergement Hetzner, Francfort.",
+      "Rien ne se paie en ligne.",
+      "Le code source vous appartient.",
+      "Mise en production en 6-8 semaines.",
+      "Nous restons à vos côtés avec un suivi mensuel.",
+    ]) {
+      expect(propreLlms(texte), texte).toBe(false);
+    }
+    expect(propreLlms("2 à 4 h d’audit le matin, suivies de 4 h de formation.")).toBe(true);
+  });
+
+  it("llms-full.txt : la FAQ partagée est une liste de liens, sans réponse recopiée ni doublon", async () => {
+    const corps = await lireFull();
+    const lignes = section(corps, "FAQ")
+      .split("\n")
+      .filter((l) => l.startsWith("- "));
+    expect(lignes.length).toBeGreaterThanOrEqual(15);
+    for (const l of lignes)
+      expect(l, l).toMatch(/^- \[[^\]]+ \?\]\(https:\/\/axion-ia\.com\/fr\/faq\/[a-z0-9-]+\)$/);
+    const ids = new Set(FAQ_GLOBAL.map((f) => f.id));
+    for (const l of lignes) expect(ids.has(l.slice(l.lastIndexOf("/") + 1, -1)), l).toBe(true);
+    const normaliser = (q: string) => q.toLowerCase().replace(/[’']/g, "'");
+    const reference = new Set(
+      Object.values(QUESTIONS_REFERENCE).map((q) => normaliser(q.question)),
+    );
+    for (const l of lignes) {
+      const question = /^- \[([^\]]+)\]/.exec(l)?.[1] ?? "";
+      expect(reference.has(normaliser(question)), question).toBe(false);
+    }
+  });
+
+  it("llms-full.txt : toutes les questions de référence servies ont leur réponse et leur page", async () => {
+    const bloc = section(await lireFull(), "Questions de dirigeants : réponses complètes");
+    const titres = [...bloc.matchAll(/^### (.+)$/gm)].map((m) => m[1]);
+    expect(titres.length).toBeGreaterThanOrEqual(14);
+    expect(titres).toEqual([...new Set(titres)]);
+    expect(bloc.match(/^Page : https:\/\/axion-ia\.com\/fr/gm)?.length).toBe(titres.length);
   });
 });

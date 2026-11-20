@@ -327,7 +327,8 @@ describe("🔴 ouvert : le sitemap, l'index et llms.txt citent la route", () => 
     const llms = sansCommentaires(lire("src/app/llms.txt/route.ts"));
     expect(llms).toMatch(/const sectionTour = TOUR_PUBLIC\s*\?/);
     expect(lire("src/app/robots.ts")).not.toMatch(/tour-?(de-?)?france/);
-    expect(lire("src/app/llms.txt/route.ts")).toContain("## Tour France IA");
+    // Depuis la refonte du 20/11/2026, le Tour est une ligne de la section « Optional ».
+    expect(lire("src/app/llms.txt/route.ts")).toContain("- [Tour France IA](");
   });
 });
 
@@ -441,10 +442,10 @@ describe("🔴 la page n'embarque rien de la coquille d'Axion", () => {
   });
 });
 
-/** La section « Tour France IA » de llms.txt, seule : le reste du fichier parle d'autres offres. */
+/** La ligne « Tour France IA » de llms.txt, seule : le reste du fichier parle d'autres offres. */
 function sectionTourLlms(): string {
   const llms = lire("src/app/llms.txt/route.ts");
-  const debut = llms.indexOf("## Tour France IA");
+  const debut = llms.indexOf("- [Tour France IA](");
   expect(debut).toBeGreaterThan(-1);
   return llms.slice(debut, llms.indexOf("`", debut));
 }
