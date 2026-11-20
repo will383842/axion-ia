@@ -264,13 +264,18 @@ describe("sendDevisAction — rien ne part, rien n'est « envoye »", () => {
     expect(h.revoquer).toHaveBeenCalledOnce();
   });
 
-  it("(9) courriel enfilé : « envoye » écrit, l'appel n'ajoute pas clientId ni ne change le payload", async () => {
+  it("(9) courriel enfilé : « envoye » écrit, l'appel ne change que par clientId (règle du client), sans toucher au payload", async () => {
     const r = await sendDevisAction(ID);
     expect(r).toMatchObject({ data: { emailEnvoye: true, signatureCreee: true } });
     expect(JSON.stringify(r)).not.toContain("garePourValidation");
     expect(h.txDevisUpdateMany).toHaveBeenCalledOnce();
     const options = h.enqueueEmail.mock.calls[0]![4] as Record<string, unknown>;
-    expect(Object.keys(options).sort()).toEqual(["attachments", "entityId", "entityType"]);
+    expect(Object.keys(options).sort()).toEqual([
+      "attachments",
+      "clientId",
+      "entityId",
+      "entityType",
+    ]);
     expect(h.enqueueEmail.mock.calls[0]![0]).toBe("devis-envoi");
   });
 

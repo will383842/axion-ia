@@ -22,6 +22,7 @@ import { prisma } from "@/lib/prisma";
 import { requireAdminWrite, logQualiopiActivity } from "@/server/actions/qualiopi/_guards";
 import { enqueueEmail } from "@/server/queue/queues";
 import type { MotifRetenue } from "@/server/email/suppression";
+import { CLE_SUJET_CHOISI } from "@/server/qualiopi/devis/contenu-email-devis";
 import type { EmailJobName } from "@/server/queue/types";
 import { estSuperAdmin } from "@/server/auth/habilitations";
 import { gabaritEnSommeil, MESSAGE_EMAIL_EN_SOMMEIL } from "@/server/qualiopi/financements/sommeil";
@@ -52,6 +53,32 @@ const approuverSchema = z.object({
   /** Bloc de texte libre inséré dans le corps. Vide = aucun ajout. */
   messagePersonnalise: z.string().trim().max(4000).optional(),
 });
+
+/**
+ * L'objet que le worker doit imposer, ou `undefined` (le gabarit décide).
+ *
+ * Règle d'origine : seul un objet retouché à l'approbation s'impose. Exception unique : un devis
+ * (`devis-envoi`) dont l'objet a été choisi à l'envoi — la ligne porte alors le marqueur
+ * `sujetChoisi` égal à son objet. Sans marqueur, l'objet de la ligne n'est qu'une étiquette de
+ * corbeille (« Devis N — Axion-IA », « Convention à signer — … ») : jamais envoyée au client.
+ */
+function sujetAImposerALEnvoi(
+  email: { template: string; sujet: string },
+  payload: Record<string, unknown>,
+  sujetDemande: string | undefined,
+): string | undefined {
+  if (sujetDemande !== undefined) {
+    return sujetDemande !== email.sujet ? sujetDemande : undefined;
+  }
+  if (
+    email.template === "devis-envoi" &&
+    email.sujet.trim() !== "" &&
+    payload[CLE_SUJET_CHOISI] === email.sujet
+  ) {
+    return email.sujet;
+  }
+  return undefined;
+}
 
 /**
  * Approuve un email en attente ET l'envoie.
@@ -120,6 +147,8 @@ export async function approuverEmailAction(
     ...(v.messagePersonnalise ? { messagePersonnalise: v.messagePersonnalise } : {}),
   };
 
+  const sujetAImposer = sujetAImposerALEnvoi(email, payload, v.sujet);
+
   const attachments = Array.isArray(email.attachments)
     ? (email.attachments as Array<{ filename: string; r2Key: string; contentType?: string }>)
     : undefined;
@@ -155,7 +184,7 @@ export async function approuverEmailAction(
             // recalculait l'objet du gabarit. On ne force que s'il a CHANGÉ — un
             // objet inchangé (ou le nom technique d'un vieux garage) laisse le
             // gabarit décider, comme avant.
-            ...(v.sujet !== undefined && v.sujet !== email.sujet ? { sujetForce: v.sujet } : {}),
+            ...(sujetAImposer !== undefined ? { sujetForce: sujetAImposer } : {}),
             ...(email.entityType ? { entityType: email.entityType } : {}),
             ...(email.entityId ? { entityId: email.entityId } : {}),
             ...(attachments && attachments.length > 0 ? { attachments } : {}),
