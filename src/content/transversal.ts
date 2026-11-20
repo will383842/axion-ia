@@ -370,7 +370,7 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
         "Cinq prestations : formations, coaching 1-to-1, audit, implémentation, sites web & SaaS IA",
         "On travaille sur vos outils et vos données réelles, pas sur des cas d'école",
         "13 régions métropolitaines et 5 DROM, sur site ou à distance",
-        "Appel de cadrage de 45 minutes, devis sous 48 h ouvrées",
+        "Diagnostic IA de 45 minutes, devis sous 48 h ouvrées",
       ],
       facts: [
         { figure: "5", label: "prestations au catalogue" },
@@ -440,7 +440,7 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
         {
           title: "Le tarif dépend du format",
           detail:
-            "Formation de 4 heures : {{price:intervention-4h|flat}} pour le groupe. Journée de formation : {{price:formation-generale-1j|from}}. Coaching 1-to-1 : {{price:intervention-membre-equipe|flat}} avec un collaborateur, {{price:intervention-dirigeants|flat}} avec le dirigeant. Audit IA : {{price:audit-flash|from}}. Implémentation : sur devis, avec réponse sous 48 h ouvrées.",
+            "Formation de 4 heures : {{price:intervention-4h|flat}} pour le groupe. Journée de formation : {{price:formation-generale-1j|from}}. Coaching 1-to-1 : sur devis. Audit IA : {{price:audit-flash|from}}. Implémentation : sur devis, avec réponse sous 48 h ouvrées.",
         },
       ],
     },
@@ -610,9 +610,9 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
       ],
       steps: [
         {
-          title: "Appel de cadrage",
+          title: "Diagnostic IA",
           detail:
-            "Une trentaine de minutes pour cerner le besoin, le format adapté et le périmètre. C'est le seul temps offert du parcours, et il sert surtout à éviter un devis à côté de la plaque.",
+            "45 minutes pour cerner le besoin, le format adapté et le périmètre. C'est le seul temps offert du parcours, et il sert surtout à éviter un devis à côté de la plaque.",
         },
         {
           title: "Devis détaillé sous 48 h ouvrées",
@@ -664,7 +664,7 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
         "Par un cas réel, pas par un plan stratégique. La première étape recommandée est une intervention de découverte — une demi-journée ou une journée — qui identifie 3 à 5 process candidats à l'IA dans votre contexte. L'intervenant arrive avec ses modèles, travaille sur vos données et démontre des gains concrets avant tout engagement.\n\nEn amont, un Diagnostic IA de 45 minutes suffit à choisir le bon point d'entrée. Si vous voulez faire monter une équipe, ce sera une formation en intra. Si le sujet est votre propre poste, ce sera le coaching 1-to-1. Si vous cherchez une cartographie chiffrée de l'entreprise, ce sera l'audit IA.\n\nAucune compétence technique n'est requise, et aucune installation logicielle n'est demandée de votre côté, ni sur place ni à distance : la visioconférence se fait sur Zoom, depuis le navigateur. Le devis suit sous 48 heures ouvrées, et les équipes formées sont opérationnelles dès le lendemain.",
       keyPoints: [
         "Commencer par un cas réel, pas par une stratégie IA",
-        "Appel de cadrage de 45 minutes pour choisir le point d'entrée",
+        "Diagnostic IA de 45 minutes pour choisir le point d'entrée",
         "Journée de découverte : 3 à 5 process candidats identifiés sur vos données",
         "Aucune compétence technique requise, rien à installer, ni sur place ni à distance",
         "Devis sous 48 h ouvrées, équipes opérationnelles dès le lendemain",
@@ -677,9 +677,9 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
       ],
       steps: [
         {
-          title: "Appel de cadrage",
+          title: "Diagnostic IA",
           detail:
-            "30 minutes pour décrire votre contexte et cerner le format adapté. Sans engagement, et sans qu'aucun chiffrage ne soit encore nécessaire.",
+            "45 minutes pour décrire votre contexte et cerner le format adapté. Sans engagement, et sans qu'aucun chiffrage ne soit encore nécessaire.",
         },
         {
           title: "Journée de découverte",
@@ -1838,7 +1838,7 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
     fr: {
       question: "À quoi sert le coaching 1-to-1 IA pour les dirigeants ?",
       answer:
-        "À prendre de la hauteur sur l'IA sans y passer vos soirées. Le coaching 1-to-1 dirigeant est une journée de 7 à 8 heures en tête-à-tête avec un intervenant senior, préparée en amont sur votre secteur : {{price:intervention-dirigeants|flat}}. Elle ne porte pas sur l'entreprise entière mais sur vous — votre temps, vos décisions, votre charge personnelle. On déroule le panorama IA de votre secteur, préparé avant la journée, on hiérarchise 5 à 10 leviers par impact et par urgence, et on regarde ce que cela donne à trois ans.\n\nLes usages travaillés sont ceux de votre quotidien : préparation de réunions, lecture rapide de dossiers, rédaction stratégique, veille sectorielle automatisée. Sous 7 jours, vous recevez la note de cadrage stratégique — le panorama sourcé et vos leviers priorisés — qui devient une base de discussion utilisable telle quelle avec votre équipe de direction. La journée se tient sur site, à distance ou en hybride, partout en France métropolitaine et dans les DROM.",
+        "À prendre de la hauteur sur l'IA sans y passer vos soirées. Le coaching 1-to-1 dirigeant est une journée de 7 à 8 heures en tête-à-tête avec un intervenant senior, préparée en amont sur votre secteur, sur devis. Elle ne porte pas sur l'entreprise entière mais sur vous — votre temps, vos décisions, votre charge personnelle. On déroule le panorama IA de votre secteur, préparé avant la journée, on hiérarchise 5 à 10 leviers par impact et par urgence, et on regarde ce que cela donne à trois ans.\n\nLes usages travaillés sont ceux de votre quotidien : préparation de réunions, lecture rapide de dossiers, rédaction stratégique, veille sectorielle automatisée. Sous 7 jours, vous recevez la note de cadrage stratégique — le panorama sourcé et vos leviers priorisés — qui devient une base de discussion utilisable telle quelle avec votre équipe de direction. La journée se tient sur site, à distance ou en hybride, partout en France métropolitaine et dans les DROM.",
       keyPoints: [
         "Une journée de 7 à 8 h en tête-à-tête, préparée en amont sur votre secteur",
         "Le périmètre, c'est vous : votre temps, vos décisions, votre charge",
@@ -1888,7 +1888,7 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
         {
           title: "Le tarif dépend du profil accompagné",
           detail:
-            "Journée avec le dirigeant : {{price:intervention-dirigeants|flat}}. La même journée avec un collaborateur, centrée sur son poste : {{price:intervention-membre-equipe|flat}}.",
+            "Prestation sur devis. Un Diagnostic IA de 45 minutes permet de trancher, et le devis suit sous 48 h ouvrées.",
         },
       ],
     },
@@ -2623,7 +2623,7 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
         "En quatre temps, chacun produisant un livrable et chacun pouvant être le dernier. Tout commence par un Diagnostic IA pour cerner le besoin, avec un devis sous 48 heures ouvrées. Viennent ensuite les quatre étapes : identifier, auditer, implémenter, mesurer.\n\nIdentifier, c'est une journée sur site : 3 à 5 process candidats, des démonstrations sur vos données anonymisées, des quick-wins déployables sous trente jours, et une cartographie terrain en sortie. Auditer, c'est cinq jours pour chiffrer chaque opportunité et remettre un plan priorisé, sous forme d'un document de 25 à 40 pages et d'un atelier de restitution. Implémenter, c'est six à huit semaines du cadrage technique à la mise en production, avec trente jours de support inclus. Mesurer, c'est revenir compter les heures et les coûts réellement économisés, sur des indicateurs convenus avant le déploiement.\n\nLa méthode est découplée du contrat long : vous pouvez vous arrêter à la fin de n'importe quelle étape, et le même intervenant senior vous suit du cadrage à la livraison.",
       keyPoints: [
         "Quatre temps séparés, un livrable concret à chaque étape",
-        "Appel de cadrage puis devis sous 48 h ouvrées",
+        "Diagnostic IA puis devis sous 48 h ouvrées",
         "Journée sur site, audit de 5 jours, mise en production en 6-8 semaines",
         "Chaque étape peut être la dernière : aucun engagement de durée imposé",
         "Le même intervenant senior du cadrage jusqu'à la livraison",
@@ -3957,16 +3957,16 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
     fr: {
       question: "Comment se passe un premier diagnostic IA ?",
       answer:
-        "Tout commence par un Diagnostic IA, court et sans engagement : vous décrivez votre activité, vos irritants et vos objectifs, et on détermine ensemble le niveau adapté. Le diagnostic lui-même, c'est l'audit IA — une prestation à part entière, avec livrable écrit.\n\nIl se déroule ensuite en trois temps. On observe vos processus et vos outils tels qu'ils fonctionnent réellement, en entretiens terrain ou sur une journée complète dans vos locaux pour une TPE. On repère les tâches chronophages automatisables et on teste l'IA en direct sur deux ou trois de vos vrais cas, jamais sur une démonstration générique. On identifie enfin les cas d'usage à fort impact pour démarrer vite, chacun scoré par ROI estimé et complexité technique.\n\nVous ressortez avec des actions concrètes et un ordre de priorité clair, pas une liste de bonnes intentions : ce qui s'active tout de suite, ce qui peut attendre, ce qu'il vaut mieux abandonner. Le plan est rédigé pour que vos équipes puissent l'exécuter seules.",
+        "Tout commence par un Diagnostic IA, court et sans engagement : vous décrivez votre activité, vos irritants et vos objectifs, et on détermine ensemble le niveau adapté. L'analyse elle-même, c'est l'audit IA — une prestation à part entière, avec livrable écrit.\n\nIl se déroule ensuite en trois temps. On observe vos processus et vos outils tels qu'ils fonctionnent réellement, en entretiens terrain ou sur une journée complète dans vos locaux pour une TPE. On repère les tâches chronophages automatisables et on teste l'IA en direct sur deux ou trois de vos vrais cas, jamais sur une démonstration générique. On identifie enfin les cas d'usage à fort impact pour démarrer vite, chacun scoré par ROI estimé et complexité technique.\n\nVous ressortez avec des actions concrètes et un ordre de priorité clair, pas une liste de bonnes intentions : ce qui s'active tout de suite, ce qui peut attendre, ce qu'il vaut mieux abandonner. Le plan est rédigé pour que vos équipes puissent l'exécuter seules.",
       keyPoints: [
         "Un Diagnostic IA d'abord, pour caler le périmètre et le niveau",
-        "Le diagnostic lui-même, c'est l'audit IA — une prestation à part entière",
+        "L'analyse elle-même, c'est l'audit IA — une prestation à part entière",
         "Observation des processus réels, y compris les procédures orales",
         "2 à 3 cas d'usage à fort impact testés en direct sur vos vrais dossiers",
         "En sortie : des actions classées par priorité, ROI et complexité",
       ],
       facts: [
-        { figure: "3", label: "temps du diagnostic" },
+        { figure: "3", label: "temps de l'audit" },
         { figure: "2-3", label: "cas d'usage prioritaires" },
         { figure: "1 j", label: "sur site pour une TPE" },
       ],
@@ -3996,7 +3996,7 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
         {
           title: "Le Diagnostic IA n'est pas l'audit",
           detail:
-            "L'appel sert à caler le périmètre et le bon niveau. Le diagnostic lui-même, c'est l'audit IA : une intervention sur le terrain avec un livrable écrit.",
+            "Ce rendez-vous de 45 minutes sert à caler le périmètre et le bon niveau. L'analyse elle-même, c'est l'audit IA : une intervention sur le terrain avec un livrable écrit.",
         },
         {
           title: "Ce n'est pas un questionnaire à remplir",
@@ -4227,7 +4227,7 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
         {
           title: "Le tarif du 1-to-1 dépend du profil accompagné",
           detail:
-            "Journée avec le dirigeant : {{price:intervention-dirigeants|flat}}. Journée avec un collaborateur : {{price:intervention-membre-equipe|flat}}. Le devis suit sous 48 h ouvrées.",
+            "Prestation sur devis. Un Diagnostic IA de 45 minutes permet de trancher, et le devis suit sous 48 h ouvrées.",
         },
       ],
     },
@@ -4536,7 +4536,7 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
         {
           title: "Cadrage et arbitrage",
           detail:
-            "Une trentaine de minutes pour trancher la vraie question : construire une base neuve ou augmenter l'existant. Le devis détaillé suit sous 48 h ouvrées.",
+            "45 minutes pour trancher la vraie question : construire une base neuve ou augmenter l'existant. Le devis détaillé suit sous 48 h ouvrées.",
         },
         {
           title: "Conception et choix de stack",
@@ -4779,7 +4779,7 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
     fr: {
       question: "Proposez-vous un accompagnement IA individuel pour dirigeant ?",
       answer:
-        "Oui, et il est strictement individuel : une personne, un intervenant senior, aucune salle de formation. Le format de référence est la journée de 7 à 8 heures avec le dirigeant ({{price:intervention-dirigeants|flat}}), déclinable sur deux jours quand le périmètre le justifie. Elle se tient dans vos locaux, à distance ou en hybride, sur les 13 régions et les 5 DROM ; à l'international, nous intervenons dans les structures francophones sur des missions d'une semaine minimum.\n\nLa confidentialité fait partie du cadre : on travaille sur vos vrais dossiers, vos vrais comptes et vos vrais chiffres, et rien n'est conservé après la journée. C'est aussi le même expert du premier échange à la remise du livrable — vous n'expliquez jamais deux fois votre contexte, et personne ne repart avec la moitié de l'histoire. Concrètement, un Diagnostic IA d'une trentaine de minutes suffit à choisir le format et à caler la date ; le devis suit sous 48 h ouvrées, et la note de cadrage écrite arrive sous 7 jours après la journée.",
+        "Oui, et il est strictement individuel : une personne, un intervenant senior, aucune salle de formation. Le format de référence est la journée de 7 à 8 heures avec le dirigeant, déclinable sur deux jours quand le périmètre le justifie. Elle se tient dans vos locaux, à distance ou en hybride, sur les 13 régions et les 5 DROM ; à l'international, nous intervenons dans les structures francophones sur des missions d'une semaine minimum.\n\nLa confidentialité fait partie du cadre : on travaille sur vos vrais dossiers, vos vrais comptes et vos vrais chiffres, et rien n'est conservé après la journée. C'est aussi le même expert du premier échange à la remise du livrable — vous n'expliquez jamais deux fois votre contexte, et personne ne repart avec la moitié de l'histoire. Concrètement, un Diagnostic IA de 45 minutes suffit à choisir le format et à caler la date ; le devis suit sous 48 h ouvrées, et la note de cadrage écrite arrive sous 7 jours après la journée.",
       keyPoints: [
         "Une seule personne accompagnée, par un intervenant senior",
         "Journée de 7 à 8 h, déclinable sur deux jours selon le périmètre",
@@ -4876,7 +4876,7 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
     fr: {
       question: "Le coaching IA est-il adapté aux cadres et aux managers ?",
       answer:
-        "Oui, et c'est souvent le profil sur lequel le retour est le plus visible. La journée 1-to-1 s'adresse à n'importe quel poste — responsable administratif, comptabilité, achats, RH, marketing, encadrement d'équipe — et se tient au tarif collaborateur : {{price:intervention-membre-equipe|flat}}. On part de vos tâches réelles : reporting hebdomadaire, comptes-rendus de réunion, tri des mails, notes internes, réponses récurrentes, tableaux de suivi. On les allège une par une, sur vos propres dossiers et vos propres outils.\n\nLa particularité d'un manager, c'est le double bénéfice : ce qu'il gagne pour lui, et ce qu'il devient capable de transmettre à son équipe. Vous repartez de la journée avec 3 à 5 méthodes pratiquées, utilisables dès le lendemain, puis votre cahier de prompts et un plan d'action sous 7 jours, avec un point de suivi à 30 jours. Quand plusieurs managers sont concernés, une journée collective en groupe de 2 à 15 participants est souvent plus efficace qu'un 1-to-1 répété : {{price:formation-generale-1j|flat}} pour le groupe.",
+        "Oui, et c'est souvent le profil sur lequel le retour est le plus visible. La journée 1-to-1 s'adresse à n'importe quel poste — responsable administratif, comptabilité, achats, RH, marketing, encadrement d'équipe — et se tient sur devis. On part de vos tâches réelles : reporting hebdomadaire, comptes-rendus de réunion, tri des mails, notes internes, réponses récurrentes, tableaux de suivi. On les allège une par une, sur vos propres dossiers et vos propres outils.\n\nLa particularité d'un manager, c'est le double bénéfice : ce qu'il gagne pour lui, et ce qu'il devient capable de transmettre à son équipe. Vous repartez de la journée avec 3 à 5 méthodes pratiquées, utilisables dès le lendemain, puis votre cahier de prompts et un plan d'action sous 7 jours, avec un point de suivi à 30 jours. Quand plusieurs managers sont concernés, une journée collective en groupe de 2 à 15 participants est souvent plus efficace qu'un 1-to-1 répété : {{price:formation-generale-1j|flat}} pour le groupe.",
       keyPoints: [
         "Ouvert à tous les postes d'encadrement, au tarif collaborateur",
         "On part des tâches réelles : reporting, comptes-rendus, mails, notes internes",
