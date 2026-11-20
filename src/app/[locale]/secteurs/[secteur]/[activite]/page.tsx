@@ -15,6 +15,7 @@ import { isQualiopiPublicDisclosureEnabled } from "@/server/qualiopi/config/flag
 import { CLIENT_SECTORS, getClientSector } from "@/content/sectors";
 import { SERVICE_DEFS, getServiceDef } from "@/content/knowledge/services";
 import {
+  getObjectionFaq,
   getSectorPainContext,
   type Secteur,
   type Verticale,
@@ -136,9 +137,9 @@ export default async function SecteurActivite({ params }: Props) {
     serviceType: service.labelFr,
   });
 
-  const faqJsonLd = pain
-    ? buildFaqJsonLd({ items: [{ question: pain.objection, answer: pain.objectionReply }] })
-    : null;
+  // Paire objection/réponse facultative : sans paire, ni bloc visible ni JSON-LD FAQ.
+  const objectionFaq = pain ? getObjectionFaq(pain) : null;
+  const faqJsonLd = objectionFaq ? buildFaqJsonLd({ items: [objectionFaq] }) : null;
 
   // Activités sœurs (même secteur) pour le maillage interne.
   // Ordre canonique SSOT (formations → 1-to-1 → audit → implémentation → sites web),
@@ -218,18 +219,20 @@ export default async function SecteurActivite({ params }: Props) {
             </ul>
           </Section>
 
-          <Section
-            tone="sand"
-            titleAs="h2"
-            title={isFr ? "Votre objection, notre réponse" : "Your objection, our answer"}
-          >
-            <p className="text-fg font-semibold" data-faq-q>
-              {pain.objection}
-            </p>
-            <p className="text-fg-soft mt-1 max-w-3xl" data-faq-a data-answer>
-              {pain.objectionReply}
-            </p>
-          </Section>
+          {objectionFaq ? (
+            <Section
+              tone="sand"
+              titleAs="h2"
+              title={isFr ? "Votre objection, notre réponse" : "Your objection, our answer"}
+            >
+              <p className="text-fg font-semibold" data-faq-q>
+                {objectionFaq.question}
+              </p>
+              <p className="text-fg-soft mt-1 max-w-3xl" data-faq-a data-answer>
+                {objectionFaq.answer}
+              </p>
+            </Section>
+          ) : null}
         </>
       ) : null}
 

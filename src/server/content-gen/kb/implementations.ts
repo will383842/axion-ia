@@ -302,15 +302,6 @@ export const KB_IMPLEMENTATIONS: readonly KbFact[] = [
     verticales: ["implementations"],
     confidence: 0.92,
   },
-  {
-    id: "impl-032",
-    text: "Axion-IA mesure systématiquement les KPIs d'usage post-déploiement : taux de résolution automatique, satisfaction utilisateur (CSAT), coût par interaction, taux de dérive du modèle — avec tableau de bord mensuel pour le client.",
-    source: "Axion-IA — Protocole suivi post-déploiement v1.1",
-    sourceUrl: "https://axion-ia.com/implementations",
-    verifiedAt: "2026-05-01",
-    verticales: ["implementations"],
-    confidence: 0.95,
-  },
   // ── Taux d'échec projets IA ───────────────────────────────────────────────
   {
     id: "impl-033",
@@ -551,8 +542,8 @@ export const KB_IMPLEMENTATIONS: readonly KbFact[] = [
   },
   {
     id: "impl-059",
-    text: "Axion-IA intègre des mécanismes de monitoring MLOps dans toutes ses implémentations : alertes automatiques de dérive du modèle (data drift et concept drift), tableaux de bord hebdomadaires de qualité des réponses, et protocole de réentraînement trimestriel.",
-    source: "Axion-IA — Protocole MLOps et suivi post-déploiement v1.1",
+    text: "Axion-IA intègre des mécanismes de monitoring MLOps dans toutes ses implémentations : alertes automatiques de dérive du modèle (data drift et concept drift), tableaux de bord hebdomadaires de qualité des réponses.",
+    source: "Axion-IA — Protocole MLOps v1.1",
     sourceUrl: "https://axion-ia.com/implementations",
     verifiedAt: "2026-05-22",
     verticales: ["implementations"],

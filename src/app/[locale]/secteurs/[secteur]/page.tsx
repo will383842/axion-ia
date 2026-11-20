@@ -22,6 +22,7 @@ import type { ServiceId } from "@/content/services";
 import { getPageImages } from "@/lib/seo/page-images";
 import { FOUNDER } from "@/lib/brand";
 import {
+  getObjectionFaq,
   getSectorPainContext,
   type Secteur,
   type Verticale,
@@ -173,11 +174,12 @@ export default async function SecteurPilier({ params }: Props) {
     })),
   });
 
-  const faqItems = activities.map((a) => ({
-    question: a.pain!.objection,
-    answer: a.pain!.objectionReply,
-  }));
-  const faqJsonLd = buildFaqJsonLd({ items: faqItems });
+  // Entrées sans paire objection/réponse : écartées (pas de question vide, pas de FAQPage vide).
+  const faqItems = activities.flatMap((a) => {
+    const item = getObjectionFaq(a.pain!);
+    return item ? [item] : [];
+  });
+  const faqJsonLd = faqItems.length > 0 ? buildFaqJsonLd({ items: faqItems }) : null;
 
   const sectorImagesJsonLd = buildPageImageGraphJsonLd({
     locale: loc,
@@ -467,25 +469,27 @@ export default async function SecteurPilier({ params }: Props) {
       </section>
 
       {/* OBJECTIONS — FAQ sectorielle (Speakable via data-faq-q/a) */}
-      <Section
-        tone="canvas"
-        titleAs="h2"
-        title={isFr ? "Vos objections, nos réponses" : "Your objections, our answers"}
-      >
-        <dl className="grid grid-cols-1 gap-5 lg:grid-cols-2">
-          {faqItems.map((f, i) => (
-            <div key={i} className="border-border rounded-2xl border p-6">
-              <dt className="text-fg flex items-start gap-2 font-semibold" data-faq-q>
-                <Quote className="text-terracotta mt-1 h-4 w-4 shrink-0" aria-hidden="true" />
-                {f.question}
-              </dt>
-              <dd className="text-fg-soft mt-2 text-sm leading-relaxed" data-faq-a data-answer>
-                {f.answer}
-              </dd>
-            </div>
-          ))}
-        </dl>
-      </Section>
+      {faqItems.length > 0 ? (
+        <Section
+          tone="canvas"
+          titleAs="h2"
+          title={isFr ? "Vos objections, nos réponses" : "Your objections, our answers"}
+        >
+          <dl className="grid grid-cols-1 gap-5 lg:grid-cols-2">
+            {faqItems.map((f, i) => (
+              <div key={i} className="border-border rounded-2xl border p-6">
+                <dt className="text-fg flex items-start gap-2 font-semibold" data-faq-q>
+                  <Quote className="text-terracotta mt-1 h-4 w-4 shrink-0" aria-hidden="true" />
+                  {f.question}
+                </dt>
+                <dd className="text-fg-soft mt-2 text-sm leading-relaxed" data-faq-a data-answer>
+                  {f.answer}
+                </dd>
+              </div>
+            ))}
+          </dl>
+        </Section>
+      ) : null}
 
       {/* CTA FINAL — mocha */}
       <Section
@@ -525,7 +529,7 @@ export default async function SecteurPilier({ params }: Props) {
       <JsonLd data={serviceJsonLd} />
       {sectorImagesJsonLd ? <JsonLd data={sectorImagesJsonLd} /> : null}
       <JsonLd data={itemListJsonLd} scriptId="jsonld-secteur-itemlist" />
-      <JsonLd data={faqJsonLd} scriptId="jsonld-secteur-faq" />
+      {faqJsonLd ? <JsonLd data={faqJsonLd} scriptId="jsonld-secteur-faq" /> : null}
     </>
   );
 }
