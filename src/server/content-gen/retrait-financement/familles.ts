@@ -133,6 +133,25 @@ function phrasesDe(texte: string): string[] {
 
 const norm = (s: string): string => s.replace(/\s+/g, " ").trim();
 
+/**
+ * Forme réduite d'un texte pour comparer une phrase CITÉE par le rapport à un passage : le rapport retire
+ * les parenthèses (« (AIF) ») de la citation, et colle parfois le titre devant la réponse. Parenthèses,
+ * « … » de bord, espaces et casse sont donc neutralisés des DEUX côtés.
+ */
+const reduit = (s: string): string =>
+  norm(s.replace(/\s*\([^)]*\)/g, ""))
+    .replace(/^…\s*|\s*…$/g, "")
+    .toLowerCase();
+
+/** La phrase citée figure-t-elle dans `texte` (formes réduites, avec ou sans le titre collé devant) ? */
+function contient(texte: string, phrase: string): boolean {
+  const h = reduit(texte);
+  const p = reduit(phrase);
+  const candidats = [p];
+  for (let i = p.indexOf("? "); i >= 0; i = p.indexOf("? ", i + 1)) candidats.push(p.slice(i + 2));
+  return candidats.some((c) => c.length >= 15 && h.includes(c.slice(0, 80)));
+}
+
 /** Libellés de bloc d'encadré : courts et sans ponctuation, mais ce ne sont pas des titres. */
 const ENCADRES = new Set([
   "attention",
@@ -243,7 +262,7 @@ function familleDe(
     if (phrase !== null)
       for (const t of titres) {
         const s = sectionDe(contexte, t);
-        if (s && [...s.corps].some((l) => norm(l).includes(norm(phrase).slice(0, 80)))) return "F5";
+        if (s && [...s.corps].some((l) => contient(l, phrase))) return "F5";
       }
     return "F6";
   }
@@ -397,6 +416,7 @@ function overridesF1(classes: readonly CasClasse[]): EntreeOverride[] {
             "élément faqJson du parent : même Q/R standard que la FAQ fille (trois stockages cohérents)",
           consignes: [
             "recomposer le tableau faqJson : remplacer l'élément dont la question est `origine`, sans retirer d'élément",
+            "la réponse réelle de l'élément doit être, à la normalisation des espaces près, égale à `reponseOrigine` ; sinon REFUSER (à la main) : le rapport ne relie pas l'élément à SA FAQ fille",
           ],
         }),
       );
@@ -504,7 +524,7 @@ export function genererOverrides(cas: readonly CasAmbigu[]): Sortie {
   const classes = classerAmbigus(cas);
   const brut = [...overridesF1(classes), ...overridesF4(classes)];
   const vus = new Set<string>();
-  const auto = brut
+  const autoBrut = brut
     .filter((e) => {
       const k = `${e.contenu}|${e.champ}|${e.origine}`;
       if (vus.has(k)) return false;
@@ -518,21 +538,82 @@ export function genererOverrides(cas: readonly CasAmbigu[]): Sortie {
         comparer(a.origine, b.origine),
     );
 
+  // R1 : une seule phrase standard par (contenu, champ). La zone suivante d'un même article est SUPPRIMÉE
+  // (remplacement vide) : sinon « Tarifs : sur devis… » apparaîtrait deux fois dans l'article.
+  const zonesVues = new Set<string>();
+  const auto = [...autoBrut].map((e) => {
+    if (e.famille !== "F4") return e;
+    const k = `${e.contenu}|${e.champ}`;
+    if (!zonesVues.has(k)) {
+      zonesVues.add(k);
+      return e;
+    }
+    return entree({
+      ...e,
+      remplacement: "",
+      raison: `${e.raison} ; la phrase standard est déjà posée par une autre zone du même article : cette zone est supprimée (remplacement vide)`,
+      consignes: [
+        ...e.consignes,
+        "remplacement vide : supprimer la zone ; la phrase standard est déjà posée par la zone précédente du même (contenu, champ)",
+      ],
+    });
+  });
+
   // Un cas F4 pris en charge par un override automatique n'est pas à refaire par l'agent.
   const prisEnCharge = new Set(
     auto
       .filter((e) => e.famille === "F4")
       .map((e) => `${e.contenu}|${e.champ}|${e.origine.split("\n")[0]}`),
   );
-  const reste = classes.filter(
+  const origines = (cle: string, champ: string): string[] =>
+    auto
+      .filter((e) => e.famille === "F4" && e.contenu === cle && e.champ === champ)
+      .map((e) => e.origine);
+  const dansZoneAuto = (c: CasClasse): boolean => {
+    const phrase = citation(c.cas.message);
+    return phrase !== null && origines(c.cas.cle, c.cas.champ).some((o) => contient(o, phrase));
+  };
+  const casF4Agent = classes.filter(
     (c) =>
-      c.famille !== "F1" &&
-      c.famille !== "F5" &&
-      !(
-        c.famille === "F4" &&
-        prisEnCharge.has(`${c.cas.cle}|${c.cas.champ}|${titreDeSection(c.cas.message)}`)
-      ),
+      c.famille === "F4" &&
+      !prisEnCharge.has(`${c.cas.cle}|${c.cas.champ}|${titreDeSection(c.cas.message)}`),
   );
+  // R1 : un F5 disparaît avec sa section SEULEMENT si la section est réellement traitée : zone
+  // automatique, passage émis pour l'agent, ou cas « à la main » du même (contenu, champ). Sinon la
+  // phrase est rendue à l'agent (F6) : elle ne doit jamais disparaître de toutes les sorties.
+  const couvert = (c: CasClasse): boolean => {
+    const phrase = citation(c.cas.message);
+    if (phrase === null) return false;
+    const k = `${c.cas.cle}|${c.cas.champ}`;
+    return (
+      dansZoneAuto(c) ||
+      casF4Agent.some(
+        (z) => `${z.cas.cle}|${z.cas.champ}` === k && contient(zoneAgent(z).passage, phrase),
+      ) ||
+      classes.some(
+        (z) =>
+          z.famille === "F7" &&
+          `${z.cas.cle}|${z.cas.champ}` === k &&
+          z.cas.lignes.some((l) => contient(l, phrase)),
+      )
+    );
+  };
+  const reste: CasClasse[] = [];
+  for (const c of classes) {
+    if (
+      c.famille === "F1" ||
+      (prisEnCharge.has(`${c.cas.cle}|${c.cas.champ}|${titreDeSection(c.cas.message)}`) &&
+        c.famille === "F4")
+    )
+      continue;
+    if (c.famille === "F5") {
+      if (!couvert(c)) reste.push({ cas: c.cas, famille: "F6" });
+      continue;
+    }
+    // R1 : une phrase F6 déjà contenue dans une zone automatique du même article est un doublon.
+    if (c.famille === "F6" && dansZoneAuto(c)) continue;
+    reste.push(c);
+  }
   const tri = (l: CasClasse[]): CasClasse[] =>
     [...l].sort(
       (a, b) =>
@@ -575,8 +656,7 @@ function zoneAgent(c: CasClasse): { passage: string; phrase: string | null } {
     if (t !== null && s) return { passage: [t, ...s.corps].join("\n"), phrase };
   }
   if (c.famille === "F6" && phrase !== null) {
-    const cle = norm(phrase).slice(0, 80);
-    const i = cas.lignes.findIndex((l) => norm(l).includes(cle));
+    const i = cas.lignes.findIndex((l) => contient(l, phrase));
     if (i >= 0) return { passage: cas.lignes.slice(Math.max(0, i - 2), i + 3).join("\n"), phrase };
   }
   return { passage: cas.passage, phrase };
