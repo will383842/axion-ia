@@ -15,7 +15,7 @@
  *   F7  cas durs (verrou, tableau, champs courts, cas non reconnu)                       → À LA MAIN
  *
  * Règles de sûreté :
- *  - les remplacements n'utilisent QUE les phrases de `phrases-standard.ts` (en attente de validation) ;
+ *  - les remplacements n'utilisent QUE les phrases de `phrases-standard.ts` (phrase FR validée par Williams le 20/11) ;
  *  - une famille non automatisable ne reçoit AUCUNE proposition, jamais une proposition devinée ;
  *  - tout remplacement repasse la « porte des interdits » (`refusReplacement`) avant d'être émis ;
  *  - sortie déterministe : tri stable, aucune date, aucun aléa.
@@ -118,7 +118,9 @@ export function lireRapport(md: string): CasAmbigu[] {
 
 /** Dernier « … » du message : la question (FAQ) ou la phrase visée. */
 function citation(message: string): string | null {
-  const m = /« (.*) »\s*$/.exec(message);
+  // R1 : « forme non prouvée (hors « A, B et X. », … ) : « phrase » » contient déjà des « » dans son
+  // préfixe fixe : on le retire avant de chercher la citation, sinon la « phrase » commence trop tôt.
+  const m = /« (.*) »\s*$/.exec(message.replace(/^forme non prouvée \([^)]*\) : /, ""));
   return m ? m[1]!.trim() : null;
 }
 
@@ -162,6 +164,9 @@ function sectionDe(
   }
   return { debut, corps };
 }
+
+/** Titre numéroté (« Étape 4 — … », « 3. … ») : l'article le place dans une liste ordonnée. */
+const TITRE_NUMEROTE = /^(?:[ÉE]tape|Step|Phase|Partie|Part)\s*\d|^\d+\s*[.)]/i;
 
 const titreDeSection = (message: string): string | null => {
   const m = /^section « (.*?) » :/.exec(message);
@@ -207,6 +212,7 @@ function familleDe(
   c: CasAmbigu,
   parQuestion: Map<string, string[]>,
   sections: Map<string, string[]>,
+  contextes: Map<string, string[]>,
 ): Famille {
   if (CHAMPS_COURTS.has(c.champ)) return "F7";
   if (c.message.startsWith("verrou") || c.message.startsWith("tableau")) return "F7";
@@ -216,17 +222,27 @@ function familleDe(
     const reponses = q === null ? [] : (parQuestion.get(q) ?? []);
     // Le rapport n'imprime que la QUESTION de l'élément faqJson : on ne conclut « F1 » que si TOUTES
     // les FAQ filles de même question sont F1. Sans fille connue, on ne devine pas.
-    return reponses.length > 0 && reponses.every(reponseToutEntiereVisee) ? "F1" : "F2";
+    // R3 : le rapport ne relie pas l'élément `faqJson` d'un article à SA FAQ fille (identifiants
+    // différents) : si plusieurs réponses DIFFÉRENTES existent pour la même question, on ne choisit pas
+    // (le résultat dépendrait de l'ordre du rapport et les pertes seraient celles d'un autre article).
+    const distinctes = new Set(reponses.map(norm));
+    return distinctes.size === 1 && reponses.every(reponseToutEntiereVisee) ? "F1" : "F2";
   }
   if (c.message.startsWith(MSG_FAQ_ETRANGERE)) return "F3";
-  if (titreDeSection(c.message) !== null) return "F4";
+  const titreF4 = titreDeSection(c.message);
+  // R2 : une section numérotée est au milieu d'une liste ordonnée (« Étape 3 », puis le remplacement,
+  // puis « Étape 5 ») : jamais de remplacement automatique, un relecteur renumérote.
+  if (titreF4 !== null) return TITRE_NUMEROTE.test(titreF4.trim()) ? "F7" : "F4";
   if (c.message.startsWith("forme non prouvée") || c.message.startsWith("phrase mixte")) {
     if (c.table === "faq" || c.champ === "faqJson") return "F3";
     const phrase = citation(c.message);
     const titres = sections.get(`${c.cle}|${c.champ}`) ?? [];
+    // R1 : un cas « phrase » n'imprime parfois que le paragraphe, sans titre. Le contexte est le passage
+    // le plus long du même (contenu, champ) : celui d'un cas « section » ou « forme non prouvée ».
+    const contexte = contextes.get(`${c.cle}|${c.champ}`) ?? c.lignes;
     if (phrase !== null)
       for (const t of titres) {
-        const s = sectionDe(c.lignes, t);
+        const s = sectionDe(contexte, t);
         if (s && [...s.corps].some((l) => norm(l).includes(norm(phrase).slice(0, 80)))) return "F5";
       }
     return "F6";
@@ -239,13 +255,18 @@ function familleDe(
 export function classerAmbigus(cas: readonly CasAmbigu[]): CasClasse[] {
   const parQuestion = reponsesParQuestion(cas);
   const sections = new Map<string, string[]>();
+  const contextes = new Map<string, string[]>();
+  for (const c of cas) {
+    const kc = `${c.cle}|${c.champ}`;
+    if (c.lignes.length > (contextes.get(kc)?.length ?? 0)) contextes.set(kc, c.lignes);
+  }
   for (const c of cas) {
     const t = titreDeSection(c.message);
     if (t === null) continue;
     const k = `${c.cle}|${c.champ}`;
     sections.set(k, [...(sections.get(k) ?? []), t]);
   }
-  return cas.map((c) => ({ cas: c, famille: familleDe(c, parQuestion, sections) }));
+  return cas.map((c) => ({ cas: c, famille: familleDe(c, parQuestion, sections, contextes) }));
 }
 
 // ───────────────────────────── porte des interdits ─────────────────────────────
@@ -307,10 +328,16 @@ function entree(
 
 function overridesF1(classes: readonly CasClasse[]): EntreeOverride[] {
   const out: EntreeOverride[] = [];
+  // R3 : réponse d'origine d'une question, seulement quand elle est UNIQUE dans tout le rapport.
   const reponses = new Map<string, string>();
+  const ambigues = new Set<string>();
   for (const { cas, famille } of classes)
-    if (famille === "F1" && cas.table === "faq" && cas.champ === "answerFr")
-      reponses.set(citation(cas.message) ?? "", cas.passage);
+    if (famille === "F1" && cas.table === "faq" && cas.champ === "answerFr") {
+      const q = citation(cas.message) ?? "";
+      const vue = reponses.get(q);
+      if (vue !== undefined && norm(vue) !== norm(cas.passage)) ambigues.add(q);
+      else reponses.set(q, cas.passage);
+    }
 
   const questionsFaq = new Set<string>();
   for (const { cas, famille } of classes) {
@@ -354,6 +381,8 @@ function overridesF1(classes: readonly CasClasse[]): EntreeOverride[] {
         );
       }
     } else if (cas.champ === "faqJson") {
+      // Garde (la classification l'empêche déjà) : deux réponses différentes → jamais d'automatique.
+      if (ambigues.has(q) || !reponses.has(q)) continue;
       out.push(
         entree({
           contenu: cas.cle,
@@ -393,10 +422,11 @@ function overridesF4(classes: readonly CasClasse[]): EntreeOverride[] {
         raison: `section « ${z.titre} » entièrement consacrée au financement (${z.corps.length} bloc(s), toutes les phrases visées) : titre et contenu remplacés par la phrase standard`,
         zoneEstimee: true,
         consignes: [
-          "le titre ET la section (jusqu'au titre de même niveau) deviennent un seul <p> avec la phrase standard",
+          "le titre ET les blocs listés dans `origine` deviennent un seul <p> avec la phrase standard",
+          "la zone est EXACTEMENT `origine`, reconnue sur le HTML (titre puis blocs, dans l'ordre) : si la section HTML court plus loin que le dernier bloc listé, jusqu'au titre de même niveau (sous-titres, puces, tableaux), REFUSER et envoyer à la main, jamais de remplacement partiel",
           "retirer l'entrée de sommaire ou l'ancre (#…) qui pointait vers ce titre",
           "si l'article a déjà une section « Tarifs », supprimer la zone au lieu de la remplacer (pas de doublon)",
-          "bornes de la zone estimées depuis le rapport (pas de niveaux de titre) : à confirmer sur le HTML, refus si la zone est introuvable ou présente deux fois",
+          "bornes estimées depuis le rapport (il n'imprime pas les niveaux de titre) : refus si la zone est introuvable, présente deux fois, ou plus courte que la section HTML (« jusqu'au titre de même niveau »)",
         ],
       }),
     );
@@ -412,7 +442,59 @@ function zoneAuto(cas: CasAmbigu): { titre: string; corps: string[] } | null {
   if (!s || s.corps.length === 0 || s.corps.length > 6) return null;
   if (!estFrancais([titre, ...s.corps])) return null;
   const toutesVisees = s.corps.every((l) => phrasesDe(l).every(estVisee));
-  return toutesVisees ? { titre, corps: s.corps } : null;
+  if (!toutesVisees) return null;
+  // R2 : une zone qui perd un chiffre ou un nom propre (ville, organisme, personne) ne part pas en
+  // automatique : un relecteur ou l'agent décide si cette information doit survivre ailleurs.
+  const perdus = pertes([titre, ...s.corps].join("\n"), PHRASE_FR);
+  if (perdus.some((m) => /\d/.test(m))) return null;
+  if (nomsPropresPerdus(s.corps, new Set(perdus))) return null;
+  return { titre, corps: s.corps };
+}
+
+const sansAccent = (m: string): string =>
+  m
+    .normalize("NFD")
+    .replace(/\p{M}/gu, "")
+    .toLowerCase()
+    .replace(/[^a-z0-9]/g, "");
+
+/** Mots capitalisés qui font partie du VOCABULAIRE du financement (noms d'organismes, de dispositifs). */
+const VOCABULAIRE_FINANCEMENT = new Set(
+  [
+    "operateurs",
+    "competences",
+    "france",
+    "travail",
+    "compte",
+    "personnel",
+    "formation",
+    "individuelle",
+    "aide",
+    "pole",
+    "emploi",
+    "qualiopi",
+    "regionale",
+    "region",
+    "etat",
+  ].map((m) => m),
+);
+
+/** Un mot capitalisé hors début de phrase figure-t-il parmi les mots perdus ? */
+function nomsPropresPerdus(lignes: readonly string[], perdus: ReadonlySet<string>): boolean {
+  for (const l of lignes) {
+    const mots = l.split(/\s+/);
+    for (let i = 1; i < mots.length; i++) {
+      if (/[.!?:…]$/.test(mots[i - 1]!)) continue;
+      const m = mots[i]!.replace(/^[(«"'’]+/, "");
+      if (
+        /^\p{Lu}[\p{Ll}'’-]+/u.test(m) &&
+        perdus.has(sansAccent(m)) &&
+        !VOCABULAIRE_FINANCEMENT.has(sansAccent(m))
+      )
+        return true;
+    }
+  }
+  return false;
 }
 
 const comparer = (a: string, b: string): number => (a < b ? -1 : a > b ? 1 : 0);
@@ -473,7 +555,7 @@ export function rendreOverridesAuto(s: Sortie): string {
   return `${JSON.stringify(
     {
       avertissement:
-        "Propositions à RELIRE. Les phrases standard sont celles de phrases-standard.ts, en attente de validation par Williams. Aucune écriture en base : ce fichier est lu par le vérificateur d'overrides (quatre portes).",
+        "Propositions à RELIRE. Les phrases standard sont celles de phrases-standard.ts, validées par Williams (20/11). Aucune écriture en base : ce fichier est lu par le vérificateur d'overrides (quatre portes).",
       familles: ["F1", "F4"],
       total: s.auto.length,
       overrides: s.auto,

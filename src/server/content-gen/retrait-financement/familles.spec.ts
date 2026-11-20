@@ -117,23 +117,20 @@ const fixtureF6 = () =>
   );
 const P5 =
   "Renseignez-vous auprès de votre OPCO avant de vous engager sur un financement pour une formation IA non certifiante.";
+// Format RÉEL du rapport : le cas « section » imprime l'article, le cas « phrase » le seul paragraphe.
 const fixtureF5 = () =>
   rapport(
     bloc("article_translation:1b1f79fe-3495-4725-98d8-d1c571dde0f9", "body", MSG4(TM), [
       TM,
       "Selon votre statut et votre OPCO de rattachement, la formation peut être prise en charge. Nous vous guidons dans ces démarches administratives.",
+      P5,
       "Scénario concret",
     ]),
     bloc(
       "article_translation:1b1f79fe-3495-4725-98d8-d1c571dde0f9",
       "body",
       `phrase mixte sans coupure propre : « ${P5} »`,
-      [
-        TM,
-        "Selon votre statut et votre OPCO de rattachement, la formation peut être prise en charge. Nous vous guidons dans ces démarches administratives.",
-        P5,
-        "Scénario concret",
-      ],
+      [P5],
     ),
   );
 
