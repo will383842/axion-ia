@@ -91,6 +91,10 @@ const ICONES_ETAT: Record<EtatMedia, { icone: LucideIcon; ton: Ton; libelle: str
   vivant: { icone: Check, ton: "success", libelle: "Lien vivant" },
 };
 
+export function estEtatMedia(s: string): s is EtatMedia {
+  return Object.prototype.hasOwnProperty.call(ICONES_ETAT, s);
+}
+
 export function tonDeEtat(etat: EtatMedia): Ton {
   return ICONES_ETAT[etat].ton;
 }

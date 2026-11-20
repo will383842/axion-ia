@@ -18,9 +18,7 @@ import {
   AdminBadge,
   AdminEmptyState,
 } from "@/components/admin/ui";
-import { AdminBlocRepliable } from "@/components/admin/ui/AdminBlocRepliable";
 import { Film, MessageSquare, CalendarClock, HelpCircle } from "lucide-react";
-import type { EtatMedia } from "./FicheVisuelle";
 import { LIBELLE_MOTIF_REFUS } from "@/content/recrutement/statuts";
 import {
   TuilesCandidature,
@@ -28,6 +26,7 @@ import {
   PastilleEtat,
   PastilleStatut,
   EncadreTeinte,
+  estEtatMedia,
   tonDeEtat,
 } from "./FicheVisuelle";
 import { getApplicationDetailAction } from "@/features/admin-job-applications/actions";
@@ -244,46 +243,48 @@ export default async function ApplicationDetailPage({ params }: PageProps) {
         }
       />
 
-      <div className="flex flex-wrap items-center gap-[var(--space-admin-3)]">
-        <PastilleStatut statut={a.status} />
-      </div>
+      <div className="mb-[var(--space-admin-6)] space-y-[var(--space-admin-4)]">
+        <div>
+          <PastilleStatut statut={a.status} />
+        </div>
 
-      {/* Le motif de la décision reste VISIBLE, jamais replié : c'est ce que
+        {/* Le motif de la décision reste VISIBLE, jamais replié : c'est ce que
           le fondateur doit relire avant de répondre au candidat. */}
-      {a.rejectionReason && (a.status === "rejected" || a.status === "withdrawn") ? (
-        <EncadreTeinte ton="error" titre="Motif :">
-          {LIBELLE_MOTIF_REFUS[a.rejectionReason]}
-        </EncadreTeinte>
-      ) : null}
+        {a.rejectionReason && (a.status === "rejected" || a.status === "withdrawn") ? (
+          <EncadreTeinte ton="error" titre="Motif :">
+            {LIBELLE_MOTIF_REFUS[a.rejectionReason]}
+          </EncadreTeinte>
+        ) : null}
 
-      <TuilesCandidature
-        tuiles={[
-          {
-            libelle: "Travaux à voir",
-            valeur: videos.length + liens.length,
-            ton: videos.length + liens.length > 0 ? "success" : "default",
-            icone: Film,
-          },
-          {
-            libelle: "Entretiens",
-            valeur: entretiens.length,
-            ton: entretiens.length > 0 ? "info" : "default",
-            icone: CalendarClock,
-          },
-          {
-            libelle: "Événements au journal",
-            valeur: frise.length,
-            ton: "default",
-            icone: MessageSquare,
-          },
-          {
-            libelle: "Réponses aux questions",
-            valeur: Object.keys(a.answers).length,
-            ton: "default",
-            icone: HelpCircle,
-          },
-        ]}
-      />
+        <TuilesCandidature
+          tuiles={[
+            {
+              libelle: "Travaux à voir",
+              valeur: videos.length + liens.length,
+              ton: videos.length + liens.length > 0 ? "success" : "default",
+              icone: Film,
+            },
+            {
+              libelle: "Entretiens",
+              valeur: entretiens.length,
+              ton: entretiens.length > 0 ? "info" : "default",
+              icone: CalendarClock,
+            },
+            {
+              libelle: "Événements au journal",
+              valeur: frise.length,
+              ton: "default",
+              icone: MessageSquare,
+            },
+            {
+              libelle: "Réponses aux questions",
+              valeur: Object.keys(a.answers).length,
+              ton: "default",
+              icone: HelpCircle,
+            },
+          ]}
+        />
+      </div>
 
       <AdminCard>
         <dl className="grid grid-cols-[10rem_1fr] gap-y-2 text-sm">
@@ -387,11 +388,11 @@ export default async function ApplicationDetailPage({ params }: PageProps) {
         {videos.length > 0 ? (
           <div className="mb-[var(--space-admin-4)] space-y-[var(--space-admin-4)]">
             {videos.map((v) => (
-              <CarteEtat key={v.id} ton={tonDeEtat(v.statut as EtatMedia)}>
+              <CarteEtat key={v.id} ton={estEtatMedia(v.statut) ? tonDeEtat(v.statut) : "neutral"}>
                 <p className="text-sm font-medium">
                   {v.nomOriginal}{" "}
                   <span className="admin-meta-small">· {tailleLisible(v.taille)}</span>{" "}
-                  <PastilleEtat etat={v.statut as EtatMedia} />
+                  {estEtatMedia(v.statut) ? <PastilleEtat etat={v.statut} /> : null}
                   {v.statut === "rejetee" ? (
                     <span className="admin-meta-small"> · {v.motifRejet ?? "motif inconnu"}</span>
                   ) : null}
@@ -565,17 +566,13 @@ export default async function ApplicationDetailPage({ params }: PageProps) {
           />
           {/* V2-N-6 — l'issue de l'échange (« Retenu »…) se note dans Rendez-vous : la
               fiche n'y menait pas, il fallait savoir où chercher. */}
-          <div className="mt-[var(--space-admin-4)]">
-            <AdminBlocRepliable titre="L'échange a eu lieu ?">
-              <p className="admin-meta-small">
-                Notez son issue dans{" "}
-                <Link href={`/fr/${adminPrefix}/rendez-vous?vue=point`} className="admin-link">
-                  Rendez-vous › À faire le point
-                </Link>
-                .
-              </p>
-            </AdminBlocRepliable>
-          </div>
+          <p className="admin-meta-small mt-[var(--space-admin-3)]">
+            L&apos;échange a eu lieu ? Notez son issue dans{" "}
+            <Link href={`/fr/${adminPrefix}/rendez-vous?vue=point`} className="admin-link">
+              Rendez-vous › À faire le point
+            </Link>
+            .
+          </p>
         </AdminCard>
       ) : null}
       {montrerFicheFormateur ? (

@@ -5,6 +5,11 @@ import { describe, it, expect, vi, beforeEach } from "vitest";
 import { render, screen, within, cleanup } from "@testing-library/react";
 
 const detail = vi.fn();
+const invitationAllumee = vi.fn(async () => false);
+const videosMock = vi.fn(async () => [
+  { id: "v1", nomOriginal: "montage.mp4", taille: 1000, statut: "analyse", motifRejet: null },
+]);
+const candidatureLue = vi.fn(async (): Promise<unknown> => null);
 vi.mock("@/auth", () => ({ auth: async () => ({ user: { id: "u1", role: "admin" } }) }));
 vi.mock("next/navigation", () => ({
   redirect: vi.fn(),
@@ -39,7 +44,7 @@ vi.mock("@/features/admin-job-applications/reply-actions", () => ({
   etatLivraisonReponseAction: vi.fn(),
 }));
 vi.mock("@/server/qualiopi/formateurs-independants/etats-entree", () => ({
-  invitationAutoFormateursAllumee: async () => false,
+  invitationAutoFormateursAllumee: () => invitationAllumee(),
   lireEtatsEntree: async () => ({ modeles_composeur: false }),
 }));
 vi.mock("@/server/qualiopi/formateurs-independants/suivi-invitations", () => ({
@@ -52,12 +57,10 @@ vi.mock("@/lib/prisma", () => ({
   prisma: {
     jobApplicationLink: { findMany: async () => [] },
     jobApplicationVideo: {
-      findMany: async () => [
-        { id: "v1", nomOriginal: "montage.mp4", taille: 1000, statut: "analyse", motifRejet: null },
-      ],
+      findMany: () => videosMock(),
     },
     trainer: { findUnique: async () => null },
-    jobApplication: { findUnique: async () => null },
+    jobApplication: { findUnique: () => candidatureLue() },
   },
 }));
 
@@ -111,6 +114,8 @@ async function rendre(over: Record<string, unknown> = {}): Promise<HTMLElement> 
 beforeEach(() => {
   cleanup();
   detail.mockReset();
+  invitationAllumee.mockReset().mockResolvedValue(false);
+  candidatureLue.mockReset().mockResolvedValue(null);
 });
 
 describe("fiche candidature — refonte branchée", () => {
@@ -157,5 +162,45 @@ describe("fiche candidature — refonte branchée", () => {
     const c = await rendre();
     expect(c.querySelector("#status")).not.toBeNull();
     expect(c.querySelector("#rejectionReason")).not.toBeNull();
+  });
+
+  it("garde le passage « L'échange a eu lieu ? » et son lien VISIBLES, hors de tout <details>", async () => {
+    invitationAllumee.mockResolvedValue(true);
+    candidatureLue.mockResolvedValue({
+      invitationFormateurAt: null,
+      rattrapageAt: null,
+      clotureSansSuiteAt: null,
+    });
+    await rendre({
+      status: "reviewing",
+      rejectionReason: null,
+      offerTitleSnap: "Formateur IA indépendant (freelance)",
+    });
+    const lien = screen.getByRole("link", { name: /à faire le point/i });
+    expect(lien.closest("details")).toBeNull();
+    expect(lien.getAttribute("href")).toBe("/fr/pilotage/rendez-vous?vue=point");
+    expect(screen.getByText(/L.échange a eu lieu/)).toBeTruthy();
+  });
+
+  it("enveloppe pastille, motif et tuiles dans un conteneur espacé", async () => {
+    const c = await rendre();
+    const conteneur = c.querySelector(".mb-\\[var\\(--space-admin-6\\)\\]");
+    expect(conteneur).not.toBeNull();
+    expect(conteneur!.className).toContain("space-y-[var(--space-admin-4)]");
+    expect(conteneur!.className).not.toMatch(/\bgap-/);
+    expect(conteneur!.querySelector(".admin-badge-plein--destructive")).not.toBeNull();
+    expect(conteneur!.querySelector(".admin-alert-error")).not.toBeNull();
+    expect(
+      within(conteneur as HTMLElement).getByRole("list", { name: /Chiffres clés/ }),
+    ).toBeTruthy();
+  });
+
+  it("ne plante pas sur un état de vidéo inconnu et n'affiche pas de pastille", async () => {
+    videosMock.mockResolvedValueOnce([
+      { id: "v9", nomOriginal: "bizarre.mp4", taille: 10, statut: "inconnu_x", motifRejet: null },
+    ]);
+    const c = await rendre();
+    expect(screen.getByText(/bizarre\.mp4/)).toBeTruthy();
+    expect(c.textContent).not.toMatch(/inconnu_x/);
   });
 });
