@@ -1,10 +1,15 @@
 import { describe, it, expect, vi } from "vitest";
-import { render, screen } from "@testing-library/react";
+import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 
 vi.mock("next/navigation", () => ({ useRouter: () => ({ refresh: vi.fn() }) }));
 
 import { EmailOutboxItem } from "./EmailOutboxItem";
-import { lireDetailsDevis, messageDejaSaisi } from "./emails-devis-details";
+import {
+  construireApercu,
+  lireDetailsDevis,
+  messageDejaSaisi,
+  presenterDevis,
+} from "./emails-devis-details";
 
 const ok = async () => ({ data: { id: "x", envoye: true } });
 const photo = {
@@ -58,10 +63,41 @@ describe("EmailOutboxItem — devis", () => {
     expect(container.querySelector("iframe")).toBeNull();
   });
 
-  it("pré-remplit le message personnalisé", () => {
+  it("affiche le message prévu en lecture et laisse le champ vide", () => {
     carte();
     const champ = screen.getByPlaceholderText(/Comme convenu/) as HTMLTextAreaElement;
-    expect(champ.value).toBe("Bonjour, voici le devis.");
+    expect(champ.value).toBe("");
+    expect(screen.getByText(/Message déjà prévu dans l’e-mail/)).toBeTruthy();
+    expect(screen.getByText(/Bonjour, voici le devis\./)).toBeTruthy();
+    expect(
+      screen.getByText("Un texte saisi ici remplace le message prévu ; laisser vide le garde."),
+    ).toBeTruthy();
+  });
+
+  it("champ vide : l'approbation n'envoie aucun message (le serveur garde le prévu)", async () => {
+    const approuver = vi.fn(async (_: unknown) => ({ data: { id: "x", envoye: true } }));
+    carte({ approuverAction: approuver });
+    fireEvent.click(screen.getByRole("checkbox"));
+    fireEvent.click(screen.getByRole("button", { name: "Approuver et envoyer" }));
+    await waitFor(() => expect(approuver).toHaveBeenCalled());
+    expect(approuver.mock.calls[0]![0]).toEqual({ id: "e1" });
+  });
+
+  it("texte saisi : il est envoyé pour remplacer le message prévu", async () => {
+    const approuver = vi.fn(async (_: unknown) => ({ data: { id: "x", envoye: true } }));
+    carte({ approuverAction: approuver });
+    fireEvent.change(screen.getByPlaceholderText(/Comme convenu/), {
+      target: { value: "Nouveau texte" },
+    });
+    fireEvent.click(screen.getByRole("checkbox"));
+    fireEvent.click(screen.getByRole("button", { name: "Approuver et envoyer" }));
+    await waitFor(() => expect(approuver).toHaveBeenCalled());
+    expect(approuver.mock.calls[0]![0]).toEqual({ id: "e1", messagePersonnalise: "Nouveau texte" });
+  });
+
+  it("sans message prévu : pas de bloc de lecture", () => {
+    carte({ messageInitial: "" });
+    expect(screen.queryByText(/Message déjà prévu/)).toBeNull();
   });
 
   it("sans liens, aucun lien affiché", () => {
@@ -100,5 +136,101 @@ describe("lireDetailsDevis", () => {
   it("lit le message déjà saisi", () => {
     expect(messageDejaSaisi({ messagePersonnalise: "Salut" })).toBe("Salut");
     expect(messageDejaSaisi(null)).toBe("");
+  });
+});
+
+describe("lireDetailsDevis — montant", () => {
+  const mail = [{ template: "devis-envoi", entityType: "Devis", entityId: "d1" }];
+  const lire = async (ligne: Record<string, unknown>) => {
+    const findMany = vi.fn().mockResolvedValue([ligne]);
+    return (await lireDetailsDevis({ devis: { findMany } }, mail)).get("d1")!;
+  };
+
+  it("devis classique : montant exact", async () => {
+    const r = await lire({
+      id: "d1",
+      numero: "N1",
+      documentGenereId: "p1",
+      offre: null,
+      documentGenere: { metadata: photo },
+    });
+    expect(r.montantTtcCents).toBe(120000);
+  });
+
+  it("devis à formules (offre non nulle) : aucun montant", async () => {
+    const r = await lire({
+      id: "d1",
+      numero: "N1",
+      documentGenereId: "p1",
+      offre: { version: 1 },
+      documentGenere: { metadata: photo },
+    });
+    expect(r.montantTtcCents).toBeNull();
+    expect(presenterDevis(r, "d1", "adm").montantTtc).toBeNull();
+  });
+
+  it("devis à formules (formules figées dans la pièce) : aucun montant", async () => {
+    const metadata = {
+      renderData: {
+        data: { ...photo.renderData.data, formules: { formules: [{ titre: "A" }] } },
+      },
+    };
+    const r = await lire({
+      id: "d1",
+      numero: "N1",
+      documentGenereId: "p1",
+      offre: null,
+      documentGenere: { metadata },
+    });
+    expect(r.montantTtcCents).toBeNull();
+  });
+
+  it("total nul : aucun montant, jamais « 0,00 € »", async () => {
+    const metadata = {
+      renderData: { data: { lignes: [], regimeTva: "assujetti" } },
+    };
+    const r = await lire({
+      id: "d1",
+      numero: "N1",
+      documentGenereId: "p1",
+      offre: null,
+      documentGenere: { metadata },
+    });
+    expect(r.montantTtcCents).toBeNull();
+    expect(presenterDevis(r, "d1", "adm").montantTtc).toBeNull();
+  });
+});
+
+describe("construireApercu — libellé du numéro", () => {
+  it("devis-envoi : « Devis n° »", () => {
+    expect(construireApercu({ numero: "AXI-DEV-1" }, "devis-envoi")).toEqual([
+      { label: "Devis n°", valeur: "AXI-DEV-1" },
+    ]);
+  });
+
+  it.each([
+    "facture-envoi",
+    "convention-envoi",
+    "relance-devis-client",
+    "facture-pieces-remboursement-opco",
+  ])("%s : jamais « Devis n° »", (gabarit) => {
+    const lignes = construireApercu({ numero: "X-1", titreFormation: "IA" }, gabarit);
+    expect(lignes.some((l) => l.label === "Devis n°")).toBe(false);
+    render(
+      <EmailOutboxItem
+        id="e2"
+        template={gabarit}
+        destinataire="a@b.fr"
+        sujet="S"
+        clientNom={null}
+        creeLe="01/01/2026"
+        apercu={lignes}
+        nbPiecesJointes={0}
+        accepteMessagePersonnalise={false}
+        approuverAction={ok}
+        refuserAction={async () => ({ data: { id: "e2" } })}
+      />,
+    );
+    expect(screen.queryByText("Devis n°")).toBeNull();
   });
 });

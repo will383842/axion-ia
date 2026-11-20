@@ -38,6 +38,7 @@ import {
 } from "@/server/email/outbox-policy";
 import {
   estEnvoiDevis,
+  construireApercu,
   lireDetailsDevis,
   messageDejaSaisi,
   presenterDevis,
@@ -63,35 +64,6 @@ export const metadata: Metadata = {
 
 const dateFr = (d: Date): string =>
   d.toLocaleDateString("fr-FR", { day: "2-digit", month: "2-digit", year: "numeric" });
-
-/**
- * Résumé lisible de la charge utile, pour que l'admin voie ce qui part sans
- * avoir à rendre le HTML complet.
- *
- * On liste des couples label/valeur plutôt que le JSON brut : un admin ne doit
- * pas avoir à décoder une structure technique pour décider d'un envoi.
- */
-function construireApercu(payload: unknown): Array<{ label: string; valeur: string }> {
-  if (payload === null || typeof payload !== "object") return [];
-  const LIBELLES: Record<string, string> = {
-    destinataireNom: "Destinataire",
-    numeroFacture: "Facture",
-    montantDu: "Montant dû",
-    dateEcheance: "Échéance",
-    joursRetard: "Jours de retard",
-    soldePartiel: "Solde après versement partiel",
-    titreFormation: "Formation",
-    numeroSession: "Session",
-    numero: "Devis n°",
-  };
-  const out: Array<{ label: string; valeur: string }> = [];
-  for (const [cle, libelle] of Object.entries(LIBELLES)) {
-    const v = (payload as Record<string, unknown>)[cle];
-    if (v === undefined || v === null || v === "") continue;
-    out.push({ label: libelle, valeur: typeof v === "boolean" ? (v ? "oui" : "non") : String(v) });
-  }
-  return out;
-}
 
 export default async function EmailsAValiderPage({
   params,
@@ -261,7 +233,7 @@ export default async function EmailsAValiderPage({
                           },
                         ]
                       : []),
-                    ...construireApercu(e.payload),
+                    ...construireApercu(e.payload, e.template),
                     ...(dv?.montantTtc ? [{ label: "Montant TTC", valeur: dv.montantTtc }] : []),
                   ]}
                   messageInitial={messageDejaSaisi(e.payload)}

@@ -34,7 +34,7 @@ export interface EmailOutboxItemProps {
   /** Résumé lisible de la charge utile, rendu côté serveur. */
   apercu: readonly { label: string; valeur: string }[];
   nbPiecesJointes: number;
-  /** Message déjà saisi dans la charge de l'e-mail (pré-remplit le champ). */
+  /** Message déjà prévu dans la charge de l'e-mail (affiché en lecture ; le champ reste vide). */
   messageInitial?: string;
   /** Page console du devis (e-mail d'envoi de devis seulement). */
   lienDevis?: string | null;
@@ -71,7 +71,9 @@ export function EmailOutboxItem({
 }: EmailOutboxItemProps): React.ReactElement {
   const router = useRouter();
   const [sujet, setSujet] = useState(sujetInitial);
-  const [message, setMessage] = useState(messageInitial);
+  // Le champ reste vide : le serveur garde le message déjà prévu tant qu'aucun texte n'est saisi
+  // (vider un champ pré-rempli n'aurait donc rien retiré). Un texte saisi le remplace.
+  const [message, setMessage] = useState("");
   const [motifRefus, setMotifRefus] = useState("");
   const [modeRefus, setModeRefus] = useState(false);
   const [confirmeEnvoi, setConfirmeEnvoi] = useState(false);
@@ -208,6 +210,13 @@ export function EmailOutboxItem({
         />
       </label>
 
+      {accepteMessagePersonnalise && messageInitial.trim() !== "" && (
+        <p className="m-0 rounded-[var(--radius-admin-md)] bg-[color:var(--color-admin-surface)] p-[var(--space-admin-3)] text-[length:var(--text-admin-sm)] whitespace-pre-line text-[color:var(--color-admin-fg)]">
+          <span className="font-semibold">Message déjà prévu dans l’e-mail : </span>
+          {messageInitial}
+        </p>
+      )}
+
       {accepteMessagePersonnalise && (
         <label className="block">
           <span className="mb-[var(--space-admin-1)] block text-[length:var(--text-admin-sm)] font-medium text-[color:var(--color-admin-fg)]">
@@ -223,7 +232,9 @@ export function EmailOutboxItem({
             className={champ}
           />
           <span className="mt-[var(--space-admin-1)] block text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
-            Inséré dans le corps de l&apos;e-mail.
+            {messageInitial.trim() !== ""
+              ? "Un texte saisi ici remplace le message prévu ; laisser vide le garde."
+              : "Inséré dans le corps de l’e-mail."}
           </span>
         </label>
       )}
