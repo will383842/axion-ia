@@ -134,8 +134,14 @@ export function EmailOutboxItem({
           {sujet}
         </h3>
         <p className="m-0 flex flex-wrap gap-[var(--space-admin-2)]">
-          <AdminBadge tone="info">{libelleTemplateEmail(template)}</AdminBadge>
-          {clientNom ? <AdminBadge tone="neutral">{clientNom}</AdminBadge> : null}
+          <AdminBadge tone="info" plein>
+            {libelleTemplateEmail(template)}
+          </AdminBadge>
+          {clientNom ? (
+            <AdminBadge tone="neutral" plein>
+              {clientNom}
+            </AdminBadge>
+          ) : null}
           <AdminBadge tone="outline">En attente depuis le {creeLe}</AdminBadge>
           {nbPiecesJointes > 0 && (
             <AdminBadge tone="outline">
@@ -164,7 +170,13 @@ export function EmailOutboxItem({
               <dt className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
                 {l.label}
               </dt>
-              <dd className="m-0 text-[length:var(--text-admin-base)] text-[color:var(--color-admin-fg)]">
+              <dd
+                className={`m-0 text-[color:var(--color-admin-fg)] ${
+                  l.label === "Montant TTC" || l.label === "Montant dû" || l.label === "Devis n°"
+                    ? "text-[length:var(--text-admin-lg)] font-semibold"
+                    : "text-[length:var(--text-admin-base)]"
+                }`}
+              >
                 {l.valeur}
               </dd>
             </div>
