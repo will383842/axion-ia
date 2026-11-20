@@ -37,6 +37,7 @@ import {
   EnvoiOccupe,
   envoyerAvecLienALEnvoi,
 } from "@/server/qualiopi/documents/signature/lien-a-l-envoi";
+import { cleTacheOutbox, MiseEnFileIncertaine } from "@/server/email/outbox-en-cours";
 import * as Sentry from "@sentry/nextjs";
 import type { Prisma } from "../../../../prisma/generated/client";
 
@@ -179,6 +180,9 @@ export async function approuverEmailAction(
             // 🔴 INDISPENSABLE : sans lui, l'email approuvé serait re-garé et la
             // corbeille se remplirait d'elle-même à l'infini.
             bypassValidation: true,
+            // OUT-1 : un identifiant par ligne, jamais un tirage au sort — une 2e approbation de la
+            // même ligne ne peut pas créer une 2e tâche.
+            cleOutbox: cleTacheOutbox(email.id),
             // Lot 2 (2026-09-02) : l'objet corrigé par l'admin traverse enfin la file.
             // Il était persisté, journalisé « modifié », puis jeté : le worker
             // recalculait l'objet du gabarit. On ne force que s'il a CHANGÉ — un
@@ -226,6 +230,20 @@ export async function approuverEmailAction(
     }
     res = resultat.res;
   } catch (err) {
+    if (err instanceof MiseEnFileIncertaine) {
+      // 🔴 OUT-1 — l'e-mail a PEUT-ÊTRE été mis en file : on ne remet PAS « à valider » (une 2e
+      // approbation viserait la même tâche, mais l'admin doit vérifier avant). La ligne reste
+      // « approuvé » ; le balayage horaire lira le journal et la laissera ainsi si l'envoi est connu.
+      // Libellé fixe, gabarit, nom de classe : ni adresse, ni lien, ni payload.
+      Sentry.captureException(new Error("Mise en file d'un e-mail approuvé : issue inconnue"), {
+        tags: { action: "approuverEmailAction", template: email.template, cause: err.name },
+      });
+      revalidatePath("/[locale]/(admin)/[adminPrefix]/qualiopi/emails", "page");
+      return {
+        error:
+          "L'envoi n'a pas pu être confirmé. Ne l'approuvez pas de nouveau : vérifiez dans E-mails envoyés.",
+      };
+    }
     await prisma.emailOutbox.updateMany({
       where: { id: v.id, statut: "approuve" },
       data: { statut: "a_valider", approuveAt: null, approuveById: null },
@@ -251,14 +269,22 @@ export async function approuverEmailAction(
     // (lu avant le masquage) ; la base garde la forme masquée. Si la mise en file avait
     // échoué, on ne serait pas ici : rien n'est masqué.
     const masque = masquerLienSignaturePayload(email.template, email.payload);
-    await prisma.emailOutbox.update({
-      where: { id: v.id },
+    // OUT-1 : écriture CONDITIONNELLE. Si le balayage (ou un autre appel) a déjà tranché la ligne,
+    // on n'écrase rien : alerte Sentry, pas d'erreur visible (l'e-mail est bien en file).
+    const ecrit = await prisma.emailOutbox.updateMany({
+      where: { id: v.id, statut: "approuve" },
       data: {
         statut: "envoye",
         envoyeAt: new Date(),
         ...(masque.modifie ? { payload: masque.payload as Prisma.InputJsonValue } : {}),
       },
     });
+    if (ecrit.count === 0) {
+      Sentry.captureMessage("Écriture « envoyé » ignorée : la ligne n'était plus « approuvé »", {
+        level: "warning",
+        tags: { action: "approuverEmailAction", template: email.template },
+      });
+    }
   } else if (res.retenu !== undefined) {
     // 🔴 2026-09-02 — liste de suppression. L'adresse a rebondi dur (ou la
     // personne s'est désabonnée d'un envoi marketing) : renvoyer l'email en

@@ -40,6 +40,8 @@ const h = vi.hoisted(() => ({
     options: Record<string, unknown>;
   }>,
   verdictForce: { v: null as null | Record<string, unknown> },
+  /** OUT-1 : erreur que la file lève à l'approbation (issue inconnue, file coupée…). */
+  erreurEnqueue: { v: null as null | Error },
   emettre: vi.fn(),
   log: vi.fn(),
   sentryExc: vi.fn(),
@@ -116,6 +118,7 @@ vi.mock("@/server/queue/queues", () => ({
     options: Record<string, unknown> = {},
   ) => {
     h.appelsEnqueue.push({ payload, options });
+    if (h.erreurEnqueue.v !== null && options["bypassValidation"] === true) throw h.erreurEnqueue.v;
     if (h.verdictForce.v !== null) {
       // Le verdict imposé peut déposer la ligne que le vrai `enqueueEmail` aurait garée.
       const { ligne, ...verdict } = h.verdictForce.v as { ligne?: Record<string, unknown> };
@@ -250,6 +253,7 @@ vi.mock("@/lib/prisma", () => ({
 import { sendDevisAction } from "../devis";
 import { donneesPdfDevis } from "@/server/qualiopi/documents/donnees-pdf-devis";
 import { approuverEmailAction, refuserEmailAction } from "../email-outbox";
+import { MiseEnFileIncertaine } from "@/server/email/outbox-en-cours";
 
 const devisBrouillon = () => ({
   id: ID,
@@ -291,6 +295,7 @@ beforeEach(() => {
   h.vivants.clear();
   h.nbJetons.v = 0;
   h.verdictForce.v = null;
+  h.erreurEnqueue.v = null;
   h.devis.v = devisBrouillon();
   h.ancien.v = { statut: "envoye", documentGenereId: "piece-0" };
 });
@@ -418,6 +423,35 @@ describe("approbation de l'e-mail garé (vrai module à l'envoi)", () => {
     expect(lignes()[0]!.statut).toBe("envoye");
     // La ligne ne garde ni lien ni marqueur exploitable en clair.
     expect(JSON.stringify(lignes()[0]!.payload)).not.toContain("/portail/signer/");
+  });
+});
+
+describe("OUT-1 — issue de mise en file inconnue à l'approbation du premier envoi", () => {
+  it("le lien a pu partir : jeton NON révoqué, erreur de la même classe remontée, ligne laissée « approuvée », devis brouillon", async () => {
+    await sendDevisAction(ID);
+    h.erreurEnqueue.v = new MiseEnFileIncertaine();
+    const r = await approuverEmailAction({ id: lignes()[0]!.id });
+    expect(r).toEqual({
+      error:
+        "L'envoi n'a pas pu être confirmé. Ne l'approuvez pas de nouveau : vérifiez dans E-mails envoyés.",
+    });
+    // Le jeton du lien (peut-être déjà reçu) reste vivant.
+    expect(h.nbJetons.v).toBe(1);
+    expect(h.vivants.has("JETON-1")).toBe(true);
+    // Remontée telle quelle : la classe vue par Sentry est MiseEnFileIncertaine, jamais EnvoiNonParti.
+    expect(JSON.stringify(h.sentryExc.mock.calls)).toContain("MiseEnFileIncertaine");
+    expect(JSON.stringify(h.sentryExc.mock.calls)).not.toContain("EnvoiNonParti");
+    expect(lignes()[0]!.statut).toBe("approuve");
+    expect(devisVivant()["statut"]).toBe("brouillon");
+  });
+
+  it("à titre de contraste : une autre erreur de la file défait le jeton et remet « à valider »", async () => {
+    await sendDevisAction(ID);
+    h.erreurEnqueue.v = new Error("file coupée");
+    const r = await approuverEmailAction({ id: lignes()[0]!.id });
+    expect("error" in r).toBe(true);
+    expect(h.vivants.has("JETON-1")).toBe(false);
+    expect(lignes()[0]!.statut).toBe("a_valider");
   });
 });
 

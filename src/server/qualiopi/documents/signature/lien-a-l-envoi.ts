@@ -34,8 +34,20 @@ import {
   versionRemplaceeBloqueEmission,
   VersionRemplaceeSigneeEntreTempsError,
 } from "@/server/qualiopi/devis/version-remplacee";
+import { DELAI_MISE_EN_FILE_OUTBOX_MS, MiseEnFileIncertaine } from "@/server/email/outbox-en-cours";
 import { rendreLienPrecedent } from "./lien-precedent";
 import { creerTokenDocument, revoquerJetonPrecis, TokenDocumentError } from "./token-document";
+
+/**
+ * Délai de la transaction qui enfile. OUT-1 : la mise en file doit se terminer (ou déclarer son
+ * issue inconnue) AVANT que Prisma ne ferme la transaction, sinon le verrou consultatif tombe alors
+ * que l'ajout est encore en vol. Garde de chargement : le module refuse de démarrer si la marge
+ * (5 s) n'est plus respectée.
+ */
+const TIMEOUT_TRANSACTION_ENVOI_MS = 60_000;
+if (DELAI_MISE_EN_FILE_OUTBOX_MS + 5_000 >= TIMEOUT_TRANSACTION_ENVOI_MS) {
+  throw new Error("lien-a-l-envoi : le délai de mise en file dépasse celui de la transaction");
+}
 
 export const CLE_MARQUEUR = "lienSignatureALEnvoi" as const;
 /** Gabarit du courriel d'envoi ET de renvoi d'un devis (même nom que `sendDevisAction`). */
@@ -321,6 +333,8 @@ async function premierEnvoi<R extends VerdictEnfilage>(a: {
           try {
             verdict = await enfiler(payloadPourEnvoi(payload, `${base}${token}`), ligne.recipient);
           } catch (err) {
+            // OUT-1 : issue inconnue remontée telle quelle (pas « non parti »).
+            if (err instanceof MiseEnFileIncertaine) throw err;
             throw new EnvoiNonParti(err);
           }
           if (!estEnfile(verdict)) {
@@ -346,7 +360,7 @@ async function premierEnvoi<R extends VerdictEnfilage>(a: {
           });
           return { type: "envoi", res: verdict };
         },
-        { maxWait: 5_000, timeout: 60_000 },
+        { maxWait: 5_000, timeout: TIMEOUT_TRANSACTION_ENVOI_MS },
       )
       .then(async (r) => {
         if (r.type === "envoi" && etat.verdict !== null) await journaliserEnvoi(acteur, marqueur);
@@ -365,6 +379,8 @@ async function premierEnvoi<R extends VerdictEnfilage>(a: {
       return { type: "envoi", res: etat.verdict };
     }
     if (err instanceof EnvoiOccupe) throw err;
+    // OUT-1 : l'e-mail a PEUT-ÊTRE été mis en file — le lien a pu partir : le jeton n'est pas révoqué.
+    if (err instanceof MiseEnFileIncertaine) throw err;
     // Exception AVANT ou PENDANT l'enfilage : rien n'est parti.
     await annulerLeJeton(etat.tokenId, etat.url);
     // Jamais l'erreur brute : elle peut avoir vu le payload (jeton, adresse).
@@ -553,6 +569,8 @@ async function renvoi<R extends VerdictEnfilage>(a: {
         try {
           verdict = await enfiler(payloadPourEnvoi(payload, etat.url), ligne.recipient);
         } catch (err) {
+          // OUT-1 : issue inconnue remontée telle quelle (pas « non parti »).
+          if (err instanceof MiseEnFileIncertaine) throw err;
           throw new EnvoiNonParti(err);
         }
         if (!estEnfile(verdict)) {
@@ -564,7 +582,7 @@ async function renvoi<R extends VerdictEnfilage>(a: {
         etat.verdict = verdict;
         return { type: "envoi", res: verdict };
       },
-      { maxWait: 5_000, timeout: 60_000 },
+      { maxWait: 5_000, timeout: TIMEOUT_TRANSACTION_ENVOI_MS },
     );
     if (etat.verdict !== null) await journaliserRenvoi(acteur, marqueur);
     return res;
@@ -585,6 +603,8 @@ async function renvoi<R extends VerdictEnfilage>(a: {
       return { type: "envoi", res: etat.verdict };
     }
     if (err instanceof EnvoiOccupe) throw err;
+    // OUT-1 : l'e-mail a PEUT-ÊTRE été mis en file — le lien a pu partir : ni jeton révoqué, ni ancien lien rendu.
+    if (err instanceof MiseEnFileIncertaine) throw err;
     // Rien n'est parti : le jeton neuf (s'il existe) est défait, l'ancien lien rendu.
     await annulerLeJeton(etat.tokenId, etat.url);
     throw err instanceof EnvoiNonParti ? err : new EnvoiNonParti(err);
