@@ -84,9 +84,56 @@ export type Overrides = Record<
 >;
 
 /**
+ * Familles de la porte 2 (contre-audit v3) : on REFUSE la famille entière, puis on admet une courte liste
+ * d'emplois explicitement non financiers. Un filtre « mots exacts suivis de n'importe quoi » ne ferme que
+ * les exemples cités.
+ */
+
+/** « prise(s) en charge », « prendrait en charge », « prise intégralement en charge », « prise-en-charge ». */
+const PRISE_EN_CHARGE =
+  "\\b(?:pr[ie]\\w*|pren\\w*)(?:[\\s-]+[^\\s.,;:!?\\n]+){0,3}?[\\s-]+en[\\s-]+charge\\b";
+/** Fin de groupe qui clôt un emploi non financier (« … est rapide », « … se fait », « … par l'équipe »). */
+const FIN_DE_GROUPE = "(?:\\s*(?:[.,;:!?)]|$)|\\s+(?:est|sont|se|en|par\\s+l['’]équipe)\\b)";
+const COMPLEMENT_NON_FINANCIER =
+  "(?:(?:des?|du|d['’]|de\\s+la|un|une|le|la|les)\\s*)?(?:appels?|tickets?|incidents?|requ[êe]tes?|clients?|patients?|demandes?|projets?)";
+/**
+ * Emplois NON financiers admis, listés un à un : un complément de la liste (appels, tickets, incidents,
+ * requêtes, clients, patients, demandes, projet(s)), éventuellement suivi d'un seul mot, puis une fin de
+ * groupe ; ou « rapide / immédiate / technique » (« technique du projet ») suivi d'une fin de groupe.
+ * « rapide de vos frais » et « des projets de formation » ne ferment pas le groupe : refusés.
+ */
+const PEC_ADMISE =
+  "(?:\\s+(?:" +
+  COMPLEMENT_NON_FINANCIER +
+  "(?:\\s+[a-zà-ÿ]+)?|(?:rapide|imm[ée]diate|technique)(?:\\s+du\\s+projet)?)" +
+  FIN_DE_GROUPE +
+  ")";
+/** Terme budgétaire dans la même phrase qu'« en charge » : refus, même pour un emploi de la liste. */
+const PEC_ET_BUDGET =
+  "(?:^|[.!?]\\s+)(?=[^.!?\\n]*\\ben[\\s-]+charge\\b)[^.!?\\n]*\\b(?:formations?|frais|co[uû]ts?|employeurs?|budgets?|tarifs?)\\b";
+
+/** Un seul « financ… » est admis quand il désigne le SECTEUR d'activité (liste fermée, audit v3). */
+const ADJ = "financi(?:er|[èe]re|ers|[èe]res)\\b";
+const SECTEUR_AVANT =
+  "(?:secteurs?|reporting|impacts?|donn[ée]es|analyses?|rapports?|pr[ée]visions?|engagements?|b[ée]n[ée]fices?|directeurs?|directrices?)\\s+(?:non\\s+)?";
+const FINANCE_SECTEUR =
+  "(?:(?<=(?:(?<![a-zà-ÿ])(?:la|en|de|du|des|et|ou|[ée]quipes?|fonctions?|m[ée]tiers?|secteurs?|banques?|assurances?)\\s+|[(,]\\s*))finance\\b" +
+  "|finance(?=\\s+d['’]entreprise\\b)" +
+  "|(?<=\\b" +
+  SECTEUR_AVANT +
+  ")" +
+  ADJ +
+  "|" +
+  "financi(?:er|[èe]re|ers|[èe]res)(?=\\s+(?:secteur|reporting|donn[ée]es|analyses?|rapports?|pr[ée]visions?|impact|b[ée]n[ée]fices?|engagement)))";
+
+/**
  * Interdits PUBLICS : contrôle LEXICAL strict d'un override (porte 2). Plus strict que les règles de
  * réécriture, qui laissent passer « France Travail » sans marqueur de financement (A4).
- * « prise en charge » est interdit sous toutes ses formes, sauf complément non financier (liste blanche).
+ * - « prise(s) en charge » et « à la charge de » : refusés partout, sauf emplois non financiers listés
+ *   (`PEC_ADMISE`) et sans terme budgétaire dans la phrase (`PEC_ET_BUDGET`).
+ * - « financ… » : refusé sous toutes ses formes (verbe, adverbe, « ressources / participation financière »),
+ *   sauf les emplois de secteur de `FINANCE_SECTEUR` (« la finance », « directeur financier »…).
+ * - « rembours… », « éligib… », « plan de développement des compétences » : refusés sans complément exigé.
  */
 export const INTERDITS_PUBLICS = new RegExp(
   [
@@ -99,30 +146,28 @@ export const INTERDITS_PUBLICS = new RegExp(
     "france travail",
     "p[ôo]le[- ]emploi",
     "\\bAIF\\b",
-    // P6 : le financement, pas « la finance » / « financier » (secteur d'activité).
-    "finan[cç](?:ement|ements|er|ons|ez|ent|ant|ante|ants|é(?:e|s|es)?|able|ables|ing)",
-    "aides? financi[èe]res?",
-    // Q1 : le VERBE « financer » à l'indicatif présent (« finance la formation »), les « financeurs » et
-    // les « soutiens/dispositifs financiers » ; le NOM « la finance » (secteur) n'est jamais suivi d'un
-    // déterminant, donc reste permis.
-    "\\bfinanceurs?\\b",
-    "\\bfinances?\\s+(?:la|les|le|l['’]|leurs?|votre|vos|son|sa|ses|une|des|cette|ces|tout|jusqu)",
-    "soutiens?\\s+financiers?",
-    "(?:aides?|appuis?|leviers?|dispositifs?)\\s+financi",
+    // V3-2 : toute la famille « financ… » (finançait, financièrement, ressources financières, cofinancé…),
+    // hors emplois de secteur.
+    "(?!" + FINANCE_SECTEUR + ")(?:\\b|(?<=co))finan[cç]\\w*",
+    // Verbe « financer » suivi d'un déterminant, même si « finance » est précédé d'un mot admis (« en finance une part »).
+    "\\bfinances?\\s+(?:la|les|le|l['’]|leurs?|votre|vos|son|sa|ses|une|des|cette|ces|tout|jusqu|\\d|[àa]\\s|en\\s+partie|int[ée]gral|totalement|enti[èe]rement|ta|tes|ton|notre|nos)",
     "op[ée]rateurs? de comp[ée]tences",
-    "frais\\s+(?:p[ée]dagogiques\\s+)?rembours",
-    "rembours\\w*\\s+(?:des?\\s+|les\\s+)?(?:frais|formations?)",
+    "rembours\\w*",
+    "[ée]ligib\\w*",
+    "plan\\s+de\\s+d[ée]veloppement\\s+des\\s+comp[ée]tences",
     "\\bfund(?:s|ing|ed)?\\b",
     "subvention",
     "subrogation",
     "\\bEDOF\\b",
     "FNE[- ]Formation",
     "datadock",
-    // P1 : TOUTE forme de « prise(s) en charge » / « prend en charge » est interdite, sauf si le
-    // complément est dans une courte liste blanche non financière (appels, projet, demandes…).
-    // Q2 : pas de liste blanche par préfixe : chaque mot de la liste est borné par `\\b`, et « projets de
-    // formation » reste refusé (sens financier).
-    "(?:pris(?:e|es)?|prend(?:re|ra|ront)?|prennent|prenant|pren(?:ez|ons|ais|ait|aient|drai|dras|drons|drez))\\s+en\\s+charge(?!\\s+(?:(?:rapide|imm[ée]diate|technique)\\b|des?\\s+(?:appels?|projets?(?!\\s+de\\s+formation)|demandes?|tickets?|incidents?|requ[êe]tes?|clients?|patients?)\\b|du\\s+(?:projet|client|patient|ticket)\\b|de\\s+la\\s+demande\\b|d['’](?:appels?|un\\s+projet)\\b))",
+    "(?:aides?|appuis?|leviers?|dispositifs?|soutiens?)\\s+financi",
+    // V3-1 : « prise(s) en charge » sous TOUTES ses formes, sauf emploi non financier listé.
+    PRISE_EN_CHARGE + "(?!" + PEC_ADMISE + ")",
+    PEC_ET_BUDGET,
+    "reste\\s+[àa]\\s+charge",
+    "[àa]\\s+la\\s+charge\\s+d",
+    "assum\\w*\\s+la\\s+charge",
   ].join("|"),
   "i",
 );

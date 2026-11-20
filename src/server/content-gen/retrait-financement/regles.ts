@@ -1109,7 +1109,7 @@ function nettoyerQuestion(q: string): string {
   return sans;
 }
 
-/** Question/réponse : visée → « Comment se passe le financement ? » + phrase standard. */
+/** Question/réponse : visée → `QUESTION_FR` (« Comment obtenir un devis ? ») + `PHRASE_FR` (phrase standard). */
 export function reecrireFaq(
   f: Faq,
   langue: Langue,
