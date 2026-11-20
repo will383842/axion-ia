@@ -19,9 +19,15 @@ type Cond = { statut: "a_valider" } | { statut: "approuve"; approuveAt: { gte: D
  * `journalPending` : identifiants de tâche (`outbox-<id>`) qui ont une ligne `pending` au journal.
  */
 function lecteur(lignes: Ligne[], journalPending: string[] = []) {
-  const findFirst = vi.fn(async (args: { where: { OR: Cond[] } }) => {
+  const findFirst = vi.fn(async (args: { where: { OR?: Cond[] } }) => {
+    const conditions = args.where.OR;
+    if (conditions === undefined) {
+      // 2e question (OUT-1) : la ligne « approuvé » la plus récente.
+      const ap = lignes.filter((l) => l.statut === "approuve");
+      return ap.length > 0 ? { id: "ob-1", approuveAt: ap[0]?.approuveAt ?? null } : null;
+    }
     const trouvee = lignes.find((l) =>
-      args.where.OR.some((c) => {
+      conditions.some((c) => {
         if (c.statut !== l.statut) return false;
         if (c.statut === "a_valider") return true;
         return l.approuveAt !== null && l.approuveAt >= c.approuveAt.gte;
@@ -29,15 +35,10 @@ function lecteur(lignes: Ligne[], journalPending: string[] = []) {
     );
     return trouvee ? { id: "ob-1" } : null;
   });
-  const findMany = vi.fn(async () =>
-    lignes
-      .filter((l) => l.statut === "approuve")
-      .map((l) => ({ id: "ob-1", approuveAt: l.approuveAt })),
-  );
   const logFindFirst = vi.fn(async (args: { where: { jobId: string } }) =>
     journalPending.includes(args.where.jobId) ? { id: "log-1" } : null,
   );
-  return { emailOutbox: { findFirst, findMany }, emailLog: { findFirst: logFindFirst } } as never;
+  return { emailOutbox: { findFirst }, emailLog: { findFirst: logFindFirst } } as never;
 }
 
 const MAINTENANT = new Date("2026-11-18T12:00:00Z");

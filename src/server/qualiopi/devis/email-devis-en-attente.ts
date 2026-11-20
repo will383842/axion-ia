@@ -47,14 +47,12 @@ interface LecteurOutbox extends LecteurJournalPending {
         template: string;
         entityType: string;
         entityId: string;
-        OR: CondStatut[];
+        OR?: CondStatut[];
+        statut?: "approuve";
       };
-      select: { id: true };
-    }) => Promise<{ id: string } | null>;
-    findMany: (args: {
-      where: { template: string; entityType: string; entityId: string; statut: "approuve" };
-      select: { id: true; approuveAt: true };
-    }) => Promise<Array<{ id: string; approuveAt: Date | null }>>;
+      select: { id: true; approuveAt?: true };
+      orderBy?: { approuveAt: "desc" };
+    }) => Promise<{ id: string; approuveAt?: Date | null } | null>;
   };
 }
 
@@ -102,7 +100,7 @@ export async function emailDevisEnAttente(
   if (ligne !== null) return true;
   // OUT-1 : une ligne « approuvé » ancienne dont l'envoi a une issue INCONNUE (journal `pending`)
   // compte encore : le devis ne se rouvre pas tant qu'on ne sait pas si l'e-mail est parti.
-  const anciennes = await db.emailOutbox.findMany({
+  const ancienne = await db.emailOutbox.findFirst({
     where: {
       template: GABARIT_DEVIS_ENVOI,
       entityType: "Devis",
@@ -110,11 +108,14 @@ export async function emailDevisEnAttente(
       statut: "approuve",
     },
     select: { id: true, approuveAt: true },
+    orderBy: { approuveAt: "desc" },
   });
-  for (const a of anciennes) {
-    if (await approuveEncoreEnCours(db, a, maintenant)) return true;
-  }
-  return false;
+  if (ancienne === null || ancienne === undefined) return false;
+  return approuveEncoreEnCours(
+    db,
+    { id: ancienne.id, approuveAt: ancienne.approuveAt ?? null },
+    maintenant,
+  );
 }
 
 /**

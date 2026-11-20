@@ -15,7 +15,10 @@ vi.mock("@/lib/prisma", () => ({
     emailLog: {
       count: vi.fn(async () => 0),
       findFirst: vi.fn(async () => null),
-      findMany: vi.fn(async () => h.journaux),
+      // La sonde lit aussi le journal pour d'autres mesures : seule la lecture par `jobId` est simulée.
+      findMany: vi.fn(async (a: { where?: { jobId?: unknown } }) =>
+        a?.where?.jobId !== undefined ? h.journaux : [],
+      ),
     },
     emailOutbox: {
       findMany: vi.fn(async () => h.anciens),
