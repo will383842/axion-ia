@@ -220,6 +220,9 @@ export default async function ATraiterPage({ params }: PageProps) {
     nbRouverts +
     nbHorodatages;
 
+  // Une tuile ne mène à sa section que si celle-ci est rendue (chiffre > 0).
+  const ancre = (n: number, href: string) => (n > 0 ? { href } : {});
+
   const tonDe = (n: number, tonSiPositif: "warning" | "destructive" = "warning") =>
     n > 0 ? tonSiPositif : "success";
 
@@ -249,13 +252,17 @@ export default async function ATraiterPage({ params }: PageProps) {
         title="À traiter"
         description="Tout ce qui attend une action, au même endroit — signatures, e-mails, relances, alertes. Quand cette page est vide, tout est à jour."
         meta={
-          nbAFaire > 0 ? (
+          rienAFaire ? (
+            <AdminBadge tone="success" plein>
+              Tout est à jour
+            </AdminBadge>
+          ) : nbAFaire > 0 ? (
             <AdminBadge tone="warning" plein>
               {nbAFaire} à traiter
             </AdminBadge>
           ) : (
-            <AdminBadge tone="success" plein>
-              Tout est à jour
+            <AdminBadge tone="warning" plein>
+              À vérifier : un registre n&apos;a pas pu être lu
             </AdminBadge>
           )
         }
@@ -268,49 +275,49 @@ export default async function ATraiterPage({ params }: PageProps) {
           value={signatures.length}
           icon={Signature}
           tone={tonDe(signatures.length)}
-          href="#signatures"
+          {...ancre(signatures.length, "#signatures")}
         />
         <AdminStatCard
           label="Retours en attente"
           value={retours.length}
           icon={MessageSquareReply}
           tone={tonDe(retours.length)}
-          href="#retours"
+          {...ancre(retours.length, "#retours")}
         />
         <AdminStatCard
           label="E-mails à valider"
           value={compteurs.emails}
           icon={Mail}
           tone={tonDe(compteurs.emails)}
-          href="#emails"
+          {...ancre(compteurs.emails, "#emails")}
         />
         <AdminStatCard
           label="Échéances dépassées"
           value={echeancesUrgentes.length}
           icon={CalendarClock}
           tone={tonDe(echeancesUrgentes.length, "destructive")}
-          href="#echeances"
+          {...ancre(echeancesUrgentes.length, "#echeances")}
         />
         <AdminStatCard
           label="Relances à envoyer"
           value={compteurs.relances}
           icon={Euro}
           tone={tonDe(compteurs.relances)}
-          href="#relances"
+          {...ancre(compteurs.relances, "#relances")}
         />
         <AdminStatCard
           label="Alertes"
           value={nbAlertes}
           icon={TriangleAlert}
           tone={tonDe(nbAlertes, critiques.length > 0 ? "destructive" : "warning")}
-          href="#alertes"
+          {...ancre(nbAlertes, "#alertes")}
         />
         <AdminStatCard
           label="Dossiers rouverts"
           value={rouverts === null ? "—" : nbRouverts}
           icon={LockOpen}
           tone={rouverts === null ? "default" : tonDe(nbRouverts)}
-          href="#rouverts"
+          {...ancre(nbRouverts, "#rouverts")}
         />
         <AdminStatCard
           label="Horodatages en retard"
@@ -334,7 +341,7 @@ export default async function ATraiterPage({ params }: PageProps) {
           et l'auteur sont écrits en entier — ce sont eux que l'auditeur lira
           dans le dossier d'audit. */}
       {rouverts === null ? (
-        <div role="alert" className={`${encadreDanger} mb-[var(--space-admin-8)]`}>
+        <div className={`${encadreDanger} mb-[var(--space-admin-8)]`}>
           Le registre des réouvertures n&apos;a pas pu être lu : l&apos;absence de dossier rouvert
           ci-dessous n&apos;est PAS un constat.
         </div>
@@ -384,168 +391,15 @@ export default async function ATraiterPage({ params }: PageProps) {
 
       <BlocHorodatagesEnRetard lignes={horodatagesEnRetard} base={base} />
 
-      {/* Sessions — échéances (Lot 1 §1.4).
-          🔴 Le bloc qui manquait, et il manquait en entier : la page « À
-          traiter » ne parlait pas des sessions. Une convention non signée à
-          J-3, une évaluation finale jamais saisie, un émargement resté vide —
-          rien de tout cela n'apparaissait avant d'ouvrir le dossier concerné.
-          Ce sont les seules lignes de cette page dont l'échéance est déjà
-          passée. */}
-      {echeancesUrgentes.length > 0 && (
-        <section id="echeances" className={section}>
-          <h2 className={titreSection}>
-            <CalendarClock size={20} aria-hidden="true" className="shrink-0" />
-            Sessions — échéances dépassées{" "}
-            <AdminBadge tone="destructive" plein>
-              {echeancesUrgentes.length}
-            </AdminBadge>
-          </h2>
-          {/* La chronologie EST un ordre : une liste ordonnée. */}
-          <ol className={liste}>
-            {echeancesUrgentes.slice(0, 20).map((e) => (
-              <li
-                key={`${e.sessionId}-${e.etape.cle}`}
-                className={carteElement(e.etape.etat === "hors_delai" ? "destructive" : "warning")}
-              >
-                <div className="min-w-0 flex-1">
-                  <p className="m-0 font-semibold text-[color:var(--color-admin-fg)]">
-                    {e.etape.libelle}
-                  </p>
-                  <p className={`${meta} m-0 mt-[var(--space-admin-1)]`}>
-                    {e.numero} · {e.titre}
-                  </p>
-                  {/* 🔴 L'état est dans le TEXTE, jamais dans la seule couleur
-                      (WCAG 1.4.1). */}
-                  <p className={encadreWarning}>
-                    {e.etape.mention} ·{" "}
-                    {etapeBloqueeParLeVerrou(e.etape, figeSession(e.sessionId))
-                      ? MENTION_GESTE_VERROUILLE
-                      : e.etape.geste}
-                  </p>
-                </div>
-                {/* 🔴 L3 (30/09/2026) — mène à l'onglet de la phase et à la
-                    section qui porte le geste (`hrefEtape`). */}
-                <AdminButton
-                  href={hrefEtape(e.sessionId, e.etape, `${base}/qualiopi/sessions`)}
-                  variant="secondary"
-                  size="md"
-                >
-                  Ouvrir le dossier <ArrowRight size={14} aria-hidden="true" />
-                </AdminButton>
-              </li>
-            ))}
-          </ol>
-          {echeancesUrgentes.length > 20 && (
-            /* 🔴 Une liste coupée en silence se lit comme une liste complète. */
-            <p className={`${meta} mt-[var(--space-admin-3)]`}>
-              {echeancesUrgentes.length - 20} autre
-              {echeancesUrgentes.length - 20 > 1 ? "s" : ""} échéance
-              {echeancesUrgentes.length - 20 > 1 ? "s" : ""} dépassée
-              {echeancesUrgentes.length - 20 > 1 ? "s" : ""} — voir la liste des sessions.
-            </p>
-          )}
-          {parcours.troncature !== null && (
-            <p className={`${meta} mt-[var(--space-admin-3)]`}>
-              Balayage plafonné à {parcours.troncature.plafond} sessions : cette liste peut être
-              incomplète.
-            </p>
-          )}
-        </section>
-      )}
-
-      {/* Signatures */}
-      {signatures.length > 0 && (
-        <section id="signatures" className={section}>
-          <h2 className={titreSection}>
-            <Signature size={20} aria-hidden="true" className="shrink-0" />
-            Signatures en attente{" "}
-            <AdminBadge tone="warning" plein>
-              {signatures.length}
-            </AdminBadge>
-          </h2>
-          {/* S6a (i) — ce qu'il ne reste qu'à l'organisme de signer, d'un geste. */}
-          {peutSignerPourOrganisme(role) && (
-            <div className="mb-[var(--space-admin-4)]">
-              <ContresignerLotButton
-                ids={signatures
-                  .filter(
-                    (s) =>
-                      s.statutSignature === "partielle" &&
-                      estContresignable(
-                        s.type,
-                        s.signatures.map((sig) => sig.partie),
-                      ),
-                  )
-                  .map((s) => s.id)}
-              />
-            </div>
-          )}
-          <ul className={liste}>
-            {signatures.map((s) => {
-              const label = TYPE_LABELS[s.type] ?? s.type;
-              const contexte = s.session ? `${s.session.titreSession} · ${s.session.numero}` : null;
-              // partielle = une partie a signé → c'est (souvent) TON contreseing
-              // qui manque. en_attente = personne n'a signé → relancer.
-              const partielle = s.statutSignature === "partielle";
-              const consigne = partielle
-                ? "une signature est posée — il manque la contrepartie"
-                : "aucune signature — relancer le signataire";
-              const jours = joursDepuis(s.updatedAt);
-              const attente = `en attente depuis ${jours} jour${jours > 1 ? "s" : ""}`;
-              // 🔴 L3 (30/09/2026) — une pièce de session ouvre la fiche AU
-              // bloc « Signature des pièces contractuelles ».
-              const cible = s.sessionId
-                ? hrefEtape(
-                    s.sessionId,
-                    { phase: "preparer", cible: CIBLE_SIGNATURE_PIECES },
-                    `${base}/qualiopi/sessions`,
-                  )
-                : s.trainerId
-                  ? `${base}/qualiopi/formateurs/${s.trainerId}`
-                  : `${base}/qualiopi/sessions`;
-              // Partie à relancer, décidée ICI (côté serveur) par le module pur.
-              const partieRelance = partieARelancer(
-                s.type,
-                s.statutSignature,
-                s.signatures.map((sig) => sig.partie),
-              );
-              return (
-                <li key={s.id} className={carteElement(partielle ? "info" : "warning")}>
-                  <div className="min-w-0 flex-1">
-                    <p className="m-0 flex flex-wrap items-center gap-[var(--space-admin-2)]">
-                      <AdminBadge tone={partielle ? "info" : "warning"} plein>
-                        <Signature size={14} aria-hidden="true" />
-                        {partielle ? "Contresignature" : "À relancer"}
-                      </AdminBadge>
-                      <span className="font-semibold text-[color:var(--color-admin-fg)]">
-                        {label} {s.numero}
-                      </span>
-                    </p>
-                    {contexte && (
-                      <p className={`${meta} m-0 mt-[var(--space-admin-2)]`}>{contexte}</p>
-                    )}
-                    <p className={`${meta} m-0 mt-[var(--space-admin-1)]`}>
-                      {consigne} — {attente}
-                    </p>
-                  </div>
-                  <span className="flex flex-wrap items-center gap-[var(--space-admin-2)]">
-                    {partieRelance !== null && (
-                      <RelancerSignatureButton documentGenereId={s.id} partie={partieRelance} />
-                    )}
-                    <AdminButton href={cible} variant="ghost" size="md" iconAfter={ArrowRight}>
-                      Ouvrir
-                    </AdminButton>
-                  </span>
-                </li>
-              );
-            })}
-          </ul>
-        </section>
-      )}
-
       {/* Retours en attente — questionnaires envoyés restés sans réponse.
-          Le compteur de relances est la PREUVE, devant l'auditeur, que le
-          recueil est organisé ; la relance téléphonique est un acte humain. */}
+          🔴 Constaté sur le premier dossier réel : les questionnaires partaient
+          (crons J+1/J+30), puis PLUS RIEN — aucun écran ne montrait qui n'avait
+          pas répondu, personne ne relançait. Le cron relance à J+3 puis J+10
+          (plafond 2) ; au-delà, la ligne reste ICI, marquée « à reprendre au
+          téléphone » — la relance téléphonique est un acte humain. Le compteur
+          de relances est la PREUVE, devant l'auditeur, que le recueil est
+          organisé : une non-réponse d'un tiers n'est pas une faute, l'absence
+          de tentative tracée, si. */}
       {retours.length > 0 && (
         <section id="retours" className={section}>
           <h2 className={titreSection}>
@@ -614,6 +468,100 @@ export default async function ATraiterPage({ params }: PageProps) {
         </section>
       )}
 
+      {/* Signatures */}
+      {signatures.length > 0 && (
+        <section id="signatures" className={section}>
+          <h2 className={titreSection}>
+            <Signature size={20} aria-hidden="true" className="shrink-0" />
+            Signatures en attente{" "}
+            <AdminBadge tone="warning" plein>
+              {signatures.length}
+            </AdminBadge>
+          </h2>
+          {/* S6a (i) — ce qu'il ne reste qu'à l'organisme de signer, d'un geste. */}
+          {peutSignerPourOrganisme(role) && (
+            <div className="mb-[var(--space-admin-4)]">
+              <ContresignerLotButton
+                ids={signatures
+                  .filter(
+                    (s) =>
+                      s.statutSignature === "partielle" &&
+                      estContresignable(
+                        s.type,
+                        s.signatures.map((sig) => sig.partie),
+                      ),
+                  )
+                  .map((s) => s.id)}
+              />
+            </div>
+          )}
+          <ul className={liste}>
+            {signatures.map((s) => {
+              const label = TYPE_LABELS[s.type] ?? s.type;
+              const contexte = s.session ? `${s.session.titreSession} · ${s.session.numero}` : null;
+              // partielle = une partie a signé → c'est (souvent) TON contreseing
+              // qui manque. en_attente = personne n'a signé → relancer.
+              const partielle = s.statutSignature === "partielle";
+              const consigne = partielle
+                ? "une signature est posée — il manque la contrepartie"
+                : "aucune signature — relancer le signataire";
+              const jours = joursDepuis(s.updatedAt);
+              const attente = `en attente depuis ${jours} jour${jours > 1 ? "s" : ""}`;
+              // 🔴 L3 (30/09/2026) — une pièce de session ouvre la fiche AU
+              // bloc « Signature des pièces contractuelles ».
+              const cible = s.sessionId
+                ? hrefEtape(
+                    s.sessionId,
+                    { phase: "preparer", cible: CIBLE_SIGNATURE_PIECES },
+                    `${base}/qualiopi/sessions`,
+                  )
+                : s.trainerId
+                  ? `${base}/qualiopi/formateurs/${s.trainerId}`
+                  : `${base}/qualiopi/sessions`;
+              // Partie à relancer, décidée ICI (côté serveur) par le module pur
+              // adossé au SSOT des circuits. `null` = pas de bouton : soit la
+              // prochaine signature est celle de l'organisme (contreseing de
+              // Will), soit la partie signe authentifiée (formateur) et un lien
+              // public serait refusé par l'action.
+              const partieRelance = partieARelancer(
+                s.type,
+                s.statutSignature,
+                s.signatures.map((sig) => sig.partie),
+              );
+              return (
+                <li key={s.id} className={carteElement(partielle ? "info" : "warning")}>
+                  <div className="min-w-0 flex-1">
+                    <p className="m-0 flex flex-wrap items-center gap-[var(--space-admin-2)]">
+                      <AdminBadge tone={partielle ? "info" : "warning"} plein>
+                        <Signature size={14} aria-hidden="true" />
+                        {partielle ? "Contresignature" : "À relancer"}
+                      </AdminBadge>
+                      <span className="font-semibold text-[color:var(--color-admin-fg)]">
+                        {label} {s.numero}
+                      </span>
+                    </p>
+                    {contexte && (
+                      <p className={`${meta} m-0 mt-[var(--space-admin-2)]`}>{contexte}</p>
+                    )}
+                    <p className={`${meta} m-0 mt-[var(--space-admin-1)]`}>
+                      {consigne} — {attente}
+                    </p>
+                  </div>
+                  <span className="flex flex-wrap items-center gap-[var(--space-admin-2)]">
+                    {partieRelance !== null && (
+                      <RelancerSignatureButton documentGenereId={s.id} partie={partieRelance} />
+                    )}
+                    <AdminButton href={cible} variant="ghost" size="md" iconAfter={ArrowRight}>
+                      Ouvrir
+                    </AdminButton>
+                  </span>
+                </li>
+              );
+            })}
+          </ul>
+        </section>
+      )}
+
       {/* E-mails à valider */}
       {compteurs.emails > 0 && (
         <section id="emails" className={section}>
@@ -637,6 +585,77 @@ export default async function ATraiterPage({ params }: PageProps) {
               Ouvrir la corbeille de validation
             </AdminButton>
           </div>
+        </section>
+      )}
+
+      {/* Sessions — échéances (Lot 1 §1.4).
+          🔴 Le bloc qui manquait, et il manquait en entier : la page « À
+          traiter » ne parlait pas des sessions. Une convention non signée à
+          J-3, une évaluation finale jamais saisie, un émargement resté vide —
+          rien de tout cela n'apparaissait avant d'ouvrir le dossier concerné.
+          Ce sont les seules lignes de cette page dont l'échéance est déjà
+          passée. */}
+      {echeancesUrgentes.length > 0 && (
+        <section id="echeances" className={section}>
+          <h2 className={titreSection}>
+            <CalendarClock size={20} aria-hidden="true" className="shrink-0" />
+            Sessions — échéances dépassées{" "}
+            <AdminBadge tone="destructive" plein>
+              {echeancesUrgentes.length}
+            </AdminBadge>
+          </h2>
+          {/* La chronologie EST un ordre : une liste ordonnée. */}
+          <ol className={liste}>
+            {echeancesUrgentes.slice(0, 20).map((e) => (
+              <li
+                key={`${e.sessionId}-${e.etape.cle}`}
+                className={carteElement(e.etape.etat === "hors_delai" ? "destructive" : "warning")}
+              >
+                <div className="min-w-0 flex-1">
+                  <p className="m-0 font-semibold text-[color:var(--color-admin-fg)]">
+                    {e.etape.libelle}
+                  </p>
+                  <p className={`${meta} m-0 mt-[var(--space-admin-1)]`}>
+                    {e.numero} · {e.titre}
+                  </p>
+                  {/* 🔴 L'état est dans le TEXTE, jamais dans la seule couleur
+                      (WCAG 1.4.1). */}
+                  <p className={encadreWarning}>
+                    {e.etape.mention} ·{" "}
+                    {etapeBloqueeParLeVerrou(e.etape, figeSession(e.sessionId))
+                      ? MENTION_GESTE_VERROUILLE
+                      : e.etape.geste}
+                  </p>
+                </div>
+                {/* 🔴 L3 (30/09/2026) — mène à l'onglet de la phase et à la
+                    section qui porte le geste (`hrefEtape`). */}
+                <AdminButton
+                  href={hrefEtape(e.sessionId, e.etape, `${base}/qualiopi/sessions`)}
+                  variant="secondary"
+                  size="md"
+                >
+                  Ouvrir le dossier <ArrowRight size={14} aria-hidden="true" />
+                </AdminButton>
+              </li>
+            ))}
+          </ol>
+          {echeancesUrgentes.length > 20 && (
+            /* 🔴 Une liste coupée en silence se lit comme une liste complète. */
+            <p className={`${meta} mt-[var(--space-admin-3)]`}>
+              {echeancesUrgentes.length - 20} autre
+              {echeancesUrgentes.length - 20 > 1 ? "s" : ""} échéance
+              {echeancesUrgentes.length - 20 > 1 ? "s" : ""} dépassée
+              {echeancesUrgentes.length - 20 > 1 ? "s" : ""} — voir la liste des sessions.
+            </p>
+          )}
+          {parcours.troncature !== null && (
+            /* Et si le SERVICE lui-même a tronqué, on le dit aussi : sinon la
+               page affirmerait la complétude d'un balayage plafonné. */
+            <p className={`${meta} mt-[var(--space-admin-3)]`}>
+              Balayage plafonné à {parcours.troncature.plafond} sessions : cette liste peut être
+              incomplète.
+            </p>
+          )}
         </section>
       )}
 

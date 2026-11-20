@@ -153,7 +153,83 @@ describe("page À traiter : refonte visuelle", () => {
     unmount();
     etat.rouverts = null;
     await rendre();
-    expect(screen.getByRole("alert").textContent).toContain("n'a pas pu être lu");
+    expect(screen.getByText(/registre des réouvertures n'a pas pu être lu/)).toBeTruthy();
+    expect(screen.queryByRole("alert")).toBeNull();
+  });
+
+  it("registre illisible : pas de « Tout est à jour », badge « À vérifier »", async () => {
+    etat.rouverts = null;
+    await rendre();
+    expect(screen.queryByText("Tout est à jour")).toBeNull();
+    expect(screen.getByText(/À vérifier/)).toBeTruthy();
+  });
+
+  it("registre illisible mais tâches : badge « N à traiter »", async () => {
+    etat.rouverts = null;
+    etat.emails = 2;
+    await rendre();
+    expect(screen.getByText("2 à traiter")).toBeTruthy();
+    expect(screen.queryByText(/À vérifier/)).toBeNull();
+  });
+
+  it("tuile à 0 : pas de lien vers une section absente", async () => {
+    etat.emails = 4;
+    await rendre();
+    const vide = screen.getByText("Signatures", { selector: "span" });
+    expect(vide.closest("a")).toBeNull();
+    expect(screen.getByText("E-mails à valider", { selector: "span" }).closest("a")).toBeTruthy();
+  });
+
+  it("ordre des sections : rouverts, retours, signatures, e-mails, échéances, relances, alertes", async () => {
+    etat.rouverts = [
+      {
+        sessionId: "s2",
+        numero: "S-2",
+        titre: "T",
+        depuis: new Date(),
+        par: "W",
+        jours: 9,
+        motif: "m",
+      },
+    ];
+    etat.retours = [
+      {
+        questionnaireId: "r1",
+        type: "satisfaction_chaud",
+        destinataire: "x",
+        estEntreprise: false,
+        envoyeAt: new Date(),
+        relanceCount: 0,
+        derniereRelanceAt: null,
+        relancesEpuisees: false,
+        sessionId: "s1",
+        sessionTitre: "F",
+        sessionNumero: "S-1",
+      },
+    ];
+    etat.signatures = [sig];
+    etat.emails = 1;
+    etat.relances = 1;
+    etat.echeances = [
+      {
+        sessionId: "s1",
+        numero: "S-1",
+        titre: "F",
+        etape: { cle: "k", libelle: "Étape", etat: "hors_delai", mention: "m", geste: "g" },
+      },
+    ];
+    etat.alertes = [{ id: "a1", niveau: "critique", code: "x", titre: "V", message: "msg" }];
+    const { container } = await rendre();
+    const ids = Array.from(container.querySelectorAll("section[id]")).map((n) => n.id);
+    expect(ids).toEqual([
+      "rouverts",
+      "retours",
+      "signatures",
+      "emails",
+      "echeances",
+      "relances",
+      "alertes",
+    ]);
   });
 
   it("alerte critique : pastille Critique avec icône", async () => {
