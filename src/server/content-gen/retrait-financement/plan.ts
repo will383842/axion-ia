@@ -91,9 +91,9 @@ export type Overrides = Record<
 
 /** « prise(s) en charge », « prendrait en charge », « prise intégralement en charge », « prise-en-charge ». */
 const PRISE_EN_CHARGE =
-  "\\b(?:pr[ie]\\w*|pren\\w*)(?:[\\s-]+[^\\s.,;:!?\\n]+){0,3}?[\\s-]+en[\\s-]+charge\\b";
+  "\\b(?:pr[ie]\\w*|pren\\w*)(?:[\\s-]+[^\\s.,;:!?\\n]+){0,3}?[\\s-]+en[\\s-]+charges?\\b";
 /** Fin de groupe qui clôt un emploi non financier (« … est rapide », « … se fait », « … par l'équipe »). */
-const FIN_DE_GROUPE = "(?:\\s*(?:[.,;:!?)]|$)|\\s+(?:est|sont|se|en|par\\s+l['’]équipe)\\b)";
+const FIN_DE_GROUPE = "(?:\\s*(?:[.,;:!?)]|$)|\\s+(?:est|sont|se|en|et|par\\s+l['’]équipe)\\b)";
 const COMPLEMENT_NON_FINANCIER =
   "(?:(?:des?|du|d['’]|de\\s+la|un|une|le|la|les)\\s*)?(?:appels?|tickets?|incidents?|requ[êe]tes?|clients?|patients?|demandes?|projets?)";
 /**
@@ -105,7 +105,7 @@ const COMPLEMENT_NON_FINANCIER =
 const PEC_ADMISE =
   "(?:\\s+(?:" +
   COMPLEMENT_NON_FINANCIER +
-  "(?:\\s+[a-zà-ÿ]+)?|(?:rapide|imm[ée]diate|technique)(?:\\s+du\\s+projet)?)" +
+  "(?:\\s+[a-zà-ÿ]+)?|(?:rapide|imm[ée]diate|technique)(?:\\s+du\\s+projet)?|l['’]int[ée]gralit[ée]\\s+de\\s+la\\s+partie\\s+technique)" +
   FIN_DE_GROUPE +
   ")";
 /** Terme budgétaire dans la même phrase qu'« en charge » : refus, même pour un emploi de la liste. */
@@ -115,9 +115,10 @@ const PEC_ET_BUDGET =
 /** Un seul « financ… » est admis quand il désigne le SECTEUR d'activité (liste fermée, audit v3). */
 const ADJ = "financi(?:er|[èe]re|ers|[èe]res)\\b";
 const SECTEUR_AVANT =
-  "(?:secteurs?|reporting|impacts?|donn[ée]es|analyses?|rapports?|pr[ée]visions?|engagements?|b[ée]n[ée]fices?|directeurs?|directrices?)\\s+(?:non\\s+)?";
+  "(?:secteurs?|reporting|impacts?|donn[ée]es|analyses?|rapports?|pr[ée]visions?|engagements?|b[ée]n[ée]fices?|directeurs?|directrices?|int[ée]r[êe]ts?)\\s+(?:non\\s+)?";
 const FINANCE_SECTEUR =
-  "(?:(?<=(?:(?<![a-zà-ÿ])(?:la|en|de|du|des|et|ou|[ée]quipes?|fonctions?|m[ée]tiers?|secteurs?|banques?|assurances?)\\s+|[(,]\\s*))finance\\b" +
+  "(?:(?<=(?:^|\\n))finance(?=\\s*[:,]|\\s+et\\b)" +
+  "|(?<=(?:(?<![a-zà-ÿ])(?:la|en|de|du|des|et|ou|[ée]quipes?|fonctions?|m[ée]tiers?|secteurs?|banques?|assurances?)\\s+|[(,]\\s*))finance\\b" +
   "|finance(?=\\s+d['’]entreprise\\b)" +
   "|(?<=\\b" +
   SECTEUR_AVANT +
@@ -137,21 +138,21 @@ const FINANCE_SECTEUR =
  */
 export const INTERDITS_PUBLICS = new RegExp(
   [
-    "\\bOPCOs?\\b",
+    "\\b(?:OPCOs?|OPCA|O\\.P\\.C\\.O\\.)(?![\\w])",
     "qualiopi",
     "\\bCPF\\b",
-    "compte personnel de formation",
+    "compte[\\s-]+personnel[\\s-]+de[\\s-]+formation",
     "personal training account",
-    "mon ?compte ?formation",
-    "france travail",
+    "mon[\\s-]?compte[\\s-]?formation",
+    "france[\\s-]+travail",
     "p[ôo]le[- ]emploi",
     "\\bAIF\\b",
     // V3-2 : toute la famille « financ… » (finançait, financièrement, ressources financières, cofinancé…),
     // hors emplois de secteur.
-    "(?!" + FINANCE_SECTEUR + ")(?:\\b|(?<=co))finan[cç]\\w*",
+    "(?!" + FINANCE_SECTEUR + ")(?:\\b|(?<=co|auto-?))finan[cç]\\w*",
     // Verbe « financer » suivi d'un déterminant, même si « finance » est précédé d'un mot admis (« en finance une part »).
-    "\\bfinances?\\s+(?:la|les|le|l['’]|leurs?|votre|vos|son|sa|ses|une|des|cette|ces|tout|jusqu|\\d|[àa]\\s|en\\s+partie|int[ée]gral|totalement|enti[èe]rement|ta|tes|ton|notre|nos)",
-    "op[ée]rateurs? de comp[ée]tences",
+    "\\bfinances?\\s+(?:(?:la|les|le|leurs?|votre|vos|son|sa|ses|une|des|cette|ces|tout|ta|tes|ton|notre|nos)\\b|l['’]|jusqu|\\d|[àa]\\s+(?:hauteur|100|\\d)|en\\s+partie|int[ée]gral|totalement|enti[èe]rement)",
+    "op[ée]rateurs?[\\s-]+de[\\s-]+comp[ée]tences",
     "rembours\\w*",
     "[ée]ligib\\w*",
     "plan\\s+de\\s+d[ée]veloppement\\s+des\\s+comp[ée]tences",
@@ -165,8 +166,17 @@ export const INTERDITS_PUBLICS = new RegExp(
     // V3-1 : « prise(s) en charge » sous TOUTES ses formes, sauf emploi non financier listé.
     PRISE_EN_CHARGE + "(?!" + PEC_ADMISE + ")",
     PEC_ET_BUDGET,
-    "reste\\s+[àa]\\s+charge",
+    "reste[\\s-]+[àa][\\s-]+charge",
     "[àa]\\s+la\\s+charge\\s+d",
+    "[àa]\\s+(?:sa|votre|vos|leur|leurs|ma|mon)\\s+charge",
+    // V4-1 : la famille « aide(s) » au sens financement (« l'Aide Individuelle à la Formation », « aides
+    // régionales », « dispositifs d'aide »). Le verbe « aide à / aide les » n'est pas touché.
+    "\\baides\\b",
+    "\\baide\\s+(?:individuelle|r[ée]gionale|publique|de\\s+l['’][ée]tat|[àa]\\s+la\\s+formation|au\\s+(?:financement|diagnostic))",
+    "dispositifs?\\s+d['’]aide",
+    // V4-2 : reprises indirectes « couvrent tout ou partie des frais », « réduire le coût de la formation ».
+    "tout\\s+ou\\s+partie\\s+d(?:es|u)\\s+(?:frais|co[uû]ts?)",
+    "\\b(?:dispositifs?|options?|leviers?|aides?)\\b[^.!?\\n]{0,60}\\b(?:r[ée]duire|all[ée]ger|couvr\\w*)\\b[^.!?\\n]{0,30}\\b(?:co[uû]ts?|frais)",
     "assum\\w*\\s+la\\s+charge",
   ].join("|"),
   "i",
@@ -728,9 +738,18 @@ function motsPerdus(origine: unknown, valeur: unknown): string[] {
  * résultat n'est pas « propre » (mention restante, ambigu), l'override est ignoré. Rend la raison,
  * ou `null` si la valeur est propre.
  */
+export function normaliserPourPorte2(t: string): string {
+  return t
+    .normalize("NFC")
+    .replace(/[‐-―­]/g, "-")
+    .replace(/[^\S\n]+/g, " ");
+}
+
 function valeurSale(champ: string, valeur: unknown): string | null {
   // Porte 2 : contrôle lexical strict, AVANT les règles de réécriture (A4).
-  const interdit = INTERDITS_PUBLICS.exec(textesDe(valeur).join("\n"));
+  // V4-4 : tirets Unicode ramenés au tiret ASCII, espaces insécables à l'espace (sauts de ligne conservés).
+  const texte = normaliserPourPorte2(textesDe(valeur).join("\n"));
+  const interdit = INTERDITS_PUBLICS.exec(texte);
   if (interdit) return `interdit public « ${interdit[0]} »`;
   const langue: Langue = /En$/.test(champ) ? "en" : "fr";
   const r =
