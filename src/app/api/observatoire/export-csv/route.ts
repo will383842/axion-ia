@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { readLatestSnapshot } from "@/server/observatoire/snapshot";
+import { libelleValeurScore } from "@/lib/score-ia-pme/libelles";
 import { KB_SECTOR_TAGS } from "@/content/knowledge/sector-tags";
 import { STUDY_REGIONS, STUDY_ATTRIBUTION } from "@/content/observatoire/study";
 import { BAROMETER_QUESTIONS } from "@/content/observatoire/questions";
@@ -34,10 +35,18 @@ function questionLabel(id: string): string {
 
 function optionLabel(questionId: string, source: string, value: string): string {
   if (source === "sector") {
-    return KB_SECTOR_TAGS.find((s) => s.slug === value)?.labelFr ?? value;
+    return (
+      KB_SECTOR_TAGS.find((s) => s.slug === value)?.labelFr ??
+      libelleValeurScore("sector", value, "fr") ??
+      value
+    );
   }
   if (source === "region") {
-    return STUDY_REGIONS.find((r) => r.slug === value)?.nameFr ?? value;
+    return (
+      STUDY_REGIONS.find((r) => r.slug === value)?.nameFr ??
+      libelleValeurScore("region", value, "fr") ??
+      value
+    );
   }
   return OBS.questions[questionId]?.options?.[value] ?? value;
 }
