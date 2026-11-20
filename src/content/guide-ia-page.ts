@@ -480,10 +480,10 @@ const FR: TextesPageGuide = {
     titre: "Passer de la lecture à l'action",
     intro: "Deux étapes, reprises de la dernière page du guide.",
     diagnostic: {
-      titre: "Faire le point en ligne",
+      titre: "Score IA TPE-PME",
       texte:
         "Un questionnaire gratuit, sans inscription, pour situer votre maturité et repérer vos premiers usages.",
-      cta: "Faire le point en ligne",
+      cta: "Score IA TPE-PME",
     },
     appel: {
       titre: "Parler de votre projet",
@@ -693,9 +693,9 @@ const EN: TextesPageGuide = {
     titre: "From reading to action",
     intro: "Two steps, taken from the last page of the guide.",
     diagnostic: {
-      titre: "Take stock online",
+      titre: "Score IA TPE-PME",
       texte: "A free questionnaire, no sign-up, to assess your maturity and spot your first uses.",
-      cta: "Take stock online",
+      cta: "Score IA TPE-PME",
     },
     appel: {
       titre: "Talk about your project",

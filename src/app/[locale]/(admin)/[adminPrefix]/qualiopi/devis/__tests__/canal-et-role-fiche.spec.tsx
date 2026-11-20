@@ -72,6 +72,9 @@ vi.mock("@/lib/prisma", () => ({
         ),
     },
     planRecurrent: { count: () => Promise.resolve(0) },
+    devis: {
+      findUnique: () => Promise.resolve({ documentGenere: { annuleeAt: null, type: "devis" } }),
+    },
     emailOutbox: { findFirst: () => Promise.resolve(null) },
   },
 }));
@@ -116,6 +119,9 @@ vi.mock("@/server/actions/qualiopi/devis", () => ({
 }));
 vi.mock("@/server/actions/qualiopi/facturation-emails", () => ({
   envoyerDevisEmailAction: vi.fn(),
+}));
+vi.mock("@/server/actions/qualiopi/devis-scan-papier", () => ({
+  verserScanDevisSigneAction: vi.fn(),
 }));
 vi.mock("@/server/actions/qualiopi/piece-signature", () => ({
   contresignerPieceAction: vi.fn(),
@@ -242,5 +248,14 @@ describe("fiche devis : liens PDF et rôle", () => {
     vi.resetModules();
     etat.devis = { ...base, statut: "brouillon", sentAt: null };
     expect((await afficher()).textContent).toContain("Voir l'aperçu PDF");
+  });
+
+  it("rôle qui peut écrire mais sans droit conclure_devis : pas de « Marquer accepté » sur un devis envoyé", async () => {
+    etat.role = "secretaire";
+    etat.peutEcrire = true;
+    etat.canal = "email";
+    const c = await afficher();
+    expect(c.textContent).toContain("Préparer une relance");
+    expect(screen.queryByText("Marquer accepté")).toBeNull();
   });
 });

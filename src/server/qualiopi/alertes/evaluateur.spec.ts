@@ -7,6 +7,7 @@
  * bpf, veille_inactive, factures impayées, OPCO, fail-soft par règle.
  */
 
+import { pasSigneParLeClient } from "@/server/qualiopi/devis/pas-signe-par-le-client";
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 
 import { readFileSync } from "node:fs";
@@ -2053,6 +2054,40 @@ describe("evaluerAlertes — devis_sans_reponse", () => {
     };
     expect(arg.where.statut).toBe("envoye");
     expect(arg.where.sentAt["not"]).toBeNull();
+  });
+});
+
+describe("evaluerAlertes — devis signé par le client : pas de relance", () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+    setupEmptyMocks();
+  });
+
+  it("devis_sans_reponse et devis_expire_j7 posent le filtre « pas signé par le client » dans leur requête", async () => {
+    await evaluerAlertes();
+    type Appel = {
+      where: { statut?: string; sentAt?: unknown; dateValidite?: unknown; OR?: unknown };
+    };
+    const appels = mp.devis.findMany.mock.calls.map((c) => c[0] as Appel);
+    const sansReponse = appels.find((a) => a.where.statut === "envoye" && a.where.sentAt);
+    const expireJ7 = appels.find((a) => a.where.statut === "envoye" && a.where.dateValidite);
+    expect(sansReponse?.where.OR).toEqual(pasSigneParLeClient.OR);
+    expect(expireJ7?.where.OR).toEqual(pasSigneParLeClient.OR);
+  });
+
+  it("devis non signé : les alertes restent émises", async () => {
+    mp.devis.findMany.mockResolvedValue([
+      {
+        id: "d-ns",
+        numero: "AXI-DEV-2026-077",
+        sentAt: new Date(Date.now() - 9 * 86400000),
+        dateValidite: new Date(Date.now() + 3 * 86400000),
+        client: { raisonSociale: "ACME SAS" },
+      },
+    ]);
+    const alertes = await evaluerAlertes();
+    expect(alertes.some((a) => a.code === "devis_sans_reponse" && a.cibleId === "d-ns")).toBe(true);
+    expect(alertes.some((a) => a.code === "devis_expire_j7" && a.cibleId === "d-ns")).toBe(true);
   });
 });
 

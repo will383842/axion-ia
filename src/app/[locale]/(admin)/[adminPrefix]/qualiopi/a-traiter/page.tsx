@@ -681,8 +681,8 @@ export default async function ATraiterPage({ params }: PageProps) {
           </h2>
           <div className={carteElement("warning")}>
             <p className={`${meta} m-0 min-w-0 flex-1`}>
-              Des factures échues attendent une relance. Rien ne part sans votre clic : le hub vous
-              demandera de confirmer avoir pointé votre relevé bancaire.
+              Des factures échues ou des devis sans réponse attendent une relance. Rien ne part sans
+              votre clic.
             </p>
             <AdminButton
               href={`${base}/qualiopi/facturation`}

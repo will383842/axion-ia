@@ -20,6 +20,7 @@ import { prisma } from "@/lib/prisma";
 import { adminPath } from "@/lib/admin-path";
 import { requireAdminWrite, logQualiopiActivity } from "@/server/actions/qualiopi/_guards";
 import { devisRemisEnMainPropre } from "@/server/qualiopi/devis/canal-emission";
+import { motifRelanceDevisSansObjet } from "@/server/qualiopi/devis/relance-devis-sans-objet";
 import { garerPourValidation } from "@/server/email/outbox-service";
 import { exigerAccesEchanges } from "../acces";
 import { messageAffichable } from "../message-affichable";
@@ -99,6 +100,10 @@ export async function preparerRelanceDevisAction(fd: FormData): Promise<void> {
     if (await devisRemisEnMainPropre(prisma, devis.id)) {
       return r("erreur", ERREUR_DEVIS_REMIS_MAIN_PROPRE);
     }
+
+    // Relance sans objet (signé, accepté, refusé, périmé…) : on le dit, on ne gare rien.
+    const sansObjet = await motifRelanceDevisSansObjet(prisma, devis.id, new Date());
+    if (sansObjet !== null) return r("erreur", sansObjet);
 
     // Anti-doublon : un brouillon déjà à valider pour ce devis.
     const existant = await prisma.emailOutbox.findFirst({
