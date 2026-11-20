@@ -6,18 +6,23 @@
 // n'importe quelle largeur, sans identifiants.
 
 import Link from "next/link";
+import { AlertTriangle } from "lucide-react";
+import { Ban } from "lucide-react";
+import { CheckCircle2 } from "lucide-react";
+import { Clock } from "lucide-react";
+import { XCircle } from "lucide-react";
 import {
+  AdminBadge,
   AdminPageHeader,
   AdminStatCard,
-  AdminTable,
   AdminEmptyState,
   AdminPagination,
-  type AdminTableColumn,
 } from "@/components/admin/ui";
 import {
   FENETRES_EMAILS,
   STATUTS_EMAILS,
   LIBELLES_STATUT_EMAIL,
+  TON_STATUT_EMAIL,
   libelleStatutLigne,
   type ChargementEmails,
   type EchecsRenvoyables,
@@ -33,22 +38,162 @@ import {
 
 const nb = (n: number): string => n.toLocaleString("fr-FR");
 
-const quand = (d: Date | null): string =>
+/** Le motif à montrer : erreur d'envoi, ou motif de rebond rendu par le relais. */
+const detailDe = (r: LigneEmail): string | null =>
+  r.error ? r.error.slice(0, 90) : r.bounceReason ? r.bounceReason.slice(0, 90) : null;
+
+const jourParis = (d: Date): string =>
+  new Date(d).toLocaleDateString("fr-FR", {
+    timeZone: "Europe/Paris",
+    weekday: "long",
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+  });
+
+const cleJourParis = (d: Date): string =>
+  new Date(d).toLocaleDateString("en-CA", { timeZone: "Europe/Paris" });
+
+const heureParis = (d: Date | null): string =>
   d
-    ? new Date(d).toLocaleString("fr-FR", {
-        // Heure de Paris, et non celle du serveur (UTC) : sans cela la liste affichait une heure
-        // de moins que la page de l'envoi (constaté le 25/10/2026, passage à l'heure d'hiver).
+    ? new Date(d).toLocaleTimeString("fr-FR", {
         timeZone: "Europe/Paris",
-        day: "2-digit",
-        month: "2-digit",
         hour: "2-digit",
         minute: "2-digit",
       })
     : "—";
 
-/** Le motif à montrer : erreur d'envoi, ou motif de rebond rendu par le relais. */
-const detailDe = (r: LigneEmail): string | null =>
-  r.error ? r.error.slice(0, 90) : r.bounceReason ? r.bounceReason.slice(0, 90) : null;
+/** Regroupe les lignes (déjà triées) par jour de Paris, sans changer leur ordre. */
+function grouperParJour(
+  lignes: ReadonlyArray<LigneEmail>,
+): Array<{ cle: string; titre: string; lignes: LigneEmail[] }> {
+  const out: Array<{ cle: string; titre: string; lignes: LigneEmail[] }> = [];
+  for (const r of lignes) {
+    const d = r.sentAt ?? r.createdAt;
+    const cle = cleJourParis(d);
+    const dernier = out[out.length - 1];
+    if (dernier && dernier.cle === cle) dernier.lignes.push(r);
+    else out.push({ cle, titre: jourParis(d), lignes: [r] });
+  }
+  return out;
+}
+
+const NUMERO_DEVIS = /AXI-DEV-\d{4}-\d{3}/;
+
+type TonCarte = "success" | "warning" | "destructive" | "neutral";
+
+function tonDeLigne(r: LigneEmail): TonCarte {
+  if (r.status === "bounced") return r.bounceType === "hard" ? "destructive" : "warning";
+  return TON_STATUT_EMAIL[r.status];
+}
+
+const ICONE_STATUT: Record<LigneEmail["status"], React.ReactElement> = {
+  sent: <CheckCircle2 aria-hidden="true" size={18} />,
+  failed: <XCircle aria-hidden="true" size={18} />,
+  bounced: <AlertTriangle aria-hidden="true" size={18} />,
+  pending: <Clock aria-hidden="true" size={18} />,
+  cancelled: <Ban aria-hidden="true" size={18} />,
+};
+
+const BORDURE_TON: Record<TonCarte, string> = {
+  success: "border-l-[color:var(--color-admin-success)]",
+  warning: "border-l-[color:var(--color-admin-warning)]",
+  destructive: "border-l-[color:var(--color-admin-destructive)]",
+  neutral: "border-l-[color:var(--color-admin-neutral)]",
+};
+
+function CarteEmail({
+  r,
+  base,
+  adminPrefix,
+  lien,
+}: {
+  r: LigneEmail;
+  base: string;
+  adminPrefix: string;
+  lien: (modif: Partial<FiltresEmails>) => string;
+}): React.ReactElement {
+  const ton = tonDeLigne(r);
+  const numero = r.objet?.match(NUMERO_DEVIS)?.[0] ?? null;
+  const motif = detailDe(r);
+  return (
+    <li
+      data-statut={r.status}
+      className={`rounded-[var(--radius-admin-md)] border border-l-4 border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-surface)] p-[var(--space-admin-4)] ${BORDURE_TON[ton]}`}
+    >
+      <div className="flex flex-wrap items-start justify-between gap-[var(--space-admin-3)]">
+        <div className="flex min-w-0 flex-1 flex-col gap-[var(--space-admin-2)]">
+          <div className="flex flex-wrap items-center gap-[var(--space-admin-2)]">
+            <AdminBadge tone={ton} compact={false} plein>
+              <span className="inline-flex items-center gap-[var(--space-admin-2)]">
+                {ICONE_STATUT[r.status]}
+                {libelleStatutLigne(r)}
+                {r.attempts > 1 ? ` (${r.attempts} essais)` : ""}
+              </span>
+            </AdminBadge>
+            {numero ? <AdminBadge tone="neutral">{numero}</AdminBadge> : null}
+          </div>
+          {/* Chaque carte mène à l'e-mail tel qu'il est parti. */}
+          <Link
+            href={`${base}/${r.id}`}
+            className="admin-link text-[length:var(--text-admin-base)] font-semibold"
+          >
+            {r.objet ?? r.template}
+          </Link>
+          {r.objet ? <span className="admin-meta-small">{r.template}</span> : null}
+          <span className="admin-meta-small break-all">{r.recipient}</span>
+          {r.client ? (
+            <span className="admin-meta-small">
+              <Link
+                href={`/fr/${adminPrefix}/qualiopi/clients/${r.client.id}`}
+                className="admin-link admin-meta-small"
+              >
+                {r.client.nom} ({r.client.numero})
+              </Link>{" "}
+              <Link
+                href={lien({ clientId: r.client.id, page: 1 })}
+                className="admin-link admin-meta-small"
+                title="Ne montrer que les e-mails de cette fiche client"
+              >
+                [filtrer]
+              </Link>
+            </span>
+          ) : r.entityType ? (
+            <span className="admin-meta-small">
+              {r.entityType}
+              {r.entityId ? ` · ${r.entityId.slice(0, 8)}` : ""}
+            </span>
+          ) : null}
+        </div>
+        <span className="text-[length:var(--text-admin-base)] font-semibold text-[color:var(--color-admin-fg-muted)]">
+          {heureParis(r.sentAt ?? r.createdAt)}
+        </span>
+      </div>
+      {motif ? (
+        <p
+          className={`mt-[var(--space-admin-3)] mb-0 rounded-[var(--radius-admin-sm)] border-l-4 p-[var(--space-admin-3)] text-[length:var(--text-admin-base)] text-[color:var(--color-admin-fg)] ${
+            ton === "destructive"
+              ? "border-l-[color:var(--color-admin-destructive)] bg-[color:var(--color-admin-destructive-soft)]"
+              : "border-l-[color:var(--color-admin-warning)] bg-[color:var(--color-admin-warning-soft)]"
+          }`}
+        >
+          <strong>Motif :</strong> {motif}
+        </p>
+      ) : null}
+      {/* Rejouer un échec : même gabarit, mêmes variables (job BullMQ conservé). */}
+      {r.status === "failed" && r.jobId ? (
+        <form
+          action={renvoyerEmailActionFormulaire.bind(null, adminPrefix, r.id)}
+          className="mt-[var(--space-admin-3)]"
+        >
+          <button type="submit" className={`admin-button-ghost ${PUCE}`}>
+            Renvoyer
+          </button>
+        </form>
+      ) : null}
+    </li>
+  );
+}
 
 /**
  * Cibles tactiles — lot 3 (2026-09-02). Les puces de filtre héritent d'une
@@ -251,125 +396,7 @@ export function VueEmails({
     return `${base}?${p.toString()}`;
   };
 
-  const colonnes: ReadonlyArray<AdminTableColumn<LigneEmail>> = [
-    {
-      key: "quand",
-      header: "Date",
-      cell: (r) => quand(r.sentAt ?? r.createdAt),
-      width: "16%",
-    },
-    {
-      key: "gabarit",
-      header: "Gabarit, objet et destinataire",
-      // 🔴 Les deux dans la MÊME cellule, et jamais masqués.
-      // Version initiale : deux colonnes, le destinataire caché sous 640 px.
-      // Vu à l'écran, une ligne en échec n'apprenait alors rien — savoir qu'un
-      // envoi a raté sans savoir POUR QUI est inexploitable, et c'est
-      // précisément sur mobile qu'on consulte en urgence.
-      cell: (r) => (
-        <>
-          {/* 2026-09-27 — chaque ligne mène à l'e-mail tel qu'il est parti
-              (copie conservée à l'envoi, ou raison de son absence). */}
-          <Link href={`${base}/${r.id}`} className="admin-link">
-            {r.template}
-          </Link>
-          {r.objet ? (
-            <>
-              <br />
-              <span className="text-[length:var(--text-admin-sm)]">{r.objet}</span>
-            </>
-          ) : null}
-          <br />
-          <span className="admin-meta-small break-all">{r.recipient}</span>
-          {r.client ? (
-            <>
-              {" · "}
-              <Link
-                href={`/fr/${adminPrefix}/qualiopi/clients/${r.client.id}`}
-                className="admin-link admin-meta-small"
-              >
-                {r.client.nom} ({r.client.numero})
-              </Link>{" "}
-              <Link
-                href={lien({ clientId: r.client.id, page: 1 })}
-                className="admin-link admin-meta-small"
-                title="Ne montrer que les e-mails de cette fiche client"
-              >
-                [filtrer]
-              </Link>
-            </>
-          ) : null}
-          {/* Lot 3 : sous `lg`, la colonne Détail est masquée — or le motif
-              d'un échec ou d'un rebond est l'information la plus actionnable
-              de la ligne, et c'est au téléphone qu'on la lit en urgence. On
-              le répète ici, uniquement sur les petits écrans. */}
-          {detailDe(r) ? (
-            <>
-              <br />
-              <span className="admin-meta-small lg:hidden">{detailDe(r)}</span>
-            </>
-          ) : null}
-        </>
-      ),
-      width: "44%",
-    },
-    {
-      key: "statut",
-      header: "Statut",
-      align: "right",
-      cell: (r) => (
-        <>
-          <span
-            className={
-              r.status === "failed" || (r.status === "bounced" && r.bounceType === "hard")
-                ? "admin-severity-critical"
-                : r.status === "bounced"
-                  ? "admin-severity-warning"
-                  : undefined
-            }
-          >
-            {libelleStatutLigne(r)}
-            {r.attempts > 1 ? ` (${r.attempts} essais)` : ""}
-          </span>
-          {/* Lot 3 : REJOUER un échec depuis l'écran. Le journal ne stocke pas
-              le contenu, mais BullMQ garde le job (removeOnFail : 5 000) : on
-              lui demande de le reprendre, avec le même gabarit et les mêmes
-              variables. Avant, une ligne « Échec » était terminale — quarante
-              envois à ré-émettre à la main un lundi matin, déclencheur par
-              déclencheur. */}
-          {r.status === "failed" && r.jobId ? (
-            <form
-              action={renvoyerEmailActionFormulaire.bind(null, adminPrefix, r.id)}
-              className="mt-1"
-            >
-              <button type="submit" className={`admin-button-ghost ${PUCE}`}>
-                Renvoyer
-              </button>
-            </form>
-          ) : null}
-        </>
-      ),
-    },
-    {
-      key: "detail",
-      header: "Détail",
-      cell: (r) =>
-        detailDe(r) ? (
-          // L'erreur ou le motif de rebond est la seule information vraiment
-          // actionnable d'une ligne : on la montre, tronquée, plutôt que de la
-          // cacher derrière un clic.
-          <span className="admin-meta-small">{detailDe(r)}</span>
-        ) : r.entityType ? (
-          <span className="admin-meta-small">
-            {r.entityType}
-            {r.entityId ? ` · ${r.entityId.slice(0, 8)}` : ""}
-          </span>
-        ) : (
-          <span className="admin-meta-small">—</span>
-        ),
-      hiddenBelow: "lg",
-    },
-  ];
+  const groupes = grouperParJour(donnees.lignes);
 
   return (
     <>
@@ -454,12 +481,14 @@ export function VueEmails({
       <div className="admin-kpi-grid">
         <AdminStatCard
           label="Envoyés"
+          icon={CheckCircle2}
           value={nb(donnees.parStatut.envoyes)}
           meta="Remis au serveur d'envoi sans erreur"
           tone={donnees.parStatut.envoyes > 0 ? "success" : "default"}
         />
         <AdminStatCard
           label="Échecs"
+          icon={XCircle}
           value={nb(donnees.parStatut.echecs)}
           meta="Après épuisement des tentatives"
           tone={donnees.parStatut.echecs > 0 ? "destructive" : "default"}
@@ -467,6 +496,7 @@ export function VueEmails({
         />
         <AdminStatCard
           label="En attente"
+          icon={Clock}
           value={nb(donnees.parStatut.enAttente)}
           meta="Encore en file"
         />
@@ -480,6 +510,7 @@ export function VueEmails({
             normal, pas un incident. Elle doit être VISIBLE, pas criarde. */}
         <AdminStatCard
           label="Annulés"
+          icon={Ban}
           value={nb(donnees.parStatut.annules)}
           meta="Retirés de la file avant échéance"
           {...(donnees.parStatut.annules > 0
@@ -494,6 +525,7 @@ export function VueEmails({
             corriger l'adresse — d'où le ton d'alerte et le lien de filtre. */}
         <AdminStatCard
           label="Rebonds"
+          icon={AlertTriangle}
           value={nb(donnees.parStatut.rebonds)}
           meta={
             donnees.parStatut.rebonds > 0
@@ -700,12 +732,31 @@ export function VueEmails({
           />
         ) : (
           <>
-            <AdminTable
-              columns={colonnes}
-              rows={donnees.lignes}
-              getRowId={(r) => r.id}
-              caption={`${nb(donnees.total)} e-mail(s) — page ${donnees.page} sur ${donnees.pages}`}
-            />
+            <p className="admin-meta-small" role="status">
+              {`${nb(donnees.total)} e-mail(s) — page ${donnees.page} sur ${donnees.pages}`}
+            </p>
+            {groupes.map((g) => (
+              <section
+                key={g.cle}
+                aria-label={g.titre}
+                className="mt-[var(--space-admin-4)] flex flex-col gap-[var(--space-admin-4)]"
+              >
+                <h2 className="m-0 text-[length:var(--text-admin-lg)] font-semibold text-[color:var(--color-admin-fg)] first-letter:uppercase">
+                  {g.titre}
+                </h2>
+                <ul className="m-0 flex list-none flex-col gap-[var(--space-admin-4)] p-0">
+                  {g.lignes.map((r) => (
+                    <CarteEmail
+                      key={r.id}
+                      r={r}
+                      base={base}
+                      adminPrefix={adminPrefix}
+                      lien={lien}
+                    />
+                  ))}
+                </ul>
+              </section>
+            ))}
             {donnees.pages > 1 ? (
               <AdminPagination
                 page={donnees.page}
