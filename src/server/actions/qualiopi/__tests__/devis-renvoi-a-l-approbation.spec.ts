@@ -29,7 +29,12 @@ interface Ligne {
 
 const h = vi.hoisted(() => ({
   /** OUT-1 : résultat de la sonde « envoi déjà fait ? » (sous le verrou du devis, avant tout jeton). */
-  sonde: { v: "a_faire" as "a_faire" | "deja_fait" },
+  sonde: {
+    v: "a_faire" as "a_faire" | "deja_fait",
+    url: null as string | null,
+    // Le lien que porte la tâche en file : vivant (cette pièce, partie client) ou non.
+    vivant: true,
+  },
   mode: { v: "validation" as "validation" | "auto" },
   lignes: [] as Array<Record<string, unknown>>,
   devis: { v: {} as Record<string, unknown> },
@@ -90,7 +95,16 @@ vi.mock("@/server/partners-sync/producteurs/devis", () => ({
   devisConcernesPourEmission: vi.fn(async () => []),
 }));
 vi.mock("@/server/qualiopi/documents/signature/lien-precedent", () => ({
-  ligneDuLien: vi.fn().mockResolvedValue(null),
+  ligneDuLien: async () =>
+    h.sonde.vivant
+      ? {
+          id: "lien-en-file",
+          documentGenereId: "piece-1",
+          partie: "client",
+          createdAt: new Date(),
+          revokedAt: null,
+        }
+      : null,
   rendreLienPrecedent: async (url: string) => {
     const neuf = url.split("/").pop() as string;
     h.vivants.delete(neuf);
@@ -118,7 +132,10 @@ vi.mock("@/server/qualiopi/documents/signature/token-document", () => ({
   },
 }));
 vi.mock("@/server/queue/queues", () => ({
-  sonderEnvoiOutbox: async () => h.sonde.v,
+  sonderEnvoiOutboxAvecLien: async () => ({
+    dejaFait: h.sonde.v === "deja_fait",
+    urlEnFile: h.sonde.url,
+  }),
   enqueueEmail: async (
     template: string,
     to: string,
@@ -311,6 +328,8 @@ const devisEnvoye = () => ({
 const espions: ReturnType<typeof vi.spyOn>[] = [];
 beforeEach(() => {
   h.sonde.v = "a_faire";
+  h.sonde.url = null;
+  h.sonde.vivant = true;
   vi.clearAllMocks();
   espions.push(
     ...(["log", "warn", "error"] as const).map((m) =>
@@ -391,6 +410,7 @@ describe("OUT-1 — renvoi : envoi déjà fait ou en file", () => {
   it("la sonde dit « déjà fait » : aucun jeton neuf, ancien lien intact, aucune écriture de devis, ligne « envoyé »", async () => {
     await envoyerDevisEmailAction({ devisId: ID });
     h.sonde.v = "deja_fait";
+    h.sonde.url = "https://exemple.test/fr/portail/signer/JETON-EN-FILE";
     const r = await approuverEmailAction({ id: lignes()[0]!.id });
     expect(r).toEqual({ data: { id: lignes()[0]!.id, envoye: true, dejaFait: true } });
     expect(h.nbJetons.v).toBe(0);

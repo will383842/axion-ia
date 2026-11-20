@@ -221,3 +221,77 @@ describe("OUT-1 — budget global de mise en file (C6, C3)", () => {
     expect(d.marquerEchec).not.toHaveBeenCalled();
   });
 });
+
+describe("OUT-1 — le lien que porte la tâche (vérification explicite du jeton)", () => {
+  const URL_NEUVE = "https://exemple.test/fr/portail/signer/JETON-NEUF";
+  const URL_ANCIENNE = "https://exemple.test/fr/portail/signer/JETON-ANCIEN";
+  const approuverAvecLien = () =>
+    enqueueEmail(
+      "devis-envoi" as never,
+      "client@exemple.fr",
+      "fr",
+      { signatureUrl: URL_NEUVE },
+      { bypassValidation: true, cleOutbox: CLE },
+    );
+
+  it("sonde interne : tâche déjà en file → son lien est rendu avec `dejaEnFile`, rien n'est ajouté", async () => {
+    d.getJob.mockResolvedValue({
+      getState: async () => "waiting",
+      data: { payload: { signatureUrl: URL_ANCIENNE } },
+    });
+    const r = await approuverAvecLien();
+    expect(r).toEqual({ enqueued: true, dejaEnFile: true, urlEnFile: URL_ANCIENNE });
+    expect(d.add).not.toHaveBeenCalled();
+  });
+
+  it("ajout concurrent : BullMQ ignore l'ajout, la tâche porte un AUTRE lien → `dejaEnFile` avec ce lien", async () => {
+    let ajoute = false;
+    d.add.mockImplementation(async () => {
+      ajoute = true; // la tâche d'une tentative précédente existait « juste après » la sonde
+      return { id: CLE };
+    });
+    d.getJob.mockImplementation(async () =>
+      ajoute
+        ? { getState: async () => "waiting", data: { payload: { signatureUrl: URL_ANCIENNE } } }
+        : undefined,
+    );
+    const r = await approuverAvecLien();
+    expect(r).toEqual({ enqueued: true, dejaEnFile: true, urlEnFile: URL_ANCIENNE });
+  });
+
+  it("ajout normal : la tâche porte notre lien → `{ enqueued: true }` seulement", async () => {
+    let ajoute = false;
+    d.add.mockImplementation(async () => {
+      ajoute = true;
+      return { id: CLE };
+    });
+    d.getJob.mockImplementation(async () =>
+      ajoute
+        ? { getState: async () => "waiting", data: { payload: { signatureUrl: URL_NEUVE } } }
+        : undefined,
+    );
+    expect(await approuverAvecLien()).toEqual({ enqueued: true });
+  });
+
+  it("relecture impossible après l'ajout : issue inconnue (MiseEnFileIncertaine), jamais un succès présumé", async () => {
+    let ajoute = false;
+    d.add.mockImplementation(async () => {
+      ajoute = true;
+      return { id: CLE };
+    });
+    d.getJob.mockImplementation(async () => {
+      if (ajoute) throw new Error("lecture coupée");
+      return undefined;
+    });
+    await expect(approuverAvecLien()).rejects.toBeInstanceOf(MiseEnFileIncertaine);
+    expect(d.marquerEchec).not.toHaveBeenCalled();
+  });
+
+  it("sans lien dans la charge : aucune relecture après l'ajout", async () => {
+    await approuver();
+    // une seule lecture : celle de la sonde et du retrait (pas de relecture finale)
+    const avant = d.getJob.mock.calls.length;
+    expect(avant).toBeLessThanOrEqual(3);
+    expect(d.getJob.mock.calls.every(([cle]) => cle === CLE)).toBe(true);
+  });
+});

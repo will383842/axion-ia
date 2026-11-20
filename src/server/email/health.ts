@@ -727,14 +727,16 @@ export async function verifierSanteEmails(maintenant: Date = new Date()): Promis
     if (resultat.approuvesEnvoiIncertain > 0) {
       const devisBrouillon =
         numerosDevisBrouillon.length > 0
-          ? ` Devis restés brouillon alors que l'e-mail est parti : ${numerosDevisBrouillon.join(", ")}.`
+          ? ` Devis restés brouillon alors que l'e-mail est parti : ${numerosDevisBrouillon.join(", ")}. ` +
+            `Un seul e-mail est parti : si le lien de signature qu'il porte ne marche plus, le client ` +
+            `ne peut pas signer. Renvoyer le devis depuis sa fiche envoie un second e-mail et coupe ` +
+            `le lien du premier. Le devis redevient modifiable dès que sa ligne passe « envoyé ».`
           : "";
       await leverAlerte(
         "emails_envoi_incertain",
         `${resultat.approuvesEnvoiIncertain} e-mail(s) d'issue inconnue : vérifier avant toute nouvelle approbation`,
         `${resultat.approuvesEnvoiIncertain} e-mail(s) d'issue inconnue ou partis sans trace dans la corbeille.` +
-          `${devisBrouillon} Ne pas les approuver de nouveau ; renvoyer ces devis depuis leur fiche ` +
-          `après vérification dans E-mails envoyés.`,
+          `${devisBrouillon} Ne pas les approuver de nouveau ; vérifier d'abord dans E-mails envoyés.`,
         resultat.approuvesEnvoiIncertain,
       );
       resultat.alertesLevees.push("emails_envoi_incertain");

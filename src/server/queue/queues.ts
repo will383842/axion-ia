@@ -1005,14 +1005,39 @@ async function exigerFileJoignable(): Promise<void> {
  * (≤ 5 s) ont chacune leur borne ; au-delà, ou file indisponible : `FileInjoignable`.
  */
 export async function lireEtatTacheOutbox(cle: string): Promise<EtatTacheOutbox> {
+  return (await lireTacheOutbox(cle)).etat;
+}
+
+/** Le lien de signature porté par la charge d'une tâche (`signatureUrl`, ou `lien`), ou `null`. */
+function urlSignatureDeLaCharge(data: unknown): string | null {
+  if (data === null || typeof data !== "object") return null;
+  const payload = (data as { payload?: unknown }).payload;
+  if (payload === null || typeof payload !== "object") return null;
+  const p = payload as Record<string, unknown>;
+  for (const cle of ["signatureUrl", "lien"]) {
+    const v = p[cle];
+    if (typeof v === "string" && v !== "") return v;
+  }
+  return null;
+}
+
+/**
+ * OUT-1 — état de la tâche `outbox-<id>` ET lien de signature que sa charge porte (forme du job
+ * inchangée : on lit `data.payload`). Mêmes bornes que `lireEtatTacheOutbox`. ⚠️ Le lien vaut
+ * signature : il n'est ni journalisé ni mis dans un message.
+ */
+export async function lireTacheOutbox(
+  cle: string,
+): Promise<{ etat: EtatTacheOutbox; urlSignature: string | null }> {
   await exigerFileJoignable();
   const file = emailsQueue;
   if (!file) throw new FileInjoignable();
   const lecture = await avecDelai(
-    (async (): Promise<EtatTacheOutbox> => {
+    (async (): Promise<{ etat: EtatTacheOutbox; urlSignature: string | null }> => {
       const job = await file.getJob(cle);
-      if (!job) return "absente";
-      return (await job.getState()) === "failed" ? "echouee" : "presente";
+      if (!job) return { etat: "absente", urlSignature: null };
+      const etat: EtatTacheOutbox = (await job.getState()) === "failed" ? "echouee" : "presente";
+      return { etat, urlSignature: urlSignatureDeLaCharge(job.data) };
     })(),
     DELAI_LECTURE_FILE_MS,
   ).catch(() => {
@@ -1024,15 +1049,38 @@ export async function lireEtatTacheOutbox(cle: string): Promise<EtatTacheOutbox>
 
 /**
  * OUT-1 — l'envoi sous cette clé est-il déjà fait ou en file ? Tâche présente non échouée, ou
- * tâche absente (purgée) avec une dernière ligne de journal `sent` / `bounced`. Lève
- * `FileInjoignable` si la file ou le journal ne répondent pas (rien n'est écrit).
+ * tâche absente (purgée) avec une dernière ligne de journal `sent` / `bounced`. Rend aussi le
+ * lien de signature de la tâche (`null` si purgée ou sans lien). Lève `FileInjoignable` si la
+ * file ou le journal ne répondent pas (rien n'est écrit).
  */
-export async function sonderEnvoiOutbox(cle: string): Promise<"deja_fait" | "a_faire"> {
-  const tache = await lireEtatTacheOutbox(cle);
+export async function sonderEnvoiOutboxAvecLien(
+  cle: string,
+): Promise<{ dejaFait: boolean; urlEnFile: string | null }> {
+  const { etat, urlSignature } = await lireTacheOutbox(cle);
   const journal = await lireDernierJournal(cle).catch(() => {
     throw new FileInjoignable();
   });
-  return estDejaFait(tache, journal) ? "deja_fait" : "a_faire";
+  return { dejaFait: estDejaFait(etat, journal), urlEnFile: urlSignature };
+}
+
+/**
+ * OUT-1 — relit la charge de la tâche juste après l'ajout : son lien de signature, `null` si elle
+ * n'en porte pas (ou n'existe plus : purgée, donc rien à comparer), `"illisible"` si la lecture
+ * échoue ou dépasse son délai.
+ */
+async function lireChargeApresAjout(cle: string): Promise<string | null | "illisible"> {
+  const file = emailsQueue;
+  if (!file) return "illisible";
+  const lecture = await avecDelai(
+    file.getJob(cle).then((job) => (job ? urlSignatureDeLaCharge(job.data) : null)),
+    DELAI_LECTURE_FILE_MS,
+  ).catch(() => ({ delaiDepasse: true as const }));
+  if ("delaiDepasse" in lecture) return "illisible";
+  return lecture.valeur;
+}
+
+export async function sonderEnvoiOutbox(cle: string): Promise<"deja_fait" | "a_faire"> {
+  return (await sonderEnvoiOutboxAvecLien(cle)).dejaFait ? "deja_fait" : "a_faire";
 }
 
 export async function enqueueEmail(
@@ -1103,6 +1151,11 @@ export async function enqueueEmail(
   enqueued: boolean;
   /** OUT-1 : la tâche `outbox-<id>` existait déjà, rien n'a été ajouté. */
   dejaEnFile?: boolean;
+  /**
+   * OUT-1 : avec `dejaEnFile`, le lien de signature que porte la tâche en file (jamais journalisé :
+   * il vaut signature). Absent si la tâche est purgée ou sans lien.
+   */
+  urlEnFile?: string;
   garePourValidation?: boolean;
   outboxId?: string;
   /** Envoi RETENU par la liste de suppression (adresse morte, désabonnement). */
@@ -1265,8 +1318,13 @@ export async function enqueueEmail(
   if (cleOutbox !== undefined) {
     // Sonde (qui vérifie d'abord la connexion) sous le même budget : tâche présente, ou purgée mais journal `sent` / `bounced` →
     // déjà fait, ni ajout ni journal.
-    if ((await sonderEnvoiOutbox(cleOutbox)) === "deja_fait") {
-      return { enqueued: true, dejaEnFile: true };
+    const sonde = await sonderEnvoiOutboxAvecLien(cleOutbox);
+    if (sonde.dejaFait) {
+      return {
+        enqueued: true,
+        dejaEnFile: true,
+        ...(sonde.urlEnFile !== null ? { urlEnFile: sonde.urlEnFile } : {}),
+      };
     }
     const retrait = await avecDelai(
       (async () => {
@@ -1325,6 +1383,18 @@ export async function enqueueEmail(
       const issue = await avecDelai(ajout, reste);
       // La ligne du journal reste « en attente » : vraie tant qu'on ne sait pas.
       if ("delaiDepasse" in issue) throw new MiseEnFileIncertaine();
+      // Contrôle APRÈS l'ajout : BullMQ ignore sans rien dire un ajout sous un `jobId` existant
+      // (une tentative précédente arrivée tard). La tâche qui vit porte-t-elle NOTRE lien ?
+      const urlPassee = urlSignatureDeLaCharge(data);
+      if (urlPassee !== null) {
+        const relue = await lireChargeApresAjout(cleOutbox);
+        // Relecture impossible : on ne sait pas quel lien porte la tâche → issue inconnue
+        // (aucun jeton n'est défait, rien n'est marqué ; le balayage tranche).
+        if (relue === "illisible") throw new MiseEnFileIncertaine();
+        if (relue !== null && relue !== urlPassee) {
+          return { enqueued: true, dejaEnFile: true, urlEnFile: relue };
+        }
+      }
     } else {
       await ajout;
     }

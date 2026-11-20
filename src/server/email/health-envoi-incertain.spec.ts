@@ -212,6 +212,10 @@ describe("balayage des « approuvé » anciens — OUT-1", () => {
     await verifierSanteEmails(MAINT);
     const texte = JSON.stringify(h.alerte.mock.calls);
     expect(texte).toContain("DEV-2026-0042");
+    // Effet réel du risque résiduel : UN e-mail parti, pas deux ; renvoyer en envoie un second.
+    expect(texte).toContain("Un seul e-mail est parti");
+    expect(texte).toContain("envoie un second e-mail et coupe le lien du premier");
+    expect(texte).toContain("redevient modifiable");
     expect(texte).not.toContain("@");
     expect(texte).not.toContain("L1");
   });

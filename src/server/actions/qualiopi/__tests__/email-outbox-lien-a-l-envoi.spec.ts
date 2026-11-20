@@ -10,7 +10,12 @@ const ID = "00000000-0000-4000-8000-000000000001";
 
 const h = vi.hoisted(() => ({
   /** OUT-1 : résultat de la sonde « envoi déjà fait ? » (sous le verrou du devis, avant tout jeton). */
-  sonde: { v: "a_faire" as "a_faire" | "deja_fait" },
+  sonde: {
+    v: "a_faire" as "a_faire" | "deja_fait",
+    url: null as string | null,
+    // Le lien que porte la tâche en file : vivant (cette pièce, partie client) ou non.
+    vivant: true,
+  },
   ligne: { v: null as null | Record<string, unknown> },
   etat: { statut: "a_valider" as string, refuseMotif: null as string | null },
   vivants: new Set<string>(),
@@ -43,14 +48,26 @@ vi.mock("@/server/actions/qualiopi/_guards", () => ({
 vi.mock("next/cache", () => ({ revalidatePath: (...a: unknown[]) => h.reval(...a) }));
 vi.mock("@/server/queue/queues", () => ({
   enqueueEmail: (...a: unknown[]) => h.enqueue(...a),
-  sonderEnvoiOutbox: async () => h.sonde.v,
+  sonderEnvoiOutboxAvecLien: async () => ({
+    dejaFait: h.sonde.v === "deja_fait",
+    urlEnFile: h.sonde.url,
+  }),
 }));
 vi.mock("@/server/qualiopi/devis/interrupteur-formules", () => ({
   formulesActives: async () => true,
 }));
 vi.mock("@/server/qualiopi/devis/marquer-devis-envoye", () => ({ marquerDevisEnvoye: vi.fn() }));
 vi.mock("@/server/qualiopi/documents/signature/lien-precedent", () => ({
-  ligneDuLien: vi.fn().mockResolvedValue(null),
+  ligneDuLien: async () =>
+    h.sonde.vivant
+      ? {
+          id: "lien-en-file",
+          documentGenereId: "piece-1",
+          partie: "client",
+          createdAt: new Date(),
+          revokedAt: null,
+        }
+      : null,
   // L'ancien lien est rendu : le jeton neuf ne vit plus.
   rendreLienPrecedent: async (url: string) => {
     h.vivants.delete(url.split("/").pop() as string);
@@ -151,6 +168,8 @@ const sorties = () =>
 
 beforeEach(() => {
   h.sonde.v = "a_faire";
+  h.sonde.url = null;
+  h.sonde.vivant = true;
   vi.clearAllMocks();
   h.etat.statut = "a_valider";
   h.etat.refuseMotif = null;

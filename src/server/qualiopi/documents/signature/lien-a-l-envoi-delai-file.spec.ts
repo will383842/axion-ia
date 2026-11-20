@@ -16,18 +16,33 @@ import {
 const source = readFileSync(join(__dirname, "lien-a-l-envoi.ts"), "utf8");
 
 describe("lien-a-l-envoi — marge entre la mise en file et la transaction", () => {
-  it("connexion + lecture + mise en file + 5 s (= 35 s) < délai de la transaction (lu dans le source)", () => {
+  it("somme RÉELLE du pire cas (sondes, retrait, journal, ajout ≥ 10 s, relecture, marge) < délai de la transaction, lue dans le source", () => {
     const m = /TIMEOUT_TRANSACTION_ENVOI_MS\s*=\s*([\d_]+)/.exec(source);
     expect(m).not.toBeNull();
     const timeout = Number((m as RegExpExecArray)[1]!.replace(/_/g, ""));
+    const sondeExterne = DELAI_CONNEXION_FILE_MS + DELAI_LECTURE_FILE_MS;
+    const sondeInterne = DELAI_CONNEXION_FILE_MS + DELAI_LECTURE_FILE_MS;
+    const retrait = DELAI_LECTURE_FILE_MS;
+    const journal = 5_000;
+    const ajoutMin = DELAI_MISE_EN_FILE_OUTBOX_MS - DELAI_CONNEXION_FILE_MS - DELAI_LECTURE_FILE_MS;
+    const relectureApresAjout = DELAI_LECTURE_FILE_MS;
+    const marge = 5_000;
     const somme =
-      DELAI_CONNEXION_FILE_MS + DELAI_LECTURE_FILE_MS + DELAI_MISE_EN_FILE_OUTBOX_MS + 5_000;
-    expect(somme).toBe(35_000);
+      sondeExterne + sondeInterne + retrait + journal + ajoutMin + relectureApresAjout + marge;
+    expect(sondeExterne).toBe(10_000);
+    expect(sondeInterne).toBe(10_000);
+    expect(ajoutMin).toBe(10_000);
+    expect(somme).toBe(50_000);
     expect(somme).toBeLessThan(timeout);
-    // La garde du source porte bien les trois termes (sinon la somme lue ici serait fictive).
-    expect(source).toMatch(
-      /DELAI_CONNEXION_FILE_MS\s*\+\s*DELAI_LECTURE_FILE_MS\s*\+\s*DELAI_MISE_EN_FILE_OUTBOX_MS\s*\+\s*5_000\s*>=\s*TIMEOUT_TRANSACTION_ENVOI_MS/,
-    );
+    // Le source porte bien ces sept termes dans la somme qu'il garde (sinon celle-ci serait fictive).
+    const garde = /const BUDGET_ENVOI_REEL_MS =([^;]+);/.exec(source);
+    expect(garde).not.toBeNull();
+    const corps = (garde as RegExpExecArray)[1]!;
+    expect(corps.match(/DELAI_CONNEXION_FILE_MS/g)).toHaveLength(3);
+    expect(corps.match(/DELAI_LECTURE_FILE_MS/g)).toHaveLength(5);
+    expect(corps).toContain("DELAI_MISE_EN_FILE_OUTBOX_MS");
+    expect(corps.match(/5_000/g)).toHaveLength(2);
+    expect(source).toMatch(/BUDGET_ENVOI_REEL_MS\s*>=\s*TIMEOUT_TRANSACTION_ENVOI_MS/);
   });
 
   it("les deux transactions d'envoi utilisent cette constante, aucun délai écrit en dur", () => {

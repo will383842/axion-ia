@@ -20,7 +20,7 @@ import { z } from "zod";
 import { revalidatePath } from "next/cache";
 import { prisma } from "@/lib/prisma";
 import { requireAdminWrite, logQualiopiActivity } from "@/server/actions/qualiopi/_guards";
-import { enqueueEmail, sonderEnvoiOutbox } from "@/server/queue/queues";
+import { enqueueEmail, sonderEnvoiOutboxAvecLien } from "@/server/queue/queues";
 import { cleTacheOutbox, MiseEnFileIncertaine } from "@/server/email/outbox-en-cours";
 import type { MotifRetenue } from "@/server/email/suppression";
 import { CLE_SUJET_CHOISI } from "@/server/qualiopi/devis/contenu-email-devis";
@@ -36,6 +36,7 @@ import { revoquerJetonPrecis } from "@/server/qualiopi/documents/signature/token
 import { ligneDuLien } from "@/server/qualiopi/documents/signature/lien-precedent";
 import {
   EnvoiOccupe,
+  type SondeDejaFait,
   envoyerAvecLienALEnvoi,
 } from "@/server/qualiopi/documents/signature/lien-a-l-envoi";
 import * as Sentry from "@sentry/nextjs";
@@ -170,10 +171,12 @@ export async function approuverEmailAction(
       acteur: { session },
       // OUT-1 : sonde sous le verrou du devis, AVANT tout jeton : un envoi déjà fait ou en file
       // ne forge aucun lien neuf (il révoquerait celui que porte l'e-mail déjà en file).
-      sonder: async (): Promise<Awaited<ReturnType<typeof enqueueEmail>> | null> =>
-        (await sonderEnvoiOutbox(cleTacheOutbox(email.id))) === "deja_fait"
-          ? { enqueued: true, dejaEnFile: true }
-          : null,
+      sonder: async (): Promise<SondeDejaFait<Awaited<ReturnType<typeof enqueueEmail>>> | null> => {
+        const sonde = await sonderEnvoiOutboxAvecLien(cleTacheOutbox(email.id));
+        return sonde.dejaFait
+          ? { verdict: { enqueued: true, dejaEnFile: true }, urlEnFile: sonde.urlEnFile }
+          : null;
+      },
       // Ne lève QUE si l'e-mail n'est pas parti : rien après l'enfilage ne doit remonter.
       enfiler: async (payloadFinal) => {
         // Le retour est rendu à l'enveloppe, qui lit `enqueued`.
