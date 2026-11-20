@@ -10,8 +10,11 @@ import {
   capterRegles,
   classer,
   estVisee,
+  htmlVersBlocs,
   htmlVersTexte,
   jsonContientMention,
+  motsDe,
+  questionParleDeFinancement,
   reecrireFaq,
   reecrireHtml,
   reecrireJson,
@@ -59,10 +62,132 @@ export interface Proposition {
   regles?: string[];
   /** Champs réécrits par un override humain (sous-ensemble de `apres`). */
   surcharges?: string[];
+  /** Mots non financiers perdus et ACCEPTÉS par l'override, par champ (`pertesAcceptees`). */
+  pertes?: Record<string, string[]>;
 }
 
 /** Valeurs de remplacement validées par un humain pour un cas ambigu. */
-export type Overrides = Record<string, Record<string, { origine: string; valeur: unknown }>>;
+export type Overrides = Record<
+  string,
+  Record<
+    string,
+    {
+      origine: string;
+      valeur: unknown;
+      /**
+       * Mots non financiers que l'override fait DISPARAÎTRE, listés à la main (casse et accents
+       * ignorés). Tout mot perdu hors lexique et hors de cette liste fait ignorer l'override (A8).
+       */
+      pertesAcceptees?: string[];
+    }
+  >
+>;
+
+/**
+ * Familles de la porte 2 (contre-audit v3) : on REFUSE la famille entière, puis on admet une courte liste
+ * d'emplois explicitement non financiers. Un filtre « mots exacts suivis de n'importe quoi » ne ferme que
+ * les exemples cités.
+ */
+
+/** « prise(s) en charge », « prendrait en charge », « prise intégralement en charge », « prise-en-charge ». */
+const PRISE_EN_CHARGE =
+  "\\b(?:pr[ie]\\w*|pren\\w*)(?:[\\s-]+[^\\s.,;:!?\\n]+){0,3}?[\\s-]+en[\\s-]+charges?\\b";
+/** Fin de groupe qui clôt un emploi non financier (« … est rapide », « … se fait », « … par l'équipe »). */
+const FIN_DE_GROUPE = "(?:\\s*(?:[.,;:!?)]|$)|\\s+(?:est|sont|se|en|et|par\\s+l['’]équipe)\\b)";
+const COMPLEMENT_NON_FINANCIER =
+  "(?:(?:des?|du|d['’]|de\\s+la|un|une|le|la|les)\\s*)?(?:appels?|tickets?|incidents?|requ[êe]tes?|clients?|patients?|demandes?|projets?)";
+/**
+ * Emplois NON financiers admis, listés un à un : un complément de la liste (appels, tickets, incidents,
+ * requêtes, clients, patients, demandes, projet(s)), éventuellement suivi d'un seul mot, puis une fin de
+ * groupe ; ou « rapide / immédiate / technique » (« technique du projet ») suivi d'une fin de groupe.
+ * « rapide de vos frais » et « des projets de formation » ne ferment pas le groupe : refusés.
+ */
+const PEC_ADMISE =
+  "(?:\\s+(?:" +
+  COMPLEMENT_NON_FINANCIER +
+  "(?:\\s+[a-zà-ÿ]+)?|(?:rapide|imm[ée]diate|technique)(?:\\s+du\\s+projet)?|l['’]int[ée]gralit[ée]\\s+de\\s+la\\s+partie\\s+technique)" +
+  FIN_DE_GROUPE +
+  ")";
+/** Terme budgétaire dans la même phrase qu'« en charge » : refus, même pour un emploi de la liste. */
+const PEC_ET_BUDGET =
+  "(?:^|[.!?]\\s+)(?=[^.!?\\n]*\\ben[\\s-]+charge\\b)[^.!?\\n]*\\b(?:formations?|frais|co[uû]ts?|employeurs?|budgets?|tarifs?)\\b";
+
+/** Un seul « financ… » est admis quand il désigne le SECTEUR d'activité (liste fermée, audit v3). */
+const ADJ = "financi(?:er|[èe]re|ers|[èe]res)\\b";
+const SECTEUR_AVANT =
+  "(?:secteurs?|reporting|impacts?|donn[ée]es|analyses?|rapports?|pr[ée]visions?|engagements?|b[ée]n[ée]fices?|directeurs?|directrices?|int[ée]r[êe]ts?)\\s+(?:non\\s+)?";
+const FINANCE_SECTEUR =
+  "(?:(?<=(?:^|\\n))finance(?=\\s*[:,]|\\s+et\\b)" +
+  "|(?<=(?:(?<![a-zà-ÿ])(?:la|en|de|du|des|et|ou|[ée]quipes?|fonctions?|m[ée]tiers?|secteurs?|banques?|assurances?)\\s+|[(,]\\s*))finance\\b" +
+  "|finance(?=\\s+d['’]entreprise\\b)" +
+  "|(?<=\\b" +
+  SECTEUR_AVANT +
+  ")" +
+  ADJ +
+  "|" +
+  "financi(?:er|[èe]re|ers|[èe]res)(?=\\s+(?:secteur|reporting|donn[ée]es|analyses?|rapports?|pr[ée]visions?|impact|b[ée]n[ée]fices?|engagement)))";
+
+/**
+ * Interdits PUBLICS : contrôle LEXICAL strict d'un override (porte 2). Plus strict que les règles de
+ * réécriture, qui laissent passer « France Travail » sans marqueur de financement (A4).
+ * - « prise(s) en charge » et « à la charge de » : refusés partout, sauf emplois non financiers listés
+ *   (`PEC_ADMISE`) et sans terme budgétaire dans la phrase (`PEC_ET_BUDGET`).
+ * - « financ… » : refusé sous toutes ses formes (verbe, adverbe, « ressources / participation financière »),
+ *   sauf les emplois de secteur de `FINANCE_SECTEUR` (« la finance », « directeur financier »…).
+ * - « rembours… », « éligib… », « plan de développement des compétences » : refusés sans complément exigé.
+ */
+export const INTERDITS_PUBLICS = new RegExp(
+  [
+    "\\b(?:OPCOs?|OPCA|O\\.P\\.C\\.O\\.)(?![\\w])",
+    "qualiopi",
+    "\\bCPF\\b",
+    "compte[\\s-]+personnel[\\s-]+de[\\s-]+formation",
+    "personal training account",
+    "mon[\\s-]?compte[\\s-]?formation",
+    "france[\\s-]+travail",
+    "p[ôo]le[- ]emploi",
+    "\\bAIF\\b",
+    // V3-2 : toute la famille « financ… » (finançait, financièrement, ressources financières, cofinancé…),
+    // hors emplois de secteur.
+    "(?!" + FINANCE_SECTEUR + ")(?:\\b|(?<=co|auto-?))finan[cç]\\w*",
+    // Verbe « financer » suivi d'un déterminant, même si « finance » est précédé d'un mot admis (« en finance une part »).
+    "\\bfinances?\\s+(?:(?:la|les|le|leurs?|votre|vos|son|sa|ses|une|des|cette|ces|tout|ta|tes|ton|notre|nos)\\b|l['’]|jusqu|\\d|[àa]\\s+(?:hauteur|100|\\d)|en\\s+partie|int[ée]gral|totalement|enti[èe]rement)",
+    "op[ée]rateurs?[\\s-]+de[\\s-]+comp[ée]tences",
+    "rembours\\w*",
+    "[ée]ligib\\w*",
+    "plan\\s+de\\s+d[ée]veloppement\\s+des\\s+comp[ée]tences",
+    "\\bfund(?:s|ing|ed)?\\b",
+    "subvention",
+    "subrogation",
+    "\\bEDOF\\b",
+    "FNE[- ]Formation",
+    "datadock",
+    "(?:aides?|appuis?|leviers?|dispositifs?|soutiens?)\\s+financi",
+    // V3-1 : « prise(s) en charge » sous TOUTES ses formes, sauf emploi non financier listé.
+    PRISE_EN_CHARGE + "(?!" + PEC_ADMISE + ")",
+    PEC_ET_BUDGET,
+    "reste[\\s-]+[àa][\\s-]+charge",
+    "[àa]\\s+la\\s+charge\\s+d",
+    "[àa]\\s+(?:sa|votre|vos|leur|leurs|ma|mon)\\s+charge",
+    // V4-1 : la famille « aide(s) » au sens financement (« l'Aide Individuelle à la Formation », « aides
+    // régionales », « dispositifs d'aide »). Le verbe « aide à / aide les » n'est pas touché.
+    "\\baides\\b",
+    "\\baide\\s+(?:individuelle|r[ée]gionale|publique|de\\s+l['’][ée]tat|[àa]\\s+la\\s+formation|au\\s+(?:financement|diagnostic))",
+    "dispositifs?\\s+d['’]aide",
+    // V4-2 : reprises indirectes « couvrent tout ou partie des frais », « réduire le coût de la formation ».
+    "tout\\s+ou\\s+partie\\s+d(?:es|u)\\s+(?:frais|co[uû]ts?)",
+    "\\b(?:dispositifs?|options?|leviers?|aides?)\\b[^.!?\\n]{0,60}\\b(?:r[ée]duire|all[ée]ger|couvr\\w*)\\b[^.!?\\n]{0,30}\\b(?:co[uû]ts?|frais)",
+    "assum\\w*\\s+la\\s+charge",
+    // V5-1 : « dispositif(s) » repris au sens financement, « mobilisable / mobilisation ». `adapt\\w*` et non
+    // `adapt[ée]s?\\b` : sans drapeau `u`, `é` n'est pas un caractère de mot et `adapté\\b` ne correspond jamais.
+    "\\bmobilis(?:ables?|ation)\\b|\\bpeu(?:ven)?t\\s+mobiliser\\s*:",
+    "\\b(?:ce|cet|ces)\\s+dispositifs?\\b(?!\\s+(?:de\\s+suivi|consulaires|p[ée]dagogiques?))",
+    "\\bdispositifs?\\s+(?:(?:le|les)\\s+plus\\s+|locaux\\s+)?adapt\\w*|\\b(?:bons?|meilleurs?)\\s+dispositifs?\\b|identification\\s+d(?:u|es)\\s+dispositifs?",
+    "\\bdispositifs?\\s+(?:disponibles|compl[ée]mentaires|publics)\\b|\\bdispositifs?\\s+d['’]accompagnement\\b|\\bdispositifs?\\s+de\\s+France\\s+Num",
+    "\\bappels?\\s+[àa]\\s+projets?\\b|certification\\s+qualit[ée]\\s+via",
+  ].join("|"),
+  "i",
+);
 
 export function empreinte(valeur: unknown): string {
   return createHash("sha256")
@@ -75,6 +200,155 @@ function conservees(texte: string): string[] {
     .split(/(?<=[.!?…])\s+/)
     .filter((p) => /prise en charge/i.test(p) && !estVisee(p))
     .map((p) => p.trim().slice(0, 160));
+}
+
+/**
+ * A1 (essai du 20/11) : reporte dans le `bodyText` STOCKÉ les seuls passages modifiés entre deux
+ * versions du `body`, au lieu de recalculer tout le champ (qui perdrait statistiques et sources,
+ * et recevrait crédits photo et JSON-LD). Substitution à espaces tolérés. Rend `null` si un passage
+ * est introuvable ou présent plusieurs fois : l'appelant garde le `bodyText` et lève un ambigu.
+ */
+export function reporterDansTexteBrut(
+  bodyTextOrigine: string,
+  bodyAvant: string,
+  bodyApres: string,
+): string | null {
+  const a = htmlVersBlocs(bodyAvant);
+  const b = htmlVersBlocs(bodyApres);
+  let courant = bodyTextOrigine;
+  const mots = (t: string): string[] => t.split(/\s+/).filter((x) => x !== "");
+  for (const [i0, i1, j0, j1] of groupesDeBlocs(a, b)) {
+    // P4 : chaque groupe de blocs modifiés est découpé en MORCEAUX par un diff mot à mot, et chaque
+    // morceau est reporté séparément (deux retraits proches ne forment plus un seul long passage).
+    const wa = mots(a.slice(i0, i1).join(" "));
+    const wb = mots(b.slice(j0, j1).join(" "));
+    // Contexte gauche pris du côté « après » (déjà reporté dans `courant`), droit du côté « avant ».
+    const hors = {
+      gauche: b.slice(0, j0).join(" "),
+      droite: a.slice(i1).join(" "),
+    };
+    for (const [x0, x1, y0, y1] of groupesDeBlocs(wa, wb)) {
+      const avant = wa.slice(x0, x1).join(" ");
+      const apres = wb.slice(y0, y1).join(" ");
+      let p = 0;
+      const max = Math.min(avant.length, apres.length);
+      while (p < max && avant[p] === apres[p]) p++;
+      let s = 0;
+      while (s < max - p && avant[avant.length - 1 - s] === apres[apres.length - 1 - s]) s++;
+      let retire = avant.slice(p, avant.length - s);
+      const ajoute = apres.slice(p, apres.length - s);
+      if (retire.replace(/\s+/g, "") === ajoute.replace(/\s+/g, "")) continue;
+      const gauche0 = [hors.gauche, wb.slice(0, y0).join(" ")].filter(Boolean).join(" ");
+      const gaucheTexte = (gauche0 ? gauche0 + " " : "") + avant.slice(0, p);
+      const reste = [wa.slice(x1).join(" "), hors.droite].filter(Boolean).join(" ");
+      let droiteTexte = avant.slice(avant.length - s) + (reste ? " " + reste : "");
+      // Un mot retiré emporte une espace voisine, sinon il laisse une double espace.
+      if (ajoute === "" && droiteTexte.startsWith(" ")) {
+        retire += " ";
+        droiteTexte = droiteTexte.slice(1);
+      }
+      let fait = false;
+      for (const k of [0, 20, 40, 80]) {
+        const gauche = k === 0 ? "" : gaucheTexte.slice(-k);
+        const droite = k === 0 ? "" : droiteTexte.slice(0, k);
+        if ((gauche + retire + droite).trim() === "") continue;
+        // Q3 : la ponctuation peut être écrite « Intro. » dans le corps et « Intro . » dans le texte
+        // brut : une espace est tolérée devant chaque ponctuation. Le contexte est CAPTURÉ et recopié
+        // tel qu'il est stocké (seul le fragment retiré change).
+        const re = new RegExp(
+          `(${motifTolerant(gauche)})(${motifTolerant(retire)})(${motifTolerant(droite)})`,
+          "g",
+        );
+        const n = courant.match(re)?.length ?? 0;
+        // Un contexte qui ne se retrouve pas n'est pas fatal : on essaie le contexte plus large.
+        if (n === 0 && k === 0) return null;
+        if (n !== 1) continue;
+        courant = courant.replace(re, (_m, g: string, _r: string, d: string) => g + ajoute + d);
+        fait = true;
+        break;
+      }
+      if (!fait) return null;
+    }
+  }
+  return courant;
+}
+
+/** Motif d'un texte : espaces quelconques entre mots, espace tolérée devant la ponctuation. */
+function motifTolerant(texte: string): string {
+  // Les espaces aux extrémités comptent (elles séparent le contexte du fragment retiré).
+  const debut = /^\s/.test(texte) ? "\\s+" : "";
+  const fin = /\s$/.test(texte) ? "\\s+" : "";
+  return (
+    debut +
+    texte
+      .split(/\s+/)
+      .filter((x) => x !== "")
+      .map((mot) =>
+        mot
+          .split(/([.,;:!?])/)
+          .filter((x) => x !== "")
+          .map((part) =>
+            /^[.,;:!?]$/.test(part) ? `\\s*${echapperRegExp(part)}` : echapperRegExp(part),
+          )
+          .join(""),
+      )
+      .join("\\s+") +
+    fin
+  );
+}
+
+const echapperRegExp = (x: string): string => x.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+
+/** Groupes de blocs différents : [début avant, fin avant, début après, fin après[ (sous-suite commune). */
+function groupesDeBlocs(
+  a: readonly string[],
+  b: readonly string[],
+): Array<[number, number, number, number]> {
+  const n = a.length;
+  const m = b.length;
+  const t: Uint32Array[] = Array.from({ length: n + 1 }, () => new Uint32Array(m + 1));
+  for (let i = n - 1; i >= 0; i--)
+    for (let j = m - 1; j >= 0; j--)
+      t[i]![j] = a[i] === b[j] ? t[i + 1]![j + 1]! + 1 : Math.max(t[i + 1]![j]!, t[i]![j + 1]!);
+  const out: Array<[number, number, number, number]> = [];
+  let i = 0;
+  let j = 0;
+  let di = 0;
+  let dj = 0;
+  const clore = (): void => {
+    if (i > di || j > dj) out.push([di, i, dj, j]);
+  };
+  while (i < n && j < m) {
+    if (a[i] === b[j]) {
+      clore();
+      i++;
+      j++;
+      di = i;
+      dj = j;
+    } else if (t[i + 1]![j]! >= t[i]![j + 1]!) i++;
+    else j++;
+  }
+  i = n;
+  j = m;
+  clore();
+  return out;
+}
+
+/** Ajoute `bodyText` : report des seuls passages modifiés, ou ambigu « à resynchroniser ». */
+function reporterTexteBrut(
+  c: Collecteur,
+  champ: string,
+  bodyTextOrigine: string | null | undefined,
+  bodyAvant: string,
+  bodyApres: string,
+): void {
+  if (typeof bodyTextOrigine !== "string") return c.garder(champ, bodyTextOrigine);
+  const nouveau = reporterDansTexteBrut(bodyTextOrigine, bodyAvant, bodyApres);
+  if (nouveau === null)
+    c.champ(champ, bodyTextOrigine, bodyTextOrigine, false, [
+      "bodyText à resynchroniser : passage modifié dans le body introuvable, ou présent plusieurs fois, dans le texte brut stocké",
+    ]);
+  else c.champ(champ, bodyTextOrigine, nouveau, nouveau !== bodyTextOrigine, []);
 }
 
 class Collecteur {
@@ -183,7 +457,7 @@ export function proposerTraduction(l: LigneTraduction): Proposition | null {
   c.texte("excerpt", l.excerpt, langue);
   const corps = c.html("body", l.body, langue);
   c.json("bodyJson", l.bodyJson, langue);
-  if (corps !== null) c.champ("bodyText", l.bodyText, htmlVersTexte(corps), true, []);
+  if (corps !== null) reporterTexteBrut(c, "bodyText", l.bodyText, l.body, corps);
   else c.garder("bodyText", l.bodyText);
   c.texte("metaTitle", l.metaTitle, langue, true);
   c.texte("metaDescription", l.metaDescription, langue);
@@ -389,9 +663,9 @@ export function proposerOffre(l: LigneOffre): Proposition | null {
   const en = c.html("bodyEn", l.bodyEn, "en");
   c.json("bodyJsonFr", l.bodyJsonFr, "fr");
   c.json("bodyJsonEn", l.bodyJsonEn, "en");
-  if (fr !== null) c.champ("bodyTextFr", l.bodyTextFr, htmlVersTexte(fr), true, []);
+  if (fr !== null) reporterTexteBrut(c, "bodyTextFr", l.bodyTextFr, l.bodyFr, fr);
   else c.garder("bodyTextFr", l.bodyTextFr);
-  if (en !== null) c.champ("bodyTextEn", l.bodyTextEn, htmlVersTexte(en), true, []);
+  if (en !== null) reporterTexteBrut(c, "bodyTextEn", l.bodyTextEn, l.bodyEn, en);
   else c.garder("bodyTextEn", l.bodyTextEn);
   c.texte("metaTitle", l.metaTitle, "fr", true);
   c.texte("metaDescription", l.metaDescription, "fr");
@@ -440,12 +714,51 @@ export function integrerOverrides(
   };
 }
 
+/** Textes lisibles d'une valeur d'override (HTML → texte, JSON → chaînes hors liens/ids). */
+const CLES_NON_TEXTE = new Set([
+  "href",
+  "src",
+  "url",
+  "id",
+  "slug",
+  "type",
+  "class",
+  "rel",
+  "target",
+]);
+function textesDe(valeur: unknown): string[] {
+  if (typeof valeur === "string")
+    return [/<[a-z][\s\S]*>/i.test(valeur) ? htmlVersTexte(valeur) : valeur];
+  if (Array.isArray(valeur)) return valeur.flatMap(textesDe);
+  if (valeur && typeof valeur === "object")
+    return Object.entries(valeur).flatMap(([k, v]) => (CLES_NON_TEXTE.has(k) ? [] : textesDe(v)));
+  return [];
+}
+
+/** Mots non financiers que `valeur` fait disparaître de `origine` (porte 3, A8). */
+function motsPerdus(origine: unknown, valeur: unknown): string[] {
+  return [...new Set(motsNonRetirables(textesDe(origine).join(" "), textesDe(valeur).join(" ")))];
+}
+
+/** Tirets Unicode ramenés au tiret ASCII, espaces insécables à l'espace (sauts de ligne conservés). */
+export function normaliserPourPorte2(t: string): string {
+  return t
+    .normalize("NFC")
+    .replace(/[‐-―­]/g, "-")
+    .replace(/[^\S\n]+/g, " ");
+}
+
 /**
  * Une valeur d'override est-elle PROPRE ? Elle repasse dans les mêmes règles que le contenu : si le
  * résultat n'est pas « propre » (mention restante, ambigu), l'override est ignoré. Rend la raison,
  * ou `null` si la valeur est propre.
  */
 function valeurSale(champ: string, valeur: unknown): string | null {
+  // Porte 2 : contrôle lexical strict, AVANT les règles de réécriture (A4).
+  // V4-4 : tirets Unicode ramenés au tiret ASCII, espaces insécables à l'espace (sauts de ligne conservés).
+  const texte = normaliserPourPorte2(textesDe(valeur).join("\n"));
+  const interdit = INTERDITS_PUBLICS.exec(texte);
+  if (interdit) return `interdit public « ${interdit[0]} »`;
   const langue: Langue = /En$/.test(champ) ? "en" : "fr";
   const r =
     champ === "perks"
@@ -498,6 +811,8 @@ export function appliquerOverrides(
   const apres = { ...p.apres };
   const ignores: string[] = [];
   const appliques: string[] = [];
+  const pertes: Record<string, string[]> = { ...(p.pertes ?? {}) };
+  const resynchro: string[] = [];
   for (const [champ, o] of Object.entries(surcharges)) {
     if (o.valeur === "" || o.valeur === null || o.valeur === undefined) {
       ignores.push(`${p.cle}.${champ} : valeur vide (gabarit non rempli), override ignoré`);
@@ -517,25 +832,52 @@ export function appliquerOverrides(
       );
       continue;
     }
+    // Porte 3 : aucun mot non financier perdu hors de `pertesAcceptees` (A8). La perte est explicite.
+    const perdus = motsPerdus(courant, o.valeur);
+    const acceptes = new Set(motsDe((o.pertesAcceptees ?? []).join(" ")));
+    const nonAcceptes = perdus.filter((m) => !acceptes.has(m));
+    if (nonAcceptes.length > 0) {
+      ignores.push(
+        `${p.cle}.${champ} : mots non financiers perdus et absents de pertesAcceptees (${nonAcceptes.slice(0, 8).join(", ")}), override ignoré`,
+      );
+      continue;
+    }
     avant[champ] = courant;
     apres[champ] = o.valeur;
     appliques.push(champ);
-    // Le corps réécrit à la main redevient la source du texte brut : bodyText* est recalculé,
-    // sinon il garderait le passage ambigu (indexation, recherche).
+    if (perdus.length > 0) pertes[champ] = perdus;
+    // Le corps réécrit à la main redevient la source du texte brut : le bodyText* STOCKÉ reçoit les
+    // seuls passages modifiés (A1), sinon il garderait le passage ambigu (indexation, recherche).
     const texte = CHAMP_TEXTE_DU_CORPS[champ];
-    if (texte && texte in originaux && typeof o.valeur === "string") {
-      avant[texte] = originaux[texte];
-      apres[texte] = htmlVersTexte(o.valeur);
-      appliques.push(texte);
+    if (texte && typeof originaux[texte] === "string" && typeof o.valeur === "string") {
+      const nouveau = reporterDansTexteBrut(
+        originaux[texte] as string,
+        typeof courant === "string" ? courant : "",
+        o.valeur,
+      );
+      if (nouveau === null) {
+        resynchro.push(
+          `${p.cle}.${texte} : bodyText à resynchroniser : passage modifié par l'override introuvable, ou présent plusieurs fois, dans le texte brut stocké`,
+        );
+      } else {
+        avant[texte] = originaux[texte];
+        apres[texte] = nouveau;
+        appliques.push(texte);
+      }
     }
   }
-  const ambigus = p.ambigus.filter(
-    (a) =>
-      !Object.keys(surcharges).some(
-        (champ) =>
-          a.startsWith(`${p.cle}.${champ} :`) && !ignores.some((i) => i.includes(`.${champ} :`)),
-      ),
-  );
+  const ambigus = [
+    ...p.ambigus.filter(
+      (a) =>
+        !Object.keys(surcharges).some(
+          (champ) =>
+            a.startsWith(`${p.cle}.${champ} :`) && !ignores.some((i) => i.includes(`.${champ} :`)),
+        ) &&
+        // Le bodyText resynchronisé par l'override n'est plus à resynchroniser.
+        !appliques.some((champ) => a.startsWith(`${p.cle}.${champ} :`)),
+    ),
+    ...resynchro,
+  ];
   return {
     proposition: {
       ...p,
@@ -543,6 +885,7 @@ export function appliquerOverrides(
       apres,
       ambigus,
       surcharges: [...(p.surcharges ?? []), ...appliques],
+      ...(Object.keys(pertes).length > 0 ? { pertes } : {}),
     },
     ignores,
   };
@@ -589,12 +932,25 @@ export function refuserSiAmbigus(
  * Gabarit JSON à remplir dans `retrait-financement-overrides.json` : une entrée par (contenu, champ)
  * ambigu, avec l'empreinte de l'original ; `valeur` (texte FINAL du champ) est à écrire à la main.
  */
+const QUESTION_DE_REPONSE: Record<string, string> = {
+  answerFr: "questionFr",
+  answerEn: "questionEn",
+};
+
 export function gabaritOverrides(propositions: readonly Proposition[]): Overrides {
   const g: Overrides = {};
   for (const r of ambigusNonCouverts(propositions)) {
     const p = propositions.find((x) => x.cle === r.cle);
     if (!p || !(r.champ in p.avant)) continue;
     (g[r.cle] ??= {})[r.champ] = { origine: empreinte(p.avant[r.champ]), valeur: "" };
+    // A7 : la question d'une FAQ de financement doit être surchargée AVEC la réponse, sinon elle
+    // reste publiée (et dans `faqJson` du parent).
+    const q = QUESTION_DE_REPONSE[r.champ];
+    if (p.table === "faq" && q && q in p.avant) {
+      const texteQ = p.avant[q];
+      if (typeof texteQ === "string" && questionParleDeFinancement(texteQ))
+        (g[r.cle] ??= {})[q] ??= { origine: empreinte(texteQ), valeur: "" };
+    }
   }
   return g;
 }
@@ -623,10 +979,13 @@ export function empreintePlan(propositions: readonly Proposition[]): string {
 export function resume(propositions: readonly Proposition[]): {
   a_reecrire: number;
   ambigus: number;
+  /** Ambigus qui portent AUSSI une réécriture partielle (déjà dans `ambigus`, jamais dans `a_reecrire`). */
+  partiels: number;
   total: number;
 } {
   let aReecrire = 0;
   let ambigus = 0;
+  let partiels = 0;
   for (const p of propositions) {
     const classe = classer({
       valeur: null,
@@ -635,9 +994,9 @@ export function resume(propositions: readonly Proposition[]): {
     });
     if (classe === "ambigu") ambigus++;
     else if (classe === "a-reecrire") aReecrire++;
-    if (classe === "ambigu" && Object.keys(p.apres).length > 0) aReecrire++;
+    if (classe === "ambigu" && Object.keys(p.apres).length > 0) partiels++;
   }
-  return { a_reecrire: aReecrire, ambigus, total: propositions.length };
+  return { a_reecrire: aReecrire, ambigus, partiels, total: propositions.length };
 }
 
 /** Rapport de restauration : clés et noms de champs seulement (aucun contenu). */

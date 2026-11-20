@@ -282,7 +282,7 @@ async function main() {
   const sha = empreintePlan(propositions);
   const r = resume(propositions);
   console.log(
-    `Contenus concernés : ${r.total} · à réécrire : ${r.a_reecrire} · ambigus : ${r.ambigus}`,
+    `Contenus concernés : ${r.total} · à réécrire : ${r.a_reecrire}${r.partiels > 0 ? ` + ${r.partiels} partiels` : ""} · ambigus : ${r.ambigus}`,
   );
   console.log(`PLAN_SHA=${sha}`);
   for (const i of ignores) console.log(`⚠ override ignoré : ${i}`);

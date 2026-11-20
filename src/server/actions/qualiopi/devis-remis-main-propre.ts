@@ -21,7 +21,12 @@ import {
   TITRE_ECHEANCIER,
 } from "@/server/qualiopi/devis/assistant/conditions-prix-unique";
 import { prisma } from "@/lib/prisma";
-import { requireAdminWrite, logQualiopiActivity } from "@/server/actions/qualiopi/_guards";
+import {
+  requireAdminWrite,
+  logQualiopiActivity,
+  donneesJournalQualiopi,
+} from "@/server/actions/qualiopi/_guards";
+import { ACTION_REMIS_MAIN_PROPRE } from "@/server/qualiopi/devis/canal-emission";
 import { generateDocument } from "@/server/qualiopi/documents/documents-service";
 import { emettreDevisEmis } from "@/server/partners-sync/producteurs/devis";
 import { DevisPdf, type DevisData } from "@/server/qualiopi/documents/templates/devis";
@@ -75,8 +80,6 @@ export async function marquerRemisEnMainPropreAction(input: {
   const parsed = entreeSchema.safeParse(input);
   if (!parsed.success) return { error: "Demande invalide" };
   const { id: devisId, motif } = parsed.data;
-
-  let documentGenereId: string | null = null;
 
   try {
     await prisma.$transaction(
@@ -204,7 +207,6 @@ export async function marquerRemisEnMainPropreAction(input: {
           // Clé R2 stable (l'URL signée expire en 900 s : on stocke la clé).
           pdfCle = `documents/${new Date().getFullYear()}/devis/${doc.numero}.pdf`;
           pieceId = doc.id;
-          documentGenereId = pieceId;
         } catch (err) {
           console.warn("[marquerRemisEnMainPropreAction] génération PDF échouée", err);
           throw new RemiseRefusee(MSG_PDF_RATE, "pdf_rate");
@@ -240,6 +242,23 @@ export async function marquerRemisEnMainPropreAction(input: {
         });
         // (h) Événement « devis émis » dans la MÊME transaction (règle devis.emis du cliquet).
         await emettreDevisEmis(tx, devisId);
+        // (i) Trace du canal d'émission, dans la MÊME transaction : sans elle, le devis redeviendrait « inconnu ».
+        await tx.activityLog.create({
+          data: await donneesJournalQualiopi({
+            action: ACTION_REMIS_MAIN_PROPRE,
+            targetType: "Devis",
+            targetId: devisId,
+            changes: {
+              statut: "envoye",
+              canal: "main_propre",
+              motif,
+              documentGenereId: pieceId,
+              emailEnvoye: false,
+              lienSignatureEmis: false,
+            },
+            session,
+          }),
+        });
       },
       { maxWait: 5_000, timeout: 60_000 },
     );
@@ -279,21 +298,7 @@ export async function marquerRemisEnMainPropreAction(input: {
     throw err;
   }
 
-  // Transaction validée. Ni adresse ni lien dans le journal.
-  await logQualiopiActivity({
-    action: "qualiopi.devis.remis_main_propre",
-    targetType: "Devis",
-    targetId: devisId,
-    changes: {
-      statut: "envoye",
-      canal: "main_propre",
-      motif,
-      documentGenereId,
-      emailEnvoye: false,
-      lienSignatureEmis: false,
-    },
-    session,
-  });
+  // Trace écrite dans la transaction : elle est la source du canal d'émission.
 
   return { data: { id: devisId } };
 }

@@ -60,6 +60,8 @@ import { avertissementEstimationAdmin } from "@/server/qualiopi/financements/est
 import { getClient } from "@/server/qualiopi/crm/clients";
 import { libelleReglementDevis } from "@/server/qualiopi/devis/libelles-reglement";
 import { prisma } from "@/lib/prisma";
+import { lireCanalEmission } from "@/server/qualiopi/devis/canal-emission";
+import { peutOuvrirPiecePdf } from "@/server/qualiopi/documents/acces-piece";
 import { LOT_DEVIS_ASSISTANT } from "@/server/qualiopi/devis/interrupteur-assistant";
 import { estActifPour, lireInterrupteurQualiopi } from "@/server/qualiopi/socle/interrupteurs";
 import { emailDevisEnAttente } from "@/server/qualiopi/devis/email-devis-en-attente";
@@ -287,8 +289,13 @@ export default async function QualiopiDevisDetailPage({ params, searchParams }: 
       : [];
   // Horodatage : lecture SEULE, une requête pour toutes les signatures de la pièce.
   const etatHorodatage = etatHorodatageDevis(
-    await lireHorodatagesDeSignatures(signatures.map((s) => s.id)).catch(() => []),
+    await lireHorodatagesDeSignatures(signatures.map((s) => s.id)).catch(() => null),
   );
+  // Canal d'émission : en cas d'erreur de lecture, on garde l'affichage d'avant.
+  const canal = await lireCanalEmission(prisma, devis).catch(() => "inconnu" as const);
+  const remisEnMainPropre = canal === "main_propre";
+  // même règle que les routes documents/[id], devis/[id]/apercu, pieces/[id]/exemplaire-signe
+  const peutOuvrirPdf = peutOuvrirPiecePdf(acces.role);
   const urlPdfEmis = urlPdfDevisEmis(devis);
   // UN SEUL calcul, partagé par le bloc « Signature électronique » et le bloc « Actions » :
   // signature non révoquée ET pièce non annulée (`signatureClientDuDevis`, comme les gardes serveur).
@@ -435,7 +442,7 @@ export default async function QualiopiDevisDetailPage({ params, searchParams }: 
         }
         actions={
           <>
-            {devis.statut === "brouillon" ? (
+            {devis.statut === "brouillon" && peutOuvrirPdf ? (
               <AdminButton
                 variant="secondary"
                 href={`/api/qualiopi/devis/${devis.id}/apercu`}
@@ -445,7 +452,7 @@ export default async function QualiopiDevisDetailPage({ params, searchParams }: 
                 Voir l&apos;aperçu PDF
               </AdminButton>
             ) : null}
-            {urlPdfEmis !== null ? (
+            {urlPdfEmis !== null && peutOuvrirPdf ? (
               <AdminButton
                 variant="secondary"
                 href={urlPdfEmis}
@@ -638,7 +645,13 @@ export default async function QualiopiDevisDetailPage({ params, searchParams }: 
           {/* Envoyé le */}
           {devis.sentAt != null && (
             <div>
-              <p className={infoLabelCls}>Envoyé le</p>
+              <p className={infoLabelCls}>
+                {remisEnMainPropre
+                  ? "Remis en main propre le"
+                  : canal === "email"
+                    ? "Envoyé par e-mail le"
+                    : "Envoyé le"}
+              </p>
               <p className={infoValueCls}>{formatDate(devis.sentAt)}</p>
             </div>
           )}
@@ -882,7 +895,7 @@ export default async function QualiopiDevisDetailPage({ params, searchParams }: 
 
             ⚠️ Rendu à la volée : ce n'est PAS la pièce du registre, dont
             l'empreinte est scellée et ne doit jamais être réécrite. */}
-        {signatures.length > 0 && (
+        {signatures.length > 0 && peutOuvrirPdf && (
           <p className="mt-[var(--space-admin-4)]">
             <a
               href={`/api/qualiopi/pieces/${devis.documentGenereId}/exemplaire-signe`}
@@ -901,7 +914,21 @@ export default async function QualiopiDevisDetailPage({ params, searchParams }: 
             aucun lien n'existe encore, et sur un devis accepté / refusé / expiré
             / transformé il n'y a plus rien à signer — l'afficher serait un faux
             positif permanent. */}
-        {devis.statut === "envoye" && !clientASigne && (
+        {devis.statut === "envoye" &&
+        !clientASigne &&
+        remisEnMainPropre &&
+        devis.documentGenereId !== null ? (
+          <p
+            role="status"
+            data-testid="info-remis-main-propre"
+            className="rounded-[var(--radius-admin-sm)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-surface)] p-[var(--space-admin-4)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-soft)]"
+          >
+            Devis remis en main propre le {devis.sentAt != null ? formatDate(devis.sentAt) : "—"} :
+            aucun e-mail n&apos;est parti et aucun lien de signature en ligne n&apos;existe. Une
+            fois le devis papier signé, cliquez sur « Marquer accepté ». Pour l&apos;envoyer par
+            e-mail, utilisez « Corriger et renvoyer » (nouvelle version).
+          </p>
+        ) : devis.statut === "envoye" && !clientASigne ? (
           <p
             role="alert"
             className="rounded-[var(--radius-admin-sm)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-surface)] p-[var(--space-admin-4)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-warning)]"
@@ -910,7 +937,7 @@ export default async function QualiopiDevisDetailPage({ params, searchParams }: 
               ? "Aucune pièce n'a été générée pour ce devis : le client ne peut pas signer en ligne. Réviser le devis pour le réémettre."
               : "Le client n'a pas encore signé. Le lien de signature lui a été envoyé avec le devis ; renvoyer l'email émet un nouveau lien et invalide l'ancien IMMÉDIATEMENT, avant même la validation de l'e-mail en corbeille : si l'e-mail est refusé ou supprimé, le client n'a plus de lien valable (il faudra alors renvoyer à nouveau)."}
           </p>
-        )}
+        ) : null}
       </section>
 
       {/* ── Actions de cycle de vie ──────────────────────────────────────── */}
@@ -929,6 +956,7 @@ export default async function QualiopiDevisDetailPage({ params, searchParams }: 
           signeParClient={signeParClient}
           signeDesDeuxParties={signeDesDeuxParties}
           repriseParRelance={repriseParRelance}
+          remisEnMainPropre={remisEnMainPropre}
         />
         {aideAdresse !== null ? (
           <p
@@ -946,7 +974,11 @@ export default async function QualiopiDevisDetailPage({ params, searchParams }: 
             ) : null}
           </p>
         ) : null}
-        {devis.statut === "envoye" && !clientASigne && client ? (
+        {devis.statut === "envoye" &&
+        !clientASigne &&
+        client &&
+        acces.peutEcrire &&
+        !remisEnMainPropre ? (
           <RelanceDevisDepuisLaPage
             clientId={client.id}
             devisId={devis.id}
