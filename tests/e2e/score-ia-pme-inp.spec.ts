@@ -74,14 +74,25 @@ test.describe("Score IA TPE-PME — INP en laboratoire (médiane)", () => {
 
       // Écran « secteur » (31 options groupées) : le plus lourd à rendre.
       // On avance (hors mesure) jusqu'à l'écran qui porte l'option « autre ».
+      // Chaque clic sur « Suivant » change d'écran de façon ASYNCHRONE (transition React) : sans
+      // attendre le compteur « Question N sur 15 », la boucle relisait l'écran qui allait partir,
+      // cochait puis validait encore une fois, et sautait l'écran « secteur » (jusqu'à « Voir mon
+      // score », puis plus d'option « autre »). On attend donc l'écran suivant avant de continuer.
       const secteur = page.getByRole("group").locator('input[value="autre"]');
-      for (let q = 0; q < 15 && (await secteur.count()) === 0; q += 1) {
+      const compteur = (n: number) =>
+        page.locator("span").filter({ hasText: new RegExp(`^Question ${n} sur 15$`) });
+      let ecran = 2; // le « Suivant » de l'écran 1 vient d'être cliqué
+      await expect(compteur(ecran)).toBeVisible();
+      while ((await secteur.count()) === 0) {
+        expect(ecran, "écran « secteur » introuvable avant la dernière question").toBeLessThan(15);
         await page
           .getByRole("group")
           .locator('input[type="radio"], input[type="checkbox"]')
           .first()
           .check();
-        await page.getByRole("button", { name: /Suivant|Voir mon score/ }).click();
+        await page.getByRole("button", { name: "Suivant" }).click();
+        ecran += 1;
+        await expect(compteur(ecran)).toBeVisible();
       }
       await expect(secteur).toBeVisible();
       const premier = page.getByRole("group").locator('input[type="radio"]').first();
