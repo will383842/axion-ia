@@ -20,6 +20,7 @@
 import * as Sentry from "@sentry/nextjs";
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
+import { DELAI_MISE_EN_FILE_OUTBOX_MS, MiseEnFileIncertaine } from "@/server/email/outbox-en-cours";
 import { publicUrl } from "@/lib/public-url";
 import { sendTelegram } from "@/lib/telegram";
 import { logQualiopiActivity } from "@/server/actions/qualiopi/_guards";
@@ -142,6 +143,12 @@ export class EnvoiOccupe extends Error {
     super("envoi du devis déjà en cours");
     this.name = "EnvoiOccupe";
   }
+}
+
+// OUT-1 : la mise en file (connexion comprise : budget total) doit tenir dans la transaction
+// (`timeout: 60_000` plus bas), sinon Prisma la ferme pendant que l'ajout est encore en vol.
+if (DELAI_MISE_EN_FILE_OUTBOX_MS + 5_000 >= 60_000) {
+  throw new Error("lien-a-l-envoi : le budget de mise en file dépasse la transaction");
 }
 
 const refus = (motif: string): ResultatEnvoi<never> => ({ type: "refus", motif });
@@ -321,6 +328,8 @@ async function premierEnvoi<R extends VerdictEnfilage>(a: {
           try {
             verdict = await enfiler(payloadPourEnvoi(payload, `${base}${token}`), ligne.recipient);
           } catch (err) {
+            // OUT-1 : issue inconnue, l'e-mail est peut-être parti : telle quelle, sans « non parti ».
+            if (err instanceof MiseEnFileIncertaine) throw err;
             throw new EnvoiNonParti(err);
           }
           if (!estEnfile(verdict)) {
@@ -365,6 +374,8 @@ async function premierEnvoi<R extends VerdictEnfilage>(a: {
       return { type: "envoi", res: etat.verdict };
     }
     if (err instanceof EnvoiOccupe) throw err;
+    // OUT-1 : issue inconnue. Le lien a pu partir : on ne révoque PAS le jeton, on ne le défait pas.
+    if (err instanceof MiseEnFileIncertaine) throw err;
     // Exception AVANT ou PENDANT l'enfilage : rien n'est parti.
     await annulerLeJeton(etat.tokenId, etat.url);
     // Jamais l'erreur brute : elle peut avoir vu le payload (jeton, adresse).
@@ -553,6 +564,7 @@ async function renvoi<R extends VerdictEnfilage>(a: {
         try {
           verdict = await enfiler(payloadPourEnvoi(payload, etat.url), ligne.recipient);
         } catch (err) {
+          if (err instanceof MiseEnFileIncertaine) throw err;
           throw new EnvoiNonParti(err);
         }
         if (!estEnfile(verdict)) {
@@ -585,6 +597,8 @@ async function renvoi<R extends VerdictEnfilage>(a: {
       return { type: "envoi", res: etat.verdict };
     }
     if (err instanceof EnvoiOccupe) throw err;
+    // OUT-1 : issue inconnue. Le lien a pu partir : on ne révoque PAS le jeton, on ne le défait pas.
+    if (err instanceof MiseEnFileIncertaine) throw err;
     // Rien n'est parti : le jeton neuf (s'il existe) est défait, l'ancien lien rendu.
     await annulerLeJeton(etat.tokenId, etat.url);
     throw err instanceof EnvoiNonParti ? err : new EnvoiNonParti(err);

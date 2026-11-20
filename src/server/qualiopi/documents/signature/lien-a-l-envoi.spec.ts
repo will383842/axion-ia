@@ -2,7 +2,10 @@
  * Lien de signature créé À L'ENVOI (lot B2).
  * Mocks Prisma comme les specs voisines ; aucun fichier existant n'est modifié.
  */
+import { readFileSync } from "node:fs";
+import { join } from "node:path";
 import { beforeEach, describe, expect, it, vi } from "vitest";
+import { DELAI_MISE_EN_FILE_OUTBOX_MS, MiseEnFileIncertaine } from "@/server/email/outbox-en-cours";
 
 const h = vi.hoisted(() => ({
   queryRaw: vi.fn(),
@@ -502,6 +505,28 @@ describe("devis-premier-envoi", () => {
     expect(h.revoquerPrecis).toHaveBeenCalledWith(expect.objectContaining({ tokenId: "t-1" }));
     expect(h.marquer).not.toHaveBeenCalled();
     expect(toutSerialise()).not.toContain(TOKEN);
+  });
+
+  it("OUT-1 : issue inconnue (MiseEnFileIncertaine) → remontée telle quelle, jeton NON révoqué", async () => {
+    h.rendrePrecedent.mockResolvedValue(false);
+    const incertaine = new MiseEnFileIncertaine();
+    const levee = await lancer(
+      vi.fn(async () => {
+        throw incertaine;
+      }) as never,
+    ).catch((e: unknown) => e);
+    expect(levee).toBe(incertaine);
+    expect(levee).not.toBeInstanceOf(EnvoiNonParti);
+    expect(h.revoquerPrecis).not.toHaveBeenCalled();
+    expect(h.rendrePrecedent).not.toHaveBeenCalled();
+    expect(h.marquer).not.toHaveBeenCalled();
+  });
+
+  it("OUT-1 : le budget de mise en file tient dans la transaction (lu dans le source)", () => {
+    const src = readFileSync(join(__dirname, "lien-a-l-envoi.ts"), "utf8");
+    expect(src).toMatch(/DELAI_MISE_EN_FILE_OUTBOX_MS \+ 5_000 >= 60_000/);
+    expect(DELAI_MISE_EN_FILE_OUTBOX_MS + 5_000).toBeLessThan(60_000);
+    expect(src).toMatch(/timeout: 60_000/);
   });
 
   it.each([

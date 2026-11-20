@@ -8,6 +8,7 @@
  */
 
 import type { EmailOutboxStatus } from "../../../../prisma/generated/client";
+import { AGE_APPROUVE_ABANDONNE_MIN, approuveEncoreEnCours } from "../../email/outbox-en-cours";
 
 export const GABARIT_DEVIS_ENVOI = "devis-envoi" as const;
 
@@ -16,10 +17,13 @@ export const GABARIT_DEVIS_ENVOI = "devis-envoi" as const;
  * Passé ce délai, l'approbation est abandonnée (processus tombé entre `a_valider → approuve` et
  * la mise en file) : la ligne n'a plus d'écran, ne se refuse pas, et ne doit pas verrouiller le
  * devis pour toujours. Même valeur que le balayage horaire qui la remet « à valider »
- * (`AGE_APPROUVE_ABANDONNE_MIN`, `src/server/email/health.ts`, non importé : module lourd).
+ * (`AGE_APPROUVE_ABANDONNE_MIN`, définie dans `outbox-en-cours.ts`, module léger).
  * Une ligne « à valider » compte toujours, quel que soit son âge.
+ *
+ * OUT-1 : une ligne « approuvé » plus vieille compte AUSSI tant que le journal garde une ligne
+ * `pending` pour sa tâche (`outbox-<id>`) : l'issue de l'envoi est inconnue, le devis ne se rouvre pas.
  */
-export const AGE_APPROUVE_ENCORE_EN_COURS_MIN = 15;
+export const AGE_APPROUVE_ENCORE_EN_COURS_MIN = AGE_APPROUVE_ABANDONNE_MIN;
 
 export const MSG_EMAIL_EN_ATTENTE_MODIF =
   "Un e-mail de ce devis attend validation : refusez-le avant de modifier le devis.";
@@ -27,7 +31,16 @@ export const MSG_EMAIL_EN_ATTENTE_MODIF =
 type CondStatut =
   { statut: EmailOutboxStatus } | { statut: EmailOutboxStatus; approuveAt: { gte: Date } };
 
-interface LecteurOutbox {
+interface LecteurJournalPending {
+  emailLog: {
+    findFirst: (args: {
+      where: { jobId: string; status: "pending" };
+      select: { id: true };
+    }) => Promise<{ id: string } | null>;
+  };
+}
+
+interface LecteurOutbox extends LecteurJournalPending {
   emailOutbox: {
     findFirst: (args: {
       where: {
@@ -38,20 +51,31 @@ interface LecteurOutbox {
       };
       select: { id: true };
     }) => Promise<{ id: string } | null>;
+    findMany: (args: {
+      where: { template: string; entityType: string; entityId: string; statut: "approuve" };
+      select: { id: true; approuveAt: true };
+    }) => Promise<Array<{ id: string; approuveAt: Date | null }>>;
   };
 }
 
-interface LecteurOutboxGroupe {
+interface LecteurOutboxGroupe extends LecteurJournalPending {
   emailOutbox: {
     findMany: (args: {
       where: {
         template: string;
         entityType: string;
         entityId: { in: string[] };
-        OR: CondStatut[];
+        statut: { in: EmailOutboxStatus[] };
       };
-      select: { entityId: true };
-    }) => Promise<Array<{ entityId: string | null }>>;
+      select: { id: true; entityId: true; statut: true; approuveAt: true };
+    }) => Promise<
+      Array<{
+        id: string;
+        entityId: string | null;
+        statut: EmailOutboxStatus;
+        approuveAt: Date | null;
+      }>
+    >;
   };
 }
 
@@ -75,12 +99,29 @@ export async function emailDevisEnAttente(
     },
     select: { id: true },
   });
-  return ligne !== null;
+  if (ligne !== null) return true;
+  // OUT-1 : une ligne « approuvé » ancienne dont l'envoi a une issue INCONNUE (journal `pending`)
+  // compte encore : le devis ne se rouvre pas tant qu'on ne sait pas si l'e-mail est parti.
+  const anciennes = await db.emailOutbox.findMany({
+    where: {
+      template: GABARIT_DEVIS_ENVOI,
+      entityType: "Devis",
+      entityId: devisId,
+      statut: "approuve",
+    },
+    select: { id: true, approuveAt: true },
+  });
+  for (const a of anciennes) {
+    if (await approuveEncoreEnCours(db, a, maintenant)) return true;
+  }
+  return false;
 }
 
 /**
  * Version groupée, pour une liste : UNE seule requête, même règle. Rend l'ensemble des devis
  * de `ids` qui ont un e-mail `devis-envoi` en attente. Liste vide : aucune requête.
+ * OUT-1 : les lignes « approuvé » plus vieilles que la fenêtre sont départagées par le journal
+ * (une requête par ligne de ce cas seulement).
  */
 export async function devisAvecEmailEnAttente(
   db: LecteurOutboxGroupe,
@@ -94,9 +135,16 @@ export async function devisAvecEmailEnAttente(
       template: GABARIT_DEVIS_ENVOI,
       entityType: "Devis",
       entityId: { in: uniques },
-      OR: conditionsEnAttente(maintenant),
+      statut: { in: ["a_valider", "approuve"] },
     },
-    select: { entityId: true },
+    select: { id: true, entityId: true, statut: true, approuveAt: true },
   });
-  return new Set(lignes.flatMap((l) => (l.entityId === null ? [] : [l.entityId])));
+  const trouves = new Set<string>();
+  for (const l of lignes) {
+    if (l.entityId === null || trouves.has(l.entityId)) continue;
+    if (l.statut === "a_valider" || (await approuveEncoreEnCours(db, l, maintenant))) {
+      trouves.add(l.entityId);
+    }
+  }
+  return trouves;
 }

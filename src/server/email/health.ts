@@ -46,6 +46,7 @@
  */
 
 import { prisma } from "@/lib/prisma";
+import { AGE_APPROUVE_ABANDONNE_MIN, cleTacheOutbox } from "./outbox-en-cours";
 import { lireDernierAppelRecu, lireDernierAppelWebhook } from "./webhook-battement";
 import {
   creerOuActualiser,
@@ -240,12 +241,14 @@ export const FENETRE_REBONDS_H = 24;
  */
 export const SEUIL_REBONDS = 1;
 
-/** Un « approuvé » sans envoi au-delà de ce délai est un tombeau (lot 3). */
-export const AGE_APPROUVE_ABANDONNE_MIN = 15;
+/** Un « approuvé » sans envoi au-delà de ce délai est un tombeau (lot 3). Définie dans `outbox-en-cours.ts` (OUT-1). */
+export { AGE_APPROUVE_ABANDONNE_MIN };
 
 export interface SanteEmails {
   /** Lignes de corbeille remises en attente parce que bloquées en « approuvé » (lot 3). */
   approuvesRemisEnAttente: number;
+  /** OUT-1 : « approuvé » anciens dont l'issue d'envoi est inconnue (laissés tels quels). */
+  approuvesEnvoiIncertain: number;
   echecsRecents: number;
   bloquesEnFile: number;
   /**
@@ -366,6 +369,7 @@ export interface SanteEmails {
 export async function verifierSanteEmails(maintenant: Date = new Date()): Promise<SanteEmails> {
   const resultat: SanteEmails = {
     approuvesRemisEnAttente: 0,
+    approuvesEnvoiIncertain: 0,
     echecsRecents: 0,
     bloquesEnFile: 0,
     rebondsRecents: 0,
@@ -596,10 +600,63 @@ export async function verifierSanteEmails(maintenant: Date = new Date()): Promis
   // Le contrôle horaire la remet en attente et le dit.
   try {
     const avantApprouve = new Date(maintenant.getTime() - AGE_APPROUVE_ABANDONNE_MIN * 60_000);
-    const remis = await prisma.emailOutbox.updateMany({
+    // OUT-1 — on ne remet « à valider » que ce dont on SAIT que rien n'est parti. Le journal de
+    // la tâche `outbox-<id>` tranche : `pending` = issue inconnue (on laisse, on alerte) ;
+    // `sent` / `bounced` = l'e-mail est parti (on le constate, on alerte) ; sinon rien n'est parti.
+    const anciens = await prisma.emailOutbox.findMany({
       where: { statut: "approuve", approuveAt: { lt: avantApprouve } },
-      data: { statut: "a_valider", approuveAt: null, approuveById: null },
+      select: { id: true },
     });
+    const journaux =
+      anciens.length === 0
+        ? []
+        : await prisma.emailLog.findMany({
+            where: { jobId: { in: anciens.map((a) => cleTacheOutbox(a.id)) } },
+            select: { jobId: true, status: true },
+          });
+    const statutsParTache = new Map<string, Set<string>>();
+    for (const j of journaux) {
+      if (j.jobId === null) continue;
+      const ensemble = statutsParTache.get(j.jobId) ?? new Set<string>();
+      ensemble.add(j.status);
+      statutsParTache.set(j.jobId, ensemble);
+    }
+    const aRemettre: string[] = [];
+    const partis: string[] = [];
+    let incertains = 0;
+    for (const a of anciens) {
+      const st = statutsParTache.get(cleTacheOutbox(a.id));
+      if (st?.has("sent") || st?.has("bounced")) partis.push(a.id);
+      else if (st?.has("pending")) incertains++;
+      else aRemettre.push(a.id);
+    }
+    let marquesEnvoyes = 0;
+    if (partis.length > 0) {
+      const m = await prisma.emailOutbox.updateMany({
+        where: { id: { in: partis }, statut: "approuve" },
+        data: { statut: "envoye", envoyeAt: maintenant },
+      });
+      marquesEnvoyes = m.count;
+    }
+    const remis =
+      aRemettre.length === 0
+        ? { count: 0 }
+        : await prisma.emailOutbox.updateMany({
+            where: { id: { in: aRemettre }, statut: "approuve", approuveAt: { lt: avantApprouve } },
+            data: { statut: "a_valider", approuveAt: null, approuveById: null },
+          });
+    resultat.approuvesEnvoiIncertain = incertains + marquesEnvoyes;
+    if (resultat.approuvesEnvoiIncertain > 0) {
+      await leverAlerte(
+        "emails_envoi_incertain",
+        `${resultat.approuvesEnvoiIncertain} e-mail(s) d'issue inconnue : vérifier avant toute nouvelle approbation`,
+        `${resultat.approuvesEnvoiIncertain} e-mail(s) approuvé(s) ont une issue d'envoi inconnue ou sont ` +
+          `partis sans que la corbeille l'ait noté. Ne pas les approuver de nouveau : vérifier dans ` +
+          `« E-mails envoyés ». Un devis concerné est peut-être à marquer envoyé à la main.`,
+        resultat.approuvesEnvoiIncertain,
+      );
+      resultat.alertesLevees.push("emails_envoi_incertain");
+    }
     resultat.approuvesRemisEnAttente = remis.count;
     if (remis.count > 0) {
       await leverAlerte(

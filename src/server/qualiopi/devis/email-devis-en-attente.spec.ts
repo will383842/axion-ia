@@ -14,8 +14,11 @@ import {
 type Ligne = { statut: "a_valider" | "approuve"; approuveAt: Date | null };
 type Cond = { statut: "a_valider" } | { statut: "approuve"; approuveAt: { gte: Date } };
 
-/** Faux lecteur qui applique réellement le filtre demandé à une liste de lignes. */
-function lecteur(lignes: Ligne[]) {
+/**
+ * Faux lecteur qui applique réellement le filtre demandé à une liste de lignes.
+ * `journalPending` : identifiants de tâche (`outbox-<id>`) qui ont une ligne `pending` au journal.
+ */
+function lecteur(lignes: Ligne[], journalPending: string[] = []) {
   const findFirst = vi.fn(async (args: { where: { OR: Cond[] } }) => {
     const trouvee = lignes.find((l) =>
       args.where.OR.some((c) => {
@@ -26,7 +29,15 @@ function lecteur(lignes: Ligne[]) {
     );
     return trouvee ? { id: "ob-1" } : null;
   });
-  return { emailOutbox: { findFirst } } as never;
+  const findMany = vi.fn(async () =>
+    lignes
+      .filter((l) => l.statut === "approuve")
+      .map((l) => ({ id: "ob-1", approuveAt: l.approuveAt })),
+  );
+  const logFindFirst = vi.fn(async (args: { where: { jobId: string } }) =>
+    journalPending.includes(args.where.jobId) ? { id: "log-1" } : null,
+  );
+  return { emailOutbox: { findFirst, findMany }, emailLog: { findFirst: logFindFirst } } as never;
 }
 
 const MAINTENANT = new Date("2026-11-18T12:00:00Z");
@@ -56,6 +67,16 @@ describe("emailDevisEnAttente", () => {
     const db = lecteur([{ statut: "a_valider", approuveAt: null }]);
     expect(await emailDevisEnAttente(db, "d1", MAINTENANT)).toBe(true);
   });
+
+  it("OUT-1 : « approuvé » de 20 min avec journal `pending` pour outbox-<id> : en attente", async () => {
+    const db = lecteur([{ statut: "approuve", approuveAt: ilYA(20) }], ["outbox-ob-1"]);
+    expect(await emailDevisEnAttente(db, "d1", MAINTENANT)).toBe(true);
+  });
+
+  it("OUT-1 : « approuvé » de 20 min sans journal : plus en attente", async () => {
+    const db = lecteur([{ statut: "approuve", approuveAt: ilYA(20) }], []);
+    expect(await emailDevisEnAttente(db, "d1", MAINTENANT)).toBe(false);
+  });
 });
 
 type LigneGroupee = {
@@ -69,11 +90,11 @@ type FiltreGroupe = {
   template: string;
   entityType: string;
   entityId: { in: string[] };
-  OR: Cond[];
+  statut: { in: string[] };
 };
 
 /** Faux lecteur groupé : applique réellement le filtre demandé (gabarit, type, ids, statut). */
-function lecteurGroupe(lignes: LigneGroupee[]) {
+function lecteurGroupe(lignes: LigneGroupee[], journalPending: string[] = []) {
   const findMany = vi.fn(async (args: { where: FiltreGroupe }) => {
     const w = args.where;
     return lignes
@@ -82,15 +103,22 @@ function lecteurGroupe(lignes: LigneGroupee[]) {
           l.template === w.template &&
           l.entityType === w.entityType &&
           w.entityId.in.includes(l.entityId) &&
-          w.OR.some((c) => {
-            if (c.statut !== l.statut) return false;
-            if (c.statut === "a_valider") return true;
-            return l.approuveAt !== null && l.approuveAt >= c.approuveAt.gte;
-          }),
+          w.statut.in.includes(l.statut),
       )
-      .map((l) => ({ entityId: l.entityId }));
+      .map((l) => ({
+        id: `ob-${l.entityId}`,
+        entityId: l.entityId,
+        statut: l.statut,
+        approuveAt: l.approuveAt,
+      }));
   });
-  return { db: { emailOutbox: { findMany } } as never, findMany };
+  const logFindFirst = vi.fn(async (args: { where: { jobId: string } }) =>
+    journalPending.includes(args.where.jobId) ? { id: "log-1" } : null,
+  );
+  return {
+    db: { emailOutbox: { findMany }, emailLog: { findFirst: logFindFirst } } as never,
+    findMany,
+  };
 }
 
 const ligne = (over: Partial<LigneGroupee> & { entityId: string }): LigneGroupee => ({
@@ -143,6 +171,15 @@ describe("devisAvecEmailEnAttente (version groupée)", () => {
       ligne({ entityId: "d1", statut: "envoye" }),
     ]);
     expect((await devisAvecEmailEnAttente(db, ["d1"], MAINTENANT)).size).toBe(0);
+  });
+
+  it("OUT-1 : « approuvé » de 20 min : en attente seulement avec un journal `pending`", async () => {
+    const lignes = [
+      ligne({ entityId: "d1", statut: "approuve", approuveAt: ilYA(20) }),
+      ligne({ entityId: "d2", statut: "approuve", approuveAt: ilYA(20) }),
+    ];
+    const { db } = lecteurGroupe(lignes, ["outbox-ob-d1"]);
+    expect([...(await devisAvecEmailEnAttente(db, ["d1", "d2"], MAINTENANT))]).toEqual(["d1"]);
   });
 
   it("liste vide : aucune requête", async () => {

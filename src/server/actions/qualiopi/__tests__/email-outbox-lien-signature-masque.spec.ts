@@ -86,8 +86,16 @@ describe.each(["devis-envoi", "convention-envoi"])("approbation — %s", (templa
     const r = await approuverEmailAction({ id: ID });
     expect(r).toEqual({ data: { id: ID, envoye: true } });
     expect(h.enqueue.mock.calls[0]?.[3]).toMatchObject({ signatureUrl: LIEN });
-    expect(h.update).toHaveBeenCalledTimes(1);
-    const data = (h.update.mock.calls[0]?.[0] as { data: Record<string, unknown> }).data;
+    // OUT-1 : l'écriture « envoyé » est CONDITIONNELLE (`updateMany` sur la ligne « approuvé »).
+    expect(h.update).not.toHaveBeenCalled();
+    const ecritures = h.updateMany.mock.calls.filter(
+      (c) => (c[0] as { data: Record<string, unknown> }).data["statut"] === "envoye",
+    );
+    expect(ecritures).toHaveLength(1);
+    expect((ecritures[0]?.[0] as { where: Record<string, unknown> }).where).toMatchObject({
+      statut: "approuve",
+    });
+    const data = (ecritures[0]?.[0] as { data: Record<string, unknown> }).data;
     expect(data["statut"]).toBe("envoye");
     expect(JSON.stringify(data)).not.toContain(FAUX);
     expect(data["payload"]).toMatchObject({ numero: "N1" });

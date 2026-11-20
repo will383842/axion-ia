@@ -325,7 +325,12 @@ describe("lignes anciennes et autres gabarits : inchangé", () => {
       ADRESSE,
       "fr",
       { numero: "D-1", signatureUrl: lien },
-      { bypassValidation: true, entityType: "Devis", entityId: "devis-1" },
+      {
+        bypassValidation: true,
+        cleOutbox: `outbox-${ID}`,
+        entityType: "Devis",
+        entityId: "devis-1",
+      },
     ]);
   });
 
@@ -359,6 +364,7 @@ describe("ligne ANCIENNE (sans marqueur) : non-régression", () => {
       { numero: "D-1", signatureUrl: lien, messagePersonnalise: "Bonjour" },
       {
         bypassValidation: true,
+        cleOutbox: `outbox-${ID}`,
         sujetForce: "Nouvel objet",
         entityType: "Devis",
         entityId: "devis-1",

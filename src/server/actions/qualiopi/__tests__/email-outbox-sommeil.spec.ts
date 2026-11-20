@@ -103,7 +103,7 @@ describe("approuverEmailAction — e-mail en sommeil", () => {
     await approuverEmailAction({ id: ID });
     expect(h.updateMany).toHaveBeenCalled();
     expect(h.enqueue).toHaveBeenCalledTimes(1);
-    expect(JSON.stringify(h.update.mock.calls)).toContain("envoye");
+    expect(JSON.stringify(h.updateMany.mock.calls)).toContain("envoye");
   });
 
   it("le message ne contient aucun mot interdit", () => {

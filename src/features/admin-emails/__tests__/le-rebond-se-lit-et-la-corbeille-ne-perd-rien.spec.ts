@@ -16,6 +16,7 @@ import { EmailLogStatus } from "../../../../prisma/generated/client";
 
 const countMock = vi.fn();
 const outboxUpdateMany = vi.fn();
+const outboxFindMany = vi.fn();
 const creerOuDedup = vi.fn();
 
 vi.mock("@/lib/prisma", () => ({
@@ -29,7 +30,10 @@ vi.mock("@/lib/prisma", () => ({
       findFirst: vi.fn(async () => null),
       findMany: vi.fn(async () => []),
     },
-    emailOutbox: { updateMany: (...a: unknown[]) => outboxUpdateMany(...a) },
+    emailOutbox: {
+      updateMany: (...a: unknown[]) => outboxUpdateMany(...a),
+      findMany: (...a: unknown[]) => outboxFindMany(...a),
+    },
   },
 }));
 vi.mock("@/lib/redis", () => ({ redis: { get: vi.fn(async () => null), set: vi.fn() } }));
@@ -101,12 +105,16 @@ describe("contrôle horaire — les « approuvé » abandonnés", () => {
   });
 
   it("🔴 remet en attente ceux approuvés depuis plus de 15 minutes, et le dit", async () => {
+    // OUT-1 : le balayage lit d'abord les « approuvé » anciens, puis le journal (vide ici : rien
+    // n'est parti), et ne remet « à valider » que ceux-là.
+    outboxFindMany.mockResolvedValue([{ id: "a" }, { id: "b" }]);
     outboxUpdateMany.mockResolvedValue({ count: 2 });
     const maintenant = new Date("2026-09-02T10:00:00Z");
     const sante = await verifierSanteEmails(maintenant);
     expect(sante.approuvesRemisEnAttente).toBe(2);
     expect(outboxUpdateMany).toHaveBeenCalledWith({
       where: {
+        id: { in: ["a", "b"] },
         statut: "approuve",
         approuveAt: { lt: new Date(maintenant.getTime() - AGE_APPROUVE_ABANDONNE_MIN * 60_000) },
       },
@@ -116,6 +124,7 @@ describe("contrôle horaire — les « approuvé » abandonnés", () => {
   });
 
   it("rien à remettre : aucune alerte", async () => {
+    outboxFindMany.mockResolvedValue([]);
     outboxUpdateMany.mockResolvedValue({ count: 0 });
     const sante = await verifierSanteEmails(new Date());
     expect(sante.approuvesRemisEnAttente).toBe(0);
@@ -123,7 +132,7 @@ describe("contrôle horaire — les « approuvé » abandonnés", () => {
   });
 
   it("une base qui refuse le balayage ne fait pas tomber le contrôle", async () => {
-    outboxUpdateMany.mockRejectedValue(new Error("base morte"));
+    outboxFindMany.mockRejectedValue(new Error("base morte"));
     vi.spyOn(console, "error").mockImplementation(() => {});
     const sante = await verifierSanteEmails(new Date());
     expect(sante.mesureIndisponible).toBe(false);

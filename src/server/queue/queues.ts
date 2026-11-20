@@ -15,6 +15,12 @@ import { resoudreMode, garerPourValidation } from "@/server/email/outbox-service
 import { verdictAvantEnvoi, signalerRetenue, type MotifRetenue } from "@/server/email/suppression";
 import { estSollicitationSoumiseAOpposition } from "@/server/email/verdict-envoi";
 import { journaliserEnAttente, marquerEchecMiseEnFile } from "@/server/email/email-log";
+import {
+  DELAI_CONNEXION_FILE_MS,
+  DELAI_MISE_EN_FILE_OUTBOX_MS,
+  FileInjoignable,
+  MiseEnFileIncertaine,
+} from "@/server/email/outbox-en-cours";
 import type {
   EmailJobData,
   EmailJobName,
@@ -947,6 +953,27 @@ async function signalerCorbeilleIndisponible(template: EmailJobName, to: string)
   }
 }
 
+// OUT-1 — classes définies dans un module léger, ré-exportées ici pour les appelants de la file.
+export { FileInjoignable, MiseEnFileIncertaine };
+
+/** Résultat d'une course contre la montre ; le minuteur est toujours défait. */
+async function avecDelai<T>(
+  promesse: Promise<T>,
+  ms: number,
+): Promise<{ delaiDepasse: true } | { valeur: T }> {
+  let minuteur: ReturnType<typeof setTimeout> | undefined;
+  try {
+    return await Promise.race([
+      promesse.then((valeur) => ({ valeur })),
+      new Promise<{ delaiDepasse: true }>((resolve) => {
+        minuteur = setTimeout(() => resolve({ delaiDepasse: true }), ms);
+      }),
+    ]);
+  } finally {
+    if (minuteur !== undefined) clearTimeout(minuteur);
+  }
+}
+
 export async function enqueueEmail(
   template: EmailJobName,
   to: string,
@@ -1003,9 +1030,18 @@ export async function enqueueEmail(
      * sans — soient toujours servis d'abord quand le limiteur de 40/h mord.
      */
     priority?: number;
+    /**
+     * OUT-1 — identifiant de tâche d'un envoi approuvé depuis la corbeille (`outbox-<id>`).
+     * Avec lui : la file doit répondre AVANT tout (sinon `FileInjoignable`, rien n'est en vol),
+     * une tâche déjà là n'est pas dupliquée, une tâche échouée est retirée (« Réessayer »), et
+     * un ajout sans réponse à temps lève `MiseEnFileIncertaine` (l'issue est inconnue).
+     */
+    cleOutbox?: string;
   },
 ): Promise<{
   enqueued: boolean;
+  /** OUT-1 : la tâche `outbox-<id>` existait déjà, rien n'a été ajouté. */
+  dejaEnFile?: boolean;
   garePourValidation?: boolean;
   outboxId?: string;
   /** Envoi RETENU par la liste de suppression (adresse morte, désabonnement). */
@@ -1113,7 +1149,8 @@ export async function enqueueEmail(
       : {}),
   };
   const journalise = template !== "submission-reply" && template !== "candidature-reponse";
-  const jobId = options?.jobId ?? (journalise ? `email-${randomUUID()}` : undefined);
+  const cleOutbox = options?.cleOutbox;
+  const jobId = cleOutbox ?? options?.jobId ?? (journalise ? `email-${randomUUID()}` : undefined);
   const addOptions: Record<string, unknown> = {};
   if (options?.delayMs) addOptions["delay"] = options.delayMs;
   if (jobId) addOptions["jobId"] = jobId;
@@ -1160,6 +1197,42 @@ export async function enqueueEmail(
   // Le fait que la page « E-mails envoyés » omette les réponses admin reste un
   // constat OUVERT de l'audit — il se corrige côté lecture, pas en fabriquant
   // ici des lignes qui ne seront jamais closes.
+  // OUT-1 — envoi depuis la corbeille : on s'assure AVANT toute écriture que la file répond.
+  // Connexion non prête : aucune commande n'entre dans la file hors ligne d'ioredis, donc aucun
+  // ajout ne peut rester en vol après la fermeture de la transaction de l'appelant.
+  const debutOutbox = Date.now();
+  if (cleOutbox !== undefined) {
+    const prete = await avecDelai(
+      emailsQueue.waitUntilReady().then(
+        () => true,
+        () => false,
+      ),
+      DELAI_CONNEXION_FILE_MS,
+    );
+    if (
+      "delaiDepasse" in prete ||
+      prete.valeur !== true ||
+      getBullConnection()?.status !== "ready"
+    ) {
+      throw new FileInjoignable();
+    }
+    const lecture = await avecDelai(
+      (async () => {
+        const existant = await emailsQueue.getJob(cleOutbox);
+        if (!existant) return "absent" as const;
+        if ((await existant.getState()) === "failed") {
+          // « Réessayer » : BullMQ ignorerait sinon l'ajout sous un identifiant existant.
+          await existant.remove();
+          return "retire" as const;
+        }
+        return "present" as const;
+      })(),
+      DELAI_MISE_EN_FILE_OUTBOX_MS,
+    );
+    if ("delaiDepasse" in lecture) throw new FileInjoignable();
+    if (lecture.valeur === "present") return { enqueued: true, dejaEnFile: true };
+  }
+
   let lignePosee: string | null = null;
   if (journalise) {
     lignePosee = await journaliserEnAttente({
@@ -1169,7 +1242,7 @@ export async function enqueueEmail(
       marketing: options?.marketing === true,
       jobId,
       // Le verrou anti-doublon ne sert qu'à une clé de l'appelant : `email-<uuid>` est unique.
-      cleAppelant: options?.jobId !== undefined,
+      cleAppelant: options?.jobId !== undefined || cleOutbox !== undefined,
       // L'échéance, et non la seule date de création : sans elle, un envoi
       // différé volontairement (relances apporteur J+2 / J+7) se lit comme une
       // file non consommée dès la 16e minute. `delayMs` absent ⇒ échéance
@@ -1181,12 +1254,23 @@ export async function enqueueEmail(
   }
 
   try {
-    await emailsQueue.add(
+    const ajout = emailsQueue.add(
       template,
       data,
       Object.keys(addOptions).length > 0 ? addOptions : undefined,
     );
+    if (cleOutbox !== undefined) {
+      // Un ajout resté sans réponse peut encore aboutir : on ne le tient pas pour un échec.
+      ajout.catch(() => undefined);
+      const reste = Math.max(1, DELAI_MISE_EN_FILE_OUTBOX_MS - (Date.now() - debutOutbox));
+      const issue = await avecDelai(ajout, reste);
+      // La ligne du journal reste « en attente » : vraie tant qu'on ne sait pas.
+      if ("delaiDepasse" in issue) throw new MiseEnFileIncertaine();
+    } else {
+      await ajout;
+    }
   } catch (e) {
+    if (e instanceof MiseEnFileIncertaine) throw e;
     // File injoignable : aucun job n'existe, donc aucun worker ne clora la ligne. On
     // referme celle que CET enfilage a posée, désignée par son `id` (jamais celle d'un
     // autre enfilage de la même clé, dont le job vit peut-être), puis l'erreur de la file
