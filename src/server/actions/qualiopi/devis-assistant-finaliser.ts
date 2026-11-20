@@ -35,6 +35,11 @@ import { prisma } from "@/lib/prisma";
 import { requireAdminWrite, logQualiopiActivity } from "@/server/actions/qualiopi/_guards";
 import { createDevisAction, sendDevisAction } from "@/server/actions/qualiopi/devis";
 import {
+  erreurObjetEtMessage,
+  messageEntreeSchema,
+  objetEntreeSchema,
+} from "@/server/qualiopi/devis/contenu-email-devis";
+import {
   creerDevisFormulesAction,
   modifierDevisBrouillonAction,
 } from "@/server/actions/qualiopi/devis-formules";
@@ -550,6 +555,10 @@ export async function numeroterDevisAssistantAction(i: {
 export async function envoyerDepuisAssistantAction(i: {
   brouillonId: string;
   attenduRevision: number;
+  /** Objet choisi par le fondateur ; absent = l'objet du gabarit. */
+  sujet?: string | undefined;
+  /** Message personnel ; absent = aucun. */
+  messagePersonnalise?: string | undefined;
 }): Promise<
   ActionResult<{
     devisId: string;
@@ -560,7 +569,16 @@ export async function envoyerDepuisAssistantAction(i: {
     note?: string;
   }>
 > {
-  const n = await numeroter(i);
+  // Objet et message : mêmes limites que `sendDevisAction`, refusés AVANT toute écriture.
+  const choix = z
+    .object({ sujet: objetEntreeSchema, messagePersonnalise: messageEntreeSchema })
+    .safeParse({ sujet: i.sujet, messagePersonnalise: i.messagePersonnalise });
+  if (!choix.success) return { error: choix.error.issues[0]?.message ?? "Demande invalide." };
+  const { sujet, messagePersonnalise } = choix.data;
+  // Mots interdits et caractères invisibles : refusés AVANT `numeroter`, qui écrit.
+  const refus = erreurObjetEtMessage(sujet, messagePersonnalise);
+  if (refus !== null) return { error: refus };
+  const n = await numeroter({ brouillonId: i.brouillonId, attenduRevision: i.attenduRevision });
   if (!("data" in n)) return { error: n.error };
   if (n.rejoue) {
     // Doublon d'un appel déjà traité : jamais un second envoi (lien de signature, e-mail).
@@ -572,7 +590,15 @@ export async function envoyerDepuisAssistantAction(i: {
         "La saisie a été modifiée pendant la numérotation : le devis porte la version précédente. Relancez l'envoi.",
     };
   }
-  const r = await sendDevisAction(n.data.devisId);
+  // Sans objet ni message : appel strictement identique à l'ancien (devisId seul).
+  const opts = {
+    ...(sujet !== undefined ? { sujet } : {}),
+    ...(messagePersonnalise !== undefined ? { messagePersonnalise } : {}),
+  };
+  const r =
+    Object.keys(opts).length === 0
+      ? await sendDevisAction(n.data.devisId)
+      : await sendDevisAction(n.data.devisId, opts);
   if ("error" in r) return { error: r.error };
   return {
     data: {

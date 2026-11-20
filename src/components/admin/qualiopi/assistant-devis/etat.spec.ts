@@ -21,6 +21,14 @@ const avec = (e: EtatAssistant, patch: Partial<EtatAssistant>) =>
   reducteur(e, { type: "champs", patch });
 
 describe("état initial et choix du type de devis", () => {
+  it("versement unique par défaut : solde 100 % à la livraison, donc 0 % à la signature (modifiable)", () => {
+    const e = neuf();
+    for (const phases of [e.achat.phases, e.abonnement.phases]) {
+      expect(phases).toHaveLength(1);
+      expect(phases[0]).toMatchObject({ pourcentage: "100", declencheur: "livraison" });
+    }
+  });
+
   it("reprend defaultClientId et la validité reçue, sans aucune ligne facultative", () => {
     const e = neuf();
     expect(e.clientId).toBe("c-1");
