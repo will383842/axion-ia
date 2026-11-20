@@ -69,7 +69,7 @@ function grouperParJour(
 ): Array<{ cle: string; titre: string; lignes: LigneEmail[] }> {
   const out: Array<{ cle: string; titre: string; lignes: LigneEmail[] }> = [];
   for (const r of lignes) {
-    const d = r.sentAt ?? r.createdAt;
+    const d = r.createdAt; // ordre réel du tri (createdAt desc)
     const cle = cleJourParis(d);
     const dernier = out[out.length - 1];
     if (dernier && dernier.cle === cle) dernier.lignes.push(r);
@@ -78,7 +78,7 @@ function grouperParJour(
   return out;
 }
 
-const NUMERO_DEVIS = /AXI-DEV-\d{4}-\d{3}/;
+const NUMERO_DEVIS = /\bAXI-DEV-\d{4}-\d{3,}\b/;
 
 type TonCarte = "success" | "warning" | "destructive" | "neutral";
 
@@ -732,7 +732,7 @@ export function VueEmails({
           />
         ) : (
           <>
-            <p className="admin-meta-small" role="status">
+            <p className="admin-meta-small">
               {`${nb(donnees.total)} e-mail(s) — page ${donnees.page} sur ${donnees.pages}`}
             </p>
             {groupes.map((g) => (
