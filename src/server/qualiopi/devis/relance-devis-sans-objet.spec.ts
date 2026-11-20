@@ -1,7 +1,9 @@
 import { describe, expect, it, vi } from "vitest";
 
+import { pasSigneParLeClient } from "./pas-signe-par-le-client";
 import {
   MOTIF_RELANCE_DEVIS_ACCEPTE,
+  MOTIF_RELANCE_DEVIS_BROUILLON,
   MOTIF_RELANCE_DEVIS_INTROUVABLE,
   MOTIF_RELANCE_DEVIS_MAIN_PROPRE,
   MOTIF_RELANCE_DEVIS_PERIME,
@@ -76,6 +78,27 @@ describe("motifRelanceDevisSansObjet", () => {
   });
   it("relance utile : null", async () => {
     expect(await motif({})).toBeNull();
+  });
+  it("brouillon : pas encore envoyé", async () => {
+    expect(await motif({ devis: { statut: "brouillon", dateValidite: FUTUR } })).toBe(
+      MOTIF_RELANCE_DEVIS_BROUILLON,
+    );
+    expect(MOTIF_RELANCE_DEVIS_BROUILLON).toBe(
+      "Ce devis n'a pas encore été envoyé : cette relance est sans objet.",
+    );
+  });
+  it("priorité : envoyé, signé par le client ET validité dépassée → motif « signé »", async () => {
+    expect(await motif({ devis: { statut: "envoye", dateValidite: PASSE }, nonSigne: 0 })).toBe(
+      MOTIF_RELANCE_DEVIS_SIGNE,
+    );
+  });
+  it("le contrôle de signature filtre par id du devis ET par pasSigneParLeClient", async () => {
+    const l = lecteur({});
+    await motifRelanceDevisSansObjet(l, "d1", MAINTENANT);
+    expect(l.devis.count).toHaveBeenCalledWith({ where: { id: "d1", ...pasSigneParLeClient } });
+    const where = (l.devis.count as ReturnType<typeof vi.fn>).mock.calls[0]?.[0].where;
+    expect(where?.id).toBe("d1");
+    expect(where).toMatchObject(pasSigneParLeClient);
   });
   it("priorité : refusé ET périmé → motif « refusé »", async () => {
     expect(await motif({ devis: { statut: "refuse", dateValidite: PASSE } })).toBe(
