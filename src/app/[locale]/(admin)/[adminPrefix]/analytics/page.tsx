@@ -14,6 +14,7 @@ import { redirect } from "next/navigation";
 import { env } from "@/env";
 import { SITE_URL } from "@/lib/seo";
 import { AnalyticsV2 } from "./_v2/AnalyticsV2";
+import { VisitesIA } from "./_v2/VisitesIA";
 
 export const dynamic = "force-dynamic";
 
@@ -153,6 +154,7 @@ export default async function AdminAnalyticsPage({ params }: PageProps) {
       indexNowConfigured={Boolean(env.INDEXNOW_KEY)}
       pingAction={pingIndexNowAction}
       pagesNotifiees={CHEMINS_NOTIFIES}
+      blocVisitesIA={<VisitesIA />}
     />
   );
 }
