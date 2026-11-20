@@ -249,6 +249,18 @@ describe("émission — ce qui est écrit", () => {
     expect(data["signataireNom"]).toBe("Camille Durand");
   });
 
+  it("le jeton neuf naît au même instant que la révocation du lien qu'il remplace", async () => {
+    await creerTokenDocument(entree());
+    const créé = mockPrisma.documentSignatureToken.create.mock.calls[0]?.[0]?.data as {
+      createdAt: Date;
+    };
+    const révoqué = mockPrisma.documentSignatureToken.updateMany.mock.calls[0]?.[0]?.data as {
+      revokedAt: Date;
+    };
+    expect(créé.createdAt.getTime()).toBe(révoqué.revokedAt.getTime());
+    expect(créé.createdAt.getTime()).toBe(MAINTENANT.getTime());
+  });
+
   it("🔴 révoque le jeton actif du MÊME couple avant d'en créer un neuf", async () => {
     // Deux liens vivants signifieraient qu'en révoquer un donne une fausse
     // impression de sécurité. L'index unique partiel l'impose de toute façon :
