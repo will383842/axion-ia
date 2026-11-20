@@ -33,6 +33,7 @@ vi.mock("@/lib/r2-storage", async (importOriginal) => ({
 }));
 
 import { GET } from "./route";
+import { peutOuvrirPiecePdf } from "@/server/qualiopi/documents/acces-piece";
 
 const DOC = "11111111-1111-4111-8111-111111111111";
 
@@ -104,5 +105,37 @@ describe("🔴 GET document — le nom du fichier annonce l'annulation", () => {
     await appeler();
     expect(nomDemande()).not.toContain("ANNULEE");
     expect(nomDemande()).not.toContain("COPIE");
+  });
+});
+
+describe("🔐 GET document — le rôle est réellement contrôlé (I1)", () => {
+  const REFUSES = ["reader", "editor", "secretaire", "responsable_qualite"];
+  const ACCEPTES = ["admin", "super_admin"];
+
+  it("sans session : 401, la base n'est pas lue", async () => {
+    authMock.mockResolvedValue(null);
+    const r = await appeler();
+    expect(r.status).toBe(401);
+    expect(findUniqueMock).not.toHaveBeenCalled();
+  });
+
+  it.each(REFUSES)("rôle %s : 403, la base n'est pas lue", async (role) => {
+    authMock.mockResolvedValue({ user: { id: "u1", role } });
+    const r = await appeler();
+    expect(r.status).toBe(403);
+    expect(findUniqueMock).not.toHaveBeenCalled();
+  });
+
+  it.each(ACCEPTES)("rôle %s : ni 401 ni 403, la base est lue", async (role) => {
+    authMock.mockResolvedValue({ user: { id: "u1", role } });
+    const r = await appeler();
+    expect([401, 403]).not.toContain(r.status);
+    expect(findUniqueMock).toHaveBeenCalled();
+  });
+
+  it.each([...ACCEPTES, ...REFUSES])("parité avec peutOuvrirPiecePdf (%s)", async (role) => {
+    authMock.mockResolvedValue({ user: { id: "u1", role } });
+    const r = await appeler();
+    expect(![401, 403].includes(r.status)).toBe(peutOuvrirPiecePdf(role));
   });
 });

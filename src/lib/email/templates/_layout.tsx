@@ -142,7 +142,7 @@ export function avecDonneesRendu<T>(
 }
 
 const BRAND = "Axion-IA";
-const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://axion-ia.com";
+export const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://axion-ia.com";
 const LOGO_PILL = `${BASE_URL}/email/axion-ia-logo-pill.png`;
 const CONTACT_EMAIL = EMAIL_LEGAL.contactEmail;
 

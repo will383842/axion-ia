@@ -39,7 +39,7 @@ export function DevisVersementScanPapier({
   const [erreurs, setErreurs] = useState<Erreurs>({});
   const [alerte, setAlerte] = useState<string | null>(null);
   const [statut, setStatut] = useState<string | null>(null);
-  const [refusActivation, setRefusActivation] = useState(false);
+  const [verse, setVerse] = useState(false);
   const [enCours, startTransition] = useTransition();
   const formRef = useRef<HTMLFormElement>(null);
   const fichierRef = useRef<HTMLInputElement>(null);
@@ -51,7 +51,7 @@ export function DevisVersementScanPapier({
     setErreurs({});
     setAlerte(null);
     setStatut(null);
-    setRefusActivation(false);
+    setVerse(false);
   }
 
   function soumettre(e: React.FormEvent<HTMLFormElement>) {
@@ -59,7 +59,6 @@ export function DevisVersementScanPapier({
     if (enCours) return;
     setAlerte(null);
     setStatut(null);
-    setRefusActivation(false);
 
     const fichier = fichierRef.current?.files?.[0];
     let erreurFichier: string | null = null;
@@ -99,6 +98,7 @@ export function DevisVersementScanPapier({
         setTimeout(() => alerteRef.current?.focus(), 0);
         return;
       }
+      setVerse(true);
       setStatut(
         res.statutSignature === "signee"
           ? "Scan versé : le devis est signé des deux parties."
@@ -106,7 +106,6 @@ export function DevisVersementScanPapier({
       );
       if (res.activationRefusee !== undefined) {
         setAlerte(res.activationRefusee);
-        setRefusActivation(true);
         setTimeout(() => alerteRef.current?.focus(), 0);
         return;
       }
@@ -127,8 +126,6 @@ export function DevisVersementScanPapier({
         <AdminButton
           variant="secondary"
           className="admin-button-tactile"
-          aria-expanded={false}
-          aria-controls="scan-papier-formulaire"
           onClick={() => setOuvert(true)}
         >
           Verser le devis signé (scan PDF)
@@ -202,6 +199,9 @@ export function DevisVersementScanPapier({
             {`J'atteste que ce fichier est la copie fidèle du devis signé à la main par le client, et que l'original papier est conservé par ${organismeNom}.`}
           </span>
         </label>
+        <p className="mt-1 text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
+          Une fois versé, le scan est scellé et ne peut pas être retiré depuis cet écran.
+        </p>
         <p id="scan-papier-attestation-erreur" className={erreurCls}>
           {erreurs.attestation}
         </p>
@@ -222,7 +222,7 @@ export function DevisVersementScanPapier({
         >
           {alerte}
         </p>
-        {refusActivation && (
+        {verse && (
           <AdminButton
             variant="secondary"
             className="admin-button-tactile mt-[var(--space-admin-2)]"
@@ -234,9 +234,11 @@ export function DevisVersementScanPapier({
       </div>
 
       <div className="flex flex-col gap-[var(--space-admin-3)] sm:flex-row">
-        <AdminButton type="submit" loading={enCours} className="admin-button-tactile">
-          Verser le scan signé
-        </AdminButton>
+        {!verse && (
+          <AdminButton type="submit" loading={enCours} className="admin-button-tactile">
+            Verser le scan signé
+          </AdminButton>
+        )}
         <AdminButton
           variant="ghost"
           type="button"

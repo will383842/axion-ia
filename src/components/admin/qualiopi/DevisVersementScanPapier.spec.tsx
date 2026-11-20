@@ -198,4 +198,39 @@ describe("DevisVersementScanPapier", () => {
     expect(screen.getByRole("button", { name: "Verser le devis signé (scan PDF)" })).toBeTruthy();
     expect(screen.queryByLabelText("Scan du devis signé (PDF)")).toBeNull();
   });
+
+  it("dit que le scan versé est scellé et ne peut pas être retiré", async () => {
+    const user = monter(vi.fn());
+    await ouvrir(user);
+    expect(
+      screen.getByText(
+        "Une fois versé, le scan est scellé et ne peut pas être retiré depuis cet écran.",
+      ),
+    ).toBeTruthy();
+  });
+
+  it("le bouton d'ouverture ne déclare ni aria-expanded ni aria-controls", () => {
+    monter(vi.fn());
+    const b = screen.getByRole("button", { name: "Verser le devis signé (scan PDF)" });
+    expect(b.hasAttribute("aria-expanded")).toBe(false);
+    expect(b.hasAttribute("aria-controls")).toBe(false);
+  });
+
+  it.each([
+    ["succès simple", { ok: true, signatureId: "s", statutSignature: "signee" }],
+    [
+      "succès avec activation refusée",
+      { ok: true, signatureId: "s", statutSignature: "signee", activationRefusee: "Refus." },
+    ],
+  ] as Array<[string, ResultatVersementScan]>)(
+    "%s : « Verser le scan signé » disparaît, « Actualiser la fiche » reste",
+    async (_nom, res) => {
+      const user = monter(vi.fn().mockResolvedValue(res));
+      await ouvrir(user);
+      await remplir(user);
+      await verser(user);
+      await screen.findByRole("button", { name: "Actualiser la fiche" });
+      expect(screen.queryByRole("button", { name: "Verser le scan signé" })).toBeNull();
+    },
+  );
 });

@@ -20,6 +20,7 @@ const ETAT: EtatDevisPourScan = {
   offre: null,
   offreSha256: null,
   documentGenereId: "doc-1",
+  pieceType: "devis",
   pieceAnnulee: false,
   clientASigne: false,
 };
@@ -68,6 +69,8 @@ describe("DevisScanPapierEntree", () => {
     ["client déjà signé", { clientASigne: true }],
     ["aucune pièce", { documentGenereId: null }],
     ["pièce annulée", { pieceAnnulee: true }],
+    ["pièce qui n'est pas un devis", { pieceType: "convention" }],
+    ["type de pièce inconnu", { pieceType: null }],
     ["devis à formules (offre)", { offre: { v: 1 } }],
     ["devis à formules (empreinte)", { offreSha256: "abc" }],
   ])("%s : aucun bouton", (_nom, etat) => {

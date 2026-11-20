@@ -12,6 +12,8 @@ export interface EtatDevisPourScan {
   offre: unknown;
   offreSha256: string | null;
   documentGenereId: string | null;
+  /** Type de la pièce en vigueur (le serveur exige « devis »). */
+  pieceType: string | null;
   pieceAnnulee: boolean;
   clientASigne: boolean;
 }
@@ -24,6 +26,7 @@ export function peutVerserScanPapier(e: EtatDevisPourScan, role: string | null):
     e.offre === null &&
     e.offreSha256 === null &&
     e.documentGenereId !== null &&
+    e.pieceType === "devis" &&
     !e.pieceAnnulee &&
     !e.clientASigne
   );
