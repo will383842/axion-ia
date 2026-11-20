@@ -20,9 +20,9 @@ vi.mock("@/server/qualiopi/documents/signature/parties-requises", () => ({
 
 import { GET } from "./route";
 
-const appeler = (token = "t".repeat(40)) =>
-  GET(new Request("http://x/fr/portail/signer/" + token + "/pdf") as never, {
-    params: Promise.resolve({ locale: "fr", token }),
+const appeler = (token = "t".repeat(40), locale = "fr") =>
+  GET(new Request("http://x/" + locale + "/portail/signer/" + token + "/pdf") as never, {
+    params: Promise.resolve({ locale, token }),
   });
 
 const pieceOk = (over: Record<string, unknown> = {}) => ({
@@ -91,6 +91,13 @@ describe("GET pdf gardé par le jeton", () => {
     const r = await appeler();
     expect(r.status).toBe(404);
     expect(await r.text()).toBe("");
+  });
+
+  it("locale inconnue : 404 neutre avant toute lecture du jeton", async () => {
+    const r = await appeler("t".repeat(40), "zz");
+    expect(r.status).toBe(404);
+    expect(r.headers.get("referrer-policy")).toBe("no-referrer");
+    expect(m.verif).not.toHaveBeenCalled();
   });
 
   it("build SSG (stub.invalid) : 404", async () => {

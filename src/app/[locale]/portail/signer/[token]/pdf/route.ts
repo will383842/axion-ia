@@ -13,6 +13,7 @@ import { NextResponse, type NextRequest } from "next/server";
 
 import { prisma } from "@/lib/prisma";
 import { signedDocumentPdfUrl } from "@/lib/r2-storage";
+import { refuserSiLocaleInconnue } from "@/server/auth/garde-route-console";
 import { circuitPour } from "@/server/qualiopi/documents/signature/parties-requises";
 import { verifierTokenDocument } from "@/server/qualiopi/documents/signature/token-document";
 
@@ -32,7 +33,9 @@ export async function GET(
   _req: NextRequest,
   { params }: { params: Promise<{ locale: string; token: string }> },
 ): Promise<NextResponse> {
-  const { token } = await params;
+  const { locale, token } = await params;
+  // Locale inconnue : 404 avant toute lecture du jeton (garde SEC-1b des routes publiques).
+  if (refuserSiLocaleInconnue(locale) !== null) return introuvable();
 
   // Contrat du build SSG (ADR 0026).
   if (process.env["DATABASE_URL"]?.includes("stub.invalid")) return introuvable();
