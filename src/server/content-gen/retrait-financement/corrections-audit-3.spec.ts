@@ -235,7 +235,7 @@ describe("6. override sur un contenu déjà traité : sa propre sauvegarde, et -
       locale: "fr" as const,
       title: "Titre",
       excerpt: null,
-      body: "<p>Nous formons vos équipes sur leurs vrais dossiers. Les entreprises peuvent recourir aux OPCO. Ensuite nous mesurons les résultats obtenus.</p>",
+      body: "<p>Nous formons vos équipes sur leurs vrais dossiers. Le financement OPCO est possible. Ensuite nous mesurons les résultats obtenus.</p>",
       bodyJson: null,
       bodyText: null,
       metaTitle: null,

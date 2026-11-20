@@ -71,7 +71,10 @@ describe("estVisee — motifs toujours visés", () => {
       "<p>Une équipe. Un autre point. Axion-IA prépare la certification qualité.</p>",
       "fr",
     );
-    expect(r.valeur).toBe("<p>Une équipe. Un autre point.</p>");
+    // Audit passe 6 : phrase visée NON pure (le sujet n'est pas le financement) → ambiguë, avec ou
+    // sans voisines ; jamais retirée automatiquement (décision du pilote).
+    expect(classer(r)).toBe("ambigu");
+    expect(r.modifie).toBe(false);
   });
 
   it("CPF / France Travail sans marqueur de financement : conservés", () => {
@@ -111,8 +114,17 @@ describe("reecrireTexte / reecrireHtml — extraits RÉELS de la production (18/
     const html =
       "<p>Le rapport est remis sous trois jours. Nous formons vos équipes sur leurs vrais dossiers. Les entreprises peuvent recourir aux OPCO. Un conseiller vous suit pendant un mois. Vous gardez la main sur les outils.</p>";
     const r = reecrireHtml(html, "fr");
-    expect(r.valeur).toBe(
-      "<p>Le rapport est remis sous trois jours. Nous formons vos équipes sur leurs vrais dossiers. Un conseiller vous suit pendant un mois. Vous gardez la main sur les outils.</p>",
+    // Audit passe 6 : « Les entreprises peuvent recourir aux OPCO. » n'a pas le financement pour
+    // sujet : ambiguë (jamais retirée seule), le paragraphe reste intact.
+    expect(r.valeur).toBe(html);
+    expect(r.ambigus.length).toBeGreaterThan(0);
+    // Une phrase PURE entre voisines, elle, part seule.
+    const pure = reecrireHtml(
+      "<p>Le rapport est remis sous trois jours. Le financement OPCO est possible. Un conseiller vous suit pendant un mois.</p>",
+      "fr",
+    );
+    expect(pure.valeur).toBe(
+      "<p>Le rapport est remis sous trois jours. Un conseiller vous suit pendant un mois.</p>",
     );
   });
 
@@ -175,10 +187,15 @@ describe("structure HTML", () => {
 
   it("liste : puces visées retirées, les autres gardées", () => {
     const html =
-      "<ul><li>Audit le matin</li><li>Formation éligible au CPF</li><li>Rapport sous trois jours</li></ul>";
+      "<ul><li>Audit le matin</li><li>Prise en charge OPCO</li><li>Rapport sous trois jours</li></ul>";
     expect(reecrireHtml(html, "fr").valeur).toBe(
       "<ul><li>Audit le matin</li><li>Rapport sous trois jours</li></ul>",
     );
+    // Audit passe 6 : une puce dont le service est qualifié par la mention reste, ambiguë.
+    const qualifiee = html.replace("Prise en charge OPCO", "Formation éligible au CPF");
+    const r = reecrireHtml(qualifiee, "fr");
+    expect(r.valeur).toBe(qualifiee);
+    expect(r.ambigus.length).toBeGreaterThan(0);
   });
 
   it("liste : toutes visées → phrase standard", () => {
@@ -249,7 +266,7 @@ describe("liens et attributs", () => {
 
 describe("EN", () => {
   it("phrase standard EN", () => {
-    const r = reecrireHtml("<p>Training can be funded by your OPCO or through the CPF.</p>", "en");
+    const r = reecrireHtml("<p>Funding by your OPCO or through the CPF is possible.</p>", "en");
     expect(r.valeur).toBe(`<p>${PHRASE_EN}</p>`);
   });
 

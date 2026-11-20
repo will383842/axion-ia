@@ -431,6 +431,13 @@ function melange(brut: string): boolean {
   );
 }
 
+/** Premier mot plein d'un élément d'énumération : un mot de financement (et pas un service qualifié). */
+const ELEMENT_FINANCEMENT =
+  /^(?:(?:le|la|les|l'|un|une|des|d'un|d'une|du)\s*)?(?:financ|pris(?:e|es) en charge|opcos?\b|cpf\b|subvention|rembours|aides? (?:financi[eè]res?|opcos?\b|cpf\b))/i;
+function elementDeFinancement(segment: string): boolean {
+  return ELEMENT_FINANCEMENT.test(normaliser(segment).trim());
+}
+
 /**
  * Retire le FRAGMENT visé d'une phrase, pas la phrase : parenthèse, élément d'énumération entre
  * virgules (avec correction du décompte « sept étapes »), fin de phrase après « et », mot de
@@ -484,6 +491,10 @@ function fragmenter(phrase: string): Fragment | null {
   if (simple && segments.length > 2 && !estVisee(segments[0]!)) {
     const visees = segments.map((s) => estVisee(s));
     if (visees.filter(Boolean).length === 1) {
+      // Forme prouvée : l'élément n'est retiré en entier que si son PREMIER mot plein est un mot de
+      // financement. « formation éligible au CPF » est un vrai service qualifié : ambigu.
+      if (!segments.some((s, i) => visees[i] && elementDeFinancement(s)))
+        return { texte: phrase, ambigu: HORS_FORME(phrase) };
       const gardes = segments.filter((_, i) => !visees[i]);
       const retires = segments.length - gardes.length;
       const premierRetire = visees.indexOf(true);
@@ -528,11 +539,19 @@ function fragmenter(phrase: string): Fragment | null {
 const MOT_FINANCEMENT =
   /financ|\bfund|pris(?:e|es)? en charge|OPCO|\bCPF\b|France Travail|P[ôo]le[- ]emploi|qualiopi|[ée]ligible|rembours|subvention|\bAIF\b|datadock|\bEDOF\b|subrogation|mon ?compte ?formation|FNE/i;
 
+/**
+ * Sujet de la phrase : un mot de financement dans ses TROIS premiers mots. Une mention qui
+ * qualifie un autre sujet (« formation de deux jours éligible au CPF », « audits Qualiopi »)
+ * ne rend PAS la phrase pure : en cas de doute, elle n'est pas pure.
+ */
+const SUJET_FINANCEMENT =
+  /financ|\bfund|pris(?:e|es) en charge|\bopcos?\b|\bcpf\b|france travail|p[ôo]le[- ]emploi|subvention|rembours|\baif\b|\bedof\b|subrogation|mon ?compte ?formation|\bfne\b/i;
+
 function estPur(texte: string, html = ""): boolean {
   // Balise en ligne : « pur » seulement si la phrase visée est entière (aucun élément non visé).
   if (/<[a-z][^>]*>/i.test(html) && melange(texte)) return false;
-  const debut = normaliser(texte).split(/\s+/).slice(0, 8).join(" ");
-  return MOT_FINANCEMENT.test(debut);
+  const debut = normaliser(texte).trim().split(/\s+/).slice(0, 3).join(" ");
+  return SUJET_FINANCEMENT.test(debut);
 }
 
 interface SortiePhrase {
@@ -565,6 +584,23 @@ function traiterPhrase(p: string, estHtml: boolean, court: boolean): SortiePhras
   return { type: "retire", texte: "", pur };
 }
 
+/**
+ * Une puce (HTML ou JSON : même règle). La puce entière est analysée, balises en ligne comprises :
+ * retirée seulement si elle est pure et sans autre phrase ; sinon ambiguë (jamais de perte muette).
+ */
+function verdictPuce(contenu: string, estHtml: boolean): SortiePhrase {
+  const s = traiterPhrase(contenu, estHtml, true);
+  if (s.type !== "retire") return s;
+  const ps = phrases(contenu).map((p) => traiterPhrase(p, estHtml, true));
+  if (ps.some((x) => x.type === "garde"))
+    return {
+      type: "ambigu",
+      texte: contenu,
+      ambigu: `puce mixte (phrase visée et phrase non visée) : « ${(estHtml ? htmlVersTexte(contenu) : contenu).slice(0, 160)} »`,
+    };
+  return s;
+}
+
 interface Bloc {
   /** Contenu (HTML ou texte) après réécriture. */
   contenu: string;
@@ -584,7 +620,9 @@ interface Bloc {
 function traiterBloc(contenu: string, langue: Langue, estHtml: boolean): Bloc {
   const sansFragments = retirerFragments(contenu);
   const liste = phrases(sansFragments);
-  const sorties = liste.map((p) => traiterPhrase(p, estHtml, false));
+  // `court: true` aussi dans un corps : une phrase visée dont le sujet n'est pas le financement n'est
+  // jamais retirée en entier (voisines ou non) ; ambiguë. Seule une phrase PURE part.
+  const sorties = liste.map((p) => traiterPhrase(p, estHtml, true));
   const visees = sorties.filter((x) => x.type !== "garde").length;
   if (visees === 0) {
     const modifie = sansFragments !== contenu;
@@ -980,21 +1018,25 @@ function traiterListes(racine: Element, d: Document, langue: Langue, ambigus: st
       modifie = true;
       continue;
     }
-    // Une puce : fragment retiré (texte simple), sinon puce retirée.
+    // Une puce : fragment retiré (texte simple), retirée seulement si elle est PURE (le sujet est le
+    // financement) ; toute autre puce visée est ambiguë et reste en place.
     let retirees = 0;
+    let change = false;
     for (const li of visees) {
-      const t = li.children.length === 0 ? (li.textContent ?? "") : "";
-      const sortie = t === "" ? null : traiterPhrase(t, false, false);
-      if (sortie && sortie.type === "modifie") li.textContent = sortie.texte;
-      else if (sortie && sortie.type === "ambigu") ambigus.push(sortie.ambigu ?? "puce ambiguë");
-      else {
+      const sortie = verdictPuce(li.innerHTML, true);
+      if (sortie.type === "modifie") {
+        li.textContent = sortie.texte;
+        change = true;
+      } else if (sortie.type === "ambigu") ambigus.push(sortie.ambigu ?? "puce ambiguë");
+      else if (sortie.type === "retire") {
         li.remove();
         retirees++;
+        change = true;
       }
     }
     if (retirees === items.length) liste.replaceWith(creerP(d, langue));
     else corrigerIntroDecompte(intro, items.length, retirees, ambigus);
-    modifie = true;
+    if (change) modifie = true;
   }
   return modifie;
 }
@@ -1105,7 +1147,7 @@ export function reecrireHtml(html: string, langue: Langue): Resultat {
   modifie = dedoublonner(racine) || modifie;
   const sortie = modifie ? racine.innerHTML : html;
   fenetre.close();
-  return { valeur: sortie, modifie, ambigus };
+  return { valeur: sortie, modifie, ambigus: [...new Set(ambigus)] };
 }
 
 // ───────────────────────────── Tiptap JSON ─────────────────────────────
@@ -1303,15 +1345,20 @@ export function reecrireJson(documentJson: unknown, langue: Langue): Resultat<un
           continue;
         }
         const retirees: NoeudTiptap[] = [];
+        let change = false;
         for (const li of visees) {
-          const sortiePhrase = traiterPhrase(texteNoeud(li), false, false);
+          const sortiePhrase = verdictPuce(texteNoeud(li), false);
           if (sortiePhrase.type === "modifie") {
             li.content = [
               { type: "paragraph", content: [{ type: "text", text: sortiePhrase.texte }] },
             ];
+            change = true;
           } else if (sortiePhrase.type === "ambigu") {
             ambigus.push(sortiePhrase.ambigu ?? "puce ambiguë");
-          } else retirees.push(li);
+          } else if (sortiePhrase.type === "retire") {
+            retirees.push(li);
+            change = true;
+          }
         }
         c.content = items.filter((li) => !retirees.includes(li));
         if (c.content.length === 0) sortie.push(paragrapheStandard(langue));
@@ -1343,7 +1390,7 @@ export function reecrireJson(documentJson: unknown, langue: Langue): Resultat<un
             }
           }
         }
-        modifie = true;
+        if (change) modifie = true;
         continue;
       }
       if (c.type === "table") {
@@ -1376,8 +1423,8 @@ export function reecrireJson(documentJson: unknown, langue: Langue): Resultat<un
   };
 
   traiterConteneur(racine);
-  if (!modifie) return { valeur: documentJson, modifie: false, ambigus };
-  return { valeur: racine, modifie: true, ambigus };
+  if (!modifie) return { valeur: documentJson, modifie: false, ambigus: [...new Set(ambigus)] };
+  return { valeur: racine, modifie: true, ambigus: [...new Set(ambigus)] };
 }
 
 // ───────────────────────────── classement ─────────────────────────────

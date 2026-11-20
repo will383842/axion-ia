@@ -297,13 +297,20 @@ const CHAMPS_TEXTE_OFFRE = [
 ] as const;
 
 /**
- * Avantages (`perks`) : un avantage dont le libellé parle de financement est retiré ; un libellé
- * qui ne contient qu'un fragment (« (CPF) ») est nettoyé. Tableau vide possible (la page masque
- * alors le bloc).
+ * Avantages (`perks`) : un avantage dont le libellé est ENTIÈREMENT du financement (phrases pures)
+ * est retiré ; un libellé qui ne contient qu'un fragment (« (CPF) ») est nettoyé ; un libellé
+ * AMBIGU est gardé tel quel et remonté au rapport (jamais supprimé en silence). Tableau vide
+ * possible (la page masque alors le bloc).
  */
-export function reecrirePerks(perks: unknown): { valeur: unknown; modifie: boolean } {
-  if (!Array.isArray(perks)) return { valeur: perks, modifie: false };
+export function reecrirePerks(perks: unknown): {
+  valeur: unknown;
+  modifie: boolean;
+  /** Avantages dont un libellé est ambigu : GARDÉS tels quels, à trancher à la main. */
+  ambigus: string[];
+} {
+  if (!Array.isArray(perks)) return { valeur: perks, modifie: false, ambigus: [] };
   let modifie = false;
+  const ambigus: string[] = [];
   const sortie: unknown[] = [];
   for (const it of perks as unknown[]) {
     if (!it || typeof it !== "object") {
@@ -312,6 +319,8 @@ export function reecrirePerks(perks: unknown): { valeur: unknown; modifie: boole
     }
     const o = { ...(it as Record<string, unknown>) };
     let retire = false;
+    let ambigu = false;
+    let change = false;
     for (const [cle, langue] of [
       ["labelFr", "fr"],
       ["labelEn", "en"],
@@ -319,16 +328,32 @@ export function reecrirePerks(perks: unknown): { valeur: unknown; modifie: boole
       const v = o[cle];
       if (typeof v !== "string") continue;
       const r = reecrireTexte(v, langue);
-      if (r.ambigus.length > 0) retire = true;
-      else if (r.modifie) {
+      if (r.ambigus.length > 0) {
+        // « champ entièrement visé » : toutes les phrases du libellé sont PURES (sujet = financement,
+        // sinon l'ambigu serait « phrase mixte ») → l'avantage de financement est retiré, comme avant.
+        if (r.ambigus.every((a) => a.startsWith("champ entièrement visé"))) retire = true;
+        else {
+          ambigu = true;
+          ambigus.push(`avantage ${cle} ambigu : « ${v.slice(0, 160)} »`);
+        }
+      } else if (r.modifie) {
         o[cle] = r.valeur;
-        modifie = true;
+        change = true;
       }
     }
+    // Un avantage ambigu (dans l'une ou l'autre langue) est gardé en entier : jamais supprimé en
+    // silence, jamais réécrit à moitié.
+    if (ambigu) {
+      sortie.push(it);
+      continue;
+    }
     if (retire) modifie = true;
-    else sortie.push(o);
+    else {
+      if (change) modifie = true;
+      sortie.push(o);
+    }
   }
-  return { valeur: modifie ? sortie : perks, modifie };
+  return { valeur: modifie ? sortie : perks, modifie, ambigus };
 }
 
 export function proposerOffre(l: LigneOffre): Proposition | null {
@@ -357,7 +382,7 @@ export function proposerOffre(l: LigneOffre): Proposition | null {
   c.texte("metaDescription", l.metaDescription, "fr");
   if (l.perks !== undefined && l.perks !== null) {
     const p = reecrirePerks(l.perks);
-    c.champ("perks", l.perks, p.valeur, p.modifie, []);
+    c.champ("perks", l.perks, p.valeur, p.modifie, p.ambigus);
   }
   return c.resultat("job_offer", l.id);
 }
@@ -401,6 +426,48 @@ export function integrerOverrides(
 }
 
 /**
+ * Une valeur d'override est-elle PROPRE ? Elle repasse dans les mêmes règles que le contenu : si le
+ * résultat n'est pas « propre » (mention restante, ambigu), l'override est ignoré. Rend la raison,
+ * ou `null` si la valeur est propre.
+ */
+function valeurSale(champ: string, valeur: unknown): string | null {
+  const langue: Langue = /En$/.test(champ) ? "en" : "fr";
+  const r =
+    champ === "perks"
+      ? reecrirePerks(valeur)
+      : typeof valeur === "string"
+        ? CHAMP_TEXTE_DU_CORPS[champ] || /<[a-z][\s\S]*>/i.test(valeur)
+          ? reecrireHtml(valeur, langue)
+          : reecrireTexte(valeur, langue, { titre: /title/i.test(champ) })
+        : Array.isArray(valeur) && /faq/i.test(champ)
+          ? reecrireFaqs(valeur, langue)
+          : reecrireJson(valeur, langue);
+  const c = classer(r as { valeur: unknown; modifie: boolean; ambigus: string[] });
+  if (c === "propre") {
+    if (typeof valeur !== "string" && jsonContientMention(valeur)) return "mention dans le JSON";
+    return null;
+  }
+  return c === "ambigu" ? "ambigu" : "à réécrire";
+}
+
+function reecrireFaqs(
+  valeur: unknown[],
+  langue: Langue,
+): { valeur: unknown; modifie: boolean; ambigus: string[] } {
+  let modifie = false;
+  const ambigus: string[] = [];
+  for (const it of valeur) {
+    if (!it || typeof it !== "object") continue;
+    const o = it as Record<string, unknown>;
+    if (typeof o.question !== "string" || typeof o.answer !== "string") continue;
+    const r = reecrireFaq({ question: o.question, reponse: o.answer }, langue);
+    modifie = modifie || r.modifie;
+    ambigus.push(...r.ambigus);
+  }
+  return { valeur, modifie, ambigus };
+}
+
+/**
  * Applique les remplacements humains aux cas ambigus. Un override n'est pris que si l'empreinte
  * de la valeur d'ORIGINE correspond à la valeur lue maintenant : si le texte a changé depuis,
  * il est ignoré et signalé (jamais appliqué à l'aveugle).
@@ -419,6 +486,13 @@ export function appliquerOverrides(
   for (const [champ, o] of Object.entries(surcharges)) {
     if (o.valeur === "" || o.valeur === null || o.valeur === undefined) {
       ignores.push(`${p.cle}.${champ} : valeur vide (gabarit non rempli), override ignoré`);
+      continue;
+    }
+    const sale = valeurSale(champ, o.valeur);
+    if (sale) {
+      ignores.push(
+        `${p.cle}.${champ} : l'override contient encore une mention de financement (non propre : ${sale}), override ignoré`,
+      );
       continue;
     }
     const courant = champ in originaux ? originaux[champ] : undefined;

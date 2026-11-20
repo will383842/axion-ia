@@ -22,21 +22,21 @@ describe("1. rapport : passage retiré, contexte de ~150 caractères, remplaceme
   const avant =
     "<p>" +
     "Nous commençons par un audit de vos usages réels et de vos outils. ".repeat(4) +
-    "Les entreprises peuvent recourir aux OPCO. " +
+    "Le financement OPCO est possible. " +
     "Ensuite nous formons vos équipes sur leurs vrais dossiers. ".repeat(4) +
     "</p>";
 
   it("body : le passage retiré apparaît avec son contexte avant/après", () => {
     const apres = reecrireHtml(avant, "fr").valeur;
     const [p] = passagesModifies(avant, apres);
-    expect(p?.retire).toBe("Les entreprises peuvent recourir aux OPCO.");
+    expect(p?.retire).toBe("Le financement OPCO est possible.");
     expect(p?.remplace).toBe("");
     expect(p?.avantContexte.length).toBeGreaterThan(100);
     expect(p?.avantContexte.length).toBeLessThanOrEqual(150);
     expect(p?.avantContexte).toContain("audit de vos usages");
     expect(p?.apresContexte).toContain("Ensuite nous formons");
     const texte = lignesModification("article_translation:t1", "body", avant, apres).join("\n");
-    expect(texte).toContain("retiré : « Les entreprises peuvent recourir aux OPCO. »");
+    expect(texte).toContain("retiré : « Le financement OPCO est possible. »");
     expect(texte).toContain("remplacé par : (rien)");
     expect(texte).not.toContain("(structure JSON)");
   });
@@ -84,11 +84,23 @@ describe("2. un paragraphe qui parle d'autre chose n'est jamais remplacé en ent
     const html =
       "<p>Les entreprises d'Ajaccio et de Corse-du-Sud font face au même défi : gagner du temps sur les tâches répétitives. Nous formons vos équipes sur leurs vrais dossiers. Les formations peuvent être financées par les OPCO. Le rapport est remis sous trois jours.</p>";
     const r = reecrireHtml(html, "fr");
-    expect(r.valeur).not.toContain(PHRASE_FR);
-    expect(r.valeur).toContain(
+    // Audit passe 6 : « Les formations peuvent être financées par les OPCO. » n'a pas le
+    // financement pour sujet : ambiguë, le paragraphe est conservé intact (jamais retiré seul).
+    expect(r.valeur).toBe(html);
+    expect(classer(r)).toBe("ambigu");
+    // Avec une phrase PURE à la place, seule elle part et l'intro est conservée.
+    const pure = reecrireHtml(
+      html.replace(
+        "Les formations peuvent être financées par les OPCO.",
+        "Le financement OPCO est possible.",
+      ),
+      "fr",
+    );
+    expect(pure.valeur).not.toContain(PHRASE_FR);
+    expect(pure.valeur).toContain(
       "Les entreprises d'Ajaccio et de Corse-du-Sud font face au même défi",
     );
-    expect(r.valeur).not.toMatch(INTERDITS);
+    expect(pure.valeur).not.toMatch(INTERDITS);
   });
 
   it("deux phrases de financement sur quatre : retirées seules (plus de remplacement)", () => {
@@ -110,7 +122,7 @@ describe("2. un paragraphe qui parle d'autre chose n'est jamais remplacé en ent
 
   it("liste : l'intro « points à mobiliser : » (pas du financement) n'est pas supprimée", () => {
     const r = reecrireHtml(
-      "<p>Les points à mobiliser :</p><ul><li>Audit</li><li>Rapport</li><li>Formation éligible au CPF</li></ul>",
+      "<p>Les points à mobiliser :</p><ul><li>Audit</li><li>Rapport</li><li>Prise en charge CPF</li></ul>",
       "fr",
     );
     expect(r.valeur).toContain("Les points à mobiliser :");
@@ -266,9 +278,9 @@ describe("6. ambigus : règles ciblées", () => {
       },
       "fr",
     );
-    expect(classer(r)).toBe("a-reecrire");
-    expect(r.valeur.question).toBe("OpenClassrooms est-il reconnu ?");
-    expect(r.valeur.reponse).not.toMatch(INTERDITS);
+    // Audit passe 6 : « Ils sont éligibles au CPF pour les particuliers. » (sujet : « Ils ») n'est
+    // pas une phrase de financement pure : ambiguë, la réponse est conservée telle quelle.
+    expect(classer(r)).toBe("ambigu");
     expect(r.valeur.reponse).toContain("accompagnement sur mesure");
   });
 
@@ -379,7 +391,9 @@ describe("7. offres d'emploi", () => {
     // « A et la certification Qualiopi » / « les audits Qualiopi » : hors formes prouvées → ambigu,
     // l'offre n'est pas réécrite à l'aveugle (le titre, lui, reste réécrit : mot en fin de libellé).
     expect(p.apres.summaryFr).toBeUndefined();
-    expect(String(p.apres.bodyFr)).toContain("audits Qualiopi"); // paragraphe laissé tel quel
+    // Audit passe 6 : « Audit Qualiopi annuel » (puce dont le sujet est un audit) est ambiguë, elle
+    // aussi : le corps n'est pas réécrit du tout (paragraphe et puce laissés tels quels).
+    expect(p.apres.bodyFr).toBeUndefined();
     expect(p.ambigus.length).toBeGreaterThan(0);
   });
 });
