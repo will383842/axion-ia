@@ -28,7 +28,16 @@
 // marcher, tout le monde est servi), et on bascule sur les endpoints qui
 // acceptent réellement. La spec IndexNow garantit qu'une soumission à
 // N'IMPORTE quel participant est partagée avec les autres.
-import { submitUrlsToBing } from "@/lib/seo/bing-wmt-submit";
+import {
+  isBingSubmitReady,
+  submitUrlsToBingDetaille,
+  type BingSubmitDetail,
+} from "@/lib/seo/bing-wmt-submit";
+import {
+  alerterEchecSignalement,
+  classerErreur,
+  type TypeErreurSignalement,
+} from "@/lib/seo/signalement-moteurs";
 
 const ENDPOINTS = [
   "https://api.indexnow.org/indexnow",
@@ -54,7 +63,17 @@ function buildIndexNowBody(host: string, key: string, urlList: ReadonlyArray<str
   });
 }
 
+/** Un endpoint IndexNow en échec — pour le journal et l'alerte (V1-07). */
+export interface EchecEndpoint {
+  readonly endpoint: string;
+  /** Code HTTP, `null` pour un timeout ou une panne réseau. */
+  readonly statut: number | null;
+  readonly type: TypeErreurSignalement;
+}
+
 export interface IndexNowResult {
+  /** Détail structuré des endpoints en échec, dans l'ordre d'essai. */
+  echecs?: EchecEndpoint[];
   /** Endpoint ayant accepté, ou `null` si tous ont échoué. */
   accepted: string | null;
   /** Un message par endpoint essayé, dans l'ordre — pour le log. */
@@ -76,6 +95,7 @@ export async function submitToIndexNow(
 ): Promise<IndexNowResult> {
   const body = buildIndexNowBody(host, key, urlList);
   const attempts: string[] = [];
+  const echecs: EchecEndpoint[] = [];
   for (const endpoint of ENDPOINTS) {
     // Délai d'expiration PAR endpoint : sans lui, un endpoint qui pend bloque
     // la bascule vers le suivant — donc la cascade ne sert à rien.
@@ -93,17 +113,131 @@ export async function submitToIndexNow(
       });
       if (res.ok) {
         attempts.push(`${endpoint} → ${res.status} OK`);
-        return { accepted: endpoint, attempts };
+        return { accepted: endpoint, attempts, echecs };
       }
+      echecs.push({ endpoint, statut: res.status, type: classerErreur(res.status) });
       const detail = await res.text().catch(() => "");
       attempts.push(`${endpoint} → ${res.status} ${res.statusText} ${detail.slice(0, 160)}`.trim());
     } catch (err: unknown) {
+      echecs.push({ endpoint, statut: null, type: classerErreur(null, err) });
       attempts.push(`${endpoint} → ${err instanceof Error ? err.message : String(err)}`);
     } finally {
       if (timer) clearTimeout(timer);
     }
   }
-  return { accepted: null, attempts };
+  return { accepted: null, attempts, echecs };
+}
+
+export interface RapportSignalement {
+  /** `null` : clé absente, IndexNow non tenté. */
+  readonly indexnow: IndexNowResult | null;
+  /** `null` : Bing non tenté (mode « repli » et IndexNow a accepté). */
+  readonly bing: BingSubmitDetail | null;
+}
+
+const DELAI_INDEXNOW_PAR_DEFAUT_MS = 15_000;
+
+/**
+ * Échec qui classe l'alerte IndexNow. Le premier endpoint (`api.indexnow.org`,
+ * Microsoft) répond 403 en PERMANENT depuis le 2026-08-11 : le prendre pour
+ * classer ferait dire « refus-4xx » à toute alerte, quelle que soit la vraie
+ * panne (Yandex en 5xx, timeout…), et figerait la clé d'anti-bruit. On écarte
+ * donc ce 403 connu ; s'il ne reste rien, c'est que tout n'est que 403 et on
+ * prend le dernier échec.
+ */
+function echecRepresentatif(echecs: ReadonlyArray<EchecEndpoint> | undefined) {
+  if (!echecs?.length) return undefined;
+  const inconnu = echecs.find((e) => !(e.endpoint === ENDPOINTS[0] && e.statut === 403));
+  return inconnu ?? echecs[echecs.length - 1];
+}
+
+/**
+ * GEO V1-07 — signale des URLs aux deux portes (IndexNow, API Bing) et NE LAISSE
+ * PLUS un refus passer inaperçu : journal structuré + alerte (anti-bruit : une
+ * par heure et par type), et repli sur l'autre porte.
+ *
+ * - `bing: "toujours"` (défaut, publication par action serveur) : les deux
+ *   portes partent en parallèle, chacune est le repli de l'autre.
+ * - `bing: "repli"` (worker `content-indexnow`) : Bing n'est appelé que si
+ *   IndexNow n'a été accepté par aucun endpoint (ménage du quota partagé).
+ *
+ * Alerte IndexNow : seulement quand AUCUN endpoint n'accepte ; son type est celui
+ * de la panne réelle, hors 403 connu de Microsoft (`echecRepresentatif`). Le 403 permanent
+ * de Microsoft, rattrapé par Yandex, reste au journal (sinon : une alerte par
+ * heure et par publication, à vie).
+ * Ne throw jamais.
+ */
+export async function signalerAuxMoteurs(
+  host: string,
+  key: string | undefined,
+  urls: ReadonlyArray<string>,
+  label: string,
+  options: { bing?: "toujours" | "repli"; timeoutMs?: number } = {},
+): Promise<RapportSignalement> {
+  const mode = options.bing ?? "toujours";
+  const timeoutMs = options.timeoutMs ?? DELAI_INDEXNOW_PAR_DEFAUT_MS;
+  const versBing = (): Promise<BingSubmitDetail | null> =>
+    submitUrlsToBingDetaille([...urls], label).catch((err: unknown) => {
+      console.error(`[${label}] bing : echec inattendu —`, err);
+      return null;
+    });
+  const versIndexNow = (): Promise<IndexNowResult | null> =>
+    key
+      ? submitToIndexNow(host, key, urls, { timeoutMs }).catch((err: unknown) => ({
+          accepted: null,
+          attempts: [err instanceof Error ? err.message : String(err)],
+          echecs: [{ endpoint: "indexnow", statut: null, type: classerErreur(null, err) }],
+        }))
+      : Promise.resolve(null);
+
+  let indexnow: IndexNowResult | null;
+  let bing: BingSubmitDetail | null;
+  if (mode === "toujours") {
+    [indexnow, bing] = await Promise.all([versIndexNow(), versBing()]);
+  } else {
+    indexnow = await versIndexNow();
+    bing = indexnow?.accepted ? null : await versBing();
+  }
+
+  const bingOk = bing != null && bing.configured && bing.failed === 0 && bing.submitted > 0;
+  try {
+    if (indexnow && !indexnow.accepted) {
+      const premier = echecRepresentatif(indexnow.echecs);
+      await alerterEchecSignalement({
+        moteur: "indexnow",
+        type: premier?.type ?? "reseau",
+        statut: premier?.statut ?? null,
+        // `attempts` porte le code de CHAQUE endpoint essayé.
+        detail: indexnow.attempts.join(" | "),
+        nbUrls: urls.length,
+        contexte: label,
+        repli: bingOk
+          ? "API Bing a pris le relais (soumission acceptée)"
+          : bing?.configured
+            ? "API Bing tentée mais en échec aussi"
+            : "aucun repli configuré (BING_WMT_API_KEY absente)",
+      });
+    }
+    if (bing && bing.configured && bing.failed > 0) {
+      const premier = bing.echecs[0];
+      await alerterEchecSignalement({
+        moteur: "bing",
+        type: classerErreur(premier?.statut ?? null, premier?.erreur),
+        statut: premier?.statut ?? null,
+        detail: premier?.detail || `${bing.failed} url(s) refusée(s)`,
+        nbUrls: bing.failed,
+        contexte: label,
+        repli: !key
+          ? "aucun repli configuré (INDEXNOW_KEY absente)"
+          : indexnow?.accepted
+            ? `IndexNow a pris le relais (${indexnow.accepted})`
+            : "IndexNow tenté mais en échec aussi",
+      });
+    }
+  } catch {
+    // jamais d'échec de publication à cause d'une alerte
+  }
+  return { indexnow, bing };
 }
 
 function siteHost(): string {
@@ -150,61 +284,19 @@ export function pingIndexNow(urls: ReadonlyArray<string>, context?: string): voi
     return;
   }
 
-  // 🔴 GEO-105 / GEO-106 — BING, EN PARALLELE ET INDEPENDAMMENT.
-  //
-  // Mesure de l'audit : quand le site publie, SEUL YANDEX est reellement
-  // prevenu. L'endpoint Microsoft de la cascade ci-dessous repond 403 depuis le
-  // 2026-08-11 (cause racine cote Microsoft, ticket ouvert, decision actee : on
-  // ne re-diagnostique pas). Or Bing alimente Copilot et le grounding de
-  // ChatGPT Search : l'ignorer revient a laisser hors du circuit le moteur qui
-  // nourrit deux des moteurs de reponse qu'on cherche a atteindre.
-  //
-  // La voie directe (`SubmitUrlBatch`) ne passe pas par l'agregateur et n'est
-  // donc pas concernee par ce 403.
-  //
-  // Fire-and-forget comme le reste : une soumission ratee ne doit jamais faire
-  // echouer une publication. Le silence est distingue de l'absence de cle — un
-  // « non configure » qui ressemble a une panne fait perdre du temps.
-  void submitUrlsToBing([...valid], label)
-    .then((r) => {
-      if (!r.configured) {
-        if (process.env["NODE_ENV"] !== "production") {
-          console.warn(
-            `[${label}] BING_WMT_API_KEY absente — ${valid.length} url(s) non soumises a Bing`,
-          );
-        }
-        return;
-      }
-      if (r.failed > 0) {
-        console.error(
-          `[${label}] bing : ${r.failed} url(s) refusee(s), ${r.submitted} acceptee(s)`,
-        );
-      }
-    })
-    .catch((err: unknown) => {
-      console.error(`[${label}] bing : echec inattendu —`, err);
-    });
-
-  if (!key) {
-    if (process.env["NODE_ENV"] !== "production") {
-      console.warn(`[${label}] INDEXNOW_KEY missing — would notify ${urls.length} url(s)`);
-    }
-    return;
+  // 🔴 GEO-105 / GEO-106 / V1-07 — BING ET INDEXNOW, EN PARALLELE, CHACUN
+  // REPLI DE L'AUTRE. Mesure de l'audit : l'endpoint Microsoft de la cascade
+  // repond 403 depuis le 2026-08-11 (cause cote Microsoft, ticket ouvert, on ne
+  // re-diagnostique pas) ; la voie directe Bing (`SubmitUrlBatch`) n'est pas
+  // concernee. Un echec, d'un cote ou de l'autre, est journalise et alerte par
+  // `signalerAuxMoteurs`. Fire-and-forget : une soumission ratee ne doit jamais
+  // faire echouer une publication. L'absence de cle est distinguee d'une panne.
+  if (!key && !isBingSubmitReady() && process.env["NODE_ENV"] !== "production") {
+    console.warn(
+      `[${label}] INDEXNOW_KEY et BING_WMT_API_KEY absentes — ${valid.length} url(s) non soumises`,
+    );
   }
-
-  // Fire-and-forget : on n'await pas, pour ne pas bloquer l'admin. On logge en
-  // revanche CHAQUE endpoint essayé quand aucun n'accepte — un échec silencieux
-  // est ce qui a masqué le 403 Microsoft pendant des semaines.
-  void submitToIndexNow(host, key, valid)
-    .then((result) => {
-      if (!result.accepted) {
-        console.error(
-          `[${label}] indexnow REFUSÉ par tous les endpoints pour ${valid.length} url(s) — ${result.attempts.join(" | ")}`,
-        );
-      }
-    })
-    .catch((err: unknown) => {
-      const cause = err instanceof Error ? err.message : String(err);
-      console.error(`[${label}] indexnow ping failed: ${cause}`);
-    });
+  void signalerAuxMoteurs(host, key, valid, label).catch((err: unknown) => {
+    console.error(`[${label}] signalement aux moteurs : echec inattendu —`, err);
+  });
 }

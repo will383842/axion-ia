@@ -10,6 +10,7 @@
  * `ROLES_DOSSIER_ECHANGES` seulement (décision A2).
  */
 
+import { BandeauAssistantEssai } from "@/components/admin/qualiopi/BandeauAssistantEssai";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { redirect } from "next/navigation";
@@ -352,6 +353,11 @@ export default async function QualiopiDevisNewPage({ params, searchParams }: Pag
           </Link>
         ) : null}
       </div>
+
+      {/* Assistant en « essai » et aucun client d'essai choisi : c'est l'ancien formulaire qui s'ouvre. */}
+      {etatAssistant === "essai" ? (
+        <BandeauAssistantEssai clientsHref={`/${locale}/${adminPrefix}/qualiopi/clients`} />
+      ) : null}
 
       <AdminPageHeader
         title="Nouveau devis"
