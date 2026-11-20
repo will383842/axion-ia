@@ -72,6 +72,23 @@ const PROMESSES: ReadonlyArray<readonly [string, RegExp]> = [
     "suivi ponctuel / sessions de suivi / suivi à distance",
     /suivi ponctuel|sessions? de suivi|le suivi à distance|occasional follow-up|follow-up training/i,
   ],
+  [
+    "un suivi à distance / suivi en visio possible (après l'intervention)",
+    /un suivi à distance|suivi en visio est possible|un suivi en visio/i,
+  ],
+];
+
+/**
+ * Base de connaissances de génération (articles, FAQ, chatbot RAG) : elle nourrit du texte
+ * PUBLIC, donc elle ne doit pas non plus promettre de suivi après la prestation.
+ * Les motifs sont volontairement étroits (promesses retirées le 20/11), pour ne pas rougir
+ * sur « mesure à 6 mois » d'une étude citée ou sur « suivi » au sens de pilotage.
+ */
+const DOSSIER_KB = "src/server/content-gen/kb";
+const PROMESSES_KB: ReadonlyArray<readonly [string, RegExp]> = [
+  ["suivi post-formation", /suivi post-formation/i],
+  ["évaluation à froid à 30 et 90 jours", /évaluation à froid à 30 et 90 jours/i],
+  ["30 jours de support", /(?:30|trente) (?:jours|j) de support/i],
 ];
 
 function* fichiers(dossier: string): Generator<string> {
@@ -102,6 +119,23 @@ describe("décision du 20/11 — aucune promesse de suivi après prestation", ()
         });
       }
       expect(trouves, `promesse de suivi réintroduite : ${nom}`).toEqual([]);
+    });
+  }
+
+  for (const [nom, motif] of PROMESSES_KB) {
+    it(`base de connaissances : « ${nom} » n'apparaît nulle part`, () => {
+      const fichiersKb = [...fichiers(join(RACINE, DOSSIER_KB))];
+      expect(fichiersKb.length).toBeGreaterThan(5);
+      const trouves: string[] = [];
+      for (const chemin of fichiersKb) {
+        const rel = relative(RACINE, chemin).replaceAll("\\", "/");
+        readFileSync(chemin, "utf8")
+          .split("\n")
+          .forEach((ligne, i) => {
+            if (motif.test(ligne)) trouves.push(`${rel}:${i + 1}`);
+          });
+      }
+      expect(trouves, `promesse de suivi dans la base de connaissances : ${nom}`).toEqual([]);
     });
   }
 });
