@@ -34,6 +34,12 @@ export interface EmailOutboxItemProps {
   /** Résumé lisible de la charge utile, rendu côté serveur. */
   apercu: readonly { label: string; valeur: string }[];
   nbPiecesJointes: number;
+  /** Message déjà prévu dans la charge de l'e-mail (affiché en lecture ; le champ reste vide). */
+  messageInitial?: string;
+  /** Page console du devis (e-mail d'envoi de devis seulement). */
+  lienDevis?: string | null;
+  /** PDF du devis, route admin de documents. */
+  lienPdf?: string | null;
   /** Vrai si le gabarit lit le message personnalisé (liste : `outbox-policy.ts`). */
   accepteMessagePersonnalise: boolean;
   approuverAction: (input: {
@@ -56,12 +62,17 @@ export function EmailOutboxItem({
   creeLe,
   apercu,
   nbPiecesJointes,
+  messageInitial = "",
+  lienDevis = null,
+  lienPdf = null,
   accepteMessagePersonnalise,
   approuverAction,
   refuserAction,
 }: EmailOutboxItemProps): React.ReactElement {
   const router = useRouter();
   const [sujet, setSujet] = useState(sujetInitial);
+  // Le champ reste vide : le serveur garde le message déjà prévu tant qu'aucun texte n'est saisi
+  // (vider un champ pré-rempli n'aurait donc rien retiré). Un texte saisi le remplace.
   const [message, setMessage] = useState("");
   const [motifRefus, setMotifRefus] = useState("");
   const [modeRefus, setModeRefus] = useState(false);
@@ -123,8 +134,14 @@ export function EmailOutboxItem({
           {sujet}
         </h3>
         <p className="m-0 flex flex-wrap gap-[var(--space-admin-2)]">
-          <AdminBadge tone="info">{libelleTemplateEmail(template)}</AdminBadge>
-          {clientNom ? <AdminBadge tone="neutral">{clientNom}</AdminBadge> : null}
+          <AdminBadge tone="info" plein>
+            {libelleTemplateEmail(template)}
+          </AdminBadge>
+          {clientNom ? (
+            <AdminBadge tone="neutral" plein>
+              {clientNom}
+            </AdminBadge>
+          ) : null}
           <AdminBadge tone="outline">En attente depuis le {creeLe}</AdminBadge>
           {nbPiecesJointes > 0 && (
             <AdminBadge tone="outline">
@@ -153,12 +170,43 @@ export function EmailOutboxItem({
               <dt className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
                 {l.label}
               </dt>
-              <dd className="m-0 text-[length:var(--text-admin-base)] text-[color:var(--color-admin-fg)]">
+              <dd
+                className={`m-0 text-[color:var(--color-admin-fg)] ${
+                  l.label === "Montant TTC" || l.label === "Montant dû" || l.label === "Devis n°"
+                    ? "text-[length:var(--text-admin-lg)] font-semibold"
+                    : "text-[length:var(--text-admin-base)]"
+                }`}
+              >
                 {l.valeur}
               </dd>
             </div>
           ))}
         </dl>
+      )}
+
+      {(lienDevis || lienPdf) && (
+        <p className="m-0 flex flex-wrap gap-[var(--space-admin-2)]">
+          {lienDevis && (
+            <a
+              href={lienDevis}
+              target="_blank"
+              rel="noopener"
+              className={`${bouton} inline-flex items-center border border-[color:var(--color-admin-border)] text-[color:var(--color-admin-fg)]`}
+            >
+              Voir le devis
+            </a>
+          )}
+          {lienPdf && (
+            <a
+              href={lienPdf}
+              target="_blank"
+              rel="noopener"
+              className={`${bouton} inline-flex items-center border border-[color:var(--color-admin-border)] text-[color:var(--color-admin-fg)]`}
+            >
+              Ouvrir le PDF
+            </a>
+          )}
+        </p>
       )}
 
       <label className="block">
@@ -173,6 +221,13 @@ export function EmailOutboxItem({
           className={champ}
         />
       </label>
+
+      {accepteMessagePersonnalise && messageInitial.trim() !== "" && (
+        <p className="m-0 rounded-[var(--radius-admin-md)] bg-[color:var(--color-admin-surface)] p-[var(--space-admin-3)] text-[length:var(--text-admin-sm)] whitespace-pre-line text-[color:var(--color-admin-fg)]">
+          <span className="font-semibold">Message déjà prévu dans l’e-mail : </span>
+          {messageInitial}
+        </p>
+      )}
 
       {accepteMessagePersonnalise && (
         <label className="block">
@@ -189,7 +244,9 @@ export function EmailOutboxItem({
             className={champ}
           />
           <span className="mt-[var(--space-admin-1)] block text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
-            Inséré dans le corps de l&apos;e-mail.
+            {messageInitial.trim() !== ""
+              ? "Un texte saisi ici remplace le message prévu ; laisser vide le garde."
+              : "Inséré dans le corps de l’e-mail."}
           </span>
         </label>
       )}

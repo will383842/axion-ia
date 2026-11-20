@@ -230,7 +230,7 @@ export const ANTIBES_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il vraiment sur site à Antibes ?",
-      a: "Oui. Nos experts seniors se déplacent à Antibes pour les ateliers d'audit et les interventions clés, que vous soyez en vieille ville, à Juan-les-Pins, au Cap d'Antibes ou en bord de Port Vauban. Le suivi mensuel et les itérations rapides se font ensuite en visio pour optimiser votre budget.",
+      a: "Oui. Nos experts seniors se déplacent à Antibes pour les ateliers d'audit et les interventions clés, que vous soyez en vieille ville, à Juan-les-Pins, au Cap d'Antibes ou en bord de Port Vauban.",
     },
     {
       q: "Quels secteurs d'Antibes accompagnez-vous le plus ?",

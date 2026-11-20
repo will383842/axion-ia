@@ -40,8 +40,8 @@ export const CORMEILLES_EN_PARISIS_COPY: VilleCopy = {
       en: "Intervenir à Cormeilles-en-Parisis (16 min depuis Paris Saint-Lazare) pour automatiser les processus métier des artisans BTP et commerçants locaux — code custom, pas de no-code.",
     },
     implementation: {
-      fr: "Implémenter des solutions IA sur mesure à Cormeilles-en-Parisis pour les TPE et PME du commerce et du BTP, avec accompagnement post-livraison.",
-      en: "Implémenter des solutions IA sur mesure à Cormeilles-en-Parisis pour les TPE et PME du commerce et du BTP, avec accompagnement post-livraison.",
+      fr: "Implémenter des solutions IA sur mesure à Cormeilles-en-Parisis pour les TPE et PME du commerce et du BTP.",
+      en: "Implémenter des solutions IA sur mesure à Cormeilles-en-Parisis pour les TPE et PME du commerce et du BTP.",
     },
     unAUn: {
       fr: "Accompagner en un-à-un les dirigeants de TPE et PME à Cormeilles-en-Parisis pour une adoption IA stratégique et durable.",
@@ -78,11 +78,6 @@ export const CORMEILLES_EN_PARISIS_COPY: VilleCopy = {
             step: "Recette et mise en ligne",
             detail:
               "Tests d'acceptation sur mobile et desktop, optimisation Web Vitals et SEO local (Cormeilles-en-Parisis, Val Parisis, communes limitrophes), conformité RGPD et hébergement en Union européenne. Mise en production et transfert des accès à votre nom.",
-          },
-          {
-            step: "Suivi post-livraison",
-            detail:
-              "Documentation, formation de votre équipe à l'administration du site et des fonctions IA, monitoring des performances. Vous gardez la pleine maîtrise : code, contenu et hébergement vous appartiennent, sans verrou Axion-IA.",
           },
         ],
         pricing: [
@@ -164,11 +159,6 @@ export const CORMEILLES_EN_PARISIS_COPY: VilleCopy = {
             step: "Acceptance and go-live",
             detail:
               "Acceptance tests on mobile and desktop, Web Vitals and local SEO optimisation (Cormeilles-en-Parisis, Val Parisis, neighbouring communes), GDPR compliance and European Union hosting. Production release and transfer of access in your name.",
-          },
-          {
-            step: "Post-delivery follow-up",
-            detail:
-              "Documentation, training of your team on administering the site and AI features, performance monitoring. You retain full control: the code, content and hosting belong to you, with no Axion-IA lock-in.",
           },
         ],
         pricing: [

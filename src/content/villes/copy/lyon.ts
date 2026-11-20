@@ -482,11 +482,6 @@ export const LYON_COPY: VilleCopy = {
             detail:
               "Sur site Lyon : tests d'acceptation utilisateurs, formation des ambassadeurs internes, livraison du runbook documentation, plan de monitoring de plusieurs semaines.",
           },
-          {
-            step: "Suivi post-go-live",
-            detail:
-              "À distance : surveillance des métriques de production, ajustements fins, mesure du ROI réel par rapport à la prédiction du SOW. Rapport final remis à clôture de mission.",
-          },
         ],
         pricing: [
           {
@@ -573,11 +568,6 @@ export const LYON_COPY: VilleCopy = {
             step: "Acceptance + training",
             detail:
               "On site Lyon: user acceptance tests, training of internal ambassadors, runbook documentation delivery, multi-week monitoring plan.",
-          },
-          {
-            step: "Post-go-live follow-up",
-            detail:
-              "Remote: production metrics monitoring, fine adjustments, real ROI vs SOW prediction measurement. Final report delivered at mission closure.",
           },
         ],
         pricing: [
@@ -671,7 +661,7 @@ export const LYON_COPY: VilleCopy = {
           {
             step: "Bilan et autonomie",
             detail:
-              "À l'issue du parcours convenu, un bilan écrit confidentiel : ce que vous maîtrisez, les usages à consolider, les ressources pour continuer seul. Vous êtes autonome. Si vous souhaitez un suivi ponctuel ultérieur, sessions à la carte disponibles sans engagement.",
+              "À l'issue du parcours convenu, un bilan écrit confidentiel : ce que vous maîtrisez, les usages à consolider, les ressources pour continuer seul. Vous êtes autonome.",
           },
         ],
         pricing: [
@@ -763,7 +753,7 @@ export const LYON_COPY: VilleCopy = {
           {
             step: "Assessment and autonomy",
             detail:
-              "At the end of the agreed programme, a confidential written assessment: what you have mastered, usages to consolidate, resources to continue alone. You are autonomous. If you want occasional follow-up later, on-demand sessions available without commitment.",
+              "At the end of the agreed programme, a confidential written assessment: what you have mastered, usages to consolidate, resources to continue alone. You are autonomous.",
           },
         ],
         pricing: [

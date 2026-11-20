@@ -480,12 +480,7 @@ export const BORDEAUX_COPY: VilleCopy = {
           {
             step: "Recette + formation",
             detail:
-              "Sur site Bordeaux : tests d'acceptation utilisateurs, formation des ambassadeurs internes installés sur leur poste, livraison du runbook de documentation, plan de monitoring post-go-live.",
-          },
-          {
-            step: "Suivi post-go-live",
-            detail:
-              "À distance : surveillance des métriques de production, ajustements fins, mesure du ROI réel par rapport à la prédiction du SOW. Rapport final remis à clôture, mission close, vos ambassadeurs pilotent en autonomie.",
+              "Sur site Bordeaux : tests d'acceptation utilisateurs, formation des ambassadeurs internes installés sur leur poste, livraison du runbook de documentation, plan de surveillance remis à la recette.",
           },
         ],
         pricing: [
@@ -572,12 +567,7 @@ export const BORDEAUX_COPY: VilleCopy = {
           {
             step: "Acceptance + training",
             detail:
-              "On site Bordeaux: user acceptance tests, training of internal ambassadors on their workstations, runbook documentation delivery, post-go-live monitoring plan.",
-          },
-          {
-            step: "Post-go-live follow-up",
-            detail:
-              "Remote: production metrics monitoring, fine adjustments, real ROI vs SOW prediction measurement. Final report delivered at closure, mission closed, your ambassadors run autonomously.",
+              "On site Bordeaux: user acceptance tests, training of internal ambassadors on their workstations, runbook documentation delivery, monitoring plan handed over at acceptance.",
           },
         ],
         pricing: [

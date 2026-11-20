@@ -193,7 +193,7 @@ export const HOUILLES_COPY: VilleCopy = {
             sizeLabel: "Large enterprise",
             price: "Multi-site web and SaaS program",
             detail:
-              "For groups and large accounts near La Défense and in western Paris: multi-site portals, AI-native platforms, design system, centralized GDPR governance and long-term support.",
+              "For groups and large accounts near La Défense and in western Paris: multi-site portals, AI-native platforms, design system, centralized GDPR governance.",
           },
         ],
         faq: [

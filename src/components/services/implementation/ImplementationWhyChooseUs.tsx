@@ -52,9 +52,9 @@ const REASONS: ReadonlyArray<Reason> = [
     titleFr: "Toute la chaîne IA",
     titleEn: "The whole AI chain",
     bodyFr:
-      "De l'audit à l'implémentation jusqu'au suivi : un seul interlocuteur qui maîtrise toute la chaîne, du diagnostic à l'exécution.",
+      "De l'audit à l'implémentation : un seul interlocuteur qui maîtrise toute la chaîne, du diagnostic à l'exécution.",
     bodyEn:
-      "From audit to implementation to follow-up: a single partner who masters the whole chain, from diagnosis to delivery.",
+      "From audit to implementation: a single partner who masters the whole chain, from diagnosis to delivery.",
   },
   {
     icon: ShieldCheck,

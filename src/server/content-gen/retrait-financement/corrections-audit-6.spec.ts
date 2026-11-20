@@ -154,14 +154,20 @@ describe("5. une valeur d'override qui contient encore une mention est ignorée 
     ambigus: ["article_translation:t1.body : forme non prouvée"],
     conserves: [],
   });
-  const avecValeur = (valeur: unknown, champ = "body") => {
+  const avecValeur = (valeur: unknown, champ = "body", pertesAcceptees?: string[]) => {
     const p = prop();
     const original = p.avant.body;
     return appliquerOverrides(
       p,
       { [champ]: original },
       {
-        [p.cle]: { [champ]: { origine: empreinte(original), valeur } },
+        [p.cle]: {
+          [champ]: {
+            origine: empreinte(original),
+            valeur,
+            ...(pertesAcceptees ? { pertesAcceptees } : {}),
+          },
+        },
       },
     );
   };
@@ -175,7 +181,7 @@ describe("5. une valeur d'override qui contient encore une mention est ignorée 
   });
 
   it("valeur propre → appliquée", () => {
-    const o = avecValeur("<p>Nous proposons formation et suivi.</p>");
+    const o = avecValeur("<p>Nous proposons formation et suivi.</p>", "body", ["texte", "ambigu"]);
     expect(o.ignores).toEqual([]);
     expect(o.proposition.apres.body).toBe("<p>Nous proposons formation et suivi.</p>");
     expect(o.proposition.ambigus).toHaveLength(0);
