@@ -910,18 +910,15 @@ export default async function SessionHubPage({ params, searchParams }: PageProps
       <>
         {/* ── En-tête de la session ─────────────────────────────────────────── */}
         {/* #infos EST le bloc : les cellules sont `#infos > div > div` (E2E 01-presentiel). */}
-        <AdminBloc
+        <section
           id="infos"
-          className={CLASSE_ANCRE_SECTION}
-          teinte="bleu"
-          niveau={2}
-          titre={
-            <>
-              Informations générales
-              {trainingSession.estTestInterne && <BadgeEssai />}
-            </>
-          }
+          data-teinte="bleu"
+          className={`admin-bloc admin-bloc--bleu ${CLASSE_ANCRE_SECTION}`}
         >
+          <h2 className="admin-bloc-titre">
+            Informations générales
+            {trainingSession.estTestInterne && <BadgeEssai />}
+          </h2>
           {trainingSession.estTestInterne && (
             <p className="mb-[var(--space-admin-3)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]">
               Session d&apos;essai interne : pièces numérotées hors suite légale et filigranées,
@@ -935,6 +932,11 @@ export default async function SessionHubPage({ params, searchParams }: PageProps
             base={base}
             formation={trainingSession.formation}
             client={trainingSession.client}
+            hrefClient={
+              trainingSession.client !== null
+                ? `/${locale}/${adminPrefix}/qualiopi/clients/${trainingSession.client.id}`
+                : null
+            }
             modaliteLibelle={MODALITE_LABELS[trainingSession.modalite] ?? trainingSession.modalite}
             financementLibelle={
               trainingSession.financementType !== null
@@ -970,7 +972,7 @@ export default async function SessionHubPage({ params, searchParams }: PageProps
             }
             conflits={conflitsFormateur}
           />
-        </AdminBloc>
+        </section>
         {/* QNC L03 — recueil du besoin (temps 1) : rien tant que `qualiopi.recueil.actif`
               est éteint pour cette session. */}
         <RecueilBesoinSession sessionId={id} />

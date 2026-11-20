@@ -1,13 +1,12 @@
 // @vitest-environment jsdom
 import { render } from "@testing-library/react";
 import { describe, it, expect } from "vitest";
-import { AdminBloc } from "@/components/admin/ui/AdminBloc";
 import { CellulesInfosSession } from "../CellulesInfosSession";
 
 describe("fiche session : cellules de #infos (contrat E2E 01-presentiel)", () => {
   it("`#infos > div > div` filtré sur « Modalité » = exactement 1 cellule, avec la modalité", () => {
     const { container } = render(
-      <AdminBloc id="infos" teinte="bleu" titre="Informations générales">
+      <section id="infos">
         <CellulesInfosSession
           locale="fr"
           adminPrefix="x"
@@ -25,7 +24,7 @@ describe("fiche session : cellules de #infos (contrat E2E 01-presentiel)", () =>
           sessionParentId={null}
           sessionReporteeId={null}
         />
-      </AdminBloc>,
+      </section>,
     );
     const cellules = Array.from(container.querySelectorAll("#infos > div > div")).filter((c) =>
       /^Modalité/.test((c.textContent ?? "").trim()),

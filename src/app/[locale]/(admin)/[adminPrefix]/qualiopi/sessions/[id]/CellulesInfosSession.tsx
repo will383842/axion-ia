@@ -18,6 +18,8 @@ export function CellulesInfosSession(props: {
   base: string;
   formation: { id: string; numero: string; titre: string };
   client: { id: string; numero: string; raisonSociale: string } | null;
+  /** Lien vers la fiche client, construit par la page. */
+  hrefClient?: string | null;
   modaliteLibelle: string;
   financementLibelle: string;
   inscrits: number;
@@ -35,6 +37,7 @@ export function CellulesInfosSession(props: {
     base,
     formation,
     client,
+    hrefClient = null,
     modaliteLibelle,
     financementLibelle,
     inscrits,
@@ -99,12 +102,13 @@ export function CellulesInfosSession(props: {
           <p className={infoLabelCls}>Client</p>
           <p className={infoValueCls}>
             {/* 🔴 L2 — menait à la LISTE des clients : on y cherchait le sien. */}
-            <Link
-              href={`/${locale}/${adminPrefix}/qualiopi/clients/${client.id}`}
-              className={lienCls}
-            >
-              {client.numero}
-            </Link>
+            {hrefClient !== null ? (
+              <Link href={hrefClient} className={lienCls}>
+                {client.numero}
+              </Link>
+            ) : (
+              client.numero
+            )}
           </p>
           <p className={sousCls}>{client.raisonSociale}</p>
         </div>
