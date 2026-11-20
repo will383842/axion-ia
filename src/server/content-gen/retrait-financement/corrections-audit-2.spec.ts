@@ -55,7 +55,7 @@ describe("2. décompte annoncé sans « : » avant l'énumération", () => {
 describe("3. liste : jamais remplacée en entier si une puce seulement parle de financement", () => {
   it("« gains financiers : » → seule la puce visée est retirée", () => {
     const html =
-      "<p>Voici les gains financiers :</p><ul><li>Réduction des coûts de support</li><li>Formation financée par votre OPCO</li><li>Gain de temps</li></ul>";
+      "<p>Voici les gains financiers :</p><ul><li>Réduction des coûts de support</li><li>Financement par votre OPCO</li><li>Gain de temps</li></ul>";
     const out = reecrireHtml(html, "fr").valeur;
     expect(out).toContain("Réduction des coûts de support");
     expect(out).toContain("Gain de temps");

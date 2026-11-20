@@ -13,7 +13,9 @@ import {
   type Proposition,
 } from "./plan";
 import {
+  capterRegles,
   classer,
+  motsNonRetirables,
   reecrireFaq,
   reecrireHtml,
   reecrireJson,
@@ -261,6 +263,20 @@ const PHRASES: Array<[string, Langue]> = [
   ["Les dirigeants apprécient cette formation finançable via le CPF.", "fr"],
   ["Notre formation de trois jours sur l'IA générative est finançable par votre OPCO.", "fr"],
   ["Formation sur mesure de 3 jours et accompagnement, finançable par votre OPCO", "fr"],
+  // phrases de la passe 7 (points A, A4, B)
+  ["Formation OPCO de deux jours sur ChatGPT.", "fr"],
+  ["Atelier ChatGPT financé par l'OPCO.", "fr"],
+  ["Audit puis financement OPCO.", "fr"],
+  ["Diagnostic et financement OPCO.", "fr"],
+  ["Formation éligible CPF.", "fr"],
+  ["Ateliers (OPCO) sur ChatGPT.", "fr"],
+  ["Nous proposons un accompagnement complet (audit, formation et financement OPCO).", "fr"],
+  ["Nos ateliers (formation certifiée Qualiopi) durent deux jours.", "fr"],
+  ["OPCO, CPF : nous détaillons ici les trois piliers de notre méthode.", "fr"],
+  ["Prise en charge OPCO : comptez 3 jours de formation intra-entreprise.", "fr"],
+  ["Les financements OPCO couvrent notre audit — un diagnostic de 2 jours de vos processus.", "fr"],
+  ["Financement OPCO possible pour l'atelier ChatGPT de Lyon.", "fr"],
+  ["OPCO funding covers our two-day ChatGPT workshop in Lyon.", "en"],
 ];
 
 const doc = (texte: string) => ({
@@ -278,33 +294,10 @@ const texteJson = (n: unknown): string => {
 };
 const htmlTexte = (h: string) => h.replace(/<[^>]+>/g, " ");
 
-const mots = (s: string) =>
-  s
-    .toLowerCase()
-    .replace(/[.,:;()!?]/g, " ")
-    .split(/\s+/)
-    .filter(Boolean);
-const NEUTRES =
-  /^(?:et|ou|and|or|\d+|le|la|les|l'|un|une|des|d'|du|de|the|a|an|your|votre|vos|par|via|avec)$/;
-const FINANCEMENT_DEBUT =
-  /^(?:financ|prise|prises|opco|cpf|subvention|rembours|funding|fund|funded|ligible|éligible|qualiopi|certifi|france|travail|charge|aides?|fonds)/;
-
-/** Les mots perdus, dans l'ordre de l'entrée. */
-const perdus = (entree: string, sortie: string): string[] => {
-  const reste = mots(sortie);
-  const p: string[] = [];
-  for (const m of mots(entree)) {
-    const k = reste.indexOf(m);
-    if (k >= 0) reste.splice(k, 1);
-    else p.push(m);
-  }
-  return p;
-};
-
 describe("4. propriété : les 4 points d'entrée donnent le même verdict, et le fragment perdu est financier", () => {
   it.each(PHRASES)("%s", (phrase, langue) => {
     const voisines = (x: string) => `Atelier pratique. ${x} Suivi inclus.`;
-    const entrees = {
+    const { valeur: entrees, regles } = capterRegles(() => ({
       p: reecrireHtml(`<p>${voisines(phrase)}</p>`, langue),
       li: reecrireHtml(`<ul><li>Audit.</li><li>${phrase}</li><li>Suivi.</li></ul>`, langue),
       liBalise: reecrireHtml(
@@ -312,7 +305,8 @@ describe("4. propriété : les 4 points d'entrée donnent le même verdict, et l
         langue,
       ),
       json: reecrireJson(doc(phrase), langue),
-    };
+    }));
+    const nombresCorriges = regles.some((x) => x.startsWith("décompte corrigé"));
     const verdicts = Object.fromEntries(
       Object.entries(entrees).map(([k, r]) => [k, classer(r as Resultat<unknown>)]),
     );
@@ -332,20 +326,16 @@ describe("4. propriété : les 4 points d'entrée donnent le même verdict, et l
       expect(entrees.p.valeur).toBe(`<p>${voisines(phrase)}</p>`);
       return;
     }
-    // Réécrit : chaque point d'entrée ne perd que des mots qui commencent par un mot de financement.
+    // Réécrit : VERROU — tous les mots perdus appartiennent à LEXIQUE_RETIRABLE (mots de financement,
+    // mots-outils, mots des phrases standard), sur les points d'entrée texte, <p>, <li> et JSON.
     const sorties: Array<[string, string, string]> = [
       ["p", voisines(phrase), htmlTexte(entrees.p.valeur as string)],
+      ["li", `Audit. ${phrase} Suivi.`, htmlTexte(entrees.li.valeur as string)],
       ["json", texteJson(doc(phrase)), texteJson(entrees.json.valeur)],
     ];
     if (t.modifie) sorties.push(["texte", phrase, t.valeur]);
-    for (const [k, entree, sortie] of sorties) {
-      const pertes = perdus(entree, sortie).filter((m) => !NEUTRES.test(m));
-      if (pertes.length === 0) continue;
-      const hors = pertes.filter((m) => !mots(phrase).includes(m));
-      expect(hors).toEqual([]);
-      // 1er mot perdu qui n'est pas un mot de liaison : un mot de financement.
-      expect([k, pertes[0]!, FINANCEMENT_DEBUT.test(pertes[0]!)]).toEqual([k, pertes[0]!, true]);
-    }
+    for (const [k, entree, sortie] of sorties)
+      expect([k, motsNonRetirables(entree, sortie, nombresCorriges)]).toEqual([k, []]);
   });
 
   it("FAQ : la réponse suit la même règle que le corps", () => {

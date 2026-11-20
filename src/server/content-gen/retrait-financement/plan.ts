@@ -16,6 +16,7 @@ import {
   reecrireHtml,
   reecrireJson,
   reecrireTexte,
+  motsNonRetirables,
 } from "./regles";
 
 export const ACTION_RETRAIT = "retrait-financement-2026-11";
@@ -331,7 +332,12 @@ export function reecrirePerks(perks: unknown): {
       if (r.ambigus.length > 0) {
         // « champ entièrement visé » : toutes les phrases du libellé sont PURES (sujet = financement,
         // sinon l'ambigu serait « phrase mixte ») → l'avantage de financement est retiré, comme avant.
-        if (r.ambigus.every((a) => a.startsWith("champ entièrement visé"))) retire = true;
+        // Verrou final : le libellé disparaît en entier, donc tous ses mots doivent être retirables.
+        if (
+          r.ambigus.every((a) => a.startsWith("champ entièrement visé")) &&
+          motsNonRetirables(v, "").length === 0
+        )
+          retire = true;
         else {
           ambigu = true;
           ambigus.push(`avantage ${cle} ambigu : « ${v.slice(0, 160)} »`);

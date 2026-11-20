@@ -105,7 +105,7 @@ describe("2. un paragraphe qui parle d'autre chose n'est jamais remplacé en ent
 
   it("deux phrases de financement sur quatre : retirées seules (plus de remplacement)", () => {
     const html =
-      "<p>Nous formons vos équipes. Les OPCO financent la formation. Éligible au CPF, la formation est courte. Un conseiller vous suit.</p>";
+      "<p>Nous formons vos équipes. Le financement OPCO est possible. Éligible au CPF, la formation est courte. Un conseiller vous suit.</p>";
     const r = reecrireHtml(html, "fr");
     // Règle « formes prouvées » : « Éligible au CPF, la formation est courte » mêle visé et non visé.
     expect(r.ambigus.length).toBeGreaterThan(0);
@@ -114,7 +114,7 @@ describe("2. un paragraphe qui parle d'autre chose n'est jamais remplacé en ent
 
   it("paragraphe ENTIÈREMENT consacré au financement : phrase standard", () => {
     const r = reecrireHtml(
-      "<p>Les OPCO financent la formation. Un dossier AIF peut aussi aider.</p>",
+      "<p>Le financement OPCO est possible. Le financement AIF est possible.</p>",
       "fr",
     );
     expect(r.valeur).toBe(`<p>${PHRASE_FR}</p>`);
@@ -289,7 +289,7 @@ describe("6. ambigus : règles ciblées", () => {
       id: "f1",
       questionFr: "OpenClassrooms est-il reconnu par France Compétences ?",
       answerFr:
-        "Oui, des parcours reconnus. Éligibles au CPF pour les particuliers. Notre offre est sur mesure.",
+        "Oui, des parcours reconnus. Le financement CPF est possible. Notre offre est sur mesure.",
       questionEn: "Is it recognised?",
       answerEn: "Yes.",
       metaTitle: null,
@@ -303,7 +303,7 @@ describe("6. ambigus : règles ciblées", () => {
         {
           question: "OpenClassrooms est-il reconnu par France Compétences ?",
           answer:
-            "Oui, des parcours reconnus. Éligibles au CPF pour les particuliers. Notre offre est sur mesure.",
+            "Oui, des parcours reconnus. Le financement CPF est possible. Notre offre est sur mesure.",
         },
       ],
       keyTakeaway: null,
@@ -407,7 +407,7 @@ describe("8. bodyJson", () => {
         type: "paragraph",
         content: [
           { type: "text", text: "Nous formons vos équipes. " },
-          { type: "text", text: "Les OPCO financent la formation.", marks: [{ type: "bold" }] },
+          { type: "text", text: "Le financement OPCO est possible.", marks: [{ type: "bold" }] },
           { type: "text", text: " Un conseiller vous suit." },
         ],
       },
@@ -420,7 +420,7 @@ describe("8. bodyJson", () => {
       locale: "fr",
       title: "Guide",
       excerpt: null,
-      body: "<p>Intro.</p><p>Nous formons vos équipes. Les OPCO financent la formation. Un conseiller vous suit.</p>",
+      body: "<p>Intro.</p><p>Nous formons vos équipes. Le financement OPCO est possible. Un conseiller vous suit.</p>",
       bodyJson: doc,
       bodyText: "x",
       metaTitle: null,

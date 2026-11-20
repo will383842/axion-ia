@@ -146,9 +146,11 @@ describe("reecrireTexte / reecrireHtml — extraits RÉELS de la production (18/
       },
       "fr",
     );
-    expect(r.modifie).toBe(true);
-    expect(r.valeur.question).toBe(QUESTION_FR);
-    expect(r.valeur.reponse).toBe(PHRASE_FR);
+    // Verrou final : « formations », « certifiantes », « orientons »… ne sont pas des mots de
+    // financement : la FAQ est gardée telle quelle, ambiguë (un humain tranche).
+    expect(classer(r)).toBe("ambigu");
+    expect(r.modifie).toBe(false);
+    expect(r.valeur.question).toBe("Les formations sont-elles financées ?");
   });
 
   it("fragment « (CPF, OPCO, France Travail) » retiré seul", () => {
@@ -169,7 +171,7 @@ describe("reecrireTexte / reecrireHtml — extraits RÉELS de la production (18/
 describe("structure HTML", () => {
   it("H2 sur le financement : section entière → un paragraphe standard", () => {
     const html =
-      "<h2>Un déploiement par étapes</h2><p>On commence petit.</p><h2>Financement et OPCO</h2><p>Premier paragraphe.</p><p>Second paragraphe.</p><ul><li>a</li></ul><h2>Conclusion</h2><p>Parlons-en.</p>";
+      "<h2>Un déploiement par étapes</h2><p>On commence petit.</p><h2>Financement et OPCO</h2><p>Le financement OPCO est possible.</p><p>Un dossier AIF est possible.</p><ul><li>Prise en charge OPCO</li></ul><h2>Conclusion</h2><p>Parlons-en.</p>";
     const r = reecrireHtml(html, "fr");
     expect(r.valeur).toBe(
       `<h2>Un déploiement par étapes</h2><p>On commence petit.</p><p>${PHRASE_FR}</p><h2>Conclusion</h2><p>Parlons-en.</p>`,
@@ -204,7 +206,7 @@ describe("structure HTML", () => {
   });
 
   it("liste : intro sur le financement → intro et liste remplacées", () => {
-    const html = "<p>Les financements possibles :</p><ul><li>OPCO</li><li>Fonds propres</li></ul>";
+    const html = "<p>Les financements possibles :</p><ul><li>OPCO</li><li>Fonds d'aide</li></ul>";
     expect(reecrireHtml(html, "fr").valeur).toBe(`<p>${PHRASE_FR}</p>`);
   });
 
@@ -241,7 +243,7 @@ describe("liens et attributs", () => {
 
   it("href conservé quand la phrase est retirée autour d'un lien neutre", () => {
     const html =
-      '<p>Le rapport est remis sous trois jours. Nous formons vos équipes. Les OPCO financent la formation. <a href="/fr/blog/opco-x">Lire la suite</a> Un conseiller vous suit. On y va pas à pas.</p>';
+      '<p>Le rapport est remis sous trois jours. Nous formons vos équipes. Le financement OPCO est possible. <a href="/fr/blog/opco-x">Lire la suite</a> Un conseiller vous suit. On y va pas à pas.</p>';
     const r = reecrireHtml(html, "fr");
     expect(r.valeur).toContain('href="/fr/blog/opco-x"');
   });
@@ -350,7 +352,7 @@ describe("Tiptap JSON", () => {
 describe("idempotence (une deuxième passe ne change rien)", () => {
   const cas = [
     "<h2>Financement OPCO</h2><p>Via votre OPCO.</p><h2>Suite</h2><p>Texte.</p>",
-    "<p>Le rapport est remis sous trois jours. Les OPCO financent la formation. Nous formons vos équipes. Un conseiller vous suit. On avance.</p>",
+    "<p>Le rapport est remis sous trois jours. Le financement OPCO est possible. Nous formons vos équipes. Un conseiller vous suit. On avance.</p>",
     "<ul><li>Audit</li><li>Éligible au CPF</li></ul>",
     `<p><a href="${LIEN_FR}">le financement OPCO</a></p>`,
     "<h3>Peut-on financer via un OPCO ?</h3><p>Oui, via un OPCO.</p>",

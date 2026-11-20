@@ -212,7 +212,10 @@ function phrases(s: string): string[] {
 // ───────────────────────────── journal des règles ciblées ─────────────────────────────
 
 let journal: string[] | null = null;
+/** Nombre de décomptes corrigés depuis le début du processus (lu par le verrou final). */
+let decomptesCorriges = 0;
 function noter(regle: string): void {
+  if (regle.startsWith("décompte corrigé")) decomptesCorriges++;
   journal?.push(regle);
 }
 /** Exécute `f` en recueillant les règles ciblées appliquées (pour le rapport). */
@@ -275,6 +278,8 @@ function phraseCorrecte(resultat: string, origine: string, motsMin = 4): boolean
   if (corps.split(/\s+/).filter(Boolean).length < motsMin) return false;
   if (estVisee(resultat)) return false;
   if (/,\s*,|\(\s*\)|\s[,.]|,\s*[.!?]\s*$|\s{2,}/.test(resultat)) return false;
+  // Parenthèses équilibrées : « (audit et formation. » est une coupure ratée.
+  if ((resultat.match(/\(/g) ?? []).length !== (resultat.match(/\)/g) ?? []).length) return false;
   if (MOTS_PENDANTS.test(corps)) return false;
   const base = origine.replace(/[\s.!?…]+$/, "");
   return corps.length >= base.length * 0.4;
@@ -421,19 +426,20 @@ function formeSimple(corps: string): boolean {
 function melange(brut: string): boolean {
   const segs = brut
     .replace(/[.!?…\s]+$/, "")
-    .split(/,\s+|;\s+|\s+(?:et\/ou|and\/or|ainsi que|tandis que|et|ou|puis|and|or)\s+/i)
-    .map((x) => x.trim())
+    .split(
+      /,\s+|;\s+|\s*[:：]\s+|\s+[—–]\s+|\s*\(|\s+(?:et\/ou|and\/or|ainsi que|tandis que|et|ou|puis|and|or)\s+/i,
+    )
+    .map((x) => x.replace(/^[\s)]+|[\s)]+$/g, ""))
     .filter((x) => x !== "");
   if (segs.length < 2 || !segs.some((x) => estVisee(x))) return false;
-  return segs.some(
-    (x, i) =>
-      !estVisee(x) && !MOT_FINANCEMENT.test(normaliser(x)) && (i > 0 || x.split(/\s+/).length >= 2),
-  );
+  // Tout segment non visé et non financier compte, même un premier segment d'un seul mot
+  // (« Audit puis financement OPCO », « Diagnostic et financement OPCO »).
+  return segs.some((x) => !estVisee(x) && !MOT_FINANCEMENT.test(normaliser(x)));
 }
 
 /** Premier mot plein d'un élément d'énumération : un mot de financement (et pas un service qualifié). */
 const ELEMENT_FINANCEMENT =
-  /^(?:(?:le|la|les|l'|un|une|des|d'un|d'une|du)\s*)?(?:financ|pris(?:e|es) en charge|opcos?\b|cpf\b|subvention|rembours|aides? (?:financi[eè]res?|opcos?\b|cpf\b))/i;
+  /^(?:(?:le|la|les|l'|un|une|des|d'un|d'une|du|votre|vos|notre|nos|ce|cette|ces)\s*)?(?:financ|pris(?:e|es) en charge|opcos?\b|cpf\b|france travail|subvention|rembours|aides? (?:financi[eè]res?|opcos?\b|cpf\b))/i;
 function elementDeFinancement(segment: string): boolean {
   return ELEMENT_FINANCEMENT.test(normaliser(segment).trim());
 }
@@ -451,8 +457,10 @@ function fragmenter(phrase: string): Fragment | null {
   const ok = (c: string): boolean => phraseCorrecte(c + fin, phrase);
 
   // 1. Parenthèse visée.
+  // Retirée seulement si son contenu COMMENCE par un mot de financement et ne mêle aucun segment
+  // non visé : « (audit, formation et financement OPCO) » contient de vrais services → ambigu.
   const sansParenthese = corps0.replace(/\s*\(([^()]*)\)/g, (tout, dedans: string) =>
-    estVisee(dedans) ? "" : tout,
+    estVisee(dedans) && elementDeFinancement(dedans) && !melange(dedans) ? "" : tout,
   );
   if (sansParenthese !== corps0 && ok(sansParenthese)) {
     noter("fragment entre parenthèses retiré");
@@ -540,18 +548,25 @@ const MOT_FINANCEMENT =
   /financ|\bfund|pris(?:e|es)? en charge|OPCO|\bCPF\b|France Travail|P[ôo]le[- ]emploi|qualiopi|[ée]ligible|rembours|subvention|\bAIF\b|datadock|\bEDOF\b|subrogation|mon ?compte ?formation|FNE/i;
 
 /**
- * Sujet de la phrase : un mot de financement dans ses TROIS premiers mots. Une mention qui
- * qualifie un autre sujet (« formation de deux jours éligible au CPF », « audits Qualiopi »)
- * ne rend PAS la phrase pure : en cas de doute, elle n'est pas pure.
+ * Sujet de la phrase : son PREMIER MOT PLEIN (après un déterminant ou un possessif) est un mot de
+ * financement. Un sigle qui qualifie un autre sujet (« Formation OPCO… », « Atelier financé par
+ * l'OPCO ») ou suit un vrai service (« Audit puis financement OPCO ») ne rend PAS la phrase pure.
  */
 const SUJET_FINANCEMENT =
-  /financ|\bfund|pris(?:e|es) en charge|\bopcos?\b|\bcpf\b|france travail|p[ôo]le[- ]emploi|subvention|rembours|\baif\b|\bedof\b|subrogation|mon ?compte ?formation|\bfne\b/i;
+  /^(?:financ|fund|pris(?:e|es) en charge|opcos?\b|cpf\b|france travail|p[ôo]le[- ]emploi|subvention|rembours|aif\b|edof\b|subrogation|mon ?compte ?formation|fne\b)/i;
+const DETERMINANT_DEBUT =
+  /^(?:(?:le|la|les|un|une|des|du|de|votre|vos|notre|nos|ce|cette|ces|son|sa|ses|leur|leurs|the|a|an|your|our|this|these|its|their)\s+|(?:l|d)'\s*)/i;
 
 function estPur(texte: string, html = ""): boolean {
   // Balise en ligne : « pur » seulement si la phrase visée est entière (aucun élément non visé).
   if (/<[a-z][^>]*>/i.test(html) && melange(texte)) return false;
-  const debut = normaliser(texte).trim().split(/\s+/).slice(0, 3).join(" ");
-  return SUJET_FINANCEMENT.test(debut);
+  let debut = normaliser(texte)
+    .trim()
+    .replace(/^[^\p{L}\p{N}]+/u, "");
+  for (let i = 0; i < 4 && DETERMINANT_DEBUT.test(debut); i++)
+    debut = debut.replace(DETERMINANT_DEBUT, "");
+  // Phrase faite UNIQUEMENT de mots du lexique fermé (« Dossier AIF ») : rien de non financier à perdre.
+  return SUJET_FINANCEMENT.test(debut) || motsNonRetirables(texte, "").length === 0;
 }
 
 interface SortiePhrase {
@@ -559,6 +574,8 @@ interface SortiePhrase {
   texte: string;
   pur?: boolean;
   ambigu?: string;
+  /** `texte` est du HTML à remettre tel quel (puce dont un fragment a été retiré). */
+  html?: boolean;
 }
 
 /**
@@ -588,8 +605,14 @@ function traiterPhrase(p: string, estHtml: boolean, court: boolean): SortiePhras
  * Une puce (HTML ou JSON : même règle). La puce entière est analysée, balises en ligne comprises :
  * retirée seulement si elle est pure et sans autre phrase ; sinon ambiguë (jamais de perte muette).
  */
-function verdictPuce(contenu: string, estHtml: boolean): SortiePhrase {
-  const s = traiterPhrase(contenu, estHtml, true);
+function verdictPuce(contenu0: string, estHtml: boolean): SortiePhrase {
+  // Même prétraitement qu'un paragraphe (`traiterBloc`) : « (OPCO) » seul part proprement, de sorte
+  // que « Ateliers (OPCO) sur ChatGPT. » a le même verdict en puce et en paragraphe.
+  const contenu = retirerFragments(contenu0);
+  const s0 = traiterPhrase(contenu, estHtml, true);
+  if (s0.type === "garde" && contenu !== contenu0)
+    return { type: "modifie", texte: contenu.replace(/\s{2,}/g, " ").trim(), html: estHtml };
+  const s = s0;
   if (s.type !== "retire") return s;
   const ps = phrases(contenu).map((p) => traiterPhrase(p, estHtml, true));
   if (ps.some((x) => x.type === "garde"))
@@ -662,6 +685,196 @@ function traiterBloc(contenu: string, langue: Langue, estHtml: boolean): Bloc {
   };
 }
 
+// ───────────────────────────── VERROU FINAL ─────────────────────────────
+//
+// Garantie unique, appliquée à TOUTE réécriture automatique (texte, `<p>`, `<li>`, Tiptap, FAQ,
+// avantages, blocs structurels) : on calcule les mots RETIRÉS (multiensemble des mots de l'origine
+// moins ceux du résultat, casse/accents normalisés, HTML enlevé). Si UN SEUL mot retiré n'est pas
+// dans le lexique fermé `LEXIQUE_RETIRABLE`, la réécriture est ANNULÉE : la valeur d'origine est
+// gardée et le cas devient AMBIGU (à trancher par un humain). Les règles de forme (A1-B) restent des
+// améliorations ; c'est ce verrou qui garantit qu'aucun mot non financier ne disparaît en silence.
+// Seule exception : le nombre d'un décompte corrigé (« sept étapes » → « six étapes »), déjà prouvé.
+
+function motsDe(texte: string): string[] {
+  return normaliser(texte)
+    .normalize("NFD")
+    .replace(/[̀-ͯ]/g, "")
+    .toLowerCase()
+    .split(/[^a-z0-9]+/)
+    .filter((x) => x !== "");
+}
+
+/** Mots-outils : articles, prépositions, conjonctions, pronoms, auxiliaires être/avoir/pouvoir. */
+const MOTS_OUTILS = new Set(
+  // articles, déterminants, possessifs
+  (
+    "le la les l un une des du de d au aux ce cet cette ces c son sa ses leur leurs votre vos notre nos mon ma mes ton ta tes " +
+    // prépositions, conjonctions, adverbes de liaison, élisions
+    "a en et ou ni mais or donc car puis que qu qui dont par pour sur sous avec sans dans chez entre vers selon comme si via ainsi " +
+    "tandis voire alors lorsque quand aussi s n j m t y " +
+    // pronoms
+    "je tu il elle on nous vous ils elles me te se lui en y ne pas " +
+    // être
+    "etre suis es est sommes etes sont etais etait etions etiez etaient fus fut serai seras sera serons serez seront " +
+    "serais serait seraient soit soient sois soyez soyons ete etant " +
+    // avoir
+    "avoir ai as ont avons avez avais avait avaient aurai auras aura aurons aurez auront aurait auraient ait aient eu ayant ayez " +
+    // pouvoir
+    "pouvoir peux peut pouvons pouvez peuvent pouvais pouvait pouviez pouvaient pourrai pourras pourra pourrons pourrez " +
+    "pourront pourrait pourraient puisse puissent puissiez pu " +
+    // anglais : articles, prépositions, pronoms, auxiliaires
+    "the an of by with to for and in on at as from if this that these those its their your our you we it they " +
+    "through per also but which who " +
+    "be is are was were been being am have has had can could may might will would"
+  ).split(/\s+/),
+);
+
+/** Mots de financement (stems) : financ*, rembours*, subvention*, éligib*, fund*… dressés depuis les règles. */
+const RACINES_FINANCEMENT =
+  /^(?:financ|rembours|reimburs|subvention|eligib|fund|opco|qualiopi|datadock|subrogation|mobilis)/;
+
+/** Mots de financement (exacts), y compris les qualificatifs d'un financement (« possible »). */
+const MOTS_FINANCEMENT_EXACTS = new Set(
+  (
+    "cpf edof aif fne aide aides dispositif dispositifs organisme organismes fonds cout couts " +
+    "certification certifie certifiee certifies certifiees qualite " +
+    "possible possibles disponible disponibles accessible accessibles envisageable envisageables " +
+    "available totale totales partielle partielles totalement partiellement integral integrale oui non yes no " +
+    "dossier dossiers"
+  ).split(/\s+/),
+);
+
+/** Locutions de financement : leurs mots sont retirables ensemble (jamais isolément). */
+const LOCUTIONS_FINANCEMENT: readonly string[] = [
+  "france travail",
+  "pole emploi",
+  "france competences",
+  "prise en charge",
+  "prises en charge",
+  "pris en charge",
+  "prise charge",
+  "mon compte formation",
+  "compte personnel de formation",
+  "personal training account",
+  "plan de developpement des competences",
+  "skills development plan",
+  "fonds d assurance formation",
+  "fonds assurance formation",
+  "fne formation",
+  "certification qualite",
+  "certifie qualite",
+  "taken care of",
+  "covered by",
+];
+
+/** Mots des phrases standard de remplacement (la réécriture peut retirer une phrase standard). */
+const MOTS_PHRASES_STANDARD = [PHRASE_FR, PHRASE_EN, QUESTION_FR, QUESTION_EN].flatMap(motsDe);
+
+/**
+ * LEXIQUE FERMÉ : seuls ces mots peuvent disparaître dans une réécriture automatique =
+ * mots de financement (racines, exacts, locutions) ∪ mots-outils ∪ mots des phrases standard.
+ */
+export const LEXIQUE_RETIRABLE = {
+  outils: MOTS_OUTILS,
+  racines: RACINES_FINANCEMENT,
+  exacts: MOTS_FINANCEMENT_EXACTS,
+  locutions: LOCUTIONS_FINANCEMENT,
+  phrasesStandard: new Set(MOTS_PHRASES_STANDARD),
+};
+
+function motRetirable(m: string): boolean {
+  return (
+    MOTS_OUTILS.has(m) ||
+    MOTS_FINANCEMENT_EXACTS.has(m) ||
+    RACINES_FINANCEMENT.test(m) ||
+    LEXIQUE_RETIRABLE.phrasesStandard.has(m)
+  );
+}
+
+function estNombre(m: string): boolean {
+  return /^\d+$/.test(m) || m in NOMBRES;
+}
+
+/**
+ * Phrase « pure » pour le remplacement d'un BLOC (section, FAQ, ligne, liste) : visée ET pure (A1),
+ * ou entièrement faite de mots du lexique fermé (« Oui. », « Via votre OPCO. »).
+ */
+function phrasePure(p: string): boolean {
+  return (estVisee(p) && estPur(p)) || motsNonRetirables(p, "").length === 0;
+}
+/** Toutes les phrases du texte sont pures : le bloc peut être remplacé sans perdre d'autre sujet. */
+function textePur(texte: string): boolean {
+  return phrases(texte).every(phrasePure);
+}
+
+/** Mots retirés (multiensemble origine − résultat), dans l'ordre de l'origine. */
+export function motsRetires(origine: string, resultat: string): string[] {
+  const reste = new Map<string, number>();
+  for (const m of motsDe(resultat)) reste.set(m, (reste.get(m) ?? 0) + 1);
+  const perdus: string[] = [];
+  for (const m of motsDe(origine)) {
+    const n = reste.get(m) ?? 0;
+    if (n > 0) reste.set(m, n - 1);
+    else perdus.push(m);
+  }
+  return perdus;
+}
+
+/**
+ * Mots retirés qui n'appartiennent PAS au lexique fermé (liste vide = réécriture permise).
+ * `nombresCorriges` : un décompte corrigé a eu lieu, ses nombres sont exemptés.
+ */
+export function motsNonRetirables(
+  origine: string,
+  resultat: string,
+  nombresCorriges = false,
+): string[] {
+  const perdus = new Map<string, number>();
+  for (const m of motsRetires(origine, resultat)) perdus.set(m, (perdus.get(m) ?? 0) + 1);
+  // Locutions : consommées (une occurrence de l'origine à la fois) quand tous leurs mots sont perdus.
+  const tokens = motsDe(origine);
+  for (const loc of LOCUTIONS_FINANCEMENT) {
+    const lm = loc.split(" ");
+    for (let i = 0; i + lm.length <= tokens.length; i++) {
+      if (!lm.every((w, k) => tokens[i + k] === w)) continue;
+      const besoin = new Map<string, number>();
+      for (const w of lm) besoin.set(w, (besoin.get(w) ?? 0) + 1);
+      if ([...besoin].every(([w, n]) => (perdus.get(w) ?? 0) >= n))
+        for (const [w, n] of besoin) perdus.set(w, (perdus.get(w) ?? 0) - n);
+    }
+  }
+  const hors: string[] = [];
+  for (const [m, n] of perdus) {
+    if (n <= 0 || motRetirable(m) || (nombresCorriges && estNombre(m))) continue;
+    for (let k = 0; k < n; k++) hors.push(m);
+  }
+  return hors;
+}
+
+/**
+ * Verrou : si la réécriture `r` (valeur `avant` → `apres`) retire un mot hors lexique, elle est
+ * annulée : valeur d'origine, `modifie: false`, cas AMBIGU.
+ */
+function verrouiller<T>(
+  r: Resultat<T>,
+  valeurOrigine: T,
+  avant: string,
+  apres: () => string,
+  compteurAvant: number,
+): Resultat<T> {
+  if (!r.modifie) return r;
+  const hors = motsNonRetirables(avant, apres(), decomptesCorriges > compteurAvant);
+  if (hors.length === 0) return r;
+  return {
+    valeur: valeurOrigine,
+    modifie: false,
+    ambigus: [
+      ...r.ambigus,
+      `verrou : réécriture annulée, mots non financiers retirés (${[...new Set(hors)].slice(0, 8).join(", ")}) : « ${avant.slice(0, 120)} »`,
+    ],
+  };
+}
+
 // ───────────────────────────── résultats ─────────────────────────────
 
 export interface Resultat<T = string> {
@@ -682,6 +895,16 @@ function sansSuffixeFinancement(s: string): string {
  * jamais réécrit seul → ambigu.
  */
 export function reecrireTexte(
+  texte: string,
+  langue: Langue,
+  options: { titre?: boolean } = {},
+): Resultat {
+  const c = decomptesCorriges;
+  const r = reecrireTexteInterne(texte, langue, options);
+  return verrouiller(r, texte, texte, () => r.valeur, c);
+}
+
+function reecrireTexteInterne(
   texte: string,
   langue: Langue,
   options: { titre?: boolean } = {},
@@ -754,6 +977,21 @@ export function reecrireFaq(
 ): Resultat<Faq> & {
   /** Sous-ensemble de `ambigus` qui porte sur la RÉPONSE. */ ambigusReponse: string[];
 } {
+  const c = decomptesCorriges;
+  const r = reecrireFaqInterne(f, langue);
+  const v = verrouiller(
+    r,
+    f,
+    `${f.question} ${htmlVersTexte(f.reponse)}`,
+    () => `${r.valeur.question} ${htmlVersTexte(r.valeur.reponse)}`,
+    c,
+  );
+  if (v === r) return r;
+  const ajoute = v.ambigus.filter((a) => !r.ambigus.includes(a));
+  return { ...v, ambigusReponse: [...r.ambigusReponse, ...ajoute] };
+}
+
+function reecrireFaqInterne(f: Faq, langue: Langue): Resultat<Faq> & { ambigusReponse: string[] } {
   const qVisee = estVisee(f.question);
   const rVisee = estVisee(htmlVersTexte(f.reponse));
   if (!qVisee && !rVisee) {
@@ -768,6 +1006,13 @@ export function reecrireFaq(
   }
   const parleDeFinancement = TITRE_FINANCEMENT.test(normaliser(f.question));
   if (qVisee || parleDeFinancement) {
+    // Remplacement de toute la FAQ : seulement si TOUTES les phrases de la réponse sont pures.
+    if (!textePur(htmlVersTexte(f.reponse))) {
+      const a = [
+        `FAQ à relire (question de financement, réponse mêlée à un autre sujet) : « ${f.question.slice(0, 120)} »`,
+      ];
+      return { valeur: f, modifie: false, ambigus: a, ambigusReponse: a };
+    }
     return {
       valeur: { question: question(langue), reponse: phrase(langue) },
       modifie: true,
@@ -798,12 +1043,14 @@ export function reecrireFaq(
 function reecrireBloc(contenu: string, langue: Langue): Resultat {
   const estHtml = /<[a-z][\s\S]*>/i.test(contenu);
   if (!estHtml) {
+    const c = decomptesCorriges;
     const b = traiterBloc(contenu, langue, false);
-    return {
+    const r: Resultat = {
       valeur: b.vide ? contenu : b.contenu,
       modifie: b.vide ? false : b.modifie,
       ambigus: b.vide ? ["bloc vide après retrait"] : b.ambigus,
     };
+    return verrouiller(r, contenu, contenu, () => r.valeur, c);
   }
   return reecrireHtml(contenu, langue);
 }
@@ -920,6 +1167,13 @@ function traiterTitresDe(racine: Element, d: Document, langue: Langue, ambigus: 
     const finance = TITRE_FINANCEMENT.test(normaliser(titre));
     const concerne = titreVise || (finance && sectionVisee(corps));
     if (!concerne) continue;
+    // Bloc remplacé seulement si TOUTES ses phrases sont visées et pures ; sinon ambigu.
+    if (!corps.every((el) => textePur(htmlVersTexte(el.outerHTML)))) {
+      ambigus.push(
+        `section « ${titre.slice(0, 100)} » : financement mêlé à un autre sujet, à relire`,
+      );
+      continue;
+    }
     const estQuestion = /\?\s*$/.test(titre);
     if (estQuestion) {
       h.textContent = question(langue);
@@ -1008,6 +1262,7 @@ function traiterListes(racine: Element, d: Document, langue: Langue, ambigus: st
       items.every(
         (li) => visees.includes(li) || PUCE_FINANCEUR.test(normaliser(htmlVersTexte(li.innerHTML))),
       ) &&
+      items.every((li) => textePur(htmlVersTexte(li.innerHTML))) &&
       !!intro &&
       intro.tagName === "P" &&
       /:\s*$/.test((intro.textContent ?? "").trim()) &&
@@ -1025,7 +1280,8 @@ function traiterListes(racine: Element, d: Document, langue: Langue, ambigus: st
     for (const li of visees) {
       const sortie = verdictPuce(li.innerHTML, true);
       if (sortie.type === "modifie") {
-        li.textContent = sortie.texte;
+        if (sortie.html) li.innerHTML = sortie.texte;
+        else li.textContent = sortie.texte;
         change = true;
       } else if (sortie.type === "ambigu") ambigus.push(sortie.ambigu ?? "puce ambiguë");
       else if (sortie.type === "retire") {
@@ -1065,6 +1321,12 @@ function traiterTableaux(racine: Element, ambigus: string[]): boolean {
     const autres = cellules.slice(1).map((c) => c.textContent ?? "");
     const v = verdictLigne(cellules[0]!.textContent ?? "", autres);
     if (v === "retirer") {
+      if (!cellules.every((c) => textePur(c.textContent ?? ""))) {
+        ambigus.push(
+          `tableau : ligne mêlant financement et autre contenu, à relire : « ${(tr.textContent ?? "").replace(/\s+/g, " ").trim().slice(0, 100)} »`,
+        );
+        continue;
+      }
       tr.remove();
       modifie = true;
     } else if (v === "ambigu") {
@@ -1133,6 +1395,12 @@ function dedoublonner(racine: Element): boolean {
  * (pas de sérialisation parasite). Idempotent.
  */
 export function reecrireHtml(html: string, langue: Langue): Resultat {
+  const c = decomptesCorriges;
+  const r = reecrireHtmlInterne(html, langue);
+  return verrouiller(r, html, htmlVersTexte(html), () => htmlVersTexte(r.valeur), c);
+}
+
+function reecrireHtmlInterne(html: string, langue: Langue): Resultat {
   const fenetre = new JSDOM(`<!doctype html><body>${html}</body>`).window;
   const d = fenetre.document;
   const racine = d.body;
@@ -1176,6 +1444,18 @@ function paragrapheStandard(langue: Langue): NoeudTiptap {
  * conservé tel quel.
  */
 export function reecrireJson(documentJson: unknown, langue: Langue): Resultat<unknown> {
+  const c = decomptesCorriges;
+  const r = reecrireJsonInterne(documentJson, langue);
+  return verrouiller(
+    r,
+    documentJson,
+    blocsTexteJson(documentJson).join(" "),
+    () => blocsTexteJson(r.valeur).join(" "),
+    c,
+  );
+}
+
+function reecrireJsonInterne(documentJson: unknown, langue: Langue): Resultat<unknown> {
   // JSON stocké sous forme de CHAÎNE : on l'analyse, on réécrit, on re-sérialise (même type).
   if (typeof documentJson === "string") {
     let analyse: unknown;
@@ -1186,12 +1466,12 @@ export function reecrireJson(documentJson: unknown, langue: Langue): Resultat<un
     }
     if (!analyse || typeof analyse !== "object")
       return { valeur: documentJson, modifie: false, ambigus: [] };
-    const r = reecrireJson(analyse, langue);
+    const r = reecrireJsonInterne(analyse, langue);
     return { ...r, valeur: r.modifie ? JSON.stringify(r.valeur) : documentJson };
   }
   // Tableau de nœuds sans racine « doc » : on l'enveloppe, puis on le déballe.
   if (Array.isArray(documentJson)) {
-    const r = reecrireJson({ type: "doc", content: documentJson }, langue);
+    const r = reecrireJsonInterne({ type: "doc", content: documentJson }, langue);
     return {
       ...r,
       valeur: r.modifie ? ((r.valeur as NoeudTiptap).content ?? []) : documentJson,
@@ -1225,6 +1505,12 @@ export function reecrireJson(documentJson: unknown, langue: Langue): Resultat<un
       if (cellules.length === 0 || cellules.every((c) => c.type === "tableHeader")) return true;
       const v = verdictLigne(texteNoeud(cellules[0]!), cellules.slice(1).map(texteNoeud));
       if (v === "retirer") {
+        if (!cellules.every((c) => textePur(texteNoeud(c)))) {
+          ambigus.push(
+            `tableau : ligne mêlant financement et autre contenu, à relire : « ${cellules.map(texteNoeud).join(" ").slice(0, 100)} »`,
+          );
+          return true;
+        }
         modifie = true;
         return false;
       }
@@ -1292,7 +1578,11 @@ export function reecrireJson(documentJson: unknown, langue: Langue): Resultat<un
           const corpsVise = corps.some((e) => phrases(texteNoeud(e)).some((p) => estVisee(p)));
           const concerne =
             estVisee(titre) || (TITRE_FINANCEMENT.test(normaliser(titre)) && corpsVise);
-          if (concerne) {
+          if (concerne && !corps.every((e) => textePur(texteNoeud(e)))) {
+            ambigus.push(
+              `section « ${titre.slice(0, 100)} » : financement mêlé à un autre sujet, à relire`,
+            );
+          } else if (concerne) {
             const estQuestion = /\?\s*$/.test(titre);
             if (estQuestion) {
               sortie.push(
@@ -1334,6 +1624,7 @@ export function reecrireJson(documentJson: unknown, langue: Langue): Resultat<un
         }
         const prec = sortie[sortie.length - 1];
         const introFinancement =
+          items.every((li) => textePur(texteNoeud(li))) &&
           !!prec &&
           prec.type === "paragraph" &&
           /:\s*$/.test(texteNoeud(prec).trim()) &&

@@ -89,7 +89,7 @@ describe("2. énumération coupée : rien de perdu, nombre devant la liste", () 
 describe("3. liste de puces : « coût / budget » ne suffit pas à remplacer toute la liste", () => {
   it("seule la puce financée OPCO est retirée", () => {
     const html =
-      "<p>Les avantages financiers :</p><ul><li>réduction des coûts</li><li>budget maîtrisé</li><li>formation financée OPCO</li></ul>";
+      "<p>Les avantages financiers :</p><ul><li>réduction des coûts</li><li>budget maîtrisé</li><li>financement OPCO</li></ul>";
     const r = reecrireHtml(html, "fr").valeur;
     expect(r).toContain("réduction des coûts");
     expect(r).toContain("budget maîtrisé");
