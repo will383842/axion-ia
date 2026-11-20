@@ -7,6 +7,7 @@ import { describe, expect, it } from "vitest";
 import {
   LEXIQUE_RETIRABLE,
   PHRASE_FR,
+  QUESTION_FR,
   classer,
   motsNonRetirables,
   motsRetires,
@@ -26,7 +27,7 @@ describe("motsRetires / motsNonRetirables", () => {
       "Votre OPCO peut financer la certification Qualiopi de l'organisme.",
       "Funding by your OPCO or through the CPF is possible.",
       "Pôle emploi : prise en charge France Travail, aides et dispositifs, fonds.",
-      "Comment se passe le financement ?",
+      QUESTION_FR,
     ])
       expect([p, motsNonRetirables(p, "")]).toEqual([p, []]);
   });
@@ -50,7 +51,7 @@ describe("motsRetires / motsNonRetirables", () => {
   it("le lexique expose ses ensembles fermés", () => {
     expect(LEXIQUE_RETIRABLE.exacts.has("cpf")).toBe(true);
     expect(LEXIQUE_RETIRABLE.outils.has("est")).toBe(true);
-    expect(LEXIQUE_RETIRABLE.phrasesStandard.has("echange")).toBe(true);
+    expect(LEXIQUE_RETIRABLE.phrasesStandard.has("devis")).toBe(true);
     expect(LEXIQUE_RETIRABLE.exacts.has("formation")).toBe(false);
   });
 });
