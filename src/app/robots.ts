@@ -62,14 +62,22 @@ const COMMON_DISALLOW = [
   // multiplient encore. Aucune de ces URL n'est un document : ce sont des étapes
   // de transaction, toutes déjà en `noindex`.
   //
-  // 🔑 Ne bloque NI `/fr/appel` NI les pages d'offre nues (`/fr/appel/<type>`) :
-  // dans robots.txt, `?` est littéral, donc `/*/appel?` ne vise que les variantes
-  // à chaîne de requête. Verrouillé par `robots.spec.ts`.
+  // 🔑 Ne bloque NI `/fr/appel`, NI ses variantes à paramètres SIMPLES
+  // (`/fr/appel?depuis=entete`, `?rdv=diagnostic&depuis=pied` : cibles des CTA
+  // d'en-tête et de pied de page de tout le site, dont le canonical consolide la
+  // page de conversion), NI les pages d'offre nues (`/fr/appel/<type>`). Dans
+  // robots.txt, `?` est littéral. Seuls les paramètres LIBRES (`utm_*`, `ref=`),
+  // qui viennent de liens externes, sont fermés. L'espace infini, ce sont les
+  // créneaux : `/*/appel/reserver` et `/reporter`.
+  // Variante EN (`/*/book-a-call`) : `/en/*` répond 301 vers FR tant que
+  // EN_LOCALE_ENABLED n'est pas rétabli ; à ce moment-là, ajouter
+  // `/*/book-a-call?*utm_` et `/*/book-a-call?*ref=`.
   "/*/appel/reserver",
   "/*/appel/reporter",
   "/*/appel/annuler",
   "/*/appel/confirme",
-  "/*/appel?",
+  "/*/appel?*utm_",
+  "/*/appel?*ref=",
   "/*/appel/*?",
 ];
 

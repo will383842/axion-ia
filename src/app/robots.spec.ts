@@ -183,22 +183,36 @@ function autorise(chemin: string): boolean {
 }
 
 describe("robots.txt — piège à robots /appel (548 580 requêtes IA en 7 jours)", () => {
-  it("interdit les étapes de transaction et leurs créneaux à paramètres", () => {
+  it("interdit les créneaux, les étapes de transaction et les paramètres libres", () => {
     for (const url of [
       "/fr/appel/reserver",
       "/fr/appel/reserver?debut=2026-11-21T09%3A00%3A00.000Z&rdv=diagnostic&depuis=hero",
+      "/en/appel/reserver?debut=2026-11-21T09%3A00%3A00.000Z&rdv=diagnostic",
       "/fr/appel/reporter?t=jeton&debut=2026-11-21T09%3A00%3A00.000Z",
       "/fr/appel/annuler?t=jeton",
       "/fr/appel/confirme?rdv=diagnostic",
       "/fr/appel?rdv=diagnostic&depuis=footer&utm_source=x",
+      "/fr/appel?utm_campaign=x",
+      "/fr/appel?ref=partenaire",
       "/fr/appel/formateur?depuis=f1",
     ]) {
       expect(autorise(url), `${url} doit être interdit`).toBe(false);
     }
   });
 
-  it("laisse crawlables /fr/appel nu et les pages d'offre nues", () => {
-    for (const url of ["/fr/appel", "/en/appel", "/fr/appel/formateur", "/fr/formations", "/fr"]) {
+  it("laisse crawlables /fr/appel, ses variantes à paramètres simples et les pages d'offre nues", () => {
+    for (const url of [
+      "/fr/appel",
+      "/fr/appel/",
+      "/fr/appel?depuis=entete",
+      "/fr/appel?depuis=pied",
+      "/fr/appel?rdv=diagnostic&depuis=pied",
+      "/en/book-a-call",
+      "/fr/appel/formateur",
+      "/fr/appel/apporteur",
+      "/fr/formations",
+      "/fr",
+    ]) {
       expect(autorise(url), `${url} doit rester crawlable`).toBe(true);
     }
   });
