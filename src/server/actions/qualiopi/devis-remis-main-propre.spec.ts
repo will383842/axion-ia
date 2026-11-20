@@ -164,6 +164,46 @@ describe("marquerRemisEnMainPropreAction", () => {
     expect(verrou.slice(1)).toEqual(["devis.envoi:" + ID]);
   });
 
+  describe("échéancier de l'assistant (B1)", () => {
+    const donnees = async (cond: string | undefined) => {
+      const m = await import("@/server/qualiopi/documents/donnees-pdf-devis");
+      vi.mocked(m.donneesPdfDevis).mockReturnValueOnce({
+        identite: {
+          raisonSociale: "Axion",
+          siret: "1",
+          adresseSiege: "x",
+          nda: "n",
+          qualiopi: "q",
+        },
+        formules: undefined,
+        lignes: [{ quantite: 1, prixUnitaireHtCents: 100000 }],
+        regimeTva: "assujetti",
+        tauxTvaStandardPercent: 10,
+        conditionsParticulieres: cond,
+      } as never);
+    };
+    const TEXTE =
+      "Échéancier de paiement\n1. Acompte, à la signature : 30 %, soit 360,00 € TTC\n2. Étape, à la livraison : 30 %, soit 360,00 € TTC\n3. Solde, à la livraison : 40 %, soit 480,00 € TTC";
+
+    it("échéancier qui ne suit plus le total (TVA 20 % → 10 %) : refus, aucune pièce, statut inchangé", async () => {
+      await donnees(TEXTE);
+      expect(erreur(await appel())).toMatch(/échéancier de paiement ne correspond plus au total/i);
+      expect(h.generateDocument).not.toHaveBeenCalled();
+      rienProduit();
+    });
+
+    it("échéancier cohérent (330 / 330 / 440) : remise acceptée", async () => {
+      await donnees(TEXTE.replace(/360,00/g, "330,00").replace("480,00", "440,00"));
+      expect(await appel()).toEqual({ data: { id: ID } });
+    });
+
+    it("sans échéancier : comportement inchangé", async () => {
+      await donnees("Clause libre.");
+      expect(await appel()).toEqual({ data: { id: ID } });
+      expect(h.generateDocument).toHaveBeenCalledOnce();
+    });
+  });
+
   it("journal : motif, canal, aucun e-mail ni lien, aucune adresse", async () => {
     await appel();
     const j = h.logActivity.mock.calls.find(

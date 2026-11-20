@@ -117,7 +117,7 @@ describe("modifierDevisClassiqueBrouillonAction : l'échéancier suit le total",
     const r = await appeler(TEXTE_1000.replace("2. Étape", "Deuxième versement"));
     expect(r).toEqual({
       error:
-        "L'échéancier de paiement ne correspond plus au total : corrigez les montants des versements dans les conditions particulières.",
+        "Le texte commence par \"Échéancier de paiement\" mais n'est pas au format de l'assistant : corrigez ou renommez ce titre.",
     });
     expect(m.devisUpdateMany).not.toHaveBeenCalled();
   });

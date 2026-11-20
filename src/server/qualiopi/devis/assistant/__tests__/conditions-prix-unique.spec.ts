@@ -197,6 +197,28 @@ describe("recalculerEcheancier / controlerEcheancier (l'échéancier suit le tot
     expect(controlerEcheancier(t, 120000, "assujetti")).toBe(false);
   });
 
+  it("M1 : chaque montant est vérifié, pas seulement la somme (300 / 360 / 540 de 1 200 € TTC)", () => {
+    const t = texte1000()
+      .replace(/360,00\s€ TTC/g, "@@")
+      .replace("@@", "300,00 € TTC")
+      .replace("@@", "360,00 € TTC")
+      .replace(/480,00\s€ TTC/, "540,00 € TTC");
+    expect(t).toMatch(/300,00/);
+    expect(controlerEcheancier(t, 120000, "assujetti")).toBe(false);
+  });
+
+  it("M2 : total trop faible → message dédié ; format inconnu → message dédié", () => {
+    const r = recalculerEcheancier(texte1000(), 1, "assujetti");
+    expect(r).toEqual({
+      erreur: "Le total est trop faible pour cet échéancier : un versement serait de 0,00 €.",
+    });
+    const t = texte1000().replace("2. Étape intermédiaire", "Deuxième versement");
+    expect(recalculerEcheancier(t, 120000, "assujetti")).toEqual({
+      erreur:
+        "Le texte commence par \"Échéancier de paiement\" mais n'est pas au format de l'assistant : corrigez ou renommez ce titre.",
+    });
+  });
+
   it("texte qui ne commence pas par l'échéancier : erreur", () => {
     expect("erreur" in recalculerEcheancier("Clause libre.", 1000, "assujetti")).toBe(true);
   });

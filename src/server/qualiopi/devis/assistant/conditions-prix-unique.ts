@@ -153,6 +153,22 @@ function lireEcheancier(texte: string): { lignes: LigneLue[]; reste: string } | 
 
 export const MSG_ECHEANCIER_ILLISIBLE =
   "L'échéancier de paiement ne correspond plus au total : corrigez les montants des versements dans les conditions particulières.";
+export const MSG_ECHEANCIER_TROP_FAIBLE =
+  "Le total est trop faible pour cet échéancier : un versement serait de 0,00 €.";
+export const MSG_ECHEANCIER_FORMAT_INCONNU = `Le texte commence par "${TITRE_ECHEANCIER}" mais n'est pas au format de l'assistant : corrigez ou renommez ce titre.`;
+
+function paliersDe(lignes: LigneLue[], totalTtcCents: number) {
+  return echeancierPhases(
+    totalTtcCents,
+    lignes.map((l, i) => ({
+      rang: i + 1,
+      libelle: "",
+      pourcentage: l.pct,
+      declencheur: "signature",
+    })),
+    [],
+  );
+}
 
 /**
  * Recalcule les montants du premier paragraphe (échéancier) sur le total TTC courant ; le reste du
@@ -164,19 +180,10 @@ export function recalculerEcheancier(
   regime: RegimeTva,
 ): { texte: string } | { erreur: string } {
   const lu = lireEcheancier(texte);
-  if (!lu) return { erreur: MSG_ECHEANCIER_ILLISIBLE };
-  const paliers = echeancierPhases(
-    totalTtcCents,
-    lu.lignes.map((l, i) => ({
-      rang: i + 1,
-      libelle: "",
-      pourcentage: l.pct,
-      declencheur: "signature",
-    })),
-    [],
-  );
+  if (!lu) return { erreur: MSG_ECHEANCIER_FORMAT_INCONNU };
+  const paliers = paliersDe(lu.lignes, totalTtcCents);
   if (paliers.slice(0, -1).some((x) => x.montantHtCents <= 0))
-    return { erreur: MSG_ECHEANCIER_ILLISIBLE };
+    return { erreur: MSG_ECHEANCIER_TROP_FAIBLE };
   const suffixe = regime === "assujetti" ? " TTC" : "";
   const lignes = lu.lignes.map(
     (l, i) =>
@@ -185,12 +192,17 @@ export function recalculerEcheancier(
   return { texte: `${TITRE_ECHEANCIER}\n${lignes.join("\n")}${lu.reste}` };
 }
 
-/** Vrai si la somme des versements imprimés égale le total (la base imprimée est celle du régime). */
+/**
+ * Vrai si CHAQUE versement imprimé égale celui que l'assistant calculerait sur le total
+ * (donc la somme aussi ; la base imprimée est celle du régime).
+ */
 export function controlerEcheancier(
   texte: string,
   totalTtcCents: number,
   _regime: RegimeTva,
 ): boolean {
   const lu = lireEcheancier(texte);
-  return !!lu && lu.lignes.reduce((s, l) => s + l.montantCents, 0) === totalTtcCents;
+  if (!lu) return false;
+  const paliers = paliersDe(lu.lignes, totalTtcCents);
+  return lu.lignes.every((l, i) => l.montantCents === paliers[i]!.montantHtCents);
 }
