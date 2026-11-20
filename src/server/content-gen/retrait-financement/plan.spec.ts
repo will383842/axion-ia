@@ -244,7 +244,7 @@ describe("perks des offres", () => {
   it("un avantage de financement est retiré, les autres restent ; idempotent", () => {
     const perks = [
       { labelFr: "Mutuelle", labelEn: "Health" },
-      { labelFr: "Formations financées par l'OPCO", labelEn: "OPCO-funded training" },
+      { labelFr: "Financement par l'OPCO", labelEn: "OPCO funding" },
     ];
     const p = proposerOffre(offre({ perks }))!;
     expect(p.apres.perks).toEqual([{ labelFr: "Mutuelle", labelEn: "Health" }]);

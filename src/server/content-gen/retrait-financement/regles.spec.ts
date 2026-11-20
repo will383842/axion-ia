@@ -71,7 +71,10 @@ describe("estVisee — motifs toujours visés", () => {
       "<p>Une équipe. Un autre point. Axion-IA prépare la certification qualité.</p>",
       "fr",
     );
-    expect(r.valeur).toBe("<p>Une équipe. Un autre point.</p>");
+    // Audit passe 6 : phrase visée NON pure (le sujet n'est pas le financement) → ambiguë, avec ou
+    // sans voisines ; jamais retirée automatiquement (décision du pilote).
+    expect(classer(r)).toBe("ambigu");
+    expect(r.modifie).toBe(false);
   });
 
   it("CPF / France Travail sans marqueur de financement : conservés", () => {
@@ -92,24 +95,36 @@ describe("reecrireTexte / reecrireHtml — extraits RÉELS de la production (18/
     const html =
       "<p>Ces formations peuvent être financées par les OPCO ou le plan de développement des compétences de l'entreprise, mais pas par le CPF.</p><p>Elles se déroulent chez vous.</p>";
     const r = reecrireHtml(html, "fr");
-    expect(r.modifie).toBe(true);
-    expect(r.valeur).toBe(`<p>${PHRASE_FR}</p><p>Elles se déroulent chez vous.</p>`);
+    // Énumération « OPCO ou plan de développement… mais pas par le CPF » : hors formes prouvées.
+    expect(r.ambigus.length).toBeGreaterThan(0);
+    expect(r.modifie).toBe(false);
   });
 
   it("accompagnement-ia-aubervilliers : fonds de votre OPCO", () => {
     const html =
       "<p>Des dispositifs comme les aides BPI France, les fonds de votre OPCO ou les programmes France Num peuvent être mobilisés. Nous vous accompagnons sur place. Le rapport est remis sous trois jours. Un conseiller vous répond.</p>";
     const r = reecrireHtml(html, "fr");
-    expect(r.valeur).not.toMatch(MOTIFS);
-    expect(r.valeur).toContain(PHRASE_FR); // la 1re phrase parle de financement : ouverture
+    // « les aides BPI France, les fonds de votre OPCO ou les programmes France Num » : éléments non
+    // visés dans l'énumération → ambigu (rien n'est écrit).
+    expect(r.ambigus.length).toBeGreaterThan(0);
+    expect(r.modifie).toBe(false);
   });
 
   it("phrase isolée dans un long paragraphe : seules les phrases visées sont retirées", () => {
     const html =
       "<p>Le rapport est remis sous trois jours. Nous formons vos équipes sur leurs vrais dossiers. Les entreprises peuvent recourir aux OPCO. Un conseiller vous suit pendant un mois. Vous gardez la main sur les outils.</p>";
     const r = reecrireHtml(html, "fr");
-    expect(r.valeur).toBe(
-      "<p>Le rapport est remis sous trois jours. Nous formons vos équipes sur leurs vrais dossiers. Un conseiller vous suit pendant un mois. Vous gardez la main sur les outils.</p>",
+    // Audit passe 6 : « Les entreprises peuvent recourir aux OPCO. » n'a pas le financement pour
+    // sujet : ambiguë (jamais retirée seule), le paragraphe reste intact.
+    expect(r.valeur).toBe(html);
+    expect(r.ambigus.length).toBeGreaterThan(0);
+    // Une phrase PURE entre voisines, elle, part seule.
+    const pure = reecrireHtml(
+      "<p>Le rapport est remis sous trois jours. Le financement OPCO est possible. Un conseiller vous suit pendant un mois.</p>",
+      "fr",
+    );
+    expect(pure.valeur).toBe(
+      "<p>Le rapport est remis sous trois jours. Un conseiller vous suit pendant un mois.</p>",
     );
   });
 
@@ -131,9 +146,11 @@ describe("reecrireTexte / reecrireHtml — extraits RÉELS de la production (18/
       },
       "fr",
     );
-    expect(r.modifie).toBe(true);
-    expect(r.valeur.question).toBe(QUESTION_FR);
-    expect(r.valeur.reponse).toBe(PHRASE_FR);
+    // Verrou final : « formations », « certifiantes », « orientons »… ne sont pas des mots de
+    // financement : la FAQ est gardée telle quelle, ambiguë (un humain tranche).
+    expect(classer(r)).toBe("ambigu");
+    expect(r.modifie).toBe(false);
+    expect(r.valeur.question).toBe("Les formations sont-elles financées ?");
   });
 
   it("fragment « (CPF, OPCO, France Travail) » retiré seul", () => {
@@ -154,7 +171,7 @@ describe("reecrireTexte / reecrireHtml — extraits RÉELS de la production (18/
 describe("structure HTML", () => {
   it("H2 sur le financement : section entière → un paragraphe standard", () => {
     const html =
-      "<h2>Un déploiement par étapes</h2><p>On commence petit.</p><h2>Financement et OPCO</h2><p>Premier paragraphe.</p><p>Second paragraphe.</p><ul><li>a</li></ul><h2>Conclusion</h2><p>Parlons-en.</p>";
+      "<h2>Un déploiement par étapes</h2><p>On commence petit.</p><h2>Financement et OPCO</h2><p>Le financement OPCO est possible.</p><p>Un dossier AIF est possible.</p><ul><li>Prise en charge OPCO</li></ul><h2>Conclusion</h2><p>Parlons-en.</p>";
     const r = reecrireHtml(html, "fr");
     expect(r.valeur).toBe(
       `<h2>Un déploiement par étapes</h2><p>On commence petit.</p><p>${PHRASE_FR}</p><h2>Conclusion</h2><p>Parlons-en.</p>`,
@@ -172,10 +189,15 @@ describe("structure HTML", () => {
 
   it("liste : puces visées retirées, les autres gardées", () => {
     const html =
-      "<ul><li>Audit le matin</li><li>Formation éligible au CPF</li><li>Rapport sous trois jours</li></ul>";
+      "<ul><li>Audit le matin</li><li>Prise en charge OPCO</li><li>Rapport sous trois jours</li></ul>";
     expect(reecrireHtml(html, "fr").valeur).toBe(
       "<ul><li>Audit le matin</li><li>Rapport sous trois jours</li></ul>",
     );
+    // Audit passe 6 : une puce dont le service est qualifié par la mention reste, ambiguë.
+    const qualifiee = html.replace("Prise en charge OPCO", "Formation éligible au CPF");
+    const r = reecrireHtml(qualifiee, "fr");
+    expect(r.valeur).toBe(qualifiee);
+    expect(r.ambigus.length).toBeGreaterThan(0);
   });
 
   it("liste : toutes visées → phrase standard", () => {
@@ -184,7 +206,7 @@ describe("structure HTML", () => {
   });
 
   it("liste : intro sur le financement → intro et liste remplacées", () => {
-    const html = "<p>Les financements possibles :</p><ul><li>OPCO</li><li>Fonds propres</li></ul>";
+    const html = "<p>Les financements possibles :</p><ul><li>OPCO</li><li>Fonds d'aide</li></ul>";
     expect(reecrireHtml(html, "fr").valeur).toBe(`<p>${PHRASE_FR}</p>`);
   });
 
@@ -221,7 +243,7 @@ describe("liens et attributs", () => {
 
   it("href conservé quand la phrase est retirée autour d'un lien neutre", () => {
     const html =
-      '<p>Le rapport est remis sous trois jours. Nous formons vos équipes. Les OPCO financent la formation. <a href="/fr/blog/opco-x">Lire la suite</a> Un conseiller vous suit. On y va pas à pas.</p>';
+      '<p>Le rapport est remis sous trois jours. Nous formons vos équipes. Le financement OPCO est possible. <a href="/fr/blog/opco-x">Lire la suite</a> Un conseiller vous suit. On y va pas à pas.</p>';
     const r = reecrireHtml(html, "fr");
     expect(r.valeur).toContain('href="/fr/blog/opco-x"');
   });
@@ -246,7 +268,7 @@ describe("liens et attributs", () => {
 
 describe("EN", () => {
   it("phrase standard EN", () => {
-    const r = reecrireHtml("<p>Training can be funded by your OPCO or through the CPF.</p>", "en");
+    const r = reecrireHtml("<p>Funding by your OPCO or through the CPF is possible.</p>", "en");
     expect(r.valeur).toBe(`<p>${PHRASE_EN}</p>`);
   });
 
@@ -288,7 +310,9 @@ describe("offres d'emploi", () => {
       "<p>Vous montez et pilotez les dossiers de financement qui font décoller nos projets IA : CPF, OPCO, France 2030, BPI, aides régionales.</p>",
       "fr",
     );
-    expect(r.valeur).toBe(`<p>${PHRASE_FR}</p>`);
+    // Accroche + liste « CPF, OPCO, France 2030, BPI… » sans connecteur : hors formes prouvées.
+    expect(r.ambigus.length).toBeGreaterThan(0);
+    expect(r.modifie).toBe(false);
   });
 });
 
@@ -328,7 +352,7 @@ describe("Tiptap JSON", () => {
 describe("idempotence (une deuxième passe ne change rien)", () => {
   const cas = [
     "<h2>Financement OPCO</h2><p>Via votre OPCO.</p><h2>Suite</h2><p>Texte.</p>",
-    "<p>Le rapport est remis sous trois jours. Les OPCO financent la formation. Nous formons vos équipes. Un conseiller vous suit. On avance.</p>",
+    "<p>Le rapport est remis sous trois jours. Le financement OPCO est possible. Nous formons vos équipes. Un conseiller vous suit. On avance.</p>",
     "<ul><li>Audit</li><li>Éligible au CPF</li></ul>",
     `<p><a href="${LIEN_FR}">le financement OPCO</a></p>`,
     "<h3>Peut-on financer via un OPCO ?</h3><p>Oui, via un OPCO.</p>",

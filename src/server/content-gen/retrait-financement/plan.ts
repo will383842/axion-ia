@@ -7,17 +7,27 @@
 import { createHash } from "node:crypto";
 import {
   type Langue,
+  capterRegles,
   classer,
   estVisee,
   htmlVersTexte,
+  jsonContientMention,
   reecrireFaq,
   reecrireHtml,
   reecrireJson,
   reecrireTexte,
+  motsNonRetirables,
 } from "./regles";
 
 export const ACTION_RETRAIT = "retrait-financement-2026-11";
 export const ACTION_RESTAURATION = "retrait-financement-2026-11-restauration";
+/**
+ * Override humain sur un contenu DÉJÀ traité : réécriture ciblée des seuls champs surchargés, avec
+ * sa propre sauvegarde (ancienne valeur) et sa propre restauration. Jamais mêlée à la sauvegarde
+ * du premier passage.
+ */
+export const ACTION_OVERRIDE = "retrait-financement-2026-11-override";
+export const ACTION_RESTAURATION_OVERRIDE = "retrait-financement-2026-11-override-restauration";
 
 /** Offres consacrées au financement : poste qu'Axion-IA ne propose pas → archivées (arbitrage 1). */
 export const SLUGS_OFFRES_ARCHIVEES: readonly string[] = [
@@ -45,6 +55,10 @@ export interface Proposition {
   ambigus: string[];
   /** Phrases « prise en charge » conservées (hors financement), listées à part dans le rapport. */
   conserves: string[];
+  /** Règles ciblées appliquées (fragment retiré, décompte corrigé, cellule, question…). */
+  regles?: string[];
+  /** Champs réécrits par un override humain (sous-ensemble de `apres`). */
+  surcharges?: string[];
 }
 
 /** Valeurs de remplacement validées par un humain pour un cas ambigu. */
@@ -68,6 +82,7 @@ class Collecteur {
   apres: Champs = {};
   ambigus: string[] = [];
   conserves: string[] = [];
+  regles: string[] = [];
 
   constructor(private readonly nom: string) {}
 
@@ -92,7 +107,8 @@ class Collecteur {
     this.garder(champ, valeur);
     if (typeof valeur !== "string" || valeur === "") return;
     this.conserves.push(...conservees(valeur));
-    const r = reecrireTexte(valeur, langue, { titre });
+    const { valeur: r, regles } = capterRegles(() => reecrireTexte(valeur, langue, { titre }));
+    this.noterRegles(champ, regles);
     this.champ(champ, valeur, r.valeur, r.modifie, r.ambigus);
   }
 
@@ -100,7 +116,8 @@ class Collecteur {
     this.garder(champ, valeur);
     if (typeof valeur !== "string" || valeur === "") return null;
     this.conserves.push(...conservees(htmlVersTexte(valeur)));
-    const r = reecrireHtml(valeur, langue);
+    const { valeur: r, regles } = capterRegles(() => reecrireHtml(valeur, langue));
+    this.noterRegles(champ, regles);
     this.champ(champ, valeur, r.valeur, r.modifie, r.ambigus);
     return r.modifie ? r.valeur : null;
   }
@@ -108,8 +125,25 @@ class Collecteur {
   json(champ: string, valeur: unknown, langue: Langue): void {
     this.garder(champ, valeur);
     if (valeur === null || valeur === undefined) return;
-    const r = reecrireJson(valeur, langue);
-    this.champ(champ, valeur, r.valeur, r.modifie, r.ambigus);
+    const { valeur: r, regles } = capterRegles(() => reecrireJson(valeur, langue));
+    this.noterRegles(champ, regles);
+    const ambigus = [...r.ambigus];
+    // Jamais de silence : une mention encore présente dans bodyJson (structure inattendue)
+    // réintroduirait l'ancien texte dans l'éditeur ; on la signale au lieu de la laisser passer.
+    if (jsonContientMention(r.valeur))
+      ambigus.push("mention encore présente dans le JSON après réécriture (structure inattendue)");
+    this.champ(champ, valeur, r.valeur, r.modifie, ambigus);
+  }
+
+  noterRegles(champ: string, regles: string[]): void {
+    for (const x of regles) this.regles.push(`${this.nom}.${champ} : ${x}`);
+  }
+
+  /** Règles ciblées appliquées à un champ calculé hors de `texte` / `html` / `json`. */
+  capter<T>(champ: string, f: () => T): T {
+    const { valeur, regles } = capterRegles(f);
+    this.noterRegles(champ, regles);
+    return valeur;
   }
 
   resultat(table: Table, id: string): Proposition | null {
@@ -122,6 +156,7 @@ class Collecteur {
       apres: this.apres,
       ambigus: this.ambigus,
       conserves: this.conserves,
+      regles: this.regles,
     };
   }
 }
@@ -185,7 +220,9 @@ export function proposerArticle(l: LigneArticle): Proposition | null {
       if (!it || typeof it !== "object") return it;
       const o = it as Record<string, unknown>;
       if (typeof o.question !== "string" || typeof o.answer !== "string") return it;
-      const r = reecrireFaq({ question: o.question, reponse: o.answer }, "fr");
+      const r = c.capter("faqJson", () =>
+        reecrireFaq({ question: o.question as string, reponse: o.answer as string }, "fr"),
+      );
       if (r.modifie) modifie = true;
       ambigus.push(...r.ambigus);
       return r.modifie ? { ...o, question: r.valeur.question, answer: r.valeur.reponse } : it;
@@ -211,9 +248,12 @@ export function proposerFaq(l: LigneFaq): Proposition | null {
     ["fr", l.questionFr, l.answerFr, "questionFr", "answerFr"],
     ["en", l.questionEn, l.answerEn, "questionEn", "answerEn"],
   ] as const) {
-    const r = reecrireFaq({ question: q, reponse: a }, langue);
-    c.champ(kq, q, r.valeur.question, r.valeur.question !== q, r.ambigus);
-    c.champ(ka, a, r.valeur.reponse, r.valeur.reponse !== a, []);
+    const r = c.capter(kq, () => reecrireFaq({ question: q, reponse: a }, langue));
+    // L'ambigu d'une réponse se range sous le champ RÉPONSE : un override sur la question seule
+    // ne doit pas lever le refus d'apply alors que le passage reste dans la réponse.
+    const surQuestion = r.ambigus.filter((x) => !r.ambigusReponse.includes(x));
+    c.champ(kq, q, r.valeur.question, r.valeur.question !== q, surQuestion);
+    c.champ(ka, a, r.valeur.reponse, r.valeur.reponse !== a, r.ambigusReponse);
   }
   c.texte("metaTitle", l.metaTitle, "fr", true);
   c.texte("metaDescription", l.metaDescription, "fr");
@@ -257,14 +297,29 @@ const CHAMPS_TEXTE_OFFRE = [
   "perks",
 ] as const;
 
+/** Tous les libellés texte (`labelFr`, `labelEn`) n'ont que des mots du lexique fermé. */
+function tousLibellesRetirables(o: Record<string, unknown>): boolean {
+  return ["labelFr", "labelEn"].every((k) => {
+    const v = o[k];
+    return typeof v !== "string" || motsNonRetirables(v, "").length === 0;
+  });
+}
+
 /**
- * Avantages (`perks`) : un avantage dont le libellé parle de financement est retiré ; un libellé
- * qui ne contient qu'un fragment (« (CPF) ») est nettoyé. Tableau vide possible (la page masque
- * alors le bloc).
+ * Avantages (`perks`) : un avantage dont le libellé est ENTIÈREMENT du financement (phrases pures)
+ * est retiré ; un libellé qui ne contient qu'un fragment (« (CPF) ») est nettoyé ; un libellé
+ * AMBIGU est gardé tel quel et remonté au rapport (jamais supprimé en silence). Tableau vide
+ * possible (la page masque alors le bloc).
  */
-export function reecrirePerks(perks: unknown): { valeur: unknown; modifie: boolean } {
-  if (!Array.isArray(perks)) return { valeur: perks, modifie: false };
+export function reecrirePerks(perks: unknown): {
+  valeur: unknown;
+  modifie: boolean;
+  /** Avantages dont un libellé est ambigu : GARDÉS tels quels, à trancher à la main. */
+  ambigus: string[];
+} {
+  if (!Array.isArray(perks)) return { valeur: perks, modifie: false, ambigus: [] };
   let modifie = false;
+  const ambigus: string[] = [];
   const sortie: unknown[] = [];
   for (const it of perks as unknown[]) {
     if (!it || typeof it !== "object") {
@@ -273,6 +328,8 @@ export function reecrirePerks(perks: unknown): { valeur: unknown; modifie: boole
     }
     const o = { ...(it as Record<string, unknown>) };
     let retire = false;
+    let ambigu = false;
+    let change = false;
     for (const [cle, langue] of [
       ["labelFr", "fr"],
       ["labelEn", "en"],
@@ -280,16 +337,38 @@ export function reecrirePerks(perks: unknown): { valeur: unknown; modifie: boole
       const v = o[cle];
       if (typeof v !== "string") continue;
       const r = reecrireTexte(v, langue);
-      if (r.ambigus.length > 0) retire = true;
-      else if (r.modifie) {
+      if (r.ambigus.length > 0) {
+        // « champ entièrement visé » : toutes les phrases du libellé sont PURES (sujet = financement,
+        // sinon l'ambigu serait « phrase mixte ») → l'avantage de financement est retiré, comme avant.
+        // Verrou final : le libellé disparaît en entier, donc tous ses mots doivent être retirables.
+        // Audit passe 8 : CHAQUE libellé texte (Fr ET En) ne doit avoir que des mots du lexique.
+        if (
+          r.ambigus.every((a) => a.startsWith("champ entièrement visé")) &&
+          tousLibellesRetirables(it as Record<string, unknown>)
+        )
+          retire = true;
+        else {
+          ambigu = true;
+          ambigus.push(`avantage ${cle} ambigu : « ${v.slice(0, 160)} »`);
+        }
+      } else if (r.modifie) {
         o[cle] = r.valeur;
-        modifie = true;
+        change = true;
       }
     }
+    // Un avantage ambigu (dans l'une ou l'autre langue) est gardé en entier : jamais supprimé en
+    // silence, jamais réécrit à moitié.
+    if (ambigu) {
+      sortie.push(it);
+      continue;
+    }
     if (retire) modifie = true;
-    else sortie.push(o);
+    else {
+      if (change) modifie = true;
+      sortie.push(o);
+    }
   }
-  return { valeur: modifie ? sortie : perks, modifie };
+  return { valeur: modifie ? sortie : perks, modifie, ambigus };
 }
 
 export function proposerOffre(l: LigneOffre): Proposition | null {
@@ -318,12 +397,90 @@ export function proposerOffre(l: LigneOffre): Proposition | null {
   c.texte("metaDescription", l.metaDescription, "fr");
   if (l.perks !== undefined && l.perks !== null) {
     const p = reecrirePerks(l.perks);
-    c.champ("perks", l.perks, p.valeur, p.modifie, []);
+    c.champ("perks", l.perks, p.valeur, p.modifie, p.ambigus);
   }
   return c.resultat("job_offer", l.id);
 }
 
 // ───────────────────────────── overrides, empreinte ─────────────────────────────
+
+/** Champ HTML → champ de texte brut dérivé (recalculé quand le HTML est surchargé). */
+const CHAMP_TEXTE_DU_CORPS: Record<string, string> = {
+  body: "bodyText",
+  bodyFr: "bodyTextFr",
+  bodyEn: "bodyTextEn",
+};
+
+/**
+ * Comme `appliquerOverrides`, mais aussi pour un contenu SANS proposition (déjà traité, plus aucune
+ * mention) : un override présent est appliqué si son empreinte correspond, sinon signalé.
+ */
+export function integrerOverrides(
+  p: Proposition | null,
+  cle: string,
+  originaux: Champs,
+  overrides: Overrides,
+): { proposition: Proposition | null; ignores: string[] } {
+  if (p) return appliquerOverrides(p, originaux, overrides);
+  if (!overrides[cle]) return { proposition: null, ignores: [] };
+  const i = cle.indexOf(":");
+  const vide: Proposition = {
+    cle,
+    table: cle.slice(0, i) as Table,
+    id: cle.slice(i + 1),
+    avant: {},
+    apres: {},
+    ambigus: [],
+    conserves: [],
+  };
+  const r = appliquerOverrides(vide, originaux, overrides);
+  return {
+    proposition: Object.keys(r.proposition.apres).length > 0 ? r.proposition : null,
+    ignores: r.ignores,
+  };
+}
+
+/**
+ * Une valeur d'override est-elle PROPRE ? Elle repasse dans les mêmes règles que le contenu : si le
+ * résultat n'est pas « propre » (mention restante, ambigu), l'override est ignoré. Rend la raison,
+ * ou `null` si la valeur est propre.
+ */
+function valeurSale(champ: string, valeur: unknown): string | null {
+  const langue: Langue = /En$/.test(champ) ? "en" : "fr";
+  const r =
+    champ === "perks"
+      ? reecrirePerks(valeur)
+      : typeof valeur === "string"
+        ? CHAMP_TEXTE_DU_CORPS[champ] || /<[a-z][\s\S]*>/i.test(valeur)
+          ? reecrireHtml(valeur, langue)
+          : reecrireTexte(valeur, langue, { titre: /title/i.test(champ) })
+        : Array.isArray(valeur) && /faq/i.test(champ)
+          ? reecrireFaqs(valeur, langue)
+          : reecrireJson(valeur, langue);
+  const c = classer(r as { valeur: unknown; modifie: boolean; ambigus: string[] });
+  if (c === "propre") {
+    if (typeof valeur !== "string" && jsonContientMention(valeur)) return "mention dans le JSON";
+    return null;
+  }
+  return c === "ambigu" ? "ambigu" : "à réécrire";
+}
+
+function reecrireFaqs(
+  valeur: unknown[],
+  langue: Langue,
+): { valeur: unknown; modifie: boolean; ambigus: string[] } {
+  let modifie = false;
+  const ambigus: string[] = [];
+  for (const it of valeur) {
+    if (!it || typeof it !== "object") continue;
+    const o = it as Record<string, unknown>;
+    if (typeof o.question !== "string" || typeof o.answer !== "string") continue;
+    const r = reecrireFaq({ question: o.question, reponse: o.answer }, langue);
+    modifie = modifie || r.modifie;
+    ambigus.push(...r.ambigus);
+  }
+  return { valeur, modifie, ambigus };
+}
 
 /**
  * Applique les remplacements humains aux cas ambigus. Un override n'est pris que si l'empreinte
@@ -340,7 +497,19 @@ export function appliquerOverrides(
   const avant = { ...p.avant };
   const apres = { ...p.apres };
   const ignores: string[] = [];
+  const appliques: string[] = [];
   for (const [champ, o] of Object.entries(surcharges)) {
+    if (o.valeur === "" || o.valeur === null || o.valeur === undefined) {
+      ignores.push(`${p.cle}.${champ} : valeur vide (gabarit non rempli), override ignoré`);
+      continue;
+    }
+    const sale = valeurSale(champ, o.valeur);
+    if (sale) {
+      ignores.push(
+        `${p.cle}.${champ} : l'override contient encore une mention de financement (non propre : ${sale}), override ignoré`,
+      );
+      continue;
+    }
     const courant = champ in originaux ? originaux[champ] : undefined;
     if (empreinte(courant) !== o.origine) {
       ignores.push(
@@ -350,6 +519,15 @@ export function appliquerOverrides(
     }
     avant[champ] = courant;
     apres[champ] = o.valeur;
+    appliques.push(champ);
+    // Le corps réécrit à la main redevient la source du texte brut : bodyText* est recalculé,
+    // sinon il garderait le passage ambigu (indexation, recherche).
+    const texte = CHAMP_TEXTE_DU_CORPS[champ];
+    if (texte && texte in originaux && typeof o.valeur === "string") {
+      avant[texte] = originaux[texte];
+      apres[texte] = htmlVersTexte(o.valeur);
+      appliques.push(texte);
+    }
   }
   const ambigus = p.ambigus.filter(
     (a) =>
@@ -358,7 +536,67 @@ export function appliquerOverrides(
           a.startsWith(`${p.cle}.${champ} :`) && !ignores.some((i) => i.includes(`.${champ} :`)),
       ),
   );
-  return { proposition: { ...p, avant, apres, ambigus }, ignores };
+  return {
+    proposition: {
+      ...p,
+      avant,
+      apres,
+      ambigus,
+      surcharges: [...(p.surcharges ?? []), ...appliques],
+    },
+    ignores,
+  };
+}
+
+export interface AmbiguRestant {
+  cle: string;
+  champ: string;
+  message: string;
+}
+
+/** Ambigus non couverts par un override : l'application est refusée tant qu'il en reste. */
+export function ambigusNonCouverts(propositions: readonly Proposition[]): AmbiguRestant[] {
+  const out: AmbiguRestant[] = [];
+  for (const p of propositions)
+    for (const a of p.ambigus) {
+      const reste = a.startsWith(`${p.cle}.`) ? a.slice(p.cle.length + 1) : a;
+      const i = reste.indexOf(" : ");
+      out.push({
+        cle: p.cle,
+        champ: i < 0 ? reste : reste.slice(0, i),
+        message: i < 0 ? "" : reste.slice(i + 3),
+      });
+    }
+  return out;
+}
+
+/** `--apply` : lève une erreur claire tant qu'un ambigu n'est pas couvert par un override. */
+export function refuserSiAmbigus(
+  propositions: readonly Proposition[],
+  source: string | null,
+): void {
+  const restants = ambigusNonCouverts(propositions);
+  if (restants.length === 0) return;
+  const ids = [...new Set(restants.map((x) => `${x.cle}.${x.champ}`))];
+  throw new Error(
+    `--apply REFUSÉ : ${restants.length} ambigu(s) non couvert(s) par ${source ?? "retrait-financement-overrides.json"} ` +
+      `(${ids.slice(0, 5).join(", ")}${ids.length > 5 ? ", …" : ""}). ` +
+      "Le rapport (--report) liste chaque passage complet et le gabarit JSON à remplir.",
+  );
+}
+
+/**
+ * Gabarit JSON à remplir dans `retrait-financement-overrides.json` : une entrée par (contenu, champ)
+ * ambigu, avec l'empreinte de l'original ; `valeur` (texte FINAL du champ) est à écrire à la main.
+ */
+export function gabaritOverrides(propositions: readonly Proposition[]): Overrides {
+  const g: Overrides = {};
+  for (const r of ambigusNonCouverts(propositions)) {
+    const p = propositions.find((x) => x.cle === r.cle);
+    if (!p || !(r.champ in p.avant)) continue;
+    (g[r.cle] ??= {})[r.champ] = { origine: empreinte(p.avant[r.champ]), valeur: "" };
+  }
+  return g;
 }
 
 /**
