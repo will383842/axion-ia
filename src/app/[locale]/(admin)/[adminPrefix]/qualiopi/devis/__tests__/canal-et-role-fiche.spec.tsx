@@ -249,4 +249,13 @@ describe("fiche devis : liens PDF et rôle", () => {
     etat.devis = { ...base, statut: "brouillon", sentAt: null };
     expect((await afficher()).textContent).toContain("Voir l'aperçu PDF");
   });
+
+  it("rôle qui peut écrire mais sans droit conclure_devis : pas de « Marquer accepté » sur un devis envoyé", async () => {
+    etat.role = "secretaire";
+    etat.peutEcrire = true;
+    etat.canal = "email";
+    const c = await afficher();
+    expect(c.textContent).toContain("Préparer une relance");
+    expect(screen.queryByText("Marquer accepté")).toBeNull();
+  });
 });

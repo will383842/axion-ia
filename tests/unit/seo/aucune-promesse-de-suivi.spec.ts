@@ -72,6 +72,10 @@ const PROMESSES: ReadonlyArray<readonly [string, RegExp]> = [
     "suivi ponctuel / sessions de suivi / suivi à distance",
     /suivi ponctuel|sessions? de suivi|le suivi à distance|occasional follow-up|follow-up training/i,
   ],
+  [
+    "un suivi à distance / suivi en visio possible (après l'intervention)",
+    /un suivi à distance|suivi en visio est possible|un suivi en visio/i,
+  ],
 ];
 
 function* fichiers(dossier: string): Generator<string> {

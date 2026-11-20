@@ -20,10 +20,19 @@ export function RelanceDevis(props: {
     statut: string;
     montantTotalHtCents: number;
     createdAt: Date;
+    documentGenereId?: string | null;
   }>;
+  /** Pièces déjà signées par le client (règle de `a-contresigner.ts`) : pas de relance pour elles. */
+  piecesAContresigner?: ReadonlySet<string>;
 }): React.ReactElement | null {
   const { ctx } = props;
-  const envoyes = props.devis.filter((d) => d.statut === "envoye");
+  const envoyes = props.devis.filter(
+    (d) =>
+      d.statut === "envoye" &&
+      !(
+        typeof d.documentGenereId === "string" && props.piecesAContresigner?.has(d.documentGenereId)
+      ),
+  );
   if (!ctx.voitEchanges || !ctx.peutEcrire || envoyes.length === 0) return null;
 
   return (
