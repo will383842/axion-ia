@@ -113,7 +113,7 @@ export function TuilesReleve(p: TuilesProps): React.ReactElement {
   return (
     <section
       aria-label="Chiffres clés"
-      className="grid grid-cols-1 gap-[var(--space-admin-4)] sm:grid-cols-2 lg:grid-cols-4"
+      className="mb-[var(--space-admin-6)] grid grid-cols-1 gap-[var(--space-admin-4)] sm:grid-cols-2 lg:grid-cols-4"
     >
       <AdminStatCard label="Total HT" value={euros(p.totalHtCents)} icon={Banknote} />
       <AdminStatCard label="TVA" value={euros(p.tvaCents)} icon={Percent} />

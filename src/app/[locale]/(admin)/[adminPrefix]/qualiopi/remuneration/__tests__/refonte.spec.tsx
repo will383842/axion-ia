@@ -45,6 +45,12 @@ describe("TuilesReleve", () => {
     expect(within(zone).getByText("Aucune échéance enregistrée")).toBeTruthy();
   });
 
+  it("la grille des tuiles porte la marge basse (espace avant le bloc suivant)", () => {
+    render(<TuilesReleve {...tuiles} />);
+    const grille = screen.getByLabelText("Chiffres clés");
+    expect(grille.className).toContain("mb-[var(--space-admin-6)]");
+  });
+
   it("échéance dépassée : nombre de jours de retard", () => {
     render(<TuilesReleve {...tuiles} echeance={new Date("2026-10-01")} retardJours={12} />);
     expect(screen.getByText("12 j de retard")).toBeTruthy();

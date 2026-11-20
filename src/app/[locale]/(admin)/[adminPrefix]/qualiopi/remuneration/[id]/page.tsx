@@ -125,22 +125,24 @@ export default async function ReleveDetailPage({ params, searchParams }: PagePro
       />
 
       <div>
-        <div>
-          <Link href={listeUrl} className="admin-link">
-            <ArrowLeft size={14} aria-hidden /> Retour aux relevés
-          </Link>
-        </div>
+        <div className="mb-[var(--space-admin-4)] flex flex-col gap-[var(--space-admin-3)]">
+          <div>
+            <Link href={listeUrl} className="admin-link">
+              <ArrowLeft size={14} aria-hidden /> Retour aux relevés
+            </Link>
+          </div>
 
-        {sp.ok !== undefined && (
-          <div className="admin-alert admin-alert-success" role="status">
-            {sp.ok}
-          </div>
-        )}
-        {sp.erreur !== undefined && (
-          <div className="admin-alert admin-alert-error" role="alert">
-            {sp.erreur}
-          </div>
-        )}
+          {sp.ok !== undefined && (
+            <div className="admin-alert admin-alert-success" role="status">
+              {sp.ok}
+            </div>
+          )}
+          {sp.erreur !== undefined && (
+            <div className="admin-alert admin-alert-error" role="alert">
+              {sp.erreur}
+            </div>
+          )}
+        </div>
 
         {/* ── Chiffres clés ─────────────────────────────────────────────────── */}
         <TuilesReleve
