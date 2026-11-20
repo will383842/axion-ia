@@ -187,6 +187,11 @@ const CONSOMMATEURS_ASSUMES: ReadonlySet<string> = new Set([
   // la fiche (`calculerEncoursDuCents`, règle unique du reste dû) et lit le type `Client360` ; la recopier
   // donnerait deux règles. Rien d'autre du domaine. Nommé seul.
   "src/features/dossier-client/fiche/lire-en-tete.ts",
+  // Fiche client, pipeline alimenté par les devis envoyés (20/11/2026) — le montant doit être EXACTEMENT
+  // celui du PDF du devis (`montantsDevis` + `computeTotauxFacture`, règle unique des totaux) : les
+  // recopier donnerait deux règles. Lecture seule. Ce fichier et sa spec, nommés seuls.
+  "src/features/dossier-client/fiche/pipeline-devis.ts",
+  "src/features/dossier-client/fiche/__tests__/pipeline-devis.spec.ts",
   // Fiche client, lot B7 (29/10/2026) — l'argent de l'onglet Devis et factures (affichage seul) :
   // `resteDuNetCents` (règle unique du reste dû) et `estFactureOuverte` (source unique des statuts
   // ouverts). Ce fichier est le SEUL point d'entrée ; les cartes et tuiles passent par lui. Nommé seul.

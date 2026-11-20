@@ -15,6 +15,7 @@ import { AdminButton } from "@/components/admin/ui/AdminButton";
 import type { Etape } from "../../types";
 import type { VueApercuDevis } from "./ApercuDevis";
 import { EmailEnvoi, type EmailAEnvoyer, type PropsEmailEnvoi } from "./EmailEnvoi";
+import { liensApresEnvoi } from "./liens-apres-envoi";
 
 // Chargé à la demande : l'aperçu n'existe qu'après la réponse du serveur.
 const ApercuDevis = lazy(() => import("./ApercuDevis").then((m) => ({ default: m.ApercuDevis })));
@@ -91,6 +92,13 @@ export function EtapeEnvoi({
   }, []);
 
   const prete = chargement.etat === "pret" ? chargement.prepare : null;
+  // `prete` n'existe qu'après l'appel serveur (jamais au rendu serveur) : l'URL courante est lisible.
+  const liens = prete
+    ? liensApresEnvoi(
+        typeof window === "undefined" ? null : window.location.pathname,
+        prete.devisId,
+      )
+    : null;
 
   return (
     <div className="grid gap-[var(--space-admin-8)] lg:grid-cols-[minmax(0,1fr)_22rem] lg:items-start">
@@ -130,6 +138,8 @@ export function EtapeEnvoi({
             apercuEmail={apercuEmail}
             lienFiche={lienFiche}
             modifiable={modifiable}
+            hrefDevis={liens?.hrefDevis}
+            hrefEmails={liens?.hrefEmails}
             envoyer={(email) => envoyer(prete.devisId, prete.majLe, email)}
           />
         ) : null}

@@ -11,8 +11,25 @@ vi.mock("@/lib/prisma", () => ({
     emailOutbox: { count: vi.fn().mockResolvedValue(0) },
     projetSuivi: { findMany: vi.fn().mockResolvedValue([]) },
     clientContact: { count: vi.fn().mockResolvedValue(0) },
-    devis: { count: vi.fn().mockResolvedValue(0) },
+    devis: {
+      count: vi.fn().mockResolvedValue(0),
+      findMany: vi.fn().mockResolvedValue([]),
+      create: vi.fn(),
+      update: vi.fn(),
+      updateMany: vi.fn(),
+      upsert: vi.fn(),
+      delete: vi.fn(),
+      deleteMany: vi.fn(),
+    },
   },
+}));
+vi.mock("@/server/qualiopi/devis/interrupteur-formules", () => ({
+  formulesActives: vi.fn(async () => true),
+}));
+vi.mock("@/server/qualiopi/config/site-settings", () => ({
+  getQualiopiConfig: vi.fn(async (cle: string) =>
+    cle === "regime_tva" ? "assujetti" : cle === "taux_tva_standard_percent" ? 20 : null,
+  ),
 }));
 vi.mock("@/features/dossier-client/fil-des-echanges", () => ({
   lireFilDesEchanges: vi.fn(async () => fil.valeur),
@@ -31,6 +48,7 @@ vi.mock("@/features/dossier-client/questionnaires-de-la-fiche", () => ({
 }));
 vi.mock("@/server/qualiopi/crm/clients", () => ({ calculerEncoursDuCents: () => 0 }));
 
+import { prisma } from "@/lib/prisma";
 import { lireProjetsDuClient, lireRencontresDuClient } from "@/features/dossier-client/queries";
 
 import {
@@ -196,5 +214,81 @@ describe("lireEnTete — lectures partagées", () => {
     const e = await lireEnTete(ctx(), async () => client);
     expect(e!.nbPrestations).toEqual({ ok: false });
     expect(e!.pipeline).toEqual({ ok: false });
+  });
+});
+
+describe("lireEnTete — devis en attente (lecture seule)", () => {
+  const devisEnvoye = {
+    id: "d1",
+    statut: "envoye",
+    offre: null,
+    lignes: [{ designation: "A", quantite: 1, prixUnitaireHtCents: 100_000, tauxTvaPercent: 20 }],
+    montantTotalHtCents: 100_000,
+    sentAt: new Date("2026-11-01T10:00:00Z"),
+    createdAt: new Date("2026-10-30T10:00:00Z"),
+  };
+  beforeEach(() => {
+    fil.valeur = { fil: [], sourcesEnPanne: 0 };
+    suivis.valeur = [];
+  });
+  it("aucun devis envoyé : null", async () => {
+    const e = await lireEnTete(ctx(), async () => client);
+    expect(e!.devisEnAttente).toEqual({ ok: true, valeur: null });
+  });
+  it("un devis envoyé : total HT/TTC, et aucune écriture Prisma", async () => {
+    vi.mocked(prisma.devis.findMany).mockResolvedValueOnce([devisEnvoye] as never);
+    const e = await lireEnTete(ctx(), async () => client);
+    expect(e!.devisEnAttente).toEqual({
+      ok: true,
+      valeur: {
+        nb: 1,
+        htCents: 100_000,
+        ttcCents: 120_000,
+        aPartirDe: false,
+        dernierDevisId: "d1",
+        illisibles: 0,
+      },
+    });
+    expect(prisma.devis.findMany).toHaveBeenCalledWith(
+      expect.objectContaining({
+        where: expect.objectContaining({
+          clientId: "c1",
+          statut: "envoye",
+          OR: [
+            { dateValidite: { gte: MAINTENANT } },
+            expect.objectContaining({ documentGenere: expect.anything() }),
+          ],
+        }),
+      }),
+    );
+    const ecritures = [
+      "create",
+      "update",
+      "upsert",
+      "delete",
+      "createMany",
+      "updateMany",
+      "deleteMany",
+    ];
+    for (const modele of Object.values(prisma) as Record<string, unknown>[]) {
+      for (const m of ecritures) {
+        if (typeof modele[m] === "function") expect(modele[m]).not.toHaveBeenCalled();
+      }
+    }
+  });
+  it("offre illisible : le devis est ignoré et compté, la lecture ne tombe pas", async () => {
+    vi.spyOn(console, "warn").mockImplementation(() => {});
+    vi.mocked(prisma.devis.findMany).mockResolvedValueOnce([
+      devisEnvoye,
+      { ...devisEnvoye, id: "d2", offre: { n: 1 } },
+    ] as never);
+    const e = await lireEnTete(ctx(), async () => client);
+    expect(e!.devisEnAttente).toMatchObject({ ok: true, valeur: { nb: 1, illisibles: 1 } });
+  });
+  it("lecture des devis en panne : « Lecture impossible » côté devis seulement", async () => {
+    vi.mocked(prisma.devis.findMany).mockRejectedValueOnce(new Error("panne"));
+    const e = await lireEnTete(ctx(), async () => client);
+    expect(e!.devisEnAttente).toEqual({ ok: false });
+    expect(e!.pipeline.ok).toBe(true);
   });
 });

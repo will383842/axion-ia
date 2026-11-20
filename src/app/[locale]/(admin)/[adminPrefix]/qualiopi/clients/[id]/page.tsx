@@ -32,6 +32,7 @@
  * Garde : `./__tests__/un-lecteur-ne-voit-ni-synthese-ni-echanges.spec.tsx`.
  */
 
+import { idsPiecesDevisAContresigner } from "@/server/qualiopi/documents/signature/pieces-en-attente";
 import * as E from "@/components/admin/dossier-client/fiche/emplacements";
 import { FilDesEchanges } from "@/components/admin/dossier-client/FilDesEchanges";
 import {
@@ -557,6 +558,12 @@ export default async function FicheClient360Page({ params, searchParams }: PageP
         ).catch(() => new Set<string>())
       : new Set<string>();
 
+  // Pastille « À contresigner » : même lecture mémoïsée que la liste des devis ; une panne ne cache rien.
+  const piecesAContresigner =
+    onglet === "devis-factures"
+      ? await idsPiecesDevisAContresigner().catch(() => new Set<string>())
+      : new Set<string>();
+
   const encoursDuCents = calculerEncoursDuCents(client.facturesFormation);
   // La requête ramène TOUTES les factures (l'encours l'exige) ; l'affichage,
   // lui, s'aligne sur les autres sections : les 10 dernières.
@@ -942,6 +949,7 @@ export default async function FicheClient360Page({ params, searchParams }: PageP
           bandeauPartners={bandeauPartners}
           nbEmailsAValider={nbEmailsAValider}
           devisAvecEmailAttente={devisAvecEmailAttente}
+          piecesAContresigner={piecesAContresigner}
         />
       ) : null}
     </AdminPageShell>

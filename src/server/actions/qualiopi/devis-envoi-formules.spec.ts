@@ -58,16 +58,17 @@ vi.mock("@/server/actions/qualiopi/_guards", () => ({
   logQualiopiActivity: (...a: unknown[]) => logActivity(...a),
 }));
 vi.mock("@/server/qualiopi/devis/interrupteur-formules", () => ({
-  formulesActives: () => formulesActives(),
+  formulesActives: (...a: unknown[]) => formulesActives(...a),
 }));
 vi.mock("@/server/qualiopi/documents/donnees-pdf-devis", async (importOriginal) => ({
   ...(await importOriginal<typeof import("@/server/qualiopi/documents/donnees-pdf-devis")>()),
-  lireContextePdfDevis: async () => ({
+  // Comme le vrai module : le booléen déjà calculé par l'envoi est repris tel quel.
+  lireContextePdfDevis: async (formules: boolean) => ({
     identite: { raisonSociale: "Axion", site: "https://axion-ia.com" },
     regimeTva: "assujetti",
     tauxStandard: 20,
     certificationObtenue: false,
-    formulesActives: await formulesActives(),
+    formulesActives: formules,
   }),
 }));
 vi.mock("@/server/qualiopi/documents/documents-service", () => ({
@@ -245,13 +246,23 @@ describe("sendDevisAction — devis à formules : gardes complémentaires", () =
     expect(enqueueEmail).not.toHaveBeenCalled();
   });
 
-  it("formules absentes du PDF (interrupteur éteint à la 2e lecture) : refus", async () => {
-    formulesActives.mockReset();
-    formulesActives.mockResolvedValueOnce(true).mockResolvedValue(false);
+  it("l'interrupteur est lu UNE seule fois, pour le client du devis, et sa valeur sert au PDF", async () => {
+    const r = await sendDevisAction(ID);
+    expect("data" in r).toBe(true);
+    expect(formulesActives).toHaveBeenCalledTimes(1);
+    expect(formulesActives).toHaveBeenCalledWith(
+      undefined,
+      expect.objectContaining({ clientId: "c1" }),
+    );
+  });
+
+  it("garde refusée (essai, vrai client) : aucun PDF ni jeton, message « formules_eteintes »", async () => {
+    formulesActives.mockResolvedValue(false);
     const r = await sendDevisAction(ID);
     expect("error" in r).toBe(true);
-    if ("error" in r) expect(r.error).toContain("n'ont pas pu être construites");
+    expect(formulesActives).toHaveBeenCalledTimes(1);
     expect(generateDocument).not.toHaveBeenCalled();
+    expect(creerToken).not.toHaveBeenCalled();
     expect(txDevisUpdateMany).not.toHaveBeenCalled();
   });
 

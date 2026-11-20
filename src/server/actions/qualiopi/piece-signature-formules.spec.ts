@@ -117,7 +117,7 @@ beforeEach(() => {
     async (args: { select: Record<string, boolean> }) =>
       args.select["statut"] === true
         ? { statut: "envoye" }
-        : { numero: NUMERO, offre: OFFRE, offreSha256: OFFRE_SHA },
+        : { numero: NUMERO, clientId: "client-1", offre: OFFRE, offreSha256: OFFRE_SHA },
   );
   mockSigner.mockResolvedValue({
     ok: true,
@@ -154,6 +154,11 @@ describe("devis à formules — l'action valide le choix contre l'offre figée",
     const res = await signerPieceParJetonAction(entree());
     expect(res).toMatchObject({ ok: false, raison: "piece_non_signable_maintenant" });
     expect(mockSigner).not.toHaveBeenCalled();
+  });
+
+  it("🔴 la garde est posée pour le CLIENT du devis (fiche d'essai en mode « essai »)", async () => {
+    await signerPieceParJetonAction(entree());
+    expect(interrupteur.formulesActives).toHaveBeenCalledWith(undefined, { clientId: "client-1" });
   });
 
   it("sans choix : `choix_requis`, rien n'est signé", async () => {
