@@ -15,6 +15,9 @@ vi.mock("@/server/actions/qualiopi/devis-assistant-finaliser", () => ({
 vi.mock("@/server/actions/qualiopi/devis-assistant-apercu", () => ({
   apercuAssistantAction: vi.fn(),
 }));
+vi.mock("@/server/actions/qualiopi/devis-assistant-apercu-email", () => ({
+  apercuEmailDevisAction: vi.fn(),
+}));
 vi.mock("@/server/actions/qualiopi/devis-assistant-sources", () => ({
   listerSourcesPourQuiAction: sources,
 }));

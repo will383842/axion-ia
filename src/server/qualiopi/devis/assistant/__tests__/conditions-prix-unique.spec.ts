@@ -207,6 +207,16 @@ describe("recalculerEcheancier / controlerEcheancier (l'échéancier suit le tot
     expect(controlerEcheancier(t, 120000, "assujetti")).toBe(false);
   });
 
+  it("un versement non final à 0,00 € est refusé par controlerEcheancier, comme par recalculerEcheancier", () => {
+    // Total de 1 centime : les deux premiers versements valent 0,00 €, le dernier 0,01 €. Les
+    // montants imprimés égalent ceux que l'assistant calculerait : seule la règle du zéro refuse.
+    const t = texte1000()
+      .replace(/360,00\s€/g, "0,00 €")
+      .replace(/480,00\s€/, "0,01 €");
+    expect(t).toMatch(/0,00\s€/);
+    expect(controlerEcheancier(t, 1, "assujetti")).toBe(false);
+  });
+
   it("M2 : total trop faible → message dédié ; format inconnu → message dédié", () => {
     const r = recalculerEcheancier(texte1000(), 1, "assujetti");
     expect(r).toEqual({

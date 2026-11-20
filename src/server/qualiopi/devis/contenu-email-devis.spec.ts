@@ -133,4 +133,30 @@ describe("contenuEmailDevis — objet et mots interdits", () => {
       expect(contenuEmailDevis({ ...BASE, sujet: t }).ok, t).toBe(false);
     }
   });
+
+  it("refuse « financee(s) » sans accent et « pris(e)(s) en charge », sans toucher « finances »", () => {
+    for (const t of [
+      "Formation financee",
+      "Stages financees",
+      "Dossiers financees",
+      "FINANCEE",
+      "Pris en charge",
+      "Prise en charge",
+      "Prises en charge",
+      "Frais pris  en charge",
+    ]) {
+      expect(contenuEmailDevis({ ...BASE, sujet: t }).ok, t).toBe(false);
+      expect(contenuEmailDevis({ ...BASE, message: t }).ok, t).toBe(false);
+    }
+    expect(contenuEmailDevis({ ...BASE, sujet: "Les finances du directeur financier" }).ok).toBe(
+      true,
+    );
+    expect(contenuEmailDevis({ ...BASE, sujet: "Un devis pris en main" }).ok).toBe(true);
+  });
+
+  it("refuse un caractère de format (\\p{Cf}) dans l'objet : U+202E, U+200B, U+FEFF, U+00AD", () => {
+    for (const c of ["\u202e", "\u200b", "\ufeff", "\u00ad", "\u200d"]) {
+      expect(contenuEmailDevis({ ...BASE, sujet: `Votre${c}devis` }).ok, c).toBe(false);
+    }
+  });
 });

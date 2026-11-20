@@ -56,7 +56,10 @@ export type ContenuEmailDevis =
   | { readonly ok: false; readonly error: string };
 
 // Mots du financement et de la certification. « financier » (directeur financier…) reste permis.
-const MOTS_INTERDITS = /qualiopi|opco|\bcpf\b|prise\s+en\s+charge|financement|\bfinance\s+par\b/;
+// « financee(s) » : « financé » écrit sans accent (après normalisation, « finances » reste permis).
+// « pris(e)(s) en charge » : toutes les formes de la prise en charge.
+const MOTS_INTERDITS =
+  /qualiopi|opco|\bcpf\b|\bpris(?:e|es|s)?\s+en\s+charge|financement|\bfinance\s+par\b|\bfinancees?\b/;
 // « financé(e)(s) » : testé AVEC l'accent (sans lui, « finances » du directeur financier serait pris).
 const FINANCE_ACCENTUE = /\bfinanc\u00e9(?:e|s|es)?(?![\p{L}])/u;
 
@@ -83,8 +86,11 @@ export function contenuEmailDevis(e: EntreeContenuEmailDevis): ContenuEmailDevis
   if (sujet !== undefined && sujet !== "") {
     if (sujet.length > OBJET_MAX)
       return { ok: false, error: `L'objet dépasse ${OBJET_MAX} caractères.` };
-    if (/[\p{Cc}\u2028\u2029]/u.test(sujet)) {
-      return { ok: false, error: "L'objet tient sur une seule ligne, sans caractère de contrôle." };
+    if (/[\p{Cc}\p{Cf}\u2028\u2029]/u.test(sujet)) {
+      return {
+        ok: false,
+        error: "L'objet tient sur une seule ligne, sans caractère de contrôle ni de format.",
+      };
     }
     if (contientMotInterdit(sujet)) {
       return { ok: false, error: "L'objet contient un mot qui n'a pas sa place dans un devis." };

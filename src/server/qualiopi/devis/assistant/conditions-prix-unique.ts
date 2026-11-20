@@ -204,5 +204,7 @@ export function controlerEcheancier(
   const lu = lireEcheancier(texte);
   if (!lu) return false;
   const paliers = paliersDe(lu.lignes, totalTtcCents);
+  // Comme `recalculerEcheancier` : un versement non final à 0,00 € n'est jamais valide.
+  if (paliers.slice(0, -1).some((x) => x.montantHtCents <= 0)) return false;
   return lu.lignes.every((l, i) => l.montantCents === paliers[i]!.montantHtCents);
 }

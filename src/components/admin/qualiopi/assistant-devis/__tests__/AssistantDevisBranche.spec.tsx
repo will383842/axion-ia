@@ -11,6 +11,7 @@ const A = vi.hoisted(() => ({
   numeroter: vi.fn(),
   envoyer: vi.fn(),
   apercu: vi.fn(),
+  apercuEmail: vi.fn(),
   sources: vi.fn(),
 }));
 
@@ -26,10 +27,14 @@ vi.mock("@/server/actions/qualiopi/devis-assistant-finaliser", () => ({
 vi.mock("@/server/actions/qualiopi/devis-assistant-apercu", () => ({
   apercuAssistantAction: A.apercu,
 }));
+vi.mock("@/server/actions/qualiopi/devis-assistant-apercu-email", () => ({
+  apercuEmailDevisAction: A.apercuEmail,
+}));
 vi.mock("@/server/actions/qualiopi/devis-assistant-sources", () => ({
   listerSourcesPourQuiAction: A.sources,
 }));
 
+import { adminPath } from "@/lib/admin-path";
 import { calculerApercu } from "@/server/qualiopi/devis/assistant/apercu";
 import { lirePayload } from "@/server/qualiopi/devis/assistant/payload";
 
@@ -50,6 +55,18 @@ const CLIENT: ClientOption = {
   email: "client@example.test",
 };
 const CTX = { tvaStandardPct: 20, textes: [] };
+const donneesEmail = (o: Record<string, unknown> = {}) => ({
+  a: "client@example.test",
+  de: '"Axion-IA" <contact@axion-ia.com>',
+  objet: "Votre devis AXI-DEV-2026-0001",
+  objetOrigine: "Votre devis AXI-DEV-2026-0001",
+  html: "<p>Bonjour</p>",
+  piecesJointes: [],
+  lienSignature: "créé à l'envoi",
+  salutation: "Bonjour",
+  adresseManquante: false,
+  ...o,
+});
 
 function monter(
   o: {
@@ -119,7 +136,20 @@ beforeEach(() => {
   A.envoyer.mockResolvedValue({
     data: { devisId: NUM.devisId, emailEnvoye: true, signatureCreee: true },
   });
+  A.apercuEmail.mockImplementation(async (i: { sujet?: string }) => ({
+    data: donneesEmail({ ...(i.sujet !== undefined ? { objet: i.sujet } : {}) }),
+  }));
 });
+
+/** Le bouton reste désactivé jusqu'à l'aperçu de l'e-mail (adresse lue sur la fiche). */
+const cliquerEnvoyer = async () => {
+  const b = await waitFor(() => {
+    const x = screen.getByRole("button", { name: /Envoyer au client/ }) as HTMLButtonElement;
+    expect(x.disabled).toBe(false);
+    return x;
+  });
+  fireEvent.click(b);
+};
 
 const continuer = () => fireEvent.click(screen.getByRole("button", { name: "Continuer" }));
 
@@ -318,7 +348,7 @@ describe("étape 4 : sauver → numéroter → aperçu → envoyer", () => {
   it("l'adresse du client s'affiche en LECTURE SEULE", async () => {
     monter({ etape: 4 });
     const champ = (await screen.findByLabelText("À")) as HTMLInputElement;
-    expect(champ.value).toBe("client@example.test");
+    await waitFor(() => expect(champ.value).toBe("client@example.test"));
     expect(champ.readOnly).toBe(true);
   });
 
@@ -326,11 +356,72 @@ describe("étape 4 : sauver → numéroter → aperçu → envoyer", () => {
     const onEnvoye = vi.fn();
     monter({ etape: 4, onEnvoye });
     await screen.findByText(/Proposition n°/);
-    fireEvent.click(screen.getByRole("button", { name: /Envoyer au client/ }));
+    await cliquerEnvoyer();
     expect(await screen.findByText("Le devis est envoyé au client.")).toBeTruthy();
     expect(A.envoyer).toHaveBeenCalledTimes(1);
     expect(A.envoyer.mock.calls[0]![0]).toEqual({ brouillonId: BROUILLON, attenduRevision: 8 });
     expect(onEnvoye).toHaveBeenCalledWith({ devisId: NUM.devisId });
+  });
+
+  it("l'aperçu de l'e-mail est lu avec le devis numéroté ; la fiche s'ouvre sur le client", async () => {
+    monter({ etape: 4 });
+    await screen.findByTestId("apercu-email");
+    await waitFor(() => expect(A.apercuEmail).toHaveBeenCalled());
+    expect(A.apercuEmail.mock.calls[0]![0]).toEqual({ devisId: NUM.devisId });
+  });
+
+  it("aller-retour : l'objet et le message choisis arrivent à envoyerDepuisAssistantAction", async () => {
+    monter({ etape: 4 });
+    const objet = (await screen.findByLabelText("Objet")) as HTMLInputElement;
+    fireEvent.change(objet, { target: { value: "Votre proposition" } });
+    fireEvent.change(screen.getByLabelText("Message personnel"), {
+      target: { value: "Bonjour, voici la proposition." },
+    });
+    fireEvent.click(screen.getByRole("button", { name: "Actualiser l'aperçu" }));
+    await waitFor(() => expect(A.apercuEmail).toHaveBeenCalledTimes(2));
+    expect(A.apercuEmail.mock.calls[1]![0]).toEqual({
+      devisId: NUM.devisId,
+      sujet: "Votre proposition",
+      message: "Bonjour, voici la proposition.",
+    });
+    await waitFor(() =>
+      expect(
+        (screen.getByRole("button", { name: /Envoyer au client/ }) as HTMLButtonElement).disabled,
+      ).toBe(false),
+    );
+    await cliquerEnvoyer();
+    await screen.findByText("Le devis est envoyé au client.");
+    expect(A.envoyer).toHaveBeenCalledTimes(1);
+    expect(A.envoyer.mock.calls[0]![0]).toEqual({
+      brouillonId: BROUILLON,
+      attenduRevision: 8,
+      sujet: "Votre proposition",
+      messagePersonnalise: "Bonjour, voici la proposition.",
+    });
+  });
+
+  it("sans modification : l'appel d'envoi est identique à avant (ni sujet ni message)", async () => {
+    monter({ etape: 4 });
+    await screen.findByLabelText("Objet");
+    await waitFor(() =>
+      expect(
+        (screen.getByRole("button", { name: /Envoyer au client/ }) as HTMLButtonElement).disabled,
+      ).toBe(false),
+    );
+    await cliquerEnvoyer();
+    await screen.findByText("Le devis est envoyé au client.");
+    expect(A.envoyer.mock.calls[0]![0]).toEqual({ brouillonId: BROUILLON, attenduRevision: 8 });
+  });
+
+  it("adresse vide sur la fiche : bouton désactivé et lien vers la fiche du client", async () => {
+    A.apercuEmail.mockResolvedValue({ data: donneesEmail({ a: "", adresseManquante: true }) });
+    monter({ etape: 4, etat: { ...etatT4(), clientId: CLIENT.id } });
+    const lien = await screen.findByRole("link", { name: "Ajouter l'adresse sur la fiche" });
+    expect(lien.getAttribute("href")).toBe(adminPath("fr", `/qualiopi/clients/${CLIENT.id}/edit`));
+    expect(
+      (screen.getByRole("button", { name: /Envoyer au client/ }) as HTMLButtonElement).disabled,
+    ).toBe(true);
+    expect(A.envoyer).not.toHaveBeenCalled();
   });
 
   it("envoi rejoué : l'erreur du serveur est affichée, aucun second appel d'envoi", async () => {
@@ -339,7 +430,7 @@ describe("étape 4 : sauver → numéroter → aperçu → envoyer", () => {
     });
     monter({ etape: 4 });
     await screen.findByText(/Proposition n°/);
-    fireEvent.click(screen.getByRole("button", { name: /Envoyer au client/ }));
+    await cliquerEnvoyer();
     expect((await screen.findByRole("alert")).textContent).toContain("Envoi déjà demandé");
     await act(async () => void (await Promise.resolve()));
     expect(A.envoyer).toHaveBeenCalledTimes(1);
@@ -353,7 +444,7 @@ describe("étape 4 : sauver → numéroter → aperçu → envoyer", () => {
     A.reprendre.mockResolvedValueOnce({ data: { revision: 9 } });
     monter({ etape: 4 });
     await screen.findByText(/Proposition n°/);
-    fireEvent.click(screen.getByRole("button", { name: /Envoyer au client/ }));
+    await cliquerEnvoyer();
     await waitFor(() => expect(A.numeroter).toHaveBeenCalledTimes(2));
     expect(A.envoyer).toHaveBeenCalledTimes(1);
     expect(A.apercu).toHaveBeenCalledTimes(2);
@@ -366,9 +457,9 @@ describe("étape 4 : sauver → numéroter → aperçu → envoyer", () => {
     A.reprendre.mockResolvedValueOnce({ data: { revision: 12 } });
     monter({ etape: 4 });
     await screen.findByText(/Proposition n°/);
-    fireEvent.click(screen.getByRole("button", { name: /Envoyer au client/ }));
+    await cliquerEnvoyer();
     expect((await screen.findByRole("alert")).textContent).toContain("modifié ailleurs");
-    fireEvent.click(screen.getByRole("button", { name: /Envoyer au client/ }));
+    await cliquerEnvoyer();
     await waitFor(() => expect(screen.getAllByRole("alert")[0]!.textContent).toContain("ailleurs"));
     expect(A.envoyer).toHaveBeenCalledTimes(1);
     expect(A.numeroter).toHaveBeenCalledTimes(1);
@@ -378,7 +469,7 @@ describe("étape 4 : sauver → numéroter → aperçu → envoyer", () => {
     A.envoyer.mockRejectedValueOnce(new Error("réseau"));
     monter({ etape: 4 });
     await screen.findByText(/Proposition n°/);
-    fireEvent.click(screen.getByRole("button", { name: /Envoyer au client/ }));
+    await cliquerEnvoyer();
     expect((await screen.findByRole("alert")).textContent).toContain("Vérifiez l'état du devis");
   });
 
@@ -432,7 +523,7 @@ describe("étape 4 : sauver → numéroter → aperçu → envoyer", () => {
     const onEnvoye = vi.fn();
     monter({ etape: 4, onEnvoye });
     await screen.findByText(/Proposition n°/);
-    fireEvent.click(screen.getByRole("button", { name: /Envoyer au client/ }));
+    await cliquerEnvoyer();
     await waitFor(() =>
       expect(document.body.textContent).toContain("Le client n'a pas d'adresse."),
     );
@@ -454,7 +545,7 @@ describe("étape 4 : sauver → numéroter → aperçu → envoyer", () => {
     const onEnvoye = vi.fn();
     monter({ etape: 4, onEnvoye });
     await screen.findByText(/Proposition n°/);
-    fireEvent.click(screen.getByRole("button", { name: /Envoyer au client/ }));
+    await cliquerEnvoyer();
     await waitFor(() =>
       expect(document.body.textContent).toContain(
         "reste en brouillon tant que l'e-mail n'est pas validé dans « Emails, À valider »",
@@ -468,7 +559,7 @@ describe("étape 4 : sauver → numéroter → aperçu → envoyer", () => {
     const onEnvoye = vi.fn();
     monter({ etape: 4, onEnvoye });
     await screen.findByText(/Proposition n°/);
-    fireEvent.click(screen.getByRole("button", { name: /Envoyer au client/ }));
+    await cliquerEnvoyer();
     await screen.findByText("Le devis est envoyé au client.");
     expect(onEnvoye).toHaveBeenCalledWith({ devisId: NUM.devisId });
   });
