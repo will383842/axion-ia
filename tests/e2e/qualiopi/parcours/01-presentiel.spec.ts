@@ -245,7 +245,7 @@ async function texteDuContenu(page: Page, quoi: string): Promise<string> {
  *
  * 🔑 On vise LA CELLULE, pas la page. `#infos` (sessions/[id]/page.tsx:590)
  * est une grille (:592) dont chaque enfant direct est une cellule
- * `<p>libellé</p><p>valeur</p>` ; `#infos > div > div` les désigne toutes, et
+ * `<dt>libellé</dt><dd>valeur</dd>` (liste de définitions `<dl>`, refonte visuelle) ; `#infos dl > div` les désigne toutes, et
  * le filtre ancré `^Modalité` en retient exactement une (page.tsx:610-615,
  * valeur rendue en :613 par `MODALITE_LABELS`, page.tsx:97-101).
  *
@@ -258,7 +258,7 @@ async function texteDuContenu(page: Page, quoi: string): Promise<string> {
  * garder.
  */
 function celluleModalite(page: Page): Locator {
-  return page.locator("#infos > div > div").filter({ hasText: /^Modalité/ });
+  return page.locator("#infos dl > div").filter({ hasText: /^Modalité/ });
 }
 
 test.describe("@parcours-qualiopi 1 — présentiel, du devis à la facture", () => {
