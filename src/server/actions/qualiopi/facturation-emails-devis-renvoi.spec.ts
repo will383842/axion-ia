@@ -38,6 +38,7 @@ vi.mock("@/lib/prisma", () => ({
           acquis.push(cle);
           return [{ locked: true }];
         },
+        activityLog: { findFirst: async () => null },
         emailOutbox: {
           findFirst: (...a: unknown[]) => {
             d.ordre.push("garde");
