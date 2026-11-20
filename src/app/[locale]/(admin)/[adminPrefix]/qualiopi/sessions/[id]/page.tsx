@@ -139,6 +139,9 @@ import { ChecklistSession } from "@/features/admin-qualiopi/session-hub/Checklis
 import { AccesRefuse } from "@/components/admin/ui/AccesRefuse";
 import { LIBELLE_MODALITE_HYBRIDE } from "@/server/qualiopi/documents/libelles-enumerations";
 import { gardePage } from "@/server/auth/garde-page";
+import { AdminBloc } from "@/components/admin/ui/AdminBloc";
+import { AdminBlocRepliable } from "@/components/admin/ui/AdminBlocRepliable";
+import { AdminEmptyState } from "@/components/admin/ui/AdminEmptyState";
 
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
@@ -875,12 +878,10 @@ export default async function SessionHubPage({ params, searchParams }: PageProps
   const sessionBase = `${base}/${id}`;
   const dateValidation = new Intl.DateTimeFormat("fr-FR", { dateStyle: "long" });
 
-  const sectionHeadCls =
-    "text-[length:var(--text-admin-base)] font-semibold text-[color:var(--color-admin-fg)] mb-[var(--space-admin-3)]";
   const infoLabelCls =
     "text-[length:var(--text-admin-xs)] tracking-wide text-[color:var(--color-admin-fg-muted)] uppercase";
   const infoValueCls =
-    "mt-0.5 text-[length:var(--text-admin-sm)] font-medium text-[color:var(--color-admin-fg)]";
+    "m-0 mt-0.5 text-[length:var(--text-admin-sm)] font-medium text-[color:var(--color-admin-fg)]";
   const subLinkCls =
     "flex items-center gap-[var(--space-admin-2)] rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)] px-[var(--space-admin-4)] py-[var(--space-admin-3)] text-[length:var(--text-admin-sm)] font-medium text-[color:var(--color-admin-accent)] transition-colors hover:bg-[color:var(--color-admin-surface)]";
 
@@ -908,164 +909,171 @@ export default async function SessionHubPage({ params, searchParams }: PageProps
     infos: (
       <>
         {/* ── En-tête de la session ─────────────────────────────────────────── */}
-        <section id="infos" className={`mb-[var(--space-admin-8)] ${CLASSE_ANCRE_SECTION}`}>
-          <h2 className={sectionHeadCls}>
-            Informations générales
-            {trainingSession.estTestInterne && <BadgeEssai />}
-          </h2>
-          {trainingSession.estTestInterne && (
-            <p className="mb-[var(--space-admin-3)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]">
-              Session d&apos;essai interne : pièces numérotées hors suite légale et filigranées,
-              e-mails limités aux adresses de test, aucune facture électronique, commission,
-              synchronisation ni alerte externe. Exclue du BPF, du pilotage et des taux publiés.
-            </p>
-          )}
-          <div className="grid grid-cols-2 gap-[var(--space-admin-4)] rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)] p-[var(--space-admin-5)] sm:grid-cols-4">
-            {/* Formation */}
-            <div>
-              <p className={infoLabelCls}>Formation</p>
-              <p className={infoValueCls}>
-                <Link
-                  href={`/${locale}/${adminPrefix}/qualiopi/formations/${trainingSession.formation.id}`}
-                  className="text-[color:var(--color-admin-accent)] underline-offset-2 hover:underline"
-                >
-                  {trainingSession.formation.numero}
-                </Link>
+        <section id="infos" className={`${CLASSE_ANCRE_SECTION}`}>
+          <AdminBloc
+            teinte="bleu"
+            niveau={2}
+            titre={
+              <>
+                Informations générales
+                {trainingSession.estTestInterne && <BadgeEssai />}
+              </>
+            }
+          >
+            {trainingSession.estTestInterne && (
+              <p className="mb-[var(--space-admin-3)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]">
+                Session d&apos;essai interne : pièces numérotées hors suite légale et filigranées,
+                e-mails limités aux adresses de test, aucune facture électronique, commission,
+                synchronisation ni alerte externe. Exclue du BPF, du pilotage et des taux publiés.
               </p>
-              <p className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
-                {trainingSession.formation.titre}
-              </p>
-            </div>
+            )}
+            <dl className="m-0 grid grid-cols-2 gap-[var(--space-admin-4)] sm:grid-cols-4">
+              {/* Formation */}
+              <div>
+                <dt className={infoLabelCls}>Formation</dt>
+                <dd className={infoValueCls}>
+                  <Link
+                    href={`/${locale}/${adminPrefix}/qualiopi/formations/${trainingSession.formation.id}`}
+                    className="text-[color:var(--color-admin-accent)] underline-offset-2 hover:underline"
+                  >
+                    {trainingSession.formation.numero}
+                  </Link>
+                </dd>
+                <dd className="m-0 text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
+                  {trainingSession.formation.titre}
+                </dd>
+              </div>
 
-            {/* Modalité */}
-            <div>
-              <p className={infoLabelCls}>Modalité</p>
-              <p className={infoValueCls}>
-                {MODALITE_LABELS[trainingSession.modalite] ?? trainingSession.modalite}
-              </p>
-            </div>
+              {/* Modalité */}
+              <div>
+                <dt className={infoLabelCls}>Modalité</dt>
+                <dd className={infoValueCls}>
+                  {MODALITE_LABELS[trainingSession.modalite] ?? trainingSession.modalite}
+                </dd>
+              </div>
 
-            {/* Stagiaires — « participant » reste au marketing public, jamais en console. */}
-            <div>
-              <p className={infoLabelCls}>Stagiaires</p>
-              <p className={infoValueCls}>
-                {trainingSession._count.enrollments} inscrits /{" "}
-                {trainingSession.nbParticipantsPrevus} prévus
-              </p>
-              {trainingSession.nbParticipantsReels !== null && (
-                <p className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
-                  {trainingSession.nbParticipantsReels} réels
-                </p>
-              )}
-            </div>
+              {/* Stagiaires — « participant » reste au marketing public, jamais en console. */}
+              <div>
+                <dt className={infoLabelCls}>Stagiaires</dt>
+                <dd className={infoValueCls}>
+                  {trainingSession._count.enrollments} inscrits /{" "}
+                  {trainingSession.nbParticipantsPrevus} prévus
+                </dd>
+                {trainingSession.nbParticipantsReels !== null && (
+                  <dd className="m-0 text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
+                    {trainingSession.nbParticipantsReels} réels
+                  </dd>
+                )}
+              </div>
 
-            {/* Montant HT */}
-            <div>
-              <p className={infoLabelCls}>Montant HT</p>
-              <p className={infoValueCls}>
-                {(trainingSession.montantHtCents / 100).toLocaleString("fr-FR", {
-                  style: "currency",
-                  currency: "EUR",
-                })}
-              </p>
-              {/* Vérification E2E 2026-07-26 — cet écran affirmait « Exonéré TVA »
+              {/* Montant HT */}
+              <div>
+                <dt className={infoLabelCls}>Montant HT</dt>
+                <dd className={infoValueCls}>
+                  {(trainingSession.montantHtCents / 100).toLocaleString("fr-FR", {
+                    style: "currency",
+                    currency: "EUR",
+                  })}
+                </dd>
+                {/* Vérification E2E 2026-07-26 — cet écran affirmait « Exonéré TVA »
                     en dur, juste sous un Montant HT que le PDF facture à 20 %. La
                     mention suit désormais `qualiopi.regime_tva` et disparaît en
                     régime assujetti, comme sur les documents. */}
-              {mentionTvaSession !== null && (
-                <p className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
-                  {mentionTvaSession}
-                </p>
+                {mentionTvaSession !== null && (
+                  <dd className="m-0 text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
+                    {mentionTvaSession}
+                  </dd>
+                )}
+              </div>
+
+              {/* Client */}
+              {trainingSession.client !== null && (
+                <div>
+                  <dt className={infoLabelCls}>Client</dt>
+                  <dd className={infoValueCls}>
+                    {/* 🔴 L2 — menait à la LISTE des clients : on y cherchait le sien. */}
+                    <Link
+                      href={`/${locale}/${adminPrefix}/qualiopi/clients/${trainingSession.client.id}`}
+                      className="text-[color:var(--color-admin-accent)] underline-offset-2 hover:underline"
+                    >
+                      {trainingSession.client.numero}
+                    </Link>
+                  </dd>
+                  <dd className="m-0 text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
+                    {trainingSession.client.raisonSociale}
+                  </dd>
+                </div>
               )}
-            </div>
 
-            {/* Client */}
-            {trainingSession.client !== null && (
+              {/* Financement */}
               <div>
-                <p className={infoLabelCls}>Client</p>
-                <p className={infoValueCls}>
-                  {/* 🔴 L2 — menait à la LISTE des clients : on y cherchait le sien. */}
-                  <Link
-                    href={`/${locale}/${adminPrefix}/qualiopi/clients/${trainingSession.client.id}`}
-                    className="text-[color:var(--color-admin-accent)] underline-offset-2 hover:underline"
-                  >
-                    {trainingSession.client.numero}
-                  </Link>
-                </p>
-                <p className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
-                  {trainingSession.client.raisonSociale}
-                </p>
+                <dt className={infoLabelCls}>Financement</dt>
+                <dd className={infoValueCls}>
+                  {trainingSession.financementType !== null
+                    ? (FINANCEMENT_LABELS[trainingSession.financementType] ??
+                      trainingSession.financementType)
+                    : "Non défini"}
+                </dd>
               </div>
-            )}
 
-            {/* Financement */}
-            <div>
-              <p className={infoLabelCls}>Financement</p>
-              <p className={infoValueCls}>
-                {trainingSession.financementType !== null
-                  ? (FINANCEMENT_LABELS[trainingSession.financementType] ??
-                    trainingSession.financementType)
-                  : "Non défini"}
-              </p>
-            </div>
+              {/* Durée réelle */}
+              {trainingSession.dureeReelleHeures !== null && (
+                <div>
+                  <dt className={infoLabelCls}>Durée réelle</dt>
+                  <dd className={infoValueCls}>{trainingSession.dureeReelleHeures} h</dd>
+                </div>
+              )}
 
-            {/* Durée réelle */}
-            {trainingSession.dureeReelleHeures !== null && (
-              <div>
-                <p className={infoLabelCls}>Durée réelle</p>
-                <p className={infoValueCls}>{trainingSession.dureeReelleHeures} h</p>
-              </div>
-            )}
+              {/* Session parente (récurrence) */}
+              {trainingSession.sessionParentId !== null && (
+                <div>
+                  <dt className={infoLabelCls}>Session parente</dt>
+                  <dd className={infoValueCls}>
+                    <Link
+                      href={`${base}/${trainingSession.sessionParentId}`}
+                      className="text-[color:var(--color-admin-accent)] underline-offset-2 hover:underline"
+                    >
+                      Voir la session parente
+                    </Link>
+                  </dd>
+                </div>
+              )}
 
-            {/* Session parente (récurrence) */}
-            {trainingSession.sessionParentId !== null && (
-              <div>
-                <p className={infoLabelCls}>Session parente</p>
-                <p className={infoValueCls}>
-                  <Link
-                    href={`${base}/${trainingSession.sessionParentId}`}
-                    className="text-[color:var(--color-admin-accent)] underline-offset-2 hover:underline"
-                  >
-                    Voir la session parente
-                  </Link>
-                </p>
-              </div>
-            )}
-
-            {/* Session reportée */}
-            {trainingSession.sessionReporteeId !== null && (
-              <div>
-                <p className={infoLabelCls}>Reporte la session</p>
-                <p className={infoValueCls}>
-                  <Link
-                    href={`${base}/${trainingSession.sessionReporteeId}`}
-                    className="text-[color:var(--color-admin-accent)] underline-offset-2 hover:underline"
-                  >
-                    Voir la session d&apos;origine
-                  </Link>
-                </p>
-              </div>
-            )}
-          </div>
-          <ContactEtConflitSession
-            adminPrefix={adminPrefix}
-            contact={
-              trainingSession.client !== null
-                ? {
-                    nom: trainingSession.client.contactNom,
-                    fonction: trainingSession.client.contactFonction,
-                    telephone: trainingSession.client.contactTelephone,
-                    email: trainingSession.client.contactEmail,
-                  }
-                : null
-            }
-            formateurNom={
-              allTrainers
-                .filter((t) => t.id === trainingSession.formateurPrincipalId)
-                .map((t) => `${t.prenom} ${t.nom}`.trim())[0] ?? null
-            }
-            conflits={conflitsFormateur}
-          />
+              {/* Session reportée */}
+              {trainingSession.sessionReporteeId !== null && (
+                <div>
+                  <dt className={infoLabelCls}>Reporte la session</dt>
+                  <dd className={infoValueCls}>
+                    <Link
+                      href={`${base}/${trainingSession.sessionReporteeId}`}
+                      className="text-[color:var(--color-admin-accent)] underline-offset-2 hover:underline"
+                    >
+                      Voir la session d&apos;origine
+                    </Link>
+                  </dd>
+                </div>
+              )}
+            </dl>
+            <ContactEtConflitSession
+              adminPrefix={adminPrefix}
+              contact={
+                trainingSession.client !== null
+                  ? {
+                      nom: trainingSession.client.contactNom,
+                      fonction: trainingSession.client.contactFonction,
+                      telephone: trainingSession.client.contactTelephone,
+                      email: trainingSession.client.contactEmail,
+                    }
+                  : null
+              }
+              formateurNom={
+                allTrainers
+                  .filter((t) => t.id === trainingSession.formateurPrincipalId)
+                  .map((t) => `${t.prenom} ${t.nom}`.trim())[0] ?? null
+              }
+              conflits={conflitsFormateur}
+            />
+          </AdminBloc>
         </section>
         {/* QNC L03 — recueil du besoin (temps 1) : rien tant que `qualiopi.recueil.actif`
               est éteint pour cette session. */}
@@ -1079,17 +1087,18 @@ export default async function SessionHubPage({ params, searchParams }: PageProps
               question qu'on se pose en ouvrant un dossier — « où en est-il ? » —
               et le serveur la calculait déjà sans jamais la rendre ici. */}
         {checklistRendue ? (
-          <section id="checklist" className={`mb-[var(--space-admin-8)] ${CLASSE_ANCRE_SECTION}`}>
-            <h2 className={sectionHeadCls}>Où en est ce dossier</h2>
-            <ChecklistSession
-              etapes={parcours.etapes}
-              fait={parcours.fait}
-              total={parcours.total}
-              sessionId={id}
-              prefixeSessions={base}
-              repliee={parcours.repliee}
-              fige={fige}
-            />
+          <section id="checklist" className={`${CLASSE_ANCRE_SECTION}`}>
+            <AdminBloc teinte="terracotta" niveau={2} titre="Où en est ce dossier">
+              <ChecklistSession
+                etapes={parcours.etapes}
+                fait={parcours.fait}
+                total={parcours.total}
+                sessionId={id}
+                prefixeSessions={base}
+                repliee={parcours.repliee}
+                fige={fige}
+              />
+            </AdminBloc>
           </section>
         ) : null}
         {/* QNC L12 — voyants d'indicateurs fondés sur une trace réelle (lecture seule,
@@ -1099,15 +1108,16 @@ export default async function SessionHubPage({ params, searchParams }: PageProps
     ),
     "cycle-de-vie": (
       <>
-        <section id="cycle-de-vie" className={`mb-[var(--space-admin-8)] ${CLASSE_ANCRE_SECTION}`}>
-          <h2 className={sectionHeadCls}>Cycle de vie</h2>
-          <div className="rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)] p-[var(--space-admin-5)]">
-            <SessionLifecycleButtons
-              sessionId={id}
-              statut={trainingSession.statut as TrainingSessionStatut}
-              baseSessions={base}
-            />
-          </div>
+        <section id="cycle-de-vie" className={`${CLASSE_ANCRE_SECTION}`}>
+          <AdminBloc teinte="gris" niveau={2} titre="Cycle de vie">
+            <div className="rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)] p-[var(--space-admin-5)]">
+              <SessionLifecycleButtons
+                sessionId={id}
+                statut={trainingSession.statut as TrainingSessionStatut}
+                baseSessions={base}
+              />
+            </div>
+          </AdminBloc>
         </section>
       </>
     ),
@@ -1119,16 +1129,17 @@ export default async function SessionHubPage({ params, searchParams }: PageProps
               crée une seconde session et laisse la première « Reportée » au
               registre. Voisiner avec les boutons de report ferait choisir le
               marteau-pilon pour une faute de frappe. */}
-        <section id="dates" className={`mb-[var(--space-admin-8)] ${CLASSE_ANCRE_SECTION}`}>
-          <h2 className={sectionHeadCls}>Dates de déroulement</h2>
-          <SessionDatesForm
-            sessionId={id}
-            initialDateDebut={pourInputDateTimeLocal(trainingSession.dateDebut)}
-            initialDateFin={pourInputDateTimeLocal(trainingSession.dateFin)}
-            joursHorsPlage={joursHorsPlageSession}
-            nbJoursDeclares={joursDeclaresSession.length}
-            hrefJournees={`${sessionBase}/emargement`}
-          />
+        <section id="dates" className={`${CLASSE_ANCRE_SECTION}`}>
+          <AdminBloc teinte="ambre" niveau={2} titre="Dates de déroulement">
+            <SessionDatesForm
+              sessionId={id}
+              initialDateDebut={pourInputDateTimeLocal(trainingSession.dateDebut)}
+              initialDateFin={pourInputDateTimeLocal(trainingSession.dateFin)}
+              joursHorsPlage={joursHorsPlageSession}
+              nbJoursDeclares={joursDeclaresSession.length}
+              hrefJournees={`${sessionBase}/emargement`}
+            />
+          </AdminBloc>
         </section>
       </>
     ),
@@ -1138,78 +1149,78 @@ export default async function SessionHubPage({ params, searchParams }: PageProps
               Les deux dans la MÊME section, depuis le 2026-09-05 : ils décident
               ensemble de ce que la convention imprime, et les séparer garantissait
               qu'on corrige l'un en oubliant l'autre. Cf. `SessionLieuForm`. */}
-        <section id="lieu" className={`mb-[var(--space-admin-8)] ${CLASSE_ANCRE_SECTION}`}>
-          <h2 className={sectionHeadCls}>Modalité et lieu de déroulement</h2>
-          <SessionLieuForm
-            sessionId={id}
-            initial={lieuValuesDepuisSession(trainingSession)}
-            modalite={trainingSession.modalite}
-            moyensActif={moyensActif}
-          />
-          <BlocMoyensSession sessionId={id} />
+        <section id="lieu" className={`${CLASSE_ANCRE_SECTION}`}>
+          <AdminBloc teinte="gris" niveau={2} titre="Modalité et lieu de déroulement">
+            <SessionLieuForm
+              sessionId={id}
+              initial={lieuValuesDepuisSession(trainingSession)}
+              modalite={trainingSession.modalite}
+              moyensActif={moyensActif}
+            />
+            <BlocMoyensSession sessionId={id} />
+          </AdminBloc>
         </section>
       </>
     ),
     formateur: (
       <>
         {/* ── Formateur principal (R9 — assignation bloquée si non habilité) ─── */}
-        <section id="formateur" className={`mb-[var(--space-admin-8)] ${CLASSE_ANCRE_SECTION}`}>
-          <h2 className={sectionHeadCls}>Formateur principal</h2>
-          {/* Lot L11b — cartes « 1er · 2e · 3e choix » derrière l'interrupteur
+        <section id="formateur" className={`${CLASSE_ANCRE_SECTION}`}>
+          <AdminBloc teinte="violet" niveau={2} titre="Formateur principal">
+            {/* Lot L11b — cartes « 1er · 2e · 3e choix » derrière l'interrupteur
                 `formateurs.choix_cartes` ; coupé, la liste d'avant seule. */}
-          <SectionChoixFormateur sessionId={id}>
-            <AssignFormateurForm
-              sessionId={id}
-              currentTrainerId={trainingSession.formateurPrincipalId}
-              trainers={formateurOptions}
-            />
-          </SectionChoixFormateur>
-          {/* 2026-09-03 — ce que le formateur a RÉPONDU. Une affectation n'est
+            <SectionChoixFormateur sessionId={id}>
+              <AssignFormateurForm
+                sessionId={id}
+                currentTrainerId={trainingSession.formateurPrincipalId}
+                trainers={formateurOptions}
+              />
+            </SectionChoixFormateur>
+            {/* 2026-09-03 — ce que le formateur a RÉPONDU. Une affectation n'est
                 pas une confirmation : tant qu'il n'a pas accepté, la session n'a
                 pas de formateur sûr, et l'écran doit le dire là où on l'affecte. */}
-          {trainingSession.formateurPrincipalId !== null && (
-            <MissionFormateurPanel
-              sessionId={id}
-              trainerId={trainingSession.formateurPrincipalId}
-              trainerNom={
-                formateurOptions.find((f) => f.id === trainingSession.formateurPrincipalId)
-                  ?.label ?? "formateur"
-              }
-              etat={etatMissionFormateur}
-              enAttente={missionFormateur?.statut === "en_attente"}
-              sessionAVenir={
-                trainingSession.statut === "planifiee" && trainingSession.dateDebut > new Date()
-              }
-              absencePossible={trainingSession.dateDebut <= new Date()}
-              // Le geste n'a de sens que si la session a démarré ET que personne
-              // n'a répondu. Sur une mission acceptée, refusée ou retirée, il n'y
-              // a rien à consigner — et le service refuse, mais un bouton qui
-              // refuse une fois sur deux n'est pas un bouton.
-              accordConsignable={
-                trainingSession.dateDebut <= new Date() &&
-                (missionFormateur?.statut === "expiree" ||
-                  missionFormateur?.statut === "sans_reponse" ||
-                  missionFormateur?.statut === "en_attente")
-              }
-            />
-          )}
+            {trainingSession.formateurPrincipalId !== null && (
+              <MissionFormateurPanel
+                sessionId={id}
+                trainerId={trainingSession.formateurPrincipalId}
+                trainerNom={
+                  formateurOptions.find((f) => f.id === trainingSession.formateurPrincipalId)
+                    ?.label ?? "formateur"
+                }
+                etat={etatMissionFormateur}
+                enAttente={missionFormateur?.statut === "en_attente"}
+                sessionAVenir={
+                  trainingSession.statut === "planifiee" && trainingSession.dateDebut > new Date()
+                }
+                absencePossible={trainingSession.dateDebut <= new Date()}
+                // Le geste n'a de sens que si la session a démarré ET que personne
+                // n'a répondu. Sur une mission acceptée, refusée ou retirée, il n'y
+                // a rien à consigner — et le service refuse, mais un bouton qui
+                // refuse une fois sur deux n'est pas un bouton.
+                accordConsignable={
+                  trainingSession.dateDebut <= new Date() &&
+                  (missionFormateur?.statut === "expiree" ||
+                    missionFormateur?.statut === "sans_reponse" ||
+                    missionFormateur?.statut === "en_attente")
+                }
+              />
+            )}
+          </AdminBloc>
         </section>
       </>
     ),
     "inter-entreprises": (
       <>
         {/* ── Inter-entreprises (R-INTER — financement/facture par participant) ─ */}
-        <section
-          id="inter-entreprises"
-          className={`mb-[var(--space-admin-8)] ${CLASSE_ANCRE_SECTION}`}
-        >
-          <h2 className={sectionHeadCls}>Inter-entreprises</h2>
-          <InterEntreprisesSection
-            sessionId={id}
-            interEntreprises={trainingSession.interEntreprises}
-            enrollments={interEnrollments}
-            clients={clientsForInter}
-          />
+        <section id="inter-entreprises" className={`${CLASSE_ANCRE_SECTION}`}>
+          <AdminBloc teinte="vert" niveau={2} titre="Inter-entreprises">
+            <InterEntreprisesSection
+              sessionId={id}
+              interEntreprises={trainingSession.interEntreprises}
+              enrollments={interEnrollments}
+              clients={clientsForInter}
+            />
+          </AdminBloc>
         </section>
       </>
     ),
@@ -1242,85 +1253,94 @@ export default async function SessionHubPage({ params, searchParams }: PageProps
     "sous-pages": (
       <>
         {/* ── Navigation vers les sous-pages ──────────────────────────────── */}
-        <section id="sous-pages" className={`mb-[var(--space-admin-8)] ${CLASSE_ANCRE_SECTION}`}>
-          <h2 className={sectionHeadCls}>Sous-pages</h2>
-          <div className="grid grid-cols-1 gap-[var(--space-admin-4)] sm:grid-cols-2 lg:grid-cols-4">
-            <Link href={`${sessionBase}/emargement`} className={subLinkCls}>
-              <span>Émargement</span>
-            </Link>
-            <Link href={`${sessionBase}/evaluations`} className={subLinkCls}>
-              <span>Évaluations</span>
-            </Link>
-            <Link href={`${sessionBase}/financement`} className={subLinkCls}>
-              <span>Financement</span>
-            </Link>
-            {/* Chantier QNC, L11 — tout ce qui concerne la session, par
+        <section id="sous-pages" className={`${CLASSE_ANCRE_SECTION}`}>
+          <AdminBloc teinte="gris" niveau={2} titre="Sous-pages">
+            <nav
+              aria-label="Sous-pages de la session"
+              className="grid grid-cols-1 gap-[var(--space-admin-4)] sm:grid-cols-2 lg:grid-cols-4"
+            >
+              <Link href={`${sessionBase}/emargement`} className={subLinkCls}>
+                <span>Émargement</span>
+              </Link>
+              <Link href={`${sessionBase}/evaluations`} className={subLinkCls}>
+                <span>Évaluations</span>
+              </Link>
+              <Link href={`${sessionBase}/financement`} className={subLinkCls}>
+                <span>Financement</span>
+              </Link>
+              {/* Chantier QNC, L11 — tout ce qui concerne la session, par
                 destinataire, canal et date : le même rendu que le ZIP. */}
-            <Link href={`${sessionBase}/dossier`} className={subLinkCls}>
-              <span>Dossier complet</span>
-            </Link>
-            <Link href={`${sessionBase}/emails`} className={subLinkCls}>
-              <span>E-mails</span>
-            </Link>
-            {/* Le nécessaire de séance vit au niveau de la FORMATION (kit projeté
+              <Link href={`${sessionBase}/dossier`} className={subLinkCls}>
+                <span>Dossier complet</span>
+              </Link>
+              <Link href={`${sessionBase}/emails`} className={subLinkCls}>
+                <span>E-mails</span>
+              </Link>
+              {/* Le nécessaire de séance vit au niveau de la FORMATION (kit projeté
                   + supports générés) : on y mène depuis la session, là où on
                   prépare l'animation. */}
-            <Link
-              href={`/${locale}/${adminPrefix}/qualiopi/formations/${trainingSession.formation.id}/animer`}
-              className={subLinkCls}
-            >
-              <span>Tout pour animer (formation)</span>
-            </Link>
-          </div>
+              <Link
+                href={`/${locale}/${adminPrefix}/qualiopi/formations/${trainingSession.formation.id}/animer`}
+                className={subLinkCls}
+              >
+                <span>Tout pour animer (formation)</span>
+              </Link>
+            </nav>
+          </AdminBloc>
         </section>
       </>
     ),
     stagiaires: (
       <>
         {/* ── Stagiaires : inscrire, statut, adaptations, accès portail ──── */}
-        <section id="stagiaires" className={`mb-[var(--space-admin-8)] ${CLASSE_ANCRE_SECTION}`}>
-          <h2 className={sectionHeadCls}>Stagiaires</h2>
-          <EnrollmentsSection
-            sessionId={id}
-            debutSession={trainingSession.dateDebut.toISOString()}
-            enrollments={enrollmentsSerialized}
-            availableTrainees={traineesRaw.map((t) => ({
-              id: t.id,
-              nom: t.nom,
-              prenom: t.prenom,
-              email: t.email,
-            }))}
-            rechercheStagiaire={rechercheStagiaire}
-            totalStagiairesRegistre={totalStagiairesRegistre}
-            plafondStagiaires={PLAFOND_STAGIAIRES_INSCRIPTIBLES}
-            enrollAction={enrollTraineeAction}
-            setStatutAction={setEnrollmentStatutAction}
-            setAdaptationsAction={setEnrollmentAdaptationsAction}
-            genererPortailAction={genererPortailAccesAction}
-            revoquerPortailAction={revoquerPortailAccesAction}
-          />
+        <section id="stagiaires" className={`${CLASSE_ANCRE_SECTION}`}>
+          <AdminBloc teinte="bleu" niveau={2} titre="Stagiaires">
+            <EnrollmentsSection
+              sessionId={id}
+              debutSession={trainingSession.dateDebut.toISOString()}
+              enrollments={enrollmentsSerialized}
+              availableTrainees={traineesRaw.map((t) => ({
+                id: t.id,
+                nom: t.nom,
+                prenom: t.prenom,
+                email: t.email,
+              }))}
+              rechercheStagiaire={rechercheStagiaire}
+              totalStagiairesRegistre={totalStagiairesRegistre}
+              plafondStagiaires={PLAFOND_STAGIAIRES_INSCRIPTIBLES}
+              enrollAction={enrollTraineeAction}
+              setStatutAction={setEnrollmentStatutAction}
+              setAdaptationsAction={setEnrollmentAdaptationsAction}
+              genererPortailAction={genererPortailAccesAction}
+              revoquerPortailAction={revoquerPortailAccesAction}
+            />
+          </AdminBloc>
         </section>
       </>
     ),
     documents: (
       <>
         {/* ── Documents : dossier d'audit, génération, registre, signatures ─ */}
-        <section id="documents" className={`mb-[var(--space-admin-8)] ${CLASSE_ANCRE_SECTION}`}>
-          <h2 className={sectionHeadCls}>Documents</h2>
-
-          {/* Dossier d'audit de la session — REMONTÉ ici (2026-08-05) : le bouton
+        <section id="documents" className={`${CLASSE_ANCRE_SECTION}`}>
+          <AdminBloc teinte="violet" niveau={2} titre="Documents">
+            {/* Dossier d'audit de la session — REMONTÉ ici (2026-08-05) : le bouton
                 n'était monté QUE sur la sous-page émargement, alors que « le dossier
                 de cette session » est la demande d'auditeur type ; il doit être
                 atteignable depuis la page principale de la session. Mêmes props que
                 sur emargement/page.tsx. */}
-          <div className="mb-[var(--space-admin-4)] rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)] p-[var(--space-admin-4)]">
-            <p className="mb-[var(--space-admin-3)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]">
-              Un ZIP rangé sous le numéro de cette session : ses documents, sa feuille
-              d&apos;émargement, et la vérification d&apos;intégrité de chaque chaîne de signatures.
-              C&apos;est ce que vous remettez à un auditeur qui demande « le dossier de cette
-              session ».
-            </p>
-            {/* 🔴 Le registre des signatures filtre par session depuis toujours :
+            <div className="mb-[var(--space-admin-4)] rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)] p-[var(--space-admin-4)]">
+              <AdminBlocRepliable
+                titre="À quoi sert le dossier d'audit"
+                className="mb-[var(--space-admin-3)]"
+              >
+                <p className="m-0 text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]">
+                  Un ZIP rangé sous le numéro de cette session : ses documents, sa feuille
+                  d&apos;émargement, et la vérification d&apos;intégrité de chaque chaîne de
+                  signatures. C&apos;est ce que vous remettez à un auditeur qui demande « le dossier
+                  de cette session ».
+                </p>
+              </AdminBlocRepliable>
+              {/* 🔴 Le registre des signatures filtre par session depuis toujours :
                   `listerRegistreSignatures({ sessionId })` accepte le paramètre, et
                   la page `mode-auditeur/signatures` le lit dans son URL. AUCUN écran
                   ne le posait — zéro lien portant ce paramètre dans tout `src/app`
@@ -1332,15 +1352,15 @@ export default async function SessionHubPage({ params, searchParams }: PageProps
                   exhaustive » — sans offrir le moindre chemin pour le faire. Ce lien
                   est ce chemin, et il part de là où l'auditeur pose la question :
                   le hub de la session. */}
-            <div className="flex flex-wrap items-center gap-[var(--space-admin-3)]">
-              <DossierSessionButton sessionId={id} />
-              <Link
-                href={`/${locale}/${adminPrefix}/qualiopi/mode-auditeur/signatures?session=${id}`}
-                className="admin-button-ghost"
-              >
-                Registre des signatures de cette session
-              </Link>
-              {/* 🔴 2026-09-07 — la PREUVE DE SOLLICITATION, qui n'avait aucun
+              <div className="flex flex-wrap items-center gap-[var(--space-admin-3)]">
+                <DossierSessionButton sessionId={id} />
+                <Link
+                  href={`/${locale}/${adminPrefix}/qualiopi/mode-auditeur/signatures?session=${id}`}
+                  className="admin-button-ghost"
+                >
+                  Registre des signatures de cette session
+                </Link>
+                {/* 🔴 2026-09-07 — la PREUVE DE SOLLICITATION, qui n'avait aucun
                     chemin depuis la session.
                     L'indicateur 30 ne demande pas que le stagiaire réponde — il
                     demande que l'organisme ait DEMANDÉ, et relancé. Cette preuve
@@ -1348,34 +1368,34 @@ export default async function SessionHubPage({ params, searchParams }: PageProps
                     adresse : pour une session à douze inscrits, douze recherches et
                     un recollement à la main. Ce lien pose la question comme
                     l'auditeur la pose — par session, pas par personne. */}
-              <Link
-                href={`/${locale}/${adminPrefix}/emails-envoyes?session=${id}&fenetre=0`}
-                className="admin-button-ghost"
-              >
-                Journal des envois de cette session
-              </Link>
+                <Link
+                  href={`/${locale}/${adminPrefix}/emails-envoyes?session=${id}&fenetre=0`}
+                  className="admin-button-ghost"
+                >
+                  Journal des envois de cette session
+                </Link>
+              </div>
             </div>
-          </div>
 
-          <DocumentsSection
-            sessionId={id}
-            enrollments={enrollmentsLight}
-            documentsExistants={documentsSerialized}
-            notesPieces={notesPieces}
-            certificationObtenue={isQualiopiCertificationObtenue()}
-            // Lot 1ter §2/§5 — ce que ce dossier appelle reellement. Sans lui, les
-            // ~20 boutons de generation s affichaient TOUS, sur TOUTES les
-            // sessions : Kit OPCO sur un financement direct, Contrat de formation
-            // (particulier) sur un client entreprise.
-            contexte={{
-              financement: trainingSession.financementType,
-              typeClient: clientType,
-              statut: trainingSession.statut,
-              formateurEstLeDirigeant,
-            }}
-          />
+            <DocumentsSection
+              sessionId={id}
+              enrollments={enrollmentsLight}
+              documentsExistants={documentsSerialized}
+              notesPieces={notesPieces}
+              certificationObtenue={isQualiopiCertificationObtenue()}
+              // Lot 1ter §2/§5 — ce que ce dossier appelle reellement. Sans lui, les
+              // ~20 boutons de generation s affichaient TOUS, sur TOUTES les
+              // sessions : Kit OPCO sur un financement direct, Contrat de formation
+              // (particulier) sur un client entreprise.
+              contexte={{
+                financement: trainingSession.financementType,
+                typeClient: clientType,
+                statut: trainingSession.statut,
+                formateurEstLeDirigeant,
+              }}
+            />
 
-          {/* Signature des pièces CONTRACTUELLES.
+            {/* Signature des pièces CONTRACTUELLES.
 
                 Sans ce bloc, `emettreLienSignatureAction` et `contresignerPieceAction`
                 n'étaient appelables par personne : les cinq circuits seraient restés
@@ -1385,35 +1405,35 @@ export default async function SessionHubPage({ params, searchParams }: PageProps
                 ⚠️ Rendu SEULEMENT s'il existe une pièce signable : le parcours ne
                 vise `#signature-pieces` que si une convention vivante existe, et
                 mène sinon à `#documents` (garde : `le-suivi-mene-au-geste.spec.ts`). */}
-          {piecesSignables.length > 0 && (
-            <div
-              id="signature-pieces"
-              className="mt-[var(--space-admin-6)] scroll-mt-[calc(var(--admin-topbar-h)+var(--space-admin-4))] space-y-[var(--space-admin-4)]"
-            >
-              <h3 className="text-[length:var(--text-admin-sm)] font-semibold">
-                Signature des pièces contractuelles
-              </h3>
-              {piecesSignables.map((d) => {
-                const circuit = circuitPour(d.type)!;
-                return (
-                  <PieceSignaturePanel
-                    key={d.id}
-                    documentGenereId={d.id}
-                    numero={d.numero}
-                    pieceLibelle={circuit.libelle}
-                    parties={circuit.parties}
-                    signatures={signaturesParPiece.get(d.id) ?? []}
-                    emettreAction={emettreLienSignatureAction}
-                    revoquerLiensAction={revoquerLiensSignatureAction}
-                    contresignerAction={contresignerPieceAction}
-                    envoyerParEmailAction={envoyerLienSignatureParEmailAction}
-                  />
-                );
-              })}
-            </div>
-          )}
+            {piecesSignables.length > 0 && (
+              <div
+                id="signature-pieces"
+                className="mt-[var(--space-admin-6)] scroll-mt-[calc(var(--admin-topbar-h)+var(--space-admin-4))] space-y-[var(--space-admin-4)]"
+              >
+                <h3 className="text-[length:var(--text-admin-sm)] font-semibold">
+                  Signature des pièces contractuelles
+                </h3>
+                {piecesSignables.map((d) => {
+                  const circuit = circuitPour(d.type)!;
+                  return (
+                    <PieceSignaturePanel
+                      key={d.id}
+                      documentGenereId={d.id}
+                      numero={d.numero}
+                      pieceLibelle={circuit.libelle}
+                      parties={circuit.parties}
+                      signatures={signaturesParPiece.get(d.id) ?? []}
+                      emettreAction={emettreLienSignatureAction}
+                      revoquerLiensAction={revoquerLiensSignatureAction}
+                      contresignerAction={contresignerPieceAction}
+                      envoyerParEmailAction={envoyerLienSignatureParEmailAction}
+                    />
+                  );
+                })}
+              </div>
+            )}
 
-          {/*
+            {/*
               Visa du responsable pédagogique sur le relevé de connexion.
 
               ⚠️ Rendu SEULEMENT si un relevé existe : une session présentielle n'en
@@ -1423,24 +1443,24 @@ export default async function SessionHubPage({ params, searchParams }: PageProps
               écrans de signature divergeraient sur ce qu'ils affichent comme signé,
               et l'un finirait par contredire l'autre sur la même pièce.
             */}
-          {etatReleveConsole !== null && (
-            <div className="mt-[var(--space-admin-6)]">
-              <SignatureDocument
-                documentGenereId={etatReleveConsole.documentGenereId}
-                titrePiece="Relevé de connexion"
-                numero={etatReleveConsole.numero}
-                parties={etatReleveConsole.parties}
-                peutAgir={etatReleveConsole.peutAgir}
-                mentions={etatReleveConsole.mentions}
-                plafondProbant={etatReleveConsole.plafondProbant}
-                libelleBouton="Viser le relevé"
-                labelSignature="Visa du responsable pédagogique"
-                signerAction={viserReleveResponsablePedagogiqueAction}
-              />
-            </div>
-          )}
+            {etatReleveConsole !== null && (
+              <div className="mt-[var(--space-admin-6)]">
+                <SignatureDocument
+                  documentGenereId={etatReleveConsole.documentGenereId}
+                  titrePiece="Relevé de connexion"
+                  numero={etatReleveConsole.numero}
+                  parties={etatReleveConsole.parties}
+                  peutAgir={etatReleveConsole.peutAgir}
+                  mentions={etatReleveConsole.mentions}
+                  plafondProbant={etatReleveConsole.plafondProbant}
+                  libelleBouton="Viser le relevé"
+                  labelSignature="Visa du responsable pédagogique"
+                  signerAction={viserReleveResponsablePedagogiqueAction}
+                />
+              </div>
+            )}
 
-          {/*
+            {/*
               Contreseing de la LETTRE DE MISSION FORMATEUR.
 
               C'est la contrepartie du bouton « Lettre de mission formateur » de la
@@ -1455,54 +1475,57 @@ export default async function SessionHubPage({ params, searchParams }: PageProps
               écrans de signature divergeraient sur ce qu'ils affichent comme signé,
               et l'un finirait par contredire l'autre sur la même pièce.
             */}
-          {etatLettreConsole !== null && (
-            <div className="mt-[var(--space-admin-6)]">
-              {/* Une lettre-CADRE couvrant cette session s'affiche et se
+            {etatLettreConsole !== null && (
+              <div className="mt-[var(--space-admin-6)]">
+                {/* Une lettre-CADRE couvrant cette session s'affiche et se
                     contresigne ici comme une lettre de session — en le disant. */}
-              {etatLettreConsole.estCadre && (
-                <p className="mb-[var(--space-admin-2)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]">
-                  Lettre-cadre {etatLettreConsole.periodeLisible ?? ""} — elle couvre cette session
-                  parmi d&apos;autres ; une seule signature du formateur vaut pour toutes.
-                </p>
-              )}
-              <SignatureDocument
-                documentGenereId={etatLettreConsole.documentGenereId}
-                titrePiece={
-                  etatLettreConsole.estCadre
-                    ? "Lettre de mission-cadre"
-                    : "Lettre de mission formateur"
-                }
-                numero={etatLettreConsole.numero}
-                parties={etatLettreConsole.parties}
-                peutAgir={etatLettreConsole.peutAgir}
-                motifBlocage={etatLettreConsole.motifBlocage}
-                mentions={etatLettreConsole.mentions}
-                plafondProbant={etatLettreConsole.plafondProbant}
-                libelleBouton="Contresigner la lettre de mission"
-                labelSignature="Signature pour l'organisme de formation"
-                signerAction={contresignerLettreMissionAction}
-              />
-            </div>
-          )}
+                {etatLettreConsole.estCadre && (
+                  <p className="mb-[var(--space-admin-2)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]">
+                    Lettre-cadre {etatLettreConsole.periodeLisible ?? ""} — elle couvre cette
+                    session parmi d&apos;autres ; une seule signature du formateur vaut pour toutes.
+                  </p>
+                )}
+                <SignatureDocument
+                  documentGenereId={etatLettreConsole.documentGenereId}
+                  titrePiece={
+                    etatLettreConsole.estCadre
+                      ? "Lettre de mission-cadre"
+                      : "Lettre de mission formateur"
+                  }
+                  numero={etatLettreConsole.numero}
+                  parties={etatLettreConsole.parties}
+                  peutAgir={etatLettreConsole.peutAgir}
+                  motifBlocage={etatLettreConsole.motifBlocage}
+                  mentions={etatLettreConsole.mentions}
+                  plafondProbant={etatLettreConsole.plafondProbant}
+                  libelleBouton="Contresigner la lettre de mission"
+                  labelSignature="Signature pour l'organisme de formation"
+                  signerAction={contresignerLettreMissionAction}
+                />
+              </div>
+            )}
+          </AdminBloc>
         </section>
       </>
     ),
     questionnaires: (
       <>
         {/* ── Questionnaires : générer, envoyer, relancer, saisir ──────────── */}
-        <section
-          id="questionnaires"
-          className={`mb-[var(--space-admin-8)] ${CLASSE_ANCRE_SECTION}`}
-        >
-          <h2 className={sectionHeadCls}>Questionnaires — positionnement et satisfaction</h2>
-          <QuestionnairesSection
-            sessionId={id}
-            debutSession={trainingSession.dateDebut.toISOString()}
-            questionnaires={questionnairesSerialized}
-            genererAction={genererQuestionnairesSessionAction}
-            saisirReponsesAction={saisirReponsesQuestionnaireAction}
-            envoyerAction={envoyerQuestionnaireAction}
-          />
+        <section id="questionnaires" className={`${CLASSE_ANCRE_SECTION}`}>
+          <AdminBloc
+            teinte="vert"
+            niveau={2}
+            titre="Questionnaires — positionnement et satisfaction"
+          >
+            <QuestionnairesSection
+              sessionId={id}
+              debutSession={trainingSession.dateDebut.toISOString()}
+              questionnaires={questionnairesSerialized}
+              genererAction={genererQuestionnairesSessionAction}
+              saisirReponsesAction={saisirReponsesQuestionnaireAction}
+              envoyerAction={envoyerQuestionnaireAction}
+            />
+          </AdminBloc>
         </section>
         {/* Chantier QNC, L09 — réclamations (par l'inscription) et incidents de
             la session. Ne rend rien tant que l'interrupteur est éteint. */}
@@ -1516,26 +1539,54 @@ export default async function SessionHubPage({ params, searchParams }: PageProps
     // layout, le ZIP et le registre dans le bloc Documents — un seul
     // exemplaire de chaque, jamais deux.
     cloture: (
-      <section id="cloture" className={`mb-[var(--space-admin-8)] ${CLASSE_ANCRE_SECTION}`}>
-        <h2 className={sectionHeadCls}>Clôture du dossier</h2>
-        <div className="rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)] p-[var(--space-admin-5)]">
-          <h3 className="text-[length:var(--text-admin-sm)] font-semibold">Historique du verrou</h3>
+      <section id="cloture" className={`${CLASSE_ANCRE_SECTION}`}>
+        <AdminBloc teinte="gris" niveau={2} titre="Clôture du dossier">
+          <h3 className="m-0 mb-[var(--space-admin-3)] text-[length:var(--text-admin-sm)] font-semibold">
+            Historique du verrou
+          </h3>
           {verrou.entree.evenements.length === 0 ? (
-            <p className="text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]">
-              Dossier jamais rouvert.
-            </p>
+            <AdminEmptyState variant="inline" title="Dossier jamais rouvert." />
           ) : (
-            <ol className="list-decimal space-y-[var(--space-admin-1)] pl-[var(--space-admin-5)] text-[length:var(--text-admin-sm)]">
-              {verrou.entree.evenements.map((ev) => (
-                <li key={`${ev.type}-${ev.createdAt.toISOString()}`}>
-                  {ev.type === "reouverture" ? "Réouverture" : "Nouvelle clôture"} le{" "}
-                  {dateHeureParis(ev.createdAt)} par {ev.auteurNom}
-                  {ev.motif !== null && ev.motif !== "" ? ` — motif : « ${ev.motif} »` : ""}
-                </li>
-              ))}
-            </ol>
+            <div className="overflow-x-auto">
+              <table className="w-full min-w-[32rem] border-collapse text-[length:var(--text-admin-sm)]">
+                <thead>
+                  <tr>
+                    {["Événement", "Date", "Auteur", "Motif"].map((c) => (
+                      <th
+                        key={c}
+                        scope="col"
+                        className="px-[var(--space-admin-3)] py-[var(--space-admin-2)] text-left text-[length:var(--text-admin-xs)] font-semibold text-[color:var(--color-admin-fg-muted)]"
+                      >
+                        {c}
+                      </th>
+                    ))}
+                  </tr>
+                </thead>
+                <tbody>
+                  {verrou.entree.evenements.map((ev) => (
+                    <tr
+                      key={`${ev.type}-${ev.createdAt.toISOString()}`}
+                      className="border-t border-[color:var(--color-admin-border)]"
+                    >
+                      <td className="px-[var(--space-admin-3)] py-[var(--space-admin-2)] align-top">
+                        {ev.type === "reouverture" ? "Réouverture" : "Nouvelle clôture"}
+                      </td>
+                      <td className="px-[var(--space-admin-3)] py-[var(--space-admin-2)] align-top">
+                        {dateHeureParis(ev.createdAt)}
+                      </td>
+                      <td className="px-[var(--space-admin-3)] py-[var(--space-admin-2)] align-top">
+                        {ev.auteurNom}
+                      </td>
+                      <td className="px-[var(--space-admin-3)] py-[var(--space-admin-2)] align-top">
+                        {ev.motif !== null && ev.motif !== "" ? `« ${ev.motif} »` : "—"}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           )}
-        </div>
+        </AdminBloc>
       </section>
     ),
   };
@@ -1552,7 +1603,7 @@ export default async function SessionHubPage({ params, searchParams }: PageProps
   const { affiches: blocsAffiches, replies: blocsReplies } = repartirBlocs(phaseAffichee, presents);
 
   return (
-    <>
+    <div className="admin-ton-dossier">
       {/* Fil d'Ariane, en-tête (n°, statut, phase, client, formateur) et bandeau
           d'état du dossier : portés UNE fois par `layout.tsx`, communs à la
           fiche et à ses quatre sous-pages. */}
@@ -1606,6 +1657,6 @@ export default async function SessionHubPage({ params, searchParams }: PageProps
           </div>
         </details>
       ) : null}
-    </>
+    </div>
   );
 }
