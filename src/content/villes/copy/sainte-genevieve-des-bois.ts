@@ -40,8 +40,8 @@ export const SAINTE_GENEVIEVE_DES_BOIS_COPY: VilleCopy = {
       en: "Intervenir à Sainte-Geneviève-des-Bois (24 km au sud de Paris, RER C ou RN104) pour automatiser les processus métier des commerçants et artisans locaux — code custom, pas de no-code.",
     },
     implementation: {
-      fr: "Implémenter des solutions IA sur mesure à Sainte-Geneviève-des-Bois pour les TPE et PME du commerce et des services, avec accompagnement post-livraison.",
-      en: "Implémenter des solutions IA sur mesure à Sainte-Geneviève-des-Bois pour les TPE et PME du commerce et des services, avec accompagnement post-livraison.",
+      fr: "Implémenter des solutions IA sur mesure à Sainte-Geneviève-des-Bois pour les TPE et PME du commerce et des services.",
+      en: "Implémenter des solutions IA sur mesure à Sainte-Geneviève-des-Bois pour les TPE et PME du commerce et des services.",
     },
     unAUn: {
       fr: "Accompagner en un-à-un les dirigeants de TPE et PME à Sainte-Geneviève-des-Bois pour une adoption IA stratégique et durable.",

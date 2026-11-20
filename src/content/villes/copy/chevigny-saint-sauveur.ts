@@ -65,7 +65,7 @@ export const CHEVIGNY_SAINT_SAUVEUR_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission Axion-IA à Chevigny-Saint-Sauveur ?",
-      a: "Après un premier échange gratuit, nous planifions l'intervention sous 5 jours. Nos consultants interviennent sur site dans vos locaux à Chevigny ou en visio. Chaque mission inclut un livrable actionnable et un suivi post-mission de 30 jours.",
+      a: "Après un premier échange gratuit, nous planifions l'intervention sous 5 jours. Nos consultants interviennent sur site dans vos locaux à Chevigny ou en visio. Chaque mission inclut un livrable actionnable.",
     },
   ],
 };

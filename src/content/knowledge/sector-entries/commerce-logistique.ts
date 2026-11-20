@@ -223,7 +223,7 @@ Axion-IA intervient typiquement sur : (1) audit de la maturité data de la maiso
 
 ## Q : Comment mesurer concrètement le ROI d'un projet IA ?
 
-**R :** Le ROI se calcule selon la formule standard : **(Gains nets – Coût total) / Coût total × 100**. Les gains nets comprennent les économies de coûts directs (réduction des stocks, baisse du taux de rebut, réduction des heures de travail manuel) et les gains de revenus (hausse du taux de conversion, augmentation du panier moyen, réduction du taux de retour). Il est indispensable de définir **une baseline mesurable avant le démarrage du projet** (valeur historique des KPIs cibles sur les 12 derniers mois). Pour une PME industrielle type, les gains mesurés incluent : réduction du taux de rebut de 15 à 30 % (maintenance prédictive), baisse des surstocks de 10 à 20 % (demand forecasting), gain de productivité de 5 à 15 % sur les opérations manuelles répétitives (computer vision qualité). Axion-IA établit un tableau de bord ROI dès la phase de cadrage, avec des révisions trimestrielles pendant les 24 premiers mois.
+**R :** Le ROI se calcule selon la formule standard : **(Gains nets – Coût total) / Coût total × 100**. Les gains nets comprennent les économies de coûts directs (réduction des stocks, baisse du taux de rebut, réduction des heures de travail manuel) et les gains de revenus (hausse du taux de conversion, augmentation du panier moyen, réduction du taux de retour). Il est indispensable de définir **une baseline mesurable avant le démarrage du projet** (valeur historique des KPIs cibles sur les 12 derniers mois). Pour une PME industrielle type, les gains mesurés incluent : réduction du taux de rebut de 15 à 30 % (maintenance prédictive), baisse des surstocks de 10 à 20 % (demand forecasting), gain de productivité de 5 à 15 % sur les opérations manuelles répétitives (computer vision qualité). Axion-IA établit un tableau de bord ROI dès la phase de cadrage.
 
 ---
 
@@ -247,8 +247,6 @@ Chez Axion-IA, chaque phase est **sur devis** : parlons-en lors du rendez-vous g
 2. **Périmètre mal défini** : un projet "IA pour tout l'entrepôt" sans cas d'usage précis se disperse et ne livre pas de résultat mesurable. Mitigation : commencer par 1 cas d'usage, 1 ligne, 1 flux.
 3. **Manque de sponsoring dirigeant** : sans portage au niveau direction générale, les projets IA peinent à obtenir les ressources (accès données, temps des opérationnels, budget run). Mitigation : formaliser un comité de pilotage dès le cadrage.
 4. **Dérive entre le POC et la production** : un modèle qui performe en laboratoire peut se dégrader en production (data drift, évolution des processus). Mitigation : prévoir un contrat de monitoring et de réentraînement dès le lancement.
-
-En cas de ROI décevant, Axion-IA s'engage contractuellement sur une revue post-déploiement à 6 mois avec plan de remédiation.
 
 ---
 
@@ -356,12 +354,6 @@ Contrairement aux grandes entreprises dotées de centres de compétences data, l
 - Documentation utilisateur (guide de prise en main, FAQ opérationnelle)
 - Runbook de maintenance (procédure de réentraînement, monitoring des dérives, procédure d'escalade)
 - Tableau de bord ROI (KPIs opérationnels et business, comparaison baseline)
-
----
-
-### Phase 3 — Accompagnement post-déploiement (optionnel, 12 mois)
-
-Contrat de support incluant : monitoring mensuel des KPIs modèle, réentraînement trimestriel, accès à un référent Axion-IA pour les questions d'usage, revue semestrielle d'extension du périmètre.
 
 ---
 

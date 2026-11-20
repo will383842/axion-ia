@@ -632,9 +632,9 @@ export const PAGE_IMAGES_MANIFEST: readonly PageImagesManifest[] = [
         nameEn:
           "Enterprise AI audit by company size — small business, SME, mid-cap & large enterprise",
         altFr:
-          "Audit IA en entreprise Axion-IA par taille : TPE, artisans et commerçants (1 journée sur site), PME (de 2 jours à plusieurs semaines), ETI et grandes entreprises (multi-sites, accompagnement long terme) — durée, prix et périmètre adaptés à chaque profil.",
+          "Audit IA en entreprise Axion-IA par taille : TPE, artisans et commerçants (1 journée sur site), PME (de 2 jours à plusieurs semaines), ETI et grandes entreprises (multi-sites) — durée, prix et périmètre adaptés à chaque profil.",
         altEn:
-          "Axion-IA enterprise AI audit by company size: small businesses, artisans and retailers (1 on-site day), SMEs (2 days to several weeks), mid-caps and large enterprises (multi-site, long-term support) — duration, price and scope tailored to each profile.",
+          "Axion-IA enterprise AI audit by company size: small businesses, artisans and retailers (1 on-site day), SMEs (2 days to several weeks), mid-caps and large enterprises (multi-site) — duration, price and scope tailored to each profile.",
         width: 1536,
         height: 1024,
       },

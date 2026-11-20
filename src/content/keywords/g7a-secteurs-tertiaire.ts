@@ -856,7 +856,6 @@ const KW_CYBERSECURITE: KeywordSeed[] = [
       h2Variants: [
         "Programme formation IA pour analystes et RSSI",
         "IA et threat intelligence : usages concrets en formation",
-        "Certification et suivi post-formation cybersécurité IA",
       ],
     },
     variables: {

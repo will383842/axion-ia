@@ -84,6 +84,13 @@ import { lireHorodatagesDeSignatures } from "@/server/qualiopi/documents/signatu
 import { PastilleHorodatage } from "@/components/admin/qualiopi/PastilleHorodatage";
 import { RelanceDevisDepuisLaPage } from "@/components/admin/qualiopi/RelanceDevisDepuisLaPage";
 import { lireMessageDeRetour } from "@/features/dossier-client/message-de-retour";
+import { verserScanDevisSigneAction } from "@/server/actions/qualiopi/devis-scan-papier";
+import {
+  DevisScanPapierEntree,
+  peutVerserScanPapier,
+  libelleSignaturePapier,
+} from "@/components/admin/qualiopi/DevisScanPapierEntree";
+import { peutSignerPourOrganisme } from "@/server/qualiopi/documents/signature/garde-engagement";
 
 export const dynamic = "force-dynamic";
 
@@ -307,6 +314,21 @@ export default async function QualiopiDevisDetailPage({ params, searchParams }: 
     },
   });
   const signeParClient = clientASigne && !organismeASigne;
+  const signatureClientPapier = signatures.some(
+    (s) => s.partie === "client" && s.methode === "papier_scanne",
+  );
+  const pieceDuDevis =
+    devis.statut === "envoye" && devis.documentGenereId !== null && !clientASigne
+      ? await prisma.devis.findUnique({
+          where: { id: devis.id },
+          select: { documentGenere: { select: { annuleeAt: true, type: true } } },
+        })
+      : null;
+  const pieceType = pieceDuDevis?.documentGenere?.type ?? null;
+  const pieceAnnulee = pieceDuDevis?.documentGenere?.annuleeAt != null;
+  // Même règle que l'action serveur : le signataire est celui de la fiche client.
+  const signataireNomFiche = (client?.contactNom ?? client?.raisonSociale ?? "").trim();
+  const peutVoirScan = peutSignerPourOrganisme(acces.role);
   // Devis CLASSIQUE seulement : pour un devis à formules, `acceptDevisAction` refuse l'acceptation
   // manuelle et la reprise est le bloc « relancer l'acceptation » (`repriseParRelance`).
   const signeDesDeuxParties =
@@ -405,6 +427,66 @@ export default async function QualiopiDevisDetailPage({ params, searchParams }: 
   const cellCls = "px-[var(--space-admin-4)] py-[var(--space-admin-3)] align-top";
   const headCls =
     "px-[var(--space-admin-4)] py-[var(--space-admin-3)] text-left text-[length:var(--text-admin-xs)] font-semibold uppercase tracking-wide text-[color:var(--color-admin-fg-muted)]";
+
+  const etatScan = {
+    statut: devis.statut,
+    offre: devis.offre,
+    offreSha256: devis.offreSha256,
+    documentGenereId: devis.documentGenereId,
+    pieceType,
+    pieceAnnulee,
+    clientASigne,
+  };
+  const signaturesElectroniques = signatures.filter((s) => s.methode !== "papier_scanne");
+  const signaturesPapier = signatures.filter((s) => s.methode === "papier_scanne");
+  const ligneSignature = (s: (typeof signatures)[number]) => (
+    <li
+      key={s.id}
+      className="rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)] p-[var(--space-admin-4)]"
+    >
+      <p className={infoLabelCls}>
+        {s.partie === "client" ? "Accord du client" : "Contresignature de l'organisme"}
+      </p>
+      <p className={infoValueCls}>
+        {s.signataireNom}
+        {s.signataireQualite !== null ? ` — ${s.signataireQualite}` : ""}
+      </p>
+      <p className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
+        {s.methode === "papier_scanne"
+          ? libelleSignaturePapier(s.signeAt, identiteOrganisme.raisonSociale)
+          : `Signé le ${s.signeAt.toLocaleString("fr-FR", { timeZone: "Europe/Paris" })}`}
+        {s.methode === "confirmation_accessible"
+          ? " — confirmation nominative, sans tracé manuscrit"
+          : ""}
+      </p>
+      {s.methode === "papier_scanne" && s.partie === "client" && peutVoirScan && (
+        <a
+          href={`/api/qualiopi/devis/${devis.id}/scan-signe`}
+          className="inline-flex min-h-[var(--target-admin-min-mobile)] items-center text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-accent)] underline underline-offset-4"
+        >
+          Ouvrir le scan versé (PDF)
+        </a>
+      )}
+      {s.partie === "client" && devis.offre !== null && devis.offreSha256 !== null ? (
+        <ChoixClientSigne
+          resultat={choixImprimable(
+            { offre: devis.offre, offreSha256: devis.offreSha256, numero: devis.numero },
+            {
+              hashVersion: s.hashVersion,
+              choixOffre: s.choixOffre,
+              choixOffreSha256: s.choixOffreSha256,
+            },
+          )}
+          maintenanceFacultativeProposee={maintenanceFacultativeDe(devis.offre)}
+        />
+      ) : null}
+      {/* L'empreinte EN ENTIER : une empreinte tronquée ne se
+            vérifie pas, et une preuve invérifiable n'en est pas une. */}
+      <p className="mt-[var(--space-admin-1)] text-[length:var(--text-admin-xs)] break-all text-[color:var(--color-admin-fg-muted)]">
+        <code>{s.selfHash}</code>
+      </p>
+    </li>
+  );
 
   return (
     <AdminPageShell width="wide">
@@ -519,7 +601,7 @@ export default async function QualiopiDevisDetailPage({ params, searchParams }: 
                 data-testid="mention-signe-par-client"
                 className="mt-1 text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]"
               >
-                Signé par le client, à contresigner
+                {`Signé par le client${signatureClientPapier ? " sur papier" : ""}, à contresigner`}
               </p>
             )}
             {signeDesDeuxParties && (
@@ -772,49 +854,12 @@ export default async function QualiopiDevisDetailPage({ params, searchParams }: 
       <section className="mb-[var(--space-admin-8)]">
         <h2 className={sectionHeadCls}>Signature électronique</h2>
 
-        {signatures.length > 0 ? <PastilleHorodatage etat={etatHorodatage} /> : null}
+        {signaturesElectroniques.length > 0 ? <PastilleHorodatage etat={etatHorodatage} /> : null}
 
         {/* Signatures RÉELLEMENT apposées, avec ce dont elles sont faites. */}
-        {signatures.length > 0 && (
+        {signaturesElectroniques.length > 0 && (
           <ul className="mb-[var(--space-admin-4)] space-y-[var(--space-admin-3)]">
-            {signatures.map((s) => (
-              <li
-                key={s.id}
-                className="rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)] p-[var(--space-admin-4)]"
-              >
-                <p className={infoLabelCls}>
-                  {s.partie === "client" ? "Accord du client" : "Contresignature de l'organisme"}
-                </p>
-                <p className={infoValueCls}>
-                  {s.signataireNom}
-                  {s.signataireQualite !== null ? ` — ${s.signataireQualite}` : ""}
-                </p>
-                <p className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
-                  {`Signé le ${s.signeAt.toLocaleString("fr-FR", { timeZone: "Europe/Paris" })}`}
-                  {s.methode === "confirmation_accessible"
-                    ? " — confirmation nominative, sans tracé manuscrit"
-                    : ""}
-                </p>
-                {s.partie === "client" && devis.offre !== null && devis.offreSha256 !== null ? (
-                  <ChoixClientSigne
-                    resultat={choixImprimable(
-                      { offre: devis.offre, offreSha256: devis.offreSha256, numero: devis.numero },
-                      {
-                        hashVersion: s.hashVersion,
-                        choixOffre: s.choixOffre,
-                        choixOffreSha256: s.choixOffreSha256,
-                      },
-                    )}
-                    maintenanceFacultativeProposee={maintenanceFacultativeDe(devis.offre)}
-                  />
-                ) : null}
-                {/* L'empreinte EN ENTIER : une empreinte tronquée ne se
-                    vérifie pas, et une preuve invérifiable n'en est pas une. */}
-                <p className="mt-[var(--space-admin-1)] text-[length:var(--text-admin-xs)] break-all text-[color:var(--color-admin-fg-muted)]">
-                  <code>{s.selfHash}</code>
-                </p>
-              </li>
-            ))}
+            {signaturesElectroniques.map((s) => ligneSignature(s))}
           </ul>
         )}
 
@@ -940,6 +985,29 @@ export default async function QualiopiDevisDetailPage({ params, searchParams }: 
           </p>
         ) : null}
       </section>
+
+      {/* ── Devis signé sur papier ───────────────────────────────────────── */}
+      {/* Une signature manuscrite sur papier n'est pas une signature électronique :
+          elle a sa propre section, jamais sous le titre « Signature électronique ». */}
+      {signaturesPapier.length > 0 || peutVerserScanPapier(etatScan, acces.role) ? (
+        <section data-testid="section-devis-papier" className="mb-[var(--space-admin-8)]">
+          <h2 className={sectionHeadCls}>Devis signé sur papier</h2>
+          {signaturesPapier.length > 0 && (
+            <ul className="mb-[var(--space-admin-4)] space-y-[var(--space-admin-3)]">
+              {signaturesPapier.map((s) => ligneSignature(s))}
+            </ul>
+          )}
+          <DevisScanPapierEntree
+            etat={etatScan}
+            role={acces.role}
+            devisId={devis.id}
+            signataireNom={signataireNomFiche}
+            organismeNom={identiteOrganisme.raisonSociale}
+            validiteDepassee={isExpired ? formatDate(devis.dateValidite) : null}
+            verserAction={verserScanDevisSigneAction}
+          />
+        </section>
+      ) : null}
 
       {/* ── Actions de cycle de vie ──────────────────────────────────────── */}
       <section className="mb-[var(--space-admin-8)]">

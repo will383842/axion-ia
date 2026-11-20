@@ -378,7 +378,8 @@ describe("🔴 la fiche session charge ses données en vagues", () => {
         `la lecture « ${nom} » n'est plus lancée`,
       ).toHaveLength(1);
     }
-  });
+    // Premier test du fichier : il paie l'import à froid de la page (~5 s sous charge).
+  }, 30_000);
 
   it("la garde de rôle précède TOUTE lecture", async () => {
     await rendre();

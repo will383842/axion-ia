@@ -527,7 +527,7 @@ const COACH_STARTUP: KeywordSeed[] = [
 // ── CLUSTER 10 : suivi-mensuel-coaching ───────────────────────────────────────
 const COACH_SUIVI: KeywordSeed[] = [
   s({
-    keyword: "suivi mensuel IA dirigeant programme coaching",
+    keyword: "coaching régulier IA dirigeant programme",
     module: "coaching-1-to-1",
     intent: "transactionnel",
     cible: "eti",

@@ -511,11 +511,6 @@ export const LIMOGES_COPY: VilleCopy = {
             detail:
               "Sur site Limoges : tests d'acceptation utilisateurs, formation des ambassadeurs internes, livraison du runbook documentation, plan de monitoring de plusieurs semaines.",
           },
-          {
-            step: "Suivi post-go-live",
-            detail:
-              "À distance : surveillance des métriques de production, ajustements fins, mesure du ROI réel par rapport à la prédiction du SOW. Rapport final remis à clôture de mission.",
-          },
         ],
         pricing: [
           {
@@ -602,11 +597,6 @@ export const LIMOGES_COPY: VilleCopy = {
             step: "Acceptance + training",
             detail:
               "On site Limoges: user acceptance tests, training of internal ambassadors, runbook documentation delivery, multi-week monitoring plan.",
-          },
-          {
-            step: "Post-go-live follow-up",
-            detail:
-              "Remote: production metrics monitoring, fine adjustments, real ROI vs SOW prediction measurement. Final report delivered at mission closure.",
           },
         ],
         pricing: [
@@ -700,8 +690,7 @@ export const LIMOGES_COPY: VilleCopy = {
           },
           {
             step: "Bilan et suite",
-            detail:
-              "Bilan en fin de programme : acquis consolidés, prochaines étapes autonomes, option de suivi ponctuel si nécessaire.",
+            detail: "Bilan en fin de programme : acquis consolidés, prochaines étapes autonomes.",
           },
         ],
         pricing: [
@@ -792,8 +781,7 @@ export const LIMOGES_COPY: VilleCopy = {
           },
           {
             step: "Review and next steps",
-            detail:
-              "End-of-programme review: consolidated skills, autonomous next steps, option of occasional follow-up if needed.",
+            detail: "End-of-programme review: consolidated skills, autonomous next steps.",
           },
         ],
         pricing: [

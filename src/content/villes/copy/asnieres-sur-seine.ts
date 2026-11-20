@@ -40,8 +40,8 @@ export const ASNIERES_SUR_SEINE_COPY: VilleCopy = {
       en: "Interventions collectives sur site dans vos locaux asniérois — adaptées aux équipes des secteurs commerce, informatique ou services financiers. Format demi-journée ou journée, sans prérequis technique. Programmes détaillés sur la sous-page /interventions.",
     },
     implementation: {
-      fr: "Implémentation d'outils IA opérationnels — agents RAG (Retrieval-Augmented Generation), automatisations métier — intégrés à vos systèmes existants, CRM ou ERP inclus. Suivi post-déploiement inclus. Périmètre complet sur la sous-page /implementations.",
-      en: "Implémentation d'outils IA opérationnels — agents RAG (Retrieval-Augmented Generation), automatisations métier — intégrés à vos systèmes existants, CRM ou ERP inclus. Suivi post-déploiement inclus. Périmètre complet sur la sous-page /implementations.",
+      fr: "Implémentation d'outils IA opérationnels — agents RAG (Retrieval-Augmented Generation), automatisations métier — intégrés à vos systèmes existants, CRM ou ERP inclus. Périmètre complet sur la sous-page /implementations.",
+      en: "Implémentation d'outils IA opérationnels — agents RAG (Retrieval-Augmented Generation), automatisations métier — intégrés à vos systèmes existants, CRM ou ERP inclus. Périmètre complet sur la sous-page /implementations.",
     },
     unAUn: {
       fr: "Accompagnement individuel dirigeant à Asnières-sur-Seine : sessions stratégiques en tête-à-tête avec Williams pour cadrer votre feuille de route IA, prioriser les investissements et sécuriser les décisions. Modalités sur la sous-page /un-a-un.",

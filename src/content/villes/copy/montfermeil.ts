@@ -80,9 +80,9 @@ export const MONTFERMEIL_COPY: VilleCopy = {
               "Tests d'acceptation dans vos locaux montfermeillois, formation de vos référents internes (secrétariat médical, équipe commerce, médiation culturelle) pour que vous restiez autonome. Documentation runbook remise en main propre.",
           },
           {
-            step: "Mise en ligne et suivi",
+            step: "Mise en ligne",
             detail:
-              "Déploiement, indexation, monitoring des performances et de l'IA. Itérations à distance avec points réguliers et visite à Montfermeil si besoin. Vous gardez la propriété pleine du code, transférable à tout prestataire ou repris en interne.",
+              "Déploiement et indexation. Visite à Montfermeil si besoin. Vous gardez la propriété pleine du code, transférable à tout prestataire ou repris en interne.",
           },
         ],
         pricing: [
@@ -166,9 +166,9 @@ export const MONTFERMEIL_COPY: VilleCopy = {
               "Acceptance tests at your Montfermeil premises, training of your internal leads (medical secretariat, shop team, cultural mediation) so you stay autonomous. Runbook documentation handed over.",
           },
           {
-            step: "Go-live and follow-up",
+            step: "Go-live",
             detail:
-              "Deployment, indexing, performance and AI monitoring. Remote iterations with regular check-ins and a visit to Montfermeil if needed. You keep full ownership of the code, transferable to any vendor or taken in-house.",
+              "Deployment and indexing. Visit to Montfermeil if needed. You keep full ownership of the code, transferable to any vendor or taken in-house.",
           },
         ],
         pricing: [

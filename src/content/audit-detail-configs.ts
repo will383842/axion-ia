@@ -23,7 +23,6 @@ import {
   ShieldCheck,
   Workflow,
   Inbox,
-  Users,
   Network,
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
@@ -601,15 +600,6 @@ const ETI_BENEFITS: ReadonlyArray<AuditBenefit> = [
     bodyEn:
       "Four documents calibrated for EXCOM, board of directors and audit committee: strategic framing note, opportunity arbitration table, business case per opportunity, costed and phased investment plan. They go to the meeting without your teams reformatting them.",
   },
-  {
-    icon: Users,
-    titleFr: "Accompagnement post-audit inclus",
-    titleEn: "Post-audit support included",
-    bodyFr:
-      "30 jours d'accompagnement inclus après livraison : Q&A illimité, ajustements du plan, préparation de la présentation au board. Vos décisions ne restent pas suspendues à une relecture. Au-delà : retainer mensuel sur devis si nécessaire.",
-    bodyEn:
-      "30 days of support included after delivery: unlimited Q&A, plan adjustments, board presentation preparation. Your decisions do not stay pending a review. Beyond: monthly retainer on request if needed.",
-  },
 ];
 
 const ETI_SCHEDULE: ReadonlyArray<AuditScheduleItem> = [
@@ -632,9 +622,9 @@ const ETI_SCHEDULE: ReadonlyArray<AuditScheduleItem> = [
     titleFr: "Plan stratégique + gouvernance + restitution board",
     titleEn: "Strategic plan + governance + board restitution",
     descriptionFr:
-      "Plan détaillé 18-36 mois, business cases, charte IA et comité, remis en restitution COMEX + board (2 sessions), puis 30 jours d'accompagnement.",
+      "Plan détaillé 18-36 mois, business cases, charte IA et comité, remis en restitution COMEX + board (2 sessions).",
     descriptionEn:
-      "Detailed 18-36 month plan, business cases, AI charter and committee, handed over at EXCOM + board restitution (2 sessions), then 30 days of support.",
+      "Detailed 18-36 month plan, business cases, AI charter and committee, handed over at EXCOM + board restitution (2 sessions).",
   },
 ];
 
@@ -648,8 +638,8 @@ const ETI_FAQ: ReadonlyArray<AuditFaq> = [
   {
     qFr: "Qu'est-ce qui est remis au board, concrètement ?",
     qEn: "What exactly is handed to the board?",
-    aFr: "Un plan de 60 à 80 pages et quatre pièces autonomes, présentées en restitution COMEX puis en séance board : la note de cadrage stratégique (10-15 pages, lisible en séance), le tableau d'arbitrage qui compare les opportunités BU par BU, un business case par opportunité retenue (coût de mise en œuvre, gains attendus, hypothèses posées, risques), et le plan d'investissement chiffré et phasé sur 18-36 mois. S'y ajoute le kit de gouvernance : charte IA, RACI du comité, processus d'arbitrage, registre des systèmes. Les 30 jours d'accompagnement inclus servent à faire passer ces documents dans vos instances.",
-    aEn: "A 60 to 80 page plan and four standalone pieces, presented at the EXCOM restitution then at the board session: the strategic framing note (10-15 pages, readable in session), the arbitration table comparing opportunities BU by BU, a business case per selected opportunity (implementation cost, expected gains, stated assumptions, risks), and the costed, phased 18-36 month investment plan. Plus the governance kit: AI charter, committee RACI, arbitration process, systems register. The 30 days of included support serve to carry these documents through your governance bodies.",
+    aFr: "Un plan de 60 à 80 pages et quatre pièces autonomes, présentées en restitution COMEX puis en séance board : la note de cadrage stratégique (10-15 pages, lisible en séance), le tableau d'arbitrage qui compare les opportunités BU par BU, un business case par opportunité retenue (coût de mise en œuvre, gains attendus, hypothèses posées, risques), et le plan d'investissement chiffré et phasé sur 18-36 mois. S'y ajoute le kit de gouvernance : charte IA, RACI du comité, processus d'arbitrage, registre des systèmes. Ils sont écrits pour passer dans vos instances sans être retravaillés.",
+    aEn: "A 60 to 80 page plan and four standalone pieces, presented at the EXCOM restitution then at the board session: the strategic framing note (10-15 pages, readable in session), the arbitration table comparing opportunities BU by BU, a business case per selected opportunity (implementation cost, expected gains, stated assumptions, risks), and the costed, phased 18-36 month investment plan. Plus the governance kit: AI charter, committee RACI, arbitration process, systems register. They are written to go through your governance bodies without rework.",
   },
   {
     qFr: "Et pour les groupes très grands (3+ BU, multi-sites, multinational) ?",
@@ -675,9 +665,9 @@ const ETI_SUB_TIERS: ReadonlyArray<AuditSubTierCard> = [
     priceLabelFr: formatSubTierPrice(SUB_ETI_BASE, "fr"),
     priceLabelEn: formatSubTierPrice(SUB_ETI_BASE, "en", { compact: true }),
     bodyFr:
-      "Audit stratégique pour ETI 1-2 BU. 9 semaines, 20-30 interviews, plan 60-80 pages et quatre pièces board-ready (note de cadrage, tableau d'arbitrage, business cases, plan d'investissement) + kit de gouvernance. Restitution COMEX + board, 30 j d'accompagnement post-audit inclus.",
+      "Audit stratégique pour ETI 1-2 BU. 9 semaines, 20-30 interviews, plan 60-80 pages et quatre pièces board-ready (note de cadrage, tableau d'arbitrage, business cases, plan d'investissement) + kit de gouvernance. Restitution COMEX + board.",
     bodyEn:
-      "Strategic audit for 1-2 BU mid-cap. 9 weeks, 20-30 interviews, 60-80 page plan and four board-ready pieces (framing note, arbitration table, business cases, investment plan) + governance kit. EXCOM + board restitution, 30 days post-audit support included.",
+      "Strategic audit for 1-2 BU mid-cap. 9 weeks, 20-30 interviews, 60-80 page plan and four board-ready pieces (framing note, arbitration table, business cases, investment plan) + governance kit. EXCOM + board restitution.",
     ctaType: "contact",
     contactObject: "audit-strategique-eti-base",
     isFeatured: true,
@@ -970,22 +960,18 @@ export const AUDIT_DETAIL_CONFIGS: Record<AuditTier, AuditDetailConfig> = {
       audienceFr: "ETI 250-5000 salariés & grandes entreprises",
       audienceEn: "Mid-caps 250-5000 staff & large enterprises",
       deliverableFr:
-        "Plan 60-80 pages + note de cadrage, tableau d'arbitrage, business cases, plan d'investissement, kit de gouvernance — restitution COMEX + board et 30 j d'accompagnement",
+        "Plan 60-80 pages + note de cadrage, tableau d'arbitrage, business cases, plan d'investissement, kit de gouvernance — restitution COMEX + board",
       deliverableEn:
-        "60-80 page plan + framing note, arbitration table, business cases, investment plan, governance kit — EXCOM + board restitution and 30 days of support",
+        "60-80 page plan + framing note, arbitration table, business cases, investment plan, governance kit — EXCOM + board restitution",
     },
-    promiseFr: `Audit IA transverse pour ETI (250-5000 salariés) et grandes entreprises. Cartographie multi-BU chiffrée, note de cadrage stratégique, tableau d'arbitrage, business case par opportunité, plan d'investissement 18-36 mois et kit de gouvernance rédigé (charte, RACI, comité) : quatre pièces qui passent en séance sans être reformatées, plus 30 jours d'accompagnement pour les faire adopter. Conformité AI Act 2026 + RGPD + sectoriel. Sur devis, selon le nombre de BU.`,
-    promiseEn: `Transverse AI audit for mid-cap (250-5000 staff) and large enterprises. Costed multi-BU mapping, strategic framing note, arbitration table, business case per opportunity, 18-36 month investment plan and a written governance kit (charter, RACI, committee): four pieces that go to the meeting without reformatting, plus 30 days of support to get them adopted. 2026 AI Act + GDPR + sector compliance. On request, depending on the number of BUs.`,
+    promiseFr: `Audit IA transverse pour ETI (250-5000 salariés) et grandes entreprises. Cartographie multi-BU chiffrée, note de cadrage stratégique, tableau d'arbitrage, business case par opportunité, plan d'investissement 18-36 mois et kit de gouvernance rédigé (charte, RACI, comité) : quatre pièces qui passent en séance sans être reformatées. Conformité AI Act 2026 + RGPD + sectoriel. Sur devis, selon le nombre de BU.`,
+    promiseEn: `Transverse AI audit for mid-cap (250-5000 staff) and large enterprises. Costed multi-BU mapping, strategic framing note, arbitration table, business case per opportunity, 18-36 month investment plan and a written governance kit (charter, RACI, committee): four pieces that go to the meeting without reformatting. 2026 AI Act + GDPR + sector compliance. On request, depending on the number of BUs.`,
     chipsFr: [
       "Cartographie multi-BU chiffrée",
       "Kit de gouvernance rédigé",
-      "4 livrables board-ready · 30 j d'accompagnement",
+      "4 livrables board-ready",
     ],
-    chipsEn: [
-      "Costed multi-BU mapping",
-      "Written governance kit",
-      "4 board-ready deliverables · 30-day support",
-    ],
+    chipsEn: ["Costed multi-BU mapping", "Written governance kit", "4 board-ready deliverables"],
     benefits: ETI_BENEFITS,
     schedule: ETI_SCHEDULE,
     scheduleEyebrowFr: "Déroulé type · 9 semaines",
@@ -1038,9 +1024,9 @@ export const AUDIT_DETAIL_CONFIGS: Record<AuditTier, AuditDetailConfig> = {
         titleFr: "Business cases + plan d'investissement 18-36 mois",
         titleEn: "Business cases + 18-36 month investment plan",
         descFr:
-          "Un business case par opportunité retenue (coût de mise en œuvre, gains attendus, hypothèses posées, risques) et le plan d'investissement phasé. Présentés en COMEX puis en board, avec 30 jours d'accompagnement pour les faire adopter.",
+          "Un business case par opportunité retenue (coût de mise en œuvre, gains attendus, hypothèses posées, risques) et le plan d'investissement phasé. Présentés en COMEX puis en board.",
         descEn:
-          "One business case per selected opportunity (implementation cost, expected gains, stated assumptions, risks) and the phased investment plan. Presented at EXCOM then at board, with 30 days of support to get them adopted.",
+          "One business case per selected opportunity (implementation cost, expected gains, stated assumptions, risks) and the phased investment plan. Presented at EXCOM then at board.",
       },
     ],
   },

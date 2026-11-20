@@ -361,7 +361,7 @@ const UN_A_UN_SLOTS: ReadonlyArray<DocSlot> = [
     visibilite: "formateur",
     formats: ["docx"],
     ordre: 3,
-    note: "Préparation en amont (échange 45 min, recherche métier/secteur), déroulé phase par phase, débrief 45 min, point à 30 jours (collaborateur).",
+    note: "Préparation en amont (échange 45 min, recherche métier/secteur), déroulé phase par phase, débrief 45 min.",
   },
   {
     key: "livrable_client",

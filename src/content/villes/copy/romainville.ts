@@ -78,9 +78,9 @@ export const ROMAINVILLE_COPY: VilleCopy = {
               "Recette utilisateurs en présentiel à Romainville : tests sur vos vrais contenus (œuvres, fiches produit, dossiers réglementaires), formation de vos équipes pour qu'elles gardent la main sur le contenu et les prompts. Documentation remise.",
           },
           {
-            step: "Mise en production et suivi",
+            step: "Mise en production",
             detail:
-              "Mise en ligne, monitoring des performances (Web Vitals, conversion e-commerce, qualité des réponses IA) et ajustements. Vous restez propriétaire du code, des données et de l'hébergement — réversibilité totale vers vos équipes ou tout intégrateur d'Est Ensemble.",
+              "Mise en ligne. Vous restez propriétaire du code, des données et de l'hébergement — réversibilité totale vers vos équipes ou tout intégrateur d'Est Ensemble.",
           },
         ],
         pricing: [
@@ -164,9 +164,9 @@ export const ROMAINVILLE_COPY: VilleCopy = {
               "User acceptance in person in Romainville: tests on your real content (artworks, product sheets, regulatory dossiers), training of your teams so they keep control of content and prompts. Documentation handed over.",
           },
           {
-            step: "Go-live and follow-up",
+            step: "Go-live",
             detail:
-              "Go-live, performance monitoring (Web Vitals, e-commerce conversion, AI answer quality) and adjustments. You remain owner of the code, the data and the hosting — full reversibility to your teams or any Est Ensemble integrator.",
+              "Go-live. You remain owner of the code, the data and the hosting — full reversibility to your teams or any Est Ensemble integrator.",
           },
         ],
         pricing: [

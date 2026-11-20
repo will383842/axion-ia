@@ -30,10 +30,10 @@ const SIGNALS = [
   },
   {
     Icon: Clock,
-    titleFr: "Accompagnement dans la durée",
-    titleEn: "Long-term support",
-    descFr: "Un partenaire fiable, présent à chaque étape de votre croissance.",
-    descEn: "A reliable partner at every stage of your growth.",
+    titleFr: "Un interlocuteur unique",
+    titleEn: "A single point of contact",
+    descFr: "Un partenaire fiable, présent à chaque étape de votre projet.",
+    descEn: "A reliable partner at every stage of your project.",
   },
 ] as const;
 
