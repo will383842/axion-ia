@@ -48,7 +48,6 @@ import { AdminPageShell } from "@/components/admin/ui/AdminPageShell";
 import { AdminPageHeader } from "@/components/admin/ui/AdminPageHeader";
 import { AdminButton } from "@/components/admin/ui/AdminButton";
 import { AdminBadge } from "@/components/admin/ui/AdminBadge";
-import { AdminBlocRepliable } from "@/components/admin/ui/AdminBlocRepliable";
 import { AdminEmptyState } from "@/components/admin/ui/AdminEmptyState";
 import { AdminStatCard } from "@/components/admin/ui/AdminStatCard";
 import { RelancerSignatureButton } from "@/components/admin/qualiopi/RelancerSignatureButton";
@@ -354,15 +353,10 @@ export default async function ATraiterPage({ params }: PageProps) {
               {rouverts.length}
             </AdminBadge>
           </h2>
-          <AdminBlocRepliable
-            titre="Pourquoi ces dossiers sont ici"
-            className="mb-[var(--space-admin-4)]"
-          >
-            <p className={meta}>
-              Un dossier rouvert ne se referme pas tout seul. Une fois la correction faite, « Clore
-              à nouveau » depuis la fiche session.
-            </p>
-          </AdminBlocRepliable>
+          <p className={`${meta} mb-[var(--space-admin-4)]`}>
+            Un dossier rouvert ne se referme pas tout seul. Une fois la correction faite, « Clore à
+            nouveau » depuis la fiche session.
+          </p>
           <ul className={liste}>
             {rouverts.map((d) => (
               <li key={d.sessionId} className={carteElement("warning")}>
@@ -508,7 +502,8 @@ export default async function ATraiterPage({ params }: PageProps) {
               const jours = joursDepuis(s.updatedAt);
               const attente = `en attente depuis ${jours} jour${jours > 1 ? "s" : ""}`;
               // 🔴 L3 (30/09/2026) — une pièce de session ouvre la fiche AU
-              // bloc « Signature des pièces contractuelles ».
+              // bloc « Signature des pièces contractuelles », pas en haut d'une
+              // page de huit écrans. Même helper que la checklist de la fiche.
               const cible = s.sessionId
                 ? hrefEtape(
                     s.sessionId,
@@ -593,6 +588,8 @@ export default async function ATraiterPage({ params }: PageProps) {
           traiter » ne parlait pas des sessions. Une convention non signée à
           J-3, une évaluation finale jamais saisie, un émargement resté vide —
           rien de tout cela n'apparaissait avant d'ouvrir le dossier concerné.
+          C'est la cause racine des défauts du premier dossier réel.
+
           Ce sont les seules lignes de cette page dont l'échéance est déjà
           passée. */}
       {echeancesUrgentes.length > 0 && (
@@ -604,7 +601,8 @@ export default async function ATraiterPage({ params }: PageProps) {
               {echeancesUrgentes.length}
             </AdminBadge>
           </h2>
-          {/* La chronologie EST un ordre : une liste ordonnée. */}
+          {/* La chronologie EST un ordre : une liste ordonnée, pas une pile de
+              div. Le lecteur d'écran annonce « 1 sur 7 ». */}
           <ol className={liste}>
             {echeancesUrgentes.slice(0, 20).map((e) => (
               <li
@@ -619,7 +617,8 @@ export default async function ATraiterPage({ params }: PageProps) {
                     {e.numero} · {e.titre}
                   </p>
                   {/* 🔴 L'état est dans le TEXTE, jamais dans la seule couleur
-                      (WCAG 1.4.1). */}
+                      (WCAG 1.4.1) : « rattrapable avant le … » et « hors délai :
+                      +N j » ne se confondent pas, même en noir et blanc. */}
                   <p className={encadreWarning}>
                     {e.etape.mention} ·{" "}
                     {etapeBloqueeParLeVerrou(e.etape, figeSession(e.sessionId))
@@ -627,8 +626,11 @@ export default async function ATraiterPage({ params }: PageProps) {
                       : e.etape.geste}
                   </p>
                 </div>
-                {/* 🔴 L3 (30/09/2026) — mène à l'onglet de la phase et à la
-                    section qui porte le geste (`hrefEtape`). */}
+                {/* 🔴 L3 (30/09/2026) — « Ouvrir le dossier » menait en haut de
+                    la fiche, sans rien de plus : il fallait retrouver l'étape
+                    parmi huit écrans. Il mène désormais à l'onglet de sa phase
+                    et à la section qui porte le geste — ou directement à la
+                    sous-page (`hrefEtape`, le même lien que la checklist). */}
                 <AdminButton
                   href={hrefEtape(e.sessionId, e.etape, `${base}/qualiopi/sessions`)}
                   variant="secondary"
@@ -640,7 +642,8 @@ export default async function ATraiterPage({ params }: PageProps) {
             ))}
           </ol>
           {echeancesUrgentes.length > 20 && (
-            /* 🔴 Une liste coupée en silence se lit comme une liste complète. */
+            /* 🔴 Une liste coupée en silence se lit comme une liste complète.
+               On dit combien il en reste. */
             <p className={`${meta} mt-[var(--space-admin-3)]`}>
               {echeancesUrgentes.length - 20} autre
               {echeancesUrgentes.length - 20 > 1 ? "s" : ""} échéance
@@ -659,8 +662,12 @@ export default async function ATraiterPage({ params }: PageProps) {
         </section>
       )}
 
-      {/* Relances de recouvrement. L'envoi reste un clic (et une double
-          validation) dans le hub : ce bloc y renvoie, il ne relance rien. */}
+      {/* Relances de recouvrement.
+          Bloc absent jusqu'ici : les relances proposées n'existaient QUE dans
+          le hub facturation. Un impayé ne se signalait donc nulle part tant
+          qu'on n'ouvrait pas cet écran — sur le sujet où l'oubli coûte le plus
+          cher. L'envoi reste un clic (et une double validation) dans le hub :
+          ce bloc y renvoie, il ne relance rien lui-même. */}
       {compteurs.relances > 0 && (
         <section id="relances" className={section}>
           <h2 className={titreSection}>
@@ -703,8 +710,10 @@ export default async function ATraiterPage({ params }: PageProps) {
               return (
                 <li key={a.id} className={carteElement(critique ? "destructive" : "warning")}>
                   <div className="min-w-0 flex-1">
-                    {/* Le niveau se lit par la SILHOUETTE et le libellé, pas par
-                        la seule couleur. */}
+                    {/* Le niveau se lisait contre 🟠 : deux ronds que SEULE la
+                        couleur distinguait — illisible en vision des couleurs
+                        déficiente, sur l'information la plus urgente de la page.
+                        Deux SILHOUETTES différentes le disent sans la couleur. */}
                     <p className="m-0 flex flex-wrap items-center gap-[var(--space-admin-2)]">
                       <AdminBadge tone={critique ? "destructive" : "warning"} plein>
                         {critique ? (
@@ -718,8 +727,10 @@ export default async function ATraiterPage({ params }: PageProps) {
                         {a.titre}
                       </span>
                     </p>
-                    {/* Certaines alertes recopient une réponse d'API brute :
-                        deux lignes ici, le texte complet dans l'infobulle. */}
+                    {/* Certaines alertes recopient une réponse d'API brute — un
+                        échec de job IA fait des centaines de caractères de JSON
+                        (vu en production le 2026-08-02). Deux lignes ici ; le
+                        texte complet vit dans l'infobulle et sur la page Alertes. */}
                     <p
                       title={a.message}
                       className={`${meta} m-0 mt-[var(--space-admin-2)] line-clamp-2`}

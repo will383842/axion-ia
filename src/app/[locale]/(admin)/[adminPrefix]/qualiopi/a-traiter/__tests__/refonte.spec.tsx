@@ -149,7 +149,9 @@ describe("page À traiter : refonte visuelle", () => {
     ];
     const { container, unmount } = await rendre();
     expect(screen.getByText("Motif : « erreur de date »").className).toContain("warning-soft");
-    expect(container.querySelector("#rouverts details")).toBeTruthy();
+    const consigne = screen.getByText(/Un dossier rouvert ne se referme pas tout seul/);
+    expect(consigne.closest("details")).toBeNull();
+    expect(container.querySelector("#rouverts details")).toBeNull();
     unmount();
     etat.rouverts = null;
     await rendre();
