@@ -265,7 +265,7 @@ export default async function EmargementPage({ params, searchParams }: PageProps
         />
       </div>
 
-      <div className="flex flex-col gap-[var(--space-admin-6)]">
+      <div className="flex flex-col">
         {/* Informations session */}
         <AdminBloc teinte="gris" niveau={2} titre="La session en bref">
           <dl className="m-0 grid grid-cols-2 gap-[var(--space-admin-4)] sm:grid-cols-4">
@@ -490,8 +490,7 @@ export default async function EmargementPage({ params, searchParams }: PageProps
                     const Icone = ICONE_CATEGORIE[cat];
                     return (
                       <tr key={e.id}>
-                        <th
-                          scope="row"
+                        <td
                           className={`${CELLULE} rounded-l-[var(--radius-admin-md)] border-l-4 text-left ${BORDURE_CATEGORIE[cat]}`}
                         >
                           <div className="text-[length:var(--text-admin-base)] font-semibold">
@@ -500,7 +499,7 @@ export default async function EmargementPage({ params, searchParams }: PageProps
                           <div className="text-[length:var(--text-admin-sm)] font-normal text-[color:var(--color-admin-fg-muted)]">
                             {e.trainee.email}
                           </div>
-                        </th>
+                        </td>
                         <td className={CELLULE}>
                           {e.tauxPresencePct !== null ? (
                             <AdminBadge tone={tonCategorie[cat]} compact={false} plein>

@@ -153,7 +153,7 @@ describe("Émargement d'une session — refonte visuelle", () => {
     expect(within(table).getAllByRole("columnheader")).toHaveLength(4);
     const lignes = within(table).getAllByRole("row").slice(1);
     expect(lignes).toHaveLength(2);
-    const entete = (i: number) => lignes[i]?.querySelector("th") as HTMLElement;
+    const entete = (i: number) => lignes[i]?.querySelector("td") as HTMLElement;
     expect(entete(0).className).toContain("border-l-[color:var(--color-admin-success)]");
     expect(entete(1).className).toContain("border-l-[color:var(--color-admin-destructive)]");
     expect(lignes[0]?.querySelector("svg")).not.toBeNull();
@@ -163,6 +163,20 @@ describe("Émargement d'une session — refonte visuelle", () => {
     expect(within(lignes[1] as HTMLElement).getByText("Aucune")).toBeTruthy();
     expect(table.parentElement?.className).toContain("overflow-x-auto");
     expect(container.querySelector("iframe")).toBeNull();
+  });
+
+  it("récapitulatif : la 2e td de la ligne porte le taux (lecture de l'E2E), sans th de ligne", async () => {
+    await rendre();
+    const lignes = within(screen.getByRole("table")).getAllByRole("row").slice(1);
+    const ligne = lignes[0] as HTMLElement;
+    expect(ligne.querySelector("th")).toBeNull();
+    expect(ligne.querySelectorAll("td")[1]?.textContent).toMatch(/90\s*%/);
+  });
+
+  it("les blocs ne sont pas séparés par un gap en plus de leur margin-bottom", async () => {
+    const { container } = await rendre();
+    const bloc = container.querySelector(".admin-bloc") as HTMLElement;
+    expect(bloc.parentElement?.className ?? "").not.toMatch(/\bgap-/);
   });
 
   it("distanciel : le bloc d'import du relevé apparaît", async () => {
