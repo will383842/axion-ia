@@ -10,7 +10,7 @@
 import { DATE_MISE_A_JOUR_PRIX_AUDIT_IA } from "@/content/prix-audit-ia-date";
 import { RAPPORT_COMPLET } from "@/content/journee-ia-commun";
 
-import { CONTENU as JOURNEE, LIBELLE_CTA } from "../journee-ia/contenu";
+import { LIBELLE_CTA } from "../journee-ia/contenu";
 
 export const PATH = "/prix-audit-ia";
 
@@ -27,9 +27,6 @@ export const DESCRIPTION_META =
 
 export const OG_IMAGE_ALT =
   "Combien coûte un audit IA pour une TPE ou une PME : la Journée IA, prix unique";
-
-/** Le déroulé du matin et de l'après-midi, tel que la landing de la Journée IA le dit. */
-const ETAPES = JOURNEE.deroule.etapes;
 
 export const TEXTES = {
   filAriane: "Combien coûte un audit IA",
