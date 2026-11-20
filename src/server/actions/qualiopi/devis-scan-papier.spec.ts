@@ -43,6 +43,7 @@ vi.mock("@/server/qualiopi/documents/signature/horodatage-signature", () => ({
 }));
 
 import { createHash } from "node:crypto";
+import * as Sentry from "@sentry/nextjs";
 import { verserScanDevisSigneAction } from "./devis-scan-papier";
 import { circuitPour } from "@/server/qualiopi/documents/signature/parties-requises";
 
@@ -205,7 +206,7 @@ describe("refus SANS R2 ni lecture de preuves", () => {
     const r = await verserScanDevisSigneAction(formulaire());
     expect(r).toMatchObject({ ok: false, message: expect.stringContaining("déjà été versé") });
     expect(h.prisma.documentSignature.findFirst).toHaveBeenLastCalledWith({
-      where: { signatureSha256: SHA },
+      where: { signatureSha256: SHA, revokedAt: null },
       select: { id: true },
     });
     attendSansR2OuBase();
@@ -307,5 +308,27 @@ describe("succès", () => {
     ]);
     expect([a.ok, b.ok].filter(Boolean)).toHaveLength(1);
     expect(h.apres).toHaveBeenCalledTimes(1);
+  });
+});
+
+describe("F1 / F2 — après le scellement", () => {
+  it("F1 : le journal de réussite qui échoue ne change pas le succès (Sentry, pas de relance)", async () => {
+    h.log.mockRejectedValue(new Error("journal HS"));
+    const r = await verserScanDevisSigneAction(formulaire());
+    expect(r).toMatchObject({ ok: true, signatureId: "sig-1" });
+    expect(Sentry.captureException).toHaveBeenCalled();
+  });
+
+  it("F2 : un refus d'activation est renvoyé à l'écran", async () => {
+    h.apres.mockResolvedValue({
+      activationRefusee: { prefixe: "Activation refusée :", message: "motif X" },
+    });
+    const r = await verserScanDevisSigneAction(formulaire());
+    expect(r).toMatchObject({ ok: true, activationRefusee: expect.stringContaining("motif X") });
+  });
+
+  it("F2 : sans refus, pas de champ activationRefusee", async () => {
+    const r = await verserScanDevisSigneAction(formulaire());
+    expect(r).not.toHaveProperty("activationRefusee");
   });
 });

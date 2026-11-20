@@ -803,7 +803,11 @@ function SignatureApposee({ preuve }: { preuve: PreuveSignature }): React.ReactE
         <Text style={signatureLocal.mentionPreuve}>Image de signature indisponible.</Text>
       )}
 
-      <Text style={signatureLocal.horodatage}>{`Signé le ${preuve.signeAtLisible}`}</Text>
+      {/* Ligne papier : `signeAt` est l'heure du VERSEMENT, pas de la signature ; la mention papier
+          porte déjà « versée au dossier le … ». */}
+      {preuve.mentionPapier === undefined ? (
+        <Text style={signatureLocal.horodatage}>{`Signé le ${preuve.signeAtLisible}`}</Text>
+      ) : null}
       {preuve.mentionPapier !== undefined ? (
         <Text style={signatureLocal.mentionPreuve}>{preuve.mentionPapier}</Text>
       ) : preuve.methode === "papier_scanne" ? (

@@ -522,7 +522,20 @@ describe("🔴 cohérences de forme", () => {
     // ligne sans image, sans certificat de tiers et sans confirmation nominative
     // n'est adossée à rien.
     attendRefus(
-      await signerDocument(entree({ methode: "papier_scanne", imageDataUrl: undefined })),
+      await signerDocument(
+        entree({
+          methode: "papier_scanne",
+          imageDataUrl: undefined,
+          partiesRequises: ["client", "axionia"],
+          porteur: {
+            type: "reversement_papier",
+            adminId: ADMIN,
+            provider: "physical_signed",
+            partie: "client",
+            signataire: { nom: "Camille Durand" },
+          },
+        }),
+      ),
       "image_requise",
     );
   });

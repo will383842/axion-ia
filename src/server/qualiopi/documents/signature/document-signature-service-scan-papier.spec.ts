@@ -250,12 +250,33 @@ describe("scan papier — refus", () => {
     const res = await signerDocument(
       entree({
         porteur: { type: "signataire_jeton", tokenId: "t".repeat(8), partie: "client" },
-        methode: "trace",
-        cgvVersion: "2026-10-04",
+        methode: "papier_scanne",
       }),
     );
-    attendRefus(res, "image_interdite");
+    attendRefus(res, "porteur_non_autorise");
   });
+
+  it.each([
+    ["signataire_jeton", { type: "signataire_jeton", tokenId: "t".repeat(8), partie: "client" }],
+    ["organisme_authentifie", { type: "organisme_authentifie", adminId: ADMIN, partie: "client" }],
+    [
+      "fournisseur",
+      { type: "fournisseur", submissionId: "sub-1", provider: "docuseal", partie: "client" },
+    ],
+  ])(
+    "papier_scanne + image avec le porteur %s : porteur_non_autorise, sans R2",
+    async (_n, porteur) => {
+      const res = await signerDocument(
+        entree({
+          porteur,
+          methode: "papier_scanne",
+          scanPdf: undefined,
+          imageDataUrl: "data:image/png;base64,AAAA",
+        }),
+      );
+      attendRefus(res, "porteur_non_autorise");
+    },
+  );
 
   it("scanPdf avec une autre méthode que papier_scanne : refus", async () => {
     attendRefus(await signerDocument(entree({ methode: "trace" })), "image_interdite");

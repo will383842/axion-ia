@@ -934,6 +934,12 @@ export async function signerDocument(
     jeton = v.jeton;
   }
 
+  // La méthode papier n'appartient qu'au reversement papier : tout autre porteur affirmerait
+  // une signature manuscrite qu'il n'a pas recueillie. Avant CGV et pré-contrôles de forme.
+  if (input.methode === "papier_scanne" && porteur.type !== "reversement_papier") {
+    return refus("porteur_non_autorise");
+  }
+
   // Placé APRÈS l'autorisation : sinon un appelant qui devine un identifiant de
   // pièce apprend si une autre partie a déjà signé.
   if (ctx.signatures.length > 0) return refus("deja_signe");

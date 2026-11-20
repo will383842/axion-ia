@@ -24,7 +24,10 @@ import { z } from "zod";
 import { prisma } from "@/lib/prisma";
 import type { AdminSession } from "@/server/actions/knowledge/_guards";
 import { requireAdminWrite, logQualiopiActivity } from "./_guards";
-import { apresSignature } from "@/server/qualiopi/documents/signature/apres-signature";
+import {
+  apresSignature,
+  PREFIXE_ACTIVATION_REFUSEE,
+} from "@/server/qualiopi/documents/signature/apres-signature";
 import { contexteRequete } from "@/server/qualiopi/documents/signature/contexte-requete";
 import { signerDocument } from "@/server/qualiopi/documents/signature/document-signature-service";
 import { peutSignerPourOrganisme } from "@/server/qualiopi/documents/signature/garde-engagement";
@@ -37,7 +40,12 @@ import {
 import { SignatureStockageError } from "@/server/qualiopi/emargement/storage";
 
 export type ResultatVersementScan =
-  | { ok: true; signatureId: string; statutSignature: "partielle" | "signee" }
+  | {
+      ok: true;
+      signatureId: string;
+      statutSignature: "partielle" | "signee";
+      activationRefusee?: string;
+    }
   | { ok: false; message: string };
 
 const MSG_SESSION = "Votre session a expiré ou vos droits sont insuffisants pour verser ce scan.";
@@ -174,7 +182,7 @@ export async function verserScanDevisSigneAction(
   }
   const scanSha256 = createHash("sha256").update(octets).digest("hex");
   const dejaVu = await prisma.documentSignature.findFirst({
-    where: { signatureSha256: scanSha256 },
+    where: { signatureSha256: scanSha256, revokedAt: null },
     select: { id: true },
   });
   if (dejaVu !== null) {
@@ -213,7 +221,7 @@ export async function verserScanDevisSigneAction(
     }
 
     // Remise, alerte, conséquences métier : sans `canal` (pas un lien à jeton).
-    await apresSignature({
+    const apres = await apresSignature({
       documentGenereId: piece.id,
       type: piece.type,
       numero: piece.numero,
@@ -228,21 +236,36 @@ export async function verserScanDevisSigneAction(
       .then(() => horodaterSignature(res.signatureId))
       .catch(() => undefined);
 
-    await logQualiopiActivity({
-      action: "qualiopi.devis.scan_papier_verse",
-      targetType: "DocumentSignature",
-      targetId: res.signatureId,
-      changes: {
-        documentGenereId: piece.id,
-        signatureId: res.signatureId,
-        scanSha256,
-        tailleOctets: octets.byteLength,
-        statutSignature: res.statutSignature,
-      },
-      session,
-    });
+    // La signature est scellée : un journal en échec ne doit pas faire dire « échec » à l'écran.
+    try {
+      await logQualiopiActivity({
+        action: "qualiopi.devis.scan_papier_verse",
+        targetType: "DocumentSignature",
+        targetId: res.signatureId,
+        changes: {
+          documentGenereId: piece.id,
+          signatureId: res.signatureId,
+          scanSha256,
+          tailleOctets: octets.byteLength,
+          statutSignature: res.statutSignature,
+        },
+        session,
+      });
+    } catch (err) {
+      Sentry.captureException(err, { tags: { action: "verserScanDevisSigneAction.journal" } });
+    }
 
-    return { ok: true, signatureId: res.signatureId, statutSignature: res.statutSignature };
+    const activationRefusee =
+      apres?.activationRefusee != null
+        ? `${apres.activationRefusee.prefixe ?? PREFIXE_ACTIVATION_REFUSEE} ${apres.activationRefusee.message}`
+        : undefined;
+
+    return {
+      ok: true,
+      signatureId: res.signatureId,
+      statutSignature: res.statutSignature,
+      ...(activationRefusee === undefined ? {} : { activationRefusee }),
+    };
   } catch (err) {
     if (err instanceof SignatureStockageError) {
       await journaliserRefus(session, `stockage_${err.motif}`, devisId);
