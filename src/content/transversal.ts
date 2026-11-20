@@ -1684,7 +1684,7 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
       question: "How much does an AI project cost for an SME?",
       answer:
         // R7 (ordre de Williams du 08/11/2026) : aucune indication de montant hors Journée IA.
-        "Every Axion-IA project is priced on a fixed quote, set after a short scoping call, with no surprises. Request a free quote.",
+        "Every Axion-IA project is priced on a fixed quote, set after a free 45-minute AI Diagnostic call, with no surprises. Request a free quote.",
     },
   },
   {
@@ -1985,7 +1985,7 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
     en: {
       question: "Are there grants or subsidies for an AI project?",
       answer:
-        "Depending on your project, some AI audits or diagnostics can be partially co-funded in France: the France Num programme and its diagnostics, regional digital-transformation grants, BPI schemes where applicable, and research/innovation tax credits (CIR/CII) for custom development. Eligibility depends on your size, sector and region; we point you to the relevant schemes during the audit.",
+        "Public schemes exist, but none is automatic and none is run by Axion-IA. Depending on your size, sector and region, a digital-transformation project may fall under a national or regional programme, and genuinely innovative development may qualify for research and innovation tax credits (CIR/CII). Each scheme has its own criteria: eligibility is checked with the body that grants the aid, and your accountant is best placed to advise on tax. We provide a clean file (written scope, detailed quote, dated deliverables); no service is sold as subsidised, and any public support is settled between you and that body. If this matters for your decision, raise it during the free 45-minute AI Diagnostic call, before the quote.",
     },
   },
   {
