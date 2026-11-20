@@ -41,7 +41,7 @@ const FICHIERS_CONSEIL_CLIENT = new Set([
  * Seuls les gabarits adressés aux clients/stagiaires restent scannés.
  */
 const GABARITS_EMAIL_INTERNES =
-  /^src\/lib\/email\/templates\/(?:_formateur|_infos-pratiques-formateur|_kit-apporteur|_bareme-apporteur|formateur-|apporteur-|lead-apporteur-|candidature-|qualiopi-alerte-interne|alerte-demande-client|opco-suivi-entreprise)/;
+  /^src\/lib\/email\/templates\/(?:_formateur|_infos-pratiques-formateur|_kit-apporteur|_bareme-apporteur|formateur-|apporteur-|lead-apporteur-|candidature-|qualiopi-alerte-interne|alerte-demande-client|opco-)/;
 
 const PROMESSES: ReadonlyArray<readonly [string, RegExp]> = [
   ["point de suivi", /point de suivi/i],

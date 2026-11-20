@@ -2233,7 +2233,7 @@ export const KW_COACHING_G6: KeywordSeed[] = [
       h1: "Accompagnement IA 1 pour 1 pour dirigeants : votre expert IA dédié, votre agenda",
       metaTitle: "Accompagnement IA dirigeant 1 pour 1 — Axion-IA",
       metaDescription:
-        "Un expert IA Axion-IA dédié uniquement à vous : sessions à la demande, coaching régulier sur devis, décisions IA éclairées. Formule 1-to-1 premium pour dirigeants.",
+        "Un expert IA Axion-IA dédié uniquement à vous : sessions à la demande, coaching régulier sur devis. Formule 1-to-1 premium pour dirigeants.",
       h2Variants: [
         "En quoi l'accompagnement IA 1 pour 1 diffère d'une formation",
         "Votre expert IA dédié : profil et méthode de travail",
