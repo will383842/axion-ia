@@ -163,4 +163,10 @@ describe("calculerSnapshotScore", () => {
     etat.lignes = lots(5);
     expect((await snapshot()).global).toBeNull();
   });
+
+  it("le plancher du Score est le MÊME que celui des segments de l'Observatoire (§5.2)", async () => {
+    const { N_MIN_STATISTIQUE } = await import("@/lib/score-ia-pme/constantes");
+    const { MIN_SEGMENT_N } = await import("../snapshot");
+    expect(N_MIN_STATISTIQUE).toBe(MIN_SEGMENT_N);
+  });
 });
