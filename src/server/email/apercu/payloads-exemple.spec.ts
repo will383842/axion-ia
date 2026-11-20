@@ -239,9 +239,17 @@ describe("le jeu de données d'exemple couvre tous les gabarits", () => {
   it("n'expose AUCUNE donnée réelle", () => {
     // Un aperçu de console qui afficherait un vrai prospect, ou un lien vers la
     // production, transformerait une page de documentation en fuite.
-    const valeurs = Object.values(PAYLOAD_EXEMPLE)
+    // Exception unique : `signatureUrl`. Le gabarit n'affiche le bouton de signature que si le lien
+    // est sur l'hôte du site (`estLienSignatureValide`) ; l'exemple y porte donc le domaine du site
+    // avec un faux jeton lisible (`jeton-de-demonstration`), jamais un vrai jeton.
+    const valeurs = Object.entries(PAYLOAD_EXEMPLE)
+      .filter(([cle]) => cle !== "signatureUrl")
+      .map(([, v]) => v)
       .filter((v): v is string => typeof v === "string")
       .join(" ");
+    expect(String(PAYLOAD_EXEMPLE["signatureUrl"])).toMatch(
+      /\/portail\/signer\/jeton-de-demonstration$/,
+    );
     expect(valeurs, "un lien pointe vers la production").not.toMatch(/axion-ia\.com/);
     expect(valeurs, "une adresse e-mail réelle est utilisée").not.toMatch(
       /@(?!exemple\.invalid|example\.invalid)[\w.-]+\.(com|fr|net|org|eu)/,

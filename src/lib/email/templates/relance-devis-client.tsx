@@ -5,7 +5,7 @@
 // Aucun montant, aucune promesse : le prix figurait dans le devis. Vouvoiement, ton courtois.
 
 import { Text } from "@react-email/components";
-import { EmailLayout, emailStyles } from "./_layout";
+import { BASE_URL, EmailLayout, emailStyles } from "./_layout";
 import { CLOTURE_DEVIS_FR } from "./devis-envoi";
 import { salutation, type IdentiteSalutation } from "../salutation";
 import type { Locale } from "../../../../prisma/generated/client";
@@ -16,8 +16,9 @@ interface Payload {
   /** Identité structurée du destinataire : « Bonjour Monsieur Dupont, ». Absente : « Bonjour, ». */
   salutation?: IdentiteSalutation;
   /**
-   * Lien de signature `https://…/portail/signer/<jeton>`, posé à l'envoi (jeton porteur : jamais
-   * journalisé). Ignoré s'il n'a pas cette forme : alors ni bouton ni phrase « signer ».
+   * Lien de signature `https://<hôte du site>/fr/portail/signer/<jeton>`, posé à l'envoi (jeton
+   * porteur : jamais journalisé). Ignoré s'il ne passe pas `estLienSignatureValide` : alors ni
+   * bouton ni phrase « signer ».
    */
   signatureUrl?: string;
   /** Vrai si le PDF du devis est joint à l'e-mail (posé à la préparation). */
@@ -27,6 +28,34 @@ interface Payload {
   dateEnvoi?: string;
   /** Bloc libre ajouté par l'admin avant validation. */
   messagePersonnalise?: string;
+}
+
+/**
+ * Lien de signature admis : exactement ce que le code vérifie, rien de plus.
+ *  - `https:` ; même hôte (avec port) que `BASE_URL` du gabarit commun ;
+ *  - ni identifiant ni mot de passe, ni `?…`, ni `#…` ;
+ *  - chemin `[/fr|/en]/portail/signer/<jeton>` où le jeton est de la forme réelle
+ *    `<base64url>.<base64url>` (lettres, chiffres, `_`, `-`, `.`).
+ * Toute analyse impossible (`new URL()` lève) vaut refus.
+ */
+const CHEMIN_SIGNATURE = /^(\/(fr|en))?\/portail\/signer\/[A-Za-z0-9_.-]+$/;
+
+export function estLienSignatureValide(valeur: unknown): valeur is string {
+  if (typeof valeur !== "string") return false;
+  try {
+    const u = new URL(valeur);
+    return (
+      u.protocol === "https:" &&
+      u.host === new URL(BASE_URL).host &&
+      u.username === "" &&
+      u.password === "" &&
+      u.search === "" &&
+      u.hash === "" &&
+      CHEMIN_SIGNATURE.test(u.pathname)
+    );
+  } catch {
+    return false;
+  }
 }
 
 export const relanceDevisClientSubject = (
@@ -46,16 +75,15 @@ export function RelanceDevisClientEmail({
 }) {
   const p = payload as Partial<Payload>;
   const numero = p.numero ?? "";
-  const signatureValide =
-    typeof p.signatureUrl === "string" &&
-    /^https:\/\/[^\s]+\/portail\/signer\/[^\s/]+$/.test(p.signatureUrl);
+  const signatureValide = estLienSignatureValide(p.signatureUrl);
   // Clé présente (même vide) : « Bonjour Monsieur Dupont, » ; absente : « Bonjour, ».
   const sal = p.salutation as unknown;
   const bonjour = salutation(
     typeof sal === "object" && sal !== null && !Array.isArray(sal)
       ? (sal as IdentiteSalutation)
       : {},
-    locale,
+    // Le corps de ce gabarit n'existe qu'en français : la salutation aussi.
+    "fr",
   );
   const depuis = p.dateEnvoi ? `, envoyé le ${p.dateEnvoi}` : "";
 

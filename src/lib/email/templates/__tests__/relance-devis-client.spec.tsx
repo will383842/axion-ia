@@ -5,7 +5,10 @@ import { render } from "@react-email/components";
 import { describe, expect, it } from "vitest";
 
 import { CLOTURE_DEVIS_FR } from "../devis-envoi";
+import { BASE_URL } from "../_layout";
 import { RelanceDevisClientEmail } from "../relance-devis-client";
+
+const HOTE = new URL(BASE_URL).host;
 
 const LIEN = "https://axion-ia.com/portail/signer/JETON123abc";
 const BASE = { destinataireNom: "Claire Martin", numero: "AXI-DEV-2026-014" };
@@ -38,6 +41,12 @@ describe("relance-devis-client", () => {
     ["javascript", "javascript:alert(1)"],
     ["autre chemin", "https://axion-ia.com/autre/signer/abc"],
     ["non chaîne", 42],
+    ["domaine étranger", "https://evil.tld/portail/signer/x"],
+    ["domaine trompeur", `https://${HOTE}.evil.tld/portail/signer/x`],
+    ["avec identifiant", `https://${HOTE}@evil.tld/portail/signer/x`],
+    ["avec ?y", `${BASE_URL}/portail/signer/x?y`],
+    ["avec #y", `${BASE_URL}/portail/signer/x#y`],
+    ["chemin préfixé", `${BASE_URL}/a/portail/signer/x`],
   ])("T2 : signatureUrl %s → ni bouton, ni phrase « signer »", async (_nom, valeur) => {
     const { html, text } = await rendu({ ...BASE, signatureUrl: valeur });
     for (const s of [html, text]) {
@@ -55,6 +64,26 @@ describe("relance-devis-client", () => {
     expect(visible).not.toContain(LIEN);
     expect(visible).not.toContain("/portail/signer/");
     expect(html.split(LIEN).length - 1).toBe(1);
+    // Le texte de prévisualisation (preheader) ne porte pas non plus le lien.
+    expect(html.match(/display:none[^>]*>([^<]*)/)?.[1] ?? "").not.toContain("/portail/signer/");
+  });
+
+  it("lien réel du premier envoi (/fr/, jeton `charge.signature`) → bouton", async () => {
+    const reel = `${BASE_URL}/fr/portail/signer/eyJzY29wZSI6ImQifQ.c2lnX0Ex-_`;
+    const { html } = await rendu({ ...BASE, signatureUrl: reel });
+    expect(html).toContain("Signer le devis en ligne");
+  });
+
+  it("version anglaise : la salutation reste française, comme le corps", async () => {
+    const el = (
+      <RelanceDevisClientEmail
+        locale="en"
+        payload={{ ...BASE, salutation: { civilite: "monsieur", nomFamille: "DUPONT" } }}
+      />
+    );
+    const html = await render(el);
+    expect(html).toContain("Bonjour Monsieur Dupont,");
+    expect(html).not.toContain("Hello");
   });
 
   it("T4 : salutation structurée → « Bonjour Monsieur Dupont, », jamais le nom complet", async () => {
