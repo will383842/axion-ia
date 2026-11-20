@@ -5,6 +5,7 @@ import { render, screen, within } from "@testing-library/react";
 import {
   CarteLigne,
   LignesDuMois,
+  MessageFormateurNonRetenu,
   PastilleStatutReleve,
   TuilesReleve,
   type LigneReleve,
@@ -167,4 +168,16 @@ describe("garde de vocabulaire des fichiers refondus", () => {
       expect(fautives).toEqual([]);
     });
   }
+});
+
+describe("MessageFormateurNonRetenu (relecture)", () => {
+  it("rend le message visible, hors de tout <details>", () => {
+    const { container } = render(
+      <MessageFormateurNonRetenu paragraphes={["Bonjour, votre désaccord n'est pas retenu."]} />,
+    );
+    const p = screen.getByText("Bonjour, votre désaccord n'est pas retenu.");
+    expect(p).toBeTruthy();
+    expect(p.closest("details")).toBeNull();
+    expect(container.querySelector("details")).toBeNull();
+  });
 });

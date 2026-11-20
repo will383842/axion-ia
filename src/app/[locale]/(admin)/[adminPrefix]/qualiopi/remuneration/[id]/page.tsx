@@ -36,7 +36,12 @@ import { LIBELLE_SUSPENSION_VIREMENT } from "@/server/qualiopi/formateurs-indepe
 import { prisma } from "@/lib/prisma";
 import { transitionsPossibles } from "@/server/qualiopi/remuneration/run";
 import { euros, LIBELLE_STATUT_RELEVE, MOIS_FR, libelleRegimeTva } from "../_labels";
-import { LignesDuMois, PastilleStatutReleve, TuilesReleve } from "../_composants";
+import {
+  LignesDuMois,
+  MessageFormateurNonRetenu,
+  PastilleStatutReleve,
+  TuilesReleve,
+} from "../_composants";
 import { AccesRefuse } from "@/components/admin/ui/AccesRefuse";
 import { TEXTES_FORMATEUR } from "@/lib/email/templates/formateur-independant-textes";
 import {
@@ -119,7 +124,7 @@ export default async function ReleveDetailPage({ params, searchParams }: PagePro
         meta={<PastilleStatutReleve statut={releve.statut} />}
       />
 
-      <div className="flex flex-col gap-[var(--space-admin-6)]">
+      <div>
         <div>
           <Link href={listeUrl} className="admin-link">
             <ArrowLeft size={14} aria-hidden /> Retour aux relevés
@@ -150,27 +155,6 @@ export default async function ReleveDetailPage({ params, searchParams }: PagePro
 
         {/* ── Montants : détails sous les tuiles ────────────────────────────── */}
         <AdminBloc teinte="gris" titre="Montants">
-          <dl className="m-0 grid grid-cols-1 gap-[var(--space-admin-4)] sm:grid-cols-3">
-            <div>
-              <dt className="admin-muted">Total HT</dt>
-              <dd className="m-0 text-[length:var(--text-admin-base)] font-semibold tabular-nums">
-                {euros(releve.totalHtCents)}
-              </dd>
-            </div>
-            <div>
-              <dt className="admin-muted">TVA</dt>
-              <dd className="m-0 text-[length:var(--text-admin-base)] font-semibold tabular-nums">
-                {euros(releve.tvaCents)}
-              </dd>
-            </div>
-            <div>
-              <dt className="admin-muted">Total TTC</dt>
-              <dd className="m-0 text-[length:var(--text-admin-base)] font-semibold tabular-nums">
-                {euros(releve.totalTtcCents)}
-              </dd>
-            </div>
-          </dl>
-
           <div className="flex flex-col gap-[var(--space-admin-3)] pt-[var(--space-admin-3)]">
             {releve.numeroFacture !== null && (
               <p className="admin-muted">
@@ -240,7 +224,7 @@ export default async function ReleveDetailPage({ params, searchParams }: PagePro
             {releve.autofacture.emiseAt === null ? (
               <>
                 <AdminBlocRepliable titre="Comment ça marche">
-                  <div className="flex flex-col gap-[var(--space-admin-3)] p-[var(--space-admin-5)] pt-0">
+                  <div className="flex flex-col gap-[var(--space-admin-3)]">
                     <p className="admin-muted">
                       Établir la facture d&apos;honoraires <strong>au nom et pour le compte</strong>{" "}
                       du formateur, sur mandat. La pièce porte SON SIRET, SON régime de TVA et la
@@ -528,14 +512,7 @@ export default async function ReleveDetailPage({ params, searchParams }: PagePro
               )}
 
               <h3 className="admin-h3">Désaccord non retenu</h3>
-              <AdminBlocRepliable titre="Message envoyé au formateur (F59)">
-                <blockquote className="admin-muted m-0 border-l-2 p-[var(--space-admin-5)] pt-0">
-                  <p className="admin-muted">Le formateur recevra ce message (F59) :</p>
-                  {f59.map((p) => (
-                    <p key={p}>{p}</p>
-                  ))}
-                </blockquote>
-              </AdminBlocRepliable>
+              <MessageFormateurNonRetenu paragraphes={f59} />
               <form
                 action={refuserDesaccordFormAction}
                 className="flex flex-col gap-[var(--space-admin-2)]"
@@ -702,7 +679,7 @@ export default async function ReleveDetailPage({ params, searchParams }: PagePro
         <AdminBloc teinte="gris" titre="Lignes du mois">
           <div className="flex flex-col gap-[var(--space-admin-4)]">
             <AdminBlocRepliable titre="Comment lire ces lignes">
-              <p className="admin-muted p-[var(--space-admin-5)] pt-0">
+              <p className="admin-muted">
                 Toutes les lignes du formateur sur la période. Seules celles marquées « facturée »
                 entrent dans le total.
               </p>

@@ -236,3 +236,19 @@ export function LignesDuMois({ lignes }: { lignes: readonly LigneReleve[] }): Re
     </div>
   );
 }
+
+/** Message envoyé au formateur (désaccord non retenu) : toujours visible, jamais replié. */
+export function MessageFormateurNonRetenu({
+  paragraphes,
+}: {
+  paragraphes: string[];
+}): React.ReactElement {
+  return (
+    <blockquote className="admin-muted m-0 border-l-2 pl-[var(--space-admin-4)]">
+      <p className="admin-muted">Le formateur recevra ce message (F59) :</p>
+      {paragraphes.map((p) => (
+        <p key={p}>{p}</p>
+      ))}
+    </blockquote>
+  );
+}
