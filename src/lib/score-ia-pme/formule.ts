@@ -37,9 +37,9 @@ export const BAREMES = {
 } as const satisfies Record<string, Record<string, number>>;
 
 /** Points selon le nombre d'usages (hors « none ») : 0 / 1 / 2 / 3 et plus. */
-const POINTS_USAGES = [0, 33, 67, 100] as const;
+export const POINTS_USAGES = [0, 33, 67, 100] as const;
 /** Points selon le nombre d'outils (hors « none ») : 0 / 1 / 2 et plus. */
-const POINTS_OUTILS = [0, 50, 100] as const;
+export const POINTS_OUTILS = [0, 50, 100] as const;
 
 export interface ReponsesScore {
   maturityLevel: string;

@@ -98,3 +98,21 @@ export function pageEstConsoleAdmin(pathname: string | null | undefined): boolea
   if (typeof document === "undefined") return false;
   return document.querySelector(".admin-layout-v2, .admin-layout") !== null;
 }
+
+/**
+ * Pages où AUCUNE balise de mesure de performance ne doit partir (Score IA TPE-PME, `/diagnostic`).
+ *
+ * Le Score promet que « rien ne part » tant que la personne n'a pas coché la case de
+ * l'Observatoire et pressé le bouton. Or `WebVitals` poste à chaque page un lot de mesures vers
+ * `/api/vitals`, avec l'URL complète et, pour l'INP, le SÉLECTEUR de l'élément touché
+ * (position de la ligne cliquée dans la liste de réponses) : une trace qui ressemble à une réponse
+ * et que le test T-3 (« aucune requête POST avant la case ») refuse. Ce n'est pas un secret d'URL
+ * (Plausible, sans cookie ni propriété, reste actif ici) : c'est une garde propre à la mesure de
+ * performance côté serveur. Lighthouse post-déploiement continue de mesurer la page.
+ */
+const ROUTES_SANS_MESURE_PERF = /^\/(?:[a-z]{2}\/)?diagnostic(?:\/|$)/i;
+
+export function urlSansMesureDePerformance(pathname: string | null | undefined): boolean {
+  if (typeof pathname !== "string" || pathname.length === 0) return false;
+  return ROUTES_SANS_MESURE_PERF.test(pathname);
+}
