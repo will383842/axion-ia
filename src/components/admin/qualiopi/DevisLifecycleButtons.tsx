@@ -69,6 +69,11 @@ export interface DevisLifecycleButtonsProps {
    * (`acceptDevisAction` refuserait de toute façon).
    */
   repriseParRelance?: boolean;
+  /**
+   * Devis remis en main propre : aucun e-mail n'est parti et aucun lien n'existe. Le renvoi par
+   * e-mail et son avertissement sont masqués (le serveur le refuse aussi).
+   */
+  remisEnMainPropre?: boolean;
 }
 
 type MotifRemise = "sans_email" | "adresse_bloquee" | "remis_en_rendez_vous";
@@ -96,6 +101,7 @@ export function DevisLifecycleButtons({
   signeParClient = false,
   signeDesDeuxParties = false,
   repriseParRelance = false,
+  remisEnMainPropre = false,
 }: DevisLifecycleButtonsProps): React.ReactElement {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
@@ -403,27 +409,35 @@ export function DevisLifecycleButtons({
           </>
         )}
 
-        {statut === "envoye" && !signeParClient && !signeDesDeuxParties && !repriseParRelance && (
-          <button
-            type="button"
-            onClick={handleResend}
-            disabled={isPending}
-            className="admin-button"
-            aria-label="Renvoyer le devis au client par email (PDF joint)"
-          >
-            {isPending ? "…" : "Renvoyer par email"}
-          </button>
-        )}
-        {statut === "envoye" && !signeParClient && !signeDesDeuxParties && !repriseParRelance && (
-          <p
-            data-testid="avertissement-renvoi-lien"
-            className="basis-full text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]"
-          >
-            Renvoyer par email désactive dès maintenant l&apos;ancien lien de signature, avant
-            l&apos;approbation de l&apos;e-mail en corbeille : s&apos;il est refusé ou supprimé, le
-            client n&apos;a plus de lien valable.
-          </p>
-        )}
+        {statut === "envoye" &&
+          !signeParClient &&
+          !signeDesDeuxParties &&
+          !repriseParRelance &&
+          !remisEnMainPropre && (
+            <button
+              type="button"
+              onClick={handleResend}
+              disabled={isPending}
+              className="admin-button"
+              aria-label="Renvoyer le devis au client par email (PDF joint)"
+            >
+              {isPending ? "…" : "Renvoyer par email"}
+            </button>
+          )}
+        {statut === "envoye" &&
+          !signeParClient &&
+          !signeDesDeuxParties &&
+          !repriseParRelance &&
+          !remisEnMainPropre && (
+            <p
+              data-testid="avertissement-renvoi-lien"
+              className="basis-full text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]"
+            >
+              Renvoyer par email désactive dès maintenant l&apos;ancien lien de signature, avant
+              l&apos;approbation de l&apos;e-mail en corbeille : s&apos;il est refusé ou supprimé,
+              le client n&apos;a plus de lien valable.
+            </p>
+          )}
 
         {statut === "accepte" && (
           <button

@@ -22,6 +22,21 @@ describe("PastilleHorodatage", () => {
   });
 });
 
+describe("PastilleHorodatage : tons échec / illisible (I1)", () => {
+  it("echec → ton destructive", () => {
+    render(<PastilleHorodatage etat={{ genre: "echec", libelle: "Horodatage : en échec" }} />);
+    expect(screen.getByText("Horodatage : en échec").closest("[class]")?.className).toContain(
+      "destructive",
+    );
+  });
+  it("illisible → ton warning", () => {
+    render(<PastilleHorodatage etat={{ genre: "illisible", libelle: "Horodatage : illisible" }} />);
+    expect(screen.getByText("Horodatage : illisible").closest("[class]")?.className).toContain(
+      "warning",
+    );
+  });
+});
+
 describe("RelanceDevisDepuisLaPage", () => {
   it("formulaire vers l'action existante, avec le retour sur la page du devis", () => {
     const { container } = render(

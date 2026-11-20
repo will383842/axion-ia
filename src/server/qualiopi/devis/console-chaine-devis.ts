@@ -23,10 +23,12 @@ export interface LigneHorodatage {
   readonly statut: string;
   readonly horodateAt: Date | null;
   readonly creeAt: Date;
+  /** Seule sa PRÉSENCE compte : le texte n'est jamais affiché. */
+  readonly derniereErreur?: string | null;
 }
 
 export interface EtatHorodatageDevis {
-  readonly genre: "obtenu" | "attente" | "non_configure";
+  readonly genre: "obtenu" | "attente" | "echec" | "illisible" | "non_configure";
   readonly libelle: string;
 }
 
@@ -35,16 +37,28 @@ function jour(d: Date): string {
 }
 
 /**
- * Une ligne en attente prime (la plus ancienne) ; sinon le jeton obtenu le plus récent ;
- * aucune ligne (ou horodatage jamais mis en place) : « non configuré ».
+ * `null` (lecture impossible) : illisible. Une ligne en attente avec une erreur : échec ; en
+ * attente sans erreur : attente (la plus ancienne) ; sinon le jeton obtenu le plus récent ;
+ * des lignes inexploitables : illisible ; aucune ligne : « non configuré ».
  */
 export function etatHorodatageDevis(
-  lignes: readonly LigneHorodatage[],
+  lignes: readonly LigneHorodatage[] | null,
   _maintenant: Date = new Date(),
 ): EtatHorodatageDevis {
-  const attente = lignes
+  if (lignes === null) {
+    return { genre: "illisible", libelle: "Horodatage : lecture impossible, à vérifier" };
+  }
+  const enAttente = lignes
     .filter((l) => l.statut === "en_attente")
-    .sort((a, b) => a.creeAt.getTime() - b.creeAt.getTime())[0];
+    .sort((a, b) => a.creeAt.getTime() - b.creeAt.getTime());
+  const enEchec = enAttente.find((l) => (l.derniereErreur ?? "") !== "");
+  if (enEchec !== undefined) {
+    return {
+      genre: "echec",
+      libelle: `Horodatage : en échec depuis le ${jour(enAttente[0]!.creeAt)}, nouvel essai automatique`,
+    };
+  }
+  const attente = enAttente[0];
   if (attente !== undefined) {
     return {
       genre: "attente",
@@ -59,6 +73,9 @@ export function etatHorodatageDevis(
       genre: "obtenu",
       libelle: `Horodatage : obtenu le ${jour(obtenu.horodateAt as Date)}`,
     };
+  }
+  if (lignes.length > 0) {
+    return { genre: "illisible", libelle: "Horodatage : illisible, à vérifier" };
   }
   return { genre: "non_configure", libelle: "Horodatage : non configuré" };
 }

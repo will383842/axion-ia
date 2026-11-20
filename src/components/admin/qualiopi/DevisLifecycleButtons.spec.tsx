@@ -78,3 +78,27 @@ describe("DevisLifecycleButtons — remis en main propre", () => {
     expect(src).toContain("useConfirmation");
   });
 });
+
+describe("DevisLifecycleButtons — remisEnMainPropre (I1)", () => {
+  it("masque le renvoi et l'avertissement, garde accepter, refuser et corriger", () => {
+    render(
+      <DevisLifecycleButtons
+        devisId="d"
+        statut="envoye"
+        estClassique
+        numero="N1"
+        remisEnMainPropre
+      />,
+    );
+    expect(screen.queryByText("Renvoyer par email")).toBeNull();
+    expect(screen.queryByTestId("avertissement-renvoi-lien")).toBeNull();
+    expect(screen.queryByText("Marquer accepté")).not.toBeNull();
+    expect(screen.queryByText("Marquer refusé")).not.toBeNull();
+    expect(screen.queryByText(/Corriger et renvoyer/)).not.toBeNull();
+  });
+
+  it("par défaut le renvoi reste proposé", () => {
+    render(<DevisLifecycleButtons devisId="d" statut="envoye" estClassique numero="N1" />);
+    expect(screen.queryByText("Renvoyer par email")).not.toBeNull();
+  });
+});
