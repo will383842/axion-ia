@@ -251,12 +251,17 @@ function EtapeAvecMontants({
   payloadDe: (etat: ContexteEtape["etat"]) => PayloadAssistantV1;
   rendre: (ctx: ContexteEtape) => ReactNode;
 }) {
-  const [montants, setMontants] = useState<MontantsPhases | undefined>(undefined);
+  // Les montants portent l'état pour lequel ils ont été lus : jamais d'anciens montants affichés
+  // (état changé, ou étape 3 quittée puis retrouvée), sans écrire d'état dans l'effet.
+  const { etape, etat } = ctx;
+  const [lus, setLus] = useState<{ pour: unknown; montants: MontantsPhases } | undefined>(
+    undefined,
+  );
+  const montants = lus && lus.pour === etat ? lus.montants : undefined;
   const payloadRef = useRef(payloadDe);
   useEffect(() => {
     payloadRef.current = payloadDe;
   });
-  const { etape, etat } = ctx;
   useEffect(() => {
     if (etape !== 3) return;
     let actif = true;
@@ -264,16 +269,16 @@ function EtapeAvecMontants({
       apercuAssistantAction(payloadRef.current(etat)).then(
         (r) => {
           if (!actif) return;
-          if ("error" in r || r.data.erreurs.length > 0) return setMontants(undefined);
+          if ("error" in r || r.data.erreurs.length > 0) return setLus(undefined);
           const a = r.data;
-          if (a.classique) return setMontants({ A: a.classique.phasesCents });
+          if (a.classique) return setLus({ pour: etat, montants: { A: a.classique.phasesCents } });
           const m: MontantsPhases = {};
           for (const f of a.formules?.formules ?? [])
             m[f.formule === "achat" ? "A" : "B"] = f.phases.map((p) => p.montantHtCents);
-          setMontants(m);
+          setLus({ pour: etat, montants: m });
         },
         () => {
-          if (actif) setMontants(undefined);
+          if (actif) setLus(undefined);
         },
       );
     }, DELAI_MONTANTS_MS);
@@ -434,6 +439,7 @@ export function AssistantDevisBranche(props: PropsAssistantDevisBranche) {
         phasesPrixUnique: ctx.etat.achat.phases.map((p) => ({
           libelle: p.libelle,
           pourcentage: Number(p.pourcentage.replace(",", ".")) || 0,
+          declencheur: p.declencheur,
         })),
       });
       return v.ok ? { data: v.prepare } : { error: v.erreur };

@@ -15,7 +15,10 @@
  *   - ne pas rejouer `validerEtape(4)` → « automatisation neuve » et « total 0 € » rougissent ;
  *   - appeler `sendDevisAction` avant la synchronisation → « ordre » rougit.
  */
+import { createHash } from "node:crypto";
 import { describe, it, expect, vi, beforeEach } from "vitest";
+
+const sha = (t: string) => createHash("sha256").update(t.trim(), "utf8").digest("hex");
 
 type Ligne = Record<string, unknown>;
 
@@ -573,7 +576,41 @@ describe("numerotation — déjà lié : mise à jour, jamais un 2e numéro", ()
     expect(m.row).toMatchObject({ statut: "lie_au_devis", verrouDepuis: null });
   });
 
-  it("classique : une colonne produite par l'assistant (ou vide) est remplacée", async () => {
+  it("classique : une colonne produite par l'assistant (empreinte identique) est remplacée", async () => {
+    const texte = "Échéancier de paiement\n1. Solde";
+    const p = classique();
+    p.sync = { devisId: DEVIS, devisMajLe: MAJ0.toISOString(), conditionsSha256: sha(texte) };
+    poser(p, { devisId: DEVIS, statut: "lie_au_devis" });
+    m.devisFindUnique.mockResolvedValue(
+      devisBrouillon({ updatedAt: MAJ0, conditionsParticulieres: texte }),
+    );
+    await num();
+    expect(m.modifierClassique).toHaveBeenCalledTimes(1);
+    expect(m.modifierClassique.mock.calls[0]![0].input.conditionsParticulieres).toContain(
+      "Échéancier de paiement",
+    );
+  });
+
+  it("classique : une clause ajoutée sous l'échéancier est refusée, sans écriture", async () => {
+    const texte = "Échéancier de paiement\n1. Solde";
+    const p = classique();
+    p.sync = { devisId: DEVIS, devisMajLe: MAJ0.toISOString(), conditionsSha256: sha(texte) };
+    poser(p, { devisId: DEVIS, statut: "lie_au_devis" });
+    m.devisFindUnique.mockResolvedValue(
+      devisBrouillon({
+        updatedAt: MAJ0,
+        conditionsParticulieres: `${texte}\n\nClause négociée.`,
+      }),
+    );
+    const r = await num();
+    expect(r).toMatchObject({
+      error: expect.stringContaining("Les conditions particulières ont été modifiées à la main"),
+    });
+    expect(m.modifierClassique).not.toHaveBeenCalled();
+    expect(m.creerClassique).not.toHaveBeenCalled();
+  });
+
+  it("classique : un texte « Échéancier… » sans empreinte gardée est refusé aussi", async () => {
     lier(classique());
     m.devisFindUnique.mockResolvedValue(
       devisBrouillon({
@@ -581,11 +618,9 @@ describe("numerotation — déjà lié : mise à jour, jamais un 2e numéro", ()
         conditionsParticulieres: "Échéancier de paiement\n1. Solde",
       }),
     );
-    await num();
-    expect(m.modifierClassique).toHaveBeenCalledTimes(1);
-    expect(m.modifierClassique.mock.calls[0]![0].input.conditionsParticulieres).toContain(
-      "Échéancier de paiement",
-    );
+    const r = await num();
+    expect("error" in r).toBe(true);
+    expect(m.modifierClassique).not.toHaveBeenCalled();
   });
 
   it("formules : modifierDevisBrouillonAction avec l'offre rejouée et sync.devisMajLe", async () => {

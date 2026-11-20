@@ -9,6 +9,11 @@
  * Montants : `echeancierPhases` (arrondi inférieur, dernier versement = reste) appliqué au
  * total TTC, donc la somme des versements égale exactement le total du devis.
  */
+import {
+  CONDITIONS_PARTICULIERES_LIGNES_MAX,
+  CONDITIONS_PARTICULIERES_MAX,
+  nombreDeLignes,
+} from "@/server/qualiopi/devis/conditions-particulieres";
 import { formatEurosFromCents } from "@/server/qualiopi/documents/base-layout";
 import { echeancierPhases } from "@/server/qualiopi/devis/offre-calculs";
 import { DECLENCHEURS } from "@/server/qualiopi/devis/vue-formules";
@@ -62,6 +67,9 @@ export function texteConditionsPrixUnique(
     [],
   );
   const phasesCents = paliers.map((x) => x.montantHtCents);
+  // Un versement non final à 0,00 € (ex. 1 % d'un total < 1 €) n'est pas un versement.
+  if (phasesCents.slice(0, -1).some((c) => c <= 0))
+    return erreur("Paiement : un versement ne peut pas être de 0,00 € (revoyez les pourcentages).");
   const suffixe = assujetti ? " TTC" : "";
 
   const lignes = phases.map((ph, i) => {
@@ -87,5 +95,102 @@ export function texteConditionsPrixUnique(
     );
 
   paragraphes.push(TEXTE_PLAFOND_RESPONSABILITE);
-  return { texte: paragraphes.join("\n\n"), phasesCents };
+  const texte = paragraphes.join("\n\n");
+  if (
+    texte.length > CONDITIONS_PARTICULIERES_MAX ||
+    nombreDeLignes(texte) > CONDITIONS_PARTICULIERES_LIGNES_MAX
+  ) {
+    // Champ fautif : la saisie libre la plus longue (délais ou garantie).
+    const tDelais = (nonVide(d["texte"]) ?? "").length + (fourchette ?? "").length;
+    const tGarantie = (nonVide(p.nonImprime["phraseGarantie"]) ?? "").length;
+    return {
+      erreurs: [
+        {
+          champ: tGarantie > tDelais ? "nonImprime.phraseGarantie" : "nonImprime.delais",
+          message:
+            "Les textes de délais et de garantie sont trop longs pour le devis (4 000 caractères et 80 lignes au plus, échéancier compris).",
+        },
+      ],
+    };
+  }
+  return { texte, phasesCents };
+}
+
+// ── Échéancier relu et recalculé sur un texte déjà écrit ─────────────────────────────
+
+/** Une ligne du format exact produit plus haut : « 1. Acompte, à la signature : 30 %, soit 360,00 € TTC ». */
+const LIGNE =
+  /^(\d{1,2}\. .+ : )(\d{1,3}) %, soit (\d[\d\s\u00a0\u202f]*,\d{2}[\s\u00a0\u202f]€)( TTC)?$/;
+
+interface LigneLue {
+  prefixe: string;
+  pct: number;
+  montantCents: number;
+}
+
+/** Relit le premier paragraphe ; `null` si le texte n'est pas, ou plus, au format du module. */
+function lireEcheancier(texte: string): { lignes: LigneLue[]; reste: string } | null {
+  if (!texte.startsWith(`${TITRE_ECHEANCIER}\n`)) return null;
+  const fin = texte.indexOf("\n\n");
+  const premier = fin === -1 ? texte : texte.slice(0, fin);
+  const reste = fin === -1 ? "" : texte.slice(fin);
+  const brutes = premier.split("\n").slice(1);
+  if (brutes.length === 0) return null;
+  const lignes: LigneLue[] = [];
+  for (let i = 0; i < brutes.length; i++) {
+    const m = LIGNE.exec(brutes[i]!);
+    if (!m || !m[1]!.startsWith(`${i + 1}. `)) return null;
+    lignes.push({
+      prefixe: m[1]!,
+      pct: Number(m[2]),
+      montantCents: Number(m[3]!.replace(/\D/g, "")),
+    });
+  }
+  if (lignes.some((l) => l.pct < 1 || l.pct > 100)) return null;
+  if (lignes.reduce((s, l) => s + l.pct, 0) !== 100) return null;
+  return { lignes, reste };
+}
+
+export const MSG_ECHEANCIER_ILLISIBLE =
+  "L'échéancier de paiement ne correspond plus au total : corrigez les montants des versements dans les conditions particulières.";
+
+/**
+ * Recalcule les montants du premier paragraphe (échéancier) sur le total TTC courant ; le reste du
+ * texte est gardé tel quel. Erreur claire si le paragraphe a été retouché au point d'être illisible.
+ */
+export function recalculerEcheancier(
+  texte: string,
+  totalTtcCents: number,
+  regime: RegimeTva,
+): { texte: string } | { erreur: string } {
+  const lu = lireEcheancier(texte);
+  if (!lu) return { erreur: MSG_ECHEANCIER_ILLISIBLE };
+  const paliers = echeancierPhases(
+    totalTtcCents,
+    lu.lignes.map((l, i) => ({
+      rang: i + 1,
+      libelle: "",
+      pourcentage: l.pct,
+      declencheur: "signature",
+    })),
+    [],
+  );
+  if (paliers.slice(0, -1).some((x) => x.montantHtCents <= 0))
+    return { erreur: MSG_ECHEANCIER_ILLISIBLE };
+  const suffixe = regime === "assujetti" ? " TTC" : "";
+  const lignes = lu.lignes.map(
+    (l, i) =>
+      `${l.prefixe}${l.pct} %, soit ${formatEurosFromCents(paliers[i]!.montantHtCents)}${suffixe}`,
+  );
+  return { texte: `${TITRE_ECHEANCIER}\n${lignes.join("\n")}${lu.reste}` };
+}
+
+/** Vrai si la somme des versements imprimés égale le total (la base imprimée est celle du régime). */
+export function controlerEcheancier(
+  texte: string,
+  totalTtcCents: number,
+  _regime: RegimeTva,
+): boolean {
+  const lu = lireEcheancier(texte);
+  return !!lu && lu.lignes.reduce((s, l) => s + l.montantCents, 0) === totalTtcCents;
 }

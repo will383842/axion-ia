@@ -248,6 +248,7 @@ vi.mock("@/lib/prisma", () => ({
 }));
 
 import { sendDevisAction } from "../devis";
+import { donneesPdfDevis } from "@/server/qualiopi/documents/donnees-pdf-devis";
 import { approuverEmailAction, refuserEmailAction } from "../email-outbox";
 
 const devisBrouillon = () => ({
@@ -463,5 +464,42 @@ describe("mode auto : comportement inchangé", () => {
       "JETON-SECRET",
     );
     expect(h.vivants.size).toBe(0);
+  });
+});
+
+describe("échéancier imprimé : l'envoi refuse un texte qui ne correspond plus au total", () => {
+  const TEXTE_1000 =
+    "Échéancier de paiement\n1. Acompte, à la signature : 30 %, soit 360,00 € TTC\n2. Étape, à l'avancement : 30 %, soit 360,00 € TTC\n3. Solde, à la livraison : 40 %, soit 480,00 € TTC\n\nDélais :\nX.";
+  const donnees = (htCents: number) => ({
+    identite: {},
+    formules: undefined,
+    lignes: [{ designation: "P", quantite: 1, prixUnitaireHtCents: htCents }],
+    conditionsParticulieres: TEXTE_1000,
+    regimeTva: "assujetti",
+    tauxTvaStandardPercent: 20,
+  });
+
+  it("somme des versements ≠ total TTC : refus avant PDF, jeton et e-mail", async () => {
+    h.devis.v = { ...devisBrouillon(), conditionsParticulieres: TEXTE_1000 };
+    vi.mocked(donneesPdfDevis).mockReturnValueOnce(donnees(150000) as never);
+    const r = await sendDevisAction(ID);
+    expect("error" in r).toBe(true);
+    expect((r as { error: string }).error).toMatch(/échéancier/i);
+    expect(h.nbJetons.v).toBe(0);
+    expect(h.appelsEnqueue).toHaveLength(0);
+    expect(lignes()).toHaveLength(0);
+  });
+
+  it("somme = total : l'envoi passe", async () => {
+    h.devis.v = { ...devisBrouillon(), conditionsParticulieres: TEXTE_1000 };
+    vi.mocked(donneesPdfDevis).mockReturnValueOnce(donnees(100000) as never);
+    const r = await sendDevisAction(ID);
+    expect("data" in r).toBe(true);
+  });
+
+  it("devis sans échéancier : envoi inchangé", async () => {
+    h.devis.v = { ...devisBrouillon(), conditionsParticulieres: "Clause libre." };
+    const r = await sendDevisAction(ID);
+    expect("data" in r).toBe(true);
   });
 });

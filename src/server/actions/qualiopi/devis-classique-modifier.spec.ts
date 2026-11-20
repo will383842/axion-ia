@@ -87,6 +87,47 @@ beforeEach(() => {
   m.clientFindUnique.mockResolvedValue({ idcc: null });
 });
 
+describe("modifierDevisClassiqueBrouillonAction : l'échéancier suit le total", () => {
+  const TEXTE_1000 =
+    "Échéancier de paiement\n1. Acompte, à la signature : 30 %, soit 360,00 € TTC\n2. Étape, à l'avancement : 30 %, soit 360,00 € TTC\n3. Solde, à la livraison : 40 %, soit 480,00 € TTC\n\nDélais :\nX.";
+  const ligne1500 = [{ designation: "P", quantite: 1, prixUnitaireHtCents: 150000 }];
+  const appeler = (conditionsParticulieres: string) =>
+    modifierDevisClassiqueBrouillonAction({
+      id: DEVIS,
+      attenduMajLe: MAJ,
+      input: { clientId: CLIENT, lignes: ligne1500, conditionsParticulieres },
+    });
+  beforeEach(() => {
+    m.config.mockImplementation(async (k: string) =>
+      k === "taux_tva_standard_percent" ? 20 : "assujetti",
+    );
+  });
+
+  it("1 000 → 1 500 € HT : 540 / 540 / 720 € TTC écrits, clauses suivantes intactes", async () => {
+    const r = await appeler(TEXTE_1000);
+    expect("data" in r).toBe(true);
+    const texte = m.devisUpdateMany.mock.calls[0]?.[0].data.conditionsParticulieres as string;
+    expect(texte.match(/540,00\s€ TTC/g)).toHaveLength(2);
+    expect(texte).toMatch(/720,00\s€ TTC/);
+    expect(texte).not.toMatch(/360,00|480,00/);
+    expect(texte.endsWith("\n\nDélais :\nX.")).toBe(true);
+  });
+
+  it("échéancier retouché, illisible : refus clair, aucune écriture", async () => {
+    const r = await appeler(TEXTE_1000.replace("2. Étape", "Deuxième versement"));
+    expect(r).toEqual({
+      error:
+        "L'échéancier de paiement ne correspond plus au total : corrigez les montants des versements dans les conditions particulières.",
+    });
+    expect(m.devisUpdateMany).not.toHaveBeenCalled();
+  });
+
+  it("texte sans échéancier : écrit tel quel", async () => {
+    await appeler("Clause libre.");
+    expect(m.devisUpdateMany.mock.calls[0]?.[0].data.conditionsParticulieres).toBe("Clause libre.");
+  });
+});
+
 describe("modifierDevisClassiqueBrouillonAction", () => {
   it("réécrit lignes et total (Σ arrondi par ligne), jamais le statut", async () => {
     m.devisFindUnique

@@ -40,8 +40,12 @@ const enBuild = () => process.env["DATABASE_URL"]?.includes("stub.invalid") === 
 const uuid = z.string().uuid();
 
 /** `sync` tel que le SERVEUR le connaît : lien du devis (colonne) + sa dernière mise à jour. */
-function syncServeur(devisId: string | null, devisMajLe: string | null) {
-  return { devisId, devisMajLe };
+function syncServeur(
+  devisId: string | null,
+  devisMajLe: string | null,
+  conditionsSha256?: string | null,
+) {
+  return { devisId, devisMajLe, ...(conditionsSha256 ? { conditionsSha256 } : {}) };
 }
 
 /** Vérifie en base le client et le brouillon de vente du payload ; retire ce qui n'est pas valide. */
@@ -145,10 +149,11 @@ export async function sauverBrouillonAssistantAction(i: {
   // `sync` : le lien vient de la colonne, la date de la dernière synchronisation de la base.
   const ancien = lirePayload(actuel.payload);
   const devisMajLe = ancien.ok && actuel.devisId ? ancien.payload.sync.devisMajLe : null;
+  const empreinte = ancien.ok && actuel.devisId ? ancien.payload.sync.conditionsSha256 : null;
   const payload: PayloadAssistantV1 = {
     ...refs.payload,
     etape,
-    sync: syncServeur(actuel.devisId, devisMajLe),
+    sync: syncServeur(actuel.devisId, devisMajLe, empreinte),
   };
 
   const { count } = await prisma.devisAssistantBrouillon.updateMany({
@@ -214,7 +219,14 @@ export async function reprendreBrouillonAssistantAction(id: string): Promise<
   return {
     data: {
       // Le lien du devis est celui de la colonne, pas celui que le texte du brouillon prétend.
-      payload: { ...lu.payload, sync: syncServeur(row.devisId, lu.payload.sync.devisMajLe) },
+      payload: {
+        ...lu.payload,
+        sync: syncServeur(
+          row.devisId,
+          lu.payload.sync.devisMajLe,
+          lu.payload.sync.conditionsSha256,
+        ),
+      },
       revision: row.revision,
       etape,
       statut: row.statut as StatutBrouillonAssistant,

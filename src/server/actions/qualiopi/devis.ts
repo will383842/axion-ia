@@ -28,6 +28,12 @@ import {
   requireHabilitation,
   logQualiopiActivity,
 } from "@/server/actions/qualiopi/_guards";
+import { computeTotauxFacture, TAUX_TVA_STANDARD } from "@/server/qualiopi/legal/tva";
+import {
+  controlerEcheancier,
+  MSG_ECHEANCIER_ILLISIBLE,
+  TITRE_ECHEANCIER,
+} from "@/server/qualiopi/devis/assistant/conditions-prix-unique";
 import { nextNumero } from "@/server/qualiopi/numbering/allocate";
 import { withNumberRetry } from "@/server/qualiopi/numbering/retry";
 import {
@@ -483,6 +489,21 @@ export async function sendDevisAction(id: string): Promise<
           }
           console.warn("[sendDevisAction] données du PDF devis non construites", err);
           throw new EnvoiRefuse(MSG_PDF_RATE, "pdf_rate");
+        }
+        // Échéancier de l'assistant : jamais un PDF dont les versements ≠ le total TTC imprimé.
+        if (
+          data.conditionsParticulieres?.startsWith(TITRE_ECHEANCIER) &&
+          !controlerEcheancier(
+            data.conditionsParticulieres,
+            computeTotauxFacture(
+              data.lignes,
+              data.regimeTva,
+              data.tauxTvaStandardPercent ?? TAUX_TVA_STANDARD,
+            ).totalTtcCents,
+            data.regimeTva,
+          )
+        ) {
+          throw new EnvoiRefuse(MSG_ECHEANCIER_ILLISIBLE, "echeancier_incoherent");
         }
         if (aFormules) {
           // Interrupteur allumé et offre présente : le PDF DOIT porter les formules.

@@ -8,7 +8,11 @@ import {
 } from "@/server/qualiopi/devis/conditions-particulieres";
 import { payloadVide, type PayloadAssistantV1 } from "../payload";
 import { TEXTE_DELAIS, TEXTE_GARANTIE, TEXTE_PLAFOND_RESPONSABILITE } from "../textes-rubriques";
-import { texteConditionsPrixUnique } from "../conditions-prix-unique";
+import {
+  controlerEcheancier,
+  recalculerEcheancier,
+  texteConditionsPrixUnique,
+} from "../conditions-prix-unique";
 
 function payload(
   phases: Array<[string, string, "signature" | "avancement" | "livraison"]>,
@@ -149,5 +153,94 @@ describe("texteConditionsPrixUnique", () => {
     if ("erreurs" in r) throw new Error("erreurs");
     expect(r.phasesCents).toEqual([120000]);
     expect(r.texte.match(/^\d+\. /gm)).toHaveLength(1);
+  });
+});
+
+describe("recalculerEcheancier / controlerEcheancier (l'échéancier suit le total)", () => {
+  const texte1000 = () => {
+    const p = payload(trio());
+    p.formules.garantieJours = "90";
+    const r = texteConditionsPrixUnique(p, totaux(100000), "assujetti");
+    if ("erreurs" in r) throw new Error("erreurs");
+    return r.texte;
+  };
+
+  it("1 000 → 1 500 € HT : 540,00 / 540,00 / 720,00 € TTC, clauses suivantes intactes", () => {
+    const avant = texte1000();
+    const r = recalculerEcheancier(avant, totaux(150000).totalTtcCents, "assujetti");
+    if ("erreur" in r) throw new Error(r.erreur);
+    expect(r.texte.match(/540,00\s€ TTC/g)).toHaveLength(2);
+    expect(r.texte).toMatch(/720,00\s€ TTC/);
+    expect(r.texte).not.toMatch(/360,00|480,00/);
+    expect(r.texte.slice(r.texte.indexOf("\n\n"))).toBe(avant.slice(avant.indexOf("\n\n")));
+    expect(controlerEcheancier(r.texte, 180000, "assujetti")).toBe(true);
+  });
+
+  it("controlerEcheancier : faux si le total a bougé, vrai sinon", () => {
+    const t = texte1000();
+    expect(controlerEcheancier(t, 120000, "assujetti")).toBe(true);
+    expect(controlerEcheancier(t, 180000, "assujetti")).toBe(false);
+  });
+
+  it("le taux de TVA qui change est repris (1 000 € HT à 10 %)", () => {
+    const t = computeTotauxFacture([{ quantite: 1, prixUnitaireHtCents: 100000 }], "assujetti", 10);
+    const r = recalculerEcheancier(texte1000(), t.totalTtcCents, "assujetti");
+    if ("erreur" in r) throw new Error(r.erreur);
+    expect(controlerEcheancier(r.texte, t.totalTtcCents, "assujetti")).toBe(true);
+    expect(r.texte).toMatch(/330,00\s€ TTC/);
+  });
+
+  it("texte retouché à la main (ligne illisible) : erreur claire, pas de texte", () => {
+    const t = texte1000().replace("2. Étape intermédiaire", "Deuxième versement");
+    const r = recalculerEcheancier(t, 180000, "assujetti");
+    expect("erreur" in r).toBe(true);
+    expect(controlerEcheancier(t, 120000, "assujetti")).toBe(false);
+  });
+
+  it("texte qui ne commence pas par l'échéancier : erreur", () => {
+    expect("erreur" in recalculerEcheancier("Clause libre.", 1000, "assujetti")).toBe(true);
+  });
+});
+
+describe("garde-fous de saisie", () => {
+  it("un versement non final à 0,00 € est refusé sur formules.achat.phases", () => {
+    const r = texteConditionsPrixUnique(
+      payload(
+        [
+          ["Acompte", "1", "signature"],
+          ["Solde", "99", "livraison"],
+        ],
+        "0,05",
+      ),
+      totaux(5),
+      "assujetti",
+    );
+    expect("erreurs" in r).toBe(true);
+    if ("erreurs" in r) expect(r.erreurs[0]!.champ).toBe("formules.achat.phases");
+  });
+
+  it("texte de délais trop long : message explicite sur le champ concerné", () => {
+    const p = payload(trio());
+    p.nonImprime["delais"] = { texte: "x ".repeat(2500) };
+    const r = texteConditionsPrixUnique(p, totaux(100000), "assujetti");
+    expect("erreurs" in r).toBe(true);
+    if ("erreurs" in r) {
+      expect(r.erreurs[0]!.message).toContain(
+        "Les textes de délais et de garantie sont trop longs pour le devis",
+      );
+      expect(r.erreurs[0]!.champ).toBe("nonImprime.delais");
+    }
+  });
+
+  it("plus de 80 lignes : même message, sur la garantie", () => {
+    const p = payload(trio());
+    p.formules.garantieJours = "90";
+    p.nonImprime["phraseGarantie"] = Array.from({ length: 90 }, (_, i) => `l${i}`).join("\n");
+    const r = texteConditionsPrixUnique(p, totaux(100000), "assujetti");
+    expect("erreurs" in r).toBe(true);
+    if ("erreurs" in r) {
+      expect(r.erreurs[0]!.message).toContain("trop longs");
+      expect(r.erreurs[0]!.champ).toBe("nonImprime.phraseGarantie");
+    }
   });
 });

@@ -159,6 +159,39 @@ describe("étape 3 : montants des phases relus au serveur", () => {
   });
 });
 
+describe("étapes 1 et 2 : aucun aperçu relu pour les montants", () => {
+  it.each([1, 2] as const)("rendu à l'étape %i : apercu n'est jamais appelé", async (etape) => {
+    vi.useFakeTimers({ shouldAdvanceTime: true });
+    try {
+      render(
+        <AssistantDevisBranche
+          payloadInitial={etatVersPayload(etatT4(), etape, CTX)}
+          brouillon={{ id: BROUILLON, revision: 5 }}
+          clients={[CLIENT]}
+          textesParDefaut={[]}
+          tauxStandard={20}
+          formulesActives
+          validiteParDefaut="2026-12-08"
+          versionCgv="v"
+          urlAssistant="/fr/adm/qualiopi/devis/new"
+          rendreEtape={({ etape: e, montantsPhases }) => (
+            <p data-testid="m">
+              {String(e)}:{JSON.stringify(montantsPhases ?? null)}
+            </p>
+          )}
+        />,
+      );
+      await act(async () => {
+        await vi.advanceTimersByTimeAsync(1000);
+      });
+      expect(A.apercu).not.toHaveBeenCalled();
+      expect(screen.getByTestId("m").textContent).toBe(`${etape}:null`);
+    } finally {
+      vi.useRealTimers();
+    }
+  });
+});
+
 describe("sauvegarde : la révision du serveur suit chaque sauvegarde (jeton opaque)", () => {
   it("chaque envoi porte la révision rendue par le précédent, avec un sauvegardeId neuf", async () => {
     monter();

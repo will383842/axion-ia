@@ -64,13 +64,38 @@ describe("versApercuPrepare : les centimes du serveur sont recopiés, rien n'est
       phasesPrixUnique: etatT4().achat.phases.map((p) => ({
         libelle: p.libelle,
         pourcentage: Number(p.pourcentage),
+        declencheur: p.declencheur,
       })),
     });
     const v = prepare.vue;
     expect(v.phases.map((p) => p.montantCents)).toEqual(apercu.classique!.phasesCents);
     expect(v.phases.length).toBeGreaterThan(0);
     expect(v.phases.every((p) => p.libelle.endsWith("(TTC)"))).toBe(true);
+    // Libellé aligné sur le PDF : « 1. Acompte, à la signature ».
+    expect(v.phases[0]!.libelle).toMatch(/^1\. .+, à la signature \(TTC\)$/);
     expect(v.phases.reduce((s, p) => s + p.montantCents, 0)).toBe(v.totalTtcCents);
+  });
+
+  it("prix unique hors assujetti : aucun « TTC » dans le libellé", () => {
+    const { apercu, prepare } = vue(etatT4(), {
+      ...CTX,
+      phasesPrixUnique: etatT4().achat.phases.map((p) => ({
+        libelle: p.libelle,
+        pourcentage: Number(p.pourcentage),
+        declencheur: p.declencheur,
+      })),
+    });
+    const hors = versApercuPrepare({ ...apercu, regimeTva: "franchise_293b" }, NUM, {
+      ...CTX,
+      phasesPrixUnique: etatT4().achat.phases.map((p) => ({
+        libelle: p.libelle,
+        pourcentage: Number(p.pourcentage),
+        declencheur: p.declencheur,
+      })),
+    });
+    expect(prepare.vue.phases.length).toBeGreaterThan(0);
+    if (!hors.ok) throw new Error(hors.erreur);
+    expect(hors.prepare.vue.phases.some((p) => /TTC/.test(p.libelle))).toBe(false);
   });
 
   it("T2 (B seule) : mise en service 190 000 HT, abonnement au tarif catalogue", () => {
