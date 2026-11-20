@@ -25,7 +25,6 @@ import { libelleTemplateEmail, estEmailQualiopiAutomatique } from "@/server/emai
 import { useConfirmation } from "@/components/admin/ui/useConfirmation";
 import { AdminBadge } from "@/components/admin/ui/AdminBadge";
 import { AdminBlocRepliable } from "@/components/admin/ui/AdminBlocRepliable";
-import { AdminEmptyState } from "@/components/admin/ui/AdminEmptyState";
 
 type ActionResult<T> = { data: T } | { error: string };
 
@@ -159,10 +158,15 @@ export function EmailAutomationSettings({
     <div className="flex flex-col gap-[var(--space-admin-4)]">
       {dialogue}
       {reglages.length === 0 ? (
-        <AdminEmptyState
-          variant="inline"
-          title="Aucune règle personnalisée : le comportement par défaut s'applique."
-        />
+        <p
+          role="status"
+          className="m-0 text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]"
+        >
+          <span className="font-semibold text-[color:var(--color-admin-fg)]">
+            Aucune règle personnalisée
+          </span>{" "}
+          <span>: le comportement par défaut s&apos;applique.</span>
+        </p>
       ) : (
         <div className="overflow-x-auto">
           <table className="w-full min-w-[40rem] border-collapse">
@@ -215,6 +219,15 @@ export function EmailAutomationSettings({
             </tbody>
           </table>
         </div>
+      )}
+
+      {erreur !== null && (
+        <p
+          role="alert"
+          className="m-0 text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-danger)]"
+        >
+          {erreur}
+        </p>
       )}
 
       <AdminBlocRepliable titre="Ajouter une règle" ouvertParDefaut={reglages.length === 0}>
@@ -286,20 +299,11 @@ export function EmailAutomationSettings({
               disabled={enCours}
               onChange={(e) => setMode(e.target.value as "auto" | "validation")}
             >
-              <option value="validation">Validation requise</option>
+              <option value="validation">Relecture requise</option>
               <option value="auto">Envoi automatique</option>
             </select>
           </div>
         </div>
-
-        {erreur !== null && (
-          <p
-            role="alert"
-            className="mb-[var(--space-admin-3)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-danger)]"
-          >
-            {erreur}
-          </p>
-        )}
 
         <div>
           <button

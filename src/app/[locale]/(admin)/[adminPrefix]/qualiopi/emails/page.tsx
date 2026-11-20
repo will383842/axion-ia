@@ -10,6 +10,7 @@
  * Server Component — auth + redirect, force-dynamic, noindex.
  */
 
+import { Fragment } from "react";
 import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 
@@ -20,7 +21,6 @@ import { AdminPageHeader } from "@/components/admin/ui/AdminPageHeader";
 import { AdminBadge } from "@/components/admin/ui/AdminBadge";
 import { AdminBloc } from "@/components/admin/ui/AdminBloc";
 import { AdminBlocRepliable } from "@/components/admin/ui/AdminBlocRepliable";
-import { AdminEmptyState } from "@/components/admin/ui/AdminEmptyState";
 import { EmailOutboxItem } from "@/components/admin/qualiopi/EmailOutboxItem";
 import { EmailAutomationSettings } from "@/components/admin/qualiopi/EmailAutomationSettings";
 import {
@@ -203,10 +203,11 @@ export default async function EmailsAValiderPage({
             Natures concernées :
           </p>
           <p className="my-[var(--space-admin-2)] flex flex-wrap gap-[var(--space-admin-2)]">
-            {naturesRetenues.map((t) => (
-              <AdminBadge key={t} tone="outline">
-                {libelleTemplateEmail(t)}
-              </AdminBadge>
+            {naturesRetenues.map((t, i) => (
+              <Fragment key={t}>
+                <AdminBadge tone="outline">{libelleTemplateEmail(t)}</AdminBadge>
+                <span className="sr-only">{i < naturesRetenues.length - 1 ? ", " : "."}</span>
+              </Fragment>
             ))}
           </p>
           <p className="m-0">
@@ -215,18 +216,18 @@ export default async function EmailsAValiderPage({
         </div>
       )}
 
-      <AdminBloc
-        teinte="ambre"
-        niveau={2}
-        titre={`À relire (${enAttente.length})`}
-        className="mb-[var(--space-admin-6)]"
-      >
+      <AdminBloc teinte="ambre" niveau={2} titre={`À relire (${enAttente.length})`}>
         {enAttente.length === 0 ? (
-          <AdminEmptyState
-            variant="card"
-            title="Aucun e-mail à relire"
-            description="Aucun email en attente. Les relances d'impayé, devis et factures apparaîtront ici avant leur envoi."
-          />
+          <p
+            role="status"
+            className="m-0 text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]"
+          >
+            <span className="font-semibold text-[color:var(--color-admin-fg)]">
+              Aucun e-mail à relire
+            </span>{" "}
+            Aucun email en attente. Les relances d&apos;impayé, devis et factures apparaîtront ici
+            avant leur envoi.
+          </p>
         ) : (
           <div className="flex flex-col gap-[var(--space-admin-4)]">
             {enAttente.map((e) => (
@@ -260,12 +261,7 @@ export default async function EmailsAValiderPage({
       </AdminBloc>
 
       {traitesRecents.length > 0 && (
-        <AdminBloc
-          teinte="gris"
-          niveau={2}
-          titre="Envoyés ou refusés récemment"
-          className="mb-[var(--space-admin-6)]"
-        >
+        <AdminBloc teinte="gris" niveau={2} titre="Envoyés ou refusés récemment">
           <div className="overflow-x-auto">
             <table className="w-full min-w-[40rem] border-collapse">
               <thead>

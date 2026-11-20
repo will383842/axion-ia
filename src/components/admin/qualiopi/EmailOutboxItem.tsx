@@ -120,7 +120,7 @@ export function EmailOutboxItem({
     <AdminCard as="article" className="flex flex-col gap-[var(--space-admin-3)]">
       <header className="flex flex-col gap-[var(--space-admin-2)]">
         <h3 className="m-0 text-[length:var(--text-admin-lg)] font-semibold text-[color:var(--color-admin-fg)]">
-          {sujetInitial}
+          {sujet}
         </h3>
         <p className="m-0 flex flex-wrap gap-[var(--space-admin-2)]">
           <AdminBadge tone="info">{libelleTemplateEmail(template)}</AdminBadge>
@@ -129,7 +129,7 @@ export function EmailOutboxItem({
           {nbPiecesJointes > 0 && (
             <AdminBadge tone="outline">
               {nbPiecesJointes} pièce{nbPiecesJointes > 1 ? "s" : ""} jointe
-              {nbPiecesJointes > 1 ? "s" : ""}
+              {nbPiecesJointes > 1 ? "s" : ""} — non modifiable{nbPiecesJointes > 1 ? "s" : ""}
             </AdminBadge>
           )}
         </p>

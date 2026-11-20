@@ -138,3 +138,83 @@ describe("garde de vocabulaire des fichiers refondus", () => {
     });
   }
 });
+
+describe("correctifs après relecture", () => {
+  const regle = {
+    id: "r1",
+    scope: "global" as const,
+    clientNom: null,
+    template: null,
+    mode: "validation" as const,
+  };
+
+  it("erreur de « Retirer » visible hors du bloc replié", async () => {
+    const { container } = render(
+      <EmailAutomationSettings
+        {...props}
+        reglages={[regle]}
+        supprimerAction={async () => ({ error: "Suppression impossible." })}
+      />,
+    );
+    fireEvent.click(screen.getByRole("button", { name: /^Retirer la règle/ }));
+    const alerte = await screen.findByRole("alert");
+    expect(alerte.textContent).toContain("Suppression impossible.");
+    expect(alerte.closest("details")).toBeNull();
+    expect(container.contains(alerte)).toBe(true);
+  });
+
+  it("pièces jointes : « — non modifiable(s) » avec accord", () => {
+    item();
+    expect(screen.getByText(/2 pièces jointes — non modifiables/)).toBeTruthy();
+  });
+
+  it("pièce jointe unique : singulier", () => {
+    render(
+      <EmailOutboxItem
+        id="e2"
+        template="relance-impaye"
+        destinataire="a@b.fr"
+        sujet="S"
+        clientNom={null}
+        creeLe="12/11/2026"
+        apercu={[]}
+        nbPiecesJointes={1}
+        accepteMessagePersonnalise={false}
+        approuverAction={ok}
+        refuserAction={async () => ({ data: { id: "e2" } })}
+      />,
+    );
+    expect(screen.getByText(/1 pièce jointe — non modifiable$/)).toBeTruthy();
+  });
+
+  it("libellé du mode unifié : « Relecture requise »", () => {
+    render(<EmailAutomationSettings {...props} reglages={[]} />);
+    expect(screen.getByRole("option", { name: "Relecture requise" })).toBeTruthy();
+    expect(screen.queryByRole("option", { name: "Validation requise" })).toBeNull();
+  });
+
+  it("le titre de la carte suit l'objet saisi", () => {
+    item();
+    fireEvent.change(screen.getByLabelText("Objet"), { target: { value: "Nouvel objet" } });
+    expect(screen.getByRole("heading", { level: 3 }).textContent).toBe("Nouvel objet");
+  });
+
+  it("état vide des règles : titre court + phrase en description", () => {
+    render(<EmailAutomationSettings {...props} reglages={[]} />);
+    expect(screen.queryByRole("heading", { level: 2 })).toBeNull();
+    expect(screen.getByText("Aucune règle personnalisée")).toBeTruthy();
+    expect(screen.getByText(/le comportement par défaut s'applique/)).toBeTruthy();
+  });
+
+  it("page : pas de mb-[…] sur AdminBloc, séparateurs sr-only dans le bandeau", () => {
+    const src = readFileSync(
+      "src/app/[locale]/(admin)/[adminPrefix]/qualiopi/emails/page.tsx",
+      "utf8",
+    );
+    expect(src).not.toMatch(/<AdminBloc(?!Repliable)[^>]*className="mb-/);
+    expect(src).not.toMatch(/titre=\{[^}]*\}\s*className="mb-/);
+    expect(src).toContain(
+      '<span className="sr-only">{i < naturesRetenues.length - 1 ? ", " : "."}</span>',
+    );
+  });
+});
