@@ -162,3 +162,44 @@ describe("robots.txt — découvrabilité", () => {
     expect(RESULTAT.sitemap).toBe("https://axion-ia.com/sitemap-index.xml");
   });
 });
+
+/**
+ * Lecture d'une règle robots.txt à la manière de Google (RFC 9309) : `*` = toute
+ * suite de caractères, `$` = fin, tout le reste littéral (dont `?`) ; la règle la
+ * plus longue l'emporte, `Allow` à égalité.
+ */
+function autorise(chemin: string): boolean {
+  const correspond = (motif: string): boolean => {
+    const ancre = motif.endsWith("$");
+    const corps = (ancre ? motif.slice(0, -1) : motif)
+      .split("*")
+      .map((m) => m.replace(/[.+?^${}()|[\]\\]/g, "\\$&"))
+      .join(".*");
+    return new RegExp(`^${corps}${ancre ? "$" : ""}`).test(chemin);
+  };
+  const meilleure = (motifs: string[]) =>
+    Math.max(-1, ...motifs.filter(correspond).map((m) => m.length));
+  return meilleure(permissions("*")) >= meilleure(interdictions("*"));
+}
+
+describe("robots.txt — piège à robots /appel (548 580 requêtes IA en 7 jours)", () => {
+  it("interdit les étapes de transaction et leurs créneaux à paramètres", () => {
+    for (const url of [
+      "/fr/appel/reserver",
+      "/fr/appel/reserver?debut=2026-11-21T09%3A00%3A00.000Z&rdv=diagnostic&depuis=hero",
+      "/fr/appel/reporter?t=jeton&debut=2026-11-21T09%3A00%3A00.000Z",
+      "/fr/appel/annuler?t=jeton",
+      "/fr/appel/confirme?rdv=diagnostic",
+      "/fr/appel?rdv=diagnostic&depuis=footer&utm_source=x",
+      "/fr/appel/formateur?depuis=f1",
+    ]) {
+      expect(autorise(url), `${url} doit être interdit`).toBe(false);
+    }
+  });
+
+  it("laisse crawlables /fr/appel nu et les pages d'offre nues", () => {
+    for (const url of ["/fr/appel", "/en/appel", "/fr/appel/formateur", "/fr/formations", "/fr"]) {
+      expect(autorise(url), `${url} doit rester crawlable`).toBe(true);
+    }
+  });
+});

@@ -53,6 +53,24 @@ const COMMON_DISALLOW = [
   // Disallow longest-match > Allow `/` : empêche Googlebot-Image de les fetcher.
   // Les logos restent visibles pour les visiteurs (le navigateur ignore robots.txt).
   "/logos/clients/",
+  // PIÈGE À ROBOTS /appel (2026-11-20, Cloudflare AI Crawl Control) : 548 580 des
+  // 628 610 requêtes de robots d'IA en 7 jours visaient `/fr/appel/reserver`.
+  // Chaque créneau du calendrier est un lien unique (`?debut=<instant>&rdv&depuis
+  // &utm_*`), renouvelé tous les quarts d'heure sur un horizon de 32 jours ; un
+  // créneau expiré répond 307 vers `/appel?…`, qui émet une nouvelle fournée de
+  // créneaux. Les variantes à paramètres de `/appel` (UTM libres, `depuis`) la
+  // multiplient encore. Aucune de ces URL n'est un document : ce sont des étapes
+  // de transaction, toutes déjà en `noindex`.
+  //
+  // 🔑 Ne bloque NI `/fr/appel` NI les pages d'offre nues (`/fr/appel/<type>`) :
+  // dans robots.txt, `?` est littéral, donc `/*/appel?` ne vise que les variantes
+  // à chaîne de requête. Verrouillé par `robots.spec.ts`.
+  "/*/appel/reserver",
+  "/*/appel/reporter",
+  "/*/appel/annuler",
+  "/*/appel/confirme",
+  "/*/appel?",
+  "/*/appel/*?",
 ];
 
 // Audit GSC 2026-05-18 — "Bloquée par robots.txt" sur `/api/og?title=...`.
