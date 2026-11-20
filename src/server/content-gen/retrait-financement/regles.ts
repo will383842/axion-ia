@@ -214,8 +214,14 @@ function phrases(s: string): string[] {
 let journal: string[] | null = null;
 /** Nombre de décomptes corrigés depuis le début du processus (lu par le verrou final). */
 let decomptesCorriges = 0;
+/** Nombres d'ORIGINE (normalisés) des décomptes corrigés, dans l'ordre (index = `decomptesCorriges`). */
+const nombresOrigine: string[] = [];
 function noter(regle: string): void {
-  if (regle.startsWith("décompte corrigé")) decomptesCorriges++;
+  if (regle.startsWith("décompte corrigé")) {
+    decomptesCorriges++;
+    const m = /^décompte corrigé : « (\S+) /.exec(regle);
+    nombresOrigine.push(m ? (motsDe(m[1]!)[0] ?? "") : "");
+  }
   journal?.push(regle);
 }
 /** Exécute `f` en recueillant les règles ciblées appliquées (pour le rapport). */
@@ -545,7 +551,7 @@ function fragmenter(phrase: string): Fragment | null {
 
 /** La phrase est-elle consacrée au financement (le sujet est dans ses premiers mots) ? */
 const MOT_FINANCEMENT =
-  /financ|\bfund|pris(?:e|es)? en charge|OPCO|\bCPF\b|France Travail|P[ôo]le[- ]emploi|qualiopi|[ée]ligible|rembours|subvention|\bAIF\b|datadock|\bEDOF\b|subrogation|mon ?compte ?formation|FNE/i;
+  /financ|\bfund(?:s|ing|ed|able)?\b|pris(?:e|es)? en charge|OPCO|\bCPF\b|France Travail|P[ôo]le[- ]emploi|qualiopi|[ée]ligible|rembours|subvention|\bAIF\b|datadock|\bEDOF\b|subrogation|mon ?compte ?formation|FNE/i;
 
 /**
  * Sujet de la phrase : son PREMIER MOT PLEIN (après un déterminant ou un possessif) est un mot de
@@ -553,7 +559,7 @@ const MOT_FINANCEMENT =
  * l'OPCO ») ou suit un vrai service (« Audit puis financement OPCO ») ne rend PAS la phrase pure.
  */
 const SUJET_FINANCEMENT =
-  /^(?:financ|fund|pris(?:e|es) en charge|opcos?\b|cpf\b|france travail|p[ôo]le[- ]emploi|subvention|rembours|aif\b|edof\b|subrogation|mon ?compte ?formation|fne\b)/i;
+  /^(?:financ|fund(?:s|ing|ed|able)?\b|pris(?:e|es) en charge|opcos?\b|cpf\b|france travail|p[ôo]le[- ]emploi|subvention|rembours|aif\b|edof\b|subrogation|mon ?compte ?formation|fne\b)/i;
 const DETERMINANT_DEBUT =
   /^(?:(?:le|la|les|un|une|des|du|de|votre|vos|notre|nos|ce|cette|ces|son|sa|ses|leur|leurs|the|a|an|your|our|this|these|its|their)\s+|(?:l|d)'\s*)/i;
 
@@ -566,7 +572,12 @@ function estPur(texte: string, html = ""): boolean {
   for (let i = 0; i < 4 && DETERMINANT_DEBUT.test(debut); i++)
     debut = debut.replace(DETERMINANT_DEBUT, "");
   // Phrase faite UNIQUEMENT de mots du lexique fermé (« Dossier AIF ») : rien de non financier à perdre.
-  return SUJET_FINANCEMENT.test(debut) || motsNonRetirables(texte, "").length === 0;
+  // (les phrases portant un mot de SENS_PROPRE n'y sont admises que si elles sont visées, non mêlées)
+  return (
+    SUJET_FINANCEMENT.test(debut) ||
+    (motsNonRetirables(texte, "").length === 0 &&
+      (!motsDe(texte).some((m) => SENS_PROPRE.has(m)) || (estVisee(texte) && !melange(texte))))
+  );
 }
 
 interface SortiePhrase {
@@ -731,7 +742,7 @@ const MOTS_OUTILS = new Set(
 
 /** Mots de financement (stems) : financ*, rembours*, subvention*, éligib*, fund*… dressés depuis les règles. */
 const RACINES_FINANCEMENT =
-  /^(?:financ|rembours|reimburs|subvention|eligib|fund|opco|qualiopi|datadock|subrogation|mobilis)/;
+  /^(?:(?:financ|rembours|reimburs|subvention|eligib|opco|qualiopi|datadock|subrogation|mobilis)|fund(?:s|ing|ed|able)?$)/;
 
 /** Mots de financement (exacts), y compris les qualificatifs d'un financement (« possible »). */
 const MOTS_FINANCEMENT_EXACTS = new Set(
@@ -796,21 +807,45 @@ function estNombre(m: string): boolean {
 }
 
 /**
+ * Mots du lexique qui portent un sens à eux seuls (qualité, certification, accessibilité…) : une
+ * phrase faite uniquement de mots du lexique qui en contient un n'est « pure » que si elle est
+ * visée et non mêlée (audit passe 8, point 1). Le lexique lui-même reste inchangé.
+ */
+const SENS_PROPRE = new Set(
+  (
+    "qualite certification certifie certifiee certifies certifiees accessible accessibles " +
+    "disponible disponibles dossier dossiers cout couts dispositif dispositifs organisme organismes"
+  ).split(" "),
+);
+
+/**
  * Phrase « pure » pour le remplacement d'un BLOC (section, FAQ, ligne, liste) : visée ET pure (A1),
  * ou entièrement faite de mots du lexique fermé (« Oui. », « Via votre OPCO. »).
  */
 function phrasePure(p: string): boolean {
-  return (estVisee(p) && estPur(p)) || motsNonRetirables(p, "").length === 0;
+  return (
+    (estVisee(p) && estPur(p) && !melange(p)) ||
+    (motsNonRetirables(p, "").length === 0 &&
+      (!motsDe(p).some((m) => SENS_PROPRE.has(m)) || (estVisee(p) && !melange(p))))
+  );
 }
 /** Toutes les phrases du texte sont pures : le bloc peut être remplacé sans perdre d'autre sujet. */
 function textePur(texte: string): boolean {
   return phrases(texte).every(phrasePure);
 }
 
-/** Mots retirés (multiensemble origine − résultat), dans l'ordre de l'origine. */
-export function motsRetires(origine: string, resultat: string): string[] {
+/**
+ * Mots retirés (multiensemble origine − résultat), dans l'ordre de l'origine. `injectes` : mots
+ * ajoutés par la réécriture elle-même (lien, phrase standard), ôtés du résultat avant comparaison
+ * pour qu'ils ne masquent pas un mot perdu ailleurs.
+ */
+export function motsRetires(origine: string, resultat: string, injectes: string[] = []): string[] {
   const reste = new Map<string, number>();
   for (const m of motsDe(resultat)) reste.set(m, (reste.get(m) ?? 0) + 1);
+  for (const m of injectes) {
+    const n = reste.get(m) ?? 0;
+    if (n > 0) reste.set(m, n - 1);
+  }
   const perdus: string[] = [];
   for (const m of motsDe(origine)) {
     const n = reste.get(m) ?? 0;
@@ -822,15 +857,22 @@ export function motsRetires(origine: string, resultat: string): string[] {
 
 /**
  * Mots retirés qui n'appartiennent PAS au lexique fermé (liste vide = réécriture permise).
- * `nombresCorriges` : un décompte corrigé a eu lieu, ses nombres sont exemptés.
+ * `nombresCorriges` : nombres d'ORIGINE des décomptes corrigés (normalisés), exemptés à raison d'une
+ * occurrence chacun (`true` : tout nombre, forme historique des tests). `injectes` : mots injectés.
  */
 export function motsNonRetirables(
   origine: string,
   resultat: string,
-  nombresCorriges = false,
+  nombresCorriges: boolean | string[] = false,
+  injectes: string[] = [],
 ): string[] {
   const perdus = new Map<string, number>();
-  for (const m of motsRetires(origine, resultat)) perdus.set(m, (perdus.get(m) ?? 0) + 1);
+  for (const m of motsRetires(origine, resultat, injectes)) perdus.set(m, (perdus.get(m) ?? 0) + 1);
+  if (Array.isArray(nombresCorriges))
+    for (const n of nombresCorriges) {
+      const k = perdus.get(n) ?? 0;
+      if (k > 0) perdus.set(n, k - 1);
+    }
   // Locutions : consommées (une occurrence de l'origine à la fois) quand tous leurs mots sont perdus.
   const tokens = motsDe(origine);
   for (const loc of LOCUTIONS_FINANCEMENT) {
@@ -845,10 +887,26 @@ export function motsNonRetirables(
   }
   const hors: string[] = [];
   for (const [m, n] of perdus) {
-    if (n <= 0 || motRetirable(m) || (nombresCorriges && estNombre(m))) continue;
+    if (n <= 0 || motRetirable(m) || (nombresCorriges === true && estNombre(m))) continue;
     for (let k = 0; k < n; k++) hors.push(m);
   }
   return hors;
+}
+
+/** Mots des textes injectés (lien, phrase standard, question) ajoutés par la réécriture. */
+function motsInjectes(avant: string, apres: string): string[] {
+  const occ = (t: string, s: string) => t.split(s).length - 1;
+  const mots: string[] = [];
+  for (const s of [
+    PHRASE_FR,
+    PHRASE_EN,
+    QUESTION_FR,
+    QUESTION_EN,
+    texteLienRemplace("fr"),
+    texteLienRemplace("en"),
+  ])
+    for (let i = occ(apres, s) - occ(avant, s); i > 0; i--) mots.push(...motsDe(s));
+  return mots;
 }
 
 /**
@@ -863,7 +921,13 @@ function verrouiller<T>(
   compteurAvant: number,
 ): Resultat<T> {
   if (!r.modifie) return r;
-  const hors = motsNonRetirables(avant, apres(), decomptesCorriges > compteurAvant);
+  const resultat = apres();
+  const hors = motsNonRetirables(
+    avant,
+    resultat,
+    nombresOrigine.slice(compteurAvant),
+    motsInjectes(avant, resultat),
+  );
   if (hors.length === 0) return r;
   return {
     valeur: valeurOrigine,
@@ -1315,7 +1379,9 @@ function nettoyerCellule(texte: string): string | null {
 
 function traiterTableaux(racine: Element, ambigus: string[]): boolean {
   let modifie = false;
-  for (const tr of Array.from(racine.querySelectorAll("tbody tr, table > tr"))) {
+  const lignes = Array.from(racine.querySelectorAll("tbody tr, table > tr"));
+  const retirees = new Set<Element>();
+  for (const tr of lignes) {
     const cellules = Array.from(tr.children);
     if (cellules.length === 0) continue;
     const autres = cellules.slice(1).map((c) => c.textContent ?? "");
@@ -1327,7 +1393,16 @@ function traiterTableaux(racine: Element, ambigus: string[]): boolean {
         );
         continue;
       }
+      // Dernière ligne de son tableau : le tableau resterait sans ligne → ambigu, ligne gardée.
+      const table = tr.closest("table");
+      if (lignes.every((x) => x === tr || retirees.has(x) || x.closest("table") !== table)) {
+        ambigus.push(
+          `tableau : la seule ligne restante est visée, le tableau resterait vide, à relire : « ${(tr.textContent ?? "").replace(/\s+/g, " ").trim().slice(0, 100)} »`,
+        );
+        continue;
+      }
       tr.remove();
+      retirees.add(tr);
       modifie = true;
     } else if (v === "ambigu") {
       // Cellule hors première colonne : retrait ciblé du mot de financement, sinon ambigu.

@@ -297,6 +297,14 @@ const CHAMPS_TEXTE_OFFRE = [
   "perks",
 ] as const;
 
+/** Tous les libellés texte (`labelFr`, `labelEn`) n'ont que des mots du lexique fermé. */
+function tousLibellesRetirables(o: Record<string, unknown>): boolean {
+  return ["labelFr", "labelEn"].every((k) => {
+    const v = o[k];
+    return typeof v !== "string" || motsNonRetirables(v, "").length === 0;
+  });
+}
+
 /**
  * Avantages (`perks`) : un avantage dont le libellé est ENTIÈREMENT du financement (phrases pures)
  * est retiré ; un libellé qui ne contient qu'un fragment (« (CPF) ») est nettoyé ; un libellé
@@ -333,9 +341,10 @@ export function reecrirePerks(perks: unknown): {
         // « champ entièrement visé » : toutes les phrases du libellé sont PURES (sujet = financement,
         // sinon l'ambigu serait « phrase mixte ») → l'avantage de financement est retiré, comme avant.
         // Verrou final : le libellé disparaît en entier, donc tous ses mots doivent être retirables.
+        // Audit passe 8 : CHAQUE libellé texte (Fr ET En) ne doit avoir que des mots du lexique.
         if (
           r.ambigus.every((a) => a.startsWith("champ entièrement visé")) &&
-          motsNonRetirables(v, "").length === 0
+          tousLibellesRetirables(it as Record<string, unknown>)
         )
           retire = true;
         else {
