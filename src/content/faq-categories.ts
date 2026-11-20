@@ -54,8 +54,8 @@ export const FAQ_CATEGORIES: ReadonlyArray<FaqCategoryDef> = [
     slug: "process",
     labelFr: "Process & méthode",
     labelEn: "Process & method",
-    descFr: "Réservation, déroulé, RGPD, support après-vente.",
-    descEn: "Booking, process, GDPR, after-sales support.",
+    descFr: "Réservation, déroulé, RGPD.",
+    descEn: "Booking, process, GDPR.",
   },
   {
     slug: "sites-web",

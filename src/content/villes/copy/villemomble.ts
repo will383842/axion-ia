@@ -84,7 +84,7 @@ export const VILLEMOMBLE_COPY: VilleCopy = {
           {
             step: "Mise en ligne et transfert",
             detail:
-              "Passation complète : accès, documentation, formation de votre équipe. Vous gardez le code et les données, sans verrou éditeur. Suivi des performances et ajustements à distance après le lancement.",
+              "Passation complète : accès, documentation, formation de votre équipe. Vous gardez le code et les données, sans verrou éditeur.",
           },
         ],
         pricing: [
@@ -170,7 +170,7 @@ export const VILLEMOMBLE_COPY: VilleCopy = {
           {
             step: "Go-live and handover",
             detail:
-              "Full handover: access, documentation, team training. You keep the code and data, no vendor lock-in. Performance monitoring and remote adjustments after launch.",
+              "Full handover: access, documentation, team training. You keep the code and data, no vendor lock-in.",
           },
         ],
         pricing: [

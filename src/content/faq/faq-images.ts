@@ -109,9 +109,9 @@ export const FAQ_IMAGES: Record<string, FaqImage> = {
     nameFr: "Méthode et process Axion-IA",
     nameEn: "Axion-IA method and process",
     altFr:
-      "Méthode et process Axion-IA — déroulé d'une mission IA, de la réservation au suivi, avec cadre RGPD et support après-vente.",
+      "Méthode et process Axion-IA — déroulé d'une mission IA, de la réservation à la livraison, avec cadre RGPD.",
     altEn:
-      "Axion-IA method and process — how an AI mission unfolds, from booking to follow-up, with a GDPR framework and after-sales support.",
+      "Axion-IA method and process — how an AI mission unfolds, from booking to delivery, with a GDPR framework.",
     width: W,
     height: H,
   },

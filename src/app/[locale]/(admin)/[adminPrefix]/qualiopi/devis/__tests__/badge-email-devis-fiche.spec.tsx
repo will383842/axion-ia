@@ -42,6 +42,11 @@ const base = {
   livreAt: null,
 };
 
+// L'action de versement du scan papier tire next-auth : la fiche ne fait que la transmettre.
+vi.mock("@/server/actions/qualiopi/devis-scan-papier", () => ({
+  verserScanDevisSigneAction: vi.fn(),
+}));
+vi.mock("next/navigation", () => ({ useRouter: () => ({ refresh: vi.fn() }), notFound: vi.fn() }));
 vi.mock("@/server/auth/garde-page", () => ({
   gardePage: () => Promise.resolve({ autorise: true, role: "admin", peutEcrire: true }),
 }));
@@ -54,6 +59,7 @@ vi.mock("@/server/qualiopi/crm/clients", () => ({
 vi.mock("@/lib/prisma", () => ({
   prisma: {
     factureFormation: { findMany: () => Promise.resolve([]) },
+    devis: { findUnique: () => Promise.resolve({ documentGenere: { annuleeAt: null } }) },
     documentSignature: {
       findMany: () =>
         Promise.resolve(

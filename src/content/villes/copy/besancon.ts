@@ -506,11 +506,6 @@ export const BESANCON_COPY: VilleCopy = {
             detail:
               "Sur site Besançon : tests d'acceptation utilisateurs, formation des ambassadeurs internes, livraison du runbook documentation, plan de monitoring.",
           },
-          {
-            step: "Suivi post-go-live",
-            detail:
-              "À distance : surveillance des métriques de production, ajustements fins, mesure du ROI réel par rapport à la prédiction du SOW. Rapport final remis à clôture de mission.",
-          },
         ],
         pricing: [
           {
@@ -598,11 +593,6 @@ export const BESANCON_COPY: VilleCopy = {
             detail:
               "On site Besançon: user acceptance tests, training of internal ambassadors, runbook documentation delivery, monitoring plan.",
           },
-          {
-            step: "Post-go-live follow-up",
-            detail:
-              "Remote: production metrics monitoring, fine adjustments, real ROI vs SOW prediction measurement. Final report delivered at mission closure.",
-          },
         ],
         pricing: [
           {
@@ -688,11 +678,6 @@ export const BESANCON_COPY: VilleCopy = {
               "Mise en place de vos outils IA personnels (ChatGPT, Claude, Mistral, etc.) avec vos prompts sur mesure et vos workflows spécifiques à votre métier bisontin.",
           },
           {
-            step: "Suivi et ajustements",
-            detail:
-              "Sessions de suivi pour valider l'adoption, ajuster les prompts et workflows, et répondre aux nouvelles questions qui émergent dans votre pratique quotidienne.",
-          },
-          {
             step: "Bilan et plan IA personnel",
             detail:
               "Synthèse de votre progression, remise de votre plan IA personnel documenté et des ressources pour continuer à progresser en autonomie.",
@@ -727,7 +712,7 @@ export const BESANCON_COPY: VilleCopy = {
         faq: [
           {
             q: "Combien de sessions comprend un accompagnement individuel à Besançon ?",
-            a: "Le nombre de sessions est défini ensemble en diagnostic initial selon vos objectifs et votre niveau de départ. Un Pack Découverte peut tenir en quelques sessions, un Pack Leadership IA en s'étale sur plus de temps avec un suivi régulier.",
+            a: "Le nombre de sessions est défini ensemble en diagnostic initial selon vos objectifs et votre niveau de départ. Un Pack Découverte peut tenir en quelques sessions, un Pack Leadership IA s'étale sur plus de temps avec un coaching régulier.",
           },
           {
             q: "Les sessions peuvent-elles se tenir à distance ?",
@@ -747,7 +732,7 @@ export const BESANCON_COPY: VilleCopy = {
           },
           {
             q: "Que se passe-t-il après la fin de l'accompagnement ?",
-            a: "Vous disposez de votre plan IA personnel documenté, de vos outils configurés et de vos prompts. Si vous souhaitez continuer, des sessions de suivi ponctuelles sont disponibles. Aucun engagement de durée minimum au-delà du pack initial.",
+            a: "Vous disposez de votre plan IA personnel documenté, de vos outils configurés et de vos prompts. Aucun engagement de durée minimum au-delà du pack initial.",
           },
         ],
         guarantees:
@@ -778,11 +763,6 @@ export const BESANCON_COPY: VilleCopy = {
             step: "Personalised setup",
             detail:
               "Setup of your personal AI tools (ChatGPT, Claude, Mistral, etc.) with bespoke prompts and workflows specific to your Besançon profession.",
-          },
-          {
-            step: "Follow-up and adjustments",
-            detail:
-              "Follow-up sessions to validate adoption, adjust prompts and workflows, and answer new questions that emerge in your daily practice.",
           },
           {
             step: "Review and personal AI plan",
@@ -819,7 +799,7 @@ export const BESANCON_COPY: VilleCopy = {
         faq: [
           {
             q: "How many sessions does one-to-one coaching in Besançon include?",
-            a: "The number of sessions is defined together at the initial diagnosis based on your goals and starting level. A Discovery pack may fit in a few sessions, an AI Leadership pack spans more time with regular follow-up.",
+            a: "The number of sessions is defined together at the initial diagnosis based on your goals and starting level. A Discovery pack may fit in a few sessions, an AI Leadership pack spans more time with regular coaching.",
           },
           {
             q: "Can sessions take place remotely?",
@@ -839,7 +819,7 @@ export const BESANCON_COPY: VilleCopy = {
           },
           {
             q: "What happens after coaching ends?",
-            a: "You have your documented personal AI plan, configured tools and prompts. If you want to continue, ad-hoc follow-up sessions are available. No minimum commitment beyond the initial pack.",
+            a: "You have your documented personal AI plan, configured tools and prompts. No minimum commitment beyond the initial pack.",
           },
         ],
         guarantees:

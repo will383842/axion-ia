@@ -82,9 +82,9 @@ export const NOISY_LE_GRAND_COPY: VilleCopy = {
               "Tests sur vos vraies données, vérification RGPD et accessibilité, hébergement provisionné en Union européenne. Mise en production puis formation de vos équipes pour qu'elles gèrent contenus et paramétrage de l'IA en autonomie.",
           },
           {
-            step: "Suivi et autonomie",
+            step: "Autonomie",
             detail:
-              "Monitoring des performances et du comportement de l'IA, ajustements, documentation runbook remise. Code, données et accès restent chez vous, repris par vos équipes ou tout prestataire de Marne-la-Vallée — aucun verrou Axion-IA.",
+              "Documentation runbook remise. Code, données et accès restent chez vous, repris par vos équipes ou tout prestataire de Marne-la-Vallée — aucun verrou Axion-IA.",
           },
         ],
         pricing: [
@@ -168,9 +168,9 @@ export const NOISY_LE_GRAND_COPY: VilleCopy = {
               "Testing on your real data, GDPR and accessibility checks, European Union hosting provisioned. Go-live then training of your teams so they manage content and AI settings autonomously.",
           },
           {
-            step: "Follow-up and autonomy",
+            step: "Autonomy",
             detail:
-              "Performance and AI-behaviour monitoring, adjustments, runbook documentation handed over. Code, data and access stay with you, taken over by your teams or any Marne-la-Vallée provider — no Axion-IA lock-in.",
+              "Runbook documentation handed over. Code, data and access stay with you, taken over by your teams or any Marne-la-Vallée provider — no Axion-IA lock-in.",
           },
         ],
         pricing: [

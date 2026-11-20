@@ -483,11 +483,6 @@ export const PARIS_COPY: VilleCopy = {
             detail:
               "Sur site Paris : tests d'acceptation utilisateurs, formation des ambassadeurs internes, livraison du runbook documentation, plan de monitoring de quelques semaines.",
           },
-          {
-            step: "Suivi post-go-live",
-            detail:
-              "À distance : surveillance des métriques de production, ajustements fins, mesure du ROI réel par rapport à la prédiction du SOW. Rapport final remis à clôture, mission close.",
-          },
         ],
         pricing: [
           {
@@ -574,11 +569,6 @@ export const PARIS_COPY: VilleCopy = {
             step: "Acceptance + training",
             detail:
               "On site Paris: user acceptance tests, training of internal ambassadors, runbook documentation delivery, multi-week monitoring plan.",
-          },
-          {
-            step: "Post-go-live follow-up",
-            detail:
-              "Remote: production metrics monitoring, fine adjustments, real ROI vs SOW prediction measurement. Final report delivered at closure, mission closed.",
           },
         ],
         pricing: [
@@ -669,11 +659,6 @@ export const PARIS_COPY: VilleCopy = {
             detail:
               "À mi-parcours, nous posons un plan structuré de montée en compétence : quels outils maîtriser en priorité, quels cas d'usage adresser dans les semaines suivantes, comment ancrer les bonnes pratiques.",
           },
-          {
-            step: "Suivi optionnel",
-            detail:
-              "Après les sessions principales, un suivi léger est disponible sur demande : relecture de vos prompts, ajustement de vos workflows, questions ponctuelles entre sessions. Sans engagement récurrent.",
-          },
         ],
         pricing: [
           {
@@ -760,11 +745,6 @@ export const PARIS_COPY: VilleCopy = {
             step: "Autonomy plan",
             detail:
               "At mid-course we establish a structured competence-building plan: which tools to master first, which use cases to address in the coming weeks, how to anchor best practices.",
-          },
-          {
-            step: "Optional follow-up",
-            detail:
-              "After the main sessions, lightweight follow-up is available on request: prompt review, workflow adjustment, ad-hoc questions between sessions. No recurring commitment.",
           },
         ],
         pricing: [

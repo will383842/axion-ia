@@ -72,6 +72,9 @@ vi.mock("@/lib/prisma", () => ({
         ),
     },
     planRecurrent: { count: () => Promise.resolve(0) },
+    devis: {
+      findUnique: () => Promise.resolve({ documentGenere: { annuleeAt: null, type: "devis" } }),
+    },
     emailOutbox: { findFirst: () => Promise.resolve(null) },
   },
 }));
@@ -116,6 +119,9 @@ vi.mock("@/server/actions/qualiopi/devis", () => ({
 }));
 vi.mock("@/server/actions/qualiopi/facturation-emails", () => ({
   envoyerDevisEmailAction: vi.fn(),
+}));
+vi.mock("@/server/actions/qualiopi/devis-scan-papier", () => ({
+  verserScanDevisSigneAction: vi.fn(),
 }));
 vi.mock("@/server/actions/qualiopi/piece-signature", () => ({
   contresignerPieceAction: vi.fn(),

@@ -40,8 +40,8 @@ export const LE_PLESSIS_TREVISE_COPY: VilleCopy = {
       en: "Intervenir au Plessis-Trévise (RER E ou A4 depuis Paris) pour automatiser les processus métier des TPE et PME locales — code custom, pas de no-code.",
     },
     implementation: {
-      fr: "Implémenter des solutions IA sur mesure au Plessis-Trévise pour les TPE et PME du commerce de proximité et des services, avec accompagnement post-livraison.",
-      en: "Implémenter des solutions IA sur mesure au Plessis-Trévise pour les TPE et PME du commerce de proximité et des services, avec accompagnement post-livraison.",
+      fr: "Implémenter des solutions IA sur mesure au Plessis-Trévise pour les TPE et PME du commerce de proximité et des services.",
+      en: "Implémenter des solutions IA sur mesure au Plessis-Trévise pour les TPE et PME du commerce de proximité et des services.",
     },
     unAUn: {
       fr: "Accompagner en un-à-un les dirigeants de TPE et PME au Plessis-Trévise pour une adoption IA stratégique et durable.",

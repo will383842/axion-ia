@@ -358,7 +358,6 @@ export const KW_INTERVENTIONS_G2: KeywordSeed[] = [
       h2Variants: [
         "Ce qui distingue Axion-IA des formateurs IA généralistes",
         "Déroulé type d'une session 2 jours pour une équipe PME de 15 personnes",
-        "Accompagnement post-formation : 30 jours de questions/réponses inclus",
       ],
     },
     variables: {
@@ -486,7 +485,7 @@ export const KW_INTERVENTIONS_G2: KeywordSeed[] = [
       h2Variants: [
         "Étape 1 : cartographier les tâches à fort potentiel IA",
         "Choisir le bon prestataire et le bon format (1j, 2j, cycle)",
-        "Mesurer l'impact : KPIs à suivre pendant les 30 jours post-formation",
+        "Mesurer l'impact : les KPIs que votre équipe peut suivre après la formation",
       ],
     },
     variables: {
@@ -650,7 +649,7 @@ export const KW_INTERVENTIONS_G2: KeywordSeed[] = [
       h2Variants: [
         "Comment cartographier les besoins IA de chaque département",
         "Séquencer les sessions pour ne pas impacter la production",
-        "Livrables attendus : plan détaillé, supports, suivi 90 jours",
+        "Livrables attendus : plan détaillé, supports",
       ],
     },
     variables: {
@@ -1435,7 +1434,6 @@ export const KW_INTERVENTIONS_G2: KeywordSeed[] = [
       resultat: "×3 taux d'adoption en présentiel vs MOOC",
       chiffre: "3",
       unite: "×",
-      delai: "à 30 jours post-formation",
     },
     urlCible: "/fr/faq/formation-ia-presentiel-vs-ligne",
     canonicalParent: "/fr/interventions-formations/",
@@ -1452,7 +1450,7 @@ export const KW_INTERVENTIONS_G2: KeywordSeed[] = [
     priorite: 2,
     niveau: 3,
     injection: {
-      h1: "Formation IA entreprise : résultats concrets mesurés à 30 jours",
+      h1: "Formation IA entreprise : résultats concrets attendus",
       metaTitle: "Résultats formation IA équipes — chiffres réels",
       metaDescription:
         "+2h/jour économisées par collaborateur, –30 % de tâches répétitives, 90 % d'adoption à 30 jours : les résultats réels des équipes formées par Axion-IA.",
@@ -1467,7 +1465,6 @@ export const KW_INTERVENTIONS_G2: KeywordSeed[] = [
       resultat: "+2h/jour, –30 % tâches répétitives, 90 % adoption",
       chiffre: "2",
       unite: "h/jour économisées",
-      delai: "à 30 jours post-formation",
     },
     urlCible: "/fr/blog/resultats-concrets-formation-ia-equipes",
     canonicalParent: "/fr/interventions-formations/",
@@ -1825,10 +1822,9 @@ export const KW_INTERVENTIONS_G2: KeywordSeed[] = [
     },
     variables: {
       process: "évaluation impact formation IA PME",
-      resultat: "ROI mesuré et documenté à 90 jours",
+      resultat: "ROI documenté",
       chiffre: "90",
       unite: "jours",
-      delai: "bilan à 90 jours",
     },
     urlCible: "/fr/blog/mesurer-efficacite-formation-ia-pme",
     canonicalParent: "/fr/interventions-formations/pme",

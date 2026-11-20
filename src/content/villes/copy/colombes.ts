@@ -232,7 +232,7 @@ export const COLOMBES_COPY: VilleCopy = {
     },
     {
       q: "Vos consultants se déplacent-ils réellement à Colombes ou tout se fait en visio ?",
-      a: "Nous nous déplaçons sur site à Colombes pour les phases d'observation et de mise en route. Le suivi régulier et les itérations peuvent ensuite se faire en visio si vous le préférez.",
+      a: "Nous nous déplaçons sur site à Colombes pour les phases d'observation et de mise en route.",
     },
     {
       q: "Intervenez-vous aussi dans les communes proches de Colombes ?",

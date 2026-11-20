@@ -447,12 +447,12 @@ export default async function About({ params }: Props) {
                   ? [
                       "Aucune intervention sans démonstration sur vos données réelles.",
                       "Aucun devis sans plan d'action chiffré et priorisé.",
-                      "Aucun déploiement sans support post-livraison inclus.",
+                      "Aucun déploiement sans code et documentation remis.",
                     ]
                   : [
                       "No engagement without a live demo on your real data.",
                       "No quote without a costed, prioritised action plan.",
-                      "No deployment without post-delivery support included.",
+                      "No deployment without code and documentation handed over.",
                     ]
                 ).map((item) => (
                   <li key={item} className="flex items-start gap-3.5">
@@ -480,7 +480,7 @@ export default async function About({ params }: Props) {
       {/* Proof — chiffres clés */}
       <Section eyebrow={isFr ? "Repères" : "Key figures"} tone="sand">
         <Container>
-          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {[
               {
                 figure: "2026",
@@ -502,13 +502,6 @@ export default async function About({ params }: Props) {
                 detail: isFr
                   ? "Chaque message est lu par un humain."
                   : "Every message is read by a human.",
-              },
-              {
-                figure: "30 j",
-                label: isFr ? "Support inclus" : "Support included",
-                detail: isFr
-                  ? "Maintenance corrective post-livraison incluse."
-                  : "Post-delivery corrective maintenance included.",
               },
             ].map((stat) => (
               <div
@@ -582,9 +575,7 @@ export default async function About({ params }: Props) {
               </p>
               <p>
                 <strong>{isFr ? "ROI mesurable." : "Measurable ROI."}</strong>{" "}
-                {isFr
-                  ? "Plan d'action chiffré priorisé, support post-livraison inclus."
-                  : "Costed prioritised action plan, post-delivery support included."}
+                {isFr ? "Plan d'action chiffré et priorisé." : "Costed, prioritised action plan."}
               </p>
               <p>
                 <strong>{isFr ? "Souveraineté." : "Sovereignty."}</strong>{" "}
@@ -637,8 +628,8 @@ export default async function About({ params }: Props) {
           </h2>
           <p className="text-fg-soft mx-auto mt-4 max-w-2xl text-center text-lg leading-relaxed">
             {isFr
-              ? "Chaque mission suit le même fil : cadrage, démonstration sur vos données, déploiement et suivi. Vous voyez le résultat avant de vous engager."
-              : "Every engagement follows the same thread: scoping, a demo on your data, deployment and follow-up. You see the result before you commit."}
+              ? "Chaque mission suit le même fil : cadrage, démonstration sur vos données, déploiement. Vous voyez le résultat avant de vous engager."
+              : "Every engagement follows the same thread: scoping, a demo on your data, deployment. You see the result before you commit."}
           </p>
           <div className="mt-10">
             <Illustration

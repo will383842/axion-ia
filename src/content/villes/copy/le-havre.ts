@@ -486,11 +486,6 @@ export const LE_HAVRE_COPY: VilleCopy = {
             detail:
               "Sur site au Havre : tests d'acceptation utilisateurs, formation des ambassadeurs internes (équipe logistique, maintenance, ADV selon cas), livraison du runbook documentation, plan de monitoring.",
           },
-          {
-            step: "Suivi post-go-live",
-            detail:
-              "À distance : surveillance des métriques de production, ajustements fins, mesure du ROI réel par rapport à la prédiction du SOW. Rapport final remis à clôture, mission close.",
-          },
         ],
         pricing: [
           {
@@ -577,11 +572,6 @@ export const LE_HAVRE_COPY: VilleCopy = {
             step: "Acceptance + training",
             detail:
               "On site in Le Havre: user acceptance tests, training of internal ambassadors (logistics, maintenance, customer service teams per case), runbook documentation delivery, monitoring plan.",
-          },
-          {
-            step: "Post-go-live follow-up",
-            detail:
-              "Remote: production metrics monitoring, fine adjustments, real ROI vs SOW prediction measurement. Final report delivered at closure, mission closed.",
           },
         ],
         pricing: [

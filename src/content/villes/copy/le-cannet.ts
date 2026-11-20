@@ -170,7 +170,7 @@ export const LE_CANNET_COPY: VilleCopy = {
           {
             step: "Acceptance, go-live and handover",
             detail:
-              "On-site acceptance in Le Cannet, go-live, then handover of code and documentation. Your teams keep control — no lock-in. Performance and AI-layer monitoring after launch.",
+              "On-site acceptance in Le Cannet, go-live, then handover of code and documentation. Your teams keep control — no lock-in.",
           },
         ],
         pricing: [
