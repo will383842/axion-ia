@@ -11,6 +11,7 @@ const DEVIS = "33333333-3333-4333-8333-333333333333";
 
 const m = vi.hoisted(() => ({
   devis: vi.fn(),
+  trace: vi.fn(),
   outbox: vi.fn(),
   garer: vi.fn(),
   garde: vi.fn(),
@@ -30,6 +31,7 @@ vi.mock("next/cache", () => ({ revalidatePath: vi.fn(), updateTag: vi.fn() }));
 vi.mock("@/lib/prisma", () => ({
   prisma: {
     devis: { findFirst: m.devis },
+    activityLog: { findFirst: m.trace },
     emailOutbox: { findFirst: m.outbox, findMany: m.liste, updateMany: m.refuser },
   },
 }));
@@ -55,6 +57,7 @@ import {
   ERREUR_CONTACT_ABSENT,
   ERREUR_DEVIS_INTROUVABLE,
   ERREUR_DEVIS_PERIME,
+  ERREUR_DEVIS_REMIS_MAIN_PROPRE,
   ERREUR_GARAGE,
   MESSAGE_RELANCE_GAREE,
   MESSAGE_RELANCE_PRETE,
@@ -97,6 +100,7 @@ beforeEach(() => {
   m.devis.mockImplementation(async (a: { where: { clientId: string; statut: string } }) =>
     a.where.clientId === CLIENT && a.where.statut === "envoye" ? DEVIS_ENVOYE : null,
   );
+  m.trace.mockResolvedValue(null);
   m.outbox.mockResolvedValue(null);
   m.garer.mockResolvedValue("outbox-1");
   m.liste.mockResolvedValue([{ id: "outbox-1", createdAt: new Date() }]);
@@ -122,6 +126,19 @@ describe("relance de devis (lot B9)", () => {
     expect(m.log).toHaveBeenCalledTimes(1);
   });
 
+  it("lancée depuis la page du devis : le résultat revient sur CE devis, même action", async () => {
+    const fd = formulaire();
+    fd.set("retourDevis", DEVIS);
+    const url = await lancer(fd);
+    expect(m.garer).toHaveBeenCalledTimes(1);
+    expect(url).toContain(`/qualiopi/devis/${DEVIS}?message=`);
+    expect(url).not.toContain("/qualiopi/clients/");
+  });
+  it("retourDevis forgé (pas un UUID) : retour classique sur la fiche client", async () => {
+    const fd = formulaire();
+    fd.set("retourDevis", "https://evil.example");
+    expect(await lancer(fd)).toContain(`/qualiopi/clients/${CLIENT}`);
+  });
   it("refuse le devis d'un autre client", async () => {
     const url = await lancer(formulaire(AUTRE_CLIENT));
     expect(url).toContain(ERREUR_DEVIS_INTROUVABLE);
@@ -180,6 +197,20 @@ describe("relance de devis (lot B9)", () => {
     const url = await lancer();
     expect(url).toContain(ERREUR_DEVIS_PERIME);
     expect(m.garer).not.toHaveBeenCalled();
+  });
+
+  it("devis remis en main propre : redirection avec l'erreur, rien garé, rien journalisé (I1)", async () => {
+    m.trace.mockResolvedValue({ id: "trace-1" });
+    const url = await lancer();
+    expect(url).toContain(`erreur=${ERREUR_DEVIS_REMIS_MAIN_PROPRE}`);
+    expect(m.garer).not.toHaveBeenCalled();
+    expect(m.log).not.toHaveBeenCalled();
+  });
+
+  it("devis sans trace de main propre : chemin inchangé (I1)", async () => {
+    m.trace.mockResolvedValue(null);
+    await lancer();
+    expect(m.garer).toHaveBeenCalledTimes(1);
   });
 
   it("double clic : deux appels simultanés, le surplus est refusé (jamais supprimé)", async () => {

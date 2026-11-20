@@ -49,7 +49,7 @@ export async function GET(
 
   const devis = await prisma.devis.findUnique({
     where: { id: idParsed.data },
-    select: SELECT_DEVIS_POUR_PDF,
+    select: { ...SELECT_DEVIS_POUR_PDF, clientId: true },
   });
   if (!devis) {
     return NextResponse.json({ error: "Devis introuvable" }, { status: 404 });
@@ -62,7 +62,7 @@ export async function GET(
     );
   }
 
-  const contexte = await lireContextePdfDevis();
+  const contexte = await lireContextePdfDevis({ clientId: devis.clientId });
   let data: ReturnType<typeof donneesPdfDevis>;
   try {
     data = donneesPdfDevis(devis, contexte, new Date());

@@ -42,10 +42,19 @@ import { compteRenduEnregistre } from "@/features/dossier-client/compte-rendu-en
 import { lireMessageDeRetour } from "@/features/dossier-client/message-de-retour";
 import { QuestionnairePreaudit } from "@/components/admin/dossier-client/QuestionnairePreaudit";
 import { SuppressionManuelle } from "@/components/admin/dossier-client/SuppressionManuelle";
+import { AdminEmptyState } from "@/components/admin/ui/AdminEmptyState";
 import { adminPath } from "@/lib/admin-path";
 import { prisma } from "@/lib/prisma";
 import { formatDateFrShort } from "@/lib/format-date-fr";
 import { timeInParis } from "@/lib/calendar-grid";
+import { ClipboardList, FileX2, Hourglass } from "lucide-react";
+import {
+  CarteLigne,
+  EncartTeinte,
+  NotesEnregistrementEtSuite,
+  PastilleEtat,
+  TuilesRencontre,
+} from "./vue-fiche";
 
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
@@ -61,10 +70,9 @@ interface PageProps {
 const carteCls = "admin-carte";
 const titreCls = "admin-carte-titre";
 const mutedCls = "text-[color:var(--color-admin-fg-muted)]";
-const listeCls = "space-y-[var(--space-admin-2)] text-[length:var(--text-admin-sm)]";
 const lienCls = "text-[color:var(--color-admin-accent)] underline-offset-2 hover:underline";
 const inputCls =
-  "w-full rounded-[var(--radius-admin-sm)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)] px-[var(--space-admin-3)] py-[var(--space-admin-2)] text-[length:var(--text-admin-sm)]";
+  "min-h-[44px] w-full rounded-[var(--radius-admin-sm)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)] px-[var(--space-admin-3)] py-[var(--space-admin-2)] text-[length:var(--text-admin-sm)]";
 
 const LIBELLE_ORIGINE: Readonly<Record<string, string>> = {
   manuel: "Note manuelle",
@@ -175,21 +183,28 @@ export default async function RencontrePage({ params, searchParams }: PageProps)
       />
 
       {erreur !== null ? (
-        <p
-          role="alert"
-          className="mb-[var(--space-admin-4)] rounded-[var(--radius-admin-sm)] border border-[color:var(--color-admin-danger)] px-[var(--space-admin-3)] py-[var(--space-admin-2)] text-[length:var(--text-admin-sm)]"
-        >
-          {erreur}
-        </p>
+        <div className="mb-[var(--space-admin-4)]">
+          <EncartTeinte ton="destructive" role="alert">
+            {erreur}
+          </EncartTeinte>
+        </div>
       ) : null}
       {message !== null ? (
-        <p
-          role="status"
-          className="mb-[var(--space-admin-4)] rounded-[var(--radius-admin-sm)] border border-[color:var(--color-admin-border)] px-[var(--space-admin-3)] py-[var(--space-admin-2)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-success-fg)]"
-        >
-          {message}
-        </p>
+        <div className="mb-[var(--space-admin-4)]">
+          <EncartTeinte ton="success" role="status">
+            {message}
+          </EncartTeinte>
+        </div>
       ) : null}
+
+      <TuilesRencontre
+        d={{
+          compteRenduValide: valide !== null,
+          nbFaits: faitsValides.length,
+          nbVersions: r.comptesRendus.length,
+          suiteFaite: r.suivi !== null,
+        }}
+      />
 
       <QuestionnairePreaudit
         rencontreId={r.id}
@@ -216,64 +231,70 @@ export default async function RencontrePage({ params, searchParams }: PageProps)
         <h2 className={titreCls}>Compte rendu</h2>
         {valide !== null ? (
           <>
-            <p
-              className={`mb-[var(--space-admin-2)] text-[length:var(--text-admin-xs)] ${mutedCls}`}
-            >
-              {LIBELLE_ORIGINE[valide.origine] ?? valide.origine} — version {valide.version}, validé
-              {valide.valideLe ? ` le ${formatDateFrShort(valide.valideLe)}` : ""}
+            <p className="mb-[var(--space-admin-3)]">
+              <PastilleEtat ton="success" valide>
+                Validé
+              </PastilleEtat>{" "}
+              <span className={`text-[length:var(--text-admin-sm)] ${mutedCls}`}>
+                {LIBELLE_ORIGINE[valide.origine] ?? valide.origine} — version {valide.version},
+                validé
+                {valide.valideLe ? ` le ${formatDateFrShort(valide.valideLe)}` : ""}
+              </span>
             </p>
-            <ul className={listeCls}>
+            <ul className="space-y-[var(--space-admin-3)]">
               {valide.champs.map((c, i) => (
-                <li key={i} className="whitespace-pre-line">
-                  <span className="font-medium">
-                    {LIBELLE_TYPE_FAIT[c.type as keyof typeof LIBELLE_TYPE_FAIT] ?? c.type} :
-                  </span>{" "}
+                <CarteLigne
+                  key={i}
+                  ton="success"
+                  titre={LIBELLE_TYPE_FAIT[c.type as keyof typeof LIBELLE_TYPE_FAIT] ?? c.type}
+                >
                   {c.enonce}
-                </li>
+                </CarteLigne>
               ))}
             </ul>
           </>
         ) : (
-          <p className={`text-[length:var(--text-admin-sm)] ${mutedCls}`}>
-            Aucun compte rendu validé. Ouvrez « Après l&apos;appel » pour écrire la note.
-          </p>
+          <AdminEmptyState
+            variant="inline"
+            icon={<FileX2 aria-hidden="true" size={28} />}
+            title="Aucun compte rendu validé"
+            description="Ouvrez « Après l'appel » pour écrire la note."
+          />
         )}
         {circuit.reponseAttendue ? (
-          <p
-            role="status"
-            className="mt-[var(--space-admin-3)] rounded-[var(--radius-admin-sm)] border border-[color:var(--color-admin-warning)] px-[var(--space-admin-3)] py-[var(--space-admin-2)] text-[length:var(--text-admin-sm)]"
-          >
-            <AdminBadge tone="warning">votre réponse est attendue</AdminBadge> Enregistrement très
-            court ou session interrompue avant la fin : répondez plus bas, dans « Compte rendu de
-            l&apos;enregistrement ».
-          </p>
+          <div className="mt-[var(--space-admin-3)]">
+            <EncartTeinte ton="warning" role="status">
+              <AdminBadge tone="warning">votre réponse est attendue</AdminBadge> Enregistrement très
+              court ou session interrompue avant la fin : répondez plus bas, dans « Compte rendu de
+              l&apos;enregistrement ».
+            </EncartTeinte>
+          </div>
         ) : null}
-        {vueEnregistrement === null ? (
-          <p className={`mt-[var(--space-admin-3)] text-[length:var(--text-admin-xs)] ${mutedCls}`}>
-            Aucun enregistrement de ce rendez-vous n&apos;a encore donné de compte rendu.
-          </p>
-        ) : (
-          <p className={`mt-[var(--space-admin-3)] text-[length:var(--text-admin-xs)] ${mutedCls}`}>
-            Le compte rendu de l&apos;enregistrement est plus bas sur cette page.
-          </p>
-        )}
-        <p className="mt-[var(--space-admin-2)] text-[length:var(--text-admin-sm)]">
-          <Link href={`${rdvBase}?emailSuivi=${r.id}`} className={lienCls}>
-            E-mail de suivi au client
-          </Link>{" "}
-          <span className={mutedCls}>
-            — préparé depuis les faits validés, il attend votre validation avant de partir.
-          </span>
-        </p>
+        <NotesEnregistrementEtSuite
+          hrefEmailSuivi={`${rdvBase}?emailSuivi=${r.id}`}
+          enregistrementAbsent={vueEnregistrement === null}
+        />
         {r.comptesRendus.length > 1 ? (
           <details className="mt-[var(--space-admin-3)] text-[length:var(--text-admin-sm)]">
-            <summary className="cursor-pointer">Versions ({r.comptesRendus.length})</summary>
-            <ul className={listeCls}>
+            <summary className="flex min-h-[44px] cursor-pointer items-center font-semibold">
+              Versions ({r.comptesRendus.length})
+            </summary>
+            <ul className="mt-[var(--space-admin-2)] space-y-[var(--space-admin-3)]">
               {r.comptesRendus.map((c) => (
-                <li key={c.id}>
-                  Version {c.version} — {LIBELLE_ORIGINE[c.origine] ?? c.origine},{" "}
+                <CarteLigne
+                  key={c.id}
+                  ton={
+                    c.statut === "valide"
+                      ? "success"
+                      : c.statut === "rejete"
+                        ? "destructive"
+                        : "neutral"
+                  }
+                  titre={`Version ${c.version}`}
+                >
+                  {LIBELLE_ORIGINE[c.origine] ?? c.origine},{" "}
                   {LIBELLE_STATUT_CR[c.statut] ?? c.statut}
-                </li>
+                </CarteLigne>
               ))}
             </ul>
           </details>
@@ -291,16 +312,20 @@ export default async function RencontrePage({ params, searchParams }: PageProps)
       <section className={carteCls}>
         <h2 className={titreCls}>Ce qui a été retenu</h2>
         {faitsValides.length === 0 ? (
-          <p className={`text-[length:var(--text-admin-sm)] ${mutedCls}`}>Aucun fait validé.</p>
+          <AdminEmptyState
+            variant="inline"
+            icon={<ClipboardList aria-hidden="true" size={28} />}
+            title="Aucun fait validé"
+          />
         ) : (
-          <ul className={listeCls}>
+          <ul className="space-y-[var(--space-admin-3)]">
             {faitsValides.map((f) => (
-              <li key={f.id}>
-                <span className="font-medium">{LIBELLE_TYPE_FAIT[f.type]}</span> : {f.enonce}
+              <CarteLigne key={f.id} ton="info" titre={LIBELLE_TYPE_FAIT[f.type]}>
+                {f.enonce}
                 {f.portee === "entreprise" ? (
                   <span className={mutedCls}> (toute l&apos;entreprise)</span>
                 ) : null}
-              </li>
+              </CarteLigne>
             ))}
           </ul>
         )}
@@ -309,13 +334,30 @@ export default async function RencontrePage({ params, searchParams }: PageProps)
       <section className={carteCls}>
         <h2 className={titreCls}>Suite</h2>
         {r.suivi ? (
-          <p className="text-[length:var(--text-admin-sm)]">
-            {LIBELLE_ISSUE[r.suivi.issue]}
-            {r.suivi.suite ? ` · ${LIBELLE_SUITE[r.suivi.suite]}` : ""}
-            {r.suivi.suiteLe ? ` · pour le ${formatDateFrShort(r.suivi.suiteLe)}` : ""}
-          </p>
+          <ul>
+            <CarteLigne
+              ton="success"
+              pastille={
+                <PastilleEtat ton="success" valide>
+                  Faite
+                </PastilleEtat>
+              }
+              titre={LIBELLE_ISSUE[r.suivi.issue]}
+            >
+              {[
+                r.suivi.suite ? LIBELLE_SUITE[r.suivi.suite] : null,
+                r.suivi.suiteLe ? `pour le ${formatDateFrShort(r.suivi.suiteLe)}` : null,
+              ]
+                .filter((x) => x !== null)
+                .join(" · ")}
+            </CarteLigne>
+          </ul>
         ) : (
-          <p className={`text-[length:var(--text-admin-sm)] ${mutedCls}`}>Point pas encore fait.</p>
+          <AdminEmptyState
+            variant="inline"
+            icon={<Hourglass aria-hidden="true" size={28} />}
+            title="Point pas encore fait"
+          />
         )}
       </section>
 

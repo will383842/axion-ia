@@ -10,8 +10,8 @@
  *  - AI Act : uniquement les formulations sûres de l'état du droit au 18/11/2026 ;
  *  - une page qui pose une de ces questions l'IMPORTE (`faqItems`) au lieu de la recopier.
  *
- * Décisions de Williams du 18/11/2026 reprises ici : la Journée IA va jusqu'à 15 personnes
- * au même prix ; audit le matin (2 à 4 h selon l'entreprise), formation de 4 h l'après-midi ;
+ * Décisions de Williams du 18/11/2026 reprises ici : l'audit convient aux entreprises de 2 à 250 salariés, la formation de l'après-midi va jusqu'à 15 personnes
+ * (correction du 20/11/2026) ; audit le matin (2 à 4 h selon l'entreprise), formation de 4 h l'après-midi ;
  * garantie gardée (« Si la Journée IA n'identifie pas des gains d'au moins 3 fois son prix, elle
  * est remboursée », distincte d'une « garantie de résultat », qu'on ne donne pas) ; les {{PRIX}}
  * sont déduits d'un devis d'automatisation ou de mise en place signé dans les 60 jours suivant
@@ -20,6 +20,10 @@
  * Volontairement absent : l'audit approfondi (durée non décidée) et le nom du fondateur.
  */
 import { remplacerJetons } from "./journee-ia-commun";
+
+/** Phrase unique sur l'audit approfondi : importée par la page /prix-audit-ia pour ne jamais diverger. */
+export const PHRASE_AUDIT_APPROFONDI =
+  "Un audit plus approfondi, au-delà de la Journée IA, se chiffre sur devis après un premier échange gratuit de 45 minutes.";
 
 export interface QuestionReference {
   readonly id: string;
@@ -46,7 +50,7 @@ export const QUESTIONS_REFERENCE: Readonly<Record<string, QuestionReference>> = 
     id: "ref-journee-prix",
     question: "Combien coûte la Journée IA ?",
     reponse:
-      "La Journée IA d’Axion-IA coûte {{PRIX}}, prix unique, pour une équipe jusqu’à 15 personnes. Elle comprend l’audit du matin (2 à 4 h selon l’entreprise), la formation de 4 h l’après-midi, 3 à 5 priorités écrites le soir, puis le rapport chiffré et le plan d’action sous 3 jours ouvrés. Si la Journée IA n’identifie pas des gains d’au moins 3 fois son prix, elle est remboursée.",
+      "La Journée IA d’Axion-IA coûte {{PRIX}}, prix unique. L’audit du matin convient aux entreprises de 2 à 250 salariés (2 à 4 h selon l’entreprise) ; la formation de 4 h l’après-midi accueille jusqu’à 15 personnes. La journée comprend aussi 3 à 5 priorités écrites le soir, puis le rapport chiffré et le plan d’action sous 3 jours ouvrés. Si la Journée IA n’identifie pas des gains d’au moins 3 fois son prix, elle est remboursée.",
     sujet: "Journée IA",
     source: "src/content/pricing.ts, src/content/journee-ia-commun.ts",
   },
@@ -85,8 +89,7 @@ export const QUESTIONS_REFERENCE: Readonly<Record<string, QuestionReference>> = 
   "ref-audit-prix": {
     id: "ref-audit-prix",
     question: "Combien coûte un audit IA pour une PME ?",
-    reponse:
-      "Un audit IA se fait dans la Journée IA : 2 à 4 h d’audit le matin, suivies de 4 h de formation l’après-midi, pour {{PRIX}}, prix unique. Rien ne se paie en ligne : les modalités figurent dans votre devis écrit. Un audit plus approfondi, au-delà de la Journée IA, se chiffre sur devis après un premier échange gratuit de 45 minutes.",
+    reponse: `Un audit IA se fait dans la Journée IA : 2 à 4 h d’audit le matin, suivies de 4 h de formation l’après-midi, pour {{PRIX}}, prix unique. Rien ne se paie en ligne : les modalités figurent dans votre devis écrit. ${PHRASE_AUDIT_APPROFONDI}`,
     sujet: "audit IA",
     source: "src/content/journee-ia-commun.ts, src/content/pricing.ts",
   },

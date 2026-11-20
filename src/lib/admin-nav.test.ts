@@ -211,7 +211,8 @@ describe("buildAdminNav SSOT", () => {
     // +1 État des fonds OPCO (lot OPCO A5, 2026-10-04) : 169 + 1 = 170.
     // +1 Conformité RGPD (2026-10-10, groupe Société & conformité).
     // +1 Audit de l'existant du blog (lot L10, 2026-10-24, pôle content_gen/qualite) : 177 + 1 = 178.
-    expect(items.length).toBe(178); // +1 Audit de l'existant du blog (lot L10)
+    // +1 lien externe Usine à contenu (Studio) (2026-11-20, groupe content) : 178 + 1 = 179.
+    expect(items.length).toBe(179);
   });
 
   it("prefixes all INTERNAL hrefs with /fr/<adminPrefix>", () => {
@@ -914,6 +915,7 @@ const HREFS_AVANT_REFONTE: ReadonlyArray<string> = [
   "/qualiopi/financements",
   "/qualiopi/cockpit-financier",
   "https://apps.tiime.fr/companies/635824/home",
+  "https://studio.axion-ia.com",
   "/qualiopi/baremes-opco",
   "/qualiopi/etat-des-fonds",
   "/qualiopi/indicateurs",

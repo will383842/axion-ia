@@ -71,8 +71,8 @@ describe("versApercuPrepare : les centimes du serveur sont recopiés, rien n'est
     expect(v.phases.map((p) => p.montantCents)).toEqual(apercu.classique!.phasesCents);
     expect(v.phases.length).toBeGreaterThan(0);
     expect(v.phases.every((p) => p.libelle.endsWith("(TTC)"))).toBe(true);
-    // Libellé aligné sur le PDF : « 1. Acompte, à la signature ».
-    expect(v.phases[0]!.libelle).toMatch(/^1\. .+, à la signature \(TTC\)$/);
+    // Libellé aligné sur le PDF : « 1. Acompte, à la livraison ».
+    expect(v.phases[0]!.libelle).toMatch(/^1\. .+, à la livraison \(TTC\)$/);
     expect(v.phases.reduce((s, p) => s + p.montantCents, 0)).toBe(v.totalTtcCents);
   });
 

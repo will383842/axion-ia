@@ -21,7 +21,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { CGV_VERSION, CGV_VERSION_LIBELLE } from "@/content/cgv-version";
-import { signedDocumentPdfUrl } from "@/lib/r2-storage";
 import { getOrganismeIdentite } from "@/server/qualiopi/documents/organisme";
 import {
   statutDevisDuLien,
@@ -49,6 +48,7 @@ import { codeRequis } from "@/server/qualiopi/documents/signature/contrat-cadre-
 import { PieceSignatureForm } from "@/components/portail/PieceSignatureForm";
 import { lienTelechargement } from "@/lib/content-disposition";
 import { prisma } from "@/lib/prisma";
+import { estEmailSimple } from "@/lib/email-simple";
 
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
@@ -60,33 +60,107 @@ interface PageProps {
   params: Promise<{ locale: string; token: string }>;
 }
 
-const MESSAGE_DEVIS_FERME = {
-  titre: "Ce devis n'est plus ouvert à la signature",
-  detail: "Ce devis ne peut plus être signé en ligne. Contactez votre interlocuteur.",
-};
+/** Écrans d'un lien révoqué dont le devis est refusé ou expiré (sans successeur). */
+const MESSAGES_DEVIS_REFUSE_EXPIRE = {
+  refuse: {
+    titre: "Ce devis a été refusé",
+    detail:
+      "Ce devis a été refusé et ne peut plus être signé. Contactez votre interlocuteur pour en recevoir un nouveau.",
+  },
+  expire: {
+    titre: "Ce devis a expiré",
+    detail:
+      "Ce devis a dépassé sa durée de validité. Contactez votre interlocuteur pour en recevoir un nouveau.",
+  },
+} as const;
 
 /** « le devis » → « Le devis » (début de phrase). */
 function majusculeInitiale(texte: string): string {
   return `${texte.charAt(0).toUpperCase()}${texte.slice(1)}`;
 }
 
-function Message({ titre, detail }: { titre: string; detail: string }) {
+interface Contact {
+  email: string;
+  telephone: string;
+}
+
+/** `tel:` n'accepte ni espaces ni ponctuation : on garde les chiffres et un « + » initial. */
+function hrefTel(telephone: string): string {
+  const t = telephone.trim();
+  return `tel:${t.startsWith("+") ? "+" : ""}${t.replace(/\D/g, "")}`;
+}
+
+function Message({
+  titre,
+  detail,
+  contact,
+  pdfHref,
+}: {
+  titre: string;
+  detail: string;
+  contact?: Contact | undefined;
+  /** Lien gardé par le jeton vers l'exemplaire de CETTE pièce (écran « déjà signé »). */
+  pdfHref?: string | undefined;
+}) {
+  const emailBrut = contact?.email.trim() ?? "";
+  // Pas de lien `mailto:` pour une adresse qui n'a pas une forme simple (injection de paramètres).
+  const email = estEmailSimple(emailBrut) ? emailBrut : "";
+  const telephone = contact?.telephone.trim() ?? "";
   return (
     <div className="mx-auto w-full max-w-md px-4 py-16">
       <h1 className="text-fg text-lg font-semibold">{titre}</h1>
       <p className="text-fg-soft mt-2 text-sm">{detail}</p>
+      {pdfHref !== undefined && (
+        <p className="mt-4 text-sm">
+          <a
+            href={pdfHref}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="underline underline-offset-4"
+          >
+            Revoir le document que vous avez signé (PDF)
+          </a>
+        </p>
+      )}
+      {(email !== "" || telephone !== "") && (
+        <p className="text-fg-soft mt-4 text-sm">
+          {email !== "" && (
+            <>
+              <a href={`mailto:${email}`} className="underline underline-offset-4">
+                {email}
+              </a>
+              {telephone !== "" ? " · " : ""}
+            </>
+          )}
+          {telephone !== "" && (
+            <a href={hrefTel(telephone)} className="underline underline-offset-4">
+              {telephone}
+            </a>
+          )}
+        </p>
+      )}
     </div>
   );
 }
 
 export default async function SignerDevisPage({ params }: PageProps) {
-  const { token } = await params;
+  const { locale, token } = await params;
 
   // Le stub du build SSG ne couvre pas les chemins DB de cette page : early-exit
   // obligatoire (contrat ADR 0026).
   if (process.env["DATABASE_URL"]?.includes("stub.invalid")) notFound();
 
   const verif = await verifierTokenDocument(token);
+
+  // Contact de l'organisme pour les écrans sans issue, lu APRÈS la vérification du jeton : un
+  // lien invalide ne déclenche aucune lecture d'identité. Une identité illisible ne doit jamais
+  // empêcher d'afficher l'écran : on se contente alors de ne pas afficher de contact.
+  const identiteLue = await getOrganismeIdentite().catch(() => null);
+  const contact: Contact | undefined =
+    identiteLue != null
+      ? { email: identiteLue.email ?? "", telephone: identiteLue.telephone ?? "" }
+      : undefined;
+
   if (!verif.ok) {
     // Motifs différenciés : « votre lien a expiré » est actionnable pour le
     // client et n'apprend rien à un attaquant — ces motifs ne sont atteignables
@@ -103,22 +177,26 @@ export default async function SignerDevisPage({ params }: PageProps) {
           "Une version révisée du devis vous a probablement été adressée. Utilisez le lien le plus récent, ou contactez votre interlocuteur.",
       },
     };
-    // 🔴 Un lien révoqué ou périmé parce que le devis est REFUSÉ ou expiré ne doit pas dire
-    // « une version révisée vous a été adressée » : c'est faux. Message neutre, sans motif.
+    // 🔴 Refuser un devis révoque ses liens : le client arrive ici, pas sur l'écran « refusé ».
+    // Un lien révoqué ou périmé parce que le devis est REFUSÉ ou expiré ne doit pas dire
+    // « une version révisée vous a été adressée » : c'est faux. On rend le message « refusé »
+    // ou « expiré ». Les autres cas (remplacement par une version révisée, annulation…) gardent
+    // les messages « lien désactivé » / « lien expiré » ci-dessous, sans nommer de motif de refus.
     if (verif.raison === "revoque" || verif.raison === "expire") {
       const statutDevis = await statutDevisDuLien(token);
       if (statutDevis === "refuse" || statutDevis === "expire") {
-        return <Message titre={MESSAGE_DEVIS_FERME.titre} detail={MESSAGE_DEVIS_FERME.detail} />;
+        const m = MESSAGES_DEVIS_REFUSE_EXPIRE[statutDevis];
+        return <Message titre={m.titre} detail={m.detail} contact={contact} />;
       }
     }
     const m = messages[verif.raison] ?? {
       titre: "Lien invalide",
       detail: "Ce lien ne permet pas d'accéder à un devis à signer.",
     };
-    return <Message titre={m.titre} detail={m.detail} />;
+    return <Message titre={m.titre} detail={m.detail} contact={contact} />;
   }
 
-  const identite = await getOrganismeIdentite();
+  const identite = identiteLue ?? (await getOrganismeIdentite());
 
   // 🔴 La pièce d'abord, et son CIRCUIT depuis le SSOT. Cette page ne connaît
   // aucune matrice : elle lit ce que `parties-requises.ts` déclare. Une liste
@@ -157,6 +235,11 @@ export default async function SignerDevisPage({ params }: PageProps) {
   const circuit = circuitPour(piece.type);
   if (circuit === null) notFound();
 
+  // Lien de lecture du PDF : une route de l'application gardée par le MÊME jeton, qui signe
+  // l'URL de stockage au moment du clic. Rien de signé au rendu : un lecteur lent ne tombe plus
+  // sur une URL périmée.
+  const pdfHref = `/${locale}/portail/signer/${token}/pdf`;
+
   // Numéro montré sur les écrans de fin : le client a reçu un devis AXI-DEV-…, pas la référence
   // interne AXI-DOC-…. Lu seulement dans les retours anticipés (aucune lecture sur le chemin normal).
   // Aucun devis lié (ancien devis révisé) : repli sur le numéro de la pièce.
@@ -178,6 +261,7 @@ export default async function SignerDevisPage({ params }: PageProps) {
   if (piece.annuleeAt !== null) {
     return (
       <Message
+        contact={contact}
         titre="Cette pièce a été annulée"
         detail={`${majusculeInitiale(circuit.libelleDefini)} ${await numeroAffiche()} ne fait plus foi et ne peut plus être ${circuit.genre === "masculin" ? "signé" : "signée"}. ${identite.raisonSociale} vous adressera la version qui ${circuit.genre === "masculin" ? "le" : "la"} remplace.`}
       />
@@ -193,6 +277,8 @@ export default async function SignerDevisPage({ params }: PageProps) {
   if (dejaSignee > 0) {
     return (
       <Message
+        contact={contact}
+        pdfHref={piece.pdfUrl != null && piece.pdfUrl !== "" ? pdfHref : undefined}
         titre="Vous avez déjà signé cette pièce"
         detail={`Votre signature sur ${circuit.libelleDefini} ${await numeroAffiche()} est enregistrée. ${identite.raisonSociale} vous adressera l'exemplaire contresigné.`}
       />
@@ -217,8 +303,12 @@ export default async function SignerDevisPage({ params }: PageProps) {
           detail: `Le devis ${devis.numero} a déjà fait l'objet d'un accord. Aucune nouvelle signature n'est nécessaire.`,
         },
         expire: {
-          titre: "Ce devis n'est plus en cours",
-          detail: `Le devis ${devis.numero} a expiré ou a été refusé. Contactez votre interlocuteur pour en recevoir un nouveau.`,
+          titre: "Ce devis a expiré",
+          detail: `Le devis ${devis.numero} a dépassé sa durée de validité. Contactez votre interlocuteur pour en recevoir un nouveau.`,
+        },
+        refuse: {
+          titre: "Ce devis a été refusé",
+          detail: `Le devis ${devis.numero} a été refusé et ne peut plus être signé. Contactez votre interlocuteur pour en recevoir un nouveau.`,
         },
         brouillon: {
           titre: "Ce devis n'a pas encore été émis",
@@ -226,7 +316,7 @@ export default async function SignerDevisPage({ params }: PageProps) {
         },
       };
       const m = messages[devis.statutBloquant]!;
-      return <Message titre={m.titre} detail={m.detail} />;
+      return <Message titre={m.titre} detail={m.detail} contact={contact} />;
     }
   }
 
@@ -238,12 +328,13 @@ export default async function SignerDevisPage({ params }: PageProps) {
   if (piece.type === "devis") {
     const lie = await prisma.devis.findFirst({
       where: { documentGenereId: verif.documentGenereId },
-      select: { numero: true, offre: true, offreSha256: true, dateValidite: true },
+      select: { numero: true, clientId: true, offre: true, offreSha256: true, dateValidite: true },
     });
     if (lie !== null && lie.offre != null && lie.offreSha256 != null) {
-      if (!(await formulesActives())) {
+      if (!(await formulesActives(undefined, { clientId: lie.clientId }))) {
         return (
           <Message
+            contact={contact}
             titre="Ce devis n'est pas disponible pour le moment"
             detail="Contactez votre interlocuteur chez Axion-IA : ce devis ne peut pas encore être signé en ligne."
           />
@@ -252,6 +343,7 @@ export default async function SignerDevisPage({ params }: PageProps) {
       if (!devisSignableParFormules(lie, new Date())) {
         return (
           <Message
+            contact={contact}
             titre="Ce devis a dépassé sa date de validité"
             detail={`Le devis ${lie.numero} ne peut plus être signé. Contactez votre interlocuteur pour en recevoir un nouveau.`}
           />
@@ -261,6 +353,7 @@ export default async function SignerDevisPage({ params }: PageProps) {
       if (!offre.success || sha256Offre(offre.data) !== lie.offreSha256) {
         return (
           <Message
+            contact={contact}
             titre="Ce devis ne peut pas être affiché"
             detail="Contactez votre interlocuteur chez Axion-IA pour en recevoir une version à jour."
           />
@@ -275,33 +368,15 @@ export default async function SignerDevisPage({ params }: PageProps) {
   if (devis !== null && devis.chiffrageIndisponible && offreAffichee === null) {
     return (
       <Message
+        contact={contact}
         titre="Ce devis ne peut pas être affiché"
         detail="Contactez votre interlocuteur chez Axion-IA pour en recevoir une version à jour."
       />
     );
   }
 
-  // Le PDF EXACT que la signature scellera. URL signée COURTE — 15 min suffisent
-  // pour lire avant de signer, et un lien public ne doit pas laisser fuiter une
-  // pièce contractuelle durablement.
-  //
-  // 🔴 2026-08-01 — l'intention ci-dessus était juste, l'argument était faux :
-  // on passait `piece.pdfUrl` à `getSignedUrlR2(key, …)`, donc une URL en guise
-  // de CLÉ R2. La pré-signature étant un calcul hors-ligne, rien ne levait — le
-  // `try/catch` ne se déclenchait jamais — et le lien affiché renvoyait
-  // `NoSuchKey`. Le signataire ne pouvait PAS lire la pièce, alors que la
-  // mention qu'il accepte affirme qu'il a « pu en prendre connaissance dans son
-  // intégralité avant de signer ». `signedDocumentPdfUrl` prend le document,
-  // plus une chaîne : la confusion n'est plus exprimable.
-  let pdfUrl: string | null = null;
-  if (piece.pdfUrl != null && piece.pdfUrl !== "") {
-    try {
-      pdfUrl = await signedDocumentPdfUrl(piece, 15 * 60);
-    } catch {
-      // Un lien de lecture indisponible ne doit pas empêcher de signer.
-      pdfUrl = null;
-    }
-  }
+  // Le PDF EXACT que la signature scellera, via la route gardée par le jeton (`./pdf`).
+  const pdfUrl: string | null = piece.pdfUrl != null && piece.pdfUrl !== "" ? pdfHref : null;
 
   // ── À l'attention de QUI ──
   //
@@ -350,6 +425,7 @@ export default async function SignerDevisPage({ params }: PageProps) {
       pieceLibelleDefini={circuit.libelleDefini}
       dateValiditeLisible={devis?.dateValiditeLisible ?? null}
       organismeNom={identite.raisonSociale}
+      organismeEmail={identite.email ?? ""}
       clientRaisonSociale={destinataire}
       signataireNom={verif.signataireNom}
       signataireQualite={verif.signataireQualite}

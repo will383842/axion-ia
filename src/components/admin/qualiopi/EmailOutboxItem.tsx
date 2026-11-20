@@ -19,6 +19,8 @@
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { libelleTemplateEmail } from "@/server/email/outbox-policy";
+import { AdminBadge } from "@/components/admin/ui/AdminBadge";
+import { AdminCard } from "@/components/admin/ui/AdminCard";
 
 type ActionResult<T> = { data: T } | { error: string };
 
@@ -32,6 +34,12 @@ export interface EmailOutboxItemProps {
   /** Résumé lisible de la charge utile, rendu côté serveur. */
   apercu: readonly { label: string; valeur: string }[];
   nbPiecesJointes: number;
+  /** Message déjà prévu dans la charge de l'e-mail (affiché en lecture ; le champ reste vide). */
+  messageInitial?: string;
+  /** Page console du devis (e-mail d'envoi de devis seulement). */
+  lienDevis?: string | null;
+  /** PDF du devis, route admin de documents. */
+  lienPdf?: string | null;
   /** Vrai si le gabarit lit le message personnalisé (liste : `outbox-policy.ts`). */
   accepteMessagePersonnalise: boolean;
   approuverAction: (input: {
@@ -54,12 +62,17 @@ export function EmailOutboxItem({
   creeLe,
   apercu,
   nbPiecesJointes,
+  messageInitial = "",
+  lienDevis = null,
+  lienPdf = null,
   accepteMessagePersonnalise,
   approuverAction,
   refuserAction,
 }: EmailOutboxItemProps): React.ReactElement {
   const router = useRouter();
   const [sujet, setSujet] = useState(sujetInitial);
+  // Le champ reste vide : le serveur garde le message déjà prévu tant qu'aucun texte n'est saisi
+  // (vider un champ pré-rempli n'aurait donc rien retiré). Un texte saisi le remplace.
   const [message, setMessage] = useState("");
   const [motifRefus, setMotifRefus] = useState("");
   const [modeRefus, setModeRefus] = useState(false);
@@ -67,10 +80,11 @@ export function EmailOutboxItem({
   const [erreur, setErreur] = useState<string | null>(null);
   const [isPending, startTransition] = useTransition();
 
+  // Champs de 44 px, recopiés de l'assistant devis (pas d'import croisé entre composants).
   const champ =
-    "w-full rounded-[var(--radius-admin-sm)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-surface)] px-[var(--space-admin-3)] py-[var(--space-admin-2)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg)]";
+    "min-h-[44px] w-full rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border-strong)] bg-[color:var(--color-admin-paper)] px-3 py-2 text-[length:var(--text-admin-base)] focus-visible:ring-2 focus-visible:ring-[color:var(--color-admin-ring)] focus-visible:outline-none";
   const bouton =
-    "rounded-[var(--radius-admin-sm)] px-[var(--space-admin-4)] py-[var(--space-admin-2)] text-[length:var(--text-admin-sm)] font-semibold disabled:opacity-50";
+    "min-h-[44px] rounded-[var(--radius-admin-md)] px-[var(--space-admin-4)] py-[var(--space-admin-2)] text-[length:var(--text-admin-sm)] font-semibold disabled:opacity-50";
 
   function approuver() {
     setErreur(null);
@@ -110,32 +124,92 @@ export function EmailOutboxItem({
     });
   }
 
+  const lignes = apercu.filter((l) => l.label !== "Attention");
+  const attention = apercu.find((l) => l.label === "Attention");
+
   return (
-    <article className="rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-bg)] p-[var(--space-admin-4)]">
-      <header className="mb-[var(--space-admin-3)] flex flex-wrap items-baseline justify-between gap-[var(--space-admin-2)]">
-        <div>
-          <p className="text-[length:var(--text-admin-sm)] font-semibold text-[color:var(--color-admin-fg)]">
-            {destinataire}
-            {clientNom ? (
-              <span className="font-normal text-[color:var(--color-admin-fg-muted)]">
-                {" "}
-                · {clientNom}
-              </span>
-            ) : null}
-          </p>
-          <p className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
-            {libelleTemplateEmail(template)} · en attente depuis le {creeLe}
-          </p>
-        </div>
-        {nbPiecesJointes > 0 && (
-          <span className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
-            {nbPiecesJointes} pièce{nbPiecesJointes > 1 ? "s" : ""} jointe
-            {nbPiecesJointes > 1 ? "s" : ""} — non modifiable{nbPiecesJointes > 1 ? "s" : ""}
-          </span>
-        )}
+    <AdminCard as="article" className="flex flex-col gap-[var(--space-admin-3)]">
+      <header className="flex flex-col gap-[var(--space-admin-2)]">
+        <h3 className="m-0 text-[length:var(--text-admin-lg)] font-semibold text-[color:var(--color-admin-fg)]">
+          {sujet}
+        </h3>
+        <p className="m-0 flex flex-wrap gap-[var(--space-admin-2)]">
+          <AdminBadge tone="info" plein>
+            {libelleTemplateEmail(template)}
+          </AdminBadge>
+          {clientNom ? (
+            <AdminBadge tone="neutral" plein>
+              {clientNom}
+            </AdminBadge>
+          ) : null}
+          <AdminBadge tone="outline">En attente depuis le {creeLe}</AdminBadge>
+          {nbPiecesJointes > 0 && (
+            <AdminBadge tone="outline">
+              {nbPiecesJointes} pièce{nbPiecesJointes > 1 ? "s" : ""} jointe
+              {nbPiecesJointes > 1 ? "s" : ""} — non modifiable{nbPiecesJointes > 1 ? "s" : ""}
+            </AdminBadge>
+          )}
+        </p>
+        <p className="m-0 text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]">
+          Destinataire :{" "}
+          <span className="font-semibold text-[color:var(--color-admin-fg)]">{destinataire}</span>
+        </p>
       </header>
 
-      <label className="mb-[var(--space-admin-3)] block">
+      {attention && (
+        <p className="m-0 rounded-[var(--radius-admin-md)] bg-[color:var(--color-admin-warning-soft)] px-[var(--space-admin-3)] py-[var(--space-admin-2)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-warning-fg)]">
+          <span className="font-semibold">Attention : </span>
+          {attention.valeur}
+        </p>
+      )}
+
+      {lignes.length > 0 && (
+        <dl className="m-0 grid gap-[var(--space-admin-3)] rounded-[var(--radius-admin-md)] bg-[color:var(--color-admin-surface)] p-[var(--space-admin-3)] sm:grid-cols-2">
+          {lignes.map((l) => (
+            <div key={l.label}>
+              <dt className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
+                {l.label}
+              </dt>
+              <dd
+                className={`m-0 text-[color:var(--color-admin-fg)] ${
+                  l.label === "Montant TTC" || l.label === "Montant dû" || l.label === "Devis n°"
+                    ? "text-[length:var(--text-admin-lg)] font-semibold"
+                    : "text-[length:var(--text-admin-base)]"
+                }`}
+              >
+                {l.valeur}
+              </dd>
+            </div>
+          ))}
+        </dl>
+      )}
+
+      {(lienDevis || lienPdf) && (
+        <p className="m-0 flex flex-wrap gap-[var(--space-admin-2)]">
+          {lienDevis && (
+            <a
+              href={lienDevis}
+              target="_blank"
+              rel="noopener"
+              className={`${bouton} inline-flex items-center border border-[color:var(--color-admin-border)] text-[color:var(--color-admin-fg)]`}
+            >
+              Voir le devis
+            </a>
+          )}
+          {lienPdf && (
+            <a
+              href={lienPdf}
+              target="_blank"
+              rel="noopener"
+              className={`${bouton} inline-flex items-center border border-[color:var(--color-admin-border)] text-[color:var(--color-admin-fg)]`}
+            >
+              Ouvrir le PDF
+            </a>
+          )}
+        </p>
+      )}
+
+      <label className="block">
         <span className="mb-[var(--space-admin-1)] block text-[length:var(--text-admin-xs)] font-medium text-[color:var(--color-admin-fg-muted)]">
           Objet
         </span>
@@ -148,21 +222,17 @@ export function EmailOutboxItem({
         />
       </label>
 
-      {apercu.length > 0 && (
-        <dl className="mb-[var(--space-admin-3)] grid gap-[var(--space-admin-1)] rounded-[var(--radius-admin-sm)] bg-[color:var(--color-admin-surface)] p-[var(--space-admin-3)] sm:grid-cols-2">
-          {apercu.map((l) => (
-            <div key={l.label} className="text-[length:var(--text-admin-xs)]">
-              <dt className="inline text-[color:var(--color-admin-fg-muted)]">{l.label} : </dt>
-              <dd className="inline text-[color:var(--color-admin-fg)]">{l.valeur}</dd>
-            </div>
-          ))}
-        </dl>
+      {accepteMessagePersonnalise && messageInitial.trim() !== "" && (
+        <p className="m-0 rounded-[var(--radius-admin-md)] bg-[color:var(--color-admin-surface)] p-[var(--space-admin-3)] text-[length:var(--text-admin-sm)] whitespace-pre-line text-[color:var(--color-admin-fg)]">
+          <span className="font-semibold">Message déjà prévu dans l’e-mail : </span>
+          {messageInitial}
+        </p>
       )}
 
       {accepteMessagePersonnalise && (
-        <label className="mb-[var(--space-admin-3)] block">
-          <span className="mb-[var(--space-admin-1)] block text-[length:var(--text-admin-xs)] font-medium text-[color:var(--color-admin-fg-muted)]">
-            Message personnalisé (facultatif) — inséré dans le corps de l&apos;email
+        <label className="block">
+          <span className="mb-[var(--space-admin-1)] block text-[length:var(--text-admin-sm)] font-medium text-[color:var(--color-admin-fg)]">
+            Message personnalisé (facultatif)
           </span>
           <textarea
             value={message}
@@ -173,13 +243,18 @@ export function EmailOutboxItem({
             placeholder="Ex. : « Comme convenu par téléphone, un règlement au 15 du mois nous convient. »"
             className={champ}
           />
+          <span className="mt-[var(--space-admin-1)] block text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
+            {messageInitial.trim() !== ""
+              ? "Un texte saisi ici remplace le message prévu ; laisser vide le garde."
+              : "Inséré dans le corps de l’e-mail."}
+          </span>
         </label>
       )}
 
       {erreur && (
         <p
           role="alert"
-          className="mb-[var(--space-admin-3)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-error)]"
+          className="m-0 text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-error)]"
         >
           {erreur}
         </p>
@@ -197,7 +272,7 @@ export function EmailOutboxItem({
             aria-label="Motif du refus"
             className={champ}
           />
-          <div className="flex gap-[var(--space-admin-2)]">
+          <div className="flex flex-wrap gap-[var(--space-admin-2)]">
             <button
               type="button"
               onClick={refuser}
@@ -217,7 +292,7 @@ export function EmailOutboxItem({
           </div>
         </div>
       ) : (
-        <div className="flex flex-wrap items-center gap-[var(--space-admin-3)]">
+        <div className="flex flex-col gap-[var(--space-admin-3)] border-t border-[color:var(--color-admin-border)] pt-[var(--space-admin-3)] sm:flex-row sm:flex-wrap sm:items-center">
           {/* Lot 3 (2026-09-02) : cette case est l'unique garde-fou avant un
               envoi irréversible, et elle faisait ~13 px. 24 px pour la case,
               44 px de hauteur pour le libellé cliquable qui l'entoure. */}
@@ -243,12 +318,12 @@ export function EmailOutboxItem({
             type="button"
             onClick={() => setModeRefus(true)}
             disabled={isPending}
-            className={`${bouton} border border-[color:var(--color-admin-border)] text-[color:var(--color-admin-fg)]`}
+            className={`${bouton} border border-[color:var(--color-admin-border)] text-[color:var(--color-admin-fg)] sm:ml-auto`}
           >
             Refuser
           </button>
         </div>
       )}
-    </article>
+    </AdminCard>
   );
 }

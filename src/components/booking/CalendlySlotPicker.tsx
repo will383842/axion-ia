@@ -423,9 +423,15 @@ export function CalendlySlotPicker({
                                 ? urlDuFormulaire(locale, slot.startIso, parametresDuChoix)
                                 : avecUtmContent(avecCouleursAxion(slot.schedulingUrl), suivi)
                           }
+                          // 🔴 `nofollow` sur CHAQUE créneau (piège à robots, 2026-11-20) :
+                          // un créneau = une URL unique (`?debut=…&rdv&depuis&utm_*`),
+                          // renouvelée tous les quarts d'heure sur 32 jours. Suivis, ces
+                          // liens ont fait 548 580 requêtes de robots d'IA en 7 jours sur
+                          // `/fr/appel/reserver` ; expirés, ils répondent 307 vers `/appel`,
+                          // qui en émet de nouveaux. Doublé par `robots.txt` (`robots.ts`).
                           {...(lienDuCreneau || reservationDirecte
-                            ? {}
-                            : { target: "_blank", rel: "noopener noreferrer" })}
+                            ? { rel: "nofollow" }
+                            : { target: "_blank", rel: "nofollow noopener noreferrer" })}
                           data-cta="appel_slot_pick"
                           aria-label={
                             isFr

@@ -56,7 +56,11 @@ vi.mock("@/server/qualiopi/offres/offres", () => ({
   ]),
 }));
 const formules = vi.hoisted(() => vi.fn());
-vi.mock("@/server/qualiopi/devis/interrupteur-formules", () => ({ formulesActives: formules }));
+// L'interrupteur est lu à l'état brut (3 états) ; `formules` vrai = « actif ».
+vi.mock("@/server/qualiopi/socle/interrupteurs", async (importOriginal) => ({
+  ...(await importOriginal<typeof import("@/server/qualiopi/socle/interrupteurs")>()),
+  lireInterrupteurQualiopi: async () => ((await formules()) ? "actif" : "eteint"),
+}));
 vi.mock("@/server/qualiopi/config/site-settings", () => ({
   getQualiopiConfig: vi.fn(async (k: string) => (k === "regime_tva" ? "assujetti" : 20)),
 }));

@@ -23,3 +23,14 @@ export const pasSigneParLeClient = {
     { documentGenere: { signatures: { none: { partie: "client", revokedAt: null } } } },
   ],
 } satisfies Prisma.DevisWhereInput;
+
+/**
+ * Complément POSITIF de `pasSigneParLeClient` : le client a signé (signature non révoquée) sur une
+ * pièce non annulée. Le devis n'attend plus que la contresignature de l'organisme.
+ */
+export const signeParLeClient = {
+  documentGenere: {
+    annuleeAt: null,
+    signatures: { some: { partie: "client", revokedAt: null } },
+  },
+} satisfies Prisma.DevisWhereInput;

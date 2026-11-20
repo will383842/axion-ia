@@ -79,7 +79,7 @@ const MOTS_INTERDITS: ReadonlyArray<RegExp> = [
 ];
 
 /** Jetons communs permis dans la prose sans figurer dans un champ chiffré. */
-const NOMBRES_COMMUNS = new Set(["2", "3", "4", "15", "45", "2025", "31"]);
+const NOMBRES_COMMUNS = new Set(["2", "3", "4", "15", "250", "45", "2025", "31"]);
 
 const nbMots = (t: string) => t.trim().split(/\s+/).length;
 
