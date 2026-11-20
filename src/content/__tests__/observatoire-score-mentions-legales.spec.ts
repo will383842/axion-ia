@@ -101,11 +101,35 @@ describe("politique de confidentialité : section Observatoire de l'IA", () => {
 });
 
 describe("audit PR-4 : transfert de l'IP, responsable, droits, promesse de comparaison", () => {
-  it("FR et EN : IP chez Cloudflare (États-Unis) et empreinte gardée 10 minutes", () => {
-    expect(section("fr").body).toMatch(/adresse IP est transmise à Cloudflare \(États-Unis/);
-    expect(section("fr").body).toContain("gardée 10 minutes");
-    expect(section("en").body).toMatch(/IP address is sent to Cloudflare \(United States/);
-    expect(section("en").body).toContain("kept for 10 minutes");
+  it("FR et EN : Cloudflare contacté dès la case cochée, IP, empreinte 10 minutes (art. 13.1.f)", () => {
+    const fr = section("fr").body;
+    const en = section("en").body;
+    expect(fr).toContain("Dès que vous cochez la case");
+    expect(fr).not.toContain("uniquement au moment de l'envoi");
+    expect(fr).toMatch(/adresse IP et des informations techniques sur votre navigateur/);
+    expect(fr).toMatch(/Cloudflare \(États-Unis/);
+    expect(fr).toContain("Il en va de même lorsque vous ouvrez le formulaire de retrait");
+    expect(fr).toContain("10 minutes après votre dernière tentative");
+    expect(en).toContain("As soon as you tick the box");
+    expect(en).not.toContain("only at submission");
+    expect(en).toMatch(/IP address and technical information about your browser/);
+    expect(en).toMatch(/Cloudflare \(United States/);
+    expect(en).toContain("The same applies when you open the withdrawal form");
+    expect(en).toContain("10 minutes after your last attempt");
+  });
+  it("données : langue de la page et empreinte du code de retrait (jamais le code)", () => {
+    expect(section("fr").body).toContain(
+      "la langue de la page et une empreinte de votre code de retrait (jamais le code lui-même)",
+    );
+    expect(section("en").body).toContain(
+      "the page language and a fingerprint of your withdrawal code (never the code itself)",
+    );
+  });
+  it("D-B : les anciennes réponses ne servent pas à la comparaison ; ancien canal : IP et jour", () => {
+    expect(section("fr").body).toContain("ne sont pas utilisées pour la comparaison du Score");
+    expect(section("en").body).toContain("are not used for the Score comparison");
+    expect(section("fr").body).toContain("l'adresse IP utilisée et le jour de la réponse");
+    expect(section("en").body).toContain("the IP address used and the day");
   });
   it("le responsable porte la raison sociale lue de la source unique", () => {
     for (const l of ["fr", "en"] as const) {
@@ -122,6 +146,8 @@ describe("audit PR-4 : transfert de l'IP, responsable, droits, promesse de compa
       expect(j.observatoire.form.subhook).not.toMatch(
         /dirigeants d[ée]j[àa] interrog|executives already/i,
       );
+      // Aucune promesse de comparaison, quelle que soit la formulation (D-B).
+      expect(j.observatoire.form.subhook).not.toMatch(/compar/i);
     }
   });
 });
