@@ -524,9 +524,8 @@ describe("devis-premier-envoi", () => {
 
   it("OUT-1 : le budget de mise en file tient dans la transaction (lu dans le source)", () => {
     const src = readFileSync(join(__dirname, "lien-a-l-envoi.ts"), "utf8");
-    expect(src).toMatch(/DELAI_MISE_EN_FILE_OUTBOX_MS \+ 5_000 >= 60_000/);
+    expect(src).toMatch(/DELAI_MISE_EN_FILE_OUTBOX_MS \+ 5_000 >= TIMEOUT_TRANSACTION_ENVOI_MS/);
     expect(DELAI_MISE_EN_FILE_OUTBOX_MS + 5_000).toBeLessThan(60_000);
-    expect(src).toMatch(/timeout: 60_000/);
   });
 
   it.each([

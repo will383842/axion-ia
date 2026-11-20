@@ -145,9 +145,12 @@ export class EnvoiOccupe extends Error {
   }
 }
 
-// OUT-1 : la mise en file (connexion comprise : budget total) doit tenir dans la transaction
-// (`timeout: 60_000` plus bas), sinon Prisma la ferme pendant que l'ajout est encore en vol.
-if (DELAI_MISE_EN_FILE_OUTBOX_MS + 5_000 >= 60_000) {
+/** Délai de la transaction qui enfile (Prisma la ferme au-delà : le verrou consultatif tombe). */
+const TIMEOUT_TRANSACTION_ENVOI_MS = 60_000;
+
+// OUT-1 : la mise en file (connexion comprise : budget total) doit tenir dans la transaction,
+// sinon Prisma la ferme pendant que l'ajout est encore en vol.
+if (DELAI_MISE_EN_FILE_OUTBOX_MS + 5_000 >= TIMEOUT_TRANSACTION_ENVOI_MS) {
   throw new Error("lien-a-l-envoi : le budget de mise en file dépasse la transaction");
 }
 
@@ -355,7 +358,7 @@ async function premierEnvoi<R extends VerdictEnfilage>(a: {
           });
           return { type: "envoi", res: verdict };
         },
-        { maxWait: 5_000, timeout: 60_000 },
+        { maxWait: 5_000, timeout: TIMEOUT_TRANSACTION_ENVOI_MS },
       )
       .then(async (r) => {
         if (r.type === "envoi" && etat.verdict !== null) await journaliserEnvoi(acteur, marqueur);
@@ -576,7 +579,7 @@ async function renvoi<R extends VerdictEnfilage>(a: {
         etat.verdict = verdict;
         return { type: "envoi", res: verdict };
       },
-      { maxWait: 5_000, timeout: 60_000 },
+      { maxWait: 5_000, timeout: TIMEOUT_TRANSACTION_ENVOI_MS },
     );
     if (etat.verdict !== null) await journaliserRenvoi(acteur, marqueur);
     return res;
