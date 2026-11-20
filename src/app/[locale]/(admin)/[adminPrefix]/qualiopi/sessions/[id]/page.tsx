@@ -143,6 +143,7 @@ import { AdminBloc } from "@/components/admin/ui/AdminBloc";
 import { AdminBlocRepliable } from "@/components/admin/ui/AdminBlocRepliable";
 import { AdminEmptyState } from "@/components/admin/ui/AdminEmptyState";
 import { TuilesSession } from "./TuilesSession";
+import { CellulesInfosSession } from "./CellulesInfosSession";
 import { AdminBadge } from "@/components/admin/ui/AdminBadge";
 import { Lock, LockOpen } from "lucide-react";
 
@@ -881,10 +882,6 @@ export default async function SessionHubPage({ params, searchParams }: PageProps
   const sessionBase = `${base}/${id}`;
   const dateValidation = new Intl.DateTimeFormat("fr-FR", { dateStyle: "long" });
 
-  const infoLabelCls =
-    "text-[length:var(--text-admin-xs)] tracking-wide text-[color:var(--color-admin-fg-muted)] uppercase";
-  const infoValueCls =
-    "m-0 mt-0.5 text-[length:var(--text-admin-sm)] font-medium text-[color:var(--color-admin-fg)]";
   const subLinkCls =
     "flex items-center gap-[var(--space-admin-2)] rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)] px-[var(--space-admin-4)] py-[var(--space-admin-3)] text-[length:var(--text-admin-sm)] font-medium text-[color:var(--color-admin-accent)] transition-colors hover:bg-[color:var(--color-admin-surface)]";
 
@@ -912,172 +909,68 @@ export default async function SessionHubPage({ params, searchParams }: PageProps
     infos: (
       <>
         {/* ── En-tête de la session ─────────────────────────────────────────── */}
-        <section id="infos" className={`${CLASSE_ANCRE_SECTION}`}>
-          <AdminBloc
-            teinte="bleu"
-            niveau={2}
-            titre={
-              <>
-                Informations générales
-                {trainingSession.estTestInterne && <BadgeEssai />}
-              </>
+        {/* #infos EST le bloc : les cellules sont `#infos > div > div` (E2E 01-presentiel). */}
+        <AdminBloc
+          id="infos"
+          className={CLASSE_ANCRE_SECTION}
+          teinte="bleu"
+          niveau={2}
+          titre={
+            <>
+              Informations générales
+              {trainingSession.estTestInterne && <BadgeEssai />}
+            </>
+          }
+        >
+          {trainingSession.estTestInterne && (
+            <p className="mb-[var(--space-admin-3)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]">
+              Session d&apos;essai interne : pièces numérotées hors suite légale et filigranées,
+              e-mails limités aux adresses de test, aucune facture électronique, commission,
+              synchronisation ni alerte externe. Exclue du BPF, du pilotage et des taux publiés.
+            </p>
+          )}
+          <CellulesInfosSession
+            locale={locale}
+            adminPrefix={adminPrefix}
+            base={base}
+            formation={trainingSession.formation}
+            client={trainingSession.client}
+            modaliteLibelle={MODALITE_LABELS[trainingSession.modalite] ?? trainingSession.modalite}
+            financementLibelle={
+              trainingSession.financementType !== null
+                ? (FINANCEMENT_LABELS[trainingSession.financementType] ??
+                  trainingSession.financementType)
+                : "Non défini"
             }
-          >
-            {trainingSession.estTestInterne && (
-              <p className="mb-[var(--space-admin-3)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]">
-                Session d&apos;essai interne : pièces numérotées hors suite légale et filigranées,
-                e-mails limités aux adresses de test, aucune facture électronique, commission,
-                synchronisation ni alerte externe. Exclue du BPF, du pilotage et des taux publiés.
-              </p>
-            )}
-            <dl className="m-0 grid grid-cols-2 gap-[var(--space-admin-4)] sm:grid-cols-4">
-              {/* Formation */}
-              <div>
-                <dt className={infoLabelCls}>Formation</dt>
-                <dd className={infoValueCls}>
-                  <Link
-                    href={`/${locale}/${adminPrefix}/qualiopi/formations/${trainingSession.formation.id}`}
-                    className="text-[color:var(--color-admin-accent)] underline-offset-2 hover:underline"
-                  >
-                    {trainingSession.formation.numero}
-                  </Link>
-                </dd>
-                <dd className="m-0 text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
-                  {trainingSession.formation.titre}
-                </dd>
-              </div>
-
-              {/* Modalité */}
-              <div>
-                <dt className={infoLabelCls}>Modalité</dt>
-                <dd className={infoValueCls}>
-                  {MODALITE_LABELS[trainingSession.modalite] ?? trainingSession.modalite}
-                </dd>
-              </div>
-
-              {/* Stagiaires — « participant » reste au marketing public, jamais en console. */}
-              <div>
-                <dt className={infoLabelCls}>Stagiaires</dt>
-                <dd className={infoValueCls}>
-                  {trainingSession._count.enrollments} inscrits /{" "}
-                  {trainingSession.nbParticipantsPrevus} prévus
-                </dd>
-                {trainingSession.nbParticipantsReels !== null && (
-                  <dd className="m-0 text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
-                    {trainingSession.nbParticipantsReels} réels
-                  </dd>
-                )}
-              </div>
-
-              {/* Montant HT */}
-              <div>
-                <dt className={infoLabelCls}>Montant HT</dt>
-                <dd className={infoValueCls}>
-                  {(trainingSession.montantHtCents / 100).toLocaleString("fr-FR", {
-                    style: "currency",
-                    currency: "EUR",
-                  })}
-                </dd>
-                {/* Vérification E2E 2026-07-26 — cet écran affirmait « Exonéré TVA »
-                    en dur, juste sous un Montant HT que le PDF facture à 20 %. La
-                    mention suit désormais `qualiopi.regime_tva` et disparaît en
-                    régime assujetti, comme sur les documents. */}
-                {mentionTvaSession !== null && (
-                  <dd className="m-0 text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
-                    {mentionTvaSession}
-                  </dd>
-                )}
-              </div>
-
-              {/* Client */}
-              {trainingSession.client !== null && (
-                <div>
-                  <dt className={infoLabelCls}>Client</dt>
-                  <dd className={infoValueCls}>
-                    {/* 🔴 L2 — menait à la LISTE des clients : on y cherchait le sien. */}
-                    <Link
-                      href={`/${locale}/${adminPrefix}/qualiopi/clients/${trainingSession.client.id}`}
-                      className="text-[color:var(--color-admin-accent)] underline-offset-2 hover:underline"
-                    >
-                      {trainingSession.client.numero}
-                    </Link>
-                  </dd>
-                  <dd className="m-0 text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
-                    {trainingSession.client.raisonSociale}
-                  </dd>
-                </div>
-              )}
-
-              {/* Financement */}
-              <div>
-                <dt className={infoLabelCls}>Financement</dt>
-                <dd className={infoValueCls}>
-                  {trainingSession.financementType !== null
-                    ? (FINANCEMENT_LABELS[trainingSession.financementType] ??
-                      trainingSession.financementType)
-                    : "Non défini"}
-                </dd>
-              </div>
-
-              {/* Durée réelle */}
-              {trainingSession.dureeReelleHeures !== null && (
-                <div>
-                  <dt className={infoLabelCls}>Durée réelle</dt>
-                  <dd className={infoValueCls}>{trainingSession.dureeReelleHeures} h</dd>
-                </div>
-              )}
-
-              {/* Session parente (récurrence) */}
-              {trainingSession.sessionParentId !== null && (
-                <div>
-                  <dt className={infoLabelCls}>Session parente</dt>
-                  <dd className={infoValueCls}>
-                    <Link
-                      href={`${base}/${trainingSession.sessionParentId}`}
-                      className="text-[color:var(--color-admin-accent)] underline-offset-2 hover:underline"
-                    >
-                      Voir la session parente
-                    </Link>
-                  </dd>
-                </div>
-              )}
-
-              {/* Session reportée */}
-              {trainingSession.sessionReporteeId !== null && (
-                <div>
-                  <dt className={infoLabelCls}>Reporte la session</dt>
-                  <dd className={infoValueCls}>
-                    <Link
-                      href={`${base}/${trainingSession.sessionReporteeId}`}
-                      className="text-[color:var(--color-admin-accent)] underline-offset-2 hover:underline"
-                    >
-                      Voir la session d&apos;origine
-                    </Link>
-                  </dd>
-                </div>
-              )}
-            </dl>
-            <ContactEtConflitSession
-              adminPrefix={adminPrefix}
-              contact={
-                trainingSession.client !== null
-                  ? {
-                      nom: trainingSession.client.contactNom,
-                      fonction: trainingSession.client.contactFonction,
-                      telephone: trainingSession.client.contactTelephone,
-                      email: trainingSession.client.contactEmail,
-                    }
-                  : null
-              }
-              formateurNom={
-                allTrainers
-                  .filter((t) => t.id === trainingSession.formateurPrincipalId)
-                  .map((t) => `${t.prenom} ${t.nom}`.trim())[0] ?? null
-              }
-              conflits={conflitsFormateur}
-            />
-          </AdminBloc>
-        </section>
+            inscrits={trainingSession._count.enrollments}
+            prevus={trainingSession.nbParticipantsPrevus}
+            reels={trainingSession.nbParticipantsReels}
+            montantHtCents={trainingSession.montantHtCents}
+            mentionTva={mentionTvaSession}
+            dureeReelleHeures={trainingSession.dureeReelleHeures}
+            sessionParentId={trainingSession.sessionParentId}
+            sessionReporteeId={trainingSession.sessionReporteeId}
+          />
+          <ContactEtConflitSession
+            adminPrefix={adminPrefix}
+            contact={
+              trainingSession.client !== null
+                ? {
+                    nom: trainingSession.client.contactNom,
+                    fonction: trainingSession.client.contactFonction,
+                    telephone: trainingSession.client.contactTelephone,
+                    email: trainingSession.client.contactEmail,
+                  }
+                : null
+            }
+            formateurNom={
+              allTrainers
+                .filter((t) => t.id === trainingSession.formateurPrincipalId)
+                .map((t) => `${t.prenom} ${t.nom}`.trim())[0] ?? null
+            }
+            conflits={conflitsFormateur}
+          />
+        </AdminBloc>
         {/* QNC L03 — recueil du besoin (temps 1) : rien tant que `qualiopi.recueil.actif`
               est éteint pour cette session. */}
         <RecueilBesoinSession sessionId={id} />

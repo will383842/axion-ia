@@ -13,8 +13,8 @@ describe("fiche d'une session : refonte visuelle", () => {
   });
 
   it("chaque bloc de la fiche est un AdminBloc dans sa section ancrée, plus de titre maison", () => {
+    expect(SRC).toMatch(/<AdminBloc\s+id="infos"\s+className=\{CLASSE_ANCRE_SECTION\}/);
     for (const id of [
-      "infos",
       "checklist",
       "cycle-de-vie",
       "dates",
@@ -39,8 +39,9 @@ describe("fiche d'une session : refonte visuelle", () => {
     );
   });
 
-  it("informations générales en liste de définitions", () => {
-    expect(SRC).toContain("<dl ");
+  it("informations générales : cellules div (contrat E2E), pas de liste de définitions", () => {
+    expect(SRC).toContain("<CellulesInfosSession");
+    expect(SRC).not.toContain("<dl ");
   });
 
   it("état vide du verrou et explications repliées en composants partagés", () => {
