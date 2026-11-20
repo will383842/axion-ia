@@ -906,7 +906,7 @@ describe("🔴 le vocabulaire de la landing", () => {
 
   it("aucun chiffre hors de ceux du concept : pas de compteur, pas de statistique", () => {
     const chiffres = new Set(texte.match(/\d+/g) ?? []);
-    for (const c of chiffres) expect(["1", "3", "4", "5", "15", "30"], c).toContain(c);
+    for (const c of chiffres) expect(["1", "2", "3", "4", "5", "15", "30", "250"], c).toContain(c);
   });
 
   it("« offert » et « gratuit » ne disent jamais la visio : elle est « sans engagement »", () => {

@@ -27,6 +27,8 @@ interface Props {
   pingAction: () => Promise<PingResult>;
   /** Chemins réellement notifiés — dérivés de la liste envoyée. */
   pagesNotifiees: ReadonlyArray<string>;
+  /** Bloc « Visites venues des IA » (Server Component rendu par la page). */
+  blocVisitesIA?: React.ReactNode;
 }
 
 function statusPill(status: Status, label?: string) {
@@ -43,6 +45,7 @@ export function AnalyticsV2({
   indexNowConfigured,
   pingAction,
   pagesNotifiees,
+  blocVisitesIA,
 }: Props): React.ReactElement {
   return (
     <AdminPageShell>
@@ -111,6 +114,8 @@ export function AnalyticsV2({
           </>
         )}
       </AdminCard>
+
+      {blocVisitesIA}
 
       <AdminCard className="mb-[var(--space-admin-5)]">
         <h2 className="admin-h2">Vérification moteurs de recherche</h2>
