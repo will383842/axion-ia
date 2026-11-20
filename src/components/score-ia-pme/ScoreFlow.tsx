@@ -237,7 +237,11 @@ export function ScoreFlow({
                     {titreGroupe ? (
                       <p className="text-ink/70 pt-3 text-sm font-semibold">{titreGroupe}</p>
                     ) : null}
-                    <label className="border-ink/20 flex min-h-[44px] cursor-pointer items-center gap-3 rounded-lg border bg-white px-4 py-2">
+                    <label
+                      className={`border-ink/20 flex min-h-[44px] cursor-pointer items-center gap-3 rounded-lg border bg-white px-4 py-2 ${
+                        o.value === SECTEUR_AUTRE ? "mt-3" : ""
+                      }`}
+                    >
                       <input
                         type={q.type === "multi" ? "checkbox" : "radio"}
                         name={q.id}

@@ -138,4 +138,18 @@ describe("accessibilité : retouches de l'audit PR-3", () => {
     expect(document.querySelectorAll("#observatoire").length).toBe(1);
     expect(document.querySelectorAll("#observatoire-ajout").length).toBe(1);
   });
+
+  it("« Autre secteur » est séparé du dernier groupe (espacement avant l'option)", async () => {
+    const user = userEvent.setup();
+    render(<ScoreFlow {...props()} />);
+    await user.click(screen.getByRole("button", { name: "Commencer" }));
+    let autre: HTMLElement | null = null;
+    for (let i = 0; i < NB_QUESTIONS && !autre; i += 1) {
+      autre = screen.getByRole("group").querySelector<HTMLElement>('input[value="autre"]');
+      if (!autre) await repondreEtSuivre(user);
+    }
+    expect(autre).not.toBeNull();
+    const etiquette = (autre as HTMLElement).closest("label") as HTMLElement;
+    expect(etiquette.className).toMatch(/\bmt-3\b/);
+  });
 });
