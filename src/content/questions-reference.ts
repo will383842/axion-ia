@@ -21,6 +21,10 @@
  */
 import { remplacerJetons } from "./journee-ia-commun";
 
+/** Phrase unique sur l'audit approfondi : importée par la page /prix-audit-ia pour ne jamais diverger. */
+export const PHRASE_AUDIT_APPROFONDI =
+  "Un audit plus approfondi, au-delà de la Journée IA, se chiffre sur devis après un premier échange gratuit de 45 minutes.";
+
 export interface QuestionReference {
   readonly id: string;
   readonly question: string;
@@ -85,8 +89,7 @@ export const QUESTIONS_REFERENCE: Readonly<Record<string, QuestionReference>> = 
   "ref-audit-prix": {
     id: "ref-audit-prix",
     question: "Combien coûte un audit IA pour une PME ?",
-    reponse:
-      "Un audit IA se fait dans la Journée IA : 2 à 4 h d’audit le matin, suivies de 4 h de formation l’après-midi, pour {{PRIX}}, prix unique. Rien ne se paie en ligne : les modalités figurent dans votre devis écrit. Un audit plus approfondi, au-delà de la Journée IA, se chiffre sur devis après un premier échange gratuit de 45 minutes.",
+    reponse: `Un audit IA se fait dans la Journée IA : 2 à 4 h d’audit le matin, suivies de 4 h de formation l’après-midi, pour {{PRIX}}, prix unique. Rien ne se paie en ligne : les modalités figurent dans votre devis écrit. ${PHRASE_AUDIT_APPROFONDI}`,
     sujet: "audit IA",
     source: "src/content/journee-ia-commun.ts, src/content/pricing.ts",
   },

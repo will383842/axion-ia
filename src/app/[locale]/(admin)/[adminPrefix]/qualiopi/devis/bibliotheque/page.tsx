@@ -32,7 +32,7 @@ export default async function QualiopiDevisBibliothequePage({ params }: PageProp
   if (!acces.autorise) {
     return <AccesRefuse motif={acces.motif} retourHref={`/${locale}/${adminPrefix}`} />;
   }
-  if (!(await formulesActives())) notFound();
+  if (!(await formulesActives(undefined, { console: true }))) notFound();
   const r = await listerTextesAction();
   const textes = "data" in r ? r.data : [];
 

@@ -72,7 +72,7 @@ export interface DevisConfirmation {
 
 export interface DependancesConfirmation {
   lireDevis(devisId: string): Promise<DevisConfirmation | null>;
-  formulesActives(): Promise<boolean>;
+  formulesActives(clientId: string | null): Promise<boolean>;
   regimeEtTaux(): Promise<{ regime: ReturnType<typeof regimeTvaDepuisConfig>; taux: number }>;
   /** `DocumentGenere.metadata` de la pièce (porte la PHOTO des montants), `null` si introuvable. */
   lireMetadataPiece(documentGenereId: string): Promise<unknown>;
@@ -171,7 +171,7 @@ const dependancesParDefaut: DependancesConfirmation = {
     const { documentGenere, ...reste } = d;
     return { ...reste, exemplaireSigneKey: documentGenere?.exemplaireSigneKey ?? null };
   },
-  formulesActives: () => formulesActives(),
+  formulesActives: (clientId) => formulesActives(undefined, { clientId }),
   regimeEtTaux: async () => ({
     regime: regimeTvaDepuisConfig(await getQualiopiConfig("regime_tva")),
     taux: (await getQualiopiConfig("taux_tva_standard_percent")) || TAUX_TVA_STANDARD,
@@ -262,7 +262,7 @@ export async function envoyerConfirmationCommande(
   if (devis === null) return { envoye: false, raison: "devis_introuvable" };
 
   const aOffre = devis.offre !== null && devis.offre !== undefined;
-  if (aOffre && !(await deps.formulesActives())) {
+  if (aOffre && !(await deps.formulesActives(devis.clientId))) {
     return { envoye: false, raison: "formules_eteintes" };
   }
   // Un devis à formules n'est confirmé qu'une fois ACCEPTÉ, avec son choix recopié.

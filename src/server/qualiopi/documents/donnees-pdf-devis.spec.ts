@@ -4,6 +4,7 @@ vi.mock("./organisme", () => ({ getOrganismeIdentite: vi.fn() }));
 vi.mock("@/server/qualiopi/config/site-settings", () => ({ getQualiopiConfig: vi.fn() }));
 vi.mock("@/server/qualiopi/config/flag", () => ({ isQualiopiCertificationObtenue: vi.fn() }));
 
+import { offreFictive } from "@/server/qualiopi/devis/offre-fixtures.spec-util";
 import { donneesPdfDevis, type DevisPourPdf } from "./donnees-pdf-devis";
 
 const DEVIS: DevisPourPdf = {
@@ -135,8 +136,8 @@ describe("donneesPdfDevis", () => {
 
     it("devis à formules (offre non nulle) : le champ est absent même si la colonne est remplie", () => {
       const d = donneesPdfDevis(
-        { ...DEVIS, offre: { formules: [] }, conditionsParticulieres: "Acompte de 30 %." },
-        ctx,
+        { ...DEVIS, offre: offreFictive(), conditionsParticulieres: "Acompte de 30 %." },
+        { ...ctx, formulesActives: true },
         maintenant,
       );
       expect("conditionsParticulieres" in d).toBe(false);

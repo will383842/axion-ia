@@ -15,7 +15,11 @@ import { isQualiopiCertificationObtenue } from "@/server/qualiopi/config/flag";
 import { getQualiopiConfig } from "@/server/qualiopi/config/site-settings";
 import { listClients } from "@/server/qualiopi/crm/clients";
 import { libelleSalutationEmails } from "@/server/qualiopi/crm/libelle-salutation";
-import { formulesActives } from "@/server/qualiopi/devis/interrupteur-formules";
+import {
+  formulesActivesPourEtat,
+  LOT_DEVIS_FORMULES,
+} from "@/server/qualiopi/devis/interrupteur-formules";
+import { lireInterrupteurQualiopi } from "@/server/qualiopi/socle/interrupteurs";
 import { listOffres } from "@/server/qualiopi/offres/offres";
 import {
   regimeTvaDepuisConfig,
@@ -150,13 +154,17 @@ async function chargerBibliotheque(): Promise<BibliothequeAssistant> {
 export async function chargerAssistantDevis(
   i: EntreeChargeur,
 ): Promise<RedirectionAssistant | ContexteAssistant> {
-  const [clientsBruts, offresBrutes, formulesOn, regimeBrut, tauxBrut] = await Promise.all([
+  const [clientsBruts, offresBrutes, etatFormules, regimeBrut, tauxBrut] = await Promise.all([
     listClients(),
     listOffres({ actifOnly: true }),
-    formulesActives(),
+    lireInterrupteurQualiopi(LOT_DEVIS_FORMULES),
     getQualiopiConfig("regime_tva"),
     getQualiopiConfig("taux_tva_standard_percent"),
   ]);
+  // L'écran propose les formules dès que l'interrupteur n'est pas éteint ; la décision PAR CLIENT
+  // (fiche d'essai ou non, en mode « essai ») est prise côté serveur à l'aperçu et à la
+  // finalisation, qui relisent le client du brouillon.
+  const formulesOn = etatFormules !== "eteint";
   const regimeTva = regimeTvaDepuisConfig(regimeBrut);
   const tauxStandard = tauxBrut || TAUX_TVA_STANDARD;
 
@@ -274,7 +282,7 @@ export async function chargerAssistantDevis(
     const refus = (message: string): RedirectionAssistant =>
       devis.offre === null
         ? { redirection: `${fiche}/corriger`, message, libelleLien: "Corriger le brouillon" }
-        : !formulesOn
+        : !formulesActivesPourEtat(etatFormules, essais.has(devis.clientId))
           ? versFiche(message)
           : {
               redirection: `${fiche}/modifier?sans-assistant=1`,
@@ -317,7 +325,7 @@ export async function chargerAssistantDevis(
         `Ce devis a été modifié hors de l'assistant depuis son dernier enregistrement ici : ${
           devis.offre === null
             ? "corrigez-le depuis son écran de correction."
-            : formulesOn
+            : formulesActivesPourEtat(etatFormules, essais.has(devis.clientId))
               ? "modifiez-le sans l'assistant."
               : "ouvrez sa fiche."
         }`,

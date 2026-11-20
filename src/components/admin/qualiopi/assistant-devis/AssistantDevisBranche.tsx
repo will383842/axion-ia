@@ -17,6 +17,7 @@
  */
 import { useCallback, useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 
+import { adminPath } from "@/lib/admin-path";
 import { apercuAssistantAction } from "@/server/actions/qualiopi/devis-assistant-apercu";
 import {
   creerBrouillonAssistantAction,
@@ -27,6 +28,7 @@ import {
   envoyerDepuisAssistantAction,
   numeroterDevisAssistantAction,
 } from "@/server/actions/qualiopi/devis-assistant-finaliser";
+import { apercuEmailDevisAction } from "@/server/actions/qualiopi/devis-assistant-apercu-email";
 import { listerSourcesPourQuiAction } from "@/server/actions/qualiopi/devis-assistant-sources";
 import type { PayloadAssistantV1 } from "@/server/qualiopi/devis/assistant/payload";
 import { ordonnerSources, type SourcePourQui } from "@/server/qualiopi/devis/assistant/sources";
@@ -42,6 +44,7 @@ import {
   type ResultatSauvegarde,
 } from "./AssistantDevis";
 import { serialiser } from "./etat";
+import type { EmailAEnvoyer } from "./etapes/envoi/EmailEnvoi";
 import { EtapeEnvoi, type ApercuPrepare, type ResultatAction } from "./etapes/envoi/EtapeEnvoi";
 import type { ClientOption } from "./etapes/un/BlocClient";
 import { StatutSauvegarde } from "./StatutSauvegarde";
@@ -318,6 +321,8 @@ export function AssistantDevisBranche(props: PropsAssistantDevisBranche) {
   const sauveur = useRef<Sauveur | null>(null);
   /** Révision du serveur inattendue (autre onglet ?) : plus aucune écriture ni envoi d'ici. */
   const enConflit = useRef(false);
+  // Devis numéroté par la dernière préparation de l'étape 4 : l'aperçu de l'e-mail le lit.
+  const devisPrepare = useRef<string | null>(null);
   const [avis, setAvis] = useState<string | null>(null);
   const [cleEnvoi, setCleEnvoi] = useState(0);
   const enregistrer = useCallback((f: Sauveur | null) => {
@@ -396,7 +401,9 @@ export function AssistantDevisBranche(props: PropsAssistantDevisBranche) {
     const client = props.clients.find((c) => c.id === ctx.etat.clientId);
     const preparer = async (): Promise<ResultatAction<ApercuPrepare>> => {
       try {
-        return await preparerSansFiltre();
+        const r = await preparerSansFiltre();
+        if ("data" in r) devisPrepare.current = r.data.devisId;
+        return r;
       } catch (err) {
         console.error("[devis-assistant] préparation de l'aperçu", err);
         return { error: MSG_INATTENDU };
@@ -446,6 +453,8 @@ export function AssistantDevisBranche(props: PropsAssistantDevisBranche) {
     };
     const envoyer = async (
       devisId: string,
+      _majLe: string,
+      email: EmailAEnvoyer,
     ): Promise<ResultatAction<{ enCorbeille: boolean; note?: string }>> => {
       if (enConflit.current) return { error: MSG_CONFLIT };
       const d = dernier.current;
@@ -454,6 +463,9 @@ export function AssistantDevisBranche(props: PropsAssistantDevisBranche) {
         const r = await envoyerDepuisAssistantAction({
           brouillonId: d.id,
           attenduRevision: d.revision,
+          // Sans modification, ni objet ni message : l'appel reste celui d'avant.
+          ...(email.sujet !== undefined ? { sujet: email.sujet } : {}),
+          ...(email.message !== undefined ? { messagePersonnalise: email.message } : {}),
         });
         if ("error" in r) {
           // Le message du serveur est affiché tel quel, aucun second envoi n'est lancé ici.
@@ -462,7 +474,14 @@ export function AssistantDevisBranche(props: PropsAssistantDevisBranche) {
           if (lu === "adoptee") {
             // « À renuméroter » : le devis porte une version que le client n'a pas vue ici. On
             // refait un aperçu (sauver → numéroter → aperçu) au lieu de réenvoyer directement.
-            setAvis(`${r.error} L'aperçu a été recalculé : relisez-le avant d'envoyer.`);
+            const saisiePerdue =
+              (email.sujet ?? "").trim() !== "" || (email.message ?? "").trim() !== "";
+            setAvis(
+              `${r.error} L'aperçu a été recalculé : relisez-le avant d'envoyer.` +
+                (saisiePerdue
+                  ? " Votre objet et votre message ont été réinitialisés : vérifiez-les avant d'envoyer."
+                  : ""),
+            );
             setCleEnvoi((k) => k + 1);
           }
           return { error: r.error };
@@ -506,6 +525,13 @@ export function AssistantDevisBranche(props: PropsAssistantDevisBranche) {
           envoyer={envoyer}
           destinataire={client?.email ?? ""}
           salutation={client ? props.salutations?.[client.id] : undefined}
+          apercuEmail={(m) =>
+            devisPrepare.current === null
+              ? Promise.resolve({ error: MSG_INDISPONIBLE })
+              : apercuEmailDevisAction({ devisId: devisPrepare.current, ...m })
+          }
+          lienFiche={client ? adminPath("fr", `/qualiopi/clients/${client.id}/edit`) : undefined}
+          modifiable
         />
       </>
     );
