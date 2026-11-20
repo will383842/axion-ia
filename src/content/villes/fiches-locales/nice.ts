@@ -154,7 +154,7 @@ export const FICHE_NICE: FicheLocale = {
   faqLocale: [
     {
       q: "Les petites structures niçoises ont-elles leur place dans la Journée IA ?",
-      a: "Oui. À Nice, l’Urssaf compte 1 782 établissements d’hébergement-restauration et 1 449 de construction parmi 13 953 établissements employeurs privés. La journée part de vos dossiers réels, avec jusqu’à 15 personnes, quelle que soit la taille de l’entreprise. Les chiffres viennent du jeu de données Urssaf par commune et APE, consultable en ligne par le lien de la fiche.",
+      a: "Oui. À Nice, l’Urssaf compte 1 782 établissements d’hébergement-restauration et 1 449 de construction parmi 13 953 établissements employeurs privés. La journée part de vos dossiers réels : l’audit du matin convient aux entreprises de 2 à 250 salariés, et la formation de l’après-midi accueille jusqu’à 15 personnes. Les chiffres viennent du jeu de données Urssaf par commune et APE, consultable en ligne par le lien de la fiche.",
     },
     {
       q: "Intervenez-vous hors de Nice, dans la métropole ?",
