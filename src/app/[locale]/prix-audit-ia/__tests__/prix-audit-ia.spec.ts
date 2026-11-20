@@ -10,6 +10,7 @@ import { describe, expect, it } from "vitest";
 import { remplacerJetons } from "@/content/journee-ia-commun";
 import { JOURNEE_IA_TIER } from "@/content/pricing";
 import { MOTS_INTERDITS_LLMS } from "@/app/_llms/faits-communs";
+import { PHRASE_AUDIT_APPROFONDI, reponseReference } from "@/content/questions-reference";
 import { routing } from "@/i18n/routing";
 
 import { DESCRIPTION_META, FAQ, OG_IMAGE_ALT, REPONSE_DIRECTE, TEXTES, TITRE } from "../contenu";
@@ -65,9 +66,12 @@ describe("contenu /prix-audit-ia", () => {
   it("dit la TVA en sus et l'absence de prix d'audit séparé", () => {
     expect(TEXTES.tva).toMatch(/hors taxes/);
     expect(JSON.stringify(FAQ)).toMatch(/hors taxes/);
-    expect(JSON.stringify(FAQ)).toMatch(
-      /audit plus approfondi, au-delà de la Journée IA, se chiffre sur devis/,
+    expect(TEXTES.compris.intro).toContain(PHRASE_AUDIT_APPROFONDI);
+    expect(FAQ.find((q) => q.id === "prix-audit-ia-separe")?.reponse).toContain(
+      PHRASE_AUDIT_APPROFONDI,
     );
+    expect(reponseReference("ref-audit-prix")).toContain(PHRASE_AUDIT_APPROFONDI);
+    expect(rendu).toContain(PHRASE_AUDIT_APPROFONDI);
     expect(JSON.stringify(FAQ)).not.toMatch(/pas de prix d’audit séparé|Aucun prix d’audit/);
   });
 

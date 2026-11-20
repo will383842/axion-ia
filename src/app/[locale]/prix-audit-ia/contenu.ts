@@ -10,7 +10,7 @@
 
 import { DATE_MISE_A_JOUR_PRIX_AUDIT_IA } from "@/content/prix-audit-ia-date";
 import { RAPPORT_COMPLET } from "@/content/journee-ia-commun";
-import { reponseReference } from "@/content/questions-reference";
+import { PHRASE_AUDIT_APPROFONDI, reponseReference } from "@/content/questions-reference";
 
 export const PATH = "/prix-audit-ia";
 
@@ -38,8 +38,7 @@ export const TEXTES = {
 
   compris: {
     titre: "Ce que comprend la Journée IA",
-    intro:
-      "L’audit de la Journée IA n’a pas de prix à part : il est compris dans la Journée IA. Une seule somme, pour toute l’équipe. Un audit plus approfondi, au-delà de la Journée IA, se chiffre sur devis.",
+    intro: `L’audit de la Journée IA n’a pas de prix à part : il est compris dans la Journée IA. Une seule somme, pour toute l’équipe. ${PHRASE_AUDIT_APPROFONDI}`,
     elements: [
       "L’audit le matin, 2 à 4 h selon l’entreprise : l’entreprise est passée en revue service par service, avec vous.",
       "La formation l’après-midi, pour votre équipe (jusqu’à 15 personnes), sur vos propres dossiers.",
@@ -110,8 +109,7 @@ export const FAQ: ReadonlyArray<QuestionPrix> = [
   {
     id: "prix-audit-ia-separe",
     question: "L’audit IA est-il facturé en plus de la formation ?",
-    reponse:
-      "Non. L’audit IA le matin et la formation de l’après-midi font partie de la même Journée IA, au même prix unique de {{PRIX}}. L’audit de la Journée IA n’est pas facturé à part. Un audit plus approfondi, au-delà de la Journée IA, se chiffre sur devis.",
+    reponse: `Non. L’audit IA le matin et la formation de l’après-midi font partie de la même Journée IA, au même prix unique de {{PRIX}}. L’audit de la Journée IA n’est pas facturé à part. ${PHRASE_AUDIT_APPROFONDI}`,
   },
   {
     id: "prix-audit-ia-par-personne",
