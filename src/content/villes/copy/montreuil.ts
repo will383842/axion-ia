@@ -659,7 +659,7 @@ export const MONTREUIL_COPY: VilleCopy = {
         whyHere: [
           "Montreuil concentre des profils dirigeants et managers aux profils très variés — studio jeu vidéo, direction financière, équipe IT, ESS — pour lesquels un format individuel est souvent plus efficace qu'un collectif.",
           "La confidentialité est totale : vos données, vos projets et vos enjeux stratégiques restent dans le cadre de la session. Confidentialité stricte avant chaque accompagnement.",
-          "Le rythme est le vôtre : sessions ponctuelles à la demande, suivi régulier mensuel ou intensif sur quelques semaines selon votre objectif.",
+          "Le rythme est le vôtre : sessions ponctuelles à la demande, coaching régulier mensuel ou intensif sur quelques semaines selon votre objectif.",
           "Chaque session part de vos vrais documents et de vos vrais workflows — pas d'exercices fictifs. Vous repartez avec des outils et des pratiques opérationnels.",
           "Accessible depuis Montreuil sans contrainte : sessions sur site dans vos locaux ou en visio selon votre préférence.",
           "Tarif d'entrée accessible aux profils indépendants et TPE — pas réservé aux grandes structures.",
@@ -724,7 +724,7 @@ export const MONTREUIL_COPY: VilleCopy = {
           },
           {
             q: "Combien de sessions sont nécessaires pour être autonome sur l'IA ?",
-            a: "Cela dépend de votre objectif et de votre niveau de départ. Certains profils atteignent une autonomie opérationnelle en une poignée de sessions, d'autres préfèrent un suivi régulier sur plusieurs mois. Nous calons le rythme ensemble au diagnostic initial.",
+            a: "Cela dépend de votre objectif et de votre niveau de départ. Certains profils atteignent une autonomie opérationnelle en une poignée de sessions, d'autres préfèrent un coaching régulier sur plusieurs mois. Nous calons le rythme ensemble au diagnostic initial.",
           },
           {
             q: "Les sessions sont-elles confidentielles ?",
@@ -812,7 +812,7 @@ export const MONTREUIL_COPY: VilleCopy = {
           },
           {
             q: "How many sessions are needed to become autonomous on AI?",
-            a: "It depends on your goal and starting level. Some profiles reach operational autonomy in a handful of sessions; others prefer regular follow-up over several months. We agree on the pace together at the initial diagnostic.",
+            a: "It depends on your goal and starting level. Some profiles reach operational autonomy in a handful of sessions; others prefer regular coaching over several months. We agree on the pace together at the initial diagnostic.",
           },
           {
             q: "Are sessions confidential?",

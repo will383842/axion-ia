@@ -151,7 +151,7 @@ export default async function PricingPage({ params }: Props) {
     ? `${RAPPORT_COMPLET} ${GARANTIE_PHRASE} Tout le reste — formations, audit approfondi, accompagnement individuel, mise en place de l'IA — est sur devis écrit, sous 48 h ouvrées.`
     : `Full report within 3 business days after the day. If the gains identified do not exceed 3 times the price of the day, we refund you within 30 days. Everything else — trainings, in-depth audit, 1-to-1 support, AI deployment — is on written quote, within 48 business hours.`;
 
-  // Accompagnement individuel : Collaborateur & Dirigeant × 1 jour + suivi régulier.
+  // Accompagnement individuel : Collaborateur & Dirigeant × 1 jour + coaching régulier.
   // Les formats 2 jours ont été RETIRÉS de la vente (décision Will 2026-07-17).
   const unAUnDisplayTiers: ReadonlyArray<PricingTier> = [
     getTierById(INTERVENTION_TIERS, "intervention-membre-equipe"),
@@ -186,8 +186,8 @@ export default async function PricingPage({ params }: Props) {
       eyebrow: isFr ? "Accompagnement individuel" : "1-to-1 support",
       title: serviceOfficial(SERVICE_BY_ID.unAUn, isFr),
       description: isFr
-        ? "Une journée en tête-à-tête avec le dirigeant ou un collaborateur clé, ou un suivi régulier."
-        : "A one-to-one day with the executive or a key team member, or regular follow-up.",
+        ? "Une journée en tête-à-tête avec le dirigeant ou un collaborateur clé, ou un coaching régulier."
+        : "A one-to-one day with the executive or a key team member, or regular coaching.",
       detail: isFr
         ? "Chaque format est établi sur devis écrit, selon la personne accompagnée et la durée."
         : "Each format is on written quote, according to the person and the duration.",
