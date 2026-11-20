@@ -166,3 +166,6 @@ export function DevisEnvoiEmail({
     </EmailLayout>
   );
 }
+
+/** Clôture française du premier envoi, reprise telle quelle par la relance du devis (même signataire). */
+export const CLOTURE_DEVIS_FR: string = COPY.fr.close;
