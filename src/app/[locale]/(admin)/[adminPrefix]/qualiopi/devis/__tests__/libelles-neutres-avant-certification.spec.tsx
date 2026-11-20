@@ -79,6 +79,13 @@ vi.mock("@/server/qualiopi/config/site-settings", () => ({
 vi.mock("@/features/apporteurs-reseau/etablissement-presentation", () => ({
   lireSiretsDevis: () => Promise.resolve(new Map()),
 }));
+// Chaîne du devis : la relance (action serveur) et la lecture d'horodatage ne sont pas l'objet de ce test.
+vi.mock("@/features/dossier-client/fiche/actions-relance-devis", () => ({
+  preparerRelanceDevisAction: vi.fn(),
+}));
+vi.mock("@/server/qualiopi/documents/signature/lire-horodatages", () => ({
+  lireHorodatagesDeSignatures: vi.fn(async () => []),
+}));
 vi.mock("@/server/actions/qualiopi/piece-signature", () => ({
   contresignerPieceAction: vi.fn(),
   relancerAcceptationDevisAction: vi.fn(),

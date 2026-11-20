@@ -43,6 +43,9 @@ export interface PropsEmailEnvoi {
   lienFiche?: string | undefined;
   /** Faux par défaut : l'aperçu est en lecture seule (le relais objet+message n'est pas branché). */
   modifiable?: boolean | undefined;
+  /** Après l'envoi : liens vers la fiche du devis et vers les e-mails à valider. */
+  hrefDevis?: string | undefined;
+  hrefEmails?: string | undefined;
 }
 
 export function EmailEnvoi({
@@ -52,6 +55,8 @@ export function EmailEnvoi({
   apercuEmail,
   lienFiche,
   modifiable = false,
+  hrefDevis,
+  hrefEmails,
 }: PropsEmailEnvoi) {
   const uid = useId();
   const [apercu, setApercu] = useState<EtatApercuEmail | null>(null);
@@ -203,6 +208,20 @@ export function EmailEnvoi({
         <p role="status" className="mt-[var(--space-admin-3)]">
           {statut ?? ""}
         </p>
+        {envoye && (hrefDevis !== undefined || hrefEmails !== undefined) ? (
+          <p className="mt-[var(--space-admin-2)] flex flex-wrap gap-[var(--space-admin-4)]">
+            {hrefDevis !== undefined ? (
+              <a href={hrefDevis} className="admin-link">
+                Ouvrir le devis
+              </a>
+            ) : null}
+            {hrefEmails !== undefined ? (
+              <a href={hrefEmails} className="admin-link">
+                Ouvrir les e-mails à valider
+              </a>
+            ) : null}
+          </p>
+        ) : null}
       </section>
     </AdminCard>
   );
