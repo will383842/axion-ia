@@ -7,6 +7,7 @@
  * Seuils et dates via getQualiopiConfig (jamais en dur).
  */
 
+import { pasSigneParLeClient } from "@/server/qualiopi/devis/pas-signe-par-le-client";
 import { prisma } from "@/lib/prisma";
 import {
   inscriptionsActives,
@@ -2463,7 +2464,12 @@ async function regleRelanceSansEffet(now: Date): Promise<AlerteCandidate[]> {
  */
 async function regleDevisSansReponse(now: Date): Promise<AlerteCandidate[]> {
   const devisDormants = await prisma.devis.findMany({
-    where: { statut: "envoye", sentAt: { not: null, lte: daysAgo(7, now) } },
+    where: {
+      statut: "envoye",
+      sentAt: { not: null, lte: daysAgo(7, now) },
+      // Un devis déjà signé par le client n'attend plus que la contresignature : pas de relance.
+      ...pasSigneParLeClient,
+    },
     select: {
       id: true,
       numero: true,
@@ -2499,6 +2505,8 @@ async function regleDevisExpireJ7(now: Date): Promise<AlerteCandidate[]> {
     where: {
       statut: "envoye",
       dateValidite: { gte: now, lte: daysFromNow(7, now) },
+      // Déjà signé par le client : rien à relancer avant l'échéance.
+      ...pasSigneParLeClient,
     },
     select: {
       id: true,
