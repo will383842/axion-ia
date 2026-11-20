@@ -6,7 +6,11 @@ import { useEffect } from "react";
 import { useReportWebVitals } from "next/web-vitals";
 import { onINP } from "web-vitals/attribution";
 import { usePathname } from "next/navigation";
-import { urlEstConsoleAdmin, urlPorteUnSecret } from "@/lib/analytics/routes-privees";
+import {
+  urlEstConsoleAdmin,
+  urlPorteUnSecret,
+  urlSansMesureDePerformance,
+} from "@/lib/analytics/routes-privees";
 import { useLocale } from "next-intl";
 
 const VITALS_ENDPOINT = "/api/vitals";
@@ -284,7 +288,11 @@ export function WebVitals() {
   // `data/vitals/*.ndjson` ET dans la table `WebVitalSample` — deux stockages
   // qu'aucune purge RGPD ne visite. Sur le portail, ce serait le jeton
   // d'émargement archivé en clair, côté serveur, sans date de péremption.
-  const adminRoute = isAdminRoute(pathname) || urlPorteUnSecret(pathname);
+  const adminRoute =
+    isAdminRoute(pathname) ||
+    urlPorteUnSecret(pathname) ||
+    // Score IA TPE-PME : aucune balise avant la case de l'Observatoire (cf. routes-privees.ts).
+    urlSansMesureDePerformance(pathname);
 
   // P1-21 (audit re-run 2026-05-15) — INP attribution Chrome 124+.
   // `useReportWebVitals` ne supporte pas la prop `attribution` ; on appelle

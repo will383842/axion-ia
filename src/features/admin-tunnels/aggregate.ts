@@ -146,7 +146,7 @@ export const TUNNELS_CONNUS: ReadonlyArray<{
   libelle: string;
   chemin: string;
 }> = [
-  { cle: "diagnostic", libelle: "Page publicitaire", chemin: "/fr/diagnostic" },
+  { cle: "diagnostic", libelle: "Score IA TPE-PME", chemin: "/fr/diagnostic" },
   { cle: "simulateur", libelle: "Questionnaire nu", chemin: "/fr/simulateur" },
   { cle: "roi", libelle: "Questionnaire public", chemin: "/fr/roi" },
   { cle: "apporteur", libelle: "Recrutement d'apporteurs", chemin: "/fr/apporteur-affaires" },
