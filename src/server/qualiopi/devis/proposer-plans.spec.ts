@@ -72,11 +72,15 @@ beforeEach(() => {
 });
 
 describe("inertie", () => {
-  it("interrupteur éteint : aucune lecture, aucune écriture", async () => {
+  it("interrupteur éteint pour le client du devis : aucune écriture, cible = client du devis", async () => {
     h.actif.mockResolvedValue(false);
+    h.p.devis.findUnique.mockResolvedValue(devisB());
     const r = await proposerPlansRecurrentsDuDevis(DEVIS);
     expect(r).toEqual({ statut: "inerte", raison: "interrupteur_eteint" });
-    expect(h.p.devis.findUnique).not.toHaveBeenCalled();
+    expect(h.actif).toHaveBeenCalledWith(
+      undefined,
+      expect.objectContaining({ clientId: devisB().clientId }),
+    );
     expect(h.tx.planRecurrent.create).not.toHaveBeenCalled();
   });
 

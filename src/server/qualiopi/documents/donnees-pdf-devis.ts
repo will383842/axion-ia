@@ -25,7 +25,7 @@ import {
 } from "@/server/qualiopi/legal/tva";
 import { phrasePrimauteAImprimer } from "@/server/qualiopi/devis/conditions-particulieres";
 import { offreDevisV1 } from "@/server/qualiopi/devis/offre-devis";
-import { formulesActives } from "@/server/qualiopi/devis/interrupteur-formules";
+import { formulesActives, type CibleFormules } from "@/server/qualiopi/devis/interrupteur-formules";
 import { vueFormules, type VueFormules } from "@/server/qualiopi/devis/vue-formules";
 import type { DevisData } from "./templates/devis";
 import type { LigneFacture } from "./templates/facture";
@@ -156,8 +156,13 @@ export function formulesDuDevis(
   return vueFormules(parsed.data, regime);
 }
 
-/** Lectures de configuration (aucune écriture). */
-export async function lireContextePdfDevis(): Promise<ContextePdfDevis> {
+/**
+ * Lectures de configuration (aucune écriture). `formules` : le BOOLÉEN déjà calculé par l'appelant
+ * (à l'envoi, l'interrupteur n'est lu qu'UNE fois), ou la cible pour laquelle le lire.
+ */
+export async function lireContextePdfDevis(
+  formules: boolean | CibleFormules,
+): Promise<ContextePdfDevis> {
   const identite = await getOrganismeIdentite();
   const regimeTva: RegimeTva = regimeTvaDepuisConfig(await getQualiopiConfig("regime_tva"));
   const tauxStandard = (await getQualiopiConfig("taux_tva_standard_percent")) || TAUX_TVA_STANDARD;
@@ -166,7 +171,8 @@ export async function lireContextePdfDevis(): Promise<ContextePdfDevis> {
     regimeTva,
     tauxStandard,
     certificationObtenue: isQualiopiCertificationObtenue(),
-    formulesActives: await formulesActives(),
+    formulesActives:
+      typeof formules === "boolean" ? formules : await formulesActives(undefined, formules),
   };
 }
 
@@ -198,6 +204,10 @@ export function donneesPdfDevis(
       ? (FINANCEMENT_LABELS[devis.financementSuggere as Financement] ?? devis.financementSuggere)
       : undefined;
 
+  // Un devis à formules ne se rend JAMAIS en devis classique vide : formules coupées → refus.
+  if (devis.offre != null && contexte.formulesActives !== true) {
+    throw new OffreDevisInvalideError("les devis à formules sont désactivés pour ce client");
+  }
   const formules = formulesDuDevis(devis.offre, contexte.formulesActives, regimeTva);
   // Conditions particulières : devis CLASSIQUE seulement (une offre, même éteinte, les exclut).
   const conditionsParticulieres =

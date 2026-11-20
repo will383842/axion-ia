@@ -19,6 +19,7 @@ interface AuditFaqItem {
   readonly id: string;
   readonly question: string;
   readonly answer: string;
+  readonly liens?: ReadonlyArray<{ href: string; label: string }>;
 }
 
 export interface AuditFaqProps {
@@ -71,7 +72,14 @@ function buildFrFaqs(): ReadonlyArray<AuditFaqItem> {
         "Si vous ne savez pas par où commencer avec l'IA, commencez par La Journée IA : l'audit du matin chiffre vos priorités, la formation de l'après-midi met vos équipes au travail, et le rapport complet arrive sous 3 jours ouvrés. Le module Implémentation peut ensuite prendre le relais, sur devis écrit.",
     },
     ...faqItems(["ref-audit-contenu", "ref-audit-prix", "ref-audit-vs-info"]).map(
-      ({ id, question, answer }) => ({ id, question, answer }),
+      ({ id, question, answer }) => ({
+        id,
+        question,
+        answer,
+        ...(id === "ref-audit-prix"
+          ? { liens: [{ href: "/fr/prix-audit-ia", label: "Le détail du prix" }] }
+          : {}),
+      }),
     ),
   ];
 }

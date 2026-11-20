@@ -473,12 +473,12 @@ export async function signerPieceParJetonAction(input: {
   if (piece.type === "devis") {
     const devis = await prisma.devis.findFirst({
       where: { documentGenereId: verif.documentGenereId },
-      select: { numero: true, offre: true, offreSha256: true },
+      select: { numero: true, clientId: true, offre: true, offreSha256: true },
     });
     if (devis !== null && devis.offre != null && devis.offreSha256 != null) {
       // Interrupteur `qualiopi.devis_formules.actif` : éteint, un devis à formules ne se signe pas
       // (échec fermé). Rien n'est lu ni écrit de plus.
-      if (!(await formulesActives())) {
+      if (!(await formulesActives(undefined, { clientId: devis.clientId }))) {
         return {
           ok: false,
           raison: "piece_non_signable_maintenant",
@@ -714,7 +714,7 @@ export async function apercuChoixAction(input: {
   }
   const devis = await prisma.devis.findFirst({
     where: { documentGenereId: verif.documentGenereId },
-    select: { numero: true, offre: true, offreSha256: true },
+    select: { numero: true, clientId: true, offre: true, offreSha256: true },
   });
   if (devis === null || devis.offre == null || devis.offreSha256 == null) {
     return {
@@ -723,7 +723,7 @@ export async function apercuChoixAction(input: {
       message: "Ce devis ne propose pas de formule.",
     };
   }
-  if (!(await formulesActives())) {
+  if (!(await formulesActives(undefined, { clientId: devis.clientId }))) {
     return {
       ok: false,
       raison: "piece_non_signable_maintenant",
@@ -965,12 +965,12 @@ export async function demanderCodeDevisAction(input: {
   }
   const devis = await prisma.devis.findFirst({
     where: { documentGenereId: verif.documentGenereId },
-    select: { numero: true, offre: true, offreSha256: true, dateValidite: true },
+    select: { numero: true, clientId: true, offre: true, offreSha256: true, dateValidite: true },
   });
   if (devis === null || devis.offre == null || devis.offreSha256 == null) {
     return { ok: false, raison: "piece_non_signable", message: "Ce devis se signe sans code." };
   }
-  if (!(await formulesActives())) {
+  if (!(await formulesActives(undefined, { clientId: devis.clientId }))) {
     return {
       ok: false,
       raison: "piece_non_signable_maintenant",

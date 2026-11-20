@@ -51,6 +51,7 @@ export default async function QualiopiDevisModifierPage({ params, searchParams }
     select: {
       id: true,
       numero: true,
+      clientId: true,
       statut: true,
       offre: true,
       offreSha256: true,
@@ -69,14 +70,17 @@ export default async function QualiopiDevisModifierPage({ params, searchParams }
     // `?sans-assistant=1` (carte de refus du chargeur) : l'éditeur d'avant pour un brouillon à
     // formules, seulement si les formules sont actives — aucune garde de droits ni de statut
     // n'est contournée (accès et statut brouillon déjà vérifiés ci-dessus).
-    const editeurDAvant = sansAssistant && devis.offre !== null && (await formulesActives());
+    const editeurDAvant =
+      sansAssistant &&
+      devis.offre !== null &&
+      (await formulesActives(undefined, { clientId: devis.clientId }));
     if (devis.devisAssistantBrouillon !== null && !editeurDAvant)
       redirect(`${base}/new?devis=${id}`);
     if (devis.offre === null) redirect(`${base}/${id}/corriger`);
     // Devis à formules préparé hors assistant : la branche d'avant (ci-dessous).
   }
 
-  if (!(await formulesActives())) notFound();
+  if (!(await formulesActives(undefined, { clientId: devis?.clientId ?? null }))) notFound();
 
   if (!devis || devis.statut !== "brouillon" || devis.offre === null) notFound();
   const offre = offreDevisV1.safeParse(devis.offre);

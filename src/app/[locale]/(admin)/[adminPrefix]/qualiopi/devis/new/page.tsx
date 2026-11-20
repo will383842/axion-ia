@@ -10,6 +10,7 @@
  * `ROLES_DOSSIER_ECHANGES` seulement (décision A2).
  */
 
+import { BandeauAssistantEssai } from "@/components/admin/qualiopi/BandeauAssistantEssai";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { redirect } from "next/navigation";
@@ -289,7 +290,8 @@ export default async function QualiopiDevisNewPage({ params, searchParams }: Pag
 
   // Mode formules : proposé SEULEMENT si l'interrupteur est allumé (éteint par défaut) ;
   // les textes copiés dans l'offre sont ceux de la bibliothèque « actifs par défaut ».
-  const formulesOn = await formulesActives();
+  // Essai : seulement si le client PRÉSÉLECTIONNÉ est une fiche d'essai (sans client : faux).
+  const formulesOn = await formulesActives(undefined, { clientId: defaultClientId ?? null });
   const textesParDefaut = formulesOn
     ? await prisma.devisTexteBibliotheque.findMany({
         where: { archiveAt: null, actifParDefaut: true },
@@ -351,6 +353,11 @@ export default async function QualiopiDevisNewPage({ params, searchParams }: Pag
           </Link>
         ) : null}
       </div>
+
+      {/* Assistant en « essai » et aucun client d'essai choisi : c'est l'ancien formulaire qui s'ouvre. */}
+      {etatAssistant === "essai" ? (
+        <BandeauAssistantEssai clientsHref={`/${locale}/${adminPrefix}/qualiopi/clients`} />
+      ) : null}
 
       <AdminPageHeader
         title="Nouveau devis"

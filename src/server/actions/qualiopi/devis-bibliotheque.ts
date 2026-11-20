@@ -27,7 +27,7 @@ const MSG_BUILD = "Indisponible pendant le build";
 /** Garde commune des écritures : build GH Actions (stub) puis interrupteur. `null` = autorisé. */
 async function refusEcriture(): Promise<string | null> {
   if (process.env["DATABASE_URL"]?.includes("stub.invalid")) return MSG_BUILD;
-  if (!(await formulesActives())) return MSG_ETEINT;
+  if (!(await formulesActives(undefined, { console: true }))) return MSG_ETEINT;
   return null;
 }
 

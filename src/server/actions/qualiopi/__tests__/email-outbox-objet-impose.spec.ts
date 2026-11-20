@@ -74,6 +74,23 @@ describe("approuverEmailAction — objet à imposer", () => {
     expect(options()).not.toHaveProperty("sujetForce");
   });
 
+  it("convention-envoi : un marqueur sujetChoisi, même différent de l'étiquette, n'impose rien", async () => {
+    h.findUnique.mockResolvedValue(
+      ligne("Convention à signer — AXI-CONV-1", "convention-envoi", {
+        sujetChoisi: "Convention à signer — AXI-CONV-1",
+      }),
+    );
+    await approuverEmailAction({ id: ID });
+    expect(h.enqueue).toHaveBeenCalledTimes(1);
+    expect(options()).not.toHaveProperty("sujetForce");
+    h.enqueue.mockClear();
+    h.findUnique.mockResolvedValue(
+      ligne("Un objet du fondateur", "convention-envoi", { sujetChoisi: "Un objet du fondateur" }),
+    );
+    await approuverEmailAction({ id: ID });
+    expect(options()).not.toHaveProperty("sujetForce");
+  });
+
   it("qualiopi-relance-impayee : étiquette de corbeille → rien d'imposé", async () => {
     h.findUnique.mockResolvedValue(ligne("Relance — facture 12", "qualiopi-relance-impayee"));
     await approuverEmailAction({ id: ID });
