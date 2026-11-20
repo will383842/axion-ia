@@ -15,6 +15,7 @@ import { prisma } from "@/lib/prisma";
 import { signedDocumentPdfUrl } from "@/lib/r2-storage";
 import { refuserSiLocaleInconnue } from "@/server/auth/garde-route-console";
 import { circuitPour } from "@/server/qualiopi/documents/signature/parties-requises";
+import { lireDevisASigner } from "@/server/qualiopi/documents/signature/devis-signature-queries";
 import { verifierTokenDocument } from "@/server/qualiopi/documents/signature/token-document";
 
 export const dynamic = "force-dynamic";
@@ -50,6 +51,19 @@ export async function GET(
   if (piece === null || piece.annuleeAt !== null) return introuvable();
   if (circuitPour(piece.type) === null) return introuvable();
   if (piece.pdfUrl == null || piece.pdfUrl === "") return introuvable();
+
+  // Même garde que la page : un devis brouillon, refusé ou expiré ne se relit plus par un jeton
+  // encore vivant. Lecture via `lireDevisASigner` (statut seul utilisé ici). Non reprise :
+  // la cohérence `formulesActives`/`offreSha256`, qui bloque la SIGNATURE mais pas la relecture
+  // d'un PDF déjà émis.
+  if (piece.type === "devis") {
+    const devis = await lireDevisASigner(verif.documentGenereId);
+    if (devis === null) return introuvable();
+    const bloquant = devis.statutBloquant;
+    if (bloquant === "brouillon" || bloquant === "refuse" || bloquant === "expire") {
+      return introuvable();
+    }
+  }
 
   let url: string | null = null;
   try {

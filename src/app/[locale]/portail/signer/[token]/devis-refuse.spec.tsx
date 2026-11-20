@@ -37,18 +37,38 @@ beforeEach(() => {
 });
 
 describe("page de signature — lien refusé", () => {
-  it("devis refusé : message exact, sans « version révisée »", async () => {
+  it("jeton révoqué + devis refusé : message de refus, sans « version révisée »", async () => {
     verif.mockResolvedValue({ ok: false, raison: "revoque" });
     statut.mockResolvedValue("refuse");
     const html = await rendu();
-    expect(html).toContain("n&#x27;est plus ouvert à la signature");
+    expect(html).toContain("Ce devis a été refusé");
     expect(html).not.toContain("version révisée");
+    expect(html).not.toContain("a expiré");
   });
-  it("lien remplacé (devis encore ouvert) : message actuel conservé", async () => {
+  it("jeton révoqué + devis expiré : message d'expiration", async () => {
+    verif.mockResolvedValue({ ok: false, raison: "revoque" });
+    statut.mockResolvedValue("expire");
+    const html = await rendu();
+    expect(html).toContain("Ce devis a expiré");
+    expect(html).not.toContain("refusé");
+  });
+  it("jeton révoqué pour remplacement : message neutre « lien désactivé » conservé", async () => {
     verif.mockResolvedValue({ ok: false, raison: "revoque" });
     statut.mockResolvedValue("autre");
     const html = await rendu();
     expect(html).toContain("Ce lien a été désactivé");
-    expect(html).toContain("version révisée");
+    expect(html).not.toContain("Ce devis a été refusé");
+    expect(html).not.toContain("Ce devis a expiré");
+  });
+  it("jeton révoqué, pièce autre qu'un devis : message neutre", async () => {
+    verif.mockResolvedValue({ ok: false, raison: "revoque" });
+    statut.mockResolvedValue(null);
+    expect(await rendu()).toContain("Ce lien a été désactivé");
+  });
+  it("jeton invalide : l'identité de l'organisme n'est pas lue", async () => {
+    // Le mock d'identité ci-dessus ne compte pas ses appels : voir signature-publique-ecrans.
+    verif.mockResolvedValue({ ok: false, raison: "inconnu" });
+    statut.mockResolvedValue(null);
+    expect(await rendu()).toContain("Lien invalide");
   });
 });

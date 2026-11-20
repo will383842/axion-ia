@@ -175,18 +175,52 @@ describe("exemplaire signé", () => {
   it("« Vous avez déjà signé » : lien gardé par le jeton", async () => {
     m.count.mockResolvedValue(1);
     const html = await rendu();
-    expect(html).toContain("Télécharger votre exemplaire signé (PDF)");
+    expect(html).toContain("Revoir le document que vous avez signé (PDF)");
+    expect(html).not.toContain("exemplaire signé");
     expect(html).toContain(`href="/fr/portail/signer/${TOKEN}/pdf"`);
     expect(html).not.toContain("stockage.example");
   });
   it("pièce sans PDF : pas de lien", async () => {
     m.count.mockResolvedValue(1);
     m.piece.mockResolvedValue(piece({ pdfUrl: null }));
-    expect(await rendu()).not.toContain("exemplaire signé (PDF)");
+    expect(await rendu()).not.toContain("Revoir le document");
+  });
+});
+
+describe("contact : adresse et ordre de lecture", () => {
+  it.each(["a b@x.fr", "a@x.fr?cc=evil@y.fr", "a@x.fr&bcc=z", "a@x.fr#h", "sans-arobase", "a@b"])(
+    "adresse non simple (%s) : pas de lien mailto",
+    async (email) => {
+      m.verif.mockResolvedValue({ ok: false, raison: "expire" });
+      m.statut.mockResolvedValue("autre");
+      m.identite.mockResolvedValue({ raisonSociale: "O", email, telephone: "" });
+      expect(await rendu()).not.toContain("mailto:");
+    },
+  );
+  it("jeton invalide : getOrganismeIdentite appelé APRÈS la vérification, et jamais si notFound", async () => {
+    m.verif.mockImplementation(async () => {
+      expect(m.identite).not.toHaveBeenCalled();
+      return { ok: false, raison: "expire" };
+    });
+    m.statut.mockResolvedValue("autre");
+    await rendu();
+    expect(m.identite).toHaveBeenCalledTimes(1);
+  });
+  it("pièce introuvable : l'identité est lue une seule fois", async () => {
+    m.piece.mockResolvedValue(null);
+    await expect(rendu()).rejects.toThrow("NOT_FOUND");
+    expect(m.identite).toHaveBeenCalledTimes(1);
   });
 });
 
 describe("« refusé » ≠ « expiré »", () => {
+  it("jeton révoqué + devis refusé/expiré : message propre à chaque cas", async () => {
+    m.verif.mockResolvedValue({ ok: false, raison: "revoque" });
+    m.statut.mockResolvedValue("refuse");
+    expect(await rendu()).toContain("Ce devis a été refusé");
+    m.statut.mockResolvedValue("expire");
+    expect(await rendu()).toContain("Ce devis a expiré");
+  });
   it("devis refusé : message propre", async () => {
     m.lire.mockResolvedValue({ ...DEVIS, statutBloquant: "refuse" });
     const html = await rendu();

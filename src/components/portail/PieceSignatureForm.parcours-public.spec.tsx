@@ -1,4 +1,5 @@
 /** PieceSignatureForm : aide du bouton de code, tableau en cartes (CSS seul), question par e-mail. */
+import { readFileSync } from "node:fs";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { cleanup, render, screen } from "@testing-library/react";
 
@@ -93,5 +94,42 @@ describe("« Une question sur ce devis ? »", () => {
     cleanup();
     rendre({ numeroDevis: undefined });
     expect(screen.queryByRole("link", { name: /question/i })).toBeNull();
+  });
+});
+
+describe("tableau : rôles ARIA conservés quand display:block s'applique", () => {
+  it("table, rowgroup, row, columnheader, cell", () => {
+    const { container } = rendre();
+    expect(container.querySelector("table")!.getAttribute("role")).toBe("table");
+    expect(
+      [...container.querySelectorAll("thead, tbody")].map((e) => e.getAttribute("role")),
+    ).toEqual(["rowgroup", "rowgroup"]);
+    expect(
+      [...container.querySelectorAll("tr")].every((e) => e.getAttribute("role") === "row"),
+    ).toBe(true);
+    expect(
+      [...container.querySelectorAll("th")].every((e) => e.getAttribute("role") === "columnheader"),
+    ).toBe(true);
+    expect(
+      [...container.querySelectorAll("td")].every((e) => e.getAttribute("role") === "cell"),
+    ).toBe(true);
+  });
+});
+
+describe("mailto : adresse de forme simple uniquement", () => {
+  it.each(["a b@x.fr", "a@x.fr?cc=evil@y.fr", "a@x.fr&bcc=z", "a@x.fr#h", "sans-arobase"])(
+    "%s : pas de lien",
+    (organismeEmail) => {
+      rendre({ organismeEmail });
+      expect(screen.queryByRole("link", { name: /question/i })).toBeNull();
+    },
+  );
+});
+
+describe("lien du PDF : libellé honnête", () => {
+  it("le source ne promet aucun « exemplaire signé » et porte le libellé de relecture", () => {
+    const src = readFileSync("src/components/portail/PieceSignatureForm.tsx", "utf8");
+    expect(src).toContain("Revoir le document que vous avez signé (PDF)");
+    expect(src).not.toContain("Télécharger votre exemplaire signé");
   });
 });

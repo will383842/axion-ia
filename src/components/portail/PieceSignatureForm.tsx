@@ -29,6 +29,7 @@
  * FR en dur, comme le reste du portail.
  */
 
+import { estEmailSimple } from "@/lib/email-simple";
 import { useEffect, useMemo, useState, useTransition } from "react";
 import { SignaturePad } from "@/components/portail/SignaturePad";
 
@@ -471,7 +472,7 @@ export function PieceSignatureForm({
               rel="noopener noreferrer"
               className="underline underline-offset-4"
             >
-              Télécharger votre exemplaire signé (PDF)
+              Revoir le document que vous avez signé (PDF)
             </a>
           </p>
         )}
@@ -508,48 +509,56 @@ export function PieceSignatureForm({
             </h2>
             {/* Sous 640 px : cartes (une ligne = un bloc, étiquette devant chaque valeur). CSS seul
                 (variantes `max-sm:`), aucune bascule JS : pas de décalage de mise en page. */}
-            <table className="mt-3 w-full border-collapse text-sm max-sm:block">
-              <thead className="max-sm:sr-only">
-                <tr className="border-border text-fg-soft border-b text-left text-xs uppercase">
-                  <th scope="col" className="py-2 pr-3 font-medium">
+            <table role="table" className="mt-3 w-full border-collapse text-sm max-sm:block">
+              <thead role="rowgroup" className="max-sm:sr-only">
+                <tr
+                  role="row"
+                  className="border-border text-fg-soft border-b text-left text-xs uppercase"
+                >
+                  <th role="columnheader" scope="col" className="py-2 pr-3 font-medium">
                     Désignation
                   </th>
-                  <th scope="col" className="py-2 pr-3 text-right font-medium">
+                  <th role="columnheader" scope="col" className="py-2 pr-3 text-right font-medium">
                     Qté
                   </th>
-                  <th scope="col" className="py-2 pr-3 text-right font-medium">
+                  <th role="columnheader" scope="col" className="py-2 pr-3 text-right font-medium">
                     PU HT
                   </th>
-                  <th scope="col" className="py-2 text-right font-medium">
+                  <th role="columnheader" scope="col" className="py-2 text-right font-medium">
                     Total HT
                   </th>
                 </tr>
               </thead>
-              <tbody className="max-sm:block">
+              <tbody role="rowgroup" className="max-sm:block">
                 {lignes.map((l, i) => (
                   <tr
                     key={i}
+                    role="row"
                     className="border-border border-b align-top max-sm:mb-3 max-sm:block max-sm:rounded max-sm:border max-sm:p-3"
                   >
                     <td
+                      role="cell"
                       data-label="Désignation"
                       className="text-fg py-2 pr-3 max-sm:block max-sm:py-1 max-sm:pr-0 max-sm:font-medium"
                     >
                       {l.designation}
                     </td>
                     <td
+                      role="cell"
                       data-label="Qté"
                       className={`${CELLULE_CARTE} text-fg-soft py-2 pr-3 text-right tabular-nums`}
                     >
                       {l.quantite}
                     </td>
                     <td
+                      role="cell"
                       data-label="PU HT"
                       className={`${CELLULE_CARTE} text-fg-soft py-2 pr-3 text-right tabular-nums`}
                     >
                       {l.prixUnitaireHtLisible}
                     </td>
                     <td
+                      role="cell"
                       data-label="Total HT"
                       className={`${CELLULE_CARTE} text-fg py-2 text-right tabular-nums`}
                     >
@@ -1065,16 +1074,18 @@ export function PieceSignatureForm({
                 : "")}
           </p>
         )}
-        {organismeEmail !== undefined && organismeEmail !== "" && numeroDevis !== undefined && (
-          <p className="mt-6 text-sm">
-            <a
-              href={`mailto:${organismeEmail}?subject=${encodeURIComponent(`Question sur le devis ${numeroDevis}`)}`}
-              className="underline underline-offset-4"
-            >
-              Une question sur ce devis ?
-            </a>
-          </p>
-        )}
+        {organismeEmail !== undefined &&
+          estEmailSimple(organismeEmail.trim()) &&
+          numeroDevis !== undefined && (
+            <p className="mt-6 text-sm">
+              <a
+                href={`mailto:${organismeEmail.trim()}?subject=${encodeURIComponent(`Question sur le devis ${numeroDevis}`)}`}
+                className="underline underline-offset-4"
+              >
+                Une question sur ce devis ?
+              </a>
+            </p>
+          )}
       </section>
     </div>
   );

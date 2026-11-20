@@ -48,6 +48,7 @@ import { codeRequis } from "@/server/qualiopi/documents/signature/contrat-cadre-
 import { PieceSignatureForm } from "@/components/portail/PieceSignatureForm";
 import { lienTelechargement } from "@/lib/content-disposition";
 import { prisma } from "@/lib/prisma";
+import { estEmailSimple } from "@/lib/email-simple";
 
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
@@ -59,10 +60,19 @@ interface PageProps {
   params: Promise<{ locale: string; token: string }>;
 }
 
-const MESSAGE_DEVIS_FERME = {
-  titre: "Ce devis n'est plus ouvert à la signature",
-  detail: "Ce devis ne peut plus être signé en ligne. Contactez votre interlocuteur.",
-};
+/** Écrans d'un lien révoqué dont le devis est refusé ou expiré (sans successeur). */
+const MESSAGES_DEVIS_REFUSE_EXPIRE = {
+  refuse: {
+    titre: "Ce devis a été refusé",
+    detail:
+      "Ce devis a été refusé et ne peut plus être signé. Contactez votre interlocuteur pour en recevoir un nouveau.",
+  },
+  expire: {
+    titre: "Ce devis a expiré",
+    detail:
+      "Ce devis a dépassé sa durée de validité. Contactez votre interlocuteur pour en recevoir un nouveau.",
+  },
+} as const;
 
 /** « le devis » → « Le devis » (début de phrase). */
 function majusculeInitiale(texte: string): string {
@@ -92,7 +102,9 @@ function Message({
   /** Lien gardé par le jeton vers l'exemplaire de CETTE pièce (écran « déjà signé »). */
   pdfHref?: string | undefined;
 }) {
-  const email = contact?.email.trim() ?? "";
+  const emailBrut = contact?.email.trim() ?? "";
+  // Pas de lien `mailto:` pour une adresse qui n'a pas une forme simple (injection de paramètres).
+  const email = estEmailSimple(emailBrut) ? emailBrut : "";
   const telephone = contact?.telephone.trim() ?? "";
   return (
     <div className="mx-auto w-full max-w-md px-4 py-16">
@@ -106,7 +118,7 @@ function Message({
             rel="noopener noreferrer"
             className="underline underline-offset-4"
           >
-            Télécharger votre exemplaire signé (PDF)
+            Revoir le document que vous avez signé (PDF)
           </a>
         </p>
       )}
@@ -138,7 +150,10 @@ export default async function SignerDevisPage({ params }: PageProps) {
   // obligatoire (contrat ADR 0026).
   if (process.env["DATABASE_URL"]?.includes("stub.invalid")) notFound();
 
-  // Contact de l'organisme pour les écrans sans issue. Une identité illisible ne doit jamais
+  const verif = await verifierTokenDocument(token);
+
+  // Contact de l'organisme pour les écrans sans issue, lu APRÈS la vérification du jeton : un
+  // lien invalide ne déclenche aucune lecture d'identité. Une identité illisible ne doit jamais
   // empêcher d'afficher l'écran : on se contente alors de ne pas afficher de contact.
   const identiteLue = await getOrganismeIdentite().catch(() => null);
   const contact: Contact | undefined =
@@ -146,7 +161,6 @@ export default async function SignerDevisPage({ params }: PageProps) {
       ? { email: identiteLue.email ?? "", telephone: identiteLue.telephone ?? "" }
       : undefined;
 
-  const verif = await verifierTokenDocument(token);
   if (!verif.ok) {
     // Motifs différenciés : « votre lien a expiré » est actionnable pour le
     // client et n'apprend rien à un attaquant — ces motifs ne sont atteignables
@@ -163,18 +177,16 @@ export default async function SignerDevisPage({ params }: PageProps) {
           "Une version révisée du devis vous a probablement été adressée. Utilisez le lien le plus récent, ou contactez votre interlocuteur.",
       },
     };
-    // 🔴 Un lien révoqué ou périmé parce que le devis est REFUSÉ ou expiré ne doit pas dire
-    // « une version révisée vous a été adressée » : c'est faux. Message neutre, sans motif.
+    // 🔴 Refuser un devis révoque ses liens : le client arrive ici, pas sur l'écran « refusé ».
+    // Un lien révoqué ou périmé parce que le devis est REFUSÉ ou expiré ne doit pas dire
+    // « une version révisée vous a été adressée » : c'est faux. On rend le message « refusé »
+    // ou « expiré ». Les autres cas (remplacement par une version révisée, annulation…) gardent
+    // les messages « lien désactivé » / « lien expiré » ci-dessous, sans nommer de motif de refus.
     if (verif.raison === "revoque" || verif.raison === "expire") {
       const statutDevis = await statutDevisDuLien(token);
       if (statutDevis === "refuse" || statutDevis === "expire") {
-        return (
-          <Message
-            titre={MESSAGE_DEVIS_FERME.titre}
-            detail={MESSAGE_DEVIS_FERME.detail}
-            contact={contact}
-          />
-        );
+        const m = MESSAGES_DEVIS_REFUSE_EXPIRE[statutDevis];
+        return <Message titre={m.titre} detail={m.detail} contact={contact} />;
       }
     }
     const m = messages[verif.raison] ?? {

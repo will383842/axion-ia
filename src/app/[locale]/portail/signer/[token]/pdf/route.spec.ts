@@ -4,7 +4,10 @@
  */
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
-const m = vi.hoisted(() => ({ verif: vi.fn(), piece: vi.fn(), signer: vi.fn() }));
+const m = vi.hoisted(() => ({ verif: vi.fn(), piece: vi.fn(), signer: vi.fn(), devis: vi.fn() }));
+vi.mock("@/server/qualiopi/documents/signature/devis-signature-queries", () => ({
+  lireDevisASigner: (...a: unknown[]) => m.devis(...a),
+}));
 vi.mock("@/server/qualiopi/documents/signature/token-document", () => ({
   verifierTokenDocument: (...a: unknown[]) => m.verif(...a),
 }));
@@ -40,6 +43,7 @@ beforeEach(() => {
   m.verif.mockResolvedValue({ ok: true, documentGenereId: "doc1", partie: "client" });
   m.piece.mockResolvedValue(pieceOk());
   m.signer.mockResolvedValue("https://stockage.example/signe?sig=abc");
+  m.devis.mockResolvedValue({ statutBloquant: null });
 });
 
 describe("GET pdf gardé par le jeton", () => {
@@ -82,6 +86,30 @@ describe("GET pdf gardé par le jeton", () => {
     expect(r.status).toBe(404);
     expect(await r.text()).toBe("");
     expect(m.signer).not.toHaveBeenCalled();
+  });
+
+  it.each(["expire", "refuse", "brouillon"])(
+    "devis %s avec jeton encore vivant : 404 neutre, rien n'est signé",
+    async (statutBloquant) => {
+      m.devis.mockResolvedValue({ statutBloquant });
+      const r = await appeler();
+      expect(r.status).toBe(404);
+      expect(await r.text()).toBe("");
+      expect(m.signer).not.toHaveBeenCalled();
+    },
+  );
+
+  it("devis introuvable : 404 ; devis déjà accepté : le PDF reste lisible", async () => {
+    m.devis.mockResolvedValue(null);
+    expect((await appeler()).status).toBe(404);
+    m.devis.mockResolvedValue({ statutBloquant: "deja_accepte" });
+    expect((await appeler()).status).toBe(302);
+  });
+
+  it("pièce non devis : le statut du devis n'est pas lu", async () => {
+    m.piece.mockResolvedValue(pieceOk({ type: "convention" }));
+    expect((await appeler()).status).toBe(302);
+    expect(m.devis).not.toHaveBeenCalled();
   });
 
   it("stockage indisponible (null ou erreur) : 404 neutre, aucune fuite", async () => {
