@@ -72,6 +72,7 @@ import { ValiditeBrouillon } from "@/components/admin/qualiopi/ValiditeBrouillon
 import {
   formatDateParis,
   validiteBrouillonModifiable,
+  devisAEstimationTiersFigee,
 } from "@/components/admin/qualiopi/devis-validite";
 import { SiretEtablissementDevis } from "@/components/admin/qualiopi/SiretEtablissementDevis";
 import { lireSiretsDevis } from "@/features/apporteurs-reseau/etablissement-presentation";
@@ -317,6 +318,12 @@ export default async function QualiopiDevisDetailPage({ params, searchParams }: 
   const signatureClientPapier = signatures.some(
     (s) => s.partie === "client" && s.methode === "papier_scanne",
   );
+  // Version suivante émise (non brouillon) : la prolongation n'est plus proposée sur celle-ci.
+  const successeurEmis =
+    (await prisma.devis.findFirst({
+      where: { replacesDevisId: devis.id, statut: { not: "brouillon" } },
+      select: { id: true },
+    })) !== null;
   const pieceDuDevis =
     devis.statut === "envoye" && devis.documentGenereId !== null && !clientASigne
       ? await prisma.devis.findUnique({
@@ -1028,6 +1035,9 @@ export default async function QualiopiDevisDetailPage({ params, searchParams }: 
           remisEnMainPropre={remisEnMainPropre}
           peutConclure={peutEngager(acces.role, "conclure_devis")}
           peutEcrire={acces.peutEcrire}
+          dateValiditeIso={devis.dateValidite.toISOString()}
+          successeurEmis={successeurEmis}
+          estimationTiersFigee={devisAEstimationTiersFigee(devis)}
         />
         {aideAdresse !== null ? (
           <p

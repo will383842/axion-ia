@@ -50,8 +50,12 @@ vi.mock("@/server/qualiopi/crm/clients", () => ({
 vi.mock("@/server/qualiopi/documents/signature/pieces-en-attente", () => ({
   idsPiecesDevisAContresigner: () => Promise.resolve(new Set<string>()),
 }));
+vi.mock("@/server/actions/qualiopi/devis-prolonger-validite", () => ({
+  prolongerValiditeDevisAction: vi.fn(),
+}));
 vi.mock("@/lib/prisma", () => ({
   prisma: {
+    devis: { findFirst: () => Promise.resolve(null) },
     factureFormation: { findMany: () => Promise.resolve([]) },
     documentSignature: { findMany: () => Promise.resolve([]) },
     planRecurrent: { count: () => Promise.resolve(0) },
