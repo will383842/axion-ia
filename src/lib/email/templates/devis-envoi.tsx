@@ -10,6 +10,7 @@
 
 import { Text } from "@react-email/components";
 import { EmailLayout, emailStyles } from "./_layout";
+import { lienSignatureValide } from "../lien-signature";
 import { salutation, type IdentiteSalutation } from "../salutation";
 import type { Locale } from "../../../../prisma/generated/client";
 
@@ -107,7 +108,12 @@ export function DevisEnvoiEmail({
   const p = payload as Partial<Payload>;
   const t = COPY[locale];
   const message = field(p, "messagePersonnalise", "");
-  const signatureUrl = field(p, "signatureUrl", "");
+  // Lien contrôlé : URL normalisée ou null (refus). Jamais journalisé (jeton porteur).
+  const lienSignature = lienSignatureValide(p.signatureUrl);
+  const signatureValide = lienSignature !== null;
+  if (!signatureValide && typeof p.signatureUrl === "string" && p.signatureUrl.trim() !== "") {
+    console.warn("[devis-envoi] lien de signature refusé : bouton masqué");
+  }
   const nbFormules = typeof p.nbFormules === "number" && p.nbFormules >= 2 ? p.nbFormules : 0;
   const libellesFormules = Array.isArray(p.libellesFormules)
     ? p.libellesFormules.filter((x): x is string => typeof x === "string").join(" / ")
@@ -134,7 +140,9 @@ export function DevisEnvoiEmail({
       /* Le pré-en-tête reprenait l'objet mot pour mot. Il porte désormais le
          montant et la date de validité — ce qu'on cherche avant d'ouvrir. */
       preview={t.preview(field(p, "montantLabel", ""), field(p, "dateValiditeLabel", ""))}
-      {...(signatureUrl !== "" ? { cta: { label: t.signCta, href: signatureUrl } } : {})}
+      {...(signatureValide
+        ? { cta: { label: t.signCta, href: lienSignature }, ctaSecret: true }
+        : {})}
     >
       <Text style={emailStyles.paragraphStyle}>{bonjour}</Text>
       {message !== "" &&
@@ -151,9 +159,7 @@ export function DevisEnvoiEmail({
         <Text style={emailStyles.paragraphStyle}>{t.formules(nbFormules, libellesFormules)}</Text>
       )}
       <Text style={emailStyles.paragraphStyle}>{t.attachment}</Text>
-      {signatureUrl !== "" && (
-        <Text style={emailStyles.paragraphStyle}>{t.sign(nbFormules > 0)}</Text>
-      )}
+      {signatureValide && <Text style={emailStyles.paragraphStyle}>{t.sign(nbFormules > 0)}</Text>}
       <Text style={emailStyles.paragraphStyle}>{t.questions}</Text>
       <Text style={emailStyles.paragraphStyle}>
         {t.close.split("\n").map((line, i) => (

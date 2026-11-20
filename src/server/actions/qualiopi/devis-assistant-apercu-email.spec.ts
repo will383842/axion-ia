@@ -57,6 +57,16 @@ vi.mock("@/server/qualiopi/documents/signature/token-document", () => ({
 }));
 vi.mock("@/server/queue/queues", () => ({ enqueueEmail: (...a: unknown[]) => h.enqueue(...a) }));
 
+// Origine publique du site, modifiable par test : le bouton de signature n'existe que si le lien
+// fictif de l'aperçu est sur cette origine (`lienSignatureValide`).
+const site = vi.hoisted(() => ({ origine: "https://axion-ia.com" }));
+vi.mock("@/lib/site-url", async (orig) => ({
+  ...(await orig<typeof import("@/lib/site-url")>()),
+  get SITE_URL() {
+    return site.origine;
+  },
+}));
+
 import { apercuEmailDevisAction, type ApercuEmailDevis } from "./devis-assistant-apercu-email";
 
 const ID = "11111111-1111-4111-8111-111111111111";
@@ -98,6 +108,7 @@ beforeEach(() => {
   h.etat.mockReturnValue("essai");
   h.formules.mockReturnValue(false);
   h.devisFindUnique.mockResolvedValue(devis());
+  site.origine = "https://axion-ia.com";
 });
 
 function ok(r: unknown): ApercuEmailDevis {
@@ -143,7 +154,22 @@ describe("apercuEmailDevisAction", () => {
     const d = ok(await apercuEmailDevisAction({ devisId: ID }));
     expect(d.html).not.toMatch(/href="https?:/);
     expect(d.html).not.toMatch(/href="[^"]*signer/);
-    expect(d.html).toContain("signer/apercu");
+    // Le bouton est présent ; l'adresse de signature n'est jamais imprimée en clair.
+    expect(d.html).toContain("Signer le devis en ligne");
+    expect(d.html.replace(/<[^>]*>/g, " ")).not.toMatch(/signer\//);
+  });
+
+  it("origine du site différente : pas de bouton, pas de lien, et l'action ne plante pas", async () => {
+    site.origine = "https://autre-site.test";
+    const warn = vi.spyOn(console, "warn").mockImplementation(() => {});
+    try {
+      const d = ok(await apercuEmailDevisAction({ devisId: ID }));
+      expect(d.html).not.toContain("Signer le devis en ligne");
+      expect(d.html).not.toContain("signer/");
+      expect(d.html).not.toMatch(/href="https?:/);
+    } finally {
+      warn.mockRestore();
+    }
   });
 
   it("sans adresse sur la fiche : adresseManquante vrai et adresse vide", async () => {
