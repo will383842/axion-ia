@@ -327,7 +327,7 @@ export default async function ObservatoirePage({ params, searchParams }: Props) 
         ) : null}
         <div className="flex flex-wrap gap-4">
           <Button asChild size="lg" shape="pill">
-            <Link href="/observatoire-ia/participer">
+            <Link href="/diagnostic">
               {t("results.participateCta")}
               <ArrowRight className="h-4 w-4" aria-hidden="true" />
             </Link>
@@ -671,7 +671,7 @@ export default async function ObservatoirePage({ params, searchParams }: Props) 
       {/* CTA participer */}
       <Section tone="mocha" titleAs="h2" title={t("form.hook")} description={t("form.subhook")}>
         <Button asChild size="lg" shape="pill">
-          <Link href="/observatoire-ia/participer">
+          <Link href="/diagnostic">
             {t("results.participateCta")}
             <ArrowRight className="h-4 w-4" aria-hidden="true" />
           </Link>
