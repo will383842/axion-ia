@@ -176,6 +176,8 @@ const CLIENT_360_INCLUDE = {
       statut: true,
       montantTotalHtCents: true,
       createdAt: true,
+      // Pastille « À contresigner » de la fiche (même règle que la liste des devis).
+      documentGenereId: true,
     },
   },
   facturesFormation: {

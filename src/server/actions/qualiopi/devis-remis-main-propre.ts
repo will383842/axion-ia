@@ -17,8 +17,7 @@ import React from "react";
 import { z } from "zod";
 import { computeTotauxFacture, TAUX_TVA_STANDARD } from "@/server/qualiopi/legal/tva";
 import {
-  controlerEcheancier,
-  MSG_ECHEANCIER_ILLISIBLE,
+  raisonEcheancierRefuse,
   TITRE_ECHEANCIER,
 } from "@/server/qualiopi/devis/assistant/conditions-prix-unique";
 import { prisma } from "@/lib/prisma";
@@ -168,7 +167,7 @@ export async function marquerRemisEnMainPropreAction(input: {
         // (c) Pièce PDF numérotée : un échec refuse tout (le devis reste en brouillon).
         let data: DevisData;
         try {
-          const contexte = await lireContextePdfDevis();
+          const contexte = await lireContextePdfDevis({ clientId: devis.clientId, tx });
           data = donneesPdfDevis(devis, contexte, new Date());
         } catch (err) {
           if (err instanceof OffreDevisInvalideError) {
@@ -178,19 +177,19 @@ export async function marquerRemisEnMainPropreAction(input: {
           throw new RemiseRefusee(MSG_PDF_RATE, "pdf_rate");
         }
         // Échéancier de l'assistant : même contrôle que sendDevisAction, AVANT toute pièce.
-        if (
-          data.conditionsParticulieres?.startsWith(TITRE_ECHEANCIER) &&
-          !controlerEcheancier(
-            data.conditionsParticulieres,
-            computeTotauxFacture(
-              data.lignes,
+        const raisonEcheancier = data.conditionsParticulieres?.startsWith(TITRE_ECHEANCIER)
+          ? raisonEcheancierRefuse(
+              data.conditionsParticulieres,
+              computeTotauxFacture(
+                data.lignes,
+                data.regimeTva,
+                data.tauxTvaStandardPercent ?? TAUX_TVA_STANDARD,
+              ).totalTtcCents,
               data.regimeTva,
-              data.tauxTvaStandardPercent ?? TAUX_TVA_STANDARD,
-            ).totalTtcCents,
-            data.regimeTva,
-          )
-        ) {
-          throw new RemiseRefusee(MSG_ECHEANCIER_ILLISIBLE, "echeancier_incoherent");
+            )
+          : null;
+        if (raisonEcheancier !== null) {
+          throw new RemiseRefusee(raisonEcheancier, "echeancier_incoherent");
         }
         let pdfCle: string;
         let pieceId: string;

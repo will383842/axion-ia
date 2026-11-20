@@ -55,12 +55,15 @@ const appel = (over: Record<string, unknown> = {}) =>
   modifierDevisBrouillonAction({ id: ID, attenduMajLe: MAJ, offre: offreSansIndemnite(), ...over });
 
 describe("modifierDevisBrouillonAction", () => {
-  it("interrupteur éteint : inerte, aucune lecture ni écriture", async () => {
+  it("interrupteur éteint : inerte, aucune écriture (seule lecture : le client du devis, cible de la garde)", async () => {
     formulesActives.mockResolvedValue(false);
     const r = await appel();
     expect("error" in r).toBe(true);
     expect(updateMany).not.toHaveBeenCalled();
-    expect(findUnique).not.toHaveBeenCalled();
+    expect(findUnique).toHaveBeenCalledTimes(1);
+    expect(findUnique).toHaveBeenCalledWith(
+      expect.objectContaining({ select: expect.objectContaining({ clientId: true }) }),
+    );
   });
   it("un e-mail d'envoi du devis attend (a_valider ou approuve) : refus, aucune écriture", async () => {
     outboxFindFirst.mockResolvedValue({ id: "ob-1" });

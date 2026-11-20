@@ -42,7 +42,12 @@ function retour(
   cle: "message" | "erreur",
   texte: string,
   onglet = "devis-factures",
+  versDevis: string | null = null,
 ): never {
+  // Lancée depuis la page du devis : le résultat y revient (jamais ailleurs que sur CE devis).
+  if (versDevis !== null) {
+    redirect(avecMessageDeRetour(adminPath("fr", `qualiopi/devis/${versDevis}`), cle, texte));
+  }
   const base = adminPath("fr", `qualiopi/clients/${clientId}`);
   redirect(avecMessageDeRetour(`${base}?onglet=${onglet}`, cle, texte));
 }
@@ -61,6 +66,10 @@ export async function preparerRelanceDevisAction(fd: FormData): Promise<void> {
   const clientId = uuid.safeParse(typeof brutClient === "string" ? brutClient : "");
   if (!clientId.success) redirect(adminPath("fr", "qualiopi/clients"));
   const cid = clientId.data;
+  const brutRetour = fd.get("retourDevis");
+  const versDevis = uuid.safeParse(typeof brutRetour === "string" ? brutRetour : "");
+  const r = (cle: "message" | "erreur", texte: string): never =>
+    retour(cid, cle, texte, "devis-factures", versDevis.success ? versDevis.data : null);
 
   try {
     const session = await requireAdminWrite();
@@ -68,7 +77,7 @@ export async function preparerRelanceDevisAction(fd: FormData): Promise<void> {
 
     const brutDevis = fd.get("devisId");
     const devisId = uuid.safeParse(typeof brutDevis === "string" ? brutDevis : "");
-    if (!devisId.success) return retour(cid, "erreur", ERREUR_DEVIS_INTROUVABLE);
+    if (!devisId.success) return r("erreur", ERREUR_DEVIS_INTROUVABLE);
 
     // Le devis doit être DU client de la fiche et envoyé.
     const devis = await prisma.devis.findFirst({
@@ -81,8 +90,8 @@ export async function preparerRelanceDevisAction(fd: FormData): Promise<void> {
         client: { select: { raisonSociale: true, contactNom: true, contactEmail: true } },
       },
     });
-    if (!devis) return retour(cid, "erreur", ERREUR_DEVIS_INTROUVABLE);
-    if (devis.dateValidite < new Date()) return retour(cid, "erreur", ERREUR_DEVIS_PERIME);
+    if (!devis) return r("erreur", ERREUR_DEVIS_INTROUVABLE);
+    if (devis.dateValidite < new Date()) return r("erreur", ERREUR_DEVIS_PERIME);
 
     // Anti-doublon : un brouillon déjà à valider pour ce devis.
     const existant = await prisma.emailOutbox.findFirst({
@@ -94,7 +103,7 @@ export async function preparerRelanceDevisAction(fd: FormData): Promise<void> {
       },
       select: { id: true },
     });
-    if (existant) return retour(cid, "message", MESSAGE_RELANCE_PRETE);
+    if (existant) return r("message", MESSAGE_RELANCE_PRETE);
 
     const relance = construireRelanceDevis({
       numero: devis.numero,
@@ -103,7 +112,7 @@ export async function preparerRelanceDevisAction(fd: FormData): Promise<void> {
       contactNom: devis.client.contactNom,
       contactEmail: devis.client.contactEmail,
     });
-    if (!relance.ok) return retour(cid, "erreur", relance.erreur);
+    if (!relance.ok) return r("erreur", relance.erreur);
 
     const outboxId = await garerPourValidation({
       template: TEMPLATE_RELANCE_DEVIS,
@@ -117,7 +126,7 @@ export async function preparerRelanceDevisAction(fd: FormData): Promise<void> {
       jobId: jobIdRelanceDevis(devis.id),
     });
     // Jamais d'envoi de repli : une relance non garée n'existe pas.
-    if (outboxId === null) return retour(cid, "erreur", ERREUR_GARAGE);
+    if (outboxId === null) return r("erreur", ERREUR_GARAGE);
 
     // Le contrôle ci-dessus n'est pas atomique (aucun index unique) : après le garage, on
     // recompte. S'il y a plus d'un brouillon, le plus récent est refusé (jamais supprimé).
@@ -142,7 +151,7 @@ export async function preparerRelanceDevisAction(fd: FormData): Promise<void> {
         },
       });
       // Seul l'appel qui a garé le brouillon conservé journalise ; l'autre dit « prête ».
-      if (outboxId !== brouillons[0]?.id) return retour(cid, "message", MESSAGE_RELANCE_PRETE);
+      if (outboxId !== brouillons[0]?.id) return r("message", MESSAGE_RELANCE_PRETE);
     }
 
     await logQualiopiActivity({
@@ -153,9 +162,9 @@ export async function preparerRelanceDevisAction(fd: FormData): Promise<void> {
       session,
     });
     revalidatePath(adminPath("fr", `qualiopi/clients/${cid}`));
-    return retour(cid, "message", MESSAGE_RELANCE_GAREE);
+    return r("message", MESSAGE_RELANCE_GAREE);
   } catch (e) {
     if (estRedirection(e)) throw e;
-    return retour(cid, "erreur", messageAffichable(e));
+    return r("erreur", messageAffichable(e));
   }
 }

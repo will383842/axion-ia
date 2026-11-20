@@ -106,7 +106,11 @@ export async function apercuEmailDevisAction(input: {
 
   let formules;
   try {
-    formules = donneesPdfDevis(devis, await lireContextePdfDevis(), new Date()).formules;
+    formules = donneesPdfDevis(
+      devis,
+      await lireContextePdfDevis({ clientId: devis.clientId }),
+      new Date(),
+    ).formules;
   } catch {
     return { error: "Le devis n'a pas pu être relu : aperçu indisponible." };
   }
