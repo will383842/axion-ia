@@ -102,6 +102,8 @@ export const routing = defineRouting({
     "/journee-ia": { fr: "/journee-ia", en: "/journee-ia" },
     // GEO V2-09 : la cartographie, étape du matin de la Journée IA (EN redirigée vers FR).
     "/cartographie": { fr: "/cartographie", en: "/cartographie" },
+    // GEO V2-28 : combien coûte un audit IA (EN redirigée vers FR).
+    "/prix-audit-ia": { fr: "/prix-audit-ia", en: "/prix-audit-ia" },
     "/audit/tpe-1-jour": { fr: "/audit/tpe-1-jour", en: "/audit/tpe-1-jour" },
     // Sprint 14.10.8 (Will 2026-05-12) — /audit/cible remplace /audit/process.
     // Slug aligné sur pricing.ts AUDIT_TIERS id "audit-cible".

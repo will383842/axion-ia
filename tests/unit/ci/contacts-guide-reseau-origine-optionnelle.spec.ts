@@ -35,6 +35,7 @@ describe("migration contacts_guide_reseau_origine_optionnelle", () => {
       "20261118100000_emails_manuels",
       "20261118120000_cible_effacement_emails_manuels",
       "20261118140000_client_contact_identite_devis_conditions",
+      "20261120090000_observatoire_score_consentement",
     ]);
     expect(dossiers.indexOf(NOM)).toBeGreaterThan(
       dossiers.indexOf("20261108140000_contacts_guide_reseau"),

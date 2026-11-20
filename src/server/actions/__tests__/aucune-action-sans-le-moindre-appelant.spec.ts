@@ -75,7 +75,6 @@ const DOSSIER_ACTIONS = join(SRC, "server", "actions");
 const SANS_AUCUN_APPELANT: ReadonlyArray<string> = [
   // Lot 1 de l'aperçu de l'e-mail du devis : l'écran l'attend en prop, le branchement
   // (AssistantDevisBranche) vient au lot 2 — retirer cette ligne alors.
-  "server/actions/qualiopi/devis-assistant-apercu-email.ts::apercuEmailDevisAction",
   "server/actions/editorial/metriques.ts::historiqueRelevesAction",
   "server/actions/editorial/publications.ts::controlerConformiteAction",
   "server/actions/editorial/recettes.ts::chargerArbreAction",

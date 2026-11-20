@@ -825,6 +825,74 @@ describe("envoyerDepuisAssistantAction", () => {
     });
   });
 
+  it("sans objet ni message : sendDevisAction est appelé exactement comme avant (devisId seul)", async () => {
+    poser(classique());
+    m.envoyer.mockResolvedValue({ data: { id: DEVIS, emailEnvoye: true, signatureCreee: true } });
+    await env();
+    expect(m.envoyer).toHaveBeenCalledTimes(1);
+    expect(m.envoyer.mock.calls[0]).toEqual([DEVIS]);
+  });
+
+  it("objet et message choisis : transmis à sendDevisAction(devisId, { sujet, messagePersonnalise })", async () => {
+    poser(classique());
+    m.envoyer.mockResolvedValue({ data: { id: DEVIS, emailEnvoye: true, signatureCreee: true } });
+    await envoyerDepuisAssistantAction({
+      brouillonId: ID,
+      attenduRevision: 4,
+      sujet: "Votre devis",
+      messagePersonnalise: "Bonjour, voici le devis.",
+    });
+    expect(m.envoyer).toHaveBeenCalledWith(DEVIS, {
+      sujet: "Votre devis",
+      messagePersonnalise: "Bonjour, voici le devis.",
+    });
+  });
+
+  it("objet trop long ou non textuel : refusé AVANT toute écriture et tout envoi", async () => {
+    poser(classique());
+    const r1 = await envoyerDepuisAssistantAction({
+      brouillonId: ID,
+      attenduRevision: 4,
+      sujet: "x".repeat(301),
+    });
+    expect("error" in r1).toBe(true);
+    const r2 = await envoyerDepuisAssistantAction({
+      brouillonId: ID,
+      attenduRevision: 4,
+      messagePersonnalise: "y".repeat(4001),
+    });
+    expect("error" in r2).toBe(true);
+    const r3 = await envoyerDepuisAssistantAction({
+      brouillonId: ID,
+      attenduRevision: 4,
+      sujet: 42 as unknown as string,
+    });
+    expect("error" in r3).toBe(true);
+    expect(m.envoyer).not.toHaveBeenCalled();
+    expect(m.creerClassique).not.toHaveBeenCalled();
+  });
+
+  it("objet ou message interdit (même masqué) : refusé, AUCUNE écriture (numérotation, prisma, envoi)", async () => {
+    poser(classique());
+    const cas = [
+      { sujet: "Devis Qua\u00adliopi" },
+      { sujet: "Prise-en-charge" },
+      { messagePersonnalise: "Votre OPCO" },
+      { messagePersonnalise: "ＯＰＣＯ" },
+    ];
+    for (const c of cas) {
+      const r = await envoyerDepuisAssistantAction({ brouillonId: ID, attenduRevision: 4, ...c });
+      expect("error" in r).toBe(true);
+    }
+    expect(m.creerClassique).not.toHaveBeenCalled();
+    expect(m.modifierClassique).not.toHaveBeenCalled();
+    expect(m.creerFormules).not.toHaveBeenCalled();
+    expect(m.modifierFormules).not.toHaveBeenCalled();
+    expect(m.updateMany).not.toHaveBeenCalled();
+    expect(m.executeRaw).not.toHaveBeenCalled();
+    expect(m.envoyer).not.toHaveBeenCalled();
+  });
+
   it("mode garé : {emailEnvoye:false, garePourValidation:true, note} reprend sendDevisAction", async () => {
     poser(classique());
     m.envoyer.mockResolvedValue({

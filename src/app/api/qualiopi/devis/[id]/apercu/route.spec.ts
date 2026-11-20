@@ -168,7 +168,10 @@ describe("GET /api/qualiopi/devis/[id]/apercu", () => {
 
   it("le select lit `offre` (sinon l'aperçu d'un devis à formules est vide)", async () => {
     await appeler();
-    expect(mockFindUnique.mock.calls[0]?.[0].select).toBe(SELECT_DEVIS_POUR_PDF);
+    expect(mockFindUnique.mock.calls[0]?.[0].select).toEqual({
+      ...SELECT_DEVIS_POUR_PDF,
+      clientId: true,
+    });
     expect(SELECT_DEVIS_POUR_PDF.offre).toBe(true);
   });
 

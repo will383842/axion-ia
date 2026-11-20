@@ -105,7 +105,9 @@ describe("🔴 drapeau ALLUMÉ — le créneau reste chez nous", () => {
     rendre({ reservationDirecte: true, locale: "fr" });
     const a = lienDuCreneau();
     expect(a.getAttribute("target")).toBeNull();
-    expect(a.getAttribute("rel")).toBeNull();
+    // `rel` porte désormais `nofollow` (piège à robots, 2026-11-20) et RIEN de ce
+    // qui accompagne un nouvel onglet : ni `noopener`, ni `noreferrer`.
+    expect(a.getAttribute("rel")).toBe("nofollow");
   });
 
   it("la locale est respectée", () => {

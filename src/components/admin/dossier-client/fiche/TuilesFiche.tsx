@@ -4,6 +4,7 @@
  * en panne dit « Lecture impossible », jamais 0.
  */
 
+import Link from "next/link";
 import { AlertTriangle, CheckCircle2, ClipboardList, Euro, TrendingUp } from "lucide-react";
 
 import { AdminStatCard } from "@/components/admin/ui/AdminStatCard";
@@ -41,25 +42,68 @@ export function TuilesFiche(props: {
 }): React.ReactElement {
   const { enTete: e, ficheHref } = props;
 
-  const pipeline = e.pipeline.ok
-    ? (() => {
-        const { ht, ttc } = htEtTtc(e.pipeline.valeur.htCents);
-        const chances =
-          e.pipeline.valeur.chancesPct === null
-            ? "chances non estimées"
-            : `${e.pipeline.valeur.chancesPct} % de chances de signer`;
+  const pipeline = (() => {
+    // Lecture des devis en panne : état de panne, jamais l'estimation saisie présentée comme sûre.
+    if (!e.devisEnAttente.ok) return panne("Pipeline", TrendingUp);
+    const devis = e.devisEnAttente.valeur;
+    if (devis !== null) {
+      const { ht, ttc } = htEtTtc(devis.htCents);
+      const illisibles =
+        devis.illisibles > 0
+          ? ` · dont ${devis.illisibles} illisible${devis.illisibles > 1 ? "s" : ""}`
+          : "";
+      const nb = `${devis.nb} devis en attente${illisibles}`;
+      if (devis.dernierDevisId === null) {
         return (
           <AdminStatCard
             label="Pipeline"
-            value={ht}
-            meta={`${ttc} · ${chances}`}
-            tone="info"
+            value={PANNE}
+            meta={`Devis : lecture impossible (${devis.illisibles} illisible${devis.illisibles > 1 ? "s" : ""})`}
+            tone="default"
             icon={TrendingUp}
-            href={`${ficheHref}?onglet=prestations`}
           />
         );
-      })()
-    : panne("Pipeline", TrendingUp);
+      }
+      const saisie =
+        e.pipeline.ok && e.pipeline.valeur.htCents > 0
+          ? ` · estimation saisie : ${htEtTtc(e.pipeline.valeur.htCents).ht}`
+          : "";
+      return (
+        <div>
+          <AdminStatCard
+            label="Pipeline"
+            value={devis.aPartirDe ? `à partir de ${ht}` : ht}
+            meta={`${ttc} · ${nb}${saisie}`}
+            tone="info"
+            icon={TrendingUp}
+            href={`${props.qBase}/devis/${devis.dernierDevisId}`}
+          />
+          <Link
+            href={`${props.qBase}/devis/${devis.dernierDevisId}`}
+            className="mt-1 inline-block text-xs underline"
+          >
+            Voir le devis
+          </Link>
+        </div>
+      );
+    }
+    if (!e.pipeline.ok) return panne("Pipeline", TrendingUp);
+    const { ht, ttc } = htEtTtc(e.pipeline.valeur.htCents);
+    const chances =
+      e.pipeline.valeur.chancesPct === null
+        ? "chances non estimées"
+        : `${e.pipeline.valeur.chancesPct} % de chances de signer`;
+    return (
+      <AdminStatCard
+        label="Pipeline"
+        value={ht}
+        meta={`${ttc} · ${chances}`}
+        tone="info"
+        icon={TrendingUp}
+        href={`${ficheHref}?onglet=prestations`}
+      />
+    );
+  })();
 
   const sante = e.sante.ok ? (
     e.sante.valeur.niveau === "bonne" ? (
