@@ -644,6 +644,12 @@ export interface PreuveSignature {
   imageSrc?: string | null;
   /** Vrai si l'image a été purgée (art. 17). La ligne de preuve, elle, survit. */
   imagePurgee?: boolean;
+  /**
+   * Lot I3 — libellé d'un scan PDF de signature papier (`mentionPapierV1`). Quand il est
+   * présent, il remplace la mention papier générique et « Image de signature indisponible » ne
+   * s'affiche pas : il n'y a pas d'image à montrer, par construction.
+   */
+  mentionPapier?: string;
 }
 
 /**
@@ -793,12 +799,14 @@ function SignatureApposee({ preuve }: { preuve: PreuveSignature }): React.ReactE
           Signature recueillie par confirmation nominative, sans tracé manuscrit (modalité
           accessible). Elle a la même valeur qu'une signature tracée.
         </Text>
-      ) : (
+      ) : preuve.mentionPapier !== undefined ? null : (
         <Text style={signatureLocal.mentionPreuve}>Image de signature indisponible.</Text>
       )}
 
       <Text style={signatureLocal.horodatage}>{`Signé le ${preuve.signeAtLisible}`}</Text>
-      {preuve.methode === "papier_scanne" ? (
+      {preuve.mentionPapier !== undefined ? (
+        <Text style={signatureLocal.mentionPreuve}>{preuve.mentionPapier}</Text>
+      ) : preuve.methode === "papier_scanne" ? (
         <Text style={signatureLocal.mentionPreuve}>
           Signature manuscrite sur papier, versée au dossier par l&apos;organisme.
         </Text>

@@ -72,6 +72,12 @@ import {
   CONSENTEMENT_VERSION_DOCUMENT_CODE,
   type VersionConsentementDocument,
 } from "./mentions-document";
+import {
+  MENTION_VERSION_PAPIER,
+  CONSENTEMENT_VERSION_PAPIER,
+  type VersionConsentementPapier,
+} from "./mentions-papier";
+import { estCleScanPapier, stockerScanPapier, supprimerScanPapier } from "./scan-papier-storage";
 
 /** Nombre de reprises sur conflit de chaîne. Au-delà, c'est autre chose qu'une course. */
 const MAX_REPRISES_CHAINE = 3;
@@ -231,6 +237,12 @@ export interface EntreeSignatureDocument {
   partiesRequises: readonly PartieSignataire[];
   /** Data-URL PNG/JPEG. Obligatoire sauf pour `confirmation_accessible`. */
   imageDataUrl?: string | undefined;
+  /**
+   * Lot I3 — scan PDF d'un devis signé à la main. Admis SEULEMENT avec le porteur
+   * `reversement_papier` ET la méthode `papier_scanne`, et jamais avec `imageDataUrl`.
+   * Les octets sont écrits sur R2 tels quels (jamais ré-encodés) ; l'empreinte porte sur eux.
+   */
+  scanPdf?: { octets: Buffer } | undefined;
   ipHash?: string | null | undefined;
   userAgentSha256?: string | null | undefined;
   /** Injectable pour les tests. Jamais `new Date()` en dur dans la logique. */
@@ -240,7 +252,7 @@ export interface EntreeSignatureDocument {
    * « code » n'est passée que par l'appelant qui a VÉRIFIÉ et consommé le code
    * à usage unique (contrat-cadre v3, lot L7c) : elle entre dans le tuple haché.
    */
-  consentementVersion?: VersionConsentementDocument | undefined;
+  consentementVersion?: VersionConsentementDocument | VersionConsentementPapier | undefined;
   /**
    * Version des CGV acceptées. 🔴 Fournie par le SERVEUR (jamais par le navigateur) et
    * OBLIGATOIRE pour un devis signé par lien (`signataire_jeton`). Les autres pièces et
@@ -353,7 +365,9 @@ function refus(raison: RefusSignatureDocument): ResultatSignatureDocument {
 async function nettoyerImageOrpheline(image: { key: string } | null): Promise<void> {
   if (image === null) return;
   try {
-    await supprimerImageSignature(image.key);
+    // La forme de la clé dit ce que c'est : scan PDF papier (lot I3) ou image de tracé.
+    if (estCleScanPapier(image.key)) await supprimerScanPapier(image.key);
+    else await supprimerImageSignature(image.key);
   } catch (err) {
     Sentry.captureException(err, {
       tags: { action: "signerDocument:nettoyage_orphelin" },
@@ -1038,7 +1052,7 @@ export async function signerDocument(
   //
   // ⚠️ AUCUNE exception, canal papier compris. Le reversement d'une signature
   // manuscrite recueillie AVANT l'annulation serait le seul cas légitime — mais
-  // ce porteur n'a aucun appelant dans le dépôt, et le service n'accepte pas de
+  // son seul appelant (lot I3, `verserScanDevisSigneAction`, devis) ne passe pas de date de recueil, et le service n'accepte pas de
   // date de recueil distincte de `maintenant` : il ne pourrait donc pas établir
   // l'antériorité qui justifierait l'exception. L'ouvrir sur une promesse
   // reviendrait à rouvrir le défaut pour le seul canal où personne ne regarde.
@@ -1062,9 +1076,25 @@ export async function signerDocument(
   }
 
   const imageFournie = input.imageDataUrl !== undefined && input.imageDataUrl !== "";
+  const scanFourni = input.scanPdf !== undefined;
+  const papier = input.methode === "papier_scanne";
+
+  // Lot I3 — le scan PDF n'a qu'un seul chemin : le reversement papier, méthode papier scanné,
+  // sans image de tracé en plus. Codes EXISTANTS : un scan hors de ce chemin présenterait comme
+  // papier ce qui ne l'est pas.
+  if (scanFourni && (porteur.type !== "reversement_papier" || !papier || imageFournie)) {
+    return refus("image_interdite");
+  }
+  // D1 (option c) — versions papier IMPOSÉES en papier, refusées ailleurs : l'appelant ne choisit
+  // jamais ce que la ligne dit du consentement.
+  if (papier && input.consentementVersion !== undefined) return refus("porteur_non_autorise");
+  if (!papier && input.consentementVersion === CONSENTEMENT_VERSION_PAPIER) {
+    return refus("porteur_non_autorise");
+  }
+
   if (input.methode === "confirmation_accessible") {
     if (imageFournie) return refus("image_interdite");
-  } else if (!imageFournie) {
+  } else if (!imageFournie && !scanFourni) {
     // `trace` sans image, `papier_scanne` sans scan : dans les deux cas la ligne
     // affirmerait l'existence d'une pièce que personne ne pourra produire.
     return refus("image_requise");
@@ -1090,7 +1120,13 @@ export async function signerDocument(
   // genre inconnu produirait des images ineffaçables. Les clés sont des UUID :
   // partager le préfixe avec l'émargement ne crée aucune collision.
   let image: { key: string; sha256: string; mimeType: string; sizeBytes: number } | null = null;
-  if (imageFournie && input.imageDataUrl !== undefined) {
+  if (input.scanPdf !== undefined) {
+    image = await stockerScanPapier({
+      octets: input.scanPdf.octets,
+      signeAt: maintenant,
+      id: signatureId,
+    });
+  } else if (imageFournie && input.imageDataUrl !== undefined) {
     image = await storeSignatureImage({
       dataUrl: input.imageDataUrl,
       genre: "signatures",
@@ -1102,7 +1138,11 @@ export async function signerDocument(
   const suppressionPrevueAt = new Date(maintenant);
   suppressionPrevueAt.setFullYear(suppressionPrevueAt.getFullYear() + DOCUMENT_RETENTION_YEARS);
 
-  const consentementVersion = input.consentementVersion ?? CONSENTEMENT_VERSION_DOCUMENT;
+  // D1 : en papier, les deux versions sont IMPOSÉES (jamais fournies par l'appelant).
+  const mentionVersion = papier ? MENTION_VERSION_PAPIER : MENTION_VERSION_DOCUMENT;
+  const consentementVersion = papier
+    ? CONSENTEMENT_VERSION_PAPIER
+    : (input.consentementVersion ?? CONSENTEMENT_VERSION_DOCUMENT);
 
   // V1-A-7 — le FACTEUR qui a prouvé l'adresse, scellé dans le tuple v2. Affirmé
   // seulement s'il est constaté en base : le texte « avec code » ET un code consommé
@@ -1131,7 +1171,7 @@ export async function signerDocument(
     signataireQualite,
     methode: input.methode,
     signatureSha256: image?.sha256 ?? null,
-    mentionVersion: MENTION_VERSION_DOCUMENT,
+    mentionVersion,
     consentementVersion,
     signeAtIso: maintenant.toISOString(),
     cgvVersion,
@@ -1208,7 +1248,7 @@ export async function signerDocument(
             prevHash,
             selfHash,
             hashVersion: sceauV4 === null ? HASH_VERSION_DOCUMENT : HASH_VERSION_DOCUMENT_V4,
-            mentionVersion: MENTION_VERSION_DOCUMENT,
+            mentionVersion,
             consentementVersion,
             facteurVerification,
             cgvVersion,
@@ -1242,7 +1282,8 @@ export async function signerDocument(
         // Horodatage RFC 3161 du sceau (lot 4 bis) : la ligne naît « en attente » dans la MÊME
         // transaction que la preuve ; le jeton est demandé APRÈS, sans jamais bloquer ni défaire la
         // signature. Toute signature V4 (client et contresignature) a la sienne.
-        if (sceauV4 !== null) {
+        // Lot I3 : le scan papier d'un devis a la sienne aussi (V3, empreinte = `selfHash`).
+        if (sceauV4 !== null || (porteur.type === "reversement_papier" && ctx.type === "devis")) {
           await tx.documentSignatureHorodatage.create({
             data: {
               signatureId: sig.id,
