@@ -124,3 +124,18 @@ describe("parcours accessible", () => {
     expect(premiere.checked).toBe(true);
   });
 });
+
+describe("accessibilité : retouches de l'audit PR-3", () => {
+  it("après le résultat, l'id « observatoire » n'existe qu'une fois (RGAA 8.2)", async () => {
+    const user = userEvent.setup();
+    render(
+      <>
+        <section id="observatoire" />
+        <ScoreFlow {...props()} />
+      </>,
+    );
+    await parcourirJusquAuResultat(user, NB_QUESTIONS);
+    expect(document.querySelectorAll("#observatoire").length).toBe(1);
+    expect(document.querySelectorAll("#observatoire-ajout").length).toBe(1);
+  });
+});

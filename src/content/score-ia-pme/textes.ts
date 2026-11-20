@@ -3,6 +3,7 @@
 // Aucun chiffre en dur hors 4 (minutes), 15, 5, 30, 45 ; les autres viennent des constantes
 // ou de `formule.ts` (test T-7). Aucun mot interdit (Qualiopi, OPCO, financement…).
 
+import { NB_CARACTERES } from "@/lib/score-ia-pme/code-retrait";
 import {
   CONSENT_VERSION,
   DUREE_CONSERVATION_ANS,
@@ -41,6 +42,7 @@ export const ECRANS = {
   precedent: "Précédent",
   suivant: "Suivant",
   voirResultat: "Voir mon score",
+  votreScore: "Votre score",
   choisirReponse: "Choisissez une réponse pour continuer.",
   plafond: (max: number) => `${max} réponses au plus : décochez-en une pour en choisir une autre.`,
   exclusifRetire: "Les autres choix ont été retirés.",
@@ -52,7 +54,7 @@ export const ECRANS = {
   imprimer: "Imprimer ou enregistrer en PDF",
   niveau: "Niveau",
   detail: "Détail par critère",
-  pistesTitre: "Trois pistes pour commencer",
+  pistesTitre: "Pistes pour commencer",
   pistesIntro:
     "Déduites des freins que vous avez cochés. Ce sont des idées de départ, pas un plan.",
   sortiesTitre: "Et maintenant ?",
@@ -99,6 +101,7 @@ export function encadreInformation(responsable: string, contact: string): readon
 export const AJOUT = {
   titre: "Aider l'Observatoire de l'IA (facultatif)",
   bouton: "Ajouter mes réponses",
+  antiRobotEnCours: "Vérification anti-robot en cours : réessayez dans un instant.",
   caseManquante: "Cochez la case pour envoyer vos réponses",
   enCours: "Envoi en cours…",
   confirmation: "Merci, vos réponses ont été ajoutées.",
@@ -120,11 +123,15 @@ export const RETRAIT = {
   champ: "Code de retrait",
   bouton: "Retirer mes réponses",
   vide: "Saisissez votre code de retrait.",
+  invalide: `Ce code est incomplet : il compte ${NB_CARACTERES} caractères (${NB_CARACTERES / 4} groupes de 4).`,
+  antiRobotEnCours: "Vérification anti-robot en cours : réessayez dans un instant.",
+  erreur: "Une erreur est survenue. Réessayez plus tard.",
   antiRobotBloque: "La vérification anti-robot n'a pas pu se charger. Réessayez plus tard.",
 } as const;
 
 export const METHODE = {
   titre: "Méthode",
+  faqTitre: "Questions fréquentes",
   mesure:
     "Le Score IA TPE-PME mesure l'adoption de l'IA : usages, outils, équipe, stratégie, temps gagné et moyens. Il ne mesure pas la qualité de vos données ni votre sécurité informatique.",
   conventions:

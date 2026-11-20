@@ -79,7 +79,7 @@ export function AjoutObservatoire({
     }
     const jeton = token || (siteKey ? "" : "sans-widget");
     if (!jeton) {
-      setErreur("Vérification anti-robot en cours : réessayez dans un instant.");
+      setErreur(AJOUT.antiRobotEnCours);
       return;
     }
     setStatut("envoi");
@@ -148,7 +148,7 @@ export function AjoutObservatoire({
         <button
           type="button"
           onClick={copier}
-          className="border-ink/30 mt-3 inline-flex min-h-[44px] items-center rounded-lg border px-4 text-sm font-medium"
+          className="border-ink/60 mt-3 inline-flex min-h-[44px] items-center rounded-lg border px-4 text-sm font-medium"
         >
           {AJOUT.copier}
         </button>

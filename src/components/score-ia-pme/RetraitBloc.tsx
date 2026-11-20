@@ -22,7 +22,7 @@ export function RetraitBloc() {
         <button
           type="button"
           onClick={() => setOuvert(true)}
-          className="border-ink/30 inline-flex min-h-[44px] items-center rounded-lg border px-4 text-sm font-medium"
+          className="border-ink/60 inline-flex min-h-[44px] items-center rounded-lg border px-4 text-sm font-medium"
         >
           {RETRAIT.titre}
         </button>

@@ -14,6 +14,11 @@ import { RETRAIT } from "@/content/score-ia-pme/textes";
 export function RetraitReponses() {
   const [saisie, setSaisie] = React.useState("");
   const [message, setMessage] = React.useState<{ ok: boolean; texte: string } | null>(null);
+  const champRef = React.useRef<HTMLInputElement>(null);
+  // Le bouton d'ouverture disparaît au clic : le focus passe au champ (WCAG 2.4.3).
+  React.useEffect(() => {
+    champRef.current?.focus();
+  }, []);
   const [envoi, setEnvoi] = React.useState(false);
   const { token, widget, blocked, reset } = useTurnstileToken("score-ia-pme-retrait");
   const siteKey = process.env["NEXT_PUBLIC_TURNSTILE_SITE_KEY"];
@@ -24,7 +29,7 @@ export function RetraitReponses() {
       if (envoi) return;
       const code = normaliserCode(saisie);
       if (!codeValide(code)) {
-        setMessage({ ok: false, texte: RETRAIT.vide });
+        setMessage({ ok: false, texte: code === "" ? RETRAIT.vide : RETRAIT.invalide });
         return;
       }
       if (blocked) {
@@ -33,10 +38,7 @@ export function RetraitReponses() {
       }
       const jeton = token || (siteKey ? "" : "sans-widget");
       if (!jeton) {
-        setMessage({
-          ok: false,
-          texte: "Vérification anti-robot en cours : réessayez dans un instant.",
-        });
+        setMessage({ ok: false, texte: RETRAIT.antiRobotEnCours });
         return;
       }
       setEnvoi(true);
@@ -48,7 +50,7 @@ export function RetraitReponses() {
         setMessage(r.ok ? { ok: true, texte: r.message } : { ok: false, texte: r.error });
         if (r.ok) trackEvent("Réponse retirée");
       } catch {
-        setMessage({ ok: false, texte: "Une erreur est survenue. Réessayez plus tard." });
+        setMessage({ ok: false, texte: RETRAIT.erreur });
       } finally {
         setEnvoi(false);
         reset();
@@ -59,36 +61,36 @@ export function RetraitReponses() {
 
   return (
     <form onSubmit={retirer} className="mt-3 space-y-3" noValidate>
-      <p className="text-sm">{RETRAIT.intro}</p>
       <label className="block text-sm font-medium" htmlFor="score-retrait-code">
         {RETRAIT.champ}
       </label>
       <input
         id="score-retrait-code"
+        ref={champRef}
         type="text"
         autoComplete="off"
         autoCapitalize="characters"
         spellCheck={false}
         value={saisie}
         onChange={(e) => setSaisie(e.target.value)}
-        aria-describedby={message ? "score-retrait-message" : undefined}
-        className="border-ink/30 min-h-[44px] w-full max-w-xs rounded-lg border px-3 font-mono tracking-wider"
+        aria-describedby={message && !message.ok ? "score-retrait-message" : undefined}
+        className="border-ink/60 min-h-[44px] w-full max-w-xs rounded-lg border px-3 font-mono tracking-wider"
       />
       {widget}
       <button
         type="submit"
-        className="border-ink/30 inline-flex min-h-[44px] items-center rounded-lg border px-4 text-sm font-semibold"
+        className="border-ink/60 inline-flex min-h-[44px] items-center rounded-lg border px-4 text-sm font-semibold"
       >
         {RETRAIT.bouton}
       </button>
-      <p
-        id="score-retrait-message"
-        role={message?.ok === false ? "alert" : "status"}
-        aria-live="polite"
-        className="min-h-[1.5rem] text-sm"
-      >
-        {message?.texte ?? ""}
-      </p>
+      <div className="min-h-[1.5rem] text-sm">
+        <p id="score-retrait-confirmation" role="status" aria-live="polite">
+          {message?.ok ? message.texte : ""}
+        </p>
+        <p id="score-retrait-message" role="alert">
+          {message && !message.ok ? message.texte : ""}
+        </p>
+      </div>
     </form>
   );
 }

@@ -3,7 +3,7 @@
 // affiché en 4 groupes de 4. Seul SHA-256(code normalisé) part au serveur : il ne voit jamais le code.
 
 const ALPHABET = "0123456789ABCDEFGHJKMNPQRSTVWXYZ";
-const NB_CARACTERES = 16; // 16 × 5 bits = 80 bits
+export const NB_CARACTERES = 16; // 16 × 5 bits = 80 bits
 const NBSP = " ";
 
 /** Code brut (16 caractères) tiré de `crypto.getRandomValues`. */

@@ -138,7 +138,7 @@ export default async function ScoreIaTpePmePage({ params }: Props) {
   const questions = construireQuestions();
   const libellesTaille = LIBELLES_SCORE["companySize"]?.options ?? {};
   const encadre = encadreInformation(identite.legalName, identite.contactEmail);
-  const hrefConfidentialite = `/${locale}/politique-confidentialite`;
+  const hrefConfidentialite = `/${locale}/politique-confidentialite#observatoire-ia`;
   const dateMaj = formaterDate(SITE_EDITORIAL_DATE);
 
   const jsonLd = {
@@ -263,7 +263,7 @@ export default async function ScoreIaTpePmePage({ params }: Props) {
 
           <section id="faq" aria-labelledby="faq-titre" className="scroll-mt-6">
             <h2 id="faq-titre" className="text-2xl font-semibold">
-              Questions fréquentes
+              {METHODE.faqTitre}
             </h2>
             <div className="mt-4 space-y-3">
               {FAQ.map((f) => (

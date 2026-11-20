@@ -275,7 +275,7 @@ export function ScoreFlow({
               <button
                 type="button"
                 onClick={() => aller(etape - 1)}
-                className="border-ink/30 inline-flex min-h-[44px] items-center rounded-lg border px-5 text-sm font-medium"
+                className="border-ink/60 inline-flex min-h-[44px] items-center rounded-lg border px-5 text-sm font-medium"
               >
                 {ECRANS.precedent}
               </button>
@@ -355,7 +355,7 @@ function Resultat({
     <div className="min-h-[30rem]">
       {zoneAnnonce}
       <h2 ref={titreRef} tabIndex={-1} className="text-xl font-semibold outline-none">
-        Votre score
+        {ECRANS.votreScore}
       </h2>
       <p className="mt-2 text-5xl font-bold">
         {r.score} <span className="text-2xl font-medium">sur {SCORE_MAX}</span>
@@ -466,21 +466,21 @@ function Resultat({
           <button
             type="button"
             onClick={() => window.print()}
-            className="border-ink/30 inline-flex min-h-[44px] items-center rounded-lg border px-4 text-sm font-medium"
+            className="border-ink/60 inline-flex min-h-[44px] items-center rounded-lg border px-4 text-sm font-medium"
           >
             {ECRANS.imprimer}
           </button>
           <button
             type="button"
             onClick={onModifier}
-            className="border-ink/30 inline-flex min-h-[44px] items-center rounded-lg border px-4 text-sm font-medium"
+            className="border-ink/60 inline-flex min-h-[44px] items-center rounded-lg border px-4 text-sm font-medium"
           >
             {ECRANS.modifier}
           </button>
         </div>
       </section>
 
-      <div id="observatoire" className="mt-8 print:hidden">
+      <div id="observatoire-ajout" className="mt-8 print:hidden">
         <AjoutObservatoire
           reponses={reponses}
           debutParcours={debut}
