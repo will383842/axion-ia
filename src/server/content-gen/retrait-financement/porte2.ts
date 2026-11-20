@@ -119,3 +119,79 @@ export function normaliserPourPorte2(t: string): string {
     .replace(/[‐-―­]/g, "-")
     .replace(/[^\S\n]+/g, " ");
 }
+
+/**
+ * Lexique « dur » (relecture des correctifs de l'essai à blanc n° 2, bloquant 1, voie 2) : ces mots ne
+ * désignent QUE le financement de la formation. Aucune décision « conservé sur décision » ne peut les garder,
+ * ni dans la valeur, ni dans la liste `admis`. Liste fermée, celle de la relecture.
+ */
+export const LEXIQUE_DUR = new RegExp(
+  [
+    "\\b(?:OPCOs?|O\\.P\\.C\\.O\\.)(?![\\w])",
+    "\\bCPF\\b",
+    "france[\\s-]+travail",
+    "\\bAIF\\b",
+    "\\bEDOF\\b",
+    "qualiopi",
+    "subrogation",
+    "\\bFNE\\b",
+    "plan\\s+de\\s+d[ée]veloppement\\s+des\\s+comp[ée]tences",
+  ].join("|"),
+  "i",
+);
+
+const PEC_ET_BUDGET_SEUL = new RegExp(PEC_ET_BUDGET, "iy");
+const TERME_BUDGETAIRE = /(?:formations?|frais|co[uû]ts?|employeurs?|budgets?|tarifs?)$/i;
+const LETTRE = /[\p{L}\p{N}]/u;
+
+/** Le refus vient-il du motif « terme budgétaire dans une phrase qui porte "en charge" » ? Rend ce terme. */
+function termeBudgetaire(texte: string, m: RegExpExecArray): string | null {
+  PEC_ET_BUDGET_SEUL.lastIndex = m.index;
+  const b = PEC_ET_BUDGET_SEUL.exec(texte);
+  if (!b || b[0] !== m[0]) return null;
+  return TERME_BUDGETAIRE.exec(m[0])?.[0] ?? null;
+}
+
+/**
+ * Terme refusé, tel qu'il est écrit dans le message d'un ambigu et attendu dans `admis` :
+ * - le mot ENTIER (« financières », « cofinancé » : sans drapeau `u`, le motif s'arrête avant une lettre
+ *   accentuée) ;
+ * - pour « en charge » + terme budgétaire, le motif part du début de la phrase : on cite « en charge + frais »
+ *   et non les premiers mots de la phrase (remarque 2 de la relecture).
+ * Sans « » : dans un message, la citation du cas est le DERNIER « … ».
+ * `texte` est le texte déjà normalisé sur lequel `INTERDITS_PUBLICS.exec` a rendu `m`.
+ */
+export function termeRefuse(texte: string, m: RegExpExecArray): string {
+  const budget = termeBudgetaire(texte, m);
+  if (budget !== null) return `en charge + ${budget}`;
+  let debut = m.index;
+  let fin = m.index + m[0].length;
+  if (LETTRE.test(m[0][0] ?? "")) while (debut > 0 && LETTRE.test(texte[debut - 1]!)) debut--;
+  if (LETTRE.test(m[0][m[0].length - 1] ?? ""))
+    while (fin < texte.length && LETTRE.test(texte[fin]!)) fin++;
+  return texte.slice(debut, fin).replace(/[«»]/g, "").replace(/\s+/g, " ").trim().slice(0, 60);
+}
+
+/**
+ * TOUS les termes qu'`INTERDITS_PUBLICS` refuse dans un texte, dans l'ordre, sans doublon. La porte ne rend
+ * que le premier : chaque terme trouvé est masqué, puis le texte repasse la porte, jusqu'à ce qu'elle
+ * l'accepte. Le masque (« § ») n'est admis par aucune liste de la porte : il ne peut pas faire accepter un
+ * mot voisin.
+ */
+export function termesRefuses(texteBrut: string): string[] {
+  let texte = normaliserPourPorte2(texteBrut);
+  const termes: string[] = [];
+  for (let tour = 0; tour <= texteBrut.length; tour++) {
+    const m = INTERDITS_PUBLICS.exec(texte);
+    if (!m) break;
+    const terme = termeRefuse(texte, m);
+    if (!termes.includes(terme)) termes.push(terme);
+    const fin = m.index + m[0].length;
+    // « en charge » + terme budgétaire : seul le terme budgétaire est masqué (le motif couvre la phrase
+    // depuis son début, et masquerait les autres termes qu'elle contient).
+    const budget = termeBudgetaire(texte, m);
+    const debut = budget !== null ? fin - budget.length : m.index;
+    texte = `${texte.slice(0, debut)}§${texte.slice(fin)}`;
+  }
+  return termes;
+}

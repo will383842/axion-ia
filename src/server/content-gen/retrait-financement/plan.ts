@@ -19,9 +19,16 @@ import {
   reecrireHtml,
   reecrireJson,
   reecrireTexte,
+  retirerFragments,
   motsNonRetirables,
 } from "./regles";
-import { INTERDITS_PUBLICS, normaliserPourPorte2 } from "./porte2";
+import {
+  INTERDITS_PUBLICS,
+  LEXIQUE_DUR,
+  normaliserPourPorte2,
+  termeRefuse,
+  termesRefuses,
+} from "./porte2";
 
 export { INTERDITS_PUBLICS, normaliserPourPorte2 };
 
@@ -67,6 +74,11 @@ export interface Proposition {
   surcharges?: string[];
   /** Mots non financiers perdus et ACCEPTÉS par l'override, par champ (`pertesAcceptees`). */
   pertes?: Record<string, string[]>;
+  /**
+   * Champs CONSERVÉS tels quels sur décision du dirigeant (entrée d'override avec `admis`), et les termes
+   * de la porte 2 qu'il a admis. Rien n'est écrit pour ces champs : seuls leurs ambigus sont levés.
+   */
+  conservesSurDecision?: Record<string, string[]>;
 }
 
 /** Valeurs de remplacement validées par un humain pour un cas ambigu. */
@@ -82,6 +94,14 @@ export type Overrides = Record<
        * ignorés). Tout mot perdu hors lexique et hors de cette liste fait ignorer l'override (A8).
        */
       pertesAcceptees?: string[];
+      /**
+       * « Conservé sur décision » : le champ est un FAUX POSITIF de la porte 2 (« services financiers ») et
+       * reste tel quel. Liste des termes exacts refusés par la porte 2 et admis par le dirigeant. Acceptée
+       * seulement si `valeur` est l'original, si le champ n'a que des ambigus « mention restante
+       * (porte 2 : …) », si chaque terme refusé est listé, et sans aucun mot du lexique dur
+       * (`refusDeConservation`).
+       */
+      admis?: string[];
     }
   >
 >;
@@ -259,6 +279,9 @@ const decouperPhrases = (t: string): string[] =>
     .map((x) => x.trim())
     .filter((x) => x !== "");
 
+/** Début du message d'un ambigu levé par le filet « valeur finale » (et lui seul). */
+const MENTION_PORTE2 = "mention restante (porte 2 : ";
+
 class Collecteur {
   avant: Champs = {};
   apres: Champs = {};
@@ -266,7 +289,16 @@ class Collecteur {
   conserves: string[] = [];
   regles: string[] = [];
 
-  constructor(private readonly nom: string) {}
+  /**
+   * `controlerPorte2` : le filet « valeur finale » ne s'applique qu'aux contenus du BLOG (traductions,
+   * articles, FAQ). Une offre d'emploi ne parle pas de formation : « Responsable administratif et
+   * financier », « tenir la maison côté finances » y sont légitimes, et un override ne pourrait jamais les
+   * garder. Le moteur (règles de réécriture) continue, lui, de traiter les offres.
+   */
+  constructor(
+    private readonly nom: string,
+    private readonly options: { controlerPorte2: boolean },
+  ) {}
 
   /** Garde la valeur d'origine d'un champ dans la sauvegarde, qu'il soit modifié ou non. */
   garder(champ: string, original: unknown): void {
@@ -283,7 +315,8 @@ class Collecteur {
     this.garder(champ, original);
     if (modifie) this.apres[champ] = nouveau;
     for (const a of ambigus) this.ambigus.push(`${this.nom}.${champ} : ${a}`);
-    this.controlerPorte2(champ, modifie ? nouveau : original, ambigus);
+    if (this.options.controlerPorte2)
+      this.filetPorte2(champ, modifie ? nouveau : original, ambigus);
   }
 
   /**
@@ -291,10 +324,11 @@ class Collecteur {
    * que celle des overrides humains. Chaque phrase refusée devient un ambigu « mention restante (porte 2) »
    * qui la cite : le moteur et les overrides n'ont plus qu'UNE règle, et « ambigus : 0 » après l'apply
    * prouve vraiment qu'aucune phrase de financement ne reste.
-   * - une phrase déjà citée par un ambigu du même champ n'est pas répétée ;
+   * - une phrase déjà citée par un ambigu du même champ n'est pas répétée, y compris quand le moteur la cite
+   *   SANS le fragment qu'il sait retirer (« (CPF) ») ;
    * - une FAQ (question, réponse, `faqJson`) déjà ambiguë est bloquée en bloc : on ne la découpe pas.
    */
-  private controlerPorte2(champ: string, valeur: unknown, ambigusDuChamp: string[]): void {
+  private filetPorte2(champ: string, valeur: unknown, ambigusDuChamp: string[]): void {
     if (valeur === null || valeur === undefined) return;
     if (ambigusDuChamp.length > 0 && /^(?:question|answer|faqJson)/.test(champ)) return;
     const cites = this.ambigus
@@ -303,13 +337,18 @@ class Collecteur {
     const vus = new Set<string>();
     for (const t of textesDe(valeur)) {
       for (const phrase of decouperPhrases(t)) {
-        const interdit = INTERDITS_PUBLICS.exec(normaliserPourPorte2(phrase));
+        const normalise = normaliserPourPorte2(phrase);
+        const interdit = INTERDITS_PUBLICS.exec(normalise);
         if (!interdit) continue;
         const r = reduitPorte2(phrase);
-        if (vus.has(r) || cites.some((a) => a.includes(r.slice(0, 80)))) continue;
+        // Le moteur cite parfois la phrase sans le fragment retiré : on compare aussi cette forme.
+        const sansFragment = reduitPorte2(retirerFragments(phrase));
+        const formes = sansFragment.length >= 8 && sansFragment !== r ? [r, sansFragment] : [r];
+        if (vus.has(r) || formes.some((f) => cites.some((a) => a.includes(f.slice(0, 80)))))
+          continue;
         vus.add(r);
         this.ambigus.push(
-          `${this.nom}.${champ} : mention restante (porte 2 : ${interdit[0].replace(/[«»]/g, "").replace(/\s+/g, " ").trim().slice(0, 60)}) : « ${phrase.slice(0, 160)} »`,
+          `${this.nom}.${champ} : ${MENTION_PORTE2}${termeRefuse(normalise, interdit)}) : « ${phrase.slice(0, 160)} »`,
         );
       }
     }
@@ -389,7 +428,7 @@ export interface LigneTraduction {
 }
 
 export function proposerTraduction(l: LigneTraduction): Proposition | null {
-  const c = new Collecteur(`article_translation:${l.id}`);
+  const c = new Collecteur(`article_translation:${l.id}`, { controlerPorte2: true });
   const langue: Langue = l.locale;
   c.texte("title", l.title, langue, true);
   c.texte("excerpt", l.excerpt, langue);
@@ -419,7 +458,7 @@ export interface LigneArticle {
 }
 
 export function proposerArticle(l: LigneArticle): Proposition | null {
-  const c = new Collecteur(`article:${l.id}`);
+  const c = new Collecteur(`article:${l.id}`, { controlerPorte2: true });
   c.texte("directAnswer", l.directAnswer, "fr");
   c.texte("keyTakeaway", l.keyTakeaway, "fr");
   c.texte("expertQuoteText", l.expertQuoteText, "fr");
@@ -455,7 +494,7 @@ export interface LigneFaq {
 }
 
 export function proposerFaq(l: LigneFaq): Proposition | null {
-  const c = new Collecteur(`faq:${l.id}`);
+  const c = new Collecteur(`faq:${l.id}`, { controlerPorte2: true });
   for (const [langue, q, a, kq, ka] of [
     ["fr", l.questionFr, l.answerFr, "questionFr", "answerFr"],
     ["en", l.questionEn, l.answerEn, "questionEn", "answerEn"],
@@ -584,7 +623,7 @@ export function reecrirePerks(perks: unknown): {
 }
 
 export function proposerOffre(l: LigneOffre): Proposition | null {
-  const c = new Collecteur(`job_offer:${l.id}`);
+  const c = new Collecteur(`job_offer:${l.id}`, { controlerPorte2: false });
   if (SLUGS_OFFRES_ARCHIVEES.includes(l.slug)) {
     // Arbitrage 1 : poste que nous ne proposons pas → statut existant « archived », données gardées.
     if (l.status === "archived") return null;
@@ -726,6 +765,56 @@ function reecrireFaqs(
 }
 
 /**
+ * « Conservé sur décision » (relecture des correctifs de l'essai à blanc n° 2, bloquant 1, voie 2). La
+ * porte 2 refuse des textes légitimes du blog (« services financiers », « équipes juridiques, RH et
+ * financières ») ; un override ordinaire ne peut jamais les garder (`valeurSale`). Une entrée qui porte
+ * `admis` garde le champ TEL QUEL, et seulement si TOUT ce qui suit est vrai :
+ *  1. `valeur` est strictement égale à l'original lu maintenant (et l'empreinte `origine` correspond) :
+ *     cette voie ne réécrit rien, elle ne sert jamais à faire passer un autre texte ;
+ *  2. tous les ambigus du champ sont des « mention restante (porte 2 : …) » : si le MOTEUR vise ou réécrit
+ *     le champ, ce n'est pas un faux positif de la porte ;
+ *  3. chaque terme que la porte 2 refuse dans la valeur figure, mot pour mot, dans `admis` ;
+ *  4. aucun mot du lexique dur (`LEXIQUE_DUR`), ni dans la valeur, ni dans `admis`.
+ * Rend la raison du refus, ou `null` si la conservation est acceptée.
+ */
+function refusDeConservation(
+  p: Proposition,
+  champ: string,
+  o: { origine: string; valeur: unknown; admis?: unknown },
+  courant: unknown,
+): string | null {
+  const admis = o.admis;
+  if (
+    !Array.isArray(admis) ||
+    admis.length === 0 ||
+    !admis.every((t) => typeof t === "string" && t.trim() !== "")
+  )
+    return "admis doit lister au moins un terme";
+  if (empreinte(courant) !== o.origine) return "l'empreinte de l'original ne correspond plus";
+  if (empreinte(o.valeur) !== empreinte(courant))
+    return "valeur différente de l'original : une conservation ne réécrit rien";
+  if (champ in p.apres) return "le moteur réécrit ce champ";
+  const prefixe = `${p.cle}.${champ} : `;
+  const duChamp = p.ambigus.filter((a) => a.startsWith(prefixe));
+  if (duChamp.length === 0) return "aucun ambigu de porte 2 sur ce champ : rien à conserver";
+  if (!duChamp.every((a) => a.startsWith(prefixe + MENTION_PORTE2)))
+    return "un ambigu du moteur reste sur ce champ";
+  const textes = textesDe(o.valeur);
+  const dur = [...textes, ...(admis as string[])]
+    .map((t) => LEXIQUE_DUR.exec(normaliserPourPorte2(t))?.[0])
+    .find((x) => x !== undefined);
+  if (dur !== undefined) return `mot du lexique dur « ${dur} »`;
+  // Les deux lectures de la porte 2 : le champ entier (celle des overrides) et phrase à phrase (celle du filet).
+  const refuses = new Set<string>(termesRefuses(textes.join("\n")));
+  for (const t of textes)
+    for (const ph of decouperPhrases(t)) for (const x of termesRefuses(ph)) refuses.add(x);
+  const manquants = [...refuses].filter((t) => !(admis as string[]).includes(t));
+  if (manquants.length > 0)
+    return `terme(s) refusé(s) par la porte 2 absent(s) de admis (${manquants.join(", ")})`;
+  return null;
+}
+
+/**
  * Applique les remplacements humains aux cas ambigus. Un override n'est pris que si l'empreinte
  * de la valeur d'ORIGINE correspond à la valeur lue maintenant : si le texte a changé depuis,
  * il est ignoré et signalé (jamais appliqué à l'aveugle).
@@ -743,9 +832,25 @@ export function appliquerOverrides(
   const appliques: string[] = [];
   const pertes: Record<string, string[]> = { ...(p.pertes ?? {}) };
   const resynchro: string[] = [];
+  const conserves: Record<string, string[]> = { ...(p.conservesSurDecision ?? {}) };
   for (const [champ, o] of Object.entries(surcharges)) {
     if (o.valeur === "" || o.valeur === null || o.valeur === undefined) {
       ignores.push(`${p.cle}.${champ} : valeur vide (gabarit non rempli), override ignoré`);
+      continue;
+    }
+    // Voie « conservé sur décision » : une entrée qui porte `admis` ne passe JAMAIS par la voie ordinaire.
+    if (o.admis !== undefined) {
+      const refus = refusDeConservation(
+        p,
+        champ,
+        o,
+        champ in originaux ? originaux[champ] : undefined,
+      );
+      if (refus)
+        ignores.push(
+          `${p.cle}.${champ} : conservation sur décision refusée (${refus}), override ignoré`,
+        );
+      else conserves[champ] = [...o.admis];
       continue;
     }
     const sale = valeurSale(champ, o.valeur);
@@ -816,6 +921,7 @@ export function appliquerOverrides(
       ambigus,
       surcharges: [...(p.surcharges ?? []), ...appliques],
       ...(Object.keys(pertes).length > 0 ? { pertes } : {}),
+      ...(Object.keys(conserves).length > 0 ? { conservesSurDecision: conserves } : {}),
     },
     ignores,
   };
