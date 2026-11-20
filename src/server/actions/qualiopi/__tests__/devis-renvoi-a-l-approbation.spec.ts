@@ -227,6 +227,7 @@ function tx(acquis: string[]) {
       acquis.push(cle);
       return [{ locked: true }];
     },
+    activityLog: { findFirst: async () => null },
     emailOutbox: modele(),
     // OUT-1 : journal des envois (aucune ligne `pending` : l'envoi abandonné n'a rien laissé en vol).
     emailLog: { findFirst: async () => null },

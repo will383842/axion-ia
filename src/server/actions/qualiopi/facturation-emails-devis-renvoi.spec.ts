@@ -38,6 +38,7 @@ vi.mock("@/lib/prisma", () => ({
           acquis.push(cle);
           return [{ locked: true }];
         },
+        activityLog: { findFirst: async () => null },
         emailOutbox: {
           findFirst: (...a: unknown[]) => {
             // La garde « déjà garé » : une seule question (a_valider / approuvé, sans âge).
