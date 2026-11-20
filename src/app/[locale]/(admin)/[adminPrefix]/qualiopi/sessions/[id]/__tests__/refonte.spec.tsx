@@ -13,8 +13,8 @@ describe("fiche d'une session : refonte visuelle", () => {
   });
 
   it("chaque bloc de la fiche est un AdminBloc dans sa section ancrée, plus de titre maison", () => {
-    expect(SRC).toMatch(/<AdminBloc\s+id="infos"\s+className=\{CLASSE_ANCRE_SECTION\}/);
     for (const id of [
+      "infos",
       "checklist",
       "cycle-de-vie",
       "dates",

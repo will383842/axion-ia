@@ -909,68 +909,69 @@ export default async function SessionHubPage({ params, searchParams }: PageProps
     infos: (
       <>
         {/* ── En-tête de la session ─────────────────────────────────────────── */}
-        {/* #infos EST le bloc : les cellules sont `#infos > div > div` (E2E 01-presentiel). */}
-        <AdminBloc
-          id="infos"
-          className={CLASSE_ANCRE_SECTION}
-          teinte="bleu"
-          niveau={2}
-          titre={
-            <>
-              Informations générales
-              {trainingSession.estTestInterne && <BadgeEssai />}
-            </>
-          }
-        >
-          {trainingSession.estTestInterne && (
-            <p className="mb-[var(--space-admin-3)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]">
-              Session d&apos;essai interne : pièces numérotées hors suite légale et filigranées,
-              e-mails limités aux adresses de test, aucune facture électronique, commission,
-              synchronisation ni alerte externe. Exclue du BPF, du pilotage et des taux publiés.
-            </p>
-          )}
-          <CellulesInfosSession
-            locale={locale}
-            adminPrefix={adminPrefix}
-            base={base}
-            formation={trainingSession.formation}
-            client={trainingSession.client}
-            modaliteLibelle={MODALITE_LABELS[trainingSession.modalite] ?? trainingSession.modalite}
-            financementLibelle={
-              trainingSession.financementType !== null
-                ? (FINANCEMENT_LABELS[trainingSession.financementType] ??
-                  trainingSession.financementType)
-                : "Non défini"
+        <section id="infos" className={`${CLASSE_ANCRE_SECTION}`}>
+          <AdminBloc
+            teinte="bleu"
+            niveau={2}
+            titre={
+              <>
+                Informations générales
+                {trainingSession.estTestInterne && <BadgeEssai />}
+              </>
             }
-            inscrits={trainingSession._count.enrollments}
-            prevus={trainingSession.nbParticipantsPrevus}
-            reels={trainingSession.nbParticipantsReels}
-            montantHtCents={trainingSession.montantHtCents}
-            mentionTva={mentionTvaSession}
-            dureeReelleHeures={trainingSession.dureeReelleHeures}
-            sessionParentId={trainingSession.sessionParentId}
-            sessionReporteeId={trainingSession.sessionReporteeId}
-          />
-          <ContactEtConflitSession
-            adminPrefix={adminPrefix}
-            contact={
-              trainingSession.client !== null
-                ? {
-                    nom: trainingSession.client.contactNom,
-                    fonction: trainingSession.client.contactFonction,
-                    telephone: trainingSession.client.contactTelephone,
-                    email: trainingSession.client.contactEmail,
-                  }
-                : null
-            }
-            formateurNom={
-              allTrainers
-                .filter((t) => t.id === trainingSession.formateurPrincipalId)
-                .map((t) => `${t.prenom} ${t.nom}`.trim())[0] ?? null
-            }
-            conflits={conflitsFormateur}
-          />
-        </AdminBloc>
+          >
+            {trainingSession.estTestInterne && (
+              <p className="mb-[var(--space-admin-3)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]">
+                Session d&apos;essai interne : pièces numérotées hors suite légale et filigranées,
+                e-mails limités aux adresses de test, aucune facture électronique, commission,
+                synchronisation ni alerte externe. Exclue du BPF, du pilotage et des taux publiés.
+              </p>
+            )}
+            <CellulesInfosSession
+              locale={locale}
+              adminPrefix={adminPrefix}
+              base={base}
+              formation={trainingSession.formation}
+              client={trainingSession.client}
+              modaliteLibelle={
+                MODALITE_LABELS[trainingSession.modalite] ?? trainingSession.modalite
+              }
+              financementLibelle={
+                trainingSession.financementType !== null
+                  ? (FINANCEMENT_LABELS[trainingSession.financementType] ??
+                    trainingSession.financementType)
+                  : "Non défini"
+              }
+              inscrits={trainingSession._count.enrollments}
+              prevus={trainingSession.nbParticipantsPrevus}
+              reels={trainingSession.nbParticipantsReels}
+              montantHtCents={trainingSession.montantHtCents}
+              mentionTva={mentionTvaSession}
+              dureeReelleHeures={trainingSession.dureeReelleHeures}
+              sessionParentId={trainingSession.sessionParentId}
+              sessionReporteeId={trainingSession.sessionReporteeId}
+            />
+            <ContactEtConflitSession
+              adminPrefix={adminPrefix}
+              contact={
+                trainingSession.client !== null
+                  ? {
+                      nom: trainingSession.client.contactNom,
+                      fonction: trainingSession.client.contactFonction,
+                      telephone: trainingSession.client.contactTelephone,
+                      email: trainingSession.client.contactEmail,
+                    }
+                  : null
+              }
+              formateurNom={
+                allTrainers
+                  .filter((t) => t.id === trainingSession.formateurPrincipalId)
+                  .map((t) => `${t.prenom} ${t.nom}`.trim())[0] ?? null
+              }
+              conflits={conflitsFormateur}
+            />
+          </AdminBloc>
+        </section>
         {/* QNC L03 — recueil du besoin (temps 1) : rien tant que `qualiopi.recueil.actif`
               est éteint pour cette session. */}
         <RecueilBesoinSession sessionId={id} />

@@ -1068,8 +1068,9 @@ describe("cadre commun : un seul en-tête, un seul fil d'Ariane", () => {
   });
 
   it("le lien Client de la fiche mène à la fiche du client, plus à la liste", () => {
-    const src = sansCommentaires(lire("page.tsx"));
-    expect(src).toContain("qualiopi/clients/${trainingSession.client.id}");
+    // Les cellules d'identité vivent dans `CellulesInfosSession` depuis la refonte visuelle.
+    const src = sansCommentaires(lire("CellulesInfosSession.tsx"));
+    expect(src).toContain("qualiopi/clients/${client.id}");
     expect(src).not.toMatch(/qualiopi\/clients`\}/);
   });
 });
