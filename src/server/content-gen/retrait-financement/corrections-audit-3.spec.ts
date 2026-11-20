@@ -20,7 +20,10 @@ import {
 } from "./plan";
 import { type Depot, type LigneJournal, appliquer, restaurer } from "./ecriture";
 import { construireRapport } from "./rapport";
-import { htmlVersTexte, reecrireHtml, reecrireTexte } from "./regles";
+import { htmlVersTexte, motsDe, reecrireHtml, reecrireTexte } from "./regles";
+
+/** Tous les mots d'un texte : l'override accepte de les perdre (test des mécanismes, pas du lexique). */
+const tousLesMots = (v: unknown): string[] => motsDe(htmlVersTexte(String(v)));
 
 describe("1. FAQ : l'ambigu d'une RÉPONSE se range sous le champ réponse", () => {
   const faq = {
@@ -60,7 +63,11 @@ describe("1. FAQ : l'ambigu d'une RÉPONSE se range sous le champ réponse", () 
     const p = proposerFaq(faq)!;
     const o: Overrides = {
       [p.cle]: {
-        answerFr: { origine: empreinte(faq.answerFr), valeur: "Cela dépend de l'entreprise." },
+        answerFr: {
+          origine: empreinte(faq.answerFr),
+          valeur: "Cela dépend de l'entreprise.",
+          pertesAcceptees: tousLesMots(faq.answerFr),
+        },
       },
     };
     const r = appliquerOverrides(p, faq as unknown as Champs, o);
@@ -122,7 +129,9 @@ describe("4. override sur le corps : bodyText recalculé", () => {
     const p = proposerTraduction(trad)!;
     const valeur = "<p>Un texte propre.</p>";
     const r = appliquerOverrides(p, trad, {
-      [p.cle]: { body: { origine: empreinte(trad.body), valeur } },
+      [p.cle]: {
+        body: { origine: empreinte(trad.body), valeur, pertesAcceptees: tousLesMots(trad.body) },
+      },
     });
     expect(r.proposition.apres.body).toBe(valeur);
     expect(r.proposition.apres.bodyText).toBe(htmlVersTexte(valeur));
@@ -149,7 +158,13 @@ describe("4. override sur le corps : bodyText recalculé", () => {
     };
     const p = proposerOffre(offre)!;
     const r = appliquerOverrides(p, offre, {
-      [p.cle]: { bodyFr: { origine: empreinte(offre.bodyFr), valeur: "<p>Propre.</p>" } },
+      [p.cle]: {
+        bodyFr: {
+          origine: empreinte(offre.bodyFr),
+          valeur: "<p>Propre.</p>",
+          pertesAcceptees: tousLesMots(offre.bodyFr),
+        },
+      },
     });
     expect(r.proposition.apres.bodyTextFr).toBe("Propre.");
   });
@@ -207,7 +222,13 @@ describe("5. contenu déjà traité sans mention restante : l'override présent 
   const propre = { ...DEJA_TRAITE, body: "<p>Texte propre.</p>", bodyText: "Texte propre." };
   it("proposition null + override à empreinte valide → appliqué", () => {
     const o: Overrides = {
-      [CLE]: { body: { origine: empreinte(propre.body), valeur: "<p>Mieux.</p>" } },
+      [CLE]: {
+        body: {
+          origine: empreinte(propre.body),
+          valeur: "<p>Mieux.</p>",
+          pertesAcceptees: tousLesMots(propre.body),
+        },
+      },
     };
     const r = integrerOverrides(null, CLE, propre, o);
     expect(r.proposition?.apres.body).toBe("<p>Mieux.</p>");
@@ -254,7 +275,13 @@ describe("6. override sur un contenu déjà traité : sa propre sauvegarde, et -
     const apresPremier = (m.journal[0]!.newValue as Champs).title;
     const courant = { ...m.lignes[CLE]! };
     const p = integrerOverrides(null, CLE, courant, {
-      [CLE]: { body: { origine: empreinte(courant.body), valeur: "<p>Réécrit à la main.</p>" } },
+      [CLE]: {
+        body: {
+          origine: empreinte(courant.body),
+          valeur: "<p>Réécrit à la main.</p>",
+          pertesAcceptees: tousLesMots(courant.body),
+        },
+      },
     }).proposition!;
     const r = await appliquer(m.depot, [p]);
     expect(r.ecrits).toBe(1);
@@ -270,7 +297,13 @@ describe("6. override sur un contenu déjà traité : sa propre sauvegarde, et -
     const { m, premier } = await scenario();
     const courant = { ...m.lignes[CLE]! };
     const p = integrerOverrides(null, CLE, courant, {
-      [CLE]: { body: { origine: empreinte(courant.body), valeur: "<p>Réécrit à la main.</p>" } },
+      [CLE]: {
+        body: {
+          origine: empreinte(courant.body),
+          valeur: "<p>Réécrit à la main.</p>",
+          pertesAcceptees: tousLesMots(courant.body),
+        },
+      },
     }).proposition!;
     await appliquer(m.depot, [p]);
     const r = await restaurer(m.depot, null, urlsDe);
@@ -289,7 +322,13 @@ describe("6. override sur un contenu déjà traité : sa propre sauvegarde, et -
     const { m } = await scenario();
     const courant = { ...m.lignes[CLE]! };
     const p = integrerOverrides(null, CLE, courant, {
-      [CLE]: { body: { origine: empreinte(courant.body), valeur: "<p>Réécrit à la main.</p>" } },
+      [CLE]: {
+        body: {
+          origine: empreinte(courant.body),
+          valeur: "<p>Réécrit à la main.</p>",
+          pertesAcceptees: tousLesMots(courant.body),
+        },
+      },
     }).proposition!;
     await appliquer(m.depot, [p]);
     m.lignes[CLE]!.body = "<p>Retouché depuis.</p>";

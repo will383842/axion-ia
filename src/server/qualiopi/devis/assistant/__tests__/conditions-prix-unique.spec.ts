@@ -10,6 +10,9 @@ import { payloadVide, type PayloadAssistantV1 } from "../payload";
 import { TEXTE_DELAIS, TEXTE_GARANTIE, TEXTE_PLAFOND_RESPONSABILITE } from "../textes-rubriques";
 import {
   controlerEcheancier,
+  raisonEcheancierRefuse,
+  MSG_ECHEANCIER_ILLISIBLE,
+  MSG_ECHEANCIER_TROP_FAIBLE,
   recalculerEcheancier,
   texteConditionsPrixUnique,
 } from "../conditions-prix-unique";
@@ -205,6 +208,31 @@ describe("recalculerEcheancier / controlerEcheancier (l'échéancier suit le tot
       .replace(/480,00\s€ TTC/, "540,00 € TTC");
     expect(t).toMatch(/300,00/);
     expect(controlerEcheancier(t, 120000, "assujetti")).toBe(false);
+  });
+
+  it("un versement non final à 0,00 € est refusé par controlerEcheancier, comme par recalculerEcheancier", () => {
+    // Total de 1 centime : les deux premiers versements valent 0,00 €, le dernier 0,01 €. Les
+    // montants imprimés égalent ceux que l'assistant calculerait : seule la règle du zéro refuse.
+    const t = texte1000()
+      .replace(/360,00\s€/g, "0,00 €")
+      .replace(/480,00\s€/, "0,01 €");
+    expect(t).toMatch(/0,00\s€/);
+    expect(controlerEcheancier(t, 1, "assujetti")).toBe(false);
+  });
+
+  it("raisonEcheancierRefuse : « trop faible » pour un zéro, « illisible » pour un vrai écart, null si juste", () => {
+    const zero = texte1000()
+      .replace(/360,00\s€/g, "0,00 €")
+      .replace(/480,00\s€/, "0,01 €");
+    expect(raisonEcheancierRefuse(zero, 1, "assujetti")).toBe(MSG_ECHEANCIER_TROP_FAIBLE);
+    expect(raisonEcheancierRefuse(texte1000(), 180000, "assujetti")).toBe(MSG_ECHEANCIER_ILLISIBLE);
+    expect(raisonEcheancierRefuse(texte1000(), 120000, "assujetti")).toBeNull();
+  });
+
+  it("petit total, une seule ligne à 100 % : ACCEPTÉ (aucun versement non final)", () => {
+    const t = "Échéancier de paiement\n1. Solde, à la livraison : 100 %, soit 0,01 € TTC";
+    expect(raisonEcheancierRefuse(t, 1, "assujetti")).toBeNull();
+    expect(controlerEcheancier(t, 1, "assujetti")).toBe(true);
   });
 
   it("M2 : total trop faible → message dédié ; format inconnu → message dédié", () => {

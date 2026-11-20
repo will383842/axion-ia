@@ -3,7 +3,7 @@
 // Deux familles de vérifications :
 //
 // 1. Les FAITS de la source : prix lu dans `pricing.ts`, rendez-vous gratuit de 45 minutes,
-//    cible « de 5 à 249 salariés », mention prudente de l'article 4, garantie reprise mot
+//    cible « de 2 à 250 salariés », mention prudente de l'article 4, garantie reprise mot
 //    pour mot de `journee-ia-commun.ts`.
 // 2. Un BALAYAGE des textes publics, prompts, chatbot et e-mails : un prix de la Journée IA,
 //    une durée du rendez-vous gratuit ou une cible d'effectif DIFFÉRENTS de la source font
@@ -55,8 +55,8 @@ describe("offre.ts — les faits de la source", () => {
     );
   });
 
-  it("cible les PME et TPE de 5 à 249 salariés", () => {
-    expect(EFFECTIF_CIBLE).toBe("de 5 à 249 salariés");
+  it("cible les PME et TPE de 2 à 250 salariés", () => {
+    expect(EFFECTIF_CIBLE).toBe("de 2 à 250 salariés");
   });
 
   it("matin audit, après-midi formation", () => {
@@ -201,9 +201,9 @@ describe("offre.ts — aucun texte public, prompt ou e-mail ne contredit la sour
     expect(divergences("La Journée IA (commission de 500 € HT).")).toHaveLength(0);
     expect(divergences("Allumé : la commission de la Journée IA (500 € HT).")).toHaveLength(0);
     expect(divergences("La Journée IA pour les PME (10 à 249 salariés).")).toHaveLength(1);
-    expect(divergences("La Journée IA pour les PME (5 à 249 salariés).")).toHaveLength(0);
+    expect(divergences("La Journée IA pour les PME (2 à 250 salariés).")).toHaveLength(0);
     expect(divergences("Axion-IA aide les PME de 10 à 249 salariés.")).toHaveLength(1);
-    expect(divergences("Axion-IA aide les PME et les TPE, de 5 à 249 salariés.")).toHaveLength(0);
+    expect(divergences("Axion-IA aide les PME et les TPE, de 2 à 250 salariés.")).toHaveLength(0);
   });
 
   it("aucune divergence dans les racines balayées", () => {

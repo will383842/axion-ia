@@ -22,6 +22,7 @@ import {
   SITE_URL,
 } from "@/lib/seo";
 import { dateRoute } from "@/lib/seo/fraicheur";
+import { libelleValeurScore } from "@/lib/score-ia-pme/libelles";
 import { KB_SECTOR_TAGS } from "@/content/knowledge/sector-tags";
 import {
   BAROMETER_QUESTIONS,
@@ -134,11 +135,19 @@ export default async function ObservatoirePage({ params, searchParams }: Props) 
   // Résolution des libellés d'options (SSOT pour secteur/région, i18n sinon).
   const sectorLabel = (slug: string) => {
     const tag = KB_SECTOR_TAGS.find((s) => s.slug === slug);
-    return tag ? (isFr ? tag.labelFr : tag.labelEn) : slug;
+    return tag
+      ? isFr
+        ? tag.labelFr
+        : tag.labelEn
+      : (libelleValeurScore("sector", slug, isFr ? "fr" : "en") ?? slug);
   };
   const regionLabel = (slug: string) => {
     const r = STUDY_REGIONS.find((x) => x.slug === slug);
-    return r ? (isFr ? r.nameFr : r.nameEn) : slug;
+    return r
+      ? isFr
+        ? r.nameFr
+        : r.nameEn
+      : (libelleValeurScore("region", slug, isFr ? "fr" : "en") ?? slug);
   };
   const sizeLabel = (v: string) => t(`questions.companySize.options.${v}`);
   const optionLabel = (questionId: string, source: string, value: string): string => {

@@ -656,7 +656,8 @@
           "data_quality": "Data quality / access",
           "internal_resistance": "Internal resistance",
           "time": "Lack of time",
-          "not_priority": "Not a priority"
+          "not_priority": "Not a priority",
+          "none": "No particular barrier"
         }
       },
       "timeSavedPerDay": {

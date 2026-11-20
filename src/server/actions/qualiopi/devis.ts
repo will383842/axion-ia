@@ -30,8 +30,7 @@ import {
 } from "@/server/actions/qualiopi/_guards";
 import { computeTotauxFacture, TAUX_TVA_STANDARD } from "@/server/qualiopi/legal/tva";
 import {
-  controlerEcheancier,
-  MSG_ECHEANCIER_ILLISIBLE,
+  raisonEcheancierRefuse,
   TITRE_ECHEANCIER,
 } from "@/server/qualiopi/devis/assistant/conditions-prix-unique";
 import { nextNumero } from "@/server/qualiopi/numbering/allocate";
@@ -448,7 +447,12 @@ export async function sendDevisAction(
         // (b) Devis à formules : l'interrupteur `qualiopi.devis_formules.actif` doit être allumé.
         // Éteint, le PDF ignorerait l'offre et le client recevrait un devis classique vide.
         const aFormules = devis.offre !== null && devis.offre !== undefined;
-        if (aFormules && !(await formulesActives())) {
+        // L'interrupteur n'est lu qu'UNE fois ici : la valeur est transmise au PDF plus bas
+        // (jamais deux lectures qui pourraient diverger entre la garde et le rendu).
+        const formulesOk = aFormules
+          ? await formulesActives(undefined, { clientId: devis.clientId, tx })
+          : false;
+        if (aFormules && !formulesOk) {
           throw new EnvoiRefuse(
             "Ce devis à formules ne peut pas être envoyé tant que les devis à formules sont désactivés dans la configuration. Gardez-le en brouillon.",
             "formules_eteintes",
@@ -503,7 +507,7 @@ export async function sendDevisAction(
         // Données du PDF : même fonction pure que l'aperçu du brouillon.
         let data: DevisData;
         try {
-          const contexte = await lireContextePdfDevis();
+          const contexte = await lireContextePdfDevis(formulesOk);
           data = donneesPdfDevis(devis, contexte, new Date());
         } catch (err) {
           // Offre illisible : le message dit QUOI corriger, pas « PDF non créé ».
@@ -514,19 +518,19 @@ export async function sendDevisAction(
           throw new EnvoiRefuse(MSG_PDF_RATE, "pdf_rate");
         }
         // Échéancier de l'assistant : jamais un PDF dont les versements ≠ le total TTC imprimé.
-        if (
-          data.conditionsParticulieres?.startsWith(TITRE_ECHEANCIER) &&
-          !controlerEcheancier(
-            data.conditionsParticulieres,
-            computeTotauxFacture(
-              data.lignes,
+        const raisonEcheancier = data.conditionsParticulieres?.startsWith(TITRE_ECHEANCIER)
+          ? raisonEcheancierRefuse(
+              data.conditionsParticulieres,
+              computeTotauxFacture(
+                data.lignes,
+                data.regimeTva,
+                data.tauxTvaStandardPercent ?? TAUX_TVA_STANDARD,
+              ).totalTtcCents,
               data.regimeTva,
-              data.tauxTvaStandardPercent ?? TAUX_TVA_STANDARD,
-            ).totalTtcCents,
-            data.regimeTva,
-          )
-        ) {
-          throw new EnvoiRefuse(MSG_ECHEANCIER_ILLISIBLE, "echeancier_incoherent");
+            )
+          : null;
+        if (raisonEcheancier !== null) {
+          throw new EnvoiRefuse(raisonEcheancier, "echeancier_incoherent");
         }
         if (aFormules) {
           // Interrupteur allumé et offre présente : le PDF DOIT porter les formules.

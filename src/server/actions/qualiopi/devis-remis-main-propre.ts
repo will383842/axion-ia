@@ -17,12 +17,16 @@ import React from "react";
 import { z } from "zod";
 import { computeTotauxFacture, TAUX_TVA_STANDARD } from "@/server/qualiopi/legal/tva";
 import {
-  controlerEcheancier,
-  MSG_ECHEANCIER_ILLISIBLE,
+  raisonEcheancierRefuse,
   TITRE_ECHEANCIER,
 } from "@/server/qualiopi/devis/assistant/conditions-prix-unique";
 import { prisma } from "@/lib/prisma";
-import { requireAdminWrite, logQualiopiActivity } from "@/server/actions/qualiopi/_guards";
+import {
+  requireAdminWrite,
+  logQualiopiActivity,
+  donneesJournalQualiopi,
+} from "@/server/actions/qualiopi/_guards";
+import { ACTION_REMIS_MAIN_PROPRE } from "@/server/qualiopi/devis/canal-emission";
 import { generateDocument } from "@/server/qualiopi/documents/documents-service";
 import { emettreDevisEmis } from "@/server/partners-sync/producteurs/devis";
 import { DevisPdf, type DevisData } from "@/server/qualiopi/documents/templates/devis";
@@ -76,8 +80,6 @@ export async function marquerRemisEnMainPropreAction(input: {
   const parsed = entreeSchema.safeParse(input);
   if (!parsed.success) return { error: "Demande invalide" };
   const { id: devisId, motif } = parsed.data;
-
-  let documentGenereId: string | null = null;
 
   try {
     await prisma.$transaction(
@@ -168,7 +170,7 @@ export async function marquerRemisEnMainPropreAction(input: {
         // (c) Pièce PDF numérotée : un échec refuse tout (le devis reste en brouillon).
         let data: DevisData;
         try {
-          const contexte = await lireContextePdfDevis();
+          const contexte = await lireContextePdfDevis({ clientId: devis.clientId, tx });
           data = donneesPdfDevis(devis, contexte, new Date());
         } catch (err) {
           if (err instanceof OffreDevisInvalideError) {
@@ -178,19 +180,19 @@ export async function marquerRemisEnMainPropreAction(input: {
           throw new RemiseRefusee(MSG_PDF_RATE, "pdf_rate");
         }
         // Échéancier de l'assistant : même contrôle que sendDevisAction, AVANT toute pièce.
-        if (
-          data.conditionsParticulieres?.startsWith(TITRE_ECHEANCIER) &&
-          !controlerEcheancier(
-            data.conditionsParticulieres,
-            computeTotauxFacture(
-              data.lignes,
+        const raisonEcheancier = data.conditionsParticulieres?.startsWith(TITRE_ECHEANCIER)
+          ? raisonEcheancierRefuse(
+              data.conditionsParticulieres,
+              computeTotauxFacture(
+                data.lignes,
+                data.regimeTva,
+                data.tauxTvaStandardPercent ?? TAUX_TVA_STANDARD,
+              ).totalTtcCents,
               data.regimeTva,
-              data.tauxTvaStandardPercent ?? TAUX_TVA_STANDARD,
-            ).totalTtcCents,
-            data.regimeTva,
-          )
-        ) {
-          throw new RemiseRefusee(MSG_ECHEANCIER_ILLISIBLE, "echeancier_incoherent");
+            )
+          : null;
+        if (raisonEcheancier !== null) {
+          throw new RemiseRefusee(raisonEcheancier, "echeancier_incoherent");
         }
         let pdfCle: string;
         let pieceId: string;
@@ -205,7 +207,6 @@ export async function marquerRemisEnMainPropreAction(input: {
           // Clé R2 stable (l'URL signée expire en 900 s : on stocke la clé).
           pdfCle = `documents/${new Date().getFullYear()}/devis/${doc.numero}.pdf`;
           pieceId = doc.id;
-          documentGenereId = pieceId;
         } catch (err) {
           console.warn("[marquerRemisEnMainPropreAction] génération PDF échouée", err);
           throw new RemiseRefusee(MSG_PDF_RATE, "pdf_rate");
@@ -241,6 +242,23 @@ export async function marquerRemisEnMainPropreAction(input: {
         });
         // (h) Événement « devis émis » dans la MÊME transaction (règle devis.emis du cliquet).
         await emettreDevisEmis(tx, devisId);
+        // (i) Trace du canal d'émission, dans la MÊME transaction : sans elle, le devis redeviendrait « inconnu ».
+        await tx.activityLog.create({
+          data: await donneesJournalQualiopi({
+            action: ACTION_REMIS_MAIN_PROPRE,
+            targetType: "Devis",
+            targetId: devisId,
+            changes: {
+              statut: "envoye",
+              canal: "main_propre",
+              motif,
+              documentGenereId: pieceId,
+              emailEnvoye: false,
+              lienSignatureEmis: false,
+            },
+            session,
+          }),
+        });
       },
       { maxWait: 5_000, timeout: 60_000 },
     );
@@ -280,21 +298,7 @@ export async function marquerRemisEnMainPropreAction(input: {
     throw err;
   }
 
-  // Transaction validée. Ni adresse ni lien dans le journal.
-  await logQualiopiActivity({
-    action: "qualiopi.devis.remis_main_propre",
-    targetType: "Devis",
-    targetId: devisId,
-    changes: {
-      statut: "envoye",
-      canal: "main_propre",
-      motif,
-      documentGenereId,
-      emailEnvoye: false,
-      lienSignatureEmis: false,
-    },
-    session,
-  });
+  // Trace écrite dans la transaction : elle est la source du canal d'émission.
 
   return { data: { id: devisId } };
 }

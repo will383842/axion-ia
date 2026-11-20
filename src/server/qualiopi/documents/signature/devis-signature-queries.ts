@@ -54,7 +54,7 @@ export interface DevisASigner {
    */
   chiffrageIndisponible: boolean;
   /** `true` si le devis n'est plus dans un état où une signature a du sens. */
-  statutBloquant: "deja_accepte" | "expire" | "brouillon" | null;
+  statutBloquant: "deja_accepte" | "expire" | "refuse" | "brouillon" | null;
 }
 
 function eur(cents: number): string {
@@ -141,11 +141,13 @@ export async function lireDevisASigner(documentGenereId: string): Promise<DevisA
   const statutBloquant: DevisASigner["statutBloquant"] =
     devis.statut === "accepte" || devis.statut === "transforme_convention"
       ? "deja_accepte"
-      : devis.statut === "expire" || devis.statut === "refuse"
+      : devis.statut === "expire"
         ? "expire"
-        : devis.statut === "brouillon"
-          ? "brouillon"
-          : null;
+        : devis.statut === "refuse"
+          ? "refuse"
+          : devis.statut === "brouillon"
+            ? "brouillon"
+            : null;
 
   return {
     devisId: devis.id,
