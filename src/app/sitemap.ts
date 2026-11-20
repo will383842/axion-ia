@@ -185,6 +185,8 @@ const EXCLUDED_FROM_INDEX: ReadonlyArray<PathnameKey> = [
   // publiée. Elle est annoncée par `sitemap-videos.xml`, qui est lui-même 404 dans ce cas ;
   // la déclarer ici ferait figurer une URL 404 dans pages.xml.
   "/videos",
+  // V2-10 PR-4 : 301 next.config vers le Score (/diagnostic#observatoire) : ne pas annoncer une URL redirigée.
+  "/observatoire-ia/participer",
   // 301 next.config (2026-11) : doublons de /formations et /tarifs, à ne pas annoncer dans pages.xml.
   "/formations/entreprise",
   "/formations/tarifs",

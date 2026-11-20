@@ -535,7 +535,7 @@
     },
     "form": {
       "hook": "Où en êtes-vous vraiment avec l'IA ?",
-      "subhook": "4 minutes. Comparez votre entreprise aux dirigeants déjà interrogés.",
+      "subhook": "4 minutes, sans e-mail. Obtenez votre Score IA TPE-PME, puis ajoutez vos réponses à l'Observatoire si vous le souhaitez.",
       "stepOf": "Étape {current} sur {total}",
       "next": "Suivant",
       "previous": "Précédent",

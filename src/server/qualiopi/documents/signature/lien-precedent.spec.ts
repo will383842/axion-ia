@@ -8,6 +8,8 @@ const db = vi.hoisted(() => ({
   precedent: null as unknown,
   signee: 0,
   retire: 1,
+  rendu: 1,
+  candidats: null as unknown[] | null,
   ops: [] as string[],
 }));
 vi.mock("@/lib/prisma", () => {
@@ -17,13 +19,13 @@ vi.mock("@/lib/prisma", () => {
         db.ops.push("supprimer-neuf");
         return { count: db.retire };
       },
-      updateMany: async () => {
+      updateMany: async ({ data }: { data: { revokedAt: Date | null } }) => {
+        if (data.revokedAt === null) {
+          db.ops.push("rendre-precedent");
+          return { count: db.rendu };
+        }
         db.ops.push("revoquer-neuf");
         return { count: db.retire };
-      },
-      update: async () => {
-        db.ops.push("rendre-precedent");
-        return {};
       },
     },
   };
@@ -31,7 +33,7 @@ vi.mock("@/lib/prisma", () => {
     prisma: {
       documentSignatureToken: {
         findUnique: async () => db.neuf,
-        findFirst: async () => db.precedent,
+        findMany: async () => db.candidats ?? (db.precedent === null ? [] : [db.precedent]),
       },
       documentSignature: { count: async () => db.signee },
       $transaction: async (f: (t: typeof tx) => Promise<unknown>) => {
@@ -67,6 +69,8 @@ beforeEach(() => {
   db.precedent = { id: "p" };
   db.signee = 0;
   db.retire = 1;
+  db.rendu = 1;
+  db.candidats = null;
   db.ops = [];
 });
 
@@ -110,6 +114,16 @@ describe("rendre le lien précédent", () => {
   it("le neuf a changé entre-temps : la transaction est annulée", async () => {
     db.retire = 0;
     await expect(rendreLienPrecedent(LIEN, "supprimer")).rejects.toThrow();
+    expect(db.ops).toEqual([]);
+  });
+  it("deux candidats : rien n'est rendu", async () => {
+    db.candidats = [{ id: "p" }, { id: "q" }];
+    expect(await rendreLienPrecedent(LIEN, "revoquer")).toBe(false);
+    expect(db.ops).toEqual([]);
+  });
+  it("le précédent a changé entre-temps : la transaction est annulée", async () => {
+    db.rendu = 0;
+    await expect(rendreLienPrecedent(LIEN, "revoquer")).rejects.toThrow();
     expect(db.ops).toEqual([]);
   });
 });

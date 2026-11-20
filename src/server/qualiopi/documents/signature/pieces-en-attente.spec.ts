@@ -208,3 +208,79 @@ describe("`D5-4-04` — une lecture unique, un compteur non tronqué", () => {
     expect(lectures, `occurrences trouvées : ${lectures.length}`).toHaveLength(1);
   });
 });
+
+describe("pièces de devis — « À traiter »", () => {
+  const devis = (id: string, statut: string, signatures: { partie: string }[] = []) => ({
+    id: `p-${id}`,
+    numero: `DEV-${id}`,
+    type: "devis",
+    sessionId: null,
+    statutSignature: signatures.length > 0 ? "partielle" : "en_attente",
+    updatedAt: new Date("2026-08-01"),
+    trainerId: null,
+    session: null,
+    signatures,
+    devisPortes: [{ id: `dv-${id}`, statut }],
+  });
+
+  it("écarte un devis refusé, ou périmé sans signature du client ; garde les autres", async () => {
+    const lignes = [
+      devis("1", "refuse"),
+      devis("2", "expire"),
+      devis("3", "expire", [{ partie: "client" }]),
+      devis("4", "envoye"),
+    ];
+    brancher(lignes, []);
+    const liste = await listerPiecesEnAttente();
+    expect(liste.map((p) => p.numero)).toEqual(["DEV-3", "DEV-4"]);
+    brancher(lignes, []);
+    expect(await compterPiecesEnAttente()).toBe(2);
+  });
+
+  it("garde une pièce partagée par un devis refusé et un devis envoyé, quel que soit l'ordre", async () => {
+    for (const statuts of [
+      ["refuse", "envoye"],
+      ["envoye", "refuse"],
+    ]) {
+      const ligne = {
+        ...devis("5", "refuse"),
+        devisPortes: statuts.map((statut, i) => ({ id: `dv-5-${i}`, statut })),
+      };
+      brancher([ligne], []);
+      const liste = await listerPiecesEnAttente();
+      expect(
+        liste.map((p) => p.numero),
+        statuts.join(">"),
+      ).toEqual(["DEV-5"]);
+      expect(liste[0]?.devisId).toBeNull();
+    }
+  });
+
+  it("écarte une pièce dont tous les devis liés sont refusés ou périmés sans signature", async () => {
+    const ligne = {
+      ...devis("6", "refuse"),
+      devisPortes: [
+        { id: "a", statut: "refuse" },
+        { id: "b", statut: "expire" },
+      ],
+    };
+    brancher([ligne], []);
+    expect(await listerPiecesEnAttente()).toEqual([]);
+  });
+
+  it("demande les devis liés dans un ordre déterministe", async () => {
+    brancher([devis("4", "envoye")], []);
+    await listerPiecesEnAttente();
+    expect(findManyMock.mock.calls[0]?.[0]?.select?.devisPortes?.orderBy).toEqual([
+      { createdAt: "asc" },
+      { id: "asc" },
+    ]);
+  });
+
+  it("rend l'id de la fiche du devis, et lit le devis dans la requête unique des pièces", async () => {
+    brancher([devis("4", "envoye")], []);
+    const [ligne] = await listerPiecesEnAttente();
+    expect(ligne?.devisId).toBe("dv-4");
+    expect(findManyMock.mock.calls[0]?.[0]?.select?.devisPortes).toBeDefined();
+  });
+});

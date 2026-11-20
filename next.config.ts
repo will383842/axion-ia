@@ -277,6 +277,21 @@ const nextConfig: NextConfig = {
   // expose l'URL legacy au sitemap auto + au crawler.
   async redirects() {
     return [
+      // V2-10 PR-4 (2026-11-20) : l'ancien formulaire de l'Observatoire est fermé, le Score IA
+      // TPE-PME (servi à /fr/diagnostic) devient le seul canal. 301 explicite (pas `permanent`,
+      // qui donne un 308). Ni la page, ni le formulaire, ni aucune donnée ne sont supprimés.
+      // L'EN (désactivé) atterrit sur la cible FR, comme le fait déjà le proxy pour tout /en/*.
+      // Garde : tests/unit/redirects/observatoire-participer.spec.ts.
+      {
+        source: "/:locale(fr|en)/observatoire-ia/participer",
+        destination: "/fr/diagnostic#observatoire",
+        statusCode: 301,
+      },
+      {
+        source: "/observatoire-ia/participer",
+        destination: "/fr/diagnostic#observatoire",
+        statusCode: 301,
+      },
       // Cas concrets éteints (2026-11-08, retrait juridique) : URLs déjà indexées → 301 vers la
       // page la plus proche (/fr/methodologie), plutôt qu'un 404 sec. Les notFound() des pages
       // restent en filet. Les redirections ne sont posées que tant que l'interrupteur

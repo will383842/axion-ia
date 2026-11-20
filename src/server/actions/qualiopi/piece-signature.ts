@@ -71,6 +71,7 @@ import {
   restituerCodeSignature,
   verifierCodeSignature,
 } from "@/server/qualiopi/documents/signature/code-signature";
+import { signeParLeClient } from "@/server/qualiopi/devis/pas-signe-par-le-client";
 import { envoyerCodeDevis } from "@/server/qualiopi/devis/code-signature-devis";
 import { reinitialiserEchecsSignature } from "@/server/qualiopi/documents/signature/echecs-cumules";
 import { horodaterSignature } from "@/server/qualiopi/documents/signature/horodatage-signature";
@@ -294,15 +295,28 @@ const REFUS_JETON: Record<
 async function objectionMetier(
   type: string,
   documentGenereId: string,
+  partie: PartieSignataire,
 ): Promise<{ message: string } | null> {
   if (type !== "devis") return null;
 
   const devis = await prisma.devis.findFirst({
     where: { documentGenereId },
-    select: { statut: true },
+    select: { id: true, statut: true },
   });
   if (devis === null) return { message: "Devis introuvable." };
   if (devis.statut === "envoye") return null;
+
+  // Devis `expire` : le CLIENT ne signe jamais (la date de validité fait foi pour lui). Mais
+  // l'ORGANISME doit pouvoir contresigner ce que le client a signé avant le passage du cron, sauf
+  // si une version plus récente a été émise (le devis est alors remplacé). Même règle que l'écran
+  // (`a-contresigner.ts`) et que l'acceptation (`apres-signature.ts`).
+  if (devis.statut === "expire" && partie === "axionia") {
+    const [signeParClient, successeursEmis] = await Promise.all([
+      prisma.devis.count({ where: { id: devis.id, ...signeParLeClient } }),
+      prisma.devis.count({ where: { replacesDevisId: devis.id, statut: { not: "brouillon" } } }),
+    ]);
+    if (signeParClient > 0 && successeursEmis === 0) return null;
+  }
 
   return {
     message:
@@ -959,7 +973,7 @@ export async function demanderCodeDevisAction(input: {
   }
 
   // Devis refusé, retiré, remplacé ou déjà accepté : aucun code ne part.
-  const objection = await objectionMetier(piece.type, verif.documentGenereId);
+  const objection = await objectionMetier(piece.type, verif.documentGenereId, verif.partie);
   if (objection !== null) {
     return { ok: false, raison: "piece_non_signable_maintenant", message: objection.message };
   }
@@ -1043,7 +1057,7 @@ async function objectionAvantSignature(input: {
   partie: PartieSignataire;
   adminId?: string;
 }): Promise<{ message: string } | null> {
-  const metier = await objectionMetier(input.type, input.documentGenereId);
+  const metier = await objectionMetier(input.type, input.documentGenereId, input.partie);
   if (metier !== null) return metier;
   // C4 — une lettre de mission périmée ne se signe plus, d'aucun côté.
   const perimee = await objectionLettreMissionPerimee(input);
