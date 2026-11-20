@@ -35,6 +35,7 @@ import { prisma } from "@/lib/prisma";
 import { requireAdminWrite, logQualiopiActivity } from "@/server/actions/qualiopi/_guards";
 import { createDevisAction, sendDevisAction } from "@/server/actions/qualiopi/devis";
 import {
+  erreurObjetEtMessage,
   messageEntreeSchema,
   objetEntreeSchema,
 } from "@/server/qualiopi/devis/contenu-email-devis";
@@ -574,6 +575,9 @@ export async function envoyerDepuisAssistantAction(i: {
     .safeParse({ sujet: i.sujet, messagePersonnalise: i.messagePersonnalise });
   if (!choix.success) return { error: choix.error.issues[0]?.message ?? "Demande invalide." };
   const { sujet, messagePersonnalise } = choix.data;
+  // Mots interdits et caractères invisibles : refusés AVANT `numeroter`, qui écrit.
+  const refus = erreurObjetEtMessage(sujet, messagePersonnalise);
+  if (refus !== null) return { error: refus };
   const n = await numeroter({ brouillonId: i.brouillonId, attenduRevision: i.attenduRevision });
   if (!("data" in n)) return { error: n.error };
   if (n.rejoue) {

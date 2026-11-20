@@ -160,3 +160,36 @@ describe("contenuEmailDevis — objet et mots interdits", () => {
     }
   });
 });
+
+describe("contenuEmailDevis — contournements du filtre (audit sécurité)", () => {
+  it.each([
+    ["Qua­liopi", "trait d'union conditionnel"],
+    ["Qual​iopi", "espace de largeur nulle"],
+    ["OP⁠CO", "mot-liant"],
+    ["ＯＰＣＯ", "pleine chasse"],
+    ["ﬁnancement", "ligature"],
+    ["prise-en-charge", "tirets"],
+    ["prise‑en‑charge", "tirets insécables"],
+    ["C.P.F", "points"],
+    ["CPF", "sigle"],
+    ["certifié", "certifié"],
+    ["certifiee", "certifiée sans accent"],
+    ["une certification", "certification"],
+  ])("refuse %s (%s) dans l'objet ET dans le message", (mot) => {
+    expect(contenuEmailDevis({ ...BASE, sujet: `Devis ${mot}` }).ok).toBe(false);
+    expect(contenuEmailDevis({ ...BASE, message: `Bonjour, ${mot}.` }).ok).toBe(false);
+  });
+
+  it("refuse un caractère de format invisible dans le message", () => {
+    expect(contenuEmailDevis({ ...BASE, message: "Bonjour​" }).ok).toBe(false);
+  });
+
+  it("accepte un texte normal, saut de ligne compris", () => {
+    const r = contenuEmailDevis({
+      ...BASE,
+      sujet: "Votre devis de formation",
+      message: "Bonjour,\nVoici notre proposition. Le directeur financier peut la valider.",
+    });
+    expect(r.ok).toBe(true);
+  });
+});

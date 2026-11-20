@@ -364,10 +364,13 @@ describe("étape 4 : sauver → numéroter → aperçu → envoyer", () => {
   });
 
   it("l'aperçu de l'e-mail est lu avec le devis numéroté ; la fiche s'ouvre sur le client", async () => {
-    monter({ etape: 4 });
+    A.apercuEmail.mockResolvedValue({ data: donneesEmail({ a: "", adresseManquante: true }) });
+    monter({ etape: 4, etat: { ...etatT4(), clientId: CLIENT.id } });
     await screen.findByTestId("apercu-email");
     await waitFor(() => expect(A.apercuEmail).toHaveBeenCalled());
     expect(A.apercuEmail.mock.calls[0]![0]).toEqual({ devisId: NUM.devisId });
+    const lien = await screen.findByRole("link", { name: "Ajouter l'adresse sur la fiche" });
+    expect(lien.getAttribute("href")).toBe(adminPath("fr", `/qualiopi/clients/${CLIENT.id}/edit`));
   });
 
   it("aller-retour : l'objet et le message choisis arrivent à envoyerDepuisAssistantAction", async () => {
@@ -450,6 +453,38 @@ describe("étape 4 : sauver → numéroter → aperçu → envoyer", () => {
     expect(A.apercu).toHaveBeenCalledTimes(2);
     expect(A.numeroter.mock.calls[1]![0]).toEqual({ brouillonId: BROUILLON, attenduRevision: 10 });
     expect(await screen.findByText(/L'aperçu a été recalculé/)).toBeTruthy();
+  });
+
+  it("à renuméroter avec objet et message saisis : avis « réinitialisés » (role=status)", async () => {
+    A.envoyer.mockResolvedValueOnce({
+      error:
+        "La saisie a été modifiée pendant la numérotation : le devis porte la version précédente. Relancez l'envoi.",
+    });
+    A.reprendre.mockResolvedValueOnce({ data: { revision: 9 } });
+    monter({ etape: 4 });
+    fireEvent.change(await screen.findByLabelText("Objet"), { target: { value: "Votre devis" } });
+    fireEvent.change(screen.getByLabelText("Message personnel"), {
+      target: { value: "Bonjour." },
+    });
+    fireEvent.click(screen.getByRole("button", { name: "Actualiser l'aperçu" }));
+    await waitFor(() => expect(A.apercuEmail).toHaveBeenCalledTimes(2));
+    await cliquerEnvoyer();
+    await waitFor(() => expect(A.numeroter).toHaveBeenCalledTimes(2));
+    const avis = await screen.findByText(/Votre objet et votre message ont été réinitialisés/);
+    expect(avis.closest("[role=status]")).not.toBeNull();
+  });
+
+  it("à renuméroter sans objet ni message saisis : pas d'avis de réinitialisation", async () => {
+    A.envoyer.mockResolvedValueOnce({
+      error:
+        "La saisie a été modifiée pendant la numérotation : le devis porte la version précédente. Relancez l'envoi.",
+    });
+    A.reprendre.mockResolvedValueOnce({ data: { revision: 9 } });
+    monter({ etape: 4 });
+    await screen.findByText(/Proposition n°/);
+    await cliquerEnvoyer();
+    await waitFor(() => expect(A.numeroter).toHaveBeenCalledTimes(2));
+    expect(screen.queryByText(/ont été réinitialisés/)).toBeNull();
   });
 
   it("après un échec d'envoi, une révision autre que dernier + 1 N'EST PAS adoptée : conflit, plus aucun envoi", async () => {

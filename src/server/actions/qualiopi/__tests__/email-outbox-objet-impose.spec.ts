@@ -81,6 +81,8 @@ describe("approuverEmailAction — objet à imposer", () => {
       }),
     );
     await approuverEmailAction({ id: ID });
+    expect(h.enqueue).toHaveBeenCalledTimes(1);
+    expect(options()).not.toHaveProperty("sujetForce");
     h.enqueue.mockClear();
     h.findUnique.mockResolvedValue(
       ligne("Un objet du fondateur", "convention-envoi", { sujetChoisi: "Un objet du fondateur" }),

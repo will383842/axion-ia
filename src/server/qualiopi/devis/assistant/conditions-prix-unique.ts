@@ -193,18 +193,29 @@ export function recalculerEcheancier(
 }
 
 /**
- * Vrai si CHAQUE versement imprimé égale celui que l'assistant calculerait sur le total
- * (donc la somme aussi ; la base imprimée est celle du régime).
+ * `null` si CHAQUE versement imprimé égale celui que l'assistant calculerait sur le total (donc la
+ * somme aussi) ; sinon le message à montrer : « trop faible » (un versement non final à 0,00 €,
+ * comme `recalculerEcheancier`) ou « illisible » (vrai écart ou format inconnu).
  */
-export function controlerEcheancier(
+export function raisonEcheancierRefuse(
   texte: string,
   totalTtcCents: number,
   _regime: RegimeTva,
-): boolean {
+): string | null {
   const lu = lireEcheancier(texte);
-  if (!lu) return false;
+  if (!lu) return MSG_ECHEANCIER_ILLISIBLE;
   const paliers = paliersDe(lu.lignes, totalTtcCents);
-  // Comme `recalculerEcheancier` : un versement non final à 0,00 € n'est jamais valide.
-  if (paliers.slice(0, -1).some((x) => x.montantHtCents <= 0)) return false;
-  return lu.lignes.every((l, i) => l.montantCents === paliers[i]!.montantHtCents);
+  if (paliers.slice(0, -1).some((x) => x.montantHtCents <= 0)) return MSG_ECHEANCIER_TROP_FAIBLE;
+  return lu.lignes.every((l, i) => l.montantCents === paliers[i]!.montantHtCents)
+    ? null
+    : MSG_ECHEANCIER_ILLISIBLE;
+}
+
+/** Vrai si l'échéancier suit le total (voir `raisonEcheancierRefuse`). */
+export function controlerEcheancier(
+  texte: string,
+  totalTtcCents: number,
+  regime: RegimeTva,
+): boolean {
+  return raisonEcheancierRefuse(texte, totalTtcCents, regime) === null;
 }

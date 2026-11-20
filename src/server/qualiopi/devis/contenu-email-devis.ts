@@ -59,52 +59,70 @@ export type ContenuEmailDevis =
 // « financee(s) » : « financé » écrit sans accent (après normalisation, « finances » reste permis).
 // « pris(e)(s) en charge » : toutes les formes de la prise en charge.
 const MOTS_INTERDITS =
-  /qualiopi|opco|\bcpf\b|\bpris(?:e|es|s)?\s+en\s+charge|financement|\bfinance\s+par\b|\bfinancees?\b/;
+  /qualiopi|opco|\bcpf\b|\bc\s?p\s?f\b|\bpris(?:e|es|s)?\s+en\s+charge|financement|\bfinance\s+par\b|\bfinancees?\b|\bcertifi(?:e|ee|es|ees|cation|cations|ant|ante|antes|ants)\b/;
 // « financé(e)(s) » : testé AVEC l'accent (sans lui, « finances » du directeur financier serait pris).
 const FINANCE_ACCENTUE = /\bfinanc\u00e9(?:e|s|es)?(?![\p{L}])/u;
 
-/** Minuscules, sans accents ni diacritiques : « FINANCÉ » et « financé » se valent. */
+const INVISIBLES = /[\p{Cf}\p{Default_Ignorable_Code_Point}]/gu;
+
+/**
+ * Minuscules, sans accents, sans caractère invisible (soft hyphen, espace de largeur nulle…),
+ * formes de compatibilité repliées (« ＯＰＣＯ », « ﬁ »), tirets et points lus comme des espaces.
+ */
 function normaliser(texte: string): string {
   return texte
+    .normalize("NFKC")
     .normalize("NFD")
     .replace(/\p{Diacritic}/gu, "")
-    .toLowerCase();
+    .replace(INVISIBLES, "")
+    .toLowerCase()
+    .replace(/[-\u2010\u2011\u2012\u2013\u2014\u2212.]/gu, " ");
 }
 
 export function contientMotInterdit(texte: string): boolean {
-  return (
-    MOTS_INTERDITS.test(normaliser(texte)) ||
-    FINANCE_ACCENTUE.test(texte.normalize("NFC").toLowerCase())
-  );
+  const compat = texte.normalize("NFKC").replace(INVISIBLES, "").normalize("NFC").toLowerCase();
+  return MOTS_INTERDITS.test(normaliser(texte)) || FINANCE_ACCENTUE.test(compat);
+}
+
+/**
+ * Validation PURE de l'objet et du message personnel (aucune écriture, aucun accès base) : appelée
+ * par l'envoi AVANT toute numérotation, et par `contenuEmailDevis`. `null` = valide.
+ */
+export function erreurObjetEtMessage(
+  sujetBrut: string | undefined,
+  messageBrut: string | undefined,
+): string | null {
+  const sujet = sujetBrut?.trim();
+  if (sujet !== undefined && sujet !== "") {
+    if (sujet.length > OBJET_MAX) return `L'objet dépasse ${OBJET_MAX} caractères.`;
+    if (/[\p{Cc}\p{Cf}\u2028\u2029]/u.test(sujet)) {
+      return "L'objet tient sur une seule ligne, sans caractère de contrôle ni de format.";
+    }
+    if (contientMotInterdit(sujet)) {
+      return "L'objet contient un mot qui n'a pas sa place dans un devis.";
+    }
+  }
+  const message = messageBrut?.trim();
+  if (message !== undefined && message !== "") {
+    if (message.length > MESSAGE_MAX) return `Le message dépasse ${MESSAGE_MAX} caractères.`;
+    if (/[\p{Cf}\u2028\u2029]/u.test(message)) {
+      return "Le message ne doit pas contenir de caractère de format invisible.";
+    }
+    if (contientMotInterdit(message)) {
+      return "Le message contient un mot qui n'a pas sa place dans un devis.";
+    }
+  }
+  return null;
 }
 
 const eurHt = (cents: number): string =>
   new Intl.NumberFormat("fr-FR", { style: "currency", currency: "EUR" }).format(cents / 100);
 
 export function contenuEmailDevis(e: EntreeContenuEmailDevis): ContenuEmailDevis {
+  const erreur = erreurObjetEtMessage(e.sujet, e.message);
+  if (erreur !== null) return { ok: false, error: erreur };
   const sujet = e.sujet?.trim();
-  if (sujet !== undefined && sujet !== "") {
-    if (sujet.length > OBJET_MAX)
-      return { ok: false, error: `L'objet dépasse ${OBJET_MAX} caractères.` };
-    if (/[\p{Cc}\p{Cf}\u2028\u2029]/u.test(sujet)) {
-      return {
-        ok: false,
-        error: "L'objet tient sur une seule ligne, sans caractère de contrôle ni de format.",
-      };
-    }
-    if (contientMotInterdit(sujet)) {
-      return { ok: false, error: "L'objet contient un mot qui n'a pas sa place dans un devis." };
-    }
-  }
   const message = e.message?.trim();
-  if (message !== undefined && message !== "") {
-    if (message.length > MESSAGE_MAX) {
-      return { ok: false, error: `Le message dépasse ${MESSAGE_MAX} caractères.` };
-    }
-    if (contientMotInterdit(message)) {
-      return { ok: false, error: "Le message contient un mot qui n'a pas sa place dans un devis." };
-    }
-  }
 
   const clientNom = nomPourSalutationDevis(e.client);
   const payload = payloadDevisEnvoi({

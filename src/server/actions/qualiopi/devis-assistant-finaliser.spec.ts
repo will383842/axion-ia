@@ -872,6 +872,27 @@ describe("envoyerDepuisAssistantAction", () => {
     expect(m.creerClassique).not.toHaveBeenCalled();
   });
 
+  it("objet ou message interdit (même masqué) : refusé, AUCUNE écriture (numérotation, prisma, envoi)", async () => {
+    poser(classique());
+    const cas = [
+      { sujet: "Devis Qua\u00adliopi" },
+      { sujet: "Prise-en-charge" },
+      { messagePersonnalise: "Votre OPCO" },
+      { messagePersonnalise: "ＯＰＣＯ" },
+    ];
+    for (const c of cas) {
+      const r = await envoyerDepuisAssistantAction({ brouillonId: ID, attenduRevision: 4, ...c });
+      expect("error" in r).toBe(true);
+    }
+    expect(m.creerClassique).not.toHaveBeenCalled();
+    expect(m.modifierClassique).not.toHaveBeenCalled();
+    expect(m.creerFormules).not.toHaveBeenCalled();
+    expect(m.modifierFormules).not.toHaveBeenCalled();
+    expect(m.updateMany).not.toHaveBeenCalled();
+    expect(m.executeRaw).not.toHaveBeenCalled();
+    expect(m.envoyer).not.toHaveBeenCalled();
+  });
+
   it("mode garé : {emailEnvoye:false, garePourValidation:true, note} reprend sendDevisAction", async () => {
     poser(classique());
     m.envoyer.mockResolvedValue({

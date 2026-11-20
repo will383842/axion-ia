@@ -474,7 +474,14 @@ export function AssistantDevisBranche(props: PropsAssistantDevisBranche) {
           if (lu === "adoptee") {
             // « À renuméroter » : le devis porte une version que le client n'a pas vue ici. On
             // refait un aperçu (sauver → numéroter → aperçu) au lieu de réenvoyer directement.
-            setAvis(`${r.error} L'aperçu a été recalculé : relisez-le avant d'envoyer.`);
+            const saisiePerdue =
+              (email.sujet ?? "").trim() !== "" || (email.message ?? "").trim() !== "";
+            setAvis(
+              `${r.error} L'aperçu a été recalculé : relisez-le avant d'envoyer.` +
+                (saisiePerdue
+                  ? " Votre objet et votre message ont été réinitialisés : vérifiez-les avant d'envoyer."
+                  : ""),
+            );
             setCleEnvoi((k) => k + 1);
           }
           return { error: r.error };

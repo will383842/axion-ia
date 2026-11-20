@@ -30,8 +30,7 @@ import {
 } from "@/server/actions/qualiopi/_guards";
 import { computeTotauxFacture, TAUX_TVA_STANDARD } from "@/server/qualiopi/legal/tva";
 import {
-  controlerEcheancier,
-  MSG_ECHEANCIER_ILLISIBLE,
+  raisonEcheancierRefuse,
   TITRE_ECHEANCIER,
 } from "@/server/qualiopi/devis/assistant/conditions-prix-unique";
 import { nextNumero } from "@/server/qualiopi/numbering/allocate";
@@ -514,19 +513,19 @@ export async function sendDevisAction(
           throw new EnvoiRefuse(MSG_PDF_RATE, "pdf_rate");
         }
         // Échéancier de l'assistant : jamais un PDF dont les versements ≠ le total TTC imprimé.
-        if (
-          data.conditionsParticulieres?.startsWith(TITRE_ECHEANCIER) &&
-          !controlerEcheancier(
-            data.conditionsParticulieres,
-            computeTotauxFacture(
-              data.lignes,
+        const raisonEcheancier = data.conditionsParticulieres?.startsWith(TITRE_ECHEANCIER)
+          ? raisonEcheancierRefuse(
+              data.conditionsParticulieres,
+              computeTotauxFacture(
+                data.lignes,
+                data.regimeTva,
+                data.tauxTvaStandardPercent ?? TAUX_TVA_STANDARD,
+              ).totalTtcCents,
               data.regimeTva,
-              data.tauxTvaStandardPercent ?? TAUX_TVA_STANDARD,
-            ).totalTtcCents,
-            data.regimeTva,
-          )
-        ) {
-          throw new EnvoiRefuse(MSG_ECHEANCIER_ILLISIBLE, "echeancier_incoherent");
+            )
+          : null;
+        if (raisonEcheancier !== null) {
+          throw new EnvoiRefuse(raisonEcheancier, "echeancier_incoherent");
         }
         if (aFormules) {
           // Interrupteur allumé et offre présente : le PDF DOIT porter les formules.
