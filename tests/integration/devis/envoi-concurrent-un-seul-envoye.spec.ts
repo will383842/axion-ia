@@ -57,7 +57,7 @@ vi.mock("@/server/qualiopi/documents/signature/token-document", () => ({
 vi.mock("@/server/queue/queues", () => ({
   enqueueEmail: (...a: unknown[]) => h.enqueueEmail(...a),
   // OUT-1 : sonde « l'envoi est-il déjà fait ? » appelée sous le verrou ; ici, jamais rien en file.
-  sonderEnvoiOutbox: async () => "a_faire",
+  sonderEnvoiOutboxAvecLien: async () => ({ dejaFait: false, urlEnFile: null }),
 }));
 vi.mock("@/server/partners-sync/producteurs/devis", () => ({
   emettreDevisEmis: vi.fn(async () => null),
