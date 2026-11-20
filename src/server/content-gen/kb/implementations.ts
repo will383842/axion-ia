@@ -223,15 +223,6 @@ export const KB_IMPLEMENTATIONS: readonly KbFact[] = [
   },
   // ── Maintenance et évolution ──────────────────────────────────────────────
   {
-    id: "impl-022",
-    text: "Toute implémentation Axion-IA inclut 30 jours de support correctif post-livraison ; au-delà, un contrat de maintenance optionnel (forfait mensuel de 4 h couvrant monitoring, mises à jour de sécurité et optimisations) prend le relais.",
-    source: "Axion-IA — Offre maintenance 2026",
-    sourceUrl: "https://axion-ia.com/implementations",
-    verifiedAt: "2026-05-01",
-    verticales: ["implementations"],
-    confidence: 0.95,
-  },
-  {
     id: "impl-023",
     text: "Les coûts de maintenance d'un système IA représentent en moyenne 15 à 25 % du coût de développement initial par an — incluant les mises à jour de modèles, l'enrichissement de la base de connaissances et la correction de dérives.",
     source: "Gartner — Total Cost of AI Ownership, 2024",

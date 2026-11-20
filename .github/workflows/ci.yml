@@ -1000,6 +1000,13 @@ jobs:
           # de connexion ne répond pas et `signInAction` refuse toute connexion
           # admin par sécurité : voir le commentaire du service `redis`.
           REDIS_URL: "redis://localhost:6379"
+          # Clé secrète de TEST PUBLIQUE de Cloudflare (« toujours valide »), documentée par
+          # Cloudflare et reconnue par `DEV_KEYS` dans `src/lib/turnstile.ts` : JAMAIS un secret
+          # réel. Sans elle, ce job (NEXT_PUBLIC_APP_ENV=production) refuse toute vérification
+          # anti-robot (refus par défaut voulu) et `score-ia-pme.spec.ts` ne peut pas aboutir.
+          # Lue à l'exécution par le serveur (`pnpm start`) : pas besoin au build. Aucune clé de
+          # site : le formulaire envoie un jeton fictif sans widget et n'appelle pas Cloudflare.
+          TURNSTILE_SECRET_KEY: "1x0000000000000000000000000000000AA"
           # Vide sur tous les runs normaux ⇒ `a11y-admin-mesure` se `skip`.
           # Renseigné par `workflow_dispatch` ⇒ la mesure tourne ici.
           A11Y_ROUTES: ${{ github.event.inputs.a11y_routes || '' }}

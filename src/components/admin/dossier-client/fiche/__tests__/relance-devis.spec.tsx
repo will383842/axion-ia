@@ -45,4 +45,22 @@ describe("RelanceDevis — lien vers les e-mails à valider", () => {
     expect(lien).toContain(libelle);
     expect(lien).toContain("inline-flex min-h-11 items-center");
   });
+
+  it("devis signé par le client : aucun bouton « Préparer une relance »", () => {
+    const html = renderToStaticMarkup(
+      <RelanceDevis
+        ctx={ctx(null)}
+        devis={[{ ...devis[0]!, documentGenereId: "piece-1" }]}
+        piecesAContresigner={new Set(["piece-1"])}
+      />,
+    );
+    expect(html).not.toContain("Préparer une relance");
+  });
+
+  it("devis non signé : le bouton est proposé", () => {
+    const html = renderToStaticMarkup(
+      <RelanceDevis ctx={ctx(null)} devis={devis} piecesAContresigner={new Set()} />,
+    );
+    expect(html).toContain("Préparer une relance");
+  });
 });

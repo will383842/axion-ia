@@ -55,6 +55,7 @@ import type {
 import { AccesRefuse } from "@/components/admin/ui/AccesRefuse";
 import { gardePage } from "@/server/auth/garde-page";
 import { peutEngager } from "@/server/auth/habilitations";
+import { relancesAtraiterWhere } from "@/server/qualiopi/devis/relances-a-traiter-filtre";
 
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
@@ -230,9 +231,9 @@ export default async function FacturationHubPage({
       prisma.relanceProposee.findMany({
         // À traiter = jamais traitées + reportées dont l'échéance de report est
         // passée (revue M2 : une relance reportée doit REVENIR, jamais disparaître).
-        where: {
-          OR: [{ statut: "a_traiter" }, { statut: "reportee", reporteeJusqua: { lte: now } }],
-        },
+        // Une relance de DEVIS n'est gardée que si le devis attend encore une réponse
+        // (filtre partagé avec la pastille du menu).
+        where: relancesAtraiterWhere(now),
         orderBy: { createdAt: "asc" },
         take: 20,
         select: {
@@ -242,6 +243,7 @@ export default async function FacturationHubPage({
           suggestion: true,
           factureFormationId: true,
           factureFormation: { select: { numero: true } },
+          devisId: true,
           devis: { select: { numero: true } },
         },
       }),
@@ -359,6 +361,9 @@ export default async function FacturationHubPage({
       suggestion: r.suggestion,
       libelle: r.factureFormation?.numero ?? r.devis?.numero ?? "Document inconnu",
       envoiDirect: r.factureFormationId !== null,
+      ...(r.devisId !== null
+        ? { devisHref: `/${locale}/${adminPrefix}/qualiopi/devis/${r.devisId}` }
+        : {}),
       // Le formatage (euros, dates) est fait ICI, côté serveur : le composant
       // client n'embarque ni `Intl.NumberFormat` ni logique de montant.
       ...(d !== undefined
