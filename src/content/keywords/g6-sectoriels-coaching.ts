@@ -129,11 +129,10 @@ const KW_JURIDIQUE: KeywordSeed[] = [
       h1: "Déployer l'IA dans toute votre équipe juridique — formation collective Axion-IA",
       metaTitle: "Formation IA équipe juridique PME & ETI — Axion-IA",
       metaDescription:
-        "Formez vos juristes, paralégaux et secrétaires juridiques à l'IA. Session sur site, cas concrets cabinet, suivi 30 jours inclus.",
+        "Formez vos juristes, paralégaux et secrétaires juridiques à l'IA. Session sur site, cas concrets cabinet.",
       h2Variants: [
         "Pourquoi former l'équipe entière plutôt que 1 référent ?",
         "Modules adaptés : juriste, paralégal, secrétariat",
-        "Suivi post-formation et ancrage des usages IA",
       ],
     },
     variables: {
@@ -717,7 +716,6 @@ const KW_BTP: KeywordSeed[] = [
       h2Variants: [
         "Programme formation IA conducteur de travaux — contenu et durée",
         "IA et planification chantier : exercice pratique en temps réel",
-        "Certification et suivi post-formation",
       ],
     },
     variables: {
@@ -1324,7 +1322,6 @@ const KW_RH: KeywordSeed[] = [
       h2Variants: [
         "Programme formation IA RH — 1 jour ou 2 jours selon profil",
         "IA et éthique RH : formation au bon usage des algorithmes",
-        "Suivi post-formation et mesure des gains RH",
       ],
     },
     variables: {
@@ -1351,7 +1348,7 @@ const KW_RH: KeywordSeed[] = [
       h1: "Automatiser l'onboarding des salariés avec l'IA : parcours personnalisé en 1 clic",
       metaTitle: "IA onboarding salariés PME — Axion-IA France",
       metaDescription:
-        "Parcours d'intégration automatisé, chatbot RH répondant aux 50 questions fréquentes, suivi 90 jours : l'IA transforme l'onboarding PME.",
+        "Parcours d'intégration automatisé, chatbot RH répondant aux 50 questions fréquentes : l'IA transforme l'onboarding PME.",
       h2Variants: [
         "Chatbot RH onboarding : ce qu'il sait répondre automatiquement",
         "Personnaliser le parcours d'intégration avec l'IA",
@@ -1991,7 +1988,6 @@ const KW_SANTE: KeywordSeed[] = [
       h2Variants: [
         "Programme formation IA équipe médicale — contenu et durée",
         "Ce que l'IA peut faire (et ne peut pas faire) en médecine",
-        "Certification et suivi post-formation équipe médicale",
       ],
     },
     variables: {
@@ -2094,7 +2090,6 @@ const KW_AGRO: KeywordSeed[] = [
       h2Variants: [
         "Programme formation IA agroalimentaire — niveaux et durées",
         "IA et HACCP : comment l'IA accélère la mise en conformité",
-        "Certification post-formation et suivi terrain",
       ],
     },
     variables: {

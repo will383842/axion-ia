@@ -264,8 +264,8 @@ export default async function UnAUnHubPage({ params }: Props) {
       {
         name: isFr ? "Livrable sous 7 jours" : "Deliverable within 7 days",
         text: isFr
-          ? "Sous 7 jours, vous recevez votre livrable personnalisé : la note de cadrage stratégique (dirigeant) ou votre cahier de prompts et plan d'action (collaborateur), avec un point de suivi à 30 jours pour le coaching collaborateur."
-          : "Within 7 days, you receive your personalised deliverable: the strategic framing note (executive) or your prompt playbook and action plan (team member), with a 30-day follow-up for the team-member coaching.",
+          ? "Sous 7 jours, vous recevez votre livrable personnalisé : la note de cadrage stratégique (dirigeant) ou votre cahier de prompts et plan d'action (collaborateur)."
+          : "Within 7 days, you receive your personalised deliverable: the strategic framing note (executive) or your prompt playbook and action plan (team member).",
       },
     ],
   });
@@ -1001,7 +1001,7 @@ export default async function UnAUnHubPage({ params }: Props) {
                       id: "rapport",
                       question: "Recevez-vous un compte-rendu après la journée ?",
                       answer:
-                        "Oui, et c'est LE livrable clé, remis sous 7 jours. Pour un dirigeant : la note de cadrage stratégique — panorama IA de votre secteur, sourcé, et vos 5 à 10 leviers hiérarchisés par impact et urgence. Pour un collaborateur : votre cahier de prompts personnel et un plan d'action, suivis d'un point à 30 jours.",
+                        "Oui, et c'est LE livrable clé, remis sous 7 jours. Pour un dirigeant : la note de cadrage stratégique — panorama IA de votre secteur, sourcé, et vos 5 à 10 leviers hiérarchisés par impact et urgence. Pour un collaborateur : votre cahier de prompts personnel et un plan d'action.",
                     },
                     {
                       id: "duree",
@@ -1032,7 +1032,7 @@ export default async function UnAUnHubPage({ params }: Props) {
                       id: "garantie",
                       question: "Garantie de résultat ?",
                       answer:
-                        "Non, et personne de sérieux ne peut en donner une : nos conditions générales posent une obligation de moyens, et les gains évoqués restent indicatifs — ils dépendent de vos dossiers et de ce que vous appliquez ensuite. Ce que nous engageons figure au devis : une journée en tête-à-tête sur votre poste réel, le livrable écrit sous 7 jours et un point de suivi à 30 jours. En cas d'imprévu de votre côté, la journée est reportable une fois sans frais ; annulée à plus de 15 jours ouvrés, les acomptes versés vous sont intégralement remboursés.",
+                        "Non, et personne de sérieux ne peut en donner une : nos conditions générales posent une obligation de moyens, et les gains évoqués restent indicatifs — ils dépendent de vos dossiers et de ce que vous appliquez ensuite. Ce que nous engageons figure au devis : une journée en tête-à-tête sur votre poste réel, le livrable écrit sous 7 jours. En cas d'imprévu de votre côté, la journée est reportable une fois sans frais ; annulée à plus de 15 jours ouvrés, les acomptes versés vous sont intégralement remboursés.",
                     },
                   ]
                 : [
@@ -1086,7 +1086,7 @@ export default async function UnAUnHubPage({ params }: Props) {
                       id: "guarantee",
                       question: "Guarantee?",
                       answer:
-                        "No, and no serious provider can give one: our terms set an obligation of means, and any gains mentioned are indicative — they depend on your own files and on what you apply afterwards. What we do commit to is written in the quote: a one-to-one day on your actual workstation, the written deliverable within 7 days and a follow-up at 30 days. If something unexpected comes up on your side, the day can be postponed once at no cost; cancelled more than 15 working days ahead, any deposit paid is refunded in full.",
+                        "No, and no serious provider can give one: our terms set an obligation of means, and any gains mentioned are indicative — they depend on your own files and on what you apply afterwards. What we do commit to is written in the quote: a one-to-one day on your actual workstation, the written deliverable within 7 days. If something unexpected comes up on your side, the day can be postponed once at no cost; cancelled more than 15 working days ahead, any deposit paid is refunded in full.",
                     },
                   ]
             }

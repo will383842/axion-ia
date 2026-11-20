@@ -159,7 +159,7 @@ export default async function MethodologyPage({ params }: Props) {
           },
           {
             name: "Implémenter",
-            text: "Mise en production en 6-8 semaines : cadrage technique, prototype itératif, tests utilisateurs, déploiement progressif, support 30 jours inclus.",
+            text: "Mise en production en 6-8 semaines : cadrage technique, prototype itératif, tests utilisateurs, déploiement progressif.",
           },
           {
             name: "Mesurer",
@@ -177,7 +177,7 @@ export default async function MethodologyPage({ params }: Props) {
           },
           {
             name: "Implement",
-            text: "Production deployment in 6-8 weeks: technical scoping, iterative prototype, user testing, progressive rollout, 30-day support included.",
+            text: "Production deployment in 6-8 weeks: technical scoping, iterative prototype, user testing, progressive rollout.",
           },
           {
             name: "Measure",
@@ -271,7 +271,7 @@ export default async function MethodologyPage({ params }: Props) {
             "Tests utilisateurs, déploiement progressif",
             "Stack open-source ou propriétaire selon le cas",
           ],
-          livrable: "Solution en production · 30 jours de support",
+          livrable: "Solution en production",
         },
         {
           n: "04",
@@ -317,7 +317,7 @@ export default async function MethodologyPage({ params }: Props) {
             "User testing, progressive rollout",
             "Open-source or proprietary stack as needed",
           ],
-          livrable: "Solution in production · 30 days of support",
+          livrable: "Solution in production",
         },
         {
           n: "04",
@@ -391,7 +391,7 @@ export default async function MethodologyPage({ params }: Props) {
           id: "etapes",
           question: "Quelles sont les étapes de la méthodologie Axion-IA ?",
           answer:
-            "Quatre temps clairement séparés, chacun produisant un livrable concret : Identifier (cartographie terrain en 1 journée), Auditer (audit en 5 jours), Implémenter (mise en production en 6-8 semaines, support 30 jours inclus), Mesurer (ROI réel post-déploiement).",
+            "Quatre temps clairement séparés, chacun produisant un livrable concret : Identifier (cartographie terrain en 1 journée), Auditer (audit en 5 jours), Implémenter (mise en production en 6-8 semaines), Mesurer (ROI réel post-déploiement).",
         },
         {
           id: "par-ou-commencer",
@@ -453,7 +453,7 @@ export default async function MethodologyPage({ params }: Props) {
           id: "etapes",
           question: "What are the steps of the Axion-IA methodology?",
           answer:
-            "Four clearly separated phases, each producing a concrete deliverable: Identify (1-day field mapping), Audit (5-day audit), Implement (production in 6-8 weeks, 30-day support included), Measure (real post-deployment ROI).",
+            "Four clearly separated phases, each producing a concrete deliverable: Identify (1-day field mapping), Audit (5-day audit), Implement (production in 6-8 weeks), Measure (real post-deployment ROI).",
         },
         {
           id: "par-ou-commencer",

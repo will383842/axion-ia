@@ -148,7 +148,6 @@ export const KW_NOTORIETE_H: KeywordSeed[] = [
       h2Variants: [
         "Ce que les participants disent de nos formations IA",
         "Formats adaptés à chaque équipe",
-        "De la formation à l'usage réel — le suivi post-formation",
       ],
     },
     variables: { resultat: "équipes autonomes sur les outils IA ciblés", delai: "dès J+30" },
@@ -317,13 +316,12 @@ export const KW_NOTORIETE_H: KeywordSeed[] = [
       metaTitle: "Agence IA résultats mesurables France | Axion-IA",
       metaDescription:
         "Axion-IA s'engage sur des résultats mesurables. Découvrez comment nous documentons chaque projet IA et ce que cela change pour vos décisions.",
-      h2Variants: [
-        "Pourquoi l'engagement sur les résultats est notre différenciateur",
-        "Notre méthode de mesure d'impact post-mission",
-        "Ce que nos clients vérifient à 30, 60 et 90 jours",
-      ],
+      h2Variants: ["Pourquoi l'engagement sur les résultats est notre différenciateur"],
     },
-    variables: { resultat: "KPIs définis avant chaque mission", delai: "bilan à 30 jours inclus" },
+    variables: {
+      resultat: "KPIs définis avant chaque mission",
+      delai: "avant le début de la mission",
+    },
     urlCible: "/fr/cas-concrets/",
     source: "manuel",
     note: "Couvrir les deux termes 'agence IA' et 'cabinet IA' — positionnement double Will",

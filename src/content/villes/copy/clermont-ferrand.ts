@@ -489,11 +489,6 @@ export const CLERMONT_FERRAND_COPY: VilleCopy = {
             detail:
               "Sur site Clermont-Ferrand : tests d'acceptation utilisateurs, formation des ambassadeurs internes (ingénieurs, techniciens, responsables qualité), livraison du runbook documentation, plan de monitoring.",
           },
-          {
-            step: "Suivi post-go-live",
-            detail:
-              "À distance : surveillance des métriques de production, ajustements fins, mesure du ROI réel par rapport à la prédiction du SOW. Rapport final remis à clôture, mission close.",
-          },
         ],
         pricing: [
           {
@@ -580,11 +575,6 @@ export const CLERMONT_FERRAND_COPY: VilleCopy = {
             step: "Acceptance + training",
             detail:
               "On site Clermont-Ferrand: user acceptance tests, training of internal ambassadors (engineers, technicians, quality managers), runbook documentation delivery, monitoring plan.",
-          },
-          {
-            step: "Post-go-live follow-up",
-            detail:
-              "Remote: production metrics monitoring, fine adjustments, real ROI vs SOW prediction measurement. Final report delivered at closure, mission closed.",
           },
         ],
         pricing: [

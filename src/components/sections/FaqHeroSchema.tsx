@@ -28,7 +28,7 @@ export function FaqHeroSchema({
           icon: Briefcase,
           eyebrow: "Thème 1",
           title: "Interventions & implémentation",
-          detail: `Préparation, périmètre, livrables, support post-livraison.`,
+          detail: `Préparation, périmètre, livrables.`,
           lead: true,
         },
         {
@@ -51,7 +51,7 @@ export function FaqHeroSchema({
           icon: Briefcase,
           eyebrow: "Topic 1",
           title: "Sessions & implementation",
-          detail: "Preparation, scope, deliverables, post-delivery support.",
+          detail: "Preparation, scope, deliverables.",
           lead: true,
         },
         {

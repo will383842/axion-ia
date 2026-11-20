@@ -71,7 +71,7 @@ export const SITES_WEB_CAPABILITIES: ReadonlyArray<Capability> = [
       "Natif iOS / Android (Swift, Kotlin)",
       "Multiplateforme (Flutter, React Native)",
       "PWA & web app",
-      "Store deployment & suivi",
+      "Store deployment",
     ],
     itemsEn: [
       "Native iOS / Android (Swift, Kotlin)",

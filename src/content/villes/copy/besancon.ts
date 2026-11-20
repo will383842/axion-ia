@@ -506,11 +506,6 @@ export const BESANCON_COPY: VilleCopy = {
             detail:
               "Sur site Besançon : tests d'acceptation utilisateurs, formation des ambassadeurs internes, livraison du runbook documentation, plan de monitoring.",
           },
-          {
-            step: "Suivi post-go-live",
-            detail:
-              "À distance : surveillance des métriques de production, ajustements fins, mesure du ROI réel par rapport à la prédiction du SOW. Rapport final remis à clôture de mission.",
-          },
         ],
         pricing: [
           {
@@ -598,11 +593,6 @@ export const BESANCON_COPY: VilleCopy = {
             detail:
               "On site Besançon: user acceptance tests, training of internal ambassadors, runbook documentation delivery, monitoring plan.",
           },
-          {
-            step: "Post-go-live follow-up",
-            detail:
-              "Remote: production metrics monitoring, fine adjustments, real ROI vs SOW prediction measurement. Final report delivered at mission closure.",
-          },
         ],
         pricing: [
           {
@@ -686,11 +676,6 @@ export const BESANCON_COPY: VilleCopy = {
             step: "Configuration personnalisée",
             detail:
               "Mise en place de vos outils IA personnels (ChatGPT, Claude, Mistral, etc.) avec vos prompts sur mesure et vos workflows spécifiques à votre métier bisontin.",
-          },
-          {
-            step: "Suivi et ajustements",
-            detail:
-              "Sessions de suivi pour valider l'adoption, ajuster les prompts et workflows, et répondre aux nouvelles questions qui émergent dans votre pratique quotidienne.",
           },
           {
             step: "Bilan et plan IA personnel",
@@ -780,11 +765,6 @@ export const BESANCON_COPY: VilleCopy = {
               "Setup of your personal AI tools (ChatGPT, Claude, Mistral, etc.) with bespoke prompts and workflows specific to your Besançon profession.",
           },
           {
-            step: "Follow-up and adjustments",
-            detail:
-              "Follow-up sessions to validate adoption, adjust prompts and workflows, and answer new questions that emerge in your daily practice.",
-          },
-          {
             step: "Review and personal AI plan",
             detail:
               "Progress summary, delivery of your documented personal AI plan and resources to continue progressing autonomously.",
@@ -839,7 +819,7 @@ export const BESANCON_COPY: VilleCopy = {
           },
           {
             q: "What happens after coaching ends?",
-            a: "You have your documented personal AI plan, configured tools and prompts. If you want to continue, ad-hoc follow-up sessions are available. No minimum commitment beyond the initial pack.",
+            a: "You have your documented personal AI plan, configured tools and prompts. No minimum commitment beyond the initial pack.",
           },
         ],
         guarantees:

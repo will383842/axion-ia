@@ -248,8 +248,6 @@ Chez Axion-IA, chaque phase est **sur devis** : parlons-en lors du rendez-vous g
 3. **Manque de sponsoring dirigeant** : sans portage au niveau direction générale, les projets IA peinent à obtenir les ressources (accès données, temps des opérationnels, budget run). Mitigation : formaliser un comité de pilotage dès le cadrage.
 4. **Dérive entre le POC et la production** : un modèle qui performe en laboratoire peut se dégrader en production (data drift, évolution des processus). Mitigation : prévoir un contrat de monitoring et de réentraînement dès le lancement.
 
-En cas de ROI décevant, Axion-IA s'engage contractuellement sur une revue post-déploiement à 6 mois avec plan de remédiation.
-
 ---
 
 ## Q : Quels sont les indicateurs clés (KPIs) à suivre pour piloter un projet IA en PME ?

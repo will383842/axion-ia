@@ -412,19 +412,18 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
       // Le SLUG `les-3-modules-axion-ia` reste, lui, INCHANGÉ (URL indexée).
       question: "Quels sont les modules d'Axion-IA ?",
       answer:
-        "Le découpage historique en trois modules — interventions, audit, implémentation — a été élargi : l'offre Axion-IA compte aujourd'hui cinq prestations, et c'est cette liste qui fait foi.\n\nLes Formations IA se déroulent en intra, de 4 heures à 2 journées, pour un groupe de 2 à 15 participants, dans vos locaux ou à distance. Le Coaching IA 1-to-1 est une journée de 7 à 8 heures avec une seule personne, sur son poste réel. L'Audit IA cartographie vos process et chiffre les opportunités, sur quatre niveaux selon la taille de l'entreprise et le périmètre. L'Implémentation IA met en production les automatisations retenues, avec 30 jours de support inclus à la livraison. Les Sites web & SaaS IA greffent chatbot, recherche sémantique ou agents sur votre site existant, ou construisent une plateforme IA-native.\n\nCes cinq prestations sont indépendantes : rien n'oblige à les enchaîner dans cet ordre.",
+        "Le découpage historique en trois modules — interventions, audit, implémentation — a été élargi : l'offre Axion-IA compte aujourd'hui cinq prestations, et c'est cette liste qui fait foi.\n\nLes Formations IA se déroulent en intra, de 4 heures à 2 journées, pour un groupe de 2 à 15 participants, dans vos locaux ou à distance. Le Coaching IA 1-to-1 est une journée de 7 à 8 heures avec une seule personne, sur son poste réel. L'Audit IA cartographie vos process et chiffre les opportunités, sur quatre niveaux selon la taille de l'entreprise et le périmètre. L'Implémentation IA met en production les automatisations retenues, à la livraison. Les Sites web & SaaS IA greffent chatbot, recherche sémantique ou agents sur votre site existant, ou construisent une plateforme IA-native.\n\nCes cinq prestations sont indépendantes : rien n'oblige à les enchaîner dans cet ordre.",
       keyPoints: [
         "Cinq prestations aujourd'hui, et non plus trois modules",
         "Formations IA : 4 heures à 2 journées, en intra, 2 à 15 participants",
         "Coaching IA 1-to-1 : une journée, une seule personne, sur son poste",
-        "Audit IA sur quatre niveaux ; Implémentation IA avec 30 jours de support",
+        "Audit IA sur quatre niveaux ; Implémentation IA livrée en production",
         "Sites web & SaaS IA : chatbot, recherche sémantique, agents, plateforme sur mesure",
       ],
       facts: [
         { figure: "5", label: "prestations au catalogue" },
         { figure: "4", label: "niveaux d'audit IA" },
         { figure: "2-15", label: "participants par formation" },
-        { figure: "30 j", label: "de support après livraison" },
       ],
       nuances: [
         {
@@ -694,7 +693,7 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
         {
           title: "Mise en pratique",
           detail:
-            "Les équipes appliquent dès le lendemain. Ce qui mérite d'être automatisé passe ensuite en implémentation, avec 30 jours de support inclus à la livraison.",
+            "Les équipes appliquent dès le lendemain. Ce qui mérite d'être automatisé passe ensuite en implémentation.",
         },
       ],
       nuances: [
@@ -732,18 +731,17 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
     fr: {
       question: "Quel est le délai pour implémenter l'IA en entreprise ?",
       answer:
-        "Comptez 6 à 8 semaines pour un projet d'implémentation IA complet, à compter de la signature du devis : 1 semaine de cadrage, 2 à 4 semaines de prototype, 1 à 2 semaines de tests et 1 semaine de déploiement. Trente jours de support correctif sont inclus après la mise en production.\n\nLe périmètre fait varier ce délai dans les deux sens. Une automatisation simple — lecture de factures, chatbot branché sur votre site — tourne en environ 2 semaines. À l'inverse, une IA sur mesure profondément intégrée à vos systèmes s'étale sur 4 à 12 semaines. Le devis, lui, part sous 48 heures ouvrées après l'échange de cadrage.\n\nRien n'oblige à attendre la fin pour voir quelque chose : on travaille par sprints courts avec des démos régulières, donc vous validez à chaque étape au lieu de découvrir le résultat au dernier jour. Et si votre besoin est d'abord de faire monter vos équipes, une formation collective les rend opérationnelles dès le lendemain.",
+        "Comptez 6 à 8 semaines pour un projet d'implémentation IA complet, à compter de la signature du devis : 1 semaine de cadrage, 2 à 4 semaines de prototype, 1 à 2 semaines de tests et 1 semaine de déploiement. La mission se termine à la mise en production : aucun suivi n'est prévu après la livraison.\n\nLe périmètre fait varier ce délai dans les deux sens. Une automatisation simple — lecture de factures, chatbot branché sur votre site — tourne en environ 2 semaines. À l'inverse, une IA sur mesure profondément intégrée à vos systèmes s'étale sur 4 à 12 semaines. Le devis, lui, part sous 48 heures ouvrées après l'échange de cadrage.\n\nRien n'oblige à attendre la fin pour voir quelque chose : on travaille par sprints courts avec des démos régulières, donc vous validez à chaque étape au lieu de découvrir le résultat au dernier jour. Et si votre besoin est d'abord de faire monter vos équipes, une formation collective les rend opérationnelles dès le lendemain.",
       keyPoints: [
         "6 à 8 semaines pour un projet complet, à partir de la signature du devis",
         "1 sem. de cadrage, 2 à 4 sem. de prototype, 1 à 2 sem. de tests, 1 sem. de déploiement",
         "Environ 2 semaines pour une automatisation simple et ciblée",
-        "30 jours de support correctif inclus après la mise en production",
+        "Livraison à la mise en production, sans suivi après la livraison",
         "Devis envoyé sous 48 h ouvrées après l'échange de cadrage",
       ],
       facts: [
         { figure: "6-8 sem", label: "pour un projet complet" },
         { figure: "2 sem", label: "pour une automatisation simple" },
-        { figure: "30 j", label: "de support inclus" },
         { figure: "48 h", label: "ouvrées pour le devis" },
       ],
       steps: [
@@ -763,9 +761,9 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
             "1 à 2 semaines de vérifications et de corrections, avec validation métier avant tout passage en production.",
         },
         {
-          title: "Déploiement et suivi",
+          title: "Déploiement",
           detail:
-            "Une semaine de mise en production sur vos outils, formation des équipes, puis 30 jours de support correctif.",
+            "Une semaine de mise en production sur vos outils, formation des équipes, puis livraison.",
         },
       ],
       nuances: [
@@ -789,7 +787,7 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
     en: {
       question: "How long does it take to implement AI in a company?",
       answer:
-        "An Axion-IA AI implementation project takes 6 to 8 weeks: 1 week scoping, 2 to 4 weeks prototype, 1 to 2 weeks testing, 1 week deployment. 30 days support included. For training alone, teams are operational from the next day.",
+        "An Axion-IA AI implementation project takes 6 to 8 weeks: 1 week scoping, 2 to 4 weeks prototype, 1 to 2 weeks testing, 1 week deployment. Delivery ends at go-live, with no follow-up afterwards. For training alone, teams are operational from the next day.",
     },
   },
   {
@@ -1270,12 +1268,12 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
     fr: {
       question: "Comment choisir un cabinet IA ?",
       answer:
-        "Quatre critères suffisent à trancher. Premièrement, le cabinet intervient-il sur site, avec vos données réelles et vos vrais dossiers, ou se contente-t-il de slides ? Deuxièmement, livre-t-il un ROI chiffré et mesurable, ou des promesses qualitatives ? Troisièmement, maîtrise-t-il plusieurs modèles — ChatGPT, Claude, Gemini, et des modèles ouverts comme Llama ou Mistral déployables chez vous — ou n'est-il que le revendeur d'un seul outil ? Quatrièmement, prévoit-il un accompagnement après le déploiement, une fois l'effet nouveauté passé ?\n\nAxion-IA répond positivement aux quatre. Trois vérifications supplémentaires font la différence à l'usage. Demandez qui interviendra réellement : chez Axion-IA les intervenants sont tous seniors, et le même expert vous suit du cadrage à la livraison. Demandez le devis : il est détaillé et arrive sous 48 heures ouvrées. Demandez enfin ce qui reste chez vous à la fin — le rapport, les prompts testés et les méthodes doivent vous appartenir. La couverture est nationale : 13 régions et 5 DROM, sur site ou à distance.",
+        "Quatre critères suffisent à trancher. Premièrement, le cabinet intervient-il sur site, avec vos données réelles et vos vrais dossiers, ou se contente-t-il de slides ? Deuxièmement, livre-t-il un ROI chiffré et mesurable, ou des promesses qualitatives ? Troisièmement, maîtrise-t-il plusieurs modèles — ChatGPT, Claude, Gemini, et des modèles ouverts comme Llama ou Mistral déployables chez vous — ou n'est-il que le revendeur d'un seul outil ? Quatrièmement, livre-t-il une solution documentée, que vos équipes peuvent exploiter seules ?\n\nAxion-IA répond positivement aux quatre. Trois vérifications supplémentaires font la différence à l'usage. Demandez qui interviendra réellement : chez Axion-IA les intervenants sont tous seniors, et le même expert vous suit du cadrage à la livraison. Demandez le devis : il est détaillé et arrive sous 48 heures ouvrées. Demandez enfin ce qui reste chez vous à la fin — le rapport, les prompts testés et les méthodes doivent vous appartenir. La couverture est nationale : 13 régions et 5 DROM, sur site ou à distance.",
       keyPoints: [
         "Sur site avec vos données réelles, pas une démonstration générique",
         "Un ROI chiffré et mesurable, pas des promesses qualitatives",
         "Plusieurs modèles maîtrisés — pas le revendeur d'un seul outil",
-        "Un accompagnement prévu après le déploiement",
+        "Une solution documentée, exploitable en autonomie par vos équipes",
         "Un devis détaillé sous 48 h ouvrées, sans engagement",
       ],
       facts: [
@@ -1304,7 +1302,7 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
     en: {
       question: "How do you choose an AI consultancy?",
       answer:
-        "4 key criteria: (1) does the consultancy work on site with your real data (not just slides)? (2) does it deliver a costed, measurable ROI? (3) does it master multiple AI models (not a reseller of a single tool)? (4) does it offer post-deployment support? Axion-IA meets all 4 criteria.",
+        "4 key criteria: (1) does the consultancy work on site with your real data (not just slides)? (2) does it deliver a costed, measurable ROI? (3) does it master multiple AI models (not a reseller of a single tool)? (4) does it deliver documented work your teams can run on their own? Axion-IA meets all 4 criteria.",
     },
   },
   {
@@ -1604,24 +1602,19 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
     fr: {
       question: "Axion-IA propose-t-il un accompagnement après l'implémentation ?",
       answer:
-        "Oui, et il commence sans rien demander : 30 jours de support correctif accompagnent toute implémentation, à compter de la mise en production. Pendant ce mois, les ajustements et les corrections sont pris en charge, et si une fonctionnalité livrée ne correspond pas au cahier des charges signé, elle est corrigée sans surcoût.\n\nAu-delà, rien n'est imposé. Vous pouvez ne rien prendre : le code, les workflows et la documentation vous sont livrés, tout continue de tourner sans nous. Ceux qui préfèrent un filet souscrivent un contrat de maintenance optionnel, un forfait mensuel de 4 heures couvrant corrections, montées de version et optimisations continues. Un besoin nouveau, lui, est chiffré comme une mission complémentaire — pas absorbé dans un abonnement flou.\n\nLe troisième volet est humain : des sessions de suivi forment les nouvelles recrues ou couvrent les fonctionnalités ajoutées depuis la livraison. C'est souvent ce qui fait la différence entre un outil utilisé tous les jours et un outil oublié six mois plus tard.",
+        "Non : Axion-IA ne fait aucun suivi après la livraison. L'implémentation s'arrête à la mise en production, avec le code, les workflows et la documentation. Si une fonctionnalité livrée ne correspond pas au cahier des charges signé, elle est corrigée sans surcoût : c'est un écart de livraison, pas un suivi.\n\nRien n'est imposé ensuite. Le code, les workflows et la documentation vous sont livrés, tout continue de tourner sans nous. Un contrat de maintenance optionnel existe sur devis, pour ceux qui le souhaitent. Un besoin nouveau est chiffré comme une mission complémentaire — pas absorbé dans un abonnement flou.",
       keyPoints: [
-        "30 jours de support correctif inclus dans toute implémentation",
+        "Aucun suivi après la livraison : la mission s'arrête à la mise en production",
         "Aucune maintenance mensuelle imposée : le code et la documentation sont à vous",
-        "Contrat de maintenance optionnel, forfait de 4 h par mois",
+        "Contrat de maintenance optionnel, sur devis",
         "Un écart au cahier des charges signé est corrigé sans surcoût",
-        "Sessions de suivi pour les nouvelles recrues et les nouvelles fonctionnalités",
       ],
-      facts: [
-        { figure: "30 j", label: "de support inclus" },
-        { figure: "4 h", label: "par mois en maintenance" },
-        { figure: "0", label: "abonnement obligatoire" },
-      ],
+      facts: [{ figure: "0", label: "abonnement obligatoire" }],
       nuances: [
         {
           title: "Ce n'est pas un abonnement déguisé",
           detail:
-            "Le contrat de maintenance est optionnel et se souscrit après les 30 jours inclus. Si vous ne le prenez pas, rien ne s'arrête : la solution vous appartient et continue de fonctionner.",
+            "Le contrat de maintenance est optionnel et se souscrit sur devis. Si vous ne le prenez pas, rien ne s'arrête : la solution vous appartient et continue de fonctionner.",
         },
         {
           title: "Ce n'est pas de la maintenance d'infrastructure",
@@ -1638,7 +1631,7 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
     en: {
       question: "Does Axion-IA offer support after implementation?",
       answer:
-        "Yes. 30 days of corrective support are included in every implementation project. Beyond that, an optional monthly maintenance contract is available for corrections, version upgrades and continuous optimisation. Axion-IA also offers follow-up training sessions for new hires or new AI features.",
+        "No: Axion-IA does no follow-up after delivery. The implementation ends at go-live, with the code, workflows and documentation. An optional maintenance contract is available on quote for those who want one.",
     },
   },
   {
@@ -1676,7 +1669,7 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
         {
           title: "Le coût du projet n'est pas seulement le devis",
           detail:
-            "Comptez aussi le temps de vos équipes, les abonnements aux outils IA retenus et, éventuellement, la maintenance après la période de support incluse. Tout cela s'anticipe au cadrage.",
+            "Comptez aussi le temps de vos équipes, les abonnements aux outils IA retenus et, éventuellement, une maintenance optionnelle. Tout cela s'anticipe au cadrage.",
         },
       ],
     },
@@ -2124,7 +2117,7 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
     fr: {
       question: "Que contient le rapport d'un audit IA ?",
       answer:
-        "Le rapport d'audit IA Axion-IA contient cinq blocs : la cartographie de vos processus et de leurs points de friction ; une liste priorisée de cas d'usage IA concrets ; pour chacun, une estimation du ROI et du temps gagné ; les outils et l'architecture recommandés, cadrés RGPD et souveraineté ; enfin une feuille de route séquencée. C'est un document fait pour arbitrer, pas un rapport théorique.\n\nSon volume suit le niveau d'audit : 8 à 15 pages pour l'audit sur place d'une TPE, jusqu'à 60 à 80 pages board-ready pour un audit Stratégique ETI. S'y ajoutent des livrables annexes selon le format — la bibliothèque des prompts testés en direct pendant la journée sur site, 3 à 5 quick-wins priorisés, une roadmap stratégique 12-24 mois pour les PME, un cadre de gouvernance IA et 30 jours d'accompagnement post-audit pour les ETI.\n\nTout est remis avec une restitution orale, et tout vous appartient : le plan est écrit pour que vos équipes puissent l'exécuter seules si vous le décidez.",
+        "Le rapport d'audit IA Axion-IA contient cinq blocs : la cartographie de vos processus et de leurs points de friction ; une liste priorisée de cas d'usage IA concrets ; pour chacun, une estimation du ROI et du temps gagné ; les outils et l'architecture recommandés, cadrés RGPD et souveraineté ; enfin une feuille de route séquencée. C'est un document fait pour arbitrer, pas un rapport théorique.\n\nSon volume suit le niveau d'audit : 8 à 15 pages pour l'audit sur place d'une TPE, jusqu'à 60 à 80 pages board-ready pour un audit Stratégique ETI. S'y ajoutent des livrables annexes selon le format — la bibliothèque des prompts testés en direct pendant la journée sur site, 3 à 5 quick-wins priorisés, une roadmap stratégique 12-24 mois pour les PME, un cadre de gouvernance IA pour les ETI.\n\nTout est remis avec une restitution orale, et tout vous appartient : le plan est écrit pour que vos équipes puissent l'exécuter seules si vous le décidez.",
       keyPoints: [
         "Cartographie des processus et des points de friction",
         "Cas d'usage priorisés, chacun avec ROI et temps gagné estimés",
@@ -2229,7 +2222,6 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
         { figure: "0", label: "refonte du SI nécessaire" },
         { figure: "5", label: "CRM et ERP couverts" },
         { figure: "6", label: "outils du quotidien connectés" },
-        { figure: "30 j", label: "de support après livraison" },
       ],
       nuances: [
         {
@@ -2273,7 +2265,6 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
       facts: [
         { figure: "4", label: "familles de cas d'usage" },
         { figure: "0", label: "décision sensible sans humain" },
-        { figure: "30 j", label: "de support après livraison" },
       ],
       nuances: [
         {
@@ -2620,7 +2611,7 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
     fr: {
       question: "Comment se déroule une mission avec Axion-IA ?",
       answer:
-        "En quatre temps, chacun produisant un livrable et chacun pouvant être le dernier. Tout commence par un Diagnostic IA pour cerner le besoin, avec un devis sous 48 heures ouvrées. Viennent ensuite les quatre étapes : identifier, auditer, implémenter, mesurer.\n\nIdentifier, c'est une journée sur site : 3 à 5 process candidats, des démonstrations sur vos données anonymisées, des quick-wins déployables sous trente jours, et une cartographie terrain en sortie. Auditer, c'est cinq jours pour chiffrer chaque opportunité et remettre un plan priorisé, sous forme d'un document de 25 à 40 pages et d'un atelier de restitution. Implémenter, c'est six à huit semaines du cadrage technique à la mise en production, avec trente jours de support inclus. Mesurer, c'est revenir compter les heures et les coûts réellement économisés, sur des indicateurs convenus avant le déploiement.\n\nLa méthode est découplée du contrat long : vous pouvez vous arrêter à la fin de n'importe quelle étape, et le même intervenant senior vous suit du cadrage à la livraison.",
+        "En quatre temps, chacun produisant un livrable et chacun pouvant être le dernier. Tout commence par un Diagnostic IA pour cerner le besoin, avec un devis sous 48 heures ouvrées. Viennent ensuite les quatre étapes : identifier, auditer, implémenter, mesurer.\n\nIdentifier, c'est une journée sur site : 3 à 5 process candidats, des démonstrations sur vos données anonymisées, des quick-wins déployables sous trente jours, et une cartographie terrain en sortie. Auditer, c'est cinq jours pour chiffrer chaque opportunité et remettre un plan priorisé, sous forme d'un document de 25 à 40 pages et d'un atelier de restitution. Implémenter, c'est six à huit semaines du cadrage technique à la mise en production. Mesurer, c'est revenir compter les heures et les coûts réellement économisés, sur des indicateurs convenus avant le déploiement.\n\nLa méthode est découplée du contrat long : vous pouvez vous arrêter à la fin de n'importe quelle étape, et le même intervenant senior vous suit du cadrage à la livraison.",
       keyPoints: [
         "Quatre temps séparés, un livrable concret à chaque étape",
         "Diagnostic IA puis devis sous 48 h ouvrées",
@@ -2632,7 +2623,6 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
         { figure: "1 jour", label: "sur site pour identifier" },
         { figure: "5 j", label: "d'audit" },
         { figure: "6-8 sem.", label: "jusqu'à la production" },
-        { figure: "30 j", label: "de support inclus" },
       ],
       steps: [
         {
@@ -2648,7 +2638,7 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
         {
           title: "Implémenter",
           detail:
-            "Six à huit semaines : cadrage technique, prototype itératif, tests utilisateurs, déploiement progressif. Livrable : la solution en production, avec 30 jours de support.",
+            "Six à huit semaines : cadrage technique, prototype itératif, tests utilisateurs, déploiement progressif. Livrable : la solution en production.",
         },
         {
           title: "Mesurer",
@@ -2677,7 +2667,7 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
     en: {
       question: "How does a mission with Axion-IA unfold?",
       answer:
-        "A mission follows four simple steps: a first conversation to scope your need, an audit identifying high-ROI use cases, delivery (session, intervention or custom implementation), then support to embed usage and measure gains. You stay in control at every step, deliverables are concrete, and the goal remains measurable ROI — not a demo with no follow-up.",
+        "A mission follows four simple steps: a first conversation to scope your need, an audit identifying high-ROI use cases, delivery (session, intervention or custom implementation), then a measurement of the gains. You stay in control at every step, deliverables are concrete, and the goal remains measurable ROI — not a demo with no result.",
     },
   },
   // ── Batch perfection FAQ 2026-05-31 #2 — secteurs, cas d'usage, comparatifs ────
@@ -2857,7 +2847,7 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
         {
           title: "Brancher, puis former",
           detail:
-            "L'outillage se greffe sur votre logiciel de devis et votre messagerie existants. Une implémentation se déroule en 6 à 8 semaines, avec 30 jours de support inclus.",
+            "L'outillage se greffe sur votre logiciel de devis et votre messagerie existants. Une implémentation se déroule en 6 à 8 semaines.",
         },
       ],
       nuances: [
@@ -2974,7 +2964,6 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
         { figure: "5-15 h", label: "libérées par collaborateur" },
         { figure: "2-3", label: "cas d'usage pour démarrer" },
         { figure: "6-8 sem.", label: "pour une implémentation" },
-        { figure: "30 j", label: "de support après déploiement" },
       ],
       steps: [
         {
@@ -3040,7 +3029,6 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
       facts: [
         { figure: "3-5", label: "process passés au crible" },
         { figure: "6-8 sem.", label: "pour une implémentation" },
-        { figure: "30 j", label: "de support après déploiement" },
         { figure: "48 h", label: "ouvrées pour le devis" },
       ],
       steps: [
@@ -3179,7 +3167,6 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
         { figure: "5-8 sem", label: "mise en production" },
         { figure: "0", label: "ressaisie des pièces lues" },
         { figure: "2", label: "flux : production et lecture" },
-        { figure: "30 j", label: "de support inclus" },
       ],
       steps: [
         {
@@ -4248,7 +4235,7 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
     fr: {
       question: "Qu'est-ce qu'une implémentation IA sur mesure ?",
       answer:
-        "C'est la conception et le déploiement d'une solution IA calée sur vos processus, et non sur ceux d'un logiciel du marché : automatisation d'un workflow, agent métier, traitement documentaire, assistant interne, intégration à vos outils existants. Contrairement à un outil générique, elle épouse votre façon de travailler et vos contraintes de sécurité et de RGPD.\n\nLe déroulé est toujours le même : cadrage technique et ateliers métier, développement par sprints courts avec des démos régulières, recette puis mise en production dans vos outils, enfin une phase de suivi. Comptez six à huit semaines pour la majorité des cas, avec trente jours de support correctif inclus à la livraison. Pas d'effet tunnel : vous voyez la solution prendre forme à chaque sprint.\n\nÀ la fin, le code et la documentation vous sont livrés, et vos équipes sont formées pour rester autonomes. Aucun abonnement n'est imposé et la maintenance reste optionnelle. C'est le même intervenant senior qui cadre le besoin et qui livre la solution, sans passage de relais entre un avant-vente et une équipe de production.",
+        "C'est la conception et le déploiement d'une solution IA calée sur vos processus, et non sur ceux d'un logiciel du marché : automatisation d'un workflow, agent métier, traitement documentaire, assistant interne, intégration à vos outils existants. Contrairement à un outil générique, elle épouse votre façon de travailler et vos contraintes de sécurité et de RGPD.\n\nLe déroulé est toujours le même : cadrage technique et ateliers métier, développement par sprints courts avec des démos régulières, recette puis mise en production dans vos outils, enfin la livraison. Comptez six à huit semaines pour la majorité des cas. Pas d'effet tunnel : vous voyez la solution prendre forme à chaque sprint.\n\nÀ la fin, le code et la documentation vous sont livrés, et vos équipes sont formées pour rester autonomes. Aucun abonnement n'est imposé et la maintenance reste optionnelle. C'est le même intervenant senior qui cadre le besoin et qui livre la solution, sans passage de relais entre un avant-vente et une équipe de production.",
       keyPoints: [
         "Une solution calée sur vos processus, pas un outil générique adapté",
         "Sprints courts, démos régulières, validation métier à chaque étape",
@@ -4260,7 +4247,6 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
         { figure: "6-8 sem", label: "du cadrage à la production" },
         { figure: "1 sem", label: "de cadrage technique" },
         { figure: "3-5", label: "opérationnels en phase de test" },
-        { figure: "30 j", label: "de support inclus" },
       ],
       steps: [
         {
@@ -4279,9 +4265,9 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
             "Tests utilisateurs par trois à cinq opérationnels, corrections, puis passage en production dans vos outils. Le code et la documentation vous sont remis.",
         },
         {
-          title: "Suivi et évolution",
+          title: "Évolution",
           detail:
-            "Trente jours de support correctif sont inclus pour les ajustements. Ensuite, vous faites évoluer à la demande, sans maintenance imposée.",
+            "Le code et la documentation vous sont livrés. Ensuite, vous faites évoluer à la demande, sans maintenance imposée.",
         },
       ],
       nuances: [
@@ -4305,7 +4291,7 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
     en: {
       question: "Qu'est-ce qu'une implémentation IA sur mesure ?",
       answer:
-        "L'implémentation IA sur mesure consiste à concevoir et déployer une solution IA adaptée à VOS processus : automatisation d'un workflow, agent IA métier, traitement documentaire, assistant interne, intégration à vos outils existants. Contrairement à un outil générique, elle épouse votre façon de travailler et vos contraintes (sécurité, RGPD). Axion-IA livre une solution opérationnelle, testée et documentée, avec un accompagnement pour l'ancrer durablement.",
+        "L'implémentation IA sur mesure consiste à concevoir et déployer une solution IA adaptée à VOS processus : automatisation d'un workflow, agent IA métier, traitement documentaire, assistant interne, intégration à vos outils existants. Contrairement à un outil générique, elle épouse votre façon de travailler et vos contraintes (sécurité, RGPD). Axion-IA livre une solution opérationnelle, testée et documentée, avec une documentation pour que vos équipes l'exploitent.",
     },
   },
   {
@@ -4529,7 +4515,6 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
       facts: [
         { figure: "6-12", label: "semaines pour une plateforme" },
         { figure: "2-3", label: "semaines pour un chatbot" },
-        { figure: "30 j", label: "de support inclus" },
         { figure: "48 h", label: "ouvrées pour le devis" },
       ],
       steps: [
@@ -4550,8 +4535,7 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
         },
         {
           title: "Mise en production et suite",
-          detail:
-            "Livraison dans votre infrastructure, avec 30 jours de support inclus. Au-delà, un contrat de maintenance reste optionnel.",
+          detail: "Livraison dans votre infrastructure. Un contrat de maintenance reste optionnel.",
         },
       ],
       nuances: [
@@ -4589,17 +4573,16 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
     fr: {
       question: "Développez-vous des applications ou SaaS augmentés à l'IA sur mesure ?",
       answer:
-        "Oui, avec l'IA au cœur du produit et non greffée à la fin : agents autonomes capables d'agir, automatisation des processus métier répétitifs, recherche sémantique, analyse de données, génération de contenu. La question préalable n'est d'ailleurs pas technique mais économique. Si votre plateforme actuelle fonctionne et expose une API, l'augmenter va plus vite et coûte moins cher. Si elle a plus de cinq ans, résiste aux évolutions ou n'expose aucune API, repartir sur une base IA-native est souvent plus rentable à dix-huit mois. On tranche avec vous dès le premier appel, quitte à vous dire que le projet neuf n'est pas justifié.\n\nLe développement se fait en forfait fixe sur un périmètre écrit — pas de régie. Comptez 6 à 12 semaines pour une plateforme complète, puis 30 jours de support inclus après la mise en production ; au-delà, la maintenance est optionnelle : {{price:maintenance-standard|full}}. Sécurité, RGPD et souveraineté des données sont traités comme des contraintes de conception : hébergement en Union européenne, et code, bases et modèles livrés dans votre infrastructure.",
+        "Oui, avec l'IA au cœur du produit et non greffée à la fin : agents autonomes capables d'agir, automatisation des processus métier répétitifs, recherche sémantique, analyse de données, génération de contenu. La question préalable n'est d'ailleurs pas technique mais économique. Si votre plateforme actuelle fonctionne et expose une API, l'augmenter va plus vite et coûte moins cher. Si elle a plus de cinq ans, résiste aux évolutions ou n'expose aucune API, repartir sur une base IA-native est souvent plus rentable à dix-huit mois. On tranche avec vous dès le premier appel, quitte à vous dire que le projet neuf n'est pas justifié.\n\nLe développement se fait en forfait fixe sur un périmètre écrit — pas de régie. Comptez 6 à 12 semaines pour une plateforme complète, puis la livraison à la mise en production ; une maintenance optionnelle existe : {{price:maintenance-standard|full}}. Sécurité, RGPD et souveraineté des données sont traités comme des contraintes de conception : hébergement en Union européenne, et code, bases et modèles livrés dans votre infrastructure.",
       keyPoints: [
         "IA-native : agents, automatisations et recherche sémantique intégrés dès la conception",
         "Arbitrage honnête entre augmenter l'existant et repartir d'une base neuve",
         "6 à 12 semaines en forfait fixe, sur un périmètre écrit",
-        "30 jours de support inclus, maintenance ensuite optionnelle",
+        "Livraison à la mise en production, maintenance optionnelle sur devis",
         "Hébergement UE, code et données livrés chez vous",
       ],
       facts: [
         { figure: "6-12", label: "semaines de développement" },
-        { figure: "30 j", label: "de support inclus" },
         { figure: "4 h", label: "par mois de maintenance" },
         { figure: "48 h", label: "ouvrées pour le devis" },
       ],
@@ -4622,7 +4605,7 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
         {
           title: "Mise en production et transfert",
           detail:
-            "Déploiement dans votre infrastructure, transfert de compétences à vos équipes, 30 jours de support inclus. La maintenance reste ensuite un choix.",
+            "Déploiement dans votre infrastructure, transfert de compétences à vos équipes. La maintenance reste un choix.",
         },
       ],
       nuances: [
@@ -4646,7 +4629,7 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
     en: {
       question: "Développez-vous des applications ou SaaS augmentés à l'IA sur mesure ?",
       answer:
-        "Oui. Axion-IA développe des applications et plateformes SaaS sur mesure intégrant l'IA au cœur du produit : automatisations métier, analyse de données, génération de contenu, agents intelligents. On conçoit la solution autour de votre besoin réel et de vos contraintes (sécurité, RGPD, souveraineté des données), avec une attention forte à la performance et à l'expérience utilisateur. De l'idée au produit en ligne, avec un accompagnement continu.",
+        "Oui. Axion-IA développe des applications et plateformes SaaS sur mesure intégrant l'IA au cœur du produit : automatisations métier, analyse de données, génération de contenu, agents intelligents. On conçoit la solution autour de votre besoin réel et de vos contraintes (sécurité, RGPD, souveraineté des données), avec une attention forte à la performance et à l'expérience utilisateur. De l'idée au produit en ligne.",
     },
   },
   {
@@ -4719,7 +4702,6 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
       facts: [
         { figure: "2-3", label: "semaines pour un assistant" },
         { figure: "1-2", label: "semaines pour la recherche" },
-        { figure: "30 j", label: "de support inclus" },
         { figure: "48 h", label: "ouvrées pour le devis" },
       ],
       steps: [
@@ -4741,7 +4723,7 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
         {
           title: "Mesure puis extension",
           detail:
-            "On regarde les questions réellement posées et ce qu'elles évitent comme travail manuel, avec 30 jours de support inclus, avant d'ajouter une brique.",
+            "On regarde les questions réellement posées et ce qu'elles évitent comme travail manuel, avant d'ajouter une brique.",
         },
       ],
       nuances: [
@@ -4876,18 +4858,17 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
     fr: {
       question: "Le coaching IA est-il adapté aux cadres et aux managers ?",
       answer:
-        "Oui, et c'est souvent le profil sur lequel le retour est le plus visible. La journée 1-to-1 s'adresse à n'importe quel poste — responsable administratif, comptabilité, achats, RH, marketing, encadrement d'équipe — et se tient sur devis. On part de vos tâches réelles : reporting hebdomadaire, comptes-rendus de réunion, tri des mails, notes internes, réponses récurrentes, tableaux de suivi. On les allège une par une, sur vos propres dossiers et vos propres outils.\n\nLa particularité d'un manager, c'est le double bénéfice : ce qu'il gagne pour lui, et ce qu'il devient capable de transmettre à son équipe. Vous repartez de la journée avec 3 à 5 méthodes pratiquées, utilisables dès le lendemain, puis votre cahier de prompts et un plan d'action sous 7 jours, avec un point de suivi à 30 jours. Quand plusieurs managers sont concernés, une journée collective en groupe de 2 à 15 participants est souvent plus efficace qu'un 1-to-1 répété : {{price:formation-generale-1j|flat}} pour le groupe.",
+        "Oui, et c'est souvent le profil sur lequel le retour est le plus visible. La journée 1-to-1 s'adresse à n'importe quel poste — responsable administratif, comptabilité, achats, RH, marketing, encadrement d'équipe — et se tient sur devis. On part de vos tâches réelles : reporting hebdomadaire, comptes-rendus de réunion, tri des mails, notes internes, réponses récurrentes, tableaux de suivi. On les allège une par une, sur vos propres dossiers et vos propres outils.\n\nLa particularité d'un manager, c'est le double bénéfice : ce qu'il gagne pour lui, et ce qu'il devient capable de transmettre à son équipe. Vous repartez de la journée avec 3 à 5 méthodes pratiquées, utilisables dès le lendemain, puis votre cahier de prompts et un plan d'action sous 7 jours. Quand plusieurs managers sont concernés, une journée collective en groupe de 2 à 15 participants est souvent plus efficace qu'un 1-to-1 répété : {{price:formation-generale-1j|flat}} pour le groupe.",
       keyPoints: [
         "Ouvert à tous les postes d'encadrement, au tarif collaborateur",
         "On part des tâches réelles : reporting, comptes-rendus, mails, notes internes",
         "3 à 5 méthodes pratiquées, utilisables dès le lendemain",
-        "Cahier de prompts et plan d'action sous 7 jours, suivi à 30 jours",
+        "Cahier de prompts et plan d'action sous 7 jours",
         "Plusieurs managers concernés : la journée collective est souvent plus adaptée",
       ],
       facts: [
         { figure: "3-5", label: "méthodes maîtrisées" },
         { figure: "7 j", label: "pour le livrable écrit" },
-        { figure: "30 j", label: "avant le point de suivi" },
         { figure: "2-15", label: "participants en collectif" },
       ],
       nuances: [
@@ -4935,13 +4916,13 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
     fr: {
       question: "Un coaching IA pour prendre en main les outils, c'est possible ?",
       answer:
-        "Oui, et c'est le format le plus rapide pour devenir autonome. Le Coaching IA 1-to-1 se déroule sur une journée de 7 à 8 heures, en tête-à-tête avec un intervenant senior, sur votre poste de travail réel et vos propres dossiers. On prend en main les assistants les plus utilisés en entreprise — ChatGPT, Claude et Gemini — ainsi que les extensions de navigateur et les transcripteurs de réunion, puis on crée vos assistants IA personnels. Rien n'est générique : on travaille sur vos documents, vos données, votre quotidien. Vous repartez avec 3 à 5 méthodes maîtrisées, un cahier de prompts qui reste le vôtre et un plan d'action chiffré ; le livrable écrit suit sous 7 jours, avec un point de suivi à 30 jours. La journée se tient sur site, à distance ou en hybride.",
+        "Oui, et c'est le format le plus rapide pour devenir autonome. Le Coaching IA 1-to-1 se déroule sur une journée de 7 à 8 heures, en tête-à-tête avec un intervenant senior, sur votre poste de travail réel et vos propres dossiers. On prend en main les assistants les plus utilisés en entreprise — ChatGPT, Claude et Gemini — ainsi que les extensions de navigateur et les transcripteurs de réunion, puis on crée vos assistants IA personnels. Rien n'est générique : on travaille sur vos documents, vos données, votre quotidien. Vous repartez avec 3 à 5 méthodes maîtrisées, un cahier de prompts qui reste le vôtre et un plan d'action chiffré ; le livrable écrit suit sous 7 jours. La journée se tient sur site, à distance ou en hybride.",
       keyPoints: [
         "Une journée de 7 à 8 h, une seule personne — jamais un groupe",
         "Sur votre poste réel, vos comptes et vos vrais documents",
         "ChatGPT, Claude et Gemini, extensions, transcripteurs, puis vos propres assistants",
         "3 à 5 méthodes maîtrisées et un cahier de prompts qui reste le vôtre",
-        "Livrable écrit sous 7 jours, point de suivi à 30 jours",
+        "Livrable écrit sous 7 jours",
       ],
       facts: [
         { figure: "7-8 h", label: "en tête-à-tête" },
@@ -4992,7 +4973,7 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
     en: {
       question: "Un coaching IA pour prendre en main les outils, c'est possible ?",
       answer:
-        "Oui, et c'est le format le plus rapide pour devenir autonome. Le Coaching IA 1-to-1 se déroule sur une journée de 7 à 8 heures, en tête-à-tête avec un intervenant senior, sur votre poste de travail réel et vos propres dossiers. On prend en main les assistants les plus utilisés en entreprise — ChatGPT, Claude et Gemini — ainsi que les extensions de navigateur et les transcripteurs de réunion, puis on crée vos assistants IA personnels. Rien n'est générique : on travaille sur vos documents, vos données, votre quotidien. Vous repartez avec 3 à 5 méthodes maîtrisées, un cahier de prompts qui reste le vôtre et un plan d'action chiffré ; le livrable écrit suit sous 7 jours, avec un point de suivi à 30 jours. La journée se tient sur site, à distance ou en hybride.",
+        "Oui, et c'est le format le plus rapide pour devenir autonome. Le Coaching IA 1-to-1 se déroule sur une journée de 7 à 8 heures, en tête-à-tête avec un intervenant senior, sur votre poste de travail réel et vos propres dossiers. On prend en main les assistants les plus utilisés en entreprise — ChatGPT, Claude et Gemini — ainsi que les extensions de navigateur et les transcripteurs de réunion, puis on crée vos assistants IA personnels. Rien n'est générique : on travaille sur vos documents, vos données, votre quotidien. Vous repartez avec 3 à 5 méthodes maîtrisées, un cahier de prompts qui reste le vôtre et un plan d'action chiffré ; le livrable écrit suit sous 7 jours. La journée se tient sur site, à distance ou en hybride.",
     },
   },
 ];
@@ -5059,13 +5040,13 @@ export const HELP_ARTICLES: ReadonlyArray<HelpArticle> = [
     category: "Implémentation IA",
     fr: {
       title: "Quelles sont les phases d'un projet d'implémentation ?",
-      excerpt: "5 phases clés : cadrage, prototype, tests, déploiement, support.",
-      body: "Un projet d'implémentation IA Axion-IA suit 5 phases : (1) cadrage technique 1 semaine — choix du modèle, architecture, données ; (2) prototype 2-4 semaines — version fonctionnelle sur jeu de données réel ; (3) tests utilisateurs 1-2 semaines — validation par 3-5 opérationnels ; (4) déploiement production 1 semaine — mise en service progressive ; (5) support 30 jours inclus. Total 6-8 semaines pour la majorité des cas.",
+      excerpt: "4 phases clés : cadrage, prototype, tests, déploiement.",
+      body: "Un projet d'implémentation IA Axion-IA suit 4 phases : (1) cadrage technique 1 semaine — choix du modèle, architecture, données ; (2) prototype 2-4 semaines — version fonctionnelle sur jeu de données réel ; (3) tests utilisateurs 1-2 semaines — validation par 3-5 opérationnels ; (4) déploiement production 1 semaine — mise en service progressive . Total 6-8 semaines pour la majorité des cas.",
     },
     en: {
       title: "What are the phases of an implementation project?",
-      excerpt: "5 key phases: scoping, prototype, testing, deployment, support.",
-      body: "An Axion-IA AI implementation project follows 5 phases: (1) technical scoping 1 week — model choice, architecture, data; (2) prototype 2-4 weeks — functional version on real data; (3) user testing 1-2 weeks — validation by 3-5 operational staff; (4) production deployment 1 week — progressive go-live; (5) 30-day support included. Total 6-8 weeks for most cases.",
+      excerpt: "4 key phases: scoping, prototype, testing, deployment.",
+      body: "An Axion-IA AI implementation project follows 4 phases: (1) technical scoping 1 week — model choice, architecture, data; (2) prototype 2-4 weeks — functional version on real data; (3) user testing 1-2 weeks — validation by 3-5 operational staff; (4) production deployment 1 week — progressive go-live. Total 6-8 weeks for most cases.",
     },
   },
   {
@@ -5098,16 +5079,16 @@ export const HELP_ARTICLES: ReadonlyArray<HelpArticle> = [
   },
   {
     slug: "support-post-livraison",
-    category: "Support post-livraison",
+    category: "Livraison",
     fr: {
-      title: "Quel support après livraison ?",
-      excerpt: "30 jours de maintenance corrective inclus, escalade chaude.",
-      body: `Tout projet Axion-IA inclut 30 jours de support post-livraison : maintenance corrective sur les bugs identifiés, escalade chaude par email/téléphone (réponse sous 4 h ouvrées), 1 itération de fine-tuning si dérive de qualité observée. Au-delà, contrat de maintenance optionnel ${PRIX_PUBLICS_AFFICHES ? `à ${formatPrice(maintenanceStandard, "fr")}` : "sur devis"} (4 h/mois forfait). Aucun support n'est facturé pendant les 30 jours initiaux.`,
+      title: "Y a-t-il un support après livraison ?",
+      excerpt: "Aucun support inclus après la livraison ; maintenance optionnelle sur devis.",
+      body: `Aucun support n'est inclus après la livraison : la mission s'arrête à la mise en production, avec le code et la documentation. Un contrat de maintenance optionnel est disponible ${PRIX_PUBLICS_AFFICHES ? `à ${formatPrice(maintenanceStandard, "fr")}` : "sur devis"} (4 h/mois forfait).`,
     },
     en: {
-      title: "What post-delivery support?",
-      excerpt: "30 days of corrective maintenance included, warm escalation.",
-      body: `Every Axion-IA project includes 30 days of post-delivery support: corrective maintenance on identified bugs, warm escalation by email/phone (response within 4 business hours), 1 fine-tuning iteration if quality drift observed. Beyond that, optional maintenance contract ${PRIX_PUBLICS_AFFICHES ? `at ${formatPrice(maintenanceStandard, "en")}` : "on request"} (4h/month flat fee). No support is billed during the initial 30 days.`,
+      title: "Is there support after delivery?",
+      excerpt: "No support included after delivery; optional maintenance on quote.",
+      body: `No support is included after delivery: the project ends at go-live, with the code and documentation. An optional maintenance contract is available ${PRIX_PUBLICS_AFFICHES ? `at ${formatPrice(maintenanceStandard, "en")}` : "on request"} (4h/month flat fee).`,
     },
   },
 ];

@@ -70,7 +70,7 @@ export function ImplementationFaq({
           id: "q-garantie",
           question: "Et si je ne suis pas satisfait à la livraison ?",
           answer:
-            "Sprints courts avec démos hebdomadaires : vous validez à chaque étape, pas de mauvaise surprise à la fin. À la livraison, 30 jours de support inclus pour ajustements. Si une fonctionnalité livrée ne correspond pas au cahier des charges signé, on la corrige sans surcoût.",
+            "Sprints courts avec démos hebdomadaires : vous validez à chaque étape, pas de mauvaise surprise à la fin. Si une fonctionnalité livrée ne correspond pas au cahier des charges signé, on la corrige sans surcoût.",
         },
         {
           id: "q-prerequis",
@@ -125,7 +125,7 @@ export function ImplementationFaq({
           id: "q-garantie",
           question: "What if I'm not satisfied at delivery?",
           answer:
-            "Short sprints with weekly demos: you validate at every step, no bad surprise at the end. At delivery, 30 days of included support for adjustments. If a delivered feature doesn't match the signed scope, we fix it at no extra cost.",
+            "Short sprints with weekly demos: you validate at every step, no bad surprise at the end. If a delivered feature doesn't match the signed scope, we fix it at no extra cost.",
         },
         {
           id: "q-prerequis",

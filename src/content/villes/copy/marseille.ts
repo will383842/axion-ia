@@ -477,11 +477,6 @@ export const MARSEILLE_COPY: VilleCopy = {
             detail:
               "Sur site Marseille : tests d'acceptation utilisateurs, formation des ambassadeurs internes sur leur poste, livraison du runbook documentation, plan de monitoring post-go-live.",
           },
-          {
-            step: "Suivi post-go-live",
-            detail:
-              "À distance : surveillance des métriques de production, ajustements fins, mesure du ROI réel par rapport à la prédiction du SOW. Rapport final remis à clôture, mission close.",
-          },
         ],
         pricing: [
           {
@@ -568,11 +563,6 @@ export const MARSEILLE_COPY: VilleCopy = {
             step: "Acceptance + training",
             detail:
               "On site Marseille: user acceptance tests, internal ambassador training at their workstations, runbook documentation delivery, post-go-live monitoring plan.",
-          },
-          {
-            step: "Post-go-live follow-up",
-            detail:
-              "Remote: production metrics monitoring, fine adjustments, real ROI vs SOW prediction measurement. Final report delivered at closure, mission closed.",
           },
         ],
         pricing: [

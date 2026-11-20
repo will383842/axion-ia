@@ -358,7 +358,6 @@ export const KW_INTERVENTIONS_G2: KeywordSeed[] = [
       h2Variants: [
         "Ce qui distingue Axion-IA des formateurs IA généralistes",
         "Déroulé type d'une session 2 jours pour une équipe PME de 15 personnes",
-        "Accompagnement post-formation : 30 jours de questions/réponses inclus",
       ],
     },
     variables: {
@@ -650,7 +649,7 @@ export const KW_INTERVENTIONS_G2: KeywordSeed[] = [
       h2Variants: [
         "Comment cartographier les besoins IA de chaque département",
         "Séquencer les sessions pour ne pas impacter la production",
-        "Livrables attendus : plan détaillé, supports, suivi 90 jours",
+        "Livrables attendus : plan détaillé, supports",
       ],
     },
     variables: {

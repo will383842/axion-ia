@@ -54,9 +54,9 @@ export const IMPL_FR_OVERRIDES: Record<ImplementationSlug, ImplementationFrOverr
           "Mise en production on-premise ou en cloud privé, avec CI/CD des modèles, versioning et observabilité LLM intégrée à votre exploitation.",
       },
       {
-        title: "Run, monitoring et évolution",
+        title: "Exploitation et évolution",
         description:
-          "Suivi des dérives, ré-entraînement et amélioration continue des prompts et des modèles à mesure que vos données et vos besoins évoluent.",
+          "Les indicateurs de dérive et la procédure de ré-entraînement vous sont remis, pour faire évoluer prompts et modèles à mesure que vos données et vos besoins changent.",
       },
     ],
     metrics: [
@@ -407,9 +407,9 @@ export const IMPL_FR_OVERRIDES: Record<ImplementationSlug, ImplementationFrOverr
           "On ajoute les règles de cohérence, le scoring de confiance et la file de revue humaine pour les cas ambigus, puis on push le JSON vers vos systèmes downstream.",
       },
       {
-        title: "Mise en production et suivi",
+        title: "Mise en production",
         description:
-          "On déploie le pipeline sur vos volumes réels, on monitore les taux d'extraction et on ajuste les extracteurs au fil des formats rencontrés.",
+          "On déploie le pipeline sur vos volumes réels, on mesure les taux d'extraction et on ajuste les extracteurs aux formats rencontrés avant la livraison.",
       },
     ],
     metrics: [
@@ -880,7 +880,7 @@ export const IMPL_FR_OVERRIDES: Record<ImplementationSlug, ImplementationFrOverr
       {
         title: "Mise en production avec monitoring des coûts",
         description:
-          "On déploie avec gestion des rate limits, alerting sur les erreurs d'API et tableau de suivi des coûts par flux, puis on assure le support dans la durée.",
+          "On déploie avec gestion des rate limits, alerting sur les erreurs d'API et tableau de suivi des coûts par flux, puis on vous remet la documentation d'exploitation.",
       },
     ],
     metrics: [

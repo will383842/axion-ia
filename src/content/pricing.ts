@@ -834,9 +834,9 @@ export const IMPLEMENTATION_TIERS: ReadonlyArray<PricingTier> = [
 ];
 
 // ============================================================================
-// MAINTENANCE — support post-livraison récurrent
-// Sprint 14.10.5 (Will 2026-05-08) — Toute prestation inclut 30 jours de
-// support corrigé gratuit. Au-delà, contrat optionnel `maintenance-standard`.
+// MAINTENANCE — contrat optionnel `maintenance-standard`
+// Décision Williams 2026-11-20 : aucun support ni suivi n'est inclus après une
+// prestation. Le contrat de maintenance reste une option payante sur devis.
 // ============================================================================
 
 export const MAINTENANCE_TIERS: ReadonlyArray<PricingTier> = [
@@ -849,10 +849,8 @@ export const MAINTENANCE_TIERS: ReadonlyArray<PricingTier> = [
     recurrenceEn: "/month",
     durationFr: "4 h/mois forfait",
     durationEn: "4 h/month flat",
-    descriptionFr:
-      "Contrat de maintenance optionnel après les 30 jours de support post-livraison inclus. Forfait 4 h/mois.",
-    descriptionEn:
-      "Optional maintenance contract after the 30-day included post-delivery support. 4 h/month flat.",
+    descriptionFr: "Contrat de maintenance optionnel, sur devis. Forfait 4 h/mois.",
+    descriptionEn: "Optional maintenance contract, on quote. 4 h/month flat.",
   },
 ];
 

@@ -65,7 +65,7 @@ export const CHENOVE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission Axion-IA à Chenôve ?",
-      a: "Après un premier échange gratuit, nous planifions l'intervention sous 5 jours. Nos consultants interviennent sur site à Chenôve ou en visio. Chaque mission inclut un livrable actionnable, un plan IA chiffré et un suivi post-mission de 30 jours.",
+      a: "Après un premier échange gratuit, nous planifions l'intervention sous 5 jours. Nos consultants interviennent sur site à Chenôve ou en visio. Chaque mission inclut un livrable actionnable et un plan IA chiffré.",
     },
   ],
 };

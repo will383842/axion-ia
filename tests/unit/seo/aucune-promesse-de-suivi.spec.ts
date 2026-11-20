@@ -1,0 +1,77 @@
+// @vitest-environment node
+/**
+ * Décision de Williams (20/11/2026) : « Aucun suivi nulle part ».
+ *
+ * Axion-IA ne promet AUCUN suivi après une prestation : ni point de suivi à 30 jours,
+ * ni support post-livraison, ni questions/réponses après formation, ni suivi 30/60/90 jours,
+ * ni accompagnement post-audit / post-déploiement inclus.
+ *
+ * Ce test rougit si une de ces promesses réapparaît dans le code publié (`src/content`,
+ * `src/app`, `src/components`, `src/messages`). Il ne regarde PAS :
+ *   - les tests eux-mêmes ;
+ *   - les conseils donnés AUX clients dans le contenu de formation (`FICHIERS_CONSEIL_CLIENT`),
+ *     où « point de suivi » désigne le rendez-vous que l'équipe du client se fixe elle-même ;
+ *   - le garanti de remboursement de la Journée IA sous 30 jours, le « plan d'action sur
+ *     90 jours » (un livrable), les durées de conservation : aucun de ces motifs n'en fait partie.
+ */
+import { readdirSync, readFileSync, statSync } from "node:fs";
+import { join, relative } from "node:path";
+import { describe, expect, it } from "vitest";
+
+const RACINE = process.cwd();
+const DOSSIERS = ["src/content", "src/app", "src/components", "src/messages"];
+const EXTENSIONS = /\.(ts|tsx|json)$/;
+const EXCLUS = /(\.test\.|\.spec\.|__tests__|\/node_modules\/)/;
+
+/** Conseils adressés au client dans les supports de formation : pas une promesse d'Axion-IA. */
+const FICHIERS_CONSEIL_CLIENT = new Set([
+  "src/content/formations/modules/ia-pour-les-equipes.ts",
+  "src/content/formations/modules/seminaire-ia-toute-l-entreprise-1j.ts",
+]);
+
+const PROMESSES: ReadonlyArray<readonly [string, RegExp]> = [
+  ["point de suivi", /point de suivi/i],
+  ["support post-livraison", /support post[- ]?livraison/i],
+  ["support post-intervention", /support post[- ]?intervention/i],
+  ["questions/réponses inclus", /questions\s*\/\s*réponses inclus/i],
+  ["suivi N jours", /suivi (?:post-mission (?:de )?)?\d+ jours/i],
+  ["suivi post-mission", /suivi post-mission/i],
+  [
+    "accompagnement post-(audit|formation|déploiement) inclus",
+    /accompagnement post[- ]?(?:audit|formation|déploiement|deploiement|livraison) inclus/i,
+  ],
+  ["30 jours de support", /(?:30|trente) (?:jours|j) de support/i],
+  ["30-day support", /30[- ]days? (?:of )?(?:post-delivery )?support/i],
+];
+
+function* fichiers(dossier: string): Generator<string> {
+  for (const nom of readdirSync(dossier)) {
+    const chemin = join(dossier, nom);
+    if (EXCLUS.test(chemin)) continue;
+    if (statSync(chemin).isDirectory()) yield* fichiers(chemin);
+    else if (EXTENSIONS.test(nom)) yield chemin;
+  }
+}
+
+describe("décision du 20/11 — aucune promesse de suivi après prestation", () => {
+  const corpus = DOSSIERS.flatMap((d) => [...fichiers(join(RACINE, d))])
+    .map((chemin) => relative(RACINE, chemin).replaceAll("\\", "/"))
+    .filter((rel) => !FICHIERS_CONSEIL_CLIENT.has(rel));
+
+  it("le corpus est bien lu (garde-fou contre un test qui ne regarde rien)", () => {
+    expect(corpus.length).toBeGreaterThan(500);
+  });
+
+  for (const [nom, motif] of PROMESSES) {
+    it(`« ${nom} » n'apparaît nulle part`, () => {
+      const trouves: string[] = [];
+      for (const rel of corpus) {
+        const lignes = readFileSync(join(RACINE, rel), "utf8").split("\n");
+        lignes.forEach((ligne, i) => {
+          if (motif.test(ligne)) trouves.push(`${rel}:${i + 1}`);
+        });
+      }
+      expect(trouves, `promesse de suivi réintroduite : ${nom}`).toEqual([]);
+    });
+  }
+});

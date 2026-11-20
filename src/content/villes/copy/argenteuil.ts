@@ -509,11 +509,6 @@ export const ARGENTEUIL_COPY: VilleCopy = {
             detail:
               "Sur site Argenteuil : tests d'acceptation utilisateurs, formation des ambassadeurs internes, livraison du runbook documentation, plan de monitoring sur les premières semaines d'exploitation.",
           },
-          {
-            step: "Suivi post-go-live",
-            detail:
-              "À distance : surveillance des métriques de production, ajustements fins, mesure du ROI réel par rapport à la prédiction du SOW. Rapport final remis à clôture de mission.",
-          },
         ],
         pricing: [
           {
@@ -601,11 +596,6 @@ export const ARGENTEUIL_COPY: VilleCopy = {
             detail:
               "On site Argenteuil: user acceptance tests, training of internal ambassadors, runbook documentation delivery, monitoring plan for the first weeks of operation.",
           },
-          {
-            step: "Post-go-live follow-up",
-            detail:
-              "Remote: production metrics monitoring, fine adjustments, real ROI vs SOW prediction measurement. Final report delivered at mission closure.",
-          },
         ],
         pricing: [
           {
@@ -691,11 +681,6 @@ export const ARGENTEUIL_COPY: VilleCopy = {
               "Chaque outil est installé, configuré et testé avec vous. Vous partez autonome, avec des prompts personnalisés sauvegardés pour vos tâches récurrentes.",
           },
           {
-            step: "Suivi et ajustements",
-            detail:
-              "Une session de suivi quelques semaines après pour ancrer les habitudes, corriger les difficultés rencontrées et ouvrir de nouveaux cas d'usage.",
-          },
-          {
             step: "Bilan de progression",
             detail:
               "Synthèse des gains obtenus, identification des prochaines étapes, recommandation d'une trajectoire autonome ou d'un accompagnement complémentaire.",
@@ -754,7 +739,7 @@ export const ARGENTEUIL_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Sessions sur mesure : chaque séance est construite autour de VOS cas métier réels. Outils opérationnels en fin de séance : vous repartez autonome avec des outils configurés, pas avec des slides. Suivi garanti : une séance de suivi incluse dans tout programme multi-séances.",
+          "Sessions sur mesure : chaque séance est construite autour de VOS cas métier réels. Outils opérationnels en fin de séance : vous repartez autonome avec des outils configurés, pas avec des slides.",
       },
       en: {
         hero: "Axion-IA's individual AI coaching in Argenteuil is for the executive, manager or freelancer who wants to build AI skills at their own pace — on their real business cases in commerce, construction or services. Flexible format: one to several days, on site in the Argenteuil basin or remote depending on your schedule.",
@@ -781,11 +766,6 @@ export const ARGENTEUIL_COPY: VilleCopy = {
             step: "Installation and onboarding",
             detail:
               "Each tool is installed, configured and tested with you. You leave autonomous, with personalised prompts saved for your recurring tasks.",
-          },
-          {
-            step: "Follow-up and adjustments",
-            detail:
-              "A follow-up session a few weeks later to anchor habits, fix encountered difficulties and open new use cases.",
           },
           {
             step: "Progress review",
@@ -846,7 +826,7 @@ export const ARGENTEUIL_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Tailor-made sessions: each session is built around YOUR real business cases. Operational tools at session end: you leave autonomous with configured tools, not with slides. Follow-up guaranteed: one follow-up session included in any multi-session programme.",
+          "Tailor-made sessions: each session is built around YOUR real business cases. Operational tools at session end: you leave autonomous with configured tools, not with slides.",
       },
     },
     sitesWeb: {

@@ -213,8 +213,8 @@ export default async function PricingPage({ params }: Props) {
       eyebrow: isFr ? "Mise en production" : "Production deployment",
       title: serviceOfficial(SERVICE_BY_ID.implementation, isFr),
       description: isFr
-        ? "Pilote, assistant sur vos documents, agents IA, automatisations, IA sur mesure. Mise en production en 4 à 12 semaines, support de 30 jours inclus."
-        : "Pilot, assistant on your documents, AI agents, automations, custom AI. In production in 4 to 12 weeks, 30-day support included.",
+        ? "Pilote, assistant sur vos documents, agents IA, automatisations, IA sur mesure. Mise en production en 4 à 12 semaines."
+        : "Pilot, assistant on your documents, AI agents, automations, custom AI. In production in 4 to 12 weeks.",
       detail: isFr
         ? "Chaque chantier est chiffré sur devis écrit, après un cadrage de 45 minutes."
         : "Each build is priced on written quote, after a 45-minute scoping call.",
@@ -261,7 +261,7 @@ export default async function PricingPage({ params }: Props) {
           id: "engagement",
           question: "Y a-t-il un engagement dans la durée ?",
           answer:
-            "Aucun engagement annuel : chaque prestation est un livrable autonome. Les conditions de règlement sont précisées au devis et dans les CGV. Maintenance optionnelle après la période de support incluse.",
+            "Aucun engagement annuel : chaque prestation est un livrable autonome. Les conditions de règlement sont précisées au devis et dans les CGV. Maintenance optionnelle sur devis.",
         },
         {
           id: "devis-personnalise",
@@ -296,7 +296,7 @@ export default async function PricingPage({ params }: Props) {
           id: "engagement",
           question: "Is there a long-term commitment?",
           answer:
-            "No annual commitment: each engagement is a standalone deliverable. Payment terms are detailed in the quote and Terms. Optional maintenance after the included support window.",
+            "No annual commitment: each engagement is a standalone deliverable. Payment terms are detailed in the quote and Terms. Optional maintenance on quote.",
         },
         {
           id: "devis-personnalise",

@@ -184,7 +184,7 @@ ${DESCRIPTION_AUDIT_LLMS} Cartographie, scoring ROI/complexité par opportunité
 URL : ${SITE_URL}/fr/audit
 
 ### Module 3 — ${SERVICE_BY_ID.implementation.officialFr} (${implEntry})
-Mise en production en 6-8 semaines : cadrage, prototype, tests, déploiement, support 30 j inclus. 9 prestations dont l'IA Custom premium (sur devis).
+Mise en production en 6-8 semaines : cadrage, prototype, tests, déploiement. 9 prestations dont l'IA Custom premium (sur devis).
 URL : ${SITE_URL}/fr/implementation
 
 ### Module 4 — ${SERVICE_BY_ID.unAUn.officialFr} (à partir de ${coachingEntry})

@@ -78,9 +78,9 @@ export const MONTROUGE_COPY: VilleCopy = {
               "Tests d'acceptation dans vos locaux montrougiens, formation de vos équipes (administration de contenu, pilotage des agents IA) et remise d'une documentation runbook. Vos collaborateurs restent autonomes après la mise en ligne.",
           },
           {
-            step: "Mise en production et suivi",
+            step: "Mise en production",
             detail:
-              "Mise en ligne, monitoring des performances (Web Vitals, taux de conversion, qualité des réponses IA) et ajustements. Le code et les modèles restent votre propriété, transférables à tout prestataire d'Île-de-France ou repris en interne.",
+              "Mise en ligne. Le code et les modèles restent votre propriété, transférables à tout prestataire d'Île-de-France ou repris en interne.",
           },
         ],
         pricing: [
@@ -164,9 +164,9 @@ export const MONTROUGE_COPY: VilleCopy = {
               "Acceptance tests at your Montrouge premises, training of your teams (content administration, steering the AI agents) and handover of runbook documentation. Your staff stay autonomous after go-live.",
           },
           {
-            step: "Go-live and follow-up",
+            step: "Go-live",
             detail:
-              "Launch, performance monitoring (Web Vitals, conversion rate, AI answer quality) and adjustments. Code and models remain your property, transferable to any Île-de-France provider or taken over in-house.",
+              "Launch. Code and models remain your property, transferable to any Île-de-France provider or taken over in-house.",
           },
         ],
         pricing: [

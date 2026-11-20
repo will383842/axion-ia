@@ -509,11 +509,6 @@ export const MONTREUIL_COPY: VilleCopy = {
             detail:
               "Sur site Montreuil : tests d'acceptation utilisateurs, formation des ambassadeurs internes, livraison du runbook documentation, plan de monitoring post-déploiement.",
           },
-          {
-            step: "Suivi post-go-live",
-            detail:
-              "À distance : surveillance des métriques de production, ajustements fins, mesure du ROI réel par rapport à la prédiction du SOW. Rapport final remis à clôture de mission.",
-          },
         ],
         pricing: [
           {
@@ -600,11 +595,6 @@ export const MONTREUIL_COPY: VilleCopy = {
             step: "Acceptance + training",
             detail:
               "On site Montreuil: user acceptance tests, training of internal ambassadors, runbook documentation delivery, post-deployment monitoring plan.",
-          },
-          {
-            step: "Post-go-live follow-up",
-            detail:
-              "Remote: production metrics monitoring, fine adjustments, real ROI vs SOW prediction measurement. Final report delivered at mission closure.",
           },
         ],
         pricing: [
