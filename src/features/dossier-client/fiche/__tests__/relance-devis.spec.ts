@@ -122,6 +122,19 @@ describe("relance de devis (lot B9)", () => {
     expect(m.log).toHaveBeenCalledTimes(1);
   });
 
+  it("lancée depuis la page du devis : le résultat revient sur CE devis, même action", async () => {
+    const fd = formulaire();
+    fd.set("retourDevis", DEVIS);
+    const url = await lancer(fd);
+    expect(m.garer).toHaveBeenCalledTimes(1);
+    expect(url).toContain(`/qualiopi/devis/${DEVIS}?message=`);
+    expect(url).not.toContain("/qualiopi/clients/");
+  });
+  it("retourDevis forgé (pas un UUID) : retour classique sur la fiche client", async () => {
+    const fd = formulaire();
+    fd.set("retourDevis", "https://evil.example");
+    expect(await lancer(fd)).toContain(`/qualiopi/clients/${CLIENT}`);
+  });
   it("refuse le devis d'un autre client", async () => {
     const url = await lancer(formulaire(AUTRE_CLIENT));
     expect(url).toContain(ERREUR_DEVIS_INTROUVABLE);
