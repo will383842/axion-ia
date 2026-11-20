@@ -48,6 +48,8 @@ vi.mock("@/lib/prisma", () => ({
       updateMany: async (args: { where: { statut: string }; data: Record<string, unknown> }) => {
         h.updateMany(args);
         if (args.data["statut"] === "approuve") {
+          // Verrou conditionnel `a_valider → approuve` : un seul des deux onglets le prend.
+          if (h.etat.statut !== args.where.statut) return { count: 0 };
           h.etat.statut = "approuve";
           return { count: 1 };
         }
@@ -106,5 +108,17 @@ describe("OUT-1 — approbation", () => {
     expect(r).toEqual({ data: { id: ID, envoye: true } });
     expect(h.etat.statut).toBe("refuse");
     expect(h.sentryMsg).toHaveBeenCalledTimes(1);
+  });
+});
+
+describe("OUT-1 — deux onglets", () => {
+  it("deux `approuverEmailAction` en `Promise.all` : un seul enfilage, le second est refusé", async () => {
+    const [a, b] = await Promise.all([
+      approuverEmailAction({ id: ID }),
+      approuverEmailAction({ id: ID }),
+    ]);
+    expect(h.enqueue).toHaveBeenCalledTimes(1);
+    expect([a, b].filter((r) => "data" in r)).toHaveLength(1);
+    expect([a, b].filter((r) => "error" in r)).toHaveLength(1);
   });
 });

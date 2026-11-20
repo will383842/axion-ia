@@ -51,6 +51,7 @@ import {
   marquerAnnule,
   marquerEchecMiseEnFile,
   MOTIF_MISE_EN_FILE,
+  lireDernierJournal,
 } from "./email-log";
 import { EmailLogStatus } from "../../../prisma/generated/client";
 
@@ -492,5 +493,62 @@ describe("STOP-T1b — aucune adresse en clair quand l'écriture du journal éch
     });
     expect(console.error).toHaveBeenCalled();
     expect(ecritSurLaConsole()).not.toContain("stagiaire@");
+  });
+});
+
+describe("OUT-1 — journal d'une tâche `outbox-<id>` : la ligne la plus récente tranche", () => {
+  const ENTREE = { ...BASE, jobId: "outbox-X", cleAppelant: true };
+
+  it.each(["failed", "cancelled"])(
+    "ligne `%s` : rouverte en `pending` (même id rendu), aucune seconde ligne",
+    async (statut) => {
+      findFirstMock.mockResolvedValue({ id: "log-ancien", status: statut });
+      expect(await journaliserEnAttente(ENTREE)).toBe("log-ancien");
+      expect(createMock).not.toHaveBeenCalled();
+      expect(updateManyMock).toHaveBeenCalledWith({
+        where: {
+          id: "log-ancien",
+          status: { in: [EmailLogStatus.failed, EmailLogStatus.cancelled] },
+        },
+        data: { status: EmailLogStatus.pending, attempts: 0, error: null, failedAt: null },
+      });
+      expect(findFirstMock.mock.calls[0]?.[0]).toMatchObject({ orderBy: { createdAt: "desc" } });
+    },
+  );
+
+  it("ligne rouverte entre-temps par un autre (0 ligne écrite) : null", async () => {
+    findFirstMock.mockResolvedValue({ id: "log-ancien", status: "failed" });
+    updateManyMock.mockResolvedValue({ count: 0 });
+    expect(await journaliserEnAttente(ENTREE)).toBeNull();
+  });
+
+  it("ligne `pending` : c'est elle (aucune écriture) ; `sent` ou `bounced` : null, rien posé", async () => {
+    findFirstMock.mockResolvedValue({ id: "log-p", status: "pending" });
+    expect(await journaliserEnAttente(ENTREE)).toBe("log-p");
+    for (const statut of ["sent", "bounced"]) {
+      findFirstMock.mockResolvedValue({ id: "log-s", status: statut });
+      expect(await journaliserEnAttente(ENTREE)).toBeNull();
+    }
+    expect(createMock).not.toHaveBeenCalled();
+    expect(updateManyMock).not.toHaveBeenCalled();
+  });
+
+  it("aucune ligne : la ligne est créée", async () => {
+    findFirstMock.mockResolvedValue(null);
+    expect(await journaliserEnAttente(ENTREE)).toBe("log-1");
+    expect(createMock).toHaveBeenCalledTimes(1);
+  });
+
+  it("préfixe `fi-` : règle inchangée (ligne en échec d'un autre motif : rien reposé)", async () => {
+    findFirstMock.mockResolvedValue({ id: "log-f", status: "failed", error: "relais en panne" });
+    expect(await journaliserEnAttente({ ...BASE, jobId: "fi-1", cleAppelant: true })).toBeNull();
+    expect(updateManyMock).not.toHaveBeenCalled();
+  });
+
+  it("`lireDernierJournal` : la plus récente, et une panne de lecture LÈVE (pas fail-soft)", async () => {
+    findFirstMock.mockResolvedValue({ id: "l", status: "sent", error: null });
+    expect(await lireDernierJournal("outbox-X")).toEqual({ id: "l", status: "sent", error: null });
+    findFirstMock.mockRejectedValue(new Error("base morte"));
+    await expect(lireDernierJournal("outbox-X")).rejects.toThrow("base morte");
   });
 });

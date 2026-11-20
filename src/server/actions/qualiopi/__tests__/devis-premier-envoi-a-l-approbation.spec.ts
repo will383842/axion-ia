@@ -27,6 +27,8 @@ interface Ligne {
 }
 
 const h = vi.hoisted(() => ({
+  /** OUT-1 : résultat de la sonde « envoi déjà fait ? » (sous le verrou du devis, avant tout jeton). */
+  sonde: { v: "a_faire" as "a_faire" | "deja_fait" },
   mode: { v: "validation" as "validation" | "auto" },
   lignes: [] as Array<Record<string, unknown>>,
   devis: { v: {} as Record<string, unknown> },
@@ -110,6 +112,7 @@ vi.mock("@/server/qualiopi/documents/signature/token-document", () => ({
   },
 }));
 vi.mock("@/server/queue/queues", () => ({
+  sonderEnvoiOutbox: async () => h.sonde.v,
   enqueueEmail: async (
     template: string,
     to: string,
@@ -287,6 +290,7 @@ const devisBrouillon = () => ({
 });
 
 beforeEach(() => {
+  h.sonde.v = "a_faire";
   vi.clearAllMocks();
   vi.spyOn(console, "warn").mockImplementation(() => undefined);
   h.mode.v = "validation";
@@ -368,15 +372,15 @@ describe("clic « Envoyer au client » en mode validation", () => {
     expect(lignes()).toHaveLength(1);
   });
 
-  it("une ligne « approuvée » abandonnée (plus de 15 min) ne bloque plus le devis", async () => {
+  it("OUT-1 : une ligne « approuvée » bloque le devis QUEL QUE SOIT SON ÂGE (le balayage tranche seul)", async () => {
     await sendDevisAction(ID);
     lignes()[0]!.statut = "approuve";
     (lignes()[0] as unknown as Record<string, unknown>)["approuveAt"] = new Date(
       Date.now() - 16 * 60_000,
     );
     const r2 = await sendDevisAction(ID);
-    expect("error" in r2).toBe(false);
-    expect(lignes()).toHaveLength(2);
+    expect("error" in r2).toBe(true);
+    expect(lignes()).toHaveLength(1);
   });
 
   it("verdict autre que « garé » (corbeille indisponible) : refus, aucune écriture, aucun jeton", async () => {
@@ -424,6 +428,20 @@ describe("approbation de l'e-mail garé (vrai module à l'envoi)", () => {
     expect(h.emettre).toHaveBeenCalledTimes(1);
     expect(lignes()[0]!.statut).toBe("envoye");
     // La ligne ne garde ni lien ni marqueur exploitable en clair.
+    expect(JSON.stringify(lignes()[0]!.payload)).not.toContain("/portail/signer/");
+  });
+});
+
+describe("OUT-1 — envoi déjà fait ou en file à l'approbation du premier envoi", () => {
+  it("la sonde dit « déjà fait » : aucun jeton forgé, aucun ajout, devis marqué envoyé, ligne « envoyé », message `dejaFait`", async () => {
+    await sendDevisAction(ID);
+    h.sonde.v = "deja_fait";
+    const r = await approuverEmailAction({ id: lignes()[0]!.id });
+    expect(r).toEqual({ data: { id: lignes()[0]!.id, envoye: true, dejaFait: true } });
+    expect(h.nbJetons.v).toBe(0);
+    expect(h.partis).toHaveLength(0);
+    expect(devisVivant()["statut"]).toBe("envoye");
+    expect(lignes()[0]!.statut).toBe("envoye");
     expect(JSON.stringify(lignes()[0]!.payload)).not.toContain("/portail/signer/");
   });
 });

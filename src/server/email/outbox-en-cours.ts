@@ -9,7 +9,7 @@
  * balayage) visent donc LA MÊME tâche, et BullMQ ignore la seconde.
  */
 
-/** Une ligne « approuvé » plus vieille que ce délai (minutes) est considérée abandonnée. */
+/** Une ligne « approuvé » plus vieille que ce délai (minutes) est examinée par le balayage. */
 export const AGE_APPROUVE_ABANDONNE_MIN = 15;
 
 /** Budget total (ms) de la mise en file d'un envoi de la corbeille, avant « issue inconnue ». */
@@ -39,30 +39,58 @@ export class MiseEnFileIncertaine extends Error {
   }
 }
 
-interface LecteurJournal {
-  emailLog: {
-    findFirst: (args: {
-      where: { jobId: string; status: "pending" };
-      select: { id: true };
-    }) => Promise<{ id: string } | null>;
-  };
+/** Lecture de l'état d'une tâche dans la file (hors ajout) : borne de la lecture (ms). */
+export const DELAI_LECTURE_FILE_MS = 5_000;
+
+/** Un journal `pending` sans tâche n'est tranché qu'à partir de cet âge (minutes). */
+export const AGE_JOURNAL_ORPHELIN_MIN = 60;
+
+/** Repère posé au premier constat « tâche introuvable » (champ `error` du journal). */
+export const MOTIF_CONSTAT_TACHE_ABSENTE =
+  "Balayage : tâche introuvable dans la file (premier constat).";
+
+/** Motif de clôture du journal quand la tâche est introuvable à deux passages. */
+export const MOTIF_ORPHELIN_CLOS =
+  "Balayage : tâche introuvable à deux passages, rien n'est parti.";
+
+/** État d'une tâche `outbox-<id>` : présente (attente, différée, active, terminée…), échouée ou absente. */
+export type EtatTacheOutbox = "absente" | "echouee" | "presente";
+
+export type DecisionApprouveAncien = "parti" | "rien_parti" | "constat_1" | "orphelin" | "attendre";
+
+/** Dernière ligne du journal d'une tâche (statut et repère d'erreur seulement). */
+export interface JournalResume {
+  status: string;
+  error: string | null;
 }
 
 /**
- * Une ligne « approuvé » est-elle encore en cours d'envoi ? Vrai si approuvée depuis moins de
- * 15 minutes, OU si le journal garde une ligne `pending` pour sa tâche (issue inconnue : ne pas
- * rouvrir le devis, ne pas laisser croire que rien n'est parti).
+ * Règle UNIQUE du balayage pour une ligne « approuvé » ancienne : état réel de la tâche, puis
+ * dernière ligne du journal. Fonction pure.
  */
-export async function approuveEncoreEnCours(
-  db: LecteurJournal,
-  ligne: { id: string; approuveAt: Date | null },
-  maintenant: Date = new Date(),
-): Promise<boolean> {
-  const seuil = maintenant.getTime() - AGE_APPROUVE_ABANDONNE_MIN * 60_000;
-  if (ligne.approuveAt !== null && ligne.approuveAt.getTime() >= seuil) return true;
-  const pending = await db.emailLog.findFirst({
-    where: { jobId: cleTacheOutbox(ligne.id), status: "pending" },
-    select: { id: true },
-  });
-  return pending !== null;
+export function trancherApprouveAncien(a: {
+  tache: EtatTacheOutbox;
+  journal: JournalResume | null;
+  approuveAt: Date;
+  maintenant: Date;
+}): DecisionApprouveAncien {
+  if (a.tache === "presente") return "parti";
+  if (a.tache === "echouee") return "rien_parti";
+  const statut = a.journal?.status;
+  if (statut === "sent" || statut === "bounced") return "parti";
+  if (statut !== "pending") return "rien_parti";
+  const ageMin = (a.maintenant.getTime() - a.approuveAt.getTime()) / 60_000;
+  if (ageMin < AGE_JOURNAL_ORPHELIN_MIN) return "attendre";
+  return a.journal?.error === MOTIF_CONSTAT_TACHE_ABSENTE ? "orphelin" : "constat_1";
+}
+
+/**
+ * L'envoi est-il déjà fait ? Tâche présente non échouée, ou tâche absente (purgée) avec un
+ * journal le plus récent `sent` / `bounced`.
+ */
+export function estDejaFait(tache: EtatTacheOutbox, journal: JournalResume | null): boolean {
+  return (
+    tache === "presente" ||
+    (tache === "absente" && (journal?.status === "sent" || journal?.status === "bounced"))
+  );
 }

@@ -40,7 +40,7 @@ export interface EmailOutboxItemProps {
     id: string;
     sujet?: string;
     messagePersonnalise?: string;
-  }) => Promise<ActionResult<{ id: string; envoye: boolean }>>;
+  }) => Promise<ActionResult<{ id: string; envoye: boolean; dejaFait?: boolean }>>;
   refuserAction: (input: {
     id: string;
     motif: string;
@@ -92,6 +92,11 @@ export function EmailOutboxItem({
       if (!r.data.envoye) {
         setErreur("Approuvé, mais la mise en file a échoué — l'email n'est pas parti.");
         return;
+      }
+      if (r.data.dejaFait === true) {
+        setErreur(
+          "Cet e-mail était déjà parti ou en file d'envoi : il n'a pas été envoyé une seconde fois.",
+        );
       }
       router.refresh();
     });

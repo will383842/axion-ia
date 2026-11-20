@@ -11,6 +11,7 @@ const d = vi.hoisted(() => ({
   prete: vi.fn(),
   journaliser: vi.fn(),
   echec: vi.fn(),
+  dernier: { v: null as null | { id: string; status: string; error: string | null } },
 }));
 
 vi.mock("bullmq", () => ({
@@ -34,6 +35,7 @@ vi.mock("../connection", () => ({
 vi.mock("@/server/email/email-log", () => ({
   journaliserEnAttente: (...a: unknown[]) => d.journaliser(...a),
   marquerEchecMiseEnFile: (...a: unknown[]) => d.echec(...a),
+  lireDernierJournal: async () => d.dernier.v,
 }));
 vi.mock("@/server/email/outbox-service", () => ({
   resoudreMode: vi.fn(async () => "auto"),
@@ -70,6 +72,7 @@ beforeEach(() => {
   d.prete.mockReset().mockResolvedValue(undefined);
   d.journaliser.mockReset().mockResolvedValue("log-1");
   d.echec.mockReset();
+  d.dernier.v = null;
   delete process.env["DATABASE_URL"];
 });
 
@@ -126,5 +129,28 @@ describe("OUT-1 — file d'envoi de la corbeille", () => {
     expect(d.add).toHaveBeenCalledTimes(2);
     expect(d.add.mock.calls[0]?.[2]).toMatchObject({ jobId: CLE });
     expect(d.add.mock.calls[1]?.[2]).toMatchObject({ jobId: CLE });
+  });
+});
+
+describe("OUT-1 — sonde de la file avant tout ajout", () => {
+  it("`getJob` qui ne répond jamais : FileInjoignable en moins de 10 s, `add` jamais appelé", async () => {
+    vi.useFakeTimers();
+    d.getJob.mockReturnValue(new Promise(() => {}));
+    const debut = Date.now();
+    const verdict = envoyer().catch((e: unknown) => e);
+    await vi.advanceTimersByTimeAsync(10_000);
+    expect(await verdict).toBeInstanceOf(FileInjoignable);
+    expect(Date.now() - debut).toBeLessThanOrEqual(10_000);
+    expect(d.add).not.toHaveBeenCalled();
+    expect(d.journaliser).not.toHaveBeenCalled();
+  });
+
+  it("tâche absente (purgée) + dernier journal `sent` : dejaEnFile, ni `add` ni ligne de journal", async () => {
+    d.getJob.mockResolvedValue(undefined);
+    d.dernier.v = { id: "log-0", status: "sent", error: null };
+    const r = await envoyer();
+    expect(r).toEqual({ enqueued: true, dejaEnFile: true });
+    expect(d.add).not.toHaveBeenCalled();
+    expect(d.journaliser).not.toHaveBeenCalled();
   });
 });

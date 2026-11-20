@@ -28,6 +28,8 @@ interface Ligne {
 }
 
 const h = vi.hoisted(() => ({
+  /** OUT-1 : résultat de la sonde « envoi déjà fait ? » (sous le verrou du devis, avant tout jeton). */
+  sonde: { v: "a_faire" as "a_faire" | "deja_fait" },
   mode: { v: "validation" as "validation" | "auto" },
   lignes: [] as Array<Record<string, unknown>>,
   devis: { v: {} as Record<string, unknown> },
@@ -116,6 +118,7 @@ vi.mock("@/server/qualiopi/documents/signature/token-document", () => ({
   },
 }));
 vi.mock("@/server/queue/queues", () => ({
+  sonderEnvoiOutbox: async () => h.sonde.v,
   enqueueEmail: async (
     template: string,
     to: string,
@@ -307,6 +310,7 @@ const devisEnvoye = () => ({
 
 const espions: ReturnType<typeof vi.spyOn>[] = [];
 beforeEach(() => {
+  h.sonde.v = "a_faire";
   vi.clearAllMocks();
   espions.push(
     ...(["log", "warn", "error"] as const).map((m) =>
@@ -374,12 +378,26 @@ describe("garde « déjà garé »", () => {
     expect(lignes()).toHaveLength(1);
   });
 
-  it("une ligne approuvée récemment bloque aussi ; abandonnée (plus de 15 min), non", async () => {
+  it("OUT-1 : une ligne approuvée bloque aussi, quel que soit son âge", async () => {
     await envoyerDevisEmailAction({ devisId: ID });
     Object.assign(lignes()[0]!, { statut: "approuve", approuveAt: new Date() });
     expect("error" in (await envoyerDevisEmailAction({ devisId: ID }))).toBe(true);
     Object.assign(lignes()[0]!, { approuveAt: new Date(Date.now() - 20 * 60_000) });
-    expect("data" in (await envoyerDevisEmailAction({ devisId: ID }))).toBe(true);
+    expect("error" in (await envoyerDevisEmailAction({ devisId: ID }))).toBe(true);
+  });
+});
+
+describe("OUT-1 — renvoi : envoi déjà fait ou en file", () => {
+  it("la sonde dit « déjà fait » : aucun jeton neuf, ancien lien intact, aucune écriture de devis, ligne « envoyé »", async () => {
+    await envoyerDevisEmailAction({ devisId: ID });
+    h.sonde.v = "deja_fait";
+    const r = await approuverEmailAction({ id: lignes()[0]!.id });
+    expect(r).toEqual({ data: { id: lignes()[0]!.id, envoye: true, dejaFait: true } });
+    expect(h.nbJetons.v).toBe(0);
+    expect(h.vivants.has(ANCIEN_JETON)).toBe(true);
+    expect(h.partis).toHaveLength(0);
+    expect(ecritures()).toEqual([]);
+    expect(lignes()[0]!.statut).toBe("envoye");
   });
 });
 

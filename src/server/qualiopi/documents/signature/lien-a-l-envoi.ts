@@ -20,7 +20,12 @@
 import * as Sentry from "@sentry/nextjs";
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
-import { DELAI_MISE_EN_FILE_OUTBOX_MS, MiseEnFileIncertaine } from "@/server/email/outbox-en-cours";
+import {
+  DELAI_CONNEXION_FILE_MS,
+  DELAI_LECTURE_FILE_MS,
+  DELAI_MISE_EN_FILE_OUTBOX_MS,
+  MiseEnFileIncertaine,
+} from "@/server/email/outbox-en-cours";
 import { publicUrl } from "@/lib/public-url";
 import { sendTelegram } from "@/lib/telegram";
 import { logQualiopiActivity } from "@/server/actions/qualiopi/_guards";
@@ -124,6 +129,8 @@ export interface VerdictEnfilage {
   retenu?: string;
   corbeilleIndisponible?: boolean;
   essaiBloque?: boolean;
+  /** OUT-1 : la tâche de cet envoi existait déjà, rien n'a été ajouté. */
+  dejaEnFile?: boolean;
 }
 
 export type ResultatEnvoi<R = VerdictEnfilage> =
@@ -148,9 +155,12 @@ export class EnvoiOccupe extends Error {
 /** Délai de la transaction qui enfile (Prisma la ferme au-delà : le verrou consultatif tombe). */
 const TIMEOUT_TRANSACTION_ENVOI_MS = 60_000;
 
-// OUT-1 : la mise en file (connexion comprise : budget total) doit tenir dans la transaction,
+// OUT-1 : la mise en file (connexion + lecture + ajout) doit tenir dans la transaction,
 // sinon Prisma la ferme pendant que l'ajout est encore en vol.
-if (DELAI_MISE_EN_FILE_OUTBOX_MS + 5_000 >= TIMEOUT_TRANSACTION_ENVOI_MS) {
+if (
+  DELAI_CONNEXION_FILE_MS + DELAI_LECTURE_FILE_MS + DELAI_MISE_EN_FILE_OUTBOX_MS + 5_000 >=
+  TIMEOUT_TRANSACTION_ENVOI_MS
+) {
   throw new Error("lien-a-l-envoi : le budget de mise en file dépasse la transaction");
 }
 
@@ -184,8 +194,10 @@ export async function envoyerAvecLienALEnvoi<R extends VerdictEnfilage = Verdict
   payload: Record<string, unknown>;
   acteur: { session: AdminSession };
   enfiler: Enfiler<R>;
+  /** OUT-1 : sonde « l'envoi est-il déjà fait ? », appelée sous le verrou, AVANT tout jeton. */
+  sonder?: () => Promise<R | null>;
 }): Promise<ResultatEnvoi<R>> {
-  const { ligne, payload, acteur, enfiler } = input;
+  const { ligne, payload, acteur, enfiler, sonder } = input;
   const marqueur = lireMarqueur(payload);
 
   // Lignes anciennes et autres gabarits : INCHANGÉ.
@@ -201,8 +213,8 @@ export async function envoyerAvecLienALEnvoi<R extends VerdictEnfilage = Verdict
   }
 
   return marqueur.nature === "devis-premier-envoi"
-    ? premierEnvoi({ ligne, payload, acteur, enfiler, marqueur })
-    : renvoi({ ligne, payload, acteur, enfiler, marqueur });
+    ? premierEnvoi({ ligne, payload, acteur, enfiler, marqueur, sonder })
+    : renvoi({ ligne, payload, acteur, enfiler, marqueur, sonder });
 }
 
 // ── devis-premier-envoi ─────────────────────────────────────────────────────
@@ -212,9 +224,10 @@ async function premierEnvoi<R extends VerdictEnfilage>(a: {
   payload: Record<string, unknown>;
   acteur: { session: AdminSession };
   enfiler: Enfiler<R>;
+  sonder: (() => Promise<R | null>) | undefined;
   marqueur: Extract<MarqueurLienALEnvoi, { nature: "devis-premier-envoi" }>;
 }): Promise<ResultatEnvoi<R>> {
-  const { ligne, payload, acteur, enfiler, marqueur } = a;
+  const { ligne, payload, acteur, enfiler, marqueur, sonder } = a;
   // État visible depuis le `catch` : ce qui est déjà produit, donc ce qu'il faut défaire.
   const etat: {
     tokenId: string | null;
@@ -258,6 +271,31 @@ async function premierEnvoi<R extends VerdictEnfilage>(a: {
           });
           if (!devis) return refus(MSG_INTROUVABLE);
           etat.numero = devis.numero;
+          // OUT-1 — envoi déjà fait ou en file : AUCUN jeton forgé (il révoquerait le lien que
+          // porte l'e-mail déjà en file). Le devis n'est marqué envoyé que s'il est resté tel que
+          // le marqueur de cette ligne le décrit ; sinon l'alerte existante donne son numéro.
+          const deja = sonder ? await sonder() : null;
+          if (deja) {
+            etat.verdict = deja;
+            if (
+              devis.statut === "brouillon" &&
+              devis.updatedAt.getTime() === new Date(marqueur.devisUpdatedAt).getTime()
+            ) {
+              await marquerDevisEnvoye(tx, {
+                devisId: devis.id,
+                clientId: devis.clientId,
+                numero: devis.numero,
+                updatedAt: devis.updatedAt,
+                pdfCle: marqueur.pdfCle,
+                documentGenereId: marqueur.documentGenereId,
+                replacesDevisId: devis.replacesDevisId,
+                replacesDevis: devis.replacesDevis,
+              });
+            } else {
+              throw new Error("deja_fait_devis_non_conforme");
+            }
+            return { type: "envoi", res: deja };
+          }
           if (devis.statut !== "brouillon") return refus(MSG_PAS_BROUILLON);
           if (devis.updatedAt.getTime() !== new Date(marqueur.devisUpdatedAt).getTime()) {
             return refus(MSG_MODIFIE);
@@ -342,6 +380,12 @@ async function premierEnvoi<R extends VerdictEnfilage>(a: {
             // (fausse alerte `ancien_lien_non_rendu`, ligne remise à valider à tort).
             etat.tokenId = null;
             return { type: "envoi", res: verdict };
+          }
+          // OUT-1 (filet) : la tâche existait malgré la sonde. Le jeton neuf n'est dans aucun
+          // e-mail : on le défait et on rend l'ancien lien. Le devis se marque ensuite (l'e-mail part).
+          if (verdict.dejaEnFile === true) {
+            await annulerLeJeton(etat.tokenId, etat.url);
+            etat.tokenId = null;
           }
           etat.verdict = verdict;
 
@@ -491,9 +535,10 @@ async function renvoi<R extends VerdictEnfilage>(a: {
   payload: Record<string, unknown>;
   acteur: { session: AdminSession };
   enfiler: Enfiler<R>;
+  sonder: (() => Promise<R | null>) | undefined;
   marqueur: Extract<MarqueurLienALEnvoi, { nature: "devis-renvoi" }>;
 }): Promise<ResultatEnvoi<R>> {
-  const { ligne, payload, enfiler, marqueur, acteur } = a;
+  const { ligne, payload, enfiler, marqueur, acteur, sonder } = a;
   // État visible depuis le `catch` : ce qui est déjà produit, donc ce qu'il faut défaire.
   const etat: { tokenId: string | null; url: string | null; verdict: R | null } = {
     tokenId: null,
@@ -511,6 +556,11 @@ async function renvoi<R extends VerdictEnfilage>(a: {
           SELECT pg_try_advisory_xact_lock(hashtext(${"devis.envoi:" + marqueur.devisId})) AS locked
         `;
         if (!verrou?.locked) throw new EnvoiOccupe();
+
+        // OUT-1 — envoi déjà fait ou en file : aucun jeton, aucune écriture, aucun journal de
+        // renvoi (aucun lien neuf n'existe). Le lien de l'e-mail en file reste vivant.
+        const deja = sonder ? await sonder() : null;
+        if (deja) return { type: "envoi", res: deja };
 
         // (b) Relecture + gardes DANS le tx, APRÈS le verrou, AVANT tout jeton.
         const devis = await tx.devis.findUnique({
@@ -575,6 +625,11 @@ async function renvoi<R extends VerdictEnfilage>(a: {
           // Défait : pas de seconde annulation depuis le `catch` (échec de commit).
           etat.tokenId = null;
           return { type: "envoi", res: verdict };
+        }
+        // OUT-1 (filet) : la tâche existait malgré la sonde : le jeton neuf n'est dans aucun e-mail.
+        if (verdict.dejaEnFile === true) {
+          await annulerLeJeton(etat.tokenId, etat.url);
+          etat.tokenId = null;
         }
         etat.verdict = verdict;
         return { type: "envoi", res: verdict };

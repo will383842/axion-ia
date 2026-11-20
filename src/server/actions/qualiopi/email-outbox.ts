@@ -20,7 +20,7 @@ import { z } from "zod";
 import { revalidatePath } from "next/cache";
 import { prisma } from "@/lib/prisma";
 import { requireAdminWrite, logQualiopiActivity } from "@/server/actions/qualiopi/_guards";
-import { enqueueEmail } from "@/server/queue/queues";
+import { enqueueEmail, sonderEnvoiOutbox } from "@/server/queue/queues";
 import { cleTacheOutbox, MiseEnFileIncertaine } from "@/server/email/outbox-en-cours";
 import type { MotifRetenue } from "@/server/email/suppression";
 import { CLE_SUJET_CHOISI } from "@/server/qualiopi/devis/contenu-email-devis";
@@ -90,7 +90,7 @@ function sujetAImposerALEnvoi(
  */
 export async function approuverEmailAction(
   input: z.infer<typeof approuverSchema>,
-): Promise<ActionResult<{ id: string; envoye: boolean }>> {
+): Promise<ActionResult<{ id: string; envoye: boolean; dejaFait?: boolean }>> {
   if (estStub()) return { error: "Indisponible pendant le build" };
   const session = await requireAdminWrite();
   const parsed = approuverSchema.safeParse(input);
@@ -156,7 +156,7 @@ export async function approuverEmailAction(
 
   // `enqueueEmail` peut lever (Redis coupé en cours d'appel) : sans ce filet, la
   // ligne resterait en `approuve` — le même tombeau, par une autre porte.
-  let res: { enqueued: boolean; retenu?: MotifRetenue };
+  let res: { enqueued: boolean; retenu?: MotifRetenue; dejaEnFile?: boolean };
   try {
     const resultat = await envoyerAvecLienALEnvoi({
       ligne: {
@@ -168,6 +168,12 @@ export async function approuverEmailAction(
       },
       payload,
       acteur: { session },
+      // OUT-1 : sonde sous le verrou du devis, AVANT tout jeton : un envoi déjà fait ou en file
+      // ne forge aucun lien neuf (il révoquerait celui que porte l'e-mail déjà en file).
+      sonder: async (): Promise<Awaited<ReturnType<typeof enqueueEmail>> | null> =>
+        (await sonderEnvoiOutbox(cleTacheOutbox(email.id))) === "deja_fait"
+          ? { enqueued: true, dejaEnFile: true }
+          : null,
       // Ne lève QUE si l'e-mail n'est pas parti : rien après l'enfilage ne doit remonter.
       enfiler: async (payloadFinal) => {
         // Le retour est rendu à l'enveloppe, qui lit `enqueued`.
@@ -343,12 +349,19 @@ export async function approuverEmailAction(
       sujetModifie: v.sujet !== undefined && v.sujet !== email.sujet,
       messageAjoute: Boolean(v.messagePersonnalise),
       envoye: res.enqueued,
+      ...(res.dejaEnFile === true ? { dejaFait: true } : {}),
     },
     session,
   });
 
   revalidatePath("/[locale]/(admin)/[adminPrefix]/qualiopi/emails", "page");
-  return { data: { id: v.id, envoye: res.enqueued } };
+  return {
+    data: {
+      id: v.id,
+      envoye: res.enqueued,
+      ...(res.dejaEnFile === true ? { dejaFait: true } : {}),
+    },
+  };
 }
 
 /**

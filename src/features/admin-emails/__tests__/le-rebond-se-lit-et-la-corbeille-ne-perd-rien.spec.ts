@@ -43,6 +43,8 @@ vi.mock("@/server/qualiopi/alertes/alertes-service", () => ({
   resoudreAlertesParCode: vi.fn(async () => 0),
 }));
 vi.mock("@/server/notifications", () => ({ notify: vi.fn(async () => ({ ok: true })) }));
+// OUT-1 : le balayage lit l'état réel de la tâche dans la file ; ici elle est absente (rien n'est parti).
+vi.mock("@/server/queue/queues", () => ({ lireEtatTacheOutbox: async () => "absente" }));
 
 import { LIBELLES_STATUT_EMAIL, STATUTS_EMAILS, libelleStatutLigne } from "../query";
 import { verifierSanteEmails, AGE_APPROUVE_ABANDONNE_MIN } from "@/server/email/health";
@@ -107,19 +109,34 @@ describe("contrôle horaire — les « approuvé » abandonnés", () => {
   it("🔴 remet en attente ceux approuvés depuis plus de 15 minutes, et le dit", async () => {
     // OUT-1 : le balayage lit d'abord les « approuvé » anciens, puis le journal (vide ici : rien
     // n'est parti), et ne remet « à valider » que ceux-là.
-    outboxFindMany.mockResolvedValue([{ id: "a" }, { id: "b" }]);
-    outboxUpdateMany.mockResolvedValue({ count: 2 });
     const maintenant = new Date("2026-09-02T10:00:00Z");
-    const sante = await verifierSanteEmails(maintenant);
-    expect(sante.approuvesRemisEnAttente).toBe(2);
-    expect(outboxUpdateMany).toHaveBeenCalledWith({
-      where: {
-        id: { in: ["a", "b"] },
-        statut: "approuve",
-        approuveAt: { lt: new Date(maintenant.getTime() - AGE_APPROUVE_ABANDONNE_MIN * 60_000) },
-      },
-      data: { statut: "a_valider", approuveAt: null, approuveById: null },
+    const approuveAt = new Date("2026-09-02T09:00:00Z");
+    const ligne = (id: string) => ({
+      id,
+      template: "facture-envoi",
+      payload: {},
+      approuveAt,
+      entityType: null,
+      entityId: null,
     });
+    outboxFindMany.mockResolvedValue([ligne("a"), ligne("b")]);
+    outboxUpdateMany.mockResolvedValue({ count: 1 });
+    const sante = await verifierSanteEmails(maintenant);
+    expect(outboxFindMany).toHaveBeenCalledWith(
+      expect.objectContaining({
+        where: {
+          statut: "approuve",
+          approuveAt: { lt: new Date(maintenant.getTime() - AGE_APPROUVE_ABANDONNE_MIN * 60_000) },
+        },
+      }),
+    );
+    expect(sante.approuvesRemisEnAttente).toBe(2);
+    for (const id of ["a", "b"]) {
+      expect(outboxUpdateMany).toHaveBeenCalledWith({
+        where: { id, statut: "approuve", approuveAt },
+        data: { statut: "a_valider", approuveAt: null, approuveById: null },
+      });
+    }
     expect(sante.alertesLevees).toContain("emails_approuves_abandonnes");
   });
 

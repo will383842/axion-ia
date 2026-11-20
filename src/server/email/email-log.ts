@@ -84,6 +84,9 @@ export interface EntreeJournal {
 /** Préfixe des clés des relances de campagne formateur (`cleRelance`, registre CAMP-3). */
 export const PREFIXE_RELANCE_FORMATEUR = "fi-";
 
+/** Préfixe de la tâche d'un envoi approuvé depuis la corbeille (`cleTacheOutbox`, OUT-1). */
+const PREFIXE_TACHE_OUTBOX = "outbox-";
+
 /**
  * Motif d'une ligne close par `marquerEchecMiseEnFile` : la file était injoignable, aucun
  * job n'existe. C'est la SEULE ligne « échec » qu'un réenfilage peut remettre « en
@@ -116,6 +119,41 @@ export async function journaliserEnAttente(
     }
     return await prisma.$transaction(async (tx) => {
       await tx.$executeRaw`SELECT pg_advisory_xact_lock(hashtext(${`email_log:${jobId}`}))`;
+      // OUT-1 — envoi approuvé depuis la corbeille (`outbox-<id>`) : la ligne la PLUS RÉCENTE
+      // tranche. `pending` : c'est elle (tentative en vol). `failed` / `cancelled` : une
+      // ré-approbation la rouvre (même `id`), sinon la tentative n'aurait aucune ligne `pending`
+      // et le balayage la croirait abandonnée. `sent` / `bounced` : déjà parti, rien à poser.
+      if (jobId.startsWith(PREFIXE_TACHE_OUTBOX)) {
+        const derniere = await tx.emailLog.findFirst({
+          where: { jobId },
+          orderBy: { createdAt: "desc" },
+          select: { id: true, status: true },
+        });
+        if (derniere) {
+          if (derniere.status === EmailLogStatus.pending) return derniere.id;
+          if (
+            derniere.status === EmailLogStatus.failed ||
+            derniere.status === EmailLogStatus.cancelled
+          ) {
+            const rouverte = await tx.emailLog.updateMany({
+              where: {
+                id: derniere.id,
+                status: { in: [EmailLogStatus.failed, EmailLogStatus.cancelled] },
+              },
+              data: {
+                status: EmailLogStatus.pending,
+                attempts: 0,
+                error: null,
+                failedAt: null,
+              },
+            });
+            return rouverte.count === 1 ? derniere.id : null;
+          }
+          return null;
+        }
+        const neuve = await tx.emailLog.create({ data: donnees, select: { id: true } });
+        return neuve.id;
+      }
       const existante = await tx.emailLog.findFirst({
         where: { jobId },
         select: { id: true, status: true, error: true },
@@ -320,4 +358,21 @@ export async function cloturerJournal(cloture: ClotureJournal): Promise<void> {
       sansAdresse(e instanceof Error ? e.message : String(e)),
     );
   }
+}
+
+/**
+ * OUT-1 — dernière ligne du journal d'une tâche (la plus récente par `createdAt`).
+ *
+ * PAS fail-soft, à dessein : une panne de lecture LÈVE. L'appelant (sonde d'envoi, balayage) la
+ * traite comme « file injoignable » et n'écrit rien, au lieu de croire qu'aucun envoi n'a eu lieu.
+ */
+export async function lireDernierJournal(
+  jobId: string,
+): Promise<{ id: string; status: string; error: string | null } | null> {
+  const ligne = await prisma.emailLog.findFirst({
+    where: { jobId },
+    orderBy: { createdAt: "desc" },
+    select: { id: true, status: true, error: true },
+  });
+  return ligne;
 }

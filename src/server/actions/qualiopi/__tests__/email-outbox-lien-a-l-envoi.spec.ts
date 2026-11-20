@@ -9,6 +9,8 @@ const ADRESSE = "destinataire-secret@exemple.test";
 const ID = "00000000-0000-4000-8000-000000000001";
 
 const h = vi.hoisted(() => ({
+  /** OUT-1 : résultat de la sonde « envoi déjà fait ? » (sous le verrou du devis, avant tout jeton). */
+  sonde: { v: "a_faire" as "a_faire" | "deja_fait" },
   ligne: { v: null as null | Record<string, unknown> },
   etat: { statut: "a_valider" as string, refuseMotif: null as string | null },
   vivants: new Set<string>(),
@@ -39,7 +41,10 @@ vi.mock("@/server/actions/qualiopi/_guards", () => ({
   logQualiopiActivity: (...a: unknown[]) => h.log(...a),
 }));
 vi.mock("next/cache", () => ({ revalidatePath: (...a: unknown[]) => h.reval(...a) }));
-vi.mock("@/server/queue/queues", () => ({ enqueueEmail: (...a: unknown[]) => h.enqueue(...a) }));
+vi.mock("@/server/queue/queues", () => ({
+  enqueueEmail: (...a: unknown[]) => h.enqueue(...a),
+  sonderEnvoiOutbox: async () => h.sonde.v,
+}));
 vi.mock("@/server/qualiopi/devis/interrupteur-formules", () => ({
   formulesActives: async () => true,
 }));
@@ -145,6 +150,7 @@ const sorties = () =>
   JSON.stringify([h.log.mock.calls, h.sentryExc.mock.calls, h.sentryMsg.mock.calls]);
 
 beforeEach(() => {
+  h.sonde.v = "a_faire";
   vi.clearAllMocks();
   h.etat.statut = "a_valider";
   h.etat.refuseMotif = null;

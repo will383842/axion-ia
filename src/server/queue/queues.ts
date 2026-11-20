@@ -14,12 +14,19 @@ import { getBullConnection, isBullmqDisabled } from "./connection";
 import { resoudreMode, garerPourValidation } from "@/server/email/outbox-service";
 import { verdictAvantEnvoi, signalerRetenue, type MotifRetenue } from "@/server/email/suppression";
 import { estSollicitationSoumiseAOpposition } from "@/server/email/verdict-envoi";
-import { journaliserEnAttente, marquerEchecMiseEnFile } from "@/server/email/email-log";
+import {
+  journaliserEnAttente,
+  lireDernierJournal,
+  marquerEchecMiseEnFile,
+} from "@/server/email/email-log";
 import {
   DELAI_CONNEXION_FILE_MS,
+  DELAI_LECTURE_FILE_MS,
   DELAI_MISE_EN_FILE_OUTBOX_MS,
   FileInjoignable,
   MiseEnFileIncertaine,
+  estDejaFait,
+  type EtatTacheOutbox,
 } from "@/server/email/outbox-en-cours";
 import type {
   EmailJobData,
@@ -974,6 +981,60 @@ async function avecDelai<T>(
   }
 }
 
+/**
+ * OUT-1 — la file est-elle joignable ? Attend la connexion (≤ `DELAI_CONNEXION_FILE_MS`) puis
+ * vérifie qu'elle est « ready » : sinon `FileInjoignable`, aucune commande n'a été émise.
+ */
+async function exigerFileJoignable(): Promise<void> {
+  if (!emailsQueue) throw new FileInjoignable();
+  const prete = await avecDelai(
+    emailsQueue.waitUntilReady().then(
+      () => true,
+      () => false,
+    ),
+    DELAI_CONNEXION_FILE_MS,
+  );
+  if ("delaiDepasse" in prete || prete.valeur !== true || getBullConnection()?.status !== "ready") {
+    throw new FileInjoignable();
+  }
+}
+
+/**
+ * OUT-1 — état réel de la tâche `outbox-<id>` dans la file : « presente » (attente, différée,
+ * active, priorisée, terminée), « echouee » ou « absente ». La connexion (≤ 5 s) et la lecture
+ * (≤ 5 s) ont chacune leur borne ; au-delà, ou file indisponible : `FileInjoignable`.
+ */
+export async function lireEtatTacheOutbox(cle: string): Promise<EtatTacheOutbox> {
+  await exigerFileJoignable();
+  const file = emailsQueue;
+  if (!file) throw new FileInjoignable();
+  const lecture = await avecDelai(
+    (async (): Promise<EtatTacheOutbox> => {
+      const job = await file.getJob(cle);
+      if (!job) return "absente";
+      return (await job.getState()) === "failed" ? "echouee" : "presente";
+    })(),
+    DELAI_LECTURE_FILE_MS,
+  ).catch(() => {
+    throw new FileInjoignable();
+  });
+  if ("delaiDepasse" in lecture) throw new FileInjoignable();
+  return lecture.valeur;
+}
+
+/**
+ * OUT-1 — l'envoi sous cette clé est-il déjà fait ou en file ? Tâche présente non échouée, ou
+ * tâche absente (purgée) avec une dernière ligne de journal `sent` / `bounced`. Lève
+ * `FileInjoignable` si la file ou le journal ne répondent pas (rien n'est écrit).
+ */
+export async function sonderEnvoiOutbox(cle: string): Promise<"deja_fait" | "a_faire"> {
+  const tache = await lireEtatTacheOutbox(cle);
+  const journal = await lireDernierJournal(cle).catch(() => {
+    throw new FileInjoignable();
+  });
+  return estDejaFait(tache, journal) ? "deja_fait" : "a_faire";
+}
+
 export async function enqueueEmail(
   template: EmailJobName,
   to: string,
@@ -1202,35 +1263,22 @@ export async function enqueueEmail(
   // ajout ne peut rester en vol après la fermeture de la transaction de l'appelant.
   const debutOutbox = Date.now();
   if (cleOutbox !== undefined) {
-    const prete = await avecDelai(
-      emailsQueue.waitUntilReady().then(
-        () => true,
-        () => false,
-      ),
-      DELAI_CONNEXION_FILE_MS,
-    );
-    if (
-      "delaiDepasse" in prete ||
-      prete.valeur !== true ||
-      getBullConnection()?.status !== "ready"
-    ) {
-      throw new FileInjoignable();
+    // Sonde (qui vérifie d'abord la connexion) sous le même budget : tâche présente, ou purgée mais journal `sent` / `bounced` →
+    // déjà fait, ni ajout ni journal.
+    if ((await sonderEnvoiOutbox(cleOutbox)) === "deja_fait") {
+      return { enqueued: true, dejaEnFile: true };
     }
-    const lecture = await avecDelai(
+    const retrait = await avecDelai(
       (async () => {
         const existant = await emailsQueue.getJob(cleOutbox);
-        if (!existant) return "absent" as const;
-        if ((await existant.getState()) === "failed") {
-          // « Réessayer » : BullMQ ignorerait sinon l'ajout sous un identifiant existant.
-          await existant.remove();
-          return "retire" as const;
-        }
-        return "present" as const;
+        // « Réessayer » : BullMQ ignorerait sinon l'ajout sous un identifiant existant.
+        if (existant && (await existant.getState()) === "failed") await existant.remove();
       })(),
-      DELAI_MISE_EN_FILE_OUTBOX_MS,
-    );
-    if ("delaiDepasse" in lecture) throw new FileInjoignable();
-    if (lecture.valeur === "present") return { enqueued: true, dejaEnFile: true };
+      DELAI_LECTURE_FILE_MS,
+    ).catch(() => {
+      throw new FileInjoignable();
+    });
+    if ("delaiDepasse" in retrait) throw new FileInjoignable();
   }
 
   let lignePosee: string | null = null;
@@ -1253,6 +1301,12 @@ export async function enqueueEmail(
     });
   }
 
+  // OUT-1 (C3) — en mode outbox, pas de ligne « en attente » rendue = journal en panne ou ligne
+  // déjà close ailleurs : on n'ajoute RIEN (le balayage ne saurait pas qu'un ajout est en vol).
+  if (cleOutbox !== undefined && journalise && lignePosee === null) {
+    throw new FileInjoignable();
+  }
+
   try {
     const ajout = emailsQueue.add(
       template,
@@ -1262,7 +1316,12 @@ export async function enqueueEmail(
     if (cleOutbox !== undefined) {
       // Un ajout resté sans réponse peut encore aboutir : on ne le tient pas pour un échec.
       ajout.catch(() => undefined);
-      const reste = Math.max(1, DELAI_MISE_EN_FILE_OUTBOX_MS - (Date.now() - debutOutbox));
+      // Budget GLOBAL : le reste de l'enveloppe, jamais moins de 10 s (connexion et lecture
+      // comprises, l'ajout garde de quoi aboutir : pas d'« incertaine » artificielle).
+      const reste = Math.max(
+        DELAI_MISE_EN_FILE_OUTBOX_MS - DELAI_CONNEXION_FILE_MS - DELAI_LECTURE_FILE_MS,
+        DELAI_MISE_EN_FILE_OUTBOX_MS - (Date.now() - debutOutbox),
+      );
       const issue = await avecDelai(ajout, reste);
       // La ligne du journal reste « en attente » : vraie tant qu'on ne sait pas.
       if ("delaiDepasse" in issue) throw new MiseEnFileIncertaine();

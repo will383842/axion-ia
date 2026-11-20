@@ -16,6 +16,11 @@ const d = vi.hoisted(() => ({
   connexion: { status: "ready" } as { status: string },
   journalCree: vi.fn(),
   marquerEchec: vi.fn(),
+  /** Réponse de `journaliserEnAttente` (`null` = journal en panne ou ligne déjà close). */
+  ligne: { v: "log-1" as string | null },
+  /** Dernière ligne du journal de la tâche (sonde d'envoi). */
+  dernier: { v: null as null | { id: string; status: string; error: string | null } },
+  lireDernier: vi.fn(),
 }));
 
 vi.mock("bullmq", () => ({
@@ -48,9 +53,10 @@ vi.mock("@/server/email/suppression", () => ({
 vi.mock("@/server/email/email-log", () => ({
   journaliserEnAttente: async (e: unknown) => {
     d.journalCree(e);
-    return "log-1";
+    return d.ligne.v;
   },
   marquerEchecMiseEnFile: (...a: unknown[]) => d.marquerEchec(...a),
+  lireDernierJournal: (...a: unknown[]) => d.lireDernier(...a),
 }));
 
 import { enqueueEmail, FileInjoignable, MiseEnFileIncertaine } from "../queues";
@@ -91,6 +97,9 @@ beforeEach(() => {
   d.waitUntilReady.mockReset().mockResolvedValue(undefined);
   d.journalCree.mockReset();
   d.marquerEchec.mockReset();
+  d.ligne.v = "log-1";
+  d.dernier.v = null;
+  d.lireDernier.mockReset().mockImplementation(async () => d.dernier.v);
   delete process.env["DATABASE_URL"];
 });
 afterEach(() => {
@@ -174,5 +183,41 @@ describe("OUT-1 — un identifiant, une tâche", () => {
     );
     expect(d.getJob).not.toHaveBeenCalled();
     expect((d.add.mock.calls[0]?.[2] as { jobId: string }).jobId).toMatch(/^email-/);
+  });
+});
+
+const apresMs = <T>(ms: number, valeur: T) =>
+  new Promise<T>((resolve) => setTimeout(() => resolve(valeur), ms));
+
+describe("OUT-1 — budget global de mise en file (C6, C3)", () => {
+  it("lecture de la file qui traîne (15 s) : FileInjoignable à 5 s, jamais une mise en file « incertaine » artificielle", async () => {
+    d.getJob.mockImplementation(() => apresMs(15_000, undefined));
+    d.add.mockReturnValue(new Promise(() => {}));
+    const p = approuver();
+    const verdict = expect(p).rejects.toBeInstanceOf(FileInjoignable);
+    await avancer(p, 5_000);
+    await verdict;
+    expect(d.add).not.toHaveBeenCalled();
+    expect(d.journalCree).not.toHaveBeenCalled();
+  });
+
+  it("connexion, lectures et journal lents (≈ 18 s) : l'ajout garde 10 s et aboutit (pas de MiseEnFileIncertaine à 20 s)", async () => {
+    d.waitUntilReady.mockImplementation(() => apresMs(4_900, undefined));
+    d.getJob.mockImplementation(() => apresMs(4_900, undefined));
+    d.lireDernier.mockImplementation(() => apresMs(3_000, null));
+    d.add.mockImplementation(() => apresMs(9_500, { id: CLE }));
+    const p = approuver();
+    const verdict = expect(p).resolves.toEqual({ enqueued: true });
+    await avancer(p, 30_000);
+    await verdict;
+    expect(d.add).toHaveBeenCalledTimes(1);
+    expect(d.marquerEchec).not.toHaveBeenCalled();
+  });
+
+  it("`journaliserEnAttente` rend null en mode outbox : FileInjoignable, `add` jamais appelé", async () => {
+    d.ligne.v = null;
+    await expect(approuver()).rejects.toBeInstanceOf(FileInjoignable);
+    expect(d.add).not.toHaveBeenCalled();
+    expect(d.marquerEchec).not.toHaveBeenCalled();
   });
 });
