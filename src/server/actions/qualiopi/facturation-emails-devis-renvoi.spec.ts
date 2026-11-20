@@ -40,10 +40,15 @@ vi.mock("@/lib/prisma", () => ({
         },
         emailOutbox: {
           findFirst: (...a: unknown[]) => {
-            d.ordre.push("garde");
+            // OUT-1 : la garde pose une 2e question (lignes « approuvé » anciennes) ; seule la
+            // première (a_valider / approuvé récent) marque l'ordre de la garde.
+            if ((a[0] as { where?: { OR?: unknown } })?.where?.OR !== undefined) {
+              d.ordre.push("garde");
+            }
             return d.outboxFindFirst(...a);
           },
         },
+        emailLog: { findFirst: async () => null },
       };
       try {
         return await f(tx);

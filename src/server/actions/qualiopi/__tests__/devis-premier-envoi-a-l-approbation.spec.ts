@@ -189,6 +189,8 @@ function tx() {
   return {
     $queryRaw: async () => [{ locked: true }],
     emailOutbox: modele(),
+    // OUT-1 : journal des envois (aucune ligne `pending` : l'envoi abandonné n'a rien laissé en vol).
+    emailLog: { findFirst: async () => null },
     devis: {
       findUnique: async ({ where }: { where: { id: string } }) =>
         where.id === ID ? { ...devisVivant(), replacesDevis: h.ancien.v } : null,
