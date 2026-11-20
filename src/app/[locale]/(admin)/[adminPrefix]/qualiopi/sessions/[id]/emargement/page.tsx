@@ -33,6 +33,8 @@ import { AdminBadge } from "@/components/admin/ui/AdminBadge";
 import { AdminBloc } from "@/components/admin/ui/AdminBloc";
 import { AdminBlocRepliable } from "@/components/admin/ui/AdminBlocRepliable";
 import { AdminEmptyState } from "@/components/admin/ui/AdminEmptyState";
+import { AdminStatCard } from "@/components/admin/ui/AdminStatCard";
+import { CalendarCheck, CheckCircle2, CircleAlert, CircleX, UsersRound } from "lucide-react";
 import type { DemiJourneeLabel } from "@/server/qualiopi/presence/types";
 import {
   generateSessionCreneauxAction,
@@ -88,6 +90,18 @@ const TAUX_LABELS: Record<"complete" | "partielle" | "aucune", string> = {
   complete: "Complète",
   partielle: "Partielle",
   aucune: "Aucune",
+};
+
+const ICONE_CATEGORIE = {
+  complete: CheckCircle2,
+  partielle: CircleAlert,
+  aucune: CircleX,
+} as const;
+
+const BORDURE_CATEGORIE: Record<"complete" | "partielle" | "aucune", string> = {
+  complete: "border-l-[color:var(--color-admin-success)]",
+  partielle: "border-l-[color:var(--color-admin-warning)]",
+  aucune: "border-l-[color:var(--color-admin-destructive)]",
 };
 
 interface PageProps {
@@ -170,6 +184,10 @@ export default async function EmargementPage({ params, searchParams }: PageProps
   };
 
   const hasCreneaux = creneauxRows.length > 0;
+  const nbComplets = enrollments.filter(
+    (e) => classifierPresence(e.tauxPresencePct ?? 0, seuilPresencePct) === "complete",
+  ).length;
+  const nbASuivre = enrollments.length - nbComplets;
   const isDistanciel = session.modalite === "distanciel" || session.modalite === "hybride";
 
   const tonCategorie: Record<
@@ -177,10 +195,6 @@ export default async function EmargementPage({ params, searchParams }: PageProps
     "success" | "warning" | "destructive"
   > = { complete: "success", partielle: "warning", aucune: "destructive" };
 
-  const COLONNE =
-    "px-[var(--space-admin-3)] py-[var(--space-admin-2)] text-left text-[length:var(--text-admin-xs)] font-semibold text-[color:var(--color-admin-fg-muted)]";
-  const CELLULE =
-    "px-[var(--space-admin-3)] py-[var(--space-admin-2)] align-top text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg)]";
   const TEXTE_AIDE =
     "m-0 text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]";
   const LIBELLE_ID =
@@ -217,6 +231,34 @@ export default async function EmargementPage({ params, searchParams }: PageProps
           </AdminBadge>
         </div>
       </header>
+
+      {/* Chiffres clés : calculés sur les données déjà chargées, aucune requête. */}
+      <div className="mb-[var(--space-admin-6)] grid grid-cols-1 gap-[var(--space-admin-4)] sm:grid-cols-2 lg:grid-cols-4">
+        <AdminStatCard
+          label="Stagiaires"
+          value={enrollments.length}
+          tone="info"
+          icon={UsersRound}
+        />
+        <AdminStatCard
+          label="Créneaux"
+          value={creneauxRows.length}
+          tone={hasCreneaux ? "success" : "warning"}
+          icon={CalendarCheck}
+        />
+        <AdminStatCard
+          label="Présence complète"
+          value={nbComplets}
+          tone={enrollments.length > 0 && nbComplets === enrollments.length ? "success" : "default"}
+          icon={CheckCircle2}
+        />
+        <AdminStatCard
+          label="À suivre"
+          value={nbASuivre}
+          tone={nbASuivre > 0 ? "warning" : "success"}
+          icon={CircleAlert}
+        />
+      </div>
 
       <div className="flex flex-col gap-[var(--space-admin-6)]">
         {/* Informations session */}
@@ -378,6 +420,7 @@ export default async function EmargementPage({ params, searchParams }: PageProps
             {enrollments.length === 0 ? (
               <AdminEmptyState
                 variant="inline"
+                icon={<UsersRound aria-hidden="true" size={28} />}
                 title="Aucun stagiaire inscrit à cette session."
                 description="La feuille apparaît dès qu'un stagiaire est inscrit."
               />
@@ -414,59 +457,40 @@ export default async function EmargementPage({ params, searchParams }: PageProps
         {/* Récapitulatif taux de présence */}
         {enrollments.length > 0 && (
           <AdminBloc teinte="bleu" niveau={2} titre="Récapitulatif des taux de présence">
-            <div className="overflow-x-auto">
-              <table className="w-full min-w-[40rem] border-collapse">
-                <thead>
-                  <tr>
-                    <th scope="col" className={COLONNE}>
-                      Stagiaire
-                    </th>
-                    <th scope="col" className={COLONNE}>
-                      Taux présence
-                    </th>
-                    <th scope="col" className={COLONNE}>
-                      Qualification
-                    </th>
-                    <th scope="col" className={COLONNE}>
-                      Émargement signé
-                    </th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {enrollments.map((e) => {
-                    const cat = classifierPresence(e.tauxPresencePct ?? 0, seuilPresencePct);
-                    const libelle = libelleParInscription.get(e.id);
-                    return (
-                      <tr key={e.id} className="border-t border-[color:var(--color-admin-border)]">
-                        <th scope="row" className={`${CELLULE} text-left font-medium`}>
-                          <div>
-                            {e.trainee.prenom} {e.trainee.nom}
-                          </div>
-                          <div className="text-[length:var(--text-admin-xs)] font-normal text-[color:var(--color-admin-fg-muted)]">
-                            {e.trainee.email}
-                          </div>
-                        </th>
-                        <td className={CELLULE}>
-                          {e.tauxPresencePct !== null ? (
-                            <AdminBadge tone={tonCategorie[cat]}>{e.tauxPresencePct} %</AdminBadge>
-                          ) : (
-                            <span className="text-[color:var(--color-admin-fg-muted)]">—</span>
-                          )}
-                        </td>
-                        <td className={CELLULE}>
-                          <AdminBadge tone={tonCategorie[cat]}>{TAUX_LABELS[cat]}</AdminBadge>
-                        </td>
-                        <td className={CELLULE}>
-                          <AdminBadge tone={tonBadge[libelle?.ton ?? "neutre"]}>
-                            {libelle?.texte ?? "Non"}
-                          </AdminBadge>
-                        </td>
-                      </tr>
-                    );
-                  })}
-                </tbody>
-              </table>
-            </div>
+            <ul className="m-0 flex list-none flex-col gap-[var(--space-admin-4)] p-0">
+              {enrollments.map((e) => {
+                const cat = classifierPresence(e.tauxPresencePct ?? 0, seuilPresencePct);
+                const libelle = libelleParInscription.get(e.id);
+                const Icone = ICONE_CATEGORIE[cat];
+                return (
+                  <li
+                    key={e.id}
+                    className={`flex flex-col gap-[var(--space-admin-3)] rounded-[var(--radius-admin-md)] border border-l-4 border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)] p-[var(--space-admin-4)] sm:flex-row sm:items-center sm:justify-between ${BORDURE_CATEGORIE[cat]}`}
+                  >
+                    <div className="min-w-0">
+                      <p className="m-0 text-[length:var(--text-admin-base)] font-semibold text-[color:var(--color-admin-fg)]">
+                        {e.trainee.prenom} {e.trainee.nom}
+                      </p>
+                      <p className="m-0 text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]">
+                        {e.trainee.email}
+                      </p>
+                    </div>
+                    <div className="flex flex-wrap items-center gap-[var(--space-admin-2)]">
+                      <AdminBadge tone={tonCategorie[cat]} compact={false} plein>
+                        <span className="inline-flex items-center gap-[var(--space-admin-2)]">
+                          <Icone aria-hidden="true" size={16} />
+                          {e.tauxPresencePct !== null ? `${e.tauxPresencePct} %` : "—"}
+                        </span>
+                      </AdminBadge>
+                      <AdminBadge tone={tonCategorie[cat]}>{TAUX_LABELS[cat]}</AdminBadge>
+                      <AdminBadge tone={tonBadge[libelle?.ton ?? "neutre"]}>
+                        {libelle?.texte ?? "Non"}
+                      </AdminBadge>
+                    </div>
+                  </li>
+                );
+              })}
+            </ul>
           </AdminBloc>
         )}
       </div>

@@ -136,14 +136,33 @@ describe("Émargement d'une session — refonte visuelle", () => {
     expect(screen.queryByRole("heading", { name: "Relevé de connexion distanciel" })).toBeNull();
   });
 
-  it("récapitulatif : tableau sémantique à 4 colonnes, défilement horizontal", async () => {
+  it("tuiles : chiffres clés calculés sur les données chargées", async () => {
     const { container } = await rendre();
-    const table = screen.getByRole("table");
-    expect(within(table).getAllByRole("columnheader")).toHaveLength(4);
-    expect(within(table).getAllByRole("row")).toHaveLength(3);
-    expect(table.parentElement?.className).toContain("overflow-x-auto");
-    expect(within(table).getByText("90 %")).toBeTruthy();
-    expect(within(table).getByText("Complète")).toBeTruthy();
+    const tuiles = container.querySelectorAll(".admin-stat-card");
+    expect(tuiles).toHaveLength(4);
+    const lu = (i: number) => tuiles[i]?.textContent ?? "";
+    expect(lu(0)).toMatch(/Stagiaires.*2/);
+    expect(lu(1)).toMatch(/Créneaux.*0/);
+    expect(lu(2)).toMatch(/Présence complète.*1/);
+    expect(lu(3)).toMatch(/À suivre.*1/);
+  });
+
+  it("récapitulatif : une carte par stagiaire, pastille large avec icône, bordure colorée", async () => {
+    const { container } = await rendre();
+    const bloc = screen.getByRole("heading", {
+      level: 2,
+      name: "Récapitulatif des taux de présence",
+    }).parentElement as HTMLElement;
+    const cartes = within(bloc).getAllByRole("listitem");
+    expect(cartes).toHaveLength(2);
+    expect(cartes[0]?.className).toContain("border-l-[color:var(--color-admin-success)]");
+    expect(cartes[1]?.className).toContain("border-l-[color:var(--color-admin-destructive)]");
+    expect(cartes[0]?.querySelector("svg")).not.toBeNull();
+    expect(cartes[0]?.querySelector(".admin-badge-plein")).not.toBeNull();
+    expect(within(cartes[0] as HTMLElement).getByText("90 %")).toBeTruthy();
+    expect(within(cartes[0] as HTMLElement).getByText("Complète")).toBeTruthy();
+    expect(within(cartes[1] as HTMLElement).getByText("Aucune")).toBeTruthy();
+    expect(screen.queryByRole("table")).toBeNull();
     expect(container.querySelector("iframe")).toBeNull();
   });
 
@@ -160,6 +179,7 @@ describe("Émargement d'une session — refonte visuelle", () => {
     expect(screen.getByText("Aucun stagiaire inscrit à cette session.")).toBeTruthy();
     expect(screen.queryByTestId("grille")).toBeNull();
     expect(screen.queryByRole("table")).toBeNull();
+    expect(document.querySelector("svg")).not.toBeNull();
   });
 
   it("actions identiques : le lien PDF et les composants d'écriture sont toujours montés", async () => {
