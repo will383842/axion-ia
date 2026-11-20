@@ -661,7 +661,8 @@
           "data_quality": "Qualité / accès aux données",
           "internal_resistance": "Résistance interne",
           "time": "Manque de temps",
-          "not_priority": "Pas une priorité"
+          "not_priority": "Pas une priorité",
+          "none": "Aucun frein particulier"
         }
       },
       "timeSavedPerDay": {
