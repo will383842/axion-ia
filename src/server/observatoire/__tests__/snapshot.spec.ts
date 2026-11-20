@@ -66,3 +66,26 @@ describe("aggregateBarometer — petits segments", () => {
     expect(p.totalResponses).toBe(3);
   });
 });
+
+describe("recomputeAndPersistSnapshot — Score IA TPE-PME", () => {
+  it("un échec de calculerSnapshotScore ne fait pas échouer le snapshot « latest »", async () => {
+    vi.resetModules();
+    vi.doMock("../score-snapshot", () => ({
+      calculerSnapshotScore: async () => {
+        throw new Error("boom");
+      },
+    }));
+    const upsert = vi.fn(async () => ({}));
+    vi.doMock("@/lib/prisma", () => ({
+      prisma: {
+        $queryRaw: async () => [],
+        barometerSnapshot: { upsert },
+        barometerSnapshotHistory: { create: async () => ({}) },
+      },
+    }));
+    const { recomputeAndPersistSnapshot } = await import("../snapshot");
+    await expect(recomputeAndPersistSnapshot()).resolves.toBeDefined();
+    expect(upsert).toHaveBeenCalled();
+    vi.doUnmock("../score-snapshot");
+  });
+});
