@@ -15,7 +15,10 @@
  *   - ne pas rejouer `validerEtape(4)` → « automatisation neuve » et « total 0 € » rougissent ;
  *   - appeler `sendDevisAction` avant la synchronisation → « ordre » rougit.
  */
+import { createHash } from "node:crypto";
 import { describe, it, expect, vi, beforeEach } from "vitest";
+
+const sha = (t: string) => createHash("sha256").update(t.trim(), "utf8").digest("hex");
 
 type Ligne = Record<string, unknown>;
 
@@ -244,6 +247,9 @@ describe("numerotation — première fois", () => {
       { designation: "Atelier", quantite: 1, prixUnitaireHtCents: 240000 },
     ]);
     expect(JSON.stringify(entree)).not.toMatch(/tauxTva/);
+    // Prix unique : la porte existante reçoit l'échéancier, les délais et le plafond.
+    expect(entree.conditionsParticulieres).toContain("Échéancier de paiement");
+    expect(entree.conditionsParticulieres).toContain("Délais :");
     expect(m.creerFormules).not.toHaveBeenCalled();
     expect(m.row).toMatchObject({ devisId: DEVIS, statut: "lie_au_devis", verrouDepuis: null });
     expect((m.row!["payload"] as PayloadAssistantV1).sync).toEqual({
@@ -553,6 +559,68 @@ describe("numerotation — déjà lié : mise à jour, jamais un 2e numéro", ()
     });
     expect(r).toMatchObject({ data: { devisId: DEVIS, numero: "AXI-DEV-2026-007", revision: 5 } });
     expect(m.row).toMatchObject({ statut: "lie_au_devis", verrouDepuis: null });
+  });
+
+  it("classique : une colonne conditionsParticulieres écrite à la main n'est jamais écrasée", async () => {
+    lier(classique());
+    m.devisFindUnique.mockResolvedValue(
+      devisBrouillon({
+        updatedAt: MAJ0,
+        conditionsParticulieres: "Clause négociée avec le client.",
+      }),
+    );
+    const r = await num();
+    expect(r).toMatchObject({ error: expect.stringContaining("conditions particulières") });
+    expect(m.modifierClassique).not.toHaveBeenCalled();
+    expect(m.creerClassique).not.toHaveBeenCalled();
+    expect(m.row).toMatchObject({ statut: "lie_au_devis", verrouDepuis: null });
+  });
+
+  it("classique : une colonne produite par l'assistant (empreinte identique) est remplacée", async () => {
+    const texte = "Échéancier de paiement\n1. Solde";
+    const p = classique();
+    p.sync = { devisId: DEVIS, devisMajLe: MAJ0.toISOString(), conditionsSha256: sha(texte) };
+    poser(p, { devisId: DEVIS, statut: "lie_au_devis" });
+    m.devisFindUnique.mockResolvedValue(
+      devisBrouillon({ updatedAt: MAJ0, conditionsParticulieres: texte }),
+    );
+    await num();
+    expect(m.modifierClassique).toHaveBeenCalledTimes(1);
+    expect(m.modifierClassique.mock.calls[0]![0].input.conditionsParticulieres).toContain(
+      "Échéancier de paiement",
+    );
+  });
+
+  it("classique : une clause ajoutée sous l'échéancier est refusée, sans écriture", async () => {
+    const texte = "Échéancier de paiement\n1. Solde";
+    const p = classique();
+    p.sync = { devisId: DEVIS, devisMajLe: MAJ0.toISOString(), conditionsSha256: sha(texte) };
+    poser(p, { devisId: DEVIS, statut: "lie_au_devis" });
+    m.devisFindUnique.mockResolvedValue(
+      devisBrouillon({
+        updatedAt: MAJ0,
+        conditionsParticulieres: `${texte}\n\nClause négociée.`,
+      }),
+    );
+    const r = await num();
+    expect(r).toMatchObject({
+      error: expect.stringContaining("Les conditions particulières ont été modifiées à la main"),
+    });
+    expect(m.modifierClassique).not.toHaveBeenCalled();
+    expect(m.creerClassique).not.toHaveBeenCalled();
+  });
+
+  it("classique : un texte « Échéancier… » sans empreinte gardée est refusé aussi", async () => {
+    lier(classique());
+    m.devisFindUnique.mockResolvedValue(
+      devisBrouillon({
+        updatedAt: MAJ0,
+        conditionsParticulieres: "Échéancier de paiement\n1. Solde",
+      }),
+    );
+    const r = await num();
+    expect("error" in r).toBe(true);
+    expect(m.modifierClassique).not.toHaveBeenCalled();
   });
 
   it("formules : modifierDevisBrouillonAction avec l'offre rejouée et sync.devisMajLe", async () => {

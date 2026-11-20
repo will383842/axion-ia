@@ -33,6 +33,22 @@ export function ApercuDirect({ etat, tvaStandardPct, clientNom }: PropsApercuDir
   useEffect(() => {
     dernierTotal.current = etat.lignes;
   });
+  // Changement de lignes sans sortie de champ (ligne ajoutée, supprimée, modèle appliqué) :
+  // si l'élément actif n'est pas un champ de saisie, l'annonce suit le total. Pendant une frappe
+  // le focus est dans un champ : rien n'est annoncé (l'annonce vient à la sortie du champ).
+  const ttcCents = totauxLignes(etat.lignes, tvaStandardPct).ttcCents;
+  const ttcPrecedent = useRef(ttcCents);
+  useEffect(() => {
+    if (ttcPrecedent.current === ttcCents) return;
+    ttcPrecedent.current = ttcCents;
+    // Différé de 300 ms : l'annonce suit le DERNIER total, pas chaque étape intermédiaire.
+    const minuteur = setTimeout(() => {
+      const actif = document.activeElement;
+      if (actif instanceof HTMLElement && actif.matches("input, textarea, select")) return;
+      setAnnonce(`Total TTC du devis : ${euros(ttcCents)}.`);
+    }, 300);
+    return () => clearTimeout(minuteur);
+  }, [ttcCents]);
   useEffect(() => {
     const auDepart = (ev: FocusEvent) => {
       const cible = ev.target;

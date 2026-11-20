@@ -30,6 +30,16 @@ import {
   totalHtClassiqueCents,
 } from "@/server/qualiopi/devis/champs-classiques";
 
+import { getQualiopiConfig } from "@/server/qualiopi/config/site-settings";
+import {
+  computeTotauxFacture,
+  regimeTvaDepuisConfig,
+  TAUX_TVA_STANDARD,
+} from "@/server/qualiopi/legal/tva";
+import {
+  recalculerEcheancier,
+  TITRE_ECHEANCIER,
+} from "@/server/qualiopi/devis/assistant/conditions-prix-unique";
 import {
   emailDevisEnAttente,
   MSG_EMAIL_EN_ATTENTE_MODIF,
@@ -90,6 +100,21 @@ export async function modifierDevisClassiqueBrouillonAction(
   const opco = await estimationOpcoDevis(v, montantTotalHtCents, actuel.dateValidite);
   const mentionTva = await mentionTvaDevisClassique();
 
+  // Échéancier écrit par l'assistant : il suit le nouveau total (même calcul que le PDF), sinon refus.
+  let conditions = v.conditionsParticulieres;
+  if (typeof conditions === "string" && conditions.startsWith(TITRE_ECHEANCIER)) {
+    const regime = regimeTvaDepuisConfig(await getQualiopiConfig("regime_tva"));
+    const taux = Number(await getQualiopiConfig("taux_tva_standard_percent")) || TAUX_TVA_STANDARD;
+    const totaux = computeTotauxFacture(
+      v.lignes.map((l) => ({ quantite: l.quantite, prixUnitaireHtCents: l.prixUnitaireHtCents })),
+      regime,
+      taux,
+    );
+    const r = recalculerEcheancier(conditions, totaux.totalTtcCents, regime);
+    if ("erreur" in r) return { error: r.erreur };
+    conditions = r.texte;
+  }
+
   const { count } = await prisma.devis.updateMany({
     where: { id, statut: "brouillon", offreSha256: null, updatedAt: attendu },
     data: {
@@ -111,9 +136,7 @@ export async function modifierDevisClassiqueBrouillonAction(
           }
         : {}),
       // Conditions particulières : même règle. `null` (ou texte vide, normalisé en `null`) efface.
-      ...(v.conditionsParticulieres !== undefined
-        ? { conditionsParticulieres: v.conditionsParticulieres }
-        : {}),
+      ...(conditions !== undefined ? { conditionsParticulieres: conditions } : {}),
     },
   });
   if (count === 0) return { error: MSG_PERIME };

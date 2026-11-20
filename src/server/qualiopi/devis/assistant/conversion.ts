@@ -23,7 +23,12 @@ import {
   type TexteCopie,
 } from "@/components/admin/qualiopi/devis-formules/saisie";
 import { CENTS_MAX, offreDevisV1, type OffreDevisV1 } from "@/server/qualiopi/devis/offre-devis";
-import { TAUX_TVA_STANDARD } from "@/server/qualiopi/legal/tva";
+import {
+  computeTotauxFacture,
+  TAUX_TVA_STANDARD,
+  type RegimeTva,
+} from "@/server/qualiopi/legal/tva";
+import { texteConditionsPrixUnique } from "./conditions-prix-unique";
 import {
   normaliserEuros,
   payloadVide,
@@ -56,6 +61,8 @@ export interface EntreeDevisClassique {
   opcoEnveloppeRestanteCents?: number;
   dateDebutSessionPrevue?: string;
   projetId?: string;
+  /** Échéancier, délais, garantie et plafond (texte imprimé par la porte existante du gabarit). */
+  conditionsParticulieres?: string;
 }
 
 export interface EntreeDevisFormules {
@@ -69,6 +76,8 @@ export interface EntreeDevisFormules {
 export interface ContexteConversion extends ContexteValidation {
   /** Client du projet, relu en base par l'appelant : `projetId` n'est transmis que s'il coïncide. */
   clientIdDuProjet?: string | null;
+  /** Régime de TVA, relu en base par l'appelant (défaut « assujetti »). */
+  regime?: RegimeTva;
 }
 
 export type ResultatConversion =
@@ -229,6 +238,16 @@ export function payloadVersCreation(
     });
     const opco = lireOpco(p, e);
     if (e.length > 0) return { erreurs: e };
+    // Prix unique : le gabarit n'imprime l'échéancier, les délais, la garantie et le plafond
+    // que par les conditions particulières ; on les produit ici (même total que l'aperçu).
+    const regime = ctx.regime ?? "assujetti";
+    const totaux = computeTotauxFacture(
+      lignes.map((l) => ({ quantite: l.quantite, prixUnitaireHtCents: l.prixUnitaireHtCents })),
+      regime,
+      ctx.tauxStandard ?? TAUX_TVA_STANDARD,
+    );
+    const cond = texteConditionsPrixUnique(p, totaux, regime);
+    if ("erreurs" in cond) return { erreurs: cond.erreurs };
     return {
       type: "classique",
       // Aucun `tauxTvaPercent` : le taux se dérive du régime en aval.
@@ -238,6 +257,7 @@ export function payloadVersCreation(
         ...(p.activite ? { activite: p.activite } : {}),
         ...base,
         ...opco,
+        conditionsParticulieres: cond.texte,
       },
     };
   }

@@ -91,7 +91,7 @@ export function AssistantDevisPage(p: PropsAssistantDevisPage) {
       urlAssistant={p.urlAssistant}
       salutations={salutations}
       onEnvoye={({ devisId }) => router.push(`${p.baseDevis}/${devisId}`)}
-      rendreEtape={({ etape, etat, dispatch }) => {
+      rendreEtape={({ etape, etat, dispatch, montantsPhases }) => {
         if (etape === 1)
           return (
             <EtapeClientProjet
@@ -136,6 +136,7 @@ export function AssistantDevisPage(p: PropsAssistantDevisPage) {
               etat={etat}
               dispatch={dispatch}
               tvaStandardPct={p.tauxStandard}
+              montantsPhases={montantsPhases}
             />
           );
         return null;

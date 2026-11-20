@@ -15,6 +15,12 @@
 
 import React from "react";
 import { z } from "zod";
+import { computeTotauxFacture, TAUX_TVA_STANDARD } from "@/server/qualiopi/legal/tva";
+import {
+  controlerEcheancier,
+  MSG_ECHEANCIER_ILLISIBLE,
+  TITRE_ECHEANCIER,
+} from "@/server/qualiopi/devis/assistant/conditions-prix-unique";
 import { prisma } from "@/lib/prisma";
 import { requireAdminWrite, logQualiopiActivity } from "@/server/actions/qualiopi/_guards";
 import { generateDocument } from "@/server/qualiopi/documents/documents-service";
@@ -170,6 +176,21 @@ export async function marquerRemisEnMainPropreAction(input: {
           }
           console.warn("[marquerRemisEnMainPropreAction] données du PDF non construites", err);
           throw new RemiseRefusee(MSG_PDF_RATE, "pdf_rate");
+        }
+        // Échéancier de l'assistant : même contrôle que sendDevisAction, AVANT toute pièce.
+        if (
+          data.conditionsParticulieres?.startsWith(TITRE_ECHEANCIER) &&
+          !controlerEcheancier(
+            data.conditionsParticulieres,
+            computeTotauxFacture(
+              data.lignes,
+              data.regimeTva,
+              data.tauxTvaStandardPercent ?? TAUX_TVA_STANDARD,
+            ).totalTtcCents,
+            data.regimeTva,
+          )
+        ) {
+          throw new RemiseRefusee(MSG_ECHEANCIER_ILLISIBLE, "echeancier_incoherent");
         }
         let pdfCle: string;
         let pieceId: string;

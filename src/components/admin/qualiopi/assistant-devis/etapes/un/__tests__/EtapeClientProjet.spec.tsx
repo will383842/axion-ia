@@ -68,6 +68,26 @@ describe("ApercuDirect", () => {
     expect(t).not.toContain("TVA 20 %");
   });
 
+  it("changement de lignes sans sortie de champ : l'annonce se met à jour", async () => {
+    const { rerender } = render(
+      <ApercuDirect
+        etat={avec({ lignes: [L("a", { libelle: "A", prixEur: "100" })] })}
+        tvaStandardPct={20}
+      />,
+    );
+    const statut = screen.getByRole("status");
+    expect(statut.textContent).toBe("");
+    rerender(
+      <ApercuDirect
+        etat={avec({ lignes: [L("a", { libelle: "A", prixEur: "200" })] })}
+        tvaStandardPct={20}
+      />,
+    );
+    await waitFor(() =>
+      expect(nbsp(statut.textContent ?? "")).toContain("Total TTC du devis : 240,00 €"),
+    );
+  });
+
   it("aucune mention « montants d'exemple »", () => {
     render(<ApercuDirect etat={avec({ lignes: T4 })} tvaStandardPct={20} />);
     expect(document.body.textContent).not.toMatch(/exemple/i);

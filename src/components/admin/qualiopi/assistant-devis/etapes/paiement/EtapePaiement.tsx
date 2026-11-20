@@ -67,6 +67,7 @@ export function EtapePaiement({
             nom="Phases et versements"
             phases={etat.achat.phases}
             montants={montantsPhases?.A}
+            mention="TTC"
           />
         ) : (
           <>

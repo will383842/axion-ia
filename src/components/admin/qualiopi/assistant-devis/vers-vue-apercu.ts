@@ -30,6 +30,30 @@ export interface ContexteVueApercu {
   versionCgv: string;
   /** Livrables saisis à l'écran, par formule et par rang (information, sans montant). */
   livrables?: { A?: readonly string[]; B?: readonly string[] };
+  /** Libellé et pourcentage des versements du prix unique (les montants viennent du serveur). */
+  phasesPrixUnique?: ReadonlyArray<{
+    libelle: string;
+    pourcentage: number;
+    /** `signature`, `avancement` ou `livraison` : repris dans le libellé, comme au PDF. */
+    declencheur?: string;
+  }>;
+}
+
+const QUAND: Readonly<Record<string, string>> = {
+  signature: "à la signature",
+  avancement: "à l'avancement",
+  livraison: "à la livraison",
+};
+
+/** « 1. Acompte, à la signature (TTC) » ; « TTC » seulement si le régime est assujetti. */
+function libellePhasePrixUnique(
+  i: number,
+  phase: { libelle: string; declencheur?: string } | undefined,
+  regime: ApercuAssistant["regimeTva"],
+): string {
+  const quand = phase?.declencheur ? (QUAND[phase.declencheur] ?? phase.declencheur) : "";
+  const corps = `${i + 1}. ${phase?.libelle?.trim() || "Versement"}${quand ? `, ${quand}` : ""}`;
+  return regime === "assujetti" ? `${corps} (TTC)` : corps;
 }
 
 export function urlApercuPdf(devisId: string): string {
@@ -148,7 +172,15 @@ export function versApercuPrepare(
       totalHtCents: t.totalHtCents,
       tvaCents: t.totalTvaCents,
       totalTtcCents: t.totalTtcCents,
-      phases: [],
+      // Montants du serveur (TTC si assujetti) : même source que le texte imprimé au PDF.
+      phases: apercu.classique.phasesCents.map((montantCents, i) => ({
+        rang: i + 1,
+        // Même libellé que le texte imprimé au PDF : « 1. Acompte, à la signature ».
+        libelle: libellePhasePrixUnique(i, ctx.phasesPrixUnique?.[i], apercu.regimeTva),
+        livrable: ctx.livrables?.A?.[i] ?? "",
+        pourcentage: ctx.phasesPrixUnique?.[i]?.pourcentage ?? 0,
+        montantCents,
+      })),
       formules: [],
       servicesExterieurs: [],
     };

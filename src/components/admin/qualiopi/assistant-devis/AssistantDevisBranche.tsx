@@ -232,6 +232,64 @@ function PontSauvegarde(p: {
   );
 }
 
+// ───────────────────────── montants des phases (étape 3) ─────────────────────────
+
+const DELAI_MONTANTS_MS = 400;
+type MontantsPhases = NonNullable<ContexteEtape["montantsPhases"]>;
+
+/**
+ * Étape 3 : les montants par phase viennent du SERVEUR (même module que le PDF). Ils sont relus
+ * 400 ms après le dernier changement de l'état ; une erreur ou un aperçu impossible laisse les
+ * tirets (jamais un montant inventé). Aucun effet hors de l'étape 3.
+ */
+function EtapeAvecMontants({
+  ctx,
+  payloadDe,
+  rendre,
+}: {
+  ctx: ContexteEtape;
+  payloadDe: (etat: ContexteEtape["etat"]) => PayloadAssistantV1;
+  rendre: (ctx: ContexteEtape) => ReactNode;
+}) {
+  // Les montants portent l'état pour lequel ils ont été lus : jamais d'anciens montants affichés
+  // (état changé, ou étape 3 quittée puis retrouvée), sans écrire d'état dans l'effet.
+  const { etape, etat } = ctx;
+  const [lus, setLus] = useState<{ pour: unknown; montants: MontantsPhases } | undefined>(
+    undefined,
+  );
+  const montants = lus && lus.pour === etat ? lus.montants : undefined;
+  const payloadRef = useRef(payloadDe);
+  useEffect(() => {
+    payloadRef.current = payloadDe;
+  });
+  useEffect(() => {
+    if (etape !== 3) return;
+    let actif = true;
+    const minuteur = setTimeout(() => {
+      apercuAssistantAction(payloadRef.current(etat)).then(
+        (r) => {
+          if (!actif) return;
+          if ("error" in r || r.data.erreurs.length > 0) return setLus(undefined);
+          const a = r.data;
+          if (a.classique) return setLus({ pour: etat, montants: { A: a.classique.phasesCents } });
+          const m: MontantsPhases = {};
+          for (const f of a.formules?.formules ?? [])
+            m[f.formule === "achat" ? "A" : "B"] = f.phases.map((p) => p.montantHtCents);
+          setLus({ pour: etat, montants: m });
+        },
+        () => {
+          if (actif) setLus(undefined);
+        },
+      );
+    }, DELAI_MONTANTS_MS);
+    return () => {
+      actif = false;
+      clearTimeout(minuteur);
+    };
+  }, [etape, etat]);
+  return <>{rendre(etape === 3 && montants ? { ...ctx, montantsPhases: montants } : ctx)}</>;
+}
+
 // ───────────────────────── composant ─────────────────────────
 
 export function AssistantDevisBranche(props: PropsAssistantDevisBranche) {
@@ -378,6 +436,11 @@ export function AssistantDevisBranche(props: PropsAssistantDevisBranche) {
           A: ctx.etat.achat.phases.map((p) => p.livrable),
           B: ctx.etat.abonnement.phases.map((p) => p.livrable),
         },
+        phasesPrixUnique: ctx.etat.achat.phases.map((p) => ({
+          libelle: p.libelle,
+          pourcentage: Number(p.pourcentage.replace(",", ".")) || 0,
+          declencheur: p.declencheur,
+        })),
       });
       return v.ok ? { data: v.prepare } : { error: v.erreur };
     };
@@ -469,7 +532,15 @@ export function AssistantDevisBranche(props: PropsAssistantDevisBranche) {
             />
           </>
         ) : null}
-        {ctx.etape === 4 ? etapeQuatre(ctx) : props.rendreEtape(ctx)}
+        {ctx.etape === 4 ? (
+          etapeQuatre(ctx)
+        ) : (
+          <EtapeAvecMontants
+            ctx={ctx}
+            payloadDe={(etat) => etatVersPayload(etat, 3, contexte())}
+            rendre={props.rendreEtape}
+          />
+        )}
       </>
     );
   }

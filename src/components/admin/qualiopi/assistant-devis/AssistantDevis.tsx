@@ -26,6 +26,10 @@ export interface ContexteEtape {
   etape: Etape;
   etat: EtatAssistant;
   dispatch: Dispatch<ActionAssistant>;
+  /** Centimes par phase calculés par le serveur (étape 3) : TTC en prix unique, HT en formules. */
+  montantsPhases?:
+    | { A?: ReadonlyArray<number | null> | undefined; B?: ReadonlyArray<number | null> | undefined }
+    | undefined;
 }
 
 export interface PropsAssistantDevis {

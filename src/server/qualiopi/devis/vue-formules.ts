@@ -103,7 +103,7 @@ const TITRES: Readonly<Record<Formule, string>> = {
   abonnement: "Formule B · Mise en place + abonnement",
 };
 
-const DECLENCHEURS: Readonly<Record<string, string>> = {
+export const DECLENCHEURS: Readonly<Record<string, string>> = {
   signature: "À la signature",
   avancement: "À l'avancement",
   livraison: "À la livraison",
