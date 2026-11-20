@@ -208,13 +208,19 @@ function retirerFragments(s: string): string {
  * « (UNESCO), (AFNOR). ». N'est appelée QUE si un fragment a été retiré.
  */
 function nettoyerPonctuation(s: string): string {
-  return s
-    .replace(/\(\s*\)/g, "")
-    .replace(/\(\s*[,;]\s*/g, "(")
-    .replace(/\s*[,;]\s*\)/g, ")")
-    .replace(/[,;](?:\s*[,;])+/g, (m) => m.trim().charAt(0))
-    .replace(/[,;]\s*(?=[.!?…](?:\s|$|<))/g, "")
-    .replace(/[,;]\s*(?=<\/|$)/g, "");
+  return (
+    s
+      .replace(/\(\s*\)/g, "")
+      .replace(/\(\s*[,;]\s*/g, "(")
+      .replace(/\s*[,;]\s*\)/g, ")")
+      .replace(/[,;](?:\s*[,;])+/g, (m) => m.trim().charAt(0))
+      .replace(/[,;]\s*(?=[.!?…](?:\s|$|<))/g, "")
+      // P5 : « Organismes, et partenaires » (virgule orpheline devant et/ou/and/or).
+      // Q4 (documenté, accepté) : toute virgule devant et/ou/and/or du bloc est retirée, y compris une
+      // virgule légitime (« les équipes RH, et les dirigeants ») : typographiquement acceptable en français.
+      .replace(/\s*[,;]\s*(?=(?:et|ou|and|or)\s)/g, " ")
+      .replace(/[,;]\s*(?=<\/|$)/g, "")
+  );
 }
 
 /** La question d'une FAQ parle-t-elle de financement ? (gabarit d'override : A7) */

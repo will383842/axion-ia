@@ -12,6 +12,7 @@ import {
   proposerFaq,
   proposerOffre,
   proposerTraduction,
+  refuserSiAmbigus,
   reporterDansTexteBrut,
   resume,
   type Proposition,
@@ -78,6 +79,17 @@ describe("A3 — pas de ponctuation orpheline après retrait d'un fragment", () 
     const r = reecrireHtml("<p>Partenaires : (UNESCO), (OPCO), (AFNOR) et d'autres.</p>", "fr");
     expect(r.valeur).toBe("<p>Partenaires : (UNESCO), (AFNOR) et d'autres.</p>");
     expect(r.valeur).not.toMatch(/,\s*,|\(\s*\)/);
+  });
+  it("P5 — virgule orpheline devant « et » / « ou »", () => {
+    const r = reecrireHtml("<p>Organismes (CPF), (OPCO) et partenaires.</p>", "fr");
+    expect(r.valeur).not.toMatch(/,\s+et/);
+    expect(r.valeur).toBe("<p>Organismes et partenaires.</p>");
+    const e = reecrireHtml("<p>Bodies (CPF), (OPCO) and partners.</p>", "en");
+    expect(e.valeur).not.toMatch(/,\s+and/);
+  });
+  it("P5 — une virgule normale devant « et » est conservée si rien n'a été retiré", () => {
+    const html = "<p>Des ateliers, et des cours.</p>";
+    expect(reecrireHtml(html, "fr").valeur).toBe(html);
   });
 });
 
@@ -162,6 +174,92 @@ describe("A1 — bodyText : seuls les passages modifiés dans body sont reporté
     expect(reporterDansTexteBrut("Rien", "<p>A</p>", "<p>A</p>")).toBe("Rien");
     expect(reporterDansTexteBrut("Rien", "<p>A (OPCO)</p>", "<p>A</p>")).toBeNull();
   });
+  // P4 : deux retraits proches ne doivent plus rendre `null` (long passage unique introuvable).
+  it("P4 — deux retraits séparés par une balise en ligne dans un même bloc", () => {
+    expect(
+      reporterDansTexteBrut(
+        "Ateliers (OPCO) sur ChatGPT . Puis modules (CPF) en ligne .",
+        "<p>Ateliers (OPCO) sur <a href='/x'>ChatGPT</a>. Puis modules (CPF) en ligne.</p>",
+        "<p>Ateliers sur <a href='/x'>ChatGPT</a>. Puis modules en ligne.</p>",
+      ),
+    ).toBe("Ateliers sur ChatGPT . Puis modules en ligne .");
+  });
+  it("P4 — deux blocs adjacents modifiés", () => {
+    expect(
+      reporterDansTexteBrut(
+        "Premier (OPCO) bloc . Second (CPF) bloc .",
+        "<p>Premier (OPCO) bloc.</p><p>Second (CPF) bloc.</p>",
+        "<p>Premier bloc.</p><p>Second bloc.</p>",
+      ),
+    ).toBe("Premier bloc . Second bloc .");
+  });
+  it("Q3 — deux fragments identiques, ponctuation écrite autrement dans le texte brut", () => {
+    expect(
+      reporterDansTexteBrut(
+        "Intro . Ateliers (OPCO) sur ChatGPT . Modules (OPCO) en ligne .",
+        "<p>Intro. Ateliers (OPCO) sur ChatGPT. Modules (OPCO) en ligne.</p>",
+        "<p>Intro. Ateliers sur ChatGPT. Modules en ligne.</p>",
+      ),
+    ).toBe("Intro . Ateliers sur ChatGPT . Modules en ligne .");
+  });
+  it("Q4 (documenté) — la virgule devant « et » d'un bloc touché est retirée, même légitime", () => {
+    const r = proposerTraduction(
+      traduction({
+        body: "<p>Nous formons les équipes RH, et les dirigeants (OPCO) aussi.</p>",
+        bodyText: "Nous formons les équipes RH, et les dirigeants (OPCO) aussi.",
+      }),
+    );
+    expect(r?.apres.body).toBe("<p>Nous formons les équipes RH et les dirigeants aussi.</p>");
+  });
+  it("P4 — un morceau introuvable reste null", () => {
+    expect(
+      reporterDansTexteBrut(
+        "Premier (OPCO) bloc . Autre texte.",
+        "<p>Premier (OPCO) bloc.</p><p>Second (CPF) bloc.</p>",
+        "<p>Premier bloc.</p><p>Second bloc.</p>",
+      ),
+    ).toBeNull();
+  });
+  it("P3 — override de body dont le passage est introuvable : bodyText non écrit, ambigu, --apply refusé", () => {
+    const body = "<p>Nous proposons des ateliers (OPCO) sur ChatGPT.</p>";
+    const bodyText = "Autre texte sans rapport.";
+    const r = appliquerOverrides(
+      propositionVide({ body, bodyText }, ["article_translation:x.body : ambigu"]),
+      { body, bodyText },
+      {
+        "article_translation:x": {
+          body: {
+            origine: empreinte(body),
+            valeur: "<p>Nous proposons des ateliers sur ChatGPT.</p>",
+          },
+        },
+      },
+    );
+    expect(r.proposition.apres.body).toBe("<p>Nous proposons des ateliers sur ChatGPT.</p>");
+    expect("bodyText" in r.proposition.apres).toBe(false);
+    expect(r.proposition.ambigus.join("\n")).toMatch(/bodyText à resynchroniser/);
+    expect(() => refuserSiAmbigus([r.proposition], null)).toThrow(/REFUSÉ/);
+  });
+  it("P3 — offre : bodyTextEn périmé, seuls les passages modifiés sont reportés", () => {
+    const p = proposerOffre({
+      id: "o2",
+      slug: "office-manager",
+      status: "published",
+      titleFr: "Office manager",
+      titleEn: "Office manager",
+      summaryFr: "Vous tenez la maison.",
+      summaryEn: "You run the office.",
+      bodyFr: "<p>Vous tenez la maison.</p>",
+      bodyEn: "<p>You run the office (OPCO).</p><p>More.</p>",
+      bodyJsonFr: null,
+      bodyJsonEn: null,
+      bodyTextFr: "Vous tenez la maison.",
+      bodyTextEn: "You run the office (OPCO) . More . Added by hand.",
+      metaTitle: null,
+      metaDescription: null,
+    });
+    expect(p?.apres.bodyTextEn).toBe("You run the office . More . Added by hand.");
+  });
   it("offre : même règle pour bodyTextFr", () => {
     const p = proposerOffre({
       id: "o1",
@@ -218,6 +316,57 @@ describe("A4 (porte 2) — interdits publics : contrôle lexical strict des over
   it("« prise en charge » au sens financier : interdit ; « prise en charge des appels » : permis", () => {
     expect(INTERDITS_PUBLICS.test("Une prise en charge totale par l'organisme")).toBe(true);
     expect(INTERDITS_PUBLICS.test("La prise en charge des appels est rapide.")).toBe(false);
+  });
+  // P2 : valeurs SANS marqueur que les règles de réécriture laissent passer (vérifié : acceptées
+  // quand on retire le contrôle INTERDITS_PUBLICS de `valeurSale`) ; seule la porte 2 les refuse.
+  it.each([
+    "L'Aide Individuelle à la Formation de France Travail peut couvrir tout ou partie des frais pédagogiques.",
+    "Renseignez-vous auprès de France Travail.",
+    "Votre CPF peut aider.",
+    "Contactez votre Pôle emploi.",
+    "Frais remboursés par l'opérateur de compétences.",
+    "Les Opérateurs de Compétences accompagnent les entreprises.",
+    "Une prise en charge possible des frais pédagogiques.",
+    "Les frais sont pris en charge par votre employeur.",
+    "Les formations Axion-IA peuvent être prises en charge dans ce cadre.",
+    "Le plafond de prise en charge est atteint.",
+    "Les prises en charge varient selon le dossier.",
+    "Votre employeur prend en charge les frais.",
+    // Q1 : le verbe « financer » et ses voisins (phrases réelles du rapport du 20/11).
+    "L'entreprise finance la formation dans le cadre de son plan annuel.",
+    "L'employeur finance la formation.",
+    "Il est conseillé de consulter les organismes financeurs.",
+    "Quels soutiens financiers sont disponibles ?",
+    "Un dispositif financier existe pour vous.",
+    // Q2 : « prise en charge » sous TOUTES ses formes, sans liste blanche par préfixe.
+    "Les frais sont pris en charge rapidement par l'État.",
+    "Une prise en charge immédiatement après la signature.",
+    "Une prise en charge techniquement complète.",
+    "La formation est prise en charge des projets de formation.",
+    "Prenez en charge votre formation avec votre employeur.",
+    "Prenons en charge vos frais.",
+  ])("override « %s » → ignoré par la porte 2 seule", (valeur) => {
+    expect(INTERDITS_PUBLICS.test(valeur)).toBe(true);
+    const r = surcharge("excerpt", valeur);
+    expect(r.proposition.apres.excerpt).toBeUndefined();
+    expect(r.ignores.join("\n")).toMatch(/interdit public/);
+  });
+  it.each([
+    "La prise en charge des appels est rapide.",
+    "Une prise en charge technique du projet.",
+    "La prise en charge des demandes clients se fait en une heure.",
+    "L'IA dans la finance progresse.",
+    "Les banques et la finance adoptent l'IA.",
+    "Le secteur financier recrute.",
+    "Dans la finance, l'IA automatise le reporting.",
+    "La finance et les RH adoptent l'IA.",
+    "La prise en charge des projets web est rapide.",
+  ])("« %s » n'est pas un interdit public", (valeur) => {
+    expect(INTERDITS_PUBLICS.test(valeur)).toBe(false);
+  });
+  it("« L'IA dans la finance progresse. » est accepté comme override", () => {
+    const r = surcharge("excerpt", "L'IA dans la finance progresse.");
+    expect(r.ignores.join("\n")).not.toMatch(/interdit public/);
   });
   it("une valeur propre est acceptée", () => {
     const r = surcharge("excerpt", "Notre formation est suivie par des équipes de PME motivées.");
@@ -336,10 +485,10 @@ describe("A7 — gabarit FAQ : la question de financement est aussi proposée", 
   });
 });
 
-describe("A5 — phrase et question standard sans mot interdit (en ATTENTE de validation de Williams)", () => {
-  it("valeurs proposées par l'analyse", () => {
+describe("A5 — phrase et question standard sans mot interdit (validées par Williams le 20/11)", () => {
+  it("valeurs validées par Williams (P8)", () => {
     expect(PHRASE_FR).toBe(
-      "Tarifs : devis ferme en forfait fixe, établi après un Diagnostic IA de 45 minutes.",
+      "Tarifs : sur devis, établi après un Diagnostic IA gratuit de 45 minutes.",
     );
     expect(QUESTION_FR).toBe("Comment obtenir un devis ?");
     expect(PHRASE_EN).toBe(
