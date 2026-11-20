@@ -238,10 +238,10 @@ export default async function SignerDevisPage({ params }: PageProps) {
   if (piece.type === "devis") {
     const lie = await prisma.devis.findFirst({
       where: { documentGenereId: verif.documentGenereId },
-      select: { numero: true, offre: true, offreSha256: true, dateValidite: true },
+      select: { numero: true, clientId: true, offre: true, offreSha256: true, dateValidite: true },
     });
     if (lie !== null && lie.offre != null && lie.offreSha256 != null) {
-      if (!(await formulesActives())) {
+      if (!(await formulesActives(undefined, { clientId: lie.clientId }))) {
         return (
           <Message
             titre="Ce devis n'est pas disponible pour le moment"

@@ -212,7 +212,7 @@ export default async function QualiopiDevisDetailPage({ params }: PageProps) {
     devis.offre !== null &&
     devis.formuleRetenue !== null &&
     totalLignesHtCents !== null &&
-    (await formulesActives())
+    (await formulesActives(undefined, { clientId: devis.clientId }))
       ? lirePalierSuivant({
           offre: devis.offre,
           formuleRetenue: devis.formuleRetenue,
@@ -227,7 +227,7 @@ export default async function QualiopiDevisDetailPage({ params }: PageProps) {
     devis.offreSha256 !== null &&
     devis.formuleRetenue !== null &&
     (devis.statut === "accepte" || devis.statut === "transforme_convention") &&
-    (await formulesActives());
+    (await formulesActives(undefined, { clientId: devis.clientId }));
   // 🔴 « Aucun plan en base » ne suffit PAS : une formule « achat » sans maintenance donne
   // normalement ZÉRO plan. Règle pure et testée : `evaluerPlansManquants`. `null` attendu = les
   // plans ne peuvent pas être calculés : message DISTINCT, jamais silencieux.
@@ -315,7 +315,9 @@ export default async function QualiopiDevisDetailPage({ params }: PageProps) {
   const devisBase = `/${locale}/${adminPrefix}/qualiopi/devis`;
   // Édition d'un brouillon à formules : lien proposé seulement interrupteur allumé.
   const peutModifierFormules =
-    devis.statut === "brouillon" && devis.offreSha256 !== null && (await formulesActives());
+    devis.statut === "brouillon" &&
+    devis.offreSha256 !== null &&
+    (await formulesActives(undefined, { clientId: devis.clientId }));
   // Brouillon CLASSIQUE : « Modifier le brouillon » mène à /corriger (REPLI D7).
   const estClassique = devis.offre === null && devis.offreSha256 === null;
   const peutCorrigerClassique = peutCorrigerBrouillonClassique(devis);
@@ -349,7 +351,7 @@ export default async function QualiopiDevisDetailPage({ params }: PageProps) {
     try {
       resumeFormules = formulesDuDevis(
         devis.offre,
-        await formulesActives(),
+        await formulesActives(undefined, { clientId: devis.clientId }),
         regimeTvaDepuisConfig(await getQualiopiConfig("regime_tva")),
       );
     } catch (err) {

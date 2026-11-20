@@ -157,7 +157,11 @@ export async function envoyerDevisEmailAction(
   // Devis à formules : échec FERMÉ si l'interrupteur est éteint. Sinon un renvoi émettrait un
   // nouveau lien (qui révoque l'ancien) et enverrait un e-mail dont le lien serait refusé à la
   // signature. `offre` est un champ scalaire, déjà lu par `include`.
-  if (devis.offre !== null && devis.offre !== undefined && !(await formulesActives())) {
+  if (
+    devis.offre !== null &&
+    devis.offre !== undefined &&
+    !(await formulesActives(undefined, { clientId: devis.clientId }))
+  ) {
     return {
       error:
         "Ce devis à formules ne peut pas être renvoyé tant que les devis à formules sont désactivés dans la configuration.",
