@@ -259,7 +259,7 @@ export const FAQ: { titre: string; questions: readonly QuestionReponse[] } = {
     {
       question: "Combien de temps, et qui participe ?",
       reponse:
-        "Une journée : l’audit le matin avec le dirigeant ou un responsable, la formation l’après-midi pour jusqu’à 15 personnes.",
+        "Une journée : l’audit le matin avec le dirigeant ou un responsable (entreprises de 2 à 250 salariés), la formation l’après-midi pour jusqu’à 15 personnes.",
     },
     {
       question: "Le dîner du vendredi est-il compris ?",
