@@ -7,7 +7,7 @@ describe("OngletDevisFactures — documents générés", () => {
       "src/components/admin/dossier-client/fiche/OngletDevisFactures.tsx",
       "utf8",
     );
-    expect(src).toContain("`/api/qualiopi/documents/${doc.id}`");
+    expect(src).toContain("lienTelechargement(`/api/qualiopi/documents/${doc.id}`)");
   });
   it("la route exige une session admin", () => {
     const route = readFileSync("src/app/api/qualiopi/documents/[id]/route.ts", "utf8");

@@ -450,7 +450,7 @@ export default async function QualiopiDevisDetailPage({ params, searchParams }: 
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                Télécharger le devis (PDF)
+                Ouvrir le devis (PDF)
               </AdminButton>
             ) : null}
             {peutModifierFormules ? (

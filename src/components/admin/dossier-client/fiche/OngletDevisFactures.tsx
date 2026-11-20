@@ -12,6 +12,7 @@ import { AdminBadge } from "@/components/admin/ui/AdminBadge";
 import { BandeauAttributionPartners } from "@/components/admin/qualiopi/BandeauAttributionPartners";
 import type { Client360 } from "@/server/qualiopi/crm/clients";
 import type { bandeauPourLeRole } from "@/server/partners/client-attributions";
+import { lienTelechargement } from "@/lib/content-disposition";
 import { formatDateFrShort } from "@/lib/format-date-fr";
 import { dayKeyInParis } from "@/lib/calendar-grid";
 import type { ContexteFiche } from "./contexte";
@@ -267,7 +268,7 @@ export function OngletDevisFactures({
                 <span className={ligneMutedCls}>{formatDateFrShort(doc.createdAt)}</span>
                 {/* Route existante, session admin exigée. */}
                 <a
-                  href={`/api/qualiopi/documents/${doc.id}`}
+                  href={lienTelechargement(`/api/qualiopi/documents/${doc.id}`)}
                   target="_blank"
                   rel="noopener noreferrer"
                   className={lienTexteCls}
