@@ -15,6 +15,7 @@ import {
   History,
   ListChecks,
 } from "lucide-react";
+import Link from "next/link";
 import type { ReactNode } from "react";
 
 import { AdminBadge } from "@/components/admin/ui/AdminBadge";
@@ -153,5 +154,39 @@ export function PastilleEtat({
         {children}
       </span>
     </AdminBadge>
+  );
+}
+
+/**
+ * Phrases sous le compte rendu : où trouver celui de l'enregistrement, et le lien
+ * « E-mail de suivi au client » avec sa phrase, toujours VISIBLE (l'e-mail part chez
+ * un vrai client : rien n'est replié).
+ */
+export function NotesEnregistrementEtSuite({
+  hrefEmailSuivi,
+  enregistrementAbsent,
+}: {
+  hrefEmailSuivi: string;
+  enregistrementAbsent: boolean;
+}) {
+  return (
+    <>
+      <p className="mt-[var(--space-admin-3)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]">
+        {enregistrementAbsent
+          ? "Aucun enregistrement de ce rendez-vous n'a encore donné de compte rendu."
+          : "Le compte rendu de l'enregistrement est plus bas sur cette page."}
+      </p>
+      <p className="mt-[var(--space-admin-3)] text-[length:var(--text-admin-sm)]">
+        <Link
+          href={hrefEmailSuivi}
+          className="inline-flex min-h-[44px] items-center font-semibold text-[color:var(--color-admin-accent)] underline-offset-2 hover:underline"
+        >
+          E-mail de suivi au client
+        </Link>
+      </p>
+      <p className="mt-[var(--space-admin-1)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]">
+        Il est préparé depuis les faits validés et attend votre validation avant de partir.
+      </p>
+    </>
   );
 }

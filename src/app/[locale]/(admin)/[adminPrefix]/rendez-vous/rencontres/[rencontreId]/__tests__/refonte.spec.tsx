@@ -3,7 +3,13 @@ import { join } from "node:path";
 import { describe, it, expect } from "vitest";
 import { render, screen } from "@testing-library/react";
 
-import { CarteLigne, EncartTeinte, PastilleEtat, TuilesRencontre } from "../vue-fiche";
+import {
+  CarteLigne,
+  EncartTeinte,
+  NotesEnregistrementEtSuite,
+  PastilleEtat,
+  TuilesRencontre,
+} from "../vue-fiche";
 
 describe("Fiche d'une rencontre — refonte visuelle", () => {
   it("les tuiles montrent les bons chiffres et tons", () => {
@@ -60,5 +66,39 @@ describe("Fiche d'une rencontre — refonte visuelle", () => {
     const ajoute = readFileSync(join(__dirname, "../vue-fiche.tsx"), "utf8");
     expect(ajoute).not.toMatch(/qualiopi|opco|financement|prise en charge|certification|cpf/i);
     expect(src).not.toMatch(/<iframe/i);
+  });
+
+  describe("notes sous le compte rendu", () => {
+    const rendre = (enregistrementAbsent: boolean) =>
+      render(
+        <NotesEnregistrementEtSuite
+          hrefEmailSuivi="/x?emailSuivi=1"
+          enregistrementAbsent={enregistrementAbsent}
+        />,
+      );
+
+    it("la phrase sur la validation de l'e-mail est visible, hors de tout <details>", () => {
+      const { container } = rendre(false);
+      const phrase = screen.getByText(/attend votre validation avant de partir/);
+      expect(phrase.closest("details")).toBeNull();
+      expect(container.querySelector("details")).toBeNull();
+      const lien = screen.getByText("E-mail de suivi au client");
+      expect(lien.closest("p")?.nextElementSibling).toBe(phrase);
+    });
+
+    it("les phrases sur l'enregistrement sont du texte atténué, sans encadré teinté", () => {
+      for (const absent of [false, true]) {
+        const { container, unmount } = rendre(absent);
+        const phrase = screen.getByText(
+          absent
+            ? /Aucun enregistrement de ce rendez-vous/
+            : /compte rendu de l'enregistrement est plus bas/,
+        );
+        expect(phrase.tagName).toBe("P");
+        expect(phrase.className).toContain("--color-admin-fg-muted");
+        expect(container.querySelector("[data-encart], [data-ton]")).toBeNull();
+        unmount();
+      }
+    });
   });
 });

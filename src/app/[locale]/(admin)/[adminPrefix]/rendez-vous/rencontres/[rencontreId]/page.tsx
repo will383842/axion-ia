@@ -42,14 +42,19 @@ import { compteRenduEnregistre } from "@/features/dossier-client/compte-rendu-en
 import { lireMessageDeRetour } from "@/features/dossier-client/message-de-retour";
 import { QuestionnairePreaudit } from "@/components/admin/dossier-client/QuestionnairePreaudit";
 import { SuppressionManuelle } from "@/components/admin/dossier-client/SuppressionManuelle";
-import { AdminBlocRepliable } from "@/components/admin/ui/AdminBlocRepliable";
 import { AdminEmptyState } from "@/components/admin/ui/AdminEmptyState";
 import { adminPath } from "@/lib/admin-path";
 import { prisma } from "@/lib/prisma";
 import { formatDateFrShort } from "@/lib/format-date-fr";
 import { timeInParis } from "@/lib/calendar-grid";
 import { ClipboardList, FileX2, Hourglass } from "lucide-react";
-import { CarteLigne, EncartTeinte, PastilleEtat, TuilesRencontre } from "./vue-fiche";
+import {
+  CarteLigne,
+  EncartTeinte,
+  NotesEnregistrementEtSuite,
+  PastilleEtat,
+  TuilesRencontre,
+} from "./vue-fiche";
 
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
@@ -265,31 +270,10 @@ export default async function RencontrePage({ params, searchParams }: PageProps)
             </EncartTeinte>
           </div>
         ) : null}
-        <div className="mt-[var(--space-admin-3)]">
-          <EncartTeinte ton={vueEnregistrement === null ? "neutral" : "info"}>
-            {vueEnregistrement === null
-              ? "Aucun enregistrement de ce rendez-vous n'a encore donné de compte rendu."
-              : "Le compte rendu de l'enregistrement est plus bas sur cette page."}
-          </EncartTeinte>
-        </div>
-        <p className="mt-[var(--space-admin-3)] text-[length:var(--text-admin-sm)]">
-          <Link
-            href={`${rdvBase}?emailSuivi=${r.id}`}
-            className={`inline-flex min-h-[44px] items-center font-semibold ${lienCls}`}
-          >
-            E-mail de suivi au client
-          </Link>
-        </p>
-        <AdminBlocRepliable
-          titre="À propos de l'e-mail de suivi"
-          className="mt-[var(--space-admin-2)]"
-        >
-          <p
-            className={`px-[var(--space-admin-5)] pb-[var(--space-admin-4)] text-[length:var(--text-admin-sm)] ${mutedCls}`}
-          >
-            Il est préparé depuis les faits validés et attend votre validation avant de partir.
-          </p>
-        </AdminBlocRepliable>
+        <NotesEnregistrementEtSuite
+          hrefEmailSuivi={`${rdvBase}?emailSuivi=${r.id}`}
+          enregistrementAbsent={vueEnregistrement === null}
+        />
         {r.comptesRendus.length > 1 ? (
           <details className="mt-[var(--space-admin-3)] text-[length:var(--text-admin-sm)]">
             <summary className="flex min-h-[44px] cursor-pointer items-center font-semibold">
