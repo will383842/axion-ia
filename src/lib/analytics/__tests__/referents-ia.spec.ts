@@ -42,11 +42,24 @@ describe("classerReferentIA", () => {
     expect(classerReferentIA(null)).toBeNull();
   });
 
-  it("tracking-referer partage la même liste", () => {
-    for (const ia of REFERENTS_IA) {
-      for (const d of ia.domaines) {
-        expect(detectSearchEngine(`https://${d}/`)).toBe(ia.id);
-      }
+  it("cohérence avec le traceur public (inchangé) : même identifiant pour les IA historiques", () => {
+    // tracking-referer.ts n'importe plus ce module (0 o ajouté au bundle public) : ce test
+    // garde les deux listes alignées. deepseek/you/phind/bing.com/chat : serveur seulement.
+    const historiques = [
+      ["chatgpt.com", "chatgpt"],
+      ["chat.openai.com", "chatgpt"],
+      ["perplexity.ai", "perplexity"],
+      ["copilot.microsoft.com", "copilot"],
+      ["gemini.google.com", "gemini"],
+      ["bard.google.com", "gemini"],
+      ["chat.mistral.ai", "mistral"],
+      ["mistral.ai", "mistral"],
+      ["claude.ai", "claude"],
+    ] as const;
+    for (const [d, id] of historiques) {
+      expect(detectSearchEngine(`https://${d}/`)).toBe(id);
+      expect(classerReferentIA(`https://${d}/`)?.id).toBe(id);
     }
+    expect(REFERENTS_IA.length).toBeGreaterThan(historiques.length - 3);
   });
 });

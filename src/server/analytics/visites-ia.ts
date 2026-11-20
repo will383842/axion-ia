@@ -3,11 +3,20 @@
 //
 // - API v2 (`POST /api/v2/query`), dimension `visit:source` (référent reconnu OU
 //   `utm_source`, même sans en-tête Referer), filtre EXACT `is` sur `SOURCES_PLAUSIBLE`
-//   (+ `visit:referrer` contient `bing.com/chat`). Le classement par IA se fait ICI.
+//   OU `visit:referrer` contient un domaine de `REFERENTS_IA` (+ `bing.com/chat`).
+//   Le classement par IA se fait ICI.
+//   ⚠️ Pourquoi les deux : Plausible v3.0.1 (prod) range d'abord le référent via RefInspector,
+//   sous-domaines compris (`source.ex` → `resolve/1`, `ref_inspector/parser.ex:59`) ; or
+//   `google.com` est sous « Google » (`referers.yml:1513`). Une visite de `gemini.google.com`
+//   a donc `visit:source = "Google"` et `visit:referrer = "gemini.google.com"` : seul le
+//   filtre sur le référent la voit. Les versions récentes nomment « Microsoft Copilot » et
+//   « Google Gemini » (`custom_sources.json`) : les deux noms sont listés.
 // - Périodes : `7d` / `30d` natifs (alignés sur la v1) ; hebdo = lundi d'il y a 11
 //   semaines → aujourd'hui, fuseau Europe/Paris (semaine en cours partielle).
-// - Repli v1 (`/api/v1/stats/breakdown`, `visit:source==…`) si la v2 répond 404 :
-//   totaux 7 j / 30 j seulement (ni série hebdomadaire, ni pages d'arrivée, ni bing.com/chat).
+// - Repli v1 (`/api/v1/stats/breakdown`) si la v2 répond 404 : par source (`visit:source==…`)
+//   + un second passage par référent Gemini (`visit:referrer=~…`, sources déjà comptées
+//   exclues). Totaux 7 j / 30 j seulement (ni série hebdomadaire, ni pages d'arrivée,
+//   ni bing.com/chat : Copilot via Bing n'y est compté que si la source l'indique).
 // - Échec silencieux : clé absente, stubs de build, API injoignable ou en erreur →
 //   `{ statut: "indisponible" }`, jamais d'exception. Aucun appel réseau au build.
 // - Cache mémoire court (5 min) : la page admin est force-dynamic.
@@ -15,9 +24,13 @@
 // Note : les visiteurs d'une période sont additionnés d'une IA à l'autre ; une
 // personne venue de deux IA différentes est comptée deux fois (écart négligeable).
 
-import { classerReferentIA, type IdIA } from "@/lib/analytics/referents-ia";
+import "server-only";
 
-// Libellés et sources Plausible : côté SERVEUR uniquement (zéro octet dans le bundle public).
+import { classerReferentIA, REFERENTS_IA, type IdIA } from "@/lib/analytics/referents-ia";
+
+// Module SERVEUR uniquement (`server-only`) : jamais dans le bundle public.
+// `src/lib/tracking-referer.ts` (chargé sur tout le site) n'importe rien de ceci et reste
+// identique à sa version d'avant la PR.
 export const LIBELLES_IA: Readonly<Record<IdIA, string>> = {
   chatgpt: "ChatGPT",
   perplexity: "Perplexity",
@@ -33,15 +46,22 @@ export const LIBELLES_IA: Readonly<Record<IdIA, string>> = {
 /** Valeurs EXACTES de `visit:source` : nom reconnu par Plausible + domaine (utm_source). */
 export const SOURCES_PLAUSIBLE: Readonly<Record<IdIA, readonly string[]>> = {
   chatgpt: ["ChatGPT", "chatgpt.com", "chat.openai.com"],
-  perplexity: ["Perplexity", "perplexity.ai"],
-  copilot: ["Copilot", "copilot.microsoft.com"],
-  gemini: ["Gemini", "gemini.google.com", "bard.google.com"],
+  perplexity: ["Perplexity", "perplexity.ai", "pplx.ai"],
+  copilot: ["Copilot", "Microsoft Copilot", "copilot.microsoft.com", "copilot.com"],
+  gemini: ["Gemini", "Google Gemini", "gemini.google.com", "bard.google.com"],
   mistral: ["Mistral", "chat.mistral.ai", "mistral.ai"],
   claude: ["Claude", "claude.ai"],
-  deepseek: ["DeepSeek", "chat.deepseek.com"],
+  deepseek: ["DeepSeek", "chat.deepseek.com", "deepseek.com"],
   you: ["You.com", "you.com"],
   phind: ["Phind", "phind.com"],
 };
+
+/** Domaines cherchés dans `visit:referrer` (sous-domaines compris) : filet quand la source est « Google », « Bing »… */
+const DOMAINES_REFERENT: readonly string[] = [
+  ...REFERENTS_IA.flatMap((ia) => ia.domaines),
+  "bing.com/chat",
+];
+const REFERENTS_GEMINI = ["gemini.google.com", "bard.google.com"];
 
 const TOUTES_SOURCES: readonly string[] = Object.values(SOURCES_PLAUSIBLE).flat();
 const IA_PAR_SOURCE: ReadonlyMap<string, IdIA> = new Map(
@@ -206,7 +226,7 @@ function requete(site: string, plage: "7d" | "30d" | [string, string], dimension
         "or",
         [
           ["is", "visit:source", [...TOUTES_SOURCES]],
-          ["contains", "visit:referrer", ["bing.com/chat"]],
+          ["contains", "visit:referrer", [...DOMAINES_REFERENT]],
         ],
       ],
     ],
@@ -221,6 +241,7 @@ async function breakdownV1(
   site: string,
   jours: number,
   propriete: string,
+  filtres: string,
 ): Promise<unknown[]> {
   const p = new URLSearchParams({
     site_id: site,
@@ -228,7 +249,7 @@ async function breakdownV1(
     property: propriete,
     metrics: "visitors,visits",
     limit: "1000",
-    filters: `visit:source==${TOUTES_SOURCES.join("|")}`,
+    filters: filtres,
   });
   const res = await fetch(`${api}/api/v1/stats/breakdown?${p.toString()}`, {
     headers: { authorization: `Bearer ${cle}` },
@@ -238,7 +259,11 @@ async function breakdownV1(
   if (!res.ok) throw new Error(`HTTP ${res.status}`);
   const json = (await res.json()) as { results?: Array<Record<string, unknown>> };
   return (json.results ?? []).map((r) => ({
-    dimensions: [String(r[propriete.replace(/^[a-z]+:/, "")] ?? "")],
+    // Passage « référent » : source vide, le référent est classé par domaine.
+    dimensions:
+      propriete === "visit:referrer"
+        ? ["", String(r.referrer ?? "")]
+        : [String(r[propriete.replace(/^[a-z]+:/, "")] ?? "")],
     metrics: [r.visitors, r.visits],
   }));
 }
@@ -249,8 +274,11 @@ export async function lireVisitesIA(): Promise<VisitesIA> {
   if (!cle || !site)
     return { statut: "indisponible", raison: "Clé d'accès Plausible non configurée." };
   // Build GitHub Actions (stubs ADR 0026) : aucun appel réseau.
+  // `SKIP_ENV_VALIDATION` ne vaut « build » que pendant la phase de build : posée à
+  // l'exécution (Coolify), elle ne doit pas éteindre la mesure.
   if (
-    process.env.SKIP_ENV_VALIDATION === "true" ||
+    (process.env.SKIP_ENV_VALIDATION === "true" &&
+      process.env.NEXT_PHASE === "phase-production-build") ||
     process.env.DATABASE_URL?.includes("stub.invalid")
   ) {
     return {
@@ -282,10 +310,17 @@ export async function lireVisitesIA(): Promise<VisitesIA> {
       };
     } catch (e) {
       if (!(e instanceof V2Absente)) throw e;
-      const [r7, r30] = await Promise.all([
-        breakdownV1(api, cle, site, 7, "visit:source"),
-        breakdownV1(api, cle, site, 30, "visit:source"),
+      const parSource = `visit:source==${TOUTES_SOURCES.join("|")}`;
+      // Gemini arrive avec la source « Google » : second passage par référent, hors sources déjà comptées.
+      const parReferent = `visit:referrer=~${REFERENTS_GEMINI.map((d) => d.replace(/\./g, "\\.")).join("|")};visit:source!=${TOUTES_SOURCES.join("|")}`;
+      const [s7, g7, s30, g30] = await Promise.all([
+        breakdownV1(api, cle, site, 7, "visit:source", parSource),
+        breakdownV1(api, cle, site, 7, "visit:referrer", parReferent),
+        breakdownV1(api, cle, site, 30, "visit:source", parSource),
+        breakdownV1(api, cle, site, 30, "visit:referrer", parReferent),
       ]);
+      const r7 = [...s7, ...g7];
+      const r30 = [...s30, ...g30];
       // v1 ne croise pas deux propriétés : pages d'arrivée non disponibles en repli.
       resultat = {
         statut: "ok",

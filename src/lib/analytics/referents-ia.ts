@@ -1,11 +1,8 @@
 // Liste UNIQUE des référents « assistants IA » (fiche GEO V1-10).
 //
-// Partagée par `tracking-referer.ts` (détection côté navigateur) et la console
-// (`src/server/analytics/visites-ia.ts`, qui y ajoute libellés et sources Plausible).
-//
-// ⚠️ Module volontairement minuscule et sans import : `tracking-referer` est dans le
-// bundle public (cliquet « Poids du bundle ») : n'y mettre que ce que le navigateur utilise
-// (ni libellés d'affichage, ni filtres d'API — ils vivent côté serveur).
+// SERVEUR uniquement : utilisée par la console (`src/server/analytics/visites-ia.ts`).
+// `tracking-referer.ts` (bundle public) ne l'importe PAS — sa liste d'expressions régulières
+// est inchangée ; `referents-ia.spec.ts` vérifie que les deux restent alignées.
 
 export type IdIA =
   | "chatgpt"

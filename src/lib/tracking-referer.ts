@@ -4,7 +4,6 @@
 // page qui appelle `trackFunnel` en embarquait une copie (cliquet « Poids du bundle »).
 
 import { trackEvent } from "@/lib/analytics/plausible-tracker";
-import { classerReferentIA } from "@/lib/analytics/referents-ia";
 
 /**
  * P1-19 audit indexation 2026-05-15 — détection du moteur de recherche source.
@@ -28,8 +27,6 @@ import { classerReferentIA } from "@/lib/analytics/referents-ia";
  *   - gemini.google.com / bard.google.com → "gemini"
  *   - mistral.ai / chat.mistral.ai → "mistral"
  *   - copilot.microsoft.com → "copilot"
- *   - chat.deepseek.com → "deepseek", you.com → "you", phind.com → "phind"
- *   - (liste des IA : `referents-ia.ts`, source unique)
  *   - (vide / null) → "direct"
  *   - reste → "other"
  *
@@ -48,9 +45,6 @@ export type RefererSource =
   | "gemini"
   | "mistral"
   | "copilot"
-  | "deepseek"
-  | "you"
-  | "phind"
   | "direct"
   | "other";
 
@@ -61,14 +55,17 @@ const REFERER_PATTERNS: ReadonlyArray<{ test: RegExp; source: RefererSource }> =
   { test: /^https?:\/\/(?:duckduckgo\.com|html\.duckduckgo\.com)\//i, source: "ddg" },
   { test: /^https?:\/\/(?:www\.)?ecosia\.org\//i, source: "ecosia" },
   { test: /^https?:\/\/(?:www\.)?lilo\.org\//i, source: "lilo" },
+  { test: /^https?:\/\/(?:www\.)?perplexity\.ai\//i, source: "perplexity" },
+  { test: /^https?:\/\/(?:chat\.openai\.com|chatgpt\.com)\//i, source: "chatgpt" },
+  { test: /^https?:\/\/(?:www\.)?claude\.ai\//i, source: "claude" },
+  { test: /^https?:\/\/(?:gemini|bard)\.google\.com\//i, source: "gemini" },
+  { test: /^https?:\/\/(?:chat\.)?mistral\.ai\//i, source: "mistral" },
+  { test: /^https?:\/\/copilot\.microsoft\.com\//i, source: "copilot" },
 ];
 
 export function detectSearchEngine(referrer: string | null | undefined): RefererSource {
   const ref = (referrer ?? "").trim();
   if (ref.length === 0) return "direct";
-  // Assistants IA : liste unique partagée avec la console (referents-ia.ts).
-  const ia = classerReferentIA(ref);
-  if (ia) return ia.id;
   for (const { test, source } of REFERER_PATTERNS) {
     if (test.test(ref)) return source;
   }
