@@ -86,7 +86,7 @@ export type Overrides = Record<
 /**
  * Interdits PUBLICS : contrôle LEXICAL strict d'un override (porte 2). Plus strict que les règles de
  * réécriture, qui laissent passer « France Travail » sans marqueur de financement (A4).
- * « prise en charge » n'est interdit qu'au sens financier (cf. `PRISE_EN_CHARGE_FINANCIERE`).
+ * « prise en charge » est interdit sous toutes ses formes, sauf complément non financier (liste blanche).
  */
 export const INTERDITS_PUBLICS = new RegExp(
   [
@@ -99,15 +99,21 @@ export const INTERDITS_PUBLICS = new RegExp(
     "france travail",
     "p[ôo]le[- ]emploi",
     "\\bAIF\\b",
-    "finan[cç]",
+    // P6 : le financement, pas « la finance » / « financier » (secteur d'activité).
+    "finan[cç](?:ement|ements|er|ons|ez|ent|ant|ante|ants|é(?:e|s|es)?|able|ables|ing)",
+    "aides? financi[èe]res?",
+    "op[ée]rateurs? de comp[ée]tences",
+    "frais\\s+(?:p[ée]dagogiques\\s+)?rembours",
+    "rembours\\w*\\s+(?:des?\\s+|les\\s+)?(?:frais|formations?)",
     "\\bfund(?:s|ing|ed)?\\b",
     "subvention",
     "subrogation",
     "\\bEDOF\\b",
     "FNE[- ]Formation",
     "datadock",
-    "pris(?:e|es)? en charge (?:totale|partielle|financi[èe]re|par (?:l'|le |la |les )?(?:organisme|op[ée]rateur|r[ée]gion|[ÉEée]tat|employeur|branche))",
-    "(?:dossier|demande|accord|modalit[ée]s?) de (?:la )?prise en charge",
+    // P1 : TOUTE forme de « prise(s) en charge » / « prend en charge » est interdite, sauf si le
+    // complément est dans une courte liste blanche non financière (appels, projet, demandes…).
+    "(?:pris(?:e|es)?|prend(?:re|ra|ront)?|prennent|prenant)\\s+en\\s+charge(?!\\s+(?:rapide|imm[ée]diate|technique|des?\\s+(?:appels?|projets?|demandes?|tickets?|incidents?|requ[êe]tes?|clients?|patients?)|du\\s+(?:projet|client|patient|ticket)|de\\s+la\\s+demande|d['’](?:appels?|un\\s+projet)))",
   ].join("|"),
   "i",
 );
@@ -139,32 +145,53 @@ export function reporterDansTexteBrut(
   const a = htmlVersBlocs(bodyAvant);
   const b = htmlVersBlocs(bodyApres);
   let courant = bodyTextOrigine;
+  const mots = (t: string): string[] => t.split(/\s+/).filter((x) => x !== "");
   for (const [i0, i1, j0, j1] of groupesDeBlocs(a, b)) {
-    const avant = a.slice(i0, i1).join(" ");
-    const apres = b.slice(j0, j1).join(" ");
-    let p = 0;
-    const max = Math.min(avant.length, apres.length);
-    while (p < max && avant[p] === apres[p]) p++;
-    let s = 0;
-    while (s < max - p && avant[avant.length - 1 - s] === apres[apres.length - 1 - s]) s++;
-    const retire = avant.slice(p, avant.length - s);
-    const ajoute = apres.slice(p, apres.length - s);
-    if (retire.replace(/\s+/g, "") === ajoute.replace(/\s+/g, "")) continue;
-    let fait = false;
-    for (const k of [0, 20, 40, 80]) {
-      const gauche = avant.slice(Math.max(0, p - k), p);
-      const droite = avant.slice(avant.length - s, avant.length - s + k);
-      const motif = gauche + retire + droite;
-      if (motif.trim() === "") continue;
-      const re = new RegExp(motif.split(/\s+/).map(echapperRegExp).join("\\s+"), "g");
-      const n = courant.match(re)?.length ?? 0;
-      if (n === 0) return null;
-      if (n > 1) continue;
-      courant = courant.replace(re, () => gauche + ajoute + droite);
-      fait = true;
-      break;
+    // P4 : chaque groupe de blocs modifiés est découpé en MORCEAUX par un diff mot à mot, et chaque
+    // morceau est reporté séparément (deux retraits proches ne forment plus un seul long passage).
+    const wa = mots(a.slice(i0, i1).join(" "));
+    const wb = mots(b.slice(j0, j1).join(" "));
+    // Contexte gauche pris du côté « après » (déjà reporté dans `courant`), droit du côté « avant ».
+    const hors = {
+      gauche: b.slice(0, j0).join(" "),
+      droite: a.slice(i1).join(" "),
+    };
+    for (const [x0, x1, y0, y1] of groupesDeBlocs(wa, wb)) {
+      const avant = wa.slice(x0, x1).join(" ");
+      const apres = wb.slice(y0, y1).join(" ");
+      let p = 0;
+      const max = Math.min(avant.length, apres.length);
+      while (p < max && avant[p] === apres[p]) p++;
+      let s = 0;
+      while (s < max - p && avant[avant.length - 1 - s] === apres[apres.length - 1 - s]) s++;
+      let retire = avant.slice(p, avant.length - s);
+      const ajoute = apres.slice(p, apres.length - s);
+      if (retire.replace(/\s+/g, "") === ajoute.replace(/\s+/g, "")) continue;
+      const gauche0 = [hors.gauche, wb.slice(0, y0).join(" ")].filter(Boolean).join(" ");
+      const gaucheTexte = (gauche0 ? gauche0 + " " : "") + avant.slice(0, p);
+      const reste = [wa.slice(x1).join(" "), hors.droite].filter(Boolean).join(" ");
+      let droiteTexte = avant.slice(avant.length - s) + (reste ? " " + reste : "");
+      // Un mot retiré emporte une espace voisine, sinon il laisse une double espace.
+      if (ajoute === "" && droiteTexte.startsWith(" ")) {
+        retire += " ";
+        droiteTexte = droiteTexte.slice(1);
+      }
+      let fait = false;
+      for (const k of [0, 20, 40, 80]) {
+        const gauche = k === 0 ? "" : gaucheTexte.slice(-k);
+        const droite = k === 0 ? "" : droiteTexte.slice(0, k);
+        const motif = gauche + retire + droite;
+        if (motif.trim() === "") continue;
+        const re = new RegExp(motif.split(/\s+/).map(echapperRegExp).join("\\s+"), "g");
+        const n = courant.match(re)?.length ?? 0;
+        if (n === 0) return null;
+        if (n > 1) continue;
+        courant = courant.replace(re, () => gauche + ajoute + droite);
+        fait = true;
+        break;
+      }
+      if (!fait) return null;
     }
-    if (!fait) return null;
   }
   return courant;
 }
@@ -586,11 +613,6 @@ export function integrerOverrides(
   };
 }
 
-/**
- * Une valeur d'override est-elle PROPRE ? Elle repasse dans les mêmes règles que le contenu : si le
- * résultat n'est pas « propre » (mention restante, ambigu), l'override est ignoré. Rend la raison,
- * ou `null` si la valeur est propre.
- */
 /** Textes lisibles d'une valeur d'override (HTML → texte, JSON → chaînes hors liens/ids). */
 const CLES_NON_TEXTE = new Set([
   "href",
@@ -617,6 +639,11 @@ function motsPerdus(origine: unknown, valeur: unknown): string[] {
   return [...new Set(motsNonRetirables(textesDe(origine).join(" "), textesDe(valeur).join(" ")))];
 }
 
+/**
+ * Une valeur d'override est-elle PROPRE ? Elle repasse dans les mêmes règles que le contenu : si le
+ * résultat n'est pas « propre » (mention restante, ambigu), l'override est ignoré. Rend la raison,
+ * ou `null` si la valeur est propre.
+ */
 function valeurSale(champ: string, valeur: unknown): string | null {
   // Porte 2 : contrôle lexical strict, AVANT les règles de réécriture (A4).
   const interdit = INTERDITS_PUBLICS.exec(textesDe(valeur).join("\n"));
