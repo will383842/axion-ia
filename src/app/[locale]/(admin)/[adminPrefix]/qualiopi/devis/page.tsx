@@ -15,6 +15,11 @@ import { AdminButton } from "@/components/admin/ui/AdminButton";
 import { AdminBadge } from "@/components/admin/ui/AdminBadge";
 import { BadgeEmailDevis } from "@/components/admin/qualiopi/BadgeEmailDevis";
 import { prisma } from "@/lib/prisma";
+import {
+  devisAvecRelanceRecente,
+  estCandidatARelance,
+  estDevisARelancer,
+} from "@/server/qualiopi/devis/devis-a-relancer";
 import { devisAvecEmailEnAttente } from "@/server/qualiopi/devis/email-devis-en-attente";
 import { Hash, FileText, Send, CheckCircle2, ArrowRight, PenLine } from "lucide-react";
 import { listDevis } from "@/server/qualiopi/crm/devis";
@@ -106,6 +111,16 @@ export default async function QualiopiDevisPage({ params, searchParams }: PagePr
   const emailsEnAttente = await devisAvecEmailEnAttente(
     prisma,
     devisList.filter((d) => d.statut === "brouillon" || d.statut === "envoye").map((d) => d.id),
+  ).catch(() => new Set<string>());
+
+  // Pastille « À relancer » : UNE lecture groupée des relances déjà garées ou envoyées.
+  const maintenant = new Date();
+  const relancesRecentes = await devisAvecRelanceRecente(
+    prisma,
+    devisList
+      .filter((d) => estCandidatARelance(d, etatListeDevis(d, piecesAContresigner), maintenant))
+      .map((d) => d.id),
+    maintenant,
   ).catch(() => new Set<string>());
 
   // Index clients par id pour affichage rapide
@@ -253,6 +268,16 @@ export default async function QualiopiDevisPage({ params, searchParams }: PagePr
                           <AdminBadge tone={STATUT_TONES[devis.statut] ?? "neutral"} dot>
                             {STATUT_LABELS[devis.statut] ?? devis.statut}
                           </AdminBadge>
+                          {estDevisARelancer(
+                            devis,
+                            etatListeDevis(devis, piecesAContresigner),
+                            relancesRecentes.has(devis.id),
+                            maintenant,
+                          ) && (
+                            <AdminBadge tone="warning" dot>
+                              À relancer
+                            </AdminBadge>
+                          )}
                           <BadgeEmailDevis
                             statut={devis.statut}
                             enAttente={emailsEnAttente.has(devis.id)}
