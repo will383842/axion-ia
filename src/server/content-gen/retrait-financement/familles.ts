@@ -203,6 +203,8 @@ function estFrancais(lignes: readonly string[]): boolean {
 // ───────────────────────────── classement ─────────────────────────────
 
 const MSG_FAQ_FINANCEMENT = "FAQ à relire (question de financement";
+/** Message de `conditionnelsRestants` (`regles.ts`) : une mention reste après le retrait d'un fragment. */
+const MSG_MENTION_RESTANTE = "mention restante";
 const MSG_FAQ_ETRANGERE = "FAQ à relire (question étrangère";
 const CHAMPS_COURTS = new Set(["directAnswer", "keyTakeaway", "expertQuoteText"]);
 
@@ -252,7 +254,13 @@ function familleDe(
   // R2 : une section numérotée est au milieu d'une liste ordonnée (« Étape 3 », puis le remplacement,
   // puis « Étape 5 ») : jamais de remplacement automatique, un relecteur renumérote.
   if (titreF4 !== null) return TITRE_NUMEROTE.test(titreF4.trim()) ? "F7" : "F4";
-  if (c.message.startsWith("forme non prouvée") || c.message.startsWith("phrase mixte")) {
+  // B2 (essai à blanc n° 2) : « mention restante… » (A4 de #2194, B1) est une phrase citée, comme
+  // « forme non prouvée » : même chemin F5/F6, jamais « message non reconnu » (F7, à la main).
+  if (
+    c.message.startsWith("forme non prouvée") ||
+    c.message.startsWith("phrase mixte") ||
+    c.message.startsWith(MSG_MENTION_RESTANTE)
+  ) {
     if (c.table === "faq" || c.champ === "faqJson") return "F3";
     const phrase = citation(c.message);
     const titres = sections.get(`${c.cle}|${c.champ}`) ?? [];
@@ -611,7 +619,8 @@ export function genererOverrides(cas: readonly CasAmbigu[]): Sortie {
       continue;
     }
     // R1 : une phrase F6 déjà contenue dans une zone automatique du même article est un doublon.
-    if (c.famille === "F6" && dansZoneAuto(c)) continue;
+    // B2 : idem pour un cas F7 qui cite une phrase (verrou…) : la zone remplace toute la section.
+    if ((c.famille === "F6" || c.famille === "F7") && dansZoneAuto(c)) continue;
     reste.push(c);
   }
   const tri = (l: CasClasse[]): CasClasse[] =>
