@@ -504,15 +504,17 @@ export default async function ATraiterPage({ params }: PageProps) {
               // 🔴 L3 (30/09/2026) — une pièce de session ouvre la fiche AU
               // bloc « Signature des pièces contractuelles », pas en haut d'une
               // page de huit écrans. Même helper que la checklist de la fiche.
-              const cible = s.sessionId
-                ? hrefEtape(
-                    s.sessionId,
-                    { phase: "preparer", cible: CIBLE_SIGNATURE_PIECES },
-                    `${base}/qualiopi/sessions`,
-                  )
-                : s.trainerId
-                  ? `${base}/qualiopi/formateurs/${s.trainerId}`
-                  : `${base}/qualiopi/sessions`;
+              const cible = s.devisId
+                ? `${base}/qualiopi/devis/${s.devisId}`
+                : s.sessionId
+                  ? hrefEtape(
+                      s.sessionId,
+                      { phase: "preparer", cible: CIBLE_SIGNATURE_PIECES },
+                      `${base}/qualiopi/sessions`,
+                    )
+                  : s.trainerId
+                    ? `${base}/qualiopi/formateurs/${s.trainerId}`
+                    : `${base}/qualiopi/sessions`;
               // Partie à relancer, décidée ICI (côté serveur) par le module pur
               // adossé au SSOT des circuits. `null` = pas de bouton : soit la
               // prochaine signature est celle de l'organisme (contreseing de
@@ -679,8 +681,8 @@ export default async function ATraiterPage({ params }: PageProps) {
           </h2>
           <div className={carteElement("warning")}>
             <p className={`${meta} m-0 min-w-0 flex-1`}>
-              Des factures échues attendent une relance. Rien ne part sans votre clic : le hub vous
-              demandera de confirmer avoir pointé votre relevé bancaire.
+              Des factures échues ou des devis sans réponse attendent une relance. Rien ne part sans
+              votre clic.
             </p>
             <AdminButton
               href={`${base}/qualiopi/facturation`}

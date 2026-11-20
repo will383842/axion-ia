@@ -82,6 +82,8 @@ export interface RelanceItem {
   suggestion: string | null;
   /** true = facture CRM (envoi direct possible) ; false = document booking. */
   envoiDirect: boolean;
+  /** Lien vers la fiche du devis, pour une relance de devis (sinon absent). */
+  devisHref?: string;
   /** Détail de décision. Absent = relance booking, ou facture introuvable. */
   detail?: RelanceDetail;
 }
@@ -285,6 +287,11 @@ export function RelancesATraiter({
               {r.detail?.palierLibelle ?? r.palier}
             </span>
             <span className="flex-1">{r.suggestion ?? r.libelle}</span>
+            {r.devisHref !== undefined ? (
+              <a href={r.devisHref} className="admin-button-secondary">
+                Ouvrir le devis
+              </a>
+            ) : null}
             {canWrite && r.envoiDirect ? (
               <button
                 type="button"

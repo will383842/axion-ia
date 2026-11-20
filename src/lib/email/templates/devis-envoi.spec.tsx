@@ -1,13 +1,60 @@
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
-import { describe, it, expect } from "vitest";
+import { describe, it, expect, vi } from "vitest";
+
+// En test, SITE_URL retombe sur http://localhost:3000 (le lien de signature exige https).
+vi.mock("@/lib/site-url", () => ({ SITE_URL: "https://axion-ia.com" }));
+
 import { renderEmailTemplate } from "./index";
+import { PAYLOAD_EXEMPLE } from "@/server/email/apercu/payloads-exemple";
+
+const JETON = "JETONabc123.SIGNATUREdef456";
+const LIEN = `https://axion-ia.com/fr/portail/signer/${JETON}`;
 
 const BASE = {
   clientNom: "Acme",
   numero: "AXI-DEV-2026-014",
-  signatureUrl: "https://x.test/s/abc",
+  signatureUrl: LIEN,
 };
+
+describe("devis-envoi : le lien de signature n'est jamais imprimé en clair", () => {
+  it("lien valide → bouton présent, jeton une seule fois (le href), aperçu sans lien", async () => {
+    const r = await renderEmailTemplate("devis-envoi", "fr", BASE);
+    expect(r.html).toContain("Signer le devis en ligne");
+    expect(r.html.split(JETON).length - 1).toBe(1);
+    expect(r.html).toMatch(new RegExp(`<a[^>]*href="${LIEN}"`));
+    expect(r.html).toContain("Pour signer, ouvrez");
+  });
+
+  const REFUSES: Array<[string, string]> = [
+    ["domaine étranger", `https://evil.tld/fr/portail/signer/${JETON}`],
+    ["domaine trompeur", `https://axion-ia.com.evil.tld/fr/portail/signer/${JETON}`],
+    ["identifiant", `https://user:pw@axion-ia.com/fr/portail/signer/${JETON}`],
+    ["?y", `${LIEN}?y=1`],
+    ["#y", `${LIEN}#y`],
+    ["chemin préfixé", `https://axion-ia.com/x/portail/signer/${JETON}`],
+  ];
+  it.each(REFUSES)("lien refusé (%s) → ni bouton ni lien ni phrase « signer »", async (_n, url) => {
+    const warn = vi.spyOn(console, "warn").mockImplementation(() => {});
+    try {
+      const r = await renderEmailTemplate("devis-envoi", "fr", { ...BASE, signatureUrl: url });
+      expect(r.html).not.toContain("Signer le devis en ligne");
+      expect(r.html).not.toContain(JETON);
+      expect(r.text).not.toContain(JETON);
+      expect(r.html).not.toContain("portail/signer");
+      expect(r.html).not.toContain("Pour signer, ouvrez");
+      expect(warn).toHaveBeenCalled();
+      expect(String(warn.mock.calls.flat().join(" "))).not.toContain(JETON);
+    } finally {
+      warn.mockRestore();
+    }
+  });
+
+  it("l'exemple d'aperçu rend toujours le bouton", async () => {
+    const r = await renderEmailTemplate("devis-envoi", "fr", PAYLOAD_EXEMPLE);
+    expect(r.html).toContain("Signer le devis en ligne");
+  });
+});
 
 describe("devis-envoi : le texte de signature dit le vrai parcours (CGV 6.2)", () => {
   it("ne promet plus « en un clic » et décrit CGV puis signature puis contresignature", async () => {
