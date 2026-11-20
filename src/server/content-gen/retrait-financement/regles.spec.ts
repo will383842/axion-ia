@@ -8,6 +8,7 @@ const LIEN_EN = `/en/${PAGE}`;
 import {
   PHRASE_EN,
   PHRASE_FR,
+  QUESTION_EN,
   QUESTION_FR,
   classer,
   estVisee,
@@ -277,7 +278,7 @@ describe("EN", () => {
       { question: "Can it be funded by an OPCO?", reponse: "<p>Yes, by your OPCO.</p>" },
       "en",
     );
-    expect(r.valeur.question).toBe("How does funding work?");
+    expect(r.valeur.question).toBe(QUESTION_EN);
     expect(r.valeur.reponse).toBe(PHRASE_EN);
   });
 

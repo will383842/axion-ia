@@ -13,7 +13,10 @@ import {
   type Proposition,
 } from "./plan";
 import { construireRapport } from "./rapport";
-import { estVisee, htmlVersTexte, reecrireHtml, reecrireTexte } from "./regles";
+import { estVisee, htmlVersTexte, motsDe, reecrireHtml, reecrireTexte } from "./regles";
+
+/** Tous les mots d'un texte : l'override accepte de les perdre (test des mécanismes, pas du lexique). */
+const tousLesMots = (v: unknown): string[] => motsDe(htmlVersTexte(String(v)));
 
 describe("2. décompte annoncé sans « : » avant l'énumération", () => {
   it("« Les 3 piliers … l'audit, le financement OPCO et la formation. » → 2 piliers, rien de perdu", () => {
@@ -119,7 +122,13 @@ describe("1. apply refusé tant qu'un ambigu n'est pas couvert par un override",
   it("un ambigu couvert par un override valide n'est plus listé ; origine périmée → reste", () => {
     const p = prop(["article_translation:t1.body : phrase mixte"]);
     const bon = appliquerOverrides(p, p.avant, {
-      "article_translation:t1": { body: { origine: empreinte(p.avant.body), valeur: "<p>ok</p>" } },
+      "article_translation:t1": {
+        body: {
+          origine: empreinte(p.avant.body),
+          valeur: "<p>ok</p>",
+          pertesAcceptees: tousLesMots(p.avant.body),
+        },
+      },
     });
     expect(ambigusNonCouverts([bon.proposition])).toHaveLength(0);
     expect(bon.proposition.surcharges).toEqual(["body"]);
@@ -160,7 +169,13 @@ describe("1. apply refusé tant qu'un ambigu n'est pas couvert par un override",
   it("un override sur un contenu déjà traité est marqué comme réécriture ciblée", () => {
     const p = prop(["article_translation:t1.body : x"], { title: "t" });
     const o = appliquerOverrides(p, p.avant, {
-      "article_translation:t1": { body: { origine: empreinte(p.avant.body), valeur: "ok" } },
+      "article_translation:t1": {
+        body: {
+          origine: empreinte(p.avant.body),
+          valeur: "ok",
+          pertesAcceptees: tousLesMots(p.avant.body),
+        },
+      },
     });
     expect(o.proposition.surcharges).toEqual(["body"]);
     expect(Object.keys(o.proposition.apres).sort()).toEqual(["body", "title"]);

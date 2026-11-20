@@ -13,10 +13,8 @@ import { JSDOM } from "jsdom";
 
 export type Langue = "fr" | "en";
 
-export const PHRASE_FR = "Financement : solutions indiquées au premier échange.";
-export const PHRASE_EN = "Funding: options discussed at our first call.";
-export const QUESTION_FR = "Comment se passe le financement ?";
-export const QUESTION_EN = "How does funding work?";
+import { PHRASE_EN, PHRASE_FR, QUESTION_EN, QUESTION_FR } from "./phrases-standard";
+export { PHRASE_EN, PHRASE_FR, QUESTION_EN, QUESTION_FR };
 
 export function phrase(langue: Langue): string {
   return langue === "en" ? PHRASE_EN : PHRASE_FR;
@@ -143,11 +141,15 @@ const BLOCS_TEXTE = new Set([
   "MAIN",
 ]);
 
+const TAGS_NON_TEXTE: ReadonlySet<string> = new Set(["SCRIPT", "STYLE", "TEMPLATE", "NOSCRIPT"]);
+
 /** Texte d'un nœud ; chaque frontière de bloc (et chaque <br>) devient `sep`. */
 function texteNoeudHtml(n: Node, sep: string): string {
   if (n.nodeType === 3) return n.nodeValue ?? "";
   if (n.nodeType !== 1) return "";
   const el = n as Element;
+  // JSON-LD, styles, gabarits : jamais du texte lisible (A1, essai du 20/11).
+  if (TAGS_NON_TEXTE.has(el.tagName)) return "";
   const interieur = Array.from(el.childNodes)
     .map((c) => texteNoeudHtml(c, sep))
     .join("");
@@ -183,8 +185,7 @@ export function estVisee(texte: string): boolean {
   return false;
 }
 
-const SIGLES =
-  "(?:CPF|OPCOs?|France Travail|P[ôo]le emploi|France Comp[ée]tences|AIF|FNE-Formation|Qualiopi|EDOF)";
+const SIGLES = "(?:CPF|OPCOs?|France Travail|P[ôo]le emploi|AIF|FNE-Formation|Qualiopi|EDOF)";
 const FRAGMENT_PARENTHESE = new RegExp(
   `\\s*\\(\\s*(?:${SIGLES}(?:\\s*(?:,|;|et|ou|/|and|or)\\s*)?)+\\)`,
   "gi",
@@ -195,10 +196,49 @@ const LIBELLE_FINANCEMENT = /\s*\((?:financements?|funding)\)/gi;
 
 /** Retire les fragments qui se suffisent à eux-mêmes : « (CPF, OPCO, France Travail) ». */
 function retirerFragments(s: string): string {
-  return s
+  const r = s
     .replace(FRAGMENT_PARENTHESE, "")
     .replace(FRAGMENT_FINANCABLES, ",")
     .replace(LIBELLE_FINANCEMENT, "");
+  return r === s ? s : nettoyerPonctuation(r);
+}
+
+/**
+ * Ponctuation orpheline laissée par un retrait de fragment (A3) : « (UNESCO), (AFNOR), . » →
+ * « (UNESCO), (AFNOR). ». N'est appelée QUE si un fragment a été retiré.
+ */
+function nettoyerPonctuation(s: string): string {
+  return s
+    .replace(/\(\s*\)/g, "")
+    .replace(/\(\s*[,;]\s*/g, "(")
+    .replace(/\s*[,;]\s*\)/g, ")")
+    .replace(/[,;](?:\s*[,;])+/g, (m) => m.trim().charAt(0))
+    .replace(/[,;]\s*(?=[.!?…](?:\s|$|<))/g, "")
+    .replace(/[,;]\s*(?=<\/|$)/g, "");
+}
+
+/** La question d'une FAQ parle-t-elle de financement ? (gabarit d'override : A7) */
+export function questionParleDeFinancement(question: string): boolean {
+  return TITRE_FINANCEMENT.test(normaliser(question));
+}
+
+/**
+ * Blocs de texte d'UNE section de titre `titre` (titre inclus, jusqu'au titre de même niveau ou
+ * supérieur), pour n'imprimer au rapport que la section ambiguë et non l'article entier (A9).
+ */
+export function blocsDeSection(html: string, titre: string): string[] {
+  const d = doc().createElement("div");
+  d.innerHTML = html;
+  const enfants = Array.from(d.children);
+  const cible = titre.replace(/\s+/g, " ").trim();
+  for (let i = 0; i < enfants.length; i++) {
+    const h = enfants[i]!;
+    const niv = niveau(h);
+    if (niv < 2 || niv > 4) continue;
+    if (!(h.textContent ?? "").replace(/\s+/g, " ").trim().startsWith(cible)) continue;
+    return [h, ...section(enfants, i, niv)].flatMap((el) => htmlVersBlocs(el.outerHTML));
+  }
+  return [];
 }
 
 /** Découpe en phrases sur une chaîne HTML ou texte (la balise fermante après le point est permise). */
@@ -580,6 +620,28 @@ function estPur(texte: string, html = ""): boolean {
   );
 }
 
+/**
+ * A4 (essai du 20/11) : la détection se fait sur la phrase d'ORIGINE. Quand le retrait d'un fragment
+ * (« (AIF) ») fait tomber le seul marqueur d'une phrase visée, un motif conditionnel (CPF, France
+ * Travail, Pôle emploi…) peut rester publié sans plus être vu. Rend les phrases concernées : elles
+ * deviennent AMBIGUËS (jamais « propres »).
+ */
+function conditionnelsRestants(origine: string, estHtml: boolean): string[] {
+  const out: string[] = [];
+  for (const p of phrases(origine)) {
+    const avant = estHtml ? htmlVersTexte(p) : p;
+    if (!estVisee(avant)) continue;
+    const sans = retirerFragments(p);
+    if (sans === p) continue;
+    const apres = estHtml ? htmlVersTexte(sans) : sans;
+    if (CONDITIONNELS.some((r) => r.test(normaliser(apres))))
+      out.push(
+        `mention restante après retrait d'un fragment (France Travail, CPF…) : « ${avant.slice(0, 160)} »`,
+      );
+  }
+  return out;
+}
+
 interface SortiePhrase {
   type: "garde" | "modifie" | "retire" | "ambigu";
   texte: string;
@@ -619,6 +681,8 @@ function traiterPhrase(p: string, estHtml: boolean, court: boolean): SortiePhras
 function verdictPuce(contenu0: string, estHtml: boolean): SortiePhrase {
   // Même prétraitement qu'un paragraphe (`traiterBloc`) : « (OPCO) » seul part proprement, de sorte
   // que « Ateliers (OPCO) sur ChatGPT. » a le même verdict en puce et en paragraphe.
+  const residuels = conditionnelsRestants(contenu0, estHtml);
+  if (residuels[0] !== undefined) return { type: "ambigu", texte: contenu0, ambigu: residuels[0] };
   const contenu = retirerFragments(contenu0);
   const s0 = traiterPhrase(contenu, estHtml, true);
   if (s0.type === "garde" && contenu !== contenu0)
@@ -652,6 +716,9 @@ interface Bloc {
  * financement : un paragraphe qui parle d'autre chose n'est jamais remplacé en entier.
  */
 function traiterBloc(contenu: string, langue: Langue, estHtml: boolean): Bloc {
+  const residuels = conditionnelsRestants(contenu, estHtml);
+  if (residuels.length > 0)
+    return { contenu, modifie: false, visee: true, vide: false, ambigus: residuels };
   const sansFragments = retirerFragments(contenu);
   const liste = phrases(sansFragments);
   // `court: true` aussi dans un corps : une phrase visée dont le sujet n'est pas le financement n'est
@@ -706,7 +773,7 @@ function traiterBloc(contenu: string, langue: Langue, estHtml: boolean): Bloc {
 // améliorations ; c'est ce verrou qui garantit qu'aucun mot non financier ne disparaît en silence.
 // Seule exception : le nombre d'un décompte corrigé (« sept étapes » → « six étapes »), déjà prouvé.
 
-function motsDe(texte: string): string[] {
+export function motsDe(texte: string): string[] {
   return normaliser(texte)
     .normalize("NFD")
     .replace(/[̀-ͯ]/g, "")
@@ -975,6 +1042,8 @@ function reecrireTexteInterne(
 ): Resultat {
   const origine = texte;
   let courant = options.titre ? sansSuffixeFinancement(texte) : texte;
+  const residuels = conditionnelsRestants(courant, false);
+  if (residuels.length > 0) return { valeur: origine, modifie: false, ambigus: residuels };
   courant = retirerFragments(courant);
   if (options.titre && estVisee(courant)) {
     // Titre : seul un mot de certification en fin de libellé peut être retiré ; sinon ambigu.
