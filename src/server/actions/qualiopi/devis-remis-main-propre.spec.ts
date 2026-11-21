@@ -331,7 +331,9 @@ describe("marquerRemisEnMainPropreAction", () => {
 
   it("ligne a_valider ou approuve présente : refus, aucun PDF", async () => {
     h.txOutboxFindFirst.mockResolvedValue({ id: "ob-0" });
-    expect(erreur(await appel())).toContain("attend déjà dans Emails → À valider");
+    expect(erreur(await appel())).toContain(
+      "attend dans « E-mails à valider » ou est en cours d'envoi",
+    );
     expect(h.txOutboxFindFirst).toHaveBeenCalledWith({
       where: {
         template: "devis-envoi",
