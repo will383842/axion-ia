@@ -25,6 +25,8 @@ import {
   TYPES_CIBLE,
   codeAccordeAuType,
   normaliserMot,
+  contientSelecteurVariante,
+  retirerSelecteurVariante,
   validerAdresse,
   validerCheminPdf,
   validerTitre,
@@ -110,8 +112,12 @@ export async function enregistrerCible(req: NextRequest): Promise<Response> {
   if (json === undefined) return refus(400, "corps_illisible");
   const lu = CorpsCible.safeParse(json);
   if (!lu.success) return refus(422, "corps_invalide");
-  const { type, code, actif, test, version } = lu.data;
+  const { type, actif, test, version } = lu.data;
+  const code = retirerSelecteurVariante(lu.data.code);
   if (!codeAccordeAuType(code, type)) return refus(422, "code_invalide");
+  // Titre : U+FE0F REFUSÉ (422 clair, comme la fabrique), jamais retiré : ce serait changer ❤️, 1️⃣, drapeaux.
+  if (typeof lu.data.titre === "string" && contientSelecteurVariante(lu.data.titre))
+    return refus(422, "titre_caractere_interdit");
   const titre = validerTitre(lu.data.titre);
   if (titre === null) return refus(422, "titre_invalide");
 

@@ -2,6 +2,9 @@
 // G3 — POST /api/interne/guides-reseau/contenu : base EN MÉMOIRE, stockage et rendu factices, aucun réseau.
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import crypto from "node:crypto";
+import { mkdtemp, readdir, rm } from "node:fs/promises";
+import os from "node:os";
+import path from "node:path";
 import { NextRequest } from "next/server";
 
 type Ligne = Record<string, any>; // eslint-disable-line @typescript-eslint/no-explicit-any
@@ -17,6 +20,10 @@ const etat = vi.hoisted(() => ({
   cibleEcrite: 0,
   retardRendu: null as Promise<void> | null,
   tailleFausse: false,
+  retardDepot: null as Promise<void> | null,
+  panneRendu: false,
+  reel: false,
+  signaux: [] as (AbortSignal | undefined)[],
 }));
 
 vi.mock("@/lib/prisma", () => ({
@@ -78,18 +85,43 @@ vi.mock("../stockage-guides", () => ({
     process.env.GUIDES_RESEAU_STOCKAGE === "volume" || process.env.GUIDES_RESEAU_STOCKAGE === "r2"
       ? {
           mode: process.env.GUIDES_RESEAU_STOCKAGE,
-          deposer: async (cle: string, c: Buffer) => {
+          // Ce faux stockage N'APPLIQUE PAS le contrat d'abandon (il ne le vérifie pas lui-même) : le contrat
+          // est vérifié sur le VRAI stockage (`etat.reel`) ou dans stockage-abandon.spec.ts.
+          deposer: async (
+            cle: string,
+            c: Buffer,
+            abandonne?: () => boolean,
+            signal?: AbortSignal,
+          ) => {
+            etat.signaux.push(signal);
             if (etat.panneStockage) throw new Error("r2_en_panne");
+            if (etat.retardDepot) await etat.retardDepot;
+            if (etat.reel) {
+              const vrai = (
+                await vi.importActual<typeof import("../stockage-guides")>("../stockage-guides")
+              ).ouvrirStockage(process.env)!;
+              return vrai.deposer(cle, c, abandonne, signal);
+            }
             etat.depots.push({ cle, octets: c.length });
             etat.objets.set(cle, c.length);
           },
-          taille: async (cle: string) => (etat.tailleFausse ? 1 : (etat.objets.get(cle) ?? null)),
+          taille: async (cle: string) =>
+            etat.reel
+              ? await (
+                  await vi.importActual<typeof import("../stockage-guides")>("../stockage-guides")
+                )
+                  .ouvrirStockage(process.env)!
+                  .taille(cle)
+              : etat.tailleFausse
+                ? 1
+                : (etat.objets.get(cle) ?? null),
         }
       : null,
 }));
 vi.mock("../guide-pdf", () => ({
   rendreGuidePdf: async () => {
     etat.rendus++;
+    if (etat.panneRendu) throw new Error("rendu_en_panne");
     if (etat.retardRendu) await etat.retardRendu;
     const pages = Array.from({ length: etat.pdfPages }, () => "/Type /Page\n").join("");
     return Buffer.from(
@@ -163,6 +195,10 @@ beforeEach(() => {
     cibleEcrite: 0,
     retardRendu: null,
     tailleFausse: false,
+    retardDepot: null,
+    panneRendu: false,
+    reel: false,
+    signaux: [],
   });
   vi.stubEnv("GUIDES_RESEAU_FABRIQUE_ENABLED", "true");
   vi.stubEnv("GUIDES_RESEAU_HMAC_SECRET", SECRET);
@@ -324,19 +360,106 @@ describe("idempotence et ordre", () => {
       vi.useRealTimers();
     }
   });
-  it("panne du stockage = 503 stockage_echec, ligne « echec », ancienne version intacte, relance OK", async () => {
+  it("(a) VRAI stockage : dépôt tardif après l'abandon = NI fichier final NI temporaire sur le volume", async () => {
+    const racine = await mkdtemp(path.join(os.tmpdir(), "guides-fabrique-"));
+    vi.stubEnv("GUIDES_RESEAU_VOLUME", racine);
+    etat.reel = true;
+    vi.useFakeTimers({ toFake: ["setTimeout", "clearTimeout"] });
+    try {
+      let lacher!: () => void;
+      etat.retardDepot = new Promise<void>((r) => (lacher = r));
+      const a = envoyer(corps(contenu({ version: 1 })));
+      await vi.advanceTimersByTimeAsync(61_000);
+      expect((await a).status).toBe(503);
+      lacher();
+      await vi.advanceTimersByTimeAsync(50);
+      vi.useRealTimers();
+      await new Promise((r) => setTimeout(r, 50));
+      const restes = await readdir(racine, { recursive: true });
+      expect(restes.filter((f) => /\.pdf/.test(String(f)))).toEqual([]);
+    } finally {
+      etat.retardDepot = null;
+      vi.useRealTimers();
+      await rm(racine, { recursive: true, force: true });
+    }
+  });
+  it("(a) le délai ANNULE le travail : le signal reçu par le dépôt est abandonné", async () => {
+    vi.useFakeTimers({ toFake: ["setTimeout", "clearTimeout"] });
+    try {
+      let lacher!: () => void;
+      etat.retardDepot = new Promise<void>((r) => (lacher = r));
+      const a = envoyer(corps(contenu({ version: 1 })));
+      await vi.advanceTimersByTimeAsync(61_000);
+      await a;
+      expect(etat.signaux).toHaveLength(1);
+      expect(etat.signaux[0]?.aborted).toBe(true);
+      lacher();
+      await vi.advanceTimersByTimeAsync(50);
+    } finally {
+      etat.retardDepot = null;
+      vi.useRealTimers();
+    }
+  });
+  it("(a) relance du même code/version PENDANT que l'ancien travail tourne encore = 409 en_cours ; libre une fois fini", async () => {
+    vi.useFakeTimers({ toFake: ["setTimeout", "clearTimeout"] });
+    try {
+      let lacher!: () => void;
+      etat.retardDepot = new Promise<void>((r) => (lacher = r));
+      const a = envoyer(corps(contenu({ version: 1 })));
+      await vi.advanceTimersByTimeAsync(61_000);
+      expect((await a).status).toBe(503); // réponse rendue au délai, le travail, lui, n'a pas fini
+      const relance = await envoyer(corps(contenu({ version: 1 })));
+      expect(relance.status).toBe(409);
+      expect((await json(relance)).erreur).toBe("en_cours");
+      lacher();
+      await vi.advanceTimersByTimeAsync(50);
+      etat.retardDepot = null;
+      expect((await envoyer(corps(contenu({ version: 1 })))).status).toBe(201);
+    } finally {
+      etat.retardDepot = null;
+      vi.useRealTimers();
+    }
+  });
+  it("(b) deux versions du MÊME guide en parallèle : refus propre 409 en_cours, aucune ligne réservée pour la seconde", async () => {
+    let lacher!: () => void;
+    etat.retardRendu = new Promise<void>((r) => (lacher = r));
+    const a = envoyer(corps(contenu({ version: 1 })));
+    await new Promise((r) => setTimeout(r, 30));
+    const b = await envoyer(corps(contenu({ version: 2 })));
+    expect(b.status).toBe(409);
+    expect((await json(b)).erreur).toBe("en_cours");
+    expect(etat.lignes.find((l) => l.version === 2)).toBeUndefined();
+    lacher();
+    expect((await a).status).toBe(201);
+    // verrou libéré : la version 2 passe ensuite
+    etat.retardRendu = null;
+    expect((await envoyer(corps(contenu({ version: 2 })))).status).toBe(201);
+  });
+  it("(c) panne du stockage = 503 depot_pdf_echec ; panne du rendu = 503 rendu_pdf_echec (deux causes, deux libellés)", async () => {
+    etat.panneStockage = true;
+    const s = await envoyer(corps(contenu({ version: 1 })));
+    expect(s.status).toBe(503);
+    expect((await json(s)).erreur).toBe("depot_pdf_echec");
+    etat.panneStockage = false;
+    etat.panneRendu = true;
+    const r = await envoyer(corps(contenu({ version: 1 })));
+    expect(r.status).toBe(503);
+    expect((await json(r)).erreur).toBe("rendu_pdf_echec");
+    expect(etat.lignes.find((l) => l.version === 1)?.statut).toBe("echec");
+  });
+  it("panne du stockage = 503 depot_pdf_echec, ligne « echec », ancienne version intacte, relance OK", async () => {
     await envoyer(corps(contenu({ version: 1 })));
     etat.panneStockage = true;
     const r = await envoyer(corps(contenu({ version: 2 })));
     expect(r.status).toBe(503);
-    expect((await json(r)).erreur).toBe("stockage_echec");
+    expect((await json(r)).erreur).toBe("depot_pdf_echec");
     expect(etat.lignes.find((l) => l.version === 2)?.statut).toBe("echec");
     expect(etat.lignes.find((l) => l.version === 1)?.statut).toBe("pret");
     expect(etat.cibleEcrite).toBe(0);
     etat.panneStockage = false;
     expect((await envoyer(corps(contenu({ version: 2 })))).status).toBe(201);
   });
-  it("taille relue différente = stockage_echec (pas « pret »)", async () => {
+  it("taille relue différente = depot_pdf_echec (pas « pret »)", async () => {
     etat.tailleFausse = true;
     const r = await envoyer(corps(contenu()));
     expect(r.status).toBe(503);
