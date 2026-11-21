@@ -85,6 +85,11 @@ import {
   CONSENTEMENT_VERSION_DOCUMENT_CODE,
   MENTION_VERSION_DOCUMENT,
 } from "@/server/qualiopi/documents/signature/mentions-document";
+import {
+  MENTION_VERSION_DEVIS,
+  consentementVersionDevis,
+  estSignatureClientDevis,
+} from "@/server/qualiopi/documents/signature/mentions-devis";
 import { circuitPour } from "@/server/qualiopi/documents/signature/parties-requises";
 import { envoyerCodeSignature } from "@/server/qualiopi/formateurs-independants/code-signature-envoi";
 import { objectionContresignatureContratCadre } from "@/server/qualiopi/formateurs-independants/garde-contresignature-contrat-cadre";
@@ -456,7 +461,10 @@ export async function signerPieceParJetonAction(input: {
   // mise en ligne montre l'ancien texte, alors que le service scelle `MENTION_VERSION_DOCUMENT`.
   // Absente ou différente : refus, avant toute consommation de code, rien n'est écrit. Vaut pour
   // toutes les pièces qui passent par ce formulaire.
-  if (donnees.mentionVersionAffichee !== MENTION_VERSION_DOCUMENT) {
+  // Signature du CLIENT sur un DEVIS : la version attendue est `devis-v1` (mentions propres au devis).
+  const clientDevis = estSignatureClientDevis(piece.type, verif.partie);
+  const mentionAttendue = clientDevis ? MENTION_VERSION_DEVIS : MENTION_VERSION_DOCUMENT;
+  if (donnees.mentionVersionAffichee !== mentionAttendue) {
     return {
       ok: false,
       raison: "mention_perimee",
@@ -626,9 +634,14 @@ export async function signerPieceParJetonAction(input: {
       methode: donnees.methode,
       partiesRequises: circuit.parties,
       ...(donnees.imageDataUrl === undefined ? {} : { imageDataUrl: donnees.imageDataUrl }),
-      ...(avecCode || renforcee !== undefined
-        ? { consentementVersion: CONSENTEMENT_VERSION_DOCUMENT_CODE }
-        : {}),
+      ...(clientDevis
+        ? {
+            mentionVersion: MENTION_VERSION_DEVIS,
+            consentementVersion: consentementVersionDevis(avecCode || renforcee !== undefined),
+          }
+        : avecCode || renforcee !== undefined
+          ? { consentementVersion: CONSENTEMENT_VERSION_DOCUMENT_CODE }
+          : {}),
       ...(renforcee === undefined ? {} : { renforcee }),
       // Valeur SERVEUR, jamais celle du navigateur. Vide hors devis.
       ...(piece.type === "devis" ? { cgvVersion: CGV_VERSION } : {}),
