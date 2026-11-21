@@ -81,7 +81,10 @@ import {
   etatHorodatageDevis,
   urlPdfDevisEmis,
 } from "@/server/qualiopi/devis/console-chaine-devis";
-import { lireDateValiditeImprimee } from "@/server/qualiopi/documents/signature/devis-signature-queries";
+import {
+  lireDateValiditeImprimee,
+  validiteProlongeeDepuisPdf,
+} from "@/server/qualiopi/documents/signature/devis-signature-queries";
 import { lireHorodatagesDeSignatures } from "@/server/qualiopi/documents/signature/lire-horodatages";
 import { PastilleHorodatage } from "@/components/admin/qualiopi/PastilleHorodatage";
 import { RelanceDevisDepuisLaPage } from "@/components/admin/qualiopi/RelanceDevisDepuisLaPage";
@@ -444,8 +447,7 @@ export default async function QualiopiDevisDetailPage({ params, searchParams }: 
       return null;
     }
   })();
-  const validiteProlongee =
-    dateImprimeeSurPdf !== null && dateImprimeeSurPdf !== formatDate(devis.dateValidite);
+  const validiteProlongee = validiteProlongeeDepuisPdf(dateImprimeeSurPdf, devis.dateValidite);
 
   const infoLabelCls =
     "text-[length:var(--text-admin-xs)] tracking-wide text-[color:var(--color-admin-fg-muted)] uppercase";
