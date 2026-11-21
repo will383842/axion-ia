@@ -411,6 +411,8 @@ Depuis #2057, le worker envoie les réponses écrites à la main (`submission-re
 
 Au retour vers l'avant, rien à faire : le nouveau worker relit l'état de chaque ligne avant d'envoyer.
 
+**Redis exigé** : le verrou et le marqueur ci-dessus ne protègent que si Redis ne perd pas de clés. Vérifier (lecture seule) : `redis-cli INFO memory | grep maxmemory_policy` doit rendre `noeviction`, et `redis-cli INFO persistence | grep aof_enabled` doit rendre `1`. La veille horaire (`src/server/email/veille-reponses-en-cours.ts`, lancée par `health.ts`) lève l'alerte `redis_config_risque` sinon. Il reste un risque : avec `appendfsync everysec`, on peut perdre environ 1 s d'écritures en cas de panne.
+
 ### ⚠️ Un déploiement vert ne prouve PAS que le schéma a bougé
 
 `scripts/docker-entrypoint.sh` lance `prisma migrate deploy` **en best-effort** : la
