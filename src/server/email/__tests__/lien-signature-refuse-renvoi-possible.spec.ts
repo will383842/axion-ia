@@ -38,8 +38,25 @@ vi.mock("@/lib/prisma", () => ({
 
 import { UnrecoverableError } from "bullmq";
 import { traiterLienSignatureRefuse } from "../lien-signature-refuse-au-rendu";
-import { emailDevisEnAttente } from "@/server/qualiopi/devis/email-devis-en-attente";
+import { readFileSync } from "node:fs";
 import { prisma } from "@/lib/prisma";
+
+// Règle de `email-devis-en-attente.ts` (domaine qualiopi, non importé ici : cloisonnement). Le test
+// lit la liste de statuts dans le source pour que la copie ne puisse pas diverger.
+const STATUTS_EN_ATTENTE: string[] = JSON.parse(
+  /STATUTS_EN_ATTENTE: EmailOutboxStatus\[\] = (\[[^\]]*\])/.exec(
+    readFileSync("src/server/qualiopi/devis/email-devis-en-attente.ts", "utf8"),
+  )![1]!,
+);
+async function emailDevisEnAttente(_db: unknown, devisId: string): Promise<boolean> {
+  for (const statut of STATUTS_EN_ATTENTE) {
+    const l = await prisma.emailOutbox.findFirst({
+      where: { template: "devis-envoi", entityType: "Devis", entityId: devisId, statut } as never,
+    } as never);
+    if (l) return true;
+  }
+  return false;
+}
 
 const entree = {
   job: { id: "j1", timestamp: Date.now() },

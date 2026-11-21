@@ -76,7 +76,7 @@ import {
   ERREUR_EMAIL_DEVIS_EN_ATTENTE,
   CLE_MARQUEUR_LIEN,
 } from "../relance-devis";
-import { CLE_MARQUEUR } from "@/server/qualiopi/documents/signature/lien-a-l-envoi";
+import { readFileSync } from "node:fs";
 
 function formulaire(clientId = CLIENT, devisId = DEVIS): FormData {
   const fd = new FormData();
@@ -322,7 +322,9 @@ describe("relance de devis (lot B9)", () => {
   });
 
   it("B3 — la clé du marqueur copiée ici est celle du module à l'envoi", () => {
-    expect(CLE_MARQUEUR_LIEN).toBe(CLE_MARQUEUR);
+    // Lu en texte : importer le module du domaine ici violerait le cloisonnement.
+    const src = readFileSync("src/server/qualiopi/documents/signature/lien-a-l-envoi.ts", "utf8");
+    expect(/export const CLE_MARQUEUR = "([^"]+)"/.exec(src)?.[1]).toBe(CLE_MARQUEUR_LIEN);
   });
 
   it("contact absent : erreur, rien garé", async () => {

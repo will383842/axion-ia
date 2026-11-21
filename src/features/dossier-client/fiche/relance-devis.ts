@@ -8,10 +8,28 @@
  * Aucun montant : le devis a déjà été envoyé avec son prix, la relance n'en reparle pas.
  */
 
-import {
-  salutationPourPayload,
-  type SalutationPayload,
-} from "@/server/qualiopi/crm/salutation-payload";
+import { nettoyerNomPropre, normaliserCivilite } from "@/lib/email/salutation";
+
+/** Identité de salutation du payload : copie de la règle de `salutation-payload.ts` (domaine qualiopi, non importé ici). */
+type SalutationPayload =
+  | { readonly civilite: "madame" | "monsieur"; readonly nomFamille: string }
+  | { readonly prenom: string }
+  | Record<string, never>;
+
+function salutationPourPayload(e: {
+  clientNom: string;
+  contactCivilite?: unknown;
+  contactPrenom?: unknown;
+  contactNomFamille?: unknown;
+}): SalutationPayload | undefined {
+  if (e.clientNom.trim() === "") return undefined;
+  const civilite = normaliserCivilite(e.contactCivilite);
+  const nomFamille = nettoyerNomPropre(e.contactNomFamille, { particules: true });
+  if (civilite && nomFamille) return { civilite, nomFamille };
+  const prenom = nettoyerNomPropre(e.contactPrenom);
+  if (prenom) return { prenom };
+  return {};
+}
 
 /** Nom du gabarit d'e-mail (registre des gabarits d'outbox). */
 export const TEMPLATE_RELANCE_DEVIS = "relance-devis-client";
