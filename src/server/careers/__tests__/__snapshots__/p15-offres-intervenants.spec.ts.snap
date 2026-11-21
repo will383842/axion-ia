@@ -1,0 +1,437 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`(b) CH4-37 — la réponse « poste pourvu » ignore les offres d'intervenants > ÉTEINT : le filtre est celui d'avant (snapshot) 1`] = `
+{
+  "AND": [
+    {
+      "OR": [
+        {
+          "offer": null,
+        },
+        {
+          "offer": {
+            "category": {
+              "not": "commercial",
+            },
+            "slug": {
+              "notIn": [
+                "videaste-freelance-tournage",
+                "monteur-video-freelance-distance",
+                "monteur-video-motion",
+                "videaste-content-creator",
+                "formateur-ia-freelance",
+              ],
+            },
+          },
+        },
+      ],
+    },
+    {
+      "offerTitleSnap": {
+        "mode": "insensitive",
+        "not": {
+          "contains": "monteur vid",
+        },
+      },
+    },
+    {
+      "offerTitleSnap": {
+        "mode": "insensitive",
+        "not": {
+          "contains": "vidéaste",
+        },
+      },
+    },
+    {
+      "offerTitleSnap": {
+        "mode": "insensitive",
+        "not": {
+          "contains": "commercial",
+        },
+      },
+    },
+    {
+      "offerTitleSnap": {
+        "mode": "insensitive",
+        "not": {
+          "contains": "business dev",
+        },
+      },
+    },
+    {
+      "offerTitleSnap": {
+        "mode": "insensitive",
+        "not": {
+          "contains": "apporteur",
+        },
+      },
+    },
+    {
+      "offerTitleSnap": {
+        "mode": "insensitive",
+        "not": {
+          "contains": "formateur ia freelance",
+        },
+      },
+    },
+    {
+      "NOT": {
+        "AND": [
+          {
+            "offerTitleSnap": {
+              "contains": "formateur",
+              "mode": "insensitive",
+            },
+          },
+          {
+            "offerTitleSnap": {
+              "contains": "freelance",
+              "mode": "insensitive",
+            },
+          },
+        ],
+      },
+    },
+    {
+      "NOT": {
+        "AND": [
+          {
+            "offerTitleSnap": {
+              "contains": "formateur",
+              "mode": "insensitive",
+            },
+          },
+          {
+            "offerTitleSnap": {
+              "contains": "indépendant",
+              "mode": "insensitive",
+            },
+          },
+        ],
+      },
+    },
+    {
+      "NOT": {
+        "AND": [
+          {
+            "offerTitleSnap": {
+              "contains": "formateur",
+              "mode": "insensitive",
+            },
+          },
+          {
+            "offerTitleSnap": {
+              "contains": "independant",
+              "mode": "insensitive",
+            },
+          },
+        ],
+      },
+    },
+    {
+      "NOT": {
+        "AND": [
+          {
+            "offerTitleSnap": {
+              "contains": "formatrice",
+              "mode": "insensitive",
+            },
+          },
+          {
+            "offerTitleSnap": {
+              "contains": "freelance",
+              "mode": "insensitive",
+            },
+          },
+        ],
+      },
+    },
+    {
+      "NOT": {
+        "AND": [
+          {
+            "offerTitleSnap": {
+              "contains": "formatrice",
+              "mode": "insensitive",
+            },
+          },
+          {
+            "offerTitleSnap": {
+              "contains": "indépendant",
+              "mode": "insensitive",
+            },
+          },
+        ],
+      },
+    },
+    {
+      "NOT": {
+        "AND": [
+          {
+            "offerTitleSnap": {
+              "contains": "formatrice",
+              "mode": "insensitive",
+            },
+          },
+          {
+            "offerTitleSnap": {
+              "contains": "independant",
+              "mode": "insensitive",
+            },
+          },
+        ],
+      },
+    },
+    {
+      "OR": [
+        {
+          "offer": null,
+        },
+        {
+          "NOT": {
+            "offer": {
+              "OR": [
+                {
+                  "AND": [
+                    {
+                      "titleFr": {
+                        "contains": "formateur",
+                        "mode": "insensitive",
+                      },
+                    },
+                    {
+                      "titleFr": {
+                        "contains": "freelance",
+                        "mode": "insensitive",
+                      },
+                    },
+                  ],
+                },
+                {
+                  "AND": [
+                    {
+                      "titleFr": {
+                        "contains": "formateur",
+                        "mode": "insensitive",
+                      },
+                    },
+                    {
+                      "titleFr": {
+                        "contains": "indépendant",
+                        "mode": "insensitive",
+                      },
+                    },
+                  ],
+                },
+                {
+                  "AND": [
+                    {
+                      "titleFr": {
+                        "contains": "formateur",
+                        "mode": "insensitive",
+                      },
+                    },
+                    {
+                      "titleFr": {
+                        "contains": "independant",
+                        "mode": "insensitive",
+                      },
+                    },
+                  ],
+                },
+                {
+                  "AND": [
+                    {
+                      "titleFr": {
+                        "contains": "formatrice",
+                        "mode": "insensitive",
+                      },
+                    },
+                    {
+                      "titleFr": {
+                        "contains": "freelance",
+                        "mode": "insensitive",
+                      },
+                    },
+                  ],
+                },
+                {
+                  "AND": [
+                    {
+                      "titleFr": {
+                        "contains": "formatrice",
+                        "mode": "insensitive",
+                      },
+                    },
+                    {
+                      "titleFr": {
+                        "contains": "indépendant",
+                        "mode": "insensitive",
+                      },
+                    },
+                  ],
+                },
+                {
+                  "AND": [
+                    {
+                      "titleFr": {
+                        "contains": "formatrice",
+                        "mode": "insensitive",
+                      },
+                    },
+                    {
+                      "titleFr": {
+                        "contains": "independant",
+                        "mode": "insensitive",
+                      },
+                    },
+                  ],
+                },
+                {
+                  "AND": [
+                    {
+                      "slug": {
+                        "contains": "formateur",
+                        "mode": "insensitive",
+                      },
+                    },
+                    {
+                      "slug": {
+                        "contains": "freelance",
+                        "mode": "insensitive",
+                      },
+                    },
+                  ],
+                },
+                {
+                  "AND": [
+                    {
+                      "slug": {
+                        "contains": "formateur",
+                        "mode": "insensitive",
+                      },
+                    },
+                    {
+                      "slug": {
+                        "contains": "indépendant",
+                        "mode": "insensitive",
+                      },
+                    },
+                  ],
+                },
+                {
+                  "AND": [
+                    {
+                      "slug": {
+                        "contains": "formateur",
+                        "mode": "insensitive",
+                      },
+                    },
+                    {
+                      "slug": {
+                        "contains": "independant",
+                        "mode": "insensitive",
+                      },
+                    },
+                  ],
+                },
+                {
+                  "AND": [
+                    {
+                      "slug": {
+                        "contains": "formatrice",
+                        "mode": "insensitive",
+                      },
+                    },
+                    {
+                      "slug": {
+                        "contains": "freelance",
+                        "mode": "insensitive",
+                      },
+                    },
+                  ],
+                },
+                {
+                  "AND": [
+                    {
+                      "slug": {
+                        "contains": "formatrice",
+                        "mode": "insensitive",
+                      },
+                    },
+                    {
+                      "slug": {
+                        "contains": "indépendant",
+                        "mode": "insensitive",
+                      },
+                    },
+                  ],
+                },
+                {
+                  "AND": [
+                    {
+                      "slug": {
+                        "contains": "formatrice",
+                        "mode": "insensitive",
+                      },
+                    },
+                    {
+                      "slug": {
+                        "contains": "independant",
+                        "mode": "insensitive",
+                      },
+                    },
+                  ],
+                },
+                {
+                  "AND": [
+                    {
+                      "OR": [
+                        {
+                          "titleFr": {
+                            "contains": "formateur",
+                            "mode": "insensitive",
+                          },
+                        },
+                        {
+                          "titleFr": {
+                            "contains": "formatrice",
+                            "mode": "insensitive",
+                          },
+                        },
+                      ],
+                    },
+                    {
+                      "OR": [
+                        {
+                          "employmentType": "CONTRACTOR",
+                        },
+                        {
+                          "secondaryEmploymentType": "CONTRACTOR",
+                        },
+                      ],
+                    },
+                  ],
+                },
+              ],
+            },
+          },
+        },
+      ],
+    },
+  ],
+  "id": {
+    "notIn": [
+      "t",
+    ],
+  },
+  "replies": {
+    "none": {},
+  },
+  "status": "new",
+  "submittedAt": {
+    "lte": 2026-10-12T10:00:00.000Z,
+  },
+  "vivierOpposedAt": null,
+}
+`;

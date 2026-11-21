@@ -8,6 +8,7 @@ import { AdminPageShell, AdminPageHeader } from "@/components/admin/ui";
 import { getJobOfferDetailAction } from "@/features/admin-job-offers/actions";
 import { JobOfferForm, type JobOfferFormInitial } from "../JobOfferForm";
 import { OfferLifecycleActions } from "./OfferLifecycleActions";
+import { masquerSupprimer } from "@/server/careers/garde-suppression-offre";
 import { lireEtatsEntree } from "@/server/qualiopi/formateurs-independants/interrupteurs-lecture";
 
 export const dynamic = "force-dynamic";
@@ -98,7 +99,7 @@ export default async function EditJobOfferPage({ params }: PageProps) {
           </div>
         }
       />
-      <OfferLifecycleActions id={o.id} />
+      <OfferLifecycleActions id={o.id} masquerSupprimer={await masquerSupprimer(o.id)} />
       <JobOfferForm initial={initial} natureLue={natureLue} />
     </AdminPageShell>
   );
