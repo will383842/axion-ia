@@ -27,7 +27,9 @@
  * ── Inertie ───────────────────────────────────────────────────────────────────────────────────
  * Canal fermé : `transactionDevisSigne` exécute le travail sur le client reçu, SANS transaction,
  * exactement comme avant ce module ; `emettreDevisSigne` rend `null` sans rien lire. Canal ouvert :
- * une transaction interactive, où l'écriture et l'événement vivent et meurent ensemble.
+ * une transaction interactive, où l'écriture et l'événement vivent et meurent ensemble. L'option
+ * `toujoursEnTransaction` existe pour un écrivain qui décide APRÈS son écriture et doit pouvoir
+ * l'annuler, canal fermé compris.
  */
 import type { Prisma, PrismaClient } from "../../../../prisma/generated/client";
 import {
@@ -240,11 +242,17 @@ export async function devisConcernesPourEmission(
  * La transaction d'un écrivain de `accepte`. Canal ouvert : `client.$transaction` interactive,
  * l'écriture et l'émission dedans. Canal fermé : le travail sur `client` lui-même, sans
  * transaction — le comportement d'avant INT-T04, à l'identique (REQ-INT-008).
+ *
+ * Option `toujoursEnTransaction` : pour un écrivain qui décide APRÈS son écriture (relecture puis
+ * erreur pour annuler). Vraie, le travail s'exécute dans `client.$transaction` quel que soit l'état
+ * du canal (fermé, `emettreDevisSigne` ne lit ni n'écrit rien). Absente : comportement inchangé.
  */
 export async function transactionDevisSigne<R>(
   client: PrismaClient,
   travail: (tx: Prisma.TransactionClient) => Promise<R>,
+  options?: { toujoursEnTransaction?: boolean },
 ): Promise<R> {
+  if (options?.toujoursEnTransaction === true) return client.$transaction((tx) => travail(tx));
   if (!canalPartnersOuvert()) return travail(client);
   return client.$transaction((tx) => travail(tx));
 }

@@ -5,8 +5,8 @@
  * À appeler DANS la transaction qui pose la nouvelle version « envoye » : l'ancienne version
  * passe « expire » (jamais d'écrasement) et son lien de signature est révoqué, dans la MÊME
  * transaction. Sa ligne est verrouillée (`FOR NO KEY UPDATE`) et son statut relu sous ce verrou :
- * la décision ne repose jamais sur un statut lu en début de transaction. La révocation ne touche AUCUNE signature déjà apposée : elle ferme le lien, elle
- * n'efface pas une preuve.
+ * la décision ne repose jamais sur un statut lu en début de transaction. La révocation ne touche
+ * AUCUNE signature déjà apposée : elle ferme le lien, elle n'efface pas une preuve.
  */
 
 import type { Prisma } from "../../../../prisma/generated/client";

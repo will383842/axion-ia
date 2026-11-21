@@ -93,14 +93,9 @@ vi.mock("@/server/partners-sync/producteurs/devis", async (importOriginal) => ({
     options?: unknown,
   ) => {
     if (h.vraieTransaction) {
-      const reel = await importOriginal<
-        typeof import("@/server/partners-sync/producteurs/devis")
-      >();
-      return reel.transactionDevisSigne(
-        client as never,
-        travail as never,
-        options as never,
-      );
+      const reel =
+        await importOriginal<typeof import("@/server/partners-sync/producteurs/devis")>();
+      return reel.transactionDevisSigne(client as never, travail as never, options as never);
     }
     return client.$transaction(travail);
   },
