@@ -184,6 +184,12 @@ export interface AutresPartiesAppreciations {
     readonly sollicitee: Date | null;
     /** Dernier avis d'entreprise reçu (questionnaire répondu ou appréciation). */
     readonly avis: Date | null;
+    /**
+     * La session a-t-elle une entreprise (cliente de la session ou d'une
+     * inscription) ? Absent = oui. `false` : particuliers / CPF, la partie
+     * est « sans objet » — tracé, pas silencieux.
+     */
+    readonly concernee?: boolean;
   };
   readonly formateur: {
     /** Formateurs qui ont animé la session (même règle que l'action de saisie). */
@@ -574,7 +580,11 @@ function p30(t: TraceAppreciations, c: ContexteVoyants): Verdict {
     manques.push(`${t.stagiairesActifs - t.chaudRepondus} questionnaire(s) à chaud sans réponse`);
   }
   const { entreprise, formateur, financeur } = autres;
-  if (entreprise.avis !== null) {
+  if (entreprise.concernee === false) {
+    traces.push(
+      `sans objet : aucune entreprise rattachée à la session ni à ses inscriptions (lu le ${jour(c.maintenant)})`,
+    );
+  } else if (entreprise.avis !== null) {
     traces.push(`avis de l'entreprise reçu le ${jour(entreprise.avis)}`);
   } else if (entreprise.sollicitee !== null) {
     traces.push(`entreprise sollicitée le ${jour(entreprise.sollicitee)}`);
@@ -584,7 +594,10 @@ function p30(t: TraceAppreciations, c: ContexteVoyants): Verdict {
   if (formateur.avis !== null) {
     traces.push(`avis du formateur reçu le ${jour(formateur.avis)}`);
   } else if (formateur.attendus === 0) {
-    traces.push("aucun formateur à interroger sur cette session");
+    // Zéro formateur en base : l'absence de personne à interroger n'est pas une preuve.
+    manques.push(
+      "aucun formateur rattaché en base : l'avis du formateur ne peut pas être recueilli",
+    );
   } else {
     manques.push("avis du formateur non recueilli");
   }
@@ -607,8 +620,7 @@ function p30(t: TraceAppreciations, c: ContexteVoyants): Verdict {
   const echeanceAutres = new Date(
     c.dateFin.getTime() + (DELAI_AUTRES_PARTIES_JOURS + DELAI_APRES_SESSION_JOURS) * MS_JOUR,
   );
-  const echeance =
-    manques.length === 1 && !stagiairesComplets ? echeanceStagiaires : echeanceAutres;
+  const echeance = !stagiairesComplets ? echeanceStagiaires : echeanceAutres;
   return sansTrace(
     echeance,
     c.maintenant,

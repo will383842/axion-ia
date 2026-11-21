@@ -46,6 +46,23 @@ describe("debutPremiereDemiJournee", () => {
     expect(debut).toEqual(new Date("2026-12-07T08:30:00Z"));
   });
 
+  it("deux lignes le jour J : la plus matinale, quel que soit l'ordre du tableau", () => {
+    const apresMidi = {
+      date: new Date("2026-12-07T00:00:00Z"),
+      heureDebut: "14:00",
+      heureFin: "17:30",
+    };
+    const matin = {
+      date: new Date("2026-12-07T00:00:00Z"),
+      heureDebut: "09:00",
+      heureFin: "12:30",
+    };
+    const dateDebut = new Date("2026-12-07T00:00:00Z");
+    const attendu = new Date("2026-12-07T08:00:00Z");
+    expect(debutPremiereDemiJournee({ dateDebut, jours: [apresMidi, matin] })).toEqual(attendu);
+    expect(debutPremiereDemiJournee({ dateDebut, jours: [matin, apresMidi] })).toEqual(attendu);
+  });
+
   it("n'est JAMAIS le dateDebut brut (00:00 UTC)", () => {
     const dateDebut = new Date("2026-12-07T00:00:00Z");
     const debut = debutPremiereDemiJournee({
