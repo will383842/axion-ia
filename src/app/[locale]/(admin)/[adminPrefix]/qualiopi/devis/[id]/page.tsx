@@ -429,17 +429,19 @@ export default async function QualiopiDevisDetailPage({ params, searchParams }: 
   const validiteAfficheeExpiree = isExpired || devis.statut === "expire";
   // Date imprimée sur le PDF scellé (chaîne brute de la photo) : si elle diffère de la date en
   // cours, la validité a été prolongée après l'envoi. Lecture seule ; absente = rien d'affiché.
-  const dateImprimeeSurPdf =
-    devis.documentGenereId !== null
-      ? lireDateValiditeImprimee(
-          (
-            await prisma.documentGenere.findUnique({
-              where: { id: devis.documentGenereId },
-              select: { metadata: true },
-            })
-          )?.metadata,
-        )
-      : null;
+  // Affichage seulement : une lecture en échec ne doit jamais empêcher d'ouvrir la fiche.
+  const dateImprimeeSurPdf = await (async () => {
+    if (devis.documentGenereId === null) return null;
+    try {
+      const piece = await prisma.devis.findUnique({
+        where: { id: devis.id },
+        select: { documentGenere: { select: { metadata: true } } },
+      });
+      return lireDateValiditeImprimee(piece?.documentGenere?.metadata);
+    } catch {
+      return null;
+    }
+  })();
   const validiteProlongee =
     dateImprimeeSurPdf !== null && dateImprimeeSurPdf !== formatDate(devis.dateValidite);
 
