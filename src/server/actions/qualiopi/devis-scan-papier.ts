@@ -35,6 +35,11 @@ import {
   controlerPdf,
 } from "@/server/qualiopi/documents/signature/scan-papier-storage";
 import { SignatureStockageError } from "@/server/qualiopi/emargement/storage";
+import {
+  finDeJourneeParis,
+  lireJourIso,
+  minuitParisUtc,
+} from "@/server/qualiopi/devis/date-validite";
 
 export type ResultatVersementScan =
   | {
@@ -48,7 +53,12 @@ export type ResultatVersementScan =
 const MSG_SESSION = "Votre session a expiré ou vos droits sont insuffisants pour verser ce scan.";
 const MSG_DEVIS = "Ce devis est introuvable.";
 const MSG_ETAT =
-  "Ce devis ne peut pas recevoir de scan signé : il doit être envoyé, classique (sans formules), avec sa pièce en vigueur.";
+  "Ce devis ne peut pas recevoir de scan signé : il doit être envoyé ou expiré, classique (sans formules), avec sa pièce en vigueur.";
+const MSG_SUCCESSEUR =
+  "Une version plus récente de ce devis a été envoyée : ce scan ne peut pas être versé sur la version remplacée.";
+const MSG_DATE_FUTURE =
+  "La date écrite par le client ne peut pas être postérieure à aujourd'hui : vérifiez la saisie.";
+const MSG_DATE_INVALIDE = "La date écrite par le client est invalide : vérifiez la saisie.";
 const MSG_FICHE = "La fiche client ne porte pas de nom de signataire : renseignez-la d'abord.";
 const MSG_DEJA_SIGNE = "Ce devis est déjà signé par le client.";
 const MSG_SCAN_VU = "Ce scan a déjà été versé.";
@@ -60,7 +70,18 @@ const entreeSchema = z.object({
   devisId: z.string().uuid(),
   attestation: z.literal(true),
   fichier: z.instanceof(File),
+  // Facultative : chaîne vide = absente. Simple TRANSCRIPTION, gardée au journal (jamais `signeAt`).
+  dateEcriteParClient: z
+    .string()
+    .regex(/^(\d{4}-\d{2}-\d{2})?$/)
+    .optional(),
 });
+
+/** `AAAA-MM-JJ` déjà validé par `lireJourIso` : ses trois composantes. */
+function jourDe(iso: string): [number, number, number] {
+  const j = lireJourIso(iso);
+  return j === null ? [1970, 1, 1] : [j.y, j.mo, j.d];
+}
 
 function refus(message: string): ResultatVersementScan {
   return { ok: false, message };
@@ -97,16 +118,39 @@ export async function verserScanDevisSigneAction(
   if (!peutSignerPourOrganisme(session.role)) return refus(MSG_SESSION);
 
   const attestation = formData.get("attestation");
+  const dateBrute = formData.get("dateEcriteParClient");
   const parse = entreeSchema.safeParse({
     devisId: formData.get("devisId"),
     attestation: attestation === "true" || attestation === "on",
     fichier: formData.get("fichier"),
+    ...(typeof dateBrute === "string" ? { dateEcriteParClient: dateBrute } : {}),
   });
   if (!parse.success) {
-    await journaliserRefus(session, "requete_invalide");
-    return refus("Choisissez un fichier PDF et cochez l'attestation avant de verser le scan.");
+    const seuleLaDate = parse.error.issues.every((i) => i.path[0] === "dateEcriteParClient");
+    await journaliserRefus(session, seuleLaDate ? "date_ecrite_invalide" : "requete_invalide");
+    return refus(
+      seuleLaDate
+        ? MSG_DATE_INVALIDE
+        : "Choisissez un fichier PDF et cochez l'attestation avant de verser le scan.",
+    );
   }
   const { devisId, fichier } = parse.data;
+
+  // ── Date écrite par le client (facultative) : réelle, et pas postérieure à aujourd'hui (Paris) ──
+  const dateEcrite = parse.data.dateEcriteParClient ?? "";
+  let dateEcriteUtc: number | null = null;
+  if (dateEcrite !== "") {
+    const jour = lireJourIso(dateEcrite);
+    if (jour === null) {
+      await journaliserRefus(session, "date_ecrite_invalide", devisId);
+      return refus(MSG_DATE_INVALIDE);
+    }
+    dateEcriteUtc = Date.UTC(jour.y, jour.mo - 1, jour.d);
+    if (dateEcriteUtc > minuitParisUtc(new Date())) {
+      await journaliserRefus(session, "date_ecrite_future", devisId);
+      return refus(MSG_DATE_FUTURE);
+    }
+  }
 
   // ── Contrôles du FICHIER, avant toute lecture base ou R2 ──
   const nomPdf = fichier.name.toLowerCase().endsWith(".pdf");
@@ -133,6 +177,8 @@ export async function verserScanDevisSigneAction(
       statut: true,
       offre: true,
       offreSha256: true,
+      dateValidite: true,
+      sentAt: true,
       documentGenereId: true,
       client: {
         select: {
@@ -151,7 +197,7 @@ export async function verserScanDevisSigneAction(
   }
   const piece = devis.documentGenere;
   if (
-    devis.statut !== "envoye" ||
+    (devis.statut !== "envoye" && devis.statut !== "expire") ||
     devis.offre !== null ||
     devis.offreSha256 !== null ||
     devis.documentGenereId === null ||
@@ -161,6 +207,16 @@ export async function verserScanDevisSigneAction(
   ) {
     await journaliserRefus(session, "etat_devis", devisId);
     return refus(MSG_ETAT);
+  }
+
+  // Version remplacée : refus, avant tout appel R2 (décision du fondateur).
+  const successeur = await prisma.devis.findFirst({
+    where: { replacesDevisId: devis.id, statut: { not: "brouillon" } },
+    select: { id: true },
+  });
+  if (successeur !== null) {
+    await journaliserRefus(session, "successeur_emis", devisId);
+    return refus(MSG_SUCCESSEUR);
   }
 
   // D2 : l'identité vient de la fiche client, jamais du formulaire.
@@ -249,6 +305,18 @@ export async function verserScanDevisSigneAction(
           scanSha256,
           tailleOctets: octets.byteLength,
           statutSignature: res.statutSignature,
+          // Transcription seulement : `signeAt` reste l'heure du versement, le scan fait foi.
+          dateEcriteParClient: dateEcrite === "" ? null : dateEcrite,
+          statutDevisAuVersement: devis.statut,
+          dateValidite: devis.dateValidite.toISOString(),
+          validiteDepassee: devis.dateValidite.getTime() < Date.now(),
+          dateEcriteApresValidite:
+            dateEcriteUtc !== null &&
+            finDeJourneeParis(...jourDe(dateEcrite)).getTime() > devis.dateValidite.getTime(),
+          dateEcriteAvantEnvoi:
+            dateEcriteUtc !== null &&
+            devis.sentAt !== null &&
+            dateEcriteUtc < minuitParisUtc(devis.sentAt),
         },
         session,
       });

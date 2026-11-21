@@ -12,6 +12,7 @@ const etat = vi.hoisted(() => ({
   peutEcrire: true,
   signatures: [] as Array<{ partie: string; methode: string }>,
   canal: "inconnu" as "email" | "main_propre" | "inconnu" | "rejet",
+  dateEcrite: null as string | null,
 }));
 
 const base = {
@@ -69,6 +70,14 @@ vi.mock("@/lib/prisma", () => ({
             choixOffreSha256: null,
             documentGenere: { annuleeAt: null },
           })),
+        ),
+    },
+    activityLog: {
+      findMany: () =>
+        Promise.resolve(
+          etat.dateEcrite === null
+            ? []
+            : [{ targetId: "s0", changes: { dateEcriteParClient: etat.dateEcrite } }],
         ),
     },
     planRecurrent: { count: () => Promise.resolve(0) },
@@ -158,6 +167,7 @@ beforeEach(() => {
   etat.peutEcrire = true;
   etat.signatures = [];
   etat.canal = "inconnu";
+  etat.dateEcrite = null;
 });
 afterEach(() => cleanup());
 
@@ -182,6 +192,32 @@ describe("fiche devis : signature papier", () => {
     expect(electronique).toBeDefined();
     expect(electronique?.textContent).not.toContain("Copie numérisée versée");
     expect(electronique?.textContent).not.toContain("Ouvrir le scan versé");
+  });
+
+  it("lien_exemplaire_signe_seulement_si_signature_electronique", async () => {
+    etat.signatures = [{ partie: "client", methode: "papier_scanne" }];
+    const papier = await afficher();
+    expect(papier.textContent).not.toContain("Ouvrir l'exemplaire signé (PDF)");
+    cleanup();
+    vi.resetModules();
+    etat.signatures = [{ partie: "client", methode: "trace" }];
+    const electronique = await afficher();
+    expect(electronique.textContent).toContain("Ouvrir l'exemplaire signé (PDF)");
+  });
+
+  it("date écrite par le client : lue dans le journal, affichée sous la signature papier", async () => {
+    etat.signatures = [{ partie: "client", methode: "papier_scanne" }];
+    etat.dateEcrite = "2026-11-12";
+    const c = await afficher();
+    expect(c.querySelector('[data-testid="section-devis-papier"]')?.textContent).toContain(
+      "Date écrite par le client : 12/11/2026 (recopiée au versement).",
+    );
+  });
+
+  it("pas de date écrite au journal : aucune ligne", async () => {
+    etat.signatures = [{ partie: "client", methode: "papier_scanne" }];
+    const c = await afficher();
+    expect(c.textContent).not.toContain("Date écrite par le client");
   });
 
   it("signature par trace : reste sous « Signature électronique »", async () => {
