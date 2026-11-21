@@ -128,6 +128,8 @@ describe("replyToSubmissionAction", () => {
       "submission-reply",
       "fr",
       expect.objectContaining({ subject: "Re: votre demande" }),
+      // I2-1 : rendu avec le vrai destinataire (lien d'opposition personnel dans le pied de page).
+      { destinataire: "user@example.com" },
     );
     // Sécurité : plus de PII (email en clair) dans le payload de queue — le
     // worker re-déchiffre l'adresse depuis la DB. L'arg `to` est donc vide.
