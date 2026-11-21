@@ -342,6 +342,7 @@ describe("envoi simultané du même brouillon, Postgres réel (B1)", () => {
         statut: "envoye",
         sentAt: new Date(),
         documentGenereId: piece.id,
+        fichierPdfUrl: "documents/2026/devis/TEST-DOC-B2R.pdf",
         dateValidite: dansUnAn,
       },
     });
@@ -363,6 +364,9 @@ describe("envoi simultané du même brouillon, Postgres réel (B1)", () => {
           sujet: "Votre devis",
           entityType: "Devis",
           entityId: devis.id,
+          attachments: [
+            { filename: "TEST-DEV-B2R.pdf", r2Key: "documents/2026/devis/TEST-DOC-B2R.pdf" },
+          ] as never,
         },
       });
       creees.outbox.push(ligne.id);

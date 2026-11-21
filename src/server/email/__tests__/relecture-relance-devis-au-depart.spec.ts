@@ -73,6 +73,22 @@ describe("lecteur relance-devis-client", () => {
     expect(texte).toMatch(/^Un devis :/);
     expect(texte).not.toContain("script");
   });
+  it("devis introuvable, relance AVEC lien : l'alerte dit que le lien a été révoqué", async () => {
+    h.unique.mockResolvedValue(null);
+    await lecteur()({
+      ...job,
+      payload: { numero: "DEV-2026-001", lienSignatureALEnvoi: { v: 1 } },
+    } as never);
+    const texte = String((h.sentry.mock.calls[0] as unknown[])[0]);
+    expect(texte).toContain("lien neuf n'a été remis à personne");
+  });
+  it("devis introuvable, relance SANS lien : aucune phrase sur le lien, ni URL ni jeton", async () => {
+    h.unique.mockResolvedValue(null);
+    await lecteur()({ ...job, payload: { numero: "DEV-2026-001" } } as never);
+    const texte = String((h.sentry.mock.calls[0] as unknown[])[0]);
+    expect(texte).toBe("Devis DEV-2026-001 : relance non envoyée : devis introuvable.");
+    expect(texte).not.toMatch(/lien|http/i);
+  });
   it("devis non lié : retenue + alerte sans numéro", async () => {
     expect(await lecteur()({ template: "relance-devis-client" } as never)).toMatch(/prudence/);
     expect(h.sentry).toHaveBeenCalledTimes(1);

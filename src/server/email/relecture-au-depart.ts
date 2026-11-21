@@ -652,12 +652,19 @@ const FORME_NUMERO_DEVIS = /^[A-Za-z0-9._-]{1,40}$/;
 
 /** Alerte interne : une relance munie de son lien disparaît parce que son devis est introuvable. */
 function alerterRelanceSansDevis(payload: unknown): void {
-  const n =
+  const corps =
     payload !== null && typeof payload === "object" && !Array.isArray(payload)
-      ? (payload as Record<string, unknown>).numero
-      : undefined;
+      ? (payload as Record<string, unknown>)
+      : {};
+  const n = corps.numero;
   const numero = typeof n === "string" && FORME_NUMERO_DEVIS.test(n) ? `Devis ${n}` : "Un devis";
-  const texte = `${numero} : e-mail de relance NON envoyé, devis introuvable ou non lié au départ. L'ancien lien du client a été révoqué et le lien neuf n'a été remis à personne : renvoyez le devis depuis sa fiche.`;
+  // La phrase sur le lien n'est vraie que si la relance en portait un : jamais d'URL ni de jeton ici.
+  const portaitUnLien =
+    (corps.lienSignatureALEnvoi !== undefined && corps.lienSignatureALEnvoi !== null) ||
+    (typeof corps.signatureUrl === "string" && corps.signatureUrl.length > 0);
+  const texte = portaitUnLien
+    ? `${numero} : e-mail de relance NON envoyé, devis introuvable ou non lié au départ. L'ancien lien du client a été révoqué et le lien neuf n'a été remis à personne : renvoyez le devis depuis sa fiche.`
+    : `${numero} : relance non envoyée : devis introuvable.`;
   try {
     Sentry.captureMessage(texte, {
       level: "error",
