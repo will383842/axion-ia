@@ -367,6 +367,58 @@ describe("F2 — devis expiré et date écrite par le client", () => {
     expect(refuse.changes).toEqual({ motif: "successeur_emis" });
   });
 
+  it("refus_version_remplacee_rend_MSG_SUCCESSEUR_et_journalise_successeur_emis", async () => {
+    h.signer.mockResolvedValue({ ok: false, raison: "version_remplacee", message: "autre texte" });
+    const r = await verserScanDevisSigneAction(formulaire());
+    expect(r).toEqual({
+      ok: false,
+      message:
+        "Une version plus récente de ce devis a été envoyée : ce scan ne peut pas être versé sur la version remplacée.",
+    });
+    expect(h.apres).not.toHaveBeenCalled();
+    const refuse = h.log.mock.calls.find(
+      (c) => (c[0] as { action: string }).action === "qualiopi.devis.scan_papier_refuse",
+    )![0] as { changes: Record<string, unknown>; targetId: string | null };
+    expect(refuse.changes).toEqual({ motif: "successeur_emis" });
+    expect(refuse.targetId).toBe(DEVIS);
+  });
+
+  it("date_du_jour_acceptee_juste_apres_minuit_a_Paris", async () => {
+    // 23 h 05 UTC le 10 = 0 h 05 à Paris (hiver) le 11 : « aujourd'hui » est le 11.
+    vi.useFakeTimers({ toFake: ["Date"], now: new Date("2026-11-10T23:05:00Z") });
+    try {
+      const aujourdhui = await verserScanDevisSigneAction(
+        formulaire({ dateEcriteParClient: "2026-11-11" }),
+      );
+      expect(aujourdhui).toMatchObject({ ok: true });
+      const demain = await verserScanDevisSigneAction(
+        formulaire({ dateEcriteParClient: "2026-11-12" }),
+      );
+      expect(demain).toMatchObject({ ok: false });
+    } finally {
+      vi.useRealTimers();
+    }
+  });
+
+  it("refus_a_cause_de_la_seule_date_journalise_le_devisId_du_formulaire", async () => {
+    const r = await verserScanDevisSigneAction(formulaire({ dateEcriteParClient: "11/11/2026" }));
+    expect(r.ok).toBe(false);
+    attendSansR2OuBase();
+    const refuse = h.log.mock.calls.find(
+      (c) => (c[0] as { action: string }).action === "qualiopi.devis.scan_papier_refuse",
+    )![0] as { changes: Record<string, unknown>; targetId: string | null };
+    expect(refuse.changes).toEqual({ motif: "date_ecrite_invalide" });
+    expect(refuse.targetId).toBe(DEVIS);
+  });
+
+  it("refus_requete_invalide_ne_journalise_pas_de_devisId", async () => {
+    await verserScanDevisSigneAction(formulaire({ attestation: null }));
+    const refuse = h.log.mock.calls.find(
+      (c) => (c[0] as { action: string }).action === "qualiopi.devis.scan_papier_refuse",
+    )![0] as { targetId: string | null };
+    expect(refuse.targetId).toBeNull();
+  });
+
   it("refuse_date_ecrite_future", async () => {
     const r = await verserScanDevisSigneAction(formulaire({ dateEcriteParClient: "2999-01-01" }));
     expect(r).toEqual({

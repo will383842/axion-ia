@@ -77,12 +77,6 @@ const entreeSchema = z.object({
     .optional(),
 });
 
-/** `AAAA-MM-JJ` déjà validé par `lireJourIso` : ses trois composantes. */
-function jourDe(iso: string): [number, number, number] {
-  const j = lireJourIso(iso);
-  return j === null ? [1970, 1, 1] : [j.y, j.mo, j.d];
-}
-
 function refus(message: string): ResultatVersementScan {
   return { ok: false, message };
 }
@@ -127,7 +121,13 @@ export async function verserScanDevisSigneAction(
   });
   if (!parse.success) {
     const seuleLaDate = parse.error.issues.every((i) => i.path[0] === "dateEcriteParClient");
-    await journaliserRefus(session, seuleLaDate ? "date_ecrite_invalide" : "requete_invalide");
+    // Refus dû à la seule date : le devis visé est lisible dans le formulaire, on le journalise.
+    const devisVise = seuleLaDate ? z.string().uuid().safeParse(formData.get("devisId")) : null;
+    await journaliserRefus(
+      session,
+      seuleLaDate ? "date_ecrite_invalide" : "requete_invalide",
+      devisVise?.success ? devisVise.data : undefined,
+    );
     return refus(
       seuleLaDate
         ? MSG_DATE_INVALIDE
@@ -139,12 +139,14 @@ export async function verserScanDevisSigneAction(
   // ── Date écrite par le client (facultative) : réelle, et pas postérieure à aujourd'hui (Paris) ──
   const dateEcrite = parse.data.dateEcriteParClient ?? "";
   let dateEcriteUtc: number | null = null;
+  let jourEcrit: { y: number; mo: number; d: number } | null = null;
   if (dateEcrite !== "") {
     const jour = lireJourIso(dateEcrite);
     if (jour === null) {
       await journaliserRefus(session, "date_ecrite_invalide", devisId);
       return refus(MSG_DATE_INVALIDE);
     }
+    jourEcrit = jour;
     dateEcriteUtc = Date.UTC(jour.y, jour.mo - 1, jour.d);
     if (dateEcriteUtc > minuitParisUtc(new Date())) {
       await journaliserRefus(session, "date_ecrite_future", devisId);
@@ -273,6 +275,11 @@ export async function verserScanDevisSigneAction(
       ...(await contexteRequete()),
     });
     if (!res.ok) {
+      // Version remplacée pendant l'envoi : même motif et même message que le pré-contrôle.
+      if (res.raison === "version_remplacee") {
+        await journaliserRefus(session, "successeur_emis", devisId);
+        return refus(MSG_SUCCESSEUR);
+      }
       await journaliserRefus(session, res.raison, devisId);
       return refus(res.message);
     }
@@ -311,8 +318,9 @@ export async function verserScanDevisSigneAction(
           dateValidite: devis.dateValidite.toISOString(),
           validiteDepassee: devis.dateValidite.getTime() < Date.now(),
           dateEcriteApresValidite:
-            dateEcriteUtc !== null &&
-            finDeJourneeParis(...jourDe(dateEcrite)).getTime() > devis.dateValidite.getTime(),
+            jourEcrit !== null &&
+            finDeJourneeParis(jourEcrit.y, jourEcrit.mo, jourEcrit.d).getTime() >
+              devis.dateValidite.getTime(),
           dateEcriteAvantEnvoi:
             dateEcriteUtc !== null &&
             devis.sentAt !== null &&

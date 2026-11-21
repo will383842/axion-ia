@@ -730,6 +730,11 @@ const CONSOMMATEURS_ASSUMES: ReadonlySet<string> = new Set([
   //    `acceptDevisAction` TELLES QUELLES : le verrou est une propriété de la vraie base, un double
   //    ne prouverait rien. Même raison, même dossier que le test d'envoi simultané ci-dessus.
   "tests/integration/devis/versions-concurrentes.spec.ts",
+  // ── Garde de version d'une SIGNATURE de devis (garde-signature-version). Le test appelle la VRAIE
+  //    `signerDocument` et la VRAIE `marquerDevisEnvoye` contre un vrai Postgres : le verrou de ligne
+  //    est une propriété de la vraie base, un double ne prouverait rien. Même raison, même dossier
+  //    que `versions-concurrentes.spec.ts` ci-dessus.
+  "tests/integration/devis/signature-version-remplacee.spec.ts",
   // ── Banc @formateurs, scénarios d'ARGENT (vérification 1, équipe C,
   //    2026-10-14). L'exécuteur `tsx` du banc appelle le code serveur RÉEL du
   //    paiement des formateurs (passage par mission, autofacture, virements,
