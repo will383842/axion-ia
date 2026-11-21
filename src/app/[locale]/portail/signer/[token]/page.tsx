@@ -33,6 +33,12 @@ import {
   mentionCompleteDocument,
 } from "@/server/qualiopi/documents/signature/mentions-document";
 import {
+  CONTACT_PAR_DEFAUT,
+  MENTION_VERSION_DEVIS,
+  estSignatureClientDevis,
+  mentionCompleteDevisV1,
+} from "@/server/qualiopi/documents/signature/mentions-devis";
+import {
   apercuChoixAction,
   demanderCodeDevisAction,
   demanderCodeSignatureAction,
@@ -402,19 +408,32 @@ export default async function SignerDevisPage({ params }: PageProps) {
   // Devis À FORMULES : signature « simple renforcée » (lot 4 bis) — code reçu par e-mail + déclaration.
   const renforcee = offreAffichee !== null && verif.partie === "client";
 
-  const mentions = mentionCompleteDocument(
-    verif.partie,
-    {
-      pieceLibelle: circuit.libelle,
-      // Un devis se désigne par SON numéro (AXI-DEV), celui que le client connaît ; le n° de
-      // pièce (AXI-DOC) reste affiché à part par le formulaire.
-      pieceNumero: devis?.numero ?? piece.numero,
-      organisme: identite.raisonSociale,
-    },
-    circuit.canal === "maison",
-    avecCode || renforcee,
-    MENTION_VERSION_DOCUMENT,
-  );
+  // Signature du CLIENT sur un DEVIS : mentions propres au devis (`devis-v1`). Toute autre pièce
+  // garde les mentions `MENTION_VERSION_DOCUMENT`, inchangées.
+  const clientDevis = estSignatureClientDevis(piece.type, verif.partie);
+  const emailContact = (identite.email ?? "").trim();
+  const mentions = clientDevis
+    ? mentionCompleteDevisV1(
+        {
+          numeroDevis: devis?.numero ?? piece.numero,
+          prestataire: identite.raisonSociale,
+          contact: estEmailSimple(emailContact) ? emailContact : CONTACT_PAR_DEFAUT,
+        },
+        avecCode || renforcee,
+      )
+    : mentionCompleteDocument(
+        verif.partie,
+        {
+          pieceLibelle: circuit.libelle,
+          // Un devis se désigne par SON numéro (AXI-DEV), celui que le client connaît ; le n° de
+          // pièce (AXI-DOC) reste affiché à part par le formulaire.
+          pieceNumero: devis?.numero ?? piece.numero,
+          organisme: identite.raisonSociale,
+        },
+        circuit.canal === "maison",
+        avecCode || renforcee,
+        MENTION_VERSION_DOCUMENT,
+      );
 
   return (
     <PieceSignatureForm
@@ -449,7 +468,7 @@ export default async function SignerDevisPage({ params }: PageProps) {
       // texte ne change, donc aucune version de mention à incrémenter.
       mentions={mentions}
       // Version de la mention AFFICHÉE : le formulaire la poste, le serveur refuse si elle a changé.
-      mentionVersion={MENTION_VERSION_DOCUMENT}
+      mentionVersion={clientDevis ? MENTION_VERSION_DEVIS : MENTION_VERSION_DOCUMENT}
       // CGV à lire et accepter avant de signer un DEVIS (case séparée, version scellée).
       {...(piece.type === "devis"
         ? {

@@ -20,6 +20,7 @@
 
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { MENTION_VERSION_DOCUMENT } from "@/server/qualiopi/documents/signature/mentions-document";
+import { MENTION_VERSION_DEVIS } from "@/server/qualiopi/documents/signature/mentions-devis";
 
 vi.mock("@/lib/prisma", () => ({
   prisma: {
@@ -148,6 +149,9 @@ beforeEach(() => {
   mockPositionnement.mockResolvedValue(true);
 });
 
+/** Une pièce qui n'est pas un devis affiche `MENTION_VERSION_DOCUMENT`. */
+const PIECE_CONVENTION = { mentionVersionAffichee: MENTION_VERSION_DOCUMENT };
+
 function entree(over: Record<string, unknown> = {}) {
   return {
     token: "jeton-en-clair",
@@ -156,8 +160,9 @@ function entree(over: Record<string, unknown> = {}) {
     // Case des CGV cochée par défaut : elle ne vise que le devis, les autres types l'ignorent.
     cgvAcceptees: true as const,
     cgvVersionAffichee: CGV_VERSION,
-    // Version de mention affichée par la page : celle du serveur par défaut.
-    mentionVersionAffichee: MENTION_VERSION_DOCUMENT,
+    // Version de mention affichée par la page : celle du serveur pour un DEVIS signé par le client
+    // (pièce par défaut de ce fichier). Les autres pièces passent `MENTION_VERSION_DOCUMENT`.
+    mentionVersionAffichee: MENTION_VERSION_DEVIS,
     ...over,
   };
 }
@@ -185,7 +190,7 @@ describe("🔴 le positionnement part À LA CONCLUSION de la pièce qui engage l
     conventionConclue();
     mockPrisma.questionnaire.findMany.mockResolvedValue([{ id: "q-1" }, { id: "q-2" }]);
 
-    const res = await signerPieceParJetonAction(entree());
+    const res = await signerPieceParJetonAction(entree(PIECE_CONVENTION));
 
     expect(res).toMatchObject({ ok: true });
     expect(mockPositionnement).toHaveBeenCalledTimes(2);
@@ -202,13 +207,13 @@ describe("🔴 le positionnement part À LA CONCLUSION de la pièce qui engage l
     });
     // `statutSignature: "partielle"` par défaut : le client a signé, l'organisme
     // n'a pas contresigné. Envoyer ici promettrait une formation non conclue.
-    await signerPieceParJetonAction(entree());
+    await signerPieceParJetonAction(entree(PIECE_CONVENTION));
     expect(mockPositionnement).not.toHaveBeenCalled();
   });
 
   it("🔴 IDEMPOTENT : ne cible que les questionnaires jamais envoyés ni répondus", async () => {
     conventionConclue();
-    await signerPieceParJetonAction(entree());
+    await signerPieceParJetonAction(entree(PIECE_CONVENTION));
 
     const where = (
       mockPrisma.questionnaire.findMany.mock.calls[0]![0] as {
@@ -242,7 +247,7 @@ describe("🔴 le positionnement part À LA CONCLUSION de la pièce qui engage l
     mockPrisma.questionnaire.findMany.mockResolvedValue([{ id: "q-1" }]);
     mockPositionnement.mockRejectedValue(new Error("SMTP indisponible"));
 
-    const res = await signerPieceParJetonAction(entree());
+    const res = await signerPieceParJetonAction(entree(PIECE_CONVENTION));
 
     expect(res).toMatchObject({ ok: true, statutSignature: "signee" });
   });
@@ -265,7 +270,7 @@ describe("🔴 le positionnement part À LA CONCLUSION de la pièce qui engage l
     // quand une règle `EmailAutomationSetting` gare le message.
     mockPositionnement.mockResolvedValue(false);
 
-    const res = await signerPieceParJetonAction(entree());
+    const res = await signerPieceParJetonAction(entree(PIECE_CONVENTION));
 
     // La signature reste écrite : ce n'est pas l'e-mail qui la fonde.
     expect(res).toMatchObject({ ok: true, statutSignature: "signee" });
@@ -291,7 +296,7 @@ describe("🔴 le positionnement part À LA CONCLUSION de la pièce qui engage l
       statutSignature: "signee",
     });
 
-    const res = await signerPieceParJetonAction(entree());
+    const res = await signerPieceParJetonAction(entree(PIECE_CONVENTION));
 
     expect(res).toMatchObject({ ok: true });
     expect(mockPrisma.questionnaire.findMany).not.toHaveBeenCalled();
@@ -375,7 +380,7 @@ describe("🔴 le devis doit être ENCORE SIGNABLE — garde serveur", () => {
       numero: "AXI-CONV-2026-001",
     });
     mockPrisma.devis.findFirst.mockResolvedValue(null);
-    const res = await signerPieceParJetonAction(entree());
+    const res = await signerPieceParJetonAction(entree(PIECE_CONVENTION));
     expect(res).toMatchObject({ ok: true });
     expect(mockPrisma.devis.findFirst).not.toHaveBeenCalled();
   });
@@ -525,7 +530,7 @@ describe("🔴 CGV avant signature du devis — case obligatoire, version enregi
       numero: "AXI-DOC-2026-032",
     });
     const res = await signerPieceParJetonAction(
-      entree({ cgvAcceptees: undefined, cgvVersionAffichee: undefined }),
+      entree({ ...PIECE_CONVENTION, cgvAcceptees: undefined, cgvVersionAffichee: undefined }),
     );
     expect(res).toMatchObject({ ok: true });
     const arg = mockSigner.mock.calls[0]?.[0] as Record<string, unknown>;
