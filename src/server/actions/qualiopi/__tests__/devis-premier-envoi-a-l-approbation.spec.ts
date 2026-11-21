@@ -203,7 +203,12 @@ const ecritures = () => h.journalEcritures;
 
 function tx() {
   return {
-    $queryRaw: async () => [{ locked: true }],
+    $queryRaw: async (...a: unknown[]) => {
+      // Verrou de LIGNE de la version remplacée : rend son statut relu sous le verrou.
+      const texte = Array.isArray(a[0]) ? (a[0] as string[]).join("?") : String(a[0]);
+      if (texte.includes("FOR NO KEY UPDATE")) return [{ statut: h.ancien.v["statut"] }];
+      return [{ locked: true }];
+    },
     emailOutbox: modele(),
     // OUT-1 : journal des envois (aucune ligne `pending` : l'envoi abandonné n'a rien laissé en vol).
     emailLog: { findFirst: async () => null },

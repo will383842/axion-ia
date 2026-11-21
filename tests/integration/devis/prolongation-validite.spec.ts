@@ -56,7 +56,8 @@ describe("prolongation de validité contre un vrai Postgres (Gate D)", () => {
       const { count } = await tx.devis.updateMany({
         where: {
           id: devis.id,
-          statut: { in: ["envoye", "expire"] },
+          // Statut LU (« expire » ici), comme l'action : jamais une liste.
+          statut: "expire",
           dateValidite: devis.dateValidite,
           ...pasSigneParLeClient,
         },
@@ -132,7 +133,8 @@ describe("prolongation de validité contre un vrai Postgres (Gate D)", () => {
       const { count } = await tx.devis.updateMany({
         where: {
           id: devis.id,
-          statut: { in: ["envoye", "expire"] },
+          // Statut LU (« envoye » ici), comme l'action : jamais une liste.
+          statut: "envoye",
           dateValidite: lue,
           ...pasSigneParLeClient,
         },
