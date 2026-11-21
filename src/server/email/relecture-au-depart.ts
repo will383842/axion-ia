@@ -40,6 +40,7 @@ import {
 import { hashEmailForLookup } from "@/lib/security/email-hash";
 import { prisma } from "@/lib/prisma";
 import { VARIANTES_VALIDEES_A_PART } from "@/server/email/textes-formateurs-a-valider";
+import { motifRelanceDevisSansObjet } from "@/server/qualiopi/devis/relance-devis-sans-objet";
 import { blocageCumule } from "@/server/qualiopi/documents/signature/echecs-cumules";
 import { estTexteValide } from "@/server/email/textes-valides";
 import { lireTextesValides } from "@/server/email/textes-valides-lecture";
@@ -642,6 +643,22 @@ const relireCodeDevis: LecteurAuDepart = async (job) => {
   }
 };
 
+/**
+ * Relance de devis (B3) : la relance est-elle encore utile AU DÉPART ? Même module que
+ * l'approbation (`motifRelanceDevisSansObjet`) : signé, refusé, accepté, périmé, remplacé, remis
+ * en main propre → retenue. Échec fermé : sans devis lié ou base muette, on retient.
+ */
+const relireRelanceDevisClient: LecteurAuDepart = async (job) => {
+  try {
+    if (job.entityType !== "Devis" || !job.entityId) {
+      return "devis non lié à la relance — retenu par prudence";
+    }
+    return await motifRelanceDevisSansObjet(prisma, job.entityId, new Date());
+  } catch {
+    return "état illisible au départ — retenu par prudence";
+  }
+};
+
 /** Le registre : gabarit → lecteur d'état. */
 export const RELECTURES_AU_DEPART: ReadonlyMap<string, LecteurAuDepart> = new Map<
   string,
@@ -670,4 +687,5 @@ export const RELECTURES_AU_DEPART: ReadonlyMap<string, LecteurAuDepart> = new Ma
   [F61, relireRelanceBilan],
   [F17, relireCodeSignature],
   ["devis-code-signature", relireCodeDevis],
+  ["relance-devis-client", relireRelanceDevisClient],
 ]);

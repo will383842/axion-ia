@@ -15,6 +15,7 @@ const m = vi.hoisted(() => ({
   compte: vi.fn(),
   trace: vi.fn(),
   outbox: vi.fn(),
+  attente: vi.fn(),
   garer: vi.fn(),
   garde: vi.fn(),
   echanges: vi.fn(),
@@ -34,7 +35,13 @@ vi.mock("@/lib/prisma", () => ({
   prisma: {
     devis: { findFirst: m.devis, findUnique: m.unique, count: m.compte },
     activityLog: { findFirst: m.trace },
-    emailOutbox: { findFirst: m.outbox, findMany: m.liste, updateMany: m.refuser },
+    emailOutbox: {
+      // Un e-mail `devis-envoi` en attente (B3) ou un brouillon de relance déjà à valider.
+      findFirst: (a: { where: { template: string } }) =>
+        a.where.template === "devis-envoi" ? m.attente(a) : m.outbox(a),
+      findMany: m.liste,
+      updateMany: m.refuser,
+    },
   },
 }));
 vi.mock("@/server/actions/qualiopi/_guards", () => ({
@@ -63,7 +70,13 @@ import {
   ERREUR_GARAGE,
   MESSAGE_RELANCE_GAREE,
   MESSAGE_RELANCE_PRETE,
+  MESSAGE_RELANCE_GAREE_SANS_LIEN,
+  ERREUR_PDF_ABSENT,
+  ERREUR_FORMULES_SANS_PIECE,
+  ERREUR_EMAIL_DEVIS_EN_ATTENTE,
+  CLE_MARQUEUR_LIEN,
 } from "../relance-devis";
+import { CLE_MARQUEUR } from "@/server/qualiopi/documents/signature/lien-a-l-envoi";
 
 function formulaire(clientId = CLIENT, devisId = DEVIS): FormData {
   const fd = new FormData();
@@ -92,7 +105,13 @@ const DEVIS_ENVOYE = {
     raisonSociale: "Atelier Martin",
     contactNom: null,
     contactEmail: "compta@martin.example",
+    contactCivilite: "monsieur",
+    contactPrenom: "Paul",
+    contactNomFamille: "Martin",
   },
+  documentGenereId: "piece-1",
+  fichierPdfUrl: "documents/2026/devis/AXI-DEV-2026-014.pdf",
+  offre: null,
 };
 
 beforeEach(() => {
@@ -106,6 +125,7 @@ beforeEach(() => {
   m.compte.mockResolvedValue(1); // 1 = non signé par le client
   m.trace.mockResolvedValue(null);
   m.outbox.mockResolvedValue(null);
+  m.attente.mockResolvedValue(null);
   m.garer.mockResolvedValue("outbox-1");
   m.liste.mockResolvedValue([{ id: "outbox-1", createdAt: new Date() }]);
   m.refuser.mockResolvedValue({ count: 0 });
@@ -247,6 +267,64 @@ describe("relance de devis (lot B9)", () => {
     expect(m.transport).not.toHaveBeenCalled();
   });
 
+  it("B3 — gare le PDF en pièce jointe et le marqueur « le lien naît à l'envoi », sans lien ni jeton", async () => {
+    await lancer();
+    const arg = m.garer.mock.calls[0]![0];
+    expect(arg.attachments).toEqual([
+      { filename: "AXI-DEV-2026-014.pdf", r2Key: "documents/2026/devis/AXI-DEV-2026-014.pdf" },
+    ]);
+    expect(arg.payload[CLE_MARQUEUR_LIEN]).toEqual({
+      v: 1,
+      nature: "devis-renvoi",
+      documentGenereId: "piece-1",
+      partie: "client",
+      devisId: DEVIS,
+    });
+    expect(arg.payload.pieceJointe).toBe(true);
+    expect(arg.payload.salutation).toEqual({ civilite: "monsieur", nomFamille: "Martin" });
+    const brut = JSON.stringify(arg.payload);
+    expect(brut).not.toMatch(/signatureUrl|token|jeton|\/portail\//i);
+    // Journal : ni URL ni adresse, seulement « avecLien ».
+    expect(m.log.mock.calls[0]![0].changes).toEqual({
+      outboxId: "outbox-1",
+      numero: "AXI-DEV-2026-014",
+      avecLien: true,
+    });
+    expect(JSON.stringify(m.log.mock.calls)).not.toContain("martin.example");
+  });
+
+  it("B3 — devis classique (sans pièce signable) : PDF joint, pas de marqueur, le message le dit", async () => {
+    m.devis.mockResolvedValue({ ...DEVIS_ENVOYE, documentGenereId: null });
+    const url = await lancer();
+    const arg = m.garer.mock.calls[0]![0];
+    expect(arg.payload).not.toHaveProperty(CLE_MARQUEUR_LIEN);
+    expect(arg.attachments).toHaveLength(1);
+    expect(url).toContain(MESSAGE_RELANCE_GAREE_SANS_LIEN);
+    expect(m.log.mock.calls[0]![0].changes.avecLien).toBe(false);
+  });
+
+  it("B3 — PDF absent : refus, rien garé", async () => {
+    m.devis.mockResolvedValue({ ...DEVIS_ENVOYE, fichierPdfUrl: null });
+    expect(await lancer()).toContain(ERREUR_PDF_ABSENT);
+    expect(m.garer).not.toHaveBeenCalled();
+  });
+
+  it("B3 — devis à formules sans pièce : refus, rien garé", async () => {
+    m.devis.mockResolvedValue({ ...DEVIS_ENVOYE, documentGenereId: null, offre: { v: 1 } });
+    expect(await lancer()).toContain(ERREUR_FORMULES_SANS_PIECE);
+    expect(m.garer).not.toHaveBeenCalled();
+  });
+
+  it("B3 — un e-mail de devis (envoi ou renvoi) attend déjà : refus, rien garé", async () => {
+    m.attente.mockResolvedValue({ id: "devis-envoi-en-attente" });
+    expect(await lancer()).toContain(ERREUR_EMAIL_DEVIS_EN_ATTENTE);
+    expect(m.garer).not.toHaveBeenCalled();
+  });
+
+  it("B3 — la clé du marqueur copiée ici est celle du module à l'envoi", () => {
+    expect(CLE_MARQUEUR_LIEN).toBe(CLE_MARQUEUR);
+  });
+
   it("contact absent : erreur, rien garé", async () => {
     m.devis.mockResolvedValue({
       ...DEVIS_ENVOYE,
@@ -264,6 +342,9 @@ describe("texte de la relance", () => {
     envoyeLe: new Date("2026-10-01T10:00:00Z"),
     raisonSociale: "Atelier Martin",
     contactEmail: "compta@martin.example",
+    devisId: DEVIS,
+    documentGenereId: "piece-1",
+    fichierPdfUrl: "documents/2026/devis/AXI-DEV-2026-014.pdf",
   });
 
   it("ne porte ni montant ni mot interdit", () => {
