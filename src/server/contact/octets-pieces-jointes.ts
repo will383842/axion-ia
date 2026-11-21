@@ -228,6 +228,8 @@ export function nomsRepertoireZip(repertoire: Uint8Array): string[] | null {
   return noms.length > 0 ? noms : null;
 }
 
+const MACRO_ODF = /(^|\/)(basic|scripts)\//;
+
 /**
  * Lecture 2c — la liste des entrées dit-elle le format annoncé, et sans
  * macros ? `vbaProject.bin` / `vbaData.xml` (Office), `Basic/` / `Scripts/` (ODF).
@@ -240,7 +242,9 @@ export function analyserRepertoirePieceJointe(
   if (!noms) return refus("contenu", nom);
   const bas = noms.map((n) => n.toLowerCase());
   if (format === "odt") {
-    if (bas.some((n) => n.startsWith("basic/") || n.startsWith("scripts/"))) {
+    // Un segment entier `basic` ou `scripts`, à la racine OU dans un sous-document
+    // (`Object 1/Basic/…`) ; `pictures/basic-chart.png` ou `mybasic/x` restent acceptés.
+    if (bas.some((n) => MACRO_ODF.test(n))) {
       return refus("macros", nom);
     }
   } else if (format === "docx" || format === "xlsx" || format === "pptx") {
