@@ -301,7 +301,7 @@ describe("sendDevisAction — rien ne part, rien n'est « envoye »", () => {
   it("(12) une ligne a_valider ou approuve existe déjà : refus, rien produit", async () => {
     h.txOutboxFindFirst.mockResolvedValue({ id: "ob-0" });
     const r = await sendDevisAction(ID);
-    expect(erreur(r)).toContain("attend déjà dans Emails → À valider");
+    expect(erreur(r)).toContain("attend dans « E-mails à valider » ou est en cours d'envoi");
     expect(h.txOutboxFindFirst).toHaveBeenCalledWith({
       where: {
         template: "devis-envoi",

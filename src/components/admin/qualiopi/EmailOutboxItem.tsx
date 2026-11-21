@@ -21,6 +21,7 @@ import { useRouter } from "next/navigation";
 import { libelleTemplateEmail } from "@/server/email/outbox-policy";
 import { AdminBadge } from "@/components/admin/ui/AdminBadge";
 import { AdminCard } from "@/components/admin/ui/AdminCard";
+import { AdminBloc } from "@/components/admin/ui/AdminBloc";
 
 type ActionResult<T> = { data: T } | { error: string };
 
@@ -42,6 +43,8 @@ export interface EmailOutboxItemProps {
   lienPdf?: string | null;
   /** Vrai si le gabarit lit le message personnalisé (liste : `outbox-policy.ts`). */
   accepteMessagePersonnalise: boolean;
+  /** Relance de devis devenue inutile : la phrase écrite pour l'administrateur (`null` = utile). */
+  motifSansObjet?: string | null;
   approuverAction: (input: {
     id: string;
     sujet?: string;
@@ -66,6 +69,7 @@ export function EmailOutboxItem({
   lienDevis = null,
   lienPdf = null,
   accepteMessagePersonnalise,
+  motifSansObjet = null,
   approuverAction,
   refuserAction,
 }: EmailOutboxItemProps): React.ReactElement {
@@ -134,6 +138,14 @@ export function EmailOutboxItem({
 
   return (
     <AdminCard as="article" className="flex flex-col gap-[var(--space-admin-3)]">
+      {motifSansObjet ? (
+        <AdminBloc teinte="ambre" niveau={3} titre="Relance sans objet">
+          <p className="m-0 text-[length:var(--text-admin-sm)]">{motifSansObjet}</p>
+          <p className="m-0 text-[length:var(--text-admin-sm)]">
+            Vous pouvez la refuser : elle ne partira pas.
+          </p>
+        </AdminBloc>
+      ) : null}
       <header className="flex flex-col gap-[var(--space-admin-2)]">
         <h3 className="m-0 text-[length:var(--text-admin-lg)] font-semibold text-[color:var(--color-admin-fg)]">
           {sujet}

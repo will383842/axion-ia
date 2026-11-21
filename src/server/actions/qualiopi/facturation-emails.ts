@@ -54,7 +54,7 @@ const eur = (cents: number): string =>
 const dateFr = (d: Date): string => d.toLocaleDateString("fr-FR");
 
 const MSG_RENVOI_DEJA_GARE =
-  "Un e-mail de ce devis attend déjà dans Emails → À valider : validez-le ou refusez-le avant de renvoyer.";
+  "Un e-mail de ce devis attend dans « E-mails à valider » ou est en cours d'envoi. S'il est encore à valider, approuvez-le ou refusez-le ; s'il est en cours d'envoi, patientez quelques minutes puis rechargez la page.";
 const MSG_RENVOI_MAIN_PROPRE =
   "Ce devis a été remis en main propre : aucun e-mail n'est parti et aucun lien de signature n'existe. Pour l'envoyer par e-mail, créez une nouvelle version avec « Corriger et renvoyer ».";
 const MSG_ENVOI_EN_COURS = "Un envoi de ce devis est déjà en cours, réessayez dans un instant.";

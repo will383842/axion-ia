@@ -162,7 +162,7 @@ export async function marquerRemisEnMainPropreAction(input: {
         const dejaGare = await emailDevisEnAttente(tx, devisId);
         if (dejaGare) {
           throw new RemiseRefusee(
-            "Un e-mail de ce devis attend déjà dans Emails → À valider : validez-le ou refusez-le avant de remettre le devis en main propre.",
+            "Un e-mail de ce devis attend dans « E-mails à valider » ou est en cours d'envoi. S'il est encore à valider, approuvez-le ou refusez-le ; s'il est en cours d'envoi, patientez quelques minutes puis rechargez la page.",
             "deja_gare",
           );
         }
