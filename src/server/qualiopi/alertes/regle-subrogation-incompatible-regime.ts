@@ -24,6 +24,7 @@
 
 import { prisma } from "@/lib/prisma";
 import { nomOpcoDuClient } from "@/server/qualiopi/financements/opco-referentiel";
+import { nomTiersLisible } from "./nom-organisme-tiers";
 import { regimePaiementOpco } from "@/server/qualiopi/financements/regime-paiement-opco";
 import { entreeRegimeDepuisSession } from "@/server/qualiopi/financements/regime-paiement-session";
 import { parisDateISO } from "@/server/qualiopi/presence/time";
@@ -75,7 +76,7 @@ export function candidatsSubrogationIncompatibleRegime(
       code: "subrogation_incompatible_regime",
       niveau: "critique",
       titre: "Subrogation incompatible avec le régime de paiement",
-      message: `La session ${s.numero} est en subrogation (paiement direct par ${nomOpcoDuClient(s.client)}), alors que le régime de paiement depuis le 1er octobre 2026 est le remboursement de l'entreprise : ${motif}. Sans accord écrit de l'organisme tiers prévoyant le paiement direct, la facture adressée à l'organisme tiers sera rejetée. Sur la page Financement de la session, retirez la subrogation ou cochez la case de l'accord écrit prévoyant le paiement direct à l'organisme.`,
+      message: `La session ${s.numero} est en subrogation (paiement direct par ${nomTiersLisible(nomOpcoDuClient(s.client))}), alors que le régime de paiement depuis le 1er octobre 2026 est le remboursement de l'entreprise : ${motif}. Sans accord écrit de l'organisme tiers prévoyant le paiement direct, la facture adressée à l'organisme tiers sera rejetée. Sur la page Financement de la session, retirez la subrogation ou cochez la case de l'accord écrit prévoyant le paiement direct à l'organisme de formation.`,
       cibleType: "TrainingSession",
       cibleId: s.id,
     });

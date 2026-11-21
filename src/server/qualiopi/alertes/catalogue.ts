@@ -1424,7 +1424,7 @@ export const ALERTE_CATALOGUE: Record<string, AlerteCatalogueEntry> = {
   // quand la fiche est complète.
   donnees_opco_incompletes: {
     niveau: "important",
-    titre: "Données de l'organisme tiers du client incomplètes",
+    titre: "Fiche client incomplète pour le paiement par un tiers",
     resolutionAuto: true,
     guichet: "direction",
   },

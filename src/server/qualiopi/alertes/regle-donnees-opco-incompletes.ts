@@ -70,7 +70,7 @@ export function candidatsDonneesOpcoIncompletes(sessions: SessionOpcoAVenir[]): 
     return {
       code: "donnees_opco_incompletes",
       niveau: "important",
-      titre: "Données de l'organisme tiers du client incomplètes",
+      titre: "Fiche client incomplète pour le paiement par un tiers",
       message: `La fiche de ce client, financé par un organisme tiers pour ${sessionsTexte} à venir, n'indique pas : ${listeFr(manques)}. Sans ces données, le régime de paiement, le barème, l'état des fonds et la date limite de dépôt restent inconnus. Complétez la fiche client.`,
       cibleType: "Client",
       cibleId: clientId,

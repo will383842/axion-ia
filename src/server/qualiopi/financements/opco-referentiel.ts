@@ -74,12 +74,15 @@ export function opcoDuClient(client: OpcoClient | null | undefined): OpcoId | nu
   return isOpcoId(libre) ? libre : null;
 }
 
+/** Le repli affiché quand la fiche ne dit rien : sert aussi aux factures et aux pièces. */
+export const NOM_OPCO_A_PRECISER = "OPCO (à préciser)";
+
 /** Nom affiché, même règle ; un texte libre non reconnu est repris tel quel. */
 export function nomOpcoDuClient(client: OpcoClient | null | undefined): string {
   const id = opcoDuClient(client);
   if (id) return OPCO_LABELS[id];
   const libre = client?.opcoIdentifie?.trim();
-  return libre ? libre : "OPCO (à préciser)";
+  return libre ? libre : NOM_OPCO_A_PRECISER;
 }
 
 /**

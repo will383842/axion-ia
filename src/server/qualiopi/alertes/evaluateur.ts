@@ -140,6 +140,7 @@ import { regleDelaiFacturationOpco } from "./regle-delai-facturation-opco";
 import { regleDepotOpcoAFaire } from "./regle-depot-opco-a-faire";
 import { regleConditionSuspensiveOpco } from "./regle-condition-suspensive-opco";
 import { regleDonneesOpcoIncompletes } from "./regle-donnees-opco-incompletes";
+import { nomTiersLisible } from "./nom-organisme-tiers";
 import { regleSuiviEntrepriseOpco } from "./regle-suivi-entreprise-opco";
 import { regleEtatFondsPerime } from "./regle-etat-fonds-perime";
 import { regleRegistreSousTraitants } from "./regle-registre-sous-traitants";
@@ -2959,7 +2960,7 @@ async function regleDossiersFinancement(now: Date): Promise<AlerteCandidate[]> {
         : "Encaissement en retard — hors subrogation, c'est le client qui doit",
       message: d.subrogation
         ? `Le paiement du dossier ${libelleDossier(d)} (${financeur}) était attendu le ${echeance} et n'est pas reçu : relancer l'organisme tiers.`
-        : `Le règlement du dossier ${libelleDossier(d)} était attendu le ${echeance} et n'est pas reçu. ⚠️ Ce dossier est SANS subrogation : ${financeur} rembourse le client, il ne verse rien à l'organisme. C'est le CLIENT qu'il faut relancer.`,
+        : `Le règlement du dossier ${libelleDossier(d)} était attendu le ${echeance} et n'est pas reçu. ⚠️ Ce dossier est SANS subrogation : ${financeur} rembourse le client, il ne nous verse rien. C'est le CLIENT qu'il faut relancer.`,
       cibleType: "DossierFinancement",
       cibleId: d.id,
     });
@@ -3281,7 +3282,7 @@ async function regleAucunBaremeOpco(now: Date): Promise<AlerteCandidate[]> {
       code: "aucun_bareme_opco",
       niveau: "important",
       titre,
-      message: `La session ${s.numero} (début le ${s.dateDebut.toLocaleDateString("fr-FR")}) est financée par l'organisme tiers ${nomOpcoDuClient(client)} sans barème applicable${idcc ? ` pour l'IDCC ${idcc}` : ""}. Saisissez le barème avant d'engager le dossier.`,
+      message: `La session ${s.numero} (début le ${s.dateDebut.toLocaleDateString("fr-FR")}) est financée par l'organisme tiers ${nomTiersLisible(nomOpcoDuClient(client))} sans barème applicable${idcc ? ` pour l'IDCC ${idcc}` : ""}. Saisissez le barème avant d'engager le dossier.`,
       cibleType: "TrainingSession",
       cibleId: s.id,
     });
