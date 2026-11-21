@@ -34,6 +34,8 @@ import {
 import { marquerRemisEnMainPropreAction } from "@/server/actions/qualiopi/devis-remis-main-propre";
 import { useConfirmation } from "@/components/admin/ui/useConfirmation";
 import { envoyerDevisEmailAction } from "@/server/actions/qualiopi/facturation-emails";
+import { prolongerValiditeDevisAction } from "@/server/actions/qualiopi/devis-prolonger-validite";
+import { formatDateParis } from "@/components/admin/qualiopi/devis-validite";
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Types
@@ -78,6 +80,55 @@ export interface DevisLifecycleButtonsProps {
   peutConclure?: boolean;
   /** L'utilisateur peut écrire dans la console : sans cela, aucun bouton d'écriture n'est rendu. */
   peutEcrire?: boolean;
+  /** Date de validité actuelle (ISO). Absente : « Prolonger la validité… » n'est pas proposé. */
+  dateValiditeIso?: string;
+  /** Une version plus récente de ce devis a été émise : elle seule se prolonge. */
+  successeurEmis?: boolean;
+  /** Ancien classique avec estimation d'un tiers liée à sa date : la date ne se change pas ici. */
+  estimationTiersFigee?: boolean;
+}
+
+const JOUR_MS = 86_400_000;
+
+/** Jour civil de Paris décalé de `jours`, au format `AAAA-MM-JJ` (valeur d'un champ date). */
+function jourParisIso(jours: number): string {
+  const p = new Intl.DateTimeFormat("en-CA", {
+    timeZone: "Europe/Paris",
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+  }).format(new Date());
+  const [y, mo, d] = p.split("-").map(Number) as [number, number, number];
+  return new Date(Date.UTC(y, mo - 1, d) + jours * JOUR_MS).toISOString().slice(0, 10);
+}
+
+/**
+ * Plus petite date proposée : le plus tard entre demain et le lendemain de la validité actuelle
+ * (le serveur refuse une date non postérieure à l'actuelle). Les dates `AAAA-MM-JJ` se comparent
+ * comme des chaînes.
+ */
+function minNouvelleDate(dateValiditeIso: string | undefined): string {
+  const demain = jourParisIso(1);
+  if (!dateValiditeIso) return demain;
+  const actuelle = new Date(dateValiditeIso);
+  if (Number.isNaN(actuelle.getTime())) return demain;
+  const [y, mo, d] = new Intl.DateTimeFormat("en-CA", {
+    timeZone: "Europe/Paris",
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+  })
+    .format(actuelle)
+    .split("-")
+    .map(Number) as [number, number, number];
+  const lendemain = new Date(Date.UTC(y, mo - 1, d) + JOUR_MS).toISOString().slice(0, 10);
+  return lendemain > demain ? lendemain : demain;
+}
+
+/** `AAAA-MM-JJ` → `JJ/MM/AAAA`. */
+function jourLisible(iso: string): string {
+  const [y, mo, d] = iso.split("-");
+  return `${d}/${mo}/${y}`;
 }
 
 type MotifRemise = "sans_email" | "adresse_bloquee" | "remis_en_rendez_vous";
@@ -108,6 +159,9 @@ export function DevisLifecycleButtons({
   remisEnMainPropre = false,
   peutConclure = true,
   peutEcrire = true,
+  dateValiditeIso,
+  successeurEmis = false,
+  estimationTiersFigee = false,
 }: DevisLifecycleButtonsProps): React.ReactElement {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
@@ -127,6 +181,20 @@ export function DevisLifecycleButtons({
   // `useConfirmation` ne propose pas de choix DANS le dialogue : le motif se choisit ici,
   // à côté du bouton, puis la confirmation est simple.
   const [motifRemise, setMotifRemise] = useState<MotifRemise>("sans_email");
+
+  const [prolongerOuvert, setProlongerOuvert] = useState(false);
+  const [nouvelleDate, setNouvelleDate] = useState("");
+  const peutProlonger =
+    peutEcrire &&
+    peutConclure &&
+    statut === "envoye" &&
+    dateValiditeIso !== undefined &&
+    !clientASigne &&
+    !signeParClient &&
+    !signeDesDeuxParties &&
+    !repriseParRelance &&
+    !successeurEmis &&
+    !estimationTiersFigee;
 
   function resetMessages() {
     setError(null);
@@ -213,6 +281,39 @@ export function DevisLifecycleButtons({
             );
             router.refresh();
           }
+        });
+      },
+    );
+  }
+
+  function handleProlonger() {
+    if (!dateValiditeIso || nouvelleDate === "") return;
+    const nouvelle = jourLisible(nouvelleDate);
+    const ancienne = formatDateParis(new Date(dateValiditeIso));
+    const expire = statut === "expire";
+    demander(
+      {
+        titre: `Prolonger la validité du devis${numero ? ` ${numero}` : ""} ?`,
+        description: `La validité passe du ${ancienne} au ${nouvelle}. Le PDF n'est pas modifié. Le lien de signature déjà reçu par le client garde son ancienne échéance : renvoyez ensuite le devis par e-mail pour lui donner un lien valable.${expire ? " Le devis redevient « envoyé »." : ""}`,
+        libelleConfirmer: "Prolonger",
+      },
+      () => {
+        resetMessages();
+        startTransition(async () => {
+          const result = await prolongerValiditeDevisAction({ devisId, nouvelleDate });
+          if ("error" in result) {
+            setError(result.error);
+            return;
+          }
+          const lisible = result.data.nouvelleDateLisible;
+          setSuccessMsg(
+            remisEnMainPropre
+              ? `Validité prolongée jusqu'au ${lisible}. Ce devis a été remis en main propre : prévenez le client de la nouvelle date.`
+              : `Validité prolongée jusqu'au ${lisible}. Le client n'est pas prévenu : cliquez sur « Renvoyer par email » pour lui envoyer un nouveau lien (selon vos réglages, l'e-mail attendra votre validation dans Emails → À valider).`,
+          );
+          setProlongerOuvert(false);
+          setNouvelleDate("");
+          router.refresh();
         });
       },
     );
@@ -440,6 +541,48 @@ export function DevisLifecycleButtons({
           </>
         )}
 
+        {peutProlonger && !prolongerOuvert && (
+          <button
+            type="button"
+            onClick={() => setProlongerOuvert(true)}
+            disabled={isPending}
+            className="admin-button-secondary"
+            aria-label="Prolonger la validité du devis"
+          >
+            Prolonger la validité…
+          </button>
+        )}
+        {peutProlonger && prolongerOuvert && (
+          <div
+            data-testid="zone-prolonger"
+            className="flex basis-full flex-wrap items-end gap-[var(--space-admin-3)]"
+          >
+            <label className="flex flex-col gap-[var(--space-admin-1)] text-[length:var(--text-admin-sm)]">
+              <span>Nouvelle date de validité</span>
+              <input
+                type="date"
+                name="nouvelleDate"
+                value={nouvelleDate}
+                min={minNouvelleDate(dateValiditeIso)}
+                max={jourParisIso(90)}
+                onChange={(e) => setNouvelleDate(e.target.value)}
+                disabled={isPending}
+                className="admin-input"
+              />
+            </label>
+            <button
+              type="button"
+              onClick={handleProlonger}
+              disabled={isPending || nouvelleDate === ""}
+              className="admin-button"
+            >
+              {isPending ? "…" : "Prolonger"}
+            </button>
+            <p className="basis-full text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
+              Le PDF déjà envoyé n&apos;est pas modifié : il garde sa date d&apos;origine.
+            </p>
+          </div>
+        )}
         {peutEcrire &&
           statut === "envoye" &&
           !signeParClient &&

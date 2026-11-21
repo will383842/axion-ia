@@ -17,6 +17,9 @@ vi.mock("@/server/actions/qualiopi/devis", () => ({
   declineDevisAction: vi.fn(),
   transformDevisToConventionAction: vi.fn(),
 }));
+vi.mock("@/server/actions/qualiopi/devis-prolonger-validite", () => ({
+  prolongerValiditeDevisAction: vi.fn(),
+}));
 vi.mock("@/server/actions/qualiopi/facturation-emails", () => ({
   envoyerDevisEmailAction: vi.fn(),
 }));

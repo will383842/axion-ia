@@ -40,6 +40,7 @@ import {
   recalculerEcheancier,
   TITRE_ECHEANCIER,
 } from "@/server/qualiopi/devis/assistant/conditions-prix-unique";
+import { finDeJourneeParis, JOUR_MS, minuitParisUtc } from "@/server/qualiopi/devis/date-validite";
 import {
   emailDevisEnAttente,
   MSG_EMAIL_EN_ATTENTE_MODIF,
@@ -160,41 +161,6 @@ export async function modifierDevisClassiqueBrouillonAction(
 
 const VALIDITE_MIN_JOURS = 7;
 const VALIDITE_MAX_JOURS = 90;
-const JOUR_MS = 86_400_000;
-
-/** Jour civil (heure de Paris) de `maintenant`, en millisecondes UTC à minuit. */
-function minuitParisUtc(maintenant: Date): number {
-  const p = new Intl.DateTimeFormat("en-CA", {
-    timeZone: "Europe/Paris",
-    year: "numeric",
-    month: "2-digit",
-    day: "2-digit",
-  }).format(maintenant);
-  const [y, mo, d] = p.split("-").map(Number) as [number, number, number];
-  return Date.UTC(y, mo - 1, d);
-}
-
-/** Décalage de Paris par rapport à UTC (ms) à l'instant `t`. */
-function decalageParisMs(t: number): number {
-  const parts = new Intl.DateTimeFormat("en-GB", {
-    timeZone: "Europe/Paris",
-    hourCycle: "h23",
-    year: "numeric",
-    month: "2-digit",
-    day: "2-digit",
-    hour: "2-digit",
-    minute: "2-digit",
-    second: "2-digit",
-  }).formatToParts(new Date(t));
-  const g = (k: string) => Number(parts.find((x) => x.type === k)?.value);
-  return Date.UTC(g("year"), g("month") - 1, g("day"), g("hour"), g("minute"), g("second")) - t;
-}
-
-/** Instant UTC de 23 h 59 min 59 s, HEURE DE PARIS, du jour civil `y-mo-d`. */
-function finDeJourneeParis(y: number, mo: number, d: number): Date {
-  const naif = Date.UTC(y, mo - 1, d, 23, 59, 59);
-  return new Date(naif - decalageParisMs(naif - decalageParisMs(naif)));
-}
 
 const validiteSchema = z.object({
   id: z.string().uuid(),
