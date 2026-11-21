@@ -24,6 +24,9 @@ vi.mock("@/lib/prisma", () => ({
     documentSignatureHorodatage: { create: vi.fn() },
     trainer: { findUnique: vi.fn() },
     adminUser: { findUnique: vi.fn() },
+    // Garde de version d'un devis (verrou de ligne puis relecture) : aucune ligne = rien à garder.
+    devis: { count: vi.fn(async () => 0) },
+    $queryRaw: vi.fn(async () => []),
     $transaction: vi.fn(),
   },
 }));
