@@ -69,10 +69,4 @@ describe("CGV : acompte facultatif", () => {
       expect(art.body).not.toMatch(MOTS_INTERDITS);
     }
   });
-
-  it("le texte « délais » du devis ne parle plus de premier versement", async () => {
-    const { TEXTE_DELAIS } = await import("@/server/qualiopi/devis/assistant/textes-rubriques");
-    expect(TEXTE_DELAIS).not.toContain("premier versement");
-    expect(TEXTE_DELAIS).toContain("si le devis prévoit un acompte, cet acompte");
-  });
 });

@@ -33,6 +33,10 @@ describe("textes des rubriques du devis", () => {
   it("TEXTE_GARANTIE renvoie aux limites des conditions générales", () => {
     expect(TEXTE_GARANTIE).toContain("dans les limites prévues aux conditions générales");
   });
+  it("TEXTE_DELAIS : l'acompte est facultatif, plus de « premier versement »", () => {
+    expect(TEXTE_DELAIS).not.toContain("premier versement");
+    expect(TEXTE_DELAIS).toContain("si le devis prévoit un acompte, cet acompte");
+  });
   it("TEXTE_PLAFOND_FRAIS ne finit pas par un point", () => {
     expect(TEXTE_PLAFOND_FRAIS.endsWith(".")).toBe(false);
   });
