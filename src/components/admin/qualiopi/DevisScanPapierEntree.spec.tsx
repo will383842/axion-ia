@@ -23,6 +23,7 @@ const ETAT: EtatDevisPourScan = {
   pieceType: "devis",
   pieceAnnulee: false,
   clientASigne: false,
+  successeurEmis: false,
 };
 
 function rendre(
@@ -57,13 +58,25 @@ describe("DevisScanPapierEntree", () => {
     },
   );
 
-  it.each(["brouillon", "accepte", "refuse", "expire", "transforme_convention"])(
+  it.each(["brouillon", "accepte", "refuse", "transforme_convention"])(
     "statut %s : aucun bouton",
     (statut) => {
       rendre({ statut }, "admin");
       expect(screen.queryByRole("button", BOUTON)).toBeNull();
     },
   );
+
+  it("visible_si_expire", () => {
+    rendre({ statut: "expire" }, "admin");
+    expect(screen.getByRole("button", BOUTON)).toBeTruthy();
+  });
+
+  it("masque_si_successeur_emis", () => {
+    rendre({ statut: "expire", successeurEmis: true }, "admin");
+    expect(screen.queryByRole("button", BOUTON)).toBeNull();
+    rendre({ statut: "envoye", successeurEmis: true }, "admin");
+    expect(screen.queryByRole("button", BOUTON)).toBeNull();
+  });
 
   it.each([
     ["client déjà signé", { clientASigne: true }],

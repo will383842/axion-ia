@@ -325,7 +325,9 @@ export default async function QualiopiDevisDetailPage({ params, searchParams }: 
       select: { id: true },
     })) !== null;
   const pieceDuDevis =
-    devis.statut === "envoye" && devis.documentGenereId !== null && !clientASigne
+    (devis.statut === "envoye" || devis.statut === "expire") &&
+    devis.documentGenereId !== null &&
+    !clientASigne
       ? await prisma.devis.findUnique({
           where: { id: devis.id },
           select: { documentGenere: { select: { annuleeAt: true, type: true } } },
@@ -443,9 +445,41 @@ export default async function QualiopiDevisDetailPage({ params, searchParams }: 
     pieceType,
     pieceAnnulee,
     clientASigne,
+    successeurEmis,
   };
   const signaturesElectroniques = signatures.filter((s) => s.methode !== "papier_scanne");
   const signaturesPapier = signatures.filter((s) => s.methode === "papier_scanne");
+  // Date écrite par le client, recopiée au versement : lue dans le journal (transcription, le scan
+  // fait foi). Au mieux : une lecture en échec n'empêche pas d'afficher la fiche.
+  const datesEcritesParSignature = new Map<string, string>();
+  if (signaturesPapier.length > 0) {
+    const journal = await prisma.activityLog
+      .findMany({
+        where: {
+          action: "qualiopi.devis.scan_papier_verse",
+          targetType: "DocumentSignature",
+          targetId: { in: signaturesPapier.map((s) => s.id) },
+        },
+        select: { targetId: true, changes: true },
+        orderBy: { createdAt: "desc" },
+      })
+      .catch(() => []);
+    for (const l of journal) {
+      const c = l.changes as { dateEcriteParClient?: unknown } | null;
+      const iso = c?.dateEcriteParClient;
+      if (
+        l.targetId !== null &&
+        typeof iso === "string" &&
+        !datesEcritesParSignature.has(l.targetId)
+      ) {
+        const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(iso);
+        if (m) datesEcritesParSignature.set(l.targetId, `${m[3]}/${m[2]}/${m[1]}`);
+      }
+    }
+  }
+  // Pour un devis expiré, `isExpired` est faux : la validité dépassée se lit sur la date elle-même.
+  const validiteDepasseeScan =
+    (devis.statut === "envoye" || devis.statut === "expire") && devis.dateValidite < new Date();
   const ligneSignature = (s: (typeof signatures)[number]) => (
     <li
       key={s.id}
@@ -466,6 +500,11 @@ export default async function QualiopiDevisDetailPage({ params, searchParams }: 
           ? " — confirmation nominative, sans tracé manuscrit"
           : ""}
       </p>
+      {s.methode === "papier_scanne" && datesEcritesParSignature.has(s.id) && (
+        <p className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
+          {`Date écrite par le client : ${datesEcritesParSignature.get(s.id)} (recopiée au versement).`}
+        </p>
+      )}
       {s.methode === "papier_scanne" && s.partie === "client" && peutVoirScan && (
         <a
           href={`/api/qualiopi/devis/${devis.id}/scan-signe`}
@@ -948,7 +987,7 @@ export default async function QualiopiDevisDetailPage({ params, searchParams }: 
 
             ⚠️ Rendu à la volée : ce n'est PAS la pièce du registre, dont
             l'empreinte est scellée et ne doit jamais être réécrite. */}
-        {signatures.length > 0 && peutOuvrirPdf && (
+        {signaturesElectroniques.length > 0 && peutOuvrirPdf && (
           <p className="mt-[var(--space-admin-4)]">
             <a
               href={`/api/qualiopi/pieces/${devis.documentGenereId}/exemplaire-signe`}
@@ -1010,7 +1049,7 @@ export default async function QualiopiDevisDetailPage({ params, searchParams }: 
             devisId={devis.id}
             signataireNom={signataireNomFiche}
             organismeNom={identiteOrganisme.raisonSociale}
-            validiteDepassee={isExpired ? formatDate(devis.dateValidite) : null}
+            validiteDepassee={validiteDepasseeScan ? formatDate(devis.dateValidite) : null}
             verserAction={verserScanDevisSigneAction}
           />
         </section>

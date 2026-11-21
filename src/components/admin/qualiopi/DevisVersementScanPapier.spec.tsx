@@ -2,7 +2,7 @@
  * Formulaire de versement du scan d'un devis signé sur papier.
  */
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import { cleanup, render, screen, waitFor } from "@testing-library/react";
+import { cleanup, fireEvent, render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 
 const refresh = vi.fn();
@@ -19,14 +19,17 @@ const ATTESTATION = /original papier est conservé par Axion-IA/;
 beforeEach(() => refresh.mockReset());
 afterEach(cleanup);
 
-function monter(action: (fd: FormData) => Promise<ResultatVersementScan>) {
+function monter(
+  action: (fd: FormData) => Promise<ResultatVersementScan>,
+  validiteDepassee: string | null = null,
+) {
   const user = userEvent.setup();
   render(
     <DevisVersementScanPapier
       devisId={DEVIS_ID}
       signataireNom="Jean Dupont"
       organismeNom="Axion-IA"
-      validiteDepassee={null}
+      validiteDepassee={validiteDepassee}
       verserAction={action}
     />,
   );
@@ -52,6 +55,63 @@ async function remplir(
 
 const verser = (user: ReturnType<typeof userEvent.setup>) =>
   user.click(screen.getByRole("button", { name: "Verser le scan signé" }));
+
+describe("F2 — validité dépassée et date écrite par le client", () => {
+  it("avertissement_texte_exact", async () => {
+    const user = monter(vi.fn(), "10/11/2026");
+    await ouvrir(user);
+    expect(
+      screen.getByText(
+        "La date de validité de ce devis (10/11/2026) est dépassée. Le scan sera tout de même accepté : en le versant, vous acceptez l'accord tardif du client aux conditions du PDF d'origine.",
+      ),
+    ).toBeTruthy();
+    expect(document.body.textContent).not.toContain("ne versez le scan que si");
+  });
+
+  it("champ_date_libelle_aide_max", async () => {
+    const user = monter(vi.fn());
+    await ouvrir(user);
+    const champ = screen.getByLabelText(
+      "Date écrite par le client sur le devis (facultatif)",
+    ) as HTMLInputElement;
+    expect(champ.type).toBe("date");
+    expect(champ.name).toBe("dateEcriteParClient");
+    expect(champ.max).toMatch(/^\d{4}-\d{2}-\d{2}$/);
+    expect(
+      screen.getByText(
+        "Recopiez la date qui figure près de sa signature, s'il en a écrit une. Elle est gardée pour information : la signature est enregistrée à la date du versement, et le scan fait foi.",
+      ),
+    ).toBeTruthy();
+  });
+
+  it("date_envoyee_dans_formdata", async () => {
+    const action = vi.fn().mockResolvedValue({ ok: false, message: "fin" });
+    const user = monter(action);
+    await ouvrir(user);
+    await remplir(user);
+    fireEvent.change(screen.getByLabelText("Date écrite par le client sur le devis (facultatif)"), {
+      target: { value: "2026-11-12" },
+    });
+    await verser(user);
+    await waitFor(() => expect(action).toHaveBeenCalledTimes(1));
+    expect((action.mock.calls[0]![0] as FormData).get("dateEcriteParClient")).toBe("2026-11-12");
+  });
+
+  it("statut_apres_versement_validite_depassee", async () => {
+    const user = monter(
+      vi.fn().mockResolvedValue({ ok: true, signatureId: "s", statutSignature: "partielle" }),
+      "10/11/2026",
+    );
+    await ouvrir(user);
+    await remplir(user);
+    await verser(user);
+    await waitFor(() =>
+      expect(screen.getByRole("status").textContent).toContain(
+        "Scan versé : le devis est enregistré comme signé par le client, sur papier, après sa date de validité. Contresignez-le pour le conclure.",
+      ),
+    );
+  });
+});
 
 describe("DevisVersementScanPapier", () => {
   it("ouvre le formulaire : champ fichier et case d'attestation", async () => {
