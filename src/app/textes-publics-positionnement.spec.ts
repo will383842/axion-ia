@@ -27,7 +27,11 @@ import { GET as getLlms } from "./llms.txt/route";
 import { GET as getLlmsFull } from "./llms-full.txt/route";
 import { BRAND, FOUNDER } from "@/lib/brand";
 import { JOURNEE_IA_TIER, formatTierPrice } from "@/content/pricing";
-import { DESCRIPTION_SERVICE_JOURNEE_IA, remplacerJetons } from "@/content/journee-ia-commun";
+import {
+  DESCRIPTION_ENTITE_FR,
+  DESCRIPTION_SERVICE_JOURNEE_IA,
+  remplacerJetons,
+} from "@/content/journee-ia-commun";
 import { buildPersonWilliamsJsonLd } from "@/lib/seo/williams-person";
 import { WILLIAMS_LEAD, WILLIAMS_IDENTITE, WILLIAMS_PREUVES } from "@/content/equipe/williams";
 
@@ -100,7 +104,14 @@ describe("llms.txt / llms-full.txt — cible, rendez-vous, Qualiopi", () => {
     ["llms.txt", getLlms],
     ["llms-full.txt", getLlmsFull],
   ] as const)("%s : porte le message principal", async (_n, get) => {
-    expect(await (await get()).text()).toContain(POSITIONNEMENT);
+    // Depuis la refonte du 20/11/2026, le message principal des deux fichiers est la présentation
+    // officielle (`DESCRIPTION_ENTITE_FR`), en citation juste sous le titre. Le slogan des données
+    // structurées (`POSITIONNEMENT`) reste verrouillé plus bas, sur le nœud Organization.
+    const corps = await (await get()).text();
+    expect(corps.startsWith(`# Axion-IA\n\n> ${DESCRIPTION_ENTITE_FR}\n`)).toBe(true);
+    expect(DESCRIPTION_ENTITE_FR).toMatch(
+      /^Axion-IA est une entreprise française qui aide les TPE et PME/,
+    );
   });
 
   it.each([

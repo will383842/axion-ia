@@ -275,7 +275,7 @@ export const CONTENU = {
     texte:
       "La Journée IA se passe dans vos locaux, où que vous soyez ; l’appel gratuit, en visio ou par téléphone.",
     lien: "Où nous intervenons, partout en France",
-    ariaCarte: "Carte de France : Axion-IA intervient partout en France métropolitaine et en Corse",
+    ariaCarte: "Carte de France : Axion-IA intervient partout en France, outre-mer compris",
   },
 
   faq: {
