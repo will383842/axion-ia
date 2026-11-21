@@ -50,6 +50,10 @@ vi.mock("@/server/qualiopi/crm/clients", () => ({
 vi.mock("@/server/qualiopi/documents/signature/pieces-en-attente", () => ({
   idsPiecesDevisAContresigner: () => Promise.resolve(new Set<string>()),
 }));
+vi.mock("@/server/actions/qualiopi/devis-delai-client", () => ({
+  demanderDelaiClientAction: vi.fn(),
+  leverDelaiClientAction: vi.fn(),
+}));
 vi.mock("@/server/actions/qualiopi/devis-prolonger-validite", () => ({
   prolongerValiditeDevisAction: vi.fn(),
 }));
@@ -100,6 +104,7 @@ vi.mock("@/server/actions/qualiopi/piece-signature", () => ({
 }));
 for (const c of [
   "DevisLifecycleButtons",
+  "DevisDelaiClient",
   "ChoixClientSigne",
   "DevisContresignature",
   "RelancerAcceptationDevis",

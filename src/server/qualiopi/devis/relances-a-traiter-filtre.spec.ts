@@ -30,6 +30,29 @@ describe("relancesAtraiterWhere : relances de devis sans objet masquées à la l
   });
 });
 
+describe("relancesAtraiterWhere : devis en délai demandé par le client", () => {
+  it("sans liste (ou liste vide), l'objet rendu est IDENTIQUE à celui d'avant", () => {
+    expect(relancesAtraiterWhere(NOW, [])).toEqual(relancesAtraiterWhere(NOW));
+  });
+
+  it("avec une liste, `devisId.notIn` n'est posé que dans la branche devis_sans_reponse", () => {
+    const where = relancesAtraiterWhere(NOW, ["d1", "d2"]);
+    const [aTraiter, typeOuDevis] = where.AND as Array<{ OR: Array<Record<string, unknown>> }>;
+    expect(aTraiter?.OR).toEqual([
+      { statut: "a_traiter" },
+      { statut: "reportee", reporteeJusqua: { lte: NOW } },
+    ]);
+    expect(typeOuDevis?.OR[0]).toEqual({ type: { not: "devis_sans_reponse" } });
+    expect(typeOuDevis?.OR[1]).toEqual({
+      type: "devis_sans_reponse",
+      devisId: { notIn: ["d1", "d2"] },
+      devis: {
+        is: { statut: "envoye", dateValidite: { gte: NOW }, AND: [pasSigneParLeClient] },
+      },
+    });
+  });
+});
+
 const prismaMock = vi.hoisted(() => ({
   relanceProposee: { count: vi.fn() },
 }));
