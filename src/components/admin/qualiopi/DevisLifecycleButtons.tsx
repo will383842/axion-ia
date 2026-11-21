@@ -15,6 +15,10 @@
  *                 « Marquer refusé »  → declineDevisAction
  *                 « Corriger et renvoyer » (classique, non signé par le client) →
  *                 reviseDevisAction après confirmation, puis écran /corriger.
+ *   - expire    : version suivante émise : note « remplacé » ; signé par le client : note
+ *                 « contresignez » ; sinon « Prolonger la validité… », « Corriger et renvoyer »
+ *                 (classique), « Marquer accepté » (classique, après confirmation d'un devis
+ *                 expiré) et « Marquer refusé ».
  *   - autres    : aucun bouton (terminal).
  *
  * router.refresh() après chaque succès.
@@ -187,7 +191,7 @@ export function DevisLifecycleButtons({
   const peutProlonger =
     peutEcrire &&
     peutConclure &&
-    statut === "envoye" &&
+    (statut === "envoye" || statut === "expire") &&
     dateValiditeIso !== undefined &&
     !clientASigne &&
     !signeParClient &&
@@ -361,6 +365,29 @@ export function DevisLifecycleButtons({
     );
   }
 
+  function handleAcceptExpire() {
+    const depassee = dateValiditeIso ? formatDateParis(new Date(dateValiditeIso)) : "";
+    demander(
+      {
+        titre: "Marquer accepté un devis expiré ?",
+        description: `La date de validité de ce devis (${depassee}) est dépassée. Le marquer accepté vaut accord aux conditions du PDF d'origine, prix compris. Ne le faites que si le client vous a donné son accord.`,
+        libelleConfirmer: "Marquer accepté",
+      },
+      () => {
+        resetMessages();
+        startTransition(async () => {
+          const result = await acceptDevisAction(devisId);
+          if ("error" in result) {
+            setError(result.error);
+          } else {
+            setSuccessMsg("Devis accepté.");
+            router.refresh();
+          }
+        });
+      },
+    );
+  }
+
   function handleDecline() {
     demander(
       {
@@ -398,7 +425,12 @@ export function DevisLifecycleButtons({
   }
 
   // Statuts terminaux : aucune action disponible (sauf accepté → transformer)
-  if (statut !== "brouillon" && statut !== "envoye" && statut !== "accepte") {
+  if (
+    statut !== "brouillon" &&
+    statut !== "envoye" &&
+    statut !== "accepte" &&
+    statut !== "expire"
+  ) {
     return (
       <p className="text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]">
         Aucune action disponible pour ce statut.
@@ -496,6 +528,62 @@ export function DevisLifecycleButtons({
             {isPending ? "…" : "Corriger et renvoyer"}
           </button>
         )}
+        {statut === "expire" && successeurEmis && (
+          <p
+            data-testid="note-expire-remplace"
+            className="basis-full text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]"
+          >
+            Ce devis a été remplacé par une version plus récente.
+          </p>
+        )}
+        {statut === "expire" && !successeurEmis && signeParClient && (
+          <p
+            data-testid="note-signe-par-client"
+            className="basis-full text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]"
+          >
+            Le client a signé ce devis. Contresignez-le dans le bloc « Signature électronique »
+            ci-dessus pour le conclure.
+          </p>
+        )}
+        {peutEcrire &&
+          statut === "expire" &&
+          !successeurEmis &&
+          !signeParClient &&
+          !clientASigne && (
+            <>
+              {estClassique && (
+                <button
+                  type="button"
+                  onClick={handleCorriger}
+                  disabled={isPending}
+                  className="admin-button-secondary"
+                  aria-label="Créer une nouvelle version en brouillon de ce devis pour la corriger et la renvoyer"
+                >
+                  {isPending ? "…" : "Corriger et renvoyer"}
+                </button>
+              )}
+              {peutConclure && estClassique && (
+                <button
+                  type="button"
+                  onClick={handleAcceptExpire}
+                  disabled={isPending}
+                  className="admin-button"
+                  aria-label="Marquer le devis expiré comme accepté"
+                >
+                  {isPending ? "…" : "Marquer accepté"}
+                </button>
+              )}
+              <button
+                type="button"
+                onClick={handleDecline}
+                disabled={isPending}
+                className="admin-button-danger"
+                aria-label="Marquer le devis comme refusé"
+              >
+                {isPending ? "…" : "Marquer refusé"}
+              </button>
+            </>
+          )}
         {statut === "envoye" && signeParClient && (
           <p
             data-testid="note-signe-par-client"

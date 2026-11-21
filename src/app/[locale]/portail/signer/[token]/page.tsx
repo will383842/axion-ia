@@ -424,6 +424,7 @@ export default async function SignerDevisPage({ params }: PageProps) {
       pieceLibelle={circuit.libelle}
       pieceLibelleDefini={circuit.libelleDefini}
       dateValiditeLisible={devis?.dateValiditeLisible ?? null}
+      dateValiditeImprimee={devis?.dateValiditeImprimee ?? null}
       organismeNom={identite.raisonSociale}
       organismeEmail={identite.email ?? ""}
       clientRaisonSociale={destinataire}

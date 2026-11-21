@@ -161,7 +161,9 @@ describe("« Corriger et renvoyer »", () => {
     envoye({ estClassique: false });
     expect(screen.queryByRole("button", CORRIGER)).toBeNull();
     cleanup();
-    for (const statut of ["brouillon", "accepte", "refuse", "expire"] as const) {
+    // « expire » en est sorti (lot E2) : « Corriger et renvoyer » y est désormais proposé
+    // (couvert par DevisLifecycleButtons-expire.spec.tsx).
+    for (const statut of ["brouillon", "accepte", "refuse"] as const) {
       envoye({ statut });
       expect(screen.queryByRole("button", CORRIGER)).toBeNull();
       cleanup();

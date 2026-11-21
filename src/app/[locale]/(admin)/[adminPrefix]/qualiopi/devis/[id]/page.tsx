@@ -81,6 +81,7 @@ import {
   etatHorodatageDevis,
   urlPdfDevisEmis,
 } from "@/server/qualiopi/devis/console-chaine-devis";
+import { lireDateValiditeImprimee } from "@/server/qualiopi/documents/signature/devis-signature-queries";
 import { lireHorodatagesDeSignatures } from "@/server/qualiopi/documents/signature/lire-horodatages";
 import { PastilleHorodatage } from "@/components/admin/qualiopi/PastilleHorodatage";
 import { RelanceDevisDepuisLaPage } from "@/components/admin/qualiopi/RelanceDevisDepuisLaPage";
@@ -424,6 +425,23 @@ export default async function QualiopiDevisDetailPage({ params, searchParams }: 
 
   const isExpired =
     (devis.statut === "brouillon" || devis.statut === "envoye") && devis.dateValidite < new Date();
+  // Affichage du bloc « Validité » : le statut `expire` porte aussi la mention « (expiré) ».
+  const validiteAfficheeExpiree = isExpired || devis.statut === "expire";
+  // Date imprimée sur le PDF scellé (chaîne brute de la photo) : si elle diffère de la date en
+  // cours, la validité a été prolongée après l'envoi. Lecture seule ; absente = rien d'affiché.
+  const dateImprimeeSurPdf =
+    devis.documentGenereId !== null
+      ? lireDateValiditeImprimee(
+          (
+            await prisma.documentGenere.findUnique({
+              where: { id: devis.documentGenereId },
+              select: { metadata: true },
+            })
+          )?.metadata,
+        )
+      : null;
+  const validiteProlongee =
+    dateImprimeeSurPdf !== null && dateImprimeeSurPdf !== formatDate(devis.dateValidite);
 
   const infoLabelCls =
     "text-[length:var(--text-admin-xs)] tracking-wide text-[color:var(--color-admin-fg-muted)] uppercase";
@@ -650,16 +668,26 @@ export default async function QualiopiDevisDetailPage({ params, searchParams }: 
             <p className={infoLabelCls}>Validité</p>
             <p
               className={
-                isExpired ? `${infoValueCls} text-[color:var(--color-admin-warning)]` : infoValueCls
+                validiteAfficheeExpiree
+                  ? `${infoValueCls} text-[color:var(--color-admin-warning)]`
+                  : infoValueCls
               }
             >
               {formatDate(devis.dateValidite)}
-              {isExpired && (
+              {validiteAfficheeExpiree && (
                 <span className="ml-[var(--space-admin-1)] text-[length:var(--text-admin-xs)]">
                   (expiré)
                 </span>
               )}
             </p>
+            {validiteProlongee && (
+              <p
+                data-testid="validite-prolongee"
+                className="mt-0.5 text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]"
+              >
+                Prolongée (le PDF indique le {dateImprimeeSurPdf}).
+              </p>
+            )}
             {validiteBrouillonModifiable(devis) ? (
               <div className="mt-[var(--space-admin-3)]">
                 <ValiditeBrouillon
