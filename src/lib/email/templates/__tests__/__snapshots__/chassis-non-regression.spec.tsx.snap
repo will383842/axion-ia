@@ -1,0 +1,653 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`S2 — non-régression : 5 gabarits non migrés figés (HTML et texte) > apporteur-attribution-confirmee (signature fondateur-court, famille B) en en > html 1`] = `
+"<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html dir="ltr" lang="en"><head><meta name="viewport" content="width=device-width, initial-scale=1"/><meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/><meta name="x-apple-disable-message-reformatting"/><meta name="color-scheme" content="light dark"/><meta name="supported-color-schemes" content="light dark"/><style>
+  :root { color-scheme: light dark; supported-color-schemes: light dark; }
+  @media (prefers-color-scheme: dark) {
+    .ax-body { background-color: #15110c !important; }
+    .ax-card { background-color: #221b13 !important; border-color: #3a3025 !important; }
+    .ax-text { color: #f6efe3 !important; }
+    .ax-heading { color: #fdf7ec !important; }
+    .ax-muted { color: #b8ac99 !important; }
+    .ax-trust { background-color: #2c1c12 !important; border-color: #5a3620 !important; }
+    /* Lot 4 (2026-09-02) — le CORPS des gabarits. Les classes ci-dessus ne
+       vivaient que dans le châssis ; les 42 gabarits posent des styles en
+       ligne (encre #241d15) et aucune classe. En mode sombre, la carte passait
+       à #221b13 et chaque paragraphe restait presque noir : noir sur noir. On
+       cible les descendants de la carte, en !important, ce qui prime sur un
+       style en ligne — sans toucher à un seul gabarit. Le bouton, blanc sur
+       terracotta, est remis à part par sa classe. */
+    .ax-card p, .ax-card li, .ax-card td, .ax-card span, .ax-card strong, .ax-card em { color: #f6efe3 !important; }
+    .ax-card h1, .ax-card h2, .ax-card h3 { color: #fdf7ec !important; }
+    .ax-card a { color: #f0a070 !important; }
+    .ax-card a.ax-cta, .ax-card a.ax-cta span { color: #ffffff !important; }
+    .ax-card hr { border-color: #3a3025 !important; }
+  }
+  /* Lot 4 — sous 600 px : 28 px de marge de chaque côté et un titre de 26 px
+     ne laissaient qu'une colonne de 264 px sur un écran de 320. */
+  @media only screen and (max-width: 600px) {
+    .ax-card { padding: 24px 18px !important; border-radius: 14px !important; }
+    .ax-title { font-size: 22px !important; }
+  }
+</style></head><body class="ax-body" data-famille="B" style="background-color:#f6f1e8;margin:0;padding:0"><!--$--><!--html--><!--head--><div style="display:none;overflow:hidden;line-height:1px;opacity:0;max-height:0;max-width:0" data-skip-in-text="true">L&#x27;attribution est désormais définitive.<div> ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿</div></div><!--body--><table border="0" width="100%" cellPadding="0" cellSpacing="0" role="presentation" align="center"><tbody><tr><td style="background-color:#f6f1e8;font-family:-apple-system, BlinkMacSystemFont, &#x27;Segoe UI&#x27;, Roboto, Helvetica, Arial, sans-serif;color:#241d15;padding:0 0 40px;margin:0"><table align="center" width="100%" border="0" cellPadding="0" cellSpacing="0" role="presentation" style="height:6px;line-height:6px;font-size:1px;background-color:#c24a1b;background-image:linear-gradient(90deg, #c24a1b 0%, #d1561f 55%, #8c3010 100%)"><tbody><tr><td> </td></tr></tbody></table><table align="center" width="100%" border="0" cellPadding="0" cellSpacing="0" role="presentation" style="max-width:600px;margin:0 auto;width:100%"><tbody><tr style="width:100%"><td><table align="center" width="100%" border="0" cellPadding="0" cellSpacing="0" role="presentation" style="padding:26px 0 20px;text-align:center"><tbody><tr><td><a href="https://axion-ia.com" style="color:#067df7;text-decoration-line:none" target="_blank"><img alt="Axion-IA" height="115" src="https://axion-ia.com/email/axion-ia-logo-pill.png" style="display:block;outline:none;border:0;text-decoration:none;margin:0 auto" width="210"/></a><p class="ax-muted" style="font-size:11px;line-height:24px;letter-spacing:0.18em;text-transform:uppercase;color:#6b6153;font-weight:700;margin:12px 0 0 0;margin-top:12px;margin-right:0;margin-bottom:0;margin-left:0">The end-to-end AI partner for SMEs</p></td></tr></tbody></table><table align="center" width="100%" class="ax-card" border="0" cellPadding="0" cellSpacing="0" role="presentation" style="max-width:100%;background-color:#ffffff;border-radius:20px;border:1px solid #eee2d2;padding:32px 28px;box-shadow:0 12px 34px -16px rgba(234,78,27,0.20), 0 2px 6px -2px rgba(36,29,21,0.06)"><tbody><tr style="width:100%"><td><h1 class="ax-heading ax-title" data-bloc="titre" style="font-family:Georgia, &#x27;Times New Roman&#x27;, Times, serif;font-size:26px;font-weight:700;margin:0 0 18px 0;color:#1c150e;line-height:1.2">Votre attribution est confirmée</h1><span data-bloc="debut-corps" data-skip-in-text="true"></span><p style="font-size:16px;line-height:1.7;color:#241d15;margin:14px 0;margin-top:14px;margin-right:0;margin-bottom:14px;margin-left:0">Bonjour Camille,</p><p style="font-size:16px;line-height:1.7;color:#241d15;margin:14px 0;margin-top:14px;margin-right:0;margin-bottom:14px;margin-left:0">L&#x27;attribution de l&#x27;entreprise que vous nous avez présentée est désormais définitive : elle vous est réservée.</p><p style="font-size:16px;line-height:1.7;color:#241d15;margin:14px 0;margin-top:14px;margin-right:0;margin-bottom:14px;margin-left:0">Une attribution ne fait naître aucune commission par elle-même : la commission naît d&#x27;une commande de l&#x27;entreprise, une fois la prestation réalisée et entièrement payée.</p><span data-bloc="fin-corps" data-skip-in-text="true"></span><table align="center" width="100%" border="0" cellPadding="0" cellSpacing="0" role="presentation" data-bloc="lienEspace" style="text-align:center;margin:22px 0 4px 0"><tbody><tr><td><a href="https://exemple.invalid/lien-de-demonstration" style="color:#8c3010;text-decoration-line:none;display:inline-block;border:2px solid #c24a1b;border-radius:10px;padding:10px 18px;font-weight:700;text-decoration:none" target="_blank">Ouvrir mon espace d&#x27;apporteur</a><p style="font-size:13px;line-height:24px;margin:8px 0 0 0;color:#6b6153;margin-top:8px;margin-right:0;margin-bottom:0;margin-left:0">Ce lien vous est personnel : ne transférez pas cet e-mail.</p></td></tr></tbody></table><p class="ax-muted" data-bloc="soupape" style="font-size:14px;line-height:1.6;color:#6b6153;margin:22px 0 0 0;padding-top:16px;border-top:1px solid #eee2d2;margin-top:22px;margin-right:0;margin-bottom:0;margin-left:0">A question? Just reply to this email — it reaches us directly, and a human reads it.</p><p class="ax-text" data-bloc="signature" style="font-size:14px;line-height:1.7;color:#241d15;margin:24px 0 0 0;border-left:3px solid #c24a1b;padding-left:14px;margin-top:24px;margin-right:0;margin-bottom:0;margin-left:0"><span style="font-family:Georgia, &#x27;Times New Roman&#x27;, Times, serif;font-size:16px;font-weight:700;color:#1c150e">Williams Jullin</span><br/><span style="color:#6b6153">Founder &amp; CEO · Axion-IA</span><br/><a href="https://www.linkedin.com/in/williamsjullin/" style="color:#8c3010;text-decoration-line:none;font-weight:600" target="_blank">LinkedIn</a></p></td></tr></tbody></table><table align="center" width="100%" border="0" cellPadding="0" cellSpacing="0" role="presentation" data-bloc="pied" style="padding:26px 12px 0 12px"><tbody><tr><td><p class="ax-muted" style="font-size:12px;line-height:1.6;color:#6b6153;margin:0;text-align:center;margin-top:0;margin-bottom:0;margin-left:0;margin-right:0">AXION IA SAS<!-- --> · <!-- -->French company (SAS)<br/>11 Avenue Paul Verlaine, ELITE BUREAUX - boîte 53, 38100 Grenoble, France<br/>Reg. no.<!-- --> <!-- -->108018631<!-- --> · <!-- -->VAT<!-- --> <!-- -->FR51108018631<!-- --> · <!-- -->Training provider reg. no.<!-- --> <!-- -->84381100438<br/>Cet enregistrement ne vaut pas agrément de l&#x27;État.<br/>Contact:<!-- --> <a href="mailto:contact@axion-ia.com" style="color:#8c3010;text-decoration-line:none;font-weight:600" target="_blank">contact@axion-ia.com</a><br/>© <!-- -->2026<!-- --> <!-- -->AXION IA SAS<!-- --> — <!-- -->All rights reserved.</p></td></tr></tbody></table></td></tr></tbody></table></td></tr></tbody></table><!--/$--></body></html>"
+`;
+
+exports[`S2 — non-régression : 5 gabarits non migrés figés (HTML et texte) > apporteur-attribution-confirmee (signature fondateur-court, famille B) en en > texte 1`] = `
+" 
+
+https://axion-ia.com
+
+The end-to-end AI partner for SMEs
+
+
+VOTRE ATTRIBUTION EST CONFIRMÉE
+
+Bonjour Camille,
+
+L'attribution de l'entreprise que vous nous avez présentée est désormais définitive : elle vous est réservée.
+
+Une attribution ne fait naître aucune commission par elle-même : la commission naît d'une commande de l'entreprise, une fois la prestation réalisée et entièrement payée.
+
+Ouvrir mon espace d'apporteur https://exemple.invalid/lien-de-demonstration
+
+Ce lien vous est personnel : ne transférez pas cet e-mail.
+
+A question? Just reply to this email — it reaches us directly, and a human reads it.
+
+Williams Jullin
+Founder & CEO · Axion-IA
+LinkedIn https://www.linkedin.com/in/williamsjullin/
+
+AXION IA SAS · French company (SAS)
+11 Avenue Paul Verlaine, ELITE BUREAUX - boîte 53, 38100 Grenoble, France
+Reg. no. 108018631 · VAT FR51108018631 · Training provider reg. no. 84381100438
+Cet enregistrement ne vaut pas agrément de l'État.
+Contact: contact@axion-ia.com
+© 2026 AXION IA SAS — All rights reserved."
+`;
+
+exports[`S2 — non-régression : 5 gabarits non migrés figés (HTML et texte) > apporteur-attribution-confirmee (signature fondateur-court, famille B) en fr > html 1`] = `
+"<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html dir="ltr" lang="fr"><head><meta name="viewport" content="width=device-width, initial-scale=1"/><meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/><meta name="x-apple-disable-message-reformatting"/><meta name="color-scheme" content="light dark"/><meta name="supported-color-schemes" content="light dark"/><style>
+  :root { color-scheme: light dark; supported-color-schemes: light dark; }
+  @media (prefers-color-scheme: dark) {
+    .ax-body { background-color: #15110c !important; }
+    .ax-card { background-color: #221b13 !important; border-color: #3a3025 !important; }
+    .ax-text { color: #f6efe3 !important; }
+    .ax-heading { color: #fdf7ec !important; }
+    .ax-muted { color: #b8ac99 !important; }
+    .ax-trust { background-color: #2c1c12 !important; border-color: #5a3620 !important; }
+    /* Lot 4 (2026-09-02) — le CORPS des gabarits. Les classes ci-dessus ne
+       vivaient que dans le châssis ; les 42 gabarits posent des styles en
+       ligne (encre #241d15) et aucune classe. En mode sombre, la carte passait
+       à #221b13 et chaque paragraphe restait presque noir : noir sur noir. On
+       cible les descendants de la carte, en !important, ce qui prime sur un
+       style en ligne — sans toucher à un seul gabarit. Le bouton, blanc sur
+       terracotta, est remis à part par sa classe. */
+    .ax-card p, .ax-card li, .ax-card td, .ax-card span, .ax-card strong, .ax-card em { color: #f6efe3 !important; }
+    .ax-card h1, .ax-card h2, .ax-card h3 { color: #fdf7ec !important; }
+    .ax-card a { color: #f0a070 !important; }
+    .ax-card a.ax-cta, .ax-card a.ax-cta span { color: #ffffff !important; }
+    .ax-card hr { border-color: #3a3025 !important; }
+  }
+  /* Lot 4 — sous 600 px : 28 px de marge de chaque côté et un titre de 26 px
+     ne laissaient qu'une colonne de 264 px sur un écran de 320. */
+  @media only screen and (max-width: 600px) {
+    .ax-card { padding: 24px 18px !important; border-radius: 14px !important; }
+    .ax-title { font-size: 22px !important; }
+  }
+</style></head><body class="ax-body" data-famille="B" style="background-color:#f6f1e8;margin:0;padding:0"><!--$--><!--html--><!--head--><div style="display:none;overflow:hidden;line-height:1px;opacity:0;max-height:0;max-width:0" data-skip-in-text="true">L&#x27;attribution est désormais définitive.<div> ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿</div></div><!--body--><table border="0" width="100%" cellPadding="0" cellSpacing="0" role="presentation" align="center"><tbody><tr><td style="background-color:#f6f1e8;font-family:-apple-system, BlinkMacSystemFont, &#x27;Segoe UI&#x27;, Roboto, Helvetica, Arial, sans-serif;color:#241d15;padding:0 0 40px;margin:0"><table align="center" width="100%" border="0" cellPadding="0" cellSpacing="0" role="presentation" style="height:6px;line-height:6px;font-size:1px;background-color:#c24a1b;background-image:linear-gradient(90deg, #c24a1b 0%, #d1561f 55%, #8c3010 100%)"><tbody><tr><td> </td></tr></tbody></table><table align="center" width="100%" border="0" cellPadding="0" cellSpacing="0" role="presentation" style="max-width:600px;margin:0 auto;width:100%"><tbody><tr style="width:100%"><td><table align="center" width="100%" border="0" cellPadding="0" cellSpacing="0" role="presentation" style="padding:26px 0 20px;text-align:center"><tbody><tr><td><a href="https://axion-ia.com" style="color:#067df7;text-decoration-line:none" target="_blank"><img alt="Axion-IA" height="115" src="https://axion-ia.com/email/axion-ia-logo-pill.png" style="display:block;outline:none;border:0;text-decoration:none;margin:0 auto" width="210"/></a><p class="ax-muted" style="font-size:11px;line-height:24px;letter-spacing:0.18em;text-transform:uppercase;color:#6b6153;font-weight:700;margin:12px 0 0 0;margin-top:12px;margin-right:0;margin-bottom:0;margin-left:0">Le partenaire IA de bout en bout des PME</p></td></tr></tbody></table><table align="center" width="100%" class="ax-card" border="0" cellPadding="0" cellSpacing="0" role="presentation" style="max-width:100%;background-color:#ffffff;border-radius:20px;border:1px solid #eee2d2;padding:32px 28px;box-shadow:0 12px 34px -16px rgba(234,78,27,0.20), 0 2px 6px -2px rgba(36,29,21,0.06)"><tbody><tr style="width:100%"><td><h1 class="ax-heading ax-title" data-bloc="titre" style="font-family:Georgia, &#x27;Times New Roman&#x27;, Times, serif;font-size:26px;font-weight:700;margin:0 0 18px 0;color:#1c150e;line-height:1.2">Votre attribution est confirmée</h1><span data-bloc="debut-corps" data-skip-in-text="true"></span><p style="font-size:16px;line-height:1.7;color:#241d15;margin:14px 0;margin-top:14px;margin-right:0;margin-bottom:14px;margin-left:0">Bonjour Camille,</p><p style="font-size:16px;line-height:1.7;color:#241d15;margin:14px 0;margin-top:14px;margin-right:0;margin-bottom:14px;margin-left:0">L&#x27;attribution de l&#x27;entreprise que vous nous avez présentée est désormais définitive : elle vous est réservée.</p><p style="font-size:16px;line-height:1.7;color:#241d15;margin:14px 0;margin-top:14px;margin-right:0;margin-bottom:14px;margin-left:0">Une attribution ne fait naître aucune commission par elle-même : la commission naît d&#x27;une commande de l&#x27;entreprise, une fois la prestation réalisée et entièrement payée.</p><span data-bloc="fin-corps" data-skip-in-text="true"></span><table align="center" width="100%" border="0" cellPadding="0" cellSpacing="0" role="presentation" data-bloc="lienEspace" style="text-align:center;margin:22px 0 4px 0"><tbody><tr><td><a href="https://exemple.invalid/lien-de-demonstration" style="color:#8c3010;text-decoration-line:none;display:inline-block;border:2px solid #c24a1b;border-radius:10px;padding:10px 18px;font-weight:700;text-decoration:none" target="_blank">Ouvrir mon espace d&#x27;apporteur</a><p style="font-size:13px;line-height:24px;margin:8px 0 0 0;color:#6b6153;margin-top:8px;margin-right:0;margin-bottom:0;margin-left:0">Ce lien vous est personnel : ne transférez pas cet e-mail.</p></td></tr></tbody></table><p class="ax-muted" data-bloc="soupape" style="font-size:14px;line-height:1.6;color:#6b6153;margin:22px 0 0 0;padding-top:16px;border-top:1px solid #eee2d2;margin-top:22px;margin-right:0;margin-bottom:0;margin-left:0">Une question ? Répondez simplement à cet e-mail — il arrive directement chez nous, et c&#x27;est un humain qui lit.</p><p class="ax-text" data-bloc="signature" style="font-size:14px;line-height:1.7;color:#241d15;margin:24px 0 0 0;border-left:3px solid #c24a1b;padding-left:14px;margin-top:24px;margin-right:0;margin-bottom:0;margin-left:0"><span style="font-family:Georgia, &#x27;Times New Roman&#x27;, Times, serif;font-size:16px;font-weight:700;color:#1c150e">Williams Jullin</span><br/><span style="color:#6b6153">Fondateur &amp; CEO · Axion-IA</span><br/><a href="https://www.linkedin.com/in/williamsjullin/" style="color:#8c3010;text-decoration-line:none;font-weight:600" target="_blank">LinkedIn</a></p></td></tr></tbody></table><table align="center" width="100%" border="0" cellPadding="0" cellSpacing="0" role="presentation" data-bloc="pied" style="padding:26px 12px 0 12px"><tbody><tr><td><p class="ax-muted" style="font-size:12px;line-height:1.6;color:#6b6153;margin:0;text-align:center;margin-top:0;margin-bottom:0;margin-left:0;margin-right:0">AXION IA SAS<!-- --> · <!-- -->SAS française<br/>11 Avenue Paul Verlaine, ELITE BUREAUX - boîte 53, 38100 Grenoble, France<br/>SIREN<!-- --> <!-- -->108018631<!-- --> · <!-- -->TVA<!-- --> <!-- -->FR51108018631<!-- --> · <!-- -->NDA<!-- --> <!-- -->84381100438<br/>Cet enregistrement ne vaut pas agrément de l&#x27;État.<br/>Contact :<!-- --> <a href="mailto:contact@axion-ia.com" style="color:#8c3010;text-decoration-line:none;font-weight:600" target="_blank">contact@axion-ia.com</a><br/>© <!-- -->2026<!-- --> <!-- -->AXION IA SAS<!-- --> — <!-- -->Tous droits réservés.</p></td></tr></tbody></table></td></tr></tbody></table></td></tr></tbody></table><!--/$--></body></html>"
+`;
+
+exports[`S2 — non-régression : 5 gabarits non migrés figés (HTML et texte) > apporteur-attribution-confirmee (signature fondateur-court, famille B) en fr > texte 1`] = `
+" 
+
+https://axion-ia.com
+
+Le partenaire IA de bout en bout des PME
+
+
+VOTRE ATTRIBUTION EST CONFIRMÉE
+
+Bonjour Camille,
+
+L'attribution de l'entreprise que vous nous avez présentée est désormais définitive : elle vous est réservée.
+
+Une attribution ne fait naître aucune commission par elle-même : la commission naît d'une commande de l'entreprise, une fois la prestation réalisée et entièrement payée.
+
+Ouvrir mon espace d'apporteur https://exemple.invalid/lien-de-demonstration
+
+Ce lien vous est personnel : ne transférez pas cet e-mail.
+
+Une question ? Répondez simplement à cet e-mail — il arrive directement chez nous, et c'est un humain qui lit.
+
+Williams Jullin
+Fondateur & CEO · Axion-IA
+LinkedIn https://www.linkedin.com/in/williamsjullin/
+
+AXION IA SAS · SAS française
+11 Avenue Paul Verlaine, ELITE BUREAUX - boîte 53, 38100 Grenoble, France
+SIREN 108018631 · TVA FR51108018631 · NDA 84381100438
+Cet enregistrement ne vaut pas agrément de l'État.
+Contact : contact@axion-ia.com
+© 2026 AXION IA SAS — Tous droits réservés."
+`;
+
+exports[`S2 — non-régression : 5 gabarits non migrés figés (HTML et texte) > audit-confirmed (signature fondateur, famille B) en en > html 1`] = `
+"<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html dir="ltr" lang="en"><head><meta name="viewport" content="width=device-width, initial-scale=1"/><meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/><meta name="x-apple-disable-message-reformatting"/><meta name="color-scheme" content="light dark"/><meta name="supported-color-schemes" content="light dark"/><style>
+  :root { color-scheme: light dark; supported-color-schemes: light dark; }
+  @media (prefers-color-scheme: dark) {
+    .ax-body { background-color: #15110c !important; }
+    .ax-card { background-color: #221b13 !important; border-color: #3a3025 !important; }
+    .ax-text { color: #f6efe3 !important; }
+    .ax-heading { color: #fdf7ec !important; }
+    .ax-muted { color: #b8ac99 !important; }
+    .ax-trust { background-color: #2c1c12 !important; border-color: #5a3620 !important; }
+    /* Lot 4 (2026-09-02) — le CORPS des gabarits. Les classes ci-dessus ne
+       vivaient que dans le châssis ; les 42 gabarits posent des styles en
+       ligne (encre #241d15) et aucune classe. En mode sombre, la carte passait
+       à #221b13 et chaque paragraphe restait presque noir : noir sur noir. On
+       cible les descendants de la carte, en !important, ce qui prime sur un
+       style en ligne — sans toucher à un seul gabarit. Le bouton, blanc sur
+       terracotta, est remis à part par sa classe. */
+    .ax-card p, .ax-card li, .ax-card td, .ax-card span, .ax-card strong, .ax-card em { color: #f6efe3 !important; }
+    .ax-card h1, .ax-card h2, .ax-card h3 { color: #fdf7ec !important; }
+    .ax-card a { color: #f0a070 !important; }
+    .ax-card a.ax-cta, .ax-card a.ax-cta span { color: #ffffff !important; }
+    .ax-card hr { border-color: #3a3025 !important; }
+  }
+  /* Lot 4 — sous 600 px : 28 px de marge de chaque côté et un titre de 26 px
+     ne laissaient qu'une colonne de 264 px sur un écran de 320. */
+  @media only screen and (max-width: 600px) {
+    .ax-card { padding: 24px 18px !important; border-radius: 14px !important; }
+    .ax-title { font-size: 22px !important; }
+  }
+</style></head><body class="ax-body" data-famille="B" style="background-color:#f6f1e8;margin:0;padding:0"><!--$--><!--html--><!--head--><div style="display:none;overflow:hidden;line-height:1px;opacity:0;max-height:0;max-width:0" data-skip-in-text="true">We will get back to you with a mission calendar.<div> ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿</div></div><!--body--><table border="0" width="100%" cellPadding="0" cellSpacing="0" role="presentation" align="center"><tbody><tr><td style="background-color:#f6f1e8;font-family:-apple-system, BlinkMacSystemFont, &#x27;Segoe UI&#x27;, Roboto, Helvetica, Arial, sans-serif;color:#241d15;padding:0 0 40px;margin:0"><table align="center" width="100%" border="0" cellPadding="0" cellSpacing="0" role="presentation" style="height:6px;line-height:6px;font-size:1px;background-color:#c24a1b;background-image:linear-gradient(90deg, #c24a1b 0%, #d1561f 55%, #8c3010 100%)"><tbody><tr><td> </td></tr></tbody></table><table align="center" width="100%" border="0" cellPadding="0" cellSpacing="0" role="presentation" style="max-width:600px;margin:0 auto;width:100%"><tbody><tr style="width:100%"><td><table align="center" width="100%" border="0" cellPadding="0" cellSpacing="0" role="presentation" style="padding:26px 0 20px;text-align:center"><tbody><tr><td><a href="https://axion-ia.com" style="color:#067df7;text-decoration-line:none" target="_blank"><img alt="Axion-IA" height="115" src="https://axion-ia.com/email/axion-ia-logo-pill.png" style="display:block;outline:none;border:0;text-decoration:none;margin:0 auto" width="210"/></a><p class="ax-muted" style="font-size:11px;line-height:24px;letter-spacing:0.18em;text-transform:uppercase;color:#6b6153;font-weight:700;margin:12px 0 0 0;margin-top:12px;margin-right:0;margin-bottom:0;margin-left:0">The end-to-end AI partner for SMEs</p></td></tr></tbody></table><table align="center" width="100%" class="ax-card" border="0" cellPadding="0" cellSpacing="0" role="presentation" style="max-width:100%;background-color:#ffffff;border-radius:20px;border:1px solid #eee2d2;padding:32px 28px;box-shadow:0 12px 34px -16px rgba(234,78,27,0.20), 0 2px 6px -2px rgba(36,29,21,0.06)"><tbody><tr style="width:100%"><td><h1 class="ax-heading ax-title" data-bloc="titre" style="font-family:Georgia, &#x27;Times New Roman&#x27;, Times, serif;font-size:26px;font-weight:700;margin:0 0 18px 0;color:#1c150e;line-height:1.2">Audit request received</h1><span data-bloc="debut-corps" data-skip-in-text="true"></span><p style="font-size:16px;line-height:1.7;color:#241d15;margin:14px 0;margin-top:14px;margin-right:0;margin-bottom:14px;margin-left:0">We received your audit request (Audit IA) for 24 salariés company — Industrie sector. Our team gets back to you with a mission calendar.</p><p style="font-size:16px;line-height:1.7;color:#241d15;margin:14px 0;margin-top:14px;margin-right:0;margin-bottom:14px;margin-left:0">Hello Camille,<br/>The audit takes 5 to 10 days depending on scope. You&#x27;ll receive an actionable report with quantified quick-wins and a 90-day action plan.</p><p style="font-size:16px;line-height:1.7;color:#6b6153;margin:14px 0;margin-top:14px;margin-right:0;margin-bottom:14px;margin-left:0">Reference: demo-0000</p><span data-bloc="fin-corps" data-skip-in-text="true"></span><table align="center" width="100%" border="0" cellPadding="0" cellSpacing="0" role="presentation" data-bloc="action" style="text-align:center;margin:30px 0 8px 0"><tbody><tr><td><a href="https://axion-ia.com/en/methodologie" class="ax-cta" style="line-height:100%;text-decoration:none;display:inline-block;max-width:100%;mso-padding-alt:0px;background-color:#c24a1b;background-image:linear-gradient(180deg, #cf5527 0%, #c24a1b 100%);color:#ffffff;padding:16px 34px;border-radius:999px;font-size:16px;font-weight:700;font-family:-apple-system, BlinkMacSystemFont, &#x27;Segoe UI&#x27;, Roboto, Helvetica, Arial, sans-serif;box-shadow:0 10px 22px -8px rgba(194,74,27,0.5);padding-top:16px;padding-right:34px;padding-bottom:16px;padding-left:34px" target="_blank"><span><!--[if mso]><i style="mso-font-width:425%;mso-text-raise:24" hidden>&#8202;&#8202;&#8202;&#8202;</i><![endif]--></span><span style="max-width:100%;display:inline-block;line-height:120%;mso-padding-alt:0px;mso-text-raise:12px">Audit methodology<!-- -->  →</span><span><!--[if mso]><i style="mso-font-width:425%" hidden>&#8202;&#8202;&#8202;&#8202;&#8203;</i><![endif]--></span></a><p class="ax-muted" style="font-size:12px;line-height:1.5;color:#6b6153;margin:12px 0 0 0;text-align:center;word-break:break-all;margin-top:12px;margin-right:0;margin-bottom:0;margin-left:0">Button not working? Copy this address:<br/>https://axion-ia.com/en/methodologie</p></td></tr></tbody></table><p class="ax-muted" data-bloc="soupape" style="font-size:14px;line-height:1.6;color:#6b6153;margin:22px 0 0 0;padding-top:16px;border-top:1px solid #eee2d2;margin-top:22px;margin-right:0;margin-bottom:0;margin-left:0">A question? Just reply to this email — it reaches us directly, and a human reads it.</p><p class="ax-text" data-bloc="signature" style="font-size:14px;line-height:1.7;color:#241d15;margin:24px 0 0 0;border-left:3px solid #c24a1b;padding-left:14px;margin-top:24px;margin-right:0;margin-bottom:0;margin-left:0"><span style="font-family:Georgia, &#x27;Times New Roman&#x27;, Times, serif;font-size:16px;font-weight:700;color:#1c150e">Williams Jullin</span><br/><span style="color:#6b6153">Founder &amp; CEO · Axion-IA</span><br/><span style="color:#6b6153;font-style:italic">Hearing about AI everywhere and no longer sure where to start? We cut through the noise, and handle it for you, end to end.</span><br/><span style="color:#6b6153;font-size:13px">AI audit · Automated systems implementation · Training · 1-to-1 coaching</span><br/><a href="https://www.linkedin.com/in/williamsjullin/" style="color:#8c3010;text-decoration-line:none;font-weight:600" target="_blank">LinkedIn</a></p></td></tr></tbody></table><table align="center" width="100%" border="0" cellPadding="0" cellSpacing="0" role="presentation" data-bloc="pied" style="padding:26px 12px 0 12px"><tbody><tr><td><p class="ax-muted" style="font-size:13px;line-height:1.6;color:#6b6153;margin:0 0 10px 0;text-align:center;margin-top:0;margin-right:0;margin-bottom:10px;margin-left:0">Axion-IA<!-- --> —<!-- --> <a href="https://www.linkedin.com/company/axion-ia-france" style="color:#8c3010;text-decoration-line:none;font-weight:700;text-decoration:none" target="_blank">LinkedIn</a> · <a href="https://www.facebook.com/axioniacom" style="color:#8c3010;text-decoration-line:none;font-weight:700;text-decoration:none" target="_blank">Facebook</a> · <a href="https://x.com/AxionIAFrance" style="color:#8c3010;text-decoration-line:none;font-weight:700;text-decoration:none" target="_blank">X</a> — <!-- -->Williams Jullin<!-- --> :<!-- --> <a href="https://www.linkedin.com/in/williamsjullin/" style="color:#8c3010;text-decoration-line:none;font-weight:700;text-decoration:none" target="_blank">LinkedIn</a></p><p class="ax-muted" style="font-size:12px;line-height:1.6;color:#6b6153;margin:0;text-align:center;margin-top:0;margin-bottom:0;margin-left:0;margin-right:0">AXION IA SAS<!-- --> · <!-- -->French company (SAS)<br/>11 Avenue Paul Verlaine, ELITE BUREAUX - boîte 53, 38100 Grenoble, France<br/>Reg. no.<!-- --> <!-- -->108018631<!-- --> · <!-- -->VAT<!-- --> <!-- -->FR51108018631<!-- --> · <!-- -->Training provider reg. no.<!-- --> <!-- -->84381100438<br/>Cet enregistrement ne vaut pas agrément de l&#x27;État.<br/>Contact:<!-- --> <a href="mailto:contact@axion-ia.com" style="color:#8c3010;text-decoration-line:none;font-weight:600" target="_blank">contact@axion-ia.com</a><br/>© <!-- -->2026<!-- --> <!-- -->AXION IA SAS<!-- --> — <!-- -->All rights reserved.</p></td></tr></tbody></table></td></tr></tbody></table></td></tr></tbody></table><!--/$--></body></html>"
+`;
+
+exports[`S2 — non-régression : 5 gabarits non migrés figés (HTML et texte) > audit-confirmed (signature fondateur, famille B) en en > texte 1`] = `
+" 
+
+https://axion-ia.com
+
+The end-to-end AI partner for SMEs
+
+
+AUDIT REQUEST RECEIVED
+
+We received your audit request (Audit IA) for 24 salariés company — Industrie sector. Our team gets back to you with a mission calendar.
+
+Hello Camille,
+The audit takes 5 to 10 days depending on scope. You'll receive an actionable report with quantified quick-wins and a 90-day action plan.
+
+Reference: demo-0000
+
+Audit methodology  → https://axion-ia.com/en/methodologie
+
+Button not working? Copy this address:
+https://axion-ia.com/en/methodologie
+
+A question? Just reply to this email — it reaches us directly, and a human reads it.
+
+Williams Jullin
+Founder & CEO · Axion-IA
+Hearing about AI everywhere and no longer sure where to start? We cut through the noise, and handle it for you, end to end.
+AI audit · Automated systems implementation · Training · 1-to-1 coaching
+LinkedIn https://www.linkedin.com/in/williamsjullin/
+
+Axion-IA — LinkedIn https://www.linkedin.com/company/axion-ia-france · Facebook https://www.facebook.com/axioniacom · X https://x.com/AxionIAFrance — Williams Jullin : LinkedIn https://www.linkedin.com/in/williamsjullin/
+
+AXION IA SAS · French company (SAS)
+11 Avenue Paul Verlaine, ELITE BUREAUX - boîte 53, 38100 Grenoble, France
+Reg. no. 108018631 · VAT FR51108018631 · Training provider reg. no. 84381100438
+Cet enregistrement ne vaut pas agrément de l'État.
+Contact: contact@axion-ia.com
+© 2026 AXION IA SAS — All rights reserved."
+`;
+
+exports[`S2 — non-régression : 5 gabarits non migrés figés (HTML et texte) > audit-confirmed (signature fondateur, famille B) en fr > html 1`] = `
+"<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html dir="ltr" lang="fr"><head><meta name="viewport" content="width=device-width, initial-scale=1"/><meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/><meta name="x-apple-disable-message-reformatting"/><meta name="color-scheme" content="light dark"/><meta name="supported-color-schemes" content="light dark"/><style>
+  :root { color-scheme: light dark; supported-color-schemes: light dark; }
+  @media (prefers-color-scheme: dark) {
+    .ax-body { background-color: #15110c !important; }
+    .ax-card { background-color: #221b13 !important; border-color: #3a3025 !important; }
+    .ax-text { color: #f6efe3 !important; }
+    .ax-heading { color: #fdf7ec !important; }
+    .ax-muted { color: #b8ac99 !important; }
+    .ax-trust { background-color: #2c1c12 !important; border-color: #5a3620 !important; }
+    /* Lot 4 (2026-09-02) — le CORPS des gabarits. Les classes ci-dessus ne
+       vivaient que dans le châssis ; les 42 gabarits posent des styles en
+       ligne (encre #241d15) et aucune classe. En mode sombre, la carte passait
+       à #221b13 et chaque paragraphe restait presque noir : noir sur noir. On
+       cible les descendants de la carte, en !important, ce qui prime sur un
+       style en ligne — sans toucher à un seul gabarit. Le bouton, blanc sur
+       terracotta, est remis à part par sa classe. */
+    .ax-card p, .ax-card li, .ax-card td, .ax-card span, .ax-card strong, .ax-card em { color: #f6efe3 !important; }
+    .ax-card h1, .ax-card h2, .ax-card h3 { color: #fdf7ec !important; }
+    .ax-card a { color: #f0a070 !important; }
+    .ax-card a.ax-cta, .ax-card a.ax-cta span { color: #ffffff !important; }
+    .ax-card hr { border-color: #3a3025 !important; }
+  }
+  /* Lot 4 — sous 600 px : 28 px de marge de chaque côté et un titre de 26 px
+     ne laissaient qu'une colonne de 264 px sur un écran de 320. */
+  @media only screen and (max-width: 600px) {
+    .ax-card { padding: 24px 18px !important; border-radius: 14px !important; }
+    .ax-title { font-size: 22px !important; }
+  }
+</style></head><body class="ax-body" data-famille="B" style="background-color:#f6f1e8;margin:0;padding:0"><!--$--><!--html--><!--head--><div style="display:none;overflow:hidden;line-height:1px;opacity:0;max-height:0;max-width:0" data-skip-in-text="true">Nous revenons vers vous avec un calendrier de mission.<div> ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿</div></div><!--body--><table border="0" width="100%" cellPadding="0" cellSpacing="0" role="presentation" align="center"><tbody><tr><td style="background-color:#f6f1e8;font-family:-apple-system, BlinkMacSystemFont, &#x27;Segoe UI&#x27;, Roboto, Helvetica, Arial, sans-serif;color:#241d15;padding:0 0 40px;margin:0"><table align="center" width="100%" border="0" cellPadding="0" cellSpacing="0" role="presentation" style="height:6px;line-height:6px;font-size:1px;background-color:#c24a1b;background-image:linear-gradient(90deg, #c24a1b 0%, #d1561f 55%, #8c3010 100%)"><tbody><tr><td> </td></tr></tbody></table><table align="center" width="100%" border="0" cellPadding="0" cellSpacing="0" role="presentation" style="max-width:600px;margin:0 auto;width:100%"><tbody><tr style="width:100%"><td><table align="center" width="100%" border="0" cellPadding="0" cellSpacing="0" role="presentation" style="padding:26px 0 20px;text-align:center"><tbody><tr><td><a href="https://axion-ia.com" style="color:#067df7;text-decoration-line:none" target="_blank"><img alt="Axion-IA" height="115" src="https://axion-ia.com/email/axion-ia-logo-pill.png" style="display:block;outline:none;border:0;text-decoration:none;margin:0 auto" width="210"/></a><p class="ax-muted" style="font-size:11px;line-height:24px;letter-spacing:0.18em;text-transform:uppercase;color:#6b6153;font-weight:700;margin:12px 0 0 0;margin-top:12px;margin-right:0;margin-bottom:0;margin-left:0">Le partenaire IA de bout en bout des PME</p></td></tr></tbody></table><table align="center" width="100%" class="ax-card" border="0" cellPadding="0" cellSpacing="0" role="presentation" style="max-width:100%;background-color:#ffffff;border-radius:20px;border:1px solid #eee2d2;padding:32px 28px;box-shadow:0 12px 34px -16px rgba(234,78,27,0.20), 0 2px 6px -2px rgba(36,29,21,0.06)"><tbody><tr style="width:100%"><td><h1 class="ax-heading ax-title" data-bloc="titre" style="font-family:Georgia, &#x27;Times New Roman&#x27;, Times, serif;font-size:26px;font-weight:700;margin:0 0 18px 0;color:#1c150e;line-height:1.2">Demande d&#x27;audit reçue</h1><span data-bloc="debut-corps" data-skip-in-text="true"></span><p style="font-size:16px;line-height:1.7;color:#241d15;margin:14px 0;margin-top:14px;margin-right:0;margin-bottom:14px;margin-left:0">Nous avons bien reçu votre demande d&#x27;audit (Audit IA) pour entreprise 24 salariés — secteur Industrie. Notre équipe revient vers vous avec un calendrier de mission.</p><p style="font-size:16px;line-height:1.7;color:#241d15;margin:14px 0;margin-top:14px;margin-right:0;margin-bottom:14px;margin-left:0">Bonjour Camille,<br/>L&#x27;audit dure 5 à 10 jours selon le périmètre. Vous recevrez un rapport actionnable avec quick-wins chiffrés et un plan d&#x27;action 90 jours.</p><p style="font-size:16px;line-height:1.7;color:#6b6153;margin:14px 0;margin-top:14px;margin-right:0;margin-bottom:14px;margin-left:0">Référence : demo-0000</p><span data-bloc="fin-corps" data-skip-in-text="true"></span><table align="center" width="100%" border="0" cellPadding="0" cellSpacing="0" role="presentation" data-bloc="action" style="text-align:center;margin:30px 0 8px 0"><tbody><tr><td><a href="https://axion-ia.com/fr/methodologie" class="ax-cta" style="line-height:100%;text-decoration:none;display:inline-block;max-width:100%;mso-padding-alt:0px;background-color:#c24a1b;background-image:linear-gradient(180deg, #cf5527 0%, #c24a1b 100%);color:#ffffff;padding:16px 34px;border-radius:999px;font-size:16px;font-weight:700;font-family:-apple-system, BlinkMacSystemFont, &#x27;Segoe UI&#x27;, Roboto, Helvetica, Arial, sans-serif;box-shadow:0 10px 22px -8px rgba(194,74,27,0.5);padding-top:16px;padding-right:34px;padding-bottom:16px;padding-left:34px" target="_blank"><span><!--[if mso]><i style="mso-font-width:425%;mso-text-raise:24" hidden>&#8202;&#8202;&#8202;&#8202;</i><![endif]--></span><span style="max-width:100%;display:inline-block;line-height:120%;mso-padding-alt:0px;mso-text-raise:12px">Méthodologie d&#x27;audit<!-- -->  →</span><span><!--[if mso]><i style="mso-font-width:425%" hidden>&#8202;&#8202;&#8202;&#8202;&#8203;</i><![endif]--></span></a><p class="ax-muted" style="font-size:12px;line-height:1.5;color:#6b6153;margin:12px 0 0 0;text-align:center;word-break:break-all;margin-top:12px;margin-right:0;margin-bottom:0;margin-left:0">Le bouton ne fonctionne pas ? Copiez cette adresse :<br/>https://axion-ia.com/fr/methodologie</p></td></tr></tbody></table><p class="ax-muted" data-bloc="soupape" style="font-size:14px;line-height:1.6;color:#6b6153;margin:22px 0 0 0;padding-top:16px;border-top:1px solid #eee2d2;margin-top:22px;margin-right:0;margin-bottom:0;margin-left:0">Une question ? Répondez simplement à cet e-mail — il arrive directement chez nous, et c&#x27;est un humain qui lit.</p><p class="ax-text" data-bloc="signature" style="font-size:14px;line-height:1.7;color:#241d15;margin:24px 0 0 0;border-left:3px solid #c24a1b;padding-left:14px;margin-top:24px;margin-right:0;margin-bottom:0;margin-left:0"><span style="font-family:Georgia, &#x27;Times New Roman&#x27;, Times, serif;font-size:16px;font-weight:700;color:#1c150e">Williams Jullin</span><br/><span style="color:#6b6153">Fondateur &amp; CEO · Axion-IA</span><br/><span style="color:#6b6153;font-style:italic">Vous entendez parler d’IA partout et ne savez plus par où commencer ? On fait le tri, et on s’en occupe pour vous, de bout en bout.</span><br/><span style="color:#6b6153;font-size:13px">Audit IA · Implémentation de systèmes automatisés · Formation · Coaching 1-to-1</span><br/><a href="https://www.linkedin.com/in/williamsjullin/" style="color:#8c3010;text-decoration-line:none;font-weight:600" target="_blank">LinkedIn</a></p></td></tr></tbody></table><table align="center" width="100%" border="0" cellPadding="0" cellSpacing="0" role="presentation" data-bloc="pied" style="padding:26px 12px 0 12px"><tbody><tr><td><p class="ax-muted" style="font-size:13px;line-height:1.6;color:#6b6153;margin:0 0 10px 0;text-align:center;margin-top:0;margin-right:0;margin-bottom:10px;margin-left:0">Axion-IA<!-- --> —<!-- --> <a href="https://www.linkedin.com/company/axion-ia-france" style="color:#8c3010;text-decoration-line:none;font-weight:700;text-decoration:none" target="_blank">LinkedIn</a> · <a href="https://www.facebook.com/axioniacom" style="color:#8c3010;text-decoration-line:none;font-weight:700;text-decoration:none" target="_blank">Facebook</a> · <a href="https://x.com/AxionIAFrance" style="color:#8c3010;text-decoration-line:none;font-weight:700;text-decoration:none" target="_blank">X</a> — <!-- -->Williams Jullin<!-- --> :<!-- --> <a href="https://www.linkedin.com/in/williamsjullin/" style="color:#8c3010;text-decoration-line:none;font-weight:700;text-decoration:none" target="_blank">LinkedIn</a></p><p class="ax-muted" style="font-size:12px;line-height:1.6;color:#6b6153;margin:0;text-align:center;margin-top:0;margin-bottom:0;margin-left:0;margin-right:0">AXION IA SAS<!-- --> · <!-- -->SAS française<br/>11 Avenue Paul Verlaine, ELITE BUREAUX - boîte 53, 38100 Grenoble, France<br/>SIREN<!-- --> <!-- -->108018631<!-- --> · <!-- -->TVA<!-- --> <!-- -->FR51108018631<!-- --> · <!-- -->NDA<!-- --> <!-- -->84381100438<br/>Cet enregistrement ne vaut pas agrément de l&#x27;État.<br/>Contact :<!-- --> <a href="mailto:contact@axion-ia.com" style="color:#8c3010;text-decoration-line:none;font-weight:600" target="_blank">contact@axion-ia.com</a><br/>© <!-- -->2026<!-- --> <!-- -->AXION IA SAS<!-- --> — <!-- -->Tous droits réservés.</p></td></tr></tbody></table></td></tr></tbody></table></td></tr></tbody></table><!--/$--></body></html>"
+`;
+
+exports[`S2 — non-régression : 5 gabarits non migrés figés (HTML et texte) > audit-confirmed (signature fondateur, famille B) en fr > texte 1`] = `
+" 
+
+https://axion-ia.com
+
+Le partenaire IA de bout en bout des PME
+
+
+DEMANDE D'AUDIT REÇUE
+
+Nous avons bien reçu votre demande d'audit (Audit IA) pour entreprise 24 salariés — secteur Industrie. Notre équipe revient vers vous avec un calendrier de mission.
+
+Bonjour Camille,
+L'audit dure 5 à 10 jours selon le périmètre. Vous recevrez un rapport actionnable avec quick-wins chiffrés et un plan d'action 90 jours.
+
+Référence : demo-0000
+
+Méthodologie d'audit  → https://axion-ia.com/fr/methodologie
+
+Le bouton ne fonctionne pas ? Copiez cette adresse :
+https://axion-ia.com/fr/methodologie
+
+Une question ? Répondez simplement à cet e-mail — il arrive directement chez nous, et c'est un humain qui lit.
+
+Williams Jullin
+Fondateur & CEO · Axion-IA
+Vous entendez parler d’IA partout et ne savez plus par où commencer ? On fait le tri, et on s’en occupe pour vous, de bout en bout.
+Audit IA · Implémentation de systèmes automatisés · Formation · Coaching 1-to-1
+LinkedIn https://www.linkedin.com/in/williamsjullin/
+
+Axion-IA — LinkedIn https://www.linkedin.com/company/axion-ia-france · Facebook https://www.facebook.com/axioniacom · X https://x.com/AxionIAFrance — Williams Jullin : LinkedIn https://www.linkedin.com/in/williamsjullin/
+
+AXION IA SAS · SAS française
+11 Avenue Paul Verlaine, ELITE BUREAUX - boîte 53, 38100 Grenoble, France
+SIREN 108018631 · TVA FR51108018631 · NDA 84381100438
+Cet enregistrement ne vaut pas agrément de l'État.
+Contact : contact@axion-ia.com
+© 2026 AXION IA SAS — Tous droits réservés."
+`;
+
+exports[`S2 — non-régression : 5 gabarits non migrés figés (HTML et texte) > candidature-entretien-rappel (famille C) en en > html 1`] = `
+"<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html dir="ltr" lang="en"><head><meta name="viewport" content="width=device-width, initial-scale=1"/><meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/><meta name="x-apple-disable-message-reformatting"/><meta name="color-scheme" content="light dark"/><meta name="supported-color-schemes" content="light dark"/><style>
+  :root { color-scheme: light dark; supported-color-schemes: light dark; }
+  @media (prefers-color-scheme: dark) {
+    .ax-body { background-color: #15110c !important; }
+    .ax-card { background-color: #221b13 !important; border-color: #3a3025 !important; }
+    .ax-text { color: #f6efe3 !important; }
+    .ax-heading { color: #fdf7ec !important; }
+    .ax-muted { color: #b8ac99 !important; }
+    .ax-trust { background-color: #2c1c12 !important; border-color: #5a3620 !important; }
+    /* Lot 4 (2026-09-02) — le CORPS des gabarits. Les classes ci-dessus ne
+       vivaient que dans le châssis ; les 42 gabarits posent des styles en
+       ligne (encre #241d15) et aucune classe. En mode sombre, la carte passait
+       à #221b13 et chaque paragraphe restait presque noir : noir sur noir. On
+       cible les descendants de la carte, en !important, ce qui prime sur un
+       style en ligne — sans toucher à un seul gabarit. Le bouton, blanc sur
+       terracotta, est remis à part par sa classe. */
+    .ax-card p, .ax-card li, .ax-card td, .ax-card span, .ax-card strong, .ax-card em { color: #f6efe3 !important; }
+    .ax-card h1, .ax-card h2, .ax-card h3 { color: #fdf7ec !important; }
+    .ax-card a { color: #f0a070 !important; }
+    .ax-card a.ax-cta, .ax-card a.ax-cta span { color: #ffffff !important; }
+    .ax-card hr { border-color: #3a3025 !important; }
+  }
+  /* Lot 4 — sous 600 px : 28 px de marge de chaque côté et un titre de 26 px
+     ne laissaient qu'une colonne de 264 px sur un écran de 320. */
+  @media only screen and (max-width: 600px) {
+    .ax-card { padding: 24px 18px !important; border-radius: 14px !important; }
+    .ax-title { font-size: 22px !important; }
+  }
+</style></head><body class="ax-body" data-famille="C" style="background-color:#f6f1e8;margin:0;padding:0"><!--$--><!--html--><!--head--><div style="display:none;overflow:hidden;line-height:1px;opacity:0;max-height:0;max-width:0" data-skip-in-text="true">by video call — +33 7 00 00 00 00<div> ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿</div></div><!--body--><table border="0" width="100%" cellPadding="0" cellSpacing="0" role="presentation" align="center"><tbody><tr><td style="background-color:#f6f1e8;font-family:-apple-system, BlinkMacSystemFont, &#x27;Segoe UI&#x27;, Roboto, Helvetica, Arial, sans-serif;color:#241d15;padding:0 0 40px;margin:0"><table align="center" width="100%" border="0" cellPadding="0" cellSpacing="0" role="presentation" style="height:6px;line-height:6px;font-size:1px;background-color:#c24a1b;background-image:linear-gradient(90deg, #c24a1b 0%, #d1561f 55%, #8c3010 100%)"><tbody><tr><td> </td></tr></tbody></table><table align="center" width="100%" border="0" cellPadding="0" cellSpacing="0" role="presentation" style="max-width:600px;margin:0 auto;width:100%"><tbody><tr style="width:100%"><td><table align="center" width="100%" border="0" cellPadding="0" cellSpacing="0" role="presentation" style="padding:26px 0 20px;text-align:center"><tbody><tr><td><img alt="Axion-IA" height="115" src="https://axion-ia.com/email/axion-ia-logo-pill.png" style="display:block;outline:none;border:0;text-decoration:none;margin:0 auto" width="210"/><p class="ax-muted" style="font-size:11px;line-height:24px;letter-spacing:0.18em;text-transform:uppercase;color:#6b6153;font-weight:700;margin:12px 0 0 0;margin-top:12px;margin-right:0;margin-bottom:0;margin-left:0">The end-to-end AI partner for SMEs</p></td></tr></tbody></table><table align="center" width="100%" class="ax-card" border="0" cellPadding="0" cellSpacing="0" role="presentation" style="max-width:100%;background-color:#ffffff;border-radius:20px;border:1px solid #eee2d2;padding:32px 28px;box-shadow:0 12px 34px -16px rgba(234,78,27,0.20), 0 2px 6px -2px rgba(36,29,21,0.06)"><tbody><tr style="width:100%"><td><p data-bloc="surtitre" style="font-size:12px;line-height:24px;letter-spacing:0.14em;text-transform:uppercase;font-weight:800;color:#c24a1b;margin:0 0 12px 0;margin-top:0;margin-right:0;margin-bottom:12px;margin-left:0">Piloter son activité avec l&#x27;IA</p><h1 class="ax-heading ax-title" data-bloc="titre" style="font-family:Georgia, &#x27;Times New Roman&#x27;, Times, serif;font-size:26px;font-weight:700;margin:0 0 18px 0;color:#1c150e;line-height:1.2">Your interview is tomorrow</h1><span data-bloc="debut-corps" data-skip-in-text="true"></span><p style="font-size:16px;line-height:1.7;color:#241d15;margin:14px 0;font-weight:600;margin-top:14px;margin-right:0;margin-bottom:14px;margin-left:0">Today at 11:00 (45 min), by video call.</p><p style="font-size:16px;line-height:1.7;color:#241d15;margin:14px 0;margin-top:14px;margin-right:0;margin-bottom:14px;margin-left:0">+33 7 00 00 00 00</p><p style="font-size:16px;line-height:1.7;color:#241d15;margin:14px 0;margin-top:14px;margin-right:0;margin-bottom:14px;margin-left:0">Hello Camille, we look forward to speaking with you.<br/>If anything changes — a delay, a conflict — simply reply to this message.</p><span data-bloc="fin-corps" data-skip-in-text="true"></span><p class="ax-muted" data-bloc="soupape" style="font-size:14px;line-height:1.6;color:#6b6153;margin:22px 0 0 0;padding-top:16px;border-top:1px solid #eee2d2;margin-top:22px;margin-right:0;margin-bottom:0;margin-left:0">A question? Just reply to this email — it reaches us directly, and a human reads it.</p></td></tr></tbody></table><table align="center" width="100%" border="0" cellPadding="0" cellSpacing="0" role="presentation" data-bloc="pied" style="padding:26px 12px 0 12px"><tbody><tr><td><p class="ax-muted" style="font-size:12px;line-height:1.6;color:#6b6153;margin:0;text-align:center;margin-top:0;margin-bottom:0;margin-left:0;margin-right:0">AXION IA SAS<!-- --> · <!-- -->French company (SAS)<br/>11 Avenue Paul Verlaine, ELITE BUREAUX - boîte 53, 38100 Grenoble, France<br/>Reg. no.<!-- --> <!-- -->108018631<!-- --> · <!-- -->VAT<!-- --> <!-- -->FR51108018631<!-- --> · <!-- -->Training provider reg. no.<!-- --> <!-- -->84381100438<br/>Cet enregistrement ne vaut pas agrément de l&#x27;État.<br/>Contact:<!-- --> <a href="mailto:contact@axion-ia.com" style="color:#8c3010;text-decoration-line:none;font-weight:600" target="_blank">contact@axion-ia.com</a><br/>© <!-- -->2026<!-- --> <!-- -->AXION IA SAS<!-- --> — <!-- -->All rights reserved.</p></td></tr></tbody></table></td></tr></tbody></table></td></tr></tbody></table><!--/$--></body></html>"
+`;
+
+exports[`S2 — non-régression : 5 gabarits non migrés figés (HTML et texte) > candidature-entretien-rappel (famille C) en en > texte 1`] = `
+" 
+
+The end-to-end AI partner for SMEs
+
+Piloter son activité avec l'IA
+
+
+YOUR INTERVIEW IS TOMORROW
+
+Today at 11:00 (45 min), by video call.
+
++33 7 00 00 00 00
+
+Hello Camille, we look forward to speaking with you.
+If anything changes — a delay, a conflict — simply reply to this message.
+
+A question? Just reply to this email — it reaches us directly, and a human reads it.
+
+AXION IA SAS · French company (SAS)
+11 Avenue Paul Verlaine, ELITE BUREAUX - boîte 53, 38100 Grenoble, France
+Reg. no. 108018631 · VAT FR51108018631 · Training provider reg. no. 84381100438
+Cet enregistrement ne vaut pas agrément de l'État.
+Contact: contact@axion-ia.com
+© 2026 AXION IA SAS — All rights reserved."
+`;
+
+exports[`S2 — non-régression : 5 gabarits non migrés figés (HTML et texte) > candidature-entretien-rappel (famille C) en fr > html 1`] = `
+"<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html dir="ltr" lang="fr"><head><meta name="viewport" content="width=device-width, initial-scale=1"/><meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/><meta name="x-apple-disable-message-reformatting"/><meta name="color-scheme" content="light dark"/><meta name="supported-color-schemes" content="light dark"/><style>
+  :root { color-scheme: light dark; supported-color-schemes: light dark; }
+  @media (prefers-color-scheme: dark) {
+    .ax-body { background-color: #15110c !important; }
+    .ax-card { background-color: #221b13 !important; border-color: #3a3025 !important; }
+    .ax-text { color: #f6efe3 !important; }
+    .ax-heading { color: #fdf7ec !important; }
+    .ax-muted { color: #b8ac99 !important; }
+    .ax-trust { background-color: #2c1c12 !important; border-color: #5a3620 !important; }
+    /* Lot 4 (2026-09-02) — le CORPS des gabarits. Les classes ci-dessus ne
+       vivaient que dans le châssis ; les 42 gabarits posent des styles en
+       ligne (encre #241d15) et aucune classe. En mode sombre, la carte passait
+       à #221b13 et chaque paragraphe restait presque noir : noir sur noir. On
+       cible les descendants de la carte, en !important, ce qui prime sur un
+       style en ligne — sans toucher à un seul gabarit. Le bouton, blanc sur
+       terracotta, est remis à part par sa classe. */
+    .ax-card p, .ax-card li, .ax-card td, .ax-card span, .ax-card strong, .ax-card em { color: #f6efe3 !important; }
+    .ax-card h1, .ax-card h2, .ax-card h3 { color: #fdf7ec !important; }
+    .ax-card a { color: #f0a070 !important; }
+    .ax-card a.ax-cta, .ax-card a.ax-cta span { color: #ffffff !important; }
+    .ax-card hr { border-color: #3a3025 !important; }
+  }
+  /* Lot 4 — sous 600 px : 28 px de marge de chaque côté et un titre de 26 px
+     ne laissaient qu'une colonne de 264 px sur un écran de 320. */
+  @media only screen and (max-width: 600px) {
+    .ax-card { padding: 24px 18px !important; border-radius: 14px !important; }
+    .ax-title { font-size: 22px !important; }
+  }
+</style></head><body class="ax-body" data-famille="C" style="background-color:#f6f1e8;margin:0;padding:0"><!--$--><!--html--><!--head--><div style="display:none;overflow:hidden;line-height:1px;opacity:0;max-height:0;max-width:0" data-skip-in-text="true">en visioconférence — +33 7 00 00 00 00<div> ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿</div></div><!--body--><table border="0" width="100%" cellPadding="0" cellSpacing="0" role="presentation" align="center"><tbody><tr><td style="background-color:#f6f1e8;font-family:-apple-system, BlinkMacSystemFont, &#x27;Segoe UI&#x27;, Roboto, Helvetica, Arial, sans-serif;color:#241d15;padding:0 0 40px;margin:0"><table align="center" width="100%" border="0" cellPadding="0" cellSpacing="0" role="presentation" style="height:6px;line-height:6px;font-size:1px;background-color:#c24a1b;background-image:linear-gradient(90deg, #c24a1b 0%, #d1561f 55%, #8c3010 100%)"><tbody><tr><td> </td></tr></tbody></table><table align="center" width="100%" border="0" cellPadding="0" cellSpacing="0" role="presentation" style="max-width:600px;margin:0 auto;width:100%"><tbody><tr style="width:100%"><td><table align="center" width="100%" border="0" cellPadding="0" cellSpacing="0" role="presentation" style="padding:26px 0 20px;text-align:center"><tbody><tr><td><img alt="Axion-IA" height="115" src="https://axion-ia.com/email/axion-ia-logo-pill.png" style="display:block;outline:none;border:0;text-decoration:none;margin:0 auto" width="210"/><p class="ax-muted" style="font-size:11px;line-height:24px;letter-spacing:0.18em;text-transform:uppercase;color:#6b6153;font-weight:700;margin:12px 0 0 0;margin-top:12px;margin-right:0;margin-bottom:0;margin-left:0">Le partenaire IA de bout en bout des PME</p></td></tr></tbody></table><table align="center" width="100%" class="ax-card" border="0" cellPadding="0" cellSpacing="0" role="presentation" style="max-width:100%;background-color:#ffffff;border-radius:20px;border:1px solid #eee2d2;padding:32px 28px;box-shadow:0 12px 34px -16px rgba(234,78,27,0.20), 0 2px 6px -2px rgba(36,29,21,0.06)"><tbody><tr style="width:100%"><td><p data-bloc="surtitre" style="font-size:12px;line-height:24px;letter-spacing:0.14em;text-transform:uppercase;font-weight:800;color:#c24a1b;margin:0 0 12px 0;margin-top:0;margin-right:0;margin-bottom:12px;margin-left:0">Piloter son activité avec l&#x27;IA</p><h1 class="ax-heading ax-title" data-bloc="titre" style="font-family:Georgia, &#x27;Times New Roman&#x27;, Times, serif;font-size:26px;font-weight:700;margin:0 0 18px 0;color:#1c150e;line-height:1.2">Votre entretien, c&#x27;est demain</h1><span data-bloc="debut-corps" data-skip-in-text="true"></span><p style="font-size:16px;line-height:1.7;color:#241d15;margin:14px 0;font-weight:600;margin-top:14px;margin-right:0;margin-bottom:14px;margin-left:0">Aujourd&#x27;hui à 11:00 (45 min), en visioconférence.</p><p style="font-size:16px;line-height:1.7;color:#241d15;margin:14px 0;margin-top:14px;margin-right:0;margin-bottom:14px;margin-left:0">+33 7 00 00 00 00</p><p style="font-size:16px;line-height:1.7;color:#241d15;margin:14px 0;margin-top:14px;margin-right:0;margin-bottom:14px;margin-left:0">Bonjour Camille, au plaisir d&#x27;échanger avec vous.<br/>Si quelque chose change — un retard, un imprévu — répondez simplement à ce message.</p><span data-bloc="fin-corps" data-skip-in-text="true"></span><p class="ax-muted" data-bloc="soupape" style="font-size:14px;line-height:1.6;color:#6b6153;margin:22px 0 0 0;padding-top:16px;border-top:1px solid #eee2d2;margin-top:22px;margin-right:0;margin-bottom:0;margin-left:0">Une question ? Répondez simplement à cet e-mail — il arrive directement chez nous, et c&#x27;est un humain qui lit.</p></td></tr></tbody></table><table align="center" width="100%" border="0" cellPadding="0" cellSpacing="0" role="presentation" data-bloc="pied" style="padding:26px 12px 0 12px"><tbody><tr><td><p class="ax-muted" style="font-size:12px;line-height:1.6;color:#6b6153;margin:0;text-align:center;margin-top:0;margin-bottom:0;margin-left:0;margin-right:0">AXION IA SAS<!-- --> · <!-- -->SAS française<br/>11 Avenue Paul Verlaine, ELITE BUREAUX - boîte 53, 38100 Grenoble, France<br/>SIREN<!-- --> <!-- -->108018631<!-- --> · <!-- -->TVA<!-- --> <!-- -->FR51108018631<!-- --> · <!-- -->NDA<!-- --> <!-- -->84381100438<br/>Cet enregistrement ne vaut pas agrément de l&#x27;État.<br/>Contact :<!-- --> <a href="mailto:contact@axion-ia.com" style="color:#8c3010;text-decoration-line:none;font-weight:600" target="_blank">contact@axion-ia.com</a><br/>© <!-- -->2026<!-- --> <!-- -->AXION IA SAS<!-- --> — <!-- -->Tous droits réservés.</p></td></tr></tbody></table></td></tr></tbody></table></td></tr></tbody></table><!--/$--></body></html>"
+`;
+
+exports[`S2 — non-régression : 5 gabarits non migrés figés (HTML et texte) > candidature-entretien-rappel (famille C) en fr > texte 1`] = `
+" 
+
+Le partenaire IA de bout en bout des PME
+
+Piloter son activité avec l'IA
+
+
+VOTRE ENTRETIEN, C'EST DEMAIN
+
+Aujourd'hui à 11:00 (45 min), en visioconférence.
+
++33 7 00 00 00 00
+
+Bonjour Camille, au plaisir d'échanger avec vous.
+Si quelque chose change — un retard, un imprévu — répondez simplement à ce message.
+
+Une question ? Répondez simplement à cet e-mail — il arrive directement chez nous, et c'est un humain qui lit.
+
+AXION IA SAS · SAS française
+11 Avenue Paul Verlaine, ELITE BUREAUX - boîte 53, 38100 Grenoble, France
+SIREN 108018631 · TVA FR51108018631 · NDA 84381100438
+Cet enregistrement ne vaut pas agrément de l'État.
+Contact : contact@axion-ia.com
+© 2026 AXION IA SAS — Tous droits réservés."
+`;
+
+exports[`S2 — non-régression : 5 gabarits non migrés figés (HTML et texte) > contact-confirmed (signature équipe, famille B) en en > html 1`] = `
+"<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html dir="ltr" lang="en"><head><meta name="viewport" content="width=device-width, initial-scale=1"/><meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/><meta name="x-apple-disable-message-reformatting"/><meta name="color-scheme" content="light dark"/><meta name="supported-color-schemes" content="light dark"/><style>
+  :root { color-scheme: light dark; supported-color-schemes: light dark; }
+  @media (prefers-color-scheme: dark) {
+    .ax-body { background-color: #15110c !important; }
+    .ax-card { background-color: #221b13 !important; border-color: #3a3025 !important; }
+    .ax-text { color: #f6efe3 !important; }
+    .ax-heading { color: #fdf7ec !important; }
+    .ax-muted { color: #b8ac99 !important; }
+    .ax-trust { background-color: #2c1c12 !important; border-color: #5a3620 !important; }
+    /* Lot 4 (2026-09-02) — le CORPS des gabarits. Les classes ci-dessus ne
+       vivaient que dans le châssis ; les 42 gabarits posent des styles en
+       ligne (encre #241d15) et aucune classe. En mode sombre, la carte passait
+       à #221b13 et chaque paragraphe restait presque noir : noir sur noir. On
+       cible les descendants de la carte, en !important, ce qui prime sur un
+       style en ligne — sans toucher à un seul gabarit. Le bouton, blanc sur
+       terracotta, est remis à part par sa classe. */
+    .ax-card p, .ax-card li, .ax-card td, .ax-card span, .ax-card strong, .ax-card em { color: #f6efe3 !important; }
+    .ax-card h1, .ax-card h2, .ax-card h3 { color: #fdf7ec !important; }
+    .ax-card a { color: #f0a070 !important; }
+    .ax-card a.ax-cta, .ax-card a.ax-cta span { color: #ffffff !important; }
+    .ax-card hr { border-color: #3a3025 !important; }
+  }
+  /* Lot 4 — sous 600 px : 28 px de marge de chaque côté et un titre de 26 px
+     ne laissaient qu'une colonne de 264 px sur un écran de 320. */
+  @media only screen and (max-width: 600px) {
+    .ax-card { padding: 24px 18px !important; border-radius: 14px !important; }
+    .ax-title { font-size: 22px !important; }
+  }
+</style></head><body class="ax-body" data-famille="B" style="background-color:#f6f1e8;margin:0;padding:0"><!--$--><!--html--><!--head--><div style="display:none;overflow:hidden;line-height:1px;opacity:0;max-height:0;max-width:0" data-skip-in-text="true">Message received — your request reference is in the message.<div> ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿</div></div><!--body--><table border="0" width="100%" cellPadding="0" cellSpacing="0" role="presentation" align="center"><tbody><tr><td style="background-color:#f6f1e8;font-family:-apple-system, BlinkMacSystemFont, &#x27;Segoe UI&#x27;, Roboto, Helvetica, Arial, sans-serif;color:#241d15;padding:0 0 40px;margin:0"><table align="center" width="100%" border="0" cellPadding="0" cellSpacing="0" role="presentation" style="height:6px;line-height:6px;font-size:1px;background-color:#c24a1b;background-image:linear-gradient(90deg, #c24a1b 0%, #d1561f 55%, #8c3010 100%)"><tbody><tr><td> </td></tr></tbody></table><table align="center" width="100%" border="0" cellPadding="0" cellSpacing="0" role="presentation" style="max-width:600px;margin:0 auto;width:100%"><tbody><tr style="width:100%"><td><table align="center" width="100%" border="0" cellPadding="0" cellSpacing="0" role="presentation" style="padding:26px 0 20px;text-align:center"><tbody><tr><td><a href="https://axion-ia.com" style="color:#067df7;text-decoration-line:none" target="_blank"><img alt="Axion-IA" height="115" src="https://axion-ia.com/email/axion-ia-logo-pill.png" style="display:block;outline:none;border:0;text-decoration:none;margin:0 auto" width="210"/></a><p class="ax-muted" style="font-size:11px;line-height:24px;letter-spacing:0.18em;text-transform:uppercase;color:#6b6153;font-weight:700;margin:12px 0 0 0;margin-top:12px;margin-right:0;margin-bottom:0;margin-left:0">The end-to-end AI partner for SMEs</p></td></tr></tbody></table><table align="center" width="100%" class="ax-card" border="0" cellPadding="0" cellSpacing="0" role="presentation" style="max-width:100%;background-color:#ffffff;border-radius:20px;border:1px solid #eee2d2;padding:32px 28px;box-shadow:0 12px 34px -16px rgba(234,78,27,0.20), 0 2px 6px -2px rgba(36,29,21,0.06)"><tbody><tr style="width:100%"><td><h1 class="ax-heading ax-title" data-bloc="titre" style="font-family:Georgia, &#x27;Times New Roman&#x27;, Times, serif;font-size:26px;font-weight:700;margin:0 0 18px 0;color:#1c150e;line-height:1.2">Message received</h1><span data-bloc="debut-corps" data-skip-in-text="true"></span><p style="font-size:16px;line-height:1.7;color:#241d15;margin:14px 0;margin-top:14px;margin-right:0;margin-bottom:14px;margin-left:0">Your message has arrived. We will get back to you.</p><p style="font-size:16px;line-height:1.7;color:#6b6153;margin:14px 0;margin-top:14px;margin-right:0;margin-bottom:14px;margin-left:0">Reference: demo-0000</p><p style="font-size:16px;line-height:1.7;color:#241d15;margin:14px 0;margin-top:14px;margin-right:0;margin-bottom:14px;margin-left:0">Hello Camille,<br/>For urgent topics (session within 7 days), book a call with us directly.</p><p style="font-size:16px;line-height:1.7;color:#6b6153;margin:14px 0;margin-top:14px;margin-right:0;margin-bottom:14px;margin-left:0">If you did not send this message, please ignore it or reply to us: we will erase your data.</p><span data-bloc="fin-corps" data-skip-in-text="true"></span><table align="center" width="100%" border="0" cellPadding="0" cellSpacing="0" role="presentation" data-bloc="action" style="text-align:center;margin:30px 0 8px 0"><tbody><tr><td><a href="https://axion-ia.com/en/book-a-call?depuis=email-contact" class="ax-cta" style="line-height:100%;text-decoration:none;display:inline-block;max-width:100%;mso-padding-alt:0px;background-color:#c24a1b;background-image:linear-gradient(180deg, #cf5527 0%, #c24a1b 100%);color:#ffffff;padding:16px 34px;border-radius:999px;font-size:16px;font-weight:700;font-family:-apple-system, BlinkMacSystemFont, &#x27;Segoe UI&#x27;, Roboto, Helvetica, Arial, sans-serif;box-shadow:0 10px 22px -8px rgba(194,74,27,0.5);padding-top:16px;padding-right:34px;padding-bottom:16px;padding-left:34px" target="_blank"><span><!--[if mso]><i style="mso-font-width:425%;mso-text-raise:24" hidden>&#8202;&#8202;&#8202;&#8202;</i><![endif]--></span><span style="max-width:100%;display:inline-block;line-height:120%;mso-padding-alt:0px;mso-text-raise:12px">Book a call<!-- -->  →</span><span><!--[if mso]><i style="mso-font-width:425%" hidden>&#8202;&#8202;&#8202;&#8202;&#8203;</i><![endif]--></span></a><p class="ax-muted" style="font-size:12px;line-height:1.5;color:#6b6153;margin:12px 0 0 0;text-align:center;word-break:break-all;margin-top:12px;margin-right:0;margin-bottom:0;margin-left:0">Button not working? Copy this address:<br/>https://axion-ia.com/en/book-a-call?depuis=email-contact</p></td></tr></tbody></table><p class="ax-muted" data-bloc="soupape" style="font-size:14px;line-height:1.6;color:#6b6153;margin:22px 0 0 0;padding-top:16px;border-top:1px solid #eee2d2;margin-top:22px;margin-right:0;margin-bottom:0;margin-left:0">A question? Just reply to this email — it reaches us directly, and a human reads it.</p><p class="ax-text" data-bloc="signature" style="font-size:14px;line-height:1.7;color:#241d15;margin:24px 0 0 0;border-left:3px solid #c24a1b;padding-left:14px;margin-top:24px;margin-right:0;margin-bottom:0;margin-left:0"><span style="font-family:Georgia, &#x27;Times New Roman&#x27;, Times, serif;font-size:16px;font-weight:700;color:#1c150e">The Axion-IA team</span><br/><span style="color:#6b6153;font-style:italic">Hearing about AI everywhere and no longer sure where to start? We cut through the noise, and handle it for you, end to end.</span><br/><span style="color:#6b6153;font-size:13px">AI audit · Automated systems implementation · Training · 1-to-1 coaching</span><br/><a href="https://www.linkedin.com/company/axion-ia-france" style="color:#8c3010;text-decoration-line:none;font-weight:600" target="_blank">LinkedIn</a></p></td></tr></tbody></table><table align="center" width="100%" border="0" cellPadding="0" cellSpacing="0" role="presentation" data-bloc="pied" style="padding:26px 12px 0 12px"><tbody><tr><td><p class="ax-muted" style="font-size:13px;line-height:1.6;color:#6b6153;margin:0 0 10px 0;text-align:center;margin-top:0;margin-right:0;margin-bottom:10px;margin-left:0">Axion-IA<!-- --> —<!-- --> <a href="https://www.linkedin.com/company/axion-ia-france" style="color:#8c3010;text-decoration-line:none;font-weight:700;text-decoration:none" target="_blank">LinkedIn</a> · <a href="https://www.facebook.com/axioniacom" style="color:#8c3010;text-decoration-line:none;font-weight:700;text-decoration:none" target="_blank">Facebook</a> · <a href="https://x.com/AxionIAFrance" style="color:#8c3010;text-decoration-line:none;font-weight:700;text-decoration:none" target="_blank">X</a> — <!-- -->Williams Jullin<!-- --> :<!-- --> <a href="https://www.linkedin.com/in/williamsjullin/" style="color:#8c3010;text-decoration-line:none;font-weight:700;text-decoration:none" target="_blank">LinkedIn</a></p><p class="ax-muted" style="font-size:12px;line-height:1.6;color:#6b6153;margin:0;text-align:center;margin-top:0;margin-bottom:0;margin-left:0;margin-right:0">AXION IA SAS<!-- --> · <!-- -->French company (SAS)<br/>11 Avenue Paul Verlaine, ELITE BUREAUX - boîte 53, 38100 Grenoble, France<br/>Reg. no.<!-- --> <!-- -->108018631<!-- --> · <!-- -->VAT<!-- --> <!-- -->FR51108018631<!-- --> · <!-- -->Training provider reg. no.<!-- --> <!-- -->84381100438<br/>Cet enregistrement ne vaut pas agrément de l&#x27;État.<br/>Contact:<!-- --> <a href="mailto:contact@axion-ia.com" style="color:#8c3010;text-decoration-line:none;font-weight:600" target="_blank">contact@axion-ia.com</a><br/>© <!-- -->2026<!-- --> <!-- -->AXION IA SAS<!-- --> — <!-- -->All rights reserved.</p></td></tr></tbody></table></td></tr></tbody></table></td></tr></tbody></table><!--/$--></body></html>"
+`;
+
+exports[`S2 — non-régression : 5 gabarits non migrés figés (HTML et texte) > contact-confirmed (signature équipe, famille B) en en > texte 1`] = `
+" 
+
+https://axion-ia.com
+
+The end-to-end AI partner for SMEs
+
+
+MESSAGE RECEIVED
+
+Your message has arrived. We will get back to you.
+
+Reference: demo-0000
+
+Hello Camille,
+For urgent topics (session within 7 days), book a call with us directly.
+
+If you did not send this message, please ignore it or reply to us: we will erase your data.
+
+Book a call  → https://axion-ia.com/en/book-a-call?depuis=email-contact
+
+Button not working? Copy this address:
+https://axion-ia.com/en/book-a-call?depuis=email-contact
+
+A question? Just reply to this email — it reaches us directly, and a human reads it.
+
+The Axion-IA team
+Hearing about AI everywhere and no longer sure where to start? We cut through the noise, and handle it for you, end to end.
+AI audit · Automated systems implementation · Training · 1-to-1 coaching
+LinkedIn https://www.linkedin.com/company/axion-ia-france
+
+Axion-IA — LinkedIn https://www.linkedin.com/company/axion-ia-france · Facebook https://www.facebook.com/axioniacom · X https://x.com/AxionIAFrance — Williams Jullin : LinkedIn https://www.linkedin.com/in/williamsjullin/
+
+AXION IA SAS · French company (SAS)
+11 Avenue Paul Verlaine, ELITE BUREAUX - boîte 53, 38100 Grenoble, France
+Reg. no. 108018631 · VAT FR51108018631 · Training provider reg. no. 84381100438
+Cet enregistrement ne vaut pas agrément de l'État.
+Contact: contact@axion-ia.com
+© 2026 AXION IA SAS — All rights reserved."
+`;
+
+exports[`S2 — non-régression : 5 gabarits non migrés figés (HTML et texte) > contact-confirmed (signature équipe, famille B) en fr > html 1`] = `
+"<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html dir="ltr" lang="fr"><head><meta name="viewport" content="width=device-width, initial-scale=1"/><meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/><meta name="x-apple-disable-message-reformatting"/><meta name="color-scheme" content="light dark"/><meta name="supported-color-schemes" content="light dark"/><style>
+  :root { color-scheme: light dark; supported-color-schemes: light dark; }
+  @media (prefers-color-scheme: dark) {
+    .ax-body { background-color: #15110c !important; }
+    .ax-card { background-color: #221b13 !important; border-color: #3a3025 !important; }
+    .ax-text { color: #f6efe3 !important; }
+    .ax-heading { color: #fdf7ec !important; }
+    .ax-muted { color: #b8ac99 !important; }
+    .ax-trust { background-color: #2c1c12 !important; border-color: #5a3620 !important; }
+    /* Lot 4 (2026-09-02) — le CORPS des gabarits. Les classes ci-dessus ne
+       vivaient que dans le châssis ; les 42 gabarits posent des styles en
+       ligne (encre #241d15) et aucune classe. En mode sombre, la carte passait
+       à #221b13 et chaque paragraphe restait presque noir : noir sur noir. On
+       cible les descendants de la carte, en !important, ce qui prime sur un
+       style en ligne — sans toucher à un seul gabarit. Le bouton, blanc sur
+       terracotta, est remis à part par sa classe. */
+    .ax-card p, .ax-card li, .ax-card td, .ax-card span, .ax-card strong, .ax-card em { color: #f6efe3 !important; }
+    .ax-card h1, .ax-card h2, .ax-card h3 { color: #fdf7ec !important; }
+    .ax-card a { color: #f0a070 !important; }
+    .ax-card a.ax-cta, .ax-card a.ax-cta span { color: #ffffff !important; }
+    .ax-card hr { border-color: #3a3025 !important; }
+  }
+  /* Lot 4 — sous 600 px : 28 px de marge de chaque côté et un titre de 26 px
+     ne laissaient qu'une colonne de 264 px sur un écran de 320. */
+  @media only screen and (max-width: 600px) {
+    .ax-card { padding: 24px 18px !important; border-radius: 14px !important; }
+    .ax-title { font-size: 22px !important; }
+  }
+</style></head><body class="ax-body" data-famille="B" style="background-color:#f6f1e8;margin:0;padding:0"><!--$--><!--html--><!--head--><div style="display:none;overflow:hidden;line-height:1px;opacity:0;max-height:0;max-width:0" data-skip-in-text="true">Message bien reçu — la référence de votre demande est dans le message.<div> ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿</div></div><!--body--><table border="0" width="100%" cellPadding="0" cellSpacing="0" role="presentation" align="center"><tbody><tr><td style="background-color:#f6f1e8;font-family:-apple-system, BlinkMacSystemFont, &#x27;Segoe UI&#x27;, Roboto, Helvetica, Arial, sans-serif;color:#241d15;padding:0 0 40px;margin:0"><table align="center" width="100%" border="0" cellPadding="0" cellSpacing="0" role="presentation" style="height:6px;line-height:6px;font-size:1px;background-color:#c24a1b;background-image:linear-gradient(90deg, #c24a1b 0%, #d1561f 55%, #8c3010 100%)"><tbody><tr><td> </td></tr></tbody></table><table align="center" width="100%" border="0" cellPadding="0" cellSpacing="0" role="presentation" style="max-width:600px;margin:0 auto;width:100%"><tbody><tr style="width:100%"><td><table align="center" width="100%" border="0" cellPadding="0" cellSpacing="0" role="presentation" style="padding:26px 0 20px;text-align:center"><tbody><tr><td><a href="https://axion-ia.com" style="color:#067df7;text-decoration-line:none" target="_blank"><img alt="Axion-IA" height="115" src="https://axion-ia.com/email/axion-ia-logo-pill.png" style="display:block;outline:none;border:0;text-decoration:none;margin:0 auto" width="210"/></a><p class="ax-muted" style="font-size:11px;line-height:24px;letter-spacing:0.18em;text-transform:uppercase;color:#6b6153;font-weight:700;margin:12px 0 0 0;margin-top:12px;margin-right:0;margin-bottom:0;margin-left:0">Le partenaire IA de bout en bout des PME</p></td></tr></tbody></table><table align="center" width="100%" class="ax-card" border="0" cellPadding="0" cellSpacing="0" role="presentation" style="max-width:100%;background-color:#ffffff;border-radius:20px;border:1px solid #eee2d2;padding:32px 28px;box-shadow:0 12px 34px -16px rgba(234,78,27,0.20), 0 2px 6px -2px rgba(36,29,21,0.06)"><tbody><tr style="width:100%"><td><h1 class="ax-heading ax-title" data-bloc="titre" style="font-family:Georgia, &#x27;Times New Roman&#x27;, Times, serif;font-size:26px;font-weight:700;margin:0 0 18px 0;color:#1c150e;line-height:1.2">Message bien reçu</h1><span data-bloc="debut-corps" data-skip-in-text="true"></span><p style="font-size:16px;line-height:1.7;color:#241d15;margin:14px 0;margin-top:14px;margin-right:0;margin-bottom:14px;margin-left:0">Votre message est bien arrivé. Nous revenons vers vous.</p><p style="font-size:16px;line-height:1.7;color:#6b6153;margin:14px 0;margin-top:14px;margin-right:0;margin-bottom:14px;margin-left:0">Référence : demo-0000</p><p style="font-size:16px;line-height:1.7;color:#241d15;margin:14px 0;margin-top:14px;margin-right:0;margin-bottom:14px;margin-left:0">Bonjour Camille,<br/>Pour les sujets urgents (intervention sous 7 jours), réservez directement un appel avec nous.</p><p style="font-size:16px;line-height:1.7;color:#6b6153;margin:14px 0;margin-top:14px;margin-right:0;margin-bottom:14px;margin-left:0">Si vous n&#x27;êtes pas à l&#x27;origine de ce message, ignorez-le ou répondez-nous : nous effaçons vos données.</p><span data-bloc="fin-corps" data-skip-in-text="true"></span><table align="center" width="100%" border="0" cellPadding="0" cellSpacing="0" role="presentation" data-bloc="action" style="text-align:center;margin:30px 0 8px 0"><tbody><tr><td><a href="https://axion-ia.com/fr/appel?depuis=email-contact" class="ax-cta" style="line-height:100%;text-decoration:none;display:inline-block;max-width:100%;mso-padding-alt:0px;background-color:#c24a1b;background-image:linear-gradient(180deg, #cf5527 0%, #c24a1b 100%);color:#ffffff;padding:16px 34px;border-radius:999px;font-size:16px;font-weight:700;font-family:-apple-system, BlinkMacSystemFont, &#x27;Segoe UI&#x27;, Roboto, Helvetica, Arial, sans-serif;box-shadow:0 10px 22px -8px rgba(194,74,27,0.5);padding-top:16px;padding-right:34px;padding-bottom:16px;padding-left:34px" target="_blank"><span><!--[if mso]><i style="mso-font-width:425%;mso-text-raise:24" hidden>&#8202;&#8202;&#8202;&#8202;</i><![endif]--></span><span style="max-width:100%;display:inline-block;line-height:120%;mso-padding-alt:0px;mso-text-raise:12px">Réserver un appel<!-- -->  →</span><span><!--[if mso]><i style="mso-font-width:425%" hidden>&#8202;&#8202;&#8202;&#8202;&#8203;</i><![endif]--></span></a><p class="ax-muted" style="font-size:12px;line-height:1.5;color:#6b6153;margin:12px 0 0 0;text-align:center;word-break:break-all;margin-top:12px;margin-right:0;margin-bottom:0;margin-left:0">Le bouton ne fonctionne pas ? Copiez cette adresse :<br/>https://axion-ia.com/fr/appel?depuis=email-contact</p></td></tr></tbody></table><p class="ax-muted" data-bloc="soupape" style="font-size:14px;line-height:1.6;color:#6b6153;margin:22px 0 0 0;padding-top:16px;border-top:1px solid #eee2d2;margin-top:22px;margin-right:0;margin-bottom:0;margin-left:0">Une question ? Répondez simplement à cet e-mail — il arrive directement chez nous, et c&#x27;est un humain qui lit.</p><p class="ax-text" data-bloc="signature" style="font-size:14px;line-height:1.7;color:#241d15;margin:24px 0 0 0;border-left:3px solid #c24a1b;padding-left:14px;margin-top:24px;margin-right:0;margin-bottom:0;margin-left:0"><span style="font-family:Georgia, &#x27;Times New Roman&#x27;, Times, serif;font-size:16px;font-weight:700;color:#1c150e">L&#x27;équipe Axion-IA</span><br/><span style="color:#6b6153;font-style:italic">Vous entendez parler d’IA partout et ne savez plus par où commencer ? On fait le tri, et on s’en occupe pour vous, de bout en bout.</span><br/><span style="color:#6b6153;font-size:13px">Audit IA · Implémentation de systèmes automatisés · Formation · Coaching 1-to-1</span><br/><a href="https://www.linkedin.com/company/axion-ia-france" style="color:#8c3010;text-decoration-line:none;font-weight:600" target="_blank">LinkedIn</a></p></td></tr></tbody></table><table align="center" width="100%" border="0" cellPadding="0" cellSpacing="0" role="presentation" data-bloc="pied" style="padding:26px 12px 0 12px"><tbody><tr><td><p class="ax-muted" style="font-size:13px;line-height:1.6;color:#6b6153;margin:0 0 10px 0;text-align:center;margin-top:0;margin-right:0;margin-bottom:10px;margin-left:0">Axion-IA<!-- --> —<!-- --> <a href="https://www.linkedin.com/company/axion-ia-france" style="color:#8c3010;text-decoration-line:none;font-weight:700;text-decoration:none" target="_blank">LinkedIn</a> · <a href="https://www.facebook.com/axioniacom" style="color:#8c3010;text-decoration-line:none;font-weight:700;text-decoration:none" target="_blank">Facebook</a> · <a href="https://x.com/AxionIAFrance" style="color:#8c3010;text-decoration-line:none;font-weight:700;text-decoration:none" target="_blank">X</a> — <!-- -->Williams Jullin<!-- --> :<!-- --> <a href="https://www.linkedin.com/in/williamsjullin/" style="color:#8c3010;text-decoration-line:none;font-weight:700;text-decoration:none" target="_blank">LinkedIn</a></p><p class="ax-muted" style="font-size:12px;line-height:1.6;color:#6b6153;margin:0;text-align:center;margin-top:0;margin-bottom:0;margin-left:0;margin-right:0">AXION IA SAS<!-- --> · <!-- -->SAS française<br/>11 Avenue Paul Verlaine, ELITE BUREAUX - boîte 53, 38100 Grenoble, France<br/>SIREN<!-- --> <!-- -->108018631<!-- --> · <!-- -->TVA<!-- --> <!-- -->FR51108018631<!-- --> · <!-- -->NDA<!-- --> <!-- -->84381100438<br/>Cet enregistrement ne vaut pas agrément de l&#x27;État.<br/>Contact :<!-- --> <a href="mailto:contact@axion-ia.com" style="color:#8c3010;text-decoration-line:none;font-weight:600" target="_blank">contact@axion-ia.com</a><br/>© <!-- -->2026<!-- --> <!-- -->AXION IA SAS<!-- --> — <!-- -->Tous droits réservés.</p></td></tr></tbody></table></td></tr></tbody></table></td></tr></tbody></table><!--/$--></body></html>"
+`;
+
+exports[`S2 — non-régression : 5 gabarits non migrés figés (HTML et texte) > contact-confirmed (signature équipe, famille B) en fr > texte 1`] = `
+" 
+
+https://axion-ia.com
+
+Le partenaire IA de bout en bout des PME
+
+
+MESSAGE BIEN REÇU
+
+Votre message est bien arrivé. Nous revenons vers vous.
+
+Référence : demo-0000
+
+Bonjour Camille,
+Pour les sujets urgents (intervention sous 7 jours), réservez directement un appel avec nous.
+
+Si vous n'êtes pas à l'origine de ce message, ignorez-le ou répondez-nous : nous effaçons vos données.
+
+Réserver un appel  → https://axion-ia.com/fr/appel?depuis=email-contact
+
+Le bouton ne fonctionne pas ? Copiez cette adresse :
+https://axion-ia.com/fr/appel?depuis=email-contact
+
+Une question ? Répondez simplement à cet e-mail — il arrive directement chez nous, et c'est un humain qui lit.
+
+L'équipe Axion-IA
+Vous entendez parler d’IA partout et ne savez plus par où commencer ? On fait le tri, et on s’en occupe pour vous, de bout en bout.
+Audit IA · Implémentation de systèmes automatisés · Formation · Coaching 1-to-1
+LinkedIn https://www.linkedin.com/company/axion-ia-france
+
+Axion-IA — LinkedIn https://www.linkedin.com/company/axion-ia-france · Facebook https://www.facebook.com/axioniacom · X https://x.com/AxionIAFrance — Williams Jullin : LinkedIn https://www.linkedin.com/in/williamsjullin/
+
+AXION IA SAS · SAS française
+11 Avenue Paul Verlaine, ELITE BUREAUX - boîte 53, 38100 Grenoble, France
+SIREN 108018631 · TVA FR51108018631 · NDA 84381100438
+Cet enregistrement ne vaut pas agrément de l'État.
+Contact : contact@axion-ia.com
+© 2026 AXION IA SAS — Tous droits réservés."
+`;
+
+exports[`S2 — non-régression : 5 gabarits non migrés figés (HTML et texte) > payment-receipt (famille A) en en > html 1`] = `
+"<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html dir="ltr" lang="en"><head><meta name="viewport" content="width=device-width, initial-scale=1"/><meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/><meta name="x-apple-disable-message-reformatting"/><meta name="color-scheme" content="light dark"/><meta name="supported-color-schemes" content="light dark"/><style>
+  :root { color-scheme: light dark; supported-color-schemes: light dark; }
+  @media (prefers-color-scheme: dark) {
+    .ax-body { background-color: #15110c !important; }
+    .ax-card { background-color: #221b13 !important; border-color: #3a3025 !important; }
+    .ax-text { color: #f6efe3 !important; }
+    .ax-heading { color: #fdf7ec !important; }
+    .ax-muted { color: #b8ac99 !important; }
+    .ax-trust { background-color: #2c1c12 !important; border-color: #5a3620 !important; }
+    /* Lot 4 (2026-09-02) — le CORPS des gabarits. Les classes ci-dessus ne
+       vivaient que dans le châssis ; les 42 gabarits posent des styles en
+       ligne (encre #241d15) et aucune classe. En mode sombre, la carte passait
+       à #221b13 et chaque paragraphe restait presque noir : noir sur noir. On
+       cible les descendants de la carte, en !important, ce qui prime sur un
+       style en ligne — sans toucher à un seul gabarit. Le bouton, blanc sur
+       terracotta, est remis à part par sa classe. */
+    .ax-card p, .ax-card li, .ax-card td, .ax-card span, .ax-card strong, .ax-card em { color: #f6efe3 !important; }
+    .ax-card h1, .ax-card h2, .ax-card h3 { color: #fdf7ec !important; }
+    .ax-card a { color: #f0a070 !important; }
+    .ax-card a.ax-cta, .ax-card a.ax-cta span { color: #ffffff !important; }
+    .ax-card hr { border-color: #3a3025 !important; }
+  }
+  /* Lot 4 — sous 600 px : 28 px de marge de chaque côté et un titre de 26 px
+     ne laissaient qu'une colonne de 264 px sur un écran de 320. */
+  @media only screen and (max-width: 600px) {
+    .ax-card { padding: 24px 18px !important; border-radius: 14px !important; }
+    .ax-title { font-size: 22px !important; }
+  }
+</style></head><body class="ax-body" data-famille="A" style="background-color:#f6f1e8;margin:0;padding:0"><!--$--><!--html--><!--head--><div style="display:none;overflow:hidden;line-height:1px;opacity:0;max-height:0;max-width:0" data-skip-in-text="true">1 450,00 € received. This message is your receipt — keep it.<div> ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿</div></div><!--body--><table border="0" width="100%" cellPadding="0" cellSpacing="0" role="presentation" align="center"><tbody><tr><td style="background-color:#f6f1e8;font-family:-apple-system, BlinkMacSystemFont, &#x27;Segoe UI&#x27;, Roboto, Helvetica, Arial, sans-serif;color:#241d15;padding:0 0 40px;margin:0"><table align="center" width="100%" border="0" cellPadding="0" cellSpacing="0" role="presentation" style="height:6px;line-height:6px;font-size:1px;background-color:#c24a1b;background-image:linear-gradient(90deg, #c24a1b 0%, #d1561f 55%, #8c3010 100%)"><tbody><tr><td> </td></tr></tbody></table><table align="center" width="100%" border="0" cellPadding="0" cellSpacing="0" role="presentation" style="max-width:600px;margin:0 auto;width:100%"><tbody><tr style="width:100%"><td><table align="center" width="100%" border="0" cellPadding="0" cellSpacing="0" role="presentation" style="padding:26px 0 20px;text-align:center"><tbody><tr><td><img alt="Axion-IA" height="115" src="https://axion-ia.com/email/axion-ia-logo-pill.png" style="display:block;outline:none;border:0;text-decoration:none;margin:0 auto" width="210"/><p class="ax-muted" style="font-size:11px;line-height:24px;letter-spacing:0.18em;text-transform:uppercase;color:#6b6153;font-weight:700;margin:12px 0 0 0;margin-top:12px;margin-right:0;margin-bottom:0;margin-left:0">The end-to-end AI partner for SMEs</p></td></tr></tbody></table><table align="center" width="100%" class="ax-card" border="0" cellPadding="0" cellSpacing="0" role="presentation" style="max-width:100%;background-color:#ffffff;border-radius:20px;border:1px solid #eee2d2;padding:32px 28px;box-shadow:0 12px 34px -16px rgba(234,78,27,0.20), 0 2px 6px -2px rgba(36,29,21,0.06)"><tbody><tr style="width:100%"><td><h1 class="ax-heading ax-title" data-bloc="titre" style="font-family:Georgia, &#x27;Times New Roman&#x27;, Times, serif;font-size:26px;font-weight:700;margin:0 0 18px 0;color:#1c150e;line-height:1.2">Payment received</h1><span data-bloc="debut-corps" data-skip-in-text="true"></span><p style="font-size:16px;line-height:1.7;color:#241d15;margin:14px 0;margin-top:14px;margin-right:0;margin-bottom:14px;margin-left:0">We received your payment of 1 450,00 € for invoice F-2026-0142 on 28 août 2026. Thank you.</p><p style="font-size:16px;line-height:1.7;color:#241d15;margin:14px 0;margin-top:14px;margin-right:0;margin-bottom:14px;margin-left:0">Hello Camille Dupont,<!-- --> <!-- -->The next installment will be billed according to your agreed schedule.</p><span data-bloc="fin-corps" data-skip-in-text="true"></span><table align="center" width="100%" border="0" cellPadding="0" cellSpacing="0" role="presentation" data-bloc="action" style="text-align:center;margin:30px 0 8px 0"><tbody><tr><td><a href="https://axion-ia.com/en/mes-donnees/booking/demo-0000" class="ax-cta" style="line-height:100%;text-decoration:none;display:inline-block;max-width:100%;mso-padding-alt:0px;background-color:#c24a1b;background-image:linear-gradient(180deg, #cf5527 0%, #c24a1b 100%);color:#ffffff;padding:16px 34px;border-radius:999px;font-size:16px;font-weight:700;font-family:-apple-system, BlinkMacSystemFont, &#x27;Segoe UI&#x27;, Roboto, Helvetica, Arial, sans-serif;box-shadow:0 10px 22px -8px rgba(194,74,27,0.5);padding-top:16px;padding-right:34px;padding-bottom:16px;padding-left:34px" target="_blank"><span><!--[if mso]><i style="mso-font-width:425%;mso-text-raise:24" hidden>&#8202;&#8202;&#8202;&#8202;</i><![endif]--></span><span style="max-width:100%;display:inline-block;line-height:120%;mso-padding-alt:0px;mso-text-raise:12px">View my file<!-- -->  →</span><span><!--[if mso]><i style="mso-font-width:425%" hidden>&#8202;&#8202;&#8202;&#8202;&#8203;</i><![endif]--></span></a><p class="ax-muted" style="font-size:12px;line-height:1.5;color:#6b6153;margin:12px 0 0 0;text-align:center;word-break:break-all;margin-top:12px;margin-right:0;margin-bottom:0;margin-left:0">Button not working? Copy this address:<br/>https://axion-ia.com/en/mes-donnees/booking/demo-0000</p></td></tr></tbody></table></td></tr></tbody></table><table align="center" width="100%" border="0" cellPadding="0" cellSpacing="0" role="presentation" data-bloc="pied" style="padding:26px 12px 0 12px"><tbody><tr><td><p class="ax-muted" style="font-size:12px;line-height:1.6;color:#6b6153;margin:0;text-align:center;margin-top:0;margin-bottom:0;margin-left:0;margin-right:0">AXION IA SAS<!-- --> · <!-- -->French company (SAS)<br/>11 Avenue Paul Verlaine, ELITE BUREAUX - boîte 53, 38100 Grenoble, France<br/>Reg. no.<!-- --> <!-- -->108018631<!-- --> · <!-- -->VAT<!-- --> <!-- -->FR51108018631<br/>Didn&#x27;t request this? Write to us:<!-- --> <a href="mailto:contact@axion-ia.com" style="color:#8c3010;text-decoration-line:none;font-weight:600" target="_blank">contact@axion-ia.com</a><br/>© <!-- -->2026<!-- --> <!-- -->AXION IA SAS<!-- --> — <!-- -->All rights reserved.</p></td></tr></tbody></table></td></tr></tbody></table></td></tr></tbody></table><!--/$--></body></html>"
+`;
+
+exports[`S2 — non-régression : 5 gabarits non migrés figés (HTML et texte) > payment-receipt (famille A) en en > texte 1`] = `
+" 
+
+The end-to-end AI partner for SMEs
+
+
+PAYMENT RECEIVED
+
+We received your payment of 1 450,00 € for invoice F-2026-0142 on 28 août 2026. Thank you.
+
+Hello Camille Dupont, The next installment will be billed according to your agreed schedule.
+
+View my file  → https://axion-ia.com/en/mes-donnees/booking/demo-0000
+
+Button not working? Copy this address:
+https://axion-ia.com/en/mes-donnees/booking/demo-0000
+
+AXION IA SAS · French company (SAS)
+11 Avenue Paul Verlaine, ELITE BUREAUX - boîte 53, 38100 Grenoble, France
+Reg. no. 108018631 · VAT FR51108018631
+Didn't request this? Write to us: contact@axion-ia.com
+© 2026 AXION IA SAS — All rights reserved."
+`;
+
+exports[`S2 — non-régression : 5 gabarits non migrés figés (HTML et texte) > payment-receipt (famille A) en fr > html 1`] = `
+"<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html dir="ltr" lang="fr"><head><meta name="viewport" content="width=device-width, initial-scale=1"/><meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/><meta name="x-apple-disable-message-reformatting"/><meta name="color-scheme" content="light dark"/><meta name="supported-color-schemes" content="light dark"/><style>
+  :root { color-scheme: light dark; supported-color-schemes: light dark; }
+  @media (prefers-color-scheme: dark) {
+    .ax-body { background-color: #15110c !important; }
+    .ax-card { background-color: #221b13 !important; border-color: #3a3025 !important; }
+    .ax-text { color: #f6efe3 !important; }
+    .ax-heading { color: #fdf7ec !important; }
+    .ax-muted { color: #b8ac99 !important; }
+    .ax-trust { background-color: #2c1c12 !important; border-color: #5a3620 !important; }
+    /* Lot 4 (2026-09-02) — le CORPS des gabarits. Les classes ci-dessus ne
+       vivaient que dans le châssis ; les 42 gabarits posent des styles en
+       ligne (encre #241d15) et aucune classe. En mode sombre, la carte passait
+       à #221b13 et chaque paragraphe restait presque noir : noir sur noir. On
+       cible les descendants de la carte, en !important, ce qui prime sur un
+       style en ligne — sans toucher à un seul gabarit. Le bouton, blanc sur
+       terracotta, est remis à part par sa classe. */
+    .ax-card p, .ax-card li, .ax-card td, .ax-card span, .ax-card strong, .ax-card em { color: #f6efe3 !important; }
+    .ax-card h1, .ax-card h2, .ax-card h3 { color: #fdf7ec !important; }
+    .ax-card a { color: #f0a070 !important; }
+    .ax-card a.ax-cta, .ax-card a.ax-cta span { color: #ffffff !important; }
+    .ax-card hr { border-color: #3a3025 !important; }
+  }
+  /* Lot 4 — sous 600 px : 28 px de marge de chaque côté et un titre de 26 px
+     ne laissaient qu'une colonne de 264 px sur un écran de 320. */
+  @media only screen and (max-width: 600px) {
+    .ax-card { padding: 24px 18px !important; border-radius: 14px !important; }
+    .ax-title { font-size: 22px !important; }
+  }
+</style></head><body class="ax-body" data-famille="A" style="background-color:#f6f1e8;margin:0;padding:0"><!--$--><!--html--><!--head--><div style="display:none;overflow:hidden;line-height:1px;opacity:0;max-height:0;max-width:0" data-skip-in-text="true">1 450,00 € encaissés. Ce message vaut reçu — à conserver.<div> ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿</div></div><!--body--><table border="0" width="100%" cellPadding="0" cellSpacing="0" role="presentation" align="center"><tbody><tr><td style="background-color:#f6f1e8;font-family:-apple-system, BlinkMacSystemFont, &#x27;Segoe UI&#x27;, Roboto, Helvetica, Arial, sans-serif;color:#241d15;padding:0 0 40px;margin:0"><table align="center" width="100%" border="0" cellPadding="0" cellSpacing="0" role="presentation" style="height:6px;line-height:6px;font-size:1px;background-color:#c24a1b;background-image:linear-gradient(90deg, #c24a1b 0%, #d1561f 55%, #8c3010 100%)"><tbody><tr><td> </td></tr></tbody></table><table align="center" width="100%" border="0" cellPadding="0" cellSpacing="0" role="presentation" style="max-width:600px;margin:0 auto;width:100%"><tbody><tr style="width:100%"><td><table align="center" width="100%" border="0" cellPadding="0" cellSpacing="0" role="presentation" style="padding:26px 0 20px;text-align:center"><tbody><tr><td><img alt="Axion-IA" height="115" src="https://axion-ia.com/email/axion-ia-logo-pill.png" style="display:block;outline:none;border:0;text-decoration:none;margin:0 auto" width="210"/><p class="ax-muted" style="font-size:11px;line-height:24px;letter-spacing:0.18em;text-transform:uppercase;color:#6b6153;font-weight:700;margin:12px 0 0 0;margin-top:12px;margin-right:0;margin-bottom:0;margin-left:0">Le partenaire IA de bout en bout des PME</p></td></tr></tbody></table><table align="center" width="100%" class="ax-card" border="0" cellPadding="0" cellSpacing="0" role="presentation" style="max-width:100%;background-color:#ffffff;border-radius:20px;border:1px solid #eee2d2;padding:32px 28px;box-shadow:0 12px 34px -16px rgba(234,78,27,0.20), 0 2px 6px -2px rgba(36,29,21,0.06)"><tbody><tr style="width:100%"><td><h1 class="ax-heading ax-title" data-bloc="titre" style="font-family:Georgia, &#x27;Times New Roman&#x27;, Times, serif;font-size:26px;font-weight:700;margin:0 0 18px 0;color:#1c150e;line-height:1.2">Paiement reçu</h1><span data-bloc="debut-corps" data-skip-in-text="true"></span><p style="font-size:16px;line-height:1.7;color:#241d15;margin:14px 0;margin-top:14px;margin-right:0;margin-bottom:14px;margin-left:0">Nous avons bien reçu votre paiement de 1 450,00 € pour la facture F-2026-0142 le 28 août 2026. Merci.</p><p style="font-size:16px;line-height:1.7;color:#241d15;margin:14px 0;margin-top:14px;margin-right:0;margin-bottom:14px;margin-left:0">Bonjour Camille Dupont,<!-- --> <!-- -->L&#x27;échéance suivante sera facturée selon votre échéancier convenu.</p><span data-bloc="fin-corps" data-skip-in-text="true"></span><table align="center" width="100%" border="0" cellPadding="0" cellSpacing="0" role="presentation" data-bloc="action" style="text-align:center;margin:30px 0 8px 0"><tbody><tr><td><a href="https://axion-ia.com/fr/mes-donnees/booking/demo-0000" class="ax-cta" style="line-height:100%;text-decoration:none;display:inline-block;max-width:100%;mso-padding-alt:0px;background-color:#c24a1b;background-image:linear-gradient(180deg, #cf5527 0%, #c24a1b 100%);color:#ffffff;padding:16px 34px;border-radius:999px;font-size:16px;font-weight:700;font-family:-apple-system, BlinkMacSystemFont, &#x27;Segoe UI&#x27;, Roboto, Helvetica, Arial, sans-serif;box-shadow:0 10px 22px -8px rgba(194,74,27,0.5);padding-top:16px;padding-right:34px;padding-bottom:16px;padding-left:34px" target="_blank"><span><!--[if mso]><i style="mso-font-width:425%;mso-text-raise:24" hidden>&#8202;&#8202;&#8202;&#8202;</i><![endif]--></span><span style="max-width:100%;display:inline-block;line-height:120%;mso-padding-alt:0px;mso-text-raise:12px">Voir mon dossier<!-- -->  →</span><span><!--[if mso]><i style="mso-font-width:425%" hidden>&#8202;&#8202;&#8202;&#8202;&#8203;</i><![endif]--></span></a><p class="ax-muted" style="font-size:12px;line-height:1.5;color:#6b6153;margin:12px 0 0 0;text-align:center;word-break:break-all;margin-top:12px;margin-right:0;margin-bottom:0;margin-left:0">Le bouton ne fonctionne pas ? Copiez cette adresse :<br/>https://axion-ia.com/fr/mes-donnees/booking/demo-0000</p></td></tr></tbody></table></td></tr></tbody></table><table align="center" width="100%" border="0" cellPadding="0" cellSpacing="0" role="presentation" data-bloc="pied" style="padding:26px 12px 0 12px"><tbody><tr><td><p class="ax-muted" style="font-size:12px;line-height:1.6;color:#6b6153;margin:0;text-align:center;margin-top:0;margin-bottom:0;margin-left:0;margin-right:0">AXION IA SAS<!-- --> · <!-- -->SAS française<br/>11 Avenue Paul Verlaine, ELITE BUREAUX - boîte 53, 38100 Grenoble, France<br/>SIREN<!-- --> <!-- -->108018631<!-- --> · <!-- -->TVA<!-- --> <!-- -->FR51108018631<br/>Vous n&#x27;êtes pas à l&#x27;origine de cette demande ? Écrivez-nous :<!-- --> <a href="mailto:contact@axion-ia.com" style="color:#8c3010;text-decoration-line:none;font-weight:600" target="_blank">contact@axion-ia.com</a><br/>© <!-- -->2026<!-- --> <!-- -->AXION IA SAS<!-- --> — <!-- -->Tous droits réservés.</p></td></tr></tbody></table></td></tr></tbody></table></td></tr></tbody></table><!--/$--></body></html>"
+`;
+
+exports[`S2 — non-régression : 5 gabarits non migrés figés (HTML et texte) > payment-receipt (famille A) en fr > texte 1`] = `
+" 
+
+Le partenaire IA de bout en bout des PME
+
+
+PAIEMENT REÇU
+
+Nous avons bien reçu votre paiement de 1 450,00 € pour la facture F-2026-0142 le 28 août 2026. Merci.
+
+Bonjour Camille Dupont, L'échéance suivante sera facturée selon votre échéancier convenu.
+
+Voir mon dossier  → https://axion-ia.com/fr/mes-donnees/booking/demo-0000
+
+Le bouton ne fonctionne pas ? Copiez cette adresse :
+https://axion-ia.com/fr/mes-donnees/booking/demo-0000
+
+AXION IA SAS · SAS française
+11 Avenue Paul Verlaine, ELITE BUREAUX - boîte 53, 38100 Grenoble, France
+SIREN 108018631 · TVA FR51108018631
+Vous n'êtes pas à l'origine de cette demande ? Écrivez-nous : contact@axion-ia.com
+© 2026 AXION IA SAS — Tous droits réservés."
+`;

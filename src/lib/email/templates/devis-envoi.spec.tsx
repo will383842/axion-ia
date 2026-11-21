@@ -156,12 +156,20 @@ describe("devis-envoi : clé facultative `salutation`", () => {
     });
     expect(r.html).toContain("Bonjour Monsieur Dupont,");
   });
-  it("le nom de famille est échappé dans le HTML", async () => {
+  it("un nom à balisage est refusé par la liste blanche (audit S2) : jamais rendu tel quel", async () => {
     const r = await renderEmailTemplate("devis-envoi", "fr", {
       numero: "N1",
       salutation: { civilite: "monsieur", nomFamille: "<b>&" },
     });
-    expect(r.html).toContain("&lt;b&gt;&amp;");
     expect(r.html).not.toContain("<b>&");
+    expect(r.html).not.toContain("&lt;b&gt;&amp;");
+    expect(r.html).toContain("Bonjour,");
+  });
+  it("le nom de famille est échappé dans le HTML (apostrophe)", async () => {
+    const r = await renderEmailTemplate("devis-envoi", "fr", {
+      numero: "N1",
+      salutation: { civilite: "monsieur", nomFamille: "O'Brien" },
+    });
+    expect(r.html).toContain("Monsieur O&#x27;Brien,");
   });
 });
