@@ -74,6 +74,13 @@ import {
   type VersionConsentementDocument,
 } from "./mentions-document";
 import {
+  MENTION_VERSION_DEVIS,
+  CONSENTEMENT_VERSION_DEVIS,
+  CONSENTEMENT_VERSION_DEVIS_CODE,
+  estSignatureClientDevis,
+  type VersionConsentementDevis,
+} from "./mentions-devis";
+import {
   MENTION_VERSION_PAPIER,
   CONSENTEMENT_VERSION_PAPIER,
   type VersionConsentementPapier,
@@ -255,7 +262,17 @@ export interface EntreeSignatureDocument {
    * « code » n'est passée que par l'appelant qui a VÉRIFIÉ et consommé le code
    * à usage unique (contrat-cadre v3, lot L7c) : elle entre dans le tuple haché.
    */
-  consentementVersion?: VersionConsentementDocument | VersionConsentementPapier | undefined;
+  consentementVersion?:
+    | VersionConsentementDocument
+    | VersionConsentementPapier
+    | VersionConsentementDevis
+    | undefined;
+  /**
+   * Version des mentions affichées. Seule `devis-v1` est admise, et seulement pour la signature du
+   * CLIENT sur un DEVIS, avec un consentement devis. Absente : `MENTION_VERSION_DOCUMENT` (autres
+   * appelants, contresignature de la console).
+   */
+  mentionVersion?: typeof MENTION_VERSION_DEVIS | undefined;
   /**
    * Version des CGV acceptées. 🔴 Fournie par le SERVEUR (jamais par le navigateur) et
    * OBLIGATOIRE pour un devis signé par lien (`signataire_jeton`). Les autres pièces et
@@ -1116,6 +1133,19 @@ export async function signerDocument(
   if (!papier && input.consentementVersion === CONSENTEMENT_VERSION_PAPIER) {
     return refus("porteur_non_autorise");
   }
+  // Mentions `devis-v1` : réservées à la signature du CLIENT sur un DEVIS, jamais en papier, et
+  // toujours AVEC un consentement devis (texte lu et consentement scellé cohérents). Avant tout R2.
+  if (input.mentionVersion !== undefined) {
+    if (papier || !estSignatureClientDevis(ctx.type, partie)) {
+      return refus("porteur_non_autorise");
+    }
+  }
+  const consentementDevis =
+    input.consentementVersion === CONSENTEMENT_VERSION_DEVIS ||
+    input.consentementVersion === CONSENTEMENT_VERSION_DEVIS_CODE;
+  if (consentementDevis !== (input.mentionVersion === MENTION_VERSION_DEVIS)) {
+    return refus("porteur_non_autorise");
+  }
 
   if (input.methode === "confirmation_accessible") {
     if (imageFournie) return refus("image_interdite");
@@ -1164,7 +1194,9 @@ export async function signerDocument(
   suppressionPrevueAt.setFullYear(suppressionPrevueAt.getFullYear() + DOCUMENT_RETENTION_YEARS);
 
   // D1 : en papier, les deux versions sont IMPOSÉES (jamais fournies par l'appelant).
-  const mentionVersion = papier ? MENTION_VERSION_PAPIER : MENTION_VERSION_DOCUMENT;
+  const mentionVersion = papier
+    ? MENTION_VERSION_PAPIER
+    : (input.mentionVersion ?? MENTION_VERSION_DOCUMENT);
   const consentementVersion = papier
     ? CONSENTEMENT_VERSION_PAPIER
     : (input.consentementVersion ?? CONSENTEMENT_VERSION_DOCUMENT);
@@ -1174,7 +1206,10 @@ export async function signerDocument(
   // pour cette pièce et cette partie (l'appelant le consomme juste avant). Sans code
   // consommé, rien n'est affirmé — jamais déduit du seul texte affiché.
   let facteurVerification: FacteurVerificationSignature | null = null;
-  if (consentementVersion === CONSENTEMENT_VERSION_DOCUMENT_CODE) {
+  if (
+    consentementVersion === CONSENTEMENT_VERSION_DOCUMENT_CODE ||
+    consentementVersion === CONSENTEMENT_VERSION_DEVIS_CODE
+  ) {
     const code = await prisma.documentSignatureCode.findFirst({
       where: { documentGenereId: ctx.id, partie, utiliseAt: { not: null } },
       select: { id: true },

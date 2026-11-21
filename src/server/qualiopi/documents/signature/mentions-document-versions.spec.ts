@@ -248,7 +248,7 @@ describe("une signature « doc-v1 » existante se revérifie à l'identique", ()
     // imposée), puis posée dans le tuple scellé et dans la ligne écrite.
     expect(
       src.match(
-        /const mentionVersion = papier \? MENTION_VERSION_PAPIER : MENTION_VERSION_DOCUMENT/g,
+        /const mentionVersion = papier\s+\? MENTION_VERSION_PAPIER\s+: \(input\.mentionVersion \?\? MENTION_VERSION_DOCUMENT\);/g,
       )?.length,
     ).toBe(1);
     expect(src.match(/^\s+mentionVersion,$/gm)?.length).toBe(2);
