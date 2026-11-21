@@ -296,10 +296,8 @@ async function collecterEnAttente(maintenant: Date): Promise<EnAttente> {
       if (!estCategorieClient(category)) continue;
       candidats.push({ s, category, details, ouvres });
     }
-    // Au-delà de la place restante : comptées, jamais déchiffrées.
-    const place = Math.max(0, PLAFOND_EN_ATTENTE - elements.length);
-    nonListees += Math.max(0, candidats.length - place);
-    const retenus = candidats.slice(0, place);
+    // Place attribuée APRÈS le contrôle d'opposition et de lisibilité (sur toute la page).
+    const retenus = candidats;
     // 2e passe : empreintes (stockée, sinon calculée), puis UNE lecture groupée des oppositions.
     const empreintes = new Map<string, string>();
     const illisible = new Set<string>();
@@ -359,6 +357,11 @@ async function collecterEnAttente(maintenant: Date): Promise<EnAttente> {
         reponses.some(
           (r) => r.deliveryStatus === "failed" && r.errorMsg?.startsWith(PREFIXE_ISSUE_INCONNUE),
         );
+      // Valide mais sans place : comptée « autre » (donc jamais sans ligne listée au-dessus).
+      if (elements.length >= PLAFOND_EN_ATTENTE) {
+        nonListees += 1;
+        continue;
+      }
       elements.push({
         type: libelleTypeDemande(event),
         nom: nom ?? "",
