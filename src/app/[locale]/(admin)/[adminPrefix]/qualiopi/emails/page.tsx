@@ -47,6 +47,11 @@ import {
   presenterDevis,
 } from "@/components/admin/qualiopi/emails-devis-details";
 import { lireReponsesSurRelancesGarees } from "@/server/relances/reponse-relance-garee";
+import { motifRelanceDevisSansObjet } from "@/server/qualiopi/devis/relance-devis-sans-objet";
+import {
+  ENTITE_DEVIS,
+  TEMPLATE_RELANCE_DEVIS,
+} from "@/features/dossier-client/fiche/relance-devis";
 
 /**
  * Natures d'email réglables. On expose les deux listes plutôt que la seule
@@ -146,6 +151,38 @@ export default async function EmailsAValiderPage({
   const detailsDevis = await lireDetailsDevis(prisma, enAttente);
 
   const reponduLe = await lireReponsesSurRelancesGarees(enAttente);
+
+  // Une relance de devis garée peut être devenue inutile : un seul calcul par devis distinct,
+  // lecture seule. Un calcul qui échoue ne pose aucun bandeau et ne casse jamais la page.
+  const maintenant = new Date();
+  const devisRelances = [
+    ...new Set(
+      enAttente
+        .filter(
+          (e) =>
+            e.template === TEMPLATE_RELANCE_DEVIS &&
+            e.entityType === ENTITE_DEVIS &&
+            e.entityId !== null,
+        )
+        .map((e) => e.entityId as string),
+    ),
+  ];
+  // Par lots de 5 : jamais plus de 5 calculs en cours à la fois.
+  const TAILLE_LOT_SANS_OBJET = 5;
+  const motifsSansObjet = new Map<string, string | null>();
+  for (let i = 0; i < devisRelances.length; i += TAILLE_LOT_SANS_OBJET) {
+    const lot = devisRelances.slice(i, i + TAILLE_LOT_SANS_OBJET);
+    const resultats = await Promise.all(
+      lot.map(async (devisId): Promise<[string, string | null]> => {
+        try {
+          return [devisId, await motifRelanceDevisSansObjet(prisma, devisId, maintenant)];
+        } catch {
+          return [devisId, null];
+        }
+      }),
+    );
+    for (const [devisId, motif] of resultats) motifsSansObjet.set(devisId, motif);
+  }
 
   // S5 (2026-08-26) — le gel réglementaire par règle NOMMÉE reste permis (la
   // règle nommée est souveraine, c'est documenté dans `outbox-policy.ts`) mais
@@ -283,6 +320,13 @@ export default async function EmailsAValiderPage({
                   lienPdf={dv?.lienPdf ?? null}
                   nbPiecesJointes={Array.isArray(e.attachments) ? e.attachments.length : 0}
                   accepteMessagePersonnalise={gabaritLitLeMessage(e.template)}
+                  motifSansObjet={
+                    e.template === TEMPLATE_RELANCE_DEVIS &&
+                    e.entityType === ENTITE_DEVIS &&
+                    e.entityId !== null
+                      ? (motifsSansObjet.get(e.entityId) ?? null)
+                      : null
+                  }
                   approuverAction={approuverEmailAction}
                   refuserAction={refuserEmailAction}
                 />

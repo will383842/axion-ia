@@ -369,7 +369,7 @@ const sortiesSensibles = () =>
     h.sentryMsg.mock.calls,
     espions.flatMap((e) => e.mock.calls),
   ]);
-const MSG_ATTENTE = /attend déjà dans Emails/;
+const MSG_ATTENTE = /attend dans « E-mails à valider » ou est en cours d'envoi/;
 
 describe("renvoi en mode validation : le clic ne touche à aucun lien", () => {
   it("ligne garée avec marqueur, aucun jeton créé, l'ancien lien reste vivant, devis toujours envoyé", async () => {
