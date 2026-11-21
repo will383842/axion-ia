@@ -46,6 +46,9 @@ export const revalidate = 3600;
 // archivé. Les passages relatifs au financement et à la certification restent cachés tant que
 // `QUALIOPI_CERTIFICATION_OBTENUE` n'est pas « true » (`@/content/cgv-passages-financement`).
 // La date elle-même vit dans `@/content/cgv-version` (source unique, enregistrée à la signature).
+//
+// 2026-11-21 : articles 6.5 et 12.1 : l'acompte n'est exigé que s'il est prévu au devis (défaut : aucun).
+// Le texte du 19 novembre 2026 est archivé à l'identique (@/content/cgv-archives).
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;

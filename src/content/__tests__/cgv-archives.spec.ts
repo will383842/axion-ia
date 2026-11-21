@@ -12,6 +12,14 @@ describe("cgv-archives", () => {
     const sha = createHash("sha256").update(JSON.stringify(fr), "utf8").digest("hex");
     expect(sha).toBe("f01365341d95733c97f4bbba52bc96d4aa7094cc159ae42cf594ed9413a971b2");
   });
+  it("la version 2026-11-19 est archivée à l'identique (empreinte du cliquet v3)", () => {
+    const fr = CGV_ARCHIVES["2026-11-19"].fr;
+    const sha = createHash("sha256").update(JSON.stringify(fr), "utf8").digest("hex");
+    expect(sha).toBe("e00474b466af4504593fe5e0fd1bde46b84cf69045efa86d5e6c0572ea4f67eb");
+  });
+  it("texteArchiveCgv rend le libellé de la version 2026-11-19", () => {
+    expect(texteArchiveCgv("2026-11-19")?.libelle).toBe("19 novembre 2026");
+  });
   it("texteArchiveCgv rend le texte d'une version archivée, null sinon", () => {
     expect(texteArchiveCgv("2026-11-18")?.libelle).toBe("18 novembre 2026");
     expect(texteArchiveCgv("2026-10-04")).toBeNull();

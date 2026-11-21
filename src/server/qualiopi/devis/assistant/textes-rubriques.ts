@@ -8,7 +8,7 @@
  */
 
 export const TEXTE_DELAIS =
-  "Les délais indiqués sont des estimations, pas des dates garanties. Ils commencent quand nous avons reçu le premier versement et les éléments prévus au devis (accès, informations, contenus). Ils s'allongent de la durée de tout retard de votre part, d'une suspension prévue aux conditions générales, d'un changement de périmètre, d'un cas de force majeure ou de la défaillance d'un service extérieur.";
+  "Les délais indiqués sont des estimations, pas des dates garanties. Ils commencent quand nous avons reçu les éléments prévus au devis (accès, informations, contenus) et, si le devis prévoit un acompte, cet acompte. Ils s'allongent de la durée de tout retard de votre part, d'une suspension prévue aux conditions générales, d'un changement de périmètre, d'un cas de force majeure ou de la défaillance d'un service extérieur.";
 
 export const TEXTE_GARANTIE =
   "Pendant la durée de garantie indiquée, à compter de la réception de la livraison finale, nous corrigeons gratuitement, dans les limites prévues aux conditions générales, les anomalies que vous nous signalez par écrit et qui rendent le livrable non conforme au devis. La garantie ne couvre pas : une modification faite par vous ou par un tiers, un usage non prévu, la panne ou le changement d'un service extérieur ou d'un fournisseur d'IA, une demande nouvelle, ni une erreur isolée dans une réponse produite par l'IA.";
