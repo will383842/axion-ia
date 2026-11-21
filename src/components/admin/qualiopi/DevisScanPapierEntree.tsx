@@ -16,13 +16,19 @@ export interface EtatDevisPourScan {
   pieceType: string | null;
   pieceAnnulee: boolean;
   clientASigne: boolean;
+  /** Une version suivante (non brouillon) a été émise : le scan n'est plus accepté sur celle-ci. */
+  successeurEmis: boolean;
 }
 
-/** Mêmes conditions que l'action serveur : devis envoyé, classique, pièce en vigueur, non signé. */
+/**
+ * Mêmes conditions que l'action serveur : devis envoyé ou expiré, classique, pièce en vigueur,
+ * non signé, sans version suivante émise.
+ */
 export function peutVerserScanPapier(e: EtatDevisPourScan, role: string | null): boolean {
   return (
     peutSignerPourOrganisme(role) &&
-    e.statut === "envoye" &&
+    (e.statut === "envoye" || e.statut === "expire") &&
+    !e.successeurEmis &&
     e.offre === null &&
     e.offreSha256 === null &&
     e.documentGenereId !== null &&
