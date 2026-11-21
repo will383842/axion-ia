@@ -337,6 +337,22 @@ describe.each(GABARITS)("$template : un seul envoi", (g) => {
     expect(d.redisMap.has(cleVerrou(g))).toBe(false);
   });
 
+  it("W50 : ligne passée `sent` à la main (« Marquer comme envoyée »), job encore en file → aucun envoi", async () => {
+    // État exact que laisse l'aide : sent, sentAt posé, motif effacé, marqueur Redis posé APRÈS.
+    poser(g, {
+      deliveryStatus: "sent",
+      sentAt: MAINTENANT,
+      providerMessageId: "marquee-envoyee-a-la-main",
+      failedAt: null,
+      errorMsg: null,
+    });
+    d.redisMap.set(cleMarqueur(g), { v: "marquee-envoyee-a-la-main", expireAt: null });
+    await expect(processeur()(job(g))).resolves.toBeUndefined();
+    expect(d.sendEmail).not.toHaveBeenCalled();
+    expect(livres).toBe(0);
+    expect(d.redisMap.has(cleVerrou(g))).toBe(false);
+  });
+
   it("W2 : erreur au dernier essai → failed + failedAt, erreur relevée", async () => {
     const l = poser(g);
     d.sendEmail.mockRejectedValueOnce(refusSmtp("smtp 550", 550));

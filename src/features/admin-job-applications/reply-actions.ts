@@ -19,6 +19,7 @@ import { enqueueEmail } from "@/server/queue/queues";
 import { peutOuvrirDossierCandidat } from "@/server/auth/habilitations";
 import { INBOX_COUNTS_TAG } from "@/features/admin-inbox/cache-tags";
 
+import { marquerReponseEnvoyeeALaMain } from "@/server/email/marquer-reponse-envoyee";
 import { ecrireEtEnfilerReponse } from "./envoyer-reponse";
 import { remplirModele } from "@/content/recrutement/modeles-reponse";
 import { CHEMIN_COMPLEMENT, lienComplement } from "@/features/job-application/complement";
@@ -277,4 +278,41 @@ export async function etatLivraisonReponseAction(
     select: { deliveryStatus: true, errorMsg: true },
   });
   return r ? { statut: r.deliveryStatus, erreur: r.errorMsg } : null;
+}
+
+/**
+ * Le fondateur a retrouvé l'e-mail dans ZeptoMail : on clôt une réponse « issue inconnue »
+ * en `sent`, sans rien renvoyer. Même garde que « Réessayer ».
+ */
+export async function marquerReponseCandidatureEnvoyeeAction(
+  replyId: string,
+): Promise<{ ok: boolean; error?: string }> {
+  let acteur: { userId: string };
+  try {
+    acteur = await requireEcritureCandidature();
+  } catch {
+    return { ok: false, error: "unauthorized" };
+  }
+  const parsed = z.string().min(1).max(64).safeParse(replyId);
+  if (!parsed.success) return { ok: false, error: "invalid_id" };
+
+  let r: Awaited<ReturnType<typeof marquerReponseEnvoyeeALaMain>>;
+  try {
+    r = await marquerReponseEnvoyeeALaMain({
+      gabarit: "candidature-reponse",
+      replyId: parsed.data,
+      adminUserId: acteur.userId,
+    });
+  } catch (e) {
+    Sentry.captureException(e);
+    return { ok: false, error: "echec" };
+  }
+  if (!r.ok) return r;
+
+  const ligne = await prisma.jobApplicationReply.findUnique({
+    where: { id: parsed.data },
+    select: { applicationId: true },
+  });
+  if (ligne) revalidatePath(adminPath("fr", `contacts/candidatures/${ligne.applicationId}`));
+  return { ok: true };
 }
