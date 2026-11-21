@@ -6,6 +6,7 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 
 const h = vi.hoisted(() => ({
   queryRaw: vi.fn(),
+  statutAncien: "envoye",
   txOptions: vi.fn(),
   txDevisFindUnique: vi.fn(),
   txDevisUpdateMany: vi.fn(),
@@ -31,7 +32,13 @@ vi.mock("@/lib/prisma", () => ({
       h.txOptions(options);
       h.enAttente = {};
       h.tx = {
-        $queryRaw: (...a: unknown[]) => h.queryRaw(...a),
+        $queryRaw: (...a: unknown[]) => {
+          // Verrou de LIGNE de la version remplacée : rend le statut relu sous le verrou.
+          const texte = Array.isArray(a[0]) ? (a[0] as string[]).join("?") : String(a[0]);
+          if (texte.includes("FOR NO KEY UPDATE"))
+            return Promise.resolve([{ statut: h.statutAncien }]);
+          return h.queryRaw(...a);
+        },
         devis: {
           findUnique: (...a: unknown[]) => h.txDevisFindUnique(...a),
           updateMany: (...a: unknown[]) => h.txDevisUpdateMany(...a),
@@ -353,6 +360,7 @@ describe("marquerRemisEnMainPropreAction", () => {
   });
 
   it("révision : version remplacée « expire », ses jetons sont révoqués", async () => {
+    h.statutAncien = "envoye";
     h.txDevisFindUnique.mockResolvedValue(
       devis({
         replacesDevisId: "ancien",
@@ -386,8 +394,10 @@ describe("marquerRemisEnMainPropreAction", () => {
 });
 
 const ANCIEN = { replacesDevisId: "ancien" };
-const avecAncien = (statut: string) =>
-  devis({ ...ANCIEN, replacesDevis: { statut, documentGenereId: "doc-0" } });
+const avecAncien = (statut: string) => {
+  h.statutAncien = statut; // le statut relu sous le verrou de ligne est celui du cas
+  return devis({ ...ANCIEN, replacesDevis: { statut, documentGenereId: "doc-0" } });
+};
 
 describe("marquerRemisEnMainPropreAction — version remplacée signée ou acceptée", () => {
   it("version remplacée signée par le client : refus AVANT le PDF, rien d'écrit", async () => {

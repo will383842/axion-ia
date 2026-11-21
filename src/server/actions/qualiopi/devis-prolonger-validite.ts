@@ -165,7 +165,9 @@ export async function prolongerValiditeDevisAction(
         data: { dateValidite: nouvelle, statut: "envoye" },
       });
       if (count === 0) throw new CourseDevisPerdue();
-      // 4. Une version suivante émise entre la lecture et l'écriture annule tout.
+      // 4. Re-lecture APRÈS l'écriture : l'écriture a pris le verrou de la ligne ; si l'envoi de la
+      // version suivante tenait ce verrou, il est validé maintenant et cette lecture le voit.
+      // Avant l'écriture, cette lecture ne prouverait rien. Trouvée : tout est annulé.
       const suivante = await tx.devis.findFirst({
         where: { replacesDevisId: devisId, statut: { not: "brouillon" } },
         select: { id: true },

@@ -988,6 +988,14 @@ export async function acceptDevisAction(id: string): Promise<ActionResult<{ id: 
         }
         throw new AcceptationSigneeEnLigne();
       }
+      // Re-lecture APRÈS l'écriture : l'écriture a pris le verrou de la ligne ; si l'envoi de la
+      // version suivante tenait ce verrou, il est validé maintenant et cette lecture le voit.
+      // Avant l'écriture, cette lecture ne prouverait rien.
+      const successeurApresEcriture = await tx.devis.findFirst({
+        where: { replacesDevisId: devisId, statut: { not: "brouillon" } },
+        select: { id: true },
+      });
+      if (successeurApresEcriture) throw new AcceptationVersionRemplacee();
       await emettreDevisSigne(tx, devisId);
     });
   } catch (err) {
