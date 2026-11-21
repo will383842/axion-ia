@@ -15,8 +15,7 @@ export const CONSENTEMENT_VERSION_DEVIS = "devis-consent-v1" as const;
 export const CONSENTEMENT_VERSION_DEVIS_CODE = "devis-consent-c-v1" as const;
 
 export type VersionConsentementDevis =
-  | typeof CONSENTEMENT_VERSION_DEVIS
-  | typeof CONSENTEMENT_VERSION_DEVIS_CODE;
+  typeof CONSENTEMENT_VERSION_DEVIS | typeof CONSENTEMENT_VERSION_DEVIS_CODE;
 
 export const CONTACT_PAR_DEFAUT = "contact@axion-ia.com";
 

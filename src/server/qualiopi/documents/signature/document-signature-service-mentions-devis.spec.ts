@@ -99,7 +99,11 @@ function piece(devis: Record<string, unknown> | null, type = "devis") {
   };
 }
 
-const PORTEUR_JETON = { type: "signataire_jeton" as const, tokenId: TOKEN, partie: "client" as const };
+const PORTEUR_JETON = {
+  type: "signataire_jeton" as const,
+  tokenId: TOKEN,
+  partie: "client" as const,
+};
 
 /** Devis À FORMULES, client, signature renforcée (code consommé). */
 function entreeFormules(over: Record<string, unknown> = {}) {

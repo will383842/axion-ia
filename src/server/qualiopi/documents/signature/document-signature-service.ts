@@ -263,10 +263,7 @@ export interface EntreeSignatureDocument {
    * à usage unique (contrat-cadre v3, lot L7c) : elle entre dans le tuple haché.
    */
   consentementVersion?:
-    | VersionConsentementDocument
-    | VersionConsentementPapier
-    | VersionConsentementDevis
-    | undefined;
+    VersionConsentementDocument | VersionConsentementPapier | VersionConsentementDevis | undefined;
   /**
    * Version des mentions affichées. Seule `devis-v1` est admise, et seulement pour la signature du
    * CLIENT sur un DEVIS, avec un consentement devis. Absente : `MENTION_VERSION_DOCUMENT` (autres
