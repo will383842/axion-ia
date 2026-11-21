@@ -69,7 +69,8 @@ describe("modifierDevisBrouillonAction", () => {
     outboxFindFirst.mockResolvedValue({ id: "ob-1" });
     const r = await appel();
     expect(r).toEqual({
-      error: "Un e-mail de ce devis attend validation : refusez-le avant de modifier le devis.",
+      error:
+        "Un e-mail de ce devis attend dans « E-mails à valider » ou est en cours d'envoi. S'il est encore à valider, approuvez-le ou refusez-le ; s'il est en cours d'envoi, patientez quelques minutes puis rechargez la page ; si rien ne change au bout d'une heure, voyez la page Ops & monitoring de la console.",
     });
     expect(outboxFindFirst).toHaveBeenCalledWith({
       where: {

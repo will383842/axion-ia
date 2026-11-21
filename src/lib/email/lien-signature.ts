@@ -32,3 +32,37 @@ export function lienSignatureValide(valeur: unknown): string | null {
     return null;
   }
 }
+
+/** Gabarits dont le bouton de signature est masqué si le lien est refusé (garde au rendu, worker). */
+export const GABARITS_LIEN_SIGNATURE_GARDE: readonly string[] = [
+  "devis-envoi",
+  "relance-devis-client",
+];
+
+/**
+ * La garde est-elle active dans CE processus ? Non si `SITE_URL` est local (localhost, 127.0.0.1,
+ * [::1]) : le lien y est en `http`, le gabarit n'y affiche jamais de bouton, bloquer serait bloquer
+ * sans raison. Une adresse illisible vaut « active ».
+ */
+export function gardeLienSignatureActive(): boolean {
+  try {
+    const h = new URL(SITE_URL).hostname;
+    return !(h === "localhost" || h === "127.0.0.1" || h === "[::1]" || h === "::1");
+  } catch {
+    return true;
+  }
+}
+
+/**
+ * Vrai si le worker doit REFUSER d'envoyer : gabarit gardé, lien présent (chaîne non vide) mais
+ * refusé par `lienSignatureValide` (même verdict que celui qui masquerait le bouton), garde active.
+ * Lien absent ou vide : faux (permis). Ne journalise rien, ne lève jamais.
+ */
+export function lienSignatureRefuseAuRendu(template: string, payload: unknown): boolean {
+  if (!GABARITS_LIEN_SIGNATURE_GARDE.includes(template)) return false;
+  if (payload === null || typeof payload !== "object" || Array.isArray(payload)) return false;
+  const url = (payload as Record<string, unknown>).signatureUrl;
+  if (typeof url !== "string" || url.trim() === "") return false;
+  if (!gardeLienSignatureActive()) return false;
+  return lienSignatureValide(url) === null;
+}

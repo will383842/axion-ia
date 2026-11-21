@@ -40,6 +40,12 @@ import {
 import { hashEmailForLookup } from "@/lib/security/email-hash";
 import { prisma } from "@/lib/prisma";
 import { VARIANTES_VALIDEES_A_PART } from "@/server/email/textes-formateurs-a-valider";
+import * as Sentry from "@sentry/nextjs";
+import { sendTelegram } from "@/lib/telegram";
+import {
+  MOTIF_RELANCE_DEVIS_INTROUVABLE,
+  motifRelanceDevisSansObjet,
+} from "@/server/qualiopi/devis/relance-devis-sans-objet";
 import { blocageCumule } from "@/server/qualiopi/documents/signature/echecs-cumules";
 import { estTexteValide } from "@/server/email/textes-valides";
 import { lireTextesValides } from "@/server/email/textes-valides-lecture";
@@ -642,6 +648,52 @@ const relireCodeDevis: LecteurAuDepart = async (job) => {
   }
 };
 
+const FORME_NUMERO_DEVIS = /^[A-Za-z0-9._-]{1,40}$/;
+
+/** Alerte interne : une relance munie de son lien disparaît parce que son devis est introuvable. */
+function alerterRelanceSansDevis(payload: unknown): void {
+  const corps =
+    payload !== null && typeof payload === "object" && !Array.isArray(payload)
+      ? (payload as Record<string, unknown>)
+      : {};
+  const n = corps.numero;
+  const numero = typeof n === "string" && FORME_NUMERO_DEVIS.test(n) ? `Devis ${n}` : "Un devis";
+  // La phrase sur le lien n'est vraie que si la relance en portait un : jamais d'URL ni de jeton ici.
+  const portaitUnLien =
+    (corps.lienSignatureALEnvoi !== undefined && corps.lienSignatureALEnvoi !== null) ||
+    (typeof corps.signatureUrl === "string" && corps.signatureUrl.length > 0);
+  const texte = portaitUnLien
+    ? `${numero} : e-mail de relance NON envoyé, devis introuvable ou non lié au départ. L'ancien lien du client a été révoqué et le lien neuf n'a été remis à personne : renvoyez le devis depuis sa fiche.`
+    : `${numero} : relance non envoyée : devis introuvable.`;
+  try {
+    Sentry.captureMessage(texte, {
+      level: "error",
+      tags: { action: "relanceDevisSansDevisAuDepart" },
+    });
+  } catch {
+    // Une alerte qui échoue ne change pas l'issue.
+  }
+  sendTelegram({ tag: "AUTO", body: `🔴 ${texte}` }).catch(() => {});
+}
+
+/**
+ * Relance de devis (B3) : la relance est-elle encore utile AU DÉPART ? Même module que
+ * l'approbation (`motifRelanceDevisSansObjet`) : signé, refusé, accepté, périmé, remplacé, remis
+ * en main propre → retenue SILENCIEUSE (légitime).
+ * Une ERREUR de lecture n'est PAS une retenue : elle remonte (`echecAuDepart` : nouveaux essais,
+ * puis journal clos en échec), car le jeton neuf a déjà révoqué l'ancien lien. Un devis
+ * introuvable / non lié retient ET lève une alerte (jamais de jeton, d'adresse ni de nom).
+ */
+const relireRelanceDevisClient: LecteurAuDepart = async (job) => {
+  if (job.entityType !== "Devis" || !job.entityId) {
+    alerterRelanceSansDevis(job.payload);
+    return "devis non lié à la relance — retenu par prudence";
+  }
+  const motif = await motifRelanceDevisSansObjet(prisma, job.entityId, new Date());
+  if (motif === MOTIF_RELANCE_DEVIS_INTROUVABLE) alerterRelanceSansDevis(job.payload);
+  return motif;
+};
+
 /** Le registre : gabarit → lecteur d'état. */
 export const RELECTURES_AU_DEPART: ReadonlyMap<string, LecteurAuDepart> = new Map<
   string,
@@ -670,4 +722,5 @@ export const RELECTURES_AU_DEPART: ReadonlyMap<string, LecteurAuDepart> = new Ma
   [F61, relireRelanceBilan],
   [F17, relireCodeSignature],
   ["devis-code-signature", relireCodeDevis],
+  ["relance-devis-client", relireRelanceDevisClient],
 ]);

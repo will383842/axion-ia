@@ -54,6 +54,8 @@ import {
 // seulement — même garde de graphe que `verdict-envoi`.
 import { gabaritEnSommeil } from "@/server/qualiopi/financements/sommeil";
 import { RELECTURES_AU_DEPART } from "@/server/email/relecture-au-depart";
+import { lienSignatureRefuseAuRendu } from "@/lib/email/lien-signature";
+import { traiterLienSignatureRefuse } from "@/server/email/lien-signature-refuse-au-rendu";
 import {
   MOTIF_ECHEC_SANS_ENVOI,
   MOTIF_ISSUE_INCONNUE,
@@ -447,6 +449,22 @@ export function startEmailWorker(): Worker<EmailJobData, void, EmailJobName> {
         return echecAuDepart(err);
       }
       if (retenu) return;
+
+      // Garde du lien de signature AU RENDU : un lien que ce serveur refuserait masquerait le
+      // bouton, l'e-mail partirait sans lien alors que l'ancien est révoqué. Échec définitif visible.
+      if (lienSignatureRefuseAuRendu(template, payload)) {
+        await traiterLienSignatureRefuse({
+          job,
+          template,
+          to,
+          locale,
+          marketing: marketing === true,
+          attempts,
+          entityType,
+          entityId,
+          payload,
+        });
+      }
 
       try {
         const {

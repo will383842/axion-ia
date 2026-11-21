@@ -21,6 +21,7 @@ import { adminPath } from "@/lib/admin-path";
 import { requireAdminWrite, logQualiopiActivity } from "@/server/actions/qualiopi/_guards";
 import { devisRemisEnMainPropre } from "@/server/qualiopi/devis/canal-emission";
 import { motifRelanceDevisSansObjet } from "@/server/qualiopi/devis/relance-devis-sans-objet";
+import { emailDevisEnAttente } from "@/server/qualiopi/devis/email-devis-en-attente";
 import { garerPourValidation } from "@/server/email/outbox-service";
 import { exigerAccesEchanges } from "../acces";
 import { messageAffichable } from "../message-affichable";
@@ -31,9 +32,11 @@ import {
   ERREUR_DEVIS_INTROUVABLE,
   ERREUR_DEVIS_PERIME,
   ERREUR_DEVIS_REMIS_MAIN_PROPRE,
+  ERREUR_EMAIL_DEVIS_EN_ATTENTE,
   ERREUR_GARAGE,
   jobIdRelanceDevis,
   MESSAGE_RELANCE_GAREE,
+  MESSAGE_RELANCE_GAREE_SANS_LIEN,
   MESSAGE_RELANCE_PRETE,
   TEMPLATE_RELANCE_DEVIS,
 } from "./relance-devis";
@@ -90,7 +93,19 @@ export async function preparerRelanceDevisAction(fd: FormData): Promise<void> {
         numero: true,
         sentAt: true,
         dateValidite: true,
-        client: { select: { raisonSociale: true, contactNom: true, contactEmail: true } },
+        documentGenereId: true,
+        fichierPdfUrl: true,
+        offre: true,
+        client: {
+          select: {
+            raisonSociale: true,
+            contactNom: true,
+            contactEmail: true,
+            contactCivilite: true,
+            contactPrenom: true,
+            contactNomFamille: true,
+          },
+        },
       },
     });
     if (!devis) return r("erreur", ERREUR_DEVIS_INTROUVABLE);
@@ -104,6 +119,11 @@ export async function preparerRelanceDevisAction(fd: FormData): Promise<void> {
     // Relance sans objet (signé, accepté, refusé, périmé…) : on le dit, on ne gare rien.
     const sansObjet = await motifRelanceDevisSansObjet(prisma, devis.id, new Date());
     if (sansObjet !== null) return r("erreur", sansObjet);
+
+    // Un e-mail de devis (envoi ou renvoi) attend déjà : deux liens se révoqueraient l'un l'autre.
+    if (await emailDevisEnAttente(prisma, devis.id)) {
+      return r("erreur", ERREUR_EMAIL_DEVIS_EN_ATTENTE);
+    }
 
     // Anti-doublon : un brouillon déjà à valider pour ce devis.
     const existant = await prisma.emailOutbox.findFirst({
@@ -123,6 +143,13 @@ export async function preparerRelanceDevisAction(fd: FormData): Promise<void> {
       raisonSociale: devis.client.raisonSociale,
       contactNom: devis.client.contactNom,
       contactEmail: devis.client.contactEmail,
+      contactCivilite: devis.client.contactCivilite,
+      contactPrenom: devis.client.contactPrenom,
+      contactNomFamille: devis.client.contactNomFamille,
+      devisId: devis.id,
+      documentGenereId: devis.documentGenereId,
+      fichierPdfUrl: devis.fichierPdfUrl,
+      aFormules: devis.offre !== null,
     });
     if (!relance.ok) return r("erreur", relance.erreur);
 
@@ -131,6 +158,7 @@ export async function preparerRelanceDevisAction(fd: FormData): Promise<void> {
       recipient: relance.destinataire,
       locale: "fr",
       payload: relance.payload,
+      attachments: [...relance.attachments],
       sujet: relance.sujet,
       clientId: cid,
       entityType: ENTITE_DEVIS,
@@ -170,11 +198,12 @@ export async function preparerRelanceDevisAction(fd: FormData): Promise<void> {
       action: "dossier-client.relance-devis.preparee",
       targetType: "Devis",
       targetId: devis.id,
-      changes: { outboxId, numero: devis.numero },
+      // Jamais d'URL ni d'adresse : seulement si un bouton naîtra à l'approbation.
+      changes: { outboxId, numero: devis.numero, avecLien: relance.avecLien },
       session,
     });
     revalidatePath(adminPath("fr", `qualiopi/clients/${cid}`));
-    return r("message", MESSAGE_RELANCE_GAREE);
+    return r("message", relance.avecLien ? MESSAGE_RELANCE_GAREE : MESSAGE_RELANCE_GAREE_SANS_LIEN);
   } catch (e) {
     if (estRedirection(e)) throw e;
     return r("erreur", messageAffichable(e));
