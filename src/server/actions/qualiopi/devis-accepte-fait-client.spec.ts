@@ -224,6 +224,29 @@ describe("acceptDevisAction — version remplacée par une version émise", () =
     expect(h.monter).not.toHaveBeenCalled();
   });
 
+  it("relecture_successeur_apres_ecriture_refuse_et_n_emet_rien", async () => {
+    // Aucun successeur à la lecture d'avant l'écriture ; la version suivante est validée entre
+    // les deux : la relecture APRÈS l'écriture la voit et annule tout.
+    h.tx.devis.findFirst.mockResolvedValueOnce(null).mockResolvedValueOnce({ id: "successeur" });
+    const r = await acceptDevisAction(DEVIS);
+    expect(r).toEqual({ error: MSG });
+    expect(h.tx.devis.updateMany).toHaveBeenCalledOnce();
+    expect(h.emettre).not.toHaveBeenCalled();
+    expect(h.monter).not.toHaveBeenCalled();
+    expect(h.proposer).not.toHaveBeenCalled();
+    expect(h.log).not.toHaveBeenCalled();
+  });
+
+  it("ordre_ecriture_puis_relecture", async () => {
+    await acceptDevisAction(DEVIS);
+    expect(h.tx.devis.findFirst).toHaveBeenCalledTimes(2);
+    const [avant, apres] = h.tx.devis.findFirst.mock.invocationCallOrder;
+    const [ecriture] = h.tx.devis.updateMany.mock.invocationCallOrder;
+    expect(avant!).toBeLessThan(ecriture!);
+    expect(ecriture!).toBeLessThan(apres!);
+    expect(apres!).toBeLessThan(h.emettre.mock.invocationCallOrder[0]!);
+  });
+
   it("expiré par simple dépassement de date (aucun successeur émis) : reste acceptable", async () => {
     h.tx.devis.findUnique.mockResolvedValue({
       statut: "expire",

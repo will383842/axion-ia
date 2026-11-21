@@ -725,6 +725,16 @@ const CONSOMMATEURS_ASSUMES: ReadonlySet<string> = new Set([
   //    dans un double ne prouverait rien. Il vit sous `tests/integration/`, seul dossier que lit
   //    `vitest.integration.config.ts`. Tout ce qui sort de la base est simulé.
   "tests/integration/devis/envoi-concurrent-un-seul-envoye.spec.ts",
+  // ── Versions concurrentes d'un devis sur Postgres réel (verrou de ligne sur la version
+  //    remplacée). Le test appelle `marquerDevisEnvoye`, `prolongerValiditeDevisAction` et
+  //    `acceptDevisAction` TELLES QUELLES : le verrou est une propriété de la vraie base, un double
+  //    ne prouverait rien. Même raison, même dossier que le test d'envoi simultané ci-dessus.
+  "tests/integration/devis/versions-concurrentes.spec.ts",
+  // ── Garde de version d'une SIGNATURE de devis (garde-signature-version). Le test appelle la VRAIE
+  //    `signerDocument` et la VRAIE `marquerDevisEnvoye` contre un vrai Postgres : le verrou de ligne
+  //    est une propriété de la vraie base, un double ne prouverait rien. Même raison, même dossier
+  //    que `versions-concurrentes.spec.ts` ci-dessus.
+  "tests/integration/devis/signature-version-remplacee.spec.ts",
   // ── Banc @formateurs, scénarios d'ARGENT (vérification 1, équipe C,
   //    2026-10-14). L'exécuteur `tsx` du banc appelle le code serveur RÉEL du
   //    paiement des formateurs (passage par mission, autofacture, virements,

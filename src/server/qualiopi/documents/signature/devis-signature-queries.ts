@@ -32,6 +32,12 @@ export interface DevisASigner {
   devisId: string;
   numero: string;
   dateValiditeLisible: string;
+  /**
+   * Date de validité IMPRIMÉE sur le PDF, lue en chaîne brute dans la photo de la pièce
+   * (`metadata.renderData.data.dateValidite`) ; `null` si la photo est ancienne ou illisible.
+   * Elle diffère de `dateValiditeLisible` quand la validité a été prolongée après l'envoi.
+   */
+  dateValiditeImprimee: string | null;
   clientRaisonSociale: string;
   lignes: LigneDevisAffichee[];
   totalHtLisible: string;
@@ -55,6 +61,38 @@ export interface DevisASigner {
   chiffrageIndisponible: boolean;
   /** `true` si le devis n'est plus dans un état où une signature a du sens. */
   statutBloquant: "deja_accepte" | "expire" | "refuse" | "brouillon" | null;
+}
+
+/**
+ * Date de validité telle que le PDF l'a imprimée : chaîne brute de
+ * `metadata.renderData.data.dateValidite`. Lecture à part de `lirePhotoDevis` (dont le schéma ne
+ * garde pas ce champ). `null` si absente, vide ou de forme inattendue.
+ */
+export function lireDateValiditeImprimee(metadata: unknown): string | null {
+  if (typeof metadata !== "object" || metadata === null) return null;
+  const renderData = (metadata as Record<string, unknown>)["renderData"];
+  if (typeof renderData !== "object" || renderData === null) return null;
+  const data = (renderData as Record<string, unknown>)["data"];
+  if (typeof data !== "object" || data === null) return null;
+  const valeur = (data as Record<string, unknown>)["dateValidite"];
+  return typeof valeur === "string" && valeur.trim() !== "" ? valeur : null;
+}
+
+/**
+ * Date de validité formatée COMME LE PDF l'imprime (`toLocaleDateString("fr-FR")`, fuseau du
+ * serveur). À utiliser pour comparer à `lireDateValiditeImprimee` : un autre format (fuseau de
+ * Paris) ferait afficher à tort une « prolongation » près de minuit.
+ */
+export function formaterDateValiditeCommePdf(date: Date): string {
+  return date.toLocaleDateString("fr-FR");
+}
+
+/** `true` si la date imprimée sur le PDF scellé diffère de la validité en cours (prolongée). */
+export function validiteProlongeeDepuisPdf(
+  dateImprimee: string | null,
+  dateValidite: Date,
+): boolean {
+  return dateImprimee !== null && dateImprimee !== formaterDateValiditeCommePdf(dateValidite);
 }
 
 function eur(cents: number): string {
@@ -152,7 +190,8 @@ export async function lireDevisASigner(documentGenereId: string): Promise<DevisA
   return {
     devisId: devis.id,
     numero: devis.numero,
-    dateValiditeLisible: devis.dateValidite.toLocaleDateString("fr-FR"),
+    dateValiditeLisible: formaterDateValiditeCommePdf(devis.dateValidite),
+    dateValiditeImprimee: lireDateValiditeImprimee(devis.documentGenere?.metadata),
     clientRaisonSociale,
     lignes,
     totalHtLisible,

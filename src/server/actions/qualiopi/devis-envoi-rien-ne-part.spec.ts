@@ -13,6 +13,7 @@ const h = vi.hoisted(() => ({
   txDevisUpdateMany: vi.fn(),
   txDevisUpdate: vi.fn(),
   txDevisCount: vi.fn(),
+  statutAncien: "envoye",
   statuts: {} as Record<string, string>,
   enAttente: {} as Record<string, string>,
   txClientUpdateMany: vi.fn(),
@@ -43,7 +44,13 @@ vi.mock("@/lib/prisma", () => ({
       h.txOptions(options);
       h.enAttente = {};
       const resultat = await f({
-        $queryRaw: (...a: unknown[]) => h.queryRaw(...a),
+        $queryRaw: (...a: unknown[]) => {
+          // Verrou de LIGNE de la version remplacée : rend le statut relu sous le verrou.
+          const texte = Array.isArray(a[0]) ? (a[0] as string[]).join("?") : String(a[0]);
+          if (texte.includes("FOR NO KEY UPDATE"))
+            return Promise.resolve([{ statut: h.statutAncien }]);
+          return h.queryRaw(...a);
+        },
         devis: {
           findUnique: (...a: unknown[]) => h.txDevisFindUnique(...a),
           updateMany: (...a: unknown[]) => h.txDevisUpdateMany(...a),
@@ -301,7 +308,7 @@ describe("sendDevisAction — rien ne part, rien n'est « envoye »", () => {
   it("(12) une ligne a_valider ou approuve existe déjà : refus, rien produit", async () => {
     h.txOutboxFindFirst.mockResolvedValue({ id: "ob-0" });
     const r = await sendDevisAction(ID);
-    expect(erreur(r)).toContain("attend déjà dans Emails → À valider");
+    expect(erreur(r)).toContain("attend dans « E-mails à valider » ou est en cours d'envoi");
     expect(h.txOutboxFindFirst).toHaveBeenCalledWith({
       where: {
         template: "devis-envoi",
@@ -472,8 +479,10 @@ describe("sendDevisAction — rien ne part, rien n'est « envoye »", () => {
 });
 
 const ANCIEN = { replacesDevisId: "ancien" };
-const avecAncien = (statut: string) =>
-  devis({ ...ANCIEN, replacesDevis: { statut, documentGenereId: "doc-0" } });
+const avecAncien = (statut: string) => {
+  h.statutAncien = statut; // le statut relu sous le verrou de ligne est celui du cas
+  return devis({ ...ANCIEN, replacesDevis: { statut, documentGenereId: "doc-0" } });
+};
 
 describe("sendDevisAction — version remplacée signée ou acceptée", () => {
   it("version remplacée signée par le client : refus AVANT le PDF, rien d'écrit", async () => {

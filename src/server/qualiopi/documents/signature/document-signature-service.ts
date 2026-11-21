@@ -52,6 +52,7 @@ import {
   validerChoixSignature,
 } from "@/server/qualiopi/devis/choix-signature";
 import { offreDevisV1 } from "@/server/qualiopi/devis/offre-devis";
+import { versionDevisEncoreSignable } from "@/server/qualiopi/devis/garde-signature-version";
 import { codeAssezRecent, validerDeclaration } from "@/server/qualiopi/devis/signature-renforcee";
 import { peutEngager } from "@/server/auth/habilitations";
 import { resoudreAppartenance, type RoleFormateur } from "@/server/formateur/session-membership";
@@ -210,7 +211,9 @@ export type RefusSignatureDocument =
   /** Signature renforcée — nom, fonction ou déclaration de pouvoir absents ou invalides. */
   | "declaration_requise"
   /** Signature renforcée — aucun code à usage unique récemment accepté pour cette pièce. */
-  | "code_requis";
+  | "code_requis"
+  /** Devis : une version plus récente a été émise pendant la signature ; rien n'est inscrit. */
+  | "version_remplacee";
 
 export type ResultatSignatureDocument =
   | {
@@ -345,7 +348,17 @@ const MESSAGES: Record<RefusSignatureDocument, string> = {
     "Renseignez votre nom, votre fonction et cochez la déclaration de pouvoir d'engager la société avant de signer.",
   code_requis:
     "Saisissez le code reçu par e-mail pour signer. S'il a expiré, demandez-en un nouveau.",
+  version_remplacee:
+    "Une version plus récente de ce devis vient d'être émise : cette signature n'a pas été enregistrée. C'est la nouvelle version qui doit être signée.",
 };
+
+/** Devis : la version signée a été remplacée avant l'inscription ; jamais réessayé. */
+class SignatureSurVersionRemplaceeError extends Error {
+  constructor() {
+    super("signature sur une version de devis remplacée");
+    this.name = "SignatureSurVersionRemplaceeError";
+  }
+}
 
 function refus(raison: RefusSignatureDocument): ResultatSignatureDocument {
   return { ok: false, raison, message: MESSAGES[raison] };
@@ -1195,6 +1208,12 @@ export async function signerDocument(
   for (let essai = 0; essai < MAX_REPRISES_CHAINE; essai++) {
     try {
       const cree = await prisma.$transaction(async (tx) => {
+        // Garde de version : en PREMIER, avant toute lecture de la chaîne. Les contrôles d'avant la
+        // transaction (statut, jeton, version suivante) datent d'avant l'envoi R2 : seule cette
+        // relecture sous verrou fait foi.
+        if (ctx.type === "devis" && !(await versionDevisEncoreSignable(tx, ctx.id))) {
+          throw new SignatureSurVersionRemplaceeError();
+        }
         // 🔴 L'ordre de la chaîne est celui de l'INSERTION (`createdAt`), jamais
         // celui de `signeAt` : ce dernier est figé AVANT l'écriture de l'image sur
         // R2 (sharp + aller-retour réseau, 100 à 500 ms), et il peut de surcroît
@@ -1337,6 +1356,15 @@ export async function signerDocument(
         statutSignature: cree.statutSignature,
       };
     } catch (err) {
+      if (err instanceof SignatureSurVersionRemplaceeError) {
+        await nettoyerImageOrpheline(image);
+        Sentry.captureMessage("Signature refusée : version de devis remplacée", {
+          level: "warning",
+          tags: { action: "signerDocument:version_remplacee" },
+          extra: { documentGenereId: input.documentGenereId, partie },
+        });
+        return refus("version_remplacee");
+      }
       const conflit = err instanceof Prisma.PrismaClientKnownRequestError && err.code === "P2002";
       if (!conflit) {
         await nettoyerImageOrpheline(image);

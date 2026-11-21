@@ -9,7 +9,7 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 
 const h = vi.hoisted(() => ({
   prisma: {
-    devis: { findUnique: vi.fn() },
+    devis: { findUnique: vi.fn(), findFirst: vi.fn() },
     documentSignature: { findFirst: vi.fn() },
   },
   requireAdminWrite: vi.fn(),
@@ -60,10 +60,17 @@ function pdf(over: { nom?: string; type?: string; octets?: Buffer } = {}): File 
 }
 
 function formulaire(
-  over: { fichier?: File | null; attestation?: string | null; devisId?: string } = {},
+  over: {
+    fichier?: File | null;
+    attestation?: string | null;
+    devisId?: string;
+    dateEcriteParClient?: string;
+  } = {},
 ) {
   const f = new FormData();
   f.set("devisId", over.devisId ?? DEVIS);
+  if (over.dateEcriteParClient !== undefined)
+    f.set("dateEcriteParClient", over.dateEcriteParClient);
   if (over.attestation !== null) f.set("attestation", over.attestation ?? "true");
   if (over.fichier !== null) f.set("fichier", over.fichier ?? pdf());
   return f;
@@ -75,6 +82,8 @@ function devis(over: Record<string, unknown> = {}) {
     statut: "envoye",
     offre: null,
     offreSha256: null,
+    dateValidite: new Date("2999-01-01T22:59:59Z"),
+    sentAt: new Date("2026-11-01T09:00:00Z"),
     documentGenereId: PIECE,
     client: {
       raisonSociale: "Acme SAS",
@@ -98,6 +107,7 @@ beforeEach(() => {
   h.requireAdminWrite.mockResolvedValue({ userId: ADMIN, role: "super_admin" });
   h.peut.mockReturnValue(true);
   h.prisma.devis.findUnique.mockResolvedValue(devis());
+  h.prisma.devis.findFirst.mockResolvedValue(null);
   h.prisma.documentSignature.findFirst.mockResolvedValue(null);
   h.signer.mockResolvedValue({
     ok: true,
@@ -275,6 +285,12 @@ describe("succès", () => {
       scanSha256: SHA,
       tailleOctets: OCTETS.byteLength,
       statutSignature: "partielle",
+      dateEcriteParClient: null,
+      statutDevisAuVersement: "envoye",
+      dateValidite: "2999-01-01T22:59:59.000Z",
+      validiteDepassee: false,
+      dateEcriteApresValidite: false,
+      dateEcriteAvantEnvoi: false,
     });
     const texte = JSON.stringify(h.log.mock.calls);
     expect(texte).not.toContain("Camille");
@@ -308,6 +324,161 @@ describe("succès", () => {
     ]);
     expect([a.ok, b.ok].filter(Boolean)).toHaveLength(1);
     expect(h.apres).toHaveBeenCalledTimes(1);
+  });
+});
+
+describe("F2 — devis expiré et date écrite par le client", () => {
+  const journalVerse = () =>
+    h.log.mock.calls.find(
+      (c) => (c[0] as { action: string }).action === "qualiopi.devis.scan_papier_verse",
+    )![0] as { changes: Record<string, unknown> };
+
+  it("accepte_devis_expire", async () => {
+    h.prisma.devis.findUnique.mockResolvedValue(
+      devis({ statut: "expire", dateValidite: new Date("2026-11-10T22:59:59Z") }),
+    );
+    const r = await verserScanDevisSigneAction(formulaire());
+    expect(r).toMatchObject({ ok: true, signatureId: "sig-1" });
+    expect(h.signer).toHaveBeenCalledTimes(1);
+    expect(journalVerse().changes).toMatchObject({
+      statutDevisAuVersement: "expire",
+      validiteDepassee: true,
+    });
+  });
+
+  it("refuse_expire_successeur_emis_avant_R2", async () => {
+    h.prisma.devis.findUnique.mockResolvedValue(devis({ statut: "expire" }));
+    h.prisma.devis.findFirst.mockResolvedValue({ id: "suivant" });
+    const r = await verserScanDevisSigneAction(formulaire());
+    expect(r).toEqual({
+      ok: false,
+      message:
+        "Une version plus récente de ce devis a été envoyée : ce scan ne peut pas être versé sur la version remplacée.",
+    });
+    expect(h.prisma.devis.findFirst).toHaveBeenCalledWith({
+      where: { replacesDevisId: DEVIS, statut: { not: "brouillon" } },
+      select: { id: true },
+    });
+    attendSansR2OuBase();
+    expect(h.prisma.documentSignature.findFirst).not.toHaveBeenCalled();
+    const refuse = h.log.mock.calls.find(
+      (c) => (c[0] as { action: string }).action === "qualiopi.devis.scan_papier_refuse",
+    )![0] as { changes: Record<string, unknown> };
+    expect(refuse.changes).toEqual({ motif: "successeur_emis" });
+  });
+
+  it("refus_version_remplacee_rend_MSG_SUCCESSEUR_et_journalise_successeur_emis", async () => {
+    h.signer.mockResolvedValue({ ok: false, raison: "version_remplacee", message: "autre texte" });
+    const r = await verserScanDevisSigneAction(formulaire());
+    expect(r).toEqual({
+      ok: false,
+      message:
+        "Une version plus récente de ce devis a été envoyée : ce scan ne peut pas être versé sur la version remplacée.",
+    });
+    expect(h.apres).not.toHaveBeenCalled();
+    const refuse = h.log.mock.calls.find(
+      (c) => (c[0] as { action: string }).action === "qualiopi.devis.scan_papier_refuse",
+    )![0] as { changes: Record<string, unknown>; targetId: string | null };
+    expect(refuse.changes).toEqual({ motif: "successeur_emis" });
+    expect(refuse.targetId).toBe(DEVIS);
+  });
+
+  it("date_du_jour_acceptee_juste_apres_minuit_a_Paris", async () => {
+    // 23 h 05 UTC le 10 = 0 h 05 à Paris (hiver) le 11 : « aujourd'hui » est le 11.
+    vi.useFakeTimers({ toFake: ["Date"], now: new Date("2026-11-10T23:05:00Z") });
+    try {
+      const aujourdhui = await verserScanDevisSigneAction(
+        formulaire({ dateEcriteParClient: "2026-11-11" }),
+      );
+      expect(aujourdhui).toMatchObject({ ok: true });
+      const demain = await verserScanDevisSigneAction(
+        formulaire({ dateEcriteParClient: "2026-11-12" }),
+      );
+      expect(demain).toMatchObject({ ok: false });
+    } finally {
+      vi.useRealTimers();
+    }
+  });
+
+  it("refus_a_cause_de_la_seule_date_journalise_le_devisId_du_formulaire", async () => {
+    const r = await verserScanDevisSigneAction(formulaire({ dateEcriteParClient: "11/11/2026" }));
+    expect(r.ok).toBe(false);
+    attendSansR2OuBase();
+    const refuse = h.log.mock.calls.find(
+      (c) => (c[0] as { action: string }).action === "qualiopi.devis.scan_papier_refuse",
+    )![0] as { changes: Record<string, unknown>; targetId: string | null };
+    expect(refuse.changes).toEqual({ motif: "date_ecrite_invalide" });
+    expect(refuse.targetId).toBe(DEVIS);
+  });
+
+  it("refus_requete_invalide_ne_journalise_pas_de_devisId", async () => {
+    await verserScanDevisSigneAction(formulaire({ attestation: null }));
+    const refuse = h.log.mock.calls.find(
+      (c) => (c[0] as { action: string }).action === "qualiopi.devis.scan_papier_refuse",
+    )![0] as { targetId: string | null };
+    expect(refuse.targetId).toBeNull();
+  });
+
+  it("refuse_date_ecrite_future", async () => {
+    const r = await verserScanDevisSigneAction(formulaire({ dateEcriteParClient: "2999-01-01" }));
+    expect(r).toEqual({
+      ok: false,
+      message:
+        "La date écrite par le client ne peut pas être postérieure à aujourd'hui : vérifiez la saisie.",
+    });
+    attendSansR2OuBase();
+    const refuse = h.log.mock.calls.find(
+      (c) => (c[0] as { action: string }).action === "qualiopi.devis.scan_papier_refuse",
+    )![0] as { changes: Record<string, unknown> };
+    expect(refuse.changes).toEqual({ motif: "date_ecrite_future" });
+  });
+
+  it("refuse une date impossible (2026-02-30)", async () => {
+    const r = await verserScanDevisSigneAction(formulaire({ dateEcriteParClient: "2026-02-30" }));
+    expect(r.ok).toBe(false);
+    attendSansR2OuBase();
+  });
+
+  it("accepte_sans_date_ecrite (absente ou chaîne vide)", async () => {
+    const a = await verserScanDevisSigneAction(formulaire());
+    const b = await verserScanDevisSigneAction(formulaire({ dateEcriteParClient: "" }));
+    expect(a.ok).toBe(true);
+    expect(b.ok).toBe(true);
+    expect(journalVerse().changes).toMatchObject({ dateEcriteParClient: null });
+  });
+
+  it("journal_porte_date_ecrite_et_drapeaux", async () => {
+    h.prisma.devis.findUnique.mockResolvedValue(
+      devis({
+        statut: "expire",
+        dateValidite: new Date("2026-11-10T22:59:59Z"),
+        sentAt: new Date("2026-11-05T09:00:00Z"),
+      }),
+    );
+    await verserScanDevisSigneAction(formulaire({ dateEcriteParClient: "2026-11-12" }));
+    expect(journalVerse().changes).toMatchObject({
+      dateEcriteParClient: "2026-11-12",
+      statutDevisAuVersement: "expire",
+      dateValidite: "2026-11-10T22:59:59.000Z",
+      validiteDepassee: true,
+      dateEcriteApresValidite: true,
+      dateEcriteAvantEnvoi: false,
+    });
+    h.log.mockClear();
+    await verserScanDevisSigneAction(formulaire({ dateEcriteParClient: "2026-11-01" }));
+    expect(journalVerse().changes).toMatchObject({
+      dateEcriteParClient: "2026-11-01",
+      dateEcriteApresValidite: false,
+      dateEcriteAvantEnvoi: true,
+    });
+  });
+
+  it("signeAt_jamais_remplace_par_date_ecrite", async () => {
+    await verserScanDevisSigneAction(formulaire({ dateEcriteParClient: "2026-11-12" }));
+    const appel = h.signer.mock.calls[0]![0] as Record<string, unknown>;
+    expect(JSON.stringify(appel)).not.toContain("2026-11-12");
+    expect(appel).not.toHaveProperty("signeAt");
+    expect(appel).not.toHaveProperty("dateRecueil");
   });
 });
 

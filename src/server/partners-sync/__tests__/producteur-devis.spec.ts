@@ -401,6 +401,30 @@ describe("REQ-INT-007 — inertie : canal fermé, le comportement d'avant", () =
     ).toBe("tx");
     expect(transaction).toHaveBeenCalledTimes(1);
   });
+
+  it("option toujoursEnTransaction : $transaction canal fermé ; canal fermé sans option, inchangé ; ouvert, dans les deux cas", async () => {
+    const transaction = vi.fn(async (f: (tx: unknown) => Promise<string>) => f("tx"));
+    const client = { $transaction: transaction } as unknown as PrismaClient;
+    const surTx = async (tx: unknown) => (String(tx) === "tx" ? "tx" : "client");
+
+    process.env.PARTNERS_SYNC_ENABLED = "false";
+    expect(await transactionDevisSigne(client, surTx, { toujoursEnTransaction: true })).toBe("tx");
+    expect(transaction).toHaveBeenCalledTimes(1);
+
+    transaction.mockClear();
+    expect(
+      await transactionDevisSigne(client, async (tx) => (tx === client ? "client" : "?")),
+    ).toBe("client");
+    expect(
+      await transactionDevisSigne(client, async (tx) => (tx === client ? "client" : "?"), {}),
+    ).toBe("client");
+    expect(transaction).not.toHaveBeenCalled();
+
+    process.env.PARTNERS_SYNC_ENABLED = "true";
+    expect(await transactionDevisSigne(client, surTx)).toBe("tx");
+    expect(await transactionDevisSigne(client, surTx, { toujoursEnTransaction: true })).toBe("tx");
+    expect(transaction).toHaveBeenCalledTimes(2);
+  });
 });
 
 describe("REQ-INT-006 — le prix public ferme des offres d'un devis, lu dans la transaction", () => {

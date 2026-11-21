@@ -25,6 +25,16 @@ const fileCls =
   "mt-1 block w-full min-h-[var(--target-admin-min-mobile)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg)] file:mr-4 file:rounded file:border-0 file:bg-[color:var(--color-admin-surface)] file:px-[var(--space-admin-3)] file:py-[var(--space-admin-2)] file:text-[length:var(--text-admin-sm)] file:font-medium file:text-[color:var(--color-admin-fg)]";
 const erreurCls = "mt-1 text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-error)]";
 
+/** Aujourd'hui, jour civil de Paris, au format `AAAA-MM-JJ` (valeur `max` du champ date). */
+function aujourdhuiParisIso(): string {
+  return new Intl.DateTimeFormat("en-CA", {
+    timeZone: "Europe/Paris",
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+  }).format(new Date());
+}
+
 type Erreurs = { fichier?: string; attestation?: string };
 
 export function DevisVersementScanPapier({
@@ -102,7 +112,9 @@ export function DevisVersementScanPapier({
       setStatut(
         res.statutSignature === "signee"
           ? "Scan versé : le devis est signé des deux parties."
-          : "Scan versé : le devis est enregistré comme signé par le client, sur papier. Contresignez-le pour le conclure.",
+          : validiteDepassee !== null
+            ? "Scan versé : le devis est enregistré comme signé par le client, sur papier, après sa date de validité. Contresignez-le pour le conclure."
+            : "Scan versé : le devis est enregistré comme signé par le client, sur papier. Contresignez-le pour le conclure.",
       );
       if (res.activationRefusee !== undefined) {
         setAlerte(res.activationRefusee);
@@ -148,9 +160,35 @@ export function DevisVersementScanPapier({
       </p>
       {validiteDepassee !== null && (
         <p className="text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-warning)]">
-          {`La date de validité de ce devis (${validiteDepassee}) est dépassée : ne versez le scan que si le client l'a signé avant cette date.`}
+          {`La date de validité de ce devis (${validiteDepassee}) est dépassée. Le scan sera tout de même accepté : en le versant, vous acceptez l'accord tardif du client aux conditions du PDF d'origine.`}
         </p>
       )}
+
+      <div>
+        <label
+          htmlFor="scan-papier-date-ecrite"
+          className="text-[length:var(--text-admin-sm)] font-medium text-[color:var(--color-admin-fg)]"
+        >
+          Date écrite par le client sur le devis (facultatif)
+        </label>
+        <input
+          id="scan-papier-date-ecrite"
+          name="dateEcriteParClient"
+          type="date"
+          max={aujourdhuiParisIso()}
+          aria-describedby="scan-papier-date-ecrite-aide"
+          disabled={enCours}
+          className="mt-1 block min-h-[var(--target-admin-min-mobile)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg)]"
+        />
+        <p
+          id="scan-papier-date-ecrite-aide"
+          className="mt-1 text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]"
+        >
+          Recopiez la date qui figure près de sa signature, s&apos;il en a écrit une. Elle est
+          gardée pour information : la signature est enregistrée à la date du versement, et le scan
+          fait foi.
+        </p>
+      </div>
 
       <div>
         <label

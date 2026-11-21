@@ -81,6 +81,10 @@ import {
   etatHorodatageDevis,
   urlPdfDevisEmis,
 } from "@/server/qualiopi/devis/console-chaine-devis";
+import {
+  lireDateValiditeImprimee,
+  validiteProlongeeDepuisPdf,
+} from "@/server/qualiopi/documents/signature/devis-signature-queries";
 import { lireHorodatagesDeSignatures } from "@/server/qualiopi/documents/signature/lire-horodatages";
 import { PastilleHorodatage } from "@/components/admin/qualiopi/PastilleHorodatage";
 import { RelanceDevisDepuisLaPage } from "@/components/admin/qualiopi/RelanceDevisDepuisLaPage";
@@ -325,7 +329,9 @@ export default async function QualiopiDevisDetailPage({ params, searchParams }: 
       select: { id: true },
     })) !== null;
   const pieceDuDevis =
-    devis.statut === "envoye" && devis.documentGenereId !== null && !clientASigne
+    (devis.statut === "envoye" || devis.statut === "expire") &&
+    devis.documentGenereId !== null &&
+    !clientASigne
       ? await prisma.devis.findUnique({
           where: { id: devis.id },
           select: { documentGenere: { select: { annuleeAt: true, type: true } } },
@@ -339,7 +345,10 @@ export default async function QualiopiDevisDetailPage({ params, searchParams }: 
   // Devis CLASSIQUE seulement : pour un devis à formules, `acceptDevisAction` refuse l'acceptation
   // manuelle et la reprise est le bloc « relancer l'acceptation » (`repriseParRelance`).
   const signeDesDeuxParties =
-    clientASigne && organismeASigne && devis.statut === "envoye" && devis.offreSha256 === null;
+    clientASigne &&
+    organismeASigne &&
+    (devis.statut === "envoye" || (devis.statut === "expire" && !successeurEmis)) &&
+    devis.offreSha256 === null;
   const repriseParRelance =
     clientASigne && organismeASigne && devis.statut === "envoye" && devis.offreSha256 !== null;
   // X3 — devis CLASSIQUE (sans offre ni empreinte) signé des deux parties (pièce non annulée),
@@ -424,6 +433,24 @@ export default async function QualiopiDevisDetailPage({ params, searchParams }: 
 
   const isExpired =
     (devis.statut === "brouillon" || devis.statut === "envoye") && devis.dateValidite < new Date();
+  // Affichage du bloc « Validité » : le statut `expire` porte aussi la mention « (expiré) ».
+  const validiteAfficheeExpiree = isExpired || devis.statut === "expire";
+  // Date imprimée sur le PDF scellé (chaîne brute de la photo) : si elle diffère de la date en
+  // cours, la validité a été prolongée après l'envoi. Lecture seule ; absente = rien d'affiché.
+  // Affichage seulement : une lecture en échec ne doit jamais empêcher d'ouvrir la fiche.
+  const dateImprimeeSurPdf = await (async () => {
+    if (devis.documentGenereId === null) return null;
+    try {
+      const piece = await prisma.devis.findUnique({
+        where: { id: devis.id },
+        select: { documentGenere: { select: { metadata: true } } },
+      });
+      return lireDateValiditeImprimee(piece?.documentGenere?.metadata);
+    } catch {
+      return null;
+    }
+  })();
+  const validiteProlongee = validiteProlongeeDepuisPdf(dateImprimeeSurPdf, devis.dateValidite);
 
   const infoLabelCls =
     "text-[length:var(--text-admin-xs)] tracking-wide text-[color:var(--color-admin-fg-muted)] uppercase";
@@ -443,9 +470,41 @@ export default async function QualiopiDevisDetailPage({ params, searchParams }: 
     pieceType,
     pieceAnnulee,
     clientASigne,
+    successeurEmis,
   };
   const signaturesElectroniques = signatures.filter((s) => s.methode !== "papier_scanne");
   const signaturesPapier = signatures.filter((s) => s.methode === "papier_scanne");
+  // Date écrite par le client, recopiée au versement : lue dans le journal (transcription, le scan
+  // fait foi). Au mieux : une lecture en échec n'empêche pas d'afficher la fiche.
+  const datesEcritesParSignature = new Map<string, string>();
+  if (signaturesPapier.length > 0) {
+    const journal = await prisma.activityLog
+      .findMany({
+        where: {
+          action: "qualiopi.devis.scan_papier_verse",
+          targetType: "DocumentSignature",
+          targetId: { in: signaturesPapier.map((s) => s.id) },
+        },
+        select: { targetId: true, changes: true },
+        orderBy: { createdAt: "desc" },
+      })
+      .catch(() => []);
+    for (const l of journal) {
+      const c = l.changes as { dateEcriteParClient?: unknown } | null;
+      const iso = c?.dateEcriteParClient;
+      if (
+        l.targetId !== null &&
+        typeof iso === "string" &&
+        !datesEcritesParSignature.has(l.targetId)
+      ) {
+        const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(iso);
+        if (m) datesEcritesParSignature.set(l.targetId, `${m[3]}/${m[2]}/${m[1]}`);
+      }
+    }
+  }
+  // Pour un devis expiré, `isExpired` est faux : la validité dépassée se lit sur la date elle-même.
+  const validiteDepasseeScan =
+    (devis.statut === "envoye" || devis.statut === "expire") && devis.dateValidite < new Date();
   const ligneSignature = (s: (typeof signatures)[number]) => (
     <li
       key={s.id}
@@ -466,6 +525,11 @@ export default async function QualiopiDevisDetailPage({ params, searchParams }: 
           ? " — confirmation nominative, sans tracé manuscrit"
           : ""}
       </p>
+      {s.methode === "papier_scanne" && datesEcritesParSignature.has(s.id) && (
+        <p className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
+          {`Date écrite par le client : ${datesEcritesParSignature.get(s.id)} (recopiée au versement).`}
+        </p>
+      )}
       {s.methode === "papier_scanne" && s.partie === "client" && peutVoirScan && (
         <a
           href={`/api/qualiopi/devis/${devis.id}/scan-signe`}
@@ -650,16 +714,26 @@ export default async function QualiopiDevisDetailPage({ params, searchParams }: 
             <p className={infoLabelCls}>Validité</p>
             <p
               className={
-                isExpired ? `${infoValueCls} text-[color:var(--color-admin-warning)]` : infoValueCls
+                validiteAfficheeExpiree
+                  ? `${infoValueCls} text-[color:var(--color-admin-warning)]`
+                  : infoValueCls
               }
             >
               {formatDate(devis.dateValidite)}
-              {isExpired && (
+              {validiteAfficheeExpiree && (
                 <span className="ml-[var(--space-admin-1)] text-[length:var(--text-admin-xs)]">
                   (expiré)
                 </span>
               )}
             </p>
+            {validiteProlongee && (
+              <p
+                data-testid="validite-prolongee"
+                className="mt-0.5 text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]"
+              >
+                Prolongée (le PDF indique le {dateImprimeeSurPdf}).
+              </p>
+            )}
             {validiteBrouillonModifiable(devis) ? (
               <div className="mt-[var(--space-admin-3)]">
                 <ValiditeBrouillon
@@ -948,7 +1022,7 @@ export default async function QualiopiDevisDetailPage({ params, searchParams }: 
 
             ⚠️ Rendu à la volée : ce n'est PAS la pièce du registre, dont
             l'empreinte est scellée et ne doit jamais être réécrite. */}
-        {signatures.length > 0 && peutOuvrirPdf && (
+        {signaturesElectroniques.length > 0 && peutOuvrirPdf && (
           <p className="mt-[var(--space-admin-4)]">
             <a
               href={`/api/qualiopi/pieces/${devis.documentGenereId}/exemplaire-signe`}
@@ -1010,7 +1084,7 @@ export default async function QualiopiDevisDetailPage({ params, searchParams }: 
             devisId={devis.id}
             signataireNom={signataireNomFiche}
             organismeNom={identiteOrganisme.raisonSociale}
-            validiteDepassee={isExpired ? formatDate(devis.dateValidite) : null}
+            validiteDepassee={validiteDepasseeScan ? formatDate(devis.dateValidite) : null}
             verserAction={verserScanDevisSigneAction}
           />
         </section>
