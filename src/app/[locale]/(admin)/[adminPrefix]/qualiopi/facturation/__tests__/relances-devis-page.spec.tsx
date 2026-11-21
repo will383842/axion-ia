@@ -5,7 +5,12 @@
 import { cleanup, render, screen } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
-const etat = vi.hoisted(() => ({ appels: [] as Array<{ where: unknown }> }));
+const etat = vi.hoisted(() => ({
+  appels: [] as Array<{ where: unknown }>,
+  /** Entrées du journal rendues pour la lecture des délais demandés par le client. */
+  journal: [] as unknown[],
+  journalRejette: false,
+}));
 
 vi.mock("next/navigation", () => ({
   notFound: vi.fn(),
@@ -57,6 +62,11 @@ vi.mock("@/lib/prisma", () => {
             etat.appels.push({ where: args.where });
             return Promise.resolve(relances);
           }
+          if (nom === "activityLog" && methode === "findMany") {
+            return etat.journalRejette
+              ? Promise.reject(new Error("journal indisponible"))
+              : Promise.resolve(etat.journal);
+          }
           if (methode === "count") return Promise.resolve(0);
           if (methode === "aggregate") return Promise.resolve({ _sum: {} });
           if (methode === "findMany" || methode === "groupBy") return Promise.resolve([]);
@@ -92,6 +102,39 @@ describe("page Facturation : relances à traiter", () => {
       JSON.stringify(v).replace(/\d{4}-\d{2}-\d{2}T[\d:.]+Z/g, "<date>");
     expect(masque(etat.appels[0]!.where)).toBe(masque(relancesAtraiterWhere(new Date())));
     expect(masque(etat.appels[0]!.where)).toContain("devis_sans_reponse");
+  });
+
+  it("un délai actif sur un devis : le filtre exclut ce devis", async () => {
+    etat.appels = [];
+    etat.journalRejette = false;
+    etat.journal = [
+      {
+        targetId: "d1",
+        action: "qualiopi.devis.delai_client.demande",
+        changes: { finDelai: new Date(Date.now() + 3 * 86_400_000).toISOString() },
+        createdAt: new Date(),
+        id: "e1",
+      },
+    ];
+    try {
+      await afficher();
+      expect(JSON.stringify(etat.appels[0]!.where)).toContain('"devisId":{"notIn":["d1"]}');
+    } finally {
+      etat.journal = [];
+    }
+  });
+
+  it("lecture du délai en erreur : filtre identique à celui d'avant", async () => {
+    etat.appels = [];
+    etat.journalRejette = true;
+    try {
+      await afficher();
+      const masque = (v: unknown) =>
+        JSON.stringify(v).replace(/\d{4}-\d{2}-\d{2}T[\d:.]+Z/g, "<date>");
+      expect(masque(etat.appels[0]!.where)).toBe(masque(relancesAtraiterWhere(new Date())));
+    } finally {
+      etat.journalRejette = false;
+    }
   });
 
   it("« Ouvrir le devis » seulement pour la relance de devis", async () => {

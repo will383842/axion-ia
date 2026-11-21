@@ -7,6 +7,7 @@
  * Seuils et dates via getQualiopiConfig (jamais en dur).
  */
 
+import { delaisClientActifs } from "@/server/qualiopi/devis/delai-client";
 import { pasSigneParLeClient } from "@/server/qualiopi/devis/pas-signe-par-le-client";
 import { prisma } from "@/lib/prisma";
 import {
@@ -2477,9 +2478,17 @@ async function regleDevisSansReponse(now: Date): Promise<AlerteCandidate[]> {
       client: { select: { raisonSociale: true } },
     },
   });
+  // Délai demandé par le client : pas d'alerte avant la date. Lecture en erreur = aucun délai
+  // (une règle qui lève suspendrait la résolution automatique de TOUTES les alertes).
+  const enDelai = await delaisClientActifs(
+    prisma,
+    now,
+    devisDormants.map((d) => d.id),
+  ).catch(() => new Map<string, Date>());
   const alertes: AlerteCandidate[] = [];
   for (const d of devisDormants) {
     if (!d.sentAt) continue;
+    if (enDelai.has(d.id)) continue;
     alertes.push({
       code: "devis_sans_reponse",
       niveau: "important",
@@ -2515,14 +2524,23 @@ async function regleDevisExpireJ7(now: Date): Promise<AlerteCandidate[]> {
       client: { select: { raisonSociale: true } },
     },
   });
-  return devisEnFin.map((d) => ({
-    code: "devis_expire_j7",
-    niveau: "important" as AlerteNiveau,
-    titre: "Devis expire dans moins de 7 jours",
-    message: `Le devis ${d.numero} (${d.client.raisonSociale}) expire le ${d.dateValidite.toLocaleDateString("fr-FR")} : dernière fenêtre pour relancer le client avant l'échéance.`,
-    cibleType: "Devis",
-    cibleId: d.id,
-  }));
+  // Délai demandé par le client : pas d'alerte avant la date. Lecture en erreur = aucun délai
+  // (une règle qui lève suspendrait la résolution automatique de TOUTES les alertes).
+  const enDelai = await delaisClientActifs(
+    prisma,
+    now,
+    devisEnFin.map((d) => d.id),
+  ).catch(() => new Map<string, Date>());
+  return devisEnFin
+    .filter((d) => !enDelai.has(d.id))
+    .map((d) => ({
+      code: "devis_expire_j7",
+      niveau: "important" as AlerteNiveau,
+      titre: "Devis expire dans moins de 7 jours",
+      message: `Le devis ${d.numero} (${d.client.raisonSociale}) expire le ${d.dateValidite.toLocaleDateString("fr-FR")} : dernière fenêtre pour relancer le client avant l'échéance.`,
+      cibleType: "Devis",
+      cibleId: d.id,
+    }));
 }
 
 /**

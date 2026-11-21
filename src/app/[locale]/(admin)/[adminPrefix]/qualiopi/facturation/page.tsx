@@ -55,6 +55,7 @@ import type {
 import { AccesRefuse } from "@/components/admin/ui/AccesRefuse";
 import { gardePage } from "@/server/auth/garde-page";
 import { peutEngager } from "@/server/auth/habilitations";
+import { idsDevisEnDelaiClient } from "@/server/qualiopi/devis/delai-client";
 import { relancesAtraiterWhere } from "@/server/qualiopi/devis/relances-a-traiter-filtre";
 
 export const dynamic = "force-dynamic";
@@ -152,6 +153,8 @@ export default async function FacturationHubPage({
 
   // Requêtes en parallèle : page courante + total + KPIs transverses (hors filtre).
   const now = new Date();
+  // Délai demandé par le client : même liste que le compteur du menu (lecture en erreur = aucun délai).
+  const devisEnDelai = await idsDevisEnDelaiClient(prisma, now).catch(() => [] as string[]);
   const [factures, total, aggEmis, aggEncaisse, ouvertes, relances, dossiersEnCours, clients] =
     await Promise.all([
       prisma.factureFormation.findMany({
@@ -233,7 +236,7 @@ export default async function FacturationHubPage({
         // passée (revue M2 : une relance reportée doit REVENIR, jamais disparaître).
         // Une relance de DEVIS n'est gardée que si le devis attend encore une réponse
         // (filtre partagé avec la pastille du menu).
-        where: relancesAtraiterWhere(now),
+        where: relancesAtraiterWhere(now, devisEnDelai),
         orderBy: { createdAt: "asc" },
         take: 20,
         select: {

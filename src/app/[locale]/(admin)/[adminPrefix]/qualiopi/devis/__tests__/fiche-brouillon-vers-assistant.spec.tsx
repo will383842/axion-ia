@@ -50,6 +50,10 @@ vi.mock("@/server/qualiopi/crm/devis", () => ({ getDevis: () => Promise.resolve(
 vi.mock("@/server/qualiopi/crm/clients", () => ({
   getClient: () => Promise.resolve({ id: "c1", raisonSociale: "Client fictif" }),
 }));
+vi.mock("@/server/actions/qualiopi/devis-delai-client", () => ({
+  demanderDelaiClientAction: vi.fn(),
+  leverDelaiClientAction: vi.fn(),
+}));
 vi.mock("@/server/actions/qualiopi/devis-prolonger-validite", () => ({
   prolongerValiditeDevisAction: vi.fn(),
 }));

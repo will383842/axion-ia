@@ -2,7 +2,7 @@
  * Pastille « À relancer » de la liste des devis.
  *
  * Un devis est « à relancer » quand il est envoyé, non signé par le client, encore valide, envoyé
- * depuis 3 jours ou plus, et qu'aucune relance n'est garée ni n'a été approuvée ou envoyée depuis 7 jours, et qu'il n'a pas été remis en main propre.
+ * depuis 3 jours ou plus, et qu'aucune relance n'est garée ni n'a été approuvée ou envoyée depuis 7 jours, et qu'il n'a pas été remis en main propre, ni délai demandé par le client en cours (`delai-client.ts`).
  *
  * Lecture seule. UNE requête groupée pour toute la liste (jamais une par ligne).
  */

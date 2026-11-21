@@ -402,6 +402,9 @@ const CONSOMMATEURS_ASSUMES: ReadonlySet<string> = new Set([
   "src/server/admin/dossiers-pipeline.ts",
   "src/server/admin/pilotage-dashboard.ts",
   "src/server/admin/qualiopi-nav-counts.ts",
+  // V6-27 (#2246) : la spec du compteur vérifie que le délai demandé par le
+  //   client masque bien la relance (fonction du domaine devis importée).
+  "src/server/admin/qualiopi-nav-counts.spec.ts",
   // ── QNC L02 (mode essai) — deux sorties EXTERNES qui doivent reconnaître une
   //    pièce d'essai pour ne pas la laisser partir. Elles importent le prédicat
   //    UNIQUE (`essai/perimetre`) et le journal des sorties bloquées
