@@ -345,7 +345,10 @@ export default async function QualiopiDevisDetailPage({ params, searchParams }: 
   // Devis CLASSIQUE seulement : pour un devis à formules, `acceptDevisAction` refuse l'acceptation
   // manuelle et la reprise est le bloc « relancer l'acceptation » (`repriseParRelance`).
   const signeDesDeuxParties =
-    clientASigne && organismeASigne && devis.statut === "envoye" && devis.offreSha256 === null;
+    clientASigne &&
+    organismeASigne &&
+    (devis.statut === "envoye" || (devis.statut === "expire" && !successeurEmis)) &&
+    devis.offreSha256 === null;
   const repriseParRelance =
     clientASigne && organismeASigne && devis.statut === "envoye" && devis.offreSha256 !== null;
   // X3 — devis CLASSIQUE (sans offre ni empreinte) signé des deux parties (pièce non annulée),
