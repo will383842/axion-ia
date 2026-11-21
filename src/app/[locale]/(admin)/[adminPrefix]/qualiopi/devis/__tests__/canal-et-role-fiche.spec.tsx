@@ -118,6 +118,10 @@ vi.mock("@/server/actions/qualiopi/devis", () => ({
   declineDevisAction: vi.fn(),
   transformDevisToConventionAction: vi.fn(),
 }));
+vi.mock("@/server/actions/qualiopi/devis-delai-client", () => ({
+  demanderDelaiClientAction: vi.fn(),
+  leverDelaiClientAction: vi.fn(),
+}));
 vi.mock("@/server/actions/qualiopi/devis-prolonger-validite", () => ({
   prolongerValiditeDevisAction: vi.fn(),
 }));

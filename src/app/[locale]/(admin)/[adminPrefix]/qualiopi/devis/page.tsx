@@ -21,6 +21,7 @@ import {
   estCandidatARelance,
   estDevisARelancer,
 } from "@/server/qualiopi/devis/devis-a-relancer";
+import { delaisClientActifs } from "@/server/qualiopi/devis/delai-client";
 import { devisAvecEmailEnAttente } from "@/server/qualiopi/devis/email-devis-en-attente";
 import { Hash, FileText, Send, CheckCircle2, ArrowRight, PenLine } from "lucide-react";
 import { listDevis } from "@/server/qualiopi/crm/devis";
@@ -119,9 +120,11 @@ export default async function QualiopiDevisPage({ params, searchParams }: PagePr
   const idsCandidats = devisList
     .filter((d) => estCandidatARelance(d, etatListeDevis(d, piecesAContresigner), maintenant))
     .map((d) => d.id);
-  const [relancesRecentes, remisMainPropre] = await Promise.all([
+  const [relancesRecentes, remisMainPropre, enDelai] = await Promise.all([
     devisAvecRelanceRecente(prisma, idsCandidats, maintenant).catch(() => new Set<string>()),
     devisRemisEnMainPropreParmi(prisma, idsCandidats).catch(() => new Set<string>()),
+    // Délai demandé par le client : lecture en erreur = aucun délai (on montre, comme avant).
+    delaisClientActifs(prisma, maintenant, idsCandidats).catch(() => new Map<string, Date>()),
   ]);
 
   // Index clients par id pour affichage rapide
@@ -272,7 +275,9 @@ export default async function QualiopiDevisPage({ params, searchParams }: PagePr
                           {estDevisARelancer(
                             devis,
                             etatListeDevis(devis, piecesAContresigner),
-                            relancesRecentes.has(devis.id) || remisMainPropre.has(devis.id),
+                            relancesRecentes.has(devis.id) ||
+                              remisMainPropre.has(devis.id) ||
+                              enDelai.has(devis.id),
                             maintenant,
                           ) && (
                             <AdminBadge tone="warning" dot>
