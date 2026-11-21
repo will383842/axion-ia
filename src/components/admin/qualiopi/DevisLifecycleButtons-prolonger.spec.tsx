@@ -90,9 +90,10 @@ describe("DevisLifecycleButtons — prolonger la validité", () => {
     monter({ peutConclure: false });
     expect(screen.queryByRole("button", BOUTON)).toBeNull();
     cleanup();
-    monter({ statut: "expire" });
+    // Devis expiré : « Prolonger » est proposé (lot E2) sauf sans droit de conclure.
+    monter({ statut: "expire", peutConclure: false });
     expect(screen.queryByRole("button", BOUTON)).toBeNull();
-    expect(screen.getByText("Aucune action disponible pour ce statut.")).toBeTruthy();
+    expect(screen.queryByText("Aucune action disponible pour ce statut.")).toBeNull();
   });
 
   it("min_est_le_lendemain_de_la_validite_actuelle_si_elle_est_plus_tard_que_demain", async () => {

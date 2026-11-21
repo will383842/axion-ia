@@ -163,6 +163,11 @@ export interface PieceSignatureFormProps {
   numeroDevis?: string | null;
   /** Date de validité — un devis en a une, une convention non. */
   dateValiditeLisible: string | null;
+  /**
+   * Date de validité imprimée sur le PDF, quand elle diffère de la date en cours (validité
+   * prolongée après l'envoi). Absente ou identique : aucune mention.
+   */
+  dateValiditeImprimee?: string | null;
   organismeNom: string;
   /** E-mail de contact de l'organisme (lien « Une question sur ce devis ? »). Vide = pas de lien. */
   organismeEmail?: string;
@@ -277,6 +282,7 @@ export function PieceSignatureForm({
   numero,
   numeroDevis,
   dateValiditeLisible,
+  dateValiditeImprimee = null,
   organismeNom,
   organismeEmail,
   clientRaisonSociale,
@@ -495,6 +501,13 @@ export function PieceSignatureForm({
           ? `Établie par ${organismeNom} à l'attention de ${clientRaisonSociale}.`
           : `Établie par ${organismeNom}.`}
         {dateValiditeLisible !== null ? ` Valable jusqu'au ${dateValiditeLisible}.` : ""}
+        {dateValiditeLisible !== null &&
+        dateValiditeImprimee !== null &&
+        dateValiditeImprimee !== dateValiditeLisible ? (
+          <span data-testid="validite-prolongee">
+            {` Validité prolongée par ${organismeNom} : le PDF ci-dessous indique la date d'origine (${dateValiditeImprimee}) ; ses autres conditions sont inchangées.`}
+          </span>
+        ) : null}
       </p>
 
       {/* ── Ce qui est signé, sous les yeux du signataire ── */}
