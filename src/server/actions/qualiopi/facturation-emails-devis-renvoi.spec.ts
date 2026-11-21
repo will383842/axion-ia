@@ -201,7 +201,7 @@ describe("garde « déjà garé » (réutilise email-devis-en-attente)", () => {
     const r = await envoyerDevisEmailAction({ devisId: ID });
     expect(r).toEqual({
       error:
-        "Un e-mail de ce devis attend dans « E-mails à valider » ou est en cours d'envoi. S'il est encore à valider, approuvez-le ou refusez-le ; s'il est en cours d'envoi, patientez quelques minutes puis rechargez la page.",
+        "Un e-mail de ce devis attend dans « E-mails à valider » ou est en cours d'envoi. S'il est encore à valider, approuvez-le ou refusez-le ; s'il est en cours d'envoi, patientez quelques minutes puis rechargez la page ; si rien ne change au bout d'une heure, voyez la page « E-mails envoyés » de la console. Rien n'a été renvoyé.",
     });
     expect(d.enqueueEmail).not.toHaveBeenCalled();
     expect(d.creerToken).not.toHaveBeenCalled();

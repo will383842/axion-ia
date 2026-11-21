@@ -139,7 +139,7 @@ export function EmailOutboxItem({
   return (
     <AdminCard as="article" className="flex flex-col gap-[var(--space-admin-3)]">
       {motifSansObjet ? (
-        <AdminBloc teinte="ambre" niveau={3} titre="Relance sans objet">
+        <AdminBloc teinte="ambre" niveau={4} titre="Relance sans objet">
           <p className="m-0 text-[length:var(--text-admin-sm)]">{motifSansObjet}</p>
           <p className="m-0 text-[length:var(--text-admin-sm)]">
             Vous pouvez la refuser : elle ne partira pas.

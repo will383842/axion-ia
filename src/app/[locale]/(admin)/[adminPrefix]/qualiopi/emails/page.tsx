@@ -167,17 +167,22 @@ export default async function EmailsAValiderPage({
         .map((e) => e.entityId as string),
     ),
   ];
-  const motifsSansObjet = new Map<string, string | null>(
-    await Promise.all(
-      devisRelances.map(async (devisId): Promise<[string, string | null]> => {
+  // Par lots de 5 : jamais plus de 5 calculs en cours à la fois.
+  const TAILLE_LOT_SANS_OBJET = 5;
+  const motifsSansObjet = new Map<string, string | null>();
+  for (let i = 0; i < devisRelances.length; i += TAILLE_LOT_SANS_OBJET) {
+    const lot = devisRelances.slice(i, i + TAILLE_LOT_SANS_OBJET);
+    const resultats = await Promise.all(
+      lot.map(async (devisId): Promise<[string, string | null]> => {
         try {
           return [devisId, await motifRelanceDevisSansObjet(prisma, devisId, maintenant)];
         } catch {
           return [devisId, null];
         }
       }),
-    ),
-  );
+    );
+    for (const [devisId, motif] of resultats) motifsSansObjet.set(devisId, motif);
+  }
 
   // S5 (2026-08-26) — le gel réglementaire par règle NOMMÉE reste permis (la
   // règle nommée est souveraine, c'est documenté dans `outbox-policy.ts`) mais

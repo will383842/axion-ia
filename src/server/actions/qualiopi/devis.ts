@@ -266,7 +266,7 @@ const MSG_VERROU =
 const MSG_DEJA_ENVOYE =
   "Ce devis a déjà été envoyé : rien n'a été renvoyé. Pour le transmettre de nouveau, utilisez « Renvoyer par email ».";
 const MSG_DEJA_GARE =
-  "Un e-mail de ce devis attend dans « E-mails à valider » ou est en cours d'envoi. S'il est encore à valider, approuvez-le ou refusez-le ; s'il est en cours d'envoi, patientez quelques minutes puis rechargez la page.";
+  "Un e-mail de ce devis attend dans « E-mails à valider » ou est en cours d'envoi. S'il est encore à valider, approuvez-le ou refusez-le ; s'il est en cours d'envoi, patientez quelques minutes puis rechargez la page ; si rien ne change au bout d'une heure, voyez la page « E-mails envoyés » de la console. Rien n'est parti ; le devis reste en brouillon.";
 const MSG_CORBEILLE =
   "La corbeille « E-mails à valider » est indisponible : rien n'est parti ; le devis reste en brouillon. Réessayez quand l'alerte est levée.";
 const MSG_ESSAI =

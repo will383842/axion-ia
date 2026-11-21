@@ -60,6 +60,17 @@ describe("EmailOutboxItem — bandeau « Relance sans objet »", () => {
     expect(screen.getByRole("checkbox")).toBeTruthy();
   });
 
+  it("le titre du bandeau n'est pas un h3 : c'est un h4, sous le h3 du sujet", () => {
+    const { container } = carte("relance-devis-client", MOTIF);
+    const titre = screen.getByText("Relance sans objet");
+    expect(titre.tagName).toBe("H4");
+    expect(titre.tagName).not.toBe("H3");
+    // Le seul h3 de la carte est le sujet.
+    const h3 = container.querySelectorAll("h3");
+    expect(h3).toHaveLength(1);
+    expect(h3[0]?.textContent).toContain("Devis AXI-DEV-2026-012");
+  });
+
   it("le bandeau est placé avant le champ Objet (haut de la carte)", () => {
     carte("relance-devis-client", MOTIF);
     const bandeau = screen.getByText("Relance sans objet");
@@ -138,6 +149,21 @@ describe("page E-mails à valider — calcul du motif « sans objet »", () => {
     expect(appels[0]?.[2]).toBeInstanceOf(Date);
     // d1 sert deux relances : deux bandeaux ; d2 (null) et le gabarit étranger : aucun.
     expect(screen.getAllByText("Relance sans objet")).toHaveLength(2);
+  });
+
+  it("12 devis distincts : jamais plus de 5 calculs en cours en même temps", async () => {
+    let enCours = 0;
+    let maxEnCours = 0;
+    impl = async () => {
+      enCours += 1;
+      maxEnCours = Math.max(maxEnCours, enCours);
+      await new Promise((r) => setTimeout(r, 5));
+      enCours -= 1;
+      return null;
+    };
+    await rendrePage(Array.from({ length: 12 }, (_, i) => relance(`r${i}`, `d${i}`)));
+    expect(appels).toHaveLength(12);
+    expect(maxEnCours).toBe(5);
   });
 
   it("relance sans lien vers un devis : aucun appel, aucun bandeau", async () => {

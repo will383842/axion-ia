@@ -62,7 +62,7 @@ export const schemaEmissionLien = z.object({
 });
 
 export const MSG_RELANCE_DEVIS_EMAIL_EN_ATTENTE =
-  "Un e-mail de ce devis attend dans « E-mails à valider » ou est en cours d'envoi. S'il est encore à valider, approuvez-le ou refusez-le ; s'il est en cours d'envoi, patientez quelques minutes puis rechargez la page. Rien n'a été émis ni envoyé ; le lien déjà reçu par le client reste valable.";
+  "Un e-mail de ce devis attend dans « E-mails à valider » ou est en cours d'envoi. S'il est encore à valider, approuvez-le ou refusez-le ; s'il est en cours d'envoi, patientez quelques minutes puis rechargez la page ; si rien ne change au bout d'une heure, voyez la page « E-mails envoyés » de la console. Rien n'a été émis ni envoyé ; le lien déjà reçu par le client reste valable.";
 export const MSG_RELANCE_DEVIS_ENVOI_EN_COURS =
   "Un envoi de ce devis est déjà en cours : réessayez dans un instant. Rien n'a été émis ni envoyé.";
 export const MSG_RELANCE_DEVIS_SANS_DEVIS =
