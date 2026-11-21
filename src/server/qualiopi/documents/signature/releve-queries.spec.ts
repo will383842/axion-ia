@@ -213,7 +213,7 @@ describe("🔴 ce qui est présenté au signataire", () => {
     expect(etat?.mentions.join(" ")).toContain("certificat délivré par un prestataire");
     // « doc-v2 » depuis le 17/11/2026 (accord du genre dans l'attestation) ; le texte « doc-v1 »
     // est conservé et testé dans `mentions-document-versions.spec.ts`.
-    expect(MENTION_VERSION_DOCUMENT).toBe("doc-v2");
+    expect(MENTION_VERSION_DOCUMENT).toBe("doc-v3");
   });
 
   it("🔴 dit que les deux signatures ne sont pas un double contrôle indépendant", async () => {

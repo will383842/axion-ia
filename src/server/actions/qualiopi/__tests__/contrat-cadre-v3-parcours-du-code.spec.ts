@@ -182,6 +182,7 @@ vi.mock("../_guards", () => ({ requireAdminWrite: vi.fn(), logQualiopiActivity: 
 import { renderEmailTemplate } from "@/lib/email/templates";
 import { payloadPourRendu } from "@/server/email/code-en-file";
 import { demanderCodeSignatureAction, signerPieceParJetonAction } from "../piece-signature";
+import { MENTION_VERSION_DOCUMENT } from "@/server/qualiopi/documents/signature/mentions-document";
 
 beforeEach(() => {
   h.codes.length = 0;
@@ -215,7 +216,7 @@ const signer = (code: string) =>
   signerPieceParJetonAction({
     token: "jeton",
     methode: "confirmation_accessible",
-    mentionVersionAffichee: "doc-v2",
+    mentionVersionAffichee: MENTION_VERSION_DOCUMENT,
     code,
   });
 

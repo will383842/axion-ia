@@ -150,6 +150,7 @@ import {
   contresignerPieceAction,
   signerPieceParJetonAction,
 } from "../piece-signature";
+import { MENTION_VERSION_DOCUMENT } from "@/server/qualiopi/documents/signature/mentions-document";
 
 type Mock = ReturnType<typeof vi.fn>;
 const mSigner = signerDocument as unknown as Mock;
@@ -169,7 +170,7 @@ const signerParJeton = () =>
   signerPieceParJetonAction({
     token: "jeton",
     methode: "confirmation_accessible",
-    mentionVersionAffichee: "doc-v2",
+    mentionVersionAffichee: MENTION_VERSION_DOCUMENT,
   });
 
 function rienNEstEcrit(): void {

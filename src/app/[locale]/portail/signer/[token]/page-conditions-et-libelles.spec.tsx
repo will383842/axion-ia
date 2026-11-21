@@ -171,6 +171,20 @@ describe("page de signature — devis classique", () => {
   });
 });
 
+describe("page de signature — mandat (L11-S1)", () => {
+  it("le client lit « procuration spéciale », sans « OPCO » ni parenthèse", async () => {
+    m.piece.mockResolvedValue(piece({ type: "mandat_opco", numero: "AXI-DOC-2026-041" }));
+    await rendu();
+    const props = m.formulaire.mock.calls[0]?.[0] as Record<string, unknown>;
+    expect(props).toMatchObject({
+      pieceLibelle: "procuration spéciale",
+      pieceLibelleDefini: "la procuration spéciale",
+    });
+    expect(JSON.stringify(props)).not.toMatch(/opco|[()]/i);
+    expect(m.mentions.mock.calls[0]?.[1]).toMatchObject({ pieceLibelle: "procuration spéciale" });
+  });
+});
+
 describe("page de signature — articles des messages", () => {
   it("pièce annulée : « Le devis … ne fait plus foi »", async () => {
     m.piece.mockResolvedValue(piece({ annuleeAt: new Date() }));

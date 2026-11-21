@@ -248,11 +248,13 @@ const CIRCUITS: Readonly<Record<string, CircuitSignature>> = {
   //
   // ⚠️ Libellé au féminin (« procuration », synonyme légal du mandat à
   // l'art. 1984) : la mention d'attestation écrit « la {libellé} n° … ».
+  // Le libellé ne porte plus la note interne « (mandat OPCO) » (L11-S1, « doc-v3 ») : les
+  // signatures « doc-v1 » et « doc-v2 » gardent l'ancien texte (`mentions-document.ts`).
   mandat_opco: {
     parties: ["client", "axionia"],
     canal: "maison",
-    libelle: "procuration spéciale (mandat OPCO)",
-    libelleDefini: "la procuration spéciale (mandat OPCO)",
+    libelle: "procuration spéciale",
+    libelleDefini: "la procuration spéciale",
     genre: "feminin",
   },
   // 2026-08-10 (décision Will) : le circuit `protocole_afest` a été retiré avec

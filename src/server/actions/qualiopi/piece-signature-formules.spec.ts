@@ -54,6 +54,7 @@ import { checkRateLimit } from "@/lib/rate-limit";
 import { choixCanonique, sha256Choix, sha256Offre } from "@/server/qualiopi/devis/offre-calculs";
 import { offreFictive } from "@/server/qualiopi/devis/offre-fixtures.spec-util";
 import { signerPieceParJetonAction } from "./piece-signature";
+import { MENTION_VERSION_DOCUMENT } from "@/server/qualiopi/documents/signature/mentions-document";
 
 type Mock = ReturnType<typeof vi.fn>;
 const mockPrisma = prisma as unknown as {
@@ -78,7 +79,7 @@ function entree(over: Record<string, unknown> = {}) {
     imageDataUrl: "data:image/png;base64,AAAA",
     cgvAcceptees: true as const,
     cgvVersionAffichee: CGV_VERSION,
-    mentionVersionAffichee: "doc-v2",
+    mentionVersionAffichee: MENTION_VERSION_DOCUMENT,
     // Signature renforcée (lot 4 bis) : déclaration saisie + code reçu par e-mail.
     declaration: { nom: "Camille Durand", fonction: "Gérante", pouvoirEngager: true },
     code: "123456",

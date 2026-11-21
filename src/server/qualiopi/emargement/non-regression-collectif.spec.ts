@@ -140,7 +140,7 @@ describe("non-régression du chemin collectif", () => {
     // silencieusement le prochain bump de l'autre famille.
     // « doc-v2 » depuis le 17/11/2026 (accord du genre dans l'attestation ; « doc-v1 » conservé,
     // cf. `mentions-document-versions.spec.ts`).
-    expect(MENTION_VERSION_DOCUMENT).toBe("doc-v2");
+    expect(MENTION_VERSION_DOCUMENT).toBe("doc-v3");
     // Mention et consentement sont DEUX axes : reformuler le texte affiché ne
     // change pas ce à quoi le signataire consent, et l'inverse.
     expect(CONSENTEMENT_VERSION_DOCUMENT).not.toBe(MENTION_VERSION_DOCUMENT);

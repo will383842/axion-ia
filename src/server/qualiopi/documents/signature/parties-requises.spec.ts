@@ -12,6 +12,7 @@ import { describe, it, expect } from "vitest";
 import { readFileSync, readdirSync, statSync } from "node:fs";
 import { join } from "node:path";
 import {
+  CIRCUITS_SIGNATURE_LISTE,
   circuitPour,
   partiesRequisesPour,
   pieceSignable,
@@ -172,5 +173,27 @@ describe("🔴 mandat OPCO — canal et parties épinglés (INT-T66-A)", () => {
 
   it("le mandant donne, l'organisme accepte en dernier — l'OPCO ne signe pas", () => {
     expect(partiesRequisesPour("mandat_opco")).toStrictEqual(["client", "axionia"]);
+  });
+});
+
+describe("🔴 libellé du mandat — ce que lit le client (L11-S1)", () => {
+  it("« procuration spéciale », au féminin, sans note interne", () => {
+    const c = circuitPour("mandat_opco");
+    expect(c?.libelle).toBe("procuration spéciale");
+    expect(c?.libelleDefini).toBe("la procuration spéciale");
+    expect(c?.genre).toBe("feminin");
+  });
+
+  it("aucun circuit n'affiche de parenthèse ni de mot interne dans ses libellés", () => {
+    // Mots écrits par concaténation : ce fichier ne porte pas le mot en clair.
+    const interdits = ["OP" + "CO", "prise en " + "charge", "finan" + "ceur", "Quali" + "opi"];
+    expect(CIRCUITS_SIGNATURE_LISTE.length).toBeGreaterThan(5);
+    for (const c of CIRCUITS_SIGNATURE_LISTE) {
+      for (const texte of [c.libelle, c.libelleDefini]) {
+        expect(texte, texte).not.toMatch(/[()]/);
+        for (const mot of interdits)
+          expect(texte.toLowerCase(), texte).not.toContain(mot.toLowerCase());
+      }
+    }
   });
 });
