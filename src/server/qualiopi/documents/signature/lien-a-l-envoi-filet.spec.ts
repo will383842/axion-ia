@@ -148,7 +148,14 @@ function devisRelu() {
     replacesDevisId: null,
     replacesDevis: null,
     dateValidite: new Date("2026-12-15T00:00:00Z"),
-    client: { raisonSociale: "ACME", contactNom: "C", contactFonction: null, type: "entreprise" },
+    fichierPdfUrl: "documents/2026/devis/AXI-DOC-001.pdf",
+    client: {
+      raisonSociale: "ACME",
+      contactNom: "C",
+      contactFonction: null,
+      contactEmail: "dest@client.test",
+      type: "entreprise",
+    },
   };
 }
 
@@ -185,6 +192,7 @@ const LIGNE = {
   recipient: "dest@client.test",
   entityType: "Devis",
   entityId: "d-1",
+  pieceJointeCle: "documents/2026/devis/AXI-DOC-001.pdf",
 };
 const payload = {
   lienSignatureALEnvoi: {

@@ -78,6 +78,11 @@ const cleDevisValide = (cle: string, numeroPiece: unknown): boolean => {
   );
 };
 
+const MSG_ADRESSE_CHANGEE =
+  "L'adresse du contact a changé depuis la préparation de cet e-mail. Refusez-le, puis préparez-en un nouveau.";
+const MSG_PDF_CHANGE =
+  "Le PDF de ce devis a changé depuis la préparation de cet e-mail. Refusez-le, puis préparez-en un nouveau.";
+
 const MSG_JETON = "Le lien de signature n'a pas pu être créé : refusez cet e-mail et réessayez.";
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -204,6 +209,8 @@ export interface LigneALEnvoi {
   recipient: string;
   entityType: string;
   entityId: string;
+  /** Clé R2 de la première pièce jointe de la ligne (le PDF du devis), recontrôlée au renvoi. */
+  pieceJointeCle?: string | null;
 }
 
 /** Le verrou d'envoi de ce devis est déjà pris (autre clic, remise en main propre…). */
@@ -731,7 +738,15 @@ async function renvoi<R extends VerdictEnfilage>(a: {
             offre: true,
             documentGenereId: true,
             dateValidite: true,
-            client: { select: { raisonSociale: true, contactNom: true, contactFonction: true } },
+            fichierPdfUrl: true,
+            client: {
+              select: {
+                raisonSociale: true,
+                contactNom: true,
+                contactFonction: true,
+                contactEmail: true,
+              },
+            },
           },
         });
         if (!devis) return refus(MSG_INTROUVABLE);
@@ -754,6 +769,18 @@ async function renvoi<R extends VerdictEnfilage>(a: {
           !(await formulesActives(undefined, { clientId: devis.clientId, tx }))
         ) {
           return refus(MSG_FORMULES);
+        }
+
+        // L'adresse du contact a changé depuis la préparation : le jeton serait lié à une adresse
+        // qui n'est plus celle du contact. Refus AVANT tout jeton (comparaison sans casse ni espaces).
+        const adresseActuelle = (devis.client.contactEmail ?? "").trim().toLowerCase();
+        if (adresseActuelle !== ligne.recipient.trim().toLowerCase()) {
+          return refus(MSG_ADRESSE_CHANGEE);
+        }
+        // Le PDF joint est recontrôlé : forme attendue ET identique au PDF actuel du devis.
+        const cleJointe = ligne.pieceJointeCle ?? "";
+        if (!FORME_CLE_PDF.test(cleJointe) || cleJointe !== (devis.fichierPdfUrl ?? "")) {
+          return refus(MSG_PDF_CHANGE);
         }
 
         // (c) URL de base AVANT le jeton : créer le jeton révoque l'ancien lien.

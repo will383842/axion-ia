@@ -11,7 +11,11 @@
 import { masquerSecretsTexte } from "@/lib/email/masquer-secrets";
 
 /** Gabarits dont le payload porte un lien de signature sous la clé `signatureUrl`. */
-export const GABARITS_AVEC_LIEN_SIGNATURE: readonly string[] = ["devis-envoi", "convention-envoi"];
+export const GABARITS_AVEC_LIEN_SIGNATURE: readonly string[] = [
+  "devis-envoi",
+  "convention-envoi",
+  "relance-devis-client",
+];
 
 /**
  * Gabarits formateurs dont le payload porte un lien de signature à jeton sous la clé `lien`

@@ -40,7 +40,12 @@ import {
 import { hashEmailForLookup } from "@/lib/security/email-hash";
 import { prisma } from "@/lib/prisma";
 import { VARIANTES_VALIDEES_A_PART } from "@/server/email/textes-formateurs-a-valider";
-import { motifRelanceDevisSansObjet } from "@/server/qualiopi/devis/relance-devis-sans-objet";
+import * as Sentry from "@sentry/nextjs";
+import { sendTelegram } from "@/lib/telegram";
+import {
+  MOTIF_RELANCE_DEVIS_INTROUVABLE,
+  motifRelanceDevisSansObjet,
+} from "@/server/qualiopi/devis/relance-devis-sans-objet";
 import { blocageCumule } from "@/server/qualiopi/documents/signature/echecs-cumules";
 import { estTexteValide } from "@/server/email/textes-valides";
 import { lireTextesValides } from "@/server/email/textes-valides-lecture";
@@ -643,20 +648,43 @@ const relireCodeDevis: LecteurAuDepart = async (job) => {
   }
 };
 
+const FORME_NUMERO_DEVIS = /^[A-Za-z0-9._-]{1,40}$/;
+
+/** Alerte interne : une relance munie de son lien disparaît parce que son devis est introuvable. */
+function alerterRelanceSansDevis(payload: unknown): void {
+  const n =
+    payload !== null && typeof payload === "object" && !Array.isArray(payload)
+      ? (payload as Record<string, unknown>).numero
+      : undefined;
+  const numero = typeof n === "string" && FORME_NUMERO_DEVIS.test(n) ? `Devis ${n}` : "Un devis";
+  const texte = `${numero} : e-mail de relance NON envoyé, devis introuvable ou non lié au départ. L'ancien lien du client a été révoqué et le lien neuf n'a été remis à personne : renvoyez le devis depuis sa fiche.`;
+  try {
+    Sentry.captureMessage(texte, {
+      level: "error",
+      tags: { action: "relanceDevisSansDevisAuDepart" },
+    });
+  } catch {
+    // Une alerte qui échoue ne change pas l'issue.
+  }
+  sendTelegram({ tag: "AUTO", body: `🔴 ${texte}` }).catch(() => {});
+}
+
 /**
  * Relance de devis (B3) : la relance est-elle encore utile AU DÉPART ? Même module que
  * l'approbation (`motifRelanceDevisSansObjet`) : signé, refusé, accepté, périmé, remplacé, remis
- * en main propre → retenue. Échec fermé : sans devis lié ou base muette, on retient.
+ * en main propre → retenue SILENCIEUSE (légitime).
+ * Une ERREUR de lecture n'est PAS une retenue : elle remonte (`echecAuDepart` : nouveaux essais,
+ * puis journal clos en échec), car le jeton neuf a déjà révoqué l'ancien lien. Un devis
+ * introuvable / non lié retient ET lève une alerte (jamais de jeton, d'adresse ni de nom).
  */
 const relireRelanceDevisClient: LecteurAuDepart = async (job) => {
-  try {
-    if (job.entityType !== "Devis" || !job.entityId) {
-      return "devis non lié à la relance — retenu par prudence";
-    }
-    return await motifRelanceDevisSansObjet(prisma, job.entityId, new Date());
-  } catch {
-    return "état illisible au départ — retenu par prudence";
+  if (job.entityType !== "Devis" || !job.entityId) {
+    alerterRelanceSansDevis(job.payload);
+    return "devis non lié à la relance — retenu par prudence";
   }
+  const motif = await motifRelanceDevisSansObjet(prisma, job.entityId, new Date());
+  if (motif === MOTIF_RELANCE_DEVIS_INTROUVABLE) alerterRelanceSansDevis(job.payload);
+  return motif;
 };
 
 /** Le registre : gabarit → lecteur d'état. */

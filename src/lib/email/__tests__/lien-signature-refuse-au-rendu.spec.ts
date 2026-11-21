@@ -44,7 +44,7 @@ describe("lienSignatureRefuseAuRendu", () => {
       expect(lienSignatureRefuseAuRendu("devis-envoi", AUTRE)).toBe(false);
     }
   });
-  it("G5 — SITE_URL en http mais non local : lien https du même hôte → refusé", () => {
+  it("G5 — SITE_URL en http mais non local : lien https du même hôte → permis (seul l'hôte est comparé) ; autre hôte → refusé", () => {
     h.site = "http://axion-ia.com";
     expect(lienSignatureRefuseAuRendu("devis-envoi", BON)).toBe(false);
     expect(lienSignatureRefuseAuRendu("devis-envoi", AUTRE)).toBe(true);

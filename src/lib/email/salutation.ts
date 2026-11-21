@@ -112,3 +112,30 @@ export function salutation(id: IdentiteSalutation, locale: string): string {
   if (prenom) return `${bonjour} ${prenom},`;
   return `${bonjour},`;
 }
+
+export type SalutationPayload =
+  | { readonly civilite: CiviliteSalutation; readonly nomFamille: string }
+  | { readonly prenom: string }
+  | Record<string, never>;
+
+/**
+ * La clé `salutation` du payload d'un e-mail de devis (envoi, renvoi, relance) — fonction PURE.
+ * Civilité ET nom de famille fiables → `{ civilite, nomFamille }` ; sinon prénom → `{ prenom }` ;
+ * sinon `{}` ; `undefined` (clé à omettre) seulement si `clientNom` est vide.
+ * ⛔ Jamais `contactNom` découpé, jamais de civilité devinée.
+ * Règle identique à `src/server/qualiopi/crm/salutation-payload.ts` (verrouillée par un test).
+ */
+export function salutationPourPayload(e: {
+  clientNom: string;
+  contactCivilite?: unknown;
+  contactPrenom?: unknown;
+  contactNomFamille?: unknown;
+}): SalutationPayload | undefined {
+  if (e.clientNom.trim() === "") return undefined;
+  const civilite = normaliserCivilite(e.contactCivilite);
+  const nomFamille = nettoyerNomPropre(e.contactNomFamille, { particules: true });
+  if (civilite && nomFamille) return { civilite, nomFamille };
+  const prenom = nettoyerNomPropre(e.contactPrenom);
+  if (prenom) return { prenom };
+  return {};
+}

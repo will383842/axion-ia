@@ -15,6 +15,7 @@ const d = vi.hoisted(() => ({
   findFirst: vi.fn(),
   updateMany: vi.fn(),
   retenue: false,
+  siteUrl: { value: "https://axion-ia.com" },
 }));
 
 vi.mock("bullmq", async () => {
@@ -38,7 +39,11 @@ vi.mock("@sentry/nextjs", () => ({
   captureException: (...a: unknown[]) => d.sentryExc(...a),
 }));
 vi.mock("@/lib/telegram", () => ({ sendTelegram: (...a: unknown[]) => d.telegram(...a) }));
-vi.mock("@/lib/site-url", () => ({ SITE_URL: "https://axion-ia.com" }));
+vi.mock("@/lib/site-url", () => ({
+  get SITE_URL() {
+    return d.siteUrl.value;
+  },
+}));
 vi.mock("../../connection", () => ({ getBullConnectionOrThrow: () => ({ host: "doublure" }) }));
 vi.mock("../../lib/sentry-worker", () => ({ captureWorkerError: vi.fn() }));
 vi.mock("../../lib/sanitize-job-data", () => ({ redactEmailValue: (v: string) => v }));
@@ -89,9 +94,9 @@ const JETON = "SECRETJETON.ABC";
 const LIEN_AUTRE = `https://autre.example/fr/portail/signer/${JETON}`;
 const LIEN_BON = `https://axion-ia.com/fr/portail/signer/${JETON}`;
 
-function job(template: string, payload: Record<string, unknown>, attemptsMade = 0) {
+function job(template: string, payload: Record<string, unknown>, attemptsMade = 0, id = "job-1") {
   return {
-    id: "job-1",
+    id,
     name: template,
     timestamp: Date.now(),
     data: {
@@ -158,27 +163,33 @@ describe.each(["devis-envoi", "relance-devis-client"])("lien refusé au rendu �
     expect(d.cloturer.mock.calls[0]![0].attempts).toBe(1);
   });
 
-  it("W4 — la ligne de corbeille « envoyé » passe « refusé » avec le motif", async () => {
-    await processeur()(job(gabarit, { numero: "D-1", signatureUrl: LIEN_AUTRE })).catch(() => {});
+  it("W4 — LA ligne de la tâche `outbox-<id>` passe « refusé » (approuvé ou envoyé), avec le motif", async () => {
+    await processeur()(
+      job(gabarit, { numero: "D-1", signatureUrl: LIEN_AUTRE }, 0, "outbox-ligne-1"),
+    ).catch(() => {});
     expect(d.updateMany).toHaveBeenCalledWith({
-      where: { id: "ligne-1", statut: "envoye" },
+      where: { id: "ligne-1", statut: { in: ["approuve", "envoye"] } },
       data: expect.objectContaining({ statut: "refuse", refuseMotif: MOTIF_LIEN_REFUSE_AU_RENDU }),
     });
+    expect(d.findFirst).not.toHaveBeenCalled();
   });
 
-  it("W4 — aucune ligne, ou lecture qui lève : l'échec a quand même lieu", async () => {
-    d.findFirst.mockResolvedValueOnce(null);
-    let e = await processeur()(job(gabarit, { numero: "D-1", signatureUrl: LIEN_AUTRE })).catch(
+  it("W4 — tâche sans `outbox-` (envoi direct) : aucune écriture de corbeille, l'échec a lieu", async () => {
+    const e = await processeur()(job(gabarit, { numero: "D-1", signatureUrl: LIEN_AUTRE })).catch(
       (x) => x,
     );
     expect(e).toBeInstanceOf(UnrecoverableError);
     expect(d.updateMany).not.toHaveBeenCalled();
-    d.findFirst.mockRejectedValueOnce(new Error("base muette"));
-    e = await processeur()(job(gabarit, { numero: "D-1", signatureUrl: LIEN_AUTRE })).catch(
-      (x) => x,
-    );
+    expect(d.findFirst).not.toHaveBeenCalled();
+  });
+
+  it("W4 — écriture de corbeille qui lève : l'échec a quand même lieu", async () => {
+    d.updateMany.mockRejectedValueOnce(new Error("base muette"));
+    const e = await processeur()(
+      job(gabarit, { numero: "D-1", signatureUrl: LIEN_AUTRE }, 0, "outbox-ligne-1"),
+    ).catch((x) => x);
     expect(e).toBeInstanceOf(UnrecoverableError);
-    expect(d.cloturer).toHaveBeenCalledTimes(2);
+    expect(d.cloturer).toHaveBeenCalledTimes(1);
   });
 
   it("W5/W6 — alerte au numéro ; aucune URL, jeton, adresse dans aucune sortie", async () => {
@@ -213,6 +224,20 @@ describe.each(["devis-envoi", "relance-devis-client"])("lien refusé au rendu �
   it("W7 — lien absent : envoi (sans bouton)", async () => {
     await processeur()(job(gabarit, { numero: "D-1" }));
     expect(d.sendEmail).toHaveBeenCalledTimes(1);
+  });
+});
+
+describe("W8 — garde inactive (SITE_URL local)", () => {
+  it("lien refusé mais SITE_URL local : rendu et envoi appelés", async () => {
+    d.siteUrl.value = "http://localhost:3000";
+    try {
+      await processeur()(job("devis-envoi", { numero: "D-1", signatureUrl: LIEN_AUTRE }));
+    } finally {
+      d.siteUrl.value = "https://axion-ia.com";
+    }
+    expect(d.render).toHaveBeenCalledTimes(1);
+    expect(d.sendEmail).toHaveBeenCalledTimes(1);
+    expect(d.telegram).not.toHaveBeenCalled();
   });
 });
 

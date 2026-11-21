@@ -5,7 +5,11 @@ const h = vi.hoisted(() => ({
   unique: vi.fn(),
   count: vi.fn(),
   trace: vi.fn(),
+  sentry: vi.fn(),
+  telegram: vi.fn(() => Promise.resolve()),
 }));
+vi.mock("@sentry/nextjs", () => ({ captureMessage: h.sentry }));
+vi.mock("@/lib/telegram", () => ({ sendTelegram: h.telegram }));
 vi.mock("@/lib/prisma", () => ({
   prisma: {
     devis: { findUnique: h.unique, count: h.count },
@@ -43,9 +47,34 @@ describe("lecteur relance-devis-client", () => {
     h.unique.mockResolvedValue({ statut: "envoye", dateValidite: new Date(Date.now() - 1e6) });
     expect(await lecteur()(job as never)).toMatch(/validité du devis est dépassée/);
   });
-  it("échec fermé : base muette ou devis non lié → retenue", async () => {
+  it("devis signé : retenue silencieuse, aucune alerte", async () => {
+    h.count.mockResolvedValue(0);
+    expect(await lecteur()(job as never)).toMatch(/déjà signé/);
+    expect(h.sentry).not.toHaveBeenCalled();
+    expect(h.telegram).not.toHaveBeenCalled();
+  });
+  it("lecture en erreur : l'exception remonte (pas de « annulé »), sans alerte ici", async () => {
     h.unique.mockRejectedValue(new Error("base"));
-    expect(await lecteur()(job as never)).toMatch(/retenu par prudence/);
+    await expect(lecteur()(job as never)).rejects.toThrow("base");
+    expect(h.sentry).not.toHaveBeenCalled();
+  });
+  it("devis introuvable : retenue + alerte au numéro du payload", async () => {
+    h.unique.mockResolvedValue(null);
+    const r = await lecteur()({ ...job, payload: { numero: "DEV-2026-001" } } as never);
+    expect(r).toMatch(/introuvable/);
+    expect(h.sentry).toHaveBeenCalledTimes(1);
+    expect(String((h.sentry.mock.calls[0] as unknown[])[0])).toContain("Devis DEV-2026-001");
+    expect(h.telegram).toHaveBeenCalledTimes(1);
+  });
+  it("devis introuvable, numéro illisible : alerte sans numéro", async () => {
+    h.unique.mockResolvedValue(null);
+    await lecteur()({ ...job, payload: { numero: "x y <script>" } } as never);
+    const texte = String((h.sentry.mock.calls[0] as unknown[])[0]);
+    expect(texte).toMatch(/^Un devis :/);
+    expect(texte).not.toContain("script");
+  });
+  it("devis non lié : retenue + alerte sans numéro", async () => {
     expect(await lecteur()({ template: "relance-devis-client" } as never)).toMatch(/prudence/);
+    expect(h.sentry).toHaveBeenCalledTimes(1);
   });
 });

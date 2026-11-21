@@ -12,13 +12,13 @@ import { UnrecoverableError } from "bullmq";
 import { prisma } from "@/lib/prisma";
 import { sendTelegram } from "@/lib/telegram";
 import { cloturerJournal } from "@/server/email/email-log";
+import { idLigneDepuisCleTache } from "@/server/email/outbox-en-cours";
 import { EmailLogStatus } from "../../../prisma/generated/client";
 
 export const MOTIF_LIEN_REFUSE_AU_RENDU =
   "Non envoyé : le lien de signature n'est pas reconnu par le serveur d'envoi (adresse du site différente). Corrigez le réglage, puis renvoyez le devis depuis sa fiche.";
 
 const FORME_NUMERO = /^[A-Za-z0-9._-]{1,40}$/;
-const FENETRE_CORBEILLE_MS = 10 * 60 * 1000;
 
 /** Numéro du devis lu dans la charge, SEULEMENT s'il a la forme d'un numéro. */
 export function numeroDevisSur(payload: unknown): string {
@@ -55,28 +55,18 @@ export async function traiterLienSignatureRefuse(a: {
     ...(a.job.id ? { jobId: a.job.id } : {}),
   });
 
-  // 2. Corbeille, au mieux : la ligne « envoyé » de cet envoi passe « refusé » avec le motif.
-  if (a.entityType === "Devis" && a.entityId) {
+  // 2. Corbeille, au mieux : LA ligne de cet envoi (id tiré de l'identifiant de tâche
+  // `outbox-<id>`) passe « refusé » avec le motif. Envoi direct (pas d'`outbox-`) : aucune
+  // écriture, le journal clos et l'alerte suffisent. L'écriture finale du site exige
+  // `statut: "approuve"` : elle rendra 0 et ne fera que journaliser un avertissement Sentry
+  // (« la ligne n'était plus « approuvé » à l'écriture »), sans plantage.
+  const idLigne = idLigneDepuisCleTache(a.job.id);
+  if (idLigne !== null) {
     try {
-      const depuis = new Date((a.job.timestamp ?? Date.now()) - FENETRE_CORBEILLE_MS);
-      const ligne = await prisma.emailOutbox.findFirst({
-        where: {
-          template: a.template,
-          entityType: "Devis",
-          entityId: a.entityId,
-          recipient: a.to,
-          statut: "envoye",
-          envoyeAt: { gte: depuis },
-        },
-        orderBy: { envoyeAt: "desc" },
-        select: { id: true },
+      await prisma.emailOutbox.updateMany({
+        where: { id: idLigne, statut: { in: ["approuve", "envoye"] } },
+        data: { statut: "refuse", refuseAt: new Date(), refuseMotif: MOTIF_LIEN_REFUSE_AU_RENDU },
       });
-      if (ligne) {
-        await prisma.emailOutbox.updateMany({
-          where: { id: ligne.id, statut: "envoye" },
-          data: { statut: "refuse", refuseAt: new Date(), refuseMotif: MOTIF_LIEN_REFUSE_AU_RENDU },
-        });
-      }
     } catch {
       // Au mieux : le journal clos et l'alerte restent.
     }

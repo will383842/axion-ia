@@ -166,6 +166,7 @@ export async function approuverEmailAction(
         recipient: email.recipient,
         entityType: email.entityType ?? "",
         entityId: email.entityId ?? "",
+        pieceJointeCle: attachments?.[0]?.r2Key ?? null,
       },
       payload,
       acteur: { session },
