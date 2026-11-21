@@ -252,8 +252,13 @@ export async function transactionDevisSigne<R>(
   travail: (tx: Prisma.TransactionClient) => Promise<R>,
   options?: { toujoursEnTransaction?: boolean },
 ): Promise<R> {
-  if (options?.toujoursEnTransaction === true) return client.$transaction((tx) => travail(tx));
-  if (!canalPartnersOuvert()) return travail(client);
+  // Le verrou du canal COMMENCE la fonction (garde `partners:inertie`, R2). Canal fermé : sans
+  // transaction, sauf `toujoursEnTransaction` (écrivain qui doit pouvoir annuler après coup).
+  if (!canalPartnersOuvert()) {
+    return options?.toujoursEnTransaction === true
+      ? client.$transaction((tx) => travail(tx))
+      : travail(client);
+  }
   return client.$transaction((tx) => travail(tx));
 }
 
