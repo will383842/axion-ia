@@ -13,6 +13,8 @@ const etat = vi.hoisted(() => ({
   contresigner: new Set<string>(),
   mainPropre: new Set<string>(),
   demandesMainPropre: [] as string[][],
+  /** devisId → fin du délai demandé par le client (ISO). */
+  delais: new Map<string, string>(),
 }));
 
 const il_y_a = (j: number) => new Date(Date.now() - j * 86_400_000);
@@ -42,6 +44,7 @@ vi.mock("@/server/qualiopi/crm/devis", () => ({
       ligne("deja-relance"),
       ligne("signe"),
       ligne("main-propre"),
+      ligne("delai"),
       ligne("accepte", { statut: "accepte" }),
     ]),
 }));
@@ -54,7 +57,23 @@ vi.mock("@/server/qualiopi/documents/signature/pieces-en-attente", () => ({
 vi.mock("@/lib/prisma", () => ({
   prisma: {
     activityLog: {
-      findMany: (args: { where: { targetId: { in: string[] } } }) => {
+      findMany: (args: {
+        where: { action: string | { in: string[] }; targetId: { in: string[] } };
+      }) => {
+        // Lecture des délais demandés par le client (actions `...delai_client.*`).
+        if (typeof args.where.action !== "string") {
+          return Promise.resolve(
+            args.where.targetId.in
+              .filter((i) => etat.delais.has(i))
+              .map((targetId) => ({
+                targetId,
+                action: "qualiopi.devis.delai_client.demande",
+                changes: { finDelai: etat.delais.get(targetId) },
+                createdAt: new Date(),
+                id: `e-${targetId}`,
+              })),
+          );
+        }
         etat.demandesMainPropre.push(args.where.targetId.in);
         return Promise.resolve(
           args.where.targetId.in
@@ -101,6 +120,7 @@ describe("liste des devis : pastille « À relancer »", () => {
     etat.demandes = [];
     etat.mainPropre = new Set(["main-propre"]);
     etat.demandesMainPropre = [];
+    etat.delais = new Map([["delai", new Date(Date.now() + 5 * JOUR).toISOString()]]);
   });
 
   it("présente seulement sur le devis envoyé, non signé, valide, vieux de 3 jours, sans relance récente", async () => {
@@ -110,12 +130,26 @@ describe("liste des devis : pastille « À relancer »", () => {
   it("une seule lecture groupée, limitée aux candidats", async () => {
     await afficher();
     expect(etat.demandes).toHaveLength(1);
-    expect(etat.demandes[0]?.sort()).toEqual(["deja-relance", "main-propre", "ok"]);
+    expect(etat.demandes[0]?.sort()).toEqual(["deja-relance", "delai", "main-propre", "ok"]);
   });
 
   it("pas de pastille sur un devis remis en main propre, une seule lecture groupée", async () => {
     expect(avecPastille(await afficher())).not.toContain("main-propre");
     expect(etat.demandesMainPropre).toHaveLength(1);
-    expect(etat.demandesMainPropre[0]?.sort()).toEqual(["deja-relance", "main-propre", "ok"]);
+    expect(etat.demandesMainPropre[0]?.sort()).toEqual([
+      "deja-relance",
+      "delai",
+      "main-propre",
+      "ok",
+    ]);
+  });
+
+  it("pas de pastille sur un devis en délai demandé par le client", async () => {
+    expect(avecPastille(await afficher())).not.toContain("delai");
+  });
+
+  it("délai échu : la pastille revient", async () => {
+    etat.delais = new Map([["delai", new Date(Date.now() - 1000).toISOString()]]);
+    expect(avecPastille(await afficher())).toContain("delai");
   });
 });

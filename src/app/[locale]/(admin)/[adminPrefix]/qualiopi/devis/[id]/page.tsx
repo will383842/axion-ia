@@ -20,6 +20,12 @@ import { BadgeEmailDevis } from "@/components/admin/qualiopi/BadgeEmailDevis";
 import { AdminButton } from "@/components/admin/ui/AdminButton";
 import { peutCorrigerBrouillonClassique } from "@/server/qualiopi/devis/brouillon-classique-modifiable";
 import { DevisLifecycleButtons } from "@/components/admin/qualiopi/DevisLifecycleButtons";
+import { DevisDelaiClient } from "@/components/admin/qualiopi/DevisDelaiClient";
+import {
+  bornesDelaiClient,
+  delaisClientActifs,
+  peutDemanderDelai,
+} from "@/server/qualiopi/devis/delai-client";
 import { ChoixClientSigne } from "@/components/admin/qualiopi/ChoixClientSigne";
 import { offreDevisV1 } from "@/server/qualiopi/devis/offre-devis";
 import { choixImprimable } from "@/server/qualiopi/devis/choix-exemplaire";
@@ -351,6 +357,29 @@ export default async function QualiopiDevisDetailPage({ params, searchParams }: 
     devis.offreSha256 === null;
   const repriseParRelance =
     clientASigne && organismeASigne && devis.statut === "envoye" && devis.offreSha256 !== null;
+  // « Le client demande un délai » : devis envoyé, valide, non signé, avec droit d'écriture. La
+  // lecture du délai en cours est « ouverte en cas d'erreur » (aucun délai : on montre comme avant).
+  const maintenantDelai = new Date();
+  const delaiProposable = peutDemanderDelai({
+    statut: devis.statut,
+    clientASigne,
+    signeParClient,
+    signeDesDeuxParties,
+    repriseParRelance,
+    peutEcrire: acces.peutEcrire,
+    dateValidite: devis.dateValidite,
+    maintenant: maintenantDelai,
+  });
+  const finDelaiClient = delaiProposable
+    ? ((
+        await delaisClientActifs(prisma, maintenantDelai, [devis.id]).catch(
+          () => new Map<string, Date>(),
+        )
+      ).get(devis.id) ?? null)
+    : null;
+  const bornesDelai = delaiProposable
+    ? bornesDelaiClient(maintenantDelai, devis.dateValidite)
+    : null;
   // X3 — devis CLASSIQUE (sans offre ni empreinte) signé des deux parties (pièce non annulée),
   // accepté : l'état de la confirmation de commande se lit en base, donc l'information qui suit
   // survit au rafraîchissement. « aucune » : reprise proposée (idempotente) ; « a_valider » : ligne
@@ -1113,6 +1142,25 @@ export default async function QualiopiDevisDetailPage({ params, searchParams }: 
           successeurEmis={successeurEmis}
           estimationTiersFigee={devisAEstimationTiersFigee(devis)}
         />
+        {delaiProposable ? (
+          <div className="mt-[var(--space-admin-3)]">
+            <DevisDelaiClient
+              devisId={devis.id}
+              numero={devis.numero}
+              delaiJusquAuLisible={
+                finDelaiClient
+                  ? new Intl.DateTimeFormat("fr-FR", {
+                      timeZone: "Europe/Paris",
+                      day: "2-digit",
+                      month: "2-digit",
+                      year: "numeric",
+                    }).format(finDelaiClient)
+                  : null
+              }
+              bornes={bornesDelai}
+            />
+          </div>
+        ) : null}
         {aideAdresse !== null ? (
           <p
             role="note"
