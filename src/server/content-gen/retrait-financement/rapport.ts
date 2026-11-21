@@ -351,12 +351,16 @@ export function construireRapport(
       "",
       "## Conservés sur décision du dirigeant",
       "",
-      "Champs laissés TELS QUELS : la porte 2 y refuse un terme sans rapport avec le financement de la formation (entrée `admis` du fichier d'overrides). Rien n'est écrit pour eux.",
+      "Champs laissés TELS QUELS : la porte 2 y refuse un terme sans rapport avec le financement de la formation (entrée `admis` du fichier d'overrides). Rien n'est écrit pour eux. Sous chaque champ : les phrases qui restent en ligne.",
       "",
     );
     for (const x of conserves)
-      for (const [c, termes] of Object.entries(x.conservesSurDecision ?? {}))
+      for (const [c, termes] of Object.entries(x.conservesSurDecision ?? {})) {
         l.push(`- \`${x.cle}\` · ${c} : termes admis : ${termes.join(", ")}`);
+        // Les PHRASES qui restent en ligne, une par ligne : un terme admis couvre toutes celles du champ.
+        for (const phrase of x.phrasesConservees?.[c] ?? [])
+          l.push(`  - phrase conservée — ${phrase}`);
+      }
   }
   l.push("", "## « prise en charge » conservées (hors financement)");
   for (const x of propositions) for (const c of x.conserves) l.push(`- \`${x.cle}\` : ${c}`);
