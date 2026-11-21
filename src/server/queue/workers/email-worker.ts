@@ -53,6 +53,7 @@ import {
 // Le registre des relectures au départ (CAMP-1) : base, déchiffrement, règles pures
 // seulement — même garde de graphe que `verdict-envoi`.
 import { gabaritEnSommeil } from "@/server/qualiopi/financements/sommeil";
+import { poserJetonOpposition } from "@/server/email/opposition-differee";
 import { RELECTURES_AU_DEPART } from "@/server/email/relecture-au-depart";
 import {
   MOTIF_ECHEC_SANS_ENVOI,
@@ -1193,14 +1194,20 @@ async function envoyerReponseUnSeulEnvoi<L extends LigneReponse>(
     }
 
     let messageId: string;
+    // NE JAMAIS RETIRER : le corps figé porte un REPÈRE, pas le jeton (aucune adresse décodable au
+    // repos). Un « Réessayer » peut rejouer une ligne figée des mois plus tard : le jeton se pose
+    // ICI, à chaque départ. `corps` n'est jamais écrit en base, ni journalisé, ni passé à Sentry.
+    const jetonOpp = jetonOpposition(to);
+    const corps = poserJetonOpposition({ html: ligne.bodyHtml, text: ligne.bodyText }, jetonOpp);
     envoiTente = true;
     try {
       const resultat = await sendEmail({
         to,
         subject: ligne.subject,
-        html: ligne.bodyHtml,
-        text: ligne.bodyText,
+        html: corps.html,
+        text: corps.text,
         replyTo,
+        unsubscribeToken: jetonOpp,
       });
       messageId = resultat.messageId;
     } catch (e) {
