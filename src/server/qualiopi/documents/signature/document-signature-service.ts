@@ -1133,6 +1133,7 @@ export async function signerDocument(
   // Mentions `devis-v1` : réservées à la signature du CLIENT sur un DEVIS, jamais en papier, et
   // toujours AVEC un consentement devis (texte lu et consentement scellé cohérents). Avant tout R2.
   if (input.mentionVersion !== undefined) {
+    if (input.mentionVersion !== MENTION_VERSION_DEVIS) return refus("porteur_non_autorise");
     if (papier || !estSignatureClientDevis(ctx.type, partie)) {
       return refus("porteur_non_autorise");
     }

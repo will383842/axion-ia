@@ -299,6 +299,20 @@ describe("devis-v1 — refus avant tout stockage", () => {
     );
   });
 
+  it("devis client + `mentionVersion` inconnue (forcée) + consentement absent : refus, aucun stockage", async () => {
+    mockPrisma.documentGenere.findUnique.mockResolvedValue(piece(null));
+    attendRefus(
+      await signerDocument(
+        entreeClassique({
+          mentionVersion: "xyz" as never,
+          consentementVersion: undefined,
+        }),
+      ),
+      "porteur_non_autorise",
+    );
+    expect(mockStore).not.toHaveBeenCalled();
+  });
+
   it("consentement devis sans `mentionVersion` devis : refus", async () => {
     mockPrisma.documentGenere.findUnique.mockResolvedValue(piece(null));
     attendRefus(

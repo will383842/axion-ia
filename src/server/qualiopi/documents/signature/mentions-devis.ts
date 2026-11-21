@@ -29,7 +29,7 @@ export function consentementVersionDevis(avecCode: boolean): VersionConsentement
 }
 
 /**
- * Les 15 éléments, dans l'ordre : attestation (case cochée, hors du dépli), valeur de la
+ * Les 14 éléments (1 attestation + 13 dans le dépli), dans l'ordre : attestation (case cochée, hors du dépli), valeur de la
  * signature, qui recueille et conserve, consentement (2 phrases), information RGPD (9 phrases).
  */
 export function mentionCompleteDevisV1(
