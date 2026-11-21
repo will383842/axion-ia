@@ -593,15 +593,33 @@ export function DevisLifecycleButtons({
             ci-dessus pour le conclure.
           </p>
         )}
-        {peutConclure && statut === "envoye" && signeDesDeuxParties && (
-          <p
-            data-testid="note-signe-des-deux-parties"
-            className="basis-full text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]"
-          >
-            Ce devis est signé des deux parties, mais son acceptation n&apos;a pas été enregistrée.
-            Cliquez sur « Marquer accepté » pour la finir.
-          </p>
-        )}
+        {peutEcrire &&
+          peutConclure &&
+          statut === "expire" &&
+          !successeurEmis &&
+          signeDesDeuxParties &&
+          !repriseParRelance && (
+            <button
+              type="button"
+              onClick={handleAcceptExpire}
+              disabled={isPending}
+              className="admin-button"
+              aria-label="Marquer le devis expiré comme accepté"
+            >
+              {isPending ? "…" : "Marquer accepté"}
+            </button>
+          )}
+        {peutConclure &&
+          (statut === "envoye" || (statut === "expire" && !successeurEmis && !repriseParRelance)) &&
+          signeDesDeuxParties && (
+            <p
+              data-testid="note-signe-des-deux-parties"
+              className="basis-full text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]"
+            >
+              Ce devis est signé des deux parties, mais son acceptation n&apos;a pas été
+              enregistrée. Cliquez sur « Marquer accepté » pour la finir.
+            </p>
+          )}
         {peutEcrire && statut === "envoye" && !signeParClient && !repriseParRelance && (
           <>
             {peutConclure && (

@@ -92,6 +92,33 @@ describe("DevisLifecycleButtons — signé par le client", () => {
     );
   });
 
+  it("🔴 expiré, signé des deux côtés : note dédiée et « Marquer accepté », ni refuser", () => {
+    render(<DevisLifecycleButtons devisId="d" statut="expire" signeDesDeuxParties clientASigne />);
+    expect(
+      screen.getByRole("button", { name: /Marquer le devis expiré comme accepté/ }),
+    ).toBeTruthy();
+    expect(screen.queryByRole("button", REFUSER)).toBeNull();
+    expect(screen.getByTestId("note-signe-des-deux-parties").textContent).toContain(
+      "Ce devis est signé des deux parties, mais son acceptation n'a pas été enregistrée.",
+    );
+  });
+
+  it("expiré, signé des deux côtés mais remplacé par une version émise : rien de proposé", () => {
+    render(
+      <DevisLifecycleButtons
+        devisId="d"
+        statut="expire"
+        signeDesDeuxParties
+        clientASigne
+        successeurEmis
+      />,
+    );
+    expect(screen.queryByTestId("note-signe-des-deux-parties")).toBeNull();
+    expect(
+      screen.queryByRole("button", { name: /Marquer le devis expiré comme accepté/ }),
+    ).toBeNull();
+  });
+
   it("sans droit d'écrire : l'avertissement du renvoi n'est pas affiché (le bouton est masqué)", () => {
     render(<DevisLifecycleButtons devisId="d" statut="envoye" peutEcrire={false} />);
     expect(screen.queryByRole("button", RENVOYER)).toBeNull();

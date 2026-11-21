@@ -1140,6 +1140,10 @@ export async function transformDevisToConventionAction(
   return { data: { id: idParsed.data } };
 }
 
+class RefusVersionRemplacee extends Error {}
+const MSG_REFUS_REMPLACE =
+  "Ce devis a été remplacé par une version plus récente : refusez la version en cours.";
+
 /**
  * Marque le devis comme refusé (statut → refuse, declinedAt = now).
  */
@@ -1165,12 +1169,37 @@ export async function declineDevisAction(id: string): Promise<ActionResult<{ id:
   if (lu.statut !== "envoye" && lu.statut !== "expire") {
     return { error: "Seul un devis envoyé (ou expiré) peut être refusé. Rechargez la page." };
   }
-  // Même garde reposée DANS l'écriture : un client qui signe entre la lecture et l'écriture.
-  const ecrit = await prisma.devis.updateMany({
-    where: { id: idParsed.data, statut: { in: ["envoye", "expire"] }, ...pasSigneParLeClient },
-    data: { statut: "refuse", declinedAt: new Date() },
+  // Version REMPLACÉE par une version émise : même contrôle que l'acceptation, sans écriture.
+  const successeurEmis = await prisma.devis.findFirst({
+    where: { replacesDevisId: idParsed.data, statut: { not: "brouillon" } },
+    select: { id: true },
   });
-  if (ecrit.count === 0) {
+  if (successeurEmis) return { error: MSG_REFUS_REMPLACE };
+  // Même garde reposée DANS l'écriture : un client qui signe entre la lecture et l'écriture.
+  // Transaction réelle : l'écriture prend le verrou de la ligne, puis la relecture de la version
+  // suivante (voir `acceptDevisAction`) annule le refus si son envoi vient d'être validé.
+  let ecritureVide = false;
+  try {
+    await prisma.$transaction(async (tx) => {
+      const ecrit = await tx.devis.updateMany({
+        where: { id: idParsed.data, statut: { in: ["envoye", "expire"] }, ...pasSigneParLeClient },
+        data: { statut: "refuse", declinedAt: new Date() },
+      });
+      if (ecrit.count === 0) {
+        ecritureVide = true;
+        return;
+      }
+      const successeurApresEcriture = await tx.devis.findFirst({
+        where: { replacesDevisId: idParsed.data, statut: { not: "brouillon" } },
+        select: { id: true },
+      });
+      if (successeurApresEcriture) throw new RefusVersionRemplacee();
+    });
+  } catch (err) {
+    if (err instanceof RefusVersionRemplacee) return { error: MSG_REFUS_REMPLACE };
+    throw err;
+  }
+  if (ecritureVide) {
     return { error: "Le devis a changé entre-temps (signature du client ?). Rechargez la page." };
   }
   const refuse = { documentGenereId: lu.documentGenereId };
