@@ -9,6 +9,7 @@ import { render, cleanup, fireEvent, screen, act } from "@testing-library/react"
 const repondre = vi.fn();
 const etat = vi.fn();
 vi.mock("@/features/admin-job-applications/reply-actions", () => ({
+  apercuReponseCandidatAction: async () => ({ ok: true, apercu: { html: "<p>Aperçu</p>" } }),
   repondreAuCandidatAction: (...a: unknown[]) => repondre(...a),
   rejouerReponseEchoueeAction: vi.fn(),
   etatLivraisonReponseAction: (...a: unknown[]) => etat(...a),
@@ -27,7 +28,7 @@ afterEach(() => {
   vi.useRealTimers();
 });
 
-function ouvrirEtRemplir(): HTMLElement {
+async function ouvrirEtRemplir(): Promise<HTMLElement> {
   render(
     <ComposerReponse
       applicationId="11111111-1111-1111-1111-111111111111"
@@ -38,13 +39,18 @@ function ouvrirEtRemplir(): HTMLElement {
   fireEvent.click(screen.getByRole("button", { name: "Répondre au candidat" }));
   fireEvent.change(screen.getByLabelText("Objet"), { target: { value: "Votre candidature" } });
   fireEvent.change(screen.getByLabelText("Message"), { target: { value: "Bonjour" } });
+  // Voir avant d'envoyer (I2-2) : « Envoyer » ne s'active qu'après l'aperçu exact.
+  fireEvent.click(screen.getByRole("button", { name: "Voir l’aperçu exact" }));
+  await act(async () => {
+    for (let i = 0; i < 6; i++) await Promise.resolve();
+  });
   return screen.getByRole("button", { name: "Envoyer" });
 }
 
 describe("ComposerReponse — double envoi", () => {
   it("🔴 deux clics rapprochés n'appellent l'envoi qu'UNE fois", async () => {
     repondre.mockResolvedValue({ ok: true, replyId: "r1" });
-    const bouton = ouvrirEtRemplir();
+    const bouton = await ouvrirEtRemplir();
     fireEvent.click(bouton);
     fireEvent.click(bouton);
     await act(async () => {
@@ -55,7 +61,7 @@ describe("ComposerReponse — double envoi", () => {
 
   it("🔴 le bouton reste verrouillé tant que le message est en file", async () => {
     repondre.mockResolvedValue({ ok: true, replyId: "r1" });
-    ouvrirEtRemplir();
+    await ouvrirEtRemplir();
     fireEvent.click(screen.getByRole("button", { name: "Envoyer" }));
     await act(async () => {
       await Promise.resolve();
@@ -73,7 +79,7 @@ describe("ComposerReponse — libellé d'envoi", () => {
   async function jusquAuSondage(statut: string): Promise<void> {
     repondre.mockResolvedValue({ ok: true, replyId: "r1" });
     etat.mockResolvedValue({ statut, erreur: null });
-    ouvrirEtRemplir();
+    await ouvrirEtRemplir();
     fireEvent.click(screen.getByRole("button", { name: "Envoyer" }));
     await act(async () => {
       await Promise.resolve();
@@ -94,7 +100,7 @@ describe("ComposerReponse — worker lent et rouverture", () => {
   async function envoyerPuisAttendre(ms: number): Promise<void> {
     repondre.mockResolvedValue({ ok: true, replyId: "r1" });
     etat.mockResolvedValue({ statut: "pending", erreur: null });
-    ouvrirEtRemplir();
+    await ouvrirEtRemplir();
     fireEvent.click(screen.getByRole("button", { name: "Envoyer" }));
     await act(async () => {
       await Promise.resolve();
@@ -122,7 +128,7 @@ describe("ComposerReponse — worker lent et rouverture", () => {
   async function envoyerEtConfirmerSent(): Promise<void> {
     repondre.mockResolvedValue({ ok: true, replyId: "r1" });
     etat.mockResolvedValue({ statut: "sent", erreur: null });
-    ouvrirEtRemplir();
+    await ouvrirEtRemplir();
     fireEvent.click(screen.getByRole("button", { name: "Envoyer" }));
     await act(async () => {
       await Promise.resolve();
@@ -143,6 +149,12 @@ describe("ComposerReponse — worker lent et rouverture", () => {
     await act(async () => {
       await Promise.resolve();
     });
+    // Le texte a changé : l'aperçu est périmé, « Envoyer » attend un nouvel aperçu (I2-2).
+    // Une fois revu, l'envoi est rouvert — preuve que la phase « envoyé » a bien été levée.
+    fireEvent.click(screen.getByRole("button", { name: "Voir l’aperçu exact" }));
+    await act(async () => {
+      for (let i = 0; i < 6; i++) await Promise.resolve();
+    });
     expect((screen.getByRole("button", { name: "Envoyer" }) as HTMLButtonElement).disabled).toBe(
       false,
     );
@@ -162,6 +174,11 @@ describe("ComposerReponse — worker lent et rouverture", () => {
     fireEvent.click(screen.getByRole("button", { name: "Répondre au candidat" }));
     fireEvent.change(screen.getByLabelText("Objet"), { target: { value: "Votre candidature" } });
     fireEvent.change(screen.getByLabelText("Message"), { target: { value: "Bonjour" } });
+    // Voir avant d'envoyer (I2-2) : « Envoyer » ne s'active qu'après l'aperçu exact.
+    fireEvent.click(screen.getByRole("button", { name: "Voir l’aperçu exact" }));
+    await act(async () => {
+      for (let i = 0; i < 6; i++) await Promise.resolve();
+    });
     fireEvent.click(screen.getByRole("button", { name: "Envoyer" }));
     await act(async () => {
       await Promise.resolve();
@@ -173,6 +190,12 @@ describe("ComposerReponse — worker lent et rouverture", () => {
       true,
     );
     fireEvent.click(screen.getByRole("button", { name: "Mon lien" }));
+    // Le texte a changé : l'aperçu est périmé, « Envoyer » attend un nouvel aperçu (I2-2).
+    // Une fois revu, l'envoi est rouvert — preuve que la phase « envoyé » a bien été levée.
+    fireEvent.click(screen.getByRole("button", { name: "Voir l’aperçu exact" }));
+    await act(async () => {
+      for (let i = 0; i < 6; i++) await Promise.resolve();
+    });
     expect((screen.getByRole("button", { name: "Envoyer" }) as HTMLButtonElement).disabled).toBe(
       false,
     );

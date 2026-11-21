@@ -11,6 +11,7 @@ const repondre = vi.fn();
 const etat = vi.fn();
 const rejouerMock = vi.fn();
 vi.mock("@/features/admin-job-applications/reply-actions", () => ({
+  apercuReponseCandidatAction: async () => ({ ok: true, apercu: { html: "<p>Aperçu</p>" } }),
   repondreAuCandidatAction: (...a: unknown[]) => repondre(...a),
   rejouerReponseEchoueeAction: (...a: unknown[]) => rejouerMock(...a),
   etatLivraisonReponseAction: (...a: unknown[]) => etat(...a),
@@ -44,6 +45,11 @@ async function envoyerPuisSonder(statut: string, erreur: string | null = null): 
   fireEvent.click(screen.getByRole("button", { name: "Répondre au candidat" }));
   fireEvent.change(screen.getByLabelText("Objet"), { target: { value: "Votre candidature" } });
   fireEvent.change(screen.getByLabelText("Message"), { target: { value: "Bonjour" } });
+  // Voir avant d'envoyer (I2-2) : « Envoyer » ne s'active qu'après l'aperçu exact.
+  fireEvent.click(screen.getByRole("button", { name: "Voir l’aperçu exact" }));
+  await act(async () => {
+    for (let i = 0; i < 6; i++) await Promise.resolve();
+  });
   fireEvent.click(screen.getByRole("button", { name: "Envoyer" }));
   await act(async () => {
     await Promise.resolve();

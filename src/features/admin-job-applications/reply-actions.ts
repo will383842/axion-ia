@@ -20,6 +20,14 @@ import { peutOuvrirDossierCandidat } from "@/server/auth/habilitations";
 import { INBOX_COUNTS_TAG } from "@/features/admin-inbox/cache-tags";
 
 import { ecrireEtEnfilerReponse } from "./envoyer-reponse";
+import { rendreReponseCandidat } from "./rendu-reponse";
+import {
+  extrairePreEntete,
+  rendreLiensInertes,
+  type ApercuLecteur,
+} from "@/lib/email/apercu-lecteur";
+import { enveloppeExpedition } from "@/lib/email/enveloppe";
+import { masquerSecretsEmail } from "@/lib/email/masquer-secrets";
 import { remplirModele } from "@/content/recrutement/modeles-reponse";
 import { CHEMIN_COMPLEMENT, lienComplement } from "@/features/job-application/complement";
 import { DUREE_JETON_COMPLEMENT_MS } from "@/server/recrutement/jeton-complement";
@@ -98,53 +106,11 @@ export async function repondreAuCandidatAction(
   if (!parsed.success) return { ok: false, error: "champs_invalides" };
   const data = parsed.data;
 
-  const candidature = await prisma.jobApplication.findUnique({
-    where: { id: data.applicationId },
-    select: {
-      id: true,
-      email: true,
-      locale: true,
-      status: true,
-      offerTitleSnap: true,
-      firstName: true,
-      lastName: true,
-      offer: {
-        select: {
-          id: true,
-          screeningQuestions: true,
-          slug: true,
-          titleFr: true,
-          employmentType: true,
-          secondaryEmploymentType: true,
-        },
-      },
-    },
-  });
-  if (!candidature) return { ok: false, error: "candidature_introuvable" };
-
-  // Lot L0c-2 — un modèle « formateur » n'est accepté que là où le composeur le
-  // propose (candidature de formateur freelance, `formateurs.modeles_composeur`).
-  if ((MODELES_REPONSE_FORMATEUR_IDS as readonly string[]).includes(data.modele)) {
-    const modelesFormateur =
-      (await lireEtatsEntree()).modeles_composeur &&
-      estCandidatureFormateurFreelance({
-        offerTitleSnap: candidature.offerTitleSnap,
-        offer: candidature.offer,
-      });
-    if (!modeleAutorise(data.modele, { modelesFormateur })) {
-      return { ok: false, error: "modele_indisponible" };
-    }
-  }
-
-  // `{lien_complement}` se résout ICI, côté serveur : le lien est signé avec
-  // AUTH_SECRET, que le navigateur n'a pas. Une offre sans questions n'a pas
-  // de lien — on refuse plutôt que d'envoyer « {lien_complement} » en clair.
-  let corps = data.bodyMarkdown;
-  if (corps.includes("{lien_complement}")) {
-    const lien = await lienComplement(candidature.id, candidature.offer);
-    if (!lien) return { ok: false, error: "lien_complement_indisponible" };
-    corps = remplirModele(corps, { lien_complement: lien });
-  }
+  // Chargement du dossier, garde du modèle « formateur » et résolution de `{lien_complement}` :
+  // le MÊME chemin que l'aperçu (`apercuReponseCandidatAction`), par `preparerReponse`.
+  const prepare = await preparerReponse(data);
+  if (!prepare.ok) return { ok: false, error: prepare.error };
+  const { candidature, corps } = prepare;
 
   // 🔴 GARDE CONTRE LE DOUBLE ENVOI, CÔTÉ SERVEUR — dans la transaction
   // d'écriture (`garderContreDoublon`), sous verrou consultatif : une recherche
@@ -277,4 +243,132 @@ export async function etatLivraisonReponseAction(
     select: { deliveryStatus: true, errorMsg: true },
   });
   return r ? { statut: r.deliveryStatus, erreur: r.errorMsg } : null;
+}
+
+// === APERCU-AVANT-ENVOI ===
+// Tout ce qui suit sert l'aperçu exact (lot I2-2) : ni journal, ni trace, ni cache.
+
+type SaisieReponse = z.output<typeof schemaReponse>;
+
+/**
+ * Dossier chargé, modèle vérifié, `{lien_complement}` résolu : ce que l'envoi ET l'aperçu
+ * partagent, pour que l'aperçu montre le message qui partira. Non exporté : un fichier
+ * `"use server"` ne peut exporter que des actions.
+ */
+async function preparerReponse(data: SaisieReponse): Promise<
+  | {
+      ok: true;
+      candidature: NonNullable<Awaited<ReturnType<typeof chargerCandidature>>>;
+      corps: string;
+    }
+  | { ok: false; error: string }
+> {
+  const candidature = await chargerCandidature(data.applicationId);
+  if (!candidature) return { ok: false, error: "candidature_introuvable" };
+
+  // Lot L0c-2 — un modèle « formateur » n'est accepté que là où le composeur le
+  // propose (candidature de formateur freelance, `formateurs.modeles_composeur`).
+  if ((MODELES_REPONSE_FORMATEUR_IDS as readonly string[]).includes(data.modele)) {
+    const modelesFormateur =
+      (await lireEtatsEntree()).modeles_composeur &&
+      estCandidatureFormateurFreelance({
+        offerTitleSnap: candidature.offerTitleSnap,
+        offer: candidature.offer,
+      });
+    if (!modeleAutorise(data.modele, { modelesFormateur })) {
+      return { ok: false, error: "modele_indisponible" };
+    }
+  }
+
+  // `{lien_complement}` se résout ICI, côté serveur : le lien est signé avec
+  // AUTH_SECRET, que le navigateur n'a pas. Une offre sans questions n'a pas
+  // de lien — on refuse plutôt que d'envoyer « {lien_complement} » en clair.
+  let corps = data.bodyMarkdown;
+  if (corps.includes("{lien_complement}")) {
+    const lien = await lienComplement(candidature.id, candidature.offer);
+    if (!lien) return { ok: false, error: "lien_complement_indisponible" };
+    corps = remplirModele(corps, { lien_complement: lien });
+  }
+  return { ok: true, candidature, corps };
+}
+
+function chargerCandidature(id: string) {
+  return prisma.jobApplication.findUnique({
+    where: { id },
+    select: {
+      id: true,
+      email: true,
+      locale: true,
+      status: true,
+      offerTitleSnap: true,
+      firstName: true,
+      lastName: true,
+      offer: {
+        select: {
+          id: true,
+          screeningQuestions: true,
+          slug: true,
+          titleFr: true,
+          employmentType: true,
+          secondaryEmploymentType: true,
+        },
+      },
+    },
+  });
+}
+
+export type EtatApercuReponse = { ok: true; apercu: ApercuLecteur } | { ok: false; error: string };
+
+/**
+ * Aperçu EXACT d'une réponse à un candidat, avant tout envoi.
+ *
+ * Même garde que l'envoi (`requireEcritureCandidature`), même préparation
+ * (`preparerReponse`), même fonction de rendu (`rendreReponseCandidat`) avec le vrai
+ * destinataire. Rien n'est écrit, rien n'est mis en file.
+ *
+ * 🔴 Le HTML rendu porte le lien d'opposition ET le lien de suppression du candidat : avant
+ * de quitter le serveur, il passe par `masquerSecretsEmail` puis `rendreLiensInertes`. Le
+ * navigateur de la console ne reçoit jamais un jeton, et l'adresse n'est montrée qu'à la
+ * ligne « À ».
+ */
+export async function apercuReponseCandidatAction(
+  input: z.input<typeof schemaReponse>,
+): Promise<EtatApercuReponse> {
+  try {
+    await requireEcritureCandidature();
+  } catch (e) {
+    return { ok: false, error: e instanceof Error ? e.message : "unauthorized" };
+  }
+
+  const parsed = schemaReponse.safeParse(input);
+  if (!parsed.success) return { ok: false, error: "champs_invalides" };
+
+  const prepare = await preparerReponse(parsed.data);
+  if (!prepare.ok) return { ok: false, error: prepare.error };
+
+  const rendu = await rendreReponseCandidat(prepare.candidature, {
+    subject: parsed.data.subject,
+    bodyMarkdown: prepare.corps,
+  });
+  if (!rendu.ok) return { ok: false, error: rendu.error };
+
+  const masque = masquerSecretsEmail({
+    subject: rendu.subject,
+    html: rendu.html,
+    text: rendu.text,
+  });
+  const html = rendreLiensInertes(masque.html);
+  const enveloppe = enveloppeExpedition();
+  return {
+    ok: true,
+    apercu: {
+      html,
+      texte: masque.text,
+      objet: masque.subject,
+      de: enveloppe.from,
+      a: rendu.destinataire,
+      repondreA: enveloppe.replyTo,
+      preEntete: extrairePreEntete(html),
+    },
+  };
 }
