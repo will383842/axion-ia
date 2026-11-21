@@ -48,6 +48,7 @@ import {
   purgerPilote,
 } from "../rgpd-erase";
 import { hashEmailForLookup } from "../security/email-hash";
+import { prefixesStockageEmail } from "../email-manuel/pieces-jointes";
 
 type Ligne = Record<string, unknown>;
 
@@ -518,12 +519,99 @@ describe("neutralisation (geste manuel du fondateur)", () => {
       emailsNeutralises: 0,
       piecesJointesNeutralisees: 0,
       clesStockage: [],
+      prefixesStockage: [],
       rattachesAutreAdresse: [],
     });
     expect(
       (await neutraliserEmailsManuelsPour("personne@exemple-fictif.fr")).emailsNeutralises,
     ).toBe(0);
     expect(lignes()).toEqual(avant);
+  });
+});
+
+describe("dossiers de stockage rendus par la neutralisation (F7-S1)", () => {
+  const lignes = (): Ligne[] => base.tables["emailManuel"] ?? [];
+  const pieces = (): Ligne[] => base.tables["emailManuelPieceJointe"] ?? [];
+  const idDe = (k: keyof typeof courriels): string => courriels[k]["id"] as string;
+
+  function ajouterTiers(): string {
+    const TIERS = "assistante@exemple-fictif.fr";
+    const tiers = email({
+      id: id(7),
+      contactId: CONTACT_ALICE,
+      destinataireChiffre: encryptPii(TIERS),
+      destinataireHash: h(TIERS),
+      destinataireNom: "L'assistante",
+      statut: "en_file",
+      envoyeLe: null,
+    });
+    lignes().push(tiers);
+    return tiers["id"] as string;
+  }
+
+  it("un e-mail à trois pièces (acceptée, refusée, attendue) : ses trois dossiers, et chaque clé en base en dépend", async () => {
+    const alice1 = idDe("alice1");
+    const [def, tmp, ref] = prefixesStockageEmail(alice1);
+    const lot: Ligne[] = [
+      { ...piece(alice1, `${def}a.pdf`), id: id(1), statut: "acceptee" },
+      { ...piece(alice1, `${tmp}b.pdf`), id: id(2), statut: "refusee" },
+      { ...piece(alice1, `${ref}c.pdf`), id: id(3), statut: "attendue" },
+    ];
+    pieces().push(...lot);
+    const r = await neutraliserEmailsManuelsPour(ALICE);
+    for (const p of prefixesStockageEmail(alice1)) expect(r.prefixesStockage).toContain(p);
+    const siennes = pieces().filter((p) => p["emailManuelId"] === alice1);
+    expect(siennes.length).toBeGreaterThanOrEqual(3);
+    for (const p of lot) {
+      expect(
+        prefixesStockageEmail(alice1).some((x) => (p["cleStockage"] as string).startsWith(x)),
+      ).toBe(true);
+    }
+    expect(d.supprimerR2).not.toHaveBeenCalled();
+  });
+
+  it("un e-mail sans aucune pièce : ses trois dossiers sont quand même rendus", async () => {
+    const r = await neutraliserEmailsManuelsPour(ALICE);
+    expect(pieces().some((p) => p["emailManuelId"] === idDe("alice3"))).toBe(false);
+    // `alice2` n'a qu'une pièce : on vérifie un e-mail sans pièce, le brouillon.
+    expect(pieces().some((p) => p["emailManuelId"] === idDe("brouillon"))).toBe(false);
+    for (const p of prefixesStockageEmail(idDe("brouillon"))) {
+      expect(r.prefixesStockage).toContain(p);
+    }
+  });
+
+  it("l'e-mail d'une autre personne : aucun de ses dossiers", async () => {
+    const r = await neutraliserEmailsManuelsPour(ALICE);
+    for (const p of prefixesStockageEmail(idDe("bruno"))) {
+      expect(r.prefixesStockage).not.toContain(p);
+    }
+  });
+
+  it("liste triée, sans doublon, et identique à la seconde passe (avec et sans l'option)", async () => {
+    ajouterTiers();
+    for (const options of [{}, { aussiRattachesAutreAdresse: true }]) {
+      const r1 = await neutraliserEmailsManuelsPour(ALICE, options);
+      const r2 = await neutraliserEmailsManuelsPour(ALICE, options);
+      expect(r1.prefixesStockage.length).toBeGreaterThan(0);
+      expect(r2.prefixesStockage).toEqual(r1.prefixesStockage);
+      expect(r1.prefixesStockage).toEqual([...new Set(r1.prefixesStockage)].sort());
+    }
+  });
+
+  it("les dossiers d'un e-mail « rattaché autre adresse » ne sont rendus qu'avec l'option", async () => {
+    const tiersId = ajouterTiers();
+    const sans = await neutraliserEmailsManuelsPour(ALICE);
+    for (const p of prefixesStockageEmail(tiersId)) expect(sans.prefixesStockage).not.toContain(p);
+    for (const p of prefixesStockageEmail(idDe("alice3"))) {
+      expect(sans.prefixesStockage).not.toContain(p);
+    }
+    const avec = await neutraliserEmailsManuelsPour(ALICE, { aussiRattachesAutreAdresse: true });
+    for (const p of prefixesStockageEmail(tiersId)) expect(avec.prefixesStockage).toContain(p);
+    // Seconde passe avec l'option : rien n'est modifié mais la liste reste complète.
+    const encore = await neutraliserEmailsManuelsPour(ALICE, { aussiRattachesAutreAdresse: true });
+    expect(encore.emailsNeutralises).toBe(0);
+    expect(encore.prefixesStockage).toEqual(avec.prefixesStockage);
+    expect(d.supprimerR2).not.toHaveBeenCalled();
   });
 });
 
