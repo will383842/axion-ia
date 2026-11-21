@@ -31,6 +31,8 @@ function porte(): Porte {
 const h = vi.hoisted(() => ({
   /** Retient `emettreDevisEmis` pour un devis donné : `entre` signale l'arrivée, `porte` libère. */
   retenir: new Map<string, { entre: () => void; porte: Promise<void> }>(),
+  /** Vrai : `transactionDevisSigne` est la VRAIE fonction (canal Partners fermé), sans simulacre. */
+  vraieTransaction: false,
 }));
 
 vi.mock("next/cache", () => ({ revalidatePath: vi.fn() }));
@@ -73,7 +75,7 @@ vi.mock("@/server/queue/queues", () => ({
   enqueueEmail: vi.fn(async () => ({ enqueued: true })),
   sonderEnvoiOutboxAvecLien: async () => ({ dejaFait: false, urlEnFile: null }),
 }));
-vi.mock("@/server/partners-sync/producteurs/devis", () => ({
+vi.mock("@/server/partners-sync/producteurs/devis", async (importOriginal) => ({
   emettreDevisEmis: vi.fn(async (_tx: unknown, devisId: string) => {
     const g = h.retenir.get(devisId);
     if (g) {
@@ -83,10 +85,25 @@ vi.mock("@/server/partners-sync/producteurs/devis", () => ({
     return null;
   }),
   emettreDevisSigne: vi.fn(async () => undefined),
+  // Par défaut un `$transaction` permanent (les cas d'entrelacement en ont besoin). Le cas
+  // « canal fermé » bascule sur la vraie fonction, qui, sans l'option, n'ouvre AUCUNE transaction.
   transactionDevisSigne: async (
     client: { $transaction: (f: unknown) => Promise<unknown> },
     travail: unknown,
-  ) => client.$transaction(travail),
+    options?: unknown,
+  ) => {
+    if (h.vraieTransaction) {
+      const reel = await importOriginal<
+        typeof import("@/server/partners-sync/producteurs/devis")
+      >();
+      return reel.transactionDevisSigne(
+        client as never,
+        travail as never,
+        options as never,
+      );
+    }
+    return client.$transaction(travail);
+  },
   devisConcernesPourEmission: vi.fn(async () => []),
 }));
 vi.mock("@/features/dossier-client/devis-signe-fait-client", () => ({
@@ -97,6 +114,7 @@ vi.mock("@/server/qualiopi/devis/proposer-plans", () => ({
 }));
 vi.mock("@/lib/telegram", () => ({ sendTelegram: vi.fn(async () => undefined) }));
 
+import { logQualiopiActivity } from "../../../src/server/actions/qualiopi/_guards";
 import { acceptDevisAction } from "../../../src/server/actions/qualiopi/devis";
 import { prolongerValiditeDevisAction } from "../../../src/server/actions/qualiopi/devis-prolonger-validite";
 import { marquerDevisEnvoye } from "../../../src/server/qualiopi/devis/marquer-devis-envoye";
@@ -114,6 +132,7 @@ const creees: { v1: string[]; v2: string[]; pieces: string[]; clients: string[] 
 
 beforeEach(() => {
   h.retenir.clear();
+  h.vraieTransaction = false;
 });
 
 afterAll(async () => {
@@ -350,5 +369,37 @@ describe("deux versions d'un même devis : jamais deux ouvertes, Postgres réel"
     expect((r as { error?: string }).error).toMatch(/remplacé par une version plus récente/);
     const etat = await statuts(jeu);
     expect(etat).toMatchObject({ v1: "expire", v2: "envoye" });
+  });
+
+  it("envoi_d_abord_puis_acceptation, canal Partners FERMÉ, vraie transactionDevisSigne", async () => {
+    const ancien = process.env.PARTNERS_SYNC_ENABLED;
+    process.env.PARTNERS_SYNC_ENABLED = "false";
+    h.vraieTransaction = true;
+    try {
+      vi.mocked(logQualiopiActivity).mockClear();
+      const jeu = await creerJeu("A7", "envoye");
+      const a = lancerA(jeu, "envoye");
+      await a.ecrit; // v1 « expire » (non validé), ligne verrouillée
+      const c = acceptDevisAction(jeu.v1.id);
+      expect(await resteEnAttente(c)).toBe(true);
+      a.fin();
+      expect((await a.resultat).ok).toBe(true);
+      const r = await c;
+      expect((r as { error?: string }).error).toMatch(/version plus récente/);
+      const etat = await statuts(jeu);
+      expect(etat).toMatchObject({ v1: "expire", v2: "envoye" });
+      expect(vi.mocked(logQualiopiActivity)).not.toHaveBeenCalledWith(
+        expect.objectContaining({ action: "qualiopi.devis.accept", targetId: jeu.v1.id }),
+      );
+      expect(
+        await db.activityLog.count({
+          where: { targetId: jeu.v1.id, action: "qualiopi.devis.accept" },
+        }),
+      ).toBe(0);
+    } finally {
+      h.vraieTransaction = false;
+      if (ancien === undefined) delete process.env.PARTNERS_SYNC_ENABLED;
+      else process.env.PARTNERS_SYNC_ENABLED = ancien;
+    }
   });
 });
