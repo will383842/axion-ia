@@ -44,9 +44,18 @@ vi.mock("../contrat-pdf", async () => {
     rendreContratPdf: (...a: unknown[]) => pdf.rendreContratPdf(...a),
   };
 });
-const r2 = vi.hoisted(() => ({ deleteFromR2: vi.fn(), upload: vi.fn() }));
+const r2 = vi.hoisted(() => ({
+  deleteFromR2: vi.fn(),
+  upload: vi.fn(),
+  // Documents annexes (fiche des commissions, livret) : présents sur R2 ou non.
+  annexesPresentes: false,
+}));
 vi.mock("@/lib/r2-storage", () => ({
   deleteFromR2: (...a: unknown[]) => r2.deleteFromR2(...a),
+  enteteObjetR2: async (cle: string) =>
+    cle.startsWith("documents-apporteurs/") && !r2.annexesPresentes
+      ? null
+      : { taille: 1000, etag: "e" },
   getObjectBufferR2: vi.fn(),
   isR2Configured: () => true,
   uploadToR2: (...a: unknown[]) => r2.upload(...a),
@@ -67,6 +76,7 @@ vi.mock("@/lib/prisma", () => {
   };
 });
 
+import { DOCUMENTS_ANNEXES } from "../documents-joints";
 import { appliquerDecision, preparerDecision, renvoyerContratSigne } from "../verification";
 
 const ID = "6f1c2a3b-4d5e-4f60-8a7b-9c0d1e2f3a4b";
@@ -86,6 +96,7 @@ function dossier(over: Record<string, unknown> = {}) {
 
 beforeEach(() => {
   vi.clearAllMocks();
+  r2.annexesPresentes = false;
   h.envoyer.mockResolvedValue("envoye");
   h.lireDossier.mockResolvedValue(dossier());
   h.purgerContenuPieces.mockResolvedValue(2);
@@ -176,7 +187,12 @@ describe("D4 : renvoyer le contrat signé", () => {
     h.lireDossier.mockResolvedValue(dossier({ statut: "signe" }));
     h.appFindUnique.mockResolvedValue({ contratSigneCle: cle });
     const r = await renvoyerContratSigne(ID, new Date("2026-10-05T12:00:00Z"));
-    expect(r).toEqual({ ok: true, message: "Contrat signé renvoyé." });
+    // I3 : la console dit ce qui a été joint (ici aucune annexe n'est déposée sur R2).
+    expect(r).toEqual({
+      ok: true,
+      message:
+        "Contrat signé renvoyé. Pièce jointe : le contrat seul. Non joints (absents ou illisibles sur le stockage) : la fiche des commissions et le livret.",
+    });
     const e = h.envoyer.mock.calls[0]![0];
     expect(e).toMatchObject({
       gabarit: "apporteur-contrat-signe",
@@ -186,6 +202,26 @@ describe("D4 : renvoyer le contrat signé", () => {
     });
     expect(e.payload.dossierUrl).toContain(ID);
     expect(h.appUpdate).not.toHaveBeenCalled();
+  });
+
+  it("annexes absentes de R2 (état d'aujourd'hui) : le contrat part seul", async () => {
+    h.lireDossier.mockResolvedValue(dossier({ statut: "signe" }));
+    h.appFindUnique.mockResolvedValue({ contratSigneCle: cle });
+    await renvoyerContratSigne(ID);
+    expect(h.envoyer.mock.calls[0]![0].attachments).toEqual([
+      { filename: "Contrat-apporteur-Axion-IA.pdf", r2Key: cle, contentType: "application/pdf" },
+    ]);
+  });
+
+  it("annexes déposées sur R2 : contrat + fiche des commissions + livret", async () => {
+    r2.annexesPresentes = true;
+    h.lireDossier.mockResolvedValue(dossier({ statut: "signe" }));
+    h.appFindUnique.mockResolvedValue({ contratSigneCle: cle });
+    await renvoyerContratSigne(ID);
+    const cles = (h.envoyer.mock.calls[0]![0].attachments as { r2Key: string }[]).map(
+      (a) => a.r2Key,
+    );
+    expect(cles).toEqual([cle, ...DOCUMENTS_ANNEXES.map((d) => d.cleR2)]);
   });
 
   it("chaque renvoi a un jobId distinct, et distinct de l'envoi d'origine", async () => {
@@ -251,6 +287,59 @@ describe("B3 : la contresignature fabrique le PDF depuis le texte archivé à la
     expect(r).toMatchObject({ ok: true });
     expect(pdf.rendreContratPdf.mock.calls[0]![0].texte).toBe(TEXTE_SIGNE);
     expect(pdf.texteDuContrat).not.toHaveBeenCalled();
+  });
+
+  it("contresignature : l'e-mail porte le contrat, puis les annexes déposées sur R2", async () => {
+    r2.annexesPresentes = true;
+    h.appFindUnique.mockResolvedValue({
+      signatureApporteur: signature({ texte: TEXTE_SIGNE }),
+      contratSha256: sha(TEXTE_SIGNE),
+    });
+    expect(await appliquerDecision(ID, "contresigner", null)).toMatchObject({ ok: true });
+    const envoi = h.envoyer.mock.calls[0]![0] as {
+      gabarit: string;
+      attachments: { filename: string; r2Key: string }[];
+    };
+    expect(envoi.gabarit).toBe("apporteur-contrat-signe");
+    expect(envoi.attachments).toHaveLength(1 + DOCUMENTS_ANNEXES.length);
+    // Le contrat contresigné en premier : la clé que la contresignature vient de déposer.
+    expect(envoi.attachments[0]!.r2Key).toBe(r2.upload.mock.calls[0]![0]);
+    expect(envoi.attachments.slice(1).map((a) => a.r2Key)).toEqual(
+      DOCUMENTS_ANNEXES.map((d) => d.cleR2),
+    );
+  });
+
+  it("🔴 I3 : le message de la contresignature dit quelles pièces ont été jointes", async () => {
+    r2.annexesPresentes = true;
+    h.appFindUnique.mockResolvedValue({
+      signatureApporteur: signature({ texte: TEXTE_SIGNE }),
+      contratSha256: sha(TEXTE_SIGNE),
+    });
+    expect(await appliquerDecision(ID, "contresigner", null)).toEqual({
+      ok: true,
+      message:
+        "Contrat contresigné et envoyé. Pièces jointes : le contrat, la fiche des commissions et le livret.",
+    });
+  });
+
+  it("🔴 I3 : sans annexe sur R2, le message les nomme comme non jointes", async () => {
+    h.appFindUnique.mockResolvedValue({
+      signatureApporteur: signature({ texte: TEXTE_SIGNE }),
+      contratSha256: sha(TEXTE_SIGNE),
+    });
+    const r = await appliquerDecision(ID, "contresigner", null);
+    expect(r.message).toBe(
+      "Contrat contresigné et envoyé. Pièce jointe : le contrat seul. Non joints (absents ou illisibles sur le stockage) : la fiche des commissions et le livret.",
+    );
+  });
+
+  it("contresignature sans annexe sur R2 : le contrat seul, comme avant", async () => {
+    h.appFindUnique.mockResolvedValue({
+      signatureApporteur: signature({ texte: TEXTE_SIGNE }),
+      contratSha256: sha(TEXTE_SIGNE),
+    });
+    expect(await appliquerDecision(ID, "contresigner", null)).toMatchObject({ ok: true });
+    expect(h.envoyer.mock.calls[0]![0].attachments).toHaveLength(1);
   });
 
   it("archive altérée (empreinte différente) : refus, aucun PDF", async () => {

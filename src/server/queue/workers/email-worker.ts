@@ -13,6 +13,8 @@
 // de l'app web et dotée de son PROPRE environnement. Les variables SMTP s'y
 // posent, et il faut REDEPLOY (pas Restart) pour qu'elles soient relues.
 
+import { createHash } from "node:crypto";
+
 import { DelayedError, UnrecoverableError, Worker } from "bullmq";
 import type { Job } from "bullmq";
 import { getBullConnectionOrThrow } from "../connection";
@@ -154,37 +156,98 @@ async function motifDeRetenueAuDepart(data: EmailJobData): Promise<string | null
  */
 export const TAILLE_MAX_PJ_OCTETS = 10 * 1_048_576;
 
+/** Une pièce facultative que l'e-mail n'a pas emportée, et pourquoi. Jamais de clé R2 ici. */
+export interface PieceOmise {
+  filename: string;
+  motif: "introuvable" | "trop lourde";
+}
+
+export interface PiecesResolues {
+  pieces: NonNullable<SendEmailParams["attachments"]>;
+  /** Pièces FACULTATIVES non jointes (l'e-mail part quand même). */
+  omises: PieceOmise[];
+  /** Empreinte de chaque pièce FACULTATIVE jointe : quelle version du fichier est partie. */
+  empreintes: Array<{ filename: string; sha256: string }>;
+}
+
+/**
+ * Une pièce facultative ne part pas : journal et Sentry, SANS la clé R2 (celle d'un contrat
+ * porte l'identifiant du dossier) — le nom du fichier montré au destinataire suffit.
+ */
+function signalerPieceOmise(filename: string, motif: PieceOmise["motif"]): void {
+  const message = `[email-worker] pièce facultative non jointe (${motif}) : ${filename} — l'e-mail part sans elle`;
+  console.warn(message);
+  captureWorkerError("email", "emails", undefined, new Error(message));
+}
+
 /**
  * Hub facturation — résout les pièces jointes d'un job (clé R2 → Buffer).
  * FAIL-HARD (revue M8) : les templates affirment « le document est joint » —
  * envoyer sans la PJ serait un mensonge au client. PJ irrécupérable → throw
  * → retry BullMQ (backoff), puis job `failed` visible (Sentry + logs).
+ *
+ * 2026-11-25 (relecture de la PR #2255, I2) — sauf pour une pièce marquée `facultative`,
+ * que le gabarit ne promet pas (annexes de l'e-mail « contrat signé » d'un apporteur) :
+ * introuvable, illisible, ou trop lourde pour le plafond, elle est OMISE, journalisée et
+ * signalée, et l'e-mail part avec le reste. Une annexe retirée ou remplacée entre la mise en
+ * file et l'envoi ne retient plus le contrat.
  */
-export async function resolveAttachments(
+export async function resoudrePiecesJointes(
   attachments: EmailJobData["attachments"],
-): Promise<SendEmailParams["attachments"]> {
-  if (!attachments || attachments.length === 0) return undefined;
+): Promise<PiecesResolues> {
+  const omises: PieceOmise[] = [];
+  const empreintes: PiecesResolues["empreintes"] = [];
+  if (!attachments || attachments.length === 0) return { pieces: [], omises, empreintes };
   if (!isR2Configured()) {
     throw new Error(
       "[email-worker] pièces jointes demandées mais R2 non configuré — envoi refusé (le template promet un document joint)",
     );
   }
-  const resolved: Array<{ filename: string; content: Buffer; contentType?: string }> = [];
   let octetsTotal = 0;
-  for (const att of attachments) {
+  // Les pièces EXIGÉES d'abord : une facultative ne prend jamais la place d'une exigée dans le
+  // plafond. Chaque résultat garde son rang, l'ordre d'origine est rétabli à la fin.
+  const ordonnees = attachments
+    .map((att, rang) => ({ att, rang }))
+    .sort((a, b) => Number(a.att.facultative === true) - Number(b.att.facultative === true));
+  const jointes: Array<{ rang: number; piece: PiecesResolues["pieces"][number] }> = [];
+  const nonJointes: Array<{ rang: number; omise: PieceOmise }> = [];
+  const hachees: Array<{ rang: number; empreinte: PiecesResolues["empreintes"][number] }> = [];
+  for (const { att, rang } of ordonnees) {
+    const facultative = att.facultative === true;
     const buffer = await getObjectBufferR2(att.r2Key).catch(() => null);
     if (buffer === null) {
+      if (facultative) {
+        nonJointes.push({ rang, omise: { filename: att.filename, motif: "introuvable" } });
+        signalerPieceOmise(att.filename, "introuvable");
+        continue;
+      }
       throw new Error(
         `[email-worker] PJ introuvable sur R2 (${att.r2Key}) — envoi refusé, retry BullMQ`,
       );
     }
+    if (facultative && octetsTotal + buffer.byteLength > TAILLE_MAX_PJ_OCTETS) {
+      nonJointes.push({ rang, omise: { filename: att.filename, motif: "trop lourde" } });
+      signalerPieceOmise(att.filename, "trop lourde");
+      continue;
+    }
     octetsTotal += buffer.byteLength;
-    resolved.push({
-      filename: att.filename,
-      content: buffer,
-      contentType: att.contentType ?? "application/pdf",
+    if (facultative) {
+      const sha256 = createHash("sha256").update(buffer).digest("hex").slice(0, 16);
+      hachees.push({ rang, empreinte: { filename: att.filename, sha256 } });
+    }
+    jointes.push({
+      rang,
+      piece: {
+        filename: att.filename,
+        content: buffer,
+        contentType: att.contentType ?? "application/pdf",
+      },
     });
   }
+  const parRang = (a: { rang: number }, b: { rang: number }): number => a.rang - b.rang;
+  const resolved = jointes.sort(parRang).map((j) => j.piece);
+  omises.push(...nonJointes.sort(parRang).map((n) => n.omise));
+  empreintes.push(...hachees.sort(parRang).map((h) => h.empreinte));
 
   // 🔴 Audit du 2026-08-16 — AUCUNE garde de taille n'existait.
   //
@@ -208,7 +271,28 @@ export async function resolveAttachments(
         `Alléger le document ou le remplacer par un lien de téléchargement.`,
     );
   }
-  return resolved;
+  return { pieces: resolved, omises, empreintes };
+}
+
+/** Les pièces seules, ou `undefined` s'il n'y en a aucune (forme attendue par le relais). */
+export async function resolveAttachments(
+  attachments: EmailJobData["attachments"],
+): Promise<SendEmailParams["attachments"]> {
+  const { pieces } = await resoudrePiecesJointes(attachments);
+  return pieces.length > 0 ? pieces : undefined;
+}
+
+/**
+ * Note du journal « envoyé » pour un e-mail à pièces FACULTATIVES (I3, I4) : l'empreinte de
+ * chaque pièce jointe (quelle version est partie) et le nom de chaque pièce non jointe.
+ * `undefined` quand le job n'en porte aucune : les autres e-mails ne changent pas.
+ */
+export function notePiecesFacultatives(r: PiecesResolues): string | undefined {
+  const phrases = [
+    ...r.empreintes.map((e) => `Pièce jointe : ${e.filename} (sha256 ${e.sha256}).`),
+    ...r.omises.map((o) => `Pièce non jointe : ${o.filename} (${o.motif}).`),
+  ];
+  return phrases.length > 0 ? phrases.join(" ") : undefined;
 }
 
 /**
@@ -457,7 +541,10 @@ export function startEmailWorker(): Worker<EmailJobData, void, EmailJobName> {
         } = await renderEmailTemplate(template, locale, payloadPourRendu(template, payload), {
           destinataire: to,
         });
-        const attachments = await resolveAttachments(job.data.attachments);
+        const resolues = await resoudrePiecesJointes(job.data.attachments);
+        const attachments = resolues.pieces.length > 0 ? resolues.pieces : undefined;
+        const notePieces = notePiecesFacultatives(resolues);
+        const noteCloture = [noteRepli, notePieces].filter(Boolean).join(" ");
         // Lot 2 : l'objet forcé depuis la corbeille prime sur celui du gabarit.
         const subject = job.data.sujet?.trim() ? job.data.sujet.trim() : subjectRendu;
         // RFC 8058 List-Unsubscribe (P0-RGPD-3 fix audit final 2026-05-09).
@@ -514,8 +601,9 @@ export function startEmailWorker(): Worker<EmailJobData, void, EmailJobName> {
           status: EmailLogStatus.sent,
           providerMessageId: result.messageId,
           sentAt: new Date(),
-          // Seul champ de trace écrit à la clôture : on y note le repli (sinon rien, inchangé).
-          ...(noteRepli ? { error: noteRepli } : {}),
+          // Seul champ de trace écrit à la clôture : on y note le repli et les pièces
+          // facultatives, jointes (empreinte) ou non (sinon rien, inchangé).
+          ...(noteCloture ? { error: noteCloture } : {}),
           ...(entityType ? { entityType } : {}),
           ...(entityId ? { entityId } : {}),
           ...(jobId ? { jobId } : {}),
@@ -532,7 +620,10 @@ export function startEmailWorker(): Worker<EmailJobData, void, EmailJobName> {
             subject,
             html,
             text,
-            attachmentNames: job.data.attachments?.map((a) => a.filename),
+            // Les pièces RÉELLEMENT parties : une facultative omise n'y figure pas.
+            attachmentNames: job.data.attachments
+              ? resolues.pieces.map((a) => a.filename)
+              : undefined,
             // S6b : seul un e-mail à code à usage unique transmet son gabarit (code masqué).
             ...(GABARITS_A_CODE_UNIQUE.has(template)
               ? { template, codeAMasquer: codeDuPayload(template, payload) }

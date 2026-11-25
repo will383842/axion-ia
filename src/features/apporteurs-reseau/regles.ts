@@ -239,18 +239,32 @@ export const LIBELLE_PROLONGATION: Readonly<Record<MotifProlongation, string>> =
   financement_en_cours: "un dossier de financement est en cours",
 };
 
-/** Une commande signée à cette date est-elle couverte par la protection ? */
+/**
+ * Une commande signée à cette date est-elle couverte par la protection ?
+ *
+ * `reservation` (facultatif, règle par rendez-vous, cf. `regle-attribution.ts`) : une présentation
+ * au statut `reservee`, pas encore confirmée, couvre la commande de la saisie au terme de sa
+ * réservation provisoire, bornes incluses. Sans ce champ, le résultat est celui d'avant.
+ *
+ * ⚠️ Une présentation confirmée est jugée sur sa SEULE protection, et tout autre statut
+ * (`terminee`, `dementie`, `deja_connue`, `hors_champ`) n'est jamais couvert par la réservation :
+ * la résiliation coupe le droit en ramenant `protegeeJusquAt` à sa date (`resiliation.ts`, art.
+ * 12.3), la réservation ne doit pas le rouvrir.
+ */
 export function commandeCouverte(e: {
   signeeAt: Date;
   recueAt: Date;
   confirmee: boolean;
   protegeeJusquAt: Date | null;
+  reservation?: { reserveeJusquAt: Date; statut: string } | null;
 }): boolean {
-  if (!e.confirmee || !e.protegeeJusquAt) return false;
-  return (
-    e.signeeAt.getTime() >= e.recueAt.getTime() &&
-    e.signeeAt.getTime() <= e.protegeeJusquAt.getTime()
-  );
+  const signee = e.signeeAt.getTime();
+  const apresLaSaisie = signee >= e.recueAt.getTime();
+  if (e.confirmee && e.protegeeJusquAt && apresLaSaisie && signee <= e.protegeeJusquAt.getTime())
+    return true;
+  if (e.reservation && e.reservation.statut === "reservee" && !e.confirmee)
+    return apresLaSaisie && signee <= e.reservation.reserveeJusquAt.getTime();
+  return false;
 }
 
 // ── Commissions (annexe 1 du contrat v2) ─────────────────────────────────

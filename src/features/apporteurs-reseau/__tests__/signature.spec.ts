@@ -6,6 +6,7 @@ const lireDossierParLien = vi.fn();
 const enregistrerDeclarations = vi.fn();
 const envoyer = vi.fn();
 const uploadToR2 = vi.fn();
+const enteteObjetR2 = vi.fn();
 const updateMany = vi.fn();
 const rendreContratPdf = vi.fn();
 const findUnique = vi.fn();
@@ -25,7 +26,11 @@ vi.mock("../donnees", () => ({
   enregistrerDeclarations: (...a: unknown[]) => enregistrerDeclarations(...a),
 }));
 vi.mock("../envois", () => ({ envoyer: (...a: unknown[]) => envoyer(...a) }));
-vi.mock("@/lib/r2-storage", () => ({ uploadToR2: (...a: unknown[]) => uploadToR2(...a) }));
+vi.mock("@/lib/r2-storage", () => ({
+  uploadToR2: (...a: unknown[]) => uploadToR2(...a),
+  enteteObjetR2: (...a: unknown[]) => enteteObjetR2(...a),
+  isR2Configured: () => true,
+}));
 vi.mock("@/lib/prisma", () => ({
   prisma: {
     apporteurReseau: {
@@ -290,6 +295,7 @@ describe("dossier en ligne — signerContrat", () => {
     vi.clearAllMocks();
     rendreContratPdf.mockResolvedValue(Buffer.from("%PDF"));
     uploadToR2.mockResolvedValue({ key: "k", etag: null, sizeBytes: 4 });
+    enteteObjetR2.mockResolvedValue({ taille: 4, etag: "e" });
     updateMany.mockResolvedValue({ count: 1 });
     envoyer.mockResolvedValue("envoye");
     findUnique.mockResolvedValue({ declarations: {} });
@@ -472,6 +478,35 @@ describe("dossier en ligne — signerContrat", () => {
       jobId: `apporteur-dossier-recu-${ID}-${entree.maintenant.getTime()}`,
       payload: { contactName: "Éloïse" },
     });
+  });
+
+  const accuseEnvoye = () =>
+    envoyer.mock.calls
+      .map((c) => c[0] as Record<string, unknown>)
+      .find((c) => c["gabarit"] === "apporteur-dossier-recu");
+
+  it("l'accusé porte en pièce jointe le PDF que l'apporteur vient de signer (objet R2 déposé)", async () => {
+    lireDossierParLien.mockResolvedValue(dossierComplet());
+    const r = await signerContrat(entree);
+    if (!r.ok) throw new Error("signature attendue");
+    const cle = cleContratApporteur(ID, r.sha256);
+    expect(uploadToR2.mock.calls[0]?.[0]).toBe(cle);
+    expect(accuseEnvoye()?.["attachments"]).toEqual([
+      expect.objectContaining({ r2Key: cle, contentType: "application/pdf" }),
+    ]);
+    // L'alerte interne, elle, ne porte aucune pièce.
+    const alerte = envoyer.mock.calls
+      .map((c) => c[0] as Record<string, unknown>)
+      .find((c) => c["gabarit"] === "apporteur-dossier-a-verifier");
+    expect(alerte).not.toHaveProperty("attachments");
+  });
+
+  it("🔴 R2 indisponible au moment de l'accusé : l'e-mail part quand même, sans pièce jointe", async () => {
+    lireDossierParLien.mockResolvedValue(dossierComplet());
+    enteteObjetR2.mockRejectedValue(new Error("R2 en panne"));
+    expect(await signerContrat(entree)).toMatchObject({ ok: true });
+    expect(accuseEnvoye()).toBeDefined();
+    expect(accuseEnvoye()).not.toHaveProperty("attachments");
   });
 
   it("D3 : alerte non partie → journal et Sentry, sans donnée personnelle ; signature conservée", async () => {
