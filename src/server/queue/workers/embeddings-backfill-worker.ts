@@ -278,6 +278,12 @@ export async function rattraperEmbeddingsVoyage(): Promise<VoyageBackfillStats> 
       // 4xx (hors 429) sur un lot de plusieurs articles : un seul article fautif le fait
       // échouer chaque nuit. On réessaie article par article et on saute celui qui échoue.
       const status = out.status;
+      if (out.reason === "http_error" && (status === 401 || status === 403)) {
+        // Clé refusée : inutile de réessayer article par article (rafale d'appels).
+        stats.errors += lot.length;
+        stats.stoppedReason = "auth";
+        break;
+      }
       if (
         out.reason === "http_error" &&
         status !== undefined &&

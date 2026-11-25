@@ -118,6 +118,14 @@ describe("rattrapage Voyage des articles", () => {
     expect(executeRawMock).not.toHaveBeenCalled();
   });
 
+  it("401 (clé refusée) : s'arrête tout de suite, sans réessai article par article", async () => {
+    queryRawUnsafeMock.mockResolvedValueOnce(articles(45));
+    embedBatchMock.mockResolvedValue({ ok: false, reason: "http_error", status: 401 });
+    const r = await rattraperEmbeddingsVoyage();
+    expect(embedBatchMock).toHaveBeenCalledTimes(1);
+    expect(r.stoppedReason).toBe("auth");
+  });
+
   it("panne répétée : s'arrête après 3 lots consécutifs en échec", async () => {
     vi.useFakeTimers();
     queryRawUnsafeMock.mockResolvedValueOnce(articles(100));
