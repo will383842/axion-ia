@@ -187,3 +187,26 @@ describe("REQ-JUR-024 — les mots-clés de financement suivent la certification
     expect(kw.join(" | ")).not.toMatch(/CPF/);
   });
 });
+
+describe("mots-clés — vocabulaire d'apporteur, jamais de salariat ni de promesse de revenu", () => {
+  const FAUTES =
+    /\bemploi\b|embauch|poste|recrut|\bjob\b|boulot|bien payé|rémunérateur|gagner|argent|salari/i;
+
+  it("aucun mot-clé de salariat ou de promesse de revenu (base et variantes locales)", () => {
+    const kw = buildCommercialKeywords(
+      { financementAffichable: true },
+      "Lyon",
+      "Rhône",
+      "Auvergne-Rhône-Alpes",
+    );
+    expect(kw.length).toBeGreaterThan(20);
+    expect(kw.filter((k) => FAUTES.test(k))).toEqual([]);
+  });
+
+  it("les variantes locales parlent d'apporteur d'affaires", () => {
+    const kw = buildCommercialKeywords({ financementAffichable: false }, "Lyon");
+    expect(kw).toContain("apporteur d'affaires Lyon");
+    expect(kw).toContain("apporteur d'affaires");
+    expect(kw).toContain("sans investissement");
+  });
+});
