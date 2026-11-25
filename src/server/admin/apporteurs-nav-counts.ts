@@ -11,6 +11,10 @@
  */
 
 import { validationParRendezVousActive } from "@/features/apporteurs-reseau/interrupteur-rendez-vous";
+import {
+  lireSourceRendezVous,
+  rendezVousNonTenu,
+} from "@/features/apporteurs-reseau/statut-rendez-vous";
 import { idsRetires } from "@/features/apporteurs-reseau/retrait";
 import { prisma } from "@/lib/prisma";
 
@@ -73,11 +77,28 @@ async function propositionsATraiter(): Promise<number> {
   if (!validationParRendezVousActive()) return 0;
   const l = await prisma.propositionRendezVousPresentation.findMany({
     where: { ecarteeAt: null, retenueAt: null },
-    select: { presentationId: true },
+    select: { presentationId: true, rendezVousCle: true },
     take: 500,
   });
   if (l.length === 0) return 0;
-  return prisma.presentationEntreprise.count({
+  const reservees = await prisma.presentationEntreprise.findMany({
     where: { id: { in: [...new Set(l.map((x) => x.presentationId))] }, statut: "reservee" },
+    select: { id: true },
   });
+  const ouvertes = new Set(reservees.map((x) => x.id));
+  // Même règle que la liste de la console : un rendez-vous annulé, manqué ou reporté depuis la
+  // proposition n'est plus « à traiter » (il n'a pas eu lieu).
+  const nonTenus = new Map<string, boolean>();
+  const aTraiter = new Set<string>();
+  for (const x of l) {
+    if (!ouvertes.has(x.presentationId)) continue;
+    let non = nonTenus.get(x.rendezVousCle);
+    if (non === undefined) {
+      const src = await lireSourceRendezVous(prisma, x.rendezVousCle);
+      non = !!src && rendezVousNonTenu(src);
+      nonTenus.set(x.rendezVousCle, non);
+    }
+    if (!non) aTraiter.add(x.presentationId);
+  }
+  return aTraiter.size;
 }
