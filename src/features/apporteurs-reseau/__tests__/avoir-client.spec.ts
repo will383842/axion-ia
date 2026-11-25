@@ -143,21 +143,18 @@ beforeEach(() => {
   d.sansFiltre = true;
 });
 
-describe("règle du 25/11 : un avoir ne touche plus une commission hors Journée IA", () => {
+describe("règle unique de l'avoir : la commission suit l'argent gardé, pour TOUS les produits", () => {
   it.each(["audit", "formation", "implementation", "site_web", "conference"])(
-    "activité « %s » : avoir total, rien n'est annulé, réduit, retenu ni repris",
+    "activité « %s » : avoir total → annulée (pas encore facturée), retenue (facturée) ou reprise (versée)",
     async (activite) => {
       d.sansFiltre = false;
       d.lignes = [
         ligne({ activite }),
-        ligne({ id: "c2", activite, statut: "versee", verseeAt: LE }),
+        ligne({ id: "c2", activite, autofactureNumero: "AXI-APP-2026-0001" }),
+        ligne({ id: "c3", activite, statut: "versee", verseeAt: LE }),
       ];
       const b = await reprendreApresAvoirsClients(LE);
-      expect(b).toEqual({ reduites: 0, annulees: 0, retenues: 0, reprises: 0 });
-      expect(d.annuler).not.toHaveBeenCalled();
-      expect(d.reduire).not.toHaveBeenCalled();
-      expect(d.retenir).not.toHaveBeenCalled();
-      expect(d.reprise).not.toHaveBeenCalled();
+      expect(b).toEqual({ reduites: 0, annulees: 1, retenues: 1, reprises: 1 });
     },
   );
 });

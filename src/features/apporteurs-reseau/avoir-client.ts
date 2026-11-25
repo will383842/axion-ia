@@ -1,5 +1,5 @@
 // Réseau d'apporteurs — la facture du CLIENT est annulée (ou réduite) par un AVOIR : la commission
-// suit UNIQUEMENT pour une Journée IA remboursée (règle du 25/11 ; ancien art. 4.5 du contrat 2.6).
+// suit l'argent réellement gardé, pour tous les produits (décision du pilote, 25/11 ; art. 4.5).
 //
 // « Un avoir ou un remboursement partiel diminue le prix facturé : la commission est recalculée sur
 // le prix net […] et la différence fait l'objet d'une reprise […] dès que la Société constate
@@ -38,13 +38,11 @@ import { enregistrerReprise, PREFIXE_PALIER_REPRISE } from "./resiliation";
 import { signalerErreurReseau } from "./signaler";
 
 /**
- * RÈGLE DU 25/11 : la commission est calculée UNE SEULE FOIS, sur le net HT arrêté à la signature
- * du devis. Un avoir du client ne la réduit plus, ne l'annule plus, ne la retient plus. Le SEUL cas
- * de reprise qui reste : le remboursement d'une Journée IA (garantie CGV 47.10), dont les 500 €
- * sont repris. Ce passage ne touche donc que les lignes de cette activité (pas encore dans la
- * grille de main : tant qu'elle n'y est pas, il ne fait rien, ce qui est voulu).
+ * DÉCISION DU 25/11 (règle unique) : la commission suit l'argent réellement GARDÉ par Axion IA,
+ * pour TOUS les produits. Un avoir total l'annule (pas encore versée) ou la fait reprendre
+ * (déjà versée) ; un avoir partiel la réduit en proportion. La déduction des 1 490 € d'une
+ * Journée IA sur un devis signé n'est pas un avoir.
  */
-export const ACTIVITE_REPRISE_SUR_AVOIR = "journee_ia";
 
 const MODIFIABLES = ["a_qualifier", "due", "en_attente_vigilance"] as const;
 
@@ -217,7 +215,6 @@ export async function reprendreApresAvoirsClients(
   const lignes = await prisma.commissionApporteur.findMany({
     where: {
       factureId: { in: factureIds },
-      activite: ACTIVITE_REPRISE_SUR_AVOIR,
       statut: { in: [...MODIFIABLES, "versee"] },
       montantCents: { gt: 0 },
     },

@@ -908,7 +908,7 @@ async function etapeCommissions(maintenant: Date, bilan: BilanPassageReseau): Pr
     }
     const calc = calculerCommission({
       activite: (f.activite ?? null) as ActiviteCommission | null,
-      factureHtCents: commande.baseSignatureCents,
+      factureHtCents: commande.baseApresAvoirsCents,
       palier: null,
     });
     if (calc.statut === "aucune") continue;
@@ -929,7 +929,7 @@ async function etapeCommissions(maintenant: Date, bilan: BilanPassageReseau): Pr
       presentationId: p.id,
       factureId: commande.factureCleId,
       activite: f.activite ?? "inconnue",
-      factureHtCents: commande.baseSignatureCents,
+      factureHtCents: commande.baseApresAvoirsCents,
     };
 
     // La commission de l'apporteur.

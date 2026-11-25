@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 
 import { echeancePaiement } from "../autofacture-donnees";
+import { calculerCommission } from "../regles";
 import { commandesSoldees, type FactureDeCommande } from "../commandes";
 
 // Règle du dirigeant (25/11) : commission calculée UNE SEULE FOIS sur le net HT arrêté à la
@@ -61,5 +62,54 @@ describe("délai de 30 jours depuis le paiement intégral", () => {
 
   it("paiement postérieur à l'émission (donnée incohérente) : on garde l'émission", () => {
     expect(echeancePaiement(paiement, emission).toISOString()).toBe("2026-12-02T12:00:00.000Z");
+  });
+});
+
+describe("avoir total : même résultat avant ou après le passage (décision pilote 25/11)", () => {
+  it("facture sans devis annulée par avoir puis refaite : UNE seule commande soldée, 4 500 € → 675 €", () => {
+    const cs = commandesSoldees([
+      f("F1", { devisId: null, montantHtCents: 450_000 }),
+      avoir("AV1", "F1", 450_000),
+      f("F2", {
+        devisId: null,
+        montantHtCents: 450_000,
+        emiseAt: new Date("2026-11-05T10:00:00Z"),
+      }),
+    ]);
+    expect(cs).toHaveLength(1);
+    expect(cs[0]!.factureCleId).toBe("F2");
+    const calc = calculerCommission({
+      activite: "implementation",
+      factureHtCents: cs[0]!.baseApresAvoirsCents,
+    });
+    expect(calc).toMatchObject({ statut: "calculee", montantCents: 67_500 });
+  });
+
+  it("avoir partiel avant le passage : la base suit l'argent gardé (10 000 € − 2 000 €)", () => {
+    const [c] = commandesSoldees(
+      [f("A", { montantHtCents: 1_000_000 }), avoir("AV", "A", 200_000)],
+      new Map([["D1", 1_000_000]]),
+    );
+    expect(c!.baseSignatureCents).toBe(1_000_000);
+    expect(c!.baseApresAvoirsCents).toBe(800_000);
+  });
+
+  it("avoir total avant le passage : aucune commande", () => {
+    expect(commandesSoldees([f("A"), avoir("AV", "A", 500_000)])).toEqual([]);
+  });
+});
+
+describe("grille : coaching 0 €, arrondi au centime le plus proche", () => {
+  it("coaching un_a_un : aucune commission", () => {
+    expect(calculerCommission({ activite: "un_a_un", factureHtCents: 300_000 })).toEqual({
+      statut: "aucune",
+    });
+  });
+  it("333,33 € à 15 % → 50,00 € (et non 49,99 €)", () => {
+    expect(
+      calculerCommission({ activite: "implementation", factureHtCents: 33_333 }),
+    ).toMatchObject({
+      montantCents: 5_000,
+    });
   });
 });

@@ -79,7 +79,7 @@ const DEJA_FACTUREE =
 
 /** Part du parrain recalculée sur le nouveau montant du filleul (art. 4.6). */
 export const partDuParrain = (commissionFilleulCents: number): number =>
-  Math.floor((Math.max(0, commissionFilleulCents) * PARRAINAGE_BPS) / 10_000);
+  Math.round((Math.max(0, commissionFilleulCents) * PARRAINAGE_BPS) / 10_000);
 
 /** Nombre de sessions retenu à la création (formation) : prix public ÷ prix du palier. */
 function quantiteDe(l: { palier: string | null; prixPublicHtCents: number | null }): number {

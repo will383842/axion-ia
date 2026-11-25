@@ -31,6 +31,12 @@ export interface CommandeSoldee {
    * non déduits. Un avoir ou une modification du devis après la signature ne la change plus.
    */
   baseSignatureCents: number;
+  /**
+   * Décision du 25/11 : la commission suit l'argent réellement GARDÉ. Base de signature moins ce
+   * que les avoirs rendent au client (0 si tout est rendu). Un avoir avant ou après le passage
+   * donne ainsi le même résultat.
+   */
+  baseApresAvoirsCents: number;
   devisId: string | null;
 }
 
@@ -100,6 +106,10 @@ export function commandesSoldees(
       factureIds: triees.map((f) => f.id),
       totalHtCents: net,
       baseSignatureCents: totalDevis !== undefined ? totalDevis : brutCents,
+      baseApresAvoirsCents: Math.max(
+        0,
+        (totalDevis !== undefined ? totalDevis : brutCents) - (brutCents - net),
+      ),
       devisId: membres[0]!.devisId,
     });
   }

@@ -1050,16 +1050,16 @@ describe("réduire ou annuler une commission pas encore facturée (point 4)", ()
   it("réduire : la commission est RECALCULÉE depuis le prix conservé, la part du parrain par sa règle", async () => {
     etat.lignes = avecParrain();
     const r = await reduireCommission("c1", 80_005, "prix conservé : 800,05 € HT", "admin-1");
-    expect(r).toMatchObject({ ok: true, montantCents: 24_001 });
+    expect(r).toMatchObject({ ok: true, montantCents: 24_002 });
     expect(lignes().find((l) => l.id === "c1")!).toMatchObject({
-      montantCents: 24_001,
+      montantCents: 24_002,
       factureHtCents: 80_005,
     });
     expect(lignes().find((l) => l.id === "p1")!.montantCents).toBe(2_400); // 10 % arrondi inférieur
     expect(etat.journal[0]).toMatchObject({
       adminUserId: "admin-1",
       action: "commission_apporteur.reduite",
-      changes: { avantCents: 30_000, apresCents: 24_001, prixConserveHtCents: 80_005 },
+      changes: { avantCents: 30_000, apresCents: 24_002, prixConserveHtCents: 80_005 },
     });
   });
 
