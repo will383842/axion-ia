@@ -54,9 +54,8 @@ describe("constantes et dates de la règle par rendez-vous", () => {
     expect(VERSION_REGLE_RENDEZ_VOUS).toBe("2.8");
   });
 
-  it("finReservation : la saisie + 60 jours, même arithmétique que les délais existants", () => {
-    expect(FIN.getTime()).toBe(ajouterJours(SAISIE, 60).getTime());
-    expect(FIN.toISOString()).toBe("2026-05-09T09:30:00.000Z");
+  it("finReservation : fin du 60e jour calendaire à Paris (N1)", () => {
+    expect(FIN.toISOString()).toBe("2026-05-08T21:59:59.999Z");
   });
 
   it("finDeProtectionRendezVous : 6 mois depuis le rendez-vous, comme la fonction de mois existante", () => {
@@ -401,14 +400,57 @@ describe("durcissements mineurs (relecture du 25/11)", () => {
     vi.unstubAllEnvs();
   });
 
-  it("M3 · finReservation ajoute 60 × 24 h, y compris à travers un changement d'heure", () => {
-    // 1er février 9 h (Paris, UTC+1) → 2 avril 10 h (Paris, UTC+2).
-    expect(finReservation(new Date("2026-02-01T08:00:00.000Z")).toISOString()).toBe(
-      "2026-04-02T08:00:00.000Z",
+  it("N1 · jour 1 = jour de la saisie : saisie 25 nov. 15 h → fin le 23 janv. à minuit Paris", () => {
+    const saisie = new Date("2026-11-25T14:00:00.000Z"); // 15 h Paris
+    const fin = finReservation(saisie);
+    expect(fin.toISOString()).toBe("2027-01-23T22:59:59.999Z"); // 23 janv. 23:59:59.999 Paris
+    const reserve = (t: string) =>
+      reservationOccupe({ recueAt: saisie, reserveeJusquAt: fin }, new Date(t));
+    expect(reserve("2027-01-23T22:59:00.000Z")).toBe(true); // 23:59 Paris : réservée
+    expect(reserve("2027-01-23T23:00:00.000Z")).toBe(false); // 24 janv. 00:00 Paris : libre
+  });
+
+  it("N1 · saisie du 1er déc. 15 h → 29 janv.", () => {
+    expect(finReservation(new Date("2026-12-01T14:00:00.000Z")).toISOString()).toBe(
+      "2027-01-29T22:59:59.999Z",
     );
-    // 1er septembre 9 h (Paris, UTC+2) → 31 octobre 8 h (Paris, UTC+1).
-    expect(finReservation(new Date("2026-09-01T07:00:00.000Z")).toISOString()).toBe(
-      "2026-10-31T07:00:00.000Z",
+  });
+
+  it("N1 · 00 h 30 et 23 h 50 Paris le même jour : même fin", () => {
+    // 00:30 Paris le 25/11 = 24/11 23:30Z ; 23:50 Paris le 25/11 = 25/11 22:50Z
+    for (const t of ["2026-11-24T23:30:00.000Z", "2026-11-25T22:50:00.000Z"])
+      expect(finReservation(new Date(t)).toISOString()).toBe("2027-01-23T22:59:59.999Z");
+  });
+
+  it("N1 · fin d'année : saisie 31 déc. 23 h 50 Paris → 28 févr.", () => {
+    expect(finReservation(new Date("2026-12-31T22:50:00.000Z")).toISOString()).toBe(
+      "2027-02-28T22:59:59.999Z",
+    );
+  });
+
+  it("N1 · passage à l'heure d'été (fin mars) : minuit Paris suit le décalage", () => {
+    // saisie 15 janv. → 60e jour = 15 mars (CET, UTC+1)
+    expect(finReservation(new Date("2026-01-15T10:00:00.000Z")).toISOString()).toBe(
+      "2026-03-15T22:59:59.999Z",
+    );
+    // saisie 10 mars → 60e jour = 8 mai (CEST, UTC+2) : 23:59:59.999 Paris = 21:59:59.999Z
+    expect(finReservation(new Date("2026-03-10T09:30:00.000Z")).toISOString()).toBe(
+      "2026-05-08T21:59:59.999Z",
+    );
+    // la fin du 60e jour traverse le changement d'heure du 29 mars : saisie 5 fév.
+    expect(finReservation(new Date("2026-02-05T08:00:00.000Z")).toISOString()).toBe(
+      "2026-04-05T21:59:59.999Z",
+    );
+  });
+
+  it("N1 · passage à l'heure d'hiver (fin octobre)", () => {
+    // saisie 25 août → 23 oct. (CEST, veille du changement du 25)
+    expect(finReservation(new Date("2026-08-25T07:00:00.000Z")).toISOString()).toBe(
+      "2026-10-23T21:59:59.999Z",
+    );
+    // saisie 2 sept. → 31 oct. (CET, UTC+1)
+    expect(finReservation(new Date("2026-09-02T07:00:00.000Z")).toISOString()).toBe(
+      "2026-10-31T22:59:59.999Z",
     );
   });
 });
