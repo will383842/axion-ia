@@ -131,7 +131,7 @@ describe("envoyerInvitationApporteur", () => {
     expect(dest).toBe("nadia@example.com");
     expect(locale).toBe("fr");
     expect(payload["calendlyUrl"]).toBe(LIEN);
-    expect(payload["dossierUrl"]).toBe("https://axion-ia.com/fr/devenir-commercial-ia/candidature");
+    expect(payload["dossierUrl"]).toBe("https://axion-ia.com/fr/apporteur-affaires/dossier");
     // L'historique de la fiche se lit par cette entité — sans elle, « déjà invitée » serait muet.
     expect(options).toMatchObject({ entityType: "Submission", entityId: fiche().id });
   });

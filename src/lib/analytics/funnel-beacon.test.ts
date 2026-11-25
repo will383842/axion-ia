@@ -36,7 +36,7 @@ describe("funnelKeyFromPath", () => {
     expect(
       funnelKeyFromPath("/fr/apporteur-affaires-independant-formation-ia-entreprise"),
     ).toBeNull();
-    expect(funnelKeyFromPath("/fr/devenir-commercial-ia/candidature")).toBeNull();
+    expect(funnelKeyFromPath("/fr/apporteur-affaires/dossier")).toBeNull();
   });
 
   it("reconnaît la page de réservation du Tour France IA, et elle seule", () => {

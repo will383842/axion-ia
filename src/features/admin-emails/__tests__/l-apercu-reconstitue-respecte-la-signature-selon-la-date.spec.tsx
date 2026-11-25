@@ -155,7 +155,7 @@ describe("les données de l'aperçu suivent la règle de l'envoi", () => {
     ).subject;
     expect(a.subject).toBe(attendu);
     // Dossier pas encore arrivé (la seule ligne est un premier contact) : le lien y est.
-    expect(a.html).toContain("/devenir-commercial-ia/candidature");
+    expect(a.html).toContain("/apporteur-affaires/dossier");
     // Le lien de réservation public reste lisible, le jeton d'opposition non.
     expect(a.html).toContain("https://calendly.com/axion-ia/echange-apporteur-15-min");
     expect(a.html).toContain("api/unsubscribe?token=[masqué]");

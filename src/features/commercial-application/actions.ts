@@ -53,7 +53,7 @@ import {
 } from "@/lib/commercial-application/model";
 import { signalerHoneypot } from "@/lib/security/honeypot-observable";
 import {
-  DOSSIER_COMPLET_PATH,
+  DOSSIER_COMPLET_SOURCE,
   sourceConnueDepuisUtm,
 } from "@/lib/commercial-application/lead-apporteur";
 import { annulerRelancesLeadApporteur } from "./relances-lead-apporteur";
@@ -364,7 +364,7 @@ export async function submitCommercialApplicationAction(
           message: d.pitch,
           // 🔑 Lu par l'invitation automatique (`invitation-auto.ts`) : c'est ce
           // qui fait de cette ligne un DOSSIER COMPLET. Ne pas changer sans elle.
-          source: DOSSIER_COMPLET_PATH,
+          source: DOSSIER_COMPLET_SOURCE,
           consentVersion: COMMERCIAL_APPLICATION_CONSENT_VERSION,
           // Plus de `vivierConsentAt` depuis le 19/09 : la case vivier est
           // retirée du formulaire (B2). Un ancien onglet peut encore envoyer

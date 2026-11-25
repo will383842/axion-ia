@@ -2,7 +2,7 @@
 // Facebook (2026-09-03).
 //
 // ── Pourquoi un second formulaire, et pas le wizard ─────────────────────────
-// Le wizard `/devenir-commercial-ia/candidature` est un DOSSIER : neuf écrans,
+// Le wizard `/apporteur-affaires/dossier` est un DOSSIER : neuf écrans,
 // expériences, pitch de 150 caractères minimum. Il convertit très bien quelqu'un
 // qui a lu une annonce et décidé de candidater. Un visiteur venu d'un post
 // Facebook n'a rien décidé : il a donné dix secondes à une page, sur son
@@ -98,8 +98,23 @@ export function sourceDepuisUtm(utmSource: string | undefined | null): string {
 export const TUNNEL_FACEBOOK_PATH = "/apporteur-affaires";
 export const TUNNEL_FACEBOOK_MERCI_PATH = "/apporteur-affaires/merci";
 
-/** Cible du dossier complet — le wizard existant, pré-rempli par le brouillon. */
-export const DOSSIER_COMPLET_PATH = "/devenir-commercial-ia/candidature";
+/**
+ * Cible du dossier complet — le wizard existant, pré-rempli par le brouillon.
+ * Adresse publique depuis le 2026-11-25 (L5c, D6) ; l'ancienne
+ * `/devenir-commercial-ia/candidature` redirige en 301 (`next.config.ts`).
+ */
+export const DOSSIER_COMPLET_PATH = "/apporteur-affaires/dossier";
+
+/**
+ * CANAL enregistré en base (`details.source`) pour un dossier complet.
+ *
+ * ⛔ Clé technique, pas un lien : elle garde l'ANCIENNE valeur. Les dossiers déjà
+ * reçus la portent, la reconnaissance des dossiers complets
+ * (`invitation-auto.ts`) et le contrat partenaires (`sourceCanal`) la lisent.
+ * La changer rendrait invisibles les dossiers existants. Les liens et e-mails
+ * utilisent `DOSSIER_COMPLET_PATH`, jamais cette constante.
+ */
+export const DOSSIER_COMPLET_SOURCE = "/devenir-commercial-ia/candidature";
 
 /**
  * Le premier contact compte-t-il comme conversion Meta ? SEULEMENT s'il vient

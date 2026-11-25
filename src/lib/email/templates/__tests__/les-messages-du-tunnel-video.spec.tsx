@@ -25,7 +25,7 @@ import {
 import { DOCUMENT_APPORTEUR_CHEMIN } from "@/lib/commercial-application/kit-apporteur";
 
 const REPRISE = "https://axion-ia.com/fr/apporteur-affaires/video?r=jeton";
-const DOSSIER = "https://axion-ia.com/fr/devenir-commercial-ia/candidature";
+const DOSSIER = "https://axion-ia.com/fr/apporteur-affaires/dossier";
 const CALENDLY = "https://calendly.com/axion-ia/echange-apporteur-affaires";
 
 const html = (el: React.ReactElement): Promise<string> => render(el);

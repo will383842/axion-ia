@@ -24,7 +24,7 @@ export async function GET(): Promise<Response> {
   const lm = COMMERCIAL_OFFER_DATE_POSTED;
   const entries: Array<{ path: string; priority: string; freq: string }> = [
     { path: "/devenir-commercial-ia", priority: "0.9", freq: "weekly" },
-    { path: "/devenir-commercial-ia/candidature", priority: "0.7", freq: "monthly" },
+    { path: "/apporteur-affaires/dossier", priority: "0.7", freq: "monthly" },
     // Landing presse « Le Mémo de l'Isère » (2026-08-12), refondue le 2026-11-09.
     { path: "/memo-isere", priority: "0.9", freq: "weekly" },
     // `/apporteur-affaires-independant-formation-ia-entreprise` n'y figure plus : depuis le

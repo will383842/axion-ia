@@ -371,7 +371,7 @@ const CONSOMMATEURS_ASSUMES: ReadonlySet<string> = new Set([
   // « OPCO » et « financement formation » ne sont émis que si la certification
   // est obtenue (REQ-JUR-024). La page lit le drapeau et le passe au module de
   // contenu, qui n'en lit aucun.
-  "src/app/[locale]/devenir-commercial-ia/candidature/page.tsx",
+  "src/app/[locale]/apporteur-affaires/dossier/page.tsx",
   "src/app/[locale]/devenir-commercial-ia/page.tsx",
   "src/server/content-gen/generators/blog-article.ts",
   // ── Boîte de réception (2026-08-27) : annote chaque demande entrante du

@@ -112,7 +112,7 @@ describe("invitation — jobs anciens, sans provenance", () => {
     const h = await rendu({
       contactName: "Nadia Ben",
       calendlyUrl: CALENDLY,
-      dossierUrl: "https://axion-ia.com/fr/devenir-commercial-ia/candidature",
+      dossierUrl: "https://axion-ia.com/fr/apporteur-affaires/dossier",
     });
     expect(sansAnnee(h)).toMatchSnapshot();
   });

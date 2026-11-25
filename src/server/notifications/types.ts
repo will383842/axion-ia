@@ -185,7 +185,7 @@ export type NotificationEvent =
       };
     }
   | {
-      // Candidature commerciale — tunnel sans CV `/devenir-commercial-ia/candidature`
+      // Candidature commerciale — tunnel sans CV `/apporteur-affaires/dossier`
       // (annonce presse Mémorial de l'Isère, 2026-08-12). Catégorie SÉPARÉE des
       // autres candidatures : salon Telegram dédié 🧲, comme
       // le monteur vidéo. Message volontairement COURT : les 6 champs qui

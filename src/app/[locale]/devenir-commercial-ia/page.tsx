@@ -4,7 +4,7 @@
 // Refonte du 09/11/2026 : page générée depuis la maquette validée par Williams
 // (`components/recrutement/landings/SectionsPrincipale.tsx`). Elle vend UNE seule chose, la Journée
 // IA, avec UNE seule commission indicative par journée payée. Tous les boutons mènent au dossier
-// de 3 minutes, sans CV (`/devenir-commercial-ia/candidature`).
+// de 3 minutes, sans CV (`/apporteur-affaires/dossier`).
 //
 // ⛔ Plus d'offre d'emploi schema.org ici (décision Will 2026-09-19, B5) : un apporteur n'occupe pas
 // un poste. `tests/unit/seo/plus-d-offre-d-emploi-google-pour-les-apporteurs.spec.tsx` la refuse.
@@ -35,7 +35,7 @@ import { ShellLanding } from "@/components/recrutement/landings/ShellLanding";
 export const revalidate = 3600;
 
 const PATH = "/devenir-commercial-ia";
-const DOSSIER = "/devenir-commercial-ia/candidature";
+const DOSSIER = "/apporteur-affaires/dossier";
 const LANDING_MESURE = "apporteur-principale";
 
 interface Props {

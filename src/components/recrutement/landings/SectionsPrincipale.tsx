@@ -31,10 +31,7 @@ export function SectionsPrincipale({ p, faq }: { p: Chiffres; faq?: ReactNode })
                 )}
               </p>
               <div className="h-actions">
-                <Link
-                  className="btn btn-p"
-                  href="/fr/devenir-commercial-ia/candidature?depuis=haut"
-                >
+                <Link className="btn btn-p" href="/fr/apporteur-affaires/dossier?depuis=haut">
                   <svg className="ico" aria-hidden="true" focusable="false">
                     <use href="#i-main" />
                   </svg>
@@ -187,7 +184,7 @@ export function SectionsPrincipale({ p, faq }: { p: Chiffres; faq?: ReactNode })
             </li>
           </ol>
           <div className="cta-bloc">
-            <Link className="btn btn-p" href="/fr/devenir-commercial-ia/candidature?depuis=comment">
+            <Link className="btn btn-p" href="/fr/apporteur-affaires/dossier?depuis=comment">
               <svg className="ico" aria-hidden="true" focusable="false">
                 <use href="#i-main" />
               </svg>
@@ -525,10 +522,7 @@ export function SectionsPrincipale({ p, faq }: { p: Chiffres; faq?: ReactNode })
             </p>
           </div>
           <div className="com-cta prix-cta">
-            <Link
-              className="btn btn-o"
-              href="/fr/devenir-commercial-ia/candidature?depuis=commission"
-            >
+            <Link className="btn btn-o" href="/fr/apporteur-affaires/dossier?depuis=commission">
               <svg className="ico" aria-hidden="true" focusable="false">
                 <use href="#i-main" />
               </svg>
@@ -620,7 +614,7 @@ export function SectionsPrincipale({ p, faq }: { p: Chiffres; faq?: ReactNode })
           <p className="plusieurs">
             Vous connaissez déjà le dirigeant qu’il faut&nbsp;? Commencez par lui.
           </p>
-          <Link className="btn btn-blanc" href="/fr/devenir-commercial-ia/candidature?depuis=bas">
+          <Link className="btn btn-blanc" href="/fr/apporteur-affaires/dossier?depuis=bas">
             <svg className="ico" aria-hidden="true" focusable="false">
               <use href="#i-main" />
             </svg>

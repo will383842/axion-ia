@@ -11,7 +11,7 @@
 //
 // ── Resserré le 2026-09-29 (décision de Will) : DOSSIER COMPLET seulement ──
 // Côté site, l'invitation ne part plus que pour le DOSSIER COMPLET (les neuf
-// écrans de `/devenir-commercial-ia/candidature`), 15 minutes après sa
+// écrans de `/apporteur-affaires/dossier`), 15 minutes après sa
 // réception. Le premier contact du formulaire court (`/apporteur-affaires`)
 // et le contact capturé à l'écran 1 du dossier ne la déclenchent plus : ils
 // gardent leur propre suite — kit + « complète ton dossier » + rappels
@@ -83,7 +83,7 @@ import { VALIDITE_JETON_REPRISE_MS } from "@/lib/commercial-application/vsl-appo
 import { lireVsl } from "./lead-vsl-details";
 import { FILTRE_APPORTEUR_PRISMA } from "@/lib/commercial-application/est-apporteur";
 import { ORIGINE_CANDIDATURE_OFFRE } from "@/lib/contact/accuse-attendu";
-import { DOSSIER_COMPLET_PATH } from "@/lib/commercial-application/lead-apporteur";
+import { DOSSIER_COMPLET_SOURCE } from "@/lib/commercial-application/lead-apporteur";
 import { envoyerInvitationApporteur } from "./invitation-apporteur";
 
 /** Délai entre la réception et l'invitation (décision Will). */
@@ -149,7 +149,7 @@ export function ficheEligible(details: unknown): boolean {
   // Fiche du site : le DOSSIER COMPLET, et lui seul (décision du 29/09). Le
   // premier contact et l'écran 1 portent `etape` ; la saisie manuelle et les
   // fiches importées n'ont pas cette source.
-  return d["source"] === DOSSIER_COMPLET_PATH && d["etape"] === undefined;
+  return d["source"] === DOSSIER_COMPLET_SOURCE && d["etape"] === undefined;
 }
 
 /**
@@ -290,7 +290,7 @@ export async function passerInvitationsAuto(
     where: {
       AND: [
         ...FILTRE_APPORTEUR_PRISMA.AND,
-        { details: { path: ["source"], equals: DOSSIER_COMPLET_PATH } },
+        { details: { path: ["source"], equals: DOSSIER_COMPLET_SOURCE } },
       ],
       submittedAt: { gte: depuis, lte: jusqua },
       deletedAt: null,

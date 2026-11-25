@@ -267,7 +267,7 @@ export async function auditerPage(page: Page, url: string): Promise<ResultatAudi
         // 🔴 QUATRIÈME TOUR — `r.left >= -1` produisait de FAUX COUPABLES.
         //
         // Le relevé de CI a désigné, sur `/fr/demande-devis`, `/fr/audit/demande`
-        // et `/fr/devenir-commercial-ia/candidature`, un `<input>` « dépassant de
+        // et `/fr/apporteur-affaires/dossier`, un `<input>` « dépassant de
         // 10 827 px ». Sa géométrie : `gauche -9999 · droite -9804`. C'est le pot
         // de miel anti-spam, placé hors écran par la gauche — motif standard.
         //

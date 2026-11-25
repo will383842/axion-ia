@@ -154,7 +154,7 @@ const ORIGINE_FICHE_RENDEZ_VOUS = "rendez-vous-apporteur";
  *
  * 🔴 2026-10-07 (test réel de Will) : l'invitation de ces personnes disait « Il
  * nous manque encore votre dossier » avec un lien vers l'ANCIEN formulaire de
- * candidature (`/devenir-commercial-ia/candidature`). Ce formulaire n'est pas leur
+ * candidature (`/apporteur-affaires/dossier`). Ce formulaire n'est pas leur
  * parcours : elles ont donné leur prénom, leur e-mail et leur numéro sur la page
  * vidéo, ou réservé directement. Aucune phrase ni aucun lien vers lui.
  */

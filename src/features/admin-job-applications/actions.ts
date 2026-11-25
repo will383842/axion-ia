@@ -70,7 +70,7 @@ export async function listApplicationsAction(input: Partial<ListApplicationsInpu
 
 // ============================================================ vues fusionnées
 // Onglets « Toutes » et « Mémo Isère » (demande Will 2026-08-13). Les
-// candidatures commerciales du tunnel /devenir-commercial-ia/candidature
+// candidatures commerciales du tunnel /apporteur-affaires/dossier
 // (annonce Mémorial de l'Isère, cf. groupe Telegram commercial-memo) sont des
 // `Submission` avec `details.subType = "candidature-commerciale"`, PAS des
 // `JobApplication`. « Toutes » fusionne les deux tables triées par date ;

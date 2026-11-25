@@ -56,7 +56,11 @@ export function funnelKeyFromPath(pathname: string | null | undefined): FunnelKe
   // Tunnel apporteurs : `/apporteur-affaires` et tout ce qui est dessous
   // (`/video`, `/merci`). Segment ENTIER : la page SEO
   // `/apporteur-affaires-independant-…` n'est pas un tunnel payant.
-  if (segments.includes("apporteur-affaires")) return "apporteur";
+  // Sauf le DOSSIER complet (`/apporteur-affaires/dossier`, ex-`/devenir-commercial-ia/
+  // candidature`, déplacé le 2026-11-25) : ce n'est pas du trafic payant, le compter
+  // fausserait le témoin (cf. funnel-beacon.test.ts).
+  const iApporteur = segments.indexOf("apporteur-affaires");
+  if (iApporteur !== -1 && segments[iApporteur + 1] !== "dossier") return "apporteur";
   // Tour France IA : la page de RÉSERVATION seulement (`/fr/appel/tour-france-ia`).
   // Jamais la landing `/tour-france-ia`, qui ne porte aucune mesure (voir
   // `FUNNEL_KEYS`). Segment ENTIER, et sous `/appel` : rien d'autre ne le porte.

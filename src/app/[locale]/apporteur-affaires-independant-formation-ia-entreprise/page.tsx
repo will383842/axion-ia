@@ -32,7 +32,7 @@ import { ShellLanding } from "@/components/recrutement/landings/ShellLanding";
 export const revalidate = 3600;
 
 const PATH = "/apporteur-affaires-independant-formation-ia-entreprise";
-const DOSSIER = "/devenir-commercial-ia/candidature";
+const DOSSIER = "/apporteur-affaires/dossier";
 const LANDING_MESURE = "apporteur-independant";
 
 const TITRE = "Apporteur d'affaires indépendant · la Journée IA · Axion-IA";
