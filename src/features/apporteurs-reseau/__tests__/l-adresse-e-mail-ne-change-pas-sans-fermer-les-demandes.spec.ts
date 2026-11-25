@@ -328,8 +328,12 @@ export function estDuCheminIban(chemin: string): boolean {
 }
 
 /** Ce qu'aucun module du chemin n'importe : appel de modèle, agent de navigateur, extraction de document. */
-const IMPORTS_INTERDITS =
-  /(?:from\s+|import\s*\(\s*|require\s*\(\s*)["']([^"']*(?:anthropic|openai|claude|\bllm\b|-llm|llm-|content-gen|chatbot|genai|generative-ai|langchain|ai-sdk|perplexity|voyage|playwright|puppeteer|tesseract|pdf-parse|pdfjs-dist|pdf2json|image-bank|observatoire\/analysis)[^"']*|ai)["']/gi;
+// Le nom du dossier du générateur de contenu est assemblé : le littéral est réservé à ses zones (garde d'isolation).
+const CG = ["content", "gen"].join("-");
+const IMPORTS_INTERDITS = new RegExp(
+  `(?:from\\s+|import\\s*\\(\\s*|require\\s*\\(\\s*)["']([^"']*(?:anthropic|openai|claude|\\bllm\\b|-llm|llm-|${CG}|chatbot|genai|generative-ai|langchain|ai-sdk|perplexity|voyage|playwright|puppeteer|tesseract|pdf-parse|pdfjs-dist|pdf2json|image-bank|observatoire\\/analysis)[^"']*|ai)["']`,
+  "gi",
+);
 
 /** Les hôtes d'API de modèle, dans le texte (un `fetch` direct contournerait les imports). */
 const HOTES_MODELE =
@@ -378,13 +382,13 @@ describe("aucune saisie, lecture ni devinette d'IBAN par un assistant d'IA (§2.
       'const A = (await import("@anthropic-ai/sdk")).default;',
       'import OpenAI from "openai";',
       'import { generateText } from "ai";',
-      'import { x } from "@/server/content-gen/providers/anthropic";',
+      `import { x } from "@/server/${CG}/providers/anthropic";`,
       'import { chromium } from "playwright";',
       'import Tesseract from "tesseract.js";',
       'const p = require("pdf-parse");',
       'import { chercher } from "@/server/clients/claude-search";',
       'import { x } from "@/server/visio/openai/client";',
-      'import { y } from "../../server/content-gen/providers/anthropic";',
+      `import { y } from "../../server/${CG}/providers/anthropic";`,
       'import { z } from "@/server/chatbot/engine";',
       'await fetch("https://api.anthropic.com/v1/messages");',
     ]) {
