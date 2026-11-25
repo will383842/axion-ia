@@ -211,6 +211,39 @@ describe("garde-fous : seuls les anciens montants partent, le reste est signalé
     ]);
   });
 
+  it("FAQ d'article (forme vue en production) : le bouton perd son montant, la question reste", () => {
+    const faq = [
+      {
+        question: "Comment réserver une formation IA avec Axion-IA ?",
+        answer:
+          'Pour réserver une formation IA avec Axion-IA, choisissez le format : <a href="/formations">Réserver une formation · 2 450 €</a>.',
+      },
+    ];
+    const r = retirerMontantCtaJson(faq);
+    expect(r.remplacements).toBe(1);
+    expect(r.valeur).toEqual([
+      {
+        question: "Comment réserver une formation IA avec Axion-IA ?",
+        answer:
+          'Pour réserver une formation IA avec Axion-IA, choisissez le format : <a href="/formations">Réserver une formation</a>.',
+      },
+    ]);
+    expect(ctaSuspects(texteJson(r.valeur), 400)).toEqual([]);
+  });
+
+  it("FAQ support-apres-vente : « 290 €/mois HT » est réécrit en « sur devis »", () => {
+    const cible = FAQ_CIBLES.find((c) => c.slug === "support-apres-vente")!;
+    const p = planifierFaq(cible.slug, {
+      answerFr:
+        "Maintenance optionnelle 290 €/mois HT (correctifs + monitoring + 2 h/mois d'évolution). Sans engagement, résiliable mensuellement.",
+      answerEn:
+        "Optional maintenance €290/month (fixes + monitoring + 2h/month of evolution). No commitment, monthly cancellation.",
+      metaDescription: null,
+    })!;
+    expect(p.ecritures).toEqual({ answerFr: cible.answerFr, answerEn: cible.answerEn });
+    expect(p.ecritures.answerFr).toContain("sur devis");
+  });
+
   it("un bouton découpé en deux nœuds JSON n'est pas réécrit, mais signalé", () => {
     const json = { content: [{ text: "Réserver une formation" }, { text: " · 2 450 €" }] };
     const r = retirerMontantCtaJson(json);

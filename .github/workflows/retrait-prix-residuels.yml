@@ -290,10 +290,16 @@ jobs:
           set -u
           [ -s out/urls.txt ] || exit 0
           if [ -z "${INDEXNOW_KEY:-}" ]; then echo "::notice::INDEXNOW_KEY absent — IndexNow ignoré."; exit 0; fi
-          LIST=$(jq -Rn '[inputs | select(length>0) | "https://axion-ia.com" + .]' < out/urls.txt)
+          # Corps écrit dans un fichier hors de out/ (qui est téléversé : la clé n'y va pas).
+          # En ligne de commande, 4 233 URL dépassaient la limite d'arguments (run 45651363409).
+          CORPS="$RUNNER_TEMP/indexnow.json"
+          jq -Rn --arg key "$INDEXNOW_KEY" \
+            '{host: "axion-ia.com", key: $key, urlList: [inputs | select(length>0) | "https://axion-ia.com" + .]}' \
+            < out/urls.txt > "$CORPS"
           curl -sS -o /dev/null -w 'IndexNow HTTP %{http_code}\n' -m 30 -X POST "https://api.indexnow.org/indexnow" \
             -H "Content-Type: application/json; charset=utf-8" \
-            --data "{\"host\":\"axion-ia.com\",\"key\":\"${INDEXNOW_KEY}\",\"urlList\":${LIST}}" || true
+            --data-binary "@$CORPS" || true
+          rm -f "$CORPS"
 
       - uses: actions/upload-artifact@v4
         if: always()

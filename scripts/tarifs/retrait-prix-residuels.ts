@@ -37,7 +37,7 @@ export const ACTION = "retrait-prix-residuels-2026-11";
 export const ACTION_RESTORE = `${ACTION}-restore`;
 const DESCRIPTION = "script:retrait-prix-residuels";
 
-type Table = "faqs" | "article_translations";
+type Table = "faqs" | "article_translations" | "articles";
 
 /** Colonnes autorisées en écriture (liste blanche : seuls ces noms entrent dans le SQL). */
 const COLONNES: Record<Table, Record<string, { json: boolean }>> = {
@@ -47,7 +47,21 @@ const COLONNES: Record<Table, Record<string, { json: boolean }>> = {
     body_text: { json: false },
     body_json: { json: true },
   },
+  // FAQ d'article (bloc « questions » de la page) : même règle de bouton que le corps.
+  articles: { faq_json: { json: true } },
 };
+
+/** URL publiques d'un article (par l'id de `articles`) : slug français sûr seulement. */
+async function urlsArticle(articleId: string): Promise<string[]> {
+  const a = await prisma.$queryRaw<Array<{ slugFr: string | null; isNews: boolean }>>(Prisma.sql`
+    SELECT (SELECT f.slug FROM article_translations f
+             WHERE f.article_id = a.id AND f.locale::text = 'fr' LIMIT 1) AS "slugFr",
+           a.is_news AS "isNews"
+    FROM articles a WHERE a.id = ${articleId}::uuid`);
+  const s = a[0]?.slugFr;
+  if (!s || !SLUG_SUR_RE.test(s)) return [];
+  return a[0]?.isNews ? [`/fr/blog/${s}`, `/fr/actualites/${s}`] : [`/fr/blog/${s}`];
+}
 
 const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 const SLUG_SUR_RE = /^[A-Za-z0-9._~-]+$/;
@@ -337,12 +351,33 @@ export async function construirePlan(): Promise<Plan> {
     WHERE faq_json::text ~* ${LIBELLES_CTA_SQL} OR direct_answer ~* ${LIBELLES_CTA_SQL}
        OR key_takeaway ~* ${LIBELLES_CTA_SQL}`);
   for (const a of articlesRevoir) {
+    // faq_json : bouton avec ancien montant réécrit (même règle exacte que le corps).
+    let faqApres: unknown = a.faqJson;
+    if (a.faqJson != null) {
+      const j = retirerMontantCtaJson(a.faqJson);
+      if (j.remplacements > 0) {
+        faqApres = j.valeur;
+        const urls = await urlsArticle(a.id);
+        if (urls.length === 0)
+          notes.push(`articles:${a.id} : pas de slug français sûr, aucune URL à purger`);
+        lignes.push({
+          table: "articles",
+          id: a.id,
+          cle: `articles:${a.id}`,
+          libelle: `FAQ de l'article ${a.id} statut ${a.status}`,
+          champs: [{ colonne: "faq_json", avant: a.faqJson, apres: j.valeur }],
+          remplacements: j.remplacements,
+          fragments: j.fragments.map((f) => ({ ...f, colonne: "faq_json" })),
+          urls,
+        });
+      }
+    }
     const champsA: Array<[string, string | null]> = [
-      ["faq_json", a.faqJson == null ? null : texteJson(a.faqJson)],
+      ["faq_json", faqApres == null ? null : texteJson(faqApres)],
       ["direct_answer", a.directAnswer],
       ["key_takeaway", a.keyTakeaway],
     ];
-    // Tout libellé suivi d'un montant (ancien ou non) : jamais écrit ici, toujours signalé.
+    // Ce qui reste APRÈS retrait (autre montant, forme inconnue) : jamais écrit, signalé.
     for (const [champ, v] of champsA)
       for (const sus of ctaSuspects(v, 400))
         aRevoir.push(`articles:${a.id} (${a.status}) ${champ} : « ${extrait(sus)} »`);
@@ -577,6 +612,8 @@ async function restaurer(): Promise<{ restaures: number; divergences: string[]; 
         Prisma.sql`SELECT slug FROM faqs WHERE id = ${id}::uuid`,
       );
       if (f[0] && SLUG_SUR_RE.test(f[0].slug)) urls.add(`/fr/faq/${f[0].slug}`);
+    } else if (table === "articles") {
+      for (const u of await urlsArticle(id)) urls.add(u);
     } else {
       const a = await prisma.$queryRaw<
         Array<{ slugFr: string | null; isNews: boolean }>
