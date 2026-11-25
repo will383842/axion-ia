@@ -231,7 +231,7 @@ export function StepB2b({ a, set, errors }: StepProps) {
     <div>
       <StepHeading
         title="Votre expérience"
-        hint="Aucune expérience n’est exigée. Ces réponses nous aident seulement à préparer notre échange."
+        hint="Aucune expérience de la vente n’est exigée. Vos réponses nous aident à préparer notre échange."
       />
       <ChipGroup legend="Avez-vous déjà vendu en B2B ?" requiredField error={errors.b2bDejaVendu}>
         <Chip
@@ -447,7 +447,7 @@ export function StepParcours({
                         }
                         className="accent-terracotta h-5 w-5 shrink-0"
                       />
-                      <span className="text-fg font-medium">C’est mon poste actuel</span>
+                      <span className="text-fg font-medium">C’est mon activité en cours</span>
                     </label>
                   </div>
                   <ChipGroup legend="Type de clients" optionalHint>

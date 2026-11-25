@@ -40,6 +40,10 @@ export const CANDIDATURE_COMMERCIALE_SUBTYPE = "candidature-commerciale";
  * retirée : elle n'existait que pour le CRM, et le dossier apporteur ne part
  * plus au CRM.
  *
+ * v4 (25/11, lot L5a) — « J'accepte que mes informations soient utilisées pour
+ * l'étude de ma demande d'apport d'affaires. » ; même périmètre que la v3, seul
+ * le libellé change.
+ *
  * 🔑 Le couplage avec le CRM, qui refusait en 422 toute version inconnue, ne
  * s'applique donc plus : cette valeur ne franchit plus la frontière. Elle vit
  * dans `details.consentVersion` et dans le registre de preuve — changer le
@@ -351,7 +355,7 @@ export const experienceSchema = z
       .optional(),
   })
   .refine((e) => e.posteActuel || Boolean(e.fin), {
-    message: "Indiquez la date de fin ou cochez « poste actuel ».",
+    message: "Indiquez la date de fin ou cochez « activité en cours ».",
     path: ["fin"],
   });
 

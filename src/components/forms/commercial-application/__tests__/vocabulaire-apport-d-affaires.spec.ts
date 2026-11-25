@@ -37,7 +37,7 @@ const INTERDITS: ReadonlyArray<{ mot: string; re: RegExp }> = [
 
 /** Champs du parcours (écran des expériences), tolérés jusqu'à D5. */
 const PARCOURS =
-  /poste occupé|mon poste actuel|"Poste \?"|exp\.poste|posteActuel|\{ poste:|-poste`|errors\[`\$\{pre\}-poste`\]/i;
+  /poste occupé|"Poste \?"|exp\.poste|posteActuel|\{ poste:|-poste`|errors\[`\$\{pre\}-poste`\]/i;
 
 describe("le formulaire d'entrée emploie le vocabulaire de l'apport d'affaires", () => {
   for (const fichier of FICHIERS) {
@@ -55,5 +55,39 @@ describe("le formulaire d'entrée emploie le vocabulaire de l'apport d'affaires"
   it("le texte de consentement parle d'une demande d'apport d'affaires", () => {
     const steps = readFileSync(path.join(DOSSIER, "steps.tsx"), "utf8");
     expect(steps.replace(/\s+/g, " ")).toContain("l’étude de ma demande d’apport d’affaires.");
+  });
+
+  describe("corrections du verdict L5a", () => {
+    const lire = (rel: string) =>
+      readFileSync(path.resolve(__dirname, "../../../..", rel), "utf8").replace(/\s+/g, " ");
+
+    it("l'aide de l'écran 2 ne promet pas « aucune expérience » ni « seulement »", () => {
+      const steps = lire("components/forms/commercial-application/steps.tsx");
+      expect(steps).toContain(
+        "Aucune expérience de la vente n’est exigée. Vos réponses nous aident à préparer notre échange.",
+      );
+      expect(steps).not.toContain("nous aident seulement");
+    });
+
+    it("le sommaire de l'écran 2 ne parle pas de parcours", () => {
+      const w = lire("components/forms/commercial-application/CommercialApplicationWizard.tsx");
+      expect(w).toContain("Quelques mots sur ce que vous faites aujourd'hui.");
+      expect(w).not.toContain("Votre parcours, en quelques lignes");
+    });
+
+    it("les messages d'erreur disent « activité en cours », pas « poste actuel »", () => {
+      for (const f of [
+        "lib/commercial-application/model.ts",
+        "components/forms/commercial-application/wizard-state.ts",
+      ]) {
+        const t = lire(f);
+        expect(t).toContain("activité en cours");
+        expect(t).not.toMatch(/cochez « poste actuel »/);
+      }
+    });
+
+    it("la docstring de la version du consentement décrit la v4", () => {
+      expect(lire("lib/commercial-application/model.ts")).toContain("v4 (25/11, lot L5a)");
+    });
   });
 });

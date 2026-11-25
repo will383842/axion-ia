@@ -199,7 +199,7 @@ export function validateStep(step: number, a: WizardAnswers): FieldErrors {
         if (!exp.debutMois || !exp.debutAnnee)
           e[`${pre}-debut`] = "Indiquez le mois et l’année de début.";
         if (!exp.posteActuel && (!exp.finMois || !exp.finAnnee))
-          e[`${pre}-fin`] = "Indiquez la fin, ou cochez « poste actuel ».";
+          e[`${pre}-fin`] = "Indiquez la fin, ou cochez « activité en cours ».";
         if (
           exp.debutMois &&
           exp.debutAnnee &&

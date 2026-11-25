@@ -385,7 +385,7 @@ export function CommercialApplicationWizard(): React.ReactNode {
                     {
                       n: "2",
                       t: "Votre expérience",
-                      d: "Votre parcours, en quelques lignes.",
+                      d: "Quelques mots sur ce que vous faites aujourd'hui.",
                     },
                     { n: "3", t: "Votre terrain", d: "IA, outils, zone souhaitée, déplacements." },
                     {
