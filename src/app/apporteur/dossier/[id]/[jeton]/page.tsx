@@ -37,6 +37,7 @@ import {
 import { lireDeclarationsDe } from "@/features/apporteurs-reseau/declaration-entreprise";
 import { ID_DOSSIER_EXEMPLE } from "@/features/apporteurs-reseau/jeton";
 
+import { EncartChallenge, lireEncartPourEspace } from "./challenge/EncartChallenge";
 import { ContratLisible } from "./ContratLisible";
 import { Coquille, EcranEtat } from "./Coquille";
 import { DeclarationEntreprise } from "./DeclarationEntreprise";
@@ -127,6 +128,7 @@ export default async function DossierApporteurPage({ params }: PageProps) {
     const vigilance = await vigilanceDemandeeA(dossier.id);
     // Préavis de résiliation en cours (lot L1b) : une ligne d'information, rien à faire.
     const fin = await lireResiliationEnCours(dossier.id);
+    const encartChallenge = await lireEncartPourEspace();
     return (
       <Coquille titre={titre}>
         <EcranEtat
@@ -146,6 +148,8 @@ export default async function DossierApporteurPage({ params }: PageProps) {
             </a>
           ) : null}
         </EcranEtat>
+        {/* Challenge publié : la règle seulement (invitation libre). */}
+        <EncartChallenge vue={encartChallenge} id={dossier.id} jeton={jeton} />
         <DeclarationEntreprise id={dossier.id} jeton={jeton} protectionMois={PROTECTION_MOIS} />
         <ListeDeclarations declarations={declarations} />
         {/* Tout ce qui lui a été remis, au même endroit (2026-11-25). */}

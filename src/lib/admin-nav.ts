@@ -806,6 +806,14 @@ function buildAdminNavSocle(adminPrefix: string): ReadonlyArray<AdminNavItem> {
       group: "apporteurs",
       navLevel: 0,
     },
+    // Challenges (invitation libre : jamais un objectif imposé). Écran éteint par interrupteur.
+    {
+      href: `${base}/apporteurs/challenges`,
+      label: "Challenges apporteurs",
+      icon: "Trophy",
+      group: "apporteurs",
+      navLevel: 0,
+    },
     // Candidatures aux offres publiées (JobApplication : CV/photo, workflow RH).
     {
       href: `${base}/contacts/candidatures`,

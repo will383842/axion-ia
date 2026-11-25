@@ -32,6 +32,9 @@ on:
           - "EN_LOCALE_ENABLED"
           # Chantier visio (PR 4) — balayage du dossier client. Cible : worker.
           - "DOSSIER_BALAYAGE_ENABLED"
+          # Challenges d'apporteurs (invitation libre). Cible : le site. Éteints par défaut.
+          - "APPORTEUR_CHALLENGES_CONSOLE_ENABLED"
+          - "APPORTEUR_CHALLENGES_ESPACE_ENABLED"
           # Enregistrement des visios (PR 5) : lu par le site ET le worker.
           - "ENREGISTREMENT_VISIO_PILOTE"
           - "ENREGISTREMENT_VISIO_OUVERT"
