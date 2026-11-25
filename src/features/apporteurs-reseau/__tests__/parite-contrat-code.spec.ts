@@ -131,7 +131,7 @@ describe("parité contrat / code : les nombres clés sont les mêmes", () => {
   it("30 % audit et 1-to-1, 15 % intégration (annexe 1)", () => {
     attendre(
       "audit, en pourcent",
-      lire("audit", /Audit sur place \| à partir de 1 190 € \| (\d+) % \|/),
+      lire("audit", /Tous les audits \| à partir de 1 190 € \| (\d+) % \|/),
       TAUX_BPS.audit / 100,
       "TAUX_BPS.audit / 100",
     );
