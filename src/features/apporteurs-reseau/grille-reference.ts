@@ -91,7 +91,8 @@ export function grilleDeReference(): readonly TableauGrille[] {
     return { cellules: [nom!, duree!, euros(p.prixCents / 100), euros(p.forfaitCents / 100)] };
   });
 
-  const unAUn = pourcent(TAUX_BPS.un_a_un);
+  // Annexe 1, A1.3 : aucune commission sur l'accompagnement individuel (décision du 2026-11-25).
+  const unAUn = "Aucune";
   const accompagnement: LigneGrille[] = [
     ["Accompagnement dirigeant", "1 jour", palier("intervention-dirigeants", INTERVENTION_TIERS)],
     [
@@ -173,7 +174,8 @@ export function grilleDeReference(): readonly TableauGrille[] {
     {
       cle: "A1.2",
       titre: "Accompagnement individuel et coaching (1-to-1)",
-      regle: `${unAUn} du montant hors taxes facturé.`,
+      regle:
+        "Aucune commission : l'accompagnement individuel (coaching « one to one »), vendu à la séance ou à la journée, relève de A1.6.",
       colonnes: ["Prestation", "Durée", "Prix public HT", "Commission"],
       lignes: accompagnement,
     },

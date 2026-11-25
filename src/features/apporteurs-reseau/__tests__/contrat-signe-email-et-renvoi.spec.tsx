@@ -61,7 +61,7 @@ describe("e-mail « contrat signé » (D5)", () => {
       expect(x).toMatch(/Formation : 500/);
       expect(x).toContain("Audit : 30 % du montant HT");
       expect(x).toContain("Intégration : 15 % du montant HT");
-      expect(x).toContain("1-to-1) : 30 % du montant HT");
+      expect(x).toContain("1-to-1) : aucune commission");
       expect(x).toContain(
         "Parrainage : si vous présentez une personne qui devient elle-même apporteur",
       );

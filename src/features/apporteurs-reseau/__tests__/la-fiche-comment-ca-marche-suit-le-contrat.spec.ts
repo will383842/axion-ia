@@ -39,8 +39,8 @@ describe("fiche « Comment ça marche » ↔ contrat 2.3", () => {
     expect(CONTRAT_V2_MARKDOWN).toMatch(/SIREN valide \*\*et actif\*\*/);
   });
 
-  it("les taux affichés sont ceux de l'annexe 1 (30 % audit et 1-to-1, 15 % implémentation, 500 € et 250 €)", () => {
+  it("les taux affichés sont ceux de l'annexe 1 (30 % audit, 0 € 1-to-1, 15 % implémentation, 500 € et 250 €)", () => {
     for (const m of [/500 €/, /250 €/, /30 %/, /15 %/]) expect(texte).toMatch(m);
-    expect(texte).toMatch(/30 %\s*Accompagnement individuel/);
+    expect(texte).toMatch(/0 €\s*Accompagnement individuel/);
   });
 });

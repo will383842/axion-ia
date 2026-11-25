@@ -9,7 +9,6 @@ import {
   COMMISSION_FORMATION_PAR_JOURNEE_EUR,
   getCommissionById,
 } from "@/content/pricing";
-import { TAUX_BPS } from "@/features/apporteurs-reseau/regles";
 import {
   LIBELLE_PIECE,
   PIECES_FACULTATIVES,
@@ -20,7 +19,6 @@ type Langue = "fr" | "en";
 
 const PCT_AUDIT = getCommissionById("com-audit").percent ?? 0;
 const PCT_INTEGRATION = getCommissionById("com-integration").percent ?? 0;
-const PCT_UN_A_UN = TAUX_BPS.un_a_un / 100;
 
 function pourcent(n: number, l: Langue): string {
   return l === "fr" ? `${String(n).replace(".", ",")} %` : `${n}%`;
@@ -40,7 +38,7 @@ export function lignesBareme(l: Langue = "fr"): string[] {
       `Training: €${COMMISSION_FORMATION_PAR_JOURNEE_EUR} excl. VAT per training day at the public rate (reduced pro rata if the client is granted a discount).`,
       `Audit: ${pourcent(PCT_AUDIT, l)} of the invoice amount excl. VAT.`,
       `Integration: ${pourcent(PCT_INTEGRATION, l)} of the invoice amount excl. VAT.`,
-      `One-to-one support and coaching: ${pourcent(PCT_UN_A_UN, l)} of the invoice amount excl. VAT.`,
+      `One-to-one support and coaching: no commission.`,
       `Talk: €${COMMISSION_CONFERENCE_EUR} excl. VAT per talk ordered (never more than the price invoiced excl. VAT).`,
     ];
   }
@@ -48,7 +46,7 @@ export function lignesBareme(l: Langue = "fr"): string[] {
     `Formation : ${COMMISSION_FORMATION_PAR_JOURNEE_EUR} € HT par journée de formation au tarif public (réduite au prorata en cas de remise accordée au client).`,
     `Audit : ${pourcent(PCT_AUDIT, l)} du montant HT de la facture.`,
     `Intégration : ${pourcent(PCT_INTEGRATION, l)} du montant HT de la facture.`,
-    `Accompagnement individuel et coaching (1-to-1) : ${pourcent(PCT_UN_A_UN, l)} du montant HT de la facture.`,
+    `Accompagnement individuel et coaching (1-to-1) : aucune commission.`,
     `Conférence : ${COMMISSION_CONFERENCE_EUR} € HT par conférence commandée (jamais plus que le prix HT facturé).`,
   ];
 }

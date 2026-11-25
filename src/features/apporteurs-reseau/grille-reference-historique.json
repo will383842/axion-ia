@@ -45,30 +45,50 @@
     {
       "depuisLe": "2026-10-08",
       "cellules": ["Accompagnement dirigeant", "1 jour", "1 390 €", "30 %"]
+    },
+    {
+      "depuisLe": "2026-11-25",
+      "cellules": ["Accompagnement dirigeant", "1 jour", "1 390 €", "Aucune"]
     }
   ],
   "A1.2 | Accompagnement dirigeant | 2 jours": [
     {
       "depuisLe": "2026-10-08",
       "cellules": ["Accompagnement dirigeant", "2 jours", "2 590 €", "30 %"]
+    },
+    {
+      "depuisLe": "2026-11-25",
+      "cellules": ["Accompagnement dirigeant", "2 jours", "2 590 €", "Aucune"]
     }
   ],
   "A1.2 | Accompagnement collaborateur | 1 jour": [
     {
       "depuisLe": "2026-10-08",
       "cellules": ["Accompagnement collaborateur", "1 jour", "990 €", "30 %"]
+    },
+    {
+      "depuisLe": "2026-11-25",
+      "cellules": ["Accompagnement collaborateur", "1 jour", "990 €", "Aucune"]
     }
   ],
   "A1.2 | Accompagnement collaborateur | 2 jours": [
     {
       "depuisLe": "2026-10-08",
       "cellules": ["Accompagnement collaborateur", "2 jours", "1 830 €", "30 %"]
+    },
+    {
+      "depuisLe": "2026-11-25",
+      "cellules": ["Accompagnement collaborateur", "2 jours", "1 830 €", "Aucune"]
     }
   ],
   "A1.2 | Coaching individuel | à la séance": [
     {
       "depuisLe": "2026-10-08",
       "cellules": ["Coaching individuel", "à la séance", "à partir de 790 €", "30 %"]
+    },
+    {
+      "depuisLe": "2026-11-25",
+      "cellules": ["Coaching individuel", "à la séance", "à partir de 790 €", "Aucune"]
     }
   ],
   "A1.3 | Audit sur place": [
