@@ -13,7 +13,7 @@
  * (`interrupteur-rendez-vous.ts`) et se passe en argument (`regleDe(signature, actif)`).
  */
 
-import { PROTECTION_MOIS, ajouterJours, ajouterMois } from "./regles";
+import { PROTECTION_MOIS, ajouterMois, finDuNiemeJourParis } from "./regles";
 
 /** Durée de la réservation provisoire, à compter de la saisie (`recueAt`). */
 export const RESERVATION_PROVISOIRE_JOURS = 60;
@@ -60,9 +60,14 @@ export function regleDe(signature: unknown, actif: boolean): RegleAttribution {
     : null;
 }
 
-/** Fin de la réservation provisoire : la saisie + 60 jours (borne incluse). */
+/**
+ * Fin de la réservation provisoire (décision N1) : la FIN du 60e jour calendaire (Paris), le jour de la
+ * saisie étant le jour 1, quelle que soit l'heure de la saisie (23:59:59.999 Paris, borne incluse).
+ * Même règle pour les fenêtres « rendez-vous pris » et « devis signé » dans les 60 jours : elles
+ * lisent toutes `reserveeJusquAt`, donc cette fonction.
+ */
 export function finReservation(recueAt: Date): Date {
-  return ajouterJours(recueAt, RESERVATION_PROVISOIRE_JOURS);
+  return finDuNiemeJourParis(recueAt, RESERVATION_PROVISOIRE_JOURS);
 }
 
 /** Fin de la protection : six mois à compter du rendez-vous TENU. */
