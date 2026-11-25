@@ -65,7 +65,7 @@ export const OSTRICOURT_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission Axion-IA à Ostricourt ?",
-      a: "Nos consultants interviennent depuis Lille (30 min A1), Douai (15 min) ou Lens (15 min). Ostricourt est au carrefour du bassin minier, déplacements sans surcoût hébergement. Sessions sur site ou en visio selon vos préférences.",
+      a: "Nos consultants interviennent depuis Lille (30 min A1), Douai (15 min) ou Lens (15 min). Ostricourt est au carrefour du bassin minier. Sessions sur site ou en visio selon vos préférences.",
     },
   ],
 };

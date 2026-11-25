@@ -24,11 +24,15 @@
 
 import { randomUUID } from "node:crypto";
 
+import { decryptPii } from "@/lib/pii-crypto";
 import { prisma } from "@/lib/prisma";
 
 import { jourParis } from "./autofacture-donnees";
-import { lireReservations } from "./reservation-presentation";
-import { euros, ajouterMois } from "./regles";
+import { envoyer } from "./envois";
+import { urlDossier } from "./jeton";
+import { lireReservations, tableAbsente } from "./reservation-presentation";
+import { argentEnJeu } from "./retrait";
+import { signalerErreurReseau } from "./signaler";
 
 // ── Résiliation ──────────────────────────────────────────────────────────
 
@@ -65,17 +69,173 @@ export function planResiliation(
 
 const STATUTS_RESILIABLES = ["signe"] as const;
 
-export async function resilierApporteur(
+// ── Résiliation en deux temps (lot L1b, 2026-11-25) ──────────────────────
+// 1. NOTIFIER (`notifierResiliation`) : ligne `apporteur_resiliation`, journal, e-mail. Le statut
+//    reste « signe » : l'apporteur peut continuer à présenter des entreprises pendant le préavis.
+// 2. PRENDRE EFFET (`executerResiliation`) : à la date d'effet, par le passage quotidien (ou
+//    aussitôt pour 11.2 et 12.5). Seule cette fonction écrit le statut « resilie ».
+// Les seules échéances portent sur ce que FAIT AXION (préavis) : aucune sur l'apporteur.
+
+// ⚖️ DÉCOMPTE (décision du dirigeant, 25/11/2026, arts. 641-642 du code de procédure civile) :
+// le jour de la notification (ou de la mise en demeure) NE COMPTE PAS. Préavis de 30 jours notifié
+// le 1er décembre : le contrat prend fin le 31 décembre au soir, la résiliation prend effet le
+// 1er janvier à 00 h (Paris). Mise en demeure de 15 jours le 1er : résiliation possible le 17.
+/** Délai de la mise en demeure restée sans effet (article 11.2), en jours de Paris, jour de la mise en demeure exclu. */
+export const MISE_EN_DEMEURE_JOURS = 15;
+/** Ancienneté maximale de la date de notification saisie (jamais d'effet rétroactif). */
+export const NOTIFICATION_MAX_ANTERIORITE_JOURS = 7;
+
+/** Préavis de l'article 11.1, en jours de Paris, jour de la notification exclu. */
+export const DELAI_RESILIATION_11_1_JOURS = 30;
+
+export type InitiativeResiliation = "societe" | "apporteur";
+export type FondementResiliation = "11.1" | "11.2" | "12.5";
+
+/** Minuit, heure de Paris, au début du jour « AAAA-MM-JJ ». */
+function minuitParis(jour: string): Date {
+  const [a, m, j] = jour.split("-").map(Number);
+  for (const h of [23, 22]) {
+    const c = new Date(Date.UTC(a!, m! - 1, j! - 1, h));
+    if (jourParis(c) === jour && jourParis(new Date(c.getTime() - 1)) !== jour) return c;
+  }
+  return new Date(Date.UTC(a!, m! - 1, j!, 0));
+}
+
+/** Le premier jour où la résiliation peut intervenir : le délai de `n` jours est ÉCOULÉ, le jour de départ n'étant pas compté. */
+function lendemainDuDelai(jour: string, n: number): string {
+  return plusJours(jour, n + 1);
+}
+
+function plusJours(jour: string, n: number): string {
+  const [a, m, j] = jour.split("-").map(Number);
+  return new Date(Date.UTC(a!, m! - 1, j! + n)).toISOString().slice(0, 10);
+}
+
+export type PlanNotification =
+  { ok: true; effetLe: Date; immediat: boolean } | { ok: false; message: string };
+
+/**
+ * La date d'effet d'une résiliation, ou un refus. Pur.
+ *   · 11.1 : notification + 30 jours de Paris, jour de la notification exclu (effet le 1er janvier pour une notification du 1er décembre) ; jamais plus tôt (une date d'effet plus proche est
+ *     refusée) ; plus tard seulement à la demande écrite de l'apporteur ;
+ *   · 11.2 : mise en demeure antérieure et motif obligatoires ; effet immédiat ;
+ *   · 12.5 : motif obligatoire ; effet immédiat.
+ */
+export function planNotificationResiliation(e: {
+  initiative: InitiativeResiliation;
+  fondement: FondementResiliation;
+  notifieeLe: Date;
+  miseEnDemeureLe?: Date | null;
+  motif?: string | null;
+  /** 11.1 : date d'effet demandée par écrit. Jamais antérieure au préavis. */
+  effetDemandeLe?: Date | null;
+  maintenant: Date;
+}): PlanNotification {
+  const motif = (e.motif ?? "").trim();
+  if (Number.isNaN(e.notifieeLe.getTime()))
+    return { ok: false, message: "Indiquez la date de la notification écrite." };
+  if (jourParis(e.notifieeLe) > jourParis(e.maintenant))
+    return { ok: false, message: "La date de notification ne peut pas être dans le futur." };
+  // Pas d'effet rétroactif : la notification saisie ne remonte pas à plus de 7 jours.
+  if (
+    jourParis(e.notifieeLe) <
+    plusJours(jourParis(e.maintenant), -NOTIFICATION_MAX_ANTERIORITE_JOURS)
+  )
+    return {
+      ok: false,
+      message: `La date de notification ne peut pas remonter à plus de ${NOTIFICATION_MAX_ANTERIORITE_JOURS} jours.`,
+    };
+  if (e.fondement === "11.1") {
+    if (motif)
+      return {
+        ok: false,
+        message: "L'article 11.1 dispense de motiver : ne saisissez pas de motif.",
+      };
+    const minimum = minuitParis(
+      lendemainDuDelai(jourParis(e.notifieeLe), DELAI_RESILIATION_11_1_JOURS),
+    );
+    if (e.effetDemandeLe) {
+      if (!(e.effetDemandeLe.getTime() >= minimum.getTime()))
+        return { ok: false, message: "Le préavis de 30 jours ne peut pas être raccourci." };
+      if (e.initiative !== "apporteur")
+        return { ok: false, message: "Seul l'apporteur peut demander un effet plus lointain." };
+      return { ok: true, effetLe: minuitParis(jourParis(e.effetDemandeLe)), immediat: false };
+    }
+    return { ok: true, effetLe: minimum, immediat: false };
+  }
+  if (e.initiative !== "societe")
+    return { ok: false, message: "Ce fondement ne relève que d'Axion IA." };
+  if (!motif) return { ok: false, message: "Indiquez le motif." };
+  if (e.fondement === "11.2") {
+    const m = e.miseEnDemeureLe;
+    if (
+      !m ||
+      Number.isNaN(m.getTime()) ||
+      !(lendemainDuDelai(jourParis(m), MISE_EN_DEMEURE_JOURS) <= jourParis(e.notifieeLe))
+    )
+      return {
+        ok: false,
+        message: `L'article 11.2 exige une mise en demeure restée sans effet pendant ${MISE_EN_DEMEURE_JOURS} jours.`,
+      };
+  }
+  return { ok: true, effetLe: e.maintenant, immediat: true };
+}
+
+const jourLong = (d: Date) =>
+  d.toLocaleDateString("fr-FR", {
+    timeZone: "Europe/Paris",
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+  });
+
+/** Le dernier jour du contrat : la veille de la prise d'effet (effet le 1er janvier → fin le 31 décembre au soir). */
+export function dernierJourDuContrat(effetLe: Date): Date {
+  return new Date(`${plusJours(jourParis(effetLe), -1)}T12:00:00Z`);
+}
+
+/** La résiliation notifiée et pas encore effective, dates formatées ; `null` si aucune ou table absente. */
+export async function lireResiliationEnCours(
   apporteurId: string,
+): Promise<{ notifieeLe: string; effetLe: string; dernierJourLe: string } | null> {
+  try {
+    const r = await prisma.apporteurResiliation.findUnique({
+      where: { apporteurId },
+      select: { notifieeLe: true, effetLe: true, executeeAt: true, fondement: true },
+    });
+    return r && !r.executeeAt
+      ? {
+          notifieeLe: jourLong(r.notifieeLe),
+          effetLe: jourLong(r.effetLe),
+          // Effet déjà atteint (11.2 / 12.5 dont la prise d'effet a échoué) : le contrat a pris fin ce jour-là.
+          dernierJourLe: jourLong(
+            r.fondement !== "11.1" && r.effetLe.getTime() <= Date.now()
+              ? r.effetLe
+              : dernierJourDuContrat(r.effetLe),
+          ),
+        }
+      : null;
+  } catch (err) {
+    if (tableAbsente(err)) return null;
+    throw err;
+  }
+}
+
+/** Écriture conditionnelle : deux passages ne résilient pas deux fois. */
+export async function executerResiliation(
+  apporteurId: string,
+  effetLe: Date,
   maintenant: Date = new Date(),
 ): Promise<{ ok: true; message: string } | { ok: false; message: string }> {
   const a = await prisma.apporteurReseau.findUnique({
     where: { id: apporteurId },
-    select: { id: true, statut: true },
+    select: { id: true, statut: true, prenom: true, email: true, versionLien: true },
   });
   if (!a) return { ok: false, message: "Apporteur introuvable." };
   if (!(STATUTS_RESILIABLES as readonly string[]).includes(a.statut))
     return { ok: false, message: "Seul un contrat signé peut être résilié." };
+  // B1 bis : si de l'argent est en jeu, le lien n'est PAS révoqué (mode restreint après la fin).
+  const argent = await argentEnJeu(apporteurId);
 
   // Lues AVANT la transaction (tolérant à la table absente : une erreur dans une transaction Postgres
   // l'aurait annulée). Aucune ligne : rien à ramener.
@@ -89,10 +249,13 @@ export async function resilierApporteur(
   );
   const termine = await prisma.$transaction(
     async (tx) => {
-      // Écriture conditionnelle : deux clics ne résilient pas deux fois.
       const r = await tx.apporteurReseau.updateMany({
         where: { id: apporteurId, statut: "signe" },
-        data: { statut: "resilie", resilieAt: maintenant, versionLien: { increment: 1 } },
+        data: {
+          statut: "resilie",
+          resilieAt: effetLe,
+          ...(argent ? {} : { versionLien: { increment: 1 } }),
+        },
       });
       if (r.count !== 1) return null;
       const presentations = await tx.presentationEntreprise.findMany({
@@ -104,7 +267,7 @@ export async function resilierApporteur(
           ...p,
           reserveeJusquAt: reservations.get(p.id)?.reserveeJusquAt ?? null,
         })),
-        maintenant,
+        effetLe,
       );
       for (const p of plan) {
         if (reservations.has(p.id) && p.reserveeJusquAt) {
@@ -119,14 +282,211 @@ export async function resilierApporteur(
           data: { statut: "terminee", protegeeJusquAt: p.protegeeJusquAt },
         });
       }
+      await tx.apporteurResiliation.updateMany({
+        where: { apporteurId, executeeAt: null },
+        data: { executeeAt: maintenant },
+      });
+      await tx.activityLog.create({
+        data: {
+          action: "apporteur.resiliation_effective",
+          targetType: "apporteur_reseau",
+          targetId: apporteurId,
+          changes: { effetLe: effetLe.toISOString(), attributionsTerminees: plan.length } as object,
+        },
+      });
       return plan.length;
     },
     { timeout: 15_000 },
   );
   if (termine === null) return { ok: false, message: "Ce contrat vient déjà d'être résilié." };
+
+  // E-mail de prise d'effet : après la transaction, jamais bloquant pour elle.
+  try {
+    const destinataire = decryptPii(a.email) ?? "";
+    const lien = argent ? urlDossier(apporteurId, a.versionLien) : null;
+    if (destinataire) {
+      const r = await envoyer({
+        gabarit: "apporteur-resiliation-effective",
+        destinataire,
+        payload: {
+          prenom: decryptPii(a.prenom) ?? "",
+          effetLe: jourLong(effetLe),
+          argentEnJeu: argent,
+          ...(lien ? { lien } : {}),
+        },
+        entityType: "ApporteurReseau",
+        entityId: apporteurId,
+        jobId: `resiliation-effet-${apporteurId}`,
+      });
+      if (r === "envoye") await poserHorodatage(apporteurId, { emailEffetEnvoyeAt: maintenant });
+    }
+  } catch (err) {
+    signalerErreurReseau("résiliation : e-mail de prise d'effet", err);
+  }
   return {
     ok: true,
-    message: `Contrat résilié : ${termine} attribution(s) terminée(s), liens révoqués, rappels coupés. Les commissions acquises restent à verser : elles sont facturées comme les autres.`,
+    message: `Contrat résilié : ${termine} attribution(s) terminée(s), rappels coupés. Les commissions acquises restent à verser : elles sont facturées comme les autres.`,
+  };
+}
+
+async function poserHorodatage(
+  apporteurId: string,
+  data: { emailNotifEnvoyeAt?: Date; emailEffetEnvoyeAt?: Date },
+): Promise<void> {
+  try {
+    await prisma.apporteurResiliation.updateMany({ where: { apporteurId }, data });
+  } catch (err) {
+    if (!tableAbsente(err)) throw err;
+  }
+}
+
+/**
+ * Les résiliations notifiées dont la date d'effet est atteinte prennent effet. Table absente
+ * (le worker peut tourner avant la migration) : rien à faire. Une seule exécution par apporteur
+ * (écriture conditionnelle dans `executerResiliation`).
+ */
+export async function executerResiliationsEchues(maintenant: Date): Promise<void> {
+  let echues: Array<{ apporteurId: string; effetLe: Date }> = [];
+  try {
+    echues = await prisma.apporteurResiliation.findMany({
+      where: { effetLe: { lte: maintenant }, executeeAt: null },
+      select: { apporteurId: true, effetLe: true },
+    });
+  } catch (err) {
+    if (tableAbsente(err)) return;
+    throw err;
+  }
+  for (const r of echues) {
+    try {
+      const res = await executerResiliation(r.apporteurId, r.effetLe, maintenant);
+      if (!res.ok) {
+        // Introuvable, plus « signe » ou déjà résilié : définitif. On clôt la ligne (sinon elle
+        // reviendrait chaque jour) et on le signale.
+        await prisma.apporteurResiliation.updateMany({
+          where: { apporteurId: r.apporteurId, executeeAt: null },
+          data: { executeeAt: maintenant },
+        });
+        signalerErreurReseau(
+          "résiliation échue non exécutée",
+          new Error(`${r.apporteurId} : ${res.message}`),
+        );
+      }
+    } catch (err) {
+      signalerErreurReseau("résiliation échue en échec", err);
+    }
+  }
+}
+
+/** Temps 1 : la notification écrite. Le statut reste « signe » (sauf effet immédiat, 11.2 et 12.5). */
+export async function notifierResiliation(e: {
+  apporteurId: string;
+  adminId: string;
+  initiative: InitiativeResiliation;
+  fondement: FondementResiliation;
+  notifieeLe: Date;
+  miseEnDemeureLe?: Date | null;
+  motif?: string | null;
+  maintenant?: Date;
+}): Promise<{ ok: true; message: string } | { ok: false; message: string }> {
+  const maintenant = e.maintenant ?? new Date();
+  const a = await prisma.apporteurReseau.findUnique({
+    where: { id: e.apporteurId },
+    select: { id: true, statut: true, prenom: true, email: true },
+  });
+  if (!a) return { ok: false, message: "Apporteur introuvable." };
+  if (!(STATUTS_RESILIABLES as readonly string[]).includes(a.statut))
+    return { ok: false, message: "Seul un contrat signé peut être résilié." };
+  const plan = planNotificationResiliation({ ...e, maintenant });
+  if (!plan.ok) return plan;
+  const motif = (e.motif ?? "").trim().slice(0, 1000) || null;
+  const miseEnDemeureLe = e.fondement === "11.2" ? (e.miseEnDemeureLe ?? null) : null;
+
+  const cree = await prisma.$transaction(async (tx) => {
+    const deja = await tx.apporteurResiliation.findUnique({
+      where: { apporteurId: e.apporteurId },
+      select: { executeeAt: true },
+    });
+    if (deja) return false;
+    await tx.apporteurResiliation.create({
+      data: {
+        apporteurId: e.apporteurId,
+        initiative: e.initiative,
+        fondement: e.fondement,
+        notifieeLe: e.notifieeLe,
+        effetLe: plan.effetLe,
+        miseEnDemeureLe,
+        motif,
+        parId: e.adminId,
+      },
+    });
+    await tx.activityLog.create({
+      data: {
+        adminUserId: e.adminId,
+        action: "apporteur.resiliation_notifiee",
+        targetType: "apporteur_reseau",
+        targetId: e.apporteurId,
+        changes: {
+          initiative: e.initiative,
+          fondement: e.fondement,
+          notifieeLe: e.notifieeLe.toISOString(),
+          effetLe: plan.effetLe.toISOString(),
+          miseEnDemeureLe: miseEnDemeureLe?.toISOString() ?? null,
+          motif,
+        } as object,
+      },
+    });
+    return true;
+  });
+  if (!cree) return { ok: false, message: "Une résiliation est déjà notifiée pour cet apporteur." };
+
+  try {
+    const destinataire = decryptPii(a.email) ?? "";
+    if (destinataire) {
+      const fondement =
+        e.fondement === "11.1"
+          ? e.initiative === "apporteur"
+            ? "11.1-apporteur"
+            : "11.1-societe"
+          : e.fondement;
+      const r = await envoyer({
+        gabarit: "apporteur-resiliation-notifiee",
+        destinataire,
+        payload: {
+          prenom: decryptPii(a.prenom) ?? "",
+          fondement,
+          notifieeLe: jourLong(e.notifieeLe),
+          effetLe: jourLong(plan.effetLe),
+          ...(e.fondement === "11.2" && e.miseEnDemeureLe
+            ? { miseEnDemeureLe: jourLong(e.miseEnDemeureLe) }
+            : {}),
+          ...(motif && e.fondement !== "11.1" ? { motif } : {}),
+        },
+        entityType: "ApporteurReseau",
+        entityId: e.apporteurId,
+        jobId: `resiliation-notif-${e.apporteurId}`,
+      });
+      if (r === "envoye") await poserHorodatage(e.apporteurId, { emailNotifEnvoyeAt: maintenant });
+    }
+  } catch (err) {
+    signalerErreurReseau("résiliation : e-mail de notification", err);
+  }
+
+  if (plan.immediat) {
+    try {
+      const r = await executerResiliation(e.apporteurId, plan.effetLe, maintenant);
+      return r.ok ? { ok: true, message: `Résiliation notifiée, effet immédiat. ${r.message}` } : r;
+    } catch (err) {
+      signalerErreurReseau("résiliation : prise d'effet immédiate", err);
+      return {
+        ok: true,
+        message:
+          "Résiliation notifiée ; la prise d'effet a échoué et sera reprise par le passage quotidien. Ne la saisissez pas une seconde fois.",
+      };
+    }
+  }
+  return {
+    ok: true,
+    message: `Résiliation notifiée le ${jourLong(e.notifieeLe)} ; elle prendra effet le ${jourLong(plan.effetLe)}.`,
   };
 }
 

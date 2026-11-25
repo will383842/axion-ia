@@ -111,11 +111,13 @@ function tableAbsente(err: unknown): boolean {
 /** Les établissements des présentations ; une présentation absente de la table : `AVANT_2_6`. */
 export async function lireEtablissements(
   ids: readonly string[],
+  /** Client de la transaction appelante (lecture dans son instantané) ; à défaut, le client global. */
+  db: Pick<typeof prisma, "presentationEtablissement"> = prisma,
 ): Promise<Map<string, Etablissement>> {
   const m = new Map<string, Etablissement>(ids.map((id) => [id, AVANT_2_6] as const));
   if (ids.length === 0) return m;
   try {
-    const ls = await prisma.presentationEtablissement.findMany({
+    const ls = await db.presentationEtablissement.findMany({
       where: { presentationId: { in: [...ids] } },
       select: {
         presentationId: true,

@@ -65,7 +65,7 @@ export const MARCOUSSIS_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Marcoussis depuis Paris ?",
-      a: "Nos consultants accèdent à Marcoussis en 30 min depuis Paris (A10/N20). Gare RER B Massy-Palaiseau à 15 min, gare RER C Arpajon à 10 min. Coûts de déplacement séparés du forfait, tarifs transparents.",
+      a: "Nos consultants accèdent à Marcoussis en 30 min depuis Paris (A10/N20). Gare RER B Massy-Palaiseau à 15 min, gare RER C Arpajon à 10 min. Tarifs transparents.",
     },
   ],
 };

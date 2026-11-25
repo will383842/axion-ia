@@ -43,15 +43,15 @@ import {
   type ResultatEnvoi,
 } from "./envois";
 import { idsPriseDeContactRebondie } from "./rebonds";
-import { type ReservationProvisoire, reservationOccupe } from "./regle-attribution";
+import {
+  type ReservationProvisoire,
+  reservationOccupe,
+  versReservationProvisoire,
+} from "./regle-attribution";
 import { ajouterMois, finDeProtection } from "./regles";
 import { validationParRendezVousActive } from "./interrupteur-rendez-vous";
 import { finReservation, regleDe } from "./regle-attribution";
-import {
-  enregistrerReservation,
-  lireReservations,
-  versProvisoire,
-} from "./reservation-presentation";
+import { enregistrerReservation, lireReservations } from "./reservation-presentation";
 import { annoncerRefus } from "./refus-annonce";
 import { annoncerAttribution } from "./attribution-annonce";
 
@@ -291,8 +291,11 @@ export async function creerPresentation(
   if (
     siennes.some(
       (p) =>
-        presentationOccupe(p, maintenant, versProvisoire(reservations.get(p.id), p.recueAt)) &&
-        memePerimetre(moi, etabs.get(p.id)!),
+        presentationOccupe(
+          p,
+          maintenant,
+          versReservationProvisoire(p.recueAt, reservations.get(p.id)),
+        ) && memePerimetre(moi, etabs.get(p.id)!),
     )
   ) {
     return {
@@ -517,9 +520,7 @@ export function existeDeclarationPlusAncienne(
       presentationOccupe(
         { statut: a.statut, protegeeJusquAt: a.protegeeJusquAt ?? null },
         maintenant,
-        a.reservation
-          ? { recueAt: a.recueAt ?? new Date(0), reserveeJusquAt: a.reservation.reserveeJusquAt }
-          : null,
+        a.reservation && a.recueAt ? versReservationProvisoire(a.recueAt, a.reservation) : null,
       ),
   );
 }

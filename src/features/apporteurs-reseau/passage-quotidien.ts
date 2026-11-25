@@ -73,6 +73,7 @@ import { commandesSoldees, ligneNeutralisee } from "./commandes";
 import { PREFIXE_PALIER_REPRISE } from "./resiliation";
 import { idsPriseDeContactRebondie } from "./rebonds";
 import { urlDossier } from "./jeton";
+import { executerResiliationsEchues } from "./resiliation";
 import { signalerErreurReseau } from "./signaler";
 import {
   ajouterJours,
@@ -270,7 +271,8 @@ type NomEtape =
   | "avoirs-sans-piece"
   | "hors-grille"
   | "declarations-sans-reponse"
-  | "commandes-a-attribuer";
+  | "commandes-a-attribuer"
+  | "resiliations-echues";
 
 const ETAPES_FACTURATION: readonly NomEtape[] = [
   "commissions",
@@ -308,6 +310,8 @@ async function passer(
 ): Promise<BilanPassageReseau> {
   const bilan = bilanVide();
   const etapes: Array<[NomEtape, () => Promise<void>]> = [
+    // Lot L1b (en PREMIER : les étapes suivantes ne traitent plus l'apporteur comme « signe » le jour de l'effet) : la résiliation notifiée prend effet à sa date (préavis de 30 jours en 11.1).
+    ["resiliations-echues", async () => void (await executerResiliationsEchues(maintenant))],
     ["confirmation-tacite", () => etapeConfirmationTacite(maintenant, bilan)],
     ["terme", () => etapeTerme(maintenant, bilan)],
     ["commissions", () => etapeCommissions(maintenant, bilan)],

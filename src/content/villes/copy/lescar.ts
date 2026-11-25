@@ -49,7 +49,7 @@ export const LESCAR_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Lescar et dans l'agglo Pau ?",
-      a: "Oui, Axion-IA intervient à Lescar et dans toute l'agglomération Pau Béarn Pyrénées (Pau, Billère, Lons, Jurançon, Idron, Gan). Déplacement inclus dans l'agglo paloise.",
+      a: "Oui, Axion-IA intervient à Lescar et dans toute l'agglomération Pau Béarn Pyrénées (Pau, Billère, Lons, Jurançon, Idron, Gan).",
     },
     {
       q: "Quels services IA pour les commerces de la zone Lescar-Soleil ?",

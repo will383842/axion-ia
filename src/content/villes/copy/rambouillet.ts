@@ -221,7 +221,7 @@ export const RAMBOUILLET_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Detailed quote issued from 24-48 hours depending on complexity, with no imposed subscription. Fully transferable custom code: you keep ownership of the code, access and documentation, recoverable in-house or by any Yvelines provider — no Axion-IA lock-in. EU hosting by default, documented GDPR compliance (DPA signed before any processing). We deliver UX/UI, mobile, multi-CMS e-commerce and AI integration on a single project; travel costs to Rambouillet and its agglomeration are calculated case by case depending on the zone.",
+          "Detailed quote issued from 24-48 hours depending on complexity, with no imposed subscription. Fully transferable custom code: you keep ownership of the code, access and documentation, recoverable in-house or by any Yvelines provider — no Axion-IA lock-in. EU hosting by default, documented GDPR compliance (DPA signed before any processing). We deliver UX/UI, mobile, multi-CMS e-commerce and AI integration on a single project.",
       },
     },
   },
@@ -229,7 +229,7 @@ export const RAMBOUILLET_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Quels sont vos tarifs pour une intervention à Rambouillet ?",
-      a: "À Rambouillet (78120), l'Audit sur place 4h démarre à {{price:audit-flash|flat}}, la Formation 4 h à {{price:intervention-4h|flat}}, et l'Implémentation à {{price:impl-poc|entry}}. Tarifs publics, sans abonnement, déplacement Transilien N ou RN10 inclus.",
+      a: "À Rambouillet (78120), l'Audit sur place 4h démarre à {{price:audit-flash|flat}}, la Formation 4 h à {{price:intervention-4h|flat}}, et l'Implémentation à {{price:impl-poc|entry}}. Tarifs publics, sans abonnement.",
     },
     {
       q: "Sous quel délai vous déplacez-vous à Rambouillet ?",

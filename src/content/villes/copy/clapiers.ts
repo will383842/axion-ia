@@ -63,7 +63,7 @@ export const CLAPIERS_COPY: VilleCopy = {
     },
     {
       q: "Vous déplacez-vous sur site à Clapiers ?",
-      a: "Oui. Nous intervenons partout en France, sur place ou à distance. Pour les missions courtes ou les comités de pilotage, la visio reste possible. Pas de surcoût de déplacement dans Montpellier Méditerranée Métropole.",
+      a: "Oui. Nous intervenons partout en France, sur place ou à distance. Pour les missions courtes ou les comités de pilotage, la visio reste possible.",
     },
   ],
   // EN mirror FR (Will rule 2026-05-22 : NE JAMAIS traduire EN pour villes).

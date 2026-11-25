@@ -19,7 +19,13 @@ vi.mock("@/lib/prisma", () => {
         "noteInterne" in a.select
           ? { noteInterne: etat.note }
           : etat.apporteurStatut
-            ? { id: "APP1", statut: etat.apporteurStatut }
+            ? {
+                id: "APP1",
+                statut: etat.apporteurStatut,
+                prenom: "Claire",
+                email: "claire@example.fr",
+                versionLien: 1,
+              }
             : null,
       ),
       updateMany: vi.fn(async (a: { where: { statut: string }; data: Record<string, unknown> }) => {
@@ -51,16 +57,26 @@ vi.mock("@/lib/prisma", () => {
       deleteMany: vi.fn(),
       updateMany: vi.fn(),
     },
+    activityLog: { create: vi.fn(async () => ({})) },
+    apporteurResiliation: {
+      findUnique: vi.fn(async () => null),
+      create: vi.fn(async () => ({})),
+      updateMany: vi.fn(async () => ({ count: 1 })),
+    },
     $executeRaw: vi.fn(async () => 0),
     $transaction: async (cb: (tx: unknown) => unknown) => cb(prisma),
   };
   return { prisma };
 });
 
+vi.mock("../envois", () => ({ envoyer: vi.fn(async () => "envoye") }));
+vi.mock("../retrait", () => ({ argentEnJeu: vi.fn(async () => false) }));
+vi.mock("@/lib/pii-crypto", () => ({ decryptPii: (v: string) => v }));
+
 import {
   enregistrerReprise,
   planResiliation,
-  resilierApporteur,
+  executerResiliation,
   verifierReprise,
 } from "../resiliation";
 import { prisma } from "@/lib/prisma";
@@ -111,7 +127,7 @@ describe("résiliation : effets de l'article 12", () => {
       { id: "r", statut: "reservee", protegeeJusquAt: null },
       { id: "c", statut: "confirmee", protegeeJusquAt: new Date("2027-01-01T00:00:00Z") },
     ];
-    const r = await resilierApporteur("APP1", MAINTENANT);
+    const r = await executerResiliation("APP1", MAINTENANT, MAINTENANT);
     expect(r.ok).toBe(true);
     expect(etat.majApporteur[0]).toMatchObject({
       statut: "resilie",
@@ -123,17 +139,17 @@ describe("résiliation : effets de l'article 12", () => {
   });
 
   it("les commissions acquises ne sont ni supprimées ni annulées", async () => {
-    await resilierApporteur("APP1", MAINTENANT);
+    await executerResiliation("APP1", MAINTENANT, MAINTENANT);
     expect(prisma.commissionApporteur.deleteMany).not.toHaveBeenCalled();
     expect(prisma.commissionApporteur.updateMany).not.toHaveBeenCalled();
   });
 
   it("un contrat non signé ne se résilie pas ; deux clics ne résilient pas deux fois", async () => {
     etat.apporteurStatut = "dossier_en_cours";
-    expect((await resilierApporteur("APP1", MAINTENANT)).ok).toBe(false);
+    expect((await executerResiliation("APP1", MAINTENANT, MAINTENANT)).ok).toBe(false);
     etat.apporteurStatut = "signe";
-    expect((await resilierApporteur("APP1", MAINTENANT)).ok).toBe(true);
-    expect((await resilierApporteur("APP1", MAINTENANT)).ok).toBe(false);
+    expect((await executerResiliation("APP1", MAINTENANT, MAINTENANT)).ok).toBe(true);
+    expect((await executerResiliation("APP1", MAINTENANT, MAINTENANT)).ok).toBe(false);
   });
 });
 
