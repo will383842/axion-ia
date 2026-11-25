@@ -864,7 +864,20 @@ async function etapeCommissions(maintenant: Date, bilan: BilanPassageReseau): Pr
   const toutesCle = new Set(
     existantesToutes.map((e) => `${e.factureId}|${e.apporteurId}|${e.parrainage ? 1 : 0}`),
   );
-  const existantes = existantesToutes.filter((e) => e.statut !== "annulee");
+  // Une ligne ne bloque la recréation (facture refaite sous le même devis) que si sa facture n'a
+  // PAS été entièrement rendue au client par avoir (annulée, retenue ou reprise comprises). Une
+  // annulation volontaire sur une facture non remboursée continue de bloquer.
+  const rendues = new Set(
+    lignes
+      .filter((l) => {
+        const avoirsDe = avoirsLignes
+          .filter((a) => a.avoirDeId === l.id && !["brouillon", "annulee"].includes(a.statut))
+          .reduce((s, a) => s + a.montantHtCents, 0);
+        return l.montantHtCents + avoirsDe <= 0;
+      })
+      .map((l) => l.id),
+  );
+  const existantes = existantesToutes.filter((e) => !rendues.has(e.factureId));
   const cle = (f: string, a: string, p: boolean) => `${f}|${a}|${p ? 1 : 0}`;
   const dejaCle = new Set(existantes.map((e) => cle(e.factureId, e.apporteurId, e.parrainage)));
   // Une commission déjà créée sur n'importe quelle facture de la commande vaut pour la commande.

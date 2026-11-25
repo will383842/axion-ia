@@ -324,7 +324,8 @@ describe("dettes de a1 sur #1398", () => {
   it("(a) un avoir de PLUS de 24 mois ne donne lieu à aucune reprise, même à côté d'un récent", async () => {
     const vieux = avoir(-100, { id: "A0", emiseAt: new Date("2024-01-01T00:00:00Z") });
     d.factures = [facture, vieux];
-    d.lignes = [ligne(versee)];
+    // Ligne créée AVANT le vieil avoir (donc sa base ne l'intègre pas).
+    d.lignes = [ligne({ ...versee, creeAt: new Date("2023-06-01T00:00:00Z") })];
     await reprendreApresAvoirsClients(LE);
     expect(d.reprise).not.toHaveBeenCalled();
     // Un avoir récent s'y ajoute : seule SA part est reprise (30 % de 1 € = 0,30 €).
@@ -369,5 +370,23 @@ describe("relecture de a1 sur #1402 : base = prix de la ligne à sa création", 
     await reprendreApresAvoirsClients(LE);
     // 30 % de 134 € = 40,20 € : 70,20 − 40,20 = 30 € repris.
     expect(d.reprise).toHaveBeenCalledWith(expect.objectContaining({ demandeeCents: 3_000 }));
+  });
+});
+
+describe("tour 3 : avoir ancien déjà intégré à la base de la ligne", () => {
+  it("C2 : avoir de 30 mois AVANT la ligne (base 234), avoir récent de 100 → reprise de la part du récent", async () => {
+    const vieux = avoir(-100, { id: "A0", emiseAt: new Date("2024-01-01T00:00:00Z") });
+    d.factures = [facture, vieux, avoir(-100, { id: "A1" })];
+    d.lignes = [
+      ligne({
+        statut: "versee",
+        verseeAt: LE,
+        factureHtCents: 234,
+        montantCents: 70,
+        autofactureNumero: "X",
+      }),
+    ];
+    await reprendreApresAvoirsClients(LE);
+    expect(d.reprise).toHaveBeenCalledWith(expect.objectContaining({ demandeeCents: 30 }));
   });
 });

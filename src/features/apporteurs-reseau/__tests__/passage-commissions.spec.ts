@@ -163,6 +163,18 @@ describe("passage quotidien : commission par commande soldée", () => {
   });
 
   describe("avoir total puis facture refaite sous le même devis (tour 3)", () => {
+    it("annulation volontaire sur une facture NON remboursée : continue de bloquer", async () => {
+      etat.payees = [
+        { id: "A", devisId: "D1" },
+        { id: "B", devisId: "D1" },
+      ];
+      etat.lignes = [fac({ id: "A" }), fac({ id: "B", emiseAt: new Date("2026-09-20T00:00:00Z") })];
+      etat.commissions = [
+        { factureId: "A", apporteurId: "APP1", parrainage: false, statut: "annulee" },
+      ];
+      await passerReseauApporteurs(MAINTENANT);
+      expect(etat.crees).toEqual([]);
+    });
     const avecParrain = () => {
       etat.presentations = [
         {
@@ -202,14 +214,14 @@ describe("passage quotidien : commission par commande soldée", () => {
       await passerReseauApporteurs(MAINTENANT);
       expect(etat.crees).toHaveLength(2);
     });
-    it("filleul versé et repris, parrain annulé : aucune part orpheline pour le parrain", async () => {
+    it("filleul versé puis repris en totalité (facture A rendue), parrain annulé : refaite → filleul ET part recréés", async () => {
       avecParrain();
       etat.commissions = [
         { factureId: "A", apporteurId: "APP1", parrainage: false, statut: "versee" },
         { factureId: "A", apporteurId: "PAR1", parrainage: true, statut: "annulee" },
       ];
       await passerReseauApporteurs(MAINTENANT);
-      expect(etat.crees).toEqual([]);
+      expect(etat.crees).toHaveLength(2);
     });
   });
 

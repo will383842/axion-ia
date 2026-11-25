@@ -244,7 +244,7 @@ export async function reprendreApresAvoirsClients(
     try {
       const lu = await facturesDeLaCommande(factureId);
       if (!lu) continue;
-      const { netCents, brutCents, avoirs: actifs } = netDeLaCommande(lu.membres, lu.avoirs);
+      const { netCents, avoirs: actifs } = netDeLaCommande(lu.membres, lu.avoirs);
       if (actifs.length === 0) continue; // avoir brouillon ou annulé : sans effet
       const net = Math.max(0, netCents);
       // Dette a1 (a) : le délai de 24 mois de l'art. 4.5 s'apprécie AVOIR PAR AVOIR. Pour une ligne
@@ -316,12 +316,17 @@ export async function reprendreApresAvoirsClients(
         // `l.factureHtCents` est déjà le prix net à la création OU après une réduction (qui le
         // réécrit) : il ne se réduit plus des avoirs, il est seulement borné par le net actuel de la
         // commande (jamais de double déduction d'un avoir déjà pris en compte).
-        // Net de la commande au regard des SEULS avoirs de moins de 24 mois (art. 4.5).
-        const netRecents = Math.max(
-          0,
-          brutCents + recents.reduce((x, a) => x + a.montantHtCents, 0),
-        );
-        const netLigne = Math.max(0, Math.min(l.factureHtCents, netRecents));
+        // `l.factureHtCents` porte déjà les avoirs pris en compte à la création ou par une
+        // réduction : on ne le réduit que du net actuel de la commande (tous avoirs), la reprise
+        // déjà faite étant soustraite plus bas. Le délai de 24 mois est tenu par `apres` ci-dessus.
+        // Un avoir de plus de 24 mois émis APRÈS la ligne n'est pas déjà intégré à sa base : il ne
+        // profite pas du délai d'un avoir récent (art. 4.5) et est donc remis dans le net.
+        const anciensApres = (actifs as FactureLue[])
+          .filter(
+            (a) => !recents.includes(a) && (a.emiseAt ?? a.createdAt ?? new Date(0)) > l.creeAt,
+          )
+          .reduce((x, a) => x + a.montantHtCents, 0);
+        const netLigne = Math.max(0, Math.min(l.factureHtCents, net - anciensApres));
         const annulationLigne = dateDeLAnnulation(apres) ?? annulationLe;
         const cible = cibleApresAvoir(
           { ...l, montantCents: montant },
