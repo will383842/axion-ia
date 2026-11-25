@@ -10,6 +10,14 @@
  *  - toute fiche passe la porte de doctrine de la base (`verifierDoctrineTraduction`) PLUS
  *    les décisions du pack : un seul prix (Journée IA 1 490 € HT), pas de remise, pas de
  *    gain garanti, pas de Grenoble, « Williams » et jamais « Will ».
+ *
+ * Doctrine du site au 25/11/2026 (`journee-ia-commun.ts`, CGV art. 47.7 et 47.10), seule
+ * exception à « aucun montant autre que 1 490 € HT » et à « aucun remboursement » :
+ *  - la garantie : si les GAINS IDENTIFIÉS n'atteignent pas 3 fois le prix (4 470 € HT),
+ *    remboursement sur demande écrite ; jamais une garantie de gain obtenu ;
+ *  - le seuil de déduction : un devis d'au moins 5 000 € HT signé sous 60 jours.
+ * Le lieu se dit « dans vos locaux, partout en France » et rien de plus : frais, distances,
+ * hébergement, repas et régions relèvent des CGV, jamais d'une fiche.
  */
 
 import { verifierDoctrineTraduction } from "./banned-words";
@@ -85,6 +93,23 @@ const REDUCTION =
   /(?<![\p{L}])(?:réduction|reduction|rabais|offert|offerte|offerts|offertes)(?![\p{L}])/iu;
 const TOUR_FRANCE_IA = /tour\s+(?:de\s+)?france\s+ia/i;
 
+/** Montants de la doctrine du site, admis seulement dans leur phrase (cf. `contexteMontant`). */
+const MONTANT_GARANTIE = /^4[\s\u00a0\u202f]?470(?:[.,]00)?$/;
+const MONTANT_SEUIL_DEDUCTION = /^5[\s\u00a0\u202f]?000(?:[.,]00)?$/;
+const MULTIPLE_GARANTIE_RE = /\b(?:3|trois)\s+fois\b/i;
+const GAINS_IDENTIFIES = /gains?\s+identifi[ée]s?/i;
+const REMBOURSEMENT_GARANTI = /garanti[^.]*rembours/i;
+/** Lieu : seule formule admise « dans vos locaux, partout en France ». */
+const DEPLACEMENT_ET_ANNEXES =
+  /d[ée]placement|(?:se|nous|vous)\s+d[ée]pla[cç]|h[ée]bergement|\brepas\b|\bkm\b|kilom[èe]tre|auvergne|\bfrais\b/i;
+
+/** Phrase (jusqu'au point) qui contient la position donnée. */
+function phraseA(texte: string, pos: number): string {
+  const debut = Math.max(texte.lastIndexOf(". ", pos), texte.lastIndexOf("\n", pos)) + 1;
+  const fin = texte.indexOf(". ", pos);
+  return texte.slice(debut, fin === -1 ? undefined : fin + 1);
+}
+
 function texteDeLaFiche(l: LignePack): { titre: string; reponse: string } {
   const s = (v: unknown) => (typeof v === "string" ? v.trim() : "");
   return { titre: s(l.question), reponse: s(l.answer_draft) };
@@ -96,8 +121,16 @@ function reglesDuPack(texte: string): string[] {
   for (const m of texte.matchAll(MONTANT)) {
     const nombre = (m[1] ?? m[2] ?? "").trim();
     if (!PRIX_AUTORISE.test(nombre)) {
-      raisons.push(`prix non autorisé : « ${m[0]} »`);
-      continue;
+      const phrase = phraseA(texte, m.index ?? 0);
+      const garantie =
+        MONTANT_GARANTIE.test(nombre) &&
+        MULTIPLE_GARANTIE_RE.test(phrase) &&
+        GAINS_IDENTIFIES.test(texte);
+      const deduction = MONTANT_SEUIL_DEDUCTION.test(nombre) && /\bdevis\b/i.test(phrase);
+      if (!garantie && !deduction) {
+        raisons.push(`prix non autorisé : « ${m[0]} »`);
+        continue;
+      }
     }
     const suite = texte.slice((m.index ?? 0) + m[0].length);
     if (!HT_APRES.test(suite)) raisons.push(`prix sans « HT » juste après : « ${m[0]} »`);
@@ -116,9 +149,18 @@ function reglesDuPack(texte: string): string[] {
     )
   )
     raisons.push("formule « Aucun gain garanti » interdite");
+  if (DEPLACEMENT_ET_ANNEXES.test(texte))
+    raisons.push(
+      "lieu : seule formule admise « dans vos locaux, partout en France » (frais, distance, hébergement, repas, région : CGV)",
+    );
+  const garantieReelle =
+    REMBOURSEMENT_GARANTI.test(texte) &&
+    GAINS_IDENTIFIES.test(texte) &&
+    MULTIPLE_GARANTIE_RE.test(texte);
+  const texteSansGarantie = garantieReelle ? texte.replace(REMBOURSEMENT_GARANTI, "") : texte;
   if (
     /(gains?|r[ée]sultats?|retour sur investissement|roi)\s+garanti|garantit?\s+(un|des|le|les)\s+(gains?|r[ée]sultats?)|gains?\s+assur[ée]s?|satisfait ou rembours|garanti[^.]*rembours/i.test(
-      texte,
+      texteSansGarantie,
     )
   ) {
     raisons.push(
@@ -276,7 +318,7 @@ export const SEUIL_QUASI_DOUBLON = 0.8;
 /** Décisions du pack qui contredisent les décisions de Williams : signalées, jamais importées. */
 const TRAITEMENT_CONTRADICTION: Record<string, string> = {
   D02: "Écartée : seul prix affiché = Journée IA 1 490 € HT, sans remise ni contrepartie tournage.",
-  D03: "Écartée : gains identifiés et estimés, jamais garantis ; garantie/CGV/devis = brouillons, aucune promesse juridique.",
+  D03: "Écartée telle que rédigée : seule la garantie du site fait foi (gains identifiés n’atteignant pas 3 fois le prix, CGV art. 47.10) ; aucun gain obtenu n’est jamais garanti.",
 };
 
 export function analyserPack(lignes: readonly LignePack[]): RapportPack {

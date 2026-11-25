@@ -9,7 +9,9 @@
  *   ne met jamais à jour ni ne supprime une fiche existante (aucun DROP/DELETE) ;
  * - garde-fou : --commit est refusé si NODE_ENV=production ou si DATABASE_URL ne vise pas
  *   localhost, sauf --confirmer-prod (accord de Williams) ; l'hôte visé est affiché avant d'écrire ;
- * - toutes les fiches sont en brouillon interne, jamais publiées.
+ * - toutes les fiches sont en brouillon interne, jamais publiées ;
+ * - fichier par défaut : le pack final du 25/11/2026 (54 fiches, décisions du dirigeant appliquées) ;
+ *   l'ancien pack du 10/11/2026 reste lisible par `--fichier=docs/knowledge/pack-journee-ia-2026-11-10/Base_RAG.jsonl`.
  */
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
@@ -29,7 +31,7 @@ async function main() {
   const commit = process.argv.includes("--commit");
   const fichier =
     argument("fichier") ??
-    join("docs", "knowledge", "pack-journee-ia-2026-11-10", "Base_RAG.jsonl");
+    join("docs", "knowledge", "pack-journee-ia-2026-11-25", "Base_RAG.jsonl");
   const rapport = analyserPack(lignesDepuisJsonl(readFileSync(fichier, "utf-8")));
 
   const resume = {

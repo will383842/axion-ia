@@ -401,3 +401,116 @@ describe("evaluerGardeCommit — garde-fou production", () => {
     expect(JSON.stringify(g)).not.toContain("admin");
   });
 });
+
+describe("porte de doctrine alignée sur le site (pack du 25/11/2026)", () => {
+  const rejet = (t: string) => controlerFiche(faq({ answer_draft: t })).ok;
+  it("accepte la garantie réelle : gains identifiés, 3 fois, 4 470 € HT", () => {
+    expect(
+      rejet(
+        "La journée est garantie sur les gains identifiés : s’ils n’atteignent pas 3 fois le prix de la journée (4 470 € HT), vous êtes remboursé sur demande écrite.",
+      ),
+    ).toBe(true);
+  });
+  it("accepte le seuil de déduction de 5 000 € HT dans une phrase sur le devis", () => {
+    expect(rejet("Un devis d’au moins 5 000 € HT signé sous 60 jours déduit les 1 490 € HT.")).toBe(
+      true,
+    );
+  });
+  it("refuse 4 470 € ou 5 000 € hors de leur contexte, et tout autre prix", () => {
+    for (const t of [
+      "La journée coûte 4 470 € HT.",
+      "Elle coûte 5 000 € HT.",
+      "Elle coûte 990 € HT.",
+      "Prix : 1 490 € HT, soit 4 470 € HT pour trois journées.",
+    ]) {
+      expect(rejet(t), t).toBe(false);
+    }
+  });
+  it("refuse une garantie qui ne porte pas sur les gains identifiés", () => {
+    for (const t of [
+      "Garantie : vous êtes remboursé si vous n’êtes pas satisfait.",
+      "Le gain est garanti et sinon remboursé, 3 fois le prix.",
+      "Gains garantis à 3 fois le prix.",
+    ]) {
+      expect(rejet(t), t).toBe(false);
+    }
+  });
+  it("refuse frais de déplacement, hébergement, repas, km et Auvergne", () => {
+    for (const t of [
+      "Les frais de déplacement sont offerts.",
+      "Déplacement compris dans un rayon de 50 km.",
+      "Nous prenons en charge l’hébergement.",
+      "Le repas du midi est inclus.",
+      "Gratuit en Auvergne.",
+      "Dans un rayon de 80 km autour de nos bureaux.",
+      "Nous nous déplaçons partout.",
+    ]) {
+      expect(rejet(t), t).toBe(false);
+    }
+  });
+  it("refuse Grenoble et « Aucun gain garanti »", () => {
+    expect(rejet("Notre agence de Grenoble.")).toBe(false);
+    expect(rejet("Aucun gain garanti.")).toBe(false);
+  });
+  it("accepte « dans vos locaux, partout en France »", () => {
+    expect(rejet("La Journée IA se déroule dans vos locaux, partout en France.")).toBe(true);
+  });
+  it("n’exempte pas le contrôle des champs libres", () => {
+    expect(controlerFiche(faq({ source: "Rayon 50 km" })).ok).toBe(false);
+  });
+});
+
+describe("pack final du 25/11/2026 — tout passe la porte", () => {
+  const FINAL = join(process.cwd(), "docs/knowledge/pack-journee-ia-2026-11-25/Base_RAG.jsonl");
+  const lignes = lignesDepuisJsonl(readFileSync(FINAL, "utf-8"));
+  const rapport = analyserPack(lignes);
+  it("53 fiches, 0 rejet", () => {
+    expect(lignes).toHaveLength(53);
+    expect(rapport.rejets).toEqual([]);
+    expect(rapport.aImporter).toHaveLength(53);
+  });
+  it("aucune fiche retirée n’est exportée", () => {
+    const ids = new Set(lignes.map((l) => l.id));
+    for (const id of [
+      "GEO-002",
+      "GEO-030",
+      "GEO-031",
+      "GEO-032",
+      "GEO-033",
+      "GEO-034",
+      "GEO-052",
+      "GEO-054",
+      "GEO-055",
+    ])
+      expect(ids.has(id), id).toBe(false);
+  });
+  it("les 26 pistes par métier portent la mention exacte", () => {
+    const pistes = rapport.aImporter.filter((f) =>
+      f.translation.bodyText.startsWith("Exemple de piste"),
+    );
+    expect(pistes).toHaveLength(26);
+    for (const f of pistes)
+      expect(f.translation.bodyText).toContain("Exemple de piste, pas un résultat constaté.");
+  });
+  it("délai du rapport : 10 jours ouvrés, déduction : 5 000 € HT sous 60 jours", () => {
+    const corps = (id: string) =>
+      rapport.aImporter.find((f) => f.entry.slug === `pack-journee-ia-${id.toLowerCase()}`)
+        ?.translation.bodyText ?? "";
+    expect(corps("GEO-005")).toContain("sous 10 jours ouvrés");
+    expect(corps("GEO-006")).toContain("5 000 € HT");
+    expect(corps("GEO-006")).toContain("60 jours");
+    // GEO-016 (lieu) reprend à 91 % la FAQ du site : signalée dans la PR, non importée.
+    expect(corps("GEO-016")).toBe("");
+  });
+  it("aucune fiche n’affiche de gain chiffré promis ni de prix barré", () => {
+    for (const f of rapport.aImporter) {
+      expect(f.translation.bodyText, f.entry.slug).not.toMatch(/prix barré|ancien prix/i);
+    }
+  });
+  it("toutes en brouillon interne, jamais publiées", () => {
+    for (const f of rapport.aImporter) {
+      expect(f.entry.status).toBe("draft");
+      expect(f.entry.publishedAt).toBeNull();
+    }
+  });
+});

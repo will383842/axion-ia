@@ -82,3 +82,16 @@ pnpm tsx scripts/import-knowledge-pack-journee-ia.ts --commit   # base locale un
 
 Avant tout `--commit` : rien à défaire. Après : les fiches se retrouvent par le préfixe de slug `pack-journee-ia-` ; les
 archiver depuis la console (aucune suppression physique prévue par ce chantier).
+
+## Pack final du 25/11/2026 (décisions du dirigeant)
+
+Fichier : `docs/knowledge/pack-journee-ia-2026-11-25/Base_RAG.jsonl` — 53 fiches `faq_knowledge` (54 moins GEO-016, déjà à la FAQ du site), copiées depuis le
+dépôt privé de plans (`journee-ia/pack/pack-corrige.json`, fiches non retirées). Les 9 fiches retirées (GEO-002, 030 à 034, 052,
+054, 055) en sont absentes. C'est le fichier par défaut du script d'import.
+
+La porte de doctrine admet désormais, et seulement dans leur contexte : la garantie du site (gains **identifiés** qui
+n'atteignent pas 3 fois le prix, 4 470 € HT) et le seuil de déduction (devis d'au moins 5 000 € HT). Elle rejette en plus toute
+mention de frais, de déplacement, d'hébergement, de repas, de km ou d'« Auvergne ». Le lieu se dit « dans vos locaux, partout en
+France ».
+
+Essai à sec (aucune base) : `pnpm tsx scripts/import-knowledge-pack-journee-ia.ts`. Import réel : voir la PR.
