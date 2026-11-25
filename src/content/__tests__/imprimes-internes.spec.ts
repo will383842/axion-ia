@@ -154,3 +154,10 @@ describe("la trame de l'échange apporteur dit ce que dit l'article 2.4 du contr
     expect(html).toContain("Oui, aucune exclusivité, y compris pour des prestations comparables.");
   });
 });
+
+describe("la trame d'échange n'écarte personne parce qu'il apporte pour un concurrent (L7b)", () => {
+  it("ni critère éliminatoire ni case « concurrent direct »", () => {
+    const html = readFileSync(path.join(RACINE, "docs/imprimes", `${TRAME}.html`), "utf8");
+    expect(html).not.toMatch(/concurrent direct/i);
+  });
+});
