@@ -102,7 +102,7 @@ const REMBOURSEMENT_GARANTI = /garanti[^.]*rembours/i;
 const MULTIPLE_RE =
   /(?<![\p{L}\d])([0-9]+|deux|quatre|cinq|six|sept|huit|neuf|dix|onze|douze|vingt)\s?(?:fois|x)(?![\p{L}\d])/giu;
 const CONTEXTE_MULTIPLE =
-  /prix|garantie|tarif|montant|mise|co[uû]t|valeur|investissement|rembours|gains?/i;
+  /(?<![\p{L}])(?:prix|garantie|tarif|rembours\p{L}*|investissement|gains?)(?![\p{L}])/iu;
 const QUATRE_MILLE = /(?<!\d)4[\s\u00a0\u202f.,]?470(?!\d)/;
 function autreMultiple(texte: string): boolean {
   for (const m of texte.matchAll(MULTIPLE_RE)) {
@@ -114,9 +114,15 @@ function autreMultiple(texte: string): boolean {
     if (/^\s*(?:[,;:.)]|$)/.test(apres) && CONTEXTE_MULTIPLE.test(phrase)) return true;
     // « N fois le prix / la garantie / l'investissement / les gains… »
     if (
-      /^\s*(?:(?:le|la|ce|son|leur|votre|notre|les|vos|l[’'])\s*)?(?:prix|garantie|tarif|montant|mise|co[uû]t|valeur|investissement|gains?)/iu.test(
+      /^\s*(?:(?:le|la|ce|son|leur|votre|notre|les|vos)\s+|l[’'])?(?:prix|garantie|tarif|co[uû]t|investissement|gains?)(?![\p{L}])/iu.test(
         apres,
       )
+    )
+      return true;
+    // « N fois plus / supérieur(e)s / moins / inférieur(e)s » : toute la phrase compte.
+    if (
+      /^\s*(?:plus|moins|sup[ée]rieur|inf[ée]rieur)/iu.test(apres) &&
+      /(?<![\p{L}])(?:prix|garantie|tarif|rembours\p{L}*|investissement)(?![\p{L}])/iu.test(phrase)
     )
       return true;
     // « Nx » : toute la phrase compte.

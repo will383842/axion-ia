@@ -528,6 +528,10 @@ describe("porte de doctrine alignée sur le site (pack du 25/11/2026)", () => {
       "Le devis est relu 2 fois.",
       "Les données sont ressaisies 2 fois, dans le CRM puis dans la facture.",
       "La tâche est répétée 2 fois.",
+      "Les montants sont ressaisis 2 fois, dans le CRM puis dans la facture.",
+      "Une facture saisie 2 fois coûte cher.",
+      "La mise en place est vérifiée 2 fois.",
+      "Cette tâche prend 2 fois plus de temps.",
     ]) {
       expect(accepte(t), t).toBe(true);
     }
@@ -543,6 +547,8 @@ describe("porte de doctrine alignée sur le site (pack du 25/11/2026)", () => {
       "Nous sommes installés en Savoie.",
       "Garantie : jusqu’à 5 fois les gains identifiés, sinon remboursé.",
       "Vous êtes remboursé 5 fois.",
+      "Des gains 5 fois supérieurs au prix.",
+      "Des gains jusqu’à 5 fois plus élevés que le prix.",
       "Gains identifiés : 5 fois l’investissement.",
       "Gains identifiés : 5 fois leur prix.",
       "Notre intervention locale suit vos besoins.",
