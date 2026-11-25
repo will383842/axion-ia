@@ -31,12 +31,10 @@ export const TEXTES_COMMISSIONS = {
   avoirDu: (n: string) => `Avoir n° ${n}`,
   echeance: (d: string) => `Échéance indiquée sur la facture : ${d}`,
   netApresAvoirs: "Montant net, après déduction des avoirs éventuels.",
-  ht: (m: string) => `${m} hors taxes`,
   assujetti: (ht: string, tva: string, ttc: string) =>
     `${ht} hors taxes · TVA 20 % : ${tva} · ${ttc} toutes taxes comprises`,
   franchise: (ht: string) =>
     `${ht} hors taxes · TVA non applicable, article 293 B du code général des impôts`,
-  regimeInconnu: (ht: string) => `${ht} hors taxes · TVA : en vérification`,
   montantEnVerification: "Montant en vérification",
   telechargerFacture: (n: string) => `Télécharger la facture ${n}`,
   telechargerAvoir: (n: string) => `Télécharger l'avoir ${n}`,

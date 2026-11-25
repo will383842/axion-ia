@@ -144,6 +144,31 @@ describe("assemblage de « Mes commissions »", () => {
     ]);
   });
 
+  it("lecture tronquée : ni parrainage ni virement (une autofacture pourrait être coupée)", () => {
+    const e = new Date("2026-11-18T09:00:00Z");
+    const num = {
+      autofactureNumero: "AXI-APP-2026-0042",
+      autofactureAttenteMotif: null,
+      autofactureEmiseAt: e,
+    };
+    const v = vue(
+      [
+        lig({
+          ...num,
+          id: "a",
+          parrainage: true,
+          presentationApporteurId: B,
+          montantCents: 12_000,
+        }),
+        lig({ ...num, id: "b" }),
+      ],
+      { tronque: true },
+    );
+    expect(v.horsEntreprise).toHaveLength(0);
+    expect(v.virements).toHaveLength(0);
+    expect(v.tronque).toBe(true);
+  });
+
   it("régime inconnu : aucun virement quand rien n'est à virer", () => {
     const e = new Date("2026-11-18T09:00:00Z");
     const num = {

@@ -254,7 +254,8 @@ export function assemblerEspaceCommissions(e: {
     ]);
   }
 
-  for (const [numero, ls] of parrainages) {
+  // Lecture tronquée : une autofacture pourrait être coupée, aucun montant de parrainage n'est donné.
+  for (const [numero, ls] of e.tronque ? [] : parrainages) {
     // Jamais « suspendue » ni montant d'une part contestée : cela révélerait un litige chez le
     // client du filleul. Les parts réglées et les parts dues sont présentées séparément.
     const versees = ls.filter((l) => l.statut === "versee" && l.verseeAt);
