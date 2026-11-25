@@ -210,6 +210,14 @@ import {
   ApporteurVirementFaitEmail,
 } from "./apporteur-demarrage";
 import { ApporteurLienEspaceEmail, apporteurLienEspaceSubject } from "./apporteur-lien-espace";
+import {
+  ApporteurResiliationEffectiveEmail,
+  apporteurResiliationEffectiveSubject,
+} from "./apporteur-resiliation-effective";
+import {
+  ApporteurResiliationNotifieeEmail,
+  apporteurResiliationNotifieeSubject,
+} from "./apporteur-resiliation-notifiee";
 import { ENTREES_FORMATEUR_INDEPENDANT } from "./_formateur-independant";
 import { estGabaritFormateurIndependant } from "./formateur-independant-textes";
 import {
@@ -647,6 +655,15 @@ const TEMPLATES: TemplateMap = {
   "apporteur-manquement": {
     subject: apporteurManquementSubject,
     component: ApporteurManquementEmail,
+  },
+  // Lot L1a (2026-11-25) : gabarits de résiliation, SANS émetteur avant L1b.
+  "apporteur-resiliation-notifiee": {
+    subject: apporteurResiliationNotifieeSubject,
+    component: ApporteurResiliationNotifieeEmail,
+  },
+  "apporteur-resiliation-effective": {
+    subject: apporteurResiliationEffectiveSubject,
+    component: ApporteurResiliationEffectiveEmail,
   },
   "apporteur-contrat-signe": {
     subject: apporteurContratSigneSubject,
