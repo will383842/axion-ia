@@ -69,7 +69,6 @@ import { reprendreApresAvoirsClients } from "./avoir-client";
 import { regenererAvoirsSansPiece } from "./manquement";
 import { alerterHorsGrille } from "./hors-grille";
 import { chiffrerPiecesEnClair } from "./pieces-chiffrement";
-import { marquerRealiseesDepuisSessions } from "./realisation";
 import { commandesSoldees } from "./commandes";
 import { idsPriseDeContactRebondie } from "./rebonds";
 import { urlDossier } from "./jeton";
@@ -268,14 +267,12 @@ type NomEtape =
   | "rappels-dossier"
   | "chiffrement-pieces"
   | "avoirs-sans-piece"
-  | "realisation"
   | "hors-grille"
   | "declarations-sans-reponse"
   | "commandes-a-attribuer";
 
 const ETAPES_FACTURATION: readonly NomEtape[] = [
   "commissions",
-  "realisation",
   "avoirs-clients",
   "autofacturation",
   "avoirs-sans-piece",
@@ -315,9 +312,6 @@ async function passer(
     ["commissions", () => etapeCommissions(maintenant, bilan)],
     // Les commissions devenues dues (ci-dessus) sont facturées dans la foulée, puis celles que la
     // vigilance libère (ci-dessous) le sont au passage horaire suivant.
-    // Contrat 2.3 (art. 4.2) : une session de formation terminée rend la prestation « réalisée »,
-    // juste avant l'autofacturation qui ne prend que les prestations réalisées.
-    ["realisation", async () => void (await marquerRealiseesDepuisSessions(maintenant))],
     // Art. 4.5 (essai réel du 09/10) : une facture client annulée ou réduite par un avoir réduit,
     // annule, retient ou reprend la commission, AVANT que l'autofacturation ne la facture.
     ["avoirs-clients", async () => void (await reprendreApresAvoirsClients(maintenant))],
@@ -912,7 +906,7 @@ async function etapeCommissions(maintenant: Date, bilan: BilanPassageReseau): Pr
     }
     const calc = calculerCommission({
       activite: (f.activite ?? null) as ActiviteCommission | null,
-      factureHtCents: commande.totalHtCents,
+      factureHtCents: commande.baseSignatureCents,
       palier: null,
     });
     if (calc.statut === "aucune") continue;
@@ -933,7 +927,7 @@ async function etapeCommissions(maintenant: Date, bilan: BilanPassageReseau): Pr
       presentationId: p.id,
       factureId: commande.factureCleId,
       activite: f.activite ?? "inconnue",
-      factureHtCents: commande.totalHtCents,
+      factureHtCents: commande.baseSignatureCents,
     };
 
     // La commission de l'apporteur.

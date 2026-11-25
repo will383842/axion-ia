@@ -792,45 +792,29 @@ describe("relecture de la PR 1359 (a1)", () => {
   });
 });
 
-describe("règle ferme (contrat 2.3, art. 4.2) : rien n'est facturé ni versé avant la réalisation", () => {
+describe("règle du 25/11 : la commission sort au paiement intégral, sans condition de réalisation", () => {
   const enAttente = (id: string, montant = 40_000) =>
     ligne(id, "due", montant, { prestationRealiseeAt: null, prestationRealiseePar: null });
 
-  it("passage horaire : une prestation non réalisée n'est pas facturée ; marquée réalisée, elle l'est", async () => {
+  it("passage horaire : payée à 100 %, prestation NON livrée → facturée quand même (règle du 25/11)", async () => {
     etat.lignes = [enAttente("c1")];
-    expect(await facturerCommissionsDues(MARDI)).toMatchObject({ autofactures: 0 });
-    expect(lignes()[0]!.autofactureNumero).toBeNull();
-    expect(
-      await marquerPrestationRealisee("c1", new Date("2026-10-05T12:00:00Z"), MARDI, "admin-1"),
-    ).toEqual({ ok: true });
     expect(await facturerCommissionsDues(MARDI)).toMatchObject({ autofactures: 1 });
-    expect(
-      etat.journal.some((j) => j["action"] === "commission_apporteur.prestation_realisee"),
-    ).toBe(true);
+    expect(lignes()[0]!.autofactureNumero).not.toBeNull();
   });
 
-  it("« Virement fait » SANS numéro : ne facture ni ne verse une prestation non réalisée", async () => {
+  it("« Virement fait » SANS numéro : facture puis verse, sans condition de réalisation", async () => {
     etat.lignes = [enAttente("c1")];
-    expect(await marquerVerse("APP1", MARDI)).toMatchObject({ ok: false });
-    expect(lignes()[0]!.autofactureNumero).toBeNull();
-    expect(lignes()[0]!.statut).toBe("due");
+    expect(await marquerVerse("APP1", MARDI)).toMatchObject({ ok: true });
+    expect(lignes()[0]!.autofactureNumero).not.toBeNull();
+    expect(lignes()[0]!.statut).toBe("versee");
   });
 
-  it("« Virement fait » AVEC numéro : refusé si une ligne de l'autofacture n'est pas réalisée", async () => {
-    etat.lignes = [ligne("c1", "due", 40_000)];
+  it("« Virement fait » AVEC numéro : accepté même si la prestation n'est pas livrée", async () => {
+    etat.lignes = [enAttente("c1")];
     await facturerCommissionsDues(MARDI);
-    lignes()[0]!.prestationRealiseeAt = null; // donnée incohérente : le verrou tient quand même
     const r = await marquerVerse("APP1", MARDI, "AXI-APP-2026-0001");
-    expect(r).toMatchObject({ ok: false });
-    expect((r as { message: string }).message).toContain("En attente de réalisation");
-    expect(lignes()[0]!.statut).toBe("due");
-  });
-
-  it("colonne absente (worker avant la migration) : RIEN n'est facturé ni versé", async () => {
-    etat.colonneLitigeAbsente = true; // le simulateur refuse alors toute requête brute
-    etat.lignes = [ligne("c1", "due", 40_000)];
-    expect(await facturerCommissionsDues(MARDI)).toMatchObject({ autofactures: 0 });
-    expect(await marquerVerse("APP1", MARDI)).toMatchObject({ ok: false });
+    expect(r).toMatchObject({ ok: true });
+    expect(lignes()[0]!.statut).toBe("versee");
   });
 
   it("« Annuler » : possible tant que la commission n'est pas facturée, refusé ensuite", async () => {
@@ -972,7 +956,8 @@ describe("relecture de la PR 1365 (a1) : l'automatisme ne marque jamais « réal
     expect(await annulerRealisation("c1", "admin-1")).toEqual({ ok: true });
     expect(await marquerRealiseesDepuisSessions(MARDI)).toBe(0);
     expect(lignes()[0]!.prestationRealiseeAt).toBeNull();
-    expect(await facturerCommissionsDues(MARDI)).toMatchObject({ autofactures: 0 });
+    // Règle du 25/11 : la réalisation ne conditionne plus la facturation.
+    expect(await facturerCommissionsDues(MARDI)).toMatchObject({ autofactures: 1 });
     // Le bouton, lui, peut toujours la reposer.
     expect(await marquerPrestationRealisee("c1", FIN, MARDI, "admin-1")).toEqual({ ok: true });
   });

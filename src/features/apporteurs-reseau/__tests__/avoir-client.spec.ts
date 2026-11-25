@@ -19,6 +19,8 @@ const d = vi.hoisted(() => ({
   lignes: [] as Array<Record<string, unknown>>,
   reprisesDeja: [] as Array<{ montantCents: number }>,
   filleulHorsGroupe: null as null | Record<string, unknown>,
+  /** Vrai : le simulateur ignore le filtre d'activité (le calcul proportionnel reste testé sur « audit » en attendant la grille Journée IA). */
+  sansFiltre: true,
   annuler: vi.fn(async () => ({ ok: true })),
   reduire: vi.fn(async () => ({ ok: true })),
   retenir: vi.fn(async () => ({
@@ -58,7 +60,11 @@ vi.mock("@/lib/prisma", () => ({
     },
     commissionApporteur: {
       findMany: vi.fn(async ({ where }: { where: Where }) =>
-        "palier" in where ? d.reprisesDeja : d.lignes,
+        "palier" in where
+          ? d.reprisesDeja
+          : d.lignes.filter(
+              (l) => d.sansFiltre || where.activite === undefined || l.activite === where.activite,
+            ),
       ),
       updateMany: (...a: unknown[]) => d.maj(...(a as [])),
       findFirst: vi.fn(async () => d.filleulHorsGroupe),
@@ -134,6 +140,26 @@ beforeEach(() => {
   d.lignes = [ligne()];
   d.reprisesDeja = [];
   d.filleulHorsGroupe = null;
+  d.sansFiltre = true;
+});
+
+describe("règle du 25/11 : un avoir ne touche plus une commission hors Journée IA", () => {
+  it.each(["audit", "formation", "implementation", "site_web", "conference"])(
+    "activité « %s » : avoir total, rien n'est annulé, réduit, retenu ni repris",
+    async (activite) => {
+      d.sansFiltre = false;
+      d.lignes = [
+        ligne({ activite }),
+        ligne({ id: "c2", activite, statut: "versee", verseeAt: LE }),
+      ];
+      const b = await reprendreApresAvoirsClients(LE);
+      expect(b).toEqual({ reduites: 0, annulees: 0, retenues: 0, reprises: 0 });
+      expect(d.annuler).not.toHaveBeenCalled();
+      expect(d.reduire).not.toHaveBeenCalled();
+      expect(d.retenir).not.toHaveBeenCalled();
+      expect(d.reprise).not.toHaveBeenCalled();
+    },
+  );
 });
 
 describe("pas encore facturée : réduite ou annulée", () => {

@@ -134,7 +134,7 @@ describe("passage quotidien : commission par commande soldée", () => {
     expect(bilan.commissionsCreees).toBe(1);
   });
 
-  it("avoir sur la commande : commission sur le HT net de l'avoir", async () => {
+  it("avoir sur la commande : la base reste le HT à la signature (règle du 25/11)", async () => {
     etat.payees = [{ id: "A", devisId: "D1" }];
     etat.lignes = [fac({ id: "A", montantHtCents: 200_000 })];
     etat.avoirs = [
@@ -148,7 +148,7 @@ describe("passage quotidien : commission par commande soldée", () => {
       },
     ];
     await passerReseauApporteurs(MAINTENANT);
-    expect(etat.crees[0]).toMatchObject({ factureHtCents: 150_000, montantCents: 45_000 });
+    expect(etat.crees[0]).toMatchObject({ factureHtCents: 200_000, montantCents: 60_000 });
   });
 
   it("commission déjà créée sur l'acompte (ancien comportement) : jamais doublée sur le solde", async () => {

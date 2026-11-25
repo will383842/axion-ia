@@ -51,7 +51,6 @@ vi.mock("../facturation", () => ({
     erreurs: 0,
   })),
 }));
-vi.mock("../realisation", () => ({ marquerRealiseesDepuisSessions: vi.fn(async () => 0) }));
 vi.mock("../hors-grille", () => ({ alerterHorsGrille: vi.fn(async () => 0) }));
 vi.mock("../manquement", () => ({ regenererAvoirsSansPiece: vi.fn(async () => 0) }));
 vi.mock("../pieces-chiffrement", () => ({ chiffrerPiecesEnClair: vi.fn(async () => 0) }));

@@ -23,8 +23,14 @@ export interface CommandeSoldee {
   factureCleId: string;
   /** Toutes les factures de la commande, hors avoirs. */
   factureIds: string[];
-  /** Total HT facturé net des avoirs. */
+  /** Total HT facturé net des avoirs (affichage ; ce n'est PAS la base de la commission). */
   totalHtCents: number;
+  /**
+   * BASE DE LA COMMISSION (règle du 25/11) : le net HT arrêté à la signature du devis, calculé une
+   * seule fois. Total du devis quand il est connu, sinon HT des factures à leur émission, avoirs
+   * non déduits. Un avoir ou une modification du devis après la signature ne la change plus.
+   */
+  baseSignatureCents: number;
   devisId: string | null;
 }
 
@@ -83,7 +89,7 @@ export function commandesSoldees(
     const totalDevis = devisId ? totauxDevis?.get(devisId) : undefined;
     if (totalDevis !== undefined && membres.reduce((s, f) => s + f.montantHtCents, 0) < totalDevis)
       continue;
-    const net = netDeLaCommande(membres, avoirs).netCents;
+    const { brutCents, netCents: net } = netDeLaCommande(membres, avoirs);
     if (net <= 0) continue;
     const triees = [...membres].sort(
       (a, b) =>
@@ -93,6 +99,7 @@ export function commandesSoldees(
       factureCleId: triees[triees.length - 1]!.id,
       factureIds: triees.map((f) => f.id),
       totalHtCents: net,
+      baseSignatureCents: totalDevis !== undefined ? totalDevis : brutCents,
       devisId: membres[0]!.devisId,
     });
   }

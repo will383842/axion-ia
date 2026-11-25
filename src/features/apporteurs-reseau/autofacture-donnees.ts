@@ -313,9 +313,18 @@ export function jourParis(d: Date): string {
   }).format(d);
 }
 
-/** Échéance ferme : jour de Paris de l'émission + 30 jours calendaires (rendue à midi UTC). */
-export function echeancePaiement(emission: Date): Date {
-  const [a, m, j] = jourParis(emission).split("-").map(Number);
+/**
+ * Échéance ferme : jour de Paris + 30 jours calendaires (rendue à midi UTC). Règle du 25/11 : le
+ * délai court depuis le PAIEMENT INTÉGRAL du client (`paiementIntegral`), pas depuis l'émission de
+ * l'autofacture (qui peut attendre une donnée de l'apporteur). Sans date de paiement connue, ou si
+ * elle est postérieure à l'émission, on garde l'émission (jamais plus tard que l'ancien calcul).
+ */
+export function echeancePaiement(emission: Date, paiementIntegral?: Date | null): Date {
+  const depart =
+    paiementIntegral && paiementIntegral.getTime() < emission.getTime()
+      ? paiementIntegral
+      : emission;
+  const [a, m, j] = jourParis(depart).split("-").map(Number);
   return new Date(Date.UTC(a!, m! - 1, j! + ECHEANCE_JOURS, 12));
 }
 
@@ -349,6 +358,7 @@ export function objectifVirement(emission: Date): Date {
 export function etatEcheances(
   emission: Date,
   maintenant: Date,
+  paiementIntegral?: Date | null,
 ): {
   objectif: Date;
   echeance: Date;
@@ -356,7 +366,7 @@ export function etatEcheances(
   echeanceDepassee: boolean;
 } {
   const objectif = objectifVirement(emission);
-  const echeance = echeancePaiement(emission);
+  const echeance = echeancePaiement(emission, paiementIntegral);
   const jour = jourParis(maintenant);
   return {
     objectif,
