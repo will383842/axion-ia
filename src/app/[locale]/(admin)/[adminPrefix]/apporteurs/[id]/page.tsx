@@ -22,6 +22,7 @@ import {
   FinDeVie,
   SoldeNegatifFiche,
 } from "@/components/admin/apporteurs/fiche/FinDeVieEtVigilance";
+import { lireResiliationEnCours } from "@/features/apporteurs-reseau/resiliation";
 import { lireSoldeNegatif } from "@/features/apporteurs-reseau/solde-negatif";
 import { siretDe } from "@/features/apporteurs-reseau/siret-apporteur";
 import {
@@ -363,6 +364,7 @@ export default async function FicheApporteurPage({ params, searchParams }: PageP
         <FinDeVie
           apporteurId={d.id}
           signe={d.statut === "signe"}
+          resiliationNotifiee={await lireResiliationEnCours(d.id)}
           retour={retour?.slice(0, 400)}
           erreur={erreur?.slice(0, 400)}
           versees={fiche.commissions
