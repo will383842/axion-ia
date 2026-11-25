@@ -122,8 +122,8 @@ describe("analyserPack — pack réel", () => {
   });
   it("n’importe que les fiches questions/réponses, toutes en brouillon", () => {
     expect(rapport.aImporter.length + rapport.rejets.length).toBe(63);
-    expect(rapport.aImporter.length).toBe(62);
-    expect(rapport.rejets.map((r) => r.id)).toEqual(["GEO-033"]);
+    expect(rapport.aImporter.length).toBe(61);
+    expect(rapport.rejets.map((r) => r.id)).toEqual(["GEO-033", "GEO-054"]);
     for (const f of rapport.aImporter) {
       expect(f.entry.status).toBe("draft");
       expect(f.entry.publishedAt).toBeNull();
@@ -237,7 +237,7 @@ describe("note de relecture — points non vérifiés", () => {
   it("dans le pack réel, les 30 scénarios et les points juridiques sont marqués", () => {
     const r = analyserPack(lignesDepuisJsonl(readFileSync(CHEMIN, "utf-8")));
     const marques = r.aImporter.filter((f) => f.entry.briefMarkdown.startsWith(MARQUE));
-    expect(marques.length).toBeGreaterThanOrEqual(33);
+    expect(marques.length).toBeGreaterThanOrEqual(32);
     for (const f of marques) expect(f.entry.briefMarkdown).not.toContain("Donnée réelle");
   });
 });
@@ -471,6 +471,38 @@ describe("porte de doctrine alignée sur le site (pack du 25/11/2026)", () => {
     ]) {
       expect(accepte(t), t).toBe(false);
     }
+  });
+  it("refuse les autres façons de parler du déplacement et de la présence locale", () => {
+    for (const t of [
+      "Un forfait de 150 est ajouté au-delà de notre zone.",
+      "Au-delà, un forfait s’applique selon la distance.",
+      "Dans un rayon raisonnable autour de notre siège.",
+      "Venue gratuite en Rhône-Alpes.",
+      "Venue gratuite en AURA.",
+      "Le trajet est facturé sur devis.",
+      "La venue hors de notre zone se chiffre sur devis.",
+      "Le transport de l’intervenant est en sus.",
+      "Nous venons chez vous sans supplément.",
+      "Nous sommes basés à Lyon et intervenons en Isère.",
+    ]) {
+      expect(accepte(t), t).toBe(false);
+    }
+  });
+  it("refuse toute mention de financement", () => {
+    for (const t of [
+      "Un financement est possible.",
+      "Vous pouvez faire financer la journée.",
+      "La journée est finançable.",
+    ]) {
+      expect(accepte(t), t).toBe(false);
+    }
+  });
+  it("n’accepte le seuil de 5 000 € HT que comme minimum d’un devis", () => {
+    expect(accepte("Hors du devis, comptez 5 000 € HT.")).toBe(false);
+  });
+  it("accepte « forfaitaire » et « documents de transport » (usages légitimes)", () => {
+    expect(accepte("Une estimation forfaitaire des gains.")).toBe(true);
+    expect(accepte("Les documents de transport sont analysés.")).toBe(true);
   });
   it("refuse Grenoble et « Aucun gain garanti »", () => {
     expect(accepte("Notre agence de Grenoble.")).toBe(false);

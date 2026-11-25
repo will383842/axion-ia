@@ -103,7 +103,7 @@ const AUTRE_MULTIPLE =
   /(?<![\p{L}\d])(?:[0-24-9]|\d{2,}|deux|quatre|cinq|six|sept|huit|neuf|dix)\s+fois\s+(?:(?:le|la|ce|son|votre|notre)\s+)?(?:prix|garantie|tarif|montant|mise)/iu;
 /** Lieu : seule formule admise « dans vos locaux, partout en France ». */
 const DEPLACEMENT_ET_ANNEXES =
-  /d[ée]placement|(?:se|nous|vous)\s+d[ée]pla[cç]|h[ée]bergement|\brepas\b|\bkm\b|kilom[èe]tre|auvergne|\bfrais\b/i;
+  /d[ée]placement|(?:se|nous|vous)\s+d[ée]pla[cç]|h[ée]bergement|\brepas\b|\bkm\b|kilom[èe]tre|auvergne|\bfrais\b|\brayon\b|\btrajets?\b|\bvenue\b|rh[ôo]ne[- ]alpes|\baura\b|\bsuppl[ée]ment|\ben sus\b|\bforfait\b|transport de l[’']intervenant|(?:venue|zone|distance|r[ée]gion|trajet)[^.]*sur devis|sur devis[^.]*(?:venue|zone|distance|r[ée]gion|trajet)|\b(?:bas[ée]e?s?|implant[ée]e?s?|agence|bureaux?)\s+(?:à|en|de)\s+\p{Lu}/iu;
 
 /** Phrase (jusqu'au point) qui contient la position donnée. */
 function phraseA(texte: string, pos: number): string {
@@ -124,7 +124,11 @@ function reglesDuPack(texte: string): string[] {
     const nombre = (m[1] ?? m[2] ?? "").trim();
     if (!PRIX_AUTORISE.test(nombre)) {
       const phrase = phraseA(texte, m.index ?? 0);
-      const deduction = MONTANT_SEUIL_DEDUCTION.test(nombre) && /\bdevis\b/i.test(phrase);
+      const deduction =
+        MONTANT_SEUIL_DEDUCTION.test(nombre) &&
+        /(?:au moins|minimum|au-delà de)[^.]*\bdevis|\bdevis\b[^.]*(?:au moins|minimum)/i.test(
+          phrase,
+        );
       if (!deduction) {
         raisons.push(`prix non autorisé : « ${m[0]} »`);
         continue;
@@ -142,6 +146,8 @@ function reglesDuPack(texte: string): string[] {
   if (TOUR_FRANCE_IA.test(texte)) raisons.push("« Tour France IA » exclu de ce pack");
   if (/\bremises?\b/i.test(texte)) raisons.push("remise : un seul prix affiché, sans remise");
   if (/\bgrenoble\b/i.test(texte)) raisons.push("« Grenoble » interdit en communication");
+  if (/finan[cç]/i.test(texte))
+    raisons.push("financement : jamais évoqué (OPCO, CPF et assimilés compris)");
   if (/\bwill\b/i.test(texte)) raisons.push("écrire « Williams », jamais « Will »");
   if (
     /aucun gain (n[’']est )?garanti|aucune garantie de (gain|r[ée]sultat)|gains? non garantis?/i.test(
