@@ -41,6 +41,17 @@ export interface PersistArticleEmbeddingResult {
   readonly dimensions?: number;
 }
 
+/** Remet embedding_voyage à NULL (best-effort) pour que le rattrapage le recalcule. */
+async function invaliderEmbeddingVoyage(prisma: PrismaClient, articleId: string): Promise<void> {
+  try {
+    await prisma.$executeRaw`
+      UPDATE articles SET embedding_voyage = NULL WHERE id = ${articleId}::uuid
+    `;
+  } catch {
+    /* best-effort : ne jamais bloquer la publication */
+  }
+}
+
 /**
  * Calcule l'embedding du contenu article et persiste dans articles.embedding.
  *
@@ -78,6 +89,7 @@ export async function persistArticleEmbedding(
       // le rattrapage la remplira une fois la coupure levée.
       const killSwitch = await readKillSwitchFailSafe();
       if (killSwitch.active) {
+        await invaliderEmbeddingVoyage(prisma, input.articleId);
         console.warn(
           JSON.stringify({
             event: "persist_article_embedding_voyage_kill_switch",
@@ -90,6 +102,8 @@ export async function persistArticleEmbedding(
     const result = provider === "voyage" ? await embedVoyage(text) : await embed(text);
     if (result === null) {
       if (provider === "voyage") {
+        // Un vecteur périmé (article rafraîchi) ne serait jamais recalculé : on remet NULL.
+        await invaliderEmbeddingVoyage(prisma, input.articleId);
         console.warn(
           JSON.stringify({
             event: "persist_article_embedding_voyage_unavailable",
