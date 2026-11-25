@@ -10,11 +10,18 @@ import { AdminPageShell } from "@/components/admin/ui/AdminPageShell";
 import { AdminPageHeader } from "@/components/admin/ui/AdminPageHeader";
 import { AdminSubmitButton } from "@/components/admin/ui/AdminSubmitButton";
 import { AccesRefuse } from "@/components/admin/ui/AccesRefuse";
-import { BadgeEcheance } from "@/components/admin/garanties-journee-ia/BadgeEcheance";
+import {
+  BadgeEcheance,
+  BadgeHorsDelai,
+} from "@/components/admin/garanties-journee-ia/BadgeEcheance";
 import { gardePage } from "@/server/auth/garde-page";
 import { peutEngager } from "@/server/auth/habilitations";
 import { dossiersDejaRembourses, lireGarantie } from "@/server/garanties-journee-ia/lecture";
-import { calculerEcheances, estReputeeAcceptee } from "@/lib/garantie-journee-ia/echeances";
+import {
+  calculerEcheances,
+  demandeHorsDelai,
+  estReputeeAcceptee,
+} from "@/lib/garantie-journee-ia/echeances";
 import {
   aujourdhuiParis,
   etatEcheance,
@@ -55,6 +62,7 @@ export default async function GarantieFichePage({ params, searchParams }: PagePr
   const aujourdhui = aujourdhuiParis();
   const echeances = calculerEcheances(d, aujourdhui);
   const reputee = estReputeeAcceptee(d, aujourdhui);
+  const horsDelai = demandeHorsDelai(d);
   const autres = await dossiersDejaRembourses(d.sirenSnapshot, d.id);
   const ecriture = acces.peutEcrire;
   const argent = peutEngager(acces.role, "facturer");
@@ -88,6 +96,13 @@ export default async function GarantieFichePage({ params, searchParams }: PagePr
       ) : null}
 
       <h2 className="mb-2 text-lg font-semibold">Échéances</h2>
+      {horsDelai ? (
+        <p role="alert" className="mb-2 rounded border border-red-300 bg-red-50 p-3 text-sm">
+          <BadgeHorsDelai /> Demande reçue après les 30 jours suivant la remise du rapport. Aucune
+          acceptation tacite : décider au cas par cas (rembourser, refuser ou offrir un avoir). Si «
+          Rembourser » est choisi, le virement est dû sous 30 jours après la décision.
+        </p>
+      ) : null}
       {reputee ? (
         <p role="alert" className="mb-2 rounded border border-red-300 bg-red-50 p-3 text-sm">
           Demande réputée acceptée : aucune réponse écrite dans les 15 jours (état calculé, non
@@ -159,9 +174,9 @@ export default async function GarantieFichePage({ params, searchParams }: PagePr
                     defaultValue={d.decision ?? "remboursement"}
                     className="admin-input"
                   >
-                    <option value="remboursement">Remboursement</option>
-                    <option value="refus">Refus</option>
-                    <option value="non_applicable">Non applicable</option>
+                    <option value="remboursement">Rembourser</option>
+                    <option value="refus">Refuser</option>
+                    <option value="avoir">Offrir un avoir</option>
                   </select>
                 </label>
                 <label className="flex flex-col gap-1 text-sm">
@@ -177,6 +192,17 @@ export default async function GarantieFichePage({ params, searchParams }: PagePr
                 <label className="flex flex-col gap-1 text-sm">
                   Montant remboursé (€, si remboursement)
                   <input name="montantRembourseEuros" inputMode="decimal" className="admin-input" />
+                </label>
+                <label className="flex flex-col gap-1 text-sm">
+                  Montant de l&apos;avoir (€ HT, 4 470 € au plus, si « Offrir un avoir »)
+                  <input
+                    name="montantAvoirEuros"
+                    inputMode="decimal"
+                    defaultValue={
+                      d.montantAvoirHtCents === null ? "" : String(d.montantAvoirHtCents / 100)
+                    }
+                    className="admin-input"
+                  />
                 </label>
                 <label className="flex flex-col gap-1 text-sm">
                   Total des gains constatés (€, facultatif)
@@ -196,7 +222,7 @@ export default async function GarantieFichePage({ params, searchParams }: PagePr
                   <input name="avoirId" defaultValue={d.avoirId ?? ""} className="admin-input" />
                 </label>
                 <label className="flex flex-col gap-1 text-sm">
-                  Motif (obligatoire hors remboursement, 10 caractères au moins)
+                  Note (facultative ; obligatoire pour un refus, 10 caractères au moins)
                   <textarea
                     name="motifDecision"
                     rows={2}

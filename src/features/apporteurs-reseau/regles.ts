@@ -84,6 +84,47 @@ export function ajouterJours(d: Date, jours: number): Date {
   return new Date(d.getTime() + jours * JOUR_MS);
 }
 
+const FORMAT_PARIS = new Intl.DateTimeFormat("en-GB", {
+  timeZone: "Europe/Paris",
+  year: "numeric",
+  month: "numeric",
+  day: "numeric",
+  hour: "numeric",
+  hourCycle: "h23",
+});
+
+function composantesParis(t: number): { y: number; m: number; d: number; h: number } {
+  const p: Record<string, number> = {};
+  for (const x of FORMAT_PARIS.formatToParts(new Date(t))) p[x.type] = Number(x.value);
+  return { y: p.year ?? NaN, m: p.month ?? NaN, d: p.day ?? NaN, h: p.hour ?? NaN };
+}
+
+/**
+ * Fonction UNIQUE de la fin d'un délai en jours calendaires (décision du dirigeant N1,
+ * 2026-11-25) : le dernier instant (23:59:59.999, heure de Paris, heure d'été/hiver comprise)
+ * du `n`-ième jour calendaire à Paris, le jour de `d` étant le jour 1, quelle que soit l'heure de
+ * la saisie. Exemple : 25 nov. 15 h, n = 60 → 23 janv. 23:59:59.999 ; le 24 janv. 00:00 est libre.
+ * Date illisible : `Invalid Date`.
+ */
+export function finDuNiemeJourParis(d: Date, n: number): Date {
+  if (!Number.isFinite(d.getTime())) return new Date(NaN);
+  const { y, m, d: j } = composantesParis(d.getTime());
+  const minuit = new Date(Date.UTC(y, m - 1, j + n)); // minuit Paris après le n-ième jour (jour 1 = jour de d), en « heure murale »
+  // Les changements d'heure ont lieu à 2 h/3 h, jamais à minuit : un seul des deux décalages tombe juste.
+  for (const decalageH of [1, 2]) {
+    const t = minuit.getTime() - decalageH * 3_600_000;
+    const c = composantesParis(t);
+    if (
+      c.h === 0 &&
+      c.d === minuit.getUTCDate() &&
+      c.m === minuit.getUTCMonth() + 1 &&
+      c.y === minuit.getUTCFullYear()
+    )
+      return new Date(t - 1);
+  }
+  return new Date(NaN);
+}
+
 // ── Dossier de l'apporteur ───────────────────────────────────────────────
 
 /**

@@ -4,6 +4,7 @@ import {
   DELAI_REPONSE_JOURS,
   DELAI_VIREMENT_JOURS,
   calculerEcheances,
+  demandeHorsDelai,
   estReputeeAcceptee,
 } from "../echeances";
 
@@ -106,5 +107,81 @@ describe("estReputeeAcceptee", () => {
   it("faux sans demande ou si une décision est datée", () => {
     expect(estReputeeAcceptee({ dateJournee: "2026-12-01" }, "2030-01-01")).toBe(false);
     expect(estReputeeAcceptee({ ...d, decisionLe: "2026-12-30" }, "2030-01-01")).toBe(false);
+  });
+});
+
+describe("réponse tardive (art. 47.10 f)", () => {
+  const d = {
+    dateJournee: "2026-12-01",
+    rapportRemisLe: "2026-12-10",
+    demandeRecueLe: "2026-12-20",
+  };
+  it("refus daté après l'échéance : réputée acceptée, virement au 2027-02-03, Réponse non faite", () => {
+    const t = { ...d, decision: "refus" as const, decisionLe: "2027-01-10" };
+    expect(estReputeeAcceptee(t, "2027-01-10")).toBe(true);
+    const r = calculerEcheances(t);
+    expect(r.find((e) => e.type === "virement")).toMatchObject({ date: "2027-02-03" });
+    expect(r.find((e) => e.type === "reponse")!.faite).toBe(false);
+  });
+  it("remboursement tardif : virement = échéance de réponse + 30 j, pas décision + 30 j", () => {
+    const r = calculerEcheances({ ...d, decision: "remboursement", decisionLe: "2027-01-20" });
+    expect(r.find((e) => e.type === "virement")).toMatchObject({ date: "2027-02-03" });
+  });
+  it("réponse à temps : non acceptée, échéance Réponse faite, pas de virement pour un refus", () => {
+    const t = { ...d, decision: "refus" as const, decisionLe: "2027-01-03" };
+    expect(estReputeeAcceptee(t, "2027-03-01")).toBe(false);
+    const r = calculerEcheances(t, "2027-03-01");
+    expect(r.find((e) => e.type === "reponse")!.faite).toBe(true);
+    expect(r.find((e) => e.type === "virement")).toBeUndefined();
+  });
+  it("réponse le jour même de l'échéance : à temps", () => {
+    expect(estReputeeAcceptee({ ...d, decisionLe: "2027-01-04" }, "2027-03-01")).toBe(false);
+  });
+});
+
+describe("demandeHorsDelai", () => {
+  const base = { dateJournee: "2026-12-01", rapportRemisLe: "2026-12-10" };
+  it("vrai si la demande arrive après remise + 30 j (2027-01-09), faux sinon", () => {
+    expect(demandeHorsDelai({ ...base, demandeRecueLe: "2027-01-10" })).toBe(true);
+    expect(demandeHorsDelai({ ...base, demandeRecueLe: "2027-01-09" })).toBe(false);
+    expect(demandeHorsDelai(base)).toBe(false);
+  });
+  it("porté par l'échéance fin_demande sans changer les dates", () => {
+    const r = calculerEcheances({ ...base, demandeRecueLe: "2027-01-10" });
+    const f = r.find((e) => e.type === "fin_demande")!;
+    expect(f).toMatchObject({ date: "2027-01-09", demandeHorsDelai: true });
+    expect(r.find((e) => e.type === "reponse")!.date).toBe("2027-01-25");
+  });
+});
+
+describe("demande hors délai : cas par cas (décision du dirigeant du 25/11/2026)", () => {
+  const h = {
+    dateJournee: "2026-12-01",
+    rapportRemisLe: "2026-12-10",
+    demandeRecueLe: "2027-01-10",
+  };
+  it("sans réponse : jamais réputée acceptée, pas de virement, réponse « à trancher »", () => {
+    expect(estReputeeAcceptee(h, "2030-01-01")).toBe(false);
+    const r = calculerEcheances(h, "2030-01-01");
+    expect(r.find((e) => e.type === "virement")).toBeUndefined();
+    expect(r.find((e) => e.type === "reponse")).toMatchObject({ aTrancher: true, faite: false });
+  });
+  it("réponse tardive (refus ou avoir) : toujours pas réputée acceptée, pas de virement", () => {
+    const t = { ...h, decision: "refus" as const, decisionLe: "2027-03-01" };
+    expect(estReputeeAcceptee(t, "2027-03-01")).toBe(false);
+    const r = calculerEcheances(t);
+    expect(r.find((e) => e.type === "virement")).toBeUndefined();
+    expect(r.find((e) => e.type === "reponse")).toMatchObject({ aTrancher: true, faite: true });
+  });
+  it("décision remboursement : virement = décision + 30 j", () => {
+    const r = calculerEcheances({ ...h, decision: "remboursement", decisionLe: "2027-03-01" });
+    expect(r.find((e) => e.type === "virement")).toMatchObject({
+      date: "2027-03-31",
+      faite: false,
+    });
+  });
+  it("demande à temps : pas de drapeau « à trancher »", () => {
+    const r = calculerEcheances({ ...h, demandeRecueLe: "2027-01-09" });
+    expect(r.find((e) => e.type === "reponse")!.aTrancher).toBeUndefined();
   });
 });

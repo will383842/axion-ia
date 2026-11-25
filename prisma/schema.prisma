@@ -5361,6 +5361,8 @@ model Devis {
   livreAt                 DateTime? @map("livre_at")
   /// NULL pour toute pièce antérieure, jamais rétro-remplie.
   conditionsParticulieres String?   @map("conditions_particulieres") @db.Text
+  /// Journée IA vendue sous ce nom : imprime la garantie de remboursement (CGV art. 47.10). Lu par l'app seulement, jamais par le worker.
+  journeeIa               Boolean   @default(false) @map("journee_ia")
 
   /// Devis à formules (colonnes posées par la migration 20261104120000_devis_formules).
   /// `offre` NULL = devis classique, comportement INCHANGÉ. Tant que l'interrupteur
@@ -18706,7 +18708,7 @@ model EmailManuelPieceJointe {
 /// ACCEPTÉE ; virement sous 30 jours après l'acceptation. Les échéances ne sont JAMAIS stockées :
 /// `calculerEcheances` les recalcule depuis les dates saisies. « Réputée acceptée » n'est jamais écrit
 /// par un robot. Montants en centimes. On archive (`archive_le`), on ne supprime jamais. `decision`
-/// est du texte (remboursement | refus | non_applicable), PAS une énumération Postgres (contrat
+/// est du texte (remboursement | refus | avoir), PAS une énumération Postgres (contrat
 /// app/worker, AGENTS.md « DEUX conteneurs »). Table additive : aucun code worker ne la lit en PR 2.
 /// rgpd: technique — dates, montants et décision d'un remboursement d'entreprise ; rattaché au client par identifiant, SIREN d'entreprise, notes internes sans coordonnées
 model GarantieJourneeIa {
@@ -18728,6 +18730,8 @@ model GarantieJourneeIa {
   seuilHtCents          Int               @map("seuil_ht_cents")
   totalGainsCents       Int?              @map("total_gains_cents")
   montantRembourseCents Int?              @map("montant_rembourse_cents")
+  /// Décision « avoir » : montant de l'avoir offert, en euros HT (centimes), plafonné côté code à 4 470 €.
+  montantAvoirHtCents   Int?              @map("montant_avoir_ht_cents")
   /// Dates = jour de Paris, sans heure.
   dateJournee           DateTime          @map("date_journee") @db.Date
   rapportRemisLe        DateTime?         @map("rapport_remis_le") @db.Date
@@ -18735,7 +18739,7 @@ model GarantieJourneeIa {
   decisionLe            DateTime?         @map("decision_le") @db.Date
   avoirEmisLe           DateTime?         @map("avoir_emis_le") @db.Date
   virementLe            DateTime?         @map("virement_le") @db.Date
-  /// remboursement | refus | non_applicable. Texte, pas d'énumération.
+  /// remboursement | refus | avoir. Texte, pas d'énumération.
   decision              String?           @db.VarChar(20)
   motifDecision         String?           @map("motif_decision")
   notes                 String?

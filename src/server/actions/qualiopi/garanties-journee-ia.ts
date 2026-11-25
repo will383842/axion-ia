@@ -2,7 +2,9 @@
  * Qualiopi — Server Actions du suivi des remboursements de la garantie Journée IA (CGV art. 47.10).
  *
  * Règle retenue : « variante brief » (demande écrite sous 30 j après le rapport ; réponse sous 15 j,
- * sinon réputée acceptée ; virement sous 30 j après l'acceptation). Les échéances se CALCULENT
+ * sinon réputée acceptée ; virement sous 30 j après l'acceptation). Demande reçue après les 30 jours : jamais d'acceptation
+ * tacite, le dirigeant choisit (rembourser : virement sous 30 j après la décision ; refuser ; offrir
+ * un avoir ≤ 4 470 € HT). Les échéances se CALCULENT
  * (`calculerEcheances`) : on n'écrit que des dates saisies par un humain. « Réputée acceptée » n'est
  * jamais écrite par un robot.
  *
@@ -29,7 +31,9 @@ import {
   eurosEnCentimes,
   refusDecision,
   refusDemande,
+  plafondRemboursementCents,
   refusVirement,
+  verifierMontantAvoir,
 } from "@/server/garanties-journee-ia/regles";
 import { dossiersDejaRembourses, lireGarantie } from "@/server/garanties-journee-ia/lecture";
 
@@ -223,8 +227,14 @@ export async function enregistrerDecisionGarantieJourneeIaAction(
   if (decision === "remboursement") {
     montant = eurosEnCentimes(texte(formData, "montantRembourseEuros"));
     if (montant === null || montant <= 0) refuser(fiche(id), "Montant remboursé invalide.");
-    if (montant > dossier.prixHtCents * 2)
+    if (montant > plafondRemboursementCents(dossier.prixHtCents))
       refuser(fiche(id), "Montant remboursé incohérent avec le prix.");
+  }
+  let montantAvoir: number | null = null;
+  if (decision === "avoir") {
+    const v = verifierMontantAvoir(eurosEnCentimes(texte(formData, "montantAvoirEuros")));
+    if (!v.ok) refuser(fiche(id), v.message);
+    montantAvoir = v.cents;
   }
   const total = texte(formData, "totalGainsEuros")
     ? eurosEnCentimes(texte(formData, "totalGainsEuros"))
@@ -245,6 +255,7 @@ export async function enregistrerDecisionGarantieJourneeIaAction(
         decisionLe: enDate(decisionLe),
         motifDecision: motif,
         montantRembourseCents: montant,
+        montantAvoirHtCents: montantAvoir,
         totalGainsCents: total,
         avoirEmisLe: enDate(avoirEmisLe),
         avoirId,
@@ -259,6 +270,7 @@ export async function enregistrerDecisionGarantieJourneeIaAction(
           decision: { avant: dossier.decision, apres: decision },
           decisionLe,
           montantRembourseCents: montant,
+          montantAvoirHtCents: montantAvoir,
         },
         session,
       }),
@@ -292,6 +304,8 @@ export async function enregistrerVirementGarantieJourneeIaAction(
     if (montant === null || montant <= 0) refuser(fiche(id), "Montant remboursé invalide.");
   }
   if (montant === null) refuser(fiche(id), "Saisir le montant remboursé.");
+  if (montant > plafondRemboursementCents(dossier.prixHtCents))
+    refuser(fiche(id), "Montant remboursé incohérent avec le prix.");
 
   await prisma.$transaction(async (tx) => {
     await tx.garantieJourneeIa.update({

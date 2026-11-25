@@ -1,6 +1,6 @@
 import { renderToStaticMarkup } from "react-dom/server";
 import { describe, expect, it } from "vitest";
-import { BadgeEcheance } from "../BadgeEcheance";
+import { BadgeEcheance, BadgeHorsDelai } from "../BadgeEcheance";
 import { etatEcheance } from "@/lib/garantie-journee-ia/presentation";
 
 describe("BadgeEcheance : la couleur ne porte jamais seule l'information", () => {
@@ -24,5 +24,13 @@ describe("BadgeEcheance : la couleur ne porte jamais seule l'information", () =>
     );
     expect(html).toContain('data-niveau="gris"');
     expect(html).toContain("Clos");
+  });
+});
+
+describe("BadgeHorsDelai", () => {
+  it("rouge ET texte « Hors délai »", () => {
+    const html = renderToStaticMarkup(<BadgeHorsDelai />);
+    expect(html).toContain('data-niveau="rouge"');
+    expect(html).toContain("Hors délai");
   });
 });

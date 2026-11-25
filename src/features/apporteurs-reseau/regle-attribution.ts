@@ -13,7 +13,7 @@
  * (`interrupteur-rendez-vous.ts`) et se passe en argument (`regleDe(signature, actif)`).
  */
 
-import { PROTECTION_MOIS, ajouterJours, ajouterMois } from "./regles";
+import { PROTECTION_MOIS, ajouterMois, finDuNiemeJourParis } from "./regles";
 
 /** Durée de la réservation provisoire, à compter de la saisie (`recueAt`). */
 export const RESERVATION_PROVISOIRE_JOURS = 60;
@@ -60,9 +60,14 @@ export function regleDe(signature: unknown, actif: boolean): RegleAttribution {
     : null;
 }
 
-/** Fin de la réservation provisoire : la saisie + 60 jours (borne incluse). */
+/**
+ * Fin de la réservation provisoire (décision N1) : la FIN du 60e jour calendaire (Paris), le jour de la
+ * saisie étant le jour 1, quelle que soit l'heure de la saisie (23:59:59.999 Paris, borne incluse).
+ * Même règle pour les fenêtres « rendez-vous pris » et « devis signé » dans les 60 jours : elles
+ * lisent toutes `reserveeJusquAt`, donc cette fonction.
+ */
 export function finReservation(recueAt: Date): Date {
-  return ajouterJours(recueAt, RESERVATION_PROVISOIRE_JOURS);
+  return finDuNiemeJourParis(recueAt, RESERVATION_PROVISOIRE_JOURS);
 }
 
 /** Fin de la protection : six mois à compter du rendez-vous TENU. */
@@ -90,12 +95,18 @@ export function rendezVousRecevable(e: {
   reserveeJusquAt: Date;
   prisAt: Date;
   tenuAt: Date | null;
+  /**
+   * Date à laquelle AXION IA a annulé ce rendez-vous : il est alors RÉPUTÉ TENU à cette date (Axion
+   * ne peut pas empêcher une validation en annulant). Une annulation, une absence ou un report
+   * par l'ENTREPRISE ne se transmet JAMAIS ici : il ne valide pas. Le silence d'Axion non plus.
+   */
+  annuleParAxionAt?: Date | null;
   maintenant: Date;
 }): { ok: true } | { ok: false; motif: MotifRendezVousRefuse } {
   const pris = e.prisAt.getTime();
   if (!(pris >= e.recueAt.getTime())) return { ok: false, motif: "pris_avant_saisie" };
   if (!(pris <= e.reserveeJusquAt.getTime())) return { ok: false, motif: "pris_apres_reservation" };
-  const tenu = e.tenuAt?.getTime();
+  const tenu = (e.tenuAt ?? e.annuleParAxionAt)?.getTime();
   if (tenu === undefined || !(tenu <= e.maintenant.getTime()))
     return { ok: false, motif: "pas_encore_tenu" };
   if (!(tenu >= pris)) return { ok: false, motif: "tenu_avant_prise" };
