@@ -42,6 +42,23 @@ describe("persistArticleEmbedding — fournisseur voyage", () => {
     expect(String((fetchMock.mock.calls[0] as unknown[])[0])).toContain("voyageai.com");
   });
 
+  it("bodyText vide + bodyHtml : même texte que le rattrapage (HTML nettoyé)", async () => {
+    const fetchMock = vi.fn(async (..._a: unknown[]) =>
+      Response.json({ data: [{ index: 0, embedding: vec(1024) }] }),
+    );
+    vi.stubGlobal("fetch", fetchMock);
+    const exec = vi.fn(async () => 1);
+    await persistArticleEmbedding({ $executeRaw: exec } as never, {
+      articleId: input.articleId,
+      title: "Titre",
+      bodyText: "",
+      bodyHtml: "<p>Corps <b>HTML</b></p>",
+    });
+    const body = JSON.parse(String((fetchMock.mock.calls[0]?.[1] as { body: string }).body));
+    expect(JSON.stringify(body.input)).toContain("Corps HTML");
+    expect(JSON.stringify(body.input)).not.toContain("<p>");
+  });
+
   it("panne Voyage (429) : ne lève pas, rien écrit, publication non bloquée", async () => {
     vi.spyOn(console, "warn").mockImplementation(() => {});
     vi.stubGlobal(

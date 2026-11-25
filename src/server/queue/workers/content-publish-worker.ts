@@ -1148,6 +1148,7 @@ async function executePublishPipeline(
       title,
       ...(metaDescription ? { metaDescription } : {}),
       ...(bodyText ? { bodyText } : {}),
+      bodyHtml: bodyHtmlForPersist,
     });
     await logStep(
       cgJob.id,

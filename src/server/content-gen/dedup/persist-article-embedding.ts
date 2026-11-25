@@ -30,6 +30,8 @@ export interface PersistArticleEmbeddingInput {
   readonly title: string;
   readonly metaDescription?: string;
   readonly bodyText?: string;
+  /** HTML stocké (article_translations.body) : repli de bodyText vide, comme au rattrapage. */
+  readonly bodyHtml?: string;
 }
 
 export interface PersistArticleEmbeddingResult {
@@ -64,6 +66,7 @@ export async function persistArticleEmbedding(
             title: input.title,
             metaDescription: input.metaDescription ?? null,
             bodyText: input.bodyText ?? null,
+            bodyHtml: input.bodyHtml ?? null,
           })
         : buildEmbeddingInput({
             title: input.title,
