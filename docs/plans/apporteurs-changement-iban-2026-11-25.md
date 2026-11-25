@@ -410,15 +410,36 @@ La première version « proposait d'attendre sans bloquer » (D-4) : **c'est ret
   (le gel s'arrête). Une demande `confirmee` non décidée **10 jours** après sa confirmation passe en rouge dans la
   console et déclenche une alerte interne (passage quotidien **du worker**, tolérant la table absente,
   `P2021` : rien à signaler ; le passage quotidien de l'application n'existe pas, il n'en est pas créé un).
-  L'administrateur lève le gel en **décidant** (valider ou refuser). L'échéance ferme du contrat est de trente
-  jours : l'alerte à 10 jours laisse 20 jours pour décider.
+  L'administrateur lève le gel en **décidant** (valider ou refuser).
+- **L'échéance de trente jours ne court pas depuis la demande (correction B-1).** Le virement est dû au plus
+  tard 30 jours après le paiement à 100 % du client ; en pratique, l'autofacture est émise au passage qui suit ce
+  paiement et porte `echeancePaiement(emission)` = jour de Paris de l'émission + 30 jours
+  (`autofacture-donnees.ts:300-320`, `ECHEANCE_JOURS = 30`). Une demande peut donc s'ouvrir alors que l'échéance
+  est déjà proche : les 72 heures d'opposition suffisent parfois à la dépasser, avant même l'alerte à 10 jours.
+  Le plan ne suppose donc aucune marge fixe. Règles :
+  1. **Échéance par ligne gelée.** Pour chaque autofacture en attente de virement chez un apporteur dont la
+     demande est ouverte, la console calcule `echeancePaiement(autofactureEmiseAt)` et affiche la **plus proche
+     échéance** (date, jamais un compte à rebours) dans le bandeau de gel et dans « Virements à faire ».
+  2. **Alerte sur la plus proche échéance.** Alerte interne et ligne en rouge en console quand la plus proche
+     échéance est à **5 jours ou moins** (J-5, constante isolée), **immédiate** si elle l'est déjà à l'ouverture de
+     la demande ou à sa confirmation ; en plus de l'alerte « confirmée depuis 10 jours ». Même passage quotidien
+     du worker, mêmes tolérances (table absente : rien à signaler).
+  3. **Si l'échéance arrive sans décision.** Deux options, à trancher par le dirigeant (D-4) :
+     - **Option A : décision obligatoire avant l'échéance.** Le `super_admin` décide (valider ou refuser)
+       avant la date ; passé l'échéance, la ligne reste gelée et en rouge, le retard est assumé et tracé.
+     - **Option B : versement sur l'ancien compte.** À l'échéance, sans décision, le virement part sur
+       l'ancien compte, toujours au nom de l'apporteur (art. 5.4), ce qui exige un **refus motivé** du
+       `super_admin` qui lève le gel (aucune levée automatique : le geste reste humain, journalisé).
+     **Recommandation : B**, parce qu'elle tient la règle des 30 jours quoi qu'il arrive ; la seule personne
+     qui peut s'en servir est le `super_admin`, et l'ancien compte est celui que l'apporteur a déjà signé. L'option A
+     est plus prudente contre la fraude mais fait dépasser l'échéance sans recours.
 - **Abus du gel (M4)** : un tiers qui n'a que le lien personnel peut ouvrir une demande et geler les virements
   jusqu'à l'expiration (24 heures). Parades : trois demandes au plus par 30 jours (donc au plus trois jours de
   gel par mois sans la boîte e-mail), limites de débit du §2.2 point 9, l'apporteur peut **annuler** sa demande
   depuis l'espace (le gel s'arrête), et l'opposition lève le gel et coupe le lien.
 - **Point à faire relire par le juriste** (D-4, nouvelle formulation) : le gel retarde un versement dû ; l'art. 5.4
-  (« pas de versement sans coordonnées à son nom ») ne l'interdit pas, mais l'échéance de trente jours doit rester
-  tenable. À défaut d'accord, le dirigeant peut lever le gel par un refus motivé.
+  (« pas de versement sans coordonnées à son nom ») ne l'interdit pas, mais l'échéance de trente jours (depuis
+  le paiement à 100 %, pas depuis la demande) doit rester tenable : voir les options A et B ci-dessus.
 
 ### 4.3 D'où l'administrateur lit le compte à virer (correction du bloquant 1, IBAN masqué)
 
@@ -846,6 +867,11 @@ l'interrupteur `APPORTEUR_CHANGEMENT_IBAN_ENABLED` (section 8).
     refusé côté serveur, ligne grisée, aucun bouton « Ouvrir le RIB » ; validée, refusée, opposée, annulée ou
     expirée → gel levé ; la création des commissions et des autofactures continue pendant le gel ; table absente
     → comportement d'aujourd'hui.
+  - **`le-gel-ne-fait-pas-depasser-l-echeance.spec.ts`** : autofacture émise à J-27, demande à J0 → alerte
+    immédiate et échéance (`echeancePaiement`) affichée dans le bandeau ; autofacture émise à J-10 → pas d'alerte
+    J-5 avant J-5, alerte à J-5 ; plus proche échéance prise parmi plusieurs lignes gelées ; jour de Paris aux
+    bornes ; aucun compte à rebours rendu (une date) ; l'option retenue en D-4 : A (ligne reste gelée et rouge
+    après l'échéance) ou B (le virement sur l'ancien compte n'est possible qu'après un refus motivé `super_admin`).
   - le contrôle des quatre derniers caractères : bon accepté, mauvais refusé ; aucun IBAN entier dans le HTML ni
     dans une valeur de retour ; l'ouverture du RIB est refusée hors `facturer` et journalisée sans l'IBAN.
   - « Virement fait » sans demande ouverte : comportement d'aujourd'hui, plus une ligne de
@@ -1069,6 +1095,7 @@ et 3.
 > Demande de changement de compte confirmée par `<Prénom> <Nom>` : décision possible à partir du 28 novembre 2026.
 > OPPOSITION : `<Prénom> <Nom>` dit ne pas avoir demandé de changement de compte. Le lien de son espace a été coupé. Appelez-le au numéro de sa fiche.
 > Demande de changement de compte de `<Prénom> <Nom>` confirmée depuis 10 jours, sans décision.
+> Virement à échéance proche, bloqué par une demande de changement de compte de `<Prénom> <Nom>` : échéance le `<date>`. Décision attendue avant cette date.
 
 ### 12.5 Console
 
@@ -1131,7 +1158,7 @@ reformulées ci-dessous.
 | D-1  | Le délai d'opposition est-il de 72 heures après la confirmation ? (oui / non, 48 heures)                                                                                                                                       | **Oui, 72 heures.** Le lien n'expire pas et il n'y a pas de session : plus long que les 48 heures des formateurs.                                                      |
 | D-2  | Le rappel téléphonique au numéro de la fiche est-il obligatoire à chaque validation ? (oui / non)                                                                                                                              | **Oui.** C'est la seule barrière contre une boîte e-mail volée. Une fiche sans numéro ne peut pas demander (§2.4).                                                     |
 | D-3  | _Retirée : tranchée par la règle « IBAN masqué partout »._ L'IBAN demandé ne s'affiche jamais en entier ; l'administrateur le recopie depuis le RIB et le serveur compare l'empreinte.                                         | Sans objet.                                                                                                                                                            |
-| D-4  | _Reformulée : le gel est tranché par le dirigeant._ Reste pour le juriste : le gel d'un versement dû (jusqu'à la décision, alerte à 10 jours, échéance ferme à 30 jours) est-il compatible avec l'art. 5.4 ? (oui / à ajuster) | **Oui**, avec l'alerte à 10 jours et la levée par un refus motivé. À faire relire par le juriste.                                                                      |
+| D-4  | _Reformulée : le gel est tranché par le dirigeant._ Reste pour le dirigeant et le juriste : le gel d'un versement dû est-il compatible avec l'art. 5.4 et l'échéance de 30 jours **depuis le paiement à 100 %** (pas depuis la demande) ? Si l'échéance arrive sans décision : A (décision `super_admin` obligatoire avant l'échéance) ou B (virement sur l'ancien compte après refus motivé) ? | **Oui**, avec l'alerte sur la plus proche échéance (J-5), l'alerte à 10 jours, et **l'option B**. À faire relire par le juriste.                                                                      |
 | D-5  | Envoie-t-on l'e-mail « demande non confirmée », seulement quand l'apporteur revient sur son espace ? (oui / non)                                                                                                               | **Oui, et c'est ce que le plan prévoit** : le gabarit 5 est créé aux lots 2 et 4. Si « non », retirer sa ligne.                                                        |
 | D-6  | Qui peut ouvrir le RIB courant à virer dans « Virements à faire » ? (A : `super_admin` et `admin`, ceux qui peuvent `facturer` / B : `super_admin` seul)                                                                       | **A.** C'est le geste de virer, déjà réservé à `facturer` ; chaque ouverture est journalisée, aucun IBAN n'est affiché. La validation, elle, reste `super_admin` seul. |
 | D-7  | Garde-t-on l'historique des comptes et les demandes 10 ans, les RIB de demandes contestées 5 ans, et purge-t-on les autres RIB à 90 jours ? (oui / non)                                                                        | **Oui**, sous réserve de l'avis du délégué à la protection des données avant le lot 8.                                                                                 |
