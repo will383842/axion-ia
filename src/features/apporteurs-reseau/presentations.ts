@@ -34,11 +34,10 @@ import {
   siretValide,
   type Etablissement,
 } from "./etablissement-presentation";
+import { apercu, type ApercuRendu } from "./apercu-envoi";
 import {
-  apercu,
   avecTexteLibre,
   envoyer,
-  type ApercuRendu,
   type EnvoiApporteur,
   type GabaritApporteur,
   type ResultatEnvoi,

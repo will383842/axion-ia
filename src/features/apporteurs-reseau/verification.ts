@@ -26,13 +26,8 @@ import { deleteFromR2, getObjectBufferR2, isR2Configured, uploadToR2 } from "@/l
 
 import { empreinte, rendreContratPdf, texteDuContrat, type ValeursContrat } from "./contrat-pdf";
 import { lireDossier, purgerContenuPieces } from "./donnees";
-import {
-  apercu,
-  avecTexteLibre,
-  envoyer,
-  type EnvoiApporteur,
-  type GabaritApporteur,
-} from "./envois";
+import { apercu } from "./apercu-envoi";
+import { avecTexteLibre, envoyer, type EnvoiApporteur, type GabaritApporteur } from "./envois";
 import { urlDossier } from "./jeton";
 import { signalerErreurReseau } from "./signaler";
 import { lireEntrepriseParSiren, lireRegistre, type ResultatRegistre } from "./annuaire";

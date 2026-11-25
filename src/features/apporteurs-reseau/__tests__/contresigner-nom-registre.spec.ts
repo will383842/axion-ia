@@ -19,9 +19,11 @@ vi.mock("../annuaire", () => ({
   lireEntrepriseParSiren: (...a: unknown[]) => h.registre(...a),
   lireRegistre: (...a: unknown[]) => h.registre(...a),
 }));
+vi.mock("../apercu-envoi", () => ({
+  apercu: vi.fn(async () => ({ sujet: "s", html: "<p/>", destinataire: "x" })),
+}));
 vi.mock("../envois", () => ({
   envoyer: (...a: unknown[]) => h.envoyer(...a),
-  apercu: vi.fn(async () => ({ sujet: "s", html: "<p/>", destinataire: "x" })),
   avecTexteLibre: (payload: Record<string, unknown>) => payload,
 }));
 vi.mock("../donnees", () => ({

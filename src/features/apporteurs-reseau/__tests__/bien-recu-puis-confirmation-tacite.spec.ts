@@ -63,8 +63,8 @@ vi.mock("../commissions", () => ({
   piecesVigilanceValides: vi.fn(async () => true),
   statutApresVigilance: vi.fn(async () => ({ statut: "due", demander: false })),
 }));
+vi.mock("../apercu-envoi", () => ({ apercu: vi.fn() }));
 vi.mock("../envois", () => ({
-  apercu: vi.fn(),
   avecTexteLibre: (p: Record<string, unknown>) => p,
   envoyer: vi.fn(async (e: unknown) => {
     etat.envoyes.push(e);
