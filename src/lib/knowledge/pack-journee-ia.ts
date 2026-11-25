@@ -276,7 +276,9 @@ function sansAccent(t: string): string {
 /** Scénario non constaté, point à vérifier ou juridique : `factual_check` ne vaut alors rien. */
 export function estNonVerifiee(l: LignePack): boolean {
   const t = sansAccent([l.status, l.source].filter((v) => typeof v === "string").join(" "));
-  return /non constate|a verifier|juridique/.test(t);
+  return /non constate|a verifier|juridique|hypothese|analyse editoriale|methodologie axion proposee|illustrative/.test(
+    t,
+  );
 }
 
 export function versEntreeKnowledge(l: LignePack): EntreeKnowledgeDraft {

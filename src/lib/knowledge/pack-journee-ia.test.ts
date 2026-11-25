@@ -11,6 +11,7 @@ import {
   evaluerGardeCommit,
   importerBrouillons,
   lignesDepuisJsonl,
+  slugDeLaFiche,
   versEntreeKnowledge,
   type ClientImport,
   type LignePack,
@@ -233,6 +234,22 @@ describe("note de relecture — points non vérifiés", () => {
     const e = versEntreeKnowledge(faq({ factual_check: "Donnée réelle ou exemple explicite" }));
     expect(e.entry.briefMarkdown).not.toContain("NON VÉRIFIÉ");
     expect(e.entry.briefMarkdown).toContain("Donnée réelle ou exemple explicite");
+  });
+  it("GEO-010, 011, 019 et 021 (hypothèses ou analyses) sont marquées, sans « Donnée réelle »", () => {
+    const r = analyserPack(
+      lignesDepuisJsonl(
+        readFileSync(
+          join(process.cwd(), "docs/knowledge/pack-journee-ia-2026-11-25/Base_RAG.jsonl"),
+          "utf-8",
+        ),
+      ),
+    );
+    for (const id of ["GEO-010", "GEO-011", "GEO-019", "GEO-021"]) {
+      const f = r.aImporter.find((x) => x.entry.slug === slugDeLaFiche(id));
+      expect(f, id).toBeDefined();
+      expect(f!.entry.briefMarkdown.startsWith(MARQUE), id).toBe(true);
+      expect(f!.entry.briefMarkdown, id).not.toContain("Donnée réelle");
+    }
   });
   it("dans le pack réel, les 30 scénarios et les points juridiques sont marqués", () => {
     const r = analyserPack(lignesDepuisJsonl(readFileSync(CHEMIN, "utf-8")));
