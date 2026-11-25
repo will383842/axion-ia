@@ -5281,6 +5281,7 @@ model Client {
   // fiche absorbée par une fusion garde ses pièces et son SIREN.
   @@index([siren])
   @@map("clients")
+  garantiesJourneeIa GarantieJourneeIa[]
 }
 
 /// Devis commercial (CRM). Lignes snapshot ; pas de prix catalogue dupliqué.
@@ -5385,6 +5386,7 @@ model Devis {
   @@index([documentGenereId])
   @@index([choixSignatureId])
   @@map("devis")
+  garantiesJourneeIa GarantieJourneeIa[]
 }
 
 /// Bibliothèque des textes du devis à formules (avantages, inconvénients, prérequis,
@@ -8677,6 +8679,8 @@ model FactureFormation {
   @@index([statut, emiseAt])
   @@index([echeanceAt])
   @@map("factures_formation")
+  garantiesJourneeIaFacture GarantieJourneeIa[] @relation("GarantieJourneeIaFacture")
+  garantiesJourneeIaAvoir   GarantieJourneeIa[] @relation("GarantieJourneeIaAvoir")
 }
 
 // ============================================================
@@ -12784,6 +12788,7 @@ model AuditMission {
   @@index([dateDebut])
   @@index([dateDebut, dateFin])
   @@map("audit_missions")
+  garantiesJourneeIa GarantieJourneeIa[]
 }
 
 /// QR codes dynamiques (onglet admin "QR codes & liens").
@@ -18693,4 +18698,54 @@ model EmailManuelPieceJointe {
 
   @@index([emailManuelId], map: "emails_manuels_pieces_jointes_email_idx")
   @@map("emails_manuels_pieces_jointes")
+}
+
+/// Garantie « Journée IA » (CGV art. 47.10) — suivi des remboursements (PR 2/3, 2026-11-25).
+/// Une ligne par journée garantie. Règle retenue : « variante brief » — demande écrite du client sous
+/// 30 jours après la remise du rapport ; réponse d'Axion-IA sous 15 jours, sinon demande RÉPUTÉE
+/// ACCEPTÉE ; virement sous 30 jours après l'acceptation. Les échéances ne sont JAMAIS stockées :
+/// `calculerEcheances` les recalcule depuis les dates saisies. « Réputée acceptée » n'est jamais écrit
+/// par un robot. Montants en centimes. On archive (`archive_le`), on ne supprime jamais. `decision`
+/// est du texte (remboursement | refus | non_applicable), PAS une énumération Postgres (contrat
+/// app/worker, AGENTS.md « DEUX conteneurs »). Table additive : aucun code worker ne la lit en PR 2.
+/// rgpd: technique — dates, montants et décision d'un remboursement d'entreprise ; rattaché au client par identifiant, SIREN d'entreprise, notes internes sans coordonnées
+model GarantieJourneeIa {
+  id                    String            @id @default(uuid()) @db.Uuid
+  clientId              String            @map("client_id") @db.Uuid
+  client                Client            @relation(fields: [clientId], references: [id], onDelete: Restrict)
+  devisId               String?           @map("devis_id") @db.Uuid
+  devis                 Devis?            @relation(fields: [devisId], references: [id], onDelete: SetNull)
+  auditMissionId        String?           @unique @map("audit_mission_id") @db.Uuid
+  auditMission          AuditMission?     @relation(fields: [auditMissionId], references: [id], onDelete: SetNull)
+  factureId             String?           @map("facture_id") @db.Uuid
+  facture               FactureFormation? @relation("GarantieJourneeIaFacture", fields: [factureId], references: [id], onDelete: SetNull)
+  avoirId               String?           @map("avoir_id") @db.Uuid
+  avoir                 FactureFormation? @relation("GarantieJourneeIaAvoir", fields: [avoirId], references: [id], onDelete: SetNull)
+  /// SIREN figé à la création : contrôle « une seule fois » (47.10 e).
+  sirenSnapshot         String?           @map("siren_snapshot") @db.VarChar(14)
+  /// Prix et seuil HT en centimes, copiés du devis et figés.
+  prixHtCents           Int               @map("prix_ht_cents")
+  seuilHtCents          Int               @map("seuil_ht_cents")
+  totalGainsCents       Int?              @map("total_gains_cents")
+  montantRembourseCents Int?              @map("montant_rembourse_cents")
+  /// Dates = jour de Paris, sans heure.
+  dateJournee           DateTime          @map("date_journee") @db.Date
+  rapportRemisLe        DateTime?         @map("rapport_remis_le") @db.Date
+  demandeRecueLe        DateTime?         @map("demande_recue_le") @db.Date
+  decisionLe            DateTime?         @map("decision_le") @db.Date
+  avoirEmisLe           DateTime?         @map("avoir_emis_le") @db.Date
+  virementLe            DateTime?         @map("virement_le") @db.Date
+  /// remboursement | refus | non_applicable. Texte, pas d'énumération.
+  decision              String?           @db.VarChar(20)
+  motifDecision         String?           @map("motif_decision")
+  notes                 String?
+  archiveLe             DateTime?         @map("archive_le") @db.Timestamptz(3)
+  creePar               String?           @map("cree_par") @db.VarChar(80)
+  createdAt             DateTime          @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt             DateTime          @updatedAt @map("updated_at") @db.Timestamptz(3)
+
+  @@index([archiveLe, dateJournee], map: "garanties_journee_ia_archive_le_date_journee_idx")
+  @@index([clientId], map: "garanties_journee_ia_client_id_idx")
+  @@index([sirenSnapshot], map: "garanties_journee_ia_siren_snapshot_idx")
+  @@map("garanties_journee_ia")
 }
