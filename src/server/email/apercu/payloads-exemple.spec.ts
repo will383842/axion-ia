@@ -176,9 +176,14 @@ describe("le jeu de données d'exemple couvre tous les gabarits", () => {
     // client (alertes clients, PR B). Champs tous facultatifs.
     // RELEVÉ À 88 (2026-11-15) : `recap-demandes-clients`, récap quotidien INTERNE des demandes de
     // clients (alertes clients, PR C). Champs tous facultatifs.
-    // RELEVÉ À 89 (2026-11-25) : `apporteur-presentation-recue-rendez-vous` (apporteurs, lot 7a).
-    // `entreprise-information-coordonnees` (un 90e) est RETIRÉ : pas d'e-mail d'information à l'entreprise.
-    expect(tous.length).toBe(89);
+    // RELEVÉ À 90 (2026-11-25) : `entreprise-information-coordonnees` et
+    // `apporteur-presentation-recue-rendez-vous` (apporteurs, lot 7a) : deux fichiers NEUFS, NON
+    // BRANCHÉS (absents du registre et du catalogue). Champs tous facultatifs.
+    // RELEVÉ À 92 (2026-11-25) : `apporteur-resiliation-notifiee` et `apporteur-resiliation-effective`
+    // (lot L1a, sans émetteur). Champs tous facultatifs ; `fondement`, `notifieeLe`, `effetLe`
+    // et `miseEnDemeureLe` ont leur valeur d'exemple.
+    // (lot 7b : aucun gabarit ajouté ; `entreprise-information-coordonnees` reste un fichier source, non enregistré.)
+    expect(tous.length).toBe(92);
   });
 
   it.each(tous.map((g) => g.nom))("%s : tous ses champs requis ont une valeur d'exemple", (nom) => {

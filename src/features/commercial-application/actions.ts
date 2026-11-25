@@ -279,7 +279,7 @@ export async function submitCommercialApplicationAction(
       return {
         ok: false,
         error:
-          "Nous avons déjà reçu plusieurs candidatures avec cet email. Elle est bien enregistrée — inutile de la renvoyer.",
+          "Nous avons déjà reçu plusieurs demandes avec cet e-mail. La vôtre est bien enregistrée : inutile de la renvoyer.",
       };
     }
   }

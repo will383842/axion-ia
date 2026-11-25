@@ -40,14 +40,14 @@ describe("CGV v3 publiées : variante normale (environnement non défini)", () =
     expect(texteComplet(cg.fr)).not.toMatch(INTERDIT_MOTS_FONDATEUR);
   });
 
-  it("l'article 47.7 fige les valeurs validées : 90 jours, 0 euro", async () => {
+  it("l'article 47.7 fige les valeurs validées : 60 jours, prix HT de la journée", async () => {
     const { getLegal } = await import("@/content/legal");
     const t = texteComplet(getLegal("conditions-generales").fr as Page);
     expect(t).toContain(
-      "(délai : valeur fixée au devis ; à défaut : 90 jours) suivant la remise du rapport",
+      "(délai : valeur fixée au devis ; à défaut : 60 jours) suivant le jour de la journée",
     );
     expect(t).toContain(
-      "(montant déduit : valeur fixée au devis ; à défaut : 0 euro) du prix de la journée est déduit",
+      "(montant déduit : valeur fixée au devis ; à défaut : le prix HT de la journée, hors frais de déplacement) est déduit",
     );
   });
 
