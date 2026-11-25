@@ -230,7 +230,7 @@ export const CONTENU = {
     lignes: ["Dans vos locaux", "Sans remise", "Devis écrit, rien à payer en ligne"],
     deduction: DEDUCTION_JOURNEE_IA,
     ancre: "Dans cet exemple type, la journée coûte moins de deux mois de ces heures.",
-    titreGarantie: `Moins de ${SEUIL} de gains identifiés\u202f? Nous vous remboursons.`,
+    titreGarantie: `Moins de ${SEUIL} de gains identifiés\u202f? Remboursement sur demande.`,
     garantie: GARANTIE_PHRASE,
     condition: CONDITION_GARANTIE,
     rapport: RAPPORT_COMPLET,

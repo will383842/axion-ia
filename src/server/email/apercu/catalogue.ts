@@ -557,6 +557,19 @@ export const CATALOGUE: Readonly<Record<EmailJobName, FicheEmail>> = {
     destinataire: "l'apporteur qui a déclaré l'entreprise",
     source: "features/apporteurs-reseau/envois.ts",
   },
+  "apporteur-resiliation-notifiee": {
+    categorie: "recrutement",
+    quand:
+      "Rien ne l'envoie encore — gabarit livré avant son émetteur (lot L1b, résiliation avec préavis)",
+    destinataire: "—",
+    source: null,
+  },
+  "apporteur-resiliation-effective": {
+    categorie: "recrutement",
+    quand: "Rien ne l'envoie encore — gabarit livré avant son émetteur (lot L1b, prise d'effet)",
+    destinataire: "—",
+    source: null,
+  },
   "apporteur-non-commissionne": {
     categorie: "recrutement",
     quand:
@@ -592,6 +605,13 @@ export const CATALOGUE: Readonly<Record<EmailJobName, FicheEmail>> = {
   "apporteur-presentation-refusee": {
     categorie: "recrutement",
     quand: "Bouton « Déjà connue » ou « Hors champ » d'une entreprise présentée, après aperçu",
+    destinataire: "l'apporteur qui a présenté l'entreprise",
+    source: "features/apporteurs-reseau/envois.ts",
+  },
+  "apporteur-presentation-non-retenue": {
+    categorie: "recrutement",
+    quand:
+      "Le dirigeant écarte une entreprise présentée (démentie, déjà connue, hors champ) ; envoi éteint tant que APPORTEURS_EMAIL_REFUS n'est pas « true »",
     destinataire: "l'apporteur qui a présenté l'entreprise",
     source: "features/apporteurs-reseau/envois.ts",
   },
@@ -643,8 +663,10 @@ export const CATALOGUE: Readonly<Record<EmailJobName, FicheEmail>> = {
   },
   "apporteur-lien-espace": {
     categorie: "recrutement",
-    quand: "Page « Retrouver mon espace » : l'apporteur tape son adresse e-mail",
-    destinataire: "l'apporteur du réseau qui a demandé son lien",
+    quand:
+      "Page « Retrouver mon espace » : l'apporteur tape son adresse e-mail ; ou bouton « Envoyer le lien de son espace » de la fiche d'un apporteur au dossier signé",
+    destinataire:
+      "l'apporteur du réseau qui a demandé son lien, ou à qui un administrateur l'envoie depuis la console (le texte ne dit alors pas « comme vous l'avez demandé »)",
     // L'action de la page appelle `envoyer()`, qui pose le job : comme les autres gabarits
     // apporteur, l'appelant réel de `enqueueEmail` est `envois.ts`.
     source: "features/apporteurs-reseau/envois.ts",

@@ -210,12 +210,24 @@ import {
   ApporteurVirementFaitEmail,
 } from "./apporteur-demarrage";
 import { ApporteurLienEspaceEmail, apporteurLienEspaceSubject } from "./apporteur-lien-espace";
+import {
+  ApporteurResiliationEffectiveEmail,
+  apporteurResiliationEffectiveSubject,
+} from "./apporteur-resiliation-effective";
+import {
+  ApporteurResiliationNotifieeEmail,
+  apporteurResiliationNotifieeSubject,
+} from "./apporteur-resiliation-notifiee";
 import { ENTREES_FORMATEUR_INDEPENDANT } from "./_formateur-independant";
 import { estGabaritFormateurIndependant } from "./formateur-independant-textes";
 import {
   apporteurAttributionConfirmeeSubject,
   ApporteurAttributionConfirmeeEmail,
 } from "./apporteur-attribution-confirmee";
+import {
+  apporteurPresentationNonRetenueSubject,
+  ApporteurPresentationNonRetenueEmail,
+} from "./apporteur-presentation-non-retenue";
 import { VivierInformationEmail, vivierInformationSubject } from "./vivier-information";
 import { ConventionEnvoiEmail, conventionEnvoiSubject } from "./convention-envoi";
 import { PieceExemplaireSigneEmail, pieceExemplaireSigneSubject } from "./piece-exemplaire-signe";
@@ -644,6 +656,15 @@ const TEMPLATES: TemplateMap = {
     subject: apporteurManquementSubject,
     component: ApporteurManquementEmail,
   },
+  // Lot L1a (2026-11-25) : gabarits de résiliation, SANS émetteur avant L1b.
+  "apporteur-resiliation-notifiee": {
+    subject: apporteurResiliationNotifieeSubject,
+    component: ApporteurResiliationNotifieeEmail,
+  },
+  "apporteur-resiliation-effective": {
+    subject: apporteurResiliationEffectiveSubject,
+    component: ApporteurResiliationEffectiveEmail,
+  },
   "apporteur-contrat-signe": {
     subject: apporteurContratSigneSubject,
     component: ApporteurContratSigneEmail,
@@ -655,6 +676,10 @@ const TEMPLATES: TemplateMap = {
   "apporteur-presentation-refusee": {
     subject: apporteurPresentationRefuseeSubject,
     component: ApporteurPresentationRefuseeEmail,
+  },
+  "apporteur-presentation-non-retenue": {
+    subject: apporteurPresentationNonRetenueSubject,
+    component: ApporteurPresentationNonRetenueEmail,
   },
   "entreprise-prise-de-contact-apporteur": {
     subject: entrepriseConfirmationApporteurSubject,
@@ -838,6 +863,9 @@ export async function renderEmailTemplate(
       typeof payload.lienEspace === "string"
         ? payload.lienEspace
         : null,
+    // « Lien perdu ? » dans le pied : seulement pour un e-mail adressé à un apporteur, c'est-à-dire
+    // un gabarit `apporteur-*` dont `envoyer()` a posé le lien de l'espace (2026-11-25).
+    espaceApporteur: name.startsWith("apporteur-") && typeof payload.lienEspace === "string",
   };
   // Injecte les stats avis RÉELLES (DB, cache 15 min) dans le bandeau de confiance de tous les
   // templates, sans changer chaque template. Variable de module re-posée avant chaque `render` :

@@ -31,6 +31,7 @@ import { enqueueEmail } from "@/server/queue/queues";
 import { etatPourApporteur, validerDeclaration, type EtatDeclaration } from "./declaration-regles";
 import { lireEtablissements, memePerimetre } from "./etablissement-presentation";
 import { creerPresentation, nomComplet, presentationOccupe } from "./presentations";
+import { lireReservations, versProvisoire } from "./reservation-presentation";
 import {
   etatPrestation,
   horsGrilleEnCours,
@@ -115,13 +116,14 @@ export async function declarerEntreprise(
   // déclaration couvre toute l'entreprise. Un autre établissement de l'entreprise se déclare.
   const siennes = await prisma.presentationEntreprise.findMany({
     where: { apporteurId, siren: d.siret.slice(0, 9), statut: { in: ["reservee", "confirmee"] } },
-    select: { id: true, statut: true, protegeeJusquAt: true },
+    select: { id: true, statut: true, protegeeJusquAt: true, recueAt: true },
   });
   const etabs = await lireEtablissements(siennes.map((p) => p.id));
+  const reservations = await lireReservations(siennes.map((p) => p.id));
   if (
     siennes.some(
       (p) =>
-        presentationOccupe(p, maintenant) &&
+        presentationOccupe(p, maintenant, versProvisoire(reservations.get(p.id), p.recueAt)) &&
         memePerimetre({ siret: d.siret, entreprise: false, exclus: [] }, etabs.get(p.id)!),
     )
   ) {

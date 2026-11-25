@@ -66,7 +66,8 @@ vi.mock("@/lib/email/templates", async (orig) => {
 
 import { apercuDecisionAction, apercuLienAction } from "../actions-apporteurs";
 import { apercuReponseAction } from "../actions-presentations";
-import { apercu, envoyer, type EnvoiApporteur } from "../envois";
+import { apercu } from "../apercu-envoi";
+import { envoyer, type EnvoiApporteur } from "../envois";
 import { jetonOpposition } from "@/server/email/opposition-jeton";
 
 const dossier = {

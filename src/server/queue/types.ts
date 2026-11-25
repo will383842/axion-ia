@@ -184,11 +184,14 @@ export type EmailJobName =
   | "apporteur-dossier-recu"
   | "apporteur-commission-suspension"
   | "apporteur-manquement"
+  | "apporteur-resiliation-notifiee"
+  | "apporteur-resiliation-effective"
   | "apporteur-commission-avoir-client"
   | "apporteur-non-commissionne"
   | "apporteur-contrat-signe"
   | "apporteur-presentation-recue"
   | "apporteur-presentation-refusee"
+  | "apporteur-presentation-non-retenue"
   | "entreprise-prise-de-contact-apporteur"
   | "apporteur-vigilance"
   | "apporteur-commande-signee"
@@ -356,9 +359,20 @@ export interface EmailJobData {
   /**
    * Pièces jointes (Hub facturation — envoi manuel devis/facture). JAMAIS de
    * binaire dans Redis : uniquement la clé R2 ; le worker télécharge puis
-   * attache (fail-soft : envoi sans PJ si R2 indisponible).
+   * attache. FAIL-HARD : une pièce introuvable arrête l'envoi (nouvelles tentatives), parce
+   * que le gabarit affirme « le document est joint ».
+   *
+   * `facultative` (2026-11-25, champ FACULTATIF) : pièce que le gabarit ne promet pas (annexes
+   * de l'e-mail « contrat signé » d'un apporteur). Introuvable, illisible ou trop lourde à
+   * l'envoi, l'e-mail part sans elle ; c'est journalisé et signalé. Un worker qui ne connaît pas
+   * ce champ exige la pièce, comme avant.
    */
-  attachments?: Array<{ filename: string; r2Key: string; contentType?: string }>;
+  attachments?: Array<{
+    filename: string;
+    r2Key: string;
+    contentType?: string;
+    facultative?: boolean;
+  }>;
   /**
    * Objet FORCÉ — lot 2 (2026-09-02). Posé uniquement quand l'admin a modifié
    * l'objet dans la corbeille de validation. Le worker le préfère à l'objet

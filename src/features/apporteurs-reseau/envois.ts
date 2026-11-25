@@ -5,25 +5,20 @@
  * (`server/email/apercu/catalogue.spec.ts`) retrouve l'émetteur d'un gabarit à son nom
  * littéral dans le fichier qui appelle `enqueueEmail`.
  *
- * `apercu()` rend l'e-mail exact (vrai gabarit) sans rien envoyer : la console le montre
- * à Williams avant chaque envoi décidé par lui.
+ * `apercu()` vit dans `./apercu-envoi` (qui importe `server-only`) : ce module-ci est chargé par
+ * le worker (tsx, hors de Next) et ne doit rien importer qui en dépende (Sentry AXION-IA-25).
  */
 
-import { texteParDefaut } from "@/lib/email/templates/apporteur-demarrage";
 import {
   avecLienEspaceRecalcule,
   jobIdSansDeuxPoints,
   resultatDeLEnfilage,
   retirerEnvoiEchoue,
-  type ApercuRendu as ApercuRenduMonde,
   type ResultatEnvoi,
 } from "@/server/email/envoi-monde";
 import { enqueueEmail } from "@/server/queue/queues";
 import type { EmailJobName } from "@/server/queue/types";
 
-import type { ApercuLecteur } from "@/lib/email/apercu-lecteur";
-
-import { apercuMasque } from "./apercu-masque";
 import { signalerErreurReseau } from "./signaler";
 import { prisma } from "@/lib/prisma";
 import { urlDossier } from "./jeton";
@@ -37,11 +32,14 @@ export type GabaritApporteur =
   | "apporteur-dossier-recu"
   | "apporteur-commission-suspension"
   | "apporteur-manquement"
+  | "apporteur-resiliation-notifiee"
+  | "apporteur-resiliation-effective"
   | "apporteur-commission-avoir-client"
   | "apporteur-non-commissionne"
   | "apporteur-contrat-signe"
   | "apporteur-presentation-recue"
   | "apporteur-presentation-refusee"
+  | "apporteur-presentation-non-retenue"
   | "entreprise-prise-de-contact-apporteur"
   | "apporteur-vigilance"
   | "apporteur-commande-signee"
@@ -60,11 +58,14 @@ export const GABARITS_APPORTEUR: readonly GabaritApporteur[] = [
   "apporteur-dossier-recu",
   "apporteur-commission-suspension",
   "apporteur-manquement",
+  "apporteur-resiliation-notifiee",
+  "apporteur-resiliation-effective",
   "apporteur-commission-avoir-client",
   "apporteur-non-commissionne",
   "apporteur-contrat-signe",
   "apporteur-presentation-recue",
   "apporteur-presentation-refusee",
+  "apporteur-presentation-non-retenue",
   "entreprise-prise-de-contact-apporteur",
   "apporteur-vigilance",
   "apporteur-commande-signee",
@@ -84,40 +85,17 @@ export interface EnvoiApporteur {
   entityId: string;
   /** Clé d'idempotence : un même envoi n'est jamais doublé. */
   jobId?: string;
-  attachments?: Array<{ filename: string; r2Key: string; contentType?: string }>;
+  attachments?: Array<{
+    filename: string;
+    r2Key: string;
+    contentType?: string;
+    facultative?: boolean;
+  }>;
 }
-
-/**
- * L'aperçu exact d'un e-mail, plus (si modifiable) son texte par défaut en texte brut.
- * 🔴 `html` et `apercu` sont MASQUÉS et INERTES (aucun jeton, aucun `href`) : ils quittent le serveur.
- */
-export type ApercuRendu = ApercuRenduMonde<GabaritApporteur> & { apercu: ApercuLecteur };
 
 // Fonctions communes du module d'envoi « monde » (FAC-1) : ré-exportées, jamais recopiées.
 export { avecTexteLibre, retirerEnvoiEchoue } from "@/server/email/envoi-monde";
 export type { ResultatEnvoi };
-
-/**
- * Rend avec le vrai destinataire et la charge EXACTE que `envoyer` met en file (lien d'espace
- * recalculé compris), par `renderEmailTemplate` comme le worker ; puis masque et rend inerte.
- */
-export async function apercu(
-  e: Pick<EnvoiApporteur, "gabarit" | "destinataire" | "payload" | "entityType" | "entityId">,
-): Promise<ApercuRendu> {
-  const payload = await avecLienEspace(e as EnvoiApporteur);
-  const rendu = await apercuMasque(e.gabarit, "fr", payload, e.destinataire);
-  // Le texte par défaut se calcule SANS le texte réécrit : « Texte d'origine » reste possible.
-  const { texteLibre: _ignore, ...sansTexte } = e.payload;
-  const texteDefaut = texteParDefaut(e.gabarit, sansTexte);
-  return {
-    gabarit: e.gabarit,
-    sujet: rendu.sujet,
-    html: rendu.html,
-    destinataire: e.destinataire,
-    apercu: rendu.apercu,
-    ...(typeof texteDefaut === "string" ? { texteDefaut } : {}),
-  };
-}
 
 /**
  * Gabarits que reçoit l'APPORTEUR lui-même (et non une entreprise) : ce sont eux qui
@@ -132,11 +110,14 @@ const GABARITS_VERS_L_APPORTEUR: ReadonlySet<string> = new Set([
   "apporteur-dossier-recu",
   "apporteur-commission-suspension",
   "apporteur-manquement",
+  "apporteur-resiliation-notifiee",
+  "apporteur-resiliation-effective",
   "apporteur-commission-avoir-client",
   "apporteur-non-commissionne",
   "apporteur-contrat-signe",
   "apporteur-presentation-recue",
   "apporteur-presentation-refusee",
+  "apporteur-presentation-non-retenue",
   "apporteur-vigilance",
   "apporteur-commande-signee",
   "apporteur-commande-non-attribuee",
@@ -168,7 +149,7 @@ async function apporteurDeLEnvoi(e: EnvoiApporteur): Promise<string | null> {
  * fail-soft : sans lien, l'e-mail part tel quel. Le lien est TOUJOURS recalculé ici : un
  * `lienEspace` reçu dans le payload est retiré ou écrasé, jamais repris (relecture de #1408).
  */
-async function avecLienEspace(e: EnvoiApporteur): Promise<Record<string, unknown>> {
+export async function avecLienEspace(e: EnvoiApporteur): Promise<Record<string, unknown>> {
   return avecLienEspaceRecalcule(e.payload, async () => {
     if (!GABARITS_VERS_L_APPORTEUR.has(e.gabarit) || e.gabarit === "apporteur-dossier-refuse") {
       return null;

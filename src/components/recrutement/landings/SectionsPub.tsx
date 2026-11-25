@@ -289,8 +289,9 @@ export function SectionsPub({
                       </svg>
                     </span>
                     <span className="t">
-                      <b>Le risque est chez nous</b> : si les gains identifiés ne dépassent pas 3
-                      fois le prix de la journée, nous remboursons, sans discussion, sous 30 jours.
+                      <b>Le risque est chez nous</b>&nbsp;: si le rapport n’identifie pas au moins 3
+                      fois le prix de la journée en gains, l’entreprise peut demander à être
+                      remboursée (conditions dans nos CGV).
                     </span>
                   </li>
                   <li>

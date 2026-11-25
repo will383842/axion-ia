@@ -170,9 +170,9 @@ describe("le dossier complet apporteur ne part plus au CRM (B2, 19/09)", () => {
       "commercial-tunnel",
     ]);
     const unique = consentement.mock.calls[0]?.[0] as { consentVersion: string };
-    expect(unique.consentVersion).toBe("memo-v3-2026-09-19");
+    expect(unique.consentVersion).toBe("memo-v4-2026-11-25");
 
     const args = creer.mock.calls[0]?.[0] as { data: { details: Record<string, unknown> } };
-    expect(args.data.details["consentVersion"]).toBe("memo-v3-2026-09-19");
+    expect(args.data.details["consentVersion"]).toBe("memo-v4-2026-11-25");
   });
 });

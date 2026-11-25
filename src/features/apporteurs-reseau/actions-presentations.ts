@@ -21,7 +21,8 @@ import { peutEngager } from "@/server/auth/habilitations";
 import { lireEtablissementParSiret } from "./annuaire";
 import { siretValide } from "./etablissement-presentation";
 import { constaterManquement } from "./manquement";
-import type { ApercuRendu, GabaritApporteur } from "./envois";
+import type { ApercuRendu } from "./apercu-envoi";
+import type { GabaritApporteur } from "./envois";
 import {
   apercuReponse,
   appliquerReponse,

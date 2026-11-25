@@ -142,6 +142,11 @@ export const env = createEnv({
     // (décision de Will). Texte libre : une valeur mal saisie ne fait jamais planter l'application.
     // Le salon se règle par `TELEGRAM_CHAT_ID_TOUR` (lu par `process.env`, comme les autres salons).
     TOUR_TELEGRAM_ENABLED: z.string().optional(),
+    // Réseau d'apporteurs : validation d'une entreprise par rendez-vous (future règle du contrat
+    // 2.8). Lu par le SITE et le WORKER (`apporteurs-reseau/interrupteur-rendez-vous.ts`). ABSENT =
+    // ÉTEINT ; seule « true » allume. Texte libre : une valeur mal saisie ne fait jamais planter
+    // l'application. Lot 2 (2026-11-25) : rien ne le lit encore.
+    APPORTEURS_VALIDATION_RDV: z.string().optional(),
     // Boîte d'Axion IA qui reçoit les essais de la console (jamais le prospect). Lue par le WORKER.
     // Texte libre (une faute de frappe ne doit jamais empêcher le démarrage) : `adresseEssai()`
     // la vérifie et l'essai échoue, visible au journal, si elle est invalide.
@@ -808,6 +813,7 @@ export const env = createEnv({
     QUESTIONNAIRE_SUIVI_NOTICE_VISIBLE: process.env.QUESTIONNAIRE_SUIVI_NOTICE_VISIBLE,
     QUESTIONNAIRE_EXPORT_COMPLET_ENABLED: process.env.QUESTIONNAIRE_EXPORT_COMPLET_ENABLED,
     TOUR_TELEGRAM_ENABLED: process.env.TOUR_TELEGRAM_ENABLED,
+    APPORTEURS_VALIDATION_RDV: process.env.APPORTEURS_VALIDATION_RDV,
     QUESTIONNAIRE_PREAUDIT_ADRESSE_ESSAI: process.env.QUESTIONNAIRE_PREAUDIT_ADRESSE_ESSAI,
     IDCC_OPCO_IMPORT_ENABLED: process.env.IDCC_OPCO_IMPORT_ENABLED,
     VISIO_ADRESSES_DE_TEST: process.env.VISIO_ADRESSES_DE_TEST,

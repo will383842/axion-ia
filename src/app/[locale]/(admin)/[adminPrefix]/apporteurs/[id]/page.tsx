@@ -268,12 +268,15 @@ export default async function FicheApporteurPage({ params, searchParams }: PageP
               </a>
             ) : null}
           </div>
-          {d.statut === "dossier_en_cours" || d.statut === "a_completer" || d.statut === "signe" ? (
+          {d.statut === "dossier_en_cours" ||
+          d.statut === "a_completer" ||
+          d.statut === "a_verifier" ||
+          d.statut === "signe" ? (
             <div className="mt-[var(--space-admin-4)]">
               <EnvoiLienDossier
                 apporteurId={d.id}
                 contratSigne={d.statut === "signe" && fiche.aContratSigne}
-                lienPossible={d.statut !== "signe"}
+                lienEspace={d.statut === "a_verifier" || d.statut === "signe"}
               />
             </div>
           ) : null}
@@ -375,7 +378,7 @@ export default async function FicheApporteurPage({ params, searchParams }: PageP
       <RetraitDuReseau
         apporteurId={d.id}
         nomComplet={`${d.prenom} ${d.nom}`.trim()}
-        signe={d.statut === "signe"}
+        sousContrat={d.statut === "signe" || d.statut === "a_verifier"}
         retireLe={retireAt ? jour(retireAt) : null}
         refusSuppression={refusSuppr}
         retour={

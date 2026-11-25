@@ -157,7 +157,7 @@ describe("versions de consentement v2", () => {
     // part plus au CRM. Elle passe en v3 (étude de la candidature seule, case
     // vivier retirée) sans rien porter côté CRM ; on la pinne ici pour que tout
     // changement du texte affiché reste un geste délibéré.
-    expect(COMMERCIAL_APPLICATION_CONSENT_VERSION).toBe("memo-v3-2026-09-19");
+    expect(COMMERCIAL_APPLICATION_CONSENT_VERSION).toBe("memo-v4-2026-11-25");
     // La version carrières vit dans une constante privée de sa Server Action :
     // elle est pinnée par le test d'intégration du formulaire. On vérifie ici
     // ce qui est importable sans monter tout le module serveur.
