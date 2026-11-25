@@ -47,6 +47,7 @@ import { injectInternalLinks } from "../links/internal-link-catalog";
 import { injectExternalLinks } from "../links/external-links-injector";
 import { getIntentPromptAddendum } from "../shared/intent-prompt-adapter";
 import { buildPh3PromptAugmentation } from "../prompt-augmentation";
+import { consigneJourneeIA } from "../knowledge/journee-ia-fiche";
 import { applySystemPromptOverride } from "@/server/content-gen/template-resolver";
 import { getFinancingPromptFact } from "@/server/qualiopi/config/financing";
 import { extractMentionedCitiesFromText } from "@/lib/geo/extract-mentioned-cities";
@@ -179,7 +180,8 @@ export const blogArticleGenerator: Generator = {
 
     // PH3b — ancrage local (+ pain-matrix si profil commercial) APPENDU APRÈS les
     // directives. No-op (chaîne vide) si flag QUALITY_PROFILES_ENABLED OFF.
-    const ph3Aug = buildPh3PromptAugmentation(input);
+    const ph3Aug =
+      buildPh3PromptAugmentation(input) + consigneJourneeIA(topic, input.primaryKeyword);
 
     type OutlineSection = { h2: string; brief: string };
     type PlanParsed = {

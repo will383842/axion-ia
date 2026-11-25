@@ -33,6 +33,7 @@
 
 import { hashPrompt } from "../provenance/provenance-logger";
 import { buildPh3PromptAugmentation } from "../prompt-augmentation";
+import { consigneJourneeIA } from "../knowledge/journee-ia-fiche";
 import { generate as routerGenerate } from "../providers/provider-router";
 import { retrieve as kbRetrieve } from "../kb-client";
 import { sanitizeContentGenHtml } from "../shared/html-sanitizer";
@@ -171,7 +172,7 @@ export async function runV7Phase8Pipeline(
 
   // PH3b — augmentation pain-matrix + ancrage local APPENDUE APRÈS la brand-voice
   // (jamais en remplacement). No-op (chaîne vide) si flag QUALITY_PROFILES_ENABLED OFF.
-  const systemPromptWithBrandVoice = `${config.systemPromptOverride}\n\n${getBrandVoiceForContentType(config.contentTypeSlug)}${buildPh3PromptAugmentation(input)}`;
+  const systemPromptWithBrandVoice = `${config.systemPromptOverride}\n\n${getBrandVoiceForContentType(config.contentTypeSlug)}${buildPh3PromptAugmentation(input)}${consigneJourneeIA(input.primaryKeyword)}`;
 
   let bestParsed: ParsedOutput | null = null;
   let bestScore = -1;
