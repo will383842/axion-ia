@@ -147,6 +147,19 @@ describe("rotation de clés", () => {
     expect(marques).toEqual([null, null]);
   });
 
+  it("429 « credit balance is too low » ne fait PAS tourner la clé : ni bascule, ni marque", async () => {
+    vi.stubEnv("ANTHROPIC_API_KEY_2", K2);
+    create.mockRejectedValue(new APIError(429, "Your credit balance is too low"));
+    await expect(anthropicProvider.generate(req)).rejects.toBeInstanceOf(ProviderError);
+    expect(clesVues).toEqual([K1]);
+    expect(create).toHaveBeenCalledTimes(1);
+    expect(alerte).not.toHaveBeenCalled();
+    expect(await fauxRedis.mget("anthropic:cle:1:epuisee", "anthropic:cle:1:invalide")).toEqual([
+      null,
+      null,
+    ]);
+  });
+
   it("429 (même avec « billing » dans le message) ne fait PAS tourner la clé", async () => {
     vi.stubEnv("ANTHROPIC_API_KEY_2", K2);
     create.mockRejectedValue(new APIError(429, "rate limit, see Plans & Billing"));

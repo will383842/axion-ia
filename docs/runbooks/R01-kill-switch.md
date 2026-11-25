@@ -160,6 +160,8 @@ Après plusieurs refus de crédit le drapeau de suspension se pose seul et une a
 
 **Auto-arrêt (quota-guard) :** seul OpenAI est toujours critique ; Anthropic ne déclenche l'auto-arrêt que si `CONTENT_GEN_BLOG_CLAUDE` vaut `true` (lu à chaque appel) ET que toutes les clés sont épuisées ou refusées.
 
+**Rotation de clés : seuls un 400 « credit balance is too low » / `insufficient_quota` ou un 402 marquent une clé épuisée.** Un 429 portant le même texte ne fait PAS tourner la clé (c'est un rate-limit) ; le mot « billing » seul ne compte plus.
+
 **Après une recharge de crédit : redémarrer le worker.** Une clé refusée pour crédit est marquée « épuisée » 24 h, en mémoire du processus (état propre à chaque conteneur ; cette marque ne vaut que s'il y a plusieurs clés, et le fournisseur est partagé avec la génération Qualiopi ; le chatbot passe par ce fichier SEULEMENT si `CHATBOT_LLM_PROVIDER=anthropic` : OpenAI par défaut, le code prend `CHATBOT_LLM_PROVIDER ?? "openai"`) : sans redémarrage, le worker continue d'ignorer une clé pourtant rechargée. La rotation de clés (`ANTHROPIC_API_KEY_2`, `_3`) s'applique donc aussi à Qualiopi, et au chatbot seulement s'il est réglé sur Anthropic, dès la mise en ligne.
 
 ### Retour arrière (à tester une fois, hors production sensible)
