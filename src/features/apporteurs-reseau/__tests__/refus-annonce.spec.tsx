@@ -46,6 +46,53 @@ describe("le texte de l'e-mail de refus", () => {
   );
 });
 
+describe("motif d'une présentation démentie (réservée OU confirmée)", () => {
+  it("reste vrai pour une présentation d'abord confirmée : ne dit pas « pas confirmé cette présentation »", async () => {
+    const html = await render(
+      React.createElement(ApporteurPresentationNonRetenueEmail, {
+        locale: "fr",
+        payload: { contactName: "Ana Bel", entreprise: "Danone", motif: "non-confirmee" },
+      }),
+    );
+    expect(COPY_NON_RETENUE.motif["non-confirmee"]).toBe(
+      "L'entreprise ne nous a pas confirmé cette mise en relation.",
+    );
+    expect(html).not.toContain("n&#x27;a pas confirmé cette présentation");
+  });
+
+  it("une confirmée démentie envoie le même motif neutre", async () => {
+    vi.stubEnv("APPORTEURS_EMAIL_REFUS", "true");
+    h.deja = false;
+    h.envoyer.mockResolvedValue("envoye");
+    h.presentation = {
+      id: ID,
+      statut: "dementie",
+      denomination: "Danone",
+      apporteur: { prenom: "Ana", nom: "Bel", email: "ana@exemple.fr" },
+    };
+    await annoncerRefus(ID, "dementie");
+    expect(h.envoyer.mock.calls.at(-1)![0].payload.motif).toBe("non-confirmee");
+    vi.unstubAllEnvs();
+  });
+
+  it("pas de gabaritRepli (aucun ancien gabarit n'est vrai) : l'interrupteur reste éteint par défaut", async () => {
+    vi.stubEnv("APPORTEURS_EMAIL_REFUS", "true");
+    h.presentation = {
+      id: ID,
+      statut: "dementie",
+      denomination: "Danone",
+      apporteur: { prenom: "Ana", nom: "Bel", email: "ana@exemple.fr" },
+    };
+    await annoncerRefus(ID, "dementie");
+    expect(h.envoyer.mock.calls.at(-1)![0].payload).not.toHaveProperty("gabaritRepli");
+    vi.unstubAllEnvs();
+    h.envoyer.mockClear();
+    expect(process.env.APPORTEURS_EMAIL_REFUS).toBeUndefined();
+    expect(await annoncerRefus(ID, "dementie")).toBe(false);
+    expect(h.envoyer).not.toHaveBeenCalled();
+  });
+});
+
 describe("annoncerRefus", () => {
   beforeEach(() => {
     vi.clearAllMocks();

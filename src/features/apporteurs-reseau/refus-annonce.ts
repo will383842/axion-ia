@@ -4,6 +4,10 @@
  *
  * Derrière `APPORTEURS_EMAIL_REFUS` (facultative, ÉTEINTE par défaut ; « true » = allumée).
  * Clé d'idempotence `apporteur-refus-<presentationId>` : un seul envoi par présentation.
+ * PAS de `gabaritRepli` (AGENTS.md, lot S3) : aucun gabarit ancien n'est vrai pour un refus
+ * (`apporteur-presentation-refusee` dit « nous ne pouvons pas vous la réserver »). N'allumer
+ * `APPORTEURS_EMAIL_REFUS` qu'une fois le worker en ligne sur un commit qui contient ce gabarit ;
+ * sinon un worker antérieur reporte le job 9 fois puis échoue.
  * Ne LÈVE jamais vers son appelant : le statut posé ne se défait pas si l'e-mail échoue.
  */
 

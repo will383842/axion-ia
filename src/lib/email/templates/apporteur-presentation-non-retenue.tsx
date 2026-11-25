@@ -39,7 +39,7 @@ export const COPY_NON_RETENUE = {
   motif: {
     "deja-connue": "Elle est déjà en relation avec nous.",
     "hors-champ": "Son activité ne fait pas partie de celles que nous accompagnons.",
-    "non-confirmee": "L'entreprise n'a pas confirmé cette présentation.",
+    "non-confirmee": "L'entreprise ne nous a pas confirmé cette mise en relation.",
   },
   fin: "Cette information ne demande aucune démarche de votre part.",
 } as const;
