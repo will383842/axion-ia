@@ -109,6 +109,9 @@ const PDF = "application/pdf";
  */
 export const DELAI_ENTETE_MS = 5_000;
 
+/** Délai maximal du dépôt du guide (≈ 1 Mo) : au-delà, il n'est pas joint (relecture de la PR #2298). */
+export const DELAI_DEPOT_MS = 15_000;
+
 async function enteteDansLeDelai(cle: string): ReturnType<typeof enteteObjetR2> {
   let minuterie: ReturnType<typeof setTimeout> | undefined;
   try {
@@ -138,7 +141,17 @@ async function deposerCopieLocale(
       return null;
     }
     const sha256 = createHash("sha256").update(copie).digest("hex");
-    await uploadToR2(cle, copie, PDF, { sha256 });
+    let minuterie: ReturnType<typeof setTimeout> | undefined;
+    try {
+      await Promise.race([
+        uploadToR2(cle, copie, PDF, { sha256 }),
+        new Promise<never>((_, refuser) => {
+          minuterie = setTimeout(() => refuser(new Error("délai dépassé")), DELAI_DEPOT_MS);
+        }),
+      ]);
+    } finally {
+      clearTimeout(minuterie);
+    }
     console.warn(`[apporteurs-documents] ${libelle} : absent de R2, déposé depuis l'image`);
     return copie.byteLength;
   } catch (err) {

@@ -483,7 +483,7 @@ export async function appliquerDecision(
         signalerErreurReseau("contresignature : trace de la vérification du nom", err);
       }
     }
-    // Le contrat, toujours ; la fiche des commissions et le livret s'ils sont déposés sur R2.
+    // Le contrat, toujours ; la fiche des commissions, le livret et le guide de démarrage s'ils sont sur R2 (le guide y est déposé tout seul s'il manque).
     const pieces = await piecesDuContratSigne(cle);
     const r = await envoyer({
       ...prep.envoi,

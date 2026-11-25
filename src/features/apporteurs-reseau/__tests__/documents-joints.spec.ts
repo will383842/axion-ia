@@ -26,6 +26,7 @@ vi.mock("../guide-demarrage", async (importOriginal) => ({
 vi.mock("../signaler", () => ({ signalerErreurReseau: (...a: unknown[]) => h.signaler(...a) }));
 
 import {
+  DELAI_DEPOT_MS,
   DELAI_ENTETE_MS,
   DOCUMENTS_ANNEXES,
   NOM_CONTRAT_SIGNE,
@@ -191,6 +192,20 @@ describe("🔴 le guide de démarrage : dépôt automatique sur R2", () => {
     const pieces = await documentsAnnexesAJoindre();
     expect(pieces.map((p) => p.r2Key)).toEqual([FICHE.cleR2, LIVRET.cleR2]);
     expect(h.signaler).toHaveBeenCalled();
+  });
+
+  it("dépôt qui ne répond pas : après le délai, guide non joint, rien n'est levé", async () => {
+    vi.useFakeTimers();
+    try {
+      r2(sansGuide);
+      h.televerser.mockImplementation(() => new Promise(() => undefined));
+      const attendu = documentsAnnexesAJoindre();
+      await vi.advanceTimersByTimeAsync(DELAI_DEPOT_MS + 1);
+      expect((await attendu).map((p) => p.r2Key)).toEqual([FICHE.cleR2, LIVRET.cleR2]);
+      expect(h.signaler).toHaveBeenCalled();
+    } finally {
+      vi.useRealTimers();
+    }
   });
 
   it("copie embarquée illisible : guide non joint, aucun dépôt", async () => {

@@ -1,7 +1,7 @@
 /**
  * DÉPÔT D'UN DOCUMENT JOINT AUX E-MAILS DES APPORTEURS — un PDF local vers sa clé R2 fixe.
  *
- * Les documents annexes (fiche des commissions, livret) partent avec l'e-mail « contrat signé »
+ * Les documents annexes (fiche des commissions, livret, guide de démarrage) partent avec l'e-mail « contrat signé »
  * dès qu'ils existent sur R2, à la clé déclarée dans
  * `src/features/apporteurs-reseau/documents-joints.ts`. Ils ne sont pas dans le dépôt : ce
  * script les dépose, APRÈS relecture par le dirigeant. Déposer à nouveau remplace le document ;
@@ -9,6 +9,9 @@
  * pouvoir prouver plus tard quelle version un apporteur a reçue : le journal de chaque e-mail
  * « contrat signé » note les 16 premiers caractères du sha256 de chaque annexe jointe, et ce
  * script affiche le sha256 complet du fichier déposé. NOTER ce sha256 avec la date du dépôt.
+ *
+ * (Le guide de démarrage est aussi déposé tout seul par l'application s'il manque ; ce script sert
+ * à le REMPLACER après un nouveau PDF dans `private/apporteurs/`.)
  *
  * Usage :
  *   pnpm tsx scripts/apporteurs/deposer-document-joint.ts                 # liste les documents et leur état

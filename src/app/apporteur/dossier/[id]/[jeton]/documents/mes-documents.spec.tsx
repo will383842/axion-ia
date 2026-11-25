@@ -141,7 +141,7 @@ describe("dossier signé", () => {
     h.livret = true;
     const t = texte(await rendre());
     expect(t).not.toMatch(/\d\s*(€|%|euros?)/i);
-    expect(t).not.toMatch(/gr[e]noble|aucun gain garanti|conférence|salari[ée]|obj[e]ctif/i);
+    expect(t).not.toMatch(/gr[e]noble|aucun\s+gain\s+gar[a]nti|conférence|salari[ée]|obj[e]ctif/i);
   });
 });
 
