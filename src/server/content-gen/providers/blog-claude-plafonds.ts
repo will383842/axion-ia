@@ -1,5 +1,5 @@
 /**
- * Plafonds du blog via Claude : validation commune à l'écran d'administration
+ * Plafonds du contenu via Claude (clés `blog_claude_*`, nom conservé : pas de migration) : validation commune à l'écran d'administration
  * et au script de pose.
  *
  * Module PUR : pas de base de données, pas de "use server", pas d'alias `@/`
@@ -38,7 +38,7 @@ export const LIBELLES_SCRIPT: LibellesPlafondsBlog = {
 
 export const LIBELLES_ECRAN: LibellesPlafondsBlog = {
   jour: "Plafond du jour",
-  mois: "Plafond mensuel du blog",
+  mois: "Plafond mensuel du contenu via Claude",
   reserve: "Réserve Qualiopi",
   jugeMax: "Relectures max par jour",
 };

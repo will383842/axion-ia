@@ -69,6 +69,7 @@ import {
   assertCostCapAvailable,
   resetMonthlyCostCounters,
   TEXT_CHAIN_PROVIDERS,
+  chaineTexteProviders,
 } from "../cost-tracker";
 
 /** Extrait les clés des upserts ContentGenConfig capturés. */
@@ -101,6 +102,14 @@ describe("F2 — kill switch décidé sur la chaîne texte RÉELLE, pas sur role
 
   it("la chaîne texte réelle = OpenAI seul (alignement provider-router décision Will 2026-07-09)", () => {
     expect(TEXT_CHAIN_PROVIDERS).toEqual(["openai"]);
+  });
+
+  it("chaîne texte effective : openai seul si l'interrupteur Claude est éteint, + anthropic sinon", () => {
+    vi.stubEnv("CONTENT_GEN_BLOG_CLAUDE", "false");
+    expect(chaineTexteProviders()).toEqual(["openai"]);
+    vi.stubEnv("CONTENT_GEN_BLOG_CLAUDE", "true");
+    expect(chaineTexteProviders()).toEqual(["openai", "anthropic"]);
+    vi.unstubAllEnvs();
   });
 
   it("cap openai atteint + chaîne texte épuisée → kill switch posé avec auto:true/source:cost_cap", async () => {

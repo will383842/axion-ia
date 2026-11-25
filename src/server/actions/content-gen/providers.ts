@@ -245,7 +245,7 @@ const MESSAGE_ANTHROPIC_ABSENTE =
   "ligne provider_config « anthropic » absente : rien posé (non créée ici)";
 
 /**
- * Règle les 4 plafonds du blog Claude (clés blog_claude_* de extraConfig, ligne
+ * Règle les 4 plafonds du contenu via Claude (clés blog_claude_* de extraConfig, ligne
  * `anthropic` uniquement). N'écrit jamais monthlyCapUsd, enabled, model ni les
  * compteurs. Les refus de validation sont RENVOYÉS (Next masque le texte des
  * erreurs levées par une action serveur).
