@@ -1,4 +1,4 @@
-// Retirer du réseau / Remettre / Supprimer définitivement (2026-10-07).
+// Classer le dossier (non signé) / Remettre / Supprimer définitivement (2026-10-07).
 //
 // Composant SERVEUR, sans JavaScript côté navigateur : des formulaires HTML qui appellent
 // les actions serveur (`actions-retrait.ts`), puis reviennent sur la fiche avec le message.
@@ -18,7 +18,8 @@ interface Props {
   readonly apporteurId: string;
   /** « Prénom Nom », à retaper pour supprimer. */
   readonly nomComplet: string;
-  readonly signe: boolean;
+  /** Dossier sous contrat (`signe` ou `a_verifier`) : le classement n'est pas proposé. */
+  readonly sousContrat: boolean;
   /** Date de retrait déjà formatée, ou `null` si la fiche est dans le réseau. */
   readonly retireLe: string | null;
   /** `null` : suppression permise ; sinon la raison pour laquelle elle ne l'est pas. */
@@ -32,7 +33,7 @@ const PETIT = "text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-
 export function RetraitDuReseau({
   apporteurId,
   nomComplet,
-  signe,
+  sousContrat,
   retireLe,
   refusSuppression,
   retour,
@@ -57,8 +58,8 @@ export function RetraitDuReseau({
         >
           <input type="hidden" name="apporteurId" value={apporteurId} />
           <p>
-            Fiche <strong>retirée du réseau</strong> le {retireLe}. Le lien du dossier ne fonctionne
-            plus. Rien n&apos;a été effacé.
+            Dossier <strong>classé</strong> le {retireLe}. Le lien du dossier ne fonctionne plus.
+            Rien n&apos;a été effacé.
           </p>
           <div>
             <button type="submit" className="admin-button-secondary">
@@ -67,32 +68,44 @@ export function RetraitDuReseau({
           </div>
           <p className={PETIT}>Un nouveau lien de dossier est créé ; il n&apos;est pas envoyé.</p>
         </form>
+      ) : sousContrat ? (
+        <p className="admin-alert" role="note">
+          Contrat en cours : un dossier sous contrat ne peut pas être classé. Pour y mettre fin,
+          utilisez{" "}
+          <a href="#resiliation" className="underline">
+            « Résilier le contrat »
+          </a>{" "}
+          (préavis de 30 jours, art. 11.1). Les commissions dues restent dues.
+        </p>
       ) : (
         <details>
-          <summary className="cursor-pointer font-medium">Retirer du réseau</summary>
+          <summary className="cursor-pointer font-medium">Classer le dossier (non signé)</summary>
           <form
             action={retirerDuReseauFormAction}
             className="mt-[var(--space-admin-2)] flex flex-col gap-[var(--space-admin-2)]"
           >
             <input type="hidden" name="apporteurId" value={apporteurId} />
             <p>
-              La fiche sortira des listes (onglet « Retirés » pour la revoir) et le lien du dossier
-              sera désactivé. Rien n&apos;est effacé : contrat, pièces, commissions et autofactures
-              restent.
+              Le dossier sortira des listes (onglet « Retirés » pour le revoir) et son lien sera
+              désactivé. Rien n&apos;est effacé : pièces, commissions et autofactures restent.
             </p>
-            {signe ? (
-              <p className="admin-alert" role="note">
-                Le contrat prévoit une fin avec 30 jours de préavis (art. 11.1) ; retirer la fiche
-                ne résilie pas le contrat. Pour y mettre fin, utilisez{" "}
-                <a href="#resiliation" className="underline">
-                  « Résilier le contrat »
-                </a>
-                . Les commissions dues restent dues.
-              </p>
-            ) : null}
+            <label className="flex flex-col gap-1">
+              <span>Motif du classement (obligatoire)</span>
+              <span className="text-fg-muted">
+                Sans nom, adresse, téléphone ni coordonnées bancaires
+              </span>
+              <textarea
+                name="motif"
+                className="admin-input"
+                required
+                minLength={3}
+                maxLength={500}
+                rows={3}
+              />
+            </label>
             <div>
               <button type="submit" className="admin-button">
-                Confirmer le retrait
+                Classer le dossier
               </button>
             </div>
           </form>
