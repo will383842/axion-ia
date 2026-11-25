@@ -33,7 +33,7 @@ export default async function NouvelleGarantiePage({ params, searchParams }: Pag
         description="Avec une mission d'audit, le client, la date, le prix et le devis sont repris de la mission."
       />
       {q.erreur ? (
-        <p role="alert" className="mb-4 rounded border border-red-300 bg-red-50 p-3 text-sm">
+        <p role="alert" className="mb-4 rounded border border-[color:var(--color-admin-error-fg)] bg-[color:var(--color-admin-error-soft)] text-[color:var(--color-admin-error-fg)] p-3 text-sm">
           {q.erreur}
         </p>
       ) : null}

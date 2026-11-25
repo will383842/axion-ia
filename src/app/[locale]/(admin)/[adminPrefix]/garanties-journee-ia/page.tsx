@@ -54,7 +54,7 @@ export default async function GarantiesJourneeIaPage({ params, searchParams }: P
         }
       />
       {tableAbsente ? (
-        <p role="alert" className="mb-4 rounded border border-yellow-300 bg-yellow-50 p-3 text-sm">
+        <p role="alert" className="mb-4 rounded border border-[color:var(--color-admin-warning-fg)] bg-[color:var(--color-admin-warning-soft)] text-[color:var(--color-admin-warning-fg)] p-3 text-sm">
           La table des garanties n&apos;est pas encore créée sur cette base (migration en attente).
         </p>
       ) : null}
