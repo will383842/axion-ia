@@ -53,6 +53,10 @@ describe("entreprise-information-coordonnees", () => {
     );
     expect(text).toContain("Bonjour,");
     expect(text).not.toMatch(/undefined|null/);
+    // Sans nom d'apporteur : l'élision est faite (« d'une personne », pas « de une personne »).
+    const lu = text.replace(/\s+/g, " ");
+    expect(lu).toContain("de la part d'une personne de notre réseau");
+    expect(lu).not.toContain("de une");
   });
 
   it("dit qui traite, les quatre droits, comment les exercer, et porte le lien de confidentialité", async () => {

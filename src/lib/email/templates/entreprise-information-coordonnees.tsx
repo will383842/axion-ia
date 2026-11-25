@@ -62,7 +62,8 @@ export const COPY_INFORMATION_COORDONNEES = {
   title: "D'où viennent vos coordonnées",
   preview: "Un simple message d'information : vous n'avez rien à faire, et voici vos droits.",
   origine: (a: string) =>
-    `Axion-IA a reçu vos coordonnées professionnelles de la part de ${a || "une personne de notre réseau"}, qui a pensé que nos services pouvaient vous intéresser.`,
+    // Élision : « de la part d'une personne », jamais « de la part de une personne ».
+    `Axion-IA a reçu vos coordonnées professionnelles de la part ${a ? `de ${a}` : "d'une personne de notre réseau"}, qui a pensé que nos services pouvaient vous intéresser.`,
   usage: (responsable: string) =>
     `Ces coordonnées servent seulement à pouvoir échanger avec vous si vous le souhaitez. Elles sont traitées par ${responsable}, dont l'adresse figure au bas de ce message.`,
   droits: (adresse: string) =>
