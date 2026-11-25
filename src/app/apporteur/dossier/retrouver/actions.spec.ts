@@ -7,12 +7,16 @@ const h = vi.hoisted(() => ({
   fiche: vi.fn(),
   envoyer: vi.fn(),
   limite: vi.fn(),
+  argent: vi.fn<(...a: unknown[]) => Promise<boolean>>(async () => false),
 }));
 vi.mock("@/lib/prisma", () => ({
   prisma: { apporteurReseau: { findUnique: (...a: unknown[]) => h.fiche(...a) } },
 }));
 vi.mock("@/features/apporteurs-reseau/envois", () => ({
   envoyer: (...a: unknown[]) => h.envoyer(...a),
+}));
+vi.mock("@/features/apporteurs-reseau/retrait", () => ({
+  argentEnJeu: (...a: unknown[]) => h.argent(...a),
 }));
 vi.mock("@/features/apporteurs-reseau/jeton", () => ({
   urlDossier: (id: string, v: number) => `https://axion-ia.com/apporteur/dossier/${id}/jeton-v${v}`,
@@ -110,6 +114,21 @@ describe("la réponse est toujours la même", () => {
       expect(h.envoyer).not.toHaveBeenCalled();
     },
   );
+});
+
+describe("dossier résilié avec de l'argent en jeu (B1 bis)", () => {
+  it("le lien du mode restreint est renvoyé ; sans argent, rien", async () => {
+    h.fiche.mockResolvedValue({
+      id: ID,
+      prenom: "Claire",
+      statut: "resilie",
+      versionLien: 1,
+      email: "chiffre:c@exemple.fr",
+    });
+    h.argent.mockResolvedValueOnce(true);
+    await demande({ email: "claire@exemple.fr" });
+    expect(h.envoyer).toHaveBeenCalledTimes(1);
+  });
 });
 
 describe("adresse enregistrée", () => {

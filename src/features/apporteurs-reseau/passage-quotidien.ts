@@ -281,6 +281,8 @@ async function passer(
 ): Promise<BilanPassageReseau> {
   const bilan = bilanVide();
   const etapes: Array<[NomEtape, () => Promise<void>]> = [
+    // Lot L1b (en PREMIER : les étapes suivantes ne traitent plus l'apporteur comme « signe » le jour de l'effet) : la résiliation notifiée prend effet à sa date (préavis de 30 jours en 11.1).
+    ["resiliations-echues", async () => void (await executerResiliationsEchues(maintenant))],
     ["confirmation-tacite", () => etapeConfirmationTacite(maintenant, bilan)],
     ["terme", () => etapeTerme(maintenant, bilan)],
     ["commissions", () => etapeCommissions(maintenant, bilan)],
@@ -316,8 +318,6 @@ async function passer(
     // Contrat 2.6 (art. 3.1, relecture de a1) : une commande à attribuer est relancée à J+10,
     // puis à J+15 (délai dépassé).
     ["commandes-a-attribuer", async () => void (await relancerAAttribuer(maintenant))],
-    // Lot L1b : la résiliation notifiée prend effet à sa date (préavis de 30 jours en 11.1).
-    ["resiliations-echues", async () => void (await executerResiliationsEchues(maintenant))],
   ];
   for (const [nom, etape] of etapes) {
     if (seulement && !seulement.includes(nom)) continue;

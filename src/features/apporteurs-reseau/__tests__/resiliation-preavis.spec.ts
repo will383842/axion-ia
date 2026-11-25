@@ -177,8 +177,24 @@ describe("planNotificationResiliation", () => {
     ).toBe(false);
     expect(planNotificationResiliation({ ...e, miseEnDemeureLe: J("2026-11-20") }).ok).toBe(false);
     expect(
-      planNotificationResiliation({ ...e, miseEnDemeureLe: J("2026-11-20"), motif: "x" }),
+      planNotificationResiliation({ ...e, miseEnDemeureLe: J("2026-11-19"), motif: "x" }),
     ).toMatchObject({ ok: true, immediat: true });
+  });
+  it("11.2 : la mise en demeure doit être restée sans effet 15 jours (14 jours : refus)", () => {
+    const e = {
+      initiative: "societe" as const,
+      fondement: "11.2" as const,
+      notifieeLe: J("2026-12-04"),
+      motif: "x",
+      maintenant,
+    };
+    expect(planNotificationResiliation({ ...e, miseEnDemeureLe: J("2026-11-20") }).ok).toBe(false);
+    expect(planNotificationResiliation({ ...e, miseEnDemeureLe: J("2026-11-19") }).ok).toBe(true);
+  });
+  it("une notification antérieure de plus de 7 jours est refusée (pas d'effet rétroactif)", () => {
+    const e = { initiative: "societe" as const, fondement: "11.1" as const, maintenant };
+    expect(planNotificationResiliation({ ...e, notifieeLe: J("2026-11-27") }).ok).toBe(false);
+    expect(planNotificationResiliation({ ...e, notifieeLe: J("2026-11-28") }).ok).toBe(true);
   });
   it("12.5 sans motif : refus", () => {
     const e = {
@@ -264,6 +280,14 @@ describe("notifierResiliation (11.1)", () => {
     const effet = new Date("2026-12-30T23:00:00.000Z");
     expect(etat.majApporteur[0]).toMatchObject({ statut: "resilie", resilieAt: effet });
     expect(etat.majPresentations[0]).toMatchObject({ data: { protegeeJusquAt: effet } });
+  });
+
+  it("une résiliation en erreur ne bloque pas les suivantes ; une ligne terminale est close", async () => {
+    await notif();
+    etat.statut = "resilie"; // déjà résilié par ailleurs : l'exécution refuse, définitivement
+    await etapeResiliationsEchuesPourTest(J("2026-12-31"));
+    expect(etat.ligne!.executeeAt).toBeTruthy();
+    expect(etat.envois.map((e) => e.gabarit)).toEqual(["apporteur-resiliation-notifiee"]);
   });
 
   it("table absente (P2021) : le passage ne lève pas", async () => {
