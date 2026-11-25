@@ -120,7 +120,13 @@ export const LIBELLE_ETAT_DECLARATION: Record<EtatDeclaration, string> = {
   expiree: "Expirée",
 };
 
-/** `null` pour un état qu'on ne montre pas (démentie : un litige ne s'affiche pas). */
+/**
+ * `null` pour un état qu'on ne montre pas (démentie : un litige ne s'affiche pas).
+ *
+ * `reservation` (facultatif, règle par rendez-vous, cf. `regle-attribution.ts`) : une présentation
+ * au statut `reservee` est « Réservée » jusqu'à `reserveeJusquAt` inclus, puis « Expirée ». Sans
+ * ce troisième argument, le résultat est celui d'avant.
+ */
 export function etatPourApporteur(
   p: {
     statut: string;
@@ -129,10 +135,18 @@ export function etatPourApporteur(
     protegeeJusquAt: Date | null;
   },
   maintenant: Date = new Date(),
+  reservation?: { reserveeJusquAt: Date } | null,
 ): { etat: EtatDeclaration; jusquAu: Date | null } | null {
   const fin = p.protegeeJusquAt ?? finDeProtection(p.recueAt);
   switch (p.statut) {
     case "reservee":
+      if (reservation) {
+        const terme = reservation.reserveeJusquAt;
+        return {
+          etat: terme.getTime() < maintenant.getTime() ? "expiree" : "reservee",
+          jusquAu: terme,
+        };
+      }
       if (!p.contactEnvoyeAt) {
         const attente = maintenant.getTime() - p.recueAt.getTime();
         return {

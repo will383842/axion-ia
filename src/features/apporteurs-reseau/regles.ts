@@ -239,18 +239,26 @@ export const LIBELLE_PROLONGATION: Readonly<Record<MotifProlongation, string>> =
   financement_en_cours: "un dossier de financement est en cours",
 };
 
-/** Une commande signée à cette date est-elle couverte par la protection ? */
+/**
+ * Une commande signée à cette date est-elle couverte par la protection ?
+ *
+ * `reservation` (facultatif, règle par rendez-vous, cf. `regle-attribution.ts`) : si la protection
+ * ne couvre pas la commande, la réservation provisoire la couvre de la saisie à son terme, bornes
+ * incluses. Sans ce champ, le résultat est celui d'avant.
+ */
 export function commandeCouverte(e: {
   signeeAt: Date;
   recueAt: Date;
   confirmee: boolean;
   protegeeJusquAt: Date | null;
+  reservation?: { reserveeJusquAt: Date } | null;
 }): boolean {
-  if (!e.confirmee || !e.protegeeJusquAt) return false;
-  return (
-    e.signeeAt.getTime() >= e.recueAt.getTime() &&
-    e.signeeAt.getTime() <= e.protegeeJusquAt.getTime()
-  );
+  const signee = e.signeeAt.getTime();
+  const apresLaSaisie = signee >= e.recueAt.getTime();
+  if (e.confirmee && e.protegeeJusquAt && apresLaSaisie && signee <= e.protegeeJusquAt.getTime())
+    return true;
+  if (e.reservation) return apresLaSaisie && signee <= e.reservation.reserveeJusquAt.getTime();
+  return false;
 }
 
 // ── Commissions (annexe 1 du contrat v2) ─────────────────────────────────
