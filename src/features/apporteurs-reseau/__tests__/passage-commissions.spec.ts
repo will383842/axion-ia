@@ -162,6 +162,57 @@ describe("passage quotidien : commission par commande soldée", () => {
     expect(etat.crees).toEqual([]);
   });
 
+  describe("avoir total puis facture refaite sous le même devis (tour 3)", () => {
+    const avecParrain = () => {
+      etat.presentations = [
+        {
+          ...protegee,
+          apporteur: {
+            ...protegee.apporteur,
+            parrainId: "PAR1",
+            signeParSocieteAt: new Date("2026-06-01T00:00:00Z"),
+          },
+        },
+      ];
+      etat.payees = [
+        { id: "A", devisId: "D1" },
+        { id: "B", devisId: "D1" },
+      ];
+      etat.lignes = [
+        fac({ id: "A", montantHtCents: 200_000 }),
+        fac({ id: "B", montantHtCents: 200_000, emiseAt: new Date("2026-09-20T00:00:00Z") }),
+      ];
+      etat.avoirs = [
+        {
+          id: "AV",
+          devisId: "D1",
+          statut: "emise",
+          avoirDeId: "A",
+          montantHtCents: -200_000,
+          emiseAt: null,
+        },
+      ];
+    };
+    it("filleul et parrain annulés : refaite → une commission ET sa part (même résultat qu'avant le passage)", async () => {
+      avecParrain();
+      etat.commissions = [
+        { factureId: "A", apporteurId: "APP1", parrainage: false, statut: "annulee" },
+        { factureId: "A", apporteurId: "PAR1", parrainage: true, statut: "annulee" },
+      ];
+      await passerReseauApporteurs(MAINTENANT);
+      expect(etat.crees).toHaveLength(2);
+    });
+    it("filleul versé et repris, parrain annulé : aucune part orpheline pour le parrain", async () => {
+      avecParrain();
+      etat.commissions = [
+        { factureId: "A", apporteurId: "APP1", parrainage: false, statut: "versee" },
+        { factureId: "A", apporteurId: "PAR1", parrainage: true, statut: "annulee" },
+      ];
+      await passerReseauApporteurs(MAINTENANT);
+      expect(etat.crees).toEqual([]);
+    });
+  });
+
   it("client sans SIREN : aucune commission", async () => {
     etat.payees = [{ id: "A", devisId: "D1" }];
     etat.lignes = [fac({ id: "A", client: { siren: null } })];

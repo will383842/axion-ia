@@ -855,15 +855,16 @@ async function etapeCommissions(maintenant: Date, bilan: BilanPassageReseau): Pr
     ...new Set(lignes.map((l) => l.devisId).filter((d): d is string => !!d)),
   ]);
   const decisions = await lireDecisionsAAttribuer(commandes.map((c) => c.factureCleId));
-  const existantes = await prisma.commissionApporteur.findMany({
+  const existantesToutes = await prisma.commissionApporteur.findMany({
     // Une commission ANNULÉE (avoir total) ne bloque ni la recréation sur la facture refaite, ni la
     // garde « deux apporteurs » : seul compte l'argent encore en jeu.
-    where: {
-      factureId: { in: commandes.flatMap((c) => c.factureIds) },
-      statut: { not: "annulee" },
-    },
-    select: { factureId: true, apporteurId: true, parrainage: true },
+    where: { factureId: { in: commandes.flatMap((c) => c.factureIds) } },
+    select: { factureId: true, apporteurId: true, parrainage: true, statut: true },
   });
+  const toutesCle = new Set(
+    existantesToutes.map((e) => `${e.factureId}|${e.apporteurId}|${e.parrainage ? 1 : 0}`),
+  );
+  const existantes = existantesToutes.filter((e) => e.statut !== "annulee");
   const cle = (f: string, a: string, p: boolean) => `${f}|${a}|${p ? 1 : 0}`;
   const dejaCle = new Set(existantes.map((e) => cle(e.factureId, e.apporteurId, e.parrainage)));
   // Une commission déjà créée sur n'importe quelle facture de la commande vaut pour la commande.
@@ -938,6 +939,7 @@ async function etapeCommissions(maintenant: Date, bilan: BilanPassageReseau): Pr
     };
 
     // La commission de l'apporteur.
+    let filleulCreeCeTour = false;
     if (!deja.has(f.id, p.apporteurId, false, commande)) {
       try {
         if (calc.statut === "calculee") {
@@ -963,6 +965,7 @@ async function etapeCommissions(maintenant: Date, bilan: BilanPassageReseau): Pr
           });
         }
         bilan.commissionsCreees += 1;
+        filleulCreeCeTour = true;
       } catch (err) {
         if (!estDoublon(err)) throw err;
       }
@@ -973,6 +976,13 @@ async function etapeCommissions(maintenant: Date, bilan: BilanPassageReseau): Pr
     if (!parrainId || !signeParSocieteAt || !dansFenetreParrainage(signeParSocieteAt, signeeAt))
       continue;
     if (deja.has(f.id, parrainId, true, commande)) continue;
+    // Une part de parrain annulée (avoir total) ne renaît qu'avec la commission du filleul créée
+    // dans CE passage : jamais seule à côté d'un filleul repris ou retenu (même résultat avant/après).
+    if (
+      !filleulCreeCeTour &&
+      commande.factureIds.some((id) => toutesCle.has(`${id}|${parrainId}|1`))
+    )
+      continue;
     try {
       if (calc.statut === "calculee") {
         const part = partParrainage({
