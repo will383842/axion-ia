@@ -18,7 +18,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
-import { texteDuContrat } from "@/features/apporteurs-reseau/contrat-pdf";
+import { empreinte, texteDuContrat } from "@/features/apporteurs-reseau/contrat-pdf";
 import { lireDossierParLien, vigilanceDemandeeA } from "@/features/apporteurs-reseau/donnees";
 import {
   AIDE_PIECE,
@@ -227,6 +227,9 @@ export default async function DossierApporteurPage({ params }: PageProps) {
           : 4;
 
   const texte = texteDuContrat(valeursDuContrat(dossier, new Date()));
+  // Empreinte du texte AFFICHÉ, renvoyée à la signature : si le contrat change entre-temps,
+  // le serveur refuse au lieu de faire signer un texte que la personne n'a pas lu.
+  const empreinteLue = empreinte(texte);
 
   return (
     <Coquille titre={titre}>
@@ -234,6 +237,7 @@ export default async function DossierApporteurPage({ params }: PageProps) {
         dossier={publicDossier}
         etapeInitiale={etapeInitiale}
         contrat={<ContratLisible texte={texte} />}
+        empreinteLue={empreinteLue}
         urlPdf={`/apporteur/dossier/${dossier.id}/${jeton}/contrat`}
       />
     </Coquille>

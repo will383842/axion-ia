@@ -133,12 +133,15 @@ export function DossierEnLigne({
   dossier,
   etapeInitiale,
   contrat,
+  empreinteLue,
   urlPdf,
 }: {
   dossier: DossierPublic;
   etapeInitiale: 1 | 2 | 3 | 4;
   /** Le contrat rempli, déjà rendu en HTML par le serveur. */
   contrat: React.ReactNode;
+  /** SHA-256 du texte du contrat affiché : renvoyé tel quel à la signature (champ caché). */
+  empreinteLue: string;
   urlPdf: string;
 }) {
   const router = useRouter();
@@ -311,6 +314,7 @@ export function DossierEnLigne({
     fd.set("id", dossier.id);
     fd.set("jeton", dossier.jeton);
     fd.set("nomTape", signataire);
+    fd.set("empreinteLue", empreinteLue);
     declarations.forEach((c) => fd.append("declarations", c));
     acceptations.forEach((c) => fd.append("acceptations", c));
     demarrer(async () => {

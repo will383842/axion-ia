@@ -43,6 +43,7 @@ vi.mock("../contrat-pdf", async () => {
   };
 });
 
+import { empreinte, texteDuContrat } from "../contrat-pdf";
 import { CONTRAT_VERSION } from "../contrat-v2";
 import { APPROCHE_VIGILANCE_CENTS } from "../regles";
 import {
@@ -51,18 +52,35 @@ import {
   casesCompletes,
   cleContratApporteur,
   etatDeLaPage,
+  LIBELLE_REFUS_SIGNATURE,
   manquesDuDossier,
   nomAjoutable,
   nomTapeCorrespond,
   piecesDeposables,
   vigilanceDemandee,
   resumerNavigateur,
-  signerContrat,
+  signerContrat as signerContratReel,
   typesDeposes,
   valeursDuContrat,
   verifierAvantSignature,
   type SignatureApporteurJson,
 } from "../signature";
+
+/**
+ * Les tests de signature réussie simulent une page qui a affiché le texte du dossier simulé :
+ * sauf si le test fixe `empreinteLue`, on la calcule comme la page (mêmes fonctions, même date).
+ */
+async function signerContrat(
+  e: Omit<Parameters<typeof signerContratReel>[0], "empreinteLue"> & { empreinteLue?: string },
+) {
+  if (e.empreinteLue !== undefined)
+    return signerContratReel({ ...e, empreinteLue: e.empreinteLue });
+  const dossier = await lireDossierParLien(e.apporteurId, e.jeton);
+  const lue = dossier
+    ? empreinte(texteDuContrat(valeursDuContrat(dossier, e.maintenant ?? new Date())))
+    : "";
+  return signerContratReel({ ...e, empreinteLue: lue });
+}
 
 const ID = "6f1c2a3b-4d5e-4f60-8a7b-9c0d1e2f3a4b";
 const JETON = "AbCdEfGhIjKlMnOpQrStUvWxYz0123456789_-AbCd";
@@ -275,6 +293,59 @@ describe("dossier en ligne — signerContrat", () => {
     updateMany.mockResolvedValue({ count: 1 });
     envoyer.mockResolvedValue("envoye");
     findUnique.mockResolvedValue({ declarations: {} });
+  });
+
+  // Empreinte du texte que la page a AFFICHÉ : même fonction, même texte que `signerContrat`.
+  const empreinteAffichee = (dossier = dossierComplet(), quand = entree.maintenant) =>
+    empreinte(texteDuContrat(valeursDuContrat(dossier as never, quand)));
+
+  it("🔴 empreinte lue DIFFÉRENTE : refus « texte_modifie », ni PDF, ni R2, ni base", async () => {
+    lireDossierParLien.mockResolvedValue(dossierComplet());
+    const r = await signerContrat({ ...entree, empreinteLue: "a".repeat(64) });
+    expect(r).toEqual({
+      ok: false,
+      raison: "refus",
+      message: LIBELLE_REFUS_SIGNATURE.texte_modifie,
+    });
+    expect(LIBELLE_REFUS_SIGNATURE.texte_modifie).toBe(
+      "Le contrat a été mis à jour depuis l'affichage de cette page. Rechargez la page, relisez-le, puis signez.",
+    );
+    expect(rendreContratPdf).not.toHaveBeenCalled();
+    expect(uploadToR2).not.toHaveBeenCalled();
+    expect(updateMany).not.toHaveBeenCalled();
+    expect(enregistrerDeclarations).not.toHaveBeenCalled();
+    expect(envoyer).not.toHaveBeenCalled();
+  });
+
+  it("🔴 empreinte lue VIDE : même refus, rien n'est écrit", async () => {
+    lireDossierParLien.mockResolvedValue(dossierComplet());
+    const r = await signerContrat({ ...entree, empreinteLue: "" });
+    expect(r).toMatchObject({
+      ok: false,
+      raison: "refus",
+      message: LIBELLE_REFUS_SIGNATURE.texte_modifie,
+    });
+    expect(rendreContratPdf).not.toHaveBeenCalled();
+    expect(uploadToR2).not.toHaveBeenCalled();
+    expect(updateMany).not.toHaveBeenCalled();
+  });
+
+  it("🔴 le contrat change après l'affichage (passage de minuit) : refus", async () => {
+    lireDossierParLien.mockResolvedValue(dossierComplet());
+    const lue = empreinteAffichee(dossierComplet(), new Date("2026-10-04T21:59:00Z"));
+    const r = await signerContrat({ ...entree, empreinteLue: lue });
+    expect(r).toMatchObject({ ok: false, message: LIBELLE_REFUS_SIGNATURE.texte_modifie });
+    expect(uploadToR2).not.toHaveBeenCalled();
+    expect(updateMany).not.toHaveBeenCalled();
+  });
+
+  it("empreinte lue ÉGALE à celle du texte : la signature passe comme avant", async () => {
+    lireDossierParLien.mockResolvedValue(dossierComplet());
+    const r = await signerContrat({ ...entree, empreinteLue: empreinteAffichee() });
+    expect(r.ok).toBe(true);
+    expect(rendreContratPdf).toHaveBeenCalledTimes(1);
+    expect(uploadToR2).toHaveBeenCalledTimes(1);
+    expect(updateMany).toHaveBeenCalledTimes(1);
   });
 
   it("refuse un lien invalide sans rien écrire", async () => {
