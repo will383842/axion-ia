@@ -457,7 +457,8 @@ function ancienEtat(
       }
       return { etat: fin.getTime() < maintenant.getTime() ? "expiree" : "reservee", jusquAu: fin };
     case "confirmee":
-      return { etat: fin.getTime() < maintenant.getTime() ? "expiree" : "reservee", jusquAu: fin };
+      // Depuis « Confirmée » (libellé de l'espace apporteur) : une confirmée en cours n'est plus « reservee ».
+      return { etat: fin.getTime() < maintenant.getTime() ? "expiree" : "confirmee", jusquAu: fin };
     case "terminee":
       return { etat: "expiree", jusquAu: fin };
     case "deja_connue":

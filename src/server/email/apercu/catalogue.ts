@@ -608,6 +608,13 @@ export const CATALOGUE: Readonly<Record<EmailJobName, FicheEmail>> = {
     destinataire: "l'apporteur qui a présenté l'entreprise",
     source: "features/apporteurs-reseau/envois.ts",
   },
+  "apporteur-presentation-non-retenue": {
+    categorie: "recrutement",
+    quand:
+      "Le dirigeant écarte une entreprise présentée (démentie, déjà connue, hors champ) ; envoi éteint tant que APPORTEURS_EMAIL_REFUS n'est pas « true »",
+    destinataire: "l'apporteur qui a présenté l'entreprise",
+    source: "features/apporteurs-reseau/envois.ts",
+  },
   "entreprise-prise-de-contact-apporteur": {
     categorie: "recrutement",
     quand: "Avec « Bien reçu » : la prise de contact de Williams, de la part de l'apporteur",

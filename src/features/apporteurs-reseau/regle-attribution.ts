@@ -90,12 +90,18 @@ export function rendezVousRecevable(e: {
   reserveeJusquAt: Date;
   prisAt: Date;
   tenuAt: Date | null;
+  /**
+   * Date à laquelle AXION IA a annulé ce rendez-vous : il est alors RÉPUTÉ TENU à cette date (Axion
+   * ne peut pas empêcher une validation en annulant). Une annulation, une absence ou un report
+   * par l'ENTREPRISE ne se transmet JAMAIS ici : il ne valide pas. Le silence d'Axion non plus.
+   */
+  annuleParAxionAt?: Date | null;
   maintenant: Date;
 }): { ok: true } | { ok: false; motif: MotifRendezVousRefuse } {
   const pris = e.prisAt.getTime();
   if (!(pris >= e.recueAt.getTime())) return { ok: false, motif: "pris_avant_saisie" };
   if (!(pris <= e.reserveeJusquAt.getTime())) return { ok: false, motif: "pris_apres_reservation" };
-  const tenu = e.tenuAt?.getTime();
+  const tenu = (e.tenuAt ?? e.annuleParAxionAt)?.getTime();
   if (tenu === undefined || !(tenu <= e.maintenant.getTime()))
     return { ok: false, motif: "pas_encore_tenu" };
   if (!(tenu >= pris)) return { ok: false, motif: "tenu_avant_prise" };

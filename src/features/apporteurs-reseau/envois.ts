@@ -39,6 +39,7 @@ export type GabaritApporteur =
   | "apporteur-contrat-signe"
   | "apporteur-presentation-recue"
   | "apporteur-presentation-refusee"
+  | "apporteur-presentation-non-retenue"
   | "entreprise-prise-de-contact-apporteur"
   | "apporteur-vigilance"
   | "apporteur-commande-signee"
@@ -64,6 +65,7 @@ export const GABARITS_APPORTEUR: readonly GabaritApporteur[] = [
   "apporteur-contrat-signe",
   "apporteur-presentation-recue",
   "apporteur-presentation-refusee",
+  "apporteur-presentation-non-retenue",
   "entreprise-prise-de-contact-apporteur",
   "apporteur-vigilance",
   "apporteur-commande-signee",
@@ -115,6 +117,7 @@ const GABARITS_VERS_L_APPORTEUR: ReadonlySet<string> = new Set([
   "apporteur-contrat-signe",
   "apporteur-presentation-recue",
   "apporteur-presentation-refusee",
+  "apporteur-presentation-non-retenue",
   "apporteur-vigilance",
   "apporteur-commande-signee",
   "apporteur-commande-non-attribuee",
