@@ -24,6 +24,8 @@ ALTER TABLE "articles"
 CREATE INDEX IF NOT EXISTS "articles_embedding_voyage_hnsw_idx"
     ON "articles" USING hnsw ("embedding_voyage" vector_cosine_ops);
 
+RESET lock_timeout;
+
 -- Retour arrière (manuel, jamais exécuté par Prisma ; à ne faire qu'après avoir remis
 -- CONTENT_EMBEDDING_PROVIDER=openai et redémarré app + worker) :
 --   DROP INDEX IF EXISTS "articles_embedding_voyage_hnsw_idx";
