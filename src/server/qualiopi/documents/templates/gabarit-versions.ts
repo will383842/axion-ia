@@ -100,6 +100,8 @@ export type TypeGabaritSignable =
  * | `convention` | 7 | 18/11 — refonte au style de la charte 2027 (`charte/v1`) : sections en cartes, lignes libellé / valeur, signatures en cadre. Aucun texte changé (mentions, clauses, intitulés, montants) ; taux écrits à la française. **v6 archivée** |
  * | `convention_tripartite` | 7 | 18/11 — même refonte, aucun texte changé. **v6 archivée** |
  * | `convention` | 8 | 19/11 — clause financeur, 5 bis et ligne Qualiopi imprimées seulement si certification obtenue (photo `data.certificationObtenue`) ; v7 archivée |
+ * | `convention` | 9 | 25/11 — acompte acquis en cas d'annulation sans condition de délai (suppression de « plus de 15 jours ouvrés : 0 % ») ; dédit formation facturé à part, non imputable ni pris en charge par un OPCO. **v8 archivée** |
+ * | `convention_tripartite` | 8 | 25/11 — même règle, mot pour mot. **v7 archivée** |
  * | `contrat_formation` | 3 | 18/11 — même refonte, aucun texte changé. **v2 archivée** |
  * | les autres | 1 | texte inchangé depuis l'origine |
  *
@@ -164,9 +166,15 @@ export const GABARIT_VERSIONS: Record<TypeGabaritSignable, number> = {
     du réglage à la génération ; absent = faux). Le texte de ces clauses est GARDÉ, mot pour mot,
     pour le jour de la certification ; v7 archivée.
   */
-  convention: 8,
+  /*
+    v9 — 25/11/2026, décision du dirigeant : l'acompte versé reste acquis en cas d'annulation par le
+    client, SANS condition de délai (section 4) ; le dédit formation est facturé à part et n'est ni
+    imputable sur les fonds de la formation professionnelle ni pris en charge par un OPCO ; v8 archivée.
+  */
+  convention: 9,
   /* v7 — 18/11/2026, refonte au style de la charte 2027 (texte inchangé) ; v6 archivée. */
-  convention_tripartite: 7,
+  /* v8 — 25/11/2026, même règle de l'acompte acquis que la bipartite (section 4) ; v7 archivée. */
+  convention_tripartite: 8,
   /* v3 — 18/11/2026, refonte au style de la charte 2027 (texte inchangé) ; v2 archivée. */
   contrat_formation: 3,
   contrat_sous_traitance: 2,

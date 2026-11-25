@@ -205,7 +205,7 @@ const INTERVENTIONS_FR: VilleServiceCopyLocale = {
     },
     {
       q: "Que se passe-t-il en cas d'annulation ?",
-      a: "Plus l'annulation est anticipée, plus elle est neutre. Très anticipée : remboursement intégral. Quelques jours avant : participation partielle aux frais consultant déjà bloqué. Très tardive : la session est reportable une fois sans frais sur les mois suivants.",
+      a: "L'acompte prévu au devis, dès qu'il est versé, reste acquis en cas d'annulation, quel que soit le délai. Au-delà de l'acompte, rien n'est dû à plus de 15 jours ouvrés avant la date ; entre 8 et 15 jours ouvrés, 50 % du prix HT restent dus, et 100 % à moins de 8 jours ouvrés (jamais moins que l'acompte). La session est reportable une fois sans frais, dans les 3 mois.",
     },
   ],
   guarantees:

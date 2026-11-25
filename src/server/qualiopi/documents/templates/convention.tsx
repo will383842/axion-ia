@@ -440,18 +440,46 @@ export function ConventionPdf({
         </SectionCarte>
 
         {/* 4. Conditions d'annulation */}
-        <SectionCarte title="4. Conditions d'annulation">
+        <SectionCarte title="4. Conditions d'annulation et acompte">
+          {/*
+            🔴 25/11/2026 — décision du dirigeant : dès qu'un acompte est versé, il reste acquis
+            si le client annule, SANS condition de délai. L'ancienne ligne « Annulation à plus de
+            15 jours ouvrés avant le début : 0 % » (acomptes remboursés) est supprimée. Les
+            montants dus au-delà de l'acompte (50 % / 100 %) sont inchangés mais ne sont jamais
+            inférieurs à l'acompte versé. TVA : aucune exonération.
+          */}
           <Text style={stylesPiece.paragraphe}>
-            En cas de désistement du client, les frais d'annulation suivants s'appliquent :
+            En cas de désistement du client, l&apos;acompte prévu au devis ou à la présente
+            convention, dès qu&apos;il a été versé, reste acquis à l&apos;organisme, quel que soit
+            le délai d&apos;annulation. Il est conservé à titre de dédit et d&apos;indemnité
+            (article 1231-5 du Code civil). Les frais d&apos;annulation suivants s&apos;appliquent
+            en plus de l&apos;acompte, qui s&apos;impute sur eux :
           </Text>
           <Text style={local.listItem}>
-            • Annulation à plus de 15 jours ouvrés avant le début : 0 %
+            • Annulation à plus de 15 jours ouvrés avant le début : aucune somme en plus de
+            l&apos;acompte versé, qui reste acquis
           </Text>
           <Text style={local.listItem}>
             • Annulation entre 8 et 15 jours ouvrés avant le début : 50 % du prix HT
           </Text>
           <Text style={local.listItem}>
             • Annulation à moins de 8 jours ouvrés avant le début : 100 % du prix HT
+          </Text>
+          <Text style={local.listItem}>
+            • La somme due n&apos;est jamais inférieure à l&apos;acompte versé.
+          </Text>
+          <Text style={stylesPiece.paragraphe}>
+            Les sommes ainsi conservées ou dues, acompte compris, constituent un dédit : elles ne
+            sont pas le prix d&apos;une action de formation, sont facturées à part (mention «
+            Indemnité de dédit – ne constitue pas une dépense de formation professionnelle »), ne
+            peuvent être imputées sur les fonds de la formation professionnelle
+            {data.certificationObtenue === true
+              ? " ni prises en charge par un opérateur de compétences, "
+              : ", "}
+            et restent à la charge du client (article L.6354-1 du Code du travail). La taxe sur la
+            valeur ajoutée s&apos;applique à ces sommes comme au prix, sans exonération.
+            L&apos;acompte n&apos;est pas acquis si l&apos;annulation résulte d&apos;une annulation
+            par l&apos;organisme ou d&apos;un cas de force majeure.
           </Text>
           {/*
             🔴 F51 — le report gratuit était promis par les CGV et absent de la
@@ -461,7 +489,8 @@ export function ConventionPdf({
           */}
           <Text style={local.listItem}>
             • Dans tous les cas, la prestation est reportable une fois sans frais à une date
-            convenue entre les parties, le report se substituant alors à l&apos;annulation.
+            convenue entre les parties, le report se substituant alors à l&apos;annulation ;
+            l&apos;acompte versé reste alors imputé sur le prix.
           </Text>
         </SectionCarte>
 
