@@ -184,6 +184,34 @@ describe("l'équipe est prévenue par l'alerte interne existante", () => {
     expect(h.enqueueEmail.mock.calls[0]![3].message).toContain("552 100 554 00013");
   });
 
+  it.each([
+    ["le devis AX26-118 de la société Dupont", "le devis AX26-118 de la société Dupont"],
+    ["facture FA26-0001234567 non reçue", "facture FA26-0001234567 non reçue"],
+  ])("une référence n'est pas un IBAN : %s", async (message, attendu) => {
+    await demande({ sujet: "autre", message });
+    expect(h.enqueueEmail.mock.calls[0]![3].message).toContain(attendu);
+    expect(h.enqueueEmail.mock.calls[0]![3].message).not.toContain("retirées");
+  });
+
+  it.each([
+    ["espace après le code pays", "FR 76 3000 6000 0112 3456 7890 189"],
+    ["espaces doubles", "FR76  3000  6000  0112  3456  7890  189"],
+    ["points", "FR76.3000.6000.0112.3456.7890.189"],
+    ["minuscules collées", "fr7630006000011234567890189"],
+  ])("IBAN retiré, le reste du message gardé : %s", async (_nom, iban) => {
+    await demande({ sujet: "commissions", message: `Versez sur ${iban} merci beaucoup` });
+    const { message } = h.enqueueEmail.mock.calls[0]![3];
+    expect(message).toContain("Versez sur [coordonnées bancaires retirées] merci beaucoup");
+    expect(message).not.toContain("0112");
+    expect(message).not.toContain("7890");
+  });
+
+  it("RIB français retiré", async () => {
+    await demande({ sujet: "commissions", message: "Mon RIB : 30006 00001 12345678901 89 voilà" });
+    const { message } = h.enqueueEmail.mock.calls[0]![3];
+    expect(message).toContain("Mon RIB : [coordonnées bancaires retirées] voilà");
+  });
+
   it("le texte libre part tel quel, sans être interprété, sur une seule ligne", async () => {
     const brut = "<script>alert(1)</script>\n\n[lien](https://exemple.fr)\u0000 fin";
     await demande({ sujet: "autre", message: brut });
@@ -222,5 +250,43 @@ describe("l'équipe est prévenue par l'alerte interne existante", () => {
     ]);
     expect(traces).not.toContain("contrat signé");
     espions.forEach((e) => e.mockRestore());
+  });
+});
+
+describe("compteur de limite en panne", () => {
+  it("panne sur la limite par connexion : texte d'échec, jamais « déjà envoyé »", async () => {
+    h.limite.mockResolvedValue({ allowed: false, panne: true });
+    const r = await demande({ sujet: "contrat", message: MESSAGE });
+    expect(r).toMatchObject({ ok: false, message: TEXTES_AIDE.echec });
+    expect(h.enqueueEmail).not.toHaveBeenCalled();
+  });
+
+  it("panne sur la limite par dossier : texte d'échec", async () => {
+    h.limite
+      .mockResolvedValueOnce({ allowed: true })
+      .mockResolvedValueOnce({ allowed: false, panne: true });
+    const r = await demande({ sujet: "contrat", message: MESSAGE });
+    expect(r).toMatchObject({ ok: false, message: TEXTES_AIDE.echec });
+  });
+
+  it("limite par connexion atteinte : texte sans durée ni « déjà envoyé »", async () => {
+    h.limite.mockResolvedValue({ allowed: false });
+    const r = await demande({ sujet: "contrat", message: MESSAGE });
+    expect(r).toMatchObject({ ok: false, message: TEXTES_AIDE.tropDEssais });
+    expect(TEXTES_AIDE.tropDEssais).not.toMatch(/heure|minute|déjà envoy/i);
+  });
+
+  it("limite par dossier atteinte : texte « déjà envoyé »", async () => {
+    h.limite.mockResolvedValueOnce({ allowed: true }).mockResolvedValueOnce({ allowed: false });
+    const r = await demande({ sujet: "contrat", message: MESSAGE });
+    expect(r).toMatchObject({ ok: false, message: TEXTES_AIDE.tropDEnvois });
+  });
+});
+
+describe("retours à la ligne", () => {
+  it("CRLF compte pour un caractère, comme dans le navigateur", async () => {
+    const message = "a".repeat(1980) + "\r\n".repeat(20); // 2 020 bruts, 2 000 pour le navigateur
+    const r = await demande({ sujet: "autre", message });
+    expect(r).toEqual({ ok: true });
   });
 });

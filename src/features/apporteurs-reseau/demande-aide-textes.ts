@@ -34,6 +34,8 @@ export const TEXTES_AIDE = {
   messageLong: `Votre message est trop long : ${MESSAGE_AIDE_MAX.toLocaleString("fr-FR")} caractères au plus.`,
   lienInvalide:
     "Ce lien n'est plus valable. Rouvrez votre espace depuis le dernier e-mail que nous vous avons envoyé.",
+  tropDEssais:
+    "Cette connexion a fait trop d'essais. Patientez un peu, puis réessayez, ou écrivez-nous à contact@axion-ia.com.",
   tropDEnvois:
     "Vous nous avez déjà envoyé plusieurs messages. Réessayez dans une heure, ou écrivez-nous à contact@axion-ia.com.",
   echec:

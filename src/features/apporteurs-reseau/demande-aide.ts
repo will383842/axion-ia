@@ -26,6 +26,7 @@ import { z } from "zod";
 
 import { getClientIp } from "@/lib/client-ip";
 import { destinataireAlertesInternes } from "@/lib/destinataires-internes";
+import { ibanValide } from "@/lib/iban";
 import { checkRateLimit } from "@/lib/rate-limit";
 import { hashIp } from "@/lib/security/ip-hash";
 import { enqueueEmail } from "@/server/queue/queues";
@@ -48,14 +49,50 @@ const saisieValide = z.object({
   message: z.string().min(MESSAGE_AIDE_MIN).max(MESSAGE_AIDE_MAX),
 });
 
-/** Ce qui ressemble à un IBAN (2 lettres, 2 chiffres, puis 10 à 30 caractères, groupés ou non). */
-const FORME_IBAN = /\b[A-Za-z]{2}\d{2}(?:[ .-]?[A-Za-z0-9]){10,30}\b/g;
+const RETRAIT = "[coordonnées bancaires retirées]";
 
-/** Une seule ligne, sans caractère de contrôle, sans rien qui ressemble à un IBAN. */
+/** Début d'un IBAN : code pays, puis deux chiffres (séparateurs tolérés entre eux). */
+const DEBUT_IBAN = /\b[A-Za-z]{2}[\s.-]*\d{2}/g;
+/** RIB français : 5 + 5 + 11 + 2 caractères, groupés ou non. */
+const FORME_RIB =
+  /(?<![\dA-Za-z])\d{5}[\s.-]?\d{5}[\s.-]?[\dA-Za-z]{11}[\s.-]?\d{2}(?![\dA-Za-z])/g;
+
+/**
+ * Retire les IBAN VALIDES (clé de contrôle, pays SEPA) : une référence de devis ou de facture
+ * qui ressemble à un IBAN reste intacte, avec les mots qui la suivent.
+ */
+function retirerIban(texte: string): string {
+  let sortie = "";
+  let curseur = 0;
+  DEBUT_IBAN.lastIndex = 0;
+  let m: RegExpExecArray | null;
+  while ((m = DEBUT_IBAN.exec(texte)) !== null) {
+    const debut = m.index;
+    const fins: number[] = []; // position (exclue) de chaque caractère alphanumérique
+    const brut: string[] = [];
+    for (let i = debut; i < texte.length && brut.length < 34; i++) {
+      const c = texte[i]!;
+      if (/[A-Za-z0-9]/.test(c)) {
+        brut.push(c);
+        fins.push(i + 1);
+      } else if (!/[\s.-]/.test(c)) break;
+    }
+    for (let n = brut.length; n >= 15; n--) {
+      if (ibanValide(brut.slice(0, n).join(""))) {
+        sortie += texte.slice(curseur, debut) + RETRAIT;
+        curseur = fins[n - 1]!;
+        DEBUT_IBAN.lastIndex = curseur;
+        break;
+      }
+    }
+  }
+  return sortie + texte.slice(curseur);
+}
+
+/** Une seule ligne, sans caractère de contrôle, sans coordonnées bancaires. */
 function assainir(texte: string): string {
-  return texte
-    .replace(/[\u0000-\u001f\u007f]+/g, " ")
-    .replace(FORME_IBAN, "[coordonnées bancaires retirées]")
+  return retirerIban(texte.replace(/[\u0000-\u001f\u007f]+/g, " "))
+    .replace(FORME_RIB, RETRAIT)
     .replace(/\s+/g, " ")
     .trim();
 }
@@ -63,7 +100,8 @@ function assainir(texte: string): string {
 const lien = (v: string) => (typeof v === "string" ? v.slice(0, 100) : "");
 const champ = (fd: FormData, nom: string, max: number) => {
   const v = fd.get(nom);
-  return typeof v === "string" ? v.trim().slice(0, max) : "";
+  // CRLF → LF : le navigateur compte un retour à la ligne pour 1 caractère (`maxLength`).
+  return typeof v === "string" ? v.replace(/\r\n?/g, "\n").trim().slice(0, max) : "";
 };
 
 async function ipHachee(): Promise<string> {
@@ -92,7 +130,9 @@ export async function envoyerDemandeAide(
     windowSec: 900,
     surPanne: "refuser",
   });
-  if (!parIp.allowed) return { ok: false, message: TEXTES_AIDE.tropDEnvois, saisie };
+  // Compteur aveugle (Redis injoignable) : ce n'est pas un reproche à faire à la personne.
+  if (parIp.panne) return { ok: false, message: TEXTES_AIDE.echec, saisie };
+  if (!parIp.allowed) return { ok: false, message: TEXTES_AIDE.tropDEssais, saisie };
 
   // 2. Le lien, revérifié côté serveur. Refusé ou résilié : même refus qu'un lien faux.
   const dossier = await lireDossierParLien(lien(id), lien(jeton));
@@ -120,6 +160,7 @@ export async function envoyerDemandeAide(
     windowSec: 3600,
     surPanne: "refuser",
   });
+  if (parDossier.panne) return { ok: false, message: TEXTES_AIDE.echec, saisie };
   if (!parDossier.allowed) return { ok: false, message: TEXTES_AIDE.tropDEnvois, saisie };
 
   // 5. L'alerte interne. Seuls le nom, le sujet et le message partent : aucune autre donnée

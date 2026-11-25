@@ -50,7 +50,7 @@ export default async function AideApporteurPage({ params }: PageProps) {
       <FormulaireAide envoyerAction={envoyerDemandeAide.bind(null, dossier.id, jeton)} />
       <a
         href={`/apporteur/dossier/${dossier.id}/${jeton}`}
-        className="text-terracotta-deep mt-8 inline-flex min-h-[48px] items-center gap-2 text-[17px] font-bold underline underline-offset-4"
+        className="text-terracotta-deep focus-visible:outline-terracotta mt-8 inline-flex min-h-[48px] items-center gap-2 text-[17px] font-bold underline underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-solid"
       >
         {TEXTES_AIDE.retour}
       </a>
