@@ -512,6 +512,15 @@ describe("porte de doctrine alignée sur le site (pack du 25/11/2026)", () => {
       "L’impact financier des tâches répétitives est chiffré.",
       "Une agence de communication peut participer.",
       "Les personnes présentes à la journée posent leurs questions.",
+      "L’essence de la méthode : partir de vos tâches réelles.",
+      "Les relances partent 2 fois par semaine : l’audit chiffre le gain de temps.",
+      "La saisie est faite 4 fois par jour, ce qui coûte du temps.",
+      "Le traitement est 10 fois plus rapide, un gain mesuré pendant l’audit.",
+      "L’audit peut suivre la prise en charge des patients.",
+      "Une IA locale garde les données chez vous.",
+      "Une équipe présente à Paris peut suivre la formation.",
+      "Les collaborateurs situés en Bretagne y participent.",
+      "Une entreprise implantée en France.",
     ]) {
       expect(accepte(t), t).toBe(true);
     }
@@ -524,6 +533,10 @@ describe("porte de doctrine alignée sur le site (pack du 25/11/2026)", () => {
       "Soit 4 470, vous êtes remboursé.",
       "Nous sommes installés à Lyon.",
       "Nous sommes présents à Lyon et Annecy.",
+      "Nous sommes installés en Savoie.",
+      "Notre intervention locale suit vos besoins.",
+      "Prise en charge de la journée par votre OPCO.",
+      "Du carburant est facturé.",
       "Une intervention locale en Savoie, près de chez vous.",
       "Notre agence de Lyon vous reçoit.",
       "L’intervenant se rend chez vous, péage et essence compris.",

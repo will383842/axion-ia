@@ -108,16 +108,27 @@ function autreMultiple(texte: string): boolean {
   for (const m of texte.matchAll(MULTIPLE_RE)) {
     const n = (m[1] ?? "").toLowerCase();
     if (n === "3" || n === "trois") continue;
-    if (CONTEXTE_MULTIPLE.test(phraseA(texte, m.index ?? 0))) return true;
+    const apres = texte.slice((m.index ?? 0) + m[0].length);
+    const x = /x$/i.test(m[0]);
+    // « N fois » : seul compte ce qui le suit (le prix, la garantie, rien) ; « Nx » : la phrase.
+    if (
+      /^\s*(?:[,;:.)]|$|(?:(?:le|la|ce|son|votre|notre|les|vos)\s+)?(?:prix|garantie|tarif|montant|mise|co[uû]t|valeur|investissement))/iu.test(
+        apres,
+      )
+    )
+      return true;
+    if (x && CONTEXTE_MULTIPLE.test(phraseA(texte, m.index ?? 0))) return true;
   }
   return false;
 }
 /** Lieu : seule formule admise « dans vos locaux, partout en France ». */
 const DEPLACEMENT_ET_ANNEXES =
-  /d[ée]placement|(?:se|nous|vous)\s+d[ée]pla[cç]|h[ée]bergement|\brepas\b|\bkm\b|kilom[èe]tre|auvergne|\bfrais\b|\brayon\b|\btrajets?\b|\bvenue\b|rh[ôo]ne[- ]alpes|\bsuppl[ée]ments?(?![\p{L}])|p[ée]age|\bessence\b|surco[ûu]t|pr[èe]s de chez vous|\blocale\b|\ben sus\b|\bforfait\b|transport de l[’']intervenant|(?:venue|zone|distance|r[ée]gion|trajet)[^.]*sur devis|sur devis[^.]*(?:venue|zone|distance|r[ée]gion|trajet)/iu;
+  /d[ée]placement|(?:se|nous|vous)\s+d[ée]pla[cç]|h[ée]bergement|\brepas\b|\bkm\b|kilom[èe]tre|auvergne|\bfrais\b|\brayon\b|\btrajets?\b|\bvenue\b|rh[ôo]ne[- ]alpes|\bsuppl[ée]ments?(?![\p{L}])|p[ée]age|(?:p[ée]age|carburant)[^.]*\bessence\b|\bessence\b[^.]*(?:p[ée]age|carburant|trajet)|\bcarburant\b|surco[ûu]t|pr[èe]s de chez vous|(?:intervention|pr[ée]sence|[ée]quipe|agence)s?\s+locale?s?\b|\ben sus\b|\bforfait\b|transport de l[’']intervenant|(?:venue|zone|distance|r[ée]gion|trajet)[^.]*sur devis|sur devis[^.]*(?:venue|zone|distance|r[ée]gion|trajet)/iu;
 /** Présence locale : sensible à la casse (une majuscule suit le lieu) pour ne pas attraper « agence de communication ». */
-const PRESENCE_LOCALE =
-  /\b(?:[Bb]as[ée]e?s?|[Ii]mplant[ée]e?s?|[Ii]nstall[ée]e?s?|[Pp]r[ée]sent(?:e)?s?|[Ss]itu[ée]e?s?|[Aa]gence|[Bb]ureaux?)\s+(?:à|en|de)\s+\p{Lu}/u;
+const PRESENCE_LOCALE = /\b(?:[Aa]gence|[Bb]ureaux?|[Bb]as[ée]e?s?)\s+(?:à|en|de)\s+\p{Lu}/u;
+/** Première personne : « nous sommes installés / présents / situés à Lyon ». */
+const PRESENCE_NOUS =
+  /\b(?:nous\s+(?:sommes|[eê]tes)|notre\s+(?:[ée]quipe|soci[ée]t[ée])\s+est)\s+(?:[\p{L}]+\s+)?(?:bas[ée]e?s?|implant[ée]e?s?|install[ée]e?s?|pr[ée]sent(?:e)?s?|situ[ée]e?s?)\s+(?:à|en|dans)\s+\p{Lu}/iu;
 const REGION_AURA = /\bAURA\b/;
 
 /** Phrase (jusqu'au point) qui contient la position donnée. */
@@ -168,7 +179,7 @@ function reglesDuPack(texte: string): string[] {
   if (/\bremises?\b/i.test(texte)) raisons.push("remise : un seul prix affiché, sans remise");
   if (/\bgrenoble\b/i.test(texte)) raisons.push("« Grenoble » interdit en communication");
   if (
-    /financ(?:ement|er|é)|finan[cç]able|subvention|prise en charge|op[ée]rateur de comp[ée]tences/i.test(
+    /financ(?:ement|er|é)|finan[cç]able|subvention|prise en charge (?:de la journ[ée]e|de la formation|par votre op|financi)|op[ée]rateur de comp[ée]tences/i.test(
       texte,
     )
   )
@@ -180,7 +191,12 @@ function reglesDuPack(texte: string): string[] {
     )
   )
     raisons.push("formule « Aucun gain garanti » interdite");
-  if (DEPLACEMENT_ET_ANNEXES.test(texte) || PRESENCE_LOCALE.test(texte) || REGION_AURA.test(texte))
+  if (
+    DEPLACEMENT_ET_ANNEXES.test(texte) ||
+    PRESENCE_LOCALE.test(texte) ||
+    PRESENCE_NOUS.test(texte) ||
+    REGION_AURA.test(texte)
+  )
     raisons.push(
       "lieu : seule formule admise « dans vos locaux, partout en France » (frais, distance, hébergement, repas, région : CGV)",
     );
