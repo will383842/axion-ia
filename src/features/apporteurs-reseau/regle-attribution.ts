@@ -23,13 +23,13 @@ export const VERSION_REGLE_RENDEZ_VOUS = "2.8";
 /** `null` : la règle en vigueur aujourd'hui (confirmation par le silence). */
 export type RegleAttribution = "rendez_vous" | null;
 
-/**
- * « 2.10 » → [2, 10] ; `null` pour tout ce qui n'est pas une suite de nombres séparés par des
- * points. Bornée (quatre composantes de quatre chiffres au plus) : une chaîne démesurée est
- * illisible, elle ne devient jamais « l'infini ».
- */
+/** Forme canonique : 1 à 4 composantes de 1 à 4 chiffres, sans zéro de tête (« 2.08 » : refusé). */
+const VERSION_CANONIQUE = /^(0|[1-9]\d{0,3})(\.(0|[1-9]\d{0,3})){0,3}$/;
+
+/** « 2.10 » → [2, 10] ; `null` pour tout ce qui n'est pas une version canonique. */
 function composantes(version: unknown): number[] | null {
-  if (typeof version !== "string" || !/^\d{1,4}(\.\d{1,4}){0,3}$/.test(version)) return null;
+  if (typeof version !== "string" || version.length > 19 || !VERSION_CANONIQUE.test(version))
+    return null;
   return version.split(".").map(Number);
 }
 
@@ -37,12 +37,11 @@ function composantes(version: unknown): number[] | null {
  * La signature de l'apporteur (`signatureApporteur`, champ `version`) porte-t-elle une version du
  * contrat au moins égale à `min` ? Comparaison composante par composante, en NOMBRES
  * (« 2.10 » > « 2.8 ») ; une composante manquante vaut 0 (« 3 » = « 3.0 »). Version absente,
- * vide ou illisible : faux.
+ * vide, illisible, non canonique ou héritée d'un prototype : faux.
  */
 export function versionAuMoins(signature: unknown, min: string): boolean {
   if (typeof signature !== "object" || signature === null || Array.isArray(signature)) return false;
-  // Le champ doit appartenir à l'objet lui-même (jamais hérité d'un prototype).
-  if (!Object.prototype.hasOwnProperty.call(signature, "version")) return false;
+  if (!Object.hasOwn(signature, "version")) return false;
   const version = composantes((signature as { version?: unknown }).version);
   const seuil = composantes(min);
   if (!version || !seuil) return false;
@@ -72,14 +71,19 @@ export function finDeProtectionRendezVous(rendezVousAt: Date): Date {
 }
 
 export type MotifRendezVousRefuse =
-  "pris_avant_saisie" | "pris_apres_reservation" | "pas_encore_tenu";
+  "pris_avant_saisie" | "pris_apres_reservation" | "pas_encore_tenu" | "tenu_avant_prise";
 
 /**
  * Ce rendez-vous valide-t-il l'entreprise ? Il doit avoir été PRIS pendant la réservation (bornes
- * incluses) et avoir EU LIEU ; il peut s'être tenu après la fin de la réservation.
+ * incluses) et avoir EU LIEU, pas avant sa prise ; il peut s'être tenu après la fin de la
+ * réservation.
  *
- * Les contrôles sont écrits en POSITIF : une date illisible (`Invalid Date`) ne satisfait aucune
- * comparaison, donc elle refuse, jamais elle ne valide.
+ * Juge UN rendez-vous, isolément. La règle vise le PREMIER rendez-vous tenu : c'est à l'appelant
+ * de présenter les rendez-vous par date de tenue croissante et de retenir le premier recevable,
+ * jamais le dernier (les six mois partent de celui-là).
+ *
+ * ⚠️ Conditions écrites en POSITIF : toute comparaison avec une date illisible rend `false`, donc
+ * une date illisible REFUSE (elle ne valide jamais une entreprise ni n'ouvre six mois de protection).
  */
 export function rendezVousRecevable(e: {
   recueAt: Date;
@@ -91,7 +95,36 @@ export function rendezVousRecevable(e: {
   const pris = e.prisAt.getTime();
   if (!(pris >= e.recueAt.getTime())) return { ok: false, motif: "pris_avant_saisie" };
   if (!(pris <= e.reserveeJusquAt.getTime())) return { ok: false, motif: "pris_apres_reservation" };
-  if (!e.tenuAt || !(e.tenuAt.getTime() <= e.maintenant.getTime()))
+  const tenu = e.tenuAt?.getTime();
+  if (tenu === undefined || !(tenu <= e.maintenant.getTime()))
     return { ok: false, motif: "pas_encore_tenu" };
+  if (!(tenu >= pris)) return { ok: false, motif: "tenu_avant_prise" };
   return { ok: true };
+}
+
+/** La réservation provisoire d'une présentation `reservee`, telle que la liront les gardes. */
+export type ReservationProvisoire = {
+  /** La saisie : un rendez-vous pris avant elle ne compte pas. */
+  recueAt: Date;
+  reserveeJusquAt: Date;
+  /**
+   * Date de PRISE d'un rendez-vous ni tenu ni annulé (c'est l'appelant qui le sait). Absent ou
+   * `null` : aucun rendez-vous en attente.
+   */
+  rendezVousEnAttentePrisAt?: Date | null | undefined;
+};
+
+/**
+ * La réservation retient-elle encore l'entreprise ? Oui tant qu'elle court (terme inclus), OU
+ * tant qu'un rendez-vous PRIS pendant la réservation (bornes incluses) reste à tenir : il peut
+ * encore valider l'entreprise, donc un second apporteur ne doit pas pouvoir la saisir.
+ *
+ * ⚠️ Échec du côté « occupée » : une date illisible continue d'occuper (jamais deux apporteurs).
+ * Seul un terme clairement dépassé libère, et seul un rendez-vous clairement hors fenêtre est écarté.
+ */
+export function reservationOccupe(r: ReservationProvisoire, maintenant: Date): boolean {
+  if (!(r.reserveeJusquAt.getTime() < maintenant.getTime())) return true;
+  const pris = r.rendezVousEnAttentePrisAt?.getTime();
+  if (pris === undefined) return false;
+  return !(pris < r.recueAt.getTime()) && !(pris > r.reserveeJusquAt.getTime());
 }

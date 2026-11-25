@@ -6,9 +6,9 @@
  * (« TRUE », « 1 », « true » entouré d'espaces : éteint). Lu à CHAQUE appel, jamais figé à
  * l'import : le site et le worker suivent la valeur de leur propre conteneur.
  *
- * ⚠️ Côté SERVEUR seulement (site et worker). Le fichier ne porte pas `server-only` (le worker
- * l'importe) : dans un composant client, la variable n'existe pas et la fonction rendrait
- * toujours `false`, sans erreur.
+ * ⚠️ Côté SERVEUR seulement (site et worker). Le fichier n'a pas `server-only`, pour rester lisible
+ * par le worker : importé par un composant client, il rendrait toujours `false`, sans erreur (la
+ * variable n'est pas `NEXT_PUBLIC_`).
  *
  * Lot 2 (2026-11-25) : rien ne lit encore cette fonction.
  */

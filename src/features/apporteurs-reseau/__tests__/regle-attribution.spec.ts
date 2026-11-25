@@ -8,6 +8,9 @@
  *      une grille de cas, à une copie figée de l'ancienne règle) ;
  *   2. AVEC le champ, la réservation de 60 jours s'applique, bornes incluses.
  */
+import { readFileSync, readdirSync } from "node:fs";
+import { join } from "node:path";
+
 import { afterEach, describe, expect, it, vi } from "vitest";
 
 vi.mock("server-only", () => ({}));
@@ -29,6 +32,7 @@ import {
   finReservation,
   regleDe,
   rendezVousRecevable,
+  reservationOccupe,
   versionAuMoins,
 } from "../regle-attribution";
 import {
@@ -122,17 +126,6 @@ describe("versionAuMoins", () => {
     }
   });
 
-  it("chaîne démesurée, espaces, propriété héritée : faux ; zéros de tête lus en nombres", () => {
-    expect(versionAuMoins({ version: "9".repeat(400) }, "2.8")).toBe(false);
-    expect(versionAuMoins({ version: `2.8${".0".repeat(50)}` }, "2.8")).toBe(false);
-    expect(versionAuMoins({ version: " 2.8 " }, "2.8")).toBe(false);
-    expect(versionAuMoins({ version: "2.8\n" }, "2.8")).toBe(false);
-    expect(versionAuMoins(Object.create({ version: "2.8" }), "2.8")).toBe(false);
-    expect(versionAuMoins({ version: "2" }, "2.8")).toBe(false);
-    expect(versionAuMoins({ version: "2.08" }, "2.8")).toBe(true);
-    expect(versionAuMoins({ version: "2.07" }, "2.8")).toBe(false);
-  });
-
   it("un minimum illisible : faux", () => {
     expect(versionAuMoins({ version: "2.8" }, "")).toBe(false);
     expect(versionAuMoins({ version: "2.8" }, "x")).toBe(false);
@@ -162,12 +155,6 @@ describe("regleDe", () => {
     expect(regleDe({ version: "2.8" }, false)).toBeNull();
     expect(regleDe({ version: "2.10" }, false)).toBeNull();
     expect(regleDe({ version: "2.6" }, false)).toBeNull();
-  });
-
-  it("un interrupteur qui n'est pas le booléen true : null", () => {
-    expect(regleDe({ version: "2.8" }, "false" as unknown as boolean)).toBeNull();
-    expect(regleDe({ version: "2.8" }, "true" as unknown as boolean)).toBeNull();
-    expect(regleDe({ version: "2.8" }, 1 as unknown as boolean)).toBeNull();
   });
 });
 
@@ -219,32 +206,6 @@ describe("rendezVousRecevable", () => {
     ).toEqual({ ok: true });
   });
 
-  it("une date illisible refuse toujours, jamais elle ne valide", () => {
-    const KO = new Date(Number.NaN);
-    const bon = { ...base, prisAt: j(10), tenuAt: j(30) };
-    expect(rendezVousRecevable(bon)).toEqual({ ok: true });
-    expect(rendezVousRecevable({ ...bon, prisAt: KO })).toEqual({
-      ok: false,
-      motif: "pris_avant_saisie",
-    });
-    expect(rendezVousRecevable({ ...bon, recueAt: KO })).toEqual({
-      ok: false,
-      motif: "pris_avant_saisie",
-    });
-    expect(rendezVousRecevable({ ...bon, reserveeJusquAt: KO })).toEqual({
-      ok: false,
-      motif: "pris_apres_reservation",
-    });
-    expect(rendezVousRecevable({ ...bon, tenuAt: KO })).toEqual({
-      ok: false,
-      motif: "pas_encore_tenu",
-    });
-    expect(rendezVousRecevable({ ...bon, maintenant: KO })).toEqual({
-      ok: false,
-      motif: "pas_encore_tenu",
-    });
-  });
-
   it("ordre des contrôles : la date de prise est jugée avant la tenue", () => {
     expect(rendezVousRecevable({ ...base, prisAt: j(-1), tenuAt: null }).ok).toBe(false);
     expect(rendezVousRecevable({ ...base, prisAt: j(-1), tenuAt: null })).toMatchObject({
@@ -253,6 +214,231 @@ describe("rendezVousRecevable", () => {
     expect(rendezVousRecevable({ ...base, prisAt: j(61), tenuAt: null })).toMatchObject({
       motif: "pris_apres_reservation",
     });
+  });
+});
+
+describe("rendezVousRecevable : échec FERMÉ (relecture du 25/11, I1 et I2)", () => {
+  const NAN = new Date(NaN);
+  const bon = {
+    recueAt: SAISIE,
+    reserveeJusquAt: FIN,
+    prisAt: j(10),
+    tenuAt: j(30),
+    maintenant: j(200),
+  };
+
+  it("le cas de référence est recevable", () => {
+    expect(rendezVousRecevable(bon)).toEqual({ ok: true });
+  });
+
+  it("I1 · une date illisible, quelle qu'elle soit, ne valide jamais l'entreprise", () => {
+    expect(rendezVousRecevable({ ...bon, prisAt: NAN })).toEqual({
+      ok: false,
+      motif: "pris_avant_saisie",
+    });
+    expect(rendezVousRecevable({ ...bon, recueAt: NAN })).toEqual({
+      ok: false,
+      motif: "pris_avant_saisie",
+    });
+    expect(rendezVousRecevable({ ...bon, reserveeJusquAt: NAN })).toEqual({
+      ok: false,
+      motif: "pris_apres_reservation",
+    });
+    expect(rendezVousRecevable({ ...bon, tenuAt: NAN })).toEqual({
+      ok: false,
+      motif: "pas_encore_tenu",
+    });
+    expect(rendezVousRecevable({ ...bon, maintenant: NAN })).toEqual({
+      ok: false,
+      motif: "pas_encore_tenu",
+    });
+  });
+
+  it("I2 · tenu AVANT sa prise : refusé", () => {
+    expect(rendezVousRecevable({ ...bon, prisAt: j(10), tenuAt: j(5) })).toEqual({
+      ok: false,
+      motif: "tenu_avant_prise",
+    });
+    expect(
+      rendezVousRecevable({ ...bon, prisAt: j(10), tenuAt: new Date(j(10).getTime() - 1) }),
+    ).toEqual({ ok: false, motif: "tenu_avant_prise" });
+  });
+
+  it("I2 · tenu avant la saisie : refusé", () => {
+    expect(rendezVousRecevable({ ...bon, prisAt: SAISIE, tenuAt: j(-30) })).toEqual({
+      ok: false,
+      motif: "tenu_avant_prise",
+    });
+  });
+
+  it("pris et tenu au même instant : recevable (borne incluse)", () => {
+    expect(rendezVousRecevable({ ...bon, prisAt: j(10), tenuAt: j(10) })).toEqual({ ok: true });
+  });
+});
+
+describe("occupation de l'entreprise : jamais deux apporteurs (I4 et I5)", () => {
+  const NAN = new Date(NaN);
+  const p = { statut: "reservee" as const, protegeeJusquAt: null };
+  const pres = {
+    statut: "reservee",
+    contactEnvoyeAt: j(3),
+    recueAt: SAISIE,
+    protegeeJusquAt: null,
+  };
+  const enAttente = (prisAt: Date | null) => ({
+    recueAt: SAISIE,
+    reserveeJusquAt: FIN,
+    rendezVousEnAttentePrisAt: prisAt,
+  });
+
+  it("I4 · rendez-vous pris à J+50, à tenir à J+80 : l'entreprise reste occupée de J+61 à J+80", () => {
+    for (const n of [50, 60, 61, 70, 80]) {
+      expect(presentationOccupe(p, j(n), enAttente(j(50))), `J+${n}`).toBe(true);
+      expect(reservationOccupe(enAttente(j(50)), j(n)), `J+${n}`).toBe(true);
+    }
+  });
+
+  it("I4 · l'apporteur voit « Réservée », pas « Expirée », tant que son rendez-vous est à tenir", () => {
+    expect(etatPourApporteur(pres, j(59), enAttente(j(50)))).toEqual({
+      etat: "reservee",
+      jusquAu: FIN,
+    });
+    // Terme passé, droit encore vivant : aucune date de fin à annoncer.
+    expect(etatPourApporteur(pres, j(70), enAttente(j(50)))).toEqual({
+      etat: "reservee",
+      jusquAu: null,
+    });
+  });
+
+  it("I4 · bornes de prise incluses : pris à la saisie ou au terme de la réservation", () => {
+    expect(presentationOccupe(p, j(70), enAttente(SAISIE))).toBe(true);
+    expect(presentationOccupe(p, j(70), enAttente(FIN))).toBe(true);
+  });
+
+  it("I4 · un rendez-vous pris AVANT la saisie ou APRÈS les 60 jours ne retient pas l'entreprise", () => {
+    expect(presentationOccupe(p, j(70), enAttente(j(-1)))).toBe(false);
+    expect(presentationOccupe(p, j(70), enAttente(new Date(SAISIE.getTime() - 1)))).toBe(false);
+    expect(presentationOccupe(p, j(70), enAttente(j(61)))).toBe(false);
+    expect(presentationOccupe(p, j(70), enAttente(new Date(FIN.getTime() + 1)))).toBe(false);
+    expect(etatPourApporteur(pres, j(70), enAttente(j(61)))).toEqual({
+      etat: "expiree",
+      jusquAu: FIN,
+    });
+    // … mais pendant les 60 jours, la réservation occupe de toute façon.
+    expect(presentationOccupe(p, j(30), enAttente(j(-1)))).toBe(true);
+  });
+
+  it("I4 · sans rendez-vous en attente (absent ou null) : libre à J+61, comme avant", () => {
+    expect(presentationOccupe(p, j(61), enAttente(null))).toBe(false);
+    expect(presentationOccupe(p, j(61), { recueAt: SAISIE, reserveeJusquAt: FIN })).toBe(false);
+    expect(presentationOccupe(p, j(60), enAttente(null))).toBe(true);
+  });
+
+  it("I5 · une réservation de date illisible continue d'occuper, et l'état dit la même chose", () => {
+    const illisible = { recueAt: SAISIE, reserveeJusquAt: NAN };
+    expect(presentationOccupe(p, j(10), illisible)).toBe(true);
+    expect(presentationOccupe(p, j(400), illisible)).toBe(true);
+    expect(etatPourApporteur(pres, j(400), illisible)).toEqual({ etat: "reservee", jusquAu: null });
+    expect(presentationOccupe(p, NAN, { recueAt: SAISIE, reserveeJusquAt: FIN })).toBe(true);
+  });
+
+  it("I5 · un rendez-vous en attente de date illisible continue d'occuper", () => {
+    expect(presentationOccupe(p, j(70), enAttente(NAN))).toBe(true);
+    expect(presentationOccupe(p, j(70), { ...enAttente(j(50)), recueAt: NAN })).toBe(true);
+  });
+
+  it("presentationOccupe et etatPourApporteur ne se contredisent sur aucun cas", () => {
+    for (const reserveeJusquAt of [FIN, NAN, j(-5)])
+      for (const prisAt of [undefined, null, j(-1), SAISIE, j(50), FIN, j(61), NAN])
+        for (const maintenant of [...INSTANTS, NAN]) {
+          const r = { recueAt: SAISIE, reserveeJusquAt, rendezVousEnAttentePrisAt: prisAt };
+          expect(etatPourApporteur(pres, maintenant, r)?.etat === "reservee").toBe(
+            presentationOccupe(p, maintenant, r),
+          );
+        }
+  });
+});
+
+describe("durcissements mineurs (relecture du 25/11)", () => {
+  it("M1 · versionAuMoins refuse les formes non canoniques", () => {
+    for (const version of [
+      "2.08",
+      "02.8",
+      "2.008",
+      " 2.8 ",
+      "2.8\n",
+      "9".repeat(400),
+      "99999",
+      `2.8${".0".repeat(50_000)}`,
+      "2.8.0.0.0",
+      "2.8e1",
+      "0x3",
+      "٢.٨",
+    ]) {
+      expect(versionAuMoins({ version }, "2.8"), version.slice(0, 20)).toBe(false);
+    }
+    expect(versionAuMoins({ version: "2" }, "2.8")).toBe(false);
+    expect(versionAuMoins({ version: "2.8.0.0" }, "2.8")).toBe(true);
+    expect(versionAuMoins({ version: "10.0" }, "2.8")).toBe(true);
+    expect(versionAuMoins({ version: "0.9" }, "2.8")).toBe(false);
+  });
+
+  it("M1 · une version héritée du prototype n'est pas lue", () => {
+    expect(versionAuMoins(Object.create({ version: "2.8" }), "2.8")).toBe(false);
+  });
+
+  it("M2 · regleDe exige un interrupteur strictement booléen", () => {
+    for (const actif of ["false", "true", 1, {}, []])
+      expect(regleDe({ version: "2.8" }, actif as unknown as boolean)).toBeNull();
+  });
+
+  it("regleDe et l'interrupteur, de bout en bout", () => {
+    vi.stubEnv("APPORTEURS_VALIDATION_RDV", "true");
+    expect(regleDe({ version: "2.8" }, validationParRendezVousActive())).toBe("rendez_vous");
+    expect(regleDe({ version: "2.6" }, validationParRendezVousActive())).toBeNull();
+    vi.stubEnv("APPORTEURS_VALIDATION_RDV", "TRUE");
+    expect(regleDe({ version: "2.8" }, validationParRendezVousActive())).toBeNull();
+    vi.unstubAllEnvs();
+  });
+
+  it("M3 · finReservation ajoute 60 × 24 h, y compris à travers un changement d'heure", () => {
+    // 1er février 9 h (Paris, UTC+1) → 2 avril 10 h (Paris, UTC+2).
+    expect(finReservation(new Date("2026-02-01T08:00:00.000Z")).toISOString()).toBe(
+      "2026-04-02T08:00:00.000Z",
+    );
+    // 1er septembre 9 h (Paris, UTC+2) → 31 octobre 8 h (Paris, UTC+1).
+    expect(finReservation(new Date("2026-09-01T07:00:00.000Z")).toISOString()).toBe(
+      "2026-10-31T07:00:00.000Z",
+    );
+  });
+});
+
+describe("verrous du lot 2 : module pur, aucun branchement", () => {
+  const DOSSIER = join(process.cwd(), "src/features/apporteurs-reseau");
+
+  it("regle-attribution.ts n'importe que ./regles", () => {
+    const source = readFileSync(join(DOSSIER, "regle-attribution.ts"), "utf8");
+    const imports = [...source.matchAll(/\bfrom\s+"([^"]+)"|\bimport\s+"([^"]+)"|import\(/g)].map(
+      (m) => m[1] ?? m[2] ?? "import()",
+    );
+    expect(imports).toEqual(["./regles"]);
+    expect(source).not.toMatch(/process\.env|require\(/);
+  });
+
+  it("aucun appelant ne construit encore de réservation (la preuve « sans effet »)", () => {
+    // Brancher la règle oblige à écrire `reserveeJusquAt` : tant que ce lot n'est pas suivi du
+    // branchement, le mot ne vit que dans les modules de règles. Le lot suivant retirera ce test.
+    const SRC = join(process.cwd(), "src");
+    const porteurs = (readdirSync(SRC, { recursive: true }) as string[])
+      .map((f) => f.replaceAll("\\", "/"))
+      .filter((f) => /\.tsx?$/.test(f) && !f.includes("__tests__/") && !/\.spec\.tsx?$/.test(f))
+      .filter((f) => readFileSync(join(SRC, f), "utf8").includes("reserveeJusquAt"))
+      .sort();
+    expect(porteurs).toEqual([
+      "features/apporteurs-reseau/declaration-regles.ts",
+      "features/apporteurs-reseau/regle-attribution.ts",
+      "features/apporteurs-reseau/regles.ts",
+    ]);
   });
 });
 
@@ -375,7 +561,7 @@ describe("sans le champ reservation : rien ne change", () => {
 });
 
 describe("avec une reservation : commandeCouverte", () => {
-  const reservation = { reserveeJusquAt: FIN };
+  const reservation = { reserveeJusquAt: FIN, statut: "reservee" };
   const nonConfirmee = { recueAt: SAISIE, confirmee: false, protegeeJusquAt: null, reservation };
 
   it("J+59 couverte, J+60 pile couverte, J+61 non couverte", () => {
@@ -408,15 +594,64 @@ describe("avec une reservation : commandeCouverte", () => {
     expect(commandeCouverte({ ...confirmee, signeeAt: j(-1) })).toBe(false);
   });
 
-  it("confirmée dont la protection est échue tôt : la réservation couvre encore ses 60 jours", () => {
+  it("I3 · confirmée dont la protection est échue tôt : jugée sur sa SEULE protection", () => {
     const e = { recueAt: SAISIE, confirmee: true, protegeeJusquAt: j(30), reservation };
-    expect(commandeCouverte({ ...e, signeeAt: j(45) })).toBe(true);
+    expect(commandeCouverte({ ...e, signeeAt: j(30) })).toBe(true);
+    expect(commandeCouverte({ ...e, signeeAt: j(45) })).toBe(false);
     expect(commandeCouverte({ ...e, signeeAt: j(61) })).toBe(false);
+  });
+
+  it("I3 · résiliée à J+20 (protection ramenée à J+20), commande à J+45 : non couverte", () => {
+    for (const statut of ["terminee", "confirmee"]) {
+      const e = {
+        recueAt: SAISIE,
+        confirmee: true,
+        protegeeJusquAt: j(20),
+        reservation: { reserveeJusquAt: FIN, statut },
+      };
+      expect(commandeCouverte({ ...e, signeeAt: j(45) }), statut).toBe(false);
+      expect(commandeCouverte({ ...e, signeeAt: j(20) }), statut).toBe(true);
+    }
+  });
+
+  it("I3 · la réservation ne couvre que le statut reservee", () => {
+    for (const statut of ["terminee", "dementie", "deja_connue", "hors_champ", "confirmee", ""]) {
+      for (const protegeeJusquAt of [null, j(20)])
+        expect(
+          commandeCouverte({
+            signeeAt: j(45),
+            recueAt: SAISIE,
+            confirmee: false,
+            protegeeJusquAt,
+            reservation: { reserveeJusquAt: FIN, statut },
+          }),
+          statut,
+        ).toBe(false);
+    }
+  });
+
+  it("une réservation dont le terme précède la saisie ne couvre rien", () => {
+    const e = { ...nonConfirmee, reservation: { reserveeJusquAt: j(-5), statut: "reservee" } };
+    for (const n of [-10, -5, -1, 0, 1, 30])
+      expect(commandeCouverte({ ...e, signeeAt: j(n) })).toBe(false);
+  });
+
+  it("date illisible : jamais couverte", () => {
+    const nan = new Date(NaN);
+    expect(commandeCouverte({ ...nonConfirmee, signeeAt: nan })).toBe(false);
+    expect(commandeCouverte({ ...nonConfirmee, recueAt: nan, signeeAt: j(10) })).toBe(false);
+    expect(
+      commandeCouverte({
+        ...nonConfirmee,
+        signeeAt: j(10),
+        reservation: { reserveeJusquAt: nan, statut: "reservee" },
+      }),
+    ).toBe(false);
   });
 });
 
 describe("avec une reservation : présentation reservee", () => {
-  const reservation = { reserveeJusquAt: FIN };
+  const reservation = { recueAt: SAISIE, reserveeJusquAt: FIN };
   const p = { statut: "reservee" as const, protegeeJusquAt: null };
 
   it("occupe à J+59 et à J+60 pile, n'occupe plus à J+61", () => {
@@ -424,19 +659,6 @@ describe("avec une reservation : présentation reservee", () => {
     expect(presentationOccupe(p, j(60), reservation)).toBe(true);
     expect(presentationOccupe(p, new Date(FIN.getTime() + 1), reservation)).toBe(false);
     expect(presentationOccupe(p, j(61), reservation)).toBe(false);
-  });
-
-  it("réservation de date illisible : continue d'occuper, et l'état reste « réservée »", () => {
-    const illisible = { reserveeJusquAt: new Date(Number.NaN) };
-    expect(presentationOccupe(p, j(10), illisible)).toBe(true);
-    expect(presentationOccupe(p, j(400), illisible)).toBe(true);
-    expect(
-      etatPourApporteur(
-        { statut: "reservee", contactEnvoyeAt: null, recueAt: SAISIE, protegeeJusquAt: null },
-        j(400),
-        illisible,
-      )?.etat,
-    ).toBe("reservee");
   });
 
   it("la reservation ne touche pas les autres statuts", () => {
@@ -511,14 +733,6 @@ describe("l'interrupteur APPORTEURS_VALIDATION_RDV", () => {
   it('"true" exactement : allumé', () => {
     vi.stubEnv("APPORTEURS_VALIDATION_RDV", "true");
     expect(validationParRendezVousActive()).toBe(true);
-  });
-
-  it("de bout en bout : regleDe(signature, validationParRendezVousActive())", () => {
-    vi.stubEnv("APPORTEURS_VALIDATION_RDV", "true");
-    expect(regleDe({ version: "2.8" }, validationParRendezVousActive())).toBe("rendez_vous");
-    expect(regleDe({ version: "2.6" }, validationParRendezVousActive())).toBeNull();
-    vi.stubEnv("APPORTEURS_VALIDATION_RDV", "TRUE");
-    expect(regleDe({ version: "2.8" }, validationParRendezVousActive())).toBeNull();
   });
 
   it("lu à l'exécution : un changement après l'import est suivi", () => {

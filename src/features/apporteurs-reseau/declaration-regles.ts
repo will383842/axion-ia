@@ -11,6 +11,7 @@ import { z } from "zod";
 
 import { luhnValid } from "@/lib/siret";
 
+import { type ReservationProvisoire, reservationOccupe } from "./regle-attribution";
 import { finDeProtection, RAPPEL_SANS_REPONSE_JOURS } from "./regles";
 
 /** 14 chiffres et clé de Luhn (module pur, lisible par le navigateur). */
@@ -124,8 +125,10 @@ export const LIBELLE_ETAT_DECLARATION: Record<EtatDeclaration, string> = {
  * `null` pour un état qu'on ne montre pas (démentie : un litige ne s'affiche pas).
  *
  * `reservation` (facultatif, règle par rendez-vous, cf. `regle-attribution.ts`) : une présentation
- * au statut `reservee` est « Réservée » jusqu'à `reserveeJusquAt` inclus, puis « Expirée ». Sans
- * ce troisième argument, le résultat est celui d'avant.
+ * au statut `reservee` est « Réservée » tant que `reservationOccupe` le dit (réservation en cours,
+ * ou rendez-vous pris pendant la réservation et encore à tenir), puis « Expirée ». `jusquAu` vaut
+ * `null` quand le terme est passé mais que le rendez-vous à tenir garde le droit vivant. Sans ce
+ * troisième argument, le résultat est celui d'avant.
  */
 export function etatPourApporteur(
   p: {
@@ -135,17 +138,17 @@ export function etatPourApporteur(
     protegeeJusquAt: Date | null;
   },
   maintenant: Date = new Date(),
-  reservation?: { reserveeJusquAt: Date } | null,
+  reservation?: ReservationProvisoire | null,
 ): { etat: EtatDeclaration; jusquAu: Date | null } | null {
   const fin = p.protegeeJusquAt ?? finDeProtection(p.recueAt);
   switch (p.statut) {
     case "reservee":
       if (reservation) {
         const terme = reservation.reserveeJusquAt;
-        return {
-          etat: terme.getTime() < maintenant.getTime() ? "expiree" : "reservee",
-          jusquAu: terme,
-        };
+        if (!reservationOccupe(reservation, maintenant)) return { etat: "expiree", jusquAu: terme };
+        // Terme passé (rendez-vous à tenir) ou illisible : aucune date de fin à annoncer.
+        const termeAVenir = terme.getTime() >= maintenant.getTime();
+        return { etat: "reservee", jusquAu: termeAVenir ? terme : null };
       }
       if (!p.contactEnvoyeAt) {
         const attente = maintenant.getTime() - p.recueAt.getTime();
