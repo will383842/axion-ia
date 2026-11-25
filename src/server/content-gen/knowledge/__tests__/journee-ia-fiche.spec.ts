@@ -56,12 +56,25 @@ describe("fiche Journée IA", () => {
       "réservez et payez en ligne",
       "un acompte de 30 %",
       "conditions d'annulation",
+      "déplacements inclus",
+      "anciennement 1 990 €",
+      "x5 le prix",
+      "soit 4.470 €",
+      "aucun gain n’est garanti",
+      "ROI garanti",
+      "réservez dès aujourd'hui en ligne",
+      "payez directement sur le site",
+      "annulez sans frais",
+      "nos amis grenoblois",
     ];
     for (const t of fautifs) expect(trouveInterdits(t).length, t).toBeGreaterThan(0);
-    expect(INTERDITS_JOURNEE_IA.length).toBeGreaterThanOrEqual(fautifs.length - 3);
+    expect(INTERDITS_JOURNEE_IA).toHaveLength(11);
   });
 
   it("la consigne ne s'active que si le sujet touche la Journée IA", () => {
+    for (const sujet of ["journées IA en PME", "Journée de l'IA", "audit IA en une journée"])
+      expect(sujetTouchelaJourneeIA(sujet), sujet).toBe(true);
+    expect(trouveInterdits("Au lieu de perdre du temps, formez vos équipes")).toEqual([]);
     expect(consigneJourneeIA("Comment démarrer l'IA en PME")).toBe("");
     const c = consigneJourneeIA("Journée IA : à quoi s'attendre");
     expect(c).toContain(fiche);
@@ -81,6 +94,7 @@ describe("fiche Journée IA", () => {
     const autre = mod.construireFicheJourneeIA();
     expect(autre).toContain("7 jours ouvrés");
     expect(autre).toContain("2 fois");
+    expect(autre).not.toContain(`${MULTIPLE_GARANTIE} fois`);
     expect(autre).not.toBe(fiche);
   });
 
