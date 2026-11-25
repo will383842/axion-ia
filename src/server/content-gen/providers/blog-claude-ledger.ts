@@ -222,10 +222,16 @@ export async function reserverCout(p: ParamsReservation): Promise<Reservation> {
         const cumulJourUsd = await cumulContenu(tx, minuitParis(maintenant));
         const cumulMoisBlogUsd = await cumulContenu(tx, debutMoisParis(maintenant));
         if (cumulJourUsd > p.plafondJourUsd) {
-          throw new BlogClaudeRefusError("Plafond du jour du contenu via Claude atteint", "plafond_jour");
+          throw new BlogClaudeRefusError(
+            "Plafond du jour du contenu via Claude atteint",
+            "plafond_jour",
+          );
         }
         if (cumulMoisBlogUsd > p.plafondMoisBlogUsd) {
-          throw new BlogClaudeRefusError("Plafond du mois du contenu via Claude atteint", "plafond_mois");
+          throw new BlogClaudeRefusError(
+            "Plafond du mois du contenu via Claude atteint",
+            "plafond_mois",
+          );
         }
 
         // Le blog ne doit jamais couper Qualiopi (même ligne `anthropic`).
