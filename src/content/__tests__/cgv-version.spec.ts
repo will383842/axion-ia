@@ -15,12 +15,12 @@ import { CGV_VERSION, CGV_VERSION_LIBELLE, CGV_VERSION_LIBELLE_EN } from "@/cont
  * Empreinte du texte FR pour la version courante. À mettre à jour AVEC CGV_VERSION.
  * Deux variantes existent (`cgv-passages-financement.ts`) : chacune a sa paire figée.
  */
-const EMPREINTE_TEXTE_FR = "759812726cf76bd5c87fcab50a2c307534096478f79a6a5d84f8dbfb1d7c5074";
-const VERSION_DE_L_EMPREINTE = "2026-11-26";
+const EMPREINTE_TEXTE_FR = "e862de3fa32074b9298f5e23e164ea062c197ba6de124277baf1e532e9403d43";
+const VERSION_DE_L_EMPREINTE = "2026-11-27";
 /** Variante « certifiée » (QUALIOPI_CERTIFICATION_OBTENUE=true) : version suffixée « -f ». */
 const EMPREINTE_TEXTE_FR_CERTIFIEE =
-  "e262558d65ad143192a1bad0e56e19cc91de75b6a2cce71d30403ba1ff9dfa14";
-const VERSION_DE_L_EMPREINTE_CERTIFIEE = "2026-11-26-f";
+  "e1154919b07f507de4f3457832db250fbf2df3596f1ec50c379d7ca3b4f3a902";
+const VERSION_DE_L_EMPREINTE_CERTIFIEE = "2026-11-27-f";
 
 afterEach(() => {
   vi.unstubAllEnvs();
