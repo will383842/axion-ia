@@ -90,13 +90,14 @@ const EXEMPLE_DE_CALCUL = [
  *     (`seuilGarantieEur()`, `src/content/journee-ia-commun.ts`). Littéral ici (le test e2e
  *     n'importe pas `src/`) ; `tests/unit/ci/prix-publics-seuil-garantie.spec.ts` vérifie qu'il
  *     égale la constante. Toléré UNIQUEMENT à moins de 200 caractères de « gains identifiés »
- *     ou « 3 fois » ;
- * (b) « au moins 5 000 € HT » : condition de la déduction (`SEUIL_DEVIS_DEDUCTION_EUR`), sous
+ *     ou « 3 fois le/son prix » ;
+ * (b) « …intégration d'au moins 5 000 € HT » (ancré sur cette phrase) : condition de la déduction (`SEUIL_DEVIS_DEDUCTION_EUR`), sous
  *     sa forme brute, échappée (&#x27; / ') ou RSC. Aucun autre montant n'est exempté.
  */
 const SEUIL_GARANTIE_LITTERAL = /(?<![\d.,])4 470 €/g;
-const MOTS_GARANTIE = /gains identifi|3 fois/;
-const CONDITION_DEDUCTION = /au moins 5 000 € HT/g;
+const MOTS_GARANTIE = /gains identifi|(?<!\d)3 fois (?:le|son) prix/;
+const CONDITION_DEDUCTION =
+  /intégration d(?:’|'|&#x27;|&#39;|\\+u2019)au moins 5 000 € HT/g;
 const FENETRE_GARANTIE = 200;
 
 function retirerConditionsNonTarifaires(t: string): string {

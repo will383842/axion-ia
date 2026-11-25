@@ -28,6 +28,6 @@ describe("exception R7 : seuils de la garantie et de la déduction", () => {
 
   it("le littéral de la condition de déduction suit SEUIL_DEVIS_DEDUCTION_EUR", () => {
     expect(SEUIL_DEVIS_DEDUCTION_EUR).toBe(5000);
-    expect(source).toContain("au moins 5 000 € HT");
+    expect(source).toContain("intégration d(?:’|'|&#x27;|&#39;|\\\\+u2019)au moins 5 000 € HT/g");
   });
 });
