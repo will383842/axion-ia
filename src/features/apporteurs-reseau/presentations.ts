@@ -43,6 +43,7 @@ import {
   type ResultatEnvoi,
 } from "./envois";
 import { idsPriseDeContactRebondie } from "./rebonds";
+import { type ReservationProvisoire, reservationOccupe } from "./regle-attribution";
 import { ajouterMois, finDeProtection } from "./regles";
 import { annoncerAttribution } from "./attribution-annonce";
 
@@ -68,12 +69,17 @@ export function devisSigneNonFacture(d: {
   return facture < d.montantTotalHtCents;
 }
 
-/** Une présentation occupe-t-elle encore le SIREN à cette date ? */
+/**
+ * Une présentation occupe-t-elle encore le SIREN à cette date ? `reservation` (facultatif, règle
+ * par rendez-vous) : une présentation `reservee` occupe tant que sa réservation court, ou qu'un
+ * rendez-vous pris pendant la réservation reste à tenir (`reservationOccupe`).
+ */
 export function presentationOccupe(
   p: { statut: StatutPresentation; protegeeJusquAt: Date | null },
   maintenant: Date,
+  reservation?: ReservationProvisoire | null,
 ): boolean {
-  if (p.statut === "reservee") return true;
+  if (p.statut === "reservee") return !reservation || reservationOccupe(reservation, maintenant);
   if (p.statut === "confirmee")
     return !p.protegeeJusquAt || p.protegeeJusquAt.getTime() >= maintenant.getTime();
   return false;
