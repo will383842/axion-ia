@@ -42,3 +42,12 @@ CREATE TABLE IF NOT EXISTS "propositions_rendez_vous_presentation" (
 );
 
 CREATE UNIQUE INDEX IF NOT EXISTS "propositions_rendez_vous_presentation_presentation_id_rende_key" ON "propositions_rendez_vous_presentation"("presentation_id", "rendez_vous_cle");
+
+-- Un même rendez-vous ne peut jamais valider deux présentations (règle impérative : jamais deux
+-- apporteurs commissionnés pour une même entreprise). Index uniques PARTIELS, écrits à la main :
+-- Prisma ne sait pas les exprimer (précédent : trainer_statements_mission_unique). Ils ne
+-- contraignent que les lignes déjà validées / retenues ; l'unicité par entreprise (SIREN/SIRET)
+-- reste une décision du dirigeant, volontairement non prise ici.
+CREATE UNIQUE INDEX IF NOT EXISTS "presentation_reservation_rendez_vous_valide_key" ON "presentation_reservation"("rendez_vous_cle") WHERE "validee_at" IS NOT NULL;
+
+CREATE UNIQUE INDEX IF NOT EXISTS "propositions_rendez_vous_presentation_retenue_key" ON "propositions_rendez_vous_presentation"("rendez_vous_cle") WHERE "retenue_at" IS NOT NULL;

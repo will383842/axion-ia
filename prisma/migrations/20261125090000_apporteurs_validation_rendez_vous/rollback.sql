@@ -6,7 +6,10 @@ CREATE SCHEMA IF NOT EXISTS "retrait";
 ALTER TABLE "propositions_rendez_vous_presentation" SET SCHEMA "retrait";
 ALTER TABLE "presentation_reservation" SET SCHEMA "retrait";
 COMMIT;
--- Puis : prisma migrate resolve --rolled-back 20261125090000_apporteurs_validation_rendez_vous
+-- Les index (dont les deux uniques partiels) suivent leur table dans le schéma « retrait ».
+-- Attention : `prisma migrate resolve --rolled-back` n'accepte qu'une migration en échec ; sur une
+-- migration appliquée avec succès il refuse. L'état laissé par le bloc ci-dessus suffit : ne pas
+-- relancer `migrate deploy` tant que le dossier de la migration reste dans le dépôt.
 
 -- Repli si le rôle de la base n'a pas le droit CREATE sur la base : renommer chaque table
 -- ET chaque index (suffixes _pkey, _key, _idx) avec le suffixe _retire_20261125, par exemple :

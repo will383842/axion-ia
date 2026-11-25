@@ -16483,10 +16483,12 @@ model PresentationReservation {
   /// calendly | rencontre | saisie | commande (texte, pas d'énumération : fenêtre app/worker).
   validationSource String?   @map("validation_source") @db.VarChar(20)
   valideeAt        DateTime? @map("validee_at") @db.Timestamptz(3)
+  /// Auteur : identifiant texte (administrateur ou « systeme »), pas un UUID ; sans clé étrangère.
   valideeParId     String?   @map("validee_par_id") @db.VarChar(64)
   creeAt           DateTime  @default(now()) @map("cree_at") @db.Timestamptz(3)
   majAt            DateTime  @default(now()) @updatedAt @map("maj_at") @db.Timestamptz(3)
 
+  /// Index unique PARTIEL hors schéma (migration.sql) : rendez_vous_cle WHERE validee_at IS NOT NULL.
   @@index([reserveeJusquAt])
   @@map("presentation_reservation")
 }
@@ -16505,6 +16507,7 @@ model PropositionRendezVousPresentation {
   rendezVousAt   DateTime? @map("rendez_vous_at") @db.Timestamptz(3)
   creeAt         DateTime  @default(now()) @map("cree_at") @db.Timestamptz(3)
   ecarteeAt      DateTime? @map("ecartee_at") @db.Timestamptz(3)
+  /// Auteur : identifiant texte (administrateur ou « systeme »), pas un UUID ; sans clé étrangère.
   ecarteeParId   String?   @map("ecartee_par_id") @db.VarChar(64)
   retenueAt      DateTime? @map("retenue_at") @db.Timestamptz(3)
 

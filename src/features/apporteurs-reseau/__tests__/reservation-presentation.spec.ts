@@ -33,7 +33,7 @@ const absente = () => Object.assign(new Error("absente"), { code: "P2021" });
 const LIGNE = {
   presentationId: "p1",
   regle: "rendez_vous",
-  reserveeJusquAt: new Date("2026-12-25T00:00:00.000Z"),
+  reserveeJusquAt: new Date("2027-01-24T00:00:00.000Z"),
   echueAt: null,
   rendezVousPrisAt: null,
   rendezVousAt: null,
@@ -88,7 +88,7 @@ describe("lireReservations", () => {
 });
 
 describe("enregistrerReservation", () => {
-  const jusqua = new Date("2026-12-25T00:00:00.000Z");
+  const jusqua = new Date("2027-01-24T00:00:00.000Z");
 
   it("crée la ligne avec la règle « rendez_vous »", async () => {
     await enregistrerReservation("p1", jusqua);
