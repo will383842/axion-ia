@@ -202,16 +202,22 @@ beforeEach(() => {
 });
 
 describe("proposerPourRendezVous", () => {
-  for (const status of ["canceled", "no_show"]) {
-    it(`Calendly « ${status} » : rien n'est proposé`, async () => {
-      presentation("p1");
-      evenement("e1", "dirigeant@acme-industrie.fr", { status });
-      expect(await proposerPourRendezVous({ calendlyEventId: "e1" })).toBe(0);
-      expect(bd.propositions).toHaveLength(0);
-    });
-  }
+  // Lot 5 (fusionné) : un rendez-vous ANNULÉ est proposé quand même (le dépôt ne sait pas qui a
+  // annulé) ; la validation le refuse, la console le marque « non tenu » (lot 6).
+  it("Calendly « canceled » : proposé quand même (le lot 6 le marque et le refuse)", async () => {
+    presentation("p1");
+    evenement("e1", "dirigeant@acme-industrie.fr", { status: "canceled" });
+    expect(await proposerPourRendezVous({ calendlyEventId: "e1" })).toBe(1);
+  });
 
-  for (const statut of ["annule", "absent", "reporte"]) {
+  it("Calendly « no_show » : rien n'est proposé", async () => {
+    presentation("p1");
+    evenement("e1", "dirigeant@acme-industrie.fr", { status: "no_show" });
+    expect(await proposerPourRendezVous({ calendlyEventId: "e1" })).toBe(0);
+    expect(bd.propositions).toHaveLength(0);
+  });
+
+  for (const statut of ["absent", "reporte"]) {
     it(`rencontre « ${statut} » (liée à l'événement, ou seule) : rien n'est proposé`, async () => {
       presentation("p1");
       evenement("e1", "dirigeant@acme-industrie.fr", {
