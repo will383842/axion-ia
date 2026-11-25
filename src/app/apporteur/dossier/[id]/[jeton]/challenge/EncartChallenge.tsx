@@ -41,10 +41,12 @@ export function EncartChallenge({
   const p = phrasesDeLEncart(vue);
   return (
     <section
-      aria-label={vue.titre}
+      aria-labelledby="titre-challenge"
       className="border-border bg-paper mt-5 rounded-2xl border p-5 text-[17px] leading-relaxed"
     >
-      <h2 className="font-serif text-[22px] font-medium">{vue.titre}</h2>
+      <h2 id="titre-challenge" className="font-serif text-[22px] font-medium">
+        {vue.titre}
+      </h2>
       <p className="text-fg-soft mt-2">{p.principale}</p>
       <p className="text-fg-soft mt-2">{p.rassurance}</p>
       <a

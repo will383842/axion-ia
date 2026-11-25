@@ -109,6 +109,7 @@ export default async function ChallengePage({ params, searchParams }: PageProps)
               className="mt-[var(--space-admin-4)] flex flex-col gap-[var(--space-admin-2)]"
             >
               <input type="hidden" name="id" value={c.id} />
+              <input type="hidden" name="version" value={c.version} />
               <label className="flex items-start gap-2">
                 <input type="checkbox" name="case1" value="oui" required />
                 <span>J&apos;ai relu la règle et le règlement.</span>

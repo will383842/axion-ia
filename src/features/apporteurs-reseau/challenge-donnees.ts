@@ -90,6 +90,8 @@ export interface ChallengeConsole extends SaisieChallenge {
   reglementSha256: string | null;
   publieAt: Date | null;
   creeAt: Date;
+  /** Version affichée : la publication refuse si la ligne a changé depuis. */
+  version: string;
 }
 
 type Ligne = {
@@ -107,6 +109,7 @@ type Ligne = {
   statut: string;
   publieAt: Date | null;
   creeAt: Date;
+  majAt: Date;
 };
 
 function versConsole(c: Ligne): ChallengeConsole {
@@ -125,6 +128,7 @@ function versConsole(c: Ligne): ChallengeConsole {
     statut: c.statut as StatutChallenge,
     publieAt: c.publieAt,
     creeAt: c.creeAt,
+    version: c.majAt.toISOString(),
   };
 }
 
@@ -183,12 +187,22 @@ export async function modifierBrouillon(id: string, s: SaisieChallenge): Promise
  * challenge déjà publié du même produit. Transaction sérialisable : deux publications simultanées
  * ne passent pas toutes les deux.
  */
-export async function publierChallenge(id: string, auteur: string): Promise<ResultatEcriture> {
+export async function publierChallenge(
+  id: string,
+  auteur: string,
+  version: string,
+): Promise<ResultatEcriture> {
   return prisma.$transaction(
     async (tx) => {
       const c = await tx.challengeApporteur.findUnique({ where: { id } });
       if (!c || c.statut !== "brouillon")
         return { ok: false, message: "Seul un brouillon peut être publié." } as const;
+      // Ce que l'administrateur a relu doit être ce qui est figé.
+      if (c.majAt.toISOString() !== version)
+        return {
+          ok: false,
+          message: "Ce challenge vient d'être modifié : rechargez la page et relisez-le.",
+        } as const;
       const memes = await tx.challengeApporteur.findMany({
         where: { statut: "publie", produit: c.produit },
         select: { debutLe: true, finLe: true },

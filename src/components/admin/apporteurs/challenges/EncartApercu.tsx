@@ -8,7 +8,7 @@ import type { VueEncartChallenge } from "@/features/apporteurs-reseau/challenge-
 export function EncartApercu({ vue }: { vue: VueEncartChallenge }) {
   const p = phrasesDeLEncart(vue);
   return (
-    <div className="rounded-lg border p-4" aria-label="Aperçu de l'encart de l'espace">
+    <div role="group" className="rounded-lg border p-4" aria-label="Aperçu de l'encart de l'espace">
       <p className="font-semibold">{vue.titre}</p>
       <p className="mt-2">{p.principale}</p>
       <p className="mt-2">{p.rassurance}</p>

@@ -74,7 +74,9 @@ describe("rôles", () => {
       expect(r.etat).toBe("erreur");
       expect(
         await lancer(
-          publierChallengeAction(fd({ id: ID, case1: "oui", case2: "oui", case3: "oui" })),
+          publierChallengeAction(
+            fd({ id: ID, case1: "oui", case2: "oui", case3: "oui", version: "v1" }),
+          ),
         ),
       ).toContain("REDIRECT:");
       expect(await lancer(archiverChallengeAction(fd({ id: ID, confirmer: "oui" })))).toContain(
@@ -126,7 +128,9 @@ describe("création et publication", () => {
     expect(h.publier).not.toHaveBeenCalled();
     expect(
       await lancer(
-        publierChallengeAction(fd({ id: ID, case1: "oui", case2: "oui", case3: "oui" })),
+        publierChallengeAction(
+          fd({ id: ID, case1: "oui", case2: "oui", case3: "oui", version: "v1" }),
+        ),
       ),
     ).toContain("retour=");
     expect(h.publier).toHaveBeenCalledTimes(1);
@@ -149,7 +153,9 @@ describe("création et publication", () => {
       message: "Un challenge déjà publié couvre cette période.",
     } as never);
     const r = await lancer(
-      publierChallengeAction(fd({ id: ID, case1: "oui", case2: "oui", case3: "oui" })),
+      publierChallengeAction(
+        fd({ id: ID, case1: "oui", case2: "oui", case3: "oui", version: "v1" }),
+      ),
     );
     expect(decodeURIComponent(r)).toContain("Un challenge déjà publié couvre cette période.");
     h.archiver.mockResolvedValueOnce({
@@ -159,5 +165,22 @@ describe("création et publication", () => {
     const a = await lancer(archiverChallengeAction(fd({ id: ID, confirmer: "oui" })));
     expect(decodeURIComponent(a)).toContain("Seul un challenge publié peut être archivé.");
     expect(h.journal).not.toHaveBeenCalled();
+  });
+});
+
+describe("version relue", () => {
+  it("la version affichée est transmise à la publication", async () => {
+    await lancer(
+      publierChallengeAction(
+        fd({
+          id: ID,
+          case1: "oui",
+          case2: "oui",
+          case3: "oui",
+          version: "2026-11-25T10:00:00.000Z",
+        }),
+      ),
+    );
+    expect(h.publier).toHaveBeenCalledWith(ID, "adm-1", "2026-11-25T10:00:00.000Z");
   });
 });

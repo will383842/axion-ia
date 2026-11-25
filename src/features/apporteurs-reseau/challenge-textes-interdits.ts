@@ -11,9 +11,12 @@
  */
 const FORMULES: ReadonlyArray<{ motif: RegExp; libelle: string }> = [
   { motif: /\bil vous reste\b/i, libelle: "« il vous reste »" },
-  { motif: /\bplus que\b/i, libelle: "« plus que »" },
+  {
+    motif: /\bplus que (quelques|\d+|un|une|deux|trois|quatre|cinq|six|sept|huit|neuf|dix)\b/i,
+    libelle: "« plus que »",
+  },
   { motif: /\bencore \d+/i, libelle: "« encore N »" },
-  { motif: /\bderniers? jours?\b/i, libelle: "« derniers jours »" },
+  { motif: /\bderniers jours\b/i, libelle: "« derniers jours »" },
   { motif: /\bderni[èe]re chance\b/i, libelle: "« dernière chance »" },
   { motif: /\bJ-\d+/i, libelle: "« J-N »" },
   { motif: /\bne manquez pas\b/i, libelle: "« ne manquez pas »" },

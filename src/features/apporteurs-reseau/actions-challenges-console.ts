@@ -132,7 +132,7 @@ export async function publierChallengeAction(fd: FormData): Promise<void> {
   // Le `redirect` lève une exception : il reste HORS du `try`, sinon le `catch` l'avalerait.
   let message: string | null = null;
   try {
-    const r = await publierChallenge(id, s.adminId);
+    const r = await publierChallenge(id, s.adminId, texte(fd, "version"));
     if (r.ok) await tracer("challenge_apporteur.publie", id, s.adminId, {});
     else message = r.message;
   } catch (err) {

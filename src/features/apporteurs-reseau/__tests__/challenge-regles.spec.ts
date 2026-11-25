@@ -33,6 +33,10 @@ describe("filtre de formules de pression", () => {
   it("laisse passer un règlement qui dit « aucun objectif », « aucun classement »", () => {
     expect(formulesInterdites(REGLEMENT_TYPE)).toEqual([]);
     expect(formulesInterdites("Aucun objectif, aucun classement, aucun rappel.")).toEqual([]);
+    expect(formulesInterdites("Le dernier jour de paiement client est le 31 mars 2027.")).toEqual(
+      [],
+    );
+    expect(formulesInterdites("Une Journée ne compte plus que si elle est payée.")).toEqual([]);
   });
   it.each([
     "Il vous reste 3 jours",
