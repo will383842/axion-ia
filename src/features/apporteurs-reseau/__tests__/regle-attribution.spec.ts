@@ -438,6 +438,8 @@ describe("verrous du lot 2 : module pur, aucun branchement", () => {
       "features/apporteurs-reseau/declaration-regles.ts",
       "features/apporteurs-reseau/regle-attribution.ts",
       "features/apporteurs-reseau/regles.ts",
+      // Lot 1 (#2253) : module de présentation pur, lui aussi sans appelant.
+      "features/apporteurs-reseau/reservation-presentation.ts",
     ]);
   });
 });
