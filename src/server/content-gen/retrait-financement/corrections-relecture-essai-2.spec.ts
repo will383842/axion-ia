@@ -181,8 +181,9 @@ describe("voie 2 — une entrée { origine, valeur, admis } conserve un faux pos
     expect(r.proposition.surcharges ?? []).toEqual([]);
     expect(r.proposition.conservesSurDecision).toEqual({ excerpt: ["financiers"] });
     expect(() => refuserSiAmbigus([r.proposition], null)).not.toThrow();
-    // Rien n'est écrit : l'empreinte du plan est celle d'un plan sans cette ligne.
-    expect(empreintePlan([r.proposition])).toBe(empreintePlan([]));
+    // Rien n'est écrit, mais la conservation entre dans l'empreinte du plan (deuxième relecture, remarque 3).
+    expect(empreintePlan([r.proposition])).not.toBe(empreintePlan([]));
+    expect(empreintePlan([r.avant])).toBe(empreintePlan([]));
   });
 
   it("phrase réelle du rapport v2 (« équipes juridiques, RH et financières ») conservée", () => {
@@ -321,6 +322,9 @@ describe("voie 2 — une entrée { origine, valeur, admis } conserve un faux pos
       "plan de développement des compétences",
       "À inscrire au plan de développement des compétences.",
     ],
+    ["aide individuelle à la formation", "Demandez l'aide individuelle à la formation."],
+    ["datadock", "Organisme référencé Datadock."],
+    ["finançable", "Cette formation est finançable."],
   ])("le lexique dur refuse « %s », même admis mot pour mot", (_mot, phrase) => {
     expect(LEXIQUE_DUR.test(phrase)).toBe(true);
     // Quel que soit l'ambigu levé par le moteur ou par la porte 2, aucune conservation n'est possible.

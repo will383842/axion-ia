@@ -79,6 +79,13 @@ export interface Proposition {
    * de la porte 2 qu'il a admis. Rien n'est écrit pour ces champs : seuls leurs ambigus sont levés.
    */
   conservesSurDecision?: Record<string, string[]>;
+  /**
+   * Ambigus LEVÉS par une conservation sur décision, par champ : un par phrase que la porte 2 refuse et qui
+   * reste donc en ligne, citée EN ENTIER (l'ambigu du filet coupe sa citation à 160 caractères). Imprimés
+   * dans le rapport sous la ligne du champ : un seul terme de `admis` couvre toutes les phrases du champ
+   * qui le contiennent.
+   */
+  phrasesConservees?: Record<string, string[]>;
 }
 
 /** Valeurs de remplacement validées par un humain pour un cas ambigu. */
@@ -800,8 +807,15 @@ function refusDeConservation(
   if (!duChamp.every((a) => a.startsWith(prefixe + MENTION_PORTE2)))
     return "un ambigu du moteur reste sur ce champ";
   const textes = textesDe(o.valeur);
+  // Contrôle en plus sur la valeur BRUTE : les attributs HTML (href, alt) et les clés (url, href, slug) ne
+  // figurent pas dans le texte visible.
+  const brut = normaliserPourPorte2(
+    typeof o.valeur === "string" ? o.valeur : JSON.stringify(o.valeur),
+  );
   const dur = [...textes, ...(admis as string[])]
-    .map((t) => LEXIQUE_DUR.exec(normaliserPourPorte2(t))?.[0])
+    .map((t) => normaliserPourPorte2(t))
+    .concat(brut)
+    .map((t) => LEXIQUE_DUR.exec(t)?.[0])
     .find((x) => x !== undefined);
   if (dur !== undefined) return `mot du lexique dur « ${dur} »`;
   // Les deux lectures de la porte 2 : le champ entier (celle des overrides) et phrase à phrase (celle du filet).
@@ -812,6 +826,36 @@ function refusDeConservation(
   if (manquants.length > 0)
     return `terme(s) refusé(s) par la porte 2 absent(s) de admis (${manquants.join(", ")})`;
   return null;
+}
+
+/** Longueur de la citation dans un ambigu « mention restante (porte 2 : …) » du filet. */
+const CITATION_PORTE2 = 160;
+
+/**
+ * Ambigus du champ levés par une conservation, sans le préfixe « clé.champ : », sur une ligne chacun. Une
+ * citation coupée par le filet est remplacée par la phrase entière, retrouvée dans la valeur du champ ; si
+ * elle est introuvable ou ne désigne pas une seule phrase, la coupure est signalée par « … ».
+ */
+function phrasesLevees(p: Proposition, champ: string, valeur: unknown): string[] {
+  const prefixe = `${p.cle}.${champ} : `;
+  const phrases = textesDe(valeur).flatMap((t) => decouperPhrases(t));
+  return p.ambigus
+    .filter((a) => a.startsWith(prefixe))
+    .map((a) => {
+      const message = a.slice(prefixe.length);
+      const i = message.indexOf(") : « ");
+      if (i < 0 || !message.endsWith(" »")) return message;
+      const cite = message.slice(i + 6, -2);
+      let phrase = cite;
+      if (cite.length >= CITATION_PORTE2) {
+        const entieres = [
+          ...new Set(phrases.filter((ph) => ph.slice(0, CITATION_PORTE2) === cite)),
+        ];
+        phrase = entieres.length === 1 ? entieres[0]! : `${cite}…`;
+      }
+      return `${message.slice(0, i + 6)}${phrase} »`;
+    })
+    .map((m) => m.replace(/\s+/g, " ").trim());
 }
 
 /**
@@ -833,6 +877,7 @@ export function appliquerOverrides(
   const pertes: Record<string, string[]> = { ...(p.pertes ?? {}) };
   const resynchro: string[] = [];
   const conserves: Record<string, string[]> = { ...(p.conservesSurDecision ?? {}) };
+  const phrasesConservees: Record<string, string[]> = { ...(p.phrasesConservees ?? {}) };
   for (const [champ, o] of Object.entries(surcharges)) {
     if (o.valeur === "" || o.valeur === null || o.valeur === undefined) {
       ignores.push(`${p.cle}.${champ} : valeur vide (gabarit non rempli), override ignoré`);
@@ -850,7 +895,10 @@ export function appliquerOverrides(
         ignores.push(
           `${p.cle}.${champ} : conservation sur décision refusée (${refus}), override ignoré`,
         );
-      else conserves[champ] = [...o.admis];
+      else {
+        conserves[champ] = [...o.admis];
+        phrasesConservees[champ] = phrasesLevees(p, champ, o.valeur);
+      }
       continue;
     }
     const sale = valeurSale(champ, o.valeur);
@@ -922,6 +970,7 @@ export function appliquerOverrides(
       surcharges: [...(p.surcharges ?? []), ...appliques],
       ...(Object.keys(pertes).length > 0 ? { pertes } : {}),
       ...(Object.keys(conserves).length > 0 ? { conservesSurDecision: conserves } : {}),
+      ...(Object.keys(phrasesConservees).length > 0 ? { phrasesConservees } : {}),
     },
     ignores,
   };
@@ -1003,13 +1052,30 @@ export function champsARestaurer(avant: Champs, apres: Champs): Champs {
   return out;
 }
 
-/** Empreinte du plan : (clé, valeurs après) triés. `apply` exige la même que l'essai à blanc. */
+/**
+ * Empreinte du plan : (clé, valeurs après) triés. `apply` exige la même que l'essai à blanc.
+ *
+ * Deuxième relecture, remarque 3 : les champs « conservés sur décision » entrent dans l'empreinte, en paires
+ * (clé, champs et termes admis) triées — une entrée `admis` ajoutée, retirée ou modifiée après l'essai à
+ * blanc fait refuser l'apply. Sans aucune conservation, l'empreinte est EXACTEMENT celle d'avant (même
+ * valeur hachée) : un essai à blanc sans entrée `admis` garde son `PLAN_SHA`.
+ */
 export function empreintePlan(propositions: readonly Proposition[]): string {
+  const tri = (a: string, b: string): number => (a < b ? -1 : a > b ? 1 : 0);
   const stable = [...propositions]
     .filter((p) => Object.keys(p.apres).length > 0)
     .sort((a, b) => a.cle.localeCompare(b.cle))
     .map((p) => [p.cle, p.apres]);
-  return empreinte(stable);
+  const conserves = propositions
+    .filter((p) => Object.keys(p.conservesSurDecision ?? {}).length > 0)
+    .map((p) => [
+      p.cle,
+      Object.entries(p.conservesSurDecision ?? {})
+        .map(([champ, termes]) => [champ, [...termes].sort(tri)] as [string, string[]])
+        .sort((a, b) => tri(a[0], b[0])),
+    ])
+    .sort((a, b) => tri(a[0] as string, b[0] as string));
+  return conserves.length === 0 ? empreinte(stable) : empreinte({ apres: stable, conserves });
 }
 
 export function resume(propositions: readonly Proposition[]): {

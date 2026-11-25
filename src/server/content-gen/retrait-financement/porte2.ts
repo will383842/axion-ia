@@ -57,18 +57,18 @@ const FINANCE_SECTEUR =
  *   (`PEC_ADMISE`) et sans terme budgétaire dans la phrase (`PEC_ET_BUDGET`).
  * - « financ… » : refusé sous toutes ses formes (verbe, adverbe, « ressources / participation financière »),
  *   sauf les emplois de secteur de `FINANCE_SECTEUR` (« la finance », « directeur financier »…).
- * - « rembours… », « éligib… », « plan de développement des compétences » : refusés sans complément exigé.
+ * - « rembours… », « éligib… », « plan(s) de développement des compétences » : refusés sans complément exigé.
  */
 export const INTERDITS_PUBLICS = new RegExp(
   [
-    "\\b(?:OPCOs?|OPCA|O\\.P\\.C\\.O\\.)(?![\\w])",
+    "\\b(?:OPCOs?|OPCAs?|O\\.P\\.C\\.O\\.)(?![\\w])",
     "qualiopi",
     "\\bCPF\\b",
     "compte[\\s-]+personnel[\\s-]+de[\\s-]+formation",
-    "personal training account",
+    "personal[\\s-]+training[\\s-]+account",
     "mon[\\s-]?compte[\\s-]?formation",
     "france[\\s-]+travail",
-    "p[ôo]le[- ]emploi",
+    "p[ôo]le[\\s-]+emploi",
     "\\bAIF\\b",
     // V3-2 : toute la famille « financ… » (finançait, financièrement, ressources financières, cofinancé…),
     // hors emplois de secteur.
@@ -78,7 +78,7 @@ export const INTERDITS_PUBLICS = new RegExp(
     "op[ée]rateurs?[\\s-]+de[\\s-]+comp[ée]tences",
     "rembours\\w*",
     "[ée]ligib\\w*",
-    "plan\\s+de\\s+d[ée]veloppement\\s+des\\s+comp[ée]tences",
+    "plans?\\s+de\\s+d[ée]veloppement\\s+des\\s+comp[ée]tences",
     "\\bfund(?:s|ing|ed)?\\b",
     "subvention",
     "subrogation",
@@ -124,18 +124,31 @@ export function normaliserPourPorte2(t: string): string {
  * Lexique « dur » (relecture des correctifs de l'essai à blanc n° 2, bloquant 1, voie 2) : ces mots ne
  * désignent QUE le financement de la formation. Aucune décision « conservé sur décision » ne peut les garder,
  * ni dans la valeur, ni dans la liste `admis`. Liste fermée, celle de la relecture.
+ *
+ * Deuxième relecture, remarque 1 : la liste porte aussi les formes écrites EN TOUTES LETTRES des mêmes mots
+ * (OPCA, opérateurs de compétences, compte personnel de formation, Mon Compte Formation, Pôle emploi,
+ * personal training account), avec les motifs d'`INTERDITS_PUBLICS`, et le pluriel « plans de développement
+ * des compétences ».
  */
 export const LEXIQUE_DUR = new RegExp(
   [
-    "\\b(?:OPCOs?|O\\.P\\.C\\.O\\.)(?![\\w])",
+    "\\b(?:OPCOs?|OPCAs?|O\\.P\\.C\\.O\\.)(?![\\w])",
+    "op[ée]rateurs?[\\s-]+de[\\s-]+comp[ée]tences",
     "\\bCPF\\b",
+    "compte[\\s-]+personnel[\\s-]+de[\\s-]+formation",
+    "mon[\\s-]?compte[\\s-]?formation",
+    "personal[\\s-]+training[\\s-]+account",
     "france[\\s-]+travail",
+    "p[ôo]le[\\s-]+emploi",
     "\\bAIF\\b",
     "\\bEDOF\\b",
     "qualiopi",
     "subrogation",
     "\\bFNE\\b",
-    "plan\\s+de\\s+d[ée]veloppement\\s+des\\s+comp[ée]tences",
+    "aide\\s+individuelle\\s+[àa]\\s+la\\s+formation",
+    "datadock",
+    "finan[cç]ables?",
+    "plans?\\s+de\\s+d[ée]veloppement\\s+des\\s+comp[ée]tences",
   ].join("|"),
   "i",
 );
