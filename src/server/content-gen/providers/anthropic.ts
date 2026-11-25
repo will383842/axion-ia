@@ -246,7 +246,6 @@ export function __simulerNouveauProcessusCles(): void {
 /**
  * Appelle l'API avec rotation des clés s'il y en a PLUSIEURS ; avec une seule clé, appel
  * direct sans marque ni alerte (comportement strictement identique à l'ancien).
- * `
  */
 function appelerAvecCles<T>(appel: (cle?: string) => Promise<T>): Promise<T> {
   const env = process.env as EnvCles;
