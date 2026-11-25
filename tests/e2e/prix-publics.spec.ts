@@ -84,9 +84,37 @@ const EXEMPLE_DE_CALCUL = [
   /(?<![\d.,])9 450 €/g,
 ];
 
+/**
+ * EXCEPTION ÉTROITE (25/11/2026, décision du pilote) — deux montants de CONDITIONS, pas des prix :
+ * (a) le seuil de la garantie « 3 fois le prix » = `MULTIPLE_GARANTIE` × 1 490 € = 4 470 €
+ *     (`seuilGarantieEur()`, `src/content/journee-ia-commun.ts`). Littéral ici (le test e2e
+ *     n'importe pas `src/`) ; `tests/unit/ci/prix-publics-seuil-garantie.spec.ts` vérifie qu'il
+ *     égale la constante. Toléré UNIQUEMENT à moins de 200 caractères de « gains identifiés »
+ *     ou « 3 fois » ;
+ * (b) « au moins 5 000 € HT » : condition de la déduction (`SEUIL_DEVIS_DEDUCTION_EUR`), sous
+ *     sa forme brute, échappée (&#x27; / ') ou RSC. Aucun autre montant n'est exempté.
+ */
+const SEUIL_GARANTIE_LITTERAL = /(?<![\d.,])4 470 €/g;
+const MOTS_GARANTIE = /gains identifi|3 fois/;
+const CONDITION_DEDUCTION = /au moins 5 000 € HT/g;
+const FENETRE_GARANTIE = 200;
+
+function retirerConditionsNonTarifaires(t: string): string {
+  let out = t.replace(CONDITION_DEDUCTION, "");
+  out = out.replace(SEUIL_GARANTIE_LITTERAL, (m, offset: number) => {
+    const voisinage = out.slice(
+      Math.max(0, offset - FENETRE_GARANTIE),
+      offset + m.length + FENETRE_GARANTIE,
+    );
+    return MOTS_GARANTIE.test(voisinage) ? "" : m;
+  });
+  return out;
+}
+
 function montantsInterdits(corps: string, url?: string): string[] {
   let t = normaliser(corps).replace(JOURNEE, "");
   for (const r of HORS_SUJET) t = t.replace(r, "");
+  t = retirerConditionsNonTarifaires(t);
   // « 9 450 € » n'est exempté que si la page porte bien la légende « de temps pay… » (le « é »
   // peut être échappé dans le flux RSC : on ne teste donc que le préfixe).
   if (url && URLS_EXEMPLE_DE_CALCUL.has(url) && /de temps pay/.test(t)) {
