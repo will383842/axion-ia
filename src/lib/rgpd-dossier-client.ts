@@ -52,6 +52,26 @@ export const EXCLUSIONS_EXPORT_DOSSIER: ReadonlyArray<{
   readonly motif: string;
 }> = [
   {
+    modele: "ApporteurChangementIban",
+    motif:
+      "la demande de changement de compte bancaire déposée depuis votre espace d'apporteur (lot 1 du chantier, 2026-11-26 : tables créées, interrupteur éteint, aucune ligne). L'export de ces données (IBAN demandé rendu masqué) est livré avec le lot « RGPD » du même chantier, avant l'allumage ; d'ici là, une demande est traitée à la main sous un mois (contact@axion-ia.com).",
+  },
+  {
+    modele: "ApporteurChangementIbanRib",
+    motif:
+      "la demande de changement de compte bancaire déposée depuis votre espace d'apporteur (lot 1 du chantier, 2026-11-26 : tables créées, interrupteur éteint, aucune ligne). L'export de ces données (IBAN demandé rendu masqué) est livré avec le lot « RGPD » du même chantier, avant l'allumage ; d'ici là, une demande est traitée à la main sous un mois (contact@axion-ia.com).",
+  },
+  {
+    modele: "ApporteurIbanHistorique",
+    motif:
+      "l'historique de vos comptes bancaires successifs (lot 1 du chantier, 2026-11-26 : tables créées, interrupteur éteint, aucune ligne). L'export de ces données (IBAN rendu masqué) est livré avec le lot « RGPD » du même chantier, avant l'allumage ; d'ici là, une demande est traitée à la main sous un mois (contact@axion-ia.com).",
+  },
+  {
+    modele: "ApporteurVirementCompte",
+    motif:
+      "la demande de changement de compte bancaire déposée depuis votre espace d'apporteur (lot 1 du chantier, 2026-11-26 : tables créées, interrupteur éteint, aucune ligne). L'export de ces données (IBAN demandé rendu masqué) est livré avec le lot « RGPD » du même chantier, avant l'allumage ; d'ici là, une demande est traitée à la main sous un mois (contact@axion-ia.com).",
+  },
+  {
     modele: "ConsoleCommande",
     motif:
       "la copie, transmise à notre console des automatisations, de ce que vous avez choisi en " +

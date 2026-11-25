@@ -41,6 +41,7 @@ describe("migration contacts_guide_reseau_origine_optionnelle", () => {
       "20261125130000_apporteurs_rdv_motifs",
       "20261125150000_apporteur_resiliation",
       "20261126090000_devis_journee_ia",
+      "20261126120000_apporteur_changement_iban",
     ]);
     expect(dossiers.indexOf(NOM)).toBeGreaterThan(
       dossiers.indexOf("20261108140000_contacts_guide_reseau"),

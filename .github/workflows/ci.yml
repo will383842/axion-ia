@@ -1613,6 +1613,13 @@ jobs:
         run: |
           PGPASSWORD=ci_password_dummy psql -h localhost -U axion_ia_ci -d axion_ia_ci \
             -v ON_ERROR_STOP=1 -f tests/sql/signature-renforcee-comportement.sql
+      # Changement d'IBAN d'un apporteur (2026-11-26, lot 1) : une seule demande ouverte par apporteur,
+      # IBAN jamais en clair (CHECK sur le format chiffré), RIB borné à 10 Mo, historique et compte virement
+      # en ajout seul, demande jamais supprimée, transitions d'état gardées par déclencheur. Cas ANNULÉS.
+      - name: Changement d'IBAN des apporteurs — comportement SQL
+        run: |
+          PGPASSWORD=ci_password_dummy psql -h localhost -U axion_ia_ci -d axion_ia_ci \
+            -v ON_ERROR_STOP=1 -f tests/sql/apporteur-changement-iban-comportement.sql
       # ADR 0060 (2026-09-30) — le journal des réouvertures de dossier de session
       # est en ajout seul : UPDATE/DELETE refusés par trigger, motif de
       # réouverture ≥ 10 caractères par CHECK, deux réouvertures = deux lignes,

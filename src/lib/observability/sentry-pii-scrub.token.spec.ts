@@ -15,6 +15,8 @@ import { describe, it, expect } from "vitest";
 
 import { jetonQuestionnaire } from "@/server/visio/questionnaire-en-ligne/jeton";
 import {
+  corpsAIgnorer,
+  estRouteARequeteSecrete,
   piiScrubBeforeSend,
   piiScrubBeforeSendTransaction,
 } from "@/lib/observability/sentry-pii-scrub";
@@ -149,5 +151,69 @@ describe("questionnaire de cadrage en ligne — le jeton du lien client (2026-10
     const url = `https://axion-ia.com/questionnaire/${ID}`;
     const nettoye = piiScrubBeforeSend({ request: { url } } as never);
     expect(nettoye?.request?.url).toBe(url);
+  });
+});
+
+describe("changement d'IBAN d'un apporteur (plan apporteurs-changement-iban, lot 3)", () => {
+  const DEMANDE = "9f1c2b3a-4d5e-4f60-8a7b-1c2d3e4f5a6b";
+  // Forme d'une signature de `fabriqueLienSigne` : base64url, sans point.
+  const SIGNATURE = "Zm9vYmFyYmF6cXV4MTIzNDU2Nzg5MGFiY2RlZmdoaWprbG1ub3A";
+  const LIEN = `/apporteur/dossier/compte/${DEMANDE}/${SIGNATURE}`;
+
+  it("🔴 masque la signature du lien de confirmation ou d'opposition dans l'URL", () => {
+    const nettoye = piiScrubBeforeSend({
+      request: { url: `https://axion-ia.com${LIEN}` },
+    } as never);
+    expect(nettoye?.request?.url).not.toContain(SIGNATURE);
+    expect(nettoye?.request?.url).toContain(`/apporteur/dossier/compte/${DEMANDE}/[TOKEN]`);
+  });
+
+  it("🔴 la requête entière est supprimée : corps, cookies, query, en-têtes sensibles", () => {
+    expect(estRouteARequeteSecrete(LIEN)).toBe(true);
+    expect(estRouteARequeteSecrete(`POST https://axion-ia.com${LIEN}`)).toBe(true);
+    expect(corpsAIgnorer(`https://axion-ia.com${LIEN}`)).toBe(true);
+    const nettoye = piiScrubBeforeSend({
+      request: {
+        url: `https://axion-ia.com${LIEN}?s=${SIGNATURE}`,
+        data: { signature: SIGNATURE },
+        cookies: { a: "b" },
+        query_string: `s=${SIGNATURE}`,
+        headers: { referer: `https://axion-ia.com${LIEN}`, "user-agent": "x" },
+      },
+    } as never);
+    expect(nettoye?.request?.data).toBeUndefined();
+    expect(nettoye?.request?.cookies).toBeUndefined();
+    expect(nettoye?.request?.query_string).toBeUndefined();
+    expect(JSON.stringify(nettoye)).not.toContain(SIGNATURE);
+  });
+
+  it("🔴 la route de la console qui reçoit l'IBAN recopié perd son corps, sous n'importe quel préfixe d'administration", () => {
+    const IBAN_RECOPIE = "FR7630006000011234567890189";
+    for (const chemin of [
+      "/fr/gestion-x7/apporteurs/changements-de-compte/9f1c2b3a",
+      "/gestion-x7/apporteurs/changements-de-compte",
+      "/fr/[adminPrefix]/apporteurs/changements-de-compte/[id]",
+    ]) {
+      expect(estRouteARequeteSecrete(chemin), chemin).toBe(true);
+      expect(estRouteARequeteSecrete(`POST https://axion-ia.com${chemin}`), chemin).toBe(true);
+      expect(corpsAIgnorer(`https://axion-ia.com${chemin}`), chemin).toBe(true);
+      const nettoye = piiScrubBeforeSend({
+        request: { url: `https://axion-ia.com${chemin}`, data: { ibanRecopie: IBAN_RECOPIE } },
+        transaction: `POST ${chemin}`,
+      } as never);
+      expect(nettoye?.request?.data, chemin).toBeUndefined();
+      expect(JSON.stringify(nettoye), chemin).not.toContain(IBAN_RECOPIE);
+    }
+  });
+
+  it("contre-épreuve : les autres pages de la console apporteurs restent lisibles", () => {
+    for (const chemin of [
+      "/fr/gestion-x7/apporteurs",
+      "/fr/gestion-x7/apporteurs/commissions",
+      "/fr/gestion-x7/apporteurs/9f1c2b3a",
+      "/fr/gestion-x7/apporteurs/changements-de-comptes-autres",
+    ]) {
+      expect(estRouteARequeteSecrete(chemin), chemin).toBe(false);
+    }
   });
 });

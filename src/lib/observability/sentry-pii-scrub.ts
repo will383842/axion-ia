@@ -92,6 +92,10 @@ const SEGMENTS_SECRETS: ReadonlyArray<RegExp> = [
   /(\/questionnaire\/[0-9a-fA-F-]{36}\/)[^/?#]+/gi,
   // Dossier en ligne d'un apporteur (2026-10-05) : `/apporteur/dossier/<uuid>/<jeton>`.
   /(\/apporteur\/dossier\/[0-9a-fA-F-]{36}\/)[^/?#]+/gi,
+  // Liens de CONFIRMATION et d'OPPOSITION d'un changement d'IBAN (plan apporteurs-changement-iban, lot 3) :
+  // `/apporteur/dossier/compte/<idDemande>/<signature>`. La signature autorise à confirmer ou à bloquer ;
+  // elle n'est pas couverte par le motif ci-dessus (le segment `compte` n'est pas un identifiant).
+  /(\/apporteur\/dossier\/compte\/[0-9a-fA-F-]{36}\/)[^/?#]+/gi,
   // Page publique de signature (S6b) : `/portail/signer/<jeton>`.
   /(\/portail\/signer\/)[^/?#]+/gi,
   // Dossier en ligne d'un formateur indépendant (lot L5) : `/formateur/dossier/<uuid>/<jeton>`.
@@ -142,12 +146,24 @@ function redactString(input: unknown): unknown {
 const ROUTE_A_REQUETE_SECRETE =
   /^(?:[A-Z]+\s+)?(?:https?:\/\/[^/]+)?(?:\/(?:fr|en))?\/(?:questionnaire|document|apporteur\/dossier|portail\/signer|formateur\/dossier|guide-reseau|api\/guide-ia\/telecharger)(?:\/|$|\?)/i;
 
+/**
+ * Routes de la CONSOLE dont la requête porte un IBAN en ENTRÉE (plan apporteurs-changement-iban, §2.2 point 12,
+ * lot 3) : l'administrateur recopie l'IBAN lu sur le RIB pour le contrôle d'empreinte, et l'action le reçoit dans
+ * le corps. Le préfixe d'administration est variable (`[adminPrefix]`) : le motif ne le suppose pas et vise le
+ * segment `apporteurs/changements-de-compte`, où qu'il soit. Le corps, les cookies et la query sont SUPPRIMÉS.
+ */
+const ROUTE_CONSOLE_A_REQUETE_SECRETE =
+  /^(?:[A-Z]+\s+)?(?:https?:\/\/[^/]+)?(?:\/[^/?#]+)*?\/apporteurs\/changements-de-compte(?:\/|$|\?|#)/i;
+
 /** En-têtes retirés en entier sur ces routes (en minuscules). */
 const ENTETES_RETIRES = new Set(["next-router-state-tree", "next-action", "referer", "cookie"]);
 
 /** L'URL (ou le nom de transaction) vise-t-elle une route à requête secrète ? */
 export function estRouteARequeteSecrete(url: unknown): boolean {
-  return typeof url === "string" && ROUTE_A_REQUETE_SECRETE.test(url);
+  return (
+    typeof url === "string" &&
+    (ROUTE_A_REQUETE_SECRETE.test(url) || ROUTE_CONSOLE_A_REQUETE_SECRETE.test(url))
+  );
 }
 
 /**
