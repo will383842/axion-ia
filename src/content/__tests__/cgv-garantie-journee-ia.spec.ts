@@ -88,6 +88,25 @@ describe("CGV : garantie de la Journée IA (art. 47.10)", () => {
       });
     }
 
+    describe("47.10 ne dépend plus du questionnaire de préparation", () => {
+      const a4710 = () => {
+        const a47 = corps(47);
+        return a47.slice(a47.indexOf("47.10 Garantie"));
+      };
+      it("ne mentionne aucun questionnaire", () => {
+        expect(a4710()).not.toMatch(/questionnaire/i);
+      });
+      for (const phrase of [
+        "sans autre formalité",
+        "Si le Client n'indique pas de coût horaire",
+        "au plus tard pendant la journée",
+      ]) {
+        it(`contient « ${phrase} »`, () => {
+          expect(a4710()).toContain(phrase);
+        });
+      }
+    });
+
     it("ne propose plus de tenue à distance", () => {
       expect(corps(47)).not.toContain("tenue à distance");
     });
