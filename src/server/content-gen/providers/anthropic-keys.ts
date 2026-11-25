@@ -119,6 +119,11 @@ export interface EtatCles {
   motif(index: 1 | 2 | 3): Promise<MotifIndisponibilite | null>;
   /** Pose la marque (Redis avec durée de vie ; mémoire si Redis est en panne). */
   marquer(index: 1 | 2 | 3, motif: MotifIndisponibilite): Promise<void>;
+  /**
+   * Vue de l'état lue en UN seul `mget` (les 3 clés × 2 motifs) : à prendre une fois par
+   * appel de rotation. Les marques posées ensuite par la vue y sont aussitôt visibles.
+   */
+  instantane?(): Promise<EtatCles>;
 }
 
 const DUREES_MS: Record<MotifIndisponibilite, number> = {
@@ -135,6 +140,10 @@ export function cleRedisEtat(index: 1 | 2 | 3, motif: MotifIndisponibilite): str
 const DELAI_REDIS_MS = 1_000;
 /** Un avertissement « Redis en panne » au plus toutes les 60 s et par processus. */
 const INTERVALLE_AVERTISSEMENT_MS = 60_000;
+/** Après une erreur Redis : plus aucune requête Redis pendant 60 s (repli mémoire). */
+const PAUSE_REDIS_MS = 60_000;
+const INDEX: ReadonlyArray<1 | 2 | 3> = [1, 2, 3];
+const MOTIFS: ReadonlyArray<MotifIndisponibilite> = ["epuisee", "invalide"];
 
 function avecDelai<T>(promesse: Promise<T>): Promise<T> {
   let minuteur: ReturnType<typeof setTimeout> | undefined;
@@ -158,9 +167,14 @@ export function creerEtatCles(options: OptionsEtat = {}): EtatCles {
   /** `${index}:${motif}` -> instant d'expiration (repli quand Redis ne répond pas). */
   const memoire = new Map<string, number>();
   let dernierAvertissement = 0;
+  /** Instant avant lequel Redis n'est plus interrogé (0 : disponible). */
+  let redisPauseJusqua = 0;
+
+  const redisUtilisable = (): boolean => redis !== undefined && now() >= redisPauseJusqua;
 
   const avertir = (operation: string): void => {
     const t = now();
+    redisPauseJusqua = t + PAUSE_REDIS_MS;
     if (dernierAvertissement !== 0 && t - dernierAvertissement < INTERVALLE_AVERTISSEMENT_MS) {
       return;
     }
@@ -182,19 +196,27 @@ export function creerEtatCles(options: OptionsEtat = {}): EtatCles {
     return true;
   };
 
-  return {
+  const present = (v: unknown): boolean => v !== null && v !== undefined;
+
+  /** La mémoire ne contient que des marques posées pendant une panne Redis. */
+  const motifMemoire = (index: number): MotifIndisponibilite | null => {
+    if (enMemoire(index, "epuisee")) return "epuisee";
+    if (enMemoire(index, "invalide")) return "invalide";
+    return null;
+  };
+
+  const etat: EtatCles = {
     async motif(index) {
-      // La mémoire ne contient que des marques posées pendant une panne Redis.
-      if (enMemoire(index, "epuisee")) return "epuisee";
-      if (enMemoire(index, "invalide")) return "invalide";
-      if (!redis) return null;
+      const local = motifMemoire(index);
+      if (local !== null) return local;
+      if (!redis || !redisUtilisable()) return null;
       try {
         const reponse = await avecDelai(
           redis.mget(cleRedisEtat(index, "epuisee"), cleRedisEtat(index, "invalide")),
         );
         if (!Array.isArray(reponse)) return null;
-        if (reponse[0] !== null && reponse[0] !== undefined) return "epuisee";
-        if (reponse[1] !== null && reponse[1] !== undefined) return "invalide";
+        if (present(reponse[0])) return "epuisee";
+        if (present(reponse[1])) return "invalide";
         return null;
       } catch {
         avertir("lecture");
@@ -202,7 +224,7 @@ export function creerEtatCles(options: OptionsEtat = {}): EtatCles {
       }
     },
     async marquer(index, motif) {
-      if (redis) {
+      if (redis && redisUtilisable()) {
         try {
           await avecDelai(
             redis.set(cleRedisEtat(index, motif), "1", "EX", DUREES_MS[motif] / 1000),
@@ -214,7 +236,41 @@ export function creerEtatCles(options: OptionsEtat = {}): EtatCles {
       }
       memoire.set(`${index}:${motif}`, now() + DUREES_MS[motif]);
     },
+    async instantane() {
+      /** `${index}:${motif}` lus dans Redis, complétés par les marques posées via la vue. */
+      const lus = new Set<string>();
+      if (redis && redisUtilisable()) {
+        const cles = INDEX.flatMap((i) => MOTIFS.map((m) => cleRedisEtat(i, m)));
+        try {
+          const reponse = await avecDelai(redis.mget(...cles));
+          if (Array.isArray(reponse)) {
+            let k = 0;
+            for (const i of INDEX) {
+              for (const m of MOTIFS) {
+                if (present(reponse[k++])) lus.add(`${i}:${m}`);
+              }
+            }
+          }
+        } catch {
+          avertir("lecture");
+        }
+      }
+      return {
+        async motif(index) {
+          const local = motifMemoire(index);
+          if (local !== null) return local;
+          if (lus.has(`${index}:epuisee`)) return "epuisee";
+          if (lus.has(`${index}:invalide`)) return "invalide";
+          return null;
+        },
+        async marquer(index, motif) {
+          lus.add(`${index}:${motif}`);
+          await etat.marquer(index, motif);
+        },
+      };
+    },
   };
+  return etat;
 }
 
 /** Première clé disponible selon l'ordre ; `null` si aucune. */
@@ -384,7 +440,9 @@ export async function appelerAvecRotationCles<T>(
   appel: (cle: string) => Promise<T>,
   options: OptionsRotation,
 ): Promise<T> {
-  const { env, usage, etat } = options;
+  const { env, usage } = options;
+  // UN seul mget Redis pour tout l'appel (les marques posées en cours de route y sont tenues).
+  const etat = options.etat.instantane ? await options.etat.instantane() : options.etat;
   const journal: Journal = options.journal ?? ((m: string) => console.warn(m));
   if (listerCles(env, usage, journal).length === 0) {
     throw new ProviderError("Anthropic : aucune clé configurée", "auth_failed", "anthropic", false);

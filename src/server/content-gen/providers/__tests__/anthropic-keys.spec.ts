@@ -205,6 +205,65 @@ describe("état des clés (Redis partagé, repli mémoire)", () => {
     });
     expect(await etat.motif(1)).toBeNull();
   });
+  it("UN seul mget par appel de rotation, même avec deux clés refusées puis une réussie", async () => {
+    const redis = creerFauxRedis();
+    const etat = creerEtatCles({ redis });
+    const appel = vi.fn(async (cle: string) => {
+      if (cle !== K3) throw brute(402, "x");
+      return "ok";
+    });
+    await expect(
+      appelerAvecRotationCles(appel, {
+        env: ENV,
+        usage: "content_gen",
+        etat,
+        journal: vi.fn(),
+      }),
+    ).resolves.toBe("ok");
+    expect(appel.mock.calls.map((c) => c[0])).toEqual([K1, K2, K3]);
+    expect(redis.lectures).toHaveLength(1);
+    // Les marques posées pendant l'appel sont bien écrites.
+    expect(redis.ttls.has("anthropic:cle:1:epuisee")).toBe(true);
+    expect(redis.ttls.has("anthropic:cle:2:epuisee")).toBe(true);
+  });
+  it("UN seul mget aussi quand toutes les clés sont épuisées (erreur finale)", async () => {
+    const redis = creerFauxRedis();
+    const etat = creerEtatCles({ redis });
+    const appel = vi.fn(async (_cle: string) => {
+      throw brute(402, "x");
+    });
+    await expect(
+      appelerAvecRotationCles(appel, {
+        env: ENV,
+        usage: "content_gen",
+        etat,
+        journal: vi.fn(),
+      }),
+    ).rejects.toMatchObject({ toutesEpuisees: true, code: "quota_exhausted" });
+    expect(redis.lectures).toHaveLength(1);
+  });
+  it("après une erreur Redis : plus aucune requête Redis pendant 60 s (repli mémoire), puis reprise", async () => {
+    const h = horloge();
+    const set = vi.fn(async () => {
+      throw new Error("ECONNREFUSED");
+    });
+    const mget = vi.fn(async () => {
+      throw new Error("ECONNREFUSED");
+    });
+    const etat = creerEtatCles({ now: h.now, redis: { set, mget }, journal: vi.fn() });
+    await etat.motif(1); // erreur : le disjoncteur s'ouvre
+    expect(mget).toHaveBeenCalledTimes(1);
+    h.avancer(59_000);
+    await etat.motif(1);
+    await etat.marquer(1, "epuisee");
+    await etat.instantane?.();
+    expect(mget).toHaveBeenCalledTimes(1);
+    expect(set).not.toHaveBeenCalled();
+    expect(await etat.motif(1)).toBe("epuisee"); // repli mémoire
+    h.avancer(2_000);
+    await etat.motif(2);
+    expect(mget).toHaveBeenCalledTimes(2);
+  });
   it("aucune clé API dans les clés ni les valeurs Redis", async () => {
     const redis = creerFauxRedis();
     const etat = creerEtatCles({ redis });
