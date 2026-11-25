@@ -230,7 +230,7 @@ export const CHOLET_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Quels sont les tarifs publics d'Axion-IA pour intervenir à Cholet ?",
-      a: "Nos tarifs publics démarrent à {{price:audit-flash|flat}} pour l'Audit sur place 4h, {{price:intervention-4h|flat}} pour une intervention ciblée et {{price:intervention-dirigeants|flat}} pour une Implémentation ou un accompagnement un-à-un. Le déplacement à Cholet est inclus pour ces formats.",
+      a: "Nos tarifs publics démarrent à {{price:audit-flash|flat}} pour l'Audit sur place 4h, {{price:intervention-4h|flat}} pour une intervention ciblée et {{price:intervention-dirigeants|flat}} pour une Implémentation ou un accompagnement un-à-un.",
     },
     {
       q: "Quels délais pour une intervention IA à Cholet après prise de contact ?",
@@ -238,7 +238,7 @@ export const CHOLET_COPY: VilleCopy = {
     },
     {
       q: "Axion-IA intervient-elle dans les communes proches de Cholet ?",
-      a: "Oui. Nous couvrons sans surcoût les communes du Choletais : La Séguinière, Nuaillé, Le May-sur-Èvre, Saint-Léger-sous-Cholet, La Tessoualle, Mazières-en-Mauges et Saint-Christophe-du-Bois, ainsi que le reste du bassin d'emploi.",
+      a: "Oui. Nous couvrons les communes du Choletais : La Séguinière, Nuaillé, Le May-sur-Èvre, Saint-Léger-sous-Cholet, La Tessoualle, Mazières-en-Mauges et Saint-Christophe-du-Bois, ainsi que le reste du bassin d'emploi.",
     },
     {
       q: "Comment Axion-IA garantit-elle le respect du RGPD lors d'une mission à Cholet ?",

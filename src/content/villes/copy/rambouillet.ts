@@ -229,7 +229,7 @@ export const RAMBOUILLET_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Quels sont vos tarifs pour une intervention à Rambouillet ?",
-      a: "À Rambouillet (78120), l'Audit sur place 4h démarre à {{price:audit-flash|flat}}, la Formation 4 h à {{price:intervention-4h|flat}}, et l'Implémentation à {{price:impl-poc|entry}}. Tarifs publics, sans abonnement, déplacement Transilien N ou RN10 inclus.",
+      a: "À Rambouillet (78120), l'Audit sur place 4h démarre à {{price:audit-flash|flat}}, la Formation 4 h à {{price:intervention-4h|flat}}, et l'Implémentation à {{price:impl-poc|entry}}. Tarifs publics, sans abonnement.",
     },
     {
       q: "Sous quel délai vous déplacez-vous à Rambouillet ?",

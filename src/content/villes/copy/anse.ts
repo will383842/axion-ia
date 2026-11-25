@@ -65,7 +65,7 @@ export const ANSE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Anse ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Coûts de déplacement séparés du forfait, tarifs transparents.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Tarifs transparents.",
     },
   ],
 };

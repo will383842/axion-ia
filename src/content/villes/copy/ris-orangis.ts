@@ -246,7 +246,7 @@ export const RIS_ORANGIS_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Ris-Orangis ?",
-      a: "Le diagnostic et les sessions clés se font sur site à Ris-Orangis ; le suivi se poursuit en visio. Le RER D et l'A6 permettent des déplacements rapides, dont les frais sont indiqués séparément, en toute transparence.",
+      a: "Le diagnostic et les sessions clés se font sur site à Ris-Orangis ; le suivi se poursuit en visio. Le RER D et l'A6 permettent des déplacements rapides.",
     },
   ],
 };

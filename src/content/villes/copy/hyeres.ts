@@ -242,7 +242,7 @@ export const HYERES_COPY: VilleCopy = {
     },
     {
       q: "Axion-IA intervient-il dans les communes autour de Hyères ?",
-      a: "Oui. Nous nous déplaçons également à Toulon, La Garde, Carqueiranne, La Crau et dans le reste de la métropole pour des prestations sur site, sans surcoût caché.",
+      a: "Oui. Nous nous déplaçons également à Toulon, La Garde, Carqueiranne, La Crau et dans le reste de la métropole pour des prestations sur site.",
     },
     {
       q: "Comment se déroule un audit IA à Hyères ?",

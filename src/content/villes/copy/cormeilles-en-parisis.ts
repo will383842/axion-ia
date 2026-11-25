@@ -56,7 +56,7 @@ export const CORMEILLES_EN_PARISIS_COPY: VilleCopy = {
           "Tissu industriel et BTP dominant : la carrière de gypse Placoplatre (Saint-Gobain), l'usine Placo et les ~40 établissements de la ZAE Carrefour des Champs Guillaume (9,48 ha, BTP et petit transport) ont des besoins concrets — configurateurs de devis plâtrerie-construction, suivi de chantier, portails fournisseurs — que nous traitons en applications web sur mesure.",
           "Le quartier Seine Parisii (reconversion de la friche Lafarge : 1 200 logements, marina ~110 anneaux mise en eau prévue avril 2026, 1er label BBCA Quartier de France) crée une vague d'activité pour promoteurs, services de proximité, loisirs nautiques et commerces : autant de vitrines web et plateformes de réservation à lancer.",
           "Commerce de proximité concentré : ~50 commerces le long de l'avenue Foch avec la locomotive Auchan, et un droit de préemption commercial instauré par la ville en 2025 pour redynamiser le centre — un contexte propice aux e-commerce locaux, click & collect et fiches Google Business optimisées que nous déployons en multi-CMS.",
-          "Accès direct depuis Paris (ligne J Transilien depuis Saint-Lazare, A15 sortie Herblay, A115) : nos kick-offs se tiennent sur site à Cormeilles-en-Parisis, dans les Bois Rochefort, les Champs Guillaume ou avenue Foch, sans surcoût logistique disproportionné.",
+          "Accès direct depuis Paris (ligne J Transilien depuis Saint-Lazare, A15 sortie Herblay, A115) : nos kick-offs se tiennent sur site à Cormeilles-en-Parisis, dans les Bois Rochefort, les Champs Guillaume ou avenue Foch.",
         ],
         methodology: [
           {
@@ -129,7 +129,7 @@ export const CORMEILLES_EN_PARISIS_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Devis transmis à partir de 24 à 48 h selon la complexité. Sites et plateformes développés en code custom (pas de no-code opaque), avec UX/UI, design mobile-first et e-commerce multi-CMS. Hébergement en Union européenne et conformité RGPD par défaut. Vous gardez la pleine maîtrise : code source, contenus et hébergement vous appartiennent, transférables à tout intégrateur ou repris en interne, sans verrou Axion-IA. Kick-off sur site à Cormeilles-en-Parisis ; frais de déplacement éventuels calculés au cas par cas selon la zone.",
+          "Devis transmis à partir de 24 à 48 h selon la complexité. Sites et plateformes développés en code custom (pas de no-code opaque), avec UX/UI, design mobile-first et e-commerce multi-CMS. Hébergement en Union européenne et conformité RGPD par défaut. Vous gardez la pleine maîtrise : code source, contenus et hébergement vous appartiennent, transférables à tout intégrateur ou repris en interne, sans verrou Axion-IA. Kick-off sur site à Cormeilles-en-Parisis.",
       },
       en: {
         hero: "Axion-IA supports micro-businesses, SMEs and mid-caps in Cormeilles-en-Parisis (Val-d'Oise, CA Val Parisis) on their AI-augmented websites and SaaS platforms. The local fabric is distinctive: the Placoplatre quarry, owned by the Saint-Gobain group, still extracts Cormeilles gypsum — heir to the Lambert plaster works (1822) and accounting on its own for nearly 10% of France's plaster production — while the former Lafarge cement brownfield is being converted into the Seine Parisii district with its marina on the Seine. Between the Carrefour des Champs Guillaume business park (construction and transport), the Bois Rochefort leisure hub and the Avenue Foch shops, we build showcase sites, multi-CMS e-commerce and custom-code business applications, hosted in the European Union and GDPR-compliant, with UX/UI, mobile and embedded AI.",
@@ -218,7 +218,7 @@ export const CORMEILLES_EN_PARISIS_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Quels sont les tarifs pour un audit IA à Cormeilles-en-Parisis ?",
-      a: "Les audits IA à Cormeilles-en-Parisis débutent à {{price:audit-flash|flat}} pour un Audit sur place de 4 heures sur site, déplacement Williams inclus. Tarifs publics consultables sur axion-ia.com.",
+      a: "Les audits IA à Cormeilles-en-Parisis débutent à {{price:audit-flash|flat}} pour un Audit sur place de 4 heures sur site. Tarifs publics consultables sur axion-ia.com.",
     },
     {
       q: "Quels sont les délais pour une intervention IA à Cormeilles-en-Parisis ?",
