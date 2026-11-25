@@ -12,7 +12,6 @@ import type { ImgHTMLAttributes } from "react";
 import { describe, expect, it, vi } from "vitest";
 
 vi.mock("next/image", () => ({
-  // eslint-disable-next-line @next/next/no-img-element
   default: ({ src, alt }: ImgHTMLAttributes<HTMLImageElement>) => (
     <img src={String(src)} alt={alt} />
   ),
@@ -80,8 +79,14 @@ describe("une seule offre, une seule commission", () => {
     expect(t).toContain(texte(p.commission));
     expect(t.toLowerCase()).toContain("à titre indicatif");
     expect(t).toContain(
-      "si les gains identifiés ne dépassent pas 3 fois le prix de la journée, nous remboursons",
+      "si les gains identifiés n’atteignent pas 3 fois le prix HT de la journée, nous vous remboursons sous 30 jours",
     );
+    expect(t).toContain(
+      "Seule condition : la présence du décideur et des personnes prévues pendant l’audit",
+    );
+    expect(t).toContain("Le total écrit des gains vous est remis à la fin de la journée");
+    expect(t).toContain("sous 10 jours ouvrés");
+    expect(t).not.toMatch(/sans discussion|ne dépassent pas|3 jours ouvrés/i);
   });
 
   it("aucun vocabulaire interdit, sur aucune des six surfaces", () => {

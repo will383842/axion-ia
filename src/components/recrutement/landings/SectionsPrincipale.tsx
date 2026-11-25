@@ -251,8 +251,10 @@ export function SectionsPrincipale({ p, faq }: { p: Chiffres; faq?: ReactNode })
                       </svg>
                     </span>
                     <span className="t">
-                      <b>Le risque est chez nous</b> : si les gains identifiés ne dépassent pas 3
-                      fois le prix de la journée, nous remboursons, sans discussion, sous 30 jours.
+                      <b>Le risque est chez nous</b> : si les gains identifiés n’atteignent pas 3
+                      fois le prix HT de la journée, nous vous remboursons sous 30 jours. Seule
+                      condition : la présence du décideur et des personnes prévues pendant l’audit.
+                      Le total écrit des gains vous est remis à la fin de la journée.
                     </span>
                   </li>
                   <li>
@@ -262,8 +264,8 @@ export function SectionsPrincipale({ p, faq }: { p: Chiffres; faq?: ReactNode })
                       </svg>
                     </span>
                     <span className="t">
-                      <b>Dans leurs locaux, partout en France.</b> Rapport et plan d’action sur 90
-                      jours sous 3 jours ouvrés.
+                      <b>Dans leurs locaux, partout en France.</b> Rapport complet et plan d’action
+                      sur 90 jours sous 10 jours ouvrés.
                     </span>
                   </li>
                 </ul>
