@@ -20,6 +20,7 @@ import {
   MENTION_DECLARATION_OF,
   NUMERO_DECLARATION_ACTIVITE,
   RAPPORT_COMPLET,
+  SEUIL_DEVIS_DEDUCTION_EUR,
   gainExempleEur,
   remplacerJetons,
   seuilGarantieEur,
@@ -151,5 +152,9 @@ describe("le seuil de la garantie (CGV art. 47.10)", () => {
 
   it("le seuil est le multiple × le prix lu dans pricing.ts", () => {
     expect(seuilGarantieEur()).toBe(3 * JOURNEE_IA_TIER.priceFlat!);
+  });
+
+  it("le devis minimum qui ouvre la déduction est 5 000 euros HT (art. 47.7)", () => {
+    expect(SEUIL_DEVIS_DEDUCTION_EUR).toBe(5000);
   });
 });

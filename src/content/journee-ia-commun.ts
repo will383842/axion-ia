@@ -51,6 +51,9 @@ export function seuilGarantieEur(): number {
   return MULTIPLE_GARANTIE * JOURNEE_IA_TIER.priceFlat;
 }
 
+/** Montant minimum HT, avant déduction, du devis de projet qui ouvre droit à la déduction du prix de la Journée IA (CGV art. 47.7). */
+export const SEUIL_DEVIS_DEDUCTION_EUR = 5000;
+
 /** Numéro de déclaration d'activité de l'organisme de formation. */
 // Même valeur que `NDA_NUMERO` (src/server/qualiopi/legal/legal-mentions.ts) : recopiée ici pour que
 // `src/content` n’importe pas le domaine Qualiopi (garde `qualiopi:isolation-check`).
