@@ -160,6 +160,9 @@ async function recordSkippedRun(skippedReason: string): Promise<void> {
   }
 }
 
+/** Avertissement « Voyage sans référence » : émis une seule fois par processus. */
+let avertissementVoyageEmis = false;
+
 async function processJob(_job: Job<{ readonly trigger: string }>): Promise<void> {
   const since = new Date(Date.now() - 24 * 60 * 60 * 1000);
 
@@ -168,6 +171,13 @@ async function processJob(_job: Job<{ readonly trigger: string }>): Promise<void
   const { review: seuilReview, warn: seuilWarn } = getDriftThresholds(provider);
   const referenceEmbedding = await loadReferenceEmbedding(provider);
   if (!referenceEmbedding) {
+    if (provider === "voyage" && !avertissementVoyageEmis) {
+      // Avertissement unique par processus : pas d'erreur, pas de blocage de publication.
+      avertissementVoyageEmis = true;
+      console.warn(
+        "[brand-voice-drift-monitor] fournisseur voyage sans référence Voyage calibrée — comparaison de voix de marque sautée (cf. runbook R36 §4)",
+      );
+    }
     console.info("[brand-voice-drift-monitor] no reference embedding configured — skipping run");
     // 2026-09-02 — sans cette trace, la console affichait « Jamais exécuté »
     // pendant des semaines alors que le cron tournait chaque nuit à 04:00.
