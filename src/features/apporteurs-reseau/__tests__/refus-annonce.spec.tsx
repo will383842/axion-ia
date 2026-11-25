@@ -47,6 +47,13 @@ describe("le texte de l'e-mail de refus", () => {
 });
 
 describe("motif d'une présentation démentie (réservée OU confirmée)", () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+    h.deja = false;
+    h.envoyer.mockResolvedValue("envoye");
+  });
+  afterEach(() => vi.unstubAllEnvs());
+
   it("reste vrai pour une présentation d'abord confirmée : ne dit pas « pas confirmé cette présentation »", async () => {
     const html = await render(
       React.createElement(ApporteurPresentationNonRetenueEmail, {
@@ -55,9 +62,10 @@ describe("motif d'une présentation démentie (réservée OU confirmée)", () =>
       }),
     );
     expect(COPY_NON_RETENUE.motif["non-confirmee"]).toBe(
-      "L'entreprise ne nous a pas confirmé cette mise en relation.",
+      "Cette mise en relation n'a finalement pas pu aboutir.",
     );
-    expect(html).not.toContain("n&#x27;a pas confirmé cette présentation");
+    expect(COPY_NON_RETENUE.motif["non-confirmee"]).not.toMatch(/confirm/i);
+    expect(html).not.toMatch(/confirm/i);
   });
 
   it("une confirmée démentie envoie le même motif neutre", async () => {
