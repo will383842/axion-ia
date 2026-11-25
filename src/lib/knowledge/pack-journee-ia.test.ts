@@ -8,6 +8,7 @@ import { describe, expect, it } from "vitest";
 import {
   analyserPack,
   controlerFiche,
+  estGarantieChatbot,
   evaluerGardeCommit,
   importerBrouillons,
   lignesDepuisJsonl,
@@ -795,5 +796,47 @@ describe("importerBrouillons — fiches non brouillon, bodyJson", () => {
       translations: { updateMany: { data: { bodyJson: unknown } } };
     };
     expect(d.translations.updateMany.data.bodyJson).toBe(effacer);
+  });
+});
+
+describe("D03 révisée le 26/11/2026 — garantie autorisée pour le chatbot, texte encadré", () => {
+  const conforme =
+    "La journée est garantie sur les gains identifiés dans le rapport : s’ils n’atteignent pas 3 fois le prix HT de la journée, vous êtes remboursé sur demande écrite.";
+  it("accepte la fiche garantie conforme et la marque chatbot", () => {
+    const l = faq({ answer_draft: conforme });
+    expect(controlerFiche(l).ok).toBe(true);
+    expect(estGarantieChatbot(l)).toBe(true);
+    const e = versEntreeKnowledge(l);
+    expect(e.chatbotAutorise).toBe(true);
+    expect(e.entry.status).toBe("draft");
+    expect(e.entry.briefMarkdown).toContain("Chatbot : autorisée");
+  });
+  it("une fiche sans garantie n’est pas marquée chatbot", () => {
+    expect(versEntreeKnowledge(faq()).chatbotAutorise).toBe(false);
+  });
+  it("dans le pack final, une seule fiche (GEO-009) est autorisée pour le chatbot", () => {
+    const lignes = lignesDepuisJsonl(
+      readFileSync(
+        join(process.cwd(), "docs/knowledge/pack-journee-ia-2026-11-25/Base_RAG.jsonl"),
+        "utf-8",
+      ),
+    );
+    const ids = lignes
+      .filter((l) => l.type === "faq_knowledge" && estGarantieChatbot(l))
+      .map((l) => l.id);
+    expect(ids).toEqual(["GEO-009"]);
+  });
+  it("rejette « 5 fois », « 4 470 € », « 1 490 € x 3 », « sans discussion », « gain garanti »", () => {
+    for (const t of [
+      "Si les gains identifiés n’atteignent pas 5 fois le prix HT, vous êtes remboursé sur demande écrite.",
+      "Si les gains identifiés n’atteignent pas 3 fois le prix HT (4 470 €), vous êtes remboursé sur demande écrite.",
+      "Si les gains identifiés n’atteignent pas 1 490 € HT x 3, vous êtes remboursé sur demande écrite.",
+      "Si les gains identifiés n’atteignent pas 3 fois le prix HT, vous êtes remboursé sans discussion.",
+      "Nous vous garantissons un gain garanti de 3 fois le prix HT.",
+    ]) {
+      const l = faq({ answer_draft: t });
+      expect(controlerFiche(l).ok, t).toBe(false);
+      expect(estGarantieChatbot(l), t).toBe(false);
+    }
   });
 });

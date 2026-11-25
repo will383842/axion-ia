@@ -14,7 +14,9 @@
  * Doctrine du site au 25/11/2026 (`journee-ia-commun.ts`, CGV art. 47.7 et 47.10), seule
  * exception à « aucun montant autre que 1 490 € HT » et à « aucun remboursement » :
  *  - la garantie : si les GAINS IDENTIFIÉS n'atteignent pas 3 fois le prix HT,
- *    remboursement sur demande écrite, SANS montant en euros (4 470 € est rejeté) ; jamais une garantie de gain obtenu ;
+ *    remboursement sur demande écrite, SANS montant en euros (4 470 € est rejeté) ; jamais une garantie de gain obtenu.
+ *    D03 révisée le 26/11/2026 : UNE fiche « garantie » conforme au texte encadré ci-dessous est
+ *    autorisée pour le chatbot (`chatbotAutorise`) ; « sans discussion », « 5 fois » et tout montant restent rejetés ;
  *  - le seuil de déduction : un devis d'au moins 5 000 € HT signé sous 60 jours.
  * Le lieu se dit « dans vos locaux, partout en France » et rien de plus : frais, distances,
  * hébergement, repas et régions relèvent des CGV, jamais d'une fiche.
@@ -30,6 +32,8 @@ export interface LignePack {
 }
 
 export interface EntreeKnowledgeDraft {
+  /** D03 révisée : vrai pour la seule fiche garantie au texte encadré (la fiche reste un brouillon `team`). */
+  readonly chatbotAutorise: boolean;
   readonly entry: {
     readonly type: "faq";
     readonly domain: "editorial";
@@ -103,6 +107,8 @@ const MULTIPLE_RE =
   /(?<![\p{L}\d])([0-9]+|deux|quatre|cinq|six|sept|huit|neuf|dix|onze|douze|vingt)\s?(?:fois|x)(?![\p{L}\d])/giu;
 const CONTEXTE_MULTIPLE =
   /(?<![\p{L}])(?:prix|garantie|tarif|rembours\p{L}*|investissement|gains?)(?![\p{L}])/iu;
+const SANS_DISCUSSION = /sans\s+(?:aucune\s+)?discussions?(?![\p{L}])/iu;
+const DEMANDE_ECRITE = /sur\s+demande\s+[ée]crite/i;
 const QUATRE_MILLE = /(?<!\d)4[\s\u00a0\u202f.,]?470(?!\d)/;
 function autreMultiple(texte: string): boolean {
   for (const m of texte.matchAll(MULTIPLE_RE)) {
@@ -189,6 +195,8 @@ function reglesDuPack(texte: string): string[] {
   }
   if (autreMultiple(texte) || QUATRE_MILLE.test(texte))
     raisons.push("multiple de garantie : seule la garantie « 3 fois » le prix HT existe");
+  if (SANS_DISCUSSION.test(texte))
+    raisons.push("« sans discussion » interdit : le remboursement se demande par écrit");
   if (/\bbarr[ée]e?s?(?![\p{L}])/iu.test(texte))
     raisons.push("prix barré interdit : un seul prix affiché");
   if (/\bcumulables?\b/i.test(texte)) raisons.push("déduction : jamais cumulable");
@@ -241,6 +249,26 @@ function reglesDuPack(texte: string): string[] {
     );
   }
   return raisons;
+}
+
+/**
+ * D03 révisée (26/11/2026) : une fiche « garantie » est autorisée pour le chatbot si, et seulement si,
+ * elle passe toute la porte ET porte le texte encadré : 3 fois le prix HT, sur les gains identifiés,
+ * remboursement sur demande écrite. Le reste (montant, autre multiple, « sans discussion », gain
+ * garanti) est déjà rejeté par `reglesDuPack`. Une fiche qui ne parle pas de garantie n'est pas concernée.
+ */
+export function estGarantieChatbot(l: LignePack): boolean {
+  if (!controlerFiche(l).ok) return false;
+  const { titre, reponse } = texteDeLaFiche(l);
+  const t = `${titre}\n${reponse}`;
+  return (
+    /garanti/i.test(t) &&
+    GAINS_IDENTIFIES.test(t) &&
+    MULTIPLE_GARANTIE_RE.test(t) &&
+    DEMANDE_ECRITE.test(t) &&
+    /prix\s+(?:de la journ[ée]e\s+)?HT|HT\s+de la journ[ée]e|prix\s+HT/i.test(t) &&
+    !/€|euros?|\beur\b|\d/i.test(t.replace(/\b3\b/g, ""))
+  );
 }
 
 export function controlerFiche(l: LignePack): ControleFiche {
@@ -303,6 +331,7 @@ export function versEntreeKnowledge(l: LignePack): EntreeKnowledgeDraft {
   const slug = slugDeLaFiche(l.id);
   const s = (v: unknown, def = "non renseigné") => (typeof v === "string" && v ? v : def);
   const nonVerifiee = estNonVerifiee(l);
+  const chatbotAutorise = estGarantieChatbot(l);
   const note = [
     ...(nonVerifiee ? [MARQUE_NON_VERIFIE] : []),
     `[pack Journée IA ${s(l.pack, s(l.source_date, "date inconnue"))}] ${l.id}`,
@@ -312,9 +341,13 @@ export function versEntreeKnowledge(l: LignePack): EntreeKnowledgeDraft {
     `Garde de publication : ${s(l.publication_gate)}`,
     ...(nonVerifiee ? [] : [`Contrôle factuel à faire : ${s(l.factual_check)}`]),
     `Page cible : ${s(l.page_id)} — ${s(l.canonical_url)}`,
+    ...(chatbotAutorise
+      ? ["Chatbot : autorisée (D03 révisée le 26/11/2026, garantie au texte encadré)."]
+      : []),
     "Brouillon : relecture humaine requise avant toute publication. Jamais publié automatiquement.",
   ].join("\n");
   return {
+    chatbotAutorise,
     entry: {
       type: "faq",
       domain: "editorial",
@@ -393,7 +426,7 @@ export const SEUIL_QUASI_DOUBLON = 0.8;
 /** Décisions du pack qui contredisent les décisions de Williams : signalées, jamais importées. */
 const TRAITEMENT_CONTRADICTION: Record<string, string> = {
   D02: "Écartée : seul prix affiché = Journée IA 1 490 € HT, sans remise ni contrepartie tournage.",
-  D03: "Écartée telle que rédigée : seule la garantie du site fait foi (gains identifiés n’atteignant pas 3 fois le prix, CGV art. 47.10) ; aucun gain obtenu n’est jamais garanti.",
+  D03: "Révisée le 26/11/2026 : une seule fiche garantie autorisée pour le chatbot, texte encadré (3 fois le prix HT sur les gains identifiés, remboursement sur demande écrite, aucun montant, jamais « sans discussion » ni un autre multiple) ; aucun gain obtenu n’est jamais garanti.",
 };
 
 export function analyserPack(lignes: readonly LignePack[]): RapportPack {
