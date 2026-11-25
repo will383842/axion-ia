@@ -62,10 +62,9 @@ const VARIABLE_ORDRE: Record<UsageCles, keyof EnvCles> = {
 
 /**
  * Crédit épuisé. Le mot « billing » seul ne suffit pas (il apparaît dans des messages de
- * rate-limit et d'authentification) : on exige une formule explicite.
+ * rate-limit et d'authentification) : on exige une formule explicite (ou le statut 402).
  */
-const MOTIF_FACTURATION =
-  /credit balance is too low|insufficient[_-]quota|billing[_\s-]error|payment[_\s-]required/i;
+const MOTIF_FACTURATION = /credit balance is too low|insufficient[_-]quota/i;
 
 const MOTIF_CLE_ANTHROPIC = /sk-ant-[A-Za-z0-9_-]+/g;
 const MASQUE = "[clé masquée]";

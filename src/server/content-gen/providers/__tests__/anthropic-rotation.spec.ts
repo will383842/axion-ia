@@ -136,6 +136,17 @@ describe("rotation de clés", () => {
     expect(trackCost).toHaveBeenCalledTimes(1);
   });
 
+  it("400 avec le seul mot « billing » : ni bascule de clé, ni marque", async () => {
+    vi.stubEnv("ANTHROPIC_API_KEY_2", K2);
+    create.mockRejectedValue(new APIError(400, "invalid request, see the billing page"));
+    await expect(anthropicProvider.generate(req)).rejects.toBeInstanceOf(ProviderError);
+    expect(clesVues).toEqual([K1]);
+    expect(create).toHaveBeenCalledTimes(1);
+    expect(alerte).not.toHaveBeenCalled();
+    const marques = await fauxRedis.mget("anthropic:cle:1:epuisee", "anthropic:cle:1:invalide");
+    expect(marques).toEqual([null, null]);
+  });
+
   it("429 (même avec « billing » dans le message) ne fait PAS tourner la clé", async () => {
     vi.stubEnv("ANTHROPIC_API_KEY_2", K2);
     create.mockRejectedValue(new APIError(429, "rate limit, see Plans & Billing"));

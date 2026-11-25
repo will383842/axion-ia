@@ -189,13 +189,10 @@ function mapAnthropicErrorBrut(err: unknown): ProviderError {
         true,
       );
     }
-    // Hors 429, le motif large reste justifié : c'est là qu'Anthropic signale
-    // réellement le crédit épuisé (400 `invalid_request_error`, 402). Observé en
-    // prod : 128 jobs échoués sous l'étiquette générique « Anthropic API 400 ».
-    if (
-      /credit balance is too low|billing|insufficient[_-]quota/i.test(err.message) ||
-      status === 402
-    ) {
+    // Hors 429 : c'est là qu'Anthropic signale réellement le crédit épuisé (400
+    // `invalid_request_error`, 402). Motif EXPLICITE exigé : le mot « billing » seul
+    // apparaît dans des messages sans rapport avec le crédit (rotation de clé à tort).
+    if (/credit balance is too low|insufficient[_-]quota/i.test(err.message) || status === 402) {
       return new ProviderError(
         `Anthropic quota épuisé (compte à recharger) : ${err.message}`,
         "quota_exhausted",
