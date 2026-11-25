@@ -91,6 +91,9 @@ export const MESSAGE_RDV_INTROUVABLE =
 export const MESSAGE_PREMIER_RDV =
   "Un rendez-vous plus ancien, déjà tenu, est proposé pour cette présentation : c'est le PREMIER rendez-vous tenu qui valide (il fixe le départ des 6 mois). Validez celui-là, ou écartez-le s'il ne convient pas.";
 
+export const MESSAGE_ANCIEN_RDV_ANNULE =
+  "Une déclaration plus ancienne, d'un autre apporteur, a un rendez-vous pris à temps puis annulé, reporté ou manqué. S'il a été annulé par Axion IA, il est réputé tenu : saisissez-le d'abord (« Annulé par Axion IA »). Sinon, écartez cette proposition. Rien n'est validé.";
+
 const MESSAGE_CONCURRENCE =
   "Une autre validation est en cours sur cette entreprise : réessayez dans un instant.";
 
@@ -270,10 +273,15 @@ export async function validerParRendezVous(
           ]);
           const reservees = new Map(lignes.map((l) => [l.presentationId, l]));
           const prisEnAttente = new Map<string, Date>();
+          const annuleesPrises = new Map<string, Date>();
           for (const pa of propositionsAutres) {
             const src = await lireSourceRendezVous(tx, pa.rendezVousCle);
-            if (!src || rendezVousNonTenu(src)) continue;
-            const pris = src.prisAt ?? pa.prisAt;
+            const pris = src?.prisAt ?? pa.prisAt;
+            if (src && rendezVousNonTenu(src)) {
+              annuleesPrises.set(pa.presentationId, pris);
+              continue;
+            }
+            // Source introuvable : comme une date illisible, la proposition continue de retenir.
             const deja = prisEnAttente.get(pa.presentationId);
             if (!deja || pris.getTime() < deja.getTime())
               prisEnAttente.set(pa.presentationId, pris);
@@ -300,6 +308,19 @@ export async function validerParRendezVous(
             );
           });
           if (bloquant) throw new Refus(MESSAGE_AUTRE_APPORTEUR);
+          // Plus ancienne, encore « réservée », même périmètre, avec un rendez-vous PRIS dans sa
+          // fenêtre puis annulé : elle attend la décision du dirigeant (réputé tenu, ou écarté).
+          const ancienneAnnulee = autres.some((a) => {
+            const pris = annuleesPrises.get(a.id);
+            const r = reservees.get(a.id);
+            if (!pris || !r || a.statut !== "reservee") return false;
+            if (a.recueAt.getTime() >= p.recueAt.getTime()) return false;
+            if (!memePerimetre(miennePerimetre, etabs.get(a.id)!)) return false;
+            return (
+              pris.getTime() >= a.recueAt.getTime() && pris.getTime() <= r.reserveeJusquAt.getTime()
+            );
+          });
+          if (ancienneAnnulee) throw new Refus(MESSAGE_ANCIEN_RDV_ANNULE);
         }
 
         // 🔑 Écritures CONDITIONNELLES : la première prend la réservation (`valideeAt` vide) ;
@@ -362,6 +383,7 @@ export async function validerParRendezVous(
           presentationId: e.presentationId,
           rendezVousCle: e.rendezVousCle,
           retenueAt: null,
+          ecarteeAt: null,
         },
         data: { retenueAt: maintenant },
       });
@@ -391,15 +413,23 @@ export async function ecarterProposition(
   maintenant: Date = new Date(),
 ): Promise<{ ok: true } | { ok: false; message: string }> {
   try {
-    const r = await prisma.propositionRendezVousPresentation.updateMany({
-      where: { id, ecarteeAt: null, retenueAt: null },
-      data: { ecarteeAt: maintenant, ecarteeParId: acteurId },
-    });
+    // Serializable : écarter et valider la même proposition en même temps ne réussissent jamais
+    // toutes les deux (la validation filtre aussi `ecarteeAt: null` en écrivant `retenueAt`).
+    const r = await prisma.$transaction(
+      (tx) =>
+        tx.propositionRendezVousPresentation.updateMany({
+          where: { id, ecarteeAt: null, retenueAt: null },
+          data: { ecarteeAt: maintenant, ecarteeParId: acteurId },
+        }),
+      { isolationLevel: "Serializable", timeout: 15_000 },
+    );
     return r.count === 1
       ? { ok: true }
       : { ok: false, message: "Cette proposition a déjà été traitée." };
   } catch (err) {
     if (tableAbsente(err)) return { ok: false, message: "Proposition introuvable." };
+    if ((err as { code?: unknown } | null)?.code === "P2034")
+      return { ok: false, message: MESSAGE_CONCURRENCE };
     throw err;
   }
 }

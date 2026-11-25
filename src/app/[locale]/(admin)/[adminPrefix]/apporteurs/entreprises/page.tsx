@@ -399,6 +399,7 @@ function SectionRendezVous({
                   <ActionsProposition
                     id={r.id}
                     dateTenueConnue={!!r.rendezVousAt}
+                    nonTenu={r.nonTenu}
                     aujourdhuiLocal={aujourdhuiLocal}
                   />
                 ) : null}

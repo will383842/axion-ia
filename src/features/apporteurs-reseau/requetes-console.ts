@@ -287,6 +287,8 @@ export interface PropositionVue {
   rendezVousAt: Date | null;
   /** Le rendez-vous a-t-il déjà eu lieu (date passée) ? Sinon le dirigeant attend. */
   tenuPasse: boolean;
+  /** Annulé, reporté ou absent depuis la proposition : à écarter, ou à saisir « Annulé par Axion IA ». */
+  nonTenu: boolean;
 }
 
 /**
@@ -324,8 +326,9 @@ export async function lirePropositionsATraiter(
     },
   });
   const parId = new Map(presentations.map((p) => [p.id, p]));
-  // Rendez-vous annulé / absent / reporté depuis la proposition : MASQUÉ (il n'a pas eu lieu ; la
-  // validation le refuserait de toute façon, état relu à la source dans sa transaction).
+  // Rendez-vous annulé / absent / reporté depuis la proposition : il ne se valide pas (état relu à
+  // la source dans la transaction), mais il RESTE VISIBLE, marqué `nonTenu` : il retient l'ancien
+  // apporteur tant que le dirigeant ne l'a pas écarté (ou saisi « Annulé par Axion IA »).
   const ecartes = new Set<string>();
   for (const cle of new Set(propositions.map((p) => p.rendezVousCle))) {
     const src = await lireSourceRendezVous(prisma, cle);
@@ -335,7 +338,6 @@ export async function lirePropositionsATraiter(
   for (const pr of propositions) {
     const p = parId.get(pr.presentationId);
     if (!p) continue; // la présentation n'est plus « réservée » : plus rien à proposer
-    if (ecartes.has(pr.rendezVousCle)) continue;
     sorties.push({
       id: pr.id,
       presentationId: p.id,
@@ -351,6 +353,7 @@ export async function lirePropositionsATraiter(
       recueAt: p.recueAt,
       prisAt: pr.prisAt,
       rendezVousAt: pr.rendezVousAt,
+      nonTenu: ecartes.has(pr.rendezVousCle),
       tenuPasse: !!pr.rendezVousAt && pr.rendezVousAt.getTime() <= maintenant.getTime(),
     });
   }

@@ -137,7 +137,11 @@ vi.mock("@/lib/prisma", () => ({
   },
 }));
 
-import { ecarterProposition, validerParRendezVous } from "../validation-rendez-vous";
+import {
+  ecarterProposition,
+  MESSAGE_ANCIEN_RDV_ANNULE,
+  validerParRendezVous,
+} from "../validation-rendez-vous";
 
 const SAISIE = new Date("2026-11-01T10:00:00Z");
 const MAINTENANT = new Date("2026-11-20T10:00:00Z");
@@ -475,16 +479,18 @@ describe("canal de la saisie manuelle", () => {
 describe("ecarterProposition", () => {
   it("écarte sans jamais supprimer, une seule fois", async () => {
     const lignes: Ligne[] = [{ id: "x", ecarteeAt: null, retenueAt: null }];
-    const { prisma } = await import("@/lib/prisma");
-    (prisma as any).propositionRendezVousPresentation = {
-      updateMany: async ({ where, data }: any) => {
-        const l = lignes.filter((p) => p.id === where.id && !p.ecarteeAt && !p.retenueAt);
-        l.forEach((p) => Object.assign(p, data));
-        return { count: l.length };
-      },
+    const origine = tx.propositionRendezVousPresentation.updateMany;
+    tx.propositionRendezVousPresentation.updateMany = async ({ where, data }: any) => {
+      const l = lignes.filter((p) => p.id === where.id && !p.ecarteeAt && !p.retenueAt);
+      l.forEach((p) => Object.assign(p, data));
+      return { count: l.length };
     };
-    expect((await ecarterProposition("x", "admin-1", MAINTENANT)).ok).toBe(true);
-    expect((await ecarterProposition("x", "admin-1", MAINTENANT)).ok).toBe(false);
+    try {
+      expect((await ecarterProposition("x", "admin-1", MAINTENANT)).ok).toBe(true);
+      expect((await ecarterProposition("x", "admin-1", MAINTENANT)).ok).toBe(false);
+    } finally {
+      tx.propositionRendezVousPresentation.updateMany = origine;
+    }
     expect(lignes).toHaveLength(1);
     expect(lignes[0]).toMatchObject({ ecarteeAt: MAINTENANT, ecarteeParId: "admin-1" });
   });
@@ -514,11 +520,11 @@ describe("revue de sécurité du lot 6", () => {
     expect(bd.annonces).toHaveLength(0);
   });
 
-  it("le même rendez-vous annulé depuis ne retient plus l'ancien : l'autre est validé", async () => {
+  function ancienneAvecRdv(statut: string) {
     entreprise("pOld", A2, { recueAt: new Date("2026-09-01T10:00:00Z") });
     bd.reservations[0]!["reserveeJusquAt"] = new Date("2026-10-31T22:59:59.999Z");
     evenement("evOld", {
-      status: "canceled",
+      status: statut,
       startTime: new Date("2026-11-25T10:00:00Z"),
       capturedAt: new Date("2026-10-20T10:00:00Z"),
     });
@@ -530,8 +536,34 @@ describe("revue de sécurité du lot 6", () => {
       ecarteeAt: null,
       retenueAt: null,
     });
+  }
+
+  it("le rendez-vous de l'ancien, pris à temps puis annulé, attend le dirigeant : le plus récent n'est pas validé", async () => {
+    ancienneAvecRdv("canceled");
+    entreprise("p1", A1);
+    const r = await validerParRendezVous(saisie("p1"), MAINTENANT);
+    expect(r).toEqual({ ok: false, message: MESSAGE_ANCIEN_RDV_ANNULE });
+    expect(bd.presentations.find((p) => p["id"] === "p1")!["statut"]).toBe("reservee");
+    expect(bd.annonces).toHaveLength(0);
+  });
+
+  it("une fois la proposition annulée de l'ancien écartée, le plus récent est validé", async () => {
+    ancienneAvecRdv("canceled");
+    bd.propositions[0]!["ecarteeAt"] = new Date("2026-11-19T10:00:00Z");
     entreprise("p1", A1);
     expect((await validerParRendezVous(saisie("p1"), MAINTENANT)).ok).toBe(true);
+  });
+
+  it("source introuvable : la proposition de l'ancien continue de la retenir", async () => {
+    ancienneAvecRdv("scheduled");
+    bd.events.splice(
+      bd.events.findIndex((x) => x["id"] === "evOld"),
+      1,
+    );
+    entreprise("p1", A1);
+    const r = await validerParRendezVous(saisie("p1"), MAINTENANT);
+    expect(r.ok).toBe(false);
+    expect(bd.presentations.find((p) => p["id"] === "p1")!["statut"]).toBe("reservee");
   });
 
   it("proposition écartée entre l'affichage et le clic : refus, rien d'écrit", async () => {

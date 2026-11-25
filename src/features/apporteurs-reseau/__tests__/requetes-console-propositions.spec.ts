@@ -50,7 +50,7 @@ beforeEach(() => {
 });
 
 describe("lirePropositionsATraiter", () => {
-  it("masque les rendez-vous annulés ou absents, garde les autres", async () => {
+  it("garde les rendez-vous annulés ou absents VISIBLES, marqués « non tenu »", async () => {
     bd.propositions.push(prop("calendly:ok"), prop("calendly:ann"), prop("calendly:abs"));
     const ev = (id: string, status: string) =>
       bd.events.push({ id, status, startTime: null, capturedAt: new Date(), rencontre: null });
@@ -58,6 +58,10 @@ describe("lirePropositionsATraiter", () => {
     ev("ann", "canceled");
     ev("abs", "no_show");
     const r = await lirePropositionsATraiter(new Date("2026-11-20T10:00:00Z"));
-    expect(r.map((x) => x.rendezVousCle)).toEqual(["calendly:ok"]);
+    expect(r.map((x) => [x.rendezVousCle, x.nonTenu])).toEqual([
+      ["calendly:ok", false],
+      ["calendly:ann", true],
+      ["calendly:abs", true],
+    ]);
   });
 });

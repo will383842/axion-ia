@@ -37,8 +37,11 @@ export function ActionsProposition({
   id,
   dateTenueConnue,
   aujourdhuiLocal,
+  nonTenu = false,
 }: {
   id: string;
+  /** Annulé, reporté ou absent : seul « Ce n'est pas lui » est proposé. */
+  nonTenu?: boolean;
   /** Faux : l'outil ne sait pas quand le rendez-vous a eu lieu, le dirigeant le dit. */
   dateTenueConnue: boolean;
   /** « AAAA-MM-JJThh:mm » à Paris, pour préremplir. */
@@ -50,41 +53,49 @@ export function ActionsProposition({
   if (eV.etat === "ok" || eE.etat === "ok") return <Retour etat={eV.etat === "ok" ? eV : eE} />;
   return (
     <div className="flex flex-col gap-[var(--space-admin-2)] text-[length:var(--text-admin-sm)]">
-      <form action={valider} className="flex flex-wrap items-end gap-[var(--space-admin-2)]">
-        <input type="hidden" name="id" value={id} />
-        {demande ? (
-          <>
-            {dateTenueConnue ? null : (
-              <label className="flex flex-col gap-1">
-                Il a eu lieu le
-                <input
-                  type="datetime-local"
-                  name="tenuLe"
-                  required
-                  defaultValue={aujourdhuiLocal}
-                  className="admin-input"
-                />
-              </label>
-            )}
-            <span>L&apos;entreprise sera attribuée à cet apporteur pour 6 mois.</span>
-            <button type="submit" className="admin-button" disabled={vEnCours}>
-              Oui, il a eu lieu
+      {nonTenu ? (
+        <p>
+          Ce rendez-vous a été annulé, reporté ou le client ne s&apos;est pas présenté : il ne
+          valide pas l&apos;entreprise. S&apos;il a été annulé par Axion IA, il est réputé tenu :
+          saisissez-le plus bas (« Annulé par Axion IA »). Sinon, écartez-le.
+        </p>
+      ) : (
+        <form action={valider} className="flex flex-wrap items-end gap-[var(--space-admin-2)]">
+          <input type="hidden" name="id" value={id} />
+          {demande ? (
+            <>
+              {dateTenueConnue ? null : (
+                <label className="flex flex-col gap-1">
+                  Il a eu lieu le
+                  <input
+                    type="datetime-local"
+                    name="tenuLe"
+                    required
+                    defaultValue={aujourdhuiLocal}
+                    className="admin-input"
+                  />
+                </label>
+              )}
+              <span>L&apos;entreprise sera attribuée à cet apporteur pour 6 mois.</span>
+              <button type="submit" className="admin-button" disabled={vEnCours}>
+                Oui, il a eu lieu
+              </button>
+              <button
+                type="button"
+                className="admin-button-secondary"
+                disabled={vEnCours}
+                onClick={() => setDemande(false)}
+              >
+                Annuler
+              </button>
+            </>
+          ) : (
+            <button type="button" className="admin-button" onClick={() => setDemande(true)}>
+              Il a eu lieu
             </button>
-            <button
-              type="button"
-              className="admin-button-secondary"
-              disabled={vEnCours}
-              onClick={() => setDemande(false)}
-            >
-              Annuler
-            </button>
-          </>
-        ) : (
-          <button type="button" className="admin-button" onClick={() => setDemande(true)}>
-            Il a eu lieu
-          </button>
-        )}
-      </form>
+          )}
+        </form>
+      )}
       <form action={ecarter}>
         <input type="hidden" name="id" value={id} />
         <button type="submit" className="admin-button-secondary" disabled={eEnCours}>
