@@ -222,7 +222,6 @@ export async function validerParRendezVous(
             ...(e.rendezVousCle ? { rendezVousCle: { not: e.rendezVousCle } } : {}),
           },
           select: { rendezVousCle: true },
-          take: 50,
         });
         for (const autre of proposees) {
           const src = await lireSourceRendezVous(tx, autre.rendezVousCle);

@@ -107,7 +107,34 @@ describe("validation par rendez-vous : actions réservées aux administrateurs",
   it("interrupteur éteint : aucune validation", async () => {
     vi.stubEnv("APPORTEURS_VALIDATION_RDV", "");
     expect((await gestes[0]!()).etat).toBe("erreur");
+    expect((await gestes[1]!()).etat).toBe("erreur");
     expect((await gestes[2]!()).etat).toBe("erreur");
     expect(h.valider).not.toHaveBeenCalled();
+    expect(h.ecarter).not.toHaveBeenCalled();
+  });
+
+  it("« Annulé par Axion IA » : la date de prise est exigée", async () => {
+    const r = await saisirRendezVousAction(
+      INITIAL,
+      form({ presentationId: ID, canal: "annule_par_axion", tenuLe: "2026-11-10T10:00" }),
+    );
+    expect(r.etat).toBe("erreur");
+    expect(h.valider).not.toHaveBeenCalled();
+  });
+
+  it("« Annulé par Axion IA » avec la date de prise : le canal est transmis, prise ≠ tenue", async () => {
+    const r = await saisirRendezVousAction(
+      INITIAL,
+      form({
+        presentationId: ID,
+        canal: "annule_par_axion",
+        tenuLe: "2026-11-10T10:00",
+        prisLe: "2026-11-05T10:00",
+      }),
+    );
+    expect(r.etat).toBe("ok");
+    const e = (h.valider.mock.calls[0] as unknown as [Record<string, unknown>])[0];
+    expect(e).toMatchObject({ canal: "annule_par_axion", source: "saisie" });
+    expect(e["prisAt"]).not.toEqual(e["tenuAt"]);
   });
 });

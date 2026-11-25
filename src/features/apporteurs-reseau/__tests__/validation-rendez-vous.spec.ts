@@ -562,6 +562,25 @@ describe("revue de sécurité du lot 6", () => {
     expect(bd.presentations[0]!["statut"]).toBe("reservee");
   });
 
+  it("la présentation change de statut entre la lecture et l'écriture : refus, rien d'écrit, aucune annonce", async () => {
+    entreprise("p1", A1);
+    // L'écriture sur la réservation passe, puis la présentation n'est plus « réservée ».
+    const origine = tx.presentationEntreprise.updateMany;
+    tx.presentationEntreprise.updateMany = async (a: any) => {
+      bd.presentations[0]!["statut"] = "dementie";
+      return origine(a);
+    };
+    try {
+      const r = await validerParRendezVous(saisie("p1"), MAINTENANT);
+      expect(r.ok).toBe(false);
+    } finally {
+      tx.presentationEntreprise.updateMany = origine;
+    }
+    expect(bd.journal).toHaveLength(0);
+    expect(bd.annonces).toHaveLength(0);
+    expect(bd.reservations[0]!["valideeAt"]).toBeNull();
+  });
+
   it("« Annulé par Axion IA » : réputé tenu, le canal est inscrit au journal", async () => {
     entreprise("p1", A1);
     const r = await validerParRendezVous(
