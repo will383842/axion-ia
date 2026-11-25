@@ -673,3 +673,55 @@ describe("fixerValiditeDevisBrouillonAction (S10)", () => {
     expect(m.devisFindUnique).not.toHaveBeenCalled();
   });
 });
+
+describe("modifierDevisClassiqueBrouillonAction : case « Journée IA » (colonne journeeIa)", () => {
+  const appeler = (input: Record<string, unknown>) =>
+    modifierDevisClassiqueBrouillonAction({
+      id: DEVIS,
+      attenduMajLe: MAJ,
+      input: { ...ENTREE, ...input } as never,
+    });
+
+  it("vraie : la colonne et le paragraphe imprimé sont écrits (idempotent)", async () => {
+    const { TEXTE_GARANTIE_JOURNEE_IA } =
+      await import("@/server/qualiopi/devis/assistant/textes-rubriques");
+    await appeler({ conditionsParticulieres: "Mon texte", journeeIa: true });
+    const data = m.devisUpdateMany.mock.calls[0]![0].data;
+    expect(data.journeeIa).toBe(true);
+    expect(data.conditionsParticulieres).toBe(`Mon texte\n\n${TEXTE_GARANTIE_JOURNEE_IA}`);
+    await appeler({ conditionsParticulieres: data.conditionsParticulieres, journeeIa: true });
+    expect(m.devisUpdateMany.mock.calls[1]![0].data.conditionsParticulieres).toBe(
+      data.conditionsParticulieres,
+    );
+  });
+
+  it("fausse : la colonne est effacée et le paragraphe retiré", async () => {
+    const { TEXTE_GARANTIE_JOURNEE_IA } =
+      await import("@/server/qualiopi/devis/assistant/textes-rubriques");
+    await appeler({
+      conditionsParticulieres: `Mon texte\n\n${TEXTE_GARANTIE_JOURNEE_IA}`,
+      journeeIa: false,
+    });
+    const data = m.devisUpdateMany.mock.calls[0]![0].data;
+    expect(data.journeeIa).toBe(false);
+    expect(data.conditionsParticulieres).toBe("Mon texte");
+  });
+
+  it("clé absente : colonne et conditions intactes (aucune clé écrite)", async () => {
+    await appeler({});
+    const data = m.devisUpdateMany.mock.calls[0]![0].data;
+    expect("journeeIa" in data).toBe(false);
+    expect("conditionsParticulieres" in data).toBe(false);
+  });
+
+  it("vraie sans clé conditions : part du texte enregistré, sans l'effacer", async () => {
+    m.devisFindUnique.mockResolvedValueOnce({
+      ...EXISTANT,
+      conditionsParticulieres: "Texte déjà enregistré",
+    });
+    await appeler({ journeeIa: true });
+    expect(m.devisUpdateMany.mock.calls[0]![0].data.conditionsParticulieres).toMatch(
+      /^Texte déjà enregistré\n\nGarantie de remboursement de la Journée IA/,
+    );
+  });
+});

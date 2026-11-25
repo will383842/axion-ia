@@ -6,6 +6,7 @@
  * émis ne change pas. Le devis signé prime sur les CGV (art. 4.1) : chaque texte dit exactement
  * ce que disent les CGV (art. 12.2, 15, 26.5, 28, 29, 38), jamais plus.
  */
+import { CONDITION_GARANTIE, GARANTIE_PHRASE } from "@/content/journee-ia-commun";
 
 export const TEXTE_DELAIS =
   "Les délais indiqués sont des estimations, pas des dates garanties. Ils commencent quand nous avons reçu les éléments prévus au devis (accès, informations, contenus) et, si le devis prévoit un acompte, cet acompte. Ils s'allongent de la durée de tout retard de votre part, d'une suspension prévue aux conditions générales, d'un changement de périmètre, d'un cas de force majeure ou de la défaillance d'un service extérieur.";
@@ -19,5 +20,13 @@ export const TEXTE_PLAFOND_FRAIS =
 
 export const TEXTE_PLAFOND_RESPONSABILITE =
   "Notre responsabilité, engagée pour faute prouvée, ne couvre que les dommages directs. Elle est plafonnée au prix hors taxes de la prestation ou, pour un abonnement, un hébergement ou une maintenance, au montant hors taxes payé ou dû au cours des 12 mois précédant le fait générateur, sans pouvoir être inférieure à 5 000 euros. Ces limites ne s'appliquent pas en cas de faute lourde ou intentionnelle, ni de dommage corporel. Le détail figure dans nos conditions générales.";
+
+/**
+ * Paragraphe imprimé sur un devis (conditions particulières) et sur la convention quand la case
+ * « Journée IA » est cochée. ASSEMBLÉ depuis le socle commun de la Journée IA : la phrase de
+ * remboursement et sa condition ne sont jamais réécrites ici. Aucun montant, aucune déclaration
+ * demandée au client ; renvoi à l'article 47.10 des conditions générales.
+ */
+export const TEXTE_GARANTIE_JOURNEE_IA = `Garantie de remboursement de la Journée IA (article 47.10 des conditions générales). ${GARANTIE_PHRASE} ${CONDITION_GARANTIE}`;
 
 export const VERSION_TEXTES_RUBRIQUES = "code-2026-11-19";

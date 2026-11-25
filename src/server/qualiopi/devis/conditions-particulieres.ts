@@ -5,6 +5,8 @@
  * avertissement) comme par le schéma serveur et les gabarits.
  */
 
+import { TEXTE_GARANTIE_JOURNEE_IA } from "@/server/qualiopi/devis/assistant/textes-rubriques";
+
 /** Longueur maximale du texte, après normalisation côté serveur. */
 export const CONDITIONS_PARTICULIERES_MAX = 4000;
 
@@ -78,4 +80,24 @@ function sansCasseNiAccents(s: string): string {
 export function motsSensiblesTrouves(s: string): string[] {
   const texte = sansCasseNiAccents(s);
   return MOTS_SENSIBLES.filter((m) => texte.includes(sansCasseNiAccents(m)));
+}
+
+/**
+ * Garantie de la Journée IA dans le texte des conditions particulières (la colonne
+ * `Devis.journeeIa` reste la source de vérité ; le texte n'en est que l'impression, le gabarit du
+ * devis imprimant déjà ce bloc). Idempotent : le paragraphe n'est jamais posé deux fois.
+ *
+ * `true` : ajoute le paragraphe s'il manque, à la fin. `false` : le retire.
+ * Le contrôle des 4 000 caractères / 80 lignes reste à l'appelant (schéma serveur, formulaire).
+ */
+export function avecGarantieJourneeIa(texte: string | null, actif: boolean): string | null {
+  const present = (texte ?? "").includes(TEXTE_GARANTIE_JOURNEE_IA);
+  // Rien à faire : on rend le texte tel quel (aucune retouche d'espaces à l'insu de l'auteur).
+  if (actif === present) return texte;
+  const paragraphes = (texte ?? "")
+    .split(/\n{2,}/)
+    .map((p) => p.trim())
+    .filter((p) => p !== "" && p !== TEXTE_GARANTIE_JOURNEE_IA);
+  if (actif) paragraphes.push(TEXTE_GARANTIE_JOURNEE_IA);
+  return paragraphes.length === 0 ? null : paragraphes.join("\n\n");
 }

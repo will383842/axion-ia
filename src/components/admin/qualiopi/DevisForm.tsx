@@ -28,6 +28,7 @@ import { DevisFormulesPanel } from "./DevisFormulesPanel";
 import { BandeauAttributionPartners } from "./BandeauAttributionPartners";
 import type { LigneFormulaire } from "./devis-edition-lignes";
 import {
+  avecGarantieJourneeIa,
   CONDITIONS_PARTICULIERES_LIGNES_MAX,
   CONDITIONS_PARTICULIERES_MAX,
   MESSAGE_CONDITIONS_PARTICULIERES_LIGNES,
@@ -103,6 +104,8 @@ export interface DevisFormProps {
     refClient: string | null;
     /** Conditions particulières enregistrées (pré-remplissage) ; `null` = aucune. */
     conditionsParticulieres: string | null;
+    /** Colonne `Devis.journeeIa` : la case « Journée IA » (source de vérité). */
+    journeeIa?: boolean;
   };
 }
 
@@ -234,8 +237,13 @@ export function DevisForm({
   // L'action l'acceptait depuis toujours ; seul le formulaire ne la posait pas.
   const [activite, setActivite] = useState<ActiviteFacturation | "">(edition?.activite ?? "");
   // Conditions particulières (devis classique) : texte simple, imprimé tel quel sur le devis.
+  // Journée IA : la colonne fait foi ; le paragraphe imprimé est retiré du champ libre (le
+  // serveur le remet à l'enregistrement), pour qu'il ne s'affiche pas deux fois.
+  const [journeeIa, setJourneeIa] = useState(edition?.journeeIa === true);
   const [conditionsParticulieres, setConditionsParticulieres] = useState(
-    edition?.conditionsParticulieres ?? "",
+    edition?.journeeIa === true
+      ? (avecGarantieJourneeIa(edition.conditionsParticulieres, false) ?? "")
+      : (edition?.conditionsParticulieres ?? ""),
   );
   const motsSensibles = motsSensiblesTrouves(conditionsParticulieres);
 
@@ -405,6 +413,7 @@ export function DevisForm({
             // financement n'est volontairement PAS envoyé : clé absente = champs intacts.
             conditionsParticulieres:
               conditionsParticulieres.trim() === "" ? null : conditionsParticulieres,
+            journeeIa,
           },
         });
         if ("error" in result) {
@@ -425,6 +434,7 @@ export function DevisForm({
         ...(projetId !== undefined && clientId === defaultClientId ? { projetId } : {}),
         ...(activite !== "" ? { activite } : {}),
         ...(conditionsParticulieres.trim() !== "" ? { conditionsParticulieres } : {}),
+        ...(journeeIa ? { journeeIa: true } : {}),
       });
 
       if ("error" in result) {
@@ -734,6 +744,15 @@ export function DevisForm({
             >
               {`${conditionsParticulieres.length} / ${CONDITIONS_PARTICULIERES_MAX}`}
             </p>
+            <label className="flex items-center gap-[var(--space-admin-2)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg)]">
+              <input
+                type="checkbox"
+                checked={journeeIa}
+                onChange={(e) => setJourneeIa(e.target.checked)}
+                disabled={isPending}
+              />
+              Journée IA : imprimer la garantie de remboursement (CGV art. 47.10)
+            </label>
             {motsSensibles.map((mot) => (
               <p
                 key={mot}
