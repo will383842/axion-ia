@@ -3,6 +3,11 @@
 // (`index.tsx`), ni dans le catalogue d'aperçu, ni dans `envois.ts`. Rien ne l'envoie ; un
 // autre lot le branchera, après relecture du texte par le dirigeant.
 //
+// ⛔ JAMAIS ENVOYÉ SEUL : le contrat 2.8 (article 7.2) et la règle de Will interdisent tout message
+// d'information distinct à l'entreprise ; l'information RGPD (art. 14) vit dans le PREMIER message
+// (`apporteur-demarrage.tsx`). Ce texte sert de source de formulation pour ce premier message ; le
+// brancher comme e-mail à part est un défaut.
+//
 // Il accompagne la future règle « validation par rendez-vous » (contrat 2.8). Ce n'est PAS
 // la prise de contact (`entreprise-prise-de-contact-apporteur`, dans `apporteur-demarrage.tsx`,
 // qui reste intacte) : ici on INFORME, on ne propose rien et on ne demande rien.
@@ -65,7 +70,7 @@ export const COPY_INFORMATION_COORDONNEES = {
     // Élision : « de la part d'une personne », jamais « de la part de une personne ».
     `Axion-IA a reçu vos coordonnées professionnelles de la part ${a ? `de ${a}` : "d'une personne de notre réseau"}, qui a pensé que nos services pouvaient vous intéresser.`,
   usage: (responsable: string) =>
-    `Ces coordonnées servent seulement à pouvoir échanger avec vous si vous le souhaitez. Elles sont traitées par ${responsable}, dont l'adresse figure au bas de ce message.`,
+    `Ces coordonnées servent à pouvoir échanger avec vous si vous le souhaitez, à suivre notre relation et, si vous devenez client, à calculer la rémunération de la personne qui nous a présenté votre entreprise. Elles sont traitées par ${responsable}, dont l'adresse figure au bas de ce message.`,
   baseLegale:
     "Sur quelle base : notre intérêt légitime à présenter nos services aux professionnels (RGPD, art. 6.1.f), ce message portant sur votre activité professionnelle.",
   conservation:
