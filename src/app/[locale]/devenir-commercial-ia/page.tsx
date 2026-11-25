@@ -95,7 +95,7 @@ export default async function DevenirCommercialHub({ params }: Props) {
           path: PATH,
           name: "Devenir apporteur d'affaires IA · Axion-IA",
           description,
-          speakable: [".en-bref p", "h1"],
+          speakable: [".en-bref p:not(.maj)", "h1"],
           ariane: true,
         })}
         scriptId="jsonld-commercial-webpage"
