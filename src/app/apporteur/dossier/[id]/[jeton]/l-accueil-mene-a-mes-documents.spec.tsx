@@ -9,7 +9,7 @@ vi.mock("next/navigation", () => ({
   notFound: () => {
     throw new Error("NEXT_NOT_FOUND");
   },
-  // LienAide (#2257) lit l'identifiant et le jeton dans l'adresse.
+  // LienAide (PR 2257) lit l'identifiant et le jeton dans l'adresse.
   useParams: () => ({ id: "6f1c2a3b-4d5e-4f60-8a7b-9c0d1e2f3a4b", jeton: "jeton-test" }),
 }));
 vi.mock("@/features/apporteurs-reseau/donnees", () => ({
