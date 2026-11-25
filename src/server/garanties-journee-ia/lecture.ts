@@ -13,6 +13,7 @@ export interface DossierGarantie extends DossierPourListe {
   seuilHtCents: number;
   totalGainsCents: number | null;
   montantRembourseCents: number | null;
+  montantAvoirHtCents: number | null;
   avoirEmisLe: string | null;
   motifDecision: string | null;
   notes: string | null;
@@ -48,6 +49,7 @@ export function versDossier(r: Ligne): DossierGarantie {
     seuilHtCents: r.seuilHtCents,
     totalGainsCents: r.totalGainsCents,
     montantRembourseCents: r.montantRembourseCents,
+    montantAvoirHtCents: r.montantAvoirHtCents,
     dateJournee: jourIso(r.dateJournee) as string,
     rapportRemisLe: jourIso(r.rapportRemisLe),
     demandeRecueLe: jourIso(r.demandeRecueLe),

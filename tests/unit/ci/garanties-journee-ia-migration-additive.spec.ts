@@ -9,7 +9,7 @@ import { describe, expect, it } from "vitest";
 
 const RACINE = process.cwd();
 const sql = readFileSync(
-  join(RACINE, "prisma", "migrations", "20261125150000_garanties_journee_ia", "migration.sql"),
+  join(RACINE, "prisma", "migrations", "20261126120000_garanties_journee_ia", "migration.sql"),
   "utf8",
 )
   .split("\n")
@@ -51,6 +51,10 @@ describe("migration garanties_journee_ia : additive", () => {
     expect(m).not.toBeNull();
     expect(m?.[0]).toMatch(/decision\s+String\?\s+@db\.VarChar\(20\)/);
     expect(m?.[0]).not.toMatch(/\bdecision\s+Decision/);
+  });
+  it("la décision « avoir » et son montant sont des colonnes de la table neuve, sans énumération", () => {
+    expect(sql).toMatch(/"montant_avoir_ht_cents" INTEGER,/);
+    expect(schema).toMatch(/montantAvoirHtCents\s+Int\?\s+@map\("montant_avoir_ht_cents"\)/);
   });
   it("aucun code de worker ni de cron ne lit la table (cron en PR 3)", () => {
     const fautifs: string[] = [];

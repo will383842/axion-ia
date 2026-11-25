@@ -8,6 +8,7 @@
 import { joursRestants } from "@/lib/jours-ouvres";
 import {
   calculerEcheances,
+  demandeHorsDelai,
   estReputeeAcceptee,
   type DonneesGarantie,
   type Echeance,
@@ -65,7 +66,8 @@ export function etatEcheance(
 export const PROCHAINE_ACTION: Readonly<Record<TypeEcheance, string>> = {
   rapport: "Remettre le rapport au client et saisir la date de remise.",
   fin_demande: "Attendre la demande écrite du client ; saisir sa date de réception si elle arrive.",
-  reponse: "Répondre par écrit au client, puis saisir la décision.",
+  reponse:
+    "Répondre par écrit au client (rembourser, refuser ou offrir un avoir), puis saisir la décision.",
   virement: "Virer le remboursement, puis saisir la date du virement.",
 };
 
@@ -83,6 +85,8 @@ export interface LigneListe {
   prochaineAction: string;
   /** Demande réputée acceptée : état CALCULÉ, jamais écrit en base. */
   reputeeAcceptee: boolean;
+  /** Demande reçue après les 30 jours : badge rouge « Hors délai », décision au cas par cas. */
+  horsDelai: boolean;
 }
 
 /**
@@ -107,6 +111,7 @@ export function lignesDeListe(
         etat: etatEcheance(echeance, aujourdhui),
         prochaineAction: echeance.faite ? "—" : PROCHAINE_ACTION[echeance.type],
         reputeeAcceptee: reputee,
+        horsDelai: demandeHorsDelai(d),
       });
     }
   }

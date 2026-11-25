@@ -207,6 +207,31 @@ describe("décision, virement, archivage", () => {
     });
     expect(tx.activityLog.create).toHaveBeenCalledTimes(1);
   });
+  it("enregistre un avoir plafonné à 4 470 € HT, sans note", async () => {
+    const r = await va(
+      enregistrerDecisionGarantieJourneeIaAction(
+        form({ id: ID, decision: "avoir", decisionLe: "2026-12-12", montantAvoirEuros: "4470" }),
+      ),
+    );
+    expect(r).toMatch(/ok=decision/);
+    expect(tx.garantieJourneeIa.update.mock.calls[0]?.[0].data).toMatchObject({
+      decision: "avoir",
+      montantAvoirHtCents: 447000,
+      montantRembourseCents: null,
+    });
+  });
+  it("refuse un avoir au-dessus de 4 470 € ou sans montant", async () => {
+    for (const montantAvoirEuros of ["4470,01", ""]) {
+      expect(
+        await va(
+          enregistrerDecisionGarantieJourneeIaAction(
+            form({ id: ID, decision: "avoir", decisionLe: "2026-12-12", montantAvoirEuros }),
+          ),
+        ),
+      ).toMatch(/erreur=/);
+    }
+    expect(tx.garantieJourneeIa.update).not.toHaveBeenCalled();
+  });
   it("refuse une décision sans demande reçue", async () => {
     lireGarantie.mockResolvedValue({ ...dossier, demandeRecueLe: null });
     expect(

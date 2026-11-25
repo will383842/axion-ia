@@ -44,6 +44,23 @@ describe("lignesDeListe", () => {
     ]);
     expect(lignesDeListe([{ ...base, rapportRemisLe: "2026-12-03" }], AUJ, true)).toHaveLength(2);
   });
+  it("marque « hors délai » une demande reçue après 30 jours, sans acceptation tacite ni virement", () => {
+    const l = lignesDeListe(
+      [{ ...base, rapportRemisLe: "2026-12-01", demandeRecueLe: "2027-01-15" }],
+      "2027-03-01",
+    );
+    expect(l.length).toBeGreaterThan(0);
+    expect(l.every((x) => x.horsDelai)).toBe(true);
+    expect(l.every((x) => !x.reputeeAcceptee)).toBe(true);
+    expect(l.some((x) => x.echeance.type === "virement")).toBe(false);
+  });
+  it("une demande dans le délai n'est pas hors délai", () => {
+    const l = lignesDeListe(
+      [{ ...base, rapportRemisLe: "2026-12-01", demandeRecueLe: "2026-12-20" }],
+      AUJ,
+    );
+    expect(l.every((x) => !x.horsDelai)).toBe(true);
+  });
   it("exclut les dossiers archivés", () => {
     expect(lignesDeListe([{ ...base, archiveLe: "2026-12-02T00:00:00.000Z" }], AUJ)).toEqual([]);
   });

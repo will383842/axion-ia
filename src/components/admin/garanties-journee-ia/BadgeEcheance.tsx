@@ -30,3 +30,19 @@ export function BadgeEcheance({ etat }: { etat: EtatEcheance }): React.ReactElem
     </span>
   );
 }
+
+/**
+ * Badge ROUGE « Hors délai » : demande reçue après les 30 jours suivant la remise du rapport.
+ * Le texte double la couleur ; aucune acceptation tacite, le dirigeant tranche au cas par cas.
+ */
+export function BadgeHorsDelai(): React.ReactElement {
+  return (
+    <span
+      data-niveau="rouge"
+      data-hors-delai="oui"
+      className="inline-flex items-center rounded-full border border-red-300 bg-red-100 px-2 py-0.5 text-xs font-semibold text-red-900"
+    >
+      Hors délai
+    </span>
+  );
+}

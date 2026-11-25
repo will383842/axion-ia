@@ -18730,6 +18730,8 @@ model GarantieJourneeIa {
   seuilHtCents          Int               @map("seuil_ht_cents")
   totalGainsCents       Int?              @map("total_gains_cents")
   montantRembourseCents Int?              @map("montant_rembourse_cents")
+  /// Décision « avoir » : montant de l'avoir offert, en euros HT (centimes), plafonné côté code à 4 470 €.
+  montantAvoirHtCents   Int?              @map("montant_avoir_ht_cents")
   /// Dates = jour de Paris, sans heure.
   dateJournee           DateTime          @map("date_journee") @db.Date
   rapportRemisLe        DateTime?         @map("rapport_remis_le") @db.Date
@@ -18737,7 +18739,7 @@ model GarantieJourneeIa {
   decisionLe            DateTime?         @map("decision_le") @db.Date
   avoirEmisLe           DateTime?         @map("avoir_emis_le") @db.Date
   virementLe            DateTime?         @map("virement_le") @db.Date
-  /// remboursement | refus | non_applicable. Texte, pas d'énumération.
+  /// remboursement | refus | avoir. Texte, pas d'énumération.
   decision              String?           @db.VarChar(20)
   motifDecision         String?           @map("motif_decision")
   notes                 String?

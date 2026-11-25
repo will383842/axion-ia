@@ -1,5 +1,12 @@
 import { describe, expect, it } from "vitest";
-import { eurosEnCentimes, refusDecision, refusDemande, refusVirement } from "../regles";
+import {
+  eurosEnCentimes,
+  PLAFOND_AVOIR_HT_CENTS,
+  refusDecision,
+  refusDemande,
+  refusVirement,
+  verifierMontantAvoir,
+} from "../regles";
 
 const d = { dateJournee: "2026-12-01", rapportRemisLe: "2026-12-03", demandeRecueLe: "2026-12-10" };
 
@@ -7,22 +14,28 @@ describe("refusDecision", () => {
   it("accepte un remboursement après la demande", () => {
     expect(refusDecision(d, { decision: "remboursement", decisionLe: "2026-12-12" })).toBeNull();
   });
-  it("refuse sans demande reçue (hors non_applicable)", () => {
+  it("refuse sans demande reçue, pour les trois décisions", () => {
+    for (const decision of ["remboursement", "refus", "avoir"] as const) {
+      expect(
+        refusDecision(
+          { ...d, demandeRecueLe: null },
+          { decision, decisionLe: "2026-12-12", motif: "Motif suffisamment long" },
+        ),
+      ).toMatch(/demande/);
+    }
+  });
+  it("accepte un avoir sans note, et les trois décisions sur une demande hors délai", () => {
+    const horsDelai = { ...d, demandeRecueLe: "2027-02-20" };
+    expect(refusDecision(horsDelai, { decision: "avoir", decisionLe: "2027-02-22" })).toBeNull();
     expect(
-      refusDecision(
-        { ...d, demandeRecueLe: null },
-        { decision: "remboursement", decisionLe: "2026-12-12" },
-      ),
-    ).toMatch(/demande/);
+      refusDecision(horsDelai, { decision: "remboursement", decisionLe: "2027-02-22" }),
+    ).toBeNull();
     expect(
-      refusDecision(
-        { ...d, demandeRecueLe: null },
-        {
-          decision: "non_applicable",
-          decisionLe: "2026-12-12",
-          motif: "Hors périmètre de la garantie",
-        },
-      ),
+      refusDecision(horsDelai, {
+        decision: "refus",
+        decisionLe: "2027-02-22",
+        motif: "Demande hors délai, refusée",
+      }),
     ).toBeNull();
   });
   it("refuse une décision antérieure à la demande", () => {
@@ -30,7 +43,7 @@ describe("refusDecision", () => {
       /précéder/,
     );
   });
-  it("exige un motif hors remboursement", () => {
+  it("exige un motif pour un refus", () => {
     expect(
       refusDecision(d, { decision: "refus", decisionLe: "2026-12-12", motif: "court" }),
     ).toMatch(/motif/);
@@ -99,5 +112,37 @@ describe("refusDemande / eurosEnCentimes", () => {
     expect(eurosEnCentimes("19.999")).toBeNull();
     expect(eurosEnCentimes("abc")).toBeNull();
     expect(eurosEnCentimes("-5")).toBeNull();
+  });
+});
+
+describe("avoir et demande hors délai", () => {
+  it("plafonne l'avoir à 4 470 € HT", () => {
+    expect(PLAFOND_AVOIR_HT_CENTS).toBe(447_000);
+    expect(verifierMontantAvoir(447_000)).toEqual({ ok: true, cents: 447_000 });
+    expect(verifierMontantAvoir(447_001).ok).toBe(false);
+    expect(verifierMontantAvoir(0).ok).toBe(false);
+    expect(verifierMontantAvoir(null).ok).toBe(false);
+  });
+  it("hors délai : jamais de virement dû sans décision de remboursement", () => {
+    const h = {
+      dateJournee: "2026-12-01",
+      rapportRemisLe: "2026-12-03",
+      demandeRecueLe: "2027-02-20",
+    };
+    expect(refusVirement(h, "2027-04-01", "2027-04-01")).toMatch(/Aucun remboursement/);
+    expect(
+      refusVirement(
+        { ...h, decision: "avoir", decisionLe: "2027-02-22" },
+        "2027-03-01",
+        "2027-03-01",
+      ),
+    ).toMatch(/Aucun remboursement/);
+    expect(
+      refusVirement(
+        { ...h, decision: "remboursement", decisionLe: "2027-02-22" },
+        "2027-03-01",
+        "2027-03-01",
+      ),
+    ).toBeNull();
   });
 });

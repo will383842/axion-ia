@@ -11,7 +11,10 @@ import { AdminPageShell } from "@/components/admin/ui/AdminPageShell";
 import { AdminPageHeader } from "@/components/admin/ui/AdminPageHeader";
 import { AdminButton } from "@/components/admin/ui/AdminButton";
 import { AccesRefuse } from "@/components/admin/ui/AccesRefuse";
-import { BadgeEcheance } from "@/components/admin/garanties-journee-ia/BadgeEcheance";
+import {
+  BadgeEcheance,
+  BadgeHorsDelai,
+} from "@/components/admin/garanties-journee-ia/BadgeEcheance";
 import { gardePage } from "@/server/auth/garde-page";
 import { listerGaranties } from "@/server/garanties-journee-ia/lecture";
 import { aujourdhuiParis, jourFr, lignesDeListe } from "@/lib/garantie-journee-ia/presentation";
@@ -43,7 +46,7 @@ export default async function GarantiesJourneeIaPage({ params, searchParams }: P
     <AdminPageShell width="wide">
       <AdminPageHeader
         title="Garantie Journée IA — remboursements"
-        description="Échéances calculées depuis les dates saisies : rapport, demande écrite du client, réponse (15 j, sinon réputée acceptée) et virement (30 j)."
+        description="Échéances calculées depuis les dates saisies : rapport, demande écrite du client, réponse (15 j, sinon réputée acceptée ; demande hors délai : décision au cas par cas, jamais d'acceptation tacite) et virement (30 j)."
         actions={
           acces.peutEcrire ? (
             <AdminButton href={`${base}/nouveau`}>Nouveau dossier</AdminButton>
@@ -90,6 +93,12 @@ export default async function GarantiesJourneeIaPage({ params, searchParams }: P
                 <td className="p-2">{jourFr(l.echeance.date)}</td>
                 <td className="p-2">
                   <BadgeEcheance etat={l.etat} />
+                  {l.horsDelai ? (
+                    <>
+                      {" "}
+                      <BadgeHorsDelai />
+                    </>
+                  ) : null}
                 </td>
                 <td className="p-2">{l.prochaineAction}</td>
               </tr>
