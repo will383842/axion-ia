@@ -143,4 +143,21 @@ describe("création et publication", () => {
     await lancer(publierChallengeAction(fd({ id: "x", case1: "oui", case2: "oui", case3: "oui" })));
     expect(h.publier).not.toHaveBeenCalled();
   });
+  it("un refus métier est montré tel quel, sans passer par Sentry", async () => {
+    h.publier.mockResolvedValueOnce({
+      ok: false,
+      message: "Un challenge déjà publié couvre cette période.",
+    } as never);
+    const r = await lancer(
+      publierChallengeAction(fd({ id: ID, case1: "oui", case2: "oui", case3: "oui" })),
+    );
+    expect(decodeURIComponent(r)).toContain("Un challenge déjà publié couvre cette période.");
+    h.archiver.mockResolvedValueOnce({
+      ok: false,
+      message: "Seul un challenge publié peut être archivé.",
+    } as never);
+    const a = await lancer(archiverChallengeAction(fd({ id: ID, confirmer: "oui" })));
+    expect(decodeURIComponent(a)).toContain("Seul un challenge publié peut être archivé.");
+    expect(h.journal).not.toHaveBeenCalled();
+  });
 });

@@ -129,14 +129,17 @@ export async function publierChallengeAction(fd: FormData): Promise<void> {
     return redirect(`${liste()}?erreur=${encodeURIComponent("Challenge inconnu.")}`);
   if (!["case1", "case2", "case3"].every((k) => texte(fd, k) === "oui"))
     return retourne("Cochez les trois cases pour publier.");
+  // Le `redirect` lève une exception : il reste HORS du `try`, sinon le `catch` l'avalerait.
+  let message: string | null = null;
   try {
     const r = await publierChallenge(id, s.adminId);
-    if (!r.ok) return retourne(r.message);
-    await tracer("challenge_apporteur.publie", id, s.adminId, {});
+    if (r.ok) await tracer("challenge_apporteur.publie", id, s.adminId, {});
+    else message = r.message;
   } catch (err) {
     Sentry.captureException(err, { tags: { action: "apporteurs-challenge-publier" } });
-    return retourne("Publication impossible. Réessayez.");
+    message = "Publication impossible. Réessayez.";
   }
+  if (message) return retourne(message);
   revalidatePath(liste());
   redirect(
     `${liste()}/${id}?retour=${encodeURIComponent("Challenge publié. Son règlement ne peut plus être modifié.")}`,
@@ -145,20 +148,22 @@ export async function publierChallengeAction(fd: FormData): Promise<void> {
 
 export async function archiverChallengeAction(fd: FormData): Promise<void> {
   const id = texte(fd, "id");
+  const vers = (cle: "erreur" | "retour", m: string, avecId = false): never =>
+    redirect(`${liste()}${avecId ? `/${id}` : ""}?${cle}=${encodeURIComponent(m)}`);
   const s = await sessionArgent();
-  if (!s.ok) return redirect(`${liste()}?erreur=${encodeURIComponent(s.message)}`);
+  if (!s.ok) return vers("erreur", s.message);
   if (!UUID.test(id) || texte(fd, "confirmer") !== "oui")
-    return redirect(`${liste()}?erreur=${encodeURIComponent("Confirmez d'abord l'archivage.")}`);
+    return vers("erreur", "Confirmez d'abord l'archivage.");
+  let message: string | null = null;
   try {
     const r = await archiverChallenge(id);
-    if (!r.ok) return redirect(`${liste()}/${id}?erreur=${encodeURIComponent(r.message)}`);
-    await tracer("challenge_apporteur.archive", id, s.adminId, {});
+    if (r.ok) await tracer("challenge_apporteur.archive", id, s.adminId, {});
+    else message = r.message;
   } catch (err) {
     Sentry.captureException(err, { tags: { action: "apporteurs-challenge-archiver" } });
-    return redirect(
-      `${liste()}/${id}?erreur=${encodeURIComponent("Archivage impossible. Réessayez.")}`,
-    );
+    message = "Archivage impossible. Réessayez.";
   }
+  if (message) return vers("erreur", message, true);
   revalidatePath(liste());
-  redirect(`${liste()}?retour=${encodeURIComponent("Challenge archivé.")}`);
+  return vers("retour", "Challenge archivé.");
 }
