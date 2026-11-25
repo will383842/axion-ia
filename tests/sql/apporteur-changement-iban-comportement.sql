@@ -7,6 +7,8 @@
 
 -- 1. Une seule demande OUVERTE par apporteur ; une demande close n'empeche pas la suivante.
 BEGIN;
+-- Cas qui ont besoin de dates passees : seul le declencheur d'horloge est desactive (transaction annulee).
+ALTER TABLE apporteur_changements_iban DISABLE TRIGGER apporteur_changements_iban_horloge;
 DO $$
 DECLARE
   ap uuid := gen_random_uuid();
@@ -71,6 +73,8 @@ ROLLBACK;
 
 -- 3. Statut, origine, empreinte et quatre caracteres sont bornes ; la coherence d'etat est exigee.
 BEGIN;
+-- Cas qui ont besoin de dates passees : seul le declencheur d'horloge est desactive (transaction annulee).
+ALTER TABLE apporteur_changements_iban DISABLE TRIGGER apporteur_changements_iban_horloge;
 DO $$
 DECLARE
   chiffre text := 'enc:v2:' || repeat('a', 24) || ':' || repeat('b', 40) || ':' || repeat('c', 32);
@@ -165,6 +169,8 @@ ROLLBACK;
 -- 4. Jamais de DELETE ni de TRUNCATE ; le coeur d'une demande ne change pas ; une demande decidee est figee ;
 --    on ne saute pas a « validee » sans passer par « confirmee ».
 BEGIN;
+-- Cas qui ont besoin de dates passees : seul le declencheur d'horloge est desactive (transaction annulee).
+ALTER TABLE apporteur_changements_iban DISABLE TRIGGER apporteur_changements_iban_horloge;
 DO $$
 DECLARE
   chiffre text := 'enc:v2:' || repeat('a', 24) || ':' || repeat('b', 40) || ':' || repeat('c', 32);
@@ -347,5 +353,71 @@ BEGIN
     TRUNCATE apporteur_virements_compte;
     RAISE EXCEPTION 'AXT99 TRUNCATE accepte';
   EXCEPTION WHEN raise_exception THEN IF SQLERRM LIKE 'AXT99%' THEN RAISE; END IF; END;
+END $$;
+ROLLBACK;
+
+-- 8. Les dates d'etape suivent l'horloge de la base : ni confirmation antidatee, ni validation avant 72 h reelles,
+--    ni date de decision dans le futur, ni champ de suivi pose hors de sa transition ; fin de validite >= debut.
+BEGIN;
+DO $$
+DECLARE
+  chiffre text := 'enc:v2:' || repeat('a', 24) || ':' || repeat('b', 40) || ':' || repeat('c', 32);
+  h text := repeat('d', 64);
+  d uuid := gen_random_uuid();
+BEGIN
+  BEGIN
+    INSERT INTO apporteur_changements_iban (id, apporteur_id, iban, iban_empreinte, iban_fin4, origine, demandee_at)
+    VALUES (gen_random_uuid(), gen_random_uuid(), chiffre, h, '1234', 'espace', now() - interval '3 days');
+    RAISE EXCEPTION 'AXT99 demandee_at antidatee acceptee';
+  EXCEPTION WHEN raise_exception THEN IF SQLERRM LIKE 'AXT99%' THEN RAISE; END IF; END;
+  INSERT INTO apporteur_changements_iban (id, apporteur_id, iban, iban_empreinte, iban_fin4, origine)
+  VALUES (d, gen_random_uuid(), chiffre, h, '1234', 'espace');
+  -- voie (a) : confirmation antidatee
+  BEGIN
+    UPDATE apporteur_changements_iban SET statut = 'confirmee', confirmee_at = now() - interval '10 days' WHERE id = d;
+    RAISE EXCEPTION 'AXT99 confirmee_at antidatee acceptee';
+  EXCEPTION WHEN raise_exception THEN IF SQLERRM LIKE 'AXT99%' THEN RAISE; END IF; END;
+  -- champs de suivi hors transition
+  BEGIN
+    UPDATE apporteur_changements_iban SET opposee_at = now() WHERE id = d;
+    RAISE EXCEPTION 'AXT99 opposee_at pose sans opposition';
+  EXCEPTION WHEN raise_exception THEN IF SQLERRM LIKE 'AXT99%' THEN RAISE; END IF; END;
+  BEGIN
+    UPDATE apporteur_changements_iban SET motif_refus = 'x', traitee_par = gen_random_uuid() WHERE id = d;
+    RAISE EXCEPTION 'AXT99 motif pose sans decision';
+  EXCEPTION WHEN raise_exception THEN IF SQLERRM LIKE 'AXT99%' THEN RAISE; END IF; END;
+  UPDATE apporteur_changements_iban SET avis_envoye_at = now() WHERE id = d;
+  BEGIN
+    UPDATE apporteur_changements_iban SET avis_envoye_at = now() + interval '1 hour' WHERE id = d;
+    RAISE EXCEPTION 'AXT99 avis_envoye_at reecrit';
+  EXCEPTION WHEN raise_exception THEN IF SQLERRM LIKE 'AXT99%' THEN RAISE; END IF; END;
+  UPDATE apporteur_changements_iban SET statut = 'confirmee', confirmee_at = now() WHERE id = d;
+  -- voie (b) : traitee_at dans le futur pour tenir les 72 h
+  BEGIN
+    UPDATE apporteur_changements_iban SET statut = 'validee', traitee_at = now() + interval '3 days', traitee_par = gen_random_uuid() WHERE id = d;
+    RAISE EXCEPTION 'AXT99 validation datee dans le futur acceptee';
+  EXCEPTION WHEN raise_exception THEN IF SQLERRM LIKE 'AXT99%' THEN RAISE; END IF; END;
+  -- validation reelle avant 72 h : refusee par l'horloge de la base
+  BEGIN
+    UPDATE apporteur_changements_iban SET statut = 'validee', traitee_at = now(), traitee_par = gen_random_uuid() WHERE id = d;
+    RAISE EXCEPTION 'AXT99 validation avant 72 h reelles acceptee';
+  EXCEPTION WHEN raise_exception THEN IF SQLERRM LIKE 'AXT99%' THEN RAISE; END IF; WHEN check_violation THEN NULL; END;
+  -- le refus, lui, n'attend pas 72 h
+  UPDATE apporteur_changements_iban SET statut = 'refusee', traitee_at = now(), traitee_par = gen_random_uuid(), motif_refus = 'Titulaire different' WHERE id = d;
+END $$;
+ROLLBACK;
+
+BEGIN;
+DO $$
+DECLARE
+  h text := repeat('d', 64);
+  chiffre text := 'enc:v2:' || repeat('a', 24) || ':' || repeat('b', 40) || ':' || repeat('c', 32);
+  id1 uuid := gen_random_uuid();
+BEGIN
+  BEGIN
+    INSERT INTO apporteur_iban_historique (id, apporteur_id, iban, iban_empreinte, iban_fin4, origine, en_vigueur_de, en_vigueur_jusqua)
+    VALUES (id1, gen_random_uuid(), chiffre, h, '1234', 'dossier_initial', now(), now() - interval '1 day');
+    RAISE EXCEPTION 'AXT99 fin de validite avant le debut acceptee';
+  EXCEPTION WHEN check_violation THEN NULL; END;
 END $$;
 ROLLBACK;

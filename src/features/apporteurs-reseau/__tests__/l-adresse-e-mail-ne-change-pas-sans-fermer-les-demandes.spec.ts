@@ -124,7 +124,7 @@ export function lireEcritures(sources: ReadonlyArray<{ fichier: string; texte: s
       sql.push(fichier);
     // Alias ou accès par crochets : `const f = prisma.apporteurReseau;`, `prisma["apporteurReseau"]`.
     for (const a of texte.matchAll(
-      /(?:=\s*[\w.]*\.apporteurReseau\s*[;,\n]|\[\s*["']apporteurReseau["']\s*\])/g,
+      /(?:=\s*[\w.]*\.apporteurReseau\s*[;,\n]|\[\s*["']apporteurReseau["']\s*\]|\{[^}]*\bapporteurReseau\s*:\s*\w+[^}]*\}\s*=)/g,
     ))
       appelsOpaques.push(`${fichier} : accès indirect à apporteurReseau (${a[0].trim()})`);
     // Écriture imbriquée par une relation : `{ apporteur: { update: { telephone … } } }`.
@@ -246,6 +246,10 @@ describe("les coordonnées de la fiche (e-mail, téléphone) ne changent que par
         texte: "const f = prisma.apporteurReseau;\nawait f.update({ data: { email } });",
       },
       {
+        fichier: "src/y/destructure.ts",
+        texte: "const { apporteurReseau: ar } = tx;\nawait ar.update({ data: { email } });",
+      },
+      {
         fichier: "src/y/crochets.ts",
         texte: 'await prisma["apporteurReseau"].update({ data: { email: x } });',
       },
@@ -282,6 +286,7 @@ describe("les coordonnées de la fiche (e-mail, téléphone) ne changent que par
     const opaques = l.appelsOpaques.join("\n");
     expect(opaques).toContain("src/y/alias.ts");
     expect(opaques).toContain("src/y/crochets.ts");
+    expect(opaques).toContain("src/y/destructure.ts");
     expect(opaques).toContain("src/y/dispersion.ts");
     expect(opaques).toContain("src/y/upsert.ts");
     expect(opaques).toContain("src/y/abrege.ts");

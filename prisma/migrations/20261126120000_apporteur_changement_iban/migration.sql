@@ -117,6 +117,16 @@ BEGIN
      OR (OLD."confirmation_navigateur" IS NOT NULL AND NEW."confirmation_navigateur" IS DISTINCT FROM OLD."confirmation_navigateur") THEN
     RAISE EXCEPTION 'apporteur_changements_iban : la preuve de la confirmation ne change plus';
   END IF;
+  -- Chaque champ de suivi ne s'écrit qu'avec la transition qui le porte (jamais seul, jamais sur une autre).
+  IF (NEW."confirmee_at" IS DISTINCT FROM OLD."confirmee_at" AND NOT (OLD."statut" = 'a_confirmer' AND NEW."statut" = 'confirmee'))
+     OR (NEW."opposee_at" IS DISTINCT FROM OLD."opposee_at" AND NEW."statut" <> 'opposee')
+     OR (NEW."annulee_at" IS DISTINCT FROM OLD."annulee_at" AND NEW."statut" <> 'annulee')
+     OR (NEW."expiree_at" IS DISTINCT FROM OLD."expiree_at" AND NEW."statut" <> 'expiree')
+     OR ((NEW."traitee_at" IS DISTINCT FROM OLD."traitee_at" OR NEW."traitee_par" IS DISTINCT FROM OLD."traitee_par"
+          OR NEW."motif_refus" IS DISTINCT FROM OLD."motif_refus") AND NEW."statut" NOT IN ('validee', 'refusee'))
+     OR (OLD."avis_envoye_at" IS NOT NULL AND NEW."avis_envoye_at" IS DISTINCT FROM OLD."avis_envoye_at") THEN
+    RAISE EXCEPTION 'apporteur_changements_iban : un champ de suivi ne s''écrit qu''avec sa transition';
+  END IF;
   -- Une demande confirmée ne revient pas en arrière ; on ne saute pas à « validée » sans être passé par « confirmée ».
   IF NEW."statut" IS DISTINCT FROM OLD."statut" THEN
     IF NOT (
@@ -145,6 +155,46 @@ BEGIN
   RETURN NEW;
 END;
 $$ LANGUAGE plpgsql;
+
+-- Les dates d'étape sont celles de L'HORLOGE DE LA BASE (à une minute près), jamais celles de l'appelant : une
+-- confirmation ne s'antidate pas, et une validation ne se date pas dans le futur pour tenir les 72 h.
+-- Fonction à part : un test peut désactiver ce seul déclencheur (dans une transaction annulée) pour fabriquer des
+-- demandes anciennes, sans désactiver les gardes de transition.
+CREATE FUNCTION "apporteur_changements_iban_garde_horloge"() RETURNS trigger AS $$
+DECLARE
+  maintenant timestamptz := clock_timestamp();
+  fenetre interval := interval '1 minute';
+BEGIN
+  IF TG_OP = 'INSERT' THEN
+    IF NEW."demandee_at" < maintenant - fenetre OR NEW."demandee_at" > maintenant + fenetre THEN
+      RAISE EXCEPTION 'apporteur_changements_iban : demandee_at suit l''horloge de la base';
+    END IF;
+    RETURN NEW;
+  END IF;
+  IF NEW."statut" IS DISTINCT FROM OLD."statut" THEN
+    IF NEW."statut" = 'confirmee' AND (NEW."confirmee_at" < maintenant - fenetre OR NEW."confirmee_at" > maintenant + fenetre
+         OR NEW."confirmee_at" < OLD."demandee_at") THEN
+      RAISE EXCEPTION 'apporteur_changements_iban : confirmee_at suit l''horloge de la base';
+    END IF;
+    IF NEW."statut" IN ('validee', 'refusee') AND (NEW."traitee_at" < maintenant - fenetre OR NEW."traitee_at" > maintenant + fenetre) THEN
+      RAISE EXCEPTION 'apporteur_changements_iban : traitee_at suit l''horloge de la base';
+    END IF;
+    IF NEW."statut" = 'validee' AND maintenant < OLD."confirmee_at" + interval '72 hours' THEN
+      RAISE EXCEPTION 'apporteur_changements_iban : validation avant la fin du délai d''opposition de 72 heures';
+    END IF;
+    IF (NEW."statut" = 'opposee' AND (NEW."opposee_at" < maintenant - fenetre OR NEW."opposee_at" > maintenant + fenetre))
+       OR (NEW."statut" = 'annulee' AND (NEW."annulee_at" < maintenant - fenetre OR NEW."annulee_at" > maintenant + fenetre))
+       OR (NEW."statut" = 'expiree' AND (NEW."expiree_at" < maintenant - fenetre OR NEW."expiree_at" > maintenant + fenetre)) THEN
+      RAISE EXCEPTION 'apporteur_changements_iban : la date d''étape suit l''horloge de la base';
+    END IF;
+  END IF;
+  RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER "apporteur_changements_iban_horloge"
+  BEFORE INSERT OR UPDATE ON "apporteur_changements_iban"
+  FOR EACH ROW EXECUTE FUNCTION "apporteur_changements_iban_garde_horloge"();
 
 CREATE TRIGGER "apporteur_changements_iban_no_delete"
   BEFORE DELETE ON "apporteur_changements_iban"
@@ -255,6 +305,9 @@ ALTER TABLE "apporteur_iban_historique" ADD CONSTRAINT "apporteur_iban_historiqu
 );
 ALTER TABLE "apporteur_iban_historique" ADD CONSTRAINT "apporteur_iban_historique_empreinte" CHECK (
   "iban_empreinte" ~ '^[0-9a-f]{64}$' AND "iban_fin4" ~ '^[A-Z0-9]{4}$'
+);
+ALTER TABLE "apporteur_iban_historique" ADD CONSTRAINT "apporteur_iban_historique_periode" CHECK (
+  "en_vigueur_jusqua" IS NULL OR "en_vigueur_de" IS NULL OR "en_vigueur_jusqua" >= "en_vigueur_de"
 );
 -- Un compte « changement » vient d'une demande.
 ALTER TABLE "apporteur_iban_historique" ADD CONSTRAINT "apporteur_iban_historique_demande" CHECK (

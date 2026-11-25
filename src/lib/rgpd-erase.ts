@@ -2231,7 +2231,7 @@ export const EXCEPTIONS_EFFACEMENT_DOSSIER: ReadonlyArray<{
     // 2026-11-26 — changement d'IBAN après signature (plan apporteurs-changement-iban, lot 1).
     modele: "ApporteurChangementIban",
     motif:
-      "preuve de la décision sur un changement de compte bancaire (qui a demandé, confirmé, validé ou refusé, et quand) : conservée comme les autofactures et les virements qu'elle justifie (art. 17(3)(b) et (e) RGPD, art. L.123-22 du code de commerce). Une demande ouverte est annulée à l'effacement ; la ligne n'est jamais supprimée.",
+      "preuve de la décision sur un changement de compte bancaire (qui a demandé, confirmé, validé ou refusé, et quand) : conservée comme les autofactures et les virements qu'elle justifie (art. 17(3)(b) et (e) RGPD, art. L.123-22 du code de commerce). Annuler la demande ouverte à l'effacement sera livré avec le lot « RGPD » du chantier, avant l'allumage ; la ligne n'est jamais supprimée.",
   },
   {
     // 2026-11-26 — changement d'IBAN après signature (plan apporteurs-changement-iban, lot 1).

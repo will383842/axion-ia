@@ -14,7 +14,7 @@ Rien ne les lit ni ne les écrit tant que le lot 4 (cœur serveur) n'est pas en 
 **Il n'y en a pas, à dessein.** Aucun script de suppression n'est livré, et la migration n'a pas de `rollback.sql` :
 
 - les tables peuvent rester en place si le code est retiré : rien d'ancien ne les lit ;
-- les déclencheurs refusent `DELETE` et `TRUNCATE` (demandes, historique) et toute modification (compte d'un virement) :
+- les déclencheurs refusent `DELETE` et `TRUNCATE` (demandes, RIB joints, historique) et toute modification (compte d'un virement) ; seule la purge des octets d'un RIB passe :
   une demande est une preuve, un historique de comptes est un ajout seul ;
 - une fois une demande validée, la fiche porte le nouvel IBAN, la pièce `rib` courante est le nouveau RIB et
   l'historique porte l'ancien : le retour à l'ancien compte se fait par **une nouvelle demande**, pas par une
