@@ -5,9 +5,12 @@ import type { EtatEcheance, NiveauEcheance } from "@/lib/garantie-journee-ia/pre
  * le TEXTE (« Dépassée de 3 j », « Aujourd'hui », « Dans 4 j », « Clos ») la double toujours.
  */
 const CLASSES: Record<NiveauEcheance, string> = {
-  rouge: "border-[color:var(--color-admin-error-fg)] bg-[color:var(--color-admin-error-soft)] text-[color:var(--color-admin-error-fg)] font-semibold",
-  orange: "border-[color:var(--color-admin-warning)] bg-[color:var(--color-admin-warning-soft)] text-[color:var(--color-admin-warning-fg)] font-semibold",
-  jaune: "border-[color:var(--color-admin-warning-fg)] bg-[color:var(--color-admin-warning-soft)] text-[color:var(--color-admin-warning-fg)]",
+  rouge:
+    "border-[color:var(--color-admin-error-fg)] bg-[color:var(--color-admin-error-soft)] text-[color:var(--color-admin-error-fg)] font-semibold",
+  orange:
+    "border-[color:var(--color-admin-warning)] bg-[color:var(--color-admin-warning-soft)] text-[color:var(--color-admin-warning-fg)] font-semibold",
+  jaune:
+    "border-[color:var(--color-admin-warning-fg)] bg-[color:var(--color-admin-warning-soft)] text-[color:var(--color-admin-warning-fg)]",
   vert: "border-[color:var(--color-admin-success-fg)] bg-[color:var(--color-admin-success-soft)] text-[color:var(--color-admin-success-fg)]",
   gris: "border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-surface-2)] text-[color:var(--color-admin-fg-muted)]",
 };
