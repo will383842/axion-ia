@@ -13,7 +13,7 @@
  * (`interrupteur-rendez-vous.ts`) et se passe en argument (`regleDe(signature, actif)`).
  */
 
-import { PROTECTION_MOIS, ajouterJours, ajouterMois } from "./regles";
+import { PROTECTION_MOIS, ajouterMois } from "./regles";
 
 /** Durée de la réservation provisoire, à compter de la saisie (`recueAt`). */
 export const RESERVATION_PROVISOIRE_JOURS = 60;
@@ -60,9 +60,33 @@ export function regleDe(signature: unknown, actif: boolean): RegleAttribution {
     : null;
 }
 
-/** Fin de la réservation provisoire : la saisie + 60 jours (borne incluse). */
+/**
+ * « AAAA-MM-JJ » du jour de Paris : LE MÊME découpage que `aujourdhuiParis`
+ * (`declaration-regles.ts`, qui importe ce module : d'où la copie d'une ligne ; un test fige
+ * l'égalité des deux).
+ */
+const jourDeParis = (d: Date): string =>
+  new Intl.DateTimeFormat("sv-SE", { timeZone: "Europe/Paris" }).format(d);
+
+/**
+ * Fin de la réservation provisoire : la FIN du 60e jour, heure de Paris (J0 = le jour de la
+ * saisie) : couvert jusqu'à 23:59:59.999 de J+60, refusé à 00:00 de J+61. L'heure de la saisie
+ * n'y change rien, ni les passages à l'heure d'hiver ou d'été. Date illisible : date illisible
+ * (toute comparaison refuse).
+ */
 export function finReservation(recueAt: Date): Date {
-  return ajouterJours(recueAt, RESERVATION_PROVISOIRE_JOURS);
+  if (Number.isNaN(recueAt.getTime())) return new Date(Number.NaN);
+  const [a = 0, m = 1, jour = 1] = jourDeParis(recueAt).split("-").map(Number);
+  // Minuit UTC du jour J+61 (le calendrier fait les mois et les années bissextiles).
+  const minuitUtc = Date.UTC(a, m - 1, jour + RESERVATION_PROVISOIRE_JOURS + 1);
+  const cible = new Date(minuitUtc).toISOString().slice(0, 10);
+  // Minuit à Paris = minuit UTC − 2 h (été) ou − 1 h (hiver) : celui des deux qui tombe à 00:00.
+  const ete = minuitUtc - 2 * 3_600_000;
+  const minuitParis =
+    jourDeParis(new Date(ete)) === cible && jourDeParis(new Date(ete - 1)) !== cible
+      ? ete
+      : minuitUtc - 3_600_000;
+  return new Date(minuitParis - 1);
 }
 
 /** Fin de la protection : six mois à compter du rendez-vous TENU. */
@@ -111,7 +135,7 @@ export type ReservationProvisoire = {
    * Date de PRISE d'un rendez-vous ni tenu ni annulé (c'est l'appelant qui le sait). Absent ou
    * `null` : aucun rendez-vous en attente.
    */
-  rendezVousEnAttentePrisAt?: Date | null | undefined;
+  rendezVousPrisAt?: Date | null | undefined;
 };
 
 /**
@@ -124,7 +148,7 @@ export type ReservationProvisoire = {
  */
 export function reservationOccupe(r: ReservationProvisoire, maintenant: Date): boolean {
   if (!(r.reserveeJusquAt.getTime() < maintenant.getTime())) return true;
-  const pris = r.rendezVousEnAttentePrisAt?.getTime();
+  const pris = r.rendezVousPrisAt?.getTime();
   if (pris === undefined) return false;
   return !(pris < r.recueAt.getTime()) && !(pris > r.reserveeJusquAt.getTime());
 }

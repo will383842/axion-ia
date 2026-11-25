@@ -22,7 +22,7 @@ vi.mock("../attribution-annonce", () => ({}));
 vi.mock("../rebonds", () => ({}));
 vi.mock("../annuaire", () => ({}));
 
-import { etatPourApporteur } from "../declaration-regles";
+import { aujourdhuiParis, etatPourApporteur } from "../declaration-regles";
 import { validationParRendezVousActive } from "../interrupteur-rendez-vous";
 import { presentationOccupe } from "../presentations";
 import {
@@ -54,9 +54,53 @@ describe("constantes et dates de la règle par rendez-vous", () => {
     expect(VERSION_REGLE_RENDEZ_VOUS).toBe("2.8");
   });
 
-  it("finReservation : la saisie + 60 jours, même arithmétique que les délais existants", () => {
-    expect(FIN.getTime()).toBe(ajouterJours(SAISIE, 60).getTime());
-    expect(FIN.toISOString()).toBe("2026-05-09T09:30:00.000Z");
+  it("finReservation : la FIN du 60e jour, heure de Paris (J0 = jour de la saisie)", () => {
+    // Saisie le 10/03/2026 à 10 h 30 (Paris) → J+60 = 09/05/2026 → 23:59:59.999 Paris = 21:59:59.999Z
+    expect(FIN.toISOString()).toBe("2026-05-09T21:59:59.999Z");
+    // L'heure de la saisie ne change pas le jour, mais le jour de Paris oui.
+    expect(finReservation(new Date("2026-03-09T23:05:00.000Z")).toISOString()).toBe(
+      "2026-05-09T21:59:59.999Z", // 00:05 Paris le 10/03
+    );
+    expect(finReservation(new Date("2026-03-10T22:30:00.000Z")).toISOString()).toBe(
+      "2026-05-09T21:59:59.999Z", // 23:30 Paris le 10/03 : J0 = 10/03
+    );
+    expect(finReservation(new Date("2026-03-10T23:30:00.000Z")).toISOString()).toBe(
+      "2026-05-10T21:59:59.999Z", // 00:30 Paris le 11/03 : J0 = 11/03
+    );
+    expect(finReservation(new Date(Number.NaN)).getTime()).toBeNaN();
+  });
+
+  it("même découpage de jour que aujourdhuiParis", () => {
+    for (const iso of ["2026-03-10T09:30:00Z", "2026-03-10T23:30:00Z", "2026-10-24T22:30:00Z"]) {
+      const d = new Date(iso);
+      const jourDeFin = aujourdhuiParis(finReservation(d));
+      const attendu = new Date(`${aujourdhuiParis(d)}T00:00:00Z`);
+      attendu.setUTCDate(attendu.getUTCDate() + 60);
+      expect(jourDeFin).toBe(attendu.toISOString().slice(0, 10));
+      expect(aujourdhuiParis(new Date(finReservation(d).getTime() + 1))).not.toBe(jourDeFin);
+    }
+  });
+
+  it("60e jour à 18 h et à 23:59 Paris : couvert ; 61e jour à 00:00 Paris : refusé", () => {
+    const h18 = new Date("2026-05-09T16:00:00.000Z"); // 18:00 Paris
+    const h2359 = new Date("2026-05-09T21:59:00.000Z"); // 23:59 Paris
+    const minuit = new Date("2026-05-09T22:00:00.000Z"); // 00:00 Paris, J+61
+    const reservation = { reserveeJusquAt: FIN, statut: "reservee" };
+    const e = { recueAt: SAISIE, confirmee: false, protegeeJusquAt: null, reservation };
+    expect(commandeCouverte({ ...e, signeeAt: h18 })).toBe(true);
+    expect(commandeCouverte({ ...e, signeeAt: h2359 })).toBe(true);
+    expect(commandeCouverte({ ...e, signeeAt: minuit })).toBe(false);
+    const p = { statut: "reservee" as const, protegeeJusquAt: null };
+    const r = { recueAt: SAISIE, reserveeJusquAt: FIN };
+    expect(presentationOccupe(p, h2359, r)).toBe(true);
+    expect(presentationOccupe(p, minuit, r)).toBe(false);
+    const base = { recueAt: SAISIE, reserveeJusquAt: FIN, maintenant: j(200), tenuAt: j(100) };
+    expect(rendezVousRecevable({ ...base, prisAt: h18 })).toEqual({ ok: true });
+    expect(rendezVousRecevable({ ...base, prisAt: h2359 })).toEqual({ ok: true });
+    expect(rendezVousRecevable({ ...base, prisAt: minuit })).toEqual({
+      ok: false,
+      motif: "pris_apres_reservation",
+    });
   });
 
   it("finDeProtectionRendezVous : 6 mois depuis le rendez-vous, comme la fonction de mois existante", () => {
@@ -288,7 +332,7 @@ describe("occupation de l'entreprise : jamais deux apporteurs (I4 et I5)", () =>
   const enAttente = (prisAt: Date | null) => ({
     recueAt: SAISIE,
     reserveeJusquAt: FIN,
-    rendezVousEnAttentePrisAt: prisAt,
+    rendezVousPrisAt: prisAt,
   });
 
   it("I4 · rendez-vous pris à J+50, à tenir à J+80 : l'entreprise reste occupée de J+61 à J+80", () => {
@@ -351,7 +395,7 @@ describe("occupation de l'entreprise : jamais deux apporteurs (I4 et I5)", () =>
     for (const reserveeJusquAt of [FIN, NAN, j(-5)])
       for (const prisAt of [undefined, null, j(-1), SAISIE, j(50), FIN, j(61), NAN])
         for (const maintenant of [...INSTANTS, NAN]) {
-          const r = { recueAt: SAISIE, reserveeJusquAt, rendezVousEnAttentePrisAt: prisAt };
+          const r = { recueAt: SAISIE, reserveeJusquAt, rendezVousPrisAt: prisAt };
           expect(etatPourApporteur(pres, maintenant, r)?.etat === "reservee").toBe(
             presentationOccupe(p, maintenant, r),
           );
@@ -401,15 +445,20 @@ describe("durcissements mineurs (relecture du 25/11)", () => {
     vi.unstubAllEnvs();
   });
 
-  it("M3 · finReservation ajoute 60 × 24 h, y compris à travers un changement d'heure", () => {
-    // 1er février 9 h (Paris, UTC+1) → 2 avril 10 h (Paris, UTC+2).
-    expect(finReservation(new Date("2026-02-01T08:00:00.000Z")).toISOString()).toBe(
-      "2026-04-02T08:00:00.000Z",
-    );
-    // 1er septembre 9 h (Paris, UTC+2) → 31 octobre 8 h (Paris, UTC+1).
-    expect(finReservation(new Date("2026-09-01T07:00:00.000Z")).toISOString()).toBe(
-      "2026-10-31T07:00:00.000Z",
-    );
+  it("N1 · saisie dont les 60 jours enjambent le passage à l'heure d'hiver (25/10/2026)", () => {
+    // 01/09/2026 09:00 Paris → J+60 = 31/10/2026 (+1 h) : 23:59:59.999 = 22:59:59.999Z
+    const fin = finReservation(new Date("2026-09-01T07:00:00.000Z"));
+    expect(fin.toISOString()).toBe("2026-10-31T22:59:59.999Z");
+    expect(new Date("2026-10-31T22:59:00.000Z") <= fin).toBe(true); // 23:59 Paris
+    expect(new Date("2026-10-31T23:00:00.000Z") <= fin).toBe(false); // 00:00 Paris, J+61
+  });
+
+  it("N1 · saisie dont les 60 jours enjambent le passage à l'heure d'été (29/03/2026)", () => {
+    // 10/02/2026 09:00 Paris → J+60 = 11/04/2026 (+2 h) : 23:59:59.999 = 21:59:59.999Z
+    const fin = finReservation(new Date("2026-02-10T08:00:00.000Z"));
+    expect(fin.toISOString()).toBe("2026-04-11T21:59:59.999Z");
+    expect(new Date("2026-04-11T21:59:00.000Z") <= fin).toBe(true); // 23:59 Paris
+    expect(new Date("2026-04-11T22:00:00.000Z") <= fin).toBe(false); // 00:00 Paris, J+61
   });
 });
 
@@ -564,7 +613,7 @@ describe("avec une reservation : commandeCouverte", () => {
   const reservation = { reserveeJusquAt: FIN, statut: "reservee" };
   const nonConfirmee = { recueAt: SAISIE, confirmee: false, protegeeJusquAt: null, reservation };
 
-  it("J+59 couverte, J+60 pile couverte, J+61 non couverte", () => {
+  it("J+59 couverte, J+60 (jusqu'à 23:59 Paris) couverte, J+61 non couverte", () => {
     expect(commandeCouverte({ ...nonConfirmee, signeeAt: j(59) })).toBe(true);
     expect(commandeCouverte({ ...nonConfirmee, signeeAt: j(60) })).toBe(true);
     expect(commandeCouverte({ ...nonConfirmee, signeeAt: new Date(FIN.getTime() + 1) })).toBe(
@@ -654,7 +703,7 @@ describe("avec une reservation : présentation reservee", () => {
   const reservation = { recueAt: SAISIE, reserveeJusquAt: FIN };
   const p = { statut: "reservee" as const, protegeeJusquAt: null };
 
-  it("occupe à J+59 et à J+60 pile, n'occupe plus à J+61", () => {
+  it("occupe à J+59 et jusqu'à la fin du J+60, n'occupe plus à J+61", () => {
     expect(presentationOccupe(p, j(59), reservation)).toBe(true);
     expect(presentationOccupe(p, j(60), reservation)).toBe(true);
     expect(presentationOccupe(p, new Date(FIN.getTime() + 1), reservation)).toBe(false);
