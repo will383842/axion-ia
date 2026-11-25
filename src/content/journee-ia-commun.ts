@@ -35,6 +35,22 @@ export const CONDITION_GARANTIE =
 export const RAPPORT_COMPLET =
   "Sous 3 jours ouvrés après la journée, vous recevez votre rapport complet : vos gains chiffrés, les tâches à automatiser classées par rentabilité, et votre plan d’action sur 90 jours.";
 
+/**
+ * Multiple du prix HT de la journée sous lequel la journée est remboursée (garantie, CGV
+ * art. 47.10). Décision du dirigeant du 25/11/2026.
+ */
+export const MULTIPLE_GARANTIE = 3;
+
+/** Seuil de la garantie en euros HT : le multiple × le prix de la journée (`pricing.ts`). */
+export function seuilGarantieEur(): number {
+  if (JOURNEE_IA_TIER.priceFlat == null) {
+    throw new Error(
+      "JOURNEE_IA_TIER.priceFlat est absent : le seuil de la garantie est incalculable.",
+    );
+  }
+  return MULTIPLE_GARANTIE * JOURNEE_IA_TIER.priceFlat;
+}
+
 /** Numéro de déclaration d'activité de l'organisme de formation. */
 // Même valeur que `NDA_NUMERO` (src/server/qualiopi/legal/legal-mentions.ts) : recopiée ici pour que
 // `src/content` n’importe pas le domaine Qualiopi (garde `qualiopi:isolation-check`).

@@ -16,11 +16,13 @@ import {
   GARANTIE,
   GARANTIE_PHRASE,
   JETON_PRIX,
+  MULTIPLE_GARANTIE,
   MENTION_DECLARATION_OF,
   NUMERO_DECLARATION_ACTIVITE,
   RAPPORT_COMPLET,
   gainExempleEur,
   remplacerJetons,
+  seuilGarantieEur,
 } from "@/content/journee-ia-commun";
 import { JOURNEE_IA_TIER, formatAmount, formatTierPrice } from "@/content/pricing";
 
@@ -139,5 +141,15 @@ describe("textes publics : mots interdits", () => {
     expect(texte).not.toMatch(
       /conforme|certifi|qualiopi|\bCPF\b|\bOPCO\b|offert|\bETI\b|TPE\/PME|financement|amende|valeur de|satisfait|intégrateur|SaaS|no-code|Grenoble|même prix pour tous|Vous êtes remboursé|3 à 4\s?h/i,
     );
+  });
+});
+
+describe("le seuil de la garantie (CGV art. 47.10)", () => {
+  it("le multiple décidé est 3", () => {
+    expect(MULTIPLE_GARANTIE).toBe(3);
+  });
+
+  it("le seuil est le multiple × le prix lu dans pricing.ts", () => {
+    expect(seuilGarantieEur()).toBe(3 * JOURNEE_IA_TIER.priceFlat!);
   });
 });
