@@ -183,12 +183,13 @@ function virements(lignes: readonly CommissionLue[], regime: RegimeTva): Viremen
     const suspendues = ls.filter(suspendue).map((l) => l.montantCents ?? 0);
     const date = new Date(Math.min(...ls.map((l) => emission(l).getTime())));
     const base = { numero, factureLe: date, echeanceLe: echeancePaiement(date), regime };
+    // Mêmes garde-fous que la console : jamais de virement affiché quand rien n'est à virer.
+    const { totalCents, partielPossible } = aVirerPartielCents(regime, aVirer, suspendues);
+    if (!partielPossible || totalCents <= 0) continue;
     if (regime === null) {
       out.push({ ...base, montants: null });
       continue;
     }
-    const { totalCents, partielPossible } = aVirerPartielCents(regime, aVirer, suspendues);
-    if (!partielPossible || totalCents <= 0) continue;
     const ht = aVirer.reduce(
       (s, l) =>
         s + (l.statut === "reprise" ? -Math.abs(l.montantCents ?? 0) : (l.montantCents ?? 0)),
@@ -254,23 +255,36 @@ export function assemblerEspaceCommissions(e: {
   }
 
   for (const [numero, ls] of parrainages) {
-    const toutesVersees = ls.every((l) => l.statut === "versee");
-    const somme = ls.reduce((s, l) => s + (l.montantCents ?? 0), 0);
+    // Jamais « suspendue » ni montant d'une part contestée : cela révélerait un litige chez le
+    // client du filleul. Les parts réglées et les parts dues sont présentées séparément.
+    const versees = ls.filter((l) => l.statut === "versee" && l.verseeAt);
+    const dues = ls.filter((l) => l.statut === "due" && l.litigeDepuis === null);
     const d = new Date(Math.min(...ls.map((l) => emission(l).getTime())));
-    hors.push({
-      cle: `p${hors.length}`,
-      nature: "Parrainage",
-      montantCents: somme !== 0 ? somme : null,
-      // Jamais « suspendue » : cela révélerait un litige chez le client du filleul.
-      etat: toutesVersees ? "versee" : "facturee",
-      numeroFacture: numero,
-      factureLe: d,
-      echeanceLe: toutesVersees ? null : echeancePaiement(d),
-      verseeLe: toutesVersees
-        ? new Date(Math.max(...ls.map((l) => (l.verseeAt ?? l.majAt).getTime())))
-        : null,
-      numeroAvoir: null,
-    });
+    const somme = (xs: CommissionLue[]) => xs.reduce((s, l) => s + (l.montantCents ?? 0), 0);
+    if (versees.length > 0 && somme(versees) !== 0)
+      hors.push({
+        cle: `p${hors.length}`,
+        nature: "Parrainage",
+        montantCents: somme(versees),
+        etat: "versee",
+        numeroFacture: numero,
+        factureLe: d,
+        echeanceLe: null,
+        verseeLe: new Date(Math.max(...versees.map((l) => l.verseeAt!.getTime()))),
+        numeroAvoir: null,
+      });
+    if (dues.length > 0 && somme(dues) !== 0)
+      hors.push({
+        cle: `p${hors.length}`,
+        nature: "Parrainage",
+        montantCents: somme(dues),
+        etat: "facturee",
+        numeroFacture: numero,
+        factureLe: d,
+        echeanceLe: echeancePaiement(d),
+        verseeLe: null,
+        numeroAvoir: null,
+      });
   }
 
   const entreprises: EntrepriseVue[] = [];

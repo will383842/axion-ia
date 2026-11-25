@@ -118,6 +118,56 @@ describe("assemblage de « Mes commissions »", () => {
     expect(v.entreprises[0]!.commissions).toHaveLength(0);
   });
 
+  it("parrainage : une part contestée n'apparaît pas, une part versée est séparée de la due", () => {
+    const e = new Date("2026-11-18T09:00:00Z");
+    const base = {
+      parrainage: true,
+      presentationApporteurId: B,
+      autofactureNumero: "AXI-APP-2026-0014",
+      autofactureEmiseAt: e,
+      autofactureAttenteMotif: null,
+    };
+    const v = vue([
+      lig({
+        ...base,
+        id: "a",
+        statut: "versee",
+        montantCents: 2_000,
+        verseeAt: new Date("2026-11-20"),
+      }),
+      lig({ ...base, id: "b", statut: "due", montantCents: 3_000, litigeDepuis: e }),
+      lig({ ...base, id: "c", statut: "due", montantCents: 1_000 }),
+    ]);
+    expect(v.horsEntreprise.map((h) => [h.etat, h.montantCents])).toEqual([
+      ["versee", 2_000],
+      ["facturee", 1_000],
+    ]);
+  });
+
+  it("régime inconnu : aucun virement quand rien n'est à virer", () => {
+    const e = new Date("2026-11-18T09:00:00Z");
+    const num = {
+      autofactureNumero: "AXI-APP-2026-0014",
+      autofactureAttenteMotif: null,
+      autofactureEmiseAt: e,
+    };
+    const v = vue(
+      [
+        lig({ ...num, id: "a", montantCents: 10_000 }),
+        lig({ ...num, id: "b", montantCents: 30_000, litigeDepuis: e }),
+        lig({
+          ...num,
+          id: "r",
+          statut: "reprise",
+          montantCents: -15_000,
+          avoirNumero: "AXI-APP-2026-0011",
+        }),
+      ],
+      { regimeTva: null },
+    );
+    expect(v.virements).toHaveLength(0);
+  });
+
   it("ne rend jamais un champ interdit (motif d'attente, litige, palier brut, identifiants)", () => {
     const v = vue([
       lig({ litigeDepuis: new Date(), litigeMotif: "SECRET-LITIGE" } as Partial<CommissionLue>),

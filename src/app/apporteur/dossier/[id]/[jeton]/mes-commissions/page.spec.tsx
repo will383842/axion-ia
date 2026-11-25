@@ -132,7 +132,7 @@ describe("rendu", () => {
     expect(t).toContain("Validée le 12 octobre 2026");
     expect(t).toContain("Réservée jusqu'au 1 décembre 2026");
     expect(t).toContain("Commission : 500,00 € hors taxes");
-    expect(t).toContain("échéance de paiement le 18 décembre 2026");
+    expect(t).toContain("échéance indiquée sur la facture : 18 décembre 2026");
     expect(t).toContain("TVA 20 % : 100,00 €");
     expect(t).toContain("Télécharger la facture AXI-APP-2026-0014");
     expect(t).toContain("Télécharger l'avoir AXI-APP-2026-0011");

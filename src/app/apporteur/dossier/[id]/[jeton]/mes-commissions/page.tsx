@@ -92,6 +92,7 @@ function Virement({ v, base }: { v: VirementAVenirVue; base: string }) {
             : T.franchise(euros(m.htCents))}
         </p>
       )}
+      <p className="text-fg-soft">{T.netApresAvoirs}</p>
       <p>{T.echeance(date(v.echeanceLe))}</p>
       {lienPiece(base, v.numero, T.telechargerFacture(v.numero))}
     </div>

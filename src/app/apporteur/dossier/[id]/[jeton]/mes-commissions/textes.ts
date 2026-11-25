@@ -19,7 +19,7 @@ export const TEXTES_COMMISSIONS = {
   comment: [
     "Votre commission est due quand le client a payé toute sa commande.",
     "Nous établissons alors la facture à votre nom et nous faisons le virement au plus tard 30 jours après ce paiement.",
-    "Si le client est remboursé ou si son paiement est annulé, la commission est reprise.",
+    "Si le client est remboursé, la commission est ajustée au prorata du remboursement ; si elle vous a déjà été versée, elle est reprise.",
     "La facture en PDF est la pièce qui fait foi.",
   ],
   grille: "Grille des commissions",
@@ -29,7 +29,8 @@ export const TEXTES_COMMISSIONS = {
   commission: (m: string) => `Commission : ${m} hors taxes`,
   factureDu: (n: string, d: string) => `Facture n° ${n} du ${d}`,
   avoirDu: (n: string, d: string) => `Avoir n° ${n} · ${d}`,
-  echeance: (d: string) => `Échéance de paiement : ${d}`,
+  echeance: (d: string) => `Échéance indiquée sur la facture : ${d}`,
+  netApresAvoirs: "Montant net, après déduction des avoirs éventuels.",
   ht: (m: string) => `${m} hors taxes`,
   assujetti: (ht: string, tva: string, ttc: string) =>
     `${ht} hors taxes · TVA 20 % : ${tva} · ${ttc} toutes taxes comprises`,
@@ -58,7 +59,7 @@ export function texteEtat(etat: EtatPrincipal, d: DonneesEtat): string | null {
     case "suspendue":
       return "Suspendue : le client conteste la prestation. Nous vous avons écrit à ce sujet.";
     case "facturee":
-      return `Commission due · facture n° ${d.facture ?? ""}${d.factureLe ? ` du ${d.factureLe}` : ""}${d.echeanceLe ? ` · échéance de paiement le ${d.echeanceLe}` : ""}`;
+      return `Commission due · facture n° ${d.facture ?? ""}${d.factureLe ? ` du ${d.factureLe}` : ""}${d.echeanceLe ? ` · échéance indiquée sur la facture : ${d.echeanceLe}` : ""}`;
     case "a_preciser":
       return "Payée par le client. Montant en cours de calcul.";
     case "en_attente_pieces":
