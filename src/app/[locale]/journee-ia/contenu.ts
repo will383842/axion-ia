@@ -42,7 +42,7 @@ export const OG_IMAGE_ALT =
   "La Journée IA d’Axion-IA : audit et formation IA dans vos locaux, {{PRIX}}";
 
 /** Début de la promesse, mis en gras dans `GARANTIE_PHRASE`. */
-export const DEBUT_PROMESSE = "nous vous remboursons";
+export const DEBUT_PROMESSE = "vous êtes remboursé sur demande écrite";
 
 export const CONTENU = {
   accroche: {
@@ -215,7 +215,7 @@ export const CONTENU = {
     lignes: ["Dans vos locaux", "Sans remise", "Devis écrit, rien à payer en ligne"],
     deduction: DEDUCTION_JOURNEE_IA,
     ancre: "Dans cet exemple type, la journée coûte moins de deux mois de ces heures.",
-    titreGarantie: "Pas 3 fois le prix en gains identifiés\u202f? Nous vous remboursons.",
+    titreGarantie: "Pas 3 fois le prix en gains identifiés\u202f? Remboursement sur demande.",
     garantie: GARANTIE_PHRASE,
     condition: CONDITION_GARANTIE,
     rapport: RAPPORT_COMPLET,
