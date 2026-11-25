@@ -7,6 +7,8 @@
 // d'information distinct à l'entreprise ; l'information RGPD (art. 14) vit dans le PREMIER message
 // (`apporteur-demarrage.tsx`). Ce texte sert de source de formulation pour ce premier message ; le
 // brancher comme e-mail à part est un défaut.
+// Les phrases `preview` et `rienAFaire` (« simple information ») sont celles d'un message à part :
+// à adapter quand ce texte est repris dans le premier message.
 //
 // Il accompagne la future règle « validation par rendez-vous » (contrat 2.8). Ce n'est PAS
 // la prise de contact (`entreprise-prise-de-contact-apporteur`, dans `apporteur-demarrage.tsx`,
@@ -19,7 +21,8 @@
 //     longue du fondateur porte le lien de réservation d'un échange ;
 //   · laisser entendre que l'on s'assure de la parole de l'apporteur (Will, 2026-10-05 :
 //     « contre-vendeur ») ;
-//   · parler de prix, de rémunération de l'apporteur ou d'un événement ;
+//   · parler de prix, du montant ou des conditions de la rémunération de l'apporteur, ou d'un
+//     événement (la finalité « calculer la rémunération » est nommée, rien de plus) ;
 //   · donner les coordonnées de l'apporteur : son prénom et son nom, rien d'autre.
 //
 // Même châssis que les autres messages du réseau : famille B, sans rangée sociale,
