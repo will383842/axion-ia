@@ -2,7 +2,12 @@ import { describe, expect, it } from "vitest";
 
 import { echeancePaiement } from "../autofacture-donnees";
 import { calculerCommission } from "../regles";
-import { commandesSoldees, type FactureDeCommande } from "../commandes";
+import {
+  commandesSoldees,
+  ligneNeutralisee,
+  netDeLaCommande,
+  type FactureDeCommande,
+} from "../commandes";
 
 // Règle du dirigeant (25/11) : commission calculée UNE SEULE FOIS sur le net HT arrêté à la
 // signature du devis ; due au paiement intégral ; 30 jours à compter de ce paiement.
@@ -132,5 +137,41 @@ describe("tour 2 : base jamais déduite deux fois", () => {
       new Map([["D1", 1_000_000]]),
     );
     expect(c!.baseApresAvoirsCents).toBe(1_000_000);
+  });
+});
+
+describe("tour 4 : facture refaite sous le même devis, jamais deux commissions (600 € et non 1 200 €)", () => {
+  // Devis 2 000 € (audit, 30 % = 600 €) : A payée, commission c1. Avoir total sur A, B refaite.
+  const A = f("A", { montantHtCents: 200_000 });
+  const AV = avoir("AV", "A", 200_000);
+  const B = (statut: string) =>
+    f("B", {
+      montantHtCents: 200_000,
+      statut,
+      emiseAt: new Date("2026-11-05T10:00:00Z"),
+    });
+
+  it("B pas encore payée : le net vu par la reprise est 0 → c1 annulée ou reprise", () => {
+    // Même calcul que `avoir-client.ts` : seules les factures payées comptent.
+    const lu = [A, B("emise")];
+    const { netCents } = netDeLaCommande(
+      lu.filter((m) => m.statut === "payee"),
+      [AV],
+    );
+    expect(netCents).toBe(0);
+  });
+
+  it("B payée : une seule commande soldée, base 2 000 € ; c1 due ou versée sans reprise la bloque", () => {
+    const [c] = commandesSoldees([A, AV, B("payee")], new Map([["D1", 200_000]]));
+    expect(c!.baseApresAvoirsCents).toBe(200_000);
+    expect(ligneNeutralisee({ statut: "due", montantCents: 60_000 }, 0)).toBe(false);
+    expect(ligneNeutralisee({ statut: "versee", montantCents: 60_000 }, 0)).toBe(false);
+    expect(ligneNeutralisee({ statut: "versee", montantCents: 60_000 }, 30_000)).toBe(false);
+  });
+
+  it("une ligne annulée, retenue ou versée puis intégralement reprise est neutralisée", () => {
+    expect(ligneNeutralisee({ statut: "annulee", montantCents: 60_000 }, 0)).toBe(true);
+    expect(ligneNeutralisee({ statut: "retenue", montantCents: 60_000 }, 0)).toBe(true);
+    expect(ligneNeutralisee({ statut: "versee", montantCents: 60_000 }, 60_000)).toBe(true);
   });
 });

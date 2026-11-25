@@ -390,3 +390,24 @@ describe("tour 3 : avoir ancien déjà intégré à la base de la ligne", () => 
     expect(d.reprise).toHaveBeenCalledWith(expect.objectContaining({ demandeeCents: 30 }));
   });
 });
+
+describe("facture refaite sous le même devis, pas encore payée (point 1 de l'escalade)", () => {
+  it("avoir total sur A payée + B refaite non payée : la commission c1 est annulée, pas conservée", async () => {
+    d.factures = [
+      { ...facture, devisId: "D1", montantHtCents: 200_000 },
+      avoir(-200_000, { devisId: "D1" }),
+      {
+        ...facture,
+        id: "B",
+        devisId: "D1",
+        statut: "emise",
+        montantHtCents: 200_000,
+        emiseAt: new Date("2026-11-05T10:00:00Z"),
+      },
+    ];
+    d.lignes = [ligne({ factureHtCents: 200_000, montantCents: 60_000 })];
+    const b = await reprendreApresAvoirsClients(LE);
+    expect(b.annulees).toBe(1);
+    expect(d.annuler).toHaveBeenCalledTimes(1);
+  });
+});

@@ -117,3 +117,19 @@ export function commandesSoldees(
   }
   return out;
 }
+
+/**
+ * Une ligne de commission est-elle RÉELLEMENT neutralisée ? Annulée avant facturation, retenue
+ * (neutralisée par un avoir d'autofacture), ou versée dont les reprises couvrent tout le montant.
+ * Seule une telle ligne peut cesser de bloquer une commission sur une facture refaite sous le même
+ * devis : sinon (due, à qualifier, versée sans reprise complète) l'argent est encore en jeu et une
+ * seconde commission le paierait deux fois.
+ */
+export function ligneNeutralisee(
+  ligne: { statut: string; montantCents: number | null },
+  reprisesCents: number,
+): boolean {
+  if (ligne.statut === "annulee" || ligne.statut === "retenue") return true;
+  if (ligne.statut === "versee") return reprisesCents >= (ligne.montantCents ?? 0);
+  return false;
+}

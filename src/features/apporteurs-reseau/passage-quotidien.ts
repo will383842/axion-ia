@@ -69,7 +69,8 @@ import { reprendreApresAvoirsClients } from "./avoir-client";
 import { regenererAvoirsSansPiece } from "./manquement";
 import { alerterHorsGrille } from "./hors-grille";
 import { chiffrerPiecesEnClair } from "./pieces-chiffrement";
-import { commandesSoldees } from "./commandes";
+import { commandesSoldees, ligneNeutralisee } from "./commandes";
+import { PREFIXE_PALIER_REPRISE } from "./resiliation";
 import { idsPriseDeContactRebondie } from "./rebonds";
 import { urlDossier } from "./jeton";
 import { signalerErreurReseau } from "./signaler";
@@ -859,15 +860,23 @@ async function etapeCommissions(maintenant: Date, bilan: BilanPassageReseau): Pr
     // Une commission ANNULÉE (avoir total) ne bloque ni la recréation sur la facture refaite, ni la
     // garde « deux apporteurs » : seul compte l'argent encore en jeu.
     where: { factureId: { in: commandes.flatMap((c) => c.factureIds) } },
-    select: { factureId: true, apporteurId: true, parrainage: true, statut: true },
+    select: {
+      id: true,
+      factureId: true,
+      apporteurId: true,
+      parrainage: true,
+      statut: true,
+      montantCents: true,
+    },
   });
   const toutesCle = new Set(
     existantesToutes.map((e) => `${e.factureId}|${e.apporteurId}|${e.parrainage ? 1 : 0}`),
   );
-  // Une ligne ne bloque la recréation (facture refaite sous le même devis) que si sa facture n'a
-  // PAS été entièrement rendue au client par avoir (annulée, retenue ou reprise comprises). Une
-  // annulation volontaire sur une facture non remboursée continue de bloquer.
-  const rendues = new Set(
+  // Une ligne ne cesse de bloquer (facture refaite sous le même devis) que si sa facture a été
+  // entièrement rendue au client par avoir ET si la ligne est RÉELLEMENT neutralisée (annulée,
+  // retenue, ou versée avec reprises égales à son montant). Sinon l'argent est encore en jeu : une
+  // seconde commission le paierait deux fois (600 € + 600 € pour un devis de 2 000 €).
+  const facturesRendues = new Set(
     lignes
       .filter((l) => {
         const avoirsDe = avoirsLignes
@@ -877,7 +886,22 @@ async function etapeCommissions(maintenant: Date, bilan: BilanPassageReseau): Pr
       })
       .map((l) => l.id),
   );
-  const existantes = existantesToutes.filter((e) => !rendues.has(e.factureId));
+  const versees = existantesToutes.filter((e) => e.statut === "versee");
+  const reprisesParLigne = new Map<string, number>();
+  if (versees.length > 0) {
+    const reprises = await prisma.commissionApporteur.findMany({
+      where: { palier: { in: versees.map((e) => `${PREFIXE_PALIER_REPRISE}${e.id}`) } },
+      select: { palier: true, montantCents: true },
+    });
+    for (const r of reprises) {
+      const id = (r.palier ?? "").slice(PREFIXE_PALIER_REPRISE.length);
+      reprisesParLigne.set(id, (reprisesParLigne.get(id) ?? 0) + Math.abs(r.montantCents ?? 0));
+    }
+  }
+  const existantes = existantesToutes.filter(
+    (e) =>
+      !(facturesRendues.has(e.factureId) && ligneNeutralisee(e, reprisesParLigne.get(e.id) ?? 0)),
+  );
   const cle = (f: string, a: string, p: boolean) => `${f}|${a}|${p ? 1 : 0}`;
   const dejaCle = new Set(existantes.map((e) => cle(e.factureId, e.apporteurId, e.parrainage)));
   // Une commission déjà créée sur n'importe quelle facture de la commande vaut pour la commande.
