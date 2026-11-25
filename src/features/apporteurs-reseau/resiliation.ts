@@ -200,7 +200,10 @@ export async function lireResiliationEnCours(
       ? {
           notifieeLe: jourLong(r.notifieeLe),
           effetLe: jourLong(r.effetLe),
-          dernierJourLe: jourLong(dernierJourDuContrat(r.effetLe)),
+          // Effet déjà atteint (11.2 / 12.5 dont la prise d'effet a échoué) : le contrat a pris fin ce jour-là.
+          dernierJourLe: jourLong(
+            r.effetLe.getTime() <= Date.now() ? r.effetLe : dernierJourDuContrat(r.effetLe),
+          ),
         }
       : null;
   } catch (err) {
@@ -404,7 +407,6 @@ export async function notifierResiliation(e: {
   });
   if (!cree) return { ok: false, message: "Une résiliation est déjà notifiée pour cet apporteur." };
 
-  let emailNotifParti = false;
   try {
     const destinataire = decryptPii(a.email) ?? "";
     if (destinataire) {
@@ -431,10 +433,7 @@ export async function notifierResiliation(e: {
         entityId: e.apporteurId,
         jobId: `resiliation-notif-${e.apporteurId}`,
       });
-      if (r === "envoye") {
-        emailNotifParti = true;
-        await poserHorodatage(e.apporteurId, { emailNotifEnvoyeAt: maintenant });
-      }
+      if (r === "envoye") await poserHorodatage(e.apporteurId, { emailNotifEnvoyeAt: maintenant });
     }
   } catch (err) {
     signalerErreurReseau("résiliation : e-mail de notification", err);
@@ -448,7 +447,8 @@ export async function notifierResiliation(e: {
       signalerErreurReseau("résiliation : prise d'effet immédiate", err);
       return {
         ok: true,
-        message: `Résiliation notifiée${emailNotifParti ? " et e-mail envoyé" : " (l'e-mail n'est pas parti : vérifiez l'adresse)"} ; la prise d'effet a échoué et sera reprise par le passage quotidien. Ne la saisissez pas une seconde fois.`,
+        message:
+          "Résiliation notifiée ; la prise d'effet a échoué et sera reprise par le passage quotidien. Ne la saisissez pas une seconde fois.",
       };
     }
   }
