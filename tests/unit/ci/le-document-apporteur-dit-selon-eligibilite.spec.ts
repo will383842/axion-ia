@@ -79,6 +79,9 @@ describe.skipIf(texte === null)("le document apporteur publié", () => {
   });
 
   it("donne le lien du dossier d'un seul tenant", () => {
+    // Document imprimé : il porte encore l'ANCIENNE adresse, que la redirection 301
+    // (L5c) couvre. Son PDF n'est pas régénéré par ce lot ; à la prochaine
+    // régénération, passer à `apporteur-affaires/dossier`.
     expect(t).toContain("axion-ia.com/fr/devenir-commercial-ia/candidature");
   });
 });

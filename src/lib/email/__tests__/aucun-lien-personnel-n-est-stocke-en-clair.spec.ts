@@ -104,7 +104,7 @@ describe("masquerSecretsTexte — la règle", () => {
     const publics = [
       "https://axion-ia.com/fr/politique-confidentialite#reseau-d-apporteurs-d-affaires",
       "https://calendly.com/axion-ia/echange-apporteur-15-min",
-      "https://axion-ia.com/fr/devenir-commercial-ia/candidature",
+      "https://axion-ia.com/fr/apporteur-affaires/dossier",
       "https://axion-ia.com/documents/catalogue-formations-2026.pdf",
     ];
     for (const url of publics) {

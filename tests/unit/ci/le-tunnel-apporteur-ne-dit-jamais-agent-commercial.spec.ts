@@ -66,7 +66,7 @@ const SURFACES = [
   // lisait que le tunnel Facebook : la même faute vivait à côté, en ligne.
   "src/content/recrutement/partenaire-landings.ts",
   "src/app/[locale]/devenir-commercial-ia/page.tsx",
-  "src/app/[locale]/devenir-commercial-ia/candidature/page.tsx",
+  "src/app/[locale]/apporteur-affaires/dossier/page.tsx",
   "src/app/[locale]/apporteur-affaires-independant-formation-ia-entreprise/page.tsx",
   "src/app/[locale]/memo-isere/page.tsx",
   // 2026-09-21 — TROUVE HORS LISTE : cette page disait « Nous recrutons plus de

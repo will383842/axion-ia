@@ -19,7 +19,7 @@ import { PrismaClient } from "../../../prisma/generated/client/index.js";
 import { hashEmailForLookup } from "../../../src/lib/security/email-hash";
 
 const prisma = new PrismaClient();
-const DOSSIER = "/fr/devenir-commercial-ia/candidature";
+const DOSSIER = "/fr/apporteur-affaires/dossier";
 
 test.afterAll(async () => {
   await prisma.$disconnect();

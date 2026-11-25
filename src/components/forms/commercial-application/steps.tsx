@@ -1,4 +1,4 @@
-// Demande d’apport d’affaires — les 9 écrans du wizard (une question, un écran).
+// Demande d’apport d’affaires — les 7 écrans du wizard (une question, un écran).
 //
 // Chaque écran est un composant contrôlé : il reçoit les réponses, les
 // erreurs de SON écran et un patcheur. Aucune logique de navigation ici —
@@ -8,50 +8,31 @@
 // jamais dans les labels de champs.
 
 import * as React from "react";
-import { Plus, Trash2, ChevronDown, Search } from "lucide-react";
 import { cn } from "@/lib/utils";
 import {
   B2B_ANNEES_OPTIONS,
   CARNET_DIRIGEANTS_OPTIONS,
-  DEPARTEMENTS,
-  DEPLACEMENT_OPTIONS,
   IA_OUTILS_OPTIONS,
   INFORMATIQUE_USAGES_OPTIONS,
-  MOIS_FR,
-  REGIONS_ZONE,
   SOURCE_OPTIONS,
   STATUT_OPTIONS,
-  TYPES_CLIENTS_OPTIONS,
 } from "@/lib/commercial-application/model";
 import {
   Chip,
   ChipGroup,
-  MonthYearSelect,
   RequiredMark,
   StepHeading,
   TextField,
   FIELD_CLASS,
   LABEL_CLASS,
 } from "./ui";
-import type { ExperienceDraft, FieldErrors, WizardAnswers } from "./wizard-state";
+import type { FieldErrors, WizardAnswers } from "./wizard-state";
 
 export interface StepProps {
   a: WizardAnswers;
   set: (patch: Partial<WizardAnswers>) => void;
   errors: FieldErrors;
 }
-
-const CURRENT_YEAR = new Date().getFullYear();
-
-/** Années proposées pour les expériences (10 ans d’historique + marge). */
-const EXP_YEARS: readonly string[] = Array.from({ length: 41 }, (_, i) => String(CURRENT_YEAR - i));
-
-/** Années proposées pour la disponibilité. */
-const DISPO_YEARS: readonly string[] = [
-  String(CURRENT_YEAR),
-  String(CURRENT_YEAR + 1),
-  String(CURRENT_YEAR + 2),
-];
 
 // ── Étape 1 — Qui êtes-vous ─────────────────────────────────────────────────────
 
@@ -131,62 +112,6 @@ export function StepIdentite({ a, set, errors }: StepProps) {
           autoComplete="postal-code"
           maxLength={10}
           error={errors.codePostal}
-        />
-      </div>
-
-      <div className="mt-4">
-        <span className={LABEL_CLASS}>
-          Date de naissance
-          <span className="text-fg-muted ml-1.5 font-normal">(facultatif)</span>
-        </span>
-        <div className="grid grid-cols-3 gap-2">
-          <input
-            aria-label="Jour de naissance"
-            className={cn(FIELD_CLASS, errors.naissance && "border-terracotta-deep")}
-            inputMode="numeric"
-            placeholder="Jour"
-            maxLength={2}
-            value={a.naissanceJour}
-            onChange={(e) => set({ naissanceJour: e.target.value.replace(/\D/g, "") })}
-            autoComplete="bday-day"
-          />
-          <input
-            aria-label="Mois de naissance"
-            className={cn(FIELD_CLASS, errors.naissance && "border-terracotta-deep")}
-            inputMode="numeric"
-            placeholder="Mois"
-            maxLength={2}
-            value={a.naissanceMois}
-            onChange={(e) => set({ naissanceMois: e.target.value.replace(/\D/g, "") })}
-            autoComplete="bday-month"
-          />
-          <input
-            aria-label="Année de naissance"
-            className={cn(FIELD_CLASS, errors.naissance && "border-terracotta-deep")}
-            inputMode="numeric"
-            placeholder="Année"
-            maxLength={4}
-            value={a.naissanceAnnee}
-            onChange={(e) => set({ naissanceAnnee: e.target.value.replace(/\D/g, "") })}
-            autoComplete="bday-year"
-          />
-        </div>
-        {errors.naissance ? (
-          <p className="text-terracotta-deep mt-1.5 text-sm" role="alert">
-            {errors.naissance}
-          </p>
-        ) : null}
-      </div>
-
-      <div className="mt-4">
-        <TextField
-          label="Nationalité"
-          fieldId="ca-nationalite"
-          value={a.nationalite}
-          onChange={(e) => set({ nationalite: e.target.value })}
-          maxLength={80}
-          optionalHint
-          error={errors.nationalite}
         />
       </div>
 
@@ -299,201 +224,7 @@ export function StepB2b({ a, set, errors }: StepProps) {
   );
 }
 
-// ── Étape 3 — Parcours des 10 dernières années ──────────────────────────────
-
-interface ExperienceStepProps extends StepProps {
-  onPatchExperience: (id: string, patch: Partial<ExperienceDraft>) => void;
-  onAddExperience: () => void;
-  onRemoveExperience: (id: string) => void;
-}
-
-function experienceSummary(exp: ExperienceDraft): string {
-  const periode =
-    exp.debutMois && exp.debutAnnee
-      ? `${exp.debutMois}/${exp.debutAnnee} → ${exp.posteActuel ? "auj." : exp.finMois && exp.finAnnee ? `${exp.finMois}/${exp.finAnnee}` : "?"}`
-      : "";
-  return [exp.poste || "Poste ?", exp.entreprise || "Entreprise ?", periode]
-    .filter(Boolean)
-    .join(" — ");
-}
-
-export function StepParcours({
-  a,
-  errors,
-  onPatchExperience,
-  onAddExperience,
-  onRemoveExperience,
-}: ExperienceStepProps) {
-  return (
-    <div>
-      <StepHeading
-        title="Votre parcours des 10 dernières années"
-        hint="Pas besoin de tout votre parcours de vie — seulement les 10 dernières années. Une seule entreprise sur la période ? C’est très bien aussi : un seul bloc suffit."
-      />
-      {errors.experiences ? (
-        <p className="text-terracotta-deep mb-3 text-sm" role="alert">
-          {errors.experiences}
-        </p>
-      ) : null}
-      <div className="space-y-3">
-        {a.experiences.map((exp, index) => {
-          const pre = `exp-${exp.id}`;
-          const hasError = Object.keys(errors).some((k) => k.startsWith(pre));
-          return (
-            <div
-              key={exp.id}
-              className={cn(
-                "rounded-2xl border-2",
-                hasError ? "border-terracotta-deep" : "border-border",
-                "bg-bg",
-              )}
-            >
-              <div className="flex items-center gap-1 pr-2">
-                <button
-                  type="button"
-                  className="flex min-h-[52px] min-w-0 flex-1 items-center gap-2.5 px-4 text-left"
-                  aria-expanded={exp.open}
-                  onClick={() => onPatchExperience(exp.id, { open: !exp.open })}
-                >
-                  <ChevronDown
-                    aria-hidden="true"
-                    className={cn(
-                      "text-fg-muted h-4 w-4 shrink-0 transition-transform motion-reduce:transition-none",
-                      exp.open && "rotate-180",
-                    )}
-                  />
-                  <span className="text-fg min-w-0 flex-1 truncate text-[15px] font-semibold">
-                    {experienceSummary(exp)}
-                  </span>
-                </button>
-                {a.experiences.length > 1 ? (
-                  <button
-                    type="button"
-                    onClick={() => onRemoveExperience(exp.id)}
-                    className="text-fg-muted hover:text-terracotta-deep flex h-11 w-11 shrink-0 items-center justify-center rounded-full transition-colors"
-                    aria-label={`Supprimer l’expérience ${index + 1}`}
-                  >
-                    <Trash2 aria-hidden="true" className="h-4 w-4" />
-                  </button>
-                ) : null}
-              </div>
-
-              {exp.open ? (
-                <div className="border-border space-y-4 border-t px-4 py-4">
-                  <TextField
-                    label="Entreprise"
-                    fieldId={`${pre}-entreprise`}
-                    requiredField
-                    value={exp.entreprise}
-                    onChange={(e) => onPatchExperience(exp.id, { entreprise: e.target.value })}
-                    maxLength={120}
-                    autoComplete="organization"
-                    error={errors[`${pre}-entreprise`]}
-                  />
-                  <TextField
-                    label="Ville ou département de l’entreprise"
-                    fieldId={`${pre}-ville`}
-                    requiredField
-                    value={exp.ville}
-                    onChange={(e) => onPatchExperience(exp.id, { ville: e.target.value })}
-                    maxLength={120}
-                    error={errors[`${pre}-ville`]}
-                  />
-                  <TextField
-                    label="Poste occupé"
-                    fieldId={`${pre}-poste`}
-                    requiredField
-                    value={exp.poste}
-                    onChange={(e) => onPatchExperience(exp.id, { poste: e.target.value })}
-                    maxLength={120}
-                    autoComplete="organization-title"
-                    error={errors[`${pre}-poste`]}
-                  />
-                  <MonthYearSelect
-                    idPrefix={`${pre}-debut`}
-                    label="De"
-                    requiredField
-                    monthValue={exp.debutMois}
-                    yearValue={exp.debutAnnee}
-                    months={MOIS_FR}
-                    years={EXP_YEARS}
-                    onMonthChange={(v) => onPatchExperience(exp.id, { debutMois: v })}
-                    onYearChange={(v) => onPatchExperience(exp.id, { debutAnnee: v })}
-                    error={errors[`${pre}-debut`]}
-                  />
-                  <div>
-                    <MonthYearSelect
-                      idPrefix={`${pre}-fin`}
-                      label="À"
-                      requiredField={!exp.posteActuel}
-                      monthValue={exp.finMois}
-                      yearValue={exp.finAnnee}
-                      months={MOIS_FR}
-                      years={EXP_YEARS}
-                      onMonthChange={(v) => onPatchExperience(exp.id, { finMois: v })}
-                      onYearChange={(v) => onPatchExperience(exp.id, { finAnnee: v })}
-                      error={errors[`${pre}-fin`]}
-                      disabled={exp.posteActuel}
-                    />
-                    <label className="mt-2.5 flex min-h-[44px] cursor-pointer items-center gap-2.5 text-[15px]">
-                      <input
-                        type="checkbox"
-                        checked={exp.posteActuel}
-                        onChange={(e) =>
-                          onPatchExperience(exp.id, {
-                            posteActuel: e.target.checked,
-                            ...(e.target.checked ? { finMois: "", finAnnee: "" } : {}),
-                          })
-                        }
-                        className="accent-terracotta h-5 w-5 shrink-0"
-                      />
-                      <span className="text-fg font-medium">C’est mon activité en cours</span>
-                    </label>
-                  </div>
-                  <ChipGroup legend="Type de clients" optionalHint>
-                    {TYPES_CLIENTS_OPTIONS.map((o) => (
-                      <Chip
-                        key={o.id}
-                        name={`${pre}-clients`}
-                        value={o.id}
-                        label={o.label}
-                        multi
-                        checked={exp.typesClients.includes(o.id)}
-                        onToggle={(v) =>
-                          onPatchExperience(exp.id, {
-                            typesClients: exp.typesClients.includes(v)
-                              ? exp.typesClients.filter((t) => t !== v)
-                              : [...exp.typesClients, v],
-                          })
-                        }
-                      />
-                    ))}
-                  </ChipGroup>
-                </div>
-              ) : null}
-            </div>
-          );
-        })}
-      </div>
-      {a.experiences.length < 8 ? (
-        /* Bouton bien VISIBLE (retour Will 2026-08-13) : pleine largeur,
-           bordure terracotta — le bouton fantôme passait inaperçu. */
-        <button
-          type="button"
-          onClick={onAddExperience}
-          className="border-terracotta text-terracotta-deep bg-terracotta-soft/40 hover:bg-terracotta-soft focus-visible:ring-terracotta mt-4 inline-flex min-h-[52px] w-full items-center justify-center gap-2 rounded-2xl border-2 border-dashed px-4 text-base font-semibold transition-colors focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
-        >
-          <Plus aria-hidden="true" className="h-5 w-5" />
-          Ajouter une expérience
-        </button>
-      ) : (
-        <p className="text-fg-muted mt-3 text-sm">8 expériences maximum — c’est déjà très bien.</p>
-      )}
-    </div>
-  );
-}
-
-// ── Étape 4 — L’IA au quotidien 🤖 ──────────────────────────────────────────
+// ── Étape 3 — L’IA au quotidien 🤖 ──────────────────────────────────────────
 
 export function StepIa({ a, set, errors }: StepProps) {
   return (
@@ -588,7 +319,7 @@ export function StepIa({ a, set, errors }: StepProps) {
   );
 }
 
-// ── Étape 5 — L’informatique ────────────────────────────────────────────────
+// ── Étape 4 — L’informatique ────────────────────────────────────────────────
 
 export function StepInformatique({ a, set, errors }: StepProps) {
   return (
@@ -657,133 +388,7 @@ export function StepInformatique({ a, set, errors }: StepProps) {
   );
 }
 
-// ── Étape 6 — Votre zone 📍 ────────────────────────────────────────────────────
-
-export function StepZone({ a, set, errors }: StepProps) {
-  const [search, setSearch] = React.useState("");
-  const query = search.trim().toLowerCase();
-  const matchingDepartements = query
-    ? DEPARTEMENTS.filter(
-        (d) => d.nom.toLowerCase().includes(query) || d.code.startsWith(search.trim()),
-      ).slice(0, 12)
-    : [];
-
-  const toggleZone = (label: string) =>
-    set({
-      zoneMobile: false,
-      zones: a.zones.includes(label) ? a.zones.filter((z) => z !== label) : [...a.zones, label],
-    });
-
-  return (
-    <div>
-      <StepHeading
-        title="Votre zone 📍"
-        hint="Sur quelle zone souhaitez-vous travailler ? Régions, départements — ou partout."
-      />
-      <Chip
-        name="zone-mobile"
-        value="mobile"
-        label="Peu importe, je suis mobile"
-        checked={a.zoneMobile}
-        onToggle={() => set({ zoneMobile: !a.zoneMobile, zones: [] })}
-        prominent
-      />
-
-      <div className="mt-5">
-        <ChipGroup legend="Ou choisissez une ou plusieurs régions" error={errors.zones}>
-          {REGIONS_ZONE.map((r) => (
-            <Chip
-              key={r}
-              name="zone-region"
-              value={r}
-              label={r}
-              multi
-              checked={a.zones.includes(r)}
-              onToggle={() => toggleZone(r)}
-            />
-          ))}
-        </ChipGroup>
-      </div>
-
-      <div className="mt-5">
-        <label className={LABEL_CLASS} htmlFor="ca-zone-recherche">
-          Ou cherchez un département
-        </label>
-        <div className="relative">
-          <Search
-            aria-hidden="true"
-            className="text-fg-muted pointer-events-none absolute top-1/2 left-4 h-4 w-4 -translate-y-1/2"
-          />
-          <input
-            id="ca-zone-recherche"
-            type="search"
-            className={cn(FIELD_CLASS, "pl-11")}
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            // La touche « Rechercher » du clavier mobile (Enter) déclencherait
-            // la soumission implicite du form → avance d'écran surprise. On la
-            // neutralise : ici, Enter ne doit que filtrer, jamais naviguer.
-            onKeyDown={(e) => {
-              if (e.key === "Enter") e.preventDefault();
-            }}
-            placeholder="Isère, 38, Drôme…"
-            autoComplete="off"
-          />
-        </div>
-        {matchingDepartements.length > 0 ? (
-          <div className="mt-2 grid grid-cols-2 gap-2">
-            {matchingDepartements.map((d) => {
-              const label = `${d.nom} (${d.code})`;
-              return (
-                <Chip
-                  key={d.code}
-                  name="zone-departement"
-                  value={label}
-                  label={label}
-                  multi
-                  checked={a.zones.includes(label)}
-                  onToggle={() => toggleZone(label)}
-                />
-              );
-            })}
-          </div>
-        ) : null}
-      </div>
-
-      {a.zones.length > 0 ? (
-        <p className="text-fg-soft mt-4 text-sm" aria-live="polite">
-          Zone choisie : {a.zones.join(", ")}
-        </p>
-      ) : null}
-
-      <div className="mt-7">
-        {/* OBLIGATOIRE (retour Will 2026-08-18) : le métier est du terrain,
-            une demande sans réponse ici n'est pas exploitable. Le tap ne
-            DÉ-sélectionne donc plus (un radio obligatoire qu'on peut vider
-            laisserait le candidat bloqué sans comprendre pourquoi). */}
-        <ChipGroup
-          legend="Êtes-vous prêt à vous déplacer chez les clients ?"
-          requiredField
-          columns={1}
-          error={errors.deplacement}
-        >
-          {DEPLACEMENT_OPTIONS.map((o) => (
-            <Chip
-              key={o.id}
-              name="deplacement"
-              value={o.id}
-              label={o.label}
-              checked={a.deplacement === o.id}
-              onToggle={(v) => set({ deplacement: v })}
-            />
-          ))}
-        </ChipGroup>
-      </div>
-    </div>
-  );
-}
-
-// ── Étape 7 — Vous, en quelques lignes ✨ ────────────────────────────────────
+// ── Étape 5 — Vous, en quelques lignes ✨ ────────────────────────────────────
 
 export function StepPitch({ a, set, errors }: StepProps) {
   const len = a.pitch.trim().length;
@@ -836,7 +441,7 @@ export function StepPitch({ a, set, errors }: StepProps) {
   );
 }
 
-// ── Étape 8 — Votre message (facultatif) ──────────────────────────────────────
+// ── Étape 6 — Votre message (facultatif) ──────────────────────────────────────
 
 export function StepMessage({ a, set }: StepProps) {
   return (
@@ -861,26 +466,13 @@ export function StepMessage({ a, set }: StepProps) {
   );
 }
 
-// ── Étape 9 — Derniers détails ──────────────────────────────────────────────
+// ── Étape 7 — Derniers détails ──────────────────────────────────────────────
 
 export function StepDetails({ a, set, errors }: StepProps) {
   return (
     <div>
       <StepHeading title="Derniers détails" hint="Promis, c’est le dernier écran." />
-      <MonthYearSelect
-        idPrefix="ca-dispo"
-        label="À partir de quand êtes-vous disponible ?"
-        requiredField
-        monthValue={a.dispoMois}
-        yearValue={a.dispoAnnee}
-        months={MOIS_FR}
-        years={DISPO_YEARS}
-        onMonthChange={(v) => set({ dispoMois: v })}
-        onYearChange={(v) => set({ dispoAnnee: v })}
-        error={errors.dispo}
-      />
-
-      <div className="mt-6">
+      <div>
         <ChipGroup legend="Votre statut aujourd’hui" optionalHint>
           {STATUT_OPTIONS.map((o) => (
             <Chip

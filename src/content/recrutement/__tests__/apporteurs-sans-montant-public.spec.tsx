@@ -76,7 +76,7 @@ import * as Leboncoin from "@/app/[locale]/leboncoin/page";
 import * as Video from "@/app/[locale]/apporteur-affaires/video/page";
 import * as Independant from "@/app/[locale]/apporteur-affaires-independant-formation-ia-entreprise/page";
 import * as Hub from "@/app/[locale]/devenir-commercial-ia/page";
-import * as Candidature from "@/app/[locale]/devenir-commercial-ia/candidature/page";
+import * as Candidature from "@/app/[locale]/apporteur-affaires/dossier/page";
 import * as MemoIsere from "@/app/[locale]/memo-isere/page";
 
 type PageModule = {
@@ -91,7 +91,7 @@ const PAGES: Readonly<Record<string, PageModule>> = {
   "/apporteur-affaires/video (VSL)": Video as unknown as PageModule,
   "/apporteur-affaires-independant-formation-ia-entreprise": Independant as unknown as PageModule,
   "/devenir-commercial-ia": Hub as unknown as PageModule,
-  "/devenir-commercial-ia/candidature": Candidature as unknown as PageModule,
+  "/apporteur-affaires/dossier": Candidature as unknown as PageModule,
   "/memo-isere": MemoIsere as unknown as PageModule,
 };
 

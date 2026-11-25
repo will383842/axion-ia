@@ -168,7 +168,7 @@ ${EN_BREF_APPORTEURS}
 
 ${APPORTEURS_QUESTIONS_LLMS.map((q) => `**${q.question}** ${q.reponse}`).join("\n\n")}
 
-Pages : ${SITE_URL}/fr/devenir-commercial-ia · dossier de 3 minutes : ${SITE_URL}/fr/devenir-commercial-ia/candidature
+Pages : ${SITE_URL}/fr/devenir-commercial-ia · dossier de 3 minutes : ${SITE_URL}/fr/apporteur-affaires/dossier
 ${sectionVideos}
 ## Observatoire
 

@@ -53,7 +53,7 @@ import {
 } from "@/lib/commercial-application/model";
 import { signalerHoneypot } from "@/lib/security/honeypot-observable";
 import {
-  DOSSIER_COMPLET_PATH,
+  DOSSIER_COMPLET_SOURCE,
   sourceConnueDepuisUtm,
 } from "@/lib/commercial-application/lead-apporteur";
 import { annulerRelancesLeadApporteur } from "./relances-lead-apporteur";
@@ -133,7 +133,7 @@ function internalRecipient(): string {
 const SEUIL_ALERTE_VOLUME_JOUR = 25;
 
 /** « mars 2019 → aujourd'hui » pour une expérience. */
-function periodeOf(e: CommercialApplicationInput["experiences"][number]): string {
+function periodeOf(e: NonNullable<CommercialApplicationInput["experiences"]>[number]): string {
   const fin = e.posteActuel ? "aujourd'hui" : formatMoisAnnee(e.fin);
   return `${formatMoisAnnee(e.debut)} → ${fin}`;
 }
@@ -184,7 +184,9 @@ function buildRecapRows(d: CommercialApplicationInput): Array<{ label: string; v
           },
         ]
       : []),
-    { label: "Zone souhaitée", value: zoneResume(d) },
+    // L5b (D5) : plus demandés ; l'ancien onglet qui les envoie encore les garde,
+    // le récap n'affiche rien quand ils manquent.
+    ...(d.zoneMobile || d.zones?.length ? [{ label: "Zone souhaitée", value: zoneResume(d) }] : []),
     ...(d.deplacement
       ? [
           {
@@ -193,7 +195,9 @@ function buildRecapRows(d: CommercialApplicationInput): Array<{ label: string; v
           },
         ]
       : []),
-    { label: "Disponibilité", value: formatMoisAnnee(d.disponibilite) },
+    ...(d.disponibilite
+      ? [{ label: "Disponibilité", value: formatMoisAnnee(d.disponibilite) }]
+      : []),
     ...(d.statut ? [{ label: "Statut actuel", value: optionLabel(STATUT_OPTIONS, d.statut) }] : []),
     ...(d.linkedin ? [{ label: "LinkedIn", value: d.linkedin }] : []),
     ...(d.sourceConnaissance
@@ -305,7 +309,7 @@ export async function submitCommercialApplicationAction(
 
   // Expériences en ordre ANTI-CHRONOLOGIQUE partout en aval (récap + console) :
   // poste actuel d'abord, puis début décroissant.
-  const experiences = [...d.experiences].sort((a, b) => {
+  const experiences = [...(d.experiences ?? [])].sort((a, b) => {
     if (a.posteActuel !== b.posteActuel) return a.posteActuel ? -1 : 1;
     return b.debut.localeCompare(a.debut);
   });
@@ -360,7 +364,7 @@ export async function submitCommercialApplicationAction(
           message: d.pitch,
           // 🔑 Lu par l'invitation automatique (`invitation-auto.ts`) : c'est ce
           // qui fait de cette ligne un DOSSIER COMPLET. Ne pas changer sans elle.
-          source: DOSSIER_COMPLET_PATH,
+          source: DOSSIER_COMPLET_SOURCE,
           consentVersion: COMMERCIAL_APPLICATION_CONSENT_VERSION,
           // Plus de `vivierConsentAt` depuis le 19/09 : la case vivier est
           // retirée du formulaire (B2). Un ancien onglet peut encore envoyer
@@ -378,7 +382,7 @@ export async function submitCommercialApplicationAction(
             ville: d.ville,
             codePostal: d.codePostal,
             b2b: { dejaVendu: d.b2bDejaVendu, ...(d.b2bAnnees ? { annees: d.b2bAnnees } : {}) },
-            experiences,
+            ...(experiences.length > 0 ? { experiences } : {}),
             ia: {
               utilise: d.iaUtilise,
               ...(d.iaOutils?.length ? { outils: d.iaOutils } : {}),
@@ -390,11 +394,18 @@ export async function submitCommercialApplicationAction(
               ...(d.informatiqueUsages?.length ? { usages: d.informatiqueUsages } : {}),
               ...(d.informatiqueAutre ? { usageAutre: d.informatiqueAutre } : {}),
             },
-            zone: { mobile: d.zoneMobile, ...(d.zones?.length ? { zones: d.zones } : {}) },
+            ...(d.zoneMobile !== undefined || d.zones?.length
+              ? {
+                  zone: {
+                    mobile: d.zoneMobile === true,
+                    ...(d.zones?.length ? { zones: d.zones } : {}),
+                  },
+                }
+              : {}),
             ...(d.deplacement ? { deplacement: d.deplacement } : {}),
             pitch: d.pitch,
             ...(d.messageLibre ? { messageLibre: d.messageLibre } : {}),
-            disponibilite: d.disponibilite,
+            ...(d.disponibilite ? { disponibilite: d.disponibilite } : {}),
             ...(d.statut ? { statut: d.statut } : {}),
             ...(d.linkedin ? { linkedin: d.linkedin } : {}),
             ...(d.sourceConnaissance ? { sourceConnaissance: d.sourceConnaissance } : {}),
@@ -497,11 +508,11 @@ export async function submitCommercialApplicationAction(
           contactEmail: d.email,
           contactPhone: d.telephone,
           ville: d.ville,
-          zone: zoneResume(d),
+          ...(d.zoneMobile || d.zones?.length ? { zone: zoneResume(d) } : {}),
           b2bYears: d.b2bDejaVendu
             ? optionLabel(B2B_ANNEES_OPTIONS, d.b2bAnnees)
             : "aucune (prérequis non rempli)",
-          availability: formatMoisAnnee(d.disponibilite),
+          ...(d.disponibilite ? { availability: formatMoisAnnee(d.disponibilite) } : {}),
           usesAi: d.iaUtilise,
           locale,
         },

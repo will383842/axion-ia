@@ -12,7 +12,6 @@ import type { ImgHTMLAttributes } from "react";
 import { describe, expect, it, vi } from "vitest";
 
 vi.mock("next/image", () => ({
-  // eslint-disable-next-line @next/next/no-img-element
   default: ({ src, alt }: ImgHTMLAttributes<HTMLImageElement>) => (
     <img src={String(src)} alt={alt} />
   ),
@@ -111,10 +110,9 @@ describe("tous les boutons mènent au bon endroit", () => {
       );
 
   it("la page principale envoie chaque bouton vers le dossier de 3 minutes", () => {
-    const boutons = liens(principale).filter((h) => h.includes("candidature"));
+    const boutons = liens(principale).filter((h) => h.includes("apporteur-affaires/dossier"));
     expect(boutons.length).toBeGreaterThanOrEqual(3);
-    for (const href of boutons)
-      expect(href).toMatch(/^\/fr\/devenir-commercial-ia\/candidature\?depuis=/);
+    for (const href of boutons) expect(href).toMatch(/^\/fr\/apporteur-affaires\/dossier\?depuis=/);
   });
 
   it("la variante pub garde le formulaire court, la variante annonce envoie au dossier", () => {
@@ -126,8 +124,8 @@ describe("tous les boutons mènent au bon endroit", () => {
     expect(
       annonce,
       annonce.slice(annonce.indexOf("Vu sur"), annonce.indexOf("Vu sur") + 1200),
-    ).toContain("candidature?depuis=annonce-haut");
-    expect(annonce).toContain("candidature?depuis=annonce");
+    ).toContain("dossier?depuis=annonce-haut");
+    expect(annonce).toContain("dossier?depuis=annonce");
   });
 
   it("le dossier pose le formulaire existant à la place de l'écran de la maquette", () => {
@@ -149,7 +147,7 @@ describe("tous les boutons mènent au bon endroit", () => {
       for (const href of liens(html)) {
         const sansRequete = href.split("?")[0]!;
         expect(
-          connus.has(sansRequete) || sansRequete === "/fr/devenir-commercial-ia/candidature",
+          connus.has(sansRequete) || sansRequete === "/fr/apporteur-affaires/dossier",
           href,
         ).toBe(true);
       }

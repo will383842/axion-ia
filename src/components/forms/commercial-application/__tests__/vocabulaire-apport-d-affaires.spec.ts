@@ -81,7 +81,9 @@ describe("le formulaire d'entrée emploie le vocabulaire de l'apport d'affaires"
         "components/forms/commercial-application/wizard-state.ts",
       ]) {
         const t = lire(f);
-        expect(t).toContain("activité en cours");
+        // L5b : wizard-state ne valide plus le parcours, donc n'a plus ce message ;
+        // le modèle (ancien onglet) le garde.
+        if (f.endsWith("model.ts")) expect(t).toContain("activité en cours");
         expect(t).not.toMatch(/cochez « poste actuel »/);
       }
     });

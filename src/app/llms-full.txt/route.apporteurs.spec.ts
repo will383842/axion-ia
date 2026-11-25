@@ -19,7 +19,7 @@ describe("llms-full.txt — apporteurs d'affaires", () => {
     expect(SECTION.length).toBeGreaterThan(400);
     expect(SECTION).toContain(EN_BREF_APPORTEURS);
     expect(SECTION).toContain("https://axion-ia.com/fr/devenir-commercial-ia");
-    expect(SECTION).toContain("https://axion-ia.com/fr/devenir-commercial-ia/candidature");
+    expect(SECTION).toContain("https://axion-ia.com/fr/apporteur-affaires/dossier");
   });
 
   it("n'affiche aucun montant dans la section (règle R7)", () => {

@@ -71,7 +71,7 @@ describe("le consentement précède l'écriture", () => {
     // serait. Ce test dit où il vit désormais ; s'il remonte un jour aux deux
     // endroits, c'est ce test qu'il faudra changer sciemment.
     const dernier = { ...emptyAnswers(), consent: false };
-    const erreurs = validateStep(9, dernier);
+    const erreurs = validateStep(7, dernier);
     expect(erreurs.consent).toBeUndefined();
   });
 
@@ -80,7 +80,7 @@ describe("le consentement précède l'écriture", () => {
     // intermédiaire, la capture de l'écran 1 partirait toujours sans accord —
     // et les deux premiers tests resteraient verts.
     const ecransQuiExigent = [];
-    for (let ecran = 0; ecran <= 9; ecran += 1) {
+    for (let ecran = 0; ecran <= 7; ecran += 1) {
       const erreurs = validateStep(ecran, { ...emptyAnswers(), consent: false });
       if (erreurs.consent) ecransQuiExigent.push(ecran);
     }
@@ -131,24 +131,9 @@ describe("le consentement n'est demandé qu'une fois", () => {
       consent: true,
       b2bDejaVendu: true,
       b2bAnnees: "5-10",
-      experiences: [
-        {
-          ...emptyAnswers().experiences[0]!,
-          entreprise: "Exemple SA",
-          ville: "Grenoble",
-          poste: "Commercial",
-          debutMois: "01",
-          debutAnnee: "2020",
-          posteActuel: true,
-        },
-      ],
       iaUtilise: false,
       informatiqueUtilise: false,
-      zoneMobile: true,
-      deplacement: "oui",
       pitch: "x".repeat(200),
-      dispoMois: "12",
-      dispoAnnee: String(new Date().getFullYear() + 1),
     };
     const payload = buildSubmissionPayload(reponses);
     expect(payload.consent).toBe(true);
@@ -171,24 +156,9 @@ describe("le dossier apporteur ne demande plus ni permis ni véhicule", () => {
     consent: true,
     b2bDejaVendu: true,
     b2bAnnees: "5-10",
-    experiences: [
-      {
-        ...emptyAnswers().experiences[0]!,
-        entreprise: "Exemple SA",
-        ville: "Lyon",
-        poste: "Apporteur d'affaires",
-        debutMois: "01",
-        debutAnnee: "2020",
-        posteActuel: true,
-      },
-    ],
     iaUtilise: false,
     informatiqueUtilise: false,
-    zoneMobile: true,
-    deplacement: "oui",
     pitch: "x".repeat(200),
-    dispoMois: "12",
-    dispoAnnee: String(new Date().getFullYear() + 1),
   });
 
   it("le dernier écran ne pose plus la question", () => {
@@ -200,7 +170,7 @@ describe("le dossier apporteur ne demande plus ni permis ni véhicule", () => {
   });
 
   it("le dernier écran se valide sans cette réponse, et l'envoi ne la porte pas", () => {
-    expect(validateStep(9, complet())).toEqual({});
+    expect(validateStep(7, complet())).toEqual({});
     const payload = buildSubmissionPayload(complet()) as Record<string, unknown>;
     expect(payload).not.toHaveProperty("permisVehicule");
     expect(commercialApplicationSchema.safeParse(payload).success).toBe(true);
@@ -212,7 +182,7 @@ describe("le dossier apporteur ne demande plus ni permis ni véhicule", () => {
   });
 
   it("un brouillon antérieur ne ramène pas la réponse dans le dossier", () => {
-    saveDraft(9, { ...complet(), permisVehicule: true } as never);
+    saveDraft(7, { ...complet(), permisVehicule: true } as never);
     const repris = loadDraft();
     expect(repris).not.toBeNull();
     expect(repris!.answers).not.toHaveProperty("permisVehicule");

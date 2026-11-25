@@ -59,7 +59,7 @@ describe("planifierRelancesLeadApporteur", () => {
     const n = await planifierRelancesLeadApporteur({
       email: "nadia@example.com",
       prenom: "Nadia",
-      dossierUrl: "https://axion-ia.com/fr/devenir-commercial-ia/candidature",
+      dossierUrl: "https://axion-ia.com/fr/apporteur-affaires/dossier",
       submissionId: "s-1",
     });
     expect(n).toBe(2);
@@ -90,7 +90,7 @@ describe("planifierKitDossierCommence — le kit de qui a quitté le dossier", (
     const pose = await planifierKitDossierCommence({
       email: "nadia@example.com",
       prenom: "Nadia",
-      dossierUrl: "https://axion-ia.com/fr/devenir-commercial-ia/candidature",
+      dossierUrl: "https://axion-ia.com/fr/apporteur-affaires/dossier",
       submissionId: "s-1",
     });
     expect(pose).toBe(true);

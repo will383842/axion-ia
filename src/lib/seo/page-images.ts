@@ -1535,7 +1535,7 @@ export const PAGE_IMAGES_MANIFEST: readonly PageImagesManifest[] = [
     ],
   },
   {
-    path: "/devenir-commercial-ia/candidature",
+    path: "/apporteur-affaires/dossier",
     images: [
       {
         src: "/illustrations/memo-isere/candidature-commercial-ia-sans-cv-mobile-axion-ia.avif",

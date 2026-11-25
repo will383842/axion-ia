@@ -32,7 +32,7 @@ import {
   VARIANTE_DOSSIER_COMMENCE,
 } from "@/lib/commercial-application/kit-apporteur";
 
-const DOSSIER = "https://axion-ia.com/fr/devenir-commercial-ia/candidature";
+const DOSSIER = "https://axion-ia.com/fr/apporteur-affaires/dossier";
 const CALENDLY = "https://calendly.com/axion-ia/echange-apporteur-affaires";
 
 async function html(el: React.ReactElement): Promise<string> {

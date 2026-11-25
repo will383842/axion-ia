@@ -228,7 +228,7 @@ describe("submitLeadApporteurAction", () => {
       Record<string, unknown>,
     ];
     expect(recu[1]).toBe("nadia@example.com");
-    expect(recu[3].dossierUrl).toBe("https://axion-ia.com/fr/devenir-commercial-ia/candidature");
+    expect(recu[3].dossierUrl).toBe("https://axion-ia.com/fr/apporteur-affaires/dossier");
     // ⛔ Décision Will 2026-09-19 : le lien de réservation n'est plus distribué
     // automatiquement (il saturerait l'agenda) — il part sur invitation, depuis
     // la console. Le kit, lui, est rendu par le gabarit.

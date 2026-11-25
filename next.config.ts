@@ -395,10 +395,18 @@ const nextConfig: NextConfig = {
         destination: "/fr/formations",
         permanent: true,
       },
+      // 2026-11-25 (plan apporteurs, L5c, D6) : le formulaire d'entrée change d'adresse.
+      // « candidature » est un mot d'embauche. 301 direct (query `?depuis=` conservée) ;
+      // garde : tests/unit/redirects/dossier-apporteur-adresse.spec.ts.
+      {
+        source: "/:locale(fr|en)/devenir-commercial-ia/candidature",
+        destination: "/:locale/apporteur-affaires/dossier",
+        statusCode: 301,
+      },
       {
         source: "/:locale(fr|en)/apporteur/candidature",
-        destination: "/:locale/devenir-commercial-ia/candidature",
-        permanent: true,
+        destination: "/:locale/apporteur-affaires/dossier",
+        statusCode: 301,
       },
       {
         source: "/:locale(fr|en)/apporteur",

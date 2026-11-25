@@ -46,7 +46,8 @@ describe("un brouillon ancien, avec consentVivier: true", () => {
     // Contre-témoin : un chargement qui rendrait `null` ferait passer les
     // assertions suivantes sans rien prouver.
     expect(charge, "le brouillon ancien doit rester lisible").not.toBeNull();
-    expect(charge?.screen).toBe(4);
+    // v1 (9 écrans) : l’écran 4 « IA » est devenu l’écran 3 du parcours à 7 écrans (L5b).
+    expect(charge?.screen).toBe(3);
     expect(charge?.answers.prenom).toBe("Camille");
   });
 

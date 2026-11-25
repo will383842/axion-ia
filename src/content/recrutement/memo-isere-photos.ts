@@ -1,5 +1,5 @@
 /**
- * SSOT — Photos Unsplash de /memo-isere et /devenir-commercial-ia/candidature.
+ * SSOT — Photos Unsplash de /memo-isere et /apporteur-affaires/dossier.
  *
  * AUTO-GÉNÉRÉ par `scripts/curate-memo-isere-unsplash.mjs --build`.
  * Photos servies en LOCAL (`public/illustrations/memo-isere/*.avif`) → 0 hotlink,

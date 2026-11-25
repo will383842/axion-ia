@@ -398,7 +398,13 @@ export const commercialApplicationSchema = z
     carnetDirigeants: z
       .enum(CARNET_DIRIGEANTS_OPTIONS.map((o) => o.id) as [string, ...string[]])
       .optional(),
-    experiences: z.array(experienceSchema).min(1).max(8),
+    /**
+     * FACULTATIF depuis le 2026-11-25 (L5b, D5) : le formulaire ne demande plus
+     * le parcours. Gardé dans le schéma — un onglet ouvert avant le déploiement
+     * l'envoie encore — mais jamais lu ni enregistré par le serveur s'il est
+     * absent ; les dossiers déjà reçus gardent leurs réponses en base.
+     */
+    experiences: z.array(experienceSchema).max(8).optional(),
     iaUtilise: z.boolean(),
     iaOutils: z
       .array(z.enum(IA_OUTILS_OPTIONS.map((o) => o.id) as [string, ...string[]]))
@@ -412,23 +418,22 @@ export const commercialApplicationSchema = z
       .max(INFORMATIQUE_USAGES_OPTIONS.length)
       .optional(),
     informatiqueAutre: z.string().trim().max(120).optional(),
-    zoneMobile: z.boolean(),
+    /** FACULTATIF depuis L5b (D5) : la zone n'est plus demandée. */
+    zoneMobile: z.boolean().optional(),
     /** Labels lisibles (« Isère (38) », « Auvergne-Rhône-Alpes »). */
     zones: z.array(z.string().trim().min(1).max(60)).max(30).optional(),
     /**
-     * OBLIGATOIRE (Will 2026-08-18). Métier de terrain : une candidature sans
-     * réponse ici n'est pas exploitable côté recrutement.
+     * FACULTATIF depuis L5b (D5, 2026-11-25) : les déplacements ne sont plus
+     * demandés. Toléré (ancien onglet), jamais lu par le score.
      *
-     * ⚠️ PAS de `.optional()` — et surtout pas d'`z.enum().optional()` sur un
-     * champ dont l'UI peut renvoyer la chaîne vide : ce couple rejette `""`
-     * avec un message générique, sans jamais désigner le champ fautif (défaut
-     * constaté sur le formulaire de contact le 2026-08-17). Ici l'UI est en
-     * chips et le wizard garantit une valeur non vide avant l'envoi.
+     * ⚠️ `.optional()` sur un `z.enum()` rejette la chaîne vide : l'UI n'émet
+     * plus jamais cette clé, et un ancien onglet envoie une valeur non vide.
      */
-    deplacement: z.enum(DEPLACEMENT_OPTIONS.map((o) => o.id) as [string, ...string[]]),
+    deplacement: z.enum(DEPLACEMENT_OPTIONS.map((o) => o.id) as [string, ...string[]]).optional(),
     pitch: z.string().trim().min(150).max(800),
     messageLibre: z.string().trim().max(2000).optional(),
-    disponibilite: z.string().regex(MOIS_ANNEE),
+    /** FACULTATIF depuis L5b (D5) : la disponibilité n'est plus demandée. */
+    disponibilite: z.string().regex(MOIS_ANNEE).optional(),
     /**
      * IGNORÉ depuis le 11/11/2026 — Williams retire la question « permis et
      * véhicule » du formulaire. Même contrat que `consentVivier` ci-dessous : un
@@ -454,10 +459,6 @@ export const commercialApplicationSchema = z
      * ni horodatage en base, ni preuve vivier.
      */
     consentVivier: z.boolean().optional(),
-  })
-  .refine((d) => d.zoneMobile || (d.zones?.length ?? 0) > 0, {
-    message: "Choisissez au moins une zone, ou « Peu importe, je suis mobile ».",
-    path: ["zones"],
   })
   // « Pourquoi, et pour quoi faire ? » est OBLIGATOIRE quand la réponse IA
   // est Oui (retour Will 2026-08-13) — gardé aussi côté serveur.

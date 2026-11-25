@@ -1,4 +1,4 @@
-// Curation Unsplash — photos des pages /memo-isere et /devenir-commercial-ia/candidature.
+// Curation Unsplash — photos des pages /memo-isere et /apporteur-affaires/dossier.
 //
 // Réplique le pattern CGU-compliant des autres `curate-*-unsplash.mjs` :
 //   - free-tier only (premium/paid filtré)
@@ -257,7 +257,7 @@ async function build() {
 
   const target = join(ROOT, "src/content/recrutement/memo-isere-photos.ts");
   const body = `/**
- * SSOT — Photos Unsplash de /memo-isere et /devenir-commercial-ia/candidature.
+ * SSOT — Photos Unsplash de /memo-isere et /apporteur-affaires/dossier.
  *
  * AUTO-GÉNÉRÉ par \`scripts/curate-memo-isere-unsplash.mjs --build\`.
  * Photos servies en LOCAL (\`public/illustrations/memo-isere/*.avif\`) → 0 hotlink,

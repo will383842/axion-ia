@@ -77,7 +77,7 @@ export const ROUTE_FRESHNESS: Readonly<Record<string, string>> = {
   "/desabonnement": "2026-09-25T09:54:41.000Z",
   "/design": "2026-08-21T07:41:26.000Z",
   "/devenir-commercial-ia": "2026-11-11T08:42:26.000Z",
-  "/devenir-commercial-ia/candidature": "2026-11-11T08:42:26.000Z",
+  "/apporteur-affaires/dossier": "2026-11-11T08:42:26.000Z",
   "/diagnostic": "2026-10-17T06:59:08.000Z",
   "/espace-formateur": "2026-10-17T00:36:56.000Z",
   "/espace-formateur/connexion": "2026-10-17T21:45:21.000Z",

@@ -1,5 +1,6 @@
-// Dossier d'apporteur d'affaires — `/devenir-commercial-ia/candidature` (l'URL est gardée : elle
-// est la destination de tous les boutons des landings et des e-mails de relance).
+// Dossier d'apporteur d'affaires — `/apporteur-affaires/dossier` (ex-`/devenir-commercial-ia/
+// candidature`, déplacé le 2026-11-25, L5c : l'ancienne adresse redirige en 301). Destination de
+// tous les boutons des landings et des e-mails de relance.
 //
 // Refonte du 09/11/2026 : la page est générée depuis la maquette validée par Williams
 // (`landings/SectionsDossier.tsx`). Le formulaire est celui qui existe déjà — une question par
@@ -29,7 +30,7 @@ import { ShellLanding } from "@/components/recrutement/landings/ShellLanding";
 
 export const revalidate = 3600;
 
-const PATH = "/devenir-commercial-ia/candidature";
+const PATH = "/apporteur-affaires/dossier";
 const LANDING_MESURE = "apporteur-dossier";
 
 const TITRE = "Dossier apporteur d'affaires : 3 minutes, sans CV · Axion-IA";

@@ -278,7 +278,7 @@ const CATEGORY_GROUP: Record<NotificationCategory, TelegramGroup> = {
   VIDEO_EDITOR_APPLICATION_RECEIVED: "monteur-video",
 
   // 🧲 Commercial Mémo (alertes coupées le 14/11, décision du fondateur) — les candidatures commerciales du tunnel sans CV
-  // `/devenir-commercial-ia/candidature` (annonce Mémorial de l'Isère) SEULEMENT,
+  // `/apporteur-affaires/dossier` (annonce Mémorial de l'Isère) SEULEMENT,
   // dans leur propre salon (même logique que le monteur vidéo : une campagne de
   // recrutement = un fil, jamais mélangée aux autres candidatures).
   COMMERCIAL_APPLICATION_RECEIVED: "commercial-memo",

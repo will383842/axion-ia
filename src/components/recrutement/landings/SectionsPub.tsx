@@ -126,7 +126,7 @@ export function SectionsPub({
               <div className="v-annonce annonce-cta">
                 <Link
                   className="btn btn-p"
-                  href="/fr/devenir-commercial-ia/candidature?depuis=annonce-haut"
+                  href="/fr/apporteur-affaires/dossier?depuis=annonce-haut"
                 >
                   <svg className="ico" aria-hidden="true" focusable="false">
                     <use href="#i-main" />
@@ -440,7 +440,7 @@ export function SectionsPub({
             {annonce && (
               <Link
                 className="btn btn-o v-annonce"
-                href="/fr/devenir-commercial-ia/candidature?depuis=annonce"
+                href="/fr/apporteur-affaires/dossier?depuis=annonce"
               >
                 <svg className="ico" aria-hidden="true" focusable="false">
                   <use href="#i-main" />
@@ -492,7 +492,7 @@ export function SectionsPub({
           {annonce && (
             <Link
               className="btn btn-blanc v-annonce"
-              href="/fr/devenir-commercial-ia/candidature?depuis=annonce"
+              href="/fr/apporteur-affaires/dossier?depuis=annonce"
             >
               <svg className="ico" aria-hidden="true" focusable="false">
                 <use href="#i-main" />
