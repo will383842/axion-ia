@@ -249,7 +249,7 @@ describe("capturerContactDossierAction", () => {
     expect(consentement).toHaveBeenCalledTimes(1);
     expect(consentement.mock.calls[0]?.[0]).toMatchObject({
       formRef: "commercial-tunnel",
-      consentVersion: "memo-v3-2026-09-19",
+      consentVersion: "memo-v4-2026-11-25",
       action: "optin",
     });
   });

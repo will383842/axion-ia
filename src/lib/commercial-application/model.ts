@@ -46,7 +46,7 @@ export const CANDIDATURE_COMMERCIALE_SUBTYPE = "candidature-commerciale";
  * texte affiché, c'est changer cette valeur (≤ 40 caractères, borne pinnée
  * par `lib/consents/__tests__/consents.test.ts`).
  */
-export const COMMERCIAL_APPLICATION_CONSENT_VERSION = "memo-v3-2026-09-19";
+export const COMMERCIAL_APPLICATION_CONSENT_VERSION = "memo-v4-2026-11-25";
 
 // ── Options à choix (chips) ─────────────────────────────────────────────────
 
