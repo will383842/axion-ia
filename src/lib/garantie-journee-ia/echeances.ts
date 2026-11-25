@@ -29,6 +29,17 @@ export interface Echeance {
   date: string;
   faite: boolean;
   libelle: string;
+  /** Porté par l'échéance « fin_demande » : demande reçue après la fin du délai (affichage seulement). */
+  demandeHorsDelai?: boolean;
+}
+
+/**
+ * Demande reçue après la fin du délai de demande (remise du rapport + 30 jours). Indicateur
+ * d'affichage : il ne modifie aucune échéance, la règle applicable reste à trancher.
+ */
+export function demandeHorsDelai(d: DonneesGarantie): boolean {
+  if (!d.rapportRemisLe || !d.demandeRecueLe) return false;
+  return d.demandeRecueLe > ajouterJours(d.rapportRemisLe, DELAI_DEMANDE_JOURS);
 }
 
 /** Date limite de réponse d'Axion-IA, ou null sans demande reçue. */
@@ -37,17 +48,19 @@ function echeanceReponse(d: DonneesGarantie): string | null {
 }
 
 /**
- * Demande réputée acceptée : demande reçue, aucune décision datée, échéance de réponse
- * dépassée (strictement). État CALCULÉ, jamais écrit en base.
+ * Demande réputée acceptée (art. 47.10 f) : demande reçue et aucune réponse dans le délai.
+ * Sans décision datée, l'échéance de réponse doit être dépassée (strictement) à `aujourdhui` ;
+ * avec une décision datée, elle doit être postérieure à l'échéance (réponse tardive).
+ * État CALCULÉ, jamais écrit en base.
  */
 export function estReputeeAcceptee(d: DonneesGarantie, aujourdhui: string): boolean {
   const limite = echeanceReponse(d);
-  return limite !== null && !d.decisionLe && aujourdhui > limite;
+  return limite !== null && (d.decisionLe ? d.decisionLe > limite : aujourdhui > limite);
 }
 
 /**
  * Échéances triées par date. `aujourdhui` (optionnel, « AAAA-MM-JJ ») ne sert qu'au virement
- * d'une demande réputée acceptée : sans lui, ce virement n'est pas annoncé.
+ * d'une demande réputée acceptée sans réponse : sans lui, ce virement n'est pas annoncé.
  */
 export function calculerEcheances(d: DonneesGarantie, aujourdhui?: string): Echeance[] {
   const r: Echeance[] = [
@@ -64,6 +77,7 @@ export function calculerEcheances(d: DonneesGarantie, aujourdhui?: string): Eche
       date: ajouterJours(d.rapportRemisLe, DELAI_DEMANDE_JOURS),
       faite: Boolean(d.demandeRecueLe || d.decision),
       libelle: "Fin du délai de demande de remboursement",
+      demandeHorsDelai: demandeHorsDelai(d),
     });
   }
   const reponse = echeanceReponse(d);
@@ -71,15 +85,17 @@ export function calculerEcheances(d: DonneesGarantie, aujourdhui?: string): Eche
     r.push({
       type: "reponse",
       date: reponse,
-      faite: Boolean(d.decisionLe),
+      faite: Boolean(d.decisionLe && d.decisionLe <= reponse),
       libelle: "Réponse écrite d'Axion-IA",
     });
   }
   let virement: string | null = null;
-  if (d.decision === "remboursement" && d.decisionLe) {
-    virement = ajouterJours(d.decisionLe, DELAI_VIREMENT_JOURS);
-  } else if (reponse && !d.decisionLe && aujourdhui && estReputeeAcceptee(d, aujourdhui)) {
+  // Réponse absente ou tardive : acceptation tacite, virement = échéance de réponse + 30 j,
+  // quelle que soit la décision. Une réponse tardive suffit, même sans `aujourdhui`.
+  if (reponse && estReputeeAcceptee(d, aujourdhui ?? reponse)) {
     virement = ajouterJours(reponse, DELAI_VIREMENT_JOURS);
+  } else if (d.decision === "remboursement" && d.decisionLe) {
+    virement = ajouterJours(d.decisionLe, DELAI_VIREMENT_JOURS);
   }
   if (virement) {
     r.push({
