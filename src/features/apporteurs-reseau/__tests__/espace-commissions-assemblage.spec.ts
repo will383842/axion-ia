@@ -111,7 +111,7 @@ describe("assemblage de « Mes commissions »", () => {
       }),
     ];
     // Le parrainage porte la présentation du filleul : le garde ne doit PAS l'écarter à tort.
-    const v = vue(faits.map((f) => ({ ...f, presentationApporteurId: A })));
+    const v = vue(faits);
     expect(v.horsEntreprise).toHaveLength(1);
     expect(v.horsEntreprise[0]!.montantCents).toBe(5_000);
     expect(JSON.stringify(v)).not.toMatch(/pFilleul|pF3|"s1"|"s2"/);

@@ -221,6 +221,9 @@ export function assemblerEspaceCommissions(e: {
   // Garde de cloisonnement (défense en profondeur : la requête filtre déjà par apporteur).
   const mes = e.commissions.filter((c) => {
     if (c.presentationId === null) return true;
+    // Une part de parrainage porte la présentation du FILLEUL : elle n'est jamais rattachée ni
+    // affichée par entreprise, sa ligne est regroupée par autofacture (présentation non lue).
+    if (c.parrainage) return true;
     return c.presentationApporteurId === e.apporteurId;
   });
 
@@ -258,7 +261,8 @@ export function assemblerEspaceCommissions(e: {
       cle: `p${hors.length}`,
       nature: "Parrainage",
       montantCents: somme !== 0 ? somme : null,
-      etat: toutesVersees ? "versee" : ls.some((l) => l.litigeDepuis) ? "suspendue" : "facturee",
+      // Jamais « suspendue » : cela révélerait un litige chez le client du filleul.
+      etat: toutesVersees ? "versee" : "facturee",
       numeroFacture: numero,
       factureLe: d,
       echeanceLe: toutesVersees ? null : echeancePaiement(d),
@@ -303,7 +307,7 @@ export function assemblerEspaceCommissions(e: {
           ),
         ),
       });
-    if (c.avoirNumero)
+    if (c.avoirNumero && !c.parrainage)
       pieces.set(c.avoirNumero, { numero: c.avoirNumero, genre: "avoir", le: emission(c) });
   }
 
