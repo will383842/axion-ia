@@ -132,7 +132,7 @@ describe("construireEnvoisReponse : la règle choisit l'accusé", () => {
     expect(sans[1]!.jobId).toBe("apporteur-presentation-recue-P2");
   });
 
-  it("règle « rendez_vous » : l'accusé 60 jours, avec la fin de réservation (60e jour : saisie + 59)", () => {
+  it("règle « rendez_vous » : l'accusé 60 jours, avec la fin de réservation (fin du 60e jour, N1)", () => {
     const e = construireEnvoisReponse({ ...donnees, regle: "rendez_vous" }, "bien_recu", opts);
     expect(e.map((x) => x.gabarit)).toEqual(RENDEZ_VOUS);
     expect(e[1]!.destinataire).toBe("ana@x.fr");

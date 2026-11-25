@@ -44,7 +44,7 @@ import {
 } from "./envois";
 import { idsPriseDeContactRebondie } from "./rebonds";
 import { type ReservationProvisoire, reservationOccupe } from "./regle-attribution";
-import { ajouterJours, ajouterMois, finDeProtection } from "./regles";
+import { ajouterMois, finDeProtection } from "./regles";
 import { validationParRendezVousActive } from "./interrupteur-rendez-vous";
 import { finReservation, regleDe, type RegleAttribution } from "./regle-attribution";
 import {
@@ -657,10 +657,8 @@ export function construireEnvoisReponse(
             payload: {
               contactName: nomApporteur,
               entreprise: d.presentation.denomination,
-              // Jour 1 = la saisie : le 60e et dernier jour est saisie + 59 (jusqu'à minuit, heure de Paris).
-              dateFinReservation: dateLongue(
-                ajouterJours(finReservation(d.presentation.recueAt), -1),
-              ),
+              // `finReservation` est déjà la fin du 60e jour (jour 1 = la saisie, minuit Paris, N1).
+              dateFinReservation: dateLongue(finReservation(d.presentation.recueAt)),
             },
             ...versApporteur,
             jobId: `apporteur-presentation-recue-${d.presentation.id}`,
