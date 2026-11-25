@@ -83,7 +83,7 @@ describe("classer un dossier : motif obligatoire", () => {
     expect(p.retraitCreate).not.toHaveBeenCalled();
   });
 
-  it("dossier non signé avec motif : classé, motif dans la ligne ET dans le journal", async () => {
+  it("dossier non signé avec motif : classé, motif dans la ligne, journal sans le texte", async () => {
     statut("dossier_en_cours");
     const r = await retirerDuReseau(ID, "adm-1", `  ${MOTIF}  `);
     expect(r.ok).toBe(true);
@@ -93,7 +93,32 @@ describe("classer un dossier : motif obligatoire", () => {
     expect(p.apporteurUpdate).toHaveBeenCalled();
     const j = p.journal.mock.calls[0]![0].data;
     expect(j.adminUserId).toBe("adm-1");
-    expect(j.changes.motif).toBe(MOTIF);
+    // Le texte libre ne va PAS au journal (conservé, jamais effacé) : seule la colonne le porte.
+    expect(j.changes.motif).toBeUndefined();
+    expect(j.changes.motifSaisi).toBe(true);
+  });
+
+  it("motif avec téléphone, e-mail et IBAN : masqué en colonne, absent du journal", async () => {
+    statut("dossier_en_cours");
+    const brut =
+      "Ne répond plus, joint au 06 12 34 56 78 / jean.dupont@gmail.com / FR76 3000 6000 0112 3456 7890 189";
+    const r = await retirerDuReseau(ID, "adm-1", brut);
+    expect(r.ok).toBe(true);
+    const col: string = p.retraitCreate.mock.calls[0]![0].data.motif;
+    expect(col).not.toMatch(/\d{4}|@|jean\.dupont|06 12/);
+    expect(col).toContain("[téléphone masqué]");
+    expect(col).toContain("[e-mail masqué]");
+    expect(col).toContain("[IBAN masqué]");
+    expect(col).toContain("Ne répond plus");
+    const changes = JSON.stringify(p.journal.mock.calls[0]![0].data.changes);
+    expect(changes).not.toMatch(/\d{4}|@|jean|Ne répond/);
+  });
+
+  it("le refus sous contrat dit « classement », pas « retrait »", async () => {
+    statut("signe");
+    const r = await retirerDuReseau(ID, "adm-1", MOTIF);
+    expect(r.message).toContain("le classement n'est pas possible");
+    expect(r.message).not.toContain("le retrait");
   });
 
   it("dossier résilié : classable", async () => {
@@ -130,5 +155,6 @@ describe("verrou de source", () => {
     );
     expect(src).not.toContain("Retirer du réseau");
     expect(src).toContain("Classer le dossier (non signé)");
+    expect(src).toContain("Sans nom, adresse, téléphone ni coordonnées bancaires");
   });
 });

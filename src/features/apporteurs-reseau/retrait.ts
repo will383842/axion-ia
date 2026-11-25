@@ -65,10 +65,21 @@ export type Issue = { ok: true; message: string } | { ok: false; message: string
 export const MOTIF_MIN = 3;
 export const MOTIF_MAX = 500;
 
+/**
+ * Le motif est un texte libre : on masque e-mails, IBAN et téléphones avant de l'écrire en colonne
+ * (le journal d'audit, conservé, ne reçoit jamais le texte). Ordre : e-mail, IBAN, puis téléphone.
+ */
+export function masquerCoordonnees(texte: string): string {
+  return texte
+    .replace(/[^\s@]+@[^\s@]+\.[^\s@]+/g, "[e-mail masqué]")
+    .replace(/\b[A-Za-z]{2}\d{2}(?:[ ]?[A-Za-z0-9]{3,4}){3,8}\b/g, "[IBAN masqué]")
+    .replace(/(?:\+|00)?\d(?:[\s.\-]?\d){7,}/g, "[téléphone masqué]");
+}
+
 /** Refus d'un dossier sous contrat (L2, B2). `null` si le statut permet le classement. */
 export function refusClassement(statut: string): string | null {
   if (statut === "signe") {
-    return "Contrat en cours : le retrait n'est pas possible. Pour mettre fin au contrat, utilisez « Résilier le contrat » (article 11).";
+    return "Contrat en cours : le classement n'est pas possible. Pour mettre fin au contrat, utilisez « Résilier le contrat » (article 11).";
   }
   if (statut === "a_verifier") {
     return "Contrat signé par l'apporteur, en attente de votre contresignature : refusez le dossier ou contresignez-le.";
@@ -104,7 +115,9 @@ export async function retirerDuReseau(
     }
     const deja = await tx.apporteurReseauRetrait.findUnique({ where: { apporteurId } });
     if (deja) return { ok: false, message: "Ce dossier est déjà classé." };
-    await tx.apporteurReseauRetrait.create({ data: { apporteurId, retirePar: adminId, motif } });
+    await tx.apporteurReseauRetrait.create({
+      data: { apporteurId, retirePar: adminId, motif: masquerCoordonnees(motif) },
+    });
     await tx.apporteurReseau.update({
       where: { id: apporteurId },
       data: { versionLien: { increment: 1 } },
@@ -116,7 +129,7 @@ export async function retirerDuReseau(
         action: "apporteur.retire_du_reseau",
         targetType: "apporteur_reseau",
         targetId: apporteurId,
-        changes: { statut: a.statut, lienDesactive: true, motif },
+        changes: { statut: a.statut, lienDesactive: true, motifSaisi: true },
       },
     });
     return {

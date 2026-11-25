@@ -91,6 +91,9 @@ export function RetraitDuReseau({
             </p>
             <label className="flex flex-col gap-1">
               <span>Motif du classement (obligatoire)</span>
+              <span className="text-fg-muted">
+                Sans nom, adresse, téléphone ni coordonnées bancaires
+              </span>
               <textarea
                 name="motif"
                 className="admin-input"
