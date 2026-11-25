@@ -130,3 +130,30 @@ describe("rattrapage Voyage des articles", () => {
     expect(r.stoppedReason).toContain("3 lots consécutifs");
   });
 });
+
+describe("lot refusé en 4xx : réessai article par article", () => {
+  it("saute l'article fautif, écrit les autres, journalise son id, ne s'arrête pas", async () => {
+    queryRawUnsafeMock.mockResolvedValue(articles(3));
+    embedBatchMock
+      .mockResolvedValueOnce({ ok: false, reason: "http_error", status: 400 })
+      .mockResolvedValueOnce(ok(1))
+      .mockResolvedValueOnce({ ok: false, reason: "http_error", status: 400 })
+      .mockResolvedValueOnce(ok(1));
+    const stats = await rattraperEmbeddingsVoyage();
+    expect(embedBatchMock).toHaveBeenCalledTimes(4);
+    expect(stats.processed).toBe(2);
+    expect(stats.errors).toBe(1);
+    expect(stats.stoppedReason).toBeUndefined();
+    const journal = (console.error as unknown as { mock: { calls: unknown[][] } }).mock.calls
+      .map((c) => String(c[0]))
+      .join("\n");
+    expect(journal).toContain("id-1");
+  });
+
+  it("un 500 reste un échec de lot, sans réessai unitaire", async () => {
+    queryRawUnsafeMock.mockResolvedValue(articles(3));
+    embedBatchMock.mockResolvedValue({ ok: false, reason: "http_error", status: 500 });
+    await rattraperEmbeddingsVoyage();
+    expect(embedBatchMock).toHaveBeenCalledTimes(1);
+  });
+});

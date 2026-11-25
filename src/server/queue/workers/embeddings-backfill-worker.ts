@@ -202,6 +202,29 @@ function plafondVoyageParPassage(): number {
   return Math.min(n, VOYAGE_HARD_MAX_PER_RUN);
 }
 
+async function ecrireEmbeddingVoyage(
+  articleId: string,
+  vecteur: readonly number[],
+  stats: VoyageBackfillStats,
+): Promise<void> {
+  try {
+    const litteral = `[${vecteur.join(",")}]`;
+    await prisma.$executeRaw`
+      UPDATE articles
+      SET embedding_voyage = ${litteral}::vector
+      WHERE id = ${articleId}::uuid
+        AND embedding_voyage IS NULL
+    `;
+    stats.processed++;
+  } catch (err) {
+    stats.errors++;
+    console.error(
+      `[embeddings-backfill] écriture embedding_voyage article ${articleId} en échec:`,
+      err instanceof Error ? err.message : String(err),
+    );
+  }
+}
+
 /**
  * Rattrapage de `articles.embedding_voyage` (Voyage voyage-3, 1024 dim) sur les articles
  * publiés qui n'en ont pas. Indépendant de CONTENT_EMBEDDING_PROVIDER : il doit pouvoir
@@ -252,6 +275,42 @@ export async function rattraperEmbeddingsVoyage(): Promise<VoyageBackfillStats> 
     const lot = articles.slice(i, i + VOYAGE_BATCH_SIZE);
     const out = await embedVoyageBatch(lot.map(texteVoyage));
     if (!out.ok) {
+      // 4xx (hors 429) sur un lot de plusieurs articles : un seul article fautif le fait
+      // échouer chaque nuit. On réessaie article par article et on saute celui qui échoue.
+      const status = out.status;
+      if (
+        out.reason === "http_error" &&
+        status !== undefined &&
+        status >= 400 &&
+        status < 500 &&
+        lot.length > 1
+      ) {
+        let unSeulOk = false;
+        for (const article of lot) {
+          const seul = await embedVoyageBatch([texteVoyage(article)]);
+          if (seul.ok && seul.embeddings[0]) {
+            unSeulOk = true;
+            await ecrireEmbeddingVoyage(article.id, seul.embeddings[0], stats);
+          } else if (!seul.ok && (seul.reason === "rate_limited" || seul.reason === "no_key")) {
+            stats.errors++;
+            stats.stoppedReason = seul.reason;
+            return stats;
+          } else {
+            stats.errors++;
+            console.error(
+              `[embeddings-backfill] article ${article.id} sauté : Voyage le refuse (HTTP ${status}).`,
+            );
+          }
+          await new Promise<void>((resolve) => setTimeout(resolve, VOYAGE_PAUSE_MS));
+        }
+        // Un lot où plus aucun article ne passe est une vraie panne : il compte comme échec.
+        echecsConsecutifs = unSeulOk ? 0 : echecsConsecutifs + 1;
+        if (echecsConsecutifs >= VOYAGE_MAX_CONSECUTIVE_FAILURES) {
+          stats.stoppedReason = `${echecsConsecutifs} lots consécutifs en échec (${out.reason})`;
+          break;
+        }
+        continue;
+      }
       stats.errors += lot.length;
       echecsConsecutifs++;
       if (out.reason === "rate_limited" || out.reason === "no_key") {
@@ -273,22 +332,7 @@ export async function rattraperEmbeddingsVoyage(): Promise<VoyageBackfillStats> 
         stats.errors++;
         continue;
       }
-      try {
-        const litteral = `[${vecteur.join(",")}]`;
-        await prisma.$executeRaw`
-          UPDATE articles
-          SET embedding_voyage = ${litteral}::vector
-          WHERE id = ${article.id}::uuid
-            AND embedding_voyage IS NULL
-        `;
-        stats.processed++;
-      } catch (err) {
-        stats.errors++;
-        console.error(
-          `[embeddings-backfill] écriture embedding_voyage article ${article.id} en échec:`,
-          err instanceof Error ? err.message : String(err),
-        );
-      }
+      await ecrireEmbeddingVoyage(article.id, vecteur, stats);
     }
     if (i + VOYAGE_BATCH_SIZE < articles.length) {
       await new Promise<void>((resolve) => setTimeout(resolve, VOYAGE_PAUSE_MS));
