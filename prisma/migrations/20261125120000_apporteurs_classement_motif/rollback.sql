@@ -1,0 +1,5 @@
+-- Rollback de 20261125120000_apporteurs_classement_motif.
+-- Seulement sur décision du fondateur : la colonne porte le motif de classements déjà faits.
+-- Sauvegarder d'abord (COPY ... TO) ; ne rien supprimer sans sauvegarde.
+-- Pour mettre de côté plutôt que supprimer :
+--   ALTER TABLE "apporteur_reseau_retrait" RENAME COLUMN "motif" TO "motif_retire_20261125";

@@ -126,8 +126,10 @@ describe("refusSuppression", () => {
     ["avec une entreprise présentée", { presentations: 1 }],
     ["parrain d'un filleul", { filleuls: 1 }],
     ["SANS fiche candidat (le contact serait perdu)", { ficheCandidat: false }],
-  ])("%s : refusé, avec une phrase qui renvoie à « Retirer du réseau »", (_c, over) => {
-    expect(refusSuppression({ ...VIERGE, ...over })).toMatch(/Retirer du réseau/);
+  ])("%s : refusé, avec une phrase qui renvoie à la bonne voie", (_c, over) => {
+    expect(refusSuppression({ ...VIERGE, ...over })).toMatch(
+      /Résilier le contrat|Classer le dossier/,
+    );
   });
 });
 
@@ -135,9 +137,11 @@ describe("retirer du réseau", () => {
   it("crée la ligne de retrait, désactive le lien, journalise — et n'efface rien", async () => {
     p.apporteurFindUnique.mockResolvedValue({ id: ID, statut: "dossier_en_cours" });
     p.retraitFindUnique.mockResolvedValue(null);
-    const r = await retirerDuReseau(ID, "adm-1");
+    const r = await retirerDuReseau(ID, "adm-1", "Sans suite.");
     expect(r.ok).toBe(true);
-    expect(p.retraitCreate).toHaveBeenCalledWith({ data: { apporteurId: ID, retirePar: "adm-1" } });
+    expect(p.retraitCreate).toHaveBeenCalledWith({
+      data: { apporteurId: ID, retirePar: "adm-1", motif: "Sans suite." },
+    });
     expect(p.apporteurUpdate.mock.calls[0]![0].data).toEqual({ versionLien: { increment: 1 } });
     expect(p.journal.mock.calls[0]![0].data).toMatchObject({
       adminUserId: "adm-1",
@@ -148,19 +152,10 @@ describe("retirer du réseau", () => {
     expect(p.pieceDeleteMany).not.toHaveBeenCalled();
   });
 
-  it("contrat SIGNÉ : le message dit que le contrat n'est pas résilié (préavis, art. 11.1)", async () => {
-    p.apporteurFindUnique.mockResolvedValue({ id: ID, statut: "signe" });
-    p.retraitFindUnique.mockResolvedValue(null);
-    const r = await retirerDuReseau(ID, "adm-1");
-    expect(r.message).toMatch(/N'EST PAS résilié/);
-    expect(r.message).toMatch(/11\.1/);
-    expect(r.message).toMatch(/commissions dues restent dues/);
-  });
-
   it("déjà retirée : refus, rien ne bouge", async () => {
-    p.apporteurFindUnique.mockResolvedValue({ id: ID, statut: "signe" });
+    p.apporteurFindUnique.mockResolvedValue({ id: ID, statut: "dossier_en_cours" });
     p.retraitFindUnique.mockResolvedValue({ apporteurId: ID });
-    expect((await retirerDuReseau(ID, "adm-1")).ok).toBe(false);
+    expect((await retirerDuReseau(ID, "adm-1", "Sans suite.")).ok).toBe(false);
     expect(p.apporteurUpdate).not.toHaveBeenCalled();
   });
 });

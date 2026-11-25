@@ -16552,12 +16552,14 @@ model DevisEtablissement {
 /// ferait échouer, pendant la fenêtre app/worker (~50 min avant la migration), toutes les
 /// requêtes du worker qui lisent cette table sans liste de colonnes. Une ligne = retiré ;
 /// « Remettre dans le réseau » supprime la ligne (l'historique vit dans le journal d'audit).
-/// rgpd: technique — état « retiré du réseau » d'un dossier : identifiant, date et administrateur auteur ; aucune donnée de la personne
+/// rgpd: technique — état « retiré du réseau » d'un dossier : identifiant, date, administrateur auteur et motif du classement (texte libre de l'administrateur, sans donnée de la personne)
 model ApporteurReseauRetrait {
   apporteurId String   @id @map("apporteur_id") @db.Uuid
   retireAt    DateTime @default(now()) @map("retire_at") @db.Timestamptz(3)
   /// Identifiant de l'administrateur qui a retiré la fiche.
   retirePar   String?  @map("retire_par") @db.VarChar(64)
+  /// Motif du classement (L2, 2026-11-25), 3 à 500 caractères. Nul pour les lignes d'avant.
+  motif       String?  @db.Text
 
   @@map("apporteur_reseau_retrait")
 }
