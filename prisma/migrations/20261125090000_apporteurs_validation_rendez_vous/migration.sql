@@ -42,5 +42,3 @@ CREATE TABLE IF NOT EXISTS "propositions_rendez_vous_presentation" (
 );
 
 CREATE UNIQUE INDEX IF NOT EXISTS "propositions_rendez_vous_presentation_presentation_id_rende_key" ON "propositions_rendez_vous_presentation"("presentation_id", "rendez_vous_cle");
-
-CREATE INDEX IF NOT EXISTS "propositions_rendez_vous_presentation_presentation_id_idx" ON "propositions_rendez_vous_presentation"("presentation_id");

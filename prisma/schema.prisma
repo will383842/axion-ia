@@ -16509,7 +16509,6 @@ model PropositionRendezVousPresentation {
   retenueAt      DateTime? @map("retenue_at") @db.Timestamptz(3)
 
   @@unique([presentationId, rendezVousCle])
-  @@index([presentationId])
   @@map("propositions_rendez_vous_presentation")
 }
 
