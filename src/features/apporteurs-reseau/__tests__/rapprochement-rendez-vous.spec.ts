@@ -249,8 +249,11 @@ describe("proposerPourRendezVous", () => {
   });
 
   it("un domaine de webmail ne rapproche personne", async () => {
-    presentation("p1", { personneEmail: "enc:a@gmail.com", personneEmailHash: "h:a@gmail.com" });
-    evenement("e1", "b@gmail.com");
+    presentation("p1", {
+      personneEmail: "enc:a@tutanota.com",
+      personneEmailHash: "h:a@tutanota.com",
+    });
+    evenement("e1", "b@tutanota.com");
     expect(await proposerPourRendezVous({ calendlyEventId: "e1" })).toBe(0);
   });
 
