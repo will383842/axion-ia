@@ -21,6 +21,7 @@
 import type { PrismaClient } from "../../../../prisma/generated/client";
 import { embed, buildEmbeddingInput, OPENAI_EMBEDDING_DIMENSION } from "./openai-embedder";
 import { embedVoyage, VOYAGE_EMBEDDING_DIMENSION } from "./voyage-embedder";
+import { readKillSwitchFailSafe } from "@/server/content-gen/config-store";
 import { getEmbeddingProvider } from "./embedding-provider";
 import { buildVoyageEmbeddingText } from "./texte-a-vectoriser";
 
@@ -69,6 +70,20 @@ export async function persistArticleEmbedding(
             ...(input.metaDescription ? { metaDescription: input.metaDescription } : {}),
             ...(input.bodyText ? { bodyText: input.bodyText } : {}),
           });
+    if (provider === "voyage") {
+      // Coupure d'urgence (fail-safe : état illisible = arrêt). Colonne laissée NULL,
+      // le rattrapage la remplira une fois la coupure levée.
+      const killSwitch = await readKillSwitchFailSafe();
+      if (killSwitch.active) {
+        console.warn(
+          JSON.stringify({
+            event: "persist_article_embedding_voyage_kill_switch",
+            articleId: input.articleId,
+          }),
+        );
+        return { persisted: false, reason: "disabled" };
+      }
+    }
     const result = provider === "voyage" ? await embedVoyage(text) : await embed(text);
     if (result === null) {
       if (provider === "voyage") {

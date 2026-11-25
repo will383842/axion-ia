@@ -1,4 +1,9 @@
 import { describe, it, expect, vi, afterEach, beforeEach } from "vitest";
+const killSwitchMock = vi.fn();
+vi.mock("@/server/content-gen/config-store", () => ({
+  readKillSwitchFailSafe: (...a: unknown[]) => killSwitchMock(...a),
+}));
+import { __resetVoyageTokenCounter } from "../voyage-embedder";
 import { persistArticleEmbedding } from "../persist-article-embedding";
 
 const input = {
@@ -9,6 +14,8 @@ const input = {
 const vec = (n: number) => Array.from({ length: n }, () => 0.1);
 
 beforeEach(() => {
+  killSwitchMock.mockResolvedValue({ active: false });
+  __resetVoyageTokenCounter();
   process.env["CONTENT_EMBEDDING_PROVIDER"] = "voyage";
   process.env["VOYAGE_API_KEY"] = "pa-test";
 });
@@ -16,6 +23,7 @@ afterEach(() => {
   delete process.env["CONTENT_EMBEDDING_PROVIDER"];
   delete process.env["VOYAGE_API_KEY"];
   delete process.env["OPENAI_EMBEDDINGS_ENABLED"];
+  delete process.env["VOYAGE_EMBEDDINGS_MAX_TOKENS_PER_DAY"];
   vi.unstubAllGlobals();
   vi.restoreAllMocks();
 });
@@ -43,6 +51,30 @@ describe("persistArticleEmbedding — fournisseur voyage", () => {
     const exec = vi.fn(async () => 1);
     const r = await persistArticleEmbedding({ $executeRaw: exec } as never, input);
     expect(r.persisted).toBe(false);
+    expect(exec).not.toHaveBeenCalled();
+  });
+
+  it("coupure d'urgence active : aucun appel Voyage, rien écrit", async () => {
+    vi.spyOn(console, "warn").mockImplementation(() => {});
+    killSwitchMock.mockResolvedValue({ active: true, reason: "test" });
+    const fetchMock = vi.fn();
+    vi.stubGlobal("fetch", fetchMock);
+    const exec = vi.fn(async () => 1);
+    const r = await persistArticleEmbedding({ $executeRaw: exec } as never, input);
+    expect(r.persisted).toBe(false);
+    expect(fetchMock).not.toHaveBeenCalled();
+    expect(exec).not.toHaveBeenCalled();
+  });
+
+  it("plafond quotidien de tokens atteint : aucun appel Voyage, rien écrit", async () => {
+    vi.spyOn(console, "warn").mockImplementation(() => {});
+    process.env["VOYAGE_EMBEDDINGS_MAX_TOKENS_PER_DAY"] = "1";
+    const fetchMock = vi.fn();
+    vi.stubGlobal("fetch", fetchMock);
+    const exec = vi.fn(async () => 1);
+    const r = await persistArticleEmbedding({ $executeRaw: exec } as never, input);
+    expect(r.persisted).toBe(false);
+    expect(fetchMock).not.toHaveBeenCalled();
     expect(exec).not.toHaveBeenCalled();
   });
 

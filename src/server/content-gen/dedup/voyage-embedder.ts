@@ -31,6 +31,21 @@ export type VoyageBatchOutcome =
     }
   | { readonly ok: false; readonly reason: VoyageFailureReason; readonly status?: number };
 
+// Compteur de tokens du jour (en mémoire, remis à zéro au démarrage), comme openai-embedder.ts.
+const compteurTokens = new Map<string, number>();
+
+function plafondQuotidien(): number {
+  const brut = process.env["VOYAGE_EMBEDDINGS_MAX_TOKENS_PER_DAY"];
+  if (!brut) return 1_000_000;
+  const n = parseInt(brut, 10);
+  return Number.isFinite(n) && n > 0 ? n : 1_000_000;
+}
+
+/** Test uniquement. */
+export function __resetVoyageTokenCounter(): void {
+  compteurTokens.clear();
+}
+
 /** Retire toute occurrence de la clé d'un texte destiné à un journal. */
 function purger(texte: string, apiKey: string): string {
   return apiKey ? texte.split(apiKey).join("[clé masquée]").slice(0, 200) : texte.slice(0, 200);
@@ -114,11 +129,34 @@ export async function embedVoyageBatch(texts: readonly string[]): Promise<Voyage
   }
 }
 
-/** Embed un seul texte. `null` si clé absente ou si Voyage est en panne. */
+/**
+ * Embed un seul texte (chemin de publication). `null` si clé absente, plafond quotidien
+ * `VOYAGE_EMBEDDINGS_MAX_TOKENS_PER_DAY` (1 M par défaut) atteint, ou Voyage en panne.
+ * Le rattrapage (`embedVoyageBatch`) a son propre plafond par passage.
+ */
 export async function embedVoyage(text: string): Promise<EmbedResult | null> {
+  if (!process.env["VOYAGE_API_KEY"]) return null;
+  const jour = new Date().toISOString().slice(0, 10);
+  const utilises = compteurTokens.get(jour) ?? 0;
+  const plafond = plafondQuotidien();
+  const estimes = Math.ceil(text.length / 4);
+  if (utilises + estimes > plafond) {
+    console.warn(
+      JSON.stringify({
+        event: "voyage_embeddings_throttled",
+        reason: "daily_cap_reached",
+        used: utilises,
+        cap: plafond,
+        estTokens: estimes,
+      }),
+    );
+    return null;
+  }
   const out = await embedVoyageBatch([text]);
   if (!out.ok) return null;
   const embedding = out.embeddings[0];
   if (!embedding) return null;
+  const consommes = out.tokensUsed > 0 ? out.tokensUsed : estimes;
+  compteurTokens.set(jour, utilises + consommes);
   return { embedding, tokensUsed: out.tokensUsed, model: out.model };
 }
