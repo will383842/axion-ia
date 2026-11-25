@@ -2,7 +2,7 @@
  * Règles PURES (sans Prisma) du retrait des derniers anciens prix affichés (2026-11).
  * Règle de Will : seul prix public = Journée IA 1 490 € HT, le reste « sur devis ».
  *
- *  - 2 FAQ (`combien-coute-audit`, `qu-est-ce-qu-une-implementation`) : réponses remplacées par
+ *  - 3 FAQ (`combien-coute-audit`, `qu-est-ce-qu-une-implementation`, `support-apres-vente`) : réponses remplacées par
  *    les textes de `prisma/seed.ts`, seulement si l'ancienne valeur contient un montant.
  *  - Boutons d'appel à l'action (CTA) des articles : « Réserver une formation · 2 450 € » devient
  *    « Réserver une formation » (le libellé seul, sans montant). Seuls les anciens montants de
@@ -55,6 +55,14 @@ export const FAQ_CIBLES: readonly FaqCible[] = [
       "C'est le déploiement d'une solution IA chez vous : automatisation, agents, IA custom. Sur devis selon l'ambition : parlons-en lors du rendez-vous gratuit de 45 minutes.",
     answerEn:
       "It's the deployment of an AI solution at your premises: automation, agents, custom AI. On request depending on scope: let's discuss it during the free 45-minute call.",
+  },
+  {
+    // Ajoutée le 25/11 : « Maintenance optionnelle 290 €/mois HT » vue par l'inventaire.
+    slug: "support-apres-vente",
+    answerFr:
+      "Maintenance optionnelle sur devis (correctifs + monitoring + 2 h/mois d'évolution). Sans engagement, résiliable mensuellement.",
+    answerEn:
+      "Optional maintenance on request (fixes + monitoring + 2h/month of evolution). No commitment, monthly cancellation.",
   },
 ];
 
