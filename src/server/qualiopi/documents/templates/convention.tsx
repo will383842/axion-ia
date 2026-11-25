@@ -478,12 +478,13 @@ export function ConventionPdf({
             {data.certificationObtenue === true
               ? " ni prises en charge par un opérateur de compétences, "
               : ", "}
-            et restent à la charge du client (article L.6354-1 du Code du travail). La taxe sur la
-            valeur ajoutée s&apos;applique à ces sommes comme au prix, sans exonération.
-            L&apos;acompte n&apos;est pas acquis si l&apos;annulation résulte d&apos;un manquement
-            ou d&apos;une annulation de l&apos;organisme, d&apos;un cas de force majeure, ou de
-            l&apos;exercice d&apos;un droit de rétractation légal. La facture d&apos;acompte est
-            alors annulée par avoir et son montant porté sur la facture de dédit.
+            et restent à la charge du client (article L.6354-1 du Code du travail). En cas
+            d&apos;annulation par le client, la facture d&apos;acompte est annulée par avoir et son
+            montant porté sur la facture de dédit. La taxe sur la valeur ajoutée s&apos;applique à
+            ces sommes comme au prix, sans exonération. L&apos;acompte n&apos;est pas acquis si
+            l&apos;annulation résulte d&apos;un manquement ou d&apos;une annulation de
+            l&apos;organisme, d&apos;un cas de force majeure, ou de l&apos;exercice d&apos;un droit
+            de rétractation légal.
           </Text>
           {/*
             🔴 F51 — le report gratuit était promis par les CGV et absent de la
