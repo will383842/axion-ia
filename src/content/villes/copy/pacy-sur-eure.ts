@@ -65,7 +65,7 @@ export const PACY_SUR_EURE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Paris ou Évreux ?",
-      a: "Nos consultants viennent de Paris (1h20 A13, ou train via Vernon-Giverny à 20 min) ou d'Évreux (20 min). Pour les multi-jours, hébergement local possible. Coûts de déplacement séparés du forfait, tarifs transparents.",
+      a: "Nos consultants viennent de Paris (1h20 A13, ou train via Vernon-Giverny à 20 min) ou d'Évreux (20 min). Pour les multi-jours, hébergement local possible. Tarifs transparents.",
     },
   ],
 };

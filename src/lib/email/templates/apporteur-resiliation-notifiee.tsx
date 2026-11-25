@@ -79,9 +79,9 @@ export const COPY_RESILIATION_NOTIFIEE = {
   titleFin: "Fin de votre contrat d'apporteur d'affaires",
   preview: "Nous vous notifions la résiliation de votre contrat.",
   societe: (effet: string) =>
-    `Nous vous notifions la résiliation de votre contrat d'apporteur d'affaires, conformément à son article 11.1.${effetPrevu(effet)} Jusqu'à cette date, vous pouvez continuer à nous présenter des entreprises.`,
+    `Nous vous notifions la résiliation de votre contrat d'apporteur d'affaires, conformément à son article 11.1.${effetPrevu(effet)} Jusqu'à la veille de cette date au soir, vous pouvez continuer à nous présenter des entreprises.`,
   apporteur: (notifiee: string, effet: string) =>
-    `Nous accusons réception de votre résiliation écrite${notifiee ? ` du ${notifiee}` : ""}, conformément à l'article 11.1 de votre contrat.${effetPrevu(effet)} Jusqu'à cette date, vous pouvez continuer à nous présenter des entreprises.`,
+    `Nous accusons réception de votre résiliation écrite${notifiee ? ` du ${notifiee}` : ""}, conformément à l'article 11.1 de votre contrat.${effetPrevu(effet)} Jusqu'à la veille de cette date au soir, vous pouvez continuer à nous présenter des entreprises.`,
   inexecution: (effet: string, miseEnDemeure: string) =>
     `Nous vous notifions la résiliation de votre contrat d'apporteur d'affaires, conformément à son article 11.2${
       miseEnDemeure ? `, après notre mise en demeure du ${miseEnDemeure}` : ""

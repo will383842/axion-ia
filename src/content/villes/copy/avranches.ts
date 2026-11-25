@@ -65,7 +65,7 @@ export const AVRANCHES_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Avranches ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Gare d'Avranches (TER Caen-Granville). Multi-jours : hébergement local. Coûts de déplacement séparés du forfait, tarifs transparents.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Gare d'Avranches (TER Caen-Granville). Multi-jours : hébergement local. Tarifs transparents.",
     },
   ],
 };

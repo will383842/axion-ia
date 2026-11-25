@@ -233,7 +233,7 @@ export const ISSY_LES_MOULINEAUX_COPY: VilleCopy = {
     },
     {
       q: "Comment Williams se déplace-t-il à Issy-les-Moulineaux ?",
-      a: "Williams se déplace depuis Paris en métro ligne 12 (stations Mairie d'Issy ou Corentin Celton), en RER C (Issy / Issy-Val-de-Seine) ou en tramway T2. Pas de frais kilométriques additionnels sur l'Île-de-France.",
+      a: "Williams se déplace depuis Paris en métro ligne 12 (stations Mairie d'Issy ou Corentin Celton), en RER C (Issy / Issy-Val-de-Seine) ou en tramway T2.",
     },
     {
       q: "Quels délais pour un audit à Issy-les-Moulineaux ?",

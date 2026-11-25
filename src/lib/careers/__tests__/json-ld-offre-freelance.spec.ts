@@ -140,13 +140,10 @@ describe("JSON-LD — non-régression (interrupteur coupé, offre salariée, app
     expect(JSON.stringify(j.jobLocation)).toContain("Grenoble");
   });
 
-  it("apporteur (commission) : incentiveCompensation, sans baseSalary", () => {
-    const j = buildJobPostingJsonLd(
-      offre({ employmentType: "FULL_TIME", isCommission: true }),
-      "fr",
-    )!;
-    expect(j.incentiveCompensation).toBeTruthy();
-    expect(j).not.toHaveProperty("baseSalary");
+  it("apporteur (commission) non freelance : aucun JobPosting", () => {
+    expect(
+      buildJobPostingJsonLd(offre({ employmentType: "FULL_TIME", isCommission: true }), "fr"),
+    ).toBeNull();
   });
 
   it("un freelance 'CONTRACTOR' sans l'interrupteur garde sa sortie d'aujourd'hui", () => {

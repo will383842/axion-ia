@@ -1,23 +1,31 @@
 /**
- * Rotation de clés Anthropic (module pur, NON BRANCHÉ en production).
+ * Rotation de clés Anthropic (module pur ; branché dans `anthropic.ts`, seulement quand
+ * PLUSIEURS clés sont configurées — avec une seule clé le comportement est inchangé).
  *
  * - Clés lues dans ANTHROPIC_API_KEY, ANTHROPIC_API_KEY_2, ANTHROPIC_API_KEY_3.
  * - Ordre par usage : ANTHROPIC_KEY_ORDER_CONTENT_GEN (ex. « 2,1 ») ; défaut « 1,2,3 ».
  *   Les clés non listées passent après, en secours. Un ordre invalide revient au défaut
  *   (et le dit dans le journal). Clés vides et doublons (même valeur) ignorés.
- * - On change de clé UNIQUEMENT sur un refus de FACTURATION reçu avant tout flux :
- *   jamais sur 429, 5xx, délai, 401/403, ni sur une erreur reçue EN COURS de flux
- *   (la réponse a déjà été facturée en partie : rejouer risquerait une double facturation).
- * - Aucune clé n'est jamais écrite dans un journal (seulement l'index 1, 2, 3) et les
- *   erreurs relancées sont débarrassées de toute clé (sk-ant-… et clés de l'environnement).
- * - ÉTAT EN MÉMOIRE, PAR PROCESSUS : l'app et le worker ne partagent pas les marques
- *   « épuisée » ; un partage (Redis) viendra plus tard, hors périmètre de ce module.
+ * - Tableau de réaction (TOUJOURS avant le premier octet de flux) :
+ *     400 « credit balance too low » ou 402 -> clé marquée ÉPUISÉE (6 h), clé suivante ;
+ *     401 ou 403                            -> clé marquée INVALIDE (1 h), clé suivante ;
+ *     429, 5xx, délai                       -> aucune rotation (nouvel essai : `withRetry`) ;
+ *     erreur EN COURS de flux               -> aucune rotation, aucun rejeu (déjà facturé).
+ * - ÉTAT PARTAGÉ DANS REDIS (app et worker) : `anthropic:cle:{index}:epuisee` /
+ *   `anthropic:cle:{index}:invalide`, SET avec durée de vie. Redis en panne : repli sur la
+ *   mémoire locale du processus (+ avertissement au journal) ; on ne s'arrête jamais.
+ * - Aucune clé n'est jamais écrite dans un journal, une alerte ou Redis (seulement
+ *   l'index 1, 2, 3) et les erreurs relancées sont débarrassées de toute clé
+ *   (sk-ant-… et clés de l'environnement).
  *
  * Contrat de l'appel injecté : il relance l'erreur du fournisseur. Pour qu'un 429 ne soit
  * jamais pris pour un crédit épuisé, l'erreur doit porter le statut HTTP d'origine
  * (`status`, `statut`, ou `cause.status`), car `mapAnthropicError` transforme un 429
  * « credit balance is too low » en `quota_exhausted` et perd ce statut. Une erreur reçue en
  * cours de flux porte `enFlux: true`.
+ *
+ * Erreur finale (aucune clé utilisable) : elle porte `toutesEpuisees: true`
+ * (+ `motifIndisponibilite`). Quota-guard et le blog ne comptent que celles-là.
  */
 import { ProviderError } from "./IProvider";
 
@@ -36,8 +44,10 @@ export interface CleRetenue {
   readonly cle: string;
 }
 
-/** Durée de vie d'une marque « épuisée » : 24 h. */
-export const DUREE_EPUISEMENT_MS = 24 * 60 * 60 * 1000;
+/** Durée de vie d'une marque « épuisée » (crédit) : 6 h. */
+export const DUREE_EPUISEMENT_MS = 6 * 60 * 60 * 1000;
+/** Durée de vie d'une marque « invalide » (401/403) : 1 h. */
+export const DUREE_INVALIDITE_MS = 60 * 60 * 1000;
 export const MAX_ESSAIS = 3;
 
 const NOMS: Record<1 | 2 | 3, keyof EnvCles> = {
@@ -52,10 +62,9 @@ const VARIABLE_ORDRE: Record<UsageCles, keyof EnvCles> = {
 
 /**
  * Crédit épuisé. Le mot « billing » seul ne suffit pas (il apparaît dans des messages de
- * rate-limit et d'authentification) : on exige une formule explicite.
+ * rate-limit et d'authentification) : on exige une formule explicite (ou le statut 402).
  */
-const MOTIF_FACTURATION =
-  /credit balance is too low|insufficient[_-]quota|billing[_\s-]error|payment[_\s-]required/i;
+const MOTIF_FACTURATION = /credit balance is too low|insufficient[_-]quota/i;
 
 const MOTIF_CLE_ANTHROPIC = /sk-ant-[A-Za-z0-9_-]+/g;
 const MASQUE = "[clé masquée]";
@@ -95,48 +104,201 @@ export function listerCles(env: EnvCles, usage: UsageCles, journal?: Journal): C
   return retenues;
 }
 
-/* --- État d'épuisement (en mémoire, horloge injectable) ------------------- */
+/* --- État des clés (Redis partagé + repli mémoire, horloge injectable) ---- */
+
+export type MotifIndisponibilite = "epuisee" | "invalide";
+
+/** Partie de l'API ioredis utilisée (permet un faux Redis dans les tests). */
+export interface RedisCles {
+  set(cle: string, valeur: string, mode: "EX", secondes: number): Promise<unknown>;
+  mget(...cles: string[]): Promise<unknown>;
+}
 
 export interface EtatCles {
-  readonly now: () => number;
-  /** clé -> instant d'expiration de la marque. */
-  readonly epuisees: Map<string, number>;
+  /** Motif de la marque posée sur la clé n°`index` (Redis, sinon mémoire) ; `null` si libre. */
+  motif(index: 1 | 2 | 3): Promise<MotifIndisponibilite | null>;
+  /** Pose la marque (Redis avec durée de vie ; mémoire si Redis est en panne). */
+  marquer(index: 1 | 2 | 3, motif: MotifIndisponibilite): Promise<void>;
+  /**
+   * Vue de l'état lue en UN seul `mget` (les 3 clés × 2 motifs) : à prendre une fois par
+   * appel de rotation. Les marques posées ensuite par la vue y sont aussitôt visibles.
+   */
+  instantane?(): Promise<EtatCles>;
 }
 
-export function creerEtatCles(now: () => number = Date.now): EtatCles {
-  return { now, epuisees: new Map() };
+const DUREES_MS: Record<MotifIndisponibilite, number> = {
+  epuisee: DUREE_EPUISEMENT_MS,
+  invalide: DUREE_INVALIDITE_MS,
+};
+
+/** Clé Redis : l'index seul, jamais la clé API. */
+export function cleRedisEtat(index: 1 | 2 | 3, motif: MotifIndisponibilite): string {
+  return `anthropic:cle:${index}:${motif}`;
 }
 
-export function marquerEpuisee(etat: EtatCles, cle: string): void {
-  etat.epuisees.set(cle, etat.now() + DUREE_EPUISEMENT_MS);
+/** Délai maximal d'une commande Redis : une panne ne doit pas retarder la génération. */
+const DELAI_REDIS_MS = 1_000;
+/** Un avertissement « Redis en panne » au plus toutes les 60 s et par processus. */
+const INTERVALLE_AVERTISSEMENT_MS = 60_000;
+/** Après une erreur Redis : plus aucune requête Redis pendant 60 s (repli mémoire). */
+const PAUSE_REDIS_MS = 60_000;
+const INDEX: ReadonlyArray<1 | 2 | 3> = [1, 2, 3];
+const MOTIFS: ReadonlyArray<MotifIndisponibilite> = ["epuisee", "invalide"];
+
+function avecDelai<T>(promesse: Promise<T>): Promise<T> {
+  let minuteur: ReturnType<typeof setTimeout> | undefined;
+  const delai = new Promise<never>((_, rejet) => {
+    minuteur = setTimeout(() => rejet(new Error("délai Redis dépassé")), DELAI_REDIS_MS);
+  });
+  return Promise.race([promesse, delai]).finally(() => clearTimeout(minuteur));
 }
 
-function estEpuisee(etat: EtatCles, cle: string): boolean {
-  const fin = etat.epuisees.get(cle);
-  if (fin === undefined) return false;
-  if (etat.now() >= fin) {
-    etat.epuisees.delete(cle);
-    return false;
-  }
-  return true;
+export interface OptionsEtat {
+  now?: () => number;
+  /** Absent : mémoire seule. */
+  redis?: RedisCles;
+  journal?: Journal;
 }
 
-/** Première clé non épuisée selon l'ordre ; `null` si aucune. */
-export function choisirCle(
+export function creerEtatCles(options: OptionsEtat = {}): EtatCles {
+  const now = options.now ?? Date.now;
+  const { redis } = options;
+  const journal: Journal = options.journal ?? ((m: string) => console.warn(m));
+  /** `${index}:${motif}` -> instant d'expiration (repli quand Redis ne répond pas). */
+  const memoire = new Map<string, number>();
+  let dernierAvertissement = 0;
+  /** Instant avant lequel Redis n'est plus interrogé (0 : disponible). */
+  let redisPauseJusqua = 0;
+
+  const redisUtilisable = (): boolean => redis !== undefined && now() >= redisPauseJusqua;
+
+  const avertir = (operation: string): void => {
+    const t = now();
+    redisPauseJusqua = t + PAUSE_REDIS_MS;
+    if (dernierAvertissement !== 0 && t - dernierAvertissement < INTERVALLE_AVERTISSEMENT_MS) {
+      return;
+    }
+    dernierAvertissement = t;
+    // Message générique : jamais le texte de l'erreur Redis (URL, mot de passe possibles).
+    journal(
+      `[anthropic] Redis indisponible (${operation}) : état des clés gardé en mémoire locale`,
+    );
+  };
+
+  const enMemoire = (index: number, motif: MotifIndisponibilite): boolean => {
+    const id = `${index}:${motif}`;
+    const fin = memoire.get(id);
+    if (fin === undefined) return false;
+    if (now() >= fin) {
+      memoire.delete(id);
+      return false;
+    }
+    return true;
+  };
+
+  const present = (v: unknown): boolean => v !== null && v !== undefined;
+
+  /** La mémoire ne contient que des marques posées pendant une panne Redis. */
+  const motifMemoire = (index: number): MotifIndisponibilite | null => {
+    if (enMemoire(index, "epuisee")) return "epuisee";
+    if (enMemoire(index, "invalide")) return "invalide";
+    return null;
+  };
+
+  const etat: EtatCles = {
+    async motif(index) {
+      const local = motifMemoire(index);
+      if (local !== null) return local;
+      if (!redis || !redisUtilisable()) return null;
+      try {
+        const reponse = await avecDelai(
+          redis.mget(cleRedisEtat(index, "epuisee"), cleRedisEtat(index, "invalide")),
+        );
+        if (!Array.isArray(reponse)) return null;
+        if (present(reponse[0])) return "epuisee";
+        if (present(reponse[1])) return "invalide";
+        return null;
+      } catch {
+        avertir("lecture");
+        return null;
+      }
+    },
+    async marquer(index, motif) {
+      if (redis && redisUtilisable()) {
+        try {
+          const reponse = await avecDelai(
+            redis.set(cleRedisEtat(index, motif), "1", "EX", DUREES_MS[motif] / 1000),
+          );
+          // Un `set` qui ne répond pas « OK » (stub de build : null) est une panne : la
+          // marque n'a pas été posée, on la garde en mémoire.
+          if (reponse !== "OK") throw new Error("réponse Redis inattendue");
+          return;
+        } catch {
+          avertir("écriture");
+        }
+      }
+      memoire.set(`${index}:${motif}`, now() + DUREES_MS[motif]);
+    },
+    async instantane() {
+      /** `${index}:${motif}` lus dans Redis, complétés par les marques posées via la vue. */
+      const lus = new Set<string>();
+      if (redis && redisUtilisable()) {
+        const cles = INDEX.flatMap((i) => MOTIFS.map((m) => cleRedisEtat(i, m)));
+        try {
+          const reponse = await avecDelai(redis.mget(...cles));
+          if (Array.isArray(reponse)) {
+            let k = 0;
+            for (const i of INDEX) {
+              for (const m of MOTIFS) {
+                if (present(reponse[k++])) lus.add(`${i}:${m}`);
+              }
+            }
+          }
+        } catch {
+          avertir("lecture");
+        }
+      }
+      return {
+        async motif(index) {
+          const local = motifMemoire(index);
+          if (local !== null) return local;
+          if (lus.has(`${index}:epuisee`)) return "epuisee";
+          if (lus.has(`${index}:invalide`)) return "invalide";
+          return null;
+        },
+        async marquer(index, motif) {
+          lus.add(`${index}:${motif}`);
+          await etat.marquer(index, motif);
+        },
+      };
+    },
+  };
+  return etat;
+}
+
+/** Première clé disponible selon l'ordre ; `null` si aucune. */
+export async function choisirCle(
   env: EnvCles,
   usage: UsageCles,
   etat: EtatCles,
   exclure: ReadonlySet<string> = new Set(),
-): CleRetenue | null {
-  return (
-    listerCles(env, usage).find((c) => !exclure.has(c.cle) && !estEpuisee(etat, c.cle)) ?? null
-  );
+): Promise<CleRetenue | null> {
+  for (const c of listerCles(env, usage)) {
+    if (exclure.has(c.cle)) continue;
+    if ((await etat.motif(c.index)) === null) return c;
+  }
+  return null;
 }
 
-/** Vrai si des clés existent et qu'elles sont toutes marquées épuisées. */
-export function toutesEpuisees(env: EnvCles, usage: UsageCles, etat: EtatCles): boolean {
+/** Vrai si des clés existent et qu'aucune n'est utilisable (épuisées ou invalides). */
+export async function toutesIndisponibles(
+  env: EnvCles,
+  usage: UsageCles,
+  etat: EtatCles,
+): Promise<boolean> {
   const cles = listerCles(env, usage);
-  return cles.length > 0 && cles.every((c) => estEpuisee(etat, c.cle));
+  if (cles.length === 0) return false;
+  return (await choisirCle(env, usage, etat)) === null;
 }
 
 /* --- Classification et masquage -------------------------------------------- */
@@ -164,6 +326,19 @@ export function estRefusFacturation(e: unknown): boolean {
   return statut === 402 || MOTIF_FACTURATION.test(e.message);
 }
 
+/**
+ * Refus d'AUTHENTIFICATION d'Anthropic (clé révoquée, mauvaise organisation) : statut 401
+ * ou 403 reçu AVANT tout flux. Le statut est exigé : « fournisseur désactivé » ou « clé
+ * absente » sont aussi `auth_failed` mais ne disent rien de la clé.
+ */
+export function estRefusAuthentification(e: unknown): boolean {
+  if (!(e instanceof Error)) return false;
+  if ((e as { enFlux?: unknown }).enFlux === true) return false;
+  if (e instanceof ProviderError && e.provider !== "anthropic") return false;
+  const statut = statutHttp(e);
+  return statut === 401 || statut === 403;
+}
+
 function masquer(texte: string, env: EnvCles): string {
   let sortie = texte.replace(MOTIF_CLE_ANTHROPIC, MASQUE);
   for (const nom of Object.values(NOMS)) {
@@ -185,55 +360,132 @@ function assainir<E>(e: E, env: EnvCles): E {
 
 /* --- Appel avec rotation -------------------------------------------------- */
 
+export interface EvenementCle {
+  readonly index: 1 | 2 | 3;
+  readonly motif: MotifIndisponibilite;
+}
+
 export interface OptionsRotation {
   env: EnvCles;
   usage: UsageCles;
   etat: EtatCles;
   /** Journal sans secret ; par défaut console.warn. Ne reçoit jamais une clé. */
   journal?: Journal;
+  /**
+   * Appelé après chaque marque posée (alerte). JAMAIS attendu (feu et oubli) et ses erreurs
+   * sont avalées : une alerte en panne ou muette ne retarde ni ne casse la génération.
+   * Ne reçoit que l'index.
+   */
+  surMarque?: (evenement: EvenementCle) => Promise<unknown> | void;
 }
 
-function quotaEpuise(cause?: unknown): ProviderError {
-  const err = new ProviderError(
-    "Anthropic quota épuisé : toutes les clés Anthropic sont épuisées",
-    "quota_exhausted",
-    "anthropic",
-    false,
-  );
+/**
+ * Alerte « feu et oubli » : jamais attendue (une alerte qui ne répond pas ne doit pas
+ * retarder la clé suivante), erreurs avalées (synchrones ou rejetées).
+ */
+function declencherAlerte(surMarque: OptionsRotation["surMarque"], evenement: EvenementCle): void {
+  try {
+    void Promise.resolve(surMarque?.(evenement)).catch(() => undefined);
+  } catch {
+    // Une alerte en panne ne casse jamais la génération.
+  }
+}
+
+/** Erreur finale : aucune clé utilisable. `toutesEpuisees: true` est le drapeau lu en aval. */
+export interface ErreurToutesIndisponibles {
+  toutesEpuisees: true;
+  motifIndisponibilite: "credit" | "authentification" | "mixte";
+}
+
+function aucuneCleUtilisable(
+  motifs: ReadonlyArray<MotifIndisponibilite>,
+  cause?: unknown,
+): ProviderError {
+  const credit = motifs.includes("epuisee");
+  const auth = motifs.includes("invalide");
+  const motifIndisponibilite: ErreurToutesIndisponibles["motifIndisponibilite"] =
+    credit && auth ? "mixte" : auth ? "authentification" : "credit";
+  // Tout invalide : on reste sur `auth_failed` (avec le statut d'origine pour le blog).
+  // Dès qu'une clé est épuisée par le crédit : `quota_exhausted` (c'est l'argent qui manque).
+  const err =
+    auth && !credit
+      ? new ProviderError(
+          "Anthropic : toutes les clés Anthropic sont refusées (authentification)",
+          "auth_failed",
+          "anthropic",
+          false,
+        )
+      : new ProviderError(
+          "Anthropic quota épuisé : toutes les clés Anthropic sont épuisées ou refusées",
+          "quota_exhausted",
+          "anthropic",
+          false,
+        );
+  Object.assign(err, { toutesEpuisees: true, motifIndisponibilite });
   if (cause !== undefined) (err as { cause?: unknown }).cause = cause;
+  if (err.code === "auth_failed") {
+    // Sans appel de cet essai (toutes déjà marquées invalides), pas de cause : le statut
+    // reste 401, sinon le blog ne compterait pas ce refus d'authentification.
+    const statut = cause !== undefined ? statutHttp(cause) : undefined;
+    (err as { status?: number }).status = statut ?? 401;
+  }
   return err;
 }
 
 /**
- * Appelle `appel(cle)` ; sur refus de facturation marque la clé épuisée (24 h) et
- * rejoue avec la suivante. Au plus 3 essais, jamais deux fois la même clé.
+ * Appelle `appel(cle)` ; sur refus de facturation (400/402) marque la clé épuisée (6 h),
+ * sur refus d'authentification (401/403) la marque invalide (1 h), puis rejoue avec la
+ * suivante. Au plus 3 essais, jamais deux fois la même clé.
  * Toute autre erreur est relancée telle quelle (débarrassée de toute clé).
- * Quand tout est épuisé : `quota_exhausted`, avec la dernière erreur d'origine en `cause`.
+ * Quand plus aucune clé n'est utilisable : erreur finale `toutesEpuisees: true`, avec la
+ * dernière erreur d'origine en `cause`.
  */
 export async function appelerAvecRotationCles<T>(
   appel: (cle: string) => Promise<T>,
   options: OptionsRotation,
 ): Promise<T> {
-  const { env, usage, etat } = options;
+  const { env, usage } = options;
+  // UN seul mget Redis pour tout l'appel (les marques posées en cours de route y sont tenues).
+  const etat = options.etat.instantane ? await options.etat.instantane() : options.etat;
   const journal: Journal = options.journal ?? ((m: string) => console.warn(m));
   if (listerCles(env, usage, journal).length === 0) {
     throw new ProviderError("Anthropic : aucune clé configurée", "auth_failed", "anthropic", false);
   }
   const essayees = new Set<string>();
+  /** Motifs des clés rencontrées indisponibles (déjà marquées avant l'appel, ou à l'instant). */
+  const motifs: MotifIndisponibilite[] = [];
   let derniere: unknown;
   while (essayees.size < MAX_ESSAIS) {
-    const choix = choisirCle(env, usage, etat, essayees);
+    const choix = await choisirCle(env, usage, etat, essayees);
     if (!choix) break;
     essayees.add(choix.cle);
     try {
       return await appel(choix.cle);
     } catch (e) {
       assainir(e, env);
-      if (!estRefusFacturation(e)) throw e;
+      const motif: MotifIndisponibilite | null = estRefusFacturation(e)
+        ? "epuisee"
+        : estRefusAuthentification(e)
+          ? "invalide"
+          : null;
+      if (motif === null) throw e;
       derniere = e;
-      marquerEpuisee(etat, choix.cle);
-      journal(`[anthropic] clé ${choix.index} refusée (facturation) : marquée épuisée 24 h`);
+      motifs.push(motif);
+      await etat.marquer(choix.index, motif);
+      journal(
+        motif === "epuisee"
+          ? `[anthropic] clé ${choix.index} refusée (facturation) : marquée épuisée 6 h`
+          : `[anthropic] clé ${choix.index} refusée (authentification) : marquée invalide 1 h`,
+      );
+      declencherAlerte(options.surMarque, { index: choix.index, motif });
     }
   }
-  throw quotaEpuise(derniere);
+  // Motif de CHAQUE clé configurée, y compris celles marquées avant cet appel (autre
+  // processus) ; repli sur ce qu'on a vu si l'état ne répond plus.
+  const motifsFinaux: MotifIndisponibilite[] = [];
+  for (const c of listerCles(env, usage)) {
+    const m = await etat.motif(c.index);
+    if (m !== null) motifsFinaux.push(m);
+  }
+  throw aucuneCleUtilisable(motifsFinaux.length > 0 ? motifsFinaux : motifs, derniere);
 }
