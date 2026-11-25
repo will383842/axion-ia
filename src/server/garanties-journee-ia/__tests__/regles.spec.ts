@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 import {
   eurosEnCentimes,
   PLAFOND_AVOIR_HT_CENTS,
+  plafondRemboursementCents,
   refusDecision,
   refusDemande,
   refusVirement,
@@ -144,5 +145,23 @@ describe("avoir et demande hors délai", () => {
         "2027-03-01",
       ),
     ).toBeNull();
+  });
+});
+
+describe("réponse tardive et plafonds", () => {
+  it("un refus tardif ne bloque pas le virement dû par acceptation tacite (47.10 f)", () => {
+    const tard = {
+      dateJournee: "2026-12-01",
+      rapportRemisLe: "2026-12-03",
+      demandeRecueLe: "2026-12-10",
+      decision: "refus" as const,
+      decisionLe: "2026-12-30",
+    };
+    expect(refusVirement(tard, "2027-01-20", "2027-01-20")).toBeNull();
+  });
+  it("plafonne le remboursement au prix HT + 20 %, et refuse un montant hors Int32", () => {
+    expect(plafondRemboursementCents(447_000)).toBe(536_400);
+    expect(eurosEnCentimes("9999999999")).toBeNull();
+    expect(eurosEnCentimes("1234,56")).toBe(123456);
   });
 });

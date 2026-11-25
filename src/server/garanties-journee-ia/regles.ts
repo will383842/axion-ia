@@ -9,6 +9,10 @@ import { estReputeeAcceptee, type DonneesGarantie } from "@/lib/garantie-journee
 export const DECISIONS = ["remboursement", "refus", "avoir"] as const;
 export type Decision = (typeof DECISIONS)[number];
 export const MOTIF_MIN = 10;
+/** Plafond d'un remboursement : prix HT de la journée + TVA à 20 % (art. 47.10 f), en centimes. */
+export function plafondRemboursementCents(prixHtCents: number): number {
+  return Math.round(prixHtCents * 1.2);
+}
 /** Plafond de l'avoir offert : 4 470 € HT (décision du dirigeant, 25/11/2026), en centimes. */
 export const PLAFOND_AVOIR_HT_CENTS = 447_000;
 
@@ -47,7 +51,7 @@ export function refusVirement(
   virementLe: string,
   aujourdhui: string,
 ): string | null {
-  const dû = d.decision === "remboursement" || (!d.decisionLe && estReputeeAcceptee(d, aujourdhui));
+  const dû = d.decision === "remboursement" || estReputeeAcceptee(d, aujourdhui);
   if (!dû)
     return "Aucun remboursement n'est dû : ni décision de remboursement, ni demande réputée acceptée.";
   const depart = d.decisionLe ?? d.demandeRecueLe ?? null;
@@ -71,5 +75,6 @@ export function refusDemande(d: DonneesGarantie, demandeRecueLe: string | null):
 export function eurosEnCentimes(brut: string | number): number | null {
   const t = String(brut).replace(/\s/g, "").replace(",", ".");
   if (!/^\d+(\.\d{1,2})?$/.test(t)) return null;
-  return Math.round(Number(t) * 100);
+  const c = Math.round(Number(t) * 100);
+  return c <= 2_147_483_647 ? c : null;
 }

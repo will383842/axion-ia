@@ -18708,7 +18708,7 @@ model EmailManuelPieceJointe {
 /// ACCEPTÉE ; virement sous 30 jours après l'acceptation. Les échéances ne sont JAMAIS stockées :
 /// `calculerEcheances` les recalcule depuis les dates saisies. « Réputée acceptée » n'est jamais écrit
 /// par un robot. Montants en centimes. On archive (`archive_le`), on ne supprime jamais. `decision`
-/// est du texte (remboursement | refus | non_applicable), PAS une énumération Postgres (contrat
+/// est du texte (remboursement | refus | avoir), PAS une énumération Postgres (contrat
 /// app/worker, AGENTS.md « DEUX conteneurs »). Table additive : aucun code worker ne la lit en PR 2.
 /// rgpd: technique — dates, montants et décision d'un remboursement d'entreprise ; rattaché au client par identifiant, SIREN d'entreprise, notes internes sans coordonnées
 model GarantieJourneeIa {

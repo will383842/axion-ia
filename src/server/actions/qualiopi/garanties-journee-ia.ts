@@ -31,6 +31,7 @@ import {
   eurosEnCentimes,
   refusDecision,
   refusDemande,
+  plafondRemboursementCents,
   refusVirement,
   verifierMontantAvoir,
 } from "@/server/garanties-journee-ia/regles";
@@ -226,7 +227,7 @@ export async function enregistrerDecisionGarantieJourneeIaAction(
   if (decision === "remboursement") {
     montant = eurosEnCentimes(texte(formData, "montantRembourseEuros"));
     if (montant === null || montant <= 0) refuser(fiche(id), "Montant remboursé invalide.");
-    if (montant > dossier.prixHtCents * 2)
+    if (montant > plafondRemboursementCents(dossier.prixHtCents))
       refuser(fiche(id), "Montant remboursé incohérent avec le prix.");
   }
   let montantAvoir: number | null = null;
@@ -303,6 +304,8 @@ export async function enregistrerVirementGarantieJourneeIaAction(
     if (montant === null || montant <= 0) refuser(fiche(id), "Montant remboursé invalide.");
   }
   if (montant === null) refuser(fiche(id), "Saisir le montant remboursé.");
+  if (montant > plafondRemboursementCents(dossier.prixHtCents))
+    refuser(fiche(id), "Montant remboursé incohérent avec le prix.");
 
   await prisma.$transaction(async (tx) => {
     await tx.garantieJourneeIa.update({

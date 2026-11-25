@@ -101,7 +101,7 @@ export async function dossiersDejaRembourses(
     const l = await prisma.garantieJourneeIa.findMany({
       where: {
         sirenSnapshot: siren,
-        decision: "remboursement",
+        OR: [{ decision: "remboursement" }, { virementLe: { not: null } }],
         ...(sauf ? { id: { not: sauf } } : {}),
       },
       select: { id: true, dateJournee: true },
