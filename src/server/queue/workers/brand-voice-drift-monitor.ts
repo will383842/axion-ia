@@ -23,14 +23,23 @@
 import { Worker, type Job } from "bullmq";
 import { prisma } from "@/lib/prisma";
 import { captureWorkerError } from "@/server/queue/lib/sentry-worker";
-import { BRAND_VOICE_CONFIG_KEY } from "@/server/actions/content-gen/brand-voice-constants";
+import {
+  ARTICLE_EMBEDDING_COLUMN,
+  BRAND_VOICE_REFERENCE_KEY,
+  getDriftThresholds,
+  getEmbeddingProvider,
+  type EmbeddingProvider,
+} from "@/server/content-gen/dedup/embedding-provider";
 
 export const QUEUE_NAME = "brand-voice-drift-monitor";
 
-/** Seuil bas : article mis en needs_review (dérive sévère). */
+/**
+ * Seuil bas : article mis en needs_review (dérive sévère). Valeur OpenAI ; pour Voyage,
+ * `getDriftThresholds("voyage")` (configurable, à recalibrer — cf. runbook R36).
+ */
 export const DRIFT_THRESHOLD_REVIEW = 0.7;
 
-/** Seuil haut : drift warning loggé dans ContentGenAuditLog. */
+/** Seuil haut : drift warning loggé dans ContentGenAuditLog (valeur OpenAI, cf. ci-dessus). */
 export const DRIFT_THRESHOLD_WARN = 0.8;
 
 /** Clé ContentGenConfig pour les stats du dernier run. */
@@ -77,10 +86,12 @@ export function cosineSimilarityNullSafe(
  * Charge l'embedding de référence brand voice depuis ContentGenConfig.
  * Retourne null si la clé n'existe pas ou si la valeur n'est pas un tableau de nombres.
  */
-async function loadReferenceEmbedding(): Promise<readonly number[] | null> {
+async function loadReferenceEmbedding(
+  provider: EmbeddingProvider,
+): Promise<readonly number[] | null> {
   try {
     const row = await prisma.contentGenConfig.findUnique({
-      where: { key: BRAND_VOICE_CONFIG_KEY },
+      where: { key: BRAND_VOICE_REFERENCE_KEY[provider] },
     });
     if (!row || !row.value) return null;
     const val = row.value;
@@ -99,15 +110,20 @@ async function loadReferenceEmbedding(): Promise<readonly number[] | null> {
  * Récupère les articles publiés dans les dernières 24h avec leur embedding pgvector.
  * Passe par $queryRawUnsafe car embedding est un champ Unsupported() dans Prisma.
  */
-async function fetchRecentArticlesWithEmbeddings(since: Date): Promise<ArticleEmbeddingRow[]> {
+async function fetchRecentArticlesWithEmbeddings(
+  since: Date,
+  provider: EmbeddingProvider,
+): Promise<ArticleEmbeddingRow[]> {
+  // Nom de colonne issu d'une table de constantes (PR4), jamais d'une entrée externe.
+  const col = ARTICLE_EMBEDDING_COLUMN[provider];
   // embedding::text donne la représentation '[0.1,0.2,...]' en string.
   // On demande à Postgres de la sérialiser en JSON array via to_json(embedding).
   const rows = (await prisma.$queryRawUnsafe(
     `SELECT
        a.id,
        CASE
-         WHEN a.embedding IS NOT NULL
-         THEN ARRAY(SELECT unnest(a.embedding::real[]))
+         WHEN a.${col} IS NOT NULL
+         THEN ARRAY(SELECT unnest(a.${col}::real[]))
          ELSE NULL
        END AS embedding_arr
      FROM articles a
@@ -148,7 +164,9 @@ async function processJob(_job: Job<{ readonly trigger: string }>): Promise<void
   const since = new Date(Date.now() - 24 * 60 * 60 * 1000);
 
   // 1. Charger le référentiel brand voice
-  const referenceEmbedding = await loadReferenceEmbedding();
+  const provider = getEmbeddingProvider();
+  const { review: seuilReview, warn: seuilWarn } = getDriftThresholds(provider);
+  const referenceEmbedding = await loadReferenceEmbedding(provider);
   if (!referenceEmbedding) {
     console.info("[brand-voice-drift-monitor] no reference embedding configured — skipping run");
     // 2026-09-02 — sans cette trace, la console affichait « Jamais exécuté »
@@ -158,7 +176,7 @@ async function processJob(_job: Job<{ readonly trigger: string }>): Promise<void
   }
 
   // 2. Récupérer les articles publiés dans les 24h avec embedding
-  const articles = await fetchRecentArticlesWithEmbeddings(since);
+  const articles = await fetchRecentArticlesWithEmbeddings(since, provider);
 
   if (articles.length === 0) {
     console.info(
@@ -184,7 +202,7 @@ async function processJob(_job: Job<{ readonly trigger: string }>): Promise<void
     if (similarity === null) continue;
 
     // 3. Seuil < 0.70 → needs_review + log warn
-    if (similarity < DRIFT_THRESHOLD_REVIEW) {
+    if (similarity < seuilReview) {
       articlesNeedsReview++;
       articlesFlagged++;
 
@@ -193,7 +211,7 @@ async function processJob(_job: Job<{ readonly trigger: string }>): Promise<void
           event: "brand_voice_drift_critical",
           articleId: article.id,
           similarity: similarity.toFixed(4),
-          threshold: DRIFT_THRESHOLD_REVIEW,
+          threshold: seuilReview,
           action: "needs_review",
         }),
       );
@@ -211,16 +229,16 @@ async function processJob(_job: Job<{ readonly trigger: string }>): Promise<void
               articleId: article.id,
               similarity,
               level: "needs_review",
-              threshold: DRIFT_THRESHOLD_REVIEW,
+              threshold: seuilReview,
               detectedAt: new Date().toISOString(),
             },
-            description: `Dérive brand voice critique (similarity=${similarity.toFixed(4)} < ${DRIFT_THRESHOLD_REVIEW}) — admin review requis`,
+            description: `Dérive brand voice critique (similarity=${similarity.toFixed(4)} < ${seuilReview}) — admin review requis`,
           },
         })
         .catch(() => {
           // fail-soft — audit log failure doesn't block processing
         });
-    } else if (similarity < DRIFT_THRESHOLD_WARN) {
+    } else if (similarity < seuilWarn) {
       // 4. Seuil 0.70 ≤ x < 0.80 → drift warning ContentGenAuditLog uniquement
       articlesFlagged++;
 
@@ -233,10 +251,10 @@ async function processJob(_job: Job<{ readonly trigger: string }>): Promise<void
               articleId: article.id,
               similarity,
               level: "warn",
-              threshold: DRIFT_THRESHOLD_WARN,
+              threshold: seuilWarn,
               detectedAt: new Date().toISOString(),
             } as never,
-            description: `Dérive brand voice modérée (similarity=${similarity.toFixed(4)} < ${DRIFT_THRESHOLD_WARN}) — article flaggé pour revue`,
+            description: `Dérive brand voice modérée (similarity=${similarity.toFixed(4)} < ${seuilWarn}) — article flaggé pour revue`,
           },
         })
         .catch(() => {
@@ -248,7 +266,7 @@ async function processJob(_job: Job<{ readonly trigger: string }>): Promise<void
           event: "brand_voice_drift_warn",
           articleId: article.id,
           similarity: similarity.toFixed(4),
-          threshold: DRIFT_THRESHOLD_WARN,
+          threshold: seuilWarn,
         }),
       );
     }
