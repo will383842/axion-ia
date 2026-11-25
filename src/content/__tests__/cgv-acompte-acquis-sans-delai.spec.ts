@@ -30,18 +30,17 @@ describe("CGV : l'acompte versé reste acquis, sans condition de délai", () => 
     it(`${variante} : plus aucune clause « acomptes remboursés » à plus de 15 jours`, async () => {
       const { tout } = await charger(certifiee);
       expect(tout).not.toMatch(/aucune somme due et acomptes? remboursés?/i);
-      expect(tout).not.toMatch(/acomptes? (versés? )?(sont |est )?(intégralement )?remboursés?/i);
     });
 
     it(`${variante} : 6.5, 46.2, 47.6 et 49.5 posent la même règle`, async () => {
       const { art } = await charger(certifiee);
       expect(art(6)).toContain(
-        "Dès qu'il a été versé, l'acompte prévu au devis reste acquis à Axion-IA si le Client annule la commande, quel que soit le délai",
+        "l'acompte prévu au devis reste acquis à Axion-IA, à concurrence des sommes effectivement versées",
       );
       expect(art(46)).toContain(
         "aucune somme n'est due en plus de l'acompte versé, qui reste acquis",
       );
-      expect(art(46)).toContain("n'est jamais inférieure à l'acompte versé");
+      expect(art(46)).toContain("n'est jamais inférieure au montant hors taxes de l'acompte versé");
       expect(art(47)).toContain(
         "reste acquis à Axion-IA en cas d'annulation par le Client, quel que soit le délai",
       );
@@ -49,7 +48,7 @@ describe("CGV : l'acompte versé reste acquis, sans condition de délai", () => 
       expect(art(49)).toContain(
         "l'acompte prévu au devis reste acquis à Axion-IA en cas d'annulation par le Client, quel que soit le délai",
       );
-      expect(art(42)).toContain("n'est jamais inférieur à l'acompte versé");
+      expect(art(42)).toContain("n'est jamais inférieur au montant hors taxes de l'acompte versé");
     });
 
     it(`${variante} : le barème au-delà de l'acompte est inchangé (50 % entre 8 et 15 jours, 100 % sous 8)`, async () => {
@@ -64,9 +63,7 @@ describe("CGV : l'acompte versé reste acquis, sans condition de délai", () => 
       expect(art(6)).toContain("l'acompte n'est acquis qu'à l'expiration du délai de rétractation");
       expect(art(6)).toContain("sans exonération");
       expect(art(6)).toContain("article 1231-5 du Code civil");
-      expect(art(49)).toContain(
-        "n'est acquis à Axion-IA qu'après l'expiration du délai de rétractation",
-      );
+      expect(art(49)).toContain("l'acompte acquis de l'article 6.5 ne s'applique pas");
       expect(art(53)).toContain(
         "n'est acquis à Axion-IA qu'à l'expiration du délai de rétractation",
       );

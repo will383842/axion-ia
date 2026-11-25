@@ -37,7 +37,7 @@ export const CONDITIONS_TARIFAIRES_FR: ReadonlyArray<{ titre: string; texte: str
   {
     titre: "Annulation et report",
     texte:
-      "Dès qu'il est versé, l'acompte prévu au devis reste acquis en cas d'annulation, quel que soit le délai. À plus de 15 jours ouvrés avant le début, aucune somme n'est due en plus de l'acompte. Entre 8 et 15 jours ouvrés, 50 % du prix HT restent dus ; à moins de 8 jours ouvrés, le prix HT reste dû en totalité ; la somme due n'est jamais inférieure à l'acompte versé. Ces sommes sont un dédit facturé à part, non imputable sur les fonds de la formation professionnelle. La formation est reportable une fois sans frais, à une date convenue ensemble dans les 3 mois.",
+      "Dès qu'il est versé, l'acompte prévu au devis reste acquis en cas d'annulation, quel que soit le délai (hors rétractation légale et annulation de notre fait). À plus de 15 jours ouvrés avant le début, aucune somme n'est due en plus de l'acompte. Entre 8 et 15 jours ouvrés, 50 % du prix HT restent dus ; à moins de 8 jours ouvrés, le prix HT reste dû en totalité ; la somme due n'est jamais inférieure à l'acompte versé. Ces sommes sont un dédit facturé à part, non imputable sur les fonds de la formation professionnelle. La formation est reportable une fois sans frais, à une date convenue ensemble dans les 3 mois.",
   },
 ];
 

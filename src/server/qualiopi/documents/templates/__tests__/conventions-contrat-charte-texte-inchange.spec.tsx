@@ -279,12 +279,12 @@ describe("section 4 : l'acompte versé reste acquis, sans condition de délai", 
       expect(s).toContain("aucune somme en plus de l'acompte versé");
       expect(s).toContain("entre 8 et 15 jours ouvrés avant le début : 50 % du prix HT");
       expect(s).toContain("à moins de 8 jours ouvrés avant le début : 100 % du prix HT");
-      expect(s).toContain("n'est jamais inférieure à l'acompte versé");
+      expect(s).toContain("n'est jamais inférieure au montant hors taxes de l'acompte versé");
       expect(s).toContain("article 1231-5 du Code civil");
       expect(s).toContain("L.6354-1");
       expect(s).toContain("sans exonération");
       expect(s).not.toMatch(/ : 0 %/);
-      expect(s).not.toMatch(/rembours/i);
+      expect(s).not.toMatch(/acompte[^.]{0,40}(est|sera|sont) rembours/i);
     });
   }
   it("convention : l'opérateur de compétences n'est cité qu'une fois la certification obtenue", () => {

@@ -122,14 +122,14 @@ const EMPREINTES: Readonly<
     // v6 — 16/10/2026 : mention handicap, L15, NC12. v5 — 04/10/2026 : clause de condition suspensive OPCO.)
     // v9 — 25/11/2026 : l'acompte versé reste acquis en cas d'annulation, sans condition de délai
     // (§ 4) ; dédit formation facturé à part, ni imputable ni pris en charge par un OPCO ; v8 archivée.
-    sha: "88ebb930a36006e2da85e9a9aa37b60ceec42b49c475a84591bc11f326eb652b",
+    sha: "5e998c7b917a213e65033009d11599f7916e5abdb87863f6d5bc3e0a4bdd6dfa",
     version: 9,
   },
   convention_tripartite: {
     // v7 — 18/11/2026 : refonte au style de la charte 2027, texte inchangé ; v6 archivée.
     // (v6 — 16/10/2026 : même mention handicap, mot pour mot.)
     // v8 — 25/11/2026 : même règle de l'acompte acquis (§ 4), mot pour mot ; v7 archivée.
-    sha: "29d3e2f87dcc79fc24548204546f2bbfee9a7a184e04b10623dedd69f5c447de",
+    sha: "13745289e55d767e3ff410aef9cbb856a4411797b4b7ecc72a0bc4f9d8d2aecf",
     version: 8,
   },
   contrat_formation: {

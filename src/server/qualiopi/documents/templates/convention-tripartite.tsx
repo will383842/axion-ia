@@ -421,8 +421,9 @@ export function ConventionTripartitePdf({
             En cas de désistement du client, l&apos;acompte prévu au devis ou à la présente
             convention, dès qu&apos;il a été versé, reste acquis à l&apos;organisme, quel que soit
             le délai d&apos;annulation. Il est conservé à titre de dédit et d&apos;indemnité
-            (article 1231-5 du Code civil). Les frais d&apos;annulation suivants s&apos;appliquent
-            en plus de l&apos;acompte, qui s&apos;impute sur eux :
+            (article 1231-5 du Code civil). Les sommes suivantes sont dues ; l&apos;acompte versé
+            s&apos;impute sur elles, sans jamais être remboursé, et la somme due ne dépasse pas le
+            prix HT :
           </Text>
           <Text style={local.listItem}>
             • Annulation à plus de 15 jours ouvrés avant le début : aucune somme en plus de
@@ -435,7 +436,13 @@ export function ConventionTripartitePdf({
             • Annulation à moins de 8 jours ouvrés avant le début : 100 % du prix HT
           </Text>
           <Text style={local.listItem}>
-            • La somme due n&apos;est jamais inférieure à l&apos;acompte versé.
+            • La somme due n&apos;est jamais inférieure au montant hors taxes de l&apos;acompte
+            versé.
+          </Text>
+          <Text style={local.listItem}>
+            • Dans tous les cas, la prestation est reportable une fois sans frais à une date
+            convenue entre les parties, le report se substituant alors à l&apos;annulation ;
+            l&apos;acompte versé reste alors imputé sur le prix.
           </Text>
           <Text style={stylesPiece.paragraphe}>
             Les sommes ainsi conservées ou dues, acompte compris, constituent un dédit : elles ne
@@ -445,7 +452,10 @@ export function ConventionTripartitePdf({
             par un opérateur de compétences, et restent à la charge du client (article L.6354-1 du
             Code du travail). La taxe sur la valeur ajoutée s&apos;applique à ces sommes comme au
             prix, sans exonération. L&apos;acompte n&apos;est pas acquis si l&apos;annulation
-            résulte d&apos;une annulation par l&apos;organisme ou d&apos;un cas de force majeure.
+            résulte d&apos;un manquement ou d&apos;une annulation de l&apos;organisme, d&apos;un cas
+            de force majeure, ou de l&apos;exercice d&apos;un droit de rétractation légal. La
+            facture d&apos;acompte est alors annulée par avoir et son montant porté sur la facture
+            de dédit.
           </Text>
         </SectionCarte>
 

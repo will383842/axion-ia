@@ -101,7 +101,7 @@ export type TypeGabaritSignable =
  * | `convention_tripartite` | 7 | 18/11 — même refonte, aucun texte changé. **v6 archivée** |
  * | `convention` | 8 | 19/11 — clause financeur, 5 bis et ligne Qualiopi imprimées seulement si certification obtenue (photo `data.certificationObtenue`) ; v7 archivée |
  * | `convention` | 9 | 25/11 — acompte acquis en cas d'annulation sans condition de délai (suppression de « plus de 15 jours ouvrés : 0 % ») ; dédit formation facturé à part, non imputable ni pris en charge par un OPCO. **v8 archivée** |
- * | `convention_tripartite` | 8 | 25/11 — même règle, mot pour mot. **v7 archivée** |
+ * | `convention_tripartite` | 8 | 25/11 — même règle (report ajouté). **v7 archivée** |
  * | `contrat_formation` | 3 | 18/11 — même refonte, aucun texte changé. **v2 archivée** |
  * | les autres | 1 | texte inchangé depuis l'origine |
  *
