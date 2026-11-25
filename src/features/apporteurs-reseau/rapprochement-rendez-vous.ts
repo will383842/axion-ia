@@ -22,7 +22,10 @@
 // illisible : rien n'est proposé. Côté rencontre saisie à la main (clé « rencontre:… »), la seule
 // date connue est celle de la SAISIE dans la console : le préfixe de la clé le dit au dirigeant.
 //
-// Rendez-vous annulé ou absent (`status` ≠ scheduled/completed, ou invité « canceled ») : rien.
+// Rendez-vous ANNULÉ : proposé quand même. Le dépôt ne sait pas QUI a annulé (Calendly rend `host`
+// même quand le visiteur annule depuis nos pages) et la règle veut qu'une annulation par Axion IA
+// soit réputée tenue : le dirigeant tranche, le lot de validation relit statut et issue au moment de
+// retenir. Exclus : absent (`no_show`), reporté (`reporte`, ou ancienne réservation d'un report).
 //
 // Écriture : `createMany({ skipDuplicates })` sur (presentationId, rendezVousCle) — un rejeu ne
 // double rien, et une proposition écartée n'est jamais recréée (sa ligne reste). AUCUN ordre n'est
@@ -141,11 +144,12 @@ const SELECT_EVENEMENT = {
   rencontre: {
     select: { statut: true, client: { select: { siren: true, siret: true } } },
   },
+  eventUri: true,
 } as const;
 
-/** Une rencontre annulée, absente ou reportée n'aura pas lieu : rien à proposer. */
+/** Une rencontre absente ou reportée n'a pas eu lieu : rien à proposer (annulée : voir en-tête). */
 function rencontreCaduque(statut: string | null | undefined): boolean {
-  return statut === "annule" || statut === "absent" || statut === "reporte";
+  return statut === "absent" || statut === "reporte";
 }
 
 const PROFONDEUR_REPORTS = 10;
@@ -155,19 +159,45 @@ const PROFONDEUR_REPORTS = 10;
  * `created_at` est la date du report, pas celle de la prise. On remonte la chaîne ; une
  * ancienne réservation introuvable, non confirmée par l'API ou sans date → `null` (rien).
  */
-async function datePriseOrigine(invitee: Record<string, unknown>): Promise<Date | null> {
+async function datePriseOrigine(
+  invitee: Record<string, unknown>,
+  eventUri: string | null,
+): Promise<Date | null> {
   let courant = invitee;
+  let uriCourante = eventUri;
   const vus = new Set<string>();
   for (let i = 0; i < PROFONDEUR_REPORTS; i++) {
     const ancien = courant["old_invitee"];
-    if (ancien === undefined || ancien === null || ancien === "") return datePrise(courant);
-    if (typeof ancien !== "string" || vus.has(ancien)) return null;
-    vus.add(ancien);
-    const ev = await prisma.calendlyEvent.findUnique({
-      where: { inviteeUri: ancien },
-      select: { rawPayload: true },
-    });
+    let ev: { rawPayload: unknown; eventUri?: string | null } | null;
+    if (typeof ancien === "string" && ancien !== "") {
+      // Report fait depuis le lien Calendly : le nouvel invité porte l'ancien.
+      if (vus.has(ancien)) return null;
+      vus.add(ancien);
+      ev = await prisma.calendlyEvent.findUnique({
+        where: { inviteeUri: ancien },
+        select: { rawPayload: true, eventUri: true },
+      });
+    } else if (ancien === undefined || ancien === null || ancien === "") {
+      // Report fait depuis NOTRE site : nouvelle réservation sans `old_invitee`, le lien ancien →
+      // nouveau n'est écrit que dans `calendly_reports`.
+      const rapport = uriCourante
+        ? await prisma.calendlyReport.findUnique({
+            where: { nouvelEventUri: uriCourante },
+            select: { ancienEventUri: true },
+          })
+        : null;
+      if (!rapport) return datePrise(courant);
+      if (vus.has(rapport.ancienEventUri)) return null;
+      vus.add(rapport.ancienEventUri);
+      ev = await prisma.calendlyEvent.findFirst({
+        where: { eventUri: rapport.ancienEventUri },
+        select: { rawPayload: true, eventUri: true },
+      });
+    } else {
+      return null;
+    }
     if (!ev) return null;
+    uriCourante = ev.eventUri ?? null;
     const precedent = inviteeConfirme(undefined, ev.rawPayload);
     if (!precedent) return null;
     courant = precedent;
@@ -217,15 +247,22 @@ async function lireRendezVous(e: {
       select: SELECT_EVENEMENT,
     });
     if (!ev || !ev.enrichedAt) return null;
-    // Annulé, absent : ce rendez-vous n'aura pas lieu. (« completed » : marqué tenu, recevable.)
-    if (ev.status !== "scheduled" && ev.status !== "completed") return null;
+    // Absent : n'a pas eu lieu. Annulé : proposé (en-tête). « completed » : marqué tenu, recevable.
+    if (ev.status === "no_show") return null;
+    // Ancienne réservation d'un report : le rendez-vous vit dans la nouvelle réservation.
+    if (ev.eventUri) {
+      const reporte = await prisma.calendlyReport.findUnique({
+        where: { ancienEventUri: ev.eventUri },
+        select: { nouvelEventUri: true },
+      });
+      if (reporte) return null;
+    }
     const invitee = inviteeConfirme(e.invitee, ev.rawPayload);
     if (!invitee) return null; // charge non confirmée par l'API : AUCUN rapprochement
-    if (invitee["status"] === "canceled") return null;
     if (rencontreCaduque(ev.rencontre?.statut)) return null;
     const adresse = adresseConfirmee(invitee);
     if (!adresse) return null; // adresse non confirmée : AUCUN rapprochement
-    const prisAt = await datePriseOrigine(invitee);
+    const prisAt = await datePriseOrigine(invitee, ev.eventUri ?? null);
     if (!prisAt) return null; // pas de date de prise fiable : rien (jamais `capturedAt`)
     const empreinte = hashEmailForLookup(adresse);
     return {

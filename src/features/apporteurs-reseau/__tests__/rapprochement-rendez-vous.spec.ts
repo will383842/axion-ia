@@ -10,6 +10,7 @@ const bd = vi.hoisted(() => ({
   etablissements: [] as Ligne[],
   evenements: [] as Ligne[],
   rencontres: [] as Ligne[],
+  reports: [] as Ligne[],
   adresses: [] as Ligne[],
   propositions: [] as Ligne[],
   ecritures: 0,
@@ -83,6 +84,20 @@ vi.mock("@/lib/prisma", () => ({
       findUnique: async ({ where }: { where: { id?: string; inviteeUri?: string } }) =>
         bd.evenements.find((e) =>
           where.inviteeUri !== undefined ? e.inviteeUri === where.inviteeUri : e.id === where.id,
+        ) ?? null,
+      findFirst: async ({ where }: { where: { eventUri: string } }) =>
+        bd.evenements.find((e) => e.eventUri === where.eventUri) ?? null,
+    },
+    calendlyReport: {
+      findUnique: async ({
+        where,
+      }: {
+        where: { nouvelEventUri?: string; ancienEventUri?: string };
+      }) =>
+        bd.reports.find((r) =>
+          where.nouvelEventUri !== undefined
+            ? r.nouvelEventUri === where.nouvelEventUri
+            : r.ancienEventUri === where.ancienEventUri,
         ) ?? null,
     },
     rencontre: {
@@ -361,18 +376,63 @@ describe("proposerPourRendezVous", () => {
     expect(await proposerPourRendezVous({ calendlyEventId: "e1", invitee: brute.invitee })).toBe(1);
   });
 
-  it("rendez-vous annulé (colonne ou invité) ou absent : rien", async () => {
+  it("absent (no_show) : rien ; annulé (colonne ou invité) : proposé, le dirigeant tranche", async () => {
     presentation("p1");
-    evenement("col", "dirigeant@acme-industrie.fr", { status: "canceled" });
     evenement("abs", "dirigeant@acme-industrie.fr", { status: "no_show" });
+    expect(await proposerPourRendezVous({ calendlyEventId: "abs" })).toBe(0);
+    evenement("col", "dirigeant@acme-industrie.fr", { status: "canceled" });
     evenement("inv", "dirigeant@acme-industrie.fr", {
       rawPayload: payload("dirigeant@acme-industrie.fr", PRIS.toISOString(), {
         status: "canceled",
       }),
     });
-    for (const id of ["col", "abs", "inv"])
-      expect(await proposerPourRendezVous({ calendlyEventId: id })).toBe(0);
-    expect(bd.propositions).toHaveLength(0);
+    for (const id of ["col", "inv"])
+      expect(await proposerPourRendezVous({ calendlyEventId: id })).toBe(1);
+    expect(bd.propositions.map((p) => p.rendezVousCle).sort()).toEqual([
+      "calendly:col",
+      "calendly:inv",
+    ]);
+  });
+
+  it("report fait depuis notre site (calendly_reports, sans old_invitee), réservé à l'origine avant la saisie : rien", async () => {
+    presentation("p1"); // saisie le 1er novembre
+    evenement("ancien", "dirigeant@acme-industrie.fr", {
+      eventUri: "https://api.calendly.com/scheduled_events/ANCIEN",
+      status: "canceled",
+      rawPayload: payload("dirigeant@acme-industrie.fr", "2026-10-30T10:00:00Z"),
+    });
+    evenement("nouveau", "dirigeant@acme-industrie.fr", {
+      eventUri: "https://api.calendly.com/scheduled_events/NOUVEAU",
+      startTime: new Date("2026-12-01T09:00:00Z"),
+      rawPayload: payload("dirigeant@acme-industrie.fr", PRIS.toISOString()),
+    });
+    bd.reports.push({
+      ancienEventUri: "https://api.calendly.com/scheduled_events/ANCIEN",
+      nouvelEventUri: "https://api.calendly.com/scheduled_events/NOUVEAU",
+    });
+    expect(await proposerPourRendezVous({ calendlyEventId: "nouveau" })).toBe(0);
+    // L'ancienne réservation d'un report n'est jamais proposée elle-même.
+    expect(await proposerPourRendezVous({ calendlyEventId: "ancien" })).toBe(0);
+  });
+
+  it("report fait depuis notre site, réservé à l'origine APRÈS la saisie : proposé (date d'origine)", async () => {
+    presentation("p1");
+    evenement("ancien", "dirigeant@acme-industrie.fr", {
+      eventUri: "https://api.calendly.com/scheduled_events/ANCIEN",
+      status: "canceled",
+      rawPayload: payload("dirigeant@acme-industrie.fr", "2026-11-03T10:00:00Z"),
+    });
+    evenement("nouveau", "dirigeant@acme-industrie.fr", {
+      eventUri: "https://api.calendly.com/scheduled_events/NOUVEAU",
+      startTime: new Date("2026-12-01T09:00:00Z"),
+      rawPayload: payload("dirigeant@acme-industrie.fr", "2026-11-20T10:00:00Z"),
+    });
+    bd.reports.push({
+      ancienEventUri: "https://api.calendly.com/scheduled_events/ANCIEN",
+      nouvelEventUri: "https://api.calendly.com/scheduled_events/NOUVEAU",
+    });
+    expect(await proposerPourRendezVous({ calendlyEventId: "nouveau" })).toBe(1);
+    expect(bd.propositions[0]!.prisAt).toEqual(new Date("2026-11-03T10:00:00Z"));
   });
 
   it("reporté après la saisie, réservé à l'origine avant : rien", async () => {
@@ -451,9 +511,9 @@ describe("proposerPourRendezVous", () => {
     expect(await proposerPourRendezVous({ calendlyEventId: "nouveau" })).toBe(0);
   });
 
-  it("rencontre annulée, absente ou reportée alors que l'événement Calendly est scheduled : rien", async () => {
+  it("rencontre absente ou reportée alors que l'événement Calendly est scheduled : rien", async () => {
     presentation("p1");
-    for (const statut of ["annule", "absent", "reporte"]) {
+    for (const statut of ["absent", "reporte"]) {
       bd.evenements.length = 0;
       evenement(`ev-${statut}`, "dirigeant@acme-industrie.fr", {
         rencontre: { statut, client: null },
@@ -467,9 +527,19 @@ describe("proposerPourRendezVous", () => {
     expect(await proposerPourRendezVous({ calendlyEventId: "ev-ok" })).toBe(1);
   });
 
-  it("rencontre saisie à la main annulée, absente ou reportée : rien", async () => {
+  it("rencontre saisie à la main absente ou reportée : rien ; annulée : proposée", async () => {
     presentation("p1");
-    for (const statut of ["annule", "absent", "reporte"]) {
+    bd.rencontres.push({
+      id: "r-annule",
+      statut: "annule",
+      createdAt: PRIS,
+      debutPrevu: new Date("2026-11-12T09:00:00Z"),
+      calendlyEventId: null,
+      client: null,
+      participants: [{ emailHash: "h:dirigeant@acme-industrie.fr" }],
+    });
+    expect(await proposerPourRendezVous({ rencontreId: "r-annule" })).toBe(1);
+    for (const statut of ["absent", "reporte"]) {
       bd.rencontres.length = 0;
       bd.rencontres.push({
         id: `r-${statut}`,
