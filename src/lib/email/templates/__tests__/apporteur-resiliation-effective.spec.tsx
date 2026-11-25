@@ -1,8 +1,9 @@
 import { describe, expect, it } from "vitest";
 
+import { COPY_RESILIATION_EFFECTIVE } from "../apporteur-resiliation-effective";
 import { renderEmailTemplate } from "../index";
 
-const INTERDITS = ["reproche", "objectif", "relance", "n'oubliez pas", "Grenoble", "gain garanti"];
+const INTERDITS = ["reproche", "objectif", "relance", "n'oubliez pas"];
 
 async function rendu(payload: Record<string, unknown>) {
   const r = await renderEmailTemplate("apporteur-resiliation-effective" as never, "fr", payload);
@@ -36,5 +37,14 @@ describe("apporteur-resiliation-effective", () => {
   it("salue par le prénom seul", async () => {
     const r = await rendu({ prenom: "Claire", effetLe: "25 décembre 2026" });
     expect(r.t).toContain("Bonjour Claire,");
+  });
+});
+
+describe("textes du gabarit : mots exclus", () => {
+  it("ne contient ni « Grenoble » ni « gain garanti »", () => {
+    const s = JSON.stringify(Object.values(COPY_RESILIATION_EFFECTIVE).map(String)).toLowerCase();
+    expect(s).not.toContain("grenoble");
+    expect(s).not.toContain("gain garanti");
+    expect(s).not.toContain("aucun gain");
   });
 });

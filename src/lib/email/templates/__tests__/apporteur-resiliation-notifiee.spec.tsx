@@ -1,8 +1,9 @@
 import { describe, expect, it } from "vitest";
 
+import { COPY_RESILIATION_NOTIFIEE } from "../apporteur-resiliation-notifiee";
 import { renderEmailTemplate } from "../index";
 
-const INTERDITS = ["reproche", "objectif", "relance", "n'oubliez pas", "Grenoble", "gain garanti"];
+const INTERDITS = ["reproche", "objectif", "relance", "n'oubliez pas"];
 const base = { prenom: "Claire", notifieeLe: "25 novembre 2026", effetLe: "25 décembre 2026" };
 const FONDEMENTS = ["11.1-societe", "11.1-apporteur", "11.2", "12.5"] as const;
 
@@ -63,5 +64,14 @@ describe("apporteur-resiliation-notifiee", () => {
   it("salue par le prénom seul", async () => {
     const r = await rendu({ fondement: "11.1-societe", prenom: "Claire" });
     expect(r.t).toContain("Bonjour Claire,");
+  });
+});
+
+describe("textes du gabarit : mots exclus", () => {
+  it("ne contient ni « Grenoble » ni « gain garanti »", () => {
+    const s = JSON.stringify(Object.values(COPY_RESILIATION_NOTIFIEE).map(String)).toLowerCase();
+    expect(s).not.toContain("grenoble");
+    expect(s).not.toContain("gain garanti");
+    expect(s).not.toContain("aucun gain");
   });
 });

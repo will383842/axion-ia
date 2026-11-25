@@ -38,6 +38,11 @@ describe("gabarits de résiliation (L1a)", () => {
       "features/apporteurs-reseau/retrait.ts",
       "features/apporteurs-reseau/__tests__/gabarits-resiliation.spec.ts",
       "lib/email/templates/__tests__/",
+      // Gardes qui NOMMENT les gabarits (listes figées), sans les émettre.
+      "content/__tests__/remuneration-indicative.spec.ts",
+      "server/email/apercu/catalogue.spec.ts",
+      "server/email/apercu/payloads-exemple.spec.ts",
+      "lib/email/templates/aucun-gabarit-orphelin.spec.ts",
     ];
     const fautifs: string[] = [];
     const parcourir = (d: string) => {

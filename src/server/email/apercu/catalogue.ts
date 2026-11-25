@@ -557,6 +557,19 @@ export const CATALOGUE: Readonly<Record<EmailJobName, FicheEmail>> = {
     destinataire: "l'apporteur qui a déclaré l'entreprise",
     source: "features/apporteurs-reseau/envois.ts",
   },
+  "apporteur-resiliation-notifiee": {
+    categorie: "recrutement",
+    quand:
+      "Rien ne l'envoie encore — gabarit livré avant son émetteur (lot L1b, résiliation avec préavis)",
+    destinataire: "—",
+    source: null,
+  },
+  "apporteur-resiliation-effective": {
+    categorie: "recrutement",
+    quand: "Rien ne l'envoie encore — gabarit livré avant son émetteur (lot L1b, prise d'effet)",
+    destinataire: "—",
+    source: null,
+  },
   "apporteur-non-commissionne": {
     categorie: "recrutement",
     quand:

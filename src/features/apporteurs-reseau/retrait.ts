@@ -310,6 +310,10 @@ export const GABARITS_ARGENT: ReadonlySet<string> = new Set([
   "apporteur-commission-suspension",
   // Un manquement (art. 4.5 bis) entraîne des reprises : l'apporteur retiré en est informé.
   "apporteur-manquement",
+  // Résiliation (L1a, sans émetteur avant L1b) : l'apporteur résilié ET retiré reçoit quand même
+  // la notification de sa propre résiliation.
+  "apporteur-resiliation-notifiee",
+  "apporteur-resiliation-effective",
   // Une commission facturée annulée après l'avoir du client (art. 4.5) : de l'argent.
   "apporteur-commission-avoir-client",
   // A1.7 : la constatation qu'un produit n'est pas commissionné concerne de l'argent attendu.
