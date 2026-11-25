@@ -37,6 +37,7 @@ vi.mock("../presentations", () => ({
   presentationOccupe: (p: { statut: string }) =>
     p.statut === "reservee" || p.statut === "confirmee",
 }));
+vi.mock("../reservation-presentation", () => ({ lireReservations: async () => new Map() }));
 vi.mock("../envois", () => ({ envoyer: (...a: unknown[]) => envoyer(...a) }));
 vi.mock("@/server/queue/queues", () => ({
   enqueueEmail: (...a: unknown[]) => enqueueEmail(...a),

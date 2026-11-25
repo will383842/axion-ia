@@ -31,6 +31,7 @@ import { enqueueEmail } from "@/server/queue/queues";
 import { etatPourApporteur, validerDeclaration, type EtatDeclaration } from "./declaration-regles";
 import { lireEtablissements, memePerimetre } from "./etablissement-presentation";
 import { creerPresentation, nomComplet, presentationOccupe } from "./presentations";
+import { lireReservations } from "./reservation-presentation";
 import {
   etatPrestation,
   horsGrilleEnCours,
@@ -118,10 +119,11 @@ export async function declarerEntreprise(
     select: { id: true, statut: true, protegeeJusquAt: true },
   });
   const etabs = await lireEtablissements(siennes.map((p) => p.id));
+  const reservations = await lireReservations(siennes.map((p) => p.id));
   if (
     siennes.some(
       (p) =>
-        presentationOccupe(p, maintenant) &&
+        presentationOccupe(p, maintenant, reservations.get(p.id)) &&
         memePerimetre({ siret: d.siret, entreprise: false, exclus: [] }, etabs.get(p.id)!),
     )
   ) {
