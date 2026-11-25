@@ -80,8 +80,16 @@ const ACTIVITE: Record<string, string> = {
  * Objectif de virement (2 jours ouvrés, sans pénalité : ORANGE s'il est dépassé, jamais rouge) et
  * échéance ferme de 30 jours (ROUGE seulement une fois dépassée).
  */
-function Echeances({ emission, maintenant }: { emission: Date; maintenant: Date }) {
-  const e = etatEcheances(emission, maintenant);
+function Echeances({
+  emission,
+  maintenant,
+  paiementIntegral,
+}: {
+  emission: Date;
+  maintenant: Date;
+  paiementIntegral?: Date | null;
+}) {
+  const e = etatEcheances(emission, maintenant, paiementIntegral);
   return (
     <p className="text-[length:var(--text-admin-sm)]">
       <span style={e.objectifDepasse ? { color: "var(--color-admin-warning)" } : undefined}>
@@ -242,7 +250,11 @@ export default async function CommissionsApporteursPage({ params, searchParams }
                     {euros(v.totalCents)} · {v.lignes} ligne(s) ·{" "}
                     <LienPdf numero={v.numero} base={base} />
                   </p>
-                  <Echeances emission={v.emissionAt} maintenant={maintenant} />
+                  <Echeances
+                    emission={v.emissionAt}
+                    maintenant={maintenant}
+                    paiementIntegral={v.paiementIntegralAt}
+                  />
                 </div>
                 {peutPayer ? (
                   <VerserForm
@@ -299,7 +311,11 @@ export default async function CommissionsApporteursPage({ params, searchParams }
                     <p className="text-[length:var(--text-admin-sm)]">
                       Facturée : <LienPdf numero={c.autofactureNumero} base={base} />
                     </p>
-                    <Echeances emission={c.emissionAt} maintenant={maintenant} />
+                    <Echeances
+                      emission={c.emissionAt}
+                      maintenant={maintenant}
+                      paiementIntegral={c.encaisseeAt}
+                    />
                   </>
                 ) : null}
                 {c.statut === "reprise" && c.avoirNumero ? (
@@ -334,7 +350,6 @@ export default async function CommissionsApporteursPage({ params, searchParams }
                 {c.statut === "due" &&
                 !c.autofactureNumero &&
                 !c.autofactureAttenteMotif &&
-                c.prestationRealiseeAt &&
                 !c.litigeDepuis ? (
                   <p className="text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]">
                     Autofacture à émettre : elle part automatiquement dans l&apos;heure (si elle ne
@@ -368,7 +383,8 @@ export default async function CommissionsApporteursPage({ params, searchParams }
                         className="text-[length:var(--text-admin-sm)] font-semibold"
                         style={{ color: "var(--color-admin-warning)" }}
                       >
-                        En attente de réalisation : ni facturée ni versée
+                        Réalisation non saisie (sans effet sur la commission : due dès le paiement
+                        intégral)
                         {c.prestationRealiseePar === "annulee-console"
                           ? " (réalisation annulée à la main : plus de passage automatique)"
                           : ""}

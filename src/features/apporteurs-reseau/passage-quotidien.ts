@@ -801,6 +801,8 @@ async function etapeCommissions(maintenant: Date, bilan: BilanPassageReseau): Pr
       ...FACTURE_HORS_ESSAI,
       statut: "payee",
       avoirDeId: null,
+      // Règle du 25/11 : rien sur les abonnements ni la maintenance (factures de plan récurrent).
+      planRecurrentId: null,
       client: { siren: { in: [...index.keys()] } },
     },
     select: { id: true, devisId: true },

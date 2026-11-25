@@ -404,6 +404,8 @@ export function donneesManquantesAutofacture(a: {
 
 /** Données du gabarit, ou le motif pour lequel la pièce ne peut pas être établie. */
 export function construireDonneesAutofacture(e: {
+  /** Paiement intégral du client : le délai de 30 jours court de là (règle du 25/11). */
+  paiementIntegral?: Date | null;
   numero: string;
   /** Période des prestations imprimée sur la pièce, ex. « commissions exigibles au 6 octobre 2026 ». */
   periodeLibelle: string;
@@ -435,7 +437,7 @@ export function construireDonneesAutofacture(e: {
       dateEmission: dateFr(e.dateEmission),
       // L'autofacture est datée du jour d'établissement ; la date de prestation est l'encaissement retenu.
       datePrestation: dateFr(dateEncaissementRetenue(e.dateEmission)),
-      dateEcheance: dateFr(echeancePaiement(e.dateEmission)),
+      dateEcheance: dateFr(echeancePaiement(e.dateEmission, e.paiementIntegral)),
       contestationAvant: dateFr(limite),
       periodeLabel: e.periodeLibelle,
       sousTraitant: {

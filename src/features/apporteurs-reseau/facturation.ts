@@ -62,6 +62,7 @@ import { lireEntrepriseParSiren, type ResultatRegistre } from "./annuaire";
 import { envoyer, envoyerConfirmationVirement, type ResultatEnvoi } from "./envois";
 import { etatVigilance, euros } from "./regles";
 import { horsLitige, litigeDisponible } from "./litige";
+import { paiementIntegralLe } from "./paiement-integral";
 import { signalerErreurReseau } from "./signaler";
 
 export function jobIdEmailAutofacture(numero: string): string {
@@ -210,24 +211,6 @@ export type ResultatFacturation =
  *     aucun PDF tenté ni Sentry ; dès que la fiche est complète, le passage suivant facture ;
  *   · une erreur TECHNIQUE (PDF, stockage) : Sentry et nouvel essai à chaque passage.
  */
-/**
- * Le paiement intégral le plus ANCIEN parmi les factures des commissions (le délai de 30 jours
- * court de là, règle du 25/11). Jamais bloquant : sans date, l'échéance part de l'émission.
- */
-async function paiementIntegralLe(factureIds: readonly string[]): Promise<Date | null> {
-  try {
-    if (factureIds.length === 0) return null;
-    const f = await prisma.factureFormation.findMany({
-      where: { id: { in: [...new Set(factureIds)] } },
-      select: { paidAt: true },
-    });
-    const t = f.map((x) => x.paidAt?.getTime()).filter((x): x is number => typeof x === "number");
-    return t.length ? new Date(Math.min(...t)) : null;
-  } catch {
-    return null;
-  }
-}
-
 export async function facturerApporteur(
   apporteurId: string,
   maintenant: Date = new Date(),
@@ -244,8 +227,8 @@ export async function facturerApporteur(
   const hors = await horsLitige();
   let avant = await lireAFacturer(prisma, apporteurId, hors);
   let dues = avant.filter((c) => c.statut === "due");
-  const paiementIntegral = await paiementIntegralLe(dues.map((c) => c.factureId));
   if (dues.length === 0) return { ok: false, message: "Aucune commission due à facturer." };
+  const paiementIntegral = await paiementIntegralLe(dues.map((c) => c.factureId));
   const total = avant.reduce((s, c) => s + (c.montantCents ?? 0), 0);
   // Art. 12.4 : les reprises dépassent les dues → COMPENSATION avec pièces. Les dues sont
   // facturées, les reprises imputées à hauteur exacte (la dernière scindée), le reste attend.
@@ -964,6 +947,8 @@ export interface VirementAFaire {
   lignes: number;
   /** Date d'émission de l'autofacture (`autofactureEmiseAt`, repli `majAt`). */
   emissionAt: Date;
+  /** Paiement intégral du client (le délai de 30 jours court de là), s'il est connu. */
+  paiementIntegralAt: Date | null;
 }
 
 /**
@@ -1011,6 +996,7 @@ export async function lireVirementsAFaire(): Promise<VirementAFaire[]> {
     },
     select: {
       apporteurId: true,
+      factureId: true,
       autofactureNumero: true,
       avoirNumero: true,
       montantCents: true,
@@ -1038,6 +1024,7 @@ export async function lireVirementsAFaire(): Promise<VirementAFaire[]> {
         totalCents: 0,
         lignes: 1,
         emissionAt: emission,
+        paiementIntegralAt: null,
       });
     } else {
       cur.lignes += 1;
@@ -1046,6 +1033,8 @@ export async function lireVirementsAFaire(): Promise<VirementAFaire[]> {
   }
   const suspendues = await suspenduesParNumero();
   for (const [numero, ls] of parNumero) {
+    const v = m.get(numero);
+    if (v) v.paiementIntegralAt = await paiementIntegralLe(ls.map((x) => x.factureId));
     const p = aVirerPartielCents(ls[0]!.apporteur.regimeTva, ls, suspendues.get(numero) ?? []);
     // Rien à virer tant que la suspension dure (partiel refusé), ou total nul : pas affiché.
     if (!p.partielPossible || p.totalCents <= 0) m.delete(numero);

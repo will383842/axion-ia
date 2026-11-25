@@ -13,6 +13,7 @@
 
 // ⚠️ Atteint par le WORKER (passage quotidien, tsx hors Next) : aucun `server-only` ici.
 
+import { paiementIntegralLe } from "./paiement-integral";
 import { prisma } from "@/lib/prisma";
 import { decryptPii } from "@/lib/pii-crypto";
 import type { StatutCommissionApporteur } from "../../../prisma/generated/client";
@@ -723,6 +724,7 @@ export async function genererPdfAutofacture(e: {
         where: { id: { in: [...e.commissionIds] } },
         select: {
           id: true,
+          factureId: true,
           activite: true,
           palier: true,
           parrainage: true,
@@ -751,6 +753,7 @@ export async function genererPdfAutofacture(e: {
       numero: e.numero,
       periodeLibelle: e.periodeLibelle,
       dateEmission: e.maintenant ?? new Date(),
+      paiementIntegral: await paiementIntegralLe(commissions.map((l) => l.factureId)),
       apporteur: {
         nom: [decryptPii(apporteur.prenom), decryptPii(apporteur.nom)].filter(Boolean).join(" "),
         denomination: apporteur.denomination,
