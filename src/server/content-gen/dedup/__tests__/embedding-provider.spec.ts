@@ -70,3 +70,17 @@ describe("seuils par fournisseur", () => {
     expect(getDedupThresholds("voyage").similarThreshold).toBe(0.7);
   });
 });
+
+describe("lecture des seuils", () => {
+  it("accepte la virgule décimale", () => {
+    process.env["CONTENT_DEDUP_DUPLICATE_THRESHOLD_VOYAGE"] = "0,9";
+    expect(getDedupThresholds("voyage").duplicateThreshold).toBe(0.9);
+  });
+  it("journalise toute valeur rejetée et garde le défaut", () => {
+    const warn = vi.spyOn(console, "warn").mockImplementation(() => undefined);
+    process.env["CONTENT_DEDUP_DUPLICATE_THRESHOLD_VOYAGE"] = "1,5";
+    expect(getDedupThresholds("voyage").duplicateThreshold).toBe(0.85);
+    expect(warn).toHaveBeenCalledTimes(1);
+    expect(String(warn.mock.calls[0]?.[0])).toContain("CONTENT_DEDUP_DUPLICATE_THRESHOLD_VOYAGE");
+  });
+});

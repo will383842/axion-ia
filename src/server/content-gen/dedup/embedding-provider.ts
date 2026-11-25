@@ -64,8 +64,13 @@ const VOYAGE_DRIFT_PROVISOIRE: DriftThresholds = { review: 0.7, warn: 0.8 };
 function lireSeuil(nom: string, defaut: number): number {
   const brut = process.env[nom];
   if (brut === undefined || brut.trim() === "") return defaut;
-  const n = Number(brut);
-  return Number.isFinite(n) && n > 0 && n <= 1 ? n : defaut;
+  // Virgule décimale française acceptée (« 0,9 » → 0.9).
+  const n = Number(brut.trim().replace(",", "."));
+  if (Number.isFinite(n) && n > 0 && n <= 1) return n;
+  console.warn(
+    `[embedding-provider] ${nom}="${brut.slice(0, 20)}" rejetée (attendu : nombre dans ]0 ; 1]) : défaut ${defaut} utilisé.`,
+  );
+  return defaut;
 }
 
 export function getDedupThresholds(provider: EmbeddingProvider): DedupThresholds {
