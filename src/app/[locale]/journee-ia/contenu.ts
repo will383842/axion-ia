@@ -42,7 +42,7 @@ export const OG_IMAGE_ALT =
   "La Journée IA d’Axion-IA : audit et formation IA dans vos locaux, {{PRIX}}";
 
 /** Début de la promesse, mis en gras dans `GARANTIE_PHRASE`. */
-export const DEBUT_PROMESSE = "nous vous remboursons";
+export const DEBUT_PROMESSE = "vous êtes remboursé sur demande écrite";
 
 export const CONTENU = {
   accroche: {

@@ -113,7 +113,7 @@ describe("Journée IA — contenu.ts", () => {
       "TPE/PME",
       "Grenoble",
       "Aucun gain garanti",
-      "Vous êtes remboursé",
+      "remboursé automatiquement",
       "même prix pour tous",
       "3 à 4 h",
       "3 à 4\u00a0h",
@@ -211,11 +211,11 @@ describe("Journée IA — contenu.ts", () => {
   it("reprend la garantie mot pour mot, d'une seule constante", () => {
     // Le texte historique, déplacé dans le module commun, reste exporté tel quel.
     expect(GARANTIE).toBe(
-      "À la fin de la journée, vous recevez votre rapport complet : vos gains chiffrés, les tâches à automatiser classées par rentabilité, et votre plan d’action sur 90 jours. Si les gains identifiés n’atteignent pas 3 fois le prix HT de la journée, nous vous remboursons sous 30 jours.",
+      "Sous 10 jours ouvrés après la journée, vous recevez votre rapport complet : vos gains chiffrés, les tâches à automatiser classées par rentabilité, et votre plan d’action sur 90 jours. Si les gains identifiés dans votre rapport n’atteignent pas 3 fois le prix HT de la journée, vous êtes remboursé sur demande écrite.",
     );
     // La page affiche la phrase de remboursement, la condition, puis le rapport (sans doublon).
     expect(GARANTIE_PHRASE).toBe(
-      "Si les gains identifiés n’atteignent pas 3 fois le prix HT de la journée, nous vous remboursons sous 30 jours.",
+      "Si les gains identifiés dans votre rapport n’atteignent pas 3 fois le prix HT de la journée, vous êtes remboursé sur demande écrite.",
     );
     expect(GARANTIE.endsWith(GARANTIE_PHRASE)).toBe(true);
     expect(CONTENU.prix.garantie).toBe(GARANTIE_PHRASE);

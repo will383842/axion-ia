@@ -7,6 +7,7 @@ import { describe, it, expect } from "vitest";
 
 import {
   CONDITION_GARANTIE,
+  DELAI_RAPPORT_JOURS_OUVRES,
   DATE_MISE_A_JOUR_JOURNEE_IA,
   DESCRIPTION_SERVICE_JOURNEE_IA,
   EN_BREF_ACCUEIL,
@@ -29,7 +30,7 @@ import { JOURNEE_IA_TIER, formatAmount, formatTierPrice } from "@/content/pricin
 
 /** Le littéral actuel de la garantie, recopié tel qu'il était dans `contenu.ts`. */
 const GARANTIE_ACTUELLE =
-  "À la fin de la journée, vous recevez votre rapport complet : vos gains chiffrés, les tâches à automatiser classées par rentabilité, et votre plan d’action sur 90 jours. Si les gains identifiés n’atteignent pas 3 fois le prix HT de la journée, nous vous remboursons sous 30 jours.";
+  "Sous 10 jours ouvrés après la journée, vous recevez votre rapport complet : vos gains chiffrés, les tâches à automatiser classées par rentabilité, et votre plan d’action sur 90 jours. Si les gains identifiés dans votre rapport n’atteignent pas 3 fois le prix HT de la journée, vous êtes remboursé sur demande écrite.";
 
 const TEXTES_AVEC_JETONS = {
   EN_BREF_ACCUEIL,
@@ -111,7 +112,7 @@ describe("la garantie", () => {
   it("GARANTIE finit par GARANTIE_PHRASE, qui est la phrase de remboursement", () => {
     expect(GARANTIE.endsWith(GARANTIE_PHRASE)).toBe(true);
     expect(GARANTIE_PHRASE).toBe(
-      "Si les gains identifiés n’atteignent pas 3 fois le prix HT de la journée, nous vous remboursons sous 30 jours.",
+      "Si les gains identifiés dans votre rapport n’atteignent pas 3 fois le prix HT de la journée, vous êtes remboursé sur demande écrite.",
     );
   });
 
@@ -120,6 +121,17 @@ describe("la garantie", () => {
       expect(t).toContain("n’atteignent pas");
       expect(t).not.toContain("ne dépassent pas");
       expect(t).not.toContain("sans discussion");
+    }
+  });
+
+  it("GARANTIE annonce le rapport sous 10 jours ouvrés et le remboursement sur demande écrite", () => {
+    expect(DELAI_RAPPORT_JOURS_OUVRES).toBe(10);
+    expect(GARANTIE).toContain("10 jours ouvrés");
+    expect(GARANTIE_PHRASE).toContain("dans votre rapport n’atteignent pas");
+    expect(GARANTIE_PHRASE).toContain("sur demande écrite");
+    for (const t of [GARANTIE, GARANTIE_PHRASE]) {
+      expect(t).not.toContain("À la fin de la journée");
+      expect(t).not.toContain("nous vous remboursons");
     }
   });
 
@@ -153,7 +165,7 @@ describe("mention de déclaration d'activité et date", () => {
 describe("textes publics : mots interdits", () => {
   it.each(Object.entries(TOUS_LES_TEXTES))("%s", (_nom, texte) => {
     expect(texte).not.toMatch(
-      /conforme|certifi|qualiopi|\bCPF\b|\bOPCO\b|offert|\bETI\b|TPE\/PME|financement|amende|valeur de|satisfait|intégrateur|SaaS|no-code|Grenoble|même prix pour tous|Vous êtes remboursé|3 à 4\s?h/i,
+      /conforme|certifi|qualiopi|\bCPF\b|\bOPCO\b|offert|\bETI\b|TPE\/PME|financement|amende|valeur de|satisfait|intégrateur|SaaS|no-code|Grenoble|même prix pour tous|rembours\S* automatiquement|3 à 4\s?h/i,
     );
   });
 });

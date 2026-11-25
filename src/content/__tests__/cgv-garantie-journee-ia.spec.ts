@@ -71,22 +71,25 @@ describe("CGV : garantie de la Journée IA (art. 47.10)", () => {
   describe("texte rendu de l'article 47", () => {
     const phrases = [
       "n'atteint pas",
-      "sans que le Client ait à le demander",
+      "dans le rapport écrit remis selon l'article 47.1 (c)",
+      "Le rapport indique le total et son détail",
+      "des coûts d'erreurs, de retards et de pénalités évités",
+      "peut demander le remboursement par écrit dans les 30 jours suivant la remise du rapport",
+      "la demande est réputée acceptée",
+      "rembourse par virement, dans les 30 jours suivant l'acceptation",
+      "à défaut : 15) participants",
       "TVA correspondante",
       "même s'il est remboursé ou si le prix cesse d'être dû",
       "Elle ne s'applique pas à une journée remboursée au titre de l'article 47.10",
       "autour du siège d'Axion-IA",
-      "Par exception à l'article 9.2",
+      "par exception à l'article 9.2",
       "La garantie ne couvre que la journée tenue",
       "le prix de mise en place, par Axion-IA ou par un tiers, n'est pas retiré",
       `majoré de ${MAJORATION_PLANCHER_COUT_HORAIRE_PCT} %`,
       "la déduction est reprise",
-      "dans le total remis à la fin de la journée",
       "arrondi au centime",
-      "dans les 30 jours suivant cet accord",
-      "À défaut de remise écrite du total",
       "restituer le remboursement reçu",
-      "les sommes qu'il a lui-même payées au titre de ce prix",
+      "les sommes que le Client a lui-même payées au titre de ce prix",
       `${milliers(SEUIL_DEVIS_DEDUCTION_EUR)} euros HT avant déduction`,
     ];
     for (const phrase of phrases) {
@@ -115,6 +118,22 @@ describe("CGV : garantie de la Journée IA (art. 47.10)", () => {
           expect(a4710()).toContain(phrase);
         });
       }
+    });
+
+    it("n'écrit plus « à la fin de la journée » dans 47.10, hors l'alinéa (d)", () => {
+      const a47 = corps(47);
+      const a4710 = a47.slice(a47.indexOf("47.10 Garantie"));
+      const hors = a4710.replace(/avant la fin de la journée/g, "");
+      expect(hors).not.toContain("à la fin de la journée");
+      expect(hors).not.toContain("pendant la journée, ce que");
+    });
+
+    it("n'écrit pas « sans que le Client ait à le demander » dans l'article 47", () => {
+      expect(corps(47)).not.toContain("sans que le Client ait à le demander");
+    });
+
+    it("n'annonce plus 12 participants par défaut", () => {
+      expect(corps(47)).not.toContain("à défaut : 12) participants");
     });
 
     it("ne propose plus de tenue à distance", () => {

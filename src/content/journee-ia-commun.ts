@@ -15,17 +15,15 @@ import { JOURNEE_IA_TIER, formatAmount, formatTierPrice } from "@/content/pricin
 /** Le jeton que les textes portent à la place du prix de la journée. */
 export const JETON_PRIX = "{{PRIX}}";
 
-/**
- * La garantie, mot pour mot (rapport + remboursement). Déplacée ici sans changer
- * un caractère : la landing continue de l'afficher telle quelle tant qu'elle n'est
- * pas passée à `RAPPORT_COMPLET` + `GARANTIE_PHRASE`.
- */
-export const GARANTIE =
-  "À la fin de la journée, vous recevez votre rapport complet : vos gains chiffrés, les tâches à automatiser classées par rentabilité, et votre plan d’action sur 90 jours. Si les gains identifiés n’atteignent pas 3 fois le prix HT de la journée, nous vous remboursons sous 30 jours.";
+/** Délai de remise du rapport, valeur par défaut de l'art. 47.1 (c) des CGV, décision du 25/11/2026. */
+export const DELAI_RAPPORT_JOURS_OUVRES = 10;
 
 /** La seule phrase de remboursement : la fin exacte de `GARANTIE`. */
 export const GARANTIE_PHRASE =
-  "Si les gains identifiés n’atteignent pas 3 fois le prix HT de la journée, nous vous remboursons sous 30 jours.";
+  "Si les gains identifiés dans votre rapport n’atteignent pas 3 fois le prix HT de la journée, vous êtes remboursé sur demande écrite.";
+
+/** La garantie, mot pour mot (rapport + remboursement sur demande). */
+export const GARANTIE = `Sous ${DELAI_RAPPORT_JOURS_OUVRES} jours ouvrés après la journée, vous recevez votre rapport complet : vos gains chiffrés, les tâches à automatiser classées par rentabilité, et votre plan d’action sur 90 jours. ${GARANTIE_PHRASE}`;
 
 /** La condition de la garantie, mot pour mot. */
 export const CONDITION_GARANTIE =
