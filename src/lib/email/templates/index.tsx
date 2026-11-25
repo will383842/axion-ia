@@ -209,6 +209,10 @@ import {
   ApporteurManquementEmail,
   ApporteurVirementFaitEmail,
 } from "./apporteur-demarrage";
+import {
+  apporteurPresentationRecueRendezVousSubject,
+  ApporteurPresentationRecueRendezVousEmail,
+} from "./apporteur-presentation-recue-rendez-vous";
 import { ApporteurLienEspaceEmail, apporteurLienEspaceSubject } from "./apporteur-lien-espace";
 import { ENTREES_FORMATEUR_INDEPENDANT } from "./_formateur-independant";
 import { estGabaritFormateurIndependant } from "./formateur-independant-textes";
@@ -655,6 +659,10 @@ const TEMPLATES: TemplateMap = {
   "apporteur-presentation-refusee": {
     subject: apporteurPresentationRefuseeSubject,
     component: ApporteurPresentationRefuseeEmail,
+  },
+  "apporteur-presentation-recue-rendez-vous": {
+    subject: apporteurPresentationRecueRendezVousSubject,
+    component: ApporteurPresentationRecueRendezVousEmail,
   },
   "entreprise-prise-de-contact-apporteur": {
     subject: entrepriseConfirmationApporteurSubject,

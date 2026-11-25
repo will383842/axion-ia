@@ -14,6 +14,11 @@ import {
   declarerEntrepriseAction,
   rechercherEntrepriseDeclarationAction,
 } from "./actions-declaration";
+import {
+  RESERVATION_PROVISOIRE_JOURS,
+  type RegleAttribution,
+} from "@/features/apporteurs-reseau/regle-attribution";
+
 import { TEXTES } from "./textes";
 import { TEXTES_DECLARATION as T } from "./textes-declaration";
 
@@ -63,11 +68,14 @@ export function DeclarationEntreprise({
   id,
   jeton,
   protectionMois,
+  regle = null,
 }: {
   id: string;
   jeton: string;
   /** Durée de la réservation (`PROTECTION_MOIS`), passée par la page : jamais écrite ici. */
   protectionMois: number;
+  /** Règle de l'apporteur (`regleDe`) : « rendez_vous » change le texte « Comment ça se passe ». */
+  regle?: RegleAttribution;
 }) {
   const router = useRouter();
   const uid = useId();
@@ -131,7 +139,10 @@ export function DeclarationEntreprise({
       <div className="bg-sand mt-3 rounded-xl p-3 text-[15px] leading-relaxed">
         <p className="font-bold">{T.commentTitre}</p>
         <ul className="mt-1 grid gap-1">
-          {T.comment(protectionMois).map((l) => (
+          {(regle === "rendez_vous"
+            ? T.commentRendezVous(RESERVATION_PROVISOIRE_JOURS, protectionMois)
+            : T.comment(protectionMois)
+          ).map((l) => (
             <li key={l}>• {l}</li>
           ))}
         </ul>

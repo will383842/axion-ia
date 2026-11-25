@@ -143,7 +143,12 @@ export default async function DossierApporteurPage({ params }: PageProps) {
             </a>
           ) : null}
         </EcranEtat>
-        <DeclarationEntreprise id={dossier.id} jeton={jeton} protectionMois={PROTECTION_MOIS} />
+        <DeclarationEntreprise
+          id={dossier.id}
+          jeton={jeton}
+          protectionMois={PROTECTION_MOIS}
+          regle={dossier.regleAttribution ?? null}
+        />
         <ListeDeclarations declarations={declarations} />
         {/* Tout ce qui lui a été remis, au même endroit (2026-11-25). */}
         <a

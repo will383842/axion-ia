@@ -31,6 +31,18 @@ export const TEXTES_DECLARATION = {
       "Si elle a déjà été présentée ou nous est déjà connue, nous vous le disons.",
       "Toute commande signée pendant cette période vous est commissionnée, dès que la prestation est réalisée et entièrement payée.",
     ] as const,
+  // Lot 7b — validation par rendez-vous (contrat ≥ 2.8, interrupteur allumé) SEULEMENT. Les
+  // apporteurs sous le contrat 2.6 gardent `comment` ci-dessus, mot pour mot. Aucun objectif,
+  // aucun nombre, aucune relance. ⚠️ À RELIRE par le dirigeant (liste dans la PR).
+  commentRendezVous: (jours: number, mois: number) =>
+    [
+      "Après votre déclaration, nous prenons contact avec l'entreprise de votre part.",
+      `Cette entreprise vous est gardée ${jours} jours à compter de votre déclaration.`,
+      `Elle est validée sur votre compte dès qu'un premier rendez-vous avec Axion-IA a eu lieu, s'il a été pris pendant ces ${jours} jours. Les ${mois} mois pendant lesquels elle vous est rattachée partent alors du jour de ce rendez-vous.`,
+      `Un devis signé pendant ces ${jours} jours compte aussi.`,
+      "Si elle a déjà été présentée ou nous est déjà connue, nous vous le disons.",
+      "Une commission n'est due que sur une commande payée.",
+    ] as const,
   jusquAu: (date: string) => `jusqu'au ${date}`,
   // Contrat 2.3, art. 4.2 : la commission naît de la prestation RÉALISÉE et entièrement payée.
   prestationEnAttente: "Prestation commandée, en attente de réalisation",

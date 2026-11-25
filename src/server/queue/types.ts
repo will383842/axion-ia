@@ -190,6 +190,8 @@ export type EmailJobName =
   | "apporteur-presentation-recue"
   | "apporteur-presentation-refusee"
   | "entreprise-prise-de-contact-apporteur"
+  // Lot 7b : accusé « 60 jours, rendez-vous » (branché).
+  | "apporteur-presentation-recue-rendez-vous"
   | "apporteur-vigilance"
   | "apporteur-commande-signee"
   | "apporteur-commande-non-attribuee"

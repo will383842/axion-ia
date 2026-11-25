@@ -589,6 +589,13 @@ export const CATALOGUE: Readonly<Record<EmailJobName, FicheEmail>> = {
     destinataire: "l'apporteur qui a présenté l'entreprise",
     source: "features/apporteurs-reseau/envois.ts",
   },
+  "apporteur-presentation-recue-rendez-vous": {
+    categorie: "recrutement",
+    quand:
+      "Bouton « Bien reçu » d'une entreprise présentée par un apporteur sous la validation par rendez-vous (interrupteur allumé ET contrat signé ≥ 2.8), après aperçu",
+    destinataire: "l'apporteur qui a présenté l'entreprise",
+    source: "features/apporteurs-reseau/envois.ts",
+  },
   "apporteur-presentation-refusee": {
     categorie: "recrutement",
     quand: "Bouton « Déjà connue » ou « Hors champ » d'une entreprise présentée, après aperçu",
