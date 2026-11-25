@@ -184,6 +184,8 @@ export type EmailJobName =
   | "apporteur-dossier-recu"
   | "apporteur-commission-suspension"
   | "apporteur-manquement"
+  | "apporteur-resiliation-notifiee"
+  | "apporteur-resiliation-effective"
   | "apporteur-commission-avoir-client"
   | "apporteur-non-commissionne"
   | "apporteur-contrat-signe"

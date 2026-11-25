@@ -145,7 +145,17 @@ describe("le catalogue décrit le code réel", () => {
     "%s : déclaré dormant, et vraiment sans appelant",
     (nom) => {
       if ((nom as string) === "(aucun)") return;
-      const reels = [...(APPELANTS.get(nom) ?? [])];
+      // Lot L1a : `envois.ts` et `retrait.ts` NOMMENT les deux gabarits de résiliation dans
+      // leurs listes (GABARITS_APPORTEUR, GABARITS_ARGENT) sans les enfiler. Exemption
+      // nominative, par fichier ET par nom ; à retirer avec le catalogue `source: null` en L1b.
+      const reels = [...(APPELANTS.get(nom) ?? [])].filter(
+        (f) =>
+          !(
+            (nom as string).startsWith("apporteur-resiliation-") &&
+            (f === "features/apporteurs-reseau/envois.ts" ||
+              f === "features/apporteurs-reseau/retrait.ts")
+          ),
+      );
       expect(
         reels,
         `« ${nom} » est affiché comme dormant dans la console alors qu'il est ` +
@@ -162,6 +172,9 @@ describe("le catalogue décrit le code réel", () => {
     // `newsletter-confirm-optin` : dormant depuis le lot L2 (amendement de Will
     // du 24/09, plus aucun double opt-in pour une inscription neuve).
     expect([...DORMANTS].sort(), "la liste des gabarits dormants a changé").toEqual([
+      // Lot L1a (2026-11-25) : livrés SANS émetteur ; L1b les branche et retire ces deux lignes.
+      "apporteur-resiliation-effective",
+      "apporteur-resiliation-notifiee",
       "cancellation-confirmed-by-user",
       "force-majeure-notice",
       "newsletter-confirm-optin",
