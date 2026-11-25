@@ -136,6 +136,7 @@ export function SaisirRendezVous({
         <select name="canal" required className="admin-input" defaultValue="telephone">
           <option value="telephone">Appel téléphonique</option>
           <option value="sur_place">Rendez-vous sur place</option>
+          <option value="annule_par_axion">Annulé par Axion IA (réputé tenu)</option>
         </select>
       </label>
       <label className="flex flex-col gap-1">
@@ -149,7 +150,7 @@ export function SaisirRendezVous({
         />
       </label>
       <label className="flex flex-col gap-1">
-        Pris le (si un autre jour)
+        Pris le (si un autre jour ; obligatoire pour « Annulé par Axion IA »)
         <input type="datetime-local" name="prisLe" className="admin-input" />
       </label>
       <button type="submit" className="admin-button" disabled={enCours}>

@@ -309,7 +309,7 @@ function sourceDeLaCle(cle: string): SourceValidation {
 
 /** « 2026-11-24T14:30 » (heure de Paris) → instant ; jamais dans le futur proche, jamais illisible. */
 function instantSaisi(brut: string): Date | null {
-  return /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}/.test(brut) ? fromParisLocalInput(brut) : null;
+  return /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}(:\d{2})?$/.test(brut) ? fromParisLocalInput(brut) : null;
 }
 
 function messageValidation(r: Awaited<ReturnType<typeof validerParRendezVous>>): EtatAction {
@@ -347,6 +347,7 @@ export async function validerPropositionAction(
       prisAt: pr.prisAt,
       tenuAt,
       source: sourceDeLaCle(pr.rendezVousCle),
+      propositionId: pr.id,
       acteurId: acteur.id,
     });
     if (r.ok) rafraichir();
@@ -364,6 +365,8 @@ export async function ecarterPropositionAction(
 ): Promise<EtatAction> {
   const acteur = await sessionAdministrateur();
   if (typeof acteur === "string") return { etat: "erreur", message: acteur };
+  if (!validationParRendezVousActive())
+    return { etat: "erreur", message: MESSAGE_INTERRUPTEUR_ETEINT };
   const id = texte(fd, "id").toLowerCase();
   if (!UUID.test(id)) return { etat: "erreur", message: "Proposition inconnue." };
   try {
@@ -390,14 +393,18 @@ export async function saisirRendezVousAction(_prev: EtatAction, fd: FormData): P
   const presentationId = texte(fd, "presentationId").toLowerCase();
   if (!UUID.test(presentationId)) return { etat: "erreur", message: "Choisissez l'entreprise." };
   const canal = texte(fd, "canal");
-  if (canal !== "telephone" && canal !== "sur_place")
+  if (canal !== "telephone" && canal !== "sur_place" && canal !== "annule_par_axion")
     return {
       etat: "erreur",
-      message: "Indiquez s'il s'agit d'un appel ou d'un rendez-vous sur place.",
+      message: "Indiquez le type de rendez-vous : appel, sur place ou annulé par Axion IA.",
     };
   const tenuAt = instantSaisi(texte(fd, "tenuLe"));
   if (!tenuAt) return { etat: "erreur", message: "Indiquez la date et l'heure du rendez-vous." };
   const prisBrut = texte(fd, "prisLe");
+  // Annulé par Axion IA (réputé tenu) : la date de PRISE est exigée (jamais réputée prise le jour
+  // prévu, qui peut tomber après les 60 jours).
+  if (canal === "annule_par_axion" && !prisBrut)
+    return { etat: "erreur", message: "Indiquez le jour où ce rendez-vous avait été pris." };
   const prisAt = prisBrut ? instantSaisi(prisBrut) : tenuAt;
   if (!prisAt) return { etat: "erreur", message: "Date de prise du rendez-vous illisible." };
   try {

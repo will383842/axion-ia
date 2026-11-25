@@ -70,7 +70,7 @@ beforeEach(() => {
 });
 
 describe("validation par rendez-vous : actions réservées aux administrateurs", () => {
-  it.each(["editeur", "lecteur", "support"])(
+  it.each(["editor", "reader", "responsable_qualite", "secretaire", "inconnu"])(
     "le rôle « %s » n'atteint jamais le métier",
     async (role) => {
       h.session = { user: { id: "u1", role } };

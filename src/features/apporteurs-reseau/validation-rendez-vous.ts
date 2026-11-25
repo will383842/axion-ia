@@ -31,6 +31,7 @@ import { annoncerAttribution } from "./attribution-annonce";
 import { lireEtablissements, memePerimetre } from "./etablissement-presentation";
 import { validationParRendezVousActive } from "./interrupteur-rendez-vous";
 import { presentationOccupe } from "./presentations";
+import { versReservationProvisoire } from "./regle-attribution";
 import {
   type MotifRendezVousRefuse,
   finDeProtectionRendezVous,
@@ -52,7 +53,9 @@ export interface SaisieValidation {
   tenuAt: Date;
   source: SourceValidation;
   /** Canal d'une saisie manuelle (« telephone » / « sur_place ») ; inscrit au journal. */
-  canal?: "telephone" | "sur_place";
+  canal?: "telephone" | "sur_place" | "annule_par_axion";
+  /** La proposition validée : elle est relue DANS la transaction (écartée entre-temps : refus). */
+  propositionId?: string;
   /** L'administrateur qui valide (identifiant seul). */
   acteurId: string;
 }
@@ -80,7 +83,7 @@ export const MESSAGE_AUTRE_APPORTEUR =
   "Une autre déclaration, d'un autre apporteur, occupe encore cette entreprise (plus ancienne ou déjà validée) : une entreprise n'a jamais deux apporteurs. Rien n'est validé.";
 
 export const MESSAGE_RDV_NON_TENU =
-  "Ce rendez-vous a été annulé, reporté, ou le client ne s'est pas présenté : il n'a pas eu lieu et ne valide pas l'entreprise.";
+  "Ce rendez-vous a été annulé, reporté, ou le client ne s'est pas présenté : il n'a pas eu lieu et ne valide pas l'entreprise. S'il a été annulé par Axion IA, il est réputé tenu : saisissez-le à la main, type « Annulé par Axion IA ».";
 
 export const MESSAGE_RDV_INTROUVABLE =
   "Le rendez-vous désigné est introuvable à la source : rien n'est validé.";
@@ -176,6 +179,16 @@ export async function validerParRendezVous(
           if (!tableAbsente(err)) throw err;
         }
 
+        // La proposition elle-même est relue ici : écartée ou retenue entre-temps, on ne valide pas.
+        if (e.propositionId) {
+          const pr = await tx.propositionRendezVousPresentation.findUnique({
+            where: { id: e.propositionId },
+            select: { ecarteeAt: true, retenueAt: true },
+          });
+          if (!pr || pr.ecarteeAt || pr.retenueAt)
+            throw new Refus("Cette proposition a déjà été traitée.");
+        }
+
         // 🔑 L'état du rendez-vous est RELU ICI, à la source, dans la transaction : une proposition
         // affichée « à traiter » peut avoir été annulée, reportée ou marquée absente depuis. Les
         // dates de la source l'emportent sur celles recopiées dans la proposition.
@@ -231,18 +244,41 @@ export async function validerParRendezVous(
             statut: { in: ["reservee", "confirmee"] },
           },
           select: { id: true, statut: true, recueAt: true, protegeeJusquAt: true },
-          take: 50,
         });
         if (autres.length > 0) {
           const ids = [p.id, ...autres.map((a) => a.id)];
-          const [etabs, lignes] = await Promise.all([
+          const [etabs, lignes, propositionsAutres] = await Promise.all([
             lireEtablissements(ids, tx),
             tx.presentationReservation.findMany({
               where: { presentationId: { in: autres.map((a) => a.id) } },
-              select: { presentationId: true, reserveeJusquAt: true, rendezVousPrisAt: true },
+              select: {
+                presentationId: true,
+                reserveeJusquAt: true,
+                rendezVousPrisAt: true,
+                valideeAt: true,
+              },
+            }),
+            // Un rendez-vous PRIS pendant la réservation d'une déclaration plus ancienne, pas
+            // encore tenu, la retient au-delà du terme : il n'est écrit nulle part ailleurs que
+            // dans ses propositions (`rendezVousPrisAt` ne l'est qu'à la validation).
+            tx.propositionRendezVousPresentation.findMany({
+              where: {
+                presentationId: { in: autres.map((a) => a.id) },
+                ecarteeAt: null,
+              },
+              select: { presentationId: true, rendezVousCle: true, prisAt: true },
             }),
           ]);
           const reservees = new Map(lignes.map((l) => [l.presentationId, l]));
+          const prisEnAttente = new Map<string, Date>();
+          for (const pa of propositionsAutres) {
+            const src = await lireSourceRendezVous(tx, pa.rendezVousCle);
+            if (!src || rendezVousNonTenu(src)) continue;
+            const pris = src.prisAt ?? pa.prisAt;
+            const deja = prisEnAttente.get(pa.presentationId);
+            if (!deja || pris.getTime() < deja.getTime())
+              prisEnAttente.set(pa.presentationId, pris);
+          }
           const miennePerimetre = etabs.get(p.id)!;
           const bloquant = autres.some((a) => {
             if (!memePerimetre(miennePerimetre, etabs.get(a.id)!)) return false;
@@ -253,13 +289,15 @@ export async function validerParRendezVous(
             return presentationOccupe(
               { statut: a.statut, protegeeJusquAt: a.protegeeJusquAt },
               maintenant,
-              r
-                ? {
-                    recueAt: a.recueAt,
-                    reserveeJusquAt: r.reserveeJusquAt,
-                    rendezVousEnAttentePrisAt: r.rendezVousPrisAt,
-                  }
-                : null,
+              versReservationProvisoire(
+                a.recueAt,
+                r
+                  ? {
+                      ...r,
+                      rendezVousPrisAt: r.rendezVousPrisAt ?? prisEnAttente.get(a.id) ?? null,
+                    }
+                  : null,
+              ),
             );
           });
           if (bloquant) throw new Refus(MESSAGE_AUTRE_APPORTEUR);

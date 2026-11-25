@@ -78,7 +78,7 @@ async function propositionsATraiter(): Promise<number> {
   const l = await prisma.propositionRendezVousPresentation.findMany({
     where: { ecarteeAt: null, retenueAt: null },
     select: { presentationId: true, rendezVousCle: true },
-    take: 500,
+    take: 100, // borne : une lecture de source par rendez-vous distinct, à chaque page de la console
   });
   if (l.length === 0) return 0;
   const reservees = await prisma.presentationEntreprise.findMany({

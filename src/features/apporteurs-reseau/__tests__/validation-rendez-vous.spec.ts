@@ -18,6 +18,8 @@ const { bd, tx } = vi.hoisted(() => {
     journal: [] as Ligne[],
     annonces: [] as string[],
     conflit: false,
+    /** Appelée au début de la première écriture conditionnelle : simule une écriture concurrente. */
+    avantEcriture: null as null | (() => void),
     verrou: Promise.resolve() as Promise<unknown>,
   };
   function correspond(l: Ligne, where: Ligne): boolean {
@@ -49,6 +51,8 @@ const { bd, tx } = vi.hoisted(() => {
         bd.reservations.find((r) => r.presentationId === where.presentationId) ?? null,
       findMany: async ({ where }: any) => bd.reservations.filter((r) => correspond(r, where)),
       updateMany: async ({ where, data }: any) => {
+        bd.avantEcriture?.();
+        bd.avantEcriture = null;
         const l = bd.reservations.filter(
           (r) =>
             r.presentationId === where.presentationId &&
@@ -71,10 +75,13 @@ const { bd, tx } = vi.hoisted(() => {
       findUnique: async ({ where }: any) => bd.rencontres.find((x) => x.id === where.id) ?? null,
     },
     propositionRendezVousPresentation: {
+      findUnique: async ({ where }: any) => bd.propositions.find((p) => p.id === where.id) ?? null,
       findMany: async ({ where }: any) =>
         bd.propositions.filter(
           (p) =>
-            p.presentationId === where.presentationId &&
+            (where.presentationId?.in
+              ? where.presentationId.in.includes(p.presentationId)
+              : p.presentationId === where.presentationId) &&
             p.ecarteeAt == null &&
             (!where.rendezVousCle || p.rendezVousCle !== where.rendezVousCle.not),
         ),
@@ -197,6 +204,7 @@ beforeEach(() => {
   ] as const)
     bd[k].length = 0;
   bd.conflit = false;
+  bd.avantEcriture = null;
   bd.verrou = Promise.resolve();
   evenement("ev1");
 });
@@ -479,5 +487,88 @@ describe("ecarterProposition", () => {
     expect((await ecarterProposition("x", "admin-1", MAINTENANT)).ok).toBe(false);
     expect(lignes).toHaveLength(1);
     expect(lignes[0]).toMatchObject({ ecarteeAt: MAINTENANT, ecarteeParId: "admin-1" });
+  });
+});
+
+describe("revue de sécurité du lot 6", () => {
+  it("un rendez-vous PRIS pendant la réservation de l'ancien, pas encore tenu, le retient au-delà du terme", async () => {
+    // A2 : saisie le 1er sept., terme le 31 oct. ; rendez-vous pris le 20 oct., prévu le 25 nov.
+    entreprise("pOld", A2, { recueAt: new Date("2026-09-01T10:00:00Z") });
+    bd.reservations[0]!["reserveeJusquAt"] = new Date("2026-10-31T22:59:59.999Z");
+    evenement("evOld", {
+      startTime: new Date("2026-11-25T10:00:00Z"),
+      capturedAt: new Date("2026-10-20T10:00:00Z"),
+    });
+    bd.propositions.push({
+      id: "prOld",
+      presentationId: "pOld",
+      rendezVousCle: "calendly:evOld",
+      prisAt: new Date("2026-10-20T10:00:00Z"),
+      ecarteeAt: null,
+      retenueAt: null,
+    });
+    entreprise("p1", A1, { recueAt: new Date("2026-11-01T10:00:00Z") });
+    const r = await validerParRendezVous(saisie("p1"), MAINTENANT);
+    expect(r.ok).toBe(false);
+    expect(bd.presentations.find((p) => p["id"] === "p1")!["statut"]).toBe("reservee");
+    expect(bd.annonces).toHaveLength(0);
+  });
+
+  it("le même rendez-vous annulé depuis ne retient plus l'ancien : l'autre est validé", async () => {
+    entreprise("pOld", A2, { recueAt: new Date("2026-09-01T10:00:00Z") });
+    bd.reservations[0]!["reserveeJusquAt"] = new Date("2026-10-31T22:59:59.999Z");
+    evenement("evOld", {
+      status: "canceled",
+      startTime: new Date("2026-11-25T10:00:00Z"),
+      capturedAt: new Date("2026-10-20T10:00:00Z"),
+    });
+    bd.propositions.push({
+      id: "prOld",
+      presentationId: "pOld",
+      rendezVousCle: "calendly:evOld",
+      prisAt: new Date("2026-10-20T10:00:00Z"),
+      ecarteeAt: null,
+      retenueAt: null,
+    });
+    entreprise("p1", A1);
+    expect((await validerParRendezVous(saisie("p1"), MAINTENANT)).ok).toBe(true);
+  });
+
+  it("proposition écartée entre l'affichage et le clic : refus, rien d'écrit", async () => {
+    entreprise("p1", A1);
+    bd.propositions.push({
+      id: "pr1",
+      presentationId: "p1",
+      rendezVousCle: "calendly:ev1",
+      prisAt: PRIS,
+      ecarteeAt: new Date("2026-11-19T10:00:00Z"),
+      retenueAt: null,
+    });
+    const r = await validerParRendezVous(saisie("p1", { propositionId: "pr1" }), MAINTENANT);
+    expect(r.ok).toBe(false);
+    expect(bd.presentations[0]!["statut"]).toBe("reservee");
+    expect(bd.journal).toHaveLength(0);
+  });
+
+  it("écriture concurrente entre la lecture et l'écriture : la condition « valideeAt vide » refuse, ni journal ni annonce", async () => {
+    entreprise("p1", A1);
+    bd.avantEcriture = () => {
+      bd.reservations[0]!["valideeAt"] = new Date("2026-11-20T09:59:00Z");
+    };
+    const r = await validerParRendezVous(saisie("p1"), MAINTENANT);
+    expect(r.ok).toBe(false);
+    expect(bd.journal).toHaveLength(0);
+    expect(bd.annonces).toHaveLength(0);
+    expect(bd.presentations[0]!["statut"]).toBe("reservee");
+  });
+
+  it("« Annulé par Axion IA » : réputé tenu, le canal est inscrit au journal", async () => {
+    entreprise("p1", A1);
+    const r = await validerParRendezVous(
+      saisie("p1", { rendezVousCle: null, source: "saisie", canal: "annule_par_axion" }),
+      MAINTENANT,
+    );
+    expect(r.ok).toBe(true);
+    expect(bd.journal[0]!["changes"]).toMatchObject({ canal: "annule_par_axion" });
   });
 });
