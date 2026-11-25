@@ -8,10 +8,13 @@
  *   --restore                       remet les valeurs d'origine (seulement si la valeur actuelle
  *                                   est celle écrite par l'apply)
  *   --report=<fichier>  --urls=<fichier>  --sauvegarde=<fichier>  (apply : obligatoire)
- *   --sans-controle-sauvegarde      copie jetable seulement : saute l'exigence d'une sauvegarde < 24 h
+ *   --sans-controle-sauvegarde      copie jetable seulement (base `axionia_copie`, refusé ailleurs) :
+ *                                   saute l'exigence d'une sauvegarde < 24 h
  *
  * Garanties : aucun DELETE, aucun changement de slug / statut / indexationTier, aucun appel IA.
  * Chaque ligne : audit log + UPDATE CONDITIONNEL (valeur d'origine) dans UNE transaction.
+ * `updated_at` n'est PAS modifié (UPDATE brut, voulu : le restore remet l'état exact d'avant).
+ * Le rapport liste chaque fragment « avant → après » : c'est LUI qu'on relit avant l'apply.
  */
 import { createHash } from "node:crypto";
 import fs from "node:fs";
@@ -22,11 +25,12 @@ import {
   ANCIENS_MONTANTS_RE,
   FAQ_CIBLES,
   LIBELLES_CTA_SQL,
-  contientCtaAvecMontant,
-  jsonContientCtaAvecMontant,
+  type Fragment,
+  ctaSuspects,
   planifierFaq,
   retirerMontantCta,
   retirerMontantCtaJson,
+  texteJson,
 } from "./prix-residuels-regles";
 
 export const ACTION = "retrait-prix-residuels-2026-11";
@@ -62,6 +66,8 @@ interface Ligne {
   libelle: string; // pour le rapport
   champs: Champ[];
   remplacements: number;
+  /** Chaque remplacement, colonne par colonne (rapport). Vide pour une FAQ. */
+  fragments: Array<Fragment & { colonne: string }>;
   /** Pour la purge du cache. */
   urls: string[];
 }
@@ -74,6 +80,9 @@ interface Plan {
 }
 
 class ChangeEntreTemps extends Error {}
+
+/** Un gros article (3 colonnes + journal) à travers le tunnel dépasse les 5 s par défaut. */
+const DELAIS_TX = { timeout: 30_000, maxWait: 10_000 };
 
 const prisma = new PrismaClient();
 
@@ -112,6 +121,23 @@ export function lireOptions(argv: string[]): Options {
   if (o.mode === "apply" && !o.sauvegarde)
     throw new Error("--apply exige --sauvegarde=<fichier.json> (valeurs d'origine).");
   return o;
+}
+
+/** Nom de la base visée (sans rien afficher d'autre de l'URL). */
+export function nomBase(url: string | undefined): string {
+  try {
+    return new URL(url ?? "").pathname.replace(/^\//, "");
+  } catch {
+    return "";
+  }
+}
+
+/** `--sans-controle-sauvegarde` n'est permis que sur la copie jetable. */
+export function exigerCopieJetable(url: string | undefined): void {
+  if (nomBase(url) !== "axionia_copie")
+    throw new Error(
+      "--sans-controle-sauvegarde refusé : réservé à la base jetable « axionia_copie ».",
+    );
 }
 
 // ───────────────────────────── plan ─────────────────────────────
@@ -178,8 +204,13 @@ export async function construirePlan(): Promise<Plan> {
       metaDescription: f.metaDescription,
     });
     if (!p) continue;
+    const valeurs = {
+      answer_fr: f.answerFr,
+      answer_en: f.answerEn,
+      meta_description: f.metaDescription ?? "",
+    };
     for (const champ of p.aRevoir)
-      aRevoir.push(`faqs:${f.id} (${f.slug}) ${champ} : « ${extrait(f.metaDescription ?? "")} »`);
+      aRevoir.push(`faqs:${f.id} (${f.slug}) ${champ} : « ${extrait(valeurs[champ])} »`);
     const champs: Champ[] = [];
     if (p.ecritures.answerFr !== undefined)
       champs.push({ colonne: "answer_fr", avant: f.answerFr, apres: p.ecritures.answerFr });
@@ -193,6 +224,7 @@ export async function construirePlan(): Promise<Plan> {
       libelle: `FAQ ${f.slug} (${f.status})`,
       champs,
       remplacements: champs.length,
+      fragments: [],
       urls: [`/fr/faq/${f.slug}`],
     });
   }
@@ -208,26 +240,52 @@ export async function construirePlan(): Promise<Plan> {
        OR t.body_json::text ~ ${LIBELLES_CTA_SQL}`);
   for (const t of articles) {
     const champs: Champ[] = [];
-    let n = 0;
+    const fragments: Ligne["fragments"] = [];
+    const comptes: Record<string, number> = {};
+    const cleT = `article_translations:${t.id}`;
+    // Ce qui reste APRÈS retrait et ressemble encore à un bouton avec montant : à revoir
+    // (y compris pour une ligne où rien n'est réécrit).
+    const signaler = (colonne: string, texteApres: string | null, fenetre: number): void => {
+      for (const sus of ctaSuspects(texteApres, fenetre))
+        aRevoir.push(
+          `${cleT} (${t.slug} [${t.locale}] ${t.status}) ${colonne} : bouton non reconnu « ${extrait(sus)} »`,
+        );
+    };
     const b = retirerMontantCta(t.body);
+    comptes.body = b.remplacements;
     if (b.remplacements > 0) {
       champs.push({ colonne: "body", avant: t.body, apres: b.texte });
-      n += b.remplacements;
+      for (const fr of b.fragments) fragments.push({ ...fr, colonne: "body" });
     }
+    signaler("body", b.texte, 60);
     if (t.bodyText !== null) {
       const x = retirerMontantCta(t.bodyText);
+      comptes.body_text = x.remplacements;
       if (x.remplacements > 0) {
         champs.push({ colonne: "body_text", avant: t.bodyText, apres: x.texte });
-        n += x.remplacements;
+        for (const fr of x.fragments) fragments.push({ ...fr, colonne: "body_text" });
       }
+      signaler("body_text", x.texte, 60);
     }
     if (t.bodyJson !== null && t.bodyJson !== undefined) {
       const j = retirerMontantCtaJson(t.bodyJson);
+      comptes.body_json = j.remplacements;
       if (j.remplacements > 0) {
         champs.push({ colonne: "body_json", avant: t.bodyJson, apres: j.valeur });
-        n += j.remplacements;
+        for (const fr of j.fragments) fragments.push({ ...fr, colonne: "body_json" });
       }
+      // Fenêtre large : un bouton peut être découpé en plusieurs nœuds.
+      signaler("body_json", texteJson(j.valeur), 160);
     }
+    const n = fragments.length;
+    if (new Set(Object.values(comptes)).size > 1)
+      notes.push(
+        `${cleT} (${t.slug}) : nombre de boutons différent selon la colonne (${Object.entries(
+          comptes,
+        )
+          .map(([c, v]) => `${c}=${v}`)
+          .join(", ")})`,
+      );
     if (champs.length === 0) continue;
     const slugFr = t.slugFr ?? (t.locale === "fr" ? t.slug : null);
     const urls: string[] = [];
@@ -243,6 +301,7 @@ export async function construirePlan(): Promise<Plan> {
       libelle: `Article ${t.slug} [${t.locale}] statut ${t.status}${t.isNews ? " actualité" : ""} — ${extraitCta(t.body)}`,
       champs,
       remplacements: n,
+      fragments,
       urls,
     });
   }
@@ -278,16 +337,15 @@ export async function construirePlan(): Promise<Plan> {
     WHERE faq_json::text ~ ${LIBELLES_CTA_SQL} OR direct_answer ~ ${LIBELLES_CTA_SQL}
        OR key_takeaway ~ ${LIBELLES_CTA_SQL}`);
   for (const a of articlesRevoir) {
-    if (a.faqJson != null && jsonContientCtaAvecMontant(a.faqJson))
-      aRevoir.push(`articles:${a.id} (${a.status}) faq_json : « ${extraitCta(a.faqJson)} »`);
-    if (contientCtaAvecMontant(a.directAnswer))
-      aRevoir.push(
-        `articles:${a.id} (${a.status}) direct_answer : « ${extraitCta(a.directAnswer)} »`,
-      );
-    if (contientCtaAvecMontant(a.keyTakeaway))
-      aRevoir.push(
-        `articles:${a.id} (${a.status}) key_takeaway : « ${extraitCta(a.keyTakeaway)} »`,
-      );
+    const champsA: Array<[string, string | null]> = [
+      ["faq_json", a.faqJson == null ? null : texteJson(a.faqJson)],
+      ["direct_answer", a.directAnswer],
+      ["key_takeaway", a.keyTakeaway],
+    ];
+    // Tout libellé suivi d'un montant (ancien ou non) : jamais écrit ici, toujours signalé.
+    for (const [champ, v] of champsA)
+      for (const sus of ctaSuspects(v, 160))
+        aRevoir.push(`articles:${a.id} (${a.status}) ${champ} : « ${extrait(sus)} »`);
   }
 
   // 4. URL à purger : pages FAQ (les fiches affichent des FAQ liées) + articles touchés.
@@ -417,7 +475,7 @@ async function appliquer(lignes: Ligne[]): Promise<{ ecrites: number; perdues: s
           l.champs.map((c) => ({ colonne: c.colonne, nouvelle: c.apres, condition: c.avant })),
         );
         if (n !== 1) throw new ChangeEntreTemps(); // annule aussi l'audit log
-      });
+      }, DELAIS_TX);
       ecrites++;
     } catch (err) {
       if (err instanceof ChangeEntreTemps) {
@@ -504,7 +562,7 @@ async function restaurer(): Promise<{ restaures: number; divergences: string[]; 
             description: DESCRIPTION,
           },
         });
-      });
+      }, DELAIS_TX);
       restaures++;
     } catch (err) {
       if (err instanceof ChangeEntreTemps) {
@@ -561,6 +619,15 @@ function rapport(mode: Mode, plan: Plan, sha: string): string {
     out.push(
       `- ${l.cle} — ${l.libelle} — colonnes : ${l.champs.map((c) => c.colonne).join(", ")} — remplacements : ${l.remplacements}`,
     );
+    if (l.table === "faqs") {
+      for (const c of l.champs)
+        out.push(`  - ${c.colonne} : « ${String(c.avant)} » → « ${String(c.apres)} »`);
+    } else {
+      for (const f of l.fragments)
+        out.push(
+          `  - ${f.colonne} : « ${f.avant} » → « ${f.apres} » (suite : « ${extrait(f.suite, 30)} »)`,
+        );
+    }
   }
   out.push("", "## À revoir (jamais écrit automatiquement)");
   for (const r of plan.aRevoir) out.push(`- ${r}`);
@@ -598,7 +665,8 @@ async function main(): Promise<void> {
   for (const n of plan.notes) console.log(`note : ${n}`);
   for (const r of plan.aRevoir) console.log(`à revoir → ${r}`);
   if (o.rapport) fs.writeFileSync(o.rapport, rapport(o.mode, plan, sha));
-  if (o.urls) fs.writeFileSync(o.urls, `${plan.urls.join("\n")}\n`);
+  // En apply, la liste d'URL n'est écrite qu'APRÈS écriture : un apply refusé ne purge rien.
+  if (o.urls) fs.writeFileSync(o.urls, o.mode === "dry-run" ? `${plan.urls.join("\n")}\n` : "");
 
   if (o.mode === "dry-run") {
     console.log("Essai à blanc : RIEN n'a été écrit en base.");
@@ -610,8 +678,10 @@ async function main(): Promise<void> {
     console.error(`Le plan a changé depuis le dry-run (PLAN_SHA recalculé ${sha}) : apply refusé.`);
     process.exit(3);
   }
-  if (o.sansControleSauvegarde) console.log("⚠ contrôle de sauvegarde sauté (copie jetable).");
-  else await exigerSauvegarde();
+  if (o.sansControleSauvegarde) {
+    exigerCopieJetable(process.env.DATABASE_URL);
+    console.log("⚠ contrôle de sauvegarde sauté (copie jetable).");
+  } else await exigerSauvegarde();
   fs.writeFileSync(
     o.sauvegarde!,
     JSON.stringify(
@@ -627,6 +697,7 @@ async function main(): Promise<void> {
   console.log(`Sauvegarde des valeurs d'origine : ${o.sauvegarde}`);
   const r = await appliquer(plan.lignes);
   console.log(`Écrites : ${r.ecrites}/${plan.lignes.length}`);
+  if (o.urls && r.ecrites > 0) fs.writeFileSync(o.urls, `${plan.urls.join("\n")}\n`);
   if (r.perdues.length > 0) {
     console.error(`${r.perdues.length} ligne(s) ont changé entre-temps : relancer un dry-run.`);
     process.exitCode = 4;

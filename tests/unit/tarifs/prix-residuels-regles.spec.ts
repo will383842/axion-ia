@@ -10,7 +10,9 @@ import {
   FAQ_CIBLES,
   contientCtaAvecMontant,
   contientMontant,
+  ctaSuspects,
   planifierFaq,
+  texteJson,
   retirerMontantCta,
   retirerMontantCtaJson,
 } from "../../../scripts/tarifs/prix-residuels-regles";
@@ -85,7 +87,7 @@ describe("CTA d'article : le montant part, le libellé reste", () => {
   it("ne touche ni un montant hors CTA, ni 12 450 €, ni un href", () => {
     const html =
       '<p>Budget de 12 450 € par an, soit 490 € HT par mois.</p><a href="/fr/appel?ref=Réserver une formation">Lien</a>';
-    expect(retirerMontantCta(html)).toEqual({ texte: html, remplacements: 0 });
+    expect(retirerMontantCta(html)).toEqual({ texte: html, remplacements: 0, fragments: [] });
   });
 
   it("garde le HTML autour et le reste du texte", () => {
@@ -102,7 +104,7 @@ describe("CTA d'article : le montant part, le libellé reste", () => {
     );
     expect(une.remplacements).toBe(2);
     const deux = retirerMontantCta(une.texte);
-    expect(deux).toEqual({ texte: une.texte, remplacements: 0 });
+    expect(deux).toEqual({ texte: une.texte, remplacements: 0, fragments: [] });
   });
 
   it("parcourt un JSON récursivement et épargne les adresses", () => {
@@ -133,5 +135,64 @@ describe("CTA d'article : le montant part, le libellé reste", () => {
       n: 3,
     });
     expect(retirerMontantCtaJson(r.valeur).remplacements).toBe(0);
+  });
+});
+
+describe("garde-fous : seuls les anciens montants partent, le reste est signalé", () => {
+  it("ne retire JAMAIS 1 490 € (prix public de la Journée IA) et le signale", () => {
+    const t = "Réserver une formation · 1 490 € HT";
+    expect(retirerMontantCta(t)).toEqual({ texte: t, remplacements: 0, fragments: [] });
+    expect(ctaSuspects(t)).toHaveLength(1);
+  });
+
+  it.each([
+    ["Réserver une formation — 2 450 €", "Réserver une formation"],
+    ["Réserver une formation &mdash; 2 450 €", "Réserver une formation"],
+    ["Réserver l&#039;intervention Essentielle · 490 €", "Réserver une formation"],
+  ])("reconnaît %j", (entree, attendu) => {
+    expect(retirerMontantCta(entree).texte).toBe(attendu);
+  });
+
+  it.each([
+    "Réserver une formation à partir de 2 450 €",
+    "<strong>Réserver une formation</strong> · 2 450 €",
+    "Faire faire par Axion-IA · 3 200 €",
+  ])("ne réécrit pas une forme inconnue, mais la signale : %j", (t) => {
+    expect(retirerMontantCta(t).remplacements).toBe(0);
+    expect(ctaSuspects(retirerMontantCta(t).texte)).toHaveLength(1);
+  });
+
+  it("ne signale rien quand il n'y a pas de montant derrière le libellé", () => {
+    expect(ctaSuspects("Réserver une formation, c'est simple.")).toEqual([]);
+    expect(ctaSuspects(null)).toEqual([]);
+  });
+
+  it("rend le fragment avant → après et ce qui suit (« / jour »)", () => {
+    const r = retirerMontantCta("Réserver une formation · 2 450 € / jour");
+    expect(r.fragments).toEqual([
+      {
+        avant: "Réserver une formation · 2 450 €",
+        apres: "Réserver une formation",
+        suite: " / jour",
+      },
+    ]);
+  });
+
+  it("un bouton découpé en deux nœuds JSON n'est pas réécrit, mais signalé", () => {
+    const json = { content: [{ text: "Réserver une formation" }, { text: " · 2 450 €" }] };
+    const r = retirerMontantCtaJson(json);
+    expect(r.remplacements).toBe(0);
+    expect(ctaSuspects(texteJson(r.valeur), 160)).toHaveLength(1);
+  });
+
+  it("FAQ : « from €1,990 » est réécrit ; une réponse différente sans montant est signalée", () => {
+    const cible = FAQ_CIBLES[0]!;
+    const p = planifierFaq(cible.slug, {
+      answerFr: "Texte modifié à la main, sans montant.",
+      answerEn: "Audits start from €1,990.",
+      metaDescription: null,
+    })!;
+    expect(p.ecritures).toEqual({ answerEn: cible.answerEn });
+    expect(p.aRevoir).toEqual(["answer_fr"]);
   });
 });

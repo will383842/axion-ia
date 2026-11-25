@@ -141,7 +141,9 @@ jobs:
   # ═══════════════════════════════════════════════════════════════════════
   prod:
     name: Production (${{ inputs.mode }})
-    if: ${{ inputs.mode != 'copie' }}
+    # Production : seulement depuis `main` (code relu et fusionné). L'essai sur copie, lui, reste
+    # lançable depuis une branche.
+    if: ${{ inputs.mode != 'copie' && github.ref == 'refs/heads/main' }}
     runs-on: ubuntu-latest
     timeout-minutes: 45
     env:
@@ -209,6 +211,9 @@ jobs:
           # DATABASE_URL de production : masquée avant toute utilisation, jamais affichée.
           DBURL=$($SSH "root@${VPS_HOST}" "docker exec ${APP} printenv DATABASE_URL")
           echo "::add-mask::$DBURL"
+          # Le mot de passe seul est masqué aussi (un message d'erreur peut le citer sans l'URL).
+          DBPASS=$(printf '%s' "$DBURL" | sed -nE 's#^[a-zA-Z]+://[^:/@]+:([^@]+)@.*#\1#p')
+          if [ -n "$DBPASS" ]; then echo "::add-mask::$DBPASS"; fi
           LOCAL_DBURL=$(printf '%s' "$DBURL" | sed -E 's#@[^/]+/#@127.0.0.1:15432/#')
           echo "::add-mask::$LOCAL_DBURL"
           export DATABASE_URL="$LOCAL_DBURL"
@@ -244,16 +249,35 @@ jobs:
         run: |
           set -u
           [ -s out/urls.txt ] || { echo "Aucune URL à purger."; exit 0; }
-          if [ -z "${REVALIDATE_SECRET:-}" ]; then echo "::warning::REVALIDATE_SECRET absent — purge ignorée (ISR : 1 h)."; exit 0; fi
+          if [ -z "${REVALIDATE_SECRET:-}" ]; then
+            echo "::error::REVALIDATE_SECRET absent : cache NON purgé (les pages gardent l'ancien texte jusqu'à 1 h)."
+            exit 1
+          fi
           split -l 30 out/urls.txt out/lot-
+          echecs=0
+          # Tous les lots sont tentés ; l'étape échoue à la fin si l'un d'eux n'a pas été purgé.
           for lot in out/lot-*; do
             PATHS=$(jq -Rn '[inputs | select(length>0)]' < "$lot")
-            code=$(curl -sS -o /dev/null -w '%{http_code}' -m 60 -X POST "https://axion-ia.com/api/internal/revalidate" \
+            taille=$(printf '%s' "$PATHS" | jq 'length')
+            : > out/reponse.json
+            code=$(curl -sS -o out/reponse.json -w '%{http_code}' -m 60 -X POST "https://axion-ia.com/api/internal/revalidate" \
               -H "Content-Type: application/json" -H "X-Revalidate-Secret: ${REVALIDATE_SECRET}" \
-              --data "{\"paths\":${PATHS}}" || echo 000)
-            echo "$lot → HTTP $code"
+              --data "{\"paths\":${PATHS}}" || true)
+            configure=$(jq -r '.edge.configured // false' out/reponse.json 2>/dev/null || echo false)
+            purgees=$(jq -r '.edge.purged // 0 | if type == "number" then . else 0 end' out/reponse.json 2>/dev/null || echo 0)
+            echo "$lot → HTTP $code, edge.configured=${configure:-false}, edge.purged=${purgees:-0}/$taille"
+            if [ "$code" != "200" ] || [ "${configure:-false}" != "true" ]; then
+              echecs=$((echecs + 1))
+              echo "::warning::$lot non purgé (HTTP $code, cache de bordure configuré : ${configure:-false})."
+            elif [ "${purgees:-0}" -lt "$taille" ]; then
+              echo "::warning::$lot : ${purgees:-0} URL purgées en bordure sur $taille."
+            fi
             sleep 2
           done
+          if [ "$echecs" -gt 0 ]; then
+            echo "::error::$echecs lot(s) non purgé(s) : relancer la purge ou attendre l'expiration (1 h)."
+            exit 1
+          fi
 
       - name: IndexNow
         if: ${{ (inputs.mode == 'apply' || inputs.mode == 'restore') && !cancelled() }}
