@@ -29,7 +29,7 @@ import { JOURNEE_IA_TIER, formatAmount, formatTierPrice } from "@/content/pricin
 
 /** Le littéral actuel de la garantie, recopié tel qu'il était dans `contenu.ts`. */
 const GARANTIE_ACTUELLE =
-  "À la fin de la journée, vous recevez votre rapport complet : vos gains chiffrés, les tâches à automatiser classées par rentabilité, et votre plan d’action sur 90 jours. Si les gains identifiés ne dépassent pas 3 fois le prix de la journée, nous vous remboursons, sans discussion, sous 30 jours.";
+  "À la fin de la journée, vous recevez votre rapport complet : vos gains chiffrés, les tâches à automatiser classées par rentabilité, et votre plan d’action sur 90 jours. Si les gains identifiés n’atteignent pas 3 fois le prix HT de la journée, nous vous remboursons sous 30 jours.";
 
 const TEXTES_AVEC_JETONS = {
   EN_BREF_ACCUEIL,
@@ -111,13 +111,26 @@ describe("la garantie", () => {
   it("GARANTIE finit par GARANTIE_PHRASE, qui est la phrase de remboursement", () => {
     expect(GARANTIE.endsWith(GARANTIE_PHRASE)).toBe(true);
     expect(GARANTIE_PHRASE).toBe(
-      "Si les gains identifiés ne dépassent pas 3 fois le prix de la journée, nous vous remboursons, sans discussion, sous 30 jours.",
+      "Si les gains identifiés n’atteignent pas 3 fois le prix HT de la journée, nous vous remboursons sous 30 jours.",
     );
+  });
+
+  it("GARANTIE et GARANTIE_PHRASE : « n'atteignent pas », ni « ne dépassent pas » ni « sans discussion »", () => {
+    for (const t of [GARANTIE, GARANTIE_PHRASE]) {
+      expect(t).toContain("n’atteignent pas");
+      expect(t).not.toContain("ne dépassent pas");
+      expect(t).not.toContain("sans discussion");
+    }
+  });
+
+  it("CONDITION_GARANTIE n'exige ni chiffres ni questionnaire", () => {
+    expect(CONDITION_GARANTIE).not.toContain("chiffres");
+    expect(CONDITION_GARANTIE).not.toContain("questionnaire");
   });
 
   it("la condition et le rapport sont ceux décidés", () => {
     expect(CONDITION_GARANTIE).toBe(
-      "Condition : votre équipe est disponible pendant la journée et nous fournit les chiffres demandés.",
+      "Condition : le décideur et les personnes prévues sont présents pendant l’audit.",
     );
     expect(RAPPORT_COMPLET.startsWith("Sous 3 jours ouvrés après la journée")).toBe(true);
   });

@@ -33,7 +33,9 @@ describe("CGV : garantie de la Journée IA (art. 47.10)", () => {
 
   it("l'article 47 ne contient aucun terme interdit ni l'ancien délai de 90 jours", () => {
     const a47 = corps(47);
-    expect(a47).not.toMatch(/Grenoble|gain garanti|validés par vous|sans discussion/i);
+    expect(a47).not.toMatch(
+      /Grenoble|gain garanti|validés par vous|sans discussion|OPCO|financement|prise en charge/i,
+    );
     expect(a47).not.toContain("90 jours");
   });
 
@@ -46,7 +48,6 @@ describe("CGV : garantie de la Journée IA (art. 47.10)", () => {
     const a47 = corps(47);
     expect(a47).toContain("atteint au moins");
     expect(a47).toContain(`${milliers(SEUIL_DEVIS_DEDUCTION_EUR)} euros HT avant déduction`);
-    expect(a47).toContain("avant déduction");
   });
 
   it("legal.ts ne tape pas le seuil du devis de déduction dans l'article 47.7", () => {
@@ -80,6 +81,12 @@ describe("CGV : garantie de la Journée IA (art. 47.10)", () => {
       "le prix de mise en place, par Axion-IA ou par un tiers, n'est pas retiré",
       `majoré de ${MAJORATION_PLANCHER_COUT_HORAIRE_PCT} %`,
       "la déduction est reprise",
+      "dans le total remis à la fin de la journée",
+      "arrondi au centime",
+      "dans les 30 jours suivant cet accord",
+      "À défaut de remise écrite du total",
+      "restituer le remboursement reçu",
+      "les sommes qu'il a lui-même payées au titre de ce prix",
       `${milliers(SEUIL_DEVIS_DEDUCTION_EUR)} euros HT avant déduction`,
     ];
     for (const phrase of phrases) {
@@ -93,6 +100,9 @@ describe("CGV : garantie de la Journée IA (art. 47.10)", () => {
         const a47 = corps(47);
         return a47.slice(a47.indexOf("47.10 Garantie"));
       };
+      it("l'alinéa 47.10 est bien présent", () => {
+        expect(corps(47).indexOf("47.10 Garantie")).toBeGreaterThan(-1);
+      });
       it("ne mentionne aucun questionnaire", () => {
         expect(a4710()).not.toMatch(/questionnaire/i);
       });

@@ -21,15 +21,15 @@ export const JETON_PRIX = "{{PRIX}}";
  * pas passée à `RAPPORT_COMPLET` + `GARANTIE_PHRASE`.
  */
 export const GARANTIE =
-  "À la fin de la journée, vous recevez votre rapport complet : vos gains chiffrés, les tâches à automatiser classées par rentabilité, et votre plan d’action sur 90 jours. Si les gains identifiés ne dépassent pas 3 fois le prix de la journée, nous vous remboursons, sans discussion, sous 30 jours.";
+  "À la fin de la journée, vous recevez votre rapport complet : vos gains chiffrés, les tâches à automatiser classées par rentabilité, et votre plan d’action sur 90 jours. Si les gains identifiés n’atteignent pas 3 fois le prix HT de la journée, nous vous remboursons sous 30 jours.";
 
 /** La seule phrase de remboursement : la fin exacte de `GARANTIE`. */
 export const GARANTIE_PHRASE =
-  "Si les gains identifiés ne dépassent pas 3 fois le prix de la journée, nous vous remboursons, sans discussion, sous 30 jours.";
+  "Si les gains identifiés n’atteignent pas 3 fois le prix HT de la journée, nous vous remboursons sous 30 jours.";
 
 /** La condition de la garantie, mot pour mot. */
 export const CONDITION_GARANTIE =
-  "Condition : votre équipe est disponible pendant la journée et nous fournit les chiffres demandés.";
+  "Condition : le décideur et les personnes prévues sont présents pendant l’audit.";
 
 /** Le rapport, remis sous 3 jours ouvrés (décision de Williams). */
 export const RAPPORT_COMPLET =
