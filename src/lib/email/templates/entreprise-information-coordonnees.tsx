@@ -66,8 +66,12 @@ export const COPY_INFORMATION_COORDONNEES = {
     `Axion-IA a reçu vos coordonnées professionnelles de la part ${a ? `de ${a}` : "d'une personne de notre réseau"}, qui a pensé que nos services pouvaient vous intéresser.`,
   usage: (responsable: string) =>
     `Ces coordonnées servent seulement à pouvoir échanger avec vous si vous le souhaitez. Elles sont traitées par ${responsable}, dont l'adresse figure au bas de ce message.`,
+  baseLegale:
+    "Sur quelle base : notre intérêt légitime à présenter nos services aux professionnels (RGPD, art. 6.1.f), ce message portant sur votre activité professionnelle.",
+  conservation:
+    "Conservation : elles sont gardées tant qu'elles restent exactes et que vous exercez la fonction pour laquelle elles ont été recueillies, et jusqu'à votre opposition ou votre demande d'effacement ; elles sont mises à jour ou effacées dès que nous apprenons qu'elles ne sont plus exactes.",
   droits: (adresse: string) =>
-    `Vos droits : vous pouvez à tout moment demander à y accéder, à les faire rectifier ou effacer, ou vous opposer à leur utilisation. Il suffit de nous écrire à ${adresse}. Tout est détaillé dans notre `,
+    `Vos droits : vous pouvez à tout moment demander à y accéder, à les faire rectifier ou effacer, ou vous opposer à leur utilisation. Il suffit de nous écrire à ${adresse}. Vous pouvez aussi introduire une réclamation auprès de la CNIL. Tout est détaillé dans notre `,
   droitsLien: "politique de confidentialité",
   rienAFaire:
     "Vous n'avez rien à faire : ce message est une simple information, et vous ne recevrez aucune relance.",
@@ -100,6 +104,8 @@ export function EntrepriseInformationCoordonneesEmail({ locale, payload }: Props
       </Text>
       <Text style={emailStyles.paragraphStyle}>{t.origine(texteOuNull(p.nomApporteur) ?? "")}</Text>
       <Text style={emailStyles.paragraphStyle}>{t.usage(EMAIL_LEGAL.legalName)}</Text>
+      <Text style={emailStyles.paragraphStyle}>{t.baseLegale}</Text>
+      <Text style={emailStyles.paragraphStyle}>{t.conservation}</Text>
       <Text style={emailStyles.paragraphStyle}>
         {t.droits(EMAIL_LEGAL.contactEmail)}
         <a
