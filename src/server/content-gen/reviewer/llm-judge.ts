@@ -26,7 +26,6 @@
 // (hardcodé, sans fallback) → poste majeur de consommation Anthropic invisible.
 import { openaiProvider } from "@/server/content-gen/providers/openai";
 import {
-  BLOG_TYPES,
   genererTexteBlogClaude,
   interrupteurBlogClaude,
 } from "@/server/content-gen/providers/blog-claude";
@@ -412,12 +411,11 @@ export async function reviewArticle(
   options: { readonly typeBlog?: string } = {},
 ): Promise<JudgeResult> {
   const userPrompt = buildUserPrompt(article);
-  // Relecture par Claude (Opus) : interrupteur allumé ET contenu de blog seulement
-  // (le marquage des autres types vient dans une PR suivante), ET type encore autorisé
-  // par CONTENT_GEN_CLAUDE_TYPES (sinon la porte refuserait l'appel).
+  // Relecture par Claude (Opus, `claude-opus-5-5`) : interrupteur allumé ET type autorisé
+  // par CONTENT_GEN_CLAUDE_TYPES (blog par défaut, tous les types contenu si listés).
+  // Sinon le juge reste sur OpenAI, comme avant.
   const typeJuge = options.typeBlog ?? article.contentType ?? "";
-  const viaClaude =
-    interrupteurBlogClaude() && BLOG_TYPES.has(typeJuge) && typeClaudeAutorise(typeJuge);
+  const viaClaude = interrupteurBlogClaude() && typeClaudeAutorise(typeJuge);
   const response = viaClaude
     ? await genererTexteBlogClaude(
         {

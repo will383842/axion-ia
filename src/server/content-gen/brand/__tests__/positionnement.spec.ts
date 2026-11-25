@@ -81,7 +81,7 @@ describe("bloc de positionnement", () => {
     }
   });
 
-  it("la Journée IA est annoncée sans prix, sans acompte ni frais de déplacement", () => {
+  it("la Journée IA est annoncée sans prix ni acompte", () => {
     expect(BLOC_POSITIONNEMENT).not.toMatch(/garantie|remboursé/i);
     expect(BLOC_POSITIONNEMENT).not.toMatch(/\d\s*(?:€|euros?)/i);
   });

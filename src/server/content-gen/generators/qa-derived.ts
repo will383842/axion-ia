@@ -60,7 +60,7 @@ Produis une page FAQ détaillée en français optimisée AEO/GEO 2026. Règles a
 - À la première occurrence d'un terme technique, encadre-le avec <dfn> ou <span class="glossary-term" title="définition courte">terme</span>.
 - Quand c'est pertinent (1 à 2 max), utilise un encadré : <aside class="callout callout-warning"><p class="callout-label">Attention</p><p>…</p></aside>. Variantes de classe : callout-info, callout-note, callout-warning, callout-danger.
 - relatedFaq : 4-5 questions similaires fréquentes avec réponses directes de 40-60 mots chacune (2-3 phrases, citables hors contexte).
-- 0 délai chiffré, 0 mention de frais de déplacement, 0 prix en dur.
+- 0 délai chiffré, 0 prix en dur.
 - 0 numéro de téléphone : utiliser uniquement contact@axion-ia.com.
 - INTERDIT (marketing-hype, doctrine §21 — un seul de ces mots fait REJETER le contenu) : « unique », « meilleur », « la meilleure », « leader », « n°1 », « révolutionnaire », « exceptionnel », « incroyable », « incontournable », « garanti », « sans risque », « instantané ». Reste factuel et sobre.
 - "metaTitle": "OBLIGATOIREMENT 50 à 60 caractères (compte les espaces), keyword principal au tout début. NE JAMAIS sous 50 caractères : si trop court, ajoute une précision utile (bénéfice, secteur). NE PAS dépasser 60."
@@ -203,6 +203,7 @@ ${sectionChiffresVerifies()}
         jobId: input.jobId,
         contentType: "qa_derived",
         role: "text",
+        blogClaudeRole: "court",
         systemPrompt: SYSTEM_PROMPT + getIntentPromptAddendum(input.targetSearchIntent),
         userPrompt,
         maxTokens: 2048,

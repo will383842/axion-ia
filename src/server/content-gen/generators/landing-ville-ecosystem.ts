@@ -157,6 +157,7 @@ ${factsContext}
       jobId: `ecosystem-${ville.insee ?? safeVille}-${safeVerticale}`,
       contentType: "landing_ville",
       role: "text",
+      blogClaudeRole: "court",
       systemPrompt,
       userPrompt,
       maxTokens: 800,
