@@ -60,6 +60,7 @@ import { regenererAvoirsSansPiece } from "./manquement";
 import { alerterHorsGrille } from "./hors-grille";
 import { chiffrerPiecesEnClair } from "./pieces-chiffrement";
 import { marquerRealiseesDepuisSessions } from "./realisation";
+import { marquerRealiseesDOffice } from "./realisation-reputee";
 import { commandesSoldees } from "./commandes";
 import { idsPriseDeContactRebondie } from "./rebonds";
 import { urlDossier } from "./jeton";
@@ -241,6 +242,7 @@ type NomEtape =
   | "chiffrement-pieces"
   | "avoirs-sans-piece"
   | "realisation"
+  | "realisation-d-office"
   | "hors-grille"
   | "declarations-sans-reponse"
   | "commandes-a-attribuer";
@@ -248,6 +250,7 @@ type NomEtape =
 const ETAPES_FACTURATION: readonly NomEtape[] = [
   "commissions",
   "realisation",
+  "realisation-d-office",
   "avoirs-clients",
   "autofacturation",
   "avoirs-sans-piece",
@@ -287,6 +290,8 @@ async function passer(
     // Contrat 2.3 (art. 4.2) : une session de formation terminée rend la prestation « réalisée »,
     // juste avant l'autofacturation qui ne prend que les prestations réalisées.
     ["realisation", async () => void (await marquerRealiseesDepuisSessions(maintenant))],
+    // L3b (D3) : réputée réalisée 90 jours après l'encaissement intégral, sauf opposition motivée.
+    ["realisation-d-office", async () => void (await marquerRealiseesDOffice(maintenant))],
     // Art. 4.5 (essai réel du 09/10) : une facture client annulée ou réduite par un avoir réduit,
     // annule, retient ou reprend la commission, AVANT que l'autofacturation ne la facture.
     ["avoirs-clients", async () => void (await reprendreApresAvoirsClients(maintenant))],
