@@ -40,6 +40,9 @@ describe("apporteur-presentation-recue-rendez-vous", () => {
     expect(text).toContain("60 jours");
     expect(text).toContain("jusqu'au 24 janvier 2027");
     expect(text).toContain("rendez-vous");
+    // 60 jours, jour 1 = saisie : le rendez-vous peut être pris jusqu'à la date citée INCLUSE.
+    expect(text.replace(/\s+/g, " ")).toContain("jusqu'à cette date incluse");
+    expect(text).not.toContain("avant cette date");
     expect(html).toContain('data-famille="B"');
   });
 
@@ -47,7 +50,7 @@ describe("apporteur-presentation-recue-rendez-vous", () => {
     const { text } = await rendre(EXEMPLE);
     const lu = text.replace(/\s+/g, " ");
     expect(lu).toContain("dès qu'un premier rendez-vous avec Axion-IA aura eu lieu");
-    expect(lu).toContain("s'il a été pris avant cette date");
+    expect(lu).toContain("s'il a été pris jusqu'à cette date incluse");
     expect(lu).toContain("6 mois");
     expect(lu).toContain("du jour de ce rendez-vous");
     expect(lu).toContain("Un devis signé pendant ces 60 jours compte aussi");

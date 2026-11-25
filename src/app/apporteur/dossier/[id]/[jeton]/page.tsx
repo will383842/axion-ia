@@ -34,6 +34,7 @@ import {
 } from "@/features/apporteurs-reseau/signature";
 
 import { lireDeclarationsDe } from "@/features/apporteurs-reseau/declaration-entreprise";
+import { RESERVATION_PROVISOIRE_JOURS } from "@/features/apporteurs-reseau/regle-attribution";
 import { ID_DOSSIER_EXEMPLE } from "@/features/apporteurs-reseau/jeton";
 
 import { ContratLisible } from "./ContratLisible";
@@ -147,6 +148,7 @@ export default async function DossierApporteurPage({ params }: PageProps) {
           id={dossier.id}
           jeton={jeton}
           protectionMois={PROTECTION_MOIS}
+          reservationJours={RESERVATION_PROVISOIRE_JOURS}
           regle={dossier.regleAttribution ?? null}
         />
         <ListeDeclarations declarations={declarations} />

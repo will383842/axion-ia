@@ -65,7 +65,7 @@ export const COPY_PRESENTATION_RECUE_RENDEZ_VOUS = {
     `Nous avons bien reçu votre présentation de ${e || "l'entreprise"} : elle vous est gardée ${jours} jours${date ? `, jusqu'au ${date}` : " à compter de votre saisie"}.`,
   suiteTitre: "La suite",
   validation: (date: string | null, jours: number, mois: number) =>
-    `Elle sera validée sur votre compte dès qu'un premier rendez-vous avec Axion-IA aura eu lieu, s'il a été pris ${date ? "avant cette date" : `pendant ces ${jours} jours`}. Les ${mois} mois pendant lesquels elle vous est rattachée partent alors du jour de ce rendez-vous.`,
+    `Elle sera validée sur votre compte dès qu'un premier rendez-vous avec Axion-IA aura eu lieu, s'il a été pris ${date ? "jusqu'à cette date incluse" : `pendant ces ${jours} jours`}. Les ${mois} mois pendant lesquels elle vous est rattachée partent alors du jour de ce rendez-vous.`,
   devis: (jours: number) => `Un devis signé pendant ces ${jours} jours compte aussi.`,
   sansRendezVous:
     "Sans rendez-vous pris d'ici là, la réservation s'arrête, sans aucun reproche : vous pourrez nous présenter de nouveau cette entreprise plus tard, après un nouveau contact avec elle.",
