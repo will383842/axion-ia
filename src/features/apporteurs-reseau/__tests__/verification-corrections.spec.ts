@@ -187,7 +187,12 @@ describe("D4 : renvoyer le contrat signé", () => {
     h.lireDossier.mockResolvedValue(dossier({ statut: "signe" }));
     h.appFindUnique.mockResolvedValue({ contratSigneCle: cle });
     const r = await renvoyerContratSigne(ID, new Date("2026-10-05T12:00:00Z"));
-    expect(r).toEqual({ ok: true, message: "Contrat signé renvoyé." });
+    // I3 : la console dit ce qui a été joint (ici aucune annexe n'est déposée sur R2).
+    expect(r).toEqual({
+      ok: true,
+      message:
+        "Contrat signé renvoyé. Pièce jointe : le contrat seul. Non joints (absents ou illisibles sur le stockage) : la fiche des commissions et le livret.",
+    });
     const e = h.envoyer.mock.calls[0]![0];
     expect(e).toMatchObject({
       gabarit: "apporteur-contrat-signe",
@@ -301,6 +306,30 @@ describe("B3 : la contresignature fabrique le PDF depuis le texte archivé à la
     expect(envoi.attachments[0]!.r2Key).toBe(r2.upload.mock.calls[0]![0]);
     expect(envoi.attachments.slice(1).map((a) => a.r2Key)).toEqual(
       DOCUMENTS_ANNEXES.map((d) => d.cleR2),
+    );
+  });
+
+  it("🔴 I3 : le message de la contresignature dit quelles pièces ont été jointes", async () => {
+    r2.annexesPresentes = true;
+    h.appFindUnique.mockResolvedValue({
+      signatureApporteur: signature({ texte: TEXTE_SIGNE }),
+      contratSha256: sha(TEXTE_SIGNE),
+    });
+    expect(await appliquerDecision(ID, "contresigner", null)).toEqual({
+      ok: true,
+      message:
+        "Contrat contresigné et envoyé. Pièces jointes : le contrat, la fiche des commissions et le livret.",
+    });
+  });
+
+  it("🔴 I3 : sans annexe sur R2, le message les nomme comme non jointes", async () => {
+    h.appFindUnique.mockResolvedValue({
+      signatureApporteur: signature({ texte: TEXTE_SIGNE }),
+      contratSha256: sha(TEXTE_SIGNE),
+    });
+    const r = await appliquerDecision(ID, "contresigner", null);
+    expect(r.message).toBe(
+      "Contrat contresigné et envoyé. Pièce jointe : le contrat seul. Non joints (absents ou illisibles sur le stockage) : la fiche des commissions et le livret.",
     );
   });
 

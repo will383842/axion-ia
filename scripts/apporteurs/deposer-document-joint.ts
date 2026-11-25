@@ -4,7 +4,11 @@
  * Les documents annexes (fiche des commissions, livret) partent avec l'e-mail « contrat signé »
  * dès qu'ils existent sur R2, à la clé déclarée dans
  * `src/features/apporteurs-reseau/documents-joints.ts`. Ils ne sont pas dans le dépôt : ce
- * script les dépose, APRÈS relecture par le dirigeant. Déposer à nouveau remplace le document.
+ * script les dépose, APRÈS relecture par le dirigeant. Déposer à nouveau remplace le document ;
+ * la version remplacée est d'abord copiée sous `documents-apporteurs/archives/` (clé datée), pour
+ * pouvoir prouver plus tard quelle version un apporteur a reçue : le journal de chaque e-mail
+ * « contrat signé » note les 16 premiers caractères du sha256 de chaque annexe jointe, et ce
+ * script affiche le sha256 complet du fichier déposé. NOTER ce sha256 avec la date du dépôt.
  *
  * Usage :
  *   pnpm tsx scripts/apporteurs/deposer-document-joint.ts                 # liste les documents et leur état
@@ -18,7 +22,10 @@
  * (l'image n'embarque pas `scripts/`).
  *
  * Pour RETIRER un document (il cesse d'être joint au prochain envoi), supprimer l'objet à sa
- * clé depuis le tableau de bord R2 : ce script ne supprime rien.
+ * clé depuis le tableau de bord R2 : ce script ne supprime rien. Un e-mail déjà en file part
+ * alors sans ce document (pièce facultative : journalisé et signalé, jamais d'échec) ; tant que
+ * le worker en ligne est antérieur à ce comportement, un tel e-mail échoue au contraire après
+ * cinq essais, et se répare par « Renvoyer le contrat signé » depuis la fiche de l'apporteur.
  */
 
 import { createHash } from "node:crypto";
@@ -26,9 +33,10 @@ import { existsSync, readFileSync } from "node:fs";
 
 import {
   DOCUMENTS_ANNEXES,
+  PREFIXE_DOCUMENTS_APPORTEURS,
   TAILLE_MAX_PIECES_OCTETS,
 } from "@/features/apporteurs-reseau/documents-joints";
-import { enteteObjetR2, isR2Configured, uploadToR2 } from "@/lib/r2-storage";
+import { enteteObjetR2, getObjectBufferR2, isR2Configured, uploadToR2 } from "@/lib/r2-storage";
 
 /** Place laissée au contrat lui-même (quelques centaines de Ko) dans le plafond de l'e-mail. */
 const RESERVE_CONTRAT_OCTETS = 1_048_576;
@@ -99,6 +107,18 @@ async function main(): Promise<void> {
   if (!appliquer) {
     console.log("Essai à blanc : rien n'est écrit. Ajoutez --appliquer pour déposer.");
     return;
+  }
+  // La version en place est gardée sous une clé datée AVANT d'être remplacée.
+  const ancien = await getObjectBufferR2(doc.cleR2);
+  if (ancien && ancien.byteLength > 0) {
+    const shaAncien = createHash("sha256").update(ancien).digest("hex");
+    if (shaAncien === sha256) {
+      console.log("Ce fichier est déjà celui qui est déposé (même sha256) : rien à faire.");
+      return;
+    }
+    const cleArchive = `${PREFIXE_DOCUMENTS_APPORTEURS}archives/${doc.id}-${new Date().toISOString().replace(/[:.]/g, "-")}-${shaAncien.slice(0, 16)}.pdf`;
+    await uploadToR2(cleArchive, ancien, "application/pdf", { sha256: shaAncien });
+    console.log(`Version remplacée gardée : ${cleArchive} (sha256 ${shaAncien})`);
   }
   await uploadToR2(doc.cleR2, pdf, "application/pdf", { sha256 });
   const relu = await enteteObjetR2(doc.cleR2);

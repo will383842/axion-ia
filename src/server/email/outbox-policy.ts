@@ -234,7 +234,8 @@ export const LIBELLE_TEMPLATE_EMAIL: Record<string, string> = {
   "apporteur-attribution-confirmee": "Apporteur : attribution confirmée ou protection prolongée",
   "apporteur-releve": "Apporteur : commission facturée et autofacture",
   "apporteur-virement-fait": "Apporteur : virement de commission confirmé",
-  "apporteur-lien-espace": "Apporteur : lien de son espace, à sa demande",
+  "apporteur-lien-espace":
+    "Apporteur : lien de son espace, à sa demande ou envoyé depuis la console",
   "devis-envoi": "Envoi d'un devis",
   "relance-devis-client": "Relance d'un devis sans réponse",
   "convention-envoi": "Envoi d'une convention",

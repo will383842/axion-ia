@@ -25,7 +25,7 @@ import { decryptPii } from "@/lib/pii-crypto";
 import { deleteFromR2, getObjectBufferR2, isR2Configured, uploadToR2 } from "@/lib/r2-storage";
 
 import { empreinte, rendreContratPdf, texteDuContrat, type ValeursContrat } from "./contrat-pdf";
-import { piecesDuContratSigne } from "./documents-joints";
+import { bilanDesPieces, piecesDuContratSigne } from "./documents-joints";
 import { lireDossier, purgerContenuPieces } from "./donnees";
 import { apercu } from "./apercu-envoi";
 import { avecTexteLibre, envoyer, type EnvoiApporteur, type GabaritApporteur } from "./envois";
@@ -483,16 +483,19 @@ export async function appliquerDecision(
         signalerErreurReseau("contresignature : trace de la vérification du nom", err);
       }
     }
+    // Le contrat, toujours ; la fiche des commissions et le livret s'ils sont déposés sur R2.
+    const pieces = await piecesDuContratSigne(cle);
     const r = await envoyer({
       ...prep.envoi,
       jobId: `apporteur-contrat-signe-${apporteurId}`,
-      // Le contrat, toujours ; la fiche des commissions et le livret s'ils sont déposés sur R2.
-      attachments: await piecesDuContratSigne(cle),
+      attachments: pieces,
     });
     return {
       ok: true,
       message:
-        r === "envoye" ? "Contrat contresigné et envoyé." : `Contrat contresigné (e-mail : ${r}).`,
+        r === "envoye"
+          ? `Contrat contresigné et envoyé. ${bilanDesPieces(pieces)}`
+          : `Contrat contresigné (e-mail : ${r}).`,
     };
   }
 
@@ -557,6 +560,7 @@ export async function renvoyerContratSigne(
     select: { contratSigneCle: true },
   });
   if (!a?.contratSigneCle) return { ok: false, message: "Le contrat signé est introuvable." };
+  const pieces = await piecesDuContratSigne(a.contratSigneCle);
   const r = await envoyer({
     destinataire: d.email,
     entityType: "ApporteurReseau",
@@ -564,11 +568,14 @@ export async function renvoyerContratSigne(
     gabarit: "apporteur-contrat-signe",
     payload: { contactName: d.prenom, ...dossierUrlSi(urlDossier(d.id, d.versionLien)) },
     jobId: `apporteur-contrat-signe-${apporteurId}-renvoi-${maintenant.getTime()}`,
-    attachments: await piecesDuContratSigne(a.contratSigneCle),
+    attachments: pieces,
   });
   return {
     ok: true,
-    message: r === "envoye" ? "Contrat signé renvoyé." : `Renvoi préparé (e-mail : ${r}).`,
+    message:
+      r === "envoye"
+        ? `Contrat signé renvoyé. ${bilanDesPieces(pieces)}`
+        : `Renvoi préparé (e-mail : ${r}).`,
   };
 }
 
@@ -591,12 +598,15 @@ export async function preparerLien(apporteurId: string, mot: string | null, text
     return { ok: false as const, message: "Impossible de fabriquer le lien (secret absent)." };
   // Dossier signé (à vérifier ou contresigné) : il n'y a plus rien à compléter, mais l'apporteur
   // peut avoir perdu le lien de son ESPACE (25/11). On envoie le gabarit de « Retrouver mon
-  // espace », tel quel : prénom et lien, ni mot personnel ni texte réécrit (il n'en a pas).
+  // espace » : prénom et lien, ni mot personnel ni texte réécrit (il n'en a pas). `origine`
+  // (champ FACULTATIF, relecture de la PR #2255, I1) dit que l'envoi vient de la console : le
+  // gabarit n'écrit alors ni « comme vous l'avez demandé » ni « si vous n'êtes pas à l'origine ».
+  // Un worker plus ancien ignore ce champ et rend le texte d'avant.
   if (d.statut === "a_verifier" || d.statut === "signe") {
     const envoi: EnvoiApporteur = {
       gabarit: "apporteur-lien-espace",
       destinataire: d.email,
-      payload: { prenom: d.prenom, lien: url },
+      payload: { prenom: d.prenom, lien: url, origine: "console" },
       entityType: "ApporteurReseau",
       entityId: d.id,
     };

@@ -1,4 +1,4 @@
-import { readFileSync } from "node:fs";
+import { readdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 
 import { beforeEach, describe, expect, it, vi } from "vitest";
@@ -19,10 +19,12 @@ vi.mock("@/lib/r2-storage", () => ({
 vi.mock("../signaler", () => ({ signalerErreurReseau: (...a: unknown[]) => h.signaler(...a) }));
 
 import {
+  DELAI_ENTETE_MS,
   DOCUMENTS_ANNEXES,
   NOM_CONTRAT_SIGNE,
   PREFIXE_DOCUMENTS_APPORTEURS,
   TAILLE_MAX_PIECES_OCTETS,
+  bilanDesPieces,
   documentsAnnexesAJoindre,
   pieceContratDeLAccuse,
   piecesDuContratSigne,
@@ -30,6 +32,8 @@ import {
 
 const CLE_CONTRAT = "apporteurs/6f1c2a3b-4d5e-4f60-8a7b-9c0d1e2f3a4b/contrat-v2-signe-abcd.pdf";
 const [FICHE, LIVRET] = DOCUMENTS_ANNEXES;
+/** Une annexe est FACULTATIVE pour le worker : absente à l'envoi, elle n'arrête pas l'e-mail. */
+const ANNEXE = { contentType: "application/pdf", facultative: true } as const;
 
 /** Simule R2 : `tailles` donne la taille de chaque objet présent ; absent = `null`. */
 function r2(tailles: Record<string, number>) {
@@ -73,8 +77,8 @@ describe("documents annexes à joindre", () => {
   it("les deux existent : les deux sont joints, avec le nom montré au destinataire", async () => {
     r2({ [FICHE.cleR2]: 1000, [LIVRET.cleR2]: 2000 });
     expect(await documentsAnnexesAJoindre()).toEqual([
-      { filename: FICHE.nomFichier, r2Key: FICHE.cleR2, contentType: "application/pdf" },
-      { filename: LIVRET.nomFichier, r2Key: LIVRET.cleR2, contentType: "application/pdf" },
+      { ...ANNEXE, filename: FICHE.nomFichier, r2Key: FICHE.cleR2 },
+      { ...ANNEXE, filename: LIVRET.nomFichier, r2Key: LIVRET.cleR2 },
     ]);
   });
 
@@ -95,6 +99,19 @@ describe("documents annexes à joindre", () => {
     h.entete.mockRejectedValue(new Error("réseau"));
     expect(await documentsAnnexesAJoindre()).toEqual([]);
     expect(h.signaler).toHaveBeenCalled();
+  });
+
+  it("R2 ne répond pas : après le délai, rien n'est joint et rien n'est levé", async () => {
+    vi.useFakeTimers();
+    try {
+      h.entete.mockImplementation(() => new Promise(() => undefined));
+      const attendu = documentsAnnexesAJoindre();
+      await vi.advanceTimersByTimeAsync(DELAI_ENTETE_MS * DOCUMENTS_ANNEXES.length + 1);
+      expect(await attendu).toEqual([]);
+      expect(h.signaler).toHaveBeenCalledTimes(DOCUMENTS_ANNEXES.length);
+    } finally {
+      vi.useRealTimers();
+    }
   });
 
   it("R2 non configuré : rien n'est joint, R2 n'est pas interrogé", async () => {
@@ -119,8 +136,8 @@ describe("pièces de l'e-mail « contrat signé »", () => {
     r2({ [CLE_CONTRAT]: 50_000, [FICHE.cleR2]: 1000, [LIVRET.cleR2]: 2000 });
     expect(await piecesDuContratSigne(CLE_CONTRAT)).toEqual([
       { filename: NOM_CONTRAT_SIGNE, r2Key: CLE_CONTRAT, contentType: "application/pdf" },
-      { filename: FICHE.nomFichier, r2Key: FICHE.cleR2, contentType: "application/pdf" },
-      { filename: LIVRET.nomFichier, r2Key: LIVRET.cleR2, contentType: "application/pdf" },
+      { ...ANNEXE, filename: FICHE.nomFichier, r2Key: FICHE.cleR2 },
+      { ...ANNEXE, filename: LIVRET.nomFichier, r2Key: LIVRET.cleR2 },
     ]);
   });
 
@@ -175,5 +192,82 @@ describe("pièce de l'accusé de signature", () => {
       h.signaler.mock.calls.map((c) => c[0]),
     ]);
     expect(ecrit).not.toContain("6f1c2a3b");
+  });
+});
+
+// Relecture de la PR #2255 (I2) : seule la pièce que l'e-mail PROMET est exigée par le worker.
+describe("pièces exigées et pièces facultatives", () => {
+  it("🔴 « contrat signé » : le contrat est exigé, chaque annexe est facultative", async () => {
+    r2({ [CLE_CONTRAT]: 50_000, [FICHE.cleR2]: 1000, [LIVRET.cleR2]: 2000 });
+    const [contrat, ...annexes] = await piecesDuContratSigne(CLE_CONTRAT);
+    expect(contrat).not.toHaveProperty("facultative");
+    expect(annexes).toHaveLength(2);
+    for (const a of annexes) expect(a.facultative).toBe(true);
+  });
+
+  it("🔴 accusé : son texte ne promet aucune pièce, le contrat joint y est facultatif", async () => {
+    r2({ [CLE_CONTRAT]: 50_000 });
+    expect((await pieceContratDeLAccuse(CLE_CONTRAT))[0]?.facultative).toBe(true);
+  });
+});
+
+// Relecture de la PR #2255 (I3) : la console dit quelles pièces ont été mises dans l'e-mail.
+describe("bilan des pièces, dit à la console", () => {
+  const contrat = {
+    filename: NOM_CONTRAT_SIGNE,
+    r2Key: CLE_CONTRAT,
+    contentType: "application/pdf",
+  };
+  const fiche = { ...ANNEXE, filename: FICHE.nomFichier, r2Key: FICHE.cleR2 };
+  const livret = { ...ANNEXE, filename: LIVRET.nomFichier, r2Key: LIVRET.cleR2 };
+
+  it("tout est joint", () => {
+    expect(bilanDesPieces([contrat, fiche, livret])).toBe(
+      "Pièces jointes : le contrat, la fiche des commissions et le livret.",
+    );
+  });
+
+  it("une annexe manque : elle est nommée", () => {
+    expect(bilanDesPieces([contrat, fiche])).toBe(
+      "Pièces jointes : le contrat et la fiche des commissions. Non joint (absent ou illisible sur le stockage) : le livret.",
+    );
+  });
+
+  it("aucune annexe (état d'aujourd'hui) : le contrat seul, les deux annexes nommées", () => {
+    expect(bilanDesPieces([contrat])).toBe(
+      "Pièce jointe : le contrat seul. Non joints (absents ou illisibles sur le stockage) : la fiche des commissions et le livret.",
+    );
+  });
+});
+
+// Relecture de la PR #2255 (I4) : les annexes ne sortent du stockage que par l'e-mail.
+describe("🔴 les clés des annexes ne sont servies par aucune route", () => {
+  const racine = process.cwd();
+  function fichiers(dossier: string): string[] {
+    return readdirSync(join(racine, dossier), { recursive: true, encoding: "utf-8" })
+      .filter((f) => /\.(ts|tsx)$/.test(f) && !/(__tests__|\.spec\.)/.test(f))
+      .map((f) => join(dossier, f).replace(/\\/g, "/"));
+  }
+
+  it("seuls la déclaration et la contresignature lisent le préfixe ou la liste des annexes", () => {
+    const lecteurs = fichiers("src").filter((f) =>
+      /documents-apporteurs\/|PREFIXE_DOCUMENTS_APPORTEURS|DOCUMENTS_ANNEXES|documents-joints/.test(
+        readFileSync(join(racine, f), "utf-8"),
+      ),
+    );
+    expect(lecteurs.sort()).toEqual([
+      "src/features/apporteurs-reseau/documents-joints.ts",
+      "src/features/apporteurs-reseau/signature.ts",
+      "src/features/apporteurs-reseau/verification.ts",
+    ]);
+  });
+
+  it("aucun code ne lit `R2_PUBLIC_BASE_URL` : le dépôt ne fabrique aucune adresse publique d'objet", () => {
+    const lecteurs = [...fichiers("src"), ...fichiers("scripts")].filter((f) =>
+      readFileSync(join(racine, f), "utf-8")
+        .split("\n")
+        .some((l) => l.includes("R2_PUBLIC_BASE_URL") && !l.trimStart().startsWith("//")),
+    );
+    expect(lecteurs).toEqual([]);
   });
 });

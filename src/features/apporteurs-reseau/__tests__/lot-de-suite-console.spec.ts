@@ -118,8 +118,9 @@ describe("7) « Envoyer le lien du dossier »", () => {
       if (!prep.ok) throw new Error(prep.message);
       expect(prep.envoi.gabarit).toBe("apporteur-lien-espace");
       expect(prep.envoi.destinataire).toBe("claire@exemple.fr");
-      // Charge EXACTE du gabarit existant : prénom et lien, rien d'autre (ni mot, ni texte libre).
-      expect(prep.envoi.payload).toEqual({ prenom: "Claire", lien: prep.url });
+      // Charge du gabarit existant : prénom et lien (ni mot, ni texte libre), plus l'origine
+      // « console » (I1) : l'e-mail ne dit pas « comme vous l'avez demandé » à qui n'a rien demandé.
+      expect(prep.envoi.payload).toEqual({ prenom: "Claire", lien: prep.url, origine: "console" });
       expect(prep.url).toContain(`/apporteur/dossier/${ID}/`);
 
       expect(await envoyerLien(ID, null)).toMatchObject({ ok: true });

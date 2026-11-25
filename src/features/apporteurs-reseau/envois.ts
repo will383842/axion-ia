@@ -79,7 +79,12 @@ export interface EnvoiApporteur {
   entityId: string;
   /** Clé d'idempotence : un même envoi n'est jamais doublé. */
   jobId?: string;
-  attachments?: Array<{ filename: string; r2Key: string; contentType?: string }>;
+  attachments?: Array<{
+    filename: string;
+    r2Key: string;
+    contentType?: string;
+    facultative?: boolean;
+  }>;
 }
 
 // Fonctions communes du module d'envoi « monde » (FAC-1) : ré-exportées, jamais recopiées.
