@@ -181,7 +181,14 @@ export const blogArticleGenerator: Generator = {
     // PH3b — ancrage local (+ pain-matrix si profil commercial) APPENDU APRÈS les
     // directives. No-op (chaîne vide) si flag QUALITY_PROFILES_ENABLED OFF.
     const ph3Aug =
-      buildPh3PromptAugmentation(input) + consigneJourneeIA(topic, input.primaryKeyword);
+      buildPh3PromptAugmentation(input) +
+      consigneJourneeIA(
+        topic,
+        input.primaryKeyword,
+        ...(input.secondaryKeywords ?? []),
+        input.rssItemTitle,
+        input.rssItemSummary,
+      );
 
     type OutlineSection = { h2: string; brief: string };
     type PlanParsed = {

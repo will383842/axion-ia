@@ -1,3 +1,5 @@
+import { readFileSync } from "node:fs";
+import { join } from "node:path";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import {
   DELAI_RAPPORT_JOURS_OUVRES,
@@ -15,6 +17,7 @@ import {
 
 afterEach(() => {
   vi.doUnmock("@/content/journee-ia-commun");
+  vi.doUnmock("@/content/pricing");
   vi.resetModules();
 });
 
@@ -66,6 +69,8 @@ describe("fiche Journée IA", () => {
       "payez directement sur le site",
       "annulez sans frais",
       "nos amis grenoblois",
+      "le déplacement est inclus",
+      "journée annulée",
     ];
     for (const t of fautifs) expect(trouveInterdits(t).length, t).toBeGreaterThan(0);
     expect(INTERDITS_JOURNEE_IA).toHaveLength(11);
@@ -109,6 +114,13 @@ describe("fiche Journée IA", () => {
     expect(autre).toContain("1");
     expect(autre).not.toBe(fiche);
     expect(autre).toMatch(/1[\s  ]234/);
-    vi.doUnmock("@/content/pricing");
+  });
+
+  it("est câblée dans les générateurs", () => {
+    const lire = (f: string) => readFileSync(join(__dirname, "../../generators", f), "utf8");
+    expect(lire("blog-article.ts")).toMatch(/consigneJourneeIA\(/);
+    expect(lire("v7-phase8-shared.ts")).toMatch(/consigneJourneeIA\(/);
+    expect(lire("ville-hub-copy.ts")).toContain("consigneJourneeIAForcee()");
+    expect(lire("landing-ville-faq-extended.ts")).toContain("consigneJourneeIAForcee()");
   });
 });

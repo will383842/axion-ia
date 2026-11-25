@@ -36,8 +36,9 @@ export const INTERDITS_JOURNEE_IA: readonly InterditJourneeIA[] = [
   { libelle: "« Grenoble »", motif: /grenobl/ },
   { libelle: "frais de déplacement", motif: /frais de deplacement|frais kilometriques/ },
   {
-    libelle: "« déplacement inclus »",
-    motif: /deplacements? (?:inclus|compris|offerts?)|inclut le deplacement/,
+    libelle: "toute mention du déplacement (« déplacement inclus », offert, pris en charge)",
+    motif:
+      /deplacements? (?:\w+ ){0,2}(?:inclus|compris|offerts?|pris en charge|gratuits?)|inclut le deplacement/,
   },
   {
     libelle: "tout prix barré ou prix « avant »",
@@ -51,7 +52,7 @@ export const INTERDITS_JOURNEE_IA: readonly InterditJourneeIA[] = [
       `(?<!\\d)${SEUIL_GARANTIE_CHIFFRES.replace(/(\d)(?=(\d{3})+$)/g, "$1[ .,]?")}(?!\\d)`,
     ),
   },
-  { libelle: "« aucun gain garanti »", motif: /aucun gain (?:n est |est )?garanti/ },
+  { libelle: "« aucun gain garanti »", motif: /aucun gain (?:n est |est )?(?:jamais )?garanti/ },
   {
     libelle: "des gains garantis ou promis à l'avance",
     motif:
@@ -65,7 +66,7 @@ export const INTERDITS_JOURNEE_IA: readonly InterditJourneeIA[] = [
   { libelle: "tout acompte", motif: /acompte|arrhes/ },
   {
     libelle: "toute condition d'annulation",
-    motif: /annulation|annul(?:er|ez|ee)\b|retractation|report de la journee/,
+    motif: /annulation|annul(?:er|ez|e|ee|es)\b|retractation|report de la journee/,
   },
 ];
 
@@ -90,8 +91,8 @@ export function construireFicheJourneeIA(): string {
   return [
     "FICHE JOURNÉE IA — faits à respecter à la lettre :",
     "- Format : une seule journée en présentiel, dans les locaux de l'entreprise, partout en France.",
-    "- Audience : TPE et PME qui partent de zéro ; aucun prérequis, aucun outil à acheter avant.",
-    `- Prix : prix unique, un seul montant jamais comparé à un autre. À écrire par le jeton \`${JETON_PRIX_JOURNEE_IA}\` (résolu en « ${prix} »), jamais recopié en chiffres.`,
+    "- Audience : TPE et PME qui partent de zéro, sans prérequis.",
+    `- Prix : prix unique, un seul montant jamais comparé à un autre. À écrire par le jeton \`${JETON_PRIX_JOURNEE_IA}\` (résolu au rendu en « ${prix} »), jamais recopié en chiffres.`,
     `- Rapport : remis sous ${DELAI_RAPPORT_JOURS_OUVRES} jours ouvrés après la journée.`,
     `- Garantie : si les gains identifiés dans le rapport n'atteignent pas ${MULTIPLE_GARANTIE} fois le prix HT de la journée, le client est remboursé sur demande écrite. Les gains identifiés sont une estimation du rapport, jamais une promesse. À citer en « ${MULTIPLE_GARANTIE} fois le prix HT », sans montant en euros.`,
     `- ${CONDITION_GARANTIE} Citer cette condition chaque fois que la garantie est citée.`,
@@ -112,6 +113,11 @@ export function sujetTouchelaJourneeIA(
 /** Bloc de consigne (faits + interdits) à appendre au system prompt ; `""` hors sujet. */
 export function consigneJourneeIA(...sujets: ReadonlyArray<string | null | undefined>): string {
   if (!sujetTouchelaJourneeIA(...sujets)) return "";
+  return consigneJourneeIAForcee();
+}
+
+/** Même bloc, sans test du sujet : pour les générateurs dont la consigne cite toujours la Journée IA. */
+export function consigneJourneeIAForcee(): string {
   const interdits = INTERDITS_JOURNEE_IA.map((i) => `  • ${i.libelle}`).join("\n");
   return `\n\n${construireFicheJourneeIA()}\nINTERDITS sur la Journée IA — ne jamais écrire :\n${interdits}\n(Conditions d'annulation, acompte et paiement : renvoyer aux CGV, sans les détailler.)`;
 }

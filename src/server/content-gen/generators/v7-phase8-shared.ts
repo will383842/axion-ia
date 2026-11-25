@@ -172,7 +172,7 @@ export async function runV7Phase8Pipeline(
 
   // PH3b — augmentation pain-matrix + ancrage local APPENDUE APRÈS la brand-voice
   // (jamais en remplacement). No-op (chaîne vide) si flag QUALITY_PROFILES_ENABLED OFF.
-  const systemPromptWithBrandVoice = `${config.systemPromptOverride}\n\n${getBrandVoiceForContentType(config.contentTypeSlug)}${buildPh3PromptAugmentation(input)}${consigneJourneeIA(input.primaryKeyword)}`;
+  const systemPromptWithBrandVoice = `${config.systemPromptOverride}\n\n${getBrandVoiceForContentType(config.contentTypeSlug)}${buildPh3PromptAugmentation(input)}${consigneJourneeIA(input.primaryKeyword, ...(input.secondaryKeywords ?? []), input.rssItemTitle, input.rssItemSummary)}`;
 
   let bestParsed: ParsedOutput | null = null;
   let bestScore = -1;
