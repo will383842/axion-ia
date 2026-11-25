@@ -4,7 +4,7 @@
  * Le hub `/devenir-commercial-ia` mène à la RÉSERVATION (décision de Will, 25/11/2026).
  *
  * Le dossier de 3 minutes faisait perdre trop de monde : chaque bouton « réserver » du hub
- * va à `/fr/appel/apporteur` avec son emplacement dans `?depuis=` (recopié en `utm_content`,
+ * va à `/fr/appel/apporteur` avec son emplacement dans `?depuis=` (suivi par la réservation :
  * forme acceptée par `lireDepuis`). La page `/candidature` reste en place (liens de relance
  * e-mail) mais le hub n'y renvoie plus.
  */

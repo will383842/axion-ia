@@ -603,7 +603,7 @@ export function SectionsPrincipale({ p, faq }: { p: Chiffres; faq?: ReactNode })
               <span className="n" aria-hidden="true">
                 2
               </span>
-              Un échange de 15 minutes en visio, pour faire connaissance et lire le contrat
+              Un échange de 15 minutes en visio, pour faire connaissance et répondre à vos questions
             </li>
             <li>
               <span className="n" aria-hidden="true">
