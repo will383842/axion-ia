@@ -1,0 +1,279 @@
+name: Retrait des prix résiduels (FAQ + boutons d'articles)
+
+# Retire de la base de production les derniers anciens prix affichés sur axion-ia.com
+# (règle : seul prix public = Journée IA 1 490 € HT, le reste « sur devis »).
+# Script : `scripts/tarifs/retrait-prix-residuels.ts`. Règles pures : `scripts/tarifs/prix-residuels-regles.ts`
+# (testées : `tests/unit/tarifs/prix-residuels-regles.spec.ts`).
+# Périmètre : 2 FAQ (`combien-coute-audit`, `qu-est-ce-qu-une-implementation`) et les boutons d'appel à
+# l'action des articles (« Réserver une formation · 2 450 € » devient « Réserver une formation »).
+# Jamais écrit : statut, slug, indexation. Aucun DELETE. Les autres occurrences sont listées « à revoir ».
+#
+# 🔴 DÉCLENCHEMENT MANUEL SEULEMENT (workflow_dispatch). Rien ne tourne seul, jamais.
+#
+# Ordre d'emploi, un mode à la fois :
+#   1. copie    → restaure la dernière sauvegarde R2 dans un Postgres JETABLE du runner, y joue
+#                 dry-run → apply → plan vide → restore → dry-run. La production n'est pas touchée.
+#   2. dry-run  → lit la base de PRODUCTION (lecture seule), publie le rapport, affiche PLAN_SHA.
+#   3. apply    → écrit en production, avec `plan_sha` (empreinte lue à l'étape 2 : refus si elle
+#                 diffère) ET une sauvegarde Postgres de moins de 24 h. Relit ensuite le plan
+#                 (doit être vide), purge le cache par lots de 30 URL, puis IndexNow.
+#   4. restore  → remet les valeurs d'origine (seulement si la valeur actuelle est celle écrite),
+#                 purge le cache et IndexNow.
+#
+# Accès à la production : tunnel SSH vers la base (secret `VPS_SSH_KEY`), comme `seed-kb-manual.yml`.
+# La DATABASE_URL est lue dans le conteneur, masquée, et n'est jamais affichée.
+
+on:
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: "copie (essai sur une copie) | dry-run (prod, lecture) | apply (prod, écrit) | restore (prod)"
+        required: true
+        default: "copie"
+        type: choice
+        options: ["copie", "dry-run", "apply", "restore"]
+      plan_sha:
+        description: "apply seulement : empreinte PLAN_SHA lue lors du dry-run"
+        required: false
+        default: ""
+        type: string
+
+permissions:
+  contents: read
+
+concurrency:
+  group: retrait-prix-residuels
+  cancel-in-progress: false
+
+jobs:
+  # ═══════════════════════════════════════════════════════════════════════
+  # copie — Postgres éphémère du runner. AUCUN accès à la production.
+  # ═══════════════════════════════════════════════════════════════════════
+  copie:
+    name: Essai sur une copie (R2 → Postgres éphémère)
+    if: ${{ inputs.mode == 'copie' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    services:
+      postgres:
+        image: pgvector/pgvector:pg16
+        env:
+          POSTGRES_USER: axionia_copie
+          POSTGRES_PASSWORD: copie
+          POSTGRES_DB: axionia_copie
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    env:
+      DATABASE_URL: postgresql://axionia_copie:copie@localhost:5432/axionia_copie
+      SKIP_ENV_VALIDATION: "true"
+    steps:
+      - uses: actions/checkout@v6
+      - uses: pnpm/action-setup@v5
+        with:
+          version: 10.33.4
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm prisma:generate
+      - name: Install aws-cli
+        run: aws --version 2>/dev/null || (sudo apt-get update && sudo apt-get install -y awscli)
+      - name: Restaurer la dernière sauvegarde dans la copie
+        env:
+          R2_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY_ID }}
+          R2_SECRET_ACCESS_KEY: ${{ secrets.R2_SECRET_ACCESS_KEY }}
+          R2_ENDPOINT: ${{ secrets.R2_ENDPOINT }}
+          R2_BUCKET_NAME: ${{ secrets.R2_BUCKET_NAME }}
+          BACKUP_ENCRYPTION_PASSPHRASE: ${{ secrets.BACKUP_ENCRYPTION_PASSPHRASE }}
+        run: |
+          set -euo pipefail
+          chmod +x scripts/restore-postgres-test-r2.sh scripts/backup-lib.sh
+          DATABASE_URL_TEST="$DATABASE_URL" bash scripts/restore-postgres-test-r2.sh
+      - name: 1/5 dry-run sur la copie
+        run: |
+          set -euo pipefail
+          mkdir -p out
+          pnpm tsx scripts/tarifs/retrait-prix-residuels.ts --dry-run \
+            --report=out/rapport-1-dry-run.md --urls=out/urls-1.txt | tee out/dry-run.log
+          echo "PLAN_SHA=$(grep -o 'PLAN_SHA=[0-9a-f]*' out/dry-run.log | head -1 | cut -d= -f2)" >> "$GITHUB_ENV"
+      - name: 2/5 apply sur la copie
+        run: |
+          set -euo pipefail
+          pnpm tsx scripts/tarifs/retrait-prix-residuels.ts --apply --plan-sha="$PLAN_SHA" \
+            --sans-controle-sauvegarde --sauvegarde=out/sauvegarde-copie.json \
+            --report=out/rapport-2-apply.md --urls=out/urls-2.txt
+      - name: 3/5 vérification — le plan est vide après apply (idempotence)
+        run: |
+          set -euo pipefail
+          pnpm tsx scripts/tarifs/retrait-prix-residuels.ts --dry-run \
+            --report=out/rapport-3-apres-apply.md --urls=out/urls-3.txt | tee out/apres-apply.log
+          grep -qx "à réécrire : 0" out/apres-apply.log || { echo "::error::Le plan n'est pas vide après apply : règles non idempotentes."; exit 1; }
+      - name: 4/5 restore sur la copie
+        run: |
+          set -euo pipefail
+          pnpm tsx scripts/tarifs/retrait-prix-residuels.ts --restore \
+            --report=out/rapport-4-restore.md --urls=out/urls-4.txt | tee out/restore.log
+      - name: 5/5 le plan d'origine est revenu à l'identique
+        run: |
+          set -euo pipefail
+          pnpm tsx scripts/tarifs/retrait-prix-residuels.ts --dry-run \
+            --report=out/rapport-5-apres-restore.md --urls=out/urls-5.txt | tee out/apres-restore.log
+          grep -q "PLAN_SHA=$PLAN_SHA" out/apres-restore.log || { echo "::error::Après restore, le plan diffère de l'essai initial."; exit 1; }
+          echo "✓ Copie : dry-run → apply → plan vide → restore → plan d'origine."
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: retrait-prix-residuels-copie
+          path: |
+            out/rapport-*.md
+            out/urls-*.txt
+            out/sauvegarde-copie.json
+          retention-days: 14
+
+  # ═══════════════════════════════════════════════════════════════════════
+  # prod — tunnel SSH vers la base (comme seed-kb-manual.yml)
+  # ═══════════════════════════════════════════════════════════════════════
+  prod:
+    name: Production (${{ inputs.mode }})
+    if: ${{ inputs.mode != 'copie' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    env:
+      VPS_HOST: 178.105.55.15
+      PG_CONTAINER: u7zlql3bpb1xy5t4kg6jnvpm
+      SKIP_ENV_VALIDATION: "true"
+      BULLMQ_DISABLED: "true"
+    steps:
+      - uses: actions/checkout@v6
+
+      # Les entrées d'un workflow_dispatch sont du texte fourni par l'appelant : jamais interpolées
+      # dans un script shell (passées par `env:`), et validées avant usage.
+      - name: Valider les entrées
+        env:
+          MODE: ${{ inputs.mode }}
+          PLAN_SHA: ${{ inputs.plan_sha }}
+        run: |
+          set -euo pipefail
+          printf '%s' "$MODE" | grep -Eq '^(dry-run|apply|restore)$' || { echo "::error::mode invalide."; exit 1; }
+          if [ -n "$PLAN_SHA" ] && ! printf '%s' "$PLAN_SHA" | grep -Eq '^[0-9a-f]{64}$'; then
+            echo "::error::plan_sha : 64 caractères hexadécimaux."
+            exit 1
+          fi
+          if [ "$MODE" = "apply" ] && [ -z "$PLAN_SHA" ]; then
+            echo "::error::apply exige plan_sha, lu dans la sortie du dry-run."
+            exit 1
+          fi
+
+      - uses: pnpm/action-setup@v5
+        with:
+          version: 10.33.4
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm prisma:generate
+
+      - name: Setup SSH key
+        env:
+          VPS_SSH_KEY: ${{ secrets.VPS_SSH_KEY }}
+        run: |
+          set -euo pipefail
+          if [ -z "${VPS_SSH_KEY:-}" ]; then echo "::error::Secret VPS_SSH_KEY manquant."; exit 1; fi
+          mkdir -p ~/.ssh
+          # tr -d '\r' : clé stockée en CRLF (envoi depuis Windows) = « error in libcrypto ».
+          printf '%s\n' "$VPS_SSH_KEY" | tr -d '\r' > ~/.ssh/id_vps
+          chmod 600 ~/.ssh/id_vps
+
+      # Tunnel + exécution dans UNE seule étape (le tunnel vit autant que l'étape).
+      - name: Exécuter (${{ inputs.mode }})
+        env:
+          MODE: ${{ inputs.mode }}
+          PLAN_SHA: ${{ inputs.plan_sha }}
+        timeout-minutes: 30
+        run: |
+          set -euo pipefail
+          SSH="ssh -i $HOME/.ssh/id_vps -o BatchMode=yes -o StrictHostKeyChecking=accept-new -o ConnectTimeout=15"
+
+          PGIP=$($SSH "root@${VPS_HOST}" "docker inspect ${PG_CONTAINER} -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}'")
+          [ -n "$PGIP" ] || { echo "::error::IP du conteneur Postgres introuvable."; exit 1; }
+          APP=$($SSH "root@${VPS_HOST}" "for C in \$(docker ps --format '{{.Names}}'); do docker exec \$C sh -lc 'test -f package.json && grep -q axion-ia package.json' 2>/dev/null && echo \$C && break; done")
+          [ -n "$APP" ] || { echo "::error::Conteneur applicatif introuvable."; exit 1; }
+
+          # DATABASE_URL de production : masquée avant toute utilisation, jamais affichée.
+          DBURL=$($SSH "root@${VPS_HOST}" "docker exec ${APP} printenv DATABASE_URL")
+          echo "::add-mask::$DBURL"
+          LOCAL_DBURL=$(printf '%s' "$DBURL" | sed -E 's#@[^/]+/#@127.0.0.1:15432/#')
+          echo "::add-mask::$LOCAL_DBURL"
+          export DATABASE_URL="$LOCAL_DBURL"
+
+          $SSH -o ExitOnForwardFailure=yes -f -N -L 15432:"${PGIP}":5432 "root@${VPS_HOST}"
+          sleep 3
+
+          mkdir -p out
+          RUN="pnpm exec tsx scripts/tarifs/retrait-prix-residuels.ts"
+          case "$MODE" in
+            dry-run)
+              $RUN --dry-run --report=out/rapport.md --urls=out/urls.txt 2>&1 | tee out/run.log
+              ;;
+            apply)
+              # La sauvegarde Postgres < 24 h est exigée par le script lui-même, AVANT toute écriture.
+              $RUN --apply --plan-sha="$PLAN_SHA" --sauvegarde=out/sauvegarde-avant.json \
+                --report=out/rapport.md --urls=out/urls.txt 2>&1 | tee out/run.log
+              # Le plan relu APRÈS écriture doit être vide (lecture seule, rapport à part).
+              $RUN --dry-run --report=out/rapport-apres-apply.md --urls=out/urls-apres-apply.txt 2>&1 | tee out/apres-apply.log
+              grep -qx "à réécrire : 0" out/apres-apply.log || { echo "::error::Le plan n'est pas vide après apply."; exit 1; }
+              ;;
+            restore)
+              $RUN --restore --report=out/rapport.md --urls=out/urls.txt 2>&1 | tee out/run.log
+              ;;
+          esac
+          grep -o 'PLAN_SHA=[0-9a-f]*' out/run.log | head -1 >> "$GITHUB_STEP_SUMMARY" || true
+
+      # Purge du cache : par lots de 30 (limite de /api/internal/revalidate : 60/min), après apply ET restore.
+      - name: Purger le cache (lots de 30, pause de 2 s)
+        if: ${{ (inputs.mode == 'apply' || inputs.mode == 'restore') && !cancelled() }}
+        env:
+          REVALIDATE_SECRET: ${{ secrets.REVALIDATE_SECRET }}
+        run: |
+          set -u
+          [ -s out/urls.txt ] || { echo "Aucune URL à purger."; exit 0; }
+          if [ -z "${REVALIDATE_SECRET:-}" ]; then echo "::warning::REVALIDATE_SECRET absent — purge ignorée (ISR : 1 h)."; exit 0; fi
+          split -l 30 out/urls.txt out/lot-
+          for lot in out/lot-*; do
+            PATHS=$(jq -Rn '[inputs | select(length>0)]' < "$lot")
+            code=$(curl -sS -o /dev/null -w '%{http_code}' -m 60 -X POST "https://axion-ia.com/api/internal/revalidate" \
+              -H "Content-Type: application/json" -H "X-Revalidate-Secret: ${REVALIDATE_SECRET}" \
+              --data "{\"paths\":${PATHS}}" || echo 000)
+            echo "$lot → HTTP $code"
+            sleep 2
+          done
+
+      - name: IndexNow
+        if: ${{ (inputs.mode == 'apply' || inputs.mode == 'restore') && !cancelled() }}
+        env:
+          INDEXNOW_KEY: ${{ secrets.INDEXNOW_KEY }}
+        run: |
+          set -u
+          [ -s out/urls.txt ] || exit 0
+          if [ -z "${INDEXNOW_KEY:-}" ]; then echo "::notice::INDEXNOW_KEY absent — IndexNow ignoré."; exit 0; fi
+          LIST=$(jq -Rn '[inputs | select(length>0) | "https://axion-ia.com" + .]' < out/urls.txt)
+          curl -sS -o /dev/null -w 'IndexNow HTTP %{http_code}\n' -m 30 -X POST "https://api.indexnow.org/indexnow" \
+            -H "Content-Type: application/json; charset=utf-8" \
+            --data "{\"host\":\"axion-ia.com\",\"key\":\"${INDEXNOW_KEY}\",\"urlList\":${LIST}}" || true
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: retrait-prix-residuels-${{ inputs.mode }}
+          path: |
+            out/rapport*.md
+            out/urls.txt
+            out/sauvegarde-avant.json
+          retention-days: 14
