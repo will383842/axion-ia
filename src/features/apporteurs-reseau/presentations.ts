@@ -47,7 +47,11 @@ import { type ReservationProvisoire, reservationOccupe } from "./regle-attributi
 import { ajouterMois, finDeProtection } from "./regles";
 import { validationParRendezVousActive } from "./interrupteur-rendez-vous";
 import { finReservation, regleDe } from "./regle-attribution";
-import { enregistrerReservation, lireReservations } from "./reservation-presentation";
+import {
+  enregistrerReservation,
+  lireReservations,
+  versProvisoire,
+} from "./reservation-presentation";
 import { annoncerAttribution } from "./attribution-annonce";
 
 // ── Signalements avant de répondre ───────────────────────────────────────
@@ -271,7 +275,7 @@ export async function creerPresentation(
   // saisie console ne doit pas ouvrir une seconde réservation de 30 jours.
   const siennes = await prisma.presentationEntreprise.findMany({
     where: { apporteurId: s.apporteurId, siren, statut: { in: ["reservee", "confirmee"] } },
-    select: { id: true, statut: true, protegeeJusquAt: true },
+    select: { id: true, statut: true, protegeeJusquAt: true, recueAt: true },
   });
   // Contrat 2.6 : par établissement — un AUTRE établissement de la même entreprise se déclare.
   const etabs = await lireEtablissements(siennes.map((p) => p.id));
@@ -286,7 +290,7 @@ export async function creerPresentation(
   if (
     siennes.some(
       (p) =>
-        presentationOccupe(p, maintenant, reservations.get(p.id)) &&
+        presentationOccupe(p, maintenant, versProvisoire(reservations.get(p.id), p.recueAt)) &&
         memePerimetre(moi, etabs.get(p.id)!),
     )
   ) {
@@ -512,7 +516,9 @@ export function existeDeclarationPlusAncienne(
       presentationOccupe(
         { statut: a.statut, protegeeJusquAt: a.protegeeJusquAt ?? null },
         maintenant,
-        a.reservation,
+        a.reservation
+          ? { recueAt: a.recueAt ?? new Date(0), reserveeJusquAt: a.reservation.reserveeJusquAt }
+          : null,
       ),
   );
 }
