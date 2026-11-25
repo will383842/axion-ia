@@ -246,7 +246,7 @@ export const TOURNEFEUILLE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Tournefeuille ?",
-      a: "Le diagnostic et les sessions clés se font sur site ; le suivi se poursuit en visio. La proximité de Toulouse (15 min) permet des déplacements rapides, dont les frais sont indiqués séparément et en toute transparence.",
+      a: "Le diagnostic et les sessions clés se font sur site ; le suivi se poursuit en visio. La proximité de Toulouse (15 min) permet des déplacements rapides.",
     },
   ],
 };

@@ -15,6 +15,7 @@
 // Rendu à la demande (`force-dynamic`), jamais au build : `lireDossierParLien` refuse
 // lui-même la base factice (contrat `stub.invalid`, `AGENTS.md`).
 
+import { lireResiliationEnCours } from "@/features/apporteurs-reseau/resiliation";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
@@ -124,12 +125,14 @@ export default async function DossierApporteurPage({ params }: PageProps) {
     const declarations = await lireDeclarationsDe(dossier.id);
     // Les attestations ne sont « demandées » qu'à l'approche du seuil : avant, pas de dépôt proposé.
     const vigilance = await vigilanceDemandeeA(dossier.id);
+    // Préavis de résiliation en cours (lot L1b) : une ligne d'information, rien à faire.
+    const fin = await lireResiliationEnCours(dossier.id);
     return (
       <Coquille titre={titre}>
         <EcranEtat
           pastilleTexte={TEXTES.signePastille}
           titre={TEXTES.signeTitre}
-          ligne={vigilance ? TEXTES.signeLigneVigilance : TEXTES.signeLigne}
+          ligne={`${vigilance ? TEXTES.signeLigneVigilance : TEXTES.signeLigne}${fin ? ` ${TEXTES.preavisLigne(fin.dernierJourLe)}` : ""}`}
           succes
         >
           {dossier.aContratSigne ? (

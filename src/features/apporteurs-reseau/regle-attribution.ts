@@ -96,7 +96,7 @@ export function rendezVousRecevable(e: {
   prisAt: Date;
   tenuAt: Date | null;
   /**
-   * Date à laquelle AXION IA a annulé ce rendez-vous : il est alors RÉPUTÉ TENU à cette date (Axion
+   * Date à laquelle AXION IA a annulé ce rendez-vous : il est alors RÉPUTÉ TENU à la date à laquelle il était FIXÉ (contrat 2.8, art. 3.2), et cette date doit être passée (Axion
    * ne peut pas empêcher une validation en annulant). Une annulation, une absence ou un report
    * par l'ENTREPRISE ne se transmet JAMAIS ici : il ne valide pas. Le silence d'Axion non plus.
    */
@@ -138,4 +138,24 @@ export function reservationOccupe(r: ReservationProvisoire, maintenant: Date): b
   const pris = r.rendezVousEnAttentePrisAt?.getTime();
   if (pris === undefined) return false;
   return !(pris < r.recueAt.getTime()) && !(pris > r.reserveeJusquAt.getTime());
+}
+
+/**
+ * La réservation d'une présentation, telle que la lisent les gardes d'occupation (`reservationOccupe`) :
+ * la saisie (`recueAt`), le terme, et la prise d'un rendez-vous encore à tenir. `null` sans ligne.
+ */
+export function versReservationProvisoire(
+  recueAt: Date,
+  r:
+    | { reserveeJusquAt: Date; rendezVousPrisAt?: Date | null; valideeAt?: Date | null }
+    | null
+    | undefined,
+): ReservationProvisoire | null {
+  if (!r) return null;
+  return {
+    recueAt,
+    reserveeJusquAt: r.reserveeJusquAt,
+    // Un rendez-vous déjà validé n'est plus « à tenir ».
+    rendezVousEnAttentePrisAt: r.valideeAt ? null : (r.rendezVousPrisAt ?? null),
+  };
 }
