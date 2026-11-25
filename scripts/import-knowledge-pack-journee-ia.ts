@@ -1,12 +1,16 @@
 /**
  * Import du pack « Journée IA » (10/11/2026) dans la base de connaissance.
  *
- *   pnpm tsx scripts/import-knowledge-pack-journee-ia.ts            # dry-run (défaut, sans base)
- *   pnpm tsx scripts/import-knowledge-pack-journee-ia.ts --commit   # écrit, uniquement des brouillons
+ *   pnpm tsx scripts/import-knowledge-pack-journee-ia.ts                 # dry-run (défaut, sans base)
+ *   pnpm tsx scripts/import-knowledge-pack-journee-ia.ts --avec-base     # dry-run + liste des fiches qui seraient mises à jour (lecture seule)
+ *   pnpm tsx scripts/import-knowledge-pack-journee-ia.ts --commit        # écrit, uniquement des brouillons
  *
- * - dry-run par défaut : ne lit ni n'écrit aucune base ;
- * - --commit : crée seulement les fiches ABSENTES (clé = slug stable `pack-journee-ia-<id>`),
- *   ne met jamais à jour ni ne supprime une fiche existante (aucun DROP/DELETE) ;
+ * - dry-run par défaut : n'écrit aucune base ; sans --avec-base il ne la lit pas non plus
+ *   (toute fiche dont le slug existe déjà serait alors mise à jour) ;
+ * - --commit : CRÉE les fiches absentes et MET À JOUR celles dont le slug existe déjà
+ *   (clé = slug stable `pack-journee-ia-<id>` : le pack du 25/11 remplace celui du 10/11,
+ *   contenu, titre et métadonnées) ; le rapport distingue créations et mises à jour ;
+ *   rien n'est jamais supprimé (aucun DROP/DELETE) ;
  * - garde-fou : --commit est refusé si NODE_ENV=production ou si DATABASE_URL ne vise pas
  *   localhost, sauf --confirmer-prod (accord de Williams) ; l'hôte visé est affiché avant d'écrire ;
  * - toutes les fiches sont en brouillon interne, jamais publiées ;
@@ -20,6 +24,7 @@ import {
   evaluerGardeCommit,
   importerBrouillons,
   lignesDepuisJsonl,
+  planifierImport,
   type ClientImport,
 } from "../src/lib/knowledge/pack-journee-ia";
 
@@ -47,13 +52,24 @@ async function main() {
     parStatut: { draft: rapport.aImporter.length, published: 0 },
   };
 
-  if (!commit) {
-    console.warn(JSON.stringify(resume, null, 2));
+  const avecBase = process.argv.includes("--avec-base");
+  if (!commit && !avecBase) {
+    console.warn(
+      JSON.stringify(
+        {
+          ...resume,
+          miseAJour:
+            "base non consultée : toute fiche dont le slug existe déjà serait MISE À JOUR (relancer avec --avec-base pour la liste)",
+        },
+        null,
+        2,
+      ),
+    );
     return;
   }
 
   const garde = evaluerGardeCommit({
-    commit,
+    commit: true,
     nodeEnv: process.env.NODE_ENV,
     databaseUrl: process.env.DATABASE_URL,
     confirmerProd: process.argv.includes("--confirmer-prod"),
@@ -67,7 +83,19 @@ async function main() {
   const { PrismaClient } = await import("../prisma/generated/client");
   const prisma = new PrismaClient();
   try {
-    const bilan = await importerBrouillons(prisma as unknown as ClientImport, rapport.aImporter);
+    const client = prisma as unknown as ClientImport;
+    if (!commit) {
+      const plan = await planifierImport(client, rapport.aImporter);
+      console.warn(
+        JSON.stringify(
+          { ...resume, aCreer: plan.aCreer.length, aMettreAJour: plan.aMettreAJour },
+          null,
+          2,
+        ),
+      );
+      return;
+    }
+    const bilan = await importerBrouillons(client, rapport.aImporter);
     console.warn(JSON.stringify({ ...resume, ...bilan }, null, 2));
   } finally {
     await prisma.$disconnect();

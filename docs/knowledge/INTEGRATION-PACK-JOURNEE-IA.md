@@ -64,10 +64,13 @@ d'offre interne `INT-03` : exacts selon le pack, à confirmer avant publication.
 
 - `src/lib/knowledge/pack-journee-ia.ts` : tri, doctrine, mapping, anti-doublon (Jaccard sur trigrammes, seuil 0,8, signalement
   sans rejet — reprise de l'esprit de `Controle_Doublons.py`).
-- `scripts/import-knowledge-pack-journee-ia.ts` : **dry-run par défaut** (aucun accès base). `--commit` crée seulement les fiches
-  absentes (slug stable `pack-journee-ia-<id>`), ne met jamais à jour ni ne supprime. Idempotent. La logique d'écriture est
-  `importerBrouillons(client, fiches)` (module pur, testée avec un faux client). Le rapport distingue « déjà présentes » et
-  « conflit de slug de traduction : fiche non créée » (`conflitsSlugTraduction`, lu dans `meta.target` du P2002).
+- `scripts/import-knowledge-pack-journee-ia.ts` : **dry-run par défaut** (aucune écriture ; sans `--avec-base`, aucune lecture non plus).
+  Décision (25/11) : le pack du 25/11 **remplace** celui du 10/11. `--commit` crée les fiches absentes et **met à jour** celles dont le
+  slug stable `pack-journee-ia-<id>` existe déjà (contenu, titre, métadonnées, remise en brouillon) ; rien n'est jamais supprimé.
+  `--avec-base` (lecture seule, même garde-fou d'hôte) liste les fiches qui seraient mises à jour. La logique d'écriture est
+  `importerBrouillons(client, fiches)` (module pur, testée avec un faux client). Le rapport distingue `crees`, `misAJour`
+  (+ `slugsMisAJour`), `dejaPresents` (course : fiche créée entre-temps) et « conflit de slug de traduction : fiche non créée »
+  (`conflitsSlugTraduction`, lu dans `meta.target` du P2002).
 - **Garde-fou** : `--commit` est refusé si `NODE_ENV=production` ou si `DATABASE_URL` ne vise pas localhost, sauf `--confirmer-prod`.
   L'hôte de la base (sans identifiant) est affiché avant toute écriture.
 - `src/lib/knowledge/pack-journee-ia.test.ts` : contrat de tri, de doctrine, de non-publication, d'idempotence et de garde-fou.

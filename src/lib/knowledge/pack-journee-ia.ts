@@ -432,7 +432,10 @@ export function analyserPack(lignes: readonly LignePack[]): RapportPack {
   };
 }
 
-/** Sous-ensemble de PrismaClient dont l'import a besoin : aucune méthode d'écriture autre que `create`. */
+/**
+ * Sous-ensemble de PrismaClient dont l'import a besoin : lecture par slug, création, et mise à jour
+ * d'une fiche existante. Ni `delete`, ni `upsert` : rien n'est jamais supprimé.
+ */
 export interface ClientImport {
   readonly knowledgeEntry: {
     findUnique(a: {
@@ -445,12 +448,31 @@ export interface ClientImport {
       };
       select: { id: true };
     }): Promise<unknown>;
+    update(a: {
+      where: { id: string };
+      data: MiseAJourFiche;
+      select: { id: true };
+    }): Promise<unknown>;
   };
 }
 
+/** Champs réécrits sur une fiche déjà en base : le pack du 25/11 remplace celui du 10/11. */
+export type MiseAJourFiche = Omit<EntreeKnowledgeDraft["entry"], "slug"> & {
+  translations: {
+    updateMany: {
+      where: { locale: "fr" };
+      data: Omit<EntreeKnowledgeDraft["translation"], "locale" | "slug">;
+    };
+  };
+};
+
 export interface RapportImport {
   crees: number;
-  /** Fiche déjà en base (détectée avant, ou créée entre-temps : P2002 sur le slug de la fiche). */
+  /** Fiche déjà en base (slug identique) : contenu, titre et métadonnées remplacés, rien supprimé. */
+  misAJour: number;
+  /** Slugs mis à jour (pour le rapport). */
+  slugsMisAJour: string[];
+  /** Fiche créée entre-temps par un autre processus (P2002 sur le slug de la fiche) : laissée telle quelle. */
   dejaPresents: number;
   /** P2002 sur (locale, slug) de la traduction : la fiche n'a PAS été créée. */
   conflitsSlugTraduction: string[];
@@ -463,22 +485,60 @@ function cibleTraduction(erreur: unknown): boolean {
   return /locale|translation/i.test(texte);
 }
 
+function donneesDeMiseAJour(f: EntreeKnowledgeDraft): MiseAJourFiche {
+  const { slug: _slug, ...entry } = f.entry;
+  const { locale: _locale, slug: _slugTraduction, ...traduction } = f.translation;
+  return {
+    ...entry,
+    translations: { updateMany: { where: { locale: "fr" }, data: traduction } },
+  };
+}
+
+/** Lecture seule : quelles fiches du pack existent déjà (donc seraient mises à jour). */
+export async function planifierImport(
+  client: { readonly knowledgeEntry: Pick<ClientImport["knowledgeEntry"], "findUnique"> },
+  fiches: readonly EntreeKnowledgeDraft[],
+): Promise<{ aCreer: string[]; aMettreAJour: string[] }> {
+  const plan = { aCreer: [] as string[], aMettreAJour: [] as string[] };
+  for (const f of fiches) {
+    const deja = await client.knowledgeEntry.findUnique({
+      where: { slug: f.entry.slug },
+      select: { id: true },
+    });
+    (deja ? plan.aMettreAJour : plan.aCreer).push(f.entry.slug);
+  }
+  return plan;
+}
+
 /**
- * Crée seulement les fiches absentes. Ne met jamais à jour ni ne supprime : le client n'expose
- * que `findUnique` et `create`. Idempotent : une 2e exécution ne crée rien.
+ * Crée les fiches absentes et MET À JOUR celles dont le slug existe déjà (le pack du 25/11
+ * remplace l'ancien). Ne supprime jamais rien : le client n'expose ni `delete` ni `upsert`.
+ * Idempotent : une 2e exécution réécrit les mêmes valeurs.
  */
 export async function importerBrouillons(
   client: ClientImport,
   fiches: readonly EntreeKnowledgeDraft[],
 ): Promise<RapportImport> {
-  const rapport: RapportImport = { crees: 0, dejaPresents: 0, conflitsSlugTraduction: [] };
+  const rapport: RapportImport = {
+    crees: 0,
+    misAJour: 0,
+    slugsMisAJour: [],
+    dejaPresents: 0,
+    conflitsSlugTraduction: [],
+  };
   for (const f of fiches) {
     const deja = await client.knowledgeEntry.findUnique({
       where: { slug: f.entry.slug },
       select: { id: true },
     });
     if (deja) {
-      rapport.dejaPresents++;
+      await client.knowledgeEntry.update({
+        where: { id: deja.id },
+        data: donneesDeMiseAJour(f),
+        select: { id: true },
+      });
+      rapport.misAJour++;
+      rapport.slugsMisAJour.push(f.entry.slug);
       continue;
     }
     try {

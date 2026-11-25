@@ -11,6 +11,7 @@ import {
   evaluerGardeCommit,
   importerBrouillons,
   lignesDepuisJsonl,
+  planifierImport,
   slugDeLaFiche,
   versEntreeKnowledge,
   type ClientImport,
@@ -263,6 +264,7 @@ describe("note de relecture — points non vérifiés", () => {
 function fauxClient(existants: string[] = [], erreurs: Record<string, unknown> = {}) {
   const base = new Set(existants);
   const appels: string[] = [];
+  const mises: Array<{ where: { id: string }; data: unknown }> = [];
   const piege = (nom: string) => () => {
     appels.push(nom);
     throw new Error(`appel interdit : ${nom}`);
@@ -280,14 +282,18 @@ function fauxClient(existants: string[] = [], erreurs: Record<string, unknown> =
         base.add(a.data.slug);
         return { id: a.data.slug };
       },
-      update: piege("update"),
+      update: async (a: { where: { id: string }; data: unknown }) => {
+        appels.push("update");
+        mises.push(a);
+        return { id: a.where.id };
+      },
       updateMany: piege("updateMany"),
       upsert: piege("upsert"),
       delete: piege("delete"),
       deleteMany: piege("deleteMany"),
     },
   } as unknown as ClientImport;
-  return { client, appels, base };
+  return { client, appels, base, mises };
 }
 
 describe("importerBrouillons — idempotence et non-écrasement", () => {
@@ -295,19 +301,43 @@ describe("importerBrouillons — idempotence et non-écrasement", () => {
     versEntreeKnowledge,
   );
 
-  it("saute une fiche existante sans appeler create", async () => {
-    const { client, appels } = fauxClient(["pack-journee-ia-geo-901"]);
+  it("met à jour une fiche existante (slug identique) au lieu de l’ignorer", async () => {
+    const { client, appels, mises } = fauxClient(["pack-journee-ia-geo-901"]);
     const r = await importerBrouillons(client, fiches);
     expect(r.crees).toBe(2);
-    expect(r.dejaPresents).toBe(1);
+    expect(r.misAJour).toBe(1);
+    expect(r.slugsMisAJour).toEqual(["pack-journee-ia-geo-901"]);
+    expect(r.dejaPresents).toBe(0);
     expect(appels.filter((a) => a === "create")).toHaveLength(2);
+    expect(mises).toHaveLength(1);
+    const data = mises[0]!.data as {
+      briefMarkdown: string;
+      status: string;
+      translations: {
+        updateMany: { where: { locale: string }; data: { title: string; bodyText: string } };
+      };
+    };
+    expect(mises[0]!.where.id).toBe("pack-journee-ia-geo-901");
+    expect(data.status).toBe("draft");
+    expect(data.briefMarkdown).toContain("GEO-901");
+    expect(data.translations.updateMany.where).toEqual({ locale: "fr" });
+    expect(data.translations.updateMany.data.title).toBe(fiches[0]!.translation.title);
+    expect(data.translations.updateMany.data.bodyText).toBe(fiches[0]!.translation.bodyText);
+    expect(data).not.toHaveProperty("slug");
   });
-  it("n’appelle jamais update, upsert, delete ni deleteMany", async () => {
+  it("n’appelle jamais upsert, delete, deleteMany ni updateMany", async () => {
     const { client, appels } = fauxClient(["pack-journee-ia-geo-902"]);
     await importerBrouillons(client, fiches);
-    for (const interdit of ["update", "updateMany", "upsert", "delete", "deleteMany"]) {
+    for (const interdit of ["updateMany", "upsert", "delete", "deleteMany"]) {
       expect(appels).not.toContain(interdit);
     }
+  });
+  it("le mode à sec liste les fiches qui seraient mises à jour, sans écrire", async () => {
+    const { client, appels } = fauxClient(["pack-journee-ia-geo-901", "pack-journee-ia-geo-903"]);
+    const plan = await planifierImport(client, fiches);
+    expect(plan.aMettreAJour).toEqual(["pack-journee-ia-geo-901", "pack-journee-ia-geo-903"]);
+    expect(plan.aCreer).toEqual(["pack-journee-ia-geo-902"]);
+    expect(appels.every((a) => a === "findUnique")).toBe(true);
   });
   it("compte une erreur P2002 sans planter et continue", async () => {
     const { client } = fauxClient([], {
@@ -338,13 +368,14 @@ describe("importerBrouillons — idempotence et non-écrasement", () => {
     const { client } = fauxClient([], { "pack-journee-ia-geo-901": new Error("réseau") });
     await expect(importerBrouillons(client, fiches)).rejects.toThrow("réseau");
   });
-  it("la 2e exécution ne crée rien", async () => {
+  it("la 2e exécution ne crée rien : elle met tout à jour", async () => {
     const { client } = fauxClient();
     const premiere = await importerBrouillons(client, fiches);
     const seconde = await importerBrouillons(client, fiches);
     expect(premiere.crees).toBe(3);
+    expect(premiere.misAJour).toBe(0);
     expect(seconde.crees).toBe(0);
-    expect(seconde.dejaPresents).toBe(3);
+    expect(seconde.misAJour).toBe(3);
   });
 });
 
