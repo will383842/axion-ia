@@ -5,10 +5,10 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 
 // Lot de suite du 07/10 (relecture de a1) : lien du dossier (déjà envoyé, dossier signé),
 // dossier « Nouvel apporteur » relié à sa fiche candidat, messages exacts et vouvoyés.
-// Retrait du réseau (#1353) : personne n'est retiré dans ces scénarios.
+// Retrait du réseau (#1353) : personne n'est retiré dans ces scénarios, sauf `h.retire`.
 vi.mock("../retrait", async (orig) => ({
   ...(await orig<typeof import("../retrait")>()),
-  retraitDe: async () => null,
+  retraitDe: async () => (h.retire ? new Date("2026-10-07T00:00:00Z") : null),
   idsRetires: async () => new Set<string>(),
   argentEnJeu: async () => false,
 }));
@@ -23,6 +23,7 @@ const h = vi.hoisted(() => ({
   doublon: null as { id: string } | null,
   createEnErreur: false,
   cree: vi.fn(),
+  retire: false,
 }));
 
 vi.mock("../envois", () => ({
@@ -103,11 +104,61 @@ beforeEach(() => {
   h.dejaRelie = null;
   h.doublon = null;
   h.createEnErreur = false;
+  h.retire = false;
 });
 
 describe("7) « Envoyer le lien du dossier »", () => {
-  it.each(["a_verifier", "signe"])("dossier %s : plus de lien à envoyer", async (statut) => {
-    h.lireDossier.mockResolvedValue(dossier({ statut }));
+  // 25/11 : un dossier signé reçoit le lien de son ESPACE (gabarit existant de « Retrouver mon
+  // espace »), plus le lien « complétez votre dossier ».
+  it.each(["a_verifier", "signe"])(
+    "dossier %s : le lien de l'espace part, avec le gabarit « apporteur-lien-espace »",
+    async (statut) => {
+      h.lireDossier.mockResolvedValue(dossier({ statut }));
+      const prep = await preparerLien(ID, "Un mot", "Un texte réécrit");
+      if (!prep.ok) throw new Error(prep.message);
+      expect(prep.envoi.gabarit).toBe("apporteur-lien-espace");
+      expect(prep.envoi.destinataire).toBe("claire@exemple.fr");
+      // Charge EXACTE du gabarit existant : prénom et lien, rien d'autre (ni mot, ni texte libre).
+      expect(prep.envoi.payload).toEqual({ prenom: "Claire", lien: prep.url });
+      expect(prep.url).toContain(`/apporteur/dossier/${ID}/`);
+
+      expect(await envoyerLien(ID, null)).toMatchObject({ ok: true });
+      expect(h.envoyer).toHaveBeenCalledTimes(1);
+      const envoi = h.envoyer.mock.calls[0]?.[0] as Record<string, unknown>;
+      expect(envoi["gabarit"]).toBe("apporteur-lien-espace");
+      expect(String(envoi["jobId"])).toMatch(new RegExp(`^apporteur-lien-espace-${ID}-\\d+$`));
+    },
+  );
+
+  it("dossier signé : « déjà envoyé » ne regarde que les liens d'ESPACE déjà partis", async () => {
+    h.lireDossier.mockResolvedValue(dossier({ statut: "signe" }));
+    await preparerLien(ID, null);
+    const { prisma } = await import("@/lib/prisma");
+    const appel = vi.mocked(prisma.emailLog.findFirst).mock.calls.at(-1)?.[0];
+    expect(JSON.stringify(appel)).toContain("apporteur-lien-espace");
+    expect(JSON.stringify(appel)).not.toContain("apporteur-dossier-lien");
+  });
+
+  it.each(["refuse", "resilie"])(
+    "🔴 dossier %s : toujours refusé, rien ne part",
+    async (statut) => {
+      h.lireDossier.mockResolvedValue(dossier({ statut }));
+      expect(await preparerLien(ID, null)).toMatchObject({ ok: false });
+      expect(await envoyerLien(ID, null, undefined, true)).toMatchObject({ ok: false });
+      expect(h.envoyer).not.toHaveBeenCalled();
+    },
+  );
+
+  it("🔴 dossier signé mais RETIRÉ du réseau : toujours refusé, rien ne part", async () => {
+    h.retire = true;
+    h.lireDossier.mockResolvedValue(dossier({ statut: "signe" }));
+    expect(await preparerLien(ID, null)).toMatchObject({ ok: false });
+    expect(await envoyerLien(ID, null, undefined, true)).toMatchObject({ ok: false });
+    expect(h.envoyer).not.toHaveBeenCalled();
+  });
+
+  it("dossier introuvable (ou effacé) : refusé", async () => {
+    h.lireDossier.mockResolvedValue(null);
     expect(await preparerLien(ID, null)).toMatchObject({ ok: false });
   });
 
