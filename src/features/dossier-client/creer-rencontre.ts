@@ -36,6 +36,11 @@
 
 import type { RencontreType } from "../../../prisma/generated/client";
 import { hashEmailForLookup } from "@/lib/security/email-hash";
+import {
+  erreurRapprochement,
+  proposerPourRendezVous,
+} from "@/features/apporteurs-reseau/rapprochement-rendez-vous";
+import * as Sentry from "@sentry/nextjs";
 import type { BaseTransactionnelle } from "./base";
 import { codeMeet, NOM_WILLIAMS } from "./rencontre-calendly";
 import { estClientTestInterne, modePiloteDisponible, caseTestInterneVisible } from "./client-test";
@@ -125,7 +130,7 @@ export async function creerRencontre(
     throw new ErreurCreationRencontre("Le lien de la visio doit commencer par https://.");
   }
 
-  return db.$transaction(async (tx): Promise<ResultatCreerRencontre> => {
+  const resultat = await db.$transaction(async (tx): Promise<ResultatCreerRencontre> => {
     const fiche = await tx.client.findUnique({ where: { id: e.clientId }, select: { id: true } });
     if (fiche === null) throw new ErreurCreationRencontre("Fiche client introuvable.");
     if (e.projetId) {
@@ -238,4 +243,16 @@ export async function creerRencontre(
       invitation,
     };
   });
+
+  // Lot 5 (2026-11-25) : proposition de rapprochement avec une entreprise présentée par un
+  // apporteur. APRÈS la création validée ; l'outil propose, le dirigeant valide ; interrupteur
+  // éteint = rien. Un échec ne casse jamais la création (aucun détail du rendez-vous journalisé).
+  try {
+    await proposerPourRendezVous({ rencontreId: resultat.rencontreId });
+  } catch (err) {
+    Sentry.captureException(erreurRapprochement(err), {
+      tags: { service: "apporteurs-rapprochement-rdv" },
+    });
+  }
+  return resultat;
 }

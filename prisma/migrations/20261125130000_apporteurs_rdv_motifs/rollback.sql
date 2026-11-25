@@ -1,0 +1,6 @@
+-- Rollback de 20261125130000_apporteurs_rdv_motifs.
+-- Seulement sur décision du fondateur, après sauvegarde (COPY ... TO) ; rien n'est supprimé.
+-- Pour mettre de côté plutôt que supprimer :
+--   ALTER TABLE "presentation_reservation" RENAME COLUMN "validation_motif" TO "validation_motif_retire_20261125";
+--   ALTER TABLE "propositions_rendez_vous_presentation" RENAME COLUMN "ecartee_motif" TO "ecartee_motif_retire_20261125";
+--   ALTER TABLE "propositions_rendez_vous_presentation" RENAME COLUMN "ecartee_notifiee_at" TO "ecartee_notifiee_at_retire_20261125";

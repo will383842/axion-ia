@@ -9,6 +9,7 @@ vi.mock("next/navigation", () => ({
   notFound: () => {
     throw new Error("NEXT_NOT_FOUND");
   },
+  useParams: () => ({}),
 }));
 vi.mock("@/features/apporteurs-reseau/donnees", () => ({
   lireDossierParLien: vi.fn(async () => ({

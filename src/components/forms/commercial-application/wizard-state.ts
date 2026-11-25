@@ -150,7 +150,7 @@ export function validateStep(step: number, a: WizardAnswers): FieldErrors {
       //
       // ⛔ Ne pas le redescendre. Verrouillé par
       // `le-consentement-precede-l-ecriture.spec.ts`.
-      if (!a.consent) e.consent = "Votre accord est nécessaire pour traiter votre candidature.";
+      if (!a.consent) e.consent = "Votre accord est nécessaire pour étudier votre demande.";
       if (!a.prenom.trim()) e.prenom = "Votre prénom est nécessaire.";
       if (!a.nom.trim()) e.nom = "Votre nom est nécessaire.";
       if (!a.email.trim()) e.email = "Votre e-mail est nécessaire.";
@@ -199,7 +199,7 @@ export function validateStep(step: number, a: WizardAnswers): FieldErrors {
         if (!exp.debutMois || !exp.debutAnnee)
           e[`${pre}-debut`] = "Indiquez le mois et l’année de début.";
         if (!exp.posteActuel && (!exp.finMois || !exp.finAnnee))
-          e[`${pre}-fin`] = "Indiquez la fin, ou cochez « poste actuel ».";
+          e[`${pre}-fin`] = "Indiquez la fin, ou cochez « activité en cours ».";
         if (
           exp.debutMois &&
           exp.debutAnnee &&

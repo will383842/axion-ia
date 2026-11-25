@@ -4,9 +4,10 @@
 // ── Retirer / Remettre (tout apporteur) ───────────────────────────────────
 // Retirer : la fiche sort des listes par défaut (onglet « Retirés » pour la revoir) et le
 // lien personnel du dossier cesse de fonctionner (`versionLien` + 1). RIEN n'est effacé :
-// contrat, pièces, commissions, autofactures, journal. Retirer un apporteur SIGNÉ ne
-// résilie pas son contrat (préavis de 30 jours, art. 11.1) : la console le dit et renvoie
-// à « Résilier le contrat ». Les commissions dues restent dues.
+// contrat, pièces, commissions, autofactures, journal. L2 (2026-11-25) : le geste, rebaptisé
+// « Classer le dossier (non signé) », est REFUSÉ pour un apporteur sous contrat (`signe`,
+// `a_verifier`) ; il exige un motif, tracé dans la ligne et dans le journal. Seule la
+// résiliation (préavis de 30 jours, art. 11.1) met fin à un contrat.
 // Remettre : la fiche revient dans les listes avec un NOUVEAU lien (`versionLien` + 1),
 // qui n'est pas envoyé.
 //
@@ -61,16 +62,62 @@ export async function retraitDe(apporteurId: string): Promise<Date | null> {
 
 export type Issue = { ok: true; message: string } | { ok: false; message: string };
 
-export async function retirerDuReseau(apporteurId: string, adminId: string): Promise<Issue> {
+export const MOTIF_MIN = 3;
+export const MOTIF_MAX = 500;
+
+/**
+ * Le motif est un texte libre : on masque e-mails, IBAN et téléphones avant de l'écrire en colonne
+ * (le journal d'audit, conservé, ne reçoit jamais le texte). Ordre : e-mail, IBAN, puis téléphone.
+ */
+export function masquerCoordonnees(texte: string): string {
+  return texte
+    .replace(/[^\s@]+@[^\s@]+\.[^\s@]+/g, "[e-mail masqué]")
+    .replace(/\b[A-Za-z]{2}\d{2}(?:[ ]?[A-Za-z0-9]{3,4}){3,8}\b/g, "[IBAN masqué]")
+    .replace(/(?:\+|00)?\d(?:[\s.\-]?\d){7,}/g, "[téléphone masqué]");
+}
+
+/** Refus d'un dossier sous contrat (L2, B2). `null` si le statut permet le classement. */
+export function refusClassement(statut: string): string | null {
+  if (statut === "signe") {
+    return "Contrat en cours : le classement n'est pas possible. Pour mettre fin au contrat, utilisez « Résilier le contrat » (article 11).";
+  }
+  if (statut === "a_verifier") {
+    return "Contrat signé par l'apporteur, en attente de votre contresignature : refusez le dossier ou contresignez-le.";
+  }
+  return null;
+}
+
+/**
+ * Classer un dossier NON SIGNÉ (ex-« Retirer du réseau »). Refusé pour un apporteur sous
+ * contrat (`signe`, `a_verifier`) : seule la résiliation (préavis de 30 jours) y met fin.
+ * Motif obligatoire, écrit dans la ligne et dans le journal, dans la même transaction.
+ * Un dossier `resilie` reste classable : son contrat est fini, le geste range la fiche.
+ */
+export async function retirerDuReseau(
+  apporteurId: string,
+  adminId: string,
+  motifBrut?: string,
+): Promise<Issue> {
+  const motif = typeof motifBrut === "string" ? motifBrut.trim() : "";
   return prisma.$transaction(async (tx) => {
     const a = await tx.apporteurReseau.findUnique({
       where: { id: apporteurId },
       select: { id: true, statut: true },
     });
     if (!a) return { ok: false, message: "Dossier introuvable." };
+    const sousContrat = refusClassement(a.statut);
+    if (sousContrat) return { ok: false, message: sousContrat };
+    if (motif.length < MOTIF_MIN || motif.length > MOTIF_MAX) {
+      return {
+        ok: false,
+        message: `Indiquez le motif du classement (${MOTIF_MIN} à ${MOTIF_MAX} caractères).`,
+      };
+    }
     const deja = await tx.apporteurReseauRetrait.findUnique({ where: { apporteurId } });
-    if (deja) return { ok: false, message: "Cette fiche est déjà retirée du réseau." };
-    await tx.apporteurReseauRetrait.create({ data: { apporteurId, retirePar: adminId } });
+    if (deja) return { ok: false, message: "Ce dossier est déjà classé." };
+    await tx.apporteurReseauRetrait.create({
+      data: { apporteurId, retirePar: adminId, motif: masquerCoordonnees(motif) },
+    });
     await tx.apporteurReseau.update({
       where: { id: apporteurId },
       data: { versionLien: { increment: 1 } },
@@ -82,15 +129,12 @@ export async function retirerDuReseau(apporteurId: string, adminId: string): Pro
         action: "apporteur.retire_du_reseau",
         targetType: "apporteur_reseau",
         targetId: apporteurId,
-        changes: { statut: a.statut, lienDesactive: true },
+        changes: { statut: a.statut, lienDesactive: true, motifSaisi: true },
       },
     });
     return {
       ok: true,
-      message:
-        a.statut === "signe"
-          ? "Fiche retirée du réseau et lien du dossier désactivé. Le contrat N'EST PAS résilié : pour y mettre fin, utilisez « Résilier le contrat » (préavis de 30 jours, art. 11.1). Les commissions dues restent dues."
-          : "Fiche retirée du réseau et lien du dossier désactivé. Rien n'a été effacé.",
+      message: "Dossier classé et lien du dossier désactivé. Rien n'a été effacé.",
     };
   });
 }
@@ -140,19 +184,21 @@ export interface EtatSuppression {
 /** `null` si la suppression est permise ; sinon la phrase qui dit pourquoi elle ne l'est pas. */
 export function refusSuppression(e: EtatSuppression): string | null {
   if (e.signeParApporteurAt || e.signeParSocieteAt || STATUTS_ENGAGES.has(e.statut)) {
-    return "Contrat signé : conservation légale. Utilisez « Retirer du réseau ».";
+    return e.statut === "signe" || e.statut === "a_verifier"
+      ? "Contrat signé : conservation légale. Pour y mettre fin, utilisez « Résilier le contrat »."
+      : "Contrat signé : conservation légale. Utilisez « Classer le dossier ».";
   }
   if (e.commissions > 0) {
-    return "Commissions enregistrées : conservation légale. Utilisez « Retirer du réseau ».";
+    return "Commissions enregistrées : conservation légale. Utilisez « Classer le dossier ».";
   }
   if (e.presentations > 0) {
-    return "Entreprises présentées : conservation de l'historique. Utilisez « Retirer du réseau ».";
+    return "Entreprises présentées : conservation de l'historique. Utilisez « Classer le dossier ».";
   }
   if (e.filleuls > 0) {
-    return "Cet apporteur est le parrain d'autres apporteurs. Utilisez « Retirer du réseau ».";
+    return "Cet apporteur est le parrain d'autres apporteurs. Utilisez « Classer le dossier ».";
   }
   if (!e.ficheCandidat) {
-    return "Aucune fiche candidat ne conserve ce contact : le supprimer le ferait perdre. Utilisez « Retirer du réseau ».";
+    return "Aucune fiche candidat ne conserve ce contact : le supprimer le ferait perdre. Utilisez « Classer le dossier ».";
   }
   return null;
 }

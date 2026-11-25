@@ -38,10 +38,10 @@ export const OG_EYEBROW = "Partenaire IA des PME et TPE";
 export const OG_IMAGE_ALT = `${TITRE} · ${OG_EYEBROW}`;
 
 /** Coupure de la garantie : ce qui précède reste en texte courant, ce qui suit passe en gras. */
-const COUPURE_GARANTIE = "nous vous remboursons";
+const COUPURE_GARANTIE = "vous êtes remboursé sur demande écrite";
 const POINT_DE_COUPURE = GARANTIE_PHRASE.indexOf(COUPURE_GARANTIE);
 if (POINT_DE_COUPURE < 0) {
-  throw new Error("GARANTIE_PHRASE ne contient plus « nous vous remboursons ».");
+  throw new Error("GARANTIE_PHRASE ne contient plus « vous êtes remboursé sur demande écrite ».");
 }
 
 /** Texte alternatif d'une tuile secteur : le même que celui du manifeste d'images (`page-images.ts`). */
