@@ -312,6 +312,11 @@ export async function deposerPieceAction(fd: FormData): Promise<Resultat> {
 
 // ── Étape 4 : signature ──────────────────────────────────────────────────
 
+/** L'empreinte du texte affiché : 64 caractères hexadécimaux au plus, sinon chaîne vide. */
+function empreinteLueDe(v: FormDataEntryValue | null): string {
+  return typeof v === "string" && /^[0-9a-f]{1,64}$/i.test(v) ? v.toLowerCase() : "";
+}
+
 export async function signerAction(fd: FormData): Promise<Resultat> {
   if (!(await debitAutorise("signature"))) return TROP;
   const cases = (nom: string) =>
@@ -328,6 +333,7 @@ export async function signerAction(fd: FormData): Promise<Resultat> {
       acceptations: cases("acceptations"),
       ipHash: await ipHachee(),
       userAgent: await getClientUserAgent(),
+      empreinteLue: empreinteLueDe(fd.get("empreinteLue")),
     });
     return r.ok ? { ok: true } : { ok: false, message: r.message };
   } catch (e) {

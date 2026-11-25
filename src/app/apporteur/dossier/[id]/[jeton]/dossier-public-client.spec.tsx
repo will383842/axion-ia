@@ -62,7 +62,13 @@ function dossier(over: Partial<DossierPublic> = {}): DossierPublic {
 
 const rendre = (d: DossierPublic, etape: 1 | 2 | 3 | 4) =>
   render(
-    <DossierEnLigne dossier={d} etapeInitiale={etape} contrat={<p>Contrat</p>} urlPdf="/pdf" />,
+    <DossierEnLigne
+      dossier={d}
+      etapeInitiale={etape}
+      contrat={<p>Contrat</p>}
+      empreinteLue={"a".repeat(64)}
+      urlPdf="/pdf"
+    />,
   );
 
 beforeEach(() => {

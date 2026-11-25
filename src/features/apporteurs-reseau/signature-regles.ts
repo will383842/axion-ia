@@ -165,13 +165,15 @@ export function casesCompletes(
 
 // ── Contrôle complet avant signature ─────────────────────────────────────
 
-export type RefusSignature = "non_modifiable" | "incomplet" | "cases" | "nom";
+export type RefusSignature = "non_modifiable" | "incomplet" | "cases" | "nom" | "texte_modifie";
 
 export const LIBELLE_REFUS_SIGNATURE: Readonly<Record<RefusSignature, string>> = {
   non_modifiable: "Ce dossier ne peut plus être signé depuis ce lien.",
   incomplet: "Votre dossier n'est pas encore complet.",
   cases: "Cochez toutes les cases avant de signer.",
   nom: "Le nom du signataire ne correspond pas au dossier : écrivez-nous avant de signer.",
+  texte_modifie:
+    "Le contrat a été mis à jour depuis l'affichage de cette page. Rechargez la page, relisez-le, puis signez.",
 };
 
 export function verifierAvantSignature(e: {

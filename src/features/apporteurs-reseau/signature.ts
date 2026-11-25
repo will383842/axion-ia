@@ -21,6 +21,8 @@
 
 import "server-only";
 
+import { timingSafeEqual } from "node:crypto";
+
 import * as Sentry from "@sentry/nextjs";
 
 import { adminPath } from "@/lib/admin-path";
@@ -85,6 +87,12 @@ export type ResultatSignature =
 
 const INTROUVABLE = "Ce lien ne fonctionne plus.";
 
+/** Égalité de deux empreintes hexadécimales (vide ou de longueur différente : jamais égales). */
+function empreintesEgales(lue: string, calculee: string): boolean {
+  if (!lue || lue.length !== calculee.length) return false;
+  return timingSafeEqual(Buffer.from(lue, "utf8"), Buffer.from(calculee, "utf8"));
+}
+
 export async function signerContrat(e: {
   apporteurId: string;
   jeton: string;
@@ -93,6 +101,12 @@ export async function signerContrat(e: {
   acceptations: readonly string[];
   ipHash: string | null;
   userAgent: string | null;
+  /**
+   * Empreinte SHA-256 du texte que la page a AFFICHÉ à la personne. Obligatoire : si le contrat
+   * a changé depuis (mise en ligne, passage de minuit), on refuse plutôt que de signer un texte
+   * jamais lu.
+   */
+  empreinteLue: string;
   maintenant?: Date;
 }): Promise<ResultatSignature> {
   const dossier = await lireDossierParLien(e.apporteurId, e.jeton);
@@ -147,6 +161,10 @@ export async function signerContrat(e: {
     return { ok: false, raison: "refus", message: LIBELLE_REFUS_SIGNATURE.incomplet };
   }
   const sha256 = empreinte(texte);
+  // Ce que la personne a LU doit être ce qu'elle signe : sinon rien n'est rendu, envoyé ni écrit.
+  if (!empreintesEgales(e.empreinteLue, sha256)) {
+    return { ok: false, raison: "refus", message: LIBELLE_REFUS_SIGNATURE.texte_modifie };
+  }
   const navigateur = resumerNavigateur(e.userAgent);
 
   const pdf = await rendreContratPdf({

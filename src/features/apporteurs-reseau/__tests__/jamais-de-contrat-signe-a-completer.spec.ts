@@ -50,7 +50,13 @@ vi.mock("../signature-regles", async (importOriginal) => {
   };
 });
 
-import { CLES_ACCEPTATIONS, CLES_DECLARATIONS, signerContrat } from "../signature";
+import { empreinte, texteDuContrat } from "../contrat-pdf";
+import {
+  CLES_ACCEPTATIONS,
+  CLES_DECLARATIONS,
+  signerContrat,
+  valeursDuContrat,
+} from "../signature";
 
 const ID = "6f1c2a3b-4d5e-4f60-8a7b-9c0d1e2f3a4b";
 const JETON = "AbCdEfGhIjKlMnOpQrStUvWxYz0123456789_-AbCd";
@@ -84,6 +90,7 @@ const entree = {
   acceptations: [...CLES_ACCEPTATIONS],
   ipHash: "0123456789abcdef",
   userAgent: null,
+  empreinteLue: "",
   maintenant: new Date("2026-10-05T12:34:00Z"),
 };
 
@@ -117,7 +124,10 @@ describe("jamais de contrat signé avec « à compléter »", () => {
 
   it("dossier complet : la signature passe comme avant", async () => {
     lireDossierParLien.mockResolvedValue(dossierComplet());
-    expect(await signerContrat(entree)).toMatchObject({ ok: true });
+    const empreinteLue = empreinte(
+      texteDuContrat(valeursDuContrat(dossierComplet() as never, entree.maintenant)),
+    );
+    expect(await signerContrat({ ...entree, empreinteLue })).toMatchObject({ ok: true });
     expect(uploadToR2).toHaveBeenCalledTimes(1);
     expect(updateMany).toHaveBeenCalledTimes(1);
   });

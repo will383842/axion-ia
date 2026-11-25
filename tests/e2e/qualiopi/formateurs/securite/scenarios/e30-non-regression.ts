@@ -164,6 +164,7 @@ async function tunnelApporteur() {
       acceptations: [],
       ipHash: null,
       userAgent: "banc",
+      empreinteLue: "",
     });
   } catch (e) {
     signature = { leve: e instanceof Error ? e.message : String(e) };
