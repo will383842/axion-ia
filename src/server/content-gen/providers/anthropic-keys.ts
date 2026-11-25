@@ -226,9 +226,12 @@ export function creerEtatCles(options: OptionsEtat = {}): EtatCles {
     async marquer(index, motif) {
       if (redis && redisUtilisable()) {
         try {
-          await avecDelai(
+          const reponse = await avecDelai(
             redis.set(cleRedisEtat(index, motif), "1", "EX", DUREES_MS[motif] / 1000),
           );
+          // Un `set` qui ne répond pas « OK » (stub de build : null) est une panne : la
+          // marque n'a pas été posée, on la garde en mémoire.
+          if (reponse !== "OK") throw new Error("réponse Redis inattendue");
           return;
         } catch {
           avertir("écriture");

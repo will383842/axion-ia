@@ -264,6 +264,16 @@ describe("état des clés (Redis partagé, repli mémoire)", () => {
     await etat.motif(2);
     expect(mget).toHaveBeenCalledTimes(2);
   });
+  it("un `set` Redis qui ne répond pas « OK » (stub de build : null) est une panne : mémoire de repli", async () => {
+    const journal = vi.fn();
+    const etat = creerEtatCles({
+      redis: { set: async () => null, mget: async () => [null, null] },
+      journal,
+    });
+    await etat.marquer(1, "epuisee");
+    expect(await etat.motif(1)).toBe("epuisee");
+    expect(JSON.stringify(journal.mock.calls)).toMatch(/Redis indisponible/);
+  });
   it("aucune clé API dans les clés ni les valeurs Redis", async () => {
     const redis = creerFauxRedis();
     const etat = creerEtatCles({ redis });
