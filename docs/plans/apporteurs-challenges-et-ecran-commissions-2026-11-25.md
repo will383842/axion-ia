@@ -3,6 +3,12 @@
 Plan de conception du 25 novembre 2026, **corrigé le même jour** après la relecture « À CORRIGER »
 de la PR #2261. **Aucun code produit dans cette PR** : ce fichier est le seul livrable.
 Lecture du code faite sur `origin/main` au commit `ef5cc10d`.
+**Corrigé une seconde fois le même jour** après la deuxième relecture « PLAN À CORRIGER » (faite sur
+`54dd1eab`, qui contient #2253 et #2258) ; références recalées sur `8c6ca06f`. Les points traités :
+lot 1 exécutable (B-1), seuil soumis au dirigeant (B-2/D-14), annonce soumise à décision (B-3/D-15),
+valeur `activite` et commande mixte (I-1), source du libellé de la prime (I-2), `gabaritRepli` nommé
+(I-3), `src/env.ts` et RGPD (I-4), alerte interne et coupe 7a/7b (I-5), lecteurs de `factureId` (I-6).
+La description de la PR est mise à jour : **8 lots** et **15 décisions** (D-1 à D-15), non « 18 lots / 18 questions ».
 
 > **Coordination (arbitrage pris).** L'écran « Mes commissions » est décrit **une seule fois**, dans
 > le plan de la PR #2259 (`docs/plans/apporteurs-espace-commissions-2026-11-25.md`, lots EC). Ce plan
@@ -18,8 +24,8 @@ Lecture du code faite sur `origin/main` au commit `ef5cc10d`.
 
 1. **Les règles du dirigeant priment sur tout le reste du plan.** Un challenge est facultatif. Il n'a
    ni classement, ni relance, ni compte à rebours, ni compteur de progression. L'espace de
-   l'apporteur montre **la règle et le règlement**, rien d'autre. Un seul message d'annonce, relu
-   mot pour mot par le dirigeant.
+   l'apporteur montre **la règle et le règlement**, rien d'autre. **Aucun message d'annonce n'est
+   prévu tant que le dirigeant ne l'a pas décidé par écrit (D-15, recommandation : non).**
 2. **Le challenge de décembre 2026** : une prime de **2 000 € HT** pour **10 Journées IA facturées**
    entre le **1er et le 31 décembre 2026** (jours civils de Paris) à des entreprises attribuées à
    l'apporteur. **Aucun chiffre d'affaires n'est exigé.**
@@ -28,10 +34,13 @@ Lecture du code faite sur `origin/main` au commit `ef5cc10d`.
    acte `valider_prime`).
 4. **La prime suit le circuit des commissions** une fois validée : autofacture `AXI-APP`, TVA selon le
    régime de l'apporteur (jamais d'exonération inventée), vigilance, reprise par avoir.
-5. **Manque bloquant corrigé** : rien ne dit aujourd'hui qu'une vente est une « Journée IA ». Le plan
+5. **Un seuil reste un seuil** : « dix Journées » est la condition d'obtention posée par le dirigeant,
+   et le plan ne prétend pas qu'il n'y a « aucun objectif » (D-14). Le règlement dit ce qui est vrai :
+   aucune obligation, aucun suivi communiqué à l'apporteur, aucun classement.
+6. **Manque bloquant corrigé** : rien ne dit aujourd'hui qu'une vente est une « Journée IA ». Le plan
    la reconnaît sur les **lignes du devis** (`offreTierId = "journee-ia"`), crée l'offre dans un lot
    dédié, et garde une décision manuelle motivée pour les factures sans devis.
-6. **Écart signalé avec la règle de commission du dirigeant** : la Journée IA doit rapporter 500 € au
+7. **Écart signalé avec la règle de commission du dirigeant** : la Journée IA doit rapporter 500 € au
    prorata du prix payé (sur 1 490 € HT). Le code n'a aucun palier Journée IA : selon l'activité
    saisie, elle rapporte 30 % (`audit`) ou reste « à qualifier » (`formation`). Lot d'alignement
    « argent » prévu (lot 2).
@@ -51,13 +60,22 @@ Abréviation : **AR/** = `src/features/apporteurs-reseau/`. **ESP/** = `src/app/
 - Une facture d'acompte n'a qu'une ligne « Acompte de N % — devis … », **sans `offreTierId`**
   (`src/server/qualiopi/financements/facture-libre-pur.ts:233-240`). Une facture sans devis n'a que
   des lignes libres.
+- **Ce qui empêche d'ajouter l'offre par la seule graine** (vérifié sur `54dd1eab`) :
+  - chaque offre de `OFFRES_SEED` passe par `dureesDuSquelette(tierId)` (`prisma/seeds/qualiopi/offres.ts`,
+    ~l. 138-160), qui **lève une erreur** quand `getSkeletonByTier` (`src/content/formations/skeletons.ts`)
+    ne trouve aucun squelette : aucun ne porte `journee-ia` ;
+  - chaque offre porte un `code` fixe `AXI-OFF-NNN` (l. 21-25), que le plan doit donner ;
+  - les graines **ne tournent pas au déploiement** (ni l'entrypoint ni le `Dockerfile` ne les lancent) ;
+  - `schema.prisma:5314-5320` : le champ `offreTierId` des lignes de devis est **mixte** (un `tierId`
+    pour les offres legacy, un **code** `AXI-OFF-NNN` pour le catalogue V2). Toute lecture doit
+    tolérer les deux formes.
 - Conséquence : la Journée IA **ne se reconnaît que sur les lignes du devis** de la commande, et
   seulement si le devis porte l'offre.
 
 ### 1.2 La commission de la Journée IA aujourd'hui
 
-- `calculerCommission`, `AR/regles.ts:338-390`. Paliers de formation (`:259-302`) : aucun
-  `journee-ia`. `TAUX_BPS` (`:306`) : `audit` 30 %.
+- `calculerCommission`, `AR/regles.ts:352-405`. Paliers de formation (à partir de `:273`) : aucun
+  `journee-ia`. `TAUX_BPS` (`:320`) : `audit` 30 %.
 - Dans `etapeCommissions`, la commission est calculée avec `palier: null`
   (`AR/passage-quotidien.ts:762-765`) à partir de `FactureFormation.activite`, saisie à la main :
   - `audit` → 30 % du HT, soit 447 € pour une Journée à 1 490 € ;
@@ -81,7 +99,7 @@ Abréviation : **AR/** = `src/features/apporteurs-reseau/`. **ESP/** = `src/app/
 | Habilitations        | `src/server/auth/habilitations.ts:291`                                                                                                      | `facturer: ["super_admin", "admin"]`. Il n'existe aucun acte réservé à `super_admin` seul pour l'argent du réseau.                                                                                                                                           |
 | E-mails              | `AR/envois.ts:156` (`envoyer`), `AR/apercu-envoi.ts` (`apercu`, `server-only`, jamais chargé par le worker, depuis #2250)                   | Un nouveau gabarit s'inscrit à quatre endroits et porte un `gabaritRepli` (AGENTS.md, lot S3).                                                                                                                                                               |
 | Poids                | `package.json:271`                                                                                                                          | Compartiment « Routes /apporteur/dossier … — 25 KB cumulé ».                                                                                                                                                                                                 |
-| Ligne de commission  | `prisma/schema.prisma:16655` (`CommissionApporteur`), unicité `@@unique([factureId, apporteurId, parrainage])`                              | La prime y entre comme une ligne de genre nouveau.                                                                                                                                                                                                           |
+| Ligne de commission  | `prisma/schema.prisma:16705` (`CommissionApporteur`, unicité l. 16746), unicité `@@unique([factureId, apporteurId, parrainage])`                              | La prime y entre comme une ligne de genre nouveau.                                                                                                                                                                                                           |
 
 ### 1.4 Une entreprise, un seul apporteur commissionné ; le parrainage à part
 
@@ -106,6 +124,7 @@ Une migration additive : `prisma/migrations/2026MMJJHHMMSS_apporteurs_challenges
 Conventions :
 
 - aucune clé étrangère vers les tables existantes ;
+- **traitement RGPD de `challenges_primes` par `rgpd-erase.ts` : conservée comme pièce comptable**, comme `commissions_apporteur` (une prime validée est une écriture liée à une autofacture). Les lignes `a_valider`, `en_suspens` ou `refusee`, sans commission : **supprimées** à l'effacement ; `preuves` ne contient aucun nom. Le développeur recopie le traitement de `commissions_apporteur` dans `rgpd-erase.ts` ; test dédié ;
 - aucune valeur ajoutée à une énumération existante ;
 - états en `VARCHAR` + `CHECK` ;
 - tout est nullable ou porte un défaut ;
@@ -210,7 +229,7 @@ Comparaison de **jours civils**, jamais d'instants. Ni `minuitParisUtc`, ni `fin
 Entrée : les commandes telles que `AR/commandes.ts` les regroupe (factures d'un devis + avoirs).
 
 1. **Reconnaissance sur le devis** : `journees` = somme des `quantite` des lignes du devis dont
-   `offreTierId = "journee-ia"`. Les lignes de facture ne sont pas lues pour reconnaître le produit
+   `offreTierId` égal à `"journee-ia"` **ou au code `AXI-OFF-NNN` de l'offre** (forme mixte, §1.1). Les lignes de facture ne sont pas lues pour reconnaître le produit
    (un acompte n'en porte pas).
 2. **Sans devis, ou devis sans offre reconnue** : seule une décision de
    `challenges_factures_decisions` fait compter la facture (D-4). Sans décision : ne compte pas.
@@ -221,6 +240,11 @@ Entrée : les commandes telles que `AR/commandes.ts` les regroupe (factures d'un
    partiel ne retire pas de Journée ; un avoir qui annule une ligne Journée IA en retire la quantité.
 5. **Attributaire** : `presentationPourEtablissement` à la date de commande. « À attribuer » non
    tranché → ne compte pour personne ; compte dès la décision, à sa date d'origine.
+   **Depuis #2253 et #2258** (règle d'attribution par rendez-vous, `regle-attribution.ts`,
+   `commandeCouverte` avec `reservation`) : si `APPORTEURS_VALIDATION_RDV` est **allumé**, c'est la règle de
+   `regle-attribution.ts` qui vaut, **telle qu'elle est au jour du constat**, pour décembre comme pour toute
+   période. Le constat appelle la même fonction que le passage quotidien (jamais une copie), et la
+   preuve (`preuves`) note **laquelle des deux règles a tranché**. Interrupteur éteint : règle antérieure.
 6. **Payée en entier** (pour le versement, D-2) : la commande figure dans `commandesSoldees` **avec**
    `totauxDevis` ; et aucun `Payment` de ses factures n'est `refunded` sans avoir correspondant.
 
@@ -231,7 +255,7 @@ facturees(apporteur) = Σ journees des commandes de l'attributaire, dansLaPeriod
 seuilAtteint         = facturees >= seuil
 payeesEnEntier       = Σ journees des mêmes commandes payées en entier
                        (et dernier paiement <= paiement_jusqu_au s'il existe)
-pretAVerser          = seuilAtteint ET payeesEnEntier >= seuil     // recommandation D-2
+pretAVerser          = seuilAtteint ET payeesEnEntier >= seuil     // règle du dirigeant : versement après paiement à 100 %
 ```
 
 Ces nombres ne sortent **jamais** vers l'espace de l'apporteur. Ils servent au constat et à la
@@ -242,7 +266,7 @@ console (§ 4.3).
 | Condition                                                                                                                             | Source                                                     |
 | ------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------- |
 | Challenge `publie`                                                                                                                    | `challenges_apporteur.statut`                              |
-| `seuilAtteint` (et `pretAVerser` si D-2 est accepté)                                                                                  | § 3.3                                                      |
+| `seuilAtteint` **et `pretAVerser`** (règle du dirigeant : rien n'est versé avant paiement à 100 % ; ce n'est plus une branche selon D-2)                                                                                  | § 3.3                                                      |
 | Contrat en cours à la date de la 10e Journée facturée (D-6)                                                                           | `ApporteurReseau.statut` et dates                          |
 | SIREN présent et valide sur la fiche                                                                                                  | `ApporteurReseau.siren`                                    |
 | Entreprise **active** au registre, lu **au clic**, hors cache, règle de `AR/verification.ts:187-195` (SIRET s'il existe, sinon SIREN) | registre ; « indisponible » ou « introuvable » = **refus** |
@@ -297,6 +321,28 @@ console (§ 4.3).
 | `statut`                       | `statutApresVigilance` ; puis `demanderVigilance` si besoin               |
 | `prestationRealiseeAt`, `…Par` | date de validation, `challenge`                                           |
 
+**Lecteurs qui supposent qu'un `factureId` est une `FactureFormation`** (vérifiés sur `54dd1eab`).
+La prime met `challenges_primes.id` dans `factureId` : chaque lecteur ci-dessous doit soit l'ignorer
+explicitement (`activite = prime_challenge`), soit le tolérer. **Un test par lecteur** (lot 4) :
+
+| Lecteur | Ce qu'il fait d'un `factureId` | Règle pour la prime |
+| --- | --- | --- |
+| `AR/avoir-client.ts:206-258` | cherche la facture client pour une reprise sur avoir | ignore les lignes `prime_challenge` (une prime n'est jamais reprise par un avoir client) |
+| `AR/ajustement.ts:114-163` (`suivreParrain`) | recrée / annule la part de parrainage | **aucune part de parrainage ne naît d'une prime** ; test explicite |
+| `AR/commissions.ts:409-439` et `:511` | `lireCommissions` : jointure facture, nom client, date | libellé de prime lu au §9.4 ; jointure facture absente tolérée |
+| `AR/commandes-a-attribuer.ts:51` | lit les factures à attribuer | la prime n'est jamais « à attribuer » |
+
+Plus un test : une ligne `prime_challenge` ne génère ni part de parrainage, ni ligne dans « à attribuer »,
+ni reprise par avoir client.
+
+**Source du libellé de la prime (I-2).** Le libellé n'est pas fixe : il est **lu en base**,
+`challenges_apporteur.titre`, retrouvé par `palier = challenge:<id>`. Le titre est immuable après
+publication (§2.1), donc l'autofacture déjà émise ne change jamais. Qui libelle quoi : la table des
+natures de #2259 (§3.5) **renvoie ici** ; l'autofacture `AXI-APP` (`autofacture-donnees.ts`) et
+`prestation-presentation.ts` lisent le même champ. Repli si la table est absente ou le challenge
+introuvable : « Prime exceptionnelle » (jamais l'identifiant). Le suffixe « (complément de commission) »
+est fixe, sur l'autofacture seulement.
+
 **Fenêtre app/worker (AGENTS.md, règle symétrique).** Le worker doit savoir libeller
 `prime_challenge` (lot 4) **avant** que la console puisse créer la première ligne (lot 7) : PR et
 créneau distincts.
@@ -315,7 +361,7 @@ créneau distincts.
   (plan #2259), libellée « Prime exceptionnelle de décembre 2026 ». Avant validation : rien.
 - Composants serveur uniquement, zéro JavaScript client.
 - Mêmes protections que #2259 § 2.5 : `force-dynamic`, `Cache-Control: no-store`,
-  `Referrer-Policy: no-referrer`, `noindex`. Jeton faux, ancien jeton, statut non `signe`, mode
+  `Referrer-Policy: same-origin` (valeur de `next.config.ts` sur `/apporteur/dossier/`, alignée sur #2259 §2.5 ; la première version annonçait `no-referrer` à tort), `noindex`. Jeton faux, ancien jeton, statut non `signe`, mode
   restreint : écran neutre (pas d'encart, page du règlement en 404).
 - Poids : compartiment « Routes /apporteur/dossier — 25 KB cumulé » (`package.json:271`) ; mesurer
   en octets après le lot 8.
@@ -342,12 +388,14 @@ publication, annonce : `sessionArgent()` (`facturer`). Chaque geste écrit au jo
 
 ### 4.3 Console : suivi et validation
 
-- **Suivi** (onglet du challenge) : apporteurs qui ont au moins une Journée retenue, **par ordre
+- **Suivi** (onglet du challenge ; c'est un **décompte interne**, nécessaire pour payer et jamais communiqué à l'apporteur, D-14) : apporteurs qui ont au moins une Journée retenue, **par ordre
   alphabétique, sans rang ni export**. Pour chacun : factures retenues (numéro, jour d'émission,
   Journées, payée en entier ou non) et écartées avec la raison. Bouton « Corriger le nombre de
   Journées » (motif obligatoire, `facturer`).
 - **Constat** : le passage quotidien met à jour `challenges_primes` (`a_valider` / `en_suspens`). Une
-  seule alerte interne au dirigeant quand une ligne passe `a_valider` pour la première fois. **Aucun
+  seule alerte interne quand une ligne passe `a_valider` pour la première fois, **par le canal existant** :
+  `destinataireAlertesInternes()` (`@/lib/destinataires-internes`) et `enqueueEmail("qualiopi-alerte-interne", …)`,
+  comme `alerterHorsGrille` (`AR/hors-grille.ts`). Aucun nouveau gabarit. **Aucun
   e-mail à l'apporteur.**
 - **Validation** (onglet « Primes ») : les Journées retenues, puis chaque contrôle du § 3.4 en clair
   (« oui », « non », « inconnu »). Bouton « Valider la prime de 2 000 € HT » **désactivé** tant qu'un
@@ -356,7 +404,12 @@ publication, annonce : `sessionArgent()` (`facturer`). Chaque geste écrit au jo
 - **À reprendre** : primes versées dont le compte est retombé sous 10. « Reprendre la prime »
   (confirmation, `enregistrerReprise`) ou « Laisser » (motif). `super_admin` seulement.
 
-### 4.4 Le message d'annonce, unique
+### 4.4 Le message d'annonce, unique — **sous réserve de D-15**
+
+> **Aucun message ne part, et le lot 6 n'est pas lançable, tant que le dirigeant n'a pas répondu « oui »
+> par écrit à D-15.** La règle « sans relance » ne dit pas qu'un message d'annonce est permis, et rien
+> dans le dépôt ne porte cette autorisation. Recommandation : **non**. Le règlement et l'encart de
+> l'espace suffisent ; l'apporteur qui ouvre son espace voit la règle.
 
 Sur la fiche d'un challenge publié : bloc « Annonce ».
 
@@ -369,8 +422,15 @@ Sur la fiche d'un challenge publié : bloc « Annonce ».
   l'envoi.
 - **Jamais renvoyé, aucune relance** : un apporteur qui signe après l'annonce ne reçoit rien ; il voit
   l'encart.
-- Gabarit `apporteur-challenge-annonce`, inscrit aux quatre registres, avec `gabaritRepli` (§ 6,
-  lot 6).
+- Gabarit `apporteur-challenge-annonce`, inscrit aux **cinq** endroits : le gabarit
+  (`src/lib/email/templates/`), `index.tsx`, `src/server/queue/types.ts`, `src/server/email/outbox-policy.ts`,
+  `src/server/email/apercu/catalogue.ts`.
+- **`gabaritRepli` nommé : `apporteur-lien-espace`** (gabarit existant, ancien et sûr). Sa charge est
+  `{ prenom?, lien?, origine? }` (`apporteur-lien-espace.tsx`) : la charge de l'annonce **contient ces trois
+  champs** avec le même sens, `lien` étant **le lien de l'espace** (où l'encart est visible), pas un lien
+  vers le règlement. Un worker antérieur au lot 6 rend donc « le lien de votre espace » : message neutre, sans
+  mention de la prime. Test : le gabarit de repli rend sans champ vide avec la charge de l'annonce. La clé
+  d'envoi (`jobId`) est `apporteur-challenge-annonce-<challengeId>-<apporteurId>`.
 
 ---
 
@@ -424,15 +484,19 @@ sur les textes du § 9 (ils doivent passer) et sur des contre-exemples (ils doiv
 ## 6. Interrupteurs
 
 Tous éteints par défaut, valeur exacte `"true"`, ajoutés à la liste fermée de
-`.github/workflows/coolify-drapeau.yml`. Si le plan #2259 a déjà créé `AR/interrupteurs.ts`, on y
-ajoute ces clés ; sinon le lot 3 le crée.
+`.github/workflows/coolify-drapeau.yml`. **Convention de `main` : un fichier par interrupteur**
+(`AR/interrupteur-rendez-vous.ts`) et la déclaration dans `src/env.ts` (suivie par #2258 pour
+`APPORTEURS_VALIDATION_RDV`). Pas de fichier `interrupteurs.ts` commun : le lot 3 crée
+`AR/interrupteur-challenges-console.ts`, `…-espace.ts`, `…-annonce.ts`, `…-prime.ts` et
+`AR/interrupteur-commission-journee-ia.ts`, et les déclare dans `src/env.ts`. Aucun conflit avec #2259
+(qui a son propre fichier).
 
 | Clé                                       | Cible              | Ce qu'elle ouvre                                      |
 | ----------------------------------------- | ------------------ | ----------------------------------------------------- |
 | `APPORTEUR_COMMISSION_JOURNEE_IA_ENABLED` | site **et** worker | Palier Journée IA dans `calculerCommission` (lot 2).  |
 | `APPORTEUR_CHALLENGES_CONSOLE_ENABLED`    | site               | Écrans console : liste, création, publication, suivi. |
 | `APPORTEUR_CHALLENGES_ESPACE_ENABLED`     | site               | Encart « la règle » et page du règlement.             |
-| `APPORTEUR_CHALLENGES_ANNONCE_ENABLED`    | site               | Bouton d'envoi du message unique.                     |
+| `APPORTEUR_CHALLENGES_ANNONCE_ENABLED`    | site               | Bouton d'envoi du message unique. **Ne s'allume qu'après D-15 = oui.** |
 | `APPORTEUR_CHALLENGES_PRIME_ENABLED`      | site **et** worker | Constat, validation, création de la ligne.            |
 
 **Retiré** : la barre de progression et tout interrupteur qui l'ouvrait. Les interrupteurs de
@@ -448,8 +512,8 @@ janvier. Ce qui doit être en ligne **avant** le 1er décembre pour que des Jour
 reconnues automatiquement : le lot 1 (offre `journee-ia` dans les devis). Sans lui, chaque
 facture de décembre passera par une décision manuelle (lot 7, toujours possible a posteriori).
 
-Minimum pour publier honnêtement : lots 3, 5, 8 (règle visible, règlement figé). L'annonce (lot 6)
-peut partir après la publication. Si ce minimum n'est pas en ligne le 1er décembre : D-10.
+Minimum pour publier honnêtement : lots 3, 5, 8 (règle visible, règlement figé). **Le lot 1 n'est plus « lançable
+tout de suite » tel qu'écrit avant cette correction : voir §8, lot 1 (squelette, code, mise en base).** L'annonce (lot 6), si D-15 est « oui », peut partir après la publication. Si ce minimum n'est pas en ligne le 1er décembre : D-10.
 
 ---
 
@@ -470,23 +534,30 @@ Chaque lot : tests rouges d'abord, une PR, en brouillon pendant le travail (AGEN
 
 | Lot   | Nature   | Contenu                                                                                                                                                                                 | Fichiers                                                                                                                                                                                                                                                                                                                  | Tests rouges d'abord                                                                                                                                                                                                                                                                           | Interrupteur                              | Dépend de                                                        |
 | ----- | -------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------- | ---------------------------------------------------------------- |
-| **1** | données  | Offre « Journée IA » reconnaissable dans les devis                                                                                                                                      | `prisma/seeds/qualiopi/offres.ts` (offre `tierId: "journee-ia"`, prix lu dans `pricing.ts`), assistant de devis (propose l'offre, pose `offreTierId`)                                                                                                                                                                     | le devis créé depuis l'offre porte `offreTierId = "journee-ia"` ; le seed reste idempotent ; aucun prix en dur                                                                                                                                                                                 | aucun (une offre de plus au catalogue)    | —                                                                |
-| **2** | argent   | Commission de la Journée IA alignée sur la règle : 500 € par Journée à 1 490 € HT, au prorata du prix payé, plafonnée au forfait, reprise par la voie existante si remboursée en argent | `AR/regles.ts` (palier `journee-ia`, forfait 50 000, prix 149 000), `AR/passage-quotidien.ts` (reconnaissance sur les lignes du devis), `AR/__tests__/regles.spec.ts`                                                                                                                                                     | 1 490 € → 500 € ; 745 € → 250 € ; 2 Journées → 1 000 € ; avoir total → reprise ; ancien comportement intact interrupteur éteint                                                                                                                                                                | `APPORTEUR_COMMISSION_JOURNEE_IA_ENABLED` | 1 ; allumage après D-11 (version de l'annexe 1)                  |
-| **3** | données  | Migration des challenges (§ 2), RGPD, déclaration des interrupteurs                                                                                                                     | `prisma/schema.prisma`, `prisma/migrations/…_apporteurs_challenges/{migration,rollback}.sql`, `prisma/objets-sql-bruts.ts`, `src/lib/rgpd-reseau-apporteur.ts`, `src/lib/rgpd-erase.ts`, `AR/interrupteurs.ts`, `.github/workflows/coolify-drapeau.yml`, `tests/unit/ci/apporteurs-challenges-migration-additive.spec.ts` | migration additive, sans clé étrangère vers l'existant, sans `ALTER TYPE` ; `rgpd` des quatre tables (dont `challenges_annonces` = `dossier-client`) ; aucune donnée d'exemple                                                                                                                 | tables lues par aucun code                | —                                                                |
-| **4** | argent   | Le worker sait libeller une prime (en ligne **avant** le lot 7)                                                                                                                         | `AR/autofacture-donnees.ts` (libellé « Prime exceptionnelle … »), `AR/commissions.ts` (hors `ACTIVITES_CLASSABLES`), `AR/prestation-presentation.ts`, `AR/requetes-console.ts`, `…/apporteurs/commissions/page.tsx` (libellé)                                                                                             | ligne `prime_challenge` simulée : autofacture assujetti (TVA 20 %), franchise (mention 293 B), régime inconnu (attente) ; DAS2 ; aucune part de parrainage ; palier jamais rendu                                                                                                               | aucun (aucune ligne n'existe encore)      | —                                                                |
+| **1** | données  | Offre « Journée IA » reconnaissable dans les devis, **et présente en production avant le 1er décembre** | `src/content/formations/skeletons.ts` (un squelette `journee-ia` : durée, public visé, modalités ; sans lui `dureesDuSquelette` lève et casse **toute** la graine), `prisma/seeds/qualiopi/offres.ts` (entrée `tierId: "journee-ia"` avec son **`code` fixe `AXI-OFF-NNN`** : le suivant du dernier de `OFFRES_SEED_BASE`, relu dans le fichier le jour du lot, jamais deviné ; prix lu dans `pricing.ts`), assistant de devis : `src/components/admin/qualiopi/assistant-devis/{lignes,vers-offre,vers-payload}.ts` et `VenteWizard.tsx` (propose l'offre, pose `offreTierId` ; **toute jointure sur `offres_site` tolère la forme mixte** `schema.prisma:5314-5320`) ; **mise en base de production : par le workflow `careers-offres-seed.yml` si c'est bien la graine des offres, sinon par un workflow `workflow_dispatch` dédié ou la création de l'offre depuis la console** (les graines ne tournent pas au déploiement). Le développeur **nomme le chemin retenu dans la PR** et le dirigeant le lance. | le squelette existe et `dureesDuSquelette("journee-ia")` ne lève pas ; le seed reste idempotent et crée l'offre une seule fois ; le devis créé depuis l'offre porte `offreTierId` ; une lecture mixte (tierId ou code) reconnaît la ligne ; aucun prix en dur | aucun (une offre de plus au catalogue) | — |
+| **2** | argent   | **Règle d'activité fixée (I-1)** : l'offre `journee-ia` du devis **l'emporte** sur `FactureFormation.activite` (saisie à la main) ; la Journée est calculée par un palier `journee-ia` rattaché à l'activité `formation`, avec `palier = "journee-ia"` et `quantite` passés à `calculerCommission` (`regles.ts:352-405` attend les deux ; aujourd'hui `etapeCommissions` passe `palier: null` sans `quantite`, `passage-quotidien.ts:760-764`) ; **commande mixte** : la part Journée est calculée sur les lignes `journee-ia`, le reste sur l'activité de la facture, au prorata du prix payé. Commission de la Journée IA alignée sur la règle : 500 € par Journée à 1 490 € HT, au prorata du prix payé, plafonnée au forfait, reprise par la voie existante si remboursée en argent | `AR/regles.ts` (palier `journee-ia`, forfait 50 000, prix 149 000), `AR/passage-quotidien.ts` (reconnaissance sur les lignes du devis), `AR/__tests__/regles.spec.ts`                                                                                                                                                     | 1 490 € → 500 € ; 745 € → 250 € ; 2 Journées → 1 000 € ; avoir total → reprise ; ancien comportement intact interrupteur éteint                                                                                                                                                                | `APPORTEUR_COMMISSION_JOURNEE_IA_ENABLED` | 1 ; allumage après D-11 (version de l'annexe 1)                  |
+| **3** | données  | Migration des challenges (§ 2), RGPD, déclaration des interrupteurs                                                                                                                     | `prisma/schema.prisma`, `prisma/migrations/…_apporteurs_challenges/{migration,rollback}.sql`, `prisma/objets-sql-bruts.ts`, `src/lib/rgpd-reseau-apporteur.ts`, `src/lib/rgpd-erase.ts`, `AR/interrupteur-challenges-*.ts` et `AR/interrupteur-commission-journee-ia.ts` (un fichier chacun), `src/env.ts`, `.github/workflows/coolify-drapeau.yml`, `tests/unit/ci/apporteurs-challenges-migration-additive.spec.ts` | migration additive, sans clé étrangère vers l'existant, sans `ALTER TYPE` ; `rgpd` des quatre tables (dont `challenges_annonces` = `dossier-client`) ; aucune donnée d'exemple                                                                                                                 | tables lues par aucun code                | —                                                                |
+| **4** | argent   | Le worker sait libeller une prime (en ligne **avant** le lot 7)                                                                                                                         | `AR/autofacture-donnees.ts` (libellé « Prime exceptionnelle … »), `AR/commissions.ts` (hors `ACTIVITES_CLASSABLES`, lecture du titre), `AR/avoir-client.ts`, `AR/ajustement.ts`, `AR/commandes-a-attribuer.ts` (ignorent `prime_challenge`), `AR/prestation-presentation.ts`, `AR/requetes-console.ts`, `…/apporteurs/commissions/page.tsx` (libellé)                                                                                             | **un test par lecteur de `factureId` du §3.6** (avoir client, `suivreParrain`, `lireCommissions`, `commandes-a-attribuer`) ; aucune part de parrainage ne naît d'une prime ; libellé lu en base (repli « Prime exceptionnelle ») ; ligne `prime_challenge` simulée : autofacture assujetti (TVA 20 %), franchise (mention 293 B), régime inconnu (attente) ; DAS2 ; aucune part de parrainage ; palier jamais rendu                                                                                                               | aucun (aucune ligne n'existe encore)      | —                                                                |
 | **5** | écran    | Console : liste, création, publication, filtre de formules                                                                                                                              | `…/apporteurs/challenges/{page,nouveau,[id]}/**`, `AR/actions-challenges-console.ts`, `AR/challenge-textes-interdits.ts`, `src/lib/admin-nav.ts`, `src/lib/admin-nav.test.ts`                                                                                                                                             | habilitation `facturer` ; immutabilité ; chevauchement ; formules de pression ; textes du § 9 acceptés                                                                                                                                                                                         | `APPORTEUR_CHALLENGES_CONSOLE_ENABLED`    | 3                                                                |
-| **6** | sécurité | Message d'annonce unique                                                                                                                                                                | `src/lib/email/templates/apporteur-challenge-annonce.tsx`, `index.tsx`, `src/server/queue/types.ts`, `src/server/email/outbox-policy.ts`, `src/server/email/apercu/catalogue.ts`, `AR/envois.ts`, `AR/actions-challenges-annonce.ts`, bloc console                                                                        | second envoi refusé (action et clé) ; retirés exclus ; aperçu exact ; aucun job différé ni répété ; `gabaritRepli`                                                                                                                                                                             | `APPORTEUR_CHALLENGES_ANNONCE_ENABLED`    | 3, 5 ; gabarit en ligne sur le worker **avant** le premier envoi |
+| **6** | sécurité | **Facultatif, bloqué par D-15 (recommandation : non).** Message d'annonce unique                                                                                                                                                                | `src/lib/email/templates/apporteur-challenge-annonce.tsx`, `index.tsx`, `src/server/queue/types.ts`, `src/server/email/outbox-policy.ts`, `src/server/email/apercu/catalogue.ts`, `AR/envois.ts`, `AR/actions-challenges-annonce.ts`, bloc console                                                                        | second envoi refusé (action et clé) ; retirés exclus ; aperçu exact ; aucun job différé ni répété ; `gabaritRepli = apporteur-lien-espace` et charge compatible (§4.4) ; clé `apporteur-challenge-annonce-<challengeId>-<apporteurId>`                                                                                                                                                                             | `APPORTEUR_CHALLENGES_ANNONCE_ENABLED`    | D-15 = oui ; 3, 5 ; gabarit en ligne sur le worker **avant** le premier envoi |
 | **7** | argent   | Règles pures, constat, suivi, validation, reprise                                                                                                                                       | `AR/challenge-regles.ts`, `AR/challenge-prime.ts`, `AR/passage-quotidien.ts` (une étape), `AR/actions-challenges-prime.ts`, `src/server/auth/habilitations.ts` (`valider_prime: ["super_admin"]`), `…/apporteurs/challenges/[id]/{suivi,primes}/**`                                                                       | tous les cas du § 3.5 ; jours civils de Paris aux bornes ; `totauxDevis` ; `refunded` sans avoir ; statut réversible ; registre muet = refus ; SIRET puis SIREN au clic hors cache ; `demanderVigilance` ; reprise par avoir ; seule l'action de validation crée la ligne ; `super_admin` seul | `APPORTEUR_CHALLENGES_PRIME_ENABLED`      | 3, 4 **en ligne**, 5                                             |
-| **8** | écran    | Espace : encart « la règle » et page du règlement                                                                                                                                       | `ESP/challenge/reglement/page.tsx`, `ESP/challenge/textes.ts`, `ESP/page.tsx` (un bloc), tests                                                                                                                                                                                                                            | aucun nombre personnel ; aucun `<progress>` ni « N sur M » ; `noindex`, `no-store`, `Referrer-Policy` ; jeton faux / restreint = neutre ; poids du compartiment 25 KB                                                                                                                          | `APPORTEUR_CHALLENGES_ESPACE_ENABLED`     | 3 ; après le lot qui touche `ESP/page.tsx` dans #2259            |
+| **8** | écran    | Espace : encart « la règle » et page du règlement                                                                                                                                       | `ESP/challenge/reglement/page.tsx`, `ESP/challenge/textes.ts`, `ESP/page.tsx` (un bloc), tests                                                                                                                                                                                                                            | aucun nombre personnel ; aucun `<progress>` ni « N sur M » ; `noindex`, `no-store`, `Referrer-Policy: same-origin` ; jeton faux / restreint = neutre ; poids du compartiment 25 KB                                                                                                                          | `APPORTEUR_CHALLENGES_ESPACE_ENABLED`     | 3 ; **après EC-5 de #2259** (qui touche `ESP/page.tsx`) ; attend D-5, la relecture du §9.2 et D-14 |
 
-Le lot 7 peut se scinder en 7a (règles pures, sans base, sans dépendance) et 7b (constat et
-console). **7a est lançable tout de suite.**
+Le lot 7 se coupe ainsi :
+
+- **7a — règles pures, sans base** : `AR/challenge-regles.ts` et ses tests (`AR/__tests__/challenge-regles.spec.ts`,
+  `une-journee-ne-compte-que-pour-l-attributaire.spec.ts` sur données simulées). Ses tests encodent les
+  recommandations D-2, D-4, D-6, D-7, D-8, D-9 : **7a attend ces réponses** (ou les code comme
+  constantes isolées, une ligne chacune, modifiables si le dirigeant change d'avis).
+- **7b — constat et validation** : `AR/challenge-prime.ts`, l'étape de `AR/passage-quotidien.ts`,
+  `AR/actions-challenges-prime.ts`, `habilitations.ts` (`valider_prime`), `…/challenges/[id]/{suivi,primes}/**`,
+  l'alerte interne. Dépend de 7a, 3, 4 **en ligne**, 5 ; attend D-3, D-12, D-13 **et D-14**.
 
 « Mes commissions » : lots EC du plan #2259. La ligne de prime y est rendue comme une commission ;
 aucune section « challenge ».
 
 Collisions : `AR/passage-quotidien.ts` est touché par les lots 2 et 7 → 7 après 2. `ESP/page.tsx` par
-le lot 8 et #2259. Un fichier d'actions par lot.
+le lot 8 et EC-5 de #2259 (EC-5 d'abord). Un fichier d'actions par lot.
 
 Allumage conseillé : (1) `…_CONSOLE` ; le dirigeant crée le challenge de décembre ; (2) `…_ESPACE` ;
 (3) publication ; (4) `…_ANNONCE`, envoi unique ; (5) `…_PRIME` sur le worker puis sur le site ;
@@ -505,7 +576,7 @@ Allumage conseillé : (1) `…_CONSOLE` ; le dirigeant crée le challenge de dé
 >    pour tous.
 > 2. **Rien n'est attendu de vous.** Aucune inscription n'est demandée et aucun chiffre n'est exigé.
 >    Ne pas obtenir cette prime n'a aucune conséquence sur votre contrat, vos commissions ou votre
->    relation avec Axion IA. Cette prime ne fixe aucun objectif et ne crée aucune obligation.
+>    relation avec Axion IA. Cette prime ne crée aucune obligation pour vous : le seuil de dix Journées est la condition d'obtention de la prime, non un objectif qui vous serait fixé.
 > 3. **Ce qui ouvre droit à la prime.** Dix Journées IA facturées par Axion IA entre le 1er et le
 >    31 décembre 2026 inclus (date de la facture, heure de Paris), à des entreprises qui vous sont
 >    attribuées selon votre contrat. Les autres prestations ne comptent pas. Une Journée remboursée,
@@ -521,7 +592,7 @@ Allumage conseillé : (1) `…_CONSOLE` ; le dirigeant crée le challenge de dé
 > 7. **Fin de contrat.** La prime reste due si votre contrat était en cours le jour où la dixième
 >    Journée a été facturée [D-6].
 > 8. **Organisation.** Vous restez seul juge de votre activité, de vos horaires et de vos démarches.
->    Axion IA n'envoie aucun rappel, ne publie aucun classement et n'affiche aucun décompte.
+>    Axion IA n'envoie aucun rappel, ne publie aucun classement et ne vous communique aucun décompte de votre activité.
 > 9. **Règlement fixe.** Ce règlement ne peut pas être modifié après sa publication.
 
 ### 9.2 Encart de l'espace
@@ -574,7 +645,7 @@ Objet : « Prime exceptionnelle de décembre 2026 »
 
 | N°       | Question fermée                                                                                                                                                                              | Recommandation                                                                                                                                                                                                     |
 | -------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| **D-1**  | « Entreprise » veut-il dire **SIREN** (une société = un seul apporteur commissionné) ou **établissement** (deux SIRET d'un même SIREN peuvent revenir à deux apporteurs, contrat art. 2.6) ? | **SIREN**, lecture stricte de votre règle. Cela demande de changer `attributaireDeLaCommande` et l'article 2.6 (plan #2259). Pour le challenge, rien ne change : chaque Journée compte pour son seul attributaire. |
+| **D-1**  | **Identique à Q2 du plan #2259 : une seule décision, prise là-bas, dont la réponse vaut ici.** « Entreprise » veut-il dire **SIREN** (une société = un seul apporteur commissionné) ou **établissement** (deux SIRET d'un même SIREN peuvent revenir à deux apporteurs, contrat art. 2.6) ? | **SIREN**, lecture stricte de votre règle. Cela demande de changer `attributaireDeLaCommande` et l'article 2.6 (plan #2259). Pour le challenge, rien ne change : chaque Journée compte pour son seul attributaire. |
 | **D-2**  | La prime est-elle versée quand les dix Journées sont **payées à 100 %**, et reprise si l'une est remboursée ? (La condition d'obtention reste « facturées en décembre ».)                    | **Oui.** C'est la règle de toutes les commissions.                                                                                                                                                                 |
 | **D-3**  | Faut-il une date limite de paiement client (par exemple **31 mars 2027**) au-delà de laquelle une Journée impayée ne permet plus le versement ?                                              | **Oui, 31 mars 2027**, écrite dans le règlement seulement, jamais dans l'encart.                                                                                                                                   |
 | **D-4**  | Une facture de décembre sans devis, ou sur un devis sans l'offre Journée IA, peut-elle compter par décision manuelle motivée et journalisée dans la console ?                                | **Oui**, la décision vise la facture et s'applique quel que soit l'apporteur.                                                                                                                                      |
@@ -587,3 +658,5 @@ Objet : « Prime exceptionnelle de décembre 2026 »
 | **D-11** | La commission de 500 € par Journée IA (lot 2) demande-t-elle une nouvelle version de l'annexe 1 acceptée par les apporteurs avant d'allumer `APPORTEUR_COMMISSION_JOURNEE_IA_ENABLED` ?      | **Oui**, faire relire par le conseil ; coder maintenant, allumer après.                                                                                                                                            |
 | **D-12** | La prime est-elle couverte par le mandat d'autofacturation (contrat art. 5.2, annexe 2), en la qualifiant de « complément de commission » ?                                                  | **Oui**, sous réserve du conseil. Sinon, une case d'acceptation dans l'espace, qui ne vaut pas inscription.                                                                                                        |
 | **D-13** | Peut-on archiver un challenge publié pendant sa période, les droits déjà nés restant acquis ?                                                                                                | **Oui.**                                                                                                                                                                                                           |
+| **D-14** | **Le seuil de dix Journées est-il compatible avec « aucun objectif » ?** Vous avez posé la règle « 2 000 € pour 10 Journées IA » : c'est un seuil d'obtention. Le plan l'assume (règlement art. 2 et 8 reformulés, décompte interne seulement, rien de communiqué à l'apporteur). Confirmez-vous un dispositif à seuil ? Oui / Non | **Oui, tel que reformulé**, après relecture du conseil (risque de requalification). Si « non » : prime décidée a posteriori, sans seuil publié ; les lots 6, 7b et 8 sont à refaire. |
+| **D-15** | **Un message d'annonce est-il autorisé ?** Rien dans le dépôt ne porte cette autorisation, et la règle dit « sans relance ». Oui (un seul message, jamais de rappel, texte du §9.3) / Non | **Non.** L'encart de l'espace et le règlement suffisent. Si « oui », par écrit, avant tout code du lot 6. |
