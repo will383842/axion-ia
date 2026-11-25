@@ -15,7 +15,7 @@ import path from "node:path";
 import { describe, expect, it } from "vitest";
 
 const DOSSIER = path.resolve(__dirname, "..");
-const FICHIERS = ["steps.tsx", "CommercialApplicationWizard.tsx"] as const;
+const FICHIERS = ["steps.tsx", "CommercialApplicationWizard.tsx", "wizard-state.ts"] as const;
 
 /** Source sans commentaires ni appels `trackFunnel("…")` (noms techniques de mesure). */
 function sourceRendue(fichier: string): string {
@@ -35,7 +35,7 @@ const INTERDITS: ReadonlyArray<{ mot: string; re: RegExp }> = [
   { mot: "indispensable", re: /indispensable/i },
 ];
 
-/** Champs du parcours (écran des expériences), tolérés jusqu'à D5. */
+/** Champs du parcours (écran des expériences), tolérés jusqu'à D5 ; « poste » de wizard-state.ts est un nom de champ de l'état (D5). */
 const PARCOURS =
   /poste occupé|"Poste \?"|exp\.poste|posteActuel|\{ poste:|-poste`|errors\[`\$\{pre\}-poste`\]/i;
 
@@ -46,7 +46,7 @@ describe("le formulaire d'entrée emploie le vocabulaire de l'apport d'affaires"
         const lignes = sourceRendue(fichier)
           .split("\n")
           .filter((l) => re.test(l))
-          .filter((l) => !(mot === "poste" && PARCOURS.test(l)));
+          .filter((l) => !(mot === "poste" && (PARCOURS.test(l) || fichier === "wizard-state.ts")));
         expect(lignes, lignes.join("\n")).toEqual([]);
       });
     }
