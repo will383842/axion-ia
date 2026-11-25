@@ -1,4 +1,4 @@
-// Candidature commerciale — les 9 écrans du wizard (une question, un écran).
+// Demande d’apport d’affaires — les 9 écrans du wizard (une question, un écran).
 //
 // Chaque écran est un composant contrôlé : il reçoit les réponses, les
 // erreurs de SON écran et un patcheur. Aucune logique de navigation ici —
@@ -210,7 +210,8 @@ export function StepIdentite({ a, set, errors }: StepProps) {
             aria-describedby={errors.consent ? "ca-consent-error" : undefined}
           />
           <span className="text-fg-soft text-sm leading-relaxed">
-            J’accepte que mes informations soient utilisées pour l’étude de ma candidature.
+            J’accepte que mes informations soient utilisées pour l’étude de ma demande d’apport
+            d’affaires.
           </span>
         </label>
         {errors.consent ? (
@@ -223,14 +224,14 @@ export function StepIdentite({ a, set, errors }: StepProps) {
   );
 }
 
-// ── Étape 2 — Le prérequis B2B ──────────────────────────────────────────────
+// ── Étape 2 — L’expérience B2B ──────────────────────────────────────────────
 
 export function StepB2b({ a, set, errors }: StepProps) {
   return (
     <div>
       <StepHeading
-        title="Le prérequis"
-        hint="Ce poste demande une vraie expérience de la vente B2B. C’est le seul prérequis, mais il est indispensable."
+        title="Votre expérience"
+        hint="Aucune expérience n’est exigée. Ces réponses nous aident seulement à préparer notre échange."
       />
       <ChipGroup legend="Avez-vous déjà vendu en B2B ?" requiredField error={errors.b2bDejaVendu}>
         <Chip
@@ -273,7 +274,7 @@ export function StepB2b({ a, set, errors }: StepProps) {
           décrocheraient vraiment.
 
           FACULTATIVE à dessein : la rendre bloquante ferait abandonner ceux qui
-          hésitent sur le chiffre, alors qu'une candidature sans carnet déclaré
+          hésitent sur le chiffre, alors qu'une demande sans carnet déclaré
           reste parfaitement exploitable — elle passe simplement par l'échange
           collectif au lieu d'un appel prioritaire. */}
       <div className="mt-6">
@@ -294,13 +295,6 @@ export function StepB2b({ a, set, errors }: StepProps) {
           ))}
         </ChipGroup>
       </div>
-
-      {a.b2bDejaVendu === false ? (
-        <p className="bg-paper border-border text-fg-soft mt-6 rounded-2xl border px-4 py-3.5 text-[15px] leading-relaxed">
-          Le profil recherché est vraiment orienté vente B2B. Vous pouvez quand même envoyer votre
-          candidature, nous la lirons.
-        </p>
-      ) : null}
     </div>
   );
 }
@@ -764,7 +758,7 @@ export function StepZone({ a, set, errors }: StepProps) {
 
       <div className="mt-7">
         {/* OBLIGATOIRE (retour Will 2026-08-18) : le métier est du terrain,
-            une candidature sans réponse ici n'est pas exploitable. Le tap ne
+            une demande sans réponse ici n'est pas exploitable. Le tap ne
             DÉ-sélectionne donc plus (un radio obligatoire qu'on peut vider
             laisserait le candidat bloqué sans comprendre pourquoi). */}
         <ChipGroup
