@@ -25,7 +25,7 @@ describe("contrat 2.2 : déclaration et durée de l'attribution", () => {
     expect(texte).toContain("les déclarations de l'article 3.2 sont faites par le seul formulaire");
   });
 
-  it("3.2 : l'attribution devient aussi définitive sur confirmation écrite de la Société", () => {
+  it("3.2 : plus de confirmation écrite ; validation par rendez-vous tenu ou commande signée", () => {
     // 2.8 : plus de confirmation écrite ni par le silence ; validation par le premier rendez-vous
     // qui a eu lieu (pris pendant la réservation) ou par la commande signée.
     expect(texte).not.toContain("dès que la Société la confirme par écrit à l'Apporteur");
@@ -54,7 +54,7 @@ describe("contrat 2.2 : déclaration et durée de l'attribution", () => {
     );
   });
 
-  it("3.5 : la prise en charge par la Société court six mois depuis la prise en charge", () => {
+  it("3.5 : la prise en charge par la Société suit les mêmes bornes que l'Apporteur (60 jours puis 6 mois)", () => {
     expect(texte).toContain("Elle vaut pour **60 jours**, décomptés comme à l'article 3.2");
     expect(texte).toContain("elle ne se poursuit, pour **6 mois**, que si un rendez-vous");
     expect(texte).not.toContain("3.4 alinéa 2");

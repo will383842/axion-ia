@@ -8,7 +8,7 @@ import { ACCEPTATIONS } from "../regles-dossier";
 // suspension pendant une contestation écrite ; reprise sur 24 mois ; fraude ; CPF constaté après.
 const texte = CONTRAT_V2_MARKDOWN.replace(/\s+/g, " ");
 
-describe("contrat 2.3 : commission sur prestation réalisée, reprise et litige", () => {
+describe("contrat 2.3 (état en 2.8) : commission due à l'encaissement intégral, reprise et litige", () => {
   it("version 2.3", () => {
     expect(Number(CONTRAT_VERSION)).toBeGreaterThanOrEqual(2.3);
   });
@@ -57,6 +57,9 @@ describe("contrat 2.3 : commission sur prestation réalisée, reprise et litige"
   });
 
   it("8.1 et A1.6 : CPF constaté après le versement = reprise", () => {
+    expect(texte).toContain(
+      "Lorsque ce financement est constaté après le versement de la commission, celle-ci fait l'objet d'une reprise",
+    );
     expect(texte).toContain(
       "Un tel financement constaté après le versement de la commission donne lieu à sa reprise",
     );
