@@ -89,7 +89,8 @@ function jsonLdElements(noeud: unknown, out: Array<Record<string, unknown>> = []
 
 const INTERDITES_JSON =
   /baseSalary|incentiveCompensation|MonetaryAmount|jobBenefits|workHours|validThrough/;
-const MOTS_INTERDITS = /\bposte\b|emploi|recrut|embauch|commercial|déplafonn|plafond|freelance/i;
+const MOTS_INTERDITS =
+  /\bposte\b|emploi|recrut|embauch|commercial|déplafonn|plafond|freelance|aucun gain garanti/i;
 
 async function lireJobPosting(): Promise<Record<string, unknown>> {
   const trouves = (await donneesStructurees(await rendreHub()))

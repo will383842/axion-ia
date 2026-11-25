@@ -80,6 +80,7 @@ export default async function DevenirCommercialHub({ params }: Props) {
   const p = chiffresApporteurs();
   const faq = faqPrincipale(p);
   const { description } = textesMeta();
+  const jobPosting = buildApporteurJobPostingJsonLd(locale);
 
   return (
     <>
@@ -104,10 +105,7 @@ export default async function DevenirCommercialHub({ params }: Props) {
         scriptId="jsonld-commercial-webpage"
       />
       <JsonLd data={faqApporteurs(faq)} scriptId="jsonld-commercial-faq" />
-      <JsonLd
-        data={buildApporteurJobPostingJsonLd(locale)}
-        scriptId="jsonld-commercial-jobposting"
-      />
+      {jobPosting ? <JsonLd data={jobPosting} scriptId="jsonld-commercial-jobposting" /> : null}
 
       <StickyMobileCta
         href={DOSSIER}

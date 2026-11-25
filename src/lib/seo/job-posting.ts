@@ -1,6 +1,6 @@
 // JobPosting JSON-LD (Google for Jobs) pour une offre d'emploi DB.
-// Crée ex nihilo (le JobPosting de /devenir-commercial-ia est inline, multi-lieux
-// et 100% commission — non réutilisable pour une offre single-location salariée).
+// Crée ex nihilo (le JobPosting de /devenir-commercial-ia, mono-lieu et à distance, est
+// construit à part dans `job-posting-apporteur.ts` — non réutilisable ici).
 // Gère : remote→TELECOMMUTE vs Place ; baseSalary ;
 // validThrough déterministe ; garde-fou published & !filled.
 import { BRAND_LOGO, ORGANIZATION_SAME_AS, SITE_URL } from "@/lib/seo";
