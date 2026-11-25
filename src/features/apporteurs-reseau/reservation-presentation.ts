@@ -11,6 +11,8 @@
 
 import { prisma } from "@/lib/prisma";
 
+import type { ReservationProvisoire } from "./regle-attribution";
+
 /** La seule règle posée par ce lot : validation au premier rendez-vous tenu. */
 const REGLE_RENDEZ_VOUS = "rendez_vous";
 
@@ -29,12 +31,21 @@ export interface Reservation {
   valideeAt: Date | null;
 }
 
-/** La réservation telle que la lisent les gardes (`reservationOccupe`) ; `null` si aucune ligne. */
+/**
+ * La réservation telle que la lisent les gardes (`reservationOccupe`) ; `null` si aucune ligne.
+ * Porte aussi le rendez-vous pris pendant la réservation s'il n'a pas encore eu lieu (lot 4).
+ */
 export function versProvisoire(
   r: Reservation | undefined,
   recueAt: Date,
-): { recueAt: Date; reserveeJusquAt: Date } | null {
-  return r ? { recueAt, reserveeJusquAt: r.reserveeJusquAt } : null;
+): ReservationProvisoire | null {
+  return r
+    ? {
+        recueAt,
+        reserveeJusquAt: r.reserveeJusquAt,
+        rendezVousEnAttentePrisAt: r.rendezVousAt ? null : r.rendezVousPrisAt,
+      }
+    : null;
 }
 
 /** L'erreur Prisma « la table n'existe pas » (P2021) : migration pas encore passée. */

@@ -254,7 +254,7 @@ describe("deux apporteurs, une entreprise : le premier qui a saisi la garde", ()
   it("la déclaration plus ancienne, réservation en cours, occupe : la plus récente est refusée", () => {
     expect(
       existeDeclarationPlusAncienne(
-        [{ ...ligne(A28, T0), reservation: { reserveeJusquAt: jours(T0, 60) } }],
+        [{ ...ligne(A28, T0), reservation: { recueAt: T0, reserveeJusquAt: jours(T0, 60) } }],
         { apporteurId: B28, recueAt: jours(T0, 3) },
         jours(T0, 3),
       ),
@@ -264,7 +264,7 @@ describe("deux apporteurs, une entreprise : le premier qui a saisi la garde", ()
   it("jamais deux commissionnés : réservation échue, l'ancienne ne bloque plus ; la nouvelle devient la seule à occuper", () => {
     expect(
       existeDeclarationPlusAncienne(
-        [{ ...ligne(A28, T0), reservation: { reserveeJusquAt: jours(T0, 60) } }],
+        [{ ...ligne(A28, T0), reservation: { recueAt: T0, reserveeJusquAt: jours(T0, 60) } }],
         { apporteurId: B28, recueAt: jours(T0, 70) },
         jours(T0, 70),
       ),
@@ -284,7 +284,12 @@ describe("deux apporteurs, une entreprise : le premier qui a saisi la garde", ()
   it("l'ordre de saisie décide : la plus récente n'est jamais prioritaire sur l'ancienne", () => {
     expect(
       existeDeclarationPlusAncienne(
-        [{ ...ligne(B28, jours(T0, 3)), reservation: { reserveeJusquAt: jours(T0, 63) } }],
+        [
+          {
+            ...ligne(B28, jours(T0, 3)),
+            reservation: { recueAt: jours(T0, 3), reserveeJusquAt: jours(T0, 63) },
+          },
+        ],
         { apporteurId: A28, recueAt: T0 },
         jours(T0, 4),
       ),

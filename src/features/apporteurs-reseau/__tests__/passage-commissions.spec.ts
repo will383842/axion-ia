@@ -60,6 +60,7 @@ vi.mock("@/lib/prisma", () => ({
         return a.data;
       }),
     },
+    presentationReservation: { findMany: vi.fn(async () => []) },
     pieceApporteur: { findMany: vi.fn(async () => []) },
     devis: { findMany: vi.fn(async () => []) },
     apporteurReseau: { findMany: vi.fn(async () => []) },

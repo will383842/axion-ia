@@ -504,7 +504,7 @@ export function existeDeclarationPlusAncienne(
     protegeeJusquAt?: Date | null;
     recueAt?: Date | null;
     /** Règle par rendez-vous : la réservation de la déclaration, si elle en a une. */
-    reservation?: { reserveeJusquAt: Date } | null;
+    reservation?: ReservationProvisoire | null;
   }>,
   moi: { apporteurId: string; recueAt: Date },
   maintenant: Date,

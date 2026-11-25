@@ -27,6 +27,7 @@ import { randomUUID } from "node:crypto";
 import { prisma } from "@/lib/prisma";
 
 import { jourParis } from "./autofacture-donnees";
+import { lireReservations } from "./reservation-presentation";
 import { euros, ajouterMois } from "./regles";
 
 // ── Résiliation ──────────────────────────────────────────────────────────
@@ -35,13 +36,15 @@ export interface PresentationARegler {
   id: string;
   statut: string;
   protegeeJusquAt: Date | null;
+  /** Règle par rendez-vous : la fin de la réservation provisoire, si la présentation en porte une. */
+  reserveeJusquAt?: Date | null;
 }
 
 /** Ce qu'il faut écrire sur chaque présentation en cours. Pur. */
 export function planResiliation(
   presentations: readonly PresentationARegler[],
   maintenant: Date,
-): Array<{ id: string; protegeeJusquAt: Date | null }> {
+): Array<{ id: string; protegeeJusquAt: Date | null; reserveeJusquAt: Date | null }> {
   return presentations
     .filter((p) => p.statut === "reservee" || p.statut === "confirmee")
     .map((p) => ({
@@ -51,6 +54,12 @@ export function planResiliation(
         p.protegeeJusquAt && p.protegeeJusquAt.getTime() > maintenant.getTime()
           ? maintenant
           : p.protegeeJusquAt,
+      // Même règle pour la réservation (art. 12.3) : une commande signée avant la résiliation reste
+      // couverte, aucune commande d'après ne l'est, et la réservation ne se prolonge pas.
+      reserveeJusquAt:
+        p.reserveeJusquAt && p.reserveeJusquAt.getTime() > maintenant.getTime()
+          ? maintenant
+          : (p.reserveeJusquAt ?? null),
     }));
 }
 
@@ -68,6 +77,16 @@ export async function resilierApporteur(
   if (!(STATUTS_RESILIABLES as readonly string[]).includes(a.statut))
     return { ok: false, message: "Seul un contrat signé peut être résilié." };
 
+  // Lues AVANT la transaction (tolérant à la table absente : une erreur dans une transaction Postgres
+  // l'aurait annulée). Aucune ligne : rien à ramener.
+  const reservations = await lireReservations(
+    (
+      await prisma.presentationEntreprise.findMany({
+        where: { apporteurId, statut: "reservee" },
+        select: { id: true },
+      })
+    ).map((p) => p.id),
+  );
   const termine = await prisma.$transaction(
     async (tx) => {
       // Écriture conditionnelle : deux clics ne résilient pas deux fois.
@@ -80,8 +99,21 @@ export async function resilierApporteur(
         where: { apporteurId, statut: { in: ["reservee", "confirmee"] } },
         select: { id: true, statut: true, protegeeJusquAt: true },
       });
-      const plan = planResiliation(presentations, maintenant);
+      const plan = planResiliation(
+        presentations.map((p) => ({
+          ...p,
+          reserveeJusquAt: reservations.get(p.id)?.reserveeJusquAt ?? null,
+        })),
+        maintenant,
+      );
       for (const p of plan) {
+        if (reservations.has(p.id) && p.reserveeJusquAt) {
+          // Conditionnelle : ne touche qu'une réservation qui courait encore.
+          await tx.presentationReservation.updateMany({
+            where: { presentationId: p.id, reserveeJusquAt: { gt: p.reserveeJusquAt } },
+            data: { reserveeJusquAt: p.reserveeJusquAt },
+          });
+        }
         await tx.presentationEntreprise.update({
           where: { id: p.id },
           data: { statut: "terminee", protegeeJusquAt: p.protegeeJusquAt },
