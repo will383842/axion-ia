@@ -1,0 +1,5 @@
+-- Rollback de 20261126090000_devis_journee_ia.
+-- Seulement sur décision du fondateur : la colonne porte le repère de devis déjà émis.
+-- Sauvegarder d'abord (COPY ... TO) ; ne rien supprimer sans sauvegarde.
+-- Pour mettre de côté plutôt que supprimer :
+--   ALTER TABLE "devis" RENAME COLUMN "journee_ia" TO "journee_ia_retire_20261126";
