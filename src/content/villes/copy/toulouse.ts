@@ -684,7 +684,7 @@ export const TOULOUSE_COPY: VilleCopy = {
             sizeLabel: "Grande entreprise",
             price: "Parcours grands comptes — sur devis",
             detail:
-              "Pour directeurs de divisions et cadres de direction des grands groupes toulousains (Airbus, Thales Alenia Space, Continental, CNES). Format confidentiel haut niveau, agenda adapté aux contraintes de direction opérationnelle. Frais en sus.",
+              "Pour directeurs de divisions et cadres de direction des grands groupes toulousains (Airbus, Thales Alenia Space, Continental, CNES). Format confidentiel haut niveau, agenda adapté aux contraintes de direction opérationnelle.",
           },
         ],
         faq: [

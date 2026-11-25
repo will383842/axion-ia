@@ -221,7 +221,7 @@ export const RAMBOUILLET_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Detailed quote issued from 24-48 hours depending on complexity, with no imposed subscription. Fully transferable custom code: you keep ownership of the code, access and documentation, recoverable in-house or by any Yvelines provider — no Axion-IA lock-in. EU hosting by default, documented GDPR compliance (DPA signed before any processing). We deliver UX/UI, mobile, multi-CMS e-commerce and AI integration on a single project;",
+          "Detailed quote issued from 24-48 hours depending on complexity, with no imposed subscription. Fully transferable custom code: you keep ownership of the code, access and documentation, recoverable in-house or by any Yvelines provider — no Axion-IA lock-in. EU hosting by default, documented GDPR compliance (DPA signed before any processing). We deliver UX/UI, mobile, multi-CMS e-commerce and AI integration on a single project.",
       },
     },
   },

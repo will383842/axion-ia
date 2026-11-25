@@ -686,7 +686,7 @@ export const TOURS_COPY: VilleCopy = {
             sizeLabel: "Grande entreprise",
             price: "Parcours grands comptes — sur devis",
             detail:
-              "Pour cadres dirigeants et directeurs de sites des grands groupes tourangeaux (STMicroelectronics, SKF, Michelin, Hutchinson). Format confidentiel haut niveau, agenda adapté aux contraintes de direction de site industriel. Frais en sus.",
+              "Pour cadres dirigeants et directeurs de sites des grands groupes tourangeaux (STMicroelectronics, SKF, Michelin, Hutchinson). Format confidentiel haut niveau, agenda adapté aux contraintes de direction de site industriel.",
           },
         ],
         faq: [

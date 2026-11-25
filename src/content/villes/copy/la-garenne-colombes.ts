@@ -222,7 +222,7 @@ export const LA_GARENNE_COLOMBES_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Quote delivered from 24-48 h depending on complexity,. Hosting in Europe by default and GDPR compliance: you remain the owner of your data, your code and your content. The site and its AI agents are portable — taken over in-house or by any provider of your choice, with no vendor lock-in or imposed maintenance contract. We cover the whole chain without subcontracting: UX/UI, mobile responsive, multi-CMS e-commerce (Shopify, WooCommerce, Wix, custom) and the AI layer (RAG chatbot, semantic search, agents), from the shops on rue de l'Aigle to the France subsidiaries of the Champs-Philippe district.",
+          "Quote delivered from 24-48 h depending on complexity. Hosting in Europe by default and GDPR compliance: you remain the owner of your data, your code and your content. The site and its AI agents are portable — taken over in-house or by any provider of your choice, with no vendor lock-in or imposed maintenance contract. We cover the whole chain without subcontracting: UX/UI, mobile responsive, multi-CMS e-commerce (Shopify, WooCommerce, Wix, custom) and the AI layer (RAG chatbot, semantic search, agents), from the shops on rue de l'Aigle to the France subsidiaries of the Champs-Philippe district.",
       },
     },
   },
