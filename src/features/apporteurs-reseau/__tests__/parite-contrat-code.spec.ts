@@ -114,18 +114,17 @@ describe("parité contrat / code : les nombres clés sont les mêmes", () => {
       "PALIERS_FORMATION[formation-generale-4h].forfaitCents / 100",
     );
   });
-  it("30 % audit et 1-to-1, 15 % intégration (annexe 1)", () => {
+  it("30 % audit, aucune commission 1-to-1, 15 % intégration (annexe 1)", () => {
     attendre(
       "audit, en pourcent",
       lire("audit", /\*\*(\d+) % du montant hors taxes facturé\*\* de tout audit vendu seul/),
       TAUX_BPS.audit / 100,
       "TAUX_BPS.audit / 100",
     );
-    attendre(
-      "1-to-1, en pourcent",
-      lire("1-to-1", /(\d+) % du montant hors taxes facturé de l'accompagnement individuel/),
-      TAUX_BPS.un_a_un / 100,
-      "TAUX_BPS.un_a_un / 100",
+    // Décision de Will du 25/11 : plus aucune commission sur l'accompagnement individuel (A1.3).
+    // Le code (TAUX_BPS.un_a_un) relève du lot qui aligne les règles sur la 2.8.
+    expect(TEXTE).toContain(
+      "L'accompagnement individuel (coaching « one to one »), vendu à la séance ou à la journée, ne donne lieu à aucune commission ; il relève de A1.6.",
     );
     attendre(
       "intégration, en pourcent",

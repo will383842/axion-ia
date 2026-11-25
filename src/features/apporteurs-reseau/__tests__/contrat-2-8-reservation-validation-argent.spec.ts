@@ -53,6 +53,17 @@ describe("contrat 2.8", () => {
     );
   });
 
+  it("décisions de Will du 25/11 : A1.3 sans commission ; file d'attente de 15 jours après les 30 jours de repos", () => {
+    expect(texte).toContain(
+      "L'accompagnement individuel (coaching « one to one »), vendu à la séance ou à la journée, ne donne lieu à aucune commission ; il relève de A1.6.",
+    );
+    expect(texte).toContain(
+      "ces quinze jours ne s'ouvrent qu'à l'expiration des 30 jours de repos prévus à l'article 3.2",
+    );
+    expect(texte).toContain("soixante jours (annexe 1, A1.8)");
+    expect(texte).not.toContain("A1.7).");
+  });
+
   it("information RGPD dans le premier message, sans e-mail séparé ; jamais de vérification annoncée", () => {
     expect(texte).toContain("dans le premier message qu'elle lui adresse");
     expect(texte).toContain("Aucun message d'information distinct n'est envoyé.");
