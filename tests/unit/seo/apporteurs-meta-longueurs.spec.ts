@@ -20,7 +20,8 @@ vi.mock("@/i18n/navigation", () => ({
 vi.mock("@/components/forms/commercial-application/CommercialApplicationWizard", () => ({
   CommercialApplicationWizard: () => null,
 }));
-vi.mock("@/lib/seo", () => ({
+vi.mock("@/lib/seo", async (importOriginal) => ({
+  ...(await importOriginal<typeof import("@/lib/seo")>()),
   buildProductMetadata: async (o: { title: string; description: string }) => ({
     title: o.title,
     description: o.description,
