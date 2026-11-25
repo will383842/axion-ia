@@ -75,7 +75,7 @@ export const MISE_EN_DEMEURE_JOURS = 15;
 export const NOTIFICATION_MAX_ANTERIORITE_JOURS = 7;
 
 /** Préavis de l'article 11.1, en jours de Paris. */
-export const PREAVIS_JOURS = 30;
+export const DELAI_RESILIATION_11_1_JOURS = 30;
 
 export type InitiativeResiliation = "societe" | "apporteur";
 export type FondementResiliation = "11.1" | "11.2" | "12.5";
@@ -135,7 +135,7 @@ export function planNotificationResiliation(e: {
         ok: false,
         message: "L'article 11.1 dispense de motiver : ne saisissez pas de motif.",
       };
-    const minimum = minuitParis(plusJours(jourParis(e.notifieeLe), PREAVIS_JOURS));
+    const minimum = minuitParis(plusJours(jourParis(e.notifieeLe), DELAI_RESILIATION_11_1_JOURS));
     if (e.effetDemandeLe) {
       if (!(e.effetDemandeLe.getTime() >= minimum.getTime()))
         return { ok: false, message: "Le préavis de 30 jours ne peut pas être raccourci." };
