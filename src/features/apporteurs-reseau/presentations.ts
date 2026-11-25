@@ -45,6 +45,13 @@ import {
 import { idsPriseDeContactRebondie } from "./rebonds";
 import { type ReservationProvisoire, reservationOccupe } from "./regle-attribution";
 import { ajouterMois, finDeProtection } from "./regles";
+import { validationParRendezVousActive } from "./interrupteur-rendez-vous";
+import { finReservation, regleDe } from "./regle-attribution";
+import {
+  enregistrerReservation,
+  lireReservations,
+  versProvisoire,
+} from "./reservation-presentation";
 import { annoncerAttribution } from "./attribution-annonce";
 
 // ── Signalements avant de répondre ───────────────────────────────────────
@@ -268,7 +275,7 @@ export async function creerPresentation(
   // saisie console ne doit pas ouvrir une seconde réservation de 30 jours.
   const siennes = await prisma.presentationEntreprise.findMany({
     where: { apporteurId: s.apporteurId, siren, statut: { in: ["reservee", "confirmee"] } },
-    select: { id: true, statut: true, protegeeJusquAt: true },
+    select: { id: true, statut: true, protegeeJusquAt: true, recueAt: true },
   });
   // Contrat 2.6 : par établissement — un AUTRE établissement de la même entreprise se déclare.
   const etabs = await lireEtablissements(siennes.map((p) => p.id));
@@ -276,8 +283,16 @@ export async function creerPresentation(
   // entière — la règle d'établissement ne lui est pas opposable sans avenant.
   const entiere = signeAvant26(apporteur.signatureApporteur);
   const moi: Etablissement = { siret, entreprise: entiere, exclus: [] };
+  // Règle par rendez-vous (contrat ≥ 2.8, interrupteur allumé) : une présentation dont la
+  // réservation est échue n'occupe plus rien, l'apporteur peut redéclarer. Aucune ligne
+  // (présentation d'avant, contrat 2.6) : la règle d'avant, inchangée.
+  const reservations = await lireReservations(siennes.map((p) => p.id));
   if (
-    siennes.some((p) => presentationOccupe(p, maintenant) && memePerimetre(moi, etabs.get(p.id)!))
+    siennes.some(
+      (p) =>
+        presentationOccupe(p, maintenant, versProvisoire(reservations.get(p.id), p.recueAt)) &&
+        memePerimetre(moi, etabs.get(p.id)!),
+    )
   ) {
     return {
       ok: false,
@@ -295,6 +310,7 @@ export async function creerPresentation(
     s.dateEchange && /^\d{4}-\d{2}-\d{2}$/.test(s.dateEchange)
       ? new Date(`${s.dateEchange}T00:00:00Z`)
       : null;
+  const regle = regleDe(apporteur.signatureApporteur, validationParRendezVousActive());
   const cree = await prisma.$transaction(async (tx) => {
     const c = await tx.presentationEntreprise.create({
       data: {
@@ -316,6 +332,10 @@ export async function creerPresentation(
       select: { id: true },
     });
     await enregistrerEtablissement(c.id, siret, entiere, tx);
+    // Réservation de 60 jours à compter de la saisie. L'écriture ne rattrape RIEN (pas même la
+    // table absente) : la transaction s'annule et la création échoue, jamais de repli silencieux
+    // vers l'ancienne règle.
+    if (regle === "rendez_vous") await enregistrerReservation(c.id, finReservation(recueAt), tx);
     return c;
   });
   return { ok: true, id: cree.id };
@@ -482,6 +502,8 @@ export function existeDeclarationPlusAncienne(
     statut: StatutPresentation;
     protegeeJusquAt?: Date | null;
     recueAt?: Date | null;
+    /** Règle par rendez-vous : la réservation de la déclaration, si elle en a une. */
+    reservation?: { reserveeJusquAt: Date } | null;
   }>,
   moi: { apporteurId: string; recueAt: Date },
   maintenant: Date,
@@ -494,6 +516,9 @@ export function existeDeclarationPlusAncienne(
       presentationOccupe(
         { statut: a.statut, protegeeJusquAt: a.protegeeJusquAt ?? null },
         maintenant,
+        a.reservation
+          ? { recueAt: a.recueAt ?? new Date(0), reserveeJusquAt: a.reservation.reserveeJusquAt }
+          : null,
       ),
   );
 }

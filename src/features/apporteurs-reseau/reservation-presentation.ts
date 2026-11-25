@@ -29,6 +29,14 @@ export interface Reservation {
   valideeAt: Date | null;
 }
 
+/** La réservation telle que la lisent les gardes (`reservationOccupe`) ; `null` si aucune ligne. */
+export function versProvisoire(
+  r: Reservation | undefined,
+  recueAt: Date,
+): { recueAt: Date; reserveeJusquAt: Date } | null {
+  return r ? { recueAt, reserveeJusquAt: r.reserveeJusquAt } : null;
+}
+
 /** L'erreur Prisma « la table n'existe pas » (P2021) : migration pas encore passée. */
 export function tableAbsente(err: unknown): boolean {
   return !!err && typeof err === "object" && (err as { code?: unknown }).code === "P2021";

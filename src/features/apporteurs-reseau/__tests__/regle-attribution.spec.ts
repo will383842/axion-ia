@@ -8,7 +8,7 @@
  *      une grille de cas, à une copie figée de l'ancienne règle) ;
  *   2. AVEC le champ, la réservation de 60 jours s'applique, bornes incluses.
  */
-import { readFileSync, readdirSync } from "node:fs";
+import { readFileSync } from "node:fs";
 import { join } from "node:path";
 
 import { afterEach, describe, expect, it, vi } from "vitest";
@@ -423,22 +423,6 @@ describe("verrous du lot 2 : module pur, aucun branchement", () => {
     );
     expect(imports).toEqual(["./regles"]);
     expect(source).not.toMatch(/process\.env|require\(/);
-  });
-
-  it("aucun appelant ne construit encore de réservation (la preuve « sans effet »)", () => {
-    // Brancher la règle oblige à écrire `reserveeJusquAt` : tant que ce lot n'est pas suivi du
-    // branchement, le mot ne vit que dans les modules de règles. Le lot suivant retirera ce test.
-    const SRC = join(process.cwd(), "src");
-    const porteurs = (readdirSync(SRC, { recursive: true }) as string[])
-      .map((f) => f.replaceAll("\\", "/"))
-      .filter((f) => /\.tsx?$/.test(f) && !f.includes("__tests__/") && !/\.spec\.tsx?$/.test(f))
-      .filter((f) => readFileSync(join(SRC, f), "utf8").includes("reserveeJusquAt"))
-      .sort();
-    expect(porteurs).toEqual([
-      "features/apporteurs-reseau/declaration-regles.ts",
-      "features/apporteurs-reseau/regle-attribution.ts",
-      "features/apporteurs-reseau/regles.ts",
-    ]);
   });
 });
 

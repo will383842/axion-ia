@@ -34,6 +34,7 @@ vi.mock("@/lib/prisma", () => ({
       create: (...a: unknown[]) => h.create(...a),
       findMany: (...a: unknown[]) => h.siennes(...a),
     },
+    presentationReservation: { findMany: async () => [], create: vi.fn() },
     $transaction: async (f: (t: unknown) => unknown) =>
       f({ presentationEntreprise: { create: (...a: unknown[]) => h.create(...a) } }),
   },
