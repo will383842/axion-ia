@@ -189,6 +189,7 @@ export type EmailJobName =
   | "apporteur-contrat-signe"
   | "apporteur-presentation-recue"
   | "apporteur-presentation-refusee"
+  | "apporteur-presentation-non-retenue"
   | "entreprise-prise-de-contact-apporteur"
   | "apporteur-vigilance"
   | "apporteur-commande-signee"

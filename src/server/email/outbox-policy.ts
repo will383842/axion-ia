@@ -226,6 +226,7 @@ export const LIBELLE_TEMPLATE_EMAIL: Record<string, string> = {
   "apporteur-contrat-signe": "Apporteur : contrat contresigné",
   "apporteur-presentation-recue": "Apporteur : entreprise bien reçue",
   "apporteur-presentation-refusee": "Apporteur : entreprise non réservée",
+  "apporteur-presentation-non-retenue": "Apporteur : entreprise non retenue",
   "entreprise-prise-de-contact-apporteur": "Prise de contact avec une entreprise présentée",
   "apporteur-vigilance": "Apporteur : attestation URSSAF demandée",
   "apporteur-commande-signee": "Apporteur : une commande signée",
