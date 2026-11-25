@@ -313,10 +313,23 @@ export interface OptionsRotation {
   /** Journal sans secret ; par défaut console.warn. Ne reçoit jamais une clé. */
   journal?: Journal;
   /**
-   * Appelé après chaque marque posée (alerte). N'est jamais attendu au-delà de son
-   * échec : une alerte en panne ne doit pas casser la génération. Ne reçoit que l'index.
+   * Appelé après chaque marque posée (alerte). JAMAIS attendu (feu et oubli) et ses erreurs
+   * sont avalées : une alerte en panne ou muette ne retarde ni ne casse la génération.
+   * Ne reçoit que l'index.
    */
   surMarque?: (evenement: EvenementCle) => Promise<unknown> | void;
+}
+
+/**
+ * Alerte « feu et oubli » : jamais attendue (une alerte qui ne répond pas ne doit pas
+ * retarder la clé suivante), erreurs avalées (synchrones ou rejetées).
+ */
+function declencherAlerte(surMarque: OptionsRotation["surMarque"], evenement: EvenementCle): void {
+  try {
+    void Promise.resolve(surMarque?.(evenement)).catch(() => undefined);
+  } catch {
+    // Une alerte en panne ne casse jamais la génération.
+  }
 }
 
 /** Erreur finale : aucune clé utilisable. `toutesEpuisees: true` est le drapeau lu en aval. */
@@ -402,11 +415,7 @@ export async function appelerAvecRotationCles<T>(
           ? `[anthropic] clé ${choix.index} refusée (facturation) : marquée épuisée 6 h`
           : `[anthropic] clé ${choix.index} refusée (authentification) : marquée invalide 1 h`,
       );
-      try {
-        await options.surMarque?.({ index: choix.index, motif });
-      } catch {
-        // Une alerte en panne ne casse jamais la génération.
-      }
+      declencherAlerte(options.surMarque, { index: choix.index, motif });
     }
   }
   // Motif de CHAQUE clé configurée, y compris celles marquées avant cet appel (autre

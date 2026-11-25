@@ -367,6 +367,38 @@ describe("appelerAvecRotationCles", () => {
     ).resolves.toBe("ok");
   });
 
+  it("une alerte qui ne répond jamais n'attend pas : la clé suivante est appelée sans délai", async () => {
+    vi.useFakeTimers();
+    try {
+      const appel = vi.fn(async (cle: string) => {
+        if (cle === K1) throw brute(402, "x");
+        return "ok";
+      });
+      const surMarque = vi.fn(() => new Promise<never>(() => {}));
+      const resultat = appelerAvecRotationCles(appel, options(undefined, vi.fn(), surMarque));
+      // Aucun avancement d'horloge : seules les microtâches tournent.
+      await vi.advanceTimersByTimeAsync(0);
+      await expect(resultat).resolves.toBe("ok");
+      expect(surMarque).toHaveBeenCalledTimes(1);
+      expect(appel.mock.calls.map((c) => c[0])).toEqual([K1, K2]);
+    } finally {
+      vi.useRealTimers();
+    }
+  });
+
+  it("une alerte qui lève de façon synchrone ne casse pas non plus la génération", async () => {
+    const appel = vi.fn(async (cle: string) => {
+      if (cle === K1) throw brute(402, "x");
+      return "ok";
+    });
+    const surMarque = vi.fn(() => {
+      throw new Error("alerte cassée");
+    });
+    await expect(
+      appelerAvecRotationCles(appel, options(undefined, vi.fn(), surMarque)),
+    ).resolves.toBe("ok");
+  });
+
   it("état partagé : le worker ne rejoue pas une clé que l'app a déjà marquée", async () => {
     const redis = creerFauxRedis();
     const app = creerEtatCles({ redis });
