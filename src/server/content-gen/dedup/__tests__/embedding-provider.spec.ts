@@ -1,4 +1,4 @@
-import { describe, it, expect, afterEach } from "vitest";
+import { describe, it, expect, afterEach, vi } from "vitest";
 import {
   ARTICLE_EMBEDDING_COLUMN,
   BRAND_VOICE_REFERENCE_KEY,
@@ -9,6 +9,8 @@ import {
 
 afterEach(() => {
   delete process.env["CONTENT_EMBEDDING_PROVIDER"];
+  delete process.env["VOYAGE_API_KEY"];
+  vi.restoreAllMocks();
   delete process.env["CONTENT_DEDUP_DUPLICATE_THRESHOLD_VOYAGE"];
   delete process.env["CONTENT_DEDUP_SIMILAR_THRESHOLD_VOYAGE"];
   delete process.env["BRAND_VOICE_DRIFT_REVIEW_THRESHOLD_VOYAGE"];
@@ -22,7 +24,16 @@ describe("sélection du fournisseur", () => {
     process.env["CONTENT_EMBEDDING_PROVIDER"] = "cohere";
     expect(getEmbeddingProvider()).toBe("openai");
   });
-  it("voyage quand demandé (casse et espaces tolérés)", () => {
+  it("voyage sans clé → openai, avec un avertissement sans clé", () => {
+    const warn = vi.spyOn(console, "warn").mockImplementation(() => undefined);
+    process.env["CONTENT_EMBEDDING_PROVIDER"] = "voyage";
+    expect(getEmbeddingProvider()).toBe("openai");
+    process.env["VOYAGE_API_KEY"] = "   ";
+    expect(getEmbeddingProvider()).toBe("openai");
+    expect(warn).toHaveBeenCalled();
+  });
+  it("voyage quand demandé avec une clé (casse et espaces tolérés)", () => {
+    process.env["VOYAGE_API_KEY"] = "cle-de-test";
     process.env["CONTENT_EMBEDDING_PROVIDER"] = " Voyage ";
     expect(getEmbeddingProvider()).toBe("voyage");
   });

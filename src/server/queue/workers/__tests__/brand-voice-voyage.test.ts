@@ -50,6 +50,7 @@ beforeEach(() => {
 });
 afterEach(() => {
   delete process.env.CONTENT_EMBEDDING_PROVIDER;
+  delete process.env.VOYAGE_API_KEY;
 });
 
 describe("moniteur de dérive", () => {
@@ -63,6 +64,7 @@ describe("moniteur de dérive", () => {
   });
 
   it("voyage : clé de référence Voyage, colonne embedding_voyage, seuils Voyage", async () => {
+    process.env.VOYAGE_API_KEY = "cle-de-test";
     process.env.CONTENT_EMBEDDING_PROVIDER = "voyage";
     process.env.BRAND_VOICE_DRIFT_WARN_THRESHOLD_VOYAGE = "0.5";
     process.env.BRAND_VOICE_DRIFT_REVIEW_THRESHOLD_VOYAGE = "0.4";
@@ -85,6 +87,7 @@ describe("moniteur de dérive", () => {
 
 describe("recalibrage", () => {
   it("voyage : moyenne les vecteurs de embedding_voyage et stocke sous la clé Voyage", async () => {
+    process.env.VOYAGE_API_KEY = "cle-de-test";
     process.env.CONTENT_EMBEDDING_PROVIDER = "voyage";
     queryRawUnsafeMock.mockResolvedValue([{ id: ID, embedding_arr: [3, 4] }]);
     configFindUniqueMock.mockResolvedValue(null);

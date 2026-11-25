@@ -29,9 +29,17 @@ export const BRAND_VOICE_REFERENCE_KEY = {
 } as const satisfies Record<EmbeddingProvider, string>;
 
 export function getEmbeddingProvider(): EmbeddingProvider {
-  return process.env["CONTENT_EMBEDDING_PROVIDER"]?.trim().toLowerCase() === "voyage"
-    ? "voyage"
-    : "openai";
+  if (process.env["CONTENT_EMBEDDING_PROVIDER"]?.trim().toLowerCase() !== "voyage") {
+    return "openai";
+  }
+  // Voyage demandé sans clé : on resterait sans vecteur ; repli sur OpenAI, avec avertissement.
+  if (!process.env["VOYAGE_API_KEY"]?.trim()) {
+    console.warn(
+      "[embedding-provider] CONTENT_EMBEDDING_PROVIDER=voyage mais VOYAGE_API_KEY est absente ou vide : repli sur openai.",
+    );
+    return "openai";
+  }
+  return "voyage";
 }
 
 export interface DedupThresholds {

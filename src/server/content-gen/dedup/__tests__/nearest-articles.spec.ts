@@ -4,6 +4,7 @@ import { findNearestArticles, verdictPourVoisinLePlusProche } from "../nearest-a
 const ID = "00000000-0000-0000-0000-000000000001";
 afterEach(() => {
   delete process.env["CONTENT_EMBEDDING_PROVIDER"];
+  delete process.env["VOYAGE_API_KEY"];
   delete process.env["CONTENT_DEDUP_DUPLICATE_THRESHOLD_VOYAGE"];
 });
 
@@ -16,6 +17,7 @@ describe("détection des doublons — colonne selon le fournisseur", () => {
     expect(sql).not.toContain("embedding_voyage");
   });
   it("voyage : lit embedding_voyage, jamais la colonne OpenAI", async () => {
+    process.env["VOYAGE_API_KEY"] = "cle-de-test";
     process.env["CONTENT_EMBEDDING_PROVIDER"] = "voyage";
     const q = vi.fn(async () => []);
     await findNearestArticles({ $queryRawUnsafe: q } as never, { articleId: ID, limit: 3 });
