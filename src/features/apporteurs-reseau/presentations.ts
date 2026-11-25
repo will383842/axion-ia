@@ -51,10 +51,7 @@ import {
 import { ajouterMois, finDeProtection } from "./regles";
 import { validationParRendezVousActive } from "./interrupteur-rendez-vous";
 import { finReservation, regleDe } from "./regle-attribution";
-import {
-  enregistrerReservation,
-  lireReservations,
-} from "./reservation-presentation";
+import { enregistrerReservation, lireReservations } from "./reservation-presentation";
 import { annoncerRefus } from "./refus-annonce";
 import { annoncerAttribution } from "./attribution-annonce";
 
