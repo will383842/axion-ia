@@ -36,6 +36,7 @@ import { readContentGenConfig } from "@/server/actions/content-gen/_settings";
 import { readKillSwitchFailSafe } from "@/server/content-gen/config-store";
 import { revalidateContent } from "@/server/content-gen/shared/revalidate-content";
 import { captureWorkerError } from "@/server/queue/lib/sentry-worker";
+import { factCheckClaudeActif } from "@/server/content-gen/fact-check/fact-check-claude";
 
 const QUEUE_NAME = "content-fact-check";
 
@@ -178,6 +179,25 @@ async function processJob(job: Job<FactCheckJobPayload>): Promise<void> {
   if (killSwitch.active) {
     console.log(`[fact-check] kill switch active, skip article ${articleId}`);
     return;
+  }
+
+  // PR 5 — type vérifié AVANT publication par Claude (barrière de relecture du worker de
+  // génération) : ni Perplexity ni correction OpenAI ici, et AUCUN repli. Drapeau éteint
+  // (défaut) : `factCheckClaudeActif` rend faux, le code d'avant s'exécute à l'identique.
+  // (Lecture en base SEULEMENT drapeau allumé : éteint, aucune requête de plus.)
+  if (process.env["CONTENT_GEN_FACTCHECK_CLAUDE"] === "true") {
+    // Pas de `.catch` : base illisible = le job échoue et BullMQ le rejoue ; jamais de
+    // repli silencieux vers Perplexity.
+    const jobPourType = await prisma.contentGenJob.findUnique({
+      where: { id: contentGenJobId },
+      select: { contentType: true },
+    });
+    if (jobPourType && factCheckClaudeActif(jobPourType.contentType)) {
+      console.log(
+        `[fact-check] article ${articleId} : vérifié avant publication par Claude, Perplexity/OpenAI non appelés`,
+      );
+      return;
+    }
   }
 
   const article = await prisma.article.findUnique({

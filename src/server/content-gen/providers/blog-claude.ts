@@ -183,7 +183,16 @@ export async function assertPlafondsClaude(
   req: GenerationRequest,
   role: RoleBlogClaude,
   maintenant: Date = new Date(),
+  /** Frais fixes ajoutés au coût maximal réservé (ex. recherches web payées à l'usage). */
+  fraisFixesUsd = 0,
 ): Promise<AccordBlogClaude> {
+  if (!(
+    typeof fraisFixesUsd === "number" &&
+    Number.isFinite(fraisFixesUsd) &&
+    fraisFixesUsd >= 0
+  )) {
+    throw refuser("Frais fixes invalides", "config_invalide");
+  }
   if (!interrupteurBlogClaude()) {
     throw refuser("Texte du blog via Claude : interrupteur éteint", "eteint");
   }
@@ -220,13 +229,9 @@ export async function assertPlafondsClaude(
   // Coût maximal : entrée estimée × 1,5 au prix d'écriture du cache + max_tokens en sortie.
   const caracteres = req.systemPrompt.length + req.userPrompt.length;
   const entreeEstimee = Math.ceil(caracteres / 3);
-  const coutMaxUsd = computeCost(
-    model,
-    0,
-    req.maxTokens ?? DEFAULT_MAX_TOKENS,
-    0,
-    Math.ceil(entreeEstimee * 1.5),
-  );
+  const coutMaxUsd =
+    computeCost(model, 0, req.maxTokens ?? DEFAULT_MAX_TOKENS, 0, Math.ceil(entreeEstimee * 1.5)) +
+    fraisFixesUsd;
 
   try {
     const reservation = await reserverCout({
