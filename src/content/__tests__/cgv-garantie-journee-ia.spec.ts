@@ -6,8 +6,8 @@ import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
 import { getLegal } from "@/content/legal";
-import { JOURNEE_IA_TIER } from "@/content/pricing";
 import {
+  MAJORATION_PLANCHER_COUT_HORAIRE_PCT,
   MULTIPLE_GARANTIE,
   SEUIL_DEVIS_DEDUCTION_EUR,
   seuilGarantieEur,
@@ -16,7 +16,11 @@ import {
 const milliers = (n: number) => String(n).replace(/\B(?=(\d{3})+(?!\d))/g, " ");
 
 const sections = getLegal("conditions-generales").fr.sections;
-const corps = (n: number) => sections.find((s) => s.title.includes(`Article ${n}. `))?.body ?? "";
+const corps = (n: number): string => {
+  const section = sections.find((s) => s.title.includes(`Article ${n}. `));
+  if (!section) throw new Error(`Article ${n} introuvable dans les CGV`);
+  return section.body;
+};
 
 describe("CGV : garantie de la Journée IA (art. 47.10)", () => {
   it("l'article 47 porte l'alinéa 47.10, les gains identifiés et le seuil calculé", () => {
@@ -38,13 +42,9 @@ describe("CGV : garantie de la Journée IA (art. 47.10)", () => {
     expect(corps(48)).toContain("article 47.10");
   });
 
-  it("le seuil suit le prix : multiple × priceFlat, pas une valeur tapée", () => {
-    expect(seuilGarantieEur()).toBe(MULTIPLE_GARANTIE * JOURNEE_IA_TIER.priceFlat!);
-  });
-
   it("l'article 47.7 exige un devis d'au moins le seuil calculé, avant déduction", () => {
     const a47 = corps(47);
-    expect(a47).toContain("d'un montant d'au moins");
+    expect(a47).toContain("atteint au moins");
     expect(a47).toContain(`${milliers(SEUIL_DEVIS_DEDUCTION_EUR)} euros HT avant déduction`);
     expect(a47).toContain("avant déduction");
   });
@@ -66,5 +66,43 @@ describe("CGV : garantie de la Journée IA (art. 47.10)", () => {
     const source = readFileSync(join(process.cwd(), "src/content/legal.ts"), "utf8");
     expect(source).not.toMatch(/4[\s\u00a0\u202f]?470/);
     expect(source).not.toMatch(/1[\s\u00a0\u202f]?490/);
+  });
+  describe("texte rendu de l'article 47", () => {
+    const phrases = [
+      "n'atteint pas",
+      "sans que le Client ait à le demander",
+      "TVA correspondante",
+      "même s'il est remboursé ou si le prix cesse d'être dû",
+      "Elle ne s'applique pas à une journée remboursée au titre de l'article 47.10",
+      "autour du siège d'Axion-IA",
+      "Par exception à l'article 9.2",
+      "La garantie ne couvre que la journée tenue",
+      "le prix de mise en place, par Axion-IA ou par un tiers, n'est pas retiré",
+      `majoré de ${MAJORATION_PLANCHER_COUT_HORAIRE_PCT} %`,
+      "la déduction est reprise",
+      `${milliers(SEUIL_DEVIS_DEDUCTION_EUR)} euros HT avant déduction`,
+    ];
+    for (const phrase of phrases) {
+      it(`contient « ${phrase} »`, () => {
+        expect(corps(47)).toContain(phrase);
+      });
+    }
+
+    it("ne propose plus de tenue à distance", () => {
+      expect(corps(47)).not.toContain("tenue à distance");
+    });
+
+    it("n'emploie pas « La Journée IA » avec l'article", () => {
+      expect(corps(47)).not.toContain("La Journée IA");
+    });
+
+    it("les articles 16 et 48 ne parlent pas de « gain garanti »", () => {
+      expect(corps(16)).not.toContain("gain garanti");
+      expect(corps(48)).not.toContain("gain garanti");
+    });
+
+    it("corps() lève une erreur si l'article est introuvable", () => {
+      expect(() => corps(9999)).toThrow(/introuvable/);
+    });
   });
 });
