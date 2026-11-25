@@ -422,11 +422,12 @@ function aucuneCleUtilisable(
           false,
         );
   Object.assign(err, { toutesEpuisees: true, motifIndisponibilite });
-  if (cause !== undefined) {
-    (err as { cause?: unknown }).cause = cause;
-    const statut = statutHttp(cause);
-    if (statut !== undefined && err.code === "auth_failed")
-      (err as { status?: number }).status = statut;
+  if (cause !== undefined) (err as { cause?: unknown }).cause = cause;
+  if (err.code === "auth_failed") {
+    // Sans appel de cet essai (toutes déjà marquées invalides), pas de cause : le statut
+    // reste 401, sinon le blog ne compterait pas ce refus d'authentification.
+    const statut = cause !== undefined ? statutHttp(cause) : undefined;
+    (err as { status?: number }).status = statut ?? 401;
   }
   return err;
 }

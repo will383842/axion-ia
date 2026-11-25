@@ -493,6 +493,19 @@ describe("appelerAvecRotationCles", () => {
     expect(appel).toHaveBeenCalledTimes(3);
   });
 
+  it("toutes DÉJÀ marquées invalides, aucun appel : l'erreur finale porte le statut 401", async () => {
+    const etat = creerEtatCles({ redis: creerFauxRedis() });
+    for (const i of [1, 2, 3] as const) await etat.marquer(i, "invalide");
+    const appel = vi.fn(async (_cle: string) => "ok");
+    const err = (await appelerAvecRotationCles(appel, options(etat)).catch(
+      (e: unknown) => e,
+    )) as ProviderError & { status?: number; toutesEpuisees?: boolean };
+    expect(appel).not.toHaveBeenCalled();
+    expect(err.code).toBe("auth_failed");
+    expect(err.toutesEpuisees).toBe(true);
+    expect(err.status).toBe(401);
+  });
+
   it("mélange crédit + 401 : quota_exhausted, toutesEpuisees true, motif « mixte »", async () => {
     const appel = vi.fn(async (cle: string) => {
       throw cle === K2 ? brute(401, "invalid x-api-key") : brute(402, "x");
