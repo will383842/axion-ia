@@ -11,7 +11,7 @@ Ce parcours n'est pas joué par la CI (config dédiée, serveur lancé à la mai
    (garder le bundle CA habituel dans le même fichier). Variables : `R2_ACCOUNT_ID=localtest-axion`,
    `R2_BUCKET_NAME=axion-test`, `R2_ACCESS_KEY_ID/SECRET` fictifs, `CLAMAV_HOST=127.0.0.1`,
    `PII_ENCRYPTION_KEY` = 64 caractères hexadécimaux, `SKIP_ENV_VALIDATION=true`, `AUTH_SECRET` fictif.
-3. `pnpm dev` (proxys sortants désactivés pour le processus), puis
+3. Poser `APPORTEUR_BAC_A_SABLE=1` (sans elle, le test est ignoré : la CI ne le joue donc pas), puis `pnpm dev` (proxys sortants désactivés pour le processus), puis
    `npx playwright test -c tests/e2e/apporteur-parcours-complet/outillage/playwright.bac-a-sable.config.ts`.
 
 E-mails : aucun worker ; les tâches restent dans la file BullMQ de Redis local, d'où le test lit le lien du dossier.

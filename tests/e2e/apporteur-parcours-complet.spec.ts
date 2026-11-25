@@ -113,7 +113,11 @@ async function lienDuDossierDansLaFile(): Promise<string> {
 }
 
 test.describe("@apporteur parcours complet", () => {
-  test.setTimeout(900_000);
+  test.describe.configure({ timeout: 900_000 });
+  test.skip(
+    !process.env["APPORTEUR_BAC_A_SABLE"],
+    "parcours local seulement (faux R2/SIRENE/ClamAV) : poser APPORTEUR_BAC_A_SABLE=1",
+  );
   test.use({ viewport: { width: 1280, height: 900 } });
 
   test("inscription → dossier → signature → contresignature → espace apporteur", async ({
