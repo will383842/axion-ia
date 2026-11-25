@@ -109,15 +109,18 @@ function autreMultiple(texte: string): boolean {
     const n = (m[1] ?? "").toLowerCase();
     if (n === "3" || n === "trois") continue;
     const apres = texte.slice((m.index ?? 0) + m[0].length);
-    const x = /x$/i.test(m[0]);
-    // « N fois » : seul compte ce qui le suit (le prix, la garantie, rien) ; « Nx » : la phrase.
+    const phrase = phraseA(texte, m.index ?? 0);
+    // « N fois » en fin de phrase (« remboursé 5 fois. ») : seulement dans un contexte de prix ou de garantie.
+    if (/^\s*(?:[,;:.)]|$)/.test(apres) && CONTEXTE_MULTIPLE.test(phrase)) return true;
+    // « N fois le prix / la garantie / l'investissement / les gains… »
     if (
-      /^\s*(?:[,;:.)]|$|(?:(?:le|la|ce|son|votre|notre|les|vos)\s+)?(?:prix|garantie|tarif|montant|mise|co[uû]t|valeur|investissement))/iu.test(
+      /^\s*(?:(?:le|la|ce|son|leur|votre|notre|les|vos|l[’'])\s*)?(?:prix|garantie|tarif|montant|mise|co[uû]t|valeur|investissement|gains?)/iu.test(
         apres,
       )
     )
       return true;
-    if (x && CONTEXTE_MULTIPLE.test(phraseA(texte, m.index ?? 0))) return true;
+    // « Nx » : toute la phrase compte.
+    if (/x$/i.test(m[0]) && CONTEXTE_MULTIPLE.test(phrase)) return true;
   }
   return false;
 }
@@ -128,7 +131,7 @@ const DEPLACEMENT_ET_ANNEXES =
 const PRESENCE_LOCALE = /\b(?:[Aa]gence|[Bb]ureaux?|[Bb]as[ée]e?s?)\s+(?:à|en|de)\s+\p{Lu}/u;
 /** Première personne : « nous sommes installés / présents / situés à Lyon ». */
 const PRESENCE_NOUS =
-  /\b(?:nous\s+(?:sommes|[eê]tes)|notre\s+(?:[ée]quipe|soci[ée]t[ée])\s+est)\s+(?:[\p{L}]+\s+)?(?:bas[ée]e?s?|implant[ée]e?s?|install[ée]e?s?|pr[ée]sent(?:e)?s?|situ[ée]e?s?)\s+(?:à|en|dans)\s+\p{Lu}/iu;
+  /\b(?:[Nn]ous\s+(?:sommes|[eê]tes)|[Nn]otre\s+(?:[ée]quipe|soci[ée]t[ée])\s+est)\s+(?:\p{L}+\s+)?(?:bas[ée]e?s?|implant[ée]e?s?|install[ée]e?s?|pr[ée]sent(?:e)?s?|situ[ée]e?s?)\s+(?:à|en)\s+\p{Lu}/u;
 const REGION_AURA = /\bAURA\b/;
 
 /** Phrase (jusqu'au point) qui contient la position donnée. */
