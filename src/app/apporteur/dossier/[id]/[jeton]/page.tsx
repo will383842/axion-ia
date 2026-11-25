@@ -145,10 +145,17 @@ export default async function DossierApporteurPage({ params }: PageProps) {
         </EcranEtat>
         <DeclarationEntreprise id={dossier.id} jeton={jeton} protectionMois={PROTECTION_MOIS} />
         <ListeDeclarations declarations={declarations} />
+        {/* Tout ce qui lui a été remis, au même endroit (2026-11-25). */}
+        <a
+          href={`/apporteur/dossier/${dossier.id}/${jeton}/documents`}
+          className="border-terracotta-deep text-terracotta-deep mt-5 flex min-h-[48px] items-center gap-2 rounded-2xl border-2 px-5 py-3 text-[17px] font-bold"
+        >
+          Mes documents : contrat, fiche des commissions, charte →
+        </a>
         {/* La grille de référence des commissions, réservée aux apporteurs (2026-10-09). */}
         <a
           href={`/apporteur/dossier/${dossier.id}/${jeton}/commissions`}
-          className="text-terracotta-deep mt-5 inline-flex min-h-[48px] items-center gap-2 text-[17px] font-bold underline underline-offset-4"
+          className="text-terracotta-deep mt-3 inline-flex min-h-[48px] items-center gap-2 text-[17px] font-bold underline underline-offset-4"
         >
           Voir la grille de référence des commissions →
         </a>
