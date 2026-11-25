@@ -132,16 +132,16 @@ describe("construireEnvoisReponse : la règle choisit l'accusé", () => {
     expect(sans[1]!.jobId).toBe("apporteur-presentation-recue-P2");
   });
 
-  it("règle « rendez_vous » : l'accusé 60 jours, avec la fin de réservation (saisie + 60 jours)", () => {
+  it("règle « rendez_vous » : l'accusé 60 jours, avec la fin de réservation (60e jour : saisie + 59)", () => {
     const e = construireEnvoisReponse({ ...donnees, regle: "rendez_vous" }, "bien_recu", opts);
     expect(e.map((x) => x.gabarit)).toEqual(RENDEZ_VOUS);
     expect(e[1]!.destinataire).toBe("ana@x.fr");
     expect(e[1]!.payload).toEqual({
       contactName: "Ana Bel",
       entreprise: "Acme",
-      dateFinReservation: "24 janvier 2027",
+      dateFinReservation: "23 janvier 2027",
     });
-    // 25/11/2026 + 60 jours = 24/01/2027
+    // Jour 1 = 25/11/2026 : le 60e jour est le 23/01/2027 (saisie + 59).
     // Même clé d'idempotence : jamais deux accusés pour une présentation.
     expect(e[1]!.jobId).toBe("apporteur-presentation-recue-P2");
     // Pas de `gabaritRepli` : le repli naturel annoncerait l'ancienne règle (voir interrupteur-rendez-vous.ts).
