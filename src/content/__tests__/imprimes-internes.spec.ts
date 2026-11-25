@@ -158,6 +158,6 @@ describe("la trame de l'échange apporteur dit ce que dit l'article 2.4 du contr
 describe("la trame d'échange n'écarte personne parce qu'il apporte pour un concurrent (L7b)", () => {
   it("ni critère éliminatoire ni case « concurrent direct »", () => {
     const html = readFileSync(path.join(RACINE, "docs/imprimes", `${TRAME}.html`), "utf8");
-    expect(html).not.toMatch(/concurrent direct/i);
+    expect(html).not.toMatch(/concurren\w*\s+direct/i);
   });
 });
