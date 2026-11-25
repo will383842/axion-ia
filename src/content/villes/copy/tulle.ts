@@ -61,7 +61,7 @@ export const TULLE_COPY: VilleCopy = {
     },
     {
       q: "Quel délai pour démarrer une mission IA à Tulle ?",
-      a: "Intervention sous 5 jours ouvrés. Brive à 30 min, Limoges à 1h30. Déplacements sur site inclus ou sessions en visio selon vos préférences.",
+      a: "Intervention sous 5 jours ouvrés. Brive à 30 min, Limoges à 1h30.",
     },
     {
       q: "Comment Axion-IA garantit-il la conformité RGPD à Tulle ?",

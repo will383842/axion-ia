@@ -65,7 +65,7 @@ export const LABENNE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Labenne depuis Bayonne ?",
-      a: "Labenne est à 15 min de Bayonne par A63 (sortie directe). Nos consultants interviennent facilement sur site. Aéroport Biarritz à 20 min. Coûts de déplacement séparés du forfait, tarifs transparents.",
+      a: "Labenne est à 15 min de Bayonne par A63 (sortie directe). Nos consultants interviennent facilement sur site. Aéroport Biarritz à 20 min. Tarifs transparents.",
     },
   ],
 };

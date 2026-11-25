@@ -219,7 +219,7 @@ export const DRAGUIGNAN_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Quote within 24 to 48 hours depending on complexity. Custom-code development, European Union hosting and GDPR compliance by default (minimisation, processing register). We own the full chain: UX/UI, responsive mobile, multi-CMS e-commerce and AI building blocks. You keep full control of your site or platform — code, content and data transferable, with no vendor lock-in or no-code dependency. Travel costs to Draguignan and the Dracénie are calculated case by case by zone.",
+          "Quote within 24 to 48 hours depending on complexity. Custom-code development, European Union hosting and GDPR compliance by default (minimisation, processing register). We own the full chain: UX/UI, responsive mobile, multi-CMS e-commerce and AI building blocks. You keep full control of your site or platform — code, content and data transferable, with no vendor lock-in or no-code dependency.",
       },
     },
   },
