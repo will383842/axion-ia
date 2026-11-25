@@ -98,6 +98,16 @@ describe("recalibrage", () => {
     expect(arg.where.key).toBe("brand_voice_reference_embedding_voyage");
   });
 
+  it("fournisseur explicite : recalibre Voyage alors que le fournisseur actif reste openai", async () => {
+    delete process.env.CONTENT_EMBEDDING_PROVIDER;
+    queryRawUnsafeMock.mockResolvedValue([{ id: ID, embedding_arr: [3, 4] }]);
+    configFindUniqueMock.mockResolvedValue(null);
+    await recalibrateBrandVoice([ID], "voyage");
+    expect(String(queryRawUnsafeMock.mock.calls[0]?.[0])).toContain("a.embedding_voyage");
+    const arg = configUpsertMock.mock.calls[0]?.[0] as { where: { key: string } };
+    expect(arg.where.key).toBe("brand_voice_reference_embedding_voyage");
+  });
+
   it("openai : clé historique inchangée, jamais la clé Voyage", async () => {
     queryRawUnsafeMock.mockResolvedValue([{ id: ID, embedding_arr: [3, 4] }]);
     configFindUniqueMock.mockResolvedValue(null);

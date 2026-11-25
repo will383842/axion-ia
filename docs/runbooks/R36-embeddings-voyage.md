@@ -24,13 +24,15 @@ Coolify → Application → Env vars : `VOYAGE_API_KEY=<clé Voyage AI>` (déjà
 - `BRAND_VOICE_DRIFT_WARN_THRESHOLD_VOYAGE` / `BRAND_VOICE_DRIFT_REVIEW_THRESHOLD_VOYAGE` : percentiles bas de la distribution à la référence.
 - ⚠️ Les valeurs par défaut Voyage (0,85/0,80 et 0,70/0,80) sont **provisoires**, reprises d'OpenAI : ne pas basculer sans calibrage.
 
-## 4. Référence de voix de marque Voyage
+## 4. Référence de voix de marque Voyage (AVANT la bascule)
 
-Elle est stockée séparément (`brand_voice_reference_embedding_voyage`), la référence OpenAI n'est pas touchée. Avec `CONTENT_EMBEDDING_PROVIDER=voyage` déjà posé, recalibrer depuis la console (même méthode : moyenne normalisée des articles choisis). Tant qu'elle est absente, le moniteur de dérive saute proprement.
+Ordre : **rattrapage → calibrage des seuils → recalibrage de la référence Voyage → bascule.**
+
+Elle est stockée séparément (`brand_voice_reference_embedding_voyage`), la référence OpenAI n'est pas touchée. `recalibrateBrandVoice(articleIds, "voyage")` prend le fournisseur en paramètre explicite : on la recalibre **sans** poser `CONTENT_EMBEDDING_PROVIDER=voyage` (formulaire de la console : champ `provider=voyage`). Même méthode : moyenne normalisée des articles choisis, qui doivent avoir `embedding_voyage` (rattrapage terminé). Tant qu'elle est absente, le moniteur de dérive saute proprement : ne pas basculer sans elle.
 
 ## 5. Basculer
 
-`CONTENT_EMBEDDING_PROVIDER=voyage` (Coolify, scope RUN) puis redémarrer app et worker. Vérifier : un article publié reçoit `embedding_voyage` ; le moniteur de dérive date son passage.
+À ne faire qu'une fois les étapes 2 à 4 terminées. `CONTENT_EMBEDDING_PROVIDER=voyage` (Coolify, scope RUN, app ET worker, même valeur) puis redémarrer app et worker. Vérifier : un article publié reçoit `embedding_voyage` ; le moniteur de dérive date son passage.
 
 ## Retour arrière
 

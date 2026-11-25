@@ -24,6 +24,7 @@ import {
   ARTICLE_EMBEDDING_COLUMN,
   BRAND_VOICE_REFERENCE_KEY,
   getEmbeddingProvider,
+  type EmbeddingProvider,
 } from "@/server/content-gen/dedup/embedding-provider";
 
 // Sprint Final P1-3 — Zod runtime validation des inputs Server Actions.
@@ -63,11 +64,18 @@ export interface BrandVoiceDriftStats {
  *
  * Articles sans embedding sont ignorés. Si tous sont sans embedding → throw.
  *
+ * `providerExplicite` : fournisseur à recalibrer. Absent → fournisseur actif
+ * (`CONTENT_EMBEDDING_PROVIDER`). Le passer explicitement permet de recalibrer la référence
+ * Voyage AVANT de basculer (rattrapage → calibrage des seuils → recalibrage → bascule).
+ *
  * Écrit dans :
  *  - ContentGenConfig["brand_voice_reference_embedding"] → tableau JSON nombre
  *  - ContentGenAuditLog (SOC2 audit trail)
  */
-export async function recalibrateBrandVoice(articleIds: string[]): Promise<{
+export async function recalibrateBrandVoice(
+  articleIds: string[],
+  providerExplicite?: EmbeddingProvider,
+): Promise<{
   success: boolean;
   embeddingDimension: number;
   articlesUsed: number;
@@ -86,7 +94,7 @@ export async function recalibrateBrandVoice(articleIds: string[]): Promise<{
 
   // PR4 — colonne et clé de référence du fournisseur actif (jamais mélangées :
   // 1536 dim OpenAI vs 1024 dim Voyage). Noms issus de constantes, pas d'entrée externe.
-  const provider = getEmbeddingProvider();
+  const provider: EmbeddingProvider = providerExplicite ?? getEmbeddingProvider();
   const col = ARTICLE_EMBEDDING_COLUMN[provider];
   const referenceKey = BRAND_VOICE_REFERENCE_KEY[provider];
 
@@ -216,7 +224,11 @@ export async function recalibrateBrandVoiceForm(
   }
 
   try {
-    const result = await recalibrateBrandVoice(articleIds);
+    // Champ facultatif « provider » : permet de recalibrer la référence Voyage avant la bascule.
+    const demande = formData.get("provider");
+    const provider: EmbeddingProvider | undefined =
+      demande === "voyage" || demande === "openai" ? demande : undefined;
+    const result = await recalibrateBrandVoice(articleIds, provider);
     return {
       status: "success",
       message: `Référence recalibrée sur ${result.articlesUsed} article(s) — embedding de dimension ${result.embeddingDimension}.`,
