@@ -308,7 +308,23 @@ describe("validerParRendezVous", () => {
     bd.retraits.push({ apporteurId: A1 });
     const r = await validerParRendezVous(saisie("p1"), MAINTENANT);
     expect(r.ok).toBe(true);
-    if (r.ok) expect(r.avertissements.join(" ")).toMatch(/retiré/);
+    if (r.ok) {
+      expect(r.avertissements.join(" ")).toMatch(/retiré/);
+      expect(r.message).toMatch(/retiré/);
+    }
+    // L'annonce d'attribution n'est pas un e-mail « argent » : elle n'est pas tentée pour un retiré.
+    expect(bd.annonces).toHaveLength(0);
+    expect(bd.presentations[0]!["statut"]).toBe("confirmee");
+  });
+
+  it("déclaration plus récente d'un autre apporteur en attente : avertissement, rien d'automatique", async () => {
+    entreprise("p1", A1);
+    entreprise("p2", A2, { recueAt: new Date("2026-11-03T10:00:00Z") });
+    const r = await validerParRendezVous(saisie("p1"), MAINTENANT);
+    expect(r.ok).toBe(true);
+    if (r.ok) expect(r.avertissements.join(" ")).toMatch(/plus récente.*saisie le 3 nov/);
+    expect(bd.presentations.find((p) => p["id"] === "p2")!["statut"]).toBe("reservee");
+    expect(bd.annonces).toEqual(["p1"]);
   });
 
   it("apporteur en préavis (contrat encore signé) : permis", async () => {

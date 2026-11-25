@@ -50,6 +50,7 @@ export function ActionsProposition({
   const [eV, valider, vEnCours] = useActionState(validerPropositionAction, INITIAL);
   const [eE, ecarter, eEnCours] = useActionState(ecarterPropositionAction, INITIAL);
   const [demande, setDemande] = useState(false);
+  const [demandeEcart, setDemandeEcart] = useState(false);
   if (eV.etat === "ok" || eE.etat === "ok") return <Retour etat={eV.etat === "ok" ? eV : eE} />;
   return (
     <div className="flex flex-col gap-[var(--space-admin-2)] text-[length:var(--text-admin-sm)]">
@@ -64,6 +65,7 @@ export function ActionsProposition({
           <input type="hidden" name="id" value={id} />
           {demande ? (
             <>
+              <input type="hidden" name="confirmer" value="oui" />
               {dateTenueConnue ? null : (
                 <label className="flex flex-col gap-1">
                   Il a eu lieu le
@@ -96,11 +98,36 @@ export function ActionsProposition({
           )}
         </form>
       )}
-      <form action={ecarter}>
+      <form action={ecarter} className="flex flex-wrap items-center gap-[var(--space-admin-2)]">
         <input type="hidden" name="id" value={id} />
-        <button type="submit" className="admin-button-secondary" disabled={eEnCours}>
-          Ce n&apos;est pas lui
-        </button>
+        {demandeEcart ? (
+          <>
+            <input type="hidden" name="confirmer" value="oui" />
+            <span>
+              Écarter libère l&apos;entreprise pour un autre apporteur : seulement si
+              l&apos;annulation ou l&apos;erreur ne vient pas d&apos;Axion IA.
+            </span>
+            <button type="submit" className="admin-button-secondary" disabled={eEnCours}>
+              Oui, l&apos;écarter
+            </button>
+            <button
+              type="button"
+              className="admin-button-secondary"
+              disabled={eEnCours}
+              onClick={() => setDemandeEcart(false)}
+            >
+              Annuler
+            </button>
+          </>
+        ) : (
+          <button
+            type="button"
+            className="admin-button-secondary"
+            onClick={() => setDemandeEcart(true)}
+          >
+            Ce n&apos;est pas lui
+          </button>
+        )}
       </form>
       <Retour etat={eV} />
       <Retour etat={eE} />
@@ -108,7 +135,7 @@ export function ActionsProposition({
   );
 }
 
-/** Saisie par le dirigeant d'un rendez-vous téléphonique ou sur place. */
+/** Saisie par le dirigeant d'un rendez-vous téléphonique, sur place, ou annulé par Axion IA. */
 export function SaisirRendezVous({
   entreprises,
   aujourdhuiLocal,
@@ -118,6 +145,7 @@ export function SaisirRendezVous({
   aujourdhuiLocal: string;
 }) {
   const [etat, saisir, enCours] = useActionState(saisirRendezVousAction, INITIAL);
+  const [demande, setDemande] = useState(false);
   if (entreprises.length === 0)
     return (
       <p className="text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]">
@@ -151,7 +179,7 @@ export function SaisirRendezVous({
         </select>
       </label>
       <label className="flex flex-col gap-1">
-        A eu lieu le
+        A eu lieu le (annulé par Axion IA : jour de l&apos;annulation)
         <input
           type="datetime-local"
           name="tenuLe"
@@ -161,12 +189,34 @@ export function SaisirRendezVous({
         />
       </label>
       <label className="flex flex-col gap-1">
-        Pris le (si un autre jour ; obligatoire pour « Annulé par Axion IA »)
-        <input type="datetime-local" name="prisLe" className="admin-input" />
+        Pris (convenu) le
+        <input type="datetime-local" name="prisLe" required className="admin-input" />
       </label>
-      <button type="submit" className="admin-button" disabled={enCours}>
-        Enregistrer : il a eu lieu
-      </button>
+      <p className="basis-full text-[color:var(--color-admin-fg-muted)]">
+        Annulé par Axion IA : indiquez le jour où Axion IA a annulé, pas la date prévue. Le
+        rendez-vous est réputé tenu ce jour-là ; une date à venir est refusée.
+      </p>
+      {demande ? (
+        <>
+          <input type="hidden" name="confirmer" value="oui" />
+          <span>L&apos;entreprise sera attribuée à cet apporteur pour 6 mois.</span>
+          <button type="submit" className="admin-button" disabled={enCours}>
+            Oui, enregistrer : il a eu lieu
+          </button>
+          <button
+            type="button"
+            className="admin-button-secondary"
+            disabled={enCours}
+            onClick={() => setDemande(false)}
+          >
+            Annuler
+          </button>
+        </>
+      ) : (
+        <button type="button" className="admin-button" onClick={() => setDemande(true)}>
+          Enregistrer : il a eu lieu
+        </button>
+      )}
       <Retour etat={etat} />
     </form>
   );

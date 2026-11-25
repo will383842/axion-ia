@@ -1,7 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any -- doubles de base en mémoire */
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
-// La console MASQUE une proposition dont le rendez-vous a été annulé / reporté / marqué absent.
+// La console GARDE VISIBLE une proposition dont le rendez-vous a été annulé / reporté / marqué absent
+// (marquée « non tenu ») ; le filtre « présentation réservée » est posé AVANT la borne de 200.
 type Ligne = Record<string, any>;
 const bd = vi.hoisted(() => ({
   propositions: [] as Ligne[],
@@ -12,17 +13,25 @@ vi.mock("server-only", () => ({}));
 vi.mock("@/lib/pii-crypto", () => ({ decryptPii: (v: string | null) => v }));
 vi.mock("@/lib/prisma", () => ({
   prisma: {
-    propositionRendezVousPresentation: { findMany: async () => bd.propositions },
+    propositionRendezVousPresentation: {
+      findMany: async ({ where, take }: any) =>
+        bd.propositions
+          .filter((p) => where.presentationId.in.includes(p.presentationId))
+          .slice(0, take),
+    },
     presentationEntreprise: {
-      findMany: async () => [
-        {
-          id: "p1",
-          denomination: "ACME",
-          siren: "732829320",
-          recueAt: new Date("2026-11-01T10:00:00Z"),
-          apporteur: { prenom: "A", nom: "B" },
-        },
-      ],
+      findMany: async ({ where }: any) =>
+        where.statut === "reservee"
+          ? [
+              {
+                id: "p1",
+                denomination: "ACME",
+                siren: "732829320",
+                recueAt: new Date("2026-11-01T10:00:00Z"),
+                apporteur: { prenom: "A", nom: "B" },
+              },
+            ]
+          : [],
     },
     calendlyEvent: {
       findUnique: async ({ where }: any) => bd.events.find((e) => e.id === where.id) ?? null,
@@ -63,5 +72,19 @@ describe("lirePropositionsATraiter", () => {
       ["calendly:ann", true],
       ["calendly:abs", true],
     ]);
+  });
+
+  it("200 propositions de présentations non réservées n'empêchent pas d'afficher celle qui attend", async () => {
+    for (let i = 0; i < 200; i++)
+      bd.propositions.push({ ...prop(`calendly:x${i}`), id: `inerte-${i}`, presentationId: "pX" });
+    bd.propositions.push(prop("calendly:vraie"));
+    bd.events.push({
+      id: "vraie",
+      status: "scheduled",
+      startTime: null,
+      rencontre: null,
+    });
+    const r = await lirePropositionsATraiter(new Date("2026-11-20T10:00:00Z"));
+    expect(r.map((x) => x.rendezVousCle)).toEqual(["calendly:vraie"]);
   });
 });

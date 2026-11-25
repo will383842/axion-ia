@@ -45,12 +45,18 @@ function form(o: Record<string, string>) {
   return fd;
 }
 const gestes = [
-  () => validerPropositionAction(INITIAL, form({ id: ID })),
-  () => ecarterPropositionAction(INITIAL, form({ id: ID })),
+  () => validerPropositionAction(INITIAL, form({ id: ID, confirmer: "oui" })),
+  () => ecarterPropositionAction(INITIAL, form({ id: ID, confirmer: "oui" })),
   () =>
     saisirRendezVousAction(
       INITIAL,
-      form({ presentationId: ID, canal: "telephone", tenuLe: "2026-11-10T10:00" }),
+      form({
+        presentationId: ID,
+        canal: "telephone",
+        tenuLe: "2026-11-10T10:00",
+        prisLe: "2026-11-05T10:00",
+        confirmer: "oui",
+      }),
     ),
 ];
 
@@ -86,7 +92,9 @@ describe("validation par rendez-vous : actions réservées aux administrateurs",
   });
 
   it("un administrateur valide une proposition avec les dates de la base", async () => {
-    expect((await validerPropositionAction(INITIAL, form({ id: ID }))).etat).toBe("ok");
+    expect((await validerPropositionAction(INITIAL, form({ id: ID, confirmer: "oui" }))).etat).toBe(
+      "ok",
+    );
     expect(h.valider).toHaveBeenCalledWith(
       expect.objectContaining({
         rendezVousCle: "calendly:ev1",
@@ -97,11 +105,44 @@ describe("validation par rendez-vous : actions réservées aux administrateurs",
     );
   });
 
-  it("saisie manuelle : source « saisie », sans clé, pris = tenu par défaut", async () => {
+  it("saisie manuelle : source « saisie », sans clé, date de prise celle du formulaire", async () => {
     expect((await gestes[2]!()).etat).toBe("ok");
     const e = (h.valider.mock.calls[0] as unknown as [Record<string, unknown>])[0];
     expect(e).toMatchObject({ source: "saisie", rendezVousCle: null });
-    expect(e["prisAt"]).toEqual(e["tenuAt"]);
+    expect(e["prisAt"]).not.toEqual(e["tenuAt"]);
+  });
+
+  it("saisie sans « pris le » : refus, aucun appel au métier", async () => {
+    const r = await saisirRendezVousAction(
+      INITIAL,
+      form({
+        presentationId: ID,
+        canal: "telephone",
+        tenuLe: "2026-11-10T10:00",
+        confirmer: "oui",
+      }),
+    );
+    expect(r.etat).toBe("erreur");
+    expect(h.valider).not.toHaveBeenCalled();
+  });
+
+  it("sans confirmation côté serveur : aucun appel au métier (les trois gestes)", async () => {
+    const sans = [
+      validerPropositionAction(INITIAL, form({ id: ID })),
+      ecarterPropositionAction(INITIAL, form({ id: ID })),
+      saisirRendezVousAction(
+        INITIAL,
+        form({
+          presentationId: ID,
+          canal: "telephone",
+          tenuLe: "2026-11-10T10:00",
+          prisLe: "2026-11-05T10:00",
+        }),
+      ),
+    ];
+    for (const r of await Promise.all(sans)) expect(r.etat).toBe("erreur");
+    expect(h.valider).not.toHaveBeenCalled();
+    expect(h.ecarter).not.toHaveBeenCalled();
   });
 
   it("interrupteur éteint : aucune validation", async () => {
@@ -116,7 +157,12 @@ describe("validation par rendez-vous : actions réservées aux administrateurs",
   it("« Annulé par Axion IA » : la date de prise est exigée", async () => {
     const r = await saisirRendezVousAction(
       INITIAL,
-      form({ presentationId: ID, canal: "annule_par_axion", tenuLe: "2026-11-10T10:00" }),
+      form({
+        presentationId: ID,
+        canal: "annule_par_axion",
+        tenuLe: "2026-11-10T10:00",
+        confirmer: "oui",
+      }),
     );
     expect(r.etat).toBe("erreur");
     expect(h.valider).not.toHaveBeenCalled();
@@ -130,6 +176,7 @@ describe("validation par rendez-vous : actions réservées aux administrateurs",
         canal: "annule_par_axion",
         tenuLe: "2026-11-10T10:00",
         prisLe: "2026-11-05T10:00",
+        confirmer: "oui",
       }),
     );
     expect(r.etat).toBe("ok");

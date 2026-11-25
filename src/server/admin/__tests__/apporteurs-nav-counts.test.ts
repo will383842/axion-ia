@@ -8,22 +8,21 @@ const etat = vi.hoisted(() => ({
   casse: false,
   retires: [] as Array<{ apporteurId: string }>,
   propositions: [] as Array<{ presentationId: string; rendezVousCle: string }>,
-  evenement: { status: "active" } as { status: string },
+  /** Présentations encore « réservées ». */
+  reservees: ["p1"] as string[],
 }));
 
 vi.mock("@/lib/prisma", () => ({
   prisma: {
-    propositionRendezVousPresentation: { findMany: vi.fn(async () => etat.propositions) },
-    calendlyEvent: {
-      findUnique: vi.fn(async () => ({
-        status: etat.evenement.status,
-        startTime: new Date("2026-10-14T09:00:00Z"),
-        capturedAt: new Date("2026-10-01T09:00:00Z"),
-        rencontre: null,
-      })),
+    propositionRendezVousPresentation: {
+      count: vi.fn(
+        async ({ where }: { where: { presentationId: { in: string[] } } }) =>
+          etat.propositions.filter((x) => where.presentationId.in.includes(x.presentationId))
+            .length,
+      ),
     },
     presentationEntreprise: {
-      findMany: vi.fn(async () => etat.propositions.map((x) => ({ id: x.presentationId }))),
+      findMany: vi.fn(async () => etat.reservees.map((id) => ({ id }))),
       count: vi.fn(async () => {
         if (etat.casse) throw new Error("base indisponible");
         return etat.presentations;
@@ -48,7 +47,7 @@ beforeEach(() => {
   etat.casse = false;
   etat.retires = [];
   etat.propositions = [];
-  etat.evenement = { status: "active" };
+  etat.reservees = ["p1"];
   vi.unstubAllEnvs();
 });
 
@@ -88,19 +87,26 @@ describe("pastille « pièces » : hors apporteurs retirés (relecture de a1, 08
   });
 });
 
-describe("pastille « rendez-vous proposés » : ce que la console afficherait", () => {
+describe("pastille « rendez-vous proposés » : les lignes de la liste, annulées comprises", () => {
   const proposition = { presentationId: "p1", rendezVousCle: "calendly:ev1" };
 
-  it("un rendez-vous encore valable compte pour 1", async () => {
+  it("un rendez-vous proposé compte pour 1", async () => {
     vi.stubEnv("APPORTEURS_VALIDATION_RDV", "true");
     etat.propositions = [proposition];
     expect((await compterApporteursNav()).propositions).toBe(1);
   });
 
-  it("un rendez-vous annulé depuis la proposition ne compte plus (la liste est vide, la pastille aussi)", async () => {
+  it("un rendez-vous annulé reste à décider : il compte", async () => {
+    vi.stubEnv("APPORTEURS_VALIDATION_RDV", "true");
+    // La pastille ne lit plus la source : un événement annulé reste une ligne de la liste.
+    etat.propositions = [proposition];
+    expect((await compterApporteursNav()).propositions).toBe(1);
+  });
+
+  it("présentation non réservée : 0", async () => {
     vi.stubEnv("APPORTEURS_VALIDATION_RDV", "true");
     etat.propositions = [proposition];
-    etat.evenement = { status: "canceled" };
+    etat.reservees = [];
     expect((await compterApporteursNav()).propositions).toBe(0);
   });
 

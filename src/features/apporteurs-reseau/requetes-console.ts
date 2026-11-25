@@ -293,30 +293,21 @@ export interface PropositionVue {
 
 /**
  * Les propositions du rapprochement que le dirigeant n'a ni retenues ni écartées, pour des
- * présentations encore « réservées ». Aucune pagination fine : une trentaine tout au plus.
+ * présentations encore « réservées » (filtre posé avant la borne de 200).
  * Table absente (fenêtre app/worker) : liste vide.
  */
+/** Au-delà, la liste est tronquée : l'écran le dit (`lignes.length >= LIMITE_PROPOSITIONS`). */
+export const LIMITE_PROPOSITIONS = 200;
+
 export async function lirePropositionsATraiter(
   maintenant: Date = new Date(),
 ): Promise<PropositionVue[]> {
   if (process.env.DATABASE_URL?.includes("stub.invalid")) return [];
-  let propositions;
-  try {
-    propositions = await prisma.propositionRendezVousPresentation.findMany({
-      where: { ecarteeAt: null, retenueAt: null },
-      orderBy: [{ creeAt: "asc" }, { id: "asc" }],
-      take: 200,
-    });
-  } catch (err) {
-    if ((err as { code?: unknown } | null)?.code === "P2021") return [];
-    throw err;
-  }
-  if (propositions.length === 0) return [];
+  // Le filtre « présentation réservée » est posé AVANT la borne : une proposition inerte (présentation
+  // déjà traitée) ne doit jamais masquer, en tête de file, celle qui attend vraiment le dirigeant.
+  // (Pas de relation Prisma entre les deux modèles : on lit d'abord les identifiants.)
   const presentations = await prisma.presentationEntreprise.findMany({
-    where: {
-      id: { in: [...new Set(propositions.map((p) => p.presentationId))] },
-      statut: "reservee",
-    },
+    where: { statut: "reservee" },
     select: {
       id: true,
       denomination: true,
@@ -325,6 +316,23 @@ export async function lirePropositionsATraiter(
       apporteur: { select: { prenom: true, nom: true } },
     },
   });
+  if (presentations.length === 0) return [];
+  let propositions;
+  try {
+    propositions = await prisma.propositionRendezVousPresentation.findMany({
+      where: {
+        ecarteeAt: null,
+        retenueAt: null,
+        presentationId: { in: presentations.map((p) => p.id) },
+      },
+      orderBy: [{ creeAt: "asc" }, { id: "asc" }],
+      take: LIMITE_PROPOSITIONS,
+    });
+  } catch (err) {
+    if ((err as { code?: unknown } | null)?.code === "P2021") return [];
+    throw err;
+  }
+  if (propositions.length === 0) return [];
   const parId = new Map(presentations.map((p) => [p.id, p]));
   // Rendez-vous annulé / absent / reporté depuis la proposition : il ne se valide pas (état relu à
   // la source dans la transaction), mais il RESTE VISIBLE, marqué `nonTenu` : il retient l'ancien

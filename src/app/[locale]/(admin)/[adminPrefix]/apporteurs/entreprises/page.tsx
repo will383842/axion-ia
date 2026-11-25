@@ -32,7 +32,9 @@ import {
 } from "@/features/apporteurs-reseau/presentations";
 import { LIBELLE_PROLONGATION, type MotifProlongation } from "@/features/apporteurs-reseau/regles";
 import { validationParRendezVousActive } from "@/features/apporteurs-reseau/interrupteur-rendez-vous";
+import { heureConsole } from "@/features/apporteurs-reseau/statut-rendez-vous";
 import {
+  LIMITE_PROPOSITIONS,
   lirePropositionsATraiter,
   lireReservationsOuvertes,
   type PropositionVue,
@@ -68,14 +70,8 @@ const STATUT: Record<
   terminee: { libelle: "Terminée", ton: "neutral" },
 };
 
-const heure = (d: Date) =>
-  d.toLocaleString("fr-FR", {
-    day: "numeric",
-    month: "short",
-    hour: "2-digit",
-    minute: "2-digit",
-    timeZone: "Europe/Paris",
-  });
+// Même formatage que le message de refus de la validation (`heureConsole`) : on retrouve la ligne.
+const heure = heureConsole;
 
 export default async function EntreprisesPresenteesPage({ params, searchParams }: PageProps) {
   const { adminPrefix } = await params;
@@ -372,6 +368,12 @@ function SectionRendezVous({
             pas cliqué « Il a eu lieu ».
           </p>
         </div>
+        {propositions.length >= LIMITE_PROPOSITIONS ? (
+          <p role="status" className="text-[length:var(--text-admin-sm)]">
+            Liste tronquée à {LIMITE_PROPOSITIONS} propositions : traitez les plus anciennes pour
+            voir les suivantes.
+          </p>
+        ) : null}
         {propositions.length === 0 ? (
           <p className="text-[color:var(--color-admin-fg-muted)]">Aucun rendez-vous à examiner.</p>
         ) : (
@@ -410,7 +412,7 @@ function SectionRendezVous({
         {peutValider ? (
           <details>
             <summary className="cursor-pointer text-[length:var(--text-admin-sm)] font-medium">
-              Saisir un rendez-vous téléphonique ou sur place
+              Saisir un rendez-vous à la main (téléphone, sur place, ou annulé par Axion IA)
             </summary>
             <div className="pt-[var(--space-admin-3)]">
               <SaisirRendezVous
