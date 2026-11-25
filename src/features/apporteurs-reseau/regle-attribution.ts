@@ -13,7 +13,7 @@
  * (`interrupteur-rendez-vous.ts`) et se passe en argument (`regleDe(signature, actif)`).
  */
 
-import { PROTECTION_MOIS, ajouterJours, ajouterMois } from "./regles";
+import { PROTECTION_MOIS, ajouterMois, finDuNiemeJourParis } from "./regles";
 
 /** Durée de la réservation provisoire, à compter de la saisie (`recueAt`). */
 export const RESERVATION_PROVISOIRE_JOURS = 60;
@@ -60,9 +60,14 @@ export function regleDe(signature: unknown, actif: boolean): RegleAttribution {
     : null;
 }
 
-/** Fin de la réservation provisoire : la saisie + 60 jours (borne incluse). */
+/**
+ * Fin de la réservation provisoire (décision N1) : la FIN du 60e jour calendaire (Paris), le jour de la
+ * saisie étant le jour 1, quelle que soit l'heure de la saisie (23:59:59.999 Paris, borne incluse).
+ * Même règle pour les fenêtres « rendez-vous pris » et « devis signé » dans les 60 jours : elles
+ * lisent toutes `reserveeJusquAt`, donc cette fonction.
+ */
 export function finReservation(recueAt: Date): Date {
-  return ajouterJours(recueAt, RESERVATION_PROVISOIRE_JOURS);
+  return finDuNiemeJourParis(recueAt, RESERVATION_PROVISOIRE_JOURS);
 }
 
 /** Fin de la protection : six mois à compter du rendez-vous TENU. */
@@ -91,7 +96,7 @@ export function rendezVousRecevable(e: {
   prisAt: Date;
   tenuAt: Date | null;
   /**
-   * Date à laquelle AXION IA a annulé ce rendez-vous : il est alors RÉPUTÉ TENU à cette date (Axion
+   * Date à laquelle AXION IA a annulé ce rendez-vous : il est alors RÉPUTÉ TENU à la date à laquelle il était FIXÉ (contrat 2.8, art. 3.2), et cette date doit être passée (Axion
    * ne peut pas empêcher une validation en annulant). Une annulation, une absence ou un report
    * par l'ENTREPRISE ne se transmet JAMAIS ici : il ne valide pas. Le silence d'Axion non plus.
    */
@@ -133,4 +138,24 @@ export function reservationOccupe(r: ReservationProvisoire, maintenant: Date): b
   const pris = r.rendezVousEnAttentePrisAt?.getTime();
   if (pris === undefined) return false;
   return !(pris < r.recueAt.getTime()) && !(pris > r.reserveeJusquAt.getTime());
+}
+
+/**
+ * La réservation d'une présentation, telle que la lisent les gardes d'occupation (`reservationOccupe`) :
+ * la saisie (`recueAt`), le terme, et la prise d'un rendez-vous encore à tenir. `null` sans ligne.
+ */
+export function versReservationProvisoire(
+  recueAt: Date,
+  r:
+    | { reserveeJusquAt: Date; rendezVousPrisAt?: Date | null; valideeAt?: Date | null }
+    | null
+    | undefined,
+): ReservationProvisoire | null {
+  if (!r) return null;
+  return {
+    recueAt,
+    reserveeJusquAt: r.reserveeJusquAt,
+    // Un rendez-vous déjà validé n'est plus « à tenir ».
+    rendezVousEnAttentePrisAt: r.valideeAt ? null : (r.rendezVousPrisAt ?? null),
+  };
 }

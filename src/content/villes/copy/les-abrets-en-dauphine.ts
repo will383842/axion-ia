@@ -65,7 +65,7 @@ export const LES_ABRETS_EN_DAUPHINE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Lyon ou Chambéry ?",
-      a: "Nos consultants viennent de Lyon (1h A43) ou Chambéry (50 min A43). Pour les multi-jours, hébergement local possible. Coûts de déplacement séparés du forfait, tarifs transparents.",
+      a: "Nos consultants viennent de Lyon (1h A43) ou Chambéry (50 min A43). Pour les multi-jours, hébergement local possible. Tarifs transparents.",
     },
   ],
 };

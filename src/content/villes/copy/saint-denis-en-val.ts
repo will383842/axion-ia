@@ -49,7 +49,7 @@ export const SAINT_DENIS_EN_VAL_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Saint-Denis-en-Val et agglo Orléans ?",
-      a: "Oui, Axion-IA intervient à Saint-Denis-en-Val et dans toute l'agglomération Orléans Métropole (Olivet, Saint-Jean-de-Braye, Fleury-les-Aubrais, Saran). Couverture nationale, déplacement sur site inclus dans le forfait mission.",
+      a: "Oui, Axion-IA intervient à Saint-Denis-en-Val et dans toute l'agglomération Orléans Métropole (Olivet, Saint-Jean-de-Braye, Fleury-les-Aubrais, Saran). Couverture nationale.",
     },
     {
       q: "Travaillez-vous avec les professions libérales de Saint-Denis-en-Val ?",

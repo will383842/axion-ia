@@ -88,7 +88,10 @@ export default async function MemoIserePage({ params }: Props) {
     <TunnelFacebookShell sousTitre="Apporteurs d'affaires">
       <Container className="border-border border-b py-3">
         <Breadcrumbs
-          items={[{ href: PATH, label: "Apporteurs d'affaires · Le Mémo de l'Isère" }]}
+          items={[
+            { href: "/devenir-commercial-ia", label: "Devenir apporteur d'affaires" },
+            { href: PATH, label: "Apporteurs d'affaires · Le Mémo de l'Isère" },
+          ]}
         />
       </Container>
 
