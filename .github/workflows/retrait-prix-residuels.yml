@@ -250,7 +250,7 @@ jobs:
           set -u
           [ -s out/urls.txt ] || { echo "Aucune URL à purger."; exit 0; }
           if [ -z "${REVALIDATE_SECRET:-}" ]; then
-            echo "::error::REVALIDATE_SECRET absent : cache NON purgé (les pages gardent l'ancien texte jusqu'à 1 h)."
+            echo "::error::REVALIDATE_SECRET absent : cache NON purgé (les pages gardent l'ancien texte jusqu'à 24 h)."
             exit 1
           fi
           split -l 30 out/urls.txt out/lot-
@@ -269,13 +269,16 @@ jobs:
             if [ "$code" != "200" ] || [ "${configure:-false}" != "true" ]; then
               echecs=$((echecs + 1))
               echo "::warning::$lot non purgé (HTTP $code, cache de bordure configuré : ${configure:-false})."
+            elif [ "${purgees:-0}" -eq 0 ]; then
+              echecs=$((echecs + 1))
+              echo "::warning::$lot : aucune URL purgée en bordure sur $taille."
             elif [ "${purgees:-0}" -lt "$taille" ]; then
               echo "::warning::$lot : ${purgees:-0} URL purgées en bordure sur $taille."
             fi
             sleep 2
           done
           if [ "$echecs" -gt 0 ]; then
-            echo "::error::$echecs lot(s) non purgé(s) : relancer la purge ou attendre l'expiration (1 h)."
+            echo "::error::$echecs lot(s) non purgé(s) : relancer la purge ou attendre l'expiration (jusqu'à 24 h)."
             exit 1
           fi
 

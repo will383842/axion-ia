@@ -162,6 +162,39 @@ describe("garde-fous : seuls les anciens montants partent, le reste est signalé
     expect(ctaSuspects(retirerMontantCta(t).texte)).toHaveLength(1);
   });
 
+  it.each([
+    "Réserver une formation : 2&nbsp;450&nbsp;€",
+    "Réserver une formation — à partir de 2&#8239;450&nbsp;€",
+    "RÉSERVER UNE FORMATION · 2 450 €",
+    "R&eacute;server une formation, 2 450 €",
+    "Réserver une formation : 2 450 €",
+    "Réserver une formation : 2 450 €",
+  ])("signale aussi une écriture inhabituelle : %j", (t) => {
+    expect(ctaSuspects(retirerMontantCta(t).texte)).toHaveLength(1);
+  });
+
+  it("voit un montant dont les espaces sont des entités", () => {
+    expect(contientMontant("Dès 1&nbsp;990&nbsp;€ HT")).toBe(true);
+    expect(contientMontant("Sur devis.")).toBe(false);
+  });
+
+  it("FAQ : un montant écrit avec des entités est réécrit lui aussi", () => {
+    const cible = FAQ_CIBLES[0]!;
+    const p = planifierFaq(cible.slug, {
+      answerFr: "Dès 1&nbsp;990&nbsp;€ HT.",
+      answerEn: cible.answerEn,
+      metaDescription: null,
+    })!;
+    expect(p.ecritures).toEqual({ answerFr: cible.answerFr });
+  });
+
+  it.each([
+    "Réserver l&#x2019;intervention Essentielle · 2 450 €",
+    "Réserver <b>une</b> formation · 2 450 €",
+  ])("signale une apostrophe rare ou une balise dans le libellé : %j", (t) => {
+    expect(ctaSuspects(retirerMontantCta(t).texte)).toHaveLength(1);
+  });
+
   it("ne signale rien quand il n'y a pas de montant derrière le libellé", () => {
     expect(ctaSuspects("Réserver une formation, c'est simple.")).toEqual([]);
     expect(ctaSuspects(null)).toEqual([]);

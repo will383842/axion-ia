@@ -18,8 +18,20 @@
 export const MONTANT_RE =
   /\d[\d   .,]*\s*(?:€|&euro;|&#8364;|&#x20ac;|euros?\b|EUR\b)|(?:€|&euro;)\s?\d/i;
 
+/**
+ * Pour DÉTECTER seulement : espaces écrits en entités (« 2&nbsp;450&nbsp;€ ») ramenés à une
+ * espace, « &eacute; » et « é » décomposé ramenés à « é ». Jamais utilisé pour écrire.
+ */
+export function normaliserPourDetection(texte: string): string {
+  return texte
+    .replace(/&(?:nbsp|thinsp|ensp|emsp|#160|#xa0|#8239|#x202f|#8201|#x2009);/gi, " ")
+    .replace(/&eacute;/g, "é")
+    .replace(/&Eacute;/g, "É")
+    .normalize("NFC");
+}
+
 export function contientMontant(texte: string | null | undefined): boolean {
-  return typeof texte === "string" && MONTANT_RE.test(texte);
+  return typeof texte === "string" && MONTANT_RE.test(normaliserPourDetection(texte));
 }
 
 export interface FaqCible {
@@ -110,9 +122,16 @@ export function motifCta(): RegExp {
   return new RegExp(SOURCE_CTA, "g");
 }
 
-/** Mots du libellé seul (sans montant), pour filtrer vite en SQL puis en JS. */
+/** Libellé écrit autrement (majuscules, espace insécable, sans accent) : pour SIGNALER seulement. */
+const ENTRE = String.raw`(?:\s|<[^>]{0,20}>)+`; // espaces ou balise courte entre deux mots
+const LIBELLE_LACHE = String.raw`R[ée]server${ENTRE}(?:une${ENTRE}formation|l.{1,8}?intervention${ENTRE}Essentielle)|Faire${ENTRE}faire${ENTRE}par${ENTRE}Axion-IA`;
+
+/**
+ * Filtre SQL LARGE (à utiliser avec `~*`, insensible à la casse) : ramène aussi les libellés
+ * écrits avec entités ou espaces insécables. La règle exacte est appliquée ensuite en JS.
+ */
 export const LIBELLES_CTA_SQL =
-  "(Réserver une formation|Réserver l.{1,8}intervention Essentielle|Faire faire par Axion-IA)";
+  "(R.{1,8}server.{1,8}une.{1,8}formation|R.{1,8}server.{1,8}l.{1,8}intervention.{1,8}Essentielle|Faire.{1,8}faire.{1,8}par.{1,8}Axion-IA)";
 
 function libelleSeul(libelle: string): string {
   // « Intervention Essentielle » : offre retirée du catalogue, le bouton devient générique.
@@ -163,10 +182,11 @@ export function contientCtaAvecMontant(texte: string | null | undefined): boolea
  */
 export function ctaSuspects(texte: string | null | undefined, fenetre = 60): string[] {
   if (typeof texte !== "string") return [];
+  const net = normaliserPourDetection(texte);
   const out: string[] = [];
-  for (const m of texte.matchAll(new RegExp(LIBELLE, "g"))) {
+  for (const m of net.matchAll(new RegExp(LIBELLE_LACHE, "gi"))) {
     const fin = (m.index ?? 0) + m[0].length;
-    const suite = texte.slice(fin, fin + fenetre);
+    const suite = net.slice(fin, fin + fenetre);
     if (MONTANT_RE.test(suite)) out.push(`${m[0]}${suite}`);
   }
   return out;

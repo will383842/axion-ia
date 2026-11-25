@@ -236,8 +236,8 @@ export async function construirePlan(): Promise<Plan> {
            (SELECT f.slug FROM article_translations f
              WHERE f.article_id = t.article_id AND f.locale::text = 'fr' LIMIT 1) AS "slugFr"
     FROM article_translations t JOIN articles a ON a.id = t.article_id
-    WHERE t.body ~ ${LIBELLES_CTA_SQL} OR t.body_text ~ ${LIBELLES_CTA_SQL}
-       OR t.body_json::text ~ ${LIBELLES_CTA_SQL}`);
+    WHERE t.body ~* ${LIBELLES_CTA_SQL} OR t.body_text ~* ${LIBELLES_CTA_SQL}
+       OR t.body_json::text ~* ${LIBELLES_CTA_SQL}`);
   for (const t of articles) {
     const champs: Champ[] = [];
     const fragments: Ligne["fragments"] = [];
@@ -275,7 +275,7 @@ export async function construirePlan(): Promise<Plan> {
         for (const fr of j.fragments) fragments.push({ ...fr, colonne: "body_json" });
       }
       // Fenêtre large : un bouton peut être découpé en plusieurs nœuds.
-      signaler("body_json", texteJson(j.valeur), 160);
+      signaler("body_json", texteJson(j.valeur), 400);
     }
     const n = fragments.length;
     if (new Set(Object.values(comptes)).size > 1)
@@ -334,8 +334,8 @@ export async function construirePlan(): Promise<Plan> {
     SELECT id::text AS id, faq_json AS "faqJson", direct_answer AS "directAnswer",
            key_takeaway AS "keyTakeaway", status::text AS status
     FROM articles
-    WHERE faq_json::text ~ ${LIBELLES_CTA_SQL} OR direct_answer ~ ${LIBELLES_CTA_SQL}
-       OR key_takeaway ~ ${LIBELLES_CTA_SQL}`);
+    WHERE faq_json::text ~* ${LIBELLES_CTA_SQL} OR direct_answer ~* ${LIBELLES_CTA_SQL}
+       OR key_takeaway ~* ${LIBELLES_CTA_SQL}`);
   for (const a of articlesRevoir) {
     const champsA: Array<[string, string | null]> = [
       ["faq_json", a.faqJson == null ? null : texteJson(a.faqJson)],
@@ -344,7 +344,7 @@ export async function construirePlan(): Promise<Plan> {
     ];
     // Tout libellé suivi d'un montant (ancien ou non) : jamais écrit ici, toujours signalé.
     for (const [champ, v] of champsA)
-      for (const sus of ctaSuspects(v, 160))
+      for (const sus of ctaSuspects(v, 400))
         aRevoir.push(`articles:${a.id} (${a.status}) ${champ} : « ${extrait(sus)} »`);
   }
 
@@ -695,9 +695,11 @@ async function main(): Promise<void> {
     "utf8",
   );
   console.log(`Sauvegarde des valeurs d'origine : ${o.sauvegarde}`);
+  // La liste d'URL est posée juste avant d'écrire : un apply interrompu en route purge quand même.
+  if (o.urls) fs.writeFileSync(o.urls, `${plan.urls.join("\n")}\n`);
   const r = await appliquer(plan.lignes);
   console.log(`Écrites : ${r.ecrites}/${plan.lignes.length}`);
-  if (o.urls && r.ecrites > 0) fs.writeFileSync(o.urls, `${plan.urls.join("\n")}\n`);
+  if (o.urls && r.ecrites === 0) fs.writeFileSync(o.urls, "");
   if (r.perdues.length > 0) {
     console.error(`${r.perdues.length} ligne(s) ont changé entre-temps : relancer un dry-run.`);
     process.exitCode = 4;
