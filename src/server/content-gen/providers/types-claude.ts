@@ -7,7 +7,8 @@
  *
  * Valeurs :
  *  - absente / vide / `blog` : les 4 types blog (comportement d'avant) ;
- *  - `tous` : tous les types de l'énumération `ContentType` ;
+ *  - `tous` : tous les types de l'énumération `ContentType` (seul ou présent dans une liste :
+ *    il l'emporte alors sur le reste) ;
  *  - liste séparée par des virgules (`blog` y est admis comme raccourci) : seuls les
  *    types connus sont retenus ; un type inconnu est IGNORÉ avec un avertissement.
  *    Une liste dont aucun élément n'est connu rend l'ensemble VIDE (rien ne passe
@@ -29,19 +30,27 @@ export function tousLesTypes(): ReadonlySet<string> {
   return new Set(Object.values(ContentType) as string[]);
 }
 
+/** Valeurs inconnues déjà signalées : la variable est relue à chaque appel, on n'avertit qu'une fois. */
+const dejaSignalees = new Set<string>();
+
+function avertirUneFois(message: string): void {
+  if (dejaSignalees.has(message)) return;
+  dejaSignalees.add(message);
+  console.warn(message);
+}
+
 export function lireTypesClaude(
   brut: string | undefined,
-  avertir: (message: string) => void = (m) => console.warn(m),
+  avertir: (message: string) => void = avertirUneFois,
 ): ReadonlySet<string> {
   const valeur = (brut ?? "").trim().toLowerCase();
   if (valeur === "" || valeur === "blog") return BLOG_TYPES;
-  if (valeur === "tous") return tousLesTypes();
-
   const connus = tousLesTypes();
   const retenus = new Set<string>();
   for (const morceau of valeur.split(",")) {
     const nom = morceau.trim();
     if (nom === "") continue;
+    if (nom === "tous") return connus;
     if (nom === "blog") {
       for (const t of BLOG_TYPES) retenus.add(t);
     } else if (connus.has(nom)) {

@@ -45,6 +45,29 @@ describe("lireTypesClaude", () => {
   });
 });
 
+describe("`tous` dans une liste", () => {
+  it.each(["tous", "landing_ville,tous", "tous,glossary_term", " TOUS , blog"])(
+    "valeur %j : tous les types",
+    (v) => {
+      expect(lireTypesClaude(v, vi.fn()).size).toBe(tousLesTypes().size);
+    },
+  );
+});
+
+describe("avertissement par défaut", () => {
+  it("émis une seule fois par valeur inconnue, malgré les relectures", () => {
+    const warn = vi.spyOn(console, "warn").mockImplementation(() => {});
+    try {
+      for (let i = 0; i < 3; i++) lireTypesClaude("inconnu_unique_a,inconnu_unique_b");
+      const messages = warn.mock.calls.map((c) => String(c[0]));
+      expect(messages.filter((m) => m.includes("inconnu_unique_a"))).toHaveLength(1);
+      expect(messages.filter((m) => m.includes("inconnu_unique_b"))).toHaveLength(1);
+    } finally {
+      warn.mockRestore();
+    }
+  });
+});
+
 describe("lecture de l'environnement", () => {
   it("variable absente = blog ; relue à chaque appel", () => {
     expect(typeClaudeAutorise("blog_article")).toBe(true);
