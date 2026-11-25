@@ -32,6 +32,7 @@ import {
 } from "@/lib/knowledge/embeddings";
 
 import { embedVoyageBatch } from "@/server/content-gen/dedup/voyage-embedder";
+import { buildVoyageEmbeddingText } from "@/server/content-gen/dedup/texte-a-vectoriser";
 
 export const EMBEDDINGS_BACKFILL_QUEUE = "embeddings-backfill";
 
@@ -58,6 +59,23 @@ interface ArticleRow {
   id: string;
   title: string;
   content: string | null;
+}
+
+interface ArticleVoyageRow {
+  id: string;
+  title: string;
+  meta_description: string | null;
+  body_text: string | null;
+  body: string | null;
+}
+
+function texteVoyage(a: ArticleVoyageRow): string {
+  return buildVoyageEmbeddingText({
+    title: a.title,
+    metaDescription: a.meta_description,
+    bodyText: a.body_text,
+    bodyHtml: a.body,
+  });
 }
 
 interface KbStaleRow {
@@ -212,7 +230,7 @@ export async function rattraperEmbeddingsVoyage(): Promise<VoyageBackfillStats> 
 
   const max = plafondVoyageParPassage();
   const articles = (await prisma.$queryRawUnsafe(
-    `SELECT a.id, t.title, COALESCE(NULLIF(t.body_text, ''), t.body) AS content
+    `SELECT a.id, t.title, t.meta_description, t.body_text, t.body
      FROM articles a
      JOIN article_translations t ON t.article_id = a.id AND t.locale = 'fr'
      WHERE a.status = 'published'
@@ -220,7 +238,7 @@ export async function rattraperEmbeddingsVoyage(): Promise<VoyageBackfillStats> 
        AND btrim(COALESCE(t.title, '')) <> ''
      ORDER BY a.published_at DESC NULLS LAST
      LIMIT ${max}`,
-  )) as ArticleRow[];
+  )) as ArticleVoyageRow[];
 
   const stats: VoyageBackfillStats = {
     processed: 0,
@@ -232,7 +250,7 @@ export async function rattraperEmbeddingsVoyage(): Promise<VoyageBackfillStats> 
 
   for (let i = 0; i < articles.length; i += VOYAGE_BATCH_SIZE) {
     const lot = articles.slice(i, i + VOYAGE_BATCH_SIZE);
-    const out = await embedVoyageBatch(lot.map((a) => buildEmbeddingText(a.title, a.content)));
+    const out = await embedVoyageBatch(lot.map(texteVoyage));
     if (!out.ok) {
       stats.errors += lot.length;
       echecsConsecutifs++;

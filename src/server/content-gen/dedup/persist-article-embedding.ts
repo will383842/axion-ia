@@ -22,6 +22,7 @@ import type { PrismaClient } from "../../../../prisma/generated/client";
 import { embed, buildEmbeddingInput, OPENAI_EMBEDDING_DIMENSION } from "./openai-embedder";
 import { embedVoyage, VOYAGE_EMBEDDING_DIMENSION } from "./voyage-embedder";
 import { getEmbeddingProvider } from "./embedding-provider";
+import { buildVoyageEmbeddingText } from "./texte-a-vectoriser";
 
 export interface PersistArticleEmbeddingInput {
   readonly articleId: string;
@@ -54,13 +55,20 @@ export async function persistArticleEmbedding(
   input: PersistArticleEmbeddingInput,
 ): Promise<PersistArticleEmbeddingResult> {
   try {
-    const text = buildEmbeddingInput({
-      title: input.title,
-      ...(input.metaDescription ? { metaDescription: input.metaDescription } : {}),
-      ...(input.bodyText ? { bodyText: input.bodyText } : {}),
-    });
-
     const provider = getEmbeddingProvider();
+    // Voyage : fabrication unique, partagée avec le rattrapage (texte-a-vectoriser.ts).
+    const text =
+      provider === "voyage"
+        ? buildVoyageEmbeddingText({
+            title: input.title,
+            metaDescription: input.metaDescription ?? null,
+            bodyText: input.bodyText ?? null,
+          })
+        : buildEmbeddingInput({
+            title: input.title,
+            ...(input.metaDescription ? { metaDescription: input.metaDescription } : {}),
+            ...(input.bodyText ? { bodyText: input.bodyText } : {}),
+          });
     const result = provider === "voyage" ? await embedVoyage(text) : await embed(text);
     if (result === null) {
       if (provider === "voyage") {
