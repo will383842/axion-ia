@@ -28,12 +28,17 @@ export const BRAND_VOICE_REFERENCE_KEY = {
   voyage: "brand_voice_reference_embedding_voyage",
 } as const satisfies Record<EmbeddingProvider, string>;
 
+/** Avertissement émis une seule fois par processus. */
+let avertiSansCle = false;
+
 export function getEmbeddingProvider(): EmbeddingProvider {
   if (process.env["CONTENT_EMBEDDING_PROVIDER"]?.trim().toLowerCase() !== "voyage") {
     return "openai";
   }
   // Voyage demandé sans clé : on resterait sans vecteur ; repli sur OpenAI, avec avertissement.
   if (!process.env["VOYAGE_API_KEY"]?.trim()) {
+    if (avertiSansCle) return "openai";
+    avertiSansCle = true;
     console.warn(
       "[embedding-provider] CONTENT_EMBEDDING_PROVIDER=voyage mais VOYAGE_API_KEY est absente ou vide : repli sur openai.",
     );
