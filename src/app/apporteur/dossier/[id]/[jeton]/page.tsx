@@ -132,7 +132,7 @@ export default async function DossierApporteurPage({ params }: PageProps) {
         <EcranEtat
           pastilleTexte={TEXTES.signePastille}
           titre={TEXTES.signeTitre}
-          ligne={`${vigilance ? TEXTES.signeLigneVigilance : TEXTES.signeLigne}${fin ? ` ${TEXTES.preavisLigne(fin.effetLe)}` : ""}`}
+          ligne={`${vigilance ? TEXTES.signeLigneVigilance : TEXTES.signeLigne}${fin ? ` ${TEXTES.preavisLigne(fin.dernierJourLe)}` : ""}`}
           succes
         >
           {dossier.aContratSigne ? (

@@ -102,6 +102,7 @@ import {
   executerResiliation,
   executerResiliationsEchues as etapeResiliationsEchuesPourTest,
   notifierResiliation,
+  dernierJourDuContrat,
   planNotificationResiliation,
 } from "../resiliation";
 
@@ -123,7 +124,7 @@ beforeEach(() => {
 
 describe("planNotificationResiliation", () => {
   const maintenant = J("2026-12-05");
-  it("11.1 notifiée le 1er décembre : effet le 31 décembre (jours de Paris)", () => {
+  it("11.1 notifiée le 1er décembre : le jour de la notification ne compte pas, effet le 1er janvier", () => {
     const p = planNotificationResiliation({
       initiative: "societe",
       fondement: "11.1",
@@ -131,7 +132,42 @@ describe("planNotificationResiliation", () => {
       maintenant,
     });
     expect(p).toMatchObject({ ok: true, immediat: false });
-    if (p.ok) expect(p.effetLe.toISOString()).toBe("2026-12-30T23:00:00.000Z");
+    // Le contrat prend fin le 31 décembre au soir ; la résiliation prend effet le 1er janvier 00 h (Paris).
+    if (p.ok) expect(p.effetLe.toISOString()).toBe("2026-12-31T23:00:00.000Z");
+  });
+  it("11.1 en fin de mois : notifiée le 31 janvier, effet le 3 mars (février de 28 jours)", () => {
+    const p = planNotificationResiliation({
+      initiative: "societe",
+      fondement: "11.1",
+      notifieeLe: J("2027-01-31"),
+      maintenant: J("2027-01-31"),
+    });
+    if (!p.ok) throw new Error("refus inattendu");
+    expect(p.effetLe.toISOString()).toBe("2027-03-02T23:00:00.000Z");
+  });
+  it("11.1 en heure d'été : notifiée le 30 juin, effet le 31 juillet à minuit de Paris", () => {
+    const p = planNotificationResiliation({
+      initiative: "societe",
+      fondement: "11.1",
+      notifieeLe: J("2027-06-30"),
+      maintenant: J("2027-06-30"),
+    });
+    if (!p.ok) throw new Error("refus inattendu");
+    expect(p.effetLe.toISOString()).toBe("2027-07-30T22:00:00.000Z");
+  });
+  it("11.1 : un effet demandé le 31 décembre (30e jour compté depuis le 1er) est refusé, le 1er janvier admis", () => {
+    const e = {
+      initiative: "apporteur" as const,
+      fondement: "11.1" as const,
+      notifieeLe: J("2026-12-01"),
+      maintenant,
+    };
+    expect(
+      planNotificationResiliation({ ...e, effetDemandeLe: new Date("2026-12-30T23:00:00Z") }).ok,
+    ).toBe(false);
+    expect(
+      planNotificationResiliation({ ...e, effetDemandeLe: new Date("2026-12-31T23:00:00Z") }).ok,
+    ).toBe(true);
   });
   it("11.1 : une date d'effet plus proche est refusée", () => {
     const p = planNotificationResiliation({
@@ -175,10 +211,32 @@ describe("planNotificationResiliation", () => {
     expect(
       planNotificationResiliation({ ...e, miseEnDemeureLe: J("2026-12-04"), motif: "x" }).ok,
     ).toBe(false);
-    expect(planNotificationResiliation({ ...e, miseEnDemeureLe: J("2026-11-20") }).ok).toBe(false);
+    expect(planNotificationResiliation({ ...e, miseEnDemeureLe: J("2026-11-19") }).ok).toBe(false);
     expect(
-      planNotificationResiliation({ ...e, miseEnDemeureLe: J("2026-11-19"), motif: "x" }),
+      planNotificationResiliation({ ...e, miseEnDemeureLe: J("2026-11-18"), motif: "x" }),
     ).toMatchObject({ ok: true, immediat: true });
+  });
+  it("11.2 : mise en demeure le 1er, résiliation possible le 17 et pas le 16 (jour de la mise en demeure non compté)", () => {
+    const e = {
+      initiative: "societe" as const,
+      fondement: "11.2" as const,
+      miseEnDemeureLe: J("2026-12-01"),
+      motif: "x",
+      maintenant: J("2026-12-20"),
+    };
+    expect(planNotificationResiliation({ ...e, notifieeLe: J("2026-12-16") }).ok).toBe(false);
+    expect(planNotificationResiliation({ ...e, notifieeLe: J("2026-12-17") }).ok).toBe(true);
+  });
+  it("11.2 en fin de mois et passage d'année : mise en demeure le 20 décembre, possible le 5 janvier et pas le 4", () => {
+    const e = {
+      initiative: "societe" as const,
+      fondement: "11.2" as const,
+      miseEnDemeureLe: J("2026-12-20"),
+      motif: "x",
+      maintenant: J("2027-01-08"),
+    };
+    expect(planNotificationResiliation({ ...e, notifieeLe: J("2027-01-04") }).ok).toBe(false);
+    expect(planNotificationResiliation({ ...e, notifieeLe: J("2027-01-05") }).ok).toBe(true);
   });
   it("11.2 : la mise en demeure doit être restée sans effet 15 jours (14 jours : refus)", () => {
     const e = {
@@ -188,8 +246,8 @@ describe("planNotificationResiliation", () => {
       motif: "x",
       maintenant,
     };
-    expect(planNotificationResiliation({ ...e, miseEnDemeureLe: J("2026-11-20") }).ok).toBe(false);
-    expect(planNotificationResiliation({ ...e, miseEnDemeureLe: J("2026-11-19") }).ok).toBe(true);
+    expect(planNotificationResiliation({ ...e, miseEnDemeureLe: J("2026-11-19") }).ok).toBe(false);
+    expect(planNotificationResiliation({ ...e, miseEnDemeureLe: J("2026-11-18") }).ok).toBe(true);
   });
   it("une notification antérieure de plus de 7 jours est refusée (pas d'effet rétroactif)", () => {
     const e = { initiative: "societe" as const, fondement: "11.1" as const, maintenant };
@@ -215,6 +273,17 @@ describe("planNotificationResiliation", () => {
         maintenant,
       }).ok,
     ).toBe(false);
+  });
+});
+
+describe("dernierJourDuContrat", () => {
+  it("la veille de la prise d'effet : effet le 1er janvier, contrat jusqu'au 31 décembre au soir", () => {
+    expect(
+      new Date(dernierJourDuContrat(new Date("2026-12-31T23:00:00Z"))).toISOString().slice(0, 10),
+    ).toBe("2026-12-31");
+    expect(dernierJourDuContrat(new Date("2027-03-02T23:00:00Z")).toISOString().slice(0, 10)).toBe(
+      "2027-03-02",
+    );
   });
 });
 
@@ -253,13 +322,13 @@ describe("notifierResiliation (11.1)", () => {
     expect(etat.envois).toHaveLength(0);
   });
 
-  it("le passage du 30 décembre ne résilie pas ; celui du 31 résilie une seule fois", async () => {
+  it("le passage du 31 décembre (23 h 59) ne résilie pas ; celui du 1er janvier résilie une seule fois", async () => {
     await notif();
-    await etapeResiliationsEchuesPourTest(J("2026-12-30"));
+    await etapeResiliationsEchuesPourTest(new Date("2026-12-31T22:59:00Z"));
     expect(etat.statut).toBe("signe");
-    await etapeResiliationsEchuesPourTest(J("2026-12-31"));
+    await etapeResiliationsEchuesPourTest(J("2027-01-01"));
     expect(etat.statut).toBe("resilie");
-    await etapeResiliationsEchuesPourTest(J("2026-12-31"));
+    await etapeResiliationsEchuesPourTest(J("2027-01-01"));
     expect(etat.majApporteur).toHaveLength(1);
     expect(etat.envois.map((e) => e.gabarit)).toEqual([
       "apporteur-resiliation-notifiee",
@@ -277,7 +346,7 @@ describe("notifierResiliation (11.1)", () => {
     ];
     await notif();
     await etapeResiliationsEchuesPourTest(J("2027-01-03"));
-    const effet = new Date("2026-12-30T23:00:00.000Z");
+    const effet = new Date("2026-12-31T23:00:00.000Z");
     expect(etat.majApporteur[0]).toMatchObject({ statut: "resilie", resilieAt: effet });
     expect(etat.majPresentations[0]).toMatchObject({ data: { protegeeJusquAt: effet } });
   });
@@ -285,7 +354,7 @@ describe("notifierResiliation (11.1)", () => {
   it("une résiliation en erreur ne bloque pas les suivantes ; une ligne terminale est close", async () => {
     await notif();
     etat.statut = "resilie"; // déjà résilié par ailleurs : l'exécution refuse, définitivement
-    await etapeResiliationsEchuesPourTest(J("2026-12-31"));
+    await etapeResiliationsEchuesPourTest(J("2027-01-01"));
     expect(etat.ligne!.executeeAt).toBeTruthy();
     expect(etat.envois.map((e) => e.gabarit)).toEqual(["apporteur-resiliation-notifiee"]);
   });

@@ -69,12 +69,16 @@ const STATUTS_RESILIABLES = ["signe"] as const;
 //    aussitôt pour 11.2 et 12.5). Seule cette fonction écrit le statut « resilie ».
 // Les seules échéances portent sur ce que FAIT AXION (préavis) : aucune sur l'apporteur.
 
-/** Délai de la mise en demeure restée sans effet (article 11.2), en jours de Paris. */
+// ⚖️ DÉCOMPTE (décision du dirigeant, 25/11/2026, arts. 641-642 du code de procédure civile) :
+// le jour de la notification (ou de la mise en demeure) NE COMPTE PAS. Préavis de 30 jours notifié
+// le 1er décembre : le contrat prend fin le 31 décembre au soir, la résiliation prend effet le
+// 1er janvier à 00 h (Paris). Mise en demeure de 15 jours le 1er : résiliation possible le 17.
+/** Délai de la mise en demeure restée sans effet (article 11.2), en jours de Paris, jour de la mise en demeure exclu. */
 export const MISE_EN_DEMEURE_JOURS = 15;
 /** Ancienneté maximale de la date de notification saisie (jamais d'effet rétroactif). */
 export const NOTIFICATION_MAX_ANTERIORITE_JOURS = 7;
 
-/** Préavis de l'article 11.1, en jours de Paris. */
+/** Préavis de l'article 11.1, en jours de Paris, jour de la notification exclu. */
 export const DELAI_RESILIATION_11_1_JOURS = 30;
 
 export type InitiativeResiliation = "societe" | "apporteur";
@@ -90,6 +94,11 @@ function minuitParis(jour: string): Date {
   return new Date(Date.UTC(a!, m! - 1, j!, 0));
 }
 
+/** Le premier jour où la résiliation peut intervenir : le délai de `n` jours est ÉCOULÉ, le jour de départ n'étant pas compté. */
+function lendemainDuDelai(jour: string, n: number): string {
+  return plusJours(jour, n + 1);
+}
+
 function plusJours(jour: string, n: number): string {
   const [a, m, j] = jour.split("-").map(Number);
   return new Date(Date.UTC(a!, m! - 1, j! + n)).toISOString().slice(0, 10);
@@ -100,7 +109,7 @@ export type PlanNotification =
 
 /**
  * La date d'effet d'une résiliation, ou un refus. Pur.
- *   · 11.1 : notification + 30 jours de Paris ; jamais plus tôt (une date d'effet plus proche est
+ *   · 11.1 : notification + 30 jours de Paris, jour de la notification exclu (effet le 1er janvier pour une notification du 1er décembre) ; jamais plus tôt (une date d'effet plus proche est
  *     refusée) ; plus tard seulement à la demande écrite de l'apporteur ;
  *   · 11.2 : mise en demeure antérieure et motif obligatoires ; effet immédiat ;
  *   · 12.5 : motif obligatoire ; effet immédiat.
@@ -135,7 +144,9 @@ export function planNotificationResiliation(e: {
         ok: false,
         message: "L'article 11.1 dispense de motiver : ne saisissez pas de motif.",
       };
-    const minimum = minuitParis(plusJours(jourParis(e.notifieeLe), DELAI_RESILIATION_11_1_JOURS));
+    const minimum = minuitParis(
+      lendemainDuDelai(jourParis(e.notifieeLe), DELAI_RESILIATION_11_1_JOURS),
+    );
     if (e.effetDemandeLe) {
       if (!(e.effetDemandeLe.getTime() >= minimum.getTime()))
         return { ok: false, message: "Le préavis de 30 jours ne peut pas être raccourci." };
@@ -153,7 +164,7 @@ export function planNotificationResiliation(e: {
     if (
       !m ||
       Number.isNaN(m.getTime()) ||
-      !(plusJours(jourParis(m), MISE_EN_DEMEURE_JOURS) <= jourParis(e.notifieeLe))
+      !(lendemainDuDelai(jourParis(m), MISE_EN_DEMEURE_JOURS) <= jourParis(e.notifieeLe))
     )
       return {
         ok: false,
@@ -171,17 +182,26 @@ const jourLong = (d: Date) =>
     year: "numeric",
   });
 
+/** Le dernier jour du contrat : la veille de la prise d'effet (effet le 1er janvier → fin le 31 décembre au soir). */
+export function dernierJourDuContrat(effetLe: Date): Date {
+  return new Date(`${plusJours(jourParis(effetLe), -1)}T12:00:00Z`);
+}
+
 /** La résiliation notifiée et pas encore effective, dates formatées ; `null` si aucune ou table absente. */
 export async function lireResiliationEnCours(
   apporteurId: string,
-): Promise<{ notifieeLe: string; effetLe: string } | null> {
+): Promise<{ notifieeLe: string; effetLe: string; dernierJourLe: string } | null> {
   try {
     const r = await prisma.apporteurResiliation.findUnique({
       where: { apporteurId },
       select: { notifieeLe: true, effetLe: true, executeeAt: true },
     });
     return r && !r.executeeAt
-      ? { notifieeLe: jourLong(r.notifieeLe), effetLe: jourLong(r.effetLe) }
+      ? {
+          notifieeLe: jourLong(r.notifieeLe),
+          effetLe: jourLong(r.effetLe),
+          dernierJourLe: jourLong(dernierJourDuContrat(r.effetLe)),
+        }
       : null;
   } catch (err) {
     if (tableAbsente(err)) return null;
@@ -384,6 +404,7 @@ export async function notifierResiliation(e: {
   });
   if (!cree) return { ok: false, message: "Une résiliation est déjà notifiée pour cet apporteur." };
 
+  let emailNotifParti = false;
   try {
     const destinataire = decryptPii(a.email) ?? "";
     if (destinataire) {
@@ -410,7 +431,10 @@ export async function notifierResiliation(e: {
         entityId: e.apporteurId,
         jobId: `resiliation-notif-${e.apporteurId}`,
       });
-      if (r === "envoye") await poserHorodatage(e.apporteurId, { emailNotifEnvoyeAt: maintenant });
+      if (r === "envoye") {
+        emailNotifParti = true;
+        await poserHorodatage(e.apporteurId, { emailNotifEnvoyeAt: maintenant });
+      }
     }
   } catch (err) {
     signalerErreurReseau("résiliation : e-mail de notification", err);
@@ -424,8 +448,7 @@ export async function notifierResiliation(e: {
       signalerErreurReseau("résiliation : prise d'effet immédiate", err);
       return {
         ok: true,
-        message:
-          "Résiliation notifiée et e-mail envoyé ; la prise d'effet a échoué et sera reprise par le passage quotidien. Ne la saisissez pas une seconde fois.",
+        message: `Résiliation notifiée${emailNotifParti ? " et e-mail envoyé" : " (l'e-mail n'est pas parti : vérifiez l'adresse)"} ; la prise d'effet a échoué et sera reprise par le passage quotidien. Ne la saisissez pas une seconde fois.`,
       };
     }
   }

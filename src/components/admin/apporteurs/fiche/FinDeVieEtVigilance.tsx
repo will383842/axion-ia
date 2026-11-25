@@ -146,17 +146,20 @@ export function FinDeVie({
       {signe && resiliationNotifiee ? (
         <p id="resiliation">
           Résiliation notifiée le {resiliationNotifiee.notifieeLe}, effet le{" "}
-          {resiliationNotifiee.effetLe}. Jusqu&apos;à cette date, le contrat reste signé.
+          {resiliationNotifiee.effetLe}. Le contrat reste signé jusqu&apos;à la veille au soir.
         </p>
       ) : signe ? (
         <details id="resiliation">
           <summary className="cursor-pointer font-medium">Résilier le contrat</summary>
           <p className="my-[var(--space-admin-2)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]">
             La résiliation se fait en deux temps : on enregistre la notification écrite, puis le
-            contrat prend fin à la date d&apos;effet (30 jours après la notification en 11.1, tout
-            de suite en 11.2 et 12.5). L&apos;apporteur reçoit un e-mail à chaque temps. À la prise
-            d&apos;effet, les attributions en cours prennent fin ; les commandes signées avant
-            restent couvertes et les commissions acquises sont facturées et virées comme les autres.
+            contrat prend fin à la date d&apos;effet (en 11.1, 30 jours après la notification, le
+            jour de la notification n&apos;étant pas compté : notifiée le 1er décembre, effet le 1er
+            janvier à 00 h ; tout de suite en 11.2 et 12.5, la mise en demeure devant dater de plus
+            de 15 jours, son jour non compté). L&apos;apporteur reçoit un e-mail à chaque temps. À
+            la prise d&apos;effet, les attributions en cours prennent fin ; les commandes signées
+            avant restent couvertes et les commissions acquises sont facturées et virées comme les
+            autres.
           </p>
           <form
             action={resilierApporteurAction}
