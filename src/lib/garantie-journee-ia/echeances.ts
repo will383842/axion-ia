@@ -31,11 +31,17 @@ export interface Echeance {
   libelle: string;
   /** Porté par l'échéance « fin_demande » : demande reçue après la fin du délai (affichage seulement). */
   demandeHorsDelai?: boolean;
+  /**
+   * Porté par l'échéance « reponse » d'une demande hors délai : ce n'est pas une obligation
+   * datée (pas d'acceptation tacite), le dirigeant tranche au cas par cas ; `date` n'est qu'indicative.
+   */
+  aTrancher?: boolean;
 }
 
 /**
- * Demande reçue après la fin du délai de demande (remise du rapport + 30 jours). Indicateur
- * d'affichage : il ne modifie aucune échéance, la règle applicable reste à trancher.
+ * Demande reçue après la fin du délai de demande (remise du rapport + 30 jours). Décision du
+ * dirigeant (25/11/2026) : elle se traite au cas par cas (rembourser, refuser ou offrir un avoir),
+ * sans acceptation tacite ni virement automatique.
  */
 export function demandeHorsDelai(d: DonneesGarantie): boolean {
   if (!d.rapportRemisLe || !d.demandeRecueLe) return false;
@@ -51,9 +57,10 @@ function echeanceReponse(d: DonneesGarantie): string | null {
  * Demande réputée acceptée (art. 47.10 f) : demande reçue et aucune réponse dans le délai.
  * Sans décision datée, l'échéance de réponse doit être dépassée (strictement) à `aujourdhui` ;
  * avec une décision datée, elle doit être postérieure à l'échéance (réponse tardive).
- * État CALCULÉ, jamais écrit en base.
+ * Toujours faux pour une demande hors délai (cas par cas). État CALCULÉ, jamais écrit en base.
  */
 export function estReputeeAcceptee(d: DonneesGarantie, aujourdhui: string): boolean {
+  if (demandeHorsDelai(d)) return false;
   const limite = echeanceReponse(d);
   return limite !== null && (d.decisionLe ? d.decisionLe > limite : aujourdhui > limite);
 }
@@ -81,17 +88,30 @@ export function calculerEcheances(d: DonneesGarantie, aujourdhui?: string): Eche
     });
   }
   const reponse = echeanceReponse(d);
+  const horsDelai = demandeHorsDelai(d);
   if (reponse) {
-    r.push({
-      type: "reponse",
-      date: reponse,
-      faite: Boolean(d.decisionLe && d.decisionLe <= reponse),
-      libelle: "Réponse écrite d'Axion-IA",
-    });
+    r.push(
+      horsDelai
+        ? {
+            type: "reponse",
+            date: reponse,
+            faite: Boolean(d.decisionLe),
+            libelle: "Réponse d'Axion-IA : à trancher (demande hors délai, cas par cas)",
+            aTrancher: true,
+          }
+        : {
+            type: "reponse",
+            date: reponse,
+            faite: Boolean(d.decisionLe && d.decisionLe <= reponse),
+            libelle: "Réponse écrite d'Axion-IA",
+          },
+    );
   }
   let virement: string | null = null;
   // Réponse absente ou tardive : acceptation tacite, virement = échéance de réponse + 30 j,
   // quelle que soit la décision. Une réponse tardive suffit, même sans `aujourdhui`.
+  // Hors délai : jamais d'acceptation tacite (estReputeeAcceptee rend faux), virement seulement
+  // si le dirigeant a décidé de rembourser.
   if (reponse && estReputeeAcceptee(d, aujourdhui ?? reponse)) {
     virement = ajouterJours(reponse, DELAI_VIREMENT_JOURS);
   } else if (d.decision === "remboursement" && d.decisionLe) {
