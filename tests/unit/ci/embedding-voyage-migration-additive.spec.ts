@@ -13,7 +13,7 @@ const SQL_BRUT = readFileSync(
     process.cwd(),
     "prisma",
     "migrations",
-    "20261125130000_add_article_embedding_voyage",
+    "20261125140000_add_article_embedding_voyage",
     "migration.sql",
   ),
   "utf8",
@@ -27,6 +27,10 @@ describe("migration add_article_embedding_voyage : additive", () => {
     expect(sql).toMatch(/ADD COLUMN IF NOT EXISTS "embedding_voyage" vector\(1024\)\s*;/);
     expect(sql).not.toMatch(/NOT NULL/i);
     expect(sql).not.toMatch(/DEFAULT/i);
+  });
+
+  it("pose un lock_timeout de 5 s en tête", () => {
+    expect(sql.trimStart()).toMatch(/^SET lock_timeout = '5s';/);
   });
 
   it("indexe en HNSW cosine", () => {

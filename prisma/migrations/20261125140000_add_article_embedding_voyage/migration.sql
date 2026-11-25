@@ -1,3 +1,5 @@
+SET lock_timeout = '5s';
+
 -- PR4 — Embeddings Voyage AI (voyage-3, 1024 dim) pour la détection des doublons
 -- et la voix de marque, en parallèle de la colonne OpenAI existante.
 --
