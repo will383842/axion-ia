@@ -1,6 +1,9 @@
 import { describe, expect, it } from "vitest";
 
-import { COPY_RESILIATION_NOTIFIEE } from "../apporteur-resiliation-notifiee";
+import {
+  COPY_RESILIATION_NOTIFIEE,
+  validerChargeResiliation,
+} from "../apporteur-resiliation-notifiee";
 import { renderEmailTemplate } from "../index";
 
 const INTERDITS = ["reproche", "objectif", "relance", "n'oubliez pas"];
@@ -64,6 +67,40 @@ describe("apporteur-resiliation-notifiee", () => {
   it("salue par le prénom seul", async () => {
     const r = await rendu({ fondement: "11.1-societe", prenom: "Claire" });
     expect(r.t).toContain("Bonjour Claire,");
+  });
+});
+
+describe("charge incomplète ou 12.5", () => {
+  it("fondement inconnu : jamais de préavis ni de date, phrase neutre", async () => {
+    const r = await rendu({ fondement: "11.3" });
+    expect(r.t).toContain("la fin de votre contrat");
+    expect(r.t).not.toContain("préavis");
+    expect(r.t).not.toContain("prendra effet");
+  });
+
+  it("validerChargeResiliation lève sur fondement inconnu ou date d'effet absente", () => {
+    expect(() => validerChargeResiliation({ ...base, fondement: "11.3" })).toThrow();
+    expect(() => validerChargeResiliation({ prenom: "Claire" })).toThrow();
+    expect(() => validerChargeResiliation({ ...base, fondement: "12.5", effetLe: "" })).toThrow();
+    expect(() => validerChargeResiliation({ ...base, fondement: "11.2" })).not.toThrow();
+  });
+
+  it("11.1 Société sans date d'effet : ne renvoie pas à « notre notification »", async () => {
+    const r = await rendu({ fondement: "11.1-societe", effetLe: "" });
+    expect(r.t).not.toContain("notre notification");
+  });
+
+  it("12.5 : « Cause constatée », pas « décision », versement selon l'article 12.5", async () => {
+    const r = await rendu({ fondement: "12.5", motif: "Décès." });
+    expect(r.t).toContain("Cause constatée : Décès.");
+    expect(r.t).not.toContain("Motif de cette décision");
+    expect(r.t).not.toContain("versées normalement");
+    expect(r.t).toContain("ayants droit");
+  });
+
+  it("textes : « attribuées ou réservées » (article 12.3)", async () => {
+    const r = await rendu({ fondement: "11.2", motif: "x" });
+    expect(r.t).toContain("attribuées ou réservées");
   });
 });
 

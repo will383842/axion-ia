@@ -218,12 +218,15 @@ export const PAYLOAD_EXEMPLE: Readonly<Record<string, unknown>> = {
   unsubscribeToken: "jeton-de-demonstration",
   version: "v2",
   ville: "Grenoble",
-  // Chantier QNC, L09 — réclamations (accusé et réponse signée).
   // Lot L1a — résiliation du contrat d'apporteur (gabarits sans émetteur).
   fondement: "11.2",
   notifieeLe: "25 novembre 2026",
   effetLe: "25 décembre 2026",
   miseEnDemeureLe: "5 novembre 2026",
+  motif: "Motif d'exemple, saisi par l'administrateur.",
+  argentEnJeu: true,
+  lien: "https://exemple.invalid/lien-de-demonstration",
+  // Chantier QNC, L09 — réclamations (accusé et réponse signée).
   recueLe: "16 octobre 2026",
   reponseAvant: "6 novembre 2026",
   reponse:

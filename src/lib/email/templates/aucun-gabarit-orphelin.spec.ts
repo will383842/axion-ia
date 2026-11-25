@@ -123,7 +123,7 @@ describe("registre des gabarits — les dormants sont vraiment dormants", () => 
     // retirées avec — classer un gabarit n'est plus un cas particulier pour eux.)
     const EXEMPTIONS: Readonly<Record<string, ReadonlyArray<string>>> = {
       "src/server/newsletter/retention.ts": ["newsletter-confirm-optin"],
-      // Lot L1a : les deux gabarits de résiliation sont NOMMÉS dans les listes d'`envois.ts` et
+      // Lot L1a : les deux gabarits de résiliation sont NOMMÉS dans les listes d'`envois.ts`, `outbox-policy.ts` et
       // `retrait.ts`, sans émetteur ; L1b les branche et retire ces deux exemptions.
       "src/features/apporteurs-reseau/envois.ts": [
         "apporteur-resiliation-notifiee",

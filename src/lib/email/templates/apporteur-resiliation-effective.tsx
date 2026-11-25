@@ -33,7 +33,7 @@ export const COPY_RESILIATION_EFFECTIVE = {
       ? `La résiliation de votre contrat d'apporteur d'affaires, qui vous a été notifiée, prend effet ce jour (${d}).`
       : "La résiliation de votre contrat d'apporteur d'affaires, qui vous a été notifiée, prend effet ce jour.",
   commissions:
-    "Les commandes signées avant cette date par les entreprises qui vous sont attribuées restent commissionnées (article 12.3), et vos commissions acquises vous sont facturées et versées normalement (article 12.2).",
+    "Les commandes signées avant cette date par les entreprises qui vous sont attribuées ou réservées restent commissionnées (article 12.3), et vos commissions acquises vous sont facturées et versées normalement (article 12.2).",
   espace:
     "Votre espace reste accessible pour consulter vos commissions et, si nous vous le demandons, déposer l'attestation de vigilance correspondante.",
   cta: "Ouvrir mon espace",
