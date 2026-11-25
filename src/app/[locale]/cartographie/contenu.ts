@@ -8,7 +8,12 @@ import {
   DATE_MISE_A_JOUR_CARTOGRAPHIE,
   DEFINITION_CARTOGRAPHIE,
 } from "@/content/cartographie-date";
-import { DEROULE_JOURNEE_IA, RAPPORT_COMPLET, remplacerJetons } from "@/content/journee-ia-commun";
+import {
+  DEROULE_JOURNEE_IA,
+  DELAI_RAPPORT_JOURS_OUVRES,
+  RAPPORT_COMPLET,
+  remplacerJetons,
+} from "@/content/journee-ia-commun";
 
 import { CONTENU as ACCUEIL } from "../_accueil/contenu";
 import { CONTENU as JOURNEE } from "../journee-ia/contenu";
@@ -56,7 +61,7 @@ export const TEXTES = {
         texte: "La cartographie, service par service. " + MATIN,
       },
       { moment: "17 h 30", texte: `${PRIORITES}.` },
-      { moment: "Sous 3 jours ouvrés", texte: "Le rapport complet." },
+      { moment: `Sous ${DELAI_RAPPORT_JOURS_OUVRES} jours ouvrés`, texte: "Le rapport complet." },
     ],
   },
   recu: {

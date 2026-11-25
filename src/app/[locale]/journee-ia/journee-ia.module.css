@@ -1,5 +1,5 @@
 /* La Journée IA — seulement ce que Tailwind dit mal : la carte des gains (barres et ruban de la
-   journée), la frise du déroulé (ligne du temps), le « ×3 » en filigrane de la garantie, et les
+   journée), la frise du déroulé (ligne du temps), et les
    nuances `color-mix` du design v4 (ombres, halo du héros). Toutes les couleurs sont des jetons
    de `globals.css`. Les largeurs des barres sont posées en style inline par le serveur : la carte
    est lisible sans JS. Seule animation : la pousse des barres, absente sous
@@ -440,29 +440,6 @@
 
   .et {
     font-size: 18px;
-  }
-}
-
-/* ── Garantie : « ×3 » en filigrane ────────────────────────────────────────── */
-
-.x3 {
-  position: absolute;
-  top: 10px;
-  right: 12px;
-  font-size: 64px;
-  font-weight: 800;
-  line-height: 1;
-  color: var(--color-terracotta-on-mocha);
-  opacity: 0.1;
-  pointer-events: none;
-}
-
-@media (min-width: 480px) {
-  .x3 {
-    top: 4px;
-    right: 18px;
-    font-size: clamp(88px, 9vw, 128px);
-    opacity: 0.13;
   }
 }
 

@@ -1,7 +1,7 @@
 // La Journée IA — données structurées de la landing, en une fonction pure (testable).
 //
 // Trois nœuds : le Service (le même octet pour octet que sur l'accueil, construit une seule fois
-// dans `@/lib/seo/journee-ia-service`), la WebPage, et la FAQPage (les 13 questions VISIBLES,
+// dans `@/lib/seo/journee-ia-service`), la WebPage, et la FAQPage (les 14 questions VISIBLES,
 // mot pour mot). Le BreadcrumbList est émis par `Breadcrumbs`.
 //
 // Aucun nœud `Organization`, `WebSite` ni `Person` n'est émis ici : ils restent au layout
