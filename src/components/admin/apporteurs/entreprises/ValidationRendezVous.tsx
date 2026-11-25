@@ -179,7 +179,7 @@ export function SaisirRendezVous({
         </select>
       </label>
       <label className="flex flex-col gap-1">
-        A eu lieu le (annulé par Axion IA : jour de l&apos;annulation)
+        A eu lieu le (annulé par Axion IA : date à laquelle il était fixé)
         <input
           type="datetime-local"
           name="tenuLe"
@@ -193,8 +193,8 @@ export function SaisirRendezVous({
         <input type="datetime-local" name="prisLe" required className="admin-input" />
       </label>
       <p className="basis-full text-[color:var(--color-admin-fg-muted)]">
-        Annulé par Axion IA : indiquez le jour où Axion IA a annulé, pas la date prévue. Le
-        rendez-vous est réputé tenu ce jour-là ; une date à venir est refusée.
+        Annulé par Axion IA : indiquez la date à laquelle le rendez-vous était fixé. Il est réputé
+        avoir eu lieu à cette date ; une date à venir est refusée (il n&apos;a pas encore eu lieu).
       </p>
       {demande ? (
         <>

@@ -31,7 +31,7 @@ const { bd, tx } = vi.hoisted(() => {
       if (v === null) return l[k] == null;
       if (v && typeof v === "object" && !(v instanceof Date)) {
         if ("in" in v) return v.in.includes(l[k]);
-        if ("not" in v) return l[k] !== v.not;
+        if ("not" in v) return v.not === null ? l[k] != null : l[k] !== v.not;
         return true;
       }
       return l[k] === v;
@@ -793,5 +793,86 @@ describe("revue de sécurité du lot 6", () => {
     );
     expect(r.ok).toBe(true);
     expect(bd.journal[0]!["changes"]).toMatchObject({ canal: "annule_par_axion" });
+  });
+});
+
+describe("30 jours après la réservation : personne d'autre ne peut déclarer (art. 3.2 / 3.5)", () => {
+  function ancienneSansRendezVous() {
+    // Saisie le 1er sept., terme le 31 oct. (22:59 UTC) ; aucune proposition.
+    entreprise("pOld", A2, { recueAt: new Date("2026-09-01T10:00:00Z") });
+    bd.reservations[0]!["reserveeJusquAt"] = new Date("2026-10-31T22:59:59.999Z");
+  }
+
+  it("une déclaration saisie dans les 30 jours qui suivent le terme de l'ancienne ne la prive pas", async () => {
+    ancienneSansRendezVous();
+    entreprise("p1", A1); // saisie le 1er nov. : dans les 30 jours après le 31 oct.
+    const r = await validerParRendezVous(saisie("p1"), MAINTENANT);
+    expect(r.ok).toBe(false);
+    if (!r.ok) {
+      expect(r.message).toMatch(/saisie le 1 sept\.?, 12:00/);
+      expect(r.message).toMatch(/30 jours/);
+    }
+    expect(bd.presentations.find((p) => p["id"] === "p1")!["statut"]).toBe("reservee");
+    expect(bd.annonces).toHaveLength(0);
+  });
+
+  it("saisie après les 30 jours : l'ancienne ne retient plus", async () => {
+    ancienneSansRendezVous();
+    const saisieP1 = new Date("2026-12-05T10:00:00Z"); // > 30 nov.
+    entreprise("p1", A1, { recueAt: saisieP1 });
+    bd.events[0]!["startTime"] = new Date("2026-12-10T10:00:00Z");
+    const r = await validerParRendezVous(
+      saisie("p1", {
+        prisAt: new Date("2026-12-06T10:00:00Z"),
+        tenuAt: new Date("2026-12-10T10:00:00Z"),
+      }),
+      new Date("2026-12-20T10:00:00Z"),
+    );
+    expect(r.ok).toBe(true);
+  });
+
+  it("l'ancienne dont la proposition a été écartée par le dirigeant est libérée", async () => {
+    ancienneSansRendezVous();
+    bd.propositions.push({
+      id: "prOld",
+      presentationId: "pOld",
+      rendezVousCle: "calendly:evOld",
+      prisAt: new Date("2026-10-20T10:00:00Z"),
+      ecarteeAt: new Date("2026-11-19T10:00:00Z"),
+      retenueAt: null,
+    });
+    entreprise("p1", A1);
+    expect((await validerParRendezVous(saisie("p1"), MAINTENANT)).ok).toBe(true);
+  });
+});
+
+describe("journal et messages (tour d'audit)", () => {
+  it("apporteurRetire du journal vaut false quand le seul avertissement concerne une déclaration plus récente", async () => {
+    entreprise("p1", A1);
+    entreprise("p2", A2, { recueAt: new Date("2026-11-03T10:00:00Z") });
+    const r = await validerParRendezVous(saisie("p1"), MAINTENANT);
+    expect(r.ok).toBe(true);
+    if (r.ok) expect(r.avertissements.length).toBeGreaterThan(0);
+    expect(bd.journal[0]!["changes"]).toMatchObject({ apporteurRetire: false });
+  });
+
+  it("« Ce n'est pas lui » est inscrit au journal (identifiants seuls)", async () => {
+    bd.propositions.push({ id: "pr9", presentationId: "p1", ecarteeAt: null, retenueAt: null });
+    expect((await ecarterProposition("pr9", "admin-1", MAINTENANT)).ok).toBe(true);
+    expect(bd.journal).toHaveLength(1);
+    expect(bd.journal[0]).toMatchObject({
+      adminUserId: "admin-1",
+      action: "presentation.proposition_ecartee",
+      targetId: "pr9",
+    });
+  });
+
+  it("le message du premier rendez-vous dit d'écarter la proposition plus ancienne non recevable", async () => {
+    entreprise("p1", A1);
+    evenement("ev0", { startTime: new Date("2026-11-08T10:00:00Z") });
+    bd.propositions.push({ presentationId: "p1", rendezVousCle: "calendly:ev0", ecarteeAt: null });
+    const r = await validerParRendezVous(saisie("p1"), MAINTENANT);
+    expect(r.ok).toBe(false);
+    if (!r.ok) expect(r.message).toMatch(/écartez-le d.abord/);
   });
 });

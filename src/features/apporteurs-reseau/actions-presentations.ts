@@ -387,7 +387,7 @@ export async function ecarterPropositionAction(
 
 /**
  * Saisie MANUELLE par le dirigeant d'un rendez-vous téléphonique, sur place, ou « Annulé par
- * Axion IA » (réputé tenu, au jour de l'annulation). Aucune réservation Calendly ne le porte.
+ * Axion IA » (réputé tenu à la date à laquelle il était FIXÉ : contrat 2.8, art. 3.2). Aucune réservation Calendly ne le porte.
  * La date de PRISE (« pris le ») est OBLIGATOIRE : jamais réputée prise le jour où il a eu lieu.
  * Un rendez-vous dans le futur est refusé par la règle. Confirmation en deux temps, vérifiée ici.
  */

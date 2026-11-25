@@ -96,7 +96,7 @@ export function rendezVousRecevable(e: {
   prisAt: Date;
   tenuAt: Date | null;
   /**
-   * Date à laquelle AXION IA a annulé ce rendez-vous : il est alors RÉPUTÉ TENU à cette date (Axion
+   * Date à laquelle AXION IA a annulé ce rendez-vous : il est alors RÉPUTÉ TENU à la date à laquelle il était FIXÉ (contrat 2.8, art. 3.2), et cette date doit être passée (Axion
    * ne peut pas empêcher une validation en annulant). Une annulation, une absence ou un report
    * par l'ENTREPRISE ne se transmet JAMAIS ici : il ne valide pas. Le silence d'Axion non plus.
    */

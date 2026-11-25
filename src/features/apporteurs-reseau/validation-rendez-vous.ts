@@ -100,7 +100,7 @@ export const MESSAGE_RDV_INTROUVABLE =
   "Le rendez-vous désigné est introuvable à la source : rien n'est validé.";
 
 export const MESSAGE_PREMIER_RDV =
-  "Un rendez-vous plus ancien, déjà tenu, est proposé pour cette présentation : c'est le PREMIER rendez-vous tenu qui valide (il fixe le départ des 6 mois). Validez celui-là, ou écartez-le s'il ne convient pas.";
+  "Un rendez-vous plus ancien, déjà tenu, est proposé pour cette présentation : c'est le PREMIER rendez-vous tenu qui valide (il fixe le départ des 6 mois). Validez celui-là. S'il n'est pas recevable (pris avant la saisie de cette entreprise, par exemple), écartez-le d'abord, puis validez celui-ci.";
 
 /**
  * Une déclaration plus ancienne, d'un autre apporteur, a un rendez-vous pris pendant sa réservation
@@ -114,6 +114,21 @@ export function messageAncienRdvAnnule(saisies: Date[]): string {
     .map((d) => `saisie le ${heureConsole(d)}`)
     .join(" ; ");
   return `Rien n'est validé. Une déclaration plus ancienne de cette entreprise, faite par un autre apporteur (${dates}), a un rendez-vous pris pendant sa réservation puis annulé, reporté ou manqué : elle passe en premier et attend votre décision. Décidez d'abord pour CETTE déclaration-là (ligne marquée annulée, plus haut) : si Axion IA a annulé ce rendez-vous, saisissez-le pour elle (« Annulé par Axion IA »). La proposition sur laquelle vous venez de cliquer n'est pas en cause.`;
+}
+
+/**
+ * Art. 3.2 / 3.5 : pendant les 30 jours qui suivent le terme de la réservation provisoire, personne
+ * d'autre ne peut déclarer l'entreprise. Une déclaration plus récente, saisie dans cette fenêtre,
+ * ne prive donc jamais la plus ancienne (encore « en attente ») de son entreprise.
+ */
+export const JOURS_APRES_RESERVATION = 30;
+
+export function messageAncienneEnGrace(saisies: Date[]): string {
+  const dates = [...saisies]
+    .sort((x, y) => x.getTime() - y.getTime())
+    .map((d) => `saisie le ${heureConsole(d)}`)
+    .join(" ; ");
+  return `Rien n'est validé. Une déclaration plus ancienne de cette entreprise, faite par un autre apporteur (${dates}), est encore en attente : pendant les ${JOURS_APRES_RESERVATION} jours qui suivent la fin de sa réservation, personne d'autre ne peut déclarer cette entreprise. Elle passe en premier ; décidez d'abord pour elle.`;
 }
 
 const MESSAGE_SANS_PROPOSITION = "Rendez-vous sans proposition : rien n'est validé.";
@@ -291,7 +306,7 @@ export async function validerParRendezVous(
         });
         if (autres.length > 0) {
           const ids = [p.id, ...autres.map((a) => a.id)];
-          const [etabs, lignes, propositionsAutres] = await Promise.all([
+          const [etabs, lignes, propositionsAutres, ecarteesAutres] = await Promise.all([
             lireEtablissements(ids, tx),
             tx.presentationReservation.findMany({
               where: { presentationId: { in: autres.map((a) => a.id) } },
@@ -312,7 +327,16 @@ export async function validerParRendezVous(
               },
               select: { presentationId: true, rendezVousCle: true, prisAt: true },
             }),
+            // Une proposition ÉCARTÉE par le dirigeant libère l'ancienne déclaration (geste humain).
+            tx.propositionRendezVousPresentation.findMany({
+              where: {
+                presentationId: { in: autres.map((a) => a.id) },
+                ecarteeAt: { not: null },
+              },
+              select: { presentationId: true },
+            }),
           ]);
+          const avecEcartee = new Set(ecarteesAutres.map((x) => x.presentationId));
           const reservees = new Map(lignes.map((l) => [l.presentationId, l]));
           const prisEnAttente = new Map<string, Date>();
           const parId = new Map(autres.map((a) => [a.id, a]));
@@ -372,6 +396,22 @@ export async function validerParRendezVous(
           );
           if (anciennesAnnulees.length > 0)
             throw new Refus(messageAncienRdvAnnule(anciennesAnnulees.map((a) => a.recueAt)));
+          // Plus ancienne, encore « réservée », même périmètre, SANS proposition écartée : la
+          // déclaration en cours (p) est saisie dans les 30 jours qui suivent son terme, fenêtre où
+          // personne d'autre ne peut déclarer l'entreprise : l'ancienne passe en premier.
+          const anciennesEnGrace = autres.filter((a) => {
+            if (a.statut !== "reservee" || a.recueAt.getTime() >= p.recueAt.getTime()) return false;
+            if (!memePerimetre(miennePerimetre, etabs.get(a.id)!) || avecEcartee.has(a.id))
+              return false;
+            const r = reservees.get(a.id);
+            if (!r || r.valideeAt) return false;
+            return (
+              p.recueAt.getTime() <=
+              r.reserveeJusquAt.getTime() + JOURS_APRES_RESERVATION * 86_400_000
+            );
+          });
+          if (anciennesEnGrace.length > 0)
+            throw new Refus(messageAncienneEnGrace(anciennesEnGrace.map((a) => a.recueAt)));
           // Une déclaration plus récente et encore en attente ne bloque pas, mais elle attend :
           // on le dit, et on n'écrit à personne (aucun e-mail ne part seul).
           for (const a of autres)
@@ -432,7 +472,7 @@ export async function validerParRendezVous(
               canal: e.canal ?? null,
               prisAt: prisAt.toISOString(),
               tenuAt: tenuAt.toISOString(),
-              apporteurRetire: avertissements.length > 0,
+              apporteurRetire: retire,
             },
           },
         });
@@ -479,11 +519,24 @@ export async function ecarterProposition(
     // Valider et écarter écrivent la MÊME ligne sous condition (`ecarteeAt`/`retenueAt` vides),
     // chacune dans une transaction Serializable : l'une des deux échoue (count 0 ou P2034).
     const r = await prisma.$transaction(
-      (tx) =>
-        tx.propositionRendezVousPresentation.updateMany({
+      async (tx) => {
+        const ecartee = await tx.propositionRendezVousPresentation.updateMany({
           where: { id, ecarteeAt: null, retenueAt: null },
           data: { ecarteeAt: maintenant, ecarteeParId: acteurId },
-        }),
+        });
+        // Trace du geste (identifiants seuls) : écarter peut libérer l'entreprise.
+        if (ecartee.count === 1)
+          await tx.activityLog.create({
+            data: {
+              adminUserId: acteurId,
+              action: "presentation.proposition_ecartee",
+              targetType: "proposition_rendez_vous_presentation",
+              targetId: id,
+              changes: { ecarteeAt: maintenant.toISOString() },
+            },
+          });
+        return ecartee;
+      },
       { isolationLevel: "Serializable", timeout: 15_000 },
     );
     return r.count === 1
