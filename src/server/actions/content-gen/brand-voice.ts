@@ -80,8 +80,6 @@ export async function recalibrateBrandVoice(
   embeddingDimension: number;
   articlesUsed: number;
 }> {
-  // Fichier "use server" : l'argument vient du client, on ne l'interpole jamais sans le valider.
-  const fournisseurValide = z.enum(["openai", "voyage"]).optional().parse(providerExplicite);
   const session = await requireAdminWriteRateLimited("recalibrateBrandVoice", {
     limit: 10,
     windowSec: 60,
@@ -96,6 +94,8 @@ export async function recalibrateBrandVoice(
 
   // PR4 — colonne et clé de référence du fournisseur actif (jamais mélangées :
   // 1536 dim OpenAI vs 1024 dim Voyage). Noms issus de constantes, pas d'entrée externe.
+  // Fichier "use server" : l'argument vient du client, on ne l'interpole jamais sans le valider.
+  const fournisseurValide = z.enum(["openai", "voyage"]).optional().parse(providerExplicite);
   const provider: EmbeddingProvider = fournisseurValide ?? getEmbeddingProvider();
   const col = ARTICLE_EMBEDDING_COLUMN[provider];
   const referenceKey = BRAND_VOICE_REFERENCE_KEY[provider];

@@ -68,11 +68,10 @@ describe("persistArticleEmbedding — fournisseur voyage", () => {
     const exec = vi.fn(async () => 1);
     const r = await persistArticleEmbedding({ $executeRaw: exec } as never, input);
     expect(r.persisted).toBe(false);
-    expect(
-      exec.mock.calls.every((c) =>
-        (c as unknown as [TemplateStringsArray])[0].join("?").includes("= NULL"),
-      ),
-    ).toBe(true);
+    expect(exec).toHaveBeenCalledTimes(1);
+    expect((exec.mock.calls[0] as unknown as [TemplateStringsArray])[0].join("?")).toContain(
+      "= NULL",
+    );
   });
 
   it("panne Voyage : remet embedding_voyage à NULL (pas de vecteur périmé)", async () => {
@@ -96,11 +95,10 @@ describe("persistArticleEmbedding — fournisseur voyage", () => {
     const r = await persistArticleEmbedding({ $executeRaw: exec } as never, input);
     expect(r.persisted).toBe(false);
     expect(fetchMock).not.toHaveBeenCalled();
-    expect(
-      exec.mock.calls.every((c) =>
-        (c as unknown as [TemplateStringsArray])[0].join("?").includes("= NULL"),
-      ),
-    ).toBe(true);
+    expect(exec).toHaveBeenCalledTimes(1);
+    expect((exec.mock.calls[0] as unknown as [TemplateStringsArray])[0].join("?")).toContain(
+      "= NULL",
+    );
   });
 
   it("plafond quotidien de tokens atteint : aucun appel Voyage, rien écrit", async () => {
@@ -112,11 +110,10 @@ describe("persistArticleEmbedding — fournisseur voyage", () => {
     const r = await persistArticleEmbedding({ $executeRaw: exec } as never, input);
     expect(r.persisted).toBe(false);
     expect(fetchMock).not.toHaveBeenCalled();
-    expect(
-      exec.mock.calls.every((c) =>
-        (c as unknown as [TemplateStringsArray])[0].join("?").includes("= NULL"),
-      ),
-    ).toBe(true);
+    expect(exec).toHaveBeenCalledTimes(1);
+    expect((exec.mock.calls[0] as unknown as [TemplateStringsArray])[0].join("?")).toContain(
+      "= NULL",
+    );
   });
 
   it("clé absente : no-op, aucun appel réseau, aucune écriture", async () => {
@@ -128,11 +125,7 @@ describe("persistArticleEmbedding — fournisseur voyage", () => {
     const r = await persistArticleEmbedding({ $executeRaw: exec } as never, input);
     expect(r).toEqual({ persisted: false, reason: "disabled" });
     expect(fetchMock).not.toHaveBeenCalled();
-    expect(
-      exec.mock.calls.every((c) =>
-        (c as unknown as [TemplateStringsArray])[0].join("?").includes("= NULL"),
-      ),
-    ).toBe(true);
+    expect(exec).not.toHaveBeenCalled();
   });
 
   it("écriture en base en échec : ne lève pas", async () => {

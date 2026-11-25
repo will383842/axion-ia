@@ -5,6 +5,7 @@ import {
   getDedupThresholds,
   getDriftThresholds,
   getEmbeddingProvider,
+  __resetAvertissementEmbedding,
 } from "../embedding-provider";
 
 afterEach(() => {
@@ -26,11 +27,12 @@ describe("sélection du fournisseur", () => {
   });
   it("voyage sans clé → openai, avec un avertissement sans clé", () => {
     const warn = vi.spyOn(console, "warn").mockImplementation(() => undefined);
+    __resetAvertissementEmbedding();
     process.env["CONTENT_EMBEDDING_PROVIDER"] = "voyage";
     expect(getEmbeddingProvider()).toBe("openai");
     process.env["VOYAGE_API_KEY"] = "   ";
     expect(getEmbeddingProvider()).toBe("openai");
-    expect(warn).toHaveBeenCalled();
+    expect(warn).toHaveBeenCalledTimes(1);
   });
   it("voyage quand demandé avec une clé (casse et espaces tolérés)", () => {
     process.env["VOYAGE_API_KEY"] = "cle-de-test";

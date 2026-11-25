@@ -31,6 +31,11 @@ export const BRAND_VOICE_REFERENCE_KEY = {
 /** Avertissement émis une seule fois par processus. */
 let avertiSansCle = false;
 
+/** Test uniquement. */
+export function __resetAvertissementEmbedding(): void {
+  avertiSansCle = false;
+}
+
 export function getEmbeddingProvider(): EmbeddingProvider {
   if (process.env["CONTENT_EMBEDDING_PROVIDER"]?.trim().toLowerCase() !== "voyage") {
     return "openai";

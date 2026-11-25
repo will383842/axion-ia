@@ -117,6 +117,7 @@ export async function persistArticleEmbedding(
 
     if (provider === "voyage") {
       if (result.embedding.length !== VOYAGE_EMBEDDING_DIMENSION) {
+        await invaliderEmbeddingVoyage(prisma, input.articleId);
         return { persisted: false, reason: "no_embedding", dimensions: result.embedding.length };
       }
       const voyageLiteral = `[${result.embedding.join(",")}]`;
@@ -163,6 +164,9 @@ export async function persistArticleEmbedding(
         error: err instanceof Error ? err.message : String(err),
       }),
     );
+    if (getEmbeddingProvider() === "voyage") {
+      await invaliderEmbeddingVoyage(prisma, input.articleId);
+    }
     return { persisted: false, reason: "exception" };
   }
 }

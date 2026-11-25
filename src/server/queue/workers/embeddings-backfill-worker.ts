@@ -305,6 +305,10 @@ export async function rattraperEmbeddingsVoyage(): Promise<VoyageBackfillStats> 
             stats.errors++;
             stats.stoppedReason = seul.reason;
             return stats;
+          } else if (!seul.ok && (seul.status === 401 || seul.status === 403)) {
+            stats.errors++;
+            stats.stoppedReason = "auth";
+            return stats;
           } else {
             stats.errors++;
             console.error(

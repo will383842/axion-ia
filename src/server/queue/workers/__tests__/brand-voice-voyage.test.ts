@@ -108,6 +108,11 @@ describe("recalibrage", () => {
     expect(arg.where.key).toBe("brand_voice_reference_embedding_voyage");
   });
 
+  it("fournisseur invalide : rejeté avant toute requête SQL", async () => {
+    await expect(recalibrateBrandVoice([ID], "embedding; DROP" as never)).rejects.toThrow();
+    expect(queryRawUnsafeMock).not.toHaveBeenCalled();
+  });
+
   it("openai : clé historique inchangée, jamais la clé Voyage", async () => {
     queryRawUnsafeMock.mockResolvedValue([{ id: ID, embedding_arr: [3, 4] }]);
     configFindUniqueMock.mockResolvedValue(null);
