@@ -179,7 +179,12 @@ describe("le jeu de données d'exemple couvre tous les gabarits", () => {
     // RELEVÉ À 90 (2026-11-25) : `entreprise-information-coordonnees` et
     // `apporteur-presentation-recue-rendez-vous` (apporteurs, lot 7a) : deux fichiers NEUFS, NON
     // BRANCHÉS (absents du registre et du catalogue). Champs tous facultatifs.
-    expect(tous.length).toBe(90);
+    // RELEVÉ À 92 (2026-11-25) : `apporteur-resiliation-notifiee` et `apporteur-resiliation-effective`
+    // (lot L1a, sans émetteur). Champs tous facultatifs ; `fondement`, `notifieeLe`, `effetLe`
+    // et `miseEnDemeureLe` ont leur valeur d'exemple.
+    // RELEVÉ À 93 : `apporteur-presentation-non-retenue`, l'e-mail à l'apporteur « entreprise non
+    // retenue ». Champs tous facultatifs.
+    expect(tous.length).toBe(93);
   });
 
   it.each(tous.map((g) => g.nom))("%s : tous ses champs requis ont une valeur d'exemple", (nom) => {

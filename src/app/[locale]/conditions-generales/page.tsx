@@ -49,6 +49,9 @@ export const revalidate = 3600;
 //
 // 2026-11-21 : articles 6.5 et 12.1 : l'acompte n'est exigé que s'il est prévu au devis (défaut : aucun).
 // Le texte du 19 novembre 2026 est archivé à l'identique (@/content/cgv-archives).
+//
+// 2026-11-26 : articles 16.2, 47.5, 47.6, 47.7, 47.10 et 48.3 (garantie de remboursement de la
+// Journée IA, seuil de déduction, coût horaire plancher). Le texte du 21/11 est archivé (@/content/cgv-archives).
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;

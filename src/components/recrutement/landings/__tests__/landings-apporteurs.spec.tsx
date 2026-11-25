@@ -12,7 +12,6 @@ import type { ImgHTMLAttributes } from "react";
 import { describe, expect, it, vi } from "vitest";
 
 vi.mock("next/image", () => ({
-  // eslint-disable-next-line @next/next/no-img-element
   default: ({ src, alt }: ImgHTMLAttributes<HTMLImageElement>) => (
     <img src={String(src)} alt={alt} />
   ),
@@ -80,8 +79,18 @@ describe("une seule offre, une seule commission", () => {
     expect(t).toContain(texte(p.commission));
     expect(t.toLowerCase()).toContain("à titre indicatif");
     expect(t).toContain(
-      "si les gains identifiés ne dépassent pas 3 fois le prix de la journée, nous remboursons",
+      "si le rapport n’identifie pas au moins 3 fois le prix de la journée en gains, l’entreprise peut demander à être remboursée",
     );
+  });
+
+  it("la garantie de la Journée IA est dite juste : remboursement sur demande, jamais d'office (CGV art. 47.10)", () => {
+    for (const html of [principale, pub]) {
+      const t = texte(html);
+      expect(t).toContain("peut demander à être remboursée");
+      expect(t).toContain("(conditions dans nos CGV)");
+      expect(t).not.toContain("sans discussion");
+      expect(t).not.toMatch(/nous remboursons/i);
+    }
   });
 
   it("aucun vocabulaire interdit, sur aucune des six surfaces", () => {

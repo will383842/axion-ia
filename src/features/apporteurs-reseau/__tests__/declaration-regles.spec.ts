@@ -91,7 +91,7 @@ describe("déclaration d'entreprise — règles pures (art. 3.2)", () => {
         { ...base, statut: "confirmee", contactEnvoyeAt: le, protegeeJusquAt: fin },
         le,
       ),
-    ).toEqual({ etat: "reservee", jusquAu: fin });
+    ).toEqual({ etat: "confirmee", jusquAu: fin });
     // Échue : expirée, avec sa date de fin.
     expect(
       etatPourApporteur(
@@ -120,6 +120,7 @@ describe("déclaration d'entreprise — règles pures (art. 3.2)", () => {
       a_l_etude: "À l'étude",
       sans_reponse: "En attente d'une réponse — nous revenons vers vous",
       reservee: "Réservée",
+      confirmee: "Confirmée",
       non_disponible: "Non disponible",
       expiree: "Expirée",
     });
