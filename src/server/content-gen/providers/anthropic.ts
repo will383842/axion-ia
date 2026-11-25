@@ -32,7 +32,9 @@ import {
 import { withRetry } from "../lib/retry";
 import { assertCostCapAvailable, trackCost } from "../lib/cost-tracker";
 import { readProviderConfig } from "../lib/config-reader";
+import { redis } from "@/lib/redis";
 import { appelerAvecRotationCles, creerEtatCles, listerCles, type EnvCles } from "./anthropic-keys";
+import { alerterCleAnthropic } from "./anthropic-credit-alert";
 
 const DEFAULT_TIMEOUT_MS = 60_000; // 60s — long-form Claude
 
@@ -232,10 +234,54 @@ function mapAnthropicErrorBrut(err: unknown): ProviderError {
 }
 
 /**
- * État de rotation des clés : UN SEUL par processus (module), pour que les marques
- * « épuisée » survivent d'un appel à l'autre. Propre à chaque conteneur.
+ * État de rotation des clés : les marques « épuisée » (6 h) / « invalide » (1 h) vivent dans
+ * Redis, donc partagées entre l'app et le worker. Redis en panne : repli sur la mémoire de
+ * ce processus (module), avec un avertissement au journal.
+ * Au build (REDIS_URL=redis://stub.invalid), `@/lib/redis` est un Proxy sans connexion.
  */
-const etatCles = creerEtatCles();
+let etatCles = creerEtatCles({ redis });
+
+/** Test uniquement : simule un NOUVEAU processus (mémoire de repli vide, même Redis). */
+export function __simulerNouveauProcessusCles(): void {
+  etatCles = creerEtatCles({ redis });
+}
+
+/**
+ * Appelle l'API avec rotation des clés s'il y en a PLUSIEURS ; avec une seule clé, appel
+ * direct sans marque ni alerte (comportement strictement identique à l'ancien).
+ * `
+ */
+function appelerAvecCles<T>(appel: (cle?: string) => Promise<T>): Promise<T> {
+  const env = process.env as EnvCles;
+  const cles = listerCles(env, "content_gen");
+  if (cles.length <= 1) return appel(cles[0]?.cle);
+  return appelerAvecRotationCles((cle) => appel(cle), {
+    env,
+    usage: "content_gen",
+    etat: etatCles,
+    surMarque: ({ index, motif }) => alerterCleAnthropic(index, motif),
+  });
+}
+
+/**
+ * Pose `toutesEpuisees` sur l'erreur rendue à l'appelant (quota-guard, blog) :
+ *  - déjà posé par la rotation (vrai : plus aucune clé utilisable) : inchangé ;
+ *  - clé unique : vrai pour un crédit refusé ou un 401/403 (c'est LA clé : comportement
+ *    d'avant) ;
+ *  - plusieurs clés et erreur qui a franchi la rotation (ex. crédit refusé EN COURS de
+ *    flux sur une clé) : faux, une seule clé ne coupe jamais tout.
+ * Les autres erreurs (429, 5xx, « fournisseur désactivé »…) ne sont pas annotées.
+ */
+function annoterDrapeaux(err: ProviderError): ProviderError {
+  if (typeof (err as { toutesEpuisees?: unknown }).toutesEpuisees === "boolean") return err;
+  const statut = (err as { status?: unknown }).status;
+  const estCredit = err.code === "quota_exhausted";
+  const estAuth = err.code === "auth_failed" && (statut === 401 || statut === 403);
+  if (!estCredit && !estAuth) return err;
+  const uneSeuleCle = listerCles(process.env as EnvCles, "content_gen").length <= 1;
+  (err as { toutesEpuisees?: boolean }).toutesEpuisees = uneSeuleCle;
+  return err;
+}
 
 /** Consigne ajoutée au prompt système, UNIQUEMENT sur le chemin blog Claude + JSON. */
 export const CONSIGNE_JSON_BLOG = "Réponds uniquement par un objet JSON valide, sans texte autour.";
@@ -441,18 +487,8 @@ export const anthropicProvider: IProvider = {
       }
     };
 
-    // Rotation : seulement s'il existe PLUSIEURS clés. Clé unique = comportement
-    // strictement identique à l'ancien (pas de marque « épuisée » de 24 h).
-    const env = process.env as EnvCles;
-    const rotation = listerCles(env, "content_gen").length > 1;
-    const appel = rotation
-      ? () =>
-          appelerAvecRotationCles((cle) => executeCall(cle), {
-            env,
-            usage: "content_gen",
-            etat: etatCles,
-          })
-      : () => executeCall();
+    // Rotation : seulement s'il existe PLUSIEURS clés (voir `appelerAvecCles`).
+    const appel = () => appelerAvecCles((cle) => executeCall(cle));
 
     const coutReel = (): number =>
       computeCost(model, tokensInput, tokensOutput, cacheReadInputTokens, cacheCreationInputTokens);
@@ -471,7 +507,7 @@ export const anthropicProvider: IProvider = {
           cheminBlog ? { maxAttempts: 1 } : {},
         );
       } catch (err) {
-        throw err instanceof ProviderError ? err : mapAnthropicError(err);
+        throw annoterDrapeaux(err instanceof ProviderError ? err : mapAnthropicError(err));
       }
 
       if (stopReason === "max_tokens") {
@@ -570,17 +606,20 @@ export const anthropicProvider: IProvider = {
   },
 
   async healthCheck(): Promise<boolean> {
-    if (!process.env.ANTHROPIC_API_KEY) return false;
+    if (listerCles(process.env as EnvCles, "content_gen").length === 0) return false;
     try {
       const config = await readProviderConfig("anthropic");
       if (!config.enabled) return false;
-      // Anthropic ne propose pas d'endpoint /models, on fait un mini-call ($0.0001)
-      const client = getClient();
-      await client.messages.create({
-        model: "claude-haiku-4-5",
-        max_tokens: 5,
-        messages: [{ role: "user", content: "Hi" }],
-      });
+      // Anthropic ne propose pas d'endpoint /models : mini-appel (1 jeton) avec le modèle
+      // d'écriture CONFIGURÉ, par la même rotation que la génération (une clé épuisée ne
+      // rend pas le fournisseur « en panne » tant qu'une autre répond).
+      await appelerAvecCles((cle) =>
+        getClient(cle).messages.create({
+          model: config.model,
+          max_tokens: 1,
+          messages: [{ role: "user", content: "Hi" }],
+        }),
+      );
       return true;
     } catch {
       return false;

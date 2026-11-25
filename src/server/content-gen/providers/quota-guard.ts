@@ -58,12 +58,20 @@ const PERMANENT_CODES = new Set(["quota_exhausted", "auth_failed"]);
 
 /**
  * Providers dont la panne justifie de couper la production de contenu.
- * Aligné sur `ROLE_TO_PROVIDERS.text` (`provider-router.ts`) : la génération de
- * texte passe exclusivement par OpenAI (décision Will 2026-07-09). Un incident
+ * OpenAI (texte, décision Will 2026-07-09) et Anthropic (tout le contenu passe sur
+ * Claude, 3 comptes en rotation : voir `PROVIDERS_A_ROTATION`). Un incident
  * Perplexity (rôle `data`) ou Unsplash (illustrations) dégrade le contenu mais
  * ne justifie pas d'arrêter la chaîne.
  */
-const CRITICAL_PROVIDERS = new Set<string>(["openai"]);
+const CRITICAL_PROVIDERS = new Set<string>(["openai", "anthropic"]);
+
+/**
+ * Fournisseurs à PLUSIEURS comptes (rotation de clés) : une erreur permanente n'y compte
+ * que si `toutesEpuisees === true` (plus aucune clé utilisable). Une seule clé épuisée ne
+ * coupe jamais tout. Avec une seule clé configurée, `anthropic.ts` pose ce drapeau sur
+ * l'erreur de l'unique clé : le comportement est inchangé.
+ */
+const PROVIDERS_A_ROTATION = new Set<string>(["anthropic"]);
 
 interface QuotaGuardEntry {
   readonly consecutive: number;
@@ -95,10 +103,14 @@ export async function recordPermanentProviderFailure(
   provider: ProviderKey | string,
   code: string,
   message: string,
+  options: { toutesEpuisees?: boolean } = {},
 ): Promise<boolean> {
   try {
     if (!isPermanentProviderCode(code)) return false;
     if (!CRITICAL_PROVIDERS.has(String(provider))) return false;
+    if (PROVIDERS_A_ROTATION.has(String(provider)) && options.toutesEpuisees !== true) {
+      return false;
+    }
 
     const state = await readGuardState();
     const previous = state[String(provider)];
