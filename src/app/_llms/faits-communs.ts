@@ -62,7 +62,7 @@ export const HEBERGEMENT_LLMS = "Hetzner, dans l’Union européenne";
 
 /** Facturation et engagement. */
 export const FACTURATION_LLMS =
-  "Facturation en euros, régime de TVA de l’Union européenne, virement SEPA ou SWIFT. Devis fixe, sans mensualité ni engagement.";
+  "Facturation en euros, régime de TVA de l’Union européenne, virement SEPA ou SWIFT.";
 
 /** Langues servies, lues au rendu (même prédicat que le proxy des 301). */
 export function languesLlms(): string {
