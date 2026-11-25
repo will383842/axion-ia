@@ -13,14 +13,16 @@ describe("contrat 2.3 : commission sur prestation réalisée, reprise et litige"
     expect(Number(CONTRAT_VERSION)).toBeGreaterThanOrEqual(2.3);
   });
 
-  it("4.2 : réalisée ET encaissée ; non réalisée, même du fait de la Société : pas due, réduite ou reprise", () => {
+  it("4.2 (2.8) : due dès l'encaissement intégral, même si le travail n'est pas terminé ; aucune condition de réalisation", () => {
+    expect(texte).toContain("Elle est acquise et due dès que la Société a encaissé l'intégralité");
+    expect(texte).toContain("même si le travail n'est pas terminé");
+    expect(texte).toContain("au plus tard 30 jours après cet encaissement");
     expect(texte).toContain(
-      "lorsque la prestation commandée a été réalisée et que la Société a encaissé l'intégralité",
+      "Le retard, l'inexécution ou l'exécution partielle de la prestation par la Société ne diffère pas la commission",
     );
-    expect(texte).toContain(
-      "Lorsque la prestation n'est pas réalisée, en tout ou partie, quelle qu'en soit la cause, y compris du fait de la Société, la commission n'est pas due",
-    );
-    expect(texte).toContain("si elle a déjà été versée, la différence fait l'objet d'une reprise");
+    expect(texte).not.toContain("lorsque la prestation commandée a été réalisée");
+    expect(texte).not.toContain("Lorsque la prestation n'est pas réalisée");
+    expect(texte).not.toMatch(/réputée réalisée/);
   });
 
   it("4.5 : plus d'exclusion ; geste commercial compris ; garde-fou de l'article 1304-3", () => {
@@ -56,10 +58,7 @@ describe("contrat 2.3 : commission sur prestation réalisée, reprise et litige"
 
   it("8.1 et A1.6 : CPF constaté après le versement = reprise", () => {
     expect(texte).toContain(
-      "Lorsque ce financement est constaté après le versement de la commission, celle-ci fait l'objet d'une reprise",
-    );
-    expect(texte).toContain(
-      "Un financement par le compte personnel de formation constaté après le versement de la commission donne lieu à sa reprise",
+      "Un tel financement constaté après le versement de la commission donne lieu à sa reprise",
     );
   });
 

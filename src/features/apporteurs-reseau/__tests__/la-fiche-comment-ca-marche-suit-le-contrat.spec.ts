@@ -32,9 +32,10 @@ describe("fiche « Comment ça marche » ↔ contrat 2.3", () => {
     expect(texte).toMatch(/24 mois/);
     // Et le contrat le dit bien (si le contrat change, ce test oblige à relire la fiche).
     expect(CONTRAT_V2_MARKDOWN).toMatch(/au moyen du seul formulaire/);
-    expect(CONTRAT_V2_MARKDOWN).toMatch(/6 mois à compter de la déclaration/);
+    // Contrat 2.8 : 60 jours de réservation, 6 mois à compter du rendez-vous ; plus de condition de réalisation.
+    expect(CONTRAT_V2_MARKDOWN).toMatch(/6 mois à compter du jour où le rendez-vous a eu lieu/);
     expect(CONTRAT_V2_MARKDOWN).toMatch(/une seule fois/);
-    expect(CONTRAT_V2_MARKDOWN).toMatch(/réalisée et\s+que la Société a encaissé l'intégralité/);
+    expect(CONTRAT_V2_MARKDOWN).toMatch(/dès que la Société a encaissé l'intégralité/);
     expect(CONTRAT_V2_MARKDOWN).toMatch(/SIREN valide \*\*et actif\*\*/);
   });
 

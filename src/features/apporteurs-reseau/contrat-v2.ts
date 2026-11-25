@@ -30,7 +30,18 @@
 // 2.6 (09/10/2026, décision de Will) : l'attribution porte sur l'ÉTABLISSEMENT déclaré (SIRET),
 // commissionné sur ses seules commandes ; la Société peut, à sa seule discrétion et sur demande,
 // l'étendre à toute l'entreprise (SIREN). L'antériorité (3.3) se juge par établissement.
-export const CONTRAT_VERSION = "2.6";
+// 2.8 (25/11/2026, OUI final de Will ; la 2.7 n'a jamais été fusionnée) : réservation provisoire de
+// 60 jours et validation au premier rendez-vous tenu ou à la commande signée (3.2, 3.3, 3.4, 3.4 bis,
+// 3.5, 3.7, 4.4, 11.1 bis, 12.1, 12.3) ; aucun résultat attendu (2.2) ; définitions et prix public
+// (4.0) ; grille « version 3 », remise au prorata, déduction de la Journée IA, fait générateur à
+// l'encaissement intégral de la part commissionnable sans condition de réalisation, virement sous
+// 30 jours, reprise en cas de remboursement de la garantie (4.1 à 4.5, annexe 1) ; commission brute
+// (6.5) ; information RGPD dans le premier message (7.2) ; résiliation par courrier électronique
+// (11.1) ; avenant et dispositions transitoires 2.6 vers 2.8 (13) ; hiérarchie avec l'annexe 1 bis,
+// fiche des commissions (17) ; licence de marque (22 bis). La version 2.6 est conservée dans
+// l'historique git (`git log -- contrat-v2.ts`) et, pour chaque signataire, dans sa signature
+// (`texte`, `texteSha256`, `version`). Nouvelle empreinte du texte signé.
+export const CONTRAT_VERSION = "2.8";
 
 export const CONTRAT_V2_MARKDOWN = `## Contrat d'apporteur d'affaires
 
@@ -82,12 +93,7 @@ en naît est bornée dans le temps et non reconductible (articles 3.4 et 3.4 bis
 **2.1** L'Apporteur exerce une activité indépendante. Il organise librement son activité, ses horaires,
 ses méthodes, ses moyens et ses déplacements.
 
-**2.2** **Aucun objectif, aucun quota, aucun volume minimum ne lui est assigné.** L'absence d'activité de
-l'Apporteur, quelle qu'en soit la durée, n'est pas un manquement contractuel : elle ne peut fonder ni une
-mise en demeure, ni une suspension au titre de l'article 3.7, ni une résiliation au titre de
-l'article 11.2, ni aucune conséquence sur les attributions en cours ou sur les commissions acquises ou à
-venir. **La faculté reconnue à chacune des parties par l'article 11.1 de résilier sans avoir à motiver sa
-décision demeure entière.**
+**2.2** **Aucun objectif, aucun quota, aucun volume minimum ne lui est assigné.** L'absence d'activité de l'Apporteur, quelle qu'en soit la durée, n'est pas un manquement contractuel : elle ne peut fonder ni une mise en demeure, ni une suspension au titre de l'article 3.7, ni une résiliation au titre de l'article 11.2, ni aucune conséquence sur les réservations provisoires, sur les attributions en cours ou sur les commissions acquises ou à venir. **L'Apporteur n'est tenu à aucun résultat : ni l'absence de rendez-vous d'une entreprise qu'il a déclarée, ni la fin d'une réservation provisoire (article 3.2), ni le nombre ou la fréquence de ses déclarations ne constituent un manquement, et aucun ne peut fonder l'une de ces mesures.** **La faculté reconnue à chacune des parties par l'article 11.1 de résilier sans avoir à motiver sa décision demeure entière.**
 
 **2.3** **Aucun compte rendu d'activité ne lui est demandé**, à l'exception des seules informations
 d'identification énumérées à l'article 3.2, nécessaires à la Société pour reprendre le contact, et qui ne
@@ -127,17 +133,9 @@ n'étant promise, les déclarations de l'article 3.2 sont faites par le seul for
 les notifications de l'article 20, les autofactures et leurs décomptes (article 5) sont
 adressés par courrier électronique ; toute mention de l'espace en ligne s'entend de ces échanges.
 
-Les délais qui courent de plein droit (articles 3.2, 3.4, 3.5, 3.7 et 5.1 à 5.5) et les échéances de
-paiement ne sont ni suspendus ni prorogés par la présente période. **Elle ne reporte aucun délai de
-paiement (article 5.3 ; article L.441-10 du code de commerce) et ne suspend aucune pénalité de retard.
-L'encaissement, au sens de l'article 4.0, s'entend du jour où la somme est créditée sur le compte bancaire de
-la Société, quel que soit le moyen de paiement du client (virement, carte bancaire, opérateur de compétences
-ou autre financeur).**
-Les opérations que le contrat confie à la Société (enregistrement des déclarations, refus, informations,
-autofactures, décomptes, réponses) sont effectuées manuellement ; elles le sont dans les délais que le contrat
-fixe et, à défaut, dans un délai raisonnable. Le retard de la Société dans l'une de ces opérations ne prive
-l'Apporteur d'aucun droit et ne vaut pas renonciation de la Société à se prévaloir de la stipulation
-concernée.
+Les délais qui courent de plein droit (articles 3.2, 3.4, 3.5, 3.7 et 5.1 à 5.5) et les échéances de paiement ne sont ni suspendus ni prorogés par la présente période. **Elle ne reporte aucun délai de paiement (article 5.3 ; article L.441-10 du code de commerce) et ne suspend aucune pénalité de retard. L'encaissement, au sens de l'article 4.0, s'entend du jour où la somme est créditée sur le compte bancaire de la Société, quels que soient le moyen de paiement et le payeur.**
+
+Les opérations que le contrat confie à la Société (enregistrement des déclarations, refus, constats de validation, informations, autofactures, décomptes, réponses) sont effectuées manuellement ; elles le sont dans les délais que le contrat fixe et, à défaut, dans un délai raisonnable. Le retard de la Société dans l'une de ces opérations ne prive l'Apporteur d'aucun droit et ne vaut pas renonciation de la Société à se prévaloir de la stipulation concernée.
 
 Les stipulations qui supposent une fonction de l'espace en ligne non ouverte (vérification d'entreprise par
 l'Apporteur, liste des filleuls, consultation du registre) s'appliquent à compter de son ouverture ; dans
@@ -166,150 +164,61 @@ d'extension, de l'ensemble des établissements qu'elle couvre. L'établissement 
 numéro SIRET figure sur le devis ou la commande, à défaut sur la fiche du client. L'extension n'emporte pas un
 établissement que la Société connaît déjà au sens de l'article 3.3, apprécié établissement par établissement.
 
-Lorsque la commande ne peut être rattachée à une attribution, faute de numéro SIRET ou faute de correspondance,
-la Société procède elle-même au rattachement dans les **quinze jours** de l'encaissement intégral. La commission
-qui en résulte reste due ; le délai de paiement de l'article 5.3 court à compter de ce rattachement, et ce délai
-ne prive l'Apporteur d'aucun droit. Lorsque la Société constate qu'aucune attribution ne correspond à la
-commande, ou qu'elle revient à une autre attribution, elle en informe l'Apporteur concerné par écrit et motive
-sa décision ; il peut la contester par écrit, et la Société y répond de façon motivée dans les trente jours.
+Lorsque la commande ne peut être rattachée à une attribution ou à une réservation provisoire, faute de numéro SIRET ou faute de correspondance, la Société procède elle-même au rattachement dans les **quinze jours** de l'encaissement intégral. La commission qui en résulte reste due ; le délai de paiement de l'article 5.3 court à compter de ce rattachement, et ce délai ne prive l'Apporteur d'aucun droit. Lorsque la Société constate qu'aucune attribution ni aucune réservation provisoire ne correspond à la commande, ou qu'elle revient à un autre Apporteur, elle en informe l'Apporteur concerné par écrit et motive sa décision ; il peut la contester par écrit, et la Société y répond de façon motivée dans les trente jours.
 
-**3.2 — Naissance de l'attribution.** L'attribution naît de la **déclaration** de l'entreprise, faite
-par l'Apporteur **au moyen du seul formulaire** accessible depuis son lien personnel et, une fois l'espace en
-ligne ouvert, de celui qu'il contient. **Une déclaration adressée par tout autre moyen, notamment par courrier
-électronique, est sans effet** : la Société invite alors l'Apporteur à utiliser le formulaire. Elle n'est pas
-acquise du seul fait d'une démarche non déclarée.
+**3.2 — Déclaration, réservation provisoire et validation.** La réservation naît de la **déclaration** de l'entreprise, faite par l'Apporteur **au moyen du seul formulaire** accessible depuis son lien personnel et, une fois l'espace en ligne ouvert, de celui qu'il contient. **Une déclaration adressée par tout autre moyen, notamment par courrier électronique, est sans effet** : la Société invite alors l'Apporteur à utiliser le formulaire. Aucun droit n'est acquis du seul fait d'une démarche non déclarée.
 
-La déclaration comporte l'identification de l'entreprise et le **numéro SIRET de l'établissement** visité, le **nom et la fonction de la
-personne rencontrée**, un **moyen direct de la joindre**, à savoir son adresse électronique et son numéro de
-téléphone, et la **date du contact**, laquelle n'est recueillie qu'aux seules fins des articles 3.4 bis et 3.7 et ne fait l'objet
-d'aucune exploitation statistique.
+La déclaration comporte l'identification de l'entreprise et le **numéro SIRET de l'établissement** visité, le **nom et la fonction de la personne rencontrée**, un **moyen direct de la joindre**, à savoir son adresse électronique et son numéro de téléphone, et la **date du contact**. Cette date n'est recueillie qu'aux seules fins des articles 3.4 bis et 3.7 ; l'adresse électronique sert en outre au premier message que la Société adresse à la personne (article 7.2) et au rattachement d'un rendez-vous à la déclaration. Aucune de ces données ne fait l'objet d'une exploitation statistique.
 
-L'attribution est d'abord **provisoire**. Après l'enregistrement de la déclaration, la Société **prend contact**
-avec la personne déclarée, notamment par courrier électronique, pour lui présenter ses services. **Ce message
-indique que l'Apporteur lui a parlé de l'entreprise et le désigne par ses prénom et nom : l'Apporteur est
-informé que ses prénom et nom sont ainsi communiqués à la personne qu'il déclare ; ses coordonnées ne lui sont
-pas communiquées.**
+**Réservation provisoire.** La déclaration enregistrée fait naître, au profit de l'Apporteur, une **réservation provisoire** de l'établissement déclaré, pour une durée de **60 jours**, qui prend fin au terme du 60e jour, à minuit, heure de Paris ; le jour de l'enregistrement de la déclaration, constaté par l'horodatage du serveur de la Société, compte pour le premier jour. Pendant cette durée, l'établissement ne peut être ni réservé ni attribué à un autre Apporteur, ni pris en charge par la Société (article 3.5). La date de fin de la réservation est indiquée à l'Apporteur lors de l'enregistrement.
 
-L'attribution devient **définitive** dès que la Société la confirme par écrit à l'Apporteur, ou dès que
-l'entreprise répond à la Société, prend rendez-vous avec elle ou échange avec elle, sans indiquer n'avoir eu
-aucun échange avec l'Apporteur. À défaut, elle est **réputée
-confirmée** à l'expiration d'un délai de **30 jours** à compter de la prise de contact
-(envoi du premier message de la Société), dès lors que ce message n'est pas retourné en erreur. **Tant que le message revient en
-erreur et que l'Apporteur n'a pas communiqué une adresse corrigée, ce délai ne court pas** ; à défaut d'adresse
-valide dans un délai de **45 jours** à compter de la déclaration, l'attribution prend
-fin, sans autre conséquence pour l'Apporteur que celle-ci : il ne peut déclarer à nouveau la même entreprise
-qu'à l'expiration d'un délai de 30 jours. La Société prend contact avec la personne déclarée dans les 30 jours
-de l'enregistrement de la déclaration ; à défaut, le délai de confirmation ci-dessus court à compter de
-l'expiration de ce délai. Lorsque le message est retourné en erreur, la Société en informe l'Apporteur par
-courrier électronique, dès qu'elle le constate, afin qu'il puisse communiquer une adresse corrigée.
+**Validation par le rendez-vous.** L'attribution devient **définitive** au **premier rendez-vous qui a eu lieu** entre la Société et un représentant de l'établissement déclaré, **dès lors que ce rendez-vous a été pris pendant la réservation provisoire**. Le rendez-vous peut avoir lieu après le terme des 60 jours : seule la date à laquelle il a été pris doit se situer dans ce délai. L'attribution est définitive à la date à laquelle le rendez-vous a eu lieu, quels qu'en soient la durée et le résultat.
 
-**La confirmation réputée acquise et la fin de l'attribution faute d'adresse valide sont les seules
-conséquences attachées au silence de l'entreprise.** La confirmation réputée acquise ne fait naître aucune
-commission : la commission ne naît que dans les conditions de l'article 4.
+Le rendez-vous s'entend d'un entretien entre la Société et un représentant de l'établissement déclaré — la personne déclarée ou toute autre personne agissant pour cet établissement —, tenu **en visio, par téléphone ou en personne**. Il est pris à la date à laquelle sa tenue est convenue ; l'entretien qui a lieu sans avoir été fixé à l'avance est réputé pris le jour où il a lieu. Le report, convenu entre la Société et l'entreprise, d'un rendez-vous pris pendant la réservation provisoire conserve la date à laquelle ce rendez-vous a été pris. Un rendez-vous annulé sans être reporté, ou auquel l'entreprise ne s'est pas présentée, n'a pas eu lieu ; un rendez-vous annulé, manqué ou reporté par l'entreprise ne valide pas l'attribution tant qu'il n'a pas eu lieu.
 
-**3.3 — Antériorité de la Société.** Aucune attribution ne peut porter sur un établissement que la Société
-connaît déjà à la date de la déclaration, c'est-à-dire **client au titre d'une prestation facturée au
-cours des vingt-quatre derniers mois, destinataire d'un devis de moins de six mois, ou ayant signé un devis
-qui n'a été ni entièrement facturé, ni annulé, quelle que soit sa date**. La Société enregistre
-la déclaration ; lorsqu'elle constate, sur les données dont elle dispose, que l'établissement lui est déjà connu
-au sens du présent alinéa ou est déjà attribué à un autre Apporteur, elle refuse la déclaration par une
-décision motivée adressée à l'Apporteur, sans lui révéler l'identité de l'occupant (article 3.5). À défaut,
-l'attribution est provisoire jusqu'à sa confirmation (article 3.2). **Lorsque l'antériorité est établie après
-l'enregistrement de la déclaration et avant la confirmation de l'attribution, celle-ci est annulée,
-l'Apporteur en est informé avec le motif, et aucune commission nouvelle n'est due ; les commissions déjà
-acquises restent acquises. Après la confirmation, l'attribution ne peut plus être annulée au titre du
-présent article, sauf erreur d'identification de l'entreprise ou fraude de l'Apporteur ; les commandes
-signées et les commissions acquises avant l'annulation restent commissionnées. L'Apporteur peut contester
-un refus ou une annulation par écrit ; la Société y répond de façon motivée dans les trente jours.**
+**Le rendez-vous pris pendant la réservation provisoire et qui n'a pas lieu du fait de la Société, notamment parce qu'elle l'a annulé, est réputé avoir eu lieu à la date à laquelle il était fixé** (article 1304-3 du code civil). La Société ne peut refuser, différer ou annuler un rendez-vous, ni s'abstenir d'en constater la tenue, dans le seul but de faire échec à la validation (article 1.3).
 
-**3.3 bis — Autres cas de refus.** Est également refusée la déclaration portant sur : (a) une entreprise
-dont l'établissement déclaré est administrativement cessé ; (b) une administration, un financeur public ou
-paritaire, ou un organisme de formation avec lequel la Société est en relation, figurant sur une liste
-tenue par la Société, dont l'existence et le principe sont portés à la connaissance de l'Apporteur ; (c)
-une entreprise pour laquelle deux déclarations sont déjà en attente au sens de l'article 3.5 ; (d) une
-personne inscrite au registre d'opposition au démarchage tenu par la Société. Le refus est notifié avec sa
-catégorie ; il n'emporte aucune autre conséquence et n'est pas un manquement.
+Lorsqu'un rendez-vous pris pendant la réservation provisoire n'a pas encore eu lieu au terme des 60 jours, la réservation est maintenue jusqu'au jour où il a lieu. Elle prend fin si ce rendez-vous est annulé ou n'est pas honoré par l'entreprise sans qu'un report soit convenu dans les quinze jours.
 
-**3.4 — Durée.** L'attribution est consentie pour **6 mois à compter de la déclaration**, c'est-à-dire
-de l'horodatage, par le serveur de la Société, de son enregistrement. Elle ne prend pas fin avant ce terme,
-sous réserve des articles 3.2 (fin faute d'adresse valide), 3.3, 3.3 bis et 3.7. À son terme, prolongé le
-cas échéant dans les conditions de l'alinéa suivant, l'entreprise redevient librement déclarable, dans les
-conditions de l'article 3.4 bis.
+**Un rendez-vous pris avant l'enregistrement de la déclaration est sans effet sur celle-ci**, quelle que soit la date à laquelle il a lieu.
 
-**L'attribution est prolongée de trois mois, une seule fois et sans démarche de l'Apporteur, lorsqu'au terme
-de la période l'une des conditions suivantes est remplie : (a) un devis émis par la Société à l'entreprise est
-en cours ; (b) la Société a tenu un rendez-vous ou eu un échange avec l'entreprise au cours des trente derniers
-jours ; (c) un dossier de financement de la prestation, notamment auprès d'un opérateur de compétences, est en
-cours d'instruction.** Ces conditions s'apprécient sur les seules données de la Société ; aucune ne dépend de
-l'activité de l'Apporteur. Un devis est en cours tant qu'il n'est ni signé, ni refusé, ni expiré. Un dossier
-de financement est en cours d'instruction tant que l'organisme financeur n'a pas statué. L'Apporteur est
-informé de la prolongation.
+**Validation par la commande.** La **commande** de l'établissement déclaré (article 4.4) signée pendant la réservation provisoire **vaut validation**, même en l'absence de tout rendez-vous : l'attribution est définitive à la date de cette signature et la commande est commissionnée dans les conditions de l'article 4. Ne vaut pas validation la signature d'un devis émis par la Société avant la déclaration : l'établissement relevait alors de l'article 3.3.
 
-*Exemple : une entreprise déclarée le 30 décembre, dont l'attribution expire donc le 30 juin, et avec laquelle
-la Société a eu un rendez-vous le 15 juin, reste attribuée jusqu'au 30 septembre ; une commande signée en août
-est commissionnée.*
+**Rattachement.** La validation n'est pas subordonnée à ce que l'entreprise cite l'Apporteur. La Société recherche elle-même, sur les données dont elle dispose, les rendez-vous et les commandes des établissements réservés. L'Apporteur peut, s'il le souhaite, lui signaler un rendez-vous par tout moyen ; il n'y est jamais tenu et l'absence de signalement ne le prive d'aucun droit. Lorsqu'un rendez-vous ne permet pas de savoir pour quel établissement d'une même entreprise la personne agit, il est rattaché à l'établissement dont la personne déclarée a pris le rendez-vous et, à défaut, à celui dont la déclaration porte l'horodatage le plus ancien.
 
-**3.4 bis — Absence de reconduction.** L'attribution **ne se renouvelle pas** et ne fait l'objet d'aucune
-reconduction, tacite ou automatique. À son terme, elle s'éteint de plein droit. L'Apporteur ne peut pas
-déclarer à nouveau une entreprise devenue cliente de la Société : celle-ci relève désormais de
-l'article 3.3. L'Apporteur dont l'attribution est arrivée à son terme ne peut déclarer à nouveau la même
-entreprise qu'en indiquant un nouveau contact avec l'un de ses représentants, postérieur à ce terme, dont la
-date figure à la déclaration.
+**Constat et information.** La Société constate la validation et **en informe l'Apporteur par courrier électronique dans les cinq jours ouvrés** suivant le jour où le rendez-vous a eu lieu ou la commande a été signée, en indiquant la date de la validation et le terme de l'attribution. La validation résulte du rendez-vous ou de la commande eux-mêmes : le retard de la Société à la constater ou à en informer l'Apporteur ne le prive d'aucun droit. La Société inscrit au registre de l'article 3.5 la date à laquelle le rendez-vous a été pris, celle à laquelle il a eu lieu et sa forme ; ces mentions font foi entre les parties **jusqu'à preuve contraire**, que l'Apporteur peut rapporter par tout moyen. Il peut contester par écrit l'absence de validation ; la Société y répond de façon motivée dans les trente jours, en lui communiquant l'extrait du registre relatif à sa déclaration.
+
+**Fin de la réservation provisoire.** À défaut de rendez-vous pris ou de commande signée pendant la réservation provisoire, celle-ci **prend fin de plein droit** à son terme. **Cette fin n'est jamais un manquement et n'emporte aucune autre conséquence** : elle ne peut fonder aucune des mesures mentionnées à l'article 2.2, et l'Apporteur peut déclarer à nouveau la même entreprise dans les conditions de l'article 3.4 bis, sans limite de nombre. **Le silence de l'entreprise ne vaut jamais validation** ; il ne vaut pas davantage indication au sens de l'article 3.7. Pendant les 30 jours qui suivent la fin de la réservation provisoire sans validation, personne d'autre ne peut déclarer cette entreprise et la Société ne la démarche pas (article 3.5) ; l'Apporteur peut la déclarer à nouveau dans les conditions de l'article 3.4 bis. Dans l'exemple d'une déclaration du 10 janvier, la réservation court jusqu'au 10 mars inclus, puis ces 30 jours jusqu'au 9 avril.
+
+L'Apporteur n'a l'obligation ni d'obtenir un rendez-vous, ni d'en obtenir un nombre déterminé, ni d'accomplir aucune démarche après sa déclaration. La validation ne fait naître par elle-même aucune commission : la commission ne naît que dans les conditions de l'article 4.
+
+**L'Apporteur est informé que ses prénom et nom sont communiqués à la personne qu'il déclare**, comme source de ses coordonnées, dans le premier message que la Société lui adresse (article 7.2) ; ses coordonnées ne lui sont pas communiquées.
+
+**3.3 — Antériorité de la Société.** Aucune réservation ni aucune attribution ne peut porter sur un établissement que la Société connaît déjà à la date de la déclaration, c'est-à-dire **client au titre d'une prestation facturée au cours des vingt-quatre derniers mois, destinataire d'un devis de moins de six mois, ou ayant signé un devis qui n'a été ni entièrement facturé, ni annulé, quelle que soit sa date**. La Société enregistre la déclaration ; lorsqu'elle constate, sur les données dont elle dispose, que l'établissement lui est déjà connu au sens du présent alinéa ou est déjà réservé ou attribué à un autre Apporteur, elle refuse la déclaration par une décision motivée adressée à l'Apporteur, sans lui révéler l'identité de l'occupant (article 3.5). À défaut, la déclaration fait naître une réservation provisoire jusqu'à sa validation (article 3.2). **Lorsque l'antériorité est établie après l'enregistrement de la déclaration et avant la validation, la réservation est annulée, l'Apporteur en est informé avec le motif, et aucune commission nouvelle n'est due ; les commissions déjà acquises restent acquises. Après la validation, l'attribution ne peut plus être annulée au titre du présent article, sauf erreur d'identification de l'entreprise, signature d'un devis émis avant la déclaration (article 3.2) ou fraude de l'Apporteur ; les commandes signées et les commissions acquises avant l'annulation restent commissionnées. L'Apporteur peut contester un refus ou une annulation par écrit ; la Société y répond de façon motivée dans les trente jours.**
+
+**3.3 bis — Autres cas de refus.** Est également refusée la déclaration portant sur : (a) une entreprise dont l'établissement déclaré est administrativement cessé ; (b) une administration ou un organisme avec lequel la Société est en relation, figurant sur une liste tenue par la Société, dont l'existence et le principe sont portés à la connaissance de l'Apporteur ; (c) une entreprise pour laquelle deux déclarations sont déjà en attente au sens de l'article 3.5 ; (d) une personne inscrite au registre d'opposition au démarchage tenu par la Société. Le refus est notifié avec sa catégorie ; il n'emporte aucune autre conséquence et n'est pas un manquement.
+
+**3.4 — Durée de l'attribution définitive.** L'attribution définitive est consentie pour **6 mois à compter du jour où le rendez-vous a eu lieu** ou, lorsqu'elle résulte d'une commande (article 3.2), **du jour de la signature de cette commande**. Elle ne prend pas fin avant ce terme, sous réserve des articles 3.3, 3.7 et 12.1. À son terme, prolongé le cas échéant dans les conditions de l'alinéa suivant, l'entreprise redevient librement déclarable, dans les conditions de l'article 3.4 bis.
+
+**L'attribution définitive est prolongée de trois mois, une seule fois et sans démarche de l'Apporteur, lorsqu'au terme de la période l'une des conditions suivantes est remplie : (a) un devis émis par la Société à l'entreprise est en cours ; (b) la Société a tenu un rendez-vous ou eu un échange avec l'entreprise au cours des trente derniers jours ; (c) une demande de financement de la prestation par un tiers est en cours d'instruction.** Ces conditions s'apprécient sur les seules données de la Société ; aucune ne dépend de l'activité de l'Apporteur. Un devis est en cours tant qu'il n'est ni signé, ni refusé, ni expiré. L'Apporteur est informé de la prolongation. **La prolongation est réservée aux attributions définitives : la réservation provisoire n'est jamais prolongée, sous la seule réserve de son maintien jusqu'à un rendez-vous déjà pris (article 3.2).**
+
+*Exemple : une entreprise est déclarée le 10 janvier ; elle est réservée jusqu'au 10 mars inclus. Elle prend rendez-vous le 2 mars, pour le 18 mars : le rendez-vous a lieu, l'attribution est définitive le 18 mars et court jusqu'au 18 septembre. La Société a un échange avec l'entreprise le 1er septembre : l'attribution est prolongée jusqu'au 18 décembre, et une commande signée en novembre est commissionnée.*
+
+**3.4 bis — Absence de reconduction.** Ni la réservation provisoire ni l'attribution définitive **ne se renouvellent** ; elles ne font l'objet d'aucune reconduction, tacite ou automatique. À leur terme, elles s'éteignent de plein droit. L'Apporteur ne peut pas déclarer à nouveau une entreprise devenue cliente de la Société : celle-ci relève désormais de l'article 3.3.
+
+L'Apporteur dont la réservation provisoire ou l'attribution définitive est arrivée à son terme peut déclarer à nouveau la même entreprise en indiquant un **nouveau contact** avec l'un de ses représentants, postérieur à ce terme, dont la date figure à la déclaration. **Cette faculté n'est soumise à aucun plafond, à aucun compteur, à aucun délai d'attente et à aucun rythme** ; la nouvelle déclaration fait naître une nouvelle réservation provisoire, à son propre horodatage, sous réserve de la priorité reconnue par l'article 3.5 à l'Apporteur dont la déclaration est en attente.
 
 *Cette absence de reconduction est une condition essentielle du présent contrat.*
 
-**3.5 — Entreprise déjà prise, concours entre Apporteurs.** Une entreprise peut être déjà prise **par un
-autre apporteur ou par la Société ou ses préposés**, les préposés de la Société s'entendant des personnes
-qu'elle emploie, et non des préposés de l'Apporteur mentionnés à l'article 2. **L'effet pour l'Apporteur
-est le même quel que soit l'occupant, et la Société ne révèle jamais qui occupe une entreprise donnée.**
-Lorsque deux Apporteurs déclarent la même entreprise, ou lorsqu'une déclaration et une prise en charge par
-la Société ou ses préposés portent sur la même entreprise, l'entreprise revient à celui dont la
-déclaration ou la prise en charge porte **l'horodatage serveur le plus ancien**. Cette règle s'applique
-de plein droit, sans appréciation de la Société, quelles que soient la durée ou l'intensité des démarches invoquées. Lorsqu'une attribution a été
-enregistrée par erreur au profit d'une déclaration postérieure, la Société rétablit l'ordre résultant des
-horodatages dès qu'elle constate l'erreur et en informe l'Apporteur avec le motif ; les commandes signées
-avant cette information, par une entreprise dont l'attribution lui avait été notifiée comme définitive,
-restent commissionnées à son profit.
+**3.5 — Entreprise déjà prise, concours entre Apporteurs.** Une entreprise peut être déjà prise **par un autre apporteur ou par la Société ou ses préposés**, les préposés de la Société s'entendant des personnes qu'elle emploie, et non des préposés de l'Apporteur mentionnés à l'article 2. Est prise l'entreprise qui fait l'objet d'une réservation provisoire, d'une attribution définitive ou d'une prise en charge en cours. **L'effet pour l'Apporteur est le même quel que soit l'occupant, et la Société ne révèle jamais qui occupe une entreprise donnée.** Lorsque deux Apporteurs déclarent la même entreprise, ou lorsqu'une déclaration et une prise en charge par la Société ou ses préposés portent sur la même entreprise, **la première déclaration ou prise en charge prime** : l'entreprise revient à celui dont la déclaration ou la prise en charge porte **l'horodatage serveur le plus ancien**, qui conserve l'intégralité de sa réservation provisoire. Cette règle s'applique de plein droit, sans appréciation de la Société, quelles que soient la durée ou l'intensité des démarches invoquées, et quel que soit l'Apporteur que l'entreprise cite lors d'un rendez-vous. Lorsqu'une réservation ou une attribution a été enregistrée par erreur au profit d'une déclaration postérieure, la Société rétablit l'ordre résultant des horodatages dès qu'elle constate l'erreur et en informe l'Apporteur avec le motif ; les commandes signées avant cette information, par une entreprise dont l'attribution lui avait été notifiée comme définitive, restent commissionnées à son profit.
 
-L'Apporteur dont la déclaration est postérieure est informé que l'entreprise n'est pas disponible ;
-**l'identité de celui qui l'occupe ne lui est jamais communiquée**. **Deux déclarations au plus sont
-conservées en attente par entreprise, dans l'ordre de leur horodatage ; au-delà, la déclaration n'est pas
-conservée et l'Apporteur en est informé. Lorsque l'attribution en cours, ou la prise en charge de
-l'entreprise par la Société ou ses préposés, prend fin, l'Apporteur dont la déclaration est en attente au
-premier rang en est informé et dispose de quinze jours pour déclarer à nouveau l'entreprise ; à défaut, sa
-déclaration est effacée et l'entreprise redevient librement déclarable par tous. Ce délai ne court pas tant que
-l'enregistrement des déclarations de l'Apporteur est suspendu en application de l'article 3.7 ; il
-reprend, pour sa durée restante, à la fin de la suspension. Aucune attribution ne naît
-d'une déclaration conservée sans nouvelle déclaration de l'Apporteur. Une déclaration en attente s'éteint
-en tout état de cause douze mois après son enregistrement.**
+L'Apporteur dont la déclaration est postérieure est informé que l'entreprise n'est pas disponible ; **l'identité de celui qui l'occupe ne lui est jamais communiquée**. **Deux déclarations au plus sont conservées en attente par entreprise, dans l'ordre de leur horodatage ; au-delà, la déclaration n'est pas conservée et l'Apporteur en est informé. Lorsque la réservation provisoire ou l'attribution en cours, ou la prise en charge de l'entreprise par la Société ou ses préposés, prend fin, l'Apporteur dont la déclaration est en attente au premier rang en est informé et dispose de quinze jours pour déclarer à nouveau l'entreprise ; à défaut, sa déclaration est effacée et l'entreprise redevient librement déclarable par tous. Ce délai ne court pas tant que l'enregistrement des déclarations de l'Apporteur est suspendu en application de l'article 3.7 ; il reprend, pour sa durée restante, à la fin de la suspension. Aucune réservation ne naît d'une déclaration conservée sans nouvelle déclaration de l'Apporteur ; la nouvelle déclaration fait naître une réservation provisoire dans les conditions de l'article 3.2. Une déclaration en attente s'éteint en tout état de cause douze mois après son enregistrement.** Ne pas déclarer à nouveau dans ce délai n'est pas un manquement et n'emporte aucune autre conséquence.
 
-**La prise en charge d'une entreprise par la Société ou ses préposés obéit aux mêmes bornes qu'une
-attribution**, la Société et l'ensemble de ses préposés comptant pour un seul occupant. Les articles 3.4 et
-3.4 bis lui sont applicables comme à une attribution : la durée de **6 mois** court de la prise en
-charge, c'est-à-dire de l'horodatage, par le serveur de la Société, de son enregistrement ; la
-prolongation de l'article 3.4 ne s'applique qu'une fois, dans les mêmes conditions ; la prise en
-charge ne fait l'objet d'aucune reconduction. **La Société ne prend pas en charge une entreprise pendant
-le délai de quinze jours ouvert à l'Apporteur en attente au premier rang.**
+**La prise en charge d'une entreprise par la Société ou ses préposés obéit aux mêmes bornes que celles qui s'imposent à l'Apporteur**, la Société et l'ensemble de ses préposés comptant pour un seul occupant. Elle vaut pour **60 jours**, décomptés comme à l'article 3.2 à partir de son enregistrement ; elle ne se poursuit, pour **6 mois**, que si un rendez-vous pris pendant ces 60 jours a eu lieu, à compter de ce rendez-vous, ou si une commande a été signée pendant ces 60 jours, à compter de cette signature. La prolongation de l'article 3.4 ne s'applique qu'une fois, dans les mêmes conditions ; la prise en charge ne fait l'objet d'aucune reconduction (article 3.4 bis). **La Société ne prend pas en charge une entreprise pendant le délai de quinze jours ouvert à l'Apporteur en attente au premier rang.**
 
-**La Société conserve dans ses propres outils, et peut utiliser à ses propres fins commerciales, les
-entreprises déclarées par l'Apporteur et les coordonnées qu'il a transmises, y compris pour les démarcher
-elle-même ou par ses préposés. Cette utilisation ne retire rien aux droits de l'Apporteur : pendant la
-durée de l'attribution, toute commande de l'entreprise attribuée est commissionnée dans les conditions de
-l'article 4.4, qu'elle résulte des démarches de l'Apporteur, de celles de la Société ou de ses préposés,
-ou d'une initiative de l'entreprise. La Société peut prendre contact avec l'entreprise déclarée et la relancer
-par tout moyen dès l'enregistrement de la déclaration, sans que cela retire quoi que ce soit aux droits de
-l'Apporteur. Dans les
-30 jours qui suivent une vérification d'entreprise faite par
-l'Apporteur, ou une déclaration de sa part refusée ou en attente, la Société ne démarche pas l'entreprise concernée et ne la prend pas en charge ; cette réserve ne
-s'applique ni à une entreprise que la Société connaissait déjà au sens de l'article 3.3, ni à une
-entreprise dont une attribution ou une prise en charge était en cours à la date de cette vérification ou de
-cette déclaration.**
+**La Société conserve dans ses propres outils, et peut utiliser à ses propres fins commerciales, les entreprises déclarées par l'Apporteur et les coordonnées qu'il a transmises, y compris pour les démarcher elle-même ou par ses préposés. Cette utilisation ne retire rien aux droits de l'Apporteur : pendant la réservation provisoire et pendant la durée de l'attribution, toute commande de l'entreprise est commissionnée dans les conditions de l'article 4.4, et tout rendez-vous est pris en compte dans les conditions de l'article 3.2, qu'ils résultent des démarches de l'Apporteur, de celles de la Société ou de ses préposés, ou d'une initiative de l'entreprise. La Société peut, sans y être tenue, prendre contact avec l'entreprise déclarée pour lui présenter ses services et la relancer par tout moyen dès l'enregistrement de la déclaration, sans que cela retire quoi que ce soit aux droits de l'Apporteur. Dans les 30 jours qui suivent une vérification d'entreprise faite par l'Apporteur, une déclaration de sa part refusée ou en attente, ou la fin de sa réservation provisoire sans validation, la Société ne démarche pas l'entreprise concernée et ne la prend pas en charge ; cette réserve ne s'applique ni à une entreprise que la Société connaissait déjà au sens de l'article 3.3, ni à une entreprise dont une réservation, une attribution ou une prise en charge au profit d'un autre occupant était en cours à la date de cette vérification, de cette déclaration ou de cette fin. Pendant les 30 jours qui suivent la fin d'une réservation provisoire sans validation, aucun autre Apporteur ne peut non plus déclarer l'entreprise.**
 
-Les parties conviennent que l'horodatage attribué par le serveur de la Société fait foi entre elles
-**jusqu'à preuve contraire** pour l'application du présent article, conformément à l'article 1356 du code
-civil, **quel que soit l'occupant de l'entreprise**. Cet horodatage est inscrit
-dans un registre horodaté tenu par la Société ; l'Apporteur peut en obtenir sur simple demande un extrait relatif
-à ses propres déclarations, qui ne révèle pas qui occupe l'entreprise.
+Les parties conviennent que l'horodatage attribué par le serveur de la Société fait foi entre elles **jusqu'à preuve contraire** pour l'application du présent article, conformément à l'article 1356 du code civil, **quel que soit l'occupant de l'entreprise**. Cet horodatage est inscrit dans un registre horodaté tenu par la Société, qui porte aussi les mentions de l'article 3.2 relatives aux rendez-vous ; l'Apporteur peut en obtenir sur simple demande un extrait relatif à ses propres déclarations, qui ne révèle pas qui occupe l'entreprise.
 
 **3.6 — Groupes de sociétés.** Chaque personne morale dispose de son propre SIREN. L'attribution d'une
 filiale n'emporte aucun droit sur sa société mère ni sur les autres sociétés du groupe.
@@ -322,28 +231,11 @@ cette date ; un lien né postérieurement n'ouvre aucun droit. Le rattachement e
 motivé et tracé ; l'Apporteur peut le demander en justifiant du lien de contrôle, et la décision lui est
 notifiée avec son motif.** Aucun autre rattachement n'ouvre droit à commission.
 
-**3.7 — Sincérité de la déclaration.** L'Apporteur ne déclare que des entreprises dont il a effectivement
-rencontré ou joint un représentant.
+**3.7 — Sincérité de la déclaration.** L'Apporteur ne déclare que des entreprises dont il a effectivement rencontré ou joint un représentant.
 
-Lorsque le représentant de l'entreprise déclarée indique expressément n'avoir eu aucun échange avec
-l'Apporteur, l'attribution correspondante s'éteint et l'entreprise redevient librement déclarable. Vaut une telle
-indication la déclaration en ce sens faite par l'entreprise à la Société, lors d'un échange avec elle. Ne valent
-pas une telle indication
-l'impossibilité de joindre l'entreprise, l'absence de réponse à la prise de contact, l'absence de
-souvenir de l'échange, le changement d'interlocuteur ou le refus de répondre : dans ces cas l'attribution
-est maintenue, sous la seule réserve de l'article 3.2. La réponse de l'entreprise est journalisée avec sa date, la personne qui l'a donnée, et ses termes ; l'extrait en est communiqué à l'Apporteur sur sa demande.
+Lorsque le représentant de l'entreprise déclarée indique expressément n'avoir eu aucun échange avec l'Apporteur, la réservation provisoire ou l'attribution correspondante s'éteint et l'entreprise redevient librement déclarable. Vaut une telle indication la déclaration en ce sens faite spontanément par l'entreprise à la Société, lors d'un échange avec elle. **La Société ne demande à l'entreprise de confirmer aucun échange avec l'Apporteur et ne lui fait part d'aucune vérification le concernant.** Ne valent pas une telle indication l'impossibilité de joindre l'entreprise, son silence, l'absence de rendez-vous, l'absence de souvenir de l'échange, le fait de ne pas citer l'Apporteur, le changement d'interlocuteur ou le refus de répondre : ces circonstances n'emportent aucune autre conséquence que la fin de plein droit de la réservation provisoire à son terme (article 3.2). L'indication de l'entreprise est journalisée avec sa date, la personne qui l'a donnée, et ses termes ; l'extrait en est communiqué à l'Apporteur sur sa demande.
 
-La Société peut suspendre l'enregistrement de nouvelles déclarations le temps d'une vérification. La
-suspension est notifiée avec les faits qui la motivent, lesquels ne peuvent être que l'indication
-de l'entreprise déclarée prévue au deuxième alinéa ou des éléments établissant la fabrication ou
-l'automatisation d'une déclaration. **Aucune suspension ne peut être fondée, même partiellement, sur le nombre de déclarations,
-sur leur rythme, sur l'heure ou le lieu depuis lesquels elles sont faites, ni sur la zone, le secteur ou la
-méthode de l'Apporteur.** Elle n'obéit à aucun barème, à aucun compteur et à aucun seuil. Elle porte
-exclusivement sur l'enregistrement de nouvelles déclarations : **elle est sans effet sur les attributions
-en cours, provisoires ou définitives, sur les commandes signées, sur les commissions acquises ou à venir,
-et sur l'accès de l'Apporteur à son espace.** Elle ne peut excéder quinze jours à compter de sa
-notification ; à l'expiration de ce délai elle est levée de plein droit, la Société demeurant libre de
-résilier dans les conditions de l'article 11.
+La Société peut suspendre l'enregistrement de nouvelles déclarations le temps d'une vérification. La suspension est notifiée avec les faits qui la motivent, lesquels ne peuvent être que l'indication de l'entreprise déclarée prévue au deuxième alinéa ou des éléments établissant la fabrication ou l'automatisation d'une déclaration. **Aucune suspension ne peut être fondée, même partiellement, sur le nombre de déclarations, sur leur rythme, sur le nombre de réservations provisoires arrivées à leur terme sans rendez-vous, sur le nombre de déclarations renouvelées, sur l'heure ou le lieu depuis lesquels elles sont faites, ni sur la zone, le secteur ou la méthode de l'Apporteur.** Elle n'obéit à aucun barème, à aucun compteur et à aucun seuil. Elle porte exclusivement sur l'enregistrement de nouvelles déclarations : **elle est sans effet sur les réservations provisoires et les attributions en cours, sur les rendez-vous pris ou à venir, sur les commandes signées, sur les commissions acquises ou à venir, et sur l'accès de l'Apporteur à son espace.** Elle ne peut excéder quinze jours à compter de sa notification ; à l'expiration de ce délai elle est levée de plein droit, la Société demeurant libre de résilier dans les conditions de l'article 11.
 
 **3.8 — Accès.** L'accès à l'espace en ligne et au formulaire de déclaration est personnel.
 L'Apporteur conserve son lien personnel et ses moyens d'accès et ne les communique à aucun tiers. **Toute
@@ -356,116 +248,44 @@ acquises.
 
 ### Article 4 — Rémunération
 
-**4.0 — Définitions.** Pour l'application du présent contrat : *encaissement* s'entend du crédit
-effectif des fonds sur un compte bancaire de la Société, quel que soit le moyen de paiement du client
-(virement, carte bancaire, opérateur de compétences ou autre financeur) ; la date de l'encaissement est celle
-du jour où la somme est créditée sur ce compte ; *prix facturé* s'entend du prix de la commande,
-net des avoirs ; *commission acquise* s'entend de la commission dont le fait générateur de l'article 4.2 est
-réalisé ; *entreprise* s'entend de la personne morale ou de l'entrepreneur individuel titulaire du numéro
-SIREN ; *établissement* s'entend de l'établissement de l'entreprise identifié par son numéro SIRET.
+**4.0 — Définitions.** Pour l'application du présent contrat : *encaissement* s'entend du crédit effectif des fonds sur un compte bancaire de la Société, quels que soient le moyen de paiement (virement, carte bancaire, prélèvement ou autre) et le payeur ; la date de l'encaissement est celle du jour où la somme est créditée sur ce compte ; *prix facturé* s'entend du prix de la commande, hors taxes, net des remises et des avoirs ; *prix public* s'entend du prix de référence hors taxes que l'annexe 1 attribue à la prestation ; *part commissionnable* s'entend des sommes de la commande qui ouvrent droit à commission selon l'annexe 1, à l'exclusion des sommes qu'elle déclare non commissionnées (A1.6) ; *commission acquise* s'entend de la commission dont le fait générateur de l'article 4.2 est intervenu ; *réservation provisoire*, *validation* et *attribution définitive* ont le sens que leur donne l'article 3.2, l'*attribution* s'entendant de l'attribution définitive ; *entreprise* s'entend de la personne morale ou de l'entrepreneur individuel titulaire du numéro SIREN ; *établissement* s'entend de l'établissement de l'entreprise identifié par son numéro SIRET.
 
-**4.1 — Grille.** La rémunération est exclusivement constituée de commissions, selon la **grille figurant
-en annexe 1** (version 2 du {{GRILLE_DATE}}), annexée au présent contrat et en
-faisant partie intégrante. Les produits créés après la signature relèvent de l'annexe 1, A1.7.
+**4.1 — Grille.** La rémunération est exclusivement constituée de commissions, selon la **grille figurant en annexe 1** (version 3 du {{GRILLE_DATE}}), annexée au présent contrat et en faisant partie intégrante. Les produits créés après la signature relèvent de l'annexe 1, A1.8. La fiche des commissions (annexe 1 bis) en est une présentation illustrée.
 
-Cette grille est **propre au présent contrat**. Elle est arrêtée palier par palier avant la génération du
-contrat. Elle peut différer,
-à la hausse comme à la baisse, de la grille de référence que la Société publie ; les mentions de
-rémunération figurant sur les supports publics ou commerciaux de la Société sont **indicatives** et n'ont
-pas valeur contractuelle (article 17).
+Cette grille est **propre au présent contrat**. Elle est arrêtée palier par palier avant la génération du contrat. Elle peut différer, à la hausse comme à la baisse, de la grille de référence que la Société publie ; les mentions de rémunération figurant sur les supports publics ou commerciaux de la Société sont **indicatives** et n'ont pas valeur contractuelle (article 17).
 
-La commission d'une attribution est calculée d'après la version de la grille en vigueur à la date à
-laquelle cette attribution a été confirmée, parmi les versions que l'Apporteur a acceptées. À défaut
-d'acceptation d'une version postérieure, la dernière version acceptée par l'Apporteur s'applique, y compris
-aux attributions confirmées après sa publication.
+**Les prix de référence et les commissions de l'annexe 1 n'évoluent que par un avenant accepté par l'Apporteur (article 13).** La commission d'une commande est calculée d'après la version de la grille acceptée par l'Apporteur à la date de signature de cette commande. Une nouvelle version de la grille ne s'applique qu'aux ventes signées après l'acceptation de l'avenant correspondant par l'Apporteur ; à défaut d'acceptation, la dernière version acceptée continue de s'appliquer.
 
-Lorsqu'un palier de la présente grille est inférieur à la valeur correspondante de la grille de référence
-publiée par la Société, **l'écart et son motif sont portés à la connaissance de l'Apporteur avant la
-signature**, dans le parcours de signature.
+Lorsqu'un palier de la présente grille est inférieur à la valeur correspondante de la grille de référence publiée par la Société, **l'écart et son motif sont portés à la connaissance de l'Apporteur avant la signature**, dans le parcours de signature.
 
-**4.1 bis — Remise.** Pour un palier dont la commission est un forfait par journée ou par session
-(annexe 1, A1.1), la commission de la commande est égale au forfait multiplié par le nombre de journées ou
-de sessions facturées et non annulées, réduit dans la proportion du prix facturé au prix public :
-commission = forfait × nombre × (prix hors taxes facturé de ces journées ou sessions ÷ prix public hors
-taxes de ces mêmes journées ou sessions), arrondie au centime inférieur, sans jamais excéder forfait ×
-nombre. Le prix public est le prix hors taxes du palier publié par la Société à la date d'émission du devis
-signé par l'entreprise ou, à défaut de devis, à la date de la commande. Lorsque plusieurs prestations sont
-vendues à un prix global, ce prix est réparti entre elles au prorata de leurs prix publics hors taxes. Un
-avoir ou un remboursement partiel diminue le prix facturé : la commission est recalculée sur le prix net
-selon la présente formule et la différence fait l'objet d'une reprise (article 4.5). Une remise consentie
-dans le seul but de réduire la commission est sans effet sur celle-ci. L'autofacture, ou le décompte qui
-l'accompagne, indique, pour chaque commande concernée, le prix public, le prix facturé et la commission qui en résulte. Le forfait de
-conférence (annexe 1, A1.4 bis) n'est jamais réduit à raison d'une remise. Le pourcentage n'est pas
-concerné : il s'applique au montant hors taxes facturé.
+**4.1 bis — Remise.** Pour une prestation dont la commission est un forfait (annexe 1, A1.1 et A1.2), la commission de la commande est égale au forfait multiplié par le nombre de journées ou de sessions facturées et non annulées, réduit dans la proportion du prix facturé au prix public : commission = forfait × nombre × (prix hors taxes facturé de ces journées ou sessions ÷ prix public hors taxes de ces mêmes journées ou sessions), arrondie au centime inférieur, **sans jamais excéder forfait × nombre**. **Toute remise, ristourne ou réduction de prix consentie au client, quelles qu'en soient la forme et la contrepartie — y compris lorsqu'elle est accordée en échange d'un témoignage ou d'un tournage —, diminue le prix facturé.** Une prestation offerte ne donne lieu à aucune commission. Lorsque plusieurs prestations sont vendues à un prix global, ce prix est réparti entre elles au prorata de leurs prix publics hors taxes et, à défaut de prix public pour l'une d'elles, selon la ventilation du devis. Un avoir ou un remboursement partiel diminue le prix facturé : la commission est recalculée sur le prix net selon la présente formule et la différence fait l'objet d'une reprise (article 4.5). **Une remise consentie dans le seul but de réduire la commission est sans effet sur celle-ci ; il en va de même d'une ventilation du prix entre la part commissionnable et les sommes non commissionnées arrêtée dans ce seul but.** L'autofacture, ou le décompte qui l'accompagne, indique, pour chaque commande concernée, le prix public, le prix facturé et la commission qui en résulte. Le pourcentage n'est pas concerné par la formule : il s'applique au montant hors taxes facturé de la part commissionnable, de sorte qu'une remise le réduit dans la même proportion.
 
-**4.2 — Fait générateur.** **La commission est acquise lorsque la prestation commandée a été réalisée et
-que la Société a encaissé l'intégralité** du prix facturé au client au titre de la commande, tous payeurs
-confondus, y compris un opérateur de compétences ou tout autre financeur — jamais à la signature, jamais à
-l'émission de la facture.
+**4.1 ter — Déduction du prix de la Journée IA.** Lorsque l'entreprise passe commande dans les **60 jours** qui suivent sa Journée IA et que la Société déduit de cette commande le prix de la Journée IA, **la commission de la Journée IA reste acquise à l'Apporteur en entier** : cette déduction n'est ni un avoir, ni un remboursement, ni une annulation de la Journée IA au sens de l'article 4.5, et ne donne lieu à aucune reprise. La commission de la commande ainsi passée est calculée sur son montant hors taxes facturé, après déduction, dans les conditions de l'annexe 1. La Société ne pratique cette déduction que dans les conditions prévues par ses conditions générales de vente, notamment lorsque la commande atteint au moins 5 000 € HT de mise en place payée en une fois, hors abonnements, avant déduction ; cette commande n'est commissionnée que si elle est signée pendant la durée de l'attribution (article 4.4).
 
-**Lorsque la prestation n'est pas réalisée, en tout ou partie, quelle qu'en soit la cause, y compris du fait de
-la Société, la commission n'est pas due, ou n'est due qu'à proportion de la part réalisée et encaissée ; si
-elle a déjà été versée, la différence fait l'objet d'une reprise (article 4.5).**
+**4.2 — Fait générateur.** **La commission est calculée une seule fois, sur le montant net hors taxes de la part commissionnable arrêté à la signature du devis ; elle n'est pas recalculée ensuite, sauf application de l'article 4.5. Elle est acquise et due dès que la Société a encaissé l'intégralité** du prix facturé au client au titre de la part commissionnable de la commande, tous payeurs confondus, même si le travail n'est pas terminé. Le versement a lieu par virement, au plus tard 30 jours après cet encaissement. Le paiement ou le défaut de paiement des sommes non commissionnées (annexe 1, A1.6) est sans effet sur l'acquisition de la commission ; lorsqu'une même facture porte une part commissionnable et des sommes non commissionnées, la commission est acquise à l'encaissement intégral de cette facture.
+
+**Le retard, l'inexécution ou l'exécution partielle de la prestation par la Société ne diffère pas la commission une fois l'encaissement intégral constaté ; la commission n'est reprise que dans les cas de l'article 4.5 (impayé, remboursement, avoir, encaissement annulé).**
 
 **4.2 bis — Contestation du client.** Tant qu'une contestation **écrite** du client portant sur la prestation
 ou sur sa facture est en cours, la commission correspondante est **suspendue** : elle n'est ni facturée ni
 versée. À l'issue de la contestation, elle est versée, ou fait l'objet d'une reprise, selon le prix finalement
 conservé par la Société. L'Apporteur est informé de la suspension et de son issue.
 
-**4.3 — Paiement partiel.** Aucune part de commission n'est due au titre d'un paiement partiel. La commission
-est facturée et versée dans les conditions de l'article 5, à compter de l'encaissement complet.
+**4.3 — Paiement partiel.** Aucune part de commission n'est due au titre d'un paiement partiel de la part commissionnable. La commission est facturée et versée dans les conditions de l'article 5, à compter de son encaissement complet ; l'autofacture est établie le jour de l'encaissement intégral, et le virement a lieu au plus tard 30 jours après cet encaissement.
 
-**4.4 — Périmètre.** **On entend par commande le devis, le bon de commande ou la convention de formation
-signé par l'entreprise attribuée ; la date retenue est celle de cette signature et, à défaut de document
-signé, la date d'émission de la première facture.**
+**4.4 — Périmètre.** **On entend par commande le devis ou le bon de commande signé par l'entreprise ; la date retenue est celle de cette signature et, à défaut de document signé, la date de la commande passée en ligne ou, à défaut, la date d'émission de la première facture.**
 
-**Une commande conclue sous condition suspensive est datée de sa signature ; elle est réputée n'avoir
-jamais existé si la condition défaille.** Il en est ainsi notamment d'une convention conclue sous la
-condition de l'accord de prise en charge d'un opérateur de compétences. La défaillance de la condition rend
-la commande caduque, et cette caducité vaut annulation au sens de l'article 3.3 du devis qu'elle constitue,
-le cas échéant. Si la partie dans l'intérêt exclusif de laquelle la condition est stipulée l'abandonne
-avant sa défaillance, la commande conserve la date de sa signature. Une convention signée par l'entreprise après la défaillance constitue une nouvelle
-commande, datée de sa propre signature, qui n'est commissionnée que si elle est signée pendant la durée de
-l'attribution ; un accord de prise en charge intervenu après la défaillance ne fait pas revivre la commande
-caduque.
+**Une commande conclue sous condition suspensive est datée de sa signature ; elle est réputée n'avoir jamais existé si la condition défaille.** La défaillance de la condition rend la commande caduque, et cette caducité vaut annulation au sens de l'article 3.3 du devis qu'elle constitue, le cas échéant. Si la partie dans l'intérêt exclusif de laquelle la condition est stipulée l'abandonne avant sa défaillance, la commande conserve la date de sa signature. Une commande signée par l'entreprise après la défaillance constitue une nouvelle commande, datée de sa propre signature, qui n'est commissionnée que si elle est signée pendant la réservation provisoire ou pendant la durée de l'attribution.
 
-Sont commissionnées toutes les commandes de l'entreprise attribuée **signées pendant la durée de
-l'attribution**, pour les prestations figurant à la grille — quel que soit leur nombre. Une commande signée entre la
-déclaration et la confirmation de l'attribution est commissionnée si l'attribution est ensuite confirmée,
-y compris tacitement ; elle est réputée signée pendant la durée de l'attribution. La Société ne demande à
-l'entreprise de confirmer aucun échange à cette occasion : l'attribution suit les seules règles de
-l'article 3.2. **Cette commission
-rémunère la seule mise en relation initiale, dont le prix est ainsi forfaitisé sur la durée de
-l'attribution ; elle ne rémunère aucun suivi, aucune intervention ni aucune mission de l'Apporteur
-postérieure à sa déclaration, dont le contrat ne met aucune à sa charge (article 2.2).**
+Sont commissionnées toutes les commandes de l'entreprise attribuée **signées pendant la durée de l'attribution**, pour les prestations figurant à la grille — quel que soit leur nombre. **Est également commissionnée la commande signée pendant la réservation provisoire : elle vaut validation (article 3.2), et l'attribution court alors pour 6 mois à compter de sa signature (article 3.4).** Une commande signée entre la déclaration et un rendez-vous qui valide ensuite l'attribution est réputée signée pendant la durée de l'attribution. **La Société ne demande à l'entreprise de confirmer aucun échange avec l'Apporteur, ni à l'occasion d'une commande ni à l'occasion d'un rendez-vous, et ne lui fait part d'aucune vérification le concernant : la validation suit les seules règles de l'article 3.2.** **Cette commission rémunère la seule mise en relation initiale, dont le prix est ainsi forfaitisé sur la durée de l'attribution ; elle ne rémunère aucun suivi, aucune intervention ni aucune mission de l'Apporteur postérieure à sa déclaration, dont le contrat ne met aucune à sa charge (article 2.2).**
 
-C'est la **date de signature de la commande** qui ouvre le droit, et elle seule. Une commande signée dans la
-durée de l'attribution reste commissionnée même si son encaissement intervient après l'expiration de celle-ci,
-dans les conditions de l'article 4.2.
+C'est la **date de signature de la commande** qui ouvre le droit, et elle seule. Une commande signée pendant la réservation provisoire ou pendant la durée de l'attribution reste commissionnée même si son encaissement intervient après leur expiration, dans les conditions de l'article 4.2.
 
-À l'inverse, une commande signée **après** l'expiration de l'attribution n'ouvre aucun droit, y compris
-lorsque l'entreprise est devenue cliente à la suite d'une déclaration de l'Apporteur.
+À l'inverse, une commande signée **après** la fin de la réservation provisoire non validée, ou après l'expiration de l'attribution, n'ouvre aucun droit, y compris lorsque l'entreprise est devenue cliente à la suite d'une déclaration de l'Apporteur.
 
-Lorsqu'une prestation est financée en tout ou partie par un tiers, la commission porte sur le **total hors
-taxes de la prestation**, quel que soit le payeur.
+Lorsqu'une prestation est payée en tout ou partie par un tiers, la commission porte sur le **total hors taxes de la part commissionnable**, quel que soit le payeur.
 
-**4.5 — Annulation d'un encaissement, remboursement, avoir.** Un avoir ou un remboursement partiel
-diminue le prix facturé : la commission est recalculée sur le prix net, selon l'article 4.1 bis pour un
-forfait ou sur le montant hors taxes net pour un pourcentage, et la différence fait l'objet d'une reprise.
-Lorsqu'un encaissement ayant donné lieu à
-commission est **annulé, rétracté ou restitué, quelle qu'en soit la cause** — remboursement au client,
-avoir imputé sur la facture, rejet ou révocation d'un prélèvement ou d'un virement, litige tranché en
-faveur du client, ou toute autre restitution des fonds, **y compris une restitution consentie sans
-réclamation du client, à titre de geste commercial, ou résultant de l'inexécution par la Société de ses
-propres obligations** —, la commission correspondante fait l'objet d'une reprise. **Toutefois, une
-annulation, un remboursement ou un avoir consenti dans le seul but de priver l'Apporteur de sa commission est
-sans effet sur celle-ci** (article 1304-3 du code civil), comme la remise de l'article 4.1 bis. **La reprise est constatée par un avoir d'autofacture**, établi au nom et pour le compte de
-l'Apporteur (annexe 2) dès que la Société constate l'annulation : il porte la mention
-« Autofacturation — avoir », fait référence à l'autofacture d'origine (numéro et date) et indique la commission corrigée, la taxe sur la valeur ajoutée correspondante et la
-somme reprise. **L'autofacture d'origine n'est jamais modifiée, et aucune autofacture n'est émise pour un
-montant diminué d'une reprise.** L'avoir s'impute par compensation conventionnelle (article 1348-2 du code civil) sur la prochaine somme à verser, dans les conditions du
-présent article ; le décompte qui accompagne l'autofacture de cette commission indique l'avoir imputé et la
-somme virée.
+**4.5 — Annulation d'un encaissement, remboursement, avoir.** Un avoir ou un remboursement partiel diminue le prix facturé : la commission est recalculée sur le prix net, selon l'article 4.1 bis pour un forfait ou sur le montant hors taxes net pour un pourcentage, et la différence fait l'objet d'une reprise. Lorsqu'un encaissement ayant donné lieu à commission est **annulé, rétracté ou restitué, quelle qu'en soit la cause** — impayé, remboursement au client, avoir imputé sur la facture, rejet ou révocation d'un prélèvement ou d'un virement, litige tranché en faveur du client, ou toute autre restitution des fonds, **y compris une restitution consentie sans réclamation du client, à titre de geste commercial, ou résultant de l'inexécution par la Société de ses propres obligations** —, la commission correspondante fait l'objet d'une reprise. **Il en va ainsi du remboursement de la Journée IA au titre de la garantie que la Société consent à ses clients (annexe 1, A1.1). La déduction prévue à l'article 4.1 ter n'est pas un remboursement et ne donne lieu à aucune reprise.** **Toutefois, une annulation, un remboursement ou un avoir consenti dans le seul but de priver l'Apporteur de sa commission est sans effet sur celle-ci** (article 1304-3 du code civil), comme la remise de l'article 4.1 bis. **La reprise est constatée par un avoir d'autofacture**, établi au nom et pour le compte de l'Apporteur (annexe 2) dès que la Société constate l'annulation : il porte la mention « Autofacturation — avoir », fait référence à l'autofacture d'origine (numéro et date) et indique la commission corrigée, la taxe sur la valeur ajoutée correspondante et la somme reprise. **L'autofacture d'origine n'est jamais modifiée, et aucune autofacture n'est émise pour un montant diminué d'une reprise.** L'avoir s'impute par compensation conventionnelle (article 1348-2 du code civil) sur la prochaine somme à verser, dans les conditions du présent article ; le décompte qui accompagne l'autofacture de cette commission indique l'avoir imputé et la somme virée.
 
 La reprise ne peut intervenir que dans les vingt-quatre mois suivant **la date de l'annulation** — et non celle
 de l'encaissement d'origine, une annulation pouvant survenir longtemps après lui.
@@ -671,12 +491,7 @@ ainsi que les sommes versées sur des coordonnées bancaires erronées qu'il a d
 Il est libre de souscrire une assurance de responsabilité civile professionnelle et d'en remettre l'attestation
 à la Société ; aucune n'est exigée au titre du présent contrat.
 
-**6.5 — Déclarations et paiements propres à l'Apporteur.** L'Apporteur fait son affaire
-personnelle de l'ensemble des déclarations, cotisations, contributions et impositions dues à raison de son
-activité et des sommes qui lui sont versées en exécution des présentes, et en supporte seul le paiement. Il en va de même des obligations lui incombant en qualité d'employeur, le cas échéant. La Société
-n'est tenue pour son compte d'aucune retenue, d'aucun reversement et d'aucune déclaration, à l'exception de
-celles que la loi met à sa charge, notamment la déclaration prévue à l'article 240 du code général des
-impôts, dont un récapitulatif est mis à sa disposition.
+**6.5 — Déclarations et paiements propres à l'Apporteur.** **La commission est un montant brut, exprimé hors taxes : les cotisations et contributions sociales, les impôts et toutes les charges dus à raison de l'activité de l'Apporteur sont à sa seule charge et ne s'ajoutent jamais à la commission.** L'Apporteur fait son affaire personnelle de l'ensemble des déclarations, cotisations, contributions et impositions dues à raison de son activité et des sommes qui lui sont versées en exécution des présentes, et en supporte seul le paiement. Il en va de même des obligations lui incombant en qualité d'employeur, le cas échéant. La Société n'est tenue pour son compte d'aucune retenue, d'aucun reversement et d'aucune déclaration, à l'exception de celles que la loi met à sa charge, notamment la déclaration prévue à l'article 240 du code général des impôts, dont un récapitulatif est mis à sa disposition.
 
 **6.6 — Absence de travail dissimulé.** L'Apporteur déclare ne pas se trouver dans les situations définies aux
 articles L.8221-3 et L.8221-5 du code du travail, n'avoir recours à aucun travail dissimulé et n'employer aucun travailleur étranger dépourvu
@@ -692,16 +507,9 @@ articles L.8222-1 à L.8222-5 ou L.8254-1 du code du travail imputable à un man
 professionnelles d'une personne physique. Il garantit avoir informé cette personne, **dans les conditions
 de l'article 13 du règlement (UE) 2016/679**, de la transmission de ses coordonnées et de sa finalité.
 
-**7.2** La Société est responsable du traitement de ces données. Elle en informe la personne concernée dans
-les conditions de l'article 14 du règlement (UE) 2016/679, au plus tard à la première communication avec elle et en tout état de cause dans le délai d'un mois (article 14, 3 du règlement), et les conserve pour la durée nécessaire au suivi de l'affaire et aux finalités de l'article 3.5 alinéa
-4, dans la limite des durées de conservation qu'elle porte à la connaissance de la personne ; elle l'informe
-de son droit de s'opposer à tout moment à la prospection. La Société conserve en outre ces données dans son
-outil de gestion de la relation client, à des fins de prospection et de gestion de sa relation commerciale
-avec l'entreprise, aussi longtemps qu'elle poursuit cette activité, sans échéance fixée à l'avance. La
-personne concernée peut à tout moment s'opposer à la prospection et demander l'effacement de ses données ;
-la Société les met à jour ou les efface dès qu'elle apprend qu'elles ne sont plus exactes, notamment
-lorsque la personne n'exerce plus la fonction pour laquelle elles ont été recueillies. L'Apporteur en
-informe la personne lorsqu'il recueille ses coordonnées.
+**7.2** La Société est responsable du traitement de ces données. **Elle en informe la personne concernée dans les conditions de l'article 14 du règlement (UE) 2016/679, dans le premier message qu'elle lui adresse, au plus tard dans le délai d'un mois à compter de l'enregistrement de la déclaration (article 14, 3 du règlement) ; ce message lui indique que ses coordonnées lui ont été transmises par l'Apporteur. Aucun message d'information distinct n'est envoyé.** Ce message indique l'identité de la Société, les données reçues, leur source — l'Apporteur, désigné par ses prénom et nom —, les finalités et la base juridique du traitement, sa durée, les droits de la personne, dont celui de s'opposer à tout moment à la prospection et de demander l'effacement, et le moyen de les exercer. **Il ne fait état d'aucune vérification relative à l'Apporteur et ne demande à la personne de confirmer aucun échange avec lui.**
+
+La Société traite ces données pour le suivi de la déclaration, le rattachement des rendez-vous et des commandes à celle-ci (article 3.2), la tenue du registre de l'article 3.5 et sa propre prospection. Elle les conserve pour la durée nécessaire à ces finalités, dans la limite des durées de conservation qu'elle porte à la connaissance de la personne. La Société conserve en outre ces données dans son outil de gestion de la relation client, à des fins de prospection et de gestion de sa relation commerciale avec l'entreprise, aussi longtemps qu'elle poursuit cette activité, sans échéance fixée à l'avance. La personne concernée peut à tout moment s'opposer à la prospection et demander l'effacement de ses données ; la Société les met à jour ou les efface dès qu'elle apprend qu'elles ne sont plus exactes, notamment lorsque la personne n'exerce plus la fonction pour laquelle elles ont été recueillies. L'Apporteur en informe la personne lorsqu'il recueille ses coordonnées.
 
 **7.3** L'Apporteur ne collecte ni ne transmet aucune donnée relevant de l'article 9 du même règlement.
 
@@ -793,19 +601,12 @@ objet et donnant naissance à une attribution bornée et non reconductible (arti
 
 ### Article 11 — Résiliation 
 
-**11.1** Chaque partie peut résilier le contrat à tout moment, par écrit et sans avoir à motiver sa
-décision, moyennant un préavis de **30 jours.
-Ce préavis est stipulé en considération de la durée prévisible de la relation et sans préjudice de l'article L.442-1, II du code de commerce.
-Les parties n'ayant pas entendu conclure un contrat d'agence commerciale (article 1.4), les articles L.134-11 et suivants du même code ne s'appliquent pas.** Il n'est pas dû en cas de résiliation fondée
-sur l'article 11.2 ni en cas de force majeure.
+**11.1** Chaque partie peut résilier le contrat à tout moment, sans avoir à motiver sa décision, **par courrier électronique adressé dans les conditions de l'article 20**, moyennant un préavis de **30 jours** à compter de son envoi. **Ce préavis est stipulé en considération de la durée prévisible de la relation et sans préjudice de l'article L.442-1, II du code de commerce. Les parties n'ayant pas entendu conclure un contrat d'agence commerciale (article 1.4), les articles L.134-11 et suivants du même code ne s'appliquent pas.** Il n'est pas dû en cas de résiliation fondée sur l'article 11.2 ni en cas de force majeure. La Société accuse réception de la résiliation notifiée par l'Apporteur, par courrier électronique indiquant la date de fin du contrat ; l'absence de cet accusé est sans effet sur la résiliation.
 
-**11.1 bis** Pendant le préavis, le contrat continue de produire ses effets : l'Apporteur peut déclarer de
-nouvelles entreprises, et les commandes signées pendant le préavis ouvrent droit à commission dans les
-conditions de l'article 12.3. Les déclarations en attente et les attributions provisoires à la date de fin
-du contrat sont traitées selon l'article 12.1.
+**11.1 bis** Pendant le préavis, le contrat continue de produire ses effets : l'Apporteur peut déclarer de nouvelles entreprises, les rendez-vous qui ont lieu pendant le préavis valident l'attribution dans les conditions de l'article 3.2, et les commandes signées pendant le préavis ouvrent droit à commission dans les conditions de l'article 12.3. Les déclarations en attente et les réservations provisoires à la date de fin du contrat sont traitées selon l'article 12.1.
 
 **11.2** En cas d'inexécution par l'Apporteur de ses obligations au titre des articles 3.7, 6.1, 6.3, 6.5,
-6.6, 7, 8, 9, 22 ou 22 bis,
+6.6, 7, 8, 9, 22 ou 22 bis.4,
 la Société peut résilier le contrat sans préavis, par écrit et par décision motivée, après mise en demeure
 d'y remédier restée sans effet pendant quinze jours. La mise en demeure n'est pas requise lorsque
 l'inexécution est irrémédiable. Il en va de même en cas de déclaration inexacte au titre de l'article 23.
@@ -821,24 +622,13 @@ et de** la réparation du préjudice causé par l'inexécution d'une obligation 
 
 ### Article 12 — Effets de la fin du contrat 
 
-**12.1** Les attributions provisoires et les déclarations en attente sont annulées à la date de fin du
-contrat ; cette annulation est sans effet sur les commandes déjà signées, qui demeurent commissionnées selon
-l'article 12.3. Les attributions définitives non converties prennent fin ; les entreprises correspondantes
-redeviennent librement déclarables, sans préjudice de ces mêmes commandes.
+**12.1** Les réservations provisoires et les déclarations en attente prennent fin à la date de fin du contrat ; un rendez-vous qui a lieu après cette date est sans effet, même s'il a été pris avant elle. Cette fin est sans effet sur les commandes déjà signées, y compris pendant une réservation provisoire, qui demeurent commissionnées selon l'article 12.3. Les attributions définitives non converties prennent fin ; les entreprises correspondantes redeviennent librement déclarables, sans préjudice de ces mêmes commandes.
 
 **12.2** **Les autofactures émises avant la fin du contrat restent payables à leur échéance. Les commissions
 acquises à cette date et non encore facturées sont facturées et versées** dans les conditions des
 articles 5.1 et 5.3, sans montant minimum, sous la seule réserve de l'article 5.4.
 
-**12.3** Les commandes signées avant la fin du contrat, ou pendant le préavis, continuent d'ouvrir droit à
-commission, y compris lorsque l'attribution n'était pas encore confirmée à cette date, sauf annulation ou
-extinction de l'attribution au titre des articles 3.3 ou 3.7. Cette commission devient acquise dans les
-conditions de l'article 4.2 et est facturée et versée dans les conditions des articles 5.1 et 5.3 (article
-4.3), quelle que soit la date de l'encaissement complet. La Société établit les autofactures et, le cas échéant, les avoirs, selon
-les articles 4.5 et 5, jusqu'à extinction complète de ces droits. L'Apporteur reçoit par courrier
-électronique ses autofactures, ses avoirs, leurs décomptes et le motif de tout blocage, jusqu'à l'extinction de ses droits ; son lien personnel
-est révoqué à la fin du contrat. Il peut obtenir sur simple demande à contact@axion-ia.com la copie de son
-contrat signé et de ses autofactures.
+**12.3** Les commandes signées avant la fin du contrat, ou pendant le préavis, continuent d'ouvrir droit à commission, y compris lorsqu'elles ont été signées pendant une réservation provisoire (article 4.4), sauf annulation ou extinction de la réservation ou de l'attribution au titre des articles 3.3 ou 3.7. Cette commission devient acquise dans les conditions de l'article 4.2 et est facturée et versée dans les conditions des articles 5.1 et 5.3 (article 4.3), quelle que soit la date de l'encaissement complet. La Société établit les autofactures et, le cas échéant, les avoirs, selon les articles 4.5 et 5, jusqu'à extinction complète de ces droits. L'Apporteur reçoit par courrier électronique ses autofactures, ses avoirs, leurs décomptes et le motif de tout blocage, jusqu'à l'extinction de ses droits ; son lien personnel est révoqué à la fin du contrat. Il peut obtenir sur simple demande à contact@axion-ia.com la copie de son contrat signé et de ses autofactures.
 
 **12.4** Si le solde de l'Apporteur est négatif à la suite de reprises ou d'avoirs de l'article 5.7, ce solde
 s'impute par compensation conventionnelle (article 1348-2 du code civil) sur les commissions à venir.
@@ -867,22 +657,15 @@ facturation ayant pris fin, la facture est alors établie dans les conditions de
 
 ### Article 13 — Modification
 
-**13.1** Toute modification du présent contrat ou de la grille annexée fait l'objet d'un avenant soumis à
-la signature de l'Apporteur. La publication de la commission d'un produit créé après la signature (annexe 1,
-A1.7) n'est pas une modification du contrat.
+**13.1** Toute modification du présent contrat, de la grille annexée, **des prix de référence qu'elle porte** ou de la fiche des commissions (annexe 1 bis) fait l'objet d'un avenant soumis à la signature de l'Apporteur. La publication de la commission d'un produit créé après la signature (annexe 1, A1.8) n'est pas une modification du contrat. La Société demeure libre de fixer les prix qu'elle pratique envers ses clients ; ces prix sont sans effet sur les prix de référence de l'annexe 1 tant qu'un avenant ne les a pas modifiés.
 
-**13.2** Tant que l'Apporteur n'a pas signé un avenant, **les conditions de la version qu'il a signée
-continuent de s'appliquer** — à ses attributions en cours comme à ses déclarations nouvelles, ainsi qu'aux
-commissions correspondantes.
+**13.2** Tant que l'Apporteur n'a pas signé un avenant, **les conditions de la version qu'il a signée continuent de s'appliquer** — à ses réservations et attributions en cours comme à ses déclarations nouvelles, ainsi qu'aux commissions correspondantes.
 
-**13.3** Le refus ou l'absence de signature d'un avenant **n'est pas un manquement** et n'emporte par
-lui-même aucune conséquence : l'Apporteur conserve l'intégralité de ses droits sous la version qu'il a
-signée, et demeure libre de déclarer de nouvelles entreprises. Si la Société entend ne plus poursuivre la
-relation aux conditions antérieures, il lui appartient de résilier le contrat selon l'article 11.1.
+**13.3** Le refus ou l'absence de signature d'un avenant **n'est pas un manquement** et n'emporte par lui-même aucune conséquence : l'Apporteur conserve l'intégralité de ses droits sous la version qu'il a signée, et demeure libre de déclarer de nouvelles entreprises. Si la Société entend ne plus poursuivre la relation aux conditions antérieures, il lui appartient de résilier le contrat selon l'article 11.1.
 
-**13.4** Les modifications imposées par la loi ou par un acte réglementaire, notamment les mentions de
-facturation et les seuils ou taux légaux, s'appliquent de plein droit à compter de leur entrée en vigueur,
-sans avenant, dans la seule mesure où elles l'exigent.
+**13.4** Les modifications imposées par la loi ou par un acte réglementaire, notamment les mentions de facturation et les seuils ou taux légaux, s'appliquent de plein droit à compter de leur entrée en vigueur, sans avenant, dans la seule mesure où elles l'exigent.
+
+**13.5 — Passage d'une version antérieure à la présente version.** Lorsque l'Apporteur était lié à la Société par une version antérieure du contrat, la présente version ne s'applique qu'aux **déclarations enregistrées à compter de sa prise d'effet**, c'est-à-dire de la date à laquelle la Société lui notifie avoir enregistré son acceptation. **Les déclarations enregistrées auparavant — qu'elles aient donné lieu à une attribution provisoire, à une attribution confirmée ou à une mise en attente —, ainsi que les commandes et les commissions qui s'y rattachent, restent régies jusqu'à leur extinction par la version sous laquelle elles ont été faites, grille comprise.** L'entreprise dont l'attribution née sous la version antérieure a pris fin ne peut être déclarée à nouveau que dans les conditions de la présente version. Entre Apporteurs, l'ordre des horodatages de l'article 3.5 s'applique quelle que soit la version du contrat de chacun.
 
 ---
 
@@ -929,15 +712,7 @@ cession ne peut modifier.
 
 ### Article 17 — Intégralité et hiérarchie
 
-Le contrat et ses annexes expriment l'intégralité de l'accord et remplacent tout échange antérieur. En cas
-de contradiction : le contrat, puis l'annexe 1, puis l'annexe 2 ; aucun contenu de l'espace en ligne, des
-documents de présentation ou d'un courrier électronique, **ni aucun support public ou commercial de la
-Société, notamment les pages de son site présentant les commissions,** n'a valeur contractuelle, **à
-l'exception des documents que le présent contrat désigne — autofactures, avoirs et décomptes, notifications de
-l'article 20, décisions relatives aux attributions et extraits du registre de l'article 3.5 —, qui font
-partie de l'exécution du contrat, et de la grille de référence publiée, pour les seuls produits créés après la
-signature (annexe 1, A1.7). La présente stipulation ne limite ni n'exclut le devoir d'information de
-l'article 1112-1 du code civil.**
+Le contrat et ses annexes expriment l'intégralité de l'accord et remplacent tout échange antérieur. En cas de contradiction : le contrat, puis l'annexe 1, puis l'annexe 1 bis, puis l'annexe 2 ; **la fiche des commissions (annexe 1 bis) illustre l'annexe 1 et ne peut ni y ajouter ni en retrancher**. Aucun contenu de l'espace en ligne, des documents de présentation ou d'un courrier électronique, **ni aucun support public ou commercial de la Société, notamment les pages de son site présentant les commissions,** n'a valeur contractuelle, **à l'exception des documents que le présent contrat désigne — autofactures, avoirs et décomptes, notifications de l'article 20, décisions relatives aux réservations et aux attributions et extraits du registre de l'article 3.5 —, qui font partie de l'exécution du contrat, et de la grille de référence publiée, pour les seuls produits créés après la signature (annexe 1, A1.8). La présente stipulation ne limite ni n'exclut le devoir d'information de l'article 1112-1 du code civil.**
 
 ---
 
@@ -996,31 +771,15 @@ usage et détruit ou restitue les documents en sa possession.
 
 ### Article 22 bis — Communication et image de marque
 
-**22 bis.1 — Communication autorisée.** L'Apporteur peut faire connaître les prestations de la Société par
-tout moyen de communication (vidéos, formats courts, publications sur les réseaux sociaux, visuels,
-publicités, supports imprimés), à condition de respecter la charte de marque remise par la Société
-(couleurs, typographies, logos, ton et règles de présentation) et les articles 8.2 et 8.3.
+**22 bis.1 — Liberté de communication.** L'Apporteur fait connaître les prestations de la Société s'il le souhaite, par les moyens, sur les supports et au rythme de son choix. Il n'y est jamais tenu et ne soumet aucune communication à l'accord préalable de la Société. Seules s'appliquent les limites des articles 8.2, 8.3 et 22 bis.5.
 
-**22 bis.2 — Usage de la marque.** Pour ces seules communications, la Société concède à l'Apporteur un
-droit d'usage personnel, non exclusif, gratuit et révocable de sa dénomination et de son logo, dans les
-formes prévues par la charte, pour la durée du contrat. Ce droit ne s'étend ni à la modification du logo,
-ni au dépôt d'une marque ou d'un nom de domaine, ni à la création d'un compte ou d'une page au nom de la
-Société (article 22).
+**22 bis.2 — Licence de marque.** Pour ces communications, la Société concède à l'Apporteur un droit d'usage personnel, non exclusif, gratuit et révocable de sa dénomination et de son logo, pour la durée du contrat. Lorsqu'il reproduit ces signes, l'Apporteur le fait dans les formes de la charte de marque remise par la Société (couleurs, typographies, versions du logo) ; la charte ne régit que l'usage des signes, et non le contenu, le format ou la méthode de la communication. Ce droit ne s'étend ni à la modification du logo, ni au dépôt d'une marque ou d'un nom de domaine, ni à la création d'un compte ou d'une page au nom de la Société (article 22).
 
-**22 bis.3 — Qualité et transparence.** Chaque communication est soignée et conforme à l'image de la
-Société. L'Apporteur s'y présente comme apporteur d'affaires indépendant, jamais comme salarié ou
-représentant de la Société. Il n'y annonce aucun prix, remise, délai, résultat ou financement (article
-8.3), et ne fait aucune affirmation inexacte sur la Société ou ses prestations.
+**22 bis.3 — Transparence.** Dans ses communications, l'Apporteur se présente comme apporteur d'affaires indépendant, jamais comme salarié ou représentant de la Société. Il n'y annonce aucun prix, remise, délai, résultat ou financement (article 8.3), et ne fait aucune affirmation inexacte sur la Société ou ses prestations.
 
-**22 bis.4 — Contrôle de la Société.** La Société peut à tout moment demander la modification ou le
-retrait d'une communication qu'elle juge non conforme à sa charte ou à son image ; l'Apporteur s'exécute
-dans les quarante-huit heures, sans indemnité. Elle peut aussi suspendre ou retirer pour l'avenir, par
-simple écrit, le droit d'usage de l'article 22 bis.2 ; l'Apporteur cesse alors toute communication
-mentionnant la Société.
+**22 bis.4 — Retrait de la licence.** La Société peut, par un écrit qui en indique le motif, retirer le droit d'usage de l'article 22 bis.2 pour une communication qui reproduit ses signes en méconnaissance de la charte ou qui contrevient aux articles 8.2 ou 8.3, ou le retirer pour l'avenir. L'Apporteur cesse alors, dans les meilleurs délais et au plus tard sous sept jours, d'utiliser la dénomination et le logo de la Société dans la communication concernée, sans indemnité. Ce retrait ne porte que sur l'usage des signes de la Société ; il n'est ni un avertissement ni une mesure disciplinaire.
 
-**22 bis.5 — Pratiques interdites.** Restent interdits en toutes circonstances l'achat de mots-clés ou de
-référencement reprenant le nom de la Société, les envois de messages en masse ou automatisés non
-sollicités, et toute communication relative au compte personnel de formation.
+**22 bis.5 — Pratiques interdites.** Restent interdits en toutes circonstances l'achat de mots-clés ou de référencement reprenant le nom de la Société, les envois de messages en masse ou automatisés non sollicités, et toute communication relative au compte personnel de formation.
 
 ---
 
@@ -1062,27 +821,29 @@ Le présent contrat est rédigé en langue française, seule version faisant foi
 
 ---
 
-## Annexe 1 — Grille de commissions du présent contrat, version 2 
+## Annexe 1 — Grille de commissions du présent contrat, version 3
 
-### A1.1 — Formations collectives
+*Les prix de référence ci-dessous sont hors taxes. Ils n'évoluent, comme les commissions, que par avenant (articles 4.1 et 13). Les commissions sont exprimées hors taxes (article 4.7) et sont des montants bruts (article 6.5). Toute commission est calculée une seule fois à la signature du devis et acquise dès que la part commissionnable de la commande a été payée en totalité (article 4.2) ; elle est reprise en cas d'impayé, d'annulation ou de remboursement (article 4.5).*
 
-*Une journée vendue est une journée de formation facturée et non annulée ; une demi-journée est une
-formation de quatre heures. Les prix publics du tableau sont ceux de la date de la version ; le prix public
-retenu pour une commande est celui de l'article 4.1 bis.*
+### A1.1 — Journée IA
 
-*Forfait de 500 € HT par journée de formation vendue, au prix public, réduit au prorata en cas de remise
-(article 4.1 bis). La commission suit le nombre de journées de la commande : chaque palier porte sa propre
-durée (une demi-journée, une journée, deux jours) et, lorsqu'une même commande porte plusieurs sessions d'un
-même palier, la commission est due pour chacune d'elles. Prix par groupe de 2 à 15 participants.*
+*Forfait de 500 € HT par Journée IA vendue et payée au prix de référence de 1 490 € HT. Lorsque le prix facturé est inférieur, le forfait est réduit dans la même proportion (article 4.1 bis) : commission = 500 € × prix hors taxes facturé ÷ 1 490 €. La commission n'excède jamais 500 € par Journée IA.*
 
-*Exemple : une formation générale d'un jour vendue 1 520 € HT au lieu de 1 900 € (remise de 20 %) donne une
-commission de 500 € × 1 520 ÷ 1 900 = 400 €. Vendue au prix public ou plus cher, elle donne 500 €.*
+| Prestation | Prix de référence HT | Commission du présent contrat |
+| --- | --- | --- |
+| Journée IA | 1 490 € | 500 € |
 
-*Exemple de plusieurs journées : cinq journées de formation générale vendues 9 500 € HT (au prix public)
-donnent 5 × 500 € = 2 500 € ; vendues 8 550 € HT (remise de 10 %), elles donnent 2 500 € × 8 550 ÷ 9 500 =
-2 250 €. Aucune limite n'est fixée au nombre de journées.*
+*Exemples : une Journée IA payée 1 490 € HT donne 500 € ; payée 1 341 € HT (10 % de moins), 450 € ; payée 1 192 € HT (20 % de moins), 400 € ; payée plus de 1 490 € HT, 500 € ; offerte, rien ; payée en partie seulement, encore rien.*
 
-| Formation | Durée | Prix public HT | Commission du présent contrat |
+**Commande passée après la Journée IA.** Lorsque l'entreprise passe commande dans les 60 jours qui suivent sa Journée IA et que la Société déduit de cette commande les 1 490 € HT de la Journée IA, l'Apporteur conserve ses 500 € en entier (article 4.1 ter).
+
+**Garantie.** La Société vend la Journée IA à ses clients avec la garantie suivante : « Si les gains identifiés dans votre rapport n’atteignent pas 3 fois le prix HT de la journée, vous êtes remboursé sur demande écrite. » (article 47.10 des conditions générales de vente). Les gains sont chiffrés dans le rapport écrit remis sous 10 jours ouvrés ; ils comptent aussi les erreurs, retards et pénalités évités, et jamais les ventes espérées. Le remboursement n'est pas automatique : le client le demande par écrit dans les 30 jours qui suivent la remise du rapport, la Société répond sous 15 jours (sans réponse, la demande est acceptée) et le virement a lieu sous 30 jours après l'acceptation. Cette garantie est un engagement de la Société envers son client ; l'Apporteur ne la présente ni ne la commente (article 8.3). Le remboursement d'une Journée IA à ce titre donne lieu à la reprise de la commission correspondante (article 4.5).
+
+### A1.2 — Formations collectives
+
+*Forfait par formation vendue et payée au prix de référence, réduit au prorata en cas de remise (article 4.1 bis). Une demi-journée est une formation de quatre heures. Lorsqu'une même commande porte plusieurs sessions, la commission est due pour chacune d'elles. Prix par groupe de 2 à 15 participants.*
+
+| Formation | Durée | Prix de référence HT | Commission du présent contrat |
 | --- | --- | --- | --- |
 | Formation générale | 4 heures | 1 200 € | 250 € |
 | Formation générale | 1 jour | 1 900 € | 500 € |
@@ -1092,123 +853,57 @@ donnent 5 × 500 € = 2 500 € ; vendues 8 550 € HT (remise de 10 %), elles 
 | Formation par secteur | 1 jour | 2 200 € | 500 € |
 | Formation par secteur | 2 jours | 3 900 € | 1 000 € |
 
-### A1.2 — Accompagnement individuel et coaching (1-to-1)
+*Exemple : une formation d'un jour payée 1 520 € HT au lieu de 1 900 € donne 500 € × 1 520 ÷ 1 900 = 400 €.*
 
-*30 % du montant hors taxes facturé.*
+### A1.3 — Accompagnement individuel
 
-| Prestation | Durée | Prix public HT | Commission du présent contrat |
-| --- | --- | --- | --- |
-| Accompagnement dirigeant | 1 jour | 1 390 € | 30 % |
-| Accompagnement dirigeant | 2 jours | 2 590 € | 30 % |
-| Accompagnement collaborateur | 1 jour | 990 € | 30 % |
-| Accompagnement collaborateur | 2 jours | 1 830 € | 30 % |
-| Coaching individuel | à la séance | à partir de 790 € | 30 % |
+*30 % du montant hors taxes facturé de l'accompagnement individuel vendu à la séance ou à la journée.*
 
-### A1.3 — Audits (11 paliers)
+### A1.4 — Audits vendus seuls
 
-*Grille publiée : **30 % du montant hors taxes facturé**.*
+***30 % du montant hors taxes facturé** de tout audit vendu seul, quel qu'en soit le palier. Un audit compris dans une Journée IA ou dans une autre prestation ne donne lieu à aucune commission distincte.*
 
-| Palier | Prix de référence HT | Commission du présent contrat |
-| --- | --- | --- |
-| Audit sur place | à partir de 1 190 € | 30 % |
-| Audit sur place — sur site | à partir de 1 190 € | 30 % |
-| Audit ciblé | à partir de 1 900 € | 30 % |
-| Audit ciblé — solo | à partir de 1 900 € | 30 % |
-| Audit ciblé — standard | à partir de 2 900 € | 30 % |
-| Audit ciblé — avancé | à partir de 3 900 € | 30 % |
-| Audit stratégique PME | à partir de 1 900 € | 30 % |
-| Audit stratégique PME — 20 à 50 salariés | à partir de 4 900 € | 30 % |
-| Audit stratégique PME — 50 à 250 salariés | à partir de 9 900 € | 30 % |
-| Audit stratégique ETI | à partir de 1 900 € | 30 % |
-| Audit stratégique ETI — base | à partir de 1 900 € | 30 % |
+*Exemple : un audit vendu seul 2 900 € HT et payé en totalité donne 870 €.*
 
-### A1.4 — Implémentations (5 paliers)
+### A1.5 — Automatisations, intégrations et développements
 
-*Grille publiée : **15 % du montant hors taxes facturé**. Les quatre derniers paliers
-étant vendus sur devis, seul le pourcentage y est applicable ; c'est aussi là que se règle la dégressivité,
-en portant un taux plus bas sur les grands programmes.*
+***15 % du montant hors taxes facturé** : (a) des frais de mise en service ; (b) des ventes en une fois.* Une vente en une fois s'entend d'une prestation dont le prix est dû une seule fois, quel que soit l'échelonnement de son paiement. Entrent dans la présente catégorie les automatisations, les intégrations et tout développement effectué par la Société pour l'entreprise.
 
-| Palier | Prix de référence HT | Commission du présent contrat |
-| --- | --- | --- |
-| Pilote IA | 990 € à 4 900 € | 15 % |
-| Mission PME | sur devis | 15 % |
-| Mission ETI | sur devis | 15 % |
-| Grand programme | sur devis | 15 % |
-| IA custom d'entreprise (4 à 12 semaines) | sur devis | 15 % |
+*Exemples : une mise en service facturée 6 000 € HT et payée en totalité donne 900 €. Une commande de 4 000 € HT de mise en service et de 150 € HT par mois de maintenance donne 600 €, calculés sur les 4 000 € seulement.*
 
-### A1.4 bis — Conférences
+### A1.6 — Sommes et prestations non commissionnées
 
-*Forfait de 500 € HT par conférence signée et payée.*
+**Ne donnent lieu à aucune commission, quelles que soient leur périodicité et la durée de l'engagement du client, y compris lorsqu'elles sont payées d'avance pour une période :**
 
-Une conférence s'entend d'une intervention de la Société, en qualité d'orateur, devant une audience désignée
-par l'entreprise ou par l'organisateur qui la commande, à une date et en un lieu (ou par visioconférence)
-fixés à la commande ; elle ne comprend ni une formation (A1.1) ni une intervention sur demande (A1.5).
-
-La commission est de **500 € hors taxes par conférence figurant à la commande**, quel que soit le nombre de
-participants. Elle n'est pas réduite à raison d'une remise : l'article 4.1 bis ne lui est
-pas applicable. Elle n'excède jamais le prix hors taxes facturé de la commande. Elle est acquise lorsque la
-Société a encaissé l'intégralité du prix facturé de la commande (articles 4.2 et 4.3) ; la reprise
-(article 4.5) et le parrainage (article 4.6) lui sont applicables comme aux autres commissions. Aucune
-commission n'est due au titre d'une conférence effectivement financée par le compte personnel de formation
-(A1.6).
-
-*Exemples : une conférence commandée 2 400 € HT et payée en totalité donne 500 € HT ; commandée 900 € HT, elle
-donne 500 € HT ; payée en partie seulement, elle ne donne encore rien ; offerte, elle ne donne rien. Une
-commande de trois conférences facturée 6 000 € HT et payée en totalité donne 3 × 500 € = 1 500 € HT.*
-
-| Prestation | Commission du présent contrat |
+| Sommes | Commission |
 | --- | --- |
-| Conférence | 500 € HT par conférence |
-
-### A1.5 — Prestations non commissionnées
-
-**Les prestations qui ne figurent dans aucun des tableaux A1.1 à A1.4 bis ne donnent lieu à aucune
-commission**, sous réserve de A1.7 pour les paliers créés après la date de la présente version. Prestations
-non commissionnées à la date de la présente version :
-
-| Prestation | Commission |
-| --- | --- |
-| Développement web | **Aucune** |
+| Abonnements | **Aucune** |
 | Maintenance | **Aucune** |
+| Hébergement | **Aucune** |
+| Licences | **Aucune** |
 | Intervention sur demande | **Aucune** |
 
-Le « coup de projecteur » (podcast, interview, page dédiée) est fourni à titre gratuit et ne donne lieu à
-aucune commission par construction.
+**Les prestations qui ne figurent dans aucun des paragraphes A1.1 à A1.5 ne donnent lieu à aucune commission**, sous réserve de A1.8 pour les produits créés après la date de la présente version. Le « coup de projecteur » (podcast, interview, page dédiée) est fourni à titre gratuit et ne donne lieu à aucune commission par construction.
 
-Le présent tableau est limitatif à la date de la présente version ; les paliers créés postérieurement
-relèvent de A1.7.
+### A1.7 — Compte personnel de formation
 
-### A1.6 — Compte personnel de formation
+Conformément à l'article 8.1, **aucune commission n'est due au titre d'une prestation effectivement financée, en tout ou partie, par le compte personnel de formation**, quelle que soit l'origine du contact. Un tel financement constaté après le versement de la commission donne lieu à sa reprise (article 4.5). **À la date de la présente version, aucune prestation de la présente grille n'est proposée avec ce financement.**
 
-Conformément à l'article 8.1, **aucune commission n'est due au titre d'une prestation effectivement
-financée, en tout ou partie, par le compte personnel de formation**, quelle que soit l'origine du contact,
-y compris pour une conférence. Les paliers susceptibles d'un tel financement portent la mention « CPF » dans
-les tableaux A1.1 à A1.4 bis. Un financement par le compte personnel de formation constaté après le
-versement de la commission donne lieu à sa reprise (article 4.5).
-**À la date de la présente version, aucun palier de la présente grille ne porte cette mention.**
+### A1.8 — Produits créés après la signature
 
-### A1.7 — Produits créés après la signature
+**Chaque prestation figurant à la présente annexe conserve la commission que lui attribue le présent contrat tant que la Société la propose.**
 
-**Chaque palier figurant à la présente annexe conserve la commission que lui attribue le présent contrat
-tant que la Société le propose.**
+Lorsque la Société crée un produit après la signature du présent contrat (palier, prestation ou format), **sa commission est celle que la grille de référence publiée par la Société lui attribue à la date de la vente**, sans avenant. La Société fixe la commission de chaque nouveau produit à sa création et la publie, datée, avant toute vente de ce produit ; elle la motive sur demande de l'Apporteur (article 1164 du code civil). **La commission ainsi publiée n'est jamais rétroactive** : une vente déjà conclue conserve la commission publiée à la date de cette vente. Un produit créé après la signature n'est jamais commissionné sur ses sommes périodiques (A1.6).
 
-Lorsque la Société crée un produit après la signature du présent contrat (palier, prestation ou format,
-nouvelle formation comprise), **sa commission est celle que la grille de référence publiée par la Société
-lui attribue à la date de la vente**, sans avenant. La Société fixe la commission de chaque nouveau produit
-à sa création et la publie, datée, avant toute vente de ce produit ; elle la motive sur demande de
-l'Apporteur (article 1164 du code civil). **La commission ainsi publiée n'est jamais rétroactive** : une
-vente déjà réalisée conserve la commission publiée à la date de cette vente.
+Lorsqu'un tel produit est vendu à une entreprise attribuée sans qu'aucune commission n'ait été publiée à la date de la vente, la commission correspondante est portée en attente **sous le libellé « prestation hors grille de commissions »**. **La situation est réglée dans les soixante jours de l'encaissement**, soit par la publication de la commission de ce produit, soit par la constatation écrite que ce produit n'est pas commissionné, portée à la connaissance de l'Apporteur avec son motif. **À défaut de décision de la Société dans ce délai, la commission est due au taux ou au forfait que la grille publiée par la Société portait à la date de la vente.** Aucun taux n'est appliqué par défaut en dehors de ce cas.
 
-Lorsqu'un tel produit est vendu à une entreprise attribuée sans qu'aucune commission n'ait été publiée à la
-date de la vente, la commission correspondante est portée en attente **sous le libellé « prestation hors
-grille de commissions »**. **La situation est réglée dans les soixante jours de l'encaissement**, soit par
-la publication de la commission de ce produit, soit par la constatation écrite que ce produit n'est pas
-commissionné, portée à la connaissance de l'Apporteur avec son motif. **À défaut de décision de la Société
-dans ce délai, la commission est due au taux ou au forfait que la grille publiée par la Société portait à
-la date de la vente.** Aucun taux n'est appliqué par défaut en dehors de ce cas.
+**Le retrait d'un produit de l'offre de la Société n'affecte ni les commissions acquises ni les attributions en cours.**
 
-**Le retrait d'un produit de l'offre de la Société n'affecte ni les commissions acquises ni les
-attributions en cours.**
+---
+
+## Annexe 1 bis — Fiche des commissions
+
+La fiche des commissions jointe au présent contrat, datée du {{GRILLE_DATE}}, présente sous une forme illustrée la grille de l'annexe 1 et ses exemples. Elle est signée avec le contrat et adressée à l'Apporteur avec l'exemplaire contresigné. **Elle n'ajoute rien à l'annexe 1 et n'en retranche rien : en cas de différence, l'annexe 1 et le contrat s'appliquent seuls (article 17).** Elle n'évolue que par avenant (article 13.1).
 
 ---
 
