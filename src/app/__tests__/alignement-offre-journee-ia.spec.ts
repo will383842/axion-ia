@@ -160,7 +160,8 @@ describe("un seul prix public : celui de La Journée IA, lu dans pricing.ts", ()
     expect(phrasePrixJourneeIa()).toContain(prixDeLaJournee());
     const sansJeton = texteDuRenvoi().split(prixDeLaJournee()).join("");
     expect(sansJeton).not.toMatch(MONTANT);
-    expect(sansJeton).not.toMatch(/\bHT\b/);
+    // La garantie dit « le prix HT de la journée » (sans montant) : ce libellé n'est pas un prix.
+    expect(sansJeton.split("prix HT de la journée").join("")).not.toMatch(/\bHT\b/);
   });
 
   it("aucun montant écrit dans les sources des pages et composants alignés", () => {
