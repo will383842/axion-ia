@@ -16465,6 +16465,54 @@ model PresentationEtablissement {
   @@map("presentation_etablissement")
 }
 
+/// Règle « validation au premier rendez-vous tenu » (lot 1, 2026-11-25) : la RÉSERVATION d'une
+/// présentation. L'entreprise présentée est réservée à l'apporteur jusqu'à `reserveeJusquAt` ; elle
+/// est validée par le premier rendez-vous tenu. Table séparée sans clé étrangère (fenêtre
+/// app/worker), comme `PresentationEtablissement`. Absente = présentation d'avant cette règle.
+/// rgpd: technique — règle d'attribution figée, dates et identifiants ; aucun nom, e-mail ni téléphone
+model PresentationReservation {
+  presentationId   String    @id @map("presentation_id") @db.Uuid
+  /// La règle figée à la présentation : « rendez_vous ».
+  regle            String    @db.VarChar(20)
+  reserveeJusquAt  DateTime  @map("reservee_jusqu_at") @db.Timestamptz(3)
+  echueAt          DateTime? @map("echue_at") @db.Timestamptz(3)
+  rendezVousPrisAt DateTime? @map("rendez_vous_pris_at") @db.Timestamptz(3)
+  rendezVousAt     DateTime? @map("rendez_vous_at") @db.Timestamptz(3)
+  /// « calendly:<id> » ou « rencontre:<id> » (`cleRendezVous`).
+  rendezVousCle    String?   @map("rendez_vous_cle") @db.VarChar(80)
+  /// calendly | rencontre | saisie | commande (texte, pas d'énumération : fenêtre app/worker).
+  validationSource String?   @map("validation_source") @db.VarChar(20)
+  valideeAt        DateTime? @map("validee_at") @db.Timestamptz(3)
+  valideeParId     String?   @map("validee_par_id") @db.VarChar(64)
+  creeAt           DateTime  @default(now()) @map("cree_at") @db.Timestamptz(3)
+  majAt            DateTime  @default(now()) @updatedAt @map("maj_at") @db.Timestamptz(3)
+
+  @@index([reserveeJusquAt])
+  @@map("presentation_reservation")
+}
+
+/// Un rendez-vous qui POURRAIT valider une présentation réservée, proposé à Williams qui le
+/// retient ou l'écarte. Une ligne par couple (présentation, rendez-vous). Sans clé étrangère.
+/// rgpd: technique — identifiants de présentation et de rendez-vous, motif, dates ; aucun nom, e-mail ni téléphone
+model PropositionRendezVousPresentation {
+  id             String    @id @default(uuid()) @db.Uuid
+  presentationId String    @map("presentation_id") @db.Uuid
+  rendezVousCle  String    @map("rendez_vous_cle") @db.VarChar(80)
+  /// email_exact | meme_entreprise | meme_siren (texte, pas d'énumération).
+  motif          String    @db.VarChar(30)
+  apporteurCite  Boolean   @default(false) @map("apporteur_cite")
+  prisAt         DateTime  @map("pris_at") @db.Timestamptz(3)
+  rendezVousAt   DateTime? @map("rendez_vous_at") @db.Timestamptz(3)
+  creeAt         DateTime  @default(now()) @map("cree_at") @db.Timestamptz(3)
+  ecarteeAt      DateTime? @map("ecartee_at") @db.Timestamptz(3)
+  ecarteeParId   String?   @map("ecartee_par_id") @db.VarChar(64)
+  retenueAt      DateTime? @map("retenue_at") @db.Timestamptz(3)
+
+  @@unique([presentationId, rendezVousCle])
+  @@index([presentationId])
+  @@map("propositions_rendez_vous_presentation")
+}
+
 /// Contrat 2.6 : une commande soldée dont l'établissement ne correspond à aucune attribution
 /// exacte (SIRET absent, autre SIRET, siège qui paie pour l'agence) n'est JAMAIS perdue en
 /// silence : elle attend le choix de Williams (art. 3.1 ; 15 jours de l'encaissement).
