@@ -1,6 +1,8 @@
 // DOCUMENTS REMIS à l'apporteur (2026-11-25) : le registre UNIQUE de ce qu'il doit pouvoir
 // retrouver — titre, phrase simple, chemin, condition d'affichage.
 //
+// Le guide de démarrage (PDF A4) est servi par une route contrôlée, sous contrat signé seulement.
+//
 // Lu par la page « Mes documents » de son espace
 // (`/apporteur/dossier/<apporteurId>/<jeton>/documents`) ; module PUR (ni base, ni disque, ni
 // `server-only`), pour que les e-mails puissent le réutiliser plus tard.
@@ -23,7 +25,8 @@ export interface ContexteDocuments {
   readonly livretDisponible: boolean;
 }
 
-export type CleDocument = "contrat" | "fiche-commissions" | "livret" | "charte" | "outils";
+export type CleDocument =
+  "contrat" | "guide" | "fiche-commissions" | "livret" | "charte" | "outils";
 
 export interface DocumentRemis {
   readonly cle: CleDocument;
@@ -32,8 +35,12 @@ export interface DocumentRemis {
   readonly description: string;
   /** Texte du lien. */
   readonly action: string;
+  /** Texte du second lien, quand le document s'enregistre aussi (PDF A4). */
+  readonly actionTelechargement?: string;
   /** Adresse du document, relative au site. */
   readonly chemin: (espace: string) => string;
+  /** Adresse d'enregistrement du document, relative au site. */
+  readonly telechargement?: (espace: string) => string;
   /** Faut-il montrer la ligne à cet apporteur ? */
   readonly visible: (c: ContexteDocuments) => boolean;
   /** Fichier ou page à imprimer : s'ouvre dans un nouvel onglet, l'espace reste ouvert. */
@@ -51,6 +58,18 @@ export const DOCUMENTS_REMIS: readonly DocumentRemis[] = [
     action: "Télécharger mon contrat (PDF)",
     chemin: (espace) => `${espace}/contrat?dl=1`,
     visible: (c) => c.sousContrat && c.contratSigneDisponible,
+    nouvelOnglet: true,
+  },
+  {
+    cle: "guide",
+    titre: "Votre guide de démarrage",
+    description:
+      "Ce guide vous est remis avec votre contrat : une idée par page, vous piochez ce qui vous plaît, à votre rythme.",
+    action: "Ouvrir le guide (PDF)",
+    actionTelechargement: "Télécharger le guide (PDF A4)",
+    chemin: (espace) => `${espace}/guide`,
+    telechargement: (espace) => `${espace}/guide?dl=1`,
+    visible: (c) => c.sousContrat,
     nouvelOnglet: true,
   },
   {
@@ -97,7 +116,9 @@ export interface DocumentAffiche {
   readonly titre: string;
   readonly description: string;
   readonly action: string;
+  readonly actionTelechargement?: string;
   readonly href: string;
+  readonly telechargement?: string;
   readonly nouvelOnglet: boolean;
 }
 
@@ -109,6 +130,12 @@ export function documentsRemis(c: ContexteDocuments): DocumentAffiche[] {
     description: d.description,
     action: d.action,
     href: d.chemin(c.espace),
+    ...(d.telechargement && d.actionTelechargement
+      ? {
+          actionTelechargement: d.actionTelechargement,
+          telechargement: d.telechargement(c.espace),
+        }
+      : {}),
     nouvelOnglet: d.nouvelOnglet,
   }));
 }
@@ -119,7 +146,7 @@ export const DOCUMENTS_INTRO =
   "Tous les documents que nous vous avons remis, réunis au même endroit.";
 /** Dossier pas encore signé : ce qui viendra s'ajouter. */
 export const DOCUMENTS_NON_SIGNE =
-  "Votre contrat, la charte de marque et vos outils de communication s'ajouteront ici dès que votre contrat sera signé.";
+  "Votre contrat, votre guide de démarrage, la charte de marque et vos outils de communication s'ajouteront ici dès que votre contrat sera signé.";
 
 /** Ce que voit qui ouvre la page sans lien personnel valide : aucun document. */
 export const DOCUMENTS_RESERVES = {

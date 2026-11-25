@@ -1,0 +1,420 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Guide de démarrage de l'apporteur — Axion IA</title>
+<meta name="robots" content="noindex">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,600;0,9..144,700;1,9..144,500&family=Manrope:wght@500;600;700;800&display=swap">
+<style>
+:root{color-scheme:light;--ivoire:#faf8f3;--feuille:#fff;--sable:#f6f0e3;--trait:#d9cdb8;--brun:#2a2520;--encre:#16130f;--doux:#2f2822;
+--terra:#c24a1b;--terra-f:#8c3010;--terra-c:#fbe3d6;--bleu:#1a4dd9;--bleu-f:#143aa8;--bleu-c:#e4ebfd;--ocre:#6b3200;--ocre-c:#fdebc8;
+--titre:"Fraunces","Iowan Old Style",Palatino,Georgia,serif;--texte:"Manrope",system-ui,-apple-system,"Segoe UI",Arial,sans-serif}
+*{box-sizing:border-box}
+html{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+body{margin:0;background:var(--ivoire);color:var(--encre);font-family:var(--texte);font-size:16px;line-height:1.42;padding:16px}
+h1,h2,h3,p,ul,ol{margin:0}ul,ol{padding:0;list-style:none}
+svg.i{width:1em;height:1em;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;flex:none}
+.guide{max-width:210mm;margin:0 auto;display:flex;flex-direction:column;gap:20px}
+.page{background:var(--feuille);border:1px solid var(--trait);border-radius:20px;padding:30px 18px 16px;position:relative;overflow:hidden;display:flex;flex-direction:column;gap:12px;break-inside:avoid}
+.page::before{content:"";position:absolute;left:0;right:0;top:0;height:9px;background:linear-gradient(90deg,var(--terra) 0 62%,var(--bleu) 62%)}
+.tete{display:flex;align-items:center;gap:12px}
+.num{flex:none;width:46px;height:46px;border-radius:50%;background:var(--brun);color:#fff;font:700 22px var(--titre);display:grid;place-items:center}
+.sur{font-size:12px;font-weight:800;letter-spacing:.13em;text-transform:uppercase;color:var(--terra-f)}
+h2{font-family:var(--titre);font-weight:700;font-size:clamp(24px,6vw,31px);line-height:1.08;letter-spacing:-.01em}
+h2 em{font-style:italic;font-weight:600;color:var(--terra)}
+.obj{background:var(--bleu-c);border-left:8px solid var(--bleu);border-radius:12px;padding:9px 13px;font-weight:700;color:var(--encre)}
+.obj b{color:var(--bleu-f)}
+h3{font-size:13px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--brun);display:flex;align-items:center;gap:7px;margin-bottom:5px}
+h3 .i{font-size:18px;color:var(--terra)}
+.cases li{display:flex;gap:10px;align-items:flex-start;padding:5px 0;border-bottom:1px dotted var(--trait);font-weight:600}
+.cases li:last-child{border:0}
+.cases .bx{flex:none;width:19px;height:19px;border:2.5px solid var(--brun);border-radius:5px;margin-top:2px;background:#fff}
+.libre{font-size:12px;font-weight:700;color:var(--doux);margin-top:3px}
+.ex{background:var(--ocre-c);border:2.5px dashed var(--ocre);border-radius:12px;padding:9px 13px;color:var(--encre)}
+.ex h3{color:var(--ocre);margin-bottom:3px}.ex h3 .i{color:var(--ocre)}
+.dire{background:var(--sable);border:2px solid var(--brun);border-radius:6px 18px 18px 18px;padding:10px 14px;font-weight:700;font-style:italic;color:var(--encre)}
+.dire small{display:block;font-style:normal;font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--bleu-f);margin-bottom:2px}
+.err{background:var(--terra-c);border:2.5px solid var(--terra-f);border-radius:12px;padding:9px 13px;display:flex;gap:10px;align-items:flex-start;color:var(--encre);font-weight:600}
+.err .i{font-size:24px;color:var(--terra-f);margin-top:1px}.err b{color:var(--terra-f)}
+.cle{background:var(--terra);color:#fff;border-radius:14px;padding:11px 15px;font-weight:800;font-size:17px}
+.cle.b{background:var(--bleu)}
+.pp{margin-top:auto;padding-top:8px;border-top:2px solid var(--brun);display:flex;justify-content:space-between;gap:10px;font-size:11.5px;font-weight:800;color:var(--brun)}
+.deux{display:grid;grid-template-columns:1fr;gap:12px}
+.illu{display:flex;justify-content:center;gap:16px;color:var(--bleu);font-size:44px;padding:2px 0}
+.illu .i{stroke-width:1.5}.illu .i:nth-child(odd){color:var(--terra)}
+/* couverture */
+.couv{background:var(--brun);color:#fff;border-color:var(--brun);justify-content:flex-start;gap:16px}
+.couv::after{content:"";position:absolute;right:-110px;top:-110px;width:300px;height:300px;border-radius:50%;background:var(--terra)}
+.couv>*{position:relative;z-index:1}
+.marque{align-self:flex-start;background:#fff;color:var(--brun);font-weight:800;letter-spacing:.15em;text-transform:uppercase;font-size:12px;border-radius:99px;padding:7px 15px}
+.couv h1{font-family:var(--titre);font-size:clamp(38px,10vw,64px);line-height:1;max-width:11ch;letter-spacing:-.015em;margin-top:34px}
+.couv h1 em{color:#f0916a;font-weight:600}
+.couv .acc{font-size:19px;font-weight:600;max-width:34ch}
+.chemin{display:grid;gap:8px;margin:6px 0}
+.chemin li{display:flex;align-items:center;gap:12px;background:#fff;color:var(--encre);border-radius:14px;padding:9px 14px;font-weight:800}
+.chemin .n{flex:none;width:32px;height:32px;border-radius:50%;background:var(--terra);color:#fff;display:grid;place-items:center;font:700 16px var(--titre)}
+.chemin .i{margin-left:auto;font-size:22px;color:var(--bleu)}
+.couv .cle{background:#fff;color:var(--encre);border-left:10px solid var(--terra);font-size:16.5px}
+.couv .pp{border-color:#fff;color:#fff}
+/* carte */
+.carte{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.bulle{border:2.5px dashed var(--bleu);background:var(--bleu-c);border-radius:14px;padding:9px 11px;font-weight:700;font-size:14.5px;min-height:62px;display:flex;flex-direction:column;gap:5px}
+.bulle .i{font-size:20px;color:var(--bleu-f)}
+.bulle span{font-weight:600;font-size:12.5px;color:var(--doux)}
+.centre{grid-column:1/-1;background:var(--terra);color:#fff;text-align:center;border-radius:99px;padding:8px;font:700 19px var(--titre)}
+/* frise */
+.frise{display:grid;gap:7px}
+.frise li{display:flex;gap:11px;align-items:center;border-radius:14px;padding:8px 12px;font-weight:700;border:2px solid var(--brun);background:#fff}
+.frise .j{flex:none;min-width:84px;text-align:center;border-radius:10px;background:var(--brun);color:#fff;font-size:13px;font-weight:800;padding:6px 6px}
+.frise .v{background:var(--bleu-c);border-color:var(--bleu)}.frise .v .j{background:var(--bleu)}
+.frise .r{background:var(--terra-c);border-color:var(--terra)}.frise .r .j{background:var(--terra-f)}
+.mem{display:grid;gap:8px}
+.mem>div{border-radius:12px;padding:8px 12px;font-size:14.5px;font-weight:600}
+.oui{background:var(--bleu-c);border:2px solid var(--bleu)}.non{background:var(--sable);border:2px solid var(--brun)}
+.mem b{display:block;font-size:12.5px;letter-spacing:.1em;text-transform:uppercase}
+.oui b{color:var(--bleu-f)}
+.mem li{padding:1px 0 1px 16px;position:relative}.oui li::before{content:"✓";position:absolute;left:0;color:var(--bleu-f);font-weight:800}.non li::before{content:"✕";position:absolute;left:0;font-weight:800}
+.form{border:2px solid var(--brun);border-radius:12px;overflow:hidden;font-size:14px;font-weight:600}
+.form div{padding:6px 12px;border-bottom:1px solid var(--trait)}.form div:last-child{border:0}
+.form .t{background:var(--brun);color:#fff;font-weight:800}.form .s{background:var(--sable);font-weight:800}
+.form .bt{background:var(--terra);color:#fff;font-weight:800;text-align:center}
+/* argent */
+.etapes{display:grid;gap:8px;grid-template-columns:1fr 1fr}
+.etapes li{background:var(--sable);border:2px solid var(--brun);border-radius:14px;padding:9px 11px;font-weight:700;font-size:14.5px;display:flex;flex-direction:column;gap:3px}
+.etapes .i{font-size:26px;color:var(--terra)}
+.tab{width:100%;border-collapse:collapse;font-size:14px}
+.tab td,.tab th{padding:6px 8px;border-bottom:1.5px solid var(--trait);text-align:left;vertical-align:top}
+.tab th{font-size:11.5px;letter-spacing:.09em;text-transform:uppercase;border-bottom:2.5px solid var(--brun)}
+.tab td:last-child,.tab th:last-child{text-align:right;white-space:nowrap;font-weight:800;color:var(--bleu-f)}
+.tab tr.tot td{font-size:15px}.tab small{display:block;font-weight:600;color:var(--doux)}
+.barre{height:10px;border-radius:99px;background:var(--trait);overflow:hidden;margin-top:3px}.barre i{display:block;height:100%;background:var(--terra)}
+.note{font-size:12.5px;font-weight:700;color:var(--doux)}
+.rep{display:grid;gap:6px;grid-template-columns:1fr 1fr}
+.rep li{background:var(--bleu-c);border:2px solid var(--bleu);border-radius:12px;padding:8px 11px;font-weight:700;font-size:14px;display:flex;gap:8px;align-items:center}
+.rep .i{font-size:20px;color:var(--bleu-f)}
+.trois{display:grid;gap:8px}
+.trois li{display:flex;gap:11px;align-items:center;background:var(--sable);border:2px solid var(--brun);border-radius:14px;padding:9px 13px;font-weight:800}
+.trois .n{flex:none;width:30px;height:30px;border-radius:50%;background:var(--terra);color:#fff;display:grid;place-items:center;font:700 15px var(--titre)}
+/* freins et challenge */
+.freins{display:grid;gap:8px;grid-template-columns:1fr}
+.freins>div{background:var(--sable);border:2px solid var(--brun);border-radius:12px;padding:8px 11px;font-size:13.5px;font-weight:600}
+.freins h3{margin-bottom:2px;font-size:12.5px;text-transform:none;letter-spacing:0;font-weight:800;display:block}
+.freins p{margin-top:3px;color:var(--bleu-f);font-weight:800}
+.defi{border:3px solid var(--terra);border-radius:16px;background:var(--terra-c);padding:11px 15px;display:flex;flex-direction:column;gap:5px;break-inside:avoid}
+.defi-sur{font-size:12px;font-weight:800;letter-spacing:.13em;text-transform:uppercase;color:var(--terra-f)}
+.defi-t{font:700 22px/1.1 var(--titre);color:var(--encre)}
+.defi-offre{font-weight:700}.defi-offre strong{color:var(--terra-f);font-size:1.15em}
+.defi-regles li{position:relative;padding-left:16px;font-size:14px;font-weight:600}
+.defi-regles li::before{content:"·";position:absolute;left:4px;font-weight:800;color:var(--terra-f)}
+.defi-pied{font-size:12.5px;font-weight:700;color:var(--doux)}
+@media (min-width:600px){.freins{grid-template-columns:1fr 1fr}}
+@media (min-width:600px){body{padding:24px}.page{padding:36px 40px 20px}.deux{grid-template-columns:1fr 1fr}.mem{grid-template-columns:1fr 1fr}}
+@page{size:A4;margin:10mm}
+@media print{
+ body{background:#fff;padding:0;font-size:14.8px;line-height:1.4}
+ .guide{gap:0;max-width:none}
+ .page{width:190mm;height:276mm;border:0;border-radius:0;box-shadow:none;padding:11mm 6mm 3mm;gap:4.2mm;page-break-after:always;break-after:page;break-inside:avoid}
+ .page:last-child{page-break-after:auto;break-after:auto}
+ .page::before{height:6px}
+ .deux{grid-template-columns:1fr 1fr}.mem{grid-template-columns:1fr 1fr}
+ h2{font-size:29px}.num{width:46px;height:46px;font-size:22px}.cases li{padding:7px 0}.err,.ex,.dire,.obj{padding:11px 15px}h3{font-size:13px}.libre,.note{font-size:13px}.bulle{font-size:15px}.tab{font-size:16px}.frise li{padding:5px 10px}.frise{gap:5px}.mem>div{font-size:15px}.form{font-size:15px}.etapes li{font-size:15px}.rep li{font-size:15px}
+ .illu{font-size:44px}.couv h1{font-size:54px;margin-top:20mm}
+ .couv .acc{font-size:16px}.cle{font-size:13.5px}.couv .cle{font-size:13.5px}
+ .carte .bulle{min-height:54px}
+ .freins{grid-template-columns:1fr 1fr;gap:6px}.freins>div{font-size:12.5px;padding:6px 9px}.freins h3{font-size:12.5px}.page .dire,.page .ex,.page .err{padding:8px 12px}
+ .couv{gap:2.5mm}.couv h1{margin-top:8mm}.chemin{gap:5px}.chemin li{padding:6px 14px}
+}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+<defs>
+<symbol id="cle" viewBox="0 0 24 24"><circle cx="8" cy="15" r="4.5"/><path d="M11.5 11.5 20 3m-3 3 3 3m-6-0 2 2"/></symbol>
+<symbol id="doc" viewBox="0 0 24 24"><path d="M6 2h9l5 5v15H6z"/><path d="M14 2v6h6M9 14l2.5 2.5L16 12"/></symbol>
+<symbol id="mail" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></symbol>
+<symbol id="gens" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c.5-4 3-6 6.5-6s6 2 6.5 6M16 5a3.2 3.2 0 0 1 0 6.2M18 14.3c2 .7 3.2 2.600 3.500 5.700"/></symbol>
+<symbol id="bulle" viewBox="0 0 24 24"><path d="M4 4h16v12H10l-5 4v-4H4z"/><path d="M8 9h8M8 12h5"/></symbol>
+<symbol id="chrono" viewBox="0 0 24 24"><circle cx="12" cy="13.500" r="8"/><path d="M12 9v5l3 2M9 2h6"/></symbol>
+<symbol id="main" viewBox="0 0 24 24"><path d="M2 12l5-4 4 1 3-2 8 6-5 5-3-1-3 1-4-3-5-3z"/><path d="m11 9 3 3"/></symbol>
+<symbol id="coche" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="m8 12.500 3 3 5-6"/></symbol>
+<symbol id="alerte" viewBox="0 0 24 24"><path d="M12 3 2 20h20z"/><path d="M12 10v5M12 17.500v.5"/></symbol>
+<symbol id="idee" viewBox="0 0 24 24"><path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-3.500 10.900c.7.600 1 1.300 1 2.100h5c0-.8.300-1.500 1-2.100A6 6 0 0 0 12 3z"/></symbol>
+<symbol id="cal" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></symbol>
+<symbol id="pieces" viewBox="0 0 24 24"><ellipse cx="12" cy="6" rx="7" ry="3"/><path d="M5 6v6c0 1.700 3 3 7 3s7-1.300 7-3V6M5 12v6c0 1.700 3 3 7 3s7-1.300 7-3v-6"/></symbol>
+<symbol id="porte" viewBox="0 0 24 24"><path d="M5 21V4l9-2v19M14 21h6M5 21h14"/><circle cx="11" cy="12.500" r=".8"/></symbol>
+<symbol id="bouee" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="3.500"/><path d="m5.600 5.600 3.900 3.900M18.400 5.600l-3.900 3.900M5.600 18.400l3.900-3.900M18.400 18.400l-3.900-3.900"/></symbol>
+<symbol id="euro" viewBox="0 0 24 24"><path d="M17 6.500A7 7 0 1 0 17 17.500M4 10h9M4 14h9"/></symbol>
+<symbol id="pousse" viewBox="0 0 24 24"><path d="M12 21v-9M12 12c0-4 3-6 7-6 0 4-3 6-7 6zM12 15c0-3-2-5-6-5 0 3 2 5 6 5z"/></symbol>
+<symbol id="sms" viewBox="0 0 24 24"><rect x="7" y="2" width="10" height="20" rx="2.500"/><path d="M10 7h4M10 10h4M11 18h2"/></symbol>
+<symbol id="loupe" viewBox="0 0 24 24"><circle cx="10.500" cy="10.500" r="6.500"/><path d="m16 16 5 5"/></symbol>
+</defs></svg>
+
+<main class="guide">
+
+<!-- 1 COUVERTURE -->
+<section class="page couv">
+ <span class="marque">Axion IA · Apporteurs d'affaires</span>
+ <h1>Votre guide <em>de démarrage</em></h1>
+ <p class="acc">Présentez une entreprise. Axion IA s'occupe du reste. Ce guide vous est remis avec votre contrat : une idée par page, vous piochez ce qui vous plaît, à votre rythme.</p>
+ <ol class="chemin">
+  <li><span class="n">1</span>Démarrer<svg class="i"><use href="#cle"/></svg></li>
+  <li><span class="n">★</span>Vos freins, un par un<svg class="i"><use href="#porte"/></svg></li>
+  <li><span class="n">2</span>Votre réseau<svg class="i"><use href="#gens"/></svg></li>
+  <li><span class="n">3</span>Que dire en 30 secondes<svg class="i"><use href="#bulle"/></svg></li>
+  <li><span class="n">4</span>Obtenir un « oui, écrivez-moi »<svg class="i"><use href="#sms"/></svg></li>
+  <li><span class="n">5</span>Déclarer l'entreprise<svg class="i"><use href="#doc"/></svg></li>
+  <li><span class="n">6</span>Le rendez-vous diagnostic<svg class="i"><use href="#cal"/></svg></li>
+  <li><span class="n">7</span>Votre commission<svg class="i"><use href="#euro"/></svg></li>
+  <li><span class="n">8</span>Présenter d'autres entreprises<svg class="i"><use href="#pousse"/></svg></li>
+  <li><span class="n">+</span>Mini-calculs · Aide et challenge du mois<svg class="i"><use href="#bouee"/></svg></li>
+ </ol>
+ <p class="cle">Ce qui compte : que l'entreprise prenne son rendez-vous diagnostic avec Axion IA. C'est lui qui valide l'entreprise à votre nom.</p>
+ <p class="pp" style="color:#fff;border-color:#fff"><span>Idées libres, rien d'obligatoire. Vous restez indépendant.</span><span>Remis avec votre contrat · Novembre 2026</span></p>
+</section>
+
+<!-- 2 DEMARRER -->
+<section class="page">
+ <div class="tete"><span class="num">1</span><div><div class="sur">Pour démarrer</div><h2>Votre espace est <em>prêt</em></h2></div></div>
+ <p class="obj"><b>Le but :</b> être prêt à présenter une entreprise.</p>
+ <div class="illu"><svg class="i"><use href="#cle"/></svg><svg class="i"><use href="#doc"/></svg><svg class="i"><use href="#mail"/></svg></div>
+ <section><h3><svg class="i"><use href="#coche"/></svg>Vous pouvez</h3>
+ <ul class="cases">
+  <li><span class="bx"></span><span><b>Pas encore de SIREN ?</b> Créez votre micro-entreprise en ligne : <b>autoentrepreneur.urssaf.fr</b>. Aucun contrat ne se signe sans SIREN actif.</span></li>
+  <li><span class="bx"></span><span>Ce guide accompagne votre contrat : gardez-les ensemble. Signez votre contrat en ligne. Gardez sous la main votre SIRET, votre IBAN et une pièce d'identité.</span></li>
+  <li><span class="bx"></span><span>Gardez l'e-mail qui contient votre lien personnel (par exemple dans vos favoris). Lien perdu ? La page « Retrouver mon espace » vous le renvoie.</span></li>
+  <li><span class="bx"></span><span>Ouvrez « Mes documents » et jetez un œil à la fiche des commissions.</span></li>
+ </ul><p class="libre"><b>Petite victoire, pour vous :</b> votre espace s'ouvre et vous voyez « Déclarer une entreprise » : vous êtes prêt. Cases facultatives, rien à renvoyer à personne.</p></section>
+ <div class="ex"><h3><svg class="i"><use href="#idee"/></svg>Exemple</h3>Paul a créé sa micro-entreprise, reçu son SIREN, puis signé. Dans son espace, il voit le bouton « Déclarer une entreprise » : il est prêt.</div>
+ <div class="deux">
+  <div class="dire"><small>Ce que vous n'avez pas à faire</small>Vendre, négocier, venir aux rendez-vous ou à la Journée. Axion IA mène tout avec le dirigeant, du premier message à la facture.</div>
+  <div class="err"><svg class="i"><use href="#alerte"/></svg><span><b>À éviter :</b> attendre de « tout savoir sur l'IA ». Inutile : c'est Axion IA qui explique, conseille et réalise.</span></div>
+ </div>
+ <p class="pp"><span>Étape 1 sur 8</span><span>Idées libres, rien d'obligatoire</span></p>
+</section>
+
+<!-- FREINS -->
+<section class="page">
+ <div class="tete"><span class="num">★</span><div><div class="sur">Bon à savoir</div><h2>Vos freins, <em>un par un</em></h2></div></div>
+ <p class="obj"><b>C'est normal d'hésiter au début.</b> Rien ne presse et rien n'est attendu de vous : prenez seulement ce qui vous aide. Un « non » n'est jamais un manquement.</p>
+ <div class="freins">
+  <div><h3>« J'ai peur du premier appel »</h3>Vous n'avez rien à vendre : vous donnez une information, comme on recommande un bon garagiste. Vous pouvez écrire plutôt qu'appeler.<p>Un tout petit pas : envoyez le message ci-dessous à la personne avec qui c'est le plus facile.</p></div>
+  <div><h3>« Je ne connais personne »</h3>Vous connaissez plus de dirigeants que vous ne pensez : un commerçant, un artisan, un ancien collègue, un proche qui a sa société.<p>Un tout petit pas : écrivez un seul nom sur votre carte de réseau (étape 2).</p></div>
+  <div><h3>« Je ne sais pas quoi dire »</h3>Une phrase suffit, et vous n'avez pas à tout savoir. « Je ne sais pas, Axion IA te l'expliquera » est une très bonne réponse.<p>Un tout petit pas : lisez une fois à voix haute la phrase de l'étape 3, avec vos mots.</p></div>
+  <div><h3>« J'ai peur de déranger »</h3>Vous posez une question, et la personne reste libre de répondre non. Certains dirigeants cherchent justement quelqu'un de confiance sur l'IA.<p>Un tout petit pas : terminez par « Si ça ne te parle pas, aucun souci. »</p></div>
+  <div><h3>« Je n'ai pas le temps »</h3>Un message prend deux minutes. Ensuite, c'est Axion IA qui écrit, rencontre et explique.<p>Un tout petit pas : envoyez un message quand vous y pensez, entre deux choses.</p></div>
+  <div><h3>« Et si on me dit non ? »</h3>Un « non » vise une offre, jamais vous. Il ne vous coûte rien et vous n'avez aucun résultat à rendre.<p>Un tout petit pas : répondez « Pas de souci, merci de m'avoir répondu. »</p></div>
+ </div>
+ <div class="dire"><small>Idée de message à envoyer</small>« Bonjour, petite question : tes équipes utilisent-elles déjà ChatGPT ou Copilot ? Je connais Axion IA, qui forme les équipes à bien s'en servir. Si tu veux, ils peuvent t'écrire de ma part. Si ça ne te parle pas, aucun souci. »</div>
+ <div class="dire"><small>« Pas le temps » ou « pas maintenant »</small>« Pas de souci. Si tu veux, Axion IA t'écrit simplement, ou je t'en reparle plus tard. »<br><span style="font-style:normal;font-weight:600">Rien ne presse : vous la déclarerez le jour où elle sera d'accord pour qu'Axion IA lui écrive.</span></div>
+ <div class="ex"><h3><svg class="i"><use href="#idee"/></svg>Exemple</h3>Sophie n'osait pas appeler. Elle a envoyé le message à M. Martin, son garagiste. Il a répondu le soir même : « Envoie-les-moi. »</div>
+ <div class="err"><svg class="i"><use href="#alerte"/></svg><span><b>À éviter :</b> insister. Laissez toujours une porte de sortie : « Aucune obligation, hein. » Vous restez libre de choisir les entreprises que vous présentez, et celles que vous ne présentez pas.</span></div>
+ <p class="pp"><span>Encart</span><span>Idées libres, rien d'obligatoire</span></p>
+</section>
+
+<!-- 3 RESEAU -->
+<section class="page">
+ <div class="tete"><span class="num">2</span><div><div class="sur">Votre réseau</div><h2>À qui pourriez-vous <em>en parler ?</em></h2></div></div>
+ <p class="obj"><b>Le but :</b> repérer des dirigeants que vous connaissez déjà.</p>
+ <div class="carte">
+  <div class="centre">Vous</div>
+  <div class="bulle"><svg class="i"><use href="#gens"/></svg>Anciens collègues et employeurs<span>Nom : ………………</span></div>
+  <div class="bulle"><svg class="i"><use href="#gens"/></svg>Commerçants et artisans du quartier<span>Nom : ………………</span></div>
+  <div class="bulle"><svg class="i"><use href="#gens"/></svg>Clients ou fournisseurs de votre activité<span>Nom : ………………</span></div>
+  <div class="bulle"><svg class="i"><use href="#gens"/></svg>Associations, clubs, réseaux d'entrepreneurs<span>Nom : ………………</span></div>
+  <div class="bulle"><svg class="i"><use href="#gens"/></svg>Famille et amis qui dirigent une entreprise<span>Nom : ………………</span></div>
+  <div class="bulle"><svg class="i"><use href="#gens"/></svg>Professions libérales : expert-comptable, cabinet, agence<span>Nom : ………………</span></div>
+ </div>
+ <section><h3><svg class="i"><use href="#coche"/></svg>Vous pouvez</h3>
+ <ul class="cases">
+  <li><span class="bx"></span><span>Noter quelques noms, autant que vous voulez.</span></li>
+  <li><span class="bx"></span><span>Pour chacun, vous demander : « Ses équipes utilisent-elles déjà ChatGPT ou Copilot ? »</span></li>
+  <li><span class="bx"></span><span>Commencer par la personne avec qui c'est le plus facile.</span></li>
+ </ul><p class="libre"><b>Petite victoire, pour vous :</b> un premier nom écrit sur votre carte : c'est un vrai début. Cases facultatives.</p></section>
+ <div class="ex"><h3><svg class="i"><use href="#idee"/></svg>Exemple</h3>Sophie pense d'abord à M. Martin, qui dirige le garage où elle fait réviser sa voiture, puis à son ancienne responsable, aujourd'hui gérante d'un cabinet.</div>
+ <div class="err"><svg class="i"><use href="#alerte"/></svg><span><b>À éviter :</b> viser des inconnus avant les personnes qui vous connaissent. Une recommandation passe mieux qu'une présentation à froid.</span></div>
+ <p class="pp"><span>Étape 2 sur 8</span><span>Idées libres, rien d'obligatoire</span></p>
+</section>
+
+<!-- 4 30 SECONDES -->
+<section class="page">
+ <div class="tete"><span class="num">3</span><div><div class="sur">Parler</div><h2>Que dire <em>en 30 secondes</em></h2></div></div>
+ <p class="obj"><b>Le but :</b> avoir une phrase simple, avec vos mots.</p>
+ <div class="illu"><svg class="i"><use href="#bulle"/></svg><svg class="i"><use href="#chrono"/></svg></div>
+ <div class="dire"><small>Idée de phrase à dire</small>« Tes équipes utilisent sûrement déjà l'IA, souvent sans règles communes. Je connais Axion IA : ils viennent une journée dans l'entreprise, partout en France, former les équipes sur leurs vrais dossiers. Il reste une charte d'usage, une attestation par personne formée et un plan pour la suite. Ça t'intéresse que je te mette en relation ? »</div>
+ <div class="ex"><h3><svg class="i"><use href="#idee"/></svg>Pour appuyer, si vous le souhaitez</h3>Depuis février 2025, la loi européenne sur l'IA demande aux entreprises de préparer les personnes qui utilisent l'IA dans leur travail.</div>
+ <section><h3><svg class="i"><use href="#coche"/></svg>Vous pouvez</h3>
+ <ul class="cases">
+  <li><span class="bx"></span><span>La dire à voix haute une fois, à votre façon. Vos mots valent mieux que les nôtres.</span></li>
+  <li><span class="bx"></span><span>Si on vous parle de prix : « La Journée IA est à 1 490 € HT. Pour le reste, tu verras directement avec eux. »</span></li>
+  <li><span class="bx"></span><span>Si vous ne savez pas répondre : « Je ne sais pas, Axion IA te l'expliquera. »</span></li>
+ </ul><p class="libre"><b>Petite victoire, pour vous :</b> vous avez dit votre phrase une fois, même à un proche. Cases facultatives.</p></section>
+ <div class="ex"><h3><svg class="i"><use href="#idee"/></svg>Exemple</h3>Paul en parle à Mme Dupont lors d'une soirée d'association. Elle répond : « Justement, mes commerciaux s'en servent n'importe comment. »</div>
+ <div class="err"><svg class="i"><use href="#alerte"/></svg><span><b>À éviter :</b> promettre une remise, un résultat ou un délai. Ce n'est pas votre rôle : Axion IA s'en charge.</span></div>
+ <p class="pp"><span>Étape 3 sur 8</span><span>Idées libres, rien d'obligatoire</span></p>
+</section>
+
+<!-- 5 PREMIERE CONVERSATION -->
+<section class="page">
+ <div class="tete"><span class="num">4</span><div><div class="sur">Parler</div><h2>Obtenir un « oui, <em>écrivez-moi</em> »</h2></div></div>
+ <p class="obj"><b>Le but :</b> que la personne soit d'accord pour qu'Axion IA lui écrive.</p>
+ <div class="illu"><svg class="i"><use href="#gens"/></svg><svg class="i"><use href="#coche"/></svg></div>
+ <section><h3><svg class="i"><use href="#coche"/></svg>Vous pouvez</h3>
+ <ul class="cases">
+  <li><span class="bx"></span><span>Demander : « Je peux leur donner tes coordonnées ? Ils t'écriront de ma part. »</span></li>
+  <li><span class="bx"></span><span>Noter sa fonction, son e-mail, son téléphone, la date de votre échange, et le SIRET de l'établissement (à retrouver sur annuaire-entreprises.data.gouv.fr).</span></li>
+  <li><span class="bx"></span><span>Lui dire : « Ils te proposeront un premier rendez-vous. Le plus simple pour voir si ça peut t'aider, c'est ce premier rendez-vous : prends-le. »</span></li>
+ </ul><p class="libre"><b>Petite victoire, pour vous :</b> quelqu'un vous a dit « oui, écrivez-moi » : votre part est presque faite. Cases facultatives.</p></section>
+ <div class="dire"><small><svg class="i" style="display:inline;vertical-align:-2px"><use href="#sms"/></svg> Idée de SMS, à envoyer après l'échange</small>« Bonjour Madame Dupont, ravi de notre échange. Comme convenu, Axion IA va vous écrire de ma part pour vous proposer un premier rendez-vous, en visio, par téléphone ou sur place. Belle journée, Paul »</div>
+ <div class="ex"><h3><svg class="i"><use href="#idee"/></svg>Exemple</h3>Karim parle avec la gérante d'une agence immobilière. Elle accepte. Karim note ses coordonnées et la date du jour.</div>
+ <p class="cle b">Ce qu'il faut retenir : c'est Axion IA qui informe l'entreprise, dans son tout premier message. Vous n'avez rien d'autre à envoyer.</p>
+ <div class="err"><svg class="i"><use href="#alerte"/></svg><span><b>À éviter :</b> déclarer quelqu'un à qui vous n'avez pas vraiment parlé. Le formulaire demande « La personne rencontrée » et la « Date du contact ».</span></div>
+ <p class="pp"><span>Étape 4 sur 8</span><span>Idées libres, rien d'obligatoire</span></p>
+</section>
+
+<!-- 6 DECLARER -->
+<section class="page">
+ <div class="tete"><span class="num">5</span><div><div class="sur">Déclarer</div><h2>Déclarer l'entreprise <em>dans votre espace</em></h2></div></div>
+ <p class="obj"><b>Le but :</b> réserver l'entreprise à votre nom.</p>
+ <div class="form" aria-label="Schéma du formulaire">
+  <div class="t">Déclarer une entreprise</div>
+  <div class="s">L'entreprise</div><div>Numéro SIRET de l'établissement visité (14 chiffres) · Nom de l'entreprise</div>
+  <div class="s">La personne rencontrée</div><div>Prénom et nom · Fonction · E‑mail · Téléphone · Date du contact</div>
+  <div class="bt">Déclarer cette entreprise</div>
+ </div>
+ <section><h3><svg class="i"><use href="#coche"/></svg>Vous pouvez</h3>
+ <ul class="cases">
+  <li><span class="bx"></span><span>Ouvrir votre lien personnel, puis « Déclarer une entreprise ».</span></li>
+  <li><span class="bx"></span><span>Remplir les champs : tous sont nécessaires.</span></li>
+  <li><span class="bx"></span><span>Regarder ensuite « Vos déclarations » : l'entreprise y apparaît.</span></li>
+ </ul><p class="libre"><b>Petite victoire, pour vous :</b> votre première entreprise apparaît dans « Vos déclarations ». Cases facultatives.</p></section>
+ <p class="cle">Déclarez AVANT que l'entreprise prenne rendez-vous : un rendez-vous pris avant votre déclaration ne compte pas.</p>
+ <div class="ex"><h3><svg class="i"><use href="#idee"/></svg>Exemple</h3>Paul déclare la société Dupont le 10 janvier. Le rendez-vous diagnostic a lieu le 2 février : Dupont est à Paul.</div>
+ <div class="deux">
+  <div class="dire"><small>Si l'écran dit « Non disponible »</small>L'entreprise est déjà prise ou déjà connue d'Axion IA. Ce n'est pas un échec : vous pouvez passer à la suivante.</div>
+  <div class="err"><svg class="i"><use href="#alerte"/></svg><span><b>À éviter :</b> déclarer une liste « au cas où ». Cela ne sert à rien : c'est le rendez-vous qui valide.</span></div>
+ </div>
+ <p class="pp"><span>Étape 5 sur 8</span><span>Idées libres, rien d'obligatoire</span></p>
+</section>
+
+<!-- 7 RDV DIAGNOSTIC -->
+<section class="page">
+ <div class="tete"><span class="num">6</span><div><div class="sur">Le geste clé</div><h2>Le rendez-vous diagnostic : <em>c'est lui qui valide</em></h2></div></div>
+ <ol class="frise">
+  <li><span class="j">Jour 1</span>Vous déclarez l'entreprise.</li>
+  <li class="v"><span class="j">60 jours</span>Elle vous est réservée, jusqu'à minuit le 60e jour (heure de Paris).</li>
+  <li class="v"><span class="j">Validée</span>Un rendez-vous diagnostic pris pendant ces 60 jours a eu lieu (même après le 60e jour), ou un devis est signé pendant ces 60 jours : elle est à vous pour 6 mois à partir du rendez-vous (ou de la signature), parfois prolongés une fois de 3 mois. Vous recevez un e-mail.</li>
+  <li class="r"><span class="j">Sinon</span>Sans rendez-vous pris ni devis signé : la réservation s'arrête, sans reproche. 30 jours de repos : personne d'autre ne peut la déclarer. Vous pourrez la déclarer à nouveau après un nouvel échange.</li>
+  <li><span class="j">Ensuite</span>Si un autre apporteur attendait, il a 15 jours de priorité.</li>
+ </ol>
+ <div class="mem">
+  <div class="oui"><b>Ça valide</b><ul><li>Rendez-vous tenu, en visio, par téléphone ou sur place</li><li>Rendez-vous annulé par Axion IA</li><li>Devis signé</li></ul></div>
+  <div class="non"><b>Ça ne valide pas</b><ul><li>Rendez-vous annulé ou manqué par l'entreprise, ou reporté tant qu'il n'a pas eu lieu (reporté puis tenu, il compte)</li><li>Rendez-vous pris avant votre déclaration</li></ul></div>
+ </div>
+ <section><h3><svg class="i"><use href="#coche"/></svg>Vous pouvez</h3>
+ <ul class="cases">
+  <li><span class="bx"></span><span>Si vous recroisez la personne, vous pouvez lui en reparler. Rien ne vous y oblige : après votre déclaration, Axion IA s'occupe de tout.</span></li>
+ </ul><p class="libre"><b>Petite victoire, pour vous :</b> vous avez déclaré avant le rendez-vous : votre part est faite, le reste revient à Axion IA. Case facultative.</p></section>
+ <div class="ex"><h3><svg class="i"><use href="#idee"/></svg>Exemple</h3>Sophie croise M. Martin au garage ; il lui dit qu'il a pris rendez-vous. Le rendez-vous a lieu : le garage est validé au nom de Sophie. Exemple de dates : déclarée le 10 janvier, l'entreprise est réservée jusqu'au 10 mars inclus, puis 30 jours de repos jusqu'au 9 avril.</div>
+  <p class="pp"><span>Étape 6 sur 8</span><span>Idées libres, rien d'obligatoire</span></p>
+</section>
+
+<!-- 9 COMMISSION -->
+<section class="page">
+ <div class="tete"><span class="num">7</span><div><div class="sur">Votre commission</div><h2>Comment elle <em>arrive</em></h2></div></div>
+ <p class="obj"><b>Le but :</b> comprendre le chemin de l'argent, sans mauvaise surprise.</p>
+ <ol class="etapes">
+  <li><svg class="i"><use href="#doc"/></svg>1. Le client signe pendant que l'entreprise vous est réservée ou attribuée.</li>
+  <li><svg class="i"><use href="#euro"/></svg>2. Il paie 100 %. Un acompte ne suffit pas.</li>
+  <li><svg class="i"><use href="#mail"/></svg>3. Le jour où tout est payé, Axion IA établit votre autofacture, même si le travail n'est pas fini.</li>
+  <li><svg class="i"><use href="#pieces"/></svg>4. Virement au plus tard 30 jours après le paiement complet.</li>
+ </ol>
+ <div class="ex" style="background:var(--bleu-c);border-color:var(--bleu)"><h3 style="color:var(--bleu-f)"><svg class="i" style="color:var(--bleu-f)"><use href="#idee"/></svg>Ce qui rapporte</h3><b>500 €</b> par Journée IA vendue et payée · <b>30 %</b> sur un audit vendu seul · <b>15 %</b> sur la mise en service et les ventes payées en une fois des automatisations et intégrations · <b>les formations</b> : de 250 € à 1 000 € selon la formation (voir la fiche des commissions).</div>
+ <div class="ex" style="background:var(--sable);border-color:var(--brun)"><h3 style="color:var(--brun)"><svg class="i" style="color:var(--brun)"><use href="#alerte"/></svg>Ce qui ne rapporte rien</h3>Accompagnement individuel (coaching « one to one »), abonnements, maintenance, hébergement, licences. Ce qui n'est pas sur la fiche des commissions ne rapporte rien.</div>
+ <section><h3><svg class="i"><use href="#coche"/></svg>Vous pouvez</h3>
+ <ul class="cases">
+  <li><span class="bx"></span><span>Vérifier votre IBAN dans votre espace.</span></li>
+  <li><span class="bx"></span><span>Garder vos autofactures pour vos déclarations : vos cotisations et vos impôts restent à votre charge.</span></li>
+  <li><span class="bx"></span><span>Une question ? « Besoin d'aide ? », puis le sujet « Mes commissions ».</span></li>
+ </ul><p class="libre"><b>Petite victoire, pour vous :</b> votre IBAN est vérifié : le jour venu, rien ne bloquera. Cases facultatives.</p></section>
+ <div class="ex"><h3><svg class="i"><use href="#idee"/></svg>Exemple</h3>La société Dupont paie sa Journée IA en totalité. Paul reçoit l'autofacture, puis son virement de 500 €.</div>
+ <div class="err"><svg class="i"><use href="#alerte"/></svg><span><b>À éviter :</b> écrire votre IBAN dans un message d'aide. Jamais : l'écran vous le rappelle aussi.</span></div>
+ <p class="pp"><span>Étape 7 sur 8</span><span>Les règles complètes sont dans votre contrat</span></p>
+</section>
+
+<!-- 10 CALCULS -->
+<section class="page">
+ <div class="tete"><span class="num">€</span><div><div class="sur">Mini-calculs</div><h2>Des exemples, <em>pas des promesses</em></h2></div></div>
+ <p class="obj"><b>Exemple de calcul, pas une promesse de revenu.</b> Montants hors taxes ; ils valent quand le client paie le prix de base.</p>
+ <table class="tab">
+  <tr><th>Exemple</th><th>Pour vous</th></tr>
+  <tr><td>Journée IA payée 1 490 €<small>Montant fixe</small></td><td>500 €</td></tr>
+  <tr><td>Formation générale ou métier, 1 jour<small>Forfait selon la formation</small></td><td>500 €</td></tr>
+  <tr><td>Automatisation : 6 000 € de mise en service<small>15 %</small></td><td>900 €</td></tr>
+  <tr><td>Audit vendu seul : 2 900 €<small>30 %</small></td><td>870 €</td></tr>
+  <tr><td>Coaching individuel « one to one »<small>Aucune commission</small></td><td>0 €</td></tr>
+  <tr><td>Abonnement de 99 € par mois<small>Aucune commission</small></td><td>0 €</td></tr>
+ </table>
+ <div class="ex"><h3><svg class="i"><use href="#pieces"/></svg>Exemple : une entreprise, deux commissions</h3>
+  Le client achète une Journée IA : <b>500 €</b>. Il commande ensuite une automatisation de 20 000 € dans les 60 jours : ses 1 490 € sont déduits (20 000 − 1 490 = 18 510 €), et 15 % de 18 510 € font <b>2 776,50 €</b>. Total pour cette entreprise : <b>3 276,50 €</b>.
+  <p class="note" style="margin-top:4px">La déduction a lieu si la commande atteint au moins 5 000 € HT de mise en place payée en une fois, hors abonnements, avant déduction.</p></div>
+ <div><h3><svg class="i"><use href="#euro"/></svg>La part qui vous revient sur une Journée IA payée 1 490 €</h3><div class="barre"><i style="width:33.5%"></i></div><p class="note">Les 500 € restent acquis même si les 1 490 € sont ensuite déduits d'une commande.</p></div>
+ <p class="cle b">Si le client est remboursé ou ne paie pas, la commission est annulée, ou reprise si elle a déjà été versée. Les 500 € d'une Journée IA sont repris si elle est remboursée au client.</p>
+ <p class="note">Détail complet (formations, réductions, impayés) : la « Fiche des commissions », dans « Mes documents ». En cas de différence, le contrat l'emporte.</p>
+ <p class="pp"><span>Exemples</span><span>Exemples de calcul, pas une promesse de revenu</span></p>
+</section>
+
+<!-- 11 AUTRES ENTREPRISES -->
+<section class="page">
+ <div class="tete"><span class="num">8</span><div><div class="sur">Aller plus loin</div><h2>Présenter d'autres entreprises, <em>à votre façon</em></h2></div></div>
+ <p class="obj"><b>Le but :</b> des idées, si l'envie vous prend. Aucune n'est un devoir.</p>
+ <div class="illu"><svg class="i"><use href="#pousse"/></svg><svg class="i"><use href="#gens"/></svg></div>
+ <section><h3><svg class="i"><use href="#idee"/></svg>Idées, à piocher</h3>
+ <ul class="cases">
+  <li><span class="bx"></span><span>Demander à un dirigeant content : « Tu connais un autre dirigeant que ça pourrait aider ? »</span></li>
+  <li><span class="bx"></span><span>Soigner votre présence avec « Mes outils de communication » : bannière, signature d'e-mail, textes prêts à copier.</span></li>
+  <li><span class="bx"></span><span>Reprendre votre carte de réseau (étape 2) et ajouter les noms auxquels vous n'aviez pas pensé.</span></li>
+  <li><span class="bx"></span><span>Parler du réseau à une personne qui aimerait devenir apporteur (parrainage, ci-dessous).</span></li>
+ </ul><p class="libre"><b>Petite victoire, pour vous :</b> un nom de plus vous est revenu en tête. Cases facultatives. Pas de rythme de publication, pas de nombre de contacts.</p></section>
+ <div class="dire"><small>Idée de phrase, après un bon moment</small>« Merci encore de m'avoir fait confiance. Si tu penses à un dirigeant qui se pose les mêmes questions sur l'IA, je peux le présenter de la même façon. »</div>
+ <div class="ex" style="background:var(--bleu-c);border-color:var(--bleu)"><h3 style="color:var(--bleu-f)"><svg class="i" style="color:var(--bleu-f)"><use href="#gens"/></svg>Le parrainage</h3>10 % des commissions de la personne que vous parrainez, sur ses commandes signées dans les 6 mois après la signature de son contrat. Payé par Axion IA : rien n'est retiré à votre filleul. Un seul niveau. <b>Exemple :</b> il présente une Journée IA, vous recevez 50 €.</div>
+ <div class="ex"><h3><svg class="i"><use href="#idee"/></svg>Exemple</h3>Après la Journée IA chez Dupont, Mme Dupont parle de Paul à son expert-comptable. Paul le rencontre, et le parcours reprend à l'étape 4.</div>
+ <div class="err"><svg class="i"><use href="#alerte"/></svg><span><b>À éviter :</b> vous présenter comme « Axion IA ». Vous êtes apporteur d'affaires indépendant : gardez la mention des visuels fournis, et la charte de marque dans « Mes documents ».</span></div>
+ <p class="pp"><span>Étape 8 sur 8</span><span>Idées libres, rien d'obligatoire</span></p>
+</section>
+
+<!-- 12 FIN -->
+<section class="page">
+ <div class="tete"><span class="num">?</span><div><div class="sur">Besoin d'un coup de main</div><h2>Vous n'êtes <em>pas seul</em></h2></div></div>
+ <section><h3><svg class="i"><use href="#loupe"/></svg>Vos repères dans l'espace</h3>
+ <ul class="rep">
+  <li><svg class="i"><use href="#doc"/></svg>Déclarer une entreprise</li>
+  <li><svg class="i"><use href="#coche"/></svg>Vos déclarations</li>
+  <li><svg class="i"><use href="#doc"/></svg>Mes documents</li>
+  <li><svg class="i"><use href="#pousse"/></svg>Mes outils de communication</li>
+  <li><svg class="i"><use href="#euro"/></svg>Voir la grille de référence des commissions</li>
+  <li><svg class="i"><use href="#bouee"/></svg>Besoin d'aide ?</li>
+ </ul></section>
+ <div class="deux">
+  <div class="ex" style="background:var(--bleu-c);border-color:var(--bleu)"><h3 style="color:var(--bleu-f)"><svg class="i" style="color:var(--bleu-f)"><use href="#cle"/></svg>Lien perdu ?</h3>La page « Retrouver mon espace » vous le renvoie par e-mail. Pas de mot de passe.</div>
+  <div class="ex" style="background:var(--bleu-c);border-color:var(--bleu)"><h3 style="color:var(--bleu-f)"><svg class="i" style="color:var(--bleu-f)"><use href="#mail"/></svg>Une question ?</h3>contact@axion-ia.com. Ne donnez jamais vos coordonnées bancaires par message.</div>
+ </div>
+ <aside class="defi" aria-labelledby="defi-t">
+  <p class="defi-sur">Challenge du mois · facultatif</p>
+  <p class="defi-t" id="defi-t"><!-- MOIS -->Décembre 2026</p>
+  <p class="defi-offre"><!-- OFFRE --><strong>2 000 €</strong> pour 10 Journées IA vendues dans le mois (du 1er au 31 décembre 2026), par des entreprises validées à votre nom.</p>
+  <ul class="defi-regles"><!-- REGLES FIXES, NE PAS MODIFIER -->
+   <li>Une occasion, pas une obligation : si vous passez votre tour, rien ne change, vos commissions restent les mêmes.</li>
+   <li>Aucun classement, aucune comparaison entre apporteurs. Personne ne vous relance à ce sujet.</li>
+   <li>Cotisations et impôts restent à votre charge.</li>
+  </ul>
+  <p class="defi-pied"><!-- RENVOI -->Remis avec votre contrat : les conditions du challenge. En cas de différence, elles l'emportent sur ce guide.</p>
+ </aside>
+ <p class="cle">Vous êtes indépendant, sans exclusivité et sans frais d'entrée. Vous arrêtez quand vous voulez, avec 30 jours de préavis, par simple e-mail.</p>
+ <p class="note">Document d'information. Les règles complètes sont celles de votre contrat d'apporteur d'affaires et de son annexe des commissions : en cas de différence, le contrat l'emporte.</p>
+ <p class="pp"><span>Axion IA · axion-ia.com</span><span>Novembre 2026</span></p>
+</section>
+
+</main>
+</body>
+</html>

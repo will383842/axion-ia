@@ -10,11 +10,18 @@ const h = vi.hoisted(() => ({
   entete: vi.fn(),
   configure: true,
   signaler: vi.fn(),
+  televerser: vi.fn(),
+  copie: vi.fn(),
 }));
 
 vi.mock("@/lib/r2-storage", () => ({
   enteteObjetR2: (...a: unknown[]) => h.entete(...a),
   isR2Configured: () => h.configure,
+  uploadToR2: (...a: unknown[]) => h.televerser(...a),
+}));
+vi.mock("../guide-demarrage", async (importOriginal) => ({
+  ...(await importOriginal<typeof import("../guide-demarrage")>()),
+  lireGuideDemarrage: () => h.copie(),
 }));
 vi.mock("../signaler", () => ({ signalerErreurReseau: (...a: unknown[]) => h.signaler(...a) }));
 
@@ -31,7 +38,7 @@ import {
 } from "../documents-joints";
 
 const CLE_CONTRAT = "apporteurs/6f1c2a3b-4d5e-4f60-8a7b-9c0d1e2f3a4b/contrat-v2-signe-abcd.pdf";
-const [FICHE, LIVRET] = DOCUMENTS_ANNEXES;
+const [FICHE, LIVRET, GUIDE] = DOCUMENTS_ANNEXES;
 /** Une annexe est FACULTATIVE pour le worker : absente à l'envoi, elle n'arrête pas l'e-mail. */
 const ANNEXE = { contentType: "application/pdf", facultative: true } as const;
 
@@ -47,12 +54,18 @@ let avertissements: ReturnType<typeof vi.spyOn>;
 beforeEach(() => {
   vi.clearAllMocks();
   h.configure = true;
+  h.televerser.mockResolvedValue({});
+  h.copie.mockResolvedValue(Buffer.from("%PDF-guide"));
   avertissements = vi.spyOn(console, "warn").mockImplementation(() => undefined);
 });
 
 describe("déclaration des documents annexes", () => {
-  it("fiche des commissions et livret, chacun à une clé fixe sous le préfixe commun", () => {
-    expect(DOCUMENTS_ANNEXES.map((d) => d.id)).toEqual(["fiche-commissions", "livret"]);
+  it("fiche des commissions, livret et guide de démarrage, chacun à une clé fixe sous le préfixe commun", () => {
+    expect(DOCUMENTS_ANNEXES.map((d) => d.id)).toEqual([
+      "fiche-commissions",
+      "livret",
+      "guide-demarrage",
+    ]);
     for (const d of DOCUMENTS_ANNEXES) {
       expect(d.cleR2.startsWith(PREFIXE_DOCUMENTS_APPORTEURS)).toBe(true);
       expect(d.cleR2.endsWith(".pdf")).toBe(true);
@@ -74,25 +87,27 @@ describe("déclaration des documents annexes", () => {
 });
 
 describe("documents annexes à joindre", () => {
-  it("les deux existent : les deux sont joints, avec le nom montré au destinataire", async () => {
-    r2({ [FICHE.cleR2]: 1000, [LIVRET.cleR2]: 2000 });
+  it("toutes existent : toutes sont jointes, avec le nom montré au destinataire", async () => {
+    r2({ [FICHE.cleR2]: 1000, [LIVRET.cleR2]: 2000, [GUIDE.cleR2]: 3000 });
     expect(await documentsAnnexesAJoindre()).toEqual([
       { ...ANNEXE, filename: FICHE.nomFichier, r2Key: FICHE.cleR2 },
       { ...ANNEXE, filename: LIVRET.nomFichier, r2Key: LIVRET.cleR2 },
+      { ...ANNEXE, filename: GUIDE.nomFichier, r2Key: GUIDE.cleR2 },
     ]);
+    expect(h.televerser).not.toHaveBeenCalled();
   });
 
   it("🔴 document absent de R2 : non joint, sans erreur, et journalisé", async () => {
-    r2({ [FICHE.cleR2]: 1000 });
+    r2({ [FICHE.cleR2]: 1000, [GUIDE.cleR2]: 3000 });
     const pieces = await documentsAnnexesAJoindre();
-    expect(pieces.map((p) => p.r2Key)).toEqual([FICHE.cleR2]);
+    expect(pieces.map((p) => p.r2Key)).toEqual([FICHE.cleR2, GUIDE.cleR2]);
     expect(avertissements).toHaveBeenCalledTimes(1);
     expect(String(avertissements.mock.calls[0]?.[0])).toContain("livret");
   });
 
-  it("aucun document déposé (état d'aujourd'hui) : rien n'est joint", async () => {
+  it("aucun document déposé (état d'aujourd'hui) : seul le guide est joint, déposé par l'application", async () => {
     r2({});
-    expect(await documentsAnnexesAJoindre()).toEqual([]);
+    expect((await documentsAnnexesAJoindre()).map((p) => p.r2Key)).toEqual([GUIDE.cleR2]);
   });
 
   it("R2 en panne : rien n'est joint, rien n'est levé, la panne est signalée", async () => {
@@ -121,30 +136,94 @@ describe("documents annexes à joindre", () => {
   });
 
   it("objet vide : non joint", async () => {
-    r2({ [FICHE.cleR2]: 0, [LIVRET.cleR2]: 2000 });
+    r2({ [FICHE.cleR2]: 0, [LIVRET.cleR2]: 2000, [GUIDE.cleR2]: 0 });
     expect((await documentsAnnexesAJoindre()).map((p) => p.r2Key)).toEqual([LIVRET.cleR2]);
   });
 
   it("document qui ferait dépasser le plafond : non joint, les autres le restent", async () => {
-    r2({ [FICHE.cleR2]: 1000, [LIVRET.cleR2]: TAILLE_MAX_PIECES_OCTETS });
-    expect((await documentsAnnexesAJoindre()).map((p) => p.r2Key)).toEqual([FICHE.cleR2]);
+    r2({ [FICHE.cleR2]: 1000, [LIVRET.cleR2]: TAILLE_MAX_PIECES_OCTETS, [GUIDE.cleR2]: 3000 });
+    expect((await documentsAnnexesAJoindre()).map((p) => p.r2Key)).toEqual([
+      FICHE.cleR2,
+      GUIDE.cleR2,
+    ]);
+  });
+});
+
+// Le guide de démarrage part tout seul avec le contrat : s'il manque sur R2 (404 vrai), l'application
+// y dépose sa copie embarquée. Jamais sur une panne, jamais par-dessus un objet existant.
+describe("🔴 le guide de démarrage : dépôt automatique sur R2", () => {
+  const sansGuide = { [FICHE.cleR2]: 1000, [LIVRET.cleR2]: 2000 };
+
+  it("absent de R2 : la copie embarquée y est déposée une fois, puis jointe (facultative)", async () => {
+    r2(sansGuide);
+    const pieces = await documentsAnnexesAJoindre();
+    expect(h.televerser).toHaveBeenCalledTimes(1);
+    expect(h.televerser).toHaveBeenCalledWith(
+      GUIDE.cleR2,
+      Buffer.from("%PDF-guide"),
+      "application/pdf",
+      expect.objectContaining({ sha256: expect.stringMatching(/^[0-9a-f]{64}$/) }),
+    );
+    expect(pieces.at(-1)).toEqual({ ...ANNEXE, filename: GUIDE.nomFichier, r2Key: GUIDE.cleR2 });
+  });
+
+  it("présent sur R2 (dépôt manuel) : jamais écrasé", async () => {
+    r2({ ...sansGuide, [GUIDE.cleR2]: 3000 });
+    await documentsAnnexesAJoindre();
+    expect(h.televerser).not.toHaveBeenCalled();
+  });
+
+  it("R2 en panne ou sans réponse : aucun dépôt, guide non joint", async () => {
+    h.entete.mockRejectedValue(new Error("réseau"));
+    expect(await documentsAnnexesAJoindre()).toEqual([]);
+    expect(h.televerser).not.toHaveBeenCalled();
+  });
+
+  it("R2 non configuré : aucun dépôt", async () => {
+    h.configure = false;
+    expect(await documentsAnnexesAJoindre()).toEqual([]);
+    expect(h.televerser).not.toHaveBeenCalled();
+  });
+
+  it("dépôt en échec : guide non joint, signalé, rien n'est levé", async () => {
+    r2(sansGuide);
+    h.televerser.mockRejectedValue(new Error("refusé"));
+    const pieces = await documentsAnnexesAJoindre();
+    expect(pieces.map((p) => p.r2Key)).toEqual([FICHE.cleR2, LIVRET.cleR2]);
+    expect(h.signaler).toHaveBeenCalled();
+  });
+
+  it("copie embarquée illisible : guide non joint, aucun dépôt", async () => {
+    r2(sansGuide);
+    h.copie.mockResolvedValue(null);
+    const pieces = await documentsAnnexesAJoindre();
+    expect(pieces.map((p) => p.r2Key)).toEqual([FICHE.cleR2, LIVRET.cleR2]);
+    expect(h.televerser).not.toHaveBeenCalled();
+  });
+
+  it("la fiche et le livret absents ne sont JAMAIS déposés par l'application", async () => {
+    r2({});
+    await documentsAnnexesAJoindre();
+    expect(h.televerser.mock.calls.map((c) => c[0])).toEqual([GUIDE.cleR2]);
   });
 });
 
 describe("pièces de l'e-mail « contrat signé »", () => {
-  it("contrat + fiche + livret quand tout existe, le contrat en premier", async () => {
-    r2({ [CLE_CONTRAT]: 50_000, [FICHE.cleR2]: 1000, [LIVRET.cleR2]: 2000 });
+  it("contrat + fiche + livret + guide quand tout existe, le contrat en premier", async () => {
+    r2({ [CLE_CONTRAT]: 50_000, [FICHE.cleR2]: 1000, [LIVRET.cleR2]: 2000, [GUIDE.cleR2]: 3000 });
     expect(await piecesDuContratSigne(CLE_CONTRAT)).toEqual([
       { filename: NOM_CONTRAT_SIGNE, r2Key: CLE_CONTRAT, contentType: "application/pdf" },
       { ...ANNEXE, filename: FICHE.nomFichier, r2Key: FICHE.cleR2 },
       { ...ANNEXE, filename: LIVRET.nomFichier, r2Key: LIVRET.cleR2 },
+      { ...ANNEXE, filename: GUIDE.nomFichier, r2Key: GUIDE.cleR2 },
     ]);
   });
 
-  it("annexes absentes : le contrat seul, comme avant", async () => {
+  it("fiche et livret absents : le contrat et le guide (déposé par l'application)", async () => {
     r2({ [CLE_CONTRAT]: 50_000 });
-    expect(await piecesDuContratSigne(CLE_CONTRAT)).toEqual([
-      { filename: NOM_CONTRAT_SIGNE, r2Key: CLE_CONTRAT, contentType: "application/pdf" },
+    expect((await piecesDuContratSigne(CLE_CONTRAT)).map((p) => p.r2Key)).toEqual([
+      CLE_CONTRAT,
+      GUIDE.cleR2,
     ]);
   });
 
@@ -158,6 +237,7 @@ describe("pièces de l'e-mail « contrat signé »", () => {
       [CLE_CONTRAT]: TAILLE_MAX_PIECES_OCTETS - 1500,
       [FICHE.cleR2]: 1000,
       [LIVRET.cleR2]: 2000,
+      [GUIDE.cleR2]: 3000,
     });
     expect((await piecesDuContratSigne(CLE_CONTRAT)).map((p) => p.r2Key)).toEqual([
       CLE_CONTRAT,
@@ -198,10 +278,10 @@ describe("pièce de l'accusé de signature", () => {
 // Relecture de la PR #2255 (I2) : seule la pièce que l'e-mail PROMET est exigée par le worker.
 describe("pièces exigées et pièces facultatives", () => {
   it("🔴 « contrat signé » : le contrat est exigé, chaque annexe est facultative", async () => {
-    r2({ [CLE_CONTRAT]: 50_000, [FICHE.cleR2]: 1000, [LIVRET.cleR2]: 2000 });
+    r2({ [CLE_CONTRAT]: 50_000, [FICHE.cleR2]: 1000, [LIVRET.cleR2]: 2000, [GUIDE.cleR2]: 3000 });
     const [contrat, ...annexes] = await piecesDuContratSigne(CLE_CONTRAT);
     expect(contrat).not.toHaveProperty("facultative");
-    expect(annexes).toHaveLength(2);
+    expect(annexes).toHaveLength(3);
     for (const a of annexes) expect(a.facultative).toBe(true);
   });
 
@@ -220,22 +300,23 @@ describe("bilan des pièces, dit à la console", () => {
   };
   const fiche = { ...ANNEXE, filename: FICHE.nomFichier, r2Key: FICHE.cleR2 };
   const livret = { ...ANNEXE, filename: LIVRET.nomFichier, r2Key: LIVRET.cleR2 };
+  const guide = { ...ANNEXE, filename: GUIDE.nomFichier, r2Key: GUIDE.cleR2 };
 
   it("tout est joint", () => {
-    expect(bilanDesPieces([contrat, fiche, livret])).toBe(
-      "Pièces jointes : le contrat, la fiche des commissions et le livret.",
+    expect(bilanDesPieces([contrat, fiche, livret, guide])).toBe(
+      "Pièces jointes : le contrat, la fiche des commissions, le livret et le guide de démarrage.",
     );
   });
 
   it("une annexe manque : elle est nommée", () => {
-    expect(bilanDesPieces([contrat, fiche])).toBe(
-      "Pièces jointes : le contrat et la fiche des commissions. Non joint (absent ou illisible sur le stockage) : le livret.",
+    expect(bilanDesPieces([contrat, fiche, guide])).toBe(
+      "Pièces jointes : le contrat, la fiche des commissions et le guide de démarrage. Non joint (absent ou illisible sur le stockage) : le livret.",
     );
   });
 
-  it("aucune annexe (état d'aujourd'hui) : le contrat seul, les deux annexes nommées", () => {
+  it("aucune annexe : le contrat seul, les trois annexes nommées", () => {
     expect(bilanDesPieces([contrat])).toBe(
-      "Pièce jointe : le contrat seul. Non joints (absents ou illisibles sur le stockage) : la fiche des commissions et le livret.",
+      "Pièce jointe : le contrat seul. Non joints (absents ou illisibles sur le stockage) : la fiche des commissions, le livret et le guide de démarrage.",
     );
   });
 });

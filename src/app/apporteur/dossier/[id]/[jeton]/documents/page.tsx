@@ -1,7 +1,7 @@
 // MES DOCUMENTS (2026-11-25).
 //
 // `/apporteur/dossier/<apporteurId>/<jeton>/documents` : tout ce qui a été remis à l'apporteur,
-// au même endroit — son contrat signé, la fiche des commissions, le livret d'accueil, la charte
+// au même endroit — son contrat signé, son guide de démarrage, la fiche des commissions, le livret d'accueil, la charte
 // de marque, ses outils de communication. Une ligne et une phrase simple par document.
 //
 // Même contrôle que son espace (`lireDossierParLien` : jeton et version du lien) ; AUCUN
@@ -102,6 +102,11 @@ export default async function MesDocumentsPage({ params }: PageProps) {
               {d.nouvelOnglet ? "↓" : null} {d.action}
               {d.nouvelOnglet ? null : " →"}
             </a>
+            {d.telechargement ? (
+              <a href={d.telechargement} download className={`${LIEN} mt-1 ml-6`}>
+                ↓ {d.actionTelechargement}
+              </a>
+            ) : null}
           </li>
         ))}
       </ul>
