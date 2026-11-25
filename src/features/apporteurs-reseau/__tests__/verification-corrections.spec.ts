@@ -22,9 +22,9 @@ vi.mock("../annuaire", () => ({
   lireEntrepriseParSiren: (...a: unknown[]) => h.registre(...a),
 }));
 
+vi.mock("../apercu-envoi", () => ({ apercu: vi.fn() }));
 vi.mock("../envois", () => ({
   envoyer: (...a: unknown[]) => h.envoyer(...a),
-  apercu: vi.fn(),
   avecTexteLibre: (payload: Record<string, unknown>, texte?: string) =>
     texte ? { ...payload, texteLibre: texte } : payload,
 }));

@@ -1,5 +1,5 @@
 import { readFileSync, readdirSync, statSync } from "node:fs";
-import { join, resolve } from "node:path";
+import { dirname, join, resolve } from "node:path";
 import { describe, expect, it } from "vitest";
 
 /**
@@ -87,10 +87,16 @@ function specificateurs(source: string): string[] {
   return out;
 }
 
-/** `@/x/y` → chemin absolu du fichier, ou null si ce n'est pas un module du dépôt. */
-function resoudre(spec: string): string | null {
-  if (!spec.startsWith("@/")) return null;
-  const base = join(SRC, spec.slice(2));
+/**
+ * `@/x/y` ou import relatif (`./x`, `../x`, résolu depuis le dossier de l'importeur)
+ * → chemin absolu du fichier, ou null si ce n'est pas un module du dépôt.
+ */
+function resoudre(spec: string, depuis?: string): string | null {
+  let base: string;
+  if (spec.startsWith("@/")) base = join(SRC, spec.slice(2));
+  else if ((spec.startsWith("./") || spec.startsWith("../")) && depuis !== undefined)
+    base = resolve(dirname(depuis), spec);
+  else return null;
   for (const cand of [
     `${base}.ts`,
     `${base}.tsx`,
@@ -106,10 +112,10 @@ function resoudre(spec: string): string | null {
   return null;
 }
 
-/** Fermeture transitive des modules du dépôt atteignables depuis le worker. */
-function atteignablesDepuisLeWorker(): Set<string> {
+/** Fermeture transitive des modules du dépôt atteignables depuis les points de départ. */
+function atteignablesDepuisLeWorker(departs?: string[]): Set<string> {
   const vus = new Set<string>();
-  const file = DEPARTS.flatMap((depart) => fichiersSous(depart));
+  const file = departs ?? DEPARTS.flatMap((depart) => fichiersSous(depart));
   while (file.length > 0) {
     const f = file.pop() as string;
     if (vus.has(f)) continue;
@@ -121,7 +127,7 @@ function atteignablesDepuisLeWorker(): Set<string> {
       continue;
     }
     for (const spec of specificateurs(source)) {
-      const cible = resoudre(spec);
+      const cible = resoudre(spec, f);
       if (cible !== null && !vus.has(cible)) file.push(cible);
     }
   }
@@ -219,5 +225,19 @@ describe("🔴 le worker tourne hors de Next — `server-only` n'y résout pas",
     expect(atteignables).toContain(
       "src/server/qualiopi/positionnement/detail-adaptation-chiffre.ts",
     );
+  });
+
+  // 🔑 2026-11-25 — Sentry AXION-IA-25 : `envois.ts` importait `./apercu-masque`
+  // (`server-only`) par un import RELATIF, que la marche ne suivait pas.
+  it("le cron apporteurs : aucun module atteint n'importe `server-only` (imports relatifs suivis)", () => {
+    const depart = join(SRC, "server/queue/workers/apporteur-crons-worker.ts");
+    const atteints = [...atteignablesDepuisLeWorker([depart])].map((f) =>
+      f.slice(RACINE.length + 1).replace(/\\/g, "/"),
+    );
+    expect(atteints).toContain("src/features/apporteurs-reseau/envois.ts");
+    const fautifs = atteints.filter((f) =>
+      IMPORTE_SERVER_ONLY.test(readFileSync(join(RACINE, f), "utf8")),
+    );
+    expect(fautifs).toEqual([]);
   });
 });
