@@ -247,10 +247,16 @@ export async function reprendreApresAvoirsClients(
       // Seules les factures PAYÉES comptent : une facture refaite sous le même devis et pas encore
       // payée ne « remplace » pas l'argent rendu par l'avoir (sinon la commission d'origine
       // survivrait, puis une seconde serait créée au paiement de la facture refaite).
-      const { netCents, avoirs: actifs } = netDeLaCommande(
-        lu.membres.filter((m) => m.statut === "payee"),
-        lu.avoirs,
+      const payees = lu.membres.filter((m) => m.statut === "payee");
+      const { netCents: netPaye, avoirs: actifs } = netDeLaCommande(payees, lu.avoirs);
+      // Facture(s) encore à payer (émises, non annulées) : on ne fait qu'ANNULER quand tout l'argent
+      // payé est rendu. Une réduction ou une reprise partielle attend le paiement : la commande
+      // soldée est alors jugée sur le devis entier, et une commission réduite ne remonte jamais.
+      const impayees = lu.membres.some(
+        (m) => !["payee", "brouillon", "annulee"].includes(m.statut),
       );
+      if (impayees && netPaye > 0) continue;
+      const netCents = netPaye;
       if (actifs.length === 0) continue; // avoir brouillon ou annulé : sans effet
       const net = Math.max(0, netCents);
       // Dette a1 (a) : le délai de 24 mois de l'art. 4.5 s'apprécie AVOIR PAR AVOIR. Pour une ligne

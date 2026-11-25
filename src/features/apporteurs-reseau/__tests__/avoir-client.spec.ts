@@ -410,4 +410,17 @@ describe("facture refaite sous le même devis, pas encore payée (point 1 de l'e
     expect(b.annulees).toBe(1);
     expect(d.annuler).toHaveBeenCalledTimes(1);
   });
+
+  it("avoir partiel sur le solde A2 + solde refait B non payé : aucune réduction (600 € restent 600 €)", async () => {
+    d.factures = [
+      { ...facture, id: "A1", devisId: "D1", montantHtCents: 60_000 },
+      { ...facture, id: "F1", devisId: "D1", montantHtCents: 140_000 },
+      avoir(-140_000, { devisId: "D1" }),
+      { ...facture, id: "B", devisId: "D1", statut: "emise", montantHtCents: 140_000 },
+    ];
+    d.lignes = [ligne({ factureHtCents: 200_000, montantCents: 60_000 })];
+    const b = await reprendreApresAvoirsClients(LE);
+    expect(b).toEqual({ reduites: 0, annulees: 0, retenues: 0, reprises: 0 });
+    expect(d.reduire).not.toHaveBeenCalled();
+  });
 });

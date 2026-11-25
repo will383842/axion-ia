@@ -6,6 +6,7 @@ const etat = vi.hoisted(() => ({
   lignes: [] as unknown[],
   avoirs: [] as unknown[],
   commissions: [] as unknown[],
+  reprises: [] as unknown[],
   crees: [] as Array<Record<string, unknown>>,
 }));
 
@@ -53,7 +54,9 @@ vi.mock("@/lib/prisma", () => ({
       }),
     },
     commissionApporteur: {
-      findMany: vi.fn(async () => etat.commissions),
+      findMany: vi.fn(async (a?: { where?: { palier?: unknown } }) =>
+        a?.where?.palier ? etat.reprises : etat.commissions,
+      ),
       groupBy: vi.fn(async () => []),
       create: vi.fn(async (a: { data: Record<string, unknown> }) => {
         etat.crees.push(a.data);
@@ -99,6 +102,7 @@ beforeEach(() => {
   etat.lignes = [];
   etat.avoirs = [];
   etat.commissions = [];
+  etat.reprises = [];
   etat.crees = [];
 });
 
@@ -217,11 +221,52 @@ describe("passage quotidien : commission par commande soldée", () => {
     it("filleul versé puis repris en totalité (facture A rendue), parrain annulé : refaite → filleul ET part recréés", async () => {
       avecParrain();
       etat.commissions = [
-        { factureId: "A", apporteurId: "APP1", parrainage: false, statut: "versee" },
+        {
+          id: "C1",
+          factureId: "A",
+          apporteurId: "APP1",
+          parrainage: false,
+          statut: "versee",
+          montantCents: 60_000,
+        },
         { factureId: "A", apporteurId: "PAR1", parrainage: true, statut: "annulee" },
       ];
+      etat.reprises = [{ palier: "reprise-de:C1", montantCents: -60_000 }];
       await passerReseauApporteurs(MAINTENANT);
       expect(etat.crees).toHaveLength(2);
+    });
+    it("filleul versé, reprise PARTIELLE (300 € sur 600 €) : la refaite ne recrée rien (600 € au total)", async () => {
+      avecParrain();
+      etat.commissions = [
+        {
+          id: "C1",
+          factureId: "A",
+          apporteurId: "APP1",
+          parrainage: false,
+          statut: "versee",
+          montantCents: 60_000,
+        },
+        { factureId: "A", apporteurId: "PAR1", parrainage: true, statut: "due" },
+      ];
+      etat.reprises = [{ palier: "reprise-de:C1", montantCents: -30_000 }];
+      await passerReseauApporteurs(MAINTENANT);
+      expect(etat.crees).toEqual([]);
+    });
+    it("c1 encore « due » (avoir pas encore traité), A rendue, B payée : aucune seconde commission", async () => {
+      avecParrain();
+      etat.commissions = [
+        {
+          id: "C1",
+          factureId: "A",
+          apporteurId: "APP1",
+          parrainage: false,
+          statut: "due",
+          montantCents: 60_000,
+        },
+        { factureId: "A", apporteurId: "PAR1", parrainage: true, statut: "due" },
+      ];
+      await passerReseauApporteurs(MAINTENANT);
+      expect(etat.crees).toEqual([]);
     });
   });
 
