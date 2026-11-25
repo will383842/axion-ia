@@ -140,12 +140,23 @@ describe("remarque 1 — le lexique dur porte les formes en toutes lettres", () 
   });
 
   it("une entrée `admis` dont la valeur BRUTE (href) contient un mot du lexique dur est refusée", () => {
-    const valeur = `${SERVICES} <a href="https://www.moncompteformation.gouv.fr/x">voir</a>`;
+    // « FNE » n'est dans le lexique dur que seul (le moteur ne vise que « FNE-Formation ») : seul le
+    // contrôle de la valeur brute l'attrape, le texte visible (« voir ») est innocent.
+    const valeur = `${SERVICES} <a href="https://exemple.fr/fne/x">voir</a>`;
     const r = jouer(traduction({ excerpt: valeur }), {
       [CLE]: { excerpt: { origine: empreinte(valeur), valeur, admis: ["financiers"] } },
     });
     expect(r.ignores).toHaveLength(1);
     expect(r.ignores[0]).toContain("mot du lexique dur");
+    expect(r.proposition.conservesSurDecision).toBeUndefined();
+  });
+
+  it("href vers moncompteformation.gouv.fr : refusé aussi (le moteur vise déjà l'attribut)", () => {
+    const valeur = `${SERVICES} <a href="https://www.moncompteformation.gouv.fr/x">voir</a>`;
+    const r = jouer(traduction({ excerpt: valeur }), {
+      [CLE]: { excerpt: { origine: empreinte(valeur), valeur, admis: ["financiers"] } },
+    });
+    expect(r.ignores).toHaveLength(1);
     expect(r.proposition.conservesSurDecision).toBeUndefined();
   });
 
