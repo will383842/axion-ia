@@ -175,7 +175,7 @@ export function grilleDeReference(): readonly TableauGrille[] {
       cle: "A1.2",
       titre: "Accompagnement individuel et coaching (1-to-1)",
       regle:
-        "Aucune commission : l'accompagnement individuel (coaching « one to one »), vendu à la séance ou à la journée, relève de A1.6.",
+        "Aucune commission : l'accompagnement individuel (coaching « one to one »), vendu à la séance ou à la journée, relève des prestations non commissionnées (A1.5 ci-dessous).",
       colonnes: ["Prestation", "Durée", "Prix public HT", "Commission"],
       lignes: accompagnement,
     },

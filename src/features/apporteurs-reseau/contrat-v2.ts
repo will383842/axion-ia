@@ -882,6 +882,7 @@ L'accompagnement individuel (coaching « one to one »), vendu à la séance ou 
 | Hébergement | **Aucune** |
 | Licences | **Aucune** |
 | Intervention sur demande | **Aucune** |
+| Accompagnement individuel (coaching « one to one »), à la séance ou à la journée (A1.3) | **Aucune** |
 
 **Les prestations qui ne figurent dans aucun des paragraphes A1.1 à A1.5 ne donnent lieu à aucune commission**, sous réserve de A1.8 pour les produits créés après la date de la présente version. Le « coup de projecteur » (podcast, interview, page dédiée) est fourni à titre gratuit et ne donne lieu à aucune commission par construction.
 

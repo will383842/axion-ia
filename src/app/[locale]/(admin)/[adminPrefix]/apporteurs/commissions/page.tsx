@@ -620,7 +620,7 @@ export default async function CommissionsApporteursPage({ params, searchParams }
                           Choisir…
                         </option>
                         <option value="formation">Formation (puis palier)</option>
-                        <option value="un_a_un">1-to-1 (30 %)</option>
+                        <option value="un_a_un">1-to-1 (aucune commission)</option>
                         <option value="audit">Audit (30 %)</option>
                         <option value="implementation">Intégration (15 %)</option>
                         <option value="conference">Conférence (500 € fixes)</option>
