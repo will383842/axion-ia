@@ -96,8 +96,7 @@ const EXEMPLE_DE_CALCUL = [
  */
 const SEUIL_GARANTIE_LITTERAL = /(?<![\d.,])4 470 €/g;
 const MOTS_GARANTIE = /gains identifi|(?<!\d)3 fois (?:le|son) prix/;
-const CONDITION_DEDUCTION =
-  /intégration d(?:’|'|&#x27;|&#39;|\\+u2019)au moins 5 000 € HT/g;
+const CONDITION_DEDUCTION = /intégration d(?:’|'|&#x27;|&#39;|\\+u2019)au moins 5 000 € HT/g;
 const FENETRE_GARANTIE = 200;
 
 function retirerConditionsNonTarifaires(t: string): string {
