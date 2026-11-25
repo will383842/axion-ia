@@ -39,4 +39,5 @@ Elle est stockée séparément (`brand_voice_reference_embedding_voyage`), la r�
 ## Pièges
 
 - Les deux espaces vectoriels ne se comparent jamais : une similarité entre un vecteur OpenAI et un vecteur Voyage n'a aucun sens (dimensions différentes de toute façon).
-- Fenêtre app/worker (AGENTS.md) : la colonne est nullable et ignorée par l'ancien code ; aucun ordre de déploiement imposé.
+- **Ordre de mise en ligne imposé.** Le worker (sources TS, ~3 min) atterrit bien avant l'app (~50 min) : n'allumer `CONTENT_EMBEDDING_PROVIDER=voyage` ou `VOYAGE_ARTICLES_BACKFILL_ENABLED` qu'**après** l'atterrissage de l'app (en-tête `x-axion-build-sha` à jour, `curl -sI https://axion-ia.com/fr | grep -i x-axion-build-sha`) ET la présence de la colonne `articles.embedding_voyage` (`prisma migrate status` ou lecture du schéma). Sinon le worker lit une colonne qui n'existe pas encore.
+- **Même valeur sur l'app ET sur le worker** : ce sont deux conteneurs, chacun avec ses variables Coolify. `CONTENT_EMBEDDING_PROVIDER` et `VOYAGE_API_KEY` doivent être identiques des deux côtés, sinon la publication (app) et le rattrapage (worker) écrivent dans deux espaces différents.

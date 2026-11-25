@@ -7,8 +7,11 @@
 -- (le rattrapage se fait par le worker, par lots, avec plafond).
 --
 -- Compatibilité « deux conteneurs » (AGENTS.md) : l'ancien worker/app ignore cette
--- colonne (aucun SELECT * sur articles ne la lit : champ `Unsupported`), donc ni
--- l'ordre app → worker ni worker → app n'est un problème.
+-- colonne (aucun SELECT * sur articles ne la lit : champ `Unsupported`), donc la
+-- migration seule est sans danger. En revanche l'ORDRE D'ALLUMAGE est imposé : ne poser
+-- `CONTENT_EMBEDDING_PROVIDER=voyage` ni `VOYAGE_ARTICLES_BACKFILL_ENABLED` qu'après
+-- l'atterrissage de l'app (en-tête `x-axion-build-sha`) et la présence de la colonne,
+-- avec la MÊME valeur sur l'app ET sur le worker (deux conteneurs).
 --
 -- pgvector déjà actif (cf 20260514020000_kb_v4_pgvector_embeddings).
 
