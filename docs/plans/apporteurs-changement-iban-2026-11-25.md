@@ -3,6 +3,13 @@
 Plan de conception et d'audit (sécurité, argent). **Aucun code dans ce document.**
 Date : 25/11/2026. Base lue : `origin/main` au commit `3151c61a`, revérifiée sur `ef5cc10d`
 après la relecture (verdict « À CORRIGER » du 25/11/2026, PR #2256).
+**Corrigé une seconde fois le 25/11/2026** après la deuxième relecture « PLAN À CORRIGER »
+(faite sur `54dd1eab`), références revérifiées sur `8c6ca06f`. En plus des constats de la relecture,
+cette version applique **quatre règles du dirigeant** : (1) validation réservée à l'administrateur
+(`super_admin`) ; (2) **aucune saisie d'IBAN par Claude** (§2.6) ; (3) **IBAN masqué partout**, y compris
+dans la console (§4.3, §5.2) ; (4) **virements gelés tant que le nouveau compte n'est pas validé** (§4.2).
+Les points 3 et 4 remplacent l'affichage de l'IBAN entier et l'« attente sans blocage » de la première
+version.
 
 ## 0. Résumé
 
@@ -19,15 +26,20 @@ après la relecture (verdict « À CORRIGER » du 25/11/2026, PR #2256).
   console **par le rôle le plus élevé (`super_admin`) seulement**. L'ancien IBAN reste celui
   des virements jusqu'à la validation, puis il est gardé dans un historique, jamais supprimé.
 - **Après la validation, le compte présenté pour virer est le nouveau, et lui seul**
-  (section 4.3) : l'IBAN de la fiche devient la source affichée dans « Virements à faire »,
+  (section 4.3) : « Virements à faire » ouvre la pièce `rib` courante (l'IBAN reste masqué à l'écran),
   et le RIB de la demande devient la pièce `rib` courante du dossier. Aujourd'hui le virement
   se fait à partir de la pièce RIB ; sans ce point, l'argent partirait encore sur l'ancien
   compte.
 - Les liens de confirmation et d'opposition vivent **hors du chemin à jeton** :
   `/apporteur/dossier/compte/<idDemande>/<signature>`. Un e-mail de sécurité ne redonne
   jamais le lien personnel de l'espace.
-- **Jamais d'IBAN en clair** dans un journal, un e-mail, une alerte, Sentry ou une adresse de
-  page. Seulement « le compte qui se termine par 1234 ».
+- **IBAN masqué partout** : jamais en clair dans un journal, un e-mail, une alerte, Sentry, une adresse
+  de page, **ni à l'écran de la console**. Seulement « le compte qui se termine par 1234 ». L'administrateur
+  lit l'IBAN sur la pièce RIB (un document), jamais dans une page.
+- **Virements gelés tant que le nouveau compte n'est pas validé** (règle du dirigeant, §4.2) : de la
+  demande à la décision, « Virement fait » est refusé pour cet apporteur. La commission continue de
+  naître et l'autofacture de partir ; seul le virement attend.
+- **Aucune saisie d'IBAN par Claude** (§2.6).
 - Le dépôt a déjà ce circuit pour les formateurs indépendants
   (`src/server/qualiopi/formateurs-independants/changements-coordonnees.ts`, modèle
   `DemandeChangementFormateur`). Ce plan reprend ses règles et ajoute ce que le lien sans
@@ -39,7 +51,7 @@ après la relecture (verdict « À CORRIGER » du 25/11/2026, PR #2256).
   numérotation `AXI-APP`, ni le moment du versement (client payé à 100 %), ni la règle
   « une entreprise, un seul apporteur commissionné ». Seul change le compte sur lequel le
   virement part.
-- Neuf lots de code (section 11). Deux sont lançables tout de suite. Les décisions du
+- Neuf lots de code (section 11). Un ou deux sont lançables tout de suite (section 11, tableau). Les décisions du
   dirigeant sont en section 13.
 
 ## 1. Ce qui existe (lu dans le code)
@@ -53,7 +65,7 @@ après la relecture (verdict « À CORRIGER » du 25/11/2026, PR #2256).
 | Lien personnel                | `jeton = HMAC(id + versionLien)`, rien n'est stocké, pas de date de fin. Coupé en augmentant `versionLien` (retrait, résiliation, refus, effacement).                                                                                                                                                                   | `jeton.ts:37-60`                                                                                   |
 | Liens signés                  | Fabrique commune `fabriqueLienSigne` : domaine et version propres, échéance facultative **signée**, comparaison à temps constant, rien de stocké.                                                                                                                                                                       | `src/lib/security/lien-signe.ts`                                                                   |
 | Retrouver son lien            | Formulaire public : l'adresse saisie reçoit le lien si elle est celle d'une fiche. Limite par IP et par adresse, **fermé si la limite est indisponible**. Qui lit la boîte e-mail de l'apporteur obtient donc le lien.                                                                                                  | `src/app/apporteur/dossier/retrouver/actions.ts`                                                   |
-| Adresse e-mail et téléphone   | Plus modifiables par l'apporteur après la signature. **Aucune action de console ne modifie l'adresse e-mail d'une fiche** (vérifié : `actions-apporteurs.ts` ne la pose qu'à la création, `ouvrirDossierManuelAction` ; `correction-nom.ts` et `actions-identite.ts` n'y touchent pas ; seul `rgpd-erase.ts` l'écrase). | `donnees.ts`, `actions-apporteurs.ts`, `actions-identite.ts`, `correction-nom.ts`, `rgpd-erase.ts` |
+| Adresse e-mail et téléphone   | Plus modifiables par l'apporteur après la signature. **Aucune action de console ne modifie l'adresse e-mail d'une fiche** (vérifié : les seules écritures de `email` sont `ouvrirDossierDepuisCandidature` (`donnees.ts:68`, écriture en `:168`), `ouvrirDossierManuel` (`verification.ts:727`, écriture en `:789`) et l'effacement RGPD (`rgpd-erase.ts:3105`) ; `actions-apporteurs.ts` appelle la création mais ne l'écrit pas ; `correction-nom.ts` et `actions-identite.ts` n'y touchent pas). Le **téléphone** (`telephone String?`, facultatif) n'a **aucun écrivain après la signature**. | `donnees.ts`, `actions-apporteurs.ts`, `actions-identite.ts`, `correction-nom.ts`, `rgpd-erase.ts` |
 | Espace « signé »              | Contrat à télécharger, déclaration d'entreprise, grille, outils, pièces de vigilance. Rien sur le compte bancaire.                                                                                                                                                                                                      | `page.tsx` de l'espace                                                                             |
 | RIB                           | Pièce `rib` exigée pour signer. Un nouveau dépôt du même type par `deposerPiece` **purge les octets de l'ancien** (`purgerContenuPieces`, `courantesSeulement`). Contrôle commun : `controlerPiece` (format, `TAILLE_MAX_PIECE` = 10 Mo, antivirus obligatoire), chiffrement `chiffrerContenuPiece`.                    | `donnees.ts:435`, `src/server/pieces/depot-controle.ts`, `pieces-chiffrement.ts`                   |
 | Autofacture                   | Aucun IBAN dans les données ni dans le PDF de l'autofacture.                                                                                                                                                                                                                                                            | `autofacture-donnees.ts`, `commissions.ts`, `facturation.ts`                                       |
@@ -91,7 +103,7 @@ contrôle humain (RIB, rappel au numéro connu) arrête l'attaque.
 ### 2.2 Les barrières, dans l'ordre
 
 1. **Rien ne change sur la fiche à la demande.** La demande vit dans sa propre table.
-   L'ancien IBAN reste celui des virements, et l'ancienne pièce RIB reste la pièce courante.
+   L'ancien IBAN reste celui de la fiche, et l'ancienne pièce RIB reste la pièce courante ; les virements, eux, sont gelés (§4.2).
    (Arrête M1, M2, M3 tant que personne n'a validé.)
 2. **Le RIB du nouveau compte est obligatoire**, déposé avec la demande. Il passe par le
    **même contrôle** que les pièces du dossier (`controlerPiece` : format par extension et
@@ -131,13 +143,16 @@ contrôle humain (RIB, rappel au numéro connu) arrête l'attaque.
    L'outil prépare les contrôles, la personne décide (section 5.2). **Trois cases
    obligatoires**, vérifiées côté serveur : « Le titulaire du RIB est l'apporteur ou son
    entreprise », « L'IBAN du RIB est celui de la demande », « J'ai parlé à l'apporteur au
-   numéro de sa fiche ». Le rappel est la seule barrière contre M2. (Arrête M2, M3, limite M5.)
+   numéro de sa fiche ». **La deuxième case est adossée à un contrôle** : l'administrateur
+   **recopie l'IBAN qu'il lit sur le RIB** dans un champ ; le serveur en calcule l'empreinte et la
+   compare à celle de la demande (`iban_empreinte`). Aucun IBAN n'est affiché pour cela, rien n'est
+   rendu en retour, rien n'est journalisé (seulement « contrôle réussi / échoué »). Le rappel est la seule barrière contre M2. (Arrête M2, M3, limite M5.)
 7. **À la validation**, dans une seule transaction :
    - la demande passe à « validée » (écriture conditionnée au statut `confirmee`) ;
    - l'ancien IBAN chiffré est copié dans l'historique ;
    - le nouvel IBAN est rechiffré pour la fiche ;
    - **le RIB de la demande devient la pièce `rib` courante** : une nouvelle ligne de pièce
-     de type `rib` (valeur existante de l'énumération) est créée avec ses octets rechiffrés ;
+     de type `rib` (valeur existante de l'énumération) est créée avec ses octets rechiffrés, **statut `conforme`** et `verifieeAt` = l'instant de la validation (l'administrateur a coché les trois cases) ;
      l'ancienne pièce `rib` reçoit `remplaceeAt` **sans purge de ses octets** (preuve du
      compte payé jusque-là). Pas d'appel à `deposerPiece` ;
    - le lien personnel est renouvelé (`versionLien` + 1) ;
@@ -147,13 +162,23 @@ contrôle humain (RIB, rappel au numéro connu) arrête l'attaque.
    (sans lien), et le gabarit **existant** `apporteur-lien-espace` avec le lien neuf, pour
    que l'apporteur ne perde pas son espace sans comprendre.
 
-8. **Premier virement sur le nouveau compte** : la console l'affiche en clair (« premier
-   virement sur ce compte ») et « Virement fait » enregistre sur quel compte l'argent est
+8. **Premier virement sur le nouveau compte** : la console l'affiche (« premier
+   virement sur ce compte », quatre derniers caractères) et « Virement fait » enregistre sur quel compte l'argent est
    parti (section 4.3). (Limite M5, répond à M6.)
 9. **Limites d'usage.** Une seule demande ouverte par apporteur (index unique partiel). Trois
-   demandes au plus par période de 30 jours. Limite de débit par IP hachée sur chaque action
-   (demande, confirmation, opposition, annulation), **fermée en cas de panne de Redis** (un
-   e-mail part : même règle que « Retrouver mon espace »). Les réponses ne disent jamais si
+   demandes au plus par période de 30 jours. Limite de débit sur chaque action, par `checkRateLimit` (`@/lib/rate-limit`) et `hashIp`
+   (`src/lib/security/ip-hash.ts`), `surPanne: "refuser"` (**fermée en cas de panne de Redis**, comme
+   `retrouver/actions.ts`) :
+
+   | Action | Clé | Limite |
+   | --- | --- | --- |
+   | Demande | `apporteur:iban:demande:ip:<ip hachée>` ; `apporteur:iban:demande:apporteur:<id>` | 5 par heure par IP ; 3 par jour par apporteur |
+   | Confirmation | `apporteur:iban:confirmer:ip:<ip hachée>` | 10 par quart d'heure |
+   | Opposition | `apporteur:iban:bloquer:ip:<ip hachée>` ; `apporteur:iban:bloquer:demande:<id>` | 10 par quart d'heure par IP ; 5 par jour par demande |
+   | Annulation | `apporteur:iban:annuler:ip:<ip hachée>` | 10 par quart d'heure |
+
+   Les chiffres sont des constantes isolées (`changement-iban-regles.ts`), testées aux bornes. Un e-mail part
+   à chaque demande : même règle que « Retrouver mon espace ». Les réponses ne disent jamais si
    une adresse existe. (Arrête M4.)
 10. **Compte déjà connu ailleurs.** À la demande puis à la validation, l'empreinte du nouvel
     IBAN est comparée aux IBAN des autres apporteurs, à ceux du parrain et des filleuls
@@ -165,12 +190,17 @@ contrôle humain (RIB, rappel au numéro connu) arrête l'attaque.
     et de la confirmation. « Navigateur résumé » = la sortie de `resumerNavigateur`
     (`src/lib/navigateur.ts`) : famille et système, par exemple « Chrome · Windows ».
     **Jamais la chaîne `User-Agent` entière.** (Répond à M6.)
-12. **Aucun IBAN en clair hors du chiffré.** Ni dans le journal (le masquage de `journaliser`
+12. **Aucun IBAN en clair hors du chiffré, et aucune exception.** Ni dans le journal (le masquage de `journaliser`
     reste un filet, pas la règle : on n'y passe jamais l'IBAN), ni dans une alerte interne,
     ni dans une charge ou un rendu d'e-mail, ni dans Sentry (aucun `captureException` ni
     `signalerErreurReseau` ne reçoit l'IBAN ; les routes publiques sont sous
     `/apporteur/dossier/`, dont Sentry supprime le corps), ni dans une adresse de page, ni
-    dans une valeur de retour d'action. Un test le verrouille par lot.
+    dans une valeur de retour d'action, **ni à l'écran de la console** (règle du dirigeant : IBAN masqué
+    partout). Il n'y a **aucune exception** : la première version autorisait deux affichages entiers
+    (« Afficher l'IBAN à virer », écran de décision) ; ils sont **supprimés** (§4.3, §5.2, D-3, D-6). Le seul
+    IBAN qui entre dans une requête est celui que l'administrateur recopie pour le contrôle du point 6, en
+    **entrée** de l'action, jamais en sortie ; la route d'action de la console est ajoutée à la purge Sentry du
+    corps de requête (lot 3). Un test le verrouille par lot.
 
 ### 2.3 Ce que ces barrières ne couvrent pas
 
@@ -185,7 +215,13 @@ contrôle humain (RIB, rappel au numéro connu) arrête l'attaque.
 
 ### 2.4 Qui peut demander
 
-- Seulement une fiche au statut `signe`, non retirée du réseau, dont l'IBAN actuel est lisible.
+- Seulement une fiche au statut `signe`, non retirée du réseau, dont l'IBAN actuel est lisible **et dont le
+  téléphone est renseigné** (voir ci-dessous).
+- **Fiche sans téléphone** : la demande est **refusée à la création** (aucune ligne écrite, aucun e-mail), car le
+  rappel est obligatoire (D-2) et une demande sans numéro ne pourrait jamais être validée. Texte : §12.1,
+  « Fiche sans numéro ». L'apporteur écrit à Axion IA ; l'administrateur ajoute le numéro par une action de
+  console **qui obéit à la règle du §2.5 bis** (elle ferme les demandes ouvertes et alerte), puis la demande
+  est possible.
 - Dossier « à vérifier » : pas de demande. L'administrateur peut déjà rouvrir le dossier
   (« à compléter »), et l'IBAN se corrige alors à l'étape 2, comme aujourd'hui.
 - Fiche retirée (mode restreint) ou résiliée avec de l'argent encore dû : pas de demande
@@ -202,9 +238,43 @@ modifie après la création (section 1). Règle à graver :
   doit, dans la même transaction, **annuler toute demande de changement d'IBAN ouverte**, et
   envoyer pendant 30 jours toute alerte de sécurité **aussi à l'ancienne adresse** (règle
   déjà appliquée aux formateurs).
-- Verrou : un test de garde statique (lot 3) échoue si une écriture du champ `email` de
-  `apporteurReseau` apparaît ailleurs que dans la création (`ouvrirDossierManuel`, le dépôt
-  du formulaire) et l'effacement RGPD, sans appeler la fonction de fermeture des demandes.
+- Verrou : un test de garde statique (lot 3) échoue si une écriture de `email` **ou d'`emailHash`** sur
+  `apporteurReseau` apparaît ailleurs que dans la liste fermée des écrivains autorisés :
+  - `ouvrirDossierDepuisCandidature` (`donnees.ts:68`, écriture en `:168`) ;
+  - `ouvrirDossierManuel` (`verification.ts:727`, écriture en `:789`) ;
+  - l'effacement RGPD (`rgpd-erase.ts:3105`) ;
+  sans appeler la fonction de fermeture des demandes. Ces trois écrivains sont des créations ou un effacement : ils
+  ne rencontrent jamais de demande ouverte, ils sont donc autorisés tels quels.
+- **L'alerte à l'ancienne adresse pendant 30 jours** est testée : un envoi de sécurité, dans les 30 jours qui
+  suivent un changement d'adresse, part aux deux adresses ; à 31 jours, à la nouvelle seule.
+
+### 2.5 bis Règle dure : le téléphone de la fiche
+
+Le rappel (barrière 6) ne protège rien si le numéro peut changer en même temps que l'IBAN. Aujourd'hui le
+téléphone n'a aucun écrivain après la signature (`telephone String?`, écrit à l'étape 1 du dossier,
+`[jeton]/actions.ts:166-174`, `telephone: telephone || null`). Règle symétrique de celle de l'adresse :
+
+- toute future action qui modifie `telephone` ou `telephoneHash` annule, dans la même transaction, toute
+  demande de changement d'IBAN ouverte, et alerte l'adresse de la fiche (30 jours aussi sur l'ancienne si
+  l'adresse change) ;
+- test de garde statique (lot 3) : liste fermée des écrivains du téléphone (l'étape 1 du dossier, avant
+  signature ; l'effacement RGPD) ;
+- **un numéro modifié depuis moins de 30 jours** s'affiche en orange sur l'écran de décision, avec la
+  mention « numéro modifié le … » : l'administrateur doit alors confirmer par un autre moyen.
+
+### 2.6 Règles du dirigeant sur l'IBAN et le virement
+
+1. **Validation réservée à l'administrateur** : `valider_changement_iban`, `super_admin` seul (§2.2, point 6).
+2. **Aucune saisie d'IBAN par Claude.** Aucun assistant IA (Claude ni autre) ne saisit, ne recopie, ne
+   pré-remplit, ne lit à haute voix ni ne devine un IBAN, dans l'espace comme dans la console : ni appel à une
+   API de modèle sur ce chemin, ni agent de navigateur, ni extraction automatique du RIB. Verrou : garde
+   statique (lot 3) qui échoue si un module du chemin (`changement-iban*.ts`, `actions-changement-iban.ts`,
+   `actions-compte.ts`, le contrôle de la console) importe `@anthropic-ai/sdk` ou un module d'appel de modèle.
+   **L'essai réel du §9 se fait à la main par une personne**, avec un IBAN d'essai qu'elle saisit elle-même ; le
+   développeur n'écrit un IBAN que dans des **fixtures de test** (IBAN fictifs de documentation, jamais
+   réels).
+3. **IBAN masqué partout** (§2.2, point 12).
+4. **Virements gelés tant que le nouveau compte n'est pas validé** (§4.2).
 
 ## 3. Modèle de données
 
@@ -233,7 +303,7 @@ migration est jouée par le conteneur de l'application. Conséquences retenues :
   y a plus de 24 heures** (écriture conditionnelle : `where statut = 'a_confirmer' and
 demandee_at < maintenant - 24 h`), puis insère. Sinon une demande jamais confirmée
   bloquerait l'apporteur pour toujours. Même écriture conditionnelle à l'ouverture de
-  l'espace (pour afficher l'état juste et déclencher l'e-mail 5, décision D-5). Aucune tâche
+  l'espace (pour afficher l'état juste et déclencher l'e-mail 5, **retenu : D-5 est tranchée « oui » dans ce plan**). Aucune tâche
   planifiée n'est nécessaire.
 - Le worker n'a pas besoin d'`IBAN_EMPREINTE_SECRET` : demande, confirmation, validation et
   « Virement fait » tournent dans l'application. Seules la purge des RIB et l'alerte
@@ -315,68 +385,80 @@ l'ancien : le retour à l'ancien compte se fait par une nouvelle demande, pas pa
   l'apporteur, jamais d'exonération inventée), ni le SIREN, ni l'identité de facturation.
 - Les commissions (`commissions_apporteur`), leur calcul, leurs taux, leur moment de
   versement (client payé à 100 %) et leurs reprises ne sont pas modifiés par ce chantier.
-- La déclaration annuelle des honoraires (`das2.ts`, `lignesDas2Apporteurs`) se fonde sur les
+- La déclaration annuelle des honoraires (`src/server/paiements-sortants/das2.ts`, `lignesDas2Apporteurs` dans `commissions.ts:859`) se fonde sur les
   sommes versées par bénéficiaire, pas sur le compte : inchangée.
 
-### 4.2 Virement à faire pendant qu'une demande est ouverte
+### 4.2 Virements gelés tant que le nouveau compte n'est pas validé (règle du dirigeant)
 
-Le virement se fait à la main, hors du site ; le site ne sait que ce que « Virement fait »
-lui déclare. Règle :
+Le virement se fait à la main, hors du site ; le site ne sait que ce que « Virement fait » lui déclare.
+**Règle du dirigeant : les virements d'un apporteur sont gelés tant que le nouveau compte n'est pas validé.**
+La première version « proposait d'attendre sans bloquer » (D-4) : **c'est retiré**.
 
-- **Tant que le nouveau compte n'est pas validé, l'ancien est le seul utilisé** (règle du
-  dirigeant). « Virements à faire » ne montre que le compte de la fiche, c'est-à-dire
-  l'ancien.
-- Tant qu'une demande est `a_confirmer` ou `confirmee`, la ligne de l'apporteur dans
-  « Virements à faire » (console des commissions et vue commune des paiements sortants)
-  porte un bandeau (texte en section 12).
-- **L'outil propose d'attendre la décision** ; il ne bloque pas. Virer sur le compte actuel
-  reste permis (art. 5.4 et 6.3) ; mais si l'apporteur a fermé ce compte, le virement
-  reviendra.
-- Les délais du contrat restent tenables : objectif de deux jours ouvrés, échéance ferme à
-  trente jours. **Une demande non décidée 10 jours après sa confirmation passe en rouge**
-  dans la console et déclenche une alerte interne. Cette alerte passe par le passage
-  quotidien **du worker**, qui tolère la table absente (`P2021` : rien à signaler) ; le
-  passage quotidien de l'application n'existe pas, il n'en est pas créé un.
-- « Virement fait » n'est **pas bloqué** par une demande ouverte (art. 5.4). Il enregistre
-  seulement le compte utilisé.
+- **Quand le gel commence** : dès qu'une demande de cet apporteur existe à l'état `a_confirmer` ou
+  `confirmee` (donc dès la création). **Quand il finit** : la demande passe à `validee`, `refusee`,
+  `opposee`, `annulee` ou `expiree`. Après `validee`, le virement part sur le nouveau compte ; après les
+  autres, sur l'ancien. Le gel est **calculé à la lecture** depuis l'état de la demande : rien n'est écrit,
+  rien à défaire.
+- **Ce qui est gelé** : « Virement fait » (`marquerVerse`) est **refusé côté serveur** pour cet apporteur
+  (« Virements gelés : changement de compte en cours »), et « Virements à faire » (console des
+  commissions et vue commune des paiements sortants) affiche la ligne **grisée**, avec le bandeau du §12.5 et sans
+  bouton « Ouvrir le RIB ». Un virement déjà parti avant la demande reste valable (art. 6.3).
+- **Ce qui continue** : les commissions naissent, les autofactures partent, les reprises s'appliquent. Rien
+  n'est annulé ni reporté dans le calcul. **Seul le virement attend.**
+- **Le gel a une borne visible, pas une fin automatique.** Une demande `a_confirmer` expire seule à 24 heures
+  (le gel s'arrête). Une demande `confirmee` non décidée **10 jours** après sa confirmation passe en rouge dans la
+  console et déclenche une alerte interne (passage quotidien **du worker**, tolérant la table absente,
+  `P2021` : rien à signaler ; le passage quotidien de l'application n'existe pas, il n'en est pas créé un).
+  L'administrateur lève le gel en **décidant** (valider ou refuser). L'échéance ferme du contrat est de trente
+  jours : l'alerte à 10 jours laisse 20 jours pour décider.
+- **Abus du gel (M4)** : un tiers qui n'a que le lien personnel peut ouvrir une demande et geler les virements
+  jusqu'à l'expiration (24 heures). Parades : trois demandes au plus par 30 jours (donc au plus trois jours de
+  gel par mois sans la boîte e-mail), limites de débit du §2.2 point 9, l'apporteur peut **annuler** sa demande
+  depuis l'espace (le gel s'arrête), et l'opposition lève le gel et coupe le lien.
+- **Point à faire relire par le juriste** (D-4, nouvelle formulation) : le gel retarde un versement dû ; l'art. 5.4
+  (« pas de versement sans coordonnées à son nom ») ne l'interdit pas, mais l'échéance de trente jours doit rester
+  tenable. À défaut d'accord, le dirigeant peut lever le gel par un refus motivé.
 
-### 4.3 D'où l'administrateur lit le compte à virer (correction du bloquant 1)
+### 4.3 D'où l'administrateur lit le compte à virer (correction du bloquant 1, IBAN masqué)
 
-Constat : aujourd'hui, l'IBAN n'est lu en entier nulle part ; le virement est donc fait à
-partir de la **pièce RIB** du dossier. Si la validation changeait seulement l'IBAN de la
-fiche, la pièce ouverte pour virer resterait l'ancien RIB, et l'argent partirait sur
-l'ancien compte. Solution retenue, en deux parties qui se tiennent :
+Constat : aujourd'hui, l'IBAN n'est lu en entier nulle part ; le virement est fait à partir de la
+**pièce RIB** du dossier. Si la validation changeait seulement l'IBAN de la fiche, la pièce ouverte pour
+virer resterait l'ancien RIB, et l'argent partirait sur l'ancien compte. La première version corrigeait cela en
+affichant l'IBAN entier ; **la règle du dirigeant (« IBAN masqué partout ») l'interdit**. Solution retenue :
 
-1. **Une seule source affichée : l'IBAN de la fiche.** Dans « Virements à faire », chaque
-   ligne porte un bouton « Afficher l'IBAN à virer ». Il affiche l'IBAN courant de la fiche en
-   entier (lu par `lireIban`, qui trouve enfin son appelant), avec le nom du titulaire
-   attendu. Réservé à `peutEngager(role, "facturer")` (le geste de virer, décision D-6).
-   **Chaque affichage est journalisé** (qui, quand, quel apporteur, quatre derniers
-   caractères : jamais l'IBAN). Rien n'est mis en cache, rien n'est rendu dans le HTML
-   initial : l'IBAN n'arrive qu'à la demande, par une action serveur.
-2. **La pièce RIB suit.** À la validation, le RIB de la demande devient la pièce `rib`
-   courante (section 2.2, point 7). L'ancienne pièce porte « Remplacée le … — ne plus
-   utiliser pour virer » dans la fiche. Ainsi, quiconque vire encore depuis la pièce tombe
-   aussi sur le nouveau compte.
+1. **La pièce RIB est la seule source de lecture de l'IBAN, et l'écran n'affiche que le masque.** Dans
+   « Virements à faire », chaque ligne non gelée porte : le nom du titulaire attendu, **le compte de la fiche
+   masqué** (« se termine par 5678 ») et un bouton **« Ouvrir le RIB à virer »**, qui ouvre la pièce `rib`
+   **courante** (route d'administration existante des pièces, antivirus compris), réservé à
+   `peutEngager(role, "facturer")`. Chaque ouverture est journalisée (qui, quand, quel apporteur, quatre
+   derniers caractères : jamais l'IBAN). **`lireIban` n'a toujours aucun appelant d'affichage** : il ne sert
+   qu'à calculer l'empreinte et à rechiffrer à la validation, côté serveur, sans rien rendre.
+2. **La pièce RIB suit la validation.** À la validation, le RIB de la demande devient la pièce `rib`
+   courante (section 2.2, point 7). L'ancienne pièce porte « Remplacée le … — ne plus utiliser pour virer » dans
+   la fiche. Quiconque vire depuis la pièce courante tombe sur le nouveau compte.
+3. **Contrôle avant « Virement fait »** : le formulaire demande les **quatre derniers caractères de l'IBAN lus sur
+   le RIB ouvert** ; le serveur les compare à `iban_fin4` du compte courant de la fiche (et du compte précédent
+   pendant les 10 jours qui suivent une validation). Désaccord : refus (« Le RIB ouvert ne correspond pas au
+   compte attendu »). Aucun IBAN entier n'est saisi ni rendu.
 
 Pendant 10 jours après une validation, le formulaire « Virement fait » demande : « Sur quel
-compte ce virement est-il parti ? » avec deux choix (compte actuel, compte précédent). Cas
-visé : le virement est parti de la banque avant la validation, et « Virement fait » est
-cliqué après. À chaque « Virement fait », le site enregistre le compte choisi (empreinte et
-quatre derniers caractères) dans `apporteur_virements_compte`. Le premier virement déclaré
-sur un compte est marqué et affiché comme tel. L'e-mail existant `apporteur-virement-fait`
-précise alors « sur votre compte qui se termine par … » (champ facultatif de la charge,
-rétrocompatible : un ancien worker l'ignore).
+compte ce virement est-il parti ? » avec deux choix (compte actuel, compte précédent). Cas visé : le virement est
+parti de la banque avant la validation (il n'y a pas de gel avant la demande), et « Virement fait » est cliqué
+après. À chaque « Virement fait », le site enregistre le compte choisi (empreinte et quatre derniers
+caractères) dans `apporteur_virements_compte`. Le premier virement déclaré sur un compte est marqué et affiché
+comme tel. L'e-mail existant `apporteur-virement-fait` précise alors « sur votre compte qui se termine par … »
+(champ facultatif de la charge, rétrocompatible : un ancien worker l'ignore).
 
-Test bloquant (lot 7) : **après validation, l'IBAN présenté pour virer et la pièce `rib`
-courante sont ceux du nouveau compte ; avant validation, ce sont ceux de l'ancien.**
+Test bloquant (lot 7) : **après validation, la pièce `rib` ouverte pour virer et le masque présenté sont ceux du
+nouveau compte ; avant validation (demande ouverte), le virement est gelé ; une fois la demande refusée,
+ce sont ceux de l'ancien.**
 
 ### 4.4 Cas limites
 
 | Cas                                                              | Traitement                                                                                                                                                                         |
 | ---------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Virement parti sur l'ancien compte, fermé depuis                 | Hors du site aujourd'hui (pas d'annulation de « Virement fait » trouvée). À traiter à la main ; voir section 10.                                                                   |
-| Demande validée alors qu'une autofacture attend son virement     | Le virement part sur le nouveau compte. Le bandeau disparaît, la mention « premier virement sur ce compte » apparaît.                                                              |
+| Demande validée alors qu'une autofacture attend son virement     | Le gel est levé ; le virement part sur le nouveau compte. Le bandeau disparaît, la mention « premier virement sur ce compte » apparaît.                                                              |
 | Opposition après validation                                      | Impossible par le lien d'opposition. La personne écrit ; l'administrateur traite (runbook, lot 8). Si l'argent est déjà parti : rappel de fonds auprès de la banque, hors du site. |
 | Apporteur avec commissions suspendues, reprises ou solde négatif | Aucun effet : le changement ne touche qu'au compte.                                                                                                                                |
 | Deux demandes en même temps (deux onglets)                       | L'index unique partiel n'en laisse qu'une ; la seconde reçoit « Une demande est déjà en cours ».                                                                                   |
@@ -439,9 +521,11 @@ virer ».
    - sommes en attente de virement pour cet apporteur ;
    - la demande et la confirmation viennent-elles du même navigateur résumé et de la même
      adresse IP hachée que la signature du contrat (information, jamais un blocage).
-3. Le RIB, ouvert dans la page, à côté de l'IBAN demandé (affiché en entier après un clic
-   journalisé, décision D-3) et du nom de l'apporteur et de son entreprise.
-4. Le numéro de téléphone de la fiche, avec la consigne (texte en section 12).
+3. Le RIB, ouvert dans la page, à côté de l'IBAN demandé **masqué** (« se termine par 5678 ») et du nom de
+   l'apporteur et de son entreprise. **Le contrôle exact se fait par saisie** : l'administrateur recopie l'IBAN
+   lu sur le RIB dans un champ ; le serveur compare l'empreinte (§2.2, point 6) ; rien n'est réaffiché.
+4. Le numéro de téléphone de la fiche, avec la consigne (texte en section 12) et, s'il a été modifié depuis moins
+   de 30 jours, la mention « numéro modifié le … » (§2.5 bis). Une fiche sans numéro ne produit pas de demande (§2.4).
 5. **Trois cases à cocher obligatoires** (les mêmes qu'en section 2.2, point 6).
 6. Deux boutons : **Valider le changement** (confirmation à retaper : les quatre derniers
    caractères du nouvel IBAN) et **Refuser** (motif obligatoire, envoyé à l'apporteur ;
@@ -454,14 +538,13 @@ virer ».
 **Habilitations** :
 
 - lire la liste : administrateurs ;
-- ouvrir le RIB d'une demande et afficher l'IBAN demandé en entier : `super_admin` (c'est
-  l'écran de la décision) ;
+- ouvrir le RIB d'une demande : `super_admin` (c'est l'écran de la décision) ;
 - valider ou refuser : `peutEngager(role, "valider_changement_iban")` = `super_admin` seul ;
-- afficher l'IBAN à virer dans « Virements à faire » : `facturer` (décision D-6).
-  Chaque ouverture du RIB ou affichage d'un IBAN entier est journalisé, sans l'IBAN.
+- ouvrir le RIB courant dans « Virements à faire » : `facturer` (décision D-6, reformulée).
+  Chaque ouverture d'un RIB est journalisée, sans l'IBAN. **Aucun IBAN entier n'est affiché dans la console.**
 
-**Virements à faire** : bandeau, bouton « Afficher l'IBAN à virer » et choix du compte
-(section 4).
+**Virements à faire** : bandeau de gel, bouton « Ouvrir le RIB à virer », contrôle des quatre derniers caractères et
+choix du compte (section 4).
 
 ## 6. E-mails
 
@@ -515,7 +598,7 @@ Cinq gabarits nouveaux, plus le gabarit existant `apporteur-lien-espace` :
 | 2   | `apporteur-compte-demande-bloquee` | après une opposition                                            | aucun                           |
 | 3   | `apporteur-compte-change`          | après la validation                                             | aucun                           |
 | 4   | `apporteur-compte-refuse`          | après un refus                                                  | aucun                           |
-| 5   | `apporteur-compte-expire`          | demande expirée, au retour sur l'espace (D-5)                   | aucun                           |
+| 5   | `apporteur-compte-expire`          | demande expirée, au retour sur l'espace (D-5 : oui)                 | aucun                           |
 | —   | `apporteur-lien-espace` (existant) | après une opposition et après une validation, e-mail **séparé** | lien personnel neuf             |
 
 Textes intégraux : section 12.
@@ -552,7 +635,7 @@ qui se termine par … » (lot 7).
   (« changement de coordonnées bancaires d'un apporteur, lutte contre la fraude »).
 - **Sous-traitants** : aucun nouveau (messagerie et stockage déjà utilisés).
 - **Droits d'accès internes** : RIB de demande et IBAN demandé entier réservés au
-  `super_admin` ; IBAN à virer entier réservé à `facturer` ; chaque lecture est journalisée.
+  `super_admin` ; RIB courant à virer réservé à `facturer` ; **aucun IBAN entier affiché** ; chaque ouverture est journalisée.
 
 ## 8. Interrupteur et secret
 
@@ -560,8 +643,9 @@ qui se termine par … » (lot 7).
   l'application, « éteint » sauf valeur `true`). Éteint : aucune section dans l'espace, les
   actions répondent « Ce service est fermé », la route des liens rend la page neutre,
   l'émetteur refuse d'émettre, la console n'affiche que l'historique et les demandes
-  existantes (aucune validation possible), le bouton « Afficher l'IBAN à virer » n'apparaît
-  pas.
+  existantes (aucune validation possible), le bouton « Ouvrir le RIB à virer » n'apparaît
+  pas et **le gel des virements ne s'applique pas** (aucune demande ne peut être décidée, mais une demande ouverte avant l'extinction
+  garde son gel tant qu'elle n'est pas close : pour la lever, l'administrateur la refuse).
 - `IBAN_EMPREINTE_SECRET` absent : toute demande est refusée (« Ce service est fermé pour le
   moment »), le bouton « Changer de compte » n'apparaît pas, et la console affiche un bandeau
   rouge en permanence sur la page des demandes et sur la page des apporteurs (pas seulement
@@ -575,8 +659,10 @@ qui se termine par … » (lot 7).
 3. Lot 4. Puis lots 5, 6 et 7, dans n'importe quel ordre. Puis lot 8.
 4. Mise en ligne. Vérifier sur les deux conteneurs. Vérifier que `IBAN_EMPREINTE_SECRET` est
    posé sur l'application (le bandeau de la console ne doit pas s'afficher).
-5. Essai réel sur une fiche de test, interrupteur allumé pour cet essai.
-6. Allumer l'interrupteur (décision du dirigeant, D-9).
+5. Essai réel sur une fiche de test, interrupteur allumé pour cet essai, **fait à la main par une personne** avec un IBAN d'essai qu'elle saisit elle-même (§2.6).
+   **Interrupteur interdit tant que le lot 7 n'est pas en ligne** : sans lui, la validation changerait la fiche sans que
+   le virement suive la nouvelle pièce RIB, et le gel ne serait pas appliqué.
+6. Allumer l'interrupteur (décision du dirigeant, D-9), **après** le lot 7 en ligne, le secret d'empreinte posé et le comptage de la section 8.
 7. Lot 9.
 
 Retour arrière : éteindre l'interrupteur. Les demandes ouvertes restent en base, visibles
@@ -598,6 +684,7 @@ dans la console ; aucune n'est validée tant qu'il est éteint.
   du code. Les lectures du worker sur `apporteurs_reseau` sans liste de colonnes sont
   affirmées par les commentaires du schéma ; je ne les ai pas toutes recensées.
 - **Le poids du composant client** de l'espace n'est pas mesuré.
+- **ADR** : la dérogation au `gabaritRepli` (§6.1) fait l'objet d'un **ADR court**, à écrire dans le lot 2 (`docs/adr/`), pour qu'une session future ne la « corrige » pas.
 
 ## 11. Découpage en lots de code
 
@@ -613,7 +700,7 @@ l'interrupteur `APPORTEUR_CHANGEMENT_IBAN_ENABLED` (section 8).
 | 4   | Cœur serveur                                                     | sécurité, argent  | oui                                | 1, 2 **en ligne sur le worker**, 3 |
 | 5   | Espace apporteur et route des liens                              | écran, sécurité   | oui                                | 4                                  |
 | 6   | Console : décision                                               | écran, sécurité   | oui (validation)                   | 4                                  |
-| 7   | Virements : le compte réellement payé                            | argent            | oui (affichage de l'IBAN à virer)  | 1, 4 ; D-6                         |
+| 7   | Virements : gel et compte réellement payé                            | argent            | oui (gel et ouverture du RIB)  | 1, 4 ; D-6                         |
 | 8   | RGPD, purge, alerte 10 jours                                     | données           | non (tolère tables vides/absentes) | 1, 4 ; D-7                         |
 | 9   | Compléments (demande depuis la console, reprise de l'historique) | données, sécurité | oui                                | 4, 6                               |
 
@@ -648,7 +735,10 @@ l'interrupteur `APPORTEUR_CHANGEMENT_IBAN_ENABLED` (section 8).
   contient une suite qui a la forme d'un IBAN** (motif `IBAN_RE` de `journaliser.ts`) même si
   la charge en contient un par erreur ; aucun rendu ne contient un lien `/apporteur/dossier/<uuid>/` ;
   le catalogue reste complet ; chaque gabarit est connu de `estGabaritConnu` ;
-  `les-e-mails-de-compte-n-ont-pas-de-repli.spec.ts` (section 6.1).
+  `les-e-mails-de-compte-n-ont-pas-de-repli.spec.ts` (section 6.1). **Les cinq gabarits sont tous créés** (l'e-mail 5
+  `apporteur-compte-expire` aussi : D-5 est tranchée « oui » ; si le dirigeant dit non, retirer la ligne 5 de ce lot et
+  le déclencheur du lot 4, rien d'autre). Un ADR court sur la dérogation au `gabaritRepli` est livré avec ce lot.
+  Dépend de D-10 (textes). Clé d'envoi (`jobId`) : `apporteur-compte-<étape>-<idDemande>`.
 - **Aucun émetteur dans ce lot.** Après fusion : attendre un créneau, puis vérifier le
   contenu du conteneur worker avant de fusionner le lot 4.
 
@@ -658,10 +748,12 @@ l'interrupteur `APPORTEUR_CHANGEMENT_IBAN_ENABLED` (section 8).
   `valider_changement_iban: ["super_admin"]`, commentaire « règle du dirigeant : rôle le plus
   élevé ») et ses tests existants ; `src/features/apporteurs-reseau/__tests__/l-adresse-e-mail-ne-change-pas-sans-fermer-les-demandes.spec.ts`
   (garde statique, section 2.5) ; `src/lib/observability/sentry-pii-scrub.token.spec.ts`
-  (cas `/apporteur/dossier/compte/<uuid>/<signature>`).
+  (cas `/apporteur/dossier/compte/<uuid>/<signature>`, **et la route d'action de la console qui reçoit l'IBAN recopié**).
+  Gardes statiques supplémentaires : écrivains de `email`/`emailHash` (liste fermée du §2.5), écrivains de `telephone`/`telephoneHash`
+  (§2.5 bis), **aucun import d'appel de modèle sur le chemin IBAN** (§2.6).
 - **Tests rouges d'abord** : `peutEngager("admin", "valider_changement_iban") === false`,
   `peutEngager("super_admin", …) === true` ; la matrice reste cohérente avec
-  `ROLES_ECRITURE` ; la garde statique échoue sur une écriture fictive d'`email` ; la purge
+  `ROLES_ECRITURE` ; la garde statique échoue sur une écriture fictive d'`email` ou de `telephone` ; la purge
   Sentry s'applique à la nouvelle route (vert dès l'écriture si le préfixe couvre bien : le
   test fixe le contrat).
 - Indépendant de tout : l'acte n'a pas d'appelant avant le lot 4.
@@ -698,7 +790,10 @@ l'interrupteur `APPORTEUR_CHANGEMENT_IBAN_ENABLED` (section 8).
   - `le-lien-de-confirmation-ne-sert-qu-une-fois.spec.ts` ; lien d'une autre demande, d'un
     autre apporteur, d'une autre action, expiré : même réponse neutre.
   - `aucun-iban-ne-sort-du-serveur.spec.ts` : ni journal, ni alerte, ni charge d'e-mail, ni
-    appel Sentry, ni valeur de retour ne contient l'IBAN entier.
+    appel Sentry, ni valeur de retour, **ni rendu de console** ne contient l'IBAN entier (**aucune exception**).
+  - `une-fiche-sans-telephone-ne-peut-pas-demander.spec.ts` : refus à la création, aucune ligne, aucun e-mail.
+  - `le-controle-de-l-iban-recopie-compare-l-empreinte.spec.ts` : bon IBAN accepté, mauvais refusé, rien de rendu ni journalisé.
+  - `limites-de-debit.spec.ts` : les chiffres du §2.2 point 9 aux bornes, fermées en cas de panne.
   - `sans-secret-d-empreinte-rien-ne-s-enregistre.spec.ts`.
   - `interrupteur-eteint-rien-n-est-lu-ni-ecrit-ni-emis.spec.ts` ; `table-absente-pas-de-demande.spec.ts`.
   - deux demandes simultanées, double validation, validation d'une fiche résiliée ou
@@ -708,8 +803,8 @@ l'interrupteur `APPORTEUR_CHANGEMENT_IBAN_ENABLED` (section 8).
 
 - **Fichiers** : `src/app/apporteur/dossier/[id]/[jeton]/page.tsx` (section) ;
   `MonCompteBancaire.tsx` et `actions-compte.ts` (nouveaux) ; route publique
-  `src/app/apporteur/dossier/compte/[demande]/[signature]/page.tsx` et son action (confirmer,
-  bloquer : page avec bouton, action serveur) ; `textes.ts`.
+  `src/app/apporteur/dossier/compte/[demande]/[signature]/page.tsx` (avec `export const dynamic = "force-dynamic"`, comme `[jeton]/page.tsx:47` : aucun rendu au build, contrat `stub.invalid`) et son action (confirmer,
+  bloquer : page avec bouton, action serveur) ; `src/app/apporteur/dossier/[id]/[jeton]/textes.ts` (et non `src/features/apporteurs-reseau/textes.ts`, qui n'existe pas).
 - **Tests rouges d'abord** : la section n'apparaît que pour un dossier `signe`, non restreint,
   interrupteur allumé, secret posé ; `le-mode-restreint-n-ouvre-que-la-vigilance.spec.ts`
   reste vert ; **afficher la page de confirmation ne confirme rien** (seul l'envoi du
@@ -732,28 +827,29 @@ l'interrupteur `APPORTEUR_CHANGEMENT_IBAN_ENABLED` (section 8).
   une demande contestée ; bandeau « secret absent » ; gardes existantes
   (`admin-gardes:check`, `admin-nav:routes-check`).
 
-### Lot 7 : virements, le compte réellement payé (argent)
+### Lot 7 : virements, gel et compte réellement payé (argent)
 
-- **Fichiers** : `src/features/apporteurs-reseau/facturation.ts` (`marquerVerse` écrit la
+- **Fichiers** : `src/features/apporteurs-reseau/facturation.ts` (`marquerVerse` refuse pendant le gel et écrit la
   preuve de compte ; `lireVirementsAFaire` rend l'état de la demande) ;
-  `actions-commissions.ts` (action « Afficher l'IBAN à virer », `facturer`, journalisée) ;
+  `actions-commissions.ts` (action « Ouvrir le RIB à virer », `facturer`, journalisée, **aucun IBAN rendu**) ;
   `src/components/admin/apporteurs/commissions/FormulairesCommission.tsx` ;
-  `src/server/paiements-sortants/virements.ts` (champ facultatif pour le bandeau) et la page
+  `src/server/paiements-sortants/virements.ts` (champ facultatif pour le bandeau de gel) et la page
   des virements ; `envois.ts` (`apporteur-virement-fait`, champ facultatif).
 - **Attention** : `facturation.ts` est aussi chargé par le worker. `marquerVerse` n'est
   appelé que par l'application, mais toute lecture nouvelle dans ce fichier doit tolérer la
-  table absente ; l'action qui lit l'IBAN vit dans `actions-commissions.ts` (application
-  seulement).
+  table absente ; l'action qui ouvre le RIB vit dans `actions-commissions.ts` (application seulement).
 - **Tests rouges d'abord** :
-  - **`apres-validation-on-vire-sur-le-nouveau-compte.spec.ts`** : après validation, l'IBAN
-    présenté pour virer et la pièce `rib` courante sont ceux du nouveau compte ; avant
-    validation (demande `confirmee`), ceux de l'ancien.
-  - l'IBAN à virer n'est pas dans le HTML initial ; son affichage est refusé hors
-    `facturer` et journalisé sans l'IBAN.
+  - **`apres-validation-on-vire-sur-le-nouveau-compte.spec.ts`** : après validation, la pièce `rib` ouverte pour
+    virer et le masque présenté sont ceux du nouveau compte ; demande refusée : ceux de l'ancien.
+  - **`les-virements-sont-geles-pendant-une-demande.spec.ts`** : demande `a_confirmer` ou `confirmee` → `marquerVerse`
+    refusé côté serveur, ligne grisée, aucun bouton « Ouvrir le RIB » ; validée, refusée, opposée, annulée ou
+    expirée → gel levé ; la création des commissions et des autofactures continue pendant le gel ; table absente
+    → comportement d'aujourd'hui.
+  - le contrôle des quatre derniers caractères : bon accepté, mauvais refusé ; aucun IBAN entier dans le HTML ni
+    dans une valeur de retour ; l'ouverture du RIB est refusée hors `facturer` et journalisée sans l'IBAN.
   - « Virement fait » sans demande ouverte : comportement d'aujourd'hui, plus une ligne de
-    preuve ; avec demande ouverte : accepté, bandeau présent ; dans les 10 jours après
-    validation : le choix du compte est exigé ; table absente : « Virement fait » fonctionne
-    comme aujourd'hui ; les tests existants de `facturation` restent verts sans modification.
+    preuve ; dans les 10 jours après validation : le choix du compte est exigé ; les tests existants de
+    `facturation` restent verts sans modification.
 
 ### Lot 8 : RGPD, purge, alerte 10 jours (données)
 
@@ -770,6 +866,8 @@ l'interrupteur `APPORTEUR_CHANGEMENT_IBAN_ENABLED` (section 8).
 
 ### Lot 9 : compléments (données, sécurité)
 
+- **`apporteur-lien-espace` entre dans `GABARITS_ARGENT`** (`retrait.ts:302`) : pour une fiche retirée ou résiliée, le lien neuf
+  qui suit une validation ou une opposition doit partir.
 - Demande ouverte par l'administrateur pour une fiche retirée ou résiliée avec de l'argent
   dû (mêmes barrières, validation par `super_admin`).
 - Script manuel de reprise de l'historique (section 3.3), avec essai à blanc et rejeu sans
@@ -802,7 +900,7 @@ par le prénom de la fiche.
 >
 > - Nous vous envoyons un e-mail. Vous cliquez dessus pour confirmer.
 > - Nous vérifions votre RIB et nous vous appelons. Cela prend au moins 3 jours.
-> - En attendant, rien ne change : vos commissions restent versées sur votre compte actuel.
+> - Tant que le changement n'est pas validé, **nos virements vers vous sont en attente**. Vos commissions continuent d'être enregistrées, et le virement part dès la décision.
 >
 > [Envoyer ma demande]
 
@@ -818,7 +916,7 @@ par le prénom de la fiche.
 > **Demande en cours**
 > Vous avez demandé à changer de compte le 25 novembre 2026.
 > Nous vérifions votre RIB et nous vous appelons. Réponse au plus tôt le 28 novembre.
-> En attendant, vos commissions restent versées sur le compte qui se termine par **1234**.
+> Tant que la décision n'est pas prise, nos virements vers vous sont en attente ; vos commissions continuent d'être enregistrées. Compte actuel : celui qui se termine par **1234**.
 > [Annuler ma demande]
 
 **Après validation** : l'état normal, avec le nouveau compte, et une ligne :
@@ -830,6 +928,12 @@ par le prénom de la fiche.
 > **Votre demande n'a pas été acceptée**
 > Raison : _(texte écrit par l'administrateur)_
 > Votre compte n'a pas changé. Vous pouvez faire une nouvelle demande.
+
+**Fiche sans numéro de téléphone** (la demande n'est pas créée, §2.4)
+
+> **Changer de compte**
+> Nous avons besoin de vous appeler pour vérifier un changement de compte, et nous n'avons pas de numéro de téléphone pour vous.
+> Écrivez-nous pour nous le donner : nous reviendrons vers vous.
 
 **Service fermé**
 
@@ -860,7 +964,7 @@ Après le clic :
 
 > **C'est noté.**
 > Nous vérifions votre RIB et nous vous appelons. Réponse au plus tôt le 28 novembre.
-> En attendant, rien ne change.
+> En attendant, vos virements sont en attente de la décision ; vos commissions continuent d'être enregistrées.
 
 **Bloquer**
 
@@ -893,7 +997,7 @@ Après le clic :
 > Ce bouton fonctionne pendant 24 heures.
 >
 > Ensuite, nous vérifions votre RIB et nous vous appelons. Cela prend au moins 3 jours.
-> En attendant, rien ne change.
+> En attendant, vos virements sont en attente de la décision ; vos commissions continuent d'être enregistrées.
 >
 > **Ce n'est pas vous ?** Cliquez ici : **[Bloquer cette demande]**
 > Votre compte ne changera pas.
@@ -941,7 +1045,7 @@ Après le clic :
 > Votre compte n'a pas changé : il se termine toujours par **1234**.
 > Vous pouvez faire une nouvelle demande depuis votre espace.
 
-**E-mail 5 : demande non confirmée** (`apporteur-compte-expire`, si D-5 = oui)
+**E-mail 5 : demande non confirmée** (`apporteur-compte-expire`, D-5 tranchée « oui »)
 
 > Objet : Votre demande de changement de compte est annulée
 >
@@ -979,7 +1083,7 @@ et 3.
 
 **Confirmation de validation**
 
-> Tapez les quatre derniers caractères du nouvel IBAN pour valider.
+> Recopiez l'IBAN lu sur le RIB (il ne sera pas réaffiché). Puis tapez les quatre derniers caractères du nouvel IBAN pour valider.
 
 **Rôle insuffisant**
 
@@ -987,18 +1091,23 @@ et 3.
 
 **Bandeau dans « Virements à faire »**
 
-> Changement de compte demandé le 25 novembre 2026. Compte actuel : se terminant par 1234. Décision possible à partir du 28 novembre 2026. Tant qu'il n'est pas validé, seul le compte actuel est valable.
+> **Virements gelés.** Changement de compte demandé le 25 novembre 2026. Compte actuel : se terminant par 1234. Décision possible à partir du 28 novembre 2026. Aucun virement ne part pour cet apporteur tant que le nouveau compte n'est pas validé ou la demande refusée.
 
 **Bouton et avertissement**
 
-> [Afficher l'IBAN à virer]
-> Cet affichage est enregistré.
+> [Ouvrir le RIB à virer]
+> L'IBAN n'est jamais affiché dans cette page : lisez-le sur le RIB. Cette ouverture est enregistrée.
+> Saisissez les quatre derniers caractères de l'IBAN lus sur le RIB : `[ ____ ]`
 
 **Choix du compte (10 jours après une validation)**
 
 > Sur quel compte ce virement est-il parti ?
 > ○ Compte actuel (se termine par 5678)
 > ○ Compte précédent (se termine par 1234)
+
+**Numéro de téléphone modifié récemment**
+
+> Numéro modifié le 12 novembre 2026. Confirmez-le par un autre moyen avant de décider.
 
 **Pièce RIB remplacée**
 
@@ -1011,18 +1120,20 @@ et 3.
 ## 13. Décisions attendues du dirigeant
 
 Déjà tranché par le dirigeant, donc **hors décisions** : validation réservée au rôle le plus
-élevé (`super_admin`) ; jamais d'IBAN en clair dans un journal, un e-mail ou Sentry ; l'ancien
-IBAN reste utilisé tant que le nouveau n'est pas validé.
+élevé (`super_admin`) ; **aucune saisie d'IBAN par Claude** ; **IBAN masqué partout** (journal, e-mail, alerte,
+Sentry, adresse de page **et console**) ; **virements gelés tant que le nouveau compte n'est pas validé** ; l'ancien
+IBAN reste celui des virements après un refus. Les anciennes D-3, D-4 et D-6 en découlent : elles sont retirées ou
+reformulées ci-dessous.
 
 | #    | Question fermée                                                                                                                                              | Recommandation                                                                                                                                 |
 | ---- | ------------------------------------------------------------------------------------------------------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------- |
 | D-1  | Le délai d'opposition est-il de 72 heures après la confirmation ? (oui / non, 48 heures)                                                                     | **Oui, 72 heures.** Le lien n'expire pas et il n'y a pas de session : plus long que les 48 heures des formateurs.                              |
-| D-2  | Le rappel téléphonique au numéro de la fiche est-il obligatoire à chaque validation ? (oui / non)                                                            | **Oui.** C'est la seule barrière contre une boîte e-mail volée.                                                                                |
-| D-3  | Sur l'écran de décision, l'IBAN demandé s'affiche-t-il en entier après un clic journalisé ? (oui / non, quatre derniers caractères seulement)                | **Oui.** Il faut le comparer au RIB chiffre par chiffre.                                                                                       |
-| D-4  | Pendant une demande ouverte, l'outil propose-t-il d'attendre sans bloquer le virement sur le compte actuel ? (oui / non, il bloque)                          | **Oui, sans bloquer.** L'art. 5.4 ne permet pas de différer un versement pour ce motif.                                                        |
-| D-5  | Envoie-t-on l'e-mail « demande non confirmée », seulement quand l'apporteur revient sur son espace ? (oui / non)                                             | **Oui.** Aucune tâche planifiée ; l'apporteur comprend pourquoi sa demande a disparu.                                                          |
-| D-6  | Qui peut afficher l'IBAN à virer en entier dans « Virements à faire » ? (A : `super_admin` et `admin`, ceux qui peuvent `facturer` / B : `super_admin` seul) | **A.** C'est le geste de virer, déjà réservé à `facturer` ; chaque affichage est journalisé. La validation, elle, reste `super_admin` seul.    |
+| D-2  | Le rappel téléphonique au numéro de la fiche est-il obligatoire à chaque validation ? (oui / non)                                                            | **Oui.** C'est la seule barrière contre une boîte e-mail volée. Une fiche sans numéro ne peut pas demander (§2.4).                             |
+| D-3  | _Retirée : tranchée par la règle « IBAN masqué partout »._ L'IBAN demandé ne s'affiche jamais en entier ; l'administrateur le recopie depuis le RIB et le serveur compare l'empreinte. | Sans objet. |
+| D-4  | _Reformulée : le gel est tranché par le dirigeant._ Reste pour le juriste : le gel d'un versement dû (jusqu'à la décision, alerte à 10 jours, échéance ferme à 30 jours) est-il compatible avec l'art. 5.4 ? (oui / à ajuster) | **Oui**, avec l'alerte à 10 jours et la levée par un refus motivé. À faire relire par le juriste. |
+| D-5  | Envoie-t-on l'e-mail « demande non confirmée », seulement quand l'apporteur revient sur son espace ? (oui / non)                                             | **Oui, et c'est ce que le plan prévoit** : le gabarit 5 est créé aux lots 2 et 4. Si « non », retirer sa ligne.                              |
+| D-6  | Qui peut ouvrir le RIB courant à virer dans « Virements à faire » ? (A : `super_admin` et `admin`, ceux qui peuvent `facturer` / B : `super_admin` seul) | **A.** C'est le geste de virer, déjà réservé à `facturer` ; chaque ouverture est journalisée, aucun IBAN n'est affiché. La validation, elle, reste `super_admin` seul. |
 | D-7  | Garde-t-on l'historique des comptes et les demandes 10 ans, les RIB de demandes contestées 5 ans, et purge-t-on les autres RIB à 90 jours ? (oui / non)      | **Oui**, sous réserve de l'avis du délégué à la protection des données avant le lot 8.                                                         |
 | D-8  | Ajoute-t-on la procédure de changement de compte au contrat (version 2.7) ? (oui, à la prochaine révision / non)                                             | **Oui, à la prochaine révision**, sans bloquer la mise en service : l'art. 6.3 couvre déjà l'obligation de signaler. Relecture par le juriste. |
-| D-9  | Allume-t-on l'interrupteur après l'essai réel sur une fiche de test ? (oui / non)                                                                            | **Oui**, après l'essai, et après vérification que le secret d'empreinte est posé.                                                              |
-| D-10 | Valide-t-on les textes de la section 12 tels quels ? (oui / non, avec corrections)                                                                           | **Oui.** Le lot 2 (gabarits) et le lot 5 (espace) en dépendent.                                                                                |
+| D-9  | Allume-t-on l'interrupteur après l'essai réel sur une fiche de test, **fait à la main** ? (oui / non)                                                         | **Oui**, après l'essai, après le lot 7 en ligne, et après vérification que le secret d'empreinte est posé.                                     |
+| D-10 | Valide-t-on les textes de la section 12 tels quels (dont « Fiche sans numéro » et le bandeau de gel) ? (oui / non, avec corrections)                         | **Oui.** Le lot 2 (gabarits) et le lot 5 (espace) en dépendent.                                                                                |
