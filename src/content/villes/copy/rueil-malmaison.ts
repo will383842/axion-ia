@@ -222,7 +222,7 @@ export const RUEIL_MALMAISON_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "We commit to custom code fully transferred to you, with no vendor lock-in or imposed technical dependency. Hosting in the European Union and GDPR compliance by default. UX/UI, mobile responsive, multi-CMS e-commerce and AI components are handled by a single contact, from framing in Rueil-Malmaison to go-live. Quote from 24 to 48 hours depending on complexity; any travel costs calculated case by case by zone. Your teams leave autonomous, documentation and runbook delivered.",
+          "We commit to custom code fully transferred to you, with no vendor lock-in or imposed technical dependency. Hosting in the European Union and GDPR compliance by default. UX/UI, mobile responsive, multi-CMS e-commerce and AI components are handled by a single contact, from framing in Rueil-Malmaison to go-live. Quote from 24 to 48 hours depending on complexity. Your teams leave autonomous, documentation and runbook delivered.",
       },
     },
   },

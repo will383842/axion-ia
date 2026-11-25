@@ -65,7 +65,7 @@ export const LALLAING_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission Axion-IA à Lallaing ?",
-      a: "Nos consultants interviennent depuis Douai (8 min) ou Lille (35 min via A21). Lallaing étant intégrée à l'agglomération douaisienne. Sessions sur site ou en visio selon vos préférences.",
+      a: "Nos consultants interviennent depuis Douai (8 min) ou Lille (35 min via A21). Lallaing fait partie de l'agglomération douaisienne. Sessions sur site ou en visio selon vos préférences.",
     },
   ],
 };

@@ -218,11 +218,11 @@ export const LORIENT_COPY: VilleCopy = {
           },
           {
             q: "How quickly can I get a quote in Lorient?",
-            a: "From 24 to 48 hours depending on complexity, after an initial exchange. We travel on site in Lorient and the pays de Lorient (Lanester, Ploemeur, Hennebont, Caudan, Quéven) to frame the project, then deliver a clear, costed scope. Transparent travel costs, separate from the package.",
+            a: "From 24 to 48 hours depending on complexity, after an initial exchange. We travel on site in Lorient and the pays de Lorient (Lanester, Ploemeur, Hennebont, Caudan, Quéven) to frame the project, then deliver a clear, costed scope.",
           },
         ],
         guarantees:
-          "Every site or platform is delivered with European Union hosting, GDPR compliance, code and data you fully own, and documentation that lets your teams or any Breton provider take over — with no vendor lock-in and no contractual dependence on Axion-IA. We claim UX/UI, mobile, multi-CMS e-commerce and embedded AI. Quotes from 24 to 48 hours depending on complexity; travel costs across Lorient and the pays de Lorient are transparent and separate from the package.",
+          "Every site or platform is delivered with European Union hosting, GDPR compliance, code and data you fully own, and documentation that lets your teams or any Breton provider take over — with no vendor lock-in and no contractual dependence on Axion-IA. We claim UX/UI, mobile, multi-CMS e-commerce and embedded AI. Quotes from 24 to 48 hours depending on complexity.",
       },
     },
   },

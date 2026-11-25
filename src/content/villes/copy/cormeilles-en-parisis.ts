@@ -210,7 +210,7 @@ export const CORMEILLES_EN_PARISIS_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Quote sent from 24 to 48 hours depending on complexity. Sites and platforms built in custom code (no opaque no-code), with UX/UI, mobile-first design and multi-CMS e-commerce. European Union hosting and GDPR compliance by default. You keep full control: source code, content and hosting belong to you, transferable to any integrator or brought in-house, with no Axion-IA lock-in. Kick-off on site in Cormeilles-en-Parisis; any travel costs are calculated case by case depending on the zone.",
+          "Quote sent from 24 to 48 hours depending on complexity. Sites and platforms built in custom code (no opaque no-code), with UX/UI, mobile-first design and multi-CMS e-commerce. European Union hosting and GDPR compliance by default. You keep full control: source code, content and hosting belong to you, transferable to any integrator or brought in-house, with no Axion-IA lock-in. Kick-off on site in Cormeilles-en-Parisis.",
       },
     },
   },

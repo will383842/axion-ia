@@ -218,7 +218,7 @@ export const MONTELIMAR_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Contractual commitment on the scope defined at kick-off in Montélimar. EU hosting by default, GDPR compliance, data minimisation and DPO on request. Code, data and AI components remain wholly yours: the platform can be taken over by your teams or any Drôme provider, with no vendor lock-in. Mobile-first UX/UI, multi-CMS e-commerce and custom SaaS are covered by the same team. Quotes issued from 24-48 h depending on complexity; any travel costs are quoted case by case based on the zone.",
+          "Contractual commitment on the scope defined at kick-off in Montélimar. EU hosting by default, GDPR compliance, data minimisation and DPO on request. Code, data and AI components remain wholly yours: the platform can be taken over by your teams or any Drôme provider, with no vendor lock-in. Mobile-first UX/UI, multi-CMS e-commerce and custom SaaS are covered by the same team. Quotes issued from 24-48 h depending on complexity.",
       },
     },
   },

@@ -222,7 +222,7 @@ export const MARCQ_EN_BAR_UL_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Custom code and full ownership: your sources, content, AI models and design system stay with you, resumable by any integrator of the European Metropolis of Lille — no vendor lock-in or contractual dependency on Axion-IA. EU GDPR hosting by default, framed from the design stage given the immediate proximity of the Belgian border for multi-country e-commerce stores. UX/UI, mobile, multi-CMS e-commerce and AI delivered by a single team. Quote issued from 24-48 h depending on complexity; travel costs from Lille transparent and separate from the package.",
+          "Custom code and full ownership: your sources, content, AI models and design system stay with you, resumable by any integrator of the European Metropolis of Lille — no vendor lock-in or contractual dependency on Axion-IA. EU GDPR hosting by default, framed from the design stage given the immediate proximity of the Belgian border for multi-country e-commerce stores. UX/UI, mobile, multi-CMS e-commerce and AI delivered by a single team. Quote issued from 24-48 h depending on complexity.",
       },
     },
   },

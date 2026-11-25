@@ -361,7 +361,7 @@ export const NIMES_COPY: VilleCopy = {
           "Nîmes construction SMEs benefit particularly from AI tools for site meeting minutes, specification writing and document management.",
           "The Executives format enables a strategic in-camera framing for Gard mid-cap executive committees.",
           "Vocabulary adjusted to your dominant local sector: engineering, agri-food, trade, health, construction. No recycled generic session.",
-          "Our consultants travel to Nîmes and the basin (Marguerittes, Bouillargues, Manduel, Beaucaire) — travel and lodging costs billed separately.",
+          "Our consultants travel to Nîmes and the basin (Marguerittes, Bouillargues, Manduel, Beaucaire).",
         ],
         methodology: [
           {

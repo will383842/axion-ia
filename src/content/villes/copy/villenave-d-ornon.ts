@@ -223,7 +223,7 @@ const VILLE_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Proprietary, documented custom code: you own your site or platform, with no recurring SaaS license or vendor lock-in. Hosting on EU cloud (OVHcloud, Scaleway), GDPR compliance by default, processing register and DPA provided. Portable stack, recoverable by any Bordeaux Métropole integrator or by your teams. Detailed quote from 24 to 48 hours depending on complexity; travel costs calculated by zone, billed separately.",
+          "Proprietary, documented custom code: you own your site or platform, with no recurring SaaS license or vendor lock-in. Hosting on EU cloud (OVHcloud, Scaleway), GDPR compliance by default, processing register and DPA provided. Portable stack, recoverable by any Bordeaux Métropole integrator or by your teams. Detailed quote from 24 to 48 hours depending on complexity.",
       },
     },
   },

@@ -183,7 +183,7 @@ export const CLERMONT_FERRAND_COPY: VilleCopy = {
           "The university ecosystem (UCA, ISIMA, Sigma Clermont) trains AI engineers every year; local SMEs and mid-caps need a structured audit to channel those skills toward ROI-proven use cases.",
           "Technopôle La Pardieu and Biopôle Clermont-Limagne host consulting, services, biotech and agri-food SMEs — exactly the sectors where document-processing and workflow-automation AI delivers the fastest gains.",
           "Read-outs always in person in Clermont-Ferrand, at your offices: ideation workshops with your leadership, deliverable handed over face to face, immediately actionable plan.",
-          "Public pricing, no opaque quote: you know exactly what you pay before signing — a decisive differentiator vs Lyon- or Paris-based traditional consulting firms billing travel on top.",
+          "Public pricing, no opaque quote: you know exactly what you pay before signing — a decisive differentiator vs Lyon- or Paris-based traditional consulting firms.",
           "Your post-audit action plan is executable with any vendor or in-house — no lock-in, no dependency created on Axion-IA.",
         ],
         methodology: [
@@ -802,10 +802,6 @@ export const CLERMONT_FERRAND_COPY: VilleCopy = {
           {
             q: "Do I need prior AI experience to book individual coaching?",
             a: "No. Coaching adapts to your level, from absolute beginner to advanced practitioner wishing to go further. The initial framing brief allows adjusting the programme before the session.",
-          },
-          {
-            q: "Are travel costs included?",
-            a: "No. These costs are communicated on a prior quote before confirmation.",
           },
           {
             q: "Can I organise several individual sessions for different staff members?",

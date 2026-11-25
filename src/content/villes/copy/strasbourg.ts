@@ -787,7 +787,7 @@ export const STRASBOURG_COPY: VilleCopy = {
             sizeLabel: "Large enterprise",
             price: "Large accounts and institutions programme — on quote",
             detail:
-              "For European institution officials (Parliament, Council of Europe, ECHR), large organisations (Crédit Mutuel, ARTE, Hager Group) and large pharma sites (Eli Lilly, Actavis). Confidential senior format, schedule adapted to institutional constraints. Expenses billed separately.",
+              "For European institution officials (Parliament, Council of Europe, ECHR), large organisations (Crédit Mutuel, ARTE, Hager Group) and large pharma sites (Eli Lilly, Actavis). Confidential senior format, schedule adapted to institutional constraints.",
           },
         ],
         faq: [
