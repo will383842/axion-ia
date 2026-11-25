@@ -1,4 +1,5 @@
 "use client";
+// use-client: useActionState (garde les valeurs saisies quand l'action refuse, sans JavaScript côté espace apporteur).
 
 // Formulaire d'un BROUILLON de challenge (création ou modification). Les valeurs saisies sont
 // renvoyées par l'action en cas d'erreur : un règlement long ne se perd jamais. Rien n'est publié
