@@ -77,6 +77,8 @@ const FICHIERS_SOURCE = [
   "src/content/offre.ts",
   "src/content/questions-reference.ts",
   "src/app/[locale]/tarifs/page.tsx",
+  "src/components/recrutement/landings/SectionsPub.tsx",
+  "src/components/recrutement/landings/SectionsPrincipale.tsx",
 ];
 
 const TEXTES: Record<string, string> = {
