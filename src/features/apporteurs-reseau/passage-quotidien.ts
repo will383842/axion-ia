@@ -58,6 +58,7 @@ import {
 import { reprendreApresAvoirsClients } from "./avoir-client";
 import { regenererAvoirsSansPiece } from "./manquement";
 import { alerterHorsGrille } from "./hors-grille";
+import { alerterRealisationsEnAttente } from "./realisations-en-attente";
 import { chiffrerPiecesEnClair } from "./pieces-chiffrement";
 import { marquerRealiseesDepuisSessions } from "./realisation";
 import { commandesSoldees } from "./commandes";
@@ -242,6 +243,7 @@ type NomEtape =
   | "avoirs-sans-piece"
   | "realisation"
   | "hors-grille"
+  | "realisations-en-attente"
   | "declarations-sans-reponse"
   | "commandes-a-attribuer";
 
@@ -306,6 +308,9 @@ async function passer(
     // Annexe 1, A1.7 : une commission « à qualifier » se règle sous soixante jours ; Williams
     // est alerté dix jours avant, puis le jour du dépassement.
     ["hors-grille", async () => void (await alerterHorsGrille(maintenant))],
+    // Alerte INTERNE (non contractuelle, jamais à l'apporteur) : facture payée à 100 % depuis
+    // 60 jours et prestation non marquée réalisée.
+    ["realisations-en-attente", async () => void (await alerterRealisationsEnAttente(maintenant))],
     // Rappel INTERNE (non contractuel) : une déclaration sans réponse depuis 15 jours.
     [
       "declarations-sans-reponse",

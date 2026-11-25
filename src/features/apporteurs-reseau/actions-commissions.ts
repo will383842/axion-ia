@@ -246,7 +246,7 @@ export async function annulerRealisationAction(fd: FormData): Promise<void> {
   if (!UUID.test(id)) versCommissions("erreur", "Commission inconnue.");
   let r: { ok: true } | { ok: false; message: string };
   try {
-    r = await annulerRealisation(id, await acteur());
+    r = await annulerRealisation(id, texte(fd, "motif"), await acteur());
   } catch (err) {
     Sentry.captureException(err, { tags: { action: "apporteurs-commission-realisation-annulee" } });
     r = { ok: false, message: "L'annulation n'a pas pu être enregistrée. Réessayez." };

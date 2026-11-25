@@ -835,10 +835,12 @@ describe("règle ferme (contrat 2.3, art. 4.2) : rien n'est facturé ni versé a
 
   it("« Annuler » : possible tant que la commission n'est pas facturée, refusé ensuite", async () => {
     etat.lignes = [ligne("c1", "due", 40_000), ligne("c2", "due", 10_000)];
-    expect(await annulerRealisation("c2", "admin-1")).toEqual({ ok: true });
+    expect(await annulerRealisation("c2", "Séance reportée", "admin-1")).toEqual({ ok: true });
     expect(lignes()[1]!.prestationRealiseeAt).toBeNull();
     await facturerCommissionsDues(MARDI);
-    expect(await annulerRealisation("c1", "admin-1")).toMatchObject({ ok: false });
+    expect(await annulerRealisation("c1", "Séance reportée", "admin-1")).toMatchObject({
+      ok: false,
+    });
   });
 
   it("automatique : session de formation « réalisée » = prestation réalisée à la fin de la session", async () => {
@@ -969,7 +971,7 @@ describe("relecture de la PR 1365 (a1) : l'automatisme ne marque jamais « réal
     etat.lignes = [enAttente("c1")];
     etat.factures = { "F-c1": { session: realisee } };
     expect(await marquerRealiseesDepuisSessions(MARDI)).toBe(1);
-    expect(await annulerRealisation("c1", "admin-1")).toEqual({ ok: true });
+    expect(await annulerRealisation("c1", "Séance reportée", "admin-1")).toEqual({ ok: true });
     expect(await marquerRealiseesDepuisSessions(MARDI)).toBe(0);
     expect(lignes()[0]!.prestationRealiseeAt).toBeNull();
     expect(await facturerCommissionsDues(MARDI)).toMatchObject({ autofactures: 0 });

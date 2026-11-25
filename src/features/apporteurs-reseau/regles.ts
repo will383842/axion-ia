@@ -49,6 +49,13 @@ export const PRISE_DE_CONTACT_JOURS = 30;
  */
 export const RAPPEL_SANS_REPONSE_JOURS = 15;
 /**
+ * Alerte INTERNE (non contractuelle) : une commission dont la facture est payée à 100 % depuis ce
+ * nombre de jours, et dont la prestation n'est pas marquée réalisée, est signalée UNE fois à
+ * Williams. Ce n'est PAS un délai du contrat : aucun texte ne doit le présenter comme tel. Il
+ * porte sur la diligence d'Axion, jamais sur l'activité de l'apporteur.
+ */
+export const ALERTE_REALISATION_JOURS = 60;
+/**
  * Art. 3.2 : sans adresse valide dans ce délai après la déclaration, l'attribution prend fin.
  * Opéré manuellement pendant la période de démarrage (art. 2.8) : non appliqué par le passage quotidien.
  */

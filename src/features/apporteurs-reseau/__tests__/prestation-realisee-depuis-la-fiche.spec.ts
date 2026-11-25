@@ -86,8 +86,10 @@ describe("actions de la fiche — garde serveur et retour sur la fiche", () => {
   it("annuler : le métier reçoit l'identifiant et l'auteur ; son refus revient en erreur", async () => {
     h.session = { user: { id: "adm-1", role: "admin" } };
     h.annuler.mockResolvedValue({ ok: false, message: "Cette commission est déjà facturée." });
-    const url = await redirection(annulerRealisationFicheAction(form({ id: ID, onglet: "x" })));
-    expect(h.annuler).toHaveBeenCalledWith(ID, "adm-1");
+    const url = await redirection(
+      annulerRealisationFicheAction(form({ id: ID, onglet: "x", motif: "  Client absent " })),
+    );
+    expect(h.annuler).toHaveBeenCalledWith(ID, "Client absent", "adm-1");
     // Un onglet inconnu ne passe pas dans l'adresse de retour.
     expect(url).toContain("onglet=toutes");
     expect(url).toContain("prestationErreur=Cette commission est déjà facturée.");

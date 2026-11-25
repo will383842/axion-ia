@@ -75,7 +75,7 @@ export async function annulerRealisationFicheAction(fd: FormData): Promise<void>
   if (!UUID.test(id)) retour(fd, "prestationErreur", "Commission inconnue.");
   let r: { ok: true } | { ok: false; message: string };
   try {
-    r = await annulerRealisation(id, s.acteur);
+    r = await annulerRealisation(id, texte(fd, "motif"), s.acteur);
   } catch (err) {
     Sentry.captureException(err, { tags: { action: "apporteurs-fiche-realisation-annulee" } });
     r = { ok: false, message: "L'annulation n'a pas pu être enregistrée. Réessayez." };

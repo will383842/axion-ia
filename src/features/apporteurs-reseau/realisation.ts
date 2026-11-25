@@ -44,26 +44,41 @@ export function oublierRealisationDisponible(): void {
 export const MESSAGE_EN_ATTENTE_DE_REALISATION =
   "En attente de réalisation : la prestation n'est pas encore marquée réalisée. Aucune commission n'est facturée ni versée avant (contrat, art. 4.2).";
 
+type ActionTracee =
+  "commission_apporteur.prestation_realisee" | "commission_apporteur.realisation_annulee";
+
+function ligneDeTrace(
+  action: ActionTracee,
+  id: string,
+  acteurId: string | null,
+  changes: Record<string, unknown>,
+) {
+  return {
+    adminUserId: acteurId,
+    action,
+    targetType: "commission_apporteur",
+    targetId: id,
+    changes: changes as object,
+  };
+}
+
+/** Trace NON bloquante : seulement pour le marquage automatique par le worker (sessions). */
 async function tracer(
-  action: "commission_apporteur.prestation_realisee" | "commission_apporteur.realisation_annulee",
+  action: ActionTracee,
   id: string,
   acteurId: string | null,
   changes: Record<string, unknown>,
 ): Promise<void> {
   try {
-    await prisma.activityLog.create({
-      data: {
-        adminUserId: acteurId,
-        action,
-        targetType: "commission_apporteur",
-        targetId: id,
-        changes: changes as object,
-      },
-    });
+    await prisma.activityLog.create({ data: ligneDeTrace(action, id, acteurId, changes) });
   } catch {
-    // La trace ne fait jamais échouer le geste.
+    // La trace ne fait jamais échouer le marquage automatique.
   }
 }
+
+/** Motif d'une annulation de réalisation : 3 à 500 caractères (après nettoyage des blancs). */
+export const MOTIF_ANNULATION_MIN = 3;
+export const MOTIF_ANNULATION_MAX = 500;
 
 /** Réalisation annulée à la main : l'automatisme ne la refait jamais. */
 export const ANNULEE_A_LA_MAIN = "annulee-console";
@@ -82,29 +97,49 @@ export async function marquerPrestationRealisee(
   if (Number.isNaN(realiseeLe.getTime()) || jourParis(realiseeLe) > jourParis(maintenant)) {
     return { ok: false, message: "Date de réalisation invalide (elle ne peut pas être future)." };
   }
-  const r = await prisma.commissionApporteur.updateMany({
-    where: { id, prestationRealiseeAt: null, statut: { in: [...MARQUABLES] } },
-    data: { prestationRealiseeAt: realiseeLe, prestationRealiseePar: "console" },
+  // Le geste et sa trace dans UNE transaction : si le journal échoue, rien n'est marqué.
+  const ok = await prisma.$transaction(async (tx) => {
+    const r = await tx.commissionApporteur.updateMany({
+      where: { id, prestationRealiseeAt: null, statut: { in: [...MARQUABLES] } },
+      data: { prestationRealiseeAt: realiseeLe, prestationRealiseePar: "console" },
+    });
+    if (r.count !== 1) return false;
+    await tx.activityLog.create({
+      data: ligneDeTrace("commission_apporteur.prestation_realisee", id, acteurId, {
+        realiseeLe: realiseeLe.toISOString(),
+        source: "console",
+      }),
+    });
+    return true;
   });
-  if (r.count !== 1) {
+  if (!ok) {
     return {
       ok: false,
       message:
         "Cette prestation est déjà marquée réalisée, ou la commission est versée ou reprise.",
     };
   }
-  await tracer("commission_apporteur.prestation_realisee", id, acteurId, {
-    realiseeLe: realiseeLe.toISOString(),
-    source: "console",
-  });
   return { ok: true };
 }
 
-/** « Annuler » : seulement tant que la commission n'est pas facturée (sinon, c'est une reprise). */
+/**
+ * « Annuler » : seulement tant que la commission n'est pas facturée (sinon, c'est une reprise).
+ * Un MOTIF est obligatoire (3 à 500 caractères) et porté au journal, dans la MÊME transaction que
+ * le geste : si la trace échoue, la réalisation reste posée et l'erreur remonte à l'appelant.
+ * Aucune commission n'est créée ni supprimée ici : seules les colonnes de réalisation changent.
+ */
 export async function annulerRealisation(
   id: string,
+  motif: string,
   acteurId: string | null = null,
 ): Promise<{ ok: true } | { ok: false; message: string }> {
+  const m = (motif ?? "").trim();
+  if (m.length < MOTIF_ANNULATION_MIN || m.length > MOTIF_ANNULATION_MAX) {
+    return {
+      ok: false,
+      message: `Indiquez le motif de l'annulation (${MOTIF_ANNULATION_MIN} à ${MOTIF_ANNULATION_MAX} caractères) : il est conservé au journal.`,
+    };
+  }
   const avant = await prisma.commissionApporteur.findUnique({
     where: { id },
     select: { prestationRealiseeAt: true, prestationRealiseePar: true },
@@ -114,27 +149,34 @@ export async function annulerRealisation(
   }
   const le = new Date(avant.prestationRealiseeAt.getTime());
   const par = avant.prestationRealiseePar;
-  const r = await prisma.commissionApporteur.updateMany({
-    where: {
-      id,
-      prestationRealiseeAt: le,
-      autofactureNumero: null,
-      statut: { in: [...MARQUABLES] },
-    },
-    // Marqueur : l'automatisme ne la refera plus ; seul le bouton peut la reposer.
-    data: { prestationRealiseeAt: null, prestationRealiseePar: ANNULEE_A_LA_MAIN },
+  const ok = await prisma.$transaction(async (tx) => {
+    const r = await tx.commissionApporteur.updateMany({
+      where: {
+        id,
+        prestationRealiseeAt: le,
+        autofactureNumero: null,
+        statut: { in: [...MARQUABLES] },
+      },
+      // Marqueur : l'automatisme ne la refera plus ; seul le bouton peut la reposer.
+      data: { prestationRealiseeAt: null, prestationRealiseePar: ANNULEE_A_LA_MAIN },
+    });
+    if (r.count !== 1) return false;
+    await tx.activityLog.create({
+      data: ligneDeTrace("commission_apporteur.realisation_annulee", id, acteurId, {
+        realiseeLe: le.toISOString(),
+        source: par,
+        motif: m,
+      }),
+    });
+    return true;
   });
-  if (r.count !== 1) {
+  if (!ok) {
     return {
       ok: false,
       message:
         "Cette commission est déjà facturée : on n'annule plus la réalisation, on enregistre une reprise.",
     };
   }
-  await tracer("commission_apporteur.realisation_annulee", id, acteurId, {
-    realiseeLe: le.toISOString(),
-    source: par,
-  });
   return { ok: true };
 }
 

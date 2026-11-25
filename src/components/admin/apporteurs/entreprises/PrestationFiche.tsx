@@ -53,9 +53,24 @@ export function PrestationFiche({
               <>
                 <AdminBadge tone="success">Réalisée le {jourFr(c.prestationRealiseeAt)}</AdminBadge>
                 {peutMarquer && c.autofactureNumero === null && MARQUABLES.has(c.statut) ? (
-                  <form action={annulerRealisationFicheAction}>
+                  <form
+                    action={annulerRealisationFicheAction}
+                    className="flex flex-wrap items-center gap-[var(--space-admin-2)]"
+                  >
                     <input type="hidden" name="id" value={c.id} />
                     <input type="hidden" name="onglet" value={onglet} />
+                    <label className="flex items-center gap-1">
+                      <span>Motif</span>
+                      <input
+                        type="text"
+                        name="motif"
+                        required
+                        minLength={3}
+                        maxLength={500}
+                        placeholder="Pourquoi la prestation n'est pas réalisée"
+                        className="admin-input"
+                      />
+                    </label>
                     <button type="submit" className="admin-button-secondary">
                       Annuler
                     </button>
