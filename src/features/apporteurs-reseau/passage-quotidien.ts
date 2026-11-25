@@ -63,6 +63,7 @@ import { marquerRealiseesDepuisSessions } from "./realisation";
 import { commandesSoldees } from "./commandes";
 import { idsPriseDeContactRebondie } from "./rebonds";
 import { urlDossier } from "./jeton";
+import { executerResiliationsEchues } from "./resiliation";
 import { signalerErreurReseau } from "./signaler";
 import {
   ajouterJours,
@@ -243,7 +244,8 @@ type NomEtape =
   | "realisation"
   | "hors-grille"
   | "declarations-sans-reponse"
-  | "commandes-a-attribuer";
+  | "commandes-a-attribuer"
+  | "resiliations-echues";
 
 const ETAPES_FACTURATION: readonly NomEtape[] = [
   "commissions",
@@ -314,6 +316,8 @@ async function passer(
     // Contrat 2.6 (art. 3.1, relecture de a1) : une commande à attribuer est relancée à J+10,
     // puis à J+15 (délai dépassé).
     ["commandes-a-attribuer", async () => void (await relancerAAttribuer(maintenant))],
+    // Lot L1b : la résiliation notifiée prend effet à sa date (préavis de 30 jours en 11.1).
+    ["resiliations-echues", async () => void (await executerResiliationsEchues(maintenant))],
   ];
   for (const [nom, etape] of etapes) {
     if (seulement && !seulement.includes(nom)) continue;

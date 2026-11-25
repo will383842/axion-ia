@@ -20,7 +20,7 @@ import { classerActiviteCommission, qualifierCommission } from "./commissions";
 import { marquerVerse } from "./facturation";
 import { leverSuspension, suspendreCommission } from "./litige";
 import { annulerRealisation, marquerPrestationRealisee } from "./realisation";
-import { enregistrerReprise, montantEnCentimes, resilierApporteur } from "./resiliation";
+import { enregistrerReprise, montantEnCentimes, notifierResiliation } from "./resiliation";
 import { euros } from "./regles";
 
 export type EtatActionCommission =
@@ -108,9 +108,29 @@ export async function resilierApporteurAction(fd: FormData): Promise<void> {
   if (refus) versFiche(apporteurId, "erreur", refus);
   if (texte(fd, "confirmer") !== "oui")
     versFiche(apporteurId, "erreur", "Cochez la confirmation avant de résilier.");
-  let r: Awaited<ReturnType<typeof resilierApporteur>>;
+  const initiative = texte(fd, "initiative");
+  const fondement = texte(fd, "fondement");
+  if (initiative !== "societe" && initiative !== "apporteur")
+    versFiche(apporteurId, "erreur", "Indiquez qui résilie.");
+  if (fondement !== "11.1" && fondement !== "11.2" && fondement !== "12.5")
+    versFiche(apporteurId, "erreur", "Choisissez le fondement de la résiliation.");
+  const jour = (cle: string): Date | null => {
+    const v = texte(fd, cle);
+    return /^\d{4}-\d{2}-\d{2}$/.test(v) ? new Date(`${v}T12:00:00Z`) : null;
+  };
+  const notifieeLe = jour("notifieeLe");
+  if (!notifieeLe) versFiche(apporteurId, "erreur", "Indiquez la date de la notification écrite.");
+  let r: Awaited<ReturnType<typeof notifierResiliation>>;
   try {
-    r = await resilierApporteur(apporteurId);
+    r = await notifierResiliation({
+      apporteurId,
+      adminId: (await auth())?.user?.id ?? "",
+      initiative: initiative as "societe" | "apporteur",
+      fondement: fondement as "11.1" | "11.2" | "12.5",
+      notifieeLe: notifieeLe!,
+      miseEnDemeureLe: jour("miseEnDemeureLe"),
+      motif: texte(fd, "motif"),
+    });
   } catch (err) {
     Sentry.captureException(err, { tags: { action: "apporteurs-resilier" } });
     return versFiche(apporteurId, "erreur", "Résiliation impossible. Réessayez.");
