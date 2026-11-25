@@ -98,6 +98,9 @@ const MONTANT_SEUIL_DEDUCTION = /^5[\s\u00a0\u202f]?000(?:[.,]00)?$/;
 const MULTIPLE_GARANTIE_RE = /\b(?:3|trois)\s+fois\b/i;
 const GAINS_IDENTIFIES = /gains?\s+identifi[ée]s?/i;
 const REMBOURSEMENT_GARANTI = /garanti[^.]*rembours/i;
+/** Multiple de garantie : seul « 3 fois » existe ; tout autre « N fois » près de prix/garantie est rejeté. */
+const AUTRE_MULTIPLE =
+  /(?<![\p{L}\d])(?:[0-24-9]|\d{2,}|deux|quatre|cinq|six|sept|huit|neuf|dix)\s+fois\s+(?:(?:le|la|ce|son|votre|notre)\s+)?(?:prix|garantie|tarif|montant|mise)/iu;
 /** Lieu : seule formule admise « dans vos locaux, partout en France ». */
 const DEPLACEMENT_ET_ANNEXES =
   /d[ée]placement|(?:se|nous|vous)\s+d[ée]pla[cç]|h[ée]bergement|\brepas\b|\bkm\b|kilom[èe]tre|auvergne|\bfrais\b/i;
@@ -130,6 +133,8 @@ function reglesDuPack(texte: string): string[] {
     const suite = texte.slice((m.index ?? 0) + m[0].length);
     if (!HT_APRES.test(suite)) raisons.push(`prix sans « HT » juste après : « ${m[0]} »`);
   }
+  if (AUTRE_MULTIPLE.test(texte))
+    raisons.push("multiple de garantie : seule la garantie « 3 fois » le prix HT existe");
   if (/\bttc\b/i.test(texte)) raisons.push("« TTC » interdit : seul prix affiché = 1 490 € HT");
   if (MONTANT_K.test(texte)) raisons.push("montant en k€ interdit");
   if (NOMBRE_SANS_DEVISE_HT.test(texte)) raisons.push("nombre sans devise suivi de « HT »");
