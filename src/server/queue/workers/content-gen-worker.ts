@@ -1409,7 +1409,7 @@ async function processJob(job: Job<ContentGenJobPayload>): Promise<void> {
         doctrineCheckPassed: !blockingFail,
         tokensInput: 0, // détaillé via CostLedger
         tokensOutput: output.totalTokens,
-        costUsd: output.totalCostUsd,
+        costUsd: output.totalCostUsd + coutFactCheckUsd,
         outputJsonRaw: persistedOutput as never,
       },
     });
@@ -1429,7 +1429,7 @@ async function processJob(job: Job<ContentGenJobPayload>): Promise<void> {
     // AUCUN code n'incrémentait cette clé — le cap était une garde morte.
     // Fail-open dans le helper : un échec d'écriture ne casse jamais le job.
     if (improvementFeedback !== undefined) {
-      await addQualityLoopSpend(output.totalCostUsd, contentGenJobId);
+      await addQualityLoopSpend(output.totalCostUsd + coutFactCheckUsd, contentGenJobId);
     }
 
     if (nextStatus === "quality_improving") {

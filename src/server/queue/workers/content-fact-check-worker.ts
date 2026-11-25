@@ -184,8 +184,10 @@ async function processJob(job: Job<FactCheckJobPayload>): Promise<void> {
     return;
   }
 
-  // PR 5 — type vérifié AVANT publication par Claude (barrière de relecture du worker de
-  // génération) : ni Perplexity ni correction OpenAI ici, et AUCUN repli. Drapeau éteint
+  // PR 5 — type vérifié AVANT publication par Claude (preuve `factCheckClaudePasse` écrite
+  // par le worker de génération) : ni Perplexity ni correction OpenAI ici. Sans preuve (job
+  // généré avant l'allumage), le contrôle d'avant s'applique, mais la publication, elle,
+  // est refusée par le worker de publication. Drapeau éteint
   // (défaut) : `factCheckClaudeActif` rend faux, le code d'avant s'exécute à l'identique.
   // (Lecture en base SEULEMENT drapeau allumé : éteint, aucune requête de plus.)
   if (process.env["CONTENT_GEN_FACTCHECK_CLAUDE"] === "true") {

@@ -29,3 +29,22 @@ export function factCheckClaudePasse(output: unknown): boolean {
     (output as Record<string, unknown>)[MARQUEUR_FACT_CHECK_CLAUDE] === true
   );
 }
+
+/**
+ * Publication à refuser faute de preuve de vérification : drapeau actif pour ce type, aucun
+ * marqueur dans la sortie, aucun article déjà inséré, et pas d'approbation HUMAINE.
+ */
+export function publicationSansPreuveFactCheck(args: {
+  readonly contentType: string;
+  readonly output: unknown;
+  readonly existingArticle: boolean;
+  readonly reviewedBy: string | null | undefined;
+  readonly env?: EnvFactCheck;
+}): boolean {
+  return (
+    !args.existingArticle &&
+    !args.reviewedBy &&
+    factCheckClaudeActif(args.contentType, args.env) &&
+    !factCheckClaudePasse(args.output)
+  );
+}

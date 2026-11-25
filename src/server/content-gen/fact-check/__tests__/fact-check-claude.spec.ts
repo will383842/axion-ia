@@ -136,3 +136,25 @@ describe("preuve de vérification et réservation", () => {
     expect(new Set(envoyees).size).toBe(envoyees.length);
   });
 });
+
+import { publicationSansPreuveFactCheck } from "../fact-check-claude-drapeau";
+
+describe("publicationSansPreuveFactCheck", () => {
+  const a = { contentType: "blog_article", output: {}, existingArticle: false, reviewedBy: null };
+  it("drapeau allumé, sans marqueur, sans humain : refusée", () => {
+    expect(publicationSansPreuveFactCheck({ ...a, env: ON })).toBe(true);
+  });
+  it("marqueur présent, approbation humaine ou article déjà inséré : permise", () => {
+    expect(
+      publicationSansPreuveFactCheck({ ...a, output: { factCheckClaudePasse: true }, env: ON }),
+    ).toBe(false);
+    expect(publicationSansPreuveFactCheck({ ...a, reviewedBy: "u1", env: ON })).toBe(false);
+    expect(publicationSansPreuveFactCheck({ ...a, existingArticle: true, env: ON })).toBe(false);
+  });
+  it("drapeau éteint ou type hors liste : jamais refusée (comportement d'avant)", () => {
+    expect(publicationSansPreuveFactCheck({ ...a, env: {} })).toBe(false);
+    expect(publicationSansPreuveFactCheck({ ...a, contentType: "landing_ville", env: ON })).toBe(
+      false,
+    );
+  });
+});

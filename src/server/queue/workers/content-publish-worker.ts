@@ -29,10 +29,7 @@
 // tentait de COMPLÉTER un job dont il avait rendu le lock → erreurs « job not
 // in active state » (cf. bullmq/dist/esm/classes/worker.js : DelayedError est
 // intercepté et n'émet PAS l'event `failed`).
-import {
-  factCheckClaudeActif,
-  factCheckClaudePasse,
-} from "@/server/content-gen/fact-check/fact-check-claude-drapeau";
+import { publicationSansPreuveFactCheck } from "@/server/content-gen/fact-check/fact-check-claude-drapeau";
 import { Queue, Worker, DelayedError, type Job } from "bullmq";
 import { prisma } from "@/lib/prisma";
 import { redis } from "@/lib/redis";
@@ -408,10 +405,12 @@ async function executePublishPipeline(
   // worker de génération, l'article n'est PAS publié (relecture). Drapeau éteint : inerte.
   // Une approbation HUMAINE (`reviewedBy` posé par la console) reste un feu vert délibéré.
   if (
-    !existingArticle &&
-    !review.reviewedBy &&
-    factCheckClaudeActif(cgJob.contentType) &&
-    !factCheckClaudePasse(output)
+    publicationSansPreuveFactCheck({
+      contentType: cgJob.contentType,
+      output,
+      existingArticle: Boolean(existingArticle),
+      reviewedBy: review.reviewedBy,
+    })
   ) {
     await logStepError(
       cgJob.id,
@@ -425,7 +424,10 @@ async function executePublishPipeline(
     });
     await prisma.reviewQueue.update({
       where: { id: reviewQueueId },
-      data: { status: "pending" },
+      data: {
+        status: "pending",
+        reviewNotes: "[fact-check Claude] non passé : relecture humaine requise",
+      },
     });
     return;
   }
