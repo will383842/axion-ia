@@ -368,6 +368,24 @@ describe("validerParRendezVous", () => {
     if (!r.ok) expect(r.message).toMatch(/précède sa prise/);
   });
 
+  it("« annulé par Axion IA » dont la date fixée est dans le futur : refus, rien d'écrit", async () => {
+    entreprise("p1", A1);
+    const r = await validerParRendezVous(
+      saisie("p1", {
+        rendezVousCle: null,
+        source: "saisie",
+        canal: "annule_par_axion",
+        prisAt: PRIS,
+        tenuAt: new Date("2026-12-01T10:00:00Z"),
+      }),
+      MAINTENANT,
+    );
+    expect(r.ok).toBe(false);
+    expect(bd.presentations.find((p) => p["id"] === "p1")!["statut"]).toBe("reservee");
+    expect(bd.journal).toHaveLength(0);
+    expect(bd.annonces).toHaveLength(0);
+  });
+
   it("rendez-vous pas encore tenu (dans le futur) : refus", async () => {
     entreprise("p1", A1);
     tenue(new Date("2026-12-01T10:00:00Z"));
@@ -719,11 +737,14 @@ describe("revue de sécurité du lot 6", () => {
     },
   );
 
-  it("une fois la proposition annulée de l'ancien écartée, le plus récent est validé", async () => {
+  it("proposition annulée de l'ancien écartée : il reste retenu pendant les 30 jours qui suivent son terme", async () => {
     ancienneAvecRdv("canceled");
     bd.propositions[0]!["ecarteeAt"] = new Date("2026-11-19T10:00:00Z");
-    entreprise("p1", A1);
-    expect((await validerParRendezVous(saisie("p1"), MAINTENANT)).ok).toBe(true);
+    entreprise("p1", A1); // saisie dans les 30 jours après le 31 oct. : l'ancien passe en premier
+    const r = await validerParRendezVous(saisie("p1"), MAINTENANT);
+    expect(r.ok).toBe(false);
+    if (!r.ok) expect(r.message).toMatch(/30 jours/);
+    expect(bd.presentations.find((p) => p["id"] === "p1")!["statut"]).toBe("reservee");
   });
 
   it("source introuvable : la proposition de l'ancien continue de la retenir", async () => {
@@ -831,7 +852,7 @@ describe("30 jours après la réservation : personne d'autre ne peut déclarer (
     expect(r.ok).toBe(true);
   });
 
-  it("l'ancienne dont la proposition a été écartée par le dirigeant est libérée", async () => {
+  it("une proposition écartée ne libère PAS l'ancienne pendant les 30 jours", async () => {
     ancienneSansRendezVous();
     bd.propositions.push({
       id: "prOld",
@@ -842,7 +863,53 @@ describe("30 jours après la réservation : personne d'autre ne peut déclarer (
       retenueAt: null,
     });
     entreprise("p1", A1);
-    expect((await validerParRendezVous(saisie("p1"), MAINTENANT)).ok).toBe(true);
+    const r = await validerParRendezVous(saisie("p1"), MAINTENANT);
+    expect(r.ok).toBe(false);
+    if (!r.ok) expect(r.message).toMatch(/30 jours/);
+    expect(bd.presentations.find((p) => p["id"] === "p1")!["statut"]).toBe("reservee");
+  });
+
+  // Borne : fin du 30e jour (heure de Paris) après le terme, jamais « terme + 30 × 24 h ».
+  async function validerSaisieLe(terme: string, saisieP1: string) {
+    entreprise("pOld", A2, { recueAt: new Date("2026-01-01T10:00:00Z") });
+    bd.reservations[0]!["reserveeJusquAt"] = new Date(terme);
+    const t0 = new Date(saisieP1).getTime();
+    entreprise("p1", A1, { recueAt: new Date(t0) });
+    bd.events[0]!["startTime"] = new Date(t0 + 5 * 86_400_000);
+    return validerParRendezVous(
+      saisie("p1", {
+        prisAt: new Date(t0 + 86_400_000),
+        tenuAt: new Date(t0 + 5 * 86_400_000),
+      }),
+      new Date(t0 + 10 * 86_400_000),
+    );
+  }
+
+  it.each([
+    ["dernière milliseconde du 30e jour : refusée", "2026-11-30T22:59:59.999Z", false],
+    ["première milliseconde du 31e jour : acceptée", "2026-11-30T23:00:00.000Z", true],
+  ])("borne exacte (hiver) : %s", async (_t, saisieP1, ok) => {
+    const r = await validerSaisieLe("2026-10-31T22:59:59.999Z", saisieP1);
+    expect(r.ok).toBe(ok);
+  });
+
+  it("à travers le passage à l'heure d'été : le 31e jour commence à minuit de Paris", async () => {
+    // terme 10/03/2027 (heure d'hiver) ; 30e jour = 9/04/2027 (heure d'été) : fin 21:59:59.999Z.
+    expect((await validerSaisieLe("2027-03-10T22:59:59.999Z", "2027-04-09T21:59:59.999Z")).ok).toBe(
+      false,
+    );
+    bd.presentations.length = 0;
+    bd.reservations.length = 0;
+    expect((await validerSaisieLe("2027-03-10T22:59:59.999Z", "2027-04-09T22:00:00.000Z")).ok).toBe(
+      true,
+    );
+  });
+
+  it("à travers le passage à l'heure d'hiver : le 30e jour dure jusqu'à 23 h 59 de Paris", async () => {
+    // terme 10/10/2026 (heure d'été) ; 30e jour = 9/11/2026 (heure d'hiver) : fin 22:59:59.999Z.
+    const r = await validerSaisieLe("2026-10-10T21:59:59.999Z", "2026-11-09T22:30:00.000Z");
+    expect(r.ok).toBe(false);
+    if (!r.ok) expect(r.message).toMatch(/30 jours/);
   });
 });
 

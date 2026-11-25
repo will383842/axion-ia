@@ -104,8 +104,10 @@ export function ActionsProposition({
           <>
             <input type="hidden" name="confirmer" value="oui" />
             <span>
-              Écarter libère l&apos;entreprise pour un autre apporteur : seulement si
-              l&apos;annulation ou l&apos;erreur ne vient pas d&apos;Axion IA.
+              Écarter retire seulement ce rendez-vous. Si une déclaration plus ancienne existe pour
+              cette entreprise, elle reste retenue pour son apporteur jusqu&apos;à la fin de ses 30
+              jours de protection. À faire seulement si l&apos;annulation ou l&apos;erreur ne vient
+              pas d&apos;Axion IA.
             </span>
             <button type="submit" className="admin-button-secondary" disabled={eEnCours}>
               Oui, l&apos;écarter

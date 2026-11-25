@@ -28,6 +28,7 @@
 import { prisma } from "@/lib/prisma";
 
 import { annoncerAttribution } from "./attribution-annonce";
+import { finDuNiemeJourParis } from "./regles";
 import { lireEtablissements, memePerimetre } from "./etablissement-presentation";
 import { validationParRendezVousActive } from "./interrupteur-rendez-vous";
 import { presentationOccupe } from "./presentations";
@@ -306,7 +307,7 @@ export async function validerParRendezVous(
         });
         if (autres.length > 0) {
           const ids = [p.id, ...autres.map((a) => a.id)];
-          const [etabs, lignes, propositionsAutres, ecarteesAutres] = await Promise.all([
+          const [etabs, lignes, propositionsAutres] = await Promise.all([
             lireEtablissements(ids, tx),
             tx.presentationReservation.findMany({
               where: { presentationId: { in: autres.map((a) => a.id) } },
@@ -327,16 +328,7 @@ export async function validerParRendezVous(
               },
               select: { presentationId: true, rendezVousCle: true, prisAt: true },
             }),
-            // Une proposition ÉCARTÉE par le dirigeant libère l'ancienne déclaration (geste humain).
-            tx.propositionRendezVousPresentation.findMany({
-              where: {
-                presentationId: { in: autres.map((a) => a.id) },
-                ecarteeAt: { not: null },
-              },
-              select: { presentationId: true },
-            }),
           ]);
-          const avecEcartee = new Set(ecarteesAutres.map((x) => x.presentationId));
           const reservees = new Map(lignes.map((l) => [l.presentationId, l]));
           const prisEnAttente = new Map<string, Date>();
           const parId = new Map(autres.map((a) => [a.id, a]));
@@ -396,19 +388,22 @@ export async function validerParRendezVous(
           );
           if (anciennesAnnulees.length > 0)
             throw new Refus(messageAncienRdvAnnule(anciennesAnnulees.map((a) => a.recueAt)));
-          // Plus ancienne, encore « réservée », même périmètre, SANS proposition écartée : la
-          // déclaration en cours (p) est saisie dans les 30 jours qui suivent son terme, fenêtre où
-          // personne d'autre ne peut déclarer l'entreprise : l'ancienne passe en premier.
+          // Plus ancienne, encore « réservée », même périmètre : la déclaration en cours (p) est
+          // saisie dans les 30 jours qui suivent son terme, fenêtre où personne d'autre ne peut
+          // déclarer l'entreprise : l'ancienne passe en premier. Écarter une proposition ne lève
+          // que la retenue liée à CE rendez-vous, jamais ces 30 jours (art. 3.2 / 3.5).
           const anciennesEnGrace = autres.filter((a) => {
             if (a.statut !== "reservee" || a.recueAt.getTime() >= p.recueAt.getTime()) return false;
-            if (!memePerimetre(miennePerimetre, etabs.get(a.id)!) || avecEcartee.has(a.id))
-              return false;
+            if (!memePerimetre(miennePerimetre, etabs.get(a.id)!)) return false;
             const r = reservees.get(a.id);
             if (!r || r.valideeAt) return false;
-            return (
-              p.recueAt.getTime() <=
-              r.reserveeJusquAt.getTime() + JOURS_APRES_RESERVATION * 86_400_000
+            // Fin du 30e jour (heure de Paris) après le terme : le terme est le dernier instant du
+            // 60e jour ; le jour suivant est le jour 1 des 30 jours.
+            const finGrace = finDuNiemeJourParis(
+              new Date(r.reserveeJusquAt.getTime() + 1),
+              JOURS_APRES_RESERVATION,
             );
+            return p.recueAt.getTime() <= finGrace.getTime();
           });
           if (anciennesEnGrace.length > 0)
             throw new Refus(messageAncienneEnGrace(anciennesEnGrace.map((a) => a.recueAt)));
