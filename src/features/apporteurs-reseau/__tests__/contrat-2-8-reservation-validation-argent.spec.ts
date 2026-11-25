@@ -58,7 +58,7 @@ describe("contrat 2.8", () => {
       "L'accompagnement individuel (coaching « one to one »), vendu à la séance ou à la journée, ne donne lieu à aucune commission ; il relève de A1.6.",
     );
     expect(texte).toContain(
-      "ces quinze jours ne s'ouvrent qu'à l'expiration des 30 jours qui suivent la fin de la réservation provisoire (article 3.2)",
+      "la réservation provisoire a pris fin à son terme sans validation, ces quinze jours ne s'ouvrent qu'à l'expiration des 30 jours qui suivent la fin de la réservation provisoire (article 3.2)",
     );
     expect(texte).toContain("soixante jours (annexe 1, A1.8)");
     expect(texte).not.toContain("A1.7).");
