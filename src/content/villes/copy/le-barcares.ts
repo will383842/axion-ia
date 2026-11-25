@@ -65,7 +65,7 @@ export const LE_BARCARES_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission au Barcarès ?",
-      a: "Nos consultants interviennent depuis Perpignan (20 min). Missions sur site dans votre établissement, camping ou commerce. Visio possible. Coûts de déplacement séparés du forfait, tarifs transparents.",
+      a: "Nos consultants interviennent depuis Perpignan (20 min). Missions sur site dans votre établissement, camping ou commerce. Visio possible. Tarifs transparents.",
     },
   ],
 };

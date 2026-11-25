@@ -65,7 +65,7 @@ export const LE_PEAGE_DE_ROUSSILLON_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Lyon ou Valence ?",
-      a: "Nos consultants viennent de Lyon (45 min A7) ou Valence (50 min A7). Pour les multi-jours, hébergement local possible. Coûts de déplacement séparés du forfait, tarifs transparents.",
+      a: "Nos consultants viennent de Lyon (45 min A7) ou Valence (50 min A7). Pour les multi-jours, hébergement local possible. Tarifs transparents.",
     },
   ],
 };

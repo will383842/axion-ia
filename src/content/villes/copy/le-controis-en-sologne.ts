@@ -65,7 +65,7 @@ export const LE_CONTROIS_EN_SOLOGNE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission IA dans une commune rurale ?",
-      a: "Déplacement sur site inclus. Formats adaptés : demi-journée pour TPE, journée complète pour PME. Visio complémentaire possible.",
+      a: "Formats adaptés : demi-journée pour TPE, journée complète pour PME. Visio complémentaire possible.",
     },
   ],
 };

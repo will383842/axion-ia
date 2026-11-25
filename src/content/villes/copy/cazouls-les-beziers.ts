@@ -65,7 +65,7 @@ export const CAZOULS_LES_BEZIERS_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Cazouls-lès-Béziers ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Déplacement sur site inclus dans le forfait agglo Béziers. Pour missions multi-jours, hébergement Béziers ou littoral.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Pour missions multi-jours, hébergement Béziers ou littoral.",
     },
   ],
 };

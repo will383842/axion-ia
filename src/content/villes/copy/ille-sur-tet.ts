@@ -65,7 +65,7 @@ export const ILLE_SUR_TET_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Ille-sur-Têt ?",
-      a: "Nos consultants viennent de Perpignan (25 min). Missions sur site dans votre exploitation, commerce ou atelier. Visio possible. Coûts de déplacement séparés du forfait, tarifs transparents.",
+      a: "Nos consultants viennent de Perpignan (25 min). Missions sur site dans votre exploitation, commerce ou atelier. Visio possible. Tarifs transparents.",
     },
   ],
 };

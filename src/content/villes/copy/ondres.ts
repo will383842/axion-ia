@@ -65,7 +65,7 @@ export const ONDRES_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'entrée pour une mission IA à Ondres ?",
-      a: "L'audit sur place est tarifé selon vos enjeux, livrable en 5 jours ouvrés. Inclut diagnostic complet, cartographie processus automatisables, ROI chiffré et feuille de route IA. Déplacement inclus littoral landais sud.",
+      a: "L'audit sur place est tarifé selon vos enjeux, livrable en 5 jours ouvrés. Inclut diagnostic complet, cartographie processus automatisables, ROI chiffré et feuille de route IA.",
     },
   ],
 };
