@@ -80,8 +80,10 @@ vi.mock("@/lib/prisma", () => ({
         ),
     },
     calendlyEvent: {
-      findUnique: async ({ where }: { where: { id: string } }) =>
-        bd.evenements.find((e) => e.id === where.id) ?? null,
+      findUnique: async ({ where }: { where: { id?: string; inviteeUri?: string } }) =>
+        bd.evenements.find((e) =>
+          where.inviteeUri !== undefined ? e.inviteeUri === where.inviteeUri : e.id === where.id,
+        ) ?? null,
     },
     rencontre: {
       findUnique: async ({ where }: { where: { id: string } }) =>
@@ -371,6 +373,115 @@ describe("proposerPourRendezVous", () => {
     for (const id of ["col", "abs", "inv"])
       expect(await proposerPourRendezVous({ calendlyEventId: id })).toBe(0);
     expect(bd.propositions).toHaveLength(0);
+  });
+
+  it("reporté après la saisie, réservé à l'origine avant : rien", async () => {
+    presentation("p1"); // saisie le 1er novembre
+    evenement("ancien", "dirigeant@acme-industrie.fr", {
+      inviteeUri: "https://api.calendly.com/invitees/ANCIEN",
+      status: "canceled",
+      rawPayload: payload("dirigeant@acme-industrie.fr", "2026-10-30T10:00:00Z"), // pris avant
+    });
+    evenement("nouveau", "dirigeant@acme-industrie.fr", {
+      startTime: new Date("2026-12-01T09:00:00Z"),
+      rawPayload: payload("dirigeant@acme-industrie.fr", PRIS.toISOString(), {
+        old_invitee: "https://api.calendly.com/invitees/ANCIEN",
+      }),
+    });
+    expect(await proposerPourRendezVous({ calendlyEventId: "nouveau" })).toBe(0);
+  });
+
+  it("reporté, réservé à l'origine APRÈS la saisie : proposé (date de la première réservation)", async () => {
+    presentation("p1");
+    evenement("ancien", "dirigeant@acme-industrie.fr", {
+      inviteeUri: "https://api.calendly.com/invitees/ANCIEN",
+      status: "canceled",
+      rawPayload: payload("dirigeant@acme-industrie.fr", "2026-11-03T10:00:00Z"),
+    });
+    evenement("nouveau", "dirigeant@acme-industrie.fr", {
+      startTime: new Date("2026-12-01T09:00:00Z"),
+      rawPayload: payload("dirigeant@acme-industrie.fr", "2026-11-20T10:00:00Z", {
+        old_invitee: "https://api.calendly.com/invitees/ANCIEN",
+      }),
+    });
+    expect(await proposerPourRendezVous({ calendlyEventId: "nouveau" })).toBe(1);
+    expect(bd.propositions[0]!.prisAt).toEqual(new Date("2026-11-03T10:00:00Z"));
+  });
+
+  it("report en chaîne : on remonte jusqu'à la première réservation", async () => {
+    presentation("p1");
+    evenement("a", "dirigeant@acme-industrie.fr", {
+      inviteeUri: "https://api.calendly.com/invitees/A",
+      rawPayload: payload("dirigeant@acme-industrie.fr", "2026-10-30T10:00:00Z"),
+    });
+    evenement("b", "dirigeant@acme-industrie.fr", {
+      inviteeUri: "https://api.calendly.com/invitees/B",
+      rawPayload: payload("dirigeant@acme-industrie.fr", "2026-11-10T10:00:00Z", {
+        old_invitee: "https://api.calendly.com/invitees/A",
+      }),
+    });
+    evenement("c", "dirigeant@acme-industrie.fr", {
+      startTime: new Date("2026-12-01T09:00:00Z"),
+      rawPayload: payload("dirigeant@acme-industrie.fr", "2026-11-15T10:00:00Z", {
+        old_invitee: "https://api.calendly.com/invitees/B",
+      }),
+    });
+    expect(await proposerPourRendezVous({ calendlyEventId: "c" })).toBe(0);
+  });
+
+  it("reporté, ancienne réservation introuvable ou non confirmée : rien", async () => {
+    presentation("p1");
+    evenement("orphelin", "dirigeant@acme-industrie.fr", {
+      startTime: new Date("2026-12-01T09:00:00Z"),
+      rawPayload: payload("dirigeant@acme-industrie.fr", "2026-11-20T10:00:00Z", {
+        old_invitee: "https://api.calendly.com/invitees/INCONNU",
+      }),
+    });
+    evenement("ancien", "dirigeant@acme-industrie.fr", {
+      inviteeUri: "https://api.calendly.com/invitees/BRUT",
+      rawPayload: { invitee: { created_at: "2026-11-03T10:00:00Z" } }, // sans _refreshedAt
+    });
+    evenement("nouveau", "dirigeant@acme-industrie.fr", {
+      startTime: new Date("2026-12-01T09:00:00Z"),
+      rawPayload: payload("dirigeant@acme-industrie.fr", "2026-11-20T10:00:00Z", {
+        old_invitee: "https://api.calendly.com/invitees/BRUT",
+      }),
+    });
+    expect(await proposerPourRendezVous({ calendlyEventId: "orphelin" })).toBe(0);
+    expect(await proposerPourRendezVous({ calendlyEventId: "nouveau" })).toBe(0);
+  });
+
+  it("rencontre annulée, absente ou reportée alors que l'événement Calendly est scheduled : rien", async () => {
+    presentation("p1");
+    for (const statut of ["annule", "absent", "reporte"]) {
+      bd.evenements.length = 0;
+      evenement(`ev-${statut}`, "dirigeant@acme-industrie.fr", {
+        rencontre: { statut, client: null },
+      });
+      expect(await proposerPourRendezVous({ calendlyEventId: `ev-${statut}` })).toBe(0);
+    }
+    bd.evenements.length = 0;
+    evenement("ev-ok", "dirigeant@acme-industrie.fr", {
+      rencontre: { statut: "planifie", client: null },
+    });
+    expect(await proposerPourRendezVous({ calendlyEventId: "ev-ok" })).toBe(1);
+  });
+
+  it("rencontre saisie à la main annulée, absente ou reportée : rien", async () => {
+    presentation("p1");
+    for (const statut of ["annule", "absent", "reporte"]) {
+      bd.rencontres.length = 0;
+      bd.rencontres.push({
+        id: `r-${statut}`,
+        statut,
+        createdAt: PRIS,
+        debutPrevu: new Date("2026-11-12T09:00:00Z"),
+        calendlyEventId: null,
+        client: null,
+        participants: [{ emailHash: "h:dirigeant@acme-industrie.fr" }],
+      });
+      expect(await proposerPourRendezVous({ rencontreId: `r-${statut}` })).toBe(0);
+    }
   });
 
   it("startTime antérieur à la prise : rien", async () => {

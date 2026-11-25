@@ -139,9 +139,41 @@ const SELECT_EVENEMENT = {
   startTime: true,
   rawPayload: true,
   rencontre: {
-    select: { client: { select: { siren: true, siret: true } } },
+    select: { statut: true, client: { select: { siren: true, siret: true } } },
   },
 } as const;
+
+/** Une rencontre annulée, absente ou reportée n'aura pas lieu : rien à proposer. */
+function rencontreCaduque(statut: string | null | undefined): boolean {
+  return statut === "annule" || statut === "absent" || statut === "reporte";
+}
+
+const PROFONDEUR_REPORTS = 10;
+
+/**
+ * Date de la PREMIÈRE réservation : un report crée un nouvel invité (`old_invitee`) dont
+ * `created_at` est la date du report, pas celle de la prise. On remonte la chaîne ; une
+ * ancienne réservation introuvable, non confirmée par l'API ou sans date → `null` (rien).
+ */
+async function datePriseOrigine(invitee: Record<string, unknown>): Promise<Date | null> {
+  let courant = invitee;
+  const vus = new Set<string>();
+  for (let i = 0; i < PROFONDEUR_REPORTS; i++) {
+    const ancien = courant["old_invitee"];
+    if (ancien === undefined || ancien === null || ancien === "") return datePrise(courant);
+    if (typeof ancien !== "string" || vus.has(ancien)) return null;
+    vus.add(ancien);
+    const ev = await prisma.calendlyEvent.findUnique({
+      where: { inviteeUri: ancien },
+      select: { rawPayload: true },
+    });
+    if (!ev) return null;
+    const precedent = inviteeConfirme(undefined, ev.rawPayload);
+    if (!precedent) return null;
+    courant = precedent;
+  }
+  return null; // chaîne trop longue : on ne devine pas
+}
 
 /** Le rendez-vous, ou `null` s'il ne peut rien proposer (non enrichi, adresse non confirmée…). */
 async function lireRendezVous(e: {
@@ -151,6 +183,7 @@ async function lireRendezVous(e: {
 }): Promise<RendezVous | null> {
   let calendlyEventId = e.calendlyEventId;
   let rencontre: {
+    statut: string | null;
     createdAt: Date;
     debutPrevu: Date | null;
     client: FicheClient | null;
@@ -160,6 +193,7 @@ async function lireRendezVous(e: {
     const r = await prisma.rencontre.findUnique({
       where: { id: e.rencontreId },
       select: {
+        statut: true,
         createdAt: true,
         debutPrevu: true,
         calendlyEventId: true,
@@ -167,7 +201,7 @@ async function lireRendezVous(e: {
         participants: { where: { role: "client" }, select: { emailHash: true } },
       },
     });
-    if (!r) return null;
+    if (!r || rencontreCaduque(r.statut)) return null;
     calendlyEventId ??= r.calendlyEventId ?? undefined;
     rencontre = r;
   }
@@ -188,9 +222,10 @@ async function lireRendezVous(e: {
     const invitee = inviteeConfirme(e.invitee, ev.rawPayload);
     if (!invitee) return null; // charge non confirmée par l'API : AUCUN rapprochement
     if (invitee["status"] === "canceled") return null;
+    if (rencontreCaduque(ev.rencontre?.statut)) return null;
     const adresse = adresseConfirmee(invitee);
     if (!adresse) return null; // adresse non confirmée : AUCUN rapprochement
-    const prisAt = datePrise(invitee);
+    const prisAt = await datePriseOrigine(invitee);
     if (!prisAt) return null; // pas de date de prise fiable : rien (jamais `capturedAt`)
     const empreinte = hashEmailForLookup(adresse);
     return {
