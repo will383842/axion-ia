@@ -1,6 +1,6 @@
 # Espace apporteur : page « Mes commissions » — plan de conception
 
-> **Écrit le** 2026-11-25 sur `origin/main` à `3151c61a`. **Corrigé le** 2026-11-25 sur `origin/main` à `ef5cc10d`, après la relecture « À CORRIGER » de la PR #2259.
+> **Écrit le** 2026-11-25 sur `origin/main` à `3151c61a`. **Corrigé le** 2026-11-25 sur `origin/main` à `ef5cc10d`, après la relecture « À CORRIGER » de la PR #2259. **Corrigé une seconde fois le** 2026-11-25 sur `origin/main` à `8c6ca06f`, après la deuxième relecture « PLAN À CORRIGER » (réalisée sur `54dd1eab`, qui avait déjà absorbé #2253 et #2258).
 > **Aucun code produit** : ce document est un plan.
 > **Rôle tenu** : concepteur et auditeur argent, données, sécurité.
 > **Lu pour l'écrire** : `src/features/apporteurs-reseau/` (`commissions.ts`, `commandes.ts`, `facturation.ts`, `autofacture-donnees.ts`, `regles.ts`, `envois.ts`, `presentations.ts`, `declaration-entreprise.ts`, `declaration-regles.ts`, `prestation-presentation.ts`, `passage-quotidien.ts`, `notification-attribution.ts`, `retrait.ts`, `litige.ts`, `realisation.ts`, `manquement.ts`, `resiliation.ts`, `ajustement.ts`, `avoir-client.ts`, `solde-negatif.ts`, `requetes-console.ts`, `jeton.ts`, `donnees.ts`, `signature-regles.ts`, `grille-reference.ts`, l'annexe 1 de `contrat-v2.ts`), `src/app/apporteur/dossier/`, la console `apporteurs/commissions`, `prisma/schema.prisma`, `src/lib/r2-storage.ts`, `src/content/pricing.ts`, `next.config.ts`, `package.json` (cliquets de poids), `.github/workflows/coolify-drapeau.yml`.
@@ -35,6 +35,23 @@ sujet à part, sans compteur personnel. Une prime de challenge **validée** devi
 commission ordinaire (`commissions_apporteur`) : elle s'affiche ici comme toute autre ligne, dans le
 groupe « Hors entreprise », avec son libellé, son état et sa facture. Rien d'autre.
 
+**Points de coordination ajoutés à la deuxième relecture :**
+
+- **Une seule décision pour la même question.** Q2 ici (SIREN ou établissement) et D-1 du plan #2261
+  posent la même question au dirigeant : **la décision est Q2, ici**, et D-1 y renvoie. Une seule
+  réponse, un seul avenant.
+- **`Referrer-Policy` : `same-origin`** (valeur de `next.config.ts` sur `/apporteur/dossier/`). Le plan #2261
+  annonçait `no-referrer` « comme #2259 » : il s'aligne sur `same-origin`.
+- **Le `page.tsx` de l'espace** (`src/app/apporteur/dossier/[id]/[jeton]/page.tsx`) est touché par
+  **EC-5** (lien « Mes commissions », renommage du lien « Grille des commissions », l. ~153) et par le lot 8 de #2261
+  (lien vers le règlement). **EC-5 passe en premier ; le lot 8 de #2261 suit EC-5.** Les deux PR ne se
+  modifient jamais ensemble.
+- **Convention des interrupteurs : un fichier par interrupteur**, comme `interrupteur-rendez-vous.ts`
+  sur `main`, plus la déclaration dans `src/env.ts` (convention suivie par #2258 pour
+  `APPORTEURS_VALIDATION_RDV`). Il n'y a pas de fichier `interrupteurs.ts` commun : le plan ne le crée plus
+  (voir §6).
+- **La prime de #2261** entre comme ligne « Hors entreprise » (§3.5), avec le libellé lu en base.
+
 ---
 
 ## 0. L'essentiel en une page
@@ -56,14 +73,14 @@ pas de compte à rebours, pas de relance.
 
 | Règle du dirigeant                                                                                                                                                                                                                                                    | Code sur `origin/main`                                                                                                                                                                                                                                                                                                       | Effet sur cette page                                                                                          |
 | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------- |
-| Journée IA (1 490 € HT) : 500 € au prorata du prix payé ; reprise si remboursée en argent                                                                                                                                                                             | **Pas de règle propre** : `JOURNEE_IA_TIER` n'a pas de `commissionId` (`src/content/pricing.ts:463-469`) et aucun palier `journee-ia` n'existe (`regles.ts`). La facture suit `FactureFormation.activite`, saisie à la main : `audit` → 30 % (447 €), `formation` ou vide → « à qualifier » (`passage-quotidien.ts:762-765`) | La page affiche le montant stocké, ou « à préciser » ; l'alignement sur 500 € est le lot argent du plan #2261 |
-| 15 % sur mise en service et ventes en une fois, **calculés une fois à la signature du devis**, sur le net après déduction éventuelle des 1 490 € (déduction seulement si le devis atteint 5 000 € HT avant déduction ; pas de complément si la déduction est reprise) | 15 % du HT **facturé et soldé** sur l'activité `implementation` (`TAUX_BPS`, `regles.ts:305`), calculé **au paiement intégral** (`etapeCommissions`) ; aucune déduction de Journée IA                                                                                                                                        | La page affiche le montant stocké ; elle ne recalcule rien                                                    |
+| Journée IA (1 490 € HT) : 500 € au prorata du prix payé ; reprise si remboursée en argent                                                                                                                                                                             | **Pas de règle propre** : `JOURNEE_IA_TIER` n'a pas de `commissionId` (`src/content/pricing.ts:471`) et aucun palier `journee-ia` n'existe (`regles.ts`). La facture suit `FactureFormation.activite`, saisie à la main : `audit` → 30 % (447 €), `formation` ou vide → « à qualifier » (`passage-quotidien.ts:762-765`) | La page affiche le montant stocké, ou « à préciser » ; l'alignement sur 500 € est le lot argent du plan #2261 |
+| 15 % sur mise en service et ventes en une fois, **calculés une fois à la signature du devis**, sur le net après déduction éventuelle des 1 490 € (déduction seulement si le devis atteint 5 000 € HT avant déduction ; pas de complément si la déduction est reprise) | 15 % du HT **facturé et soldé** sur l'activité `implementation` (`TAUX_BPS`, `regles.ts:320`), calculé **au paiement intégral** (`etapeCommissions`) ; aucune déduction de Journée IA                                                                                                                                        | La page affiche le montant stocké ; elle ne recalcule rien                                                    |
 | Audits seuls : 30 %                                                                                                                                                                                                                                                   | 30 % sur `audit` (`TAUX_BPS`)                                                                                                                                                                                                                                                                                                | Conforme                                                                                                      |
 | Jamais sur abonnements, maintenance, hébergement, licences                                                                                                                                                                                                            | Annexe A1.5 : rien sur `site_web` ; pas d'activité pour les abonnements ; formation au forfait par palier, conférence 500 €, accompagnement individuel 30 %                                                                                                                                                                  | La page affiche ce qui existe                                                                                 |
 | Versée quand le client a payé à 100 % ; reprise si impayé ou remboursement                                                                                                                                                                                            | Conforme : ligne créée seulement quand la commande est soldée (`commandesSoldees`, `commandes.ts:60-100`) ; reprise par avoir (`avoir-client.ts`, `resiliation.ts`)                                                                                                                                                          | Aucun montant avant le paiement intégral                                                                      |
 | Autofacture                                                                                                                                                                                                                                                           | En place (`facturation.ts`, série `AXI-APP`)                                                                                                                                                                                                                                                                                 | Les PDF sont retéléchargeables                                                                                |
 | Aucune prime ni contrat sans SIREN actif                                                                                                                                                                                                                              | Le registre est relu avant chaque autofacture (`facturation.ts:636-642`)                                                                                                                                                                                                                                                     | Une ligne bloquée l'affiche (« en attente d'une information »)                                                |
-| TVA toujours selon le régime de l'apporteur                                                                                                                                                                                                                           | `regimeTva` : `assujetti` (20 %) ou `franchise_293b` ; régime absent = autofacture bloquée (`autofacture-donnees.ts:389`)                                                                                                                                                                                                    | Mentions de TVA au §4.3                                                                                       |
+| TVA toujours selon le régime de l'apporteur                                                                                                                                                                                                                           | `regimeTva` (`schema.prisma:16396`) : `assujetti` (20 %) ou `franchise_293b` ; régime absent = autofacture bloquée (`autofacture-donnees.ts:389`)                                                                                                                                                                                                    | Mentions de TVA au §4.3                                                                                       |
 
 **L'alignement du code sur ces règles n'est pas l'objet de ce plan.** C'est un chantier argent à
 part (contrat, `regles.ts`, `parite-contrat-code.spec.ts`, avenant). La page n'en dépend pas : elle
@@ -85,7 +102,7 @@ Comment la base le distingue (vérifié dans `prisma/schema.prisma`, modèle `Co
 | `apporteur_id`    | l'apporteur qui a présenté l'entreprise     | le parrain                                                                                            |
 | `presentation_id` | sa présentation                             | **la présentation du filleul** (pas la sienne)                                                        |
 | `facture_id`      | la facture clé de la commande               | la même                                                                                               |
-| `montant_cents`   | calculé sur la vente (`calculerCommission`) | 10 % de la commission du filleul (`partParrainage`, `regles.ts:395-403`)                              |
+| `montant_cents`   | calculé sur la vente (`calculerCommission`) | 10 % de la commission du filleul (`partParrainage`, `regles.ts:408`)                              |
 | Fenêtre           | protection de la présentation               | 6 mois après `signeParSocieteAt` du filleul (`dansFenetreParrainage`, `passage-quotidien.ts:213-218`) |
 
 L'unicité `@@unique([factureId, apporteurId, parrainage])` interdit deux lignes identiques. **Elle
@@ -126,8 +143,8 @@ résultat écrit en base. Verrouillé par une garde statique (T7).
 | Ce que l'apporteur lit                   | Source                                                                                                                                                                                                                    | Partagé avec la console par                         |
 | ---------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------- |
 | Nom de l'entreprise                      | `presentations_entreprise.denomination` (ce qu'il a lui-même déclaré)                                                                                                                                                     | même colonne                                        |
-| État de la présentation                  | `etatPourApporteur()` et `LIBELLE_ETAT_DECLARATION` (`declaration-regles.ts:113-160`) : « À l'étude », « En attente d'une réponse — nous revenons vers vous », « Réservée » (jusqu'au …), « Non disponible », « Expirée » | fonction et libellés existants, inchangés (sauf Q3) |
-| « Validée le » / « Validée d'office le » | `confirmee_at` et `confirmation_tacite` (à ajouter à `DeclarationVue`)                                                                                                                                                    | mêmes colonnes que la fiche console                 |
+| État de la présentation                  | `etatPourApporteur(p, maintenant, reservation?)` (`declaration-regles.ts:133`, depuis #2253 et #2258) et `LIBELLE_ETAT_DECLARATION` (`declaration-regles.ts:113-160`) : « À l'étude », « En attente d'une réponse — nous revenons vers vous », « Réservée » (jusqu'au …), « Non disponible », « Expirée » | fonction et libellés existants, inchangés (sauf Q3) |
+| « Validée le » / « Validée d'office le » | `confirmee_at` et `confirmation_tacite` (`schema.prisma:16664`, à ajouter à `DeclarationVue`)                                                                                                                                                    | mêmes colonnes que la fiche console                 |
 | « Commande signée le »                   | `EmailLog` (`template = "apporteur-commande-signee"`, `entityType = "PresentationEntreprise"`, `entityId` ∈ ses présentations, `sentAt` non nul, statut ≠ `failed`), puis `jobId` → devis → `Devis.acceptedAt` (§1.4)     | sans objet                                          |
 | « Payée par le client le »               | date de paiement **la plus récente** parmi les factures non annulées de la commande (pas seulement `factureCleId`)                                                                                                        | extraite de `lireCommissions` (lot EC-4)            |
 | Prestation réalisée le                   | `prestation_realisee_at`                                                                                                                                                                                                  | même colonne                                        |
@@ -140,6 +157,24 @@ résultat écrit en base. Verrouillé par une garde statique (T7).
 | Virement à venir (TTC si assujetti)      | `aVirerPartielCents()` par autofacture, via `lireVirementsAFaire({ apporteurId })`                                                                                                                                        | même fonction, paramètre ajouté (EC-4)              |
 | « Versée le »                            | `versee_at`                                                                                                                                                                                                               | même colonne                                        |
 | Reprise, avoir                           | ligne `statut = reprise`, `avoir_numero`, origine par `originesDesReprises()` **filtrée par apporteur**                                                                                                                   | fonction existante, filtre ajouté                   |
+
+### 1.2 bis Réservation par rendez-vous (#2253, #2258) : comment la page la lit
+
+`main` porte désormais `etatPourApporteur(p, maintenant, reservation?)` et la table
+`PresentationReservation` (`schema.prisma:16474`), indexée par `presentationId` et **sans colonne
+`apporteurId`**. L'interrupteur est `APPORTEURS_VALIDATION_RDV`. Règles de la page :
+
+1. **Lecture par `presentationId` de ses propres présentations seulement** : un seul `in` sur les
+   identifiants déjà lus à la requête 5 (liste filtrée par `apporteurId`). La provenance de chaque
+   `presentationId` est donc prouvée par la requête 5, pas par un filtre sur la table (exception
+   documentée au §2.2, règle 1).
+2. **Même état que `ListeDeclarations.tsx`** : la page appelle la même fonction avec les mêmes
+   arguments, jamais une règle réécrite. Test : pour un jeu de présentations et de réservations,
+   le libellé de la page égale celui de `ListeDeclarations`.
+3. **Sans date de réservation** (interrupteur éteint, réservation absente ou sans échéance) : le
+   libellé « Réservée » s'affiche **sans date** (« Réservée »), jamais « jusqu'au <invalide> » ni un
+   nombre de jours. Une date n'est écrite que si elle est portée par la réservation ou la présentation.
+4. Table absente (ancien schéma) : lecture ignorée, état calculé sans réservation.
 
 ### 1.3 La fonction d'état, à facettes (lot EC-2)
 
@@ -175,7 +210,7 @@ etatPrincipal(facettes) → un seul état, pour l'apporteur
 | 10  | `a_preciser`             | `statut = a_qualifier` (sous-cas `hors_grille`)                           | Le montant n'est pas connu                                                           |
 | 11  | `en_attente_realisation` | `prestationRealiseeAt` nul                                                | I2 : rien n'est facturé ni versé avant (`realisation.ts:1-16`, `facturation.ts:229`) |
 | 12  | `en_attente_pieces`      | `statut = en_attente_vigilance`                                           |                                                                                      |
-| 13  | `en_attente_fiche`       | `statut = due`, `autofactureAttenteMotif` posé (sous-cas `solde_negatif`) |                                                                                      |
+| 13  | `en_attente_fiche`       | `statut = due`, `autofactureAttenteMotif` posé. Le sous-cas `solde_negatif` se reconnaît à `PREFIXE_MOTIF_SOLDE_NEGATIF` (`facturation.ts:554`) ; sinon `<ce qui manque>` est un **libellé** de la table des motifs, jamais le motif brut | |
 | 14  | `due`                    | `statut = due`, réalisée, pas encore facturée                             | Le passage horaire s'en charge                                                       |
 
 Le cas « compensée » (versée par déduction d'une reprise) n'est **pas** distingué par l'égalité
@@ -184,7 +219,10 @@ dans les deux cas.
 
 ⚠️ **Avant de figer l'ordre 9 / 11**, compter en production (lecture seule, par la console ou
 `admin-emergency`) les lignes `statut = due`, `autofacture_numero` non nul, `prestation_realisee_at`
-nul. Le chiffre est noté dans la PR du lot EC-2.
+nul. Le chiffre est noté dans la PR du lot EC-2. **Qui le fait : le dirigeant, ou toute session disposant
+du SSH production**, avant l'ouverture de la PR EC-2 (les développeurs n'ont pas cet accès). Tant que le
+chiffre n'est pas noté, EC-2 reste en brouillon, et le rang 9 / 11 reste celui du tableau (un
+`autofactureNumero` posé l'emporte).
 
 ### 1.4 « Commande signée » : du journal des e-mails au devis
 
@@ -201,6 +239,16 @@ nul. Le chiffre est noté dans la PR du lot EC-2.
      « en attente » pour toujours) ;
    - `jobId` illisible ou devis introuvable : une seule mention « Commande signée », **sans date**.
 5. Dès qu'une ligne de commission existe pour la même commande, elle remplace la mention.
+6. **Commande soldée sans commission** (devis accepté, toutes les factures payées, activité qui ne
+   donne rien : `calc.statut === "aucune"`, `passage-quotidien.ts:765`) : aucune ligne n'est créée, et
+   la mention « En attente du paiement du client » serait fausse pour toujours. Règle : **si toutes les
+   factures non annulées du devis sont payées et qu'aucune ligne de commission n'existe pour la
+   commande, la mention de commande est retirée** (la ligne de présentation reste). Ce n'est pas un
+   état « commission nulle » : on n'affiche rien, car l'apporteur n'a aucun droit sur cette commande.
+7. **De `factureId` aux « factures de la commande »** : aujourd'hui `lireCommissions` ne lit que la
+   facture clé (`commissions.ts:512-541`). EC-4 lit, par un seul `in` sur `devisId`, toutes les
+   factures non annulées du devis (statut et `paidAt` seulement) ; la date « Payée par le client le » est la plus
+   récente. Une ligne dont le devis est introuvable n'affiche que la date de la facture clé.
 
 Ce chemin ne lit que des faits déjà envoyés à l'apporteur, par la clé de **son** e-mail. Il ne lit
 jamais les présentations d'un autre.
@@ -242,8 +290,16 @@ Règles, toutes testées :
 
 1. **Chaque requête Prisma porte `apporteurId: dossier.id` dans son `where`**, y compris celle de
    `originesDesReprises` (`commissions.ts:662-680`, qui ne filtre pas aujourd'hui : paramètre
-   `apporteurId` ajouté). Seule exception : les devis et factures lus par identifiant au §1.4, dont
-   la liste sort d'un e-mail filtré par ses présentations **et** dont le `jobId` porte son identifiant.
+   `apporteurId` ajouté). Les **seules exceptions**, chacune avec sa preuve de provenance, sont :
+   - **(a)** les devis et factures lus par identifiant au §1.4 : la liste sort d'un e-mail filtré par ses
+     présentations **et** dont le `jobId` porte son identifiant (T13) ;
+   - **(b)** les factures « de la commande » (requête 7, §1.4 point 7), lues par `devisId` issu de (a)
+     ou de la facture clé d'une de **ses** lignes de commission (elle-même filtrée par `apporteurId`) ;
+   - **(c)** `PresentationReservation` (§1.2 bis), lue par `presentationId` ∈ les présentations de la
+     requête 5, filtrée par `apporteurId`.
+   Aucune autre. Chacune est listée dans T8 avec sa preuve : le test échoue si une requête hors de ces
+   trois porte sans filtre apporteur, ou si une exception est lue avec un identifiant qui ne vient pas
+   de sa source prouvée.
 2. Le nom d'une entreprise n'est gardé que si `!ligne.parrainage && presentation.apporteurId === dossier.id`.
 3. Champs **interdits** dans la vue : `factureId`, `factureNumero`, `factureHtCents`,
    `prixPublicHtCents`, `palier` brut, `litigeMotif`, `prestationRealiseePar`, toute coordonnée
@@ -262,10 +318,11 @@ Règles, toutes testées :
 | T3     | Même réponse (statut, corps, en-têtes) pour « numéro d'un autre » et « numéro inexistant »                                                                                                                                                                                                                                           | unité, route     |
 | T4     | Numéro mal formé (`../`, encodé, minuscules, **plus de 40 caractères**) → 404 sans requête                                                                                                                                                                                                                                           | unité, route     |
 | T5     | Parrain : sa page ne contient ni le nom de l'entreprise du filleul, ni le nom du filleul, ni l'activité, ni le palier                                                                                                                                                                                                                | unité            |
+| T5 ter | Parrainage non facturé ou prime : aucune ligne d'attente ; prime sans « Payée par le client le » ni « Prestation réalisée le » | unité            |
 | T5 bis | Parrainage regroupé : deux parts sur une même autofacture donnent **une** ligne, un montant, aucune date de commande                                                                                                                                                                                                                 | unité            |
 | T6     | Le HTML rendu ne contient aucun champ interdit (valeurs sentinelles dans chacun)                                                                                                                                                                                                                                                     | unité, rendu     |
 | T7     | Garde statique : aucun fichier sous `src/app/apporteur/dossier/[id]/[jeton]/` n'importe `@/lib/prisma`, `lireCommissions`, `lireFicheApporteur`, `calculerCommission`, `commandesSoldees`, `presentationPourEtablissement`, `attributaireDeLaCommande`, ni `lireVirementsAFaire` sans filtre. Les `*.spec.*` sont exclus de la garde | `tests/unit/ci/` |
-| T8     | Chaque appel Prisma de `lireEspaceCommissions` porte le filtre apporteur (client simulé qui enregistre les `where`), sauf l'exception documentée du §2.2                                                                                                                                                                             | unité            |
+| T8     | Chaque appel Prisma de `lireEspaceCommissions` porte le filtre apporteur (client simulé qui enregistre les `where`), sauf les trois exceptions (a), (b), (c) du §2.2, dont l'identifiant doit venir de la source prouvée                                                                                                                                                                             | unité            |
 | T9     | **Deux apporteurs sur une vraie base** : commissions, parrainage croisé, reprises, neutralisation, avoirs, même SIREN présenté par les deux. La vue de A ne contient aucun identifiant, numéro ni nom de B                                                                                                                           | intégration      |
 | T10    | `versionLien` incrémentée → 404 page et route                                                                                                                                                                                                                                                                                        | unité            |
 | T11    | La clé R2 lue commence par `apporteurs/autofactures/<id de A>/`                                                                                                                                                                                                                                                                      | unité, route     |
@@ -280,8 +337,10 @@ Stockage existant : `apporteurs/autofactures/<apporteurId>/<numero>.pdf` (autofa
 ```
 GET /apporteur/dossier/<id>/<jeton>/factures/<numero>
   0. interrupteur APPORTEUR_MES_COMMISSIONS_ENABLED, sinon 404
-  1. limite de débit, clé `apporteur-dossier:facture:<ip hachée>` (même forme que le contrat),
-     20 par quart d'heure, « laisser-passer » sur panne Redis
+  1. limite de débit par `checkRateLimit` (`@/lib/rate-limit`), clé `apporteur-dossier:facture:<ip hachée par `hashIp`>`,
+     20 par quart d'heure, `surPanne: "laisser-passer"`. **Écart assumé avec la route du contrat**
+     (`apporteur-dossier:pdf:${ip}`, IP en clair, `contrat/route.ts:43-46`) : on suit la forme **hachée**, qui
+     ne laisse pas d'IP en clair dans Redis ; le contrat sera aligné dans un lot à part s'il le faut
   2. numero ≤ 40 caractères et conforme à /^AXI-APP-\d{4}-\d{4,}$/, sinon 404 sans requête
   3. dossier = lireDossierParLien(id, jeton), sinon 404
   4. etatDeLaPage(dossier.statut) = "signe" ; mode restreint refusé (sauf Q4 = oui) ;
@@ -346,7 +405,7 @@ Règles d'écriture, verrouillées par un test de vocabulaire sur `textes.ts` **
 - **formules interdites** (test sur le rendu) : « objectif », « challenge », « défi », « bravo »,
   « félicitations », « gagnez », « gagner plus », « potentiel », « classement », « rang »,
   « record », « bonus », « performance », « progression », « atteindre », « il vous reste », « il
-  reste », « plus que », « jours restants », « dépêchez ». On filtre des formules de pression, pas
+  reste », « plus que », « jours restants », « dépêchez », « garanti » (dont « Aucun gain garanti » : la phrase ne figure pas sur cette page, c'est une règle du dirigeant pour les textes d'incitation), « Grenoble ». On filtre des formules de pression, pas
   des mots du quotidien (« pas encore eu lieu » reste permis). Le mot « palier » n'est pas interdit (libellé
   de la grille), mais aucun identifiant de palier n'est rendu. Le mot « prime » est permis seulement
   dans le libellé d'une ligne de prime validée, lu en base.
@@ -359,6 +418,22 @@ facture n° … · 50,00 € hors taxes · Réglée le … ». Ni date de comman
 
 Limite assumée : le PDF imprime aujourd'hui une ligne par part (`lignesAutofacture`). Si la juriste
 lit l'article 4.6 comme « un seul montant agrégé », le PDF est à revoir dans un lot à part (Q5).
+
+### 3.5 Le groupe « Hors entreprise » : parrainage et prime
+
+Le groupe ne contient que des lignes **sans entreprise** de l'apporteur. Deux natures, aucune
+d'autre :
+
+| Nature | Reconnaissance | Libellé | Dates affichées | Ce qui est retiré |
+| --- | --- | --- | --- | --- |
+| **Parrainage facturé** | `parrainage = true` **et** `autofactureNumero` posé : regroupé par autofacture (§3.4) | « Parrainage · facture n° <numéro> · <montant> hors taxes · <état> » | « Réglée le », date de la facture | Jamais « Payée par le client le », « Prestation réalisée le », nature de la prestation |
+| **Parrainage pas encore facturé** | `parrainage = true`, `autofactureNumero` nul | **Aucune ligne.** Il n'a pas de numéro, donc pas de clé de regroupement | — | Il n'est affiché qu'une fois facturé. Avant, la page ne dirait rien : un texte « Payée par le client. La prestation n'a pas encore eu lieu » apprendrait au parrain ce qui se passe chez le client de son filleul |
+| **Prime validée** (#2261, `activite = prime_challenge`, sans `presentationId`) | `activite = prime_challenge` | **Lu en base** : `challenges_apporteur.titre`, via `palier = challenge:<id>` ; à défaut « Prime exceptionnelle » | « Réglée le », date de la facture seulement | Jamais « Payée par le client le » ni « Prestation réalisée le » (il n'y a pas de client) |
+
+Règles : un parrainage ou une prime non facturés n'ont **aucun** texte d'état d'attente. Un test
+(T5 ter) vérifie que, pour un parrainage non facturé, la vue ne contient aucune chaîne de la table des
+états. Le libellé d'une prime vient de la base, pas du code : le worker et la page lisent le même champ
+(table des natures du §10, ligne « Prime », ajoutée).
 
 ---
 
@@ -429,7 +504,7 @@ aux deux endroits à la fois).
 | Aucune entreprise présentée                   | « Aucune entreprise présentée. » et « Retour à mon espace ». Pas d'incitation                           |
 | Des entreprises, aucune commande              | Les cartes d'entreprise seules ; factures : « Aucune facture pour l'instant. »                          |
 | Dossier pas encore signé                      | 404 neutre (comme la route du contrat)                                                                  |
-| Mode restreint                                | Selon Q4 : lecture seule, sans lien grille ni contrat, sans « Mes entreprises » en cours de réservation |
+| Mode restreint                                | Selon Q4 : lecture seule, **sans lien « Grille des commissions » ni « Télécharger mon contrat »** (ils mèneraient à « Réservé » ou à une 404), sans « Mes entreprises » en cours de réservation |
 | Lien faux, révoqué, refusé ; résilié selon Q7 | 404 neutre existante                                                                                    |
 | Lien d'exemple de l'aperçu console            | Écran d'exemple existant (`ID_DOSSIER_EXEMPLE`), jamais un 404                                          |
 | PDF absent ou stockage qui lève               | 404 neutre sur la route ; la ligne reste affichée ; `signalerErreurReseau`                              |
@@ -444,7 +519,7 @@ aux deux endroits à la fois).
 | `franchise_293b` | HT et « TVA non applicable, article 293 B du code général des impôts » | HT                                          |
 | absent           | HT et « TVA : en vérification »                                        | « Montant en vérification » (aucun chiffre) |
 
-Les montants sont calculés par `totalTtcPieceCents`, la fonction du PDF. ⚠️ Elle prend le régime
+**Le montant affiché est celui du PDF** (même fonction). Les montants sont calculés par `totalTtcPieceCents`, la fonction du PDF. ⚠️ Elle prend le régime
 **actuel** ; si l'apporteur a changé de régime depuis l'émission, l'écran et le PDF diffèrent. Le
 texte de la page renvoie au PDF comme pièce qui fait foi. EC-8 corrige la cause (Q8).
 
@@ -467,7 +542,7 @@ texte de la page renvoie au PDF comme pièce qui fait foi. EC-8 corrige la cause
 | 1-4 | `lireDossierParLien` (existant)                                                                           | clés primaires                                |
 | 5   | présentations de l'apporteur, 100 au plus                                                                 | `presentations_entreprise(apporteur_id)`      |
 | 6   | commissions de l'apporteur, 300 au plus, colonnes énumérées, `presentation { denomination, apporteurId }` | `commissions_apporteur(apporteur_id, statut)` |
-| 7   | dates de paiement des factures des commandes lues, un seul `in`                                           | clé primaire                                  |
+| 7   | factures non annulées des devis lus (exception (b) du §2.2), un seul `in` sur `devisId`; `PresentationReservation` par `presentationId` (exception (c)) | clé primaire, `devisId`, `presentationId` |
 | 8   | origines des reprises, filtrées par apporteur                                                             | clé primaire                                  |
 | 9   | journal « commande signée » de ses présentations, un `in`                                                 | `EmailLog(entityType, entityId)`              |
 | 10  | devis et factures des `jobId` lus, un `in`                                                                | clé primaire, `devisId`                       |
@@ -493,9 +568,15 @@ compile`, puis `pnpm bundle:check`. Dépassement → **STOP et demande au dirige
 | ----------------------------------- | ----- | -------------------------------------------------------------------------------------------------------- |
 | `APPORTEUR_MES_COMMISSIONS_ENABLED` | site  | Page, lien depuis l'accueil, route des PDF. Éteint (toute valeur autre que `"true"`) : 404 et aucun lien |
 
-Ajoutée à la liste fermée de `.github/workflows/coolify-drapeau.yml`. Lue par
-`src/features/apporteurs-reseau/interrupteurs.ts` (fichier créé par le premier des deux plans qui
-livre ; le plan #2261 y ajoute ses clés).
+**Cible : « site » pour la page et la route.** Les liens ajoutés dans les e-mails (EC-7) sont rendus
+par le **worker** : l'interrupteur y a donc la cible **« les deux »** (site et worker), à déclarer dans
+`coolify-drapeau.yml`. Un worker qui ne lit pas la clé ne rend **aucun lien** (jamais un lien vers une
+page en 404).
+
+Convention de `main` : **un fichier par interrupteur**, `src/features/apporteurs-reseau/interrupteur-mes-commissions.ts`
+(sur le modèle de `interrupteur-rendez-vous.ts`), et la déclaration dans `src/env.ts`. Pas de fichier
+`interrupteurs.ts` commun, donc plus de « créé par le premier qui livre ». Ajoutée à la liste fermée de
+`.github/workflows/coolify-drapeau.yml`.
 
 ---
 
@@ -540,20 +621,25 @@ commence par un commit de tests qui échouent.
 
 | Lot                     | Titre                                           | Fichiers                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  | Tests rouges d'abord                                                                                                                                                                                                                                                                      | Sous interrupteur    | Dépend de                              | Nature            |
 | ----------------------- | ----------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------- | -------------------------------------- | ----------------- |
-| **EC-0**                | Interrupteur de la page                         | `src/features/apporteurs-reseau/interrupteurs.ts` (créé ou complété), `.github/workflows/coolify-drapeau.yml` (une option), spec                                                                                                                                                                                                                                                                                                                                                                                                                                                                          | « éteint » si la valeur n'est pas exactement `"true"` ; la clé est dans la liste fermée du workflow                                                                                                                                                                                       | c'est l'interrupteur | —                                      | sécurité          |
+| **EC-0**                | Interrupteur de la page                         | `src/features/apporteurs-reseau/interrupteur-mes-commissions.ts`, `src/env.ts`, `.github/workflows/coolify-drapeau.yml` (une option, cible « les deux »), spec                                                                                                                                                                                                                                                                                                                                                                                                                                                                          | « éteint » si la valeur n'est pas exactement `"true"` ; la clé est dans la liste fermée du workflow                                                                                                                                                                                       | c'est l'interrupteur | —                                      | sécurité          |
 | **EC-1**                | Route des PDF, dormante                         | `src/app/apporteur/dossier/[id]/[jeton]/factures/[numero]/route.ts`, `route.spec.ts`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      | T1-T4, T10-T12, T14 ; statut ≠ `signe` → 404 ; mode restreint → 404 (tant que Q4 n'est pas « oui ») ; numéro > 40 caractères → 404 sans requête ; stockage qui lève → 404 ; pièce d'un autre → 404 ; octets servis, aucun appel à `getSignedUrlR2`                                        | oui                  | EC-0                                   | sécurité          |
 | **EC-2**                | État pur à facettes, non branché                | `src/features/apporteurs-reseau/etat-commission.ts`, `__tests__/etat-commission.spec.ts`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  | table de vérité : 7 statuts × contestation × réalisée × facturée × attente de fiche × reprise imputée ou non × neutralisation ; ligne historique facturée sans date de réalisation → `facturee` ; `a_qualifier` contesté → `suspendue` ; neutralisation masquée et rattachée à sa retenue | non (non branché)    | —                                      | données           |
 | **EC-3** _(facultatif)_ | Console branchée sur EC-2                       | `src/app/[locale]/(admin)/[adminPrefix]/apporteurs/commissions/page.tsx`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  | rendu avant/après identique sur un jeu couvrant chaque onglet                                                                                                                                                                                                                             | non                  | EC-2                                   | écran             |
 | **EC-4**                | Lecture cloisonnée                              | créés : `espace-commissions.ts` (`server-only`), `espace-commissions-assemblage.ts` (pur), specs, `tests/integration/…/espace-commissions-cloisonnement.spec.ts` ; modifiés : `facturation.ts` (export de `suspenduesParNumero`, `lireVirementsAFaire({ apporteurId })`), `commissions.ts` (`originesDesReprises` filtré par apporteur, extraction du repli `encaisseeAt`/`emissionAt`), `declaration-entreprise.ts` (`confirmeeAt`, `confirmationTacite`, lignes déjà lues)                                                                                                                              | T5, T5 bis, T6, T8, T9, T13 ; `jobId` → devis ; devis annulé → « commande annulée » ; somme du virement égale à `lireVirementsAFaire()` sans filtre pour ce même apporteur ; régime inconnu → « en vérification » ; garde « le worker n'importe pas `server-only` » toujours verte        | non (aucun écran)    | EC-2                                   | sécurité, données |
-| **EC-5**                | La page                                         | créés : `src/app/apporteur/dossier/[id]/[jeton]/mes-commissions/page.tsx`, `textes.ts`, composants serveur, tests de rendu, `tests/unit/ci/l-espace-commissions-ne-promet-rien.spec.ts` (formules interdites, aucun montant sans ligne, aucun total, aucun nombre de jours restants), garde T7, `tests/e2e/flows/espace-apporteur-commissions.spec.ts` (axe) ; modifiés : `page.tsx` de l'espace (un lien, sous interrupteur), `commissions/page.tsx` (libellé « Grille des commissions »), `declaration-regles.ts` si Q3 change le mot, `le-mode-restreint-n-ouvre-que-la-vigilance.spec.ts` si Q4 = oui | un rendu par état principal et par état vide ; TVA par régime ; mode restreint sans lien grille ni contrat ; `noindex`, `no-store` ; « commande signée » sans chiffre ; mesure du cliquet 25 KB                                                                                           | oui                  | EC-0, EC-1, EC-4 ; textes du §10 relus | écran             |
+| **EC-5**                | La page                                         | créés : `src/app/apporteur/dossier/[id]/[jeton]/mes-commissions/page.tsx`, `textes.ts`, composants serveur, tests de rendu, `tests/unit/ci/l-espace-commissions-ne-promet-rien.spec.ts` (formules interdites, aucun montant sans ligne, aucun total, aucun nombre de jours restants), garde T7, `tests/e2e/flows/espace-apporteur-commissions.spec.ts` (axe) ; modifiés : `page.tsx` de l'espace (un lien, sous interrupteur), `[jeton]/page.tsx` (le libellé du lien vers la grille, l. ~153, devient « Grille des commissions » ; `commissions/page.tsx` n'est pas touché), `declaration-regles.ts` si Q3 change le mot, `le-mode-restreint-n-ouvre-que-la-vigilance.spec.ts` si Q4 = oui | un rendu par état principal et par état vide ; TVA par régime ; mode restreint sans lien grille ni contrat ; `noindex`, `no-store` ; « commande signée » sans chiffre ; mesure du cliquet 25 KB                                                                                           | oui                  | EC-0, EC-1, EC-4 ; textes du §10 relus | écran             |
 | **EC-6**                | Console : « Voir ce que l'apporteur voit »      | `…/apporteurs/[id]/apercu-commissions/page.tsx`, un lien dans `…/apporteurs/[id]/page.tsx`, spec                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          | `gardePage("consultation")` ; même fonction de lecture que l'espace ; aucun lien vers le lien personnel de l'apporteur                                                                                                                                                                    | non (console)        | EC-4, EC-5                             | écran             |
-| **EC-7**                | Suites                                          | liens vers la page dans `apporteur-releve`, `apporteur-virement-fait`, `apporteur-commande-signee` (calculés dans le gabarit depuis le lien d'espace déjà présent : **aucune nouvelle clé de charge, aucun nouveau nom**) ; journal des téléchargements (table séparée, migration additive)                                                                                                                                                                                                                                                                                                               | le rendu des gabarits avec une ancienne charge est identique ; la table absente n'empêche pas le téléchargement                                                                                                                                                                           | oui (même clé)       | EC-5                                   | écran, données    |
+| **EC-7**                | Suites                                          | liens (rendus seulement si l'interrupteur « les deux » est allumé côté worker) vers la page dans `apporteur-releve`, `apporteur-virement-fait`, `apporteur-commande-signee` (calculés dans le gabarit depuis le lien d'espace déjà présent : **aucune nouvelle clé de charge, aucun nouveau nom**) ; journal des téléchargements (table séparée, migration additive)                                                                                                                                                                                                                                                                                                               | le rendu des gabarits avec une ancienne charge est identique ; la table absente n'empêche pas le téléchargement                                                                                                                                                                           | oui (même clé, cible « les deux ») | EC-5                                   | écran, données    |
 | **EC-8**                | Figer le régime de TVA à l'émission             | migration additive (`commissions_apporteur.regime_tva_emission`, nullable), `facturation.ts` (écrit à l'émission), `autofacture-donnees.ts` (lit la valeur figée, repli sur l'actuelle)                                                                                                                                                                                                                                                                                                                                                                                                                   | une autofacture émise en `assujetti` reste TTC après passage en franchise ; colonne absente (ancien worker) → comportement actuel                                                                                                                                                         | non                  | Q8                                     | argent            |
 | **EC-9**                | Verrou en base : un seul apporteur commissionné | requête de comptage d'abord, puis migration : index unique partiel `commissions_apporteur(facture_id) WHERE parrainage = false AND statut <> 'annulee'` ; si Q2 = SIREN, la règle d'attribution est un chantier argent séparé                                                                                                                                                                                                                                                                                                                                                                             | le comptage rend 0 avant la migration ; deux lignes `parrainage = false` sur une même facture → refus ; une part de parrainage reste possible                                                                                                                                             | non                  | Q2                                     | données, argent   |
 
-**Lançables tout de suite, sans décision du dirigeant** : EC-0, EC-1 (mode restreint refusé par
-défaut), EC-2, EC-3, EC-4. EC-5 attend la relecture des textes (§10) et Q3, Q4, Q7. EC-6 suit EC-5.
-EC-8 attend Q8, EC-9 attend Q2.
+**Lançables tout de suite, sans décision du dirigeant** : EC-0 (la convention de fichier est écrite
+au §6), EC-1 (mode restreint et dossier résilié refusés par défaut ; clé de limite : §2.4),
+EC-2 (après le comptage du §1.3, fait par quelqu'un qui a l'accès production), EC-3 (facultatif),
+EC-4 (après les corrections §1.2 bis, §2.2 et §3.5).
+
+**Bloqués** : EC-5 par Q11 (textes du §10), Q3, Q4, Q7 **et Q9** (« Validée d'office »), après EC-0, EC-1
+et EC-4 ; EC-6 par EC-5 ; EC-7 par EC-5 et par l'interrupteur à cible « les deux » (§6) ; EC-8 par Q8 ;
+EC-9 par Q2 (une seule décision, qui vaut aussi D-1 de #2261) ; l'allumage par Q1.
 
 Ordre :
 
@@ -583,9 +669,9 @@ Présentation (libellés existants, inchangés sauf Q3) :
 
 - « À l'étude »
 - « En attente d'une réponse — nous revenons vers vous »
-- « Réservée jusqu'au <date> » (ou « Gardée pour vous jusqu'au <date> » si Q3 = « Gardée »)
+- « Réservée jusqu'au <date> » (« Réservée » seul si aucune date n'est portée, §1.2 bis) (ou « Gardée pour vous jusqu'au <date> » si Q3 = « Gardée »)
 - « Non disponible »
-- « Expirée le <date> »
+- « Expirée » (libellé de `LIBELLE_ETAT_DECLARATION`, sans date : on n'invente pas d'autre libellé)
 - « Présentée le <date> »
 - « Validée le <date> »
 - « Validée d'office le <date> » (confirmation tacite, si Q9 = oui ; sinon « Validée le <date> »)
