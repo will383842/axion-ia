@@ -15,8 +15,10 @@
  *     « vente » ce que son article 1.2 dit n'être pas une vente ;
  *   — `jsonld_remuneration` : aucun balisage structuré de rémunération (JobPosting, baseSalary,
  *     incentiveCompensation, MonetaryAmount) sur une surface apporteur. Il a été retiré le
- *     2026-09-19 (décision B5 de Williams : un apporteur n'occupe pas un poste) ; la garde
- *     l'empêche de revenir.
+ *     2026-09-19 (décision B5). B5 est levée le 25/11/2026 pour la seule page principale : le
+ *     seul JobPosting apporteur est construit hors des surfaces (`src/lib/seo/job-posting-apporteur.ts`),
+ *     verrouillé par la spec `plus-d-offre-d-emploi-google-pour-les-apporteurs`. La garde, elle,
+ *     reste entière sur les surfaces.
  *
  * LA PHRASE, PAS LA LIGNE. Le JSX coupe une phrase sur plusieurs lignes : la mention indicative
  * est cherchée dans la ligne fautive et ses deux voisines de chaque côté (hors commentaires).

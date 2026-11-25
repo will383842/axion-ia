@@ -6,8 +6,10 @@
 // IA, avec UNE seule commission indicative par journée payée. Tous les boutons mènent au dossier
 // de 3 minutes, sans CV (`/devenir-commercial-ia/candidature`).
 //
-// ⛔ Plus d'offre d'emploi schema.org ici (décision Will 2026-09-19, B5) : un apporteur n'occupe pas
-// un poste. `tests/unit/seo/plus-d-offre-d-emploi-google-pour-les-apporteurs.spec.tsx` la refuse.
+// ⚠️ B5 levée pour CETTE SEULE page par décision de Will du 25/11/2026 (risques juridique et Google
+// assumés) : un JobPosting prudent, construit hors des dossiers apporteurs
+// (`lib/seo/job-posting-apporteur.ts`). `/memo-isere` reste exclue ; la spec
+// `plus-d-offre-d-emploi-google-pour-les-apporteurs` verrouille les deux faces.
 //
 // 🔴 Aucun montant en dur : tout vient de `pricing.ts` (`landings/chiffres.ts`).
 // Vocabulaire : « apporteur d'affaires » ; le mot « commercial » ne reste que dans l'adresse.
@@ -25,6 +27,7 @@ import { StickyMobileCta } from "@/components/marketing/StickyMobileCta";
 import { buildCommercialKeywords } from "@/content/recrutement/commercial-offer";
 import { isQualiopiCertificationObtenue } from "@/server/qualiopi/config/flag";
 import { buildProductMetadata } from "@/lib/seo";
+import { buildApporteurJobPostingJsonLd } from "@/lib/seo/job-posting-apporteur";
 import { CreditsPhotos } from "@/components/recrutement/landings/CreditsPhotos";
 import { ListeFaq, faqPrincipale } from "@/components/recrutement/landings/faq";
 import { faqApporteurs, webPageApporteurs } from "@/components/recrutement/landings/jsonld";
@@ -101,6 +104,10 @@ export default async function DevenirCommercialHub({ params }: Props) {
         scriptId="jsonld-commercial-webpage"
       />
       <JsonLd data={faqApporteurs(faq)} scriptId="jsonld-commercial-faq" />
+      <JsonLd
+        data={buildApporteurJobPostingJsonLd(locale)}
+        scriptId="jsonld-commercial-jobposting"
+      />
 
       <StickyMobileCta
         href={DOSSIER}

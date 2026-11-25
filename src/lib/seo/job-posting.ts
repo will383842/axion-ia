@@ -1,7 +1,7 @@
 // JobPosting JSON-LD (Google for Jobs) pour une offre d'emploi DB.
 // Crée ex nihilo (le JobPosting de /devenir-commercial-ia est inline, multi-lieux
 // et 100% commission — non réutilisable pour une offre single-location salariée).
-// Gère : remote→TELECOMMUTE vs Place ; baseSalary vs incentiveCompensation ;
+// Gère : remote→TELECOMMUTE vs Place ; baseSalary ;
 // validThrough déterministe ; garde-fou published & !filled.
 import { BRAND_LOGO, ORGANIZATION_SAME_AS, SITE_URL } from "@/lib/seo";
 import { buildOrganizationSameAs } from "@/lib/seo/wikidata-sameas";
@@ -13,7 +13,7 @@ import type { JobOffer } from "../../../prisma/generated/client";
 // Aligné sur le nœud Organization canonique (`seo.ts` `#organization`) : même
 // `@id` (résolution d'entité Google/LLM), même `name`, `logo` (affiché dans la
 // fiche Google for Jobs) et `sameAs` autoritatif (profil externe réel, pas la home).
-const HIRING_ORG = {
+export const HIRING_ORG = {
   "@type": "Organization",
   "@id": `${SITE_URL}/#organization`,
   name: "Axion-IA",
@@ -66,6 +66,9 @@ export function buildJobPostingJsonLd(
    */
   options: { readonly formateurFreelance?: boolean } = {},
 ): Record<string, unknown> | null {
+  // Une offre 100 % commission n'est jamais balisée comme offre d'emploi, sauf mission
+  // freelance : le seul JobPosting d'apporteur vit dans `job-posting-apporteur.ts`.
+  if (offer.isCommission && !options.formateurFreelance) return null;
   // Garde-fou cohérent avec l'indexabilité : pas de JobPosting si non-publiée,
   // pourvue, noindex (tier≠1) ou expirée (sinon Google for Jobs indexe une offre
   // qu'on a voulu cacher/clôturer).
@@ -175,16 +178,12 @@ export function buildJobPostingJsonLd(
     jsonLd.applicantLocationRequirements = applicantLocationRequirements(offer, isFr);
   }
 
-  // Rémunération : commission → incentiveCompensation ; sinon baseSalary
+  // Rémunération : baseSalary
   // (uniquement si fourchette renseignée ET affichée publiquement).
   if (options.formateurFreelance) {
     // Une mission confiée à un indépendant : CONTRACTOR seul, jamais de
     // salaire de base. Le tarif se lit dans la description de l'offre.
     jsonLd.employmentType = "CONTRACTOR";
-  } else if (offer.isCommission) {
-    jsonLd.incentiveCompensation = isFr
-      ? "Rémunération à la commission, déplafonnée."
-      : "Uncapped commission-based pay.";
   } else if (offer.salaryVisible && (offer.salaryMin != null || offer.salaryMax != null)) {
     jsonLd.baseSalary = {
       "@type": "MonetaryAmount",
