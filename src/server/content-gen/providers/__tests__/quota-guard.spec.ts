@@ -8,7 +8,7 @@
  * échec pour une cause purement administrative.
  */
 
-import { describe, it, expect, vi, beforeEach } from "vitest";
+import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 
 const persistMock = vi.fn();
 const readDirectMock = vi.fn();
@@ -178,7 +178,49 @@ describe("clearProviderFailureStreak", () => {
   });
 });
 
+describe("anthropic : critique seulement si CONTENT_GEN_BLOG_CLAUDE vaut true (lu à l'exécution)", () => {
+  afterEach(() => {
+    vi.unstubAllEnvs();
+  });
+
+  it("interrupteur éteint : une panne Anthropic ne compte pas, même toutesEpuisees", async () => {
+    vi.stubEnv("CONTENT_GEN_BLOG_CLAUDE", "");
+    mockState({ consecutive: 0 });
+    expect(
+      await recordPermanentProviderFailure("anthropic", "quota_exhausted", "tout", {
+        toutesEpuisees: true,
+      }),
+    ).toBe(false);
+    expect(persistMock).not.toHaveBeenCalled();
+    await clearProviderFailureStreak("anthropic");
+    expect(readDirectMock).not.toHaveBeenCalled();
+  });
+
+  it("interrupteur à « true » : compte, et la valeur est relue à chaque appel", async () => {
+    vi.stubEnv("CONTENT_GEN_BLOG_CLAUDE", "true");
+    mockState({ consecutive: 0 });
+    await recordPermanentProviderFailure("anthropic", "quota_exhausted", "tout", {
+      toutesEpuisees: true,
+    });
+    expect(persistMock).toHaveBeenCalled();
+
+    vi.clearAllMocks();
+    vi.stubEnv("CONTENT_GEN_BLOG_CLAUDE", "false");
+    await recordPermanentProviderFailure("anthropic", "quota_exhausted", "tout", {
+      toutesEpuisees: true,
+    });
+    expect(persistMock).not.toHaveBeenCalled();
+  });
+});
+
 describe("anthropic : rotation de clés, seule « toutesEpuisees » compte", () => {
+  beforeEach(() => {
+    vi.stubEnv("CONTENT_GEN_BLOG_CLAUDE", "true");
+  });
+  afterEach(() => {
+    vi.unstubAllEnvs();
+  });
+
   it("une seule clé épuisée (sans drapeau, ou drapeau faux) ne compte JAMAIS, même au seuil", async () => {
     mockState({ consecutive: QUOTA_HALT_THRESHOLD - 1 });
 

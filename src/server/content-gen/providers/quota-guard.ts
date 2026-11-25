@@ -57,13 +57,22 @@ export const QUOTA_HALT_THRESHOLD = 3;
 const PERMANENT_CODES = new Set(["quota_exhausted", "auth_failed"]);
 
 /**
- * Providers dont la panne justifie de couper la production de contenu.
- * OpenAI (texte, décision Will 2026-07-09) et Anthropic (tout le contenu passe sur
- * Claude, 3 comptes en rotation : voir `PROVIDERS_A_ROTATION`). Un incident
- * Perplexity (rôle `data`) ou Unsplash (illustrations) dégrade le contenu mais
- * ne justifie pas d'arrêter la chaîne.
+ * Providers dont la panne justifie TOUJOURS de couper la production de contenu :
+ * OpenAI seul (texte, décision Will 2026-07-09). Un incident Perplexity (rôle `data`) ou
+ * Unsplash (illustrations) dégrade le contenu mais ne justifie pas d'arrêter la chaîne.
+ * Anthropic n'est critique que si le blog passe par Claude : voir `estCritique`.
  */
-const CRITICAL_PROVIDERS = new Set<string>(["openai", "anthropic"]);
+const CRITICAL_PROVIDERS = new Set<string>(["openai"]);
+
+/**
+ * Critique ? Anthropic ne compte que si `CONTENT_GEN_BLOG_CLAUDE` vaut exactement `true`,
+ * LU À L'EXÉCUTION (jamais au chargement du module) : éteint, une panne Anthropic
+ * (Qualiopi, chatbot) ne doit pas arrêter la génération de contenu.
+ */
+function estCritique(provider: string): boolean {
+  if (CRITICAL_PROVIDERS.has(provider)) return true;
+  return provider === "anthropic" && process.env["CONTENT_GEN_BLOG_CLAUDE"] === "true";
+}
 
 /**
  * Fournisseurs à PLUSIEURS comptes (rotation de clés) : une erreur permanente n'y compte
@@ -107,7 +116,7 @@ export async function recordPermanentProviderFailure(
 ): Promise<boolean> {
   try {
     if (!isPermanentProviderCode(code)) return false;
-    if (!CRITICAL_PROVIDERS.has(String(provider))) return false;
+    if (!estCritique(String(provider))) return false;
     if (PROVIDERS_A_ROTATION.has(String(provider)) && options.toutesEpuisees !== true) {
       return false;
     }
@@ -180,7 +189,7 @@ export async function recordPermanentProviderFailure(
  */
 export async function clearProviderFailureStreak(provider: ProviderKey | string): Promise<void> {
   try {
-    if (!CRITICAL_PROVIDERS.has(String(provider))) return;
+    if (!estCritique(String(provider))) return;
     const state = await readGuardState();
     const entry = state[String(provider)];
     if (!entry || entry.consecutive === 0) return;
