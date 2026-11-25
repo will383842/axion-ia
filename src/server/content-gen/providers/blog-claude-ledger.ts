@@ -172,7 +172,7 @@ async function cumulContenu(tx: Prisma.TransactionClient, depuis: Date): Promise
   );
   const total = Number(rows[0]?.total ?? 0);
   if (!Number.isFinite(total)) {
-    throw new BlogClaudeRefusError("Cumul du blog illisible", "base_indisponible");
+    throw new BlogClaudeRefusError("Cumul du contenu via Claude illisible", "base_indisponible");
   }
   return total;
 }
@@ -222,10 +222,10 @@ export async function reserverCout(p: ParamsReservation): Promise<Reservation> {
         const cumulJourUsd = await cumulContenu(tx, minuitParis(maintenant));
         const cumulMoisBlogUsd = await cumulContenu(tx, debutMoisParis(maintenant));
         if (cumulJourUsd > p.plafondJourUsd) {
-          throw new BlogClaudeRefusError("Plafond du jour du blog atteint", "plafond_jour");
+          throw new BlogClaudeRefusError("Plafond du jour du contenu via Claude atteint", "plafond_jour");
         }
         if (cumulMoisBlogUsd > p.plafondMoisBlogUsd) {
-          throw new BlogClaudeRefusError("Plafond du mois du blog atteint", "plafond_mois");
+          throw new BlogClaudeRefusError("Plafond du mois du contenu via Claude atteint", "plafond_mois");
         }
 
         // Le blog ne doit jamais couper Qualiopi (même ligne `anthropic`).
@@ -242,7 +242,7 @@ export async function reserverCout(p: ParamsReservation): Promise<Reservation> {
           p.plafondMoisGlobalUsd - p.reserveQualiopiUsd
         ) {
           throw new BlogClaudeRefusError(
-            "Réserve Qualiopi entamée : appel du blog refusé",
+            "Réserve Qualiopi entamée : appel du contenu via Claude refusé",
             "reserve_qualiopi",
           );
         }
