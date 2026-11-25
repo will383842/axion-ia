@@ -838,6 +838,9 @@ export async function renderEmailTemplate(
       typeof payload.lienEspace === "string"
         ? payload.lienEspace
         : null,
+    // « Lien perdu ? » dans le pied : seulement pour un e-mail adressé à un apporteur, c'est-à-dire
+    // un gabarit `apporteur-*` dont `envoyer()` a posé le lien de l'espace (2026-11-25).
+    espaceApporteur: name.startsWith("apporteur-") && typeof payload.lienEspace === "string",
   };
   // Injecte les stats avis RÉELLES (DB, cache 15 min) dans le bandeau de confiance de tous les
   // templates, sans changer chaque template. Variable de module re-posée avant chaque `render` :
