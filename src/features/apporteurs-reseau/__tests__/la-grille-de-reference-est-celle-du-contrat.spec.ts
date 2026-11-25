@@ -73,7 +73,7 @@ describe("grille de référence ↔ annexe 1 du contrat", () => {
     expect(fausse.map((c) => c.map(norme))).not.toEqual(tableauDuContrat("A1.2"));
   });
 
-  it("la date de publication : AAAA-MM-JJ, jamais antérieure au 2026-10-08 (A1.7)", () => {
+  it("la date de publication : AAAA-MM-JJ, jamais antérieure au 2026-10-08 (A1.8)", () => {
     expect(DATE_PUBLICATION_GRILLE).toMatch(/^\d{4}-\d{2}-\d{2}$/);
     expect(DATE_PUBLICATION_GRILLE >= "2026-10-08").toBe(true);
   });

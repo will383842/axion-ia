@@ -34,7 +34,7 @@ describe("contrat 2.2 : déclaration et durée de l'attribution", () => {
     expect(texte).toContain("**Le silence de l'entreprise ne vaut jamais validation**");
   });
 
-  it("3.4 : six mois à compter de la déclaration, sans fin anticipée à 90 jours", () => {
+  it("3.4 : six mois à compter du rendez-vous (ou de la commande), sans fin anticipée à 90 jours", () => {
     // 2.8 : 60 jours de réservation provisoire, puis 6 mois à compter du rendez-vous ou de la commande.
     expect(texte).toContain("**6 mois à compter du jour où le rendez-vous a eu lieu**");
     expect(texte).toContain("pour une durée de **60 jours**");

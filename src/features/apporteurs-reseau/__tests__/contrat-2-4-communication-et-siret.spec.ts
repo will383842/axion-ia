@@ -51,7 +51,7 @@ describe("contrat 2.4", () => {
     expect(a).toContain("À la fin du contrat, il cesse tout usage");
   });
 
-  it("renvois : 22 et 22 bis dans les manquements (11.2), 22 bis dans la garantie (8.5), 22 bis.4 dans la survie (21)", () => {
+  it("renvois : 22 et 22 bis.4 dans les manquements (11.2), 22 bis dans la garantie (8.5), 22 bis.4 dans la survie (21)", () => {
     expect(article("**11.2**", "**11.3**")).toContain("6.6, 7, 8, 9, 22 ou 22 bis.4,");
     expect(article("**8.5**", "### Article 9")).toContain("aux articles 6, 8, 9, 22 ou 22 bis");
     expect(article("### Article 21 — Survie", "### Article 22")).toContain(
