@@ -20,6 +20,8 @@
 
 import type { PrismaClient } from "../../../../prisma/generated/client";
 import { embed, buildEmbeddingInput, OPENAI_EMBEDDING_DIMENSION } from "./openai-embedder";
+import { embedVoyage, VOYAGE_EMBEDDING_DIMENSION } from "./voyage-embedder";
+import { getEmbeddingProvider } from "./embedding-provider";
 
 export interface PersistArticleEmbeddingInput {
   readonly articleId: string;
@@ -38,6 +40,12 @@ export interface PersistArticleEmbeddingResult {
 /**
  * Calcule l'embedding du contenu article et persiste dans articles.embedding.
  *
+ * Le fournisseur vient de `CONTENT_EMBEDDING_PROVIDER` (PR4) :
+ *  - `openai` (défaut) : comportement historique, colonne `embedding` (1536).
+ *  - `voyage` : Voyage voyage-3, colonne `embedding_voyage` (1024). Clé absente ou
+ *    panne Voyage → warning journalisé, colonne laissée NULL (rattrapée par le worker),
+ *    la publication continue.
+ *
  * Garantit : ne throw JAMAIS. Retourne un résultat structuré pour logging.
  * Le caller doit traiter `persisted=false` comme non-bloquant.
  */
@@ -52,9 +60,37 @@ export async function persistArticleEmbedding(
       ...(input.bodyText ? { bodyText: input.bodyText } : {}),
     });
 
-    const result = await embed(text);
+    const provider = getEmbeddingProvider();
+    const result = provider === "voyage" ? await embedVoyage(text) : await embed(text);
     if (result === null) {
+      if (provider === "voyage") {
+        console.warn(
+          JSON.stringify({
+            event: "persist_article_embedding_voyage_unavailable",
+            articleId: input.articleId,
+            note: "embedding_voyage laissé NULL, rattrapage par le worker",
+          }),
+        );
+      }
       return { persisted: false, reason: "disabled" };
+    }
+
+    if (provider === "voyage") {
+      if (result.embedding.length !== VOYAGE_EMBEDDING_DIMENSION) {
+        return { persisted: false, reason: "no_embedding", dimensions: result.embedding.length };
+      }
+      const voyageLiteral = `[${result.embedding.join(",")}]`;
+      await prisma.$executeRaw`
+        UPDATE articles
+        SET embedding_voyage = ${voyageLiteral}::vector
+        WHERE id = ${input.articleId}::uuid
+      `;
+      return {
+        persisted: true,
+        reason: "ok",
+        tokensUsed: result.tokensUsed,
+        dimensions: result.embedding.length,
+      };
     }
 
     if (result.embedding.length !== OPENAI_EMBEDDING_DIMENSION) {
