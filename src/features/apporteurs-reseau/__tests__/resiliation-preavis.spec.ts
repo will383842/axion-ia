@@ -2,7 +2,7 @@
  * Lot L1b : la résiliation en DEUX TEMPS. Notification (statut « signe », préavis de 30 jours en
  * 11.1), puis prise d'effet par le passage quotidien. Aucune échéance ne porte sur l'apporteur.
  */
-import { beforeEach, describe, expect, it, vi } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 const etat = vi.hoisted(() => ({
   statut: "signe" as string,
@@ -100,6 +100,7 @@ vi.mock("@/lib/pii-crypto", () => ({ decryptPii: (v: string) => v }));
 
 import {
   executerResiliation,
+  lireResiliationEnCours,
   executerResiliationsEchues as etapeResiliationsEchuesPourTest,
   notifierResiliation,
   dernierJourDuContrat,
@@ -284,6 +285,36 @@ describe("dernierJourDuContrat", () => {
     expect(dernierJourDuContrat(new Date("2027-03-02T23:00:00Z")).toISOString().slice(0, 10)).toBe(
       "2027-03-02",
     );
+  });
+});
+
+describe("lireResiliationEnCours : dernier jour affiché", () => {
+  afterEach(() => vi.useRealTimers());
+  const notif = (fondement: "11.1" | "12.5") =>
+    notifierResiliation({
+      ...base,
+      initiative: "societe",
+      fondement,
+      notifieeLe: J("2026-12-01"),
+      maintenant: J("2026-12-01"),
+      ...(fondement === "12.5" ? { motif: "radiation constatée" } : {}),
+    });
+  it("11.1 le 1er janvier à 00 h 30, avant le passage quotidien : toujours la veille (31 décembre)", async () => {
+    await notif("11.1");
+    vi.useFakeTimers();
+    vi.setSystemTime(new Date("2026-12-31T23:30:00Z"));
+    const fin = await lireResiliationEnCours("APP1");
+    expect(fin?.dernierJourLe).toContain("31 décembre 2026");
+    expect(fin?.effetLe).toContain("1 janvier 2027");
+  });
+  it("12.5 dont la prise d'effet n'a pas abouti : le jour de l'effet, pas la veille", async () => {
+    await notif("12.5");
+    etat.ligne!.executeeAt = null;
+    etat.ligne!.effetLe = new Date("2026-12-01T10:00:00Z");
+    vi.useFakeTimers();
+    vi.setSystemTime(new Date("2026-12-01T11:00:00Z"));
+    const fin = await lireResiliationEnCours("APP1");
+    expect(fin?.dernierJourLe).toContain("1 décembre 2026");
   });
 });
 

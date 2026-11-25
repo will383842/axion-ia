@@ -194,7 +194,7 @@ export async function lireResiliationEnCours(
   try {
     const r = await prisma.apporteurResiliation.findUnique({
       where: { apporteurId },
-      select: { notifieeLe: true, effetLe: true, executeeAt: true },
+      select: { notifieeLe: true, effetLe: true, executeeAt: true, fondement: true },
     });
     return r && !r.executeeAt
       ? {
@@ -202,7 +202,9 @@ export async function lireResiliationEnCours(
           effetLe: jourLong(r.effetLe),
           // Effet déjà atteint (11.2 / 12.5 dont la prise d'effet a échoué) : le contrat a pris fin ce jour-là.
           dernierJourLe: jourLong(
-            r.effetLe.getTime() <= Date.now() ? r.effetLe : dernierJourDuContrat(r.effetLe),
+            r.fondement !== "11.1" && r.effetLe.getTime() <= Date.now()
+              ? r.effetLe
+              : dernierJourDuContrat(r.effetLe),
           ),
         }
       : null;
