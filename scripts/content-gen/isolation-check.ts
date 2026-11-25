@@ -229,6 +229,10 @@ const ALLOWED_PATTERNS: ReadonlyArray<RegExp> = [
   // consommateur non-éditorial devra rouvrir cette liste, et une liste qui
   // s'allonge à chaque usage légitime ne mesure plus rien.
   /^src\/server\/queue\/workers\/calendly-poll-worker\.ts$/,
+  // journee-ia-garantie-textes-publics.spec.ts (garantie Journée IA) : test qui
+  // LIT des textes publics pour vérifier la garantie. Le marqueur "content-gen"
+  // vient de chemins de fichiers cités en chaîne, pas d'un import du pipeline.
+  /^src\/app\/__tests__\/journee-ia-garantie-textes-publics\.spec\.ts$/,
   // prospection (feat/prospection 2026-07-04) — module autonome qui CONSOMME la
   // brique partagée `content-gen/_auth` (requireAdmin) via un import, et mentionne
   // "content-gen" dans un commentaire de contexte (robots.ts : « on ne réutilise
