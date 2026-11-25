@@ -224,6 +224,10 @@ import {
   apporteurAttributionConfirmeeSubject,
   ApporteurAttributionConfirmeeEmail,
 } from "./apporteur-attribution-confirmee";
+import {
+  apporteurPresentationNonRetenueSubject,
+  ApporteurPresentationNonRetenueEmail,
+} from "./apporteur-presentation-non-retenue";
 import { VivierInformationEmail, vivierInformationSubject } from "./vivier-information";
 import { ConventionEnvoiEmail, conventionEnvoiSubject } from "./convention-envoi";
 import { PieceExemplaireSigneEmail, pieceExemplaireSigneSubject } from "./piece-exemplaire-signe";
@@ -672,6 +676,10 @@ const TEMPLATES: TemplateMap = {
   "apporteur-presentation-refusee": {
     subject: apporteurPresentationRefuseeSubject,
     component: ApporteurPresentationRefuseeEmail,
+  },
+  "apporteur-presentation-non-retenue": {
+    subject: apporteurPresentationNonRetenueSubject,
+    component: ApporteurPresentationNonRetenueEmail,
   },
   "entreprise-prise-de-contact-apporteur": {
     subject: entrepriseConfirmationApporteurSubject,

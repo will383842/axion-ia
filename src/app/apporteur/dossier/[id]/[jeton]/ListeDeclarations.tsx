@@ -12,6 +12,7 @@ const STYLE: Record<EtatDeclaration, string> = {
   a_l_etude: "bg-sand text-fg",
   sans_reponse: "bg-sand text-fg",
   reservee: "bg-sage-soft text-sage",
+  confirmee: "bg-sage-soft text-sage",
   non_disponible: "bg-terracotta-soft text-terracotta-deep",
   expiree: "bg-sand text-fg-soft",
 };
