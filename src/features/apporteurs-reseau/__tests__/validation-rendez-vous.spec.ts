@@ -13,6 +13,8 @@ const { bd, tx } = vi.hoisted(() => {
     etablissements: [] as Ligne[],
     retraits: [] as Ligne[],
     propositions: [] as Ligne[],
+    events: [] as Ligne[],
+    rencontres: [] as Ligne[],
     journal: [] as Ligne[],
     annonces: [] as string[],
     conflit: false,
@@ -62,7 +64,20 @@ const { bd, tx } = vi.hoisted(() => {
     },
     presentationEtablissement: { findMany: async () => bd.etablissements },
     activityLog: { create: async ({ data }: any) => void bd.journal.push(data) },
+    calendlyEvent: {
+      findUnique: async ({ where }: any) => bd.events.find((x) => x.id === where.id) ?? null,
+    },
+    rencontre: {
+      findUnique: async ({ where }: any) => bd.rencontres.find((x) => x.id === where.id) ?? null,
+    },
     propositionRendezVousPresentation: {
+      findMany: async ({ where }: any) =>
+        bd.propositions.filter(
+          (p) =>
+            p.presentationId === where.presentationId &&
+            p.ecarteeAt == null &&
+            (!where.rendezVousCle || p.rendezVousCle !== where.rendezVousCle.not),
+        ),
       updateMany: async ({ where, data }: any) => {
         const l = bd.propositions.filter(
           (p) =>
@@ -145,6 +160,18 @@ function entreprise(id: string, apporteurId: string, o: Ligne = {}, statutApport
   });
 }
 
+/** Un rendez-vous Calendly tel que la source le porte (dates identiques à PRIS / TENU). */
+function evenement(id: string, o: Ligne = {}) {
+  bd.events.push({
+    id,
+    status: "scheduled",
+    startTime: TENU,
+    capturedAt: PRIS,
+    rencontre: null,
+    ...o,
+  });
+}
+
 const saisie = (id: string, o: Ligne = {}) => ({
   presentationId: id,
   rendezVousCle: "calendly:ev1",
@@ -163,12 +190,15 @@ beforeEach(() => {
     "etablissements",
     "retraits",
     "propositions",
+    "events",
+    "rencontres",
     "journal",
     "annonces",
   ] as const)
     bd[k].length = 0;
   bd.conflit = false;
   bd.verrou = Promise.resolve();
+  evenement("ev1");
 });
 
 describe("validerParRendezVous", () => {
@@ -261,19 +291,18 @@ describe("validerParRendezVous", () => {
     expect((await validerParRendezVous(saisie("p1"), MAINTENANT)).ok).toBe(false);
   });
 
+  // Les dates viennent de la SOURCE (l'événement) : on les fixe là.
+  const source = (pris: Date, tenu: Date) => {
+    bd.events[0]!["capturedAt"] = pris;
+    bd.events[0]!["startTime"] = tenu;
+  };
+
   it("date de prise hors des 60 jours : refus (avant la saisie, ou après la réservation)", async () => {
     entreprise("p1", A1);
-    const avant = await validerParRendezVous(
-      saisie("p1", { prisAt: new Date("2026-10-30T10:00:00Z") }),
-      MAINTENANT,
-    );
-    const apres = await validerParRendezVous(
-      saisie("p1", {
-        prisAt: new Date("2027-01-15T10:00:00Z"),
-        tenuAt: new Date("2027-01-20T10:00:00Z"),
-      }),
-      new Date("2027-02-01T10:00:00Z"),
-    );
+    source(new Date("2026-10-30T10:00:00Z"), TENU);
+    const avant = await validerParRendezVous(saisie("p1"), MAINTENANT);
+    source(new Date("2027-01-15T10:00:00Z"), new Date("2027-01-20T10:00:00Z"));
+    const apres = await validerParRendezVous(saisie("p1"), new Date("2027-02-01T10:00:00Z"));
     expect(avant.ok).toBe(false);
     expect(apres.ok).toBe(false);
     expect(bd.presentations[0]!["statut"]).toBe("reservee");
@@ -281,17 +310,16 @@ describe("validerParRendezVous", () => {
 
   it("tenu avant la prise : refus", async () => {
     entreprise("p1", A1);
-    const r = await validerParRendezVous(saisie("p1", { prisAt: TENU, tenuAt: PRIS }), MAINTENANT);
+    source(TENU, PRIS);
+    const r = await validerParRendezVous(saisie("p1"), MAINTENANT);
     expect(r).toMatchObject({ ok: false });
     if (!r.ok) expect(r.message).toMatch(/précède sa prise/);
   });
 
   it("rendez-vous pas encore tenu (dans le futur) : refus", async () => {
     entreprise("p1", A1);
-    const r = await validerParRendezVous(
-      saisie("p1", { tenuAt: new Date("2026-12-01T10:00:00Z") }),
-      MAINTENANT,
-    );
+    source(PRIS, new Date("2026-12-01T10:00:00Z"));
+    const r = await validerParRendezVous(saisie("p1"), MAINTENANT);
     expect(r.ok).toBe(false);
   });
 
@@ -320,6 +348,119 @@ describe("validerParRendezVous", () => {
     const r = await validerParRendezVous(saisie("p1"), MAINTENANT);
     expect(r).toMatchObject({ ok: false });
     expect(bd.annonces).toHaveLength(0);
+  });
+});
+
+describe("rendez-vous annulé, absent ou reporté : jamais de validation", () => {
+  const refus = async (id = "p1") => {
+    const r = await validerParRendezVous(saisie(id), MAINTENANT);
+    expect(r.ok).toBe(false);
+    expect(bd.presentations[0]!["statut"]).toBe("reservee");
+    expect(bd.journal).toHaveLength(0);
+    expect(bd.annonces).toHaveLength(0);
+    return r;
+  };
+
+  for (const status of ["canceled", "no_show"]) {
+    it(`Calendly « ${status} » après la proposition : refus`, async () => {
+      entreprise("p1", A1);
+      bd.events[0]!["status"] = status;
+      const r = await refus();
+      if (!r.ok) expect(r.message).toMatch(/n'a pas eu lieu/);
+    });
+  }
+
+  for (const statut of ["annule", "absent", "reporte"]) {
+    it(`rencontre « ${statut} » : refus (clé rencontre)`, async () => {
+      entreprise("p1", A1);
+      bd.rencontres.push({ id: "r1", statut, debutReel: null, debutPrevu: TENU, createdAt: PRIS });
+      const r = await validerParRendezVous(
+        saisie("p1", { rendezVousCle: "rencontre:r1", source: "rencontre" }),
+        MAINTENANT,
+      );
+      expect(r.ok).toBe(false);
+      expect(bd.presentations[0]!["statut"]).toBe("reservee");
+    });
+
+    it(`événement Calendly dont la rencontre liée est « ${statut} » : refus`, async () => {
+      entreprise("p1", A1);
+      bd.events[0]!["rencontre"] = { statut, debutReel: null, debutPrevu: TENU };
+      await refus();
+    });
+  }
+
+  it("rendez-vous introuvable à la source : refus", async () => {
+    entreprise("p1", A1);
+    bd.events.length = 0;
+    await refus();
+  });
+
+  it("la date de la SOURCE l'emporte sur celle de la proposition (rendez-vous déplacé)", async () => {
+    entreprise("p1", A1);
+    const deplace = new Date("2026-11-12T10:00:00Z");
+    bd.events[0]!["startTime"] = deplace;
+    const r = await validerParRendezVous(saisie("p1"), MAINTENANT);
+    expect(r.ok).toBe(true);
+    expect(bd.presentations[0]!["confirmeeAt"]).toEqual(deplace);
+  });
+
+  it("source déplacée dans le futur : refus (pas encore tenu)", async () => {
+    entreprise("p1", A1);
+    bd.events[0]!["startTime"] = new Date("2026-12-24T10:00:00Z");
+    await refus();
+  });
+});
+
+describe("premier rendez-vous tenu", () => {
+  it("un rendez-vous plus ancien déjà tenu, proposé et non écarté : refus", async () => {
+    entreprise("p1", A1);
+    evenement("ev0", { startTime: new Date("2026-11-08T10:00:00Z") });
+    bd.propositions.push({ presentationId: "p1", rendezVousCle: "calendly:ev0", ecarteeAt: null });
+    const r = await validerParRendezVous(saisie("p1"), MAINTENANT);
+    expect(r.ok).toBe(false);
+    if (!r.ok) expect(r.message).toMatch(/PREMIER/);
+    expect(bd.presentations[0]!["statut"]).toBe("reservee");
+  });
+
+  it("la saisie manuelle est soumise à la même règle", async () => {
+    entreprise("p1", A1);
+    evenement("ev0", { startTime: new Date("2026-11-08T10:00:00Z") });
+    bd.propositions.push({ presentationId: "p1", rendezVousCle: "calendly:ev0", ecarteeAt: null });
+    const r = await validerParRendezVous(
+      saisie("p1", { rendezVousCle: null, source: "saisie", canal: "telephone", prisAt: TENU }),
+      MAINTENANT,
+    );
+    expect(r.ok).toBe(false);
+  });
+
+  it("le plus ancien écarté, annulé ou futur ne bloque pas ; le plus ancien lui-même passe", async () => {
+    entreprise("p1", A1);
+    evenement("ev0", { status: "canceled", startTime: new Date("2026-11-08T10:00:00Z") });
+    evenement("ev9", { startTime: new Date("2026-11-30T10:00:00Z") });
+    evenement("ev8", { startTime: new Date("2026-11-07T10:00:00Z") });
+    bd.propositions.push(
+      { presentationId: "p1", rendezVousCle: "calendly:ev0", ecarteeAt: null },
+      { presentationId: "p1", rendezVousCle: "calendly:ev9", ecarteeAt: null },
+      { presentationId: "p1", rendezVousCle: "calendly:ev8", ecarteeAt: new Date() },
+    );
+    expect((await validerParRendezVous(saisie("p1"), MAINTENANT)).ok).toBe(true);
+  });
+});
+
+describe("canal de la saisie manuelle", () => {
+  it("est inscrit au journal", async () => {
+    entreprise("p1", A1);
+    const r = await validerParRendezVous(
+      saisie("p1", {
+        rendezVousCle: null,
+        source: "saisie",
+        canal: "sur_place",
+        prisAt: TENU,
+      }),
+      MAINTENANT,
+    );
+    expect(r.ok).toBe(true);
+    expect(bd.journal[0]!["changes"]).toMatchObject({ source: "saisie", canal: "sur_place" });
   });
 });
 

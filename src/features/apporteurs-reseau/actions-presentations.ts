@@ -407,6 +407,7 @@ export async function saisirRendezVousAction(_prev: EtatAction, fd: FormData): P
       prisAt,
       tenuAt,
       source: "saisie",
+      canal,
       acteurId: acteur.id,
     });
     if (r.ok) rafraichir();

@@ -202,6 +202,37 @@ beforeEach(() => {
 });
 
 describe("proposerPourRendezVous", () => {
+  for (const status of ["canceled", "no_show"]) {
+    it(`Calendly « ${status} » : rien n'est proposé`, async () => {
+      presentation("p1");
+      evenement("e1", "dirigeant@acme-industrie.fr", { status });
+      expect(await proposerPourRendezVous({ calendlyEventId: "e1" })).toBe(0);
+      expect(bd.propositions).toHaveLength(0);
+    });
+  }
+
+  for (const statut of ["annule", "absent", "reporte"]) {
+    it(`rencontre « ${statut} » (liée à l'événement, ou seule) : rien n'est proposé`, async () => {
+      presentation("p1");
+      evenement("e1", "dirigeant@acme-industrie.fr", {
+        status: "scheduled",
+        rencontre: { statut, client: null },
+      });
+      expect(await proposerPourRendezVous({ calendlyEventId: "e1" })).toBe(0);
+      bd.rencontres.push({
+        id: "r1",
+        createdAt: PRIS,
+        debutPrevu: null,
+        statut,
+        calendlyEventId: null,
+        client: null,
+        participants: [{ emailHash: "h:dirigeant@acme-industrie.fr" }],
+      });
+      expect(await proposerPourRendezVous({ rencontreId: "r1" })).toBe(0);
+      expect(bd.propositions).toHaveLength(0);
+    });
+  }
+
   it("même adresse : propose (email_exact), sans rien valider", async () => {
     presentation("p1");
     evenement("e1", "dirigeant@acme-industrie.fr");

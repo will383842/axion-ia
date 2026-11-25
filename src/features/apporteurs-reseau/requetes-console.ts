@@ -14,6 +14,7 @@ import { STATUTS_CUMUL, piecesVigilanceConformes } from "./commissions";
 import { lireDossier } from "./donnees";
 import { SEUIL_VIGILANCE_CENTS } from "./regles";
 import { idsRetires } from "./retrait";
+import { lireSourceRendezVous, rendezVousNonTenu } from "./statut-rendez-vous";
 
 export const LIBELLE_STATUT_APPORTEUR: Readonly<Record<ApporteurReseauStatut, string>> = {
   dossier_en_cours: "Dossier en cours",
@@ -323,10 +324,18 @@ export async function lirePropositionsATraiter(
     },
   });
   const parId = new Map(presentations.map((p) => [p.id, p]));
+  // Rendez-vous annulé / absent / reporté depuis la proposition : MASQUÉ (il n'a pas eu lieu ; la
+  // validation le refuserait de toute façon, état relu à la source dans sa transaction).
+  const ecartes = new Set<string>();
+  for (const cle of new Set(propositions.map((p) => p.rendezVousCle))) {
+    const src = await lireSourceRendezVous(prisma, cle);
+    if (src && rendezVousNonTenu(src)) ecartes.add(cle);
+  }
   const sorties: PropositionVue[] = [];
   for (const pr of propositions) {
     const p = parId.get(pr.presentationId);
     if (!p) continue; // la présentation n'est plus « réservée » : plus rien à proposer
+    if (ecartes.has(pr.rendezVousCle)) continue;
     sorties.push({
       id: pr.id,
       presentationId: p.id,

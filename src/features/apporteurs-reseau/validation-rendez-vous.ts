@@ -38,6 +38,7 @@ import {
   rendezVousRecevable,
 } from "./regle-attribution";
 import { tableAbsente } from "./reservation-presentation";
+import { lireSourceRendezVous, rendezVousNonTenu } from "./statut-rendez-vous";
 
 export type SourceValidation = "calendly" | "rencontre" | "saisie" | "commande";
 
@@ -50,6 +51,8 @@ export interface SaisieValidation {
   /** Quand il a EU LIEU. */
   tenuAt: Date;
   source: SourceValidation;
+  /** Canal d'une saisie manuelle (« telephone » / « sur_place ») ; inscrit au journal. */
+  canal?: "telephone" | "sur_place";
   /** L'administrateur qui valide (identifiant seul). */
   acteurId: string;
 }
@@ -75,6 +78,15 @@ export function messageMotifRefuse(motif: MotifRendezVousRefuse): string {
 
 export const MESSAGE_AUTRE_APPORTEUR =
   "Une autre déclaration, d'un autre apporteur, occupe encore cette entreprise (plus ancienne ou déjà validée) : une entreprise n'a jamais deux apporteurs. Rien n'est validé.";
+
+export const MESSAGE_RDV_NON_TENU =
+  "Ce rendez-vous a été annulé, reporté, ou le client ne s'est pas présenté : il n'a pas eu lieu et ne valide pas l'entreprise.";
+
+export const MESSAGE_RDV_INTROUVABLE =
+  "Le rendez-vous désigné est introuvable à la source : rien n'est validé.";
+
+export const MESSAGE_PREMIER_RDV =
+  "Un rendez-vous plus ancien, déjà tenu, est proposé pour cette présentation : c'est le PREMIER rendez-vous tenu qui valide (il fixe le départ des 6 mois). Validez celui-là, ou écartez-le s'il ne convient pas.";
 
 const MESSAGE_CONCURRENCE =
   "Une autre validation est en cours sur cette entreprise : réessayez dans un instant.";
@@ -164,15 +176,50 @@ export async function validerParRendezVous(
           if (!tableAbsente(err)) throw err;
         }
 
+        // 🔑 L'état du rendez-vous est RELU ICI, à la source, dans la transaction : une proposition
+        // affichée « à traiter » peut avoir été annulée, reportée ou marquée absente depuis. Les
+        // dates de la source l'emportent sur celles recopiées dans la proposition.
+        let prisAt = e.prisAt;
+        let tenuAt = e.tenuAt;
+        if (e.rendezVousCle) {
+          const src = await lireSourceRendezVous(tx, e.rendezVousCle);
+          if (!src) throw new Refus(MESSAGE_RDV_INTROUVABLE);
+          if (rendezVousNonTenu(src)) throw new Refus(MESSAGE_RDV_NON_TENU);
+          if (src.tenuAt) tenuAt = src.tenuAt;
+          if (src.prisAt) prisAt = src.prisAt;
+        }
+
         // Recevabilité du rendez-vous (règle du lot 2).
         const recevable = rendezVousRecevable({
           recueAt: p.recueAt,
           reserveeJusquAt: reservation.reserveeJusquAt,
-          prisAt: e.prisAt,
-          tenuAt: e.tenuAt,
+          prisAt,
+          tenuAt,
           maintenant,
         });
         if (!recevable.ok) throw new Refus(MESSAGES_MOTIF[recevable.motif]);
+
+        // « Premier rendez-vous tenu » : un rendez-vous plus ancien, réellement tenu, proposé pour
+        // la même présentation passe avant (valider le plus tardif repousserait le départ des
+        // 6 mois). Les propositions écartées, ou dont le rendez-vous n'a pas eu lieu, ne comptent pas.
+        const proposees = await tx.propositionRendezVousPresentation.findMany({
+          where: {
+            presentationId: p.id,
+            ecarteeAt: null,
+            ...(e.rendezVousCle ? { rendezVousCle: { not: e.rendezVousCle } } : {}),
+          },
+          select: { rendezVousCle: true },
+          take: 50,
+        });
+        for (const autre of proposees) {
+          const src = await lireSourceRendezVous(tx, autre.rendezVousCle);
+          if (!src?.tenuAt || rendezVousNonTenu(src)) continue;
+          if (
+            src.tenuAt.getTime() <= maintenant.getTime() &&
+            src.tenuAt.getTime() < tenuAt.getTime()
+          )
+            throw new Refus(MESSAGE_PREMIER_RDV);
+        }
 
         // Jamais deux apporteurs : aucune autre déclaration du même périmètre ne doit occuper
         // l'entreprise (une plus ancienne qui court encore, ou une déjà validée).
@@ -189,7 +236,7 @@ export async function validerParRendezVous(
         if (autres.length > 0) {
           const ids = [p.id, ...autres.map((a) => a.id)];
           const [etabs, lignes] = await Promise.all([
-            lireEtablissements(ids),
+            lireEtablissements(ids, tx),
             tx.presentationReservation.findMany({
               where: { presentationId: { in: autres.map((a) => a.id) } },
               select: { presentationId: true, reserveeJusquAt: true, rendezVousPrisAt: true },
@@ -223,8 +270,8 @@ export async function validerParRendezVous(
         const prise = await tx.presentationReservation.updateMany({
           where: { presentationId: p.id, valideeAt: null },
           data: {
-            rendezVousPrisAt: e.prisAt,
-            rendezVousAt: e.tenuAt,
+            rendezVousPrisAt: prisAt,
+            rendezVousAt: tenuAt,
             rendezVousCle: e.rendezVousCle,
             validationSource: e.source,
             valideeAt: maintenant,
@@ -236,9 +283,9 @@ export async function validerParRendezVous(
           where: { id: p.id, statut: "reservee" },
           data: {
             statut: "confirmee",
-            confirmeeAt: e.tenuAt,
+            confirmeeAt: tenuAt,
             confirmationTacite: false,
-            protegeeJusquAt: finDeProtectionRendezVous(e.tenuAt),
+            protegeeJusquAt: finDeProtectionRendezVous(tenuAt),
           },
         });
         if (confirmee.count !== 1) throw new Refus(MESSAGE_DEJA_VALIDEE);
@@ -252,8 +299,9 @@ export async function validerParRendezVous(
               statut: "confirmee",
               source: e.source,
               rendezVousCle: e.rendezVousCle,
-              prisAt: e.prisAt.toISOString(),
-              tenuAt: e.tenuAt.toISOString(),
+              canal: e.canal ?? null,
+              prisAt: prisAt.toISOString(),
+              tenuAt: tenuAt.toISOString(),
               apporteurRetire: avertissements.length > 0,
             },
           },
