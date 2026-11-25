@@ -807,8 +807,15 @@ function refusDeConservation(
   if (!duChamp.every((a) => a.startsWith(prefixe + MENTION_PORTE2)))
     return "un ambigu du moteur reste sur ce champ";
   const textes = textesDe(o.valeur);
+  // Contrôle en plus sur la valeur BRUTE : les attributs HTML (href, alt) et les clés (url, href, slug) ne
+  // figurent pas dans le texte visible.
+  const brut = normaliserPourPorte2(
+    typeof o.valeur === "string" ? o.valeur : JSON.stringify(o.valeur),
+  );
   const dur = [...textes, ...(admis as string[])]
-    .map((t) => LEXIQUE_DUR.exec(normaliserPourPorte2(t))?.[0])
+    .map((t) => normaliserPourPorte2(t))
+    .concat(brut)
+    .map((t) => LEXIQUE_DUR.exec(t)?.[0])
     .find((x) => x !== undefined);
   if (dur !== undefined) return `mot du lexique dur « ${dur} »`;
   // Les deux lectures de la porte 2 : le champ entier (celle des overrides) et phrase à phrase (celle du filet).

@@ -61,14 +61,14 @@ const FINANCE_SECTEUR =
  */
 export const INTERDITS_PUBLICS = new RegExp(
   [
-    "\\b(?:OPCOs?|OPCA|O\\.P\\.C\\.O\\.)(?![\\w])",
+    "\\b(?:OPCOs?|OPCAs?|O\\.P\\.C\\.O\\.)(?![\\w])",
     "qualiopi",
     "\\bCPF\\b",
     "compte[\\s-]+personnel[\\s-]+de[\\s-]+formation",
-    "personal training account",
+    "personal[\\s-]+training[\\s-]+account",
     "mon[\\s-]?compte[\\s-]?formation",
     "france[\\s-]+travail",
-    "p[ôo]le[- ]emploi",
+    "p[ôo]le[\\s-]+emploi",
     "\\bAIF\\b",
     // V3-2 : toute la famille « financ… » (finançait, financièrement, ressources financières, cofinancé…),
     // hors emplois de secteur.
@@ -132,19 +132,22 @@ export function normaliserPourPorte2(t: string): string {
  */
 export const LEXIQUE_DUR = new RegExp(
   [
-    "\\b(?:OPCOs?|OPCA|O\\.P\\.C\\.O\\.)(?![\\w])",
+    "\\b(?:OPCOs?|OPCAs?|O\\.P\\.C\\.O\\.)(?![\\w])",
     "op[ée]rateurs?[\\s-]+de[\\s-]+comp[ée]tences",
     "\\bCPF\\b",
     "compte[\\s-]+personnel[\\s-]+de[\\s-]+formation",
     "mon[\\s-]?compte[\\s-]?formation",
-    "personal training account",
+    "personal[\\s-]+training[\\s-]+account",
     "france[\\s-]+travail",
-    "p[ôo]le[- ]emploi",
+    "p[ôo]le[\\s-]+emploi",
     "\\bAIF\\b",
     "\\bEDOF\\b",
     "qualiopi",
     "subrogation",
     "\\bFNE\\b",
+    "aide\\s+individuelle\\s+[àa]\\s+la\\s+formation",
+    "datadock",
+    "finan[cç]ables?",
     "plans?\\s+de\\s+d[ée]veloppement\\s+des\\s+comp[ée]tences",
   ].join("|"),
   "i",

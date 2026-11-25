@@ -120,11 +120,33 @@ describe("remarque 1 — le lexique dur porte les formes en toutes lettres", () 
     "Pôle-emploi",
     "Personal Training Account",
     "opca",
+    "OPCAs",
+    "OPCOs",
+    "Pôle\nemploi",
+    "personal\ntraining\naccount",
     "Plans de Développement des Compétences",
     "plans de developpement des competences",
     "plan de développement des compétences",
   ])("variante « %s » reconnue par le lexique dur", (variante) => {
     expect(LEXIQUE_DUR.test(normaliserPourPorte2(`Voir ${variante} ici.`))).toBe(true);
+  });
+
+  it("OPCAs : refusé par la porte 2 (INTERDITS_PUBLICS) comme OPCA, OPCO, OPCOs et O.P.C.O.", () => {
+    for (const forme of ["OPCO", "OPCOs", "OPCA", "OPCAs", "O.P.C.O."])
+      expect([forme, INTERDITS_PUBLICS.test(normaliserPourPorte2(`Voir ${forme} ici.`))]).toEqual([
+        forme,
+        true,
+      ]);
+  });
+
+  it("une entrée `admis` dont la valeur BRUTE (href) contient un mot du lexique dur est refusée", () => {
+    const valeur = `${SERVICES} <a href="https://www.moncompteformation.gouv.fr/x">voir</a>`;
+    const r = jouer(traduction({ excerpt: valeur }), {
+      [CLE]: { excerpt: { origine: empreinte(valeur), valeur, admis: ["financiers"] } },
+    });
+    expect(r.ignores).toHaveLength(1);
+    expect(r.ignores[0]).toContain("mot du lexique dur");
+    expect(r.proposition.conservesSurDecision).toBeUndefined();
   });
 
   it("le pluriel « plans de développement des compétences » est refusé par la porte 2 (INTERDITS_PUBLICS)", () => {

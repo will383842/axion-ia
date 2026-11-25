@@ -322,6 +322,9 @@ describe("voie 2 — une entrée { origine, valeur, admis } conserve un faux pos
       "plan de développement des compétences",
       "À inscrire au plan de développement des compétences.",
     ],
+    ["aide individuelle à la formation", "Demandez l'aide individuelle à la formation."],
+    ["datadock", "Organisme référencé Datadock."],
+    ["finançable", "Cette formation est finançable."],
   ])("le lexique dur refuse « %s », même admis mot pour mot", (_mot, phrase) => {
     expect(LEXIQUE_DUR.test(phrase)).toBe(true);
     // Quel que soit l'ambigu levé par le moteur ou par la porte 2, aucune conservation n'est possible.
