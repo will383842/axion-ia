@@ -139,3 +139,23 @@ export function reservationOccupe(r: ReservationProvisoire, maintenant: Date): b
   if (pris === undefined) return false;
   return !(pris < r.recueAt.getTime()) && !(pris > r.reserveeJusquAt.getTime());
 }
+
+/**
+ * La réservation d'une présentation, telle que la lisent les gardes d'occupation (`reservationOccupe`) :
+ * la saisie (`recueAt`), le terme, et la prise d'un rendez-vous encore à tenir. `null` sans ligne.
+ */
+export function versReservationProvisoire(
+  recueAt: Date,
+  r:
+    | { reserveeJusquAt: Date; rendezVousPrisAt?: Date | null; valideeAt?: Date | null }
+    | null
+    | undefined,
+): ReservationProvisoire | null {
+  if (!r) return null;
+  return {
+    recueAt,
+    reserveeJusquAt: r.reserveeJusquAt,
+    // Un rendez-vous déjà validé n'est plus « à tenir ».
+    rendezVousEnAttentePrisAt: r.valideeAt ? null : (r.rendezVousPrisAt ?? null),
+  };
+}

@@ -11,6 +11,7 @@ const etat = vi.hoisted(() => ({
 
 vi.mock("@/lib/prisma", () => ({
   prisma: {
+    propositionRendezVousPresentation: { findMany: vi.fn(async () => []) },
     presentationEntreprise: {
       count: vi.fn(async () => {
         if (etat.casse) throw new Error("base indisponible");
@@ -41,6 +42,7 @@ describe("pastilles « Apporteurs d'affaires » : ce qui reste à faire", () => 
   it("compte présentations à traiter et pièces de vigilance déposées, aucun virement à faire", async () => {
     expect(await compterApporteursNav(OCTOBRE)).toEqual({
       presentations: 2,
+      propositions: 0,
       pieces: 1,
       virements: 0,
     });
