@@ -149,13 +149,13 @@ describe("construireEnvoisReponse : la règle choisit l'accusé", () => {
   });
 
   it("la page et l'e-mail disent la même règle : « un devis signé pendant ces 60 jours compte aussi »", async () => {
-    const { TEXTES_DECLARATION } =
-      await import("../../../app/apporteur/dossier/[id]/[jeton]/textes-declaration");
+    const { commentRendezVous } =
+      await import("../../../app/apporteur/dossier/[id]/[jeton]/textes-comment");
     const { COPY_PRESENTATION_RECUE_RENDEZ_VOUS } =
       await import("@/lib/email/templates/apporteur-presentation-recue-rendez-vous");
     const phrase = COPY_PRESENTATION_RECUE_RENDEZ_VOUS.devis(60);
     expect(phrase).toBe("Un devis signé pendant ces 60 jours compte aussi.");
-    expect(TEXTES_DECLARATION.commentRendezVous(60, 6)).toContain(phrase);
+    expect(commentRendezVous(60, 6)).toContain(phrase);
   });
 
   it("🔒 « entreprise-information-coordonnees » n'existe NI dans les gabarits NI dans EmailJobName", async () => {

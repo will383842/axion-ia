@@ -40,6 +40,7 @@ import { ID_DOSSIER_EXEMPLE } from "@/features/apporteurs-reseau/jeton";
 import { ContratLisible } from "./ContratLisible";
 import { Coquille, EcranEtat } from "./Coquille";
 import { DeclarationEntreprise } from "./DeclarationEntreprise";
+import { lignesComment } from "./textes-comment";
 import { DepotPiece } from "./DepotPiece";
 import { DossierEnLigne, type DossierPublic } from "./DossierEnLigne";
 import { ListeDeclarations } from "./ListeDeclarations";
@@ -147,9 +148,11 @@ export default async function DossierApporteurPage({ params }: PageProps) {
         <DeclarationEntreprise
           id={dossier.id}
           jeton={jeton}
-          protectionMois={PROTECTION_MOIS}
-          reservationJours={RESERVATION_PROVISOIRE_JOURS}
-          regle={dossier.regleAttribution ?? null}
+          lignesComment={lignesComment(
+            dossier.regleAttribution ?? null,
+            PROTECTION_MOIS,
+            RESERVATION_PROVISOIRE_JOURS,
+          )}
         />
         <ListeDeclarations declarations={declarations} />
         {/* Tout ce qui lui a été remis, au même endroit (2026-11-25). */}

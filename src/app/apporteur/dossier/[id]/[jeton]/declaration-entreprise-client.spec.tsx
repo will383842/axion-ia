@@ -16,6 +16,9 @@ vi.mock("./actions-declaration", () => ({
 
 import { DeclarationEntreprise } from "./DeclarationEntreprise";
 import { TEXTES } from "./textes";
+import { lignesComment } from "./textes-comment";
+
+const ACTUEL = lignesComment(null, 6, 60);
 
 beforeEach(() => vi.clearAllMocks());
 afterEach(() => {
@@ -25,9 +28,7 @@ afterEach(() => {
 
 describe("DeclarationEntreprise", () => {
   it("« Comment ça se passe » : contact de notre part, durée reçue de la page, commission due quand la prestation est réalisée ET entièrement payée", () => {
-    const { container } = render(
-      <DeclarationEntreprise id="i" jeton="j" protectionMois={6} reservationJours={60} />,
-    );
+    const { container } = render(<DeclarationEntreprise id="i" jeton="j" lignesComment={ACTUEL} />);
     const t = container.textContent ?? "";
     expect(t).toContain("Comment ça se passe");
     expect(t).toContain("nous prenons contact avec l'entreprise de votre part");
@@ -43,9 +44,7 @@ describe("DeclarationEntreprise", () => {
       <DeclarationEntreprise
         id="i"
         jeton="j"
-        protectionMois={6}
-        reservationJours={60}
-        regle="rendez_vous"
+        lignesComment={lignesComment("rendez_vous", 6, 60)}
       />,
     );
     const t = rdv.container.textContent ?? "";
@@ -54,26 +53,16 @@ describe("DeclarationEntreprise", () => {
     expect(t).not.toContain("réservé 6 mois à compter de votre déclaration");
     cleanup();
     const nulle = render(
-      <DeclarationEntreprise
-        id="i"
-        jeton="j"
-        protectionMois={6}
-        reservationJours={60}
-        regle={null}
-      />,
+      <DeclarationEntreprise id="i" jeton="j" lignesComment={lignesComment(null, 6, 60)} />,
     );
-    const actuel = render(
-      <DeclarationEntreprise id="i" jeton="j" protectionMois={6} reservationJours={60} />,
-    );
+    const actuel = render(<DeclarationEntreprise id="i" jeton="j" lignesComment={ACTUEL} />);
     expect(nulle.container.textContent).toBe(actuel.container.textContent);
     expect(actuel.container.textContent).toContain("réservé 6 mois à compter de votre déclaration");
   });
 
   it("coupure réseau : message « connexion perdue », saisie conservée", async () => {
     h.declarer.mockRejectedValue(new Error("Failed to fetch"));
-    const { container } = render(
-      <DeclarationEntreprise id="i" jeton="j" protectionMois={6} reservationJours={60} />,
-    );
+    const { container } = render(<DeclarationEntreprise id="i" jeton="j" lignesComment={ACTUEL} />);
     const siren = container.querySelector('input[name="siret"]') as HTMLInputElement;
     fireEvent.change(siren, { target: { value: "73282932000074" } });
     const form = container.querySelector("form") as HTMLFormElement;
@@ -85,9 +74,7 @@ describe("DeclarationEntreprise", () => {
   it("date du contact : plafond en heure de Paris (1er janvier 00 h 30 à Paris = 31/12 en UTC)", () => {
     vi.useFakeTimers({ toFake: ["Date"] });
     vi.setSystemTime(new Date("2026-12-31T23:30:00Z"));
-    const { container } = render(
-      <DeclarationEntreprise id="i" jeton="j" protectionMois={6} reservationJours={60} />,
-    );
+    const { container } = render(<DeclarationEntreprise id="i" jeton="j" lignesComment={ACTUEL} />);
     const date = container.querySelector('input[type="date"]') as HTMLInputElement;
     expect(date.max).toBe("2027-01-01");
   });

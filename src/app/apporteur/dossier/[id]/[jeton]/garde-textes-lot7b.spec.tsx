@@ -9,7 +9,7 @@ import { render } from "@react-email/render";
 import { describe, expect, it } from "vitest";
 
 import { EMAIL_LEGAL } from "@/lib/email/legal-footer";
-import { TEXTES_DECLARATION } from "./textes-declaration";
+import { comment, commentRendezVous } from "./textes-comment";
 
 import {
   ApporteurPresentationRecueRendezVousEmail,
@@ -43,7 +43,7 @@ async function textesApporteurRendezVous(): Promise<string[]> {
     sansPied(
       await rendu(<ApporteurPresentationRecueRendezVousEmail locale="fr" payload={payload} />),
     ),
-    ...TEXTES_DECLARATION.commentRendezVous(60, 6),
+    ...commentRendezVous(60, 6),
   ];
 }
 
@@ -85,7 +85,7 @@ describe("textes de la validation par rendez-vous (apporteur et page)", () => {
   it("les seuls nombres écrits sont 60 (jours) et 6 (mois)", () => {
     // Les textes eux-mêmes, pas le rendu : le pied de page légal porte SIREN et code postal.
     const corps = [
-      ...TEXTES_DECLARATION.commentRendezVous(60, 6),
+      ...commentRendezVous(60, 6),
       ...Object.values(COPY_PRESENTATION_RECUE_RENDEZ_VOUS).map((v) =>
         typeof v === "function" ? (v as (...a: unknown[]) => string)("x", 60, null, 6) : v,
       ),
@@ -95,7 +95,7 @@ describe("textes de la validation par rendez-vous (apporteur et page)", () => {
   });
 
   it("le texte de la page des apporteurs sous la règle actuelle n'est pas touché", () => {
-    expect(TEXTES_DECLARATION.comment(6)).toEqual([
+    expect(comment(6)).toEqual([
       "Après votre déclaration, nous prenons contact avec l'entreprise de votre part.",
       "Cet établissement vous est réservé 6 mois à compter de votre déclaration. Si vous avez rencontré la direction de l'entreprise, écrivez-nous : nous pouvons étendre votre réservation à toute l'entreprise.",
       "Si elle a déjà été présentée ou nous est déjà connue, nous vous le disons.",
