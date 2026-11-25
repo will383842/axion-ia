@@ -20,10 +20,15 @@ const { bd, tx } = vi.hoisted(() => {
     conflit: false,
     /** Appelée au début de la première écriture conditionnelle : simule une écriture concurrente. */
     avantEcriture: null as null | (() => void),
+    /** Appelée au début de la première écriture sur une proposition. */
+    avantEcritureProposition: null as null | (() => void),
+    /** Options passées à chaque `$transaction` (isolation). */
+    optionsTx: [] as unknown[],
     verrou: Promise.resolve() as Promise<unknown>,
   };
   function correspond(l: Ligne, where: Ligne): boolean {
     return Object.entries(where).every(([k, v]) => {
+      if (v === null) return l[k] == null;
       if (v && typeof v === "object" && !(v instanceof Date)) {
         if ("in" in v) return v.in.includes(l[k]);
         if ("not" in v) return l[k] !== v.not;
@@ -53,11 +58,7 @@ const { bd, tx } = vi.hoisted(() => {
       updateMany: async ({ where, data }: any) => {
         bd.avantEcriture?.();
         bd.avantEcriture = null;
-        const l = bd.reservations.filter(
-          (r) =>
-            r.presentationId === where.presentationId &&
-            (where.valideeAt === null ? r.valideeAt == null : true),
-        );
+        const l = bd.reservations.filter((r) => correspond(r, where));
         l.forEach((r) => Object.assign(r, data));
         return { count: l.length };
       },
@@ -76,22 +77,11 @@ const { bd, tx } = vi.hoisted(() => {
     },
     propositionRendezVousPresentation: {
       findUnique: async ({ where }: any) => bd.propositions.find((p) => p.id === where.id) ?? null,
-      findMany: async ({ where }: any) =>
-        bd.propositions.filter(
-          (p) =>
-            (where.presentationId?.in
-              ? where.presentationId.in.includes(p.presentationId)
-              : p.presentationId === where.presentationId) &&
-            p.ecarteeAt == null &&
-            (!where.rendezVousCle || p.rendezVousCle !== where.rendezVousCle.not),
-        ),
+      findMany: async ({ where }: any) => bd.propositions.filter((p) => correspond(p, where)),
       updateMany: async ({ where, data }: any) => {
-        const l = bd.propositions.filter(
-          (p) =>
-            p.presentationId === where.presentationId &&
-            p.rendezVousCle === where.rendezVousCle &&
-            p.retenueAt == null,
-        );
+        bd.avantEcritureProposition?.();
+        bd.avantEcritureProposition = null;
+        const l = bd.propositions.filter((p) => correspond(p, where));
         l.forEach((p) => Object.assign(p, data));
         return { count: l.length };
       },
@@ -112,23 +102,30 @@ vi.mock("../attribution-annonce", () => ({
 vi.mock("@/lib/prisma", () => ({
   prisma: {
     ...tx,
-    $transaction: async (fn: (t: typeof tx) => Promise<unknown>) => {
+    $transaction: async (fn: (t: typeof tx) => Promise<unknown>, options?: unknown) => {
+      bd.optionsTx.push(options);
       const precedent = bd.verrou;
       let fin!: () => void;
       bd.verrou = new Promise<void>((r) => (fin = r));
       await precedent;
       // Écritures annulées si la transaction échoue : on travaille sur une copie.
-      const copie = JSON.stringify([bd.presentations, bd.reservations, bd.journal]);
+      const copie = JSON.stringify([
+        bd.presentations,
+        bd.reservations,
+        bd.journal,
+        bd.propositions,
+      ]);
       try {
         if (bd.conflit) throw Object.assign(new Error("conflit"), { code: "P2034" });
         return await fn(tx);
       } catch (err) {
-        const [p, r, j] = JSON.parse(copie, (_k, v) =>
+        const [p, r, j, pr] = JSON.parse(copie, (_k, v) =>
           typeof v === "string" && /^\d{4}-\d\d-\d\dT/.test(v) ? new Date(v) : v,
         );
         bd.presentations.splice(0, bd.presentations.length, ...p);
         bd.reservations.splice(0, bd.reservations.length, ...r);
         bd.journal.splice(0, bd.journal.length, ...j);
+        bd.propositions.splice(0, bd.propositions.length, ...pr);
         throw err;
       } finally {
         fin();
@@ -209,6 +206,8 @@ beforeEach(() => {
     bd[k].length = 0;
   bd.conflit = false;
   bd.avantEcriture = null;
+  bd.avantEcritureProposition = null;
+  bd.optionsTx.length = 0;
   bd.verrou = Promise.resolve();
   evenement("ev1");
 });
