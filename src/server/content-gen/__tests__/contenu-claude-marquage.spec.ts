@@ -184,3 +184,9 @@ describe("routeur : comportement", () => {
     expect(openaiGen).toHaveBeenCalledTimes(1);
   });
 });
+
+describe("garde-fous annexes", () => {
+  it("le juge multi-avis (jobId synthétique) reste sur OpenAI", () => {
+    expect(lire("content-gen/quality/multi-judge-ensemble.ts")).toContain("sansClaude: true");
+  });
+});
