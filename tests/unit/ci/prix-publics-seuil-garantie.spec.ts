@@ -20,7 +20,7 @@ describe("exception R7 : seuils de la garantie et de la déduction", () => {
   it("3 × 1 490 = 4 470, et le littéral de l'exception est le seuil de la garantie", () => {
     expect(MULTIPLE_GARANTIE).toBe(3);
     expect(seuilGarantieEur()).toBe(3 * 1490);
-    expect(seuilGarantieEur()).toBe(MULTIPLE_GARANTIE * JOURNEE_IA_TIER.priceFlat);
+    expect(seuilGarantieEur()).toBe(MULTIPLE_GARANTIE * (JOURNEE_IA_TIER.priceFlat ?? Number.NaN));
     const litteral = formatAmount(seuilGarantieEur(), "fr").replace(/\s/g, " ");
     expect(litteral).toBe("4 470 €");
     expect(source).toContain(`(?<![\\d.,])${litteral}/g`);
