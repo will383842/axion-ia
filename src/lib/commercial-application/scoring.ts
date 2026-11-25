@@ -26,15 +26,17 @@ import type { CommercialApplicationInput } from "./model";
 
 /** Poids maximum de chaque critère. La somme fait exactement 100. */
 export const SCORE_POIDS = {
-  carnet: 25,
-  b2bAnnees: 25,
-  statut: 12,
-  typesClients: 10,
-  deplacement: 8,
-  ia: 8,
-  informatique: 7,
-  zone: 5,
+  carnet: 35,
+  b2bAnnees: 30,
+  statut: 15,
+  ia: 10,
+  informatique: 10,
 } as const;
+
+// 2026-11-25 (L5b, décision D5) : le barème ne lit plus la zone, les
+// déplacements ni le parcours (types de clients), questions d'embauche retirées
+// du formulaire. Leurs 23 points sont répartis sur les critères restants pour
+// que la somme reste 100 et que les seuils d'aiguillage gardent leur sens.
 
 export type ScoreCritere = keyof typeof SCORE_POIDS;
 
@@ -62,34 +64,28 @@ export const PRIORITES: Readonly<Record<ScorePriorite, { label: string; action: 
 // ── Barèmes par critère ─────────────────────────────────────────────────────
 
 const CARNET: Readonly<Record<string, number>> = {
-  "150-plus": 25,
-  "50-150": 21,
-  "20-50": 15,
-  "5-20": 8,
-  "0-5": 2,
+  "150-plus": 35,
+  "50-150": 29,
+  "20-50": 21,
+  "5-20": 11,
+  "0-5": 3,
 };
 
 const B2B_ANNEES: Readonly<Record<string, number>> = {
-  "plus-10": 25,
-  "5-10": 21,
-  "3-5": 15,
-  "1-3": 8,
+  "plus-10": 30,
+  "5-10": 25,
+  "3-5": 18,
+  "1-3": 10,
   "moins-1": 2,
 };
 
 /** Peut facturer demain matin = aucun frein administratif au démarrage. */
 const STATUT: Readonly<Record<string, number>> = {
-  independant: 12,
-  "auto-entrepreneur": 12,
-  "creation-statut": 7,
-  salarie: 4,
-  "en-recherche": 4,
-};
-
-const DEPLACEMENT: Readonly<Record<string, number>> = {
-  oui: 8,
-  ponctuellement: 5,
-  non: 1,
+  independant: 15,
+  "auto-entrepreneur": 15,
+  "creation-statut": 9,
+  salarie: 5,
+  "en-recherche": 5,
 };
 
 /**
@@ -109,16 +105,6 @@ export function scoreCandidature(d: CommercialApplicationInput): ScoreCandidatur
 
   const statut = d.statut ? (STATUT[d.statut] ?? 0) : 0;
 
-  // Les types de clients vivent sur CHAQUE expérience, pas au niveau racine :
-  // on agrège. Vendre aux entreprises (ou en mixte) au moins une fois suffit —
-  // c'est une aptitude, pas une proportion.
-  const vendAuxEntreprises = d.experiences.some((e) =>
-    (e.typesClients ?? []).some((t) => t === "entreprises" || t === "mixte"),
-  );
-  const typesClients = vendAuxEntreprises ? SCORE_POIDS.typesClients : 0;
-
-  const deplacement = DEPLACEMENT[d.deplacement] ?? 0;
-
   // Utiliser déjà un outil IA ne dit rien de la compétence — seulement que le
   // sujet ne fera pas peur au premier rendez-vous. D'où un poids modeste.
   const ia = d.iaUtilise && (d.iaOutils?.length ?? 0) > 0 ? SCORE_POIDS.ia : 0;
@@ -131,23 +117,12 @@ export function scoreCandidature(d: CommercialApplicationInput): ScoreCandidatur
       ? SCORE_POIDS.informatique
       : 0;
 
-  // ⚠️ Le plan §4.4 décrivait « territoire cohérent ET NON DÉJÀ SATURÉ ». La
-  // saturation dépend des autres apporteurs, donc de la base — impossible dans
-  // une fonction pure, et la faire dépendre de la base lui coûterait sa
-  // testabilité pour cinq points. On ne mesure donc que ce qui est vérifiable
-  // ici : une zone de travail exploitable est déclarée. Si la saturation
-  // devient un vrai sujet, elle se traitera en console, pas dans ce calcul.
-  const zone = d.zoneMobile || (d.zones?.length ?? 0) > 0 ? SCORE_POIDS.zone : 0;
-
   const parts = {
     carnet,
     b2bAnnees,
     statut,
-    typesClients,
-    deplacement,
     ia,
     informatique,
-    zone,
   } as const;
 
   const total = Object.values(parts).reduce((a, b) => a + b, 0);

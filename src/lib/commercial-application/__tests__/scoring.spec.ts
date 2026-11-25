@@ -3,7 +3,6 @@ import { describe, expect, it } from "vitest";
 import {
   CARNET_DIRIGEANTS_OPTIONS,
   B2B_ANNEES_OPTIONS,
-  DEPLACEMENT_OPTIONS,
   STATUT_OPTIONS,
   type CommercialApplicationInput,
 } from "../model";
@@ -25,21 +24,9 @@ function base(over: Partial<CommercialApplicationInput> = {}): CommercialApplica
     ville: "Lyon",
     codePostal: "69001",
     b2bDejaVendu: false,
-    experiences: [
-      {
-        entreprise: "ACME",
-        ville: "Lyon",
-        poste: "Commercial",
-        debut: "2020-01",
-        posteActuel: true,
-      },
-    ],
     iaUtilise: false,
     informatiqueUtilise: false,
-    zoneMobile: false,
-    deplacement: "non",
     pitch: "x".repeat(150),
-    disponibilite: "2026-10",
     permisVehicule: false,
     consent: true,
     ...over,
@@ -65,22 +52,10 @@ describe("scoreCandidature — barème", () => {
         b2bDejaVendu: true,
         b2bAnnees: "plus-10",
         statut: "independant",
-        deplacement: "oui",
         iaUtilise: true,
         iaOutils: ["chatgpt"],
         informatiqueUtilise: true,
         informatiqueUsages: ["crm"],
-        zoneMobile: true,
-        experiences: [
-          {
-            entreprise: "ACME",
-            ville: "Lyon",
-            poste: "Commercial",
-            debut: "2010-01",
-            posteActuel: true,
-            typesClients: ["entreprises"],
-          },
-        ],
       }),
     );
     expect(s.total).toBe(100);
@@ -110,7 +85,7 @@ describe("scoreCandidature — le carnet d'adresses, critère le plus lourd", ()
   it("un carnet absent ne pénalise que son propre poids", () => {
     const avec = scoreCandidature(base({ carnetDirigeants: "0-5" }));
     const sans = scoreCandidature(base());
-    expect(avec.total - sans.total).toBe(2);
+    expect(avec.total - sans.total).toBe(3);
   });
 });
 
@@ -130,7 +105,7 @@ describe("scoreCandidature — années B2B", () => {
   });
 });
 
-describe("scoreCandidature — statut et déplacement", () => {
+describe("scoreCandidature — statut", () => {
   it("chaque statut a un barème", () => {
     for (const o of STATUT_OPTIONS) {
       const s = scoreCandidature(base({ statut: o.id }));
@@ -142,60 +117,6 @@ describe("scoreCandidature — statut et déplacement", () => {
     const indep = scoreCandidature(base({ statut: "independant" })).parts.statut;
     const salarie = scoreCandidature(base({ statut: "salarie" })).parts.statut;
     expect(indep).toBeGreaterThan(salarie);
-  });
-
-  it("chaque option de déplacement a un barème", () => {
-    for (const o of DEPLACEMENT_OPTIONS) {
-      const s = scoreCandidature(base({ deplacement: o.id }));
-      expect(s.parts.deplacement, `« ${o.label} » non barémé`).toBeGreaterThan(0);
-    }
-  });
-});
-
-describe("scoreCandidature — types de clients agrégés sur les expériences", () => {
-  it("vendre aux entreprises une seule fois suffit", () => {
-    const s = scoreCandidature(
-      base({
-        experiences: [
-          {
-            entreprise: "A",
-            ville: "Lyon",
-            poste: "P",
-            debut: "2019-01",
-            posteActuel: false,
-            fin: "2020-01",
-            typesClients: ["particuliers"],
-          },
-          {
-            entreprise: "B",
-            ville: "Lyon",
-            poste: "P",
-            debut: "2020-02",
-            posteActuel: true,
-            typesClients: ["entreprises"],
-          },
-        ],
-      }),
-    );
-    expect(s.parts.typesClients).toBe(SCORE_POIDS.typesClients);
-  });
-
-  it("vendre uniquement aux particuliers ne rapporte rien sur ce critère", () => {
-    const s = scoreCandidature(
-      base({
-        experiences: [
-          {
-            entreprise: "A",
-            ville: "Lyon",
-            poste: "P",
-            debut: "2019-01",
-            posteActuel: true,
-            typesClients: ["particuliers"],
-          },
-        ],
-      }),
-    );
-    expect(s.parts.typesClients).toBe(0);
   });
 });
 

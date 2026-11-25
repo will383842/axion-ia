@@ -13,38 +13,17 @@ import {
 
 // ── Types d’état ────────────────────────────────────────────────────────────
 
-export interface ExperienceDraft {
-  /** Clé React stable (les blocs se suppriment / réordonnent). */
-  id: string;
-  entreprise: string;
-  ville: string;
-  poste: string;
-  debutMois: string; // "01".."12" ou ""
-  debutAnnee: string;
-  finMois: string;
-  finAnnee: string;
-  posteActuel: boolean;
-  typesClients: string[];
-  /** Bloc déplié (les blocs remplis se replient en accordéon). */
-  open: boolean;
-}
-
 export interface WizardAnswers {
   prenom: string;
   nom: string;
   email: string;
   telephone: string;
-  naissanceJour: string;
-  naissanceMois: string;
-  naissanceAnnee: string;
-  nationalite: string;
   ville: string;
   codePostal: string;
   b2bDejaVendu: boolean | null;
   b2bAnnees: string;
   /** Facultatif — meilleur signal du scoring, jamais bloquant (cf. `lib/commercial-application/scoring.ts`). */
   carnetDirigeants: string;
-  experiences: ExperienceDraft[];
   iaUtilise: boolean | null;
   iaOutils: string[];
   iaOutilAutre: string;
@@ -52,33 +31,12 @@ export interface WizardAnswers {
   informatiqueUtilise: boolean | null;
   informatiqueUsages: string[];
   informatiqueAutre: string;
-  zoneMobile: boolean;
-  zones: string[];
-  deplacement: string;
   pitch: string;
   messageLibre: string;
-  dispoMois: string;
-  dispoAnnee: string;
   statut: string;
   linkedin: string;
   sourceConnaissance: string;
   consent: boolean;
-}
-
-export function newExperience(open = true): ExperienceDraft {
-  return {
-    id: `exp-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
-    entreprise: "",
-    ville: "",
-    poste: "",
-    debutMois: "",
-    debutAnnee: "",
-    finMois: "",
-    finAnnee: "",
-    posteActuel: false,
-    typesClients: [],
-    open,
-  };
 }
 
 export function emptyAnswers(): WizardAnswers {
@@ -87,16 +45,11 @@ export function emptyAnswers(): WizardAnswers {
     nom: "",
     email: "",
     telephone: "",
-    naissanceJour: "",
-    naissanceMois: "",
-    naissanceAnnee: "",
-    nationalite: "",
     ville: "",
     codePostal: "",
     b2bDejaVendu: null,
     b2bAnnees: "",
     carnetDirigeants: "",
-    experiences: [newExperience()],
     iaUtilise: null,
     iaOutils: [],
     iaOutilAutre: "",
@@ -104,13 +57,8 @@ export function emptyAnswers(): WizardAnswers {
     informatiqueUtilise: null,
     informatiqueUsages: [],
     informatiqueAutre: "",
-    zoneMobile: false,
-    zones: [],
-    deplacement: "",
     pitch: "",
     messageLibre: "",
-    dispoMois: "",
-    dispoAnnee: "",
     statut: "",
     linkedin: "",
     sourceConnaissance: "",
@@ -126,10 +74,6 @@ export function emptyAnswers(): WizardAnswers {
 export type FieldErrors = Record<string, string>;
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
-
-function mmYYYY(mois: string, annee: string): string {
-  return `${annee}-${mois}`;
-}
 
 export function validateStep(step: number, a: WizardAnswers): FieldErrors {
   const e: FieldErrors = {};
@@ -162,21 +106,6 @@ export function validateStep(step: number, a: WizardAnswers): FieldErrors {
       if (!a.codePostal.trim()) e.codePostal = "Votre code postal est nécessaire.";
       else if (!/^[0-9A-Za-z][0-9A-Za-z -]{2,9}$/.test(a.codePostal.trim()))
         e.codePostal = "Ce code postal ne semble pas valide.";
-      // Date de naissance FACULTATIVE — mais si elle est commencée, elle doit
-      // être complète et plausible.
-      const naissance = [a.naissanceJour, a.naissanceMois, a.naissanceAnnee];
-      const remplis = naissance.filter((v) => v.trim() !== "").length;
-      if (remplis > 0 && remplis < 3) {
-        e.naissance = "Complétez les trois champs, ou laissez-les vides (c’est facultatif).";
-      } else if (remplis === 3) {
-        const j = Number(a.naissanceJour);
-        const m = Number(a.naissanceMois);
-        const an = Number(a.naissanceAnnee);
-        const now = new Date().getFullYear();
-        if (!(j >= 1 && j <= 31 && m >= 1 && m <= 12 && an >= now - 100 && an <= now - 15)) {
-          e.naissance = "Cette date ne semble pas plausible.";
-        }
-      }
       return e;
     }
     case 2: {
@@ -186,74 +115,26 @@ export function validateStep(step: number, a: WizardAnswers): FieldErrors {
       return e;
     }
     case 3: {
-      if (a.experiences.length === 0) {
-        e.experiences = "Ajoutez au moins une expérience.";
-        return e;
-      }
-      a.experiences.forEach((exp, i) => {
-        const pre = `exp-${exp.id}`;
-        if (!exp.entreprise.trim())
-          e[`${pre}-entreprise`] = "Le nom de l’entreprise est nécessaire.";
-        if (!exp.ville.trim()) e[`${pre}-ville`] = "La ville ou le département est nécessaire.";
-        if (!exp.poste.trim()) e[`${pre}-poste`] = "Le poste occupé est nécessaire.";
-        if (!exp.debutMois || !exp.debutAnnee)
-          e[`${pre}-debut`] = "Indiquez le mois et l’année de début.";
-        if (!exp.posteActuel && (!exp.finMois || !exp.finAnnee))
-          e[`${pre}-fin`] = "Indiquez la fin, ou cochez « activité en cours ».";
-        if (
-          exp.debutMois &&
-          exp.debutAnnee &&
-          !exp.posteActuel &&
-          exp.finMois &&
-          exp.finAnnee &&
-          mmYYYY(exp.finMois, exp.finAnnee) < mmYYYY(exp.debutMois, exp.debutAnnee)
-        ) {
-          e[`${pre}-fin`] = "La fin est avant le début.";
-        }
-        void i;
-      });
-      return e;
-    }
-    case 4: {
       if (a.iaUtilise === null) e.iaUtilise = "Répondez par oui ou par non.";
       // OBLIGATOIRE quand la réponse est Oui (retour Will 2026-08-13).
       if (a.iaUtilise === true && !a.iaUsage.trim())
         e.iaUsage = "Expliquez en quelques mots pourquoi, et pour quoi faire.";
       return e;
     }
-    case 5: {
+    case 4: {
       if (a.informatiqueUtilise === null) e.informatiqueUtilise = "Répondez par oui ou par non.";
       return e;
     }
-    case 6: {
-      if (!a.zoneMobile && a.zones.length === 0)
-        e.zones = "Choisissez au moins une zone, ou « Peu importe, je suis mobile ».";
-      // Le déplacement chez le client n'est PLUS facultatif (Will 2026-08-18) :
-      // c'est un métier de terrain, la réponse conditionne l'exploitabilité de
-      // la candidature. Garde miroir côté serveur dans `model.ts`.
-      if (!a.deplacement)
-        e.deplacement = "Dites-nous si vous pouvez vous déplacer chez les clients.";
-      return e;
-    }
-    case 7: {
+    case 5: {
       const len = a.pitch.trim().length;
       if (len < 150)
         e.pitch = `Encore ${150 - len} caractère${150 - len > 1 ? "s" : ""} — développez un peu, ça compte.`;
       else if (len > 800) e.pitch = `${len - 800} caractère${len - 800 > 1 ? "s" : ""} de trop.`;
       return e;
     }
-    case 8:
+    case 6:
       return e;
-    case 9: {
-      if (!a.dispoMois || !a.dispoAnnee) e.dispo = "Indiquez le mois et l’année.";
-      else {
-        // Une disponibilité ne peut pas être dans le passé (retour Will
-        // 2026-08-13) : le mois courant est accepté, pas avant.
-        const now = new Date();
-        const courant = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}`;
-        if (mmYYYY(a.dispoMois.padStart(2, "0"), a.dispoAnnee) < courant)
-          e.dispo = "Cette date est déjà passée — indiquez le mois courant ou un mois à venir.";
-      }
+    case 7: {
       if (
         a.linkedin.trim() &&
         !/^(https?:\/\/)?([\w-]+\.)+[\w-]{2,}(\/\S*)?$/.test(a.linkedin.trim())
@@ -269,32 +150,16 @@ export function validateStep(step: number, a: WizardAnswers): FieldErrors {
 // ── Payload serveur ─────────────────────────────────────────────────────────
 
 export function buildSubmissionPayload(a: WizardAnswers): CommercialApplicationInput {
-  const naissanceComplete = a.naissanceJour && a.naissanceMois && a.naissanceAnnee;
   return {
     prenom: a.prenom.trim(),
     nom: a.nom.trim(),
     email: a.email.trim(),
     telephone: a.telephone.trim(),
-    ...(naissanceComplete
-      ? {
-          dateNaissance: `${a.naissanceAnnee}-${a.naissanceMois.padStart(2, "0")}-${a.naissanceJour.padStart(2, "0")}`,
-        }
-      : {}),
-    ...(a.nationalite.trim() ? { nationalite: a.nationalite.trim() } : {}),
     ville: a.ville.trim(),
     codePostal: a.codePostal.trim(),
     b2bDejaVendu: a.b2bDejaVendu === true,
     ...(a.b2bDejaVendu === true && a.b2bAnnees ? { b2bAnnees: a.b2bAnnees } : {}),
     ...(a.carnetDirigeants ? { carnetDirigeants: a.carnetDirigeants } : {}),
-    experiences: a.experiences.map((exp) => ({
-      entreprise: exp.entreprise.trim(),
-      ville: exp.ville.trim(),
-      poste: exp.poste.trim(),
-      debut: mmYYYY(exp.debutMois, exp.debutAnnee),
-      ...(exp.posteActuel ? {} : { fin: mmYYYY(exp.finMois, exp.finAnnee) }),
-      posteActuel: exp.posteActuel,
-      ...(exp.typesClients.length > 0 ? { typesClients: exp.typesClients } : {}),
-    })),
     iaUtilise: a.iaUtilise === true,
     ...(a.iaUtilise === true && a.iaOutils.length > 0 ? { iaOutils: a.iaOutils } : {}),
     ...(a.iaUtilise === true && a.iaOutilAutre.trim()
@@ -308,15 +173,8 @@ export function buildSubmissionPayload(a: WizardAnswers): CommercialApplicationI
     ...(a.informatiqueUtilise === true && a.informatiqueAutre.trim()
       ? { informatiqueAutre: a.informatiqueAutre.trim() }
       : {}),
-    zoneMobile: a.zoneMobile,
-    ...(a.zoneMobile || a.zones.length === 0 ? {} : { zones: a.zones }),
-    // OBLIGATOIRE depuis le 2026-08-18 : plus de `...(x ? {} : {})`, le champ
-    // part TOUJOURS. Un spread conditionnel sur un champ devenu requis ferait
-    // échouer le schéma serveur avec un message générique côté candidat.
-    deplacement: a.deplacement,
     pitch: a.pitch.trim(),
     ...(a.messageLibre.trim() ? { messageLibre: a.messageLibre.trim() } : {}),
-    disponibilite: mmYYYY(a.dispoMois, a.dispoAnnee),
     ...(a.statut ? { statut: a.statut } : {}),
     ...(a.linkedin.trim() ? { linkedin: a.linkedin.trim() } : {}),
     ...(a.sourceConnaissance ? { sourceConnaissance: a.sourceConnaissance } : {}),
@@ -327,14 +185,34 @@ export function buildSubmissionPayload(a: WizardAnswers): CommercialApplicationI
 // ── Sauvegarde locale (reprise après fermeture) ─────────────────────────────
 
 interface SavedState {
-  v: 1;
+  /** 1 = parcours à 9 écrans (avant le 2026-11-25) ; 2 = parcours à 7 écrans. */
+  v: 1 | 2;
   screen: number;
   answers: WizardAnswers;
 }
 
+/** Réponses retirées du formulaire : jamais relues depuis un brouillon. */
+const CHAMPS_RETIRES: readonly string[] = [
+  "consentVivier",
+  "permisVehicule",
+  "naissanceJour",
+  "naissanceMois",
+  "naissanceAnnee",
+  "nationalite",
+  "experiences",
+  "zoneMobile",
+  "zones",
+  "deplacement",
+  "dispoMois",
+  "dispoAnnee",
+];
+
+/** Écran du parcours à 9 écrans → écran du parcours à 7 écrans. */
+const ECRAN_V1_VERS_V2: readonly number[] = [0, 1, 2, 2, 3, 4, 4, 5, 6, 7];
+
 export function saveDraft(screen: number, answers: WizardAnswers): void {
   try {
-    const state: SavedState = { v: 1, screen, answers };
+    const state: SavedState = { v: 2, screen, answers };
     window.localStorage.setItem(COMMERCIAL_APPLICATION_STORAGE_KEY, JSON.stringify(state));
   } catch {
     // Stockage plein / bloqué : la sauvegarde est un confort, jamais bloquante.
@@ -346,7 +224,12 @@ export function loadDraft(): { screen: number; answers: WizardAnswers } | null {
     const raw = window.localStorage.getItem(COMMERCIAL_APPLICATION_STORAGE_KEY);
     if (!raw) return null;
     const parsed = JSON.parse(raw) as Partial<SavedState> | null;
-    if (!parsed || parsed.v !== 1 || typeof parsed.screen !== "number" || !parsed.answers)
+    if (
+      !parsed ||
+      (parsed.v !== 1 && parsed.v !== 2) ||
+      typeof parsed.screen !== "number" ||
+      !parsed.answers
+    )
       return null;
     // Fusion défensive : un brouillon d’une version antérieure du formulaire
     // ne doit jamais casser le rendu — les champs manquants prennent le défaut.
@@ -366,21 +249,19 @@ export function loadDraft(): { screen: number; answers: WizardAnswers } | null {
     // 11/11/2026 (Williams) : la question « permis et véhicule » est retirée du
     // formulaire. Même traitement : un brouillon antérieur qui porte encore la
     // réponse ne la renvoie pas avec le dossier.
-    const {
-      consentVivier: _retire,
-      permisVehicule: _retireAussi,
-      ...reponses
-    } = parsed.answers as unknown as Record<string, unknown>;
-    const base = emptyAnswers();
-    const answers: WizardAnswers = {
-      ...base,
-      ...(reponses as Partial<WizardAnswers>),
-      experiences:
-        Array.isArray(parsed.answers.experiences) && parsed.answers.experiences.length > 0
-          ? parsed.answers.experiences.map((exp) => ({ ...newExperience(false), ...exp }))
-          : base.experiences,
+    //
+    // 25/11/2026 (L5b, D5) : naissance, nationalité, parcours, zone, déplacements
+    // et disponibilité ne sont plus demandés. Même traitement : un brouillon
+    // antérieur ne les renvoie pas avec le dossier.
+    const reponses: Record<string, unknown> = {
+      ...(parsed.answers as unknown as Record<string, unknown>),
     };
-    const screen = Math.min(Math.max(0, parsed.screen), 9);
+    for (const cle of CHAMPS_RETIRES) delete reponses[cle];
+    const answers: WizardAnswers = { ...emptyAnswers(), ...(reponses as Partial<WizardAnswers>) };
+    const brut = Math.max(0, parsed.screen);
+    // Un brouillon v1 compte 9 écrans : on le ramène sur son équivalent du
+    // parcours à 7 écrans (parcours → expérience, zone → outils).
+    const screen = Math.min(parsed.v === 1 ? (ECRAN_V1_VERS_V2[brut] ?? 7) : brut, 7);
     return { screen, answers };
   } catch {
     return null;

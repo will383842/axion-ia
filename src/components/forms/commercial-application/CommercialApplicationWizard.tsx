@@ -4,7 +4,7 @@
 // Mémorial de l’Isère 2026-08-12).
 //
 // Un écran = une question (ou un petit groupe). Barre d’avancement permanente
-// + « Étape X sur 9 ». Retour arrière sans perte. Sauvegarde auto en
+// + « Étape X sur 7 ». Retour arrière sans perte. Sauvegarde auto en
 // localStorage : le candidat peut fermer et revenir, il reprend où il était.
 //
 // Défilement + focus à chaque changement d’écran (pattern du simulateur v2) :
@@ -28,38 +28,32 @@ import {
   StepIdentite,
   StepInformatique,
   StepMessage,
-  StepParcours,
   StepPitch,
-  StepZone,
 } from "./steps";
 import {
   buildSubmissionPayload,
   clearDraft,
   emptyAnswers,
   loadDraft,
-  newExperience,
   saveDraft,
   validateStep,
-  type ExperienceDraft,
   type FieldErrors,
   type WizardAnswers,
 } from "./wizard-state";
 
-const TOTAL_STEPS = 9;
+const TOTAL_STEPS = 7;
 
 /** Encouragement affiché dans la jauge, indexé par numéro d'écran (1..9).
- *  Le taux d'abandon d'un tunnel à 9 écrans se joue sur la perception du
+ *  Le taux d'abandon d'un tunnel à 7 écrans se joue sur la perception du
  *  chemin restant : un pourcentage muet ne rassure personne. */
 const ENCOURAGEMENTS: Readonly<Record<number, string>> = {
   1: "C’est parti 🚀",
   2: "Ça roule 👌",
   3: "Bien joué 👏",
-  4: "Ça avance 💪",
-  5: "Déjà la moitié 🎯",
-  6: "Plus que 3 écrans",
-  7: "Plus que 2 écrans",
-  8: "Dernière ligne droite 🏁",
-  9: "Dernier écran 🎉",
+  4: "Déjà la moitié 🎯",
+  5: "Plus que 2 écrans",
+  6: "Dernière ligne droite 🏁",
+  7: "Dernier écran 🎉",
 };
 
 /** Noms d'écrans des événements Plausible « Candidature Step » — anonymes,
@@ -68,10 +62,8 @@ const STEP_NAMES: readonly string[] = [
   "accueil",
   "identite",
   "b2b",
-  "parcours",
   "ia",
   "informatique",
-  "zone",
   "pitch",
   "message",
   "details",
@@ -79,7 +71,7 @@ const STEP_NAMES: readonly string[] = [
 
 export function CommercialApplicationWizard(): React.ReactNode {
   const locale = useLocale();
-  // 0 = accueil, 1..9 = étapes, 10 = confirmation.
+  // 0 = accueil, 1..7 = étapes, 10 = confirmation.
   const [screen, setScreen] = React.useState(0);
   const [answers, setAnswers] = React.useState<WizardAnswers>(emptyAnswers);
   const [errors, setErrors] = React.useState<FieldErrors>({});
@@ -149,32 +141,6 @@ export function CommercialApplicationWizard(): React.ReactNode {
     setAnswers((prev) => ({ ...prev, ...patch }));
   }, []);
 
-  // ── Expériences (étape 3) ────────────────────────────────────────────────
-  const patchExperience = React.useCallback((id: string, patch: Partial<ExperienceDraft>) => {
-    setAnswers((prev) => ({
-      ...prev,
-      experiences: prev.experiences.map((e) => (e.id === id ? { ...e, ...patch } : e)),
-    }));
-  }, []);
-
-  const addExperience = React.useCallback(() => {
-    setAnswers((prev) => {
-      if (prev.experiences.length >= 8) return prev;
-      // Les blocs déjà remplis se replient : jamais un mur de champs.
-      return {
-        ...prev,
-        experiences: [...prev.experiences.map((e) => ({ ...e, open: false })), newExperience()],
-      };
-    });
-  }, []);
-
-  const removeExperience = React.useCallback((id: string) => {
-    setAnswers((prev) => ({
-      ...prev,
-      experiences: prev.experiences.filter((e) => e.id !== id),
-    }));
-  }, []);
-
   // ── Navigation ───────────────────────────────────────────────────────────
   const goBack = React.useCallback(() => {
     setErrors({});
@@ -223,7 +189,7 @@ export function CommercialApplicationWizard(): React.ReactNode {
     // 🔑 CAPTURE À LA SORTIE DE L'ÉCRAN 1 — le cœur du changement.
     //
     // À cet instant on a prénom, nom, e-mail, téléphone et l'accord : de quoi
-    // rappeler. Avant, quelqu'un qui s'arrêtait à l'écran 5 ne laissait RIEN —
+    // rappeler. Avant, quelqu'un qui s’arrêtait à l’écran 4 ne laissait RIEN —
     // le brouillon vit dans SON navigateur, jamais chez nous.
     //
     // ⛔ « fire and forget » DÉLIBÉRÉ : on n'attend pas la réponse et on
@@ -256,7 +222,7 @@ export function CommercialApplicationWizard(): React.ReactNode {
     // écran ne le redemande plus, et le payload l'envoie à `true` : on vérifie
     // donc ici qu'il a bien été donné. Seul cas où il manquerait : un brouillon
     // d'avant le 04/09 (accord alors au dernier écran) repris directement à
-    // l'écran 9. On renvoie la personne à l'écran 1 plutôt que d'envoyer un
+    // l’écran 7. On renvoie la personne à l'écran 1 plutôt que d'envoyer un
     // accord qu'elle n'aurait pas coché.
     if (!answers.consent) {
       setErrors(validateStep(1, answers));
@@ -320,7 +286,7 @@ export function CommercialApplicationWizard(): React.ReactNode {
              • COLLANTE sous le header : sur une étape longue (le parcours peut
                porter 8 expériences), la jauge sortait de l'écran et le candidat
                perdait de vue ce qu'il lui restait à faire.
-             • SEGMENTÉE en 9 marches plutôt qu'un filet continu de 6 px : on
+             • SEGMENTÉE en 7 marches plutôt qu'un filet continu de 6 px : on
                compte les marches restantes d'un coup d'œil, ce qu'une barre
                lisse ne permet pas.
              • ENCOURAGEMENT qui change avec l'avancement — le seul élément qui
@@ -366,7 +332,7 @@ export function CommercialApplicationWizard(): React.ReactNode {
               /* Écran d'accueil — allégé le 2026-08-18. La pastille
                  « Candidatures ouvertes », le `h1` et l'accroche « pas de CV »
                  vivent désormais dans la COQUILLE SERVEUR de la page : ils y
-                 restent visibles pendant les 9 écrans (avant, ils
+                 restent visibles pendant les 7 écrans (avant, ils
                  disparaissaient dès la première question et la page perdait son
                  `h1`). Il ne reste ici que ce qui prépare le geste : ce qu'on
                  va demander, et combien de temps ça prend. */
@@ -375,7 +341,7 @@ export function CommercialApplicationWizard(): React.ReactNode {
                   On y va ? 👋
                 </h2>
                 <p className="text-fg-soft mt-2.5 text-[15px] leading-relaxed text-pretty">
-                  9 écrans, une question à la fois. Vous pouvez revenir en arrière à tout moment,
+                  7 écrans, une question à la fois. Vous pouvez revenir en arrière à tout moment,
                   rien n’est perdu.
                 </p>
 
@@ -387,7 +353,7 @@ export function CommercialApplicationWizard(): React.ReactNode {
                       t: "Votre expérience",
                       d: "Quelques mots sur ce que vous faites aujourd'hui.",
                     },
-                    { n: "3", t: "Votre terrain", d: "IA, outils, zone souhaitée, déplacements." },
+                    { n: "3", t: "Vos outils", d: "IA et outils informatiques." },
                     {
                       n: "4",
                       t: "Vous, en vrai",
@@ -417,22 +383,11 @@ export function CommercialApplicationWizard(): React.ReactNode {
             ) : null}
             {screen === 1 ? <StepIdentite a={answers} set={set} errors={errors} /> : null}
             {screen === 2 ? <StepB2b a={answers} set={set} errors={errors} /> : null}
-            {screen === 3 ? (
-              <StepParcours
-                a={answers}
-                set={set}
-                errors={errors}
-                onPatchExperience={patchExperience}
-                onAddExperience={addExperience}
-                onRemoveExperience={removeExperience}
-              />
-            ) : null}
-            {screen === 4 ? <StepIa a={answers} set={set} errors={errors} /> : null}
-            {screen === 5 ? <StepInformatique a={answers} set={set} errors={errors} /> : null}
-            {screen === 6 ? <StepZone a={answers} set={set} errors={errors} /> : null}
-            {screen === 7 ? <StepPitch a={answers} set={set} errors={errors} /> : null}
-            {screen === 8 ? <StepMessage a={answers} set={set} errors={errors} /> : null}
-            {screen === 9 ? <StepDetails a={answers} set={set} errors={errors} /> : null}
+            {screen === 3 ? <StepIa a={answers} set={set} errors={errors} /> : null}
+            {screen === 4 ? <StepInformatique a={answers} set={set} errors={errors} /> : null}
+            {screen === 5 ? <StepPitch a={answers} set={set} errors={errors} /> : null}
+            {screen === 6 ? <StepMessage a={answers} set={set} errors={errors} /> : null}
+            {screen === 7 ? <StepDetails a={answers} set={set} errors={errors} /> : null}
           </StepTransition>
         </div>
 
