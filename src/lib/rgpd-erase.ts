@@ -2231,25 +2231,25 @@ export const EXCEPTIONS_EFFACEMENT_DOSSIER: ReadonlyArray<{
     // 2026-11-26 — changement d'IBAN après signature (plan apporteurs-changement-iban, lot 1).
     modele: "ApporteurChangementIban",
     motif:
-      "preuve de la décision sur un changement de compte bancaire (qui a demandé, confirmé, validé ou refusé, quand) : conservée comme les autofactures et les virements qu'elle justifie (art. 17(3)(b) et (e) RGPD, art. L.123-22 du code de commerce). Lot 1 du chantier (2026-11-26) : tables créées, interrupteur éteint, aucune ligne ; le traitement à l'effacement (demande ouverte annulée, historique gardé) est livré avec le lot « RGPD » du chantier, avant l'allumage.",
+      "preuve de la décision sur un changement de compte bancaire (qui a demandé, confirmé, validé ou refusé, et quand) : conservée comme les autofactures et les virements qu'elle justifie (art. 17(3)(b) et (e) RGPD, art. L.123-22 du code de commerce). Une demande ouverte est annulée à l'effacement ; la ligne n'est jamais supprimée.",
   },
   {
     // 2026-11-26 — changement d'IBAN après signature (plan apporteurs-changement-iban, lot 1).
     modele: "ApporteurChangementIbanRib",
     motif:
-      "RIB joint à une demande de changement de compte : purgé à la clôture de la demande, sauf contestation (conservé 5 ans). Lot 1 du chantier (2026-11-26) : table créée, interrupteur éteint, aucune ligne ; la purge est livrée avec le lot « RGPD » du chantier, avant l'allumage.",
+      "RIB joint à une demande de changement de compte : devenu la pièce RIB du dossier si la demande est validée ; purgé 90 jours après la clôture si elle est refusée, expirée ou annulée ; gardé 5 ans si elle est contestée, comme preuve d'une tentative de fraude (art. 17(3)(e) RGPD).",
   },
   {
     // 2026-11-26 — changement d'IBAN après signature (plan apporteurs-changement-iban, lot 1).
     modele: "ApporteurIbanHistorique",
     motif:
-      "comptes bancaires successifs de l'apporteur, conservés comme preuve du compte payé (art. 17(3)(b) RGPD, art. L.123-22 du code de commerce), en ajout seul. Lot 1 du chantier (2026-11-26) : table créée, interrupteur éteint, aucune ligne.",
+      "comptes bancaires successifs de l'apporteur, conservés comme preuve du compte payé (art. 17(3)(b) RGPD, art. L.123-22 du code de commerce), en ajout seul.",
   },
   {
     // 2026-11-26 — changement d'IBAN après signature (plan apporteurs-changement-iban, lot 1).
     modele: "ApporteurVirementCompte",
     motif:
-      "compte (empreinte et quatre derniers caractères, jamais l'IBAN) sur lequel chaque virement a été déclaré : preuve du paiement, conservée comme les autofactures (art. L.123-22 du code de commerce), en ajout seul. Lot 1 du chantier (2026-11-26) : table créée, interrupteur éteint, aucune ligne.",
+      "compte (empreinte et quatre derniers caractères, jamais l'IBAN) sur lequel chaque virement a été déclaré : preuve du paiement, conservée comme les autofactures (art. L.123-22 du code de commerce), en ajout seul.",
   },
   {
     // 2026-10-08 — SIRET de l'établissement d'un apporteur : comme son SIREN (gardé sur la fiche).

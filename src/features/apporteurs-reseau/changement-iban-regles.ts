@@ -121,6 +121,14 @@ export function confirmationExpiree(
   return demande.demandeeAt.getTime() < maintenant.getTime() - DELAI_CONFIRMATION_MS;
 }
 
+/**
+ * Le seuil de l'écriture conditionnelle « expirer avant d'insérer » (plan §3.1) : toute demande `a_confirmer`
+ * dont `demandee_at` est STRICTEMENT antérieure à ce seuil passe à `expiree`. Source unique du `WHERE` du lot 4.
+ */
+export function seuilExpiration(maintenant: Date): Date {
+  return new Date(maintenant.getTime() - DELAI_CONFIRMATION_MS);
+}
+
 /** Date limite de la confirmation par lien (signée dans le lien : la même borne que l'expiration). */
 export function echeanceConfirmation(demandeeAt: Date): Date {
   return new Date(demandeeAt.getTime() + DELAI_CONFIRMATION_MS);

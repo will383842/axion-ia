@@ -54,22 +54,22 @@ export const EXCLUSIONS_EXPORT_DOSSIER: ReadonlyArray<{
   {
     modele: "ApporteurChangementIban",
     motif:
-      "la demande de changement de compte bancaire déposée depuis votre espace d'apporteur (lot 1 du chantier, 2026-11-26 : tables créées, interrupteur éteint, aucune ligne). L'export de ces données (IBAN demandé rendu masqué) est livré avec le lot « RGPD » du même chantier, avant l'allumage ; d'ici là, une demande est traitée à la main sous un mois (contact@axion-ia.com).",
+      "vos demandes de changement de compte bancaire déposées depuis votre espace d'apporteur : leur date, leur état et les quatre derniers caractères du compte demandé vous sont rendus sur demande écrite sous un mois (contact@axion-ia.com) ; l'IBAN d'une demande refusée ou contestée n'est pas rendu, car il peut être celui d'un tiers.",
   },
   {
     modele: "ApporteurChangementIbanRib",
     motif:
-      "la demande de changement de compte bancaire déposée depuis votre espace d'apporteur (lot 1 du chantier, 2026-11-26 : tables créées, interrupteur éteint, aucune ligne). L'export de ces données (IBAN demandé rendu masqué) est livré avec le lot « RGPD » du même chantier, avant l'allumage ; d'ici là, une demande est traitée à la main sous un mois (contact@axion-ia.com).",
+      "le RIB joint à une demande de changement de compte : il peut porter les coordonnées d'un tiers ; sa copie vous est rendue sur demande écrite sous un mois (contact@axion-ia.com), tiers occultés.",
   },
   {
     modele: "ApporteurIbanHistorique",
     motif:
-      "l'historique de vos comptes bancaires successifs (lot 1 du chantier, 2026-11-26 : tables créées, interrupteur éteint, aucune ligne). L'export de ces données (IBAN rendu masqué) est livré avec le lot « RGPD » du même chantier, avant l'allumage ; d'ici là, une demande est traitée à la main sous un mois (contact@axion-ia.com).",
+      "l'historique de vos comptes bancaires successifs : les comptes validés vous sont rendus sur demande écrite sous un mois (contact@axion-ia.com).",
   },
   {
     modele: "ApporteurVirementCompte",
     motif:
-      "la demande de changement de compte bancaire déposée depuis votre espace d'apporteur (lot 1 du chantier, 2026-11-26 : tables créées, interrupteur éteint, aucune ligne). L'export de ces données (IBAN demandé rendu masqué) est livré avec le lot « RGPD » du même chantier, avant l'allumage ; d'ici là, une demande est traitée à la main sous un mois (contact@axion-ia.com).",
+      "le compte (empreinte et quatre derniers caractères, jamais l'IBAN) sur lequel chaque virement vous a été déclaré, par autofacture : rendu sur demande écrite sous un mois (contact@axion-ia.com).",
   },
   {
     modele: "ConsoleCommande",

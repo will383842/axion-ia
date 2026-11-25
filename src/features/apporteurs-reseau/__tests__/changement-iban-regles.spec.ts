@@ -13,6 +13,7 @@ import {
   choixDuCompteDemande,
   compteMasque,
   confirmationExpiree,
+  seuilExpiration,
   decisionEnRetard,
   delaiOppositionEcoule,
   demandePermiseSurLaFenetre,
@@ -85,6 +86,13 @@ describe("expiration de la confirmation", () => {
     expect(
       confirmationExpiree({ statut: "confirmee", demandeeAt: T0 }, apres(T0, 400 * JOUR)),
     ).toBe(false);
+  });
+  it("le seuil de l'écriture conditionnelle est la même borne, strictement", () => {
+    const maintenant = apres(T0, DELAI_CONFIRMATION_MS);
+    expect(seuilExpiration(maintenant).getTime()).toBe(T0.getTime());
+    // `demandee_at < seuil` : à 24 h pile la demande vit encore, une milliseconde avant le seuil elle est expirée.
+    expect(T0.getTime() < seuilExpiration(maintenant).getTime()).toBe(false);
+    expect(apres(T0, -1).getTime() < seuilExpiration(maintenant).getTime()).toBe(true);
   });
   it("l'échéance du lien est la même borne", () => {
     expect(echeanceConfirmation(T0).getTime()).toBe(T0.getTime() + DELAI_CONFIRMATION_MS);

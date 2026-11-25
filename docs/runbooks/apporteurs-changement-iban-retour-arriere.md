@@ -41,3 +41,21 @@ docker exec <conteneur app> /app/prisma-cli/node_modules/.bin/prisma migrate sta
 
 La preuve dure reste l'existence des quatre tables (`\dt apporteur_*`) et de leurs déclencheurs
 (`select tgname from pg_trigger where tgrelid::regclass::text like 'apporteur_%iban%' or tgrelid::regclass::text = 'apporteur_virements_compte'`).
+
+## Limites à connaître (relecture sécurité du lot 1)
+
+- **Les déclencheurs protègent contre une erreur de code, pas contre un rôle compromis.** Le propriétaire d'une
+  table (ou un superutilisateur) peut faire `ALTER TABLE … DISABLE TRIGGER`, `DROP TRIGGER`, ou passer
+  `session_replication_role` en `replica`. « Jamais supprimée » vaut pour le code applicatif. Vérifier, avant
+  l'allumage, que le rôle de connexion de l'application n'est pas propriétaire de ces tables.
+- **Pas de purge en fin de conservation dans ce lot.** Les déclencheurs interdisent de réécrire `iban` et de
+  supprimer une ligne (demandes, historique). Quand la durée de conservation sera arrêtée (décision D-7, lot 8),
+  la purge passera par une migration qui ajoute la sortie voulue au déclencheur : elle n'est pas devinée ici.
+
+## Pour les lots suivants (piège de format)
+
+L'IBAN de la fiche (`apporteurs_reseau.iban`) est chiffré en `enc:v1`. L'historique et les demandes exigent `enc:v2`
+(donnée liée `iban-historique:<id>` / `changement-iban:<id>`, clé exigée) : la validation **déchiffre l'ancien IBAN
+puis le rechiffre en v2**, elle ne copie pas la chaîne. Un v1 copié tel quel est refusé par la base. Le statut des
+demandes est un texte contraint (et non l'énumération nouvelle que le plan §3.2 proposait) : aucune valeur à
+propager entre les deux conteneurs.

@@ -153,7 +153,7 @@ const ROUTE_A_REQUETE_SECRETE =
  * segment `apporteurs/changements-de-compte`, où qu'il soit. Le corps, les cookies et la query sont SUPPRIMÉS.
  */
 const ROUTE_CONSOLE_A_REQUETE_SECRETE =
-  /^(?:[A-Z]+\s+)?(?:https?:\/\/[^/]+)?(?:\/[^/?#]+)*?\/apporteurs\/changements-de-compte(?:\/|$|\?|#)/i;
+  /^(?:[A-Z]+\s+)?(?:https?:\/\/[^/]+)?(?:\/[^/?#]+)*?\/apporteurs\/(?:[^/?#]+\/)?changements-de-compte(?:\/|$|\?|#)/i;
 
 /** En-têtes retirés en entier sur ces routes (en minuscules). */
 const ENTETES_RETIRES = new Set(["next-router-state-tree", "next-action", "referer", "cookie"]);

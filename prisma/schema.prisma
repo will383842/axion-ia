@@ -16602,7 +16602,7 @@ model ApporteurResiliation {
 /// Une ligne par demande, jamais supprimée (déclencheur SQL). Table SÉPARÉE, sans clé étrangère ni énumération
 /// Postgres, à dessein : `apporteurs_reseau` ne change pas pendant la fenêtre app/worker, et tout lecteur tolère
 /// la table absente (P2021). `statut` est un texte contraint par CHECK (pas d'énumération : aucune valeur à
-/// propager entre les deux conteneurs). L'IBAN demandé n'est JAMAIS en clair (CHECK sur le préfixe du chiffrement).
+/// propager entre les deux conteneurs). L'IBAN demandé n'est JAMAIS en clair (CHECK sur le format complet `enc:v2:`).
 /// rgpd: dossier-client
 model ApporteurChangementIban {
   id                     String    @id @default(uuid()) @db.Uuid
@@ -16657,6 +16657,7 @@ model ApporteurChangementIbanRib {
 
 /// Historique des comptes d'un apporteur : un compte par ligne, AJOUT SEUL (déclencheurs : ni DELETE ni TRUNCATE ;
 /// seule `en_vigueur_jusqua` passe de NULL à une date). L'ancien IBAN y est copié à la validation, jamais perdu.
+/// ⚠️ L'IBAN de la fiche est en `enc:v1` : on le DÉCHIFFRE puis on le rechiffre en v2 (donnée liée `iban-historique:<id>`) ; le CHECK refuse un v1 copié tel quel.
 /// rgpd: dossier-client
 model ApporteurIbanHistorique {
   id              String    @id @default(uuid()) @db.Uuid
@@ -16681,14 +16682,18 @@ model ApporteurIbanHistorique {
 /// Sur quel compte un virement est parti (déclaré par « Virement fait »). Ajout seul (déclencheurs).
 /// rgpd: dossier-client
 model ApporteurVirementCompte {
-  autofactureNumero  String   @id @map("autofacture_numero") @db.VarChar(40)
+  id                 String   @id @default(uuid()) @db.Uuid
+  autofactureNumero  String   @map("autofacture_numero") @db.VarChar(40)
   apporteurId        String   @map("apporteur_id") @db.Uuid
   ibanEmpreinte      String   @map("iban_empreinte") @db.Char(64)
   ibanFin4           String   @map("iban_fin4") @db.Char(4)
+  /// Instant du « Virement fait » (celui de `commissions_apporteur.versee_at`) : une autofacture peut être versée en plusieurs fois.
+  verseAt            DateTime @map("verse_at") @db.Timestamptz(3)
   declareAt          DateTime @default(now()) @map("declare_at") @db.Timestamptz(3)
   declarePar         String   @map("declare_par") @db.VarChar(64)
   premierSurCeCompte Boolean  @default(false) @map("premier_sur_ce_compte")
 
+  @@unique([autofactureNumero, verseAt], map: "apporteur_virements_compte_numero_verse_key")
   @@index([apporteurId, declareAt], map: "apporteur_virements_compte_apporteur_idx")
   @@map("apporteur_virements_compte")
 }

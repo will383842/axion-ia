@@ -47,7 +47,8 @@ ALTER TABLE "apporteur_changements_iban" ADD CONSTRAINT "apporteur_changements_i
   "origine" IN ('espace', 'console')
 );
 -- L'IBAN n'est JAMAIS en clair : le FORMAT complet de `encryptPii` v2 (`iv:chiffré:tag` en hexadécimal) est exigé,
--- un simple préfixe laisserait passer « enc:v2:FR76… ».
+-- un simple préfixe laisserait passer « enc:v2:FR76… ». ⚠️ L'IBAN de la fiche est en `enc:v1` : le copier tel quel
+-- dans l'historique est REFUSÉ ; le code déchiffre puis rechiffre en v2 avec la donnée liée (plan §3.2).
 ALTER TABLE "apporteur_changements_iban" ADD CONSTRAINT "apporteur_changements_iban_iban_chiffre" CHECK (
   "iban" ~ '^enc:v2:[0-9a-f]{24}:[0-9a-f]+:[0-9a-f]{32}$'
 );
@@ -63,6 +64,8 @@ ALTER TABLE "apporteur_changements_iban" ADD CONSTRAINT "apporteur_changements_i
   AND ("statut" <> 'validee' OR ("traitee_at" IS NOT NULL AND "traitee_par" IS NOT NULL))
   AND ("statut" <> 'refusee' OR ("traitee_at" IS NOT NULL AND "traitee_par" IS NOT NULL
         AND "motif_refus" IS NOT NULL AND length(btrim("motif_refus")) > 0))
+  -- Défense en profondeur du délai d'opposition : une validation date d'au moins 72 h après la confirmation.
+  AND ("statut" <> 'validee' OR "traitee_at" >= "confirmee_at" + interval '72 hours')
   AND ("statut" <> 'opposee' OR "opposee_at" IS NOT NULL)
   AND ("statut" <> 'annulee' OR "annulee_at" IS NOT NULL)
   AND ("statut" <> 'expiree' OR "expiree_at" IS NOT NULL)
@@ -101,8 +104,18 @@ BEGIN
           OR NEW."motif_refus" IS DISTINCT FROM OLD."motif_refus"
           OR NEW."opposee_at" IS DISTINCT FROM OLD."opposee_at"
           OR NEW."annulee_at" IS DISTINCT FROM OLD."annulee_at"
-          OR NEW."expiree_at" IS DISTINCT FROM OLD."expiree_at") THEN
+          OR NEW."expiree_at" IS DISTINCT FROM OLD."expiree_at"
+          OR NEW."controles" IS DISTINCT FROM OLD."controles"
+          OR NEW."avis_envoye_at" IS DISTINCT FROM OLD."avis_envoye_at"
+          OR NEW."confirmation_ip_hash" IS DISTINCT FROM OLD."confirmation_ip_hash"
+          OR NEW."confirmation_navigateur" IS DISTINCT FROM OLD."confirmation_navigateur") THEN
     RAISE EXCEPTION 'apporteur_changements_iban : une demande décidée est figée';
+  END IF;
+  -- La preuve de la confirmation ne se réécrit pas une fois posée (le délai de 72 h repose sur `confirmee_at`).
+  IF (OLD."confirmee_at" IS NOT NULL AND NEW."confirmee_at" IS DISTINCT FROM OLD."confirmee_at")
+     OR (OLD."confirmation_ip_hash" IS NOT NULL AND NEW."confirmation_ip_hash" IS DISTINCT FROM OLD."confirmation_ip_hash")
+     OR (OLD."confirmation_navigateur" IS NOT NULL AND NEW."confirmation_navigateur" IS DISTINCT FROM OLD."confirmation_navigateur") THEN
+    RAISE EXCEPTION 'apporteur_changements_iban : la preuve de la confirmation ne change plus';
   END IF;
   -- Une demande confirmée ne revient pas en arrière ; on ne saute pas à « validée » sans être passé par « confirmée ».
   IF NEW."statut" IS DISTINCT FROM OLD."statut" THEN
@@ -117,12 +130,31 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
+-- Une demande NAÎT « à confirmer », sans aucune trace d'étape ultérieure : on ne l'insère jamais déjà confirmée,
+-- ni validée, ni avec une confirmation antidatée (le délai de 72 h et l'e-mail de confirmation ne se contournent pas).
+CREATE FUNCTION "apporteur_changements_iban_garde_insert"() RETURNS trigger AS $$
+BEGIN
+  IF NEW."statut" <> 'a_confirmer'
+     OR NEW."avis_envoye_at" IS NOT NULL OR NEW."confirmee_at" IS NOT NULL
+     OR NEW."confirmation_ip_hash" IS NOT NULL OR NEW."confirmation_navigateur" IS NOT NULL
+     OR NEW."opposee_at" IS NOT NULL OR NEW."annulee_at" IS NOT NULL OR NEW."expiree_at" IS NOT NULL
+     OR NEW."traitee_at" IS NOT NULL OR NEW."traitee_par" IS NOT NULL
+     OR NEW."motif_refus" IS NOT NULL OR NEW."controles" IS NOT NULL THEN
+    RAISE EXCEPTION 'apporteur_changements_iban : une demande naît « a_confirmer », sans trace d''étape ultérieure';
+  END IF;
+  RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
 CREATE TRIGGER "apporteur_changements_iban_no_delete"
   BEFORE DELETE ON "apporteur_changements_iban"
   FOR EACH ROW EXECUTE FUNCTION "apporteur_changements_iban_refuse_delete"();
 CREATE TRIGGER "apporteur_changements_iban_no_truncate"
   BEFORE TRUNCATE ON "apporteur_changements_iban"
   FOR EACH STATEMENT EXECUTE FUNCTION "apporteur_changements_iban_refuse_delete"();
+CREATE TRIGGER "apporteur_changements_iban_garde_ins"
+  BEFORE INSERT ON "apporteur_changements_iban"
+  FOR EACH ROW EXECUTE FUNCTION "apporteur_changements_iban_garde_insert"();
 CREATE TRIGGER "apporteur_changements_iban_garde"
   BEFORE UPDATE ON "apporteur_changements_iban"
   FOR EACH ROW EXECUTE FUNCTION "apporteur_changements_iban_garde_update"();
@@ -155,6 +187,43 @@ ALTER TABLE "apporteur_changements_iban_rib" ADD CONSTRAINT "apporteur_changemen
   "octets" IS NULL OR substring("octets" FROM 1 FOR 4) = '\x41584231'::bytea
 );
 
+-- Un RIB joint n'est ni supprimé ni remplacé : seule la PURGE est permise (octets -> NULL avec `purge_at`).
+CREATE FUNCTION "apporteur_changements_iban_rib_refuse_delete"() RETURNS trigger AS $$
+BEGIN
+  RAISE EXCEPTION 'apporteur_changements_iban_rib : suppression interdite (seule la purge des octets est permise)';
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE FUNCTION "apporteur_changements_iban_rib_garde_update"() RETURNS trigger AS $$
+BEGIN
+  IF NEW."demande_id" IS DISTINCT FROM OLD."demande_id"
+     OR NEW."sha256" IS DISTINCT FROM OLD."sha256"
+     OR NEW."type_mime" IS DISTINCT FROM OLD."type_mime"
+     OR NEW."taille" IS DISTINCT FROM OLD."taille"
+     OR NEW."nom_fichier" IS DISTINCT FROM OLD."nom_fichier"
+     OR NEW."depose_at" IS DISTINCT FROM OLD."depose_at" THEN
+    RAISE EXCEPTION 'apporteur_changements_iban_rib : seule la purge des octets est permise';
+  END IF;
+  IF NEW."octets" IS DISTINCT FROM OLD."octets" AND NOT (NEW."octets" IS NULL AND OLD."octets" IS NOT NULL) THEN
+    RAISE EXCEPTION 'apporteur_changements_iban_rib : les octets ne sont jamais remplacés, seulement purgés';
+  END IF;
+  IF OLD."purge_at" IS NOT NULL AND NEW."purge_at" IS DISTINCT FROM OLD."purge_at" THEN
+    RAISE EXCEPTION 'apporteur_changements_iban_rib : la date de purge ne change plus';
+  END IF;
+  RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER "apporteur_changements_iban_rib_no_delete"
+  BEFORE DELETE ON "apporteur_changements_iban_rib"
+  FOR EACH ROW EXECUTE FUNCTION "apporteur_changements_iban_rib_refuse_delete"();
+CREATE TRIGGER "apporteur_changements_iban_rib_no_truncate"
+  BEFORE TRUNCATE ON "apporteur_changements_iban_rib"
+  FOR EACH STATEMENT EXECUTE FUNCTION "apporteur_changements_iban_rib_refuse_delete"();
+CREATE TRIGGER "apporteur_changements_iban_rib_garde"
+  BEFORE UPDATE ON "apporteur_changements_iban_rib"
+  FOR EACH ROW EXECUTE FUNCTION "apporteur_changements_iban_rib_garde_update"();
+
 -- ── C. L'historique des comptes (ajout seul) ───────────────────────────────────────────────────────────────────
 CREATE TABLE "apporteur_iban_historique" (
   "id" UUID NOT NULL,
@@ -172,6 +241,11 @@ CREATE TABLE "apporteur_iban_historique" (
 );
 CREATE INDEX "apporteur_iban_historique_apporteur_idx" ON "apporteur_iban_historique" ("apporteur_id", "cree_at");
 CREATE INDEX "apporteur_iban_historique_empreinte_idx" ON "apporteur_iban_historique" ("iban_empreinte");
+-- Un seul compte EN VIGUEUR par apporteur, et une seule ligne d'historique par demande (rejeu du script de reprise).
+CREATE UNIQUE INDEX "apporteur_iban_historique_un_courant"
+  ON "apporteur_iban_historique" ("apporteur_id") WHERE "en_vigueur_jusqua" IS NULL;
+CREATE UNIQUE INDEX "apporteur_iban_historique_une_par_demande"
+  ON "apporteur_iban_historique" ("demande_id") WHERE "demande_id" IS NOT NULL;
 
 ALTER TABLE "apporteur_iban_historique" ADD CONSTRAINT "apporteur_iban_historique_origine" CHECK (
   "origine" IN ('dossier_initial', 'changement')
@@ -228,15 +302,22 @@ CREATE TRIGGER "apporteur_iban_historique_garde"
 
 -- ── D. Sur quel compte un virement est parti (ajout seul) ──────────────────────────────────────────────────────
 CREATE TABLE "apporteur_virements_compte" (
+  "id" UUID NOT NULL,
   "autofacture_numero" VARCHAR(40) NOT NULL,
   "apporteur_id" UUID NOT NULL,
   "iban_empreinte" CHAR(64) NOT NULL,
   "iban_fin4" CHAR(4) NOT NULL,
+  -- Instant du « Virement fait » (le même que `commissions_apporteur.versee_at`) : une autofacture peut être
+  -- versée en PLUSIEURS fois (complément après une ligne suspendue), sur des comptes différents.
+  "verse_at" TIMESTAMPTZ(3) NOT NULL,
   "declare_at" TIMESTAMPTZ(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
   "declare_par" VARCHAR(64) NOT NULL,
   "premier_sur_ce_compte" BOOLEAN NOT NULL DEFAULT false,
-  CONSTRAINT "apporteur_virements_compte_pkey" PRIMARY KEY ("autofacture_numero")
+  CONSTRAINT "apporteur_virements_compte_pkey" PRIMARY KEY ("id")
 );
+-- Le rejeu d'un même « Virement fait » (même autofacture, même instant) n'écrit pas deux lignes.
+CREATE UNIQUE INDEX "apporteur_virements_compte_numero_verse_key"
+  ON "apporteur_virements_compte" ("autofacture_numero", "verse_at");
 CREATE INDEX "apporteur_virements_compte_apporteur_idx" ON "apporteur_virements_compte" ("apporteur_id", "declare_at");
 ALTER TABLE "apporteur_virements_compte" ADD CONSTRAINT "apporteur_virements_compte_empreinte" CHECK (
   "iban_empreinte" ~ '^[0-9a-f]{64}$' AND "iban_fin4" ~ '^[A-Z0-9]{4}$'
