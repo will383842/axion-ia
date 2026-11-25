@@ -327,10 +327,10 @@ describe("occupation de l'entreprise : jamais deux apporteurs (I4 et I5)", () =>
     expect(presentationOccupe(p, j(30), enAttente(j(-1)))).toBe(true);
   });
 
-  it("I4 · sans rendez-vous en attente (absent ou null) : libre à J+61, comme avant", () => {
-    expect(presentationOccupe(p, j(61), enAttente(null))).toBe(false);
-    expect(presentationOccupe(p, j(61), { recueAt: SAISIE, reserveeJusquAt: FIN })).toBe(false);
-    expect(presentationOccupe(p, j(60), enAttente(null))).toBe(true);
+  it("I4 · sans rendez-vous en attente (absent ou null) : libre à J+60, comme avant", () => {
+    expect(presentationOccupe(p, j(60), enAttente(null))).toBe(false);
+    expect(presentationOccupe(p, j(60), { recueAt: SAISIE, reserveeJusquAt: FIN })).toBe(false);
+    expect(presentationOccupe(p, j(59), enAttente(null))).toBe(true);
   });
 
   it("I5 · une réservation de date illisible continue d'occuper, et l'état dit la même chose", () => {
@@ -590,13 +590,13 @@ describe("avec une reservation : commandeCouverte", () => {
   const reservation = { reserveeJusquAt: FIN, statut: "reservee" };
   const nonConfirmee = { recueAt: SAISIE, confirmee: false, protegeeJusquAt: null, reservation };
 
-  it("J+59 couverte, J+60 pile couverte, J+61 non couverte", () => {
+  it("J+58 couverte, J+59 pile couverte, J+60 non couverte", () => {
+    expect(commandeCouverte({ ...nonConfirmee, signeeAt: j(58) })).toBe(true);
     expect(commandeCouverte({ ...nonConfirmee, signeeAt: j(59) })).toBe(true);
-    expect(commandeCouverte({ ...nonConfirmee, signeeAt: j(60) })).toBe(true);
     expect(commandeCouverte({ ...nonConfirmee, signeeAt: new Date(FIN.getTime() + 1) })).toBe(
       false,
     );
-    expect(commandeCouverte({ ...nonConfirmee, signeeAt: j(61) })).toBe(false);
+    expect(commandeCouverte({ ...nonConfirmee, signeeAt: j(60) })).toBe(false);
   });
 
   it("signée à l'instant de la saisie : couverte ; avant la saisie : non couverte", () => {
@@ -680,11 +680,11 @@ describe("avec une reservation : présentation reservee", () => {
   const reservation = { recueAt: SAISIE, reserveeJusquAt: FIN };
   const p = { statut: "reservee" as const, protegeeJusquAt: null };
 
-  it("occupe à J+59 et à J+60 pile, n'occupe plus à J+61", () => {
+  it("occupe à J+58 et à J+59 pile, n'occupe plus à J+60", () => {
+    expect(presentationOccupe(p, j(58), reservation)).toBe(true);
     expect(presentationOccupe(p, j(59), reservation)).toBe(true);
-    expect(presentationOccupe(p, j(60), reservation)).toBe(true);
     expect(presentationOccupe(p, new Date(FIN.getTime() + 1), reservation)).toBe(false);
-    expect(presentationOccupe(p, j(61), reservation)).toBe(false);
+    expect(presentationOccupe(p, j(60), reservation)).toBe(false);
   });
 
   it("la reservation ne touche pas les autres statuts", () => {
@@ -712,7 +712,7 @@ describe("avec une reservation : présentation reservee", () => {
         etat: "reservee",
         jusquAu: FIN,
       });
-      expect(etatPourApporteur(pres, j(60), reservation)).toEqual({
+      expect(etatPourApporteur(pres, j(59), reservation)).toEqual({
         etat: "reservee",
         jusquAu: FIN,
       });
@@ -720,7 +720,7 @@ describe("avec une reservation : présentation reservee", () => {
         etat: "expiree",
         jusquAu: FIN,
       });
-      expect(etatPourApporteur(pres, j(61), reservation)).toEqual({
+      expect(etatPourApporteur(pres, j(60), reservation)).toEqual({
         etat: "expiree",
         jusquAu: FIN,
       });
