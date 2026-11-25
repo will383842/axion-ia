@@ -104,3 +104,35 @@ describe("decisionFactCheckClaude", () => {
     expect(verifier).toHaveBeenCalledTimes(1); // pas de second essai ailleurs
   });
 });
+
+import { factCheckClaudePasse, MARQUEUR_FACT_CHECK_CLAUDE } from "../fact-check-claude";
+import {
+  MAX_RECHERCHES,
+  fraisFixesMaxUsd,
+  JETONS_ENTREE_PAR_RECHERCHE,
+} from "../../clients/claude-search";
+
+describe("preuve de vérification et réservation", () => {
+  it("le marqueur n'est reconnu que s'il vaut exactement true", () => {
+    expect(factCheckClaudePasse({ [MARQUEUR_FACT_CHECK_CLAUDE]: true })).toBe(true);
+    for (const v of [null, undefined, {}, { [MARQUEUR_FACT_CHECK_CLAUDE]: "true" }, "x"]) {
+      expect(factCheckClaudePasse(v)).toBe(false);
+    }
+  });
+  it("la réservation couvre l'entrée cumulée (quadratique), pas linéaire", () => {
+    const lineaire = MAX_RECHERCHES * JETONS_ENTREE_PAR_RECHERCHE * (2 / 1e6);
+    expect(fraisFixesMaxUsd()).toBeGreaterThan(2 * lineaire);
+  });
+  it("phrases dupliquées : envoyées une seule fois", async () => {
+    const verifier = vi.fn(async (a: { affirmations: ReadonlyArray<string> }) =>
+      resultat(a.affirmations.map(() => "verifiee" as const)),
+    );
+    await decisionFactCheckClaude(
+      { ...base, texte: "Le taux atteint 12 % et 3 millions d'euros en 2025." },
+      verifier,
+    );
+    const envoyees = (verifier.mock.calls[0] as unknown as [{ affirmations: string[] }])[0]
+      .affirmations;
+    expect(new Set(envoyees).size).toBe(envoyees.length);
+  });
+});

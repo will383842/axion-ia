@@ -24,12 +24,12 @@ import type { GenerationRequest } from "../providers/IProvider";
 
 const URL_API = "https://api.anthropic.com/v1/messages";
 const VERSION_API = "2023-06-01";
-const DELAI_MS = 120_000;
+const DELAI_MS = 300_000;
 
 /** Tarif public de l'outil `web_search` : 10 $ pour 1 000 recherches. */
 export const PRIX_RECHERCHE_USD = 10 / 1000;
 /** Recherches autorisées par appel (borne dure envoyée à l'API : `max_uses`). */
-export const MAX_RECHERCHES = 8;
+export const MAX_RECHERCHES = 5;
 /** Affirmations vérifiées par appel ; au-delà, les autres restent NON vérifiées. */
 export const MAX_AFFIRMATIONS = 12;
 /**
@@ -138,11 +138,23 @@ function promptUtilisateur(affirmations: ReadonlyArray<string>): string {
   );
 }
 
-/** Réserve maximale de frais fixes : recherches + jetons d'entrée des résultats. */
+/**
+ * Réserve maximale de frais fixes : recherches + jetons. Avec l'outil serveur, chaque tour de
+ * la boucle interne RELIT tous les résultats précédents en entrée : pour n recherches
+ * successives, l'entrée cumulée vaut au plus R × n(n+1)/2 (borne quadratique, pas linéaire).
+ * La sortie est comptée à `max_tokens` pour chacun des n+1 tours.
+ */
 export function fraisFixesMaxUsd(): number {
+  const n = MAX_RECHERCHES;
   return (
-    MAX_RECHERCHES * PRIX_RECHERCHE_USD +
-    computeCost(MODELES.court, MAX_RECHERCHES * JETONS_ENTREE_PAR_RECHERCHE, 0, 0, 0)
+    n * PRIX_RECHERCHE_USD +
+    computeCost(
+      MODELES.court,
+      JETONS_ENTREE_PAR_RECHERCHE * ((n * (n + 1)) / 2),
+      MAX_TOKENS_SORTIE * n,
+      0,
+      0,
+    )
   );
 }
 

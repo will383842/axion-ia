@@ -49,6 +49,7 @@ import {
 import {
   decisionFactCheckClaude,
   factCheckClaudeActif,
+  MARQUEUR_FACT_CHECK_CLAUDE,
 } from "@/server/content-gen/fact-check/fact-check-claude";
 import { financementPublicCitable } from "@/server/qualiopi/config/financing";
 import { readContentGenConfig } from "@/server/actions/content-gen/_settings";
@@ -1011,15 +1012,22 @@ async function processJob(job: Job<ContentGenJobPayload>): Promise<void> {
     // barrière de relecture (article NON publié) ; jamais de repli sur OpenAI/Perplexity.
     // Les sources trouvées (URL) sont gardées dans `sourcesFactCheck` du résultat persisté.
     let sourcesFactCheck: ReadonlyArray<{ url: string; title: string }> | null = null;
+    let factCheckClaudeAboutiSansReserve = false;
+    let coutFactCheckUsd = 0;
     if (factCheckClaudeActif(contentType)) {
       const decisionFc = await decisionFactCheckClaude({
         jobId: contentGenJobId,
         contentType,
-        texte: [output.directAnswer, output.bodyHtml, ...output.faq.map((f) => f.answer)].join(
-          ". ",
-        ),
+        texte: [
+          output.title,
+          output.directAnswer,
+          output.bodyHtml,
+          ...output.faq.map((f) => f.answer),
+        ].join(". "),
       });
       sourcesFactCheck = decisionFc.sources;
+      coutFactCheckUsd = decisionFc.coutUsd;
+      factCheckClaudeAboutiSansReserve = decisionFc.barriere === null;
       await logStep(
         contentGenJobId,
         "validation",
@@ -1280,7 +1288,10 @@ async function processJob(job: Job<ContentGenJobPayload>): Promise<void> {
       // pour alimenter la dedup cross-entry des prochaines générations).
       topicFingerprint,
       // PR 5 — sources du fact-check par Claude (clé ABSENTE tant que le drapeau est éteint).
-      ...(sourcesFactCheck ? { sourcesFactCheck } : {}),
+      ...(sourcesFactCheck ? { sourcesFactCheck, coutFactCheckUsd } : {}),
+      // Preuve de vérification : seule sa présence permet de sauter le fact-check d'avant
+      // et de publier (cf. content-publish-worker, content-fact-check-worker).
+      ...(factCheckClaudeAboutiSansReserve ? { [MARQUEUR_FACT_CHECK_CLAUDE]: true } : {}),
       // Lot L2 — barrières de relecture franchies (traçabilité console).
       ...(barrieresFail
         ? {

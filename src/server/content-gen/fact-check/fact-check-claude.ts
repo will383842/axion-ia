@@ -10,22 +10,15 @@
  */
 
 import type { BarriereRelecture } from "../quality/barrieres-publication";
-import { lireTypesClaude } from "../providers/types-claude";
 import { extractClaims } from "./claims-extractor";
 import { verifierAffirmationsAvecClaude, type ResultatFactCheck } from "../clients/claude-search";
 
-export type EnvFactCheck = Readonly<Record<string, string | undefined>>;
-
-export function factCheckClaudeActif(
-  contentType: string,
-  env: EnvFactCheck = process.env,
-): boolean {
-  return (
-    env["CONTENT_GEN_FACTCHECK_CLAUDE"] === "true" &&
-    env["CONTENT_GEN_BLOG_CLAUDE"] === "true" &&
-    lireTypesClaude(env["CONTENT_GEN_CLAUDE_TYPES"], () => undefined).has(contentType)
-  );
-}
+export {
+  factCheckClaudeActif,
+  factCheckClaudePasse,
+  MARQUEUR_FACT_CHECK_CLAUDE,
+  type EnvFactCheck,
+} from "./fact-check-claude-drapeau";
 
 export interface DecisionFactCheckClaude {
   readonly barriere: BarriereRelecture | null;
@@ -47,7 +40,8 @@ export async function decisionFactCheckClaude(
   },
   verifier: Verifier = verifierAffirmationsAvecClaude,
 ): Promise<DecisionFactCheckClaude> {
-  const affirmations = extractClaims(args.texte).map((c) => c.sentence);
+  // Phrases dédoublonnées : un même énoncé revient une fois par motif détecté et serait payé N fois.
+  const affirmations = [...new Set(extractClaims(args.texte).map((c) => c.sentence))];
   if (affirmations.length === 0) {
     return { barriere: null, sources: [], affirmations: 0, coutUsd: 0, recherches: 0 };
   }

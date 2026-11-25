@@ -36,7 +36,10 @@ import { readContentGenConfig } from "@/server/actions/content-gen/_settings";
 import { readKillSwitchFailSafe } from "@/server/content-gen/config-store";
 import { revalidateContent } from "@/server/content-gen/shared/revalidate-content";
 import { captureWorkerError } from "@/server/queue/lib/sentry-worker";
-import { factCheckClaudeActif } from "@/server/content-gen/fact-check/fact-check-claude";
+import {
+  factCheckClaudeActif,
+  factCheckClaudePasse,
+} from "@/server/content-gen/fact-check/fact-check-claude-drapeau";
 
 const QUEUE_NAME = "content-fact-check";
 
@@ -190,9 +193,15 @@ async function processJob(job: Job<FactCheckJobPayload>): Promise<void> {
     // repli silencieux vers Perplexity.
     const jobPourType = await prisma.contentGenJob.findUnique({
       where: { id: contentGenJobId },
-      select: { contentType: true },
+      select: { contentType: true, outputJsonRaw: true },
     });
-    if (jobPourType && factCheckClaudeActif(jobPourType.contentType)) {
+    // Saut SEULEMENT sur preuve (marqueur écrit par le worker de génération). Sans preuve
+    // (job généré avant l'allumage), le contrôle d'avant s'applique : jamais « non vérifié ».
+    if (
+      jobPourType &&
+      factCheckClaudeActif(jobPourType.contentType) &&
+      factCheckClaudePasse(jobPourType.outputJsonRaw)
+    ) {
       console.log(
         `[fact-check] article ${articleId} : vérifié avant publication par Claude, Perplexity/OpenAI non appelés`,
       );
