@@ -6,8 +6,14 @@ import { encryptPii } from "@/lib/pii-crypto";
 import { hashEmailForLookup } from "@/lib/security/email-hash";
 import { jetonDossier } from "@/features/apporteurs-reseau/jeton";
 
-const url = process.env["DATABASE_URL"] ?? "";
-if (!/@(127\.0\.0\.1|localhost):/.test(url)) throw new Error("base non locale : refus");
+// Garde stricte : bac à sable explicite, hôte local ET nom de base de test (un tunnel SSH vers la
+// production sur localhost ne passe donc pas).
+if (process.env["APPORTEUR_BAC_A_SABLE"] !== "1") throw new Error("APPORTEUR_BAC_A_SABLE=1 requis");
+const cible = new URL(process.env["DATABASE_URL"] ?? "postgresql://x@invalide/x");
+if (!["localhost", "127.0.0.1", "::1", "[::1]"].includes(cible.hostname))
+  throw new Error("base non locale : refus");
+if (!/(e2e|test|bac)/i.test(cible.pathname))
+  throw new Error("nom de base hors bac à sable : refus");
 
 const court = process.argv[2] ?? "demo";
 const statut = (process.argv[3] ?? "signe") as "signe" | "dossier_en_cours";

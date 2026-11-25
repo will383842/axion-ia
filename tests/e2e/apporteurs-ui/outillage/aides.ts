@@ -39,7 +39,10 @@ export interface EmailCapture {
 
 /** Les e-mails en file (jamais envoyés) dont la charge contient `motif`. */
 export async function emailsCaptures(motif: string | RegExp): Promise<EmailCapture[]> {
-  const redis = new Redis(process.env["REDIS_URL"] ?? "redis://127.0.0.1:6379");
+  const adresse = process.env["REDIS_URL"] ?? "redis://127.0.0.1:6379";
+  if (!["localhost", "127.0.0.1", "::1", "[::1]"].includes(new URL(adresse).hostname))
+    throw new Error("Redis non local : refus");
+  const redis = new Redis(adresse);
   try {
     const out: EmailCapture[] = [];
     for (const cle of await redis.keys("bull:*")) {

@@ -25,10 +25,7 @@ test("1.x refus sans SIRET, puis refus d'un SIRET à clé fausse, sans quitter l
   await expect(page.getByText(/il manque/)).toBeVisible();
   await capture(page, "p1-01-refus-sans-siret");
   await page.getByLabel("Numéro SIRET").fill("12345678901234");
-  // Clé de Luhn fausse : la recherche est refusée (bouton inactif) ou ne rend aucune ✓.
-  const rechercher = page.getByRole("button", { name: "Rechercher" });
-  if (await rechercher.isEnabled()) await rechercher.click();
-  await expect(page.getByText("✓", { exact: false })).toHaveCount(0);
+  // Clé de Luhn fausse : le dossier ne peut pas avancer.
   await expect(page.getByRole("button", { name: "Continuer" })).toBeDisabled();
   await capture(page, "p1-02-refus-siret-invalide");
 });

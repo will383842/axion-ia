@@ -22,7 +22,7 @@ test("6.1 résiliation 11.1 : notification enregistrée, effet à 00 h le 31e jo
   await page.getByLabel("Je confirme la résiliation de ce contrat.").check();
   await capture(page, "p6-01-formulaire");
   await page.getByRole("button", { name: "Notifier la résiliation" }).click();
-  await page.waitForTimeout(3000);
+  await expect(page.locator("main")).toContainText("Résiliation notifiée", { timeout: 60_000 });
   await capture(page, "p6-02-apres-notification");
   const corps = await page.locator("main").innerText();
   const effet = new Date(`${jour}T00:00:00Z`);
@@ -45,7 +45,13 @@ test("6.2 échec : sans la case de confirmation, rien n'est notifié", async ({ 
   await page.getByText("Résilier le contrat").first().click();
   await page.getByLabel("Date de la notification écrite").fill(aujourdhuiParis());
   await page.getByRole("button", { name: "Notifier la résiliation" }).click();
-  await page.waitForTimeout(1500);
+  // La case est obligatoire : le navigateur bloque l'envoi avant tout appel serveur.
+  expect(
+    await page
+      .getByLabel("Je confirme la résiliation de ce contrat.")
+      .evaluate((e: HTMLInputElement) => e.validity.valueMissing),
+  ).toBe(true);
+  await expect(page.locator("main")).not.toContainText("Résiliation notifiée");
   expect(await emailsCaptures(a.email)).toHaveLength(0);
   await capture(page, "p6-03-sans-confirmation");
 });

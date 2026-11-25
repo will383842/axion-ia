@@ -31,17 +31,19 @@ test("7.1 « Besoin d'aide » : message trop court refusé, puis envoyé et capt
   await page.waitForURL(/\/aide$/);
   await page.getByLabel("Votre question porte sur").selectOption({ label: "Mes commissions" });
   await page.getByLabel("Votre message").fill("court");
-  await page.getByRole("button", { name: "Envoyer mon message" }).click();
+  // Refusé par le formulaire lui-même (10 caractères au moins) : rien ne part.
+  expect(
+    await page
+      .getByLabel("Votre message")
+      .evaluate((e: HTMLTextAreaElement) => e.validity.tooShort),
+  ).toBe(true);
   await capture(page, "p7-01-aide-trop-court");
-  // Refusé : on reste sur le formulaire, aucun accusé d'envoi.
-  await expect(page.getByText("Votre message est bien parti")).toHaveCount(0);
-  await expect(page.getByLabel("Votre message")).toBeVisible();
-  const message = "Bonjour, ma question de test fictive sur le calcul de ma commission, merci.";
+  const message = `Bonjour, question de test fictive ${Date.now()} sur le calcul de ma commission, merci.`;
   await page.getByLabel("Votre message").fill(message);
   await page.getByRole("button", { name: "Envoyer mon message" }).click();
   await expect(page.getByText(/bien parti/).first()).toBeVisible({ timeout: 60_000 });
   await capture(page, "p7-02-aide-envoyee");
-  const mails = await emailsCaptures("ma question de test fictive");
+  const mails = await emailsCaptures(String(message.match(/\d{13}/)![0]));
   expect(mails.length, "un e-mail interne attendu en file").toBeGreaterThan(0);
 });
 

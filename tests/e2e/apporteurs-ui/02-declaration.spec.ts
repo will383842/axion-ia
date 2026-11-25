@@ -6,6 +6,7 @@ import { ADMIN_PREFIX, loginAsAdmin } from "../fixtures/admin-auth";
 import {
   aujourdhuiParis,
   capture,
+  emailsCaptures,
   refuserCookies,
   semer,
   siretDe,
@@ -26,13 +27,14 @@ async function remplir(page: Page, siret: string, nom: string, extra: Record<str
   await page
     .locator('input[name="personneEmail"]')
     .fill(extra["email"] ?? "contact.fictif@exemple.invalid");
-  await page.locator('input[name="personneTelephone"]').fill(extra["tel"] ?? "0498765432");
+  await page.locator('input[name="personneTelephone"]').fill(extra["tel"] ?? "0639980001");
   await page.locator('input[name="dateContact"]').fill(extra["date"] ?? aujourdhuiParis());
 }
 
 let a: ApporteurSeme;
 let b: ApporteurSeme;
-const SIRET = siretDe("552100554");
+const SIRET = siretDe("987654325"); // SIREN fabriqué (clé de Luhn valide), sans titulaire connu
+const NOM = `Boulangerie Fictive ${Date.now()}`;
 
 test.describe.serial("@apporteur parcours 2 — déclaration", () => {
   test.beforeAll(() => {
@@ -47,11 +49,11 @@ test.describe.serial("@apporteur parcours 2 — déclaration", () => {
     await refuserCookies(page);
     await expect(page.getByText("Aucune déclaration pour le moment.")).toBeVisible(); // état vide
     await capture(page, "p2-01-etat-vide");
-    await remplir(page, SIRET, "Boulangerie Fictive SARL");
+    await remplir(page, SIRET, NOM);
     await page.getByRole("button", { name: "Déclarer cette entreprise" }).click();
     await expect(page.getByText("Déclaration reçue")).toBeVisible({ timeout: 60_000 });
     await page.reload({ waitUntil: "domcontentloaded" });
-    await expect(page.getByText("Boulangerie Fictive SARL").first()).toBeVisible();
+    await expect(page.getByText(NOM).first()).toBeVisible();
     await capture(page, "p2-02-declaree");
   });
 
@@ -84,7 +86,7 @@ test.describe.serial("@apporteur parcours 2 — déclaration", () => {
     page,
   }) => {
     await page.goto(a.lien, { waitUntil: "domcontentloaded" });
-    await remplir(page, SIRET, "Boulangerie Fictive SARL");
+    await remplir(page, SIRET, NOM);
     await page.getByRole("button", { name: "Déclarer cette entreprise" }).click();
     await expect(page.getByText("Vous avez déjà déclaré cet établissement.")).toBeVisible({
       timeout: 60_000,
@@ -96,7 +98,7 @@ test.describe.serial("@apporteur parcours 2 — déclaration", () => {
     page,
   }) => {
     await page.goto(b.lien, { waitUntil: "domcontentloaded" });
-    await remplir(page, SIRET, "Boulangerie Fictive SARL");
+    await remplir(page, SIRET, NOM);
     await page.getByRole("button", { name: "Déclarer cette entreprise" }).click();
     // ÉCART au rapport : la règle cible (« personne d'autre ne peut la déclarer ») n'est pas appliquée à
     // la déclaration ; deux apporteurs peuvent réserver le même SIREN, la console arbitre.
@@ -113,7 +115,9 @@ test.describe.serial("@apporteur parcours 2 — déclaration", () => {
     await page.goto(`/fr/${ADMIN_PREFIX}/apporteurs/entreprises?onglet=a-traiter`, {
       waitUntil: "domcontentloaded",
     });
-    await expect(page.getByText("Boulangerie Fictive SARL").first()).toBeVisible();
+    await expect(page.getByText(NOM).first()).toBeVisible();
     await capture(page, "p2-06-console-a-traiter");
+    // L'alerte interne de la déclaration est bien en file (rien n'est envoyé).
+    expect((await emailsCaptures(NOM)).length).toBeGreaterThan(0);
   });
 });
