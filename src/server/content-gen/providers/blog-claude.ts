@@ -320,17 +320,23 @@ export async function genererTexteBlogClaude(
   } catch (err) {
     // Échec : la réservation reste au maximum (ou soldée par le fournisseur).
     if (err instanceof ProviderError && err.provider === "anthropic") {
+      // Rotation des clés : `toutesEpuisees` est posé par le fournisseur. Un refus de
+      // crédit ou d'authentification d'UNE clé sur plusieurs (la rotation a pris la
+      // suivante, ou l'erreur est arrivée en cours de flux) ne compte JAMAIS : il ne doit
+      // ni alerter « crédit refusé » ni approcher la suspension du générateur. Avec une
+      // seule clé configurée le fournisseur pose `true` : comportement d'avant.
+      const toutesEpuisees = (err as { toutesEpuisees?: unknown }).toutesEpuisees === true;
       if (err.code === "quota_exhausted") {
-        await enregistrerRefusCredit();
+        if (toutesEpuisees) await enregistrerRefusCredit();
         throw refuser(err.message, "credit_refuse");
       }
       // 401/403 répétés (clé révoquée, mauvaise organisation) : même compteur, même
       // suspension — sinon les jobs échoueraient sans fin tant que la clé est mauvaise.
       // Seuls les VRAIS refus HTTP comptent (statut 401/403 copié par mapAnthropicError) :
       // « fournisseur désactivé » ou « clé absente » sont aussi `auth_failed` sans statut,
-      // et ne doivent pas suspendre le blog.
+      // et ne doivent pas suspendre le blog. Et seulement si TOUTES les clés sont refusées.
       const statut = (err as { status?: unknown }).status;
-      if (err.code === "auth_failed" && (statut === 401 || statut === 403)) {
+      if (err.code === "auth_failed" && (statut === 401 || statut === 403) && toutesEpuisees) {
         await enregistrerRefusCredit(false, "auth_refusee_repetee");
       }
     }

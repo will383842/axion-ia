@@ -296,9 +296,16 @@ export async function lireDossierParLien(
   const id = apporteurId.toLowerCase();
   const a = await prisma.apporteurReseau.findUnique({
     where: { id },
-    select: { versionLien: true },
+    select: { versionLien: true, statut: true },
   });
   if (!a || !jetonDossierValide(id, a.versionLien, jeton)) return null;
+  // Résilié (lot L1b, B1 bis) : mode restreint seulement si de l'argent est encore en jeu
+  // (le lien n'a alors pas été révoqué à la prise d'effet) ; sinon page neutre.
+  if (a.statut === "resilie") {
+    if (!(await argentEnJeu(id))) return null;
+    const vue = await lireDossier(id);
+    return vue ? { ...vue, restreint: true } : null;
+  }
   // Retiré du réseau (2026-10-07) : page neutre, QUEL QUE SOIT le lien — même un lien
   // recalculé sur la version courante n'ouvre pas un dossier retiré… sauf s'il reste de
   // l'ARGENT en jeu : la page s'ouvre alors en MODE RESTREINT (dépôt des attestations de

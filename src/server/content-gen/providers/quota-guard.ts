@@ -57,13 +57,30 @@ export const QUOTA_HALT_THRESHOLD = 3;
 const PERMANENT_CODES = new Set(["quota_exhausted", "auth_failed"]);
 
 /**
- * Providers dont la panne justifie de couper la production de contenu.
- * Aligné sur `ROLE_TO_PROVIDERS.text` (`provider-router.ts`) : la génération de
- * texte passe exclusivement par OpenAI (décision Will 2026-07-09). Un incident
- * Perplexity (rôle `data`) ou Unsplash (illustrations) dégrade le contenu mais
- * ne justifie pas d'arrêter la chaîne.
+ * Providers dont la panne justifie TOUJOURS de couper la production de contenu :
+ * OpenAI seul (texte, décision Will 2026-07-09). Un incident Perplexity (rôle `data`) ou
+ * Unsplash (illustrations) dégrade le contenu mais ne justifie pas d'arrêter la chaîne.
+ * Anthropic n'est critique que si le blog passe par Claude : voir `estCritique`.
  */
 const CRITICAL_PROVIDERS = new Set<string>(["openai"]);
+
+/**
+ * Critique ? Anthropic ne compte que si `CONTENT_GEN_BLOG_CLAUDE` vaut exactement `true`,
+ * LU À L'EXÉCUTION (jamais au chargement du module) : éteint, une panne Anthropic
+ * (Qualiopi, chatbot) ne doit pas arrêter la génération de contenu.
+ */
+function estCritique(provider: string): boolean {
+  if (CRITICAL_PROVIDERS.has(provider)) return true;
+  return provider === "anthropic" && process.env["CONTENT_GEN_BLOG_CLAUDE"] === "true";
+}
+
+/**
+ * Fournisseurs à PLUSIEURS comptes (rotation de clés) : une erreur permanente n'y compte
+ * que si `toutesEpuisees === true` (plus aucune clé utilisable). Une seule clé épuisée ne
+ * coupe jamais tout. Avec une seule clé configurée, `anthropic.ts` pose ce drapeau sur
+ * l'erreur de l'unique clé : le comportement est inchangé.
+ */
+const PROVIDERS_A_ROTATION = new Set<string>(["anthropic"]);
 
 interface QuotaGuardEntry {
   readonly consecutive: number;
@@ -95,10 +112,14 @@ export async function recordPermanentProviderFailure(
   provider: ProviderKey | string,
   code: string,
   message: string,
+  options: { toutesEpuisees?: boolean } = {},
 ): Promise<boolean> {
   try {
     if (!isPermanentProviderCode(code)) return false;
-    if (!CRITICAL_PROVIDERS.has(String(provider))) return false;
+    if (!estCritique(String(provider))) return false;
+    if (PROVIDERS_A_ROTATION.has(String(provider)) && options.toutesEpuisees !== true) {
+      return false;
+    }
 
     const state = await readGuardState();
     const previous = state[String(provider)];
@@ -168,7 +189,7 @@ export async function recordPermanentProviderFailure(
  */
 export async function clearProviderFailureStreak(provider: ProviderKey | string): Promise<void> {
   try {
-    if (!CRITICAL_PROVIDERS.has(String(provider))) return;
+    if (!estCritique(String(provider))) return;
     const state = await readGuardState();
     const entry = state[String(provider)];
     if (!entry || entry.consecutive === 0) return;

@@ -22,7 +22,7 @@ import type { EmailJobName } from "@/server/queue/types";
 import { signalerErreurReseau } from "./signaler";
 import { prisma } from "@/lib/prisma";
 import { urlDossier } from "./jeton";
-import { GABARITS_ARGENT, retraitDe } from "./retrait";
+import { GABARITS_ARGENT, argentEnJeu, retraitDe } from "./retrait";
 
 export type GabaritApporteur =
   | "apporteur-dossier-lien"
@@ -163,7 +163,12 @@ export async function avecLienEspace(e: EnvoiApporteur): Promise<Record<string, 
       where: { id: apporteurId },
       select: { versionLien: true, statut: true, refuseAt: true, resilieAt: true },
     });
-    if (!a || a.statut === "refuse" || a.statut === "resilie" || a.refuseAt || a.resilieAt) {
+    if (!a || a.statut === "refuse") return null;
+    // Résilié (lot L1b, B1 bis) : le lien n'existe que pour les e-mails liés à l'argent, tant que de
+    // l'argent est en jeu (mode restreint de la page) ; sinon page neutre, donc pas de lien.
+    if (a.statut === "resilie" || a.resilieAt) {
+      if (!GABARITS_ARGENT.has(e.gabarit) || !(await argentEnJeu(apporteurId))) return null;
+    } else if (a.refuseAt) {
       return null;
     }
     return urlDossier(apporteurId, a.versionLien);
