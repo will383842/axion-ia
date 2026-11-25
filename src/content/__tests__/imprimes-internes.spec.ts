@@ -153,4 +153,16 @@ describe("la trame de l'échange apporteur dit ce que dit l'article 2.4 du contr
     expect(html).not.toContain("Seule limite de bon sens");
     expect(html).toContain("Oui, aucune exclusivité, y compris pour des prestations comparables.");
   });
+
+  it("n'écarte plus à l'entrée une personne qui apporte déjà pour un concurrent (D8, L7b)", () => {
+    const html = readFileSync(
+      path.join(RACINE, "docs/imprimes/trame-echange-apporteur.html"),
+      "utf8",
+    );
+    expect(html).not.toMatch(/concurrent direct/i);
+    expect(html).not.toMatch(/concurrence directe/i);
+    expect(html).not.toMatch(/Apporte (déjà )?pour un concurrent/i);
+    // La liste des critères éliminatoires garde ses autres lignes.
+    expect(html).toContain("Veut vendre sous la marque");
+  });
 });
