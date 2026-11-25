@@ -123,7 +123,7 @@ ${sectionVideos}
 ## Optional
 
 - [Version complète](${SITE_URL}/llms-full.txt): les réponses développées, le glossaire complet et la FAQ.
-- [Comparaisons](${SITE_URL}/fr/comparaisons): Axion-IA face aux autres options (cabinets de conseil, agences, logiciels prêts à l’emploi).
+- [Comparaisons](${SITE_URL}/fr/comparaisons): Axion-IA face aux autres options (consultants, agences, logiciels prêts à l’emploi).
 ${ligneObservatoireLlms(SITE_URL)}
 - [Devenir apporteur d’affaires](${SITE_URL}/fr/devenir-commercial-ia): réseau d’indépendants qui présentent la Journée IA à des dirigeants qu’ils connaissent.
 ${sectionTour}- [Banque d’images](${SITE_URL}/fr/galerie): visuels Axion-IA sous licence CC BY 4.0.
