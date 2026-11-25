@@ -133,11 +133,24 @@ function autreMultiple(texte: string): boolean {
 /** Lieu : seule formule admise « dans vos locaux, partout en France ». */
 const DEPLACEMENT_ET_ANNEXES =
   /d[ée]placement|(?:se|nous|vous)\s+d[ée]pla[cç]|h[ée]bergement|\brepas\b|\bkm\b|kilom[èe]tre|auvergne|\bfrais\b|\brayon\b|\btrajets?\b|\bvenue\b|rh[ôo]ne[- ]alpes|\bsuppl[ée]ments?(?![\p{L}])|p[ée]age|(?:p[ée]age|carburant)[^.]*\bessence\b|\bessence\b[^.]*(?:p[ée]age|carburant|trajet)|\bcarburant\b|surco[ûu]t|pr[èe]s de chez vous|(?:intervention|pr[ée]sence|[ée]quipe|agence)s?\s+locale?s?\b|\ben sus\b|\bforfait\b|transport de l[’']intervenant|(?:venue|zone|distance|r[ée]gion|trajet)[^.]*sur devis|sur devis[^.]*(?:venue|zone|distance|r[ée]gion|trajet)/iu;
-/** Présence locale : sensible à la casse (une majuscule suit le lieu) pour ne pas attraper « agence de communication ». */
-const PRESENCE_LOCALE = /\b(?:[Aa]gence|[Bb]ureaux?|[Bb]as[ée]e?s?)\s+(?:à|en|de)\s+\p{Lu}/u;
-/** Première personne : « nous sommes installés / présents / situés à Lyon ». */
-const PRESENCE_NOUS =
-  /\b(?:[Nn]ous\s+(?:sommes|[eê]tes)|[Nn]otre\s+(?:[ée]quipe|soci[ée]t[ée])\s+est)\s+(?:\p{L}+\s+)?(?:bas[ée]e?s?|implant[ée]e?s?|install[ée]e?s?|pr[ée]sent(?:e)?s?|situ[ée]e?s?)\s+(?:à|en)\s+\p{Lu}/u;
+/**
+ * Présence locale : « agence / bureaux / basé à Lyon », « nous sommes situés à / dans Lyon ».
+ * Le mot-clé se lit sans tenir compte de la casse (« NOUS SOMMES SITUÉS À LYON »), mais le lieu doit
+ * commencer par une majuscule pour ne pas attraper « agence de communication » ni « dans vos locaux ».
+ */
+const PRESENCE_LOCALE_RE =
+  /\b(?:agence|bureaux?|bas[ée]e?s?)\s+(?:à|en|de)\s+(?:(?:le|la|les|l[’'])\s*)?(?=\p{L})/giu;
+const PRESENCE_NOUS_RE =
+  /\b(?:nous\s+(?:sommes|[eê]tes)|notre\s+(?:[ée]quipe|soci[ée]t[ée])\s+est)\s+(?:\p{L}+\s+)?(?:bas[ée]e?s?|implant[ée]e?s?|install[ée]e?s?|pr[ée]sent(?:e)?s?|situ[ée]e?s?)\s+(?:à|en|dans)\s+(?:(?:le|la|les|l[’'])\s*)?(?=\p{L})/giu;
+function presenceLocale(texte: string): boolean {
+  for (const re of [PRESENCE_LOCALE_RE, PRESENCE_NOUS_RE]) {
+    for (const m of texte.matchAll(re)) {
+      const lieu = texte.charAt((m.index ?? 0) + m[0].length);
+      if (/\p{Lu}/u.test(lieu)) return true;
+    }
+  }
+  return false;
+}
 const REGION_AURA = /\bAURA\b/;
 
 /** Phrase (jusqu'au point) qui contient la position donnée. */
@@ -200,12 +213,7 @@ function reglesDuPack(texte: string): string[] {
     )
   )
     raisons.push("formule « Aucun gain garanti » interdite");
-  if (
-    DEPLACEMENT_ET_ANNEXES.test(texte) ||
-    PRESENCE_LOCALE.test(texte) ||
-    PRESENCE_NOUS.test(texte) ||
-    REGION_AURA.test(texte)
-  )
+  if (DEPLACEMENT_ET_ANNEXES.test(texte) || presenceLocale(texte) || REGION_AURA.test(texte))
     raisons.push(
       "lieu : seule formule admise « dans vos locaux, partout en France » (frais, distance, hébergement, repas, région : CGV)",
     );

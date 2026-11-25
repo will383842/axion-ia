@@ -682,3 +682,44 @@ describe("pack final du 25/11/2026 — tout passe la porte", () => {
     }
   });
 });
+
+describe("porte de doctrine — présence locale en « situés » et majuscules", () => {
+  const rejetee = (t: string) => controlerFiche(faq({ answer_draft: t })).ok;
+  it("rejette « Nous sommes situés à / dans <lieu> »", () => {
+    for (const t of [
+      "Nous sommes situés à Lyon.",
+      "Nous sommes situés dans Lyon.",
+      "Nous sommes situés dans le Rhône.",
+      "Nous sommes installés dans la Drôme.",
+      "Notre équipe est située à Paris.",
+    ]) {
+      expect(rejetee(t), t).toBe(false);
+    }
+  });
+  it("rejette les interdits écrits en majuscules (insensible à la casse)", () => {
+    for (const t of [
+      "NOUS SOMMES SITUÉS À LYON.",
+      "AGENCE À LYON.",
+      "FRAIS DE DÉPLACEMENT en sus.",
+      "GRENOBLE.",
+      "REMISE de dix pour cent.",
+      "PRIX BARRÉ.",
+      "FINANCEMENT OPCO.",
+      "SOUS 3 JOURS OUVRÉS.",
+      "GARANTIE 5 FOIS LE PRIX.",
+      "AUCUN GAIN GARANTI.",
+      "TOUR FRANCE IA.",
+    ]) {
+      expect(rejetee(t), t).toBe(false);
+    }
+  });
+  it("laisse passer les formules sans lieu", () => {
+    for (const t of [
+      "Nous sommes situés dans vos locaux, partout en France.",
+      "Nous sommes présents dans vos locaux.",
+      "Notre agence de communication travaille avec vous.",
+    ]) {
+      expect(rejetee(t), t).toBe(true);
+    }
+  });
+});
