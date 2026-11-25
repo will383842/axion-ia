@@ -48,31 +48,34 @@ export const EN_BREF_ACCUEIL =
   "Axion-IA, partenaire IA des PME et des TPE fondé par Williams Jullin, intervient partout en France. Sa Journée IA se déroule dans les locaux de l’entreprise pour {{PRIX}}. Le matin, l’audit cartographie l’entreprise et chiffre ses plus gros gains, en heures et en euros. L’après-midi, les équipes sont formées sur leurs propres dossiers, avec une attestation par participant. Le rapport suit sous 3 jours ouvrés. Premier pas possible\u202f: un Diagnostic IA de 45 minutes, en visio ou par téléphone.";
 
 /**
- * Description de l'entité Axion-IA (nœuds JSON-LD `Organization` et `WebSite`).
- * Reprend mot pour mot les formulations déjà publiées (« partenaire IA des PME et
- * des TPE », « partout en France », « dans les locaux de l’entreprise », « le
- * matin, l’audit… l’après-midi, les équipes sont formées… ») : aucune nouvelle
- * promesse. Aucun montant : le prix reste porté par le seul nœud Service de la
- * Journée IA (`JOURNEE_IA_TIER`).
+ * La présentation officielle d'Axion-IA (décision du dirigeant, 20/11/2026). SOURCE UNIQUE :
+ * nœud JSON-LD `Organization`, graphe de la banque d'images, FAQ de la page À propos, citation
+ * en tête de `llms.txt` et `llms-full.txt`. Ne jamais la recopier ailleurs : importer la
+ * constante.
+ *
+ * Ce qu'elle dit, dans l'ordre : savoir où l'IA rapporte avant d'acheter des outils ; ce que
+ * fait l'entreprise (audit, formation, solutions sur mesure) ; chaque prestation peut être
+ * prise seule ou s'inscrire dans un plan d'ensemble ; le but, écrit comme un but et non comme
+ * un résultat ; la Journée IA, offre phare. Aucun montant : le prix reste porté par le seul
+ * nœud Service de la Journée IA (`JOURNEE_IA_TIER`).
  */
 export const DESCRIPTION_ENTITE_FR =
-  "Axion-IA, partenaire IA des PME et des TPE, intervient partout en France. Offre phare\u202f: La Journée IA, dans les locaux de l’entreprise. Le matin, l’audit chiffre ses plus gros gains, en heures et en euros. L’après-midi, les équipes sont formées sur leurs propres dossiers.";
+  "Axion-IA est une entreprise française qui aide les TPE et PME à passer à l’IA en sachant où elle leur rapporte, plutôt que d’acheter des outils au hasard. Partout en France, outre-mer compris, elle audite, forme selon l’entreprise et son secteur, et met en place des solutions sur mesure : implémentation, intégration, automatisation. Chaque prestation peut être prise seule ou s’inscrire dans un plan d’ensemble. Le but : moins de tâches répétitives, plus de temps, de productivité, de rentabilité et de chiffre d’affaires. Offre phare, pour savoir par où commencer : la Journée IA, avec un audit le matin et, l’après-midi, une formation des équipes qui s’inscrit dans l’article 4 du règlement européen sur l’IA, avec une attestation par participant.";
 
 /**
  * Pendant anglais de `DESCRIPTION_ENTITE_FR`, pour le même nœud `#organization`
- * (layout `seo.ts` et graphe de la banque d'images). Avant (audit du
- * 2026-11-11) : deux textes anglais différents pour la même entité.
+ * (layout `seo.ts` et graphe de la banque d'images) : traduction fidèle, rien d'ajouté.
  */
 export const DESCRIPTION_ENTITE_EN =
-  "Axion-IA, the AI partner for SMEs and small businesses, works across France. Flagship offer: La Journée IA, at your premises: the audit in the morning, team training in the afternoon.";
+  "Axion-IA is a French company that helps small and medium-sized businesses adopt AI knowing where it pays off for them, rather than buying tools at random. Across France, overseas territories included, it audits, trains according to the company and its sector, and puts tailor-made solutions in place: implementation, integration, automation. Each service can be taken on its own or be part of an overall plan. The aim: fewer repetitive tasks, more time, productivity, profitability and revenue. Flagship offer, to know where to start: La Journée IA, with an audit in the morning and, in the afternoon, team training that falls within Article 4 of the European AI regulation, with an attestation for each participant.";
 
-/** Version courte pour le nœud `WebSite`. */
+/** Version courte de la présentation, pour le nœud `WebSite` et les usages limités en longueur. */
 export const DESCRIPTION_SITE_FR =
-  "Axion-IA, partenaire IA des PME et des TPE, partout en France. Offre phare\u202f: La Journée IA, l’audit le matin, la formation l’après-midi, dans vos locaux.";
+  "Axion-IA aide les TPE et PME à passer à l’IA en sachant où elle leur rapporte : audit, formation, implémentation, intégration, automatisation, partout en France. Offre phare : la Journée IA.";
 
 /** Pendant anglais de `DESCRIPTION_SITE_FR`, nœud `WebSite`. */
 export const DESCRIPTION_SITE_EN =
-  "Axion-IA, the AI partner for SMEs and small businesses across France. Flagship offer: La Journée IA, audit in the morning, training in the afternoon, at your premises.";
+  "Axion-IA helps small and medium-sized businesses adopt AI knowing where it pays off for them: audit, training, implementation, integration, automation, across France. Flagship offer: La Journée IA.";
 
 /** Les trois paragraphes du « En bref » de la landing (le prix est un jeton). */
 export const EN_BREF_JOURNEE_IA_PARAGRAPHES = [

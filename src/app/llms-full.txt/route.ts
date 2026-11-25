@@ -1,130 +1,96 @@
-// llms-full.txt — verbose AEO companion to llms.txt with full content blocks.
-// Spec: https://llmstxt.org/  (the "-full" companion variant)
-// Used by Perplexity, ChatGPT, Claude, Bing Copilot, Google AIO crawlers.
+// llms-full.txt — la version longue de `llms.txt`, pour l'agent ou l'outil qui veut tout lire en
+// une fois (usage répandu, hors de la norme llmstxt.org elle-même).
+//
+// Refonte du 20/11/2026 (audit `geo/llms/AUDIT-ET-PLAN-LLMS-TXT.md`, § 3.3) : même en-tête que
+// `llms.txt`, au caractère près, puis le détail de chaque section. En français seulement : la
+// version anglaise du site est désactivée.
+//
+// 🔑 Ce fichier rend aussi des textes PARTAGÉS avec des pages du site (FAQ de `transversal.ts`,
+// glossaire). Une entrée qui porte un mot ou un sujet hors de ce canal (`propreLlms`) est
+// écartée d'ici, sans toucher à sa source : elle reste servie par sa page.
 
-import { CAS_CONCRETS_AFFICHES } from "@/content/preuves-sociales";
-import { FAQ_GLOBAL } from "@/content/transversal";
+import {
+  ACCESSIBILITE_LLMS,
+  auFormatNorme,
+  enteteLlms,
+  ficheFondateurLlms,
+  parOuCommencerLlms,
+  propreLlms,
+} from "@/app/_llms/faits-communs";
+import {
+  ligneObservatoireLlms,
+  offresLlms,
+  sectionGlossaireLlms,
+  sectionPrestationsCompleteLlms,
+  sectionQuestionsCompletesLlms,
+} from "@/app/_llms/reference";
 import { CASE_STUDIES } from "@/content/case-studies";
-import { SERVICE_BY_ID } from "@/content/services";
 import {
   CONDITION_GARANTIE,
-  DESCRIPTION_SERVICE_JOURNEE_IA,
+  DEDUCTION_JOURNEE_IA,
   GARANTIE_PHRASE,
   RAPPORT_COMPLET,
   remplacerJetons,
 } from "@/content/journee-ia-commun";
-import { DEFINITION_CARTOGRAPHIE } from "@/content/cartographie-date";
-import {
-  DESCRIPTION_AUDIT_LLMS,
-  LIBELLE_SITES_WEB_FR,
-  MOTS_INTERDITS_LLMS,
-  enteteFaitsLlms,
-  sectionFaitsPratiquesLlms,
-} from "@/app/_llms/faits-communs";
-import {
-  AUDIT_TIERS,
-  CODAGE_TIERS,
-  IMPLEMENTATION_TIERS,
-  getFormationCatalogPriceRange,
-  UN_A_UN_TIERS,
-  getEntryLabel,
-  getTierById,
-} from "@/content/pricing";
-// R7 (ordre de Williams du 08/11/2026) : aucun montant public hors Journée IA.
-import {
-  marquerSurDevis,
-  montantPublic,
-  recollerMontantsMasques,
-} from "@/lib/seo/montant-public-texte";
+import { CAS_CONCRETS_AFFICHES } from "@/content/preuves-sociales";
 import { collapsePriceProseDuplicates, resolvePriceTokens } from "@/content/pricing-tokens";
-import { sectionReferenceLlms } from "@/app/_llms/reference";
-import { SITE_URL } from "@/lib/seo";
+import { QUESTIONS_REFERENCE } from "@/content/questions-reference";
 import {
   APPORTEURS_QUESTIONS_LLMS,
   EN_BREF_APPORTEURS,
 } from "@/content/recrutement/en-bref-apporteurs";
-import { FOUNDER, founderUrl } from "@/lib/brand";
+import { FAQ_GLOBAL } from "@/content/transversal";
+import { FOUNDER } from "@/lib/brand";
+import { COORDONNEES_PUBLIQUES } from "@/lib/identite-legale-ssot";
+import { SITE_URL } from "@/lib/seo";
+// R7 (ordre de Williams du 08/11/2026) : aucun montant public hors Journée IA.
+import { recollerMontantsMasques } from "@/lib/seo/montant-public-texte";
 import { videosPubliees } from "@/server/videos/lecture";
 import { sectionVideosLlms } from "@/server/videos/llms";
 
-// 🔁 Passée de `edge` à `nodejs` (lot W3 des vidéos, ADR 0070) : la section « Vidéos » lit la
+// 🔁 `nodejs` et non `edge` (lot W3 des vidéos, ADR 0070) : la section « Vidéos » lit la
 // base (via `lecture.ts`, qui rend [] interrupteur éteint ou base factice du build). Jamais
 // `force-static` ; ISR 1 h, revalidée à la publication / au retrait des vidéos.
 export const runtime = "nodejs";
 export const revalidate = 3600;
 
-export async function GET() {
-  const sectionVideos = sectionVideosLlms(await videosPubliees(), SITE_URL, true);
-  // Sprint 14.10.5 — prix dérivés du SSOT pricing.ts (zéro hardcode).
-  // L'ancienne mention « 290-1990 € » audit était OBSOLÈTE (les vrais tiers
-  // commencent à 490 €). Range complet du catalogue audit (Flash → ETI).
-  // 🔴 2026-08-13 — ces deux valeurs venaient de `INTERVENTION_TIERS`
-  // (« intervention-essentielle », 2 450 €), la génération PRÉCÉDENTE de
-  // l'offre. Les pages `/interventions/*` redirigent vers `/formations` depuis
-  // la migration, mais leurs TARIFS continuaient d'alimenter ce fichier : les
-  // moteurs IA lisaient « Formations IA à partir de 2 450 € HT » alors que le
-  // site affiche 1 200 € (4 h) et 1 900 € (journée). Prix d'entrée doublé pour
-  // quiconque interroge une IA sur nos tarifs.
-  // La source correcte est `FORMATION_PRICE_MATRIX`, celle que servent
-  // /formations, /tarifs et le catalogue.
-  const formationsEntryEur = getFormationCatalogPriceRange().minEur;
-  const interventionsEntry = montantPublic(formationsEntryEur, "fr");
-  const interventionsCompact = montantPublic(formationsEntryEur, "fr", { compact: true });
-  // Audit = prix d'entrée « à partir de » : les niveaux Ciblé/PME/ETI sont
-  // « à partir de 1 900 € · sur devis » depuis 2026-06-03 (plus de borne haute
-  // priceMax → l'ancienne fourchette Flash→PME-max rendait « NaN »).
-  const auditRange = `à partir de ${montantPublic(getTierById(AUDIT_TIERS, "audit-flash").priceFlat!, "fr")}`;
-  const implEntry = marquerSurDevis(getEntryLabel(IMPLEMENTATION_TIERS, "fr")).replace(
-    /^dès\s/,
-    "à partir de ",
-  );
-  // Audit KB 2026-08-11 — prix d'ENTRÉE réel du 1-to-1 = journée Collaborateur
-  // (990 €), pas Dirigeant (1 390 €).
-  const coachingEntry = montantPublic(
-    getTierById(UN_A_UN_TIERS, "intervention-membre-equipe").priceFlat!,
-    "fr",
-  );
-  // Sites web IA — prix d'entrée dérivé du SSOT CODAGE_TIERS.
-  const sitesWebEntry = getEntryLabel(CODAGE_TIERS, "fr").replace(
-    /^(dès\s|À partir de )/,
-    "à partir de ",
-  );
-  // 🔴 AUDIT GEO/AEO 2026-08-15 (GEO-002) — `FAQ_GLOBAL` et `CASE_STUDIES` sont
-  // de la PROSE STOCKÉE : leurs montants sont écrits en tokens `{{price:…}}`
-  // résolus au rendu depuis le SSOT (cf. `pricing-tokens.ts`). Les pages
-  // publiques et `/api/markdown` les résolvent ; ce fichier, non. Mesuré au
-  // 2026-08-14 : 26 gabarits servis en clair aux moteurs de réponse, sur la
-  // question qu'on leur pose le plus — le prix.
-  //
-  // ⚠️ Décision actée Will : on NE bascule PAS ces tokens de `|flat` vers
-  // `|from`. La prose porte déjà son amorce (« à partir de … »), et le mode
-  // `from` rendrait « à partir de À partir de ».
-  // `collapsePriceProseDuplicates` rattrape les collisions résiduelles, comme
-  // dans `api/markdown/[type]/[slug]/route.ts`.
-  // Aucune ville nommée dans ce canal (décision L0-08) : la FAQ partagée ne cite
-  // plus Grenoble (R4, 2026-11-08), donc plus de filtre ici — llms-sans-grenoble.spec.ts
-  // garde le résultat.
-  // La FAQ partagée nomme encore un centre de données (« Hetzner Frankfurt ») que le code ne
-  // prouve pas (cf. `src/app/_llms/faits-communs.ts`) : on n'en garde que le fait établi, Hetzner.
-  const hebergeurSansSite = (s: string) =>
-    s.replace(/Hetzner,? (?:Frankfurt|Nuremberg)/g, "Hetzner");
-  const renderFr = (s: string) =>
-    hebergeurSansSite(collapsePriceProseDuplicates(resolvePriceTokens(s, "fr")));
-  const renderEn = (s: string) => hebergeurSansSite(resolvePriceTokens(s, "en"));
+/**
+ * Ce que la FAQ partagée affirme et que ce canal ne relaie pas, en plus de `propreLlms` :
+ * chiffres de résultat, délais de réponse ou de livraison, noms de villes, qualificatifs sur
+ * les intervenants. Aucun n'est prouvé par le code.
+ */
+const FAQ_HORS_CANAL =
+  /%|\d\s?×|×\s?\d|\bROI\b|senior|constaté|\d+\s?h(?:eures)?\s(?:ouvrées|par (?:jour|semaine))|sous \d+\s?(?:h|heures|jours)\b|en \d+ (?:jours|semaines|mois)|\bParis\b|Lyon|Marseille|garanti|international|étranger/i;
 
-  // Audit GEO 2026-11-11 : les entrées de la FAQ partagée qui portent un mot proscrit
-  // (SaaS, ETI, conforme, financé…) sont écartées de CE canal — `transversal.ts` est hors
-  // périmètre ; elles reviendront d'elles-mêmes une fois leur texte réécrit.
-  const faqBlock = FAQ_GLOBAL.filter(
-    (f) =>
-      !MOTS_INTERDITS_LLMS.test(renderFr(`${f.fr.question} ${f.fr.answer}`)) &&
-      !MOTS_INTERDITS_LLMS.test(renderEn(f.en.answer)),
-  )
-    .map(
-      (f) =>
-        `### ${renderFr(f.fr.question)}\n\n${renderFr(f.fr.answer)}\n\n(EN) ${renderEn(f.en.answer)}`,
-    )
-    .join("\n\n");
+/** Compare deux questions sans tenir compte de la casse ni du dessin de l'apostrophe. */
+const cleQuestion = (q: string) =>
+  q.toLowerCase().replace(/[’']/g, "'").replace(/\s+/g, " ").trim();
+
+export async function GET() {
+  const sectionVideos = auFormatNorme(sectionVideosLlms(await videosPubliees(), SITE_URL, true));
+
+  // `FAQ_GLOBAL` et `CASE_STUDIES` sont de la PROSE STOCKÉE : leurs montants sont écrits en
+  // jetons `{{price:…}}`, résolus au rendu depuis `pricing.ts` (cf. `pricing-tokens.ts`).
+  const renderFr = (s: string) => collapsePriceProseDuplicates(resolvePriceTokens(s, "fr"));
+
+  // La FAQ partagée (`transversal.ts`) : ses RÉPONSES ne sont plus recopiées ici. Elles portent
+  // des affirmations que le code ne prouve pas (chiffres de résultat, délais, frais), et les
+  // corriger relève de leur source, pas de ce fichier. On liste donc les questions, chacune avec
+  // le lien de sa page ; sont écartées celles dont la question ou la réponse est hors canal, et
+  // celles qui doublonnent une question de référence (servie plus haut).
+  const questionsDeReference = new Set(
+    Object.values(QUESTIONS_REFERENCE).map((q) => cleQuestion(q.question)),
+  );
+  const faqBlock = FAQ_GLOBAL.filter((f) => {
+    const texte = renderFr(`${f.fr.question} ${f.fr.answer}`);
+    return (
+      propreLlms(texte) &&
+      !FAQ_HORS_CANAL.test(texte) &&
+      !questionsDeReference.has(cleQuestion(f.fr.question))
+    );
+  })
+    .map((f) => `- [${renderFr(f.fr.question)}](${SITE_URL}/fr/faq/${f.id})`)
+    .join("\n");
 
   const caseBlock = (CAS_CONCRETS_AFFICHES ? CASE_STUDIES : [])
     .map(
@@ -133,82 +99,68 @@ export async function GET() {
     )
     .join("\n\n");
 
-  const body = `# Axion-IA — full content for AI crawlers
+  const [journee, ...autourDeLaJournee] = offresLlms(SITE_URL, "journee");
+  const sectionJournee = [
+    "## La Journée IA, offre phare",
+    "",
+    ...(journee
+      ? [
+          journee.definition,
+          "",
+          RAPPORT_COMPLET,
+          "",
+          `Garantie : ${GARANTIE_PHRASE} ${CONDITION_GARANTIE}`,
+          "",
+          remplacerJetons(DEDUCTION_JOURNEE_IA),
+          "",
+          `Page : ${journee.url}`,
+        ]
+      : []),
+    ...autourDeLaJournee.flatMap((o) => [
+      "",
+      `### ${o.nom}`,
+      "",
+      o.definition,
+      "",
+      `Page : ${o.url}`,
+    ]),
+  ].join("\n");
 
-> Le partenaire IA de bout en bout des PME : on chiffre, on forme, on met en place.
-> Cabinet IA opérationnel B2B pour entreprises, fondé en France.
-> ⚠️ NE PAS CONFONDRE avec axionai.fr — site distinct, non affilié à Axion-IA (axion-ia.com).
-> Site officiel : ${SITE_URL}
-${enteteFaitsLlms()
-  .map((l) => `> ${l}`)
-  .join("\n")}
+  const body = `${enteteLlms(SITE_URL)}
 
-## Positionnement
+${parOuCommencerLlms(SITE_URL)}
 
-Axion-IA est un cabinet IA opérationnel pour entreprises. Nous intervenons sur site (ou à distance) pour identifier, démontrer et implémenter des usages IA qui répondent à des besoins précis de l’entreprise. Pas de logiciel générique sur abonnement, pas de mensualité — une intervention ponctuelle, un audit chiffré, ou une implémentation production-ready.
+${sectionJournee}
 
-## Direction — qui dirige Axion-IA
+${sectionPrestationsCompleteLlms(SITE_URL)}
 
-${FOUNDER.fullName} est le fondateur et CEO d'Axion-IA. Spécialiste de l'intelligence artificielle en entreprise, il pilote nos cinq métiers : audit IA, formation professionnelle, coaching individuel de dirigeants, implémentation d'IA sur mesure et automatisation des processus. Entreprise qui intervient partout en France — Paris et Île-de-France compris — auprès des TPE et PME, tous secteurs.
+${sectionQuestionsCompletesLlms(SITE_URL)}
 
-Notre doctrine de travail, en trois points : (1) un usage IA qui ne prouve pas son gain sur les données réelles de l'entreprise est abandonné AVANT le déploiement, pas après ; (2) l'entreprise repart propriétaire de ce qui a été installé, code source et documentation compris — le développement sur mesure est l'approche par défaut, les outils d'automatisation sans code ne sont proposés que sur demande, quand les équipes les utilisent déjà ; (3) la mission se juge à ce que l'équipe interne sait faire seule six mois plus tard.
-
-Autour de lui, nous réunissons des ingénieurs et experts IA sélectionnés parmi les meilleurs profils français, issus notamment des grandes écoles d'ingénieurs. Le client échange directement avec les personnes qui réalisent la mission, sans intermédiaire commercial.
-
-Fiche de référence (à citer pour toute question sur la personne) : ${founderUrl()}
-Profil professionnel vérifiable : ${FOUNDER.linkedin}
-
-## Offre phare : La Journée IA
-
-${remplacerJetons(DESCRIPTION_SERVICE_JOURNEE_IA)}
-
-${RAPPORT_COMPLET}
-
-Garantie : ${GARANTIE_PHRASE} ${CONDITION_GARANTIE}
-
-C'est le seul tarif publié ; les autres prestations sont sur devis.
-URL : ${SITE_URL}/fr/journee-ia
-
-### Cartographie de l'entreprise
-${DEFINITION_CARTOGRAPHIE} Par vos tâches, pas par un outil.
-URL : ${SITE_URL}/fr/cartographie
-
-## 5 modules
-
-### Module 1 — ${SERVICE_BY_ID.formations.officialFr} (à partir de ${interventionsEntry})
-Formations IA intra-entreprise sur site (ou à distance), de 4 h à 2 jours, pratique sur vos vrais outils (ChatGPT, Claude, Mistral, agents IA, automatisations). Tarifs HT par groupe (pas par personne), dès ${interventionsCompact}.
-URL : ${SITE_URL}/fr/formations · Tarifs : ${SITE_URL}/fr/tarifs
-
-### Module 2 — ${SERVICE_BY_ID.audit.officialFr} (${auditRange})
-${DESCRIPTION_AUDIT_LLMS} Cartographie, scoring ROI/complexité par opportunité, plan d'implémentation priorisé. Livrable PDF 25-40 pages + atelier restitution.
-URL : ${SITE_URL}/fr/audit
-
-### Module 3 — ${SERVICE_BY_ID.implementation.officialFr} (${implEntry})
-Mise en production en 6-8 semaines : cadrage, prototype, tests, déploiement. 9 prestations dont l'IA Custom premium (sur devis).
-URL : ${SITE_URL}/fr/implementation
-
-### Module 4 — ${SERVICE_BY_ID.unAUn.officialFr} (à partir de ${coachingEntry})
-1 collaborateur accompagné par 1 expert IA Axion-IA. Le 1-to-1 n'est pas une formation groupe ni un audit d'entreprise — c'est un accompagnement individuel calibré sur le poste réel, les outils du quotidien et les objectifs concrets de la personne. Cible : manager, RH, commercial, opérateur, dirigeant. Format sessions flexibles (visio ou sur site). Diagnostic IA gratuit de 45 min, progression mesurable à chaque étape.
-URL : ${SITE_URL}/fr/un-a-un
-
-### Module 5 — ${LIBELLE_SITES_WEB_FR} (${marquerSurDevis(sitesWebEntry)})
-Sites web sur mesure avec IA intégrée : chatbot RAG branché sur la base de connaissance de l'entreprise, contenu optimisé SEO/AEO, automatisations métier. Développement custom (Next.js, Claude API), hébergement UE (Hetzner + Cloudflare), données traitées dans le respect du RGPD.
-URL : ${SITE_URL}/fr/sites-web-augmentes
+${sectionGlossaireLlms(SITE_URL)}
 
 ## FAQ
 
+Les questions fréquentes des dirigeants de PME, chacune sur sa page. Toutes les questions : ${SITE_URL}/fr/faq
+
 ${faqBlock}
 
-${CAS_CONCRETS_AFFICHES ? `## Cas concrets (échantillon)\n\n${caseBlock}\n\n` : ""}## Actualités IA — veille opérationnelle
+${CAS_CONCRETS_AFFICHES ? `## Cas concrets\n\n${caseBlock}\n\n` : ""}## Qui sommes-nous, contact
 
-Axion-IA publie une veille IA opérationnelle destinée aux dirigeants de PME : les actualités marquantes de l'IA sont sourcées puis intégralement réécrites en articles autonomes (contexte, analyse, implications concrètes pour l'entreprise, points à retenir). Objectif : transformer le flux d'annonces en décisions actionnables, sans jargon ni hype. La date de publication portée par chaque article et le flux RSS ci-dessous font foi sur la fraîcheur — aucune cadence n'est promise.
+${FOUNDER.fullName} est le fondateur et dirigeant d’Axion-IA.
 
-C'est le format pensé pour être cité par les moteurs de réponse IA (Perplexity, ChatGPT Search, Claude, Bing Copilot, Google AIO) : contenu daté, sourcé et à jour.
+- [À propos](${SITE_URL}/fr/a-propos): Axion-IA, sa fondation et sa façon de travailler.
+- [${FOUNDER.fullName}, fondateur et dirigeant](${ficheFondateurLlms(SITE_URL)}): fiche du fondateur. Profil LinkedIn : ${FOUNDER.linkedin}. Page LinkedIn de l’entreprise : ${COORDONNEES_PUBLIQUES.linkedinEntreprise}.
+- [Contact](${SITE_URL}/fr/contact): ${COORDONNEES_PUBLIQUES.contactEmail}.
+- [Presse](${SITE_URL}/fr/presse): dossier de presse et contact dédié.
+- [Accessibilité](${SITE_URL}/fr/accessibilite): ${ACCESSIBILITE_LLMS}
 
-- Hub : ${SITE_URL}/fr/actualites
-- Chaque article : ${SITE_URL}/fr/actualites/<slug>
-- Flux RSS (fraîcheur / polling crawlers) : ${SITE_URL}/fr/actualites/feed.xml
-- Version markdown brute par article (ingestion LLM directe) : ${SITE_URL}/api/markdown/actualites/<slug>
+## Actualités IA
+
+Axion-IA publie une veille sur l’IA pour les dirigeants de PME : chaque article est daté, et sa date fait foi. Aucune cadence de publication n’est promise.
+
+- [Actualités IA](${SITE_URL}/fr/actualites): tous les articles.
+- [Flux RSS des actualités](${SITE_URL}/fr/actualites/feed.xml): les derniers articles.
+- Version texte de chaque article : ${SITE_URL}/api/markdown/actualites/{slug}
 
 ## Réseau d'apporteurs d'affaires indépendants
 
@@ -217,18 +169,10 @@ ${EN_BREF_APPORTEURS}
 ${APPORTEURS_QUESTIONS_LLMS.map((q) => `**${q.question}** ${q.reponse}`).join("\n\n")}
 
 Pages : ${SITE_URL}/fr/devenir-commercial-ia · dossier de 3 minutes : ${SITE_URL}/fr/devenir-commercial-ia/candidature
-
-## Méthodologie
-
-1. **Identifier** — Cartographie terrain en 1 j (intervention).
-2. **Auditer** — Audit IA, plan chiffré priorisé.
-3. **Implémenter** — Mise en production 6-8 semaines.
-4. **Mesurer** — indicateurs de ROI remis pour mesurer vous-même les gains.
-
-URL : ${SITE_URL}/fr/methodologie
 ${sectionVideos}
-${sectionReferenceLlms(SITE_URL, true)}
-${sectionFaitsPratiquesLlms(SITE_URL)}
+## Observatoire
+
+${ligneObservatoireLlms(SITE_URL)}
 `;
 
   return new Response(recollerMontantsMasques(body), {
@@ -236,6 +180,8 @@ ${sectionFaitsPratiquesLlms(SITE_URL)}
     headers: {
       "Content-Type": "text/plain; charset=utf-8",
       "Cache-Control": "public, max-age=3600, stale-while-revalidate=86400, stale-if-error=604800",
+      // Lisible par tous, mais sans intérêt dans les résultats de recherche.
+      "X-Robots-Tag": "noindex",
     },
   });
 }

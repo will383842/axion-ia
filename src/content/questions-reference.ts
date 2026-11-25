@@ -137,7 +137,7 @@ export const QUESTIONS_REFERENCE: Readonly<Record<string, QuestionReference>> = 
     id: "ref-coaching",
     question: "Qu’est-ce qu’un coaching IA individuel pour un dirigeant ?",
     reponse:
-      "Un coaching IA individuel est une journée en tête-à-tête (7 à 8 heures) entre un dirigeant ou un collaborateur et un expert Axion-IA, préparée en amont sur votre métier et menée sur vos vraies tâches. Vous recevez un livrable personnalisé sous 7 jours. Le coaching se fait partout en France métropolitaine, sur devis écrit après un premier échange gratuit.",
+      "Un coaching IA individuel est une journée en tête-à-tête (7 à 8 heures) entre un dirigeant ou un collaborateur et un expert Axion-IA, préparée en amont sur votre métier et menée sur vos vraies tâches. Vous recevez un livrable personnalisé sous 7 jours. Le coaching se fait partout en France, outre-mer compris, sur devis écrit après un premier échange gratuit.",
     sujet: "coaching IA",
     source: "src/app/[locale]/un-a-un/page.tsx",
   },
@@ -170,7 +170,7 @@ export const QUESTIONS_REFERENCE: Readonly<Record<string, QuestionReference>> = 
     id: "ref-partout-france",
     question: "Axion-IA intervient-il partout en France ?",
     reponse:
-      "Axion-IA intervient partout en France métropolitaine, dans vos locaux. La Journée IA, la formation et l’audit se déroulent chez vous ; le Diagnostic IA de 45 minutes se fait en visio ou par téléphone. La date est fixée avec vous pendant cet appel, sans engagement avant le devis écrit.",
+      "Axion-IA intervient partout en France, outre-mer compris, dans vos locaux. La Journée IA, la formation et l’audit se déroulent chez vous ; le Diagnostic IA de 45 minutes se fait en visio ou par téléphone. La date est fixée avec vous pendant cet appel, sans engagement avant le devis écrit.",
     sujet: "Axion-IA",
     source: "src/content/offre.ts",
   },

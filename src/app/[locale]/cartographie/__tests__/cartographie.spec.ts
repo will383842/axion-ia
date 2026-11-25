@@ -97,10 +97,11 @@ describe("sitemap et llms", () => {
     expect(sitemap).not.toMatch(/"\/cartographie"/); // non exclue
   });
 
-  it("figure dans llms.txt et llms-full.txt", () => {
-    for (const f of ["llms.txt", "llms-full.txt"]) {
-      const src = readFileSync(path.join(process.cwd(), "src/app", f, "route.ts"), "utf8");
-      expect(src).toContain("/fr/cartographie");
+  it("figure dans llms.txt et llms-full.txt (fichiers servis)", async () => {
+    const { GET: llms } = await import("@/app/llms.txt/route");
+    const { GET: llmsFull } = await import("@/app/llms-full.txt/route");
+    for (const get of [llms, llmsFull]) {
+      expect(await (await get()).text()).toMatch(/\/fr\/cartographie(?![\w/-])/);
     }
   });
 });
