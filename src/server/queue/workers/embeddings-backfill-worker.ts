@@ -273,6 +273,10 @@ export async function rattraperEmbeddingsVoyage(): Promise<VoyageBackfillStats> 
 
   for (let i = 0; i < articles.length; i += VOYAGE_BATCH_SIZE) {
     const lot = articles.slice(i, i + VOYAGE_BATCH_SIZE);
+    if (i > 0 && (await readKillSwitchFailSafe()).active) {
+      stats.stoppedReason = "kill switch";
+      break;
+    }
     const out = await embedVoyageBatch(lot.map(texteVoyage));
     if (!out.ok) {
       // 4xx (hors 429) sur un lot de plusieurs articles : un seul article fautif le fait

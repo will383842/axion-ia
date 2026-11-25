@@ -126,6 +126,20 @@ describe("rattrapage Voyage des articles", () => {
     expect(r.stoppedReason).toBe("auth");
   });
 
+  it("coupure posée en cours de passage : arrêt avant le lot suivant", async () => {
+    queryRawUnsafeMock.mockResolvedValueOnce(articles(45));
+    readKillSwitchMock
+      .mockResolvedValueOnce({ active: false })
+      .mockResolvedValueOnce({ active: true });
+    embedBatchMock.mockResolvedValue({
+      ok: true,
+      embeddings: Array.from({ length: 20 }, () => Array.from({ length: 1024 }, () => 0.1)),
+    });
+    const r = await rattraperEmbeddingsVoyage();
+    expect(embedBatchMock).toHaveBeenCalledTimes(1);
+    expect(r.stoppedReason).toBe("kill switch");
+  });
+
   it("panne répétée : s'arrête après 3 lots consécutifs en échec", async () => {
     vi.useFakeTimers();
     queryRawUnsafeMock.mockResolvedValueOnce(articles(100));
