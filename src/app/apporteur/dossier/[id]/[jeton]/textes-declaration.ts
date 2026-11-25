@@ -38,7 +38,7 @@ export const TEXTES_DECLARATION = {
     [
       "Après votre déclaration, nous prenons contact avec l'entreprise de votre part.",
       `Cette entreprise vous est gardée ${jours} jours à compter de votre déclaration.`,
-      `Elle est validée sur votre compte dès qu'un premier rendez-vous avec Axion-IA a eu lieu, s'il a été pris pendant ces ${jours} jours. Les ${mois} mois pendant lesquels elle vous est rattachée partent alors du jour de ce rendez-vous.`,
+      `Elle est validée à votre nom dès qu'un premier rendez-vous avec Axion-IA a eu lieu, s'il a été pris pendant ces ${jours} jours. Les ${mois} mois pendant lesquels elle vous est rattachée partent alors du jour de ce rendez-vous.`,
       `Un devis signé pendant ces ${jours} jours compte aussi.`,
       "Si elle a déjà été présentée ou nous est déjà connue, nous vous le disons.",
       "Une commission n'est due que sur une commande payée.",

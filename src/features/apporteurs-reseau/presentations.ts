@@ -52,6 +52,7 @@ import {
   lireReservations,
   versProvisoire,
 } from "./reservation-presentation";
+import { annoncerRefus } from "./refus-annonce";
 import { annoncerAttribution } from "./attribution-annonce";
 
 // ── Signalements avant de répondre ───────────────────────────────────────
@@ -885,9 +886,10 @@ export async function dementirPresentation(
     where: { id, statut: { in: ["reservee", "confirmee"] } },
     data: { statut: "dementie" },
   });
-  return r.count === 1
-    ? { ok: true }
-    : { ok: false, message: "Cette présentation n'est plus en cours." };
+  if (r.count !== 1) return { ok: false, message: "Cette présentation n'est plus en cours." };
+  // Facultatif, éteint par défaut (APPORTEURS_EMAIL_REFUS) ; ne lève jamais.
+  await annoncerRefus(id, "dementie");
+  return { ok: true };
 }
 
 export async function noterPresentation(id: string, note: string): Promise<void> {
