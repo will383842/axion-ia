@@ -13,8 +13,8 @@
  *
  * Doctrine du site au 25/11/2026 (`journee-ia-commun.ts`, CGV art. 47.7 et 47.10), seule
  * exception à « aucun montant autre que 1 490 € HT » et à « aucun remboursement » :
- *  - la garantie : si les GAINS IDENTIFIÉS n'atteignent pas 3 fois le prix (4 470 € HT),
- *    remboursement sur demande écrite ; jamais une garantie de gain obtenu ;
+ *  - la garantie : si les GAINS IDENTIFIÉS n'atteignent pas 3 fois le prix HT,
+ *    remboursement sur demande écrite, SANS montant en euros (4 470 € est rejeté) ; jamais une garantie de gain obtenu ;
  *  - le seuil de déduction : un devis d'au moins 5 000 € HT signé sous 60 jours.
  * Le lieu se dit « dans vos locaux, partout en France » et rien de plus : frais, distances,
  * hébergement, repas et régions relèvent des CGV, jamais d'une fiche.
@@ -93,8 +93,7 @@ const REDUCTION =
   /(?<![\p{L}])(?:réduction|reduction|rabais|offert|offerte|offerts|offertes)(?![\p{L}])/iu;
 const TOUR_FRANCE_IA = /tour\s+(?:de\s+)?france\s+ia/i;
 
-/** Montants de la doctrine du site, admis seulement dans leur phrase (cf. `contexteMontant`). */
-const MONTANT_GARANTIE = /^4[\s\u00a0\u202f]?470(?:[.,]00)?$/;
+/** Montant de la doctrine du site, admis seulement dans sa phrase (cf. `contexteMontant`). */
 const MONTANT_SEUIL_DEDUCTION = /^5[\s\u00a0\u202f]?000(?:[.,]00)?$/;
 const MULTIPLE_GARANTIE_RE = /\b(?:3|trois)\s+fois\b/i;
 const GAINS_IDENTIFIES = /gains?\s+identifi[ée]s?/i;
@@ -122,12 +121,8 @@ function reglesDuPack(texte: string): string[] {
     const nombre = (m[1] ?? m[2] ?? "").trim();
     if (!PRIX_AUTORISE.test(nombre)) {
       const phrase = phraseA(texte, m.index ?? 0);
-      const garantie =
-        MONTANT_GARANTIE.test(nombre) &&
-        MULTIPLE_GARANTIE_RE.test(phrase) &&
-        GAINS_IDENTIFIES.test(texte);
       const deduction = MONTANT_SEUIL_DEDUCTION.test(nombre) && /\bdevis\b/i.test(phrase);
-      if (!garantie && !deduction) {
+      if (!deduction) {
         raisons.push(`prix non autorisé : « ${m[0]} »`);
         continue;
       }

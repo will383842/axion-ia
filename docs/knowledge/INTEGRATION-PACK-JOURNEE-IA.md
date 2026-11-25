@@ -30,13 +30,13 @@ Copie de travail versionnée ici : `docs/knowledge/pack-journee-ia-2026-11-10/`.
 
 ## Contradictions et garde-fous
 
-| Sujet                          | Pack                                              | Décision retenue                                                                                              |
-| ------------------------------ | ------------------------------------------------- | ------------------------------------------------------------------------------------------------------------- |
-| Prix / remise (D02)            | « remise à 990 € contre tournage » vs prix unique | Seul prix affiché : **Journée IA 1 490 € HT**, aucune remise. D02 écartée, tout autre montant rejeté          |
-| Garantie / remboursement (D03) | garantie ou remboursement sous un seuil de gains  | Gains **identifiés et estimés**, jamais garantis ; garantie/CGV/devis = brouillons, aucune promesse juridique |
-| Rendez-vous gratuit (GEO-008)  | « échange gratuit facultatif »                    | Compatible avec l'unique rendez-vous gratuit de 45 min ; à reformuler à la relecture                          |
-| Cas clients (GEO-033)          | « cas clients réels avec autorisation »           | Rejetée par la porte de doctrine (fausse preuve sociale) : 1 rejet                                            |
-| Tour France IA                 | —                                                 | Exclu                                                                                                         |
+| Sujet                          | Pack                                              | Décision retenue                                                                                                                            |
+| ------------------------------ | ------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------- |
+| Prix / remise (D02)            | « remise à 990 € contre tournage » vs prix unique | Seul prix affiché : **Journée IA 1 490 € HT**, aucune remise. D02 écartée, tout autre montant rejeté                                        |
+| Garantie / remboursement (D03) | garantie ou remboursement sous un seuil de gains  | Gains **identifiés et estimés**, jamais garantis ; seule la garantie du site fait foi (3 fois le prix HT, gains identifiés, CGV art. 47.10) |
+| Rendez-vous gratuit (GEO-008)  | « échange gratuit facultatif »                    | Compatible avec l'unique rendez-vous gratuit de 45 min ; à reformuler à la relecture                                                        |
+| Cas clients (GEO-033)          | « cas clients réels avec autorisation »           | Rejetée par la porte de doctrine (fausse preuve sociale) : 1 rejet                                                                          |
+| Tour France IA                 | —                                                 | Exclu                                                                                                                                       |
 
 Le script rejette en plus de la doctrine de la base (`verifierDoctrineTraduction`) : tout montant en € / euros / EUR autre que 1 490
 (espace, espace insécable ou fine acceptés, `,00` toléré) ; 1 490 sans « HT » juste après ; « TTC » ; les montants en `k€` ; un nombre sans
@@ -57,7 +57,7 @@ toute promesse de gain ou de remboursement ; « Tour France IA ».
 
 ## Chiffres non sourcés à vérifier à la relecture
 
-`GEO-003` (audit de 2 à 4 h), `GEO-005` (rapport sous trois jours ouvrés), `GEO-018` (attestations) viennent du document
+`GEO-003` (audit de 2 à 4 h), `GEO-005` (rapport sous 10 jours ouvrés), `GEO-018` (attestations) viennent du document
 d'offre interne `INT-03` : exacts selon le pack, à confirmer avant publication.
 
 ## Mise en œuvre
@@ -90,7 +90,7 @@ dépôt privé de plans (`journee-ia/pack/pack-corrige.json`, fiches non retiré
 054, 055) en sont absentes. C'est le fichier par défaut du script d'import.
 
 La porte de doctrine admet désormais, et seulement dans leur contexte : la garantie du site (gains **identifiés** qui
-n'atteignent pas 3 fois le prix, 4 470 € HT) et le seuil de déduction (devis d'au moins 5 000 € HT). Elle rejette en plus toute
+n'atteignent pas 3 fois le prix HT ; aucun montant en euros n'est admis pour la garantie, « 4 470 € » est rejeté) et le seuil de déduction (devis d'au moins 5 000 € HT). Elle rejette en plus toute
 mention de frais, de déplacement, d'hébergement, de repas, de km ou d'« Auvergne ». Le lieu se dit « dans vos locaux, partout en
 France ».
 

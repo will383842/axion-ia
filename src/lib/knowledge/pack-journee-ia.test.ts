@@ -403,18 +403,42 @@ describe("evaluerGardeCommit — garde-fou production", () => {
 });
 
 describe("porte de doctrine alignée sur le site (pack du 25/11/2026)", () => {
-  const rejet = (t: string) => controlerFiche(faq({ answer_draft: t })).ok;
-  it("accepte la garantie réelle : gains identifiés, 3 fois, 4 470 € HT", () => {
+  const accepte = (t: string) => controlerFiche(faq({ answer_draft: t })).ok;
+  it("accepte la garantie réelle : gains identifiés, 3 fois le prix HT, sans montant", () => {
     expect(
-      rejet(
-        "La journée est garantie sur les gains identifiés : s’ils n’atteignent pas 3 fois le prix de la journée (4 470 € HT), vous êtes remboursé sur demande écrite.",
+      accepte(
+        "Si les gains identifiés dans votre rapport n’atteignent pas 3 fois le prix HT de la journée, vous êtes remboursé sur demande écrite.",
+      ),
+    ).toBe(true);
+    expect(
+      accepte(
+        "Si les gains identifiés n’atteignent pas trois fois le prix de la journée, vous êtes remboursé sur demande écrite.",
       ),
     ).toBe(true);
   });
+  it("refuse « 4 470 € » sous toutes ses formes, même dans la phrase de la garantie", () => {
+    for (const t of [
+      "Si les gains identifiés n’atteignent pas 3 fois le prix de la journée (4 470 € HT), vous êtes remboursé.",
+      "4 470 euros HT, soit 3 fois le prix ; gains identifiés.",
+      "Garantie à 4470 € HT.",
+    ]) {
+      expect(accepte(t), t).toBe(false);
+    }
+  });
+  it("refuse tout multiple de garantie autre que 3 (« 5 fois », « cinq fois »…)", () => {
+    for (const t of [
+      "Si les gains identifiés n’atteignent pas 5 fois le prix de la journée, vous êtes remboursé sur demande écrite.",
+      "Gains identifiés : garantie à 3 fois le prix, voire 5 fois le prix.",
+      "Si les gains identifiés n’atteignent pas cinq fois le prix, vous êtes remboursé.",
+      "Si les gains identifiés n’atteignent pas 10 fois la garantie, remboursé.",
+    ]) {
+      expect(accepte(t), t).toBe(false);
+    }
+  });
   it("accepte le seuil de déduction de 5 000 € HT dans une phrase sur le devis", () => {
-    expect(rejet("Un devis d’au moins 5 000 € HT signé sous 60 jours déduit les 1 490 € HT.")).toBe(
-      true,
-    );
+    expect(
+      accepte("Un devis d’au moins 5 000 € HT signé sous 60 jours déduit les 1 490 € HT."),
+    ).toBe(true);
   });
   it("refuse 4 470 € ou 5 000 € hors de leur contexte, et tout autre prix", () => {
     for (const t of [
@@ -423,7 +447,7 @@ describe("porte de doctrine alignée sur le site (pack du 25/11/2026)", () => {
       "Elle coûte 990 € HT.",
       "Prix : 1 490 € HT, soit 4 470 € HT pour trois journées.",
     ]) {
-      expect(rejet(t), t).toBe(false);
+      expect(accepte(t), t).toBe(false);
     }
   });
   it("refuse une garantie qui ne porte pas sur les gains identifiés", () => {
@@ -432,7 +456,7 @@ describe("porte de doctrine alignée sur le site (pack du 25/11/2026)", () => {
       "Le gain est garanti et sinon remboursé, 3 fois le prix.",
       "Gains garantis à 3 fois le prix.",
     ]) {
-      expect(rejet(t), t).toBe(false);
+      expect(accepte(t), t).toBe(false);
     }
   });
   it("refuse frais de déplacement, hébergement, repas, km et Auvergne", () => {
@@ -445,15 +469,15 @@ describe("porte de doctrine alignée sur le site (pack du 25/11/2026)", () => {
       "Dans un rayon de 80 km autour de nos bureaux.",
       "Nous nous déplaçons partout.",
     ]) {
-      expect(rejet(t), t).toBe(false);
+      expect(accepte(t), t).toBe(false);
     }
   });
   it("refuse Grenoble et « Aucun gain garanti »", () => {
-    expect(rejet("Notre agence de Grenoble.")).toBe(false);
-    expect(rejet("Aucun gain garanti.")).toBe(false);
+    expect(accepte("Notre agence de Grenoble.")).toBe(false);
+    expect(accepte("Aucun gain garanti.")).toBe(false);
   });
   it("accepte « dans vos locaux, partout en France »", () => {
-    expect(rejet("La Journée IA se déroule dans vos locaux, partout en France.")).toBe(true);
+    expect(accepte("La Journée IA se déroule dans vos locaux, partout en France.")).toBe(true);
   });
   it("n’exempte pas le contrôle des champs libres", () => {
     expect(controlerFiche(faq({ source: "Rayon 50 km" })).ok).toBe(false);
