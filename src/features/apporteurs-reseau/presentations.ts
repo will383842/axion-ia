@@ -71,7 +71,8 @@ export function devisSigneNonFacture(d: {
 
 /**
  * Une présentation occupe-t-elle encore le SIREN à cette date ? `reservation` (facultatif, règle
- * par rendez-vous) : une présentation `reservee` n'occupe que jusqu'à `reserveeJusquAt` inclus.
+ * par rendez-vous) : une présentation `reservee` n'occupe que jusqu'à `reserveeJusquAt` inclus
+ * (une date illisible continue d'occuper : jamais deux apporteurs par défaut).
  */
 export function presentationOccupe(
   p: { statut: StatutPresentation; protegeeJusquAt: Date | null },
@@ -79,7 +80,7 @@ export function presentationOccupe(
   reservation?: { reserveeJusquAt: Date } | null,
 ): boolean {
   if (p.statut === "reservee")
-    return !reservation || reservation.reserveeJusquAt.getTime() >= maintenant.getTime();
+    return !reservation || !(reservation.reserveeJusquAt.getTime() < maintenant.getTime());
   if (p.statut === "confirmee")
     return !p.protegeeJusquAt || p.protegeeJusquAt.getTime() >= maintenant.getTime();
   return false;

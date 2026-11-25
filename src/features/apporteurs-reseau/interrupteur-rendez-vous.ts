@@ -6,6 +6,10 @@
  * (« TRUE », « 1 », « true » entouré d'espaces : éteint). Lu à CHAQUE appel, jamais figé à
  * l'import : le site et le worker suivent la valeur de leur propre conteneur.
  *
+ * ⚠️ Côté SERVEUR seulement (site et worker). Le fichier ne porte pas `server-only` (le worker
+ * l'importe) : dans un composant client, la variable n'existe pas et la fonction rendrait
+ * toujours `false`, sans erreur.
+ *
  * Lot 2 (2026-11-25) : rien ne lit encore cette fonction.
  */
 export function validationParRendezVousActive(): boolean {

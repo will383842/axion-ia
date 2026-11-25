@@ -23,9 +23,13 @@ export const VERSION_REGLE_RENDEZ_VOUS = "2.8";
 /** `null` : la règle en vigueur aujourd'hui (confirmation par le silence). */
 export type RegleAttribution = "rendez_vous" | null;
 
-/** « 2.10 » → [2, 10] ; `null` pour tout ce qui n'est pas une suite de nombres séparés par des points. */
+/**
+ * « 2.10 » → [2, 10] ; `null` pour tout ce qui n'est pas une suite de nombres séparés par des
+ * points. Bornée (quatre composantes de quatre chiffres au plus) : une chaîne démesurée est
+ * illisible, elle ne devient jamais « l'infini ».
+ */
 function composantes(version: unknown): number[] | null {
-  if (typeof version !== "string" || !/^\d+(\.\d+)*$/.test(version)) return null;
+  if (typeof version !== "string" || !/^\d{1,4}(\.\d{1,4}){0,3}$/.test(version)) return null;
   return version.split(".").map(Number);
 }
 
@@ -37,6 +41,8 @@ function composantes(version: unknown): number[] | null {
  */
 export function versionAuMoins(signature: unknown, min: string): boolean {
   if (typeof signature !== "object" || signature === null || Array.isArray(signature)) return false;
+  // Le champ doit appartenir à l'objet lui-même (jamais hérité d'un prototype).
+  if (!Object.prototype.hasOwnProperty.call(signature, "version")) return false;
   const version = composantes((signature as { version?: unknown }).version);
   const seuil = composantes(min);
   if (!version || !seuil) return false;
@@ -50,7 +56,9 @@ export function versionAuMoins(signature: unknown, min: string): boolean {
 
 /** La règle d'un apporteur : par rendez-vous seulement si l'interrupteur est allumé ET son contrat ≥ 2.8. */
 export function regleDe(signature: unknown, actif: boolean): RegleAttribution {
-  return actif && versionAuMoins(signature, VERSION_REGLE_RENDEZ_VOUS) ? "rendez_vous" : null;
+  return actif === true && versionAuMoins(signature, VERSION_REGLE_RENDEZ_VOUS)
+    ? "rendez_vous"
+    : null;
 }
 
 /** Fin de la réservation provisoire : la saisie + 60 jours (borne incluse). */
@@ -69,6 +77,9 @@ export type MotifRendezVousRefuse =
 /**
  * Ce rendez-vous valide-t-il l'entreprise ? Il doit avoir été PRIS pendant la réservation (bornes
  * incluses) et avoir EU LIEU ; il peut s'être tenu après la fin de la réservation.
+ *
+ * Les contrôles sont écrits en POSITIF : une date illisible (`Invalid Date`) ne satisfait aucune
+ * comparaison, donc elle refuse, jamais elle ne valide.
  */
 export function rendezVousRecevable(e: {
   recueAt: Date;
@@ -77,10 +88,10 @@ export function rendezVousRecevable(e: {
   tenuAt: Date | null;
   maintenant: Date;
 }): { ok: true } | { ok: false; motif: MotifRendezVousRefuse } {
-  if (e.prisAt.getTime() < e.recueAt.getTime()) return { ok: false, motif: "pris_avant_saisie" };
-  if (e.prisAt.getTime() > e.reserveeJusquAt.getTime())
-    return { ok: false, motif: "pris_apres_reservation" };
-  if (!e.tenuAt || e.tenuAt.getTime() > e.maintenant.getTime())
+  const pris = e.prisAt.getTime();
+  if (!(pris >= e.recueAt.getTime())) return { ok: false, motif: "pris_avant_saisie" };
+  if (!(pris <= e.reserveeJusquAt.getTime())) return { ok: false, motif: "pris_apres_reservation" };
+  if (!e.tenuAt || !(e.tenuAt.getTime() <= e.maintenant.getTime()))
     return { ok: false, motif: "pas_encore_tenu" };
   return { ok: true };
 }
