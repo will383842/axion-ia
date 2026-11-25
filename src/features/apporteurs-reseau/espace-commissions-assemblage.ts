@@ -82,7 +82,7 @@ export interface EntrepriseVue {
 export interface PieceVue {
   numero: string;
   genre: "facture" | "avoir";
-  le: Date;
+  le: Date | null;
 }
 
 export interface VirementAVenirVue {
@@ -316,20 +316,25 @@ export function assemblerEspaceCommissions(e: {
         genre: "facture",
         le: new Date(
           Math.min(
-            pieces.get(c.autofactureNumero)?.le.getTime() ?? Infinity,
+            pieces.get(c.autofactureNumero)?.le?.getTime() ?? Infinity,
             emission(c).getTime(),
           ),
         ),
       });
     if (c.avoirNumero && !c.parrainage)
-      pieces.set(c.avoirNumero, { numero: c.avoirNumero, genre: "avoir", le: emission(c) });
+      pieces.set(c.avoirNumero, { numero: c.avoirNumero, genre: "avoir", le: null });
   }
 
   return {
     entreprises,
     horsEntreprise: hors,
-    virements: virements(mes, e.regimeTva),
-    pieces: [...pieces.values()].sort((a, b) => b.le.getTime() - a.le.getTime()),
+    // Lecture tronquée : une autofacture pourrait être coupée, aucun montant de virement n'est donné.
+    virements: e.tronque ? [] : virements(mes, e.regimeTva),
+    pieces: [...pieces.values()].sort(
+      (a, b) =>
+        (a.genre === b.genre ? 0 : a.genre === "facture" ? -1 : 1) ||
+        (b.le?.getTime() ?? 0) - (a.le?.getTime() ?? 0),
+    ),
     tronque: e.tronque,
   };
 }

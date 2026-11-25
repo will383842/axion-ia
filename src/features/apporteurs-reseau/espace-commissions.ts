@@ -13,6 +13,8 @@ import "server-only";
 
 import { prisma } from "@/lib/prisma";
 
+import { tableAbsente } from "./reservation-presentation";
+
 import {
   assemblerEspaceCommissions,
   BORNE_COMMISSIONS,
@@ -83,13 +85,22 @@ export async function lireEspaceCommissions(
   const mesCommissions = commissions.slice(0, BORNE_COMMISSIONS);
 
   // Pas de colonne apporteur ici : on lit par `presentationId` parmi les présentations ci-dessus.
-  const reservations =
-    mesPresentations.length === 0
-      ? []
-      : await prisma.presentationReservation.findMany({
-          where: { presentationId: { in: mesPresentations.map((p) => p.id) } },
-          select: { presentationId: true, reserveeJusquAt: true, valideeAt: true },
-        });
+  let reservations: Array<{
+    presentationId: string;
+    reserveeJusquAt: Date;
+    valideeAt: Date | null;
+  }> = [];
+  if (mesPresentations.length > 0) {
+    try {
+      reservations = await prisma.presentationReservation.findMany({
+        where: { presentationId: { in: mesPresentations.map((p) => p.id) } },
+        select: { presentationId: true, reserveeJusquAt: true, valideeAt: true },
+      });
+    } catch (err) {
+      // Migration pas encore passée (table absente) : pas de date, la page reste lisible.
+      if (!tableAbsente(err)) throw err;
+    }
+  }
 
   return assemblerEspaceCommissions({
     apporteurId,

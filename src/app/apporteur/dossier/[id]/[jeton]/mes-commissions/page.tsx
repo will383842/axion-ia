@@ -50,7 +50,7 @@ const LIEN =
 
 function lienPiece(base: string, numero: string, libelle: string) {
   return (
-    <a href={`${base}/factures/${numero}?dl=1`} target="_blank" rel="noopener" className={LIEN}>
+    <a href={`${base}/factures/${numero}`} target="_blank" rel="noopener" className={LIEN}>
       ↓ {libelle}
     </a>
   );
@@ -213,9 +213,7 @@ export default async function MesCommissionsPage({
             {vue.pieces.map((p) => (
               <li key={p.numero} className="text-[16px]">
                 <p>
-                  {p.genre === "facture"
-                    ? T.factureDu(p.numero, date(p.le))
-                    : T.avoirDu(p.numero, date(p.le))}
+                  {p.genre === "facture" ? T.factureDu(p.numero, date(p.le!)) : T.avoirDu(p.numero)}
                 </p>
                 {lienPiece(
                   base,

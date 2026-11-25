@@ -28,7 +28,7 @@ export const TEXTES_COMMISSIONS = {
   reserveeJusquAu: (d: string) => `Réservée jusqu'au ${d}`,
   commission: (m: string) => `Commission : ${m} hors taxes`,
   factureDu: (n: string, d: string) => `Facture n° ${n} du ${d}`,
-  avoirDu: (n: string, d: string) => `Avoir n° ${n} · ${d}`,
+  avoirDu: (n: string) => `Avoir n° ${n}`,
   echeance: (d: string) => `Échéance indiquée sur la facture : ${d}`,
   netApresAvoirs: "Montant net, après déduction des avoirs éventuels.",
   ht: (m: string) => `${m} hors taxes`,

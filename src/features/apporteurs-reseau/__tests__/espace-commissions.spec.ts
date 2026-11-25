@@ -7,6 +7,7 @@ const h = vi.hoisted(() => ({
   pres: [] as unknown[],
   comm: [] as unknown[],
   piece: null as unknown,
+  resaErreur: null as unknown,
 }));
 vi.mock("@/lib/prisma", () => {
   const modele = (nom: string, rendu: () => unknown) => ({
@@ -23,7 +24,10 @@ vi.mock("@/lib/prisma", () => {
     prisma: {
       presentationEntreprise: modele("presentation", () => h.pres),
       commissionApporteur: modele("commission", () => h.comm),
-      presentationReservation: modele("reservation", () => []),
+      presentationReservation: modele("reservation", () => {
+        if (h.resaErreur) throw h.resaErreur;
+        return [];
+      }),
     },
   };
 });
@@ -37,6 +41,7 @@ beforeEach(() => {
   h.pres = [];
   h.comm = [];
   h.piece = null;
+  h.resaErreur = null;
   delete process.env.DATABASE_URL;
 });
 
@@ -58,6 +63,23 @@ describe("lireEspaceCommissions", () => {
     expect(ou("commission")).toEqual({ apporteurId: A });
     // Réservations : seulement par présentations déjà prouvées siennes.
     expect(ou("reservation")).toEqual({ presentationId: { in: ["p1"] } });
+  });
+
+  it("table des réservations absente (P2021) : la page reste lisible ; autre erreur : remonte", async () => {
+    h.pres = [
+      {
+        id: "p1",
+        denomination: "X",
+        recueAt: new Date(),
+        statut: "reservee",
+        contactEnvoyeAt: null,
+        protegeeJusquAt: null,
+      },
+    ];
+    h.resaErreur = Object.assign(new Error("absente"), { code: "P2021" });
+    await expect(lireEspaceCommissions({ id: A, regimeTva: null })).resolves.toBeTruthy();
+    h.resaErreur = new Error("autre");
+    await expect(lireEspaceCommissions({ id: A, regimeTva: null })).rejects.toThrow("autre");
   });
 
   it("sans présentation, aucune requête de réservation", async () => {

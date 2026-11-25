@@ -84,7 +84,7 @@ const riche = {
   ],
   pieces: [
     { numero: "AXI-APP-2026-0014", genre: "facture", le: new Date("2026-11-18T09:00:00Z") },
-    { numero: "AXI-APP-2026-0011", genre: "avoir", le: new Date("2026-11-02T09:00:00Z") },
+    { numero: "AXI-APP-2026-0011", genre: "avoir", le: null },
   ],
   tronque: false,
 };
@@ -142,7 +142,7 @@ describe("rendu", () => {
   it("les liens de téléchargement pointent sous l'espace de l'apporteur", async () => {
     h.vue = riche;
     const html = await rendre();
-    expect(html).toContain(`/apporteur/dossier/${ID}/jeton-valide/factures/AXI-APP-2026-0014?dl=1`);
+    expect(html).toContain(`/apporteur/dossier/${ID}/jeton-valide/factures/AXI-APP-2026-0014`);
   });
 
   it("états vides : jamais « 0 € »", async () => {
