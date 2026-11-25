@@ -106,9 +106,11 @@ export function commandesSoldees(
       factureIds: triees.map((f) => f.id),
       totalHtCents: net,
       baseSignatureCents: totalDevis !== undefined ? totalDevis : brutCents,
+      // min(base, net) : jamais plus que ce qui est réellement gardé, jamais déduit deux fois
+      // (facture refaite sous le même devis, facturé au-delà du devis).
       baseApresAvoirsCents: Math.max(
         0,
-        (totalDevis !== undefined ? totalDevis : brutCents) - (brutCents - net),
+        Math.min(totalDevis !== undefined ? totalDevis : brutCents, net),
       ),
       devisId: membres[0]!.devisId,
     });

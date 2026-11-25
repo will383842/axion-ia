@@ -113,3 +113,24 @@ describe("grille : coaching 0 €, arrondi au centime le plus proche", () => {
     });
   });
 });
+
+describe("tour 2 : base jamais déduite deux fois", () => {
+  it("avoir total puis facture refaite SOUS LE MÊME DEVIS : 4 500 € → base 4 500 € (675 €)", () => {
+    const [c] = commandesSoldees(
+      [
+        f("F1", { montantHtCents: 450_000 }),
+        avoir("AV1", "F1", 450_000),
+        f("F2", { montantHtCents: 450_000, emiseAt: new Date("2026-11-05T10:00:00Z") }),
+      ],
+      new Map([["D1", 450_000]]),
+    );
+    expect(c!.baseApresAvoirsCents).toBe(450_000);
+  });
+  it("facturé 11 000 € sur un devis de 10 000 €, avoir de 1 000 € : base 10 000 €", () => {
+    const [c] = commandesSoldees(
+      [f("A", { montantHtCents: 1_100_000 }), avoir("AV", "A", 100_000)],
+      new Map([["D1", 1_000_000]]),
+    );
+    expect(c!.baseApresAvoirsCents).toBe(1_000_000);
+  });
+});

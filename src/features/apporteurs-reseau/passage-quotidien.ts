@@ -856,7 +856,12 @@ async function etapeCommissions(maintenant: Date, bilan: BilanPassageReseau): Pr
   ]);
   const decisions = await lireDecisionsAAttribuer(commandes.map((c) => c.factureCleId));
   const existantes = await prisma.commissionApporteur.findMany({
-    where: { factureId: { in: commandes.flatMap((c) => c.factureIds) } },
+    // Une commission ANNULÉE (avoir total) ne bloque ni la recréation sur la facture refaite, ni la
+    // garde « deux apporteurs » : seul compte l'argent encore en jeu.
+    where: {
+      factureId: { in: commandes.flatMap((c) => c.factureIds) },
+      statut: { not: "annulee" },
+    },
     select: { factureId: true, apporteurId: true, parrainage: true },
   });
   const cle = (f: string, a: string, p: boolean) => `${f}|${a}|${p ? 1 : 0}`;

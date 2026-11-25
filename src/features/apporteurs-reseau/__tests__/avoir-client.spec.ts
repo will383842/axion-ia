@@ -19,8 +19,6 @@ const d = vi.hoisted(() => ({
   lignes: [] as Array<Record<string, unknown>>,
   reprisesDeja: [] as Array<{ montantCents: number }>,
   filleulHorsGroupe: null as null | Record<string, unknown>,
-  /** Vrai : le simulateur ignore le filtre d'activité (le calcul proportionnel reste testé sur « audit » en attendant la grille Journée IA). */
-  sansFiltre: true,
   annuler: vi.fn(async () => ({ ok: true })),
   reduire: vi.fn(async () => ({ ok: true })),
   retenir: vi.fn(async () => ({
@@ -60,11 +58,7 @@ vi.mock("@/lib/prisma", () => ({
     },
     commissionApporteur: {
       findMany: vi.fn(async ({ where }: { where: Where }) =>
-        "palier" in where
-          ? d.reprisesDeja
-          : d.lignes.filter(
-              (l) => d.sansFiltre || where.activite === undefined || l.activite === where.activite,
-            ),
+        "palier" in where ? d.reprisesDeja : d.lignes,
       ),
       updateMany: (...a: unknown[]) => d.maj(...(a as [])),
       findFirst: vi.fn(async () => d.filleulHorsGroupe),
@@ -140,14 +134,12 @@ beforeEach(() => {
   d.lignes = [ligne()];
   d.reprisesDeja = [];
   d.filleulHorsGroupe = null;
-  d.sansFiltre = true;
 });
 
 describe("règle unique de l'avoir : la commission suit l'argent gardé, pour TOUS les produits", () => {
   it.each(["audit", "formation", "implementation", "site_web", "conference"])(
     "activité « %s » : avoir total → annulée (pas encore facturée), retenue (facturée) ou reprise (versée)",
     async (activite) => {
-      d.sansFiltre = false;
       d.lignes = [
         ligne({ activite }),
         ligne({ id: "c2", activite, autofactureNumero: "AXI-APP-2026-0001" }),
@@ -157,6 +149,25 @@ describe("règle unique de l'avoir : la commission suit l'argent gardé, pour TO
       expect(b).toEqual({ reduites: 0, annulees: 1, retenues: 1, reprises: 1 });
     },
   );
+});
+
+describe("tour 2", () => {
+  it("coaching ancien (30 %) : un avoir partiel réduit la ligne au lieu de la laisser intacte", async () => {
+    d.factures = [facture, avoir(-100)];
+    d.lignes = [ligne({ activite: "un_a_un", montantCents: 100 })];
+    await reprendreApresAvoirsClients(LE);
+    expect(d.reduire).toHaveBeenCalledWith("c1", 234, expect.any(String));
+    d.lignes = [ligne({ activite: "un_a_un", statut: "versee", verseeAt: LE, montantCents: 100 })];
+    await reprendreApresAvoirsClients(LE);
+    expect(d.reprise).toHaveBeenCalledTimes(1);
+  });
+  it("ligne déjà réduite avant facturation (factureHt = net) : aucune reprise au versement", async () => {
+    d.factures = [facture, avoir(-100)];
+    d.lignes = [ligne({ statut: "versee", verseeAt: LE, factureHtCents: 234, montantCents: 70 })];
+    const b = await reprendreApresAvoirsClients(LE);
+    expect(b.reprises).toBe(0);
+    expect(d.reprise).not.toHaveBeenCalled();
+  });
 });
 
 describe("pas encore facturée : réduite ou annulée", () => {

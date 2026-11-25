@@ -244,7 +244,7 @@ export async function reprendreApresAvoirsClients(
     try {
       const lu = await facturesDeLaCommande(factureId);
       if (!lu) continue;
-      const { netCents, avoirs: actifs } = netDeLaCommande(lu.membres, lu.avoirs);
+      const { netCents, brutCents, avoirs: actifs } = netDeLaCommande(lu.membres, lu.avoirs);
       if (actifs.length === 0) continue; // avoir brouillon ou annulé : sans effet
       const net = Math.max(0, netCents);
       // Dette a1 (a) : le délai de 24 mois de l'art. 4.5 s'apprécie AVOIR PAR AVOIR. Pour une ligne
@@ -313,10 +313,15 @@ export async function reprendreApresAvoirsClients(
         // des avoirs d'alors) ; seuls les avoirs émis APRÈS elle, et de moins de 24 mois, la réduisent.
         const apres = recents.filter((a) => (a.emiseAt ?? a.createdAt ?? new Date(0)) > l.creeAt);
         if (apres.length === 0) continue; // aucun avoir dans le délai depuis la ligne : rien à reprendre
-        const netLigne = Math.max(
+        // `l.factureHtCents` est déjà le prix net à la création OU après une réduction (qui le
+        // réécrit) : il ne se réduit plus des avoirs, il est seulement borné par le net actuel de la
+        // commande (jamais de double déduction d'un avoir déjà pris en compte).
+        // Net de la commande au regard des SEULS avoirs de moins de 24 mois (art. 4.5).
+        const netRecents = Math.max(
           0,
-          l.factureHtCents + apres.reduce((x, a) => x + a.montantHtCents, 0),
+          brutCents + recents.reduce((x, a) => x + a.montantHtCents, 0),
         );
+        const netLigne = Math.max(0, Math.min(l.factureHtCents, netRecents));
         const annulationLigne = dateDeLAnnulation(apres) ?? annulationLe;
         const cible = cibleApresAvoir(
           { ...l, montantCents: montant },
