@@ -341,6 +341,8 @@ const INTERDITS = new RegExp(
     "\\bsuivi\\b",
     "\\bsupport\\b",
     "accompagnement",
+    "cabinets? de conseil",
+    "société de conseil",
     "témoignage",
     "cas clients?\\b",
     "machine-readable",
