@@ -58,6 +58,40 @@ export type AlerteCatalogueEntry = {
  * Règle de nommage : snake_case, cohérent avec le schéma DB (code VarChar(80)).
  */
 export const ALERTE_CATALOGUE: Record<string, AlerteCatalogueEntry> = {
+  // ── Garantie Journée IA (CGV art. 47.10) — PR 3/3, 2026-11-25 ─────────────
+  //
+  // Émises ET refermées par le passage quotidien de 06:50 UTC
+  // (`formation-crons.garanties-journee-ia`, `garanties-journee-ia/passage.ts`),
+  // jamais par le balayage d'évaluation de 07:00 : `synchroniserAlertes` ne les voit
+  // pas parmi ses candidates et les résoudrait dès le premier tour, avant lecture
+  // (même motif structurel que `besoin_adaptation_declare`). Le NIVEAU du catalogue est
+  // celui du premier palier ; l'alerte porte son propre niveau à chaque palier
+  // (J-5 info, J-2 et J0 important, dépassée critique).
+  garantie_ji_rapport: {
+    niveau: "info",
+    titre: "Garantie Journée IA : rapport à remettre",
+    resolutionAuto: false,
+    motifSansResolutionAuto:
+      "Émise et refermée par le passage quotidien garanties-journee-ia (date de remise saisie ou dossier archivé), pas par le balayage d'évaluation.",
+    guichet: "direction",
+  },
+  garantie_ji_reponse: {
+    niveau: "info",
+    titre: "Garantie Journée IA : réponse écrite à envoyer",
+    resolutionAuto: false,
+    motifSansResolutionAuto:
+      "Émise et refermée par le passage quotidien garanties-journee-ia (décision datée saisie ou dossier archivé), pas par le balayage d'évaluation.",
+    guichet: "direction",
+  },
+  garantie_ji_remboursement: {
+    niveau: "info",
+    titre: "Garantie Journée IA : virement à effectuer",
+    resolutionAuto: false,
+    motifSansResolutionAuto:
+      "Émise et refermée par le passage quotidien garanties-journee-ia (date de virement saisie ou dossier archivé), pas par le balayage d'évaluation.",
+    guichet: "direction",
+  },
+
   // ── Handicap ──────────────────────────────────────────────────────────────
   referent_handicap_absent: {
     niveau: "critique",
