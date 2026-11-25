@@ -1,9 +1,9 @@
 /**
- * Pack SEO/GEO « Journée IA » du 10/11/2026 — tri et mapping vers la base de connaissance.
+ * Pack SEO/GEO « Journée IA » du 25/11/2026 (remplace celui du 10/11) — tri et mapping vers la base de connaissance.
  *
  * Module PUR (ni Prisma ni Next). Décision motivée : docs/knowledge/INTEGRATION-PACK-JOURNEE-IA.md.
  *
- *  - les 63 fiches questions/réponses (`faq_knowledge`) deviennent des BROUILLONS internes
+ *  - les 53 fiches questions/réponses (`faq_knowledge`) deviennent des BROUILLONS internes
  *    (type `faq`, statut `draft`, audience `team`, confidentialité `internal`), jamais publiés ;
  *  - les 623 expressions (`search_query`), 20 intentions de page, 18 sources et 10 décisions
  *    restent un référentiel éditorial HORS RAG : jamais servis comme des faits ;
@@ -141,9 +141,11 @@ const DEPLACEMENT_ET_ANNEXES =
 const PRESENCE_LOCALE_RE =
   /\b(?:agence|bureaux?|bas[ée]e?s?)\s+(?:à|en|de)\s+(?:(?:le|la|les|l[’'])\s*)?(?=\p{L})/giu;
 const PRESENCE_NOUS_RE =
-  /\b(?:nous\s+(?:sommes|[eê]tes)|notre\s+(?:[ée]quipe|soci[ée]t[ée])\s+est)\s+(?:\p{L}+\s+)?(?:bas[ée]e?s?|implant[ée]e?s?|install[ée]e?s?|pr[ée]sent(?:e)?s?|situ[ée]e?s?)\s+(?:à|en|dans)\s+(?:(?:le|la|les|l[’'])\s*)?(?=\p{L})/giu;
+  /\b(?:nous\s+(?:sommes|[eê]tes)|nos\s+(?:locaux|bureaux)\s+sont|(?:notre\s+(?:[ée]quipe|soci[ée]t[ée]|si[èe]ge|entreprise)|axion(?:[- ]ia)?)\s+est)\s+(?:\p{L}+\s+)?(?:bas[ée]e?s?|implant[ée]e?s?|install[ée]e?s?|pr[ée]sent(?:e)?s?|situ[ée]e?s?)\s+(?:au\s+c(?:œ|oe)ur\s+de|à\s+proximit[ée]\s+de|à|en|dans)\s+(?:(?:le|la|les|l[’'])\s*)?(?=\p{L})/giu;
+const SIEGE_A_RE =
+  /\bsi[èe]ge\s+(?:social\s+)?(?:est\s+)?(?:à|en|dans)\s+(?:(?:le|la|les|l[’'])\s*)?(?=\p{L})/giu;
 function presenceLocale(texte: string): boolean {
-  for (const re of [PRESENCE_LOCALE_RE, PRESENCE_NOUS_RE]) {
+  for (const re of [PRESENCE_LOCALE_RE, PRESENCE_NOUS_RE, SIEGE_A_RE]) {
     for (const m of texte.matchAll(re)) {
       const lieu = texte.charAt((m.index ?? 0) + m[0].length);
       if (/\p{Lu}/u.test(lieu)) return true;
@@ -190,8 +192,8 @@ function reglesDuPack(texte: string): string[] {
   if (/\bbarr[ée]e?s?(?![\p{L}])/iu.test(texte))
     raisons.push("prix barré interdit : un seul prix affiché");
   if (/\bcumulables?\b/i.test(texte)) raisons.push("déduction : jamais cumulable");
-  for (const m of texte.matchAll(/sous\s+(\d+|[a-zé]+)\s+jours?\s+ouvr/gi))
-    if (m[1] !== "10" && m[1]?.toLowerCase() !== "dix")
+  for (const m of texte.matchAll(/(\d+|[a-zé]+)\s+jours?\s+(ouvr[a-zé]*|calendaires?)/gi))
+    if ((m[1] !== "10" && m[1]?.toLowerCase() !== "dix") || !/^ouvr[ée]s?$/i.test(m[2] ?? ""))
       raisons.push(`délai du rapport : 10 jours ouvrés, pas « ${m[0]} »`);
   if (/\bttc\b/i.test(texte)) raisons.push("« TTC » interdit : seul prix affiché = 1 490 € HT");
   if (MONTANT_K.test(texte)) raisons.push("montant en k€ interdit");
@@ -222,6 +224,13 @@ function reglesDuPack(texte: string): string[] {
     GAINS_IDENTIFIES.test(texte) &&
     MULTIPLE_GARANTIE_RE.test(texte);
   const texteSansGarantie = garantieReelle ? texte.replace(REMBOURSEMENT_GARANTI, "") : texte;
+  if (
+    !(GAINS_IDENTIFIES.test(texte) && MULTIPLE_GARANTIE_RE.test(texte)) &&
+    /(?:vous\s+(?:[êe]tes|serez)|[êe]tes)\s+rembours|remboursement\s+(?:int[ée]gral|total|automatique)/i.test(
+      texteSansGarantie,
+    )
+  )
+    raisons.push("remboursement : seule la garantie « 3 fois » sur gains identifiés existe");
   if (
     /(gains?|r[ée]sultats?|retour sur investissement|roi)\s+garanti|garantit?\s+(un|des|le|les)\s+(gains?|r[ée]sultats?)|gains?\s+assur[ée]s?|satisfait ou rembours|garanti[^.]*rembours/i.test(
       texteSansGarantie,
@@ -448,8 +457,8 @@ export interface ClientImport {
   readonly knowledgeEntry: {
     findUnique(a: {
       where: { slug: string };
-      select: { id: true };
-    }): Promise<{ id: string } | null>;
+      select: { id: true; status: true; deletedAt: true };
+    }): Promise<{ id: string; status?: string; deletedAt?: Date | null } | null>;
     create(a: {
       data: EntreeKnowledgeDraft["entry"] & {
         translations: { create: EntreeKnowledgeDraft["translation"][] };
@@ -469,7 +478,7 @@ export type MiseAJourFiche = Omit<EntreeKnowledgeDraft["entry"], "slug"> & {
   translations: {
     updateMany: {
       where: { locale: "fr" };
-      data: Omit<EntreeKnowledgeDraft["translation"], "locale" | "slug">;
+      data: Omit<EntreeKnowledgeDraft["translation"], "locale" | "slug"> & { bodyJson: unknown };
     };
   };
 };
@@ -478,6 +487,8 @@ export interface RapportImport {
   crees: number;
   /** Fiche déjà en base (slug identique) : contenu, titre et métadonnées remplacés, rien supprimé. */
   misAJour: number;
+  /** Fiches existantes NON touchées : publiées, archivées, approuvées… ou supprimées (jamais dépubliées par l'import). */
+  ignoreesNonBrouillon: string[];
   /** Slugs mis à jour (pour le rapport). */
   slugsMisAJour: string[];
   /** Fiche créée entre-temps par un autre processus (P2002 sur le slug de la fiche) : laissée telle quelle. */
@@ -493,12 +504,19 @@ function cibleTraduction(erreur: unknown): boolean {
   return /locale|translation/i.test(texte);
 }
 
-function donneesDeMiseAJour(f: EntreeKnowledgeDraft): MiseAJourFiche {
+/** Seules les fiches encore à l'état de brouillon ou de relecture peuvent être remplacées. */
+function estRemplacable(d: { status?: string; deletedAt?: Date | null }): boolean {
+  return !d.deletedAt && (d.status === undefined || d.status === "draft" || d.status === "review");
+}
+
+function donneesDeMiseAJour(f: EntreeKnowledgeDraft, nullJson: unknown): MiseAJourFiche {
   const { slug: _slug, ...entry } = f.entry;
   const { locale: _locale, slug: _slugTraduction, ...traduction } = f.translation;
   return {
     ...entry,
-    translations: { updateMany: { where: { locale: "fr" }, data: traduction } },
+    translations: {
+      updateMany: { where: { locale: "fr" }, data: { ...traduction, bodyJson: nullJson } },
+    },
   };
 }
 
@@ -506,14 +524,16 @@ function donneesDeMiseAJour(f: EntreeKnowledgeDraft): MiseAJourFiche {
 export async function planifierImport(
   client: { readonly knowledgeEntry: Pick<ClientImport["knowledgeEntry"], "findUnique"> },
   fiches: readonly EntreeKnowledgeDraft[],
-): Promise<{ aCreer: string[]; aMettreAJour: string[] }> {
-  const plan = { aCreer: [] as string[], aMettreAJour: [] as string[] };
+): Promise<{ aCreer: string[]; aMettreAJour: string[]; ignorees: string[] }> {
+  const plan = { aCreer: [] as string[], aMettreAJour: [] as string[], ignorees: [] as string[] };
   for (const f of fiches) {
     const deja = await client.knowledgeEntry.findUnique({
       where: { slug: f.entry.slug },
-      select: { id: true },
+      select: { id: true, status: true, deletedAt: true },
     });
-    (deja ? plan.aMettreAJour : plan.aCreer).push(f.entry.slug);
+    if (!deja) plan.aCreer.push(f.entry.slug);
+    else if (estRemplacable(deja)) plan.aMettreAJour.push(f.entry.slug);
+    else plan.ignorees.push(f.entry.slug);
   }
   return plan;
 }
@@ -521,14 +541,18 @@ export async function planifierImport(
 /**
  * Crée les fiches absentes et MET À JOUR celles dont le slug existe déjà (le pack du 25/11
  * remplace l'ancien). Ne supprime jamais rien : le client n'expose ni `delete` ni `upsert`.
- * Idempotent : une 2e exécution réécrit les mêmes valeurs.
+ * Idempotent : une 2e exécution réécrit les mêmes valeurs. Une fiche publiée, archivée,
+ * approuvée ou supprimée n'est jamais touchée (listée dans `ignoreesNonBrouillon`).
+ * `nullJson` : valeur qui efface `bodyJson` (Prisma.DbNull), pour que l'éditeur rouvre le nouveau texte.
  */
 export async function importerBrouillons(
   client: ClientImport,
   fiches: readonly EntreeKnowledgeDraft[],
+  nullJson: unknown = null,
 ): Promise<RapportImport> {
   const rapport: RapportImport = {
     crees: 0,
+    ignoreesNonBrouillon: [],
     misAJour: 0,
     slugsMisAJour: [],
     dejaPresents: 0,
@@ -537,12 +561,16 @@ export async function importerBrouillons(
   for (const f of fiches) {
     const deja = await client.knowledgeEntry.findUnique({
       where: { slug: f.entry.slug },
-      select: { id: true },
+      select: { id: true, status: true, deletedAt: true },
     });
+    if (deja && !estRemplacable(deja)) {
+      rapport.ignoreesNonBrouillon.push(f.entry.slug);
+      continue;
+    }
     if (deja) {
       await client.knowledgeEntry.update({
         where: { id: deja.id },
-        data: donneesDeMiseAJour(f),
+        data: donneesDeMiseAJour(f, nullJson),
         select: { id: true },
       });
       rapport.misAJour++;

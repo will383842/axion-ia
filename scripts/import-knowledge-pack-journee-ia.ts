@@ -1,5 +1,5 @@
 /**
- * Import du pack « Journée IA » (10/11/2026) dans la base de connaissance.
+ * Import du pack « Journée IA » (25/11/2026, remplace celui du 10/11) dans la base de connaissance.
  *
  *   pnpm tsx scripts/import-knowledge-pack-journee-ia.ts                 # dry-run (défaut, sans base)
  *   pnpm tsx scripts/import-knowledge-pack-journee-ia.ts --avec-base     # dry-run + liste des fiches qui seraient mises à jour (lecture seule)
@@ -80,7 +80,7 @@ async function main() {
     process.exit(2);
   }
 
-  const { PrismaClient } = await import("../prisma/generated/client");
+  const { PrismaClient, Prisma } = await import("../prisma/generated/client");
   const prisma = new PrismaClient();
   try {
     const client = prisma as unknown as ClientImport;
@@ -88,14 +88,19 @@ async function main() {
       const plan = await planifierImport(client, rapport.aImporter);
       console.warn(
         JSON.stringify(
-          { ...resume, aCreer: plan.aCreer.length, aMettreAJour: plan.aMettreAJour },
+          {
+            ...resume,
+            aCreer: plan.aCreer.length,
+            aMettreAJour: plan.aMettreAJour,
+            ignoreesNonBrouillon: plan.ignorees,
+          },
           null,
           2,
         ),
       );
       return;
     }
-    const bilan = await importerBrouillons(client, rapport.aImporter);
+    const bilan = await importerBrouillons(client, rapport.aImporter, Prisma.DbNull);
     console.warn(JSON.stringify({ ...resume, ...bilan }, null, 2));
   } finally {
     await prisma.$disconnect();

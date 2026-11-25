@@ -692,6 +692,11 @@ describe("porte de doctrine — présence locale en « situés » et majuscules"
       "Nous sommes situés dans le Rhône.",
       "Nous sommes installés dans la Drôme.",
       "Notre équipe est située à Paris.",
+      "Nos locaux sont situés à Villeurbanne.",
+      "Axion est situé à Lyon.",
+      "Notre siège est à Lyon.",
+      "Nous sommes situés à proximité de Lyon.",
+      "Nous sommes situés au cœur de Lyon.",
     ]) {
       expect(rejetee(t), t).toBe(false);
     }
@@ -721,5 +726,74 @@ describe("porte de doctrine — présence locale en « situés » et majuscules"
     ]) {
       expect(rejetee(t), t).toBe(true);
     }
+  });
+});
+
+describe("porte de doctrine — délai et remboursement", () => {
+  const ok = (t: string) => controlerFiche(faq({ answer_draft: t })).ok;
+  it("rejette tout délai de rapport autre que 10 jours ouvrés", () => {
+    for (const t of [
+      "Le rapport arrive en 5 jours ouvrés.",
+      "Livré dans les 3 jours ouvrés.",
+      "Sous 10 jours ouvrables.",
+      "Sous 10 jours calendaires.",
+    ])
+      expect(ok(t), t).toBe(false);
+    expect(ok("Le rapport est remis sous 10 jours ouvrés."), "10 ouvrés").toBe(true);
+  });
+  it("rejette une promesse de remboursement sans le mot « garanti »", () => {
+    for (const t of [
+      "Si vous n’êtes pas satisfait, vous êtes remboursé.",
+      "Remboursement intégral si le chiffre d’affaires n’augmente pas.",
+    ])
+      expect(ok(t), t).toBe(false);
+  });
+});
+
+describe("importerBrouillons — fiches non brouillon, bodyJson", () => {
+  const fiches = [faq({ id: "GEO-911" }), faq({ id: "GEO-912" }), faq({ id: "GEO-913" })].map(
+    versEntreeKnowledge,
+  );
+  function clientStatut(statuts: Record<string, { status: string; deletedAt?: Date }>) {
+    const mises: Array<{ where: { id: string }; data: unknown }> = [];
+    const client = {
+      knowledgeEntry: {
+        findUnique: async (a: { where: { slug: string } }) =>
+          statuts[a.where.slug] ? { id: a.where.slug, ...statuts[a.where.slug] } : null,
+        create: async () => ({}),
+        update: async (a: { where: { id: string }; data: unknown }) => {
+          mises.push(a);
+          return {};
+        },
+      },
+    } as unknown as ClientImport;
+    return { client, mises };
+  }
+  it("ne touche jamais une fiche publiée, archivée ou supprimée, et la liste à part", async () => {
+    const { client, mises } = clientStatut({
+      "pack-journee-ia-geo-911": { status: "published" },
+      "pack-journee-ia-geo-912": { status: "archived" },
+      "pack-journee-ia-geo-913": { status: "draft", deletedAt: new Date() },
+    });
+    const r = await importerBrouillons(client, fiches);
+    expect(mises).toHaveLength(0);
+    expect(r.misAJour).toBe(0);
+    expect(r.ignoreesNonBrouillon).toHaveLength(3);
+    const plan = await planifierImport(client, fiches);
+    expect(plan.ignorees).toHaveLength(3);
+    expect(plan.aMettreAJour).toHaveLength(0);
+  });
+  it("met à jour un brouillon ou une fiche en relecture et efface bodyJson", async () => {
+    const effacer = Symbol("DbNull");
+    const { client, mises } = clientStatut({
+      "pack-journee-ia-geo-911": { status: "draft" },
+      "pack-journee-ia-geo-912": { status: "review" },
+    });
+    const r = await importerBrouillons(client, fiches, effacer);
+    expect(r.misAJour).toBe(2);
+    const d = mises[0]!.data as {
+      translations: { updateMany: { data: { bodyJson: unknown } } };
+    };
+    expect(d.translations.updateMany.data.bodyJson).toBe(effacer);
   });
 });
