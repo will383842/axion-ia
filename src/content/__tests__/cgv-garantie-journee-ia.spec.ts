@@ -39,6 +39,13 @@ describe("CGV : garantie de la Journée IA (art. 47.10)", () => {
     expect(a47).not.toContain("90 jours");
   });
 
+  it("le remboursement n'est jamais automatique : il passe par la demande de l'alinéa (f)", () => {
+    const a47 = corps(47);
+    expect(a47).not.toContain("sans autre formalité");
+    expect(a47).not.toContain("Axion-IA rembourse le Client");
+    expect(a47).toContain("le Client peut obtenir le remboursement de la journée selon (f)");
+  });
+
   it("les articles 16.2 et 48.3 renvoient à l'article 47.10", () => {
     expect(corps(16)).toContain("article 47.10");
     expect(corps(48)).toContain("article 47.10");
@@ -110,7 +117,6 @@ describe("CGV : garantie de la Journée IA (art. 47.10)", () => {
         expect(a4710()).not.toMatch(/questionnaire/i);
       });
       for (const phrase of [
-        "sans autre formalité",
         "Si le Client n'indique pas de coût horaire",
         "au plus tard pendant la journée",
       ]) {

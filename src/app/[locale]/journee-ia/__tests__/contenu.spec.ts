@@ -223,7 +223,7 @@ describe("Journée IA — contenu.ts", () => {
     expect(CONTENU.prix.rapport).toBe(RAPPORT_COMPLET);
     expect(GARANTIE_PHRASE).toContain(DEBUT_PROMESSE);
     expect(CONTENU.prix.titreGarantie).toBe(
-      "Pas 3 fois le prix en gains identifiés\u202f? Nous vous remboursons.",
+      "Pas 3 fois le prix en gains identifiés\u202f? Remboursement sur demande.",
     );
     // La FAQ répète la phrase et la condition, mot pour mot.
     const faqGarantie = faq.find((f) => f.id === "faq-garantie");
