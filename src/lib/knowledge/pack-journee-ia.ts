@@ -236,7 +236,7 @@ export function versEntreeKnowledge(l: LignePack): EntreeKnowledgeDraft {
   const nonVerifiee = estNonVerifiee(l);
   const note = [
     ...(nonVerifiee ? [MARQUE_NON_VERIFIE] : []),
-    `[pack Journée IA 2026-11-10] ${l.id}`,
+    `[pack Journée IA ${s(l.pack_date, s(l.source_date, "date inconnue"))}] ${l.id}`,
     `Source : ${s(l.source)}`,
     `Date de source : ${s(l.source_date)}`,
     `Nature : ${s(l.status)}`,
