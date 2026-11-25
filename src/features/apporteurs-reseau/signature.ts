@@ -34,6 +34,7 @@ import type { Prisma } from "../../../prisma/generated/client";
 
 import { empreinte, rendreContratPdf, texteDuContrat, type ValeursContrat } from "./contrat-pdf";
 import { lireRegistre } from "./annuaire";
+import { pieceContratDeLAccuse } from "./documents-joints";
 import { enregistrerDeclarations, lireDossierParLien } from "./donnees";
 import { jugerAdmission, LIBELLE_REFUS_ADMISSION } from "./regles";
 import { CONTRAT_VERSION } from "./contrat-v2";
@@ -239,9 +240,11 @@ export async function signerContrat(e: {
     });
   }
   // « Dossier bien reçu » à l'apporteur, une fois par signature (même horodatage que l'alerte) :
-  // jamais bloquant, la signature est actée.
+  // jamais bloquant, la signature est actée. Il porte le contrat qu'il vient de signer (déposé
+  // sur R2 plus haut) ; si R2 ne répond plus, l'accusé part sans pièce, comme avant.
   try {
     const url = urlDossier(dossier.id, dossier.versionLien);
+    const pieces = await pieceContratDeLAccuse(cle);
     const accuse = await envoyer({
       gabarit: "apporteur-dossier-recu",
       destinataire: dossier.email,
@@ -249,6 +252,7 @@ export async function signerContrat(e: {
       entityType: "ApporteurReseau",
       entityId: dossier.id,
       jobId: `apporteur-dossier-recu-${dossier.id}-${maintenant.getTime()}`,
+      ...(pieces.length > 0 ? { attachments: pieces } : {}),
     });
     if (accuse !== "envoye") {
       console.warn(`[apporteur-dossier] « dossier bien reçu » non parti (${accuse})`);

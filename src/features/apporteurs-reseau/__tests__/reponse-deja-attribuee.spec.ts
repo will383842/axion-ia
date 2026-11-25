@@ -30,8 +30,10 @@ vi.mock("../annuaire", () => ({
   lireEntrepriseParSiren: vi.fn(),
   lireEtablissementParSiret: vi.fn(),
 }));
-vi.mock("../envois", () => ({
+vi.mock("../apercu-envoi", () => ({
   apercu: vi.fn(async (e: Record<string, unknown>) => ({ ...e, sujet: "s", html: "" })),
+}));
+vi.mock("../envois", () => ({
   avecTexteLibre: (p: Record<string, unknown>) => p,
   envoyer: vi.fn(async (e: Record<string, unknown>) => {
     etat.envoyes.push(e);
