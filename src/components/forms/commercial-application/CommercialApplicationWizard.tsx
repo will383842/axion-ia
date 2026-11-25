@@ -1,6 +1,6 @@
 "use client";
 // use-client: machine à états du parcours (écran courant, réponses, sauvegarde localStorage, soumission async).
-// Candidature commerciale — orchestrateur du wizard (tunnel sans CV,
+// Demande d’apport d’affaires — orchestrateur du wizard (tunnel sans CV,
 // Mémorial de l’Isère 2026-08-12).
 //
 // Un écran = une question (ou un petit groupe). Barre d’avancement permanente
@@ -13,7 +13,7 @@
 
 import * as React from "react";
 import { useLocale } from "next-intl";
-import { ArrowLeft, ArrowRight, Check, Plus } from "lucide-react";
+import { ArrowLeft, ArrowRight, Check } from "lucide-react";
 import { submitCommercialApplicationAction } from "@/features/commercial-application/actions";
 import { trackFunnel } from "@/lib/tracking";
 import { capturerContactDossierAction } from "@/features/commercial-application/capture-actions";
@@ -86,9 +86,6 @@ export function CommercialApplicationWizard(): React.ReactNode {
   const [submitting, setSubmitting] = React.useState(false);
   const [serverError, setServerError] = React.useState<string | null>(null);
   const [submissionId, setSubmissionId] = React.useState<string>("");
-  // Confirmation inline avant de quitter l'étape expériences (retour Will
-  // 2026-08-13) — jamais de window.confirm.
-  const [confirmParcours, setConfirmParcours] = React.useState(false);
   /**
    * Capture déjà tentée dans CE parcours. Garde de CONFORT seulement : elle ne
    * survit ni au rechargement, ni au retour arrière, ni à un second appareil.
@@ -182,7 +179,6 @@ export function CommercialApplicationWizard(): React.ReactNode {
   const goBack = React.useCallback(() => {
     setErrors({});
     setServerError(null);
-    setConfirmParcours(false);
     setScreen((s) => Math.max(0, s - 1));
   }, []);
 
@@ -222,18 +218,8 @@ export function CommercialApplicationWizard(): React.ReactNode {
     const stepErrors = validateStep(screen, answers);
     setErrors(stepErrors);
     if (Object.keys(stepErrors).length > 0) {
-      setConfirmParcours(false);
       return;
     }
-    // Étape expériences : une confirmation inline avant de continuer (retour
-    // Will 2026-08-13) — premier « Continuer » pose la question, la réponse
-    // se donne dans le panneau (ou par un second « Continuer »).
-    if (screen === 3 && !confirmParcours) {
-      setConfirmParcours(true);
-      return;
-    }
-    setConfirmParcours(false);
-
     // 🔑 CAPTURE À LA SORTIE DE L'ÉCRAN 1 — le cœur du changement.
     //
     // À cet instant on a prénom, nom, e-mail, téléphone et l'accord : de quoi
@@ -278,7 +264,7 @@ export function CommercialApplicationWizard(): React.ReactNode {
       return;
     }
     void submitToServer();
-  }, [screen, answers, confirmParcours, submitToServer, locale]);
+  }, [screen, answers, submitToServer, locale]);
 
   const onFormSubmit = React.useCallback(
     (e: React.FormEvent) => {
@@ -300,9 +286,7 @@ export function CommercialApplicationWizard(): React.ReactNode {
           >
             <div className="bg-halo-warm border-terracotta/30 mb-5 inline-flex items-center gap-2 rounded-full border px-4 py-1.5">
               <Check aria-hidden="true" strokeWidth={3} className="text-terracotta-deep h-4 w-4" />
-              <span className="text-terracotta-deep text-sm font-semibold">
-                Candidature envoyée
-              </span>
+              <span className="text-terracotta-deep text-sm font-semibold">Dossier envoyé</span>
             </div>
             <h2 className="text-fg text-[28px] leading-tight font-bold tracking-tight sm:text-[32px]">
               C’est envoyé 🎉
@@ -401,7 +385,7 @@ export function CommercialApplicationWizard(): React.ReactNode {
                     {
                       n: "2",
                       t: "Votre expérience",
-                      d: "Vente B2B, postes des 10 dernières années.",
+                      d: "Quelques mots sur ce que vous faites aujourd'hui.",
                     },
                     { n: "3", t: "Votre terrain", d: "IA, outils, zone souhaitée, déplacements." },
                     {
@@ -452,43 +436,6 @@ export function CommercialApplicationWizard(): React.ReactNode {
           </StepTransition>
         </div>
 
-        {screen === 3 && confirmParcours ? (
-          <div
-            className="border-terracotta bg-terracotta-soft/50 mt-6 rounded-2xl border-2 p-5"
-            role="group"
-            aria-label="Confirmation de votre parcours"
-          >
-            <p className="text-fg font-semibold">
-              Êtes-vous sûr d’avoir indiqué TOUTES vos expériences professionnelles des 10 dernières
-              années ?
-            </p>
-            <div className="mt-4 flex flex-col gap-2 sm:flex-row">
-              <button
-                type="button"
-                onClick={() => {
-                  setConfirmParcours(false);
-                  setScreen(4);
-                }}
-                className="bg-terracotta focus-visible:ring-terracotta inline-flex min-h-[48px] flex-1 items-center justify-center gap-2 rounded-full px-5 text-[15px] font-semibold text-white transition-colors hover:opacity-90 focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
-              >
-                <Check aria-hidden="true" className="h-4 w-4" />
-                Oui, je continue
-              </button>
-              <button
-                type="button"
-                onClick={() => {
-                  setConfirmParcours(false);
-                  addExperience();
-                }}
-                className="border-terracotta text-terracotta-deep focus-visible:ring-terracotta inline-flex min-h-[48px] flex-1 items-center justify-center gap-2 rounded-full border-2 px-5 text-[15px] font-semibold transition-colors hover:bg-white/60 focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
-              >
-                <Plus aria-hidden="true" className="h-4 w-4" />
-                J’en ajoute une
-              </button>
-            </div>
-          </div>
-        ) : null}
-
         {serverError ? (
           <p
             className="text-terracotta-deep bg-terracotta-soft mt-6 rounded-xl px-4 py-3 text-sm"
@@ -511,7 +458,7 @@ export function CommercialApplicationWizard(): React.ReactNode {
                 "Envoi en cours…"
               ) : (
                 <>
-                  J’envoie ma candidature
+                  J’envoie mon dossier
                   <ArrowRight aria-hidden="true" className="h-4 w-4" />
                 </>
               )
@@ -534,8 +481,8 @@ export function CommercialApplicationWizard(): React.ReactNode {
 
         {screen === 0 ? (
           <p className="text-fg-muted mt-6 text-xs leading-relaxed">
-            RGPD · UE — vos données ne servent qu’à l’étude de votre candidature et sont conservées
-            pour garder la trace de nos échanges.
+            RGPD · UE — vos données ne servent qu’à l’étude de votre demande et sont conservées pour
+            garder la trace de nos échanges.
           </p>
         ) : null}
       </form>
