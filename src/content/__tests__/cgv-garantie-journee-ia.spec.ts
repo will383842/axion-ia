@@ -31,6 +31,14 @@ describe("CGV : garantie de la Journée IA (art. 47.10)", () => {
     expect(a47).toContain(`${MULTIPLE_GARANTIE} fois le prix HT`);
   });
 
+  it("l'article 47 ne nomme aucune ville, n'a plus de rayon ni de déclaration du Client", () => {
+    const a47 = corps(47);
+    expect(a47).not.toContain("50 km");
+    expect(a47).not.toContain("rayon");
+    expect(a47).not.toContain("Grenoble");
+    expect(a47).not.toContain("Le Client déclare");
+    expect(a47).not.toContain("déclaration inexacte");
+  });
   it("l'article 47 ne contient aucun terme interdit ni l'ancien délai de 90 jours", () => {
     const a47 = corps(47);
     expect(a47).not.toMatch(
@@ -88,14 +96,20 @@ describe("CGV : garantie de la Journée IA (art. 47.10)", () => {
       "TVA correspondante",
       "même s'il est remboursé ou si le prix cesse d'être dû",
       "Elle ne s'applique pas à une journée remboursée au titre de l'article 47.10",
-      "autour du siège d'Axion-IA",
+      "compris dans le prix lorsque la journée a lieu en région Auvergne-Rhône-Alpes",
+      "aucun frais de déplacement n'est dû",
+      "il reste acquis à Axion-IA en cas d'annulation par le Client, quel que soit le délai",
+      "Par dérogation à l'article 46.2, pour la seule Journée IA",
+      "le reste de l'article 46.2 s'applique pour le solde éventuel",
       "par exception à l'article 9.2",
       "La garantie ne couvre que la journée tenue",
       "le prix de mise en place, par Axion-IA ou par un tiers, n'est pas retiré",
       `majoré de ${MAJORATION_PLANCHER_COUT_HORAIRE_PCT} %`,
       "la déduction est reprise",
       "arrondi au centime",
-      "restituer le remboursement reçu",
+      "Axion-IA vérifie, dans ses propres registres",
+      "le Client n'a aucune déclaration à faire ni à confirmer",
+      "qu'une seule fois par entreprise (même numéro SIREN)",
       "les sommes que le Client a lui-même payées au titre de ce prix",
       `${milliers(SEUIL_DEVIS_DEDUCTION_EUR)} euros HT avant déduction`,
     ];
