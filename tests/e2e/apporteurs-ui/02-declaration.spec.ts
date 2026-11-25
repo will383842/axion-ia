@@ -14,7 +14,7 @@ import {
 } from "./outillage/aides";
 
 test.skip(
-  !process.env["APPORTEUR_BAC_A_SABLE"],
+  process.env["APPORTEUR_BAC_A_SABLE"] !== "1",
   "bac à sable seulement : poser APPORTEUR_BAC_A_SABLE=1",
 );
 test.use({ viewport: { width: 1280, height: 900 } });
@@ -33,7 +33,7 @@ async function remplir(page: Page, siret: string, nom: string, extra: Record<str
 
 let a: ApporteurSeme;
 let b: ApporteurSeme;
-const SIRET = siretDe("987654325"); // SIREN fabriqué (clé de Luhn valide), sans titulaire connu
+const SIRET = siretDe("987654325"); // SIREN fabriqué, clé de Luhn volontairement fausse : aucune entreprise réelle ; le SIRET complété est valide
 const NOM = `Boulangerie Fictive ${Date.now()}`;
 
 test.describe.serial("@apporteur parcours 2 — déclaration", () => {

@@ -9,7 +9,7 @@ import {
 } from "./outillage/aides";
 
 test.skip(
-  !process.env["APPORTEUR_BAC_A_SABLE"],
+  process.env["APPORTEUR_BAC_A_SABLE"] !== "1",
   "bac à sable seulement : poser APPORTEUR_BAC_A_SABLE=1",
 );
 

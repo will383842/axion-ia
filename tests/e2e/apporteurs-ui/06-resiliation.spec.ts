@@ -5,7 +5,7 @@ import { ADMIN_PREFIX, loginAsAdmin } from "../fixtures/admin-auth";
 import { aujourdhuiParis, capture, emailsCaptures, semer } from "./outillage/aides";
 
 test.skip(
-  !process.env["APPORTEUR_BAC_A_SABLE"],
+  process.env["APPORTEUR_BAC_A_SABLE"] !== "1",
   "bac à sable seulement : poser APPORTEUR_BAC_A_SABLE=1",
 );
 test.use({ viewport: { width: 1280, height: 900 } });
