@@ -136,7 +136,7 @@ vi.mock("@/lib/prisma", () => ({
 
 import {
   ecarterProposition,
-  MESSAGE_ANCIEN_RDV_ANNULE,
+  MESSAGE_AUTRE_APPORTEUR,
   validerParRendezVous,
 } from "../validation-rendez-vous";
 
@@ -180,15 +180,37 @@ function evenement(id: string, o: Ligne = {}) {
   });
 }
 
-const saisie = (id: string, o: Ligne = {}) => ({
-  presentationId: id,
-  rendezVousCle: "calendly:ev1",
-  prisAt: PRIS,
-  tenuAt: TENU,
-  source: "calendly" as const,
-  acteurId: "admin-1",
-  ...o,
-});
+/**
+ * La date de PRISE vient de la proposition (lot 5), jamais de la source : la proposition de la
+ * présentation est créée ici (sauf si le test en désigne une), avec `prisAt`.
+ */
+const saisie = (id: string, o: Ligne = {}) => {
+  const cle = o["rendezVousCle"] === undefined ? "calendly:ev1" : o["rendezVousCle"];
+  let propositionId = o["propositionId"] as string | undefined;
+  if (cle && !propositionId) {
+    propositionId = `pr-${id}`;
+    if (!bd.propositions.some((p) => p["id"] === propositionId))
+      bd.propositions.push({
+        id: propositionId,
+        presentationId: id,
+        rendezVousCle: cle,
+        prisAt: o["prisAt"] ?? PRIS,
+        rendezVousAt: TENU,
+        ecarteeAt: null,
+        retenueAt: null,
+      });
+  }
+  return {
+    presentationId: id,
+    rendezVousCle: cle,
+    prisAt: PRIS,
+    tenuAt: TENU,
+    source: "calendly" as const,
+    acteurId: "admin-1",
+    ...o,
+    ...(propositionId ? { propositionId } : {}),
+  };
+};
 
 beforeEach(() => {
   vi.stubEnv("APPORTEURS_VALIDATION_RDV", "true");
@@ -215,7 +237,6 @@ beforeEach(() => {
 describe("validerParRendezVous", () => {
   it("valide : confirmée à la date du rendez-vous, protection de 6 mois, journal, une annonce", async () => {
     entreprise("p1", A1);
-    bd.propositions.push({ presentationId: "p1", rendezVousCle: "calendly:ev1", retenueAt: null });
     const r = await validerParRendezVous(saisie("p1"), MAINTENANT);
     expect(r.ok).toBe(true);
     const p = bd.presentations[0]!;
@@ -302,18 +323,22 @@ describe("validerParRendezVous", () => {
     expect((await validerParRendezVous(saisie("p1"), MAINTENANT)).ok).toBe(false);
   });
 
-  // Les dates viennent de la SOURCE (l'événement) : on les fixe là.
-  const source = (pris: Date, tenu: Date) => {
-    bd.events[0]!["capturedAt"] = pris;
+  // La date de TENUE vient de la source ; la date de PRISE, de la proposition.
+  const tenue = (tenu: Date) => {
     bd.events[0]!["startTime"] = tenu;
   };
 
   it("date de prise hors des 60 jours : refus (avant la saisie, ou après la réservation)", async () => {
     entreprise("p1", A1);
-    source(new Date("2026-10-30T10:00:00Z"), TENU);
-    const avant = await validerParRendezVous(saisie("p1"), MAINTENANT);
-    source(new Date("2027-01-15T10:00:00Z"), new Date("2027-01-20T10:00:00Z"));
-    const apres = await validerParRendezVous(saisie("p1"), new Date("2027-02-01T10:00:00Z"));
+    const avant = await validerParRendezVous(
+      saisie("p1", { prisAt: new Date("2026-10-30T10:00:00Z") }),
+      MAINTENANT,
+    );
+    tenue(new Date("2027-01-20T10:00:00Z"));
+    const apres = await validerParRendezVous(
+      saisie("p1", { prisAt: new Date("2027-01-15T10:00:00Z") }),
+      new Date("2027-02-01T10:00:00Z"),
+    );
     expect(avant.ok).toBe(false);
     expect(apres.ok).toBe(false);
     expect(bd.presentations[0]!["statut"]).toBe("reservee");
@@ -321,15 +346,15 @@ describe("validerParRendezVous", () => {
 
   it("tenu avant la prise : refus", async () => {
     entreprise("p1", A1);
-    source(TENU, PRIS);
-    const r = await validerParRendezVous(saisie("p1"), MAINTENANT);
+    tenue(PRIS);
+    const r = await validerParRendezVous(saisie("p1", { prisAt: TENU }), MAINTENANT);
     expect(r).toMatchObject({ ok: false });
     if (!r.ok) expect(r.message).toMatch(/précède sa prise/);
   });
 
   it("rendez-vous pas encore tenu (dans le futur) : refus", async () => {
     entreprise("p1", A1);
-    source(PRIS, new Date("2026-12-01T10:00:00Z"));
+    tenue(new Date("2026-12-01T10:00:00Z"));
     const r = await validerParRendezVous(saisie("p1"), MAINTENANT);
     expect(r.ok).toBe(false);
   });
@@ -359,6 +384,106 @@ describe("validerParRendezVous", () => {
     const r = await validerParRendezVous(saisie("p1"), MAINTENANT);
     expect(r).toMatchObject({ ok: false });
     expect(bd.annonces).toHaveLength(0);
+  });
+});
+
+describe("date de prise : celle de la proposition, jamais capturedAt", () => {
+  it("capturedAt postérieur au terme : la date de prise de la proposition fait foi", async () => {
+    entreprise("p1", A1);
+    bd.events[0]!["capturedAt"] = new Date("2027-01-05T10:00:00Z"); // après le terme (31/12)
+    const r = await validerParRendezVous(saisie("p1"), MAINTENANT);
+    expect(r.ok).toBe(true);
+    expect(bd.reservations[0]!["rendezVousPrisAt"]).toEqual(PRIS);
+  });
+
+  it("l'ancien garde sa rétention même si son rendez-vous a été capturé après son terme", async () => {
+    entreprise("pOld", A2, { recueAt: new Date("2026-09-01T10:00:00Z") });
+    bd.reservations[0]!["reserveeJusquAt"] = new Date("2026-10-31T22:59:59.999Z");
+    evenement("evOld", {
+      startTime: new Date("2026-11-25T10:00:00Z"),
+      capturedAt: new Date("2026-11-05T10:00:00Z"), // après le terme de l'ancien
+    });
+    bd.propositions.push({
+      id: "prOld",
+      presentationId: "pOld",
+      rendezVousCle: "calendly:evOld",
+      prisAt: new Date("2026-10-20T10:00:00Z"),
+      ecarteeAt: null,
+      retenueAt: null,
+    });
+    entreprise("p1", A1);
+    const r = await validerParRendezVous(saisie("p1"), MAINTENANT);
+    expect(r).toEqual({ ok: false, message: MESSAGE_AUTRE_APPORTEUR });
+    expect(bd.presentations.find((p) => p["id"] === "p1")!["statut"]).toBe("reservee");
+    expect(bd.annonces).toHaveLength(0);
+  });
+
+  it("clé de rendez-vous sans proposition : refus", async () => {
+    entreprise("p1", A1);
+    const r = await validerParRendezVous(
+      { ...saisie("p1"), propositionId: undefined } as never,
+      MAINTENANT,
+    );
+    expect(r.ok).toBe(false);
+  });
+
+  it("proposition d'une AUTRE présentation : refus", async () => {
+    entreprise("p1", A1);
+    bd.propositions.push({
+      id: "prX",
+      presentationId: "pAutre",
+      rendezVousCle: "calendly:ev1",
+      prisAt: PRIS,
+      ecarteeAt: null,
+      retenueAt: null,
+    });
+    const r = await validerParRendezVous(saisie("p1", { propositionId: "prX" }), MAINTENANT);
+    expect(r.ok).toBe(false);
+    expect(bd.presentations[0]!["statut"]).toBe("reservee");
+  });
+});
+
+describe("écarter et valider en même temps (retenueAt dans la transaction)", () => {
+  it("écartée entre la lecture et l'écriture : refus, rien d'écrit", async () => {
+    entreprise("p1", A1);
+    const s = saisie("p1");
+    bd.avantEcriture = () => {
+      bd.propositions.find((p) => p["id"] === "pr-p1")!["ecarteeAt"] = new Date(
+        "2026-11-20T09:59:00Z",
+      );
+    };
+    // L'écriture sur la proposition est faite AVANT celle de la réservation : on simule
+    // l'écartement juste avant le marquage « retenue ».
+    bd.avantEcritureProposition = bd.avantEcriture;
+    bd.avantEcriture = null;
+    const r = await validerParRendezVous(s, MAINTENANT);
+    expect(r.ok).toBe(false);
+    expect(bd.presentations[0]!["statut"]).toBe("reservee");
+    expect(bd.reservations[0]!["valideeAt"]).toBeNull();
+    expect(bd.journal).toHaveLength(0);
+    expect(bd.annonces).toHaveLength(0);
+    // (L'écartement concurrent est une autre transaction en base ; ce double, lui, annule tout.)
+    expect(bd.propositions.find((p) => p["id"] === "pr-p1")!["retenueAt"] ?? null).toBeNull();
+  });
+
+  it("valider puis écarter en même temps : une seule réussit", async () => {
+    entreprise("p1", A1);
+    const s = saisie("p1");
+    const [v, e] = await Promise.all([
+      validerParRendezVous(s, MAINTENANT),
+      ecarterProposition("pr-p1", "admin-1", MAINTENANT),
+    ]);
+    expect([v.ok, e.ok].filter(Boolean)).toHaveLength(1);
+    const pr = bd.propositions.find((p) => p["id"] === "pr-p1")!;
+    expect(Boolean(pr["ecarteeAt"]) && Boolean(pr["retenueAt"])).toBe(false);
+  });
+
+  it("l'isolation Serializable est demandée (validation et écartement)", async () => {
+    entreprise("p1", A1);
+    await validerParRendezVous(saisie("p1"), MAINTENANT);
+    await ecarterProposition("pr-p1", "admin-1", MAINTENANT);
+    expect(bd.optionsTx).toHaveLength(2);
+    for (const o of bd.optionsTx) expect(o).toMatchObject({ isolationLevel: "Serializable" });
   });
 });
 
@@ -477,21 +602,17 @@ describe("canal de la saisie manuelle", () => {
 
 describe("ecarterProposition", () => {
   it("écarte sans jamais supprimer, une seule fois", async () => {
-    const lignes: Ligne[] = [{ id: "x", ecarteeAt: null, retenueAt: null }];
-    const origine = tx.propositionRendezVousPresentation.updateMany;
-    tx.propositionRendezVousPresentation.updateMany = async ({ where, data }: any) => {
-      const l = lignes.filter((p) => p.id === where.id && !p.ecarteeAt && !p.retenueAt);
-      l.forEach((p) => Object.assign(p, data));
-      return { count: l.length };
-    };
-    try {
-      expect((await ecarterProposition("x", "admin-1", MAINTENANT)).ok).toBe(true);
-      expect((await ecarterProposition("x", "admin-1", MAINTENANT)).ok).toBe(false);
-    } finally {
-      tx.propositionRendezVousPresentation.updateMany = origine;
-    }
-    expect(lignes).toHaveLength(1);
-    expect(lignes[0]).toMatchObject({ ecarteeAt: MAINTENANT, ecarteeParId: "admin-1" });
+    bd.propositions.push({ id: "x", ecarteeAt: null, retenueAt: null });
+    expect((await ecarterProposition("x", "admin-1", MAINTENANT)).ok).toBe(true);
+    expect((await ecarterProposition("x", "admin-1", MAINTENANT)).ok).toBe(false);
+    expect(bd.propositions).toHaveLength(1);
+    expect(bd.propositions[0]).toMatchObject({ ecarteeAt: MAINTENANT, ecarteeParId: "admin-1" });
+  });
+
+  it("une proposition retenue ne peut plus être écartée", async () => {
+    bd.propositions.push({ id: "y", ecarteeAt: null, retenueAt: MAINTENANT });
+    expect((await ecarterProposition("y", "admin-1", MAINTENANT)).ok).toBe(false);
+    expect(bd.propositions[0]!["ecarteeAt"] ?? null).toBeNull();
   });
 });
 
@@ -541,10 +662,46 @@ describe("revue de sécurité du lot 6", () => {
     ancienneAvecRdv("canceled");
     entreprise("p1", A1);
     const r = await validerParRendezVous(saisie("p1"), MAINTENANT);
-    expect(r).toEqual({ ok: false, message: MESSAGE_ANCIEN_RDV_ANNULE });
+    expect(r.ok).toBe(false);
+    if (!r.ok) {
+      // La déclaration qui bloque est NOMMÉE ; on ne dit jamais d'écarter la proposition cliquée.
+      expect(r.message).toMatch(/saisie le 1 sept\.?, 12:00/);
+      expect(r.message).not.toMatch(/écartez cette proposition/i);
+    }
     expect(bd.presentations.find((p) => p["id"] === "p1")!["statut"]).toBe("reservee");
     expect(bd.annonces).toHaveLength(0);
   });
+
+  it.each([
+    ["hors fenêtre d'abord", ["evHors", "evDans"]],
+    ["dans la fenêtre d'abord", ["evDans", "evHors"]],
+  ])(
+    "deux propositions annulées dont une hors fenêtre (%s) : l'ancien retient toujours",
+    async (_n, ordre) => {
+      entreprise("pOld", A2, { recueAt: new Date("2026-09-01T10:00:00Z") });
+      bd.reservations[0]!["reserveeJusquAt"] = new Date("2026-10-31T22:59:59.999Z");
+      const prises: Record<string, Date> = {
+        evHors: new Date("2026-08-15T10:00:00Z"),
+        evDans: new Date("2026-10-20T10:00:00Z"),
+      };
+      for (const id of ordre!) {
+        evenement(id, { status: "canceled", startTime: new Date("2026-11-25T10:00:00Z") });
+        bd.propositions.push({
+          id: `pr-${id}`,
+          presentationId: "pOld",
+          rendezVousCle: `calendly:${id}`,
+          prisAt: prises[id],
+          ecarteeAt: null,
+          retenueAt: null,
+        });
+      }
+      entreprise("p1", A1);
+      const r = await validerParRendezVous(saisie("p1"), MAINTENANT);
+      expect(r.ok).toBe(false);
+      if (!r.ok) expect(r.message).toMatch(/saisie le 1 sept/);
+      expect(bd.presentations.find((p) => p["id"] === "p1")!["statut"]).toBe("reservee");
+    },
+  );
 
   it("une fois la proposition annulée de l'ancien écartée, le plus récent est validé", async () => {
     ancienneAvecRdv("canceled");

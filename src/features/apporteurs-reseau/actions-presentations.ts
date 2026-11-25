@@ -344,7 +344,6 @@ export async function validerPropositionAction(
     const r = await validerParRendezVous({
       presentationId: pr.presentationId,
       rendezVousCle: pr.rendezVousCle,
-      prisAt: pr.prisAt,
       tenuAt,
       source: sourceDeLaCle(pr.rendezVousCle),
       propositionId: pr.id,

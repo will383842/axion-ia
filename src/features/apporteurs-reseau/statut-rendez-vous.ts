@@ -1,6 +1,7 @@
 /**
  * Un rendez-vous ANNULÉ, ABSENT ou REPORTÉ n'a pas eu lieu : il ne valide jamais une entreprise
- * (règle du dirigeant). Une seule définition, partagée par le rapprochement (lot 5), la console
+ * (règle du dirigeant). Seuls le STATUT et la date de TENUE sont lus ici : la date de PRISE vient
+ * de la proposition (lot 5, `invitee.created_at`), jamais de `capturedAt`. Une seule définition, partagée par le rapprochement (lot 5), la console
  * et la validation (lot 6), qui la REJOUE dans sa transaction sur l'état lu à la source.
  *
  *   · `CalendlyEvent.status` : `canceled` | `no_show` (marqués à la main) ;
@@ -23,9 +24,22 @@ export function rendezVousNonTenu(s: EtatSourceRendezVous): boolean {
 }
 
 export interface SourceRendezVous extends EtatSourceRendezVous {
-  /** Date du rendez-vous lue À LA SOURCE (jamais celle recopiée dans la proposition). */
+  /** Date de TENUE lue À LA SOURCE (jamais celle recopiée dans la proposition). */
   tenuAt: Date | null;
-  prisAt: Date | null;
+}
+
+/**
+ * Date et heure telles que la console les affiche (Europe/Paris) : le message d'un refus doit
+ * permettre de retrouver la ligne à l'identique.
+ */
+export function heureConsole(d: Date): string {
+  return d.toLocaleString("fr-FR", {
+    day: "numeric",
+    month: "short",
+    hour: "2-digit",
+    minute: "2-digit",
+    timeZone: "Europe/Paris",
+  });
 }
 
 interface LecteurSources {
@@ -33,7 +47,6 @@ interface LecteurSources {
     findUnique(a: unknown): Promise<{
       status: string;
       startTime: Date | null;
-      capturedAt: Date;
       rencontre: { statut: string | null; debutReel: Date | null; debutPrevu: Date | null } | null;
     } | null>;
   };
@@ -42,7 +55,6 @@ interface LecteurSources {
       statut: string | null;
       debutReel: Date | null;
       debutPrevu: Date | null;
-      createdAt: Date;
     } | null>;
   };
 }
@@ -63,7 +75,6 @@ export async function lireSourceRendezVous(
       select: {
         status: true,
         startTime: true,
-        capturedAt: true,
         rencontre: { select: { statut: true, debutReel: true, debutPrevu: true } },
       },
     });
@@ -72,19 +83,17 @@ export async function lireSourceRendezVous(
       calendlyStatus: ev.status,
       rencontreStatut: ev.rencontre?.statut ?? null,
       tenuAt: ev.startTime ?? ev.rencontre?.debutReel ?? ev.rencontre?.debutPrevu ?? null,
-      prisAt: ev.capturedAt,
     };
   }
   if (type === "rencontre") {
     const r = await db.rencontre.findUnique({
       where: { id },
-      select: { statut: true, debutReel: true, debutPrevu: true, createdAt: true },
+      select: { statut: true, debutReel: true, debutPrevu: true },
     });
     if (!r) return null;
     return {
       rencontreStatut: r.statut,
       tenuAt: r.debutReel ?? r.debutPrevu,
-      prisAt: r.createdAt,
     };
   }
   return null;

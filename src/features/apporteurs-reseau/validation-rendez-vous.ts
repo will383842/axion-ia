@@ -39,26 +39,37 @@ import {
   rendezVousRecevable,
 } from "./regle-attribution";
 import { tableAbsente } from "./reservation-presentation";
-import { lireSourceRendezVous, rendezVousNonTenu } from "./statut-rendez-vous";
+import { heureConsole, lireSourceRendezVous, rendezVousNonTenu } from "./statut-rendez-vous";
 
 export type SourceValidation = "calendly" | "rencontre" | "saisie" | "commande";
 
-export interface SaisieValidation {
+interface SaisieCommune {
   presentationId: string;
-  /** « calendly:<id> » ou « rencontre:<id> » ; `null` pour une saisie manuelle du dirigeant. */
-  rendezVousCle: string | null;
-  /** Quand le rendez-vous a été PRIS. */
-  prisAt: Date;
-  /** Quand il a EU LIEU. */
+  /** Quand il a EU LIEU (pour une proposition : relu à la source, qui l'emporte). */
   tenuAt: Date;
   source: SourceValidation;
-  /** Canal d'une saisie manuelle (« telephone » / « sur_place ») ; inscrit au journal. */
+  /** Canal d'une saisie manuelle ; inscrit au journal. */
   canal?: "telephone" | "sur_place" | "annule_par_axion";
-  /** La proposition validée : elle est relue DANS la transaction (écartée entre-temps : refus). */
-  propositionId?: string;
   /** L'administrateur qui valide (identifiant seul). */
   acteurId: string;
 }
+
+/**
+ * Deux formes, jamais mélangées :
+ *   · une PROPOSITION de l'outil : `rendezVousCle` + `propositionId`. La date de PRISE est celle de
+ *     la proposition, relue DANS la transaction (jamais `capturedAt`, jamais le client) ;
+ *   · une SAISIE manuelle : pas de clé, la date de prise est obligatoire.
+ */
+export type SaisieValidation = SaisieCommune &
+  (
+    | {
+        rendezVousCle: string;
+        propositionId: string;
+        /** Ignorée : la date de prise d'une proposition est celle de la proposition. */
+        prisAt?: Date;
+      }
+    | { rendezVousCle: null; prisAt: Date; propositionId?: undefined }
+  );
 
 export type ResultatValidation =
   { ok: true; message: string; avertissements: string[] } | { ok: false; message: string };
@@ -91,8 +102,21 @@ export const MESSAGE_RDV_INTROUVABLE =
 export const MESSAGE_PREMIER_RDV =
   "Un rendez-vous plus ancien, déjà tenu, est proposé pour cette présentation : c'est le PREMIER rendez-vous tenu qui valide (il fixe le départ des 6 mois). Validez celui-là, ou écartez-le s'il ne convient pas.";
 
-export const MESSAGE_ANCIEN_RDV_ANNULE =
-  "Une déclaration plus ancienne, d'un autre apporteur, a un rendez-vous pris à temps puis annulé, reporté ou manqué. S'il a été annulé par Axion IA, il est réputé tenu : saisissez-le d'abord (« Annulé par Axion IA »). Sinon, écartez cette proposition. Rien n'est validé.";
+/**
+ * Une déclaration plus ancienne, d'un autre apporteur, a un rendez-vous pris pendant sa réservation
+ * puis annulé, reporté ou manqué : elle passe en premier et attend la décision du dirigeant. Le
+ * message NOMME cette déclaration (date de saisie, telle que la console l'affiche) : la proposition
+ * sur laquelle on a cliqué n'est pas en cause et ne doit pas être écartée à sa place.
+ */
+export function messageAncienRdvAnnule(saisies: Date[]): string {
+  const dates = [...saisies]
+    .sort((x, y) => x.getTime() - y.getTime())
+    .map((d) => `saisie le ${heureConsole(d)}`)
+    .join(" ; ");
+  return `Rien n'est validé. Une déclaration plus ancienne de cette entreprise, faite par un autre apporteur (${dates}), a un rendez-vous pris pendant sa réservation puis annulé, reporté ou manqué : elle passe en premier et attend votre décision. Décidez d'abord pour CETTE déclaration-là (ligne marquée annulée, plus haut) : si Axion IA a annulé ce rendez-vous, saisissez-le pour elle (« Annulé par Axion IA »). La proposition sur laquelle vous venez de cliquer n'est pas en cause.`;
+}
+
+const MESSAGE_SANS_PROPOSITION = "Rendez-vous sans proposition : rien n'est validé.";
 
 const MESSAGE_CONCURRENCE =
   "Une autre validation est en cours sur cette entreprise : réessayez dans un instant.";
@@ -120,10 +144,17 @@ export async function validerParRendezVous(
 ): Promise<ResultatValidation> {
   if (!validationParRendezVousActive()) return { ok: false, message: MESSAGE_INTERRUPTEUR_ETEINT };
   // Dates illisibles : refus net (elles ne doivent jamais ouvrir six mois de protection).
-  if (!dateValide(e.prisAt) || !dateValide(e.tenuAt) || !dateValide(maintenant))
+  if (!dateValide(e.tenuAt) || !dateValide(maintenant))
     return { ok: false, message: "Date du rendez-vous illisible." };
+  if (e.rendezVousCle) {
+    // Une clé de rendez-vous sans proposition : on ne sait pas de quelle date de prise il s'agit.
+    if (!e.propositionId) return { ok: false, message: MESSAGE_SANS_PROPOSITION };
+  } else if (!dateValide(e.prisAt)) {
+    return { ok: false, message: "Date de prise du rendez-vous illisible." };
+  }
 
   const avertissements: string[] = [];
+  let retire = false;
   try {
     await prisma.$transaction(
       async (tx) => {
@@ -174,35 +205,46 @@ export async function validerParRendezVous(
             where: { apporteurId: p.apporteurId },
             select: { apporteurId: true },
           });
-          if (retrait)
+          if (retrait) {
+            retire = true;
             avertissements.push(
               "Cet apporteur est retiré du réseau (son contrat n'est pas résilié) : la validation est permise.",
             );
+          }
         } catch (err) {
           if (!tableAbsente(err)) throw err;
         }
 
-        // La proposition elle-même est relue ici : écartée ou retenue entre-temps, on ne valide pas.
-        if (e.propositionId) {
+        // 🔑 La PROPOSITION est relue ici : écartée, retenue, ou d'une autre présentation, on ne
+        // valide pas. La date de PRISE est la sienne (lot 5 : `invitee.created_at`), jamais celle
+        // de la source (`capturedAt` = création de NOTRE ligne, sans rapport avec la prise).
+        // Seuls le statut et la date de TENUE sont relus à la source : un rendez-vous affiché « à
+        // traiter » peut avoir été annulé, reporté ou marqué absent depuis.
+        let prisAt: Date;
+        let tenuAt = e.tenuAt;
+        if (e.rendezVousCle) {
           const pr = await tx.propositionRendezVousPresentation.findUnique({
             where: { id: e.propositionId },
-            select: { ecarteeAt: true, retenueAt: true },
+            select: {
+              presentationId: true,
+              rendezVousCle: true,
+              prisAt: true,
+              ecarteeAt: true,
+              retenueAt: true,
+            },
           });
           if (!pr || pr.ecarteeAt || pr.retenueAt)
             throw new Refus("Cette proposition a déjà été traitée.");
-        }
-
-        // 🔑 L'état du rendez-vous est RELU ICI, à la source, dans la transaction : une proposition
-        // affichée « à traiter » peut avoir été annulée, reportée ou marquée absente depuis. Les
-        // dates de la source l'emportent sur celles recopiées dans la proposition.
-        let prisAt = e.prisAt;
-        let tenuAt = e.tenuAt;
-        if (e.rendezVousCle) {
+          if (pr.presentationId !== p.id || pr.rendezVousCle !== e.rendezVousCle)
+            throw new Refus(MESSAGE_SANS_PROPOSITION);
+          if (!dateValide(pr.prisAt)) throw new Refus("Date de prise du rendez-vous illisible.");
+          prisAt = pr.prisAt;
           const src = await lireSourceRendezVous(tx, e.rendezVousCle);
           if (!src) throw new Refus(MESSAGE_RDV_INTROUVABLE);
           if (rendezVousNonTenu(src)) throw new Refus(MESSAGE_RDV_NON_TENU);
           if (src.tenuAt) tenuAt = src.tenuAt;
-          if (src.prisAt) prisAt = src.prisAt;
+        } else {
+          prisAt = e.prisAt as Date; // lisibilité vérifiée en tête de fonction
         }
 
         // Recevabilité du rendez-vous (règle du lot 2).
@@ -273,12 +315,23 @@ export async function validerParRendezVous(
           ]);
           const reservees = new Map(lignes.map((l) => [l.presentationId, l]));
           const prisEnAttente = new Map<string, Date>();
-          const annuleesPrises = new Map<string, Date>();
+          const parId = new Map(autres.map((a) => [a.id, a]));
+          // Présentations dont AU MOINS UNE proposition annulée a été prise dans la fenêtre de
+          // réservation (un ensemble : l'ordre de lecture ne change rien).
+          const annuleesDansFenetre = new Set<string>();
           for (const pa of propositionsAutres) {
             const src = await lireSourceRendezVous(tx, pa.rendezVousCle);
-            const pris = src?.prisAt ?? pa.prisAt;
+            const pris = pa.prisAt; // jamais la date de la source
             if (src && rendezVousNonTenu(src)) {
-              annuleesPrises.set(pa.presentationId, pris);
+              const a = parId.get(pa.presentationId);
+              const r = reservees.get(pa.presentationId);
+              if (
+                a &&
+                r &&
+                pris.getTime() >= a.recueAt.getTime() &&
+                pris.getTime() <= r.reserveeJusquAt.getTime()
+              )
+                annuleesDansFenetre.add(pa.presentationId);
               continue;
             }
             // Source introuvable : comme une date illisible, la proposition continue de retenir.
@@ -310,17 +363,36 @@ export async function validerParRendezVous(
           if (bloquant) throw new Refus(MESSAGE_AUTRE_APPORTEUR);
           // Plus ancienne, encore « réservée », même périmètre, avec un rendez-vous PRIS dans sa
           // fenêtre puis annulé : elle attend la décision du dirigeant (réputé tenu, ou écarté).
-          const ancienneAnnulee = autres.some((a) => {
-            const pris = annuleesPrises.get(a.id);
-            const r = reservees.get(a.id);
-            if (!pris || !r || a.statut !== "reservee") return false;
-            if (a.recueAt.getTime() >= p.recueAt.getTime()) return false;
-            if (!memePerimetre(miennePerimetre, etabs.get(a.id)!)) return false;
-            return (
-              pris.getTime() >= a.recueAt.getTime() && pris.getTime() <= r.reserveeJusquAt.getTime()
-            );
+          const anciennesAnnulees = autres.filter(
+            (a) =>
+              a.statut === "reservee" &&
+              annuleesDansFenetre.has(a.id) &&
+              a.recueAt.getTime() < p.recueAt.getTime() &&
+              memePerimetre(miennePerimetre, etabs.get(a.id)!),
+          );
+          if (anciennesAnnulees.length > 0)
+            throw new Refus(messageAncienRdvAnnule(anciennesAnnulees.map((a) => a.recueAt)));
+          // Une déclaration plus récente et encore en attente ne bloque pas, mais elle attend :
+          // on le dit, et on n'écrit à personne (aucun e-mail ne part seul).
+          for (const a of autres)
+            if (
+              a.statut === "reservee" &&
+              a.recueAt.getTime() >= p.recueAt.getTime() &&
+              memePerimetre(miennePerimetre, etabs.get(a.id)!)
+            )
+              avertissements.push(
+                `Une déclaration plus récente de cette entreprise, par un autre apporteur (saisie le ${heureConsole(a.recueAt)}), reste en attente : répondez-lui à la main (aucun e-mail ne part seul).`,
+              );
+        }
+
+        // Proposition retenue : écrite DANS la transaction, sous condition. Écarter et valider la
+        // même proposition ne réussissent jamais toutes les deux.
+        if (e.rendezVousCle) {
+          const retenue = await tx.propositionRendezVousPresentation.updateMany({
+            where: { id: e.propositionId, presentationId: p.id, ecarteeAt: null, retenueAt: null },
+            data: { retenueAt: maintenant },
           });
-          if (ancienneAnnulee) throw new Refus(MESSAGE_ANCIEN_RDV_ANNULE);
+          if (retenue.count !== 1) throw new Refus("Cette proposition a déjà été traitée.");
         }
 
         // 🔑 Écritures CONDITIONNELLES : la première prend la réservation (`valideeAt` vide) ;
@@ -374,24 +446,15 @@ export async function validerParRendezVous(
     throw err;
   }
 
-  // La proposition retenue ne reste plus « à traiter ». Hors transaction : un échec ne défait pas
-  // la validation (et une table absente — fenêtre app/worker — ne la bloque pas).
-  if (e.rendezVousCle) {
-    try {
-      await prisma.propositionRendezVousPresentation.updateMany({
-        where: {
-          presentationId: e.presentationId,
-          rendezVousCle: e.rendezVousCle,
-          retenueAt: null,
-          ecarteeAt: null,
-        },
-        data: { retenueAt: maintenant },
-      });
-    } catch (err) {
-      if (!tableAbsente(err)) throw err;
-    }
-  }
-
+  // Apporteur RETIRÉ : l'annonce d'attribution n'est pas un e-mail « argent » : `envoyer` la
+  // refuserait (« fiche-retiree »). On ne la tente pas et on le dit.
+  if (retire)
+    return {
+      ok: true,
+      message:
+        "Entreprise validée : protection de 6 mois à compter du rendez-vous. Cet apporteur est retiré du réseau : l'annonce d'attribution ne lui est pas envoyée (seuls les e-mails liés à l'argent lui parviennent).",
+      avertissements,
+    };
   // Une seule annonce : `annoncerAttribution` se garde par `jobId` (aucun envoi si déjà parti).
   const annonce = await annoncerAttribution(e.presentationId, "confirmee");
   return {
@@ -413,8 +476,8 @@ export async function ecarterProposition(
   maintenant: Date = new Date(),
 ): Promise<{ ok: true } | { ok: false; message: string }> {
   try {
-    // Serializable : écarter et valider la même proposition en même temps ne réussissent jamais
-    // toutes les deux (la validation filtre aussi `ecarteeAt: null` en écrivant `retenueAt`).
+    // Valider et écarter écrivent la MÊME ligne sous condition (`ecarteeAt`/`retenueAt` vides),
+    // chacune dans une transaction Serializable : l'une des deux échoue (count 0 ou P2034).
     const r = await prisma.$transaction(
       (tx) =>
         tx.propositionRendezVousPresentation.updateMany({
