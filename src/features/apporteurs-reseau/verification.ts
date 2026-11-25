@@ -25,6 +25,7 @@ import { decryptPii } from "@/lib/pii-crypto";
 import { deleteFromR2, getObjectBufferR2, isR2Configured, uploadToR2 } from "@/lib/r2-storage";
 
 import { empreinte, rendreContratPdf, texteDuContrat, type ValeursContrat } from "./contrat-pdf";
+import { bilanDesPieces, piecesDuContratSigne } from "./documents-joints";
 import { lireDossier, purgerContenuPieces } from "./donnees";
 import { apercu } from "./apercu-envoi";
 import { avecTexteLibre, envoyer, type EnvoiApporteur, type GabaritApporteur } from "./envois";
@@ -482,17 +483,19 @@ export async function appliquerDecision(
         signalerErreurReseau("contresignature : trace de la vérification du nom", err);
       }
     }
+    // Le contrat, toujours ; la fiche des commissions et le livret s'ils sont déposés sur R2.
+    const pieces = await piecesDuContratSigne(cle);
     const r = await envoyer({
       ...prep.envoi,
       jobId: `apporteur-contrat-signe-${apporteurId}`,
-      attachments: [
-        { filename: "Contrat-apporteur-Axion-IA.pdf", r2Key: cle, contentType: "application/pdf" },
-      ],
+      attachments: pieces,
     });
     return {
       ok: true,
       message:
-        r === "envoye" ? "Contrat contresigné et envoyé." : `Contrat contresigné (e-mail : ${r}).`,
+        r === "envoye"
+          ? `Contrat contresigné et envoyé. ${bilanDesPieces(pieces)}`
+          : `Contrat contresigné (e-mail : ${r}).`,
     };
   }
 
@@ -538,7 +541,8 @@ export async function appliquerDecision(
 }
 
 /**
- * Rejoue l'e-mail « contrat signé » (avec le contrat des deux parties en pièce jointe),
+ * Rejoue l'e-mail « contrat signé » (avec le contrat des deux parties en pièce jointe, et les
+ * documents annexes présents sur R2 : `documents-joints.ts`),
  * SANS refaire la signature : pour le cas où le premier envoi n'est jamais arrivé
  * (file en panne, adresse retenue, pièce introuvable). La clé d'idempotence est distincte
  * à chaque renvoi.
@@ -556,6 +560,7 @@ export async function renvoyerContratSigne(
     select: { contratSigneCle: true },
   });
   if (!a?.contratSigneCle) return { ok: false, message: "Le contrat signé est introuvable." };
+  const pieces = await piecesDuContratSigne(a.contratSigneCle);
   const r = await envoyer({
     destinataire: d.email,
     entityType: "ApporteurReseau",
@@ -563,17 +568,14 @@ export async function renvoyerContratSigne(
     gabarit: "apporteur-contrat-signe",
     payload: { contactName: d.prenom, ...dossierUrlSi(urlDossier(d.id, d.versionLien)) },
     jobId: `apporteur-contrat-signe-${apporteurId}-renvoi-${maintenant.getTime()}`,
-    attachments: [
-      {
-        filename: "Contrat-apporteur-Axion-IA.pdf",
-        r2Key: a.contratSigneCle,
-        contentType: "application/pdf",
-      },
-    ],
+    attachments: pieces,
   });
   return {
     ok: true,
-    message: r === "envoye" ? "Contrat signé renvoyé." : `Renvoi préparé (e-mail : ${r}).`,
+    message:
+      r === "envoye"
+        ? `Contrat signé renvoyé. ${bilanDesPieces(pieces)}`
+        : `Renvoi préparé (e-mail : ${r}).`,
   };
 }
 
@@ -584,12 +586,6 @@ export async function preparerLien(apporteurId: string, mot: string | null, text
   if (!d) return { ok: false as const, message: "Apporteur introuvable." };
   if (d.statut === "refuse" || d.statut === "resilie")
     return { ok: false as const, message: "Ce dossier est fermé." };
-  // Un dossier signé (à vérifier ou contresigné) n'a plus de lien à compléter (07/10).
-  if (d.statut === "a_verifier" || d.statut === "signe")
-    return {
-      ok: false as const,
-      message: "Ce dossier est déjà signé : il n'y a plus de lien à lui envoyer.",
-    };
   // Retiré du réseau (2026-10-07) : pas de lien de dossier (aperçu comme envoi).
   if (await retraitDe(d.id))
     return {
@@ -600,6 +596,23 @@ export async function preparerLien(apporteurId: string, mot: string | null, text
   const url = urlDossier(d.id, d.versionLien);
   if (!url)
     return { ok: false as const, message: "Impossible de fabriquer le lien (secret absent)." };
+  // Dossier signé (à vérifier ou contresigné) : il n'y a plus rien à compléter, mais l'apporteur
+  // peut avoir perdu le lien de son ESPACE (25/11). On envoie le gabarit de « Retrouver mon
+  // espace » : prénom et lien, ni mot personnel ni texte réécrit (il n'en a pas). `origine`
+  // (champ FACULTATIF, relecture de la PR #2255, I1) dit que l'envoi vient de la console : le
+  // gabarit n'écrit alors ni « comme vous l'avez demandé » ni « si vous n'êtes pas à l'origine ».
+  // Un worker plus ancien ignore ce champ et rend le texte d'avant.
+  if (d.statut === "a_verifier" || d.statut === "signe") {
+    const envoi: EnvoiApporteur = {
+      gabarit: "apporteur-lien-espace",
+      destinataire: d.email,
+      payload: { prenom: d.prenom, lien: url, origine: "console" },
+      entityType: "ApporteurReseau",
+      entityId: d.id,
+    };
+    const dejaEnvoyeLe = await dernierLienEnvoyeLe(d.id, "apporteur-lien-espace");
+    return { ok: true as const, envoi, url, dejaEnvoyeLe };
+  }
   const envoi: EnvoiApporteur = {
     gabarit: "apporteur-dossier-lien",
     destinataire: d.email,
@@ -637,17 +650,25 @@ export async function etatDuDossier(
  * Date du dernier lien envoyé (lien, rappel, ou « Retenu » qui porte le lien), « 6 octobre »,
  * ou `null`. Sert à « déjà envoyé le … » (fiche) et à « Nouvel apporteur ».
  */
-export async function dernierLienEnvoyeLe(apporteurId: string): Promise<string | null> {
-  const lie = await prisma.apporteurReseau.findUnique({
-    where: { id: apporteurId },
-    select: { submissionId: true },
-  });
+export async function dernierLienEnvoyeLe(
+  apporteurId: string,
+  gabarit: "apporteur-dossier-lien" | "apporteur-lien-espace" = "apporteur-dossier-lien",
+): Promise<string | null> {
+  // Le lien de l'ESPACE (dossier signé) ne se compare qu'aux liens d'espace déjà partis : le
+  // lien du dossier ou le « Retenu » d'avant la signature ne sont pas le même e-mail.
+  const lie =
+    gabarit === "apporteur-dossier-lien"
+      ? await prisma.apporteurReseau.findUnique({
+          where: { id: apporteurId },
+          select: { submissionId: true },
+        })
+      : null;
   const dernier = await prisma.emailLog.findFirst({
     where: {
       status: { in: ["pending", "sent"] },
       OR: [
         {
-          template: "apporteur-dossier-lien",
+          template: gabarit,
           entityType: "ApporteurReseau",
           entityId: apporteurId,
         },
@@ -690,7 +711,7 @@ export async function envoyerLien(
   }
   const r = await envoyer({
     ...prep.envoi,
-    jobId: `apporteur-dossier-lien-${apporteurId}-${Date.now()}`,
+    jobId: `${prep.envoi.gabarit}-${apporteurId}-${Date.now()}`,
   });
   return {
     ok: true as const,

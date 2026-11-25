@@ -23,15 +23,18 @@ import { ApercuEmail, MessageRetour, type EmailApercu } from "./ApercuEmail";
 export function EnvoiLienDossier({
   apporteurId,
   contratSigne = false,
-  lienPossible = true,
+  lienEspace = false,
   apercuDirect = false,
   apresEnvoi,
 }: {
   apporteurId: string;
   /** Vrai quand le contrat contresigné existe : propose de rejouer son e-mail. */
   contratSigne?: boolean;
-  /** Faux pour un dossier signé (à vérifier ou contresigné) : plus de lien à envoyer. */
-  lienPossible?: boolean;
+  /**
+   * Vrai pour un dossier signé (à vérifier ou contresigné) : c'est le lien de son ESPACE qui
+   * part (gabarit « apporteur-lien-espace », sans mot personnel ni texte à réécrire).
+   */
+  lienEspace?: boolean;
   /** « Nouvel apporteur » : l'aperçu de l'e-mail s'ouvre d'emblée. */
   apercuDirect?: boolean;
   /** Après un envoi réussi (ex. ouvrir la fiche). */
@@ -59,16 +62,18 @@ export function EnvoiLienDossier({
   }, [apercuDirect, apporteurId]);
   return (
     <div className="flex flex-col gap-[var(--space-admin-2)]">
-      {!lienPossible ? null : !email ? (
+      {!email ? (
         <>
-          <input
-            className="admin-input"
-            aria-label="Un mot personnel (facultatif)"
-            placeholder="Un mot personnel (facultatif)"
-            value={mot}
-            maxLength={500}
-            onChange={(e) => setMot(e.target.value)}
-          />
+          {lienEspace ? null : (
+            <input
+              className="admin-input"
+              aria-label="Un mot personnel (facultatif)"
+              placeholder="Un mot personnel (facultatif)"
+              value={mot}
+              maxLength={500}
+              onChange={(e) => setMot(e.target.value)}
+            />
+          )}
           <div>
             <button
               type="button"
@@ -85,7 +90,7 @@ export function EnvoiLienDossier({
                 })
               }
             >
-              Envoyer le lien du dossier
+              {lienEspace ? "Envoyer le lien de son espace" : "Envoyer le lien du dossier"}
             </button>
           </div>
         </>
