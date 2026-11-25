@@ -98,12 +98,27 @@ const MONTANT_SEUIL_DEDUCTION = /^5[\s\u00a0\u202f]?000(?:[.,]00)?$/;
 const MULTIPLE_GARANTIE_RE = /\b(?:3|trois)\s+fois\b/i;
 const GAINS_IDENTIFIES = /gains?\s+identifi[ée]s?/i;
 const REMBOURSEMENT_GARANTI = /garanti[^.]*rembours/i;
-/** Multiple de garantie : seul « 3 fois » existe ; tout autre « N fois » près de prix/garantie est rejeté. */
-const AUTRE_MULTIPLE =
-  /(?<![\p{L}\d])(?:[0-24-9]|\d{2,}|deux|quatre|cinq|six|sept|huit|neuf|dix)\s+fois\s+(?:(?:le|la|ce|son|votre|notre)\s+)?(?:prix|garantie|tarif|montant|mise)/iu;
+/** Multiple de garantie : seul « 3 fois » existe ; tout autre « N fois » / « Nx » dans une phrase de prix, de garantie ou de gains est rejeté. */
+const MULTIPLE_RE =
+  /(?<![\p{L}\d])([0-9]+|deux|quatre|cinq|six|sept|huit|neuf|dix|onze|douze|vingt)\s?(?:fois|x)(?![\p{L}\d])/giu;
+const CONTEXTE_MULTIPLE =
+  /prix|garantie|tarif|montant|mise|co[uû]t|valeur|investissement|rembours|gains?/i;
+const QUATRE_MILLE = /(?<!\d)4[\s\u00a0\u202f.,]?470(?!\d)/;
+function autreMultiple(texte: string): boolean {
+  for (const m of texte.matchAll(MULTIPLE_RE)) {
+    const n = (m[1] ?? "").toLowerCase();
+    if (n === "3" || n === "trois") continue;
+    if (CONTEXTE_MULTIPLE.test(phraseA(texte, m.index ?? 0))) return true;
+  }
+  return false;
+}
 /** Lieu : seule formule admise « dans vos locaux, partout en France ». */
 const DEPLACEMENT_ET_ANNEXES =
-  /d[ée]placement|(?:se|nous|vous)\s+d[ée]pla[cç]|h[ée]bergement|\brepas\b|\bkm\b|kilom[èe]tre|auvergne|\bfrais\b|\brayon\b|\btrajets?\b|\bvenue\b|rh[ôo]ne[- ]alpes|\baura\b|\bsuppl[ée]ment|\ben sus\b|\bforfait\b|transport de l[’']intervenant|(?:venue|zone|distance|r[ée]gion|trajet)[^.]*sur devis|sur devis[^.]*(?:venue|zone|distance|r[ée]gion|trajet)|\b(?:bas[ée]e?s?|implant[ée]e?s?|agence|bureaux?)\s+(?:à|en|de)\s+\p{Lu}/iu;
+  /d[ée]placement|(?:se|nous|vous)\s+d[ée]pla[cç]|h[ée]bergement|\brepas\b|\bkm\b|kilom[èe]tre|auvergne|\bfrais\b|\brayon\b|\btrajets?\b|\bvenue\b|rh[ôo]ne[- ]alpes|\bsuppl[ée]ments?(?![\p{L}])|p[ée]age|\bessence\b|surco[ûu]t|pr[èe]s de chez vous|\blocale\b|\ben sus\b|\bforfait\b|transport de l[’']intervenant|(?:venue|zone|distance|r[ée]gion|trajet)[^.]*sur devis|sur devis[^.]*(?:venue|zone|distance|r[ée]gion|trajet)/iu;
+/** Présence locale : sensible à la casse (une majuscule suit le lieu) pour ne pas attraper « agence de communication ». */
+const PRESENCE_LOCALE =
+  /\b(?:[Bb]as[ée]e?s?|[Ii]mplant[ée]e?s?|[Ii]nstall[ée]e?s?|[Pp]r[ée]sent(?:e)?s?|[Ss]itu[ée]e?s?|[Aa]gence|[Bb]ureaux?)\s+(?:à|en|de)\s+\p{Lu}/u;
+const REGION_AURA = /\bAURA\b/;
 
 /** Phrase (jusqu'au point) qui contient la position donnée. */
 function phraseA(texte: string, pos: number): string {
@@ -137,8 +152,14 @@ function reglesDuPack(texte: string): string[] {
     const suite = texte.slice((m.index ?? 0) + m[0].length);
     if (!HT_APRES.test(suite)) raisons.push(`prix sans « HT » juste après : « ${m[0]} »`);
   }
-  if (AUTRE_MULTIPLE.test(texte))
+  if (autreMultiple(texte) || QUATRE_MILLE.test(texte))
     raisons.push("multiple de garantie : seule la garantie « 3 fois » le prix HT existe");
+  if (/\bbarr[ée]e?s?(?![\p{L}])/iu.test(texte))
+    raisons.push("prix barré interdit : un seul prix affiché");
+  if (/\bcumulables?\b/i.test(texte)) raisons.push("déduction : jamais cumulable");
+  for (const m of texte.matchAll(/sous\s+(\d+|[a-zé]+)\s+jours?\s+ouvr/gi))
+    if (m[1] !== "10" && m[1]?.toLowerCase() !== "dix")
+      raisons.push(`délai du rapport : 10 jours ouvrés, pas « ${m[0]} »`);
   if (/\bttc\b/i.test(texte)) raisons.push("« TTC » interdit : seul prix affiché = 1 490 € HT");
   if (MONTANT_K.test(texte)) raisons.push("montant en k€ interdit");
   if (NOMBRE_SANS_DEVISE_HT.test(texte)) raisons.push("nombre sans devise suivi de « HT »");
@@ -146,7 +167,11 @@ function reglesDuPack(texte: string): string[] {
   if (TOUR_FRANCE_IA.test(texte)) raisons.push("« Tour France IA » exclu de ce pack");
   if (/\bremises?\b/i.test(texte)) raisons.push("remise : un seul prix affiché, sans remise");
   if (/\bgrenoble\b/i.test(texte)) raisons.push("« Grenoble » interdit en communication");
-  if (/finan[cç]/i.test(texte))
+  if (
+    /financ(?:ement|er|é)|finan[cç]able|subvention|prise en charge|op[ée]rateur de comp[ée]tences/i.test(
+      texte,
+    )
+  )
     raisons.push("financement : jamais évoqué (OPCO, CPF et assimilés compris)");
   if (/\bwill\b/i.test(texte)) raisons.push("écrire « Williams », jamais « Will »");
   if (
@@ -155,7 +180,7 @@ function reglesDuPack(texte: string): string[] {
     )
   )
     raisons.push("formule « Aucun gain garanti » interdite");
-  if (DEPLACEMENT_ET_ANNEXES.test(texte))
+  if (DEPLACEMENT_ET_ANNEXES.test(texte) || PRESENCE_LOCALE.test(texte) || REGION_AURA.test(texte))
     raisons.push(
       "lieu : seule formule admise « dans vos locaux, partout en France » (frais, distance, hébergement, repas, région : CGV)",
     );
@@ -236,7 +261,7 @@ export function versEntreeKnowledge(l: LignePack): EntreeKnowledgeDraft {
   const nonVerifiee = estNonVerifiee(l);
   const note = [
     ...(nonVerifiee ? [MARQUE_NON_VERIFIE] : []),
-    `[pack Journée IA ${s(l.pack_date, s(l.source_date, "date inconnue"))}] ${l.id}`,
+    `[pack Journée IA ${s(l.pack, s(l.source_date, "date inconnue"))}] ${l.id}`,
     `Source : ${s(l.source)}`,
     `Date de source : ${s(l.source_date)}`,
     `Nature : ${s(l.status)}`,

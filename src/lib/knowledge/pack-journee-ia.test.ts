@@ -123,7 +123,7 @@ describe("analyserPack — pack réel", () => {
   it("n’importe que les fiches questions/réponses, toutes en brouillon", () => {
     expect(rapport.aImporter.length + rapport.rejets.length).toBe(63);
     expect(rapport.aImporter.length).toBe(61);
-    expect(rapport.rejets.map((r) => r.id)).toEqual(["GEO-033", "GEO-054"]);
+    expect(rapport.rejets.map((r) => r.id)).toEqual(["GEO-005", "GEO-033"]);
     for (const f of rapport.aImporter) {
       expect(f.entry.status).toBe("draft");
       expect(f.entry.publishedAt).toBeNull();
@@ -503,6 +503,40 @@ describe("porte de doctrine alignée sur le site (pack du 25/11/2026)", () => {
   it("accepte « forfaitaire » et « documents de transport » (usages légitimes)", () => {
     expect(accepte("Une estimation forfaitaire des gains.")).toBe(true);
     expect(accepte("Les documents de transport sont analysés.")).toBe(true);
+  });
+  it("ne rejette pas à tort « aura », « supplémentaire », « financier », « agence de communication »", () => {
+    for (const t of [
+      "Le rapport aura un plan d’action sur 90 jours.",
+      "Il y aura une attestation de présence.",
+      "Le temps supplémentaire passé sur les relances est chiffré.",
+      "L’impact financier des tâches répétitives est chiffré.",
+      "Une agence de communication peut participer.",
+      "Les personnes présentes à la journée posent leurs questions.",
+    ]) {
+      expect(accepte(t), t).toBe(true);
+    }
+  });
+  it("refuse les trous restants : multiples, 4 470 nu, présence locale, déplacement, financement, prix barré, délais", () => {
+    for (const t of [
+      "Si les gains identifiés n’atteignent pas 5 fois, vous êtes remboursé.",
+      "Gains identifiés : garantie à 5x le prix.",
+      "Les gains identifiés couvrent 3 fois le prix, et 5 fois le coût de la journée sinon remboursé.",
+      "Soit 4 470, vous êtes remboursé.",
+      "Nous sommes installés à Lyon.",
+      "Nous sommes présents à Lyon et Annecy.",
+      "Une intervention locale en Savoie, près de chez vous.",
+      "Notre agence de Lyon vous reçoit.",
+      "L’intervenant se rend chez vous, péage et essence compris.",
+      "Sans surcoût dans toute la région.",
+      "La journée est subventionnée.",
+      "Une subvention est possible.",
+      "Prise en charge par votre opérateur de compétences.",
+      "Prix barré : 2 490.",
+      "Le rapport arrive sous 5 jours ouvrés.",
+      "La déduction est cumulable.",
+    ]) {
+      expect(accepte(t), t).toBe(false);
+    }
   });
   it("refuse Grenoble et « Aucun gain garanti »", () => {
     expect(accepte("Notre agence de Grenoble.")).toBe(false);
