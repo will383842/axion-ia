@@ -55,8 +55,16 @@ async function executer(
   }
 }
 
-export async function retirerDuReseauAction(input: { apporteurId: string }): Promise<Issue> {
-  return executer(input?.apporteurId, retirerDuReseau, "retirer");
+export async function retirerDuReseauAction(input: {
+  apporteurId: string;
+  motif?: string;
+}): Promise<Issue> {
+  const motif = typeof input?.motif === "string" ? input.motif.slice(0, 2000) : "";
+  return executer(
+    input?.apporteurId,
+    (id, adminId) => retirerDuReseau(id, adminId, motif),
+    "retirer",
+  );
 }
 
 export async function remettreDansLeReseauAction(input: { apporteurId: string }): Promise<Issue> {
@@ -94,7 +102,10 @@ function retourFiche(apporteurId: string, r: Issue): never {
 
 export async function retirerDuReseauFormAction(fd: FormData): Promise<void> {
   const id = champ(fd, "apporteurId", 64);
-  retourFiche(id, await retirerDuReseauAction({ apporteurId: id }));
+  retourFiche(
+    id,
+    await retirerDuReseauAction({ apporteurId: id, motif: champ(fd, "motif", 2000) }),
+  );
 }
 
 export async function remettreDansLeReseauFormAction(fd: FormData): Promise<void> {

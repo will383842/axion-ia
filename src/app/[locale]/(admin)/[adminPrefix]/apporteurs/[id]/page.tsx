@@ -378,7 +378,7 @@ export default async function FicheApporteurPage({ params, searchParams }: PageP
       <RetraitDuReseau
         apporteurId={d.id}
         nomComplet={`${d.prenom} ${d.nom}`.trim()}
-        signe={d.statut === "signe"}
+        sousContrat={d.statut === "signe" || d.statut === "a_verifier"}
         retireLe={retireAt ? jour(retireAt) : null}
         refusSuppression={refusSuppr}
         retour={
