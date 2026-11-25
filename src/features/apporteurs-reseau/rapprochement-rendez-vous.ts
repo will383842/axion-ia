@@ -259,6 +259,9 @@ async function lireRendezVous(e: {
     }
     const invitee = inviteeConfirme(e.invitee, ev.rawPayload);
     if (!invitee) return null; // charge non confirmée par l'API : AUCUN rapprochement
+    // Ancien invité d'un report fait par le lien Calendly (`rescheduled`) : le rendez-vous vit dans
+    // la nouvelle réservation (même règle que le bilan des rendez-vous).
+    if (invitee["rescheduled"] === true) return null;
     if (rencontreCaduque(ev.rencontre?.statut)) return null;
     const adresse = adresseConfirmee(invitee);
     if (!adresse) return null; // adresse non confirmée : AUCUN rapprochement

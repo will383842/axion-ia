@@ -415,6 +415,27 @@ describe("proposerPourRendezVous", () => {
     expect(await proposerPourRendezVous({ calendlyEventId: "ancien" })).toBe(0);
   });
 
+  it("ancienne réservation d'un report (lien Calendly `rescheduled`, ou calendly_reports), prise APRÈS la saisie : rien", async () => {
+    presentation("p1");
+    evenement("calendly", "dirigeant@acme-industrie.fr", {
+      status: "canceled",
+      rawPayload: payload("dirigeant@acme-industrie.fr", "2026-11-03T10:00:00Z", {
+        rescheduled: true,
+      }),
+    });
+    evenement("site", "dirigeant@acme-industrie.fr", {
+      eventUri: "https://api.calendly.com/scheduled_events/ANCIEN",
+      status: "canceled",
+      rawPayload: payload("dirigeant@acme-industrie.fr", "2026-11-03T10:00:00Z"),
+    });
+    bd.reports.push({
+      ancienEventUri: "https://api.calendly.com/scheduled_events/ANCIEN",
+      nouvelEventUri: "https://api.calendly.com/scheduled_events/NOUVEAU",
+    });
+    expect(await proposerPourRendezVous({ calendlyEventId: "calendly" })).toBe(0);
+    expect(await proposerPourRendezVous({ calendlyEventId: "site" })).toBe(0);
+  });
+
   it("report fait depuis notre site, réservé à l'origine APRÈS la saisie : proposé (date d'origine)", async () => {
     presentation("p1");
     evenement("ancien", "dirigeant@acme-industrie.fr", {
