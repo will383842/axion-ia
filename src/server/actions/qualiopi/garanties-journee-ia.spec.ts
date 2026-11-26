@@ -401,8 +401,15 @@ describe("décision, virement, archivage", () => {
       expect(r).toMatch(/ok=decision/);
       expect(genererAvoirFacture).not.toHaveBeenCalled();
     });
-    it("DOUBLE CLIC simultané : le second voit l'avoir sous verrou, n'émet rien", async () => {
+    it("DOUBLE CLIC simultané : le second voit l'avoir sous verrou, n'émet rien, et obtient le succès (mêmes valeurs)", async () => {
       deux();
+      const ecrit = {
+        ...dossier,
+        decision: "remboursement",
+        decisionLe: "2026-12-12",
+        montantRembourseCents: 178800,
+        avoirId: "44444444-4444-4444-8444-444444444444",
+      };
       tx.garantieJourneeIa.findUnique
         .mockResolvedValueOnce({ decision: null, avoirId: null, virementLe: null, archiveLe: null })
         .mockResolvedValueOnce({
@@ -411,12 +418,43 @@ describe("décision, virement, archivage", () => {
           virementLe: null,
           archiveLe: null,
         });
+      // 1er clic : dossier vierge ; 2e clic : lecture initiale vierge, puis relecture = état écrit.
+      lireGarantie
+        .mockResolvedValueOnce({ ...dossier })
+        .mockResolvedValueOnce({ ...dossier })
+        .mockResolvedValue(ecrit);
       const f = () => remb({ montantRembourseEuros: "1788" });
-      await va(enregistrerDecisionGarantieJourneeIaAction(f()));
-      const second = await va(enregistrerDecisionGarantieJourneeIaAction(f()));
-      expect(second).toMatch(/erreur=.*vient%20d/);
+      expect(await va(enregistrerDecisionGarantieJourneeIaAction(f()))).toMatch(/ok=decision/);
+      expect(await va(enregistrerDecisionGarantieJourneeIaAction(f()))).toMatch(/ok=decision/);
       expect(avoirsEmis).toHaveLength(2);
       expect(tx.garantieJourneeIa.update).toHaveBeenCalledTimes(1);
+    });
+    it("faux échec évité : l'autre clic a validé entre la lecture et la résolution des factures → succès, pas d'erreur", async () => {
+      resoudreFacturesGarantie.mockResolvedValueOnce({
+        ok: false,
+        message: "Plus rien à rembourser",
+      });
+      lireGarantie.mockResolvedValueOnce({ ...dossier }).mockResolvedValue({
+        ...dossier,
+        decision: "remboursement",
+        decisionLe: "2026-12-12",
+        montantRembourseCents: 200000,
+        avoirId: "44444444-4444-4444-8444-444444444444",
+      });
+      expect(await va(enregistrerDecisionGarantieJourneeIaAction(remb()))).toMatch(/ok=decision/);
+      expect(genererAvoirFacture).not.toHaveBeenCalled();
+    });
+    it("part inatteignable : la transaction est annulée, message sur le TOTAL, rien d'émis", async () => {
+      deux();
+      resoudreFacturesGarantie.mockResolvedValueOnce({
+        ok: true,
+        factures: [{ ...fact("SO", "SO", 40_000), atteignable: (c: number) => c % 6 !== 3 }],
+      });
+      const r = await va(
+        enregistrerDecisionGarantieJourneeIaAction(remb({ montantRembourseEuros: "100,05" })),
+      );
+      expect(r).toMatch(/erreur=.*total%20TTC/);
+      expect(avoirsEmis).toHaveLength(0);
     });
   });
   it("DOUBLE CLIC après succès (avoir déjà lié, même montant) : aucun second avoir", async () => {
@@ -548,6 +586,38 @@ describe("décision, virement, archivage", () => {
       ),
     ).toMatch(/erreur=/);
     expect(genererAvoirFacture).not.toHaveBeenCalled();
+    expect(tx.garantieJourneeIa.update).not.toHaveBeenCalled();
+  });
+  it("un avoir « geste commercial » déjà lié n'est pas écrasé par un remboursement", async () => {
+    lireGarantie.mockResolvedValue({
+      ...dossier,
+      decision: "avoir",
+      decisionLe: "2026-12-12",
+      avoirId: "55555555-5555-4555-8555-555555555555",
+    });
+    expect(await va(enregistrerDecisionGarantieJourneeIaAction(remb()))).toMatch(
+      /geste%20commercial/,
+    );
+    expect(genererAvoirFacture).not.toHaveBeenCalled();
+  });
+  it("refus soumis pendant qu'un remboursement valide : relu sous verrou, rien n'est écrasé", async () => {
+    tx.garantieJourneeIa.findUnique.mockResolvedValueOnce({
+      decision: "remboursement",
+      avoirId: "44444444-4444-4444-8444-444444444444",
+      virementLe: null,
+      archiveLe: null,
+    });
+    const r = await va(
+      enregistrerDecisionGarantieJourneeIaAction(
+        form({
+          id: ID,
+          decision: "refus",
+          decisionLe: "2026-12-12",
+          motifDecision: "motif assez long",
+        }),
+      ),
+    );
+    expect(r).toMatch(/erreur=.*vient%20d/);
     expect(tx.garantieJourneeIa.update).not.toHaveBeenCalled();
   });
   it("une erreur de l'émission de l'avoir (ex. plafond) est rendue à l'écran, sans écrire la garantie", async () => {

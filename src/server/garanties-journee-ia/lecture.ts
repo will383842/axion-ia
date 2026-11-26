@@ -3,6 +3,8 @@
  * migration n'est pas jouée, l'écran se dégrade en liste vide avec un avertissement, il ne plante pas.
  */
 import { prisma } from "@/lib/prisma";
+import type { Prisma } from "../../../prisma/generated/client";
+import { htPourTtcAvoir } from "@/server/qualiopi/financements/facture-libre-pur";
 import { jourIso, type DossierPourListe } from "@/lib/garantie-journee-ia/presentation";
 import type { Decision } from "@/server/garanties-journee-ia/regles";
 
@@ -122,6 +124,8 @@ export interface FactureGarantie {
   /** Encaissé (paiements réussis) moins les avoirs déjà émis, plafonné au reste TTC : le rendable. */
   rendableTtcCents: number;
   destinataire: string;
+  /** Un TTC `ttc` est-il EXACTEMENT atteignable par un avoir sur cette facture ? (même calcul que l'émission) */
+  atteignable: (ttcCents: number) => boolean;
 }
 
 /**
@@ -130,13 +134,16 @@ export interface FactureGarantie {
  */
 export async function facturesCandidates(
   d: Pick<DossierGarantie, "clientId" | "auditMissionId" | "devisId">,
+  db: Pick<Prisma.TransactionClient, "factureFormation"> = prisma,
 ): Promise<FactureGarantie[]> {
-  const liens = [
-    ...(d.auditMissionId ? [{ auditMissionId: d.auditMissionId }] : []),
-    ...(d.devisId ? [{ devisId: d.devisId }] : []),
-  ];
+  // Périmètre strict : le devis quand il existe (acompte + solde du MÊME devis), sinon la mission.
+  const liens = d.devisId
+    ? [{ devisId: d.devisId }]
+    : d.auditMissionId
+      ? [{ auditMissionId: d.auditMissionId }]
+      : [];
   if (liens.length === 0) return [];
-  const factures = await prisma.factureFormation.findMany({
+  const factures = await db.factureFormation.findMany({
     where: {
       clientId: d.clientId,
       avoirDeId: null,
@@ -150,12 +157,16 @@ export async function facturesCandidates(
       montantTvaCents: true,
       montantTtcCents: true,
       destinataire: true,
-      payments: { where: { status: "succeeded" }, select: { amountCents: true } },
+      regimeTva: true,
+      payments: {
+        where: { status: "succeeded", type: { not: "refund" } },
+        select: { amountCents: true },
+      },
     },
     orderBy: { createdAt: "asc" },
   });
   if (factures.length === 0) return [];
-  const avoirs = await prisma.factureFormation.findMany({
+  const avoirs = await db.factureFormation.findMany({
     where: { avoirDeId: { in: factures.map((f) => f.id) }, statut: { not: "annulee" } },
     select: { avoirDeId: true, montantHtCents: true, montantTvaCents: true, montantTtcCents: true },
   });
@@ -165,6 +176,9 @@ export async function facturesCandidates(
     // HT + TVA, comme `genererAvoirFacture` : un seul calcul du reste, pas deux qui divergent.
     const ttcAvoirs = Math.abs(siens.reduce((n, a) => n + a.montantHtCents + a.montantTvaCents, 0));
     const restantTtcCents = (f.montantTtcCents ?? f.montantHtCents + f.montantTvaCents) - ttcAvoirs;
+    const tauxPercent =
+      f.montantHtCents > 0 ? Math.round((f.montantTvaCents * 100) / f.montantHtCents) : 0;
+    const sansAvoir = siens.length === 0;
     const encaisse = f.payments.reduce((n, p) => n + p.amountCents, 0);
     return {
       id: f.id,
@@ -173,6 +187,10 @@ export async function facturesCandidates(
       restantTtcCents,
       rendableTtcCents: Math.max(0, Math.min(restantTtcCents, encaisse - ttcAvoirs)),
       destinataire: f.destinataire,
+      atteignable: (ttc: number) =>
+        // Avoir du reste sans avoir antérieur = négation intégrale : toujours exact.
+        (sansAvoir && ttc === restantTtcCents) ||
+        htPourTtcAvoir(ttc, f.regimeTva as never, tauxPercent, tauxPercent).ok,
     };
   });
 }
@@ -186,8 +204,9 @@ export async function facturesCandidates(
  */
 export async function resoudreFacturesGarantie(
   d: Pick<DossierGarantie, "clientId" | "auditMissionId" | "devisId" | "factureId">,
+  db?: Pick<Prisma.TransactionClient, "factureFormation">,
 ): Promise<{ ok: true; factures: FactureGarantie[] } | { ok: false; message: string }> {
-  const candidates = await facturesCandidates(d);
+  const candidates = await facturesCandidates(d, db);
   if (candidates.length === 0) {
     return {
       ok: false,
@@ -206,7 +225,7 @@ export async function resoudreFacturesGarantie(
     return {
       ok: false,
       message:
-        "Plus rien à rembourser : les factures sont couvertes par des avoirs ou non encaissées.",
+        "Plus rien à rembourser : les factures sont couvertes par des avoirs ou non encaissées (calcul prudent : l'encaissé moins les avoirs déjà émis ; à vérifier avec le comptable).",
     };
   return { ok: true, factures: candidates };
 }

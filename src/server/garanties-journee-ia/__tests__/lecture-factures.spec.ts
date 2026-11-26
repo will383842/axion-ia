@@ -16,6 +16,7 @@ const fac = (id: string, ht: number, payes: number[], destinataire = "entreprise
   montantTvaCents: Math.round(ht * 0.2),
   montantTtcCents: Math.round(ht * 1.2),
   destinataire,
+  regimeTva: "assujetti",
   payments: payes.map((amountCents) => ({ amountCents })),
 });
 const lots = (factures: unknown[], avoirs: unknown[] = []) =>
@@ -64,5 +65,21 @@ describe("resoudreFacturesGarantie", () => {
     expect(await resoudreFacturesGarantie(D)).toMatchObject({ ok: false });
     lots([fac("SO", 104_300, [])]);
     expect(await resoudreFacturesGarantie(D)).toMatchObject({ ok: false });
+  });
+  it("périmètre strict : le devis quand il existe (pas la mission), et les remboursements ne comptent pas comme encaissé", async () => {
+    lots([fac("SO", 104_300, [125_160])]);
+    await resoudreFacturesGarantie({ ...D, auditMissionId: "M1" });
+    const where = prisma.factureFormation.findMany.mock.calls[0]?.[0].where;
+    expect(where.OR).toEqual([{ devisId: "D1" }]);
+    const sel = prisma.factureFormation.findMany.mock.calls[0]?.[0].select;
+    expect(sel.payments.where).toEqual({ status: "succeeded", type: { not: "refund" } });
+  });
+  it("sans devis : la mission ; la facture du reste sans avoir antérieur est atteignable (négation intégrale)", async () => {
+    lots([{ ...fac("SO", 104_300, [125_160]), regimeTva: "assujetti" }]);
+    const r = await resoudreFacturesGarantie({ ...D, devisId: null, auditMissionId: "M1" });
+    expect(prisma.factureFormation.findMany.mock.calls[0]?.[0].where.OR).toEqual([
+      { auditMissionId: "M1" },
+    ]);
+    expect(r.ok && r.factures[0]?.atteignable(125_160)).toBe(true);
   });
 });

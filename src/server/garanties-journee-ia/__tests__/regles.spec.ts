@@ -217,3 +217,48 @@ describe("repartirRemboursement : le solde d'abord, puis l'acompte", () => {
     }
   });
 });
+
+describe("repartirRemboursement : parts inatteignables au centime (TVA 20 %)", () => {
+  // TTC atteignable à 20 % ⇔ pas ≡ 3 (mod 6) (sauf négation intégrale du reste).
+  const ok20 = (c: number) => c % 6 !== 3;
+  const f = [
+    {
+      id: "AC",
+      numero: "AC",
+      capaciteTtcCents: 36_000,
+      atteignable: (c: number) => c === 36_000 || ok20(c),
+    },
+    {
+      id: "SO",
+      numero: "SO",
+      capaciteTtcCents: 84_000,
+      atteignable: (c: number) => c === 84_000 || ok20(c),
+    },
+  ];
+  it("900,03 € : la part de l'acompte (60,03) est impossible → on recule le solde de 1 centime, somme exacte", () => {
+    const r = repartirRemboursement(f, 90_003);
+    expect(r.ok).toBe(true);
+    if (r.ok) {
+      expect(r.parts.reduce((n, p) => n + p.ttcCents, 0)).toBe(90_003);
+      expect(
+        r.parts.every((p) => ok20(p.ttcCents) || p.ttcCents === 36_000 || p.ttcCents === 84_000),
+      ).toBe(true);
+    }
+  });
+  it("toutes les valeurs de 1 à total : somme exacte et chaque part atteignable", () => {
+    for (let m = 1; m <= 120_000; m += 7) {
+      const r = repartirRemboursement(f, m);
+      if (!r.ok) continue;
+      expect(r.parts.reduce((n, p) => n + p.ttcCents, 0)).toBe(m);
+      for (const p of r.parts)
+        expect(f.find((x) => x.id === p.id)!.atteignable(p.ttcCents)).toBe(true);
+    }
+  });
+  it("aucune répartition possible : le message propose des TOTAUX voisins, pas la part d'une facture", () => {
+    const seule = [{ id: "SO", numero: "SO", capaciteTtcCents: 40_000, atteignable: ok20 }];
+    const r = repartirRemboursement(seule, 10_005);
+    expect(r).toMatchObject({ ok: false });
+    expect(!r.ok && r.message).toMatch(/total TTC/);
+    expect(!r.ok && r.message).toMatch(/100,04|100,06/);
+  });
+});

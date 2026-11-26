@@ -116,6 +116,8 @@ export interface FactureARembourser {
   id: string;
   numero: string;
   capaciteTtcCents: number;
+  /** Un TTC est-il exactement atteignable par un avoir sur cette facture ? Absent = toujours. */
+  atteignable?: (ttcCents: number) => boolean;
 }
 
 export type RepartitionRemboursement =
@@ -123,13 +125,33 @@ export type RepartitionRemboursement =
   | { ok: false; message: string };
 
 const eurosFr = (c: number) => (c / 100).toFixed(2).replace(".", ",");
+/** Au plus 6 centimes de recul par facture : à 20 %, un TTC sur six seulement est inatteignable. */
+const RECUL_MAX = 6;
+
+function allouer(
+  liste: readonly FactureARembourser[],
+  i: number,
+  reste: number,
+): { id: string; numero: string; ttcCents: number }[] | null {
+  if (reste === 0) return [];
+  const f = liste[i];
+  if (!f) return null;
+  const cap = Math.min(reste, Math.max(0, f.capaciteTtcCents));
+  for (let p = cap; p >= Math.max(0, cap - RECUL_MAX); p--) {
+    if (p > 0 && f.atteignable && !f.atteignable(p)) continue;
+    const suite = allouer(liste, i + 1, reste - p);
+    if (suite) return p > 0 ? [{ id: f.id, numero: f.numero, ttcCents: p }, ...suite] : suite;
+  }
+  return null;
+}
 
 /**
  * Répartit un remboursement TTC sur les factures d'un même devis : d'abord la DERNIÈRE (le solde),
  * puis les précédentes (l'acompte) pour le reste. `factures` est dans l'ordre d'émission (la plus
- * ancienne d'abord). Tout est en centimes entiers : aucun arrondi, la somme des parts égale toujours
- * `montantTtcCents`. Une facture sans capacité est sautée ; un montant supérieur au total encore
- * remboursable est refusé (jamais écrêté en silence).
+ * ancienne d'abord). Centimes entiers : la somme des parts égale toujours `montantTtcCents`. Une
+ * part inatteignable au centime (TTC impossible au taux) est reculée de quelques centimes sur la
+ * facture suivante ; si aucune répartition n'existe, refus qui propose des TOTAUX voisins (jamais la
+ * part d'une facture). Un montant supérieur au total remboursable est refusé, jamais écrêté.
  */
 export function repartirRemboursement(
   factures: readonly FactureARembourser[],
@@ -143,14 +165,21 @@ export function repartirRemboursement(
       ok: false,
       message: `Le remboursement (${eurosFr(montantTtcCents)} € TTC) dépasse le total payé et encore remboursable de la commande (${eurosFr(total)} € TTC).`,
     };
-  let reste = montantTtcCents;
-  const parts: { id: string; numero: string; ttcCents: number }[] = [];
-  for (const f of [...factures].reverse()) {
-    if (reste <= 0) break;
-    const part = Math.min(reste, Math.max(0, f.capaciteTtcCents));
-    if (part <= 0) continue;
-    parts.push({ id: f.id, numero: f.numero, ttcCents: part });
-    reste -= part;
+  const ordre = [...factures].reverse();
+  const parts = allouer(ordre, 0, montantTtcCents);
+  if (parts) return { ok: true, parts };
+  const voisins: number[] = [];
+  for (let k = 1; k <= 12 && voisins.length < 2; k++) {
+    for (const m of [montantTtcCents - k, montantTtcCents + k]) {
+      if (m > 0 && m <= total && voisins.length < 2 && allouer(ordre, 0, m)) voisins.push(m);
+    }
   }
-  return { ok: true, parts };
+  return {
+    ok: false,
+    message:
+      `Ce montant total ne peut pas être réparti au centime sur les factures (TVA).` +
+      (voisins.length > 0
+        ? ` Saisir ${voisins.map((m) => `${eurosFr(m)} €`).join(" ou ")} (total TTC).`
+        : " Voir le Hub factures."),
+  };
 }
