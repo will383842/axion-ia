@@ -126,15 +126,20 @@ const EMPREINTES: Readonly<
     // v10 — 26/11/2026 : l'acompte versé reste acquis en cas d'annulation, sans condition de délai
     // (§ 4) ; dédit formation facturé à part, ni imputable ni pris en charge par un OPCO ; v9 archivée.
     // (v9 — 25/11/2026 : paragraphe de la garantie Journée IA, § 3.)
-    sha: "a356c7d4afacce4b9993af3994948999cd2c228dceb6a5f5f91430a34a07ad10",
-    version: 10,
+    // v11 — 26/11/2026 : la personne morale non professionnelle perd aussi l'acompte (§ 4), avec
+    // clause réciproque (acompte rendu + indemnité égale si l'organisme annule hors force majeure) ;
+    // v10 archivée.
+    sha: "9b488cde5e153ef659fc657094633c106f624db94542b2d78ca540ac228506d3",
+    version: 11,
   },
   convention_tripartite: {
     // v7 — 18/11/2026 : refonte au style de la charte 2027, texte inchangé ; v6 archivée.
     // (v6 — 16/10/2026 : même mention handicap, mot pour mot.)
     // v8 — 26/11/2026 : même règle de l'acompte acquis (§ 4), mot pour mot ; v7 archivée.
-    sha: "2b5bf9ac8e135e6d879c1a5f956e8a8d38465fca77113984225f68047bab20c2",
-    version: 8,
+    // v9 — 26/11/2026 : même règle de l'acompte et même clause réciproque (§ 4), mot pour mot ;
+    // v8 archivée.
+    sha: "26d2884bfe5c2ec104e5fb4101f1e91caea84f7cafd48f7bc955016cf144f9cb",
+    version: 9,
   },
   contrat_formation: {
     // v3 — 18/11/2026 : refonte au style de la charte 2027, texte inchangé ; v2 archivée.
@@ -361,6 +366,11 @@ const EMPREINTES_ARCHIVES: Readonly<Record<string, string>> = {
   // 26/11/2026 : copies conformes des gabarits courants d'avant la règle de l'acompte acquis
   // (mention légale figée dans le fichier).
   "convention.v9.tsx": "4bd0a3df6f9cedd1ff86000937058c9c97a33ed23524fe1122a553b42f1f8ce6",
+  // 26/11/2026 : copies conformes des gabarits courants d'avant la réciprocité non-professionnel
+  // (mention légale figée dans le fichier).
+  "convention.v10.tsx": "58b6650ec812c0d8b6a2698fce9be4d4b889bef691ac8eba5bb3b6292ab0a903",
+  "convention-tripartite.v8.tsx":
+    "d972d3180bbcea219ae21c3aebb3398486a333e185c02eea2d621a5d06445081",
   "convention-tripartite.v7.tsx":
     "1c9a167628836c062e5af9a11cf1f52998325b65682ece4efe6fe231bbc11ac5",
   "convention-tripartite.v6.tsx":

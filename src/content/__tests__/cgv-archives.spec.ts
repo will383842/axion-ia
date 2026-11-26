@@ -32,6 +32,11 @@ describe("cgv-archives", () => {
     const sha = createHash("sha256").update(JSON.stringify(fr), "utf8").digest("hex");
     expect(sha).toBe("e862de3fa32074b9298f5e23e164ea062c197ba6de124277baf1e532e9403d43");
   });
+  it("la version 2026-11-28 est archivée à l'identique (empreinte du cliquet de cette version)", () => {
+    const fr = CGV_ARCHIVES["2026-11-28"].fr;
+    const sha = createHash("sha256").update(JSON.stringify(fr), "utf8").digest("hex");
+    expect(sha).toBe("5ada8e2212a962f2502b30504faf88cd6f9897326e8e612254fb91b2d27d03d9");
+  });
   it("texteArchiveCgv rend le libellé de la version 2026-11-19", () => {
     expect(texteArchiveCgv("2026-11-19")?.libelle).toBe("19 novembre 2026");
   });
