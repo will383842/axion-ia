@@ -24,13 +24,6 @@ export const TEXTES_DECLARATION = {
   // 2026-10-07 (décision de Will) : ce qui se passe après la déclaration. Aucun délai
   // de réponse promis. La durée vient de `PROTECTION_MOIS` (jamais écrite à la main).
   commentTitre: "Comment ça se passe",
-  comment: (mois: number) =>
-    [
-      "Après votre déclaration, nous prenons contact avec l'entreprise de votre part.",
-      `Cet établissement vous est réservé ${mois} mois à compter de votre déclaration. Si vous avez rencontré la direction de l'entreprise, écrivez-nous : nous pouvons étendre votre réservation à toute l'entreprise.`,
-      "Si elle a déjà été présentée ou nous est déjà connue, nous vous le disons.",
-      "Toute commande signée pendant cette période vous est commissionnée, dès que le client a payé l'intégralité, même si la prestation n'est pas encore livrée.",
-    ] as const,
   jusquAu: (date: string) => `jusqu'au ${date}`,
   // Contrat 2.3, art. 4.2 : la commission naît de la prestation RÉALISÉE et entièrement payée.
   prestationEnAttente: "Prestation commandée, en attente de réalisation",

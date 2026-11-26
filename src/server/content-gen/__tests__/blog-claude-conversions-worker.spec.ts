@@ -109,3 +109,14 @@ describe("S-M2 : `reservationId` est réservé à la porte blog-claude", () => {
     expect(fautifs).toEqual([]);
   });
 });
+
+describe("juge d'amélioration : types autorisés hors blog (PR3)", () => {
+  it("un refus Claude sur un type non-blog autorisé est non relançable", async () => {
+    vi.stubEnv("CONTENT_GEN_BLOG_CLAUDE", "true");
+    vi.stubEnv("CONTENT_GEN_CLAUDE_TYPES", "guide_pilier");
+    const err = new BlogClaudeRefusError("refus", "plafond_jour");
+    expect(await erreurJugeNonRelancableCheminClaude(err, "guide_pilier")).not.toBeNull();
+    expect(await erreurJugeNonRelancableCheminClaude(err, "comparison")).toBeNull();
+    vi.unstubAllEnvs();
+  });
+});

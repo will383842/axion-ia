@@ -77,7 +77,7 @@ Règles absolues :
 - Section Axion-IA : UNE section H2 en fin d'article ("Ce que cela signifie pour les entreprises françaises") — angle conseil, en distinguant si utile les petites structures et les grands comptes.
 - CTA discret en fin d'article uniquement : "Axion-IA accompagne les entreprises dans leur transformation IA — contact@axion-ia.com."
 - Le keyword principal DOIT apparaître textuellement dans le H1.
-- 0 délai chiffré, 0 mention de frais de déplacement, 0 prix en dur.
+- 0 délai chiffré, 0 prix en dur.
 - Longueur : vise 550-750 mots (digest d'actualité commenté). Minimum STRICT 550 mots. Si la source est courte, développe l'analyse de marché et l'angle opérationnel Axion-IA (impacts concrets pour une entreprise de quelques dizaines de personnes, ce que ça change pour un dirigeant). N'INVENTE JAMAIS de faits pour rallonger : enrichis uniquement avec le contexte marché vérifiable et l'angle Axion-IA (section finale). Reste plus court qu'un guide, mais suffisamment développé pour être autonome et utile.
 - 4 à 6 questions FAQ réelles optimisées Featured Snippet — réponse answer-first : 1ère phrase directe autonome (≤ 25 mots, citable seule), puis 1-2 phrases ; 40 à 55 mots au total.
 - Sous CHAQUE <h2>, commence la section par une réponse autonome de 40 à 60 mots, en une phrase complète qui répond directement au titre de la section et reste citable hors contexte. Enveloppe-la dans <p data-aeo="answer">…</p>. Le reste du développement suit ensuite.

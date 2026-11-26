@@ -615,6 +615,9 @@ export const env = createEnv({
     /// Voyage AI key pour embeddings KB V4 (`voyage-3-lite` dim 1024).
     /// Sans clé → fallback stub déterministe SHA-256 (cf. src/lib/knowledge/embeddings.ts).
     VOYAGE_API_KEY: z.string().optional(),
+    /// Plafond quotidien de tokens des embeddings Voyage à la publication des articles
+    /// (défaut 1 000 000 si absent). Cf. src/server/content-gen/dedup/voyage-embedder.ts.
+    VOYAGE_EMBEDDINGS_MAX_TOKENS_PER_DAY: z.string().optional(),
     /// HMAC secret factory ingest API (cf. src/lib/knowledge/hmac.ts).
     /// Min 32 chars enforcé runtime par `getKbIngestSecret()` quand utilisé.
     KB_INGEST_SECRET: z.string().min(32).optional(),
@@ -909,6 +912,7 @@ export const env = createEnv({
     PERPLEXITY_API_KEY: process.env.PERPLEXITY_API_KEY,
     UNSPLASH_ACCESS_KEY: process.env.UNSPLASH_ACCESS_KEY,
     VOYAGE_API_KEY: process.env.VOYAGE_API_KEY,
+    VOYAGE_EMBEDDINGS_MAX_TOKENS_PER_DAY: process.env.VOYAGE_EMBEDDINGS_MAX_TOKENS_PER_DAY,
     KB_INGEST_SECRET: process.env.KB_INGEST_SECRET,
     BACKUP_INGEST_SECRET: process.env.BACKUP_INGEST_SECRET,
     KB_AUTO_PUBLISH: process.env.KB_AUTO_PUBLISH,

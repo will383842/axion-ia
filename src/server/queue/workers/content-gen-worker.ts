@@ -734,6 +734,7 @@ async function processJob(job: Job<ContentGenJobPayload>): Promise<void> {
             jobId: contentGenJobId,
             contentType,
             role: "text",
+            blogClaudeRole: "court",
             systemPrompt: req.systemPrompt,
             userPrompt: req.userPrompt,
             maxTokens: req.maxTokens,
