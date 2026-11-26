@@ -53,6 +53,7 @@ describe("content-keyword-sync-worker — interrupteur équipe éditoriale", () 
   });
   afterEach(() => {
     delete process.env.CONTENT_EQUIPE_EDITORIALE;
+    delete process.env.REDIS_URL;
     for (const s of spies.splice(0)) s.mockRestore();
   });
 

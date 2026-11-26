@@ -57,7 +57,6 @@ const MOTS_VIDES = new Set([
   "sur",
   "dans",
   "avec",
-  "sans",
   "ce",
   "ces",
   "se",
@@ -67,7 +66,6 @@ const MOTS_VIDES = new Set([
   "ou",
   "que",
   "qui",
-  "à",
 ]);
 
 function singulier(mot: string): string {
@@ -76,7 +74,7 @@ function singulier(mot: string): string {
 }
 
 /**
- * Minuscules, sans accents ni ponctuation, sans mots vides, singulier simple,
+ * Minuscules, sans accents ni ponctuation, sans mots vides, singulier simple (collisions possibles, ex. « cas »/« ca », symétriques donc sans effet),
  * mots triés (l'ordre ne change pas la requête visée). Chaîne vide si rien
  * ne reste.
  */
@@ -84,7 +82,9 @@ export function normaliserRequete(brut: string): string {
   const mots = brut
     .toLowerCase()
     .normalize("NFD")
-    .replace(/[̀-ͯ]/g, "")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/œ/g, "oe")
+    .replace(/æ/g, "ae")
     .replace(/[^a-z0-9]+/g, " ")
     .split(" ")
     .filter((m) => m.length > 0 && !MOTS_VIDES.has(m))

@@ -25,6 +25,10 @@ describe("normaliserRequete", () => {
   it("ne tient pas compte de l'ordre des mots", () => {
     expect(normaliserRequete("ia formation")).toBe(normaliserRequete("formation ia"));
   });
+  it("traite œ/æ et garde « sans » (change le sens)", () => {
+    expect(normaliserRequete("cœur")).toBe("coeur");
+    expect(normaliserRequete("formation sans code")).not.toBe(normaliserRequete("formation code"));
+  });
   it("rend une chaîne vide pour une requête sans contenu", () => {
     expect(normaliserRequete("de la, le !")).toBe("");
   });
