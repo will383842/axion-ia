@@ -22,9 +22,11 @@ export function Ruban() {
       <text className={s.hr} x="0" y="58">
         {debutAudit}
       </text>
-      <text className={s.hr} x="113" y="58" textAnchor="end">
-        {finAudit}
-      </text>
+      {finAudit ? (
+        <text className={s.hr} x="113" y="58" textAnchor="end">
+          {finAudit}
+        </text>
+      ) : null}
       <text className={s.hr} x="169" y="58">
         {debutFormation}
       </text>
