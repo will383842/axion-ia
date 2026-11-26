@@ -18,9 +18,9 @@ export const LA_COURNEUVE_COPY: VilleCopy = {
   ecosystemEn:
     "La Courneuve connaît une profonde reconversion : ses anciennes zones industrielles laissent place à de nouveaux quartiers d'activités portés par le Grand Paris et l'arrivée de nouvelles lignes de transport. Le tissu économique mêle négoce et commerce de gros, logistique et entreposage, artisanat du bâtiment et services aux entreprises, à proximité du vaste parc Georges-Valbon. Ces TPE et PME productives gagnent à automatiser gestion des commandes, planning logistique, devis et suivi administratif. Axion-IA cible en priorité ces TPE de négoce, de logistique et d'artisanat, puis les PME de services du territoire.",
   distancesFr:
-    "La Courneuve est desservie par le RER B et le tramway, qui relient Paris en une vingtaine de minutes. La gare de Paris-Nord est à environ 8 km, l'aéroport de Roissy-Charles-de-Gaulle à 15 km et celui du Bourget tout proche, ce qui rend nos déplacements sur site rapides dans le nord francilien et le Grand Paris.",
+    "La Courneuve est desservie par le RER B et le tramway, qui relient Paris en une vingtaine de minutes. La gare de Paris-Nord est à environ 8 km, l'aéroport de Roissy-Charles-de-Gaulle à 15 km et celui du Bourget tout proche.",
   distancesEn:
-    "La Courneuve est desservie par le RER B et le tramway, qui relient Paris en une vingtaine de minutes. La gare de Paris-Nord est à environ 8 km, l'aéroport de Roissy-Charles-de-Gaulle à 15 km et celui du Bourget tout proche, ce qui rend nos déplacements sur site rapides dans le nord francilien et le Grand Paris.",
+    "La Courneuve est desservie par le RER B et le tramway, qui relient Paris en une vingtaine de minutes. La gare de Paris-Nord est à environ 8 km, l'aéroport de Roissy-Charles-de-Gaulle à 15 km et celui du Bourget tout proche.",
   topSectorsNaf: [
     "Commerce de gros et négoce",
     "Logistique et entreposage",

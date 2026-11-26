@@ -65,7 +65,7 @@ export const HENDAYE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Hendaye ?",
-      a: "Nos consultants interviennent sur site à Hendaye et sur la Côte Basque sud. Déplacement direct sur votre hôtel, commerce ou bureau.",
+      a: "Nos consultants interviennent sur site à Hendaye et sur la Côte Basque sud. Nous travaillons directement dans votre hôtel, votre commerce ou vos bureaux.",
     },
   ],
 };

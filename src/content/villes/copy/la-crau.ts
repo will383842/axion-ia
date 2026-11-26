@@ -65,7 +65,7 @@ export const LA_CRAU_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à La Crau ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Sur site, dans vos locaux professionnels, exploitation, domaine ou commerce.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Sur site, nous travaillons dans vos locaux professionnels, votre exploitation, votre domaine ou votre commerce.",
     },
   ],
 };

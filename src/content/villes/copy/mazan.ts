@@ -65,7 +65,7 @@ export const MAZAN_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Mazan ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Sur site, dans vos locaux professionnels, domaine viticole, exploitation ou commerce.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Sur site, nous travaillons dans vos locaux professionnels, votre domaine viticole, votre exploitation ou votre commerce.",
     },
   ],
 };
