@@ -128,7 +128,7 @@ export const LA_SEYNE_SUR_MER_COPY: VilleCopy = {
           },
           {
             q: "Intervenez-vous à La Seyne-sur-Mer ?",
-            a: "Oui. Nous intervenons dans vos locaux à La Seyne-sur-Mer, partout en France, sur place ou à distance.",
+            a: "Oui. Le kick-off se tient toujours dans vos locaux — du Technopôle de la Mer et de Brégaillon au centre-ville et aux Sablettes — et nous intervenons aussi à Ollioules, Six-Fours-les-Plages, Saint-Mandrier-sur-Mer, Toulon et Sanary-sur-Mer.",
           },
           {
             q: "Comment garantissez-vous la conformité RGPD et la souveraineté des données ?",
@@ -214,7 +214,7 @@ export const LA_SEYNE_SUR_MER_COPY: VilleCopy = {
           },
           {
             q: "Intervenez-vous à La Seyne-sur-Mer ?",
-            a: "Oui. Nous intervenons dans vos locaux à La Seyne-sur-Mer, partout en France, sur place ou à distance.",
+            a: "Oui. Le kick-off se tient toujours dans vos locaux — du Technopôle de la Mer et de Brégaillon au centre-ville et aux Sablettes — et nous intervenons aussi à Ollioules, Six-Fours-les-Plages, Saint-Mandrier-sur-Mer, Toulon et Sanary-sur-Mer.",
           },
           {
             q: "Comment garantissez-vous la conformité RGPD et la souveraineté des données ?",

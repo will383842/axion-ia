@@ -49,7 +49,7 @@ export const LAMBALLE_ARMOR_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Lamballe-Armor et baie de Saint-Brieuc ?",
-      a: "Nous intervenons dans vos locaux à Lamballe-Armor, partout en France.",
+      a: "Oui, Axion-IA intervient à Lamballe-Armor (ex-Lamballe, Meslin, Morieux, Planguenoual) et dans tout le bassin baie de Saint-Brieuc (Saint-Brieuc, Dinan).",
     },
     {
       q: "Travaillez-vous avec les PME agroalimentaires de Lamballe-Armor ?",

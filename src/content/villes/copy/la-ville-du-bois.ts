@@ -49,7 +49,7 @@ export const LA_VILLE_DU_BOIS_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à La Ville-du-Bois ?",
-      a: "Nous intervenons dans vos locaux à La Ville-du-Bois, partout en France.",
+      a: "Oui, Axion-IA intervient à La Ville-du-Bois et dans tout le Hurepoix (Longjumeau, Montlhéry, Évry).",
     },
     {
       q: "Accompagnez-vous les commerces de zone commerciale ?",

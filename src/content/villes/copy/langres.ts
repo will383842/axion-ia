@@ -49,7 +49,7 @@ export const LANGRES_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Langres et Haute-Marne ?",
-      a: "Nous intervenons partout en France, sur place ou à distance.",
+      a: "Oui, Axion-IA intervient à Langres et dans tout le Sud-Haute-Marne (Chaumont, Saint-Dizier, Bourbonne-les-Bains).",
     },
     {
       q: "Travaillez-vous avec les artisans couteliers de Langres ?",

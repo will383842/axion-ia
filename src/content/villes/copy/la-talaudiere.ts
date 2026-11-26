@@ -49,7 +49,7 @@ export const LA_TALAUDIERE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à La Talaudière et nord Saint-Étienne ?",
-      a: "Nous intervenons partout en France, sur place ou à distance.",
+      a: "Oui, Axion-IA intervient à La Talaudière et dans toute la banlieue nord stéphanoise (Saint-Étienne, Sorbiers, Villars).",
     },
     {
       q: "Travaillez-vous avec les PME zones d'activités ?",
