@@ -85,6 +85,7 @@ import {
   ajouterJours,
   ajouterMois,
   calculerCommission,
+  journeesIaDuDevis,
   commandeCouverte,
   CONFIRMATION_TACITE_JOURS,
   dateConfirmationTaciteAvecContact,
@@ -838,7 +839,9 @@ async function etapeCommissions(maintenant: Date, bilan: BilanPassageReseau): Pr
       activite: true,
       montantHtCents: true,
       emiseAt: true,
-      devis: { select: { acceptedAt: true, montantTotalHtCents: true } },
+      devis: {
+        select: { acceptedAt: true, montantTotalHtCents: true, journeeIa: true, lignes: true },
+      },
       client: { select: { siren: true, siret: true } },
     },
   });
@@ -985,6 +988,9 @@ async function etapeCommissions(maintenant: Date, bilan: BilanPassageReseau): Pr
       activite: (f.activite ?? null) as ActiviteCommission | null,
       factureHtCents: commande.baseApresAvoirsCents,
       palier: null,
+      // Journée IA : repérée par `devis.journee_ia` (aucune valeur d'énumération nouvelle).
+      journeeIa: f.devis?.journeeIa === true,
+      ...(f.devis?.journeeIa === true ? { quantite: journeesIaDuDevis(f.devis.lignes) } : {}),
     });
     if (calc.statut === "aucune") continue;
     // JAMAIS deux apporteurs commissionnés pour une même entreprise : si une autre personne a déjà

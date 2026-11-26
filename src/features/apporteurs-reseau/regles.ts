@@ -373,6 +373,44 @@ export const PALIER_CONFERENCE = "conference";
 export type ActiviteCommission =
   "formation" | "un_a_un" | "audit" | "implementation" | "site_web" | "conference";
 
+/**
+ * Journée IA (annexe 1, A1.1, grille v3) : prix de référence et forfait, en centimes. Une
+ * Journée IA se repère par `devis.journee_ia`, jamais par une valeur d'énumération.
+ */
+export const PRIX_REFERENCE_JOURNEE_IA_CENTS = 149_000;
+export const FORFAIT_JOURNEE_IA_CENTS = 50_000;
+/** Palier posé sur la ligne de commission d'une Journée IA. */
+export const PALIER_JOURNEE_IA = "journee-ia";
+
+/**
+ * Commission d'une commande de Journées IA : 500 € par journée facturée, au prorata du prix
+ * payé (art. 4.1 bis : forfait × net HT ÷ prix de référence, jamais plus que le forfait),
+ * arrondie au centime le plus proche. `netHtCents` = base de la commission (net après avoirs :
+ * avoir total → 0, avoir partiel → prorata). `journees` = journées facturées de la commande.
+ * Un acompte ne donne jamais rien : la fonction ne reçoit que des commandes soldées.
+ */
+export function commissionJourneeIaCents(netHtCents: number, journees?: number): number {
+  const q = quantiteSessions(journees);
+  const net = Math.max(0, netHtCents);
+  if (net >= PRIX_REFERENCE_JOURNEE_IA_CENTS * q) return FORFAIT_JOURNEE_IA_CENTS * q;
+  return Math.round((FORFAIT_JOURNEE_IA_CENTS * net) / PRIX_REFERENCE_JOURNEE_IA_CENTS);
+}
+
+/** Journées IA d'un devis : somme des quantités des lignes « Journée IA », au moins 1. */
+export function journeesIaDuDevis(lignes: unknown): number {
+  if (!Array.isArray(lignes)) return 1;
+  let n = 0;
+  for (const l of lignes) {
+    if (!l || typeof l !== "object") continue;
+    const { designation, quantite } = l as { designation?: unknown; quantite?: unknown };
+    if (typeof designation === "string" && /journ[ée]e\s+ia/i.test(designation)) {
+      n +=
+        typeof quantite === "number" && Number.isInteger(quantite) && quantite > 0 ? quantite : 1;
+    }
+  }
+  return quantiteSessions(n || 1);
+}
+
 export type CalculCommission =
   | {
       statut: "calculee";
@@ -397,7 +435,17 @@ export function calculerCommission(e: {
   palier?: string | null;
   /** Formation : nombre de sessions identiques du palier dans la commande (1 par défaut). */
   quantite?: number;
+  /** Devis marqué Journée IA (`devis.journee_ia`) : 500 € par journée au prorata (A1.1). */
+  journeeIa?: boolean;
 }): CalculCommission {
+  if (e.journeeIa === true) {
+    return {
+      statut: "calculee",
+      montantCents: commissionJourneeIaCents(e.factureHtCents, e.quantite),
+      palier: PALIER_JOURNEE_IA,
+      prixPublicCents: PRIX_REFERENCE_JOURNEE_IA_CENTS * quantiteSessions(e.quantite),
+    };
+  }
   if (e.activite === null) return { statut: "a_qualifier" };
   // Coaching « one to one » (décision du 25/11, A1.3) : aucune commission, comme le site web.
   if (e.activite === "site_web" || e.activite === "un_a_un") return { statut: "aucune" };
