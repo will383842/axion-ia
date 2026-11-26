@@ -9,7 +9,7 @@ import { describe, expect, it } from "vitest";
 import { cibleEtatFinal } from "@/features/apporteurs-reseau/avoir-client";
 import { etatDeLaCommande, type FactureDeCommande } from "@/features/apporteurs-reseau/commandes";
 import { PALIER_JOURNEE_IA } from "@/features/apporteurs-reseau/regles";
-import { htPourTtcAvoir } from "@/server/qualiopi/financements/facture-libre-pur";
+import { htPourTtcAvoir } from "../facture-libre-pur";
 
 const FACTURE: FactureDeCommande = {
   id: "f1",
