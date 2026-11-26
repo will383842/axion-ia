@@ -49,6 +49,7 @@ import { ContratFormationPdf as ContratFormationPdfV2 } from "./contrat-formatio
 import { ConventionPdf as ConventionPdfV6 } from "./convention.v6";
 import { ConventionPdf as ConventionPdfV7 } from "./convention.v7";
 import { ConventionPdf as ConventionPdfV8 } from "./convention.v8";
+import { ConventionPdf as ConventionPdfV9 } from "./convention.v9";
 import { ConventionTripartitePdf as ConventionTripartitePdfV7 } from "./convention-tripartite.v7";
 import { ConventionTripartitePdf as ConventionTripartitePdfV6 } from "./convention-tripartite.v6";
 import { ReleveConnexionPdf as ReleveConnexionPdfV1 } from "./releve-connexion.v1";
@@ -78,6 +79,7 @@ export const GABARITS_ARCHIVES: Readonly<
     6: { fichier: "convention.v6.tsx", Composant: ConventionPdfV6 as unknown as ComposantPiece },
     7: { fichier: "convention.v7.tsx", Composant: ConventionPdfV7 as unknown as ComposantPiece },
     8: { fichier: "convention.v8.tsx", Composant: ConventionPdfV8 as unknown as ComposantPiece },
+    9: { fichier: "convention.v9.tsx", Composant: ConventionPdfV9 as unknown as ComposantPiece },
   },
   convention_tripartite: {
     2: {

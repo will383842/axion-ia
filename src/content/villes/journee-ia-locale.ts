@@ -21,6 +21,7 @@ import { VILLES_CORE } from "./core";
 import {
   CHEMIN_JOURNEE_IA,
   CONDITION_GARANTIE,
+  DELAI_RAPPORT_JOURS_OUVRES,
   GARANTIE_PHRASE,
   lienDiagnostic,
   RAPPORT_COMPLET,
@@ -149,9 +150,9 @@ export function descriptionVille(v: VilleLocale): string {
   const code = codeDepartement(v);
   return premierQuiTient(
     [
-      `La Journée IA ${a} (${dep}) : audit dans vos locaux, vos équipes formées l’après-midi, rapport chiffré sous 3 jours ouvrés. {{PRIX}}.`,
-      `La Journée IA ${a} (${code}) : audit dans vos locaux, vos équipes formées l’après-midi, rapport chiffré sous 3 jours ouvrés. {{PRIX}}.`,
-      `Journée IA ${a} (${code}) : audit dans vos locaux, formation de vos équipes, rapport sous 3 jours ouvrés. {{PRIX}}.`,
+      `La Journée IA ${a} (${dep}) : audit dans vos locaux, vos équipes formées l’après-midi, rapport chiffré sous ${DELAI_RAPPORT_JOURS_OUVRES} jours ouvrés. {{PRIX}}.`,
+      `La Journée IA ${a} (${code}) : audit dans vos locaux, vos équipes formées l’après-midi, rapport chiffré sous ${DELAI_RAPPORT_JOURS_OUVRES} jours ouvrés. {{PRIX}}.`,
+      `Journée IA ${a} (${code}) : audit dans vos locaux, formation de vos équipes, rapport sous ${DELAI_RAPPORT_JOURS_OUVRES} jours ouvrés. {{PRIX}}.`,
     ].map(remplacerJetons),
     DESCRIPTION_MAX,
   );
@@ -177,9 +178,9 @@ export function descriptionRegion(r: RegionLocale): string {
   const en = enRegion(r);
   return premierQuiTient(
     [
-      `La Journée IA ${en}, dans vos locaux : audit, vos équipes formées l’après-midi, rapport chiffré sous 3 jours ouvrés. {{PRIX}}. Trouvez votre ville.`,
-      `La Journée IA ${en}, dans vos locaux : audit, formation de vos équipes, rapport sous 3 jours ouvrés. {{PRIX}}.`,
-      `Journée IA ${en} : audit et formation IA dans vos locaux, rapport sous 3 jours ouvrés. {{PRIX}}.`,
+      `La Journée IA ${en}, dans vos locaux : audit, vos équipes formées l’après-midi, rapport chiffré sous ${DELAI_RAPPORT_JOURS_OUVRES} jours ouvrés. {{PRIX}}. Trouvez votre ville.`,
+      `La Journée IA ${en}, dans vos locaux : audit, formation de vos équipes, rapport sous ${DELAI_RAPPORT_JOURS_OUVRES} jours ouvrés. {{PRIX}}.`,
+      `Journée IA ${en} : audit et formation IA dans vos locaux, rapport sous ${DELAI_RAPPORT_JOURS_OUVRES} jours ouvrés. {{PRIX}}.`,
     ].map(remplacerJetons),
     DESCRIPTION_MAX,
   );
@@ -191,7 +192,7 @@ export const TITRE_HUB = `La Journée IA partout en France${MARQUE}`;
 /** Meta description du hub. */
 export function descriptionHub(): string {
   return remplacerJetons(
-    "La Journée IA se tient dans vos locaux, partout en France : audit, vos équipes formées l’après-midi, rapport sous 3 jours ouvrés. {{PRIX}}.",
+    `La Journée IA se tient dans vos locaux, partout en France : audit, vos équipes formées l’après-midi, rapport sous ${DELAI_RAPPORT_JOURS_OUVRES} jours ouvrés. {{PRIX}}.`,
   );
 }
 

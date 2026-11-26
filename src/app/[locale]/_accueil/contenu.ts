@@ -16,11 +16,14 @@
 
 import {
   CONDITION_GARANTIE,
+  DELAI_RAPPORT_JOURS_OUVRES,
   EXEMPLE_TYPE,
   EN_BREF_ACCUEIL,
   GARANTIE_PHRASE,
   MENTION_DECLARATION_OF,
+  seuilGarantieEur,
 } from "@/content/journee-ia-commun";
+import { formatAmount } from "@/content/pricing";
 import { EFFECTIF_CIBLE, MICRO_TEXTE_RDV } from "@/content/offre";
 import { reponseReference } from "@/content/questions-reference";
 
@@ -86,8 +89,7 @@ export const CONTENU = {
         },
         {
           repere: "Le soir même · vos priorités",
-          texte:
-            "Vos priorités écrites avant notre départ ; rapport complet et plan d’action sur 90 jours sous 3 jours ouvrés.",
+          texte: `Vos priorités écrites avant notre départ ; rapport complet et plan d’action sur 90 jours sous ${DELAI_RAPPORT_JOURS_OUVRES} jours ouvrés.`,
         },
       ],
       lignes: [
@@ -99,7 +101,7 @@ export const CONTENU = {
       prix: "{{PRIX}}",
       prixUnite: "la journée",
       prixCadre: "Sans remise. Devis écrit, rien à payer en ligne.",
-      garantieTitre: "Garantie écrite « 3 fois le prix ».",
+      garantieTitre: `Garantie écrite « 3 fois le prix », soit ${formatAmount(seuilGarantieEur(), "fr")} de gains identifiés.`,
       garantieDebut: GARANTIE_PHRASE.slice(0, POINT_DE_COUPURE),
       garantieEngagement: GARANTIE_PHRASE.slice(POINT_DE_COUPURE),
       condition: CONDITION_GARANTIE,

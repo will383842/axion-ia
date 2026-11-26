@@ -100,8 +100,9 @@ export type TypeGabaritSignable =
  * | `convention` | 7 | 18/11 — refonte au style de la charte 2027 (`charte/v1`) : sections en cartes, lignes libellé / valeur, signatures en cadre. Aucun texte changé (mentions, clauses, intitulés, montants) ; taux écrits à la française. **v6 archivée** |
  * | `convention_tripartite` | 7 | 18/11 — même refonte, aucun texte changé. **v6 archivée** |
  * | `convention` | 8 | 19/11 — clause financeur, 5 bis et ligne Qualiopi imprimées seulement si certification obtenue (photo `data.certificationObtenue`) ; v7 archivée |
- * | `convention` | 9 | 25/11 — acompte acquis en cas d'annulation sans condition de délai (suppression de « plus de 15 jours ouvrés : 0 % ») ; dédit formation facturé à part, non imputable ni pris en charge par un OPCO. **v8 archivée** |
+ * | `convention` | 10 | 26/11 — acompte acquis en cas d'annulation sans condition de délai (suppression de « plus de 15 jours ouvrés : 0 % ») ; dédit formation facturé à part, non imputable ni pris en charge par un OPCO. **v8 archivée** |
  * | `convention_tripartite` | 8 | 25/11 — même règle (report ajouté). **v7 archivée** |
+ * | `convention` | 9 | 25/11 — § 3 : paragraphe de la garantie de remboursement de la Journée IA (CGV art. 47.10), imprimé seulement si `data.journeeIa === true` (photo de `Devis.journeeIa`) ; v8 archivée |
  * | `contrat_formation` | 3 | 18/11 — même refonte, aucun texte changé. **v2 archivée** |
  * | les autres | 1 | texte inchangé depuis l'origine |
  *
@@ -167,11 +168,15 @@ export const GABARIT_VERSIONS: Record<TypeGabaritSignable, number> = {
     pour le jour de la certification ; v7 archivée.
   */
   /*
-    v9 — 25/11/2026, décision du dirigeant : l'acompte versé reste acquis en cas d'annulation par le
+    v10 — 26/11/2026, décision du dirigeant : l'acompte versé reste acquis en cas d'annulation par le
     client, SANS condition de délai (section 4) ; le dédit formation est facturé à part et n'est ni
-    imputable sur les fonds de la formation professionnelle ni pris en charge par un OPCO ; v8 archivée.
+    imputable sur les fonds de la formation professionnelle ni pris en charge par un OPCO ; v9 archivée.
+    v9 — 25/11/2026 : § 3, paragraphe `TEXTE_GARANTIE_JOURNEE_IA` imprimé seulement si
+    `data.journeeIa === true` (photo de `Devis.journeeIa` du devis de la session, prise à la
+    génération ; absent = faux). Une clause AJOUTÉE est un changement de fond, même conditionnel :
+    incrément gardé, v8 archivée. Les conventions signées gardent leur instantané.
   */
-  convention: 9,
+  convention: 10,
   /* v7 — 18/11/2026, refonte au style de la charte 2027 (texte inchangé) ; v6 archivée. */
   /* v8 — 25/11/2026, même règle de l'acompte acquis que la bipartite (section 4) ; v7 archivée. */
   convention_tripartite: 8,

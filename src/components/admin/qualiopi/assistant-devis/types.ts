@@ -69,6 +69,13 @@ export interface EtatAssistant {
    * réouverture du brouillon). Absent d'un ancien brouillon = jamais touchée.
    */
   garantie: { afficher: boolean; jours: string; phrase: string; touche?: boolean | undefined };
+  /**
+   * Journée IA : imprimer la garantie de remboursement (CGV art. 47.10), prix unique seulement.
+   * Miroir de `Devis.journeeIa`, relu de la colonne à la réouverture (jamais du brouillon).
+   * ⚠️ Nommé SANS le jeton « ia » : l'état d'écran voyage dans `nonImprime.ecran`, et la garde S03
+   * (`montantIA`) refuse toute clé portant ce jeton ailleurs que `nonImprime.ia`.
+   */
+  garantieJournee: boolean;
   delais: { texte: string; fourchette: string; touche?: boolean | undefined };
   achat: {
     phases: PhaseAssistant[];

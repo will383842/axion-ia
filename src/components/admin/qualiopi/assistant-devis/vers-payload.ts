@@ -129,6 +129,8 @@ export function etatVersPayload(
     // Le SEUL calcul de saisie des formules : celui de l'écran (E04), pas un second.
     formules: versSaisie(etat, ctx.tvaStandardPct).saisie,
     textes: ctx.textes.map((t) => ({ ...t })),
+    // Prix unique seulement : une proposition à formules n'imprime jamais cette garantie.
+    journeeIa: classique && etat.garantieJournee === true,
     nonImprime,
     sync: { devisId: ctx.devisId ?? null, devisMajLe: null },
   };
@@ -151,7 +153,13 @@ export function payloadVersEtat(
   params: ParamsEtatVide = {},
 ): EtatDepuisPayload {
   const lu = deserialiser(ecranDepuisPayload(payload.nonImprime[CLE_ECRAN]));
-  if (lu.ok) return { etat: lu.etat, etape: lu.etape, source: "ecran" };
+  // La case vient du payload (relu de la colonne `Devis.journeeIa`), pas de l'état d'écran figé.
+  if (lu.ok)
+    return {
+      etat: { ...lu.etat, garantieJournee: payload.journeeIa === true },
+      etape: lu.etape,
+      source: "ecran",
+    };
   const etat = etatInitial({
     defaultClientId: payload.clientId ?? undefined,
     projetId: payload.projetId ?? undefined,
@@ -159,5 +167,6 @@ export function payloadVersEtat(
     validiteParDefaut: params.validiteParDefaut ?? payload.dateValidite ?? "",
     formulesActives: params.formulesActives ?? false,
   });
+  etat.garantieJournee = payload.journeeIa === true;
   return { etat, etape: 1, source: "payload" };
 }
