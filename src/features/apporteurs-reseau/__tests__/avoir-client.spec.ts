@@ -339,6 +339,18 @@ describe("sans avoir", () => {
     const b = await reprendreApresAvoirsClients(LE);
     expect(b).toMatchObject({ reduites: 0, annulees: 0, retenues: 0, reprises: 0 });
   });
+
+  it("bon d'achat offert (aucun avoir du Hub) : aucune reprise, même sur une commission versée (art. 4.5)", async () => {
+    d.factures = [facture];
+    d.lignes = [ligne({ statut: "versee", autofactureNumero: "AXI-APP-2026-0001", verseeAt: LE })];
+    const b = await reprendreApresAvoirsClients(LE);
+    expect(b).toMatchObject({ reduites: 0, annulees: 0, retenues: 0, reprises: 0 });
+    expect(d.maj).not.toHaveBeenCalled();
+    expect(d.annuler).not.toHaveBeenCalled();
+    expect(d.reduire).not.toHaveBeenCalled();
+    expect(d.retenir).not.toHaveBeenCalled();
+    expect(d.reprise).not.toHaveBeenCalled();
+  });
 });
 
 describe("dettes de a1 sur #1398", () => {

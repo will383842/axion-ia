@@ -39,6 +39,8 @@ const { tx, prisma, emisPartages } = vi.hoisted(() => {
     auditMission: { findUnique: vi.fn() },
     client: { findUnique: vi.fn() },
     garantieJourneeIa: { findUnique: vi.fn() },
+    factureFormation: { findUnique: vi.fn(), findMany: vi.fn() },
+    commissionApporteur: { count: vi.fn() },
   };
   return { tx, prisma, emisPartages };
 });
@@ -140,6 +142,13 @@ beforeEach(() => {
   tx.garantieJourneeIa.create.mockResolvedValue({ id: ID });
   prisma.client.findUnique.mockResolvedValue({ id: CID, siren: "123456789" });
   prisma.garantieJourneeIa.findUnique.mockResolvedValue(null);
+  prisma.factureFormation.findUnique.mockResolvedValue({
+    numero: "AXI-AVO-2026-001",
+    avoirDeId: null,
+    avoirDe: null,
+  });
+  prisma.factureFormation.findMany.mockResolvedValue([]);
+  prisma.commissionApporteur.count.mockResolvedValue(0);
   avoirsEmis.length = 0;
   tx.garantieJourneeIa.findUnique.mockResolvedValue({
     decision: null,
@@ -639,6 +648,60 @@ describe("décision, virement, archivage", () => {
     });
     // « Offrir un avoir » : chemin inchangé, AUCUNE facture d'avoir émise ici.
     expect(genererAvoirFacture).not.toHaveBeenCalled();
+  });
+  describe("bon d'achat : aucun avoir du Hub rattaché à une facture commissionnée (contrat 2.8, art. 4.5)", () => {
+    const AVOIR = "55555555-5555-4555-8555-555555555555";
+    const avoirForm = (avoirId?: string) =>
+      form({
+        id: ID,
+        decision: "avoir",
+        decisionLe: "2026-12-12",
+        montantAvoirEuros: "500",
+        ...(avoirId ? { avoirId } : {}),
+      });
+    const avoirSur = (devisId: string | null) => ({
+      numero: "AXI-AVO-2026-009",
+      avoirDeId: "F1",
+      avoirDe: { id: "F1", numero: "AXI-FAC-2026-100", devisId },
+    });
+    it("refuse l'identifiant d'un avoir rattaché à une facture qui porte une commission", async () => {
+      prisma.factureFormation.findUnique.mockResolvedValue(avoirSur(null));
+      prisma.commissionApporteur.count.mockResolvedValue(1);
+      const r = await va(enregistrerDecisionGarantieJourneeIaAction(avoirForm(AVOIR)));
+      expect(r).toMatch(/erreur=.*commission/);
+      expect(tx.garantieJourneeIa.update).not.toHaveBeenCalled();
+      expect(genererAvoirFacture).not.toHaveBeenCalled();
+    });
+    it("couvre la commission portée par une autre facture du même devis (acompte / solde)", async () => {
+      prisma.factureFormation.findUnique.mockResolvedValue(avoirSur("D1"));
+      prisma.factureFormation.findMany.mockResolvedValue([{ id: "SOLDE" }]);
+      prisma.commissionApporteur.count.mockResolvedValue(1);
+      const r = await va(enregistrerDecisionGarantieJourneeIaAction(avoirForm(AVOIR)));
+      expect(r).toMatch(/erreur=.*commission/);
+      expect(prisma.commissionApporteur.count.mock.calls[0]?.[0].where.factureId.in).toContain(
+        "SOLDE",
+      );
+      expect(tx.garantieJourneeIa.update).not.toHaveBeenCalled();
+    });
+    it("accepte l'identifiant d'un avoir sans commission", async () => {
+      prisma.factureFormation.findUnique.mockResolvedValue(avoirSur(null));
+      const r = await va(enregistrerDecisionGarantieJourneeIaAction(avoirForm(AVOIR)));
+      expect(r).toMatch(/ok=decision/);
+      expect(tx.garantieJourneeIa.update.mock.calls[0]?.[0].data.avoirId).toBe(AVOIR);
+    });
+    it("refuse un identifiant qui ne désigne aucune pièce", async () => {
+      prisma.factureFormation.findUnique.mockResolvedValue(null);
+      const r = await va(enregistrerDecisionGarantieJourneeIaAction(avoirForm(AVOIR)));
+      expect(r).toMatch(/erreur=/);
+      expect(tx.garantieJourneeIa.update).not.toHaveBeenCalled();
+    });
+    it("un bon d'achat sans identifiant ne touche ni la facturation ni les commissions", async () => {
+      const r = await va(enregistrerDecisionGarantieJourneeIaAction(avoirForm()));
+      expect(r).toMatch(/ok=decision/);
+      expect(prisma.factureFormation.findUnique).not.toHaveBeenCalled();
+      expect(prisma.commissionApporteur.count).not.toHaveBeenCalled();
+      expect(genererAvoirFacture).not.toHaveBeenCalled();
+    });
   });
   it("refuse un avoir au-dessus de 4 470 € ou sans montant", async () => {
     for (const montantAvoirEuros of ["4470,01", ""]) {
