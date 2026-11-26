@@ -17,6 +17,7 @@
  * La valeur 0 (« gratuit » : guide PDF, calculateur) n'est pas un prix : elle reste admise.
  */
 
+import { SEUIL_DEVIS_DEDUCTION_EUR, seuilGarantieEur } from "@/content/journee-ia-commun";
 import { describe, it, expect, vi } from "vitest";
 import { readdirSync, readFileSync, type Dirent } from "node:fs";
 import path from "node:path";
@@ -61,14 +62,24 @@ const MONTANT = new RegExp(
 /** Un ordre de grandeur en toutes lettres : « quelques centaines d'euros », « a few thousand euros ». */
 const ORDRE_DE_GRANDEUR = /(?:centaines|milliers)\s+d['’]euros|(?:hundred|thousand)\s+euros/gi;
 
-/** Montants en euros présents dans un texte, hors 1 490 (Journée IA). */
+/**
+ * Montants de la Journée IA admis : son prix (1 490), le seuil de sa garantie (3 fois son prix)
+ * et le devis minimal de la déduction (CGV 47.7), tous calculés depuis `pricing.ts` / le socle.
+ */
+const MONTANTS_JOURNEE_IA: readonly string[] = [
+  "1490",
+  String(seuilGarantieEur()),
+  String(SEUIL_DEVIS_DEDUCTION_EUR),
+];
+
+/** Montants en euros présents dans un texte, hors Journée IA (cf. `MONTANTS_JOURNEE_IA`). */
 function montantsInterdits(texte: string): string[] {
   const chiffres = (texte.match(MONTANT) ?? []).filter((m) => {
     const n = m
       .replace(/[^\d.,]/g, "")
       .replace(/[.,]\d{1,2}$/, "")
       .replace(/[.,]/g, "");
-    return n !== "1490";
+    return !MONTANTS_JOURNEE_IA.includes(n);
   });
   return [...chiffres, ...(texte.match(ORDRE_DE_GRANDEUR) ?? [])];
 }

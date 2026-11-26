@@ -17,8 +17,8 @@ import { redis } from "@/lib/redis";
 import { ProviderError, type GenerationRequest, type GenerationResponse } from "./IProvider";
 import { anthropicProvider, computeCost } from "./anthropic";
 import { alerterBlogClaude } from "./anthropic-credit-alert";
+import { BLOG_TYPES, typeClaudeAutorise } from "./types-claude";
 import {
-  BLOG_TYPES,
   BORNE_DURE_JOUR_USD,
   BORNE_DURE_MOIS_USD,
   BlogClaudeRefusError,
@@ -29,12 +29,13 @@ import {
 
 export { BLOG_TYPES, BlogClaudeRefusError };
 
-export type RoleBlogClaude = "ecriture" | "relecture";
+export type RoleBlogClaude = "ecriture" | "relecture" | "court";
 
 /** Seuls modèles admis sur ce chemin (jamais Haiku 5.5, jamais de `temperature`). */
 export const MODELES: Readonly<Record<RoleBlogClaude, string>> = {
   ecriture: "claude-sonnet-5-5",
   relecture: "claude-opus-5-5",
+  court: "claude-sonnet-5-5",
 };
 
 /** Clé `ContentGenConfig` du drapeau de suspension (levée par le fondateur seulement). */
@@ -110,10 +111,10 @@ async function lirePlafonds(role: RoleBlogClaude): Promise<PlafondsValides> {
     throw refuser("Plafond mensuel global invalide", "config_invalide");
   }
   if (!nombrePositif(jourUsd) || jourUsd > BORNE_DURE_JOUR_USD) {
-    throw refuser("Plafond du jour du blog absent ou invalide", "config_invalide");
+    throw refuser("Plafond du jour du contenu via Claude absent ou invalide", "config_invalide");
   }
   if (!nombrePositif(moisBlogUsd) || moisBlogUsd > BORNE_DURE_MOIS_USD) {
-    throw refuser("Plafond du mois du blog absent ou invalide", "config_invalide");
+    throw refuser("Plafond du mois du contenu via Claude absent ou invalide", "config_invalide");
   }
   if (!nombreNonNegatif(reserve)) {
     throw refuser("Réserve Qualiopi absente ou invalide", "config_invalide");
@@ -184,7 +185,7 @@ export async function assertPlafondsClaude(
   maintenant: Date = new Date(),
 ): Promise<AccordBlogClaude> {
   if (!interrupteurBlogClaude()) {
-    throw refuser("Texte du blog via Claude : interrupteur éteint", "eteint");
+    throw refuser("Texte via Claude : interrupteur éteint", "eteint");
   }
   const model = MODELES[role];
   if (
@@ -198,6 +199,12 @@ export async function assertPlafondsClaude(
   }
   if (req.role !== "text") {
     throw refuser("Seul le rôle texte est admis sur ce chemin", "config_invalide");
+  }
+  if (!typeClaudeAutorise(req.contentType)) {
+    throw refuser(
+      `Type de contenu « ${req.contentType} » non autorisé via Claude (CONTENT_GEN_CLAUDE_TYPES)`,
+      "config_invalide",
+    );
   }
 
   const plafonds = await lirePlafonds(role);
@@ -296,7 +303,7 @@ export async function genererTexteBlogClaude(
   role: RoleBlogClaude,
 ): Promise<GenerationResponse> {
   if (!interrupteurBlogClaude()) {
-    throw refuser("Texte du blog via Claude : interrupteur éteint", "eteint");
+    throw refuser("Texte via Claude : interrupteur éteint", "eteint");
   }
   const { model, reservation } = await assertPlafondsClaude(req, role);
 

@@ -19,17 +19,17 @@ export type TypeAlerteBlogClaude =
 
 const TEXTES: Record<TypeAlerteBlogClaude, string> = {
   credit_refuse:
-    "Texte du blog via Claude : le crédit Anthropic est refusé.\n" +
+    "Contenu via Claude : le crédit Anthropic est refusé.\n" +
     "À faire : vérifier le solde et la clé dans la console Anthropic.\n" +
-    "Ce que ça bloque : l'écriture et la relecture du blog (aucun secours automatique).",
+    "Ce que ça bloque : l'écriture et la relecture du contenu (aucun secours automatique).",
   plafond_jour:
-    "Texte du blog via Claude : plafond du jour atteint, les appels sont refusés jusqu'à minuit (heure de Paris).",
+    "Contenu via Claude : plafond du jour atteint, les appels sont refusés jusqu'à minuit (heure de Paris).",
   plafond_mois:
-    "Texte du blog via Claude : plafond du mois atteint, les appels sont refusés jusqu'au mois prochain.",
+    "Contenu via Claude : plafond du mois atteint, les appels sont refusés jusqu'au mois prochain.",
   seuil_80:
-    "Texte du blog via Claude : 80 % d'un plafond (jour ou mois) est consommé. Rien n'est coupé pour l'instant.",
+    "Contenu via Claude : 80 % d'un plafond (jour ou mois) est consommé. Rien n'est coupé pour l'instant.",
   suspendu:
-    "Texte du blog via Claude : générateur SUSPENDU après des refus de crédit répétés.\n" +
+    "Contenu via Claude : générateur SUSPENDU après des refus de crédit répétés.\n" +
     "Il ne repart que sur levée explicite par le fondateur.",
 };
 

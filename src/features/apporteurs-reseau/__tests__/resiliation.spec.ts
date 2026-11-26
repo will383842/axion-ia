@@ -46,6 +46,7 @@ vi.mock("@/lib/prisma", () => {
         return {};
       }),
     },
+    presentationReservation: { findMany: vi.fn(async () => []), updateMany: vi.fn() },
     commissionApporteur: {
       findUnique: vi.fn(async () => etat.origine),
       findMany: vi.fn(async () => etat.commissionsExistantes),

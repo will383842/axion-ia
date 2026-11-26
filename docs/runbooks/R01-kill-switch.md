@@ -154,6 +154,17 @@ Interrupteur : variable `CONTENT_GEN_BLOG_CLAUDE`. Éteint = absente ou vide ; s
 7. **Lever le kill switch et reprendre les files** (section « Étapes » ci-dessus) : c'est ce qui laisse le job d'essai partir. Sans cette étape, rien ne s'exécute.
 8. **Essai** : plafond du jour bas, UN seul job lancé à la main, relecture des articles, puis arrêt avant tout volume. Observer 24 h (dépense, alertes) et refaire le point 3.
 
+### Contenu via Claude : types autorisés et plafonds de démarrage (PR 2)
+
+Décision du dirigeant : tout le contenu passe sur Claude, budget **200 $ par mois pour les 3 comptes ensemble**. Deux réglages distincts :
+
+1. **Quels types** : variable `CONTENT_GEN_CLAUDE_TYPES` (application worker, en exécution, relue à chaque appel). Absente, vide ou `blog` = les 4 types blog (comportement d'avant). `tous` = toute l'énumération des types. Ou une liste séparée par des virgules (`landing_ville,glossary_term`, le mot `blog` y est admis comme raccourci) : un type inconnu est ignoré avec un avertissement dans les journaux du worker ; une liste sans aucun type connu n'autorise rien (jamais « tous » par défaut). `CONTENT_GEN_BLOG_CLAUDE` reste l'interrupteur général : tant qu'il n'est pas exactement `true`, rien ne change, quelle que soit cette variable.
+2. **Combien** : plafonds en base, **valeurs à poser au démarrage : 10 $ par jour et 200 $ par mois** (tous types confondus). Le cumul du jour et du mois compte tout job de contenu sur Anthropic, pas seulement les types actuellement autorisés : retirer un type de la liste en cours de mois n'efface pas ce qu'il a déjà coûté.
+
+**Le dirigeant les change lui-même dans la console** : Contenu (content-gen) → Réglages → Fournisseurs → ligne Anthropic → bloc « Contenu via Claude : plafonds » (champs « Plafond du jour », « Plafond mensuel du contenu via Claude », « Réserve Qualiopi », « Relectures max par jour »), bouton « Enregistrer les plafonds du contenu via Claude ». Effet immédiat, relu à chaque appel, aucune mise en ligne. Les bornes de garde ne changent pas : 20 $ par jour et 300 $ par mois au maximum (les valeurs de démarrage 10 $ / 200 $ y sont comprises) ; au-delà, l'écran refuse. Les clés en base gardent leur ancien nom (`blog_claude_*`), c'est normal.
+
+Un refus de plafond ne relance jamais le job (échec définitif, aucune régénération payante) et il n'y a **aucun secours vers OpenAI** pour un type autorisé : un job refusé échoue, il faut le relancer à la main après avoir relevé le plafond. Une demande qui n'est pas marquée « contenu via Claude » (notamment le chatbot, type `qa_derived`) ne bascule jamais, même avec `tous`. ⚠️ Le marquage des générateurs hors blog arrive dans une PR suivante : tant qu'elle n'est pas fusionnée, `tous` n'envoie à Claude que ce qui est déjà marqué (le blog).
+
 ### Si le blog est suspendu
 
 Après plusieurs refus de crédit le drapeau de suspension se pose seul et une alerte part. Seul le fondateur le lève, après avoir rechargé ou corrigé la cause : la même procédure de copie que dans « Allumer » (le script n'est pas dans l'image worker : `docker cp`, puis `docker exec -w /app <conteneur-worker> node_modules/.bin/tsx scripts/content-gen/poser-plafonds-blog-claude.ts --lever-suspension`, à sec), puis avec `--reel`. Les compteurs de refus (clés Redis `blog-claude:refus-credit` et `blog-claude:refus-auth`, fenêtre de 24 h chacune) n'est **pas** remis à zéro par le script : les supprimer à la main dans Redis après la levée, sinon un seul refus de plus peut re-suspendre aussitôt.

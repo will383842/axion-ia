@@ -13,14 +13,13 @@
 import { UnrecoverableError } from "bullmq";
 import { Prisma } from "../../../../prisma/generated/client";
 import { prisma } from "@/lib/prisma";
+import { BLOG_TYPES, tousLesTypes, typesClaudeAutorises } from "./types-claude";
 
-/** Types de contenu dont le texte passe par la porte (filtre I3 du cumul). */
-export const BLOG_TYPES: ReadonlySet<string> = new Set([
-  "blog_article",
-  "blog_from_keywords",
-  "blog_from_title",
-  "blog_from_rss",
-]);
+/**
+ * Les 4 types blog (défaut de `CONTENT_GEN_CLAUDE_TYPES`). Ré-exporté pour compatibilité ;
+ * l'ensemble des types AUTORISÉS se lit dans `types-claude.ts`.
+ */
+export { BLOG_TYPES };
 
 /** Bornes de GARDE du dépôt (pas les plafonds réels, posés en base). */
 export const BORNE_DURE_JOUR_USD = 20;
@@ -140,8 +139,15 @@ function enNombre(v: unknown): number {
   return Number.NaN;
 }
 
-function filtreBlogSql(): Prisma.Sql {
-  return Prisma.sql`"jobId" IN (SELECT id FROM content_gen_jobs WHERE "contentType"::text IN (${Prisma.join([...BLOG_TYPES])}))`;
+/**
+ * Filtre du cumul : TOUT job de contenu (toute l'énumération `ContentType`), pas seulement
+ * les types actuellement autorisés. Le budget (jour, mois) est celui de tout le contenu via
+ * Claude : si le dirigeant réduit la liste de types en cours de mois, ce qui a déjà été
+ * dépensé sur les types retirés reste compté (on compte large, jamais trop peu). Les lignes
+ * Qualiopi / chatbot n'ont pas de job de contenu : elles restent hors du cumul.
+ */
+function filtreContenuSql(): Prisma.Sql {
+  return Prisma.sql`"jobId" IN (SELECT id FROM content_gen_jobs WHERE "contentType"::text IN (${Prisma.join([...tousLesTypes()])}))`;
 }
 
 /** Arrondi au centime SUPÉRIEUR (le compteur mensuel est un Decimal(10,2) : on compte large). */
@@ -158,15 +164,15 @@ export function auCentimeSuperieur(v: number): number {
 export const TRANSACTION_MAX_WAIT_MS = 10_000;
 export const TRANSACTION_TIMEOUT_MS = 15_000;
 
-async function cumulBlog(tx: Prisma.TransactionClient, depuis: Date): Promise<number> {
+async function cumulContenu(tx: Prisma.TransactionClient, depuis: Date): Promise<number> {
   const rows = await tx.$queryRaw<Array<{ total: number | string | null }>>(
     Prisma.sql`SELECT COALESCE(SUM("costUsd"), 0)::float8 AS total
       FROM cost_ledger
-      WHERE provider::text = 'anthropic' AND "timestamp" >= ${depuis} AND ${filtreBlogSql()}`,
+      WHERE provider::text = 'anthropic' AND "timestamp" >= ${depuis} AND ${filtreContenuSql()}`,
   );
   const total = Number(rows[0]?.total ?? 0);
   if (!Number.isFinite(total)) {
-    throw new BlogClaudeRefusError("Cumul du blog illisible", "base_indisponible");
+    throw new BlogClaudeRefusError("Cumul du contenu via Claude illisible", "base_indisponible");
   }
   return total;
 }
@@ -184,13 +190,18 @@ export async function reserverCout(p: ParamsReservation): Promise<Reservation> {
       async (tx) => {
         await tx.$executeRaw`SELECT pg_advisory_xact_lock(hashtext('blog_claude_cap'))`;
 
-        // Le job doit exister ET être un job de blog : sinon la ligne échapperait au cumul.
+        // Le job doit exister ET être d'un type AUTORISÉ (`CONTENT_GEN_CLAUDE_TYPES`) :
+        // sinon la ligne échapperait au cumul ou l'appel dépasserait la liste voulue.
+        const autorises = [...typesClaudeAutorises()];
+        if (autorises.length === 0) {
+          throw new BlogClaudeRefusError("Aucun type de contenu autorisé", "config_invalide");
+        }
         const job = await tx.$queryRaw<Array<unknown>>(
-          Prisma.sql`SELECT 1 FROM content_gen_jobs WHERE id = ${p.jobId} AND "contentType"::text IN (${Prisma.join([...BLOG_TYPES])})`,
+          Prisma.sql`SELECT 1 FROM content_gen_jobs WHERE id = ${p.jobId} AND "contentType"::text IN (${Prisma.join(autorises)})`,
         );
         if (!Array.isArray(job) || job.length === 0) {
           throw new BlogClaudeRefusError(
-            "Job inconnu ou hors blog : appel refusé",
+            "Job inconnu ou d'un type non autorisé : appel refusé",
             "config_invalide",
           );
         }
@@ -208,13 +219,19 @@ export async function reserverCout(p: ParamsReservation): Promise<Reservation> {
         });
 
         // Cumuls recalculés EN INCLUANT la ligne qui vient d'être posée.
-        const cumulJourUsd = await cumulBlog(tx, minuitParis(maintenant));
-        const cumulMoisBlogUsd = await cumulBlog(tx, debutMoisParis(maintenant));
+        const cumulJourUsd = await cumulContenu(tx, minuitParis(maintenant));
+        const cumulMoisBlogUsd = await cumulContenu(tx, debutMoisParis(maintenant));
         if (cumulJourUsd > p.plafondJourUsd) {
-          throw new BlogClaudeRefusError("Plafond du jour du blog atteint", "plafond_jour");
+          throw new BlogClaudeRefusError(
+            "Plafond du jour du contenu via Claude atteint",
+            "plafond_jour",
+          );
         }
         if (cumulMoisBlogUsd > p.plafondMoisBlogUsd) {
-          throw new BlogClaudeRefusError("Plafond du mois du blog atteint", "plafond_mois");
+          throw new BlogClaudeRefusError(
+            "Plafond du mois du contenu via Claude atteint",
+            "plafond_mois",
+          );
         }
 
         // Le blog ne doit jamais couper Qualiopi (même ligne `anthropic`).
@@ -231,7 +248,7 @@ export async function reserverCout(p: ParamsReservation): Promise<Reservation> {
           p.plafondMoisGlobalUsd - p.reserveQualiopiUsd
         ) {
           throw new BlogClaudeRefusError(
-            "Réserve Qualiopi entamée : appel du blog refusé",
+            "Réserve Qualiopi entamée : appel du contenu via Claude refusé",
             "reserve_qualiopi",
           );
         }

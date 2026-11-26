@@ -5,6 +5,11 @@
  * avertissement) comme par le schéma serveur et les gabarits.
  */
 
+import {
+  TEXTE_GARANTIE_JOURNEE_IA,
+  TEXTE_PLAFOND_RESPONSABILITE,
+} from "@/server/qualiopi/devis/assistant/textes-rubriques";
+
 /** Longueur maximale du texte, après normalisation côté serveur. */
 export const CONDITIONS_PARTICULIERES_MAX = 4000;
 
@@ -78,4 +83,33 @@ function sansCasseNiAccents(s: string): string {
 export function motsSensiblesTrouves(s: string): string[] {
   const texte = sansCasseNiAccents(s);
   return MOTS_SENSIBLES.filter((m) => texte.includes(sansCasseNiAccents(m)));
+}
+
+/**
+ * Garantie de la Journée IA dans le texte des conditions particulières (la colonne
+ * `Devis.journeeIa` reste la source de vérité ; le texte n'en est que l'impression, le gabarit du
+ * devis imprimant déjà ce bloc). Idempotent : le paragraphe n'est jamais posé deux fois.
+ *
+ * `true` : ajoute le paragraphe s'il manque, à la fin. `false` : le retire.
+ * Le contrôle des 4 000 caractères / 80 lignes reste à l'appelant (schéma serveur, formulaire).
+ */
+export function avecGarantieJourneeIa(texte: string | null, actif: boolean): string | null {
+  const present = (texte ?? "").includes(TEXTE_GARANTIE_JOURNEE_IA);
+  // Rien à faire : on rend le texte tel quel (aucune retouche d'espaces à l'insu de l'auteur).
+  if (actif === present) return texte;
+  if (!actif) {
+    // Retrait de la sous-chaîne, même collée à un autre texte ; lignes vides résiduelles réduites.
+    const reste = (texte ?? "")
+      .replace(TEXTE_GARANTIE_JOURNEE_IA, "")
+      .replace(/\n{3,}/g, "\n\n")
+      .trim();
+    return reste === "" ? null : reste;
+  }
+  const base = (texte ?? "").trim();
+  if (base === "") return TEXTE_GARANTIE_JOURNEE_IA;
+  // Même place que dans l'assistant : avant le plafond de responsabilité s'il est présent.
+  const k = base.indexOf(TEXTE_PLAFOND_RESPONSABILITE);
+  if (k > 0)
+    return `${base.slice(0, k).trimEnd()}\n\n${TEXTE_GARANTIE_JOURNEE_IA}\n\n${base.slice(k)}`;
+  return `${base}\n\n${TEXTE_GARANTIE_JOURNEE_IA}`;
 }

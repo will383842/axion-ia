@@ -31,7 +31,9 @@ describe("DeclarationEntreprise", () => {
     expect(t).toContain("nous prenons contact avec l'entreprise de votre part");
     expect(t).toContain("réservé 6 mois à compter de votre déclaration");
     // 2026-10-07 (a1) : la commission naît de la prestation RÉALISÉE et ENTIÈREMENT payée.
-    expect(t).toContain("dès que la prestation est réalisée et entièrement payée");
+    expect(t).toContain(
+      "dès que le client a payé l'intégralité, même si la prestation n'est pas encore livrée",
+    );
     expect(t).not.toContain("une fois payée");
     expect(t).not.toMatch(/\d+\s*(jours|heures)/);
   });

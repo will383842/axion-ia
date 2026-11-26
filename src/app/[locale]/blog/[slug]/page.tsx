@@ -9,6 +9,7 @@ import { routing, STATIC_LOCALES, type Locale } from "@/i18n/routing";
 import { Section } from "@/components/layout/Section";
 import { Container } from "@/components/layout/Container";
 import { Cta } from "@/components/marketing/Cta";
+import { CHEMIN_JOURNEE_IA } from "@/content/journee-ia-commun";
 import { CtaBlock } from "@/components/sections/CtaBlock";
 import { Link } from "@/i18n/navigation";
 import { JsonLd } from "@/components/marketing/JsonLd";
@@ -808,13 +809,15 @@ export default async function BlogArticle({ params }: Props) {
 
       <CtaBlock
         spacing="compact"
-        title={isFr ? "Mettre en pratique" : "Put it to work"}
+        title={isFr ? "Une journée pour passer à l’action" : "One day to get started"}
         description={
-          isFr ? `Démarrez par notre formation en groupe.` : `Start with our group training.`
+          isFr
+            ? "La Journée IA identifie, chez vous, les tâches à automatiser en priorité."
+            : "The AI Day identifies which of your tasks to automate first."
         }
         cta={
-          <Cta href="/formations" size="lg">
-            {isFr ? "Voir nos formations" : "See our trainings"} →
+          <Cta href={CHEMIN_JOURNEE_IA} size="lg">
+            {isFr ? "Découvrir la Journée IA" : "Discover the AI Day"} →
           </Cta>
         }
         tone="dark"
