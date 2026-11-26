@@ -517,6 +517,7 @@ ${glossaryContext ? `\n${glossaryContext}` : ""}
       directAnswer: parsed.directAnswer ?? "",
       bodyHtml: parsed.bodyHtml,
       bodyText,
+      kbEntryIds: kbChunks.map((c) => c.entryId),
       faq: (parsed.faq ?? []).map((q) => ({ question: q.q, answer: q.a })),
       tags: parsed.tags ?? [],
       // Refonte templates 2026-06-22 — point clé + avis d'expert interne. Le

@@ -354,6 +354,8 @@ export const GABARITS_ARGENT: ReadonlySet<string> = new Set([
   "apporteur-virement-fait",
   // Une commission suspendue puis libérée reste de l'argent dû : l'apporteur retiré est prévenu.
   "apporteur-commission-suspension",
+  // Le régime de TVA détermine ses autofactures : l'apporteur retiré en est informé.
+  "apporteur-regime-tva",
   // Un manquement (art. 4.5 bis) entraîne des reprises : l'apporteur retiré en est informé.
   "apporteur-manquement",
   // Résiliation (L1a, émise depuis L1b) : l'apporteur résilié ET retiré reçoit quand même

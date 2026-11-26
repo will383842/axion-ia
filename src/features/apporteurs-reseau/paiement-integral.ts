@@ -11,10 +11,19 @@
 
 import { prisma } from "@/lib/prisma";
 
-export async function paiementIntegralLe(factureIds: readonly string[]): Promise<Date | null> {
+/**
+ * Le paiement intégral de CHAQUE facture demandée : par facture, le paiement le plus tardif de sa
+ * commande (un devis ; sinon la facture seule). Sert à dater la prestation sur l'autofacture
+ * (contrat 2.8, art. 4.7 et annexe 2, 2.1 bis : la date de l'encaissement intégral). `null` : date
+ * inconnue (jamais bloquant). Une requête échouée rend une carte vide.
+ */
+export async function paiementsIntegrauxParFacture(
+  factureIds: readonly string[],
+): Promise<Map<string, Date | null>> {
+  const out = new Map<string, Date | null>();
   try {
     const ids = [...new Set(factureIds)];
-    if (ids.length === 0) return null;
+    if (ids.length === 0) return out;
     const cles = await prisma.factureFormation.findMany({
       where: { id: { in: ids } },
       select: { id: true, devisId: true, paidAt: true },
@@ -37,9 +46,23 @@ export async function paiementIntegralLe(factureIds: readonly string[]): Promise
     };
     for (const f of cles) if (!f.devisId) ajouter(`facture:${f.id}`, f.paidAt);
     for (const f of membres) ajouter(`devis:${f.devisId}`, f.paidAt);
-    const dates = [...parCommande.values()].map((t) => Math.max(...t));
-    return dates.length ? new Date(Math.min(...dates)) : null;
+    for (const f of cles) {
+      const t = parCommande.get(f.devisId ? `devis:${f.devisId}` : `facture:${f.id}`);
+      out.set(f.id, t ? new Date(Math.max(...t)) : null);
+    }
+    return out;
   } catch {
-    return null;
+    return new Map();
   }
+}
+
+/**
+ * Le paiement intégral le plus ANCIEN parmi ces factures (échéance la plus stricte quand plusieurs
+ * commandes sont regroupées sur une pièce) ; `null` sans date connue.
+ */
+export async function paiementIntegralLe(factureIds: readonly string[]): Promise<Date | null> {
+  const dates = [...(await paiementsIntegrauxParFacture(factureIds)).values()].filter(
+    (d): d is Date => d !== null,
+  );
+  return dates.length ? new Date(Math.min(...dates.map((d) => d.getTime()))) : null;
 }

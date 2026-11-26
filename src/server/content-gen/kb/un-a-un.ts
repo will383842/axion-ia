@@ -1,14 +1,16 @@
 /**
  * KB sectorielle — Verticale Coaching 1-to-1 / Un-à-un (P6 2026-05-22).
  *
- * 59 facts vérifiés sur le coaching individuel IA pour CEO/fondateurs/managers.
- * Sources : ICF France, Syntec Conseil, BPI France, Harvard Business Review,
- *           OCDE, Axion-IA terrain.
+ * Fiches sourcées (55 avant le 26/11/2026) sur le coaching individuel IA pour CEO/fondateurs/managers.
+ * Sources : celles déclarées par chaque fiche (`source` et `sourceUrl`).
  *
  * Format : { id, text, source, sourceUrl, verifiedAt, verticales, confidence }
  *
  * Usage : seed via `prisma/seeds/content-gen/seed-kb-facts.ts`
  * Indexation FTS Postgres déjà en place via KbEntry.content + tsvector.
+ *
+ * ⚠️ 26/11/2026 : les faits tiers chiffrés sans adresse profonde et les « retours terrain » chiffrés
+ * ont été retirés (docs/content-gen/KB-QUARANTAINE-2026-11-26.md). Le nombre de faits n'est plus un objectif.
  */
 
 import type { KbFact } from "./audits";
@@ -123,15 +125,6 @@ export const KB_UN_A_UN: readonly KbFact[] = [
   },
   // ── Contexte marché du coaching IA ───────────────────────────────────────
   {
-    id: "ua-011",
-    text: "Le marché du coaching exécutif en France représente 890 millions d'euros en 2024 (ICF France), avec une part croissante de demandes liées à la transformation IA — estimée à 18 % des nouvelles missions en 2025." /* price-exempt: stat marché tierce */,
-    source: "ICF France — Rapport d'activité coaching exécutif 2024",
-    sourceUrl: "https://www.coachingfederation.fr",
-    verifiedAt: "2026-05-01",
-    verticales: ["un_a_un"],
-    confidence: 0.75,
-  },
-  {
     id: "ua-012",
     text: "Harvard Business Review (2024) identifie le coaching individuel comme le levier le plus efficace pour l'adoption de l'IA chez les dirigeants — supérieur aux formations collectives pour changer durablement les habitudes.",
     source: "Harvard Business Review — AI Adoption in the C-Suite, 2024",
@@ -222,15 +215,6 @@ export const KB_UN_A_UN: readonly KbFact[] = [
     verticales: ["un_a_un"],
     confidence: 0.82,
   },
-  {
-    id: "ua-021",
-    text: "Syntec Conseil indique que 62 % des dirigeants qui investissent dans leur propre formation IA initient un programme de transformation IA dans leur entreprise dans les 12 mois suivants.",
-    source: "Syntec Conseil — Benchmark transformation IA PME/ETI 2025",
-    sourceUrl: "https://syntec-conseil.fr",
-    verifiedAt: "2026-05-01",
-    verticales: ["un_a_un"],
-    confidence: 0.77,
-  },
   // ── Positionnement Axion-IA ───────────────────────────────────────────────
   {
     id: "ua-022",
@@ -251,15 +235,6 @@ export const KB_UN_A_UN: readonly KbFact[] = [
     confidence: 0.9,
   },
   // ── Chiffres et études ────────────────────────────────────────────────────
-  {
-    id: "ua-024",
-    text: "87 % des CEO de PME françaises interrogés par BPI France (2024) déclarent manquer de temps pour monter en compétences sur l'IA — identifiant le format coaching individuel comme le plus adapté à leur agenda.",
-    source: "BPI France — Rapport dirigeants et IA 2024",
-    sourceUrl: "https://www.bpifrance.fr",
-    verifiedAt: "2026-05-01",
-    verticales: ["un_a_un"],
-    confidence: 0.8,
-  },
   {
     id: "ua-025",
     text: "Le ROI du coaching exécutif IA est estimé à 5,7x l'investissement sur 12 mois par ICF (International Coaching Federation, 2024), grâce à la réduction du temps de prise de décision et à l'accélération des projets IA.",
@@ -288,81 +263,9 @@ export const KB_UN_A_UN: readonly KbFact[] = [
     confidence: 0.95,
   },
   // ── Gap compétences IA au niveau C-level ─────────────────────────────────
-  {
-    id: "ua-029",
-    text: "Une étude Capgemini Research Institute (2024) révèle que 67 % des dirigeants C-level (CEO, CFO, COO, CMO) en France déclarent ne pas maîtriser suffisamment l'IA pour prendre des décisions stratégiques éclairées — contre 41 % en Allemagne et 38 % au Royaume-Uni.",
-    source: "Capgemini Research Institute — AI Leadership Maturity Index 2024",
-    sourceUrl: "https://www.capgemini.com/research",
-    verifiedAt: "2026-05-22",
-    verticales: ["un_a_un"],
-    confidence: 0.79,
-  },
-  {
-    id: "ua-030",
-    text: "McKinsey (2024) identifie le manque de compétences IA au niveau du management intermédiaire comme le principal frein à la mise en œuvre des stratégies IA en entreprise — cité par 58 % des CXO interrogés dans 15 pays.",
-    source: "McKinsey — State of AI in Business, 2024",
-    sourceUrl: "https://www.mckinsey.com/capabilities/quantumblack/our-insights",
-    verifiedAt: "2026-05-22",
-    verticales: ["un_a_un"],
-    confidence: 0.83,
-  },
   // ── Durée et structure des accompagnements ────────────────────────────────
-  {
-    id: "ua-032",
-    text: "La durée moyenne constatée d'un accompagnement individuel IA pour un dirigeant en France est de 4,2 mois selon l'ICF France (2024) — avec un point de basculement comportemental observé en moyenne après la 6e séance.",
-    source: "ICF France — Étude durée et impact des programmes de coaching 2024",
-    sourceUrl: "https://www.coachingfederation.fr",
-    verifiedAt: "2026-05-22",
-    verticales: ["un_a_un"],
-    confidence: 0.74,
-  },
-  {
-    id: "ua-033",
-    text: "Les programmes de coaching IA dirigeant les plus efficaces combinent séances individuelles et « devoirs pratiques » hebdomadaires : 20 minutes de pratique guidée par jour sur des cas réels permettent d'ancrer les compétences 3× plus vite que les séances seules.",
-    source: "HBR — Executive Coaching and AI Skills Transfer, 2024",
-    sourceUrl: "https://hbr.org",
-    verifiedAt: "2026-05-22",
-    verticales: ["un_a_un"],
-    confidence: 0.76,
-  },
   // ── ROI coaching individuel IA ────────────────────────────────────────────
-  {
-    id: "ua-034",
-    text: "Le BCG (Boston Consulting Group, 2024) évalue que les dirigeants ayant suivi un coaching IA individuel lancent en moyenne 2,8 initiatives IA dans leur organisation dans les 12 mois suivants — contre 0,9 pour ceux n'ayant pas été accompagnés.",
-    source: "BCG — AI Leadership and Organizational Impact, 2024",
-    sourceUrl: "https://www.bcg.com/publications",
-    verifiedAt: "2026-05-22",
-    verticales: ["un_a_un"],
-    confidence: 0.77,
-  },
-  {
-    id: "ua-035",
-    text: "L'ICF (International Coaching Federation) recense un ROI médian du coaching exécutif à 7x l'investissement sur 24 mois, toutes thématiques confondues — la spécialisation IA du coaching porterait ce chiffre à 9-12x selon les premières études sectorielles 2024.",
-    source: "ICF — Global Coaching Study 2024",
-    sourceUrl: "https://coachingfederation.org",
-    verifiedAt: "2026-05-22",
-    verticales: ["un_a_un"],
-    confidence: 0.72,
-  },
   // ── Méthodologies coaching IA ─────────────────────────────────────────────
-  {
-    id: "ua-036",
-    text: "La méthode ICF (International Coaching Federation) impose 8 compétences fondamentales au coach — parmi lesquelles « écoute active », « questionnement puissant » et « facilitation de la croissance » — toutes appliquées par Axion-IA dans ses programmes 1-to-1 IA.",
-    source: "ICF — ICF Core Competencies Framework 2024",
-    sourceUrl: "https://coachingfederation.org",
-    verifiedAt: "2026-05-22",
-    verticales: ["un_a_un"],
-    confidence: 0.88,
-  },
-  {
-    id: "ua-037",
-    text: "La supervision régulière du coach est une exigence du label ICF (minimum 10h/an de supervision pair) — Axion-IA applique ce standard pour garantir la qualité et l'évolution continue de ses pratiques d'accompagnement IA.",
-    source: "ICF France — Standards de supervision du coaching professionnel 2024",
-    sourceUrl: "https://www.coachingfederation.fr",
-    verifiedAt: "2026-05-22",
-    verticales: ["un_a_un"],
-    confidence: 0.84,
-  },
   {
     id: "ua-038",
     text: "L'approche GROW (Goal, Reality, Options, Will) adaptée à l'IA est utilisée par Axion-IA pour structurer les séances de coaching dirigeant : définir l'objectif IA, analyser la situation actuelle, explorer les options technologiques, et engager sur un plan d'action concret.",
@@ -373,15 +276,6 @@ export const KB_UN_A_UN: readonly KbFact[] = [
     confidence: 0.92,
   },
   // ── Coaching vs formation collective ─────────────────────────────────────
-  {
-    id: "ua-039",
-    text: "Une méta-analyse de 230 études (ICF et Cegos, 2024) montre que le coaching individuel génère un transfert de compétences 62 % plus élevé que les formations collectives de même durée — car il est ancré dans le contexte spécifique du coaché.",
-    source: "ICF / Cegos — Méta-analyse efficacité coaching vs formation 2024",
-    sourceUrl: "https://www.cegos.fr",
-    verifiedAt: "2026-05-22",
-    verticales: ["un_a_un"],
-    confidence: 0.73,
-  },
   {
     id: "ua-040",
     text: "Pour les dirigeants dont l'agenda ne permet pas de libérer plusieurs jours consécutifs pour une formation, le coaching régulier 1-to-1 (une session par mois ou tous les deux mois) offre le meilleur compromis entre profondeur d'apprentissage et contraintes opérationnelles.",
@@ -401,34 +295,7 @@ export const KB_UN_A_UN: readonly KbFact[] = [
     verticales: ["un_a_un"],
     confidence: 0.93,
   },
-  {
-    id: "ua-042",
-    text: "Les communautés de pratique IA pour dirigeants (CdP IA) génèrent un gain d'adoption additionnel de 35 % par rapport au coaching individuel seul — selon une étude Cegos menée sur 180 managers en transformation numérique en 2024.",
-    source: "Cegos — Étude communautés de pratique et transformation digitale 2024",
-    sourceUrl: "https://www.cegos.fr",
-    verifiedAt: "2026-05-22",
-    verticales: ["un_a_un"],
-    confidence: 0.73,
-  },
   // ── Stats adoption IA C-level France ─────────────────────────────────────
-  {
-    id: "ua-044",
-    text: "78 % des CFO français interrogés par Wavestone (2025) déclarent que leur principal obstacle à l'adoption de l'IA n'est pas technologique mais humain — manque de temps pour se former et peur de faire des erreurs avec les nouveaux outils.",
-    source: "Wavestone — CFO Survey IA 2025",
-    sourceUrl: "https://www.wavestone.com",
-    verifiedAt: "2026-05-22",
-    verticales: ["un_a_un"],
-    confidence: 0.77,
-  },
-  {
-    id: "ua-045",
-    text: "Les COO (directeurs des opérations) sont les dirigeants qui adoptent le plus rapidement les outils IA opérationnels (automatisation, tableaux de bord) — 47 % utilisent déjà l'IA dans leur pilotage quotidien en 2025 (McKinsey Operations Survey 2025).",
-    source: "McKinsey — Operations Management and AI Survey 2025",
-    sourceUrl: "https://www.mckinsey.com/capabilities/operations",
-    verifiedAt: "2026-05-22",
-    verticales: ["un_a_un"],
-    confidence: 0.78,
-  },
   // ── Accompagnement stratégique IA ─────────────────────────────────────────
   {
     id: "ua-046",
@@ -449,15 +316,6 @@ export const KB_UN_A_UN: readonly KbFact[] = [
     confidence: 0.93,
   },
   // ── Coaching et gestion du changement ────────────────────────────────────
-  {
-    id: "ua-048",
-    text: "McKinsey (2024) identifie que les transformations IA échouent dans 68 % des cas non pas pour des raisons technologiques, mais pour des facteurs humains et organisationnels — positionnant le coaching dirigeant comme un investissement de prévention d'échec.",
-    source: "McKinsey — Why AI transformations fail, 2024",
-    sourceUrl: "https://www.mckinsey.com/capabilities/quantumblack/our-insights",
-    verifiedAt: "2026-05-22",
-    verticales: ["un_a_un"],
-    confidence: 0.85,
-  },
   {
     id: "ua-049",
     text: "Les sessions de coaching 1-to-1 Axion-IA n'utilisent aucun outil IA pour traiter les informations confidentielles partagées par le coaché — les conversations sont enregistrées uniquement avec consentement écrit et les données stockées sur serveurs souverains français.",
@@ -503,15 +361,6 @@ export const KB_UN_A_UN: readonly KbFact[] = [
   },
   // ── Tendances coaching exécutif IA 2025-2026 ─────────────────────────────
   {
-    id: "ua-054",
-    text: "L'intégration de l'IA comme thématique principale dans le coaching exécutif est passée de 8 % des missions en 2022 à 31 % en 2025 en France — selon l'observatoire annuel de la Société Française de Coaching (SFCoach).",
-    source: "SFCoach — Observatoire du coaching professionnel en France 2025",
-    sourceUrl: "https://www.sfcoach.org",
-    verifiedAt: "2026-05-22",
-    verticales: ["un_a_un"],
-    confidence: 0.73,
-  },
-  {
     id: "ua-055",
     text: "Axion-IA inclut dans ses programmes de coaching dirigeant un module « Gestion du changement IA » : comprendre les résistances des équipes, communiquer sur les bénéfices IA sans créer d'anxiété, et engager les sceptiques via des quick wins visibles.",
     source: "Axion-IA — Module gestion du changement IA v1.0",
@@ -544,15 +393,6 @@ export const KB_UN_A_UN: readonly KbFact[] = [
     verifiedAt: "2026-05-22",
     verticales: ["un_a_un"],
     confidence: 0.86,
-  },
-  {
-    id: "ua-059",
-    text: "Syntec Conseil indique que les entreprises françaises dont un dirigeant a bénéficié d'un coaching IA individuel ont un budget IA moyen 2,3× supérieur à celui des entreprises similaires dont le dirigeant n'a pas été accompagné.",
-    source: "Syntec Conseil — Benchmark transformation IA PME/ETI 2025",
-    sourceUrl: "https://syntec-conseil.fr",
-    verifiedAt: "2026-05-22",
-    verticales: ["un_a_un"],
-    confidence: 0.74,
   },
   {
     id: "ua-060",

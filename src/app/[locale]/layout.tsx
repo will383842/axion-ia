@@ -245,16 +245,15 @@ export async function generateMetadata({
     // En prod 2026-05-13 : GSC vérifié par DNS TXT, Bing par Import OAuth GSC
     // → ces meta restent ici en fallback si on bascule en méthode meta tag.
     // Build conditionnel : meta absente si env vars non définies (dev/preview).
-    ...(env.GOOGLE_SITE_VERIFICATION || env.BING_SITE_VERIFICATION
-      ? {
-          verification: {
-            ...(env.GOOGLE_SITE_VERIFICATION ? { google: env.GOOGLE_SITE_VERIFICATION } : {}),
-            ...(env.BING_SITE_VERIFICATION
-              ? { other: { "msvalidate.01": env.BING_SITE_VERIFICATION } }
-              : {}),
-          },
-        }
-      : {}),
+    // Vérification Pinterest du domaine (26/11/2026) : valeur PUBLIQUE, pas un secret,
+    // donc constante en dur et émise TOUJOURS (rendu : <meta name="p:domain_verify">).
+    verification: {
+      ...(env.GOOGLE_SITE_VERIFICATION ? { google: env.GOOGLE_SITE_VERIFICATION } : {}),
+      other: {
+        ...(env.BING_SITE_VERIFICATION ? { "msvalidate.01": env.BING_SITE_VERIFICATION } : {}),
+        "p:domain_verify": "3510b4e1cdf428ff298256466292bec9",
+      },
+    },
   };
 }
 

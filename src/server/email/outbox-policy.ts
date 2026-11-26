@@ -220,6 +220,7 @@ export const LIBELLE_TEMPLATE_EMAIL: Record<string, string> = {
   "apporteur-non-commissionne": "Apporteur : produit hors grille constaté non commissionné (A1.7)",
   "apporteur-commission-suspension":
     "Apporteur : commission suspendue, puis libérée (contestation du client)",
+  "apporteur-regime-tva": "Apporteur : changement de régime de TVA (art. 4.7 et 6.3)",
   "apporteur-resiliation-notifiee": "Apporteur : résiliation du contrat notifiée (art. 11 et 12.5)",
   "apporteur-resiliation-effective": "Apporteur : résiliation du contrat prise d'effet",
   "apporteur-manquement": "Apporteur : manquement ou fraude notifié avec les faits (art. 4.5 bis)",

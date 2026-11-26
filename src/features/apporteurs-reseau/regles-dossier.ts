@@ -107,3 +107,16 @@ export { PAYS_SEPA, ibanValide } from "@/lib/iban";
 
 // SIREN : validateur neutre (FAC-5), ré-exporté ici pour les appelants du réseau.
 export { sirenValide } from "@/lib/siret";
+
+/** Numéro de TVA intracommunautaire normalisé : espaces retirés, majuscules. */
+export function normaliserNumeroTva(v: string): string {
+  return v.replace(/\s+/g, "").toUpperCase();
+}
+
+/**
+ * Format d'un numéro de TVA intracommunautaire français (« FR » + 2 caractères + 9 chiffres). Le même
+ * contrôle au dossier de l'apporteur et au changement de régime de la console. Pas de VIES.
+ */
+export function numeroTvaValide(v: string | null | undefined): boolean {
+  return /^FR[0-9A-Z]{2}\d{9}$/.test(normaliserNumeroTva(v ?? ""));
+}

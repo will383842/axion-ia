@@ -1032,7 +1032,7 @@ export default async function UnAUnHubPage({ params }: Props) {
                       id: "garantie",
                       question: "Garantie de résultat ?",
                       answer:
-                        "Non, et personne de sérieux ne peut en donner une : nos conditions générales posent une obligation de moyens, et les gains évoqués restent indicatifs — ils dépendent de vos dossiers et de ce que vous appliquez ensuite. Ce que nous engageons figure au devis : une journée en tête-à-tête sur votre poste réel et le livrable écrit sous 7 jours. En cas d'imprévu de votre côté, la journée est reportable une fois sans frais ; l'acompte prévu au devis, dès qu'il est versé, reste acquis en cas d'annulation, quel que soit le délai (hors rétractation légale et annulation de notre fait).",
+                        "Non, et personne de sérieux ne peut en donner une : nos conditions générales posent une obligation de moyens, et les gains évoqués restent indicatifs — ils dépendent de vos dossiers et de ce que vous appliquez ensuite. Ce que nous engageons figure au devis : une journée en tête-à-tête sur votre poste réel et le livrable écrit sous 7 jours. En cas d'imprévu de votre côté, la journée est reportable une fois sans frais ; l'acompte prévu au devis, dès qu'il est versé, reste acquis en cas d'annulation, quel que soit le délai (hors rétractation légale, manquement ou report à notre initiative et force majeure).",
                     },
                   ]
                 : [

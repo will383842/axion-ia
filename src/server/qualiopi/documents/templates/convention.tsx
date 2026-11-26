@@ -452,7 +452,7 @@ export function ConventionPdf({
         {/* 4. Conditions d'annulation */}
         <SectionCarte title="4. Conditions d'annulation et acompte">
           {/*
-            🔴 26/11/2026 — décision du dirigeant : dès qu'un acompte est versé, il reste acquis si le client annule, SANS condition de délai ; la personne morale non professionnelle (CGV 53.3) est traitée comme le client professionnel, avec la clause RÉCIPROQUE (R.212-2 2° (applicable aux non-professionnels par R.212-5) du code de la consommation : annulation par l'organisme hors force majeure → acompte rendu + indemnité égale). L'ancienne ligne « Annulation à plus de
+            🔴 26/11/2026 — décision du dirigeant : dès qu'un acompte est versé, il reste acquis si le client annule, SANS condition de délai ; la personne morale non professionnelle (CGV 53.3) est traitée comme le client professionnel, avec la clause RÉCIPROQUE (R.212-2 2° (applicable aux non-professionnels par R.212-5) du code de la consommation) ; 26/11 (2e décision) : l'organisme REPORTE au lieu d'annuler (2 dates sous 6 mois, sans frais, acompte reporté) ; acompte rendu + indemnité égale (PM non pro seule) en dernier recours seulement. L'ancienne ligne « Annulation à plus de
             15 jours ouvrés avant le début : 0 % » (acomptes remboursés) est supprimée. Les
             montants dus au-delà de l'acompte (50 % / 100 %) sont inchangés mais ne sont jamais
             inférieurs à l'acompte versé. TVA : aucune exonération.
@@ -463,12 +463,44 @@ export function ConventionPdf({
             le délai d&apos;annulation. Il est conservé à titre de dédit et d&apos;indemnité
             (article 1231-5 du Code civil, qui laisse au juge la faculté de modérer une pénalité
             manifestement excessive). Cette règle vise le client professionnel et la personne morale
-            non professionnelle (articles 6.5 et 53.3 des conditions générales de vente). Si
-            l&apos;organisme annule la prestation, hors force majeure et hors faute du client, et
-            que la personne morale non professionnelle n&apos;accepte pas le report proposé, il
-            rembourse à la personne morale non professionnelle l&apos;acompte versé et lui verse une
-            indemnité d&apos;un montant égal à cet acompte. Les sommes suivantes sont dues ;
-            l&apos;acompte versé s&apos;impute sur elles et, sauf dans les cas prévus au dernier
+            non professionnelle (articles 6.5 et 53.3 des conditions générales de vente).
+            L&apos;organisme n&apos;annule pas : s&apos;il ne peut pas tenir la date convenue, il en
+            informe le client par écrit dès qu&apos;il a connaissance de l&apos;empêchement, puis
+            reporte la prestation sans frais pour le client. Il lui propose par écrit, dans les 30
+            jours suivant cette information, au moins 2 nouvelles dates situées dans les 6 mois
+            suivant la date initialement convenue, la première au moins 15 jours ouvrés après la fin
+            du délai de réponse, en fixant un délai de réponse raisonnable d&apos;au moins 10 jours
+            ouvrés, en rappelant l&apos;effet du silence et en relançant le client par écrit avant
+            l&apos;échéance. Sans réponse du client dans ce délai, le client est réputé accepter la
+            première date proposée ; il peut la déplacer une fois sans frais parmi les dates
+            proposées, sans consommer son propre report. L&apos;acompte et les sommes versées sont
+            reportés sur la date retenue et rien n&apos;est remboursé (article 46.4 des conditions
+            générales de vente). Si le client refuse les dates proposées, l&apos;organisme lui en
+            propose, dans les 15 jours, une seconde série d&apos;au moins 2, qui suit les mêmes
+            règles de réponse, de rappel, de relance et de silence que la première, toujours dans
+            les 6 mois suivant la date initialement convenue ; le client peut aussi proposer ses
+            propres dates, que l&apos;organisme accepte sauf indisponibilité de l&apos;intervenant
+            justifiée par écrit (il ne peut en refuser plus de 2). Si l&apos;organisme ne peut pas
+            tenir la nouvelle date, le présent alinéa s&apos;applique de nouveau, sans prolonger le
+            délai de 6 mois. À la place d&apos;un remboursement, le client peut choisir, par écrit
+            et jamais par son silence, un bon d&apos;achat (avoir) du montant des sommes qu&apos;il
+            a lui-même versées, valable 12 mois et utilisable sur toute prestation de
+            l&apos;organisme ; la part non utilisée à l&apos;expiration lui est remboursée dans les
+            30 jours, et la personne morale non professionnelle qui le choisit renonce à
+            l&apos;indemnité ci-dessous. Lorsque le client choisit le bon d&apos;achat, les sommes
+            réglées par un tiers pour son compte en sont exclues et sont remboursées à ce tiers ; à
+            défaut, elles sont reportées sur la date retenue comme les autres sommes. Ce report
+            n&apos;est pas une annulation par le client. Le remboursement n&apos;intervient
+            qu&apos;en dernier recours : si aucune date n&apos;a pu être convenue dans les 6 mois et
+            que le client n&apos;a pas choisi le bon d&apos;achat, ou si l&apos;organisme ne lui
+            propose pas, dans le délai de 30 jours, au moins 2 dates répondant aux conditions
+            ci-dessus, l&apos;organisme rembourse au client, dans les 30 jours, les sommes versées
+            pour l&apos;action concernée. Pour la seule personne morale non professionnelle, et hors
+            force majeure et faute du client, il lui verse en outre une indemnité d&apos;un montant
+            égal à l&apos;acompte, sans préjudice de la réparation du préjudice qu&apos;elle prouve,
+            sur laquelle cette indemnité s&apos;impute. Sauf faute lourde ou dolosive, le client
+            professionnel ne reçoit jamais d&apos;indemnité en plus. Les sommes suivantes sont dues
+            ; l&apos;acompte versé s&apos;impute sur elles et, sauf dans les cas prévus au dernier
             alinéa, n&apos;est pas restitué ; la somme due ne dépasse pas le prix HT :
           </Text>
           <Text style={local.listItem}>
@@ -511,10 +543,10 @@ export function ConventionPdf({
             travail). En cas d&apos;annulation par le client, la facture d&apos;acompte est annulée
             par avoir et son montant porté sur la facture de dédit. La taxe sur la valeur ajoutée
             s&apos;applique à ces sommes comme au prix, sans exonération. L&apos;acompte n&apos;est
-            pas acquis si l&apos;annulation résulte d&apos;un manquement ou d&apos;une annulation de
-            l&apos;organisme, d&apos;un cas de force majeure, de l&apos;exercice d&apos;un droit de
-            rétractation légal, ou de tout autre cas prévu à l&apos;article 6.5 des conditions
-            générales de vente.
+            pas acquis si l&apos;annulation résulte d&apos;un manquement ou d&apos;un report à
+            l&apos;initiative de l&apos;organisme, d&apos;un cas de force majeure, de
+            l&apos;exercice d&apos;un droit de rétractation légal, ou de tout autre cas prévu à
+            l&apos;article 6.5 des conditions générales de vente.
             {data.conditionSuspensiveOpco && data.certificationObtenue === true
               ? " La défaillance de la condition suspensive de l'article 5 bis rend la présente convention caduque ; les sommes versées sont alors restituées."
               : ""}
@@ -589,7 +621,12 @@ export function ConventionPdf({
               d&apos;exécution prévues aux conditions générales de vente, et sauf lorsque la
               réduction, la caducité ou le non-paiement résulte d&apos;un manquement de
               l&apos;organisme à ses propres obligations (inexécution de tout ou partie de
-              l&apos;action, défaut des justificatifs de réalisation qui lui incombent).
+              l&apos;action, défaut des justificatifs de réalisation qui lui incombent) ou d&apos;un
+              report à l&apos;initiative de l&apos;organisme (article 46.4 des conditions générales
+              de vente). En cas de report, si le financeur ne maintient pas sa prise en charge pour
+              la date retenue, ce refus ne compte pas : le financeur et l&apos;organisme proposent
+              d&apos;autres dates couvertes et, à défaut dans les 6 mois, le remboursement prévu à
+              l&apos;article 4 s&apos;applique.
             </Text>
           ) : null}
         </SectionCarte>
@@ -641,13 +678,19 @@ export function ConventionPdf({
             participants. Sa responsabilité éventuelle est limitée au montant hors taxes
             effectivement réglé au titre de la présente convention, à l&apos;exclusion des dommages
             indirects tels que perte d&apos;exploitation, de clientèle ou de chiffre
-            d&apos;affaires.
+            d&apos;affaires. Cette limitation ne s&apos;applique ni en cas de faute lourde ou
+            dolosive, ni à la personne morale non professionnelle (article 53.3 des conditions
+            générales de vente), ni aux sommes à restituer et à l&apos;indemnité prévues à
+            l&apos;article 4.
           </Text>
           <Text style={stylesPiece.paragraphe}>
             Aucune des parties ne peut être tenue responsable d&apos;un manquement résultant
             d&apos;un cas de force majeure au sens de l&apos;article 1218 du Code civil. La partie
-            empêchée en informe l&apos;autre sans délai ; l&apos;action est alors reportée à une
-            date convenue entre les parties.
+            empêchée en informe l&apos;autre sans délai. Si l&apos;empêchement est celui du client,
+            l&apos;action est reportée à une date convenue entre les parties. Si l&apos;empêchement
+            est celui de l&apos;organisme, l&apos;action est reportée dans les conditions de
+            l&apos;article 4 (article 46.4 des conditions générales de vente), sans indemnité au
+            titre de la force majeure.
           </Text>
         </SectionCarte>
 

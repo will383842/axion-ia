@@ -96,6 +96,13 @@ interface Payload {
   /** Commission facturée avec reprise : lignes « avoir imputé » et somme réellement virée. */
   avoirs?: string[];
   sommeVirement?: string;
+  /** Régime de TVA de la pièce (figé à son émission) : dit si la somme virée est « TVA comprise ». */
+  regimeTva?: "assujetti" | "franchise_293b";
+  /** Changement de régime de TVA : régime, n° de TVA, date d'effet en clair, variante annulation. */
+  regime?: string;
+  numeroTva?: string;
+  effetAu?: string;
+  annule?: boolean;
   /** Relevé : compensation intégrale par les reprises (art. 12.4), rien à virer. */
   compense?: boolean;
   numeroAutofacture?: string;
@@ -171,7 +178,7 @@ export const COPY_DEMARRAGE = {
     parrainage: (pct: string, mois: number) =>
       `Parrainage : si vous présentez une personne qui devient elle-même apporteur, vous touchez ${pct} des commissions nées de ses commandes signées pendant les ${mois} mois qui suivent la signature de son contrat par Axion-IA.`,
     paiement:
-      "Elle vous est versée dès que la prestation est réalisée et que le client l'a entièrement payée : nous établissons votre facture pour vous, puis nous faisons le virement.",
+      "Elle vous est due dès que le client a payé l'intégralité de sa commande, même si la prestation n'est pas encore livrée : nous établissons votre facture pour vous, puis nous faisons le virement au plus tard 30 jours après ce paiement.",
     fiche:
       "Votre contrat signé des deux parties est en pièce jointe. La fiche « Comment ça marche » est à garder sous la main : ",
     ficheLien: "la fiche en PDF",
@@ -323,11 +330,11 @@ export const COPY_DEMARRAGE = {
       e ? `Bonne nouvelle : ${e} a signé` : "Bonne nouvelle : une commande signée",
     title: "Une commande vient d'être signée",
     preview:
-      "Votre commission sera versée dès que la prestation sera réalisée et entièrement payée.",
+      "Votre commission vous sera due dès que le client aura payé l'intégralité de sa commande.",
     texte: (e: string) =>
       `${e || "Une entreprise que vous nous avez présentée"} vient de signer une commande avec Axion-IA. Merci pour cette mise en relation.`,
     suite:
-      "Votre commission vous sera versée dès que la prestation sera réalisée et que le client l'aura entièrement payée ; nous établissons alors votre facture en votre nom et nous vous l'envoyons par e-mail.",
+      "Votre commission vous sera due dès que le client aura payé l'intégralité de sa commande, même si la prestation n'est pas encore livrée ; nous établissons alors votre facture en votre nom et nous vous l'envoyons par e-mail, puis nous faisons le virement au plus tard 30 jours après ce paiement.",
   },
   releve: {
     subject: "Votre commission est facturée",
@@ -336,7 +343,13 @@ export const COPY_DEMARRAGE = {
     texte: (montant: string) =>
       `Votre commission de ${montant || "la somme indiquée en pièce jointe"} hors taxes est facturée en votre nom et pour votre compte : la facture est jointe à ce message. Nous nous efforçons de vous verser cette commission sous deux jours ouvrés.`,
     echeance: (d: string) => (d ? `Échéance de paiement : ${d}.` : ""),
-    somme: (s: string) => `Somme virée : ${s}.`,
+    // Régime de TVA de la pièce (champ facultatif : absent = texte d'avant).
+    somme: (s: string, regime?: string) =>
+      regime === "assujetti"
+        ? `Somme virée : ${s}, TVA comprise.`
+        : regime === "franchise_293b"
+          ? `Somme virée : ${s} (TVA non applicable, article 293 B du CGI).`
+          : `Somme virée : ${s}.`,
     compense: (montant: string) =>
       `Votre commission de ${montant || "la somme indiquée en pièce jointe"} hors taxes est facturée en votre nom et pour votre compte : la facture est jointe à ce message. Les reprises en cours sur votre compte (article 4.5) s'imputent sur cette commission par compensation (article 12.4 de votre contrat) : l'avoir correspondant est joint.`,
     net: "Net : 0,00 €, rien à virer. Le solde des reprises qui n'ont pas encore été imputées s'imputera sur vos prochaines commissions.",
@@ -387,6 +400,28 @@ export const COPY_DEMARRAGE = {
       "Elle vous reste attachée. Nous vous écrirons dès l'issue de la contestation : la commission sera alors versée, ou ajustée selon le prix finalement conservé.",
     levee:
       "La contestation du client est close : votre commission reprend son cours. Elle vous sera facturée et versée dans les conditions habituelles ; si le prix conservé a changé, le décompte vous l'indiquera.",
+  },
+  regimeTva: {
+    // Contrat 2.8, art. 4.7 et 6.3 : l'apporteur est prévenu du changement de son régime de TVA.
+    // ⛔ Aucun montant (la commission reste hors taxes) ; jamais de « débits » ; pas de gabaritRepli.
+    subject: "Votre régime de TVA est mis à jour",
+    subjectAnnule: "Votre changement de régime de TVA est annulé",
+    title: "Régime de TVA mis à jour",
+    titleAnnule: "Changement de régime annulé",
+    preview: "Votre nouveau régime s'applique aux autofactures établies à partir de cette date.",
+    // Chaque morceau est facultatif : une valeur absente ne laisse jamais de virgule ni d'espace orphelin.
+    texte: (regime: string, numero: string, effet: string) => {
+      const quand = effet ? `à compter du ${effet}, ` : "";
+      const detail =
+        regime === "assujetti"
+          ? `${quand}vous facturez la TVA${numero ? ` (n° ${numero})` : ""}`
+          : regime === "franchise_293b"
+            ? `${quand}vous ne facturez pas la TVA (franchise en base, article 293 B du CGI)`
+            : "";
+      return `Nous avons enregistré votre changement de régime de TVA${detail ? ` : ${detail}` : ""}. Il s'applique aux autofactures établies à partir de cette date (article 4.7 de votre contrat). Les factures déjà émises ne sont pas modifiées. Si ce changement est inexact, répondez à ce message (article 6.3).`;
+    },
+    annule: (effet: string) =>
+      `Le changement de régime de TVA prévu${effet ? ` à compter du ${effet}` : ""} est annulé : votre régime actuel reste inchangé. Si vous ne l'attendiez pas, répondez à ce message.`,
   },
   commissionAvoirClient: {
     // Art. 4.5 : la facture du client a été annulée par un avoir ALORS QUE la commission était
@@ -947,7 +982,7 @@ export function ApporteurReleveEmail({ locale, payload }: Props) {
         <Text style={emailStyles.paragraphStyle}>{t.net}</Text>
       ) : texteOuNull(p.sommeVirement) ? (
         <Text style={emailStyles.paragraphStyle}>
-          {t.somme(texteOuNull(p.sommeVirement) ?? "")}
+          {t.somme(texteOuNull(p.sommeVirement) ?? "", texteOuNull(p.regimeTva) ?? undefined)}
         </Text>
       ) : null}
       {texteOuNull(p.echeance) ? (
@@ -1060,6 +1095,45 @@ export function ApporteurCommissionSuspensionEmail({ locale, payload }: Props) {
       <Text style={emailStyles.paragraphStyle}>{bonjour(prenomDe(p))}</Text>
       <Text style={emailStyles.paragraphStyle}>{levee ? t.levee : t.suspendue}</Text>
       {levee ? null : <Text style={emailStyles.paragraphStyle}>{t.suspendueSuite}</Text>}
+    </EmailLayout>
+  );
+}
+
+// ── Changement de régime de TVA (contrat 2.8, art. 4.7 et 6.3) ───────────
+
+export const apporteurRegimeTvaSubject = (
+  _locale: Locale,
+  payload?: Record<string, unknown>,
+): string =>
+  (payload as Payload | undefined)?.annule
+    ? COPY_DEMARRAGE.regimeTva.subjectAnnule
+    : COPY_DEMARRAGE.regimeTva.subject;
+
+export function ApporteurRegimeTvaEmail({ locale, payload }: Props) {
+  const p = payload as Payload;
+  const t = COPY_DEMARRAGE.regimeTva;
+  const annule = p.annule === true;
+  return (
+    <EmailLayout
+      famille="B"
+      preview={annule ? t.subjectAnnule : t.preview}
+      title={annule ? t.titleAnnule : t.title}
+      locale={locale === "fr" ? "fr" : "en"}
+      sansReseauxSociaux
+      signature="fondateur-court"
+    >
+      {/* Salutation ET information sur la même ligne (aperçu de la boîte de réception, §3.6). */}
+      <Text style={emailStyles.paragraphStyle}>
+        {`${bonjour(prenomDe(p))} ${
+          annule
+            ? t.annule(texteOuNull(p.effetAu) ?? "")
+            : t.texte(
+                texteOuNull(p.regime) ?? "",
+                texteOuNull(p.numeroTva) ?? "",
+                texteOuNull(p.effetAu) ?? "",
+              )
+        }`}
+      </Text>
     </EmailLayout>
   );
 }

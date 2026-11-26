@@ -27,7 +27,8 @@ import { prisma } from "@/lib/prisma";
 import { existsInR2 } from "@/lib/r2-storage";
 import { enqueueEmail } from "@/server/queue/queues";
 
-import { dateFr } from "./autofacture-donnees";
+import { dateFr, jourParis, totalTtcPieceCents } from "./autofacture-donnees";
+import { figerPiece, piecesFigees, piecesFigeesDisponible, regimeApplicableAu } from "./tva-pieces";
 import {
   ACTIVITE_NEUTRALISATION,
   allouerNumerosAutofacture,
@@ -103,6 +104,15 @@ export async function retenir(
   periodeLibelle = `annulation pour manquement au ${dateFr(maintenant)} (art. 4.5 bis)`,
 ): Promise<{ ok: boolean; avoir?: Piece; avertissement?: string; numero?: string }> {
   const montant = l.montantCents ?? 0;
+  // L'avoir de neutralisation prend le régime de l'AUTOFACTURE qu'il rectifie (figé sur sa pièce),
+  // jamais celui de la fiche : un apporteur passé en franchise depuis garde un avoir AVEC TVA.
+  const figerAvoir = await piecesFigeesDisponible();
+  const pieceOrigine = l.autofactureNumero
+    ? (await piecesFigees([l.autofactureNumero])).get(l.autofactureNumero)
+    : undefined;
+  const regimeAvoir = pieceOrigine
+    ? { regimeTva: pieceOrigine.regimeTva, numeroTva: pieceOrigine.numeroTva }
+    : await regimeApplicableAu(l.apporteurId, jourParis(maintenant));
   // Relecture de a1 (09/10) : le numéro de l'avoir est pris DANS la transaction gagnante, après le
   // verrou de la série et la prise de la ligne — un passage concurrent perdant n'en réserve aucun.
   let numeroAvoir: string | undefined;
@@ -135,6 +145,21 @@ export async function retenir(
       },
       select: { id: true },
     });
+    if (figerAvoir && regimeAvoir.regimeTva) {
+      const ttc = totalTtcPieceCents(regimeAvoir.regimeTva, [Math.abs(montant)]);
+      await figerPiece(tx, {
+        numero: numeroAvoir!,
+        apporteurId: l.apporteurId,
+        genre: "avoir",
+        regimeTva: regimeAvoir.regimeTva,
+        numeroTva: regimeAvoir.numeroTva,
+        totalHtCents: Math.abs(montant),
+        totalTvaCents: ttc - Math.abs(montant),
+        totalTtcCents: ttc,
+        factureRectifiee: l.autofactureNumero,
+        emiseAt: maintenant,
+      });
+    }
     return rep.id;
   });
   if (!repriseId) return { ok: false };
@@ -146,6 +171,7 @@ export async function retenir(
     commissionIds: [repriseId],
     totalCents: montant,
     maintenant,
+    regime: regimeAvoir,
     avoir: {
       factureInitiale: l.autofactureNumero ?? "non retrouvée",
       dateFactureInitiale: l.autofactureEmiseAt ? dateFr(l.autofactureEmiseAt) : null,

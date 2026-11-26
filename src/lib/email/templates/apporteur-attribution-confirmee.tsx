@@ -64,7 +64,7 @@ export const COPY_ATTRIBUTION = {
   motifParDefaut: "Un échange est en cours avec elle",
   fin: (d: string) => (d ? `Fin de la protection : ${d}.` : ""),
   commission:
-    "Une attribution ne fait naître aucune commission par elle-même : la commission naît d'une commande de l'entreprise, une fois la prestation réalisée et entièrement payée.",
+    "Une attribution ne fait naître aucune commission par elle-même : la commission naît d'une commande de l'entreprise, une fois la commande entièrement payée.",
   bonjour: (n: string) => (n ? `Bonjour ${n},` : "Bonjour,"),
 } as const;
 

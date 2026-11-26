@@ -136,6 +136,11 @@ function mapCalendlyStatus(
   return null;
 }
 
+interface OptionsEnrich extends OptionsNotifier {
+  /** L'annulation vient d'être faite par la page `/appel/annuler` (lien de la personne). */
+  readonly annuleDepuisLeSite?: boolean;
+}
+
 /**
  * Enrichit une ligne `calendly_events` à partir de ses URI stockées.
  *
@@ -145,7 +150,7 @@ function mapCalendlyStatus(
  */
 export async function enrichCalendlyEvent(
   eventId: string,
-  options: OptionsNotifier = {},
+  options: OptionsEnrich = {},
 ): Promise<EnrichOutcome> {
   if (!isCalendlyApiConfigured()) return { ok: false, reason: "not_configured" };
 
@@ -703,6 +708,7 @@ export async function enrichCalendlyEvent(
               ...(annulation?.reason ? { reason: annulation.reason } : {}),
               ...(annulation?.canceledBy ? { canceledBy: annulation.canceledBy } : {}),
               ...(annulation?.cancelerType ? { cancelerType: annulation.cancelerType } : {}),
+              ...(options.annuleDepuisLeSite ? { annuleDepuisLeSite: true } : {}),
               ...(inviteeName ? { inviteeName } : {}),
               ...(eventName ? { eventName } : {}),
               ...(telephone ? { inviteePhone: telephone } : {}),

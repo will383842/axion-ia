@@ -129,8 +129,10 @@ const EMPREINTES: Readonly<
     // v11 — 26/11/2026 : la personne morale non professionnelle perd aussi l'acompte (§ 4), avec
     // clause réciproque (acompte rendu + indemnité égale si l'organisme annule hors force majeure) ;
     // v10 archivée.
-    sha: "9b488cde5e153ef659fc657094633c106f624db94542b2d78ca540ac228506d3",
-    version: 11,
+    // v12 — 26/11/2026 : l'organisme REPORTE au lieu d'annuler (2 dates sous 3 mois, sans frais,
+    // acompte reporté ; CGV 46.4) ; v11 archivée.
+    sha: "ff4ae3be526a35f5360e37178656d29914ac5f8fd07050ceac3e4e099e4c3205",
+    version: 12,
   },
   convention_tripartite: {
     // v7 — 18/11/2026 : refonte au style de la charte 2027, texte inchangé ; v6 archivée.
@@ -138,8 +140,9 @@ const EMPREINTES: Readonly<
     // v8 — 26/11/2026 : même règle de l'acompte acquis (§ 4), mot pour mot ; v7 archivée.
     // v9 — 26/11/2026 : même règle de l'acompte et même clause réciproque (§ 4), mot pour mot ;
     // v8 archivée.
-    sha: "26d2884bfe5c2ec104e5fb4101f1e91caea84f7cafd48f7bc955016cf144f9cb",
-    version: 9,
+    // v10 — 26/11/2026 : même règle de report sans frais (§ 4), mot pour mot ; v9 archivée.
+    sha: "8c1f63fab6ba031dd249a8837d34f927844c80c733b94c35687464a36408d15f",
+    version: 10,
   },
   contrat_formation: {
     // v3 — 18/11/2026 : refonte au style de la charte 2027, texte inchangé ; v2 archivée.
@@ -369,6 +372,10 @@ const EMPREINTES_ARCHIVES: Readonly<Record<string, string>> = {
   // 26/11/2026 : copies conformes des gabarits courants d'avant la réciprocité non-professionnel
   // (mention légale figée dans le fichier).
   "convention.v10.tsx": "58b6650ec812c0d8b6a2698fce9be4d4b889bef691ac8eba5bb3b6292ab0a903",
+  // 26/11/2026 : copies conformes des gabarits courants d'avant le report à l'initiative d'Axion-IA.
+  "convention.v11.tsx": "5bddc2825d427a17a5173504889e6a0ea6f983f99d1730934a07242b7b713526",
+  "convention-tripartite.v9.tsx":
+    "434bb7584074d52abb58151cc783fbcd9a6b58ddf3efdc8d690ccefbbc45ef21",
   "convention-tripartite.v8.tsx":
     "d972d3180bbcea219ae21c3aebb3398486a333e185c02eea2d621a5d06445081",
   "convention-tripartite.v7.tsx":

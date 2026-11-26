@@ -1,0 +1,730 @@
+/**
+ * ⛔ GABARIT ARCHIVÉ — `convention` version 11. NE JAMAIS MODIFIER.
+ *
+ * Copie conforme de `templates/convention.tsx` tel qu'il était sur `main` le 2026-11-26, avant la
+ * v12 (report sans frais à l'initiative d'Axion-IA : 2 nouvelles dates sous 3 mois).
+ *
+ * Seule différence : la mention légale est FIGÉE dans ce fichier, et non plus
+ * lue dans le module vivant `legal-mentions.ts`.
+ *
+ * Il ne sert qu'à RE-RENDRE l'exemplaire signé des pièces signées sous cette
+ * version (`exemplaire-signe.ts`, via `./index.ts`). Toute nouvelle pièce est
+ * produite par le gabarit courant. Son texte est verrouillé par
+ * `gabarit-empreinte.spec.ts`.
+ */
+
+/**
+ * Qualiopi — Convention de formation professionnelle (personnes morales).
+ *
+ * Conforme aux articles L.6353-1 et D.6353-1 du Code du travail (L.6353-2, abrogé
+ * depuis le 01/01/2019, était cité jusqu'à la v2 — archivée dans `archives/`).
+ * Rendu serveur exclusif — NE PAS "use client".
+ */
+
+import type { LIBELLE_MODALITE_HYBRIDE } from "@/server/qualiopi/documents/libelles-enumerations";
+import React from "react";
+import { Document, View, Text } from "@react-pdf/renderer";
+import {
+  SignatureZone,
+  assainirEspacesPdf,
+  type PreuvesParPartie,
+} from "@/server/qualiopi/documents/base-layout";
+import { BlocSignature, EncadreDoux, PageCharte } from "@/server/qualiopi/documents/charte/v1";
+import {
+  Champ,
+  ChampListe,
+  ChampNda,
+  SectionCarte,
+  stylesPiece,
+  tauxFr,
+} from "@/server/qualiopi/documents/templates/pieces-charte";
+import { ACOMPTE_DEFAUT_PERCENT } from "@/server/qualiopi/documents/acompte-defaut";
+import { TEXTE_GARANTIE_JOURNEE_IA } from "@/server/qualiopi/devis/assistant/textes-rubriques";
+import type { OrganismeIdentite } from "@/server/qualiopi/documents/organisme";
+import {
+  libelleSeuilClause,
+  type ParametresClauseConditionSuspensiveOpco,
+} from "@/server/qualiopi/financements/condition-suspensive";
+
+// ============================================================
+// Types
+// ============================================================
+
+export interface ConventionData {
+  numero: string;
+  estCopie?: boolean;
+  /** Injecte par `generateDocument` quand l'identite de l'OF est incomplete. */
+  estSpecimen?: boolean;
+  specimenMotif?: string;
+  // Partie cliente
+  client: {
+    raisonSociale: string;
+    siret: string;
+    adresse: string;
+    contact: string;
+  };
+  // Objet de la formation
+  intitule: string;
+  objectifs: string[];
+  publicVise: string;
+  dureeHeures: number;
+  dateDebut: string;
+  dateFin: string;
+  modalite: "Présentiel" | "Distanciel" | typeof LIBELLE_MODALITE_HYBRIDE;
+  lieu: string;
+  effectif: number;
+  /**
+   * Lot 1ter §6 — les stagiaires NOMMÉS, déjà formatés par
+   * `documents/stagiaires-nommes.ts`. Vide ⇒ `stagiairesADesigner` est rendu.
+   */
+  stagiairesNommes?: readonly string[];
+  /** Phrase de substitution quand aucun stagiaire n'est inscrit. */
+  stagiairesADesigner?: string | null;
+  /** Mention d'écart entre l'effectif PRÉVU et les inscrits nommés. */
+  ecartEffectif?: string | null;
+  /**
+   * Photo du réglage « certification Qualiopi obtenue » prise à la GÉNÉRATION
+   * (`isQualiopiCertificationObtenue()`). Absent = faux. Seul `true` fait imprimer la clause
+   * financeur (§ 5, 2e paragraphe), la clause « 5 bis » et la ligne « Certification Qualiopi » :
+   * avant la certification, la pièce n'affirme rien de tout cela. Le texte de ces clauses est
+   * GARDÉ ici, mot pour mot, pour le jour de la certification.
+   */
+  certificationObtenue?: boolean;
+  /**
+   * Journée IA : garantie de remboursement (CGV art. 47.10) imprimée en § 3. Photo de
+   * `Devis.journeeIa` du devis de la session, prise à la GÉNÉRATION ; absent = faux. Une
+   * convention déjà signée garde son instantané : elle ne change pas.
+   */
+  journeeIa?: boolean;
+  // Conditions financières
+  prixHt: number;
+  acomptePercent?: number;
+  /**
+   * Moyens pédagogiques et techniques mobilisés — mention du contenu de la
+   * convention (article D.6353-1 du Code du travail), absente jusqu'ici de la convention. Repli sur
+   * une formule décrivant le dispositif réel de la plateforme.
+   */
+  moyensPedagogiques?: string;
+  /**
+   * Modalités de suivi de l'exécution et d'appréciation des résultats — même
+   * exigence, même article. Repli sur le dispositif réel.
+   */
+  modalitesEvaluation?: string;
+  /** Sanction de la formation. Repli : attestation (dernier alinéa de L.6313-7). */
+  sanction?: string;
+  // Dates convention
+  dateConvention: string;
+  /**
+   * Preuves de signature RÉELLEMENT apposées, par partie.
+   *
+   * 🔴 ABSENTES = cadres vides à remplir au stylo, comportement historique
+   * INCHANGÉ. Le circuit papier reste un chemin de plein droit.
+   *
+   * Renseignées, `SignatureZone` rend le tracé, l'horodatage et l'empreinte.
+   * Sans ce branchement, la preuve n'existait QU'en base : le signataire signait
+   * et la pièce qu'on lui remettait affichait encore des cadres vides.
+   */
+  signatures?: PreuvesParPartie;
+  /**
+   * INT-T65-A — paramètres de la clause de condition suspensive OPCO, posés
+   * quand la case a été cochée à la génération. Absent ou `null` : aucune
+   * clause, et le texte imprimé est celui de la v4 (cf. `gabarit-versions.ts`).
+   */
+  conditionSuspensiveOpco?: ParametresClauseConditionSuspensiveOpco | null;
+}
+
+// ============================================================
+// Styles locaux
+// ============================================================
+
+const local = {
+  annexeList: { marginTop: 4 },
+  annexeItem: stylesPiece.annexe,
+  listItem: stylesPiece.puce,
+  amountRow: stylesPiece.ligneMontant,
+  amountLabel: stylesPiece.libelleMontant,
+  amountValue: stylesPiece.valeurMontant,
+  subrogationNote: stylesPiece.note,
+};
+
+// ============================================================
+// Helpers
+// ============================================================
+
+// 🔴 Correctif glyphes 2026-07-26. `Intl` fr-FR emet U+202F (fine insecable)
+// comme separateur de milliers ; aucune police du projet ne possede ce glyphe,
+// @react-pdf bascule sur Helvetica/WinAnsi et ecrit l'octet 0x2F, soit « / ».
+// Tout montant >= 1 000 EUR sortait donc « 1/440,00 € ». Detail mesure dans
+// `assainirEspacesPdf` (base-layout.tsx). Ce duplicat local echappait au
+// correctif du helper partage : il doit assainir lui aussi.
+function formatEur(montant: number): string {
+  return assainirEspacesPdf(
+    new Intl.NumberFormat("fr-FR", {
+      style: "currency",
+      currency: "EUR",
+      minimumFractionDigits: 2,
+    }).format(montant),
+  );
+}
+
+// ============================================================
+// INT-T65-A — clause de condition suspensive OPCO
+// ============================================================
+
+/**
+ * 🔴 TEXTE DE LA JURISTE (A07), MOT POUR MOT — validé par Williams le
+ * 2026-10-04 à 09h19 UTC, « clause validée, on garde le point 5 »
+ * (axion-apporteurs#656, commentaire 5978462914). Il ne se reformule PAS ici :
+ * `condition-suspensive-opco-clause.spec.tsx` compare chaque caractère, et la
+ * jumelle de cette fonction, dans l'autre convention, porte le même texte
+ * (`les-deux-conventions-portent-le-meme-socle.spec.ts`).
+ *
+ * Imprimée SEULEMENT si la case a été cochée à la génération. Ses trois
+ * paramètres sont posés par la convention ; aucun nombre n'est écrit dans le
+ * texte : `{opco}` (libellé de l'OPCO du client), `{dateLimite}` (jour civil de
+ * Paris, jj/mm/aaaa) et `{seuil}` (« 50 % du prix hors taxes de la
+ * présente convention », ou un montant en euros, centimes entiers).
+ */
+function ClauseConditionSuspensiveOpco({
+  p,
+}: {
+  p: ParametresClauseConditionSuspensiveOpco;
+}): React.ReactElement {
+  const opco = p.opco;
+  const dateLimite = p.dateLimite;
+  const seuil = libelleSeuilClause(p.seuil);
+  const gras = { fontWeight: "bold" as const };
+  return (
+    <SectionCarte title="5 bis. Condition suspensive de prise en charge par l'opérateur de compétences">
+      <Text style={stylesPiece.paragraphe}>
+        <Text style={gras}>{"1. La condition."}</Text>
+        {` La présente convention est conclue sous la condition suspensive que l'opérateur de compétences du Client, ${opco}, accorde par écrit, au plus tard le ${dateLimite}, une prise en charge de l'action au moins égale à ${seuil}.`}
+      </Text>
+      <Text style={stylesPiece.paragraphe}>
+        <Text style={gras}>{"2. Les diligences."}</Text>
+        {
+          " Le Client dépose sa demande de prise en charge auprès de son opérateur de compétences dans les délais et selon les modalités fixés par celui-ci ; Axion-IA lui remet sans délai les pièces nécessaires. La condition est réputée accomplie si le Client en a empêché l'accomplissement (article 1304-3 du code civil)."
+        }
+      </Text>
+      <Text style={stylesPiece.paragraphe}>
+        <Text style={gras}>{"3. L'accomplissement."}</Text>
+        {
+          " Si l'accord écrit est obtenu dans le délai, la condition est accomplie et la convention produit ses effets "
+        }
+        <Text style={gras}>{"à compter de sa date de signature"}</Text>
+        {
+          " (article 1304-6 du code civil). La part du prix non prise en charge reste due par le Client, dans les conditions des conditions générales de vente."
+        }
+      </Text>
+      <Text style={stylesPiece.paragraphe}>
+        <Text style={gras}>{"4. La renonciation."}</Text>
+        {
+          " La condition est stipulée dans l'intérêt exclusif du Client. Il peut y renoncer par écrit tant qu'elle n'est ni accomplie ni défaillie (article 1304-4 du code civil) : la convention produit alors ses effets à compter de sa date de signature, et le prix est dû dans les conditions des conditions générales de vente."
+        }
+      </Text>
+      <Text style={stylesPiece.paragraphe}>
+        <Text style={gras}>{"5. La défaillance."}</Text>
+        {` À défaut d'accord écrit au moins égal à ${seuil} au ${dateLimite}, ou en cas de refus ou d'accord inférieur notifié avant cette date, la condition défaille : la convention est caduque de plein droit et réputée n'avoir jamais existé. Aucune somme n'est due par le Client et les sommes versées lui sont restituées. Aucune action n'est exécutée avant l'accomplissement de la condition ou la renonciation du Client.`}
+      </Text>
+      <Text style={stylesPiece.paragraphe}>
+        <Text style={gras}>{"6. Après la défaillance."}</Text>
+        {
+          " Un accord de prise en charge obtenu après la défaillance ne fait pas revivre la présente convention. Les parties peuvent conclure une nouvelle convention, qui prend effet à sa propre date de signature."
+        }
+      </Text>
+      <Text style={stylesPiece.paragraphe}>
+        <Text style={gras}>{"7. Champ de la clause."}</Text>
+        {
+          " La présente clause ne s'applique que si elle figure à la convention. À défaut, la prise en charge par l'opérateur de compétences ne conditionne pas la convention, et elle est régie par les conditions générales de vente."
+        }
+      </Text>
+    </SectionCarte>
+  );
+}
+
+// ============================================================
+// Composant
+// ============================================================
+
+export function ConventionPdf({
+  data,
+  identite: identiteRecue,
+}: {
+  data: ConventionData;
+  identite: OrganismeIdentite;
+}): React.ReactElement {
+  // v8 — le numéro Qualiopi ne s'imprime NULLE PART (ligne « Certification Qualiopi » ni pied de
+  // page de la mise en page commune) tant que la certification n'est pas obtenue : on le vide ici,
+  // en plus du producteur, pour qu'aucun appelant ne puisse le faire passer.
+  const identite =
+    data.certificationObtenue === true ? identiteRecue : { ...identiteRecue, qualiopi: "" };
+  // 🔴 Réconciliation des sources de l'acompte, 2026-07-27.
+  //
+  // L'absence de plafond ici est VOULUE, et c'est la différence de fond avec
+  // `contrat-formation.tsx` : le plafond de 30 % de l'article L.6353-6 protège
+  // une PERSONNE PHYSIQUE qui finance sa propre formation. Une convention
+  // (L.6353-1) lie l'organisme à une personne morale ou à un financeur — aucun
+  // plafond légal ne s'y applique, l'acompte y est purement contractuel.
+  //
+  // Ne PAS « harmoniser » en plafonnant ici : ce serait s'interdire une clause
+  // parfaitement licite entre professionnels, et brouiller la raison d'être du
+  // plafond là où il compte vraiment.
+  //
+  // 🔴 2026-09-05 — le défaut était 30 %, et c'était un usage commercial, pas
+  // une règle de droit. Toute convention générée sans avoir remarqué le champ
+  // (qui se trouvait SOUS le bouton) réclamait donc au client 30 % à la
+  // signature, clause qu'aucune des deux parties n'avait négociée — une fausse
+  // mention dans la pièce qu'il signe, et rien à l'écran ne la signalait.
+  // Le défaut ne réclame plus rien : cf. `acompte-defaut.ts` pour l'arbitrage.
+  const acomptePercent = data.acomptePercent ?? ACOMPTE_DEFAUT_PERCENT;
+  const acompte = (data.prixHt * acomptePercent) / 100;
+  const solde = data.prixHt - acompte;
+
+  return (
+    <Document>
+      <PageCharte
+        docTitle="Convention de formation professionnelle"
+        docNumber={data.numero}
+        identite={identite}
+        {...(data.estCopie ? { estCopie: true as const } : {})}
+        {...(data.estSpecimen ? { estSpecimen: true as const } : {})}
+        {...(data.specimenMotif ? { specimenMotif: data.specimenMotif } : {})}
+      >
+        {/* Mention légale de tête */}
+        <EncadreDoux>
+          {"Établie conformément aux articles L.6353-1 et D.6353-1 du Code du travail."}
+        </EncadreDoux>
+
+        {/* 1. Parties */}
+        <SectionCarte title="1. Parties">
+          <Text style={stylesPiece.sousTitre}>Organisme de formation (prestataire)</Text>
+          <Champ label="Raison sociale" value={identite.raisonSociale} required />
+          <Champ label="SIRET" value={identite.siret} required />
+          <ChampNda nda={identite.nda} />
+          {/*
+            🔴 F29 — la ligne n'apparaît QUE si le numéro existe.
+            Marquée `required`, elle imprimait « Non renseigné » dans le style
+            des champs manquants sur chaque convention, contrat et certificat —
+            c'est-à-dire précisément les pièces qui partent chez le client, chez
+            l'OPCO et chez le certificateur. Attirer l'œil en rouge sur une
+            absence est pire que l'omettre : un organisme non encore certifié
+            n'a simplement pas de numéro Qualiopi à porter, et la ligne n'a
+            aucune raison d'exister. Même traitement que la facture et le devis.
+          */}
+          {identite.qualiopi && data.certificationObtenue === true ? (
+            <Champ label="Certification Qualiopi" value={identite.qualiopi} />
+          ) : null}
+          <Champ label="Siège social" value={identite.adresseSiege} required />
+          <Champ label="Email" value={identite.email || "—"} />
+          <Champ label="Téléphone" value={identite.telephone || "—"} />
+
+          <Text style={[stylesPiece.sousTitre, { marginTop: 8 }]}>Client (commanditaire)</Text>
+          <Champ label="Raison sociale" value={data.client.raisonSociale} />
+          <Champ label="SIRET" value={data.client.siret} />
+          <Champ label="Adresse" value={data.client.adresse} />
+          <Champ label="Contact" value={data.client.contact} />
+        </SectionCarte>
+
+        {/* 2. Objet */}
+        <SectionCarte title="2. Objet de la convention">
+          <Champ label="Intitulé" value={data.intitule} />
+          <ChampListe label="Objectifs" items={data.objectifs} />
+          <Champ label="Public visé" value={data.publicVise} />
+          <Champ
+            label="Durée"
+            value={`${data.dureeHeures} heure${data.dureeHeures > 1 ? "s" : ""}`}
+          />
+          <Champ label="Date de début" value={data.dateDebut} />
+          <Champ label="Date de fin" value={data.dateFin} />
+          <Champ label="Modalité" value={data.modalite} />
+          <Champ label="Lieu" value={data.lieu} />
+          <Champ
+            label="Effectif prévu"
+            value={`${data.effectif} stagiaire${data.effectif > 1 ? "s" : ""}`}
+          />
+          {/*
+            🔴 Lot 1ter §6 — LA CONVENTION NOMME LES STAGIAIRES.
+
+            Vérifié sur pièce réelle : `AXI-DOC-2026-032` portait « Effectif
+            prévu : 1 stagiaire » et ne nommait PERSONNE, alors que Simone Blanc
+            y était inscrite. Ce n'est pas un défaut d'affichage : la même
+            personne doit se retrouver sur l'émargement, l'évaluation et
+            l'attestation. Sans nom ici, la chaîne de preuve démarre dans le
+            flou — et c'est précisément ce rapprochement qu'un auditeur vient
+            faire.
+
+            Et si personne n'est inscrit, la pièce le DIT. Une convention muette
+            sur ce point se lit comme une convention sans stagiaire, ce qui
+            n'existe pas : le silence y est une affirmation fausse.
+          */}
+          <Champ
+            label="Stagiaires"
+            value={
+              data.stagiairesNommes && data.stagiairesNommes.length > 0
+                ? data.stagiairesNommes.join(" · ")
+                : (data.stagiairesADesigner ??
+                  "Stagiaires à désigner par le client — liste nominative annexée avant le démarrage de l'action.")
+            }
+          />
+          {data.ecartEffectif != null && (
+            <Champ label="Écart d'effectif" value={data.ecartEffectif} />
+          )}
+          {/*
+            🔴 Trois mentions du contenu de la convention (D.6353-1), absentes de la
+            convention jusqu'au 2026-08-02 : moyens pédagogiques et techniques,
+            modalités de suivi de l'exécution et d'appréciation des résultats,
+            sanction de la formation. Leur absence rend la convention
+            incomplète au regard du texte qu'elle invoque en tête de page — et
+            c'est exactement ce qu'un instructeur DREETS lit en premier.
+
+            Les replis décrivent le dispositif RÉEL de la plateforme
+            (émargement par demi-journée, positionnement, évaluation des acquis,
+            attestation) : les inventer par session les ferait diverger de ce que
+            le système produit effectivement.
+          */}
+          <Champ
+            label="Moyens pédagogiques et techniques"
+            value={
+              data.moyensPedagogiques ||
+              "Apports méthodologiques, démonstrations et mises en situation ; supports pédagogiques remis à chaque participant ; poste de travail et outils numériques nécessaires à la mise en pratique."
+            }
+          />
+          <Champ
+            label="Suivi de l'exécution et évaluation"
+            value={
+              data.modalitesEvaluation ||
+              "Feuille d'émargement signée par demi-journée en présentiel, relevé de connexion horodaté en distanciel. Questionnaire de positionnement en amont, évaluation des acquis au regard des objectifs en fin d'action, recueil de la satisfaction des participants."
+            }
+          />
+          <Champ
+            label="Sanction de la formation"
+            value={
+              data.sanction ||
+              "Attestation de fin de formation (dernier alinéa de l'article L.6313-7 du Code du travail)."
+            }
+          />
+        </SectionCarte>
+
+        {/* 3. Conditions financières */}
+        <SectionCarte title="3. Conditions financières">
+          <View style={local.amountRow}>
+            <Text style={local.amountLabel}>Prix total HT</Text>
+            <Text style={local.amountValue}>{formatEur(data.prixHt)}</Text>
+          </View>
+          {/*
+            Acompte à 0 : on ne rend PAS « Acompte (0 %) : 0,00 € » — une clause
+            qui annonce un versement nul se lit comme une erreur de génération,
+            et prête à discussion au moment de payer. On écrit ce qui est
+            convenu : la totalité à réception de facture. C'est le cas normal
+            d'une convention régularisée APRÈS la tenue de l'action, où un
+            « acompte à la signature » n'a plus d'objet.
+          */}
+          {acompte > 0 ? (
+            <>
+              <View style={local.amountRow}>
+                <Text style={local.amountLabel}>
+                  Acompte à la signature ({tauxFr(acomptePercent)} %)
+                </Text>
+                <Text style={local.amountValue}>{formatEur(acompte)}</Text>
+              </View>
+              <View style={local.amountRow}>
+                <Text style={local.amountLabel}>Solde à la fin de la formation</Text>
+                <Text style={local.amountValue}>{formatEur(solde)}</Text>
+              </View>
+            </>
+          ) : (
+            <Text style={stylesPiece.paragraphe}>
+              Payable en totalité à réception de facture — aucun acompte à la signature.
+            </Text>
+          )}
+          {/*
+            🔴 F25 — la mention TVA vient du régime CONFIGURÉ, jamais d'une
+            constante. L'exonération 261-4-4° était imprimée en dur alors que
+            `regime_tva` vaut « assujetti » : on annonçait une exonération non
+            détenue sur une pièce contractuelle et sur les kits financeurs.
+            `null` en régime assujetti → aucun bloc, ce qui est correct.
+          */}
+          {identite.mentionTvaRegime ? (
+            <Text style={stylesPiece.mention}>{identite.mentionTvaRegime}</Text>
+          ) : (
+            /* En régime assujetti, aucune mention n'était portée : le client
+               découvrait la TVA sur la facture. On dit que les prix sont HT. */
+            <Text style={stylesPiece.mention}>
+              Prix exprimés hors taxes. La taxe sur la valeur ajoutée au taux en vigueur au jour de
+              la facturation s&apos;y ajoute.
+            </Text>
+          )}
+          <Text style={stylesPiece.mention}>
+            Règlement à trente (30) jours à compter de la date d&apos;émission de la facture. Tout
+            retard de paiement entraîne de plein droit des pénalités au taux directeur de la Banque
+            centrale européenne majoré de 10 points, ainsi qu&apos;une indemnité forfaitaire de
+            recouvrement de 40 € (articles L.441-10 et D.441-5 du Code de commerce).
+          </Text>
+          {data.journeeIa === true ? (
+            <Text style={stylesPiece.paragraphe}>{TEXTE_GARANTIE_JOURNEE_IA}</Text>
+          ) : null}
+        </SectionCarte>
+
+        {/* 4. Conditions d'annulation */}
+        <SectionCarte title="4. Conditions d'annulation et acompte">
+          {/*
+            🔴 26/11/2026 — décision du dirigeant : dès qu'un acompte est versé, il reste acquis si le client annule, SANS condition de délai ; la personne morale non professionnelle (CGV 53.3) est traitée comme le client professionnel, avec la clause RÉCIPROQUE (R.212-2 2° (applicable aux non-professionnels par R.212-5) du code de la consommation : annulation par l'organisme hors force majeure → acompte rendu + indemnité égale). L'ancienne ligne « Annulation à plus de
+            15 jours ouvrés avant le début : 0 % » (acomptes remboursés) est supprimée. Les
+            montants dus au-delà de l'acompte (50 % / 100 %) sont inchangés mais ne sont jamais
+            inférieurs à l'acompte versé. TVA : aucune exonération.
+          */}
+          <Text style={stylesPiece.paragraphe}>
+            En cas de désistement du client, l&apos;acompte prévu au devis ou à la présente
+            convention, dès qu&apos;il a été versé, reste acquis à l&apos;organisme, quel que soit
+            le délai d&apos;annulation. Il est conservé à titre de dédit et d&apos;indemnité
+            (article 1231-5 du Code civil, qui laisse au juge la faculté de modérer une pénalité
+            manifestement excessive). Cette règle vise le client professionnel et la personne morale
+            non professionnelle (articles 6.5 et 53.3 des conditions générales de vente). Si
+            l&apos;organisme annule la prestation, hors force majeure et hors faute du client, et
+            que la personne morale non professionnelle n&apos;accepte pas le report proposé, il
+            rembourse à la personne morale non professionnelle l&apos;acompte versé et lui verse une
+            indemnité d&apos;un montant égal à cet acompte. Les sommes suivantes sont dues ;
+            l&apos;acompte versé s&apos;impute sur elles et, sauf dans les cas prévus au dernier
+            alinéa, n&apos;est pas restitué ; la somme due ne dépasse pas le prix HT :
+          </Text>
+          <Text style={local.listItem}>
+            • Annulation à plus de 15 jours ouvrés avant le début : aucune somme en plus de
+            l&apos;acompte versé, qui reste acquis à l&apos;organisme
+          </Text>
+          <Text style={local.listItem}>
+            • Annulation entre 8 et 15 jours ouvrés avant le début : 50 % du prix HT
+          </Text>
+          <Text style={local.listItem}>
+            • Annulation à moins de 8 jours ouvrés avant le début : 100 % du prix HT
+          </Text>
+          <Text style={local.listItem}>
+            • La somme due n&apos;est jamais inférieure au montant hors taxes de l&apos;acompte
+            versé.
+          </Text>
+          {/*
+            🔴 F51 — le report gratuit était promis par les CGV et absent de la
+            convention, alors que les deux sont signées ensemble. Les CGV ont été
+            alignées sur ce barème (jours ouvrés) ; la promesse de report, elle,
+            devait remonter ici pour que les deux textes disent la même chose.
+          */}
+          <Text style={local.listItem}>
+            • Dans tous les cas, la prestation est reportable une fois sans frais à une date
+            convenue entre les parties, le report se substituant alors à l&apos;annulation ;
+            l&apos;acompte versé reste alors imputé sur le prix.
+          </Text>
+          <Text style={stylesPiece.paragraphe}>
+            Les sommes ainsi conservées ou dues, y compris l&apos;acompte conservé du client,
+            constituent un dédit : elles ne sont pas le prix d&apos;une action de formation, sont
+            facturées à part (mention « Indemnité de dédit – ne constitue pas une dépense de
+            formation professionnelle »), ne peuvent être imputées sur les fonds de la formation
+            professionnelle
+            {data.certificationObtenue === true
+              ? " ni prises en charge par un opérateur de compétences, "
+              : ", "}
+            et restent à la charge du client. Seules les heures de formation effectivement réalisées
+            constituent une dépense de formation ; les autres sommes perçues pour des heures non
+            réalisées et non couvertes par le dédit sont remboursées (article L.6354-1 du Code du
+            travail). En cas d&apos;annulation par le client, la facture d&apos;acompte est annulée
+            par avoir et son montant porté sur la facture de dédit. La taxe sur la valeur ajoutée
+            s&apos;applique à ces sommes comme au prix, sans exonération. L&apos;acompte n&apos;est
+            pas acquis si l&apos;annulation résulte d&apos;un manquement ou d&apos;une annulation de
+            l&apos;organisme, d&apos;un cas de force majeure, de l&apos;exercice d&apos;un droit de
+            rétractation légal, ou de tout autre cas prévu à l&apos;article 6.5 des conditions
+            générales de vente.
+            {data.conditionSuspensiveOpco && data.certificationObtenue === true
+              ? " La défaillance de la condition suspensive de l'article 5 bis rend la présente convention caduque ; les sommes versées sont alors restituées."
+              : ""}
+          </Text>
+        </SectionCarte>
+
+        {/*
+          Sections 5 à 9 — 2026-08-02.
+
+          La convention couvrait l'objet, le prix et l'annulation, et rien
+          d'autre : aucune clause de propriété intellectuelle sur les supports,
+          aucune confidentialité, aucune limitation de responsabilité, aucun
+          droit applicable, et pas un mot sur les données personnelles alors
+          qu'elle en fait traiter à chaque session (identité des stagiaires,
+          émargements, évaluations).
+
+          Autrement dit, en cas de litige — support recopié et rediffusé,
+          résultat commercial déçu, incident de traitement — l'organisme
+          n'opposait aucun texte, et le RGPD était muet sur une pièce qui est
+          pourtant le support du traitement.
+        */}
+
+        {/* 5. Obligations des parties */}
+        <SectionCarte title="5. Obligations des parties">
+          <Text style={stylesPiece.paragraphe}>
+            L&apos;organisme s&apos;engage à réaliser l&apos;action conformément au programme
+            annexé, à mettre à disposition les moyens décrits ci-dessus, à remettre au client les
+            documents attestant de la réalisation (feuille d&apos;émargement, attestation) et à
+            respecter la confidentialité des informations dont il a connaissance.
+          </Text>
+          <Text style={stylesPiece.paragraphe}>
+            Le client s&apos;engage à assurer la présence des participants inscrits, à informer
+            l&apos;organisme de toute contrainte d&apos;accessibilité au plus tôt afin que les
+            adaptations nécessaires soient étudiées, et — lorsque la formation se déroule sur site —
+            à mettre à disposition un local et les équipements convenus, conformes aux règles
+            d&apos;hygiène et de sécurité qui lui incombent.
+          </Text>
+          {/*
+            🔴 16/08 — LA CLAUSE QUI MANQUAIT LÀ OÙ ELLE SERT LE PLUS.
+
+            La convention TRIPARTITE a reçu ce jour-là sa clause de défaillance
+            du financeur. Mais la tripartite n'existe QUE s'il y a subrogation.
+            Sans subrogation — le client règle l'organisme et se fait rembourser
+            par son OPCO — la pièce contractuelle est CELLE-CI, et elle ne
+            portait pas un mot sur le financement : ni « OPCO », ni
+            « financeur », ni « subrogation ». Vérifié : zéro occurrence, ici
+            comme aux CGV.
+
+            Or c'est exactement la configuration où le risque se réalise. Si
+            l'OPCO refuse, réduit ou revient sur son accord, la somme reste due
+            à l'organisme — mais aucun texte ne le disait au client, qui pouvait
+            de bonne foi considérer sa dette éteinte par le refus d'un tiers.
+
+            Le texte suit celui de la tripartite : deux rédactions différentes
+            du même engagement, sur deux pièces du même dossier, s'interprètent
+            l'une contre l'autre (art. 1190 C. civ.).
+
+            ⚠️ Rédigée pour être opposable et lisible, elle n'a pas été relue
+            par un avocat — pas plus que le reste de cette pièce. Elle vaut
+            mieux que le silence, qui était l'état précédent.
+          */}
+          {data.certificationObtenue === true ? (
+            <Text style={stylesPiece.paragraphe}>
+              Lorsque le client sollicite une prise en charge auprès d&apos;un financeur (opérateur
+              de compétences, France Travail ou tout autre organisme), cette démarche relève de la
+              relation entre le client et son financeur. Elle ne modifie ni le prix convenu, ni son
+              exigibilité : en l&apos;absence de subrogation de paiement expressément convenue, le
+              client règle l&apos;intégralité du prix à l&apos;organisme et fait son affaire du
+              remboursement. En cas de refus, de réduction, de caducité de l&apos;accord ou de
+              non-paiement par le financeur, les sommes correspondantes demeurent dues par le
+              client, sous réserve des conditions de dédit et d&apos;abandon en cours
+              d&apos;exécution prévues aux conditions générales de vente, et sauf lorsque la
+              réduction, la caducité ou le non-paiement résulte d&apos;un manquement de
+              l&apos;organisme à ses propres obligations (inexécution de tout ou partie de
+              l&apos;action, défaut des justificatifs de réalisation qui lui incombent).
+            </Text>
+          ) : null}
+        </SectionCarte>
+
+        {/* 5 bis. INT-T65-A — imprimée SEULEMENT si la case a été cochée. */}
+        {data.conditionSuspensiveOpco && data.certificationObtenue === true ? (
+          <ClauseConditionSuspensiveOpco p={data.conditionSuspensiveOpco} />
+        ) : null}
+
+        {/* 6. Données personnelles */}
+        <SectionCarte title="6. Données à caractère personnel">
+          <Text style={stylesPiece.paragraphe}>
+            Chaque partie agit en qualité de responsable de traitement pour les données qu&apos;elle
+            collecte. L&apos;organisme traite les données d&apos;identité, d&apos;émargement et
+            d&apos;évaluation des participants aux seules fins d&apos;exécuter la présente
+            convention et de satisfaire à ses obligations légales, notamment la conservation des
+            pièces justificatives pendant cinq (5) ans.
+          </Text>
+          <Text style={stylesPiece.paragraphe}>
+            Les personnes concernées disposent des droits d&apos;accès, de rectification,
+            d&apos;effacement, de limitation et d&apos;opposition prévus par le Règlement (UE)
+            2016/679, exerçables auprès de {identite.dpoEmail || identite.email || "l'organisme"}.
+            Elles peuvent introduire une réclamation auprès de la CNIL. Aucune donnée n&apos;est
+            cédée à des tiers à des fins commerciales.
+          </Text>
+        </SectionCarte>
+
+        {/* 7. Propriété intellectuelle et confidentialité */}
+        <SectionCarte title="7. Propriété intellectuelle et confidentialité">
+          <Text style={stylesPiece.paragraphe}>
+            Les supports pédagogiques, méthodes et contenus demeurent la propriété exclusive de
+            l&apos;organisme. Ils sont remis aux participants pour leur usage professionnel
+            personnel ; toute reproduction, diffusion à des tiers, revente ou utilisation à des fins
+            de formation par le client est soumise à l&apos;accord écrit préalable de
+            l&apos;organisme.
+          </Text>
+          <Text style={stylesPiece.paragraphe}>
+            Chaque partie s&apos;engage à ne pas divulguer les informations confidentielles portées
+            à sa connaissance à l&apos;occasion de l&apos;action, pendant sa durée et les deux (2)
+            années qui suivent son terme.
+          </Text>
+        </SectionCarte>
+
+        {/* 8. Responsabilité et force majeure */}
+        <SectionCarte title="8. Responsabilité et force majeure">
+          <Text style={stylesPiece.paragraphe}>
+            L&apos;organisme est tenu d&apos;une obligation de moyens quant à l&apos;atteinte des
+            objectifs pédagogiques, dont la réalisation dépend de l&apos;implication des
+            participants. Sa responsabilité éventuelle est limitée au montant hors taxes
+            effectivement réglé au titre de la présente convention, à l&apos;exclusion des dommages
+            indirects tels que perte d&apos;exploitation, de clientèle ou de chiffre
+            d&apos;affaires.
+          </Text>
+          <Text style={stylesPiece.paragraphe}>
+            Aucune des parties ne peut être tenue responsable d&apos;un manquement résultant
+            d&apos;un cas de force majeure au sens de l&apos;article 1218 du Code civil. La partie
+            empêchée en informe l&apos;autre sans délai ; l&apos;action est alors reportée à une
+            date convenue entre les parties.
+          </Text>
+        </SectionCarte>
+
+        {/* 9. Différends */}
+        <SectionCarte title="9. Droit applicable et différends">
+          <Text style={stylesPiece.paragraphe}>
+            La présente convention est régie par le droit français. En cas de différend relatif à sa
+            formation, son exécution ou son interprétation, les parties s&apos;efforceront de
+            trouver une solution amiable. À défaut d&apos;accord dans un délai de trente (30) jours
+            à compter de la première notification écrite, le litige sera porté devant le tribunal
+            compétent du ressort du siège de l&apos;organisme.
+          </Text>
+          <Text style={stylesPiece.paragraphe}>
+            Toute réclamation relative au déroulement de l&apos;action peut être adressée à{" "}
+            {identite.email || "l'organisme"} ; elle est enregistrée, traitée et fait l&apos;objet
+            d&apos;une réponse motivée.
+          </Text>
+        </SectionCarte>
+
+        {/* 10. Annexes */}
+        <SectionCarte title="10. Documents annexés">
+          <View style={local.annexeList}>
+            <Text style={local.annexeItem}>– Programme détaillé de la formation</Text>
+            <Text style={local.annexeItem}>– Règlement intérieur des stagiaires</Text>
+            <Text style={local.annexeItem}>– Conditions générales de vente (CGV)</Text>
+          </View>
+        </SectionCarte>
+
+        {/* Handicap (L15, NC12, indicateur 26) — non numérotée, pour ne renuméroter
+            aucune section : référent, contact et possibilité d'adaptation. */}
+        <SectionCarte title="Accessibilité et situation de handicap">
+          <Text style={stylesPiece.paragraphe}>
+            {
+              "Situation de handicap : notre référent handicap étudie avec vous, avant la formation, les adaptations possibles (supports, rythme, accès, modalités). Contact : handicap@axion-ia.com."
+            }
+          </Text>
+        </SectionCarte>
+
+        {/* 11. Signatures */}
+        {/* « Fait à » = ville du siège : la pièce est établie par l'OF, pas sur le
+            lieu de formation. Un blanc ici sortait « Fait à ______ » sur une pièce
+            signée électroniquement, que personne ne complète jamais à la main. */}
+        <BlocSignature titre="11. Signatures">
+          <SignatureZone
+            intro="La présente convention est établie en deux exemplaires originaux, un pour chaque partie."
+            faitLe={`${identite.rcsVille || "_________________________"}, le ${data.dateConvention}`}
+            parties={[
+              {
+                titre: "Pour l'organisme de formation",
+                signature: data.signatures?.axionia ?? null,
+                nom: identite.raisonSociale || "Axion-IA SAS",
+              },
+              {
+                titre: "Pour le client",
+                signature: data.signatures?.client ?? null,
+                nom: data.client.raisonSociale,
+              },
+            ]}
+          />
+        </BlocSignature>
+      </PageCharte>
+    </Document>
+  );
+}

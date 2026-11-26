@@ -380,6 +380,7 @@ Pas de sur-promesses ("garanti", "révolutionnaire" interdits).`;
       directAnswer: outline.directAnswer,
       bodyHtml: enrichedBody,
       bodyText,
+      kbEntryIds: kbChunks.map((c) => c.entryId),
       faq: (outline.faq ?? []).map((q) => ({ question: q.q, answer: q.a })),
       // faqJson conserve l'outline original pour audit trail + future re-gen
       // partielle d'une section donnée (V2 : admin /content-gen/jobs/[id] aurait
