@@ -218,6 +218,8 @@ jobs:
         env:
           C1: ${{ steps.run1.outputs.conclusion }}
           C2: ${{ steps.run2.outputs.conclusion }}
+          F1: ${{ steps.run1.outputs.execution_file }}
+          F2: ${{ steps.run2.outputs.execution_file }}
         run: |
           if [ "$C1" != "success" ] && [ "$C2" != "success" ]; then
             echo "::error::Aucune exécution de Claude n'a réussi : voir le diagnostic de l'étape « Claude (premier compte) »."; exit 1; fi
@@ -225,5 +227,10 @@ jobs:
           git ls-remote --heads origin | sort > "$RUNNER_TEMP/branches-apres.txt"
           nouvelles=$(comm -13 "$RUNNER_TEMP/branches-avant.txt" "$RUNNER_TEMP/branches-apres.txt" | awk '{print $2}' | sed 's#refs/heads/##')
           if [ -z "$nouvelles" ]; then
-            echo "::error::Claude a fini sans pousser aucune branche : voir « Résumé de Claude » et « Fin de la réponse » plus haut."; exit 1; fi
+            # Exception : relecture en lecture seule dont la réponse contient « VERDICT ».
+            for x in "$F1" "$F2"; do
+              if [ -n "$x" ] && [ -f "$x" ] && jq -e 'any(.[]; .type == "result" and ((.result // "") | tostring | test("VERDICT")))' "$x" >/dev/null 2>&1; then
+                echo "Claude a terminé (relecture sans branche : verdict présent dans la réponse)."; exit 0; fi
+            done
+            echo "::error::Claude a fini sans pousser aucune branche ni rendre de VERDICT : voir « Résumé de Claude » et « Fin de la réponse » plus haut."; exit 1; fi
           echo "Claude a terminé. Branches poussées (créées ou mises à jour) :"; printf '  %s\n' $nouvelles
