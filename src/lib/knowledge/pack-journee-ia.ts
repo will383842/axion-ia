@@ -97,7 +97,7 @@ const REDUCTION =
   /(?<![\p{L}])(?:réduction|reduction|rabais|offert|offerte|offerts|offertes)(?![\p{L}])/iu;
 const TOUR_FRANCE_IA = /tour\s+(?:de\s+)?france\s+ia/i;
 
-/** Montant de la doctrine du site, admis seulement dans sa phrase (cf. `contexteMontant`). */
+/** Montant de la doctrine du site, admis seulement dans la phrase de la déduction. */
 const MONTANT_SEUIL_DEDUCTION = /^5[\s\u00a0\u202f]?000(?:[.,]00)?$/;
 const MULTIPLE_GARANTIE_RE = /\b(?:3|trois)\s+fois\b/i;
 const GAINS_IDENTIFIES = /gains?\s+identifi[ée]s?/i;
@@ -107,7 +107,8 @@ const MULTIPLE_RE =
   /(?<![\p{L}\d])([0-9]+|deux|quatre|cinq|six|sept|huit|neuf|dix|onze|douze|vingt)\s?(?:fois|x)(?![\p{L}\d])/giu;
 const CONTEXTE_MULTIPLE =
   /(?<![\p{L}])(?:prix|garantie|tarif|rembours\p{L}*|investissement|gains?)(?![\p{L}])/iu;
-const SANS_DISCUSSION = /sans\s+(?:aucune\s+)?discussions?(?![\p{L}])/iu;
+const SANS_DISCUSSION =
+  /sans\s+(?:\p{L}+\s+){0,2}(?:discussions?|n[ée]gociations?|questions?|conditions?|justificatifs?)(?![\p{L}])|simple\s+demande/iu;
 const DEMANDE_ECRITE = /sur\s+demande\s+[ée]crite/i;
 const QUATRE_MILLE = /(?<!\d)4[\s\u00a0\u202f.,]?470(?!\d)/;
 function autreMultiple(texte: string): boolean {
@@ -248,6 +249,50 @@ function reglesDuPack(texte: string): string[] {
       "promesse de gain ou de remboursement : gains identifiés et estimés, jamais garantis",
     );
   }
+  const phrases = texte.split(/(?<=[.!?])\s+|\n/);
+  for (const ph of phrases) {
+    if (/\b(?:acomptes?|arrhes|annul\p{L}*|r[ée]tractation)\b/iu.test(ph))
+      raisons.push("acompte, annulation et rétractation : relèvent des CGV, jamais d'une fiche");
+    if (/voyage|billet|\btrain\b|\bavion\b|[àa] votre charge/i.test(ph))
+      raisons.push("frais de voyage ou de transport : relèvent des CGV");
+    if (
+      /[x×]\s?\d|\b(?:double|triple|quadruple|quintuple|d[ée]cuple)\b|\d\s?%/iu.test(ph) &&
+      /(?<![\p{L}])(?:prix|garantie|tarif|rembours\p{L}*|investissement|gains?|rentabilis\p{L}*)(?![\p{L}])/iu.test(
+        ph,
+      )
+    )
+      raisons.push(
+        "multiple ou pourcentage de garantie : seule la garantie « 3 fois » le prix HT existe",
+      );
+    if (
+      /(?<![\p{L}\d])(?:\d+|deux|quatre|cinq|six|sept|huit|neuf|dix|onze|douze|vingt|cent)\s+fois(?![\p{L}])/iu.test(
+        ph.replace(/\b(?:3|trois)\s+fois\b/gi, ""),
+      ) &&
+      (/rentabilis\p{L}*/iu.test(ph) ||
+        /(?<![\p{L}])gains?(?![\p{L}])[^.]*\sfois\s+(?:plus|sup[ée]rieur)/iu.test(ph))
+    )
+      raisons.push("multiple de garantie : seule la garantie « 3 fois » le prix HT existe");
+    if (/garanti|rembours/i.test(ph)) {
+      if (/€|\beuros?\b|\beur\b|mille\s+\p{L}*\s*(?:cent|euro)/iu.test(ph))
+        raisons.push("garantie : aucun montant en euros");
+      if (
+        /(?:d[ée]lai|sous|dans les|en)\s+(?:\d+|[a-zé]+)\s+(?:jours?|semaines?|mois|heures?)\b|\d+\s?h\b/iu.test(
+          ph,
+        )
+      )
+        raisons.push("garantie : aucun délai chiffré");
+      const encadree =
+        GAINS_IDENTIFIES.test(ph) && MULTIPLE_GARANTIE_RE.test(ph) && DEMANDE_ECRITE.test(ph);
+      const negation =
+        /\b(?:aucun|aucune|jamais|pas|sans garantir|ne promettons|n[’']annon[cç]ons)\b/i.test(ph);
+      const autreGarantie =
+        /(?:gains?|r[ée]sultats?|chiffre d[’']affaires)[^.]*(?:obtenus?|r[ée]els?|assur[ée]s?|garantis?)|garantis?[^.]*(?:obtenus?|r[ée]sultats?)|rembours\p{L}*\s+(?:int[ée]gral|total|automatique)|non\s+rembours/iu.test(
+          ph,
+        );
+      if (autreGarantie && !(negation && !encadree))
+        raisons.push("promesse de gain, de résultat ou de remboursement hors garantie encadrée");
+    }
+  }
   return raisons;
 }
 
@@ -259,15 +304,22 @@ function reglesDuPack(texte: string): string[] {
  */
 export function estGarantieChatbot(l: LignePack): boolean {
   if (!controlerFiche(l).ok) return false;
-  const { titre, reponse } = texteDeLaFiche(l);
-  const t = `${titre}\n${reponse}`;
+  const { reponse } = texteDeLaFiche(l);
+  const phrases = reponse.split(/(?<=[.!?])\s+|\n/).filter(Boolean);
+  const encadree = (ph: string) =>
+    /garanti/i.test(ph) &&
+    GAINS_IDENTIFIES.test(ph) &&
+    MULTIPLE_GARANTIE_RE.test(ph) &&
+    DEMANDE_ECRITE.test(ph) &&
+    /prix\s+HT|HT\s+de la journ[ée]e|prix\s+de la journ[ée]e\s+HT/i.test(ph) &&
+    !/€|euros?|\beur\b|\d/i.test(ph.replace(/\b3\s+fois\b/g, ""));
+  const negation = (ph: string) =>
+    /\b(?:aucun|aucune|jamais|ne promettons|n[’']annon[cç]ons)\b/i.test(ph);
+  const concernees = phrases.filter((ph) => /garanti|rembours/i.test(ph));
+  // Exactement une phrase encadrée ; toute autre phrase de garantie ou de remboursement est une négation.
   return (
-    /garanti/i.test(t) &&
-    GAINS_IDENTIFIES.test(t) &&
-    MULTIPLE_GARANTIE_RE.test(t) &&
-    DEMANDE_ECRITE.test(t) &&
-    /prix\s+(?:de la journ[ée]e\s+)?HT|HT\s+de la journ[ée]e|prix\s+HT/i.test(t) &&
-    !/€|euros?|\beur\b|\d/i.test(t.replace(/\b3\b/g, ""))
+    concernees.filter(encadree).length === 1 &&
+    concernees.every((ph) => encadree(ph) || negation(ph))
   );
 }
 
@@ -445,8 +497,15 @@ export function analyserPack(lignes: readonly LignePack[]): RapportPack {
     }
     vus.add(slug);
     const c = controlerFiche(l);
-    if (c.ok) aImporter.push(versEntreeKnowledge(l));
-    else rejets.push({ id: l.id, raisons: c.raisons });
+    if (c.ok) {
+      const e = versEntreeKnowledge(l);
+      // D03 révisée : UNE seule fiche garantie autorisée pour le chatbot ; les suivantes restent brouillons non chatbot.
+      aImporter.push(
+        e.chatbotAutorise && aImporter.some((x) => x.chatbotAutorise)
+          ? { ...e, chatbotAutorise: false }
+          : e,
+      );
+    } else rejets.push({ id: l.id, raisons: c.raisons });
   }
 
   const horsRag: Record<string, number> = {};

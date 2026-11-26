@@ -840,3 +840,40 @@ describe("D03 révisée le 26/11/2026 — garantie autorisée pour le chatbot, t
     }
   });
 });
+
+describe("D03 révisée — variantes adverses (relecture)", () => {
+  const G =
+    "La journée est garantie sur les gains identifiés dans le rapport : s’ils n’atteignent pas 3 fois le prix HT de la journée, vous êtes remboursé sur demande écrite.";
+  it("rejette toute promesse ajoutée à la phrase encadrée", () => {
+    for (const x of [
+      "Vos gains obtenus sont garantis.",
+      "Remboursement intégral garanti.",
+      "La garantie couvre aussi les résultats obtenus.",
+      "Garantie : gains réels au rendez-vous.",
+      "Acompte non remboursable.",
+      "Rentabilisé cinq fois en moyenne.",
+      "Les gains sont souvent 10 fois supérieurs.",
+      "Garantie : ×5 le prix.",
+      "Remboursé à 200 % du prix.",
+      "Le triple du prix est garanti.",
+      "Remboursement sur simple demande.",
+      "Remboursé sans la moindre discussion.",
+      "Remboursé sans négociation.",
+      "Garantie : 3 fois 1 490 € HT.",
+      "Garantie à quatre mille quatre cent soixante-dix euros.",
+      "Annulation possible 48 h avant.",
+      "Le billet de train est à votre charge.",
+    ]) {
+      const l = faq({ answer_draft: `${G} ${x}` });
+      expect(controlerFiche(l).ok && estGarantieChatbot(l), x).toBe(false);
+      expect(controlerFiche(faq({ answer_draft: x })).ok, x).toBe(false);
+    }
+  });
+  it("n’autorise qu’une seule fiche chatbot dans un lot", () => {
+    const r = analyserPack([
+      faq({ id: "GEO-901", answer_draft: G }),
+      faq({ id: "GEO-902", answer_draft: `${G} Merci.` }),
+    ]);
+    expect(r.aImporter.filter((f) => f.chatbotAutorise)).toHaveLength(1);
+  });
+});

@@ -1,14 +1,14 @@
-# Intégration du pack SEO/GEO « Journée IA » (10/11/2026) au RAG / knowledge
+# Intégration du pack SEO/GEO « Journée IA » (25/11/2026, remplace celui du 10/11) au RAG / knowledge
 
 Statut : décision prise le 2026-11-11, import en **brouillons** uniquement. Rien n'est publié.
 Source : dépôt `axion-brand`, branche `rag-journee-ia-pack-2026-11-11`, dossier `impl/rag-journee-ia/`.
-Copie de travail versionnée ici : `docs/knowledge/pack-journee-ia-2026-11-10/`.
+Copie de travail versionnée ici : `docs/knowledge/pack-journee-ia-2026-11-25/` (le pack du 10/11 est conservé à côté, pour mémoire).
 
 ## Décision
 
 | Contenu du pack                                          | Lignes | Devenir                                                                                                                         |
 | -------------------------------------------------------- | -----: | ------------------------------------------------------------------------------------------------------------------------------- |
-| Questions/réponses GEO (`faq_knowledge`)                 |     63 | **Importées en brouillon** (type `faq`, statut `draft`, audience `team`, confidentialité `internal`), sauf rejet de la doctrine |
+| Questions/réponses GEO (`faq_knowledge`)                 |     53 | **Importées en brouillon** (type `faq`, statut `draft`, audience `team`, confidentialité `internal`), sauf rejet de la doctrine |
 | Expressions SEO/GEO (`search_query`)                     |    623 | **Hors RAG.** Référentiel éditorial (CSV/JSONL versionnés). Ce sont des hypothèses de recherche, jamais des faits servis        |
 | Intentions de page (`page_intent`)                       |     20 | Hors RAG : feuille de route éditoriale                                                                                          |
 | Sources (`source`)                                       |     18 | Hors RAG : renvoyées dans la note de relecture de chaque fiche (champ `source`)                                                 |
@@ -17,13 +17,13 @@ Copie de travail versionnée ici : `docs/knowledge/pack-journee-ia-2026-11-10/`.
 
 ### Pourquoi
 
-- Une fiche de la base peut être servie au chatbot et à `/connaissances` dès qu'elle est publiée. Les 63 réponses sont des
+- Une fiche de la base peut être servie au chatbot et à `/connaissances` dès qu'elle est publiée. Les 53 réponses sont des
   **brouillons rédigés par IA**, marqués « À valider / ne pas publier automatiquement » : elles restent donc en `draft`,
   en audience `team` / confidentialité `internal`. Les recherches du chatbot ne lisent que `published` (et `deprecated`) :
   aucun changement de comportement du chatbot.
 - Les 623 expressions n'ont ni volume, ni difficulté, ni vérification de SERP (« À mesurer »). Les injecter dans le RAG
   ferait réciter des hypothèses comme des faits. Elles servent à la rédaction, pas à la réponse.
-- Les 30 fiches `GEO-034` à `GEO-063` sont des scénarios « non constatés » à gabarit identique : importées pour relecture,
+- Les 26 fiches « Exemple de piste » (`GEO-034` à `GEO-063`, moins les fiches retirées) sont des scénarios « non constatés » à gabarit identique : importées pour relecture,
   jamais à publier telles quelles (risque de contenu mince, décision D06 du pack).
 - Aucune migration Prisma : le schéma existant (`KnowledgeEntry`, `KnowledgeTranslation`, `KbStatus`, `KbAudience`) suffit.
   La provenance (source, date, garde de publication, page cible) est écrite dans `briefMarkdown`.
@@ -35,20 +35,20 @@ Copie de travail versionnée ici : `docs/knowledge/pack-journee-ia-2026-11-10/`.
 | Prix / remise (D02)            | « remise à 990 € contre tournage » vs prix unique | Seul prix affiché : **Journée IA 1 490 € HT**, aucune remise. D02 écartée, tout autre montant rejeté                                                                                                                                                                                                                                                                |
 | Garantie / remboursement (D03) | garantie ou remboursement sous un seuil de gains  | **Révisée le 26/11/2026 : garantie autorisée pour le chatbot, texte encadré.** Une seule fiche (GEO-009) : 3 fois le prix HT, sur les « gains identifiés » du rapport (jamais un gain obtenu), remboursement sur demande écrite, aucun montant en euros. Rejetés : autre multiple (« 5 fois »), « 4 470 € », « 1 490 € x 3 », « sans discussion », « gain garanti » |
 | Rendez-vous gratuit (GEO-008)  | « échange gratuit facultatif »                    | Compatible avec l'unique rendez-vous gratuit de 45 min ; à reformuler à la relecture                                                                                                                                                                                                                                                                                |
-| Cas clients (GEO-033)          | « cas clients réels avec autorisation »           | Rejetée par la porte de doctrine (fausse preuve sociale) : 1 rejet                                                                                                                                                                                                                                                                                                  |
+| Cas clients (GEO-033)          | « cas clients réels avec autorisation »           | Retirée du pack du 25/11 (fausse preuve sociale) : 0 rejet sur ce pack                                                                                                                                                                                                                                                                                              |
 | Tour France IA                 | —                                                 | Exclu                                                                                                                                                                                                                                                                                                                                                               |
 
 Le script rejette en plus de la doctrine de la base (`verifierDoctrineTraduction`) : tout montant en € / euros / EUR autre que 1 490
 (espace, espace insécable ou fine acceptés, `,00` toléré) ; 1 490 sans « HT » juste après ; « TTC » ; les montants en `k€` ; un nombre sans
 devise suivi de « HT » ; « réduction », « rabais », « offert » ; le mot « remise » ; « Grenoble » ; « Will » (seul) ; « Aucun gain garanti » ;
-toute promesse de gain ou de remboursement ; « Tour France IA ».
+toute promesse de gain ou de remboursement **sauf la garantie encadrée de D03** (3 fois le prix HT, gains identifiés, demande écrite) ; « Tour France IA ».
 
 **Faux rejets possibles, sans danger** (la fiche reste simplement à relire) : « remise du rapport » (le mot « remise » est refusé quel que soit son sens) et
 « will » anglais (verbe ou nom commun). Mieux vaut un faux rejet qu'une remise ou un « Will » publiés.
 
 ## À préciser avant toute publication
 
-- `GEO-006` et `GEO-016` parlent d'une prestation « sur devis » : le devis ne concerne que la **mise en place ultérieure**.
+- `GEO-006` parle d'une prestation « sur devis » : le devis ne concerne que la **mise en place ultérieure**.
   Le prix de la Journée IA est unique : **1 490 € HT**. À préciser dans la réponse avant publication.
 - `GEO-034` à `GEO-063` : titres à reformuler (scénarios « non constatés » à gabarit identique, titres artificiels).
 - Les fiches dont le statut contient « non constaté », « à vérifier » ou « juridique » (GEO-034 à 063, GEO-028, GEO-029 notamment) portent en tête de la note de
@@ -98,3 +98,11 @@ mention de frais, de déplacement, d'hébergement, de repas, de km ou d'« Auver
 France ».
 
 Essai à sec (aucune base) : `pnpm tsx scripts/import-knowledge-pack-journee-ia.ts`. Import réel : voir la PR.
+
+## D03 révisée le 26/11/2026 : ce que « autorisée pour le chatbot » veut dire
+
+Une seule fiche garantie (GEO-009) porte `chatbotAutorise` dans le rapport d'import et la mention « Chatbot : autorisée » dans sa note de relecture.
+**Ce marqueur n'est pas stocké en base** et la fiche reste importée en `draft` / `team` / `internal` : le chatbot ne lit que `published` + `public`,
+donc il ne la servira qu'après une **publication humaine** en `public` / `public`. Le texte doit alors rester celui du pack : 3 fois le prix HT, sur les
+« gains identifiés » du rapport, remboursement sur demande écrite, aucun montant, aucun délai chiffré, jamais « sans discussion », « sur simple demande »,
+« 5 fois » ni un autre multiple ou pourcentage. Le validateur rejette ces variantes et toute promesse ajoutée (« gains obtenus garantis », « remboursement intégral »).
