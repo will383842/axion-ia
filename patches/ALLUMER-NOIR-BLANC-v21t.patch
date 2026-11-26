@@ -1,0 +1,55 @@
+From ffa064366c30d7c2088f26eefcca97e1b0d86493 Mon Sep 17 00:00:00 2001
+From: "github-actions[bot]" <github-actions[bot]@users.noreply.github.com>
+Date: Thu, 26 Nov 2026 18:00:12 +0000
+Subject: [PATCH] =?UTF-8?q?ALLUMER-NOIR-BLANC-v21t=20:=20correction=20(rob?=
+ =?UTF-8?q?ot=20cr=C3=A9dits=20API)?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+---
+ .../composition/noir-blanc-allume-v21t.test.ts     | 14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
+
+diff --git a/tests/briques/composition/noir-blanc-allume-v21t.test.ts b/tests/briques/composition/noir-blanc-allume-v21t.test.ts
+index 3a43687e..a06d0741 100644
+--- a/tests/briques/composition/noir-blanc-allume-v21t.test.ts
++++ b/tests/briques/composition/noir-blanc-allume-v21t.test.ts
+@@ -14,7 +14,6 @@ import type { PlanProduit } from "@/moteurs/types";
+ import { parametresComposition } from "@/briques/composition";
+ import { NOIR_BLANC_ACTIF } from "@/briques/composition/plages-noir-blanc";
+ 
+-// La constante de la pièce a reste fausse en vrai ; ce double la lit par un getter pour (b) à (f).
+ const MAINTENANT = "2026-10-02T08:00:00.000Z";
+ const SCRIPT = "on passe de 2 heures à 20 minutes par semaine"; // « 2 » = mot 3 (1,05 s), « 20 » = mot 6 (2,1 s)
+ 
+@@ -59,8 +58,8 @@ function commande(extra: Partial<CommandeFabrication> = {}): CommandeFabrication
+   } as CommandeFabrication;
+ }
+ 
+-const couleursDe = (c: CommandeFabrication, plans: PlanProduit[], m: MotHorodate[]) =>
+-  parametresComposition(c, { ratio: "9:16", plans, segments: [], dureeSec: 9, mots: m }, RECETTE_COMPOSITION_AVOCAT).couleurs as unknown as Record<string, unknown>;
++const couleursDe = (c: CommandeFabrication, plans: PlanProduit[], m: MotHorodate[], dureeSec = 9) =>
++  parametresComposition(c, { ratio: "9:16", plans, segments: [], dureeSec, mots: m }, RECETTE_COMPOSITION_AVOCAT).couleurs as unknown as Record<string, unknown>;
+ 
+ const TOUT_ILLU = [illu(1, 0, 9)];
+ const NB = (c: Record<string, unknown>) => c.noirBlanc as [number, number][] | undefined;
+@@ -99,10 +98,11 @@ describe("ALLUMER-NOIR-BLANC-v21t · le noir et blanc de la partie « avant » e
+ 
+   it("(e) 2 plages au plus, bords gardés", () => {
+     const texte = "on passe de 2 heures à 20 minutes puis de 5 jours à 1 jour puis de 8 mois à 2 mois";
+-    const m = motsDe(texte, { 3: 3, 6: 5, 10: 8, 13: 10, 17: 13, 20: 15 });
+-    const plages = NB(couleursDe(commande(), [illu(1, 0, 20)], m)) ?? [];
+-    expect(plages.length).toBeGreaterThan(0);
+-    expect(plages.length).toBeLessThanOrEqual(2);
++    // Trois passages valides (1 à 4 s, hors des 0,5 s de bord, plan illustration sur tout), débuts croissants :
++    // « 2→20 » = [3, 5], « 5→1 » = [8, 10], « 8→2 » = [13, 15]. Seules les 2 PREMIÈRES sont gardées.
++    const m = motsDe(texte, { 3: 3, 4: 3.3, 5: 3.6, 6: 5, 7: 5.3, 8: 5.6, 9: 5.9, 10: 8, 11: 8.3, 12: 8.6, 13: 10, 14: 10.3, 15: 10.6, 16: 10.9, 17: 13, 18: 13.3, 19: 13.6, 20: 15, 21: 15.3 });
++    const plages = NB(couleursDe(commande(), [illu(1, 0, 20)], m, 20));
++    expect(plages).toEqual([[3, 5], [8, 10]]);
+     // Passage dans la première demi-seconde : ignoré.
+     expect("noirBlanc" in couleursDe(commande(), [illu(1, 0, 9)], motsDe("de 2 heures à 20 minutes", { 1: 0.1, 4: 1.6 }))).toBe(false);
+   });
+-- 
+2.56.1
+
