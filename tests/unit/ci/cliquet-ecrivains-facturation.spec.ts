@@ -215,7 +215,7 @@ describe("REQ-INT-007 — face VERTE : le dépôt réel", () => {
         "src/server/qualiopi/coaching-1to1/facturation-1to1.ts (genererFactureCoaching › travail de transactionFaitFacturation())",
         "src/server/qualiopi/financements/facturation-service.ts (genererFactureFormation › travail de transactionFaitFacturation())",
         "src/server/qualiopi/financements/facture-formation-emission.ts (emettreSansVerrou › travail de withNumberRetry() › travail de transactionFaitFacturation())",
-        "src/server/qualiopi/financements/facture-libre.ts (genererAvoirFacture › travail de transactionFaitFacturation())",
+        "src/server/qualiopi/financements/facture-libre.ts (genererAvoirFacture › travail de executeur.$transaction())",
         "src/server/qualiopi/financements/facture-libre.ts (genererFactureLibre › travail de transactionFaitFacturation())",
         "src/server/qualiopi/financements/plan-recurrent.ts (emettreFactureBrouillon › travail de transactionFaitFacturation())",
       ]);

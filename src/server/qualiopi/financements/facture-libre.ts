@@ -71,6 +71,11 @@ export {
 
 const MAX_ATTEMPTS = 5;
 
+/** Ce qu'il faut à l'émission d'un avoir : un `$transaction(travail)` (vrai ou prêté). */
+type ExecuteurTransaction = {
+  $transaction: <R>(travail: (tx: Prisma.TransactionClient) => Promise<R>) => Promise<R>;
+};
+
 // ─────────────────────────────────────────────────────────────────────────────
 // Facture libre
 // ─────────────────────────────────────────────────────────────────────────────
@@ -517,7 +522,16 @@ export async function genererAvoirFacture(
 
     try {
       // INT-T05 : l'avoir et `avoir.emis` vivent et meurent ensemble (même patron que la facture).
-      const travail = async (tx: Prisma.TransactionClient): Promise<AvoirCree> => {
+      // Crochets fournis → vraie transaction, même canal partners fermé (là, `transactionFaitFacturation`
+      // n'en ouvre pas) : l'avoir et l'écriture de la garantie vivent et meurent ensemble.
+      // Un seul `$transaction(travail)` ci-dessous (cliquet E3 : le travail est l'argument direct de
+      // l'appel) ; l'exécuteur choisit la voie, mêmes trois branches qu'avant.
+      const executeur: ExecuteurTransaction = options.tx
+        ? { $transaction: (f) => f(options.tx as Prisma.TransactionClient) }
+        : avecCrochets
+          ? prisma
+          : { $transaction: (f) => transactionFaitFacturation(prisma, f) };
+      const avoir = await executeur.$transaction(async (tx): Promise<AvoirCree> => {
         if (avecCrochets) {
           // Verrou par facture d'origine : deux avoirs de GARANTIE simultanés se sérialisent, le second
           // relit. ⚠️ Le Hub factures (sans crochet) ne prend pas ce verrou : limite connue.
@@ -571,14 +585,7 @@ export async function genererAvoirFacture(
         };
         await options.apres?.(tx, complet);
         return complet;
-      };
-      // Crochets fournis → vraie transaction, même canal partners fermé (là, `transactionFaitFacturation`
-      // n'en ouvre pas) : l'avoir et l'écriture de la garantie vivent et meurent ensemble.
-      const avoir = options.tx
-        ? await travail(options.tx)
-        : avecCrochets
-          ? await prisma.$transaction((tx) => travail(tx))
-          : await transactionFaitFacturation(prisma, travail);
+      });
       avoirCree = avoir;
       break;
     } catch (err: unknown) {

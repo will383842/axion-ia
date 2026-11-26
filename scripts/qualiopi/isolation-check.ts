@@ -146,6 +146,9 @@ const ALLOWED_PATTERNS: ReadonlyArray<RegExp> = [
  * pour rien.
  */
 const CONSOMMATEURS_ASSUMES: ReadonlySet<string> = new Set([
+  // Garantie Journée IA : remboursement de la garantie, avoirs via `genererAvoirFacture` (voie unique) —
+  // `lecture.ts` consomme donc vraiment la facturation qualiopi. Nommé seul.
+  "src/server/garanties-journee-ia/lecture.ts",
   // Garantie Journée IA, suivi des remboursements (PR 2/3, 25/11/2026) — la fiche et le formulaire de
   // création appellent les Server Actions du dossier (`actions/qualiopi/garanties-journee-ia`, gardées par
   // `requireAdminWrite` / `requireHabilitation("facturer")` du domaine, journal `ActivityLog` commun) : une
