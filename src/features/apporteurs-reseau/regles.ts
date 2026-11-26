@@ -396,19 +396,64 @@ export function commissionJourneeIaCents(netHtCents: number, journees?: number):
   return Math.round((FORFAIT_JOURNEE_IA_CENTS * net) / PRIX_REFERENCE_JOURNEE_IA_CENTS);
 }
 
-/** Journées IA d'un devis : somme des quantités des lignes « Journée IA », au moins 1. */
-export function journeesIaDuDevis(lignes: unknown): number {
-  if (!Array.isArray(lignes)) return 1;
-  let n = 0;
+/** Une ligne de devis est-elle une Journée IA ? Repère du catalogue, sinon libellé (jamais une demi-journée). */
+function estLigneJourneeIa(l: Record<string, unknown>): boolean {
+  const code = [l.offreCode, l.offreTierId].some(
+    (v) => typeof v === "string" && /journee-ia/i.test(v),
+  );
+  const d = typeof l.designation === "string" ? l.designation : "";
+  return code || (/journ[ée]e/i.test(d) && /\bIA\b/i.test(d) && !/demi/i.test(d));
+}
+
+/**
+ * Lecture des lignes d'un devis marqué Journée IA : nombre de journées (quantités entières
+ * positives), présence d'autres lignes, et ambiguïté (quantité non entière). Pur.
+ */
+export function analyserLignesJourneeIa(lignes: unknown): {
+  journees: number;
+  autresLignes: boolean;
+  ambigue: boolean;
+} {
+  let journees = 0;
+  let autresLignes = false;
+  let ambigue = false;
+  if (!Array.isArray(lignes)) return { journees: 0, autresLignes: false, ambigue: true };
   for (const l of lignes) {
     if (!l || typeof l !== "object") continue;
-    const { designation, quantite } = l as { designation?: unknown; quantite?: unknown };
-    if (typeof designation === "string" && /journ[ée]e\s+ia/i.test(designation)) {
-      n +=
-        typeof quantite === "number" && Number.isInteger(quantite) && quantite > 0 ? quantite : 1;
+    const o = l as Record<string, unknown>;
+    if (!estLigneJourneeIa(o)) {
+      autresLignes = true;
+      continue;
     }
+    if (typeof o.quantite === "number" && Number.isInteger(o.quantite) && o.quantite > 0)
+      journees += o.quantite;
+    else ambigue = true;
   }
-  return quantiteSessions(n || 1);
+  return { journees, autresLignes, ambigue };
+}
+
+/**
+ * Commission d'une commande dont le devis est marqué Journée IA (A1.1). Elle ne se calcule seule
+ * que si la commande est UNIQUEMENT des Journées IA, lisibles, d'une activité de facturation
+ * ordinaire ; dans tous les autres cas (autres lignes, quantité illisible, case cochée sur une
+ * facture de site web, de coaching, de conférence ou non classée) elle reste « à qualifier » :
+ * un humain tranche, jamais un montant silencieux.
+ */
+export function calculerCommissionJourneeIa(e: {
+  activite: ActiviteCommission | null;
+  lignes: unknown;
+  netHtCents: number;
+}): CalculCommission {
+  const a = analyserLignesJourneeIa(e.lignes);
+  const ordinaire =
+    e.activite === "formation" || e.activite === "audit" || e.activite === "implementation";
+  if (a.journees < 1 || a.autresLignes || a.ambigue || !ordinaire) return { statut: "a_qualifier" };
+  return {
+    statut: "calculee",
+    montantCents: commissionJourneeIaCents(e.netHtCents, a.journees),
+    palier: PALIER_JOURNEE_IA,
+    prixPublicCents: PRIX_REFERENCE_JOURNEE_IA_CENTS * a.journees,
+  };
 }
 
 export type CalculCommission =
@@ -435,17 +480,7 @@ export function calculerCommission(e: {
   palier?: string | null;
   /** Formation : nombre de sessions identiques du palier dans la commande (1 par défaut). */
   quantite?: number;
-  /** Devis marqué Journée IA (`devis.journee_ia`) : 500 € par journée au prorata (A1.1). */
-  journeeIa?: boolean;
 }): CalculCommission {
-  if (e.journeeIa === true) {
-    return {
-      statut: "calculee",
-      montantCents: commissionJourneeIaCents(e.factureHtCents, e.quantite),
-      palier: PALIER_JOURNEE_IA,
-      prixPublicCents: PRIX_REFERENCE_JOURNEE_IA_CENTS * quantiteSessions(e.quantite),
-    };
-  }
   if (e.activite === null) return { statut: "a_qualifier" };
   // Coaching « one to one » (décision du 25/11, A1.3) : aucune commission, comme le site web.
   if (e.activite === "site_web" || e.activite === "un_a_un") return { statut: "aucune" };

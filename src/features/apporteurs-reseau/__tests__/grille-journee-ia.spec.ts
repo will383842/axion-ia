@@ -6,24 +6,19 @@
 import { describe, expect, it } from "vitest";
 
 import { commissionPourPrixConserve } from "../ajustement";
+import { cibleEtatFinal } from "../avoir-client";
 import { commandesSoldees, type FactureDeCommande } from "../commandes";
 import {
   calculerCommission,
   commissionJourneeIaCents,
-  journeesIaDuDevis,
+  analyserLignesJourneeIa,
+  calculerCommissionJourneeIa,
   type CalculCommission,
 } from "../regles";
 
 const montant = (r: CalculCommission) => (r.statut === "calculee" ? r.montantCents : null);
 const ji = (factureHtCents: number, quantite?: number) =>
-  montant(
-    calculerCommission({
-      activite: "formation",
-      journeeIa: true,
-      factureHtCents,
-      ...(quantite ? { quantite } : {}),
-    }),
-  );
+  commissionJourneeIaCents(factureHtCents, quantite);
 
 const facture = (o: Partial<FactureDeCommande> & { id: string }): FactureDeCommande => ({
   devisId: "devis-1",
@@ -113,18 +108,43 @@ describe("Journée IA : un acompte ne donne jamais de commission", () => {
   });
 });
 
-describe("journeesIaDuDevis", () => {
-  it("somme les quantités des lignes « Journée IA », au moins 1", () => {
-    expect(journeesIaDuDevis([{ designation: "Journée IA", quantite: 2 }])).toBe(2);
+describe("Journée IA : lecture du devis, sinon « à qualifier » (jamais un montant silencieux)", () => {
+  const calc = (
+    activite: Parameters<typeof calculerCommissionJourneeIa>[0]["activite"],
+    lignes: unknown,
+    net: number,
+  ) => calculerCommissionJourneeIa({ activite, lignes, netHtCents: net });
+  const J = (quantite: number) => ({ designation: "Journée IA", quantite });
+
+  it("seules des Journées IA : 500 € par journée au prorata", () => {
+    expect(montant(calc("audit", [J(2)], 298_000))).toBe(100_000);
+    expect(montant(calc("formation", [J(1)], 134_100))).toBe(45_000);
+  });
+  it("repère du catalogue ou libellé « Journée d'accompagnement IA » reconnus", () => {
     expect(
-      journeesIaDuDevis([
-        { designation: "Journée IA — Lyon", quantite: 1 },
-        { designation: "Journee IA — Paris", quantite: 2 },
-        { designation: "Déplacement", quantite: 5 },
-      ]),
-    ).toBe(3);
-    expect(journeesIaDuDevis(null)).toBe(1);
-    expect(journeesIaDuDevis([{ designation: "Autre", quantite: 4 }])).toBe(1);
+      analyserLignesJourneeIa([{ designation: "X", offreCode: "journee-ia", quantite: 2 }])
+        .journees,
+    ).toBe(2);
+    expect(
+      analyserLignesJourneeIa([{ designation: "Journée d'accompagnement IA", quantite: 2 }])
+        .journees,
+    ).toBe(2);
+  });
+  it("autres lignes (déplacement, mise en place) : à qualifier", () => {
+    expect(calc("audit", [J(1), { designation: "Mise en place", quantite: 1 }], 649_000)).toEqual({
+      statut: "a_qualifier",
+    });
+  });
+  it("quantité non entière, demi-journée ou aucune journée lisible : à qualifier", () => {
+    expect(calc("audit", [J(1.5)], 223_500)).toEqual({ statut: "a_qualifier" });
+    expect(calc("audit", [{ designation: "Demi-journée IA", quantite: 1 }], 75_000)).toEqual({
+      statut: "a_qualifier",
+    });
+    expect(calc("audit", [], 149_000)).toEqual({ statut: "a_qualifier" });
+  });
+  it("case cochée sur une facture de site web, de coaching, de conférence ou non classée : à qualifier", () => {
+    for (const a of ["site_web", "un_a_un", "conference", null] as const)
+      expect(calc(a, [J(1)], 149_000)).toEqual({ statut: "a_qualifier" });
   });
 });
 
@@ -136,6 +156,16 @@ describe("Journée IA : reprise après avoir (ligne de commission existante)", (
   it("avoir partiel : prorata du prix gardé, arrondi au plus proche", () => {
     expect(commissionPourPrixConserve(ligne, 74_500, 50_000)).toBe(25_000);
     expect(commissionPourPrixConserve(ligne, 100_000, 50_000)).toBe(33_557);
+  });
+  it("le palier journee-ia l'emporte sur l'activité de la facture (conférence, coaching)", () => {
+    for (const activite of ["conference", "un_a_un"])
+      expect(commissionPourPrixConserve({ ...ligne, activite }, 74_500, 50_000)).toBe(25_000);
+    expect(
+      cibleEtatFinal({ ...ligne, activite: "un_a_un", montantCents: 50_000 }, 74_500, 149_000),
+    ).toBe(25_000);
+    expect(
+      cibleEtatFinal({ ...ligne, activite: "conference", montantCents: 50_000 }, 74_500, 149_000),
+    ).toBe(25_000);
   });
   it("2 journées, 1 remboursée : 500 €", () => {
     expect(
