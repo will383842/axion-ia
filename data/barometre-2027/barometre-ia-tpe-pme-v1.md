@@ -10,7 +10,7 @@ Repères de vocabulaire : une TPE compte moins de 10 salariés, une PME de 10 à
 
 1. **40 %** des TPE et PME françaises déclaraient utiliser au moins une solution d'intelligence artificielle en 2026, contre 13 % en 2024 (Baromètre France Num 2026, Crédoc et Centre Relations Clients pour la Direction générale des Entreprises, 9 655 entreprises interrogées).
 2. En 2026, **38 %** des TPE (moins de 10 salariés) et **53 %** des PME (10 à 249 salariés) utilisent l'IA (Baromètre France Num 2026, rapport complet p. 53 ; la PME était à 34 % en 2025 et 16 % en 2024).
-3. En 2025, **18,16 %** des entreprises françaises de 10 personnes occupées ou plus utilisaient au moins une technologie d'IA, contre 19,95 % dans l'Union européenne à 27 (Eurostat, enquête sur l'usage des TIC, jeu de données isoc_eb_ai).
+3. En 2025, **18,16 %** des entreprises françaises de 10 personnes occupées ou plus (hors agriculture, mines et secteur financier) utilisaient au moins une technologie d'IA, contre 19,95 % dans l'Union européenne à 27 (Eurostat, enquête sur l'usage des TIC, jeu de données isoc_eb_ai).
 4. En 2026, **34 %** des TPE et PME françaises utilisent l'IA pour générer du texte, de la voix ou des images, premier usage cité, devant les assistants conversationnels (24 %) (Baromètre France Num 2026).
 5. En 2026, **68 %** des TPE et PME françaises utilisatrices d'IA jugent qu'elle a un impact positif sur leur entreprise, et 84 % de celles qui utilisent des solutions payantes (Baromètre France Num 2026).
 
@@ -117,7 +117,7 @@ Les données OCDE, Banque de France, Bpifrance Le Lab, CCI et INSEE n'ont pas pu
 Ces enseignements décrivent des tendances ; ils ne promettent aucun résultat.
 
 1. **L'IA n'est plus marginale chez les TPE et PME.** Quatre entreprises sur dix déclarent en utiliser (40 %, France Num 2026) ; chez les PME de 10 à 249 salariés, les utilisatrices sont désormais majoritaires (53 %).
-2. **L'écart se creuse avec la taille et avec le profil du dirigeant.** 36 % des entreprises de 1 à 4 salariés l'utilisent contre 62 % de celles de 50 à 249 salariés ; la formation du dirigeant et la clientèle (BtoB) vont avec un usage plus répandu.
+2. **L'usage varie avec la taille, et l'écart se creuse ; il varie aussi avec le profil du dirigeant.** (L'écart entre TPE et PME : 4 points en 2024, 10 en 2025, 15 en 2026 ; aucune série dans le temps n'est publiée pour le profil du dirigeant.) 36 % des entreprises de 1 à 4 salariés l'utilisent contre 62 % de celles de 50 à 249 salariés ; la formation du dirigeant et la clientèle (BtoB) vont avec un usage plus répandu.
 3. **Les usages courants sont simples : rédiger, converser, chercher.** La génération de contenus (34 %) et les assistants conversationnels (24 %) dominent ; l'automatisation et l'analyse de données restent à 9-11 % (les deux sources divergent sur lequel des deux est à 9 % ou à 11 %).
 4. **Le ressenti est plus favorable avec des outils payants, mais la mesure est déclarative.** 84 % d'impact positif déclaré avec des solutions payantes, 56 % avec des gratuites ; les deux groupes ne sont pas comparables à périmètre égal (taille, secteur, usages).
 5. **Les compétences et la confiance dans les données sont les points d'attention récurrents.** 31 % des utilisateurs d'IA n'ont ni compétence ni projet d'en acquérir ; en Europe, le manque de compétences est le frein le plus cité (7,76 % de l'ensemble des entreprises, soit 70,31 % des entreprises qui ont envisagé l'IA sans l'adopter, Eurostat, unité PC_ENT_AI_EC, UE27, 2025) ; 53 % des dirigeants craignent la perte de données.
@@ -149,21 +149,29 @@ Trois vérifications des faits (26 novembre 2026, sources rouvertes) ont conduit
 - § 6.1 : phrase erronée sur la « minorité » remplacée (les non-utilisatrices sont 60 % des TPE-PME ; les PME utilisatrices sont 53 %).
 - § 7 : la mention « chiffre mis à jour le 2 octobre 2026 » est sur la page web, pas dans le rapport ; elle ne vise que la notoriété France Num (21 %, +3 points). Les phrases « le jeu de chiffres a été corrigé » et « la version en ligne fait foi », non sourcées, sont retirées.
 - § 7 : le faux écart « 8 843 + 802 = 9 645 ≠ 9 655 » est supprimé : le rapport (p. 6) donne 812 réponses par téléphone, soit 8 843 + 812 = 9 655 ; le 802 de la page web est le chiffre de 2025. Prestataires précisés (Crédoc et Centre Relations Clients) ; représentativité sur 13 régions de France métropolitaine ; écart 799 / 874 sans salarié signalé.
-- Eurostat : « 10 personnes occupées ou plus » remplace « 10 salariés ou plus » partout (§ 1 à 5, § 7, `sources.json` n° 49 à 90) ; la différence salariés / personnes occupées est signalée aux § 1 et 7.
+- Eurostat : « 10 personnes occupées ou plus » remplace « 10 salariés ou plus » partout (§ 1 à 5, § 7, `sources.json` n° 49 à 90) ; la différence salariés / personnes occupées est signalée dans les Repères de vocabulaire, au § 2 et au § 7.
 - § 3 : « 48 % » précisé (principalement payantes 20 % + les deux 28 %), distinct des 50 % qui n'utilisent que des solutions gratuites (autre question). `sources.json` n° 33 : « principalement payantes » et non « payantes seules ».
 - § 4 : « lecture plus courante » (appréciation non sourcée) remplacé par « autre lecture publiée par Eurostat ».
 - `sources.json` : n° 25 et 26, URL du rapport ajoutée.
 - § 4 et § 6 : lecture Eurostat PC_ENT_AI_EC ajoutée pour les freins (manque de compétences : 70,31 %).
 - `sources.json` : entrées 25 et 26 corrigées, entrées 83 à 90 complétées, deux entrées ajoutées (52 % et 50 %).
-- Questionnaire : mention RGPD complète (finalité, base légale, droits, réclamation CNIL, destinataires, transferts ; champs responsable, contact, durée, outil laissés en marqueurs [À COMPLÉTER PAR L'ÉDITEUR]) ; « non nominatives » au lieu de « anonymes » ; Q2, Q3, Q4, Q6 alignées sur France Num ; note Q10 corrigée (pas de comparaison France Num) ; Q6, Q12, Q14 et exclusivité de Q9 corrigées.
+- Questionnaire : mention RGPD rédigée (finalité, droits, réclamation CNIL, destinataires) ; à ce stade la base légale, les destinataires et les transferts restaient « [À COMPLÉTER PAR L'ÉDITEUR] » (corrigé ensuite, voir plus bas) ; « non nominatives » au lieu de « anonymes » ; Q2, Q3, Q4, Q6 alignées sur France Num ; note Q10 corrigée (pas de comparaison France Num) ; Q6, Q12, Q14 et exclusivité de Q9 corrigées.
 
 Après la 3e vérification (toutes les sources rouvertes, tous les chiffres confirmés) :
 
 - `sources.json` n° 33 : libellé corrigé en « Utilisateurs d'IA employant principalement des solutions payantes, ou à la fois gratuites et payantes (20 % + 28 %) » (48 % = 20 % + 28 %, rapport p. 55).
-- Questionnaire, mention RGPD : les cinq champs laissés vides sont remplis (responsable : l'éditeur du site, avec renvoi à ses mentions légales et à sa page de confidentialité ; base légale : consentement du répondant, recueilli par une case à cocher avant l'envoi ; conservation : 24 mois après la fin de l'enquête, puis statistiques agrégées seules ; destinataire : l'éditeur seul ; outil, hébergement et transferts : précisés dans le lien d'enquête avant toute diffusion). La consigne interne sur l'adresse IP et l'e-mail est sortie du texte affiché aux répondants et placée dans les notes de validation.
+- Questionnaire, mention RGPD : consigne interne (adresse IP, e-mail) sortie du texte affiché et placée dans les notes de validation ; base légale (consentement, case à cocher), durée (24 mois) et destinataire (l'éditeur seul) renseignés ; responsable du traitement renvoyé à « l'éditeur du site » avec coordonnées dans les mentions légales (insuffisant, voir la 4e vérification) ; outil, hébergement et transferts toujours non renseignés (« précisés dans le lien d'enquête »).
 - Crédoc et Centre Relations Clients nommés ensemble au § 1.1 et dans le champ `source` des 51 entrées France Num de `sources.json`.
 - `sources.json` n° 25 et 26 : le champ `url` ne contient plus qu'une adresse (le rapport) ; la page de synthèse passe dans le champ `source`.
 - § 2 : le multiplicateur annuel est limité aux sept secteurs dont la page le donne.
 - § 7 : la note sur la répartition brute de la p. 8 est élargie (9 660 réponses, 874 sans salarié, 6 580 TPE, 3 080 PME, contre 9 655, 799, 6 786 et 2 869).
 - Questionnaire : Q8 alignée sur Q4 (« dans votre entreprise ») ; note de validation : « hors dirigeant » retiré pour Q1 (non sourcé dans France Num), exemples et 4 niveaux de réponse de Q4 signalés (regroupés en Oui / Non pour comparer).
 - Non repris : la suggestion facultative H (classe Eurostat 10-249 personnes occupées).
+
+Après la 4e vérification (chiffres de la page, du rapport et d'Eurostat tous confirmés ; reste la mention RGPD) :
+
+- Questionnaire, mention RGPD : responsable du traitement nommé (Axion-IA OÜ, éditeur du site axion-ia.com, contact par la page contact du site, aucun nom de personne) ; droits d'accès, de rectification, d'effacement, d'opposition, de portabilité, de retrait du consentement à tout moment, et réclamation auprès de la CNIL ; réserve de l'article 11 du RGPD après l'envoi (réponses non nominatives). Base légale (consentement), durée (24 mois) et destinataire (l'éditeur seul) sont conservés et marqués « à valider par l'éditeur ».
+- Outil d'enquête, lieu d'hébergement et transferts hors Union européenne : **non renseignés**. Un champ unique et visible « [À CHOISIR AVANT DIFFUSION : outil d'enquête et lieu d'hébergement] » reste dans la mention ; il sera rempli avant tout envoi du questionnaire. La politique de confidentialité du site ne décrit pas encore ce questionnaire : à compléter avant diffusion.
+- Historique des corrections : lignes sur la mention RGPD (vérifications n° 2 et 3) réécrites pour dire ce qui avait réellement été fait ; « § 1 et 7 » remplacé par « Repères de vocabulaire, § 2 et § 7 ».
+- § 6.2 : titre reformulé (« se creuse » ne vaut que pour la taille, pas pour le profil du dirigeant). Chiffre clé 3 : périmètre Eurostat précisé.
+- Questionnaire : « Je ne sais pas » exclusive en Q5 et ajoutée en Q7 ; note Q10 : pas de comparaison avec Eurostat non plus.
