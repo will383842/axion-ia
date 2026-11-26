@@ -49,7 +49,7 @@ export const VILLEPREUX_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Villepreux et plaine de Versailles ?",
-      a: "Nous intervenons dans vos locaux à Villepreux, partout en France.",
+      a: "Oui. Axion-IA intervient à Villepreux et dans toute la plaine de Versailles, notamment à Versailles et à Saint-Quentin-en-Yvelines.",
     },
     {
       q: "Travaillez-vous avec les TPE artisans BTP de Villepreux ?",

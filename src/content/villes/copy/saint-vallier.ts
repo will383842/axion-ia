@@ -49,7 +49,7 @@ export const SAINT_VALLIER_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Saint-Vallier et dans le bassin Montceau ?",
-      a: "Nous intervenons dans vos locaux à Saint-Vallier, partout en France.",
+      a: "Oui. Nous intervenons à Saint-Vallier et dans tout le bassin Le Creusot-Montceau : Montceau-les-Mines, Le Creusot et Chalon-sur-Saône.",
     },
     {
       q: "Travaillez-vous avec les PME industrielles en reconversion ?",

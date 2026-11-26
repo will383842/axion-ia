@@ -49,7 +49,7 @@ export const SAINTE_SIGOLENE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Sainte-Sigolène et capitale plasturgie ?",
-      a: "Nous intervenons partout en France, sur place ou à distance.",
+      a: "Oui. Nous intervenons à Sainte-Sigolène et dans tout le bassin plasturgie du nord de la Haute-Loire : Monistrol et Yssingeaux, comme partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les PME plasturgie ?",

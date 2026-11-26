@@ -49,7 +49,7 @@ export const VILLECRESNES_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Villecresnes et sud-est Val-de-Marne ?",
-      a: "Nous intervenons dans vos locaux à Villecresnes, partout en France.",
+      a: "Oui. Axion-IA intervient à Villecresnes et dans tout le sud-est du Val-de-Marne, notamment à Boissy-Saint-Léger et à Créteil.",
     },
     {
       q: "Travaillez-vous avec les TPE et artisans de Villecresnes ?",

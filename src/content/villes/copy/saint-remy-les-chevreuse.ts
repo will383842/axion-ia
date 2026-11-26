@@ -49,7 +49,7 @@ export const SAINT_REMY_LES_CHEVREUSE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Saint-Rémy-lès-Chevreuse ?",
-      a: "Nous intervenons dans vos locaux à Saint-Rémy-lès-Chevreuse, partout en France.",
+      a: "Oui. Nous intervenons à Saint-Rémy-lès-Chevreuse et dans toute la vallée de Chevreuse : Chevreuse, Gif-sur-Yvette, Orsay et le plateau de Saclay.",
     },
     {
       q: "Accompagnez-vous les consultants indépendants et télétravailleurs ?",
