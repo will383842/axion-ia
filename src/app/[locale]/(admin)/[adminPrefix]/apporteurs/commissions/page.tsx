@@ -41,6 +41,8 @@ import {
   euros,
   FORFAIT_CONFERENCE_CENTS,
   PALIER_CONFERENCE,
+  PALIER_JOURNEE_IA,
+  FORFAIT_JOURNEE_IA_CENTS,
   PALIERS_FORMATION,
 } from "@/features/apporteurs-reseau/regles";
 import { CommandeAAttribuer } from "@/components/admin/apporteurs/CommandeAAttribuer";
@@ -132,7 +134,13 @@ const PALIERS = [
     libelle: "Conférence (500 € fixes)",
     detail: `${euros(FORFAIT_CONFERENCE_CENTS)} par commande`,
   },
+  {
+    id: PALIER_JOURNEE_IA,
+    libelle: "Journée IA (500 € par journée)",
+    detail: `${euros(FORFAIT_JOURNEE_IA_CENTS)} par journée, au prorata du prix payé (quantité = journées)`,
+  },
 ];
+const PALIERS_JOURNEE_IA = PALIERS.filter((p) => p.id === PALIER_JOURNEE_IA);
 
 export default async function CommissionsApporteursPage({ params, searchParams }: PageProps) {
   const { adminPrefix } = await params;
@@ -512,8 +520,10 @@ export default async function CommissionsApporteursPage({ params, searchParams }
                   <p className="text-[length:var(--text-admin-sm)]">
                     {c.palier === PALIER_CONFERENCE
                       ? "Conférence"
-                      : (PALIERS_FORMATION.find((p) => p.id === c.palier)?.libelle ??
-                        (c.palier === PALIER_HORS_GRILLE ? LIBELLE_HORS_GRILLE : c.palier))}
+                      : c.palier === PALIER_JOURNEE_IA
+                        ? "Journée IA"
+                        : (PALIERS_FORMATION.find((p) => p.id === c.palier)?.libelle ??
+                          (c.palier === PALIER_HORS_GRILLE ? LIBELLE_HORS_GRILLE : c.palier))}
                   </p>
                 ) : null}
                 {c.statut === "a_qualifier" && !c.parrainage
@@ -582,6 +592,12 @@ export default async function CommissionsApporteursPage({ params, searchParams }
                 c.activite === "formation" &&
                 peutPayer ? (
                   <QualifierForm id={c.id} paliers={PALIERS} />
+                ) : null}
+                {c.statut === "a_qualifier" &&
+                !c.parrainage &&
+                c.activite !== "formation" &&
+                peutPayer ? (
+                  <QualifierForm id={c.id} paliers={PALIERS_JOURNEE_IA} />
                 ) : null}
                 {c.statut === "a_qualifier" && c.parrainage ? (
                   <p className="text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]">
