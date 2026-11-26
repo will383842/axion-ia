@@ -62,8 +62,9 @@ const rendu = (
 ) => collectPdfTextNormalized(React.createElement(Composant as never, { data, identite }));
 
 describe("convention v9 — garantie de remboursement de la Journée IA", () => {
-  it("la version courante est la 11 (acompte non-professionnel) ; les v10, v9 (garantie Journée IA) et v8 sont archivées", () => {
-    expect(GABARIT_VERSIONS.convention).toBe(11);
+  it("la version courante est la 12 (report sans frais à l'initiative d'Axion-IA) ; les v11, v10, v9 (garantie Journée IA) et v8 sont archivées", () => {
+    expect(GABARIT_VERSIONS.convention).toBe(12);
+    expect(gabaritArchive("convention", 11)).toBeDefined();
     expect(gabaritArchive("convention", 10)).toBeDefined();
     expect(gabaritArchive("convention", 9)).toBeDefined();
     expect(gabaritArchive("convention", 8)).toBeDefined();

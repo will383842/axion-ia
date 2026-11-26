@@ -219,7 +219,22 @@ function corps(
  * comparaison avec l'ancienne version ; son texte est verrouillé plus bas.
  */
 function neutraliserAnnulation(texte: string): string {
-  return texte.replace(/4\. Conditions d'annulation.*?(?=5\. [A-ZÉ])/su, "");
+  // 26/11/2026 (v10 tripartite) : l'OPCO est informé d'un report à l'initiative de l'organisme (§ 5).
+  return (
+    texte
+      .replace(/4\. Conditions d'annulation.*?(?=5\. [A-ZÉ])/su, "")
+      // Même décision : plafond de responsabilité réservé (faute lourde, non-professionnel) et force majeure
+      // de l'organisme renvoyée à l'article 4 (section 8).
+      .replace(/ Cette limitation ne s'applique ni en cas de faute lourde.*?à l'article 4\./su, "")
+      .replace(
+        /sans délai\. Si l'empêchement est celui du client,.*?titre de la force majeure\./su,
+        "sans délai ; l'action est alors reportée à une date convenue entre les parties.",
+      )
+      .replace(
+        /\)\s*ou d'un report à l'initiative de l'organisme.*?l'article 4 s'applique\./su,
+        ").",
+      )
+  );
 }
 
 /** Section 4 du texte NON neutralisé, pour en verrouiller le contenu. */

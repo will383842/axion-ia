@@ -1487,7 +1487,7 @@ export default async function FormationsHub({ params }: Props) {
                       id: "remboursement",
                       question: "Garantie de résultat ?",
                       answer:
-                        "Non, et personne de sérieux ne peut en donner une : nos conditions générales posent une obligation de moyens, et les gains évoqués restent indicatifs — ils dépendent de vos outils, de vos données et de ce que vos équipes appliquent ensuite. Ce que nous engageons figure au devis : le programme, la durée, le nombre de participants et les supports remis. En cas d'imprévu de votre côté, la session est reportable une fois sans frais ; l'acompte prévu au devis, dès qu'il est versé, reste acquis en cas d'annulation, quel que soit le délai (hors rétractation légale et annulation de notre fait).",
+                        "Non, et personne de sérieux ne peut en donner une : nos conditions générales posent une obligation de moyens, et les gains évoqués restent indicatifs — ils dépendent de vos outils, de vos données et de ce que vos équipes appliquent ensuite. Ce que nous engageons figure au devis : le programme, la durée, le nombre de participants et les supports remis. En cas d'imprévu de votre côté, la session est reportable une fois sans frais ; l'acompte prévu au devis, dès qu'il est versé, reste acquis en cas d'annulation, quel que soit le délai (hors rétractation légale, manquement ou report à notre initiative et force majeure).",
                     },
                   ]
                 : [
