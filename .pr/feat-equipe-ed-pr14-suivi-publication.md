@@ -30,3 +30,11 @@ Règles de déclenchement ; API Google simulées ; quota respecté (jamais plus 
 - Le champ `tache` est facultatif : un worker plus ancien l'ignore et fait le scan d'avant.
 - Interrupteur allumé : le scan lit jusqu'à 500 articles (au lieu de 10) puis filtre par les règles.
 - Le dépôt n'ayant pas changé de lockfile, aucun `pnpm install` n'a été nécessaire.
+
+## Relecture Opus
+
+Trois tours. Tour 1 : adresse des guides/actualités, échecs relancés sans fin, re-signalement répété, liens relatifs, absence de `catch` — corrigés. Tour 2 : filet d'âge (180 jours) qui pouvait masquer les vrais signaux (désormais classé en dernier), `redis.set` sans `catch` — corrigés. Tour 3 : corrections confirmées, aucune régression interrupteur éteint.
+
+Points connus non traités : au-delà de 500 articles certains ne sont pas évalués ; J+90 relevé sur la même fenêtre de 28 jours ; quota Redis non testé directement ; contrôle de liens externes strict (une redirection compte comme cassée).
+
+VERDICT OPUS : BON
