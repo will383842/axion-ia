@@ -1,0 +1,4 @@
+Rouge : seul le lot « tests ciblés écriture des scripts (2/4) » (informatif, `continue-on-error`) échouait sur 95ea6936 ; les 11 autres contextes sont verts, la branche est déjà à jour de origin/master.
+Changé : rien dans le code (commit vide de correction) — l'unique test rouge, `tests/tableau/prete-avec-remarques-reglage-v20j.test.ts` (c), vient de `src/services/prete-avec-remarques-iv.ts` (S-13-g-v21q, #1739), hors fiche, et échoue à l'identique sur origin/master.
+Tests : lot 2/4 rejoué en local = 1 échec / 1120 réussis ; `tests/tableau/regard` + `tests/usine/inventaire/tableau.test.ts` = 122/122 ; `tsc --noEmit` : erreurs seulement sous `docs/formats/...`, aucune dans les fichiers de la fiche.
+Rouge hérité non réparé : prete-avec-remarques-reglage-v20j (c) (« un seul lecteur de la clé » voit aussi prete-avec-remarques-iv.ts), à traiter dans la fiche S-13 ; dépendances installées avec un magasin pnpm local (le magasin par défaut est en lecture seule).
