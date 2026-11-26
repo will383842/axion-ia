@@ -49,7 +49,7 @@ export const PLAN_DE_CUQUES_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Plan-de-Cuques ?",
-      a: "Nous intervenons dans vos locaux à Plan-de-Cuques, partout en France. Couverture complète métropole Aix-Marseille.",
+      a: "Axion IA intervient partout en France, sur site ou à distance. Couverture complète métropole Aix-Marseille.",
     },
     {
       q: "Quels sont les tarifs pour un audit IA à Plan-de-Cuques ?",

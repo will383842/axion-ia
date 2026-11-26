@@ -122,7 +122,7 @@ export const IVRY_SUR_SEINE_COPY: VilleCopy = {
           },
           {
             q: "Travaillez-vous avec les PME qui s'implantent dans la ZAC Ivry Confluences ?",
-            a: "Oui. Nous intervenons dans vos locaux, partout en France. Nous y déployons portails clients, intranets IA et automatisation des process commerciaux, en code sur mesure intégré à vos outils existants.",
+            a: "Oui. La ZAC Ivry Confluences, avec 145 ha et 340 000 m² tertiaires et productifs aménagés par Sadev 94 et l'arrivée de la Caisse des Dépôts, attire des PME de services et d'industrie légère. Nous y déployons portails clients, intranets IA et automatisation des process commerciaux, en code sur mesure intégré à vos outils existants.",
           },
           {
             q: "Vos plateformes santé et silver-économie sont-elles conformes RGPD ?",
@@ -130,7 +130,7 @@ export const IVRY_SUR_SEINE_COPY: VilleCopy = {
           },
           {
             q: "Quels délais pour un devis sur un projet de site ou SaaS à Ivry-sur-Seine ?",
-            a: "Nous intervenons dans vos locaux, partout en France. Nous transmettons un devis à partir de 24-48 h selon la complexité du projet.",
+            a: "Nous transmettons un devis à partir de 24-48 h selon la complexité du projet.",
           },
         ],
         guarantees:

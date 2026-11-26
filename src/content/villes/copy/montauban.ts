@@ -232,7 +232,7 @@ export const MONTAUBAN_COPY: VilleCopy = {
     },
     {
       q: "Quels délais pour une intervention sur site à Montauban ?",
-      a: "Nous intervenons dans vos locaux, partout en France. Audit livré sous 5 jours après visite. Implémentation : 2 à 6 semaines.",
+      a: "Axion IA intervient partout en France, sur site ou à distance. Audit livré sous 5 jours après visite. Implémentation : 2 à 6 semaines.",
     },
     {
       q: "Intervenez-vous dans les communes proches de Montauban ?",

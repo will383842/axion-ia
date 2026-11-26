@@ -65,7 +65,7 @@ export const FREYMING_MERLEBACH_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Freyming-Merlebach ?",
-      a: "Nous intervenons dans vos locaux à Freyming-Merlebach, partout en France.",
+      a: "Axion IA intervient partout en France, sur site ou à distance, y compris à Freyming-Merlebach et dans tout le bassin houiller lorrain.",
     },
   ],
 };

@@ -65,7 +65,7 @@ export const LONGUEAU_COPY: VilleCopy = {
     },
     {
       q: "Quels avantages de la proximité d'Amiens pour une mission IA ?",
-      a: "Nous intervenons dans vos locaux à Longueau, partout en France. L'agglomération concentre l'essentiel du tissu économique picard.",
+      a: "L'agglomération concentre l'essentiel du tissu économique picard.",
     },
   ],
 };

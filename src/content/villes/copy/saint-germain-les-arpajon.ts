@@ -49,7 +49,7 @@ export const SAINT_GERMAIN_LES_ARPAJON_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Saint-Germain-lès-Arpajon ?",
-      a: "Nous intervenons dans vos locaux à Saint-Germain-lès-Arpajon, partout en France.",
+      a: "Axion IA intervient partout en France, sur site ou à distance.",
     },
     {
       q: "Travaillez-vous avec les artisans et commerçants de proximité ?",

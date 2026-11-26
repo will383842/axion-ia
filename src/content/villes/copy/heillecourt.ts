@@ -65,7 +65,7 @@ export const HEILLECOURT_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Heillecourt ?",
-      a: "Nous intervenons dans vos locaux à Heillecourt, partout en France. Position stratégique au sud immédiat de Nancy.",
+      a: "Axion IA intervient partout en France, sur site ou à distance. Position stratégique au sud immédiat de Nancy.",
     },
   ],
 };

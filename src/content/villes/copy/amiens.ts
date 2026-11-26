@@ -265,7 +265,7 @@ export const AMIENS_COPY: VilleCopy = {
         hero: "Les interventions IA Axion-IA à Amiens se déclinent en formats sur site d'une à plusieurs journées selon vos équipes et votre secteur — industrie, commerce, services, R&D. Vos collaborateurs ne repartent pas avec des slides : ils repartent avec des outils IA installés sur leur poste, configurés pour leur travail réel.",
         whyHere: [
           "Amiens et son bassin concentrent un tissu d'entreprises manufacturières et de services où la montée en compétence IA génère des gains opérationnels immédiats : rédaction de rapports qualité, gestion documentaire fournisseurs, suivi de production.",
-          "Nos consultants se déplacent sur site à Amiens — centre-ville, zone industrielle nord, Pôle Jules Verne, zones d'activités périphériques. Pas d'aléa logistique.",
+          "Axion-IA intervient sur site à Amiens — centre-ville, zone industrielle nord, Pôle Jules Verne, zones d'activités périphériques.",
           "Le format collectif (1 journée) est calibré pour les équipes de quelques personnes à une centaine de collaborateurs, adapté aux TPE artisanales comme aux PME industrielles.",
           "Le format Conférence convient aux plénières d'entreprise et aux séminaires de rentrée : auditoriums d'entreprise, salles de séminaire des hôtels amiénois, campus UPJV ou UniLaSalle.",
           "Le format Dirigeants permet un cadrage en huis-clos pour les comités de direction et les CODIR régionaux.",

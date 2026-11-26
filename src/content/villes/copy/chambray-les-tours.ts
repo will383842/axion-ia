@@ -65,7 +65,7 @@ export const CHAMBRAY_LES_TOURS_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Chambray-lès-Tours ?",
-      a: "Nous intervenons dans vos locaux à Chambray-lès-Tours, partout en France.",
+      a: "Axion IA intervient sur site à Chambray-lès-Tours, après un échange de cadrage.",
     },
   ],
 };

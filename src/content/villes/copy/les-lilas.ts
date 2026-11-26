@@ -248,7 +248,7 @@ export const LES_LILAS_COPY: VilleCopy = {
     },
     {
       q: "Proposez-vous des sessions 1-to-1 pour dirigeants lilasiens ?",
-      a: "Oui. Nous intervenons dans vos locaux, partout en France. Cible : dirigeants de TPE/PME souhaitant cadrer leur feuille de route IA en code custom sans dépendance no-code.",
+      a: "Oui. Cible : dirigeants de TPE/PME souhaitant cadrer leur feuille de route IA en code custom sans dépendance no-code.",
     },
   ],
 };

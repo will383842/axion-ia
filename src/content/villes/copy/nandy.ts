@@ -14,9 +14,9 @@ export const NANDY_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Nandy (77). Nous accompagnons TPE et PME : artisans, commerçants, PME tertiaires de l'agglomération Grand Paris Sud — Sénart, professions libérales et prestataires de services du sud Seine-et-Marne.",
   seoHook: "artisanat bâtiment & commerce proximité",
   ecosystemFr:
-    "Nandy est une commune résidentielle de l'agglomération Grand Paris Sud, au sein du pôle urbain de Sénart en Seine-et-Marne. Tissu économique : TPE artisanat bâtiment et services, commerces de centre-ville, PME tertiaires implantées dans les zones d'activités de Sénart, professions libérales (santé, juridique). Nous intervenons dans vos locaux à Nandy, comme partout en France.",
+    "Nandy est une commune résidentielle de l'agglomération Grand Paris Sud, au sein du pôle urbain de Sénart en Seine-et-Marne. Tissu économique : TPE artisanat bâtiment et services, commerces de centre-ville, PME tertiaires implantées dans les zones d'activités de Sénart, professions libérales (santé, juridique). Proximité de Melun pour les échanges logistiques.",
   ecosystemEn:
-    "Nandy est une commune résidentielle de l'agglomération Grand Paris Sud, au sein du pôle urbain de Sénart en Seine-et-Marne. Tissu économique : TPE artisanat bâtiment et services, commerces de centre-ville, PME tertiaires implantées dans les zones d'activités de Sénart, professions libérales (santé, juridique). Nous intervenons dans vos locaux à Nandy, comme partout en France.",
+    "Nandy est une commune résidentielle de l'agglomération Grand Paris Sud, au sein du pôle urbain de Sénart en Seine-et-Marne. Tissu économique : TPE artisanat bâtiment et services, commerces de centre-ville, PME tertiaires implantées dans les zones d'activités de Sénart, professions libérales (santé, juridique). Proximité de Melun pour les échanges logistiques.",
   distancesFr:
     "Melun à 15 min, Paris centre à 45 min via RER D (gare de Cesson). Évry-Courcouronnes à 20 min, Corbeil-Essonnes à 15 min. A5 et Francilienne accessibles en 10 min. Aéroport Paris-Orly à 30 min, Roissy-CDG à 55 min.",
   distancesEn:

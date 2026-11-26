@@ -230,7 +230,7 @@ export const ABBEVILLE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Abbeville et dans la Somme ?",
-      a: "Oui, Axion-IA accompagne les TPE et PME d'Abbeville, de la baie de Somme et du Ponthieu. Nous intervenons dans vos locaux à Abbeville, partout en France.",
+      a: "Oui, Axion-IA accompagne les TPE et PME d'Abbeville, de la baie de Somme et du Ponthieu. Axion IA intervient partout en France, sur site ou à distance.",
     },
     {
       q: "Travaillez-vous avec les PME agroalimentaires et industrielles abbevilloises ?",

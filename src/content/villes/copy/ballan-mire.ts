@@ -65,7 +65,7 @@ export const BALLAN_MIRE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Ballan-Miré ?",
-      a: "Nous intervenons dans vos locaux à Ballan-Miré, partout en France.",
+      a: "Axion IA intervient sur site à Ballan-Miré, après un échange de cadrage.",
     },
   ],
 };

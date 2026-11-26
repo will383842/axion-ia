@@ -65,7 +65,7 @@ export const MOYEUVRE_GRANDE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Moyeuvre-Grande ?",
-      a: "Nous intervenons dans vos locaux à Moyeuvre-Grande, partout en France.",
+      a: "Axion IA intervient partout en France, sur site ou à distance.",
     },
   ],
 };

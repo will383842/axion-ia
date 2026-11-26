@@ -65,7 +65,7 @@ export const LIVERDUN_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Liverdun ?",
-      a: "Nous intervenons dans vos locaux à Liverdun, partout en France.",
+      a: "Nos consultants interviennent sur site à Liverdun, après un premier échange de cadrage.",
     },
   ],
 };

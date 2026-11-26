@@ -230,7 +230,7 @@ export const THIONVILLE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Thionville et dans le nord mosellan ?",
-      a: "Oui, Axion-IA accompagne les TPE et PME de Thionville et du bassin frontalier (Yutz, Hayange, vallée de la Fensch, Cattenom). Nous intervenons dans vos locaux à Thionville, partout en France.",
+      a: "Oui, Axion-IA accompagne les TPE et PME de Thionville et du bassin frontalier (Yutz, Hayange, vallée de la Fensch, Cattenom). Axion IA intervient partout en France, sur site ou à distance.",
     },
     {
       q: "Accompagnez-vous les entreprises tournées vers le Luxembourg ?",

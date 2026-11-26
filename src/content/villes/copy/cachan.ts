@@ -233,7 +233,7 @@ export const CACHAN_COPY: VilleCopy = {
     },
     {
       q: "Combien de temps faut-il pour intervenir à Cachan ?",
-      a: "Nous intervenons dans vos locaux, partout en France. Williams intervient à Cachan dans un délai de 5 jours ouvrés après confirmation.",
+      a: "Williams intervient à Cachan dans un délai de 5 jours ouvrés après confirmation.",
     },
     {
       q: "Axion-IA intervient-elle dans les communes proches de Cachan ?",

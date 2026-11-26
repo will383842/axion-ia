@@ -128,7 +128,7 @@ export const NOGENT_SUR_MARNE_COPY: VilleCopy = {
           },
           {
             q: "Le site sera-t-il rapide et bien référencé sur mobile ?",
-            a: "Oui. Nous intervenons dans vos locaux à Nogent-sur-Marne, partout en France. Nous concevons en mobile-first avec une attention forte aux performances (temps de chargement, fluidité) et au référencement local.",
+            a: "Oui. Nous concevons en mobile-first avec une attention forte aux performances (temps de chargement, fluidité) et au référencement local.",
           },
           {
             q: "Quel est le délai pour démarrer un projet de site à Nogent-sur-Marne ?",

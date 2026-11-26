@@ -230,7 +230,7 @@ export const COLMAR_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Colmar et dans le centre-Alsace ?",
-      a: "Oui, Axion-IA accompagne les TPE et PME de Colmar et de tout le centre-Alsace (Sélestat, Kaysersberg, Ribeauvillé, la route des vins). Nous intervenons dans vos locaux à Colmar, partout en France.",
+      a: "Oui, Axion-IA accompagne les TPE et PME de Colmar et de tout le centre-Alsace (Sélestat, Kaysersberg, Ribeauvillé, la route des vins). Axion IA intervient partout en France, sur site ou à distance.",
     },
     {
       q: "Accompagnez-vous les domaines viticoles de la route des vins ?",
@@ -246,7 +246,7 @@ export const COLMAR_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Colmar ?",
-      a: "Nous intervenons dans vos locaux à Colmar, partout en France.",
+      a: "Axion IA intervient partout en France, sur site ou à distance, y compris dans tout le centre-Alsace.",
     },
   ],
 };

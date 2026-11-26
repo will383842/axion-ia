@@ -65,7 +65,7 @@ export const MIGNALOUX_BEAUVOIR_COPY: VilleCopy = {
     },
     {
       q: "Travaillez-vous avec les entreprises proches du campus universitaire ?",
-      a: "Nous intervenons dans vos locaux à Mignaloux-Beauvoir, partout en France. Nous accompagnons spin-offs, PME tech, prestataires R&D et startups sur leurs projets IA.",
+      a: "Oui. Nous accompagnons spin-offs, PME tech, prestataires R&D et startups sur leurs projets IA.",
     },
   ],
 };

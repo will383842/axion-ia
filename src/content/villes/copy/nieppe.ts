@@ -65,7 +65,7 @@ export const NIEPPE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Nieppe ?",
-      a: "Nous intervenons dans vos locaux à Nieppe, partout en France.",
+      a: "Axion IA intervient partout en France, sur site ou à distance.",
     },
   ],
 };

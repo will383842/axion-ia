@@ -132,7 +132,7 @@ export const CHAVILLE_COPY: VilleCopy = {
           },
           {
             q: "Pouvez-vous créer une billetterie ou un site pour un commerce ou un lieu culturel chavillois ?",
-            a: "Oui. Nous intervenons dans vos locaux à Chaville, partout en France. Pour un commerçant du marché de Chaville, on bâtit une vitrine e-commerce avec click-and-collect, devis automatisés et agent conversationnel multilingue.",
+            a: "Oui. Pour un commerçant du marché de Chaville, on bâtit une vitrine e-commerce avec click-and-collect, devis automatisés et agent conversationnel multilingue.",
           },
         ],
         guarantees:
@@ -218,7 +218,7 @@ export const CHAVILLE_COPY: VilleCopy = {
           },
           {
             q: "Pouvez-vous créer une billetterie ou un site pour un commerce ou un lieu culturel chavillois ?",
-            a: "Oui. Nous intervenons dans vos locaux à Chaville, partout en France. Pour un commerçant du marché de Chaville, on bâtit une vitrine e-commerce avec click-and-collect, devis automatisés et agent conversationnel multilingue.",
+            a: "Oui. Pour un commerçant du marché de Chaville, on bâtit une vitrine e-commerce avec click-and-collect, devis automatisés et agent conversationnel multilingue.",
           },
         ],
         guarantees:

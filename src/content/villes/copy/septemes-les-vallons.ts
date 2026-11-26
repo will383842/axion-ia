@@ -49,7 +49,7 @@ export const SEPTEMES_LES_VALLONS_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Septèmes-les-Vallons ?",
-      a: "Nous intervenons dans vos locaux à Septèmes-les-Vallons, partout en France. Couverture complète métropole nord.",
+      a: "Oui. Axion IA intervient partout en France, sur site ou à distance, y compris à Septèmes-les-Vallons et dans tout le nord de Marseille. Couverture complète métropole nord.",
     },
     {
       q: "Quels sont les tarifs pour un audit IA à Septèmes-les-Vallons ?",

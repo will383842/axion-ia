@@ -130,7 +130,7 @@ export const LE_PERREUX_SUR_MARNE_COPY: VilleCopy = {
           },
           {
             q: "Couvrez-vous aussi les communes autour du Perreux-sur-Marne ?",
-            a: "Oui : Nogent-sur-Marne, Bry-sur-Marne, Fontenay-sous-Bois, Neuilly-Plaisance et Champigny-sur-Marne, et plus largement l'Est parisien. Nous intervenons dans vos locaux au Perreux-sur-Marne, partout en France.",
+            a: "Oui : Nogent-sur-Marne, Bry-sur-Marne, Fontenay-sous-Bois, Neuilly-Plaisance et Champigny-sur-Marne, et plus largement l'Est parisien. Axion IA intervient partout en France, sur site ou à distance.",
           },
         ],
         guarantees:
@@ -232,7 +232,7 @@ export const LE_PERREUX_SUR_MARNE_COPY: VilleCopy = {
     },
     {
       q: "Quels délais pour une intervention Axion-IA au Perreux-sur-Marne ?",
-      a: "Nous intervenons dans vos locaux au Perreux-sur-Marne, partout en France. L'intervention a lieu sous 5 à 10 jours ouvrés après validation.",
+      a: "L'intervention a lieu sous 5 à 10 jours ouvrés après validation.",
     },
     {
       q: "Intervenez-vous dans les communes proches du Perreux-sur-Marne ?",

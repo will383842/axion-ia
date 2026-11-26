@@ -65,7 +65,7 @@ export const VAUX_SUR_SEINE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Vaux-sur-Seine ?",
-      a: "Nous intervenons dans vos locaux à Vaux-sur-Seine, partout en France.",
+      a: "Une mission à Vaux-sur-Seine démarre par un échange de cadrage, puis se déroule sur site ou à distance, avec des livrables remis et documentés.",
     },
   ],
 };

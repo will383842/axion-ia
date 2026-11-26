@@ -49,7 +49,7 @@ export const CHATILLON_SUR_SEINE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Châtillon-sur-Seine et dans le Châtillonnais ?",
-      a: "Nous intervenons dans vos locaux à Châtillon-sur-Seine, partout en France.",
+      a: "Oui, Axion IA intervient partout en France, sur site ou à distance, y compris à Châtillon-sur-Seine et dans le Châtillonnais.",
     },
     {
       q: "Travaillez-vous avec les viticulteurs et PME agroalimentaires du Châtillonnais ?",

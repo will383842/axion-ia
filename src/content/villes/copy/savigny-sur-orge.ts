@@ -116,7 +116,7 @@ export const SAVIGNY_SUR_ORGE_COPY: VilleCopy = {
         faq: [
           {
             q: "Axion-IA crée-t-il des sites web à Savigny-sur-Orge ?",
-            a: "Oui. Nous intervenons dans vos locaux, partout en France. Nous concevons des sites web et plateformes SaaS augmentés par l'IA pour les entreprises de Savigny-sur-Orge et de la vallée de l'Orge : centre-ville et gare RER C, Z.A.C. Les Gâtines route de Morangis, pôle tertiaire avenue du Garigliano.",
+            a: "Oui. Nous concevons des sites web et plateformes SaaS augmentés par l'IA pour les entreprises de Savigny-sur-Orge et de la vallée de l'Orge : centre-ville et gare RER C, Z.A.C. Les Gâtines route de Morangis, pôle tertiaire avenue du Garigliano.",
           },
           {
             q: "Pouvez-vous monter une boutique e-commerce pour un commerce du centre-ville de Savigny ?",

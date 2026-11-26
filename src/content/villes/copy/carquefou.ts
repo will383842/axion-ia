@@ -230,7 +230,7 @@ export const CARQUEFOU_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Carquefou et dans la métropole nantaise ?",
-      a: "Nous intervenons dans vos locaux, partout en France. Nous accompagnons en priorité les TPE et PME, puis les ETI en complément.",
+      a: "Oui, Axion IA intervient partout en France, sur site ou à distance, y compris à Carquefou et dans la métropole nantaise. Nous accompagnons en priorité les TPE et PME, puis les ETI en complément.",
     },
     {
       q: "Travaillez-vous avec les PMI et sous-traitants industriels ?",

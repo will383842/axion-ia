@@ -232,7 +232,7 @@ export const GRANDE_SYNTHE_COPY: VilleCopy = {
     },
     {
       q: "Sous quel délai pouvez-vous intervenir à Grande-Synthe ?",
-      a: "Nous intervenons dans vos locaux à Grande-Synthe, partout en France. Notre équipe se déplace à Grande-Synthe dans un délai de 5 jours ouvrés après validation.",
+      a: "Notre équipe intervient à Grande-Synthe dans un délai de 5 jours ouvrés après validation.",
     },
     {
       q: "Couvrez-vous les communes proches de Grande-Synthe ?",

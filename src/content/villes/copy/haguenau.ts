@@ -130,7 +130,7 @@ export const HAGUENAU_COPY: VilleCopy = {
           },
           {
             q: "Sous quel délai recevons-nous un devis pour un site à Haguenau ?",
-            a: "Nous intervenons dans vos locaux à Haguenau, partout en France. Nous remettons un devis à partir de 24 à 48 h selon la complexité du projet.",
+            a: "Nous remettons un devis à partir de 24 à 48 h selon la complexité du projet.",
           },
         ],
         guarantees:
@@ -232,7 +232,7 @@ export const HAGUENAU_COPY: VilleCopy = {
     },
     {
       q: "Vous déplacez-vous à Haguenau ?",
-      a: "Oui. Nous intervenons dans vos locaux à Haguenau, partout en France. Williams intervient à Haguenau sous 5 jours ouvrés.",
+      a: "Oui. Axion IA intervient partout en France, sur site ou à distance. Williams intervient à Haguenau sous 5 jours ouvrés.",
     },
     {
       q: "Quelles communes de l'agglomération haguenovienne couvrez-vous ?",

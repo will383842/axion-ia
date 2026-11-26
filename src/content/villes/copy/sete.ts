@@ -235,7 +235,7 @@ export const SETE_COPY: VilleCopy = {
     },
     {
       q: "Axion-IA intervient-elle dans les communes autour de Sète ?",
-      a: "Oui, nous couvrons Sète Agglopôle Méditerranée (unité urbaine de 95 662 habitants) : Frontignan, Marseillan, Bouzigues, Loupian, Mèze et Balaruc-les-Bains, ainsi que l'aire montpelliéraine. Nous intervenons dans vos locaux à Sète, partout en France.",
+      a: "Oui, nous couvrons Sète Agglopôle Méditerranée (unité urbaine de 95 662 habitants) : Frontignan, Marseillan, Bouzigues, Loupian, Mèze et Balaruc-les-Bains, ainsi que l'aire montpelliéraine. Axion IA intervient partout en France, sur site ou à distance.",
     },
     {
       q: "Comment Axion-IA garantit la conformité RGPD à Sète ?",

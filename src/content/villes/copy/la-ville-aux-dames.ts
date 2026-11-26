@@ -14,9 +14,9 @@ export const LA_VILLE_AUX_DAMES_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à La Ville-aux-Dames (37). Nous accompagnons tous types d'activités : TPE tertiaires et de services, PME de la zone d'activités des Granges, commerçants, artisans BTP, professions libérales, indépendants et entreprises de Tours Métropole est.",
   seoHook: "services aux & professions libérales",
   ecosystemFr:
-    "La Ville-aux-Dames est une commune résidentielle attractive de l'est de Tours Métropole (5 606 habitants), en bords de Loire. La zone d'activités des Granges accueille TPE et PME tertiaires. Tissu économique diversifié : services aux entreprises, commerces de proximité, artisanat BTP, professions libérales. Nous intervenons dans vos locaux à La Ville-aux-Dames, comme partout en France.",
+    "La Ville-aux-Dames est une commune résidentielle attractive de l'est de Tours Métropole (5 606 habitants), en bords de Loire. La zone d'activités des Granges accueille TPE et PME tertiaires. Tissu économique diversifié : services aux entreprises, commerces de proximité, artisanat BTP, professions libérales.",
   ecosystemEn:
-    "La Ville-aux-Dames est une commune résidentielle attractive de l'est de Tours Métropole (5 606 habitants), en bords de Loire. La zone d'activités des Granges accueille TPE et PME tertiaires. Tissu économique diversifié : services aux entreprises, commerces de proximité, artisanat BTP, professions libérales. Nous intervenons dans vos locaux à La Ville-aux-Dames, comme partout en France.",
+    "La Ville-aux-Dames est une commune résidentielle attractive de l'est de Tours Métropole (5 606 habitants), en bords de Loire. La zone d'activités des Granges accueille TPE et PME tertiaires. Tissu économique diversifié : services aux entreprises, commerces de proximité, artisanat BTP, professions libérales.",
   distancesFr:
     "Tours centre à 10 min. Gare TGV Saint-Pierre-des-Corps à 5 min (Paris 1h05). Aéroport Tours Val de Loire à 25 min. Amboise à 20 min. A10 Paris-Bordeaux à 10 min.",
   distancesEn:

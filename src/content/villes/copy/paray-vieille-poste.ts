@@ -49,7 +49,7 @@ export const PARAY_VIEILLE_POSTE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Paray-Vieille-Poste près d'Orly ?",
-      a: "Nous intervenons dans vos locaux à Paray-Vieille-Poste, partout en France. Secteurs logistique, fret, hôtellerie, services.",
+      a: "Axion IA intervient partout en France, sur site ou à distance. Secteurs logistique, fret, hôtellerie, services.",
     },
     {
       q: "Accompagnez-vous les entreprises de logistique aéroportuaire ?",

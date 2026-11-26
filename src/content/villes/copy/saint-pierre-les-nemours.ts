@@ -49,7 +49,7 @@ export const SAINT_PIERRE_LES_NEMOURS_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Saint-Pierre-lès-Nemours ?",
-      a: "Nous intervenons dans vos locaux à Saint-Pierre-lès-Nemours, partout en France.",
+      a: "Oui. Axion IA intervient partout en France, sur site ou à distance, y compris à Saint-Pierre-lès-Nemours et dans tout le sud Seine-et-Marne.",
     },
     {
       q: "Accompagnez-vous les artisans et petits commerces ?",

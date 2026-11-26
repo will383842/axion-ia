@@ -233,7 +233,7 @@ export const VALLAURIS_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une intervention IA à Vallauris ?",
-      a: "Nous intervenons dans vos locaux, partout en France. Williams intervient sur site à Vallauris, généralement sous 5 jours ouvrés. La formation collective cible un workflow concret : facturation, planning, relances, intégration CRM.",
+      a: "Williams intervient sur site à Vallauris, généralement sous 5 jours ouvrés. La formation collective cible un workflow concret : facturation, planning, relances, intégration CRM.",
     },
     {
       q: "Axion-IA intervient-elle dans les communes proches de Vallauris ?",

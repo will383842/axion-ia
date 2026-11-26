@@ -117,11 +117,11 @@ export const SAINT_LOUIS_COPY: VilleCopy = {
           },
           {
             q: "Gérez-vous un site bilingue pour une clientèle suisse et allemande ?",
-            a: "Oui. Nous intervenons dans vos locaux, partout en France. À Saint-Louis, beaucoup de clients viennent de Bâle ou de Weil am Rhein. On construit des sites et boutiques bilingues FR/DE, avec parcours d'achat, paiement multi-devises et chatbot multilingue adaptés à chaque rive de la frontière, pour capter aussi bien le chaland français que la clientèle germanophone.",
+            a: "Oui. À Saint-Louis, beaucoup de clients viennent de Bâle ou de Weil am Rhein. On construit des sites et boutiques bilingues FR/DE, avec parcours d'achat, paiement multi-devises et chatbot multilingue adaptés à chaque rive de la frontière, pour capter aussi bien le chaland français que la clientèle germanophone.",
           },
           {
             q: "Pouvez-vous équiper un transporteur ou logisticien de la zone EuroAirport ?",
-            a: "Oui. Nous intervenons dans vos locaux, partout en France. Pour les transporteurs et prestataires adossés à l'EuroAirport et à l'A35, nous développons des portails de suivi, des espaces clients et des agents d'automatisation branchés sur vos TMS et outils existants. Ces plateformes sont pensées pour monter en charge avec le futur quartier d'affaires Euro3Lys et son pôle logistique transfrontalier.",
+            a: "Oui. Pour les transporteurs et prestataires adossés à l'EuroAirport et à l'A35, nous développons des portails de suivi, des espaces clients et des agents d'automatisation branchés sur vos TMS et outils existants. Ces plateformes sont pensées pour monter en charge avec le futur quartier d'affaires Euro3Lys et son pôle logistique transfrontalier.",
           },
           {
             q: "Mes données restent-elles en Europe en zone frontalière ?",
@@ -203,11 +203,11 @@ export const SAINT_LOUIS_COPY: VilleCopy = {
           },
           {
             q: "Gérez-vous un site bilingue pour une clientèle suisse et allemande ?",
-            a: "Oui. Nous intervenons dans vos locaux, partout en France. À Saint-Louis, beaucoup de clients viennent de Bâle ou de Weil am Rhein. On construit des sites et boutiques bilingues FR/DE, avec parcours d'achat, paiement multi-devises et chatbot multilingue adaptés à chaque rive de la frontière, pour capter aussi bien le chaland français que la clientèle germanophone.",
+            a: "Oui. À Saint-Louis, beaucoup de clients viennent de Bâle ou de Weil am Rhein. On construit des sites et boutiques bilingues FR/DE, avec parcours d'achat, paiement multi-devises et chatbot multilingue adaptés à chaque rive de la frontière, pour capter aussi bien le chaland français que la clientèle germanophone.",
           },
           {
             q: "Pouvez-vous équiper un transporteur ou logisticien de la zone EuroAirport ?",
-            a: "Oui. Nous intervenons dans vos locaux, partout en France. Pour les transporteurs et prestataires adossés à l'EuroAirport et à l'A35, nous développons des portails de suivi, des espaces clients et des agents d'automatisation branchés sur vos TMS et outils existants. Ces plateformes sont pensées pour monter en charge avec le futur quartier d'affaires Euro3Lys et son pôle logistique transfrontalier.",
+            a: "Oui. Pour les transporteurs et prestataires adossés à l'EuroAirport et à l'A35, nous développons des portails de suivi, des espaces clients et des agents d'automatisation branchés sur vos TMS et outils existants. Ces plateformes sont pensées pour monter en charge avec le futur quartier d'affaires Euro3Lys et son pôle logistique transfrontalier.",
           },
           {
             q: "Mes données restent-elles en Europe en zone frontalière ?",

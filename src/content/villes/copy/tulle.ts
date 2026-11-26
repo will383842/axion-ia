@@ -61,7 +61,7 @@ export const TULLE_COPY: VilleCopy = {
     },
     {
       q: "Quel délai pour démarrer une mission IA à Tulle ?",
-      a: "Nous intervenons dans vos locaux à Tulle, partout en France. Intervention sous 5 jours ouvrés.",
+      a: "Intervention sous 5 jours ouvrés.",
     },
     {
       q: "Comment Axion-IA garantit-il la conformité RGPD à Tulle ?",

@@ -65,7 +65,7 @@ export const LA_RICHE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à La Riche ?",
-      a: "Nous intervenons dans vos locaux à La Riche, partout en France.",
+      a: "Nos consultants interviennent sur site à La Riche.",
     },
   ],
 };

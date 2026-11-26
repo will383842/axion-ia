@@ -129,7 +129,7 @@ export const CLICHY_SOUS_BOIS_COPY: VilleCopy = {
           },
           {
             q: "Comment se déroule une intervention à Clichy-sous-Bois et où sont hébergées mes données ?",
-            a: "Nous intervenons dans vos locaux, partout en France. Vos données et votre code sont hébergeables en UE (RGPD), avec propriété totale et aucun abonnement imposé.",
+            a: "Axion IA intervient partout en France, sur site ou à distance. Vos données et votre code sont hébergeables en UE (RGPD), avec propriété totale et aucun abonnement imposé.",
           },
         ],
         guarantees:

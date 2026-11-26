@@ -51,7 +51,7 @@ export const MONTFERMEIL_COPY: VilleCopy = {
   services: {
     sitesWeb: {
       fr: {
-        hero: "Les sites web et plateformes SaaS augmentés par l'IA d'Axion-IA à Montfermeil (93) sont conçus pour le tissu réel de la commune : structures de santé et médico-social autour du Groupe Hospitalier Intercommunal Le Raincy-Montfermeil et du Centre de Long Séjour des Ormes (Énéal, Groupe SOS Seniors), acteurs de la culture et de la création gravitant autour des Ateliers Médicis, commerces de proximité de la ZAC du centre-ville (rue Henri Barbusse, îlots Tuilerie et Barbusse) et artisans du BTP portés par la rénovation urbaine du Plateau. Nous livrons des interfaces accessibles, des sites mobile-first et des SaaS IA-native (chatbot RAG, recherche sémantique, prise de rendez-vous intelligente) — code custom, hébergement Union européenne conforme RGPD, zéro dépendance éditeur. Nous intervenons dans vos locaux à Montfermeil, comme partout en France.",
+        hero: "Les sites web et plateformes SaaS augmentés par l'IA d'Axion-IA à Montfermeil (93) sont conçus pour le tissu réel de la commune : structures de santé et médico-social autour du Groupe Hospitalier Intercommunal Le Raincy-Montfermeil et du Centre de Long Séjour des Ormes (Énéal, Groupe SOS Seniors), acteurs de la culture et de la création gravitant autour des Ateliers Médicis, commerces de proximité de la ZAC du centre-ville (rue Henri Barbusse, îlots Tuilerie et Barbusse) et artisans du BTP portés par la rénovation urbaine du Plateau. Nous livrons des interfaces accessibles, des sites mobile-first et des SaaS IA-native (chatbot RAG, recherche sémantique, prise de rendez-vous intelligente) — code custom, hébergement Union européenne conforme RGPD, zéro dépendance éditeur.",
         whyHere: [
           "Premier employeur de la ville, le Groupe Hospitalier Intercommunal Le Raincy-Montfermeil (~2 000 salariés, rue du Général Leclerc) et le secteur médico-social local (Centre de Long Séjour des Ormes, EHPAD et soins de réadaptation) génèrent des besoins web et SaaS très spécifiques : portails patients, prise de rendez-vous, classification de documents, support multilingue — tous soumis à un cadre RGPD et données de santé strict que nous intégrons dès la conception.",
           "La revitalisation du centre-ville (ZAC ~6,2 ha, rue Henri Barbusse, îlots Tuilerie et Barbusse, commerces réimplantés au pied des immeubles des Bosquets) crée une vague de commerçants et artisans qui ont besoin de vitrines e-commerce, de fiches Google à jour et de réservation en ligne — pas de templates génériques mais des sites ancrés dans le commerce de proximité montfermeillois.",
@@ -130,7 +130,7 @@ export const MONTFERMEIL_COPY: VilleCopy = {
           },
           {
             q: "Quel est le délai pour obtenir un devis à Montfermeil ?",
-            a: "Nous intervenons dans vos locaux à Montfermeil, partout en France. Un devis sous 24 à 48 h selon la complexité, après un premier échange de cadrage.",
+            a: "Un devis sous 24 à 48 h selon la complexité, après un premier échange de cadrage.",
           },
         ],
         guarantees:
@@ -252,7 +252,7 @@ export const MONTFERMEIL_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une intervention à Montfermeil ?",
-      a: "Nous intervenons dans vos locaux à Montfermeil, comme partout en France. Visio possible pour cadrage et coaching.",
+      a: "Axion IA intervient partout en France, sur site ou à distance. Visio possible pour cadrage et coaching.",
     },
   ],
 };

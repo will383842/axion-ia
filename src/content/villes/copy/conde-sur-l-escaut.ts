@@ -49,7 +49,7 @@ export const CONDE_SUR_L_ESCAUT_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Condé-sur-l'Escaut et agglomération de Valenciennes ?",
-      a: "Nous intervenons dans vos locaux à Condé-sur-l'Escaut, partout en France.",
+      a: "Oui, Axion IA intervient partout en France, sur site ou à distance, y compris à Condé-sur-l'Escaut et dans toute l'agglomération de Valenciennes.",
     },
     {
       q: "Travaillez-vous avec les TPE et artisans de Condé-sur-l'Escaut ?",

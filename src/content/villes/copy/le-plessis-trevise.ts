@@ -232,7 +232,7 @@ export const LE_PLESSIS_TREVISE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une intervention IA au Plessis-Trévise ?",
-      a: "Nous intervenons dans vos locaux, partout en France. Nous développons du code custom (pas de no-code) adapté aux besoins des TPE et PME locales.",
+      a: "Nous développons du code custom (pas de no-code) adapté aux besoins des TPE et PME locales.",
     },
     {
       q: "Quels délais pour une implémentation IA au Plessis-Trévise ?",

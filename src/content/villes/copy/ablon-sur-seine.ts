@@ -53,7 +53,7 @@ export const ABLON_SUR_SEINE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Ablon-sur-Seine et dans le Val-de-Marne ?",
-      a: "Oui, Axion-IA accompagne les TPE et PME d'Ablon-sur-Seine et du secteur des bords de Seine sud. Nous intervenons dans vos locaux à Ablon-sur-Seine, partout en France.",
+      a: "Oui, Axion-IA accompagne les TPE et PME d'Ablon-sur-Seine et du secteur des bords de Seine sud. Axion IA intervient partout en France, sur site ou à distance.",
     },
     {
       q: "Travaillez-vous avec les TPE et artisans d'Ablon-sur-Seine ?",

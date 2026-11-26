@@ -242,7 +242,7 @@ export const CANNES_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Cannes ?",
-      a: "Nous intervenons dans vos locaux à Cannes, partout en France. Possibilité de combiner Cannes + Antibes + Mougins en une journée.",
+      a: "Une mission à Cannes peut être combinée avec Antibes et Mougins dans la même journée.",
     },
   ],
 };

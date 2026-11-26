@@ -131,7 +131,7 @@ export const GONESSE_COPY: VilleCopy = {
           },
           {
             q: "Sous quel délai pouvez-vous nous envoyer un devis ?",
-            a: "Nous intervenons dans vos locaux à Gonesse, partout en France. À partir de 24-48 h selon la complexité, après un premier échange sur votre projet.",
+            a: "À partir de 24-48 h selon la complexité, après un premier échange sur votre projet.",
           },
         ],
         guarantees:

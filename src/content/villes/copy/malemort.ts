@@ -61,7 +61,7 @@ export const MALEMORT_COPY: VilleCopy = {
     },
     {
       q: "Quel délai pour démarrer une mission IA à Malemort ?",
-      a: "Nous intervenons dans vos locaux à Malemort, partout en France. Intervention sous 5 jours ouvrés.",
+      a: "Intervention sous 5 jours ouvrés.",
     },
     {
       q: "Proposez-vous des formations IA pour équipes commerce à Malemort ?",

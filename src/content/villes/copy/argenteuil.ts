@@ -97,7 +97,7 @@ export const ARGENTEUIL_COPY: VilleCopy = {
     },
     {
       q: "Intervenez-vous aussi vers La Défense ou Cergy pour les entreprises d'Argenteuil qui ont des sites multiples ?",
-      a: "Oui. Nous intervenons dans vos locaux à Argenteuil, partout en France. La géographie du Grand Paris est notre terrain courant : La Défense, Cergy, Saint-Denis, le bassin Saint-Lazare. Si votre entreprise argenteuillaise a des équipes réparties, nous adaptons le format pour couvrir les différents sites.",
+      a: "Oui. Axion IA intervient partout en France, sur site ou à distance. La géographie du Grand Paris est notre terrain courant : La Défense, Cergy, Saint-Denis, le bassin Saint-Lazare. Si votre entreprise argenteuillaise a des équipes réparties, nous adaptons le format pour couvrir les différents sites.",
     },
   ],
 

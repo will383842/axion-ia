@@ -57,7 +57,7 @@ export const TIGNIEU_JAMEYZIEU_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les logisticiens rhodaniens ?",
-      a: "Oui, nous accompagnons les opérateurs logistiques du bassin rhodanien sur leurs cas IA : optimisation tournées, automatisation préparation commandes, prédiction demande, agents IA service client B2B. Nous intervenons dans vos locaux à Tignieu-Jameyzieu, partout en France. ROI chiffré contractuel avant mission.",
+      a: "Oui, nous accompagnons les opérateurs logistiques du bassin rhodanien sur leurs cas IA : optimisation tournées, automatisation préparation commandes, prédiction demande, agents IA service client B2B. ROI chiffré contractuel avant mission.",
     },
     {
       q: "Quels services pour les TPE artisans et commerçants ?",

@@ -65,7 +65,7 @@ export const BIGUGLIA_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Biguglia ?",
-      a: "Nous intervenons dans vos locaux à Biguglia, partout en France. Vols et ferries quotidiens depuis le continent.",
+      a: "Une mission à Biguglia démarre par un échange de cadrage, puis se déroule sur site ou à distance, avec des livrables remis et documentés.",
     },
   ],
 };

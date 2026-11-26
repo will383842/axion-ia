@@ -49,7 +49,7 @@ export const LE_PUY_SAINTE_REPARADE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il au Puy-Sainte-Réparade et dans la vallée de la Durance ?",
-      a: "Nous intervenons dans vos locaux au Puy-Sainte-Réparade, partout en France. Couverture complète nord aixois.",
+      a: "Axion IA intervient partout en France, sur site ou à distance, y compris au Puy-Sainte-Réparade. Couverture complète nord aixois.",
     },
     {
       q: "Quel est le tarif d'un audit IA au Puy-Sainte-Réparade ?",

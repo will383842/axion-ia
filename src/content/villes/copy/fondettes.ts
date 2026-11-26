@@ -65,7 +65,7 @@ export const FONDETTES_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Fondettes ?",
-      a: "Nous intervenons dans vos locaux à Fondettes, partout en France.",
+      a: "Axion IA intervient partout en France, sur site ou à distance, y compris à Fondettes.",
     },
   ],
 };

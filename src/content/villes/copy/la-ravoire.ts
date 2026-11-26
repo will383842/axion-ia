@@ -65,7 +65,7 @@ export const LA_RAVOIRE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à La Ravoire ?",
-      a: "Nous intervenons dans vos locaux à La Ravoire, partout en France. Formats demi-journée ou journée complète. Visio possible pour les sessions coaching.",
+      a: "Les missions se déroulent en formats demi-journée ou journée complète. Visio possible pour les sessions coaching.",
     },
   ],
 };

@@ -65,7 +65,7 @@ export const LEOGNAN_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Léognan ?",
-      a: "Nous intervenons dans vos locaux à Léognan, partout en France. Nos consultants interviennent dans votre chai ou domaine à Léognan ou en visio. Missions adaptées aux rythmes viticoles.",
+      a: "Nos consultants interviennent dans votre chai ou domaine à Léognan ou en visio. Missions adaptées aux rythmes viticoles.",
     },
   ],
 };

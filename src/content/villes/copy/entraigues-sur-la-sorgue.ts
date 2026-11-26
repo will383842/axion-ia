@@ -49,7 +49,7 @@ export const ENTRAIGUES_SUR_LA_SORGUE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Entraigues-sur-la-Sorgue et dans le nord-est avignonnais ?",
-      a: "Oui, Axion-IA intervient à Entraigues-sur-la-Sorgue et dans tout le nord-est avignonnais (Sorgues, Vedène, Le Pontet, Monteux). Nous intervenons dans vos locaux, comme partout en France.",
+      a: "Oui, Axion-IA intervient à Entraigues-sur-la-Sorgue et dans tout le nord-est avignonnais (Sorgues, Vedène, Le Pontet, Monteux). Axion IA intervient partout en France, sur site ou à distance.",
     },
     {
       q: "Tarifs audit IA à Entraigues-sur-la-Sorgue  : quel budget prévoir ?",

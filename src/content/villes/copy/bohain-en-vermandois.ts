@@ -65,7 +65,7 @@ export const BOHAIN_EN_VERMANDOIS_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Bohain-en-Vermandois ?",
-      a: "Nous intervenons dans vos locaux à Bohain-en-Vermandois, partout en France.",
+      a: "Une mission à Bohain-en-Vermandois démarre par un échange de cadrage, puis se déroule sur site ou à distance, avec des livrables remis et documentés.",
     },
   ],
 };

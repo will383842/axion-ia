@@ -129,7 +129,7 @@ export const GENNEVILLIERS_COPY: VilleCopy = {
           },
           {
             q: "Intervenez-vous sur place et dans les communes voisines ?",
-            a: "Nous intervenons dans vos locaux, partout en France. Nous couvrons aussi Asnières-sur-Seine, Colombes, Villeneuve-la-Garenne, Saint-Ouen, Épinay-sur-Seine, L'Île-Saint-Denis et Argenteuil.",
+            a: "Oui, Axion IA intervient partout en France, sur site ou à distance, notamment à Gennevilliers. Nous couvrons aussi Asnières-sur-Seine, Colombes, Villeneuve-la-Garenne, Saint-Ouen, Épinay-sur-Seine, L'Île-Saint-Denis et Argenteuil.",
           },
         ],
         guarantees:
@@ -231,7 +231,7 @@ export const GENNEVILLIERS_COPY: VilleCopy = {
     },
     {
       q: "Sous quel délai Axion-IA peut-il intervenir à Gennevilliers ?",
-      a: "Nous intervenons dans vos locaux, partout en France. Notre équipe se déplace à Gennevilliers sous 5 jours ouvrés.",
+      a: "Notre équipe intervient à Gennevilliers sous 5 jours ouvrés.",
     },
     {
       q: "Intervenez-vous à Asnières-sur-Seine, Colombes ou Villeneuve-la-Garenne ?",

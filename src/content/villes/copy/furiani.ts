@@ -65,7 +65,7 @@ export const FURIANI_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Furiani ?",
-      a: "Nous intervenons dans vos locaux à Furiani, partout en France. Vols et ferries quotidiens depuis le continent.",
+      a: "Axion IA intervient partout en France, sur site ou à distance, y compris à Furiani et dans toute la région bastiaise.",
     },
   ],
 };

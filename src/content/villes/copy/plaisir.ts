@@ -238,7 +238,7 @@ export const PLAISIR_COPY: VilleCopy = {
     },
     {
       q: "Combien de temps avant une première intervention à Plaisir ?",
-      a: "Nous intervenons dans vos locaux, partout en France. Nous nous engageons généralement à démarrer sous cinq jours ouvrés après validation, selon nos disponibilités.",
+      a: "Nous nous engageons généralement à démarrer sous cinq jours ouvrés après validation, selon nos disponibilités.",
     },
     {
       q: "Comment garantissez-vous la conformité RGPD à Plaisir ?",

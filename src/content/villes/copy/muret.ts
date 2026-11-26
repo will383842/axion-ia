@@ -232,7 +232,7 @@ export const MURET_COPY: VilleCopy = {
     },
     {
       q: "Sous quel délai pouvez-vous intervenir à Muret ?",
-      a: "Nous intervenons dans vos locaux à Muret, partout en France. Notre équipe se déplace à Muret dans un délai de 5 jours ouvrés après validation de la mission.",
+      a: "Nous démarrons à Muret dans un délai de 5 jours ouvrés après validation de la mission.",
     },
     {
       q: "Couvrez-vous les communes proches de Muret ?",

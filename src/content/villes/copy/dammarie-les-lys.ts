@@ -238,7 +238,7 @@ export const DAMMARIE_LES_LYS_COPY: VilleCopy = {
     },
     {
       q: "Aidez-vous les sous-traitants aéronautiques proches de Villaroche ?",
-      a: "Oui. Nous intervenons dans vos locaux à Dammarie-les-Lys, partout en France. Pour ses PME et TPE sous-traitantes, l'IA sert la gestion documentaire technique, les devis, la planification et le suivi qualité.",
+      a: "Oui. Le pôle aéronautique de Villaroche (Safran Aircraft Engines) se trouve à proximité. Pour ses PME et TPE sous-traitantes, l'IA sert la gestion documentaire technique, les devis, la planification et le suivi qualité.",
     },
     {
       q: "Quel budget prévoir pour un audit IA à Dammarie-les-Lys ?",

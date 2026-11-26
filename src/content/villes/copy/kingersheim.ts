@@ -65,7 +65,7 @@ export const KINGERSHEIM_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Kingersheim ?",
-      a: "Nous intervenons dans vos locaux à Kingersheim, partout en France. Position stratégique au croisement Alsace-Suisse-Allemagne.",
+      a: "Axion IA intervient partout en France, sur site ou à distance. Position stratégique au croisement Alsace-Suisse-Allemagne.",
     },
   ],
 };

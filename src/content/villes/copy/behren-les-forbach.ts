@@ -65,7 +65,7 @@ export const BEHREN_LES_FORBACH_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Behren-lès-Forbach ?",
-      a: "Nous intervenons dans vos locaux à Behren-lès-Forbach, partout en France.",
+      a: "Une mission à Behren-lès-Forbach démarre par un échange de cadrage, puis se déroule sur site ou à distance, avec des livrables remis et documentés.",
     },
   ],
 };

@@ -125,7 +125,7 @@ const VILLE_COPY: VilleCopy = {
           },
           {
             q: "Travaillez-vous avec les entreprises des zones industrielles d'Ozoir ?",
-            a: "Oui. Nous intervenons dans vos locaux, partout en France. Pour eux, on développe portails fournisseurs, suivi de tournées, espaces clients et agents d'automatisation des bons de commande, branchés sur leur ERP ou WMS existant.",
+            a: "Oui. Pour eux, on développe portails fournisseurs, suivi de tournées, espaces clients et agents d'automatisation des bons de commande, branchés sur leur ERP ou WMS existant.",
           },
           {
             q: "Mes données restent-elles en Europe ?",
@@ -211,7 +211,7 @@ const VILLE_COPY: VilleCopy = {
           },
           {
             q: "Travaillez-vous avec les entreprises des zones industrielles d'Ozoir ?",
-            a: "Oui. Nous intervenons dans vos locaux, partout en France. Pour eux, on développe portails fournisseurs, suivi de tournées, espaces clients et agents d'automatisation des bons de commande, branchés sur leur ERP ou WMS existant.",
+            a: "Oui. Pour eux, on développe portails fournisseurs, suivi de tournées, espaces clients et agents d'automatisation des bons de commande, branchés sur leur ERP ou WMS existant.",
           },
           {
             q: "Mes données restent-elles en Europe ?",

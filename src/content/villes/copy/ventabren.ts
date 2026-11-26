@@ -49,7 +49,7 @@ export const VENTABREN_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Ventabren et dans l'ouest aixois ?",
-      a: "Nous intervenons dans vos locaux à Ventabren, partout en France. Nous accompagnons aussi les entreprises du technopôle de l'Arbois.",
+      a: "Oui. Axion IA intervient partout en France, sur site ou à distance, y compris à Ventabren et dans l'ouest aixois. Nous accompagnons aussi les entreprises du technopôle de l'Arbois.",
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Ventabren  ?",

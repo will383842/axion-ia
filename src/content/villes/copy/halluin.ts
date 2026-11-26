@@ -121,7 +121,7 @@ export const HALLUIN_COPY: VilleCopy = {
           },
           {
             q: "Mes données restent-elles en Europe, côté FR et BE ?",
-            a: "Oui. Nous intervenons dans vos locaux, partout en France. Pour un opérateur cross-border, nous documentons la base légale et les transferts intra-UE. Vous gardez la propriété complète de vos données, pesées matières, modèles et code — rien ne part hors Europe.",
+            a: "Oui. Toute la chaîne IA est hébergeable en UE (OVHcloud, Scaleway), conforme RGPD côté France et GDPR côté Belgique, avec DPA signé. Pour un opérateur cross-border, nous documentons la base légale et les transferts intra-UE. Vous gardez la propriété complète de vos données, pesées matières, modèles et code — rien ne part hors Europe.",
           },
           {
             q: "Pouvez-vous gérer un site multilingue franco-belge ?",
@@ -207,7 +207,7 @@ export const HALLUIN_COPY: VilleCopy = {
           },
           {
             q: "Mes données restent-elles en Europe, côté FR et BE ?",
-            a: "Oui. Nous intervenons dans vos locaux, partout en France. Pour un opérateur cross-border, nous documentons la base légale et les transferts intra-UE. Vous gardez la propriété complète de vos données, pesées matières, modèles et code — rien ne part hors Europe.",
+            a: "Oui. Toute la chaîne IA est hébergeable en UE (OVHcloud, Scaleway), conforme RGPD côté France et GDPR côté Belgique, avec DPA signé. Pour un opérateur cross-border, nous documentons la base légale et les transferts intra-UE. Vous gardez la propriété complète de vos données, pesées matières, modèles et code — rien ne part hors Europe.",
           },
           {
             q: "Pouvez-vous gérer un site multilingue franco-belge ?",

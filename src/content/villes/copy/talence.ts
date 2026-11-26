@@ -129,7 +129,7 @@ export const TALENCE_COPY: VilleCopy = {
           },
           {
             q: "Intervenez-vous au-delà de Talence, sur le Sud-Bordeaux ?",
-            a: "Oui. Nous intervenons dans vos locaux à Talence, partout en France. Nos consultants se déplacent à Talence et sur le périmètre TISD — Gradignan, Villenave-d'Ornon, Pessac, Bègles — et plus largement Bordeaux Métropole.",
+            a: "Oui. Axion IA intervient partout en France, sur site ou à distance, notamment à Talence et sur le périmètre TISD — Gradignan, Villenave-d'Ornon, Pessac, Bègles — et plus largement Bordeaux Métropole.",
           },
         ],
         guarantees:

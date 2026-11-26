@@ -65,7 +65,7 @@ export const FAREBERSVILLER_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Farébersviller ?",
-      a: "Nous intervenons dans vos locaux à Farébersviller, partout en France.",
+      a: "Axion IA intervient partout en France, sur site ou à distance, y compris à Farébersviller et dans tout le secteur de Saint-Avold.",
     },
   ],
 };

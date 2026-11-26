@@ -65,7 +65,7 @@ export const NEUVILLE_DE_POITOU_COPY: VilleCopy = {
     },
     {
       q: "Travaillez-vous avec les entreprises proches du Futuroscope ?",
-      a: "Nous intervenons dans vos locaux à Neuville-de-Poitou, partout en France. Nous accompagnons PME tech, prestataires tourisme, sous-traitants du parc et entreprises de la zone Futuroscope sur leurs projets d'intelligence artificielle.",
+      a: "Nous accompagnons PME tech, prestataires tourisme, sous-traitants du parc et entreprises de la zone Futuroscope sur leurs projets d'intelligence artificielle.",
     },
   ],
 };

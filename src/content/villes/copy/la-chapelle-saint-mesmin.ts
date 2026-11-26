@@ -49,7 +49,7 @@ export const LA_CHAPELLE_SAINT_MESMIN_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à La Chapelle-Saint-Mesmin et dans Orléans Métropole ?",
-      a: "Nous intervenons dans vos locaux à La Chapelle-Saint-Mesmin, partout en France.",
+      a: "Oui, Axion IA intervient partout en France, sur site ou à distance, y compris à La Chapelle-Saint-Mesmin et dans Orléans Métropole.",
     },
     {
       q: "Travaillez-vous avec les PME industrielles verre et matériaux ?",

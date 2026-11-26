@@ -65,7 +65,7 @@ export const SAINT_MARTIN_LA_PALLU_COPY: VilleCopy = {
     },
     {
       q: "Axion-IA travaille-t-il avec les entreprises du Futuroscope ?",
-      a: "Nous intervenons dans vos locaux à Saint-Martin-la-Pallu, partout en France. Nous accompagnons PME technologiques, prestataires événementiels et sous-traitants du parc.",
+      a: "Nous accompagnons PME technologiques, prestataires événementiels et sous-traitants du parc.",
     },
   ],
 };

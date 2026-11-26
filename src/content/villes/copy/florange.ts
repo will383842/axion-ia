@@ -65,7 +65,7 @@ export const FLORANGE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Florange ?",
-      a: "Nous intervenons dans vos locaux à Florange, partout en France.",
+      a: "Axion IA intervient partout en France, sur site ou à distance. Position stratégique dans la vallée de la Fensch.",
     },
   ],
 };

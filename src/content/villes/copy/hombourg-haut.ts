@@ -65,7 +65,7 @@ export const HOMBOURG_HAUT_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Hombourg-Haut ?",
-      a: "Nous intervenons dans vos locaux à Hombourg-Haut, partout en France.",
+      a: "Axion IA intervient partout en France, sur site ou à distance, y compris à Hombourg-Haut et dans tout le secteur de Saint-Avold.",
     },
   ],
 };

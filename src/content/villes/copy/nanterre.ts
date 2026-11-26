@@ -136,7 +136,7 @@ export const NANTERRE_COPY: VilleCopy = {
           },
           {
             q: "Quel délai pour organiser une session à Nanterre ?",
-            a: "Nous intervenons dans vos locaux, partout en France. Une session se planifie généralement sous deux semaines après confirmation, selon les disponibilités mutuelles.",
+            a: "Une session se planifie généralement sous deux semaines après confirmation, selon les disponibilités mutuelles.",
           },
         ],
         guarantees:
@@ -228,7 +228,7 @@ export const NANTERRE_COPY: VilleCopy = {
           },
           {
             q: "Quel délai pour organiser une session à Nanterre ?",
-            a: "Nous intervenons dans vos locaux, partout en France. Une session se planifie généralement sous deux semaines après confirmation, selon les disponibilités mutuelles.",
+            a: "Une session se planifie généralement sous deux semaines après confirmation, selon les disponibilités mutuelles.",
           },
         ],
         guarantees:

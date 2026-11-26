@@ -128,7 +128,7 @@ export const BRETIGNY_SUR_ORGE_COPY: VilleCopy = {
           },
           {
             q: "Pouvez-vous m'aider à vendre au-delà du bassin local ?",
-            a: "Oui. Nous intervenons dans vos locaux à Brétigny-sur-Orge, partout en France. On construit une boutique e-commerce et un SEO local calibrés pour Évry-Courcouronnes, Massy, Sainte-Geneviève-des-Bois et le sud-IDF, avec recherche sémantique et parcours d'achat optimisés mobile-first pour convertir cette clientèle régionale.",
+            a: "Oui. Votre marché dépasse largement Brétigny. On construit une boutique e-commerce et un SEO local calibrés pour Évry-Courcouronnes, Massy, Sainte-Geneviève-des-Bois et le sud-IDF, avec recherche sémantique et parcours d'achat optimisés mobile-first pour convertir cette clientèle régionale.",
           },
         ],
         guarantees:
@@ -214,7 +214,7 @@ export const BRETIGNY_SUR_ORGE_COPY: VilleCopy = {
           },
           {
             q: "Pouvez-vous m'aider à vendre au-delà du bassin local ?",
-            a: "Oui. Nous intervenons dans vos locaux à Brétigny-sur-Orge, partout en France. On construit une boutique e-commerce et un SEO local calibrés pour Évry-Courcouronnes, Massy, Sainte-Geneviève-des-Bois et le sud-IDF, avec recherche sémantique et parcours d'achat optimisés mobile-first pour convertir cette clientèle régionale.",
+            a: "Oui. Votre marché dépasse largement Brétigny. On construit une boutique e-commerce et un SEO local calibrés pour Évry-Courcouronnes, Massy, Sainte-Geneviève-des-Bois et le sud-IDF, avec recherche sémantique et parcours d'achat optimisés mobile-first pour convertir cette clientèle régionale.",
           },
         ],
         guarantees:

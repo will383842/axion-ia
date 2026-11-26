@@ -65,7 +65,7 @@ export const MOUGINS_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Mougins ?",
-      a: "Nous intervenons dans vos locaux à Mougins, partout en France. Tarifs publics.",
+      a: "Axion IA intervient partout en France, sur site ou à distance. Tarifs publics.",
     },
   ],
 };

@@ -49,7 +49,7 @@ export const ENSUES_LA_REDONNE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Ensuès-la-Redonne et sur la Côte Bleue ?",
-      a: "Oui, Axion-IA intervient à Ensuès-la-Redonne et dans toute la Côte Bleue (Carry-le-Rouet, Le Rove, Sausset-les-Pins, Niolon, Méjean). Nous intervenons dans vos locaux, comme partout en France.",
+      a: "Oui, Axion-IA intervient à Ensuès-la-Redonne et dans toute la Côte Bleue (Carry-le-Rouet, Le Rove, Sausset-les-Pins, Niolon, Méjean). Axion IA intervient partout en France, sur site ou à distance.",
     },
     {
       q: "Tarifs audit IA à Ensuès-la-Redonne  : quel budget prévoir ?",

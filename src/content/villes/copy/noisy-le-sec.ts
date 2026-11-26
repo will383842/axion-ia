@@ -118,7 +118,7 @@ export const NOISY_LE_SEC_COPY: VilleCopy = {
           },
           {
             q: "Pouvez-vous accompagner les artisans et PME du BTP liés à la ZAC de la Plaine de l'Ourcq ?",
-            a: "Oui. Nous intervenons dans vos locaux à Noisy-le-Sec, partout en France. Nous construisons pour les artisans et PME du bâtiment des sites de devis en ligne, des suivis de chantier et des boutiques e-commerce de matériaux, optimisés mobile et SEO local.",
+            a: "Oui. Nous construisons pour les artisans et PME du bâtiment des sites de devis en ligne, des suivis de chantier et des boutiques e-commerce de matériaux, optimisés mobile et SEO local.",
           },
           {
             q: "Faites-vous de l'e-commerce multi-CMS pour les commerçants de Noisy-le-Sec ?",

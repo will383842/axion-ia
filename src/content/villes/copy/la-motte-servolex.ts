@@ -14,9 +14,9 @@ export const LA_MOTTE_SERVOLEX_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à La Motte-Servolex (73). Nous accompagnons TPE et PME de l'agglomération chambérienne : sociétés tertiaires des zones d'activités, professions libérales, artisans BTP, commerces, services aux entreprises et indépendants du bassin savoyard.",
   seoHook: "tertiaires services & zones d'activités",
   ecosystemFr:
-    "La Motte-Servolex est la 2e commune de l'agglomération de Chambéry (12 000 habitants). Pôle résidentiel dynamique, elle accueille plusieurs zones d'activités commerciales et tertiaires qui concentrent PME de services, professions libérales, TPE artisanat BTP et commerces. Nous intervenons dans vos locaux à La Motte-Servolex, comme partout en France.",
+    "La Motte-Servolex est la 2e commune de l'agglomération de Chambéry (12 000 habitants). Pôle résidentiel dynamique, elle accueille plusieurs zones d'activités commerciales et tertiaires qui concentrent PME de services, professions libérales, TPE artisanat BTP et commerces.",
   ecosystemEn:
-    "La Motte-Servolex est la 2e commune de l'agglomération de Chambéry (12 000 habitants). Pôle résidentiel dynamique, elle accueille plusieurs zones d'activités commerciales et tertiaires qui concentrent PME de services, professions libérales, TPE artisanat BTP et commerces. Nous intervenons dans vos locaux à La Motte-Servolex, comme partout en France.",
+    "La Motte-Servolex est la 2e commune de l'agglomération de Chambéry (12 000 habitants). Pôle résidentiel dynamique, elle accueille plusieurs zones d'activités commerciales et tertiaires qui concentrent PME de services, professions libérales, TPE artisanat BTP et commerces.",
   distancesFr:
     "Chambéry centre à 5 min. Aix-les-Bains à 15 min. Aéroport Chambéry-Savoie à 10 min. Lyon à 1h30 par A43. Annecy à 50 min.",
   distancesEn:
@@ -65,7 +65,7 @@ export const LA_MOTTE_SERVOLEX_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à La Motte-Servolex ?",
-      a: "Nous intervenons dans vos locaux à La Motte-Servolex, partout en France. Formats demi-journée ou journée complète.",
+      a: "Les missions se déroulent en formats demi-journée ou journée complète.",
     },
   ],
 };

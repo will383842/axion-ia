@@ -124,7 +124,7 @@ export const TOURNEFEUILLE_COPY: VilleCopy = {
           },
           {
             q: "Accompagnez-vous les sous-traitants aéronautiques de l'ouest toulousain ?",
-            a: "Oui. Nous intervenons dans vos locaux à Tournefeuille, partout en France. Nous livrons des plateformes B2B sobres pour ces sous-traitants : espaces clients sécurisés, search documentaire technique par chatbot RAG, qualification automatique des demandes entrantes.",
+            a: "Oui. Nous livrons des plateformes B2B sobres pour ces sous-traitants : espaces clients sécurisés, search documentaire technique par chatbot RAG, qualification automatique des demandes entrantes.",
           },
           {
             q: "Faites-vous l'UX/UI, le mobile et l'e-commerce, ou seulement l'IA ?",

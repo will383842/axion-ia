@@ -166,7 +166,7 @@ export const CLERMONT_FERRAND_COPY: VilleCopy = {
           },
           {
             q: "Différence avec un cabinet de conseil traditionnel basé à Lyon ou Paris ?",
-            a: "Nos consultants se déplacent à Clermont-Ferrand et facturent uniquement leur prestation — pas de surprime géographique. Tarifs publics, pas de devis à négocier. Méthode condensée, démos sur vos vraies données industrielles ou agro. Et surtout : aucun lock-in, vous repartez avec votre plan.",
+            a: "Axion IA intervient partout en France, sur site ou à distance, y compris à Clermont-Ferrand. Tarifs publics, pas de devis à négocier. Méthode condensée, démos sur vos vraies données industrielles ou agro. Et surtout : aucun lock-in, vous repartez avec votre plan.",
           },
           {
             q: "Faut-il être déjà mature sur l'IA pour commander un audit ?",

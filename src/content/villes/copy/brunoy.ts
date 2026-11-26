@@ -232,7 +232,7 @@ export const BRUNOY_COPY: VilleCopy = {
     },
     {
       q: "Sous quel délai pouvez-vous intervenir à Brunoy ?",
-      a: "Nous intervenons dans vos locaux à Brunoy, partout en France. Notre équipe se déplace à Brunoy dans un délai de 5 jours ouvrés après validation de la mission.",
+      a: "Notre équipe intervient à Brunoy dans un délai de 5 jours ouvrés après validation de la mission.",
     },
     {
       q: "Couvrez-vous les communes proches de Brunoy ?",

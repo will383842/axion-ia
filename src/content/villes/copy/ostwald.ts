@@ -65,7 +65,7 @@ export const OSTWALD_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Ostwald ?",
-      a: "Nous intervenons dans vos locaux à Ostwald, partout en France.",
+      a: "Axion IA intervient partout en France, sur site ou à distance.",
     },
   ],
 };

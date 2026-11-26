@@ -132,7 +132,7 @@ export const SAINT_PRIEST_COPY: VilleCopy = {
           },
           {
             q: "Quel délai pour un devis à Saint-Priest ?",
-            a: "Nous intervenons dans vos locaux, partout en France. Un devis est remis à partir de 24 à 48 h selon la complexité du projet.",
+            a: "Un devis est remis à partir de 24 à 48 h selon la complexité du projet.",
           },
         ],
         guarantees:
@@ -242,7 +242,7 @@ export const SAINT_PRIEST_COPY: VilleCopy = {
     },
     {
       q: "Quel délai pour une première intervention à Saint-Priest ?",
-      a: "Nous intervenons dans vos locaux, partout en France. Nous visons un démarrage sous cinq jours ouvrés après validation, selon nos disponibilités.",
+      a: "Nous visons un démarrage sous cinq jours ouvrés après validation, selon nos disponibilités.",
     },
     {
       q: "Comment garantissez-vous la conformité RGPD à Saint-Priest ?",

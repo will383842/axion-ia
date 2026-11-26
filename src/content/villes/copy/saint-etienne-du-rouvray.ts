@@ -242,7 +242,7 @@ export const SAINT_ETIENNE_DU_ROUVRAY_COPY: VilleCopy = {
     },
     {
       q: "Quel délai pour démarrer une mission à Saint-Étienne-du-Rouvray ?",
-      a: "Nous intervenons dans vos locaux, partout en France. Nous visons un démarrage sous cinq jours ouvrés après validation, selon nos disponibilités.",
+      a: "Nous visons un démarrage sous cinq jours ouvrés après validation, selon nos disponibilités.",
     },
     {
       q: "Comment assurez-vous la conformité RGPD à Saint-Étienne-du-Rouvray ?",

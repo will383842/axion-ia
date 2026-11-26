@@ -120,7 +120,7 @@ export const SARREGUEMINES_COPY: VilleCopy = {
           },
           {
             q: "Gérez-vous un site bilingue français-allemand pour le commerce frontalier ?",
-            a: "Nous intervenons dans vos locaux, partout en France. On déploie des sites, boutiques, chatbots et automatisations bilingues FR/DE ancrés sur vos contenus, pour servir aussi bien la clientèle mosellane que les partenaires, acheteurs et travailleurs de la Sarre voisine. Catalogue, devis et SAV basculent d'une langue à l'autre sans double maintenance ni contenu dupliqué.",
+            a: "On déploie des sites, boutiques, chatbots et automatisations bilingues FR/DE ancrés sur vos contenus, pour servir aussi bien la clientèle mosellane que les partenaires, acheteurs et travailleurs de la Sarre voisine. Catalogue, devis et SAV basculent d'une langue à l'autre sans double maintenance ni contenu dupliqué.",
           },
           {
             q: "Travaillez-vous avec les industriels, plasturgistes et sous-traitants automobile du bassin ?",
@@ -206,7 +206,7 @@ export const SARREGUEMINES_COPY: VilleCopy = {
           },
           {
             q: "Gérez-vous un site bilingue français-allemand pour le commerce frontalier ?",
-            a: "Nous intervenons dans vos locaux, partout en France. On déploie des sites, boutiques, chatbots et automatisations bilingues FR/DE ancrés sur vos contenus, pour servir aussi bien la clientèle mosellane que les partenaires, acheteurs et travailleurs de la Sarre voisine. Catalogue, devis et SAV basculent d'une langue à l'autre sans double maintenance ni contenu dupliqué.",
+            a: "On déploie des sites, boutiques, chatbots et automatisations bilingues FR/DE ancrés sur vos contenus, pour servir aussi bien la clientèle mosellane que les partenaires, acheteurs et travailleurs de la Sarre voisine. Catalogue, devis et SAV basculent d'une langue à l'autre sans double maintenance ni contenu dupliqué.",
           },
           {
             q: "Travaillez-vous avec les industriels, plasturgistes et sous-traitants automobile du bassin ?",

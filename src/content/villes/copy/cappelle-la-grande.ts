@@ -65,7 +65,7 @@ export const CAPPELLE_LA_GRANDE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Cappelle-la-Grande ?",
-      a: "Nous intervenons dans vos locaux à Cappelle-la-Grande, partout en France. Bassin résidentiel de l'agglomération de Dunkerque, proximité immédiate du port et des zones industrielles.",
+      a: "Une mission à Cappelle-la-Grande démarre par un échange de cadrage, puis se déroule sur site ou à distance, avec des livrables remis et documentés.",
     },
   ],
 };

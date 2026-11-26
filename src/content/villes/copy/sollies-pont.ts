@@ -73,7 +73,7 @@ export const SOLLIES_PONT_COPY: VilleCopy = {
     },
     {
       q: "Quels délais pour une mission à Solliès-Pont ?",
-      a: "Nous intervenons dans vos locaux à Solliès-Pont, partout en France. Nous démarrons généralement sous quelques jours ouvrés.",
+      a: "Nous démarrons généralement sous quelques jours ouvrés.",
     },
   ],
 };

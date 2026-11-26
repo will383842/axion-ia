@@ -65,7 +65,7 @@ export const DIVATTE_SUR_LOIRE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une intervention à Divatte-sur-Loire ?",
-      a: "Nous intervenons dans vos locaux à Divatte-sur-Loire, partout en France. Nos consultants se déplacent directement dans votre domaine, exploitation ou bureau à Divatte-sur-Loire. Formats demi-journée ou journée complète.",
+      a: "Axion IA intervient partout en France, sur site ou à distance. Nos consultants interviennent directement dans votre domaine, exploitation ou bureau à Divatte-sur-Loire. Formats demi-journée ou journée complète.",
     },
   ],
 };

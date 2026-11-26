@@ -49,7 +49,7 @@ export const COSNE_COURS_SUR_LOIRE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Cosne-Cours-sur-Loire et dans la Nièvre ?",
-      a: "Nous intervenons dans vos locaux à Cosne-Cours-sur-Loire, partout en France. Nos consultants couvrent le Val de Loire nivernais et le nord Bourgogne.",
+      a: "Oui, Axion IA intervient partout en France, sur site ou à distance. Nos consultants couvrent le Val de Loire nivernais et le nord Bourgogne.",
     },
     {
       q: "Accompagnez-vous les industriels et artisans de Cosne-Cours-sur-Loire ?",

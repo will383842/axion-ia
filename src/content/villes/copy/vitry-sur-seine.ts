@@ -308,7 +308,7 @@ export const VITRY_SUR_SEINE_COPY: VilleCopy = {
           },
           {
             q: "Je suis une PME productive qui s'installe aux Ardoines : quel type de site web me conseillez-vous ?",
-            a: "Nous intervenons dans vos locaux, partout en France. Pour ces profils, nous concevons des portails clients et de l'e-commerce B2B avec configurateur de catalogue technique, recherche sémantique sur vos fiches et documentation, et intégration à votre ERP — pas une vitrine générique.",
+            a: "Pour ces profils, nous concevons des portails clients et de l'e-commerce B2B avec configurateur de catalogue technique, recherche sémantique sur vos fiches et documentation, et intégration à votre ERP — pas une vitrine générique.",
           },
           {
             q: "Travaillez-vous avec les acteurs culturels du quartier MAC VAL ?",

@@ -124,7 +124,7 @@ export const ANTIBES_COPY: VilleCopy = {
           },
           {
             q: "Travaillez-vous avec les éditeurs logiciels et scale-ups proches de Sophia Antipolis ?",
-            a: "Oui. Nous intervenons dans vos locaux, partout en France. Pour ces structures, nous concevons des plateformes SaaS IA-native : chatbot RAG sur votre documentation, recherche sémantique, agents conversationnels, copilotes internes — en code custom, hébergés en Union européenne, sans lock-in éditeur.",
+            a: "Oui. Sophia Antipolis, en partie sur la commune d'Antibes, concentre plus de 30 000 emplois et un vivier d'éditeurs (écosystème Amadeus, ingénieurs des écoles du technopôle). Pour ces structures, nous concevons des plateformes SaaS IA-native : chatbot RAG sur votre documentation, recherche sémantique, agents conversationnels, copilotes internes — en code custom, hébergés en Union européenne, sans lock-in éditeur.",
           },
           {
             q: "Sous combien de temps puis-je avoir un devis ?",

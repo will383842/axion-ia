@@ -65,7 +65,7 @@ export const BOULAY_MOSELLE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Boulay-Moselle ?",
-      a: "Nous intervenons dans vos locaux à Boulay-Moselle, partout en France.",
+      a: "Une mission à Boulay-Moselle démarre par un échange de cadrage, puis se déroule sur site ou à distance, avec des livrables remis et documentés.",
     },
   ],
 };

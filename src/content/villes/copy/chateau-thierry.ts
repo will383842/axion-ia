@@ -65,7 +65,7 @@ export const CHATEAU_THIERRY_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Château-Thierry ?",
-      a: "Nous intervenons dans vos locaux à Château-Thierry, partout en France.",
+      a: "Une mission à Château-Thierry démarre par un échange de cadrage, puis se déroule sur site ou à distance, avec des livrables remis et documentés.",
     },
   ],
 };

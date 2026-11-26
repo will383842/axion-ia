@@ -49,7 +49,7 @@ export const GIGNAC_LA_NERTHE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Gignac-la-Nerthe ?",
-      a: "Nous intervenons dans vos locaux à Gignac-la-Nerthe, partout en France. Couverture complète Côte Bleue.",
+      a: "Oui, Axion IA intervient partout en France, sur site ou à distance, y compris à Gignac-la-Nerthe. Couverture complète Côte Bleue.",
     },
     {
       q: "Quels sont les tarifs pour un audit IA à Gignac-la-Nerthe ?",

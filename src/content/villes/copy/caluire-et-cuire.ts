@@ -230,7 +230,7 @@ export const CALUIRE_ET_CUIRE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Caluire-et-Cuire et dans la Métropole de Lyon ?",
-      a: "Nous intervenons dans vos locaux, partout en France. Nous accompagnons en priorité les TPE et PME, puis les ETI en complément.",
+      a: "Oui, Axion IA intervient partout en France, sur site ou à distance, y compris à Caluire-et-Cuire et dans la Métropole de Lyon. Nous accompagnons en priorité les TPE et PME, puis les ETI en complément.",
     },
     {
       q: "Travaillez-vous avec les professions de santé et libérales ?",

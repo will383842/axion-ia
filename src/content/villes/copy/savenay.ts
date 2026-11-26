@@ -61,7 +61,7 @@ export const SAVENAY_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les PME tertiaires et services ?",
-      a: "Oui, nous accompagnons les PME tertiaires installées à Savenay et nord estuaire sur leurs cas IA : automatisation processus, classification documents, agents conversationnels, reporting automatisé. Nous intervenons dans vos locaux à Savenay, partout en France.",
+      a: "Oui, nous accompagnons les PME tertiaires installées à Savenay et nord estuaire sur leurs cas IA : automatisation processus, classification documents, agents conversationnels, reporting automatisé.",
     },
     {
       q: "Quel délai pour recevoir un devis à Savenay ?",

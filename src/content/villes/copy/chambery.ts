@@ -246,7 +246,7 @@ export const CHAMBERY_COPY: VilleCopy = {
     },
     {
       q: "Quel est le délai moyen pour démarrer une mission IA à Chambéry ?",
-      a: "Nous intervenons dans vos locaux, partout en France. Nous démarrons une mission à Chambéry sous 5 à 10 jours ouvrés en moyenne, selon la disponibilité de nos experts seniors et la complexité du projet.",
+      a: "Nous démarrons une mission à Chambéry sous 5 à 10 jours ouvrés en moyenne, selon la disponibilité de nos experts seniors et la complexité du projet.",
     },
     {
       q: "Axion-IA garantit-il la conformité RGPD et AI Act à Chambéry ?",

@@ -236,7 +236,7 @@ export const LIEVIN_COPY: VilleCopy = {
     },
     {
       q: "Intervenez-vous dans les communes voisines de Liévin ?",
-      a: "Oui : Lens, Avion, Angres, Bully-les-Mines, Aix-Noulette, Éleu-dit-Leauwette, Givenchy-en-Gohelle, Grenay, Loos-en-Gohelle sont couvertes, ainsi qu'Arras et Lille. Nous intervenons dans vos locaux, partout en France.",
+      a: "Oui : Lens, Avion, Angres, Bully-les-Mines, Aix-Noulette, Éleu-dit-Leauwette, Givenchy-en-Gohelle, Grenay, Loos-en-Gohelle sont couvertes, ainsi qu'Arras et Lille. Axion IA intervient partout en France, sur site ou à distance.",
     },
     {
       q: "Vos automatisations à Liévin respectent-elles le RGPD ?",

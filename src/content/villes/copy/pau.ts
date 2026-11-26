@@ -130,7 +130,7 @@ export const PAU_COPY: VilleCopy = {
           },
           {
             q: "Où sont hébergées les données et le code de ma plateforme ?",
-            a: "Nous intervenons dans vos locaux à Pau, partout en France. Hébergement en Union européenne par défaut, conformité RGPD documentée.",
+            a: "Hébergement en Union européenne par défaut, conformité RGPD documentée. Le code source, les modèles IA et les accès restent intégralement chez vous : pas de lock-in éditeur, reprise possible à vos équipes ou à tout intégrateur palois.",
           },
         ],
         guarantees:

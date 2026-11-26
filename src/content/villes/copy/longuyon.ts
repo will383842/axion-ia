@@ -65,7 +65,7 @@ export const LONGUYON_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Longuyon ?",
-      a: "Nous intervenons dans vos locaux à Longuyon, partout en France.",
+      a: "Nos consultants interviennent sur site à Longuyon, après un premier échange de cadrage.",
     },
   ],
 };

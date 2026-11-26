@@ -65,7 +65,7 @@ export const MISSILLAC_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission en zone rurale ?",
-      a: "Nous intervenons dans vos locaux à Missillac, partout en France. Nos consultants se déplacent directement dans votre hôtel, exploitation ou bureau à Missillac. Formats demi-journée ou journée complète.",
+      a: "Nos consultants interviennent directement dans votre hôtel, exploitation ou bureau à Missillac. Formats demi-journée ou journée complète.",
     },
   ],
 };

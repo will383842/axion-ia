@@ -124,7 +124,7 @@ export const ROMAINVILLE_COPY: VilleCopy = {
           },
           {
             q: "Faites-vous de l'e-commerce pour les enseignes de Paddock Paris et du commerce local ?",
-            a: "Oui. Nous intervenons dans vos locaux, partout en France. Nous construisons des vitrines e-commerce multi-CMS (Shopify, WooCommerce, PrestaShop ou solution sur mesure), du click-and-collect, de la recommandation produit IA et des chatbots de vente, avec un design mobile-first et des Web Vitals optimisés pour la conversion.",
+            a: "Oui. Nous construisons des vitrines e-commerce multi-CMS (Shopify, WooCommerce, PrestaShop ou solution sur mesure), du click-and-collect, de la recommandation produit IA et des chatbots de vente, avec un design mobile-first et des Web Vitals optimisés pour la conversion.",
           },
           {
             q: "Êtes-vous indépendants d'un CMS, et que devient le code après la mission ?",

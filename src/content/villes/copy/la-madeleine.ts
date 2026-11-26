@@ -232,7 +232,7 @@ export const LA_MADELEINE_COPY: VilleCopy = {
     },
     {
       q: "Sous quel délai un consultant Axion-IA peut-il se déplacer à La Madeleine ?",
-      a: "Nous intervenons dans vos locaux à La Madeleine, partout en France. Notre délai standard d'intervention sur site est de 5 jours ouvrés après validation du devis.",
+      a: "Notre délai standard d'intervention sur site est de 5 jours ouvrés après validation du devis.",
     },
     {
       q: "Intervenez-vous aussi dans les communes voisines de La Madeleine ?",

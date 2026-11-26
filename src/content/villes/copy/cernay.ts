@@ -65,7 +65,7 @@ export const CERNAY_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Cernay ?",
-      a: "Nous intervenons dans vos locaux à Cernay, partout en France. Position piémont vosgien stratégique entre Mulhouse, vallée de la Thur et route des Vins.",
+      a: "Une mission à Cernay démarre par un échange de cadrage, puis se déroule sur site ou à distance, avec des livrables remis et documentés.",
     },
   ],
 };

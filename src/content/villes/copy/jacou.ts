@@ -58,7 +58,7 @@ export const JACOU_COPY: VilleCopy = {
     },
     {
       q: "Quels délais pour une intervention sur site à Jacou ?",
-      a: "Nous intervenons dans vos locaux à Jacou, partout en France. Déplacement de nos consultants sous 5 jours ouvrés après validation de la mission. Pour les TPE et commerces pressés, audit visio possible sous 48 h.",
+      a: "Intervention de nos consultants sous 5 jours ouvrés après validation de la mission. Pour les TPE et commerces pressés, audit visio possible sous 48 h.",
     },
     {
       q: "Quelles garanties RGPD pour les données traitées à Jacou ?",

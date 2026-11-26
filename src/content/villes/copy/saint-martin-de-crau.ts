@@ -49,7 +49,7 @@ export const SAINT_MARTIN_DE_CRAU_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Saint-Martin-de-Crau ?",
-      a: "Nous intervenons dans vos locaux à Saint-Martin-de-Crau, partout en France. Couverture complète Bouches-du-Rhône ouest.",
+      a: "Axion IA intervient partout en France, sur site ou à distance. Couverture complète Bouches-du-Rhône ouest.",
     },
     {
       q: "Quels sont les tarifs pour un audit IA à Saint-Martin-de-Crau ?",

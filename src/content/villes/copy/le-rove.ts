@@ -49,7 +49,7 @@ export const LE_ROVE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il au Rove et sur la Côte Bleue ?",
-      a: "Oui, Axion-IA intervient au Rove et dans toute la Côte Bleue (Ensuès-la-Redonne, Carry-le-Rouet, Sausset-les-Pins, Niolon, Marseille L'Estaque). Nous intervenons dans vos locaux, comme partout en France.",
+      a: "Oui, Axion-IA intervient au Rove et dans toute la Côte Bleue (Ensuès-la-Redonne, Carry-le-Rouet, Sausset-les-Pins, Niolon, Marseille L'Estaque). Axion IA intervient partout en France, sur site ou à distance.",
     },
     {
       q: "Quel est le tarif d'un audit IA au Rove ?",

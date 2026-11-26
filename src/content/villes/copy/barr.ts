@@ -65,7 +65,7 @@ export const BARR_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Barr ?",
-      a: "Nous intervenons dans vos locaux à Barr, partout en France. Bassin viticole stratégique sur la Route des Vins d'Alsace.",
+      a: "Une mission à Barr démarre par un échange de cadrage, puis se déroule sur site ou à distance, avec des livrables remis et documentés.",
     },
   ],
 };

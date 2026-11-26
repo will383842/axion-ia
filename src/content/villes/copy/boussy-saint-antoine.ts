@@ -49,7 +49,7 @@ export const BOUSSY_SAINT_ANTOINE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Boussy-Saint-Antoine ?",
-      a: "Nous intervenons dans vos locaux à Boussy-Saint-Antoine, partout en France.",
+      a: "Oui, Axion IA intervient partout en France, sur site ou à distance, y compris à Boussy-Saint-Antoine et dans le sud-est essonnien.",
     },
     {
       q: "Accompagnez-vous les artisans et petits commerces ?",

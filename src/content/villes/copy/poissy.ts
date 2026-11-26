@@ -132,7 +132,7 @@ export const POISSY_COPY: VilleCopy = {
           },
           {
             q: "Quel délai pour recevoir un devis et démarrer le projet à Poissy ?",
-            a: "Nous intervenons dans vos locaux, partout en France. Un devis détaillé est fourni à partir de 24-48 h selon la complexité du projet, après un premier échange.",
+            a: "Un devis détaillé est fourni à partir de 24-48 h selon la complexité du projet, après un premier échange.",
           },
         ],
         guarantees:
@@ -242,7 +242,7 @@ export const POISSY_COPY: VilleCopy = {
     },
     {
       q: "Quel délai pour démarrer une mission à Poissy ?",
-      a: "Nous intervenons dans vos locaux, partout en France. Nous visons un démarrage sous cinq jours ouvrés après validation, selon nos disponibilités.",
+      a: "Nous visons un démarrage sous cinq jours ouvrés après validation, selon nos disponibilités.",
     },
     {
       q: "Comment assurez-vous la conformité RGPD à Poissy ?",

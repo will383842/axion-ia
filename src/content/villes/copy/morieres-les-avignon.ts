@@ -49,7 +49,7 @@ export const MORIERES_LES_AVIGNON_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Morières-lès-Avignon et dans le sud-est avignonnais ?",
-      a: "Oui, Axion-IA intervient à Morières-lès-Avignon et dans tout le sud-est avignonnais (Saint-Saturnin-lès-Avignon, Châteauneuf-de-Gadagne, Le Pontet). Nous intervenons dans vos locaux, comme partout en France.",
+      a: "Oui, Axion-IA intervient à Morières-lès-Avignon et dans tout le sud-est avignonnais (Saint-Saturnin-lès-Avignon, Châteauneuf-de-Gadagne, Le Pontet). Axion IA intervient partout en France, sur site ou à distance.",
     },
     {
       q: "Tarifs audit IA à Morières-lès-Avignon  : quel budget prévoir ?",

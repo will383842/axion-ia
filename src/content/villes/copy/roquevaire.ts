@@ -49,7 +49,7 @@ export const ROQUEVAIRE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Roquevaire et dans la vallée de l'Huveaune ?",
-      a: "Nous intervenons dans vos locaux à Roquevaire, partout en France. Couverture complète bassin est marseillais.",
+      a: "Axion IA intervient partout en France, sur site ou à distance. Couverture complète bassin est marseillais.",
     },
     {
       q: "Quel est le tarif d'un audit IA à Roquevaire  ?",

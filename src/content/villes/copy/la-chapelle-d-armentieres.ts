@@ -49,7 +49,7 @@ export const LA_CHAPELLE_D_ARMENTIERES_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à La Chapelle-d'Armentières et agglomération de Lille ouest ?",
-      a: "Nous intervenons dans vos locaux à La Chapelle-d'Armentières, partout en France.",
+      a: "Oui, Axion IA intervient partout en France, sur site ou à distance, y compris à La Chapelle-d'Armentières et dans tout le secteur Lille ouest.",
     },
     {
       q: "Travaillez-vous avec les TPE et artisans de La Chapelle-d'Armentières ?",

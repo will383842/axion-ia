@@ -65,7 +65,7 @@ export const MAXEVILLE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Maxéville ?",
-      a: "Nous intervenons dans vos locaux à Maxéville, partout en France. Couverture zones commerciales, pôle Zénith et commune.",
+      a: "Une mission couvre les zones commerciales, le pôle Zénith et la commune.",
     },
   ],
 };

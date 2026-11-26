@@ -242,7 +242,7 @@ export const SAINT_MALO_COPY: VilleCopy = {
     },
     {
       q: "Quel délai pour une première intervention à Saint-Malo ?",
-      a: "Nous intervenons dans vos locaux, partout en France. Nous visons un démarrage sous cinq jours ouvrés après validation, selon nos disponibilités.",
+      a: "Nous visons un démarrage sous cinq jours ouvrés après validation, selon nos disponibilités.",
     },
     {
       q: "Comment garantissez-vous la conformité RGPD à Saint-Malo ?",

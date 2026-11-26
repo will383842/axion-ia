@@ -74,7 +74,7 @@ export const BESSAN_COPY: VilleCopy = {
     },
     {
       q: "Intervenez-vous à Bessan ou en visio uniquement ?",
-      a: "Les deux. Nous intervenons dans vos locaux à Bessan, comme partout en France. Visio possible pour cadrage et coaching, sur site recommandé pour ateliers d'équipe.",
+      a: "Les deux. Axion IA intervient partout en France, sur site ou à distance. Visio possible pour cadrage et coaching, sur site recommandé pour ateliers d'équipe.",
     },
   ],
 };

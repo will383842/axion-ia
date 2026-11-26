@@ -113,7 +113,7 @@ export const GRIGNY_COPY: VilleCopy = {
         faq: [
           {
             q: "Faites-vous l'UX/UI et l'e-commerce, pas seulement l'IA ?",
-            a: "Oui. Nous intervenons dans vos locaux, partout en France. On conçoit l'expérience complète — research, wireframes, design system, maquettes Figma, prototype cliquable — pour un site vitrine, une boutique e-commerce ou une plateforme, avec ou sans brique IA.",
+            a: "Oui. On conçoit l'expérience complète — research, wireframes, design system, maquettes Figma, prototype cliquable — pour un site vitrine, une boutique e-commerce ou une plateforme, avec ou sans brique IA.",
           },
           {
             q: "Comment équipez-vous les commerces du centre commercial Grigny 2 ?",
@@ -199,7 +199,7 @@ export const GRIGNY_COPY: VilleCopy = {
         faq: [
           {
             q: "Faites-vous l'UX/UI et l'e-commerce, pas seulement l'IA ?",
-            a: "Oui. Nous intervenons dans vos locaux, partout en France. On conçoit l'expérience complète — research, wireframes, design system, maquettes Figma, prototype cliquable — pour un site vitrine, une boutique e-commerce ou une plateforme, avec ou sans brique IA.",
+            a: "Oui. On conçoit l'expérience complète — research, wireframes, design system, maquettes Figma, prototype cliquable — pour un site vitrine, une boutique e-commerce ou une plateforme, avec ou sans brique IA.",
           },
           {
             q: "Comment équipez-vous les commerces du centre commercial Grigny 2 ?",

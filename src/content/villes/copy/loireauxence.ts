@@ -49,7 +49,7 @@ export const LOIREAUXENCE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Loireauxence ?",
-      a: "Nous intervenons dans vos locaux à Loireauxence, partout en France. Couverture complète département 44.",
+      a: "Oui, Axion IA intervient partout en France, sur site ou à distance, y compris à Loireauxence. Couverture complète département 44.",
     },
     {
       q: "Accompagnez-vous les TPE artisans et exploitants agricoles ?",

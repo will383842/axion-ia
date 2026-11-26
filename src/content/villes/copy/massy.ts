@@ -116,7 +116,7 @@ export const MASSY_COPY: VilleCopy = {
         faq: [
           {
             q: "Concevez-vous des plateformes web et SaaS pour les sièges et ESN de Massy-Atlantis ?",
-            a: "Oui. Nous intervenons dans vos locaux à Massy, partout en France. Nous y livrons portails B2B, espaces clients et SaaS métier avec chatbot RAG, recherche sémantique et agents conversationnels intégrés à vos outils.",
+            a: "Oui. Le quartier Atlantis, avec 90 hectares et environ 12 000 salariés, est notre cœur de cible à Massy : sièges sociaux comme Carrefour, Crédit Agricole Consumer Finance/Sofinco, Orange Labs, et l'écosystème d'ESN et de cabinets de conseil autour. Nous y livrons portails B2B, espaces clients et SaaS métier avec chatbot RAG, recherche sémantique et agents conversationnels intégrés à vos outils.",
           },
           {
             q: "Faites-vous de l'e-commerce et de l'UX/UI, ou seulement de l'IA ?",
