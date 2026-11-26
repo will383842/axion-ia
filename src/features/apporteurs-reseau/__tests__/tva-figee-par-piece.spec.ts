@@ -222,6 +222,21 @@ describe("le virement suit le PDF, pas la fiche", () => {
     expect(etat.sentry.some((m) => m.includes("AXI-APP-2026-0001"))).toBe(true);
   });
 
+  it("11 bis. versement partiel puis complément : la garde ne bloque pas la ligne suspendue levée", async () => {
+    etat.apporteurs["APP1"] = ASSUJETTI;
+    etat.lignes = [ligne("c1", "due", 40_000), ligne("c2", "due", 10_000)];
+    await facturerApporteur("APP1", MARDI);
+    etat.lignes[1]!.litigeDepuis = new Date("2026-10-07T09:00:00Z");
+    expect(await marquerVerse("APP1", MARDI, "AXI-APP-2026-0001")).toMatchObject({
+      ok: true,
+      totalCents: 48_000,
+    });
+    etat.lignes[1]!.litigeDepuis = null;
+    const suite = await marquerVerse("APP1", MARDI, "AXI-APP-2026-0001");
+    expect(suite).toMatchObject({ ok: true, totalCents: 12_000 });
+    expect(etat.sentry).toEqual([]);
+  });
+
   it("12. table absente : la facturation et le virement fonctionnent comme avant (repli sur la fiche), sans écriture", async () => {
     etat.tables = false;
     etat.apporteurs["APP1"] = ASSUJETTI;
@@ -282,5 +297,7 @@ describe("13. figerPiecesManquantes : rattrapage idempotent", () => {
     // qui lit le changement ≤ jour (aucun) puis la fiche. C'est `changerRegimeTva` qui fige AVANT de basculer.
     expect(await figerPiecesManquantes("APP1")).toBe(1);
     expect(etat.pieces[0]!.numero).toBe("AXI-APP-2026-0007");
+    // Émise AVANT l'effet du 1er novembre : le régime d'alors est celui d'avant le changement.
+    expect(etat.pieces[0]).toMatchObject({ regimeTva: "assujetti", numeroTva: "FR00123456782" });
   });
 });

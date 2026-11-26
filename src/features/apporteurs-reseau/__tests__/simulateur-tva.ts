@@ -98,6 +98,7 @@ export function correspond(l: Record<string, V>, where: Record<string, V>): bool
     if (typeof cond === "object") {
       const c = cond as Record<string, V>;
       if ("in" in c) return (c["in"] as V[]).includes(v);
+      if ("notIn" in c) return !(c["notIn"] as V[]).includes(v);
       if ("not" in c) return c["not"] === null ? v !== null && v !== undefined : v !== c["not"];
       if ("gt" in c) return v instanceof Date ? v.getTime() > (c["gt"] as Date).getTime() : false;
       if ("lte" in c)

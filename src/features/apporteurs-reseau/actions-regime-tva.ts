@@ -75,7 +75,11 @@ export async function annulerChangementRegimeTvaAction(input: {
   if (!UUID.test(input.apporteurId) || !UUID.test(input.changementId))
     return { ok: false, message: "Changement inconnu." };
   try {
-    const r = await annulerChangementAVenir({ changementId: input.changementId, acteurId: a.id });
+    const r = await annulerChangementAVenir({
+      changementId: input.changementId,
+      apporteurId: input.apporteurId,
+      acteurId: a.id,
+    });
     if (r.ok) rafraichir(input.apporteurId);
     return r;
   } catch (err) {

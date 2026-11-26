@@ -317,6 +317,38 @@ describe("annulation et concurrence", () => {
     ).toMatchObject({ ok: false });
   });
 
+  it("un changement daté avant un changement déjà saisi est refusé (fiche et facturation ne divergent pas)", async () => {
+    expect((await changer({ effetAu: "01/12/2026" })).ok).toBe(true);
+    etat.changements[0]!.annuleAt = null;
+    const r = await changer({
+      effetAu: "05/11/2026",
+      regimeTva: "assujetti",
+      numeroTva: "FR00123456782",
+    });
+    expect(r.ok).toBe(false);
+  });
+
+  it("un changement à venir identique au régime alors applicable est un doublon", async () => {
+    expect(
+      await changer({ effetAu: "01/12/2026", regimeTva: "assujetti", numeroTva: "FR00123456782" }),
+    ).toMatchObject({
+      ok: false,
+      message: "Aucun changement.",
+    });
+  });
+
+  it("annuler : le changement doit appartenir à l'apporteur indiqué", async () => {
+    await changer({ effetAu: "01/12/2026" });
+    expect(
+      await annulerChangementAVenir({
+        changementId: etat.changements[0]!.id,
+        apporteurId: "AUTRE",
+        acteurId: null,
+        maintenant: AUJOURDHUI,
+      }),
+    ).toMatchObject({ ok: false });
+  });
+
   it("8. deux changements simultanés : un seul réussit", async () => {
     const [a, b] = await Promise.all([changer(), changer()]);
     expect([a.ok, b.ok].filter(Boolean)).toHaveLength(1);

@@ -978,7 +978,13 @@ export async function marquerVerse(
     }
     // Garde « le virement suit le PDF » : sans ligne suspendue, le montant recalculé DOIT être celui
     // des pièces figées (autofacture moins avoirs). Jamais un virement différent du PDF.
-    const attendu = montantDesPdf(k, lignes, figees, await piecesFigees(avoirsDe(lignes)));
+    // Seulement si TOUTES les lignes de la pièce sont à verser ici : après un versement partiel
+    // (une ligne suspendue puis levée), les lignes restantes ne valent plus le PDF entier.
+    const autres = await prisma.commissionApporteur.count({
+      where: { autofactureNumero: k, id: { notIn: lignes.map((l) => l.id) } },
+    });
+    const attendu =
+      autres === 0 ? montantDesPdf(k, lignes, figees, await piecesFigees(avoirsDe(lignes))) : null;
     if ((suspendues.get(k) ?? []).length === 0 && attendu !== null && attendu !== p.totalCents) {
       signalerErreurReseau(
         "virement : le montant recalculé ne correspond pas au PDF",

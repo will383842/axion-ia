@@ -28,7 +28,7 @@ import { jourParis } from "./autofacture-donnees";
 import { envoyer } from "./envois";
 import { numeroTvaValide, normaliserNumeroTva } from "./regles-dossier";
 import { signalerErreurReseau } from "./signaler";
-import { figerPiecesManquantes, piecesFigeesDisponible } from "./tva-pieces";
+import { figerPiecesManquantes, piecesFigeesDisponible, regimeApplicableAu } from "./tva-pieces";
 
 export type RegimeCible = "assujetti" | "franchise_293b";
 
@@ -174,6 +174,10 @@ export async function changerRegimeTva(e: {
       message: `Ces ${emises.length} autofactures restent au régime d'alors (art. 4.7). Toute rectification est une décision à part. L'apporteur supporte les conséquences d'une information tardive (art. 6.3). Confirmez pour enregistrer.`,
     };
 
+  // Aucune pièce ne peut plus basculer ensuite : on les fige AU RÉGIME D'AVANT, juste avant la
+  // transaction (idempotent, sans danger si la saisie est ensuite refusée).
+  await figerPiecesManquantes(e.apporteurId);
+
   const resultat = await prisma
     .$transaction(
       async (tx) => {
@@ -202,9 +206,26 @@ export async function changerRegimeTva(e: {
           };
         if ((sansChangement || memeQueLaFiche) && !A_VENIR(effet, aujourdhui))
           return { ok: false as const, message: "Aucun changement." };
-
-        // Aucune pièce ne peut plus basculer ensuite : on les fige AU RÉGIME D'AVANT.
-        await figerPiecesManquantes(e.apporteurId);
+        // Un changement daté AVANT un changement non annulé déjà saisi ferait diverger la fiche (qui
+        // suit la saisie) et la facturation (qui suit la plus grande date d'effet) : refusé.
+        const dernier = await tx.apporteurRegimeTvaChangement.findFirst({
+          where: { apporteurId: e.apporteurId, annuleAt: null },
+          orderBy: [{ effetAu: "desc" }, { saisiAt: "desc" }],
+          select: { effetAu: true },
+        });
+        if (dernier && dernier.effetAu.toISOString().slice(0, 10) > effet)
+          return {
+            ok: false as const,
+            message:
+              "Un changement de régime est déjà enregistré à une date postérieure : annulez-le ou choisissez une date au moins égale.",
+          };
+        // Un changement à venir identique au régime alors applicable n'est qu'un doublon.
+        const alors = await regimeApplicableAu(e.apporteurId, effet);
+        if (
+          alors.regimeTva === e.regimeTva &&
+          (e.regimeTva === "franchise_293b" || (alors.numeroTva ?? "") === numeroTva)
+        )
+          return { ok: false as const, message: "Aucun changement." };
 
         const ch = await tx.apporteurRegimeTvaChangement.create({
           data: {
@@ -282,6 +303,8 @@ export async function changerRegimeTva(e: {
 /** Annule un changement À VENIR (jamais un changement déjà en vigueur). */
 export async function annulerChangementAVenir(e: {
   changementId: string;
+  /** Si fourni : le changement doit appartenir à cet apporteur. */
+  apporteurId?: string;
   acteurId: string | null;
   maintenant?: Date;
 }): Promise<{ ok: true; message: string } | { ok: false; message: string }> {
@@ -290,7 +313,8 @@ export async function annulerChangementAVenir(e: {
     where: { id: e.changementId },
     select: { id: true, apporteurId: true, regimeTva: true, effetAu: true, annuleAt: true },
   });
-  if (!c || c.annuleAt) return { ok: false, message: "Changement introuvable." };
+  if (!c || c.annuleAt || (e.apporteurId && c.apporteurId !== e.apporteurId))
+    return { ok: false, message: "Changement introuvable." };
   if (c.effetAu.toISOString().slice(0, 10) <= aujourdhui)
     return { ok: false, message: "Ce changement est déjà en vigueur : il ne s'annule plus." };
   const r = await prisma.apporteurRegimeTvaChangement.updateMany({

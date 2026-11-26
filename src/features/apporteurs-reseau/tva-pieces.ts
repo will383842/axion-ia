@@ -88,6 +88,20 @@ export async function regimeApplicableAu(apporteurId: string, jour: string): Pro
         numeroTva: c.regimeTva === "assujetti" ? (c.numeroTva ?? null) : null,
       };
     }
+    // Jour AVANT le premier changement : le régime d'alors est celui d'AVANT ce changement, jamais
+    // celui de la fiche (déjà basculée). Cas du rattrapage d'une pièce émise avant la date d'effet.
+    const suivant = await prisma.apporteurRegimeTvaChangement.findMany({
+      where: { apporteurId, annuleAt: null },
+      orderBy: [{ effetAu: "asc" }, { saisiAt: "asc" }],
+      select: { regimeAvant: true, numeroTvaAvant: true, effetAu: true },
+    });
+    const premier = suivant[0];
+    if (premier && premier.regimeAvant && premier.effetAu.getTime() > dateCivile(jour).getTime()) {
+      return {
+        regimeTva: premier.regimeAvant,
+        numeroTva: premier.regimeAvant === "assujetti" ? premier.numeroTvaAvant : null,
+      };
+    }
   } catch {
     // Table absente (migration pas encore passée) : la fiche, comme avant.
   }
