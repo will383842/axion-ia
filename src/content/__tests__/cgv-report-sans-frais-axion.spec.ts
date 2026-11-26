@@ -41,7 +41,7 @@ describe("CGV : report à l'initiative d'Axion-IA, sans frais", () => {
       expect(a).toContain("d'au moins 10 Jours ouvrés");
       expect(a).toContain("il est réputé accepter la première date proposée");
       expect(a).toContain("rien n'est remboursé");
-      expect(a).toContain("seconde série d'au moins 2 dates, toujours dans les 6 mois");
+      expect(a).toContain("seconde série, qui suit les mêmes règles que la première");
       expect(a).toContain(
         "le Client peut aussi proposer ses propres dates, qu'Axion-IA accepte, sauf indisponibilité de l'intervenant justifiée par écrit",
       );

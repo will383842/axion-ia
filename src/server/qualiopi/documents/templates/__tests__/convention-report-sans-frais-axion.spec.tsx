@@ -63,7 +63,7 @@ const FRAGMENTS = [
   "délai de réponse raisonnable d'au moins 10 jours ouvrés",
   "réputé accepter la première date proposée",
   "rien n'est remboursé",
-  "seconde série d'au moins 2, toujours dans les 6 mois suivant la date initialement convenue",
+  "qui suit les mêmes règles de réponse, de rappel, de relance et de silence que la première",
   "sans prolonger le délai de 6 mois",
   "par écrit et jamais par son silence",
   "la part non utilisée à l'expiration lui est remboursée dans les 30 jours",

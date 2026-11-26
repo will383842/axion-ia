@@ -476,24 +476,25 @@ export function ConventionPdf({
             proposées, sans consommer son propre report. L&apos;acompte et les sommes versées sont
             reportés sur la date retenue et rien n&apos;est remboursé (article 46.4 des conditions
             générales de vente). Si le client refuse les dates proposées, l&apos;organisme lui en
-            propose, dans les 15 jours, une seconde série d&apos;au moins 2, toujours dans les 6
-            mois suivant la date initialement convenue ; le client peut aussi proposer ses propres
-            dates, que l&apos;organisme accepte sauf indisponibilité de l&apos;intervenant justifiée
-            par écrit (il ne peut en refuser plus de 2). Si l&apos;organisme ne peut pas tenir la
-            nouvelle date, le présent alinéa s&apos;applique de nouveau, sans prolonger le délai de
-            6 mois. À la place d&apos;un remboursement, le client peut choisir, par écrit et jamais
-            par son silence, un bon d&apos;achat (avoir) du montant des sommes qu&apos;il a lui-même
-            versées, valable 12 mois et utilisable sur toute prestation de l&apos;organisme ; la
-            part non utilisée à l&apos;expiration lui est remboursée dans les 30 jours, et la
-            personne morale non professionnelle qui le choisit renonce à l&apos;indemnité
-            ci-dessous. Les sommes réglées par un tiers pour le compte du client ne donnent jamais
-            lieu à bon d&apos;achat : elles sont remboursées à ce tiers. Ce report n&apos;est pas
-            une annulation par le client. Le remboursement n&apos;intervient qu&apos;en dernier
-            recours : si aucune date n&apos;a pu être convenue dans les 6 mois et que le client
-            n&apos;a pas choisi le bon d&apos;achat, ou si l&apos;organisme ne lui propose pas, dans
-            le délai de 30 jours, au moins 2 dates répondant aux conditions ci-dessus,
-            l&apos;organisme rembourse au client, dans les 30 jours, les sommes versées pour
-            l&apos;action concernée. Pour la seule personne morale non professionnelle, et hors
+            propose, dans les 15 jours, une seconde série d&apos;au moins 2, qui suit les mêmes
+            règles de réponse, de rappel, de relance et de silence que la première, toujours dans
+            les 6 mois suivant la date initialement convenue ; le client peut aussi proposer ses
+            propres dates, que l&apos;organisme accepte sauf indisponibilité de l&apos;intervenant
+            justifiée par écrit (il ne peut en refuser plus de 2). Si l&apos;organisme ne peut pas
+            tenir la nouvelle date, le présent alinéa s&apos;applique de nouveau, sans prolonger le
+            délai de 6 mois. À la place d&apos;un remboursement, le client peut choisir, par écrit
+            et jamais par son silence, un bon d&apos;achat (avoir) du montant des sommes qu&apos;il
+            a lui-même versées, valable 12 mois et utilisable sur toute prestation de
+            l&apos;organisme ; la part non utilisée à l&apos;expiration lui est remboursée dans les
+            30 jours, et la personne morale non professionnelle qui le choisit renonce à
+            l&apos;indemnité ci-dessous. Les sommes réglées par un tiers pour le compte du client ne
+            donnent jamais lieu à bon d&apos;achat : elles sont remboursées à ce tiers. Ce report
+            n&apos;est pas une annulation par le client. Le remboursement n&apos;intervient
+            qu&apos;en dernier recours : si aucune date n&apos;a pu être convenue dans les 6 mois et
+            que le client n&apos;a pas choisi le bon d&apos;achat, ou si l&apos;organisme ne lui
+            propose pas, dans le délai de 30 jours, au moins 2 dates répondant aux conditions
+            ci-dessus, l&apos;organisme rembourse au client, dans les 30 jours, les sommes versées
+            pour l&apos;action concernée. Pour la seule personne morale non professionnelle, et hors
             force majeure et faute du client, il lui verse en outre une indemnité d&apos;un montant
             égal à l&apos;acompte, sans préjudice de la réparation du préjudice qu&apos;elle prouve,
             sur laquelle cette indemnité s&apos;impute. Sauf faute lourde ou dolosive, le client
@@ -622,7 +623,8 @@ export function ConventionPdf({
               l&apos;action, défaut des justificatifs de réalisation qui lui incombent) ou d&apos;un
               report à l&apos;initiative de l&apos;organisme (article 46.4 des conditions générales
               de vente). En cas de report, si le financeur ne maintient pas sa prise en charge pour
-              la date retenue, le client peut refuser cette date et le remboursement prévu à
+              la date retenue, ce refus ne compte pas : le financeur et l&apos;organisme proposent
+              d&apos;autres dates couvertes et, à défaut dans les 6 mois, le remboursement prévu à
               l&apos;article 4 s&apos;applique.
             </Text>
           ) : null}
