@@ -213,7 +213,7 @@ export const PUTEAUX_COPY: VilleCopy = {
           },
           {
             q: "Do you travel to the La Défense towers and Puteaux town centre?",
-            a: "Yes. Kick-off and acceptance happen on site, at your offices in Puteaux (92800), including in the La Défense towers, as well as in the town centre or near the Île de Puteaux. Access via RER A and E, line 1, tram T2 and Transilien L and U.",
+            a: "Yes. Kick-off and acceptance happen on site, at your offices in Puteaux (92800), including in the La Défense towers, as well as in the town centre or near the Île de Puteaux. Axion-IA works anywhere in France, on site or remotely.",
           },
           {
             q: "Where is data hosted and do we own the code?",

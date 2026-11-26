@@ -55,7 +55,7 @@ export const SARTROUVILLE_COPY: VilleCopy = {
           "Le tissu sartrouvillois est dominé par la sous-traitance industrielle de précision du Prunay (électronique, mécanique, métallurgie, plasturgie, prototypes aéronautique/automobile/aérospatial) : ces ateliers ont besoin de configurateurs de devis techniques, de portails de suivi de commandes et de catalogues produits structurés, pas de vitrines décoratives.",
           "Les Perriers concentrent cosmétique, design industriel et commerce de gros — un façonnier comme l'Académie Scientifique de Beauté ou un distributeur de fixations comme Fontana Fasteners ont des besoins e-commerce B2B (tarifs par client, références techniques, fiches sécurité) que nous traitons sur les principaux CMS et en headless.",
           "Les Sureaux abritent des activités numériques et de services aux entreprises rattachées aux pôles As'tech et NextMove : ces structures attendent des plateformes SaaS et des intégrations IA (search sémantique, agents) au niveau de leur exigence technique.",
-          "La Zone Franche Urbaine et la Pépinière d'entreprises de Sartrouville alimentent un flux régulier de jeunes PME et indépendants : nous livrons des sites évolutifs et des MVP SaaS calibrés pour une structure qui démarre puis monte en charge, à 15 minutes de La Défense via le Transilien L et le RER A.",
+          "La Zone Franche Urbaine et la Pépinière d'entreprises de Sartrouville alimentent un flux régulier de jeunes PME et indépendants : nous livrons des sites évolutifs et des MVP SaaS calibrés pour une structure qui démarre puis monte en charge.",
         ],
         methodology: [
           {

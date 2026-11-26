@@ -56,7 +56,7 @@ export const NEUILLY_SUR_SEINE_COPY: VilleCopy = {
           "Capitale française des sièges de luxe et de cosmétique : Chanel (135 avenue Charles-de-Gaulle), Sephora-LVMH (rue Ybry) et Dior imposent des standards e-commerce, fiches produit multilingues, configurateurs et expériences mobiles que nous outillons avec de la recherche sémantique et de la génération de contenu IA.",
           "Pôle médias, broadcast et publicité avec le Groupe M6 (89 avenue Charles-de-Gaulle), RTL et JCDecaux : portails de contenu à fort trafic, gestion d'actifs média (DAM), recommandation et modération assistées par IA exigent des plateformes performantes et observables.",
           "Concentration de cabinets de conseil et d'audit — Deloitte, PwC, Bureau Veritas — et de professions libérales d'affaires (avocats, notaires) : nous construisons des portails clients sécurisés, des bases de connaissances RAG et des assistants documentaires avec un cloisonnement RGPD strict des données sensibles.",
-          "Densité exceptionnelle d'environ 13 000 entreprises sur 3,7 km² desservie par la ligne 1 (Pont de Neuilly, Les Sablons, Porte Maillot) à deux pas de La Défense : intervention sur site rapide, kick-off et recette en présentiel dans vos locaux neuilléens.",
+          "Densité exceptionnelle d'environ 13 000 entreprises sur 3,7 km² : intervention sur site, kick-off et recette en présentiel dans vos locaux neuilléens.",
         ],
         methodology: [
           {

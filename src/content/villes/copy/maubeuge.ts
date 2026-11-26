@@ -56,7 +56,7 @@ export const MAUBEUGE_COPY: VilleCopy = {
           "La supply-chain automobile autour de la Manufacture Renault de Maubeuge (Kangoo E-TECH Electric, R4 E-Tech) génère un besoin réel de portails fournisseurs, de configurateurs de pièces et de suivi de commandes en ligne pour les sous-traitants de rang 1 et 2 du Val de Sambre.",
           "La filière métallurgie-énergie (Vallourec et ses tubes sans soudure à Aulnoye-Aymeries, Interfit, Cerec à Recquignies) et le nucléaire (Framatome, SRMS sur Grévaux-les-Guides) imposent des plateformes capables d'indexer de la documentation technique dense : nous y déployons du search sémantique et des chatbots RAG sur normes, fiches matières et procédures.",
           "Les PME industrielles locales nommées — Carnière/Défossez (automobile et électroménager), CBM (emballage industriel), Aciérie et Fonderie de la Haute Sambre — ont des sites souvent vitrines : nous les transformons en outils commerciaux avec catalogue produit, demande de devis automatisée et espace client B2B.",
-          "Position transfrontalière à 7 km de la Belgique via la N2 et campus de Douzies (IUT informatique rattaché à Valenciennes) : nous construisons des plateformes bilingues prêtes pour la clientèle belge et mobilisons un vivier technique local.",
+          "Position transfrontalière avec la Belgique et campus de Douzies (IUT informatique rattaché à Valenciennes) : nous construisons des plateformes bilingues prêtes pour la clientèle belge et mobilisons un vivier technique local.",
         ],
         methodology: [
           {

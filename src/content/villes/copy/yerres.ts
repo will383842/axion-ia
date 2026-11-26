@@ -128,7 +128,7 @@ export const YERRES_COPY: VilleCopy = {
           },
           {
             q: "Mon site sera-t-il rapide et bien référencé pour des recherches locales ?",
-            a: "Oui. On livre des sites contrôlés sur les Web Vitals et optimisés SEO/AEO, avec fiches établissement, données structurées et contenus locaux (centre-ville, Mont Griffon, parc Caillebotte) pour ressortir sur les recherches des Yerrois et des visiteurs venus par le RER D.",
+            a: "Oui. On livre des sites contrôlés sur les Web Vitals et optimisés SEO/AEO, avec fiches établissement, données structurées et contenus locaux (centre-ville, Mont Griffon, parc Caillebotte) pour ressortir sur les recherches des Yerrois et des visiteurs.",
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",

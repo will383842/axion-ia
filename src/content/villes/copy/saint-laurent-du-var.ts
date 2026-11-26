@@ -53,7 +53,7 @@ export const SAINT_LAURENT_DU_VAR_COPY: VilleCopy = {
         whyHere: [
           "Retail et e-commerce à fort volume : enseignes et commerces de l'écosystème CAP3000 (près de 300 boutiques, une cinquantaine de restaurants, ~10 millions de visiteurs/an) — un terrain idéal pour des sites omnicanaux, click & collect, catalogues et tunnels d'achat augmentés par l'IA.",
           "Nautisme et port de plaisance : avec plus de 1 000 anneaux et un programme de 34 M€ de travaux (nouvelle concession 20 ans dès 2026), les commerces du port, capitaineries, loueurs et services plaisanciers ont besoin de réservation en ligne, gestion d'anneaux et relation client digitalisée.",
-          "Trafic touristique multilingue : à 5 min de l'aéroport Nice-Côte d'Azur (2e aéroport français hors Paris), hôtels, restauration et agences premium exigent des chatbots et parcours FR/EN/IT/DE ancrés sur leurs propres contenus — pas un widget générique.",
+          "Trafic touristique multilingue : hôtels, restauration et agences premium exigent des chatbots et parcours FR/EN/IT/DE ancrés sur leurs propres contenus — pas un widget générique.",
           "Tissu B2B du parc P.A. Saint-Laurent (44 ha, ~794 entreprises : ADREXO, BARBERO TRANSPORTS, FRANCE BETON PROJECT, animé par le club APAL) et de l'Éco-Vallée voisine (Virbac, Arkopharma, Schneider Electric, Malongo) : portails clients, devis automatisés et SaaS métier pour la logistique, le transport, le BTP et le négoce.",
         ],
         methodology: [
@@ -124,7 +124,7 @@ export const SAINT_LAURENT_DU_VAR_COPY: VilleCopy = {
           },
           {
             q: "Gérez-vous le multilingue pour la clientèle touristique de l'aéroport ?",
-            a: "Oui. À 5 min de l'aéroport Nice-Côte d'Azur (2e aéroport français hors Paris), votre clientèle est internationale. Nous livrons des chatbots et parcours FR/EN/IT/DE ancrés sur vos propres contenus (cartes, chambres, prestations), pas un module générique — adaptés à la saisonnalité méditerranéenne.",
+            a: "Oui. Votre clientèle touristique est internationale. Nous livrons des chatbots et parcours FR/EN/IT/DE ancrés sur vos propres contenus (cartes, chambres, prestations), pas un module générique — adaptés à la saisonnalité méditerranéenne.",
           },
           {
             q: "Avec quelles technologies travaillez-vous et où sont hébergées les données ?",

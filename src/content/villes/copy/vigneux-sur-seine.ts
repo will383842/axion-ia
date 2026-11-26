@@ -58,7 +58,7 @@ export const VIGNEUX_SUR_SEINE_COPY: VilleCopy = {
           "Le tissu de Vigneux est dominé par les TPE/PME de proximité — artisans du bâtiment, transporteurs et prestataires logistiques des ZA du Bac d'Ablon et du Clos de la Régale, commerces et restauration : nous construisons des sites vitrines et e-commerce avec demande de devis intelligente et prise de rendez-vous, calibrés pour des équipes réduites.",
           "Le renouvellement urbain de la Croix-Blanche (opération ANRU pilotée par l'agglomération Val d'Yerres Val de Seine, création/réhabilitation d'environ 400 logements, commerces et place végétalisée à l'horizon 2031) recompose l'offre commerciale locale : nous outillons commerçants et services pour exister en ligne face à cette nouvelle centralité.",
           "L'économie de loisirs fluviale — Île de loisirs du Port-aux-Cerises (plus d'un million de visiteurs par an, port de plaisance de 128 anneaux) et Port Premier sur la darse de la Seine — génère des besoins de réservation en ligne, billetterie et gestion de saisonnalité que nous intégrons nativement.",
-          "La gare RER D de Vigneux (Paris-Gare de Lyon à ~25 minutes) et la proximité d'Orly placent la commune sur des flux logistiques et de services : nous concevons des plateformes de suivi de commande, de planification de tournées et de portails clients pour les PME de transport et de services aux entreprises.",
+          "La commune s'inscrit dans des flux logistiques et de services : nous concevons des plateformes de suivi de commande, de planification de tournées et de portails clients pour les PME de transport et de services aux entreprises.",
         ],
         methodology: [
           {

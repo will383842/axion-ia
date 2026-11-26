@@ -55,7 +55,7 @@ export const BUSSY_SAINT_GEORGES_COPY: VilleCopy = {
           "Le parc Gustave-Eiffel concentre des acteurs de la distribution et de la logistique (TD Synnex pour l'IT, Logistique Galeries Lafayette pour l'entreposage, Toyota Material Handling pour la manutention) : nous y construisons des portails B2B, des interfaces de suivi de commandes et des connecteurs WMS/ERP/EDI directement utiles à ces flux.",
           "Bussy-Saint-Georges devient un pôle jeu vidéo et esports : Gaming House dans l'éco-quartier du Sycomore et futur musée Odyssée (collection de 2 200+ consoles, ouverture 2026). Pour ces projets nous concevons billetterie en ligne, espaces communautaires, boutiques e-commerce gaming et plateformes de tournoi (Bussy Esport Masters).",
           "Le tissu compte des entreprises taïwanaises (Asialand, MSI) et une population dont près d'un habitant sur deux est d'origine asiatique : nous livrons des sites et SaaS multilingues FR/anglais/chinois, pensés pour le commerce transfrontalier et une audience internationale réelle.",
-          "La ZAC Léonard-de-Vinci (créée en 2005, A4 sortie 12 à 3 min, RER A à 12 min) et la ZAC du Sycomore regroupent des PME/PMI et des commerces de proximité (programme Agora Parc II) : pour elles, vitrines e-commerce multi-CMS, prise de rendez-vous et UX/UI mobile-first sont nos chantiers courants.",
+          "La ZAC Léonard-de-Vinci (créée en 2005) et la ZAC du Sycomore regroupent des PME/PMI et des commerces de proximité (programme Agora Parc II) : pour elles, vitrines e-commerce multi-CMS, prise de rendez-vous et UX/UI mobile-first sont nos chantiers courants.",
         ],
         methodology: [
           {

@@ -211,7 +211,7 @@ export const LIMEIL_BREVANNES_COPY: VilleCopy = {
           },
           {
             q: "How do your trips to Limeil-Brévannes work?",
-            a: "Our consultants travel on site for framing workshops and acceptance. The area is now served by the Câble C1, the first urban cable car in Île-de-France (launched 13 December 2025) linking Pointe du Lac (metro line 8) to Villeneuve-Saint-Georges via Limeil-Brévannes, alongside the RN19 and A86. We also cover Créteil, Valenton, Bonneuil-sur-Marne, Boissy-Saint-Léger and Villecresnes.",
+            a: "Our consultants work on site in Limeil-Brévannes for framing workshops and acceptance. Axion-IA works anywhere in France, on site or remotely. We also cover Créteil, Valenton, Bonneuil-sur-Marne, Boissy-Saint-Léger and Villecresnes.",
           },
           {
             q: "How quickly do we get a quote?",

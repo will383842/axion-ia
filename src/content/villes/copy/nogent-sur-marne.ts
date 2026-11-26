@@ -58,7 +58,7 @@ export const NOGENT_SUR_MARNE_COPY: VilleCopy = {
           "Le pôle tertiaire de la Cité d'Affaires Nogent Baltard (bureaux Eiffage au-dessus du RER A) et le siège de Bourrelier Group génèrent une demande de portails métier et d'applicatifs SaaS internes que nous concevons IA-native (recherche sémantique sur documents, agents conversationnels, automatisation de back-office).",
           "La filière santé locale — Hôpital Privé Armand Brillard (Ramsay, av. Watteau), nouvelle Maison médicale Nogent Baltard, nombreux cabinets libéraux — a besoin de sites de prise de rendez-vous, de pré-qualification patient et de portails conformes RGPD avec hébergement maîtrisé des données de santé.",
           "Le Pavillon Baltard (2 700 m², jusqu'à 2 200 personnes, salons et congrès) et l'écosystème événementiel/guinguettes des bords de Marne appellent des sites de billetterie, de réservation et de planification d'événements dopés à l'IA (assistant programme, réponses automatiques, suivi exposants).",
-          "L'économie résidentielle haut de gamme — agences immobilières, gestion de patrimoine, restauration et commerce premium du Cœur de Nogent — valorise des vitrines soignées en UX/UI mobile-first avec e-commerce multi-CMS et réponses client automatisées, à 10 minutes de Paris par RER A et RER E.",
+          "L'économie résidentielle haut de gamme — agences immobilières, gestion de patrimoine, restauration et commerce premium du Cœur de Nogent — valorise des vitrines soignées en UX/UI mobile-first avec e-commerce multi-CMS et réponses client automatisées.",
         ],
         methodology: [
           {

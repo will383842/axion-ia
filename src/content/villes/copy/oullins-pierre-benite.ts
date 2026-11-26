@@ -218,7 +218,7 @@ export const OULLINS_PIERRE_BENITE_COPY: VilleCopy = {
           },
           {
             q: "How quickly can I get a quote?",
-            a: "We issue a quote from 24 to 48 h depending on complexity. A first exchange — on site in Oullins-Pierre-Bénite, reachable by Metro B 15 min from Part-Dieu, or by video call — is enough to frame the scope, the technical stack and the AI features relevant to your activity.",
+            a: "We issue a quote from 24 to 48 h depending on complexity. A first exchange — on site in Oullins-Pierre-Bénite or by video call — is enough to frame the scope, the technical stack and the AI features relevant to your activity.",
           },
         ],
         guarantees:

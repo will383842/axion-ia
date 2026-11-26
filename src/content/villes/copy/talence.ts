@@ -215,7 +215,7 @@ export const TALENCE_COPY: VilleCopy = {
           },
           {
             q: "Do you work beyond Talence, across South Bordeaux?",
-            a: "Yes. Axion-IA works anywhere in France, on site or remotely, including in Talence.",
+            a: "Yes. Axion-IA works anywhere in France, on site or remotely, including across South Bordeaux — Talence, Pessac, Gradignan, Bègles and beyond.",
           },
         ],
         guarantees:

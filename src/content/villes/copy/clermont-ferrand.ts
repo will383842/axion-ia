@@ -258,7 +258,7 @@ export const CLERMONT_FERRAND_COPY: VilleCopy = {
           },
           {
             q: "Difference vs a Lyon- or Paris-based traditional consulting firm?",
-            a: "Our consultants travel to Clermont-Ferrand and bill only their service — no geographic premium. Public pricing, no quote to negotiate. Condensed method, demos on your real industrial or agri-food data. And above all: no lock-in, you leave with your plan.",
+            a: "Our consultants work on site in Clermont-Ferrand or remotely, and bill only their service. Public pricing, no quote to negotiate. Condensed method, demos on your real industrial or agri-food data. And above all: no lock-in, you leave with your plan.",
           },
           {
             q: "Do I need AI maturity to order an audit?",

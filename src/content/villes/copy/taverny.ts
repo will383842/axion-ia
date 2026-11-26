@@ -55,7 +55,7 @@ export const TAVERNY_COPY: VilleCopy = {
         whyHere: [
           "Le cœur industriel de Taverny — Châtaigniers, Chêne Bocquet, Écouardes — est fait d'ateliers de mécanique de précision, de ressorts et de tôlerie (CGR, CIFR Industries, CFP Industries) qui vendent encore sur catalogue PDF et devis manuels : un site augmenté par l'IA qui chiffre une pièce à partir d'un plan ou d'un cahier des charges change leur cycle commercial.",
           "Ces sous-traitants travaillent en B2B avec donneurs d'ordre récurrents : nous construisons des portails clients/fournisseurs SaaS (suivi de commande, accusés de réception, PV de contrôle, relances) plutôt que de simples vitrines, car la valeur est dans le back-office, pas dans la home page.",
-          "Taverny est desservie par l'A15, l'A115, l'A86, la Francilienne, le RER C et la ligne H : un dirigeant de PME des Châtaigniers nous reçoit en atelier, puis valide les maquettes au fil des itérations.",
+          "Axion IA intervient partout en France, sur site ou à distance, y compris à Taverny : un dirigeant de PME des Châtaigniers nous reçoit en atelier, puis valide les maquettes au fil des itérations.",
           "Au-delà de l'industrie, la commune mêle commerce de proximité, négoce de poids lourds (IVECO « Le Poids Lourd 95 », Chêne Bocquet) et services liés au site de la base de défense Creil-Taverny : nous adaptons le SaaS à chaque modèle (e-commerce de pièces, prise de RDV atelier, espace documentaire).",
         ],
         methodology: [

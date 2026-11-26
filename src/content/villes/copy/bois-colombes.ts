@@ -58,7 +58,7 @@ export const BOIS_COLOMBES_COPY: VilleCopy = {
           "Bois-Colombes concentre des sièges et DSI de grands groupes sur l'avenue de l'Europe et la ZAC des Bruyères — IBM France, Colgate-Palmolive, Abeille Assurances, Coface (env. 1 300 collaborateurs), GRTgaz/NaTran, Storengy, Elengy — qui ont des besoins de portails internes, extranets partenaires et applications métier à interfacer avec leurs systèmes existants.",
           "La ZAC des Bruyères, née sur les friches de l'ancienne usine Hispano-Suiza et desservie par la gare de Bécon-les-Bruyères, héberge des fonctions tertiaires (énergie/gaz, assurance, crédit-export, biens de grande consommation) où la production documentaire et le reporting sont des cas d'usage IA prioritaires pour un site ou une plateforme.",
           "Au pied des sièges, un tissu résidentiel dense de TPE/PME — cabinets de conseil, services financiers, agences numériques, professions libérales (santé, droit, expertise) et commerces de proximité — pour qui un site vitrine ou e-commerce avec prise de RDV, qualification et base documentaire interrogeable change l'acquisition.",
-          "Nous intervenons sur site à Bois-Colombes et dans l'ouest francilien (Courbevoie, Asnières, La Défense à env. 10 min, Paris à env. 7 km) : ateliers de conception en présentiel, puis itérations à distance, sans nous substituer à vos équipes.",
+          "Nous intervenons sur site à Bois-Colombes et dans l'ouest francilien (Courbevoie, Asnières, La Défense, Paris) : ateliers de conception en présentiel, puis itérations à distance, sans nous substituer à vos équipes.",
         ],
         methodology: [
           {

@@ -58,7 +58,7 @@ export const CHAMBERY_COPY: VilleCopy = {
           "Chambéry est une capitale French Tech (French Tech in the Alps, association Digital Savoie) : l'écosystème SaaS de Savoie Technolac — Pixminds, Lunabee Studio, Geomap-imagis, Resalab — a des besoins concrets en search sémantique, agents conversationnels et chatbots RAG que nous construisons sur mesure, pas en gabarit recyclé.",
           "Le tourisme alpin est notre terrain le plus spécifique : pour les hôtels-restaurants des stations (Trois Vallées, Les Arcs, La Plagne) et les startups de l'Alpes Tourisme Lab, nous concevons des plateformes de réservation, des assistants multilingues saisonniers et des sites e-commerce calés sur les pics de saison ski.",
           "Nous traitons l'e-commerce de marque comme un sujet à part entière : pour les icônes savoyardes (Opinel, Cafés Folliet) et les enseignes outdoor de Savoie Hexapole, boutiques multi-CMS (Shopify, WooCommerce, headless), fiches produit générées par IA et recommandation produit, avec UX/UI et mobile soignés.",
-          "Nos consultants se déplacent sur tout le bassin chambérien : Savoie Technolac (Le Bourget-du-Lac, La Motte-Servolex), ZA de Bissy, centre historique, Université Savoie Mont Blanc, et jusqu'aux stations de Tarentaise et Maurienne à 30-90 minutes.",
+          "Axion IA intervient partout en France, sur site ou à distance, y compris à Chambéry : Savoie Technolac (Le Bourget-du-Lac, La Motte-Servolex), ZA de Bissy, centre historique, Université Savoie Mont Blanc, et les stations de Tarentaise et Maurienne.",
         ],
         methodology: [
           {
@@ -214,7 +214,7 @@ export const CHAMBERY_COPY: VilleCopy = {
           },
           {
             q: "How long for a websites / SaaS quote in Chambéry?",
-            a: "From 24 to 48 hours depending on complexity. After an initial framing exchange, we send back a clear, costed scope. The Chambéry-Challes-les-Eaux TGV station and the A43 make on-site visits to Savoie Technolac, Bissy or the resorts easy.",
+            a: "From 24 to 48 hours depending on complexity. After an initial framing exchange, we send back a clear, costed scope. Axion-IA works anywhere in France, on site or remotely, including at Savoie Technolac, Bissy or in the resorts.",
           },
           {
             q: "Do my data and code stay with me after the project?",

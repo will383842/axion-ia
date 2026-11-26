@@ -55,7 +55,7 @@ export const NOISY_LE_SEC_COPY: VilleCopy = {
         whyHere: [
           "Logistique et maintenance ferroviaire au cœur du territoire: autour du Technicentre SNCF de Paris-Est et du Parc d'activités Le Terminal / Groux (~9,74 ha, ~162 entreprises à moins de 10 min du RER), nous outillons les transporteurs, sociétés de nettoyage technique (type Samsic Transport) et prestataires d'installation électrique (type Transport Tertiaire Industrie) avec des portails de suivi d'interventions, de planning et de pièces.",
           "BTP et construction sur-représentés: la ZAC Quartier durable de la Plaine de l'Ourcq (35 ha, ~75 000 m² d'activités et 30 000 m² de bureaux pilotés par Est Ensemble et Séquano d'ici 2029) alimente artisans et PME du bâtiment — nous construisons leurs sites de devis en ligne, suivis de chantier et e-commerce de matériaux.",
-          "Commerce et services de proximité: pour les boutiques du centre-ville et des marchés, desservies par la gare RER E, le tramway T1 et bientôt la gare Pont de Bondy de la ligne 15 du Grand Paris Express, nous déployons des vitrines e-commerce multi-CMS (Shopify, WooCommerce, PrestaShop) avec click-and-collect et IA produit.",
+          "Commerce et services de proximité: pour les boutiques du centre-ville et des marchés, nous déployons des vitrines e-commerce multi-CMS (Shopify, WooCommerce, PrestaShop) avec click-and-collect et IA produit.",
           "Santé et services aux entreprises: cliniques et centres de soins de suite, comme la Clinique de Soins de Suite de Noisy-le-Sec, et prestataires des 4 zones d'activités (ZI du Parc, Sous les Plâtres, ZAC des Guillaumes) reçoivent des plateformes de prise de rendez-vous, d'agents conversationnels et de classification documentaire conformes RGPD.",
         ],
         methodology: [
@@ -122,7 +122,7 @@ export const NOISY_LE_SEC_COPY: VilleCopy = {
           },
           {
             q: "Faites-vous de l'e-commerce multi-CMS pour les commerçants de Noisy-le-Sec ?",
-            a: "Oui. Pour les boutiques du centre-ville et des marchés, desservies par la gare RER E, le tramway T1 et bientôt la gare Pont de Bondy de la ligne 15 du Grand Paris Express, nous déployons des vitrines e-commerce sur Shopify, WooCommerce ou PrestaShop, avec click-and-collect, recommandation produit IA et search sémantique.",
+            a: "Oui. Pour les boutiques du centre-ville et des marchés, nous déployons des vitrines e-commerce sur Shopify, WooCommerce ou PrestaShop, avec click-and-collect, recommandation produit IA et search sémantique.",
           },
           {
             q: "Quels délais pour un devis ?",

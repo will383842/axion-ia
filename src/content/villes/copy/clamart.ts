@@ -218,7 +218,7 @@ export const CLAMART_COPY: VilleCopy = {
           },
           {
             q: "How soon will I get a quote and start?",
-            a: "The quote is sent from 24 to 48 hours depending on project complexity. Kick-off then takes place on site in Clamart — Noveos park offices, a practice near Antoine-Béclère or a town-centre shop — the town being served by the T6 tram and soon by the Grand Paris Express Line 15 station at Fort d'Issy-Vanves-Clamart.",
+            a: "The quote is sent from 24 to 48 hours depending on project complexity. Kick-off then takes place on site in Clamart — Noveos park offices, a practice near Antoine-Béclère or a town-centre shop.",
           },
         ],
         guarantees:

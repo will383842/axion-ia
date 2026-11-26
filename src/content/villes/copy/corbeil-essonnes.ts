@@ -58,7 +58,7 @@ export const CORBEIL_ESSONNES_COPY: VilleCopy = {
           "Le sud francilien de Corbeil-Essonnes concentre une sous-traitance industrielle de très haute technicité : ateliers et fournisseurs alignés sur les exigences de Safran Aircraft Engines (fabrication additive, perçage laser, soudage robotisé) et de la fonderie de silicium Altis/X-FAB. Ces PME ont besoin de portails fournisseurs, de configurateurs de devis techniques et de bases documentaires interrogeables par IA, pas de vitrines génériques.",
           "Le Centre Hospitalier Sud Francilien (av. Serge Dassault, 1068 lits) structure un écosystème santé et services associés (prestataires, dispositifs médicaux, cabinets) : nous y déployons des plateformes de prise de contact, de tri documentaire et d'assistants conformes aux contraintes de confidentialité des données de santé.",
           "Le long de la Seine, les Moulins Soufflet (moulin génération 4.0 opérationnel depuis 2022) et la Z.A. de l'Apport-Paris (21,8 ha, négoce, distribution sanitaire-chauffage, logistique) appellent des sites e-commerce B2B, des catalogues produits et des outils de suivi de commande automatisés.",
-          "Aux Coquibus (13,44 ha) et à Montconseil, le tissu automobile, retail et services, complété par le hub logistique UPS Corbeil-Essonnes/Évry, génère un besoin de boutiques en ligne multi-CMS, de prises de rendez-vous et d'agents de support — accessibles depuis Paris-Gare de Lyon en ~30 min par le RER D.",
+          "Aux Coquibus (13,44 ha) et à Montconseil, le tissu automobile, retail et services, complété par le hub logistique UPS Corbeil-Essonnes/Évry, génère un besoin de boutiques en ligne multi-CMS, de prises de rendez-vous et d'agents de support.",
         ],
         methodology: [
           {

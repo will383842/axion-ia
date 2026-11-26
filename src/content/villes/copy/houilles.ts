@@ -54,7 +54,7 @@ export const HOUILLES_COPY: VilleCopy = {
         whyHere: [
           "Le commerce de proximité est le moteur de Houilles : l'Association des commerçants et artisans de Houilles (ACAH) compte plus de 200 adhérents et le marché du centre-ville réunit 160 commerçants — une base idéale pour des sites e-commerce click-and-collect, des fiches produit générées par IA et des programmes de fidélité numériques dans la lignée de la carte Myloope.",
           "La Braderie de Houilles (1 500 à 2 000 exposants, 25 000 à 30 000 visiteurs au Parc Charles-de-Gaulle) appelle des plateformes web événementielles concrètes : inscription exposants, plan interactif, billetterie, communication multicanale — autant de cas d'usage SaaS que nous savons livrer.",
-          "Une clientèle locale aisée et connectée : le quartier du Réveil-Matin concentre de jeunes cadres (revenu médian ~39 200 € par ménage, 65 % de propriétaires), à 6 minutes de La Défense en RER A — un public qui achète en ligne et attend des sites rapides, mobiles et fiables.",
+          "Une clientèle locale aisée et connectée : le quartier du Réveil-Matin concentre de jeunes cadres (revenu médian ~39 200 € par ménage, 65 % de propriétaires) — un public qui achète en ligne et attend des sites rapides, mobiles et fiables.",
           "Un écosystème d'artisans d'art et de professions libérales (santé, juridique, conseil) qui a besoin de vitrines crédibles : prise de rendez-vous en ligne, portfolios, devis automatisés, agents conversationnels — au-delà du simple design, nous intégrons l'IA dans des outils utiles au quotidien.",
         ],
         methodology: [

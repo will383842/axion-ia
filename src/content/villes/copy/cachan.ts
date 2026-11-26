@@ -57,7 +57,7 @@ export const CACHAN_COPY: VilleCopy = {
           "Profil d'entreprises cachanais à forte teneur technique : en 2024, les activités scientifiques, techniques et de soutien administratif dominent les créations (214), devant le commerce-restauration (154) et l'information-communication (76) — exactement les structures qui ont besoin de sites web rapides et d'outils SaaS métier sur mesure plutôt que de templates génériques.",
           "Écosystème d'ingénierie ancré autour de l'ESTP (construction, BTP, génie civil) et de l'héritage ENS Paris-Saclay : nous construisons pour les bureaux d'études et cabinets techniques des plateformes IA-native (recherche sémantique sur normes et CCTP, chatbot RAG sur documentation projet, génération de pièces marché).",
           "Tissu d'indépendants et de jeunes structures incubées à La Fabrique (avenue de la Division-Leclerc) et au coworking Start Way : sites vitrines performants, boutiques e-commerce multi-CMS (WooCommerce, Shopify, PrestaShop, Sylius) et MVP SaaS livrés vite, sans dépendance à une plateforme propriétaire.",
-          "Commerce et services des pôles Gare Arcueil-Cachan / RD920, centre-ville et La Plaine, à 15 min de Paris en RER B et bientôt sur la ligne 15 Sud : nous outillons leur visibilité locale (sites mobiles, réservation, fiches produits, automatisations e-commerce) avant la densification annoncée du quartier de gare.",
+          "Commerce et services des pôles Gare Arcueil-Cachan / RD920, centre-ville et La Plaine : nous outillons leur visibilité locale (sites mobiles, réservation, fiches produits, automatisations e-commerce) avant la densification annoncée du quartier de gare.",
         ],
         methodology: [
           {
