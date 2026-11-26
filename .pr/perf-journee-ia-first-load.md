@@ -2,27 +2,45 @@
 
 ## Résumé
 
-**Aucune mesure ni aucune correction n'a pu être faite.** Aucun code de production n'est modifié.
+**Mesure faite, aucune correction de code : la page n'est pas la cause du dépassement.**
+`[locale]/journee-ia` pèse environ **294 KB gz** de JS (≈ 252 KB brotli), contre un budget de 75 KB gz.
+Une page quasi vide du même dépôt (`mentions-legales`, `a-propos`) pèse la même chose à 2 KB près.
+Le poids vient du socle chargé par toutes les routes (layout `[locale]`, framework, polyfills, providers),
+pas de la page. Alléger la page ne peut pas ramener la route sous 75 KB.
 
-Le build de mesure n'a pas pu être lancé dans l'environnement de cette session :
+## Méthode (et ses limites)
 
-- `pnpm install --frozen-lockfile` échoue : le store pnpm par défaut est hors des chemins inscriptibles (`ENOENT mkdir .../setup-pnpm/node_modules/.bin/store`).
-- Avec `--store-dir` dans `$TMPDIR`, il échoue aussi : `EROFS ... node_modules/.bin/commitlint`. `node_modules/` est monté en lecture seule.
-- `node_modules` est à moitié rempli : `.pnpm/` contient `next@16.3.1`, mais `node_modules/.bin` est vide et `node_modules/next` n'existe pas. `pnpm next build` ne peut donc pas s'exécuter.
-
-Je n'ai pas contourné la restriction (remontage ou désactivation du bac à sable), car elle fait partie du périmètre donné à la session.
+- Build : `pnpm exec next build --webpack --experimental-build-mode compile` avec les stubs `stub.invalid`,
+  `SKIP_NEXT_TYPECHECK=true`, `NODE_OPTIONS=--max-old-space-size=8192`.
+- ⚠️ La commande de la consigne (sans `--webpack`) bascule sur Turbopack et échoue sur
+  `src/app/questionnaire/manrope_*.module.css` (« Selector not pure », 50 erreurs). Le script `build` du dépôt
+  utilise `--webpack`. Sans la mémoire portée à 8 Go, le build webpack s'arrête en OOM (SIGABRT).
+- Next 16.3 n'imprime plus de tableau « First Load JS ». Le chiffre est reconstitué : somme des fichiers JS
+  listés dans `page_client-reference-manifest.js` de la route + `rootMainFiles` + `polyfillFiles` de
+  `build-manifest.json`, compressés un à un en gzip / brotli. C'est une approximation (une borne haute :
+  elle peut compter des chunks de la route non chargés au premier affichage), pas une mesure Lighthouse.
 
 ## Tableau avant/après (KB gz)
 
-| Route | Avant | Après |
-| --- | --- | --- |
-| `[locale]/journee-ia` | non mesuré | non mesuré |
+| Route                                   | Avant                    | Après                         |
+| --------------------------------------- | ------------------------ | ----------------------------- |
+| `[locale]/journee-ia`                   | ≈ 293,8 (brotli ≈ 252,3) | inchangé (aucun code modifié) |
+| `[locale]/mentions-legales` (référence) | ≈ 292,1                  | —                             |
+| `[locale]/a-propos` (référence)         | ≈ 292,7                  | —                             |
+| `[locale]/contact` (référence)          | ≈ 327,2                  | —                             |
 
-## Constat statique (aucun chiffre de poids, à confirmer par une mesure)
+Plus gros chunks de la route (gz) : `59298-*.js` 74,9 · `ea82adf5-*.js` (framework) 62,0 ·
+`polyfills-*.js` 38,7 · `72743-*.js` 12,9 · `35824-*.js` 11,9. Les chunks propres à la page sont petits ;
+l'écart avec une page vide est d'environ 1,7 KB.
 
-- Dans `src/app/[locale]/journee-ia/`, un seul fichier est en `"use client"`. Il se trouve sous `_composants/` ; `page.tsx` est un composant serveur.
-- `page.tsx` importe depuis `@/components/marketing` : `Cta`, `FaqAccordion`, `StickyMobileCta`, `JsonLd`. Il importe aussi `Breadcrumbs`, `Container` et `CarteDesGains`.
-- Pistes à vérifier une fois le build possible : `FaqAccordion`, `StickyMobileCta` et `CarteDesGains`, qui sont probablement les composants client de la page, à passer en `next/dynamic` s'ils sont sous la ligne de flottaison. Le shell partagé pèse déjà 139 KB brotli d'après `AGENTS.md`, donc 75 KB par route est sans doute hors de portée par cette seule page.
+## Pourquoi je ne touche pas au code
+
+La consigne dit de ne rien modifier si la route est déjà ≤ 75 KB, et sinon d'alléger la page. Ici la route est
+très au-dessus, mais l'écart ne se joue pas dans `src/app/[locale]/journee-ia/` : passer `FaqAccordion`,
+`StickyMobileCta` ou `CarteDesGains` en `next/dynamic` gagnerait au mieux quelques KB sur 219 KB d'excès.
+Le gros du poids est partagé (`59298-*`, framework, polyfills) et relève du chantier « shell partagé » déjà
+documenté dans `AGENTS.md` (dette ouverte, cliquet à 139 KB brotli), pas d'un lot par page.
+Aucun texte, aucune fonction touchés.
 
 ## Fichiers modifiés
 
@@ -30,14 +48,20 @@ Aucun (hors ce fichier).
 
 ## Vérifications
 
-- `pnpm install` : échec (voir ci-dessus).
-- `next build --experimental-build-mode compile` : non lancé.
-- `pnpm typecheck`, `pnpm lint`, `vitest` : non lancés, rien à vérifier sans changement de code.
+- `next build --webpack --experimental-build-mode compile` : OK (exit 0).
+- `pnpm typecheck`, `pnpm lint`, `vitest` : non lancés, aucun code modifié.
 
 ## Relecteur Opus
 
-Non lancé : il n'y a aucun diff de code à relire.
+Non lancé : aucun diff de code à relire.
 
-## À faire
+## Suite proposée
 
-Relancer la tâche dans un environnement où `pnpm install` peut écrire dans `node_modules`. La commande de mesure est celle de la consigne (build `compile` avec les stubs `stub.invalid`).
+Chantier dédié sur le chunk `59298-*` (74,9 KB gz) et les polyfills (38,7 KB gz) : identifier ce qu'ils
+contiennent (`@next/bundle-analyzer`) puis décider si le budget de 75 KB par route est atteignable pour
+le shell `[locale]`. À valider par Will (ADR) avant tout changement du budget.
+
+## Note
+
+La branche est basée sur `0c4f02e54`, antérieur à la tête de `main` ; pas de rebase (consigne). `pnpm-lock.yaml`
+n'a pas changé.
