@@ -267,3 +267,41 @@ describe("assemblage de « Mes commissions »", () => {
     ]);
   });
 });
+
+describe("« Mes commissions » : échéance au paiement intégral, TVA au régime de la pièce", () => {
+  const num = "AXI-APP-2026-0014";
+  const l = lig({
+    autofactureNumero: num,
+    autofactureAttenteMotif: null,
+    autofactureEmiseAt: new Date("2026-11-20T09:00:00Z"),
+  });
+
+  it("autofacture émise le 20/11 pour un paiement intégral du 10/11 : échéance du 10/12, pas du 20/12", () => {
+    const v = vue([l], { paiementsIntegraux: new Map([[num, new Date("2026-11-10T09:00:00Z")]]) });
+    expect(v.virements[0]!.echeanceLe).toEqual(new Date(Date.UTC(2026, 11, 10, 12)));
+    expect(v.entreprises[0]!.commissions[0]!.echeanceLe).toEqual(
+      new Date(Date.UTC(2026, 11, 10, 12)),
+    );
+  });
+
+  it("sans date de paiement connue : repli sur l'émission (comme avant)", () => {
+    expect(vue([l]).virements[0]!.echeanceLe).toEqual(new Date(Date.UTC(2026, 11, 20, 12)));
+  });
+
+  it("le régime FIGÉ de la pièce prime sur celui de la fiche (fiche passée en franchise, pièce assujettie)", () => {
+    const v = vue([l], {
+      regimeTva: "franchise_293b",
+      regimes: new Map([[num, "assujetti"]]),
+    });
+    expect(v.virements[0]!.montants).toEqual({
+      htCents: 50_000,
+      tvaCents: 10_000,
+      ttcCents: 60_000,
+    });
+  });
+
+  it("symétrique : pièce en franchise, fiche passée assujettie → 500 €, jamais 600", () => {
+    const v = vue([l], { regimeTva: "assujetti", regimes: new Map([[num, "franchise_293b"]]) });
+    expect(v.virements[0]!.montants).toEqual({ htCents: 50_000, tvaCents: null, ttcCents: 50_000 });
+  });
+});

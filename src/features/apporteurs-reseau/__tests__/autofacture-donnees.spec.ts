@@ -2,6 +2,11 @@ import { describe, expect, it } from "vitest";
 
 import {
   ECHEANCE_JOURS,
+  aVirerPartielCents,
+  aVirerTtcCents,
+  compensationDeclenchee,
+  planCompensation,
+  totalTtcPieceCents,
   dateEncaissementRetenue,
   echeancePaiement,
   etatEcheances,
@@ -250,5 +255,82 @@ describe("avoir, parrainage, dates (validation juridique)", () => {
     });
     expect(r.ok && r.data.dateEmission).toContain("10 octobre 2026");
     expect(r.ok && r.data.datePrestation).toContain("12 octobre 2026");
+  });
+});
+
+describe("L3 — TVA FIGÉE par pièce : virement, compensation, déclencheur", () => {
+  const lg = (statut: string, montantCents: number, avoirNumero: string | null = null) => ({
+    statut,
+    montantCents,
+    avoirNumero,
+  });
+
+  it("1. régimes tous assujettis : autofacture 500 € HT + avoir 100 € HT → 600 − 120 = 480 €", () => {
+    const r = { facture: "assujetti" as const, avoir: () => "assujetti" as const };
+    expect(aVirerPartielCents(r, [lg("due", 50_000), lg("reprise", -10_000, "A1")], [])).toEqual({
+      totalCents: 48_000,
+      partielPossible: true,
+    });
+    expect(aVirerTtcCents(r, [lg("due", 50_000), lg("reprise", -10_000, "A1")])).toBe(48_000);
+  });
+
+  it("2. régimes mêlés : autofacture FRANCHISE 1 000 € + avoir ASSUJETTI 500 € HT → 1 000 − 600 = 400 €", () => {
+    const r = { facture: "franchise_293b" as const, avoir: () => "assujetti" as const };
+    const lignes = [lg("due", 100_000), lg("reprise", -50_000, "A1")];
+    expect(aVirerTtcCents(r, lignes)).toBe(40_000);
+    expect(aVirerPartielCents(r, lignes, []).totalCents).toBe(40_000);
+  });
+
+  it("un régime unique (chaîne) se comporte comme avant", () => {
+    expect(aVirerTtcCents("assujetti", [lg("due", 50_000)])).toBe(60_000);
+    expect(aVirerTtcCents("franchise_293b", [lg("due", 50_000)])).toBe(50_000);
+  });
+
+  it("3. compensation en régimes mêlés : 41 667 imputés / 8 333 restants, virement 0", () => {
+    const plan = planCompensation(
+      "franchise_293b",
+      [50_000],
+      [{ id: "r1", montantCents: -50_000, piece: "AXI-APP-2026-0001", regime: "assujetti" }],
+    );
+    expect(plan).toEqual({
+      imputees: [],
+      scinder: { id: "r1", imputeCents: 41_667, resteCents: 8_333 },
+    });
+    // 41 667 HT assujetti = 41 667 + 8 333 de TVA = 50 000 TTC : l'avoir tient sous l'autofacture.
+    const ttcAvoir = totalTtcPieceCents("assujetti", [41_667]);
+    expect(ttcAvoir).toBe(50_000);
+    expect(50_000 - ttcAvoir).toBe(0);
+  });
+
+  it("4. sens inverse : dues assujetties (60 000 TTC), reprise 55 000 en franchise → pas de compensation, virement 5 000", () => {
+    const reprises = [
+      {
+        id: "r1",
+        montantCents: -55_000,
+        piece: "AXI-APP-2026-0001",
+        regime: "franchise_293b" as const,
+      },
+    ];
+    expect(compensationDeclenchee("assujetti", [50_000], reprises)).toBe(false);
+    expect(planCompensation("assujetti", [50_000], reprises)).toBeNull();
+    const r = { facture: "assujetti" as const, avoir: () => "franchise_293b" as const };
+    expect(aVirerTtcCents(r, [lg("due", 50_000), lg("reprise", -55_000, "A1")])).toBe(5_000);
+  });
+
+  it("9. le déclencheur est en TTC en régimes mêlés : 500 € franchise contre 450 € HT d'une pièce assujettie → compensation", () => {
+    const reprises = [
+      { id: "r1", montantCents: -45_000, piece: "AXI-APP-2026-0001", regime: "assujetti" as const },
+    ];
+    // En HT, 500 − 450 = +50 € (on n'entrerait pas) ; en TTC, 500 − 540 = −40 € (on entre).
+    expect(compensationDeclenchee("franchise_293b", [50_000], reprises)).toBe(true);
+  });
+
+  it("5. régime unique : le déclencheur reste le HT d'avant", () => {
+    expect(
+      compensationDeclenchee("assujetti", [50_000], [{ id: "r", montantCents: -50_000 }]),
+    ).toBe(true);
+    expect(
+      compensationDeclenchee("assujetti", [50_000], [{ id: "r", montantCents: -49_999 }]),
+    ).toBe(false);
   });
 });

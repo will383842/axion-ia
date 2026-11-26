@@ -96,6 +96,8 @@ interface Payload {
   /** Commission facturée avec reprise : lignes « avoir imputé » et somme réellement virée. */
   avoirs?: string[];
   sommeVirement?: string;
+  /** Régime de TVA de la pièce (figé à son émission) : dit si la somme virée est « TVA comprise ». */
+  regimeTva?: "assujetti" | "franchise_293b";
   /** Relevé : compensation intégrale par les reprises (art. 12.4), rien à virer. */
   compense?: boolean;
   numeroAutofacture?: string;
@@ -171,7 +173,7 @@ export const COPY_DEMARRAGE = {
     parrainage: (pct: string, mois: number) =>
       `Parrainage : si vous présentez une personne qui devient elle-même apporteur, vous touchez ${pct} des commissions nées de ses commandes signées pendant les ${mois} mois qui suivent la signature de son contrat par Axion-IA.`,
     paiement:
-      "Elle vous est versée dès que la prestation est réalisée et que le client l'a entièrement payée : nous établissons votre facture pour vous, puis nous faisons le virement.",
+      "Elle vous est due dès que le client a payé l'intégralité de sa commande, même si la prestation n'est pas encore livrée : nous établissons votre facture pour vous, puis nous faisons le virement au plus tard 30 jours après ce paiement.",
     fiche:
       "Votre contrat signé des deux parties est en pièce jointe. La fiche « Comment ça marche » est à garder sous la main : ",
     ficheLien: "la fiche en PDF",
@@ -323,11 +325,11 @@ export const COPY_DEMARRAGE = {
       e ? `Bonne nouvelle : ${e} a signé` : "Bonne nouvelle : une commande signée",
     title: "Une commande vient d'être signée",
     preview:
-      "Votre commission sera versée dès que la prestation sera réalisée et entièrement payée.",
+      "Votre commission vous sera due dès que le client aura payé l'intégralité de sa commande.",
     texte: (e: string) =>
       `${e || "Une entreprise que vous nous avez présentée"} vient de signer une commande avec Axion-IA. Merci pour cette mise en relation.`,
     suite:
-      "Votre commission vous sera versée dès que la prestation sera réalisée et que le client l'aura entièrement payée ; nous établissons alors votre facture en votre nom et nous vous l'envoyons par e-mail.",
+      "Votre commission vous sera due dès que le client aura payé l'intégralité de sa commande, même si la prestation n'est pas encore livrée ; nous établissons alors votre facture en votre nom et nous vous l'envoyons par e-mail, puis nous faisons le virement au plus tard 30 jours après ce paiement.",
   },
   releve: {
     subject: "Votre commission est facturée",
@@ -336,7 +338,13 @@ export const COPY_DEMARRAGE = {
     texte: (montant: string) =>
       `Votre commission de ${montant || "la somme indiquée en pièce jointe"} hors taxes est facturée en votre nom et pour votre compte : la facture est jointe à ce message. Nous nous efforçons de vous verser cette commission sous deux jours ouvrés.`,
     echeance: (d: string) => (d ? `Échéance de paiement : ${d}.` : ""),
-    somme: (s: string) => `Somme virée : ${s}.`,
+    // Régime de TVA de la pièce (champ facultatif : absent = texte d'avant).
+    somme: (s: string, regime?: string) =>
+      regime === "assujetti"
+        ? `Somme virée : ${s}, TVA comprise.`
+        : regime === "franchise_293b"
+          ? `Somme virée : ${s} (TVA non applicable, article 293 B du CGI).`
+          : `Somme virée : ${s}.`,
     compense: (montant: string) =>
       `Votre commission de ${montant || "la somme indiquée en pièce jointe"} hors taxes est facturée en votre nom et pour votre compte : la facture est jointe à ce message. Les reprises en cours sur votre compte (article 4.5) s'imputent sur cette commission par compensation (article 12.4 de votre contrat) : l'avoir correspondant est joint.`,
     net: "Net : 0,00 €, rien à virer. Le solde des reprises qui n'ont pas encore été imputées s'imputera sur vos prochaines commissions.",
@@ -947,7 +955,7 @@ export function ApporteurReleveEmail({ locale, payload }: Props) {
         <Text style={emailStyles.paragraphStyle}>{t.net}</Text>
       ) : texteOuNull(p.sommeVirement) ? (
         <Text style={emailStyles.paragraphStyle}>
-          {t.somme(texteOuNull(p.sommeVirement) ?? "")}
+          {t.somme(texteOuNull(p.sommeVirement) ?? "", texteOuNull(p.regimeTva) ?? undefined)}
         </Text>
       ) : null}
       {texteOuNull(p.echeance) ? (

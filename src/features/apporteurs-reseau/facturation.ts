@@ -217,7 +217,7 @@ export async function facturerApporteur(
 ): Promise<ResultatFacturation> {
   const apporteur = await prisma.apporteurReseau.findUnique({
     where: { id: apporteurId },
-    select: { id: true, prenom: true, nom: true, email: true },
+    select: { id: true, prenom: true, nom: true, email: true, regimeTva: true },
   });
   if (!apporteur) return { ok: false, message: "Apporteur introuvable." };
   const annee = Number(moisParis(maintenant).slice(0, 4));
@@ -491,6 +491,7 @@ export async function facturerApporteur(
         ...(compense ? {} : { echeance: dateFr(echeancePaiement(maintenant, paiementIntegral)) }),
         ...(avoirs.length > 0 ? { avoirs } : {}),
         ...(montrerSomme ? { sommeVirement: euros(aVirer) } : {}),
+        ...(apporteur.regimeTva ? { regimeTva: apporteur.regimeTva } : {}),
         ...(compense ? { compense: true } : {}),
       },
       entityType: "ApporteurReseau",
@@ -520,6 +521,7 @@ export async function facturerApporteur(
         totalCents: aVirer,
         emission: maintenant,
         paiementIntegral,
+        regimeTva: apporteur.regimeTva,
       });
   } catch (err) {
     signalerErreurReseau("autofacture : alerte interne", err);
@@ -710,6 +712,8 @@ export async function alerterAVirer(e: {
   emission: Date;
   /** Date du paiement intégral du client (le délai de 30 jours court de là). */
   paiementIntegral?: Date | null;
+  /** Régime de TVA de la pièce : dit si la somme est « TVA comprise » ou « sans TVA ». */
+  regimeTva?: "assujetti" | "franchise_293b" | null;
 }): Promise<boolean> {
   const jobId = jobIdAlerteAutofacture(e.numero);
   if (await dejaEnvoye(jobId)) return false;
@@ -724,7 +728,7 @@ export async function alerterAVirer(e: {
       niveau: "important",
       code: "apporteur_autofacture_a_virer",
       titre: `À virer : ${euros(e.totalCents)} à ${nom}`,
-      message: `À virer : ${euros(e.totalCents)} à ${nom} (TVA comprise si l'apporteur la facture) avant le ${objectif} (objectif de virement). Échéance de paiement : ${echeance}. Autofacture ${e.numero} envoyée à l'apporteur ; une fois le virement fait, cliquez « Virement fait » dans les commissions.`,
+      message: `À virer : ${euros(e.totalCents)} à ${nom} (${e.regimeTva === "assujetti" ? "TVA comprise" : e.regimeTva === "franchise_293b" ? "sans TVA, franchise 293 B" : "TVA comprise si l'apporteur la facture"}) avant le ${objectif} (objectif de virement). Échéance de paiement : ${echeance}. Autofacture ${e.numero} envoyée à l'apporteur ; une fois le virement fait, cliquez « Virement fait » dans les commissions.`,
       cibleType: "ApporteurReseau",
       cibleId: e.apporteurId,
       createdAt: e.emission.toLocaleDateString("fr-FR"),

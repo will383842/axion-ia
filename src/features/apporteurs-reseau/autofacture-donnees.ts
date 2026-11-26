@@ -62,6 +62,24 @@ export function regimeHonorairesApporteur(
   return null;
 }
 
+export type RegimeApporteur = ApporteurPourAutofacture["regimeTva"];
+
+/**
+ * Régime de TVA PIÈCE PAR PIÈCE (figé à l'émission, jamais relu sur la fiche) : celui de
+ * l'autofacture, et celui de chaque avoir — qui est celui de l'autofacture qu'il rectifie.
+ */
+export interface RegimesPieces {
+  readonly facture: RegimeApporteur;
+  readonly avoir: (numeroAvoir: string) => RegimeApporteur;
+}
+
+/** Un régime unique (appels d'avant) ou les régimes figés de chaque pièce. */
+export type RegimeOuPieces = RegimeApporteur | RegimesPieces;
+
+export function regimesPieces(r: RegimeOuPieces): RegimesPieces {
+  return typeof r === "object" && r !== null ? r : { facture: r, avoir: () => r };
+}
+
 /** « 1 900,00 € » : toujours deux décimales sur une pièce comptable. */
 function eurosHt(cents: number): string {
   return `${(cents / 100).toLocaleString("fr-FR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })} €`;
@@ -179,7 +197,7 @@ export function totalTtcPieceCents(
  * Une reprise sans numéro d'avoir (anciennes lignes) compte comme une ligne de l'autofacture.
  */
 export function aVirerTtcCents(
-  regimeTva: ApporteurPourAutofacture["regimeTva"],
+  regimeTva: RegimeOuPieces,
   lignes: ReadonlyArray<{
     statut: string;
     montantCents: number | null;
@@ -196,8 +214,9 @@ export function aVirerTtcCents(
       facture.push(m);
     }
   }
-  let total = totalTtcPieceCents(regimeTva, facture);
-  for (const a of avoirs.values()) total -= totalTtcPieceCents(regimeTva, a);
+  const regimes = regimesPieces(regimeTva);
+  let total = totalTtcPieceCents(regimes.facture, facture);
+  for (const [numero, a] of avoirs) total -= totalTtcPieceCents(regimes.avoir(numero), a);
   return total;
 }
 
@@ -212,7 +231,7 @@ export function aVirerTtcCents(
  * Sans ligne suspendue, c'est exactement `aVirerTtcCents`.
  */
 export function aVirerPartielCents(
-  regimeTva: ApporteurPourAutofacture["regimeTva"],
+  regimeTva: RegimeOuPieces,
   lignes: ReadonlyArray<{
     statut: string;
     montantCents: number | null;
@@ -233,10 +252,11 @@ export function aVirerPartielCents(
       piece.push(m);
     }
   }
+  const regimes = regimesPieces(regimeTva);
   let total =
-    totalTtcPieceCents(regimeTva, [...piece, ...suspenduesCents]) -
-    totalTtcPieceCents(regimeTva, suspenduesCents);
-  for (const a of avoirs.values()) total -= totalTtcPieceCents(regimeTva, a);
+    totalTtcPieceCents(regimes.facture, [...piece, ...suspenduesCents]) -
+    totalTtcPieceCents(regimes.facture, suspenduesCents);
+  for (const [numero, a] of avoirs) total -= totalTtcPieceCents(regimes.avoir(numero), a);
   return { totalCents: total, partielPossible: total > 0 };
 }
 
@@ -259,6 +279,11 @@ export function planCompensation(
     scindable?: boolean;
     /** Pièce d'avoir à laquelle la reprise appartiendra (TTC arrondi pièce par pièce). */
     piece?: string;
+    /**
+     * Régime de la pièce d'avoir à venir, donc de l'autofacture d'ORIGINE de la reprise. Absent =
+     * `regimeTva` (régime de l'autofacture à émettre).
+     */
+    regime?: ApporteurPourAutofacture["regimeTva"];
   }>,
 ):
   | { imputees: string[]; scinder: { id: string; imputeCents: number; resteCents: number } | null }
@@ -266,38 +291,106 @@ export function planCompensation(
   | null {
   const dues = duesCents.reduce((s, m) => s + m, 0);
   const total = reprises.reduce((s, r) => s + Math.abs(r.montantCents ?? 0), 0);
-  if (dues <= 0 || total <= dues) return null;
+  // Régimes mêlés (une reprise d'une pièce d'un AUTRE régime que l'autofacture à émettre) : seul
+  // le TTC compte, car c'est le TTC qui est viré ; un plafond en HT bloquerait ou scinderait à tort.
+  // Quand tous les régimes sont égaux, la règle d'avant (HT ET TTC) est gardée À L'IDENTIQUE.
+  const regimeDe = (r: { regime?: ApporteurPourAutofacture["regimeTva"] }) =>
+    r.regime === undefined ? regimeTva : r.regime;
+  const mixte = reprises.some((r) => regimeDe(r) !== regimeTva);
+  if (dues <= 0) return null;
   const plafondTtc = totalTtcPieceCents(regimeTva, [...duesCents]);
-  // TTC des avoirs : arrondi PIÈCE PAR PIÈCE, comme les PDF (jamais un centime perdu).
-  const ttcAvoirs = (items: ReadonlyArray<{ piece: string; m: number }>) => {
-    const parPiece = new Map<string, number[]>();
-    for (const x of items) parPiece.set(x.piece, [...(parPiece.get(x.piece) ?? []), x.m]);
-    return [...parPiece.values()].reduce((s, ms) => s + totalTtcPieceCents(regimeTva, ms), 0);
+  // TTC des avoirs : arrondi PIÈCE PAR PIÈCE, avec le régime de CHAQUE pièce, comme les PDF.
+  const ttcAvoirs = (
+    items: ReadonlyArray<{
+      piece: string;
+      m: number;
+      regime: ApporteurPourAutofacture["regimeTva"];
+    }>,
+  ) => {
+    const parPiece = new Map<
+      string,
+      { regime: ApporteurPourAutofacture["regimeTva"]; ms: number[] }
+    >();
+    for (const x of items) {
+      const cur = parPiece.get(x.piece) ?? { regime: x.regime, ms: [] };
+      cur.ms.push(x.m);
+      parPiece.set(x.piece, cur);
+    }
+    return [...parPiece.values()].reduce((s, p) => s + totalTtcPieceCents(p.regime, p.ms), 0);
   };
+  const tous = reprises
+    .filter((r) => Math.abs(r.montantCents ?? 0) > 0)
+    .map((r) => ({
+      piece: r.piece ?? r.id,
+      m: Math.abs(r.montantCents ?? 0),
+      regime: regimeDe(r),
+    }));
+  if (mixte ? ttcAvoirs(tous) <= plafondTtc : total <= dues) return null;
   const imputees: string[] = [];
-  const pris: Array<{ piece: string; m: number }> = [];
+  const pris: Array<{ piece: string; m: number; regime: ApporteurPourAutofacture["regimeTva"] }> =
+    [];
   for (const r of reprises) {
     const m = Math.abs(r.montantCents ?? 0);
     if (m <= 0) continue;
     const piece = r.piece ?? r.id;
+    const regime = regimeDe(r);
     const cumul = pris.reduce((s, x) => s + x.m, 0);
-    if (cumul + m <= dues && ttcAvoirs([...pris, { piece, m }]) <= plafondTtc) {
+    if ((mixte || cumul + m <= dues) && ttcAvoirs([...pris, { piece, m, regime }]) <= plafondTtc) {
       imputees.push(r.id);
-      pris.push({ piece, m });
+      pris.push({ piece, m, regime });
       continue;
     }
     // Avoir déjà émis qui ne tient pas entier : on ne le scinde pas, et on ne verse pas les dues
     // en le laissant de côté (ce serait payer alors qu'un solde négatif reste dû).
     if (r.scindable === false) return { bloque: true };
-    // Scission : la plus grande part qui garde les avoirs sous l'autofacture, HT comme TTC.
-    let part = Math.min(m - 1, dues - cumul);
-    while (part > 0 && ttcAvoirs([...pris, { piece, m: part }]) > plafondTtc) part -= 1;
+    // Scission : la plus grande part qui garde les avoirs sous l'autofacture (TTC ; HT aussi si
+    // les régimes sont égaux).
+    let part = mixte ? m - 1 : Math.min(m - 1, dues - cumul);
+    while (part > 0 && ttcAvoirs([...pris, { piece, m: part, regime }]) > plafondTtc) part -= 1;
     return {
       imputees,
       scinder: part > 0 ? { id: r.id, imputeCents: part, resteCents: m - part } : null,
     };
   }
   return { imputees, scinder: null };
+}
+
+/**
+ * La compensation (art. 12.4) est-elle déclenchée ? Les reprises en attente couvrent-elles les
+ * commissions dues ? À régime unique : HT, comme avant. Régimes mêlés : en TTC, car c'est le TTC qui
+ * est viré (500 € HT dus en franchise contre 450 € HT de reprise d'une pièce assujettie, soit
+ * 540 € TTC, donnent +50 € en HT mais −40 € à virer).
+ */
+export function compensationDeclenchee(
+  regimeTva: ApporteurPourAutofacture["regimeTva"],
+  duesCents: readonly number[],
+  reprises: ReadonlyArray<{
+    id: string;
+    montantCents: number | null;
+    piece?: string;
+    regime?: ApporteurPourAutofacture["regimeTva"];
+  }>,
+): boolean {
+  const regimeDe = (r: { regime?: ApporteurPourAutofacture["regimeTva"] }) =>
+    r.regime === undefined ? regimeTva : r.regime;
+  const dues = duesCents.reduce((s, m) => s + m, 0);
+  const reprisesHt = reprises.reduce((s, r) => s + Math.abs(r.montantCents ?? 0), 0);
+  if (!reprises.some((r) => regimeDe(r) !== regimeTva)) return dues - reprisesHt <= 0;
+  const parPiece = new Map<
+    string,
+    { regime: ApporteurPourAutofacture["regimeTva"]; ms: number[] }
+  >();
+  for (const r of reprises) {
+    const k = r.piece ?? r.id;
+    const cur = parPiece.get(k) ?? { regime: regimeDe(r), ms: [] };
+    cur.ms.push(Math.abs(r.montantCents ?? 0));
+    parPiece.set(k, cur);
+  }
+  const ttcReprises = [...parPiece.values()].reduce(
+    (s, p) => s + totalTtcPieceCents(p.regime, p.ms),
+    0,
+  );
+  return totalTtcPieceCents(regimeTva, [...duesCents]) - ttcReprises <= 0;
 }
 
 /** Échéance FERME de paiement : trente jours calendaires à compter de l'émission de l'autofacture. */
@@ -452,6 +545,7 @@ export function construireDonneesAutofacture(e: {
         email: e.apporteur.email,
       },
       identite: e.organisme,
+      presentation: "apporteur" as const,
       lignes,
       regimeHonoraires: regime,
       delaiContestationJours: DELAI_CONTESTATION_APPORTEUR_JOURS,

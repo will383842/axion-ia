@@ -14,6 +14,7 @@ import "server-only";
 import { prisma } from "@/lib/prisma";
 
 import { tableAbsente } from "./reservation-presentation";
+import { paiementIntegralLe } from "./paiement-integral";
 
 import {
   assemblerEspaceCommissions,
@@ -61,6 +62,7 @@ export async function lireEspaceCommissions(
       take: BORNE_COMMISSIONS + 1,
       select: {
         id: true,
+        factureId: true,
         presentationId: true,
         parrainage: true,
         activite: true,
@@ -102,13 +104,27 @@ export async function lireEspaceCommissions(
     }
   }
 
+  // Échéance de « Mes commissions » : 30 jours après le paiement INTÉGRAL du client (comme le PDF),
+  // une lecture par autofacture, bornée par `BORNE_COMMISSIONS`.
+  const parAutofacture = new Map<string, string[]>();
+  for (const c of mesCommissions)
+    if (c.autofactureNumero)
+      parAutofacture.set(c.autofactureNumero, [
+        ...(parAutofacture.get(c.autofactureNumero) ?? []),
+        c.factureId,
+      ]);
+  const paiementsIntegraux = new Map<string, Date | null>();
+  for (const [numero, factureIds] of parAutofacture)
+    paiementsIntegraux.set(numero, await paiementIntegralLe(factureIds));
+
   return assemblerEspaceCommissions({
     apporteurId,
     regimeTva: dossier.regimeTva,
+    paiementsIntegraux,
     maintenant,
     presentations: mesPresentations,
     reservations,
-    commissions: mesCommissions.map(({ presentation, ...c }) => ({
+    commissions: mesCommissions.map(({ presentation, factureId: _factureId, ...c }) => ({
       ...c,
       presentationApporteurId: presentation?.apporteurId ?? null,
     })),
