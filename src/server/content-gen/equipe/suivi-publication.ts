@@ -21,6 +21,8 @@ export const QUOTA_INSPECTIONS_JOUR = 200;
 export const FENETRE_NOUVEAU_JOURS = 14;
 export const REFRESH_FIXE_JOURS = 14;
 export const SEUIL_BAISSE_POSITION = 3;
+export const AGE_MAX_FILET_JOURS = 180;
+export const ESSAIS_MAX = 3;
 
 export type Jalon = "inspection-j3" | "inspection-j7" | "positions-j28" | "positions-j90";
 
@@ -53,6 +55,8 @@ export interface MagasinSuivi {
   /** Réserve jusqu'à `n` appels sous le plafond `max` du jour ; rend le nombre accordé. */
   reserverQuota(n: number, max: number): Promise<number>;
   lirePositions(articleId: string): Promise<{ j28: number | null; j90: number | null }>;
+  /** Compte un échec d'appel pour ce jalon ; rend le total d'échecs. */
+  compterEchec(cle: string): Promise<number>;
   ecrirePosition(articleId: string, jalon: Jalon, position: number): Promise<void>;
 }
 
@@ -92,6 +96,7 @@ export async function suivreArticles(
         const res = await deps.inspecter(a.url).catch(() => null);
         if (res === null) {
           r.echecs++;
+          if ((await deps.magasin.compterEchec(cle)) >= ESSAIS_MAX) await deps.magasin.marquer(cle);
           continue;
         }
         await deps.magasin.marquer(cle);
@@ -100,6 +105,7 @@ export async function suivreArticles(
         const res = await deps.positions(a.url, 28).catch(() => null);
         if (res === null) {
           r.echecs++;
+          if ((await deps.magasin.compterEchec(cle)) >= ESSAIS_MAX) await deps.magasin.marquer(cle);
           continue;
         }
         await deps.magasin.ecrirePosition(a.id, jalon, res.position);
@@ -111,7 +117,8 @@ export async function suivreArticles(
   return r;
 }
 
-export type Raison = "baisse-position" | "preuve-expiree" | "lien-casse" | "cannibalisation";
+export type Raison =
+  "age-maximum" | "baisse-position" | "preuve-expiree" | "lien-casse" | "cannibalisation";
 
 export interface SignauxArticle {
   readonly id: string;
@@ -138,6 +145,7 @@ export function declencheursMiseAJour(s: Omit<SignauxArticle, "id">, maintenant:
   if (s.preuveExpireLe !== null && s.preuveExpireLe.getTime() <= maintenant.getTime()) {
     raisons.push("preuve-expiree");
   }
+  if (s.ageJours >= AGE_MAX_FILET_JOURS) raisons.push("age-maximum");
   if (s.liensCasses > 0) raisons.push("lien-casse");
   if (s.cannibalisation) raisons.push("cannibalisation");
   return raisons;
@@ -195,7 +203,9 @@ export async function controlerLiensArticles(
 ): Promise<number> {
   let articlesCasses = 0;
   for (const a of articles) {
-    const liens = extraireLiens(a.corps).map((url) => ({ url }));
+    const liens = extraireLiens(a.corps)
+      .filter((u) => u.startsWith("/") || /^https?:\/\//i.test(u))
+      .map((url) => ({ url }));
     if (liens.length === 0) continue;
     const nb = (await filtrer(liens)).filter((l) => !l.verdict.ok).length;
     await ecrire(a.id, nb);

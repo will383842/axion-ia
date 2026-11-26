@@ -26,6 +26,12 @@ function magasin(): MagasinSuivi & { faits: Set<string>; utilise: number } {
       m.utilise += ok;
       return ok;
     },
+    echecs: new Map<string, number>(),
+    compterEchec: async (c: string) => {
+      const n = (m.echecs.get(c) ?? 0) + 1;
+      m.echecs.set(c, n);
+      return n;
+    },
     lirePositions: async () => ({ j28: null, j90: null }),
     ecrirePosition: async () => {},
   };
@@ -90,6 +96,17 @@ describe("suivreArticles (API Google simulée)", () => {
   });
 });
 
+describe("échecs répétés", () => {
+  it("abandonne le jalon après 3 échecs au lieu de réessayer sans fin", async () => {
+    const m = magasin();
+    const positions = vi.fn(async () => null);
+    const deps = { magasin: m, inspecter: vi.fn(), positions, maintenant: NOW };
+    const a = art({ publieLe: il_y_a(30) });
+    for (let i = 0; i < 5; i++) await suivreArticles([a], deps);
+    expect(positions).toHaveBeenCalledTimes(3);
+  });
+});
+
 describe("declencheursMiseAJour (règles pures)", () => {
   const base = {
     ageJours: 20,
@@ -115,6 +132,9 @@ describe("declencheursMiseAJour (règles pures)", () => {
         NOW,
       ),
     ).toEqual(["preuve-expiree", "lien-casse", "cannibalisation"]);
+  });
+  it("filet de sécurité : âge maximal", () => {
+    expect(declencheursMiseAJour({ ...base, ageJours: 180 }, NOW)).toEqual(["age-maximum"]);
   });
   it("position absente : pas de baisse inventée", () => {
     expect(declencheursMiseAJour({ ...base, positionActuelle: null }, NOW)).toEqual([]);
@@ -169,5 +189,27 @@ describe("controlerLiensArticles", () => {
     );
     expect(n).toBe(1);
     expect(ecrits).toEqual({ a: 1, b: 0 });
+  });
+});
+
+describe("liens relatifs et estCannibalise", () => {
+  it("un lien relatif n'est pas contrôlé donc pas compté cassé", async () => {
+    const { controlerLiensArticles } = await import("./suivi-publication");
+    const vus: string[] = [];
+    await controlerLiensArticles(
+      [{ id: "a", corps: `<a href="../x">x</a><a href="/fr/blog/y">y</a>` }],
+      async () => {},
+      async (liens) => {
+        vus.push(...liens.map((l) => l.url));
+        return liens.map((l) => ({ ...l, verdict: { ok: true } }));
+      },
+    );
+    expect(vus).toEqual(["/fr/blog/y"]);
+  });
+  it("estCannibalise reconnaît une URL normalisée", async () => {
+    const { estCannibalise } = await import("./suivi-publication");
+    const c = [{ requete: "q", urls: ["https://axion-ia.com/fr/blog/a"], proprietaire: "x" }];
+    expect(estCannibalise("https://axion-ia.com/fr/blog/a/?utm=1", c)).toBe(true);
+    expect(estCannibalise("https://axion-ia.com/fr/blog/b", c)).toBe(false);
   });
 });

@@ -25,6 +25,11 @@
 import { Worker, type Job } from "bullmq";
 import { prisma } from "@/lib/prisma";
 import { redis } from "@/lib/redis";
+import { SITE_URL } from "@/lib/site-url";
+import {
+  isRoutableArticleSlug,
+  resolveArticleRoute,
+} from "@/server/content-gen/blog/resolve-article-route";
 import { captureWorkerError } from "@/server/queue/lib/sentry-worker";
 import { gscInspectUrl, gscPageMetricsForUrl } from "@/server/content-gen/seo/gsc-client";
 import { equipeEditorialeActive } from "@/server/content-gen/equipe/maillage";
@@ -71,7 +76,18 @@ function envInt(name: string, fallback: number): number {
 }
 
 const JOUR_MS = 24 * 60 * 60 * 1000;
-const BASE_URL = "https://axion-ia.com";
+
+/** URL publique réelle d'un article (guides, actualités et blog n'ont pas la même route). */
+function urlArticle(a: {
+  isNews: boolean;
+  templateVariant: string | null;
+  translations: ReadonlyArray<{ slug: string }>;
+}): string | null {
+  const slug = a.translations[0]?.slug;
+  if (!isRoutableArticleSlug(slug)) return null;
+  return `${SITE_URL}/fr/${resolveArticleRoute({ isNews: a.isNews, templateVariant: a.templateVariant, slug: slug ?? null })}/${slug}`;
+}
+
 const TTL_S = 200 * 24 * 3600;
 
 /** Mémoire des jalons faits, du quota du jour et des relevés : Redis, TTL borné. */
@@ -88,6 +104,12 @@ function magasinRedis(maintenant: Date): MagasinSuivi {
       const accorde = Math.max(0, n - (total - max));
       await redis.decrby(cle, n - accorde);
       return accorde;
+    },
+    compterEchec: async (c) => {
+      const cle = `suivi-pub:essais:${c}`;
+      const n = await redis.incr(cle);
+      await redis.expire(cle, TTL_S);
+      return n;
     },
     lirePositions: async (id) => {
       const [a, b] = await redis.mget(`suivi-pub:pos:${id}:j28`, `suivi-pub:pos:${id}:j90`);
@@ -108,6 +130,8 @@ async function articlesPublies(take: number) {
       id: true,
       publishedAt: true,
       updatedAt: true,
+      isNews: true,
+      templateVariant: true,
       translations: { where: { locale: "fr" }, select: { slug: true, body: true }, take: 1 },
     },
   });
@@ -124,10 +148,8 @@ async function runTacheEquipe(
   if (tache === "suivi-publication") {
     const r = await suivreArticles(
       articles.flatMap((a) => {
-        const slug = a.translations[0]?.slug;
-        return slug && a.publishedAt
-          ? [{ id: a.id, url: `${BASE_URL}/fr/blog/${slug}`, publieLe: a.publishedAt }]
-          : [];
+        const url = urlArticle(a);
+        return url && a.publishedAt ? [{ id: a.id, url, publieLe: a.publishedAt }] : [];
       }),
       {
         magasin,
@@ -149,8 +171,8 @@ async function runTacheEquipe(
     async (id, n) =>
       void (await redis.set(`suivi-pub:liens:${id}`, String(n), "EX", 14 * 24 * 3600)),
   );
-  const carte = await chargerCarteRequetes();
-  if (carte.cannibalisations.length > 0) {
+  const carte = await chargerCarteRequetes().catch(() => null);
+  if (carte && carte.cannibalisations.length > 0) {
     console.log(`[content-refresh] cannibalisation : ${carte.cannibalisations.length} requête(s)`);
   }
   return { ...base, flaggedCount: casses, suivi: { liensCasses: casses } };
@@ -189,6 +211,8 @@ async function runRefreshJob(job: Job<RefreshJobData>): Promise<ContentRefreshRe
       select: {
         id: true,
         updatedAt: true,
+        isNews: true,
+        templateVariant: true,
         translations: { where: { locale: "fr" }, select: { slug: true }, take: 1 },
       },
     })
@@ -201,7 +225,7 @@ async function runRefreshJob(job: Job<RefreshJobData>): Promise<ContentRefreshRe
     const cannib = (await chargerCarteRequetes().catch(() => null))?.cannibalisations ?? [];
     const signaux: SignauxArticle[] = await Promise.all(
       stale.map(async (a) => {
-        const slug = a.translations[0]?.slug;
+        const url = urlArticle(a);
         const pos = await magasin.lirePositions(a.id).catch(() => ({ j28: null, j90: null }));
         const liens = Number(await redis.get(`suivi-pub:liens:${a.id}`).catch(() => 0)) || 0;
         return {
@@ -211,12 +235,20 @@ async function runRefreshJob(job: Job<RefreshJobData>): Promise<ContentRefreshRe
           positionReference: pos.j28,
           preuveExpireLe: null, // aucune source de péremption en base à ce jour
           liensCasses: liens,
-          cannibalisation: slug ? estCannibalise(`${BASE_URL}/fr/blog/${slug}`, cannib) : false,
+          cannibalisation: url ? estCannibalise(url, cannib) : false,
         };
       }),
     );
-    const ids = new Set(choisirCandidatsMiseAJour(signaux, new Date(now)).map((c) => c.id));
-    retenus = stale.filter((a) => ids.has(a.id)).slice(0, maxPerRun);
+    // Délai de grâce de 28 jours après un signalement : un relevé de position
+    // n'est écrit qu'une fois, il ne doit pas re-signaler l'article à chaque passage.
+    const choisis: string[] = [];
+    for (const c of choisirCandidatsMiseAJour(signaux, new Date(now))) {
+      if (choisis.length >= maxPerRun) break;
+      const ok = await redis.set(`suivi-pub:alerte:${c.id}`, "1", "EX", 28 * 24 * 3600, "NX");
+      if (ok === "OK") choisis.push(c.id);
+    }
+    const ids = new Set(choisis);
+    retenus = stale.filter((a) => ids.has(a.id));
   }
   const candidates = retenus.map((a) => ({
     slug: a.translations[0]?.slug ?? a.id,

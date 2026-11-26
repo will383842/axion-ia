@@ -3,6 +3,7 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 const findMany = vi.fn();
 vi.mock("@/lib/prisma", () => ({ prisma: { article: { findMany } } }));
 vi.mock("@/lib/redis", () => ({ redis: {} }));
+vi.mock("@/lib/site-url", () => ({ SITE_URL: "https://axion-ia.com" }));
 vi.mock("bullmq", () => ({ Worker: class {} }));
 vi.mock("@/server/queue/lib/sentry-worker", () => ({ captureWorkerError: vi.fn() }));
 vi.mock("@/server/content-gen/seo/gsc-client", () => ({
