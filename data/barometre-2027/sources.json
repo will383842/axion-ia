@@ -193,7 +193,7 @@
   },
   {
     "chiffre": "Usage de l'IA : Analyse et classification de documents",
-    "valeur": "13 % (page web) ; 14 % (rapport p. 54)",
+    "valeur": "13 % (page web, +7 pts) ; 14 % (rapport p. 54, +8 pts)",
     "perimetre": "TPE-PME, base : échantillon total",
     "annee": 2026,
     "source": "Baromètre France Num 2026 (Crédoc pour la DGE), enquête du 23 mars au 18 avril 2026, 9 655 entreprises dont 6 786 TPE",
@@ -201,18 +201,18 @@
   },
   {
     "chiffre": "Usage de l'IA : Automatisation des tâches",
-    "valeur": "11 %",
+    "valeur": "11 % (page de présentation, +6 pts) ; 9 % (rapport p. 54, +4 pts) : les deux sources se contredisent",
     "perimetre": "TPE-PME, base : échantillon total",
     "annee": 2026,
-    "source": "Baromètre France Num 2026 (Crédoc pour la DGE), enquête du 23 mars au 18 avril 2026, 9 655 entreprises dont 6 786 TPE",
+    "source": "Baromètre France Num 2026 (Crédoc pour la DGE), enquête du 23 mars au 18 avril 2026, 9 655 entreprises dont 6 786 TPE ; valeurs inversées entre la page de synthèse et le graphique du rapport p. 54 (vérifié sur l'image de la page)",
     "url": "https://www.francenum.gouv.fr/guides-et-conseils/strategie-numerique/comprendre-le-numerique/barometre-france-num-2026-le"
   },
   {
     "chiffre": "Usage de l'IA : Analyse de données, prévision, optimisation",
-    "valeur": "9 %",
+    "valeur": "9 % (page de présentation, +4 pts) ; 11 % (rapport p. 54, +6 pts) : les deux sources se contredisent",
     "perimetre": "TPE-PME, base : échantillon total",
     "annee": 2026,
-    "source": "Baromètre France Num 2026 (Crédoc pour la DGE), enquête du 23 mars au 18 avril 2026, 9 655 entreprises dont 6 786 TPE",
+    "source": "Baromètre France Num 2026 (Crédoc pour la DGE), enquête du 23 mars au 18 avril 2026, 9 655 entreprises dont 6 786 TPE ; valeurs inversées entre la page de synthèse et le graphique du rapport p. 54 (vérifié sur l'image de la page)",
     "url": "https://www.francenum.gouv.fr/guides-et-conseils/strategie-numerique/comprendre-le-numerique/barometre-france-num-2026-le"
   },
   {
@@ -264,7 +264,7 @@
     "url": "https://www.francenum.gouv.fr/guides-et-conseils/strategie-numerique/comprendre-le-numerique/barometre-france-num-2026-le"
   },
   {
-    "chiffre": "Utilisateurs d'IA recourant à des solutions payantes",
+    "chiffre": "Utilisateurs d'IA recourant à des solutions payantes (payantes seules 20 % + les deux 28 %)",
     "valeur": "48 %",
     "perimetre": "TPE-PME utilisatrices d'IA",
     "annee": 2026,
@@ -665,7 +665,7 @@
   },
   {
     "chiffre": "UE27, entreprises n'utilisant pas l'IA à cause de : manque de compétences",
-    "valeur": "7,76 % (de l'ensemble des entreprises, lecture de l'unité PC_ENT)",
+    "valeur": "7,76 % (de l'ensemble des entreprises, lecture de l'unité PC_ENT) ; 70,31 % des entreprises ayant envisagé l'IA sans l'adopter (unité PC_ENT_AI_EC)",
     "perimetre": "UE27, 10 salariés ou plus, entreprises de 10 salariés ou plus, hors agriculture, mines, secteur financier",
     "annee": 2025,
     "source": "Eurostat, jeu de données isoc_eb_ai (Artificial intelligence by size class of enterprise), mis à jour le 2026-06-15 ; consulté via l'API le 2026-11-26",
@@ -673,7 +673,7 @@
   },
   {
     "chiffre": "UE27, entreprises n'utilisant pas l'IA à cause de : incertitude sur les conséquences juridiques",
-    "valeur": "5,92 % (de l'ensemble des entreprises, lecture de l'unité PC_ENT)",
+    "valeur": "5,92 % (de l'ensemble des entreprises, lecture de l'unité PC_ENT) ; 53,61 % des entreprises ayant envisagé l'IA sans l'adopter (unité PC_ENT_AI_EC)",
     "perimetre": "UE27, 10 salariés ou plus, entreprises de 10 salariés ou plus, hors agriculture, mines, secteur financier",
     "annee": 2025,
     "source": "Eurostat, jeu de données isoc_eb_ai (Artificial intelligence by size class of enterprise), mis à jour le 2026-06-15 ; consulté via l'API le 2026-11-26",
@@ -681,7 +681,7 @@
   },
   {
     "chiffre": "UE27, entreprises n'utilisant pas l'IA à cause de : protection des données et vie privée",
-    "valeur": "5,82 % (de l'ensemble des entreprises, lecture de l'unité PC_ENT)",
+    "valeur": "5,82 % (de l'ensemble des entreprises, lecture de l'unité PC_ENT) ; 52,72 % des entreprises ayant envisagé l'IA sans l'adopter (unité PC_ENT_AI_EC)",
     "perimetre": "UE27, 10 salariés ou plus, entreprises de 10 salariés ou plus, hors agriculture, mines, secteur financier",
     "annee": 2025,
     "source": "Eurostat, jeu de données isoc_eb_ai (Artificial intelligence by size class of enterprise), mis à jour le 2026-06-15 ; consulté via l'API le 2026-11-26",
@@ -689,7 +689,7 @@
   },
   {
     "chiffre": "UE27, entreprises n'utilisant pas l'IA à cause de : disponibilité ou qualité des données",
-    "valeur": "4,80 % (de l'ensemble des entreprises, lecture de l'unité PC_ENT)",
+    "valeur": "4,80 % (de l'ensemble des entreprises, lecture de l'unité PC_ENT) ; 43,51 % des entreprises ayant envisagé l'IA sans l'adopter (unité PC_ENT_AI_EC)",
     "perimetre": "UE27, 10 salariés ou plus, entreprises de 10 salariés ou plus, hors agriculture, mines, secteur financier",
     "annee": 2025,
     "source": "Eurostat, jeu de données isoc_eb_ai (Artificial intelligence by size class of enterprise), mis à jour le 2026-06-15 ; consulté via l'API le 2026-11-26",
@@ -697,7 +697,7 @@
   },
   {
     "chiffre": "UE27, entreprises n'utilisant pas l'IA à cause de : incompatibilité avec les systèmes existants",
-    "valeur": "4,59 % (de l'ensemble des entreprises, lecture de l'unité PC_ENT)",
+    "valeur": "4,59 % (de l'ensemble des entreprises, lecture de l'unité PC_ENT) ; 41,60 % des entreprises ayant envisagé l'IA sans l'adopter (unité PC_ENT_AI_EC)",
     "perimetre": "UE27, 10 salariés ou plus, entreprises de 10 salariés ou plus, hors agriculture, mines, secteur financier",
     "annee": 2025,
     "source": "Eurostat, jeu de données isoc_eb_ai (Artificial intelligence by size class of enterprise), mis à jour le 2026-06-15 ; consulté via l'API le 2026-11-26",
@@ -705,7 +705,7 @@
   },
   {
     "chiffre": "UE27, entreprises n'utilisant pas l'IA à cause de : coûts jugés trop élevés",
-    "valeur": "4,24 % (de l'ensemble des entreprises, lecture de l'unité PC_ENT)",
+    "valeur": "4,24 % (de l'ensemble des entreprises, lecture de l'unité PC_ENT) ; 38,37 % des entreprises ayant envisagé l'IA sans l'adopter (unité PC_ENT_AI_EC)",
     "perimetre": "UE27, 10 salariés ou plus, entreprises de 10 salariés ou plus, hors agriculture, mines, secteur financier",
     "annee": 2025,
     "source": "Eurostat, jeu de données isoc_eb_ai (Artificial intelligence by size class of enterprise), mis à jour le 2026-06-15 ; consulté via l'API le 2026-11-26",
@@ -713,7 +713,7 @@
   },
   {
     "chiffre": "UE27, entreprises n'utilisant pas l'IA à cause de : considérations éthiques",
-    "valeur": "2,72 % (de l'ensemble des entreprises, lecture de l'unité PC_ENT)",
+    "valeur": "2,72 % (de l'ensemble des entreprises, lecture de l'unité PC_ENT) ; 24,64 % des entreprises ayant envisagé l'IA sans l'adopter (unité PC_ENT_AI_EC)",
     "perimetre": "UE27, 10 salariés ou plus, entreprises de 10 salariés ou plus, hors agriculture, mines, secteur financier",
     "annee": 2025,
     "source": "Eurostat, jeu de données isoc_eb_ai (Artificial intelligence by size class of enterprise), mis à jour le 2026-06-15 ; consulté via l'API le 2026-11-26",
@@ -721,10 +721,26 @@
   },
   {
     "chiffre": "UE27, entreprises n'utilisant pas l'IA à cause de : IA jugée inutile pour l'entreprise",
-    "valeur": "1,96 % (de l'ensemble des entreprises, lecture de l'unité PC_ENT)",
+    "valeur": "1,96 % (de l'ensemble des entreprises, lecture de l'unité PC_ENT) ; 17,79 % des entreprises ayant envisagé l'IA sans l'adopter (unité PC_ENT_AI_EC)",
     "perimetre": "UE27, 10 salariés ou plus, entreprises de 10 salariés ou plus, hors agriculture, mines, secteur financier",
     "annee": 2025,
     "source": "Eurostat, jeu de données isoc_eb_ai (Artificial intelligence by size class of enterprise), mis à jour le 2026-06-15 ; consulté via l'API le 2026-11-26",
     "url": "https://ec.europa.eu/eurostat/databrowser/view/isoc_eb_ai/default/table"
+  },
+  {
+    "chiffre": "Utilisateurs d'IA employant principalement des solutions gratuites",
+    "valeur": "52 % (question « Utilisez-vous principalement des solutions d'IA ? » : gratuites 52 %, payantes 20 %, les deux 28 %)",
+    "perimetre": "TPE-PME utilisatrices d'IA (base : 4 049)",
+    "annee": 2026,
+    "source": "Baromètre France Num 2026 (Crédoc pour la DGE), rapport p. 55",
+    "url": "https://www.francenum.gouv.fr/files/2026-09/Barom%C3%A8tre%20France%20Num%202026%20-%20Rapport%20final.pdf"
+  },
+  {
+    "chiffre": "Utilisateurs d'IA n'employant que des solutions gratuites",
+    "valeur": "50 %",
+    "perimetre": "TPE-PME utilisatrices d'IA",
+    "annee": 2026,
+    "source": "Baromètre France Num 2026 (Crédoc pour la DGE), rapport p. 58 (« Non, je n'utilise que des solutions gratuites »)",
+    "url": "https://www.francenum.gouv.fr/files/2026-09/Barom%C3%A8tre%20France%20Num%202026%20-%20Rapport%20final.pdf"
   }
 ]

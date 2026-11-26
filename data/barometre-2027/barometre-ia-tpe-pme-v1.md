@@ -61,13 +61,13 @@ Usages d'IA dans les TPE et PME françaises en 2026 (Baromètre France Num 2026,
 - génération de contenus (texte, voix ou image) : 34 % (+12 points sur un an) ;
 - assistants conversationnels, chatbots, recherche d'informations : 24 % (+10 points) ;
 - analyse et classification de documents : 13 % sur la page de présentation, 14 % dans le rapport complet ;
-- automatisation des tâches : 11 % ;
-- analyse de données, prévision, optimisation des ressources : 9 % ;
+- automatisation des tâches : 11 % sur la page de présentation, 9 % dans le rapport complet (p. 54) ;
+- analyse de données, prévision, optimisation des ressources : 9 % sur la page de présentation, 11 % dans le rapport complet (p. 54) ; les deux sources se contredisent sur ces deux usages (valeurs inversées) ;
 - contrôle qualité, détection : 4 % (rapport p. 54).
 
 Côté Eurostat (entreprises françaises de 10 salariés ou plus, 2025), 10,23 % utilisent l'IA pour analyser du texte, 7,82 % pour générer du langage écrit, parlé ou du code, 7,50 % pour générer images, vidéo ou son, 6,14 % pour la reconnaissance vocale et 4,48 % pour automatiser des processus. Pour les finalités métier, Eurostat donne en France en 2025 : 3,79 % pour la production, 3,16 % pour la sécurité informatique et 1,15 % pour la logistique. Les autres finalités (marketing, administration, finance) n'ont pas de valeur publiée pour la France en 2025 dans ce jeu de données ; dans l'UE27 en 2025, 6,92 % des entreprises de 10 salariés ou plus utilisent l'IA pour le marketing ou les ventes et 6,19 % pour l'administration et la gestion.
 
-Solutions gratuites ou payantes : parmi les TPE et PME françaises utilisatrices d'IA, 48 % emploient des solutions payantes (abonnements, licences), 52 % des solutions gratuites seulement ; 19 % de l'ensemble des TPE et PME, et 32 % des PME, recourent à des solutions payantes (Baromètre France Num 2026).
+Solutions gratuites ou payantes : parmi les TPE et PME françaises utilisatrices d'IA, 48 % emploient des solutions payantes (abonnements, licences), 52 % utilisent principalement des solutions gratuites (rapport p. 55), et 50 % n'utilisent que des solutions gratuites (rapport p. 58) ; 19 % de l'ensemble des TPE et PME, et 32 % des PME, recourent à des solutions payantes (Baromètre France Num 2026).
 
 Impact ressenti : 68 % des utilisateurs jugent l'impact de l'IA positif ; 84 % parmi les utilisateurs de solutions payantes et 56 % parmi ceux de solutions gratuites (Baromètre France Num 2026, rapport p. 57). 28 % ne se prononcent ni pour ni contre. Cette mesure est déclarative : elle ne chiffre pas un gain de temps ou de chiffre d'affaires.
 
@@ -85,6 +85,8 @@ Freins dans l'Union européenne à 27 en 2025 (Eurostat, entreprises de 10 salar
 - coûts jugés trop élevés : 4,24 % ;
 - considérations éthiques : 2,72 % ;
 - IA jugée inutile pour l'entreprise : 1,96 %.
+
+Lecture plus courante d'Eurostat pour les freins (unité PC_ENT_AI_EC : part des entreprises qui ont envisagé l'IA sans l'utiliser ; même classement) : manque de compétences 70,31 % ; incertitude juridique 53,61 % ; protection des données 52,72 % ; disponibilité ou qualité des données 43,51 % ; incompatibilité avec les systèmes 41,60 % ; coûts 38,37 % ; éthique 24,64 % ; IA jugée inutile 17,79 %. Les faibles valeurs de la première liste ne signifient pas que ces freins sont marginaux : elles sont rapportées à toutes les entreprises.
 
 Éléments français voisins, qui ne sont pas des freins à l'IA au sens strict (Baromètre France Num 2026) :
 
@@ -112,17 +114,17 @@ Les données OCDE, Banque de France, Bpifrance Le Lab, CCI et INSEE n'ont pas pu
 
 Ces enseignements décrivent des tendances ; ils ne promettent aucun résultat.
 
-1. **L'IA n'est plus marginale chez les TPE et PME.** Quatre entreprises sur dix déclarent en utiliser (40 %, France Num 2026) ; ne pas s'y être intéressé place désormais en minorité de l'échantillon une TPE-PME sur deux.
+1. **L'IA n'est plus marginale chez les TPE et PME.** Quatre entreprises sur dix déclarent en utiliser (40 %, France Num 2026) ; chez les PME de 10 à 249 salariés, les utilisatrices sont désormais majoritaires (53 %).
 2. **L'écart se creuse avec la taille et avec le profil du dirigeant.** 36 % des entreprises de 1 à 4 salariés l'utilisent contre 62 % de celles de 50 à 249 salariés ; la formation du dirigeant et la clientèle (BtoB) vont avec un usage plus répandu.
-3. **Les usages courants sont simples : rédiger, converser, chercher.** La génération de contenus (34 %) et les assistants conversationnels (24 %) dominent ; l'automatisation et l'analyse de données restent à 9-11 %.
+3. **Les usages courants sont simples : rédiger, converser, chercher.** La génération de contenus (34 %) et les assistants conversationnels (24 %) dominent ; l'automatisation et l'analyse de données restent à 9-11 % (les deux sources divergent sur lequel des deux est à 9 % ou à 11 %).
 4. **Le ressenti est plus favorable avec des outils payants, mais la mesure est déclarative.** 84 % d'impact positif déclaré avec des solutions payantes, 56 % avec des gratuites ; les deux groupes ne sont pas comparables à périmètre égal (taille, secteur, usages).
-5. **Les compétences et la confiance dans les données sont les points d'attention récurrents.** 31 % des utilisateurs d'IA n'ont ni compétence ni projet d'en acquérir ; en Europe, le manque de compétences est le frein le plus cité (7,76 %) ; 53 % des dirigeants craignent la perte de données.
+5. **Les compétences et la confiance dans les données sont les points d'attention récurrents.** 31 % des utilisateurs d'IA n'ont ni compétence ni projet d'en acquérir ; en Europe, le manque de compétences est le frein le plus cité (7,76 % de l'ensemble des entreprises, soit 70,31 % des entreprises qui ont envisagé l'IA sans l'adopter, Eurostat, unité PC_ENT_AI_EC, UE27, 2025) ; 53 % des dirigeants craignent la perte de données.
 
 ## 7. Méthodologie
 
-- **Baromètre France Num 2026** : enquête du Crédoc pour la Direction générale des Entreprises, réalisée du 23 mars au 18 avril 2026, 9 655 entreprises répondantes (6 786 TPE dont 799 sans salarié, 2 869 PME), en ligne (8 843) et par téléphone (802). Résultats déclarés représentatifs de la population 2024 des TPE et PME (taille, secteur, région). Marge d'erreur annoncée inférieure à 1 % au niveau global ; elle est plus large pour les sous-groupes (secteurs, tailles). Les questions sur l'IA sont déclaratives. Les questions sur l'impact, les compétences, le caractère payant et les dépenses sont nouvelles en 2026 : pas de série historique.
+- **Baromètre France Num 2026** : enquête du Crédoc pour la Direction générale des Entreprises, réalisée du 23 mars au 18 avril 2026, 9 655 entreprises répondantes (6 786 TPE dont 799 sans salarié, 2 869 PME), en ligne (8 843) et par téléphone (802) (la somme, 9 645, diffère de 10 du total annoncé par la source). Résultats déclarés représentatifs de la population 2024 des TPE et PME (taille, secteur, région). Marge d'erreur annoncée inférieure à 1 % au niveau global ; elle est plus large pour les sous-groupes (secteurs, tailles). Les questions sur l'IA sont déclaratives. Les questions sur l'impact, les compétences, le caractère payant et les dépenses sont nouvelles en 2026 : pas de série historique.
 - **Eurostat, isoc_eb_ai** : enquête communautaire sur l'usage des TIC dans les entreprises, entreprises de 10 salariés ou plus, hors agriculture, mines et secteur financier. Valeurs lues par l'API publique d'Eurostat (jeu mis à jour le 2026-06-15). L'interprétation de l'unité des freins (« pourcentage d'entreprises ») comme part de l'ensemble des entreprises est la nôtre.
-- **Écarts constatés entre deux sources de la même étude** : « activités financières » 46 % (page) / 47 % (rapport) et « analyse de documents » 13 % / 14 % ; les deux valeurs sont signalées dans `sources.json`. Le rapport complet porte en outre la mention « chiffre mis à jour le 2 octobre 2026 » pour la notoriété France Num : le jeu de chiffres a été corrigé après publication ; en cas de doute, la version en ligne fait foi.
+- **Écarts constatés entre deux sources de la même étude** : « activités financières » 46 % (page) / 47 % (rapport), « analyse de documents » 13 % / 14 %, « automatisation des tâches » 11 % / 9 % et « analyse de données, prévision, optimisation » 9 % / 11 % (valeurs inversées entre la page et le rapport p. 54) ; les deux valeurs sont signalées dans `sources.json`. La page de présentation porte en outre la mention « chiffre mis à jour le 2 octobre 2026 » pour la notoriété France Num (21 %, +3 points) : le jeu de chiffres a été corrigé après publication ; en cas de doute, la version en ligne fait foi.
 - Aucun chiffre n'a été estimé, extrapolé ou arrondi par nos soins. Les chiffres de ce document sont à citer avec leur périmètre et leur année.
 
 ## 8. Sources et trous
@@ -134,3 +136,15 @@ Date de consultation de toutes les sources : 26 novembre 2026.
 3. Eurostat, « Artificial intelligence by size class of enterprise » (isoc_eb_ai), tableau : https://ec.europa.eu/eurostat/databrowser/view/isoc_eb_ai/default/table ; données lues via https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/isoc_eb_ai?format=JSON&lang=EN
 
 **Sources demandées non exploitées (à compléter en V2)** : INSEE (usage de l'IA par les entreprises françaises, notamment par secteur et par région), Bpifrance Le Lab, Banque de France, CCI, OCDE, autres publications de la DGE. Raison : le moteur de recherche web n'était pas accessible depuis l'environnement de rédaction et aucune page INSEE précise n'a pu être ouverte ; aucun chiffre n'a donc été repris de ces organismes. Autres trous : freins à l'adoption de l'IA spécifiques à la France (Eurostat ne les publie que pour l'UE27 dans le jeu consulté) ; ventilation Eurostat par secteur ; mesure de l'usage de l'IA dans les entreprises de moins de 10 salariés hors France Num ; données régionales.
+
+## Corrections apportées après vérification
+
+Une vérification des faits (26 novembre 2026, sources rouvertes) a conduit aux corrections suivantes :
+
+- Automatisation des tâches (11 % page / 9 % rapport p. 54) et analyse de données (9 % page / 11 % rapport p. 54) : les deux valeurs sont désormais affichées, l'écart est ajouté à la liste du § 7.
+- « 52 % de solutions gratuites seulement » corrigé : 52 % utilisent principalement des solutions gratuites (p. 55), 50 % n'utilisent que des solutions gratuites (p. 58).
+- § 6.1 : phrase erronée sur la « minorité » remplacée (les non-utilisatrices sont 60 % des TPE-PME ; les PME utilisatrices sont 53 %).
+- § 7 : la mention « chiffre mis à jour le 2 octobre 2026 » est sur la page web, pas dans le rapport ; l'écart 8 843 + 802 = 9 645 ≠ 9 655 est signalé.
+- § 4 et § 6 : lecture Eurostat PC_ENT_AI_EC ajoutée pour les freins (manque de compétences : 70,31 %).
+- `sources.json` : entrées 25 et 26 corrigées, entrées 83 à 90 complétées, deux entrées ajoutées (52 % et 50 %).
+- Questionnaire : mention RGPD complétée, questions 1, 9, 10, 13 et 14 corrigées, décompte des questions à choix multiple rectifié.
