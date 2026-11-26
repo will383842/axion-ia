@@ -61,7 +61,7 @@ export const CREPY_EN_VALOIS_COPY: VilleCopy = {
     },
     {
       q: "Quel délai pour une intervention IA à Crépy-en-Valois ?",
-      a: "Nous intervenons généralement sous 5 jours ouvrés à Crépy-en-Valois. Déplacements sur site inclus pour les entreprises de toute l'agglomération du Valois.",
+      a: "Nous intervenons généralement sous 5 jours ouvrés à Crépy-en-Valois.",
     },
     {
       q: "Comment Axion-IA garantit-il la conformité RGPD à Crépy-en-Valois ?",

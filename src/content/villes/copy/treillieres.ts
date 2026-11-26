@@ -65,7 +65,7 @@ export const TREILLIERES_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Treillières ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Treillières est en couronne nord Nantes Métropole, très accessible. Coûts de déplacement séparés du forfait, tarifs transparents.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Treillières est en couronne nord Nantes Métropole, très accessible. Tarifs transparents.",
     },
   ],
 };

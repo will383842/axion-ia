@@ -113,10 +113,8 @@ describe("buildJobPostingJsonLd", () => {
     expect(j.incentiveCompensation).toBeUndefined();
   });
 
-  it("utilise incentiveCompensation si commission (pas de baseSalary)", () => {
-    const j = buildJobPostingJsonLd(makeOffer({ isCommission: true }))!;
-    expect(j.baseSalary).toBeUndefined();
-    expect(j.incentiveCompensation).toBeTruthy();
+  it("une offre 100 % commission non freelance ne donne aucun JobPosting", () => {
+    expect(buildJobPostingJsonLd(makeOffer({ isCommission: true }))).toBeNull();
   });
 
   it("omet baseSalary si salaire masqué", () => {

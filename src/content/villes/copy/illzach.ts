@@ -65,7 +65,7 @@ export const ILLZACH_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission Axion-IA à Illzach ?",
-      a: "Nos consultants interviennent depuis Strasbourg en 1h via l'A35, ou depuis Mulhouse centre en 8 min. Illzach appartient à Mulhouse Alsace Agglomération, déplacements quotidiens sans surcoût hébergement. Sessions sur site ou en visio selon vos préférences.",
+      a: "Nos consultants interviennent depuis Strasbourg en 1h via l'A35, ou depuis Mulhouse centre en 8 min. Illzach appartient à Mulhouse Alsace Agglomération. Sessions sur site ou en visio selon vos préférences.",
     },
   ],
 };
