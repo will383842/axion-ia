@@ -292,6 +292,20 @@ describe("moteur : conférence et lignes récurrentes (contrat 2.8, décisions d
     ).toEqual({ statut: "aucune" });
   });
 
+  it("conférence signée AVANT le 26/11/2026 : forfait de l'ancien contrat ; à partir de cette date : 0 €", () => {
+    const avant = new Date("2026-11-25T22:59:59Z");
+    const apres = new Date("2026-11-25T23:00:00Z");
+    expect(
+      calculerCommission({ activite: "conference", factureHtCents: 300_000, signeeAt: avant }),
+    ).toMatchObject({ statut: "calculee", montantCents: 50_000 });
+    expect(
+      calculerCommission({ activite: "conference", factureHtCents: 300_000, signeeAt: apres }),
+    ).toEqual({ statut: "aucune" });
+    expect(
+      calculerCommission({ activite: "conference", factureHtCents: 300_000, signeeAt: null }),
+    ).toEqual({ statut: "aucune" });
+  });
+
   it("maintenance sur la même facture : 4 000 € de mise en service + 150 € de maintenance → 600 €", () => {
     const lignes = [
       { designation: "Mise en service du site", quantite: 1, prixUnitaireHtCents: 400_000 },
@@ -326,6 +340,28 @@ describe("lignes récurrentes : cas limites", () => {
     expect(
       htLignesRecurrentesCents([{ designation: "Maintenance", prixUnitaireHtCents: 15_000 }]),
     ).toBe(15_000);
+  });
+  it("facture refaite après un avoir total : récurrent restant = 150 (devis), pas 0 (base 4 000 € → 600 €)", () => {
+    const devis = [
+      { designation: "Mise en service", quantite: 1, prixUnitaireHtCents: 400_000 },
+      { designation: "Maintenance", quantite: 1, prixUnitaireHtCents: 15_000 },
+    ];
+    const avoirTotal = [
+      { designation: "Mise en service", quantite: 1, prixUnitaireHtCents: -400_000 },
+      { designation: "Maintenance", quantite: 1, prixUnitaireHtCents: -15_000 },
+    ];
+    // F1 (annulée par l'avoir total) + F2 refaite : 150 + 150 − 150 rendus = 150.
+    expect(htLignesRecurrentesRestantesCents(devis, [avoirTotal], [devis, devis])).toBe(15_000);
+    // Factures sans lignes détaillées : le plafond ne s'applique pas (maintenance du devis retirée).
+    expect(htLignesRecurrentesRestantesCents(devis, [], [null, []])).toBe(15_000);
+    // Jamais plus que le devis, jamais négatif.
+    expect(htLignesRecurrentesRestantesCents(devis, [], [devis, devis])).toBe(15_000);
+    expect(htLignesRecurrentesRestantesCents(devis, [avoirTotal, avoirTotal], [devis])).toBe(0);
+  });
+  it("avoir « Maintenance » + facture complémentaire de maintenance : récurrent restant = 150", () => {
+    const devis = [{ designation: "Maintenance", quantite: 1, prixUnitaireHtCents: 15_000 }];
+    const avoir = [{ designation: "Maintenance", quantite: 1, prixUnitaireHtCents: -15_000 }];
+    expect(htLignesRecurrentesRestantesCents(devis, [avoir], [devis, devis])).toBe(15_000);
   });
   it("un avoir qui annule la maintenance la retire des lignes récurrentes restantes (base 4 000 €)", () => {
     const devis = [

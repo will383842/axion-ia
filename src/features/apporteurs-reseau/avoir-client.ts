@@ -258,6 +258,9 @@ async function facturesDeLaCommande(factureId: string): Promise<{
         avoirs
           .filter((a) => a.statut !== "brouillon" && a.statut !== "annulee")
           .map((a) => a.lignes),
+        membres
+          .filter((m) => m.statut !== "brouillon" && m.statut !== "annulee")
+          .map((m) => m.lignes),
       );
   return {
     membres,

@@ -377,6 +377,63 @@ describe("passage quotidien : commission par commande soldée", () => {
     expect(etat.crees).toEqual([]);
   });
 
+  it("conférence signée AVANT le 26/11/2026 : forfait de l'ancien contrat ; APRÈS : aucune commission", async () => {
+    unePayee({ activite: "conference", montantHtCents: 300_000 });
+    await passerReseauApporteurs(MAINTENANT);
+    expect(etat.crees[0]).toMatchObject({ montantCents: 50_000 });
+    etat.crees = [];
+    unePayee({
+      activite: "conference",
+      montantHtCents: 300_000,
+      devis: { acceptedAt: new Date("2026-11-26T09:00:00Z") },
+    });
+    await passerReseauApporteurs(MAINTENANT);
+    expect(etat.crees).toEqual([]);
+  });
+
+  describe("maintenance sur la même facture que la mise en service", () => {
+    const LM = [
+      { designation: "Mise en service du site", quantite: 1, prixUnitaireHtCents: 400_000 },
+      { designation: "Maintenance mensuelle", quantite: 1, prixUnitaireHtCents: 15_000 },
+    ];
+    const DEVIS = {
+      acceptedAt: new Date("2026-12-01T00:00:00Z"),
+      montantTotalHtCents: 415_000,
+      journeeIa: false,
+      lignes: LM,
+    };
+    const f = (id: string) =>
+      fac({ id, activite: "site_web", montantHtCents: 415_000, lignes: LM, devis: DEVIS });
+
+    it("mise en service 4 000 € + maintenance 150 € → 600 €", async () => {
+      etat.payees = [{ id: "F1", devisId: "D1" }];
+      etat.lignes = [f("F1")];
+      await passerReseauApporteurs(MAINTENANT);
+      expect(etat.crees[0]).toMatchObject({ factureHtCents: 400_000, montantCents: 60_000 });
+    });
+
+    it("facture refaite après un avoir total : 600 €, jamais 622,50 €", async () => {
+      etat.payees = [{ id: "F2", devisId: "D1" }];
+      etat.lignes = [f("F1"), f("F2")];
+      etat.avoirs = [
+        {
+          id: "AV",
+          devisId: "D1",
+          statut: "emise",
+          avoirDeId: "F1",
+          montantHtCents: -415_000,
+          emiseAt: null,
+          lignes: [
+            { designation: "Mise en service du site", quantite: 1, prixUnitaireHtCents: -400_000 },
+            { designation: "Maintenance mensuelle", quantite: 1, prixUnitaireHtCents: -15_000 },
+          ],
+        },
+      ];
+      await passerReseauApporteurs(MAINTENANT);
+      expect(etat.crees[0]).toMatchObject({ montantCents: 60_000 });
+    });
+  });
+
   it("implémentation : 15 % du HT ; 1-to-1 : aucune commission", async () => {
     unePayee({ activite: "implementation", montantHtCents: 200_000 });
     await passerReseauApporteurs(MAINTENANT);

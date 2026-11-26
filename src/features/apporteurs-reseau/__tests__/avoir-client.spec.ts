@@ -751,6 +751,7 @@ describe("commande mixte : mise en service + maintenance", () => {
     id: "F1",
     devisId: "D1",
     montantHtCents: 415_000,
+    lignes: DM.lignes,
     devis: DM,
   } as unknown as F;
   const avm = (statut: string, montant: number) =>
@@ -790,5 +791,37 @@ describe("commande mixte : mise en service + maintenance", () => {
     await reprendreApresAvoirsClients(LE);
     expect(d.reduire).not.toHaveBeenCalled();
     expect(ecritures()).toEqual([]);
+  });
+  const LM = (qte: number, pu: number) => [
+    { designation: "Mise en service du site", quantite: 1, prixUnitaireHtCents: 400_000 },
+    { designation: "Maintenance mensuelle", quantite: qte, prixUnitaireHtCents: pu },
+  ];
+
+  it("facture refaite après un avoir total : la commission reste 600 € (jamais 622,50 €)", async () => {
+    const f1 = { ...fm, lignes: LM(1, 15_000) } as unknown as F;
+    const f2 = { ...fm, id: "F2", lignes: LM(1, 15_000) } as unknown as F;
+    const av = { ...avm("payee", 415_000), lignes: LM(1, -15_000) } as unknown as F;
+    d.factures = [f1, f2, av];
+    d.lignes = [lm()];
+    await reprendreApresAvoirsClients(LE);
+    expect(ecritures()).not.toContainEqual(expect.objectContaining({ montantCents: 62_250 }));
+  });
+
+  it("avoir « Maintenance » puis facture complémentaire de maintenance : 600 €, pas 622,50 €", async () => {
+    const f1 = { ...fm, lignes: LM(1, 15_000) } as unknown as F;
+    const f2 = {
+      ...fm,
+      id: "F2",
+      montantHtCents: 15_000,
+      lignes: [{ designation: "Maintenance mensuelle", quantite: 1, prixUnitaireHtCents: 15_000 }],
+    } as unknown as F;
+    const av = {
+      ...avm("payee", 15_000),
+      lignes: [{ designation: "Maintenance mensuelle", quantite: 1, prixUnitaireHtCents: -15_000 }],
+    } as unknown as F;
+    d.factures = [f1, f2, av];
+    d.lignes = [lm()];
+    await reprendreApresAvoirsClients(LE);
+    expect(ecritures()).not.toContainEqual(expect.objectContaining({ montantCents: 62_250 }));
   });
 });

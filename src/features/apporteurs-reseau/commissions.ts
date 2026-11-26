@@ -308,6 +308,15 @@ export async function qualifierCommission(
   if (!journeeIa && c.activite !== "formation" && c.activite !== "conference")
     return { ok: false, message: "Seule une formation se qualifie par palier." };
   const q = quantiteSessions(quantite);
+  // Conférence : la date de signature de la commande décide du forfait (avant le 26/11/2026) ou de 0 €.
+  let signeeAt: Date | null = null;
+  if (palier === PALIER_CONFERENCE) {
+    const fac = await prisma.factureFormation.findUnique({
+      where: { id: c.factureId },
+      select: { emiseAt: true, devis: { select: { acceptedAt: true } } },
+    });
+    signeeAt = fac?.devis?.acceptedAt ?? fac?.emiseAt ?? null;
+  }
   const calc: CalculCommission = journeeIa
     ? {
         statut: "calculee",
@@ -320,9 +329,16 @@ export async function qualifierCommission(
         factureHtCents: c.factureHtCents,
         palier,
         quantite,
+        signeeAt,
       });
   if (calc.statut !== "calculee")
-    return { ok: false, message: "Calcul impossible pour ce palier." };
+    return {
+      ok: false,
+      message:
+        palier === PALIER_CONFERENCE
+          ? "Conférence signée à partir du 26/11/2026 : aucune commission (contrat 2.8)."
+          : "Calcul impossible pour ce palier.",
+    };
   const v = await statutApresVigilance(c.apporteurId, calc.montantCents, maintenant, c.id);
   const r = await prisma.commissionApporteur.updateMany({
     where: { id, statut: "a_qualifier" },

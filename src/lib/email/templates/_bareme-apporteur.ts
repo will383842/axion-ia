@@ -4,11 +4,7 @@
 // MÊMES constantes que le contrat v2 validé (annexe 1) — aucune valeur réécrite à la main.
 // La liste « à préparer » lit les pièces réellement demandées à l'étape 3 du dossier.
 
-import {
-  COMMISSION_CONFERENCE_EUR,
-  COMMISSION_FORMATION_PAR_JOURNEE_EUR,
-  getCommissionById,
-} from "@/content/pricing";
+import { COMMISSION_FORMATION_PAR_JOURNEE_EUR, getCommissionById } from "@/content/pricing";
 import {
   LIBELLE_PIECE,
   PIECES_FACULTATIVES,
@@ -39,7 +35,8 @@ export function lignesBareme(l: Langue = "fr"): string[] {
       `Audit: ${pourcent(PCT_AUDIT, l)} of the invoice amount excl. VAT.`,
       `Integration: ${pourcent(PCT_INTEGRATION, l)} of the invoice amount excl. VAT.`,
       `One-to-one support and coaching: no commission.`,
-      `Talk: €${COMMISSION_CONFERENCE_EUR} excl. VAT per talk ordered (never more than the price invoiced excl. VAT).`,
+      `Talks: no commission.`,
+      `AI Day: €500 excl. VAT per day, pro rata to the price actually paid (taken back if refunded).`,
     ];
   }
   return [
@@ -47,7 +44,8 @@ export function lignesBareme(l: Langue = "fr"): string[] {
     `Audit : ${pourcent(PCT_AUDIT, l)} du montant HT de la facture.`,
     `Intégration : ${pourcent(PCT_INTEGRATION, l)} du montant HT de la facture.`,
     `Accompagnement individuel et coaching (1-to-1) : aucune commission.`,
-    `Conférence : ${COMMISSION_CONFERENCE_EUR} € HT par conférence commandée (jamais plus que le prix HT facturé).`,
+    `Conférence : aucune commission.`,
+    `Journée IA : 500 € HT par journée, au prorata du prix effectivement payé (repris en cas de remboursement).`,
   ];
 }
 

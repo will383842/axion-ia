@@ -367,6 +367,13 @@ export const DEVELOPPEMENT_WEB_COMMISSIONNE_DEPUIS = new Date(
   "2026-11-25T23:00:00Z",
 ); /* 26/11/2026 00:00, heure de Paris */
 
+/**
+ * Conférence : plus de commission pour une commande signée à partir de cette date (même date d'effet
+ * que le développement web, décision du pilote du 26/11). Une conférence commandée AVANT garde le
+ * forfait de l'ancien contrat.
+ */
+export const CONFERENCE_SANS_COMMISSION_DEPUIS = DEVELOPPEMENT_WEB_COMMISSIONNE_DEPUIS;
+
 /** Taux de l'annexe 1, en points de base, par activité facturée. */
 /** ⚠️ `un_a_un` reste 30 % ICI (grille affichée, contrat 2.6, pricing.ts) ; le CALCUL ne le paie plus (aucune commission, décision du 25/11 ; contrat 2.8, A1.3). */
 export const TAUX_BPS = {
@@ -487,7 +494,8 @@ export type CalculCommission =
  * - formation : forfait × min(1, HT facturé ÷ prix public), arrondi au centime le plus proche
  *   (décision du 25/11 ; art. 4.1 bis) ; sans palier connu, elle reste « à qualifier », jamais zéro ;
  * - coaching « one to one » : aucune ; audit 30 %, intégration 15 % du HT, arrondi au centime le plus proche ;
- * - conférence : aucune commission (contrat 2.8) ;
+ * - conférence : aucune commission (contrat 2.8) pour une commande signée à partir du 26/11/2026 ;
+ *   avant, forfait de l'ancien contrat ;
  * - développement web : 15 % du HT facturé (annexe 1, A1.5 du contrat 2.8).
  */
 export function calculerCommission(e: {
@@ -496,13 +504,29 @@ export function calculerCommission(e: {
   palier?: string | null;
   /** Formation : nombre de sessions identiques du palier dans la commande (1 par défaut). */
   quantite?: number;
+  /** Date de signature de la commande : une conférence signée avant l'entrée en vigueur garde le forfait. */
+  signeeAt?: Date | null;
 }): CalculCommission {
   if (e.activite === null) return { statut: "a_qualifier" };
   // Coaching « one to one » (décision du 25/11, A1.3) : aucune commission.
   if (e.activite === "un_a_un") return { statut: "aucune" };
   // Conférence (contrat 2.8, décision de Will) : 0 €, aucune ligne, aucune part de parrain.
-  if (e.activite === "conference" || (e.activite === "formation" && e.palier === PALIER_CONFERENCE))
+  if (
+    e.activite === "conference" ||
+    (e.activite === "formation" && e.palier === PALIER_CONFERENCE)
+  ) {
+    // Commande signée avant la date d'effet : forfait de l'ancien contrat, plafonné au HT facturé.
+    if (e.signeeAt && e.signeeAt < CONFERENCE_SANS_COMMISSION_DEPUIS) {
+      const ht = Math.max(0, e.factureHtCents);
+      return {
+        statut: "calculee",
+        montantCents: Math.min(FORFAIT_CONFERENCE_CENTS * quantiteSessions(e.quantite), ht),
+        palier: PALIER_CONFERENCE,
+        prixPublicCents: null,
+      };
+    }
     return { statut: "aucune" };
+  }
   if (e.activite === "formation") {
     const p = PALIERS_FORMATION.find((x) => x.id === e.palier);
     if (!p) return { statut: "a_qualifier" };
@@ -552,17 +576,33 @@ export function htLignesRecurrentesCents(lignes: unknown): number {
 }
 
 /**
- * Lignes récurrentes RESTANTES d'une commande : celles du devis (ou de la facture) moins la part
- * récurrente des avoirs actifs (un avoir qui annule la maintenance ne doit pas la déduire deux fois,
- * une fois dans le net et une fois ici). Un avoir à ligne générique (« avoir partiel ») ne se
- * rattache à aucune ligne : prudence, il réduit la base commissionnable. Jamais négatif. Pur.
+ * Lignes récurrentes RESTANTES d'une commande : le MINIMUM entre (a) celles du devis (ou de la facture)
+ * et (b) celles des factures actives de la commande moins la part récurrente rendue par les avoirs
+ * actifs. (b) évite qu'une facture refaite après un avoir total, ou une facture complémentaire de
+ * maintenance, ne laisse la maintenance déduite deux fois du net (le net la contient déjà une fois
+ * de moins). Sans `lignesDesFacturesActives`, seul (a) moins les avoirs s'applique. Un avoir à ligne
+ * générique (« avoir partiel ») ne se rattache à aucune ligne : prudence, il réduit la base. Jamais
+ * négatif. Pur.
  */
 export function htLignesRecurrentesRestantesCents(
   lignesCommande: unknown,
   lignesDesAvoirsActifs: readonly unknown[],
+  lignesDesFacturesActives?: readonly unknown[],
 ): number {
   const rendu = lignesDesAvoirsActifs.reduce<number>((s, l) => s + htLignesRecurrentesCents(l), 0);
-  return Math.max(0, htLignesRecurrentesCents(lignesCommande) - rendu);
+  const duDevis = Math.max(0, htLignesRecurrentesCents(lignesCommande) - rendu);
+  // Factures sans lignes détaillées (ligne unique, JSON vide) : on ne sait rien de leur récurrent,
+  // le plafond ne s'applique pas (prudence : la maintenance du devis reste retirée de la base).
+  if (
+    !lignesDesFacturesActives ||
+    !lignesDesFacturesActives.some((l) => Array.isArray(l) && l.length > 0)
+  )
+    return duDevis;
+  const facture = lignesDesFacturesActives.reduce<number>(
+    (s, l) => s + htLignesRecurrentesCents(l),
+    0,
+  );
+  return Math.min(htLignesRecurrentesCents(lignesCommande), Math.max(0, facture - rendu));
 }
 
 /** Base commissionnable : le net HT moins les lignes récurrentes du devis (jamais négatif). */

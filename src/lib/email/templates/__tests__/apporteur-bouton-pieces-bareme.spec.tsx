@@ -5,7 +5,6 @@
 
 import { describe, expect, it } from "vitest";
 
-import { COMMISSION_CONFERENCE_EUR } from "@/content/pricing";
 import {
   LIBELLE_PIECE,
   PIECES_FACULTATIVES,
@@ -59,7 +58,9 @@ describe("barème identique partout, tiré des constantes du contrat", () => {
       expect(signe).toContain(ligne);
     }
     expect(lignesBareme().join(" ")).toContain("1-to-1");
-    expect(lignesBareme().join(" ")).toContain(`${COMMISSION_CONFERENCE_EUR} € HT par conférence`);
+    expect(lignesBareme().join(" ")).toContain("Conférence : aucune commission");
+    expect(lignesBareme().join(" ")).toContain("Journée IA : 500 € HT");
+    expect(lignesBareme("en").join(" ")).toContain("Talks: no commission");
     // Le parrainage reste dans « contrat signé » (c'est le contrat), et la mention prudente aussi.
     expect(signe).toContain("Parrainage");
     expect(retenu).toContain("à titre indicatif");

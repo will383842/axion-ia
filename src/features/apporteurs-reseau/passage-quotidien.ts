@@ -1004,6 +1004,15 @@ async function etapeCommissions(maintenant: Date, bilan: BilanPassageReseau): Pr
       : htLignesRecurrentesRestantesCents(
           f.devis ? f.devis.lignes : f.lignes,
           avoirsActifs.map((a) => a.lignes),
+          lignes
+            .filter(
+              (m) =>
+                commande.factureIds.includes(m.id) &&
+                m.avoirDeId === null &&
+                m.statut !== "brouillon" &&
+                m.statut !== "annulee",
+            )
+            .map((m) => m.lignes),
         );
     const baseCommissionnable = Math.max(0, commande.baseApresAvoirsCents - recurrentCents);
     // Journée IA : repérée par `devis.journee_ia` (aucune valeur d'énumération nouvelle).
@@ -1018,6 +1027,7 @@ async function etapeCommissions(maintenant: Date, bilan: BilanPassageReseau): Pr
             activite: (f.activite ?? null) as ActiviteCommission | null,
             factureHtCents: baseCommissionnable,
             palier: null,
+            signeeAt,
           });
     if (calc.statut === "aucune") continue;
     // JAMAIS deux apporteurs commissionnés pour une même entreprise : si une autre personne a déjà
