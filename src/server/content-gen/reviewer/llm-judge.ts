@@ -30,6 +30,7 @@ import {
   genererTexteBlogClaude,
   interrupteurBlogClaude,
 } from "@/server/content-gen/providers/blog-claude";
+import { typeClaudeAutorise } from "@/server/content-gen/providers/types-claude";
 import {
   analyzeDiversity,
   type DiversityScore,
@@ -411,9 +412,12 @@ export async function reviewArticle(
   options: { readonly typeBlog?: string } = {},
 ): Promise<JudgeResult> {
   const userPrompt = buildUserPrompt(article);
-  // Relecture par Claude (Opus) : interrupteur allumé ET contenu de blog seulement.
+  // Relecture par Claude (Opus) : interrupteur allumé ET contenu de blog seulement
+  // (le marquage des autres types vient dans une PR suivante), ET type encore autorisé
+  // par CONTENT_GEN_CLAUDE_TYPES (sinon la porte refuserait l'appel).
+  const typeJuge = options.typeBlog ?? article.contentType ?? "";
   const viaClaude =
-    interrupteurBlogClaude() && BLOG_TYPES.has(options.typeBlog ?? article.contentType ?? "");
+    interrupteurBlogClaude() && BLOG_TYPES.has(typeJuge) && typeClaudeAutorise(typeJuge);
   const response = viaClaude
     ? await genererTexteBlogClaude(
         {

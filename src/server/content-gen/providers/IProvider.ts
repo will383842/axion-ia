@@ -26,8 +26,10 @@ export interface GenerationRequest {
   /// le fallback automatique). Sprint Quality 2026 — utilisé par landing_ville
   /// generators pour forcer Claude Sonnet (verbosité + qualité éditoriale).
   readonly preferredProvider?: ProviderKey;
-  /// Rôle « texte du blog via Claude » (porte `blog-claude.ts`). Interface gelée.
-  readonly blogClaudeRole?: "ecriture" | "relecture";
+  /// Marquage EXPLICITE « contenu via Claude » (porte `blog-claude.ts`) : ecriture = Sonnet,
+  /// relecture = Opus, court = Sonnet (textes brefs). Sans marquage, le routeur ne bascule
+  /// jamais sur Claude, quel que soit le type (ex. `qa_derived` du chatbot).
+  readonly blogClaudeRole?: "ecriture" | "relecture" | "court";
   /// Identifiant de la ligne de réservation de coût (`blog-claude-ledger.ts`) :
   /// quand il est présent, le coût réel SOLDE cette ligne au lieu d'en créer une.
   /// ⚠️ RÉSERVÉ à la porte `blog-claude.ts` : aucun générateur (`generators/`) ne doit

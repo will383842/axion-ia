@@ -23,7 +23,8 @@ import { Queue, Worker, type Job, UnrecoverableError } from "bullmq";
 import { prisma } from "@/lib/prisma";
 import { getGenerator } from "@/server/content-gen/generators";
 import { generate as routerGenerate } from "@/server/content-gen/providers/provider-router";
-import { BLOG_TYPES, interrupteurBlogClaude } from "@/server/content-gen/providers/blog-claude";
+import { interrupteurBlogClaude } from "@/server/content-gen/providers/blog-claude";
+import { typeClaudeAutorise } from "@/server/content-gen/providers/types-claude";
 import { ProviderError } from "@/server/content-gen/providers/IProvider";
 import { ensureDirectAnswer } from "@/server/content-gen/shared/ensure-direct-answer";
 import { assertKbReady, KbNotReadyError } from "@/server/content-gen/kb-health";
@@ -285,7 +286,7 @@ async function resolveTemplateById(
 }
 
 /**
- * Chemin Claude (interrupteur allumé + type blog) : une erreur du fournisseur Anthropic
+ * Chemin Claude (interrupteur allumé + type autorisé par CONTENT_GEN_CLAUDE_TYPES) : une erreur du fournisseur Anthropic
  * devient `UnrecoverableError` (BullMQ ne la rejoue pas : chaque essai serait facturé).
  * Rend `null` pour tout le reste (OpenAI, interrupteur éteint, autre type) : l'erreur
  * d'origine est alors relancée telle quelle. Exporté pour les tests.
@@ -296,7 +297,7 @@ export function erreurNonRelancableCheminClaude(
 ): UnrecoverableError | null {
   if (
     interrupteurBlogClaude() &&
-    BLOG_TYPES.has(contentType) &&
+    typeClaudeAutorise(contentType) &&
     !(err instanceof UnrecoverableError) &&
     err instanceof ProviderError &&
     err.provider === "anthropic"
