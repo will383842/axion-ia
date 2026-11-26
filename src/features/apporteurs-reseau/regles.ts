@@ -373,6 +373,89 @@ export const PALIER_CONFERENCE = "conference";
 export type ActiviteCommission =
   "formation" | "un_a_un" | "audit" | "implementation" | "site_web" | "conference";
 
+/**
+ * Journée IA (annexe 1, A1.1, grille v3) : prix de référence et forfait, en centimes. Une
+ * Journée IA se repère par `devis.journee_ia`, jamais par une valeur d'énumération.
+ */
+export const PRIX_REFERENCE_JOURNEE_IA_CENTS = 149_000;
+export const FORFAIT_JOURNEE_IA_CENTS = 50_000;
+/** Palier posé sur la ligne de commission d'une Journée IA. */
+export const PALIER_JOURNEE_IA = "journee-ia";
+
+/**
+ * Commission d'une commande de Journées IA : 500 € par journée facturée, au prorata du prix
+ * payé (art. 4.1 bis : forfait × net HT ÷ prix de référence, jamais plus que le forfait),
+ * arrondie au centime le plus proche. `netHtCents` = base de la commission (net après avoirs :
+ * avoir total → 0, avoir partiel → prorata). `journees` = journées facturées de la commande.
+ * Un acompte ne donne jamais rien : la fonction ne reçoit que des commandes soldées.
+ */
+export function commissionJourneeIaCents(netHtCents: number, journees?: number): number {
+  const q = quantiteSessions(journees);
+  const net = Math.max(0, netHtCents);
+  if (net >= PRIX_REFERENCE_JOURNEE_IA_CENTS * q) return FORFAIT_JOURNEE_IA_CENTS * q;
+  return Math.round((FORFAIT_JOURNEE_IA_CENTS * net) / PRIX_REFERENCE_JOURNEE_IA_CENTS);
+}
+
+/** Une ligne de devis est-elle une Journée IA ? Repère du catalogue, sinon libellé (jamais une demi-journée). */
+function estLigneJourneeIa(l: Record<string, unknown>): boolean {
+  const code = [l.offreCode, l.offreTierId].some(
+    (v) => typeof v === "string" && /journee-ia/i.test(v),
+  );
+  const d = typeof l.designation === "string" ? l.designation : "";
+  return code || (/journ[ée]e/i.test(d) && /\bIA\b/i.test(d) && !/demi/i.test(d));
+}
+
+/**
+ * Lecture des lignes d'un devis marqué Journée IA : nombre de journées (quantités entières
+ * positives), présence d'autres lignes, et ambiguïté (quantité non entière). Pur.
+ */
+export function analyserLignesJourneeIa(lignes: unknown): {
+  journees: number;
+  autresLignes: boolean;
+  ambigue: boolean;
+} {
+  let journees = 0;
+  let autresLignes = false;
+  let ambigue = false;
+  if (!Array.isArray(lignes)) return { journees: 0, autresLignes: false, ambigue: true };
+  for (const l of lignes) {
+    if (!l || typeof l !== "object") continue;
+    const o = l as Record<string, unknown>;
+    if (!estLigneJourneeIa(o)) {
+      autresLignes = true;
+      continue;
+    }
+    if (typeof o.quantite === "number" && Number.isInteger(o.quantite) && o.quantite > 0)
+      journees += o.quantite;
+    else ambigue = true;
+  }
+  return { journees, autresLignes, ambigue };
+}
+
+/**
+ * Commission d'une commande dont le devis est marqué Journée IA (A1.1). Elle ne se calcule seule
+ * que si la commande est UNIQUEMENT des Journées IA, lisibles, d'une activité de facturation
+ * ordinaire ; dans tous les autres cas (autres lignes, quantité illisible, case cochée sur une
+ * facture de site web, de coaching, de conférence ou non classée) elle reste « à qualifier » :
+ * un humain tranche, jamais un montant silencieux.
+ */
+export function calculerCommissionJourneeIa(e: {
+  activite: ActiviteCommission | null;
+  lignes: unknown;
+  netHtCents: number;
+}): CalculCommission {
+  const a = analyserLignesJourneeIa(e.lignes);
+  const ordinaire =
+    e.activite === "formation" || e.activite === "audit" || e.activite === "implementation";
+  if (a.journees < 1 || a.autresLignes || a.ambigue || !ordinaire) return { statut: "a_qualifier" };
+  return {
+    statut: "calculee",
+    montantCents: commissionJourneeIaCents(e.netHtCents, a.journees),
+    palier: PALIER_JOURNEE_IA,
+    prixPublicCents: PRIX_REFERENCE_JOURNEE_IA_CENTS * a.journees,
+  };
+}
+
 export type CalculCommission =
   | {
       statut: "calculee";
