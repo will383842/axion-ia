@@ -47,6 +47,7 @@ import {
 import { dejaEnvoye, statutApresVigilance } from "./commissions";
 import {
   ajouterMois,
+  htLignesRecurrentesCents,
   FORFAIT_CONFERENCE_CENTS,
   PALIER_CONFERENCE,
   PALIER_JOURNEE_IA,
@@ -227,10 +228,17 @@ async function facturesDeLaCommande(factureId: string): Promise<{
   membres: FactureLue[];
   avoirs: FactureLue[];
   totalDevisCents?: number;
+  /** HT des lignes de maintenance / abonnement du devis : jamais dans la base (règle du 25/11). */
+  recurrentCents: number;
 } | null> {
   const f = await prisma.factureFormation.findUnique({
     where: { id: factureId },
-    select: { id: true, devisId: true, devis: { select: { montantTotalHtCents: true } } },
+    select: {
+      id: true,
+      devisId: true,
+      lignes: true,
+      devis: { select: { montantTotalHtCents: true, journeeIa: true, lignes: true } },
+    },
   });
   if (!f) return null;
   const membres = (await prisma.factureFormation.findMany({
@@ -242,7 +250,15 @@ async function facturesDeLaCommande(factureId: string): Promise<{
     select: CHAMPS,
   })) as FactureLue[];
   const total = f.devis?.montantTotalHtCents;
-  return { membres, avoirs, ...(typeof total === "number" ? { totalDevisCents: total } : {}) };
+  const recurrentCents = f.devis?.journeeIa
+    ? 0
+    : htLignesRecurrentesCents(f.devis ? f.devis.lignes : f.lignes);
+  return {
+    membres,
+    avoirs,
+    recurrentCents,
+    ...(typeof total === "number" ? { totalDevisCents: total } : {}),
+  };
 }
 
 type LigneLue = {
@@ -692,7 +708,10 @@ export async function reprendreApresAvoirsClients(
         continue;
       }
       if (suspensionPossible) bilan.suspensionsLevees += await leverSuspension(groupe);
-      const net = etat.netCibleCents;
+      // La commission est calculée hors lignes récurrentes : la cible se lit sur la même base
+      // (sinon un avoir ferait REMONTER une commission de 600 € à 607,50 €).
+      const net = Math.max(0, etat.netCibleCents - lu.recurrentCents);
+      const baseHorsRecurrent = Math.max(0, etat.baseCents - lu.recurrentCents);
       // Dette a1 (a) : le délai de 24 mois de l'art. 4.5 s'apprécie AVOIR PAR AVOIR. Pour une ligne
       // déjà facturée (retenue, reprise), seuls comptent les avoirs de moins de 24 mois ; un avoir
       // plus ancien ne profite jamais du délai d'un avoir récent.
@@ -748,7 +767,7 @@ export async function reprendreApresAvoirsClients(
             // L'argent est revenu : la ligne REMONTE vers la cible. Tour 2/2 (défaut 6) : la part du
             // parrain suit l'ÉTAT FINAL du filleul, que la remontée ait lieu dans CE passage ou
             // dans un précédent (passage interrompu entre les deux écritures).
-            const cible = cibleEtatFinal({ ...l, montantCents: montant }, net, etat.baseCents);
+            const cible = cibleEtatFinal({ ...l, montantCents: montant }, net, baseHorsRecurrent);
             if (cible === null) continue;
             let apres = montant;
             if (net > l.factureHtCents && cible > montant) {
@@ -788,7 +807,7 @@ export async function reprendreApresAvoirsClients(
           const cibleF = cibleEtatFinal(
             { ...reference, montantCents: reference.montantCents ?? 0 },
             net,
-            etat.baseCents,
+            baseHorsRecurrent,
           );
           if (cibleF !== null) {
             const reduiteAvant = reference.factureHtCents < net;

@@ -731,3 +731,52 @@ describe("tour 2/2 (défaut 4) : une reprise refusée n'est jamais silencieuse",
     );
   });
 });
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Commande mixte (règle du 25/11) : 4 000 € de mise en service + 150 € de maintenance, devis à
+// 4 150 €. La commission (15 % de 4 000 € = 600 €) se calcule hors maintenance ; un avoir ne doit
+// jamais la faire REMONTER (607,50 €, 622,50 €) mais la réduire sur la même base.
+// ─────────────────────────────────────────────────────────────────────────────
+describe("commande mixte : mise en service + maintenance", () => {
+  const DM = {
+    montantTotalHtCents: 415_000,
+    journeeIa: false,
+    lignes: [
+      { designation: "Mise en service du site", quantite: 1, prixUnitaireHtCents: 400_000 },
+      { designation: "Maintenance mensuelle", quantite: 1, prixUnitaireHtCents: 15_000 },
+    ],
+  };
+  const fm = {
+    ...facture,
+    id: "F1",
+    devisId: "D1",
+    montantHtCents: 415_000,
+    devis: DM,
+  } as unknown as F;
+  const avm = (statut: string, montant: number) =>
+    ({
+      ...avoir(-montant),
+      id: "AV",
+      avoirDeId: "F1",
+      devisId: "D1",
+      statut,
+      devis: DM,
+    }) as unknown as F;
+  const lm = () => ligne({ activite: "site_web", factureHtCents: 400_000, montantCents: 60_000 });
+
+  it("avoir de 100 € : la commission baisse à 585 € (jamais 607,50 €)", async () => {
+    d.factures = [fm, avm("payee", 10_000)];
+    d.lignes = [lm()];
+    await reprendreApresAvoirsClients(LE);
+    expect(d.reduire).toHaveBeenCalledWith("c1", 390_000, expect.any(String));
+    expect(ecritures()).not.toContainEqual(expect.objectContaining({ montantCents: 60_750 }));
+  });
+
+  it("avoir annulé : rien ne bouge, la commission ne remonte pas au-dessus de 600 €", async () => {
+    d.factures = [fm, avm("annulee", 10_000)];
+    d.lignes = [lm()];
+    await reprendreApresAvoirsClients(LE);
+    expect(d.reduire).not.toHaveBeenCalled();
+    expect(ecritures()).toEqual([]);
+  });
+});

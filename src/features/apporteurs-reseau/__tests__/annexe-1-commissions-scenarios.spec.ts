@@ -310,3 +310,20 @@ describe("moteur : conférence et lignes récurrentes (contrat 2.8, décisions d
     expect(baseHorsLignesRecurrentes(60_000, lignes)).toBe(0);
   });
 });
+
+describe("lignes récurrentes : cas limites", () => {
+  it("une option de maintenance à quantité 0 ne retire rien ; une quantité illisible compte pour 1", () => {
+    expect(
+      htLignesRecurrentesCents([
+        {
+          designation: "Maintenance (option non retenue)",
+          quantite: 0,
+          prixUnitaireHtCents: 15_000,
+        },
+      ]),
+    ).toBe(0);
+    expect(
+      htLignesRecurrentesCents([{ designation: "Maintenance", prixUnitaireHtCents: 15_000 }]),
+    ).toBe(15_000);
+  });
+});

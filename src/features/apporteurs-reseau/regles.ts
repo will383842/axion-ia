@@ -363,7 +363,9 @@ export type PalierFormation = (typeof PALIERS_FORMATION)[number]["id"];
  * vigueur ; jamais de commission rétroactive sur les ventes passées). Recalée le 26/11/2026, date de
  * fusion prévue du contrat 2.8 (`CONTRAT_VERSION`) ; à recaler encore si la fusion glisse.
  */
-export const DEVELOPPEMENT_WEB_COMMISSIONNE_DEPUIS = new Date("2026-11-26T00:00:00Z");
+export const DEVELOPPEMENT_WEB_COMMISSIONNE_DEPUIS = new Date(
+  "2026-11-25T23:00:00Z",
+); /* 26/11/2026 00:00, heure de Paris */
 
 /** Taux de l'annexe 1, en points de base, par activité facturée. */
 /** ⚠️ `un_a_un` reste 30 % ICI (grille affichée, contrat 2.6, pricing.ts) ; le CALCUL ne le paie plus (aucune commission, décision du 25/11 ; contrat 2.8, A1.3). */
@@ -541,7 +543,8 @@ export function htLignesRecurrentesCents(lignes: unknown): number {
     const o = l as Record<string, unknown>;
     const d = typeof o.designation === "string" ? o.designation : "";
     if (!LIGNE_RECURRENTE.test(d)) continue;
-    const q = typeof o.quantite === "number" && o.quantite > 0 ? o.quantite : 1;
+    // Quantité 0 ou négative (option non retenue) : la ligne ne pèse rien ; illisible : 1.
+    const q = typeof o.quantite === "number" ? Math.max(0, o.quantite) : 1;
     const pu = typeof o.prixUnitaireHtCents === "number" ? o.prixUnitaireHtCents : 0;
     total += Math.round(q * pu);
   }

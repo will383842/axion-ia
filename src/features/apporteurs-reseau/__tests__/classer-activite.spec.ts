@@ -82,12 +82,15 @@ describe("ligne « à qualifier » d'une activité inconnue : qualifiable ou cla
     etat.parrainId = "PAR1";
     const r = await classerActiviteCommission("C1", "site_web");
     expect(r.ok).toBe(true);
+    expect(r.message).toMatch(/antérieure au contrat 2\.8/);
+    expect(r.message).not.toMatch(/ce type de prestation/);
     expect(etat.maj[0]!.data).toMatchObject({ montantCents: 0, statut: "versee" });
     expect(etat.maj[1]!.where).toMatchObject({ apporteurId: "PAR1", parrainage: true });
   });
   it("coaching (un_a_un) : aucune commission, ligne close à 0 € (jamais due)", async () => {
     const r = await classerActiviteCommission("C1", "un_a_un");
     expect(r.ok).toBe(true);
+    expect(r.message).toMatch(/ce type de prestation/);
     expect(etat.maj[0]!.data).toMatchObject({ montantCents: 0, statut: "versee" });
   });
   it("classement manuel en conférence : aucune commission, ligne close à 0 €, part du parrain close", async () => {
@@ -96,6 +99,7 @@ describe("ligne « à qualifier » d'une activité inconnue : qualifiable ou cla
     const r = await classerActiviteCommission("C1", "conference");
     expect(r.ok).toBe(true);
     expect(etat.maj[0]!.data).toMatchObject({ montantCents: 0, statut: "versee" });
+    expect(etat.maj[1]!.where).toMatchObject({ apporteurId: "PAR1", parrainage: true });
   });
   it("facture typée formation : le palier « Conférence » ne se qualifie plus (aucune commission)", async () => {
     etat.commission = { ...ligne, activite: "formation", factureHtCents: 100_000 };

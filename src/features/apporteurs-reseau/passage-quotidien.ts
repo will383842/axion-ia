@@ -841,6 +841,7 @@ async function etapeCommissions(maintenant: Date, bilan: BilanPassageReseau): Pr
       activite: true,
       montantHtCents: true,
       emiseAt: true,
+      lignes: true,
       devis: {
         select: { acceptedAt: true, montantTotalHtCents: true, journeeIa: true, lignes: true },
       },
@@ -992,7 +993,10 @@ async function etapeCommissions(maintenant: Date, bilan: BilanPassageReseau): Pr
     // mise en service = 0 € ; seule la mise en service donne 15 %.
     const baseCommissionnable = f.devis?.journeeIa
       ? commande.baseApresAvoirsCents
-      : baseHorsLignesRecurrentes(commande.baseApresAvoirsCents, f.devis?.lignes);
+      : baseHorsLignesRecurrentes(
+          commande.baseApresAvoirsCents,
+          f.devis ? f.devis.lignes : f.lignes,
+        );
     // Journée IA : repérée par `devis.journee_ia` (aucune valeur d'énumération nouvelle).
     const calc =
       f.devis?.journeeIa === true
