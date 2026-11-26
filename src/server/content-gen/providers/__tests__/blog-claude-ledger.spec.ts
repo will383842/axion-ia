@@ -39,7 +39,9 @@ vi.mock("@/lib/prisma", () => {
       etat.sqls.push(q.sql);
       if (q.sql.includes("FROM content_gen_jobs WHERE id")) {
         etat.ordre.push("job");
-        return etat.jobExiste ? [{ plafondJobUsd: etat.jobCap === null ? null : String(etat.jobCap) }] : [];
+        return etat.jobExiste
+          ? [{ plafondJobUsd: etat.jobCap === null ? null : String(etat.jobCap) }]
+          : [];
       }
       if (q.sql.includes('"jobId" =')) return [{ total: (etat.jobCap ?? 0) + 1 }];
       etat.ordre.push("cumul");

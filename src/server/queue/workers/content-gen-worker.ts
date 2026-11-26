@@ -344,8 +344,12 @@ async function processJob(job: Job<ContentGenJobPayload>): Promise<void> {
     throw new UnrecoverableError(`ContentGenJob ${contentGenJobId} not found`);
   }
   // Brouillon d'essai : jamais régénéré ni publié par le worker (même si un rejeu l'a enfilé).
-  if (estJobEssaiClaude({ idempotencyKey: dbJob.idempotencyKey, inputPayload: dbJob.inputPayload })) {
-    throw new UnrecoverableError(`ContentGenJob ${contentGenJobId} : brouillon d'essai, jamais généré par le worker`);
+  if (
+    estJobEssaiClaude({ idempotencyKey: dbJob.idempotencyKey, inputPayload: dbJob.inputPayload })
+  ) {
+    throw new UnrecoverableError(
+      `ContentGenJob ${contentGenJobId} : brouillon d'essai, jamais généré par le worker`,
+    );
   }
   // Sprint A-suite P6 — Item 3. Log correlationId pour traçabilité end-to-end.
   if (dbJob.correlationId) {
