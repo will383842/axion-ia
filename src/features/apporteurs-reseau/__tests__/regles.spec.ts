@@ -108,14 +108,14 @@ describe("réseau d'apporteurs — règles du contrat v2", () => {
     ).toEqual({ statut: "a_qualifier" });
   });
 
-  it("audit 30 %, intégration 15 %, 1-to-1 30 %, web aucune", () => {
+  it("audit 30 %, intégration 15 %, 1-to-1 et web aucune", () => {
     const m = (activite: "audit" | "implementation" | "un_a_un") => {
       const r = calculerCommission({ activite, factureHtCents: 190_000 });
       return r.statut === "calculee" ? r.montantCents : -1;
     };
     expect(m("audit")).toBe(57_000);
     expect(m("implementation")).toBe(28_500);
-    expect(m("un_a_un")).toBe(57_000);
+    expect(m("un_a_un")).toBe(-1); // aucune commission (25/11)
     expect(calculerCommission({ activite: "site_web", factureHtCents: 100_000 })).toEqual({
       statut: "aucune",
     });
