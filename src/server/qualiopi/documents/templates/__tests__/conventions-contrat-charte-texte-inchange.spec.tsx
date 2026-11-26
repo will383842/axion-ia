@@ -215,7 +215,7 @@ function corps(
 
 /**
  * 25/11/2026 — la section « 4. Conditions d'annulation » a changé de FOND (l'acompte versé reste
- * acquis, sans condition de délai : convention v9, tripartite v8). Elle est exclue de la
+ * acquis, sans condition de délai : convention v10, tripartite v8). Elle est exclue de la
  * comparaison avec l'ancienne version ; son texte est verrouillé plus bas.
  */
 function neutraliserAnnulation(texte: string): string {
