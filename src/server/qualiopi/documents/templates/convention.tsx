@@ -653,13 +653,19 @@ export function ConventionPdf({
             participants. Sa responsabilité éventuelle est limitée au montant hors taxes
             effectivement réglé au titre de la présente convention, à l&apos;exclusion des dommages
             indirects tels que perte d&apos;exploitation, de clientèle ou de chiffre
-            d&apos;affaires.
+            d&apos;affaires. Cette limitation ne s&apos;applique ni en cas de faute lourde ou
+            dolosive, ni à la personne morale non professionnelle (article 53.3 des conditions
+            générales de vente), ni aux sommes à restituer et à l&apos;indemnité prévues à
+            l&apos;article 4.
           </Text>
           <Text style={stylesPiece.paragraphe}>
             Aucune des parties ne peut être tenue responsable d&apos;un manquement résultant
             d&apos;un cas de force majeure au sens de l&apos;article 1218 du Code civil. La partie
-            empêchée en informe l&apos;autre sans délai ; l&apos;action est alors reportée à une
-            date convenue entre les parties.
+            empêchée en informe l&apos;autre sans délai. Si l&apos;empêchement est celui du client,
+            l&apos;action est reportée à une date convenue entre les parties. Si l&apos;empêchement
+            est celui de l&apos;organisme, l&apos;action est reportée dans les conditions de
+            l&apos;article 4 (article 46.4 des conditions générales de vente), sans indemnité au
+            titre de la force majeure.
           </Text>
         </SectionCarte>
 
