@@ -121,7 +121,7 @@ export const LIBOURNE_COPY: VilleCopy = {
           },
           {
             q: "Travaillez-vous avec les commerces et l'hôtellerie-restauration du centre-ville ?",
-            a: "Oui. Pour le cœur marchand de la bastille, les commerces desservis par le réseau gratuit Calibus et l'hôtellerie-restauration libournaise, on déploie des vitrines e-commerce avec click-and-collect, réservation en ligne, gestion de stock et chatbot d'accueil multilingue. UX pensée pour l'achat au smartphone en rue piétonne, et SEO local pour capter les visiteurs de Saint-Émilion de passage.",
+            a: "Oui. Pour le cœur marchand de la bastille, les commerces du réseau gratuit Calibus et l'hôtellerie-restauration libournaise, on déploie des vitrines e-commerce avec click-and-collect, réservation en ligne, gestion de stock et chatbot d'accueil multilingue. UX pensée pour l'achat au smartphone en rue piétonne, et SEO local pour capter les visiteurs de Saint-Émilion de passage.",
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
@@ -201,7 +201,7 @@ export const LIBOURNE_COPY: VilleCopy = {
           },
           {
             q: "Travaillez-vous avec les commerces et l'hôtellerie-restauration du centre-ville ?",
-            a: "Oui. Pour le cœur marchand de la bastille, les commerces desservis par le réseau gratuit Calibus et l'hôtellerie-restauration libournaise, on déploie des vitrines e-commerce avec click-and-collect, réservation en ligne, gestion de stock et chatbot d'accueil multilingue. UX pensée pour l'achat au smartphone en rue piétonne, et SEO local pour capter les visiteurs de Saint-Émilion de passage.",
+            a: "Oui. Pour le cœur marchand de la bastille, les commerces du réseau gratuit Calibus et l'hôtellerie-restauration libournaise, on déploie des vitrines e-commerce avec click-and-collect, réservation en ligne, gestion de stock et chatbot d'accueil multilingue. UX pensée pour l'achat au smartphone en rue piétonne, et SEO local pour capter les visiteurs de Saint-Émilion de passage.",
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",

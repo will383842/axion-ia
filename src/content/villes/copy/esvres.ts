@@ -65,7 +65,7 @@ export const ESVRES_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission Axion-IA à Esvres ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Pour les missions de plusieurs jours, un hébergement local est possible (Cormery, Montbazon).",
+      a: "Nous intervenons partout en France, sur place ou à distance.",
     },
   ],
 };
