@@ -211,20 +211,19 @@ describe("villes · ni frais de déplacement, ni fausse présence, ni Grenoble",
   });
 
   for (const [nom, motif] of FRAIS)
-    it(`aucune mention de frais ou de prix du déplacement : ${nom}`, () =>
-      vide(fautes(motif)));
+    it(`aucune mention de frais ou de prix du déplacement : ${nom}`, () => vide(fautes(motif)));
 
   for (const [nom, motif] of PRESENCE)
     it(`aucune fausse présence locale : ${nom}`, () => vide(fautes(motif)));
 
   for (const [nom, motif] of TRAJET_FAQ)
-    it(`réponses de FAQ sans trajet ni durée d'accès : ${nom}`, () =>
-      vide(fautesFaq(motif)));
+    it(`réponses de FAQ sans trajet ni durée d'accès : ${nom}`, () => vide(fautesFaq(motif)));
 
   it("les réponses « devis » gardent leur délai (« 24 à 48 h ») : jamais moins que sur main", () => {
     const motif = /^\s*a: ".*24 ?(?:à|-) ?48/u;
     let n = 0;
-    for (const [f, lignes] of LIGNES) if (f.startsWith("copy/")) n += lignes.filter((l) => motif.test(l)).length;
+    for (const [f, lignes] of LIGNES)
+      if (f.startsWith("copy/")) n += lignes.filter((l) => motif.test(l)).length;
     expect(n).toBeGreaterThanOrEqual(712);
   });
 
