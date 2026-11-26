@@ -5,7 +5,10 @@
  * avertissement) comme par le schéma serveur et les gabarits.
  */
 
-import { TEXTE_GARANTIE_JOURNEE_IA } from "@/server/qualiopi/devis/assistant/textes-rubriques";
+import {
+  TEXTE_GARANTIE_JOURNEE_IA,
+  TEXTE_PLAFOND_RESPONSABILITE,
+} from "@/server/qualiopi/devis/assistant/textes-rubriques";
 
 /** Longueur maximale du texte, après normalisation côté serveur. */
 export const CONDITIONS_PARTICULIERES_MAX = 4000;
@@ -94,10 +97,19 @@ export function avecGarantieJourneeIa(texte: string | null, actif: boolean): str
   const present = (texte ?? "").includes(TEXTE_GARANTIE_JOURNEE_IA);
   // Rien à faire : on rend le texte tel quel (aucune retouche d'espaces à l'insu de l'auteur).
   if (actif === present) return texte;
-  const paragraphes = (texte ?? "")
-    .split(/\n{2,}/)
-    .map((p) => p.trim())
-    .filter((p) => p !== "" && p !== TEXTE_GARANTIE_JOURNEE_IA);
-  if (actif) paragraphes.push(TEXTE_GARANTIE_JOURNEE_IA);
-  return paragraphes.length === 0 ? null : paragraphes.join("\n\n");
+  if (!actif) {
+    // Retrait de la sous-chaîne, même collée à un autre texte ; lignes vides résiduelles réduites.
+    const reste = (texte ?? "")
+      .replace(TEXTE_GARANTIE_JOURNEE_IA, "")
+      .replace(/\n{3,}/g, "\n\n")
+      .trim();
+    return reste === "" ? null : reste;
+  }
+  const base = (texte ?? "").trim();
+  if (base === "") return TEXTE_GARANTIE_JOURNEE_IA;
+  // Même place que dans l'assistant : avant le plafond de responsabilité s'il est présent.
+  const k = base.indexOf(TEXTE_PLAFOND_RESPONSABILITE);
+  if (k > 0)
+    return `${base.slice(0, k).trimEnd()}\n\n${TEXTE_GARANTIE_JOURNEE_IA}\n\n${base.slice(k)}`;
+  return `${base}\n\n${TEXTE_GARANTIE_JOURNEE_IA}`;
 }
