@@ -375,8 +375,19 @@ export async function enregistrerDecisionGarantieJourneeIaAction(
     if (erreur) {
       const frais = await lireGarantie(id);
       if (frais?.decision === "remboursement" && frais.avoirId) {
-        revalidatePath(liste());
-        redirect(`${fiche(id)}?ok=decision`);
+        // Succès seulement si CE qui vient d'être saisi est ce qui a été enregistré par l'autre clic.
+        if (
+          frais.montantRembourseCents === montant &&
+          frais.decisionLe === decisionLe &&
+          (frais.motifDecision ?? "") === (motif ?? "")
+        ) {
+          revalidatePath(liste());
+          redirect(`${fiche(id)}?ok=decision`);
+        }
+        refuser(
+          fiche(id),
+          "L'avoir est émis avec d'autres valeurs que celles saisies : la décision ne se modifie plus.",
+        );
       }
     }
     // Hors du try : `refuser` lève NEXT_REDIRECT, qu'un catch avalerait.

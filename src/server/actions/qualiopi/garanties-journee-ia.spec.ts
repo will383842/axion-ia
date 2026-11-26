@@ -335,9 +335,46 @@ describe("décision, virement, archivage", () => {
     lireGarantie.mockResolvedValueOnce({ ...dossier }).mockResolvedValueOnce({
       ...dossier,
       decision: "remboursement",
+      decisionLe: "2026-12-12",
+      montantRembourseCents: 200000,
       avoirId: "44444444-4444-4444-8444-444444444444",
     });
     expect(await va(enregistrerDecisionGarantieJourneeIaAction(remb()))).toMatch(/ok=decision/);
+  });
+  it("double clic simultané avec un AUTRE montant : pas de faux succès", async () => {
+    genererAvoirFacture.mockRejectedValueOnce(new Error("Un autre avoir vient d'être émis"));
+    lireGarantie.mockResolvedValueOnce({ ...dossier }).mockResolvedValueOnce({
+      ...dossier,
+      decision: "remboursement",
+      decisionLe: "2026-12-12",
+      montantRembourseCents: 150000,
+      avoirId: "44444444-4444-4444-8444-444444444444",
+    });
+    expect(await va(enregistrerDecisionGarantieJourneeIaAction(remb()))).toMatch(
+      /erreur=L.avoir%20est%20%C3%A9mis%20avec%20d.autres/,
+    );
+  });
+  it("avoir déjà émis : changer la note (même montant) est refusé", async () => {
+    lireGarantie.mockResolvedValue({
+      ...dossier,
+      decision: "remboursement",
+      decisionLe: "2026-12-12",
+      montantRembourseCents: 200000,
+      motifDecision: "ancienne",
+      avoirId: "44444444-4444-4444-8444-444444444444",
+    });
+    expect(
+      await va(enregistrerDecisionGarantieJourneeIaAction(remb({ motifDecision: "nouvelle" }))),
+    ).toMatch(/erreur=/);
+  });
+  it("une erreur technique Prisma n'est jamais recopiée dans l'URL", async () => {
+    const e = Object.assign(new Error("Invalid `prisma.x()` SECRET"), {
+      name: "PrismaClientKnownRequestError",
+    });
+    genererAvoirFacture.mockRejectedValueOnce(e);
+    const r = await va(enregistrerDecisionGarantieJourneeIaAction(remb()));
+    expect(r).toMatch(/erreur=/);
+    expect(r).not.toMatch(/SECRET/);
   });
   it("avoir déjà émis : changer de décision ou de montant est refusé (pièce émise, jamais supprimée)", async () => {
     lireGarantie.mockResolvedValue({

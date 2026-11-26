@@ -476,7 +476,7 @@ export async function genererAvoirFacture(
     Math.abs(totaux.totalTtcCents) !== input.montantTtcCents
   ) {
     throw new Error(
-      `Avoir impossible au centime : le TTC calculé (${Math.abs(totaux.totalTtcCents)}) diffère du TTC demandé (${input.montantTtcCents}). Passer par le Hub factures.`,
+      `Avoir impossible au centime : le TTC calculé (${(Math.abs(totaux.totalTtcCents) / 100).toFixed(2).replace(".", ",")} €) diffère du TTC demandé (${(input.montantTtcCents / 100).toFixed(2).replace(".", ",")} €). Passer par le Hub factures.`,
     );
   }
 

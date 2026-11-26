@@ -157,10 +157,8 @@ export async function facturesCandidates(
   return factures.map((f) => {
     const siens = avoirs.filter((a) => a.avoirDeId === f.id);
     const htAvoirs = siens.reduce((n, a) => n + Math.abs(a.montantHtCents), 0);
-    const ttcAvoirs = siens.reduce(
-      (n, a) => n + Math.abs(a.montantTtcCents ?? a.montantHtCents + a.montantTvaCents),
-      0,
-    );
+    // HT + TVA, comme `genererAvoirFacture` : un seul calcul du reste, pas deux qui divergent.
+    const ttcAvoirs = Math.abs(siens.reduce((n, a) => n + a.montantHtCents + a.montantTvaCents, 0));
     return {
       id: f.id,
       numero: f.numero,
