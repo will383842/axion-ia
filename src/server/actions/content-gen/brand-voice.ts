@@ -20,7 +20,12 @@ import * as Sentry from "@sentry/nextjs";
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
 import { requireAdmin, requireAdminWriteRateLimited } from "./_auth";
-import { BRAND_VOICE_CONFIG_KEY } from "./brand-voice-constants";
+import {
+  ARTICLE_EMBEDDING_COLUMN,
+  BRAND_VOICE_REFERENCE_KEY,
+  getEmbeddingProvider,
+  type EmbeddingProvider,
+} from "@/server/content-gen/dedup/embedding-provider";
 
 // Sprint Final P1-3 — Zod runtime validation des inputs Server Actions.
 // `articleIds` borné à 500 pour éviter saturer pgvector / $queryRawUnsafe.
@@ -59,11 +64,18 @@ export interface BrandVoiceDriftStats {
  *
  * Articles sans embedding sont ignorés. Si tous sont sans embedding → throw.
  *
+ * `providerExplicite` : fournisseur à recalibrer. Absent → fournisseur actif
+ * (`CONTENT_EMBEDDING_PROVIDER`). Le passer explicitement permet de recalibrer la référence
+ * Voyage AVANT de basculer (rattrapage → calibrage des seuils → recalibrage → bascule).
+ *
  * Écrit dans :
  *  - ContentGenConfig["brand_voice_reference_embedding"] → tableau JSON nombre
  *  - ContentGenAuditLog (SOC2 audit trail)
  */
-export async function recalibrateBrandVoice(articleIds: string[]): Promise<{
+export async function recalibrateBrandVoice(
+  articleIds: string[],
+  providerExplicite?: EmbeddingProvider,
+): Promise<{
   success: boolean;
   embeddingDimension: number;
   articlesUsed: number;
@@ -80,16 +92,24 @@ export async function recalibrateBrandVoice(articleIds: string[]): Promise<{
     throw new Error("recalibrateBrandVoice: articleIds array cannot be empty");
   }
 
+  // PR4 — colonne et clé de référence du fournisseur actif (jamais mélangées :
+  // 1536 dim OpenAI vs 1024 dim Voyage). Noms issus de constantes, pas d'entrée externe.
+  // Fichier "use server" : l'argument vient du client, on ne l'interpole jamais sans le valider.
+  const fournisseurValide = z.enum(["openai", "voyage"]).optional().parse(providerExplicite);
+  const provider: EmbeddingProvider = fournisseurValide ?? getEmbeddingProvider();
+  const col = ARTICLE_EMBEDDING_COLUMN[provider];
+  const referenceKey = BRAND_VOICE_REFERENCE_KEY[provider];
+
   try {
     // Récupérer les embeddings pgvector via $queryRawUnsafe (champ Unsupported)
     const placeholders = articleIds.map((_, i) => `$${i + 1}::uuid`).join(", ");
     const rows = (await prisma.$queryRawUnsafe(
       `SELECT
          a.id,
-         ARRAY(SELECT unnest(a.embedding::real[])) AS embedding_arr
+         ARRAY(SELECT unnest(a.${col}::real[])) AS embedding_arr
        FROM articles a
        WHERE a.id IN (${placeholders})
-         AND a.embedding IS NOT NULL`,
+         AND a.${col} IS NOT NULL`,
       ...articleIds,
     )) as Array<{ id: string; embedding_arr: number[] | null }>;
 
@@ -97,7 +117,7 @@ export async function recalibrateBrandVoice(articleIds: string[]): Promise<{
 
     if (validRows.length === 0) {
       throw new Error(
-        "recalibrateBrandVoice: none of the provided articles have embeddings — cannot calibrate",
+        `recalibrateBrandVoice: none of the provided articles have ${provider} embeddings — cannot calibrate`,
       );
     }
 
@@ -120,15 +140,15 @@ export async function recalibrateBrandVoice(articleIds: string[]): Promise<{
 
     // Lire l'ancienne valeur pour l'audit diff
     const existingRow = await prisma.contentGenConfig.findUnique({
-      where: { key: BRAND_VOICE_CONFIG_KEY },
+      where: { key: referenceKey },
     });
     const oldValue = existingRow?.value ?? null;
 
     // Persister dans ContentGenConfig
     await prisma.contentGenConfig.upsert({
-      where: { key: BRAND_VOICE_CONFIG_KEY },
+      where: { key: referenceKey },
       create: {
-        key: BRAND_VOICE_CONFIG_KEY,
+        key: referenceKey,
         value: normalized as never,
         updatedBy: session.email,
       },
@@ -143,7 +163,7 @@ export async function recalibrateBrandVoice(articleIds: string[]): Promise<{
       .create({
         data: {
           action: "recalibrateBrandVoice",
-          settingKey: BRAND_VOICE_CONFIG_KEY,
+          settingKey: referenceKey,
           oldValue: oldValue as never,
           newValue: {
             dimension,
@@ -206,7 +226,11 @@ export async function recalibrateBrandVoiceForm(
   }
 
   try {
-    const result = await recalibrateBrandVoice(articleIds);
+    // Champ facultatif « provider » : permet de recalibrer la référence Voyage avant la bascule.
+    const demande = formData.get("provider");
+    const provider: EmbeddingProvider | undefined =
+      demande === "voyage" || demande === "openai" ? demande : undefined;
+    const result = await recalibrateBrandVoice(articleIds, provider);
     return {
       status: "success",
       message: `Référence recalibrée sur ${result.articlesUsed} article(s) — embedding de dimension ${result.embeddingDimension}.`,
@@ -227,6 +251,7 @@ export async function getBrandVoiceDriftStats(): Promise<BrandVoiceDriftStats> {
   await requireAdmin();
 
   const thirtyDaysAgo = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000);
+  const referenceKey = BRAND_VOICE_REFERENCE_KEY[getEmbeddingProvider()];
 
   const [driftLogs, lastRunRow, referenceRow] = await Promise.all([
     prisma.contentGenAuditLog.findMany({
@@ -243,7 +268,7 @@ export async function getBrandVoiceDriftStats(): Promise<BrandVoiceDriftStats> {
     }),
 
     prisma.contentGenConfig.findUnique({
-      where: { key: BRAND_VOICE_CONFIG_KEY },
+      where: { key: referenceKey },
     }),
   ]);
 
@@ -307,11 +332,12 @@ export async function getBrandVoiceDriftStats(): Promise<BrandVoiceDriftStats> {
 export async function listRecentArticleIdsWithEmbedding(limit = 200): Promise<string[]> {
   await requireAdmin();
   const take = Math.max(1, Math.min(500, Math.floor(limit)));
+  const col = ARTICLE_EMBEDDING_COLUMN[getEmbeddingProvider()];
   const rows = (await prisma.$queryRawUnsafe(
     `SELECT a.id
        FROM articles a
       WHERE a.status = 'published'
-        AND a.embedding IS NOT NULL
+        AND a.${col} IS NOT NULL
       ORDER BY a.published_at DESC NULLS LAST
       LIMIT $1`,
     take,

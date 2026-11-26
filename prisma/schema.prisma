@@ -1087,6 +1087,12 @@ model Article {
   /// Feature flag `OPENAI_EMBEDDINGS_ENABLED` gere l'activation prod.
   embedding Unsupported("vector(1536)")?
 
+  /// PR4 — Couche 4 dedup + voix de marque, fournisseur Voyage AI (voyage-3,
+  /// 1024 dim, index HNSW cosine). Colonne PARALLÈLE à `embedding` (OpenAI), jamais
+  /// mélangée : les deux espaces vectoriels ne sont pas comparables. Nullable,
+  /// rattrapée par `embeddings-backfill-worker`. Lue selon `CONTENT_EMBEDDING_PROVIDER`.
+  embeddingVoyage Unsupported("vector(1024)")? @map("embedding_voyage")
+
   /// Sprint S+2 City Domination — auto-tagging géographique (Phase C strat ville).
   /// Slugs des villes mentionnées dans le body article (détection via helper
   /// `extractMentionedCitiesFromText`). Permet au hub ville de filtrer les
