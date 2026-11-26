@@ -53,7 +53,7 @@ export const REYRIEUX_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Reyrieux et dans le val de Saône Ain ?",
-      a: "Nous intervenons partout en France, sur place ou à distance.",
+      a: "Oui, Axion-IA intervient à Reyrieux et dans tout le val de Saône Ain (Trévoux, Jassans-Riottier, Villefranche). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les TPE artisans et commerces de Reyrieux ?",

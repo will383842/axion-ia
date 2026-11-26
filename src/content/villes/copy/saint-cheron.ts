@@ -49,7 +49,7 @@ export const SAINT_CHERON_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Saint-Chéron et vallée de l'Orge ?",
-      a: "Nous intervenons dans vos locaux à Saint-Chéron, partout en France.",
+      a: "Oui, Axion-IA intervient à Saint-Chéron et dans toute la vallée de l'Orge (Dourdan, Arpajon, Évry-Courcouronnes). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les commerçants et artisans de Saint-Chéron ?",

@@ -65,7 +65,7 @@ export const MOULINS_LES_METZ_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Moulins-lès-Metz ?",
-      a: "Nous intervenons dans vos locaux à Moulins-lès-Metz, partout en France.",
+      a: "Nous intervenons sur place à Moulins-lès-Metz, comme partout en France, ou à distance.",
     },
   ],
 };

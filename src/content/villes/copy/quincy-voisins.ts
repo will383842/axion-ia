@@ -49,7 +49,7 @@ export const QUINCY_VOISINS_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Quincy-Voisins et environs ?",
-      a: "Nous intervenons dans vos locaux à Quincy-Voisins, partout en France.",
+      a: "Oui, Axion-IA intervient à Quincy-Voisins et dans tout le nord meldois (Meaux). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les artisans BTP du secteur ?",

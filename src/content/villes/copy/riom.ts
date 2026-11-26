@@ -49,7 +49,7 @@ export const RIOM_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Riom et nord Clermont ?",
-      a: "Nous intervenons dans vos locaux à Riom, partout en France.",
+      a: "Oui, Axion-IA intervient à Riom et dans tout le nord de Clermont Métropole (Clermont, Volvic, Châtel-Guyon). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les acteurs tourisme patrimoine Renaissance ?",

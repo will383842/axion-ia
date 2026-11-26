@@ -422,7 +422,7 @@ export const ROUBAIX_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Intervenez-vous à Roubaix pour les audits et interventions ?",
-      a: "Oui. Nous intervenons dans vos locaux à Roubaix, partout en France, sur place ou à distance.",
+      a: "Oui. Williams et l'équipe Axion-IA interviennent sur site à Roubaix pour les audits, interventions collectives et implémentations. Le format présentiel est privilégié pour les sessions de travail sur vos outils et données réels. Les échanges de cadrage peuvent se tenir en visioconférence selon votre préférence.",
     },
     {
       q: "Quels sont les tarifs pour un audit IA d'une PME roubaisienne ?",
@@ -442,7 +442,7 @@ export const ROUBAIX_COPY: VilleCopy = {
     },
     {
       q: "Proposez-vous des formats courts pour les dirigeants de TPE qui manquent de temps ?",
-      a: "Oui. Le 1-to-1 dirigeant démarre à {{price:intervention-dirigeants|flat}} en format modulaire. Aucun engagement multi-mois requis pour démarrer.",
+      a: "Oui. L'Audit sur place (4h sur site) est conçu pour les dirigeants sans disponibilité étendue — restitution le jour même, plan d'action immédiatement actionnable. Le 1-to-1 dirigeant démarre à {{price:intervention-dirigeants|flat}} en format modulaire. Aucun engagement multi-mois requis pour démarrer.",
     },
   ],
 };

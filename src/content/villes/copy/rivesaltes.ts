@@ -49,7 +49,7 @@ export const RIVESALTES_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Rivesaltes et la vallée de l'Agly ?",
-      a: "Nous intervenons partout en France, sur place ou à distance.",
+      a: "Oui, Axion-IA intervient à Rivesaltes et dans toute la vallée de l'Agly (Saint-Estève, Espira-de-l'Agly, Baixas, Cases-de-Pène). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les viticulteurs AOC Muscat et Rivesaltes ?",

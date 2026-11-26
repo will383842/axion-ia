@@ -65,7 +65,7 @@ export const ROYAN_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA sur site à Royan ?",
-      a: "Nous intervenons partout en France, sur place ou à distance.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Mission sur site dans votre hôtel, restaurant ou commerce à Royan.",
     },
   ],
 };

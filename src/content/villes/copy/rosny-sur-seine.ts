@@ -49,7 +49,7 @@ export const ROSNY_SUR_SEINE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Rosny-sur-Seine et dans le bassin mantois ?",
-      a: "Nous intervenons partout en France, sur place ou à distance.",
+      a: "Oui, Axion-IA intervient à Rosny-sur-Seine et dans tout le bassin mantois (Mantes-la-Jolie, Les Mureaux, Bonnières-sur-Seine). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les PME industrielles de l'axe Seine ?",

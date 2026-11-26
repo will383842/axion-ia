@@ -65,7 +65,7 @@ export const MUTZIG_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Mutzig ?",
-      a: "Nous intervenons dans vos locaux à Mutzig, partout en France.",
+      a: "Nous intervenons sur place à Mutzig, comme partout en France, ou à distance.",
     },
   ],
 };

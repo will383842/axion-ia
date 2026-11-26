@@ -49,7 +49,7 @@ export const MONTLOUIS_SUR_LOIRE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Montlouis-sur-Loire et bords de Loire ?",
-      a: "Nous intervenons dans vos locaux à Montlouis-sur-Loire, partout en France.",
+      a: "Oui. Nous intervenons à Montlouis-sur-Loire et dans toute l'agglomération tourangelle (Tours, Amboise, Vouvray).",
     },
     {
       q: "Travaillez-vous avec les viticulteurs AOC Montlouis ?",
@@ -65,7 +65,7 @@ export const MONTLOUIS_SUR_LOIRE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Montlouis-sur-Loire ?",
-      a: "Nous intervenons dans vos locaux à Montlouis-sur-Loire, partout en France.",
+      a: "Nous intervenons sur place à Montlouis-sur-Loire, comme partout en France, ou à distance.",
     },
   ],
 };
