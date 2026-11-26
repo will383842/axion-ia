@@ -54,6 +54,7 @@ import { logStep } from "../shared/generation-log";
 import type { Generator, GeneratorBaseInput, GeneratorOutput } from "./types";
 import { getBrandVoiceForContentType } from "../brand/brand-voice";
 import { consigneAngle } from "../brand/positionnement";
+import { consigneJourneeIA } from "../knowledge/journee-ia-fiche";
 import { REGLE_CHIFFRES_SOURCES, sectionChiffresVerifies } from "../kb/chiffres-verifies";
 import { pickInternalExpert, buildExpertQuote } from "../brand/expert-bank";
 import { getGlossaryContext } from "../brand/glossary-context";
@@ -204,6 +205,7 @@ ${externalLinksCtx.markdownSection}${feedbackSection}
 ${glossaryContext ? `\n${glossaryContext}` : ""}
 Pour le paragraphe final sur l'impact uniquement, ${consigneAngle(input.jobId)}
 L'introduction reste centrée sur l'information elle-même.
+${consigneJourneeIA(topic, input.primaryKeyword, ...(input.secondaryKeywords ?? []), input.rssItemTitle, input.rssItemSummary)}
 ${sectionChiffresVerifies()}
 ## Avis d'expert
 "expertTake" = une prise de position de ${expert.name} (${expert.title}) : perspective d'expert concise et utile sur le sujet, sans chiffre inventé.
