@@ -197,6 +197,10 @@ describe("masques : jamais plus que la fin du compte", () => {
     expect(quatreDerniersCaracteres("FR76")).toBeNull();
     expect(quatreDerniersCaracteres("")).toBeNull();
   });
+  it("une fin qui n'a pas la forme exigée par la base (« - », « . ») : rien, pas une erreur 500", () => {
+    expect(quatreDerniersCaracteres("FR76-3000-6000-0112-3456-7890-01.9")).toBeNull();
+    expect(quatreDerniersCaracteres("FR7630006000011234567890-89")).toBeNull();
+  });
   it("« se termine par … » ne contient que ces quatre caractères", () => {
     const rendu = compteMasque(quatreDerniersCaracteres(IBAN_FICTIF));
     expect(rendu).toBe("se termine par 0189");

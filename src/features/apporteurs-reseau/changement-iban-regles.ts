@@ -189,7 +189,9 @@ function normaliser(brut: string): string {
 export function quatreDerniersCaracteres(iban: string): string | null {
   const n = normaliser(iban);
   if (n.length < 15) return null;
-  return n.slice(-4);
+  const fin = n.slice(-4);
+  // La base exige `^[A-Z0-9]{4}$` : une fin portant « - » ou « . » est refusée ici, pas par une erreur 500.
+  return /^[A-Z0-9]{4}$/.test(fin) ? fin : null;
 }
 
 /** « se termine par 1234 » : la seule forme d'un compte à l'écran, dans une alerte ou un e-mail. */

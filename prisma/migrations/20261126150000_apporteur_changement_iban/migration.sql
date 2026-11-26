@@ -118,7 +118,10 @@ BEGIN
     RAISE EXCEPTION 'apporteur_changements_iban : la preuve de la confirmation ne change plus';
   END IF;
   -- Chaque champ de suivi ne s'écrit qu'avec la transition qui le porte (jamais seul, jamais sur une autre).
-  IF (NEW."confirmee_at" IS DISTINCT FROM OLD."confirmee_at" AND NOT (OLD."statut" = 'a_confirmer' AND NEW."statut" = 'confirmee'))
+  IF ((NEW."confirmee_at" IS DISTINCT FROM OLD."confirmee_at"
+       OR NEW."confirmation_ip_hash" IS DISTINCT FROM OLD."confirmation_ip_hash"
+       OR NEW."confirmation_navigateur" IS DISTINCT FROM OLD."confirmation_navigateur")
+      AND NOT (OLD."statut" = 'a_confirmer' AND NEW."statut" = 'confirmee'))
      OR (NEW."opposee_at" IS DISTINCT FROM OLD."opposee_at" AND NEW."statut" <> 'opposee')
      OR (NEW."annulee_at" IS DISTINCT FROM OLD."annulee_at" AND NEW."statut" <> 'annulee')
      OR (NEW."expiree_at" IS DISTINCT FROM OLD."expiree_at" AND NEW."statut" <> 'expiree')
@@ -156,36 +159,35 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
--- Les dates d'étape sont celles de L'HORLOGE DE LA BASE (à une minute près), jamais celles de l'appelant : une
--- confirmation ne s'antidate pas, et une validation ne se date pas dans le futur pour tenir les 72 h.
+-- Les dates d'étape sont POSÉES par la base (`clock_timestamp()`), jamais fournies par l'appelant : toute valeur
+-- passée pour `demandee_at`, `confirmee_at`, `traitee_at`, `opposee_at`, `annulee_at` ou `expiree_at` à la
+-- transition qui la porte est ÉCRASÉE. Une confirmation ne s'antidate donc pas (le délai d'opposition est exact,
+-- pas « 72 h moins une minute »), une validation ne se date pas dans le futur, et le code applicatif n'a aucune
+-- date à fournir (pas de dépendance à son horloge). Le contrôle des 72 h se lit sur `OLD.confirmee_at`.
 -- Fonction à part : un test peut désactiver ce seul déclencheur (dans une transaction annulée) pour fabriquer des
 -- demandes anciennes, sans désactiver les gardes de transition.
 CREATE FUNCTION "apporteur_changements_iban_garde_horloge"() RETURNS trigger AS $$
 DECLARE
   maintenant timestamptz := clock_timestamp();
-  fenetre interval := interval '1 minute';
 BEGIN
   IF TG_OP = 'INSERT' THEN
-    IF NEW."demandee_at" < maintenant - fenetre OR NEW."demandee_at" > maintenant + fenetre THEN
-      RAISE EXCEPTION 'apporteur_changements_iban : demandee_at suit l''horloge de la base';
-    END IF;
+    NEW."demandee_at" := maintenant;
     RETURN NEW;
   END IF;
   IF NEW."statut" IS DISTINCT FROM OLD."statut" THEN
-    IF NEW."statut" = 'confirmee' AND (NEW."confirmee_at" < maintenant - fenetre OR NEW."confirmee_at" > maintenant + fenetre
-         OR NEW."confirmee_at" < OLD."demandee_at") THEN
-      RAISE EXCEPTION 'apporteur_changements_iban : confirmee_at suit l''horloge de la base';
-    END IF;
-    IF NEW."statut" IN ('validee', 'refusee') AND (NEW."traitee_at" < maintenant - fenetre OR NEW."traitee_at" > maintenant + fenetre) THEN
-      RAISE EXCEPTION 'apporteur_changements_iban : traitee_at suit l''horloge de la base';
+    IF NEW."statut" = 'confirmee' THEN
+      NEW."confirmee_at" := maintenant;
+    ELSIF NEW."statut" IN ('validee', 'refusee') THEN
+      NEW."traitee_at" := maintenant;
+    ELSIF NEW."statut" = 'opposee' THEN
+      NEW."opposee_at" := maintenant;
+    ELSIF NEW."statut" = 'annulee' THEN
+      NEW."annulee_at" := maintenant;
+    ELSIF NEW."statut" = 'expiree' THEN
+      NEW."expiree_at" := maintenant;
     END IF;
     IF NEW."statut" = 'validee' AND maintenant < OLD."confirmee_at" + interval '72 hours' THEN
       RAISE EXCEPTION 'apporteur_changements_iban : validation avant la fin du délai d''opposition de 72 heures';
-    END IF;
-    IF (NEW."statut" = 'opposee' AND (NEW."opposee_at" < maintenant - fenetre OR NEW."opposee_at" > maintenant + fenetre))
-       OR (NEW."statut" = 'annulee' AND (NEW."annulee_at" < maintenant - fenetre OR NEW."annulee_at" > maintenant + fenetre))
-       OR (NEW."statut" = 'expiree' AND (NEW."expiree_at" < maintenant - fenetre OR NEW."expiree_at" > maintenant + fenetre)) THEN
-      RAISE EXCEPTION 'apporteur_changements_iban : la date d''étape suit l''horloge de la base';
     END IF;
   END IF;
   RETURN NEW;
