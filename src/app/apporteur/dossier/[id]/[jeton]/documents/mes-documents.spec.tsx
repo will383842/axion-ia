@@ -91,6 +91,7 @@ describe("accès", () => {
     expect(texte(html)).toContain(DOCUMENTS_RESERVES.titre);
     expect(html).not.toContain(".pdf");
     expect(html).not.toContain("/contrat");
+    expect(html).not.toContain("/guide");
   });
 });
 
@@ -100,6 +101,8 @@ describe("dossier signé", () => {
     const t = texte(html);
     expect(html).toMatch(/<h1[^>]*>Mes documents<\/h1>/);
     expect(html).toContain(`href="${ESPACE}/contrat?dl=1"`);
+    expect(html).toContain(`href="${ESPACE}/guide"`);
+    expect(html).toMatch(new RegExp(`<a href="${ESPACE}/guide\\?dl=1"[^>]* download`));
     expect(html).toContain('href="/documents/apporteurs/comment-ca-marche.pdf"');
     expect(html).toContain(`href="${ESPACE}/charte"`);
     expect(html).toContain(`href="${ESPACE}/outils"`);
@@ -110,8 +113,8 @@ describe("dossier signé", () => {
 
   it("chaque document est un titre de niveau 2 dans une liste", async () => {
     const html = await rendre();
-    expect(html.match(/<h2/g)).toHaveLength(4);
-    expect(html.match(/<li/g)).toHaveLength(4);
+    expect(html.match(/<h2/g)).toHaveLength(5);
+    expect(html.match(/<li/g)).toHaveLength(5);
     expect(html).not.toMatch(/<h[3-6]/);
   });
 
@@ -131,14 +134,14 @@ describe("dossier signé", () => {
     h.livret = true;
     const html = await rendre();
     expect(html).toContain('href="/documents/apporteurs/livret-apporteur.pdf"');
-    expect(html.match(/<li/g)).toHaveLength(5);
+    expect(html.match(/<li/g)).toHaveLength(6);
   });
 
   it("aucun montant ni pourcentage, aucun mot interdit", async () => {
     h.livret = true;
     const t = texte(await rendre());
     expect(t).not.toMatch(/\d\s*(€|%|euros?)/i);
-    expect(t).not.toMatch(/grenoble|aucun gain garanti|conférence/i);
+    expect(t).not.toMatch(/gr[e]noble|aucun\s+gain\s+gar[a]nti|conférence|salari[ée]|obj[e]ctif/i);
   });
 });
 

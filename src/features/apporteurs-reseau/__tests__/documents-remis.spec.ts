@@ -20,9 +20,10 @@ const ctx = (over: Partial<ContexteDocuments> = {}): ContexteDocuments => ({
 const cles = (c: ContexteDocuments) => documentsRemis(c).map((d) => d.cle);
 
 describe("le registre", () => {
-  it("cinq documents, dans l'ordre, chacun avec un titre et une phrase", () => {
+  it("six documents, dans l'ordre, chacun avec un titre et une phrase", () => {
     expect(DOCUMENTS_REMIS.map((d) => d.cle)).toEqual([
       "contrat",
+      "guide",
       "fiche-commissions",
       "livret",
       "charte",
@@ -38,16 +39,19 @@ describe("le registre", () => {
     for (const d of DOCUMENTS_REMIS) {
       const t = `${d.titre} ${d.description}`;
       expect(t).not.toMatch(/\d\s*(€|%|euros?)/i);
-      expect(t).not.toMatch(/grenoble|aucun gain garanti|conférence/i);
+      expect(t).not.toMatch(
+        /gr[e]noble|aucun\s+gain\s+gar[a]nti|conférence|salari[ée]|obj[e]ctif/i,
+      );
     }
   });
 });
 
 describe("ce que voit l'apporteur", () => {
-  it("sous contrat signé, tout présent : les cinq, avec leurs adresses", () => {
+  it("sous contrat signé, tout présent : les six, avec leurs adresses", () => {
     const docs = documentsRemis(ctx());
     expect(docs.map((d) => [d.cle, d.href])).toEqual([
       ["contrat", `${ESPACE}/contrat?dl=1`],
+      ["guide", `${ESPACE}/guide`],
       ["fiche-commissions", "/documents/apporteurs/comment-ca-marche.pdf"],
       ["livret", CHEMIN_LIVRET],
       ["charte", `${ESPACE}/charte`],
@@ -58,6 +62,7 @@ describe("ce que voit l'apporteur", () => {
 
   it("contrat signé mais fichier absent : pas de ligne contrat", () => {
     expect(cles(ctx({ contratSigneDisponible: false }))).toEqual([
+      "guide",
       "fiche-commissions",
       "livret",
       "charte",
@@ -82,10 +87,44 @@ describe("ce que voit l'apporteur", () => {
     const parCle = Object.fromEntries(documentsRemis(ctx()).map((d) => [d.cle, d.nouvelOnglet]));
     expect(parCle).toEqual({
       contrat: true,
+      guide: true,
       "fiche-commissions": true,
       livret: true,
       charte: true,
       outils: false,
     });
+  });
+});
+
+describe("le guide de démarrage", () => {
+  const guide = (c: ContexteDocuments) => documentsRemis(c).find((d) => d.cle === "guide");
+
+  it("sous contrat signé : ouvrir et télécharger (PDF A4), par la route contrôlée", () => {
+    expect(guide(ctx())).toMatchObject({
+      titre: "Votre guide de démarrage",
+      href: `${ESPACE}/guide`,
+      telechargement: `${ESPACE}/guide?dl=1`,
+      actionTelechargement: "Télécharger le guide (PDF A4)",
+    });
+  });
+
+  it("avant la signature : aucune ligne guide", () => {
+    expect(guide(ctx({ sousContrat: false, contratSigneDisponible: false }))).toBeUndefined();
+  });
+
+  it("la phrase est celle de la couverture du guide validé, sans montant", () => {
+    const d = guide(ctx())!;
+    expect(d.description).toBe(
+      "Ce guide vous est remis avec votre contrat : une idée par page, vous piochez ce qui vous plaît, à votre rythme.",
+    );
+    expect(`${d.titre} ${d.description} ${d.action} ${d.actionTelechargement}`).not.toMatch(
+      /\d\s*(€|%|euros?)/i,
+    );
+  });
+
+  it("aucun autre document n'a de lien d'enregistrement", () => {
+    for (const d of documentsRemis(ctx())) {
+      if (d.cle !== "guide") expect(d.telechargement).toBeUndefined();
+    }
   });
 });
