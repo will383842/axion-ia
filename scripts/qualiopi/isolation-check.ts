@@ -152,6 +152,10 @@ const CONSOMMATEURS_ASSUMES: ReadonlySet<string> = new Set([
   // seule garde et un seul journal, jamais recopiés. N'importent que ce module du domaine. Nommés seuls.
   "src/app/[locale]/(admin)/[adminPrefix]/garanties-journee-ia/[id]/page.tsx",
   "src/app/[locale]/(admin)/[adminPrefix]/garanties-journee-ia/nouveau/page.tsx",
+  // Garantie Journée IA, alertes des échéances (PR 3/3, 25/11/2026) — le passage quotidien lève ses alertes par
+  // `creerOuActualiser` du service d'alertes du domaine (même table, même dé-duplication, même envoi groupé) :
+  // une seconde écriture d'`AlerteSysteme` contournerait l'index unique partiel. N'importe que ce module. Nommé seul.
+  "src/server/garanties-journee-ia/passage.ts",
   // Signature renforcée du devis, lot 4 bis (07/11/2026) — ce test de garde RGPD (aucune table ne garde une
   // donnée personnelle en silence) lit `COLONNES_SCELLEES_DOCUMENT` (colonnes scellées de la signature,
   // `document-reconstruction`) : c'est la liste unique des colonnes que l'effacement ne touche pas ; la

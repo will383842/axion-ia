@@ -56,6 +56,8 @@ const SEGMENT_PAR_CIBLE: Readonly<Record<string, string>> = {
   // la page du rendez-vous, qui ouvre le compte rendu (lecture, validation,
   // retrait de l'accord).
   Rencontre: "rendez-vous/rencontres",
+  // Garantie Journée IA (PR 3/3) : les alertes d'échéance mènent à la fiche du dossier.
+  GarantieJourneeIa: "garanties-journee-ia",
 };
 
 /** Les types que ce module sait atteindre. Exporté pour la garde. */

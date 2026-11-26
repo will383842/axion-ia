@@ -55,6 +55,7 @@ export const NOM_TYPE_CIBLE: Readonly<Record<string, string>> = {
   Reclamation: "Réclamation",
   OffreSite: "Offre d'emploi",
   Formation: "Formation",
+  GarantieJourneeIa: "Garantie Journée IA",
   EmailOutbox: "E-mail",
   BaremeOpco: "Barème de l'organisme tiers",
   EtatFondsOpco: "État des fonds des organismes tiers",

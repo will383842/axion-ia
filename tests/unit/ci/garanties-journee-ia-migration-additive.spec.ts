@@ -1,7 +1,7 @@
 /**
  * La migration `garanties_journee_ia` est ADDITIVE (AGENTS.md « DEUX conteneurs ») : une table neuve,
  * ses index, les clés étrangères de CETTE table. Rien d'existant n'est altéré ; aucune énumération.
- * Aucun code de worker ni de cron ne la lit dans cette PR.
+ * Le cron (PR 3) ne la lit que par garanties-journee-ia/passage.ts.
  */
 import { readFileSync, readdirSync, statSync } from "node:fs";
 import { join } from "node:path";
@@ -56,7 +56,7 @@ describe("migration garanties_journee_ia : additive", () => {
     expect(sql).toMatch(/"montant_avoir_ht_cents" INTEGER,/);
     expect(schema).toMatch(/montantAvoirHtCents\s+Int\?\s+@map\("montant_avoir_ht_cents"\)/);
   });
-  it("aucun code de worker ni de cron ne lit la table (cron en PR 3)", () => {
+  it("le code des files ne touche pas la table directement : seul garanties-journee-ia/passage.ts la lit (PR 3)", () => {
     const fautifs: string[] = [];
     const pile = [join(RACINE, "src", "server", "queue")];
     while (pile.length) {

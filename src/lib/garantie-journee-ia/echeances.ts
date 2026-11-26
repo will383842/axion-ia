@@ -19,7 +19,7 @@ export interface DonneesGarantie {
   dateJournee: string;
   rapportRemisLe?: string | null;
   demandeRecueLe?: string | null;
-  decision?: "remboursement" | "refus" | "avoir" | null;
+  decision?: "remboursement" | "refus" | "avoir" | "non_applicable" | null;
   decisionLe?: string | null;
   virementLe?: string | null;
 }

@@ -102,6 +102,7 @@ import {
 } from "@/server/qualiopi/positionnement/temps2";
 import { passerRemisesAdaptation } from "@/server/qualiopi/adaptation/automatique/remises";
 import { FACTURE_HORS_ESSAI } from "@/server/qualiopi/essai/perimetre";
+import { passerGarantiesJourneeIa } from "@/server/garanties-journee-ia/passage";
 import { chargerEtatsVerrou, dossierFige } from "@/server/qualiopi/sessions/verrou-dossier";
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -151,6 +152,9 @@ export type FormationCronJobType =
   | "formation-crons.plans-recurrents"
   // Parcours vente — expiration des devis à dateValidite (SPEC_PART5 §D.10).
   | "formation-crons.devis-expiration"
+  // Garantie Journée IA (CGV 47.10) — alertes des échéances de remboursement,
+  // quotidien 06:50 UTC. Lit la table des garanties (via passage.ts) : tolère la table absente (P2021).
+  | "formation-crons.garanties-journee-ia"
   // Fraîcheur des offres d'emploi (Google for Jobs) — rappel Telegram hebdo
   // des offres à republier. AUCUN bump de date automatique (règle Google).
   | "formation-crons.offres-fraicheur"
@@ -1927,6 +1931,18 @@ async function handleDevisExpiration(): Promise<void> {
 }
 
 /**
+ * Garantie Journée IA — alertes des échéances de remboursement (quotidien 06:50 UTC).
+ * Toute la logique vit dans `garanties-journee-ia/passage.ts` (testable sans le worker).
+ */
+async function handleGarantiesJourneeIa(): Promise<void> {
+  if (process.env["DATABASE_URL"]?.includes("stub.invalid")) {
+    console.log("[formation-crons] garanties-journee-ia: stub DB, skip");
+    return;
+  }
+  await passerGarantiesJourneeIa();
+}
+
+/**
  * Fraîcheur des offres d'emploi (hebdo lundi 08:15). Détecte les offres dont le
  * datePosted effectif (celui du JSON-LD Google for Jobs) dépasse le seuil et le
  * rappelle sur Telegram (groupe 💼 Candidatures). La republication reste un clic
@@ -2807,6 +2823,7 @@ const HANDLERS: Record<FormationCronJobType, () => Promise<void>> = {
   "formation-crons.factures-lendemain": handleFacturesLendemain,
   "formation-crons.plans-recurrents": handlePlansRecurrents,
   "formation-crons.devis-expiration": handleDevisExpiration,
+  "formation-crons.garanties-journee-ia": handleGarantiesJourneeIa,
   "formation-crons.offres-fraicheur": handleOffresFraicheur,
   "formation-crons.rappels-entretien": handleRappelsEntretien,
   "formation-crons.candidatures-en-sommeil": handleCandidaturesEnSommeil,

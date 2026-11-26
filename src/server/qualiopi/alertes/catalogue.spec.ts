@@ -75,6 +75,9 @@ const CODES_ATTENDUS: string[] = [
   // pièce COMPLÈTE en sort, et le succès de la signature éteignait le seul
   // signal qui restait.
   "exemplaire_signe_non_transmis",
+  "garantie_ji_rapport",
+  "garantie_ji_reponse",
+  "garantie_ji_remboursement",
   "devis_expire_j7",
   "devis_expire",
   // Déblocages du parcours vente (2026-08-05) : l'étape suivante attend

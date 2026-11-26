@@ -2376,6 +2376,14 @@ export async function bootRepeatableJobs(): Promise<void> {
         pattern: "45 6 * * *",
         jobId: "formation-crons-devis-expiration-cron",
       },
+      // Garantie Journée IA — alertes des échéances de remboursement (J-5, J-2, J0,
+      // dépassée), daily 06:50 UTC, week-end compris : AVANT le moteur d'alertes de
+      // 07:00 qui envoie le groupe par e-mail. Tolère la table absente (P2021).
+      {
+        type: "formation-crons.garanties-journee-ia",
+        pattern: "50 6 * * *",
+        jobId: "formation-crons-garanties-journee-ia-cron",
+      },
       // Fraîcheur des offres d'emploi (Google for Jobs) — rappel Telegram des
       // offres à republier, hebdo lundi 08:15 UTC (après les crons du matin).
       {
