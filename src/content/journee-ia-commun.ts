@@ -15,25 +15,45 @@ import { JOURNEE_IA_TIER, formatAmount, formatTierPrice } from "@/content/pricin
 /** Le jeton que les textes portent à la place du prix de la journée. */
 export const JETON_PRIX = "{{PRIX}}";
 
-/**
- * La garantie, mot pour mot (rapport + remboursement). Déplacée ici sans changer
- * un caractère : la landing continue de l'afficher telle quelle tant qu'elle n'est
- * pas passée à `RAPPORT_COMPLET` + `GARANTIE_PHRASE`.
- */
-export const GARANTIE =
-  "À la fin de la journée, vous recevez votre rapport complet : vos gains chiffrés, les tâches à automatiser classées par rentabilité, et votre plan d’action sur 90 jours. Si les gains identifiés ne dépassent pas 3 fois le prix de la journée, nous vous remboursons, sans discussion, sous 30 jours.";
+/** Délai de remise du rapport, valeur par défaut de l'art. 47.1 (c) des CGV, décision du 25/11/2026. */
+export const DELAI_RAPPORT_JOURS_OUVRES = 10;
 
 /** La seule phrase de remboursement : la fin exacte de `GARANTIE`. */
 export const GARANTIE_PHRASE =
-  "Si les gains identifiés ne dépassent pas 3 fois le prix de la journée, nous vous remboursons, sans discussion, sous 30 jours.";
+  "Si les gains identifiés dans votre rapport n’atteignent pas 3 fois le prix HT de la journée, vous êtes remboursé sur demande écrite.";
+
+/** La garantie, mot pour mot (rapport + remboursement sur demande). */
+export const GARANTIE = `Sous ${DELAI_RAPPORT_JOURS_OUVRES} jours ouvrés après la journée, vous recevez votre rapport complet : vos gains chiffrés, les tâches à automatiser classées par rentabilité, et votre plan d’action sur 90 jours. ${GARANTIE_PHRASE}`;
 
 /** La condition de la garantie, mot pour mot. */
 export const CONDITION_GARANTIE =
-  "Condition : votre équipe est disponible pendant la journée et nous fournit les chiffres demandés.";
+  "Condition : le décideur et les personnes prévues sont présents pendant l’audit.";
 
 /** Le rapport, remis sous 3 jours ouvrés (décision de Williams). */
 export const RAPPORT_COMPLET =
   "Sous 3 jours ouvrés après la journée, vous recevez votre rapport complet : vos gains chiffrés, les tâches à automatiser classées par rentabilité, et votre plan d’action sur 90 jours.";
+
+/**
+ * Multiple du prix HT de la journée sous lequel la journée est remboursée (garantie, CGV
+ * art. 47.10). Décision du dirigeant du 25/11/2026.
+ */
+export const MULTIPLE_GARANTIE = 3;
+
+/** Seuil de la garantie en euros HT : le multiple × le prix de la journée (`pricing.ts`). */
+export function seuilGarantieEur(): number {
+  if (JOURNEE_IA_TIER.priceFlat == null) {
+    throw new Error(
+      "JOURNEE_IA_TIER.priceFlat est absent : le seuil de la garantie est incalculable.",
+    );
+  }
+  return MULTIPLE_GARANTIE * JOURNEE_IA_TIER.priceFlat;
+}
+
+/** Montant minimum HT, avant déduction, du devis de projet qui ouvre droit à la déduction du prix de la Journée IA (CGV art. 47.7). */
+export const SEUIL_DEVIS_DEDUCTION_EUR = 5000;
+
+/** Plancher du coût horaire retenu pour la garantie : salaire minimum horaire brut majoré de 40 % (CGV art. 47.10 b). */
+export const MAJORATION_PLANCHER_COUT_HORAIRE_PCT = 40;
 
 /** Numéro de déclaration d'activité de l'organisme de formation. */
 // Même valeur que `NDA_NUMERO` (src/server/qualiopi/legal/legal-mentions.ts) : recopiée ici pour que

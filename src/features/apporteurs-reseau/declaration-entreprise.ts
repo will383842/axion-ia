@@ -31,7 +31,8 @@ import { enqueueEmail } from "@/server/queue/queues";
 import { etatPourApporteur, validerDeclaration, type EtatDeclaration } from "./declaration-regles";
 import { lireEtablissements, memePerimetre } from "./etablissement-presentation";
 import { creerPresentation, nomComplet, presentationOccupe } from "./presentations";
-import { lireReservations, versProvisoire } from "./reservation-presentation";
+import { versReservationProvisoire } from "./regle-attribution";
+import { lireReservations } from "./reservation-presentation";
 import {
   etatPrestation,
   horsGrilleEnCours,
@@ -123,8 +124,11 @@ export async function declarerEntreprise(
   if (
     siennes.some(
       (p) =>
-        presentationOccupe(p, maintenant, versProvisoire(reservations.get(p.id), p.recueAt)) &&
-        memePerimetre({ siret: d.siret, entreprise: false, exclus: [] }, etabs.get(p.id)!),
+        presentationOccupe(
+          p,
+          maintenant,
+          versReservationProvisoire(p.recueAt, reservations.get(p.id)),
+        ) && memePerimetre({ siret: d.siret, entreprise: false, exclus: [] }, etabs.get(p.id)!),
     )
   ) {
     return { ok: false, message: MESSAGE_DEJA };

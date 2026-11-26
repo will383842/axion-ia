@@ -240,7 +240,7 @@ export const EYSINES_COPY: VilleCopy = {
     },
     {
       q: "Couvrez-vous Bordeaux, Le Bouscat et Mérignac depuis Eysines ?",
-      a: "Oui, nous nous déplaçons sans surcoût dans les communes limitrophes d'Eysines : Bordeaux, Le Bouscat, Bruges, Le Haillan, Mérignac, Le Taillan-Médoc et Blanquefort.",
+      a: "Oui, nous nous déplaçons dans les communes limitrophes d'Eysines : Bordeaux, Le Bouscat, Bruges, Le Haillan, Mérignac, Le Taillan-Médoc et Blanquefort.",
     },
     {
       q: "Comment Axion-IA garantit-il la conformité RGPD à Eysines ?",

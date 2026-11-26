@@ -557,6 +557,20 @@ export const CATALOGUE: Readonly<Record<EmailJobName, FicheEmail>> = {
     destinataire: "l'apporteur qui a déclaré l'entreprise",
     source: "features/apporteurs-reseau/envois.ts",
   },
+  "apporteur-resiliation-notifiee": {
+    categorie: "recrutement",
+    quand:
+      "Fiche de l'apporteur : « Notifier la résiliation » (article 11.1 avec préavis de 30 jours, 11.2 ou 12.5)",
+    destinataire: "l'apporteur dont le contrat est résilié",
+    source: "features/apporteurs-reseau/envois.ts",
+  },
+  "apporteur-resiliation-effective": {
+    categorie: "recrutement",
+    quand:
+      "Le jour de la prise d'effet de la résiliation (passage quotidien, ou aussitôt en 11.2 et 12.5)",
+    destinataire: "l'apporteur dont le contrat prend fin",
+    source: "features/apporteurs-reseau/envois.ts",
+  },
   "apporteur-non-commissionne": {
     categorie: "recrutement",
     quand:
@@ -592,6 +606,13 @@ export const CATALOGUE: Readonly<Record<EmailJobName, FicheEmail>> = {
   "apporteur-presentation-refusee": {
     categorie: "recrutement",
     quand: "Bouton « Déjà connue » ou « Hors champ » d'une entreprise présentée, après aperçu",
+    destinataire: "l'apporteur qui a présenté l'entreprise",
+    source: "features/apporteurs-reseau/envois.ts",
+  },
+  "apporteur-presentation-non-retenue": {
+    categorie: "recrutement",
+    quand:
+      "Le dirigeant écarte une entreprise présentée (démentie, déjà connue, hors champ) ; envoi éteint tant que APPORTEURS_EMAIL_REFUS n'est pas « true »",
     destinataire: "l'apporteur qui a présenté l'entreprise",
     source: "features/apporteurs-reseau/envois.ts",
   },

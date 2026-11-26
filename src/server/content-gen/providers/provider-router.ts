@@ -207,7 +207,9 @@ export async function generate(requete: GenerationRequest): Promise<GenerationRe
         // (solde épuisé, clé refusée) ne guérit pas d'elle-même : on la compte, et
         // au-delà du seuil la production s'arrête d'elle-même au lieu de brûler des
         // milliers de jobs en attendant qu'un humain s'en aperçoive.
-        await recordPermanentProviderFailure(provider.key, err.code, err.message);
+        await recordPermanentProviderFailure(provider.key, err.code, err.message, {
+          toutesEpuisees: (err as { toutesEpuisees?: unknown }).toutesEpuisees === true,
+        });
         throw err;
       }
       // sinon : try next provider in chain (fallback automatique)

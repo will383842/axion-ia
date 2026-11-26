@@ -109,7 +109,7 @@ export function validerDeclaration(
  *   · « Expirée » : période échue (ou attribution terminée), avec sa date de fin.
  */
 export type EtatDeclaration =
-  "a_l_etude" | "sans_reponse" | "reservee" | "non_disponible" | "expiree";
+  "a_l_etude" | "sans_reponse" | "reservee" | "confirmee" | "non_disponible" | "expiree";
 
 export const LIBELLE_ETAT_DECLARATION: Record<EtatDeclaration, string> = {
   a_l_etude: "À l'étude",
@@ -117,6 +117,7 @@ export const LIBELLE_ETAT_DECLARATION: Record<EtatDeclaration, string> = {
   // du contrat : le libellé ne cite aucun délai.
   sans_reponse: "En attente d'une réponse — nous revenons vers vous",
   reservee: "Réservée",
+  confirmee: "Confirmée",
   non_disponible: "Non disponible",
   expiree: "Expirée",
 };
@@ -159,7 +160,7 @@ export function etatPourApporteur(
       }
       return { etat: fin.getTime() < maintenant.getTime() ? "expiree" : "reservee", jusquAu: fin };
     case "confirmee":
-      return { etat: fin.getTime() < maintenant.getTime() ? "expiree" : "reservee", jusquAu: fin };
+      return { etat: fin.getTime() < maintenant.getTime() ? "expiree" : "confirmee", jusquAu: fin };
     case "terminee":
       return { etat: "expiree", jusquAu: fin };
     case "deja_connue":

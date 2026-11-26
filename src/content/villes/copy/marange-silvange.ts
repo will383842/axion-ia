@@ -65,7 +65,7 @@ export const MARANGE_SILVANGE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission Axion-IA à Marange-Silvange ?",
-      a: "Nos consultants interviennent depuis Metz en 15 min via A31. Marange-Silvange fait partie de l'aire d'attraction messine, déplacements sans surcoût hébergement. Sessions sur site ou en visio selon vos préférences.",
+      a: "Nos consultants interviennent depuis Metz en 15 min via A31. Marange-Silvange fait partie de l'aire d'attraction messine. Sessions sur site ou en visio selon vos préférences.",
     },
   ],
 };
