@@ -64,8 +64,8 @@ export const EPINAY_SOUS_SENART_COPY: VilleCopy = {
       a: "Audit IA (Sur place {{price:audit-flash|flat}} à Stratégique), interventions sur site, implémentation IA (agents conversationnels, automatisations métier), coaching 1-to-1 dirigeants, plateformes web/SaaS IA sur mesure.",
     },
     {
-      q: "Intervenez-vous à Épinay-sous-Sénart ?",
-      a: "Oui. Nous intervenons dans vos locaux à Épinay-sous-Sénart, partout en France, sur place ou à distance.",
+      q: "Comment se déroule une mission à Épinay-sous-Sénart ?",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Épinay-sous-Sénart, comme partout en France, ou à distance.",
     },
   ],
 };

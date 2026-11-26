@@ -64,8 +64,8 @@ export const ROUSSILLON_COPY: VilleCopy = {
       a: "Pour les TPE artisans BTP et commerçants à Roussillon, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation pratique, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, classification photos, gestion stocks et planning.",
     },
     {
-      q: "Intervenez-vous à Roussillon ?",
-      a: "Oui. Nous intervenons dans vos locaux à Roussillon, partout en France, sur place ou à distance.",
+      q: "Comment se déroule une mission à Roussillon ?",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Roussillon, comme partout en France, ou à distance.",
     },
   ],
 };

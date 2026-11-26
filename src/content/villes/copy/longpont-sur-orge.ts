@@ -64,8 +64,8 @@ export const LONGPONT_SUR_ORGE_COPY: VilleCopy = {
       a: "Oui, implémentation IA pour PME tertiaires du Hurepoix : CRM augmentés, classification documents, automatisations workflow. Tarifs publics, ROI chiffré contractuel.",
     },
     {
-      q: "Intervenez-vous à Longpont-sur-Orge ?",
-      a: "Oui. Nous intervenons dans vos locaux à Longpont-sur-Orge, partout en France, sur place ou à distance.",
+      q: "Comment se déroule une mission à Longpont-sur-Orge ?",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Longpont-sur-Orge, comme partout en France, ou à distance.",
     },
   ],
 };

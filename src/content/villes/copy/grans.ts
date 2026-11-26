@@ -64,8 +64,8 @@ export const GRANS_COPY: VilleCopy = {
       a: "Oui, nous intervenons en BTP et commerce de proximité sur automatisation devis et chiffrage, gestion planning chantiers, content marketing local, fiches Google Business, SAV conversationnel.",
     },
     {
-      q: "Intervenez-vous à Grans ?",
-      a: "Oui. Nous intervenons dans vos locaux à Grans, partout en France, sur place ou à distance.",
+      q: "Comment se déroule une mission à Grans ?",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Grans, comme partout en France, ou à distance.",
     },
   ],
 };

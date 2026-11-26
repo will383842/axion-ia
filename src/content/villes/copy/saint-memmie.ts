@@ -64,8 +64,8 @@ export const SAINT_MEMMIE_COPY: VilleCopy = {
       a: "Oui, planification chantiers IA, devis automatisés, gestion planning cabinet, prise de rendez-vous IA, facturation intelligente.",
     },
     {
-      q: "Intervenez-vous à Saint-Memmie ?",
-      a: "Oui. Nous intervenons dans vos locaux à Saint-Memmie, partout en France, sur place ou à distance.",
+      q: "Comment se déroule une mission à Saint-Memmie ?",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Saint-Memmie, comme partout en France, ou à distance.",
     },
   ],
 };

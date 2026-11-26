@@ -64,8 +64,8 @@ export const AURAY_COPY: VilleCopy = {
       a: "Oui, traçabilité production, gestion stocks, e-commerce, planning chantiers, maintenance prédictive, optimisation supply chain pour ostréiculteurs et nautisme du golfe.",
     },
     {
-      q: "Intervenez-vous à Auray ?",
-      a: "Oui. Nous intervenons dans vos locaux à Auray, partout en France, sur place ou à distance.",
+      q: "Comment se déroule une mission à Auray ?",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Auray, comme partout en France, ou à distance.",
     },
   ],
 };

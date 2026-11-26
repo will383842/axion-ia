@@ -232,7 +232,7 @@ export const VANVES_COPY: VilleCopy = {
     },
     {
       q: "Intervenez-vous à Vanves ?",
-      a: "Oui. Nous intervenons dans vos locaux à Vanves, partout en France, sur place ou à distance.",
+      a: "Oui. Nous intervenons sur place à Vanves, comme partout en France, ou à distance.",
     },
     {
       q: "Quelles communes proches de Vanves couvrez-vous ?",

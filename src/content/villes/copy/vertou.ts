@@ -242,7 +242,7 @@ export const VERTOU_COPY: VilleCopy = {
     },
     {
       q: "Intervenez-vous à Vertou ?",
-      a: "Oui. Nous intervenons dans vos locaux à Vertou, partout en France, sur place ou à distance.",
+      a: "Oui. Nous intervenons sur place à Vertou, comme partout en France, ou à distance.",
     },
     {
       q: "Axion-IA travaille-t-elle avec l'écosystème industriel Manitou et Saint-Nazaire ?",

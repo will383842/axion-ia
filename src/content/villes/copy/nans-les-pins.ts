@@ -64,8 +64,8 @@ export const NANS_LES_PINS_COPY: VilleCopy = {
       a: "Oui, nous intervenons en BTP, artisanat et commerce de proximité sur automatisation devis, gestion planning chantiers, content marketing local, fiches Google Business, SAV conversationnel.",
     },
     {
-      q: "Intervenez-vous à Nans-les-Pins ?",
-      a: "Oui. Nous intervenons dans vos locaux à Nans-les-Pins, partout en France, sur place ou à distance.",
+      q: "Comment se déroule une mission à Nans-les-Pins ?",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Nans-les-Pins, comme partout en France, ou à distance.",
     },
   ],
 };

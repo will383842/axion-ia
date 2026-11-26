@@ -64,8 +64,8 @@ export const MALLEMORT_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les artisans BTP : automatisation devis et facturation, gestion planning chantiers, photos avant/après, suivi heures et matériaux, agents IA prise de RDV clients.",
     },
     {
-      q: "Intervenez-vous à Mallemort ?",
-      a: "Oui. Nous intervenons dans vos locaux à Mallemort, partout en France, sur place ou à distance.",
+      q: "Comment se déroule une mission à Mallemort ?",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Mallemort, comme partout en France, ou à distance.",
     },
   ],
 };

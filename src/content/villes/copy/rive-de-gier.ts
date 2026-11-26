@@ -64,8 +64,8 @@ export const RIVE_DE_GIER_COPY: VilleCopy = {
       a: "Pour les indépendants et professions libérales à Rive-de-Gier, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : agents IA prise de RDV, classification documents, CRM augmentés.",
     },
     {
-      q: "Intervenez-vous à Rive-de-Gier ?",
-      a: "Oui. Nous intervenons dans vos locaux à Rive-de-Gier, partout en France, sur place ou à distance.",
+      q: "Comment se déroule une mission à Rive-de-Gier ?",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Rive-de-Gier, comme partout en France, ou à distance.",
     },
   ],
 };

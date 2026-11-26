@@ -64,8 +64,8 @@ export const LE_PECQ_COPY: VilleCopy = {
       a: "L'audit sur place IA démarre à {{price:audit-flash|flat}} pour les TPE/PME au Pecq. Diagnostic complet en 1 journée : cartographie processus, opportunités IA priorisées, ROI estimé, plan d'action.",
     },
     {
-      q: "Intervenez-vous au Pecq ?",
-      a: "Oui. Nous intervenons dans vos locaux au Pecq, partout en France, sur place ou à distance.",
+      q: "Comment se déroule une mission au Pecq ?",
+      a: "Après un premier échange de cadrage, nous intervenons sur place au Pecq, comme partout en France, ou à distance.",
     },
   ],
 };

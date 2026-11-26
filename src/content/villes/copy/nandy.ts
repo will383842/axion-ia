@@ -64,8 +64,8 @@ export const NANDY_COPY: VilleCopy = {
       a: "Oui, nous intervenons auprès des PME tertiaires et prestataires de services implantés dans les zones d'activités de Sénart : automatisation workflow, agents conversationnels B2B, reporting augmenté, CRM intelligent.",
     },
     {
-      q: "Intervenez-vous à Nandy ?",
-      a: "Oui. Nous intervenons dans vos locaux à Nandy, partout en France, sur place ou à distance.",
+      q: "Comment se déroule une mission à Nandy ?",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Nandy, comme partout en France, ou à distance.",
     },
   ],
 };

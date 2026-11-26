@@ -230,7 +230,7 @@ export const JOINVILLE_LE_PONT_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Intervenez-vous à Joinville-le-Pont ?",
-      a: "Oui. Nous intervenons dans vos locaux à Joinville-le-Pont, partout en France, sur place ou à distance.",
+      a: "Oui. Nous intervenons sur place à Joinville-le-Pont, comme partout en France, ou à distance.",
     },
     {
       q: "Quels gains l'IA apporte-t-elle à une agence créative de Joinville-le-Pont ?",

@@ -64,8 +64,8 @@ export const LA_BOUILLADISSE_COPY: VilleCopy = {
       a: "Oui, nos interventions et coaching 1-to-1 sont disponibles en présentiel (vos locaux à La Bouilladisse) ou en visio. Format flexible adapté aux TPE et professions libérales.",
     },
     {
-      q: "Intervenez-vous à La Bouilladisse ?",
-      a: "Oui. Nous intervenons dans vos locaux à La Bouilladisse, partout en France, sur place ou à distance.",
+      q: "Comment se déroule une mission à La Bouilladisse ?",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à La Bouilladisse, comme partout en France, ou à distance.",
     },
   ],
 };

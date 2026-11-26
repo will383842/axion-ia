@@ -64,8 +64,8 @@ export const AVALLON_COPY: VilleCopy = {
       a: "Audit sur place {{price:audit-flash|flat}}, automatisation traçabilité, outils viticulture, gestion stocks et logistique, reporting commercial, optimisation cycles production.",
     },
     {
-      q: "Intervenez-vous à Avallon ?",
-      a: "Oui. Nous intervenons dans vos locaux à Avallon, partout en France, sur place ou à distance.",
+      q: "Comment se déroule une mission à Avallon ?",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Avallon, comme partout en France, ou à distance.",
     },
   ],
 };

@@ -245,8 +245,8 @@ export const CUGNAUX_COPY: VilleCopy = {
       a: "Agents conversationnels, automatisation de la relation client, CRM augmentés et plateformes web sur mesure. Tarifs publics, sans devis opaque.",
     },
     {
-      q: "Intervenez-vous à Cugnaux ?",
-      a: "Oui. Nous intervenons dans vos locaux à Cugnaux, partout en France, sur place ou à distance.",
+      q: "Comment se déroule une mission à Cugnaux ?",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Cugnaux, comme partout en France, ou à distance.",
     },
     {
       q: "Vos interventions sont-elles conformes au RGPD ?",

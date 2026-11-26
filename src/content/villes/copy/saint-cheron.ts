@@ -64,8 +64,8 @@ export const SAINT_CHERON_COPY: VilleCopy = {
       a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Outils IA réservation, gestion salle, fidélisation clientèle.",
     },
     {
-      q: "Intervenez-vous à Saint-Chéron ?",
-      a: "Oui. Nous intervenons dans vos locaux à Saint-Chéron, partout en France, sur place ou à distance.",
+      q: "Comment se déroule une mission à Saint-Chéron ?",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Saint-Chéron, comme partout en France, ou à distance.",
     },
   ],
 };

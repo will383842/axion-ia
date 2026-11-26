@@ -64,8 +64,8 @@ export const SAINT_VALLIER_COPY: VilleCopy = {
       a: "Optimisation tournées livraison, prédiction demande, gestion flotte véhicules, automatisation administrative transport. Intervention sur site entrepôt ou en visio.",
     },
     {
-      q: "Intervenez-vous à Saint-Vallier ?",
-      a: "Oui. Nous intervenons dans vos locaux à Saint-Vallier, partout en France, sur place ou à distance.",
+      q: "Comment se déroule une mission à Saint-Vallier ?",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Saint-Vallier, comme partout en France, ou à distance.",
     },
   ],
 };

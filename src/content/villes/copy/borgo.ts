@@ -64,8 +64,8 @@ export const BORGO_COPY: VilleCopy = {
       a: "Pour les TPE artisans BTP à Borgo et plaine orientale, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation pratique, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, classification photos chantiers, gestion planning.",
     },
     {
-      q: "Intervenez-vous en Corse ?",
-      a: "Oui. Nous intervenons dans vos locaux en Corse, partout en France, sur place ou à distance.",
+      q: "Comment se déroule une mission en Corse ?",
+      a: "Après un premier échange de cadrage, nous intervenons sur place en Corse, comme partout en France, ou à distance.",
     },
   ],
 };

@@ -64,8 +64,8 @@ export const AUTUN_COPY: VilleCopy = {
       a: "Audit complet processus IA, implémentation agents conversationnels B2B, automatisation workflow documentaire, CRM augmenté, formation équipes. Tarifs publics adaptés PME.",
     },
     {
-      q: "Intervenez-vous à Autun ?",
-      a: "Oui. Nous intervenons dans vos locaux à Autun, partout en France, sur place ou à distance.",
+      q: "Comment se déroule une mission à Autun ?",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Autun, comme partout en France, ou à distance.",
     },
   ],
 };

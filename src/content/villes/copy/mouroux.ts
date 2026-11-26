@@ -64,8 +64,8 @@ export const MOUROUX_COPY: VilleCopy = {
       a: "Oui, nous intervenons auprès des TPE artisans et commerçants de Mouroux et de l'agglomération Coulommiers : automatisation devis et facturation, gestion planning, communication digitale, fidélisation clients. Formats courts adaptés.",
     },
     {
-      q: "Intervenez-vous à Mouroux ?",
-      a: "Oui. Nous intervenons dans vos locaux à Mouroux, partout en France, sur place ou à distance.",
+      q: "Comment se déroule une mission à Mouroux ?",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Mouroux, comme partout en France, ou à distance.",
     },
   ],
 };

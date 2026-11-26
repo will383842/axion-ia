@@ -233,7 +233,7 @@ export const ISSY_LES_MOULINEAUX_COPY: VilleCopy = {
     },
     {
       q: "Intervenez-vous à Issy-les-Moulineaux ?",
-      a: "Oui. Nous intervenons dans vos locaux à Issy-les-Moulineaux, partout en France, sur place ou à distance.",
+      a: "Oui. Nous intervenons sur place à Issy-les-Moulineaux, comme partout en France, ou à distance.",
     },
     {
       q: "Quels délais pour un audit à Issy-les-Moulineaux ?",

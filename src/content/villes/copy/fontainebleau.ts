@@ -64,8 +64,8 @@ export const FONTAINEBLEAU_COPY: VilleCopy = {
       a: "Oui, nous accompagnons l'hôtellerie et la restauration haut de gamme à Fontainebleau : automatisation gestion réservations, yield management IA, chatbots conciergerie multilingues, analyse satisfaction client, optimisation staffing saisonnier.",
     },
     {
-      q: "Intervenez-vous à Fontainebleau ?",
-      a: "Oui. Nous intervenons dans vos locaux à Fontainebleau, partout en France, sur place ou à distance.",
+      q: "Comment se déroule une mission à Fontainebleau ?",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Fontainebleau, comme partout en France, ou à distance.",
     },
   ],
 };

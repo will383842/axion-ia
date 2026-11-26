@@ -60,8 +60,8 @@ export const SAUTRON_COPY: VilleCopy = {
       a: "Pour les PME tertiaires de l'ouest nantais, nous proposons les 5 services Axion-IA : audit IA (Sur place à Stratégique), interventions sur site, implémentation IA (agents, automatisations), coaching 1-to-1 dirigeants, et plateformes web/SaaS IA sur mesure. Tarifs publics.",
     },
     {
-      q: "Intervenez-vous à Sautron ?",
-      a: "Oui. Nous intervenons dans vos locaux à Sautron, partout en France, sur place ou à distance.",
+      q: "Comment se déroule une mission à Sautron ?",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Sautron, comme partout en France, ou à distance.",
     },
     {
       q: "L'audit sur place {{price:audit-flash|flat}} est-il adapté aux indépendants ?",

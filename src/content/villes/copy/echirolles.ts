@@ -231,8 +231,8 @@ export const ECHIROLLES_COPY: VilleCopy = {
       a: "Les interventions Axion-IA à Échirolles démarrent à {{price:intervention-4h|flat}}, l'Audit sur place 4h à {{price:audit-flash|flat}}, et l'implémentation à {{price:impl-poc|entry}}. Tous nos tarifs sont publics sur axion-ia.com.",
     },
     {
-      q: "Intervenez-vous à Échirolles ?",
-      a: "Oui. Nous intervenons dans vos locaux à Échirolles, partout en France, sur place ou à distance.",
+      q: "Comment se déroule une mission à Échirolles ?",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Échirolles, comme partout en France, ou à distance.",
     },
     {
       q: "Axion-IA intervient-il dans les communes proches d'Échirolles ?",

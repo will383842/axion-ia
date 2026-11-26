@@ -230,7 +230,7 @@ export const LA_CHAPELLE_SUR_ERDRE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Intervenez-vous à La Chapelle-sur-Erdre ?",
-      a: "Oui. Nous intervenons dans vos locaux à La Chapelle-sur-Erdre, partout en France, sur place ou à distance.",
+      a: "Oui. Nous intervenons sur place à La Chapelle-sur-Erdre, comme partout en France, ou à distance.",
     },
     {
       q: "Quels gains l'IA apporte-t-elle à une TPE de services de La Chapelle-sur-Erdre ?",

@@ -64,8 +64,8 @@ export const PACY_SUR_EURE_COPY: VilleCopy = {
       a: "Pour les TPE et professions libérales à Pacy-sur-Eure, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation comptabilité, gestion agenda, classification documents, chatbot cabinet.",
     },
     {
-      q: "Intervenez-vous à Pacy-sur-Eure ?",
-      a: "Oui. Nous intervenons dans vos locaux à Pacy-sur-Eure, partout en France, sur place ou à distance.",
+      q: "Comment se déroule une mission à Pacy-sur-Eure ?",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Pacy-sur-Eure, comme partout en France, ou à distance.",
     },
   ],
 };

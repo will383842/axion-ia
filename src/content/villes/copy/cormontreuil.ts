@@ -64,8 +64,8 @@ export const CORMONTREUIL_COPY: VilleCopy = {
       a: "Oui, planification chantiers IA, devis automatisés, CRM augmenté, gestion planning, facturation intelligente pour artisans et commerçants.",
     },
     {
-      q: "Intervenez-vous à Cormontreuil ?",
-      a: "Oui. Nous intervenons dans vos locaux à Cormontreuil, partout en France, sur place ou à distance.",
+      q: "Comment se déroule une mission à Cormontreuil ?",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Cormontreuil, comme partout en France, ou à distance.",
     },
   ],
 };

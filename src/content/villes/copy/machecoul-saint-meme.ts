@@ -64,8 +64,8 @@ export const MACHECOUL_SAINT_MEME_COPY: VilleCopy = {
       a: "Oui, l'IA apporte des gains concrets aux activités rurales : gestion parcellaire, traçabilité, prévisions, automatisation administrative, agents IA relation client. Adapté aux TPE agricoles et maraîchères du marais breton.",
     },
     {
-      q: "Intervenez-vous à Machecoul-Saint-Même ?",
-      a: "Oui. Nous intervenons dans vos locaux à Machecoul-Saint-Même, partout en France, sur place ou à distance.",
+      q: "Comment se déroule une mission à Machecoul-Saint-Même ?",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Machecoul-Saint-Même, comme partout en France, ou à distance.",
     },
   ],
 };

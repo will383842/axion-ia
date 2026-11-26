@@ -64,8 +64,8 @@ export const CHATILLON_SUR_SEINE_COPY: VilleCopy = {
       a: "Audit sur place {{price:audit-flash|flat}}, gestion réservations IA, optimisation avis clients et e-réputation, fidélisation, reporting saisonnalité, marketing autour du Musée du Châtillonnais et du Vase de Vix.",
     },
     {
-      q: "Intervenez-vous à Châtillon-sur-Seine ?",
-      a: "Oui. Nous intervenons dans vos locaux à Châtillon-sur-Seine, partout en France, sur place ou à distance.",
+      q: "Comment se déroule une mission à Châtillon-sur-Seine ?",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Châtillon-sur-Seine, comme partout en France, ou à distance.",
     },
   ],
 };

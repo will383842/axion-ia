@@ -64,8 +64,8 @@ export const DOUCHY_LES_MINES_COPY: VilleCopy = {
       a: "Pour les commerçants et professions libérales à Douchy-les-Mines, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : agents conversationnels, automatisation RDV, fidélisation.",
     },
     {
-      q: "Intervenez-vous à Douchy-les-Mines ?",
-      a: "Oui. Nous intervenons dans vos locaux à Douchy-les-Mines, partout en France, sur place ou à distance.",
+      q: "Comment se déroule une mission à Douchy-les-Mines ?",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Douchy-les-Mines, comme partout en France, ou à distance.",
     },
   ],
 };

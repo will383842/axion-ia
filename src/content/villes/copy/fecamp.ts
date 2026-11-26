@@ -64,8 +64,8 @@ export const FECAMP_COPY: VilleCopy = {
       a: "L'audit sur place propose un tarif d'entrée accessible pour les TPE. Pour les PME maritimes et touristiques, l'audit stratégique complet est adapté au périmètre. Tarifs publics, pas de devis opaque.",
     },
     {
-      q: "Intervenez-vous à Fécamp ?",
-      a: "Oui. Nous intervenons dans vos locaux à Fécamp, partout en France, sur place ou à distance.",
+      q: "Comment se déroule une mission à Fécamp ?",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Fécamp, comme partout en France, ou à distance.",
     },
   ],
 };

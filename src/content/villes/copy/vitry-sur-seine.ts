@@ -422,7 +422,7 @@ export const VITRY_SUR_SEINE_COPY: VilleCopy = {
     },
     {
       q: "Intervenez-vous à Vitry-sur-Seine ?",
-      a: "Oui. Nous intervenons dans vos locaux à Vitry-sur-Seine, partout en France, sur place ou à distance.",
+      a: "Oui. Nous intervenons sur place à Vitry-sur-Seine, comme partout en France, ou à distance.",
     },
     {
       q: "Une PME vitriote sans DSI peut-elle bénéficier d'une implémentation IA clés en main ?",

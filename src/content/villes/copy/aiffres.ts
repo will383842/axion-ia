@@ -64,8 +64,8 @@ export const AIFFRES_COPY: VilleCopy = {
       a: "Pour les professions libérales d'Aiffres et de l'agglomération niortaise, nous proposons les 5 services Axion-IA : audit IA (Sur place à Stratégique), interventions sur site, implémentation IA (agents, automatisations), coaching 1-to-1, et plateformes web/SaaS IA sur mesure.",
     },
     {
-      q: "Intervenez-vous à Aiffres ?",
-      a: "Oui. Nous intervenons dans vos locaux à Aiffres, partout en France, sur place ou à distance.",
+      q: "Comment se déroule une mission à Aiffres ?",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Aiffres, comme partout en France, ou à distance.",
     },
   ],
 };

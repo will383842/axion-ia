@@ -64,8 +64,8 @@ export const GUEMENE_PENFAO_COPY: VilleCopy = {
       a: "Oui, nous accompagnons médecins, pharmaciens et paramédicaux de Guémené-Penfao sur des cas IA pratiques : agents IA prise de rendez-vous, automatisation secrétariat, gestion planning, outils de communication patients. RGPD strictement respecté.",
     },
     {
-      q: "Intervenez-vous à Guémené-Penfao ?",
-      a: "Oui. Nous intervenons dans vos locaux à Guémené-Penfao, partout en France, sur place ou à distance.",
+      q: "Comment se déroule une mission à Guémené-Penfao ?",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Guémené-Penfao, comme partout en France, ou à distance.",
     },
   ],
 };

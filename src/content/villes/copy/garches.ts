@@ -64,8 +64,8 @@ export const GARCHES_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les PME et cabinets conseil de l'ouest Hauts-de-Seine sur leurs cas IA : automatisation workflow, agents conversationnels B2B, classification documents, reporting augmenté, CRM intelligent. Nous intervenons dans vos locaux à Garches, partout en France.",
     },
     {
-      q: "Intervenez-vous à Garches ?",
-      a: "Oui. Nous intervenons dans vos locaux à Garches, partout en France, sur place ou à distance.",
+      q: "Comment se déroule une mission à Garches ?",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Garches, comme partout en France, ou à distance.",
     },
   ],
 };

@@ -64,8 +64,8 @@ export const LE_PELLERIN_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les TPE artisans BTP et commerçants du Pellerin sur des cas IA concrets : automatisation devis, planification chantiers, gestion stocks, communication locale et agents IA de prise de rendez-vous.",
     },
     {
-      q: "Intervenez-vous au Pellerin ?",
-      a: "Oui. Nous intervenons dans vos locaux au Pellerin, partout en France, sur place ou à distance.",
+      q: "Comment se déroule une mission au Pellerin ?",
+      a: "Après un premier échange de cadrage, nous intervenons sur place au Pellerin, comme partout en France, ou à distance.",
     },
   ],
 };

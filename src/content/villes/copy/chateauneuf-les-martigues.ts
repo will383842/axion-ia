@@ -64,8 +64,8 @@ export const CHATEAUNEUF_LES_MARTIGUES_COPY: VilleCopy = {
       a: "Oui, nous intervenons en pétrochimie et industrie lourde sur maintenance prédictive capteurs, optimisation énergétique, gestion documentaire HSE, agents IA support technique, sécurité opérationnelle.",
     },
     {
-      q: "Intervenez-vous à Châteauneuf-les-Martigues ?",
-      a: "Oui. Nous intervenons dans vos locaux à Châteauneuf-les-Martigues, partout en France, sur place ou à distance.",
+      q: "Comment se déroule une mission à Châteauneuf-les-Martigues ?",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Châteauneuf-les-Martigues, comme partout en France, ou à distance.",
     },
   ],
 };

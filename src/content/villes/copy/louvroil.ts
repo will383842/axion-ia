@@ -64,8 +64,8 @@ export const LOUVROIL_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les TPE artisans BTP de Louvroil et du Val de Sambre : automatisation devis et factures, agents IA prise de rendez-vous, classification photos chantiers, gestion stocks matériaux, planification tournées.",
     },
     {
-      q: "Intervenez-vous à Louvroil ?",
-      a: "Oui. Nous intervenons dans vos locaux à Louvroil, partout en France, sur place ou à distance.",
+      q: "Comment se déroule une mission à Louvroil ?",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Louvroil, comme partout en France, ou à distance.",
     },
   ],
 };

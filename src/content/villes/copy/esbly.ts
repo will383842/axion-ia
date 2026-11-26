@@ -64,8 +64,8 @@ export const ESBLY_COPY: VilleCopy = {
       a: "Oui, nous intervenons auprès des PME prestataires de services entre Esbly, Lagny-sur-Marne et Meaux : automatisation workflow, agents conversationnels B2B, reporting augmenté, CRM intelligent.",
     },
     {
-      q: "Intervenez-vous à Esbly ?",
-      a: "Oui. Nous intervenons dans vos locaux à Esbly, partout en France, sur place ou à distance.",
+      q: "Comment se déroule une mission à Esbly ?",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Esbly, comme partout en France, ou à distance.",
     },
   ],
 };

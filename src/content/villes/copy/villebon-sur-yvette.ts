@@ -64,8 +64,8 @@ export const VILLEBON_SUR_YVETTE_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les PME ingénierie et services de Courtaboeuf sur leurs cas IA : automatisation reporting, classification documents techniques, prédiction délais, CRM, gestion projet assistée.",
     },
     {
-      q: "Intervenez-vous à Villebon-sur-Yvette ?",
-      a: "Oui. Nous intervenons dans vos locaux à Villebon-sur-Yvette, partout en France, sur place ou à distance.",
+      q: "Comment se déroule une mission à Villebon-sur-Yvette ?",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Villebon-sur-Yvette, comme partout en France, ou à distance.",
     },
   ],
 };

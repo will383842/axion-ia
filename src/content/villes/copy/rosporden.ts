@@ -64,8 +64,8 @@ export const ROSPORDEN_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les acteurs du tourisme vert et hébergeurs autour de Rosporden sur leurs cas IA : agents conversationnels réservation, gestion saisonnalité, classification avis clients, tarification dynamique.",
     },
     {
-      q: "Intervenez-vous à Rosporden ?",
-      a: "Oui. Nous intervenons dans vos locaux à Rosporden, partout en France, sur place ou à distance.",
+      q: "Comment se déroule une mission à Rosporden ?",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Rosporden, comme partout en France, ou à distance.",
     },
   ],
 };

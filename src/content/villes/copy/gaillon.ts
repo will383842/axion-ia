@@ -64,8 +64,8 @@ export const GAILLON_COPY: VilleCopy = {
       a: "Pour les TPE artisans et commerçants à Gaillon, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, gestion stocks, chatbot accueil, classification photos, facturation.",
     },
     {
-      q: "Intervenez-vous à Gaillon ?",
-      a: "Oui. Nous intervenons dans vos locaux à Gaillon, partout en France, sur place ou à distance.",
+      q: "Comment se déroule une mission à Gaillon ?",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Gaillon, comme partout en France, ou à distance.",
     },
   ],
 };

@@ -231,8 +231,8 @@ export const BEZONS_COPY: VilleCopy = {
       a: "Nos tarifs publics démarrent à {{price:audit-flash|flat}} pour un Audit sur place et {{price:intervention-4h|flat}} pour une intervention au format collectif (1 journée) à Bezons. L'implémentation et l'accompagnement un-à-un débutent à {{price:intervention-dirigeants|flat}}, sans frais cachés.",
     },
     {
-      q: "Intervenez-vous à Bezons (Val-d'Oise) ?",
-      a: "Oui. Nous intervenons dans vos locaux à Bezons (Val-d'Oise), partout en France, sur place ou à distance.",
+      q: "Comment se déroule une mission à Bezons (Val-d'Oise) ?",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Bezons (Val-d'Oise), comme partout en France, ou à distance.",
     },
     {
       q: "Quels délais pour démarrer un projet IA à Bezons ?",

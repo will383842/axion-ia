@@ -64,8 +64,8 @@ export const TRIGNAC_COPY: VilleCopy = {
       a: "Oui, l'IA apporte des gains concrets aux commerces : automatisation gestion stocks, agents IA relation client, prévisions de vente, optimisation planning équipes. ROI mesurable dès les premières semaines.",
     },
     {
-      q: "Intervenez-vous à Trignac ?",
-      a: "Oui. Nous intervenons dans vos locaux à Trignac, partout en France, sur place ou à distance.",
+      q: "Comment se déroule une mission à Trignac ?",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Trignac, comme partout en France, ou à distance.",
     },
   ],
 };

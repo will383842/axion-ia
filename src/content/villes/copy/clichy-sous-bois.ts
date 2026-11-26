@@ -231,7 +231,7 @@ export const CLICHY_SOUS_BOIS_COPY: VilleCopy = {
     },
     {
       q: "Intervenez-vous à Clichy-sous-Bois ?",
-      a: "Oui. Nous intervenons dans vos locaux à Clichy-sous-Bois, partout en France, sur place ou à distance.",
+      a: "Oui. Nous intervenons sur place à Clichy-sous-Bois, comme partout en France, ou à distance.",
     },
     {
       q: "Quels délais pour démarrer une mission IA à Clichy-sous-Bois ?",

@@ -64,8 +64,8 @@ export const THIZY_LES_BOURGS_COPY: VilleCopy = {
       a: "Pour les TPE artisans BTP et commerçants, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1.",
     },
     {
-      q: "Intervenez-vous à Thizy-les-Bourgs ?",
-      a: "Oui. Nous intervenons dans vos locaux à Thizy-les-Bourgs, partout en France, sur place ou à distance.",
+      q: "Comment se déroule une mission à Thizy-les-Bourgs ?",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Thizy-les-Bourgs, comme partout en France, ou à distance.",
     },
   ],
 };

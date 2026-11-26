@@ -60,8 +60,8 @@ export const WORMHOUT_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les exploitations agricoles de Flandre intérieure. Cas typiques IA : prédiction rendements, optimisation assolement, automatisation gestion parcelles, classification images satellites, suivi troupeaux.",
     },
     {
-      q: "Intervenez-vous à Wormhout ?",
-      a: "Oui. Nous intervenons dans vos locaux à Wormhout, partout en France, sur place ou à distance.",
+      q: "Comment se déroule une mission à Wormhout ?",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Wormhout, comme partout en France, ou à distance.",
     },
     {
       q: "Quels secteurs accompagnez-vous à Wormhout ?",

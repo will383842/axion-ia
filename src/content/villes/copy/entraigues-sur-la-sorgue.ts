@@ -64,8 +64,8 @@ export const ENTRAIGUES_SUR_LA_SORGUE_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les maraîchers sur prévision de récoltes, traçabilité produits, optimisation tournées de livraison, gestion stocks frais et automatisation administrative coopératives.",
     },
     {
-      q: "Intervenez-vous à Entraigues-sur-la-Sorgue ?",
-      a: "Oui. Nous intervenons dans vos locaux à Entraigues-sur-la-Sorgue, partout en France, sur place ou à distance.",
+      q: "Comment se déroule une mission à Entraigues-sur-la-Sorgue ?",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Entraigues-sur-la-Sorgue, comme partout en France, ou à distance.",
     },
   ],
 };

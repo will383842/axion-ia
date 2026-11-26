@@ -64,8 +64,8 @@ export const SAINT_PIERRE_DU_PERRAY_COPY: VilleCopy = {
       a: "Audit IA (Sur place {{price:audit-flash|flat}} à Stratégique), interventions sur site, implémentation IA (agents conversationnels, automatisations métier), coaching 1-to-1 dirigeants, plateformes web/SaaS IA sur mesure.",
     },
     {
-      q: "Intervenez-vous à Saint-Pierre-du-Perray ?",
-      a: "Oui. Nous intervenons dans vos locaux à Saint-Pierre-du-Perray, partout en France, sur place ou à distance.",
+      q: "Comment se déroule une mission à Saint-Pierre-du-Perray ?",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Saint-Pierre-du-Perray, comme partout en France, ou à distance.",
     },
   ],
 };

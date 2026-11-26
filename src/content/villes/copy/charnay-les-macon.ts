@@ -64,8 +64,8 @@ export const CHARNAY_LES_MACON_COPY: VilleCopy = {
       a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, gestion stock.",
     },
     {
-      q: "Intervenez-vous à Charnay-lès-Mâcon ?",
-      a: "Oui. Nous intervenons dans vos locaux à Charnay-lès-Mâcon, partout en France, sur place ou à distance.",
+      q: "Comment se déroule une mission à Charnay-lès-Mâcon ?",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Charnay-lès-Mâcon, comme partout en France, ou à distance.",
     },
   ],
 };

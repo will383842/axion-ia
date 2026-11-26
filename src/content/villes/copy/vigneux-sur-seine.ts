@@ -245,8 +245,8 @@ export const VIGNEUX_SUR_SEINE_COPY: VilleCopy = {
       a: "Oui, les TPE sont notre priorité. Pour commerces et restauration, nous déployons fidélisation client automatisée, gestion des réservations, optimisation des stocks et reporting clair adaptés aux petites structures.",
     },
     {
-      q: "Intervenez-vous à Vigneux-sur-Seine ?",
-      a: "Oui. Nous intervenons dans vos locaux à Vigneux-sur-Seine, partout en France, sur place ou à distance.",
+      q: "Comment se déroule une mission à Vigneux-sur-Seine ?",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Vigneux-sur-Seine, comme partout en France, ou à distance.",
     },
   ],
 };

@@ -64,8 +64,8 @@ export const LOUVRES_COPY: VilleCopy = {
       a: "Pour les professions libérales à Louvres, nous proposons audit IA adapté, intervention formation 1 journée, coaching 1-to-1, implémentation agents conversationnels et automatisation. RGPD strict, secret professionnel respecté.",
     },
     {
-      q: "Intervenez-vous à Louvres ?",
-      a: "Oui. Nous intervenons dans vos locaux à Louvres, partout en France, sur place ou à distance.",
+      q: "Comment se déroule une mission à Louvres ?",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Louvres, comme partout en France, ou à distance.",
     },
   ],
 };

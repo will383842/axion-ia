@@ -64,8 +64,8 @@ export const AVON_COPY: VilleCopy = {
       a: "Oui, nos interventions IA sur site à Avon sont adaptées aux TPE artisans et commerces. Formats demi-journée ou journée complète, vos équipes repartent autonomes sur les outils IA configurés métier.",
     },
     {
-      q: "Intervenez-vous à Avon ?",
-      a: "Oui. Nous intervenons dans vos locaux à Avon, partout en France, sur place ou à distance.",
+      q: "Comment se déroule une mission à Avon ?",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Avon, comme partout en France, ou à distance.",
     },
   ],
 };

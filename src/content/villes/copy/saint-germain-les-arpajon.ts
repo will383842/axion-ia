@@ -64,8 +64,8 @@ export const SAINT_GERMAIN_LES_ARPAJON_COPY: VilleCopy = {
       a: "Audit IA (Sur place {{price:audit-flash|flat}} à Stratégique), interventions sur site, implémentation IA (agents conversationnels, automatisations métier), coaching 1-to-1 dirigeants, plateformes web/SaaS IA sur mesure.",
     },
     {
-      q: "Intervenez-vous à Saint-Germain-lès-Arpajon ?",
-      a: "Oui. Nous intervenons dans vos locaux à Saint-Germain-lès-Arpajon, partout en France, sur place ou à distance.",
+      q: "Comment se déroule une mission à Saint-Germain-lès-Arpajon ?",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Saint-Germain-lès-Arpajon, comme partout en France, ou à distance.",
     },
   ],
 };

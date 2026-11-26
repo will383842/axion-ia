@@ -64,8 +64,8 @@ export const SAINT_JEAN_BONNEFONDS_COPY: VilleCopy = {
       a: "Pour les TPE artisans BTP et commerçants à Saint-Jean-Bonnefonds, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV.",
     },
     {
-      q: "Intervenez-vous à Saint-Jean-Bonnefonds ?",
-      a: "Oui. Nous intervenons dans vos locaux à Saint-Jean-Bonnefonds, partout en France, sur place ou à distance.",
+      q: "Comment se déroule une mission à Saint-Jean-Bonnefonds ?",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Saint-Jean-Bonnefonds, comme partout en France, ou à distance.",
     },
   ],
 };

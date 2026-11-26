@@ -64,8 +64,8 @@ export const JANZE_COPY: VilleCopy = {
       a: "Oui, optimisation lignes de production agroalimentaires, traçabilité matière première, devis automatisés artisans, planning chantiers, fidélisation clients pour ateliers et commerces.",
     },
     {
-      q: "Intervenez-vous à Janzé ?",
-      a: "Oui. Nous intervenons dans vos locaux à Janzé, partout en France, sur place ou à distance.",
+      q: "Comment se déroule une mission à Janzé ?",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Janzé, comme partout en France, ou à distance.",
     },
   ],
 };

@@ -64,8 +64,8 @@ export const SAINT_ANDRE_LES_VERGERS_COPY: VilleCopy = {
       a: "Oui, gestion réservations, automatisation prises de commande, suivi stocks cuisine, planning équipes, fidélisation client, reporting ventes pour restaurateurs et hôteliers.",
     },
     {
-      q: "Intervenez-vous à Saint-André-les-Vergers ?",
-      a: "Oui. Nous intervenons dans vos locaux à Saint-André-les-Vergers, partout en France, sur place ou à distance.",
+      q: "Comment se déroule une mission à Saint-André-les-Vergers ?",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Saint-André-les-Vergers, comme partout en France, ou à distance.",
     },
   ],
 };

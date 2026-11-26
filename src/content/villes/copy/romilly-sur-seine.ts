@@ -64,8 +64,8 @@ export const ROMILLY_SUR_SEINE_COPY: VilleCopy = {
       a: "Oui, optimisation tournées, gestion entrepôts, suivi expéditions, automatisation facturation, prévision stocks, reporting clients pour TPE/PME logistique et transport.",
     },
     {
-      q: "Intervenez-vous à Romilly-sur-Seine ?",
-      a: "Oui. Nous intervenons dans vos locaux à Romilly-sur-Seine, partout en France, sur place ou à distance.",
+      q: "Comment se déroule une mission à Romilly-sur-Seine ?",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Romilly-sur-Seine, comme partout en France, ou à distance.",
     },
   ],
 };

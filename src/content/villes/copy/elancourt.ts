@@ -233,7 +233,7 @@ export const ELANCOURT_COPY: VilleCopy = {
     },
     {
       q: "Intervenez-vous à Élancourt ?",
-      a: "Oui. Nous intervenons dans vos locaux à Élancourt, partout en France, sur place ou à distance.",
+      a: "Oui. Nous intervenons sur place à Élancourt, comme partout en France, ou à distance.",
     },
     {
       q: "Axion-IA couvre-t-il les communes voisines d'Élancourt ?",

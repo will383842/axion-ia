@@ -64,8 +64,8 @@ export const SURZUR_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les gîtes, campings et chambres d'hôtes autour de Surzur et Rhuys sur leurs cas IA : agents conversationnels réservation multilingue, optimisation tarification saisonnière, classification avis clients, automatisation channel management.",
     },
     {
-      q: "Intervenez-vous à Surzur ?",
-      a: "Oui. Nous intervenons dans vos locaux à Surzur, partout en France, sur place ou à distance.",
+      q: "Comment se déroule une mission à Surzur ?",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Surzur, comme partout en France, ou à distance.",
     },
   ],
 };

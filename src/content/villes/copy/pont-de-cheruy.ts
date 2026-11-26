@@ -64,8 +64,8 @@ export const PONT_DE_CHERUY_COPY: VilleCopy = {
       a: "Pour les TPE artisans BTP et commerçants à Pont-de-Chéruy, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, classification photos, gestion stocks.",
     },
     {
-      q: "Intervenez-vous à Pont-de-Chéruy ?",
-      a: "Oui. Nous intervenons dans vos locaux à Pont-de-Chéruy, partout en France, sur place ou à distance.",
+      q: "Comment se déroule une mission à Pont-de-Chéruy ?",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Pont-de-Chéruy, comme partout en France, ou à distance.",
     },
   ],
 };

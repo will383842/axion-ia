@@ -64,8 +64,8 @@ export const AUBY_COPY: VilleCopy = {
       a: "Pour les TPE commerçants à Auby, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : agents IA conversationnels FAQ, automatisation marketing local, classification photos produits, gestion fidélité client.",
     },
     {
-      q: "Intervenez-vous à Auby ?",
-      a: "Oui. Nous intervenons dans vos locaux à Auby, partout en France, sur place ou à distance.",
+      q: "Comment se déroule une mission à Auby ?",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Auby, comme partout en France, ou à distance.",
     },
   ],
 };

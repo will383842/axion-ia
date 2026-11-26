@@ -232,8 +232,8 @@ export const SCHILTIGHEIM_COPY: VilleCopy = {
       a: "Nos interventions IA à Schiltigheim démarrent à {{price:intervention-4h|flat}} pour le format collectif (1 journée), après un Audit sur place à {{price:audit-flash|flat}}. Tarifs publics affichés.",
     },
     {
-      q: "Intervenez-vous à Schiltigheim ?",
-      a: "Oui. Nous intervenons dans vos locaux à Schiltigheim, partout en France, sur place ou à distance.",
+      q: "Comment se déroule une mission à Schiltigheim ?",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Schiltigheim, comme partout en France, ou à distance.",
     },
     {
       q: "Quels secteurs schilikois Axion-IA accompagne-t-il ?",

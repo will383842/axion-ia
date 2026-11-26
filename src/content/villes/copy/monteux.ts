@@ -64,8 +64,8 @@ export const MONTEUX_COPY: VilleCopy = {
       a: "Oui, nous intervenons auprès des parcs de loisirs, hôteliers et restaurateurs sur gestion réservations, agents conversationnels multilingues, content marketing local et optimisation des fiches Google Business.",
     },
     {
-      q: "Intervenez-vous à Monteux ?",
-      a: "Oui. Nous intervenons dans vos locaux à Monteux, partout en France, sur place ou à distance.",
+      q: "Comment se déroule une mission à Monteux ?",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Monteux, comme partout en France, ou à distance.",
     },
   ],
 };

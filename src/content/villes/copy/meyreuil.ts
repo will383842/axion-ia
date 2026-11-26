@@ -64,8 +64,8 @@ export const MEYREUIL_COPY: VilleCopy = {
       a: "Oui, nos interventions et coaching 1-to-1 sont disponibles en présentiel (vos locaux à Meyreuil) ou en visio. Idéal pour les cadres et professions libérales en télétravail.",
     },
     {
-      q: "Intervenez-vous à Meyreuil ?",
-      a: "Oui. Nous intervenons dans vos locaux à Meyreuil, partout en France, sur place ou à distance.",
+      q: "Comment se déroule une mission à Meyreuil ?",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Meyreuil, comme partout en France, ou à distance.",
     },
   ],
 };

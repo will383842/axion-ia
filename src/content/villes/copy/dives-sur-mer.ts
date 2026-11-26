@@ -64,8 +64,8 @@ export const DIVES_SUR_MER_COPY: VilleCopy = {
       a: "Pour les TPE et ostréiculteurs à Dives-sur-Mer, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : traçabilité lots, prédiction récoltes, classification photos produits, gestion commandes.",
     },
     {
-      q: "Intervenez-vous à Dives-sur-Mer ?",
-      a: "Oui. Nous intervenons dans vos locaux à Dives-sur-Mer, partout en France, sur place ou à distance.",
+      q: "Comment se déroule une mission à Dives-sur-Mer ?",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Dives-sur-Mer, comme partout en France, ou à distance.",
     },
   ],
 };

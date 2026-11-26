@@ -64,8 +64,8 @@ export const SCIEZ_COPY: VilleCopy = {
       a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, gestion stocks saisonniers, classification photos.",
     },
     {
-      q: "Intervenez-vous à Sciez ?",
-      a: "Oui. Nous intervenons dans vos locaux à Sciez, partout en France, sur place ou à distance.",
+      q: "Comment se déroule une mission à Sciez ?",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Sciez, comme partout en France, ou à distance.",
     },
   ],
 };

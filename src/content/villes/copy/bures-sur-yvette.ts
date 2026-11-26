@@ -64,8 +64,8 @@ export const BURES_SUR_YVETTE_COPY: VilleCopy = {
       a: "Oui, notre Audit sur place de 4 heures est disponible à partir de {{price:audit-flash|flat}}, idéal pour les TPE de Bures-sur-Yvette souhaitant un diagnostic rapide de leurs processus avant toute implémentation IA.",
     },
     {
-      q: "Intervenez-vous à Bures-sur-Yvette ?",
-      a: "Oui. Nous intervenons dans vos locaux à Bures-sur-Yvette, partout en France, sur place ou à distance.",
+      q: "Comment se déroule une mission à Bures-sur-Yvette ?",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Bures-sur-Yvette, comme partout en France, ou à distance.",
     },
   ],
 };

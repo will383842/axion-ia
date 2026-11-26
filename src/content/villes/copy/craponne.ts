@@ -64,8 +64,8 @@ export const CRAPONNE_COPY: VilleCopy = {
       a: "Pour les TPE artisans BTP et commerçants à Craponne, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA.",
     },
     {
-      q: "Intervenez-vous à Craponne ?",
-      a: "Oui. Nous intervenons dans vos locaux à Craponne, partout en France, sur place ou à distance.",
+      q: "Comment se déroule une mission à Craponne ?",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Craponne, comme partout en France, ou à distance.",
     },
   ],
 };

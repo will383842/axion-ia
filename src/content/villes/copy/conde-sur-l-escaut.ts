@@ -64,8 +64,8 @@ export const CONDE_SUR_L_ESCAUT_COPY: VilleCopy = {
       a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1, implémentation outils IA métier.",
     },
     {
-      q: "Intervenez-vous à Condé-sur-l'Escaut ?",
-      a: "Oui. Nous intervenons dans vos locaux à Condé-sur-l'Escaut, partout en France, sur place ou à distance.",
+      q: "Comment se déroule une mission à Condé-sur-l'Escaut ?",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Condé-sur-l'Escaut, comme partout en France, ou à distance.",
     },
   ],
 };

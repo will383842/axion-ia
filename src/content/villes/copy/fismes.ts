@@ -64,8 +64,8 @@ export const FISMES_COPY: VilleCopy = {
       a: "Oui, CRM augmenté, prise de rendez-vous IA, gestion planning, fidélisation clients, reporting intelligent pour commerces et cabinets de santé.",
     },
     {
-      q: "Intervenez-vous à Fismes ?",
-      a: "Oui. Nous intervenons dans vos locaux à Fismes, partout en France, sur place ou à distance.",
+      q: "Comment se déroule une mission à Fismes ?",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Fismes, comme partout en France, ou à distance.",
     },
   ],
 };

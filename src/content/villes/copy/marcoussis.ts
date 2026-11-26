@@ -64,8 +64,8 @@ export const MARCOUSSIS_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les PME et bureaux d'études du plateau de Courtabœuf (Les Ulis) ocumentaire, agents conversationnels internes, veille sectorielle augmentée, CRM IA. Nous intervenons dans vos locaux à Marcoussis, partout en France. Audit sur place {{price:audit-flash|flat}}.",
     },
     {
-      q: "Intervenez-vous à Marcoussis ?",
-      a: "Oui. Nous intervenons dans vos locaux à Marcoussis, partout en France, sur place ou à distance.",
+      q: "Comment se déroule une mission à Marcoussis ?",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Marcoussis, comme partout en France, ou à distance.",
     },
   ],
 };

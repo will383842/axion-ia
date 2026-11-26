@@ -64,8 +64,8 @@ export const CHATEAURENARD_COPY: VilleCopy = {
       a: "Oui, nous intervenons en agriculture sur prévision de rendement, gestion irrigation prédictive, optimisation main-d'œuvre saisonnière, traçabilité parcellaire, marketing vente directe.",
     },
     {
-      q: "Intervenez-vous à Châteaurenard ?",
-      a: "Oui. Nous intervenons dans vos locaux à Châteaurenard, partout en France, sur place ou à distance.",
+      q: "Comment se déroule une mission à Châteaurenard ?",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Châteaurenard, comme partout en France, ou à distance.",
     },
   ],
 };

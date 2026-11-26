@@ -64,8 +64,8 @@ export const BANNALEC_COPY: VilleCopy = {
       a: "Pour les TPE artisans BTP et commerçants à Bannalec, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, gestion stocks, comptabilité simplifiée.",
     },
     {
-      q: "Intervenez-vous à Bannalec ?",
-      a: "Oui. Nous intervenons dans vos locaux à Bannalec, partout en France, sur place ou à distance.",
+      q: "Comment se déroule une mission à Bannalec ?",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Bannalec, comme partout en France, ou à distance.",
     },
   ],
 };

@@ -64,8 +64,8 @@ export const EPINAY_SUR_ORGE_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les PME du bassin Massy-Longjumeau sur leurs cas IA : automatisation reporting, CRM intelligent, classification documents, optimisation processus RH, gestion projet assistée.",
     },
     {
-      q: "Intervenez-vous à Épinay-sur-Orge ?",
-      a: "Oui. Nous intervenons dans vos locaux à Épinay-sur-Orge, partout en France, sur place ou à distance.",
+      q: "Comment se déroule une mission à Épinay-sur-Orge ?",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Épinay-sur-Orge, comme partout en France, ou à distance.",
     },
   ],
 };

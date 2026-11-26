@@ -64,8 +64,8 @@ export const SAINT_CLEMENT_DE_RIVIERE_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les domaines viticoles AOC Pic Saint-Loup : classification parcellaire, prédiction rendements, automatisation traçabilité, marketing IA direct-to-consumer, chatbot œnotourisme multilingue.",
     },
     {
-      q: "Intervenez-vous à Saint-Clément-de-Rivière ?",
-      a: "Oui. Nous intervenons dans vos locaux à Saint-Clément-de-Rivière, partout en France, sur place ou à distance.",
+      q: "Comment se déroule une mission à Saint-Clément-de-Rivière ?",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Saint-Clément-de-Rivière, comme partout en France, ou à distance.",
     },
   ],
 };

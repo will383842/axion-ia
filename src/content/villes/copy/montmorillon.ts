@@ -64,8 +64,8 @@ export const MONTMORILLON_COPY: VilleCopy = {
       a: "Pour les TPE artisans BTP et commerçants à Montmorillon, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation pratique, coaching 1-to-1. Cas typiques : automatisation devis, gestion stocks, agents IA prise de RDV, marketing digital.",
     },
     {
-      q: "Intervenez-vous à Montmorillon ?",
-      a: "Oui. Nous intervenons dans vos locaux à Montmorillon, partout en France, sur place ou à distance.",
+      q: "Comment se déroule une mission à Montmorillon ?",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Montmorillon, comme partout en France, ou à distance.",
     },
   ],
 };

@@ -64,8 +64,8 @@ export const DONGES_COPY: VilleCopy = {
       a: "Oui, l'IA apporte des gains concrets au secteur industriel : maintenance prédictive, planification production, gestion qualité, traçabilité réglementaire. Adapté aux PME et sous-traitants de l'estuaire de la Loire.",
     },
     {
-      q: "Intervenez-vous à Donges ?",
-      a: "Oui. Nous intervenons dans vos locaux à Donges, partout en France, sur place ou à distance.",
+      q: "Comment se déroule une mission à Donges ?",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Donges, comme partout en France, ou à distance.",
     },
   ],
 };

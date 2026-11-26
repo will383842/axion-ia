@@ -64,8 +64,8 @@ export const MAUGES_SUR_LOIRE_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les TPE artisans BTP et commerçants de toutes les communes déléguées de Mauges-sur-Loire (Saint-Florent-le-Vieil, Montjean, La Pommeraye) sur des cas IA concrets et accessibles.",
     },
     {
-      q: "Intervenez-vous à Mauges-sur-Loire ?",
-      a: "Oui. Nous intervenons dans vos locaux à Mauges-sur-Loire, partout en France, sur place ou à distance.",
+      q: "Comment se déroule une mission à Mauges-sur-Loire ?",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Mauges-sur-Loire, comme partout en France, ou à distance.",
     },
   ],
 };

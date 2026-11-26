@@ -230,7 +230,7 @@ export const HEROUVILLE_SAINT_CLAIR_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Intervenez-vous à Hérouville-Saint-Clair ?",
-      a: "Oui. Nous intervenons dans vos locaux à Hérouville-Saint-Clair, partout en France, sur place ou à distance.",
+      a: "Oui. Nous intervenons sur place à Hérouville-Saint-Clair, comme partout en France, ou à distance.",
     },
     {
       q: "Quels gains l'IA apporte-t-elle à une TPE de services à Hérouville-Saint-Clair ?",

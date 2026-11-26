@@ -64,8 +64,8 @@ export const LANCON_PROVENCE_COPY: VilleCopy = {
       a: "Oui, nos interventions et coaching 1-to-1 sont disponibles en présentiel (vos locaux à Lançon-Provence) ou en visio. Format flexible adapté aux équipes opérationnelles et dirigeants.",
     },
     {
-      q: "Intervenez-vous à Lançon-Provence ?",
-      a: "Oui. Nous intervenons dans vos locaux à Lançon-Provence, partout en France, sur place ou à distance.",
+      q: "Comment se déroule une mission à Lançon-Provence ?",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Lançon-Provence, comme partout en France, ou à distance.",
     },
   ],
 };

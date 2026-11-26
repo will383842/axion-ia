@@ -245,8 +245,8 @@ export const VERSAILLES_COPY: VilleCopy = {
       a: "Automatisation des devis, qualification des demandes entrantes, rédaction d'offres personnalisées, suivi des prestataires et synthèses post-évènement. L'objectif est de libérer du temps commercial sans perdre la touche sur mesure.",
     },
     {
-      q: "Intervenez-vous à Versailles ?",
-      a: "Oui. Nous intervenons dans vos locaux à Versailles, partout en France, sur place ou à distance.",
+      q: "Comment se déroule une mission à Versailles ?",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Versailles, comme partout en France, ou à distance.",
     },
   ],
 };

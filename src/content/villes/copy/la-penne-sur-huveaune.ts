@@ -64,8 +64,8 @@ export const LA_PENNE_SUR_HUVEAUNE_COPY: VilleCopy = {
       a: "Oui, nos interventions et coaching 1-to-1 sont disponibles en présentiel (vos locaux) ou en visio. Format flexible adapté aux cadres et indépendants de la vallée de l'Huveaune.",
     },
     {
-      q: "Intervenez-vous à La Penne-sur-Huveaune ?",
-      a: "Oui. Nous intervenons dans vos locaux à La Penne-sur-Huveaune, partout en France, sur place ou à distance.",
+      q: "Comment se déroule une mission à La Penne-sur-Huveaune ?",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à La Penne-sur-Huveaune, comme partout en France, ou à distance.",
     },
   ],
 };

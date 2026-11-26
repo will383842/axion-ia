@@ -231,7 +231,7 @@ export const LE_GRAND_QUEVILLY_COPY: VilleCopy = {
     },
     {
       q: "Intervenez-vous au Grand-Quevilly ?",
-      a: "Oui. Nous intervenons dans vos locaux au Grand-Quevilly, partout en France, sur place ou à distance.",
+      a: "Oui. Nous intervenons sur place au Grand-Quevilly, comme partout en France, ou à distance.",
     },
     {
       q: "Quels délais pour démarrer une mission IA au Grand-Quevilly ?",

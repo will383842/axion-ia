@@ -64,8 +64,8 @@ export const LES_ABRETS_EN_DAUPHINE_COPY: VilleCopy = {
       a: "Pour les TPE artisans BTP et commerçants aux Abrets, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, classification photos, gestion stocks.",
     },
     {
-      q: "Intervenez-vous aux Abrets en Dauphiné ?",
-      a: "Oui. Nous intervenons dans vos locaux aux Abrets en Dauphiné, partout en France, sur place ou à distance.",
+      q: "Comment se déroule une mission aux Abrets en Dauphiné ?",
+      a: "Après un premier échange de cadrage, nous intervenons sur place aux Abrets en Dauphiné, comme partout en France, ou à distance.",
     },
   ],
 };

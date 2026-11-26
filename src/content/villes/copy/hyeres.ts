@@ -229,8 +229,8 @@ export const HYERES_COPY: VilleCopy = {
 
   faqGeolocalisee: [
     {
-      q: "Intervenez-vous à Hyères et vers les îles d'Or ?",
-      a: "Oui. Nous intervenons dans vos locaux à Hyères et vers les îles d'Or, partout en France, sur place ou à distance.",
+      q: "Comment se déroule une mission à Hyères et vers les îles d'Or ?",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Hyères et vers les îles d'Or, comme partout en France, ou à distance.",
     },
     {
       q: "Quels gains l'IA apporte-t-elle à un hôtelier ou un viticulteur de Hyères ?",

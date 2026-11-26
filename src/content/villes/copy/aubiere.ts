@@ -64,8 +64,8 @@ export const AUBIERE_COPY: VilleCopy = {
       a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1.",
     },
     {
-      q: "Intervenez-vous à Aubière ?",
-      a: "Oui. Nous intervenons dans vos locaux à Aubière, partout en France, sur place ou à distance.",
+      q: "Comment se déroule une mission à Aubière ?",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Aubière, comme partout en France, ou à distance.",
     },
   ],
 };

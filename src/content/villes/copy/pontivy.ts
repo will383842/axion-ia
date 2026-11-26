@@ -64,8 +64,8 @@ export const PONTIVY_COPY: VilleCopy = {
       a: "Oui, CRM clients, fidélisation, gestion rendez-vous, dossier patient, télémédecine, optimisation administrative pour commerces de centre-ville et professionnels de santé.",
     },
     {
-      q: "Intervenez-vous à Pontivy ?",
-      a: "Oui. Nous intervenons dans vos locaux à Pontivy, partout en France, sur place ou à distance.",
+      q: "Comment se déroule une mission à Pontivy ?",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Pontivy, comme partout en France, ou à distance.",
     },
   ],
 };

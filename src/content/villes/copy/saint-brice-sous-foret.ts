@@ -64,8 +64,8 @@ export const SAINT_BRICE_SOUS_FORET_COPY: VilleCopy = {
       a: "Pour les PME tertiaires du nord parisien installées à Saint-Brice-sous-Forêt, audit Stratégique, intervention formation équipes, implémentation IA complète (agents, automatisation, classification). ROI chiffré contractuel.",
     },
     {
-      q: "Intervenez-vous à Saint-Brice-sous-Forêt ?",
-      a: "Oui. Nous intervenons dans vos locaux à Saint-Brice-sous-Forêt, partout en France, sur place ou à distance.",
+      q: "Comment se déroule une mission à Saint-Brice-sous-Forêt ?",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Saint-Brice-sous-Forêt, comme partout en France, ou à distance.",
     },
   ],
 };

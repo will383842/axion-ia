@@ -64,8 +64,8 @@ export const BOLLENE_COPY: VilleCopy = {
       a: "Oui, nous intervenons en BTP, artisanat, sous-traitance industrielle (Tricastin) et commerce de proximité sur automatisation devis, gestion documentaire qualité, content marketing local, fiches Google Business, SAV conversationnel.",
     },
     {
-      q: "Intervenez-vous à Bollène ?",
-      a: "Oui. Nous intervenons dans vos locaux à Bollène, partout en France, sur place ou à distance.",
+      q: "Comment se déroule une mission à Bollène ?",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Bollène, comme partout en France, ou à distance.",
     },
   ],
 };

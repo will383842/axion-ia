@@ -247,7 +247,7 @@ export const GARDANNE_COPY: VilleCopy = {
     },
     {
       q: "Intervenez-vous à Gardanne ?",
-      a: "Oui. Nous intervenons dans vos locaux à Gardanne, partout en France, sur place ou à distance.",
+      a: "Oui. Nous intervenons sur place à Gardanne, comme partout en France, ou à distance.",
     },
   ],
 };

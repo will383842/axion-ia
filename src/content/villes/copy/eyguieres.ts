@@ -64,8 +64,8 @@ export const EYGUIERES_COPY: VilleCopy = {
       a: "Oui, nous accompagnons gîtes, chambres d'hôtes et prestataires agritourisme : agents conversationnels réservation multilingues, optimisation planning saisonnier, marketing IA ciblé, gestion avis clients automatisée.",
     },
     {
-      q: "Intervenez-vous à Eyguières ?",
-      a: "Oui. Nous intervenons dans vos locaux à Eyguières, partout en France, sur place ou à distance.",
+      q: "Comment se déroule une mission à Eyguières ?",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Eyguières, comme partout en France, ou à distance.",
     },
   ],
 };

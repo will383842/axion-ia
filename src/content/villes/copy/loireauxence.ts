@@ -60,8 +60,8 @@ export const LOIREAUXENCE_COPY: VilleCopy = {
       a: "Pour les PME tertiaires du bassin Ancenis-Nantes, nous proposons audit IA (Sur place à Stratégique), interventions sur site, implémentation IA (agents, automatisations), coaching 1-to-1 dirigeants, et plateformes web/SaaS IA. Tarifs publics.",
     },
     {
-      q: "Intervenez-vous à Loireauxence ?",
-      a: "Oui. Nous intervenons dans vos locaux à Loireauxence, partout en France, sur place ou à distance.",
+      q: "Comment se déroule une mission à Loireauxence ?",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Loireauxence, comme partout en France, ou à distance.",
     },
     {
       q: "L'audit sur place {{price:audit-flash|flat}} convient-il aux petites structures ?",

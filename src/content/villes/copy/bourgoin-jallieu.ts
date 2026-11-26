@@ -245,8 +245,8 @@ export const BOURGOIN_JALLIEU_COPY: VilleCopy = {
       a: "Audit sur place, intervention d'une journée de formation et coaching 1-to-1. Nous adaptons les formats au quotidien des TPE locales, sans jargon technique.",
     },
     {
-      q: "Intervenez-vous à Bourgoin-Jallieu ?",
-      a: "Oui. Nous intervenons dans vos locaux à Bourgoin-Jallieu, partout en France, sur place ou à distance.",
+      q: "Comment se déroule une mission à Bourgoin-Jallieu ?",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Bourgoin-Jallieu, comme partout en France, ou à distance.",
     },
   ],
 };

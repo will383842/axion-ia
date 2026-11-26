@@ -64,8 +64,8 @@ export const GUIDEL_COPY: VilleCopy = {
       a: "Oui, gestion devis, planning chantiers, suivi marges, maintenance prédictive, optimisation supply chain, e-commerce pour artisans BTP et professionnels du nautisme de Guidel.",
     },
     {
-      q: "Intervenez-vous à Guidel ?",
-      a: "Oui. Nous intervenons dans vos locaux à Guidel, partout en France, sur place ou à distance.",
+      q: "Comment se déroule une mission à Guidel ?",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Guidel, comme partout en France, ou à distance.",
     },
   ],
 };

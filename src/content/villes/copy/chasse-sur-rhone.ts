@@ -64,8 +64,8 @@ export const CHASSE_SUR_RHONE_COPY: VilleCopy = {
       a: "Pour les TPE artisans BTP et commerçants à Chasse-sur-Rhône, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, classification photos, gestion stocks.",
     },
     {
-      q: "Intervenez-vous à Chasse-sur-Rhône ?",
-      a: "Oui. Nous intervenons dans vos locaux à Chasse-sur-Rhône, partout en France, sur place ou à distance.",
+      q: "Comment se déroule une mission à Chasse-sur-Rhône ?",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Chasse-sur-Rhône, comme partout en France, ou à distance.",
     },
   ],
 };

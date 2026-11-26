@@ -230,8 +230,8 @@ export const BUSSY_SAINT_GEORGES_COPY: VilleCopy = {
       a: "Nos tarifs publics démarrent à {{price:audit-flash|flat}} pour un Audit sur place de 4 heures à Bussy-Saint-Georges. Les interventions et implémentations suivantes sont facturées sur devis selon le périmètre validé après l'audit.",
     },
     {
-      q: "Intervenez-vous à Bussy-Saint-Georges ?",
-      a: "Oui. Nous intervenons dans vos locaux à Bussy-Saint-Georges, partout en France, sur place ou à distance.",
+      q: "Comment se déroule une mission à Bussy-Saint-Georges ?",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Bussy-Saint-Georges, comme partout en France, ou à distance.",
     },
     {
       q: "Intervenez-vous dans les communes proches de Bussy-Saint-Georges ?",

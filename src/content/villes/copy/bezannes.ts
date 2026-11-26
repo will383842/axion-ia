@@ -64,8 +64,8 @@ export const BEZANNES_COPY: VilleCopy = {
       a: "Oui, CRM augmenté, automatisation propositions commerciales, gestion planning missions, facturation intelligente, reporting client pour cabinets et PME.",
     },
     {
-      q: "Intervenez-vous à Bezannes ?",
-      a: "Oui. Nous intervenons dans vos locaux à Bezannes, partout en France, sur place ou à distance.",
+      q: "Comment se déroule une mission à Bezannes ?",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Bezannes, comme partout en France, ou à distance.",
     },
   ],
 };

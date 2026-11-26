@@ -60,8 +60,8 @@ export const WERVICQ_SUD_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les acteurs transfrontaliers à Wervicq-Sud. Cas typiques IA : agents conversationnels bilingues FR/NL, automatisation documents douaniers, optimisation flux logistique cross-border Lys-Flandre occidentale.",
     },
     {
-      q: "Intervenez-vous à Wervicq-Sud ?",
-      a: "Oui. Nous intervenons dans vos locaux à Wervicq-Sud, partout en France, sur place ou à distance.",
+      q: "Comment se déroule une mission à Wervicq-Sud ?",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Wervicq-Sud, comme partout en France, ou à distance.",
     },
     {
       q: "Quels secteurs accompagnez-vous à Wervicq-Sud ?",

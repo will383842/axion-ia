@@ -64,8 +64,8 @@ export const ORGEVAL_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les PME conseil et prestataires tertiaires d'Orgeval et de l'ouest francilien : automatisation workflows, reporting augmenté, CRM intelligent, agents conversationnels B2B, classification documentaire IA.",
     },
     {
-      q: "Intervenez-vous à Orgeval ?",
-      a: "Oui. Nous intervenons dans vos locaux à Orgeval, partout en France, sur place ou à distance.",
+      q: "Comment se déroule une mission à Orgeval ?",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Orgeval, comme partout en France, ou à distance.",
     },
   ],
 };

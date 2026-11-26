@@ -64,8 +64,8 @@ export const ROMBAS_COPY: VilleCopy = {
       a: "Pour les TPE artisans BTP et commerçants à Rombas, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, classification photos chantiers, gestion stocks.",
     },
     {
-      q: "Intervenez-vous à Rombas ?",
-      a: "Oui. Nous intervenons dans vos locaux à Rombas, partout en France, sur place ou à distance.",
+      q: "Comment se déroule une mission à Rombas ?",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Rombas, comme partout en France, ou à distance.",
     },
   ],
 };

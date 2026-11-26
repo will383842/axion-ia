@@ -229,8 +229,8 @@ export const LA_GARDE_COPY: VilleCopy = {
 
   faqGeolocalisee: [
     {
-      q: "Intervenez-vous à La Garde ?",
-      a: "Oui. Nous intervenons dans vos locaux à La Garde, partout en France, sur place ou à distance.",
+      q: "Comment se déroule une mission à La Garde ?",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à La Garde, comme partout en France, ou à distance.",
     },
     {
       q: "Quels gains l'IA apporte-t-elle à une TPE de services de La Garde ?",

@@ -231,8 +231,8 @@ export const MAISONS_ALFORT_COPY: VilleCopy = {
       a: "Les interventions Axion-IA à Maisons-Alfort démarrent à {{price:intervention-4h|flat}}, l'Audit sur place 4h à {{price:audit-flash|flat}}, et l'implémentation à {{price:impl-poc|entry}}. Les tarifs publics complets sont disponibles sur axion-ia.com.",
     },
     {
-      q: "Intervenez-vous à Maisons-Alfort ?",
-      a: "Oui. Nous intervenons dans vos locaux à Maisons-Alfort, partout en France, sur place ou à distance.",
+      q: "Comment se déroule une mission à Maisons-Alfort ?",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Maisons-Alfort, comme partout en France, ou à distance.",
     },
     {
       q: "Axion-IA intervient-il dans les communes proches de Maisons-Alfort ?",

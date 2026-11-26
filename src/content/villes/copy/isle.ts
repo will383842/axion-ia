@@ -64,8 +64,8 @@ export const ISLE_COPY: VilleCopy = {
       a: "Pour les TPE artisans BTP et commerçants à Isle, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, gestion stocks et planning chantiers.",
     },
     {
-      q: "Intervenez-vous à Isle ?",
-      a: "Oui. Nous intervenons dans vos locaux à Isle, partout en France, sur place ou à distance.",
+      q: "Comment se déroule une mission à Isle ?",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Isle, comme partout en France, ou à distance.",
     },
   ],
 };

@@ -68,8 +68,8 @@ export const REYRIEUX_COPY: VilleCopy = {
       a: "Agents conversationnels B2B et patients, automatisation de workflows, classification documentaire et CRM augmentés.",
     },
     {
-      q: "Intervenez-vous à Reyrieux ?",
-      a: "Oui. Nous intervenons dans vos locaux à Reyrieux, partout en France, sur place ou à distance.",
+      q: "Comment se déroule une mission à Reyrieux ?",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Reyrieux, comme partout en France, ou à distance.",
     },
     {
       q: "Vos interventions sont-elles conformes au RGPD ?",

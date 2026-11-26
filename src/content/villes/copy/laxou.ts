@@ -64,8 +64,8 @@ export const LAXOU_COPY: VilleCopy = {
       a: "Oui, agents conversationnels, gestion stocks, programmes fidélité, gestion documentaire, prise de rendez-vous augmentée, facturation intelligente pour TPE retail et professions libérales.",
     },
     {
-      q: "Intervenez-vous à Laxou ?",
-      a: "Oui. Nous intervenons dans vos locaux à Laxou, partout en France, sur place ou à distance.",
+      q: "Comment se déroule une mission à Laxou ?",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Laxou, comme partout en France, ou à distance.",
     },
   ],
 };

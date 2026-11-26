@@ -64,8 +64,8 @@ export const DIGOIN_COPY: VilleCopy = {
       a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : agents IA prise de RDV, automatisation gestion stock, CRM clients.",
     },
     {
-      q: "Intervenez-vous à Digoin ?",
-      a: "Oui. Nous intervenons dans vos locaux à Digoin, partout en France, sur place ou à distance.",
+      q: "Comment se déroule une mission à Digoin ?",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Digoin, comme partout en France, ou à distance.",
     },
   ],
 };

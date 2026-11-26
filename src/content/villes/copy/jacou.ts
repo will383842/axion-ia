@@ -69,8 +69,8 @@ export const JACOU_COPY: VilleCopy = {
       a: "Commerces de détail (premier secteur, 23,6 % des entreprises), cabinets libéraux santé/conseil, artisans BTP, PME services aux entreprises, restauration, immobilier. Cas typiques : agents IA RDV cabinet médical, chatbot commerce, automatisation devis artisan, suivi stock restaurant.",
     },
     {
-      q: "Intervenez-vous à Jacou ?",
-      a: "Oui. Nous intervenons dans vos locaux à Jacou, partout en France, sur place ou à distance.",
+      q: "Comment se déroule une mission à Jacou ?",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Jacou, comme partout en France, ou à distance.",
     },
   ],
 };

@@ -64,8 +64,8 @@ export const LIGNE_COPY: VilleCopy = {
       a: "L'Audit sur place, d'une durée de 4 heures avec diagnostic complet et ROI chiffré, est proposé dès {{price:audit-flash|flat}}. Tarifs publics et transparents adaptés aux TPE et PME du nord-est nantais.",
     },
     {
-      q: "Intervenez-vous à Ligné ?",
-      a: "Oui. Nous intervenons dans vos locaux à Ligné, partout en France, sur place ou à distance.",
+      q: "Comment se déroule une mission à Ligné ?",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Ligné, comme partout en France, ou à distance.",
     },
   ],
 };

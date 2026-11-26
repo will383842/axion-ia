@@ -64,8 +64,8 @@ export const SAULX_LES_CHARTREUX_COPY: VilleCopy = {
       a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : gestion RDV, CRM patients/clients, conformité RGPD, fidélisation, marketing local.",
     },
     {
-      q: "Intervenez-vous à Saulx-les-Chartreux ?",
-      a: "Oui. Nous intervenons dans vos locaux à Saulx-les-Chartreux, partout en France, sur place ou à distance.",
+      q: "Comment se déroule une mission à Saulx-les-Chartreux ?",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Saulx-les-Chartreux, comme partout en France, ou à distance.",
     },
   ],
 };

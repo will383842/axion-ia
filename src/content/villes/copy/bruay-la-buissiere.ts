@@ -231,7 +231,7 @@ export const BRUAY_LA_BUISSIERE_COPY: VilleCopy = {
     },
     {
       q: "Intervenez-vous à Bruay-la-Buissière ?",
-      a: "Oui. Nous intervenons dans vos locaux à Bruay-la-Buissière, partout en France, sur place ou à distance.",
+      a: "Oui. Nous intervenons sur place à Bruay-la-Buissière, comme partout en France, ou à distance.",
     },
     {
       q: "Quelles communes proches couvrez-vous autour de Bruay-la-Buissière ?",

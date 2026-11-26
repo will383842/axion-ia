@@ -232,7 +232,7 @@ export const PALAISEAU_COPY: VilleCopy = {
     },
     {
       q: "Intervenez-vous à Palaiseau ?",
-      a: "Oui. Nous intervenons dans vos locaux à Palaiseau, partout en France, sur place ou à distance.",
+      a: "Oui. Nous intervenons sur place à Palaiseau, comme partout en France, ou à distance.",
     },
     {
       q: "Quels délais pour un audit à Palaiseau ?",

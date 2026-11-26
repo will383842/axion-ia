@@ -247,8 +247,8 @@ export const COMBS_LA_VILLE_COPY: VilleCopy = {
       a: "TPE et PME locales prioritairement : artisans BTP, commerces de détail, restaurateurs, PME logistiques proches de la RN 104, exploitations agricoles du plateau de Brie. Les ETI restent l'exception, notre cœur de cible étant la TPE et la PME.",
     },
     {
-      q: "Intervenez-vous à Combs-la-Ville ?",
-      a: "Oui. Nous intervenons dans vos locaux à Combs-la-Ville, partout en France, sur place ou à distance.",
+      q: "Comment se déroule une mission à Combs-la-Ville ?",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Combs-la-Ville, comme partout en France, ou à distance.",
     },
   ],
 };

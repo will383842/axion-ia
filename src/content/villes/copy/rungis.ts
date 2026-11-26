@@ -64,8 +64,8 @@ export const RUNGIS_COPY: VilleCopy = {
       a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1, implémentation outils IA métier alimentaire.",
     },
     {
-      q: "Intervenez-vous à Rungis ?",
-      a: "Oui. Nous intervenons dans vos locaux à Rungis, partout en France, sur place ou à distance.",
+      q: "Comment se déroule une mission à Rungis ?",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Rungis, comme partout en France, ou à distance.",
     },
   ],
 };

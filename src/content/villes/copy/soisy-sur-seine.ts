@@ -64,8 +64,8 @@ export const SOISY_SUR_SEINE_COPY: VilleCopy = {
       a: "Pour les PME du bassin Évry-Corbeil, nous proposons les 5 services Axion-IA : audit IA (Sur place à Stratégique), interventions sur site, implémentation IA (agents, automatisations), coaching 1-to-1 dirigeants, et plateformes web/SaaS IA sur mesure.",
     },
     {
-      q: "Intervenez-vous à Soisy-sur-Seine ?",
-      a: "Oui. Nous intervenons dans vos locaux à Soisy-sur-Seine, partout en France, sur place ou à distance.",
+      q: "Comment se déroule une mission à Soisy-sur-Seine ?",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Soisy-sur-Seine, comme partout en France, ou à distance.",
     },
   ],
 };

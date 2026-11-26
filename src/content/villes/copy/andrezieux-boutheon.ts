@@ -64,8 +64,8 @@ export const ANDREZIEUX_BOUTHEON_COPY: VilleCopy = {
       a: "Pour les TPE artisans BTP et commerçants à Andrézieux-Bouthéon, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, classification photos.",
     },
     {
-      q: "Intervenez-vous à Andrézieux-Bouthéon ?",
-      a: "Oui. Nous intervenons dans vos locaux à Andrézieux-Bouthéon, partout en France, sur place ou à distance.",
+      q: "Comment se déroule une mission à Andrézieux-Bouthéon ?",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Andrézieux-Bouthéon, comme partout en France, ou à distance.",
     },
   ],
 };

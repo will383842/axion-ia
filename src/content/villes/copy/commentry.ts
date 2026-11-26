@@ -68,8 +68,8 @@ export const COMMENTRY_COPY: VilleCopy = {
       a: "Agents conversationnels, automatisation de la prise de RDV, classification de dossiers et CRM augmentés. RGPD strict, sans dépendance imposée.",
     },
     {
-      q: "Intervenez-vous à Commentry ?",
-      a: "Oui. Nous intervenons dans vos locaux à Commentry, partout en France, sur place ou à distance.",
+      q: "Comment se déroule une mission à Commentry ?",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Commentry, comme partout en France, ou à distance.",
     },
     {
       q: "Vos interventions sont-elles conformes au RGPD ?",

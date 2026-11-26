@@ -64,8 +64,8 @@ export const QUESNOY_SUR_DEULE_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les PME transport et logistique fluviale de Quesnoy-sur-Deûle : optimisation tournées, traçabilité expéditions, automatisation planning, gestion documentaire, agents IA relation client B2B.",
     },
     {
-      q: "Intervenez-vous à Quesnoy-sur-Deûle ?",
-      a: "Oui. Nous intervenons dans vos locaux à Quesnoy-sur-Deûle, partout en France, sur place ou à distance.",
+      q: "Comment se déroule une mission à Quesnoy-sur-Deûle ?",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Quesnoy-sur-Deûle, comme partout en France, ou à distance.",
     },
   ],
 };

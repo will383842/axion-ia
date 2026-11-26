@@ -64,8 +64,8 @@ export const LE_PEAGE_DE_ROUSSILLON_COPY: VilleCopy = {
       a: "Pour les TPE artisans BTP et commerçants au Péage-de-Roussillon, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, classification photos, gestion stocks.",
     },
     {
-      q: "Intervenez-vous au Péage-de-Roussillon ?",
-      a: "Oui. Nous intervenons dans vos locaux au Péage-de-Roussillon, partout en France, sur place ou à distance.",
+      q: "Comment se déroule une mission au Péage-de-Roussillon ?",
+      a: "Après un premier échange de cadrage, nous intervenons sur place au Péage-de-Roussillon, comme partout en France, ou à distance.",
     },
   ],
 };

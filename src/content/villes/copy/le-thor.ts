@@ -64,8 +64,8 @@ export const LE_THOR_COPY: VilleCopy = {
       a: "Oui, nous intervenons en négoce agroalimentaire sur optimisation logistique, gestion stocks frais, prévision demande, content marketing export multilingue et automatisation des certifications qualité.",
     },
     {
-      q: "Intervenez-vous au Thor ?",
-      a: "Oui. Nous intervenons dans vos locaux au Thor, partout en France, sur place ou à distance.",
+      q: "Comment se déroule une mission au Thor ?",
+      a: "Après un premier échange de cadrage, nous intervenons sur place au Thor, comme partout en France, ou à distance.",
     },
   ],
 };

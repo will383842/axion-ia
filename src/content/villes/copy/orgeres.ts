@@ -64,8 +64,8 @@ export const ORGERES_COPY: VilleCopy = {
       a: "Gestion agenda augmentée, CRM patients ou clients, automatisation administrative et comptable, dictée IA, reporting intelligent et agents conversationnels pour les professions libérales orgéroises.",
     },
     {
-      q: "Intervenez-vous à Orgères ?",
-      a: "Oui. Nous intervenons dans vos locaux à Orgères, partout en France, sur place ou à distance.",
+      q: "Comment se déroule une mission à Orgères ?",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Orgères, comme partout en France, ou à distance.",
     },
   ],
 };

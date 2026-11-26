@@ -64,8 +64,8 @@ export const ROCHE_LA_MOLIERE_COPY: VilleCopy = {
       a: "Pour les indépendants et professions libérales à Roche-la-Molière, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : agents IA prise de RDV, classification documents, CRM augmentés.",
     },
     {
-      q: "Intervenez-vous à Roche-la-Molière ?",
-      a: "Oui. Nous intervenons dans vos locaux à Roche-la-Molière, partout en France, sur place ou à distance.",
+      q: "Comment se déroule une mission à Roche-la-Molière ?",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Roche-la-Molière, comme partout en France, ou à distance.",
     },
   ],
 };

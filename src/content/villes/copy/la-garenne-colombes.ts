@@ -229,8 +229,8 @@ export const LA_GARENNE_COLOMBES_COPY: VilleCopy = {
 
   faqGeolocalisee: [
     {
-      q: "Intervenez-vous à La Garenne-Colombes ?",
-      a: "Oui. Nous intervenons dans vos locaux à La Garenne-Colombes, partout en France, sur place ou à distance.",
+      q: "Comment se déroule une mission à La Garenne-Colombes ?",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à La Garenne-Colombes, comme partout en France, ou à distance.",
     },
     {
       q: "Travaillez-vous avec les TPE et indépendants garennois ?",

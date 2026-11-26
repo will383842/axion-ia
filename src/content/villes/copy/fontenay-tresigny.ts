@@ -64,8 +64,8 @@ export const FONTENAY_TRESIGNY_COPY: VilleCopy = {
       a: "Oui, nous intervenons auprès des exploitants agricoles céréaliers de la Brie : optimisation assolement assistée IA, automatisation suivi parcelles, outils de gestion exploitation, reporting météo et rendements augmenté.",
     },
     {
-      q: "Intervenez-vous à Fontenay-Trésigny ?",
-      a: "Oui. Nous intervenons dans vos locaux à Fontenay-Trésigny, partout en France, sur place ou à distance.",
+      q: "Comment se déroule une mission à Fontenay-Trésigny ?",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Fontenay-Trésigny, comme partout en France, ou à distance.",
     },
   ],
 };

@@ -231,8 +231,8 @@ export const SEVREMOINE_COPY: VilleCopy = {
       a: "Nos tarifs publics démarrent à {{price:audit-flash|flat}} pour un Audit sur place et {{price:intervention-4h|flat}} pour une formation collective. L'implémentation et l'accompagnement un-à-un débutent à {{price:intervention-dirigeants|flat}}, sans frais cachés.",
     },
     {
-      q: "Intervenez-vous à Sèvremoine (Maine-et-Loire) ?",
-      a: "Oui. Nous intervenons dans vos locaux à Sèvremoine (Maine-et-Loire), partout en France, sur place ou à distance.",
+      q: "Comment se déroule une mission à Sèvremoine (Maine-et-Loire) ?",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Sèvremoine (Maine-et-Loire), comme partout en France, ou à distance.",
     },
     {
       q: "Quels délais pour démarrer un projet IA à Sèvremoine ?",

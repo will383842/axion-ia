@@ -64,8 +64,8 @@ export const CONDAT_SUR_VIENNE_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les entreprises des zones d'activités de Condat-sur-Vienne et environs sur leurs cas IA : automatisation gestion commerciale, agents conversationnels, classification documents, optimisation logistique.",
     },
     {
-      q: "Intervenez-vous à Condat-sur-Vienne ?",
-      a: "Oui. Nous intervenons dans vos locaux à Condat-sur-Vienne, partout en France, sur place ou à distance.",
+      q: "Comment se déroule une mission à Condat-sur-Vienne ?",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Condat-sur-Vienne, comme partout en France, ou à distance.",
     },
   ],
 };

@@ -245,8 +245,8 @@ export const SAINT_GRATIEN_COPY: VilleCopy = {
       a: "Audit sur place, intervention d'une journée de formation et coaching 1-to-1. Nous adaptons les formats au quotidien des TPE locales, sans jargon technique.",
     },
     {
-      q: "Intervenez-vous à Saint-Gratien ?",
-      a: "Oui. Nous intervenons dans vos locaux à Saint-Gratien, partout en France, sur place ou à distance.",
+      q: "Comment se déroule une mission à Saint-Gratien ?",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Saint-Gratien, comme partout en France, ou à distance.",
     },
   ],
 };

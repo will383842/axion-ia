@@ -64,8 +64,8 @@ export const IGNY_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les PME ingénierie et conseil proches de Paris-Saclay sur leurs cas IA : automatisation reporting, classification données techniques, prédiction délais projets, optimisation ressources.",
     },
     {
-      q: "Intervenez-vous à Igny ?",
-      a: "Oui. Nous intervenons dans vos locaux à Igny, partout en France, sur place ou à distance.",
+      q: "Comment se déroule une mission à Igny ?",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Igny, comme partout en France, ou à distance.",
     },
   ],
 };

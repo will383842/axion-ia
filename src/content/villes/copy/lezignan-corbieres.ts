@@ -64,8 +64,8 @@ export const LEZIGNAN_CORBIERES_COPY: VilleCopy = {
       a: "Oui, les entreprises des zones d'activités de Lézignan-Corbières bénéficient de l'IA : automatisation gestion commerciale, agents conversationnels clients, optimisation logistique, classification documents, pilotage stocks.",
     },
     {
-      q: "Intervenez-vous à Lézignan-Corbières ?",
-      a: "Oui. Nous intervenons dans vos locaux à Lézignan-Corbières, partout en France, sur place ou à distance.",
+      q: "Comment se déroule une mission à Lézignan-Corbières ?",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Lézignan-Corbières, comme partout en France, ou à distance.",
     },
   ],
 };

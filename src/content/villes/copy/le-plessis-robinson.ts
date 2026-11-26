@@ -229,8 +229,8 @@ export const LE_PLESSIS_ROBINSON_COPY: VilleCopy = {
 
   faqGeolocalisee: [
     {
-      q: "Intervenez-vous au Plessis-Robinson ?",
-      a: "Oui. Nous intervenons dans vos locaux au Plessis-Robinson, partout en France, sur place ou à distance.",
+      q: "Comment se déroule une mission au Plessis-Robinson ?",
+      a: "Après un premier échange de cadrage, nous intervenons sur place au Plessis-Robinson, comme partout en France, ou à distance.",
     },
     {
       q: "Travaillez-vous avec les TPE et commerces robinsonnais ?",

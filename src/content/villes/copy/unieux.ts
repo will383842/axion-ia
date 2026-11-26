@@ -64,8 +64,8 @@ export const UNIEUX_COPY: VilleCopy = {
       a: "Pour les indépendants et professions libérales à Unieux, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : agents IA prise de RDV, classification documents, CRM augmentés.",
     },
     {
-      q: "Intervenez-vous à Unieux ?",
-      a: "Oui. Nous intervenons dans vos locaux à Unieux, partout en France, sur place ou à distance.",
+      q: "Comment se déroule une mission à Unieux ?",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Unieux, comme partout en France, ou à distance.",
     },
   ],
 };

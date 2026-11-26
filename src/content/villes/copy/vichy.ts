@@ -245,8 +245,8 @@ export const VICHY_COPY: VilleCopy = {
       a: "Gestion des réservations multicanal, réponses automatiques multilingues, optimisation de l'occupation selon la saison thermale et reporting clair pour piloter le chiffre d'affaires. Le tout calibré pour des structures à taille humaine.",
     },
     {
-      q: "Intervenez-vous à Vichy ?",
-      a: "Oui. Nous intervenons dans vos locaux à Vichy, partout en France, sur place ou à distance.",
+      q: "Comment se déroule une mission à Vichy ?",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Vichy, comme partout en France, ou à distance.",
     },
   ],
 };

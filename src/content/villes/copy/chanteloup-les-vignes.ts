@@ -64,8 +64,8 @@ export const CHANTELOUP_LES_VIGNES_COPY: VilleCopy = {
       a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1, implémentation outils IA métier.",
     },
     {
-      q: "Intervenez-vous à Chanteloup-les-Vignes ?",
-      a: "Oui. Nous intervenons dans vos locaux à Chanteloup-les-Vignes, partout en France, sur place ou à distance.",
+      q: "Comment se déroule une mission à Chanteloup-les-Vignes ?",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Chanteloup-les-Vignes, comme partout en France, ou à distance.",
     },
   ],
 };

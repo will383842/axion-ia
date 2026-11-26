@@ -64,8 +64,8 @@ export const FONTAINES_SUR_SAONE_COPY: VilleCopy = {
       a: "Pour les TPE artisans BTP et commerçants à Fontaines-sur-Saône, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis.",
     },
     {
-      q: "Intervenez-vous à Fontaines-sur-Saône ?",
-      a: "Oui. Nous intervenons dans vos locaux à Fontaines-sur-Saône, partout en France, sur place ou à distance.",
+      q: "Comment se déroule une mission à Fontaines-sur-Saône ?",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Fontaines-sur-Saône, comme partout en France, ou à distance.",
     },
   ],
 };

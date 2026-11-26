@@ -64,8 +64,8 @@ export const OREE_D_ANJOU_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les PME industrielles et logistiques du val de Loire sur tous les cas IA : prédiction maintenance, automatisation qualité, optimisation supply chain, agents IA service client B2B et gestion documentaire.",
     },
     {
-      q: "Intervenez-vous à Orée d'Anjou ?",
-      a: "Oui. Nous intervenons dans vos locaux à Orée d'Anjou, partout en France, sur place ou à distance.",
+      q: "Comment se déroule une mission à Orée d'Anjou ?",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Orée d'Anjou, comme partout en France, ou à distance.",
     },
   ],
 };

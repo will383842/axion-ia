@@ -64,8 +64,8 @@ export const SAINT_SYMPHORIEN_D_OZON_COPY: VilleCopy = {
       a: "Pour les TPE artisans BTP et commerçants, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1.",
     },
     {
-      q: "Intervenez-vous à Saint-Symphorien-d'Ozon ?",
-      a: "Oui. Nous intervenons dans vos locaux à Saint-Symphorien-d'Ozon, partout en France, sur place ou à distance.",
+      q: "Comment se déroule une mission à Saint-Symphorien-d'Ozon ?",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Saint-Symphorien-d'Ozon, comme partout en France, ou à distance.",
     },
   ],
 };

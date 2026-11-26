@@ -64,8 +64,8 @@ export const COURNON_D_AUVERGNE_COPY: VilleCopy = {
       a: "Agents conversationnels patient/client, automatisation RDV, classification dossiers. RGPD strict.",
     },
     {
-      q: "Intervenez-vous à Cournon-d'Auvergne ?",
-      a: "Oui. Nous intervenons dans vos locaux à Cournon-d'Auvergne, partout en France, sur place ou à distance.",
+      q: "Comment se déroule une mission à Cournon-d'Auvergne ?",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Cournon-d'Auvergne, comme partout en France, ou à distance.",
     },
   ],
 };

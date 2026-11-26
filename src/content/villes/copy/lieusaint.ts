@@ -64,8 +64,8 @@ export const LIEUSAINT_COPY: VilleCopy = {
       a: "Oui, nos interventions IA sur site à Lieusaint sont adaptées aux TPE artisans et commerces. Formats demi-journée ou journée complète, vos équipes repartent autonomes sur les outils IA configurés métier.",
     },
     {
-      q: "Intervenez-vous à Lieusaint ?",
-      a: "Oui. Nous intervenons dans vos locaux à Lieusaint, partout en France, sur place ou à distance.",
+      q: "Comment se déroule une mission à Lieusaint ?",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Lieusaint, comme partout en France, ou à distance.",
     },
   ],
 };

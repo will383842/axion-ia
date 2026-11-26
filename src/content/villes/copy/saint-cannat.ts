@@ -64,8 +64,8 @@ export const SAINT_CANNAT_COPY: VilleCopy = {
       a: "Oui, nos interventions et coaching 1-to-1 sont disponibles en présentiel (vos locaux à Saint-Cannat) ou en visio. Format flexible adapté aux cadres et professions libérales.",
     },
     {
-      q: "Intervenez-vous à Saint-Cannat ?",
-      a: "Oui. Nous intervenons dans vos locaux à Saint-Cannat, partout en France, sur place ou à distance.",
+      q: "Comment se déroule une mission à Saint-Cannat ?",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Saint-Cannat, comme partout en France, ou à distance.",
     },
   ],
 };

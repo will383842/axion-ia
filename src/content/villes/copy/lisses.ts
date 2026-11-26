@@ -64,8 +64,8 @@ export const LISSES_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les TPE artisans BTP et commerçants de Lisses. Cas typiques : automatisation devis chantier, agents IA prise de RDV, classification photos, gestion planning. Audit sur place {{price:audit-flash|flat}} adapté aux petites structures.",
     },
     {
-      q: "Intervenez-vous à Lisses ?",
-      a: "Oui. Nous intervenons dans vos locaux à Lisses, partout en France, sur place ou à distance.",
+      q: "Comment se déroule une mission à Lisses ?",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Lisses, comme partout en France, ou à distance.",
     },
   ],
 };

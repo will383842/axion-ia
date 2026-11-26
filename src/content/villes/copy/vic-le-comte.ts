@@ -64,8 +64,8 @@ export const VIC_LE_COMTE_COPY: VilleCopy = {
       a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1.",
     },
     {
-      q: "Intervenez-vous à Vic-le-Comte ?",
-      a: "Oui. Nous intervenons dans vos locaux à Vic-le-Comte, partout en France, sur place ou à distance.",
+      q: "Comment se déroule une mission à Vic-le-Comte ?",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Vic-le-Comte, comme partout en France, ou à distance.",
     },
   ],
 };

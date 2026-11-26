@@ -64,8 +64,8 @@ export const LANNILIS_COPY: VilleCopy = {
       a: "Oui, devis automatisés, planning chantiers, suivi clients, gestion stocks commerces, fidélisation locale, présence Google Business Profile pour artisans et commerçants.",
     },
     {
-      q: "Intervenez-vous à Lannilis ?",
-      a: "Oui. Nous intervenons dans vos locaux à Lannilis, partout en France, sur place ou à distance.",
+      q: "Comment se déroule une mission à Lannilis ?",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Lannilis, comme partout en France, ou à distance.",
     },
   ],
 };

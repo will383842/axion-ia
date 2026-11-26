@@ -231,8 +231,8 @@ export const TREMBLAY_EN_FRANCE_COPY: VilleCopy = {
       a: "L'Audit sur place 4h à Tremblay-en-France démarre à {{price:audit-flash|flat}}. Les interventions et implémentations sont ensuite chiffrées sur devis, selon le périmètre validé après l'audit. Tous nos tarifs publics sont consultables en ligne.",
     },
     {
-      q: "Intervenez-vous à Tremblay-en-France pour des audits ?",
-      a: "Oui. Nous intervenons dans vos locaux à Tremblay-en-France, partout en France, sur place ou à distance.",
+      q: "Comment se déroule une mission à Tremblay-en-France pour des audits ?",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Tremblay-en-France, comme partout en France, ou à distance.",
     },
     {
       q: "Intervenez-vous dans les communes proches de Tremblay-en-France ?",

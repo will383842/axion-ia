@@ -233,7 +233,7 @@ export const SAINT_MARTIN_D_HERES_COPY: VilleCopy = {
     },
     {
       q: "Intervenez-vous à Saint-Martin-d'Hères ?",
-      a: "Oui. Nous intervenons dans vos locaux à Saint-Martin-d'Hères, partout en France, sur place ou à distance.",
+      a: "Oui. Nous intervenons sur place à Saint-Martin-d'Hères, comme partout en France, ou à distance.",
     },
     {
       q: "Quelles communes autour de Saint-Martin-d'Hères sont couvertes ?",

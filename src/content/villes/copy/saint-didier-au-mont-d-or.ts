@@ -64,8 +64,8 @@ export const SAINT_DIDIER_AU_MONT_D_OR_COPY: VilleCopy = {
       a: "Pour les TPE artisans BTP et commerçants à Saint-Didier-au-Mont-d'Or, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1.",
     },
     {
-      q: "Intervenez-vous à Saint-Didier-au-Mont-d'Or ?",
-      a: "Oui. Nous intervenons dans vos locaux à Saint-Didier-au-Mont-d'Or, partout en France, sur place ou à distance.",
+      q: "Comment se déroule une mission à Saint-Didier-au-Mont-d'Or ?",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Saint-Didier-au-Mont-d'Or, comme partout en France, ou à distance.",
     },
   ],
 };

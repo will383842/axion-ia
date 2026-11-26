@@ -235,7 +235,7 @@ const VILLE_COPY: VilleCopy = {
     },
     {
       q: "Intervenez-vous à Ozoir-la-Ferrière ?",
-      a: "Oui. Nous intervenons dans vos locaux à Ozoir-la-Ferrière, partout en France, sur place ou à distance.",
+      a: "Oui. Nous intervenons sur place à Ozoir-la-Ferrière, comme partout en France, ou à distance.",
     },
     {
       q: "Quels secteurs locaux Axion-IA accompagne-t-il à Ozoir-la-Ferrière ?",

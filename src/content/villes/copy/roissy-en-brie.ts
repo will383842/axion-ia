@@ -230,8 +230,8 @@ export const ROISSY_EN_BRIE_COPY: VilleCopy = {
       a: "Nos tarifs publics commencent à {{price:audit-flash|flat}} pour un Audit sur place (4 h sur site), {{price:intervention-4h|flat}} pour le format collectif (1 journée) et {{price:intervention-dirigeants|flat}} pour une implémentation ou une session un-à-un. Devis personnalisé sous 48 h.",
     },
     {
-      q: "Intervenez-vous à Roissy-en-Brie ?",
-      a: "Oui. Nous intervenons dans vos locaux à Roissy-en-Brie, partout en France, sur place ou à distance.",
+      q: "Comment se déroule une mission à Roissy-en-Brie ?",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Roissy-en-Brie, comme partout en France, ou à distance.",
     },
     {
       q: "Quels délais pour une implémentation IA à Roissy-en-Brie ?",

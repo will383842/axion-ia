@@ -64,8 +64,8 @@ export const FOS_SUR_MER_COPY: VilleCopy = {
       a: "Oui, nous intervenons en sous-traitance industrielle sur maintenance prédictive, contrôle qualité, gestion HSE documentaire, automatisation chiffrage, agents IA support technique terrain.",
     },
     {
-      q: "Intervenez-vous à Fos-sur-Mer ?",
-      a: "Oui. Nous intervenons dans vos locaux à Fos-sur-Mer, partout en France, sur place ou à distance.",
+      q: "Comment se déroule une mission à Fos-sur-Mer ?",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Fos-sur-Mer, comme partout en France, ou à distance.",
     },
   ],
 };

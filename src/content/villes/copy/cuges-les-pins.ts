@@ -64,8 +64,8 @@ export const CUGES_LES_PINS_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les acteurs du tourisme et loisirs : agents conversationnels réservation multilingues, yield management saisonnier, automatisation gestion flux visiteurs, marketing ciblé.",
     },
     {
-      q: "Intervenez-vous à Cuges-les-Pins ?",
-      a: "Oui. Nous intervenons dans vos locaux à Cuges-les-Pins, partout en France, sur place ou à distance.",
+      q: "Comment se déroule une mission à Cuges-les-Pins ?",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Cuges-les-Pins, comme partout en France, ou à distance.",
     },
   ],
 };

@@ -64,8 +64,8 @@ export const CHARBONNIERES_LES_BAINS_COPY: VilleCopy = {
       a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1.",
     },
     {
-      q: "Intervenez-vous à Charbonnières-les-Bains ?",
-      a: "Oui. Nous intervenons dans vos locaux à Charbonnières-les-Bains, partout en France, sur place ou à distance.",
+      q: "Comment se déroule une mission à Charbonnières-les-Bains ?",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Charbonnières-les-Bains, comme partout en France, ou à distance.",
     },
   ],
 };

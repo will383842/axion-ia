@@ -64,8 +64,8 @@ export const GORGES_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les PME industrielles de Clisson et Gorges sur tous les cas IA : prédiction maintenance, automatisation qualité, optimisation production, agents IA service client B2B et gestion supply chain.",
     },
     {
-      q: "Intervenez-vous à Gorges ?",
-      a: "Oui. Nous intervenons dans vos locaux à Gorges, partout en France, sur place ou à distance.",
+      q: "Comment se déroule une mission à Gorges ?",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Gorges, comme partout en France, ou à distance.",
     },
   ],
 };

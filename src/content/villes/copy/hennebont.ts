@@ -64,8 +64,8 @@ export const HENNEBONT_COPY: VilleCopy = {
       a: "Oui, automatisation production, maintenance prédictive, qualité, gestion stocks, planification, reporting KPI, optimisation supply chain pour les PME industrie d'Hennebont.",
     },
     {
-      q: "Intervenez-vous à Hennebont ?",
-      a: "Oui. Nous intervenons dans vos locaux à Hennebont, partout en France, sur place ou à distance.",
+      q: "Comment se déroule une mission à Hennebont ?",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Hennebont, comme partout en France, ou à distance.",
     },
   ],
 };

@@ -64,8 +64,8 @@ export const PARAY_LE_MONIAL_COPY: VilleCopy = {
       a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : agents IA prise de RDV, automatisation devis, CRM commerçants centre-ville.",
     },
     {
-      q: "Intervenez-vous à Paray-le-Monial ?",
-      a: "Oui. Nous intervenons dans vos locaux à Paray-le-Monial, partout en France, sur place ou à distance.",
+      q: "Comment se déroule une mission à Paray-le-Monial ?",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Paray-le-Monial, comme partout en France, ou à distance.",
     },
   ],
 };

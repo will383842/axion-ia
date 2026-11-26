@@ -64,8 +64,8 @@ export const AY_CHAMPAGNE_COPY: VilleCopy = {
       a: "Oui, réservation en ligne IA, gestion planning dégustations, CRM visiteurs, marketing automatisé, reporting fréquentation, fidélisation clients.",
     },
     {
-      q: "Intervenez-vous à Aÿ-Champagne ?",
-      a: "Oui. Nous intervenons dans vos locaux à Aÿ-Champagne, partout en France, sur place ou à distance.",
+      q: "Comment se déroule une mission à Aÿ-Champagne ?",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Aÿ-Champagne, comme partout en France, ou à distance.",
     },
   ],
 };

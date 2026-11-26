@@ -231,7 +231,7 @@ export const SAINT_BRIEUC_COPY: VilleCopy = {
     },
     {
       q: "Intervenez-vous à Saint-Brieuc ?",
-      a: "Oui. Nous intervenons dans vos locaux à Saint-Brieuc, partout en France, sur place ou à distance.",
+      a: "Oui. Nous intervenons sur place à Saint-Brieuc, comme partout en France, ou à distance.",
     },
     {
       q: "Quels délais pour démarrer une mission IA à Saint-Brieuc ?",

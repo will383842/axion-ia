@@ -233,7 +233,7 @@ export const VILLENEUVE_D_ASCQ_COPY: VilleCopy = {
     },
     {
       q: "Intervenez-vous à Villeneuve-d'Ascq ?",
-      a: "Oui. Nous intervenons dans vos locaux à Villeneuve-d'Ascq, partout en France, sur place ou à distance.",
+      a: "Oui. Nous intervenons sur place à Villeneuve-d'Ascq, comme partout en France, ou à distance.",
     },
     {
       q: "Quels délais pour un audit IA à Villeneuve-d'Ascq ?",

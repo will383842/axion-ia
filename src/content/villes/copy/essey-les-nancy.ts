@@ -64,8 +64,8 @@ export const ESSEY_LES_NANCY_COPY: VilleCopy = {
       a: "Oui, automatisation workflow, CRM augmenté, classification documents, devis intelligents, planning chantiers, gestion administrative pour TPE tertiaires et artisans BTP de l'est nancéien.",
     },
     {
-      q: "Intervenez-vous à Essey-lès-Nancy ?",
-      a: "Oui. Nous intervenons dans vos locaux à Essey-lès-Nancy, partout en France, sur place ou à distance.",
+      q: "Comment se déroule une mission à Essey-lès-Nancy ?",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Essey-lès-Nancy, comme partout en France, ou à distance.",
     },
   ],
 };

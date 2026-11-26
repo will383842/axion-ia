@@ -64,8 +64,8 @@ export const APT_COPY: VilleCopy = {
       a: "Oui, nous intervenons en hôtellerie-restauration Luberon sur gestion des réservations, agents conversationnels multilingues, content marketing nature et patrimoine, e-réputation et optimisation Google Business.",
     },
     {
-      q: "Intervenez-vous à Apt ?",
-      a: "Oui. Nous intervenons dans vos locaux à Apt, partout en France, sur place ou à distance.",
+      q: "Comment se déroule une mission à Apt ?",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Apt, comme partout en France, ou à distance.",
     },
   ],
 };

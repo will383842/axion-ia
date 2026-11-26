@@ -64,8 +64,8 @@ export const SAINT_PAUL_LES_DAX_COPY: VilleCopy = {
       a: "Pour les professions de santé et paramédicales à Saint-Paul-lès-Dax, audit sur place {{price:audit-flash|flat}}, coaching 1-to-1 outils IA métier. Cas typiques : automatisation secrétariat, tri documents patients, aide rédaction comptes-rendus, gestion agenda.",
     },
     {
-      q: "Intervenez-vous à Saint-Paul-lès-Dax ?",
-      a: "Oui. Nous intervenons dans vos locaux à Saint-Paul-lès-Dax, partout en France, sur place ou à distance.",
+      q: "Comment se déroule une mission à Saint-Paul-lès-Dax ?",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Saint-Paul-lès-Dax, comme partout en France, ou à distance.",
     },
   ],
 };

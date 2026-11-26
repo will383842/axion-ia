@@ -64,8 +64,8 @@ export const CARVIN_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les entreprises du bassin minier en reconversion ou diversification sur leurs cas IA : automatisation processus, agents conversationnels, optimisation production, formation équipes. Toutes tailles (TPE, PME) et tous secteurs.",
     },
     {
-      q: "Intervenez-vous à Carvin ?",
-      a: "Oui. Nous intervenons dans vos locaux à Carvin, partout en France, sur place ou à distance.",
+      q: "Comment se déroule une mission à Carvin ?",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Carvin, comme partout en France, ou à distance.",
     },
   ],
 };

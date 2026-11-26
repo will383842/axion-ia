@@ -64,8 +64,8 @@ export const N_UX_LES_MINES_COPY: VilleCopy = {
       a: "Pour les commerçants et professions libérales à Nœux-les-Mines, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : agents IA conversationnels, automatisation RDV, fidélisation.",
     },
     {
-      q: "Intervenez-vous à Nœux-les-Mines ?",
-      a: "Oui. Nous intervenons dans vos locaux à Nœux-les-Mines, partout en France, sur place ou à distance.",
+      q: "Comment se déroule une mission à Nœux-les-Mines ?",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Nœux-les-Mines, comme partout en France, ou à distance.",
     },
   ],
 };

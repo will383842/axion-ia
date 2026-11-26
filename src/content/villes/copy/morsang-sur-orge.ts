@@ -231,7 +231,7 @@ export const MORSANG_SUR_ORGE_COPY: VilleCopy = {
     },
     {
       q: "Intervenez-vous à Morsang-sur-Orge ?",
-      a: "Oui. Nous intervenons dans vos locaux à Morsang-sur-Orge, partout en France, sur place ou à distance.",
+      a: "Oui. Nous intervenons sur place à Morsang-sur-Orge, comme partout en France, ou à distance.",
     },
     {
       q: "Quelles communes proches couvrez-vous autour de Morsang-sur-Orge ?",

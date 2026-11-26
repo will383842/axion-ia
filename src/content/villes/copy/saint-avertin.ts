@@ -64,8 +64,8 @@ export const SAINT_AVERTIN_COPY: VilleCopy = {
       a: "Audit sur place {{price:audit-flash|flat}}, coaching 1-to-1 {{price:intervention-membre-equipe|flat}}. Agents conversationnels, gestion stocks, fidélisation clients, automatisation commandes.",
     },
     {
-      q: "Intervenez-vous à Saint-Avertin ?",
-      a: "Oui. Nous intervenons dans vos locaux à Saint-Avertin, partout en France, sur place ou à distance.",
+      q: "Comment se déroule une mission à Saint-Avertin ?",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Saint-Avertin, comme partout en France, ou à distance.",
     },
   ],
 };

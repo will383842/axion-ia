@@ -230,7 +230,7 @@ export const SUCY_EN_BRIE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Intervenez-vous à Sucy-en-Brie ?",
-      a: "Oui. Nous intervenons dans vos locaux à Sucy-en-Brie, partout en France, sur place ou à distance.",
+      a: "Oui. Nous intervenons sur place à Sucy-en-Brie, comme partout en France, ou à distance.",
     },
     {
       q: "Un commerce ou un cabinet libéral peut-il vraiment profiter de l'IA ?",

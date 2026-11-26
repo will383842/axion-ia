@@ -234,7 +234,7 @@ export const SAINT_GENIS_LAVAL_COPY: VilleCopy = {
     },
     {
       q: "Intervenez-vous à Saint-Genis-Laval ?",
-      a: "Oui. Nous intervenons dans vos locaux à Saint-Genis-Laval, partout en France, sur place ou à distance.",
+      a: "Oui. Nous intervenons sur place à Saint-Genis-Laval, comme partout en France, ou à distance.",
     },
     {
       q: "Quelles entreprises accompagnez-vous en priorité ici ?",

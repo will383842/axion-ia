@@ -64,8 +64,8 @@ export const DELLE_COPY: VilleCopy = {
       a: "Audit sur place {{price:audit-flash|flat}}, outils relation client multilingue FR/DE, gestion devis et facturation transfrontalière, automatisation reporting, optimisation cycles commerciaux Suisse-France.",
     },
     {
-      q: "Intervenez-vous à Delle ?",
-      a: "Oui. Nous intervenons dans vos locaux à Delle, partout en France, sur place ou à distance.",
+      q: "Comment se déroule une mission à Delle ?",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Delle, comme partout en France, ou à distance.",
     },
   ],
 };

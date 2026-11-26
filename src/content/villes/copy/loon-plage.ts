@@ -64,8 +64,8 @@ export const LOON_PLAGE_COPY: VilleCopy = {
       a: "Nous proposons audit sur place 4h ({{price:audit-flash|flat}}), interventions sur site demi-journée ou journée, coaching dirigeant 1-to-1 et implémentation clé en main. Prédiction maintenance, contrôle qualité vision, optimisation production.",
     },
     {
-      q: "Intervenez-vous à Loon-Plage ?",
-      a: "Oui. Nous intervenons dans vos locaux à Loon-Plage, partout en France, sur place ou à distance.",
+      q: "Comment se déroule une mission à Loon-Plage ?",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Loon-Plage, comme partout en France, ou à distance.",
     },
   ],
 };

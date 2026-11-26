@@ -64,8 +64,8 @@ export const BOIS_GUILLAUME_COPY: VilleCopy = {
       a: "L'audit sur place est tarifé selon vos enjeux pour les TPE et professions libérales. Pour les PME tertiaires, l'audit stratégique complet est adapté au périmètre. Tarifs publics, pas de devis opaque.",
     },
     {
-      q: "Intervenez-vous à Bois-Guillaume ?",
-      a: "Oui. Nous intervenons dans vos locaux à Bois-Guillaume, partout en France, sur place ou à distance.",
+      q: "Comment se déroule une mission à Bois-Guillaume ?",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Bois-Guillaume, comme partout en France, ou à distance.",
     },
   ],
 };

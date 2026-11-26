@@ -64,8 +64,8 @@ export const NOUZONVILLE_COPY: VilleCopy = {
       a: "Oui, gestion planning, suivi commandes donneurs d'ordre, contrôle qualité, traçabilité, automatisation reporting, optimisation flux production pour sous-traitants TPE/PME.",
     },
     {
-      q: "Intervenez-vous à Nouzonville ?",
-      a: "Oui. Nous intervenons dans vos locaux à Nouzonville, partout en France, sur place ou à distance.",
+      q: "Comment se déroule une mission à Nouzonville ?",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Nouzonville, comme partout en France, ou à distance.",
     },
   ],
 };

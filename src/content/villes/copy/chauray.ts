@@ -64,8 +64,8 @@ export const CHAURAY_COPY: VilleCopy = {
       a: "Pour les PME tertiaires et logistiques de Chauray, nous proposons les 5 services Axion-IA : audit IA (Sur place à Stratégique), interventions sur site, implémentation IA (agents, automatisations), coaching 1-to-1 dirigeants, et plateformes web/SaaS IA sur mesure.",
     },
     {
-      q: "Intervenez-vous à Chauray ?",
-      a: "Oui. Nous intervenons dans vos locaux à Chauray, partout en France, sur place ou à distance.",
+      q: "Comment se déroule une mission à Chauray ?",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Chauray, comme partout en France, ou à distance.",
     },
   ],
 };

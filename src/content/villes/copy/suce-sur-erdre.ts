@@ -60,8 +60,8 @@ export const SUCE_SUR_ERDRE_COPY: VilleCopy = {
       a: "Pour les PME tertiaires du nord nantais, nous proposons audit IA (Sur place à Stratégique), interventions sur site, implémentation IA (agents, automatisations), coaching 1-to-1 dirigeants, et plateformes web/SaaS IA sur mesure. Tarifs publics.",
     },
     {
-      q: "Intervenez-vous à Sucé-sur-Erdre ?",
-      a: "Oui. Nous intervenons dans vos locaux à Sucé-sur-Erdre, partout en France, sur place ou à distance.",
+      q: "Comment se déroule une mission à Sucé-sur-Erdre ?",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Sucé-sur-Erdre, comme partout en France, ou à distance.",
     },
     {
       q: "L'audit sur place est-il adapté aux petites structures ?",

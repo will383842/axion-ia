@@ -241,8 +241,8 @@ export const VILLENEUVE_SUR_LOT_COPY: VilleCopy = {
       a: "Pour les TPE artisans et commerçants à Villeneuve (BTP, bastide commerçante, services), audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation pratique, coaching 1-to-1. Cas typiques : automatisation devis, agents IA pour relation client, classification photos, gestion stocks et planning.",
     },
     {
-      q: "Intervenez-vous à Villeneuve-sur-Lot ?",
-      a: "Oui. Nous intervenons dans vos locaux à Villeneuve-sur-Lot, partout en France, sur place ou à distance.",
+      q: "Comment se déroule une mission à Villeneuve-sur-Lot ?",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Villeneuve-sur-Lot, comme partout en France, ou à distance.",
     },
   ],
 };

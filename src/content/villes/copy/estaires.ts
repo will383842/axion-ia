@@ -64,8 +64,8 @@ export const ESTAIRES_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les exploitations agricoles et négoces de Flandre-Lys : outils IA agriculture de précision, traçabilité filière lin, automatisation gestion parcellaire, prédiction rendements, optimisation logistique.",
     },
     {
-      q: "Intervenez-vous à Estaires ?",
-      a: "Oui. Nous intervenons dans vos locaux à Estaires, partout en France, sur place ou à distance.",
+      q: "Comment se déroule une mission à Estaires ?",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Estaires, comme partout en France, ou à distance.",
     },
   ],
 };

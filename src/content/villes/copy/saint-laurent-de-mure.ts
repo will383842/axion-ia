@@ -64,8 +64,8 @@ export const SAINT_LAURENT_DE_MURE_COPY: VilleCopy = {
       a: "Pour les TPE artisans BTP et commerçants, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1.",
     },
     {
-      q: "Intervenez-vous à Saint-Laurent-de-Mure ?",
-      a: "Oui. Nous intervenons dans vos locaux à Saint-Laurent-de-Mure, partout en France, sur place ou à distance.",
+      q: "Comment se déroule une mission à Saint-Laurent-de-Mure ?",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Saint-Laurent-de-Mure, comme partout en France, ou à distance.",
     },
   ],
 };

@@ -64,8 +64,8 @@ export const COURTHEZON_COPY: VilleCopy = {
       a: "Oui, nous intervenons en oenotourisme sur gestion des réservations, agents conversationnels multilingues, content marketing terroir, e-réputation, optimisation Google Business et création d'expériences oenotouristiques.",
     },
     {
-      q: "Intervenez-vous à Courthézon ?",
-      a: "Oui. Nous intervenons dans vos locaux à Courthézon, partout en France, sur place ou à distance.",
+      q: "Comment se déroule une mission à Courthézon ?",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Courthézon, comme partout en France, ou à distance.",
     },
   ],
 };

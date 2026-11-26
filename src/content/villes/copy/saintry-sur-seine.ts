@@ -64,8 +64,8 @@ export const SAINTRY_SUR_SEINE_COPY: VilleCopy = {
       a: "Oui, implémentation IA pour PME tertiaires Saintry et vallée de Seine : CRM augmentés, classification documents, automatisations workflow. Tarifs publics, ROI chiffré contractuel.",
     },
     {
-      q: "Intervenez-vous à Saintry-sur-Seine ?",
-      a: "Oui. Nous intervenons dans vos locaux à Saintry-sur-Seine, partout en France, sur place ou à distance.",
+      q: "Comment se déroule une mission à Saintry-sur-Seine ?",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Saintry-sur-Seine, comme partout en France, ou à distance.",
     },
   ],
 };

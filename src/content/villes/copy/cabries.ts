@@ -64,8 +64,8 @@ export const CABRIES_COPY: VilleCopy = {
       a: "Oui, nous intervenons en restauration sur prévision affluence, optimisation pertes alimentaires, automatisation prise commande, agents IA réservation, marketing avis locaux et e-réputation.",
     },
     {
-      q: "Intervenez-vous à Cabriès ?",
-      a: "Oui. Nous intervenons dans vos locaux à Cabriès, partout en France, sur place ou à distance.",
+      q: "Comment se déroule une mission à Cabriès ?",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Cabriès, comme partout en France, ou à distance.",
     },
   ],
 };

@@ -64,8 +64,8 @@ export const MONTLHERY_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les organisateurs événementiels sur leurs cas IA : billetterie automatisée, chatbot participants, gestion logistique, CRM sponsors, communication ciblée.",
     },
     {
-      q: "Intervenez-vous à Montlhéry ?",
-      a: "Oui. Nous intervenons dans vos locaux à Montlhéry, partout en France, sur place ou à distance.",
+      q: "Comment se déroule une mission à Montlhéry ?",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Montlhéry, comme partout en France, ou à distance.",
     },
   ],
 };

@@ -64,8 +64,8 @@ export const CHAZELLES_SUR_LYON_COPY: VilleCopy = {
       a: "Pour les TPE artisans BTP et commerçants à Chazelles-sur-Lyon, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV.",
     },
     {
-      q: "Intervenez-vous à Chazelles-sur-Lyon ?",
-      a: "Oui. Nous intervenons dans vos locaux à Chazelles-sur-Lyon, partout en France, sur place ou à distance.",
+      q: "Comment se déroule une mission à Chazelles-sur-Lyon ?",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Chazelles-sur-Lyon, comme partout en France, ou à distance.",
     },
   ],
 };

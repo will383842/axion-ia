@@ -64,8 +64,8 @@ export const ARNOUVILLE_COPY: VilleCopy = {
       a: "Pour les PME tertiaires du nord francilien installées à Arnouville, audit Stratégique, intervention formation équipes, implémentation IA complète (agents, automatisation, classification). ROI chiffré contractuel.",
     },
     {
-      q: "Intervenez-vous à Arnouville ?",
-      a: "Oui. Nous intervenons dans vos locaux à Arnouville, partout en France, sur place ou à distance.",
+      q: "Comment se déroule une mission à Arnouville ?",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Arnouville, comme partout en France, ou à distance.",
     },
   ],
 };

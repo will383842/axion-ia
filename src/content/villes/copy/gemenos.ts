@@ -64,8 +64,8 @@ export const GEMENOS_COPY: VilleCopy = {
       a: "Oui, nous accompagnons avocats, médecins, consultants et experts-comptables : rédaction assistée, automatisation gestion cabinet, classification dossiers, agents IA prise de RDV clients.",
     },
     {
-      q: "Intervenez-vous à Gémenos ?",
-      a: "Oui. Nous intervenons dans vos locaux à Gémenos, partout en France, sur place ou à distance.",
+      q: "Comment se déroule une mission à Gémenos ?",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Gémenos, comme partout en France, ou à distance.",
     },
   ],
 };

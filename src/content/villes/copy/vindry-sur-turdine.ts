@@ -64,8 +64,8 @@ export const VINDRY_SUR_TURDINE_COPY: VilleCopy = {
       a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1.",
     },
     {
-      q: "Intervenez-vous à Vindry-sur-Turdine ?",
-      a: "Oui. Nous intervenons dans vos locaux à Vindry-sur-Turdine, partout en France, sur place ou à distance.",
+      q: "Comment se déroule une mission à Vindry-sur-Turdine ?",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Vindry-sur-Turdine, comme partout en France, ou à distance.",
     },
   ],
 };

@@ -64,8 +64,8 @@ export const LE_LION_D_ANGERS_COPY: VilleCopy = {
       a: "Oui, notre format 1-to-1 permet un accompagnement personnalisé pour les dirigeants TPE/PME du Lion-d'Angers. Sessions sur site, dans votre exploitation ou en visio, à partir de {{price:intervention-dirigeants|flat}}.",
     },
     {
-      q: "Intervenez-vous au Lion-d'Angers ?",
-      a: "Oui. Nous intervenons dans vos locaux au Lion-d'Angers, partout en France, sur place ou à distance.",
+      q: "Comment se déroule une mission au Lion-d'Angers ?",
+      a: "Après un premier échange de cadrage, nous intervenons sur place au Lion-d'Angers, comme partout en France, ou à distance.",
     },
   ],
 };

@@ -64,8 +64,8 @@ export const PENMARCH_COPY: VilleCopy = {
       a: "Oui, optimisation lignes de production conserveries, traçabilité matière première mer, devis automatisés artisans, planning chantiers, suivi clients et fidélisation locale.",
     },
     {
-      q: "Intervenez-vous à Penmarch ?",
-      a: "Oui. Nous intervenons dans vos locaux à Penmarch, partout en France, sur place ou à distance.",
+      q: "Comment se déroule une mission à Penmarch ?",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Penmarch, comme partout en France, ou à distance.",
     },
   ],
 };

@@ -64,8 +64,8 @@ export const PONT_EVEQUE_COPY: VilleCopy = {
       a: "Pour les TPE artisans BTP et commerçants à Pont-Évêque, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, classification photos.",
     },
     {
-      q: "Intervenez-vous à Pont-Évêque ?",
-      a: "Oui. Nous intervenons dans vos locaux à Pont-Évêque, partout en France, sur place ou à distance.",
+      q: "Comment se déroule une mission à Pont-Évêque ?",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Pont-Évêque, comme partout en France, ou à distance.",
     },
   ],
 };

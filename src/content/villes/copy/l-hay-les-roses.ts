@@ -230,7 +230,7 @@ export const L_HAY_LES_ROSES_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Intervenez-vous à L'Haÿ-les-Roses ?",
-      a: "Oui. Nous intervenons dans vos locaux à L'Haÿ-les-Roses, partout en France, sur place ou à distance.",
+      a: "Oui. Nous intervenons sur place à L'Haÿ-les-Roses, comme partout en France, ou à distance.",
     },
     {
       q: "Quels gains l'IA apporte-t-elle à un artisan de L'Haÿ-les-Roses ?",

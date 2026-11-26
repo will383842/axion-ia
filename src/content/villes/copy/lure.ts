@@ -64,8 +64,8 @@ export const LURE_COPY: VilleCopy = {
       a: "Oui, interventions et coaching 1-to-1 adaptés aux commerçants : gestion stocks IA, marketing local automatisé, agents conversationnels, comptabilité simplifiée. Formats journée ou demi-journée sur site à Lure.",
     },
     {
-      q: "Intervenez-vous à Lure ?",
-      a: "Oui. Nous intervenons dans vos locaux à Lure, partout en France, sur place ou à distance.",
+      q: "Comment se déroule une mission à Lure ?",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Lure, comme partout en France, ou à distance.",
     },
   ],
 };

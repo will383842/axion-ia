@@ -64,8 +64,8 @@ export const ARRADON_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les hébergeurs de charme et restaurateurs du golfe du Morbihan sur leurs cas IA : agents conversationnels réservation multilingue, optimisation tarification dynamique, classification avis clients, automatisation channel management.",
     },
     {
-      q: "Intervenez-vous à Arradon ?",
-      a: "Oui. Nous intervenons dans vos locaux à Arradon, partout en France, sur place ou à distance.",
+      q: "Comment se déroule une mission à Arradon ?",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Arradon, comme partout en France, ou à distance.",
     },
   ],
 };

@@ -64,8 +64,8 @@ export const SAINT_JULIEN_LES_VILLAS_COPY: VilleCopy = {
       a: "Oui, devis intelligents, planning chantiers, automatisation administrative, gestion documentaire cabinets, facturation augmentée pour artisans et professionnels libéraux.",
     },
     {
-      q: "Intervenez-vous à Saint-Julien-les-Villas ?",
-      a: "Oui. Nous intervenons dans vos locaux à Saint-Julien-les-Villas, partout en France, sur place ou à distance.",
+      q: "Comment se déroule une mission à Saint-Julien-les-Villas ?",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Saint-Julien-les-Villas, comme partout en France, ou à distance.",
     },
   ],
 };

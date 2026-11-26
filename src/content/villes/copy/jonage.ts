@@ -64,8 +64,8 @@ export const JONAGE_COPY: VilleCopy = {
       a: "Agents conversationnels patient/client, automatisation RDV, classification dossiers. RGPD strict. Audit sur place {{price:audit-flash|flat}}.",
     },
     {
-      q: "Intervenez-vous à Jonage ?",
-      a: "Oui. Nous intervenons dans vos locaux à Jonage, partout en France, sur place ou à distance.",
+      q: "Comment se déroule une mission à Jonage ?",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Jonage, comme partout en France, ou à distance.",
     },
   ],
 };

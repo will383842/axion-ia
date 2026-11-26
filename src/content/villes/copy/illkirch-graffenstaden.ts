@@ -235,7 +235,7 @@ const VILLE_COPY: VilleCopy = {
     },
     {
       q: "Intervenez-vous à Illkirch-Graffenstaden ?",
-      a: "Oui. Nous intervenons dans vos locaux à Illkirch-Graffenstaden, partout en France, sur place ou à distance.",
+      a: "Oui. Nous intervenons sur place à Illkirch-Graffenstaden, comme partout en France, ou à distance.",
     },
     {
       q: "Quels secteurs locaux Axion-IA accompagne-t-il à Illkirch-Graffenstaden ?",

@@ -64,8 +64,8 @@ export const VIEUX_CONDE_COPY: VilleCopy = {
       a: "Pour les commerçants et professions libérales à Vieux-Condé, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : agents conversationnels, automatisation RDV, fidélisation.",
     },
     {
-      q: "Intervenez-vous à Vieux-Condé ?",
-      a: "Oui. Nous intervenons dans vos locaux à Vieux-Condé, partout en France, sur place ou à distance.",
+      q: "Comment se déroule une mission à Vieux-Condé ?",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Vieux-Condé, comme partout en France, ou à distance.",
     },
   ],
 };

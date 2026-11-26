@@ -64,8 +64,8 @@ export const FUVEAU_COPY: VilleCopy = {
       a: "Oui, nous intervenons auprès des PME tertiaires sur automatisation back-office, CRM intelligents, gestion commerciale, agents IA support client, automatisation reporting et tableaux de bord.",
     },
     {
-      q: "Intervenez-vous à Fuveau ?",
-      a: "Oui. Nous intervenons dans vos locaux à Fuveau, partout en France, sur place ou à distance.",
+      q: "Comment se déroule une mission à Fuveau ?",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Fuveau, comme partout en France, ou à distance.",
     },
   ],
 };

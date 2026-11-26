@@ -231,8 +231,8 @@ export const NEUILLY_PLAISANCE_COPY: VilleCopy = {
       a: "Nos audits à Neuilly-Plaisance commencent à {{price:audit-flash|flat}} pour un Audit sur place de 4 heures. Les interventions et implémentations qui suivent sont chiffrées sur devis, selon le périmètre validé après l'audit.",
     },
     {
-      q: "Intervenez-vous à Neuilly-Plaisance pour les interventions ?",
-      a: "Oui. Nous intervenons dans vos locaux à Neuilly-Plaisance, partout en France, sur place ou à distance.",
+      q: "Comment se déroule une mission à Neuilly-Plaisance pour les interventions ?",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Neuilly-Plaisance, comme partout en France, ou à distance.",
     },
     {
       q: "Intervenez-vous dans les communes proches de Neuilly-Plaisance ?",

@@ -64,8 +64,8 @@ export const LES_ESSARTS_LE_ROI_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les TPE artisans bâtiment et espaces verts des Essarts-le-Roi et du sud Yvelines : devis automatisé, gestion planning IA, suivi chantier augmenté, CRM clients, facturation intelligente. Solutions terrain concrètes.",
     },
     {
-      q: "Intervenez-vous aux Essarts-le-Roi ?",
-      a: "Oui. Nous intervenons dans vos locaux aux Essarts-le-Roi, partout en France, sur place ou à distance.",
+      q: "Comment se déroule une mission aux Essarts-le-Roi ?",
+      a: "Après un premier échange de cadrage, nous intervenons sur place aux Essarts-le-Roi, comme partout en France, ou à distance.",
     },
   ],
 };

@@ -231,7 +231,7 @@ export const COUERON_COPY: VilleCopy = {
     },
     {
       q: "Intervenez-vous à Couëron pour intervenir sur site ?",
-      a: "Oui. Nous intervenons dans vos locaux à Couëron, partout en France, sur place ou à distance.",
+      a: "Oui. Nous intervenons sur place à Couëron, comme partout en France, ou à distance.",
     },
     {
       q: "Quels délais pour démarrer une mission IA à Couëron ?",

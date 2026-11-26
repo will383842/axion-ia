@@ -64,8 +64,8 @@ export const ROSNY_SUR_SEINE_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les TPE artisans et commerçants de Rosny-sur-Seine sur leurs cas IA : devis automatisé, gestion planning, agents conversationnels clients, CRM augmenté, facturation intelligente. Solutions simples et concrètes.",
     },
     {
-      q: "Intervenez-vous à Rosny-sur-Seine ?",
-      a: "Oui. Nous intervenons dans vos locaux à Rosny-sur-Seine, partout en France, sur place ou à distance.",
+      q: "Comment se déroule une mission à Rosny-sur-Seine ?",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Rosny-sur-Seine, comme partout en France, ou à distance.",
     },
   ],
 };

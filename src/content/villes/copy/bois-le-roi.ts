@@ -64,8 +64,8 @@ export const BOIS_LE_ROI_COPY: VilleCopy = {
       a: "Oui, nous intervenons auprès des TPE artisans et commerçants de village à Bois-le-Roi : automatisation devis et facturation, gestion planning, communication digitale, fidélisation clients. Formats courts adaptés aux petites structures.",
     },
     {
-      q: "Intervenez-vous à Bois-le-Roi ?",
-      a: "Oui. Nous intervenons dans vos locaux à Bois-le-Roi, partout en France, sur place ou à distance.",
+      q: "Comment se déroule une mission à Bois-le-Roi ?",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Bois-le-Roi, comme partout en France, ou à distance.",
     },
   ],
 };

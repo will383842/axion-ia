@@ -64,8 +64,8 @@ export const SAINTE_SAVINE_COPY: VilleCopy = {
       a: "Oui, gestion rendez-vous, automatisation comptes-rendus, CRM patient, facturation, reporting cabinet, télésecrétariat IA pour professions libérales et cabinets santé TPE/PME.",
     },
     {
-      q: "Intervenez-vous à Sainte-Savine ?",
-      a: "Oui. Nous intervenons dans vos locaux à Sainte-Savine, partout en France, sur place ou à distance.",
+      q: "Comment se déroule une mission à Sainte-Savine ?",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Sainte-Savine, comme partout en France, ou à distance.",
     },
   ],
 };

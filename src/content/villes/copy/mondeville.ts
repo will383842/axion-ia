@@ -64,8 +64,8 @@ export const MONDEVILLE_COPY: VilleCopy = {
       a: "L'Audit sur place démarre à {{price:audit-flash|flat}}. Tarifs publics consultables sur notre site. Devis adapté selon la taille de votre structure (TPE, PME, ETI) et la complexité de vos processus métier.",
     },
     {
-      q: "Intervenez-vous à Mondeville ?",
-      a: "Oui. Nous intervenons dans vos locaux à Mondeville, partout en France, sur place ou à distance.",
+      q: "Comment se déroule une mission à Mondeville ?",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Mondeville, comme partout en France, ou à distance.",
     },
   ],
 };

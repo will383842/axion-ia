@@ -64,8 +64,8 @@ export const LE_MESNIL_SAINT_DENIS_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les TPE artisans et commerçants du Mesnil-Saint-Denis : devis automatisé, gestion planning IA, agents conversationnels clients, CRM augmenté, facturation intelligente. Solutions simples adaptées aux petites structures.",
     },
     {
-      q: "Intervenez-vous au Mesnil-Saint-Denis ?",
-      a: "Oui. Nous intervenons dans vos locaux au Mesnil-Saint-Denis, partout en France, sur place ou à distance.",
+      q: "Comment se déroule une mission au Mesnil-Saint-Denis ?",
+      a: "Après un premier échange de cadrage, nous intervenons sur place au Mesnil-Saint-Denis, comme partout en France, ou à distance.",
     },
   ],
 };

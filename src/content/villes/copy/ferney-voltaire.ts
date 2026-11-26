@@ -64,8 +64,8 @@ export const FERNEY_VOLTAIRE_COPY: VilleCopy = {
       a: "Agents conversationnels patient/client, automatisation RDV, classification dossiers. RGPD strict.",
     },
     {
-      q: "Intervenez-vous à Ferney-Voltaire ?",
-      a: "Oui. Nous intervenons dans vos locaux à Ferney-Voltaire, partout en France, sur place ou à distance.",
+      q: "Comment se déroule une mission à Ferney-Voltaire ?",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Ferney-Voltaire, comme partout en France, ou à distance.",
     },
   ],
 };

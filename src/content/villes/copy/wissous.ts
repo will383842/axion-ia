@@ -64,8 +64,8 @@ export const WISSOUS_COPY: VilleCopy = {
       a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, gestion stocks, suivi chantier.",
     },
     {
-      q: "Intervenez-vous à Wissous ?",
-      a: "Oui. Nous intervenons dans vos locaux à Wissous, partout en France, sur place ou à distance.",
+      q: "Comment se déroule une mission à Wissous ?",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Wissous, comme partout en France, ou à distance.",
     },
   ],
 };

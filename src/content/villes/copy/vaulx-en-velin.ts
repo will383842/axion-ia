@@ -230,7 +230,7 @@ export const VAULX_EN_VELIN_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Intervenez-vous à Vaulx-en-Velin ?",
-      a: "Oui. Nous intervenons dans vos locaux à Vaulx-en-Velin, partout en France, sur place ou à distance.",
+      a: "Oui. Nous intervenons sur place à Vaulx-en-Velin, comme partout en France, ou à distance.",
     },
     {
       q: "Mon atelier industriel peut-il bénéficier de l'IA à Vaulx-en-Velin ?",

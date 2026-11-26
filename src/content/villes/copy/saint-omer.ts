@@ -64,8 +64,8 @@ export const SAINT_OMER_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les professionnels du tourisme à Saint-Omer (hôtels, restaurants, offices de tourisme, sites patrimoniaux) sur agents conversationnels multilingues, automatisation réservations, classification avis, optimisation tarification dynamique.",
     },
     {
-      q: "Intervenez-vous à Saint-Omer ?",
-      a: "Oui. Nous intervenons dans vos locaux à Saint-Omer, partout en France, sur place ou à distance.",
+      q: "Comment se déroule une mission à Saint-Omer ?",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Saint-Omer, comme partout en France, ou à distance.",
     },
   ],
 };

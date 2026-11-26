@@ -64,8 +64,8 @@ export const SAINT_CYR_SUR_LOIRE_COPY: VilleCopy = {
       a: "Audit sur place {{price:audit-flash|flat}}, coaching 1-to-1 {{price:intervention-membre-equipe|flat}}. Gestion rendez-vous, automatisation administratif, classification documents.",
     },
     {
-      q: "Intervenez-vous à Saint-Cyr-sur-Loire ?",
-      a: "Oui. Nous intervenons dans vos locaux à Saint-Cyr-sur-Loire, partout en France, sur place ou à distance.",
+      q: "Comment se déroule une mission à Saint-Cyr-sur-Loire ?",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Saint-Cyr-sur-Loire, comme partout en France, ou à distance.",
     },
   ],
 };

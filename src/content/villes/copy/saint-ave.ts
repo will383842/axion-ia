@@ -64,8 +64,8 @@ export const SAINT_AVE_COPY: VilleCopy = {
       a: "Oui, gestion clientèle, facturation, agenda, marketing local, fidélisation, automatisation administrative pour libéraux et commerces de proximité de Saint-Avé.",
     },
     {
-      q: "Intervenez-vous à Saint-Avé ?",
-      a: "Oui. Nous intervenons dans vos locaux à Saint-Avé, partout en France, sur place ou à distance.",
+      q: "Comment se déroule une mission à Saint-Avé ?",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Saint-Avé, comme partout en France, ou à distance.",
     },
   ],
 };

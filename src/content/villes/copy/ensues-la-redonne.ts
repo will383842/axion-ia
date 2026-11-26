@@ -64,8 +64,8 @@ export const ENSUES_LA_REDONNE_COPY: VilleCopy = {
       a: "Oui, nous intervenons en plaisance sur gestion planning sorties mer, réservations clubs nautiques, content marketing local (plongée, voile, kayak), fiches Google Business saisonnières, automatisation administrative.",
     },
     {
-      q: "Intervenez-vous à Ensuès-la-Redonne ?",
-      a: "Oui. Nous intervenons dans vos locaux à Ensuès-la-Redonne, partout en France, sur place ou à distance.",
+      q: "Comment se déroule une mission à Ensuès-la-Redonne ?",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Ensuès-la-Redonne, comme partout en France, ou à distance.",
     },
   ],
 };

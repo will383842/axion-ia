@@ -64,8 +64,8 @@ export const VERN_SUR_SEICHE_COPY: VilleCopy = {
       a: "Oui, devis automatisés, planning chantiers, suivi clients, gestion stocks, fidélisation locale, présence Google Business Profile pour artisans, commerçants et services de proximité.",
     },
     {
-      q: "Intervenez-vous à Vern-sur-Seiche ?",
-      a: "Oui. Nous intervenons dans vos locaux à Vern-sur-Seiche, partout en France, sur place ou à distance.",
+      q: "Comment se déroule une mission à Vern-sur-Seiche ?",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Vern-sur-Seiche, comme partout en France, ou à distance.",
     },
   ],
 };

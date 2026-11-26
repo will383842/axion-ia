@@ -64,8 +64,8 @@ export const VAUGNERAY_COPY: VilleCopy = {
       a: "Pour les TPE artisans BTP et commerçants à Vaugneray, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1.",
     },
     {
-      q: "Intervenez-vous à Vaugneray ?",
-      a: "Oui. Nous intervenons dans vos locaux à Vaugneray, partout en France, sur place ou à distance.",
+      q: "Comment se déroule une mission à Vaugneray ?",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Vaugneray, comme partout en France, ou à distance.",
     },
   ],
 };

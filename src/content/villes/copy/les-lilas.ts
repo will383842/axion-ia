@@ -232,7 +232,7 @@ export const LES_LILAS_COPY: VilleCopy = {
     },
     {
       q: "Intervenez-vous aux Lilas pour intervenir sur site ?",
-      a: "Oui. Nous intervenons dans vos locaux aux Lilas, partout en France, sur place ou à distance.",
+      a: "Oui. Nous intervenons sur place aux Lilas, comme partout en France, ou à distance.",
     },
     {
       q: "Quels délais pour démarrer une mission IA aux Lilas ?",

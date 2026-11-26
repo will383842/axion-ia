@@ -248,7 +248,7 @@ export const CARRIERES_SOUS_POISSY_COPY: VilleCopy = {
     },
     {
       q: "Intervenez-vous à Carrières-sous-Poissy ?",
-      a: "Oui. Nous intervenons dans vos locaux à Carrières-sous-Poissy, partout en France, sur place ou à distance.",
+      a: "Oui. Nous intervenons sur place à Carrières-sous-Poissy, comme partout en France, ou à distance.",
     },
   ],
 };

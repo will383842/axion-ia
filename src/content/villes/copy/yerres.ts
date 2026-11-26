@@ -245,8 +245,8 @@ export const YERRES_COPY: VilleCopy = {
       a: "Prise de rendez-vous IA, rédaction et synthèse de documents, gestion des relances et reporting. Nous démarrons par un audit sur place qui identifie les usages les plus rentables pour votre cabinet.",
     },
     {
-      q: "Intervenez-vous à Yerres ?",
-      a: "Oui. Nous intervenons dans vos locaux à Yerres, partout en France, sur place ou à distance.",
+      q: "Comment se déroule une mission à Yerres ?",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Yerres, comme partout en France, ou à distance.",
     },
   ],
 };

@@ -64,8 +64,8 @@ export const LA_CHAPELLE_SAINT_LUC_COPY: VilleCopy = {
       a: "Oui, CRM client, automatisation devis, gestion stocks, planning interventions, fidélisation, communication locale pour commerces et artisans de proximité TPE/PME.",
     },
     {
-      q: "Intervenez-vous à La Chapelle-Saint-Luc ?",
-      a: "Oui. Nous intervenons dans vos locaux à La Chapelle-Saint-Luc, partout en France, sur place ou à distance.",
+      q: "Comment se déroule une mission à La Chapelle-Saint-Luc ?",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à La Chapelle-Saint-Luc, comme partout en France, ou à distance.",
     },
   ],
 };
