@@ -20,6 +20,12 @@
  */
 
 import type { SearchIntent } from "../../../../prisma/generated/client";
+import {
+  equipeEditorialeActive,
+  type EnvEquipeEditoriale,
+} from "../fact-check/equipe-editoriale-drapeau";
+import { detecterPassagesCitables, PASSAGES_CITABLES_MIN } from "./passages-citables";
+import { normaliserTitre } from "./outline-validator";
 
 export interface SeoScoreInput {
   readonly title: string;
@@ -41,6 +47,12 @@ export interface SeoScoreInput {
   readonly citationCount?: number;
   readonly canonical?: string;
   readonly hasPersonManonJsonLd?: boolean;
+  /**
+   * Équipe éditoriale (interrupteur allumé seulement) : l'auteur actuellement affiché
+   * (Organization « plume IA », ancre `#person`) satisfait le critère d'auteur, au lieu de
+   * exiger une personne précise. Sans effet interrupteur éteint.
+   */
+  readonly hasAuteurActuelJsonLd?: boolean;
   /**
    * Le contenu est rendu dans une page qui fournit le <h1> au niveau page (le
    * titre de l'article), le body n'en contient pas par design (sanitizer FORBID
@@ -273,7 +285,43 @@ export function buildAuxBodyText(parts: {
   return segments.join(" ").replace(/\s+/g, " ").trim();
 }
 
-export function computeSeoScore(input: SeoScoreInput): SeoScoreResult {
+/**
+ * Mot-clé principal, version équipe éditoriale (12 pts) : titre 3, H1 3, méta-description 2,
+ * premier paragraphe 2, au moins un H2 2.
+ */
+function scorePrimaryKeywordEquipe(input: SeoScoreInput): { got: number; reason?: string } {
+  if (!input.primaryKeyword) return { got: 0, reason: "primaryKeyword absent" };
+  const kw = normaliserTitre(input.primaryKeyword);
+  const a = (t: string) => kw.length > 0 && ` ${normaliserTitre(t)} `.includes(` ${kw} `);
+  const blocs = (b: string) =>
+    [...input.bodyHtml.matchAll(new RegExp(`<${b}(?:\\s[^>]*)?>([\\s\\S]*?)</${b}>`, "gi"))].map(
+      (m) => m[1] ?? "",
+    );
+  const inTitle = a(input.title);
+  const inH1 = input.hasPageH1 ? inTitle : blocs("h1").some(a);
+  const inMeta = a(input.metaDescription);
+  const inPremier = a(blocs("p")[0] ?? "");
+  const inH2 = blocs("h2").some(a);
+  const got =
+    (inTitle ? 3 : 0) + (inH1 ? 3 : 0) + (inMeta ? 2 : 0) + (inPremier ? 2 : 0) + (inH2 ? 2 : 0);
+  return {
+    got,
+    reason: `KW '${kw}' title=${inTitle} h1=${inH1} meta=${inMeta} p1=${inPremier} h2=${inH2}`,
+  };
+}
+
+function scorePassagesCitables(bodyHtml: string): { got: number; reason?: string } {
+  const n = detecterPassagesCitables(bodyHtml).citables.length;
+  if (n >= PASSAGES_CITABLES_MIN) return { got: 4 };
+  if (n >= 2) return { got: 2, reason: `${n} passages citables (cible ${PASSAGES_CITABLES_MIN}+)` };
+  return { got: 0, reason: `${n} passage(s) citable(s) (cible ${PASSAGES_CITABLES_MIN}+)` };
+}
+
+export function computeSeoScore(
+  input: SeoScoreInput,
+  env: EnvEquipeEditoriale = process.env,
+): SeoScoreResult {
+  if (equipeEditorialeActive(env)) return computeSeoScoreEquipe(input);
   const checks = [
     { criterion: "Title 50-60 chars", max: 10, ...scoreTitle(input.title) },
     { criterion: "Meta 140-160 chars", max: 10, ...scoreMetaDescription(input.metaDescription) },
@@ -309,6 +357,52 @@ export function computeSeoScore(input: SeoScoreInput): SeoScoreResult {
   const totalScore = checks.reduce((sum, c) => sum + c.got, 0);
   return {
     score: Math.min(100, totalScore),
+    breakdown: checks,
+    intentAligned: checkIntentAlignment(input),
+  };
+}
+
+/**
+ * Grille de l'équipe éditoriale (somme = 100). Différences avec la grille historique :
+ *  - mot-clé : titre, H1, méta-description, premier paragraphe, un H2 (12 pts) ;
+ *  - longueur 10 → 6 pts, et 4 pts pour « 3 passages citables » ;
+ *  - auteur : l'auteur actuel (plume IA) compte, au même titre que la personne Manon.
+ * La FAQ compte dès 4 questions, sans condition d'affichage enrichi (déjà le cas ici).
+ */
+function computeSeoScoreEquipe(input: SeoScoreInput): SeoScoreResult {
+  const mots = scoreWordCount(input.bodyText, input.contentKind, input.auxBodyText);
+  const checks = [
+    { criterion: "Title 50-60 chars", max: 10, ...scoreTitle(input.title) },
+    { criterion: "Meta 140-160 chars", max: 10, ...scoreMetaDescription(input.metaDescription) },
+    { criterion: "H1 unique", max: 8, ...scoreH1Unique(input.bodyHtml, input.hasPageH1) },
+    { criterion: "3-8 H2", max: 10, ...scoreH2Structure(input.bodyHtml) },
+    { criterion: "Primary KW title+H1+meta+p1+H2", max: 12, ...scorePrimaryKeywordEquipe(input) },
+    { criterion: "Direct answer 40-80 mots", max: 8, ...scoreDirectAnswer(input.directAnswer) },
+    { criterion: "FAQ 4+", max: 8, ...scoreFaq(input.faqCount) },
+    { criterion: "Internal links 3+", max: 6, ...scoreInternalLinks(input.internalLinkCount) },
+    {
+      criterion: "Word count",
+      max: 6,
+      got: Math.round(mots.got * 0.6),
+      ...(mots.reason ? { reason: mots.reason } : {}),
+    },
+    { criterion: "Passages citables 3+", max: 4, ...scorePassagesCitables(input.bodyHtml) },
+    { criterion: "Images alt + caption", max: 6, ...scoreImages(input) },
+    {
+      criterion: "Citations intent-aware",
+      max: 6,
+      ...scoreCitations(input.citationCount, input.searchIntent),
+    },
+    { criterion: "Canonical absolute", max: 3, ...scoreCanonical(input.canonical) },
+    {
+      criterion: "Auteur JSON-LD",
+      max: 3,
+      ...scorePersonManon(input.hasPersonManonJsonLd || input.hasAuteurActuelJsonLd),
+    },
+  ];
+  const total = checks.reduce((sum, c) => sum + c.got, 0);
+  return {
+    score: Math.min(100, total),
     breakdown: checks,
     intentAligned: checkIntentAlignment(input),
   };
