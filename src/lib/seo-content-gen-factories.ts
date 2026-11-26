@@ -104,6 +104,9 @@ export interface ArticleJsonLdInput {
   readonly updatedAt: Date | string;
   readonly imageUrl?: string;
   readonly imageAlt?: string;
+  /** Dimensions réelles de la photo, quand elles sont connues (sinon non émises). */
+  readonly imageWidth?: number;
+  readonly imageHeight?: number;
   readonly authorIdRef?: string;
   readonly section?: string;
   readonly tags?: ReadonlyArray<string>;
@@ -218,11 +221,11 @@ function buildArticleBase(
           image: {
             "@type": "ImageObject",
             url: input.imageUrl,
-            // Rich Results 2026 exige width/height sur l'ImageObject (sinon warning
-            // « image dimensions missing »). Défaut OG standard 1200×630 — les héros
-            // sont des bannières larges ; suffit à valider le rich result.
-            width: 1200,
-            height: 630,
+            // Audit B (2026-11-26) — vraies dimensions seulement : 1200×630 inventés
+            // sur une photo d'un autre format étaient faux. Inconnues → omises.
+            ...(input.imageWidth && input.imageHeight
+              ? { width: input.imageWidth, height: input.imageHeight }
+              : {}),
             ...(input.imageAlt ? { caption: input.imageAlt } : {}),
           },
         }

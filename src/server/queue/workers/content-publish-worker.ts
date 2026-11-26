@@ -632,10 +632,11 @@ async function executePublishPipeline(
       : null;
   let refreshTranslationId: string | null = null;
   let refreshPreservedSlug: string | null = null;
+  let refreshExcerptExistant = false;
   if (refreshArticleId) {
     const existingTr = await prisma.articleTranslation.findFirst({
       where: { articleId: refreshArticleId, locale: "fr" },
-      select: { id: true, slug: true },
+      select: { id: true, slug: true, excerpt: true },
     });
     if (!existingTr) {
       // La cible de régénération n'a plus de traduction FR : on refuse plutôt
@@ -644,6 +645,8 @@ async function executePublishPipeline(
     }
     refreshTranslationId = existingTr.id;
     refreshPreservedSlug = existingTr.slug;
+    // Un chapô déjà rempli (écrit à la main) n'est jamais écrasé par la régénération.
+    refreshExcerptExistant = (existingTr.excerpt ?? "").trim().length > 0;
   }
 
   // Slug régénéré par le generator (ou dérivé du titre). Sur le chemin REFRESH,
@@ -1079,6 +1082,8 @@ async function executePublishPipeline(
           bodyText: bodyText || null,
           metaTitle,
           ...(metaDescription ? { metaDescription } : {}),
+          // Chapô : rempli depuis la meta-description si vide (audit B, 2026-11-26).
+          ...(metaDescription && !refreshExcerptExistant ? { excerpt: metaDescription } : {}),
         },
       });
     } else {
@@ -1092,6 +1097,9 @@ async function executePublishPipeline(
           ...(bodyText ? { bodyText } : {}),
           metaTitle,
           ...(metaDescription ? { metaDescription } : {}),
+          // Chapô : sans lui la page n'affiche aucun résumé sous le titre. On part de la
+          // meta-description (pas de la réponse directe, déjà dans « Réponse rapide »).
+          ...(metaDescription ? { excerpt: metaDescription } : {}),
           // wordCount n'est pas persisté : article_translations n'a pas de colonne
           // word_count ; les pages /blog et /actualites le recalculent à la volée
           // depuis le body (et le JSON-LD le reçoit via wordCount ci-dessous).
