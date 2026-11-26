@@ -16,7 +16,11 @@ import {
 } from "@/components/admin/garanties-journee-ia/BadgeEcheance";
 import { gardePage } from "@/server/auth/garde-page";
 import { peutEngager } from "@/server/auth/habilitations";
-import { dossiersDejaRembourses, lireGarantie } from "@/server/garanties-journee-ia/lecture";
+import {
+  dossiersDejaRembourses,
+  lireGarantie,
+  numerosPiecesGarantie,
+} from "@/server/garanties-journee-ia/lecture";
 import {
   calculerEcheances,
   demandeHorsDelai,
@@ -64,6 +68,7 @@ export default async function GarantieFichePage({ params, searchParams }: PagePr
   const reputee = estReputeeAcceptee(d, aujourdhui);
   const horsDelai = demandeHorsDelai(d);
   const autres = await dossiersDejaRembourses(d.sirenSnapshot, d.id);
+  const pieces = await numerosPiecesGarantie(d);
   const ecriture = acces.peutEcrire;
   const argent = peutEngager(acces.role, "facturer");
 
@@ -121,7 +126,8 @@ export default async function GarantieFichePage({ params, searchParams }: PagePr
           className="mb-2 rounded border border-[color:var(--color-admin-error-fg)] bg-[color:var(--color-admin-error-soft)] p-3 text-sm text-[color:var(--color-admin-error-fg)]"
         >
           Demande réputée acceptée : aucune réponse écrite dans les 15 jours (état calculé, non
-          enregistré). Le virement est dû.
+          enregistré). Le remboursement est dû : enregistrer d&apos;abord la décision « Rembourser »
+          (elle émet l&apos;avoir), puis le virement.
         </p>
       ) : null}
       <ul className="mb-6 flex flex-col gap-2 text-sm">
@@ -204,9 +210,27 @@ export default async function GarantieFichePage({ params, searchParams }: PagePr
                     className="admin-input"
                   />
                 </label>
+                {d.decision === "remboursement" && pieces.avoirNumero ? (
+                  <p className="text-sm">
+                    Avoir {pieces.avoirNumero} émis
+                    {pieces.factureNumero ? ` sur la facture ${pieces.factureNumero}` : ""} : la
+                    décision ne peut plus changer (pièce comptable). Acompte + solde : un avoir par
+                    facture touchée (le solde ici, l&apos;éventuel avoir d&apos;acompte figure au
+                    journal et au Hub factures).
+                  </p>
+                ) : null}
                 <label className="flex flex-col gap-1 text-sm">
-                  Montant remboursé (€, si remboursement)
-                  <input name="montantRembourseEuros" inputMode="decimal" className="admin-input" />
+                  Montant remboursé TTC (€, si remboursement) — la décision ÉMET l&apos;avoir
+                  <input
+                    name="montantRembourseEuros"
+                    inputMode="decimal"
+                    defaultValue={
+                      d.decision === "remboursement" && d.montantRembourseCents !== null
+                        ? String(d.montantRembourseCents / 100)
+                        : ""
+                    }
+                    className="admin-input"
+                  />
                 </label>
                 <label className="flex flex-col gap-1 text-sm">
                   Montant de l&apos;avoir (€ HT, 4 470 € au plus, si « Offrir un avoir »)
@@ -233,7 +257,8 @@ export default async function GarantieFichePage({ params, searchParams }: PagePr
                   />
                 </label>
                 <label className="flex flex-col gap-1 text-sm">
-                  Identifiant de l&apos;avoir (Hub factures, facultatif)
+                  Identifiant de l&apos;avoir (uniquement pour « Offrir un avoir », facultatif ;
+                  ignoré pour un remboursement : l&apos;avoir est alors émis par la décision)
                   <input name="avoirId" defaultValue={d.avoirId ?? ""} className="admin-input" />
                 </label>
                 <label className="flex flex-col gap-1 text-sm">
@@ -265,7 +290,7 @@ export default async function GarantieFichePage({ params, searchParams }: PagePr
                   />
                 </label>
                 <label className="flex flex-col gap-1 text-sm">
-                  Montant viré (€) — {euros(d.montantRembourseCents)} enregistré
+                  Montant viré TTC (€) — doit égaler l&apos;avoir : {euros(d.montantRembourseCents)}
                   <input name="montantRembourseEuros" inputMode="decimal" className="admin-input" />
                 </label>
                 <AdminSubmitButton>Enregistrer le virement</AdminSubmitButton>

@@ -624,7 +624,20 @@ export async function reprendreApresAvoirsClients(
   });
   const origines = [...new Set(avoirs.map((a) => a.avoirDeId).filter((x): x is string => !!x))];
   if (origines.length === 0) return bilan;
-  const devis = [...new Set(avoirs.map((a) => a.devisId).filter((x): x is string => !!x))];
+  // `genererAvoirFacture` ne recopie pas `devisId` sur l'avoir : le devis se lit sur la facture
+  // d'ORIGINE (audit Opus D1). Sans cela, un avoir sur l'acompte ne touchait pas le solde qui
+  // porte la commission.
+  const dOrigines = await prisma.factureFormation.findMany({
+    where: { id: { in: origines } },
+    select: { devisId: true },
+  });
+  const devis = [
+    ...new Set(
+      [...avoirs.map((a) => a.devisId), ...dOrigines.map((o) => o.devisId)].filter(
+        (x): x is string => !!x,
+      ),
+    ),
+  ];
   const surLeDevis = devis.length
     ? await prisma.factureFormation.findMany({
         where: { devisId: { in: devis }, avoirDeId: null },
