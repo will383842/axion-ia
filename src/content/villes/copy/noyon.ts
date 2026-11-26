@@ -61,7 +61,7 @@ export const NOYON_COPY: VilleCopy = {
     },
     {
       q: "Quel délai pour une intervention IA à Noyon ?",
-      a: "Nous intervenons généralement sous 5 jours ouvrés à Noyon. Déplacements sur site inclus. Compiègne à 25 min, Paris à 1h10 via TER.",
+      a: "Nous intervenons généralement sous 5 jours ouvrés à Noyon. Compiègne à 25 min, Paris à 1h10 via TER.",
     },
     {
       q: "Comment Axion-IA garantit-il la conformité RGPD à Noyon ?",

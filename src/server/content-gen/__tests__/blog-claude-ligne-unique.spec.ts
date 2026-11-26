@@ -15,6 +15,7 @@ const { create, trackCostSpy, reg, colonne } = vi.hoisted(() => ({
     lignes: [] as Array<{ id: string; costUsd: number; provider: string }>,
     compteur: 1,
     redis: new Map<string, number>(),
+    marques: new Map<string, string>(),
   },
 }));
 
@@ -50,7 +51,12 @@ vi.mock("@/lib/redis", () => ({
     }),
     expire: vi.fn(async () => 1),
     del: vi.fn(async () => 1),
-    set: vi.fn(async () => "OK"),
+    // Marques de clés Anthropic (rotation) : SET … EX puis MGET, comme le vrai Redis.
+    set: vi.fn(async (k: string, v: string) => {
+      reg.marques.set(k, v);
+      return "OK";
+    }),
+    mget: vi.fn(async (...cles: string[]) => cles.map((c) => reg.marques.get(c) ?? null)),
   },
 }));
 // Le suivi de coût historique : le vrai module, avec `trackCost` espionné. Toute
@@ -157,6 +163,7 @@ beforeEach(() => {
   reg.lignes = [];
   reg.compteur = 1;
   reg.redis.clear();
+  reg.marques.clear();
   process.env["CONTENT_GEN_BLOG_CLAUDE"] = "true";
   process.env["ANTHROPIC_API_KEY"] = "cle-fictive-test";
   vi.spyOn(console, "warn").mockImplementation(() => undefined);

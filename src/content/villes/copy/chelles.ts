@@ -233,7 +233,7 @@ export const CHELLES_COPY: VilleCopy = {
     },
     {
       q: "Sous quel délai vous déplacez-vous à Chelles ?",
-      a: "Notre équipe nationale intervient à Chelles sous 5 jours ouvrés après validation du devis. La ville étant à 18 km de Paris et desservie par le RER E, le déplacement est inclus sans surcoût.",
+      a: "Notre équipe nationale intervient à Chelles sous 5 jours ouvrés après validation du devis. La ville est à 18 km de Paris et desservie par le RER E.",
     },
     {
       q: "Intervenez-vous aussi dans les communes proches de Chelles ?",

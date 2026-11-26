@@ -54,12 +54,15 @@ export function CumulVigilance({ v }: { v: VigilanceFiche }) {
 export function FinDeVie({
   apporteurId,
   signe,
+  resiliationNotifiee,
   versees,
   retour,
   erreur,
 }: {
   apporteurId: string;
   signe: boolean;
+  /** Résiliation déjà notifiée (dates formatées) : remplace le formulaire. */
+  resiliationNotifiee?: { notifieeLe: string; effetLe: string } | null | undefined;
   versees: readonly CommissionVerseeFiche[];
   retour?: string | undefined;
   erreur?: string | undefined;
@@ -140,26 +143,69 @@ export function FinDeVie({
         </details>
       ) : null}
 
-      {signe ? (
+      {signe && resiliationNotifiee ? (
+        <p id="resiliation">
+          Résiliation notifiée le {resiliationNotifiee.notifieeLe}, effet le{" "}
+          {resiliationNotifiee.effetLe}. Le contrat reste signé jusqu&apos;à la veille au soir.
+        </p>
+      ) : signe ? (
         <details id="resiliation">
           <summary className="cursor-pointer font-medium">Résilier le contrat</summary>
           <p className="my-[var(--space-admin-2)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]">
-            Les attributions en cours prennent fin (les commandes déjà signées restent couvertes),
-            le lien personnel est révoqué et les rappels s&apos;arrêtent. Les commissions déjà
-            acquises restent dues : elles sont facturées et virées comme les autres.
+            La résiliation se fait en deux temps : on enregistre la notification écrite, puis le
+            contrat prend fin à la date d&apos;effet (en 11.1, 30 jours après la notification, le
+            jour de la notification n&apos;étant pas compté : notifiée le 1er décembre, effet le 1er
+            janvier à 00 h ; tout de suite en 11.2 et 12.5, la mise en demeure devant dater de plus
+            de 15 jours, son jour non compté). L&apos;apporteur reçoit un e-mail à chaque temps. À
+            la prise d&apos;effet, les attributions en cours prennent fin ; les commandes signées
+            avant restent couvertes et les commissions acquises sont facturées et virées comme les
+            autres.
           </p>
           <form
             action={resilierApporteurAction}
             className="flex flex-col gap-[var(--space-admin-2)]"
           >
             <input type="hidden" name="apporteurId" value={apporteurId} />
+            <label className="flex flex-col gap-1">
+              Qui résilie ?
+              <select name="initiative" required defaultValue="societe">
+                <option value="societe">Axion IA</option>
+                <option value="apporteur">L&apos;apporteur, par écrit</option>
+              </select>
+            </label>
+            <label className="flex flex-col gap-1">
+              Fondement
+              <select name="fondement" required defaultValue="11.1">
+                <option value="11.1">
+                  11.1 : résiliation avec préavis de 30 jours, sans motif
+                </option>
+                <option value="11.2">
+                  11.2 : inexécution, après mise en demeure (effet immédiat, motif obligatoire)
+                </option>
+                <option value="12.5">
+                  12.5 : fin de plein droit (radiation, décès…) (effet immédiat, motif obligatoire)
+                </option>
+              </select>
+            </label>
+            <label className="flex flex-col gap-1">
+              Date de la notification écrite
+              <input type="date" name="notifieeLe" required />
+            </label>
+            <label className="flex flex-col gap-1">
+              Date de la mise en demeure (11.2 seulement)
+              <input type="date" name="miseEnDemeureLe" />
+            </label>
+            <label className="flex flex-col gap-1">
+              Motif (11.2 et 12.5 seulement, laisser vide en 11.1)
+              <textarea name="motif" rows={3} maxLength={1000} />
+            </label>
             <label className="flex items-center gap-[var(--space-admin-2)]">
               <input type="checkbox" name="confirmer" value="oui" required />
               Je confirme la résiliation de ce contrat.
             </label>
             <div>
               <button type="submit" className="admin-button-secondary">
-                Résilier
+                Notifier la résiliation
               </button>
             </div>
           </form>

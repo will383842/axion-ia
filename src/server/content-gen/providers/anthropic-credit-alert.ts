@@ -93,3 +93,77 @@ export async function alerterBlogClaude(
     return false;
   }
 }
+
+/* --- Alertes par clé (rotation des clés Anthropic) -------------------------- */
+
+export type MotifAlerteCle = "epuisee" | "invalide";
+
+const DUREE_ALERTE_CLE_SEC: Record<MotifAlerteCle, number> = {
+  /** « Clé N épuisée » : une seule fois par jour. */
+  epuisee: 24 * 60 * 60,
+  /** Clé refusée (401/403) : critique ; au plus une fois par heure (durée de la marque). */
+  invalide: 60 * 60,
+};
+
+const memoireCles = new Map<string, number>();
+
+/** Test uniquement. */
+export function __resetAlerteCleAnthropicMemoire(): void {
+  memoireCles.clear();
+}
+
+/**
+ * Alerte « clé N épuisée » (1 fois par jour) ou « clé N refusée » (critique, 1 fois par
+ * heure). Seul l'index 1, 2 ou 3 figure dans l'alerte et dans les clés Redis. Fail-open.
+ * @returns true si une alerte vient d'être émise.
+ */
+export async function alerterCleAnthropic(index: number, motif: MotifAlerteCle): Promise<boolean> {
+  try {
+    if (index !== 1 && index !== 2 && index !== 3) return false;
+    const id = `${index}:${motif}`;
+    const dureeSec = DUREE_ALERTE_CLE_SEC[motif];
+    const now = Date.now();
+    const dernier = memoireCles.get(id) ?? 0;
+    if (dernier > 0 && now - dernier < dureeSec * 1000) return false;
+
+    const cleRedis = `anthropic:cle:${index}:alerte-${motif}`;
+    try {
+      const ok = await redis.set(cleRedis, "1", "EX", dureeSec, "NX");
+      if (ok !== "OK") {
+        memoireCles.set(id, now);
+        return false;
+      }
+    } catch {
+      // Redis absent : la mémoire de processus suffit.
+    }
+    memoireCles.set(id, now);
+
+    const texte =
+      motif === "epuisee"
+        ? `Clé Anthropic ${index} épuisée : le crédit de ce compte est à zéro.\n` +
+          "Les appels passent sur la clé suivante. À faire : recharger le compte (console Anthropic).\n" +
+          "Si toutes les clés sont épuisées, la génération s'arrête."
+        : `Clé Anthropic ${index} REFUSÉE (401/403) : clé révoquée, mauvaise organisation ou compte suspendu.\n` +
+          "Les appels passent sur la clé suivante pendant 1 h. À faire : vérifier la clé dans la console Anthropic et dans Coolify.";
+    const res = await notify({
+      category: "MONITORING_ALERT",
+      severity: motif === "invalide" ? "critical" : "error",
+      payload: {
+        kind: `ANTHROPIC_CLE_${motif.toUpperCase()}`,
+        details: { legacyBody: texte },
+      },
+      dedupKey: `anthropic-cle-${index}-${motif}`,
+      dedupTtlSec: dureeSec,
+      sync: true,
+      force: true,
+    } as Parameters<typeof notify>[0]);
+    if (!res.ok) {
+      await redis.del(cleRedis).catch(() => undefined);
+      // Nouvel essai dans 5 min au plus tôt.
+      memoireCles.set(id, now - dureeSec * 1000 + 5 * 60 * 1000);
+    }
+    return res.ok && res.deduped !== true;
+  } catch {
+    return false;
+  }
+}

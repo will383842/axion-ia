@@ -65,7 +65,7 @@ export const MIONS_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Lyon ?",
-      a: "Nos consultants viennent de Lyon (20 min). Coûts de déplacement séparés du forfait, tarifs transparents.",
+      a: "Nos consultants viennent de Lyon (20 min). Tarifs transparents.",
     },
   ],
 };

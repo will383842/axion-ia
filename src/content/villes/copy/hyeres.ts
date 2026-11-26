@@ -222,7 +222,7 @@ export const HYERES_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Transparent quote sent from 24-48 h depending on complexity, with no hidden amounts. Websites and SaaS platforms hosted in the EU, GDPR-compliant by design. We cover UX/UI, mobile, multi-CMS e-commerce and the AI layer. You stay owner of the code, content and integrations (POS, PMS, channel manager, SICA feeds) — no Axion-IA dependency, takeover possible in-house or by any integrator of the Métropole Toulon Provence Méditerranée. Any travel and lodging costs billed separately depending on the zone.",
+          "Transparent quote sent from 24-48 h depending on complexity, with no hidden amounts. Websites and SaaS platforms hosted in the EU, GDPR-compliant by design. We cover UX/UI, mobile, multi-CMS e-commerce and the AI layer. You stay owner of the code, content and integrations (POS, PMS, channel manager, SICA feeds) — no Axion-IA dependency, takeover possible in-house or by any integrator of the Métropole Toulon Provence Méditerranée.",
       },
     },
   },
@@ -242,7 +242,7 @@ export const HYERES_COPY: VilleCopy = {
     },
     {
       q: "Axion-IA intervient-il dans les communes autour de Hyères ?",
-      a: "Oui. Nous nous déplaçons également à Toulon, La Garde, Carqueiranne, La Crau et dans le reste de la métropole pour des prestations sur site, sans surcoût caché.",
+      a: "Oui. Nous nous déplaçons également à Toulon, La Garde, Carqueiranne, La Crau et dans le reste de la métropole pour des prestations sur site.",
     },
     {
       q: "Comment se déroule un audit IA à Hyères ?",
