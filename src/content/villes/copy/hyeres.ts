@@ -144,7 +144,7 @@ export const HYERES_COPY: VilleCopy = {
           "Cut-flower sector over-represented: the ~350 Hyères-area horticulturists and the SICA Marché aux Fleurs (France's leading flower market, 4th in Europe) need ordering portals, variety catalogues (roses, carnations, gerberas, birds of paradise) and greenhouse production dashboards — not a generic showcase site.",
           "High-cap island tourism: Porquerolles visitor numbers are capped (~6,000/day) and TLV-TVM crossings limited (~4,000 passengers/day). We build booking engines that handle these quotas, multilingual traffic and seasonal peaks, open-air accommodation included.",
           "Seasonal micro-business base: ~2,035 micro-businesses and ~95 SMEs in Hyères whose workload swings between high and low season. Our AI-native platforms automate quotes, follow-ups and e-commerce (direct nursery sales, wine estates, island products) with no vendor lock-in.",
-          "Business-zone footprint and travel: we work across the ZAE du Chibasson (85 firms, ~2,000 jobs), the planned 16-ha horticultural pole, the airport (VINCI Airports concession) and neighbouring towns — Toulon, La Garde, Carqueiranne, La Crau.",
+          "Business-zone footprint: Axion-IA works anywhere in France, on site or remotely, including across the ZAE du Chibasson (85 firms, ~2,000 jobs), the planned 16-ha horticultural pole, the airport (VINCI Airports concession) and neighbouring towns — Toulon, La Garde, Carqueiranne, La Crau.",
         ],
         methodology: [
           {
@@ -209,8 +209,8 @@ export const HYERES_COPY: VilleCopy = {
             a: "Yes. Porquerolles visitor numbers are capped (~6,000/day) and TLV-TVM crossings limited (~4,000 passengers/day). We develop booking engines that respect these caps, handle multilingual traffic and smooth seasonal peaks toward Porquerolles, Port-Cros and Le Levant.",
           },
           {
-            q: "Does Axion-IA come on site in Hyères and the peninsula?",
-            a: "Yes. We work at your premises in Hyères — greenhouse holdings, hotels, campsites, Côtes de Provence cellars, ZAE du Chibasson, airport area — and in neighbouring towns: Toulon, La Garde, Carqueiranne, La Crau.",
+            q: "Do you work in Hyères?",
+            a: "Yes. Axion-IA works anywhere in France, on site or remotely, including in Hyères — greenhouse holdings, hotels, campsites, Côtes de Provence cellars, ZAE du Chibasson, airport area — and in neighbouring towns: Toulon, La Garde, Carqueiranne, La Crau.",
           },
           {
             q: "Do I need to be a large company for a site or SaaS with Axion-IA?",

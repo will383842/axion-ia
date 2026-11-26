@@ -65,9 +65,9 @@ export const MONTREUIL_COPY: VilleCopy = {
   ],
 
   distancesFr:
-    "Métro ligne 9 : stations Croix de Chavaux, Robespierre et Mairie de Montreuil desservent le cœur de ville et le Bas-Montreuil. Paris Gare de Lyon (TGV) accessible via métro (~25 min). Aéroport Paris-Charles de Gaulle à 22 km. Limitrophe Paris 20e (Porte de Bagnolet, Porte de Montreuil).",
+    "Axion IA intervient partout en France, sur site ou à distance, y compris à Montreuil, dans le cœur de ville, le Bas-Montreuil et aux portes de Paris 20e.",
   distancesEn:
-    "Metro line 9: Croix de Chavaux, Robespierre and Mairie de Montreuil stations serve the town centre and Bas-Montreuil. Paris Gare de Lyon (TGV) accessible via metro (~25 min). Paris-Charles de Gaulle Airport 22 km away. Adjacent to Paris 20th arrondissement (Porte de Bagnolet, Porte de Montreuil).",
+    "Axion-IA works anywhere in France, on site or remotely, including in Montreuil, the town centre, Bas-Montreuil and the edge of Paris 20th arrondissement.",
 
   ecosystemFr:
     "Tissu B2B sectorisé sur un périmètre dense — 4e ville d'Île-de-France (~111 000 hab). Bas-Montreuil : siège mondial Ubisoft (2 200+ employés), siège AFD, siège BNP Paribas Personal Finance, site majeur Capgemini. Écosystème numérique Cap Digital Paris-Région. Incubateur La Pousse (ESS). IUT Montreuil (Sorbonne Paris Nord). ZAC Boissière-Acacia en développement.",

@@ -142,7 +142,7 @@ export const TREMBLAY_EN_FRANCE_COPY: VilleCopy = {
           "Tremblay-en-France is a freight/logistics hub unique in France: Air France HQ at Roissypôle, the Aérolians Paris park (198 ha, ~250-317 companies including FedEx Express, Airbus Helicopters, Daher Aerospace and Mondial Relay) and 577 companies at Paris-Nord 2. Our AI platforms are calibrated for these express and warehousing trades.",
           "We build customer portals and tracking SaaS for freight forwarders and e-commerce warehouses: real-time parcel tracking, waybill and AWB generation, semantic search across customs documentation, multilingual conversational agents for CDG international flows.",
           "Local retail (Aéroville shopping center, ~3,000 jobs since 2013) and future occupants of the Paris-Nord Villepinte Exhibition Park (Aérolians extension, Grand Paris Express line 17) need multi-CMS e-commerce storefronts, booking and high-performance mobile catalogs.",
-          "We work on site across the four zones — Roissypôle, Aérolians Paris, Paris-Nord 2, Garonor and Tremblay-CDG — reachable via RER B (CDG Terminals 1 and 2, Vert-Galant) and the A1, A104 and A3 motorways.",
+          "Axion-IA works anywhere in France, on site or remotely, across the four zones — Roissypôle, Aérolians Paris, Paris-Nord 2, Garonor and Tremblay-CDG.",
         ],
         methodology: [
           {

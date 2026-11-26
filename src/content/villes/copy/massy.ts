@@ -218,7 +218,7 @@ export const MASSY_COPY: VilleCopy = {
           },
           {
             q: "Do you operate beyond Massy, across the southern Essonne and towards Saclay?",
-            a: "Yes. From Massy, interconnected by the TGV station and the RER B and C lines, we cover western Essonne, the Saclay plateau and the southern Paris region. Kick-off and acceptance happen on site; development iterations run in a hybrid on-site/remote mode.",
+            a: "Yes. Axion-IA works anywhere in France, on site or remotely, including western Essonne, the Saclay plateau and the southern Paris region. Kick-off and acceptance can happen on site; development iterations run in a hybrid on-site/remote mode.",
           },
         ],
         guarantees:

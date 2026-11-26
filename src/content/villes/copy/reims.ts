@@ -424,8 +424,8 @@ export const REIMS_COPY: VilleCopy = {
             a: "It depends on the chosen format. The one-day format runs over a day, the two-day format over two consecutive days. The Talk and Executives format fit in a day. For a multi-format program, the rhythm is defined together at framing.",
           },
           {
-            q: "Can your consultants come to the Champagne basin (Épernay, Châlons, Troyes)?",
-            a: "Yes. We cover the entire Champagne-Ardenne basin, including Épernay (~30 km from Reims), Châlons-en-Champagne (~45 km) and Troyes (~80 km). We work anywhere in France, on site or remotely.",
+            q: "Do you work in Reims?",
+            a: "Yes. Axion-IA works anywhere in France, on site or remotely, including in Reims and across the Champagne basin.",
           },
           {
             q: "Are the tools installed on workstations adapted to the Champagne sector?",
@@ -605,7 +605,7 @@ export const REIMS_COPY: VilleCopy = {
           },
           {
             q: "Can you integrate AI into ERP systems specific to the Champagne sector?",
-            a: "Yes. We work with existing stacks — viticultural ERPs, cellar management tools, export CRMs, messaging — via API integration or lightweight orchestration layers. No replacement of your existing systems.",
+            a: "Yes. We integrate with existing stacks — viticultural ERPs, cellar management tools, export CRMs, messaging — via API integration or lightweight orchestration layers. No replacement of your existing systems.",
           },
           {
             q: "Who maintains the solution after the mission?",

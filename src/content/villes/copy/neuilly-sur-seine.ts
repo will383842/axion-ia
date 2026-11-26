@@ -212,7 +212,7 @@ export const NEUILLY_SUR_SEINE_COPY: VilleCopy = {
           },
           {
             q: "Do you work on site in Neuilly-sur-Seine?",
-            a: "Yes. Williams travels to your offices on avenue Charles-de-Gaulle, Île de la Jatte or the Ybry district via metro line 1 (Pont de Neuilly, Les Sablons, Porte Maillot). Kick-off and acceptance happen in person; neighboring towns (Levallois-Perret, Courbevoie, Puteaux, La Défense, Paris 16th and 17th) are covered in the same visit.",
+            a: "Yes. Axion-IA works anywhere in France, on site or remotely, including at your offices on avenue Charles-de-Gaulle, Île de la Jatte or the Ybry district, and in neighboring towns (Levallois-Perret, Courbevoie, Puteaux, La Défense, Paris 16th and 17th).",
           },
           {
             q: "How fast is a quote and what technology do you use?",

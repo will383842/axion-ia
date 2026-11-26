@@ -127,7 +127,7 @@ export const RAMBOUILLET_COPY: VilleCopy = {
           },
           {
             q: "Faites-vous du no-code, ou tout est-il en code custom ?",
-            a: "Nous intervenons dans vos locaux à Rambouillet, partout en France. Tout est en code custom (TypeScript, Python, intégrations API), maintenable et auditable. Pas de plateforme no-code propriétaire qui vous enferme.",
+            a: "Tout est en code custom (TypeScript, Python, intégrations API), maintenable et auditable. Pas de plateforme no-code propriétaire qui vous enferme.",
           },
           {
             q: "Où sont hébergées les données de mon site ou de mon SaaS ?",

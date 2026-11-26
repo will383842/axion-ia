@@ -186,7 +186,7 @@ export const RENNES_COPY: VilleCopy = {
           "Dense and varied Rennes economic fabric: city-centre micro-businesses, growing SMEs at ViaSilva, digital mid-caps at Atalante Beaulieu, major GE sites such as Canon CRF and Orange Innovation in Cesson-Sévigné.",
           "Strong French Tech Rennes Saint-Malo ecosystem presence: deep-tech and AI scale-ups born from IRISA and Inria, often transitioning from POC to production.",
           "Read-outs always in person in Rennes: ideation workshops at your offices, deliverable walk-through with your leadership, action plan handed over face to face.",
-          "No opaque quote game: public pricing, you know exactly what you commit to before signing. Same rate card as Paris or Lyon.",
+          "No opaque quote game: public pricing, you know exactly what you commit to before signing. Axion-IA works anywhere in France, on site or remotely.",
           "You keep control: your action plan is executable with any Rennes-based vendor or in-house after our audit.",
         ],
         methodology: [

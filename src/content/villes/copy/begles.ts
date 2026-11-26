@@ -161,7 +161,7 @@ export const BEGLES_COPY: VilleCopy = {
           {
             step: "Acceptance + go-live",
             detail:
-              "Acceptance tests, Web Vitals and SEO/AEO validated, production release without downtime. Quick access from Bordeaux-Saint-Jean (high-speed rail) in 10 minutes.",
+              "Acceptance tests, Web Vitals and SEO/AEO validated, production release without downtime. Axion-IA works anywhere in France, on site or remotely, including in Bègles.",
           },
           {
             step: "Delivery + autonomy",

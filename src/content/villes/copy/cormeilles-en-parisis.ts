@@ -137,7 +137,7 @@ export const CORMEILLES_EN_PARISIS_COPY: VilleCopy = {
           "Dominant industrial and construction fabric: the Placoplatre gypsum quarry (Saint-Gobain), the Placo plant and the ~40 establishments of the Carrefour des Champs Guillaume business park (9.48 ha, construction and small transport) have concrete needs — plastering/construction quote configurators, site-tracking tools, supplier portals — that we deliver as custom web applications.",
           "The Seine Parisii district (conversion of the Lafarge brownfield: 1,200 homes, a ~110-berth marina set to be water-filled in April 2026, France's first BBCA District label) is driving a wave of activity for developers, local services, nautical leisure and shops — all requiring web showcases and booking platforms.",
           "Concentrated local retail: ~50 shops along Avenue Foch with the Auchan anchor, and a commercial pre-emption right introduced by the city in 2025 to revitalise the centre — a context well suited to local e-commerce, click & collect and optimised Google Business profiles, which we deploy in multi-CMS.",
-          "Direct access from Paris (Transilien line J from Saint-Lazare, A15 Herblay exit, A115): our kick-offs take place on site in Cormeilles-en-Parisis — in Bois Rochefort, Champs Guillaume or on Avenue Foch — without disproportionate logistics costs.",
+          "Axion-IA works anywhere in France, on site or remotely: our kick-offs take place in Cormeilles-en-Parisis — in Bois Rochefort, Champs Guillaume or on Avenue Foch.",
         ],
         methodology: [
           {

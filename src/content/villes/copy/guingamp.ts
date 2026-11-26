@@ -65,7 +65,7 @@ export const GUINGAMP_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Guingamp ?",
-      a: "Nous intervenons dans vos locaux à Guingamp, partout en France. TGV Paris-Guingamp (direct, noeud TER Lannion/Paimpol/Carhaix).",
+      a: "Axion IA intervient partout en France, sur site ou à distance, y compris dans vos locaux à Guingamp.",
     },
   ],
 };

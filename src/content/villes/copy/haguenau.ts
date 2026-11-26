@@ -216,7 +216,7 @@ export const HAGUENAU_COPY: VilleCopy = {
           },
           {
             q: "How quickly do we receive a quote for a site in Haguenau?",
-            a: "We deliver a quote from 24 to 48 hours depending on project complexity. Williams then travels on site to Haguenau (TER station 15 minutes from Strasbourg, A4 via the D1340) for scoping before any development.",
+            a: "We deliver a quote from 24 to 48 hours depending on project complexity. Axion-IA works anywhere in France, on site or remotely, including in Haguenau, with a scoping phase before any development.",
           },
         ],
         guarantees:

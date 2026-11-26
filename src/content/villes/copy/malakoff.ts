@@ -143,7 +143,7 @@ export const MALAKOFF_COPY: VilleCopy = {
           "Audiovisual/post-production sector over-represented locally: Malakoff Studio, Time-Line Factory (rue Paul Vaillant-Couturier), Black Snow Production (rue de la Tour), McFly Prod, Teslart and Le Magasin generate very concrete needs — video asset catalogues, transcription/rough-cut, subtitling and dubbing, shoot quotes and scheduling — where AI delivers measurable gains.",
           "Dense cooperative and social-economy ecosystem: the CASACO third-place (SCIC, ~45 workstations, around a hundred coworkers) and the MALACOOP initiative (CASACO, the Ressourcerie, the La Tréso craft/digital/fabrication third-place) concentrate freelancers, remote workers and startup teams who need lightweight platforms and shared tools rather than over-engineered systems.",
           "Fabric of very small structures: ~5,800 businesses, mostly sole proprietorships, average headcount around 5; the top business-creation sector in 2024 is 'specialised, scientific and technical activities' — an audience of agencies, practices and freelancers for whom a fast site and a lean SaaS matter more than an oversized showcase site.",
-          "Immediate proximity to Paris without Paris costs: four Line 13 metro stations and the Vanves-Malakoff Transilien station (Line N) put Montparnasse ~4 km away; we travel on site to Malakoff, Vanves, Montrouge, Châtillon, Clamart, Bagneux and the bordering 14th/15th arrondissements.",
+          "Axion-IA works anywhere in France, on site or remotely, including in Malakoff, Vanves, Montrouge, Châtillon, Clamart, Bagneux and the bordering 14th/15th arrondissements.",
         ],
         methodology: [
           {

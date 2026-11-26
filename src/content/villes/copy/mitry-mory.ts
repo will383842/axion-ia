@@ -238,7 +238,7 @@ export const MITRY_MORY_COPY: VilleCopy = {
     },
     {
       q: "Quels délais d'intervention IA à Mitry-Mory ?",
-      a: "Nous planifions une intervention sur site sous 5 jours ouvrés après confirmation, en visio sous 48 h. Devis et calendrier fournis.",
+      a: "Nous planifions une intervention sur site sous 5 jours ouvrés après confirmation, en visio sous 48 h. Devis et calendrier fournis en 48 h.",
     },
     {
       q: "Comment Axion-IA garantit-il la conformité RGPD à Mitry-Mory ?",

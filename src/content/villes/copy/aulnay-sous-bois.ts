@@ -208,7 +208,7 @@ export const AULNAY_SOUS_BOIS_COPY: VilleCopy = {
           },
           {
             q: "What's the lead time for a website or SaaS quote in Aulnay-sous-Bois?",
-            a: "The quote is issued from 24-48 h depending on project complexity, after an initial framing exchange. We travel on site in Aulnay (RER B, A1/A3) to understand your flows before pricing.",
+            a: "The quote is issued from 24-48 h depending on project complexity, after an initial framing exchange. Axion-IA works anywhere in France, on site or remotely, including in Aulnay, to understand your flows before pricing.",
           },
           {
             q: "Do you handle the traceability constraints of ZI Les Mardelles manufacturers?",

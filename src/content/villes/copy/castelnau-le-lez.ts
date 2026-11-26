@@ -236,7 +236,7 @@ export const CASTELNAU_LE_LEZ_COPY: VilleCopy = {
     },
     {
       q: "Quelles communes proches couvrez-vous autour de Castelnau-le-Lez ?",
-      a: "Nous intervenons aussi dans les communes limitrophes : Montpellier, Clapiers, Le Crès, Jacou et Saint-Aunès. La ligne 2 du tramway relie directement la commune au centre de Montpellier.",
+      a: "Axion IA intervient partout en France, sur site ou à distance, y compris dans les communes limitrophes de Castelnau-le-Lez : Montpellier, Clapiers, Le Crès, Jacou et Saint-Aunès.",
     },
     {
       q: "Quels secteurs locaux accompagnez-vous à Castelnau-le-Lez ?",

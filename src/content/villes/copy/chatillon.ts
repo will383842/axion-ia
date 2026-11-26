@@ -143,7 +143,7 @@ export const CHATILLON_COPY: VilleCopy = {
           "Châtillon concentrates a rare digital density for the southern suburbs thanks to the Orange Gardens campus (~72,000 m², ~3,500 people, Orange 5G Lab and Data Studio): we build showcase sites and SaaS platforms for the tech subcontractors, software vendors and data/dev freelancers orbiting this technocentre.",
           "The AXA Assistance France headquarters (6 rue André Gide) structures an insurance/assistance/services micro-ecosystem: we equip the B2B firms, brokers and providers in this sector with client portals, secure areas and quote and follow-up automation.",
           "The arrival of the Grand Paris Express Line 15 South Châtillon-Montrouge station (opening targeted for 2027, ~95,000 daily passengers expected) is densifying the district with shops and services: we get local micro-businesses ready with multi-CMS e-commerce sites, online booking and mobile visibility before it opens.",
-          "We travel across the whole south of Hauts-de-Seine — Châtillon, Clamart, Montrouge, Malakoff, Bagneux, Fontenay-aux-Roses — to scope the project on site, near the Line 13 metro terminus, the T6 tram or the A86, with no mandatory video calls.",
+          "Axion-IA works anywhere in France, on site or remotely, including across the whole south of Hauts-de-Seine — Châtillon, Clamart, Montrouge, Malakoff, Bagneux, Fontenay-aux-Roses — with no mandatory video calls.",
         ],
         methodology: [
           {
@@ -213,7 +213,7 @@ export const CHATILLON_COPY: VilleCopy = {
           },
           {
             q: "How quickly can you start in Châtillon?",
-            a: "After an initial discussion, the quote is delivered from 24 to 48 hours depending on complexity. Williams then travels on site to Châtillon (Line 13 metro, T6 tram or A86) for scoping, then we launch the architecture and mockups.",
+            a: "After an initial discussion, the quote is delivered from 24 to 48 hours depending on complexity. Axion-IA works anywhere in France, on site or remotely, so we scope the project for Châtillon, then launch the architecture and mockups.",
           },
           {
             q: "Where is the data hosted and who owns the code?",

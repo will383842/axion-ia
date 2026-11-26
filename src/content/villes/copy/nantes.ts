@@ -185,7 +185,7 @@ export const NANTES_COPY: VilleCopy = {
         whyHere: [
           "Nantes is a strategic hub for Axion-IA: aeronautics, shipbuilding, agri-food, French Tech digital and biotech concentrate AI cases with strong ROI potential.",
           "Nantes B2B fabric well-represented in our references: industrial mid-caps (aeronautics, composites, naval), agri-food SMEs, French Tech scale-ups, Euronantes consulting firms.",
-          "Our consultants travel across the whole Nantes metropolis — Île de Nantes, Euronantes Gare, La Chantrerie, Saint-Herblain, Bouguenais — and the wider basin (Saint-Nazaire, Rennes, Angers).",
+          "Axion-IA works anywhere in France, on site or remotely, including across the whole Nantes metropolis — Île de Nantes, Euronantes Gare, La Chantrerie, Saint-Herblain, Bouguenais — and the wider basin (Saint-Nazaire, Rennes, Angers).",
           "Read-outs always in person at your premises: ideation workshop, deliverable walk-through with your leadership, action plan handed over face to face.",
           "No opaque quote game: public pricing, you know exactly what you pay before signing.",
           "Your action plan is executable with any vendor or in-house — no Axion-IA lock-in.",

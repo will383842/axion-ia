@@ -130,7 +130,7 @@ export const LIEVIN_COPY: VilleCopy = {
           },
           {
             q: "Intervenez-vous dans les communes voisines de Liévin ?",
-            a: "Oui : Lens, Avion (La Gaillette), Angres, Bully-les-Mines, Aix-Noulette, Éleu-dit-Leauwette, Grenay, Loos-en-Gohelle, ainsi qu'Arras et Lille, via l'A21, l'A26 et la gare SNCF de Liévin. Nous intervenons dans vos locaux, partout en France.",
+            a: "Oui : Lens, Avion (La Gaillette), Angres, Bully-les-Mines, Aix-Noulette, Éleu-dit-Leauwette, Grenay, Loos-en-Gohelle, ainsi qu'Arras et Lille. Axion IA intervient partout en France, sur site ou à distance.",
           },
         ],
         guarantees:

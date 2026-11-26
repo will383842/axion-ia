@@ -281,7 +281,7 @@ export const CAEN_COPY: VilleCopy = {
           },
           {
             q: "Do you cover basin communes (Mondeville, Colombelles, Hérouville-Saint-Clair)?",
-            a: "Yes. The full Caen la Mer area is our territory. Our consultants travel to all communes — from Mondeville (Bosch) to Colombelles (NXP, EffiScience), Hérouville-Saint-Clair to Ifs and Bretteville-sur-Odon.",
+            a: "Yes. Axion-IA works anywhere in France, on site or remotely, including across the full Caen la Mer area — from Mondeville (Bosch) to Colombelles (NXP, EffiScience), Hérouville-Saint-Clair to Ifs and Bretteville-sur-Odon.",
           },
           {
             q: "Do I need AI maturity to engage you?",

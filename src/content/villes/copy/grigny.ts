@@ -19,10 +19,8 @@ export const GRIGNY_COPY: VilleCopy = {
     "Grigny, 26 842 habitants en 2023 dans l'Essonne, présente un tissu économique majoritairement composé de TPE et PME des secteurs commerce de détail, transport, construction et restauration, avec des zones industrielles le long de la Seine. La ville est limitrophe de Draveil, Fleury-Mérogis, Ris-Orangis et Viry-Châtillon, et bénéficie de la proximité du pôle économique d'Évry-Courcouronnes ainsi que des axes A6 et RN7.",
   ecosystemEn:
     "Grigny, 26 842 habitants en 2023 dans l'Essonne, présente un tissu économique majoritairement composé de TPE et PME des secteurs commerce de détail, transport, construction et restauration, avec des zones industrielles le long de la Seine. La ville est limitrophe de Draveil, Fleury-Mérogis, Ris-Orangis et Viry-Châtillon, et bénéficie de la proximité du pôle économique d'Évry-Courcouronnes ainsi que des axes A6 et RN7.",
-  distancesFr:
-    "Grigny est à environ 8 km de l'aéroport de Paris-Orly, 27 km au sud de Paris, accessible via la ligne D du RER (gare Grigny-Centre) et l'autoroute A6.",
-  distancesEn:
-    "Grigny est à environ 8 km de l'aéroport de Paris-Orly, 27 km au sud de Paris, accessible via la ligne D du RER (gare Grigny-Centre) et l'autoroute A6.",
+  distancesFr: "Axion IA intervient partout en France, sur site ou à distance, y compris à Grigny.",
+  distancesEn: "Axion IA intervient partout en France, sur site ou à distance, y compris à Grigny.",
   topSectorsNaf: [
     "Commerce de détail",
     "Transports terrestres et logistique",

@@ -218,7 +218,7 @@ export const MERIGNAC_COPY: VilleCopy = {
           },
           {
             q: "How long until I get a quote?",
-            a: "From 24 to 48 hours depending on complexity. After an initial discussion of your scope — showcase site, e-commerce, supplier portal or SaaS — we send you a costed quote. Our consultants travel to Mérignac and across the Bordeaux metropolitan area for framing.",
+            a: "From 24 to 48 hours depending on complexity. After an initial discussion of your scope — showcase site, e-commerce, supplier portal or SaaS — we send you a costed quote. Axion-IA works anywhere in France, on site or remotely, including in Mérignac and across the Bordeaux metropolitan area.",
           },
         ],
         guarantees:

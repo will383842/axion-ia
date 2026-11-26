@@ -212,7 +212,7 @@ export const MEAUX_COPY: VilleCopy = {
           },
           {
             q: "Do you work with companies in the Parc d'Activités du Pays de Meaux and the La Hayette business zone?",
-            a: "Yes, we travel to the PAPM (RN3/A140 junction — neighbourhood of Gaches Chimie, C&A, Prologis, Les Saisons de Meaux) and to the La Hayette business zone in Mareuil-lès-Meaux. There we deploy B2B portals, order tracking, automated quotes and AI-driven ERP/WMS integrations.",
+            a: "Yes. Axion-IA works anywhere in France, on site or remotely, including at the PAPM (neighbourhood of Gaches Chimie, C&A, Prologis, Les Saisons de Meaux) and in the La Hayette business zone in Mareuil-lès-Meaux. There we deploy B2B portals, order tracking, automated quotes and AI-driven ERP/WMS integrations.",
           },
           {
             q: "How fast do we get a quote for a website or SaaS in Meaux?",

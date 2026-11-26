@@ -20,9 +20,9 @@ export const ALFORTVILLE_COPY: VilleCopy = {
   ecosystemEn:
     "Le tissu économique d'Alfortville s'appuie sur des commerces de proximité, des PME de services, des artisans du BTP et un héritage industriel en bord de Seine. La communauté d'origine arménienne, présente depuis les années 1920, structure une part notable du commerce indépendant. La commune est rattachée à l'EPT Grand Paris Sud Est Avenir et bénéficie de la dynamique du Grand Paris ainsi que des dessertes RER D et bus RATP qui relient Paris en moins de 15 minutes.",
   distancesFr:
-    "Alfortville est à environ 3 km au sud-est de Paris, accessible via le RER D (gares Maisons-Alfort – Alfortville et Vert de Maisons) ou la ligne 8 du métro à proximité (station École vétérinaire de Maisons-Alfort). Les autoroutes A4 et A86 permettent de rejoindre Roissy-CDG en 35 min et Orly en 25 min hors heures de pointe.",
+    "Alfortville se situe à environ 3 km au sud-est de Paris, dans le Val-de-Marne. Axion IA intervient partout en France, sur site ou à distance, y compris à Alfortville.",
   distancesEn:
-    "Alfortville est à environ 3 km au sud-est de Paris, accessible via le RER D (gares Maisons-Alfort – Alfortville et Vert de Maisons) ou la ligne 8 du métro à proximité (station École vétérinaire de Maisons-Alfort). Les autoroutes A4 et A86 permettent de rejoindre Roissy-CDG en 35 min et Orly en 25 min hors heures de pointe.",
+    "Alfortville is about 3 km south-east of Paris, in the Val-de-Marne. Axion-IA works anywhere in France, on site or remotely, including in Alfortville.",
   topSectorsNaf: [
     "Commerce de détail",
     "Restauration",

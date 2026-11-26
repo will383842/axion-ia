@@ -151,7 +151,7 @@ export const BASTIA_COPY: VilleCopy = {
           {
             step: "Kick-off on site in Bastia",
             detail:
-              "We come to your premises in Bastia, Furiani, Ville-di-Pietrabugno or across the eastern plain (via Bastia-Poretta airport) to observe your real tools, customer journeys and seasonality constraints.",
+              "We come to your premises in Bastia, Furiani, Ville-di-Pietrabugno or across the eastern plain to observe your real tools, customer journeys and seasonality constraints.",
           },
           {
             step: "UX/UI design and architecture",
@@ -210,7 +210,7 @@ export const BASTIA_COPY: VilleCopy = {
           },
           {
             q: "How fast is a quote, and where do you operate around Bastia?",
-            a: "Quotes are issued from 24-48 h depending on project complexity. We operate in Bastia and neighbouring communes (Furiani, Ville-di-Pietrabugno, Barbaggio, Patrimonio) as well as across the eastern plain, with on-site visits arranged via Bastia-Poretta airport.",
+            a: "Quotes are issued from 24-48 h depending on project complexity. We operate in Bastia and neighbouring communes (Furiani, Ville-di-Pietrabugno, Barbaggio, Patrimonio) as well as across the eastern plain. Axion-IA works anywhere in France, on site or remotely.",
           },
           {
             q: "Where is data hosted, and am I dependent on you afterwards?",

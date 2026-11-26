@@ -233,7 +233,7 @@ export const MONT_SAINT_AIGNAN_COPY: VilleCopy = {
     },
     {
       q: "Sous quel délai Axion-IA peut-il intervenir à Mont-Saint-Aignan ?",
-      a: "Nous intervenons généralement sous 5 à 10 jours ouvrés après signature du devis. Visio de cadrage possible sous 48h. La gare Rouen Rive-Droite permet une intervention rapide depuis Paris Saint-Lazare.",
+      a: "Nous intervenons généralement sous 5 à 10 jours ouvrés après signature du devis. Visio de cadrage possible sous 48h. Axion IA intervient partout en France, sur site ou à distance, y compris à Mont-Saint-Aignan.",
     },
     {
       q: "Couvrez-vous les communes proches comme Rouen, Bois-Guillaume ou Déville-lès-Rouen ?",

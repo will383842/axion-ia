@@ -279,7 +279,7 @@ export const ROUEN_COPY: VilleCopy = {
           },
           {
             q: "Do you cover Métropole communes (Madrillet, Vatine, Petit-Quevilly, Mont-Saint-Aignan)?",
-            a: "Yes. Our consultants travel to all communes of the Métropole Rouen Normandie — from Madrillet (INSA, ESIGELEC) to Mont-Saint-Aignan (Vatine, NEOMA), from Petit-Quevilly (Lubrizol, Safran) to Saint-Étienne-du-Rouvray and Grand-Quevilly. We work anywhere in France, on site or remotely.",
+            a: "Yes. We cover all communes of the Métropole Rouen Normandie, including Madrillet (INSA, ESIGELEC), Mont-Saint-Aignan (Vatine, NEOMA), Petit-Quevilly (Lubrizol, Safran), Saint-Étienne-du-Rouvray and Grand-Quevilly. We work anywhere in France, on site or remotely.",
           },
           {
             q: "Do I need AI maturity to engage you?",

@@ -21,9 +21,9 @@ export const CHOLET_COPY: VilleCopy = {
   ecosystemEn:
     "Le Choletais, situé aux confins du Maine-et-Loire, de la Vendée, de la Loire-Atlantique et des Deux-Sèvres, constitue un bassin industriel dense. Historiquement spécialisé dans le mouchoir et le tissage, il s'est diversifié vers la chaussure, l'électronique, l'équipement automobile et l'agroalimentaire. L'A87 et deux liaisons SNCF (vers Nantes et Angers) structurent les flux logistiques de ce deuxième bassin d'emploi des Pays de la Loire.",
   distancesFr:
-    "Cholet est à 51,6 km au sud-ouest d'Angers, environ 65 km au sud-est de Nantes, accessible via l'A87. La gare SNCF de Cholet dessert Nantes et Angers.",
+    "Axion IA intervient partout en France, sur site ou à distance, y compris à Cholet et dans le Choletais.",
   distancesEn:
-    "Cholet est à 51,6 km au sud-ouest d'Angers, environ 65 km au sud-est de Nantes, accessible via l'A87. La gare SNCF de Cholet dessert Nantes et Angers.",
+    "Axion-IA works anywhere in France, on site or remotely, including in Cholet and the Choletais area.",
   topSectorsNaf: [
     "Industrie de la chaussure",
     "Textile-habillement",

@@ -206,7 +206,7 @@ export const MONTROUGE_COPY: VilleCopy = {
           },
           {
             q: "Do you work on site in Montrouge and the neighbouring communes?",
-            a: "Yes. Kick-off and acceptance happen on site in Montrouge — Évergreen district, rue Barbès, town centre — with direct metro M4 (Mairie de Montrouge, Barbara) and M13 (Châtillon-Montrouge). We also travel to Paris 14th, Arcueil, Bagneux, Châtillon, Gentilly and Malakoff. Development iterations run hybrid on-site/remote.",
+            a: "Yes. Axion-IA works anywhere in France, on site or remotely. Kick-off and acceptance can happen on site in Montrouge — Évergreen district, rue Barbès, town centre — as well as in Paris 14th, Arcueil, Bagneux, Châtillon, Gentilly and Malakoff. Development iterations run hybrid on-site/remote.",
           },
           {
             q: "How long for a website or SaaS platform quote in Montrouge?",

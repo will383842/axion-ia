@@ -20,9 +20,9 @@ export const NEUILLY_SUR_MARNE_COPY: VilleCopy = {
   ecosystemEn:
     "Neuilly-sur-Marne, 39 800 habitants en 2023 en Seine-Saint-Denis, présente 2 221 établissements actifs : 1 546 dans le commerce, le transport et les services, 324 dans la construction, 100 dans l'industrie. Le tissu local est marqué par la présence des hôpitaux psychiatriques de Ville-Évrard et Maison Blanche, employeurs majeurs, et bénéficie de la proximité immédiate de Bry-sur-Marne, Gagny, Gournay-sur-Marne, Neuilly-Plaisance, Noisy-le-Grand, Rosny-sous-Bois et Villemomble.",
   distancesFr:
-    "Neuilly-sur-Marne se situe à 13,1 km à l'est de Paris, accessible via les RER A (Neuilly-Plaisance), B (Vert-Galant) et E (Chénay-Gagny), ainsi que par les autoroutes A4 et A86. L'aéroport de Paris-Charles-de-Gaulle est à environ 20 km.",
+    "Axion IA intervient partout en France, sur site ou à distance, y compris à Neuilly-sur-Marne et dans les communes voisines de l'Est francilien.",
   distancesEn:
-    "Neuilly-sur-Marne se situe à 13,1 km à l'est de Paris, accessible via les RER A (Neuilly-Plaisance), B (Vert-Galant) et E (Chénay-Gagny), ainsi que par les autoroutes A4 et A86. L'aéroport de Paris-Charles-de-Gaulle est à environ 20 km.",
+    "Axion-IA works anywhere in France, on site or remotely, including in Neuilly-sur-Marne and the neighbouring towns of eastern Île-de-France.",
   topSectorsNaf: [
     "Commerce de détail et de gros",
     "Services aux entreprises et aux particuliers",
@@ -57,7 +57,7 @@ export const NEUILLY_SUR_MARNE_COPY: VilleCopy = {
           "Pôle santé mentale dominant : l'EPS de Ville-Évrard et l'EPS de Maison Blanche, ainsi que les cabinets, IFSI et structures médico-sociales de leur écosystème, ont des besoins très spécifiques — portails de prise de rendez-vous, espaces usagers, gestion documentaire réglementée — que nous traitons en code custom avec hébergement UE et données minimisées.",
           "Parc de Maison Blanche : l'éco-quartier livre progressivement environ 40 000 m² d'activités tertiaires et artisanales et 5 500 m² de commerces de proximité ; les nouvelles structures qui s'y implantent ont besoin de sites vitrines, d'e-commerce local et d'applications mobiles que nous livrons clés en main.",
           "Z.I. des Chanoux (37,68 ha, environ 664 entreprises, gare RER A Neuilly-Plaisance) : pour les PME industrielles, logistiques et de commerce de gros de la zone, nous construisons des plateformes B2B — catalogues produits, portails revendeurs, devis automatisés, chatbots techniques sur leurs propres données.",
-          "Position dans l'Est francilien : à proximité immédiate de Noisy-le-Grand (pôle tertiaire majeur du Grand Paris), Bry-sur-Marne, Gagny et Rosny-sous-Bois, accessible via RER A, RER E et A4/A86 ; nous nous déplaçons sur site pour le cadrage et la recette.",
+          "Position dans l'Est francilien : à proximité immédiate de Noisy-le-Grand (pôle tertiaire majeur du Grand Paris), Bry-sur-Marne, Gagny et Rosny-sous-Bois ; Axion IA intervient partout en France, sur site ou à distance, y compris pour le cadrage et la recette.",
         ],
         methodology: [
           {
@@ -131,7 +131,7 @@ export const NEUILLY_SUR_MARNE_COPY: VilleCopy = {
           },
           {
             q: "Intervenez-vous dans les communes voisines de Neuilly-sur-Marne ?",
-            a: "Oui : Noisy-le-Grand, Bry-sur-Marne, Gagny, Gournay-sur-Marne, Neuilly-Plaisance, Rosny-sous-Bois et Villemomble, et plus largement l'Est francilien via RER A, RER E et A4/A86. Nous nous déplaçons sur site pour le cadrage et la recette, y compris dans la Z.I. des Chanoux et au Parc de Maison Blanche.",
+            a: "Oui. Axion IA intervient partout en France, sur site ou à distance, y compris à Noisy-le-Grand, Bry-sur-Marne, Gagny, Gournay-sur-Marne, Neuilly-Plaisance, Rosny-sous-Bois et Villemomble, dans la Z.I. des Chanoux et au Parc de Maison Blanche.",
           },
         ],
         guarantees:
@@ -143,7 +143,7 @@ export const NEUILLY_SUR_MARNE_COPY: VilleCopy = {
           "Pôle santé mentale dominant : l'EPS de Ville-Évrard et l'EPS de Maison Blanche, ainsi que les cabinets, IFSI et structures médico-sociales de leur écosystème, ont des besoins très spécifiques — portails de prise de rendez-vous, espaces usagers, gestion documentaire réglementée — que nous traitons en code custom avec hébergement UE et données minimisées.",
           "Parc de Maison Blanche : l'éco-quartier livre progressivement environ 40 000 m² d'activités tertiaires et artisanales et 5 500 m² de commerces de proximité ; les nouvelles structures qui s'y implantent ont besoin de sites vitrines, d'e-commerce local et d'applications mobiles que nous livrons clés en main.",
           "Z.I. des Chanoux (37,68 ha, environ 664 entreprises, gare RER A Neuilly-Plaisance) : pour les PME industrielles, logistiques et de commerce de gros de la zone, nous construisons des plateformes B2B — catalogues produits, portails revendeurs, devis automatisés, chatbots techniques sur leurs propres données.",
-          "Position dans l'Est francilien : à proximité immédiate de Noisy-le-Grand (pôle tertiaire majeur du Grand Paris), Bry-sur-Marne, Gagny et Rosny-sous-Bois, accessible via RER A, RER E et A4/A86 ; nous nous déplaçons sur site pour le cadrage et la recette.",
+          "Position dans l'Est francilien : à proximité immédiate de Noisy-le-Grand (pôle tertiaire majeur du Grand Paris), Bry-sur-Marne, Gagny et Rosny-sous-Bois ; Axion IA intervient partout en France, sur site ou à distance, y compris pour le cadrage et la recette.",
         ],
         methodology: [
           {
@@ -217,7 +217,7 @@ export const NEUILLY_SUR_MARNE_COPY: VilleCopy = {
           },
           {
             q: "Intervenez-vous dans les communes voisines de Neuilly-sur-Marne ?",
-            a: "Oui : Noisy-le-Grand, Bry-sur-Marne, Gagny, Gournay-sur-Marne, Neuilly-Plaisance, Rosny-sous-Bois et Villemomble, et plus largement l'Est francilien via RER A, RER E et A4/A86. Nous nous déplaçons sur site pour le cadrage et la recette, y compris dans la Z.I. des Chanoux et au Parc de Maison Blanche.",
+            a: "Oui. Axion IA intervient partout en France, sur site ou à distance, y compris à Noisy-le-Grand, Bry-sur-Marne, Gagny, Gournay-sur-Marne, Neuilly-Plaisance, Rosny-sous-Bois et Villemomble, dans la Z.I. des Chanoux et au Parc de Maison Blanche.",
           },
         ],
         guarantees:

@@ -52,8 +52,8 @@ export const BAILLARGUES_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Baillargues et dans toutes les communes est Montpellier (Le Crès, Castries, Vendargues, Mudaison). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
-      q: "La proximité de la gare TGV facilite-t-elle les missions ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Missions multi-jours possibles aussi.",
+      q: "Intervenez-vous à Baillargues ?",
+      a: "Oui. Axion IA intervient partout en France, sur site ou à distance, y compris à Baillargues.",
     },
     {
       q: "Quels services pour les PME de services tertiaires ?",

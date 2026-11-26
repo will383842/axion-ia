@@ -144,7 +144,7 @@ export const LA_COURNEUVE_COPY: VilleCopy = {
           "The Mermoz business zone (83 ha, ~200 establishments) and Rateau (logistics and recycling, Urbaparc and Parc des Damiers parks) concentrate a fabric of trading, warehousing and wholesale that benefits from moving off the phone and onto an online catalogue with automated quoting and order tracking.",
           "The presence of the Banque de France cash centre — fully automated, handling over a billion banknotes a year — and of groups like Derichebourg Propreté, Paprec or Arabelle Services makes La Courneuve a territory where process automation is a daily reality, not an abstraction: we speak the same language as your operations.",
           "The conversion of the Babcock & Wilcox brownfield into the «Fabrique des cultures» (30,000 m² of halls, cultural and creative industries) and the arrival of the Six-Routes Grand Paris Express station in 2027 attract new players: craftspeople, creative studios, e-merchants and service SMEs who need a fast, mobile, selling website from day one.",
-          "We travel on site — Mermoz warehouses, Rateau workshops, town-centre offices near Georges-Valbon park — to frame the project with you, and we cover the whole northern Paris area via the RER B, tramway T1 and soon lines 16/17.",
+          "Axion-IA works anywhere in France, on site or remotely — Mermoz warehouses, Rateau workshops, town-centre offices near Georges-Valbon park — to frame the project with you.",
         ],
         methodology: [
           {
@@ -209,8 +209,8 @@ export const LA_COURNEUVE_COPY: VilleCopy = {
             a: "Yes. For garages and automotive after-sales in La Courneuve, we design a fast mobile showcase site with online booking, quote requests and a qualification chatbot (vehicle type, service, slot). All hosted in the European Union and GDPR-compliant.",
           },
           {
-            q: "Does Axion-IA travel on site in La Courneuve?",
-            a: "Yes. We come to your premises — a Mermoz warehouse, a Rateau workshop, a town-centre office or near the future Six-Routes station — for framing and final acceptance. We cover the whole northern Paris area via the RER B, tramway T1 and, from 2027, lines 16 and 17 of the Grand Paris Express.",
+            q: "Do you work in La Courneuve?",
+            a: "Yes. Axion-IA works anywhere in France, on site or remotely, including in La Courneuve.",
           },
           {
             q: "How long to receive a quote?",

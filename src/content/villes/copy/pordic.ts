@@ -65,7 +65,7 @@ export const PORDIC_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Pordic ?",
-      a: "Nous intervenons dans vos locaux à Pordic, partout en France. Paris-Saint-Brieuc (TGV direct), puis 15 min jusqu'à Pordic.",
+      a: "Axion IA intervient partout en France, sur site ou à distance, y compris chez vous à Pordic.",
     },
   ],
 };

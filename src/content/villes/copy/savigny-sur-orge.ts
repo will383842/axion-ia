@@ -202,7 +202,7 @@ export const SAVIGNY_SUR_ORGE_COPY: VilleCopy = {
         faq: [
           {
             q: "Does Axion-IA build websites in Savigny-sur-Orge?",
-            a: "Yes. We design AI-augmented websites and SaaS platforms for companies in Savigny-sur-Orge and the Orge valley: town centre and RER C station, the Les Gâtines zone on route de Morangis, the avenue du Garigliano tertiary hub. We work on site or by video, with direct access via the RER C.",
+            a: "Yes. We design AI-augmented websites and SaaS platforms for companies in Savigny-sur-Orge and the Orge valley: town centre, the Les Gâtines zone on route de Morangis, the avenue du Garigliano tertiary hub. Axion-IA works anywhere in France, on site or remotely.",
           },
           {
             q: "Can you set up an e-commerce shop for a Savigny town-centre retailer?",

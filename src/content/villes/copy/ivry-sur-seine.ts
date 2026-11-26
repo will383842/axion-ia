@@ -216,7 +216,7 @@ export const IVRY_SUR_SEINE_COPY: VilleCopy = {
           },
           {
             q: "How fast is a quote for a website or SaaS project in Ivry-sur-Seine?",
-            a: "We send a quote from 24-48 h depending on project complexity. The kick-off takes place on site in Ivry-sur-Seine (Ivry-Port, ZAC Confluences, Cap de Seine or town centre), easily reached via metro line 7, RER C and tram T9.",
+            a: "We send a quote from 24-48 h depending on project complexity. Axion-IA works anywhere in France, on site or remotely, including in Ivry-sur-Seine (Ivry-Port, ZAC Confluences, Cap de Seine or town centre).",
           },
         ],
         guarantees:

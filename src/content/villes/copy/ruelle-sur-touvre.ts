@@ -65,7 +65,7 @@ export const RUELLE_SUR_TOUVRE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA sur site à Ruelle-sur-Touvre ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Mission sur site dans vos locaux industriels, bureau ou atelier à Ruelle-sur-Touvre, commune à 10 min de la gare TGV d'Angoulême.",
+      a: "Axion IA intervient partout en France, sur site ou à distance, dans votre usine, votre bureau ou votre atelier à Ruelle-sur-Touvre.",
     },
   ],
 };

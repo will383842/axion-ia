@@ -218,7 +218,7 @@ export const CASTRES_COPY: VilleCopy = {
           },
           {
             q: "How fast is a quote and where do you meet us?",
-            a: "The quote is delivered from 24 to 48 hours depending on project complexity. We travel on site in Castres and the southern Tarn — Campus Chartreuse, Mélou and Chartreuse zones, town centre — with the A69 Castres-Toulouse motorway also easing exchanges with the Toulouse area.",
+            a: "The quote is delivered from 24 to 48 hours depending on project complexity. Axion-IA works anywhere in France, on site or remotely, including in Castres and the southern Tarn — Campus Chartreuse, Mélou and Chartreuse zones, town centre.",
           },
         ],
         guarantees:
@@ -245,8 +245,8 @@ export const CASTRES_COPY: VilleCopy = {
       a: "Oui. Toutes nos implémentations à Castres respectent le RGPD et privilégient des architectures souveraines. Vous gardez la maîtrise de vos données et la propriété des outils déployés.",
     },
     {
-      q: "Comment se déroule une mission à Castres ?",
-      a: "Toulouse est par l'autoroute Castres-Toulouse. Nous nous déplaçons sur site à Castres.",
+      q: "Intervenez-vous à Castres ?",
+      a: "Oui. Axion IA intervient partout en France, sur site ou à distance, y compris à Castres.",
     },
     {
       q: "Proposez-vous un accompagnement individuel pour les dirigeants ?",

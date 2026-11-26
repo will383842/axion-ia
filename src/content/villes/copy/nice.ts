@@ -174,7 +174,7 @@ export const NICE_COPY: VilleCopy = {
         whyHere: [
           "Nice and its metro area hold a dense B2B fabric: 16,327 active businesses, from Old Town shops to the worldwide R&D centres of Amadeus IT and IBM.",
           "The Sophia Antipolis basin — 20 km from Nice — hosts Europe's leading tech park with Amadeus, IBM, SAP, Accenture, EURECOM: AI leadership we engage with regularly.",
-          "Our consultants travel on site across Nice and the full metro area (Grand Arénas, Nice Méridia, Sophia Antipolis, Cannes, Antibes, Grasse, Menton).",
+          "Axion-IA works anywhere in France, on site or remotely, including across Nice and the full metro area (Grand Arénas, Nice Méridia, Sophia Antipolis, Cannes, Antibes, Grasse, Menton).",
           "Read-outs always in person: ideation workshops, deliverable walk-through with your leadership, action plan handed face to face.",
           "Public pricing, no opaque six-figure quotes: you know exactly what you pay before signing.",
           "Your action plan is executable with any vendor or in-house after our audit — zero lock-in.",
@@ -245,8 +245,8 @@ export const NICE_COPY: VilleCopy = {
             a: "Yes. Confidentiality ensured from kick-off, data processed exclusively on your infrastructure, no extraction to our servers. GDPR compliance, models tested locally or on dedicated infra at your premises if sovereignty is required.",
           },
           {
-            q: "Do you cover the Sophia Antipolis basin from Nice?",
-            a: "Yes. Our consultants travel on site across the Nice Côte d'Azur metro and to Sophia Antipolis, Antibes, Cannes, Grasse and Menton. Sophia is 20 minutes from Nice-Ville, a routine working distance for our missions.",
+            q: "Do you work in Nice?",
+            a: "Yes. Axion-IA works anywhere in France, on site or remotely, including in Nice.",
           },
           {
             q: "Difference with a Big Four audit or traditional consulting?",

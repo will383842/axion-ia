@@ -208,7 +208,7 @@ export const VILLIERS_SUR_MARNE_COPY: VilleCopy = {
           },
           {
             q: "Do you build e-commerce sites for Villiers-sur-Marne retail and logistics?",
-            a: "Yes, multi-CMS or custom code depending on your back-office. We work with retail in the activity zones (IKEA, Bricorama style) and Marne-la-Vallée e-commerce logistics (A4/A104 junction, luxury, cosmetics, medical devices): online stores, order tracking, support agents and AI-augmented product search.",
+            a: "Yes, multi-CMS or custom code depending on your back-office. We work with retail in the activity zones (IKEA, Bricorama style) and Marne-la-Vallée e-commerce logistics (luxury, cosmetics, medical devices): online stores, order tracking, support agents and AI-augmented product search.",
           },
           {
             q: "How quickly do we receive a quote in Villiers-sur-Marne?",

@@ -217,7 +217,7 @@ export const CACHAN_COPY: VilleCopy = {
           },
           {
             q: "Do you also work around Cachan, and how fast do you send a quote?",
-            a: "We work in Cachan and neighbouring towns — Arcueil, Bagneux, Villejuif, Bourg-la-Reine, L'Haÿ-les-Roses — as well as across Val-de-Marne and Île-de-France, 15 minutes from Paris by RER B (and soon Line 15 South). The quote is delivered from 24-48 h depending on project complexity.",
+            a: "Axion-IA works anywhere in France, on site or remotely, including in Cachan and neighbouring towns — Arcueil, Bagneux, Villejuif, Bourg-la-Reine, L'Haÿ-les-Roses — as well as across Val-de-Marne and Île-de-France. The quote is delivered from 24-48 h depending on project complexity.",
           },
         ],
         guarantees:

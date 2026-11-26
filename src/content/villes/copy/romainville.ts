@@ -60,7 +60,7 @@ export const ROMAINVILLE_COPY: VilleCopy = {
           {
             step: "Cadrage à Romainville",
             detail:
-              "Kick-off sur site à Romainville — sur le parc Biocitech, dans une galerie de Komunuma, dans une enseigne de Paddock Paris ou dans vos locaux du quartier Bas-Pays (métro 11, station Romainville-Carnot, ou tram T1) — pour cartographier vos données réelles et le périmètre fonctionnel du site ou de la plateforme SaaS.",
+              "Kick-off sur site à Romainville — sur le parc Biocitech, dans une galerie de Komunuma, dans une enseigne de Paddock Paris ou chez vous dans le quartier Bas-Pays — pour cartographier vos données réelles et le périmètre fonctionnel du site ou de la plateforme SaaS.",
           },
           {
             step: "Conception UX/UI et architecture IA",
@@ -100,7 +100,7 @@ export const ROMAINVILLE_COPY: VilleCopy = {
             sizeLabel: "ETI",
             price: "Plateforme SaaS IA-native sur mesure",
             detail:
-              "Pour une ETI sciences de la vie ou un opérateur immobilier/retail du Grand Paris autour de la station Carnot : plateforme SaaS complète, agents conversationnels, gouvernance des données, montée en charge et sécurité.",
+              "Pour une ETI sciences de la vie ou un opérateur immobilier/retail du Grand Paris : plateforme SaaS complète, agents conversationnels, gouvernance des données, montée en charge et sécurité.",
           },
           {
             sizeLabel: "Grande entreprise",
@@ -139,14 +139,14 @@ export const ROMAINVILLE_COPY: VilleCopy = {
         whyHere: [
           "The Biocitech hub (avenue Gaston Roussel) concentrates biotech, biopharma and fine-chemistry micro-businesses and SMEs facing heavy documentary requirements (regulatory dossiers, ICPE safety sheets, batch traceability): we build AI-native platforms — semantic search over scientific corpora, RAG chatbots on quality procedures, structured extraction from regulatory PDFs.",
           "The Komunuma / Fondation Fiminco ecosystem and its galleries (Air de Paris, In Situ-Fabienne Leclerc, Imane Farès, Vincent Sator, Jocelyn Wolff) plus the international artist residency have very specific web needs: artwork catalogues, viewing rooms, exhibition ticketing, limited-edition e-commerce — bespoke sites that generic CMSs handle poorly.",
-          "The new ZAC de l'Horloge retail — Paddock Paris outlet (first city outlet accessible by metro), ~29,000 sqm of retail — calls for multi-CMS e-commerce storefronts, click-and-collect and AI product recommendation, now boosted by the visitor flow via line 11.",
+          "The new ZAC de l'Horloge retail — Paddock Paris outlet, ~29,000 sqm of retail — calls for multi-CMS e-commerce storefronts, click-and-collect and AI product recommendation.",
           "La Cité Maraîchère (municipal vertical urban farm) and the construction/services fabric (28% and 39% of local jobs) have concrete use cases: short-circuit selling, workshop booking, automated construction quotes, site tracking on Grand Paris works around the new Carnot station.",
         ],
         methodology: [
           {
             step: "Framing in Romainville",
             detail:
-              "Kick-off on site in Romainville — at the Biocitech park, in a Komunuma gallery, in a Paddock Paris store or at your premises in the Bas-Pays district. The site is reached via Métro line 11 (Romainville-Carnot station) or tram T1, to map your real data and the functional scope of the site or SaaS platform.",
+              "Kick-off on site in Romainville — at the Biocitech park, in a Komunuma gallery, in a Paddock Paris store or at your premises in the Bas-Pays district, to map your real data and the functional scope of the site or SaaS platform.",
           },
           {
             step: "UX/UI design and AI architecture",
@@ -186,7 +186,7 @@ export const ROMAINVILLE_COPY: VilleCopy = {
             sizeLabel: "Mid-cap",
             price: "Bespoke AI-native SaaS platform",
             detail:
-              "For a life-sciences mid-cap or a real-estate/retail operator of Greater Paris around Carnot station: full SaaS platform, conversational agents, data governance, scaling and security.",
+              "For a life-sciences mid-cap or a real-estate/retail operator of Greater Paris: full SaaS platform, conversational agents, data governance, scaling and security.",
           },
           {
             sizeLabel: "Large enterprise",
@@ -206,11 +206,11 @@ export const ROMAINVILLE_COPY: VilleCopy = {
           },
           {
             q: "How exactly do you operate in Romainville?",
-            a: "Our senior experts travel on site to Romainville — at Biocitech, in a Komunuma gallery, in a Paddock Paris store or at your premises in the Bas-Pays / ZAC de l'Horloge district. The site is served by Métro line 11 (Romainville-Carnot station, opened June 2024) and tram T1. Kick-off and acceptance are always done in person.",
+            a: "Axion-IA works anywhere in France, on site or remotely, including in Romainville — at Biocitech, in a Komunuma gallery, in a Paddock Paris store or at your premises in the Bas-Pays / ZAC de l'Horloge district. Kick-off and acceptance are always done in person.",
           },
           {
             q: "Do you do e-commerce for Paddock Paris stores and local retail?",
-            a: "Yes. Paddock Paris, presented as the first city outlet accessible by metro, and more broadly the ~29,000 sqm of retail of the ZAC de l'Horloge benefit from the visitor flow via line 11. We build multi-CMS e-commerce storefronts (Shopify, WooCommerce, PrestaShop or bespoke), click-and-collect, AI product recommendation and sales chatbots, with mobile-first design and Web Vitals optimised for conversion.",
+            a: "Yes. Paddock Paris and more broadly the ~29,000 sqm of retail of the ZAC de l'Horloge need strong online storefronts. We build multi-CMS e-commerce storefronts (Shopify, WooCommerce, PrestaShop or bespoke), click-and-collect, AI product recommendation and sales chatbots, with mobile-first design and Web Vitals optimised for conversion.",
           },
           {
             q: "Are you CMS-independent, and what happens to the code after the project?",

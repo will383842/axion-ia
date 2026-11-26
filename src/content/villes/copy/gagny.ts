@@ -143,7 +143,7 @@ export const GAGNY_COPY: VilleCopy = {
           "Gagny is entering a decade of urban transformation: the Le Parc de Maison Blanche eco-district (ÉcoQuartier-labelled 2018, developed by C-DU, ~4,200 homes through 2031, new Château d'eau retail hub) will spawn local shops and services that need a web and e-commerce storefront from day one.",
           "The Cœur de Ville / Îlot Centre-Ville project unveiled in 2022 (food hall, bistronomy brasserie, hairdresser, sports/fitness venue) is bringing a wave of new Gagny businesses: we build their websites, online booking and multi-CMS stores ahead of opening.",
           "The real fabric is dominated by construction trades — a legacy of Gagny's gypsum quarries, amplified by the exceptional Carrières de l'Ouest backfilling project (> €16.5M): tradespeople, finishing firms and geotechnical contractors need AI-driven quote, site-tracking and lead-qualification websites.",
-          "Served by two RER E stations (Gagny and Le Chénay – Gagny) ~20 min from Paris-Est, Gagny is reachable in person; we also work alongside established operators (Sodexo, Veolia Eau, SNCF, building firm AÏNA) and the Village du Chénay merchants' association.",
+          "Axion-IA works anywhere in France, on site or remotely, including in Gagny; we also work alongside established operators (Sodexo, Veolia Eau, SNCF, building firm AÏNA) and the Village du Chénay merchants' association.",
         ],
         methodology: [
           {

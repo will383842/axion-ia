@@ -216,7 +216,7 @@ export const BEZONS_COPY: VilleCopy = {
           },
           {
             q: "Do you travel on site to Bezons and neighbouring communes?",
-            a: "Yes. We work in Bezons via the T2 tram (Pont de Bezons terminus, twelve minutes from La Défense) and cover Argenteuil, Sartrouville, Houilles, Carrières-sur-Seine, Colombes and Nanterre, which share the same fabric of SMEs and subcontractors.",
+            a: "Yes. Axion-IA works anywhere in France, on site or remotely, including in Bezons and neighbouring communes such as Argenteuil, Sartrouville, Houilles, Carrières-sur-Seine, Colombes and Nanterre, which share the same fabric of SMEs and subcontractors.",
           },
         ],
         guarantees:

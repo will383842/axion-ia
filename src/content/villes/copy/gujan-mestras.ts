@@ -120,7 +120,7 @@ export const GUJAN_MESTRAS_COPY: VilleCopy = {
           },
           {
             q: "Pouvez-vous gérer la vente d'huîtres en ligne et la saisonnalité ?",
-            a: "Oui. On construit des boutiques de vente directe avec calendrier de retrait au port (Larros, La Hume, Le Canal…), expédition de bourriches, traçabilité des lots et gestion des pics de fin d'année. L'assistant multilingue et les automatisations absorbent les commandes en haute saison estivale et pendant les fêtes sans surcharge administrative pour les exploitations familiales du bassin d'Arcachon.",
+            a: "Oui. On construit des boutiques de vente directe avec calendrier de retrait au port (Larros, La Hume, Le Canal…), expédition de bourriches, traçabilité des lots et gestion des pics de fin d'année. L'assistant multilingue et les automatisations absorbent les commandes en haute saison estivale et pendant les fêtes sans lourdeur administrative pour les exploitations familiales du bassin d'Arcachon.",
           },
           {
             q: "Travaillez-vous avec les hébergeurs et le tourisme du bassin d'Arcachon ?",
@@ -206,7 +206,7 @@ export const GUJAN_MESTRAS_COPY: VilleCopy = {
           },
           {
             q: "Pouvez-vous gérer la vente d'huîtres en ligne et la saisonnalité ?",
-            a: "Oui. On construit des boutiques de vente directe avec calendrier de retrait au port (Larros, La Hume, Le Canal…), expédition de bourriches, traçabilité des lots et gestion des pics de fin d'année. L'assistant multilingue et les automatisations absorbent les commandes en haute saison estivale et pendant les fêtes sans surcharge administrative pour les exploitations familiales du bassin d'Arcachon.",
+            a: "Oui. On construit des boutiques de vente directe avec calendrier de retrait au port (Larros, La Hume, Le Canal…), expédition de bourriches, traçabilité des lots et gestion des pics de fin d'année. L'assistant multilingue et les automatisations absorbent les commandes en haute saison estivale et pendant les fêtes sans lourdeur administrative pour les exploitations familiales du bassin d'Arcachon.",
           },
           {
             q: "Travaillez-vous avec les hébergeurs et le tourisme du bassin d'Arcachon ?",

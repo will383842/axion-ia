@@ -202,7 +202,7 @@ export const VIGNEUX_SUR_SEINE_COPY: VilleCopy = {
         faq: [
           {
             q: "Do you build websites and e-commerce in Vigneux-sur-Seine and the Val d'Yerres Val de Seine?",
-            a: "Yes. Axion-IA designs showcase sites, e-commerce stores and AI-augmented SaaS platforms for small and mid-sized businesses in Vigneux-sur-Seine and the neighbouring communes of the Val d'Yerres Val de Seine agglomeration. We travel on site (workshop, shop, warehouse in the Bac d'Ablon or Clos de la Régale zones) or work remotely; the RER D serves the town.",
+            a: "Yes. Axion-IA designs showcase sites, e-commerce stores and AI-augmented SaaS platforms for small and mid-sized businesses in Vigneux-sur-Seine and the neighbouring communes of the Val d'Yerres Val de Seine agglomeration. Axion-IA works anywhere in France, on site (workshop, shop, warehouse in the Bac d'Ablon or Clos de la Régale zones) or remotely.",
           },
           {
             q: "Do you work with Vigneux building-trade craftspeople and contractors?",

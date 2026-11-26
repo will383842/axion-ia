@@ -251,7 +251,7 @@ export const BOULOGNE_BILLANCOURT_COPY: VilleCopy = {
           },
           {
             q: "Do you cover surrounding communes (Issy-les-Moulineaux, Meudon, Saint-Cloud)?",
-            a: "Yes. The Boulogne-Billancourt basin is our full territory: Issy-les-Moulineaux (~2 km), Vanves (~3 km), Sèvres (~3 km), Meudon (~4 km), Saint-Cloud (~3 km) and adjacent Paris 15th and 16th. No zone surcharge.",
+            a: "Yes. The Boulogne-Billancourt basin is our full territory: Issy-les-Moulineaux (~2 km), Vanves (~3 km), Sèvres (~3 km), Meudon (~4 km), Saint-Cloud (~3 km) and adjacent Paris 15th and 16th. Axion-IA works anywhere in France, on site or remotely.",
           },
           {
             q: "Do I need AI maturity to engage you?",

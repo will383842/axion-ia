@@ -368,7 +368,7 @@ export const STRASBOURG_COPY: VilleCopy = {
       en: {
         hero: "Axion-IA's AI sessions in Strasbourg come in on-site formats from one to several days depending on your teams. Your staff don't leave with slides: they leave with AI tools installed on their workstations, configured for their real work.",
         whyHere: [
-          "Strasbourg is served by TGV and ICE: we can work on site in a day, minimising logistics costs for you.",
+          "Axion-IA works anywhere in France, including Strasbourg, on site or remotely.",
           "All Strasbourg basin sectors covered in person: Wacken-Europe, Presqu'île, Illkirch Innovation Park (PII), Espace Européen de l'Entreprise in Schiltigheim, Port du Rhin, Eurométropole communes.",
           "FR/DE bilingualism natively handled: for Franco-German teams in the Eurodistrict, demos and workshops can be conducted in French, German or mixed mode per participants.",
           "The one-day format is calibrated for Strasbourg industrial, biotech and service SMEs and mid-caps up to about a hundred staff.",
@@ -734,7 +734,7 @@ export const STRASBOURG_COPY: VilleCopy = {
           "The trilingual FR/DE/EN dimension of the Eurodistrict makes Strasbourg a special case: we conduct sessions in the executive's working language, including bilingual mode for Franco-German profiles in the Strasbourg-Ortenau Eurodistrict.",
           "European institutions and international bodies (Parliament, Council of Europe, INSP ex-ENA) employ senior staff subject to strong confidentiality constraints — our 1-to-1 coaching addresses exactly this need for discreet support.",
           "PII biotech SME and mid-cap leaders (Alsace BioValley, Eli Lilly, IRCAD) need to integrate AI without exposing clinical or R&D data — our sovereign and confidential approach is calibrated for these constraints.",
-          "Maximum accessibility: Strasbourg station served by TGV and ICE — we work on site with minimal logistics cost for you.",
+          "Axion-IA works anywhere in France, including Strasbourg, on site or remotely.",
           "No group dynamics: you progress at your own pace, on your real questions, in your working language, without adapting to a collective level that is not yours.",
         ],
         methodology: [

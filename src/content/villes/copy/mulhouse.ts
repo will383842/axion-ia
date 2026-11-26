@@ -287,7 +287,7 @@ export const MULHOUSE_COPY: VilleCopy = {
           },
           {
             q: "Do you cover basin communes (Riedisheim, Kingersheim, Illzach)?",
-            a: "Yes. The full Mulhouse basin is our territory: Riedisheim (2 km), Kingersheim (3 km), Illzach (4 km), Pfastatt (5 km), Lutterbach (6 km), Brunstatt-Didenheim (7 km), Rixheim (8 km) and the industrial zones. No zone surcharge.",
+            a: "Yes. Axion-IA works anywhere in France, on site or remotely, including the full Mulhouse basin: Riedisheim, Kingersheim, Illzach, Pfastatt, Lutterbach, Brunstatt-Didenheim, Rixheim and the industrial zones.",
           },
           {
             q: "Do I need AI maturity to engage you?",

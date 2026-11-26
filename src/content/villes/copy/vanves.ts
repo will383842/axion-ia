@@ -142,7 +142,7 @@ export const VANVES_COPY: VilleCopy = {
           "Unique publishing cluster: the HQ of Hachette Livre (58 rue Jean-Bleuzen, ~1,000 staff) and Éditions Hazan feed a fabric of publishers, prepress providers, rights agencies and freelancers in Vanves — for whom a catalogue portal, an editorial knowledge base or semantic search over book backlists delivers immediate value.",
           "Audiovisual and media hub: France 3 Paris Île-de-France / France Télévisions (66 rue Jean-Bleuzen), CMI Media Régions and the live streaming studio French Virtual Studio (70 rue Jean-Bleuzen) drive demand for production platforms, rushes management and media portals that we know how to build.",
           "Social protection and services: the presence of Audiens, the social protection group for culture, press and audiovisual sectors, structures a pool of SMEs and professional services (legal, accounting, consulting) around rue Jean-Bleuzen, candidates for SaaS client portals and back-office automation.",
-          "Bordering the 15th arrondissement and the Paris Expo Porte de Versailles exhibition centre (being modernised by VIPARIS), accessible via metro line 13 (Plateau de Vanves) and Vanves-Malakoff station: a B2B and events flow that pushes Vanves businesses toward high-performance sites and online booking or registration platforms.",
+          "Bordering the 15th arrondissement and the Paris Expo Porte de Versailles exhibition centre (being modernised by VIPARIS): a B2B and events flow that pushes Vanves businesses toward high-performance sites and online booking or registration platforms.",
         ],
         methodology: [
           {

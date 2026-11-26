@@ -251,7 +251,7 @@ export const ORLEANS_COPY: VilleCopy = {
           },
           {
             q: "Do you cover agglomération communes (Ormes, Saint-Jean-de-Braye, Saran)?",
-            a: "Yes. The full Orléans agglomération is our territory: Ormes (John Deere, Shiseido), Saint-Jean-de-Braye (pharma), Saran (Pôle 45), Olivet, La Chapelle-Saint-Mesmin, Fleury-les-Aubrais and La Source. No zone surcharge.",
+            a: "Yes. The full Orléans agglomération is our territory: Ormes (John Deere, Shiseido), Saint-Jean-de-Braye (pharma), Saran (Pôle 45), Olivet, La Chapelle-Saint-Mesmin, Fleury-les-Aubrais and La Source. Axion-IA works anywhere in France, on site or remotely.",
           },
           {
             q: "Do I need AI maturity to engage you?",

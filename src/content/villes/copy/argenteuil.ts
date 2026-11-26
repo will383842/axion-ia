@@ -65,9 +65,9 @@ export const ARGENTEUIL_COPY: VilleCopy = {
   ],
 
   distancesFr:
-    "Gare d'Argenteuil (Transilien ligne J) : Paris Saint-Lazare en ~12 min. RER C accessible via correspondance Épinay-sur-Seine (T11 tramway). Aéroport Paris-Charles de Gaulle à ~30 km. Accès rapide A15 et A86 vers les bassins d'emplois du Grand Paris (La Défense à ~8 km, Cergy à ~20 km).",
+    "Argenteuil est au cœur des bassins d'emplois du Grand Paris, entre La Défense et Cergy. Axion IA intervient partout en France, sur site ou à distance, y compris à Argenteuil.",
   distancesEn:
-    "Argenteuil station (Transilien line J): Paris Saint-Lazare in ~12 min. RER C accessible via Épinay-sur-Seine connection (T11 tram). Paris-Charles de Gaulle Airport ~30 km. Fast A15 and A86 motorway access to Grand Paris employment hubs (La Défense ~8 km, Cergy ~20 km).",
+    "Argenteuil sits at the heart of the Grand Paris employment hubs, between La Défense and Cergy. Axion-IA works anywhere in France, on site or remotely, including in Argenteuil.",
 
   ecosystemFr:
     "Tissu B2B diversifié — 9 045 établissements actifs, 2 690 créations d'entreprises par an. Dominante commerce/transports (61,9 %), BTP (23,6 %), secteur public et santé (8,8 %), industrie héritée de Dassault Aviation (5,4 %). Parc du Val d'Argent (industrie/logistique/tertiaire), site Dassault en reconversion urbaine. Rayonnement Cap Digital (numérique/IA) et Mov'eo (mobilité/aéronautique). Connexion rapide La Défense et Grand Paris.",

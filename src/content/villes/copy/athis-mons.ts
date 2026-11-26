@@ -220,7 +220,7 @@ export const ATHIS_MONS_COPY: VilleCopy = {
           },
           {
             q: "Do you cover the towns around Athis-Mons?",
-            a: "Yes, we travel across the Grand-Orly Seine Bièvre territory: Juvisy-sur-Orge, Paray-Vieille-Poste, Savigny-sur-Orge, Ablon-sur-Seine and Villeneuve-le-Roi, reachable via RER C and tram T7.",
+            a: "Yes. Axion-IA works anywhere in France, on site or remotely, including across the Grand-Orly Seine Bièvre territory: Juvisy-sur-Orge, Paray-Vieille-Poste, Savigny-sur-Orge, Ablon-sur-Seine and Villeneuve-le-Roi.",
           },
         ],
         guarantees:

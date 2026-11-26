@@ -186,6 +186,25 @@ function fautesFaq(motif: RegExp): string[] {
   return out;
 }
 
+/** Miroir anglais : aucun trajet, aucune origine de l'équipe, aucun surcoût (les lignes anglaises restent dans le code). */
+const ANGLAIS: ReadonlyArray<readonly [string, RegExp]> = [
+  [
+    "we travel / come to / operate … via|from|by <transport ou Ville>",
+    /\b(?:[Ww]e|[Oo]ur (?:consultants|team|experts)) (?:travel|come|commute|reach|operate|work|cover|run|are based)[^".]{0,120}\b(?:via|from [A-Z]|by (?:TGV|train|RER|car|road)|RER|TGV|tram\w*|metro|airport|motorway|A\d{1,3}\b)/u,
+  ],
+  [
+    "From <Ville>, we / interconnected / well-connected",
+    /(?:^|["'.!?:] |a: ")(?:Yes\. )?From [A-ZÉ][^".,]{0,60}, (?:we|our|interconnected|served|connected)\b|well-connected|\bLGV ~|accessible (?:via|by)|(?:on-site )?visits arranged via|\(via [A-Z][^)]*(?:airport|station)\)/u,
+  ],
+  ["surcharge", /\b(?:zone|travel|geographic\w*|no) surcharge|surcharge\b/iu],
+  ["logistics costs", /logistics? costs?/iu],
+  ["same rate card", /same rate card|same (?:rates?|prices?|pricing) as/iu],
+  [
+    "travel costs, expenses or fees",
+    /travel (?:costs?|expenses?|fees?|time|charges?)|(?:costs?|fees?) (?:of|for) travel|travel (?:is )?(?:included|billed|extra)/iu,
+  ],
+];
+
 /** Échoue en listant TOUTES les fautes (fichier:ligne), sans troncature du diff. */
 function vide(fautesTrouvees: string[]): void {
   if (fautesTrouvees.length > 0)
@@ -215,6 +234,9 @@ describe("villes · ni frais de déplacement, ni fausse présence, ni Grenoble",
 
   for (const [nom, motif] of PRESENCE)
     it(`aucune fausse présence locale : ${nom}`, () => vide(fautes(motif)));
+
+  for (const [nom, motif] of ANGLAIS)
+    it(`réponses anglaises sans trajet, origine ni surcoût : ${nom}`, () => vide(fautes(motif)));
 
   for (const [nom, motif] of TRAJET_FAQ)
     it(`réponses de FAQ sans trajet ni durée d'accès : ${nom}`, () => vide(fautesFaq(motif)));

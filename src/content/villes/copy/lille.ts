@@ -181,7 +181,7 @@ export const LILLE_COPY: VilleCopy = {
         whyHere: [
           "Lille is a priority location for Axion-IA: densest retail/e-commerce fabric in France outside Île-de-France, international group HQs (Decathlon, Auchan, La Redoute) and 466 EuraTechnologies start-ups.",
           "Lille B2B sectors over-represented in our mandates: omnichannel retail, logistics supply chain, IT/SaaS EuraTechnologies, banking/insurance Euralille, agri-food industry (Bonduelle, Euralimentaire).",
-          "Our consultants travel across the full Lille metropolitan area: Euralille, Vieux-Lille, Villeneuve-d'Ascq, Roubaix, Tourcoing, Marcq-en-Barœul and surrounding communes.",
+          "Axion-IA works anywhere in France, on site or remotely, including across the full Lille metropolitan area: Euralille, Vieux-Lille, Villeneuve-d'Ascq, Roubaix, Tourcoing, Marcq-en-Barœul and surrounding communes.",
           "Read-outs always in person: ideation workshop at your offices, deliverable walk-through with your leadership, action plan handed over face to face.",
           "Public pricing displayed: you know exactly what you pay before signing, no opaque quote to negotiate.",
           "No lock-in: your action plan is executable with any vendor or in-house after our audit.",

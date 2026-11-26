@@ -18,9 +18,9 @@ export const AVRILLE_COPY: VilleCopy = {
   ecosystemEn:
     "Avrillé bénéficie de sa proximité avec Angers tout en conservant un cadre résidentiel attractif. Zones d'activités tertiaires, pôle santé, commerces de centre-ville et grandes enseignes. PME conseil, professions libérales et services à la personne constituent l'ossature économique.",
   distancesFr:
-    "Angers centre à 10 min. Gare TGV Angers Saint-Laud à 15 min. Aéroport Nantes Atlantique à 1h15 A11. Tramway ligne A accessible via Angers nord. Accès A11 direction Paris/Nantes.",
+    "Avrillé est limitrophe d'Angers, dans le Maine-et-Loire. Axion IA intervient partout en France, sur site ou à distance, y compris à Avrillé.",
   distancesEn:
-    "Angers centre à 10 min. Gare TGV Angers Saint-Laud à 15 min. Aéroport Nantes Atlantique à 1h15 A11. Tramway ligne A accessible via Angers nord. Accès A11 direction Paris/Nantes.",
+    "Avrillé borders Angers, in the Maine-et-Loire. Axion-IA works anywhere in France, on site or remotely, including in Avrillé.",
   topSectorsNaf: [
     "Services aux entreprises & conseil",
     "Professions de santé & libérales",

@@ -272,7 +272,7 @@ export const DIJON_COPY: VilleCopy = {
       fr: {
         hero: "Les interventions IA Axion-IA à Dijon se déclinent en formats sur site d'une à plusieurs journées selon vos équipes. Vos collaborateurs ne repartent pas avec des slides : ils repartent avec des outils IA installés sur leur poste, configurés pour leur travail réel dans votre secteur dijonnais.",
         whyHere: [
-          "Dijon est une étape stratégique de nos déploiements régionaux : métropole bien desservie (LGV ~1h34 Paris), tissu B2B dense (14 946 établissements actifs) et secteurs IA-matures (agroalimentaire, pharma, viticulture).",
+          "Dijon est une étape stratégique de nos déploiements régionaux : métropole dynamique, tissu B2B dense (14 946 établissements actifs) et secteurs IA-matures (agroalimentaire, pharma, viticulture).",
           "Tous les secteurs de la métropole couverts en présentiel : Dijon intra-muros, Chenôve (URGO), Talant, Quetigny, Longvic, Fontaine-lès-Dijon, Saint-Apollinaire.",
           "Le format collectif (1 journée) est calibré pour les PME dijonnaises de quelques personnes à une centaine de collaborateurs, idéal pour les équipes agroalimentaires, santé, commerce et services.",
           "Le format Conférence convient aux plénières des ETI et grands comptes dijonnais (salles Parc des Expositions, espaces Village by CA, Cité Internationale de la Gastronomie et du Vin).",
@@ -364,7 +364,7 @@ export const DIJON_COPY: VilleCopy = {
       en: {
         hero: "Axion-IA's AI sessions in Dijon come in on-site formats from one to several days depending on your teams. Your staff don't leave with slides: they leave with AI tools installed on their workstations, configured for their real work in your Dijon sector.",
         whyHere: [
-          "Dijon is a strategic stop in our regional deployments: well-connected metropolitan area (LGV ~1h34 from Paris), dense B2B fabric (14,946 active establishments) and AI-mature sectors (agri-food, pharma, viticulture).",
+          "Dijon is a strategic stop in our regional deployments: dynamic metropolitan area, dense B2B fabric (14,946 active establishments) and AI-mature sectors (agri-food, pharma, viticulture).",
           "All metropolitan sectors covered in person: Dijon city, Chenôve (URGO), Talant, Quetigny, Longvic, Fontaine-lès-Dijon, Saint-Apollinaire.",
           "The one-day format is calibrated for Dijon SMEs from a few to about a hundred staff, ideal for agri-food, healthcare, commerce and services teams.",
           "The Talk format suits large corporate plenaries at Dijon mid-caps and large accounts (Parc des Expositions, Village by CA spaces, International City of Gastronomy and Wine).",

@@ -141,7 +141,7 @@ export const VENISSIEUX_COPY: VilleCopy = {
           "Vénissieux is an industrial town, not a business district: our platforms target equipment makers (Aldes, HVAC and ventilation), the heavy-truck supply chain (Renault Trucks and its subcontractors) and metalworking-mechanics, with ERP/MES integrations a standard showcase site never touches.",
           "The conversion of the former Bosch site into the Vénissieux Industrial Campus (Industry 4.0, 11 ha at Puisoz) creates concrete demand for technical portals, supplier extranets and production-tracking SaaS, which we build in controlled code, not locked-in no-code.",
           "The Lyon Sud-Est industrial zone (Vénissieux–Corbas–Saint-Priest, ~900 companies, ~21,000 jobs) and the Lyon-Corbas wholesale market concentrate B2B trade and logistics: we deploy multi-CMS e-commerce, per-client negotiated catalogues and high-volume ordering spaces there.",
-          "The Grand Parilly–Puisoz urban project and the T4 tram / Metro D service connect Vénissieux to Lyon's 8th. We travel on site for framing and acceptance, from Parilly workshops to the industrial-zone offices.",
+          "Axion-IA works anywhere in France, on site or remotely, from Parilly workshops to the industrial-zone offices.",
         ],
         methodology: [
           {

@@ -216,7 +216,7 @@ export const GARGES_LES_GONESSE_COPY: VilleCopy = {
           },
           {
             q: "Do you work in towns neighboring Garges-lès-Gonesse?",
-            a: "Yes. We cover Sarcelles, Arnouville, Bonneuil-en-France (Val-d'Oise) as well as Dugny and Stains (Seine-Saint-Denis), which border Garges and share the Roissy Pays de France logistics and retail fabric, reachable via the RER D (Garges-Sarcelles station) and the T5 tram.",
+            a: "Yes. We cover Sarcelles, Arnouville, Bonneuil-en-France (Val-d'Oise) as well as Dugny and Stains (Seine-Saint-Denis), which border Garges and share the Roissy Pays de France logistics and retail fabric. Axion-IA works anywhere in France, on site or remotely.",
           },
         ],
         guarantees:

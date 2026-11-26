@@ -65,7 +65,7 @@ export const OLLIOULES_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Ollioules ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Déplacement sur site dans vos locaux professionnels, serre, atelier, usine ou commerce. A50 directe, agglo Toulon ouest bien desservie.",
+      a: "Axion IA intervient partout en France, sur site ou à distance, dans vos locaux professionnels, serre, atelier, usine ou commerce.",
     },
   ],
 };

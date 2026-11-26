@@ -138,7 +138,7 @@ export const AVIGNON_COPY: VilleCopy = {
           },
           {
             q: "Comment l'IA aide-t-elle pendant le Festival d'Avignon et le Off ?",
-            a: "Pendant le pic de juillet, l'IA aide à gérer l'afflux de demandes : réponses multilingues, suivi des réservations et de la billetterie, tri des emails et préparation des contenus. Nous formons vos équipes à ces usages concrets pour absorber la saison sans surcharge.",
+            a: "Pendant le pic de juillet, l'IA aide à gérer l'afflux de demandes : réponses multilingues, suivi des réservations et de la billetterie, tri des emails et préparation des contenus. Nous formons vos équipes à ces usages concrets pour absorber la saison sereinement.",
           },
         ],
         guarantees:
@@ -230,7 +230,7 @@ export const AVIGNON_COPY: VilleCopy = {
           },
           {
             q: "Comment l'IA aide-t-elle pendant le Festival d'Avignon et le Off ?",
-            a: "Pendant le pic de juillet, l'IA aide à gérer l'afflux de demandes : réponses multilingues, suivi des réservations et de la billetterie, tri des emails et préparation des contenus. Nous formons vos équipes à ces usages concrets pour absorber la saison sans surcharge.",
+            a: "Pendant le pic de juillet, l'IA aide à gérer l'afflux de demandes : réponses multilingues, suivi des réservations et de la billetterie, tri des emails et préparation des contenus. Nous formons vos équipes à ces usages concrets pour absorber la saison sereinement.",
           },
         ],
         guarantees:
@@ -388,7 +388,7 @@ export const AVIGNON_COPY: VilleCopy = {
         faq: [
           {
             q: "How do you handle the summer peak of the Avignon Festival and the Off?",
-            a: "We size and load-test sites and platforms for July: the In gathers ~130,000 spectators and the Off ~1,780 shows across 248 venues (60th-edition figures). Concretely: multilingual booking/ticketing journeys, queueing and caching to absorb peaks, then back to normal load the rest of the year. No hidden season-related surcharge.",
+            a: "We size and load-test sites and platforms for July: the In gathers ~130,000 spectators and the Off ~1,780 shows across 248 venues (60th-edition figures). Concretely: multilingual booking/ticketing journeys, queueing and caching to absorb peaks, then back to normal load the rest of the year.",
           },
           {
             q: "Do you work with Agroparc's food and natural-ingredients industry?",
@@ -408,7 +408,7 @@ export const AVIGNON_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Firm fixed-price quote (from 24-48 h depending on complexity): no hidden hourly drift, no 'Festival season' surcharge. Release with no downtime when augmenting the existing site. Web Vitals, accessibility and load testing checked at delivery, in particular to absorb the July peak. Source code, databases and models delivered into your infrastructure (EU hosting available), GDPR- and AI-Act-compliant: full ownership, no imposed subscription, transferable to any Vaucluse provider or brought in-house.",
+          "Firm fixed-price quote (from 24-48 h depending on complexity): no hidden hourly drift. Release with no downtime when augmenting the existing site. Web Vitals, accessibility and load testing checked at delivery, in particular to absorb the July peak. Source code, databases and models delivered into your infrastructure (EU hosting available), GDPR- and AI-Act-compliant: full ownership, no imposed subscription, transferable to any Vaucluse provider or brought in-house.",
       },
     },
   },

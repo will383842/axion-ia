@@ -20,9 +20,8 @@ export const ECHIROLLES_COPY: VilleCopy = {
   ecosystemEn:
     "Le tissu économique d'Échirolles combine industrie historique (héritage viscose depuis les années 1920), commerce de détail concentré sur Grand'Place et Espace Comboire, services de santé (Hôpital Sud, Clinique des Cèdres) et PME tertiaires installées dans la ZA des Essarts et Sud Galaxie. La commune profite de la dynamique de la métropole grenobloise et de la proximité immédiate des activités technologiques grenobloises.",
   distancesFr:
-    "Échirolles est accessible via la ligne A du tramway, la liaison TER et l'autoroute A480.",
-  distancesEn:
-    "Échirolles est accessible via la ligne A du tramway, la liaison TER et l'autoroute A480.",
+    "Axion IA intervient partout en France, sur site ou à distance, y compris à Échirolles.",
+  distancesEn: "Axion-IA works anywhere in France, on site or remotely, including in Échirolles.",
   topSectorsNaf: [
     "Industrie mécanique et équipements",
     "Commerce de détail",

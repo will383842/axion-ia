@@ -1006,8 +1006,8 @@ export const CLERMONT_FERRAND_COPY: VilleCopy = {
       a: "Nos déploiements dans le bassin couvrent prioritairement l'industrie manufacturière (filière pneumatique, équipementiers), l'agroalimentaire (coopératives, IAA Auvergne), la recherche et les biotechnologies (UCA, ISIMA, Biopôle), et les services B2B. Tout secteur avec des workflows documentaires répétitifs est éligible à un audit.",
     },
     {
-      q: "Pouvez-vous démarrer une mission depuis l'aéroport de Clermont-Ferrand (CFE) ?",
-      a: "Nous intervenons dans vos locaux à Clermont-Ferrand, partout en France. L'aéroport de Clermont-Ferrand Auvergne dessert Paris-Orly, Lyon et Amsterdam. Nos consultants peuvent arriver directement sur Clermont en avion pour les missions longues, ou en Intercités Paris-Bercy pour les kick-offs et restitutions.",
+      q: "Intervenez-vous à Clermont-Ferrand ?",
+      a: "Oui. Axion IA intervient partout en France, sur site ou à distance, y compris à Clermont-Ferrand.",
     },
     {
       q: "Vos interventions sont-elles compatibles avec les formations financées pour les TPE/PME ?",
