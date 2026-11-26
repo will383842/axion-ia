@@ -49,7 +49,7 @@ export const LA_FERTE_SAINT_AUBIN_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à La Ferté-Saint-Aubin et en Sologne ?",
-      a: "Oui, Axion-IA intervient à La Ferté-Saint-Aubin et dans toute la Sologne nord (Lamotte-Beuvron, Nouan-le-Fuzelier, Ligny-le-Ribault, Marcilly-en-Villette). Couverture nationale, déplacement sur site inclus dans le forfait mission.",
+      a: "Oui, Axion-IA intervient à La Ferté-Saint-Aubin et dans toute la Sologne nord (Lamotte-Beuvron, Nouan-le-Fuzelier, Ligny-le-Ribault, Marcilly-en-Villette). Couverture nationale.",
     },
     {
       q: "Travaillez-vous avec les TPE et artisans de La Ferté-Saint-Aubin ?",

@@ -49,7 +49,7 @@ export const VILLEMANDEUR_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Villemandeur et dans le Montargois ?",
-      a: "Oui, Axion-IA intervient à Villemandeur et dans toute l'agglomération montargoise (Montargis, Amilly, Châlette-sur-Loing, Paucourt). Nous intervenons partout en France, sur place ou à distance, déplacement sur site inclus dans le forfait mission.",
+      a: "Oui, Axion-IA intervient à Villemandeur et dans toute l'agglomération montargoise (Montargis, Amilly, Châlette-sur-Loing, Paucourt). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les TPE et artisans de Villemandeur ?",

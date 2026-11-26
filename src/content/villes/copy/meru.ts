@@ -61,7 +61,7 @@ export const MERU_COPY: VilleCopy = {
     },
     {
       q: "Quel délai pour une intervention IA à Méru ?",
-      a: "Nous intervenons généralement sous 5 jours ouvrés à Méru. Déplacements sur site inclus pour les entreprises de toute la communauté de communes du Pays de Thelle.",
+      a: "Nous intervenons généralement sous 5 jours ouvrés à Méru.",
     },
     {
       q: "Comment Axion-IA garantit-il la conformité RGPD à Méru ?",

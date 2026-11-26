@@ -228,7 +228,7 @@ export const LE_PLESSIS_TREVISE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Quels sont les tarifs pour un audit IA au Plessis-Trévise ?",
-      a: "Les audits IA au Plessis-Trévise débutent à {{price:audit-flash|flat}} pour un Audit sur place de 4 heures sur site, déplacement Williams depuis Paris via RER E inclus. Tarifs publics consultables sur axion-ia.com.",
+      a: "Les audits IA au Plessis-Trévise débutent à {{price:audit-flash|flat}} pour un Audit sur place de 4 heures sur site. Tarifs publics consultables sur axion-ia.com.",
     },
     {
       q: "Comment se déroule une intervention IA au Plessis-Trévise ?",

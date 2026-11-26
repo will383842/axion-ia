@@ -65,7 +65,7 @@ export const MESNILS_SUR_ITON_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Paris ou Évreux ?",
-      a: "Nos consultants viennent de Paris (1h15 train gare Évreux-Normandie) ou d'Évreux centre (10 min). Pour les multi-jours, hébergement local possible. Coûts de déplacement séparés du forfait, tarifs transparents.",
+      a: "Nos consultants viennent de Paris (1h15 train gare Évreux-Normandie) ou d'Évreux centre (10 min). Pour les multi-jours, hébergement local possible. Tarifs transparents.",
     },
   ],
 };

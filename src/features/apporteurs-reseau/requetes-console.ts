@@ -14,6 +14,7 @@ import { STATUTS_CUMUL, piecesVigilanceConformes } from "./commissions";
 import { lireDossier } from "./donnees";
 import { SEUIL_VIGILANCE_CENTS } from "./regles";
 import { idsRetires } from "./retrait";
+import { lireSourceRendezVous, rendezVousNonTenu } from "./statut-rendez-vous";
 
 export const LIBELLE_STATUT_APPORTEUR: Readonly<Record<ApporteurReseauStatut, string>> = {
   dossier_en_cours: "Dossier en cours",
@@ -257,4 +258,165 @@ export async function lireOctetsPiece(apporteurId: string, pieceId: string) {
     // Déchiffrée ici, seul point de lecture (aperçu console et antivirus à l'ouverture).
     octets: lireContenuPiece(p.contenu.octets),
   };
+}
+
+// ── Validation par rendez-vous (lot 6) ───────────────────────────────────
+
+export type MotifProposition = "email_exact" | "meme_entreprise" | "meme_siren";
+
+/** Pourquoi l'outil a rapproché ce rendez-vous de cette entreprise, en clair. */
+export const LIBELLE_MOTIF_PROPOSITION: Readonly<Record<MotifProposition, string>> = {
+  email_exact: "Même adresse e-mail que la personne présentée",
+  meme_entreprise: "Même entreprise (même domaine professionnel ou même fiche client)",
+  meme_siren: "Même SIREN (une fiche client de cette entreprise a réservé)",
+};
+
+export interface PropositionVue {
+  id: string;
+  presentationId: string;
+  denomination: string;
+  siren: string;
+  apporteur: string;
+  /** Rendez-vous Calendly ou rencontre ; `null` sinon (jamais pour une proposition). */
+  rendezVousCle: string;
+  motif: string;
+  motifLibelle: string;
+  apporteurCite: boolean;
+  recueAt: Date;
+  prisAt: Date;
+  rendezVousAt: Date | null;
+  /** Le rendez-vous a-t-il déjà eu lieu (date passée) ? Sinon le dirigeant attend. */
+  tenuPasse: boolean;
+  /** Annulé, reporté ou absent depuis la proposition : à écarter, ou à saisir « Annulé par Axion IA ». */
+  nonTenu: boolean;
+}
+
+/**
+ * Les propositions du rapprochement que le dirigeant n'a ni retenues ni écartées, pour des
+ * présentations encore « réservées » (filtre posé avant la borne de 200).
+ * Table absente (fenêtre app/worker) : liste vide.
+ */
+/** Au-delà, la liste est tronquée : l'écran le dit (`lignes.length >= LIMITE_PROPOSITIONS`). */
+export const LIMITE_PROPOSITIONS = 200;
+
+export async function lirePropositionsATraiter(
+  maintenant: Date = new Date(),
+): Promise<PropositionVue[]> {
+  if (process.env.DATABASE_URL?.includes("stub.invalid")) return [];
+  // Le filtre « présentation réservée » est posé AVANT la borne : une proposition inerte (présentation
+  // déjà traitée) ne doit jamais masquer, en tête de file, celle qui attend vraiment le dirigeant.
+  // (Pas de relation Prisma entre les deux modèles : on lit d'abord les identifiants.)
+  const presentations = await prisma.presentationEntreprise.findMany({
+    where: { statut: "reservee" },
+    select: {
+      id: true,
+      denomination: true,
+      siren: true,
+      recueAt: true,
+      apporteur: { select: { prenom: true, nom: true } },
+    },
+  });
+  if (presentations.length === 0) return [];
+  let propositions;
+  try {
+    propositions = await prisma.propositionRendezVousPresentation.findMany({
+      where: {
+        ecarteeAt: null,
+        retenueAt: null,
+        presentationId: { in: presentations.map((p) => p.id) },
+      },
+      orderBy: [{ creeAt: "asc" }, { id: "asc" }],
+      take: LIMITE_PROPOSITIONS,
+    });
+  } catch (err) {
+    if ((err as { code?: unknown } | null)?.code === "P2021") return [];
+    throw err;
+  }
+  if (propositions.length === 0) return [];
+  const parId = new Map(presentations.map((p) => [p.id, p]));
+  // Rendez-vous annulé / absent / reporté depuis la proposition : il ne se valide pas (état relu à
+  // la source dans la transaction), mais il RESTE VISIBLE, marqué `nonTenu` : il retient l'ancien
+  // apporteur tant que le dirigeant ne l'a pas écarté (ou saisi « Annulé par Axion IA »).
+  const ecartes = new Set<string>();
+  for (const cle of new Set(propositions.map((p) => p.rendezVousCle))) {
+    const src = await lireSourceRendezVous(prisma, cle);
+    if (src && rendezVousNonTenu(src)) ecartes.add(cle);
+  }
+  const sorties: PropositionVue[] = [];
+  for (const pr of propositions) {
+    const p = parId.get(pr.presentationId);
+    if (!p) continue; // la présentation n'est plus « réservée » : plus rien à proposer
+    sorties.push({
+      id: pr.id,
+      presentationId: p.id,
+      denomination: p.denomination,
+      siren: p.siren,
+      apporteur:
+        `${decryptPii(p.apporteur.prenom) ?? ""} ${decryptPii(p.apporteur.nom) ?? ""}`.trim(),
+      rendezVousCle: pr.rendezVousCle,
+      motif: pr.motif,
+      motifLibelle:
+        LIBELLE_MOTIF_PROPOSITION[pr.motif as MotifProposition] ?? "Rapprochement de l'outil",
+      apporteurCite: pr.apporteurCite,
+      recueAt: p.recueAt,
+      prisAt: pr.prisAt,
+      rendezVousAt: pr.rendezVousAt,
+      nonTenu: ecartes.has(pr.rendezVousCle),
+      tenuPasse: !!pr.rendezVousAt && pr.rendezVousAt.getTime() <= maintenant.getTime(),
+    });
+  }
+  return sorties;
+}
+
+/** Une entreprise « réservée » qui attend un rendez-vous (pour la saisie manuelle du dirigeant). */
+export interface ReservationOuverteVue {
+  presentationId: string;
+  denomination: string;
+  siren: string;
+  apporteur: string;
+  recueAt: Date;
+  reserveeJusquAt: Date;
+}
+
+export async function lireReservationsOuvertes(): Promise<ReservationOuverteVue[]> {
+  if (process.env.DATABASE_URL?.includes("stub.invalid")) return [];
+  let lignes;
+  try {
+    lignes = await prisma.presentationReservation.findMany({
+      where: { regle: "rendez_vous", valideeAt: null, echueAt: null },
+      orderBy: [{ reserveeJusquAt: "asc" }],
+      take: 300,
+      select: { presentationId: true, reserveeJusquAt: true },
+    });
+  } catch (err) {
+    if ((err as { code?: unknown } | null)?.code === "P2021") return [];
+    throw err;
+  }
+  if (lignes.length === 0) return [];
+  const presentations = await prisma.presentationEntreprise.findMany({
+    where: { id: { in: lignes.map((l) => l.presentationId) }, statut: "reservee" },
+    select: {
+      id: true,
+      denomination: true,
+      siren: true,
+      recueAt: true,
+      apporteur: { select: { prenom: true, nom: true } },
+    },
+  });
+  const parId = new Map(presentations.map((p) => [p.id, p]));
+  const sorties: ReservationOuverteVue[] = [];
+  for (const l of lignes) {
+    const p = parId.get(l.presentationId);
+    if (!p) continue;
+    sorties.push({
+      presentationId: p.id,
+      denomination: p.denomination,
+      siren: p.siren,
+      apporteur:
+        `${decryptPii(p.apporteur.prenom) ?? ""} ${decryptPii(p.apporteur.nom) ?? ""}`.trim(),
+      recueAt: p.recueAt,
+      reserveeJusquAt: l.reserveeJusquAt,
+    });
+  }
+  return sorties;
 }

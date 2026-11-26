@@ -129,7 +129,7 @@ export const CHOISY_LE_ROI_COPY: VilleCopy = {
           },
           {
             q: "Avec quelles technologies travaillez-vous et intervenez-vous dans les communes voisines ?",
-            a: "Toute stack moderne exposant une API : WordPress, Shopify, WooCommerce, PrestaShop, Magento, Next.js, Laravel, Django, Vue, React, Angular. On choisit la meilleure selon vos objectifs et on s'adapte à votre existant. Nous intervenons sans surcoût de zone à Vitry-sur-Seine, Thiais, Créteil, Orly, Alfortville, Valenton et Villeneuve-Saint-Georges, toutes accessibles en moins de 15 minutes depuis Choisy-le-Roi.",
+            a: "Toute stack moderne exposant une API : WordPress, Shopify, WooCommerce, PrestaShop, Magento, Next.js, Laravel, Django, Vue, React, Angular. On choisit la meilleure selon vos objectifs et on s'adapte à votre existant. Nous intervenons à Vitry-sur-Seine, Thiais, Créteil, Orly, Alfortville, Valenton et Villeneuve-Saint-Georges, toutes accessibles en moins de 15 minutes depuis Choisy-le-Roi.",
           },
         ],
         guarantees:
@@ -247,7 +247,7 @@ export const CHOISY_LE_ROI_COPY: VilleCopy = {
     },
     {
       q: "Intervenez-vous aussi dans les communes limitrophes de Choisy-le-Roi ?",
-      a: "Oui. Nous nous déplaçons sans surcoût à Vitry-sur-Seine, Thiais, Créteil, Orly, Alfortville, Valenton et Villeneuve-Saint-Georges, toutes accessibles en moins de 15 minutes depuis Choisy-le-Roi.",
+      a: "Oui. Nous nous déplaçons à Vitry-sur-Seine, Thiais, Créteil, Orly, Alfortville, Valenton et Villeneuve-Saint-Georges, toutes accessibles en moins de 15 minutes depuis Choisy-le-Roi.",
     },
   ],
 };

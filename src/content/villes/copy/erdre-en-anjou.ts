@@ -65,7 +65,7 @@ export const ERDRE_EN_ANJOU_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Erdre-en-Anjou ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Déplacement inclus dans la zone nord angevin. Pour les missions multi-jours, hébergement local possible. Tarifs publics.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Pour les missions multi-jours, hébergement local possible. Tarifs publics.",
     },
   ],
 };

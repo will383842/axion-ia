@@ -65,7 +65,7 @@ export const N_UX_LES_MINES_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Nœux-les-Mines depuis Lille ?",
-      a: "Nos consultants viennent de Lille (35 min A26/A1) ou Lens (15 min). Béthune est à 10 min. Coûts de déplacement séparés du forfait, tarifs transparents.",
+      a: "Nos consultants viennent de Lille (35 min A26/A1) ou Lens (15 min). Béthune est à 10 min. Tarifs transparents.",
     },
   ],
 };

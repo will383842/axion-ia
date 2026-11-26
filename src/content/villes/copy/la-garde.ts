@@ -242,7 +242,7 @@ export const LA_GARDE_COPY: VilleCopy = {
     },
     {
       q: "Axion-IA intervient-il dans les communes autour de La Garde ?",
-      a: "Oui. Nous nous déplaçons également à Toulon, Hyères, Le Pradet, La Valette-du-Var et dans le reste de la métropole pour des prestations sur site, sans surcoût caché.",
+      a: "Oui. Nous nous déplaçons également à Toulon, Hyères, Le Pradet, La Valette-du-Var et dans le reste de la métropole pour des prestations sur site.",
     },
     {
       q: "Vos solutions respectent-elles le RGPD à La Garde ?",
