@@ -13,17 +13,28 @@
 
 // ⚠️ Atteint par le WORKER (passage quotidien, tsx hors Next) : aucun `server-only` ici.
 
-import { paiementIntegralLe } from "./paiement-integral";
+import { paiementIntegralLe, paiementsIntegrauxParFacture } from "./paiement-integral";
+import {
+  piecesFigees,
+  piecesFigeesDisponible,
+  regimeApplicableAu,
+  regimesDesPieces,
+  type RegimeFige,
+} from "./tva-pieces";
 import { prisma } from "@/lib/prisma";
 import { decryptPii } from "@/lib/pii-crypto";
-import type { StatutCommissionApporteur } from "../../../prisma/generated/client";
+import type { Prisma, StatutCommissionApporteur } from "../../../prisma/generated/client";
 
 import {
   construireDonneesAutofacture,
+  jourParis,
+  regimeHonorairesApporteur,
   totalTtcPieceCents,
   type ApporteurPourAutofacture,
 } from "./autofacture-donnees";
 import { PREFIXE_PALIER_REPRISE } from "./resiliation";
+import { computeTotauxFacture, TAUX_TVA_STANDARD } from "@/server/qualiopi/legal/tva";
+import { regimeFactureDepuisHonoraires } from "@/server/qualiopi/remuneration/autofacture-pieces";
 import { siretDe, siretsDe } from "./siret-apporteur";
 import { envoyer, type ResultatEnvoi } from "./envois";
 import { urlDossier } from "./jeton";
@@ -182,23 +193,43 @@ export async function libererSiPiecesValides(
 }
 
 export async function cumulVigilanceCents(apporteurId: string, saufId?: string): Promise<number> {
-  const r = await prisma.commissionApporteur.aggregate({
-    where: {
-      apporteurId,
-      statut: { in: [...STATUTS_CUMUL] },
-      ...(saufId ? { id: { not: saufId } } : {}),
-    },
-    _sum: { montantCents: true },
-  });
+  const where = {
+    apporteurId,
+    statut: { in: [...STATUTS_CUMUL] },
+    ...(saufId ? { id: { not: saufId } } : {}),
+  };
+  const r = await prisma.commissionApporteur.aggregate({ where, _sum: { montantCents: true } });
   const ht = r._sum.montantCents ?? 0;
   // Art. 6.2 (analyse du 09/10) : la Société apprécie le cumul TOUTES TAXES COMPRISES, par
   // prudence. Un apporteur en franchise : TTC = HT. Régime illisible : le HT (comportement d'avant).
   try {
-    const a = await prisma.apporteurReseau.findUnique({
-      where: { id: apporteurId },
-      select: { regimeTva: true },
+    // Une commission pas encore facturée prend le régime applicable AUJOURD'HUI ; une commission
+    // facturée garde celui de SON autofacture (décision de Will : le régime est figé par pièce).
+    const auj = await regimeApplicableAu(apporteurId, jourParis(new Date()));
+    const base = totalTtcPieceCents(auj.regimeTva, [ht]);
+    if (!(await piecesFigeesDisponible())) return base;
+    const groupes = await prisma.commissionApporteur.groupBy({
+      by: ["autofactureNumero"],
+      where: { ...where, autofactureNumero: { not: null } },
+      _sum: { montantCents: true },
     });
-    return totalTtcPieceCents((a?.regimeTva ?? null) as RegimeApporteur, [ht]);
+    const regimes = await regimesDesPieces(groupes.map((g) => g.autofactureNumero!));
+    // Aucune pièce d'un autre régime que celui d'aujourd'hui : le calcul d'avant, à l'identique.
+    if (
+      !groupes.some(
+        (g) =>
+          regimes.has(g.autofactureNumero!) && regimes.get(g.autofactureNumero!) !== auj.regimeTva,
+      )
+    )
+      return base;
+    let reste = ht;
+    let total = 0;
+    for (const g of groupes) {
+      const somme = g._sum.montantCents ?? 0;
+      reste -= somme;
+      total += totalTtcPieceCents(regimes.get(g.autofactureNumero!) ?? auj.regimeTva, [somme]);
+    }
+    return total + totalTtcPieceCents(auj.regimeTva, [reste]);
   } catch {
     return ht;
   }
@@ -761,6 +792,23 @@ export async function originesDesReprises(
 }
 
 /**
+ * Le régime de TVA d'une pièce à établir : celui de la pièce si elle est DÉJÀ figée (régénération),
+ * sinon — pour un avoir — celui de l'autofacture rectifiée, sinon le régime applicable au jour
+ * d'émission (le changement daté du jour, sinon la fiche).
+ */
+async function regimeDeLaPiece(e: {
+  apporteurId: string;
+  numero: string;
+  maintenant?: Date;
+  avoir?: { factureInitiale: string };
+}): Promise<RegimeFige> {
+  const figees = await piecesFigees([e.numero, ...(e.avoir ? [e.avoir.factureInitiale] : [])]);
+  const p = figees.get(e.numero) ?? (e.avoir ? figees.get(e.avoir.factureInitiale) : undefined);
+  if (p) return { regimeTva: p.regimeTva, numeroTva: p.numeroTva };
+  return regimeApplicableAu(e.apporteurId, jourParis(e.maintenant ?? new Date()));
+}
+
+/**
  * Génère le PDF de l'autofacture (gabarit des formateurs, vendeur = l'apporteur), le dépose
  * sur R2 et rend sa clé. Rend `null` (log + Sentry) à la moindre difficulté : l'appelant
  * n'enregistre alors AUCUNE facturation.
@@ -775,7 +823,22 @@ export async function genererPdfAutofacture(e: {
   maintenant?: Date;
   /** AVOIR : `commissionIds` = les reprises, `totalCents` = leur total POSITIF. */
   avoir?: { factureInitiale: string; dateFactureInitiale: string | null; imputation: string };
-}): Promise<{ r2Key: string; filename: string; totalTtcCents: number } | null> {
+  /**
+   * Régime de TVA à imprimer. Absent : celui de la PIÈCE si elle est déjà figée (régénération), sinon
+   * — pour un avoir — celui de l'autofacture qu'il rectifie, sinon le régime applicable au jour
+   * d'émission (changement daté ou fiche).
+   */
+  regime?: RegimeFige;
+}): Promise<{
+  r2Key: string;
+  filename: string;
+  totalTtcCents: number;
+  /** Ce que le PDF a imprimé : à FIGER sur la pièce (régime, n° de TVA, totaux). */
+  regimeTva: "assujetti" | "franchise_293b";
+  numeroTva: string | null;
+  totalHtCents: number;
+  totalTvaCents: number;
+} | null> {
   try {
     const [apporteur, commissions] = await Promise.all([
       prisma.apporteurReseau.findUnique({
@@ -808,7 +871,10 @@ export async function genererPdfAutofacture(e: {
       }),
     ]);
     if (!apporteur) throw new Error("apporteur introuvable");
+    const regime = e.regime ?? (await regimeDeLaPiece(e));
     const origines = await originesDesReprises(commissions);
+    const paiements = await paiementsIntegrauxParFacture(commissions.map((l) => l.factureId));
+    const dates = [...paiements.values()].filter((d): d is Date => d !== null);
     const [
       { getOrganismeIdentite },
       { renderPdfToBuffer, storeAndSignPdf },
@@ -824,19 +890,21 @@ export async function genererPdfAutofacture(e: {
       numero: e.numero,
       periodeLibelle: e.periodeLibelle,
       dateEmission: e.maintenant ?? new Date(),
-      paiementIntegral: await paiementIntegralLe(commissions.map((l) => l.factureId)),
+      // L'échéance part du paiement intégral le plus ancien ; la date de prestation, de chaque commande.
+      paiementIntegral: dates.length ? new Date(Math.min(...dates.map((d) => d.getTime()))) : null,
       apporteur: {
         nom: [decryptPii(apporteur.prenom), decryptPii(apporteur.nom)].filter(Boolean).join(" "),
         denomination: apporteur.denomination,
         siren: apporteur.siren,
         siret: await siretDe(e.apporteurId),
         adresse: decryptPii(apporteur.adresse),
-        regimeTva: apporteur.regimeTva,
-        numeroTva: apporteur.numeroTva,
+        regimeTva: regime.regimeTva,
+        numeroTva: regime.numeroTva,
         email: decryptPii(apporteur.email) ?? null,
       },
       commissions: commissions.map((l) => ({
         ...l,
+        paiementIntegralAt: paiements.get(l.factureId) ?? null,
         origineNumero: origines.get(l.id)?.numero ?? null,
         origineMois: origines.get(l.id)?.mois ?? null,
       })),
@@ -850,13 +918,21 @@ export async function genererPdfAutofacture(e: {
     );
     const r2Key = `apporteurs/autofactures/${e.apporteurId}/${e.numero}.pdf`;
     if ((await storeAndSignPdf(buffer, r2Key)) === null) throw new Error("R2 non configuré");
+    // Totaux : la MÊME fonction que le gabarit, pour que la pièce figée retombe sur le PDF.
+    const honoraires = regimeHonorairesApporteur(regime.regimeTva)!;
+    const totaux = computeTotauxFacture(
+      construit.data.lignes.map((l) => ({ quantite: 1, prixUnitaireHtCents: l.montantHtCents })),
+      regimeFactureDepuisHonoraires(honoraires),
+      TAUX_TVA_STANDARD,
+    );
     return {
       r2Key,
       filename: `${e.numero}.pdf`,
-      totalTtcCents: totalTtcPieceCents(
-        apporteur.regimeTva,
-        construit.data.lignes.map((l) => l.montantHtCents),
-      ),
+      totalTtcCents: totaux.totalTtcCents,
+      regimeTva: regime.regimeTva as "assujetti" | "franchise_293b",
+      numeroTva: regime.regimeTva === "assujetti" ? regime.numeroTva : null,
+      totalHtCents: totaux.totalHtCents,
+      totalTvaCents: totaux.totalTtcCents - totaux.totalHtCents,
     };
   } catch (err) {
     console.error(`[reseau-apporteurs] autofacture ${e.numero} : PDF non généré :`, err);
@@ -921,6 +997,77 @@ export function construireCsvDas2(annee: number, lignes: readonly LigneDas2[]): 
   return `﻿${[entete.join(";"), ...corps].join("\r\n")}\r\n`;
 }
 
+/**
+ * Le total TTC de la DAS2 PIÈCE PAR PIÈCE, pour les apporteurs dont au moins une pièce n'a pas le
+ * régime de leur fiche ; absent de la carte = le calcul d'avant convient. Une pièce dont toutes les
+ * lignes sont versées dans l'année (somme HT = HT du PDF) compte pour le TTC de son PDF.
+ */
+async function das2ParPiece(
+  ou: Prisma.CommissionApporteurWhereInput,
+  apporteurIds: readonly string[],
+): Promise<Map<string, number>> {
+  const out = new Map<string, number>();
+  try {
+    if (apporteurIds.length === 0 || !(await piecesFigeesDisponible())) return out;
+    const lignes = await prisma.commissionApporteur.findMany({
+      where: { ...ou, apporteurId: { in: [...apporteurIds] } },
+      select: {
+        apporteurId: true,
+        statut: true,
+        montantCents: true,
+        autofactureNumero: true,
+        avoirNumero: true,
+      },
+    });
+    const numeros = [
+      ...new Set(
+        lignes.flatMap((l) => [l.autofactureNumero, l.avoirNumero]).filter((n): n is string => !!n),
+      ),
+    ];
+    const pieces = await piecesFigees(numeros);
+    const fiches = await prisma.apporteurReseau.findMany({
+      where: { id: { in: [...apporteurIds] } },
+      select: { id: true, regimeTva: true },
+    });
+    const regimeFiche = new Map(fiches.map((f) => [f.id, f.regimeTva as RegimeApporteur]));
+    type Groupe = { apporteurId: string; numero: string; avoir: boolean; ms: number[] };
+    const groupes = new Map<string, Groupe>();
+    for (const l of lignes) {
+      const m = l.montantCents ?? 0;
+      // Une reprise AVEC numéro d'avoir est une pièce d'avoir (déduite) ; sinon une ligne de
+      // l'autofacture, comme dans `aVirerTtcCents`.
+      const avoir = l.statut === "reprise" && !!l.avoirNumero;
+      const numero = avoir ? l.avoirNumero! : (l.autofactureNumero ?? "");
+      const cle = `${avoir ? "a" : "f"}:${numero}`;
+      const g = groupes.get(cle) ?? { apporteurId: l.apporteurId, numero, avoir, ms: [] };
+      g.ms.push(avoir ? Math.abs(m) : m);
+      groupes.set(cle, g);
+    }
+    const differents = new Set<string>();
+    for (const g of groupes.values()) {
+      const p = pieces.get(g.numero);
+      if (p && p.regimeTva !== regimeFiche.get(g.apporteurId)) differents.add(g.apporteurId);
+    }
+    for (const id of differents) {
+      let total = 0;
+      for (const g of groupes.values()) {
+        if (g.apporteurId !== id) continue;
+        const p = pieces.get(g.numero);
+        const ht = g.ms.reduce((s, m) => s + m, 0);
+        const ttc =
+          p && p.totalHtCents !== null && p.totalTtcCents !== null && p.totalHtCents === ht
+            ? p.totalTtcCents
+            : totalTtcPieceCents(p ? p.regimeTva : (regimeFiche.get(id) ?? null), g.ms);
+        total += g.avoir ? -ttc : ttc;
+      }
+      out.set(id, total);
+    }
+  } catch {
+    // Lecture impossible : le calcul d'avant.
+  }
+  return out;
+}
+
 /** Commissions VERSÉES dans l'année civile (Paris approximée en UTC), par apporteur. */
 export async function exportDas2(annee: number): Promise<string> {
   return construireCsvDas2(annee, await lignesDas2Apporteurs(annee));
@@ -931,28 +1078,33 @@ export async function exportDas2(annee: number): Promise<string> {
  * sortants (`server/paiements-sortants`, FAC-9) les relit telles quelles.
  */
 export async function lignesDas2Apporteurs(annee: number): Promise<LigneDas2[]> {
+  const ou: Prisma.CommissionApporteurWhereInput = {
+    // Les reprises imputées à un relevé viennent en déduction du versé de l'année. L'avoir qui
+    // NEUTRALISE une ligne retenue (art. 4.5 bis) n'en est pas une : la ligne n'a jamais été
+    // versée, il n'y a rien à déduire.
+    OR: [
+      { statut: "versee" },
+      {
+        statut: "reprise",
+        releveMois: { not: null },
+        NOT: { activite: ACTIVITE_NEUTRALISATION },
+      },
+    ],
+    verseeAt: {
+      gte: new Date(Date.UTC(annee, 0, 1) - 3_600_000),
+      lt: new Date(Date.UTC(annee + 1, 0, 1) - 3_600_000),
+    },
+  };
   const g = await prisma.commissionApporteur.groupBy({
     by: ["apporteurId"],
-    where: {
-      // Les reprises imputées à un relevé viennent en déduction du versé de l'année. L'avoir qui
-      // NEUTRALISE une ligne retenue (art. 4.5 bis) n'en est pas une : la ligne n'a jamais été
-      // versée, il n'y a rien à déduire.
-      OR: [
-        { statut: "versee" },
-        {
-          statut: "reprise",
-          releveMois: { not: null },
-          NOT: { activite: ACTIVITE_NEUTRALISATION },
-        },
-      ],
-      verseeAt: {
-        gte: new Date(Date.UTC(annee, 0, 1) - 3_600_000),
-        lt: new Date(Date.UTC(annee + 1, 0, 1) - 3_600_000),
-      },
-    },
+    where: ou,
     _sum: { montantCents: true },
     _count: { _all: true },
   });
+  const parPiece = await das2ParPiece(
+    ou,
+    g.map((x) => x.apporteurId),
+  );
   const apporteurs = await prisma.apporteurReseau.findMany({
     where: { id: { in: g.map((x) => x.apporteurId) } },
     select: {
@@ -976,9 +1128,12 @@ export async function lignesDas2Apporteurs(annee: number): Promise<LigneDas2[]> 
       siret: a ? (sirets.get(a.id) ?? null) : null,
       adresse: a?.adresse ?? null,
       // La DAS 2 se déclare TVA comprise (analyse du 09/10) : TTC pour un apporteur assujetti.
-      totalCents: totalTtcPieceCents((a?.regimeTva ?? null) as RegimeApporteur, [
-        x._sum.montantCents ?? 0,
-      ]),
+      // Régime de chaque PIÈCE (figé) : une commission facturée sans TVA en mars reste sans TVA
+      // dans la déclaration, même si l'apporteur est passé à la TVA depuis. Sans pièce d'un autre
+      // régime que la fiche, le calcul d'avant (un seul TTC sur le total), à l'identique.
+      totalCents:
+        parPiece.get(x.apporteurId) ??
+        totalTtcPieceCents((a?.regimeTva ?? null) as RegimeApporteur, [x._sum.montantCents ?? 0]),
       lignes: x._count._all,
     };
   });

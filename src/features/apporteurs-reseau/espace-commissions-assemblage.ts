@@ -126,7 +126,15 @@ const MONTRE_MONTANT: ReadonlySet<EtatPrincipal> = new Set([
   "versee",
 ]);
 
-function vueLigne(l: CommissionLue, etat: EtatPrincipal, cle: string): CommissionVue {
+/** Dates de paiement intégral du client, par numéro d'autofacture (le délai de 30 jours en part). */
+type PaiementsIntegraux = ReadonlyMap<string, Date | null>;
+
+function vueLigne(
+  l: CommissionLue,
+  etat: EtatPrincipal,
+  cle: string,
+  paiements?: PaiementsIntegraux,
+): CommissionVue {
   const m = l.montantCents;
   const reprise = etat === "reprise_a_deduire" || etat === "reprise_deduite";
   const montant =
@@ -144,7 +152,10 @@ function vueLigne(l: CommissionLue, etat: EtatPrincipal, cle: string): Commissio
     etat,
     numeroFacture: etat === "facturee" || etat === "versee" ? l.autofactureNumero : null,
     factureLe: etat === "facturee" || etat === "versee" ? e : null,
-    echeanceLe: etat === "facturee" && e ? echeancePaiement(e) : null,
+    echeanceLe:
+      etat === "facturee" && e
+        ? echeancePaiement(e, l.autofactureNumero ? paiements?.get(l.autofactureNumero) : null)
+        : null,
     verseeLe: etat === "versee" ? (l.verseeAt ?? null) : null,
     numeroAvoir: l.avoirNumero,
   };
@@ -165,7 +176,12 @@ function etatDe(l: CommissionLue): EtatPrincipal {
   );
 }
 
-function virements(lignes: readonly CommissionLue[], regime: RegimeTva): VirementAVenirVue[] {
+function virements(
+  lignes: readonly CommissionLue[],
+  regimeRepli: RegimeTva,
+  regimes?: RegimesLus,
+  paiements?: PaiementsIntegraux,
+): VirementAVenirVue[] {
   const parNumero = new Map<string, CommissionLue[]>();
   for (const l of lignes) {
     if (!l.autofactureNumero) continue;
@@ -182,9 +198,20 @@ function virements(lignes: readonly CommissionLue[], regime: RegimeTva): Viremen
     if (!aVirer.some((l) => l.statut === "due")) continue;
     const suspendues = ls.filter(suspendue).map((l) => l.montantCents ?? 0);
     const date = new Date(Math.min(...ls.map((l) => emission(l).getTime())));
-    const base = { numero, factureLe: date, echeanceLe: echeancePaiement(date), regime };
+    // Le régime de la PIÈCE (figé à son émission) ; sans pièce lue, celui de la fiche (repli).
+    const regime = regimes?.get(numero) ?? regimeRepli;
+    const base = {
+      numero,
+      factureLe: date,
+      echeanceLe: echeancePaiement(date, paiements?.get(numero)),
+      regime,
+    };
     // Mêmes garde-fous que la console : jamais de virement affiché quand rien n'est à virer.
-    const { totalCents, partielPossible } = aVirerPartielCents(regime, aVirer, suspendues);
+    const { totalCents, partielPossible } = aVirerPartielCents(
+      { facture: regime, avoir: (n) => regimes?.get(n) ?? regime },
+      aVirer,
+      suspendues,
+    );
     if (!partielPossible || totalCents <= 0) continue;
     if (regime === null) {
       out.push({ ...base, montants: null });
@@ -207,9 +234,15 @@ function virements(lignes: readonly CommissionLue[], regime: RegimeTva): Viremen
   return out.sort((a, b) => a.factureLe.getTime() - b.factureLe.getTime());
 }
 
+/** Régime de TVA FIGÉ de chaque pièce (autofacture ou avoir), par numéro. */
+export type RegimesLus = ReadonlyMap<string, RegimeTva>;
+
 export function assemblerEspaceCommissions(e: {
   apporteurId: string;
+  /** Régime de la fiche : repli seulement, pour une pièce dont le régime figé n'est pas lu. */
   regimeTva: RegimeTva;
+  regimes?: RegimesLus;
+  paiementsIntegraux?: PaiementsIntegraux;
   maintenant: Date;
   presentations: readonly PresentationLue[];
   reservations: readonly ReservationLue[];
@@ -244,13 +277,21 @@ export function assemblerEspaceCommissions(e: {
     }
     if (c.activite === "prime_challenge") {
       if (c.autofactureNumero && (c.statut === "due" || c.statut === "versee"))
-        hors.push({ ...vueLigne(c, etat, `h${hors.length}`), nature: "Prime exceptionnelle" });
+        hors.push({
+          ...vueLigne(c, etat, `h${hors.length}`, e.paiementsIntegraux),
+          nature: "Prime exceptionnelle",
+        });
       continue;
     }
     if (c.presentationId === null || !propres.has(c.presentationId)) continue;
     parPresentation.set(c.presentationId, [
       ...(parPresentation.get(c.presentationId) ?? []),
-      vueLigne(c, etat, `c${parPresentation.get(c.presentationId)?.length ?? 0}`),
+      vueLigne(
+        c,
+        etat,
+        `c${parPresentation.get(c.presentationId)?.length ?? 0}`,
+        e.paiementsIntegraux,
+      ),
     ]);
   }
 
@@ -282,7 +323,7 @@ export function assemblerEspaceCommissions(e: {
         etat: "facturee",
         numeroFacture: numero,
         factureLe: d,
-        echeanceLe: echeancePaiement(d),
+        echeanceLe: echeancePaiement(d, e.paiementsIntegraux?.get(numero)),
         verseeLe: null,
         numeroAvoir: null,
       });
@@ -330,7 +371,7 @@ export function assemblerEspaceCommissions(e: {
     entreprises,
     horsEntreprise: hors,
     // Lecture tronquée : une autofacture pourrait être coupée, aucun montant de virement n'est donné.
-    virements: e.tronque ? [] : virements(mes, e.regimeTva),
+    virements: e.tronque ? [] : virements(mes, e.regimeTva, e.regimes, e.paiementsIntegraux),
     pieces: [...pieces.values()].sort(
       (a, b) =>
         (a.genre === b.genre ? 0 : a.genre === "facture" ? -1 : 1) ||

@@ -90,9 +90,7 @@ describe("Retenu — bienvenue dans le réseau", () => {
     expect(t).toContain(
       "Vous touchez une commission. Le barème ci-dessous est donné à titre indicatif : votre contrat d'apporteur fait foi.",
     );
-    expect(t).toContain(
-      "versée dès que la prestation est réalisée et que le client l'a entièrement payée",
-    );
+    expect(t).toContain("due dès que le client a payé l'intégralité de sa commande");
     expect(t).toContain("sans objectif ni exclusivité");
     expect(t).toContain("numéro SIREN");
     expect(t).toContain("votre contrat d'apporteur, à signer en ligne");
@@ -129,7 +127,8 @@ describe("Retenu — bienvenue dans le réseau", () => {
     expect(t).toContain(`Audit : ${audit} % du montant HT de la facture.`);
     expect(t).toContain(`Intégration : ${integration} % du montant HT de la facture.`);
     // Décision de Will (2026-10-05) : la durée d'attribution ne s'écrit PAS dans cet e-mail.
-    expect(t).toContain("l'a entièrement payée.");
+    expect(t).toContain("payé l'intégralité de sa commande");
+    expect(t).not.toContain("prestation est réalisée");
     expect(t).not.toContain("attribuée");
     expect(t).not.toContain("6 mois");
     // Témoin des valeurs décidées : si le SSOT bouge, ce test le dit.

@@ -1279,3 +1279,20 @@ describe("compensation (art. 12.4) et avoir déjà émis", () => {
     expect(reprises.reduce((s, x) => s + (x.montantCents ?? 0), 0)).toBe(-13_004);
   });
 });
+
+describe("L1 — l'alerte « À virer » et l'e-mail disent le régime de TVA de la pièce", () => {
+  it("assujetti : « TVA comprise » dans l'alerte et `regimeTva` dans la charge de l'e-mail", async () => {
+    etat.lignes = [ligne("c1", "due", 50_000, { apporteurId: "APP4" })];
+    await facturerCommissionsDues(MARDI);
+    expect(etat.alertes.at(-1)!.payload["message"]).toContain("(TVA comprise)");
+    expect(etat.envoyes[0]!["payload"]).toMatchObject({ regimeTva: "assujetti" });
+  });
+  it("franchise : « sans TVA, franchise 293 B »", async () => {
+    etat.lignes = [ligne("c1", "due", 50_000)];
+    await facturerCommissionsDues(MARDI);
+    const m = String(etat.alertes.at(-1)!.payload["message"]);
+    expect(m).toContain("sans TVA, franchise 293 B");
+    expect(m).not.toContain("TVA comprise");
+    expect(etat.envoyes[0]!["payload"]).toMatchObject({ regimeTva: "franchise_293b" });
+  });
+});

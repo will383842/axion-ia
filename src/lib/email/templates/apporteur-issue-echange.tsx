@@ -99,7 +99,7 @@ export const COPY_ISSUE_ECHANGE = {
       ],
       commissionTitre: "Votre commission",
       versement: () =>
-        "Elle vous est versée dès que la prestation est réalisée et que le client l'a entièrement payée.",
+        "Elle vous est due dès que le client a payé l'intégralité de sa commande, même si la prestation n'est pas encore livrée.",
       statutTitre: "Votre statut",
       statut:
         "Vous restez indépendant, libre de votre organisation, sans objectif ni exclusivité. Pour facturer vos commissions, il vous faut un numéro SIREN (une micro-entreprise, par exemple).",

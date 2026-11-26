@@ -31,6 +31,7 @@ export type GabaritApporteur =
   | "apporteur-dossier-a-verifier"
   | "apporteur-dossier-recu"
   | "apporteur-commission-suspension"
+  | "apporteur-regime-tva"
   | "apporteur-manquement"
   | "apporteur-resiliation-notifiee"
   | "apporteur-resiliation-effective"
@@ -58,6 +59,7 @@ export const GABARITS_APPORTEUR: readonly GabaritApporteur[] = [
   // INTERNE envoyée à Williams, pas un e-mail à l'apporteur — elle ne se coupe jamais.
   "apporteur-dossier-recu",
   "apporteur-commission-suspension",
+  "apporteur-regime-tva",
   "apporteur-manquement",
   "apporteur-resiliation-notifiee",
   "apporteur-resiliation-effective",
@@ -111,6 +113,7 @@ const GABARITS_VERS_L_APPORTEUR: ReadonlySet<string> = new Set([
   // INTERNE envoyée à Williams, pas un e-mail à l'apporteur — elle ne se coupe jamais.
   "apporteur-dossier-recu",
   "apporteur-commission-suspension",
+  "apporteur-regime-tva",
   "apporteur-manquement",
   "apporteur-resiliation-notifiee",
   "apporteur-resiliation-effective",

@@ -585,6 +585,13 @@ export const CATALOGUE: Readonly<Record<EmailJobName, FicheEmail>> = {
     destinataire: "l'apporteur dont la commission est suspendue, puis libérée",
     source: "features/apporteurs-reseau/envois.ts",
   },
+  "apporteur-regime-tva": {
+    categorie: "recrutement",
+    quand:
+      "Console, fiche apporteur : « Changer le régime de TVA » enregistré (ou annulé avant sa date d'effet)",
+    destinataire: "l'apporteur dont le régime de TVA change",
+    source: "features/apporteurs-reseau/envois.ts",
+  },
   "apporteur-dossier-recu": {
     categorie: "recrutement",
     quand: "Dès qu'un apporteur signe son contrat en ligne (une fois par signature)",

@@ -9,6 +9,7 @@ import { Suspense } from "react";
 import { AdminCard, AdminPageHeader } from "@/components/admin/ui";
 import { AccesRefuse } from "@/components/admin/ui/AccesRefuse";
 import { EnvoiLienDossier, ParrainEtNote } from "@/components/admin/apporteurs/fiche/BlocsFiche";
+import { ChangerRegimeTva } from "@/components/admin/apporteurs/fiche/ChangerRegimeTva";
 import { CorrigerNom } from "@/components/admin/apporteurs/fiche/CorrigerNom";
 import { DecisionDossier } from "@/components/admin/apporteurs/fiche/DecisionDossier";
 import {
@@ -29,8 +30,10 @@ import {
   PiecesVerification,
   type PieceAffichee,
 } from "@/components/admin/apporteurs/fiche/PiecesVerification";
+import { jourParis } from "@/features/apporteurs-reseau/autofacture-donnees";
 import {
   LIBELLE_STATUT_APPORTEUR,
+  lireChangementsRegimeTva,
   lireFicheApporteur,
 } from "@/features/apporteurs-reseau/requetes-console";
 import { STATUTS_JURIDIQUES, euros } from "@/features/apporteurs-reseau/regles";
@@ -99,13 +102,15 @@ export default async function FicheApporteurPage({ params, searchParams }: PageP
   if (!fiche) notFound();
   const { dossier: d } = fiche;
   const base = `/fr/${adminPrefix}/apporteurs`;
+  const jourParisAujourdhui = jourParis(new Date());
   const aVerifier = d.statut === "a_verifier";
   // Retirer / supprimer (2026-10-07) : l'état se relit ici, les contrôles se refont au serveur.
-  const [retireAt, etatSuppr, solde, siret] = await Promise.all([
+  const [retireAt, etatSuppr, solde, siret, changementsTva] = await Promise.all([
     retraitDe(d.id),
     etatSuppression(d.id),
     lireSoldeNegatif(d.id),
     siretDe(d.id),
+    lireChangementsRegimeTva(d.id),
   ]);
   const refusSuppr = etatSuppr ? refusSuppression(etatSuppr) : "Dossier introuvable.";
   // Un compte de consultation (`reader`) ne lit pas les données personnelles de l'apporteur.
@@ -205,6 +210,38 @@ export default async function FicheApporteurPage({ params, searchParams }: PageP
                   : null
             }
           />
+          {/* Changement de régime après la signature (contrat 2.8, art. 4.7 et 6.3) : droit
+              « contresigner », contrat signé et date revérifiés côté serveur. */}
+          {changementsTva
+            .filter((c) => !c.annule && c.effetAu > jourParisAujourdhui)
+            .map((c) => (
+              <Ligne
+                key={c.id}
+                libelle="Changement prévu"
+                valeur={`le ${c.effetAu.split("-").reverse().join("/")} : ${
+                  c.regimeTva === "assujetti"
+                    ? `facturera la TVA (${c.numeroTva ?? "numéro manquant"})`
+                    : "ne facturera plus la TVA (293 B)"
+                }`}
+              />
+            ))}
+          {voitPii && d.statut === "signe" ? (
+            <ChangerRegimeTva
+              apporteurId={d.id}
+              regimeActuel={d.regimeTva}
+              historique={changementsTva.map((c) => ({
+                id: c.id,
+                libelle:
+                  c.regimeTva === "assujetti"
+                    ? `${c.regimeAvant === "franchise_293b" ? "Franchise → " : ""}facture la TVA${c.numeroTva ? ` (${c.numeroTva})` : ""}`
+                    : `${c.regimeAvant === "assujetti" ? "TVA → " : ""}franchise (293 B)`,
+                effetLe: c.effetAu.split("-").reverse().join("/"),
+                saisiLe: jour(c.saisiAt),
+                annule: c.annule,
+                aVenir: c.effetAu > jourParisAujourdhui,
+              }))}
+            />
+          ) : null}
           <Ligne
             libelle="IBAN"
             valeur={voitPii ? d.ibanMasque : d.ibanMasque ? "•••• •••• ••••" : null}
