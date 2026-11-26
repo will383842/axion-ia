@@ -74,7 +74,7 @@ function singulier(mot: string): string {
 }
 
 /**
- * Minuscules, sans accents ni ponctuation, sans mots vides, singulier simple (collisions possibles, ex. « cas »/« ca », symétriques donc sans effet),
+ * Minuscules, sans accents ni ponctuation, sans mots vides, singulier simple (collisions possibles, ex. « mois »/« moi », symétriques donc sans effet),
  * mots triés (l'ordre ne change pas la requête visée). Chaîne vide si rien
  * ne reste.
  */
