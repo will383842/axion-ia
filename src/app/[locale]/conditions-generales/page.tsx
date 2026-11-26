@@ -61,6 +61,11 @@ export const revalidate = 3600;
 // SANS condition de délai, pour tout ce qui est vendu (articles 6.5, 42.1, 46.2, 47.6, 49.5, 49.6) ; la
 // règle « annulée à plus de 15 jours ouvrés, acomptes remboursés » est supprimée. Rétractation légale
 // réservée (49.2, 53.2). Le texte du 27/11 est archivé (@/content/cgv-archives).
+//
+// 2026-11-29 : décision du dirigeant (26/11) — la personne morale non professionnelle (53.3) perd aussi son
+// acompte si elle annule, comme le Client professionnel, avec la clause RÉCIPROQUE exigée par R.212-2 1° du code
+// de la consommation (annulation par Axion-IA hors force majeure : acompte rendu + indemnité égale). La personne
+// physique de l'article 49.2 reste remboursée en totalité. Le texte du 28/11 est archivé (@/content/cgv-archives).
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;

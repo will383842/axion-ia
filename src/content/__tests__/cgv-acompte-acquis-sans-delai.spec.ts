@@ -38,7 +38,7 @@ describe("CGV : l'acompte versé reste acquis, sans condition de délai", () => 
         "l'acompte prévu au devis reste acquis à Axion-IA, à concurrence des sommes effectivement versées",
       );
       expect(art(46)).toContain(
-        "aucune somme n'est due en plus de l'acompte versé, qui reste acquis lorsque le Client est professionnel",
+        "aucune somme n'est due en plus de l'acompte versé, qui reste acquis lorsque le Client est professionnel ou une personne morale non professionnelle",
       );
       expect(art(46)).toContain("n'est jamais inférieure au montant hors taxes de l'acompte versé");
       expect(art(47)).toContain(
@@ -46,7 +46,7 @@ describe("CGV : l'acompte versé reste acquis, sans condition de délai", () => 
       );
       expect(art(47)).not.toContain("pour la seule Journée IA (article 47.10) : dès que");
       expect(art(49)).toContain(
-        "l'acompte prévu au devis reste acquis à Axion-IA, lorsque le Client est professionnel, en cas d'annulation par le Client, quel que soit le délai",
+        "l'acompte prévu au devis reste acquis à Axion-IA, lorsque le Client est professionnel ou une personne morale non professionnelle, en cas d'annulation par le Client, quel que soit le délai",
       );
       expect(art(42)).toContain("n'est jamais inférieur au montant hors taxes de l'acompte versé");
     });
@@ -75,13 +75,26 @@ describe("CGV : l'acompte versé reste acquis, sans condition de délai", () => 
     });
   }
 
-  it("personne morale non professionnelle : restitution intégrale avant le début, sans « part réalisée » (6.5)", async () => {
+  it("personne morale non professionnelle : perd aussi l'acompte, avec clause réciproque (6.5, 46.4, 53.3) ; personne physique 49.2 inchangée", async () => {
     for (const certifiee of [false, true]) {
       const { art } = await charger(certifiee);
       expect(art(6)).toContain(
-        "l'acompte est remboursé en totalité en cas d'annulation avant le début.",
+        "Cette règle vise les Clients professionnels et la personne morale non professionnelle de l'article 53.3",
       );
+      expect(art(6)).toContain(
+        "elle ne s'applique pas à la personne physique de l'article 49.2, pour laquelle l'acompte est remboursé en totalité en cas d'annulation avant le début",
+      );
+      expect(art(6)).not.toContain("ni à la personne morale non professionnelle");
       expect(art(6)).not.toContain("sous réserve de la part réalisée");
+      expect(art(53)).toContain("s'applique à elle comme au Client professionnel");
+      expect(art(53)).toContain(
+        "si Axion-IA annule la prestation (article 46.4), hors cas de force majeure (article 39) et hors faute du Client, elle lui rembourse l'acompte versé et lui verse une indemnité d'un montant égal à cet acompte",
+      );
+      expect(art(53)).not.toContain("lui est restitué en totalité");
+      expect(art(46)).toContain(
+        "sauf, pour la personne morale non professionnelle, l'indemnité de l'article 53.3",
+      );
+      expect(art(49)).toContain("l'acompte acquis de l'article 6.5 ne s'applique pas");
     }
   });
 
