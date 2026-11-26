@@ -48,6 +48,7 @@ import { dejaEnvoye, statutApresVigilance } from "./commissions";
 import {
   ajouterMois,
   htLignesRecurrentesRestantesCents,
+  plafondBaseCommissionnableCents,
   FORFAIT_CONFERENCE_CENTS,
   PALIER_CONFERENCE,
   PALIER_JOURNEE_IA,
@@ -231,6 +232,8 @@ async function facturesDeLaCommande(factureId: string): Promise<{
   totalDevisCents?: number;
   /** HT des lignes de maintenance / abonnement du devis : jamais dans la base (règle du 25/11). */
   recurrentCents: number;
+  /** Plafond strict : total HT du devis − récurrent brut (Infinity si total inconnu). */
+  plafondCents: number;
 } | null> {
   const f = await prisma.factureFormation.findUnique({
     where: { id: factureId },
@@ -238,6 +241,7 @@ async function facturesDeLaCommande(factureId: string): Promise<{
       id: true,
       devisId: true,
       lignes: true,
+      montantHtCents: true,
       devis: { select: { montantTotalHtCents: true, journeeIa: true, lignes: true } },
     },
   });
@@ -262,10 +266,16 @@ async function facturesDeLaCommande(factureId: string): Promise<{
           .filter((m) => m.statut !== "brouillon" && m.statut !== "annulee")
           .map((m) => m.lignes),
       );
+  const plafondCents = plafondBaseCommissionnableCents(
+    f.devis ? f.devis.montantTotalHtCents : f.montantHtCents,
+    f.devis ? f.devis.lignes : f.lignes,
+    f.devis?.journeeIa === true,
+  );
   return {
     membres,
     avoirs,
     recurrentCents,
+    plafondCents,
     ...(typeof total === "number" ? { totalDevisCents: total } : {}),
   };
 }
@@ -732,8 +742,13 @@ export async function reprendreApresAvoirsClients(
       if (suspensionPossible) bilan.suspensionsLevees += await leverSuspension(groupe);
       // La commission est calculée hors lignes récurrentes : la cible se lit sur la même base
       // (sinon un avoir ferait REMONTER une commission de 600 € à 607,50 €).
-      const net = Math.max(0, etat.netCibleCents - lu.recurrentCents);
-      const baseHorsRecurrent = Math.max(0, etat.baseCents - lu.recurrentCents);
+      // Plafond strict (26/11) APRÈS ce calcul : jamais au-delà de « total HT − récurrent brut »,
+      // y compris pour la remontée d'une ligne lors d'une reprise.
+      const net = Math.min(Math.max(0, etat.netCibleCents - lu.recurrentCents), lu.plafondCents);
+      const baseHorsRecurrent = Math.min(
+        Math.max(0, etat.baseCents - lu.recurrentCents),
+        lu.plafondCents,
+      );
       // Dette a1 (a) : le délai de 24 mois de l'art. 4.5 s'apprécie AVOIR PAR AVOIR. Pour une ligne
       // déjà facturée (retenue, reprise), seuls comptent les avoirs de moins de 24 mois ; un avoir
       // plus ancien ne profite jamais du délai d'un avoir récent.

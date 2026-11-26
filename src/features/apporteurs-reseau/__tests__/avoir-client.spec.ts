@@ -852,4 +852,104 @@ describe("commande mixte : mise en service + maintenance", () => {
     expect(d.reduire).not.toHaveBeenCalled();
     expect(ecritures()).toEqual([]);
   });
+  // PLAFOND STRICT (décision du pilote 26/11) : la remontée d'une ligne ne dépasse jamais
+  // « total HT du devis − récurrent brut du devis ».
+  describe("plafond strict à la remontée", () => {
+    const lignesDe = (maint: number) => [
+      { designation: "Mise en service du site", quantite: 1, prixUnitaireHtCents: 400_000 },
+      { designation: "Maintenance mensuelle", quantite: 1, prixUnitaireHtCents: maint },
+    ];
+    const unique = (m: number) => [
+      { designation: "Prestation selon devis", quantite: 1, prixUnitaireHtCents: m },
+    ];
+    const devisDe = (maint: number) => ({
+      montantTotalHtCents: 400_000 + maint,
+      journeeIa: false,
+      lignes: lignesDe(maint),
+    });
+    const facDe = (id: string, maint: number, lignes: unknown[], montant: number) =>
+      ({
+        ...facture,
+        id,
+        devisId: "D1",
+        montantHtCents: montant,
+        lignes,
+        devis: devisDe(maint),
+      }) as unknown as F;
+    const avTotal = (maint: number) =>
+      ({
+        ...avoir(-(400_000 + maint)),
+        id: "AV",
+        avoirDeId: "F1",
+        devisId: "D1",
+        statut: "payee",
+        devis: devisDe(maint),
+        lignes: [
+          { designation: "Mise en service du site", quantite: 1, prixUnitaireHtCents: -400_000 },
+          { designation: "Maintenance mensuelle", quantite: 1, prixUnitaireHtCents: -maint },
+        ],
+      }) as unknown as F;
+
+    it("devis 4 000 € + 1 000 €, F1 détaillée, avoir total, F2 « Prestation selon devis » 5 000 € : la ligne ne remonte pas au-delà de 600 €", async () => {
+      d.factures = [
+        facDe("F1", 100_000, lignesDe(100_000), 500_000),
+        facDe("F2", 100_000, unique(500_000), 500_000),
+        avTotal(100_000),
+      ];
+      d.lignes = [ligne({ activite: "site_web", factureHtCents: 400_000, montantCents: 60_000 })];
+      await reprendreApresAvoirsClients(LE);
+      expect(d.reduire).not.toHaveBeenCalled();
+      expect(ecritures()).toEqual([]);
+    });
+
+    it("devis 4 000 € + 150 €, refaite en ligne unique 4 150 € : reste 600 €", async () => {
+      d.factures = [
+        facDe("F1", 15_000, lignesDe(15_000), 415_000),
+        facDe("F2", 15_000, unique(415_000), 415_000),
+        avTotal(15_000),
+      ];
+      d.lignes = [ligne({ activite: "site_web", factureHtCents: 400_000, montantCents: 60_000 })];
+      await reprendreApresAvoirsClients(LE);
+      expect(d.reduire).not.toHaveBeenCalled();
+      expect(ecritures()).toEqual([]);
+    });
+
+    it("une ligne déjà gonflée à 750 € est ramenée à 600 € au plus (jamais remontée au-delà)", async () => {
+      d.factures = [
+        facDe("F1", 100_000, lignesDe(100_000), 500_000),
+        facDe("F2", 100_000, unique(500_000), 500_000),
+        avTotal(100_000),
+      ];
+      d.lignes = [ligne({ activite: "site_web", factureHtCents: 400_000, montantCents: 60_000 })];
+      await reprendreApresAvoirsClients(LE);
+      expect(ecritures()).not.toContainEqual(expect.objectContaining({ montantCents: 75_000 }));
+    });
+
+    it("deux acomptes à ligne unique, avoir partiel « maintenance », complément « Maintenance » : jamais au-delà de 600 €", async () => {
+      const ac = (id: string) => facDe(id, 15_000, unique(207_500), 207_500);
+      const comp = facDe(
+        "F3",
+        15_000,
+        [{ designation: "Maintenance", quantite: 1, prixUnitaireHtCents: 15_000 }],
+        15_000,
+      );
+      const av = {
+        ...avoir(-15_000),
+        id: "AV",
+        avoirDeId: "F1",
+        devisId: "D1",
+        statut: "payee",
+        devis: devisDe(15_000),
+        lignes: [
+          { designation: "Avoir partiel — maintenance", quantite: 1, prixUnitaireHtCents: -15_000 },
+        ],
+      } as unknown as F;
+      d.factures = [ac("F1"), ac("F2"), comp, av];
+      d.lignes = [ligne({ activite: "site_web", factureHtCents: 400_000, montantCents: 60_000 })];
+      await reprendreApresAvoirsClients(LE);
+      expect(ecritures()).not.toContainEqual(
+        expect.objectContaining({ montantCents: expect.any(Number) }),
+      );
+    });
+  });
 });

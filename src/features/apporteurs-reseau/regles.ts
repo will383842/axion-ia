@@ -609,6 +609,23 @@ export function htLignesRecurrentesRestantesCents(
   return Math.min(duDevisBrut, Math.max(0, facture - rendu));
 }
 
+/**
+ * PLAFOND STRICT de la base commissionnable d'une commande (décision du pilote 26/11) : total HT du
+ * devis (à défaut, de la facture) moins le récurrent BRUT (maintenance, abonnement, hébergement,
+ * licence). Quelle que soit la façon dont les factures sont détaillées, la base ne le dépasse
+ * jamais. Total inconnu : aucun plafond (Infinity). Jamais négatif. Pur.
+ */
+export function plafondBaseCommissionnableCents(
+  totalHtCents: number | null | undefined,
+  lignesCommande: unknown,
+  journeeIa = false,
+): number {
+  if (typeof totalHtCents !== "number" || !Number.isFinite(totalHtCents))
+    return Number.POSITIVE_INFINITY;
+  const brut = journeeIa ? 0 : htLignesRecurrentesCents(lignesCommande);
+  return Math.max(0, totalHtCents - brut);
+}
+
 /** Base commissionnable : le net HT moins les lignes récurrentes du devis (jamais négatif). */
 export function baseHorsLignesRecurrentes(netHtCents: number, lignes: unknown): number {
   return Math.max(0, netHtCents - htLignesRecurrentesCents(lignes));

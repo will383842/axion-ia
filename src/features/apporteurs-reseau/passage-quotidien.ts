@@ -85,6 +85,7 @@ import {
   ajouterJours,
   ajouterMois,
   htLignesRecurrentesRestantesCents,
+  plafondBaseCommissionnableCents,
   calculerCommission,
   DEVELOPPEMENT_WEB_COMMISSIONNE_DEPUIS,
   calculerCommissionJourneeIa,
@@ -1014,7 +1015,17 @@ async function etapeCommissions(maintenant: Date, bilan: BilanPassageReseau): Pr
             )
             .map((m) => m.lignes),
         );
-    const baseCommissionnable = Math.max(0, commande.baseApresAvoirsCents - recurrentCents);
+    // Plafond strict (26/11) : jamais plus que « total HT du devis − récurrent brut du devis »,
+    // APRÈS le calcul ci-dessus (prorata des avoirs partiels, avoir annulé…), qui reste en place.
+    const plafondBase = plafondBaseCommissionnableCents(
+      f.devis ? f.devis.montantTotalHtCents : f.montantHtCents,
+      f.devis ? f.devis.lignes : f.lignes,
+      f.devis?.journeeIa === true,
+    );
+    const baseCommissionnable = Math.min(
+      Math.max(0, commande.baseApresAvoirsCents - recurrentCents),
+      plafondBase,
+    );
     // Journée IA : repérée par `devis.journee_ia` (aucune valeur d'énumération nouvelle).
     const calc =
       f.devis?.journeeIa === true
