@@ -51,6 +51,14 @@ const MOTS_MESURES = 1013; // re-mesuré le 25/11/2026 (déduction détaillée, 
 const MOTS_PREMIER_ECRAN = 218; // re-mesuré le 26/11/2026 (diagnostic « gratuit et facultatif », priorités dans le rapport détaillé ; était 204)
 
 describe("Journée IA — contenu.ts", () => {
+  it("les gains sont chiffrés dans le rapport, jamais « le jour même » ; l'audit dure de 2 à 4 h", () => {
+    const t = tout.replace(/\s/g, " ");
+    expect(t).not.toMatch(/chiffr[^.]{0,80}jour m[êe]me|jour m[êe]me[^.]{0,80}chiffr/i);
+    expect(t).not.toMatch(/9 h\s?[–-]\s?12 h|de 9 h à 12 h/);
+    expect(t).toMatch(/de 2 à 4 h selon la structuration de l’entreprise/i);
+    expect(t).toMatch(/court questionnaire/i);
+  });
+
   it("tient dans une fourchette de mots (plancher −10 %, plafond +5 % : pas de « blockhaus »)", () => {
     const n = compte(horsFaq);
     expect(n).toBeGreaterThanOrEqual(Math.floor(MOTS_MESURES * 0.9));
