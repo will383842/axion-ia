@@ -18,6 +18,15 @@ export const JETON_PRIX = "{{PRIX}}";
 /** Délai de remise du rapport, valeur par défaut de l'art. 47.1 (c) des CGV, décision du 25/11/2026. */
 export const DELAI_RAPPORT_JOURS_OUVRES = 10;
 
+/** Délai, après la remise du rapport, pour demander le remboursement par écrit (CGV art. 47.10 f). */
+export const DELAI_DEMANDE_REMBOURSEMENT_JOURS = 30;
+
+/** Délai de réponse écrite d'Axion-IA à la demande (CGV art. 47.10 f). */
+export const DELAI_REPONSE_REMBOURSEMENT_JOURS = 15;
+
+/** Délai du virement, après l'acceptation de la demande (CGV art. 47.10 f). */
+export const DELAI_VIREMENT_REMBOURSEMENT_JOURS = 30;
+
 /** La seule phrase de remboursement : la fin exacte de `GARANTIE`. */
 export const GARANTIE_PHRASE =
   "Si les gains identifiés dans votre rapport n’atteignent pas 3 fois le prix HT de la journée, vous êtes remboursé sur demande écrite.";
