@@ -524,6 +524,11 @@ export type NotificationEvent =
         canceledBy?: string;
         /** `invitee` ou `host` (`cancellation.canceler_type`). */
         cancelerType?: string;
+        /**
+         * Annulé par la page du site (lien de la personne). Calendly affiche alors
+         * « hôte », car l'appel part avec notre jeton, et refuse tout motif.
+         */
+        annuleDepuisLeSite?: boolean;
         inviteePhone?: string;
         typeRendezVous?: string;
         // Ajoutés le 2026-08-09 : une annulation qui ne dit ni QUI ni QUAND
