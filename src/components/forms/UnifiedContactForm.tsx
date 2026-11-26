@@ -831,7 +831,7 @@ function UnifiedContactFormBody({
             "peer-focus-visible:ring-2 peer-focus-visible:ring-offset-2",
             compact ? "px-2.5 py-1.5 text-[12px]" : "px-3 py-2 text-[13px]",
             ACCENT_CLASSES[accent].hoverBorder,
-            // Mise en avant permanente : bordure et fond terracotta dès l'état
+            // Mise en avant permanente : bordure et texte terracotta dès l'état
             // repos, pour qu'elle se distingue des autres pastilles.
             opt === "journee_ia" && "border-terracotta text-terracotta-deep",
             PILL_CHECKED[accent],
