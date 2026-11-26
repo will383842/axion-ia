@@ -378,6 +378,7 @@ export async function enregistrerDecisionGarantieJourneeIaAction(
         // Succès seulement si CE qui vient d'être saisi est ce qui a été enregistré par l'autre clic.
         if (
           frais.montantRembourseCents === montant &&
+          (!texte(formData, "totalGainsEuros") || total === frais.totalGainsCents) &&
           frais.decisionLe === decisionLe &&
           (frais.motifDecision ?? "") === (motif ?? "")
         ) {

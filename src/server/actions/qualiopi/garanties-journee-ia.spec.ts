@@ -354,6 +354,20 @@ describe("décision, virement, archivage", () => {
       /erreur=L.avoir%20est%20%C3%A9mis%20avec%20d.autres/,
     );
   });
+  it("double clic simultané avec un AUTRE total des gains : pas de faux succès", async () => {
+    genererAvoirFacture.mockRejectedValueOnce(new Error("Un autre avoir vient d'être émis"));
+    lireGarantie.mockResolvedValueOnce({ ...dossier }).mockResolvedValueOnce({
+      ...dossier,
+      decision: "remboursement",
+      decisionLe: "2026-12-12",
+      montantRembourseCents: 200000,
+      totalGainsCents: 100000,
+      avoirId: "44444444-4444-4444-8444-444444444444",
+    });
+    expect(
+      await va(enregistrerDecisionGarantieJourneeIaAction(remb({ totalGainsEuros: "5000" }))),
+    ).toMatch(/erreur=/);
+  });
   it("avoir déjà émis : changer la note (même montant) est refusé", async () => {
     lireGarantie.mockResolvedValue({
       ...dossier,
