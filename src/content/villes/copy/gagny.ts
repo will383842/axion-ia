@@ -245,7 +245,7 @@ export const GAGNY_COPY: VilleCopy = {
     },
     {
       q: "Intervenez-vous dans les communes proches de Gagny ?",
-      a: "Oui, nous intervenons sans surcoût au Raincy, à Villemomble, Neuilly-sur-Marne, Chelles, Gournay-sur-Marne, Montfermeil et Clichy-sous-Bois, toutes limitrophes de Gagny.",
+      a: "Oui, nous intervenons au Raincy, à Villemomble, Neuilly-sur-Marne, Chelles, Gournay-sur-Marne, Montfermeil et Clichy-sous-Bois, toutes limitrophes de Gagny.",
     },
   ],
 };

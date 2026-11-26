@@ -65,7 +65,7 @@ export const GUENANGE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission Axion-IA à Guénange ?",
-      a: "Nos consultants interviennent depuis Metz (30 min) ou Luxembourg (35 min). Guénange est dans la vallée de la Fensch, accès direct A31. Sessions sur site ou en visio selon vos préférences, déplacements sans surcoût hébergement.",
+      a: "Nos consultants interviennent depuis Metz (30 min) ou Luxembourg (35 min). Guénange est dans la vallée de la Fensch, accès direct A31. Sessions sur site ou en visio selon vos préférences.",
     },
   ],
 };

@@ -74,7 +74,7 @@ export const BESSAN_COPY: VilleCopy = {
     },
     {
       q: "Vos consultants se déplacent-ils à Bessan ou en visio uniquement ?",
-      a: "Les deux. Déplacements facturés en frais réels. Visio possible pour cadrage et coaching, sur site recommandé pour ateliers d'équipe.",
+      a: "Les deux. Visio possible pour cadrage et coaching, sur site recommandé pour ateliers d'équipe.",
     },
   ],
 };

@@ -65,7 +65,7 @@ export const FONTAINEBLEAU_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission Axion-IA à Fontainebleau ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Missions multi-jours possibles avec hébergement local. Coûts de déplacement séparés du forfait, tarifs transparents.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Missions multi-jours possibles avec hébergement local. Tarifs transparents.",
     },
   ],
 };
