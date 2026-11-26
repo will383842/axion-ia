@@ -65,7 +65,7 @@ export const AMBERIEU_EN_BUGEY_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Ambérieu-en-Bugey ?",
-      a: "TER Lyon 40 min ou voiture 50 min.",
+      a: "Une mission à Ambérieu-en-Bugey démarre par un échange de cadrage, puis se déroule sur site ou à distance, avec des livrables remis et documentés.",
     },
   ],
 };

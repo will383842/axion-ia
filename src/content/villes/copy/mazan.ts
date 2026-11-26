@@ -65,7 +65,7 @@ export const MAZAN_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Mazan ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Déplacement sur site dans vos locaux professionnels, domaine viticole, exploitation, hébergement ou commerce. Comtat Venaissin bien desservi.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Sur site, dans vos locaux professionnels, domaine viticole, exploitation ou commerce.",
     },
   ],
 };
