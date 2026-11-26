@@ -290,3 +290,30 @@ describe("appliquerRemplacements — balisage et champs courts", () => {
     expect(r.statut).toBe("echec");
   });
 });
+
+describe("appliquerRemplacements — cas limites du balisage", () => {
+  it("refuse un ancien qui coupe une balise en son milieu", () => {
+    const a = {
+      ...bon(),
+      corpsHtml: `<p>Voir le guide complet <a href="/fr/blog/x">ici</a></p>${"y".repeat(300)}`,
+    };
+    const r = appliquerRemplacements(a, [
+      {
+        champ: "corpsHtml",
+        ancien: 'guide complet <a href="/fr/blog/x',
+        nouveau: "guide détaillé",
+      },
+    ]);
+    expect(r.appliques).toHaveLength(0);
+    expect(r.article.corpsHtml).toBe(a.corpsHtml);
+  });
+  it("plafonne le cumul sur un champ court (60 %)", () => {
+    const a = { ...bon(), h1: "alpha bravo charlie delta echo" };
+    const r = appliquerRemplacements(a, [
+      { champ: "h1", ancien: "alpha bravo", nouveau: "un deux" },
+      { champ: "h1", ancien: "charlie delta", nouveau: "trois quatre" },
+    ]);
+    expect(r.appliques).toHaveLength(1);
+    expect(r.refuses).toHaveLength(1);
+  });
+});

@@ -236,6 +236,7 @@ export function appliquerRemplacements(
   const refuses: RemplacementRefuse[] = [];
   const longueurCorps = Math.max(1, article.corpsHtml.length);
   let touche = 0;
+  const toucheCourt: Partial<Record<ChampEditable, number>> = {};
 
   for (const r of remplacements) {
     const refuser = (raison: string) => refuses.push({ remplacement: r, raison });
@@ -253,12 +254,16 @@ export function appliquerRemplacements(
       balisesAvant.length !== balisesApres.length ||
       balisesAvant.some((b, i) => b !== balisesApres[i]) ||
       (r.champ !== "corpsHtml" && /[<>]/.test(`${r.ancien}${r.nouveau}`)) ||
-      /[<>]/.test(r.nouveau.replace(/<[^>]*>/g, ""))
+      /[<>]/.test(r.nouveau.replace(/<[^>]*>/g, "")) ||
+      /[<>]/.test(r.ancien.replace(/<[^>]*>/g, ""))
     ) {
       refuser("balisage modifié (remplacement de texte seulement)");
       continue;
     }
-    if (r.champ !== "corpsHtml" && r.ancien.length > 0.6 * champs[r.champ].length) {
+    if (
+      r.champ !== "corpsHtml" &&
+      (toucheCourt[r.champ] ?? 0) + r.ancien.length > 0.6 * article[r.champ].length
+    ) {
       refuser("champ réécrit en grande partie (réécriture refusée)");
       continue;
     }
@@ -291,6 +296,8 @@ export function appliquerRemplacements(
       }
       touche += ajout;
     }
+    if (r.champ !== "corpsHtml")
+      toucheCourt[r.champ] = (toucheCourt[r.champ] ?? 0) + r.ancien.length;
     champs[r.champ] = champs[r.champ].replace(r.ancien, () => r.nouveau);
     appliques.push(r);
   }
