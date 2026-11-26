@@ -236,7 +236,7 @@ export const ETAMPES_COPY: VilleCopy = {
     },
     {
       q: "Quelles communes du sud-Essonne sont couvertes par Axion-IA autour d'Étampes ?",
-      a: "Nous intervenons dans vos locaux, partout en France.",
+      a: "Nous intervenons à La Ferté-Alais, Dourdan, Guillerval et dans l'ensemble du sud-Essonne, comme partout en France.",
     },
     {
       q: "Quels secteurs locaux Axion-IA accompagne-t-il à Étampes ?",

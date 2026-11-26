@@ -129,7 +129,7 @@ const VILLE_COPY: VilleCopy = {
           },
           {
             q: "Quel délai pour un devis et Williams se déplace-t-il sur site ?",
-            a: "Williams se déplace sur site à Villenave-d'Ornon — Centre Commercial Bordeaux Sud, ZAC Madère, SIM d'Hourcade, ISVV/INRAE ou secteur Pont-de-la-Maye.",
+            a: "Devis détaillé à partir de 24 à 48 h selon la complexité du projet. Williams se déplace sur site à Villenave-d'Ornon — Centre Commercial Bordeaux Sud, ZAC Madère, SIM d'Hourcade, ISVV/INRAE ou secteur Pont-de-la-Maye.",
           },
           {
             q: "Comment garantissez-vous la conformité RGPD, notamment pour la santé-innovation du site Robert-Picqué ?",

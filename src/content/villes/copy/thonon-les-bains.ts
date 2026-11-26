@@ -124,7 +124,7 @@ export const THONON_LES_BAINS_COPY: VilleCopy = {
           },
           {
             q: "Sous quel délai recevons-nous un devis ?",
-            a: "Nous intervenons dans vos locaux à Thonon-les-Bains, partout en France. Un site vitrine e-commerce pour un commerce du centre-ville se chiffre vite ; un portail B2B industriel ou une plateforme SaaS pour un site de Vongy demande un cadrage plus détaillé avant chiffrage.",
+            a: "À partir de 24 à 48 h selon la complexité. Un site vitrine e-commerce pour un commerce du centre-ville se chiffre vite ; un portail B2B industriel ou une plateforme SaaS pour un site de Vongy demande un cadrage plus détaillé avant chiffrage.",
           },
           {
             q: "Où sont hébergées les données de mon site ou de ma plateforme ?",

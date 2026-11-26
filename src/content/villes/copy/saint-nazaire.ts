@@ -128,7 +128,7 @@ export const SAINT_NAZAIRE_COPY: VilleCopy = {
           },
           {
             q: "Sous quel délai recevons-nous un devis ?",
-            a: "Nous intervenons dans vos locaux, partout en France. Pour un site vitrine, le chiffrage est rapide ; pour un portail fournisseur ou une plateforme SaaS intégrée à votre ERP/GPAO, nous prenons le temps d'un court cadrage avant de vous remettre une proposition ferme.",
+            a: "À partir de 24 à 48 h selon la complexité de votre projet. Pour un site vitrine, le chiffrage est rapide ; pour un portail fournisseur ou une plateforme SaaS intégrée à votre ERP/GPAO, nous prenons le temps d'un court cadrage avant de vous remettre une proposition ferme.",
           },
           {
             q: "Où sont hébergées les données et le site ?",

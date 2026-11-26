@@ -132,7 +132,7 @@ export const RUEIL_MALMAISON_COPY: VilleCopy = {
           },
           {
             q: "Sous quel délai puis-je avoir un devis ?",
-            a: "Nous démarrons par un atelier de cadrage sur site à Rueil-Malmaison ou à proximité du Mobipôle RER A, puis vous remettons un périmètre et un devis détaillés.",
+            a: "À partir de 24 à 48 h selon la complexité de votre projet. Nous démarrons par un atelier de cadrage sur site à Rueil-Malmaison ou à proximité du Mobipôle RER A, puis vous remettons un périmètre et un devis détaillés.",
           },
         ],
         guarantees:

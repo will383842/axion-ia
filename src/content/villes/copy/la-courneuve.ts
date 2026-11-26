@@ -128,7 +128,7 @@ export const LA_COURNEUVE_COPY: VilleCopy = {
           },
           {
             q: "Combien de temps pour recevoir un devis ?",
-            a: "Nous intervenons dans vos locaux, partout en France. Un site vitrine pour artisan est cadré rapidement ; une plateforme SaaS logistique avec intégration ERP demande un échange plus poussé. Dans tous les cas, le devis est public et sans engagement.",
+            a: "À partir de 24 à 48 h selon la complexité du projet. Un site vitrine pour artisan est cadré rapidement ; une plateforme SaaS logistique avec intégration ERP demande un échange plus poussé. Dans tous les cas, le devis est public et sans engagement.",
           },
           {
             q: "Où sont hébergées mes données et est-ce conforme RGPD ?",

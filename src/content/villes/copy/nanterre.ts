@@ -426,7 +426,7 @@ export const NANTERRE_COPY: VilleCopy = {
     },
     {
       q: "Quel délai entre la prise de contact et le premier audit à Nanterre ?",
-      a: "Nous intervenons dans vos locaux, partout en France.",
+      a: "L'audit sur place (4 h) se planifie généralement sous deux semaines après confirmation. Le calendrier dépend des disponibilités mutuelles, pas d'une file d'attente géographique.",
     },
     {
       q: "Comment Axion-IA garantit-il la conformité RGPD lors d'une implémentation à Nanterre ?",

@@ -128,7 +128,7 @@ export const HERBLAY_SUR_SEINE_COPY: VilleCopy = {
           },
           {
             q: "En combien de temps recevons-nous un devis ?",
-            a: "Après un échange de cadrage — sur site à Herblay ou en visio — nous chiffrons le scope précis (vitrine, e-commerce, SaaS, portail B2B), avec hébergement Europe conforme RGPD et un périmètre clair, sans coût caché.",
+            a: "À partir de 24 à 48 h selon la complexité. Après un échange de cadrage — sur site à Herblay ou en visio — nous chiffrons le scope précis (vitrine, e-commerce, SaaS, portail B2B), avec hébergement Europe conforme RGPD et un périmètre clair, sans coût caché.",
           },
         ],
         guarantees:

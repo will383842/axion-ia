@@ -232,7 +232,7 @@ export const LIEVIN_COPY: VilleCopy = {
     },
     {
       q: "Quels délais pour une intervention à Liévin ?",
-      a: "Nous intervenons dans vos locaux, partout en France.",
+      a: "Nous intervenons sur site sous cinq jours ouvrés depuis la signature ; l'audit sur place est livré en 4 heures et les implémentations courantes (factures, relances, reporting) sont déployées en deux à trois semaines.",
     },
     {
       q: "Intervenez-vous dans les communes voisines de Liévin ?",

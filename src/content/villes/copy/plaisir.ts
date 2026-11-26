@@ -128,7 +128,7 @@ export const PLAISIR_COPY: VilleCopy = {
           },
           {
             q: "Combien de temps pour recevoir un devis à Plaisir ?",
-            a: "Nous intervenons dans vos locaux, partout en France. Un site vitrine pour un commerçant du Grand Plaisir se chiffre vite ; une plateforme SaaS pour un sous-traitant aéronautique de SQY demande un cadrage plus poussé, donc un délai un peu plus long.",
+            a: "À partir de 24 à 48 h selon la complexité, après un premier échange de cadrage. Un site vitrine pour un commerçant du Grand Plaisir se chiffre vite ; une plateforme SaaS pour un sous-traitant aéronautique de SQY demande un cadrage plus poussé, donc un délai un peu plus long.",
           },
           {
             q: "Mes données et celles de mes clients restent-elles en Europe ?",

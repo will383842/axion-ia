@@ -128,7 +128,7 @@ export const GRADIGNAN_COPY: VilleCopy = {
           },
           {
             q: "Combien de temps avant d'avoir un devis ?",
-            a: "Nous intervenons dans vos locaux, partout en France. Après notre rencontre sur place à Gradignan, vous recevez un devis chiffré et lisible, sans jeu d'options opaques. Le périmètre est fixé avant toute ligne de code.",
+            a: "À partir de 24 à 48 h selon la complexité du projet. Après notre rencontre sur place à Gradignan, vous recevez un devis chiffré et lisible, sans jeu d'options opaques. Le périmètre est fixé avant toute ligne de code.",
           },
           {
             q: "Où sont hébergées les données de mes clients ?",

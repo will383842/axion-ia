@@ -233,7 +233,7 @@ export const LAVAL_COPY: VilleCopy = {
     },
     {
       q: "Sous quel délai vous déplacez-vous à Laval ?",
-      a: "Nous intervenons partout en France, sur place ou à distance.",
+      a: "Notre équipe nationale intervient à Laval sous 5 jours ouvrés après validation.",
     },
     {
       q: "Intervenez-vous aussi dans les communes proches de Laval ?",

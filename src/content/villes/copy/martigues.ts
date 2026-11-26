@@ -236,7 +236,7 @@ export const MARTIGUES_COPY: VilleCopy = {
     },
     {
       q: "Quelles communes proches de Martigues sont couvertes par Axion-IA ?",
-      a: "Nous intervenons partout en France, sur place ou à distance.",
+      a: "Nous intervenons à Port-de-Bouc, Saint-Mitre-les-Remparts, Châteauneuf-les-Martigues et Sausset-les-Pins, ainsi qu'à Marseille si nécessaire.",
     },
     {
       q: "Quels secteurs locaux Axion-IA accompagne-t-il à Martigues ?",

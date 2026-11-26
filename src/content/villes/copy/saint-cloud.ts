@@ -119,7 +119,7 @@ export const SAINT_CLOUD_COPY: VilleCopy = {
           },
           {
             q: "Pouvez-vous créer un e-commerce ou une boutique en ligne pour un commerce de Saint-Cloud ?",
-            a: "Oui. Nous intervenons dans vos locaux, partout en France. Nous développons l'e-commerce en multi-CMS (Shopify, WooCommerce, solutions headless) pour les commerces du centre-ville, de la gare Val d'Or et de la ZAC Bords de Seine : catalogue, paiement, mobile-first, et briques IA (recherche, recommandation, chatbot).",
+            a: "Oui. Nous développons l'e-commerce en multi-CMS (Shopify, WooCommerce, solutions headless) pour les commerces du centre-ville, de la gare Val d'Or et de la ZAC Bords de Seine : catalogue, paiement, mobile-first, et briques IA (recherche, recommandation, chatbot). Devis à partir de 24 à 48 h selon la complexité.",
           },
           {
             q: "Concevez-vous des sites événementiels ou de billetterie pour le Domaine national ou l'Hippodrome de Saint-Cloud ?",

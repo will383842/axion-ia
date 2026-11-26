@@ -124,7 +124,7 @@ export const ANNEMASSE_COPY: VilleCopy = {
           },
           {
             q: "Sous quel délai recevons-nous un devis ?",
-            a: "Nous intervenons dans vos locaux, partout en France. Après un premier échange à Annemasse pour comprendre votre activité, votre clientèle frontalière et vos outils actuels, nous vous transmettons un périmètre et un chiffrage clairs, sans engagement de poursuivre avec nous.",
+            a: "À partir de 24 à 48 h selon la complexité. Après un premier échange à Annemasse pour comprendre votre activité, votre clientèle frontalière et vos outils actuels, nous vous transmettons un périmètre et un chiffrage clairs, sans engagement de poursuivre avec nous.",
           },
           {
             q: "Nos données et celles de nos clients franco-suisses sont-elles protégées ?",

@@ -114,7 +114,7 @@ export const PAU_COPY: VilleCopy = {
         faq: [
           {
             q: "Combien de temps faut-il pour obtenir un devis pour un site ou une plateforme SaaS à Pau ?",
-            a: "Après un premier échange de cadrage (visio ou sur site à Hélioparc / en centre-ville), nous vous transmettons un périmètre chiffré clair, sans devis opaque.",
+            a: "À partir de 24 à 48 h selon la complexité du projet. Après un premier échange de cadrage (visio ou sur site à Hélioparc / en centre-ville), nous vous transmettons un périmètre chiffré clair, sans devis opaque.",
           },
           {
             q: "Accompagnez-vous les éditeurs logiciels et startups d'Hélioparc et de la French Tech Pau Béarn ?",

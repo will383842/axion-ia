@@ -125,7 +125,7 @@ const VILLE_COPY: VilleCopy = {
           },
           {
             q: "Quel délai pour un devis sur un site ou un SaaS à Illkirch-Graffenstaden ?",
-            a: "Nous intervenons dans vos locaux, partout en France. Pour un site vitrine TPE le périmètre est rapide à chiffrer ; pour une plateforme SaaS IA-native d'ETI biotech ou industrielle, le devis détaille architecture, intégrations LIMS/ERP et couche IA.",
+            a: "Devis à partir de 24 à 48 h selon la complexité, après un premier échange de cadrage. Pour un site vitrine TPE le périmètre est rapide à chiffrer ; pour une plateforme SaaS IA-native d'ETI biotech ou industrielle, le devis détaille architecture, intégrations LIMS/ERP et couche IA.",
           },
           {
             q: "Vos sites et plateformes sont-ils conformes au RGPD ?",

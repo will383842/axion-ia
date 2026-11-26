@@ -125,7 +125,7 @@ export const TALENCE_COPY: VilleCopy = {
           },
           {
             q: "Sous quel délai avez-vous un devis pour mon projet de site ou SaaS ?",
-            a: "Nous intervenons dans vos locaux à Talence, partout en France. Un site vitrine pour un cabinet Médoquine se chiffre vite ; une plateforme SaaS IA-native pour une spin-off deeptech demande un cadrage plus poussé des données et des intégrations.",
+            a: "À partir de 24 à 48 h selon la complexité, après un échange de cadrage. Un site vitrine pour un cabinet Médoquine se chiffre vite ; une plateforme SaaS IA-native pour une spin-off deeptech demande un cadrage plus poussé des données et des intégrations.",
           },
           {
             q: "Intervenez-vous au-delà de Talence, sur le Sud-Bordeaux ?",

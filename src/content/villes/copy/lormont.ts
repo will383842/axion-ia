@@ -233,7 +233,7 @@ export const LORMONT_COPY: VilleCopy = {
     },
     {
       q: "Sous quel délai Axion-IA peut-il se déplacer à Lormont ?",
-      a: "Nous intervenons partout en France, sur place ou à distance.",
+      a: "Notre équipe intervient sur site à Lormont sous 5 jours ouvrés en moyenne après validation.",
     },
     {
       q: "Couvrez-vous les communes limitrophes de Lormont ?",

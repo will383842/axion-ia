@@ -127,7 +127,7 @@ export const SAINT_MARTIN_D_HERES_COPY: VilleCopy = {
           },
           {
             q: "Quel délai pour un devis sur un projet de site ou de SaaS à Saint-Martin-d'Hères ?",
-            a: "Nous intervenons dans vos locaux, partout en France. Un site vitrine TPE se chiffre vite ; une plateforme SaaS multi-modules pour éditeur ou industriel demande un cadrage plus détaillé avant chiffrage.",
+            a: "À partir de 24 à 48 h selon la complexité, après un premier échange de cadrage. Un site vitrine TPE se chiffre vite ; une plateforme SaaS multi-modules pour éditeur ou industriel demande un cadrage plus détaillé avant chiffrage.",
           },
           {
             q: "L'hébergement et les données sont-ils conformes au RGPD ?",

@@ -132,7 +132,7 @@ export const MERIGNAC_COPY: VilleCopy = {
           },
           {
             q: "Combien de temps pour recevoir un devis ?",
-            a: "Nous intervenons dans vos locaux à Mérignac, partout en France. Après un premier échange sur votre périmètre — site vitrine, e-commerce, portail fournisseurs ou SaaS — nous vous transmettons un devis chiffré. Nos consultants se déplacent à Mérignac et dans toute la métropole bordelaise pour le cadrage.",
+            a: "À partir de 24 à 48 h selon la complexité. Après un premier échange sur votre périmètre — site vitrine, e-commerce, portail fournisseurs ou SaaS — nous vous transmettons un devis chiffré. Nos consultants se déplacent à Mérignac et dans toute la métropole bordelaise pour le cadrage.",
           },
         ],
         guarantees:

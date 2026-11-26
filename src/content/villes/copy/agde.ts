@@ -124,7 +124,7 @@ export const AGDE_COPY: VilleCopy = {
           },
           {
             q: "Travaillez-vous avec les start-up de l'incubateur GIGAMED au parc Héliopôle de Bessan ?",
-            a: "Oui. Nous intervenons dans vos locaux, partout en France. Kick-off sur place, itérations à distance.",
+            a: "Oui. Le parc Héliopôle (34 ha, fibre 1 Gb/s, incubateur GIGAMED) accueille des jeunes pousses et PME numériques pour qui nous développons des plateformes SaaS IA-native sur mesure — chatbot RAG, search sémantique, agents, automatisations — plutôt qu'une simple vitrine. Kick-off sur place, itérations à distance.",
           },
           {
             q: "Faites-vous vraiment l'UX/UI et le design, pas seulement l'IA ?",
@@ -230,7 +230,7 @@ export const AGDE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Intervenez-vous au Cap d'Agde et dans la station balnéaire ?",
-      a: "Oui. Nous intervenons dans vos locaux au Cap d'Agde et dans la station balnéaire, partout en France, sur place ou à distance.",
+      a: "Oui, nos experts IA seniors interviennent directement au Cap d'Agde, au Grau d'Agde, à la Tamarissière et dans le centre historique d'Agde, pour les hôtels, campings, restaurants et conciergeries de la station, comme partout en France.",
     },
     {
       q: "Quels cas d'usage IA pour les caves AOC Languedoc et Picpoul-de-Pinet autour d'Agde ?",

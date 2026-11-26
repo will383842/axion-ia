@@ -236,7 +236,7 @@ export const ARRAS_COPY: VilleCopy = {
     },
     {
       q: "Quel est le délai d'intervention d'Axion-IA à Arras ?",
-      a: "Nous intervenons partout en France, sur place ou à distance.",
+      a: "Nous intervenons sur site à Arras dans les 5 jours ouvrés après validation de votre demande.",
     },
     {
       q: "Les interventions d'Axion-IA à Arras sont-elles conformes au RGPD ?",

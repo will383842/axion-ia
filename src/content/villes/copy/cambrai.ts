@@ -126,7 +126,7 @@ export const CAMBRAI_COPY: VilleCopy = {
           },
           {
             q: "Quels délais pour obtenir un devis et conformité RGPD ?",
-            a: "Nous intervenons dans vos locaux à Cambrai, partout en France. Tous nos sites et plateformes sont hébergés dans l'Union européenne et conçus conformes RGPD : minimisation des données, registre des traitements, droit à l'effacement. Code custom auditable, pas de no-code opaque ni de lock-in éditeur.",
+            a: "Devis à partir de 24 à 48 h selon la complexité du projet. Tous nos sites et plateformes sont hébergés dans l'Union européenne et conçus conformes RGPD : minimisation des données, registre des traitements, droit à l'effacement. Code custom auditable, pas de no-code opaque ni de lock-in éditeur.",
           },
           {
             q: "Faites-vous vraiment l'UX/UI, le mobile, le e-commerce et l'IA, ou seulement une partie ?",

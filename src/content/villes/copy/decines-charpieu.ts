@@ -128,7 +128,7 @@ export const DECINES_CHARPIEU_COPY: VilleCopy = {
           },
           {
             q: "Sous quel délai obtient-on un devis ?",
-            a: "Nous intervenons dans vos locaux, partout en France. Après un premier échange sur votre projet — vitrine, e-commerce, plateforme événementielle ou portail logistique — nous vous transmettons un cadrage chiffré, sans montant générique affiché à l'avance.",
+            a: "À partir de 24 à 48 h selon la complexité. Après un premier échange sur votre projet — vitrine, e-commerce, plateforme événementielle ou portail logistique — nous vous transmettons un cadrage chiffré, sans montant générique affiché à l'avance.",
           },
           {
             q: "Où sont hébergées les données de mon site ?",

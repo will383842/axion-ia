@@ -128,7 +128,7 @@ export const VAULX_EN_VELIN_COPY: VilleCopy = {
           },
           {
             q: "Sous quel délai recevons-nous un devis ?",
-            a: "Nous intervenons dans vos locaux, partout en France. Après un premier échange sur votre activité — négoce, sous-traitance industrielle ou commerce — nous vous transmettons une proposition chiffrée claire, sans abonnement caché ni dépendance à un éditeur.",
+            a: "À partir de 24 à 48 h selon la complexité de votre projet. Après un premier échange sur votre activité — négoce, sous-traitance industrielle ou commerce — nous vous transmettons une proposition chiffrée claire, sans abonnement caché ni dépendance à un éditeur.",
           },
           {
             q: "Où sont hébergées les données et le site est-il conforme RGPD ?",

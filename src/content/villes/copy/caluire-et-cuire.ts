@@ -132,7 +132,7 @@ export const CALUIRE_ET_CUIRE_COPY: VilleCopy = {
           },
           {
             q: "Sous quel délai recevons-nous un devis ?",
-            a: "Nous intervenons partout en France, sur place ou à distance.",
+            a: "À partir de 24 à 48 h selon la complexité, après un premier échange. Nous intervenons partout en France, sur place ou à distance.",
           },
         ],
         guarantees:
