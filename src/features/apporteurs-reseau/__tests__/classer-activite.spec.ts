@@ -63,20 +63,19 @@ describe("ligne « à qualifier » d'une activité inconnue : qualifiable ou cla
     await classerActiviteCommission("C1", "implementation");
     expect(etat.maj[0]!.data).toMatchObject({ montantCents: 30_000 });
   });
-  it("site web : aucune commission, ligne close à 0 € (jamais due)", async () => {
+  it("site web : 15 % du HT facturé (A1.5 du contrat 2.8), la ligne devient due", async () => {
     const r = await classerActiviteCommission("C1", "site_web");
     expect(r.ok).toBe(true);
     expect(etat.maj[0]!.data).toMatchObject({
-      montantCents: 0,
-      statut: "versee",
-      palier: "aucune-commission",
+      activite: "site_web",
+      montantCents: 30_000,
+      statut: "due",
     });
   });
-  it("site web avec un parrain : la part du parrain est close à 0 € aussi", async () => {
-    etat.parrainId = "PAR1";
-    await classerActiviteCommission("C1", "site_web");
-    expect(etat.maj[1]!.where).toMatchObject({ apporteurId: "PAR1", parrainage: true });
-    expect(etat.maj[1]!.data).toMatchObject({ montantCents: 0 });
+  it("coaching (un_a_un) : aucune commission, ligne close à 0 € (jamais due)", async () => {
+    const r = await classerActiviteCommission("C1", "un_a_un");
+    expect(r.ok).toBe(true);
+    expect(etat.maj[0]!.data).toMatchObject({ montantCents: 0, statut: "versee" });
   });
   it("classement manuel d'une ligne à qualifier en conférence : 500 € fixes, due", async () => {
     etat.commission = { ...ligne, factureHtCents: 210_000 };

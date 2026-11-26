@@ -359,7 +359,13 @@ export type PalierFormation = (typeof PALIERS_FORMATION)[number]["id"];
 
 /** Taux de l'annexe 1, en points de base, par activité facturée. */
 /** ⚠️ `un_a_un` reste 30 % ICI (grille affichée, contrat 2.6, pricing.ts) ; le CALCUL ne le paie plus (aucune commission, décision du 25/11) jusqu'à la grille/contrat 2.8. */
-export const TAUX_BPS = { audit: 3000, implementation: 1500, un_a_un: 3000 } as const;
+export const TAUX_BPS = {
+  audit: 3000,
+  implementation: 1500,
+  un_a_un: 3000,
+  /** A1.5 (contrat 2.8) : tout développement effectué pour l'entreprise, 15 % du HT facturé. */
+  site_web: 1500,
+} as const;
 
 /**
  * Conférence : un forfait fixe PAR CONFÉRENCE (quel que soit le nombre de participants), sans
@@ -472,7 +478,7 @@ export type CalculCommission =
  *   (décision du 25/11 ; art. 4.1 bis) ; sans palier connu, elle reste « à qualifier », jamais zéro ;
  * - coaching « one to one » : aucune ; audit 30 %, intégration 15 % du HT, arrondi au centime le plus proche ;
  * - conférence : forfait fixe de 500 € par commande, sans prorata ;
- * - développement web : aucune (annexe 1, A1.5).
+ * - développement web : 15 % du HT facturé (annexe 1, A1.5 du contrat 2.8).
  */
 export function calculerCommission(e: {
   activite: ActiviteCommission | null;
@@ -483,7 +489,7 @@ export function calculerCommission(e: {
 }): CalculCommission {
   if (e.activite === null) return { statut: "a_qualifier" };
   // Coaching « one to one » (décision du 25/11, A1.3) : aucune commission, comme le site web.
-  if (e.activite === "site_web" || e.activite === "un_a_un") return { statut: "aucune" };
+  if (e.activite === "un_a_un") return { statut: "aucune" };
   if (
     e.activite === "conference" ||
     (e.activite === "formation" && e.palier === PALIER_CONFERENCE)

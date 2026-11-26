@@ -1,6 +1,12 @@
 import { describe, expect, it } from "vitest";
 
 import { CONTRAT_V2_MARKDOWN, CONTRAT_VERSION } from "../contrat-v2";
+import {
+  FORFAIT_JOURNEE_IA_CENTS,
+  PRIX_REFERENCE_JOURNEE_IA_CENTS,
+  TAUX_BPS,
+  calculerCommission,
+} from "../regles";
 
 // Contrat 2.8 (OUI final de Will, 25/11/2026) : réservation provisoire de 60 jours puis 30 jours,
 // validation au premier rendez-vous tenu ou à la commande signée, commission de 15 % due au
@@ -93,5 +99,18 @@ describe("contrat 2.8", () => {
     // « Grenoble » : uniquement l'adresse du siège de la Société (première page, inchangée depuis la 2.6).
     expect(texte.match(/Grenoble/g)?.length).toBe(1);
     expect(texte).toContain("38100 Grenoble");
+  });
+
+  it("parité contrat ↔ moteur : Journée IA 500 € pour 1 490 €, développement web 15 %, coaching 0", () => {
+    expect(texte).toContain(
+      "Forfait de 500 € HT par Journée IA vendue et payée au prix de référence de 1 490 € HT",
+    );
+    expect(FORFAIT_JOURNEE_IA_CENTS).toBe(50_000);
+    expect(PRIX_REFERENCE_JOURNEE_IA_CENTS).toBe(149_000);
+    expect(texte).toContain("tout développement effectué par la Société pour l'entreprise");
+    expect(TAUX_BPS.site_web).toBe(TAUX_BPS.implementation);
+    expect(calculerCommission({ activite: "un_a_un", factureHtCents: 90_000 })).toEqual({
+      statut: "aucune",
+    });
   });
 });

@@ -161,6 +161,8 @@ export function grilleDeReference(): readonly TableauGrille[] {
   ).map(([nom, id]) => ({
     cellules: [nom, prixImpl(palier(id, IMPLEMENTATION_TIERS)), impl],
   }));
+  // Contrat 2.8, A1.5 : tout développement effectué pour l'entreprise est commissionné comme une implémentation.
+  implementations.push({ cellules: ["Développement web", "sur devis", impl] });
 
   return [
     {
@@ -209,7 +211,6 @@ export function grilleDeReference(): readonly TableauGrille[] {
         "Ces prestations ne donnent lieu à aucune commission. Le « coup de projecteur » (podcast, interview, page dédiée), fourni gratuitement, n'en donne pas non plus.",
       colonnes: ["Prestation", "Commission"],
       lignes: [
-        { cellules: ["Développement web", "Aucune"] },
         { cellules: ["Maintenance", "Aucune"] },
         { cellules: ["Intervention sur demande", "Aucune"] },
       ],

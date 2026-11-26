@@ -193,12 +193,6 @@
       "cellules": ["Conférence", "500 € HT par conférence"]
     }
   ],
-  "A1.5 | Développement web": [
-    {
-      "depuisLe": "2026-10-08",
-      "cellules": ["Développement web", "Aucune"]
-    }
-  ],
   "A1.5 | Maintenance": [
     {
       "depuisLe": "2026-10-08",
@@ -209,6 +203,12 @@
     {
       "depuisLe": "2026-10-08",
       "cellules": ["Intervention sur demande", "Aucune"]
+    }
+  ],
+  "A1.4 | Développement web": [
+    {
+      "depuisLe": "2026-11-25",
+      "cellules": ["Développement web", "sur devis", "15 %"]
     }
   ]
 }

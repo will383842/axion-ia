@@ -27,10 +27,8 @@ describe("pricing.ts ↔ moteur de calcul (regles.ts)", () => {
   it("les taux : audit, implémentation, 1-to-1", () => {
     expect((getCommissionById("com-audit").percent ?? 0) * 100).toBe(TAUX_BPS.audit);
     expect((getCommissionById("com-integration").percent ?? 0) * 100).toBe(TAUX_BPS.implementation);
-    // Contrat 2.8, A1.3 : le moteur ne paie plus rien sur le 1-to-1. La ligne « com-un-a-un » de
-    // pricing.ts (grille Partners, empreinte publiée) est remise au lot « grille Partners » : elle
-    // n'est donc PAS comparée ici, et ce point est signalé dans la PR #2286.
-    expect(TAUX_BPS.un_a_un).toBe(0);
+    expect(getCommissionById("com-un-a-un").kind).toBe("percent");
+    expect((getCommissionById("com-un-a-un").percent ?? 0) * 100).toBe(TAUX_BPS.un_a_un);
   });
 
   it("chaque palier de formation : même prix public et même forfait des deux côtés", () => {
@@ -75,6 +73,7 @@ describe("pricing.ts ↔ moteur de calcul (regles.ts)", () => {
       }
     }
     for (const [activite, bps] of [
+      ["un_a_un", TAUX_BPS.un_a_un],
       ["audit", TAUX_BPS.audit],
       ["implementation", TAUX_BPS.implementation],
     ] as const) {

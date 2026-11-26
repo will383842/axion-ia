@@ -103,10 +103,10 @@ describe("autres activités : taux de l'annexe 1 sur le HT, arrondi à l'inféri
       statut: "aucune",
     });
   });
-  it("développement web : aucune commission", () => {
-    expect(calculerCommission({ activite: "site_web", factureHtCents: 500_000 })).toEqual({
-      statut: "aucune",
-    });
+  it("développement web : 15 % du HT facturé (A1.5 du contrat 2.8)", () => {
+    expect(montant(calculerCommission({ activite: "site_web", factureHtCents: 500_000 }))).toBe(
+      75_000,
+    );
   });
 });
 
