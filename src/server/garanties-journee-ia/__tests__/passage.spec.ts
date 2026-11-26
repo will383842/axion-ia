@@ -160,6 +160,25 @@ describe("passerGarantiesJourneeIa", () => {
     expect(prisma.alerteSysteme.update).toHaveBeenCalledTimes(1);
   });
 
+  it("acceptation tacite puis virement saisi sans décision : l'alerte de réponse est refermée", async () => {
+    prisma.garantieJourneeIa.findMany.mockResolvedValue([
+      {
+        ...base,
+        rapportRemisLe: d("2026-09-01"),
+        demandeRecueLe: d("2026-09-20"),
+        virementLe: d("2026-11-20"),
+      },
+    ]);
+    prisma.alerteSysteme.findMany.mockResolvedValue([
+      { id: "t", code: "garantie_ji_reponse", cibleId: base.id, message: "M" },
+    ]);
+    await passerGarantiesJourneeIa(new Date("2026-11-26T06:50:00Z"));
+    expect(creerOuActualiser.mock.calls.some((c) => c[0].code === "garantie_ji_reponse")).toBe(
+      false,
+    );
+    expect(prisma.alerteSysteme.update).toHaveBeenCalledTimes(1);
+  });
+
   it("table absente (P2021) : journal, sortie propre, rien d'écrit", async () => {
     prisma.garantieJourneeIa.findMany.mockRejectedValue(
       Object.assign(new Error("no table"), { code: "P2021" }),

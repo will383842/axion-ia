@@ -82,7 +82,10 @@ export async function passerGarantiesJourneeIa(
   }
   // PLAFOND + 1 lus : le dépassement se voit sans confondre « exactement PLAFOND » et « davantage ».
   const tronque = dossiers.length > PLAFOND;
-  if (tronque) dossiers = dossiers.slice(0, PLAFOND);
+  if (tronque) {
+    dossiers = dossiers.slice(0, PLAFOND);
+    console.warn(`[garanties-journee-ia] plus de ${PLAFOND} dossiers : fermetures suspendues`);
+  }
   bilan.dossiers = dossiers.length;
 
   const voulues: AlerteVoulue[] = [];
@@ -97,7 +100,8 @@ export async function passerGarantiesJourneeIa(
     };
     for (const e of calculerEcheances(donnees, aujourdhui)) {
       // Une décision datée clôt l'alerte de réponse, même tardive : l'obligation qui reste est le virement.
-      const close = e.type === "reponse" && donnees.decisionLe !== null;
+      const close =
+        e.type === "reponse" && (donnees.decisionLe !== null || donnees.virementLe !== null);
       const v = alerteVoulue(
         d.id,
         d.client.raisonSociale,
@@ -112,7 +116,7 @@ export async function passerGarantiesJourneeIa(
     const r = await creerOuActualiser({
       code: v.code,
       niveau: v.niveau,
-      titre: v.titre,
+      titre: v.titre.slice(0, 300),
       message: v.message,
       cibleType: CIBLE_TYPE_GARANTIE,
       cibleId: v.cibleId,
