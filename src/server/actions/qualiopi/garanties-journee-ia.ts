@@ -240,10 +240,24 @@ export async function enregistrerDecisionGarantieJourneeIaAction(
     if (montant > plafondRemboursementCents(dossier.prixHtCents))
       refuser(fiche(id), "Montant remboursé incohérent avec le prix.");
   }
+  const total0 = texte(formData, "totalGainsEuros")
+    ? eurosEnCentimes(texte(formData, "totalGainsEuros"))
+    : null;
   // Un remboursement déjà décidé a ÉMIS un avoir : rejeu identique = rien à faire (double clic),
   // tout autre changement = refus (une pièce émise ne se supprime pas).
   const etat = etatApresAvoirRembourse(dossier, { decision, montantCents: montant });
-  if (etat.type === "idempotent") redirect(`${fiche(id)}?ok=decision`);
+  if (etat.type === "idempotent") {
+    // Même montant : rejeu (double clic) — SAUF si la fiche a changé de date, de note ou de gains,
+    // qu'on ne perd pas en silence : la décision est figée par l'avoir.
+    const memeNote = (motif ?? "") === (dossier.motifDecision ?? "");
+    const memeTotal = !texte(formData, "totalGainsEuros") || total0 === dossier.totalGainsCents;
+    if (decisionLe !== dossier.decisionLe || !memeNote || !memeTotal)
+      refuser(
+        fiche(id),
+        "L'avoir est émis : la date de réponse, la note et le total des gains ne se modifient plus.",
+      );
+    redirect(`${fiche(id)}?ok=decision`);
+  }
   if (etat.type === "refus") refuser(fiche(id), etat.message);
 
   let montantAvoir: number | null = null;
@@ -351,7 +365,19 @@ export async function enregistrerDecisionGarantieJourneeIaAction(
         },
       );
     } catch (e) {
-      erreur = e instanceof Error ? e.message : "Émission de l'avoir impossible.";
+      // Erreurs techniques (Prisma…) : jamais recopiées dans l'URL.
+      erreur =
+        e instanceof Error && !/^Prisma/.test(e.name)
+          ? e.message
+          : "Émission de l'avoir impossible : réessayer ou voir le journal.";
+    }
+    // Double clic simultané : le premier a réussi, le second échoue sur verrou. On relit.
+    if (erreur) {
+      const frais = await lireGarantie(id);
+      if (frais?.decision === "remboursement" && frais.avoirId) {
+        revalidatePath(liste());
+        redirect(`${fiche(id)}?ok=decision`);
+      }
     }
     // Hors du try : `refuser` lève NEXT_REDIRECT, qu'un catch avalerait.
     if (erreur) refuser(fiche(id), erreur);
@@ -416,7 +442,8 @@ export async function enregistrerVirementGarantieJourneeIaAction(
   const refus = refusVirement(dossier, virementLe, aujourdhuiParis());
   if (refus) refuser(fiche(id), refus);
 
-  // Réputée acceptée : le montant n'a pas de décision pour le porter, il se saisit ici.
+  // Le montant vient de l'avoir émis par la décision « Rembourser » (même pour une demande réputée
+  // acceptée : un humain enregistre d'abord la décision). Une saisie ne peut que le répéter.
   let montant = dossier.montantRembourseCents;
   const saisi = texte(formData, "montantRembourseEuros");
   if (saisi) {

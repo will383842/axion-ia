@@ -315,6 +315,30 @@ describe("décision, virement, archivage", () => {
     expect(avoirsEmis).toHaveLength(1);
     expect(tx.garantieJourneeIa.update).toHaveBeenCalledTimes(1);
   });
+  it("avoir déjà émis : changer la date de réponse (même montant) est refusé, pas perdu en silence", async () => {
+    lireGarantie.mockResolvedValue({
+      ...dossier,
+      decision: "remboursement",
+      decisionLe: "2026-12-12",
+      montantRembourseCents: 200000,
+      avoirId: "44444444-4444-4444-8444-444444444444",
+    });
+    expect(
+      await va(enregistrerDecisionGarantieJourneeIaAction(remb({ decisionLe: "2026-12-14" }))),
+    ).toMatch(/erreur=L.avoir%20est%20%C3%A9mis/);
+    expect(tx.garantieJourneeIa.update).not.toHaveBeenCalled();
+  });
+  it("double clic : si l'émission échoue sur verrou mais que l'avoir existe, redirection de succès", async () => {
+    genererAvoirFacture.mockRejectedValueOnce(
+      new Error("Un autre avoir vient d'être émis sur cette facture : recharger la page."),
+    );
+    lireGarantie.mockResolvedValueOnce({ ...dossier }).mockResolvedValueOnce({
+      ...dossier,
+      decision: "remboursement",
+      avoirId: "44444444-4444-4444-8444-444444444444",
+    });
+    expect(await va(enregistrerDecisionGarantieJourneeIaAction(remb()))).toMatch(/ok=decision/);
+  });
   it("avoir déjà émis : changer de décision ou de montant est refusé (pièce émise, jamais supprimée)", async () => {
     lireGarantie.mockResolvedValue({
       ...dossier,

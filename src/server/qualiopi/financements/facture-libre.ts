@@ -396,9 +396,9 @@ export async function genererAvoirFacture(
   const restantHtCents = origine.montantHtCents - dejaAvoirHtCents;
   const origineTtcCents =
     origine.montantTtcCents ?? origine.montantHtCents + origine.montantTvaCents;
+  // HT + TVA (toujours renseignés) : un TTC nul sur UNE ligne ne fausse pas la somme.
   const dejaAvoirTtcCents = Math.abs(
-    avoirsExistants._sum.montantTtcCents ??
-      (avoirsExistants._sum.montantHtCents ?? 0) + (avoirsExistants._sum.montantTvaCents ?? 0),
+    (avoirsExistants._sum.montantHtCents ?? 0) + (avoirsExistants._sum.montantTvaCents ?? 0),
   );
   const restantTtcCents = origineTtcCents - dejaAvoirTtcCents;
   if (
@@ -453,7 +453,8 @@ export async function genererAvoirFacture(
   }
   const tauxUniforme = [...tauxEffectifs][0] ?? 0;
   let montantHtPartiel = demandeHtCents;
-  if (input.montantTtcCents !== undefined && !avoirDuRestantTtc) {
+  if (input.montantTtcCents !== undefined && !negationIntegrale) {
+    // Jamais le reste HT « à la main » : le TTC porté par l'avoir doit être EXACTEMENT le TTC demandé.
     const conv = htPourTtcAvoir(input.montantTtcCents, regimeTva, tauxUniforme, tauxStandard);
     if (!conv.ok) throw new Error(conv.message);
     if (conv.htCents > restantHtCents) {
@@ -470,6 +471,14 @@ export async function genererAvoirFacture(
     tauxUniforme,
   );
   const totaux = computeTotauxFacture(lignesAvoir, regimeTva, tauxStandard);
+  if (
+    input.montantTtcCents !== undefined &&
+    Math.abs(totaux.totalTtcCents) !== input.montantTtcCents
+  ) {
+    throw new Error(
+      `Avoir impossible au centime : le TTC calculé (${Math.abs(totaux.totalTtcCents)}) diffère du TTC demandé (${input.montantTtcCents}). Passer par le Hub factures.`,
+    );
+  }
 
   const identite = await getOrganismeIdentite();
   assertOrganismeComplet(identite, "facture");
@@ -500,7 +509,8 @@ export async function genererAvoirFacture(
       // INT-T05 : l'avoir et `avoir.emis` vivent et meurent ensemble (même patron que la facture).
       const travail = async (tx: Prisma.TransactionClient): Promise<AvoirCree> => {
         if (avecCrochets) {
-          // Verrou par facture d'origine : deux avoirs simultanés se sérialisent, le second relit.
+          // Verrou par facture d'origine : deux avoirs de GARANTIE simultanés se sérialisent, le second
+          // relit. ⚠️ Le Hub factures (sans crochet) ne prend pas ce verrou : limite connue.
           await tx.$executeRaw`SELECT pg_advisory_xact_lock(hashtext(${`avoir-origine:${origine.id}`}))`;
           const relu = await tx.factureFormation.aggregate({
             where: { avoirDeId: origine.id, statut: { not: "annulee" } },

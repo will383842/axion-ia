@@ -177,25 +177,25 @@ export async function resoudreFactureGarantie(
 ): Promise<{ ok: true; facture: FactureGarantie } | { ok: false; message: string }> {
   const candidates = await facturesCandidates(d);
   const choisie = d.factureId ?? saisie;
-  let facture: FactureGarantie | undefined;
-  if (choisie) {
-    facture = candidates.find((f) => f.id === choisie);
-    if (!facture) return { ok: false, message: "Facture invalide pour ce dossier." };
-  } else if (candidates.length === 1) {
-    facture = candidates[0];
-  } else if (candidates.length === 0) {
+  if (candidates.length === 0) {
     return {
       ok: false,
       message:
         "Aucune facture émise n'est rattachée à cette Journée IA (mission ou devis) : émettre la facture avant de décider un remboursement.",
     };
-  } else {
+  }
+  if (candidates.length > 1) {
+    // Acompte + solde : la commission est portée par la DERNIÈRE facture du devis, un avoir sur
+    // l'acompte ne la ferait pas reprendre. Cas non couvert ici : escaladé à Will.
     return {
       ok: false,
       message:
-        "Plusieurs factures correspondent (acompte et solde ?) : choisir la facture à rectifier.",
+        "Plusieurs factures correspondent (acompte et solde) : le remboursement se fait par le Hub factures, un avoir par facture, jusqu'à décision de Will.",
     };
   }
+  const facture = candidates[0];
+  if (choisie && facture?.id !== choisie)
+    return { ok: false, message: "Facture invalide pour ce dossier." };
   if (!facture || facture.restantHtCents <= 0 || facture.restantTtcCents <= 0)
     return { ok: false, message: "Cette facture est déjà entièrement couverte par des avoirs." };
   return { ok: true, facture };
