@@ -157,7 +157,10 @@ export default async function DossierApporteurPage({ params }: PageProps) {
             RESERVATION_PROVISOIRE_JOURS,
           )}
         />
-        <ListeDeclarations declarations={declarations} contratDepuis2_8={dossier.contratDepuis2_8 === true} />
+        <ListeDeclarations
+          declarations={declarations}
+          contratDepuis2_8={dossier.contratDepuis2_8 === true}
+        />
         {/* Tout ce qui lui a été remis, au même endroit (2026-11-25). */}
         <a
           href={`/apporteur/dossier/${dossier.id}/${jeton}/documents`}

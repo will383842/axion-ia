@@ -280,9 +280,7 @@ function Certificat({
   societe: SignatureSociete | null;
 }) {
   const libelle = (cle: string) =>
-    texteAcceptation(cle, version) ??
-    DECLARATIONS.find((d) => d.cle === cle)?.texte ??
-    cle;
+    texteAcceptation(cle, version) ?? DECLARATIONS.find((d) => d.cle === cle)?.texte ?? cle;
   return (
     <View break>
       <Text style={s.certifTitre}>Certificat de signature électronique</Text>
