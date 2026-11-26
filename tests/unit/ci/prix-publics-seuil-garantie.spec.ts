@@ -21,8 +21,10 @@ describe("exception R7 : seuils de la garantie et de la déduction", () => {
     expect(MULTIPLE_GARANTIE).toBe(3);
     expect(seuilGarantieEur()).toBe(3 * 1490);
     expect(seuilGarantieEur()).toBe(MULTIPLE_GARANTIE * (JOURNEE_IA_TIER.priceFlat ?? Number.NaN));
-    const litteral = formatAmount(seuilGarantieEur(), "fr").replace(/\s/g, " ");
-    expect(litteral).toBe("4 470 €");
+    const litteral = "4 470 €";
+    const formate = formatAmount(seuilGarantieEur(), "fr").replace(/\s/g, " ");
+    // formatAmount ajoute « HT » : seul le montant porte l'exception.
+    expect(formate.startsWith(litteral)).toBe(true);
     expect(source).toContain(`(?<![\\d.,])${litteral}/g`);
   });
 
