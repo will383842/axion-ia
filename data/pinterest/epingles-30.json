@@ -14,7 +14,8 @@
       "PME",
       "qualité des réponses IA",
       "biais"
-    ]
+    ],
+    "image_verticale": "data/pinterest/images/01-evaluation-prompts-ia-production-pme.jpg"
   },
   {
     "url": "https://axion-ia.com/fr/blog/accelerer-time-to-market-eti-ia-montfermeil",
@@ -32,7 +33,8 @@
       "distribution",
       "automatisation",
       "stratégie IA"
-    ]
+    ],
+    "image_verticale": "data/pinterest/images/02-accelerer-time-to-market-eti-ia-montfermeil.jpg"
   },
   {
     "url": "https://axion-ia.com/fr/blog/seminaire-ia-dirigeants-strategie",
@@ -50,7 +52,8 @@
       "gouvernance IA",
       "PME",
       "plan d'action"
-    ]
+    ],
+    "image_verticale": "data/pinterest/images/03-seminaire-ia-dirigeants-strategie.jpg"
   },
   {
     "url": "https://axion-ia.com/fr/blog/devenir-formateur-ia-certifie-ecole-privee-management-cachan",
@@ -67,7 +70,8 @@
       "école de management",
       "certification IA",
       "compétences IA"
-    ]
+    ],
+    "image_verticale": "data/pinterest/images/04-devenir-formateur-ia-certifie-ecole-privee-management-cachan.jpg"
   },
   {
     "url": "https://axion-ia.com/fr/blog/certification-ia-managers-lhay-les-roses",
@@ -85,7 +89,8 @@
       "AI Act",
       "gestion de projet IA",
       "formation IA"
-    ]
+    ],
+    "image_verticale": "data/pinterest/images/05-certification-ia-managers-lhay-les-roses.jpg"
   },
   {
     "url": "https://axion-ia.com/fr/blog/utiliser-ia-automatiser-comptabilite-pme-chatenay-malabry",
@@ -103,7 +108,8 @@
       "PME",
       "rapprochement bancaire",
       "facturation"
-    ]
+    ],
+    "image_verticale": "data/pinterest/images/06-utiliser-ia-automatiser-comptabilite-pme-chatenay-malabry.jpg"
   },
   {
     "url": "https://axion-ia.com/fr/blog/certification-formation-ia-professionnelle-france-2026-roanne",
@@ -121,7 +127,8 @@
       "compétences IA",
       "audit",
       "PME"
-    ]
+    ],
+    "image_verticale": "data/pinterest/images/07-certification-formation-ia-professionnelle-france-2026-roanne.jpg"
   },
   {
     "url": "https://axion-ia.com/fr/blog/utiliser-ia-recrutement-formation-rh",
@@ -139,7 +146,8 @@
       "formation RH",
       "offres d'emploi",
       "PME"
-    ]
+    ],
+    "image_verticale": "data/pinterest/images/08-utiliser-ia-recrutement-formation-rh.jpg"
   },
   {
     "url": "https://axion-ia.com/fr/blog/atelier-ia-dirigeants-pme-1-journee-alternatives",
@@ -157,7 +165,8 @@
       "PME",
       "comparatif",
       "stratégie IA"
-    ]
+    ],
+    "image_verticale": "data/pinterest/images/09-atelier-ia-dirigeants-pme-1-journee-alternatives.jpg"
   },
   {
     "url": "https://axion-ia.com/fr/blog/formation-ia-gpt-fine-tuning-personnalisation-saint-herblain",
@@ -174,7 +183,8 @@
       "personnalisation IA",
       "formation IA",
       "RGPD"
-    ]
+    ],
+    "image_verticale": "data/pinterest/images/10-formation-ia-gpt-fine-tuning-personnalisation-saint-herblain.jpg"
   },
   {
     "url": "https://axion-ia.com/fr/blog/calculateur-roi-formateur-ia-certifie-ecole-privee-management",
@@ -191,7 +201,8 @@
       "ROI formation",
       "école de management",
       "formation IA"
-    ]
+    ],
+    "image_verticale": "data/pinterest/images/11-calculateur-roi-formateur-ia-certifie-ecole-privee-management.jpg"
   },
   {
     "url": "https://axion-ia.com/fr/blog/ia-drh-pme-france-optimisation-rh",
@@ -209,7 +220,8 @@
       "automatisation RH",
       "recrutement IA",
       "gestion des talents"
-    ]
+    ],
+    "image_verticale": "data/pinterest/images/12-ia-drh-pme-france-optimisation-rh.jpg"
   },
   {
     "url": "https://axion-ia.com/fr/blog/formation-ia-dirigeants-gains-decisionnels",
@@ -227,7 +239,8 @@
       "gouvernance IA",
       "stratégie IA",
       "PME"
-    ]
+    ],
+    "image_verticale": "data/pinterest/images/13-formation-ia-dirigeants-gains-decisionnels.jpg"
   },
   {
     "url": "https://axion-ia.com/fr/blog/formation-ia-certification-professionnelle-montlucon",
@@ -244,7 +257,8 @@
       "compétences IA",
       "PME",
       "formation en entreprise"
-    ]
+    ],
+    "image_verticale": "data/pinterest/images/14-formation-ia-certification-professionnelle-montlucon.jpg"
   },
   {
     "url": "https://axion-ia.com/fr/blog/comparatif-meilleures-certifications-ia-france-2026",
@@ -262,7 +276,8 @@
       "LNE Certif IA",
       "conformité",
       "PME"
-    ]
+    ],
+    "image_verticale": "data/pinterest/images/15-comparatif-meilleures-certifications-ia-france-2026.jpg"
   },
   {
     "url": "https://axion-ia.com/fr/blog/formation-ia-accessible-salarie-sans-bagage-technique-thiais",
@@ -279,7 +294,8 @@
       "accessibilité",
       "PME",
       "adoption de l'IA"
-    ]
+    ],
+    "image_verticale": "data/pinterest/images/16-formation-ia-accessible-salarie-sans-bagage-technique-thiais.jpg"
   },
   {
     "url": "https://axion-ia.com/fr/blog/formation-ia-classique-ou-formateur-qui-code-que-choisir",
@@ -296,7 +312,8 @@
       "bootcamp IA",
       "théorie et pratique",
       "PME"
-    ]
+    ],
+    "image_verticale": "data/pinterest/images/17-formation-ia-classique-ou-formateur-qui-code-que-choisir.jpg"
   },
   {
     "url": "https://axion-ia.com/fr/blog/formation-ia-achat-approvisionnement-sainte-genevieve-des-bois",
@@ -314,7 +331,8 @@
       "gestion des stocks",
       "champion IA",
       "formation IA"
-    ]
+    ],
+    "image_verticale": "data/pinterest/images/18-formation-ia-achat-approvisionnement-sainte-genevieve-des-bois.jpg"
   },
   {
     "url": "https://axion-ia.com/fr/blog/formation-chatgpt-redaction-synthese-noisy-le-sec",
@@ -332,7 +350,8 @@
       "synthèse",
       "Copilot",
       "TPE PME"
-    ]
+    ],
+    "image_verticale": "data/pinterest/images/19-formation-chatgpt-redaction-synthese-noisy-le-sec.jpg"
   },
   {
     "url": "https://axion-ia.com/fr/blog/formation-prompt-engineering-equipes-pme",
@@ -350,7 +369,8 @@
       "PME",
       "LLM",
       "consignes IA"
-    ]
+    ],
+    "image_verticale": "data/pinterest/images/20-formation-prompt-engineering-equipes-pme.jpg"
   },
   {
     "url": "https://axion-ia.com/fr/blog/certification-formation-ia-professionnelle-france-2026-caluire-et-cuire",
@@ -367,7 +387,8 @@
       "compétences IA",
       "2026",
       "PME"
-    ]
+    ],
+    "image_verticale": "data/pinterest/images/21-certification-formation-ia-professionnelle-france-2026-caluire-et-cuire.jpg"
   },
   {
     "url": "https://axion-ia.com/fr/blog/formation-ia-vente-commercial-b2b",
@@ -384,7 +405,8 @@
       "qualification des leads",
       "commerciaux",
       "PME"
-    ]
+    ],
+    "image_verticale": "data/pinterest/images/22-formation-ia-vente-commercial-b2b.jpg"
   },
   {
     "url": "https://axion-ia.com/fr/blog/certification-ia-managers-bagnolet",
@@ -401,7 +423,8 @@
       "retour d'expérience",
       "formation intensive",
       "PME"
-    ]
+    ],
+    "image_verticale": "data/pinterest/images/23-certification-ia-managers-bagnolet.jpg"
   },
   {
     "url": "https://axion-ia.com/fr/blog/comparatif-formation-claude-anthropic-equipe-france",
@@ -418,7 +441,8 @@
       "outils IA",
       "PME",
       "formation équipes"
-    ]
+    ],
+    "image_verticale": "data/pinterest/images/24-comparatif-formation-claude-anthropic-equipe-france.jpg"
   },
   {
     "url": "https://axion-ia.com/fr/blog/formation-prompt-engineering-entreprise-fontenay-sous-bois",
@@ -435,7 +459,8 @@
       "PME",
       "service client",
       "automatisation"
-    ]
+    ],
+    "image_verticale": "data/pinterest/images/25-formation-prompt-engineering-entreprise-fontenay-sous-bois.jpg"
   },
   {
     "url": "https://axion-ia.com/fr/blog/formation-ia-equipe-rh-optimisation-efficacite",
@@ -453,7 +478,8 @@
       "ChatGPT",
       "Copilot",
       "recrutement"
-    ]
+    ],
+    "image_verticale": "data/pinterest/images/26-formation-ia-equipe-rh-optimisation-efficacite.jpg"
   },
   {
     "url": "https://axion-ia.com/fr/blog/formation-ia-certification-professionnelle-france-stains",
@@ -470,7 +496,8 @@
       "équipes",
       "compétences",
       "PME"
-    ]
+    ],
+    "image_verticale": "data/pinterest/images/27-formation-ia-certification-professionnelle-france-stains.jpg"
   },
   {
     "url": "https://axion-ia.com/fr/blog/table-ronde-ia-dirigeants-entreprise-garges-les-gonesse",
@@ -488,7 +515,8 @@
       "gouvernance IA",
       "stratégie IA",
       "PME"
-    ]
+    ],
+    "image_verticale": "data/pinterest/images/28-table-ronde-ia-dirigeants-entreprise-garges-les-gonesse.jpg"
   },
   {
     "url": "https://axion-ia.com/fr/blog/formation-copilot-microsoft-365-entreprise-poissy",
@@ -505,7 +533,8 @@
       "Word Excel Teams",
       "productivité",
       "PME"
-    ]
+    ],
+    "image_verticale": "data/pinterest/images/29-formation-copilot-microsoft-365-entreprise-poissy.jpg"
   },
   {
     "url": "https://axion-ia.com/fr/blog/atelier-ia-dirigeants-pme-1-journee",
@@ -523,6 +552,7 @@
       "gestion du changement",
       "gouvernance",
       "PME"
-    ]
+    ],
+    "image_verticale": "data/pinterest/images/30-atelier-ia-dirigeants-pme-1-journee.jpg"
   }
 ]
