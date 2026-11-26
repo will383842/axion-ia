@@ -16,7 +16,7 @@ import {
   equipeEditorialeActive,
   type EnvEquipeEditoriale,
 } from "../fact-check/equipe-editoriale-drapeau";
-import { validateOutline, type OutlineIssue } from "../quality/outline-validator";
+import { normaliserTitre, validateOutline, type OutlineIssue } from "../quality/outline-validator";
 import type { Brief } from "./brief";
 
 const texte = (max: number) => z.string().trim().min(1).max(max);
@@ -68,13 +68,6 @@ export function planVersHtml(plan: Plan): string {
 }
 
 const compterMots = (s: string) => s.split(/\s+/).filter(Boolean).length;
-const normaliserTexte = (s: string) =>
-  s
-    .toLowerCase()
-    .normalize("NFD")
-    .replace(/[̀-ͯ]/g, "")
-    .replace(/[^a-z0-9]+/g, " ")
-    .trim();
 
 export function verifierPlan(
   plan: Plan,
@@ -104,7 +97,9 @@ export function verifierPlan(
         message: `réponse directe de ${n} mots (attendu ${MOTS_REPONSE_MIN} à ${MOTS_REPONSE_MAX})`,
       });
     }
-    if (!normaliserTexte(plan.reponseDirecte).includes(normaliserTexte(brief.motCle))) {
+    if (
+      !` ${normaliserTitre(plan.reponseDirecte)} `.includes(` ${normaliserTitre(brief.motCle)} `)
+    ) {
       issues.push({
         code: "keyword_missing",
         message: "mot-clé principal absent de la réponse directe",

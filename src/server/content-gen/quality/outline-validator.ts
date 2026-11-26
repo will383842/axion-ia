@@ -73,7 +73,7 @@ function extractHeadingLevels(html: string): number[] {
 const H2_MIN_BLOQUANT = 5;
 const H2_MAX_BLOQUANT = 8;
 
-const norm = (s: string) =>
+export const normaliserTitre = (s: string): string =>
   s
     .toLowerCase()
     .normalize("NFD")
@@ -159,10 +159,12 @@ export function validateOutline(html: string, opts?: OutlineOptions): OutlineRes
 /** 100 % des questions du brief couvertes par un H2 ou la FAQ, sans répétition entre les deux. */
 function verifierCouverture(c: OutlineCouverture): OutlineIssue[] {
   const issues: OutlineIssue[] = [];
-  const brief = new Set(c.questions.map(norm));
-  const h2 = c.h2.map(norm);
-  const faq = c.faq.map(norm);
-  const manquantes = c.questions.filter((q) => !h2.includes(norm(q)) && !faq.includes(norm(q)));
+  const brief = new Set(c.questions.map(normaliserTitre));
+  const h2 = c.h2.map(normaliserTitre);
+  const faq = c.faq.map(normaliserTitre);
+  const manquantes = c.questions.filter(
+    (q) => !h2.includes(normaliserTitre(q)) && !faq.includes(normaliserTitre(q)),
+  );
   if (manquantes.length > 0) {
     issues.push({
       code: "coverage_missing",
@@ -170,7 +172,9 @@ function verifierCouverture(c: OutlineCouverture): OutlineIssue[] {
     });
   }
   const doublons = [...new Set(h2.filter((q) => faq.includes(q)))];
-  const repetees = h2.filter((q, i) => h2.indexOf(q) !== i);
+  const repetees = [...h2, ...faq].filter(
+    (q, i, tous) => tous.indexOf(q) !== i && !doublons.includes(q),
+  );
   if (doublons.length > 0 || repetees.length > 0) {
     issues.push({
       code: "coverage_duplicate",

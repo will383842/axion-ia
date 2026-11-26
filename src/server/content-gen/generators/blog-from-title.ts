@@ -79,7 +79,7 @@ const MIN_WORD_COUNT = 850;
 // ───────────────────────────────────────────────────────────────────────────
 
 // Consigne du plan (équipe éditoriale, derrière CONTENT_EQUIPE_EDITORIALE) : contrat vérifié par equipe/plan.ts.
-const CONSIGNE_PLAN_EQUIPE = `## Contrat de plan (obligatoire)
+const CONSIGNE_PLAN_EQUIPE = `## Contrat de plan (obligatoire — prime sur « 8 sections » ci-dessus)
 - "directAnswer" : 40 à 60 mots, placée juste sous le titre, qui contient le mot-clé principal.
 - "outline" : 5 à 8 sections <h2>, chacune répondant à une sous-question du brief ; ajoute à chaque entrée "questionCouverte" (la sous-question) et, si tu en as une, "preuve" (texte ou identifiant de preuve).
 - Pas de <h3> sauf si un <h2> en a au moins deux ; <h4> à <h6> seulement si nécessaire ; jamais de saut de niveau.

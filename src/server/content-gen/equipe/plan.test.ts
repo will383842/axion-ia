@@ -128,4 +128,30 @@ describe("verifierPlan", () => {
   it("planVersHtml produit une hiérarchie H1 puis H2", () => {
     expect(planVersHtml(planValide())).toMatch(/^<h1>.*<\/h1><p>.*<\/p><h2>/);
   });
+
+  it("refuse plus de 8 H2, accepte deux H3 sous un H2, refuse FAQ répétée", () => {
+    const base = planValide();
+    const trop = { ...base, sections: [...base.sections, ...base.sections] };
+    expect(verifierPlan(trop, brief, ACTIF).issues.map((i) => i.code)).toContain("h2_count");
+    const p = planValide();
+    p.sections[0] = {
+      ...p.sections[0]!,
+      titresSuivants: [
+        { niveau: 3, texte: "A" },
+        { niveau: 3, texte: "B" },
+      ],
+    };
+    expect(verifierPlan(p, brief, ACTIF).issues).toEqual([]);
+    const f = { ...planValide(), faq: [{ q: Q[5]! }, { q: Q[5]! }] };
+    expect(verifierPlan(f, brief, ACTIF).issues.map((i) => i.code)).toContain("coverage_duplicate");
+  });
+
+  it("mot-clé : limite de mot respectée", () => {
+    const r = verifierPlan(
+      { ...planValide(), reponseDirecte: mots(50, "La formation iable vise") },
+      brief,
+      ACTIF,
+    );
+    expect(r.issues.map((i) => i.code)).toContain("keyword_missing");
+  });
 });
