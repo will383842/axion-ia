@@ -62,10 +62,10 @@ const rendu = (
 ) => collectPdfTextNormalized(React.createElement(Composant as never, { data, identite }));
 
 describe("convention v9 — garantie de remboursement de la Journée IA", () => {
-  it("la garantie est apparue en v9 (archivée) et reste dans la version courante (≥ 10)", () => {
-    expect(GABARIT_VERSIONS.convention).toBeGreaterThanOrEqual(10);
-    expect(gabaritArchive("convention", 8)).toBeDefined();
+  it("la version courante est la 10 (acompte acquis) ; la v9 (garantie Journée IA) et la v8 sont archivées", () => {
+    expect(GABARIT_VERSIONS.convention).toBe(10);
     expect(gabaritArchive("convention", 9)).toBeDefined();
+    expect(gabaritArchive("convention", 8)).toBeDefined();
   });
 
   it("⛔ texte imprimé verrouillé : si ceci rougit, la clause d'une convention signée changerait — monter la version du gabarit convention et archiver", () => {

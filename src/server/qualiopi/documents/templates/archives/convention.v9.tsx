@@ -1,9 +1,8 @@
 /**
  * ⛔ GABARIT ARCHIVÉ — `convention` version 9. NE JAMAIS MODIFIER.
  *
- * Copie conforme de `templates/convention.tsx` tel qu'il était sur `main` le 2026-11-25,
- * avant la v10 (acompte acquis sans condition de délai ; dédit formation facturé à part).
- * Contient le paragraphe de garantie Journée IA (imprimé seulement si `data.journeeIa === true`).
+ * Copie conforme de `templates/convention.tsx` tel qu'il était sur `main` le 2026-11-26, avant la
+ * v10 (l'acompte versé reste acquis en cas d'annulation, sans condition de délai).
  *
  * Seule différence : la mention légale est FIGÉE dans ce fichier, et non plus
  * lue dans le module vivant `legal-mentions.ts`.
