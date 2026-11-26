@@ -40,7 +40,7 @@ export type VerdictFidelite =
 
 export const MAX_CITATIONS = 10;
 export const MAX_FICHES = 10;
-export const MAX_CARACTERES_FICHE = 6_000;
+export const MAX_CARACTERES_FICHE = 12_000;
 export const MAX_CARACTERES_ARTICLE = 60_000;
 
 /** Constante figée : rien de variable (cache de prompt), aucun fait chiffré (la source est la base). */
@@ -81,11 +81,7 @@ export function textePublic(output: unknown): string {
 
 export function promptUtilisateur(article: string, fiches: ReadonlyArray<FicheReference>): string {
   const bloc = fiches
-    .slice(0, MAX_FICHES)
-    .map(
-      (f) =>
-        `<fiche id="${f.id}" titre="${f.titre.replace(/"/g, "'")}">\n${f.texte.slice(0, MAX_CARACTERES_FICHE)}\n</fiche>`,
-    )
+    .map((f) => `<fiche id="${f.id}" titre="${f.titre.replace(/"/g, "'")}">\n${f.texte}\n</fiche>`)
     .join("\n");
   return `<fiches>\n${bloc}\n</fiches>\n<article>\n${article}\n</article>`;
 }
@@ -209,6 +205,9 @@ export async function decisionFideliteLlm(
       );
     }
     if (fiches.length === 0) return echec("aucune fiche de référence retrouvée");
+    if (fiches.length > MAX_FICHES || fiches.some((f) => f.texte.length > MAX_CARACTERES_FICHE)) {
+      return echec("fiches trop volumineuses pour le contrôle", fiches.length);
+    }
     const article = textePublic(args.output);
     if (article.length > MAX_CARACTERES_ARTICLE) {
       return echec("article trop long pour le contrôle", fiches.length);

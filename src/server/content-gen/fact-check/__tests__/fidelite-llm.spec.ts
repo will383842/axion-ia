@@ -116,6 +116,18 @@ describe("decisionFideliteLlm", () => {
     }
   });
 
+  it("fiches trop nombreuses ou trop longues : barrière, pas de coupe silencieuse", async () => {
+    for (const f of [
+      Array.from({ length: 11 }, (_, i) => ({ ...FICHE, id: `f${i}` })),
+      [{ ...FICHE, texte: "x".repeat(12_001) }],
+    ]) {
+      const d = deps('{"statut":"conforme","citations":[]}', f);
+      const r = await decisionFideliteLlm(BASE, d);
+      expect(r.barriere?.code).toBe("fidelite-llm");
+      expect(d.juger).not.toHaveBeenCalled();
+    }
+  });
+
   it("article trop long : barrière, le juge n'est pas appelé", async () => {
     const d = deps('{"statut":"conforme","citations":[]}');
     const r = await decisionFideliteLlm(

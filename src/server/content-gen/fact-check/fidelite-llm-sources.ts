@@ -8,7 +8,7 @@ import { prisma } from "@/lib/prisma";
 import { resolvePriceTokens } from "@/content/pricing-tokens";
 import { retrieveAvecMode } from "../kb-client";
 import { genererTexteBlogClaude } from "../providers/blog-claude";
-import type { DependancesFideliteLlm } from "./fidelite-llm";
+import { MAX_FICHES, type DependancesFideliteLlm } from "./fidelite-llm";
 
 /** Requête fixe : ramène toujours les fiches de l'offre. */
 const REQUETE_OFFRE = "Journée IA prix garantie présentiel déplacement acompte";
@@ -17,29 +17,39 @@ export const rechercherFichesPertinentes: DependancesFideliteLlm["rechercherFich
   output,
   kbEntryIds,
 }) => {
-  const o = (output ?? {}) as { title?: string; primaryKeyword?: string };
-  const requetes = [`${o.title ?? ""} ${o.primaryKeyword ?? ""}`.trim(), REQUETE_OFFRE].filter(
-    (q) => q.length > 0,
-  );
-  const ids = new Set<string>(kbEntryIds ?? []);
-  for (const query of requetes) {
-    const r = await retrieveAvecMode({
-      query,
-      locale: "fr",
-      k: query === REQUETE_OFFRE ? 4 : 6,
-      mode: "hybrid",
-    });
-    for (const c of r.chunks) ids.add(c.entryId);
+  const o = (output ?? {}) as { title?: string };
+  // 1. Fiches de l'offre : TOUJOURS en tête. Sans elles, impossible de contrôler prix,
+  //    garantie ou déplacement : on échoue franchement (fail-closed → relecture).
+  const offre = await retrieveAvecMode({
+    query: REQUETE_OFFRE,
+    locale: "fr",
+    k: 4,
+    mode: "hybrid",
+  });
+  const ordre: string[] = [];
+  const ajouter = (id: string) => {
+    if (!ordre.includes(id)) ordre.push(id);
+  };
+  for (const c of offre.chunks) ajouter(c.entryId);
+  if (ordre.length === 0) throw new Error("aucune fiche de l'offre retrouvée");
+  // 2. Fiches qui ont nourri le texte, puis recherche sur le titre.
+  for (const id of kbEntryIds ?? []) ajouter(id);
+  const titre = (o.title ?? "").trim();
+  if (titre.length > 0) {
+    const r = await retrieveAvecMode({ query: titre, locale: "fr", k: 6, mode: "hybrid" });
+    for (const c of r.chunks) ajouter(c.entryId);
   }
-  if (ids.size === 0) return [];
+  const retenus = ordre.slice(0, MAX_FICHES);
   const lignes = await prisma.knowledgeTranslation.findMany({
     where: {
-      entryId: { in: [...ids] },
+      entryId: { in: retenus },
       locale: "fr",
       entry: { status: "published", deletedAt: null },
     },
     select: { entryId: true, title: true, body: true, bodyText: true },
   });
+  // Ordre déterministe : celui de la recherche (offre d'abord).
+  lignes.sort((x, y) => retenus.indexOf(x.entryId) - retenus.indexOf(y.entryId));
   return lignes.map((t) => ({
     id: t.entryId,
     titre: t.title,
