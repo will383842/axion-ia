@@ -49,7 +49,7 @@ export const LONGVIC_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Longvic et sud Dijon Métropole ?",
-      a: "Oui, Axion-IA intervient à Longvic et tout le sud de Dijon Métropole (Dijon centre à 15 min par tram T2, Beaune à 30 min, Paris-Bercy à 1h30 en TGV via Dijon, aéroport Dijon-Bourgogne sur place).",
+      a: "Oui, Axion-IA intervient à Longvic et dans tout le sud de Dijon Métropole, ainsi qu'à Dijon et Beaune.",
     },
     {
       q: "Travaillez-vous avec les PME industrielles et logistiques de Longvic ?",
@@ -64,8 +64,8 @@ export const LONGVIC_COPY: VilleCopy = {
       a: "Audit sur place {{price:audit-flash|flat}}, automatisation reporting et conformité, gestion documentaire, suivi qualité, optimisation cycles production pour la filière aéronautique et défense liée à l'ancienne base aérienne 102.",
     },
     {
-      q: "Comment se déroule une mission depuis Dijon ou Paris ?",
-      a: "Dijon centre à 15 min (tram T2). Paris-Bercy à 1h30 en TGV via Dijon. Beaune à 30 min.",
+      q: "Comment se déroule une mission Axion-IA à Longvic ?",
+      a: "Nous intervenons partout en France, sur place dans vos locaux ou à distance en visio. Après le cadrage de votre besoin, nous planifions l'intervention et livrons un résultat actionnable.",
     },
   ],
 };

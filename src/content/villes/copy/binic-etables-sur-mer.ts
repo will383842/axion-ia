@@ -49,7 +49,7 @@ export const BINIC_ETABLES_SUR_MER_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Binic-Étables-sur-Mer et sur le littoral briochin ?",
-      a: "Oui, Axion-IA intervient à Binic-Étables-sur-Mer et sur tout le littoral de la baie de Saint-Brieuc (Pordic, Saint-Quay-Portrieux, Plérin, Tréveneuc). Saint-Brieuc à 15 min, Rennes à 1h15.",
+      a: "Oui, Axion-IA intervient à Binic-Étables-sur-Mer et sur tout le littoral de la baie de Saint-Brieuc (Pordic, Saint-Quay-Portrieux, Plérin, Tréveneuc).",
     },
     {
       q: "Travaillez-vous avec les professionnels du tourisme à Binic-Étables-sur-Mer ?",
@@ -65,7 +65,7 @@ export const BINIC_ETABLES_SUR_MER_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Binic-Étables-sur-Mer ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Gare TGV de Saint-Brieuc sur la ligne Paris-Brest. Tarifs publics et transparents.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Tarifs publics et transparents.",
     },
   ],
 };

@@ -132,7 +132,7 @@ export const CHAMPS_SUR_MARNE_COPY: VilleCopy = {
           },
           {
             q: "Intervenez-vous sur site à Champs-sur-Marne ?",
-            a: "Oui. Le kick-off se déroule sur site à la Cité Descartes ou dans vos locaux de Marne-la-Vallée (Noisiel, Lognes, Torcy, Bussy-Saint-Georges), avec un accès RER A Noisy-Champs immédiat. Les itérations de développement se font ensuite en hybride, et vos référents internes sont formés à la fin du projet.",
+            a: "Oui. Axion IA intervient partout en France, sur site ou à distance. Les itérations de développement se font ensuite en hybride, et vos référents internes sont formés à la fin du projet.",
           },
         ],
         guarantees:

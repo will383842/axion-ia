@@ -74,7 +74,7 @@ export const COUDEKERQUE_BRANCHE_COPY: VilleCopy = {
           {
             step: "Développement par sprints",
             detail:
-              "Greffe IA sur l'existant ou build IA-native : portail B2B, e-commerce multi-CMS, configurateur de devis, chatbot RAG multilingue, recherche sémantique, agents de traitement documentaire. Démos hebdomadaires en visio depuis Lille, à une heure de Coudekerque-Branche, pour ajuster au fil de l'eau.",
+              "Greffe IA sur l'existant ou build IA-native : portail B2B, e-commerce multi-CMS, configurateur de devis, chatbot RAG multilingue, recherche sémantique, agents de traitement documentaire. Démos hebdomadaires en visio, à une heure de Coudekerque-Branche, pour ajuster au fil de l'eau.",
           },
           {
             step: "Recette + mise en ligne",
@@ -160,7 +160,7 @@ export const COUDEKERQUE_BRANCHE_COPY: VilleCopy = {
           {
             step: "Développement par sprints",
             detail:
-              "Greffe IA sur l'existant ou build IA-native : portail B2B, e-commerce multi-CMS, configurateur de devis, chatbot RAG multilingue, recherche sémantique, agents de traitement documentaire. Démos hebdomadaires en visio depuis Lille, à une heure de Coudekerque-Branche, pour ajuster au fil de l'eau.",
+              "Greffe IA sur l'existant ou build IA-native : portail B2B, e-commerce multi-CMS, configurateur de devis, chatbot RAG multilingue, recherche sémantique, agents de traitement documentaire. Démos hebdomadaires en visio, à une heure de Coudekerque-Branche, pour ajuster au fil de l'eau.",
           },
           {
             step: "Recette + mise en ligne",
@@ -230,7 +230,7 @@ export const COUDEKERQUE_BRANCHE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Coudekerque-Branche et dans l'agglomération de Dunkerque ?",
-      a: "Oui. Nous couvrons Coudekerque-Branche et la communauté urbaine de Dunkerque (Dunkerque centre à 5 min, Saint-Pol-sur-Mer, Grande-Synthe). Nous intervenons partout en France, sur place ou à distance.",
+      a: "Oui. Nous couvrons Coudekerque-Branche et la communauté urbaine de Dunkerque (Dunkerque centre, Saint-Pol-sur-Mer, Grande-Synthe), sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les TPE de transport, maintenance et commerce ?",

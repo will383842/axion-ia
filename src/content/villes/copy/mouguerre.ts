@@ -65,7 +65,7 @@ export const MOUGUERRE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA sur site à Mouguerre ?",
-      a: "Nos consultants accèdent à Mouguerre via la gare de Bayonne (TGV 4h30 Paris, 10 min voiture) ou l'aéroport Biarritz Pays Basque (15 min). Mission sur site dans vos entrepôts ou locaux.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Mission sur site dans vos entrepôts ou locaux.",
     },
   ],
 };

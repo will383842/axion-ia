@@ -214,7 +214,7 @@ export const BAGNOLET_COPY: VilleCopy = {
           },
           {
             q: "Do you work on site in Bagnolet and eastern Paris?",
-            a: "Yes. From Gallieni (Line 3) and the porte de Bagnolet on the ring road, we work on site in Bagnolet, Montreuil, Pantin, Les Lilas and Romainville. Kick-off and acceptance happen at your premises; iterations can be remote.",
+            a: "Yes. Axion-IA works anywhere in France, on site or remotely, including in Bagnolet, Montreuil, Pantin, Les Lilas and Romainville. Kick-off and acceptance happen at your premises; iterations can be remote.",
           },
           {
             q: "Are we dependent on Axion-IA after delivery?",
@@ -230,7 +230,7 @@ export const BAGNOLET_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Bagnolet ?",
-      a: "Oui, Axion-IA accompagne les TPE et PME de Bagnolet et de l'est parisien. Bagnolet est desservie par la ligne 3 (Gallieni) et le périphérique. Nous intervenons partout en France, sur place ou à distance, et travaillons aussi en visio. Tarifs publics.",
+      a: "Oui, Axion-IA accompagne les TPE et PME de Bagnolet et de l'est parisien. Nous intervenons partout en France, sur place ou à distance, et travaillons aussi en visio. Tarifs publics.",
     },
     {
       q: "Quels gains IA pour un studio créatif ou une agence bagnoletaise ?",
@@ -242,7 +242,7 @@ export const BAGNOLET_COPY: VilleCopy = {
     },
     {
       q: "Intervenez-vous aussi à Montreuil, Pantin ou Les Lilas ?",
-      a: "Oui, nous couvrons l'est parisien : Montreuil, Pantin, Les Lilas, Romainville et Paris intra-muros, depuis Bagnolet. Déplacement rapide grâce au métro et au périphérique.",
+      a: "Oui. Nous couvrons l'est parisien : Montreuil, Pantin, Les Lilas, Romainville et Paris intra-muros, ainsi que Bagnolet.",
     },
     {
       q: "Vos solutions IA sont-elles conformes au RGPD ?",

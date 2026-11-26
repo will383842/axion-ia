@@ -28,14 +28,22 @@ import {
 import { aujourdhuiParis, jourIso } from "@/lib/garantie-journee-ia/presentation";
 import {
   DECISIONS,
+  etatApresAvoirRembourse,
   eurosEnCentimes,
   refusDecision,
   refusDemande,
   plafondRemboursementCents,
   refusVirement,
+  refusVirementSansAvoir,
+  repartirRemboursement,
   verifierMontantAvoir,
 } from "@/server/garanties-journee-ia/regles";
-import { dossiersDejaRembourses, lireGarantie } from "@/server/garanties-journee-ia/lecture";
+import {
+  dossiersDejaRembourses,
+  lireGarantie,
+  resoudreFacturesGarantie,
+} from "@/server/garanties-journee-ia/lecture";
+import { genererAvoirFacture } from "@/server/qualiopi/financements/facture-libre";
 
 const SOUS_CHEMIN = "garanties-journee-ia";
 const uuid = z.string().uuid();
@@ -62,6 +70,8 @@ function jourFacultatif(f: FormData, nom: string): string | null | undefined {
   const ok = jour.safeParse(t).success && !Number.isNaN(Date.parse(`${t}T00:00:00Z`));
   return ok ? t : undefined;
 }
+/** Erreur métier levée DANS une transaction (annule tout) puis rendue à l'écran, jamais en 500. */
+class ErreurGarantie extends Error {}
 const enDate = (iso: string | null): Date | null => (iso ? new Date(`${iso}T00:00:00Z`) : null);
 
 /* ── 1. Création ─────────────────────────────────────────────────────────────── */
@@ -225,11 +235,32 @@ export async function enregistrerDecisionGarantieJourneeIaAction(
 
   let montant: number | null = null;
   if (decision === "remboursement") {
+    // Montant saisi = TTC rendu au client (plafond art. 47.10 f : prix HT + TVA 20 %).
     montant = eurosEnCentimes(texte(formData, "montantRembourseEuros"));
     if (montant === null || montant <= 0) refuser(fiche(id), "Montant remboursé invalide.");
     if (montant > plafondRemboursementCents(dossier.prixHtCents))
       refuser(fiche(id), "Montant remboursé incohérent avec le prix.");
   }
+  const total0 = texte(formData, "totalGainsEuros")
+    ? eurosEnCentimes(texte(formData, "totalGainsEuros"))
+    : null;
+  // Un remboursement déjà décidé a ÉMIS un avoir : rejeu identique = rien à faire (double clic),
+  // tout autre changement = refus (une pièce émise ne se supprime pas).
+  const etat = etatApresAvoirRembourse(dossier, { decision, montantCents: montant });
+  if (etat.type === "idempotent") {
+    // Même montant : rejeu (double clic) — SAUF si la fiche a changé de date, de note ou de gains,
+    // qu'on ne perd pas en silence : la décision est figée par l'avoir.
+    const memeNote = (motif ?? "") === (dossier.motifDecision ?? "");
+    const memeTotal = !texte(formData, "totalGainsEuros") || total0 === dossier.totalGainsCents;
+    if (decisionLe !== dossier.decisionLe || !memeNote || !memeTotal)
+      refuser(
+        fiche(id),
+        "L'avoir est émis : la date de réponse, la note et le total des gains ne se modifient plus.",
+      );
+    redirect(`${fiche(id)}?ok=decision`);
+  }
+  if (etat.type === "refus") refuser(fiche(id), etat.message);
+
   let montantAvoir: number | null = null;
   if (decision === "avoir") {
     const v = verifierMontantAvoir(eurosEnCentimes(texte(formData, "montantAvoirEuros")));
@@ -241,41 +272,234 @@ export async function enregistrerDecisionGarantieJourneeIaAction(
     : null;
   if (texte(formData, "totalGainsEuros") && total === null)
     refuser(fiche(id), "Total des gains invalide.");
+
+  if (decision === "remboursement") {
+    // ── Remboursement : un VRAI avoir PAR facture touchée, tous émis dans UNE transaction ──
+    // Le montant décidé (TTC) est réparti sur les factures du même devis : le solde d'abord, puis
+    // l'acompte. C'est l'avoir (`avoirDeId`) que lit la reprise de commission (avoir-client.ts).
+    // En garantie l'acompte n'est PAS « acquis » (la règle ne vaut que pour une annulation).
+    // Un avoir « geste commercial » déjà lié ne se remplace pas en silence par un remboursement.
+    if (dossier.decision === "avoir" && dossier.avoirId)
+      refuser(
+        fiche(id),
+        "Un avoir « geste commercial » est déjà lié à ce dossier : le traiter d'abord (Hub factures) avant de décider un remboursement.",
+      );
+    const note = motif ? ` — ${motif}` : "";
+    const pdfs: Array<() => Promise<string | null>> = [];
+    let erreur: string | null = null;
+    try {
+      await prisma.$transaction(
+        async (tx) => {
+          // Verrou de ligne : un second clic simultané attend la fin du premier, puis relit.
+          await tx.$executeRaw`SELECT id FROM garanties_journee_ia WHERE id = ${id}::uuid FOR UPDATE`;
+          const frais = await tx.garantieJourneeIa.findUnique({
+            where: { id },
+            select: { decision: true, avoirId: true, virementLe: true, archiveLe: true },
+          });
+          if (
+            !frais ||
+            frais.virementLe ||
+            frais.archiveLe ||
+            (frais.decision === "remboursement" && frais.avoirId)
+          ) {
+            throw new ErreurGarantie(
+              "Ce dossier vient d'être modifié (avoir déjà émis, virement saisi ou archivage) : recharger la page.",
+            );
+          }
+          // Factures et capacités RELUES sous verrou (un avoir du Hub arrivé entre-temps est vu), puis
+          // répartition : tout refus ici annule la transaction et passe par la relecture « double clic ».
+          const cible = await resoudreFacturesGarantie(dossier, tx);
+          if (!cible.ok) throw new ErreurGarantie(cible.message);
+          const repart = repartirRemboursement(
+            cible.factures.map((f) => ({
+              id: f.id,
+              numero: f.numero,
+              capaciteTtcCents: f.rendableTtcCents,
+              atteignable: f.atteignable,
+            })),
+            montant as number,
+          );
+          if (!repart.ok) throw new ErreurGarantie(repart.message);
+          // Une seule voie de création : `genererAvoirFacture`, dans CETTE transaction. Un échec sur
+          // l'une des factures annule tous les avoirs (et les numéros consommés).
+          const emis: Array<{
+            factureId: string;
+            factureNumero: string;
+            avoirId: string;
+            avoirNumero: string;
+            htCents: number;
+            ttcCents: number;
+          }> = [];
+          for (const part of repart.parts) {
+            const r = await genererAvoirFacture(
+              {
+                factureId: part.id,
+                montantTtcCents: part.ttcCents,
+                motif: `Garantie de remboursement Journée IA (CGV art. 47.10)${note}`,
+              },
+              { tx },
+            );
+            if (r.produirePdf) pdfs.push(r.produirePdf);
+            emis.push({
+              factureId: part.id,
+              factureNumero: part.numero,
+              avoirId: r.avoirId,
+              avoirNumero: r.numero,
+              htCents: r.montantHtCents,
+              ttcCents: r.montantTtcCents,
+            });
+          }
+          const totalTtc = emis.reduce((n, e) => n + e.ttcCents, 0);
+          // Le dossier pointe sur le PREMIER avoir (le solde) ; tous figurent au journal.
+          const premier = emis[0];
+          if (!premier) throw new ErreurGarantie("Aucun avoir à émettre.");
+          await tx.garantieJourneeIa.update({
+            where: { id },
+            data: {
+              decision,
+              decisionLe: enDate(decisionLe),
+              motifDecision: motif,
+              // Le TTC réellement porté par les avoirs : ce que le virement devra égaler.
+              montantRembourseCents: totalTtc,
+              montantAvoirHtCents: null,
+              totalGainsCents: total,
+              factureId: premier.factureId,
+              avoirId: premier.avoirId,
+              avoirEmisLe: enDate(aujourdhuiParis()),
+            },
+          });
+          await tx.activityLog.create({
+            data: await donneesJournalQualiopi({
+              action: "qualiopi.garantie_journee_ia.decision",
+              targetType: "GarantieJourneeIa",
+              targetId: id,
+              changes: {
+                decision: { avant: dossier.decision, apres: decision },
+                decisionLe,
+                montantRembourseCents: totalTtc,
+                factureId: premier.factureId,
+                avoirId: premier.avoirId,
+                avoirs: emis,
+              },
+              session,
+            }),
+          });
+          for (const e of emis) {
+            await tx.activityLog.create({
+              data: await donneesJournalQualiopi({
+                action: "facturation.avoir.emettre",
+                targetType: "FactureFormation",
+                targetId: e.factureId,
+                changes: {
+                  avoirId: e.avoirId,
+                  avoirNumero: e.avoirNumero,
+                  montantHtCents: e.htCents,
+                  montantTtcCents: e.ttcCents,
+                  origine: "garantie_journee_ia",
+                  garantieId: id,
+                },
+                session,
+              }),
+            });
+          }
+        },
+        // Plusieurs avoirs + lectures de facturation : au-delà des 5 s par défaut sous charge.
+        { timeout: 15_000 },
+      );
+    } catch (e) {
+      // Erreurs techniques (Prisma…) : jamais recopiées dans l'URL.
+      erreur =
+        e instanceof Error && !/^Prisma/.test(e.name)
+          ? e.message
+          : "Émission de l'avoir impossible : réessayer ou voir le journal.";
+    }
+    // PDF des avoirs APRÈS validation (fail-soft : l'avoir reste émis sans PDF).
+    if (!erreur) await Promise.allSettled(pdfs.map((p) => p()));
+    // Double clic simultané : le premier a réussi, le second échoue sur verrou. On relit.
+    if (erreur) {
+      const frais = await lireGarantie(id);
+      if (frais?.decision === "remboursement" && frais.avoirId) {
+        // Succès seulement si CE qui vient d'être saisi est ce qui a été enregistré par l'autre clic.
+        if (
+          frais.montantRembourseCents === montant &&
+          (!texte(formData, "totalGainsEuros") || total === frais.totalGainsCents) &&
+          frais.decisionLe === decisionLe &&
+          (frais.motifDecision ?? "") === (motif ?? "")
+        ) {
+          revalidatePath(liste());
+          redirect(`${fiche(id)}?ok=decision`);
+        }
+        refuser(
+          fiche(id),
+          "L'avoir est émis avec d'autres valeurs que celles saisies : la décision ne se modifie plus.",
+        );
+      }
+    }
+    // Hors du try : `refuser` lève NEXT_REDIRECT, qu'un catch avalerait.
+    if (erreur) refuser(fiche(id), erreur);
+    revalidatePath(liste());
+    redirect(`${fiche(id)}?ok=decision`);
+  }
+
+  // ── Refus et « offrir un avoir » (geste commercial) : chemin INCHANGÉ ──
   const avoirEmisLe = jourFacultatif(formData, "avoirEmisLe");
   if (avoirEmisLe === undefined) refuser(fiche(id), "Date d'avoir invalide.");
-  const avoirId = texte(formData, "avoirId") || null;
+  // L'identifiant saisi ne vaut que pour « offrir un avoir » ; un refus n'en porte pas.
+  const avoirId = decision === "avoir" ? texte(formData, "avoirId") || null : null;
   if (avoirId && !uuid.safeParse(avoirId).success)
     refuser(fiche(id), "Identifiant d'avoir invalide.");
 
-  await prisma.$transaction(async (tx) => {
-    await tx.garantieJourneeIa.update({
-      where: { id },
-      data: {
-        decision,
-        decisionLe: enDate(decisionLe),
-        motifDecision: motif,
-        montantRembourseCents: montant,
-        montantAvoirHtCents: montantAvoir,
-        totalGainsCents: total,
-        avoirEmisLe: enDate(avoirEmisLe),
-        avoirId,
-      },
-    });
-    await tx.activityLog.create({
-      data: await donneesJournalQualiopi({
-        action: "qualiopi.garantie_journee_ia.decision",
-        targetType: "GarantieJourneeIa",
-        targetId: id,
-        changes: {
-          decision: { avant: dossier.decision, apres: decision },
-          decisionLe,
-          montantRembourseCents: montant,
+  let conflit: string | null = null;
+  try {
+    await prisma.$transaction(async (tx) => {
+      // Verrou + relecture : un remboursement validé entre-temps (avoirs émis) ne s'écrase jamais.
+      await tx.$executeRaw`SELECT id FROM garanties_journee_ia WHERE id = ${id}::uuid FOR UPDATE`;
+      const frais = await tx.garantieJourneeIa.findUnique({
+        where: { id },
+        select: { decision: true, avoirId: true, virementLe: true, archiveLe: true },
+      });
+      if (
+        !frais ||
+        frais.virementLe ||
+        frais.archiveLe ||
+        (frais.decision === "remboursement" && frais.avoirId)
+      )
+        throw new ErreurGarantie(
+          "Ce dossier vient d'être modifié (avoir déjà émis, virement saisi ou archivage) : recharger la page.",
+        );
+      await tx.garantieJourneeIa.update({
+        where: { id },
+        data: {
+          decision,
+          decisionLe: enDate(decisionLe),
+          motifDecision: motif,
+          montantRembourseCents: null,
           montantAvoirHtCents: montantAvoir,
+          totalGainsCents: total,
+          avoirEmisLe: enDate(avoirEmisLe),
+          avoirId,
         },
-        session,
-      }),
+      });
+      await tx.activityLog.create({
+        data: await donneesJournalQualiopi({
+          action: "qualiopi.garantie_journee_ia.decision",
+          targetType: "GarantieJourneeIa",
+          targetId: id,
+          changes: {
+            decision: { avant: dossier.decision, apres: decision },
+            decisionLe,
+            montantRembourseCents: null,
+            montantAvoirHtCents: montantAvoir,
+          },
+          session,
+        }),
+      });
     });
-  });
+  } catch (e) {
+    if (!(e instanceof ErreurGarantie)) throw e;
+    conflit = e.message;
+  }
+  if (conflit) refuser(fiche(id), conflit);
   revalidatePath(liste());
   redirect(`${fiche(id)}?ok=decision`);
 }
@@ -296,7 +520,8 @@ export async function enregistrerVirementGarantieJourneeIaAction(
   const refus = refusVirement(dossier, virementLe, aujourdhuiParis());
   if (refus) refuser(fiche(id), refus);
 
-  // Réputée acceptée : le montant n'a pas de décision pour le porter, il se saisit ici.
+  // Le montant vient de l'avoir émis par la décision « Rembourser » (même pour une demande réputée
+  // acceptée : un humain enregistre d'abord la décision). Une saisie ne peut que le répéter.
   let montant = dossier.montantRembourseCents;
   const saisi = texte(formData, "montantRembourseEuros");
   if (saisi) {
@@ -306,6 +531,9 @@ export async function enregistrerVirementGarantieJourneeIaAction(
   if (montant === null) refuser(fiche(id), "Saisir le montant remboursé.");
   if (montant > plafondRemboursementCents(dossier.prixHtCents))
     refuser(fiche(id), "Montant remboursé incohérent avec le prix.");
+  // Pas de virement sans l'avoir qui annule la facture et fait reprendre la commission.
+  const sansAvoir = refusVirementSansAvoir(dossier, montant);
+  if (sansAvoir) refuser(fiche(id), sansAvoir);
 
   await prisma.$transaction(async (tx) => {
     await tx.garantieJourneeIa.update({

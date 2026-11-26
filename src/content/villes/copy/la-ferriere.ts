@@ -49,7 +49,7 @@ export const LA_FERRIERE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à La Ferrière ?",
-      a: "Oui, Axion-IA intervient à La Ferrière et dans toute l'agglomération de La Roche-sur-Yon (Aizenay, Mouilleron-le-Captif, Dompierre-sur-Yon). Nos consultants se déplacent depuis Nantes (1h) ou directement sur site.",
+      a: "Oui, Axion-IA intervient à La Ferrière et dans toute l'agglomération de La Roche-sur-Yon (Aizenay, Mouilleron-le-Captif, Dompierre-sur-Yon). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Combien coûte un audit IA à La Ferrière  ?",

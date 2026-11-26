@@ -49,7 +49,7 @@ export const ARPAJON_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Arpajon et dans le Hurepoix ?",
-      a: "Oui, Axion-IA intervient à Arpajon et tout le Hurepoix essonnien (Saint-Germain-lès-Arpajon, Brétigny-sur-Orge, Linas, Montlhéry). Gare RER C Arpajon, Paris à 35 min.",
+      a: "Oui, Axion-IA intervient à Arpajon et tout le Hurepoix essonnien (Saint-Germain-lès-Arpajon, Brétigny-sur-Orge, Linas, Montlhéry).",
     },
     {
       q: "Travaillez-vous avec les commerçants du marché d'Arpajon ?",
@@ -65,7 +65,7 @@ export const ARPAJON_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Arpajon ?",
-      a: "RER C Arpajon direct depuis Paris (35 min). Évry-Courcouronnes à 20 min. Orly à 20 min. Massy-Palaiseau TGV à 15 min.",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Arpajon, comme partout en France, ou à distance.",
     },
   ],
 };

@@ -246,7 +246,7 @@ export const BOBIGNY_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Bobigny ?",
-      a: "Le diagnostic et les sessions clés se font sur site à Bobigny ; le suivi se poursuit en visio. La proximité de Paris (15 min) permet des déplacements rapides.",
+      a: "Le diagnostic et les sessions clés se font sur site à Bobigny ; le suivi se poursuit en visio.",
     },
   ],
 };

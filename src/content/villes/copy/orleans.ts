@@ -159,7 +159,7 @@ export const ORLEANS_COPY: VilleCopy = {
           },
           {
             q: "Intervenez-vous dans les communes de l'agglomération (Ormes, Saint-Jean-de-Braye, Saran) ?",
-            a: "Oui. L'ensemble de l'agglomération orléanaise est notre terrain d'intervention : Ormes (John Deere, Shiseido), Saint-Jean-de-Braye (pharma), Saran (Pôle 45), Olivet, La Chapelle-Saint-Mesmin, Fleury-les-Aubrais et La Source. Aucun supplément de zone.",
+            a: "Oui. L'ensemble de l'agglomération orléanaise est notre terrain d'intervention : Ormes (John Deere, Shiseido), Saint-Jean-de-Braye (pharma), Saran (Pôle 45), Olivet, La Chapelle-Saint-Mesmin, Fleury-les-Aubrais et La Source.",
           },
           {
             q: "Faut-il être déjà avancé sur l'IA pour solliciter un audit ?",
@@ -251,7 +251,7 @@ export const ORLEANS_COPY: VilleCopy = {
           },
           {
             q: "Do you cover agglomération communes (Ormes, Saint-Jean-de-Braye, Saran)?",
-            a: "Yes. The full Orléans agglomération is our territory: Ormes (John Deere, Shiseido), Saint-Jean-de-Braye (pharma), Saran (Pôle 45), Olivet, La Chapelle-Saint-Mesmin, Fleury-les-Aubrais and La Source. No zone surcharge.",
+            a: "Yes. The full Orléans agglomération is our territory: Ormes (John Deere, Shiseido), Saint-Jean-de-Braye (pharma), Saran (Pôle 45), Olivet, La Chapelle-Saint-Mesmin, Fleury-les-Aubrais and La Source. Axion-IA works anywhere in France, on site or remotely.",
           },
           {
             q: "Do I need AI maturity to engage you?",
@@ -989,7 +989,7 @@ export const ORLEANS_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Combien coûte un audit IA opérationnel à Orléans ?",
-      a: "Le tarif dépend du niveau retenu — Audit sur place, Ciblé, Stratégique PME ou Stratégique ETI. Tarifs publics affichés sur la page Audit, choix calibré selon votre taille (TPE, PME, ETI, grande entreprise) et votre périmètre. Aucun supplément géographique : le tarif est identique à Orléans et partout en France.",
+      a: "Le tarif dépend du niveau retenu — Audit sur place, Ciblé, Stratégique PME ou Stratégique ETI. Tarifs publics affichés sur la page Audit, choix calibré selon votre taille (TPE, PME, ETI, grande entreprise) et votre périmètre.",
     },
     {
       q: "Avez-vous des cas clients dans l'agglomération orléanaise ?",
@@ -1001,7 +1001,7 @@ export const ORLEANS_COPY: VilleCopy = {
     },
     {
       q: "Pouvez-vous intervenir dans les communes de l'agglomération hors Orléans intra-muros ?",
-      a: "Oui. L'agglomération entière est notre zone d'intervention : Ormes (John Deere, Shiseido), Saint-Jean-de-Braye (pharma Famar), Saran (Pôle 45 logistique), Olivet, La Chapelle-Saint-Mesmin, Fleury-les-Aubrais et La Source (BRGM). Aucun supplément de zone.",
+      a: "Oui. L'agglomération entière est notre zone d'intervention : Ormes (John Deere, Shiseido), Saint-Jean-de-Braye (pharma Famar), Saran (Pôle 45 logistique), Olivet, La Chapelle-Saint-Mesmin, Fleury-les-Aubrais et La Source (BRGM).",
     },
     {
       q: "En combien de temps pouvez-vous démarrer une mission à Orléans ?",

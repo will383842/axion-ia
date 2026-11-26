@@ -58,7 +58,7 @@ export const GUJAN_MESTRAS_COPY: VilleCopy = {
           "Filière ostréicole structurée autour des sept ports (Larros, La Hume, Le Canal, Meyran, Gujan, La Mole, Le Rocher) et de la Maison de l'Huître au port de Larros : on construit des boutiques de vente directe en WooCommerce ou Shopify avec calendrier de retrait au port, expédition de bourriches, traçabilité des lots affichée au client et recherche sémantique sur les calibres et les crus du bassin.",
           "Économie touristique saisonnière et balnéaire au bord du bassin d'Arcachon, avec des sites d'attraction comme Aqualand et le parc des expositions de la Côte d'Argent : nos chatbots RAG et agents conversationnels sont multilingues par défaut, calibrés pour les hébergeurs, les loueurs de cabanes tchanquées et la restauration de produits de la mer qui doivent absorber le pic estival sans étoffer leur back-office.",
           "Tissu dense de TPE du commerce, de l'artisanat et des loisirs nautiques, doublé des entreprises installées sur le parc Actipole et la ZAE de Nay (créée en 1995, une vingtaine d'hectares) : on greffe l'IA sur l'existant (widget, plugin WordPress, WooCommerce, PrestaShop ou Magento, API) sans refonte coûteuse, ou on bâtit une vitrine e-commerce sur mesure pour les produits locaux du bassin.",
-          "Proximité d'Arcachon (10 km) et de Bordeaux (50 km), gare TER sur la ligne Bordeaux-Arcachon, et ancrage dans la COBAS (agglomération du Bassin d'Arcachon Sud) : déplacements faciles pour le cadrage sur site, automatisations branchées sur vos outils métier, et toute la chaîne IA est hébergeable en UE, conforme RGPD et AI Act — vos données de commande et clients restent maîtrisées.",
+          "Ancrage dans la COBAS (agglomération du Bassin d'Arcachon Sud) : cadrage sur site, automatisations branchées sur vos outils métier, et toute la chaîne IA est hébergeable en UE, conforme RGPD et AI Act — vos données de commande et clients restent maîtrisées.",
         ],
         methodology: [
           {
@@ -120,7 +120,7 @@ export const GUJAN_MESTRAS_COPY: VilleCopy = {
           },
           {
             q: "Pouvez-vous gérer la vente d'huîtres en ligne et la saisonnalité ?",
-            a: "Oui. On construit des boutiques de vente directe avec calendrier de retrait au port (Larros, La Hume, Le Canal…), expédition de bourriches, traçabilité des lots et gestion des pics de fin d'année. L'assistant multilingue et les automatisations absorbent les commandes en haute saison estivale et pendant les fêtes sans surcharge administrative pour les exploitations familiales du bassin d'Arcachon.",
+            a: "Oui. On construit des boutiques de vente directe avec calendrier de retrait au port (Larros, La Hume, Le Canal…), expédition de bourriches, traçabilité des lots et gestion des pics de fin d'année. L'assistant multilingue et les automatisations absorbent les commandes en haute saison estivale et pendant les fêtes sans lourdeur administrative pour les exploitations familiales du bassin d'Arcachon.",
           },
           {
             q: "Travaillez-vous avec les hébergeurs et le tourisme du bassin d'Arcachon ?",
@@ -144,7 +144,7 @@ export const GUJAN_MESTRAS_COPY: VilleCopy = {
           "Filière ostréicole structurée autour des sept ports (Larros, La Hume, Le Canal, Meyran, Gujan, La Mole, Le Rocher) et de la Maison de l'Huître au port de Larros : on construit des boutiques de vente directe en WooCommerce ou Shopify avec calendrier de retrait au port, expédition de bourriches, traçabilité des lots affichée au client et recherche sémantique sur les calibres et les crus du bassin.",
           "Économie touristique saisonnière et balnéaire au bord du bassin d'Arcachon, avec des sites d'attraction comme Aqualand et le parc des expositions de la Côte d'Argent : nos chatbots RAG et agents conversationnels sont multilingues par défaut, calibrés pour les hébergeurs, les loueurs de cabanes tchanquées et la restauration de produits de la mer qui doivent absorber le pic estival sans étoffer leur back-office.",
           "Tissu dense de TPE du commerce, de l'artisanat et des loisirs nautiques, doublé des entreprises installées sur le parc Actipole et la ZAE de Nay (créée en 1995, une vingtaine d'hectares) : on greffe l'IA sur l'existant (widget, plugin WordPress, WooCommerce, PrestaShop ou Magento, API) sans refonte coûteuse, ou on bâtit une vitrine e-commerce sur mesure pour les produits locaux du bassin.",
-          "Proximité d'Arcachon (10 km) et de Bordeaux (50 km), gare TER sur la ligne Bordeaux-Arcachon, et ancrage dans la COBAS (agglomération du Bassin d'Arcachon Sud) : déplacements faciles pour le cadrage sur site, automatisations branchées sur vos outils métier, et toute la chaîne IA est hébergeable en UE, conforme RGPD et AI Act — vos données de commande et clients restent maîtrisées.",
+          "Ancrage dans la COBAS (agglomération du Bassin d'Arcachon Sud) : cadrage sur site, automatisations branchées sur vos outils métier, et toute la chaîne IA est hébergeable en UE, conforme RGPD et AI Act — vos données de commande et clients restent maîtrisées.",
         ],
         methodology: [
           {
@@ -206,7 +206,7 @@ export const GUJAN_MESTRAS_COPY: VilleCopy = {
           },
           {
             q: "Pouvez-vous gérer la vente d'huîtres en ligne et la saisonnalité ?",
-            a: "Oui. On construit des boutiques de vente directe avec calendrier de retrait au port (Larros, La Hume, Le Canal…), expédition de bourriches, traçabilité des lots et gestion des pics de fin d'année. L'assistant multilingue et les automatisations absorbent les commandes en haute saison estivale et pendant les fêtes sans surcharge administrative pour les exploitations familiales du bassin d'Arcachon.",
+            a: "Oui. On construit des boutiques de vente directe avec calendrier de retrait au port (Larros, La Hume, Le Canal…), expédition de bourriches, traçabilité des lots et gestion des pics de fin d'année. L'assistant multilingue et les automatisations absorbent les commandes en haute saison estivale et pendant les fêtes sans lourdeur administrative pour les exploitations familiales du bassin d'Arcachon.",
           },
           {
             q: "Travaillez-vous avec les hébergeurs et le tourisme du bassin d'Arcachon ?",

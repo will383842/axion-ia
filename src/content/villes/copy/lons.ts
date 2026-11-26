@@ -14,9 +14,9 @@ export const LONS_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Lons (64). Nous accompagnons TPE, PME et commerces de la zone nord de l'agglomération paloise : retail, logistique, services aux entreprises, artisanat. Audit sur place sur mesure.",
   seoHook: "commerce grande & logistique transport",
   ecosystemFr:
-    "Lons est un pôle commercial majeur au nord de Pau, 13 606 habitants. Zones d'activités commerciales (grandes surfaces, retail, enseignes nationales), PME logistique et transport, TPE artisans, services aux entreprises. Proximité immédiate de l'aéroport Pau-Pyrénées et de la technopole Hélioparc.",
+    "Lons est un pôle commercial majeur au nord de Pau, 13 606 habitants. Zones d'activités commerciales (grandes surfaces, retail, enseignes nationales), PME logistique et transport, TPE artisans, services aux entreprises. Technopole Hélioparc voisine.",
   ecosystemEn:
-    "Lons est un pôle commercial majeur au nord de Pau, 13 606 habitants. Zones d'activités commerciales (grandes surfaces, retail, enseignes nationales), PME logistique et transport, TPE artisans, services aux entreprises. Proximité immédiate de l'aéroport Pau-Pyrénées et de la technopole Hélioparc.",
+    "Lons est un pôle commercial majeur au nord de Pau, 13 606 habitants. Zones d'activités commerciales (grandes surfaces, retail, enseignes nationales), PME logistique et transport, TPE artisans, services aux entreprises. Technopole Hélioparc voisine.",
   distancesFr:
     "Gare de Pau à 8 min voiture (TGV Paris 4h20 direct). Aéroport Pau-Pyrénées à 5 min. Accès A64 (Bayonne-Toulouse) immédiat. Centre-ville Pau à 5 km. Tarbes à 40 min.",
   distancesEn:
@@ -49,7 +49,7 @@ export const LONS_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Lons et dans la zone commerciale nord Pau ?",
-      a: "Oui, Axion-IA intervient à Lons et dans toute la zone nord de l'agglomération paloise. Nos consultants accèdent facilement via l'aéroport Pau-Pyrénées (5 min) ou la gare de Pau.",
+      a: "Oui, Axion-IA intervient à Lons et dans toute la zone nord de l'agglomération paloise.",
     },
     {
       q: "Quels services IA pour les commerces et le retail à Lons ?",
@@ -65,7 +65,7 @@ export const LONS_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA sur site à Lons ?",
-      a: "Nos consultants accèdent à Lons via l'aéroport Pau-Pyrénées (5 min) ou la gare de Pau (TGV 4h20 Paris direct, 8 min voiture). Mission sur site dans vos locaux commerciaux, entrepôts ou bureaux.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Mission sur site dans vos locaux commerciaux, entrepôts ou bureaux.",
     },
   ],
 };

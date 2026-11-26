@@ -65,7 +65,7 @@ export const SAINT_APOLLINAIRE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Saint-Apollinaire ?",
-      a: "Dijon centre (10 min).",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Saint-Apollinaire, comme partout en France, ou à distance.",
     },
   ],
 };

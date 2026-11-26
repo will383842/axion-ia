@@ -49,7 +49,7 @@ export const LINAS_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Linas et Montlhéry ?",
-      a: "Oui, Axion-IA intervient à Linas et tout le Hurepoix (Montlhéry à 3 min, Longjumeau à 8 min, Évry à 20 min, Paris à 35 min). Aéroport Orly à 20 min.",
+      a: "Oui, Axion-IA intervient à Linas et dans tout le Hurepoix : Montlhéry, Longjumeau, Évry.",
     },
     {
       q: "Accompagnez-vous les entreprises de zone d'activités ?",

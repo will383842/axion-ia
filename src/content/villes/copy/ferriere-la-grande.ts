@@ -61,11 +61,11 @@ export const FERRIERE_LA_GRANDE_COPY: VilleCopy = {
     },
     {
       q: "Y a-t-il des opportunités transfrontalières avec la Belgique ?",
-      a: "Oui, la proximité de la frontière belge (Erquelinnes à 10 min, Charleroi à 45 min) offre des opportunités IA transfrontalières : gestion multilingue, conformité double réglementaire, agents IA support client FR/NL/EN.",
+      a: "Oui, la proximité de la frontière belge offre des opportunités IA transfrontalières : gestion multilingue, conformité double réglementaire, agents IA support client FR/NL/EN.",
     },
     {
       q: "Comment se déroule une mission à Ferrière-la-Grande ?",
-      a: "Depuis Lille : 1h15 via A2/N2. Depuis Valenciennes : 35 min. Gare de Maubeuge (TER). Missions sur site à Ferrière-la-Grande ou en visio.",
+      a: "Missions sur site à Ferrière-la-Grande ou en visio.",
     },
   ],
 };

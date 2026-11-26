@@ -132,7 +132,7 @@ export const CHAVILLE_COPY: VilleCopy = {
           },
           {
             q: "Pouvez-vous créer une billetterie ou un site pour un commerce ou un lieu culturel chavillois ?",
-            a: "Oui. Pour un commerçant du marché de Chaville, on bâtit une vitrine e-commerce avec click-and-collect, devis automatisés et agent conversationnel multilingue. Pour un lieu comme l'Atrium ou une association, on conçoit réservation et billetterie en ligne, recherche sémantique de la programmation et newsletters automatisées, le tout accessible, rapide (Web Vitals contrôlés) et hébergé en Europe.",
+            a: "Oui. Pour un commerçant du marché de Chaville, on bâtit une vitrine e-commerce avec click-and-collect, devis automatisés et agent conversationnel multilingue.",
           },
         ],
         guarantees:
@@ -218,7 +218,7 @@ export const CHAVILLE_COPY: VilleCopy = {
           },
           {
             q: "Pouvez-vous créer une billetterie ou un site pour un commerce ou un lieu culturel chavillois ?",
-            a: "Oui. Pour un commerçant du marché de Chaville, on bâtit une vitrine e-commerce avec click-and-collect, devis automatisés et agent conversationnel multilingue. Pour un lieu comme l'Atrium ou une association, on conçoit réservation et billetterie en ligne, recherche sémantique de la programmation et newsletters automatisées, le tout accessible, rapide (Web Vitals contrôlés) et hébergé en Europe.",
+            a: "Oui. Pour un commerçant du marché de Chaville, on bâtit une vitrine e-commerce avec click-and-collect, devis automatisés et agent conversationnel multilingue.",
           },
         ],
         guarantees:
@@ -250,7 +250,7 @@ export const CHAVILLE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Chaville ?",
-      a: "Nous démarrons par un audit, puis intervenons sur site ou en visio, à 15 min de Paris-Montparnasse. Livrables documentés, équipes formées, aucune dépendance technique imposée.",
+      a: "Nous démarrons par un audit, puis intervenons sur site ou en visio. Livrables documentés, équipes formées, aucune dépendance technique imposée.",
     },
   ],
 };

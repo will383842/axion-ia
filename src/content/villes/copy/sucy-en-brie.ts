@@ -229,8 +229,8 @@ export const SUCY_EN_BRIE_COPY: VilleCopy = {
 
   faqGeolocalisee: [
     {
-      q: "Axion-IA se déplace-t-il sur site à Sucy-en-Brie ?",
-      a: "Oui. Nos experts IA seniors interviennent directement dans vos locaux à Sucy-en-Brie et dans le sud-est du Val-de-Marne, pour observer vos processus réels avant toute recommandation.",
+      q: "Intervenez-vous à Sucy-en-Brie ?",
+      a: "Oui. Nous intervenons sur place à Sucy-en-Brie, comme partout en France, ou à distance.",
     },
     {
       q: "Un commerce ou un cabinet libéral peut-il vraiment profiter de l'IA ?",

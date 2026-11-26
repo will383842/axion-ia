@@ -74,7 +74,7 @@ export const BEAUNE_COPY: VilleCopy = {
           {
             step: "Développement par sprints",
             detail:
-              "Greffe IA sur l'existant (WordPress, Shopify, WooCommerce, PrestaShop, Magento) ou build IA-native : boutique e-commerce, portail d'allocations B2B, chatbot RAG multilingue, recherche sémantique sur vos millésimes, agents de réservation pour l'oenotourisme. Démos hebdomadaires en visio depuis Beaune ou Dijon, à 45 km, avec validation à chaque étape par vos équipes.",
+              "Greffe IA sur l'existant (WordPress, Shopify, WooCommerce, PrestaShop, Magento) ou build IA-native : boutique e-commerce, portail d'allocations B2B, chatbot RAG multilingue, recherche sémantique sur vos millésimes, agents de réservation pour l'oenotourisme. Démos hebdomadaires en visio ou Dijon, à 45 km, avec validation à chaque étape par vos équipes.",
           },
           {
             step: "Recette + mise en ligne",
@@ -160,7 +160,7 @@ export const BEAUNE_COPY: VilleCopy = {
           {
             step: "Développement par sprints",
             detail:
-              "Greffe IA sur l'existant (WordPress, Shopify, WooCommerce, PrestaShop, Magento) ou build IA-native : boutique e-commerce, portail d'allocations B2B, chatbot RAG multilingue, recherche sémantique sur vos millésimes, agents de réservation pour l'oenotourisme. Démos hebdomadaires en visio depuis Beaune ou Dijon, à 45 km, avec validation à chaque étape par vos équipes.",
+              "Greffe IA sur l'existant (WordPress, Shopify, WooCommerce, PrestaShop, Magento) ou build IA-native : boutique e-commerce, portail d'allocations B2B, chatbot RAG multilingue, recherche sémantique sur vos millésimes, agents de réservation pour l'oenotourisme. Démos hebdomadaires en visio ou Dijon, à 45 km, avec validation à chaque étape par vos équipes.",
           },
           {
             step: "Recette + mise en ligne",
@@ -230,7 +230,7 @@ export const BEAUNE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il sur site à Beaune et dans le vignoble bourguignon ?",
-      a: "Oui, nos experts IA seniors se déplacent à Beaune, dans tout le vignoble de la Côte de Beaune et de la Côte de Nuits (Meursault, Pommard, Volnay, Nuits-Saint-Georges) ainsi que dans l'agglomération dijonnaise à 45 km pour auditer, intégrer et former les équipes des TPE et PME locales directement sur leur site de production.",
+      a: "Oui, nos experts IA seniors interviennent à Beaune, dans tout le vignoble de la Côte de Beaune et de la Côte de Nuits (Meursault, Pommard, Volnay, Nuits-Saint-Georges) ainsi que dans l'agglomération dijonnaise pour auditer, intégrer et former les équipes des TPE et PME locales directement sur leur site de production.",
     },
     {
       q: "Quels secteurs accompagnez-vous prioritairement à Beaune ?",
@@ -246,7 +246,7 @@ export const BEAUNE_COPY: VilleCopy = {
     },
     {
       q: "Quel est le délai moyen pour démarrer une mission IA à Beaune ?",
-      a: "Nous démarrons une mission à Beaune sous 5 à 10 jours ouvrés en moyenne, selon la disponibilité de nos experts seniors et la complexité du projet. La gare SNCF de Beaune et l'A6 facilitent les venues hebdomadaires depuis Paris (2h15 TGV via Dijon) ou Lyon (1h45 par autoroute).",
+      a: "Nous démarrons une mission à Beaune sous 5 à 10 jours ouvrés en moyenne, selon la disponibilité de nos experts seniors et la complexité du projet.",
     },
     {
       q: "Axion-IA garantit-il la conformité RGPD et AI Act à Beaune ?",

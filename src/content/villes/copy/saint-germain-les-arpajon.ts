@@ -49,7 +49,7 @@ export const SAINT_GERMAIN_LES_ARPAJON_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Saint-Germain-lès-Arpajon ?",
-      a: "Oui, Axion-IA intervient à Saint-Germain-lès-Arpajon et tout le Hurepoix (Arpajon à 5 min, Brétigny-sur-Orge, Linas). Gare RER C Arpajon à 5 min, Paris à 35 min.",
+      a: "Axion IA intervient partout en France, sur site ou à distance.",
     },
     {
       q: "Travaillez-vous avec les artisans et commerçants de proximité ?",
@@ -65,7 +65,7 @@ export const SAINT_GERMAIN_LES_ARPAJON_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Saint-Germain-lès-Arpajon ?",
-      a: "Nous intervenons partout en France, sur place ou à distance.",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Saint-Germain-lès-Arpajon, comme partout en France, ou à distance.",
     },
   ],
 };

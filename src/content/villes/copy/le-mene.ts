@@ -49,7 +49,7 @@ export const LE_MENE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il au Mené et dans le centre Bretagne ?",
-      a: "Oui, Axion-IA intervient au Mené et dans tout le pays de Loudéac (Loudéac, Merdrignac, Collinée, Plémet, Uzel). Saint-Brieuc à 40 min, Rennes à 1h15, Pontivy à 35 min.",
+      a: "Oui, Axion-IA intervient au Mené et dans tout le pays de Loudéac (Loudéac, Merdrignac, Collinée, Plémet, Uzel).",
     },
     {
       q: "Travaillez-vous avec les PME agroalimentaires du secteur ?",
@@ -65,7 +65,7 @@ export const LE_MENE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA au Mené ?",
-      a: "Nos consultants se déplacent depuis Saint-Brieuc (40 min) ou Rennes (1h15). Gare TGV de Saint-Brieuc sur la ligne Paris-Brest, puis route vers Loudéac et Le Mené.",
+      a: "Nous intervenons partout en France, sur place ou à distance.",
     },
   ],
 };

@@ -253,7 +253,7 @@ export const LYON_COPY: VilleCopy = {
           },
           {
             q: "Do you cover Métropole communes (Villeurbanne, Vénissieux, Saint-Priest, Écully)?",
-            a: "Yes. The Métropole de Lyon is our full territory. Our consultants travel to all communes — from Villeurbanne (IT) to Saint-Priest (Renault Trucks), Écully (Centrale, Groupe SEB, EM Lyon) to Bron and Vénissieux.",
+            a: "Yes. The Métropole de Lyon is our full territory. Axion-IA works anywhere in France, on site or remotely, in all communes — from Villeurbanne (IT) to Saint-Priest (Renault Trucks), Écully (Centrale, Groupe SEB, EM Lyon) to Bron and Vénissieux.",
           },
           {
             q: "Do I need AI maturity to engage you?",
@@ -1003,7 +1003,7 @@ export const LYON_COPY: VilleCopy = {
     },
     {
       q: "Pouvez-vous intervenir dans les communes de la Métropole hors Lyon intra-muros ?",
-      a: "Oui. La Métropole entière est notre zone d'intervention : Villeurbanne (cluster IT), Écully (Centrale Lyon, Groupe SEB, EM Lyon), Bron (Eurexpo), Saint-Priest (Renault Trucks), Vénissieux, Caluire-et-Cuire, et les autres communes. Aucun supplément de zone.",
+      a: "Oui. La Métropole entière est notre zone d'intervention : Villeurbanne (cluster IT), Écully (Centrale Lyon, Groupe SEB, EM Lyon), Bron (Eurexpo), Saint-Priest (Renault Trucks), Vénissieux, Caluire-et-Cuire, et les autres communes.",
     },
     {
       q: "En combien de temps pouvez-vous démarrer une mission à Lyon ?",

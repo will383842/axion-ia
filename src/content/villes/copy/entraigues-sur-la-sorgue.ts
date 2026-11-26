@@ -49,7 +49,7 @@ export const ENTRAIGUES_SUR_LA_SORGUE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Entraigues-sur-la-Sorgue et dans le nord-est avignonnais ?",
-      a: "Oui, Axion-IA intervient à Entraigues-sur-la-Sorgue et dans tout le nord-est avignonnais (Sorgues, Vedène, Le Pontet, Monteux). Proximité d'Avignon TGV via A7.",
+      a: "Oui, Axion-IA intervient à Entraigues-sur-la-Sorgue et dans tout le nord-est avignonnais (Sorgues, Vedène, Le Pontet, Monteux). Axion IA intervient partout en France, sur site ou à distance.",
     },
     {
       q: "Tarifs audit IA à Entraigues-sur-la-Sorgue  : quel budget prévoir ?",
@@ -64,8 +64,8 @@ export const ENTRAIGUES_SUR_LA_SORGUE_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les maraîchers sur prévision de récoltes, traçabilité produits, optimisation tournées de livraison, gestion stocks frais et automatisation administrative coopératives.",
     },
     {
-      q: "Comment se déplace Axion-IA à Entraigues-sur-la-Sorgue ?",
-      a: "Entraigues-sur-la-Sorgue est à 15 min d'Avignon centre et 20 min de la gare TGV via A7. Nos consultants se déplacent dans vos locaux.",
+      q: "Comment se déroule une mission à Entraigues-sur-la-Sorgue ?",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Entraigues-sur-la-Sorgue, comme partout en France, ou à distance.",
     },
   ],
 };

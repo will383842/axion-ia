@@ -49,7 +49,7 @@ export const BEHREN_LES_FORBACH_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Behren-lès-Forbach ?",
-      a: "Oui, Axion-IA intervient à Behren-lès-Forbach et dans tout le Bassin houiller mosellan (Forbach, Stiring-Wendel, Petite-Rosselle, Cocheren). Consultants via gare SNCF Forbach ou autoroute A320.",
+      a: "Oui, Axion-IA intervient à Behren-lès-Forbach et dans tout le Bassin houiller mosellan (Forbach, Stiring-Wendel, Petite-Rosselle, Cocheren).",
     },
     {
       q: "Accompagnez-vous les entreprises transfrontalières vers la Sarre ?",
@@ -65,7 +65,7 @@ export const BEHREN_LES_FORBACH_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Behren-lès-Forbach ?",
-      a: "Nos consultants se déplacent via gare SNCF Forbach (TER + ICE vers Sarrebruck) ou autoroute A320. Forbach à 3 min, Sarrebruck à 15 min, Metz à 55 min.",
+      a: "Une mission à Behren-lès-Forbach démarre par un échange de cadrage, puis se déroule sur site ou à distance, avec des livrables remis et documentés.",
     },
   ],
 };

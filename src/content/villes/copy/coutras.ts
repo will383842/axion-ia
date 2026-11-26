@@ -65,7 +65,7 @@ export const COUTRAS_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Coutras ?",
-      a: "Nos consultants interviennent dans vos locaux ou en visio. Gare SNCF Coutras accessible. Tarifs et planning fixés en amont, livrables documentés.",
+      a: "Nos consultants interviennent dans vos locaux ou en visio. Tarifs et planning fixés en amont, livrables documentés.",
     },
   ],
 };

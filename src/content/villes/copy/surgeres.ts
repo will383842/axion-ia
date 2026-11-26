@@ -49,7 +49,7 @@ export const SURGERES_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Surgères et dans le bassin laitier ?",
-      a: "Oui, Axion-IA intervient à Surgères et tout le bassin laitier Charentes-Poitou. Nous intervenons partout en France, sur place ou à distance. Surgères est desservie par sa gare TER (La Rochelle et Niort à 30 min) et la N11.",
+      a: "Oui, Axion-IA intervient à Surgères et tout le bassin laitier Charentes-Poitou. Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quels services IA pour l'agroalimentaire laitier à Surgères ?",

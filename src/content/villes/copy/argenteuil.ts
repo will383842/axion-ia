@@ -65,9 +65,9 @@ export const ARGENTEUIL_COPY: VilleCopy = {
   ],
 
   distancesFr:
-    "Gare d'Argenteuil (Transilien ligne J) : Paris Saint-Lazare en ~12 min. RER C accessible via correspondance Épinay-sur-Seine (T11 tramway). Aéroport Paris-Charles de Gaulle à ~30 km. Accès rapide A15 et A86 vers les bassins d'emplois du Grand Paris (La Défense à ~8 km, Cergy à ~20 km).",
+    "Argenteuil est au cœur des bassins d'emplois du Grand Paris, entre La Défense et Cergy. Axion IA intervient partout en France, sur site ou à distance, y compris à Argenteuil.",
   distancesEn:
-    "Argenteuil station (Transilien line J): Paris Saint-Lazare in ~12 min. RER C accessible via Épinay-sur-Seine connection (T11 tram). Paris-Charles de Gaulle Airport ~30 km. Fast A15 and A86 motorway access to Grand Paris employment hubs (La Défense ~8 km, Cergy ~20 km).",
+    "Argenteuil sits at the heart of the Grand Paris employment hubs, between La Défense and Cergy. Axion-IA works anywhere in France, on site or remotely, including in Argenteuil.",
 
   ecosystemFr:
     "Tissu B2B diversifié — 9 045 établissements actifs, 2 690 créations d'entreprises par an. Dominante commerce/transports (61,9 %), BTP (23,6 %), secteur public et santé (8,8 %), industrie héritée de Dassault Aviation (5,4 %). Parc du Val d'Argent (industrie/logistique/tertiaire), site Dassault en reconversion urbaine. Rayonnement Cap Digital (numérique/IA) et Mov'eo (mobilité/aéronautique). Connexion rapide La Défense et Grand Paris.",
@@ -77,7 +77,7 @@ export const ARGENTEUIL_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Combien coûte un audit IA opérationnel à Argenteuil ?",
-      a: "Le tarif dépend du niveau retenu — Audit sur place, Ciblé, Stratégique PME ou Stratégique ETI. Tarifs publics affichés sur la page Audit, calibrés selon votre taille (TPE, PME, ETI, grande entreprise). Aucun supplément géographique : le tarif est identique à Argenteuil et partout en France.",
+      a: "Le tarif dépend du niveau retenu — Audit sur place, Ciblé, Stratégique PME ou Stratégique ETI. Tarifs publics affichés sur la page Audit, calibrés selon votre taille (TPE, PME, ETI, grande entreprise).",
     },
     {
       q: "Avez-vous des clients dans le secteur BTP à Argenteuil ?",
@@ -85,7 +85,7 @@ export const ARGENTEUIL_COPY: VilleCopy = {
     },
     {
       q: "Pouvez-vous intervenir dans les communes voisines (Bezons, Sartrouville, Colombes) ?",
-      a: "Oui. Tout le bassin argentin est notre zone d'intervention : Bezons (3 km), Sannois (3 km), Houilles (4 km), Cormeilles-en-Parisis (4 km), Sartrouville (5 km), Colombes (5 km), Bois-Colombes (6 km). Aucun supplément de zone.",
+      a: "Oui. Tout le bassin argentin est notre zone d'intervention : Bezons, Sannois, Houilles, Cormeilles-en-Parisis, Sartrouville, Colombes, Bois-Colombes.",
     },
     {
       q: "Quels secteurs sont prioritaires à Argenteuil pour une mission IA ?",
@@ -97,7 +97,7 @@ export const ARGENTEUIL_COPY: VilleCopy = {
     },
     {
       q: "Intervenez-vous aussi vers La Défense ou Cergy pour les entreprises d'Argenteuil qui ont des sites multiples ?",
-      a: "Oui. La géographie du Grand Paris est notre terrain courant : La Défense (~8 km), Cergy (~20 km), Saint-Denis (~12 km), le bassin Saint-Lazare. Si votre entreprise argenteuillaise a des équipes réparties, nous adaptons le format pour couvrir les différents sites.",
+      a: "Oui. Axion IA intervient partout en France, sur site ou à distance. La géographie du Grand Paris est notre terrain courant : La Défense, Cergy, Saint-Denis, le bassin Saint-Lazare. Si votre entreprise argenteuillaise a des équipes réparties, nous adaptons le format pour couvrir les différents sites.",
     },
   ],
 
@@ -188,7 +188,7 @@ export const ARGENTEUIL_COPY: VilleCopy = {
           },
           {
             q: "Intervenez-vous aussi sur les sites des communes voisines (Bezons, Sartrouville, Colombes) ?",
-            a: "Oui. Tout le bassin argentin est notre zone d'intervention : Bezons, Sartrouville, Colombes, Cormeilles-en-Parisis, Houilles, Sannois et au-delà vers La Défense. Aucun supplément de zone.",
+            a: "Oui. Tout le bassin argentin est notre zone d'intervention : Bezons, Sartrouville, Colombes, Cormeilles-en-Parisis, Houilles, Sannois et au-delà vers La Défense.",
           },
           {
             q: "Faut-il être déjà avancé sur l'IA pour solliciter un audit ?",
@@ -280,7 +280,7 @@ export const ARGENTEUIL_COPY: VilleCopy = {
           },
           {
             q: "Do you cover neighbouring communes (Bezons, Sartrouville, Colombes)?",
-            a: "Yes. The full Argenteuil basin is our territory: Bezons, Sartrouville, Colombes, Cormeilles-en-Parisis, Houilles, Sannois and through to La Défense. No zone surcharge.",
+            a: "Yes. The full Argenteuil basin is our territory: Bezons, Sartrouville, Colombes, Cormeilles-en-Parisis, Houilles, Sannois and through to La Défense.",
           },
           {
             q: "Do I need AI maturity to engage you?",

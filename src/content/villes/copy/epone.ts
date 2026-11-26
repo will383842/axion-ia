@@ -14,9 +14,9 @@ export const EPONE_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Épône (78). Nous accompagnons TPE et PME : artisans locaux, PME industrielles et logistiques de la vallée de Seine, commerçants et professions libérales de cette commune dynamique entre Mantes-la-Jolie et Les Mureaux.",
   seoHook: "industrie logistique & artisanat bâtiment",
   ecosystemFr:
-    "Épône est une commune de la rive gauche de Seine dans les Yvelines, à mi-chemin entre Mantes-la-Jolie et Les Mureaux. Zones d'activités industrielles et logistiques le long de l'axe Seine. Tissu économique : PME industrie et logistique, TPE artisanat bâtiment, commerces de centre-bourg, professions libérales, exploitations agricoles (plaine de Versailles). Proximité immédiate de l'A13 et gare Transilien.",
+    "Épône est une commune de la rive gauche de Seine dans les Yvelines, à mi-chemin entre Mantes-la-Jolie et Les Mureaux. Zones d'activités industrielles et logistiques le long de l'axe Seine. Tissu économique : PME industrie et logistique, TPE artisanat bâtiment, commerces de centre-bourg, professions libérales, exploitations agricoles (plaine de Versailles).",
   ecosystemEn:
-    "Épône est une commune de la rive gauche de Seine dans les Yvelines, à mi-chemin entre Mantes-la-Jolie et Les Mureaux. Zones d'activités industrielles et logistiques le long de l'axe Seine. Tissu économique : PME industrie et logistique, TPE artisanat bâtiment, commerces de centre-bourg, professions libérales, exploitations agricoles (plaine de Versailles). Proximité immédiate de l'A13 et gare Transilien.",
+    "Épône est une commune de la rive gauche de Seine dans les Yvelines, à mi-chemin entre Mantes-la-Jolie et Les Mureaux. Zones d'activités industrielles et logistiques le long de l'axe Seine. Tissu économique : PME industrie et logistique, TPE artisanat bâtiment, commerces de centre-bourg, professions libérales, exploitations agricoles (plaine de Versailles).",
   distancesFr:
     "Mantes-la-Jolie à 10 min, Les Mureaux à 10 min, Gare d'Épône — Mézières (Transilien J Paris Saint-Lazare ~50 min). A13 accès rapide, Poissy à 20 min, Paris La Défense à 40 min. Versailles à 30 min.",
   distancesEn:
@@ -49,7 +49,7 @@ export const EPONE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Épône et dans la vallée de Seine ?",
-      a: "Oui, Axion-IA intervient à Épône et dans toute la vallée de Seine yvelinoise (Mantes-la-Jolie à 10 min, Les Mureaux à 10 min, Aubergenville, Mézières-sur-Seine). Nos consultants se déplacent via A13 ou Transilien J.",
+      a: "Oui, Axion-IA intervient à Épône et dans toute la vallée de Seine yvelinoise (Mantes-la-Jolie, Les Mureaux, Aubergenville, Mézières-sur-Seine).",
     },
     {
       q: "Accompagnez-vous les PME logistiques de l'axe Seine ?",
@@ -65,7 +65,7 @@ export const EPONE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Épône ?",
-      a: "Nous intervenons partout en France, sur place ou à distance.",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Épône, comme partout en France, ou à distance.",
     },
   ],
 };

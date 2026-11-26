@@ -132,7 +132,7 @@ export const PONTAULT_COMBAULT_COPY: VilleCopy = {
           },
           {
             q: "Quel délai et quelles garanties pour un site à Pontault-Combault ?",
-            a: "Le devis est remis à partir de 24 à 48 h selon la complexité du périmètre. Hébergement en Union européenne et conformité RGPD intégrés dès la conception. Vous restez propriétaire du code, des données et du contenu, transférables à tout prestataire — aucun verrou éditeur. La desserte par le RER E et l'A4 nous permet d'intervenir sur site dans tout l'est francilien.",
+            a: "Le devis est remis à partir de 24 à 48 h selon la complexité du périmètre. Hébergement en Union européenne et conformité RGPD intégrés dès la conception. Vous restez propriétaire du code, des données et du contenu, transférables à tout prestataire — aucun verrou éditeur.",
           },
         ],
         guarantees:
@@ -218,7 +218,7 @@ export const PONTAULT_COMBAULT_COPY: VilleCopy = {
           },
           {
             q: "What lead time and guarantees for a site in Pontault-Combault?",
-            a: "The quote is issued from 24 to 48 hours depending on scope complexity. EU hosting and GDPR compliance built in from design. You remain owner of the code, data and content, transferable to any provider — no vendor lock-in. RER E and A4 access let us work on site across eastern Île-de-France.",
+            a: "The quote is issued from 24 to 48 hours depending on scope complexity. EU hosting and GDPR compliance built in from design. You remain owner of the code, data and content, transferable to any provider — no vendor lock-in. We work on site at Pontault-Combault, like everywhere in France.",
           },
         ],
         guarantees:
@@ -229,7 +229,7 @@ export const PONTAULT_COMBAULT_COPY: VilleCopy = {
 
   faqGeolocalisee: [
     {
-      q: "Axion-IA se déplace-t-il sur site à Pontault-Combault ?",
+      q: "Intervenez-vous à Pontault-Combault ?",
       a: "Oui. Nos experts IA interviennent dans vos locaux à Pontault-Combault, des zones commerciales aux entrepôts logistiques en passant par les ateliers d'artisans. L'audit terrain reste le meilleur moyen de cibler des automatisations utiles.",
     },
     {
@@ -242,7 +242,7 @@ export const PONTAULT_COMBAULT_COPY: VilleCopy = {
     },
     {
       q: "Quel délai pour une première intervention à Pontault-Combault ?",
-      a: "Nous visons un démarrage sous cinq jours ouvrés après validation, selon nos disponibilités. La desserte par le RER E et l'A4 nous permet d'être réactifs sur tout l'est francilien.",
+      a: "Nous visons un démarrage sous cinq jours ouvrés après validation, selon nos disponibilités.",
     },
     {
       q: "Comment garantissez-vous la conformité RGPD à Pontault-Combault ?",

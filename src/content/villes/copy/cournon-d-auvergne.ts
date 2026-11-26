@@ -49,7 +49,7 @@ export const COURNON_D_AUVERGNE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Cournon-d'Auvergne et Clermont Métropole ?",
-      a: "Oui, Axion-IA intervient à Cournon-d'Auvergne et toute Clermont Auvergne Métropole (Clermont à 10 min, Chamalières, Beaumont, Aubière). Nous intervenons partout en France, sur place ou à distance.",
+      a: "Oui. Nous intervenons à Cournon-d'Auvergne et dans toute Clermont Auvergne Métropole (Clermont-Ferrand, Chamalières, Beaumont, Aubière), sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les PME tertiaires et industrielles ?",
@@ -65,7 +65,7 @@ export const COURNON_D_AUVERGNE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Cournon-d'Auvergne ?",
-      a: "Lyon (1h45).",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Cournon-d'Auvergne, comme partout en France, ou à distance.",
     },
   ],
 };

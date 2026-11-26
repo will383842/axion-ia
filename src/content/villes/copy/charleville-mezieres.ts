@@ -132,7 +132,7 @@ export const CHARLEVILLE_MEZIERES_COPY: VilleCopy = {
           },
           {
             q: "Quels sont vos délais et où intervenez-vous ?",
-            a: "Nous établissons un devis à partir de 24-48 h selon la complexité, après le cadrage. Nous intervenons sur site à Charleville-Mézières et dans l'agglomération Ardenne Métropole — Villers-Semeuse, les Ayvelles, Nouzonville, Bogny-sur-Meuse, Sedan — et travaillons aussi en visio. Reims est à environ 1h par l'A34.",
+            a: "Nous établissons un devis à partir de 24-48 h selon la complexité, après le cadrage. Nous intervenons sur site à Charleville-Mézières et dans l'agglomération Ardenne Métropole — Villers-Semeuse, les Ayvelles, Nouzonville, Bogny-sur-Meuse, Sedan — et travaillons aussi en visio. Axion IA intervient partout en France, sur site ou à distance.",
           },
         ],
         guarantees:
@@ -218,7 +218,7 @@ export const CHARLEVILLE_MEZIERES_COPY: VilleCopy = {
           },
           {
             q: "What are your timelines and where do you operate?",
-            a: "We provide a quote within 24-48 hours depending on complexity, after framing. We operate on site in Charleville-Mézières and across the Ardenne Métropole area — Villers-Semeuse, Les Ayvelles, Nouzonville, Bogny-sur-Meuse, Sedan — and also work remotely. Reims is about 1h away via the A34.",
+            a: "We provide a quote within 24-48 hours depending on complexity, after framing. Axion-IA works anywhere in France, on site or remotely, including Charleville-Mézières and the Ardenne Métropole area — Villers-Semeuse, Les Ayvelles, Nouzonville, Bogny-sur-Meuse, Sedan.",
           },
         ],
         guarantees:
@@ -246,7 +246,7 @@ export const CHARLEVILLE_MEZIERES_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Charleville-Mézières ?",
-      a: "Reims est à 1h par l'A34, avec une gare TGV reliant Paris en 45 min. Nous nous déplaçons sur site à Charleville-Mézières.",
+      a: "Nous nous déplaçons sur site à Charleville-Mézières.",
     },
     {
       q: "Proposez-vous un accompagnement individuel pour les dirigeants ?",

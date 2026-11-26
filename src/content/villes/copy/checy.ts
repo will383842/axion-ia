@@ -49,7 +49,7 @@ export const CHECY_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il a Checy et dans l'est de l'agglomeration orleanaise ?",
-      a: "Oui, Axion-IA intervient a Checy et dans tout l'est d'Orleans Metropole (Bou, Mardie, Combleux, Saint-Jean-de-Braye). Orleans centre a 12 min, Paris a 1h25 A10/A19.",
+      a: "Oui, Axion-IA intervient a Checy et dans tout l'est d'Orleans Metropole (Bou, Mardie, Combleux, Saint-Jean-de-Braye). Nous intervenons sur place ou à distance.",
     },
     {
       q: "Quel est le tarif d'un audit IA a Checy ?",

@@ -49,7 +49,7 @@ export const SAINT_JUST_EN_CHAUSSEE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Saint-Just-en-Chaussée et sur le plateau picard ?",
-      a: "Oui, Axion-IA intervient à Saint-Just-en-Chaussée et sur tout le plateau picard (Clermont, Maignelay-Montigny, Estrées-Saint-Denis, Breteuil). Consultants accessibles via gare de Saint-Just-en-Chaussée (TER Amiens-Paris via Creil).",
+      a: "Oui, Axion-IA intervient à Saint-Just-en-Chaussée et sur tout le plateau picard (Clermont, Maignelay-Montigny, Estrées-Saint-Denis, Breteuil).",
     },
     {
       q: "Combien coûte un audit IA à Saint-Just-en-Chaussée  ?",

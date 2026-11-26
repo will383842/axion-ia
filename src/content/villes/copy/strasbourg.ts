@@ -276,7 +276,7 @@ export const STRASBOURG_COPY: VilleCopy = {
       fr: {
         hero: "Les interventions IA Axion-IA à Strasbourg se déclinent en formats sur site d'une à plusieurs journées selon vos équipes. Vos collaborateurs ne repartent pas avec des slides : ils repartent avec des outils IA installés sur leur poste, configurés pour leur travail réel.",
         whyHere: [
-          "Strasbourg est desservie en TGV et en ICE : nos consultants arrivent le matin et repartent le soir, limitant les coûts logistiques pour vous.",
+          "Nous intervenons partout en France, sur place ou à distance.",
           "Tous les secteurs du bassin strasbourgeois couverts en présentiel : Wacken-Europe, Presqu'île, Parc d'Innovation d'Illkirch (PII), Espace Européen de l'Entreprise à Schiltigheim, Port du Rhin, communes de l'Eurométropole.",
           "Dimension bilingue FR/DE gérée nativement : pour les équipes franco-allemandes de l'Eurodistrict, les démos et ateliers peuvent être conduits en français, en allemand ou en mode mixte selon les participants.",
           "Le format collectif (1 journée) est calibré pour les TPE, PME et ETI industrielles, biotech et de services strasbourgeoises jusqu'à une centaine de collaborateurs.",
@@ -368,7 +368,7 @@ export const STRASBOURG_COPY: VilleCopy = {
       en: {
         hero: "Axion-IA's AI sessions in Strasbourg come in on-site formats from one to several days depending on your teams. Your staff don't leave with slides: they leave with AI tools installed on their workstations, configured for their real work.",
         whyHere: [
-          "Strasbourg is served by TGV and ICE: we can work on site in a day, minimising logistics costs for you.",
+          "Axion-IA works anywhere in France, including Strasbourg, on site or remotely.",
           "All Strasbourg basin sectors covered in person: Wacken-Europe, Presqu'île, Illkirch Innovation Park (PII), Espace Européen de l'Entreprise in Schiltigheim, Port du Rhin, Eurométropole communes.",
           "FR/DE bilingualism natively handled: for Franco-German teams in the Eurodistrict, demos and workshops can be conducted in French, German or mixed mode per participants.",
           "The one-day format is calibrated for Strasbourg industrial, biotech and service SMEs and mid-caps up to about a hundred staff.",
@@ -642,7 +642,7 @@ export const STRASBOURG_COPY: VilleCopy = {
           "La dimension trilingue FR/DE/EN de l'Eurodistrict fait de Strasbourg un cas particulier : nous conduisons les séances dans la langue de travail du dirigeant, y compris en mode bilingue pour les profils franco-allemands de l'Eurodistrict Strasbourg-Ortenau.",
           "Les institutions européennes et les organismes internationaux (Parlement, Conseil de l'Europe, INSP ex-ENA) emploient des cadres de haut niveau soumis à des contraintes de confidentialité fortes — notre coaching 1-to-1 répond exactement à ce besoin d'accompagnement discret.",
           "Les dirigeants des PME et ETI biotech du PII (Alsace BioValley, Eli Lilly, IRCAD) ont besoin d'intégrer l'IA dans leur pratique sans exposer leurs données cliniques ou de R&D — notre approche souveraine et confidentielle est calibrée pour ces contraintes.",
-          "Accessibilité maximale : gare de Strasbourg desservie par le TGV et l'ICE — nous intervenons sur place, avec un coût logistique minimal pour vous.",
+          "Accompagnement en présentiel : nous intervenons sur place à Strasbourg.",
           "Aucun group dynamics : vous progressez à votre rythme, sur vos vraies questions, dans votre langue de travail, sans vous adapter à un niveau collectif qui n'est pas le vôtre.",
         ],
         methodology: [
@@ -734,7 +734,7 @@ export const STRASBOURG_COPY: VilleCopy = {
           "The trilingual FR/DE/EN dimension of the Eurodistrict makes Strasbourg a special case: we conduct sessions in the executive's working language, including bilingual mode for Franco-German profiles in the Strasbourg-Ortenau Eurodistrict.",
           "European institutions and international bodies (Parliament, Council of Europe, INSP ex-ENA) employ senior staff subject to strong confidentiality constraints — our 1-to-1 coaching addresses exactly this need for discreet support.",
           "PII biotech SME and mid-cap leaders (Alsace BioValley, Eli Lilly, IRCAD) need to integrate AI without exposing clinical or R&D data — our sovereign and confidential approach is calibrated for these constraints.",
-          "Maximum accessibility: Strasbourg station served by TGV and ICE — we work on site with minimal logistics cost for you.",
+          "Axion-IA works anywhere in France, including Strasbourg, on site or remotely.",
           "No group dynamics: you progress at your own pace, on your real questions, in your working language, without adapting to a collective level that is not yours.",
         ],
         methodology: [
@@ -999,7 +999,7 @@ export const STRASBOURG_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Combien coûte un audit IA opérationnel à Strasbourg ?",
-      a: "Le tarif dépend du niveau retenu — Audit sur place, Ciblé, Stratégique PME ou Stratégique ETI. Tarifs publics affichés sur la page Audit, calibrés selon votre taille (TPE, PME, ETI, grande organisation) et votre périmètre. Aucun supplément géographique : le tarif est identique partout en France.",
+      a: "Le tarif dépend du niveau retenu — Audit sur place, Ciblé, Stratégique PME ou Stratégique ETI. Tarifs publics affichés sur la page Audit, calibrés selon votre taille (TPE, PME, ETI, grande organisation) et votre périmètre.",
     },
     {
       q: "Intervenez-vous pour les institutions européennes à Strasbourg ?",

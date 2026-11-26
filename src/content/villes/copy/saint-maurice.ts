@@ -49,7 +49,7 @@ export const SAINT_MAURICE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Saint-Maurice et alentours ?",
-      a: "Oui, Axion-IA intervient à Saint-Maurice et dans les communes voisines (Charenton-le-Pont, Maisons-Alfort, Joinville-le-Pont, Vincennes). Paris 12e à 5 min par le pont de Charenton.",
+      a: "Oui, Axion-IA intervient à Saint-Maurice et dans les communes voisines (Charenton-le-Pont, Maisons-Alfort, Joinville-le-Pont, Vincennes).",
     },
     {
       q: "Accompagnez-vous les prestataires santé autour des hôpitaux ?",

@@ -49,7 +49,7 @@ export const SAULX_LES_CHARTREUX_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Saulx-les-Chartreux ?",
-      a: "Oui, Axion-IA intervient à Saulx-les-Chartreux et dans le secteur Longjumeau-Massy : Longjumeau à 5 min, Massy TGV à 10 min, Palaiseau à 10 min, Paris centre à 30 min par N20 ou A6.",
+      a: "Oui. Axion-IA intervient à Saulx-les-Chartreux et dans le secteur Longjumeau-Massy, notamment à Longjumeau, Massy et Palaiseau.",
     },
     {
       q: "Accompagnez-vous les exploitants maraîchers ?",
@@ -65,7 +65,7 @@ export const SAULX_LES_CHARTREUX_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Saulx-les-Chartreux ?",
-      a: "Massy TGV (10 min). Paris centre (30 min par N20 ou A6). Orly (15 min).",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Saulx-les-Chartreux, comme partout en France, ou à distance.",
     },
   ],
 };

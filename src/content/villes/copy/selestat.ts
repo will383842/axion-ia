@@ -49,7 +49,7 @@ export const SELESTAT_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Sélestat ?",
-      a: "Oui, Axion-IA intervient à Sélestat et dans le Centre-Alsace (Colmar, route des vins, Ribeauvillé, Riquewihr). Consultants via A35 (accès direct) ou gare TER Sélestat sur la ligne Strasbourg-Mulhouse. Position centrale entre les deux métropoles alsaciennes.",
+      a: "Oui, Axion-IA intervient à Sélestat et dans le Centre-Alsace (Colmar, route des vins, Ribeauvillé, Riquewihr). Position centrale entre les deux métropoles alsaciennes.",
     },
     {
       q: "Travaillez-vous avec les vignerons et l'œnotourisme ?",
@@ -65,7 +65,7 @@ export const SELESTAT_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Sélestat ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Sélestat est desservie par l'autoroute A35 et sa gare TER, entre Strasbourg (30 min) et Colmar (20 min), à 25 min de l'aéroport Strasbourg-Entzheim.",
+      a: "Nous intervenons partout en France, sur place ou à distance.",
     },
   ],
 };

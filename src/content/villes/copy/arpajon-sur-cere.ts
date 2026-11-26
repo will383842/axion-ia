@@ -49,7 +49,7 @@ export const ARPAJON_SUR_CERE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Arpajon-sur-Cère et agglomération Aurillac ?",
-      a: "Oui, Axion-IA intervient à Arpajon-sur-Cère et toute l'agglomération aurillacoise (Aurillac à 5 min, Ytrac, Naucelles). Nous intervenons partout en France, sur place ou à distance.",
+      a: "Oui. Axion-IA intervient à Arpajon-sur-Cère et dans toute l'agglomération aurillacoise : Aurillac, Ytrac et Naucelles. Nous intervenons sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les éleveurs Salers ?",
@@ -65,7 +65,7 @@ export const ARPAJON_SUR_CERE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Arpajon-sur-Cère ?",
-      a: "Clermont-Ferrand (2h). Tarifs publics.",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Arpajon-sur-Cère, comme partout en France, ou à distance.",
     },
   ],
 };

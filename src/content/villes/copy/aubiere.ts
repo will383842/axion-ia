@@ -49,7 +49,7 @@ export const AUBIERE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Aubière et campus Cézeaux ?",
-      a: "Oui, Axion-IA intervient à Aubière, campus Cézeaux et toute l'agglomération clermontoise (Clermont à 10 min, Cournon, Beaumont). Aéroport Clermont à 25 min.",
+      a: "Oui. Axion-IA intervient à Aubière, sur le campus Cézeaux et dans toute l'agglomération clermontoise : Clermont-Ferrand, Cournon et Beaumont.",
     },
     {
       q: "Travaillez-vous avec les startups deeptech du campus ?",
@@ -65,7 +65,7 @@ export const AUBIERE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Aubière ?",
-      a: "Clermont-Ferrand centre (10 min). Aéroport Clermont à 25 min. Tarifs publics.",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Aubière, comme partout en France, ou à distance.",
     },
   ],
 };

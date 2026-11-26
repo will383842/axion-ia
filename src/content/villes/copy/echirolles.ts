@@ -20,9 +20,8 @@ export const ECHIROLLES_COPY: VilleCopy = {
   ecosystemEn:
     "Le tissu économique d'Échirolles combine industrie historique (héritage viscose depuis les années 1920), commerce de détail concentré sur Grand'Place et Espace Comboire, services de santé (Hôpital Sud, Clinique des Cèdres) et PME tertiaires installées dans la ZA des Essarts et Sud Galaxie. La commune profite de la dynamique de la métropole grenobloise et de la proximité immédiate des activités technologiques grenobloises.",
   distancesFr:
-    "Échirolles est accessible via la ligne A du tramway, la liaison TER et l'autoroute A480.",
-  distancesEn:
-    "Échirolles est accessible via la ligne A du tramway, la liaison TER et l'autoroute A480.",
+    "Axion IA intervient partout en France, sur site ou à distance, y compris à Échirolles.",
+  distancesEn: "Axion-IA works anywhere in France, on site or remotely, including in Échirolles.",
   topSectorsNaf: [
     "Industrie mécanique et équipements",
     "Commerce de détail",
@@ -36,8 +35,8 @@ export const ECHIROLLES_COPY: VilleCopy = {
       en: "Audit sur place 4h sur site à Échirolles pour les TPE et PME industrielles, commerces et structures de santé : cartographie des processus et plan d'automatisation, à partir de {{price:audit-flash|flat}}.",
     },
     interventions: {
-      fr: "Interventions ponctuelles à Échirolles pour automatiser commandes, planning, reporting et qualité dans les ZA des Essarts et Sud Galaxie, dès {{price:intervention-4h|flat}}, déplacement sous 5 jours ouvrés.",
-      en: "Interventions ponctuelles à Échirolles pour automatiser commandes, planning, reporting et qualité dans les ZA des Essarts et Sud Galaxie, dès {{price:intervention-4h|flat}}, déplacement sous 5 jours ouvrés.",
+      fr: "Interventions ponctuelles à Échirolles pour automatiser commandes, planning, reporting et qualité dans les ZA des Essarts et Sud Galaxie, dès {{price:intervention-4h|flat}}.",
+      en: "Interventions ponctuelles à Échirolles pour automatiser commandes, planning, reporting et qualité dans les ZA des Essarts et Sud Galaxie, dès {{price:intervention-4h|flat}}.",
     },
     implementation: {
       fr: "Implémentation IA en code source à Échirolles (ERP industriel, GMAO, gestion patient, intégration SI) pour TPE et PME, à partir de {{price:impl-poc|entry}}, hébergement RGPD France.",
@@ -231,8 +230,8 @@ export const ECHIROLLES_COPY: VilleCopy = {
       a: "Les interventions Axion-IA à Échirolles démarrent à {{price:intervention-4h|flat}}, l'Audit sur place 4h à {{price:audit-flash|flat}}, et l'implémentation à {{price:impl-poc|entry}}. Tous nos tarifs sont publics sur axion-ia.com.",
     },
     {
-      q: "Sous quel délai Axion-IA se déplace-t-il à Échirolles ?",
-      a: "Notre équipe se déplace sur site à Échirolles sous 5 jours ouvrés après signature du devis. Pour les demandes urgentes, un cadrage en visioconférence est proposé sous 48 h.",
+      q: "Sous quel délai Axion-IA intervient-il à Échirolles ?",
+      a: "Nous intervenons sur site à Échirolles sous 5 jours ouvrés après signature du devis. Pour les demandes urgentes, un cadrage en visioconférence est proposé sous 48 h.",
     },
     {
       q: "Axion-IA intervient-il dans les communes proches d'Échirolles ?",

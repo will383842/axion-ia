@@ -49,7 +49,7 @@ export const SOISY_SOUS_MONTMORENCY_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Soisy-sous-Montmorency et vallée de Montmorency ?",
-      a: "Oui, Axion-IA intervient à Soisy-sous-Montmorency et toute la vallée de Montmorency (Enghien-les-Bains à 5 min, Montmorency à 5 min, Paris Gare du Nord à 30 min).",
+      a: "Oui. Axion-IA intervient à Soisy-sous-Montmorency et dans toute la vallée de Montmorency, notamment à Enghien-les-Bains et Montmorency.",
     },
     {
       q: "Travaillez-vous avec les commerçants et artisans de Soisy ?",
@@ -65,7 +65,7 @@ export const SOISY_SOUS_MONTMORENCY_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Soisy-sous-Montmorency ?",
-      a: "Enghien-les-Bains (5 min). Montmorency (5 min). Paris Gare du Nord (30 min transilien). CDG (30 min).",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Soisy-sous-Montmorency, comme partout en France, ou à distance.",
     },
   ],
 };

@@ -49,7 +49,7 @@ export const AUBIGNY_LES_CLOUZEAUX_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Aubigny-Les Clouzeaux et dans l'agglo yonnaise ?",
-      a: "Oui, Axion-IA intervient à Aubigny-Les Clouzeaux et dans toute l'agglomération de La Roche-sur-Yon. Centre-ville à 10 min. Déplacements sur site couvrent l'agglo yonnaise.",
+      a: "Oui, Axion-IA intervient à Aubigny-Les Clouzeaux et dans toute l'agglomération de La Roche-sur-Yon. Déplacements sur site couvrent l'agglo yonnaise.",
     },
     {
       q: "Quels services IA pour les PME industrielles d'Aubigny-Les Clouzeaux ?",

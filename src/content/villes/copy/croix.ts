@@ -238,7 +238,7 @@ export const CROIX_COPY: VilleCopy = {
     },
     {
       q: "Intervenez-vous sur site à Croix ?",
-      a: "Oui. Croix est reliée au tramway Mongy et à l'A22, à une vingtaine de minutes de Lille. Un expert senior se déplace dans vos locaux pour les ateliers de cadrage et les étapes clés, le reste du projet pouvant être conduit à distance.",
+      a: "Oui. Axion IA intervient partout en France, sur site ou à distance, y compris à Croix. Un expert senior se déplace dans vos locaux pour les ateliers de cadrage et les étapes clés, le reste du projet pouvant être conduit à distance.",
     },
     {
       q: "Par où commencer un projet IA à Croix ?",

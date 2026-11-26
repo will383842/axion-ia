@@ -162,7 +162,7 @@ export const MONTPELLIER_COPY: VilleCopy = {
           },
           {
             q: "Pouvez-vous intervenir sur les communes voisines (Castelnau-le-Lez, Lattes, Mauguio) ?",
-            a: "Oui. Nos interventions couvrent l'ensemble de la Métropole de Montpellier ainsi que les communes du bassin héraultais. Le tarif d'audit est identique quelle que soit la commune d'intervention dans la zone.",
+            a: "Oui. Nos interventions couvrent l'ensemble de la Métropole de Montpellier ainsi que les communes du bassin héraultais.",
           },
           {
             q: "Faut-il être déjà mature sur l'IA pour vous solliciter ?",
@@ -995,7 +995,7 @@ export const MONTPELLIER_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Combien coûte un audit IA opérationnel à Montpellier ?",
-      a: "Le tarif dépend du niveau retenu — Audit sur place, Ciblé, Stratégique PME ou Stratégique ETI. Tarifs publics affichés sur la page Audit, choix calibré selon votre taille (TPE, PME, ETI, grande entreprise) et votre secteur. Aucun supplément géographique : le tarif est identique à Montpellier comme partout en France.",
+      a: "Le tarif dépend du niveau retenu — Audit sur place, Ciblé, Stratégique PME ou Stratégique ETI. Tarifs publics affichés sur la page Audit, choix calibré selon votre taille (TPE, PME, ETI, grande entreprise) et votre secteur.",
     },
     {
       q: "Intervenez-vous dans les entreprises du parc Euromédecine ?",

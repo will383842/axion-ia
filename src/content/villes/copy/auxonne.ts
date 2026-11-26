@@ -65,7 +65,7 @@ export const AUXONNE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Auxonne ?",
-      a: "Dijon (30 min A39) ou Dole (20 min).",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Auxonne, comme partout en France, ou à distance.",
     },
   ],
 };

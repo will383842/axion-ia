@@ -463,12 +463,12 @@
       "step2Title": "2. We agree on a date",
       "step2Body": "We call you back to find a slot that suits you and prepare the topics together.",
       "step3Title": "3. We come and film",
-      "step3Body": "The team travels to your offices with the equipment. Expect about an hour on site."
+      "step3Body": "We film at your offices, with the equipment. Expect about an hour on site."
     },
     "included": {
       "title": "What's included",
-      "item1": "The team travelling to your offices",
-      "item2": "Filming and sound recording",
+      "item1": "Filming at your offices, equipment provided",
+      "item2": "Sound and image recording",
       "item3": "Editing of the episode",
       "item4": "The video and audio files, yours to use"
     },
@@ -481,7 +481,7 @@
       "phone": "Phone",
       "city": "Town",
       "postalCode": "Postcode",
-      "locationHint": "We travel to you — tell us where you are based.",
+      "locationHint": "We film at your place — tell us where you are based.",
       "activity": "In a few words, what you do",
       "activityPlaceholder": "What your company does, how long you've been going, how many of you there are…",
       "consent": "I agree that Axion-IA may keep these details to contact me about this shoot, in accordance with GDPR.",

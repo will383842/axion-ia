@@ -230,7 +230,7 @@ export const BETHUNE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Béthune et dans le bassin minier ?",
-      a: "Oui, Axion-IA intervient à Béthune et dans tout l'ancien bassin minier du Pas-de-Calais (Lens à 20 min, Arras à 35 min). Nous intervenons partout en France, sur place ou à distance.",
+      a: "Oui. Nous intervenons à Béthune et dans tout l'ancien bassin minier du Pas-de-Calais (Lens, Arras), sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les TPE et artisans béthunois ?",

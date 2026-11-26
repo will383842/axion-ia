@@ -49,7 +49,7 @@ export const MARQUISE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il a Marquise et dans le Boulonnais ?",
-      a: "Oui, Axion-IA intervient a Marquise et dans tout le Boulonnais (Boulogne-sur-Mer, Wimereux, Calais). Consultants depuis Lille (1h25 TER) ou via Calais-Frethun (Eurostar 15 min).",
+      a: "Oui, Axion-IA intervient a Marquise et dans tout le Boulonnais (Boulogne-sur-Mer, Wimereux, Calais). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quels services IA pour les carrieres de Marquise ?",

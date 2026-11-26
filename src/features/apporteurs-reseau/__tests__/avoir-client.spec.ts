@@ -37,7 +37,9 @@ const d = vi.hoisted(() => ({
 
 type Where = Record<string, unknown>;
 const correspond = (f: F, w: Where): boolean => {
-  if (w.id !== undefined && f.id !== w.id) return false;
+  const idw = w.id as string | { in: string[] } | undefined;
+  if (typeof idw === "string" && f.id !== idw) return false;
+  if (idw && typeof idw === "object" && !idw.in.includes(f.id)) return false;
   if (w.avoirDeId === null && f.avoirDeId !== null) return false;
   const a = w.avoirDeId as { not?: null; in?: string[] } | undefined;
   if (a && typeof a === "object" && "not" in a && f.avoirDeId === null) return false;
@@ -62,7 +64,12 @@ vi.mock("@/lib/prisma", () => {
     },
     commissionApporteur: {
       findMany: vi.fn(async ({ where }: { where: Where }) =>
-        "palier" in where ? d.reprisesDeja : d.lignes,
+        "palier" in where
+          ? d.reprisesDeja
+          : d.lignes.filter((l) => {
+              const f = where.factureId as { in?: string[] } | undefined;
+              return !f?.in || f.in.includes(l.factureId as string);
+            }),
       ),
       updateMany: (...a: unknown[]) => d.maj(...(a as [])),
       create: (...a: unknown[]) => d.cree(...(a as [])),
@@ -404,6 +411,19 @@ describe("tour 3 : avoir ancien déjà intégré à la base de la ligne", () => 
     ];
     await reprendreApresAvoirsClients(LE);
     expect(d.reprise).toHaveBeenCalledWith(expect.objectContaining({ demandeeCents: 30 }));
+  });
+});
+
+describe("avoir réel : `genererAvoirFacture` ne recopie pas devisId (audit Opus D1)", () => {
+  it("avoir sans devisId sur l'acompte A1, commission portée par le solde F1 : elle est reprise", async () => {
+    d.factures = [
+      { ...facture, id: "A1", devisId: "D1", montantHtCents: 60_000 },
+      { ...facture, id: "F1", devisId: "D1", montantHtCents: 140_000 },
+      avoir(-60_000, { id: "AV", devisId: null, avoirDeId: "A1" }),
+    ];
+    d.lignes = [ligne({ factureId: "F1", factureHtCents: 200_000, montantCents: 60_000 })];
+    const b = await reprendreApresAvoirsClients(LE);
+    expect(b.reduites + b.annulees + b.retenues + b.reprises).toBeGreaterThan(0);
   });
 });
 

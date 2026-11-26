@@ -9,9 +9,9 @@ export const BOURG_LA_REINE_COPY: VilleCopy = {
   pitchEn:
     "Bourg-la-Reine (92), commune de 21 019 habitants au sud de Paris, traversée par l'ex-RN20 (D920). Desservie par le RER B, limitrophe d'Antony, Sceaux, Bagneux, Cachan et L'Haÿ-les-Roses. Tissu résidentiel et commercial dense, professions libérales, services et TPE-PME des Hauts-de-Seine sud. Axion-IA, cabinet d'architectes seniors en intelligence artificielle, y accompagne dirigeants TPE, gérants PME et professions libérales avec des solutions IA codées sur mesure, sans no-code.",
   directAnswerFr:
-    "Axion-IA, cabinet d'architectes seniors en intelligence artificielle, se déplace à Bourg-la-Reine (92) pour accompagner les TPE, PME et professions libérales du sud des Hauts-de-Seine. Présence directe sur l'axe RER B Sceaux-Antony-Massy : nous intervenons sur site chez les commerçants, cabinets libéraux, agences de services et PME du tissu local. Nos prestations incluent Audit sur place 4 h à {{price:audit-flash|flat}}, Formation 4 h {{price:intervention-4h|flat}} et coaching 1-to-1 dirigeants. Code IA sur mesure, pas de no-code.",
+    "Axion-IA, cabinet d'architectes seniors en intelligence artificielle, intervient à Bourg-la-Reine (92) pour accompagner les TPE, PME et professions libérales du sud des Hauts-de-Seine. Présence directe à Bourg-la-Reine, Sceaux et Antony : nous intervenons sur site chez les commerçants, cabinets libéraux, agences de services et PME du tissu local. Nos prestations incluent Audit sur place 4 h à {{price:audit-flash|flat}}, Formation 4 h {{price:intervention-4h|flat}} et coaching 1-to-1 dirigeants. Code IA sur mesure, pas de no-code.",
   directAnswerEn:
-    "Axion-IA, cabinet d'architectes seniors en intelligence artificielle, se déplace à Bourg-la-Reine (92) pour accompagner les TPE, PME et professions libérales du sud des Hauts-de-Seine. Présence directe sur l'axe RER B Sceaux-Antony-Massy : nous intervenons sur site chez les commerçants, cabinets libéraux, agences de services et PME du tissu local. Nos prestations incluent Audit sur place 4 h à {{price:audit-flash|flat}}, Formation 4 h {{price:intervention-4h|flat}} et coaching 1-to-1 dirigeants. Code IA sur mesure, pas de no-code.",
+    "Axion-IA, cabinet d'architectes seniors en intelligence artificielle, intervient à Bourg-la-Reine (92) pour accompagner les TPE, PME et professions libérales du sud des Hauts-de-Seine. Présence directe à Bourg-la-Reine, Sceaux et Antony : nous intervenons sur site chez les commerçants, cabinets libéraux, agences de services et PME du tissu local. Nos prestations incluent Audit sur place 4 h à {{price:audit-flash|flat}}, Formation 4 h {{price:intervention-4h|flat}} et coaching 1-to-1 dirigeants. Code IA sur mesure, pas de no-code.",
   seoHook: "professions libérales, commerce & PME services",
   ecosystemFr:
     "Bourg-la-Reine est une commune de 21 019 habitants des Hauts-de-Seine, limitrophe d'Antony, Sceaux, Bagneux, Cachan et L'Haÿ-les-Roses. Desservie par la ligne B du RER et la D920 (ex-RN20 reliant Paris à Orléans), elle s'inscrit dans la métropole du Grand Paris depuis 2016. Tissu économique mixte : commerces de proximité le long de l'avenue du Général-Leclerc, professions libérales (santé, droit, conseil), TPE de services et PME résidentielles. Héritage historique de la faïencerie (XVIIIᵉ-XIXᵉ). Proximité du lycée Lakanal à Sceaux.",
@@ -34,8 +34,8 @@ export const BOURG_LA_REINE_COPY: VilleCopy = {
       en: "Audit IA à Bourg-la-Reine : diagnostic pour TPE commerçants, cabinets libéraux (médecins, avocats, experts-comptables), agences de services et PME du sud 92. Audit sur place 4 h à {{price:audit-flash|flat}}, livrable ROI chiffré.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Bourg-la-Reine, accès direct RER B. Ateliers ciblés pour TPE commerce, professions libérales et PME : automatisation gestion clients, classification documents, IA métier sur mesure. Formation 4 h à {{price:intervention-4h|flat}}.",
-      en: "Interventions IA sur site à Bourg-la-Reine, accès direct RER B. Ateliers ciblés pour TPE commerce, professions libérales et PME : automatisation gestion clients, classification documents, IA métier sur mesure. Formation 4 h à {{price:intervention-4h|flat}}.",
+      fr: "Interventions IA sur site à Bourg-la-Reine. Ateliers ciblés pour TPE commerce, professions libérales et PME : automatisation gestion clients, classification documents, IA métier sur mesure. Formation 4 h à {{price:intervention-4h|flat}}.",
+      en: "Interventions IA sur site à Bourg-la-Reine. Ateliers ciblés pour TPE commerce, professions libérales et PME : automatisation gestion clients, classification documents, IA métier sur mesure. Formation 4 h à {{price:intervention-4h|flat}}.",
     },
     implementation: {
       fr: "Implémentation IA à Bourg-la-Reine : intégration aux outils existants (CRM, ERP, bureautique) pour PME tertiaires et professions libérales. Code propriétaire client, pas de no-code, pas de SaaS verrouillé. À partir de {{price:impl-poc|entry}}.",
@@ -128,11 +128,11 @@ export const BOURG_LA_REINE_COPY: VilleCopy = {
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
-            a: "Oui. Après le cadrage sur site, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, pas de surcoût géographique en Île-de-France : le tarif est le même qu'à Antony, Sceaux ou Massy.",
+            a: "Oui. Après le cadrage sur site, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée.",
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée, pas de surcoût géographique en Île-de-France. Mise en ligne sans downtime quand on augmente l'existant, bascule planifiée hors heures d'affluence. Web Vitals et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun abonnement ni verrou éditeur imposé, transférable à tout prestataire local du Grand Paris sud ou repris en interne par vos équipes.",
+          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, bascule planifiée hors heures d'affluence. Web Vitals et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun abonnement ni verrou éditeur imposé, transférable à tout prestataire local du Grand Paris sud ou repris en interne par vos équipes.",
       },
       en: {
         hero: "Axion-IA conçoit et augmente à Bourg-la-Reine (92) des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour cette commune résidentielle dense des Hauts-de-Seine sud, où coexistent professions libérales (santé, droit, conseil), commerces de l'avenue du Général-Leclerc, PME tertiaires desservies par le RER B et quelques sièges connus comme Faber-Castell et Atlantic. Le futur écoquartier de la Faïencerie, à environ 700 m de la gare, redessine d'ailleurs le centre. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Bourg-la-Reine, itérations à distance.",
@@ -214,11 +214,11 @@ export const BOURG_LA_REINE_COPY: VilleCopy = {
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
-            a: "Oui. Après le cadrage sur site, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, pas de surcoût géographique en Île-de-France : le tarif est le même qu'à Antony, Sceaux ou Massy.",
+            a: "Oui. Après le cadrage sur site, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée.",
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée, pas de surcoût géographique en Île-de-France. Mise en ligne sans downtime quand on augmente l'existant, bascule planifiée hors heures d'affluence. Web Vitals et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun abonnement ni verrou éditeur imposé, transférable à tout prestataire local du Grand Paris sud ou repris en interne par vos équipes.",
+          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, bascule planifiée hors heures d'affluence. Web Vitals et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun abonnement ni verrou éditeur imposé, transférable à tout prestataire local du Grand Paris sud ou repris en interne par vos équipes.",
       },
     },
   },
@@ -226,11 +226,11 @@ export const BOURG_LA_REINE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Bourg-la-Reine ?",
-      a: "Oui, Axion-IA intervient à Bourg-la-Reine et dans tout le sud des Hauts-de-Seine. La ville est desservie par le RER B (station Bourg-la-Reine). Nous intervenons aussi à Antony, Sceaux, Bagneux, Cachan et L'Haÿ-les-Roses, communes limitrophes.",
+      a: "Oui, Axion-IA intervient à Bourg-la-Reine et dans tout le sud des Hauts-de-Seine. Nous intervenons aussi à Antony, Sceaux, Bagneux, Cachan et L'Haÿ-les-Roses, communes limitrophes.",
     },
     {
       q: "Quels sont les tarifs Axion-IA à Bourg-la-Reine ?",
-      a: "Tarifs publics identiques partout en France : Audit sur place 4 h à {{price:audit-flash|flat}}, formation collective sur site à {{price:intervention-4h|flat}}, Implémentation et coaching 1-to-1 à partir de {{price:intervention-dirigeants|flat}}. Pas de devis opaque, pas de surcoût géographique en Île-de-France.",
+      a: "Tarifs publics : Audit sur place 4 h à {{price:audit-flash|flat}}, formation collective sur site à {{price:intervention-4h|flat}}, Implémentation et coaching 1-to-1 à partir de {{price:intervention-dirigeants|flat}}. Pas de devis opaque.",
     },
     {
       q: "Quels délais d'intervention sur Bourg-la-Reine ?",
@@ -246,7 +246,7 @@ export const BOURG_LA_REINE_COPY: VilleCopy = {
     },
     {
       q: "Faut-il être basé à Bourg-la-Reine pour travailler avec Axion-IA ?",
-      a: "Non. Nous intervenons aussi sur tout l'axe RER B sud (Antony, Sceaux, Massy, Cachan, L'Haÿ-les-Roses) et l'ensemble du Grand Paris. Coaching 1-to-1 disponible en visio si vous préférez le distanciel.",
+      a: "Non. Nous intervenons aussi à Antony, Sceaux, Massy, Cachan, L'Haÿ-les-Roses et dans l'ensemble du Grand Paris. Coaching 1-to-1 disponible en visio si vous préférez le distanciel.",
     },
   ],
 };

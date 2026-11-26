@@ -14,9 +14,9 @@ export const LAVAUR_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Lavaur (81). Nous accompagnons TPE artisans, PME de services, commerçants, exploitants agricoles et professions libérales du Vaurais. Audit sur place sur mesure.",
   seoHook: "commerce détail & agriculture grandes",
   ecosystemFr:
-    "Lavaur (10 965 hab) est la sous-préfecture du Tarn et le pôle économique du pays vauréen, sur les bords de l'Agout. Économie de services, commerces de centre-ville, agriculture (grandes cultures, élevage), artisanat du bâtiment. Proximité Toulouse (45 min A68), carrefour entre Albi, Castres et Toulouse. Zone d'activités de la Cavalière.",
+    "Lavaur (10 965 hab) est la sous-préfecture du Tarn et le pôle économique du pays vauréen, sur les bords de l'Agout. Économie de services, commerces de centre-ville, agriculture (grandes cultures, élevage), artisanat du bâtiment. Carrefour entre Albi, Castres et Toulouse, avec des interventions dans vos locaux à Lavaur comme partout en France. Zone d'activités de la Cavalière.",
   ecosystemEn:
-    "Lavaur (10 965 hab) est la sous-préfecture du Tarn et le pôle économique du pays vauréen, sur les bords de l'Agout. Économie de services, commerces de centre-ville, agriculture (grandes cultures, élevage), artisanat du bâtiment. Proximité Toulouse (45 min A68), carrefour entre Albi, Castres et Toulouse. Zone d'activités de la Cavalière.",
+    "Lavaur (10 965 hab) est la sous-préfecture du Tarn et le pôle économique du pays vauréen, sur les bords de l'Agout. Économie de services, commerces de centre-ville, agriculture (grandes cultures, élevage), artisanat du bâtiment. Carrefour entre Albi, Castres et Toulouse, avec des interventions dans vos locaux à Lavaur comme partout en France. Zone d'activités de la Cavalière.",
   distancesFr:
     "Toulouse centre à 45 min (A68). Albi à 40 min. Castres à 35 min. Gare SNCF Lavaur (TER Toulouse-Mazamet). Aéroport Toulouse-Blagnac à 50 min. Saint-Sulpice-la-Pointe à 15 min.",
   distancesEn:
@@ -49,7 +49,7 @@ export const LAVAUR_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Lavaur et dans le Vaurais ?",
-      a: "Oui, Axion-IA intervient à Lavaur et dans tout le pays vauréen (Saint-Sulpice-la-Pointe, Graulhet, Puylaurens, Saïx). Nos consultants se déplacent depuis Toulouse (45 min A68) ou Albi (40 min).",
+      a: "Oui, Axion-IA intervient à Lavaur et dans tout le pays vauréen (Saint-Sulpice-la-Pointe, Graulhet, Puylaurens, Saïx). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quel est le tarif d'un audit IA pour une TPE à Lavaur ?",

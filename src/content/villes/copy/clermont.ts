@@ -49,7 +49,7 @@ export const CLERMONT_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Clermont et dans le Clermontois ?",
-      a: "Oui, Axion-IA intervient à Clermont et dans tout le Clermontois (Breuil-le-Sec, Agnetz, Liancourt, Fitz-James). Consultants accessibles via gare SNCF Clermont-de-l'Oise (TER Paris-Nord en 50 min). Paris à 1h via A1.",
+      a: "Oui, Axion-IA intervient à Clermont et dans tout le Clermontois (Breuil-le-Sec, Agnetz, Liancourt, Fitz-James).",
     },
     {
       q: "Tarifs audit IA à Clermont  : quel budget prévoir ?",

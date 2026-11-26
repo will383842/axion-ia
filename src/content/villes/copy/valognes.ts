@@ -65,7 +65,7 @@ export const VALOGNES_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Valognes ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Gare de Valognes (TER Paris 2 h 45 via Caen). Multi-jours : hébergement local. Tarifs transparents.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Tarifs transparents.",
     },
   ],
 };

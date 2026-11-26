@@ -49,7 +49,7 @@ export const SAINT_VALLIER_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Saint-Vallier et dans le bassin Montceau ?",
-      a: "Oui, Axion-IA intervient à Saint-Vallier et tout le bassin Le Creusot-Montceau (Montceau-les-Mines à 5 min, Le Creusot-TGV à 20 min, Chalon-sur-Saône à 40 min).",
+      a: "Oui. Nous intervenons à Saint-Vallier et dans tout le bassin Le Creusot-Montceau : Montceau-les-Mines, Le Creusot et Chalon-sur-Saône.",
     },
     {
       q: "Travaillez-vous avec les PME industrielles en reconversion ?",
@@ -65,7 +65,7 @@ export const SAINT_VALLIER_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Saint-Vallier ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Saint-Vallier est à 20 min de la gare du Creusot-TGV et 40 min de Chalon-sur-Saône.",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Saint-Vallier, comme partout en France, ou à distance.",
     },
   ],
 };

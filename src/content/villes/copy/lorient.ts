@@ -132,7 +132,7 @@ export const LORIENT_COPY: VilleCopy = {
           },
           {
             q: "Quel délai pour obtenir un devis à Lorient ?",
-            a: "À partir de 24 à 48 h selon la complexité, après un premier échange. Nous nous déplaçons sur site à Lorient et dans le pays de Lorient (Lanester, Ploemeur, Hennebont, Caudan, Quéven) pour cadrer le projet, puis nous vous remettons un périmètre chiffré clair.",
+            a: "À partir de 24 à 48 h selon la complexité, après un premier échange. Nous intervenons sur site à Lorient et dans le pays de Lorient (Lanester, Ploemeur, Hennebont, Caudan, Quéven) pour cadrer le projet, puis nous vous remettons un périmètre chiffré clair.",
           },
         ],
         guarantees:

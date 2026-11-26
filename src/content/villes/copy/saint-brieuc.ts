@@ -230,8 +230,8 @@ export const SAINT_BRIEUC_COPY: VilleCopy = {
       a: "Audit sur place dès {{price:audit-flash|flat}} (4 heures), intervention sur site dès {{price:intervention-4h|flat}}. Tarifs publics sur axion-ia.com — pas de devis opaque.",
     },
     {
-      q: "Comment Axion-IA se déplace-t-il à Saint-Brieuc ?",
-      a: "Le site est accessible par TGV, par avion à l'aéroport Saint-Brieuc Armor (Trémuson, 12 km) ou en voiture via la RN 12 (E50).",
+      q: "Intervenez-vous à Saint-Brieuc ?",
+      a: "Oui. Nous intervenons sur place à Saint-Brieuc, comme partout en France, ou à distance.",
     },
     {
       q: "Quels délais pour démarrer une mission IA à Saint-Brieuc ?",

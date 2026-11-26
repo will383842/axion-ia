@@ -49,7 +49,7 @@ export const HERICOURT_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Héricourt et dans l'aire urbaine Montbéliard ?",
-      a: "Oui, Axion-IA intervient à Héricourt et sur toute l'aire urbaine Montbéliard (Montbéliard, Audincourt, Valentigney, Belfort). Nos consultants se déplacent depuis Besançon (1h) ou Paris (TGV Belfort-Montbéliard 2h20).",
+      a: "Oui, Axion-IA intervient à Héricourt et sur toute l'aire urbaine Montbéliard (Montbéliard, Audincourt, Valentigney, Belfort). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quels services IA proposez-vous aux sous-traitants automobile d'Héricourt ?",

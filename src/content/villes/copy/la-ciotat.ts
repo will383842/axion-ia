@@ -229,8 +229,8 @@ export const LA_CIOTAT_COPY: VilleCopy = {
 
   faqGeolocalisee: [
     {
-      q: "Axion-IA se déplace-t-il sur site à La Ciotat, y compris sur la zone des chantiers ?",
-      a: "Oui. Notre cabinet d'experts IA se déplace directement dans vos ateliers, hôtels ou commerces de La Ciotat pour observer vos processus réels, généralement sous cinq jours ouvrés.",
+      q: "Intervenez-vous à La Ciotat, y compris sur la zone des chantiers ?",
+      a: "Oui. Notre cabinet d'experts IA intervient directement dans vos ateliers, hôtels ou commerces de La Ciotat, y compris sur la zone des chantiers, pour observer vos processus réels, généralement sous cinq jours ouvrés.",
     },
     {
       q: "Quels gains l'IA apporte-t-elle à une TPE de la filière yachting de La Ciotat ?",

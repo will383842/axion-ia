@@ -49,7 +49,7 @@ export const CHARNAY_LES_MACON_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Charnay-lès-Mâcon et agglo Mâcon ?",
-      a: "Oui, Axion-IA intervient à Charnay-lès-Mâcon et toute l'agglomération mâconnaise. Gare TGV Mâcon-Loché à 10 min, Lyon à 1h, Bourg-en-Bresse à 35 min.",
+      a: "Oui, Axion-IA intervient à Charnay-lès-Mâcon et toute l'agglomération mâconnaise.",
     },
     {
       q: "Travaillez-vous avec les viticulteurs du Mâconnais ?",
@@ -65,7 +65,7 @@ export const CHARNAY_LES_MACON_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Charnay-lès-Mâcon ?",
-      a: "Lyon à 1h par A6. Gare TGV Mâcon-Loché à 10 min de Charnay.",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Charnay-lès-Mâcon, comme partout en France, ou à distance.",
     },
   ],
 };

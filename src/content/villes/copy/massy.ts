@@ -64,7 +64,7 @@ export const MASSY_COPY: VilleCopy = {
           {
             step: "Cadrage à Massy",
             detail:
-              "Kick-off dans vos locaux à Massy — quartier Atlantis, pôle gare Massy TGV ou parc Vilgénis/Vilmorin — pour cartographier vos parcours utilisateurs, vos outils existants (CRM, ERP, PIM, CMS) et le cas d'usage IA prioritaire de votre site ou SaaS.",
+              "Lancement dans vos locaux à Massy — quartier Atlantis, pôle Massy-Vilgénis ou parc Vilmorin — pour cartographier vos parcours utilisateurs, vos outils existants (CRM, ERP, PIM, CMS) et le cas d'usage IA prioritaire de votre site ou SaaS.",
           },
           {
             step: "Conception UX/UI et architecture",
@@ -116,7 +116,7 @@ export const MASSY_COPY: VilleCopy = {
         faq: [
           {
             q: "Concevez-vous des plateformes web et SaaS pour les sièges et ESN de Massy-Atlantis ?",
-            a: "Oui. Le quartier Atlantis (90 hectares, environ 12 000 salariés) est notre cœur de cible à Massy : sièges sociaux comme Carrefour, Crédit Agricole Consumer Finance/Sofinco, Orange Labs, et l'écosystème d'ESN et de cabinets de conseil autour. Nous y livrons portails B2B, espaces clients et SaaS métier avec chatbot RAG, recherche sémantique et agents conversationnels intégrés à vos outils.",
+            a: "Oui. Le quartier Atlantis, avec 90 hectares et environ 12 000 salariés, est notre cœur de cible à Massy : sièges sociaux comme Carrefour, Crédit Agricole Consumer Finance/Sofinco, Orange Labs, et l'écosystème d'ESN et de cabinets de conseil autour. Nous y livrons portails B2B, espaces clients et SaaS métier avec chatbot RAG, recherche sémantique et agents conversationnels intégrés à vos outils.",
           },
           {
             q: "Faites-vous de l'e-commerce et de l'UX/UI, ou seulement de l'IA ?",
@@ -132,7 +132,7 @@ export const MASSY_COPY: VilleCopy = {
           },
           {
             q: "Intervenez-vous au-delà de Massy, dans le sud de l'Essonne et vers Saclay ?",
-            a: "Oui. Depuis Massy, interconnectée par la gare TGV et les RER B et C, nous couvrons l'ouest de l'Essonne, le plateau de Saclay et le sud francilien. Le kick-off et la recette se font sur site ; les itérations de développement se déroulent en hybride présentiel/distance.",
+            a: "Oui. Nous intervenons dans vos locaux à Massy, dans l'ouest de l'Essonne, sur le plateau de Saclay et dans le sud francilien. Le kick-off et la recette se font sur site ; les itérations de développement se déroulent en hybride présentiel/distance.",
           },
         ],
         guarantees:
@@ -150,7 +150,7 @@ export const MASSY_COPY: VilleCopy = {
           {
             step: "Framing in Massy",
             detail:
-              "Kick-off at your offices in Massy — Atlantis district, Massy TGV station hub or Vilgénis/Vilmorin park — to map your user journeys, existing tools (CRM, ERP, PIM, CMS) and the priority AI use case for your site or SaaS.",
+              "Launch at your offices in Massy — Atlantis district, Vilgénis hub or Vilmorin park — to map your user journeys, existing tools (CRM, ERP, PIM, CMS) and the priority AI use case for your site or SaaS.",
           },
           {
             step: "UX/UI design and architecture",
@@ -218,7 +218,7 @@ export const MASSY_COPY: VilleCopy = {
           },
           {
             q: "Do you operate beyond Massy, across the southern Essonne and towards Saclay?",
-            a: "Yes. From Massy, interconnected by the TGV station and the RER B and C lines, we cover western Essonne, the Saclay plateau and the southern Paris region. Kick-off and acceptance happen on site; development iterations run in a hybrid on-site/remote mode.",
+            a: "Yes. Axion-IA works anywhere in France, on site or remotely, including western Essonne, the Saclay plateau and the southern Paris region. Kick-off and acceptance can happen on site; development iterations run in a hybrid on-site/remote mode.",
           },
         ],
         guarantees:
@@ -229,8 +229,8 @@ export const MASSY_COPY: VilleCopy = {
 
   faqGeolocalisee: [
     {
-      q: "Axion-IA se déplace-t-il sur site à Massy ?",
-      a: "Oui. Nos experts IA interviennent dans vos locaux à Massy, notamment au quartier Atlantis et autour de la gare Massy TGV, pour audits, interventions et implémentations, généralement sous cinq jours ouvrés après validation.",
+      q: "Intervenez-vous à Massy ?",
+      a: "Oui. Nos experts IA interviennent dans vos locaux à Massy, notamment au quartier Atlantis, pour audits, interventions et implémentations, généralement sous cinq jours ouvrés après validation.",
     },
     {
       q: "Accompagnez-vous les ESN et cabinets de conseil de Massy ?",
@@ -245,8 +245,8 @@ export const MASSY_COPY: VilleCopy = {
       a: "Audit sur place pour cartographier les automatisations utiles, intervention d'une journée pour un premier cas d'usage concret, puis coaching 1-to-1 du dirigeant. Agents conversationnels pour la relation client B2B.",
     },
     {
-      q: "Comment se passe une mission depuis Paris ou le plateau de Saclay ?",
-      a: "Massy est à une trentaine de minutes de Paris en RER et à quelques minutes du plateau de Saclay. Nous couvrons tout l'ouest de l'Essonne.",
+      q: "Comment se déroule une mission Axion-IA à Massy ?",
+      a: "Nous intervenons partout en France, sur place dans vos locaux ou à distance en visio. Après le cadrage de votre besoin, nous planifions l'intervention et livrons un résultat actionnable.",
     },
   ],
 };

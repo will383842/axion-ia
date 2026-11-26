@@ -231,7 +231,7 @@ export const SAINT_JEAN_DE_BRAYE_COPY: VilleCopy = {
     },
     {
       q: "Quel est le délai pour une intervention à Saint-Jean-de-Braye ?",
-      a: "Déplacement sur site dans les 5 jours ouvrés après confirmation. Nous intervenons partout en France, sur place ou à distance. Saint-Jean-de-Braye est desservie par l'A10, la RN 20 et la ligne B du tramway.",
+      a: "Déplacement sur site dans les 5 jours ouvrés après confirmation. Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quelles communes autour de Saint-Jean-de-Braye sont couvertes ?",

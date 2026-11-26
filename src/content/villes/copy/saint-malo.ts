@@ -233,8 +233,8 @@ export const SAINT_MALO_COPY: VilleCopy = {
       a: "Oui. Les acteurs du tourisme d'Intra-Muros et de la côte d'Émeraude figurent parmi nos cibles prioritaires. Nous automatisons réservations, relances et gestion administrative, en tenant compte de la forte saisonnalité de l'activité malouine.",
     },
     {
-      q: "Axion-IA se déplace-t-il sur site à Saint-Malo ?",
-      a: "Oui, nos experts IA interviennent dans vos locaux, d'Intra-Muros aux zones d'activités du pays malouin et aux sites du port. L'audit terrain reste le meilleur moyen de cibler des automatisations vraiment utiles à votre métier.",
+      q: "Intervenez-vous à Saint-Malo ?",
+      a: "Oui. Nous intervenons dans vos locaux à Saint-Malo, d'Intra-Muros aux zones d'activités du pays malouin et aux sites du port. L'audit terrain reste le meilleur moyen de cibler des automatisations vraiment utiles à votre métier.",
     },
     {
       q: "Travaillez-vous avec les PME agroalimentaires du bassin malouin ?",
@@ -242,7 +242,7 @@ export const SAINT_MALO_COPY: VilleCopy = {
     },
     {
       q: "Quel délai pour une première intervention à Saint-Malo ?",
-      a: "Nous visons un démarrage sous cinq jours ouvrés après validation, selon nos disponibilités. La desserte TGV via Rennes et la N137 nous permettent d'intervenir sur toute la côte d'Émeraude et le pays malouin.",
+      a: "Nous visons un démarrage sous cinq jours ouvrés après validation, selon nos disponibilités.",
     },
     {
       q: "Comment garantissez-vous la conformité RGPD à Saint-Malo ?",

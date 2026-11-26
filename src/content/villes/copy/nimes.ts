@@ -81,7 +81,7 @@ export const NIMES_COPY: VilleCopy = {
           "La présence de BRL Groupe (siège social) et des filières agroalimentaires (Royal Canin Aimargues, Perrier Vergèze) crée des besoins réels en automatisation documentaire et en pilotage de données opérationnelles.",
           "Le CHU Carémeau et les structures médico-sociales du Gard représentent un terrain fertile pour l'IA appliquée à la gestion administrative et à la coordination de soins.",
           "Le Parc Georges Besse concentre des structures tertiaires et numériques où les cas IA (qualification de leads, génération de contenus, analyse contractuelle) sont immédiatement activables.",
-          "Tarifs publics, aucun supplément géographique : le tarif Nîmes est le même que partout en France.",
+          "Tarifs publics affichés : vous savez ce que vous payez avant de signer.",
           "Restitution toujours en présentiel à Nîmes dans vos locaux : atelier livrable en main propre avec votre direction ou comité de pilotage.",
         ],
         methodology: [
@@ -173,7 +173,7 @@ export const NIMES_COPY: VilleCopy = {
           "The presence of BRL Groupe (HQ) and agri-food supply chains (Royal Canin Aimargues, Perrier Vergèze) creates real demand for document automation and operational data management.",
           "CHU Carémeau and Gard medico-social structures represent fertile ground for AI applied to administrative management and care coordination.",
           "Parc Georges Besse concentrates tertiary and digital structures where AI use cases (lead qualification, content generation, contract analysis) are immediately activatable.",
-          "Public pricing, no geographic surcharge: Nîmes rate is the same as anywhere in France.",
+          "Public pricing: you know exactly what you pay before signing.",
           "Read-out always in person at your Nîmes premises: deliverable workshop handed face-to-face to your leadership or steering committee.",
         ],
         methodology: [
@@ -988,7 +988,7 @@ export const NIMES_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Combien coûte un audit IA opérationnel à Nîmes ?",
-      a: "Le tarif dépend du niveau retenu — Audit sur place, Ciblé, Stratégique PME ou Stratégique ETI. Tarifs publics affichés sur la page Audit, calibrés selon votre taille (TPE, PME, ETI, grande entreprise). Aucun supplément géographique : le tarif est le même à Nîmes que partout en France.",
+      a: "Le tarif dépend du niveau retenu — Audit sur place, Ciblé, Stratégique PME ou Stratégique ETI. Tarifs publics affichés sur la page Audit, calibrés selon votre taille (TPE, PME, ETI, grande entreprise).",
     },
     {
       q: "Quels secteurs nîmois sont les plus concernés par l'IA ?",

@@ -233,7 +233,7 @@ export const SURESNES_COPY: VilleCopy = {
     },
     {
       q: "Sous quel délai Axion-IA peut-il intervenir à Suresnes ?",
-      a: "Nous intervenons généralement sous 5 jours ouvrés après signature du devis. Visio de cadrage possible sous 48h. La proximité Paris (T2 vers La Défense, Transilien L vers Saint-Lazare) facilite une intervention rapide à Suresnes.",
+      a: "Nous intervenons généralement sous 5 jours ouvrés après signature du devis. Visio de cadrage possible sous 48h. Axion IA intervient partout en France, sur site ou à distance, y compris à Suresnes.",
     },
     {
       q: "Couvrez-vous les communes proches comme Puteaux, Nanterre, Rueil-Malmaison ou Saint-Cloud ?",

@@ -246,7 +246,7 @@ export const VICHY_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Vichy ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Vichy est à 35 minutes de Clermont-Ferrand et reliée à l'A71 par l'A719.",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Vichy, comme partout en France, ou à distance.",
     },
   ],
 };

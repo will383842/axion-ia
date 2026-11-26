@@ -94,7 +94,7 @@ export const RENNES_COPY: VilleCopy = {
           "Tissu économique rennais dense et contrasté : TPE du centre historique, PME en croissance à ViaSilva, ETI numériques à Atalante Beaulieu, sites GE comme Canon CRF et Orange Innovation à Cesson-Sévigné.",
           "Présence forte de l'écosystème French Tech Rennes Saint-Malo : scale-ups deep-tech et IA nées de l'IRISA et de l'Inria, souvent en phase de passage du POC à la production.",
           "Restitutions toujours en présentiel à Rennes : ateliers d'idéation dans vos locaux, lecture du livrable avec votre comité de direction, plan d'action remis en main propre.",
-          "Aucun devis opaque : tarifs publics affichés, vous savez exactement ce que vous engagez avant de signer. Même grille tarifaire qu'à Paris ou Lyon.",
+          "Aucun devis opaque : tarifs publics affichés, vous savez exactement ce que vous engagez avant de signer. Axion IA intervient partout en France, sur site ou à distance.",
           "Vous gardez le contrôle : votre plan d'action est exécutable avec n'importe quel prestataire rennais ou en interne après notre audit.",
         ],
         methodology: [
@@ -169,7 +169,7 @@ export const RENNES_COPY: VilleCopy = {
           },
           {
             q: "Intervenez-vous aussi sur les communes du bassin rennais (Cesson-Sévigné, Bruz, La Janais) ?",
-            a: "Oui. Nous couvrons l'ensemble du bassin rennais : Atalante Beaulieu et ViaSilva (Cesson-Sévigné), Ker-Lann (Bruz / ENSAI), Pôle d'Excellence Industrielle La Janais (Chartres-de-Bretagne), Saint-Grégoire et Pacé. Distance parcourue dans les faits de 0 à 15 km du centre-ville.",
+            a: "Oui. Axion IA intervient partout en France, sur site ou à distance. Nous couvrons l'ensemble du bassin rennais : Atalante Beaulieu et ViaSilva (Cesson-Sévigné), Ker-Lann (Bruz / ENSAI), Pôle d'Excellence Industrielle La Janais (Chartres-de-Bretagne), Saint-Grégoire et Pacé.",
           },
           {
             q: "Avez-vous de l'expérience dans l'écosystème French Tech Rennes ?",
@@ -186,7 +186,7 @@ export const RENNES_COPY: VilleCopy = {
           "Dense and varied Rennes economic fabric: city-centre micro-businesses, growing SMEs at ViaSilva, digital mid-caps at Atalante Beaulieu, major GE sites such as Canon CRF and Orange Innovation in Cesson-Sévigné.",
           "Strong French Tech Rennes Saint-Malo ecosystem presence: deep-tech and AI scale-ups born from IRISA and Inria, often transitioning from POC to production.",
           "Read-outs always in person in Rennes: ideation workshops at your offices, deliverable walk-through with your leadership, action plan handed over face to face.",
-          "No opaque quote game: public pricing, you know exactly what you commit to before signing. Same rate card as Paris or Lyon.",
+          "No opaque quote game: public pricing, you know exactly what you commit to before signing. Axion-IA works anywhere in France, on site or remotely.",
           "You keep control: your action plan is executable with any Rennes-based vendor or in-house after our audit.",
         ],
         methodology: [
@@ -1002,7 +1002,7 @@ export const RENNES_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Combien coûte un audit IA opérationnel à Rennes ?",
-      a: "Le tarif dépend du niveau retenu — Audit sur place, Ciblé, Stratégique PME ou Stratégique ETI. Tarifs publics affichés sur la page Audit, calibrés selon votre taille (TPE, PME, ETI, grande entreprise) et votre périmètre. Aucun supplément géographique : le tarif est identique partout en France.",
+      a: "Le tarif dépend du niveau retenu — Audit sur place, Ciblé, Stratégique PME ou Stratégique ETI. Tarifs publics affichés sur la page Audit, calibrés selon votre taille (TPE, PME, ETI, grande entreprise) et votre périmètre.",
     },
     {
       q: "Avez-vous de l'expérience dans l'écosystème numérique de Rennes Atalante ?",

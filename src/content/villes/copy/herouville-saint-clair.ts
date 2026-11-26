@@ -229,8 +229,8 @@ export const HEROUVILLE_SAINT_CLAIR_COPY: VilleCopy = {
 
   faqGeolocalisee: [
     {
-      q: "Axion-IA se déplace-t-il sur site à Hérouville-Saint-Clair ?",
-      a: "Oui. Notre cabinet d'experts IA se déplace directement dans vos locaux à Hérouville-Saint-Clair et dans l'agglomération caennaise, généralement sous cinq jours ouvrés après validation de la mission.",
+      q: "Intervenez-vous à Hérouville-Saint-Clair ?",
+      a: "Oui. Nous intervenons sur place à Hérouville-Saint-Clair, comme partout en France, ou à distance.",
     },
     {
       q: "Quels gains l'IA apporte-t-elle à une TPE de services à Hérouville-Saint-Clair ?",

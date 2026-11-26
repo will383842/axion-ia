@@ -36,8 +36,8 @@ export const SAINTE_FOY_LES_LYON_COPY: VilleCopy = {
       en: "À Sainte-Foy-lès-Lyon, l'audit Axion-IA cible les cabinets médicaux, professions libérales, sous-traitants des Laboratoires Boiron et commerçants fidésiens. Cartographie des tâches manuelles (agenda, facturation, dossiers, devis). Audit sur place 4h dès {{price:audit-flash|flat}}.",
     },
     interventions: {
-      fr: "Nos interventions à Sainte-Foy-lès-Lyon couvrent les TPE-PME tertiaires et santé : automatisation des prises de rendez-vous, génération de devis, suivi clientèle, reporting. Intervention essentielle dès {{price:intervention-4h|flat}}, équipe déplacée sur site (15 min du centre Lyon, lignes TCL multiples).",
-      en: "Nos interventions à Sainte-Foy-lès-Lyon couvrent les TPE-PME tertiaires et santé : automatisation des prises de rendez-vous, génération de devis, suivi clientèle, reporting. Intervention essentielle dès {{price:intervention-4h|flat}}, équipe déplacée sur site (15 min du centre Lyon, lignes TCL multiples).",
+      fr: "Nos interventions à Sainte-Foy-lès-Lyon couvrent les TPE-PME tertiaires et santé : automatisation des prises de rendez-vous, génération de devis, suivi clientèle, reporting. Intervention essentielle dès {{price:intervention-4h|flat}}, réalisée sur site.",
+      en: "Nos interventions à Sainte-Foy-lès-Lyon couvrent les TPE-PME tertiaires et santé : automatisation des prises de rendez-vous, génération de devis, suivi clientèle, reporting. Intervention essentielle dès {{price:intervention-4h|flat}}, réalisée sur site.",
     },
     implementation: {
       fr: "L'implémentation à Sainte-Foy-lès-Lyon s'adresse aux PME du tertiaire et de la santé qui veulent un outil IA codé sur mesure (Python/Node), hébergé en France, conforme RGPD santé. Dès {{price:impl-poc|entry}}, code livré et documenté, sans abonnement no-code.",
@@ -228,7 +228,7 @@ export const SAINTE_FOY_LES_LYON_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Quels sont les tarifs d'Axion-IA pour une intervention IA à Sainte-Foy-lès-Lyon ?",
-      a: "L'Audit sur place 4h démarre à {{price:audit-flash|flat}}, l'intervention essentielle sur site à {{price:intervention-4h|flat}}, et une implémentation codée sur mesure à {{price:impl-poc|entry}}. Tarifs publiés sur axion-ia.com/tarifs et identiques sur l'ensemble de la Métropole de Lyon.",
+      a: "L'Audit sur place 4h démarre à {{price:audit-flash|flat}}, l'intervention essentielle sur site à {{price:intervention-4h|flat}}, et une implémentation codée sur mesure à {{price:impl-poc|entry}}. Tarifs publiés sur axion-ia.com/tarifs.",
     },
     {
       q: "Axion-IA se déplace-t-il dans les communes autour de Sainte-Foy-lès-Lyon ?",

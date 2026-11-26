@@ -65,7 +65,7 @@ export const PONT_AUDEMER_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Pont-Audemer ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Pour les multi-jours, hébergement local possible Venise normande.",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Pont-Audemer, comme partout en France, ou à distance.",
     },
   ],
 };

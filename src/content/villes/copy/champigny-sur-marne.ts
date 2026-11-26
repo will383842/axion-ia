@@ -238,7 +238,7 @@ export const CHAMPIGNY_SUR_MARNE_COPY: VilleCopy = {
     },
     {
       q: "Intervenez-vous sur site à Champigny-sur-Marne ?",
-      a: "Oui. Champigny est desservie par le RER A et le RER E, à une vingtaine de minutes de Paris, et bordée par l'A4 et l'A86. Un expert senior se déplace dans vos locaux pour les ateliers de cadrage et les étapes clés, le reste pouvant être mené à distance.",
+      a: "Oui. Un expert senior se déplace dans vos locaux pour les ateliers de cadrage et les étapes clés, le reste pouvant être mené à distance.",
     },
     {
       q: "Par où commencer un projet IA à Champigny-sur-Marne ?",

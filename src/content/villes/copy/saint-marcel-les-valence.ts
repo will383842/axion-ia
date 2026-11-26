@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const SAINT_MARCEL_LES_VALENCE_COPY: VilleCopy = {
   pitchFr:
-    "Saint-Marcel-lès-Valence (26), commune en banlieue nord de Valence dans la Drôme, est intégrée à Valence Romans Agglo. Proximité immédiate de la gare Valence TGV (LGV Méditerranée). Tissu PME tertiaires, zones d'activités, TPE artisans BTP, commerces, agriculture périphérique. Axion-IA accompagne entreprises et indépendants.",
+    "Saint-Marcel-lès-Valence (26), commune en banlieue nord de Valence dans la Drôme, est intégrée à Valence Romans Agglo. Tissu PME tertiaires, zones d'activités, TPE artisans BTP, commerces, agriculture périphérique. Axion-IA accompagne entreprises et indépendants.",
   pitchEn:
-    "Saint-Marcel-lès-Valence (26), commune en banlieue nord de Valence dans la Drôme, est intégrée à Valence Romans Agglo. Proximité immédiate de la gare Valence TGV (LGV Méditerranée). Tissu PME tertiaires, zones d'activités, TPE artisans BTP, commerces, agriculture périphérique. Axion-IA accompagne entreprises et indépendants.",
+    "Saint-Marcel-lès-Valence (26), commune en banlieue nord de Valence dans la Drôme, est intégrée à Valence Romans Agglo. Tissu PME tertiaires, zones d'activités, TPE artisans BTP, commerces, agriculture périphérique. Axion-IA accompagne entreprises et indépendants.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Marcel-lès-Valence (26). Nous accompagnons tous types d'activités : PME tertiaires zones d'activités Valence Romans Agglo, TPE artisans BTP, commerçants, agriculteurs périphériques, indépendants, professions libérales et services aux entreprises.",
   directAnswerEn:
@@ -65,7 +65,7 @@ export const SAINT_MARCEL_LES_VALENCE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Saint-Marcel-lès-Valence ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Pour les multi-jours, hébergement local possible (hôtels Valence).",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Saint-Marcel-lès-Valence, comme partout en France, ou à distance.",
     },
   ],
 };

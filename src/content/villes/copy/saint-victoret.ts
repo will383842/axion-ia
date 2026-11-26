@@ -49,7 +49,7 @@ export const SAINT_VICTORET_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Saint-Victoret et zone aéroportuaire ?",
-      a: "Oui, Axion-IA intervient à Saint-Victoret et dans toute la zone aéroportuaire (Marignane, Vitrolles, Les Pennes-Mirabeau, Châteauneuf-les-Martigues). Aéroport Marseille-Provence à 5 min.",
+      a: "Oui, Axion-IA intervient à Saint-Victoret et dans toute la zone aéroportuaire (Marignane, Vitrolles, Les Pennes-Mirabeau, Châteauneuf-les-Martigues).",
     },
     {
       q: "Quel est le tarif d'un audit IA pour une PME logistique aéroportuaire ?",
@@ -65,7 +65,7 @@ export const SAINT_VICTORET_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une intervention à Saint-Victoret ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Saint-Victoret est à 5 min de l'aéroport et 25 min de Marseille par A55.",
+      a: "Nous intervenons partout en France, sur place ou à distance.",
     },
   ],
 };

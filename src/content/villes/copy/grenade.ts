@@ -49,7 +49,7 @@ export const GRENADE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Grenade ?",
-      a: "Oui, Axion-IA intervient à Grenade et dans tout le nord de la Haute-Garonne (Fronton, Castelnau-d'Estrétefonds, Merville). Nos consultants se déplacent en 30 min depuis Toulouse.",
+      a: "Oui, Axion-IA intervient à Grenade et dans tout le nord de la Haute-Garonne (Fronton, Castelnau-d'Estrétefonds, Merville). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quels secteurs accompagnez-vous à Grenade ?",
@@ -65,7 +65,7 @@ export const GRENADE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une intervention IA à Grenade ?",
-      a: "Nos consultants se déplacent à Grenade (30 min depuis Toulouse). Intervention 1 journée minimum, atelier pratique dans vos locaux. Équipes autonomes.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Intervention 1 journée minimum, atelier pratique dans vos locaux. Équipes autonomes.",
     },
   ],
 };

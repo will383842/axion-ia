@@ -49,7 +49,7 @@ export const EPINAY_SOUS_SENART_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Épinay-sous-Sénart ?",
-      a: "Oui, Axion-IA intervient à Épinay-sous-Sénart et tout le bassin Sénart (Brunoy, Yerres, Boussy-Saint-Antoine, Quincy-sous-Sénart). Gare RER D directe, Paris à 30 min.",
+      a: "Oui, Axion-IA intervient à Épinay-sous-Sénart et tout le bassin Sénart (Brunoy, Yerres, Boussy-Saint-Antoine, Quincy-sous-Sénart).",
     },
     {
       q: "Travaillez-vous avec les TPE artisans BTP du secteur ?",
@@ -65,7 +65,7 @@ export const EPINAY_SOUS_SENART_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Épinay-sous-Sénart ?",
-      a: "RER D Épinay-sous-Sénart direct depuis Paris (30 min). Évry-Courcouronnes à 15 min. Orly à 20 min.",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Épinay-sous-Sénart, comme partout en France, ou à distance.",
     },
   ],
 };

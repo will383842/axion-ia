@@ -49,7 +49,7 @@ export const AUBERGENVILLE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Aubergenville et dans la vallée de Seine ?",
-      a: "Oui, Axion-IA intervient à Aubergenville et toute la vallée de Seine yvelinoise (Mantes-la-Jolie à 10 min, Poissy à 15 min, Paris Saint-Lazare à 45 min transilien J, A13 accès direct).",
+      a: "Oui. Axion-IA intervient à Aubergenville et dans toute la vallée de Seine yvelinoise : Mantes-la-Jolie et Poissy.",
     },
     {
       q: "Travaillez-vous avec les PME industrie et logistique d'Aubergenville ?",
@@ -65,7 +65,7 @@ export const AUBERGENVILLE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Aubergenville ?",
-      a: "Mantes-la-Jolie (10 min). Poissy (15 min). Paris Saint-Lazare (45 min transilien J). A13 accès direct.",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Aubergenville, comme partout en France, ou à distance.",
     },
   ],
 };

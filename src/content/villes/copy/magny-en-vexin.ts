@@ -49,7 +49,7 @@ export const MAGNY_EN_VEXIN_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Magny-en-Vexin et dans le Vexin français ?",
-      a: "Oui, Axion-IA intervient à Magny-en-Vexin et tout le Vexin français (Cergy-Pontoise à 25 min, Mantes-la-Jolie à 20 min, Gisors à 20 min, Paris à 55 min via A15).",
+      a: "Oui. Nous intervenons à Magny-en-Vexin et dans tout le Vexin français (Cergy-Pontoise, Mantes-la-Jolie, Gisors), sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les commerçants et artisans de Magny-en-Vexin ?",
@@ -64,8 +64,8 @@ export const MAGNY_EN_VEXIN_COPY: VilleCopy = {
       a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1.",
     },
     {
-      q: "Comment se passe une mission depuis Cergy ou Paris ?",
-      a: "Cergy-Pontoise (25 min). Mantes-la-Jolie (20 min). Paris centre (55 min via A15). Aéroport CDG (60 min).",
+      q: "Comment se déroule une mission Axion-IA à Magny-en-Vexin ?",
+      a: "Nous intervenons partout en France, sur place dans vos locaux ou à distance en visio. Après le cadrage de votre besoin, nous planifions l'intervention et livrons un résultat actionnable.",
     },
   ],
 };

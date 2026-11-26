@@ -124,7 +124,7 @@ export const ANTIBES_COPY: VilleCopy = {
           },
           {
             q: "Travaillez-vous avec les éditeurs logiciels et scale-ups proches de Sophia Antipolis ?",
-            a: "Oui. Sophia Antipolis, à 7 km et en partie sur la commune d'Antibes, concentre plus de 30 000 emplois et un vivier d'éditeurs (écosystème Amadeus, ingénieurs des écoles du technopôle). Pour ces structures, nous concevons des plateformes SaaS IA-native : chatbot RAG sur votre documentation, recherche sémantique, agents conversationnels, copilotes internes — en code custom, hébergés en Union européenne, sans lock-in éditeur.",
+            a: "Oui. Sophia Antipolis, en partie sur la commune d'Antibes, concentre plus de 30 000 emplois et un vivier d'éditeurs (écosystème Amadeus, ingénieurs des écoles du technopôle). Pour ces structures, nous concevons des plateformes SaaS IA-native : chatbot RAG sur votre documentation, recherche sémantique, agents conversationnels, copilotes internes — en code custom, hébergés en Union européenne, sans lock-in éditeur.",
           },
           {
             q: "Sous combien de temps puis-je avoir un devis ?",
@@ -234,11 +234,11 @@ export const ANTIBES_COPY: VilleCopy = {
     },
     {
       q: "Quels secteurs d'Antibes accompagnez-vous le plus ?",
-      a: "Principalement les TPE et PME du yachting et des services portuaires (Port Vauban, brokers, refit), l'hôtellerie-restauration premium du Cap d'Antibes et de Juan-les-Pins, le commerce et l'artisanat de la vieille ville, le BTP de rénovation prestige, ainsi que les acteurs tech en lien avec Sophia Antipolis située à 7 km.",
+      a: "Principalement les TPE et PME du yachting et des services portuaires (Port Vauban, brokers, refit), l'hôtellerie-restauration premium du Cap d'Antibes et de Juan-les-Pins, le commerce et l'artisanat de la vieille ville, le BTP de rénovation prestige, ainsi que les acteurs tech en lien avec Sophia Antipolis.",
     },
     {
       q: "Faut-il aller jusqu'à Sophia Antipolis pour vous rencontrer ?",
-      a: "Non. Nous venons à votre adresse à Antibes — port, vieille ville, Juan-les-Pins ou Cap d'Antibes. Sophia Antipolis est à 7 km mais notre logique est inverse : nous apportons l'expertise IA chez les TPE et PME locales, là où elles travaillent, sans les obliger à se déplacer.",
+      a: "Non. Nous intervenons à votre adresse à Antibes — port, vieille ville, Juan-les-Pins ou Cap d'Antibes. Notre logique : apporter l'expertise IA chez les TPE et PME locales, là où elles travaillent, sans les obliger à aller jusqu'à Sophia Antipolis.",
     },
     {
       q: "Combien coûte un accompagnement IA pour une TPE d'Antibes ?",

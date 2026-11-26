@@ -65,7 +65,7 @@ export const THORIGNE_FOUILLARD_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Thorigné-Fouillard ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Thorigné-Fouillard est desservie par le réseau bus STAR (métro ligne B à Cesson-Sévigné proche).",
+      a: "Nous intervenons partout en France, sur place ou à distance.",
     },
   ],
 };

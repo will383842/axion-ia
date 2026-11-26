@@ -49,7 +49,7 @@ export const LE_CENDRE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il au Cendre et sud Clermont ?",
-      a: "Oui, Axion-IA intervient au Cendre et tout le sud Clermont Métropole (Cournon-d'Auvergne à 5 min, Clermont-Ferrand à 15 min, Issoire à 25 min). Aéroport Clermont à 20 min.",
+      a: "Oui, Axion-IA intervient au Cendre et sur tout le sud de Clermont Métropole (Cournon-d'Auvergne, Clermont-Ferrand, Issoire), sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les professions libérales ?",
@@ -64,8 +64,8 @@ export const LE_CENDRE_COPY: VilleCopy = {
       a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1.",
     },
     {
-      q: "Comment se passe une mission depuis Clermont-Ferrand ?",
-      a: "Clermont-Ferrand (15 min). Aéroport Clermont à 20 min.",
+      q: "Comment se déroule une mission Axion-IA au Cendre ?",
+      a: "Nous intervenons partout en France, sur place dans vos locaux ou à distance en visio. Après le cadrage de votre besoin, nous planifions l'intervention et livrons un résultat actionnable.",
     },
   ],
 };

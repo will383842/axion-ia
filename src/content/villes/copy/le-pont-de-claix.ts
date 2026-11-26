@@ -47,7 +47,7 @@ export const LE_PONT_DE_CLAIX_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il au Pont-de-Claix et sud grenoblois ?",
-      a: "Oui, Axion-IA intervient au Pont-de-Claix et tout le sud-Y grenoblois (Échirolles, Vizille, Jarrie, Champ-sur-Drac). Couverture de la métropole grenobloise et accès via tramway A ou A480 vers Lyon (1h15).",
+      a: "Oui, Axion-IA intervient au Pont-de-Claix et tout le sud-Y grenoblois (Échirolles, Vizille, Jarrie, Champ-sur-Drac).",
     },
     {
       q: "Travaillez-vous avec les industriels de la plateforme pontoise ?",

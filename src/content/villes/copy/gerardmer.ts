@@ -49,7 +49,7 @@ export const GERARDMER_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Gérardmer et dans le massif vosgien ?",
-      a: "Oui, Axion-IA intervient à Gérardmer et sur tout le massif des Vosges (La Bresse, Xonrupt-Longemer, Le Tholy, Saint-Dié-des-Vosges). Accès via Remiremont (30 min) puis route, ou par Épinal (50 min).",
+      a: "Oui, Axion-IA intervient à Gérardmer et sur tout le massif des Vosges (La Bresse, Xonrupt-Longemer, Le Tholy, Saint-Dié-des-Vosges).",
     },
     {
       q: "Quel est le tarif d'un audit IA à Gérardmer  ?",

@@ -124,7 +124,7 @@ export const SAINT_RAPHAEL_COPY: VilleCopy = {
           },
           {
             q: "Quels CMS et technologies e-commerce utilisez-vous ?",
-            a: "Nous travaillons en multi-CMS selon votre besoin : Shopify, WooCommerce ou PrestaShop pour l'e-commerce, ou un développement SaaS sur mesure (framework moderne) pour les plateformes métier des technoparcs. Le choix est justifié au cadrage, sans lock-in éditeur : le code et les accès restent à votre nom, reprenables par tout prestataire du bassin Fréjus-Saint-Raphaël.",
+            a: "Nous travaillons en multi-CMS selon votre besoin : Shopify, WooCommerce ou PrestaShop pour l'e-commerce, ou un développement SaaS sur mesure (framework moderne) pour les plateformes métier des technoparcs.",
           },
           {
             q: "Vos sites sont-ils optimisés pour la recherche locale et les assistants IA ?",
@@ -233,8 +233,8 @@ export const SAINT_RAPHAEL_COPY: VilleCopy = {
       a: "Oui. Les acteurs du tourisme et de l'hôtellerie-restauration du front de mer figurent parmi nos cibles prioritaires. Nous automatisons réservations, relances et gestion administrative, en tenant compte des fortes pointes d'activité estivales de la station.",
     },
     {
-      q: "Axion-IA se déplace-t-il sur site à Saint-Raphaël ?",
-      a: "Oui, nos experts IA interviennent dans vos locaux, du front de mer aux ports de plaisance et au bassin Fréjus-Saint-Raphaël. L'audit terrain reste le meilleur moyen de cibler des automatisations vraiment utiles à votre métier.",
+      q: "Intervenez-vous sur site à Saint-Raphaël ?",
+      a: "Oui. Nous intervenons dans vos locaux, du front de mer aux ports de plaisance et au bassin Fréjus-Saint-Raphaël. L'audit terrain reste le meilleur moyen de cibler des automatisations vraiment utiles à votre métier.",
     },
     {
       q: "Travaillez-vous avec les acteurs du nautisme à Saint-Raphaël ?",
@@ -242,7 +242,7 @@ export const SAINT_RAPHAEL_COPY: VilleCopy = {
     },
     {
       q: "Quel délai pour une première intervention à Saint-Raphaël ?",
-      a: "Nous visons un démarrage sous cinq jours ouvrés après validation, selon nos disponibilités. La gare TGV de Valescure et l'A8 nous permettent d'intervenir sur tout l'est varois et le bassin Fréjus-Saint-Raphaël.",
+      a: "Nous visons un démarrage sous cinq jours ouvrés après validation, selon nos disponibilités.",
     },
     {
       q: "Comment garantissez-vous la conformité RGPD à Saint-Raphaël ?",

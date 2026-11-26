@@ -65,7 +65,7 @@ export const BILLERE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA sur site à Billère ?",
-      a: "Nos consultants accèdent à Billère via la gare de Pau (TGV 4h20 Paris direct) ou l'aéroport Pau-Pyrénées (15 min). Mission sur site dans vos locaux, cabinet ou commerce.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Mission sur site dans vos locaux, cabinet ou commerce.",
     },
   ],
 };

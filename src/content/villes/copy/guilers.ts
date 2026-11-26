@@ -65,7 +65,7 @@ export const GUILERS_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA sur site à Guilers ?",
-      a: "Nos consultants interviennent depuis Brest centre (10 min) ou se déplacent directement dans vos locaux. Tarifs publics et transparents.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Tarifs publics et transparents.",
     },
   ],
 };

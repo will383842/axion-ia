@@ -49,7 +49,7 @@ export const NANS_LES_PINS_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Nans-les-Pins et au massif de la Sainte-Baume ?",
-      a: "Oui, Axion-IA intervient à Nans-les-Pins et dans tout le massif de la Sainte-Baume (Plan-d'Aups, Saint-Zacharie, Rougiers, Mazaugues). Accès direct depuis A8 et axes départementaux.",
+      a: "Oui, Axion-IA intervient à Nans-les-Pins et dans tout le massif de la Sainte-Baume (Plan-d'Aups, Saint-Zacharie, Rougiers, Mazaugues).",
     },
     {
       q: "Tarifs audit IA à Nans-les-Pins  : quel budget prévoir ?",
@@ -64,8 +64,8 @@ export const NANS_LES_PINS_COPY: VilleCopy = {
       a: "Oui, nous intervenons en BTP, artisanat et commerce de proximité sur automatisation devis, gestion planning chantiers, content marketing local, fiches Google Business, SAV conversationnel.",
     },
     {
-      q: "Comment se déplace Axion-IA à Nans-les-Pins ?",
-      a: "Nans-les-Pins est à 15 min de Saint-Maximin et 35 min d'Aix-en-Provence via A8. Nos consultants se déplacent dans vos locaux.",
+      q: "Comment se déroule une mission à Nans-les-Pins ?",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Nans-les-Pins, comme partout en France, ou à distance.",
     },
   ],
 };

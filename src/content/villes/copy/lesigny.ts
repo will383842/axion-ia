@@ -49,7 +49,7 @@ export const LESIGNY_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Lésigny et dans l'est francilien ?",
-      a: "Oui, Axion-IA intervient à Lésigny et dans tout l'est Seine-et-Marne (Brie-Comte-Robert, Pontault-Combault, Servon, Férolles-Attilly). Nos consultants se déplacent depuis Paris (35 min via A4) ou Marne-la-Vallée (20 min).",
+      a: "Oui, Axion-IA intervient à Lésigny et dans tout l'est Seine-et-Marne (Brie-Comte-Robert, Pontault-Combault, Servon, Férolles-Attilly). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les artisans du bâtiment à Lésigny ?",
@@ -65,7 +65,7 @@ export const LESIGNY_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Lésigny ?",
-      a: "Nos consultants se déplacent à Lésigny depuis Paris (35 min via A4) ou Marne-la-Vallée (20 min). Intervention dans vos locaux, atelier pratique avec vos équipes. Sessions en visio également possibles.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Intervention dans vos locaux, atelier pratique avec vos équipes. Sessions en visio également possibles.",
     },
   ],
 };

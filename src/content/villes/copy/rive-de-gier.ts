@@ -49,7 +49,7 @@ export const RIVE_DE_GIER_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Rive-de-Gier et vallée du Gier ?",
-      a: "Oui, Axion-IA intervient à Rive-de-Gier et toute la vallée du Gier (Saint-Chamond à 10 min, Saint-Martin-la-Plaine, Lorette, La Grand-Croix). Couverture Saint-Étienne Métropole. Nous intervenons partout en France, sur place ou à distance.",
+      a: "Oui, Axion-IA intervient à Rive-de-Gier et dans toute la vallée du Gier (Saint-Chamond, Saint-Martin-la-Plaine, Lorette, La Grand-Croix). Couverture Saint-Étienne Métropole. Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les PME industrielles vallée Gier ?",
@@ -65,7 +65,7 @@ export const RIVE_DE_GIER_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Rive-de-Gier ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Pour les multi-jours, hébergement local possible. Tarifs transparents.",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Rive-de-Gier, comme partout en France, ou à distance.",
     },
   ],
 };

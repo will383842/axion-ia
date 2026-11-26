@@ -9,18 +9,18 @@ export const ROCHEFORT_COPY: VilleCopy = {
   pitchEn:
     "Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne les TPE et PME de Rochefort et de l'agglomération CARO (65 000 habitants) dans leur transformation par l'intelligence artificielle. Ville arsenal fondée par Colbert en 1666, Rochefort conserve un ADN industriel exceptionnel : aéronautique de haute précision avec Stelia Aerospace (fuselages A350 du groupe Airbus) et Sabena Technics (MRO Boeing/Airbus), nautisme et activités portuaires, thermalisme (4e ville thermale française avec le Casino-Thermes) et tourisme patrimonial autour de la Corderie Royale, de l'Hermione et du Pont Transbordeur. Nous y déployons des architectures IA souveraines, conformes RGPD et AI Act, pensées pour les contraintes opérationnelles des sous-traitants aéronautiques, des acteurs du tourisme maritime et de l'agroalimentaire charentais. ETI couvertes en complément lorsque le besoin l'exige.",
   directAnswerFr:
-    "Axion-IA intervient à Rochefort (Charente-Maritime, 17) pour les TPE et PME du bassin CARO : sous-traitants aéronautiques de l'écosystème Stelia Aerospace et Sabena Technics, ateliers nautisme du port de commerce et de plaisance, établissements thermaux et acteurs du bien-être, opérateurs touristiques du patrimoine maritime (Corderie Royale, Hermione, Île d'Aix, Fort Boyard), PME agroalimentaires charentaises (cognac, ostréiculture Marennes-Oléron, sel de l'Île de Ré). Audits IA, interventions ciblées, implémentation d'agents métier, accompagnement un-à-un dirigeants et sites web augmentés : Williams se déplace sur site. Les ETI locales (Daher, Stelia) sont prises en charge en complément.",
+    "Axion-IA intervient à Rochefort (Charente-Maritime, 17) pour les TPE et PME du bassin CARO : sous-traitants aéronautiques de l'écosystème Stelia Aerospace et Sabena Technics, ateliers nautisme du port de commerce et de plaisance, établissements thermaux et acteurs du bien-être, opérateurs touristiques du patrimoine maritime (Corderie Royale, Hermione, Île d'Aix, Fort Boyard), PME agroalimentaires charentaises (cognac, ostréiculture Marennes-Oléron, sel de l'Île de Ré). Audits IA, interventions ciblées, implémentation d'agents métier, accompagnement un-à-un dirigeants et sites web augmentés : Williams intervient sur site. Les ETI locales (Daher, Stelia) sont prises en charge en complément.",
   directAnswerEn:
-    "Axion-IA intervient à Rochefort (Charente-Maritime, 17) pour les TPE et PME du bassin CARO : sous-traitants aéronautiques de l'écosystème Stelia Aerospace et Sabena Technics, ateliers nautisme du port de commerce et de plaisance, établissements thermaux et acteurs du bien-être, opérateurs touristiques du patrimoine maritime (Corderie Royale, Hermione, Île d'Aix, Fort Boyard), PME agroalimentaires charentaises (cognac, ostréiculture Marennes-Oléron, sel de l'Île de Ré). Audits IA, interventions ciblées, implémentation d'agents métier, accompagnement un-à-un dirigeants et sites web augmentés : Williams se déplace sur site. Les ETI locales (Daher, Stelia) sont prises en charge en complément.",
+    "Axion-IA intervient à Rochefort (Charente-Maritime, 17) pour les TPE et PME du bassin CARO : sous-traitants aéronautiques de l'écosystème Stelia Aerospace et Sabena Technics, ateliers nautisme du port de commerce et de plaisance, établissements thermaux et acteurs du bien-être, opérateurs touristiques du patrimoine maritime (Corderie Royale, Hermione, Île d'Aix, Fort Boyard), PME agroalimentaires charentaises (cognac, ostréiculture Marennes-Oléron, sel de l'Île de Ré). Audits IA, interventions ciblées, implémentation d'agents métier, accompagnement un-à-un dirigeants et sites web augmentés : Williams intervient sur site. Les ETI locales (Daher, Stelia) sont prises en charge en complément.",
   seoHook: "aéronautique Stelia, nautisme, thermalisme & patrimoine maritime",
   ecosystemFr:
     "Rochefort concentre un tissu rare en France : l'arsenal historique de Colbert reconverti en pôle aéronautique de pointe (Stelia Aerospace pour les fuselages A350 d'Airbus, Sabena Technics pour la maintenance Boeing/Airbus, écosystème DGAC, École de Gendarmerie Maritime, BAN Rochefort-Soubise), un port commerce/plaisance actif sur la Charente navigable, le 4e centre thermal français (Casino-Thermes) et un patrimoine UNESCO-compatible (Corderie Royale de 374 m, Hermione, Pont Transbordeur 1900). L'agglomération CARO mutualise les zones d'activités (Béligon, Les Pertuis) et la proximité immédiate de La Rochelle (30 km), Saintes (35 km), Niort (60 km) et Bordeaux (130 km) ouvre un bassin TPE/PME élargi, complété par les ostréiculteurs de Marennes-Oléron (40 km) et les sauniers de l'Île de Ré.",
   ecosystemEn:
     "Rochefort concentre un tissu rare en France : l'arsenal historique de Colbert reconverti en pôle aéronautique de pointe (Stelia Aerospace pour les fuselages A350 d'Airbus, Sabena Technics pour la maintenance Boeing/Airbus, écosystème DGAC, École de Gendarmerie Maritime, BAN Rochefort-Soubise), un port commerce/plaisance actif sur la Charente navigable, le 4e centre thermal français (Casino-Thermes) et un patrimoine UNESCO-compatible (Corderie Royale de 374 m, Hermione, Pont Transbordeur 1900). L'agglomération CARO mutualise les zones d'activités (Béligon, Les Pertuis) et la proximité immédiate de La Rochelle (30 km), Saintes (35 km), Niort (60 km) et Bordeaux (130 km) ouvre un bassin TPE/PME élargi, complété par les ostréiculteurs de Marennes-Oléron (40 km) et les sauniers de l'Île de Ré.",
   distancesFr:
-    "La Rochelle est à 30 km (30 min), Saintes à 35 km, Niort à 60 km, Bordeaux à 130 km (1h30). Williams se déplace sur site dans toute la Charente-Maritime, sur l'Île d'Aix, à Marennes-Oléron et sur le bassin Saintonge-Aunis. Nous intervenons partout en France, sur place ou à distance.",
+    "Williams intervient sur site dans toute la Charente-Maritime, sur l'Île d'Aix, à Marennes-Oléron et sur le bassin Saintonge-Aunis. Nous intervenons partout en France, sur place ou à distance.",
   distancesEn:
-    "La Rochelle est à 30 km (30 min), Saintes à 35 km, Niort à 60 km, Bordeaux à 130 km (1h30). Williams se déplace sur site dans toute la Charente-Maritime, sur l'Île d'Aix, à Marennes-Oléron et sur le bassin Saintonge-Aunis. Nous intervenons partout en France, sur place ou à distance.",
+    "Williams intervient sur site dans toute la Charente-Maritime, sur l'Île d'Aix, à Marennes-Oléron et sur le bassin Saintonge-Aunis. Nous intervenons partout en France, sur place ou à distance.",
   topSectorsNaf: [
     "Construction aéronautique et spatiale (Stelia Aerospace, Sabena Technics)",
     "Réparation et maintenance d'aéronefs (MRO Boeing/Airbus)",
@@ -226,7 +226,7 @@ export const ROCHEFORT_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-elle vraiment à Rochefort et dans l'agglomération CARO ?",
-      a: "Oui, Williams se déplace sur site à Rochefort et dans toute l'agglomération CARO (65 000 habitants) : zones d'activités Béligon et Les Pertuis, arsenal reconverti, port de commerce et de plaisance, ainsi que dans les communes voisines (Tonnay-Charente, Échillais, Fouras, Île d'Aix).",
+      a: "Oui, Williams intervient sur site à Rochefort et dans toute l'agglomération CARO (65 000 habitants) : zones d'activités Béligon et Les Pertuis, arsenal reconverti, port de commerce et de plaisance, ainsi que dans les communes voisines (Tonnay-Charente, Échillais, Fouras, Île d'Aix).",
     },
     {
       q: "Quels secteurs spécifiques à Rochefort accompagnez-vous en priorité ?",
@@ -235,10 +235,6 @@ export const ROCHEFORT_COPY: VilleCopy = {
     {
       q: "Travaillez-vous avec les ETI locales comme Stelia Aerospace ou Daher ?",
       a: "Notre priorité reste les TPE et PME du bassin rochefortais, mais nous accompagnons en complément les ETI locales (Stelia Aerospace, Sabena Technics, Daher à proximité) lorsqu'elles sollicitent un regard d'experts IA seniors externe sur un cas d'usage spécifique.",
-    },
-    {
-      q: "Comment rejoignez-vous Rochefort ?",
-      a: "Rochefort est accessible par TGV (gare SNCF en centre-ville, directe ou via La Rochelle) ou par l'A10 (sortie Saintes/Rochefort, La Rochelle à 30 km, Bordeaux à 130 km). Les déplacements sur Marennes-Oléron (40 km) et l'Île d'Aix sont organisés en continuité de mission.",
     },
     {
       q: "Vos architectures IA sont-elles compatibles avec les contraintes aéronautiques de Stelia et Sabena Technics ?",

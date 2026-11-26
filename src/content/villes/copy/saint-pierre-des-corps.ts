@@ -49,7 +49,7 @@ export const SAINT_PIERRE_DES_CORPS_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Saint-Pierre-des-Corps et Tours ?",
-      a: "Oui, Axion-IA intervient à Saint-Pierre-des-Corps et toute Tours Métropole (Tours, Joué-lès-Tours, Chambray-lès-Tours, Saint-Cyr-sur-Loire). Gare TGV sur place, Paris à 1h05.",
+      a: "Oui, Axion-IA intervient à Saint-Pierre-des-Corps et toute Tours Métropole (Tours, Joué-lès-Tours, Chambray-lès-Tours, Saint-Cyr-sur-Loire).",
     },
     {
       q: "Travaillez-vous avec les PME logistique et transport ferroviaire ?",
@@ -64,8 +64,8 @@ export const SAINT_PIERRE_DES_CORPS_COPY: VilleCopy = {
       a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Automatisation devis, gestion clients, facturation.",
     },
     {
-      q: "Comment se rendre à Saint-Pierre-des-Corps ?",
-      a: "Gare TGV Saint-Pierre-des-Corps directement sur place (Paris-Montparnasse 1h05). Accès immédiat.",
+      q: "Comment se déroule une mission à Saint-Pierre-des-Corps ?",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Saint-Pierre-des-Corps, comme partout en France, ou à distance.",
     },
   ],
 };

@@ -49,7 +49,7 @@ export const CHAUNY_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Chauny et dans le sud de l'Aisne ?",
-      a: "Oui, Axion-IA intervient à Chauny et dans tout le sud de l'Aisne (Tergnier, La Fère, Noyon, Coucy-le-Château). Consultants accessibles via gare SNCF Chauny (TER Paris-Nord via Tergnier). Paris à 1h20, Saint-Quentin à 30 min.",
+      a: "Oui, Axion-IA intervient à Chauny et dans tout le sud de l'Aisne (Tergnier, La Fère, Noyon, Coucy-le-Château).",
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Chauny  ?",

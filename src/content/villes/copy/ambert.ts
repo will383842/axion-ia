@@ -49,7 +49,7 @@ export const AMBERT_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Ambert et dans le Livradois-Forez ?",
-      a: "Oui, Axion-IA intervient à Ambert et dans tout le Livradois-Forez (Thiers à 40 min, Clermont-Ferrand à 1h15). Aéroport Clermont à 1h20.",
+      a: "Oui. Axion-IA intervient à Ambert et dans tout le Livradois-Forez, de Thiers à Clermont-Ferrand.",
     },
     {
       q: "Travaillez-vous avec les fromageries AOP Fourme d'Ambert ?",
@@ -65,7 +65,7 @@ export const AMBERT_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Ambert ?",
-      a: "Clermont-Ferrand (1h15). Aéroport Clermont à 1h20.",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Ambert, comme partout en France, ou à distance.",
     },
   ],
 };

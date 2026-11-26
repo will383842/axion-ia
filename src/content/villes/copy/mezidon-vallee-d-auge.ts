@@ -49,7 +49,7 @@ export const MEZIDON_VALLEE_D_AUGE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Mézidon Vallée d'Auge et dans le Pays d'Auge ?",
-      a: "Oui, Axion-IA intervient à Mézidon Vallée d'Auge et tout le Pays d'Auge (Saint-Pierre-en-Auge, Livarot, Pont-l'Évêque, Lisieux). Consultants depuis Caen (30 min N13) ou via gare SNCF Mézidon.",
+      a: "Oui, Axion-IA intervient à Mézidon Vallée d'Auge et tout le Pays d'Auge (Saint-Pierre-en-Auge, Livarot, Pont-l'Évêque, Lisieux). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les fromageries et cidreries AOP du Pays d'Auge ?",
@@ -65,7 +65,7 @@ export const MEZIDON_VALLEE_D_AUGE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA dans le Pays d'Auge ?",
-      a: "Nos consultants viennent de Caen (30 min N13) ou par train (gare SNCF Mézidon, nœud ferroviaire). Déplacement sur site (fromagerie, cidrerie, exploitation, commerce).",
+      a: "Nous intervenons partout en France, sur place ou à distance. Déplacement sur site (fromagerie, cidrerie, exploitation, commerce).",
     },
   ],
 };

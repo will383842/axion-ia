@@ -49,7 +49,7 @@ export const LA_VILLE_DU_BOIS_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à La Ville-du-Bois ?",
-      a: "Oui, Axion-IA intervient à La Ville-du-Bois et tout le Hurepoix (Longjumeau à 5 min, Montlhéry à 5 min, Évry à 20 min, Paris à 35 min). Aéroport Orly à 15 min.",
+      a: "Oui, Axion-IA intervient à La Ville-du-Bois et dans tout le Hurepoix (Longjumeau, Montlhéry, Évry).",
     },
     {
       q: "Accompagnez-vous les commerces de zone commerciale ?",

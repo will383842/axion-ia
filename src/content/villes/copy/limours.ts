@@ -49,7 +49,7 @@ export const LIMOURS_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Limours et dans le Hurepoix ?",
-      a: "Oui, Axion-IA intervient à Limours et dans le Hurepoix : Orsay à 15 min, Dourdan à 15 min, Massy TGV à 20 min, Paris centre à 40 min par N118 ou A10.",
+      a: "Oui, Axion-IA intervient à Limours et dans le Hurepoix : Orsay, Dourdan, Massy et les communes voisines.",
     },
     {
       q: "Accompagnez-vous les artisans BTP en zone semi-rurale ?",
@@ -64,8 +64,8 @@ export const LIMOURS_COPY: VilleCopy = {
       a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : gestion stocks, fidélisation client, agents IA commande, marketing local.",
     },
     {
-      q: "Comment se passe une mission depuis Paris ou Massy ?",
-      a: "Massy TGV (20 min). Paris centre (40 min par N118 ou A10). Orly (25 min).",
+      q: "Comment se déroule une mission Axion-IA à Limours ?",
+      a: "Nous intervenons partout en France, sur place dans vos locaux ou à distance en visio. Après le cadrage de votre besoin, nous planifions l'intervention et livrons un résultat actionnable.",
     },
   ],
 };

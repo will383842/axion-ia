@@ -122,7 +122,7 @@ export const IVRY_SUR_SEINE_COPY: VilleCopy = {
           },
           {
             q: "Travaillez-vous avec les PME qui s'implantent dans la ZAC Ivry Confluences ?",
-            a: "Oui. La ZAC Ivry Confluences (145 ha, 340 000 m² tertiaires et productifs aménagés par Sadev 94, arrivée de la Caisse des Dépôts) attire des PME de services et d'industrie légère. Nous y déployons portails clients, intranets IA et automatisation des process commerciaux, en code sur mesure intégré à vos outils existants.",
+            a: "Oui. La ZAC Ivry Confluences, avec 145 ha et 340 000 m² tertiaires et productifs aménagés par Sadev 94 et l'arrivée de la Caisse des Dépôts, attire des PME de services et d'industrie légère. Nous y déployons portails clients, intranets IA et automatisation des process commerciaux, en code sur mesure intégré à vos outils existants.",
           },
           {
             q: "Vos plateformes santé et silver-économie sont-elles conformes RGPD ?",
@@ -130,7 +130,7 @@ export const IVRY_SUR_SEINE_COPY: VilleCopy = {
           },
           {
             q: "Quels délais pour un devis sur un projet de site ou SaaS à Ivry-sur-Seine ?",
-            a: "Nous transmettons un devis à partir de 24-48 h selon la complexité du projet. Le kick-off se tient sur site à Ivry-sur-Seine (Ivry-Port, ZAC Confluences, Cap de Seine ou centre-ville), facilement accessible par la ligne 7, le RER C et le tramway T9.",
+            a: "Nous transmettons un devis à partir de 24-48 h selon la complexité du projet.",
           },
         ],
         guarantees:
@@ -216,7 +216,7 @@ export const IVRY_SUR_SEINE_COPY: VilleCopy = {
           },
           {
             q: "How fast is a quote for a website or SaaS project in Ivry-sur-Seine?",
-            a: "We send a quote from 24-48 h depending on project complexity. The kick-off takes place on site in Ivry-sur-Seine (Ivry-Port, ZAC Confluences, Cap de Seine or town centre), easily reached via metro line 7, RER C and tram T9.",
+            a: "We send a quote from 24-48 h depending on project complexity. Axion-IA works anywhere in France, on site or remotely, including in Ivry-sur-Seine (Ivry-Port, ZAC Confluences, Cap de Seine or town centre).",
           },
         ],
         guarantees:
@@ -228,15 +228,15 @@ export const IVRY_SUR_SEINE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Quels sont les tarifs Axion-IA à Ivry-sur-Seine ?",
-      a: "Tarifs publics : Audit sur place 4h dès {{price:audit-flash|flat}}, Formation 4 h dès {{price:intervention-4h|flat}}, implémentation ou 1-to-1 dès {{price:intervention-dirigeants|flat}}. Mêmes tarifs partout en France.",
+      a: "Tarifs publics : Audit sur place 4h dès {{price:audit-flash|flat}}, Formation 4 h dès {{price:intervention-4h|flat}}, implémentation ou 1-to-1 dès {{price:intervention-dirigeants|flat}}.",
     },
     {
       q: "Quels délais pour une intervention à Ivry-sur-Seine ?",
-      a: "Nous intervenons à Ivry-sur-Seine dans les 5 jours ouvrés après validation. La desserte par la ligne 7, le RER C et le tramway T9 facilite l'accès depuis Paris.",
+      a: "Nous intervenons à Ivry-sur-Seine dans les 5 jours ouvrés après validation.",
     },
     {
-      q: "Quelles communes proches couvrez-vous depuis Ivry-sur-Seine ?",
-      a: "Depuis Ivry-sur-Seine, nous couvrons les communes limitrophes : Paris, Charenton-le-Pont, Alfortville, Vitry-sur-Seine, Le Kremlin-Bicêtre et Villejuif. Tout le sud-est parisien est accessible facilement.",
+      q: "Quelles communes proches couvrez-vous autour d'Ivry-sur-Seine ?",
+      a: "Nous intervenons dans vos locaux à Ivry-sur-Seine et dans les communes limitrophes : Paris, Charenton-le-Pont, Alfortville, Vitry-sur-Seine, Le Kremlin-Bicêtre et Villejuif.",
     },
     {
       q: "Quels secteurs locaux accompagnez-vous à Ivry-sur-Seine ?",
@@ -248,7 +248,7 @@ export const IVRY_SUR_SEINE_COPY: VilleCopy = {
     },
     {
       q: "Vous déplacez-vous sur site à Ivry-sur-Seine ?",
-      a: "Oui, notre équipe se déplace directement à Ivry-sur-Seine pour audits, interventions et implémentations. Le métro ligne 7 (4 stations sur la commune) rend le déplacement très simple depuis Paris.",
+      a: "Oui, nous intervenons directement à Ivry-sur-Seine pour audits, interventions et implémentations.",
     },
   ],
 };

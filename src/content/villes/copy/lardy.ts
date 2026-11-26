@@ -49,7 +49,7 @@ export const LARDY_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Lardy et vallée de la Juine ?",
-      a: "Oui, Axion-IA intervient à Lardy et toute la vallée de la Juine (Arpajon, Étampes, Bouray-sur-Juine, Janville-sur-Juine). Consultants depuis Paris (45 min RER C).",
+      a: "Oui, Axion-IA intervient à Lardy et toute la vallée de la Juine (Arpajon, Étampes, Bouray-sur-Juine, Janville-sur-Juine). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quels services pour les TPE et artisans lardycois ?",
@@ -64,8 +64,8 @@ export const LARDY_COPY: VilleCopy = {
       a: "Oui, implémentation IA pour PME tertiaires du sud-Essonne depuis Lardy : CRM augmentés, classification documents, automatisations workflow. Tarifs publics, ROI chiffré contractuel.",
     },
     {
-      q: "Comment se passe une mission depuis Paris ?",
-      a: "Nos consultants viennent de Paris en RER C (45 min Gare d'Austerlitz, gare de Lardy) ou en voiture par N20/A6 (50 min).",
+      q: "Comment se déroule une mission Axion-IA à Lardy ?",
+      a: "Nous intervenons partout en France, sur place dans vos locaux ou à distance en visio. Après le cadrage de votre besoin, nous planifions l'intervention et livrons un résultat actionnable.",
     },
   ],
 };

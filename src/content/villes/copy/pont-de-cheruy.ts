@@ -57,7 +57,7 @@ export const PONT_DE_CHERUY_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les opérateurs logistiques aéroportuaires ?",
-      a: "Oui, nous accompagnons les opérateurs logistiques aire Lyon-Saint-Exupéry (20 min) sur leurs cas IA : optimisation tournées, automatisation préparation commandes, prédiction demande, agents IA service client B2B multilingue.",
+      a: "Oui, nous accompagnons les opérateurs logistiques aire Lyon-Saint-Exupéry sur leurs cas IA : optimisation tournées, automatisation préparation commandes, prédiction demande, agents IA service client B2B multilingue.",
     },
     {
       q: "Quels services pour les TPE et artisans chérulane ?",
@@ -65,7 +65,7 @@ export const PONT_DE_CHERUY_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Pont-de-Chéruy ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Pour les multi-jours, hébergement local possible (hôtels Lyon-Saint-Exupéry).",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Pont-de-Chéruy, comme partout en France, ou à distance.",
     },
   ],
 };

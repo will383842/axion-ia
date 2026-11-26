@@ -49,7 +49,7 @@ export const COURTRY_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Courtry et dans le nord Seine-et-Marne ?",
-      a: "Oui, Axion-IA intervient à Courtry et dans les communes environnantes (Le Pin, Villeparisis, Claye-Souilly, Mitry-Mory). Meaux à 15 min, Roissy-CDG à 25 min, Paris à 40 min.",
+      a: "Oui, Axion-IA intervient à Courtry et dans les communes environnantes (Le Pin, Villeparisis, Claye-Souilly, Mitry-Mory).",
     },
     {
       q: "Quel est le tarif d'un audit IA à Courtry  ?",

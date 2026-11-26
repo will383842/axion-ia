@@ -49,7 +49,7 @@ export const VILLEREST_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Villerest et Roannais Agglomération ?",
-      a: "Oui, Axion-IA intervient à Villerest et toute Roannais Agglomération (Roanne à 10 min, Riorges, Mably, Le Coteau). Nous intervenons partout en France, sur place ou à distance.",
+      a: "Oui. Axion-IA intervient à Villerest et dans toute Roannais Agglomération : Roanne, Riorges, Mably, Le Coteau. Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les acteurs tourisme barrage Villerest ?",
@@ -65,7 +65,7 @@ export const VILLEREST_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Villerest ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Pour les multi-jours, hébergement local possible (hôtels Roanne).",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Villerest, comme partout en France, ou à distance.",
     },
   ],
 };

@@ -230,7 +230,7 @@ export const AIX_LES_BAINS_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Aix-les-Bains et autour du lac du Bourget ?",
-      a: "Oui, Axion-IA accompagne les TPE et PME d'Aix-les-Bains et de tout le bassin du lac (Chambéry à 15 min, Le Bourget-du-Lac, Grésy-sur-Aix). Accès TGV direct et aéroport de Chambéry à 8 km.",
+      a: "Oui, Axion-IA accompagne les TPE et PME d'Aix-les-Bains et de tout le bassin du lac. Axion IA intervient partout en France, sur site ou à distance.",
     },
     {
       q: "Accompagnez-vous les hôtels et hébergements thermaux ?",
@@ -246,7 +246,7 @@ export const AIX_LES_BAINS_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Aix-les-Bains ?",
-      a: "Nos consultants se déplacent sur le bassin du lac du Bourget, avec un accès TGV et l'aéroport de Chambéry à 8 km.",
+      a: "La mission se déroule sur le bassin du lac du Bourget, sur site ou à distance, avec des livrables remis et documentés.",
     },
   ],
 };

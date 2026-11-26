@@ -49,7 +49,7 @@ export const FUVEAU_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Fuveau et dans le pays de la Sainte-Victoire ?",
-      a: "Oui, Axion-IA intervient à Fuveau et dans tout le pays de la Sainte-Victoire (Gardanne, Trets, Peynier, Rousset, Châteauneuf-le-Rouge, Meyreuil). Proximité Aix-en-Provence et axes A8/A52.",
+      a: "Oui, Axion-IA intervient à Fuveau et dans tout le pays de la Sainte-Victoire (Gardanne, Trets, Peynier, Rousset, Châteauneuf-le-Rouge, Meyreuil).",
     },
     {
       q: "Quel est le tarif d'un audit IA à Fuveau  ?",
@@ -64,8 +64,8 @@ export const FUVEAU_COPY: VilleCopy = {
       a: "Oui, nous intervenons auprès des PME tertiaires sur automatisation back-office, CRM intelligents, gestion commerciale, agents IA support client, automatisation reporting et tableaux de bord.",
     },
     {
-      q: "Comment se déplace Axion-IA à Fuveau ?",
-      a: "Fuveau est à 20 min d'Aix et 35 min de Marseille via A52. Nos consultants se déplacent dans vos locaux.",
+      q: "Comment se déroule une mission à Fuveau ?",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Fuveau, comme partout en France, ou à distance.",
     },
   ],
 };

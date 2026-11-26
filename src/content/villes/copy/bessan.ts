@@ -50,7 +50,7 @@ export const BESSAN_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Bessan et dans la CA Hérault Méditerranée ?",
-      a: "Oui, Axion-IA intervient à Bessan et dans toutes les communes de la CAHM : Agde (6,9 km), Pézenas, Florensac, Vias, Saint-Thibéry, Montblanc. Nous intervenons partout en France, sur place ou à distance.",
+      a: "Oui, Axion-IA intervient à Bessan et dans toutes les communes de la CAHM : Agde, Pézenas, Florensac, Vias, Saint-Thibéry, Montblanc. Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quels tarifs pour une mission IA à Bessan ?",
@@ -73,8 +73,8 @@ export const BESSAN_COPY: VilleCopy = {
       a: "TPE en priorité (commerces centre ancien fortifié, artisans BTP rénovation patrimoine, professions libérales) puis PME (viticulteurs cave coopérative ou domaines, exploitations agricoles, services aux entreprises pour l'agglo Agde-Pézenas).",
     },
     {
-      q: "Vos consultants se déplacent-ils à Bessan ou en visio uniquement ?",
-      a: "Les deux. Visio possible pour cadrage et coaching, sur site recommandé pour ateliers d'équipe.",
+      q: "Intervenez-vous à Bessan ou en visio uniquement ?",
+      a: "Les deux. Axion IA intervient partout en France, sur site ou à distance. Visio possible pour cadrage et coaching, sur site recommandé pour ateliers d'équipe.",
     },
   ],
 };

@@ -65,7 +65,7 @@ export const CAZOULS_LES_BEZIERS_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Cazouls-lès-Béziers ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Pour missions multi-jours, hébergement Béziers ou littoral.",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Cazouls-lès-Béziers, comme partout en France, ou à distance.",
     },
   ],
 };

@@ -58,7 +58,7 @@ export const HYERES_COPY: VilleCopy = {
           "Filière fleur coupée surreprésentée : ~350 horticulteurs du bassin hyérois et la SICA Marché aux Fleurs (1er marché de France, 4e européen) ont besoin de portails de commande, de catalogues variétaux (roses, œillets, gerberas, strélitzias) et de tableaux de bord de production sous serre — pas d'un site vitrine générique.",
           "Tourisme insulaire à forte jauge : la fréquentation de Porquerolles est plafonnée (~6 000 visiteurs/jour) et les traversées TLV-TVM limitées (~4 000 passagers/jour). Nous construisons des moteurs de réservation qui gèrent ces quotas, le multilingue et les pics de saison, hébergement de plein air compris.",
           "Bassin de TPE/PME saisonnières : ~2 035 TPE et ~95 PME à Hyères, dont la charge bascule entre haute et basse saison. Nos plateformes IA-native automatisent devis, relances et e-commerce (vente directe pépinières, domaines viticoles, produits insulaires) sans dépendance éditeur.",
-          "Ancrage zones d'activité et déplacements : nous intervenons sur la ZAE du Chibasson (85 entreprises, ~2 000 emplois), le futur pôle horticole de 16 ha, l'aéroport (concession VINCI Airports) et les communes voisines — Toulon, La Garde, Carqueiranne, La Crau.",
+          "Ancrage zones d'activité : nous intervenons sur la ZAE du Chibasson (85 entreprises, ~2 000 emplois), le futur pôle horticole de 16 ha, la plateforme aéroportuaire (concession VINCI Airports) et les communes voisines — Toulon, La Garde, Carqueiranne, La Crau.",
         ],
         methodology: [
           {
@@ -123,8 +123,8 @@ export const HYERES_COPY: VilleCopy = {
             a: "Oui. La fréquentation de Porquerolles est plafonnée (~6 000 visiteurs/jour) et les traversées TLV-TVM limitées (~4 000 passagers/jour). Nous développons des moteurs de réservation qui respectent ces jauges, gèrent le multilingue et lissent les pics de saison vers Porquerolles, Port-Cros et Le Levant.",
           },
           {
-            q: "Axion-IA se déplace-t-il sur site à Hyères et dans la presqu'île ?",
-            a: "Oui. Nous intervenons dans vos locaux à Hyères — exploitations sous serre, hôtels, campings, caves des Côtes de Provence, ZAE du Chibasson, secteur de l'aéroport — et dans les communes voisines : Toulon, La Garde, Carqueiranne, La Crau.",
+            q: "Intervenez-vous à Hyères et dans la presqu'île ?",
+            a: "Oui. Nous intervenons dans vos locaux à Hyères — exploitations sous serre, hôtels, campings, caves des Côtes de Provence, ZAE du Chibasson — et dans les communes voisines : Toulon, La Garde, Carqueiranne, La Crau.",
           },
           {
             q: "Faut-il être une grande entreprise pour un site ou un SaaS avec Axion-IA ?",
@@ -144,7 +144,7 @@ export const HYERES_COPY: VilleCopy = {
           "Cut-flower sector over-represented: the ~350 Hyères-area horticulturists and the SICA Marché aux Fleurs (France's leading flower market, 4th in Europe) need ordering portals, variety catalogues (roses, carnations, gerberas, birds of paradise) and greenhouse production dashboards — not a generic showcase site.",
           "High-cap island tourism: Porquerolles visitor numbers are capped (~6,000/day) and TLV-TVM crossings limited (~4,000 passengers/day). We build booking engines that handle these quotas, multilingual traffic and seasonal peaks, open-air accommodation included.",
           "Seasonal micro-business base: ~2,035 micro-businesses and ~95 SMEs in Hyères whose workload swings between high and low season. Our AI-native platforms automate quotes, follow-ups and e-commerce (direct nursery sales, wine estates, island products) with no vendor lock-in.",
-          "Business-zone footprint and travel: we work across the ZAE du Chibasson (85 firms, ~2,000 jobs), the planned 16-ha horticultural pole, the airport (VINCI Airports concession) and neighbouring towns — Toulon, La Garde, Carqueiranne, La Crau.",
+          "Business-zone footprint: Axion-IA works anywhere in France, on site or remotely, including across the ZAE du Chibasson (85 firms, ~2,000 jobs), the planned 16-ha horticultural pole, the airport (VINCI Airports concession) and neighbouring towns — Toulon, La Garde, Carqueiranne, La Crau.",
         ],
         methodology: [
           {
@@ -209,8 +209,8 @@ export const HYERES_COPY: VilleCopy = {
             a: "Yes. Porquerolles visitor numbers are capped (~6,000/day) and TLV-TVM crossings limited (~4,000 passengers/day). We develop booking engines that respect these caps, handle multilingual traffic and smooth seasonal peaks toward Porquerolles, Port-Cros and Le Levant.",
           },
           {
-            q: "Does Axion-IA come on site in Hyères and the peninsula?",
-            a: "Yes. We work at your premises in Hyères — greenhouse holdings, hotels, campsites, Côtes de Provence cellars, ZAE du Chibasson, airport area — and in neighbouring towns: Toulon, La Garde, Carqueiranne, La Crau.",
+            q: "Do you work in Hyères?",
+            a: "Yes. Axion-IA works anywhere in France, on site or remotely, including in Hyères — greenhouse holdings, hotels, campsites, Côtes de Provence cellars, ZAE du Chibasson, airport area — and in neighbouring towns: Toulon, La Garde, Carqueiranne, La Crau.",
           },
           {
             q: "Do I need to be a large company for a site or SaaS with Axion-IA?",
@@ -229,8 +229,8 @@ export const HYERES_COPY: VilleCopy = {
 
   faqGeolocalisee: [
     {
-      q: "Axion-IA se déplace-t-il sur site à Hyères et vers les îles d'Or ?",
-      a: "Oui. Notre cabinet d'experts IA se déplace dans vos locaux à Hyères et sur l'ensemble de la presqu'île pour observer vos processus réels, généralement sous cinq jours ouvrés.",
+      q: "Intervenez-vous sur site à Hyères et vers les îles d'Or ?",
+      a: "Oui. Notre cabinet d'experts IA intervient dans vos locaux à Hyères et sur l'ensemble de la presqu'île pour observer vos processus réels, généralement sous cinq jours ouvrés.",
     },
     {
       q: "Quels gains l'IA apporte-t-elle à un hôtelier ou un viticulteur de Hyères ?",

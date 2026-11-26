@@ -49,7 +49,7 @@ export const PITHIVIERS_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il a Pithiviers et dans le Pithiverais ?",
-      a: "Oui, Axion-IA intervient a Pithiviers et dans tout le Pithiverais (Malesherbes, Puiseaux, Beaune-la-Rolande). Orleans a 45 min, Paris a 1h30, Etampes RER C a 40 min.",
+      a: "Oui, Axion-IA intervient a Pithiviers et dans tout le Pithiverais (Malesherbes, Puiseaux, Beaune-la-Rolande). Nous intervenons sur place ou à distance.",
     },
     {
       q: "Quel est le tarif d'un audit IA a Pithiviers ?",

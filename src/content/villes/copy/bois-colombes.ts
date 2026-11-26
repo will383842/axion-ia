@@ -58,7 +58,7 @@ export const BOIS_COLOMBES_COPY: VilleCopy = {
           "Bois-Colombes concentre des sièges et DSI de grands groupes sur l'avenue de l'Europe et la ZAC des Bruyères — IBM France, Colgate-Palmolive, Abeille Assurances, Coface (env. 1 300 collaborateurs), GRTgaz/NaTran, Storengy, Elengy — qui ont des besoins de portails internes, extranets partenaires et applications métier à interfacer avec leurs systèmes existants.",
           "La ZAC des Bruyères, née sur les friches de l'ancienne usine Hispano-Suiza et desservie par la gare de Bécon-les-Bruyères, héberge des fonctions tertiaires (énergie/gaz, assurance, crédit-export, biens de grande consommation) où la production documentaire et le reporting sont des cas d'usage IA prioritaires pour un site ou une plateforme.",
           "Au pied des sièges, un tissu résidentiel dense de TPE/PME — cabinets de conseil, services financiers, agences numériques, professions libérales (santé, droit, expertise) et commerces de proximité — pour qui un site vitrine ou e-commerce avec prise de RDV, qualification et base documentaire interrogeable change l'acquisition.",
-          "Nous intervenons sur site à Bois-Colombes et dans l'ouest francilien (Courbevoie, Asnières, La Défense à env. 10 min, Paris à env. 7 km) : ateliers de conception en présentiel, puis itérations à distance, sans nous substituer à vos équipes.",
+          "Nous intervenons sur site à Bois-Colombes et dans l'ouest francilien (Courbevoie, Asnières, La Défense, Paris) : ateliers de conception en présentiel, puis itérations à distance, sans nous substituer à vos équipes.",
         ],
         methodology: [
           {
@@ -144,7 +144,7 @@ export const BOIS_COLOMBES_COPY: VilleCopy = {
           "Bois-Colombes concentrates headquarters and IT divisions of major groups on avenue de l'Europe and in the ZAC des Bruyères — IBM France, Colgate-Palmolive, Abeille Assurances, Coface (about 1,300 staff), GRTgaz/NaTran, Storengy, Elengy — with strong needs for internal portals, partner extranets and business apps to interface with their existing systems.",
           "The ZAC des Bruyères, born on the former Hispano-Suiza factory wasteland and served by Bécon-les-Bruyères station, hosts tertiary functions (energy/gas, insurance, export credit, consumer goods) where document production and reporting are priority AI use cases for a website or platform.",
           "At the foot of the headquarters, a dense residential fabric of micro-businesses and SMEs — consulting firms, financial services, digital agencies, liberal professions (health, law, expertise) and local shops — for whom a showcase or e-commerce site with booking, qualification and a searchable knowledge base transforms acquisition.",
-          "We work on site in Bois-Colombes and across western Île-de-France (Courbevoie, Asnières, La Défense about 10 min away, Paris about 7 km): in-person design workshops, then remote iterations, without replacing your teams.",
+          "Axion-IA works anywhere in France, on site or remotely, including in Bois-Colombes: in-person design workshops, then remote iterations, without replacing your teams.",
         ],
         methodology: [
           {

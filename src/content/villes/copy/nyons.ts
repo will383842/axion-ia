@@ -49,7 +49,7 @@ export const NYONS_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Nyons et Drôme provençale ?",
-      a: "Oui, Axion-IA intervient à Nyons et toute la Drôme provençale (Vaison-la-Romaine à 25 min, Buis-les-Baronnies, Valréas, Tulette). Nos consultants viennent de Lyon (2h A7) ou Avignon (1h).",
+      a: "Oui, Axion-IA intervient à Nyons et dans toute la Drôme provençale (Vaison-la-Romaine, Buis-les-Baronnies, Valréas, Tulette).",
     },
     {
       q: "Travaillez-vous avec les oléiculteurs AOP Nyons ?",
@@ -64,8 +64,8 @@ export const NYONS_COPY: VilleCopy = {
       a: "Pour les TPE artisans BTP et commerçants à Nyons, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, classification photos, agents IA RDV.",
     },
     {
-      q: "Comment se passe une mission depuis Lyon ou Avignon ?",
-      a: "Nos consultants viennent de Lyon (2h A7) ou Avignon (1h). Pour les multi-jours, hébergement local possible (gîtes Drôme provençale).",
+      q: "Comment se déroule une mission Axion-IA à Nyons ?",
+      a: "Nous intervenons partout en France, sur place dans vos locaux ou à distance en visio. Après le cadrage de votre besoin, nous planifions l'intervention et livrons un résultat actionnable.",
     },
   ],
 };

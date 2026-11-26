@@ -14,9 +14,9 @@ export const BREUILLET_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Breuillet (91). Nous accompagnons tous types d'activités : TPE artisans BTP, commerçants de proximité, professions libérales, exploitants agricoles de la vallée de la Renarde, indépendants et PME de services du sud Essonne. Audit sur place sur mesure.",
   seoHook: "commerce proximité & professions libérales",
   ecosystemFr:
-    "Breuillet est une commune résidentielle rurale du sud de l'Essonne, dans la vallée de la Renarde (affluent de l'Orge). Tissu économique mixte rural-péri-urbain : TPE artisans BTP, commerces de centre-bourg, professions libérales, exploitants agricoles (grandes cultures, maraîchage), PME tertiaires et services. Proximité de Dourdan et de la gare RER C d'Arpajon.",
+    "Breuillet est une commune résidentielle rurale du sud de l'Essonne, dans la vallée de la Renarde (affluent de l'Orge). Tissu économique mixte rural-péri-urbain : TPE artisans BTP, commerces de centre-bourg, professions libérales, exploitants agricoles (grandes cultures, maraîchage), PME tertiaires et services. Bassin économique de Dourdan et d'Arpajon.",
   ecosystemEn:
-    "Breuillet est une commune résidentielle rurale du sud de l'Essonne, dans la vallée de la Renarde (affluent de l'Orge). Tissu économique mixte rural-péri-urbain : TPE artisans BTP, commerces de centre-bourg, professions libérales, exploitants agricoles (grandes cultures, maraîchage), PME tertiaires et services. Proximité de Dourdan et de la gare RER C d'Arpajon.",
+    "Breuillet est une commune résidentielle rurale du sud de l'Essonne, dans la vallée de la Renarde (affluent de l'Orge). Tissu économique mixte rural-péri-urbain : TPE artisans BTP, commerces de centre-bourg, professions libérales, exploitants agricoles (grandes cultures, maraîchage), PME tertiaires et services. Bassin économique de Dourdan et d'Arpajon.",
   distancesFr:
     "Gare de Breuillet - Bruyères-le-Châtel (RER C) à 5 min. Paris Austerlitz à 50 min RER C. Aéroport Paris-Orly à 30 min voiture. Dourdan à 10 min. Arpajon à 15 min. Axe N20 vers Étampes et Orléans.",
   distancesEn:
@@ -65,7 +65,7 @@ export const BREUILLET_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Breuillet ?",
-      a: "Breuillet est desservie par le RER C (gare de Breuillet - Bruyères-le-Châtel). Pour les multi-jours, hébergement local possible.",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Breuillet, comme partout en France, ou à distance.",
     },
   ],
 };

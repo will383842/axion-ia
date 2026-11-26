@@ -49,7 +49,7 @@ export const GUIDEL_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Guidel et sur Lorient Agglomération ?",
-      a: "Oui, Axion-IA intervient à Guidel et dans toute Lorient Agglomération. Lorient centre à 20 min, aéroport Lorient Bretagne Sud à 15 min, voie express RN 165 à 5 min.",
+      a: "Oui, Axion-IA intervient à Guidel et dans toute Lorient Agglomération.",
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Guidel  ?",
@@ -64,8 +64,8 @@ export const GUIDEL_COPY: VilleCopy = {
       a: "Oui, gestion devis, planning chantiers, suivi marges, maintenance prédictive, optimisation supply chain, e-commerce pour artisans BTP et professionnels du nautisme de Guidel.",
     },
     {
-      q: "Comment accéder à Guidel depuis Paris ?",
-      a: "Gare TGV de Lorient à 25 min (Paris-Montparnasse à 3 h en TGV direct). Aéroport Lorient Bretagne Sud à 15 min. Voie express RN 165 à 5 min.",
+      q: "Comment se déroule une mission à Guidel ?",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Guidel, comme partout en France, ou à distance.",
     },
   ],
 };

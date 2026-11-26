@@ -218,7 +218,7 @@ export const DRAVEIL_COPY: VilleCopy = {
           },
           {
             q: "How does a mission work in Draveil?",
-            a: "We work across France, on site or remotely (Draveil is served by RER D via Juvisy-sur-Orge), and travel across south-east Essonne: Draveil, Montgeron, Vigneux-sur-Seine, Ris-Orangis. Kick-off and handover in person — at the shop, the practice or the Mainville park; iterations remote. Quote within 24 to 48 hours depending on complexity.",
+            a: "Axion-IA works anywhere in France, on site or remotely, including across south-east Essonne: Draveil, Montgeron, Vigneux-sur-Seine, Ris-Orangis. Kick-off and handover in person — at the shop, the practice or the Mainville park; iterations remote. Quote within 24 to 48 hours depending on complexity.",
           },
         ],
         guarantees:
@@ -246,7 +246,7 @@ export const DRAVEIL_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Draveil ?",
-      a: "Nous intervenons partout en France, sur place ou à distance.",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Draveil, comme partout en France, ou à distance.",
     },
   ],
 };

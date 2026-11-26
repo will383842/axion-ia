@@ -143,6 +143,33 @@ describe("approveReview", () => {
     expect(call[0].data.reviewedBy).toBe("admin-1");
   });
 
+  it("approbation manuelle d'un contenu Journée IA : reste possible (publié)", async () => {
+    reviewFindUniqueMock.mockResolvedValue({
+      id: "rev-ia",
+      status: "pending",
+      job: { outputJsonRaw: { bodyHtml: "<p>La Journée IA à 1 490 € HT</p>" } },
+    });
+    await approveReview("rev-ia");
+    const call = reviewUpdateManyMock.mock.calls[0] as [
+      { data: { status: string; reviewedBy: string } },
+    ];
+    expect(call[0].data.status).toBe("approved");
+    expect(call[0].data.reviewedBy).toBe("admin-1");
+    expect(queueAddMock).toHaveBeenCalled();
+  });
+
+  it("un job publish terminé (renvoi en relecture) est retiré avant le nouvel ajout", async () => {
+    const remove = vi.fn(async () => undefined);
+    queueGetJobMock.mockResolvedValueOnce({ getState: async () => "completed", remove } as never);
+    await approveReview("rev-ia");
+    expect(remove).toHaveBeenCalledTimes(1);
+    expect(queueAddMock).toHaveBeenCalledWith(
+      "publish",
+      expect.anything(),
+      expect.objectContaining({ jobId: "publish-rev-ia" }),
+    );
+  });
+
   it("throw si pas de session admin", async () => {
     authMock.mockResolvedValue(null);
     await expect(approveReview("rev-1")).rejects.toThrow("unauthorized");
@@ -289,6 +316,55 @@ describe("bulkApproveReviews", () => {
 
   it("throw ZodError si minScore hors [0,100]", async () => {
     await expect(bulkApproveReviews(150)).rejects.toThrow();
+  });
+
+  it("Journée IA : note 95 + mention → jamais approuvée en groupe (reste en attente)", async () => {
+    reviewFindManyMock.mockResolvedValue([
+      {
+        id: "rev-ia",
+        job: {
+          id: "job-ia",
+          contentType: "blog_article",
+          outputJsonRaw: { title: "T", bodyHtml: "<p>Réservez la Journée IA.</p>" },
+          inputPayload: {},
+          campaign: null,
+        },
+      },
+      {
+        id: "rev-ok",
+        job: {
+          id: "job-ok",
+          contentType: "blog_article",
+          outputJsonRaw: { title: "T", bodyHtml: "<p>Audit IA pour PME.</p>" },
+          inputPayload: {},
+          campaign: null,
+        },
+      },
+    ]);
+    const result = await bulkApproveReviews(75);
+    expect(result.approved).toBe(1);
+    const ids = reviewUpdateManyMock.mock.calls.map(
+      (c) => (c[0] as { where: { id: string } }).where.id,
+    );
+    expect(ids).toEqual(["rev-ok"]);
+  });
+
+  it("Journée IA : rattachée à une campagne Journée IA → pas approuvée en groupe", async () => {
+    reviewFindManyMock.mockResolvedValue([
+      {
+        id: "rev-camp",
+        job: {
+          id: "job-camp",
+          contentType: "blog_article",
+          outputJsonRaw: { title: "T", bodyHtml: "<p>Texte neutre.</p>" },
+          inputPayload: {},
+          campaign: { name: "Campagne Journée IA" },
+        },
+      },
+    ]);
+    const result = await bulkApproveReviews(75);
+    expect(result.approved).toBe(0);
+    expect(reviewUpdateManyMock).not.toHaveBeenCalled();
   });
 
   it("appelle logActivity bulk-approve", async () => {

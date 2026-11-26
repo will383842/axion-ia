@@ -14,9 +14,9 @@ export const CARVIN_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Carvin (62). Nous accompagnons tous types d'activités : TPE artisans, PME logistique et transport (axe A1), commerçants, indépendants, professions libérales, entreprises de services et acteurs de la reconversion industrielle du bassin minier.",
   seoHook: "logistique transport & commerce proximité",
   ecosystemFr:
-    "Carvin est située au carrefour de l'A1 (Paris-Lille) et de l'A21, en plein bassin minier du Pas-de-Calais (patrimoine UNESCO). Zones d'activités logistiques (plateforme Carvin-Libercourt), PME transport et entreposage, TPE artisanat BTP, commerces, services aux entreprises. Proximité directe de Lens (15 min), Lille (25 min A1) et Douai (20 min).",
+    "Carvin est située en plein bassin minier du Pas-de-Calais (patrimoine UNESCO). Zones d'activités logistiques (plateforme Carvin-Libercourt), PME transport et entreposage, TPE artisanat BTP, commerces, services aux entreprises. Proximité directe de Lens, de Lille et de Douai.",
   ecosystemEn:
-    "Carvin est située au carrefour de l'A1 (Paris-Lille) et de l'A21, en plein bassin minier du Pas-de-Calais (patrimoine UNESCO). Zones d'activités logistiques (plateforme Carvin-Libercourt), PME transport et entreposage, TPE artisanat BTP, commerces, services aux entreprises. Proximité directe de Lens (15 min), Lille (25 min A1) et Douai (20 min).",
+    "Carvin est située en plein bassin minier du Pas-de-Calais (patrimoine UNESCO). Zones d'activités logistiques (plateforme Carvin-Libercourt), PME transport et entreposage, TPE artisanat BTP, commerces, services aux entreprises. Proximité directe de Lens, de Lille et de Douai.",
   distancesFr:
     "Gare de Carvin (TER Lens-Lille, 25 min Lille-Flandres, 15 min Lens). Autoroute A1 Paris-Lille accès direct. Aéroport Lille-Lesquin à 15 min. Gare TGV Lille-Europe à 30 min. Lens à 15 min, Douai à 20 min.",
   distancesEn:
@@ -65,7 +65,7 @@ export const CARVIN_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Carvin ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Carvin est accessible directement par l'A1. Tarifs transparents.",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Carvin, comme partout en France, ou à distance.",
     },
   ],
 };

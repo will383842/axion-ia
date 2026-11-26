@@ -65,7 +65,7 @@ export const FONTAINES_SUR_SAONE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Fontaines-sur-Saône ?",
-      a: "Nous intervenons partout en France, sur place ou à distance.",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Fontaines-sur-Saône, comme partout en France, ou à distance.",
     },
   ],
 };

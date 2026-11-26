@@ -49,7 +49,7 @@ export const GEVEZE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Gévezé et nord-ouest rennais ?",
-      a: "Oui, Axion-IA intervient à Gévezé et dans tout le nord-ouest de Rennes Métropole (Pacé, La Mézière, Melesse, Betton). Nos consultants rejoignent Rennes en 1h25 depuis Paris (TGV) puis Gévezé en 20 min.",
+      a: "Oui, Axion-IA intervient à Gévezé et dans tout le nord-ouest de Rennes Métropole (Pacé, La Mézière, Melesse, Betton). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quel est le tarif d'un audit IA pour une TPE à Gévezé ?",

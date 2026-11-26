@@ -49,7 +49,7 @@ export const TRETS_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Trets et est d'Aix-en-Provence ?",
-      a: "Oui, Axion-IA intervient à Trets et dans tout l'est aixois (Fuveau à 10 min, Gardanne à 20 min, Auriol à 15 min, Aix à 25 min). Couverture complète piémont Sainte-Victoire.",
+      a: "Oui, Axion-IA intervient à Trets et dans tout l'est aixois (Fuveau, Gardanne, Auriol, Aix). Couverture complète piémont Sainte-Victoire.",
     },
     {
       q: "Quels sont les tarifs pour un audit IA à Trets ?",

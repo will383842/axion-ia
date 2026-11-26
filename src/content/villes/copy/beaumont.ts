@@ -49,7 +49,7 @@ export const BEAUMONT_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Beaumont et sud Clermont ?",
-      a: "Oui, Axion-IA intervient à Beaumont et tout le sud de l'agglomération clermontoise (Clermont à 10 min, Ceyrat, Romagnat, Aubière). Aéroport Clermont à 30 min.",
+      a: "Oui. Nous intervenons sur place à Beaumont et dans tout le sud de l'agglomération clermontoise (Ceyrat, Romagnat, Aubière), comme partout en France, ou à distance.",
     },
     {
       q: "Travaillez-vous avec les professions libérales ?",
@@ -65,7 +65,7 @@ export const BEAUMONT_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Beaumont ?",
-      a: "Clermont-Ferrand centre (10 min). Aéroport Clermont à 30 min. Tarifs publics.",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Beaumont, comme partout en France, ou à distance.",
     },
   ],
 };

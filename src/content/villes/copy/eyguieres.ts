@@ -64,8 +64,8 @@ export const EYGUIERES_COPY: VilleCopy = {
       a: "Oui, nous accompagnons gîtes, chambres d'hôtes et prestataires agritourisme : agents conversationnels réservation multilingues, optimisation planning saisonnier, marketing IA ciblé, gestion avis clients automatisée.",
     },
     {
-      q: "Comment se déplace Axion-IA à Eyguières ?",
-      a: "Nos consultants se déplacent dans vos locaux. Eyguières est à 15 min de Salon-de-Provence et 40 min d'Aix via A7.",
+      q: "Comment se déroule une mission à Eyguières ?",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Eyguières, comme partout en France, ou à distance.",
     },
   ],
 };

@@ -49,7 +49,7 @@ export const LANGUEUX_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Langueux et agglo Saint-Brieuc ?",
-      a: "Oui, Axion-IA intervient à Langueux et toute l'agglomération de Saint-Brieuc (Plérin, Ploufragan, Trégueux, Lamballe). Nos consultants se déplacent en 2h45 depuis Paris (TGV Saint-Brieuc).",
+      a: "Oui, Axion-IA intervient à Langueux et toute l'agglomération de Saint-Brieuc (Plérin, Ploufragan, Trégueux, Lamballe). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les commerces des zones d'activités ?",
@@ -64,8 +64,8 @@ export const LANGUEUX_COPY: VilleCopy = {
       a: "Optimisation supply chain, prédiction demande, gestion entrepôt augmentée, automatisation commandes et traçabilité, reporting temps réel pour logisticiens et distributeurs.",
     },
     {
-      q: "Comment se déroule une mission depuis Paris ou Rennes ?",
-      a: "Paris-Saint-Brieuc en 2h45 (TGV direct). Rennes à 1h (N12). Gare Saint-Brieuc à 10 min de Langueux.",
+      q: "Comment se déroule une mission Axion-IA à Langueux ?",
+      a: "Nous intervenons partout en France, sur place dans vos locaux ou à distance en visio. Après le cadrage de votre besoin, nous planifions l'intervention et livrons un résultat actionnable.",
     },
   ],
 };

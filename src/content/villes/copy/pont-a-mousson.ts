@@ -49,7 +49,7 @@ export const PONT_A_MOUSSON_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Pont-à-Mousson ?",
-      a: "Oui, Axion-IA intervient à Pont-à-Mousson et dans le bassin entre Nancy et Metz (Dieulouard, Blénod-lès-Pont-à-Mousson, Atton). Consultants via gare SNCF Pont-à-Mousson ou A31.",
+      a: "Oui, Axion-IA intervient à Pont-à-Mousson et dans le bassin entre Nancy et Metz (Dieulouard, Blénod-lès-Pont-à-Mousson, Atton).",
     },
     {
       q: "Travaillez-vous avec les PME industrielles et sous-traitants ?",
@@ -65,7 +65,7 @@ export const PONT_A_MOUSSON_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Pont-à-Mousson ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Pont-à-Mousson est desservie par sa gare SNCF (ligne Nancy–Metz) et l'autoroute A31, entre Nancy (30 min) et Metz (25 min).",
+      a: "Nous intervenons partout en France, sur place ou à distance.",
     },
   ],
 };

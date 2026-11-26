@@ -249,8 +249,8 @@ export const ROMANS_SUR_ISERE_COPY: VilleCopy = {
       a: "Nous accompagnons en priorité l'industrie de la chaussure, le travail du cuir et la tannerie, l'agroalimentaire (ravioles, salaisons), la métallurgie et le commerce — les filières historiques de la Drôme des collines.",
     },
     {
-      q: "Vos consultants se déplacent-ils réellement à Romans-sur-Isère ou tout est-il à distance ?",
-      a: "Nos consultants se déplacent physiquement à Romans-sur-Isère pour les phases de cadrage et d'ateliers utilisateurs. Le développement est ensuite effectué à distance, avec des points hebdomadaires en visio et un retour sur site pour la mise en production.",
+      q: "Intervenez-vous réellement à Romans-sur-Isère ou tout est-il à distance ?",
+      a: "Nos consultants interviennent physiquement à Romans-sur-Isère pour les phases de cadrage et d'ateliers utilisateurs. Le développement est ensuite effectué à distance, avec des points hebdomadaires en visio et un retour sur site pour la mise en production.",
     },
   ],
 };

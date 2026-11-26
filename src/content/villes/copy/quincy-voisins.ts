@@ -49,7 +49,7 @@ export const QUINCY_VOISINS_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Quincy-Voisins et environs ?",
-      a: "Oui, Axion-IA intervient à Quincy-Voisins et tout le nord meldois (Meaux à 10 min, gare Transilien ligne P à 12 min, CDG à 30 min, Paris à 50 min).",
+      a: "Oui, Axion-IA intervient à Quincy-Voisins et dans tout le nord meldois (Meaux). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les artisans BTP du secteur ?",

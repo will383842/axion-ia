@@ -49,7 +49,7 @@ export const MAEN_ROCH_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Maen Roch et dans le Pays de Fougères ?",
-      a: "Oui, Axion-IA intervient à Maen Roch et dans tout le Pays de Fougères (Fougères, Louvigné-du-Désert, Saint-Brice-en-Coglès, Bazouges-la-Pérouse). Rennes à 50 min (A84), TGV Paris 1h25 depuis Rennes.",
+      a: "Oui, Axion-IA intervient à Maen Roch et dans tout le Pays de Fougères (Fougères, Louvigné-du-Désert, Saint-Brice-en-Coglès, Bazouges-la-Pérouse).",
     },
     {
       q: "Tarifs audit IA à Maen Roch  : quel budget prévoir ?",
@@ -64,8 +64,8 @@ export const MAEN_ROCH_COPY: VilleCopy = {
       a: "Automatisation devis et factures, agents IA prise de RDV, gestion stocks intelligente, CRM augmenté commerçants de bourg, fidélisation clients. Audit sur place {{price:audit-flash|flat}} adapté aux petites structures rurales.",
     },
     {
-      q: "Comment se déroule une mission IA à Maen Roch depuis Rennes ?",
-      a: "Rennes-Maen Roch en 50 min par A84. Nos consultants se déplacent sur site pour les missions audit, formation et implémentation. Sessions en visio également possibles.",
+      q: "Comment se déroule une mission Axion-IA à Maen Roch ?",
+      a: "Nous intervenons partout en France, sur place dans vos locaux ou à distance en visio. Après le cadrage de votre besoin, nous planifions l'intervention et livrons un résultat actionnable.",
     },
   ],
 };

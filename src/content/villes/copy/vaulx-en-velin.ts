@@ -229,8 +229,8 @@ export const VAULX_EN_VELIN_COPY: VilleCopy = {
 
   faqGeolocalisee: [
     {
-      q: "Axion-IA se déplace-t-il sur site à Vaulx-en-Velin ?",
-      a: "Oui. Nos experts IA seniors interviennent directement dans vos locaux à Vaulx-en-Velin et dans tout l'est de la métropole lyonnaise, afin d'observer vos processus réels avant toute recommandation.",
+      q: "Intervenez-vous à Vaulx-en-Velin ?",
+      a: "Oui. Nous intervenons sur place à Vaulx-en-Velin, comme partout en France, ou à distance.",
     },
     {
       q: "Mon atelier industriel peut-il bénéficier de l'IA à Vaulx-en-Velin ?",

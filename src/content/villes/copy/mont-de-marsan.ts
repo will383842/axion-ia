@@ -232,8 +232,8 @@ export const MONT_DE_MARSAN_COPY: VilleCopy = {
       a: "Nos interventions IA à Mont-de-Marsan démarrent à {{price:intervention-4h|flat}} pour le format collectif (1 journée), après un Audit sur place à {{price:audit-flash|flat}}. Tarifs publics affichés.",
     },
     {
-      q: "Williams se déplace-t-il à Mont-de-Marsan ?",
-      a: "Oui, Williams se déplace à Mont-de-Marsan (130 km de Bordeaux, 700 km de Paris) pour audits, interventions et implémentations sur site, dans un délai de 5 jours ouvrés.",
+      q: "Comment se déroule une mission à Mont-de-Marsan ?",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Mont-de-Marsan, comme partout en France, ou à distance.",
     },
     {
       q: "Quels secteurs montois Axion-IA accompagne-t-il ?",

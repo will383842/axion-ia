@@ -72,9 +72,5 @@ export const SERVIAN_COPY: VilleCopy = {
       q: "Comment garantissez-vous la conformité RGPD à Servian ?",
       a: "Code et données hébergés en Union européenne, contrats DPA signés, registre des traitements fourni, formation des équipes. Conformité native, pas d'option payante.",
     },
-    {
-      q: "Vos consultants se déplacent-ils à Servian ?",
-      a: "Oui. Nous intervenons partout en France, sur place ou à distance. Visio possible pour cadrage et coaching, présentiel recommandé pour ateliers d'équipe.",
-    },
   ],
 };

@@ -49,7 +49,7 @@ export const SAINT_PRIEST_EN_JAREZ_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Saint-Priest-en-Jarez et nord Saint-Étienne ?",
-      a: "Oui, Axion-IA intervient à Saint-Priest-en-Jarez et toute la banlieue nord stéphanoise (Saint-Étienne à 10 min, La Talaudière, Villars). Nous intervenons partout en France, sur place ou à distance.",
+      a: "Oui. Nous intervenons à Saint-Priest-en-Jarez et dans toute la banlieue nord stéphanoise : Saint-Étienne, La Talaudière et Villars, comme partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les professionnels santé du secteur hospitalier ?",
@@ -65,7 +65,7 @@ export const SAINT_PRIEST_EN_JAREZ_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Saint-Priest-en-Jarez ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Pour les multi-jours, hébergement local possible. Tarifs transparents.",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Saint-Priest-en-Jarez, comme partout en France, ou à distance.",
     },
   ],
 };

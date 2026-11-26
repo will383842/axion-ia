@@ -166,7 +166,7 @@ export const CLERMONT_FERRAND_COPY: VilleCopy = {
           },
           {
             q: "Différence avec un cabinet de conseil traditionnel basé à Lyon ou Paris ?",
-            a: "Nos consultants se déplacent à Clermont-Ferrand et facturent uniquement leur prestation — pas de surprime géographique. Tarifs publics, pas de devis à négocier. Méthode condensée, démos sur vos vraies données industrielles ou agro. Et surtout : aucun lock-in, vous repartez avec votre plan.",
+            a: "Axion IA intervient partout en France, sur site ou à distance, y compris à Clermont-Ferrand. Tarifs publics, pas de devis à négocier. Méthode condensée, démos sur vos vraies données industrielles ou agro. Et surtout : aucun lock-in, vous repartez avec votre plan.",
           },
           {
             q: "Faut-il être déjà mature sur l'IA pour commander un audit ?",
@@ -258,7 +258,7 @@ export const CLERMONT_FERRAND_COPY: VilleCopy = {
           },
           {
             q: "Difference vs a Lyon- or Paris-based traditional consulting firm?",
-            a: "Our consultants travel to Clermont-Ferrand and bill only their service — no geographic premium. Public pricing, no quote to negotiate. Condensed method, demos on your real industrial or agri-food data. And above all: no lock-in, you leave with your plan.",
+            a: "Our consultants work on site in Clermont-Ferrand or remotely, and bill only their service. Public pricing, no quote to negotiate. Condensed method, demos on your real industrial or agri-food data. And above all: no lock-in, you leave with your plan.",
           },
           {
             q: "Do I need AI maturity to order an audit?",
@@ -991,7 +991,7 @@ export const CLERMONT_FERRAND_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Combien coûte un audit IA opérationnel à Clermont-Ferrand ?",
-      a: "Le tarif dépend du niveau retenu — Audit sur place, Ciblé, Stratégique PME ou Stratégique ETI. Tarifs publics affichés sur la page Audit, choix calibré selon votre taille (TPE, PME, ETI, grande entreprise) et votre périmètre. Aucun supplément géographique : le tarif est le même à Clermont-Ferrand qu'à Paris.",
+      a: "Le tarif dépend du niveau retenu — Audit sur place, Ciblé, Stratégique PME ou Stratégique ETI. Tarifs publics affichés sur la page Audit, choix calibré selon votre taille (TPE, PME, ETI, grande entreprise) et votre périmètre.",
     },
     {
       q: "Axion-IA intervient-il sur les sites industriels du bassin clermontois ?",
@@ -1004,10 +1004,6 @@ export const CLERMONT_FERRAND_COPY: VilleCopy = {
     {
       q: "Quels secteurs clermontois sont prioritaires pour l'IA ?",
       a: "Nos déploiements dans le bassin couvrent prioritairement l'industrie manufacturière (filière pneumatique, équipementiers), l'agroalimentaire (coopératives, IAA Auvergne), la recherche et les biotechnologies (UCA, ISIMA, Biopôle), et les services B2B. Tout secteur avec des workflows documentaires répétitifs est éligible à un audit.",
-    },
-    {
-      q: "Pouvez-vous démarrer une mission depuis l'aéroport de Clermont-Ferrand (CFE) ?",
-      a: "L'aéroport de Clermont-Ferrand Auvergne (Aulnat, 6 km) dessert Paris-Orly, Lyon et Amsterdam. Nos consultants peuvent arriver directement sur Clermont en avion pour les missions longues, ou en Intercités Paris-Bercy (~3 h) pour les kick-offs et restitutions.",
     },
     {
       q: "Vos interventions sont-elles compatibles avec les formations financées pour les TPE/PME ?",

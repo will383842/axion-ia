@@ -10,9 +10,9 @@ export const VILLEPARISIS_COPY: VilleCopy = {
   pitchEn:
     "Villeparisis (77270), commune de 26 946 habitants (2023) située au nord-ouest de la Seine-et-Marne, à la frontière du Val-d'Oise et de la Seine-Saint-Denis. Intégrée à la Communauté d'agglomération Roissy Pays de France, elle bénéficie d'une desserte RER B (gare Villeparisis - Mitry-le-Neuf) et d'une proximité directe avec l'aéroport Paris-Charles-de-Gaulle. Le tissu économique repose sur plusieurs parcs d'activité (ZAC de l'Ambrésis, zone Salengro) regroupant commerces, restauration, transports terrestres, construction et grandes enseignes. Communes limitrophes : Mitry-Mory, Claye-Souilly, Courtry, Le Pin, Vaujours et Tremblay-en-France. Axion-IA accompagne TPE/PME et ETI locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Villeparisis (77270) et dans le bassin Roissy Pays de France. Nous accompagnons en priorité les TPE (artisans BTP, commerces, restauration, cabinets libéraux), PME logistique et transport (proximité CDG), ainsi que les ETI quand le besoin se présente. Code custom (Python, TypeScript, FastAPI), pas de no-code rigide. Audit sur place {{price:audit-flash|flat}}, Formation 4 h {{price:intervention-4h|flat}}, Implémentation et Coaching 1-to-1 dès {{price:intervention-dirigeants|flat}}. Déplacement consultant sous 5 jours ouvrés. Conformité RGPD documentée.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Villeparisis (77270) et dans le bassin Roissy Pays de France. Nous accompagnons en priorité les TPE (artisans BTP, commerces, restauration, cabinets libéraux), PME logistique et transport (proximité CDG), ainsi que les ETI quand le besoin se présente. Code custom (Python, TypeScript, FastAPI), pas de no-code rigide. Audit sur place {{price:audit-flash|flat}}, Formation 4 h {{price:intervention-4h|flat}}, Implémentation et Coaching 1-to-1 dès {{price:intervention-dirigeants|flat}}. Conformité RGPD documentée.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Villeparisis (77270) et dans le bassin Roissy Pays de France. Nous accompagnons en priorité les TPE (artisans BTP, commerces, restauration, cabinets libéraux), PME logistique et transport (proximité CDG), ainsi que les ETI quand le besoin se présente. Code custom (Python, TypeScript, FastAPI), pas de no-code rigide. Audit sur place {{price:audit-flash|flat}}, Formation 4 h {{price:intervention-4h|flat}}, Implémentation et Coaching 1-to-1 dès {{price:intervention-dirigeants|flat}}. Déplacement consultant sous 5 jours ouvrés. Conformité RGPD documentée.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Villeparisis (77270) et dans le bassin Roissy Pays de France. Nous accompagnons en priorité les TPE (artisans BTP, commerces, restauration, cabinets libéraux), PME logistique et transport (proximité CDG), ainsi que les ETI quand le besoin se présente. Code custom (Python, TypeScript, FastAPI), pas de no-code rigide. Audit sur place {{price:audit-flash|flat}}, Formation 4 h {{price:intervention-4h|flat}}, Implémentation et Coaching 1-to-1 dès {{price:intervention-dirigeants|flat}}. Conformité RGPD documentée.",
   seoHook: "RER B, parcs d'activité & proximité CDG",
   ecosystemFr:
     "Villeparisis appartient à la Communauté d'agglomération Roissy Pays de France, structurée autour de l'aéroport Paris-Charles-de-Gaulle. Le tissu local concentre commerces (grandes enseignes en zones d'activité), restauration, transports terrestres (proximité plateforme CDG et A104), construction et BTP, professions libérales et PME services. Les principaux parcs d'activité — ZAC de l'Ambrésis et zone Salengro — accueillent entreprises de logistique, distribution et services. Les bus Roissy Est et Apolo 7 complètent la desserte RER B. Communes limitrophes : Mitry-Mory, Claye-Souilly, Courtry, Le Pin, Vaujours et Tremblay-en-France (siège de l'aéroport CDG).",
@@ -44,8 +44,8 @@ export const VILLEPARISIS_COPY: VilleCopy = {
       en: "Implémentation IA à Villeparisis en code custom : automatisation devis artisan BTP, chatbot client commerce, suivi commande restaurant/hôtel proche CDG, optimisation tournées logistique, classification documents transport.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Villeparisis : sessions sur site (accès RER B direct) ou en visio pour dirigeants TPE/PME, artisans et responsables logistique. Dès {{price:intervention-dirigeants|flat}}.",
-      en: "Coaching 1-to-1 à Villeparisis : sessions sur site (accès RER B direct) ou en visio pour dirigeants TPE/PME, artisans et responsables logistique. Dès {{price:intervention-dirigeants|flat}}.",
+      fr: "Coaching 1-to-1 à Villeparisis : sessions sur site ou en visio pour dirigeants TPE/PME, artisans et responsables logistique. Dès {{price:intervention-dirigeants|flat}}.",
+      en: "Coaching 1-to-1 à Villeparisis : sessions sur site ou en visio pour dirigeants TPE/PME, artisans et responsables logistique. Dès {{price:intervention-dirigeants|flat}}.",
     },
   },
   services: {
@@ -67,7 +67,7 @@ export const VILLEPARISIS_COPY: VilleCopy = {
           {
             step: "Kick-off à Villeparisis",
             detail:
-              "Première venue sur site, accessible en RER B (gare Villeparisis–Mitry-le-Neuf) ou via l'A104, pour observer vos vrais flux : comptoir et stock pour le retail de l'Ambrésis, quai et tournées pour les transporteurs orientés CDG, atelier et chantiers pour les artisans. On part de vos écrans et documents, pas d'un cahier des charges théorique.",
+              "Première intervention sur site pour observer vos vrais flux : comptoir et stock pour le retail de l'Ambrésis, quai et tournées pour les transporteurs orientés CDG, atelier et chantiers pour les artisans. On part de vos écrans et documents, pas d'un cahier des charges théorique.",
           },
           {
             step: "Maquettage UX/UI + démos IA sur vos données",
@@ -122,7 +122,7 @@ export const VILLEPARISIS_COPY: VilleCopy = {
           },
           {
             q: "Quels délais pour un devis et un premier rendez-vous à Villeparisis ?",
-            a: "Devis à partir de 24-48 h selon la complexité. Le kick-off se tient sur place à Villeparisis — accès direct en RER B (gare Villeparisis–Mitry-le-Neuf) ou via l'A104 — ou en visio si vous préférez démarrer plus vite.",
+            a: "Devis à partir de 24-48 h selon la complexité.",
           },
           {
             q: "Travaillez-vous avec les artisans BTP et la filière matériaux locale ?",
@@ -153,7 +153,7 @@ export const VILLEPARISIS_COPY: VilleCopy = {
           {
             step: "Kick-off in Villeparisis",
             detail:
-              "First on-site visit, reachable by RER B (Villeparisis–Mitry-le-Neuf station) or via the A104, to observe your real flows: counter and stock for Ambrésis retail, dock and rounds for CDG-geared carriers, workshop and sites for craftsmen. We start from your screens and documents, not a theoretical spec.",
+              "First on-site visit, to observe your real flows: counter and stock for Ambrésis retail, dock and rounds for CDG-geared carriers, workshop and sites for craftsmen. We start from your screens and documents, not a theoretical spec.",
           },
           {
             step: "UX/UI mock-ups + AI demos on your data",
@@ -208,7 +208,7 @@ export const VILLEPARISIS_COPY: VilleCopy = {
           },
           {
             q: "How fast can you provide a quote and a first meeting in Villeparisis?",
-            a: "Quote from 24-48 h depending on complexity. The kick-off is held on site in Villeparisis — direct access by RER B (Villeparisis–Mitry-le-Neuf station) or via the A104 — or by video call if you prefer to start sooner.",
+            a: "Quote from 24-48 h depending on complexity. The kick-off is held on site in Villeparisis, or by video call if you prefer to start sooner.",
           },
           {
             q: "Do you work with BTP craftsmen and the local materials sector?",
@@ -248,7 +248,7 @@ export const VILLEPARISIS_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les PME logistique et transport autour de Paris-CDG ?",
-      a: "Oui. Villeparisis est à 15 km de Paris-Charles-de-Gaulle et 5 min de Tremblay-en-France (plateforme CDG). Nous travaillons avec PME transport routier, logistique entrepôt et prestataires aéroportuaires. Cas typiques : RAG documents douane, classification incidents, agents IA suivi flotte.",
+      a: "Oui. Nous travaillons avec PME transport routier, logistique entrepôt et prestataires aéroportuaires. Cas typiques : RAG documents douane, classification incidents, agents IA suivi flotte.",
     },
   ],
 };

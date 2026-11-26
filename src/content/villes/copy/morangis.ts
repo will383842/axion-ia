@@ -49,7 +49,7 @@ export const MORANGIS_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Morangis et zone Orly ?",
-      a: "Oui, Axion-IA intervient à Morangis et toute la zone Orly (aéroport à 5 min, Chilly-Mazarin à 5 min, Massy TGV à 15 min, Paris centre à 25 min).",
+      a: "Oui. Nous intervenons à Morangis et dans toute la zone Orly (Orly, Chilly-Mazarin, Massy).",
     },
     {
       q: "Travaillez-vous avec les entreprises de logistique aéroportuaire ?",
@@ -64,8 +64,8 @@ export const MORANGIS_COPY: VilleCopy = {
       a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1.",
     },
     {
-      q: "Comment se passe une mission depuis Paris ou Massy ?",
-      a: "Aéroport Paris-Orly (5 min). Massy TGV (15 min). Paris centre (25 min).",
+      q: "Comment se déroule une mission Axion-IA à Morangis ?",
+      a: "Nous intervenons partout en France, sur place dans vos locaux ou à distance en visio. Après le cadrage de votre besoin, nous planifions l'intervention et livrons un résultat actionnable.",
     },
   ],
 };

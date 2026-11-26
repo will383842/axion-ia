@@ -29,6 +29,7 @@
 // tentait de COMPLÉTER un job dont il avait rendu le lock → erreurs « job not
 // in active state » (cf. bullmq/dist/esm/classes/worker.js : DelayedError est
 // intercepté et n'émet PAS l'event `failed`).
+import { exigeRelectureHumaine } from "@/server/content-gen/quality/relecture-journee-ia";
 import { publicationSansPreuveFactCheck } from "@/server/content-gen/fact-check/fact-check-claude-drapeau";
 import { Queue, Worker, DelayedError, type Job } from "bullmq";
 import { prisma } from "@/lib/prisma";
@@ -430,6 +431,42 @@ async function executePublishPipeline(
       },
     });
     return;
+  }
+  // Offre « Journée IA » : filet de dernière minute pour tout chemin d'auto-approbation
+  // (génération, boucle qualité, actualités). Sans approbation HUMAINE (`reviewedBy` posé
+  // par la console), le contenu retourne en relecture, quelle que soit sa note.
+  if (!existingArticle && !review.reviewedBy) {
+    const campagne = cgJob.campaignId
+      ? await prisma.coverageCampaign
+          .findUnique({ where: { id: cgJob.campaignId }, select: { name: true } })
+          .catch(() => null)
+      : null;
+    if (
+      exigeRelectureHumaine({
+        output,
+        inputPayload: cgJob.inputPayload,
+        campaignName: campagne?.name ?? null,
+      })
+    ) {
+      await logStepError(
+        cgJob.id,
+        "validation",
+        "Publication refusée : contenu qui parle de la Journée IA, relecture humaine obligatoire",
+        { journee_ia: true },
+      );
+      await prisma.contentGenJob.update({
+        where: { id: cgJob.id },
+        data: { status: "needs_review", errorMessage: "relecture_humaine_journee_ia" },
+      });
+      await prisma.reviewQueue.update({
+        where: { id: reviewQueueId },
+        data: {
+          status: "pending",
+          reviewNotes: "[Journée IA] relecture humaine obligatoire avant publication",
+        },
+      });
+      return;
+    }
   }
   // Un article déjà inséré pour ce job (retry après insertion) n'est jamais retenu ici.
   if (!existingArticle && violationsSurface.length > 0) {

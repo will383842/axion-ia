@@ -181,7 +181,7 @@ export const LILLE_COPY: VilleCopy = {
         whyHere: [
           "Lille is a priority location for Axion-IA: densest retail/e-commerce fabric in France outside Île-de-France, international group HQs (Decathlon, Auchan, La Redoute) and 466 EuraTechnologies start-ups.",
           "Lille B2B sectors over-represented in our mandates: omnichannel retail, logistics supply chain, IT/SaaS EuraTechnologies, banking/insurance Euralille, agri-food industry (Bonduelle, Euralimentaire).",
-          "Our consultants travel across the full Lille metropolitan area: Euralille, Vieux-Lille, Villeneuve-d'Ascq, Roubaix, Tourcoing, Marcq-en-Barœul and surrounding communes.",
+          "Axion-IA works anywhere in France, on site or remotely, including across the full Lille metropolitan area: Euralille, Vieux-Lille, Villeneuve-d'Ascq, Roubaix, Tourcoing, Marcq-en-Barœul and surrounding communes.",
           "Read-outs always in person: ideation workshop at your offices, deliverable walk-through with your leadership, action plan handed over face to face.",
           "Public pricing displayed: you know exactly what you pay before signing, no opaque quote to negotiate.",
           "No lock-in: your action plan is executable with any vendor or in-house after our audit.",
@@ -991,7 +991,7 @@ export const LILLE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Combien coûte un audit IA opérationnel à Lille ?",
-      a: "Le tarif dépend du niveau retenu — Audit sur place, Ciblé, Stratégique PME ou Stratégique ETI. Tarifs publics affichés sur la page Audit, choix calibré selon votre taille (TPE, PME, ETI, grande entreprise) et votre périmètre. Aucun supplément géographique : le tarif est identique à Lille et partout en France.",
+      a: "Le tarif dépend du niveau retenu — Audit sur place, Ciblé, Stratégique PME ou Stratégique ETI. Tarifs publics affichés sur la page Audit, choix calibré selon votre taille (TPE, PME, ETI, grande entreprise) et votre périmètre.",
     },
     {
       q: "Axion-IA intervient-il à EuraTechnologies et dans toute la métropole lilloise ?",
@@ -1008,10 +1008,6 @@ export const LILLE_COPY: VilleCopy = {
     {
       q: "Avez-vous des références dans le retail et l'e-commerce lillois ?",
       a: "Oui. Plusieurs de nos références lilloise concernent le retail omnicanal, l'e-commerce et la logistique. Les cas clients récents sont consultables dans la rubrique Cas concrets, filtrables par secteur et par taille d'entreprise.",
-    },
-    {
-      q: "Lille est-elle bien desservie pour accueillir des consultants Axion-IA ?",
-      a: "Excellemment. Lille-Europe est la seule gare française directement connectée à Londres (Eurostar 82 min), Bruxelles (Thalys 38 min) et Paris (TGV 62 min). Le métro Ilévia permet de rejoindre Villeneuve-d'Ascq et Roubaix en moins de 20 minutes.",
     },
   ],
 };

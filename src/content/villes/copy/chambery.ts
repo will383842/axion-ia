@@ -58,7 +58,7 @@ export const CHAMBERY_COPY: VilleCopy = {
           "Chambéry est une capitale French Tech (French Tech in the Alps, association Digital Savoie) : l'écosystème SaaS de Savoie Technolac — Pixminds, Lunabee Studio, Geomap-imagis, Resalab — a des besoins concrets en search sémantique, agents conversationnels et chatbots RAG que nous construisons sur mesure, pas en gabarit recyclé.",
           "Le tourisme alpin est notre terrain le plus spécifique : pour les hôtels-restaurants des stations (Trois Vallées, Les Arcs, La Plagne) et les startups de l'Alpes Tourisme Lab, nous concevons des plateformes de réservation, des assistants multilingues saisonniers et des sites e-commerce calés sur les pics de saison ski.",
           "Nous traitons l'e-commerce de marque comme un sujet à part entière : pour les icônes savoyardes (Opinel, Cafés Folliet) et les enseignes outdoor de Savoie Hexapole, boutiques multi-CMS (Shopify, WooCommerce, headless), fiches produit générées par IA et recommandation produit, avec UX/UI et mobile soignés.",
-          "Nos consultants se déplacent sur tout le bassin chambérien : Savoie Technolac (Le Bourget-du-Lac, La Motte-Servolex), ZA de Bissy, centre historique, Université Savoie Mont Blanc, et jusqu'aux stations de Tarentaise et Maurienne à 30-90 minutes.",
+          "Axion IA intervient partout en France, sur site ou à distance, y compris à Chambéry : Savoie Technolac (Le Bourget-du-Lac, La Motte-Servolex), ZA de Bissy, centre historique, Université Savoie Mont Blanc, et les stations de Tarentaise et Maurienne.",
         ],
         methodology: [
           {
@@ -128,7 +128,7 @@ export const CHAMBERY_COPY: VilleCopy = {
           },
           {
             q: "Le délai pour obtenir un devis sites web / SaaS à Chambéry ?",
-            a: "À partir de 24 à 48 h selon la complexité. Après un premier échange de cadrage, nous vous renvoyons un périmètre chiffré et clair. La gare TGV Chambéry-Challes-les-Eaux et l'A43 facilitent nos venues sur site à Savoie Technolac, à Bissy ou dans les stations.",
+            a: "À partir de 24 à 48 h selon la complexité. Après un premier échange de cadrage, nous vous renvoyons un périmètre chiffré et clair.",
           },
           {
             q: "Mes données et mon code restent-ils chez moi après le projet ?",
@@ -144,7 +144,7 @@ export const CHAMBERY_COPY: VilleCopy = {
           "Chambéry is a French Tech capital (French Tech in the Alps, Digital Savoie): the Savoie Technolac SaaS ecosystem — Pixminds, Lunabee Studio, Geomap-imagis, Resalab — has concrete needs in semantic search, conversational agents and RAG chatbots that we build bespoke, not from recycled templates.",
           "Alpine tourism is our most specific ground: for resort hotel-restaurants (Trois Vallées, Les Arcs, La Plagne) and Alpes Tourisme Lab startups, we design booking platforms, seasonal multilingual assistants and e-commerce sites tuned to ski-season peaks.",
           "We treat brand e-commerce as a discipline in its own right: for Savoyard icons (Opinel, Cafés Folliet) and the outdoor brands of Savoie Hexapole, multi-CMS stores (Shopify, WooCommerce, headless), AI-generated product sheets and product recommendation, with polished UX/UI and mobile.",
-          "Our consultants travel across the Chambéry basin: Savoie Technolac (Le Bourget-du-Lac, La Motte-Servolex), the Bissy business park, the historic centre, Université Savoie Mont Blanc, and up to the Tarentaise and Maurienne resorts 30-90 minutes away.",
+          "Axion-IA works anywhere in France, on site or remotely, including in Chambéry: Savoie Technolac (Le Bourget-du-Lac, La Motte-Servolex), the Bissy business park, the historic centre, Université Savoie Mont Blanc and the Tarentaise and Maurienne resorts.",
         ],
         methodology: [
           {
@@ -214,7 +214,7 @@ export const CHAMBERY_COPY: VilleCopy = {
           },
           {
             q: "How long for a websites / SaaS quote in Chambéry?",
-            a: "From 24 to 48 hours depending on complexity. After an initial framing exchange, we send back a clear, costed scope. The Chambéry-Challes-les-Eaux TGV station and the A43 make on-site visits to Savoie Technolac, Bissy or the resorts easy.",
+            a: "From 24 to 48 hours depending on complexity. After an initial framing exchange, we send back a clear, costed scope. Axion-IA works anywhere in France, on site or remotely, including at Savoie Technolac, Bissy or in the resorts.",
           },
           {
             q: "Do my data and code stay with me after the project?",
@@ -230,7 +230,7 @@ export const CHAMBERY_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il sur site à Chambéry et dans les stations savoyardes ?",
-      a: "Oui, nos experts IA seniors se déplacent à Chambéry, dans toute la Savoie et les stations de Tarentaise et Maurienne (30 à 90 minutes du centre-ville) pour auditer, intégrer et former les équipes des TPE et PME locales directement sur leur site de production.",
+      a: "Oui, nos experts IA seniors interviennent à Chambéry, dans toute la Savoie et les stations de Tarentaise et Maurienne, pour auditer, intégrer et former les équipes des TPE et PME locales directement sur leur site de production.",
     },
     {
       q: "Quels secteurs accompagnez-vous prioritairement à Chambéry ?",
@@ -246,7 +246,7 @@ export const CHAMBERY_COPY: VilleCopy = {
     },
     {
       q: "Quel est le délai moyen pour démarrer une mission IA à Chambéry ?",
-      a: "Nous démarrons une mission à Chambéry sous 5 à 10 jours ouvrés en moyenne, selon la disponibilité de nos experts seniors et la complexité du projet. La gare TGV Chambéry-Challes-les-Eaux et l'A43 facilitent les venues hebdomadaires depuis Paris ou Lyon.",
+      a: "Nous démarrons une mission à Chambéry sous 5 à 10 jours ouvrés en moyenne, selon la disponibilité de nos experts seniors et la complexité du projet.",
     },
     {
       q: "Axion-IA garantit-il la conformité RGPD et AI Act à Chambéry ?",

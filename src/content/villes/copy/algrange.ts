@@ -49,7 +49,7 @@ export const ALGRANGE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Algrange ?",
-      a: "Oui, Axion-IA intervient à Algrange et dans toute la Vallée de la Fensch (Hayange, Knutange, Nilvange, Sérémange-Erzange). Consultants via gare SNCF Hayange ou autoroute A30. Luxembourg accessible en 30 min.",
+      a: "Oui, Axion-IA intervient à Algrange et dans toute la Vallée de la Fensch (Hayange, Knutange, Nilvange, Sérémange-Erzange).",
     },
     {
       q: "Travaillez-vous avec les TPE/PME industrielles et sous-traitants ?",
@@ -65,7 +65,7 @@ export const ALGRANGE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Algrange ?",
-      a: "Nos consultants se déplacent via gare SNCF Hayange (ligne Metz–Luxembourg) ou autoroute A30. Hayange à 5 min, Thionville à 15 min, Luxembourg à 30 min.",
+      a: "Une mission à Algrange démarre par un échange de cadrage, puis se déroule sur site ou à distance, avec des livrables remis et documentés.",
     },
   ],
 };

@@ -154,8 +154,8 @@ export const NICE_COPY: VilleCopy = {
             a: "Oui. Confidentialité stricte dès le démarrage, données traitées exclusivement sur vos infrastructures, aucune extraction vers nos serveurs. Conformité RGPD, modèles testés en local ou sur infra dédiée chez vous si la souveraineté est requise.",
           },
           {
-            q: "Couvrez-vous le bassin Sophia Antipolis depuis Nice ?",
-            a: "Oui. Nos consultants se déplacent sur site dans toute la métropole Nice Côte d'Azur, ainsi qu'à Sophia Antipolis, Antibes, Cannes, Grasse et Menton. Sophia est à 20 min de Nice-Ville, une distance de travail courante pour nos missions.",
+            q: "Intervenez-vous à Nice ?",
+            a: "Oui. Nous intervenons sur site dans toute la métropole Nice Côte d'Azur, ainsi qu'à Sophia Antipolis, Antibes, Cannes, Grasse et Menton.",
           },
           {
             q: "Différence avec un audit Big Four ou un cabinet de conseil traditionnel ?",
@@ -174,7 +174,7 @@ export const NICE_COPY: VilleCopy = {
         whyHere: [
           "Nice and its metro area hold a dense B2B fabric: 16,327 active businesses, from Old Town shops to the worldwide R&D centres of Amadeus IT and IBM.",
           "The Sophia Antipolis basin — 20 km from Nice — hosts Europe's leading tech park with Amadeus, IBM, SAP, Accenture, EURECOM: AI leadership we engage with regularly.",
-          "Our consultants travel on site across Nice and the full metro area (Grand Arénas, Nice Méridia, Sophia Antipolis, Cannes, Antibes, Grasse, Menton).",
+          "Axion-IA works anywhere in France, on site or remotely, including across Nice and the full metro area (Grand Arénas, Nice Méridia, Sophia Antipolis, Cannes, Antibes, Grasse, Menton).",
           "Read-outs always in person: ideation workshops, deliverable walk-through with your leadership, action plan handed face to face.",
           "Public pricing, no opaque six-figure quotes: you know exactly what you pay before signing.",
           "Your action plan is executable with any vendor or in-house after our audit — zero lock-in.",
@@ -245,8 +245,8 @@ export const NICE_COPY: VilleCopy = {
             a: "Yes. Confidentiality ensured from kick-off, data processed exclusively on your infrastructure, no extraction to our servers. GDPR compliance, models tested locally or on dedicated infra at your premises if sovereignty is required.",
           },
           {
-            q: "Do you cover the Sophia Antipolis basin from Nice?",
-            a: "Yes. Our consultants travel on site across the Nice Côte d'Azur metro and to Sophia Antipolis, Antibes, Cannes, Grasse and Menton. Sophia is 20 minutes from Nice-Ville, a routine working distance for our missions.",
+            q: "Do you work in Nice?",
+            a: "Yes. Axion-IA works anywhere in France, on site or remotely, including in Nice.",
           },
           {
             q: "Difference with a Big Four audit or traditional consulting?",
@@ -710,7 +710,7 @@ export const NICE_COPY: VilleCopy = {
           },
           {
             q: "Que se passe-t-il si mon agenda de dirigeant impose un report de séance ?",
-            a: "Aucun problème. Les séances se calent sur votre agenda, pas l'inverse. Un report anticipé est sans frais. Très tardif (moins de 24h) : participation partielle aux frais de blocage consultant. Le programme s'adapte à la réalité d'un agenda dirigeant.",
+            a: "Aucun problème. Les séances se calent sur votre agenda, pas l'inverse. Un report anticipé est sans frais. Très tardif : participation partielle aux frais de blocage consultant. Le programme s'adapte à la réalité d'un agenda dirigeant.",
           },
         ],
         guarantees:
@@ -991,8 +991,8 @@ export const NICE_COPY: VilleCopy = {
       a: "Quatre paliers tarifaires publics couvrent toutes les configurations niçoises et azuréennes — Sur place pour les TPE indépendantes du Vieux-Nice ou de la Promenade, Ciblé pour les PME hôtellerie premium et services Côte d'Azur, Stratégique PME pour les scale-ups Sophia Antipolis et acteurs French Tech, Stratégique ETI pour les groupes hôteliers, opérateurs tourisme d'affaires et grandes tech de Sophia. La grille appliquée à Nice est strictement identique à celle de Paris ou Lyon — aucune pondération PACA.",
     },
     {
-      q: "Intervenez-vous à Sophia Antipolis depuis Nice ?",
-      a: "Oui. Sophia Antipolis est à 20 km de Nice-Ville, une distance de travail courante pour nos consultants. Nous couvrons l'ensemble du bassin métropolitain : Grand Arénas, Nice Méridia, Sophia Antipolis, Antibes, Cannes, Grasse et Menton. Tous les formats (audit, intervention, implémentation) sont disponibles en présentiel sur ce périmètre.",
+      q: "Intervenez-vous aussi à Sophia Antipolis, Antibes et Cannes ?",
+      a: "Oui. Nous couvrons l'ensemble du bassin métropolitain : Grand Arénas, Nice Méridia, Sophia Antipolis, Antibes, Cannes, Grasse et Menton. Tous les formats (audit, intervention, implémentation) sont disponibles en présentiel sur ce périmètre.",
     },
     {
       q: "Quels secteurs sont prioritaires à Nice et sur la Côte d'Azur ?",

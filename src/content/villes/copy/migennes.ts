@@ -49,7 +49,7 @@ export const MIGENNES_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Migennes et dans le nord de l'Yonne ?",
-      a: "Oui, Axion-IA intervient à Migennes et dans tout le nord de l'Yonne (Joigny, Auxerre, Sens, Villeneuve-sur-Yonne). Gare SNCF Migennes avec TER directs vers Paris Bercy (1h30) et correspondances Dijon.",
+      a: "Oui, Axion-IA intervient à Migennes et dans tout le nord de l'Yonne (Joigny, Auxerre, Sens, Villeneuve-sur-Yonne).",
     },
     {
       q: "Tarifs audit IA à Migennes  : quel budget prévoir ?",

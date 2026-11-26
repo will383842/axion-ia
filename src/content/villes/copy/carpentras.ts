@@ -5,7 +5,7 @@
 import type { VilleCopy } from "./types";
 
 const PITCH_FR =
-  "Axion-IA accompagne les TPE et PME de Carpentras, sous-préfecture du Vaucluse de 31 619 habitants au cœur du Comtat Venaissin. Williams se déplace sur site auprès des artisans, commerçants, exploitations viticoles et entreprises agroalimentaires locales pour automatiser, en code custom, leurs tâches administratives, devis et relances clients. Aucun no-code propriétaire, pas de SaaS verrouillant : du code documenté, livré et maintenable.";
+  "Axion-IA accompagne les TPE et PME de Carpentras, sous-préfecture du Vaucluse de 31 619 habitants au cœur du Comtat Venaissin. Williams intervient sur site auprès des artisans, commerçants, exploitations viticoles et entreprises agroalimentaires locales pour automatiser, en code custom, leurs tâches administratives, devis et relances clients. Aucun no-code propriétaire, pas de SaaS verrouillant : du code documenté, livré et maintenable.";
 
 const DIRECT_ANSWER_FR =
   "Axion-IA intervient à Carpentras pour les TPE et PME du Vaucluse : viticulteurs des AOC Ventoux et Côtes-du-Rhône, commerçants du marché provençal du vendredi (classé Site remarquable du goût), artisans BTP, professions libérales et restaurateurs. La ville est desservie par le réseau Avignon-TGV (30 km, 38 min de train). Nous intervenons partout en France, sur place ou à distance, pour cadrer le besoin, livrer du code custom Python ou TypeScript, et former l'équipe. Audit sur place {{price:audit-flash|flat}}, Formation 4 h {{price:intervention-4h|flat}}, accompagnement 1-à-1 {{price:intervention-dirigeants|flat}} — tarifs publics, pas de licence cachée.";
@@ -59,7 +59,7 @@ const VILLE_COPY: VilleCopy = {
           "Filière agroalimentaire et végétale structurante : la zone Bellecour / Carpensud (~133 ha, label ECO PARC VAUCLUSE) et le Marché Gare et ses incubateurs concentrent négoce, transformation et logistique — des activités qui ont besoin de catalogues B2B, de portails commande-fournisseur et d'automatisation des fiches produit plutôt que de vitrines génériques.",
           "Viticulture AOC à fort potentiel e-commerce : les domaines Ventoux et Côtes-du-Rhône-Villages (près d'un quart de la surface communale en vignes) vendent en direct, en caveau et à l'export — nous construisons des boutiques de vente en ligne avec gestion millésimes, allotements et conformité affichage, doublées d'un assistant IA de recommandation.",
           "Tissu de commerce indépendant dense : le marché provençal du vendredi (~350 forains, Site remarquable du goût), le marché aux truffes d'hiver de l'Hôtel-Dieu et les confiseurs du berlingot (Confiserie du Mont Ventoux) sont des TPE qui gagnent à passer en ligne — site mobile, click-and-collect, paiement intégré.",
-          "Un point d'appui numérique local réel, La Gare Numérique : ce tiers-lieu installé dans l'ancienne gare SNCF (coworking, fablab, studio fond vert, médialab) nous permet de cadrer, prototyper et former sur place, au lieu de tout faire à distance depuis Avignon.",
+          "Nous intervenons partout en France, sur place ou à distance.",
         ],
         methodology: [
           {
@@ -234,8 +234,8 @@ const VILLE_COPY: VilleCopy = {
       a: "Audit sur place {{price:audit-flash|flat}} (4 h sur site), Formation 4 h {{price:intervention-4h|flat}} (cadrage + livraison d'un automatisme), accompagnement 1-à-1 {{price:intervention-dirigeants|flat}}. Tarifs publics consultables, pas de licence SaaS récurrente : vous êtes propriétaire du code livré.",
     },
     {
-      q: "Williams se déplace-t-il vraiment à Carpentras ?",
-      a: "Oui. Williams prend le TGV Paris-Avignon puis le TER Avignon-Carpentras (30 km, 38 min) pour intervenir sur site auprès des TPE et PME du Comtat Venaissin.",
+      q: "Comment se déroule une mission à Carpentras ?",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Carpentras, comme partout en France, ou à distance.",
     },
     {
       q: "Quels secteurs locaux Axion-IA accompagne-t-il à Carpentras ?",
@@ -246,7 +246,7 @@ const VILLE_COPY: VilleCopy = {
       a: "Audit sur place bookable sous 5 à 10 jours ouvrés selon disponibilités. Formation collective livrée en 2 à 4 semaines selon complexité du cadrage. Pour les caves en pleine vendange, Axion-IA s'adapte au calendrier agricole.",
     },
     {
-      q: "Quelles communes proches couvrez-vous depuis Carpentras ?",
+      q: "Quelles communes proches couvrez-vous autour de Carpentras ?",
       a: "Axion-IA intervient aussi sur Monteux, Pernes-les-Fontaines, Aubignan, Mazan, Caromb, Loriol-du-Comtat et plus largement le Comtat Venaissin.",
     },
     {
