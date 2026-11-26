@@ -7,7 +7,7 @@ import { readFileSync } from "node:fs";
 import path from "node:path";
 import { describe, expect, it } from "vitest";
 
-import { remplacerJetons } from "@/content/journee-ia-commun";
+import { DELAI_RAPPORT_JOURS_OUVRES, remplacerJetons } from "@/content/journee-ia-commun";
 import { JOURNEE_IA_TIER } from "@/content/pricing";
 import { MOTS_INTERDITS_LLMS } from "@/app/_llms/faits-communs";
 import { PHRASE_AUDIT_APPROFONDI, reponseReference } from "@/content/questions-reference";
@@ -52,7 +52,7 @@ describe("contenu /prix-audit-ia", () => {
     expect(reponse).toMatch(/Journée IA/);
     expect(reponse).toMatch(/audit/);
     expect(reponse).toMatch(/formation/);
-    expect(reponse).toMatch(/3 jours ouvrés/);
+    expect(reponse).toContain(`${DELAI_RAPPORT_JOURS_OUVRES} jours ouvrés`);
     expect(page.indexOf("REPONSE_DIRECTE")).toBeLessThan(page.indexOf("h-compris"));
   });
 

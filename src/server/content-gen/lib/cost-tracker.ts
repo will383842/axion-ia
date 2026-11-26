@@ -35,15 +35,12 @@ import type { ProviderKey, Prisma } from "../../../../prisma/generated/client";
 export const TEXT_CHAIN_PROVIDERS: ReadonlyArray<ProviderKey> = ["openai"];
 
 /**
- * Chaîne texte EFFECTIVE : `anthropic` y compte AUSSI quand le contenu passe par Claude
- * (`CONTENT_GEN_BLOG_CLAUDE` = "true"). Éteint, la chaîne reste `["openai"]` seul : rien ne
- * change (sinon l'anthropic seedé « text » masquerait un OpenAI en cap, bug F2 de 2026-08-15).
+ * ⚠️ Le kill switch global et l'alerte de plafond se décident sur `TEXT_CHAIN_PROVIDERS`
+ * (openai SEUL), que `CONTENT_GEN_BLOG_CLAUDE` soit allumé ou non, dans l'app comme dans le
+ * worker : une décision qui dépendrait d'une variable d'environnement pourrait diverger entre
+ * les deux conteneurs. Le plafond de Claude est tenu à part par `blog-claude-ledger`
+ * (10 $/jour, 200 $/mois).
  */
-export function chaineTexteProviders(): ReadonlyArray<ProviderKey> {
-  return process.env["CONTENT_GEN_BLOG_CLAUDE"] === "true"
-    ? [...TEXT_CHAIN_PROVIDERS, "anthropic"]
-    : TEXT_CHAIN_PROVIDERS;
-}
 
 /**
  * Audit final P1-9 fix — gestion automatique du dépassement cost cap.
@@ -121,7 +118,7 @@ async function handleCostCapHit(provider: ProviderKey, spent: number, cap: numbe
       monthly_spent_usd: Number(spent.toFixed(2)),
       monthly_cap_usd: Number(cap.toFixed(2)),
     });
-    const isTextChainProvider = chaineTexteProviders().includes(provider);
+    const isTextChainProvider = TEXT_CHAIN_PROVIDERS.includes(provider);
     await sendTelegram({
       tag: "MONITORING",
       body:
@@ -156,7 +153,7 @@ async function handleCostCapHit(provider: ProviderKey, spent: number, cap: numbe
   // quota-guard (quota épuisé ne guérit pas au changement de mois).
   try {
     const remaining = await prisma.providerConfig.count({
-      where: { provider: { in: [...chaineTexteProviders()] }, enabled: true },
+      where: { provider: { in: [...TEXT_CHAIN_PROVIDERS] }, enabled: true },
     });
     if (remaining === 0) {
       const killSwitchValue = {

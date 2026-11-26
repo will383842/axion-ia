@@ -121,7 +121,8 @@ describe("marquage des générateurs", () => {
     for (const f of [
       ...GENERATEURS_MARQUES,
       "content-gen/generators/blog-from-rss.ts",
-      "content-gen/brand/positionnement.ts",
+      // positionnement.ts est exclu : depuis #2311 il cite les frais de déplacement
+      // uniquement comme interdit (« jamais de prix, ni d'acompte, ni de frais de déplacement »).
     ]) {
       expect(lire(f)).not.toMatch(/frais\s+(de\s+)?d[ée]placement/i);
     }

@@ -1,5 +1,7 @@
 import { describe, it, expect } from "vitest";
 import { QUESTIONS_REFERENCE, faqItems } from "../questions-reference";
+import { seuilGarantieEur } from "../journee-ia-commun";
+import { formatAmount } from "../pricing";
 
 const INTERDITS =
   /qualiopi|opco|prise en charge|financement|subvention|grenoble|aucun gain garanti|faites-le vous-m|le faire seul|formation obligatoire|niveau suffisant|conformité garantie|attestation de conformité|amende|fondateur|williams/i;
@@ -13,7 +15,8 @@ describe("questions-reference", () => {
     for (const q of toutes) {
       const n = mots(q.answer);
       expect(n, q.id).toBeGreaterThanOrEqual(40);
-      expect(n, q.id).toBeLessThanOrEqual(80);
+      // ref-journee-prix porte le seuil de la garantie et la demande écrite (CGV art. 47.10) : 100 mots au plus.
+      expect(n, q.id).toBeLessThanOrEqual(q.id === "ref-journee-prix" ? 100 : 80);
     }
   });
 
@@ -33,7 +36,9 @@ describe("questions-reference", () => {
 
   it("aucun montant hors prix de la Journée IA", () => {
     for (const q of toutes) {
-      const sansPrix = q.answer.replace(/1[\s  ]490[\s  ]€[\s  ]HT/g, "");
+      const sansPrix = q.answer
+        .replace(/1[\s  ]490[\s  ]€[\s  ]HT/g, "")
+        .replace(formatAmount(seuilGarantieEur(), "fr"), "");
       expect(sansPrix, q.id).not.toMatch(/€|\d\s?EUR/);
     }
   });

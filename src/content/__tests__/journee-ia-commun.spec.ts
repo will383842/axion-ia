@@ -144,7 +144,11 @@ describe("la garantie", () => {
     expect(CONDITION_GARANTIE).toBe(
       "Condition : le décideur et les personnes prévues sont présents pendant l’audit.",
     );
-    expect(RAPPORT_COMPLET.startsWith("Sous 3 jours ouvrés après la journée")).toBe(true);
+    expect(
+      RAPPORT_COMPLET.startsWith(
+        `Sous ${DELAI_RAPPORT_JOURS_OUVRES} jours ouvrés après la journée`,
+      ),
+    ).toBe(true);
   });
 });
 

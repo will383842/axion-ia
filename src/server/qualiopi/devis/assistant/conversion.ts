@@ -63,6 +63,8 @@ export interface EntreeDevisClassique {
   projetId?: string;
   /** Échéancier, délais, garantie et plafond (texte imprimé par la porte existante du gabarit). */
   conditionsParticulieres?: string;
+  /** Journée IA : colonne `Devis.journeeIa` (toujours envoyée : décocher l'efface). */
+  journeeIa?: boolean;
 }
 
 export interface EntreeDevisFormules {
@@ -258,6 +260,7 @@ export function payloadVersCreation(
         ...base,
         ...opco,
         conditionsParticulieres: cond.texte,
+        journeeIa: p.journeeIa === true,
       },
     };
   }
@@ -295,6 +298,8 @@ export interface DevisPourAssistant {
   /** Financement suggéré / estimation OPCO d'un devis classique : l'assistant ne les porte pas. */
   financementSuggere?: string | null;
   montantOpcoEstimeCents?: number | null;
+  /** Colonne `Devis.journeeIa` : relue telle quelle à la réouverture d'un devis classique. */
+  journeeIa?: boolean | null;
 }
 
 /** Résultat de la réouverture : le payload, ou un refus motivé (renvoi vers la fiche du devis). */
@@ -423,6 +428,7 @@ export function devisVersPayload(
         "opco",
       );
     p.typeDevis = "classique";
+    p.journeeIa = d.journeeIa === true;
     const l = lignesClassiquesDe(d.lignes);
     if (l.length > 0) p.lignesClassiques = l;
   }

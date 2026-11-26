@@ -69,7 +69,6 @@ import {
   assertCostCapAvailable,
   resetMonthlyCostCounters,
   TEXT_CHAIN_PROVIDERS,
-  chaineTexteProviders,
 } from "../cost-tracker";
 
 /** Extrait les clés des upserts ContentGenConfig capturés. */
@@ -104,13 +103,24 @@ describe("F2 — kill switch décidé sur la chaîne texte RÉELLE, pas sur role
     expect(TEXT_CHAIN_PROVIDERS).toEqual(["openai"]);
   });
 
-  it("chaîne texte effective : openai seul si l'interrupteur Claude est éteint, + anthropic sinon", () => {
-    vi.stubEnv("CONTENT_GEN_BLOG_CLAUDE", "false");
-    expect(chaineTexteProviders()).toEqual(["openai"]);
-    vi.stubEnv("CONTENT_GEN_BLOG_CLAUDE", "true");
-    expect(chaineTexteProviders()).toEqual(["openai", "anthropic"]);
-    vi.unstubAllEnvs();
-  });
+  it.each(["true", "false"])(
+    "kill switch décidé sur openai SEUL, CONTENT_GEN_BLOG_CLAUDE=%s (app et worker identiques)",
+    async (flag) => {
+      vi.stubEnv("CONTENT_GEN_BLOG_CLAUDE", flag);
+      primeOverCapOpenai();
+      providerCountMock.mockResolvedValue(0);
+
+      await expect(assertCostCapAvailable("openai", 0.1)).rejects.toMatchObject({
+        code: "cost_cap_reached",
+      });
+
+      expect(providerCountMock).toHaveBeenCalledWith({
+        where: { provider: { in: ["openai"] }, enabled: true },
+      });
+      expect(upsertedConfigKeys()).toContain("kill_switch");
+      vi.unstubAllEnvs();
+    },
+  );
 
   it("cap openai atteint + chaîne texte épuisée → kill switch posé avec auto:true/source:cost_cap", async () => {
     primeOverCapOpenai();
