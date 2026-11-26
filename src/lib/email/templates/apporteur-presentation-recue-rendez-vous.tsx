@@ -12,7 +12,7 @@
 //   · elle est validée au premier rendez-vous qui a eu lieu, s'il a été PRIS pendant ces
 //     60 jours ; un devis signé pendant ces 60 jours compte aussi ;
 //   · les 6 mois partent du jour du rendez-vous ;
-//   · sans rendez-vous pris en 60 jours, la réservation s'arrête, sans reproche, et
+//   · sans rendez-vous pris en 60 jours, la réservation prend fin automatiquement, et
 //     l'entreprise peut être présentée de nouveau après un nouveau contact ;
 //   · une commission n'est due que sur une commande payée.
 //
@@ -63,15 +63,15 @@ export const COPY_PRESENTATION_RECUE_RENDEZ_VOUS = {
       ? `${e} : elle vous est gardée ${jours} jours`
       : `L'entreprise vous est gardée ${jours} jours`,
   title: "Bien reçu : elle vous est gardée",
-  preview: "Ce qui la valide sur votre compte, et ce qui se passe ensuite.",
+  preview: "Ce qui la valide à votre nom, et ce qui se passe ensuite.",
   recu: (e: string, jours: number, date: string | null) =>
     `Nous avons bien reçu votre présentation de ${e || "l'entreprise"} : elle vous est gardée ${jours} jours${date ? `, jusqu'au ${date}` : " à compter de votre saisie"}.`,
   suiteTitre: "La suite",
   validation: (date: string | null, jours: number, mois: number) =>
-    `Elle sera validée sur votre compte dès qu'un premier rendez-vous avec Axion-IA aura eu lieu, s'il a été pris ${date ? "avant cette date" : `pendant ces ${jours} jours`}. Les ${mois} mois pendant lesquels elle vous est rattachée partent alors du jour de ce rendez-vous.`,
+    `Elle sera validée à votre nom dès qu'un premier rendez-vous avec Axion-IA aura eu lieu, s'il a été pris ${date ? "avant cette date" : `pendant ces ${jours} jours`}. Les ${mois} mois pendant lesquels elle vous est rattachée partent alors du jour de ce rendez-vous.`,
   devis: (jours: number) => `Un devis signé pendant ces ${jours} jours compte aussi.`,
   sansRendezVous:
-    "Sans rendez-vous pris d'ici là, la réservation s'arrête, sans aucun reproche : vous pourrez nous présenter de nouveau cette entreprise plus tard, après un nouveau contact avec elle.",
+    "Sans rendez-vous pris d'ici là, la réservation prend fin automatiquement ; vous pourrez nous présenter de nouveau cette entreprise après un nouveau contact avec elle.",
   commission: "Une commission n'est due que sur une commande payée.",
 } as const;
 

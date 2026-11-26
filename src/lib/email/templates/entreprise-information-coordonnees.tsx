@@ -3,6 +3,13 @@
 // (`index.tsx`), ni dans le catalogue d'aperçu, ni dans `envois.ts`. Rien ne l'envoie ; un
 // autre lot le branchera, après relecture du texte par le dirigeant.
 //
+// ⛔ JAMAIS ENVOYÉ SEUL : le contrat 2.8 (article 7.2) et la règle de Will interdisent tout message
+// d'information distinct à l'entreprise ; l'information RGPD (art. 14) vit dans le PREMIER message
+// (`apporteur-demarrage.tsx`). Ce texte sert de source de formulation pour ce premier message ; le
+// brancher comme e-mail à part est un défaut.
+// Les phrases `preview` et `rienAFaire` (« simple information ») sont celles d'un message à part :
+// à adapter quand ce texte est repris dans le premier message.
+//
 // Il accompagne la future règle « validation par rendez-vous » (contrat 2.8). Ce n'est PAS
 // la prise de contact (`entreprise-prise-de-contact-apporteur`, dans `apporteur-demarrage.tsx`,
 // qui reste intacte) : ici on INFORME, on ne propose rien et on ne demande rien.
@@ -14,7 +21,8 @@
 //     longue du fondateur porte le lien de réservation d'un échange ;
 //   · laisser entendre que l'on s'assure de la parole de l'apporteur (Will, 2026-10-05 :
 //     « contre-vendeur ») ;
-//   · parler de prix, de rémunération de l'apporteur ou d'un événement ;
+//   · parler de prix, du montant ou des conditions de la rémunération de l'apporteur, ou d'un
+//     événement (la finalité « calculer la rémunération » est nommée, rien de plus) ;
 //   · donner les coordonnées de l'apporteur : son prénom et son nom, rien d'autre.
 //
 // Même châssis que les autres messages du réseau : famille B, sans rangée sociale,
@@ -65,9 +73,13 @@ export const COPY_INFORMATION_COORDONNEES = {
     // Élision : « de la part d'une personne », jamais « de la part de une personne ».
     `Axion-IA a reçu vos coordonnées professionnelles de la part ${a ? `de ${a}` : "d'une personne de notre réseau"}, qui a pensé que nos services pouvaient vous intéresser.`,
   usage: (responsable: string) =>
-    `Ces coordonnées servent seulement à pouvoir échanger avec vous si vous le souhaitez. Elles sont traitées par ${responsable}, dont l'adresse figure au bas de ce message.`,
+    `Ces coordonnées servent à pouvoir échanger avec vous si vous le souhaitez, à suivre notre relation et, si vous devenez client, à calculer la rémunération de la personne qui nous a présenté votre entreprise. Elles sont traitées par ${responsable}, dont l'adresse figure au bas de ce message.`,
+  baseLegale:
+    "Sur quelle base : notre intérêt légitime à présenter nos services aux professionnels (RGPD, art. 6.1.f), ce message portant sur votre activité professionnelle.",
+  conservation:
+    "Conservation : elles sont gardées tant qu'elles restent exactes et que vous exercez la fonction pour laquelle elles ont été recueillies, et jusqu'à votre opposition ou votre demande d'effacement ; elles sont mises à jour ou effacées dès que nous apprenons qu'elles ne sont plus exactes.",
   droits: (adresse: string) =>
-    `Vos droits : vous pouvez à tout moment demander à y accéder, à les faire rectifier ou effacer, ou vous opposer à leur utilisation. Il suffit de nous écrire à ${adresse}. Tout est détaillé dans notre `,
+    `Vos droits : vous pouvez à tout moment demander à y accéder, à les faire rectifier ou effacer, ou vous opposer à leur utilisation. Il suffit de nous écrire à ${adresse}. Vous pouvez aussi introduire une réclamation auprès de la CNIL. Tout est détaillé dans notre `,
   droitsLien: "politique de confidentialité",
   rienAFaire:
     "Vous n'avez rien à faire : ce message est une simple information, et vous ne recevrez aucune relance.",
@@ -100,6 +112,8 @@ export function EntrepriseInformationCoordonneesEmail({ locale, payload }: Props
       </Text>
       <Text style={emailStyles.paragraphStyle}>{t.origine(texteOuNull(p.nomApporteur) ?? "")}</Text>
       <Text style={emailStyles.paragraphStyle}>{t.usage(EMAIL_LEGAL.legalName)}</Text>
+      <Text style={emailStyles.paragraphStyle}>{t.baseLegale}</Text>
+      <Text style={emailStyles.paragraphStyle}>{t.conservation}</Text>
       <Text style={emailStyles.paragraphStyle}>
         {t.droits(EMAIL_LEGAL.contactEmail)}
         <a

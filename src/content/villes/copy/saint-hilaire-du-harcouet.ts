@@ -65,7 +65,7 @@ export const SAINT_HILAIRE_DU_HARCOUET_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Saint-Hilaire-du-Harcouët ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Gare d'Avranches ou Fougères (TER). Multi-jours : hébergement local. Coûts de déplacement séparés du forfait, tarifs transparents.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Gare d'Avranches ou Fougères (TER). Multi-jours : hébergement local. Tarifs transparents.",
     },
   ],
 };

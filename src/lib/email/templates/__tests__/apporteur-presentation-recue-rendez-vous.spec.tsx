@@ -51,7 +51,7 @@ describe("apporteur-presentation-recue-rendez-vous", () => {
     expect(lu).toContain("6 mois");
     expect(lu).toContain("du jour de ce rendez-vous");
     expect(lu).toContain("Un devis signé pendant ces 60 jours compte aussi");
-    expect(lu).toContain("sans aucun reproche");
+    expect(lu).toContain("la réservation prend fin automatiquement");
     expect(lu).toContain("après un nouveau contact");
     expect(lu).toContain("Une commission n'est due que sur une commande payée");
   });

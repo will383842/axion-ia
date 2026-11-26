@@ -246,7 +246,7 @@ export const CHAUMONT_COPY: VilleCopy = {
     },
     {
       q: "Intervenez-vous aussi dans les communes proches de Chaumont ?",
-      a: "Oui, nous nous déplaçons également à Chamarandes-Choignes, Condes, Treix, Verbiesles, Jonchery et Biesles. Le déplacement est inclus dans le forfait dans un rayon de 20 km autour de Chaumont.",
+      a: "Oui, nous nous déplaçons également à Chamarandes-Choignes, Condes, Treix, Verbiesles, Jonchery et Biesles.",
     },
     {
       q: "Comment Axion-IA garantit la conformité RGPD à Chaumont ?",

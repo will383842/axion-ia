@@ -49,7 +49,7 @@ export const ARNAGE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Arnage et dans l'agglomération du Mans ?",
-      a: "Oui, Axion-IA intervient à Arnage et dans toute l'agglomération du Mans. Le Mans centre est à 10 min. Déplacements sur site inclus dans le périmètre métropole.",
+      a: "Oui, Axion-IA intervient à Arnage et dans toute l'agglomération du Mans. Le Mans centre est à 10 min.",
     },
     {
       q: "Quels services IA pour les PME industrielles d'Arnage ?",

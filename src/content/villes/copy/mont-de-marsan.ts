@@ -241,7 +241,7 @@ export const MONT_DE_MARSAN_COPY: VilleCopy = {
     },
     {
       q: "Intervenez-vous dans les communes proches de Mont-de-Marsan ?",
-      a: "Oui, nous intervenons à Saint-Pierre-du-Mont, Saint-Avit, Bretagne-de-Marsan, Campet-et-Lamolère, Mazerolles et Uchacq-et-Parentis, sans surcoût de déplacement depuis Mont-de-Marsan.",
+      a: "Oui, nous intervenons à Saint-Pierre-du-Mont, Saint-Avit, Bretagne-de-Marsan, Campet-et-Lamolère, Mazerolles et Uchacq-et-Parentis.",
     },
     {
       q: "Axion-IA garantit-il la conformité RGPD à Mont-de-Marsan ?",

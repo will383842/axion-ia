@@ -31,18 +31,7 @@ export {};
 // Sprint 21 = diff RSS feed lastModified field.
 
 import { submitToIndexNow } from "../src/lib/indexnow";
-
-const STRATEGIC_PATHS = [
-  "/",
-  "/audit",
-  "/interventions",
-  "/implementation",
-  "/methodologie",
-  "/comparaisons",
-  "/stack-ia",
-  "/implantations",
-  "/blog",
-] as const;
+import { STRATEGIC_PATHS } from "../src/lib/seo/indexnow-chemins";
 
 async function main(): Promise<void> {
   const key = process.env["INDEXNOW_KEY"];

@@ -130,7 +130,7 @@ export const CASTELNAU_LE_LEZ_COPY: VilleCopy = {
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
-            a: "Oui. Après le cadrage sur site à Castelnau-le-Lez, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, pas de surcoût de déplacement : la ligne 2 du tramway et la proximité de la gare Saint-Roch rendent nos venues sur site simples.",
+            a: "Oui. Après le cadrage sur site à Castelnau-le-Lez, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée : la ligne 2 du tramway et la proximité de la gare Saint-Roch rendent nos venues sur site simples.",
           },
         ],
         guarantees:
@@ -216,7 +216,7 @@ export const CASTELNAU_LE_LEZ_COPY: VilleCopy = {
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
-            a: "Oui. Après le cadrage sur site à Castelnau-le-Lez, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, pas de surcoût de déplacement : la ligne 2 du tramway et la proximité de la gare Saint-Roch rendent nos venues sur site simples.",
+            a: "Oui. Après le cadrage sur site à Castelnau-le-Lez, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée : la ligne 2 du tramway et la proximité de la gare Saint-Roch rendent nos venues sur site simples.",
           },
         ],
         guarantees:
@@ -248,7 +248,7 @@ export const CASTELNAU_LE_LEZ_COPY: VilleCopy = {
     },
     {
       q: "Vous déplacez-vous sur site à Castelnau-le-Lez ?",
-      a: "Oui, notre équipe se déplace directement sur site à Castelnau-le-Lez pour les audits, interventions et implémentations. Le tramway ligne 2 et la proximité de Montpellier rendent le déplacement simple, sans surcoût caché.",
+      a: "Oui, notre équipe se déplace directement sur site à Castelnau-le-Lez pour les audits, interventions et implémentations. Le tramway ligne 2 et la proximité de Montpellier rendent le déplacement simple.",
     },
   ],
 };

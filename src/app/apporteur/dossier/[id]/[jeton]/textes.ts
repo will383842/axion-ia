@@ -109,6 +109,10 @@ export const TEXTES = {
   signeTitre: "Votre contrat est signé",
   signeLigne: "Vous pouvez nous déclarer une entreprise ci-dessous.",
   signeLigneVigilance: "Déposez ici les attestations que nous vous demandons.",
+  // Préavis de résiliation en cours (lot L1b) : information, aucune action demandée.
+  // `dernierJour` : le dernier jour du contrat (la veille de la prise d'effet).
+  preavisLigne: (dernierJour: string) =>
+    `Votre contrat prend fin le ${dernierJour} au soir. Jusqu'à cette date, vous pouvez continuer à nous présenter des entreprises.`,
   telechargerSigne: "Télécharger mon contrat signé (PDF)",
   connexionPerdue: "Connexion perdue : vos réponses sont conservées sur cet écran, réessayez.",
   etapeAnnonce: (n: number, nom: string) => `Étape ${n} sur 4 : ${nom}`,
