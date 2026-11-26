@@ -3,8 +3,9 @@
 //
 // Refonte du 09/11/2026 : page générée depuis la maquette validée par Williams
 // (`components/recrutement/landings/SectionsPrincipale.tsx`). Elle vend UNE seule chose, la Journée
-// IA, avec UNE seule commission indicative par journée payée. Tous les boutons mènent au dossier
-// de 3 minutes, sans CV (`/devenir-commercial-ia/candidature`).
+// IA, avec UNE seule commission indicative par journée payée. Depuis le 25/11/2026 (décision de
+// Will), tous les boutons mènent à la réservation d'un échange de 15 minutes
+// (`/appel/apporteur?depuis=…`). La page `/candidature` reste en place (liens de relance e-mail).
 //
 // ⚠️ B5 levée pour CETTE SEULE page par décision de Will du 25/11/2026 (risques juridique et Google
 // assumés) : un JobPosting prudent, construit hors des dossiers apporteurs
@@ -38,7 +39,7 @@ import { ShellLanding } from "@/components/recrutement/landings/ShellLanding";
 export const revalidate = 3600;
 
 const PATH = "/devenir-commercial-ia";
-const DOSSIER = "/devenir-commercial-ia/candidature";
+const RESERVATION = "/appel/apporteur?depuis=mobile";
 const LANDING_MESURE = "apporteur-principale";
 
 interface Props {
@@ -108,8 +109,8 @@ export default async function DevenirCommercialHub({ params }: Props) {
       {jobPosting ? <JsonLd data={jobPosting} scriptId="jsonld-commercial-jobposting" /> : null}
 
       <StickyMobileCta
-        href={DOSSIER}
-        label="Devenir apporteur"
+        href={RESERVATION}
+        label="Réserver mon échange"
         track="commercial-sticky-apply"
         threshold={500}
         suivi={{ landing: LANDING_MESURE }}
