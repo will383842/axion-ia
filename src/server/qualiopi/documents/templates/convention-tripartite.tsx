@@ -411,7 +411,7 @@ export function ConventionTripartitePdf({
         {/* 4. Conditions d'annulation */}
         <SectionCarte title="4. Conditions d'annulation et acompte">
           {/*
-            🔴 26/11/2026 — décision du dirigeant : dès qu'un acompte est versé, il reste acquis si le client annule, SANS condition de délai ; la personne morale non professionnelle (CGV 53.3) est traitée comme le client professionnel, avec la clause RÉCIPROQUE (R.212-2 2° (applicable aux non-professionnels par R.212-5) du code de la consommation : annulation par l'organisme hors force majeure → acompte rendu + indemnité égale). L'ancienne ligne « Annulation à plus de
+            🔴 26/11/2026 — décision du dirigeant : dès qu'un acompte est versé, il reste acquis si le client annule, SANS condition de délai ; la personne morale non professionnelle (CGV 53.3) est traitée comme le client professionnel, avec la clause RÉCIPROQUE (R.212-2 2° (applicable aux non-professionnels par R.212-5) du code de la consommation) ; 26/11 (2e décision) : l'organisme REPORTE au lieu d'annuler (2 dates sous 3 mois, sans frais, acompte reporté) ; acompte rendu + indemnité égale (PM non pro seule) seulement si aucune date ne convient. L'ancienne ligne « Annulation à plus de
             15 jours ouvrés avant le début : 0 % » (acomptes remboursés) est supprimée. Les
             montants dus au-delà de l'acompte (50 % / 100 %) sont inchangés mais ne sont jamais
             inférieurs à l'acompte versé. TVA : aucune exonération.
@@ -422,11 +422,16 @@ export function ConventionTripartitePdf({
             le délai d&apos;annulation. Il est conservé à titre de dédit et d&apos;indemnité
             (article 1231-5 du Code civil, qui laisse au juge la faculté de modérer une pénalité
             manifestement excessive). Cette règle vise le client professionnel et la personne morale
-            non professionnelle (articles 6.5 et 53.3 des conditions générales de vente). Si
-            l&apos;organisme annule la prestation, hors force majeure et hors faute du client, et
-            que la personne morale non professionnelle n&apos;accepte pas le report proposé, il
-            rembourse à la personne morale non professionnelle l&apos;acompte versé et lui verse une
-            indemnité d&apos;un montant égal à cet acompte. Les sommes suivantes sont dues ;
+            non professionnelle (articles 6.5 et 53.3 des conditions générales de vente).             L&apos;organisme n&apos;annule pas : s&apos;il ne peut pas tenir la date convenue, il
+            reporte la prestation sans frais pour le client, en lui proposant par écrit au moins 2
+            nouvelles dates situées dans les 3 mois suivant la date initiale ; l&apos;acompte versé
+            est reporté sur la nouvelle date et rien n&apos;est remboursé (article 46.4 des
+            conditions générales de vente). Ce report n&apos;est pas une annulation par le client.
+            Si aucune des dates proposées ne convient à la personne morale non professionnelle, ou
+            si l&apos;organisme ne les propose pas dans le délai, hors force majeure et hors faute
+            du client, il lui rembourse l&apos;acompte versé et lui verse une indemnité d&apos;un
+            montant égal à cet acompte ; le client professionnel ne reçoit jamais d&apos;indemnité
+            en plus, seulement les sommes versées. Les sommes suivantes sont dues ;
             l&apos;acompte versé s&apos;impute sur elles et, sauf dans les cas prévus au dernier
             alinéa, n&apos;est pas restitué ; la somme due ne dépasse pas le prix HT :
           </Text>
@@ -461,8 +466,8 @@ export function ConventionTripartitePdf({
             d&apos;annulation par le client, la facture d&apos;acompte est annulée par avoir et son
             montant porté sur la facture de dédit. La taxe sur la valeur ajoutée s&apos;applique à
             ces sommes comme au prix, sans exonération. L&apos;acompte n&apos;est pas acquis si
-            l&apos;annulation résulte d&apos;un manquement ou d&apos;une annulation de
-            l&apos;organisme, d&apos;un cas de force majeure, de l&apos;exercice d&apos;un droit de
+            l&apos;annulation résulte d&apos;un manquement ou d&apos;un report à
+            l&apos;initiative de l&apos;organisme, d&apos;un cas de force majeure, de l&apos;exercice d&apos;un droit de
             rétractation légal, ou de tout autre cas prévu à l&apos;article 6.5 des conditions
             générales de vente.
             {data.conditionSuspensiveOpco

@@ -88,12 +88,10 @@ describe("CGV : l'acompte versé reste acquis, sans condition de délai", () => 
       expect(art(6)).not.toContain("sous réserve de la part réalisée");
       expect(art(53)).toContain("s'applique à elle comme au Client professionnel");
       expect(art(53)).toContain(
-        "si Axion-IA annule une prestation ou renonce à l'exécuter (notamment articles 17.4, 46.4 et 50.2), hors cas de force majeure (article 39), hors faute du Client et sauf report accepté par lui, elle lui rembourse l'acompte versé et lui verse une indemnité d'un montant égal à cet acompte",
+        "Si aucune des dates proposées ne convient à la personne morale non professionnelle, ou si Axion-IA ne les propose pas dans le délai de l'article 46.4, hors cas de force majeure (article 39) et hors faute du Client, elle lui rembourse l'acompte versé et lui verse une indemnité d'un montant égal à cet acompte",
       );
       expect(art(53)).not.toContain("lui est restitué en totalité");
-      expect(art(46)).toContain(
-        "sauf, pour la personne morale non professionnelle, l'indemnité de l'article 53.3",
-      );
+      expect(art(46)).toContain("pour la seule personne morale non professionnelle (article 53.3)");
       expect(art(49)).toContain("l'acompte acquis de l'article 6.5 ne s'applique pas");
     }
   });
