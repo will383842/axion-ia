@@ -34,6 +34,7 @@ import { readContentGenConfig } from "@/server/actions/content-gen/_settings";
 // erreur DB transitoire ne doit pas « dé-geler » silencieusement un arrêt
 // d'urgence (l'ancien read retombait sur {active:false} en cas d'erreur).
 import { readKillSwitchFailSafe } from "@/server/content-gen/config-store";
+import { exigeRelectureHumaine } from "@/server/content-gen/quality/relecture-journee-ia";
 import { revalidateContent } from "@/server/content-gen/shared/revalidate-content";
 import { captureWorkerError } from "@/server/queue/lib/sentry-worker";
 import {
@@ -322,11 +323,17 @@ async function processJob(job: Job<FactCheckJobPayload>): Promise<void> {
     const refutedSentences = claims
       .filter((_, i) => verdicts[i]?.status === "refuted")
       .map((c) => c.sentence);
-    const correctedHtml = await correctRefutedClaimsInPlace({
+    const correctedBrut = await correctRefutedClaimsInPlace({
       jobId: contentGenJobId,
       bodyHtml: translation.body,
       refutedSentences,
     });
+    // Offre « Journée IA » : un texte réécrit par le LLM qui en parle n'est jamais mis en
+    // ligne sans relecture ; l'article reste inchangé et signalé (branche « échec » ci-dessous).
+    const correctedHtml =
+      correctedBrut && exigeRelectureHumaine({ output: { bodyHtml: correctedBrut } })
+        ? null
+        : correctedBrut;
     const listPath = article.isNews ? "/fr/actualites" : "/fr/blog";
     if (correctedHtml) {
       const correctedText = correctedHtml

@@ -66,7 +66,8 @@ export type CodeBarriere =
   | "accroche-trop-proche"
   | "moins-de-850-mots"
   | "fidelite-kb"
-  | "fact-check-claude";
+  | "fact-check-claude"
+  | "journee-ia";
 
 export interface BarriereRelecture {
   readonly code: CodeBarriere;
