@@ -19,7 +19,7 @@ export { DATE_MISE_A_JOUR_PRIX_AUDIT_IA };
 export const TITRE = "Combien coûte un audit IA pour une TPE ou une PME ? · Axion-IA";
 
 /** Réponse directe en trois phrases : première ligne de la page, de la meta description et de l'extrait. */
-export const REPONSE_DIRECTE = `L’audit IA d’Axion-IA est compris dans la Journée IA, au prix unique de {{PRIX}}. L’audit du matin convient aux entreprises de 2 à 250 salariés ; seule la formation de l’après-midi est limitée à 15 personnes. La journée comprend l’audit le matin (2 à 4 h selon l’entreprise), la formation l’après-midi, puis le rapport complet sous ${DELAI_RAPPORT_JOURS_OUVRES} jours ouvrés.`;
+export const REPONSE_DIRECTE = `L’audit IA d’Axion-IA est compris dans la Journée IA, au prix unique de {{PRIX}}. L’audit du matin convient aux entreprises de 2 à 250 salariés ; seule la formation de l’après-midi est limitée à 15 personnes. La journée comprend l’audit le matin (2 à 4 h selon la structuration de l’entreprise), la formation l’après-midi, puis le rapport complet sous ${DELAI_RAPPORT_JOURS_OUVRES} jours ouvrés.`;
 
 export const DESCRIPTION_META =
   "Un audit IA pour une TPE ou une PME : {{PRIX}}, prix unique, compris dans la Journée IA (audit pour 2 à 250 salariés, formation de l’après-midi jusqu’à 15 personnes). Formation et automatisation : sur devis écrit.";
@@ -32,16 +32,17 @@ export const TEXTES = {
   surtitre: "Prix de l’audit IA",
   h1: "Combien coûte un audit IA pour une TPE ou une PME ?",
   cta: "Réserver un Diagnostic IA",
-  microTexte: "Diagnostic IA · 45 minutes · en visio ou par téléphone · sans engagement",
+  microTexte:
+    "Diagnostic IA gratuit et facultatif · 45 minutes · en visio ou par téléphone · sans engagement",
   tva: "Prix hors taxes : la TVA au taux en vigueur s’ajoute sur la facture.",
 
   compris: {
     titre: "Ce que comprend la Journée IA",
     intro: `L’audit de la Journée IA n’a pas de prix à part : il est compris dans la Journée IA. Une seule somme, pour toute l’équipe. ${PHRASE_AUDIT_APPROFONDI}`,
     elements: [
-      "L’audit le matin, 2 à 4 h selon l’entreprise : l’entreprise est passée en revue service par service, avec vous.",
+      "L’audit le matin, 2 à 4 h selon la structuration de l’entreprise : l’entreprise est passée en revue service par service, avec vous.",
       "La formation l’après-midi, pour votre équipe (jusqu’à 15 personnes), sur vos propres dossiers.",
-      "3 à 5 priorités écrites le soir même.",
+      "Vos 3 à 5 priorités, écrites dans le rapport détaillé.",
       RAPPORT_COMPLET,
     ],
   },
@@ -138,6 +139,6 @@ export const FAQ: ReadonlyArray<QuestionPrix> = [
     id: "prix-audit-ia-premier-pas",
     question: "Comment démarrer, avant de décider ?",
     reponse:
-      "Le premier pas est un Diagnostic IA : un appel gratuit de 45 minutes, en visio ou par téléphone, sans engagement. Il permet de voir si la Journée IA convient à votre entreprise.",
+      "Le premier pas est un Diagnostic IA : un appel gratuit et facultatif de 45 minutes, en visio ou par téléphone, sans engagement. Il permet de voir si la Journée IA convient à votre entreprise.",
   },
 ];

@@ -480,7 +480,7 @@ async function resolveVilleAnchors(campaign: {
   if (campaign.anchorVilleSlugs.length > 0) {
     return expandVilleAnchors(campaign.anchorVilleSlugs, surroundingMode, radiusKm);
   }
-  if (campaign.scope === "ville" || campaign.scope === "multi") {
+  if (campaign.scope === "ville" || campaign.scope === "multi" || campaign.scope === "national") {
     const rows = await prisma.cityGenerationOrder.findMany({
       orderBy: [{ pinned: "desc" }, { rank: "asc" }],
       take: 200,
@@ -758,7 +758,7 @@ async function processParallelCampaign(
         anchorDepartementCode = deptAnchors[slotIndex % deptAnchors.length];
       } else if (campaign.scope === "region" && regionAnchors.length > 0) {
         anchorRegionSlug = regionAnchors[slotIndex % regionAnchors.length];
-      } else if (campaign.scope === "multi") {
+      } else if (campaign.scope === "multi" || campaign.scope === "national") {
         if (villeAnchors.length > 0) {
           anchorVilleSlug = villeAnchors[slotIndex % villeAnchors.length];
         } else if (regionAnchors.length > 0) {
