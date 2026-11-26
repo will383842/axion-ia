@@ -44,7 +44,7 @@ import { Tombstone } from "@/components/content-gen/Tombstone";
 import { findArticleSlugRedirect } from "@/server/content-gen/slug-history";
 import { UnsplashCredit } from "@/components/media/UnsplashCredit";
 import { ArticleFaq } from "@/components/content-gen/ArticleFaq";
-import { ArticleSources } from "@/components/content-gen/ArticleSources";
+import { ArticleSources, aDesSourcesAffichables } from "@/components/content-gen/ArticleSources";
 import { ArticleKeyTakeaway } from "@/components/content-gen/ArticleKeyTakeaway";
 import { ArticleExpertQuote } from "@/components/content-gen/ArticleExpertQuote";
 import { ArticleShareBar } from "@/components/content-gen/ArticleShareBar";
@@ -379,7 +379,12 @@ export default async function BlogArticle({ params }: Props) {
   // les citations en base alimentent « Sources & méthodologie ». Avant `buildToc`,
   // pour que le H2 parasite quitte aussi le sommaire.
   const dbBody = isDbHtml
-    ? buildToc(unSeulBlocSources(sanitizeContentGenHtml(view.body), view.citations.length > 0))
+    ? buildToc(
+        unSeulBlocSources(
+          sanitizeContentGenHtml(view.body),
+          aDesSourcesAffichables(view.citations),
+        ),
+      )
     : null;
   // Chapô : excerpt, sinon meta-description (stock publié avant le correctif du worker).
   const chapo = chapoDeRepli(view.excerpt, view.metaDescription);
@@ -513,7 +518,9 @@ export default async function BlogArticle({ params }: Props) {
   // TL;DR Canonical Answer (audit AEO/GEO 2026-05-15 § 3.5).
   // VIS-03 — Préfère le directAnswer généré (snippet 0) ; fallback excerpt/body.
   // H3 — tokens prix résolus (no-op si aucun).
-  const rawTldr = view.directAnswer ?? deriveTldr(view.excerpt, view.body);
+  const rawTldr =
+    view.directAnswer ??
+    deriveTldr(view.excerpt === view.metaDescription ? null : view.excerpt, view.body);
   const tldrText = rawTldr ? collapsePriceProseDuplicates(resolvePriceTokens(rawTldr, loc)) : null;
 
   // V-14 sprint UX 2026-05-22 — Articles connexes : DB+FS merge via helper.

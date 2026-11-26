@@ -44,7 +44,7 @@ import { SuggestedContent } from "@/components/suggested/SuggestedContent";
 import { findRelatedArticles } from "@/server/content-gen/links/related-articles";
 import { ArticleFaq } from "@/components/content-gen/ArticleFaq";
 import { unSeulBlocSources } from "@/server/content-gen/shared/sources-et-chapo";
-import { ArticleSources } from "@/components/content-gen/ArticleSources";
+import { ArticleSources, aDesSourcesAffichables } from "@/components/content-gen/ArticleSources";
 import { ArticleKeyTakeaway } from "@/components/content-gen/ArticleKeyTakeaway";
 import { ArticleExpertQuote } from "@/components/content-gen/ArticleExpertQuote";
 import { ArticleShareBar } from "@/components/content-gen/ArticleShareBar";
@@ -161,7 +161,10 @@ export default async function GuidePiliersPage({ params }: Props) {
       guide.body,
     )
       ? // Audit B (2026-11-26) — un seul bloc « Sources » (cf. blog/[slug]).
-        unSeulBlocSources(sanitizeContentGenHtml(guide.body), guide.citations.length > 0)
+        unSeulBlocSources(
+          sanitizeContentGenHtml(guide.body),
+          aDesSourcesAffichables(guide.citations),
+        )
       : null;
 
   // Lot 9 audit blog 2026-10-24 : les liens internes des corps persistés sont

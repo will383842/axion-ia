@@ -636,7 +636,7 @@ async function executePublishPipeline(
   if (refreshArticleId) {
     const existingTr = await prisma.articleTranslation.findFirst({
       where: { articleId: refreshArticleId, locale: "fr" },
-      select: { id: true, slug: true, excerpt: true },
+      select: { id: true, slug: true, excerpt: true, metaDescription: true },
     });
     if (!existingTr) {
       // La cible de régénération n'a plus de traduction FR : on refuse plutôt
@@ -645,8 +645,11 @@ async function executePublishPipeline(
     }
     refreshTranslationId = existingTr.id;
     refreshPreservedSlug = existingTr.slug;
-    // Un chapô déjà rempli (écrit à la main) n'est jamais écrasé par la régénération.
-    refreshExcerptExistant = (existingTr.excerpt ?? "").trim().length > 0;
+    // Un chapô écrit à la main n'est jamais écrasé ; celui posé par ce worker (égal à
+    // l'ancienne meta-description) est renouvelé avec elle.
+    const ancienChapo = (existingTr.excerpt ?? "").trim();
+    refreshExcerptExistant =
+      ancienChapo.length > 0 && ancienChapo !== (existingTr.metaDescription ?? "").trim();
   }
 
   // Slug régénéré par le generator (ou dérivé du titre). Sur le chemin REFRESH,
@@ -1083,7 +1086,9 @@ async function executePublishPipeline(
           metaTitle,
           ...(metaDescription ? { metaDescription } : {}),
           // Chapô : rempli depuis la meta-description si vide (audit B, 2026-11-26).
-          ...(metaDescription && !refreshExcerptExistant ? { excerpt: metaDescription } : {}),
+          ...(metaDescription && !isNews && !refreshExcerptExistant
+            ? { excerpt: metaDescription }
+            : {}),
         },
       });
     } else {
@@ -1099,7 +1104,8 @@ async function executePublishPipeline(
           ...(metaDescription ? { metaDescription } : {}),
           // Chapô : sans lui la page n'affiche aucun résumé sous le titre. On part de la
           // meta-description (pas de la réponse directe, déjà dans « Réponse rapide »).
-          ...(metaDescription ? { excerpt: metaDescription } : {}),
+          // Pas pour une actualité : son TL;DR dérive de l'excerpt (doublon sinon).
+          ...(metaDescription && !isNews ? { excerpt: metaDescription } : {}),
           // wordCount n'est pas persisté : article_translations n'a pas de colonne
           // word_count ; les pages /blog et /actualites le recalculent à la volée
           // depuis le body (et le JSON-LD le reçoit via wordCount ci-dessous).

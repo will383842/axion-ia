@@ -53,7 +53,7 @@ import { sanitizeContentGenHtml } from "@/server/content-gen/shared/html-sanitiz
 import { parseFaqItems } from "@/server/content-gen/shared/faq-items";
 import { ArticleFaq } from "@/components/content-gen/ArticleFaq";
 import { compterMotsTexte, unSeulBlocSources } from "@/server/content-gen/shared/sources-et-chapo";
-import { ArticleSources } from "@/components/content-gen/ArticleSources";
+import { ArticleSources, aDesSourcesAffichables } from "@/components/content-gen/ArticleSources";
 import { ArticleKeyTakeaway } from "@/components/content-gen/ArticleKeyTakeaway";
 import { ArticleExpertQuote } from "@/components/content-gen/ArticleExpertQuote";
 import { UnsplashCredit } from "@/components/media/UnsplashCredit";
@@ -366,7 +366,12 @@ export default async function NewsArticlePage({ params }: Props) {
     typeof t.body === "string" && /<(h[1-6]|p|ul|ol|blockquote|table|figure|div)\b/i.test(t.body);
   // Audit B (2026-11-26) — un seul bloc « Sources » : avant `buildToc` (sommaire).
   const newsBodyToc = hasHtmlBody
-    ? buildToc(unSeulBlocSources(sanitizeContentGenHtml(t.body), citations.length > 0))
+    ? buildToc(
+        unSeulBlocSources(
+          sanitizeContentGenHtml(t.body),
+          aDesSourcesAffichables(citations.map((c) => ({ name: c.title, url: c.url }))),
+        ),
+      )
     : null;
   // GEO-079/081 — voir `@/lib/content/liens-internes` : les liens internes des
   // corps persistes sont ecrits sans prefixe de langue et redirigent chacun.
