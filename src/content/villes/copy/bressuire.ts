@@ -65,7 +65,7 @@ export const BRESSUIRE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA sur site à Bressuire ?",
-      a: "Nos consultants accèdent à Bressuire par la gare TER ou par la route (Niort 45 min, Cholet 30 min). Mission sur site dans vos usines, exploitations agricoles ou commerces.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Mission sur site dans vos usines, exploitations agricoles ou commerces.",
     },
   ],
 };

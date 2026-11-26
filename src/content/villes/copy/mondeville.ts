@@ -49,7 +49,7 @@ export const MONDEVILLE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Mondeville et est agglomération Caen ?",
-      a: "Oui, Axion-IA intervient à Mondeville et toute l'agglomération caennaise est (Colombelles, Hérouville-Saint-Clair, Giberville, Démouville). Consultants sur place en 10 min depuis Caen centre.",
+      a: "Oui, Axion-IA intervient à Mondeville et toute l'agglomération caennaise est (Colombelles, Hérouville-Saint-Clair, Giberville, Démouville). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les entreprises des zones d'activités de Mondeville ?",

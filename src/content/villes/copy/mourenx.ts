@@ -65,7 +65,7 @@ export const MOURENX_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA sur site à Mourenx ?",
-      a: "Nos consultants accèdent à Mourenx via la gare de Pau (TGV 4h20 Paris, 25 min voiture) ou l'A64. Mission sur site dans vos usines, ateliers ou bureaux du bassin de Lacq.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Mission sur site dans vos usines, ateliers ou bureaux du bassin de Lacq.",
     },
   ],
 };

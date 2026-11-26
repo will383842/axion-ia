@@ -247,7 +247,7 @@ export const LE_BOUSCAT_COPY: VilleCopy = {
     },
     {
       q: "Intervenez-vous dans les communes limitrophes du Bouscat ?",
-      a: "Oui. Nous nous déplaçons à Bordeaux, Bruges et Eysines, toutes accessibles en moins de 15 minutes depuis Le Bouscat via le tramway TBM ou la rocade bordelaise.",
+      a: "Nous intervenons partout en France, sur place ou à distance.",
     },
   ],
 };

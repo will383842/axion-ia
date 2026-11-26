@@ -65,7 +65,7 @@ export const PLOUGASTEL_DAOULAS_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission sur la presqu'île de Plougastel ?",
-      a: "Nous intervenons partout en France, sur place ou à distance.  Tarifs transparents.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Tarifs transparents.",
     },
   ],
 };

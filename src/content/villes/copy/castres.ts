@@ -120,7 +120,7 @@ export const CASTRES_COPY: VilleCopy = {
           },
           {
             q: "Travaillez-vous avec les entreprises du Castres-Mazamet Technopole ?",
-            a: "Oui. Le technopole concentre environ 500 emplois numériques (cloud, infogérance, hébergement, conception web) et des acteurs comme Albiant IT, Thales ou Consort NT. Nous outillons ces équipes avec des plateformes SaaS IA-native, des chatbots RAG et des intégrations sur leurs propres produits, depuis Le Causse Espace d'Entreprises ou le campus La Borde Basse.",
+            a: "Oui. Le technopole concentre environ 500 emplois numériques (cloud, infogérance, hébergement, conception web) et des acteurs comme Albiant IT, Thales ou Consort NT. Nous intervenons partout en France, sur place ou à distance.",
           },
           {
             q: "Vos sites et plateformes sont-ils conformes au RGPD et hébergés en Europe ?",

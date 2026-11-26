@@ -74,7 +74,7 @@ export const FRONTIGNAN_COPY: VilleCopy = {
           {
             step: "Développement par sprints",
             detail:
-              "Greffe IA sur l'existant (WordPress, Shopify, WooCommerce, PrestaShop, Magento) ou build IA-native : boutique de vente directe, réservation, chatbot RAG multilingue, recherche sémantique, traçabilité AOP et sanitaire, agents et automatisations. Démos hebdomadaires en visio depuis Montpellier.",
+              "Greffe IA sur l'existant (WordPress, Shopify, WooCommerce, PrestaShop, Magento) ou build IA-native : boutique de vente directe, réservation, chatbot RAG multilingue, recherche sémantique, traçabilité AOP et sanitaire, agents et automatisations. Démos hebdomadaires en visio.",
           },
           {
             step: "Recette + mise en ligne",
@@ -160,7 +160,7 @@ export const FRONTIGNAN_COPY: VilleCopy = {
           {
             step: "Développement par sprints",
             detail:
-              "Greffe IA sur l'existant (WordPress, Shopify, WooCommerce, PrestaShop, Magento) ou build IA-native : boutique de vente directe, réservation, chatbot RAG multilingue, recherche sémantique, traçabilité AOP et sanitaire, agents et automatisations. Démos hebdomadaires en visio depuis Montpellier.",
+              "Greffe IA sur l'existant (WordPress, Shopify, WooCommerce, PrestaShop, Magento) ou build IA-native : boutique de vente directe, réservation, chatbot RAG multilingue, recherche sémantique, traçabilité AOP et sanitaire, agents et automatisations. Démos hebdomadaires en visio.",
           },
           {
             step: "Recette + mise en ligne",

@@ -65,7 +65,7 @@ export const LONS_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA sur site à Lons ?",
-      a: "Nos consultants accèdent à Lons via l'aéroport Pau-Pyrénées (5 min) ou la gare de Pau (TGV 4h20 Paris direct, 8 min voiture). Mission sur site dans vos locaux commerciaux, entrepôts ou bureaux.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Mission sur site dans vos locaux commerciaux, entrepôts ou bureaux.",
     },
   ],
 };

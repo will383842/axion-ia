@@ -49,7 +49,7 @@ export const BORGO_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Borgo et agglomération Bastia ?",
-      a: "Oui, Axion-IA intervient à Borgo et toute l'agglomération bastiaise (Bastia, Furiani, Biguglia, Lucciana). Nos consultants arrivent via l'aéroport Bastia-Poretta situé directement sur la commune (vols directs continent).",
+      a: "Oui, Axion-IA intervient à Borgo et toute l'agglomération bastiaise (Bastia, Furiani, Biguglia, Lucciana). L'aéroport Bastia-Poretta est situé directement sur la commune (vols directs continent).",
     },
     {
       q: "Travaillez-vous avec les entreprises de logistique et transport aérien ?",

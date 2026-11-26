@@ -242,7 +242,7 @@ export const ANGLET_COPY: VilleCopy = {
     },
     {
       q: "Intervenez-vous aussi à Bayonne et Biarritz ?",
-      a: "Oui, nous couvrons tout le BAB et le Pays basque côtier : Bayonne, Biarritz, Bidart, Saint-Jean-de-Luz et les communes voisines, depuis Anglet et la technopole Izarbel.",
+      a: "Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Vos solutions IA sont-elles conformes au RGPD ?",

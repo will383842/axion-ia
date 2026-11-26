@@ -65,7 +65,7 @@ export const MONTESSON_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission Axion-IA chez nos clients ?",
-      a: "Le Vésinet (5 min). Sartrouville (5 min). Paris La Défense (15 min). Paris Saint-Lazare (20 min). RER A Le Vésinet–Le Pecq à 10 min.",
+      a: "Nous intervenons partout en France, sur place dans vos locaux ou à distance en visio. Après le cadrage de votre besoin, nous planifions l'intervention et livrons un résultat actionnable.",
     },
   ],
 };

@@ -236,7 +236,7 @@ export const ARRAS_COPY: VilleCopy = {
     },
     {
       q: "Quel est le délai d'intervention d'Axion-IA à Arras ?",
-      a: "Williams se déplace sur site à Arras dans les 5 jours ouvrés après validation de votre demande, train direct depuis Paris-Nord en 50 minutes.",
+      a: "Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Les interventions d'Axion-IA à Arras sont-elles conformes au RGPD ?",

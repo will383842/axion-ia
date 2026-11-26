@@ -65,7 +65,7 @@ export const LONGVIC_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission Axion-IA chez nos clients ?",
-      a: "Dijon centre à 15 min (tram T2). Paris-Bercy à 1h30 en TGV via Dijon. Beaune à 30 min.",
+      a: "Nous intervenons partout en France, sur place dans vos locaux ou à distance en visio. Après le cadrage de votre besoin, nous planifions l'intervention et livrons un résultat actionnable.",
     },
   ],
 };

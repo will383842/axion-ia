@@ -65,7 +65,7 @@ export const NIEUL_SUR_MER_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA sur site à Nieul-sur-Mer ?",
-      a: "Nos consultants accèdent à Nieul-sur-Mer via la gare TGV de La Rochelle (12 min, Paris 2h50 direct). Mission sur site dans vos locaux, cabinet ou commerce.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Mission sur site dans vos locaux, cabinet ou commerce.",
     },
   ],
 };

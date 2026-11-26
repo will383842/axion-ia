@@ -65,7 +65,7 @@ export const GUILHERAND_GRANGES_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission Axion-IA chez nos clients ?",
-      a: "Lyon (1h A7). TGV Paris Valence 2h15 + 10 min.",
+      a: "Nous intervenons partout en France, sur place dans vos locaux ou à distance en visio. Après le cadrage de votre besoin, nous planifions l'intervention et livrons un résultat actionnable.",
     },
   ],
 };

@@ -65,7 +65,7 @@ export const LAMBALLE_ARMOR_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission Axion-IA chez nos clients ?",
-      a: "Rennes à 1h. Paris-Montparnasse à 2h45 en TGV (gare Lamballe). Saint-Brieuc à 15 min.",
+      a: "Nous intervenons partout en France, sur place dans vos locaux ou à distance en visio. Après le cadrage de votre besoin, nous planifions l'intervention et livrons un résultat actionnable.",
     },
   ],
 };

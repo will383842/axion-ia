@@ -74,7 +74,7 @@ export const COUDEKERQUE_BRANCHE_COPY: VilleCopy = {
           {
             step: "Développement par sprints",
             detail:
-              "Greffe IA sur l'existant ou build IA-native : portail B2B, e-commerce multi-CMS, configurateur de devis, chatbot RAG multilingue, recherche sémantique, agents de traitement documentaire. Démos hebdomadaires en visio depuis Lille, à une heure de Coudekerque-Branche, pour ajuster au fil de l'eau.",
+              "Greffe IA sur l'existant ou build IA-native : portail B2B, e-commerce multi-CMS, configurateur de devis, chatbot RAG multilingue, recherche sémantique, agents de traitement documentaire. Démos hebdomadaires en visio, à une heure de Coudekerque-Branche, pour ajuster au fil de l'eau.",
           },
           {
             step: "Recette + mise en ligne",
@@ -160,7 +160,7 @@ export const COUDEKERQUE_BRANCHE_COPY: VilleCopy = {
           {
             step: "Développement par sprints",
             detail:
-              "Greffe IA sur l'existant ou build IA-native : portail B2B, e-commerce multi-CMS, configurateur de devis, chatbot RAG multilingue, recherche sémantique, agents de traitement documentaire. Démos hebdomadaires en visio depuis Lille, à une heure de Coudekerque-Branche, pour ajuster au fil de l'eau.",
+              "Greffe IA sur l'existant ou build IA-native : portail B2B, e-commerce multi-CMS, configurateur de devis, chatbot RAG multilingue, recherche sémantique, agents de traitement documentaire. Démos hebdomadaires en visio, à une heure de Coudekerque-Branche, pour ajuster au fil de l'eau.",
           },
           {
             step: "Recette + mise en ligne",

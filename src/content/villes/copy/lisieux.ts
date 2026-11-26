@@ -65,7 +65,7 @@ export const LISIEUX_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA sur site à Lisieux ?",
-      a: "Nos consultants accèdent à Lisieux par Intercités (1h40 Paris Saint-Lazare) ou voiture (A13, 35 min Caen). Mission sur site dans vos locaux, fromagerie, hôtel ou exploitation.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Mission sur site dans vos locaux, fromagerie, hôtel ou exploitation.",
     },
   ],
 };

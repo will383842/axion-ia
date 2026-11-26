@@ -69,6 +69,10 @@ const FRAIS: ReadonlyArray<readonly [string, RegExp]> = [
     /\bet identiques\b|identiques? (?:à|sur|en|quelle que soit|dans)\b[^".]{0,40}(?:commune|zone|ville|Gap|[Cc]ouronne|intra-muros|agglo)|identique quelle que soit/iu,
   ],
   [
+    "délai de déplacement après un prix",
+    /\}\}[^"]{0,40}\. (?:Déplacement|Intervention)[^."]{0,40}sous \d+ jours/u,
+  ],
+  [
     "prix + déplacement",
     /\{\{price:[^}]+\}\}[^".]{0,80}(?<!en )[Dd]éplacement(?! sur site)|(?<!en )[Dd]éplacement(?! sur site)[^".]{0,80}\{\{price:/u,
   ],
@@ -84,7 +88,11 @@ const PRESENCE: ReadonlyArray<readonly [string, RegExp]> = [
     "déplacement depuis <Ville>",
     /[Dd]éplacements? (?:rapide |direct |simple )?depuis (?!notre)[A-ZÉ]/u,
   ],
-  ["notre base locale", /depuis notre base (?!nationale)|notre base [a-zé]+ise\b/u],
+  ["notre base locale", /depuis notre base|notre base [a-zé]+ise\b/u],
+  [
+    "origine des consultants",
+    /(?<!et )[Cc]onsultants? (?:venant )?(?:de|depuis) [A-ZÉ]|se deplacent|(?:[Cc]onsultants?|[Ee]xperts?|Williams)[^."?]{0,100}(?:depuis|venant de) [A-ZÉ]|couvrez-vous depuis|couvertes par Axion-IA depuis|se déplace-t-il[^?]*depuis|visio depuis [A-ZÉ]|[Oo]n se déplace sur site depuis|arrivent (?:via|par|le matin|en une)|base nationale|logistique mission multi-jours/u,
+  ],
   ["lieux Axion-IA", /ateliers Axion-IA à|nos points de cadrage/u],
   [
     "basé à",

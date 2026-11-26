@@ -65,7 +65,7 @@ export const MAEN_ROCH_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission Axion-IA chez nos clients ?",
-      a: "Rennes-Maen Roch en 50 min par A84. Nos consultants se déplacent sur site pour les missions audit, formation et implémentation. Sessions en visio également possibles.",
+      a: "Nous intervenons partout en France, sur place dans vos locaux ou à distance en visio. Après le cadrage de votre besoin, nous planifions l'intervention et livrons un résultat actionnable.",
     },
   ],
 };

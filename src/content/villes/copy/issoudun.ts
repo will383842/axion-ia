@@ -65,7 +65,7 @@ export const ISSOUDUN_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Issoudun ?",
-      a: "Nos consultants se déplacent via la gare TER d'Issoudun (ligne Vierzon-Châteauroux) ou par l'A20 depuis Paris (2h30) ou Limoges (2h).",
+      a: "Nous intervenons partout en France, sur place ou à distance.",
     },
   ],
 };

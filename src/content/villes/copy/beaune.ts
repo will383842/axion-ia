@@ -74,7 +74,7 @@ export const BEAUNE_COPY: VilleCopy = {
           {
             step: "Développement par sprints",
             detail:
-              "Greffe IA sur l'existant (WordPress, Shopify, WooCommerce, PrestaShop, Magento) ou build IA-native : boutique e-commerce, portail d'allocations B2B, chatbot RAG multilingue, recherche sémantique sur vos millésimes, agents de réservation pour l'oenotourisme. Démos hebdomadaires en visio depuis Beaune ou Dijon, à 45 km, avec validation à chaque étape par vos équipes.",
+              "Greffe IA sur l'existant (WordPress, Shopify, WooCommerce, PrestaShop, Magento) ou build IA-native : boutique e-commerce, portail d'allocations B2B, chatbot RAG multilingue, recherche sémantique sur vos millésimes, agents de réservation pour l'oenotourisme. Démos hebdomadaires en visio ou Dijon, à 45 km, avec validation à chaque étape par vos équipes.",
           },
           {
             step: "Recette + mise en ligne",
@@ -160,7 +160,7 @@ export const BEAUNE_COPY: VilleCopy = {
           {
             step: "Développement par sprints",
             detail:
-              "Greffe IA sur l'existant (WordPress, Shopify, WooCommerce, PrestaShop, Magento) ou build IA-native : boutique e-commerce, portail d'allocations B2B, chatbot RAG multilingue, recherche sémantique sur vos millésimes, agents de réservation pour l'oenotourisme. Démos hebdomadaires en visio depuis Beaune ou Dijon, à 45 km, avec validation à chaque étape par vos équipes.",
+              "Greffe IA sur l'existant (WordPress, Shopify, WooCommerce, PrestaShop, Magento) ou build IA-native : boutique e-commerce, portail d'allocations B2B, chatbot RAG multilingue, recherche sémantique sur vos millésimes, agents de réservation pour l'oenotourisme. Démos hebdomadaires en visio ou Dijon, à 45 km, avec validation à chaque étape par vos équipes.",
           },
           {
             step: "Recette + mise en ligne",

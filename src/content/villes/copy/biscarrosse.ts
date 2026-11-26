@@ -65,7 +65,7 @@ export const BISCARROSSE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Biscarrosse ?",
-      a: "Nous intervenons partout en France, sur place ou à distance.  Tarifs publics.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Tarifs publics.",
     },
   ],
 };

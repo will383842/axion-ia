@@ -49,7 +49,7 @@ export const LYS_LEZ_LANNOY_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Lys-lez-Lannoy et dans l'agglo roubaisienne ?",
-      a: "Oui, Axion-IA intervient à Lys-lez-Lannoy et dans toute l'agglomération de Roubaix-Tourcoing (Roubaix, Lannoy, Hem, Toufflers, Leers, Wattrelos) ainsi que l'ensemble de la Métropole Européenne de Lille. Nos consultants couvrent tout le bassin lillois depuis Lille centre (20 min).",
+      a: "Oui, Axion-IA intervient à Lys-lez-Lannoy et dans toute l'agglomération de Roubaix-Tourcoing (Roubaix, Lannoy, Hem, Toufflers, Leers, Wattrelos) ainsi que l'ensemble de la Métropole Européenne de Lille. Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les PME du commerce à Lys-lez-Lannoy ?",

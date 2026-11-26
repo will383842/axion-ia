@@ -65,7 +65,7 @@ export const MULSANNE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Mulsanne ?",
-      a: "Nos consultants sont accessibles depuis la gare TGV Le Mans (15 min de Mulsanne, Paris à 55 min TGV). Intervention sur site dans vos locaux industriels, entrepôts ou bureaux.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Intervention sur site dans vos locaux industriels, entrepôts ou bureaux.",
     },
   ],
 };

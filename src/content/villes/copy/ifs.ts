@@ -49,7 +49,7 @@ export const IFS_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Ifs et sud agglomération Caen ?",
-      a: "Oui, Axion-IA intervient à Ifs et toute l'agglomération caennaise sud (Fleury-sur-Orne, Cormelles-le-Royal, Mondeville, Hérouville-Saint-Clair). Consultants sur place en 10 min depuis Caen centre.",
+      a: "Oui, Axion-IA intervient à Ifs et toute l'agglomération caennaise sud (Fleury-sur-Orne, Cormelles-le-Royal, Mondeville, Hérouville-Saint-Clair). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les PME tertiaires de l'agglomération caennaise ?",

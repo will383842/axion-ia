@@ -65,7 +65,7 @@ export const BIDART_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA sur site à Bidart ?",
-      a: "Nos consultants accèdent à Bidart via l'aéroport Biarritz Pays Basque (5 min) ou par l'A63. Mission sur site dans vos hébergements, restaurants, ateliers ou écoles de surf.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Mission sur site dans vos hébergements, restaurants, ateliers ou écoles de surf.",
     },
   ],
 };

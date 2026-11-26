@@ -246,7 +246,7 @@ export const NARBONNE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission Axion-IA chez nos clients ?",
-      a: "Montpellier 95 km via A9, Toulouse 150 km via A61, Perpignan 60 km via A9. Possibilité de combiner Narbonne + Béziers + Carcassonne ou Narbonne + Perpignan en une journée.",
+      a: "Nous intervenons partout en France, sur place dans vos locaux ou à distance en visio. Après le cadrage de votre besoin, nous planifions l'intervention et livrons un résultat actionnable.",
     },
   ],
 };

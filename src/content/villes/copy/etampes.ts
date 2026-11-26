@@ -235,7 +235,7 @@ export const ETAMPES_COPY: VilleCopy = {
       a: "Notre délai standard à Étampes est de 5 jours ouvrés après validation de la commande. Pour les TPE en situation d'urgence, un créneau prioritaire est possible sous 48 h.",
     },
     {
-      q: "Quelles communes du sud-Essonne sont couvertes par Axion-IA depuis Étampes ?",
+      q: "Quelles communes du sud-Essonne sont couvertes par Axion-IA autour d'Étampes ?",
       a: "Nous nous déplaçons à La Ferté-Alais, Dourdan, Guillerval et l'ensemble du sud-Essonne, ainsi que vers Paris via le RER C ou la RN20 si besoin.",
     },
     {

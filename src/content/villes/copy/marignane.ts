@@ -246,7 +246,7 @@ export const MARIGNANE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission Axion-IA chez nos clients ?",
-      a: "Marseille centre est à 25 km et Aix-en-Provence à 30 km de Marignane. Nous intervenons sur tout le secteur.",
+      a: "Nous intervenons partout en France, sur place dans vos locaux ou à distance en visio. Après le cadrage de votre besoin, nous planifions l'intervention et livrons un résultat actionnable.",
     },
   ],
 };

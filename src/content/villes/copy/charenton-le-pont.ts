@@ -232,7 +232,7 @@ export const CHARENTON_LE_PONT_COPY: VilleCopy = {
     },
     {
       q: "Quels délais pour intervenir à Charenton-le-Pont ?",
-      a: "Nous nous engageons à intervenir sur site à Charenton-le-Pont sous 5 jours ouvrés après validation de votre demande, en utilisant la ligne 8 ou l'A4 depuis Paris.",
+      a: "Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Intervenez-vous aussi dans les communes proches de Charenton-le-Pont ?",

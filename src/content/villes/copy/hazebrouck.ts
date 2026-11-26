@@ -72,7 +72,7 @@ export const HAZEBROUCK_COPY: VilleCopy = {
           {
             step: "Développement par sprints",
             detail:
-              "Greffe IA sur l'existant ou build IA-native : boutique e-commerce multi-CMS, prise de rendez-vous, chatbot RAG multilingue, recherche sémantique, agents d'automatisation. Démos hebdomadaires en visio depuis Lille, code versionné et livré au fil de l'eau.",
+              "Greffe IA sur l'existant ou build IA-native : boutique e-commerce multi-CMS, prise de rendez-vous, chatbot RAG multilingue, recherche sémantique, agents d'automatisation. Démos hebdomadaires en visio, code versionné et livré au fil de l'eau.",
           },
           {
             step: "Recette + mise en ligne",
@@ -126,7 +126,7 @@ export const HAZEBROUCK_COPY: VilleCopy = {
           },
           {
             q: "Accompagnez-vous les entreprises de la zone industrielle et du P.A.E. de la Creule ?",
-            a: "Oui. Pour les TPE, PME et ETI implantées sur la zone industrielle d'Hazebrouck ou le P.A.E. de la Creule — logistique, services aux entreprises, agroalimentaire flamand — on conçoit des portails clients, du suivi de flux en temps réel et des automatisations branchées sur vos ERP. On se déplace sur site depuis Lille pour le cadrage, puis on itère à distance.",
+            a: "Oui. Pour les TPE, PME et ETI implantées sur la zone industrielle d'Hazebrouck ou le P.A.E. de la Creule — logistique, services aux entreprises, agroalimentaire flamand — on conçoit des portails clients, du suivi de flux en temps réel et des automatisations branchées sur vos ERP. On se déplace chez vous pour le cadrage, puis on itère à distance.",
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
@@ -158,7 +158,7 @@ export const HAZEBROUCK_COPY: VilleCopy = {
           {
             step: "Développement par sprints",
             detail:
-              "Greffe IA sur l'existant ou build IA-native : boutique e-commerce multi-CMS, prise de rendez-vous, chatbot RAG multilingue, recherche sémantique, agents d'automatisation. Démos hebdomadaires en visio depuis Lille, code versionné et livré au fil de l'eau.",
+              "Greffe IA sur l'existant ou build IA-native : boutique e-commerce multi-CMS, prise de rendez-vous, chatbot RAG multilingue, recherche sémantique, agents d'automatisation. Démos hebdomadaires en visio, code versionné et livré au fil de l'eau.",
           },
           {
             step: "Recette + mise en ligne",
@@ -212,7 +212,7 @@ export const HAZEBROUCK_COPY: VilleCopy = {
           },
           {
             q: "Accompagnez-vous les entreprises de la zone industrielle et du P.A.E. de la Creule ?",
-            a: "Oui. Pour les TPE, PME et ETI implantées sur la zone industrielle d'Hazebrouck ou le P.A.E. de la Creule — logistique, services aux entreprises, agroalimentaire flamand — on conçoit des portails clients, du suivi de flux en temps réel et des automatisations branchées sur vos ERP. On se déplace sur site depuis Lille pour le cadrage, puis on itère à distance.",
+            a: "Oui. Pour les TPE, PME et ETI implantées sur la zone industrielle d'Hazebrouck ou le P.A.E. de la Creule — logistique, services aux entreprises, agroalimentaire flamand — on conçoit des portails clients, du suivi de flux en temps réel et des automatisations branchées sur vos ERP. On se déplace chez vous pour le cadrage, puis on itère à distance.",
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",

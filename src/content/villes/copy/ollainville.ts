@@ -65,7 +65,7 @@ export const OLLAINVILLE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission Axion-IA chez nos clients ?",
-      a: "Arpajon (5 min). Brétigny-sur-Orge (10 min). Évry-Courcouronnes (20 min). Paris centre (45 min). Orly (25 min).",
+      a: "Nous intervenons partout en France, sur place dans vos locaux ou à distance en visio. Après le cadrage de votre besoin, nous planifions l'intervention et livrons un résultat actionnable.",
     },
   ],
 };

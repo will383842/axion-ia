@@ -60,7 +60,7 @@ export const MEYREUIL_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les domaines viticoles AOC Côtes de Provence Sainte-Victoire sur des cas IA : gestion parcellaire prédictive, automatisation traçabilité, marketing digital assisté, agents IA vente directe.",
     },
     {
-      q: "Proposez-vous des sessions en visio depuis Meyreuil ?",
+      q: "Proposez-vous des sessions en visio ?",
       a: "Oui, nos interventions et coaching 1-to-1 sont disponibles en présentiel (vos locaux à Meyreuil) ou en visio. Idéal pour les cadres et professions libérales en télétravail.",
     },
     {

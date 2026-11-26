@@ -233,7 +233,7 @@ export const LORMONT_COPY: VilleCopy = {
     },
     {
       q: "Sous quel délai Axion-IA peut-il se déplacer à Lormont ?",
-      a: "Notre équipe se déplace sur site à Lormont sous 5 jours ouvrés en moyenne, avec accès direct depuis Bordeaux centre par les tramways A et E ou via la rocade A630.",
+      a: "Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Couvrez-vous les communes limitrophes de Lormont ?",

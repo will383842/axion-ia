@@ -65,7 +65,7 @@ export const LABENNE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission Axion-IA chez nos clients ?",
-      a: "Labenne est à 15 min de Bayonne par A63 (sortie directe). Nos consultants interviennent facilement sur site. Aéroport Biarritz à 20 min. Tarifs transparents.",
+      a: "Nous intervenons partout en France, sur place dans vos locaux ou à distance en visio. Après le cadrage de votre besoin, nous planifions l'intervention et livrons un résultat actionnable.",
     },
   ],
 };

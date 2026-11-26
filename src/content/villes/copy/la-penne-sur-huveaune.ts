@@ -60,7 +60,7 @@ export const LA_PENNE_SUR_HUVEAUNE_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les commerces et enseignes de la zone La Valentine et alentours sur des cas IA : automatisation gestion stocks, agents IA service client, personnalisation marketing, optimisation planning équipes.",
     },
     {
-      q: "Proposez-vous des sessions en visio depuis La Penne ?",
+      q: "Proposez-vous des sessions en visio Penne ?",
       a: "Oui, nos interventions et coaching 1-to-1 sont disponibles en présentiel (vos locaux) ou en visio. Format flexible adapté aux cadres et indépendants de la vallée de l'Huveaune.",
     },
     {

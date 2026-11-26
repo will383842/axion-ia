@@ -61,7 +61,7 @@ export const LIMAY_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une intervention IA sur site à Limay ?",
-      a: "Nos consultants viennent sur site à Limay (gare de Mantes-la-Jolie, Transilien J depuis Paris-Saint-Lazare, 50 min). Format journée ou demi-journée adapté à votre activité.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Format journée ou demi-journée adapté à votre activité.",
     },
     {
       q: "Quels services IA pour les TPE artisans et commerçants de Limay ?",

@@ -74,7 +74,7 @@ export const ABBEVILLE_COPY: VilleCopy = {
           {
             step: "Développement par sprints",
             detail:
-              "Greffe IA sur l'existant ou build IA-native : e-commerce multi-CMS, moteur de réservation directe, configurateur de devis, chatbot RAG multilingue, recherche sémantique sur catalogue, agents et automatisations branchés sur votre CRM ou ERP. Démos hebdomadaires en visio depuis Abbeville.",
+              "Greffe IA sur l'existant ou build IA-native : e-commerce multi-CMS, moteur de réservation directe, configurateur de devis, chatbot RAG multilingue, recherche sémantique sur catalogue, agents et automatisations branchés sur votre CRM ou ERP. Démos hebdomadaires en visio.",
           },
           {
             step: "Recette + mise en ligne",
@@ -160,7 +160,7 @@ export const ABBEVILLE_COPY: VilleCopy = {
           {
             step: "Développement par sprints",
             detail:
-              "Greffe IA sur l'existant ou build IA-native : e-commerce multi-CMS, moteur de réservation directe, configurateur de devis, chatbot RAG multilingue, recherche sémantique sur catalogue, agents et automatisations branchés sur votre CRM ou ERP. Démos hebdomadaires en visio depuis Abbeville.",
+              "Greffe IA sur l'existant ou build IA-native : e-commerce multi-CMS, moteur de réservation directe, configurateur de devis, chatbot RAG multilingue, recherche sémantique sur catalogue, agents et automatisations branchés sur votre CRM ou ERP. Démos hebdomadaires en visio.",
           },
           {
             step: "Recette + mise en ligne",

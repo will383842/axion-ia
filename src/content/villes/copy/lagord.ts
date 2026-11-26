@@ -65,7 +65,7 @@ export const LAGORD_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA sur site à Lagord ?",
-      a: "Nos consultants accèdent à Lagord via la gare TGV de La Rochelle (10 min, Paris 2h50 direct). Mission sur site dans vos locaux, cabinet ou commerce.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Mission sur site dans vos locaux, cabinet ou commerce.",
     },
   ],
 };

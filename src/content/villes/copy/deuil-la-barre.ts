@@ -231,7 +231,7 @@ export const DEUIL_LA_BARRE_COPY: VilleCopy = {
     },
     {
       q: "Quel est le délai pour une intervention à Deuil-la-Barre ?",
-      a: "Déplacement sur site sous 5 jours ouvrés après confirmation. Trajet rapide depuis Paris (13 minutes en Transilien ligne H) facilitant la réactivité.",
+      a: "Déplacement sur site sous 5 jours ouvrés après confirmation. Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quelles communes proches sont également couvertes ?",

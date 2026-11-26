@@ -59,7 +59,7 @@ const VILLE_COPY: VilleCopy = {
           "Filière agroalimentaire et végétale structurante : la zone Bellecour / Carpensud (~133 ha, label ECO PARC VAUCLUSE) et le Marché Gare et ses incubateurs concentrent négoce, transformation et logistique — des activités qui ont besoin de catalogues B2B, de portails commande-fournisseur et d'automatisation des fiches produit plutôt que de vitrines génériques.",
           "Viticulture AOC à fort potentiel e-commerce : les domaines Ventoux et Côtes-du-Rhône-Villages (près d'un quart de la surface communale en vignes) vendent en direct, en caveau et à l'export — nous construisons des boutiques de vente en ligne avec gestion millésimes, allotements et conformité affichage, doublées d'un assistant IA de recommandation.",
           "Tissu de commerce indépendant dense : le marché provençal du vendredi (~350 forains, Site remarquable du goût), le marché aux truffes d'hiver de l'Hôtel-Dieu et les confiseurs du berlingot (Confiserie du Mont Ventoux) sont des TPE qui gagnent à passer en ligne — site mobile, click-and-collect, paiement intégré.",
-          "Un point d'appui numérique local réel, La Gare Numérique : ce tiers-lieu installé dans l'ancienne gare SNCF (coworking, fablab, studio fond vert, médialab) nous permet de cadrer, prototyper et former sur place, au lieu de tout faire à distance depuis Avignon.",
+          "Nous intervenons partout en France, sur place ou à distance.",
         ],
         methodology: [
           {
@@ -246,7 +246,7 @@ const VILLE_COPY: VilleCopy = {
       a: "Audit sur place bookable sous 5 à 10 jours ouvrés selon disponibilités. Formation collective livrée en 2 à 4 semaines selon complexité du cadrage. Pour les caves en pleine vendange, Axion-IA s'adapte au calendrier agricole.",
     },
     {
-      q: "Quelles communes proches couvrez-vous depuis Carpentras ?",
+      q: "Quelles communes proches couvrez-vous autour de Carpentras ?",
       a: "Axion-IA intervient aussi sur Monteux, Pernes-les-Fontaines, Aubignan, Mazan, Caromb, Loriol-du-Comtat et plus largement le Comtat Venaissin.",
     },
     {

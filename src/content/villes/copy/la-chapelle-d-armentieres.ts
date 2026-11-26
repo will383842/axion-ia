@@ -65,7 +65,7 @@ export const LA_CHAPELLE_D_ARMENTIERES_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission Axion-IA chez nos clients ?",
-      a: "Paris-Nord (1h05 via TGV Lille-Europe puis 20 min route). Frontière belge à 5 min.",
+      a: "Nous intervenons partout en France, sur place dans vos locaux ou à distance en visio. Après le cadrage de votre besoin, nous planifions l'intervention et livrons un résultat actionnable.",
     },
   ],
 };

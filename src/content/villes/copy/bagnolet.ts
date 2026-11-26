@@ -242,7 +242,7 @@ export const BAGNOLET_COPY: VilleCopy = {
     },
     {
       q: "Intervenez-vous aussi à Montreuil, Pantin ou Les Lilas ?",
-      a: "Oui, nous couvrons l'est parisien : Montreuil, Pantin, Les Lilas, Romainville et Paris intra-muros, depuis Bagnolet. Déplacement rapide grâce au métro et au périphérique.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Déplacement rapide grâce au métro et au périphérique.",
     },
     {
       q: "Vos solutions IA sont-elles conformes au RGPD ?",

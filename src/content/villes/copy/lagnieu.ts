@@ -53,7 +53,7 @@ export const LAGNIEU_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Lagnieu et dans le Bugey ?",
-      a: "Oui. Nos consultants se déplacent à Lagnieu et dans tout le Bugey (Ambérieu-en-Bugey à 15 min, Belley à 30 min, Saint-Vulbas et la plaine de l'Ain), depuis Lyon (1h).",
+      a: "Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les PME industrielles du Bugey ?",

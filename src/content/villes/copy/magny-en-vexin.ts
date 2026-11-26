@@ -65,7 +65,7 @@ export const MAGNY_EN_VEXIN_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission Axion-IA chez nos clients ?",
-      a: "Cergy-Pontoise (25 min). Mantes-la-Jolie (20 min). Paris centre (55 min via A15). Aéroport CDG (60 min).",
+      a: "Nous intervenons partout en France, sur place dans vos locaux ou à distance en visio. Après le cadrage de votre besoin, nous planifions l'intervention et livrons un résultat actionnable.",
     },
   ],
 };

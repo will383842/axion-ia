@@ -65,7 +65,7 @@ export const AUDUN_LE_TICHE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Audun-le-Tiche ?",
-      a: "Nos consultants arrivent via gare SNCF Audun-le-Tiche ou autoroute A30. Luxembourg à 20 min, Thionville à 25 min, Metz à 50 min.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Luxembourg à 20 min, Thionville à 25 min, Metz à 50 min.",
     },
   ],
 };

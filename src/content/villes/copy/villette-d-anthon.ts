@@ -49,7 +49,7 @@ export const VILLETTE_D_ANTHON_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Villette-d'Anthon et aire Saint-Exupéry ?",
-      a: "Oui, Axion-IA intervient à Villette-d'Anthon et toute l'aire est de Lyon (Janneyrias, Pont-de-Chéruy, Charvieu-Chavagneux). Spécialisation logistique Saint-Exupéry. Consultants de Lyon (30 min A43).",
+      a: "Oui, Axion-IA intervient à Villette-d'Anthon et toute l'aire est de Lyon (Janneyrias, Pont-de-Chéruy, Charvieu-Chavagneux). Spécialisation logistique Saint-Exupéry.",
     },
     {
       q: "Travaillez-vous avec les opérateurs logistiques aéroportuaires ?",

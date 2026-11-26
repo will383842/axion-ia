@@ -65,7 +65,7 @@ export const HASPARREN_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA sur site à Hasparren ?",
-      a: "Nos consultants accèdent à Hasparren par la route (25 min Bayonne, D22/D932). Mission sur site dans votre atelier cuir, exploitation agricole ou commerce.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Mission sur site dans votre atelier cuir, exploitation agricole ou commerce.",
     },
   ],
 };

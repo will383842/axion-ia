@@ -64,7 +64,36 @@ function phraseConsultants(ligne) {
   });
 }
 
+/** Phrase dont le sujet est « nous / nos consultants / Williams… » et qui donne une origine (« depuis <Ville> », « arrivent via la gare »). */
+const PHRASE_ORIGINE =
+  /(^|["“] ?|[.!?] )(?:Oui[,.] )?(?![^."?]*autonomie)[^."?]*?(?:\b[Cc]onsultants?\b|\b[Ee]xperts?\b|Williams|\b[Nn]ous\b|[Nn]otre équipe|[Nn]os équipes|\bTrajet|disponibilité consultant)[^."?]*?(?:(?:depuis|venant de|se deplacent depuis|arrivent (?:via|par|le matin|en une)|accèdent à)[ \u00a0](?:[A-ZÉ]|gare|la gare)|se deplacent|repartent le soir|arrivent le matin)[^."]*\.(?= |"|$)/gu;
+
+function phraseOrigine(ligne) {
+  const dejaDit = ligne.includes("partout en France");
+  return ligne.replace(PHRASE_ORIGINE, (m, avant, decalage, tout) => {
+    if (!dejaDit) return `${avant}${NOUVELLE}`;
+    const seule = avant.startsWith('"') && tout[decalage + m.length] === '"';
+    if (seule) return `${avant}${NOUVELLE}`;
+    return avant.startsWith('"') || avant === "" ? avant : avant.slice(0, -1);
+  });
+}
+
 const REGLES_BASE = [
+  [/ en visio depuis [A-ZÉ][\p{L}'-]+(?: centre)?/gu, " en visio"],
+  [/Williams se déplace sur site depuis notre base nationale/gu, "Nous nous déplaçons chez vous"],
+  [
+    / ?[A-ZÉ][^."]*(?:toute logistique mission multi-jours|idéalement situé pour des missions multi-jours)[^."]*\./gu,
+    "",
+  ],
+  [
+    /(?<=\}\}\.) (?:Déplacement|Intervention) (?:consultant )?(?:sur site )?sous \d+ jours ouvrés[^."]*\./gu,
+    "",
+  ],
+  [
+    /(?<=\}\}), (?:déplacement|intervention) (?:consultant )?(?:sur site )?sous \d+ jours ouvrés[^."]*?(?=\.)/gu,
+    "",
+  ],
+  [/(?<=\.)  (?=[A-ZÉ])/gu, " "],
   [
     /(?<=[.!?] )(?:Pour (?:les )?(?:missions |interventions )?(?:de plusieurs jours|multi-jours)[^.,"]*, |Pour missions multi-jours, )(?:un )?h[ée]bergement[^."]*\./gu,
     "",
@@ -128,6 +157,7 @@ for (const f of fichiers) {
       let n = l;
       for (const [re, par] of [...REGLES, ...REGLES_BASE]) n = n.replace(re, par);
       n = phraseConsultants(n);
+      n = phraseOrigine(n);
       if (n !== l) lignes++;
       return n;
     })

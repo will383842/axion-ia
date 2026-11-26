@@ -72,7 +72,7 @@ export const CARRIERES_SOUS_POISSY_COPY: VilleCopy = {
           {
             step: "Développement par sprints",
             detail:
-              "Greffe IA sur l'existant ou build IA-native : e-commerce multi-CMS, portail fournisseurs de la filière automobile, chatbot RAG multilingue, recherche sémantique, agents et automatisations des relances et devis. Démos hebdomadaires en visio depuis Carrières-sous-Poissy, code versionné et revue à chaque sprint.",
+              "Greffe IA sur l'existant ou build IA-native : e-commerce multi-CMS, portail fournisseurs de la filière automobile, chatbot RAG multilingue, recherche sémantique, agents et automatisations des relances et devis. Démos hebdomadaires en visio, code versionné et revue à chaque sprint.",
           },
           {
             step: "Recette et mise en ligne",
@@ -158,7 +158,7 @@ export const CARRIERES_SOUS_POISSY_COPY: VilleCopy = {
           {
             step: "Développement par sprints",
             detail:
-              "Greffe IA sur l'existant ou build IA-native : e-commerce multi-CMS, portail fournisseurs de la filière automobile, chatbot RAG multilingue, recherche sémantique, agents et automatisations des relances et devis. Démos hebdomadaires en visio depuis Carrières-sous-Poissy, code versionné et revue à chaque sprint.",
+              "Greffe IA sur l'existant ou build IA-native : e-commerce multi-CMS, portail fournisseurs de la filière automobile, chatbot RAG multilingue, recherche sémantique, agents et automatisations des relances et devis. Démos hebdomadaires en visio, code versionné et revue à chaque sprint.",
           },
           {
             step: "Recette et mise en ligne",

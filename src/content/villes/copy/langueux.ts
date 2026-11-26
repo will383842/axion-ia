@@ -65,7 +65,7 @@ export const LANGUEUX_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission Axion-IA chez nos clients ?",
-      a: "Paris-Saint-Brieuc en 2h45 (TGV direct). Rennes à 1h (N12). Gare Saint-Brieuc à 10 min de Langueux.",
+      a: "Nous intervenons partout en France, sur place dans vos locaux ou à distance en visio. Après le cadrage de votre besoin, nous planifions l'intervention et livrons un résultat actionnable.",
     },
   ],
 };

@@ -49,7 +49,7 @@ export const LANGUIDIC_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Languidic et dans l'agglomération de Lorient ?",
-      a: "Oui, Axion-IA intervient à Languidic et dans toute Lorient Agglomération (Lorient à 25 min, Hennebont, Lanester, Caudan, Plœmeur). Nos consultants couvrent l'arrière-pays lorientais depuis Lorient, Vannes (50 min) ou Nantes (2h).",
+      a: "Oui, Axion-IA intervient à Languidic et dans toute Lorient Agglomération (Lorient à 25 min, Hennebont, Lanester, Caudan, Plœmeur). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les exploitations agricoles et agroalimentaires de Languidic ?",

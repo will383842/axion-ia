@@ -65,7 +65,7 @@ export const LUZARCHES_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission Axion-IA chez nos clients ?",
-      a: "Chantilly (10 min). Sarcelles (20 min). Paris Gare du Nord (45 min). CDG (20 min).",
+      a: "Nous intervenons partout en France, sur place dans vos locaux ou à distance en visio. Après le cadrage de votre besoin, nous planifions l'intervention et livrons un résultat actionnable.",
     },
   ],
 };

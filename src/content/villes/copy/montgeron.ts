@@ -71,7 +71,7 @@ export const MONTGERON_COPY: VilleCopy = {
           {
             step: "Développement par sprints",
             detail:
-              "Greffe IA sur l'existant ou build IA-native : e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento), prise de rendez-vous, chatbot RAG multilingue, recherche sémantique, agents de qualification de leads. Démos hebdomadaires en visio depuis Montgeron.",
+              "Greffe IA sur l'existant ou build IA-native : e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento), prise de rendez-vous, chatbot RAG multilingue, recherche sémantique, agents de qualification de leads. Démos hebdomadaires en visio.",
           },
           {
             step: "Recette + mise en ligne",
@@ -157,7 +157,7 @@ export const MONTGERON_COPY: VilleCopy = {
           {
             step: "Développement par sprints",
             detail:
-              "Greffe IA sur l'existant ou build IA-native : e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento), prise de rendez-vous, chatbot RAG multilingue, recherche sémantique, agents de qualification de leads. Démos hebdomadaires en visio depuis Montgeron.",
+              "Greffe IA sur l'existant ou build IA-native : e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento), prise de rendez-vous, chatbot RAG multilingue, recherche sémantique, agents de qualification de leads. Démos hebdomadaires en visio.",
           },
           {
             step: "Recette + mise en ligne",

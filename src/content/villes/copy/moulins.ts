@@ -65,7 +65,7 @@ export const MOULINS_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission Axion-IA chez nos clients ?",
-      a: "Lyon (2h) ou Clermont-Ferrand (1h30). TER Paris gare Moulins 2h30.",
+      a: "Nous intervenons partout en France, sur place dans vos locaux ou à distance en visio. Après le cadrage de votre besoin, nous planifions l'intervention et livrons un résultat actionnable.",
     },
   ],
 };

@@ -65,7 +65,7 @@ export const L_ILE_SAINT_DENIS_COPY: VilleCopy = {
     },
     {
       q: "Comment accéder à L'Île-Saint-Denis pour une mission ?",
-      a: "Nos consultants accèdent à L'Île-Saint-Denis via le pont de l'Île-Saint-Denis depuis Saint-Denis (RER D, 10 min) ou Saint-Ouen (métro 14, 10 min). Intervention dans vos locaux, atelier pratique avec vos équipes. Sessions en visio également possibles.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Intervention dans vos locaux, atelier pratique avec vos équipes. Sessions en visio également possibles.",
     },
   ],
 };

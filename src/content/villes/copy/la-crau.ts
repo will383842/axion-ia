@@ -49,7 +49,7 @@ export const LA_CRAU_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à La Crau et dans l'agglo Toulon est ?",
-      a: "Oui, Axion-IA intervient à La Crau et dans toute l'agglo Toulon est (Hyères, La Garde, La Valette, Solliès). Consultants accessibles en 15 min depuis Toulon et 12 min depuis l'aéroport Toulon-Hyères.",
+      a: "Oui, Axion-IA intervient à La Crau et dans toute l'agglo Toulon est (Hyères, La Garde, La Valette, Solliès). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quels services IA pour les domaines viticoles de La Crau ?",

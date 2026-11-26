@@ -69,7 +69,7 @@ export const ORNEX_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission Axion-IA chez nos clients ?",
-      a: "Ornex est à un quart d'heure de Genève et à environ une heure trente de Lyon par l'autoroute. Nous couvrons tout le pays de Gex.",
+      a: "Nous intervenons partout en France, sur place dans vos locaux ou à distance en visio. Après le cadrage de votre besoin, nous planifions l'intervention et livrons un résultat actionnable.",
     },
   ],
 };

@@ -49,7 +49,7 @@ export const OLLIOULES_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Ollioules et dans l'agglo Toulon ouest ?",
-      a: "Oui, Axion-IA intervient à Ollioules et dans toute l'agglo Toulon ouest (Sanary-sur-Mer, Six-Fours, Bandol, Le Beausset). Consultants accessibles en 15 min depuis Toulon via A50.",
+      a: "Oui, Axion-IA intervient à Ollioules et dans toute l'agglo Toulon ouest (Sanary-sur-Mer, Six-Fours, Bandol, Le Beausset). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quels services IA pour les horticulteurs et fleuristes d'Ollioules ?",

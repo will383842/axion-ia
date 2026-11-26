@@ -65,7 +65,7 @@ export const IDRON_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA sur site à Idron ?",
-      a: "Nos consultants accèdent à Idron via la gare de Pau (TGV 4h20 Paris, 8 min voiture) ou l'aéroport Pau-Pyrénées (18 min). Mission sur site dans votre cabinet, bureaux ou commerce.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Mission sur site dans votre cabinet, bureaux ou commerce.",
     },
   ],
 };

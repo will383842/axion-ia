@@ -235,7 +235,7 @@ export const IVRY_SUR_SEINE_COPY: VilleCopy = {
       a: "Nous intervenons à Ivry-sur-Seine dans les 5 jours ouvrés après validation. La desserte par la ligne 7, le RER C et le tramway T9 facilite l'accès depuis Paris.",
     },
     {
-      q: "Quelles communes proches couvrez-vous depuis Ivry-sur-Seine ?",
+      q: "Quelles communes proches couvrez-vous autour de Ivry-sur-Seine ?",
       a: "Depuis Ivry-sur-Seine, nous couvrons les communes limitrophes : Paris, Charenton-le-Pont, Alfortville, Vitry-sur-Seine, Le Kremlin-Bicêtre et Villejuif. Tout le sud-est parisien est accessible facilement.",
     },
     {

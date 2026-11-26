@@ -65,7 +65,7 @@ export const MERIEL_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission Axion-IA chez nos clients ?",
-      a: "L'Isle-Adam (5 min). Auvers-sur-Oise (10 min). Cergy-Pontoise (20 min). Paris Gare du Nord (40 min). CDG (30 min).",
+      a: "Nous intervenons partout en France, sur place dans vos locaux ou à distance en visio. Après le cadrage de votre besoin, nous planifions l'intervention et livrons un résultat actionnable.",
     },
   ],
 };

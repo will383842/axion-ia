@@ -65,7 +65,7 @@ export const JUVISY_SUR_ORGE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission Axion-IA chez nos clients ?",
-      a: "Paris-Austerlitz (20 min RER C) ou Paris-Gare de Lyon (25 min RER D), gare de Juvisy sur place. Aéroport Orly à 10 min. Tarifs publics.",
+      a: "Nous intervenons partout en France, sur place dans vos locaux ou à distance en visio. Après le cadrage de votre besoin, nous planifions l'intervention et livrons un résultat actionnable.",
     },
   ],
 };

@@ -65,7 +65,7 @@ export const MAULEON_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA sur site à Mauléon ?",
-      a: "Nos consultants accèdent à Mauléon par la route (Bressuire 20 min, Cholet 25 min, N249). Mission sur site dans vos ateliers textile, exploitations ou commerces.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Mission sur site dans vos ateliers textile, exploitations ou commerces.",
     },
   ],
 };

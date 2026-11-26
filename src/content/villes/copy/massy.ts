@@ -246,7 +246,7 @@ export const MASSY_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission Axion-IA chez nos clients ?",
-      a: "Massy est à une trentaine de minutes de Paris en RER et à quelques minutes du plateau de Saclay. Nous couvrons tout l'ouest de l'Essonne.",
+      a: "Nous intervenons partout en France, sur place dans vos locaux ou à distance en visio. Après le cadrage de votre besoin, nous planifions l'intervention et livrons un résultat actionnable.",
     },
   ],
 };

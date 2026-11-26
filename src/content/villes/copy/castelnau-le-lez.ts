@@ -72,7 +72,7 @@ export const CASTELNAU_LE_LEZ_COPY: VilleCopy = {
           {
             step: "Développement par sprints",
             detail:
-              "Greffe IA sur l'existant ou build IA-native : e-commerce multi-CMS, chatbot RAG multilingue, recherche sémantique, agents et automatisation des devis et rendez-vous. Démos hebdomadaires en visio depuis Castelnau-le-Lez, code versionné et revu, intégration continue branchée sur votre SI (CRM, ERP).",
+              "Greffe IA sur l'existant ou build IA-native : e-commerce multi-CMS, chatbot RAG multilingue, recherche sémantique, agents et automatisation des devis et rendez-vous. Démos hebdomadaires en visio, code versionné et revu, intégration continue branchée sur votre SI (CRM, ERP).",
           },
           {
             step: "Recette + mise en ligne",
@@ -158,7 +158,7 @@ export const CASTELNAU_LE_LEZ_COPY: VilleCopy = {
           {
             step: "Développement par sprints",
             detail:
-              "Greffe IA sur l'existant ou build IA-native : e-commerce multi-CMS, chatbot RAG multilingue, recherche sémantique, agents et automatisation des devis et rendez-vous. Démos hebdomadaires en visio depuis Castelnau-le-Lez, code versionné et revu, intégration continue branchée sur votre SI (CRM, ERP).",
+              "Greffe IA sur l'existant ou build IA-native : e-commerce multi-CMS, chatbot RAG multilingue, recherche sémantique, agents et automatisation des devis et rendez-vous. Démos hebdomadaires en visio, code versionné et revu, intégration continue branchée sur votre SI (CRM, ERP).",
           },
           {
             step: "Recette + mise en ligne",
@@ -235,7 +235,7 @@ export const CASTELNAU_LE_LEZ_COPY: VilleCopy = {
       a: "Nous nous engageons à intervenir sur site à Castelnau-le-Lez dans les 5 jours ouvrés après validation de la mission. La proximité de la gare Saint-Roch et de l'aéroport Montpellier-Méditerranée facilite la planification.",
     },
     {
-      q: "Quelles communes proches couvrez-vous depuis Castelnau-le-Lez ?",
+      q: "Quelles communes proches couvrez-vous autour de Castelnau-le-Lez ?",
       a: "Nous intervenons aussi dans les communes limitrophes : Montpellier, Clapiers, Le Crès, Jacou et Saint-Aunès. La ligne 2 du tramway relie directement la commune au centre de Montpellier.",
     },
     {

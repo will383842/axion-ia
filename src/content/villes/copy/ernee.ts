@@ -65,7 +65,7 @@ export const ERNEE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA en zone rurale à Ernée ?",
-      a: "Nos consultants se déplacent sur site à Ernée. Accès Laval 30 min, A84 à 15 km.  Format mixte sur site + visio. Tarifs publics.",
+      a: "Nos consultants se déplacent sur site à Ernée. Accès Laval 30 min, A84 à 15 km. Format mixte sur site + visio. Tarifs publics.",
     },
   ],
 };

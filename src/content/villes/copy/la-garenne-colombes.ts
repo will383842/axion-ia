@@ -250,7 +250,7 @@ export const LA_GARENNE_COLOMBES_COPY: VilleCopy = {
     },
     {
       q: "Faut-il une implantation locale d'Axion-IA pour intervenir ?",
-      a: "Non. Axion-IA n'a pas d'agence à La Garenne-Colombes : nos experts IA se déplacent depuis Paris.",
+      a: "Non. Nous intervenons partout en France, sur place ou à distance.",
     },
   ],
 };

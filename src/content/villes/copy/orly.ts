@@ -246,7 +246,7 @@ export const ORLY_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission Axion-IA chez nos clients ?",
-      a: "Orly est reliée à Paris par la ligne 14 en une vingtaine de minutes et à la gare Massy TGV en un quart d'heure. Nous couvrons tout le Grand Paris Sud-Est.",
+      a: "Nous intervenons partout en France, sur place dans vos locaux ou à distance en visio. Après le cadrage de votre besoin, nous planifions l'intervention et livrons un résultat actionnable.",
     },
   ],
 };

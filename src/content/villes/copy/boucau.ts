@@ -65,7 +65,7 @@ export const BOUCAU_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA sur site à Boucau ?",
-      a: "Nos consultants accèdent à Boucau via la gare de Bayonne (TGV 4h30 Paris direct, 10 min voiture) ou l'aéroport Biarritz Pays Basque (12 min). Mission sur site dans vos locaux.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Mission sur site dans vos locaux.",
     },
   ],
 };

@@ -65,7 +65,7 @@ export const LE_MEE_SUR_SEINE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission Axion-IA chez nos clients ?",
-      a: "Melun (5 min). Corbeil-Essonnes (20 min). Fontainebleau (25 min). Paris Gare de Lyon (45 min RER D). Orly (35 min).",
+      a: "Nous intervenons partout en France, sur place dans vos locaux ou à distance en visio. Après le cadrage de votre besoin, nous planifions l'intervention et livrons un résultat actionnable.",
     },
   ],
 };

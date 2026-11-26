@@ -65,7 +65,7 @@ export const SULLY_SUR_LOIRE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Sully-sur-Loire ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Gare de Sully-sur-Loire desservie par TER Centre-Val de Loire.  Tarifs transparents.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Gare de Sully-sur-Loire desservie par TER Centre-Val de Loire. Tarifs transparents.",
     },
   ],
 };

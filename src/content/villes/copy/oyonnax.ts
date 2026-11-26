@@ -71,7 +71,7 @@ export const OYONNAX_COPY: VilleCopy = {
           {
             step: "Développement par sprints",
             detail:
-              "Greffe IA sur l'existant ou build IA-native : configurateur produit, boutique e-commerce, portail B2B, chatbot RAG multilingue, recherche sémantique sur documents techniques, agents d'automatisation devis et SAV. Démos hebdomadaires en visio depuis Oyonnax, code versionné et lisible.",
+              "Greffe IA sur l'existant ou build IA-native : configurateur produit, boutique e-commerce, portail B2B, chatbot RAG multilingue, recherche sémantique sur documents techniques, agents d'automatisation devis et SAV. Démos hebdomadaires en visio, code versionné et lisible.",
           },
           {
             step: "Recette + mise en ligne",
@@ -157,7 +157,7 @@ export const OYONNAX_COPY: VilleCopy = {
           {
             step: "Développement par sprints",
             detail:
-              "Greffe IA sur l'existant ou build IA-native : configurateur produit, boutique e-commerce, portail B2B, chatbot RAG multilingue, recherche sémantique sur documents techniques, agents d'automatisation devis et SAV. Démos hebdomadaires en visio depuis Oyonnax, code versionné et lisible.",
+              "Greffe IA sur l'existant ou build IA-native : configurateur produit, boutique e-commerce, portail B2B, chatbot RAG multilingue, recherche sémantique sur documents techniques, agents d'automatisation devis et SAV. Démos hebdomadaires en visio, code versionné et lisible.",
           },
           {
             step: "Recette + mise en ligne",

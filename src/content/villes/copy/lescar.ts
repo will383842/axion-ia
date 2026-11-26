@@ -65,7 +65,7 @@ export const LESCAR_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA sur site à Lescar ?",
-      a: "Nos consultants accèdent à Lescar via la gare de Pau (TGV 4h20 Paris, 10 min voiture) ou l'aéroport Pau-Pyrénées (10 min). Mission sur site dans vos locaux, magasin ou bureaux.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Mission sur site dans vos locaux, magasin ou bureaux.",
     },
   ],
 };

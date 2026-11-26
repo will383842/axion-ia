@@ -65,7 +65,7 @@ export const COGNAC_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA sur site à Cognac ?",
-      a: "Nos consultants accèdent à Cognac par TER via Angoulême ou voiture (N141). Mission sur site dans vos locaux, chai, distillerie ou bureau.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Mission sur site dans vos locaux, chai, distillerie ou bureau.",
     },
   ],
 };

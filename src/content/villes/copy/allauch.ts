@@ -73,7 +73,7 @@ export const ALLAUCH_COPY: VilleCopy = {
           {
             step: "Développement par sprints",
             detail:
-              "Greffe IA sur l'existant ou build IA-native : boutique e-commerce de produits provençaux, vitrine multi-centres, chatbot RAG multilingue, recherche sémantique, agents et automatisations métier. Démos hebdomadaires en visio depuis Allauch, code versionné et livrable à chaque sprint.",
+              "Greffe IA sur l'existant ou build IA-native : boutique e-commerce de produits provençaux, vitrine multi-centres, chatbot RAG multilingue, recherche sémantique, agents et automatisations métier. Démos hebdomadaires en visio, code versionné et livrable à chaque sprint.",
           },
           {
             step: "Recette + mise en ligne",
@@ -159,7 +159,7 @@ export const ALLAUCH_COPY: VilleCopy = {
           {
             step: "Développement par sprints",
             detail:
-              "Greffe IA sur l'existant ou build IA-native : boutique e-commerce de produits provençaux, vitrine multi-centres, chatbot RAG multilingue, recherche sémantique, agents et automatisations métier. Démos hebdomadaires en visio depuis Allauch, code versionné et livrable à chaque sprint.",
+              "Greffe IA sur l'existant ou build IA-native : boutique e-commerce de produits provençaux, vitrine multi-centres, chatbot RAG multilingue, recherche sémantique, agents et automatisations métier. Démos hebdomadaires en visio, code versionné et livrable à chaque sprint.",
           },
           {
             step: "Recette + mise en ligne",

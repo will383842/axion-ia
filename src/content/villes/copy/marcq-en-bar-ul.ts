@@ -230,7 +230,7 @@ export const MARCQ_EN_BAR_UL_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Marcq-en-Barœul et dans la MEL ?",
-      a: "Oui. Nos consultants se déplacent à Marcq-en-Barœul et dans la Métropole Européenne de Lille (Lille, Roubaix, Tourcoing, Villeneuve-d'Ascq), depuis Lille.",
+      a: "Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les cabinets de conseil et agences marcquois ?",
@@ -250,7 +250,7 @@ export const MARCQ_EN_BAR_UL_COPY: VilleCopy = {
     },
     {
       q: "Faut-il une implantation locale d'Axion-IA pour intervenir ?",
-      a: "Non. Axion-IA n'a pas d'agence à Marcq-en-Barœul : nos experts IA se déplacent depuis Lille.",
+      a: "Non. Nous intervenons partout en France, sur place ou à distance.",
     },
   ],
 };

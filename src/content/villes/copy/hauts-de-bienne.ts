@@ -49,7 +49,7 @@ export const HAUTS_DE_BIENNE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Hauts de Bienne et dans le Haut-Jura ?",
-      a: "Oui, Axion-IA intervient à Hauts de Bienne (Morez, Les Rousses) et dans tout le Haut-Jura (Saint-Claude à 25 min, Lons-le-Saunier à 50 min, Genève à 50 min). Nos consultants couvrent la zone depuis Besançon ou Genève.",
+      a: "Oui, Axion-IA intervient à Hauts de Bienne (Morez, Les Rousses) et dans tout le Haut-Jura (Saint-Claude à 25 min, Lons-le-Saunier à 50 min, Genève à 50 min). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les lunettiers du Haut-Jura ?",

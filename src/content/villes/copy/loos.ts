@@ -74,7 +74,7 @@ export const LOOS_COPY: VilleCopy = {
           {
             step: "Développement par sprints",
             detail:
-              "Greffe IA sur l'existant ou build IA-native : portail patient, prise de rendez-vous, boutique e-commerce multi-CMS, chatbot RAG multilingue, recherche sémantique, agents et automatisations. Démos hebdomadaires en visio depuis Lille, code versionné et livré au fil de l'eau.",
+              "Greffe IA sur l'existant ou build IA-native : portail patient, prise de rendez-vous, boutique e-commerce multi-CMS, chatbot RAG multilingue, recherche sémantique, agents et automatisations. Démos hebdomadaires en visio, code versionné et livré au fil de l'eau.",
           },
           {
             step: "Recette + mise en ligne",
@@ -160,7 +160,7 @@ export const LOOS_COPY: VilleCopy = {
           {
             step: "Développement par sprints",
             detail:
-              "Greffe IA sur l'existant ou build IA-native : portail patient, prise de rendez-vous, boutique e-commerce multi-CMS, chatbot RAG multilingue, recherche sémantique, agents et automatisations. Démos hebdomadaires en visio depuis Lille, code versionné et livré au fil de l'eau.",
+              "Greffe IA sur l'existant ou build IA-native : portail patient, prise de rendez-vous, boutique e-commerce multi-CMS, chatbot RAG multilingue, recherche sémantique, agents et automatisations. Démos hebdomadaires en visio, code versionné et livré au fil de l'eau.",
           },
           {
             step: "Recette + mise en ligne",

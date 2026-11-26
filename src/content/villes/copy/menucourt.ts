@@ -65,7 +65,7 @@ export const MENUCOURT_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission Axion-IA chez nos clients ?",
-      a: "Cergy-Pontoise centre (5 min). Conflans-Sainte-Honorine (10 min). Paris La Défense (35 min). Aéroport CDG (50 min).",
+      a: "Nous intervenons partout en France, sur place dans vos locaux ou à distance en visio. Après le cadrage de votre besoin, nous planifions l'intervention et livrons un résultat actionnable.",
     },
   ],
 };

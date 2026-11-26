@@ -65,7 +65,7 @@ export const LUCCIANA_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission Axion-IA chez nos clients ?",
-      a: "Aéroport Bastia-Poretta sur la commune même, port de Bastia à 20 min. Vols et ferries quotidiens depuis le continent.",
+      a: "Nous intervenons partout en France, sur place dans vos locaux ou à distance en visio. Après le cadrage de votre besoin, nous planifions l'intervention et livrons un résultat actionnable.",
     },
   ],
 };

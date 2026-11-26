@@ -246,7 +246,7 @@ export const MONS_EN_BAR_UL_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission Axion-IA chez nos clients ?",
-      a: "Mons-en-Barœul est limitrophe de Lille et reliée par la ligne 2 du métro en quelques minutes. Nous couvrons tout l'est de la métropole.",
+      a: "Nous intervenons partout en France, sur place dans vos locaux ou à distance en visio. Après le cadrage de votre besoin, nous planifions l'intervention et livrons un résultat actionnable.",
     },
   ],
 };

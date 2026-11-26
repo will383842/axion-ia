@@ -246,7 +246,7 @@ export const MONTLUCON_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission Axion-IA chez nos clients ?",
-      a: "Montluçon est à environ 100 km de Clermont-Ferrand et à 80 km de la gare TGV de Moulins. Nous intervenons sur tout le territoire.",
+      a: "Nous intervenons partout en France, sur place dans vos locaux ou à distance en visio. Après le cadrage de votre besoin, nous planifions l'intervention et livrons un résultat actionnable.",
     },
   ],
 };

@@ -239,7 +239,7 @@ export const LAGNY_SUR_MARNE_COPY: VilleCopy = {
     },
     {
       q: "Quel délai pour une intervention sur site à Lagny-sur-Marne ?",
-      a: "Délai standard : 5 jours ouvrés après cadrage. Sur la Seine-et-Marne, une intervention rapide est possible sous 48-72h en cas de disponibilité consultant depuis Paris (ligne P, ~35 min).",
+      a: "Délai standard : 5 jours ouvrés après cadrage. Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Comment Axion-IA assure-t-il la conformité RGPD à Lagny-sur-Marne ?",

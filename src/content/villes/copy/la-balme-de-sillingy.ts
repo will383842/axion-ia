@@ -49,7 +49,7 @@ export const LA_BALME_DE_SILLINGY_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à La Balme-de-Sillingy ?",
-      a: "Oui, Axion-IA intervient à La Balme-de-Sillingy et dans toute la communauté de communes Fier et Usses (Sillingy, Frangy, Chaumont). Nos consultants couvrent le bassin annécien nord depuis Annecy (15 min).",
+      a: "Oui, Axion-IA intervient à La Balme-de-Sillingy et dans toute la communauté de communes Fier et Usses (Sillingy, Frangy, Chaumont). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les PME tertiaires du bassin annécien nord ?",

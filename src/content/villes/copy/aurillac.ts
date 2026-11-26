@@ -72,7 +72,7 @@ export const AURILLAC_COPY: VilleCopy = {
           {
             step: "Développement par sprints",
             detail:
-              "Greffe IA sur l'existant ou build IA-native : boutique e-commerce de produits du terroir, chatbot RAG multilingue, recherche sémantique, prise de rendez-vous, agents métier branchés sur votre SI. Démos hebdomadaires en visio depuis Aurillac, avec validation continue des Web Vitals.",
+              "Greffe IA sur l'existant ou build IA-native : boutique e-commerce de produits du terroir, chatbot RAG multilingue, recherche sémantique, prise de rendez-vous, agents métier branchés sur votre SI. Démos hebdomadaires en visio, avec validation continue des Web Vitals.",
           },
           {
             step: "Recette + mise en ligne",
@@ -158,7 +158,7 @@ export const AURILLAC_COPY: VilleCopy = {
           {
             step: "Développement par sprints",
             detail:
-              "Greffe IA sur l'existant ou build IA-native : boutique e-commerce de produits du terroir, chatbot RAG multilingue, recherche sémantique, prise de rendez-vous, agents métier branchés sur votre SI. Démos hebdomadaires en visio depuis Aurillac, avec validation continue des Web Vitals.",
+              "Greffe IA sur l'existant ou build IA-native : boutique e-commerce de produits du terroir, chatbot RAG multilingue, recherche sémantique, prise de rendez-vous, agents métier branchés sur votre SI. Démos hebdomadaires en visio, avec validation continue des Web Vitals.",
           },
           {
             step: "Recette + mise en ligne",

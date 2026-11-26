@@ -246,7 +246,7 @@ export const AUBERVILLIERS_COPY: VilleCopy = {
       a: "Toutes les solutions livrées à Aubervilliers respectent le RGPD : hébergement UE, minimisation des données, journalisation des traitements, DPA contractuel. Code custom, pas de boîte noire.",
     },
     {
-      q: "Quelles communes proches couvrez-vous depuis Aubervilliers ?",
+      q: "Quelles communes proches couvrez-vous autour de Aubervilliers ?",
       a: "Nous intervenons aussi à Saint-Denis, Pantin, La Courneuve, Bobigny, Paris 18e et 19e, Saint-Ouen-sur-Seine. Métro 7/12 ou tramway T3b suffisent pour la majorité des déplacements.",
     },
   ],

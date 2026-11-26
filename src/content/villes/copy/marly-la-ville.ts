@@ -65,7 +65,7 @@ export const MARLY_LA_VILLE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission Axion-IA chez nos clients ?",
-      a: "Aéroport CDG (10 min). Fosses (5 min). Paris centre (40 min via A1). Luzarches (10 min).",
+      a: "Nous intervenons partout en France, sur place dans vos locaux ou à distance en visio. Après le cadrage de votre besoin, nous planifions l'intervention et livrons un résultat actionnable.",
     },
   ],
 };

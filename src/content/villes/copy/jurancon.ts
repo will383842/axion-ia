@@ -65,7 +65,7 @@ export const JURANCON_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA sur site à Jurançon ?",
-      a: "Nos consultants accèdent à Jurançon via la gare de Pau (TGV 4h20 Paris, 5 min voiture) ou l'aéroport Pau-Pyrénées (15 min). Mission sur site dans votre domaine, cave ou commerce.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Mission sur site dans votre domaine, cave ou commerce.",
     },
   ],
 };

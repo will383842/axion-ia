@@ -123,7 +123,7 @@ export const AUXERRE_COPY: VilleCopy = {
           },
           {
             q: "Travaillez-vous avec les entreprises qui s'implantent au parc AuxR_Parc à Appoigny ?",
-            a: "Oui. Le parc d'activités AuxR_Parc (34 hectares en bordure de l'A6 à Appoigny) accueille de nouvelles structures : nous les accompagnons sur leur présence web fondatrice, leur SaaS métier et leurs intégrations dès l'installation, sur site ou à distance depuis Auxerre.",
+            a: "Nous intervenons partout en France, sur place ou à distance.",
           },
           {
             q: "Sous quel délai démarrez-vous un projet à Auxerre ?",

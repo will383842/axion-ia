@@ -235,7 +235,7 @@ export const PANTIN_COPY: VilleCopy = {
       a: "Nous intervenons sur site à Pantin dans les 5 jours ouvrés après validation. La desserte par les lignes 5 et 7 du métro et le RER E rend l'accès rapide depuis Paris intra-muros.",
     },
     {
-      q: "Quelles communes proches couvrez-vous depuis Pantin ?",
+      q: "Quelles communes proches couvrez-vous autour de Pantin ?",
       a: "Depuis Pantin, nous couvrons les communes limitrophes : Paris (19e arrondissement), Aubervilliers, Bobigny, La Courneuve, Les Lilas, Noisy-le-Sec, Le Pré-Saint-Gervais et Romainville.",
     },
     {

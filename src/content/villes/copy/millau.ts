@@ -246,7 +246,7 @@ export const MILLAU_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission Axion-IA chez nos clients ?",
-      a: "Millau est à environ 110 km de Montpellier et à une heure de Rodez, accessible par l'A75 et le Viaduc. Nous couvrons les grands causses.",
+      a: "Nous intervenons partout en France, sur place dans vos locaux ou à distance en visio. Après le cadrage de votre besoin, nous planifions l'intervention et livrons un résultat actionnable.",
     },
   ],
 };
