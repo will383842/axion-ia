@@ -65,7 +65,7 @@ export const LA_VERPILLIERE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une intervention ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Pour les missions multi-jours, hébergement local possible (hôtels Lyon-Saint-Exupéry à 10 min).",
+      a: "Nous intervenons partout en France, sur place ou à distance.",
     },
   ],
 };

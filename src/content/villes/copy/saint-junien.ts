@@ -65,7 +65,7 @@ export const SAINT_JUNIEN_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Saint-Junien ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Pour les missions multi-jours, hébergement local possible.",
+      a: "Nous intervenons partout en France, sur place ou à distance.",
     },
   ],
 };

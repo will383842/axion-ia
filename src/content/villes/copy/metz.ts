@@ -992,7 +992,7 @@ export const METZ_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Combien coûte un audit IA opérationnel Ã  Metz ?",
-      a: "Le tarif dépend du niveau retenu — Audit sur place, Ciblé, Stratégique PME ou Stratégique ETI. Tarifs publics affichés sur la page Audit, choix calibré selon votre taille (TPE, PME, ETI, grande entreprise) et votre périmètre. Aucun supplément géographique : le tarif est identique Ã  Metz et partout en France.",
+      a: "Le tarif dépend du niveau retenu — Audit sur place, Ciblé, Stratégique PME ou Stratégique ETI. Tarifs publics affichés sur la page Audit, choix calibré selon votre taille (TPE, PME, ETI, grande entreprise) et votre périmètre.",
     },
     {
       q: "Avez-vous des cas clients dans l'Eurométropole de Metz ?",
@@ -1008,7 +1008,7 @@ export const METZ_COPY: VilleCopy = {
     },
     {
       q: "Intervenez-vous dans les communes de l'Eurométropole hors Metz intra-muros ?",
-      a: "Oui. L'Eurométropole entière est notre zone d'intervention : Montigny-lès-Metz, Woippy, Marly, Longeville-lès-Metz, Le Ban-Saint-Martin, zones industrielles de Trémery et Actipôle Nord. Aucun supplément de zone.",
+      a: "Oui. L'Eurométropole entière est notre zone d'intervention : Montigny-lès-Metz, Woippy, Marly, Longeville-lès-Metz, Le Ban-Saint-Martin, zones industrielles de Trémery et Actipôle Nord.",
     },
     {
       q: "Travaillez-vous avec les startups et structures du Technopôle Metz 2000 ?",

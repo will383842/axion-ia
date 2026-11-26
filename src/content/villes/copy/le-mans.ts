@@ -985,7 +985,7 @@ export const LE_MANS_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Combien coûte un audit IA opérationnel au Mans ?",
-      a: "Le tarif dépend du niveau retenu — Audit sur place, Ciblé, Stratégique PME ou Stratégique ETI. Tarifs publics affichés sur la page Audit, calibrés selon votre taille (TPE, PME, ETI, grande entreprise) et votre périmètre. Aucun supplément géographique : le tarif est identique au Mans qu'ailleurs en France.",
+      a: "Le tarif dépend du niveau retenu — Audit sur place, Ciblé, Stratégique PME ou Stratégique ETI. Tarifs publics affichés sur la page Audit, calibrés selon votre taille (TPE, PME, ETI, grande entreprise) et votre périmètre.",
     },
     {
       q: "Avez-vous des références dans le secteur assurance au Mans ?",

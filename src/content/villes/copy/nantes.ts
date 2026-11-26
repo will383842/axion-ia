@@ -1012,7 +1012,7 @@ export const NANTES_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Combien coûte un audit IA opérationnel à Nantes ?",
-      a: "Le tarif dépend du niveau retenu — Audit sur place, Ciblé, Stratégique PME ou Stratégique ETI. Tarifs publics affichés sur la page Audit, choix calibré selon votre taille (TPE, PME, ETI, grande entreprise) et votre périmètre nantais. Aucun supplément géographique : le tarif est identique à celui pratiqué partout en France.",
+      a: "Le tarif dépend du niveau retenu — Audit sur place, Ciblé, Stratégique PME ou Stratégique ETI. Tarifs publics affichés sur la page Audit, choix calibré selon votre taille (TPE, PME, ETI, grande entreprise) et votre périmètre nantais.",
     },
     {
       q: "Avez-vous des cas clients dans la région nantaise ?",
@@ -1032,7 +1032,7 @@ export const NANTES_COPY: VilleCopy = {
     },
     {
       q: "Intervenez-vous dans le bassin Saint-Nazaire pour l'industrie navale ?",
-      a: "Oui. Le bassin économique Nantes–Saint-Nazaire fait partie de notre périmètre d'intervention Grand Ouest. Les sites industriels (construction navale, sous-traitance aéronautique, énergies marines) sont accessibles depuis notre base nantaise.",
+      a: "Oui. Le bassin économique Nantes–Saint-Nazaire fait partie de notre périmètre d'intervention Grand Ouest. Les sites industriels (construction navale, sous-traitance aéronautique, énergies marines) sont accessibles.",
     },
   ],
 };

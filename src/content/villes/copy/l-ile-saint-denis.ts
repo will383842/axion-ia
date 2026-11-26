@@ -49,7 +49,7 @@ export const L_ILE_SAINT_DENIS_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à L'Île-Saint-Denis et Plaine Commune ?",
-      a: "Oui, Axion-IA intervient à L'Île-Saint-Denis et dans tout le territoire Plaine Commune (Saint-Denis, Saint-Ouen-sur-Seine, Épinay-sur-Seine, Villetaneuse). Nos consultants se déplacent depuis Paris (Gare du Nord à 20 min en RER D).",
+      a: "Oui, Axion-IA intervient à L'Île-Saint-Denis et dans tout le territoire Plaine Commune (Saint-Denis, Saint-Ouen-sur-Seine, Épinay-sur-Seine, Villetaneuse). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les acteurs de l'économie circulaire sur l'île ?",

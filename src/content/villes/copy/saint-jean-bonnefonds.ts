@@ -65,7 +65,7 @@ export const SAINT_JEAN_BONNEFONDS_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Saint-Jean-Bonnefonds ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Pour les multi-jours, hébergement local possible. Tarifs transparents.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Tarifs transparents.",
     },
   ],
 };

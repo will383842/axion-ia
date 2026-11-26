@@ -65,7 +65,7 @@ export const LOUHANS_CHATEAURENAUD_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Louhans-Châteaurenaud ?",
-      a: "Nos consultants se déplacent depuis Lyon (1h40) ou Chalon-sur-Saône (35 min). Tarifs transparents.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Tarifs transparents.",
     },
   ],
 };

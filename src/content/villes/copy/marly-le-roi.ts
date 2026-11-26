@@ -49,7 +49,7 @@ export const MARLY_LE_ROI_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Marly-le-Roi et ouest parisien ?",
-      a: "Oui, Axion-IA intervient à Marly-le-Roi et tout l'ouest parisien (Saint-Germain-en-Laye, Le Pecq, Le Vésinet, Louveciennes, Bougival). Nos consultants se déplacent depuis Paris (30 min Transilien ligne L).",
+      a: "Oui, Axion-IA intervient à Marly-le-Roi et tout l'ouest parisien (Saint-Germain-en-Laye, Le Pecq, Le Vésinet, Louveciennes, Bougival). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les professions libérales marlychoises ?",

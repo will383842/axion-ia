@@ -49,7 +49,7 @@ export const OISSEL_SUR_SEINE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Oissel-sur-Seine et agglo Rouen sud ?",
-      a: "Oui, Axion-IA intervient à Oissel-sur-Seine et toute l'agglo rouennaise sud (Elbeuf à 8 km, Saint-Étienne-du-Rouvray à 5 km, Sotteville-lès-Rouen, Rouen centre à 15 min). Nos consultants viennent de Paris (TGV Rouen 1h15).",
+      a: "Oui, Axion-IA intervient à Oissel-sur-Seine et toute l'agglo rouennaise sud (Elbeuf à 8 km, Saint-Étienne-du-Rouvray à 5 km, Sotteville-lès-Rouen, Rouen centre à 15 min). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les PME industrielles et logistiques ?",
@@ -65,7 +65,7 @@ export const OISSEL_SUR_SEINE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Paris ou Rouen ?",
-      a: "Nos consultants viennent de Rouen (15 min, gare d'Oissel TER direct) ou Paris (TGV Rouen 1h15 + TER 10 min).",
+      a: "Nous intervenons partout en France, sur place ou à distance.",
     },
   ],
 };

@@ -161,7 +161,7 @@ export const NANCY_COPY: VilleCopy = {
           },
           {
             q: "Intervenez-vous aussi dans les communes du Grand Nancy ?",
-            a: "Oui. Le Grand Nancy est notre terrain d'intervention complet : Vandœuvre-lès-Nancy (Brabois), Laxou, Villers-lès-Nancy, Maxéville, Tomblaine, Jarville-la-Malgrange, Saint-Max. Aucun supplément de zone.",
+            a: "Oui. Le Grand Nancy est notre terrain d'intervention complet : Vandœuvre-lès-Nancy (Brabois), Laxou, Villers-lès-Nancy, Maxéville, Tomblaine, Jarville-la-Malgrange, Saint-Max.",
           },
           {
             q: "Faut-il être avancé sur l'IA pour solliciter un audit ?",
@@ -991,7 +991,7 @@ export const NANCY_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Combien coûte un audit IA opérationnel à Nancy ?",
-      a: "Le tarif dépend du niveau retenu — Audit sur place, Ciblé, Stratégique PME ou Stratégique ETI. Tarifs publics affichés sur la page Audit, choix calibré selon votre taille (TPE, PME, ETI, grande entreprise) et votre périmètre. Aucun supplément géographique : le tarif est identique à Nancy et partout en France.",
+      a: "Le tarif dépend du niveau retenu — Audit sur place, Ciblé, Stratégique PME ou Stratégique ETI. Tarifs publics affichés sur la page Audit, choix calibré selon votre taille (TPE, PME, ETI, grande entreprise) et votre périmètre.",
     },
     {
       q: "Avez-vous des cas clients dans le Grand Nancy ?",
@@ -1003,7 +1003,7 @@ export const NANCY_COPY: VilleCopy = {
     },
     {
       q: "Pouvez-vous intervenir dans les communes du Grand Nancy ?",
-      a: "Oui. Le Grand Nancy est notre zone d'intervention complète : Vandœuvre-lès-Nancy (Brabois), Laxou, Villers-lès-Nancy, Maxéville, Tomblaine, Jarville-la-Malgrange, Saint-Max. Aucun supplément de zone.",
+      a: "Oui. Le Grand Nancy est notre zone d'intervention complète : Vandœuvre-lès-Nancy (Brabois), Laxou, Villers-lès-Nancy, Maxéville, Tomblaine, Jarville-la-Malgrange, Saint-Max.",
     },
     {
       q: "En combien de temps pouvez-vous démarrer une mission à Nancy ?",

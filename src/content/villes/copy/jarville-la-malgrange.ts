@@ -65,7 +65,7 @@ export const JARVILLE_LA_MALGRANGE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Jarville-la-Malgrange ?",
-      a: "Nos consultants interviennent depuis Nancy centre (10 min). Missions sur site dans vos locaux commerciaux, cabinet ou bureau.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Missions sur site dans vos locaux commerciaux, cabinet ou bureau.",
     },
   ],
 };

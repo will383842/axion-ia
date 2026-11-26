@@ -49,7 +49,7 @@ export const LEGE_CAP_FERRET_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Lège-Cap-Ferret ?",
-      a: "Oui, Axion-IA intervient sur toute la presqu'île de Lège-Cap-Ferret et le nord du Bassin d'Arcachon (Arès, Andernos, Lanton). Nos consultants se déplacent depuis Bordeaux (1h) ou Paris (TGV 2h + 1h).",
+      a: "Oui, Axion-IA intervient sur toute la presqu'île de Lège-Cap-Ferret et le nord du Bassin d'Arcachon (Arès, Andernos, Lanton). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quel est le tarif d'un audit IA à Lège-Cap-Ferret  ?",

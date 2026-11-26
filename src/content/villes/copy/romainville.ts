@@ -132,7 +132,7 @@ export const ROMAINVILLE_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Devis à partir de 24 à 48 h selon la complexité, sans surcoût géographique — nos tarifs sont identiques partout en France. Hébergement en Union européenne conforme RGPD par défaut, avec contraintes de souveraineté renforcées pour les données sensibles des labos Biocitech. Aucun verrou éditeur : code, données et hébergement vous appartiennent et sont réversibles vers vos équipes ou tout intégrateur local. Kick-off et recette toujours en présentiel à Romainville.",
+          "Devis à partir de 24 à 48 h selon la complexité. Hébergement en Union européenne conforme RGPD par défaut, avec contraintes de souveraineté renforcées pour les données sensibles des labos Biocitech. Aucun verrou éditeur : code, données et hébergement vous appartiennent et sont réversibles vers vos équipes ou tout intégrateur local. Kick-off et recette toujours en présentiel à Romainville.",
       },
       en: {
         hero: "Romainville (93230) is no generic suburb: it is a former Roussel-Uclaf pharmaceutical brownfield turned into a rare crossover between life sciences and contemporary art. The Biocitech park (102 avenue Gaston Roussel), the only ICPE-certified technology park in the Paris region, hosts biotech and fine-chemistry firms steps away from Komunuma, one of Europe's largest art districts (Fondation Fiminco, FRAC Île-de-France, galleries Air de Paris, In Situ and Vincent Sator). With the arrival of Métro line 11 (Romainville-Carnot station, June 2024), the brand-new Paddock Paris outlet retail and a fabric of ~1,400 businesses driven by services, construction and retail, Axion-IA designs AI-augmented websites and SaaS platforms here, on site, for organisations whose business needs are very different from a classic high-street shop.",
@@ -246,7 +246,7 @@ export const ROMAINVILLE_COPY: VilleCopy = {
     },
     {
       q: "Quels sont vos tarifs pour une TPE ou PME à Romainville ?",
-      a: "Nos tarifs publics sont identiques à Romainville, Paris et toute l'Île-de-France — pas de surcoût géographique. Consultez la page tarifs du site pour le détail audit / intervention / implémentation / accompagnement un-à-un, calibrés TPE et PME en priorité.",
+      a: "Nos tarifs publics sont identiques à Romainville, Paris et toute l'Île-de-France —. Consultez la page tarifs du site pour le détail audit / intervention / implémentation / accompagnement un-à-un, calibrés TPE et PME en priorité.",
     },
   ],
 };

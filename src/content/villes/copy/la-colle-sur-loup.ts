@@ -65,7 +65,7 @@ export const LA_COLLE_SUR_LOUP_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission depuis Nice ou Cagnes ?",
-      a: "Nos consultants interviennent depuis Nice (25 min) ou Cagnes-sur-Mer (10 min). Formats flexibles : demi-journée audit, journée intervention, mission implémentation multi-semaines.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Formats flexibles : demi-journée audit, journée intervention, mission implémentation multi-semaines.",
     },
   ],
 };

@@ -65,7 +65,7 @@ export const ERGUE_GABERIC_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA sur site à Ergué-Gabéric ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Pour les missions multi-jours, hébergement local possible.",
+      a: "Nous intervenons partout en France, sur place ou à distance.",
     },
   ],
 };

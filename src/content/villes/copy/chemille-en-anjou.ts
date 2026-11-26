@@ -36,8 +36,8 @@ export const CHEMILLE_EN_ANJOU_COPY: VilleCopy = {
       en: "Audit IA sur place 4h à Chemillé-en-Anjou dès {{price:audit-flash|flat}} — cartographie des tâches automatisables pour TPE et PME des Mauges (horticulture, agroalimentaire, artisanat).",
     },
     interventions: {
-      fr: "Intervention sur site à Chemillé-en-Anjou dès {{price:intervention-4h|flat}} — déplacement consultant sur les 13 communes déléguées (Chemillé bourg, Chanzeaux, Valanjou, Cossé-d'Anjou).",
-      en: "Intervention sur site à Chemillé-en-Anjou dès {{price:intervention-4h|flat}} — déplacement consultant sur les 13 communes déléguées (Chemillé bourg, Chanzeaux, Valanjou, Cossé-d'Anjou).",
+      fr: "Intervention sur site à Chemillé-en-Anjou dès {{price:intervention-4h|flat}} — sur les 13 communes déléguées (Chemillé bourg, Chanzeaux, Valanjou, Cossé-d'Anjou).",
+      en: "Intervention sur site à Chemillé-en-Anjou dès {{price:intervention-4h|flat}} — sur les 13 communes déléguées (Chemillé bourg, Chanzeaux, Valanjou, Cossé-d'Anjou).",
     },
     implementation: {
       fr: "Implémentation code custom à Chemillé-en-Anjou dès {{price:impl-poc|entry}} — automatisations devis, factures, stocks pour structures agroalimentaires et horticoles.",

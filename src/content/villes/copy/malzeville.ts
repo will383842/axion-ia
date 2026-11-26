@@ -65,7 +65,7 @@ export const MALZEVILLE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Malzéville ?",
-      a: "Nos consultants interviennent depuis Nancy centre (10 min). Missions sur site dans vos bureaux, commerces ou cabinets libéraux.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Missions sur site dans vos bureaux, commerces ou cabinets libéraux.",
     },
   ],
 };

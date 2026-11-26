@@ -78,7 +78,7 @@ export const LIMOGES_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Combien coûte un audit IA opérationnel à Limoges ?",
-      a: "Le tarif dépend du niveau retenu — Audit sur place, Ciblé, Stratégique PME ou Stratégique ETI. Tarifs publics affichés sur la page Audit, calibrés selon votre taille (TPE, PME, ETI, grande entreprise). Aucun supplément géographique : le tarif est identique à Limoges et partout en France.",
+      a: "Le tarif dépend du niveau retenu — Audit sur place, Ciblé, Stratégique PME ou Stratégique ETI. Tarifs publics affichés sur la page Audit, calibrés selon votre taille (TPE, PME, ETI, grande entreprise).",
     },
     {
       q: "Avez-vous des cas clients à Limoges ou en Haute-Vienne ?",
@@ -90,7 +90,7 @@ export const LIMOGES_COPY: VilleCopy = {
     },
     {
       q: "Intervenez-vous aussi dans les communes du bassin (Couzeix, Panazol, Isle, Condat-sur-Vienne) ?",
-      a: "Oui. Le bassin limougeaud entier est notre zone d'intervention : Couzeix, Panazol, Le Palais-sur-Vienne, Isle, Condat-sur-Vienne, Aixe-sur-Vienne et les autres communes environnantes. Aucun supplément de zone.",
+      a: "Oui. Le bassin limougeaud entier est notre zone d'intervention : Couzeix, Panazol, Le Palais-sur-Vienne, Isle, Condat-sur-Vienne, Aixe-sur-Vienne et les autres communes environnantes.",
     },
     {
       q: "Travaillez-vous avec les entreprises du pôle ESTER Technopole ?",

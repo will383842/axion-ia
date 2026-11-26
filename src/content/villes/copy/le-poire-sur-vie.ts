@@ -65,7 +65,7 @@ export const LE_POIRE_SUR_VIE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA au Poiré-sur-Vie ?",
-      a: "Nos consultants interviennent depuis La Roche-sur-Yon (15 min) ou Nantes (50 min). Déplacement sur site dans vos locaux professionnels, atelier ou exploitation agricole.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Déplacement sur site dans vos locaux professionnels, atelier ou exploitation agricole.",
     },
   ],
 };

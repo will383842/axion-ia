@@ -242,7 +242,7 @@ export const VILLENEUVE_SUR_LOT_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Villeneuve-sur-Lot ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Pour les missions multi-jours, hébergement local possible (hôtels Villeneuve ou Agen).",
+      a: "Nous intervenons partout en France, sur place ou à distance.",
     },
   ],
 };

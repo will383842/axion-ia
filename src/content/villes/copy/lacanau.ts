@@ -49,7 +49,7 @@ export const LACANAU_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Lacanau ?",
-      a: "Oui, Axion-IA intervient à Lacanau et sur la côte médocaine (Carcans, Hourtin, Le Porge). Nos consultants se déplacent depuis Bordeaux (50 min) ou Paris (TGV 2h + 50 min).",
+      a: "Oui, Axion-IA intervient à Lacanau et sur la côte médocaine (Carcans, Hourtin, Le Porge). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quel est le tarif d'un audit IA à Lacanau  ?",

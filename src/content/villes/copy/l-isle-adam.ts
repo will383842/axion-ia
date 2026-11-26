@@ -65,7 +65,7 @@ export const L_ISLE_ADAM_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Paris ?",
-      a: "Nos consultants viennent de Paris (45 min Transilien H Gare du Nord → L'Isle-Adam — Parmain ou voiture A115/N1).",
+      a: "Nous intervenons partout en France, sur place ou à distance.",
     },
   ],
 };

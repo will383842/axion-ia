@@ -49,7 +49,7 @@ export const MIMIZAN_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Mimizan et le pays de Born ?",
-      a: "Oui, Axion-IA intervient à Mimizan (Bourg et Plage) et le pays de Born (Bias, Aureilhan, Pontenx-les-Forges, Sainte-Eulalie-en-Born). Couverture océan, lac et forêt. Déplacement depuis Bordeaux ou Mont-de-Marsan.",
+      a: "Oui, Axion-IA intervient à Mimizan (Bourg et Plage) et le pays de Born (Bias, Aureilhan, Pontenx-les-Forges, Sainte-Eulalie-en-Born). Couverture océan, lac et forêt. Nous nous déplaçons chez vous, partout en France.",
     },
     {
       q: "Proposez-vous des audits IA pour l'industrie papetière ?",
@@ -65,7 +65,7 @@ export const MIMIZAN_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission depuis Bordeaux ?",
-      a: "Nos consultants se déplacent depuis Bordeaux (1h30 par D626+A63). Pour les multi-jours, hébergement local (Mimizan-Bourg ou Mimizan-Plage).",
+      a: "Nous intervenons partout en France, sur place ou à distance. Pour les multi-jours, hébergement local (Mimizan-Bourg ou Mimizan-Plage).",
     },
   ],
 };

@@ -65,7 +65,7 @@ export const LOGNES_COPY: VilleCopy = {
     },
     {
       q: "Comment accédez-vous à Lognes depuis Paris ?",
-      a: "Nos consultants rejoignent Lognes en 30 min depuis Paris Châtelet (RER A, station Lognes). Proximité A4 et gare TGV Marne-la-Vallée Chessy.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Proximité A4 et gare TGV Marne-la-Vallée Chessy.",
     },
   ],
 };

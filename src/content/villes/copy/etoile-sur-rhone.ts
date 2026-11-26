@@ -65,7 +65,7 @@ export const ETOILE_SUR_RHONE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Étoile-sur-Rhône ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Pour les multi-jours, hébergement local possible.",
+      a: "Nous intervenons partout en France, sur place ou à distance.",
     },
   ],
 };

@@ -65,7 +65,7 @@ export const MOUANS_SARTOUX_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission depuis Cannes ou Nice ?",
-      a: "Nos consultants interviennent depuis Cannes (15 min), Nice (35 min A8) ou Grasse (10 min). Gare Mouans-Sartoux sur ligne TER Cannes-Grasse. Formats flexibles : demi-journée audit, journée intervention, mission implémentation multi-semaines.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Gare Mouans-Sartoux sur ligne TER Cannes-Grasse. Formats flexibles : demi-journée audit, journée intervention, mission implémentation multi-semaines.",
     },
   ],
 };

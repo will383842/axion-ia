@@ -65,7 +65,7 @@ export const PONT_DE_CHERUY_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Pont-de-Chéruy ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Pour les multi-jours, hébergement local possible (hôtels Lyon-Saint-Exupéry).",
+      a: "Nous intervenons partout en France, sur place ou à distance.",
     },
   ],
 };

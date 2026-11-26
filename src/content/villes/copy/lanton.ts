@@ -49,7 +49,7 @@ export const LANTON_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Lanton ?",
-      a: "Oui, Axion-IA intervient à Lanton et dans tout le nord Bassin d'Arcachon (Andernos, Arès, Audenge, Lège-Cap-Ferret). Nos consultants se déplacent depuis Bordeaux (45 min) ou Paris (TGV 2h + 45 min).",
+      a: "Oui, Axion-IA intervient à Lanton et dans tout le nord Bassin d'Arcachon (Andernos, Arès, Audenge, Lège-Cap-Ferret). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quel est le tarif d'un audit IA à Lanton  ?",

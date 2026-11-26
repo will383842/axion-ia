@@ -9,9 +9,9 @@ export const MITRY_MORY_COPY: VilleCopy = {
   pitchEn:
     "Mitry-Mory (77), commune de Seine-et-Marne (~20 456 hab.) à 25 km au nord-est de Paris, intégrée à la communauté d'agglomération Roissy Pays de France. Zone industrielle Mitry-Compans (logistique, chimie, imprimerie), zone Villette-aux-Aulnes, proximité immédiate de l'aéroport Paris-Charles-de-Gaulle. Tissu TPE, PME logistiques, industriels.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Mitry-Mory (77) pour les TPE, PME et ETI de Seine-et-Marne. Nous accompagnons en priorité les TPE artisanales et commerçantes, les PME logistiques et industrielles de la zone Mitry-Compans, et les ETI implantées sur l'axe Roissy Pays de France. Audit sur place {{price:audit-flash|flat}}, déplacement Paris/Roissy, code custom, conformité RGPD et AI Act.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Mitry-Mory (77) pour les TPE, PME et ETI de Seine-et-Marne. Nous accompagnons en priorité les TPE artisanales et commerçantes, les PME logistiques et industrielles de la zone Mitry-Compans, et les ETI implantées sur l'axe Roissy Pays de France. Audit sur place {{price:audit-flash|flat}}, intervention sur site, code custom, conformité RGPD et AI Act.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Mitry-Mory (77) pour les TPE, PME et ETI de Seine-et-Marne. Nous accompagnons en priorité les TPE artisanales et commerçantes, les PME logistiques et industrielles de la zone Mitry-Compans, et les ETI implantées sur l'axe Roissy Pays de France. Audit sur place {{price:audit-flash|flat}}, déplacement Paris/Roissy, code custom, conformité RGPD et AI Act.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Mitry-Mory (77) pour les TPE, PME et ETI de Seine-et-Marne. Nous accompagnons en priorité les TPE artisanales et commerçantes, les PME logistiques et industrielles de la zone Mitry-Compans, et les ETI implantées sur l'axe Roissy Pays de France. Audit sur place {{price:audit-flash|flat}}, intervention sur site, code custom, conformité RGPD et AI Act.",
   seoHook: "logistique, industrie & axe Roissy CDG",
   ecosystemFr:
     "Mitry-Mory héberge deux zones d'activités majeures. La zone Mitry-Compans regroupe des entreprises de logistique, de chimie et de l'imprimerie (notamment Air Liquide et Darty). La zone Villette-aux-Aulnes accueille des unités d'impression de grande presse. La commune appartient à la communauté d'agglomération Roissy Pays de France, sur l'axe stratégique de l'aéroport CDG.",
@@ -226,7 +226,7 @@ export const MITRY_MORY_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Mitry-Mory et dans la zone Mitry-Compans ?",
-      a: "Oui, nous intervenons à Mitry-Mory et dans toute la communauté d'agglomération Roissy Pays de France (Villeparisis, Claye-Souilly, Tremblay-en-France, Compans, Le Mesnil-Amelot, Gressy). Déplacement depuis Paris (~30 min).",
+      a: "Oui, nous intervenons à Mitry-Mory et dans toute la communauté d'agglomération Roissy Pays de France (Villeparisis, Claye-Souilly, Tremblay-en-France, Compans, Le Mesnil-Amelot, Gressy). Nous nous déplaçons chez vous, partout en France.",
     },
     {
       q: "Quels sont vos tarifs à Mitry-Mory ?",

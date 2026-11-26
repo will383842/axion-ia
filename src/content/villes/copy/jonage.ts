@@ -65,7 +65,7 @@ export const JONAGE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Lyon ?",
-      a: "Nos consultants viennent de Lyon (20 min). Tarifs transparents.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Tarifs transparents.",
     },
   ],
 };

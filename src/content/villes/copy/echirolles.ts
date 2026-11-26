@@ -36,8 +36,8 @@ export const ECHIROLLES_COPY: VilleCopy = {
       en: "Audit sur place 4h sur site à Échirolles pour les TPE et PME industrielles, commerces et structures de santé : cartographie des processus et plan d'automatisation, à partir de {{price:audit-flash|flat}}.",
     },
     interventions: {
-      fr: "Interventions ponctuelles à Échirolles pour automatiser commandes, planning, reporting et qualité dans les ZA des Essarts et Sud Galaxie, dès {{price:intervention-4h|flat}}, déplacement sous 5 jours ouvrés.",
-      en: "Interventions ponctuelles à Échirolles pour automatiser commandes, planning, reporting et qualité dans les ZA des Essarts et Sud Galaxie, dès {{price:intervention-4h|flat}}, déplacement sous 5 jours ouvrés.",
+      fr: "Interventions ponctuelles à Échirolles pour automatiser commandes, planning, reporting et qualité dans les ZA des Essarts et Sud Galaxie, dès {{price:intervention-4h|flat}}.",
+      en: "Interventions ponctuelles à Échirolles pour automatiser commandes, planning, reporting et qualité dans les ZA des Essarts et Sud Galaxie, dès {{price:intervention-4h|flat}}.",
     },
     implementation: {
       fr: "Implémentation IA en code source à Échirolles (ERP industriel, GMAO, gestion patient, intégration SI) pour TPE et PME, à partir de {{price:impl-poc|entry}}, hébergement RGPD France.",

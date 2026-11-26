@@ -65,7 +65,7 @@ export const SAINT_MARCEL_LES_VALENCE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Saint-Marcel-lès-Valence ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Pour les multi-jours, hébergement local possible (hôtels Valence).",
+      a: "Nous intervenons partout en France, sur place ou à distance.",
     },
   ],
 };

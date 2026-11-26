@@ -18,9 +18,9 @@ export const MONTLUEL_COPY: VilleCopy = {
   ecosystemEn:
     "Montluel, sur la Côtière de l'Ain, profite de sa position stratégique entre Lyon et l'aéroport Lyon-Saint-Exupéry pour attirer activités logistiques et PME tertiaires, tandis que la plaine de l'Ain conserve une forte vocation agricole. Le tissu local associe entrepôts et transport, PME de services, exploitations agricoles, artisanat du bâtiment et commerce de proximité. Ces TPE et PME, dépendantes de flux tendus et de marges serrées, trouvent dans l'IA opérationnelle un levier direct de productivité et de traçabilité.",
   distancesFr:
-    "Montluel est à 30 min du centre de Lyon et à 15 min de l'aéroport Lyon-Saint-Exupéry, sur l'axe A42. Miribel est à 15 min, Meximieux à 10 min, Bourg-en-Bresse à 45 min. Nos consultants se déplacent depuis Lyon sur toute la Côtière et la plaine de l'Ain : Miribel, Beynost, Meximieux et Pérouges.",
+    "Montluel est à 30 min du centre de Lyon et à 15 min de l'aéroport Lyon-Saint-Exupéry, sur l'axe A42. Miribel est à 15 min, Meximieux à 10 min, Bourg-en-Bresse à 45 min. Nous intervenons partout en France, sur place ou à distance.",
   distancesEn:
-    "Montluel est à 30 min du centre de Lyon et à 15 min de l'aéroport Lyon-Saint-Exupéry, sur l'axe A42. Miribel est à 15 min, Meximieux à 10 min, Bourg-en-Bresse à 45 min. Nos consultants se déplacent depuis Lyon sur toute la Côtière et la plaine de l'Ain : Miribel, Beynost, Meximieux et Pérouges.",
+    "Montluel est à 30 min du centre de Lyon et à 15 min de l'aéroport Lyon-Saint-Exupéry, sur l'axe A42. Miribel est à 15 min, Meximieux à 10 min, Bourg-en-Bresse à 45 min. Nous intervenons partout en France, sur place ou à distance.",
   topSectorsNaf: [
     "PME logistiques & transport",
     "Agriculture plaine de l'Ain",
@@ -69,7 +69,7 @@ export const MONTLUEL_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Lyon ?",
-      a: "Nos consultants se déplacent depuis Lyon (30 min).",
+      a: "Nous intervenons partout en France, sur place ou à distance.",
     },
   ],
 };

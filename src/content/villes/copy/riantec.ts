@@ -65,7 +65,7 @@ export const RIANTEC_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Riantec ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Pour les multi-jours, hébergement local possible (gîtes littoraux Riantec/Étel).",
+      a: "Nous intervenons partout en France, sur place ou à distance.",
     },
   ],
 };

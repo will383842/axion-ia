@@ -49,7 +49,7 @@ export const LE_TEICH_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il au Teich ?",
-      a: "Oui, Axion-IA intervient au Teich et dans tout le sud Bassin d'Arcachon (Biganos, Mios, Gujan-Mestras, Arcachon). Nos consultants se déplacent depuis Bordeaux (45 min) ou Paris (TGV + TER).",
+      a: "Oui, Axion-IA intervient au Teich et dans tout le sud Bassin d'Arcachon (Biganos, Mios, Gujan-Mestras, Arcachon). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quel est le tarif d'un audit IA au Teich ?",

@@ -80,7 +80,7 @@ export const TOULON_COPY: VilleCopy = {
           "Le tissu industriel toulonnais est unique en France : Naval Group, Thales Underwater Systems, CNIM, Marine nationale — nous maîtrisons les contraintes spécifiques de confidentialité, souveraineté des données et processus métier de la défense maritime.",
           "Le Pôle Mer Méditerranée (siège à Toulon) regroupe des PME et ETI d'ingénierie navale, de nautisme, d'énergies marines et de robotique sous-marine — autant de cas d'usage IA à fort potentiel d'automatisation.",
           "L'écosystème numérique toulonnais monte en puissance : French Tech Toulon Var, TVT Innovation, ISEN Méditerranée (IA/cybersécurité), LIS-CNRS (laboratoire IA de l'UTLN) — nos audits profitent de ce vivier de compétences locales.",
-          "Aucun jeu de devis opaque : tarifs publics affichés, vous savez exactement ce que vous payez avant de signer. Aucun supplément géographique par rapport aux autres villes françaises.",
+          "Aucun jeu de devis opaque : tarifs publics affichés, vous savez exactement ce que vous payez avant de signer.",
           "Vous gardez le contrôle : votre plan d'action est exécutable avec n'importe quel prestataire ou en interne — aucun lock-in Axion-IA.",
         ],
         methodology: [
@@ -985,7 +985,7 @@ export const TOULON_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Combien coûte un audit IA opérationnel à Toulon ?",
-      a: "Le tarif dépend du niveau retenu — Audit sur place, Ciblé, Stratégique PME ou Stratégique ETI. Tarifs publics affichés sur la page Audit, calibrés selon votre taille (TPE, PME, ETI, grande entreprise). Aucun supplément géographique : le tarif est identique partout en France.",
+      a: "Le tarif dépend du niveau retenu — Audit sur place, Ciblé, Stratégique PME ou Stratégique ETI. Tarifs publics affichés sur la page Audit, calibrés selon votre taille (TPE, PME, ETI, grande entreprise).",
     },
     {
       q: "Axion-IA peut-il intervenir auprès des entreprises de défense maritime à Toulon ?",

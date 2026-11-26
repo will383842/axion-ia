@@ -49,7 +49,7 @@ export const LAVAUR_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Lavaur et dans le Vaurais ?",
-      a: "Oui, Axion-IA intervient à Lavaur et dans tout le pays vauréen (Saint-Sulpice-la-Pointe, Graulhet, Puylaurens, Saïx). Nos consultants se déplacent depuis Toulouse (45 min A68) ou Albi (40 min).",
+      a: "Oui, Axion-IA intervient à Lavaur et dans tout le pays vauréen (Saint-Sulpice-la-Pointe, Graulhet, Puylaurens, Saïx). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quel est le tarif d'un audit IA pour une TPE à Lavaur ?",

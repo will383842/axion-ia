@@ -49,7 +49,7 @@ export const LIMAY_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Limay et dans le Mantois ?",
-      a: "Oui, Axion-IA intervient à Limay et dans tout le Mantois (Mantes-la-Jolie, Mantes-la-Ville, Buchelay, Magnanville, Rosny-sur-Seine). Nos consultants se déplacent depuis Paris-Saint-Lazare en 50 min via Transilien J.",
+      a: "Oui, Axion-IA intervient à Limay et dans tout le Mantois (Mantes-la-Jolie, Mantes-la-Ville, Buchelay, Magnanville, Rosny-sur-Seine). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quel est le tarif d'un audit IA pour une PME industrielle à Limay ?",

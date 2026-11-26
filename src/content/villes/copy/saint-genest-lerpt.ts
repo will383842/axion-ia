@@ -65,7 +65,7 @@ export const SAINT_GENEST_LERPT_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Saint-Genest-Lerpt ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Pour les multi-jours, hébergement local possible. Tarifs transparents.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Tarifs transparents.",
     },
   ],
 };

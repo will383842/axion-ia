@@ -36,8 +36,8 @@ export const AURILLAC_COPY: VilleCopy = {
       en: "Audit sur place 4h à Aurillac pour TPE et PME du Cantal — diagnostic des processus administratifs et métiers (gestion des commandes, facturation, suivi qualité agroalimentaire). À partir de {{price:audit-flash|flat}}, livrable sous 5 jours ouvrés.",
     },
     interventions: {
-      fr: "Formation collective sur site à Aurillac pour automatiser un goulot d'étranglement précis (saisie commandes producteurs laitiers, devis touristiques, relances clients). Tarif public à partir de {{price:intervention-4h|flat}}, déplacement Williams sous 5 jours.",
-      en: "Formation collective sur site à Aurillac pour automatiser un goulot d'étranglement précis (saisie commandes producteurs laitiers, devis touristiques, relances clients). Tarif public à partir de {{price:intervention-4h|flat}}, déplacement Williams sous 5 jours.",
+      fr: "Formation collective sur site à Aurillac pour automatiser un goulot d'étranglement précis (saisie commandes producteurs laitiers, devis touristiques, relances clients). Tarif public à partir de {{price:intervention-4h|flat}}.",
+      en: "Formation collective sur site à Aurillac pour automatiser un goulot d'étranglement précis (saisie commandes producteurs laitiers, devis touristiques, relances clients). Tarif public à partir de {{price:intervention-4h|flat}}.",
     },
     implementation: {
       fr: "Implémentation de solutions IA code-first à Aurillac : intégration API métier, agents conversationnels internes, automatisations sur mesure pour PME agroalimentaires ou commerces. À partir de {{price:impl-poc|entry}}.",

@@ -65,7 +65,7 @@ export const PLABENNEC_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA sur site à Plabennec ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Pour les missions multi-jours, hébergement local possible.",
+      a: "Nous intervenons partout en France, sur place ou à distance.",
     },
   ],
 };

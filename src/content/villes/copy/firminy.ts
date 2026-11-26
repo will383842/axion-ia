@@ -65,7 +65,7 @@ export const FIRMINY_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Firminy ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Pour les multi-jours, hébergement local possible (hôtels Saint-Étienne). Tarifs transparents.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Tarifs transparents.",
     },
   ],
 };

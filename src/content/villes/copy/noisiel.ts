@@ -49,7 +49,7 @@ export const NOISIEL_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Noisiel et dans le pôle Marne-la-Vallée ?",
-      a: "Oui, Axion-IA intervient à Noisiel et dans tout le pôle Marne-la-Vallée (Torcy, Champs-sur-Marne, Lognes, Bussy-Saint-Georges). Nos consultants se déplacent depuis Paris via RER A (35 min gare Noisiel).",
+      a: "Oui, Axion-IA intervient à Noisiel et dans tout le pôle Marne-la-Vallée (Torcy, Champs-sur-Marne, Lognes, Bussy-Saint-Georges). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quel est le prix d'un audit IA à Noisiel ?",

@@ -65,7 +65,7 @@ export const CROZON_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Crozon ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Pas de gare directe, accès voiture ou maritime. Pour les multi-jours, hébergement local possible (Morgat, Camaret).",
+      a: "Nous intervenons partout en France, sur place ou à distance. Pas de gare directe, accès voiture ou maritime.",
     },
   ],
 };

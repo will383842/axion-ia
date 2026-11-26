@@ -49,7 +49,7 @@ export const MONTECH_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Montech ?",
-      a: "Oui, Axion-IA intervient à Montech et dans le sud Tarn-et-Garonne (Escatalens, Lacourt-Saint-Pierre, Montbeton, Castelsarrasin). Nos consultants se déplacent depuis Montauban (15 min) ou Toulouse (40 min).",
+      a: "Oui, Axion-IA intervient à Montech et dans le sud Tarn-et-Garonne (Escatalens, Lacourt-Saint-Pierre, Montbeton, Castelsarrasin). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quel est le tarif d'un audit IA pour une TPE à Montech ?",

@@ -65,7 +65,7 @@ export const MUZILLAC_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Muzillac depuis Vannes ?",
-      a: "Nos consultants viennent de Vannes (25 min) ou Nantes (1h15). Intervention sur site dans vos locaux ou en visio. Multi-jours possibles avec hébergement local.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Intervention sur site dans vos locaux ou en visio. Multi-jours possibles avec hébergement local.",
     },
   ],
 };

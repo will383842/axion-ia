@@ -65,7 +65,7 @@ export const MAINVILLIERS_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Mainvilliers ?",
-      a: "Nos consultants se déplacent depuis Paris (1h20 via A11) ou arrivent en gare de Chartres (TER 1h10 Paris-Montparnasse).",
+      a: "Nous intervenons partout en France, sur place ou à distance.",
     },
   ],
 };

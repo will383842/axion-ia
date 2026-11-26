@@ -65,7 +65,7 @@ export const PLONEOUR_LANVERN_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Plonéour-Lanvern ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Pour les multi-jours, hébergement local possible (hôtels Pont-l'Abbé ou littoral bigouden).",
+      a: "Nous intervenons partout en France, sur place ou à distance.",
     },
   ],
 };

@@ -49,7 +49,7 @@ export const MOUY_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Mouy et dans le Pays de Thelle ?",
-      a: "Oui, Axion-IA intervient à Mouy et tout le Pays de Thelle (Méru, Chambly, Neuilly-en-Thelle, Bury, Angy). Nos consultants viennent de Paris (50 min TER via Creil) ou Beauvais (25 min).",
+      a: "Oui, Axion-IA intervient à Mouy et tout le Pays de Thelle (Méru, Chambly, Neuilly-en-Thelle, Bury, Angy). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quels services pour les TPE artisans et commerçants de Mouy ?",
@@ -65,7 +65,7 @@ export const MOUY_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Paris ou Beauvais ?",
-      a: "Nos consultants viennent de Paris (50 min TER via Creil) ou Beauvais (25 min). Pour les multi-jours, hébergement local possible (hôtels Beauvais ou Creil).",
+      a: "Nous intervenons partout en France, sur place ou à distance.",
     },
   ],
 };

@@ -49,7 +49,7 @@ export const LANGUEUX_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Langueux et agglo Saint-Brieuc ?",
-      a: "Oui, Axion-IA intervient à Langueux et toute l'agglomération de Saint-Brieuc (Plérin, Ploufragan, Trégueux, Lamballe). Nos consultants se déplacent en 2h45 depuis Paris (TGV Saint-Brieuc).",
+      a: "Oui, Axion-IA intervient à Langueux et toute l'agglomération de Saint-Brieuc (Plérin, Ploufragan, Trégueux, Lamballe). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les commerces des zones d'activités ?",

@@ -77,7 +77,7 @@ export const BRUNOY_COPY: VilleCopy = {
           {
             step: "Recette + mise en ligne",
             detail:
-              "Tests d'acceptation, Web Vitals (LCP, INP, CLS) et SEO/AEO validés, mise en production sans downtime depuis nos points de cadrage Brunoy — vos pages commerçantes et vos prises de rendez-vous restent en ligne pendant toute la bascule.",
+              "Tests d'acceptation, Web Vitals (LCP, INP, CLS) et SEO/AEO validés, mise en production sans downtime — vos pages commerçantes et vos prises de rendez-vous restent en ligne pendant toute la bascule.",
           },
           {
             step: "Livraison + autonomie",
@@ -163,7 +163,7 @@ export const BRUNOY_COPY: VilleCopy = {
           {
             step: "Recette + mise en ligne",
             detail:
-              "Tests d'acceptation, Web Vitals (LCP, INP, CLS) et SEO/AEO validés, mise en production sans downtime depuis nos points de cadrage Brunoy — vos pages commerçantes et vos prises de rendez-vous restent en ligne pendant toute la bascule.",
+              "Tests d'acceptation, Web Vitals (LCP, INP, CLS) et SEO/AEO validés, mise en production sans downtime — vos pages commerçantes et vos prises de rendez-vous restent en ligne pendant toute la bascule.",
           },
           {
             step: "Livraison + autonomie",

@@ -65,7 +65,7 @@ export const SAINT_GALMIER_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Saint-Galmier ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Pour les multi-jours, hébergement local possible (hôtels Saint-Galmier).",
+      a: "Nous intervenons partout en France, sur place ou à distance.",
     },
   ],
 };

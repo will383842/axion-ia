@@ -41,8 +41,8 @@ export const LORMONT_COPY: VilleCopy = {
       en: "Nos interventions à Lormont automatisent typiquement des tâches répétitives de PME locales : devis BTP, suivi commercial centres 4 Pavillons et Génicart, ou réponses clients commerce et restauration.",
     },
     implementation: {
-      fr: "Pour les TPE et PME de Lormont, nous implémentons des solutions IA en code custom intégrées aux outils existants (ERP, CRM, comptabilité), sans dépendance no-code, avec déplacements depuis Bordeaux en 15 minutes via le tramway A.",
-      en: "Pour les TPE et PME de Lormont, nous implémentons des solutions IA en code custom intégrées aux outils existants (ERP, CRM, comptabilité), sans dépendance no-code, avec déplacements depuis Bordeaux en 15 minutes via le tramway A.",
+      fr: "Pour les TPE et PME de Lormont, nous implémentons des solutions IA en code custom intégrées aux outils existants (ERP, CRM, comptabilité), sans dépendance no-code, avec déplacement sur site.",
+      en: "Pour les TPE et PME de Lormont, nous implémentons des solutions IA en code custom intégrées aux outils existants (ERP, CRM, comptabilité), sans dépendance no-code, avec déplacement sur site.",
     },
     unAUn: {
       fr: "L'accompagnement un-à-un à Lormont permet aux dirigeants de TPE/PME de la rive droite bordelaise de monter en compétence IA à leur rythme, avec un référent unique sur 3 à 6 mois.",

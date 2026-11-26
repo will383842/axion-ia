@@ -236,7 +236,7 @@ export const MONTAIGU_VENDEE_COPY: VilleCopy = {
     },
     {
       q: "Intervenez-vous dans les communes proches de Montaigu-Vendée ?",
-      a: "Oui, nous nous déplaçons aussi à La Bernardière, L'Herbergement, Treize-Septiers, Saint-Hilaire-de-Clisson, Remouillé et Vieillevigne, au même tarif.",
+      a: "Oui, nous nous déplaçons aussi à La Bernardière, L'Herbergement, Treize-Septiers, Saint-Hilaire-de-Clisson, Remouillé et Vieillevigne.",
     },
     {
       q: "Comment Axion-IA garantit-il la conformité RGPD à Montaigu-Vendée ?",

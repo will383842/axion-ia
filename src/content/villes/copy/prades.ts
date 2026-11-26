@@ -65,7 +65,7 @@ export const PRADES_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Prades ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Pour les multi-jours, hébergement local possible. Visio privilégiée pour le suivi.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Visio privilégiée pour le suivi.",
     },
   ],
 };

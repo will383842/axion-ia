@@ -78,7 +78,7 @@ export const CAEN_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Combien coûte un audit IA opérationnel à Caen ?",
-      a: "Le tarif dépend du niveau retenu — Audit sur place, Ciblé, Stratégique PME ou Stratégique ETI. Tarifs publics affichés sur la page Audit, choix calibré selon votre taille (TPE, PME, ETI, grande entreprise) et votre périmètre. Aucun supplément géographique : le tarif est identique à Caen et partout en France.",
+      a: "Le tarif dépend du niveau retenu — Audit sur place, Ciblé, Stratégique PME ou Stratégique ETI. Tarifs publics affichés sur la page Audit, choix calibré selon votre taille (TPE, PME, ETI, grande entreprise) et votre périmètre.",
     },
     {
       q: "Avez-vous des cas clients dans le bassin Caen la Mer ?",
@@ -90,7 +90,7 @@ export const CAEN_COPY: VilleCopy = {
     },
     {
       q: "Pouvez-vous intervenir dans les communes du bassin hors Caen intra-muros ?",
-      a: "Oui. Le bassin entier est notre zone d'intervention : Hérouville-Saint-Clair, Mondeville (Bosch), Colombelles (NXP, EffiScience), Ifs, Bretteville-sur-Odon, Bénouville et les autres communes Caen la Mer. Aucun supplément de zone.",
+      a: "Oui. Le bassin entier est notre zone d'intervention : Hérouville-Saint-Clair, Mondeville (Bosch), Colombelles (NXP, EffiScience), Ifs, Bretteville-sur-Odon, Bénouville et les autres communes Caen la Mer.",
     },
     {
       q: "En combien de temps pouvez-vous démarrer une mission à Caen ?",

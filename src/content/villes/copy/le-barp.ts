@@ -49,7 +49,7 @@ export const LE_BARP_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il au Barp ?",
-      a: "Oui, Axion-IA intervient au Barp et dans le sud bordelais (Cestas, Marcheprime, Belin-Béliet, Salles). Nos consultants se déplacent depuis Bordeaux (30 min A63) ou Paris (TGV 2h + 30 min).",
+      a: "Oui, Axion-IA intervient au Barp et dans le sud bordelais (Cestas, Marcheprime, Belin-Béliet, Salles). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quel est le tarif d'un audit IA au Barp ?",

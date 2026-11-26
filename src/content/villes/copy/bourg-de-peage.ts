@@ -65,7 +65,7 @@ export const BOURG_DE_PEAGE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Bourg-de-Péage ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Pour les multi-jours, hébergement local possible (hôtels Romans-Valence).",
+      a: "Nous intervenons partout en France, sur place ou à distance.",
     },
   ],
 };

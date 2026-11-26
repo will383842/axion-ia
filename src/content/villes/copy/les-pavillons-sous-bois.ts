@@ -227,7 +227,7 @@ export const LES_PAVILLONS_SOUS_BOIS_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il aux Pavillons-sous-Bois et dans quelles communes proches ?",
-      a: "Oui, Axion-IA intervient aux Pavillons-sous-Bois et dans les communes limitrophes : Bondy, Le Raincy, Villemomble, Aulnay-sous-Bois, Livry-Gargan. Nos consultants se déplacent depuis Paris en tramway T4 ou en voiture (≈ 25 min).",
+      a: "Oui, Axion-IA intervient aux Pavillons-sous-Bois et dans les communes limitrophes : Bondy, Le Raincy, Villemomble, Aulnay-sous-Bois, Livry-Gargan. Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quels sont vos tarifs pour une mission IA aux Pavillons-sous-Bois ?",

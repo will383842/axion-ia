@@ -990,7 +990,7 @@ export const TOURS_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Combien coûte un audit IA opérationnel à Tours ?",
-      a: "Le tarif dépend du niveau retenu — Audit sur place, Ciblé, Stratégique PME ou Stratégique ETI. Tarifs publics affichés sur la page Audit, choix calibré selon votre taille (TPE, PME, ETI, grande entreprise) et votre périmètre industriel ou tertiaire. Aucun supplément géographique : le tarif est le même à Tours qu'ailleurs en France.",
+      a: "Le tarif dépend du niveau retenu — Audit sur place, Ciblé, Stratégique PME ou Stratégique ETI. Tarifs publics affichés sur la page Audit, choix calibré selon votre taille (TPE, PME, ETI, grande entreprise) et votre périmètre industriel ou tertiaire.",
     },
     {
       q: "Avez-vous des références dans les secteurs industriels de Tours (semi-conducteurs, énergie, automobile) ?",

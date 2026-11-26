@@ -36,8 +36,8 @@ export const ALFORTVILLE_COPY: VilleCopy = {
       en: "Audit sur place 4h sur site à Alfortville pour les TPE et PME : cartographie des processus commerce/restauration/BTP et plan d'automatisation, à partir de {{price:audit-flash|flat}}.",
     },
     interventions: {
-      fr: "Interventions ponctuelles à Alfortville pour automatiser devis, relances, facturation et reporting des PME locales, dès {{price:intervention-4h|flat}}, déplacement équipe sous 5 jours ouvrés.",
-      en: "Interventions ponctuelles à Alfortville pour automatiser devis, relances, facturation et reporting des PME locales, dès {{price:intervention-4h|flat}}, déplacement équipe sous 5 jours ouvrés.",
+      fr: "Interventions ponctuelles à Alfortville pour automatiser devis, relances, facturation et reporting des PME locales, dès {{price:intervention-4h|flat}}.",
+      en: "Interventions ponctuelles à Alfortville pour automatiser devis, relances, facturation et reporting des PME locales, dès {{price:intervention-4h|flat}}.",
     },
     implementation: {
       fr: "Implémentation de solutions IA en code source à Alfortville (intégration SI, ERP, outils métier) pour TPE et PME, à partir de {{price:impl-poc|entry}}, hébergement RGPD France.",

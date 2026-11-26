@@ -36,8 +36,8 @@ export const REZE_COPY: VilleCopy = {
       en: "Audit IA sur place 4h à Rezé dès {{price:audit-flash|flat}} — cartographie des automatisations pour TPE/PME de la zone Atout-Sud, du MIN et des artisans locaux.",
     },
     interventions: {
-      fr: "Intervention sur site à Rezé dès {{price:intervention-4h|flat}} — déplacement consultant Atout-Sud, ZAC de la Brosse, ZAC de la Jaguère, et communes limitrophes (Nantes, Vertou, Bouguenais).",
-      en: "Intervention sur site à Rezé dès {{price:intervention-4h|flat}} — déplacement consultant Atout-Sud, ZAC de la Brosse, ZAC de la Jaguère, et communes limitrophes (Nantes, Vertou, Bouguenais).",
+      fr: "Intervention sur site à Rezé dès {{price:intervention-4h|flat}} — Atout-Sud, ZAC de la Brosse, ZAC de la Jaguère, et communes limitrophes (Nantes, Vertou, Bouguenais).",
+      en: "Intervention sur site à Rezé dès {{price:intervention-4h|flat}} — Atout-Sud, ZAC de la Brosse, ZAC de la Jaguère, et communes limitrophes (Nantes, Vertou, Bouguenais).",
     },
     implementation: {
       fr: "Implémentation code custom à Rezé dès {{price:impl-poc|entry}} — automatisations devis, factures, stock et logistique pour commerces et structures du MIN.",

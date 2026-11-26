@@ -65,7 +65,7 @@ export const NUEIL_LES_AUBIERS_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission dans le nord Deux-Sèvres ?",
-      a: "Nos consultants viennent de Niort (50 min) ou Cholet (30 min). Pour les multi-jours, hébergement local possible.",
+      a: "Nous intervenons partout en France, sur place ou à distance.",
     },
   ],
 };

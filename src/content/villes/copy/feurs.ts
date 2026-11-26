@@ -65,7 +65,7 @@ export const FEURS_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Feurs ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Pour les multi-jours, hébergement local possible.",
+      a: "Nous intervenons partout en France, sur place ou à distance.",
     },
   ],
 };

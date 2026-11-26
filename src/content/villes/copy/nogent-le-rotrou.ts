@@ -65,7 +65,7 @@ export const NOGENT_LE_ROTROU_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Nogent-le-Rotrou ?",
-      a: "Nos consultants se déplacent depuis Paris (1h50 via A11) ou Chartres (50 min). Gare SNCF Nogent-le-Rotrou sur la ligne TER Chartres-Le Mans. Tarifs transparents.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Gare SNCF Nogent-le-Rotrou sur la ligne TER Chartres-Le Mans. Tarifs transparents.",
     },
   ],
 };

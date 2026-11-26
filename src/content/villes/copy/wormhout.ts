@@ -61,7 +61,7 @@ export const WORMHOUT_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Wormhout ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Pour les missions multi-jours, hébergement local possible.",
+      a: "Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quels secteurs accompagnez-vous à Wormhout ?",

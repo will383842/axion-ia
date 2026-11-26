@@ -65,7 +65,7 @@ export const BRIEC_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Briec ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Pour les multi-jours, hébergement local possible (hôtels Quimper ou gîtes ruraux).",
+      a: "Nous intervenons partout en France, sur place ou à distance.",
     },
   ],
 };

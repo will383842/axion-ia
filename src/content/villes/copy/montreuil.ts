@@ -77,7 +77,7 @@ export const MONTREUIL_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Combien coûte un audit IA opérationnel à Montreuil ?",
-      a: "Le tarif dépend du niveau retenu — Audit sur place, Ciblé, Stratégique PME ou Stratégique ETI. Tarifs publics affichés sur la page Audit, calibrés selon votre taille (TPE, PME, ETI, grande entreprise) et votre périmètre. Aucun supplément géographique : le tarif est identique à Montreuil et partout en France.",
+      a: "Le tarif dépend du niveau retenu — Audit sur place, Ciblé, Stratégique PME ou Stratégique ETI. Tarifs publics affichés sur la page Audit, calibrés selon votre taille (TPE, PME, ETI, grande entreprise) et votre périmètre.",
     },
     {
       q: "Avez-vous des références dans le secteur numérique ou jeu vidéo à Montreuil ?",
@@ -188,7 +188,7 @@ export const MONTREUIL_COPY: VilleCopy = {
           },
           {
             q: "Intervenez-vous aussi à Bagnolet, Vincennes ou Rosny-sous-Bois ?",
-            a: "Oui. L'ensemble du bassin d'emploi montreuillois est notre zone d'intervention : Bagnolet, Vincennes, Romainville, Rosny-sous-Bois, Fontenay-sous-Bois, Le Pré-Saint-Gervais. Aucun supplément de zone.",
+            a: "Oui. L'ensemble du bassin d'emploi montreuillois est notre zone d'intervention : Bagnolet, Vincennes, Romainville, Rosny-sous-Bois, Fontenay-sous-Bois, Le Pré-Saint-Gervais.",
           },
           {
             q: "Faut-il être déjà avancé sur l'IA pour solliciter un audit ?",

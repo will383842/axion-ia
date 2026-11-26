@@ -36,8 +36,8 @@ export const SAINT_MAUR_DES_FOSSES_COPY: VilleCopy = {
       en: "Audit sur place 4h sur site à Saint-Maur-des-Fossés pour commerçants, professions libérales et PME : cartographie des processus et plan d'automatisation, à partir de {{price:audit-flash|flat}}.",
     },
     interventions: {
-      fr: "Interventions ponctuelles à Saint-Maur-des-Fossés pour automatiser devis, facturation, RDV, relances et reporting des TPE et PME locales, dès {{price:intervention-4h|flat}}, déplacement sous 5 jours ouvrés.",
-      en: "Interventions ponctuelles à Saint-Maur-des-Fossés pour automatiser devis, facturation, RDV, relances et reporting des TPE et PME locales, dès {{price:intervention-4h|flat}}, déplacement sous 5 jours ouvrés.",
+      fr: "Interventions ponctuelles à Saint-Maur-des-Fossés pour automatiser devis, facturation, RDV, relances et reporting des TPE et PME locales, dès {{price:intervention-4h|flat}}.",
+      en: "Interventions ponctuelles à Saint-Maur-des-Fossés pour automatiser devis, facturation, RDV, relances et reporting des TPE et PME locales, dès {{price:intervention-4h|flat}}.",
     },
     implementation: {
       fr: "Implémentation IA en code source à Saint-Maur-des-Fossés (intégration logiciel métier, ERP, CRM, outils de gestion cabinet) à partir de {{price:impl-poc|entry}}, hébergement RGPD France.",

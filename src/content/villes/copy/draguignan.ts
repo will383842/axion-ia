@@ -227,7 +227,7 @@ export const DRAGUIGNAN_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Quels sont les tarifs Axion-IA pour une mission à Draguignan ?",
-      a: "Audit sur place à partir de {{price:audit-flash|flat}}, intervention sur site à partir de {{price:intervention-4h|flat}}, session un-à-un dirigeant sur devis. Tarifs publics affichés sur le site, sans surcoût géographique pour Draguignan.",
+      a: "Audit sur place à partir de {{price:audit-flash|flat}}, intervention sur site à partir de {{price:intervention-4h|flat}}, session un-à-un dirigeant sur devis. Tarifs publics affichés sur le site.",
     },
     {
       q: "Sous quel délai Axion-IA peut intervenir à Draguignan ?",

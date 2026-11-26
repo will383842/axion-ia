@@ -65,7 +65,7 @@ export const OUISTREHAM_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Ouistreham ?",
-      a: "Nos consultants viennent de Caen (15 min D515). Déplacement direct sur site (hôtel, restaurant, port, commerce). Pour les multi-jours, hébergement local.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Déplacement direct sur site (hôtel, restaurant, port, commerce). Pour les multi-jours, hébergement local.",
     },
   ],
 };

@@ -49,7 +49,7 @@ export const MONTIVILLIERS_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Montivilliers et agglo du Havre ?",
-      a: "Oui, Axion-IA intervient à Montivilliers et toute l'agglomération du Havre (Le Havre à 10 min, Harfleur, Octeville-sur-Mer, Gonfreville-l'Orcher). Nos consultants viennent de Paris (TGV Le Havre 2h15).",
+      a: "Oui, Axion-IA intervient à Montivilliers et toute l'agglomération du Havre (Le Havre à 10 min, Harfleur, Octeville-sur-Mer, Gonfreville-l'Orcher). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les PME logistiques du port du Havre ?",
@@ -65,7 +65,7 @@ export const MONTIVILLIERS_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Paris ?",
-      a: "Nos consultants viennent de Paris via TGV Le Havre (2h15) puis Montivilliers à 10 min du centre-ville.",
+      a: "Nous intervenons partout en France, sur place ou à distance.",
     },
   ],
 };

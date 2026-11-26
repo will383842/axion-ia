@@ -9,9 +9,9 @@ export const LAON_COPY: VilleCopy = {
   pitchEn:
     "Laon (02), 24 220 habitants, préfecture de l'Aisne (Hauts-de-France). Cité médiévale perchée sur une butte-témoin à 183 m, célèbre pour sa cathédrale Notre-Dame et ses remparts du XIVe siècle. Plus grand secteur sauvegardé de France (370 ha). Économie tournée vers l'administration préfectorale, le commerce de centre-ville, l'agriculture (57,7 % du territoire) et le tourisme patrimonial. Axion-IA accompagne TPE, PME et artisans laonnois.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Laon (02). Nous accompagnons TPE, PME, artisans, commerces de centre-ville et exploitations agricoles du pays de Laon avec audits IA, interventions sur site et coaching 1-to-1. Déplacement depuis Paris via A26 ou TER Gare de Laon. Audit sur place {{price:audit-flash|flat}}, tarifs publics, code custom.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Laon (02). Nous accompagnons TPE, PME, artisans, commerces de centre-ville et exploitations agricoles du pays de Laon avec audits IA, interventions sur site et coaching 1-to-1. Nous nous déplaçons chez vous, partout en France. Audit sur place {{price:audit-flash|flat}}, tarifs publics, code custom.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Laon (02). Nous accompagnons TPE, PME, artisans, commerces de centre-ville et exploitations agricoles du pays de Laon avec audits IA, interventions sur site et coaching 1-to-1. Déplacement depuis Paris via A26 ou TER Gare de Laon. Audit sur place {{price:audit-flash|flat}}, tarifs publics, code custom.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Laon (02). Nous accompagnons TPE, PME, artisans, commerces de centre-ville et exploitations agricoles du pays de Laon avec audits IA, interventions sur site et coaching 1-to-1. Nous nous déplaçons chez vous, partout en France. Audit sur place {{price:audit-flash|flat}}, tarifs publics, code custom.",
   seoHook: "TPE/PME laonnoises & artisanat patrimoine",
   ecosystemFr:
     "Tissu économique de Laon structuré autour de la préfecture de l'Aisne et de la Communauté d'agglomération du Pays de Laon. Forte présence de l'administration publique, du commerce de centre-ville (ville haute médiévale), de l'artisanat (bâtiment, restauration de patrimoine), du tourisme culturel (cathédrale, remparts) et de l'agriculture céréalière (49,7 % de terres arables). Tissu de TPE professions libérales et services.",
@@ -226,7 +226,7 @@ export const LAON_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Laon ?",
-      a: "Oui, Axion-IA intervient à Laon et dans le pays de Laon : Athies-sous-Laon, Chambry, Bruyères-et-Montbérault, Vorges, Molinchart. Déplacement depuis Paris via A26 ou TER.",
+      a: "Oui, Axion-IA intervient à Laon et dans le pays de Laon : Athies-sous-Laon, Chambry, Bruyères-et-Montbérault, Vorges, Molinchart. Nous nous déplaçons chez vous, partout en France.",
     },
     {
       q: "Quels sont les tarifs pour une mission IA à Laon ?",
@@ -242,7 +242,7 @@ export const LAON_COPY: VilleCopy = {
     },
     {
       q: "Quels délais pour une intervention à Laon ?",
-      a: "Audit sur place livré sous 5 jours ouvrés. Interventions sur site planifiables sous 2 à 3 semaines (déplacement depuis Paris). Implémentations 4 à 8 semaines selon périmètre.",
+      a: "Audit sur place livré sous 5 jours ouvrés. Interventions sur site planifiables sous 2 à 3 semaines (déplacement sur site). Implémentations 4 à 8 semaines selon périmètre.",
     },
     {
       q: "Quels secteurs locaux accompagnez-vous à Laon ?",

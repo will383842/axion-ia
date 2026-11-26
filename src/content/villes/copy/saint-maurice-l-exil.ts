@@ -65,7 +65,7 @@ export const SAINT_MAURICE_L_EXIL_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Saint-Maurice-l'Exil ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Pour les multi-jours, hébergement local possible (hôtels Pays Roussillonnais).",
+      a: "Nous intervenons partout en France, sur place ou à distance.",
     },
   ],
 };

@@ -65,7 +65,7 @@ export const SURZUR_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Surzur ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Pour les multi-jours, hébergement local possible (gîtes presqu'île de Rhuys).",
+      a: "Nous intervenons partout en France, sur place ou à distance.",
     },
   ],
 };

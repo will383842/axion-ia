@@ -49,7 +49,7 @@ export const MIOS_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Mios et sud Bassin d'Arcachon ?",
-      a: "Oui, Axion-IA intervient à Mios et dans tout le sud Bassin d'Arcachon (Biganos, Le Teich, Salles, Belin-Béliet). Nos consultants se déplacent depuis Bordeaux (40 min) ou Paris (TGV 2h + 40 min).",
+      a: "Oui, Axion-IA intervient à Mios et dans tout le sud Bassin d'Arcachon (Biganos, Le Teich, Salles, Belin-Béliet). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Tarifs audit IA à Mios  : quel budget prévoir ?",

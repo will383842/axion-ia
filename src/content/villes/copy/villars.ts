@@ -65,7 +65,7 @@ export const VILLARS_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Villars ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Pour les multi-jours, hébergement local possible. Tarifs transparents.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Tarifs transparents.",
     },
   ],
 };

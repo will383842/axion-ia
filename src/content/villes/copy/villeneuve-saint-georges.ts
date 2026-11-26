@@ -228,7 +228,7 @@ export const VILLENEUVE_SAINT_GEORGES_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Quels sont les tarifs Axion-IA à Villeneuve-Saint-Georges ?",
-      a: "Tarifs publics : Audit sur place 4h dès {{price:audit-flash|flat}}, Formation 4 h dès {{price:intervention-4h|flat}}, implémentation ou 1-to-1 dès {{price:intervention-dirigeants|flat}}. Grille identique partout en France.",
+      a: "Tarifs publics : Audit sur place 4h dès {{price:audit-flash|flat}}, Formation 4 h dès {{price:intervention-4h|flat}}, implémentation ou 1-to-1 dès {{price:intervention-dirigeants|flat}}.",
     },
     {
       q: "Quels délais pour une intervention à Villeneuve-Saint-Georges ?",

@@ -49,7 +49,7 @@ export const HABSHEIM_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Habsheim et autour de Mulhouse ?",
-      a: "Oui, Axion-IA intervient à Habsheim et sur toute Mulhouse Alsace Agglomération (Mulhouse, Rixheim, Riedisheim, Bruebach). Accès direct via A35, proximité Bâle et EuroAirport. Nos consultants se déplacent depuis Paris en 2h40 via TGV.",
+      a: "Oui, Axion-IA intervient à Habsheim et sur toute Mulhouse Alsace Agglomération (Mulhouse, Rixheim, Riedisheim, Bruebach). Accès direct via A35, proximité Bâle et EuroAirport. Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quel est le tarif d'un audit IA à Habsheim  ?",

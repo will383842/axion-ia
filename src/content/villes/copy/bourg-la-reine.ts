@@ -128,11 +128,11 @@ export const BOURG_LA_REINE_COPY: VilleCopy = {
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
-            a: "Oui. Après le cadrage sur site, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, pas de surcoût géographique en Île-de-France : le tarif est le même qu'à Antony, Sceaux ou Massy.",
+            a: "Oui. Après le cadrage sur site, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée.",
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée, pas de surcoût géographique en Île-de-France. Mise en ligne sans downtime quand on augmente l'existant, bascule planifiée hors heures d'affluence. Web Vitals et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun abonnement ni verrou éditeur imposé, transférable à tout prestataire local du Grand Paris sud ou repris en interne par vos équipes.",
+          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, bascule planifiée hors heures d'affluence. Web Vitals et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun abonnement ni verrou éditeur imposé, transférable à tout prestataire local du Grand Paris sud ou repris en interne par vos équipes.",
       },
       en: {
         hero: "Axion-IA conçoit et augmente à Bourg-la-Reine (92) des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour cette commune résidentielle dense des Hauts-de-Seine sud, où coexistent professions libérales (santé, droit, conseil), commerces de l'avenue du Général-Leclerc, PME tertiaires desservies par le RER B et quelques sièges connus comme Faber-Castell et Atlantic. Le futur écoquartier de la Faïencerie, à environ 700 m de la gare, redessine d'ailleurs le centre. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Bourg-la-Reine, itérations à distance.",
@@ -214,11 +214,11 @@ export const BOURG_LA_REINE_COPY: VilleCopy = {
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
-            a: "Oui. Après le cadrage sur site, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, pas de surcoût géographique en Île-de-France : le tarif est le même qu'à Antony, Sceaux ou Massy.",
+            a: "Oui. Après le cadrage sur site, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée.",
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée, pas de surcoût géographique en Île-de-France. Mise en ligne sans downtime quand on augmente l'existant, bascule planifiée hors heures d'affluence. Web Vitals et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun abonnement ni verrou éditeur imposé, transférable à tout prestataire local du Grand Paris sud ou repris en interne par vos équipes.",
+          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, bascule planifiée hors heures d'affluence. Web Vitals et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun abonnement ni verrou éditeur imposé, transférable à tout prestataire local du Grand Paris sud ou repris en interne par vos équipes.",
       },
     },
   },
@@ -230,7 +230,7 @@ export const BOURG_LA_REINE_COPY: VilleCopy = {
     },
     {
       q: "Quels sont les tarifs Axion-IA à Bourg-la-Reine ?",
-      a: "Tarifs publics identiques partout en France : Audit sur place 4 h à {{price:audit-flash|flat}}, formation collective sur site à {{price:intervention-4h|flat}}, Implémentation et coaching 1-to-1 à partir de {{price:intervention-dirigeants|flat}}. Pas de devis opaque, pas de surcoût géographique en Île-de-France.",
+      a: "Tarifs publics : Audit sur place 4 h à {{price:audit-flash|flat}}, formation collective sur site à {{price:intervention-4h|flat}}, Implémentation et coaching 1-to-1 à partir de {{price:intervention-dirigeants|flat}}. Pas de devis opaque.",
     },
     {
       q: "Quels délais d'intervention sur Bourg-la-Reine ?",

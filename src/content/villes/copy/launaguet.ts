@@ -49,7 +49,7 @@ export const LAUNAGUET_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Launaguet ?",
-      a: "Oui, Axion-IA intervient à Launaguet et dans tout le nord de Toulouse (Aucamville, Castelginest, L'Union). Nos consultants se déplacent en 10 min depuis Toulouse.",
+      a: "Oui, Axion-IA intervient à Launaguet et dans tout le nord de Toulouse (Aucamville, Castelginest, L'Union). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quels secteurs accompagnez-vous à Launaguet ?",
@@ -61,7 +61,7 @@ export const LAUNAGUET_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une intervention IA à Launaguet ?",
-      a: "Nos consultants se déplacent à Launaguet depuis Toulouse (10 min D4). Intervention 1 journée minimum, atelier pratique dans vos locaux.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Intervention 1 journée minimum, atelier pratique dans vos locaux.",
     },
     {
       q: "Proposez-vous du coaching individuel à Launaguet ?",

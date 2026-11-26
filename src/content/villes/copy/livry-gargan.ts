@@ -227,7 +227,7 @@ export const LIVRY_GARGAN_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Quels sont les tarifs Axion-IA pour une mission à Livry-Gargan ?",
-      a: "Audit sur place à partir de {{price:audit-flash|flat}}, intervention sur site à partir de {{price:intervention-4h|flat}}, session un-à-un dirigeant sur devis. Tarifs publics affichés, sans surcoût géographique pour la Seine-Saint-Denis.",
+      a: "Audit sur place à partir de {{price:audit-flash|flat}}, intervention sur site à partir de {{price:intervention-4h|flat}}, session un-à-un dirigeant sur devis. Tarifs publics affichés.",
     },
     {
       q: "Sous quel délai Axion-IA peut intervenir à Livry-Gargan ?",

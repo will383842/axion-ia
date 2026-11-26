@@ -65,7 +65,7 @@ export const PONT_L_ABBE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA sur site à Pont-l'Abbé ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Pour les missions multi-jours, hébergement local possible.",
+      a: "Nous intervenons partout en France, sur place ou à distance.",
     },
   ],
 };

@@ -1003,7 +1003,7 @@ export const LYON_COPY: VilleCopy = {
     },
     {
       q: "Pouvez-vous intervenir dans les communes de la Métropole hors Lyon intra-muros ?",
-      a: "Oui. La Métropole entière est notre zone d'intervention : Villeurbanne (cluster IT), Écully (Centrale Lyon, Groupe SEB, EM Lyon), Bron (Eurexpo), Saint-Priest (Renault Trucks), Vénissieux, Caluire-et-Cuire, et les autres communes. Aucun supplément de zone.",
+      a: "Oui. La Métropole entière est notre zone d'intervention : Villeurbanne (cluster IT), Écully (Centrale Lyon, Groupe SEB, EM Lyon), Bron (Eurexpo), Saint-Priest (Renault Trucks), Vénissieux, Caluire-et-Cuire, et les autres communes.",
     },
     {
       q: "En combien de temps pouvez-vous démarrer une mission à Lyon ?",

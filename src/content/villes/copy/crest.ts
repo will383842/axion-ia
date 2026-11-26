@@ -65,7 +65,7 @@ export const CREST_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Crest ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Pour les multi-jours, hébergement local possible (hôtels Crest, gîtes vallée).",
+      a: "Nous intervenons partout en France, sur place ou à distance.",
     },
   ],
 };

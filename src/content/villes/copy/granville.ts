@@ -49,7 +49,7 @@ export const GRANVILLE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Granville et sur la côte ouest Manche ?",
-      a: "Oui, Axion-IA intervient à Granville et sur toute la côte ouest de la Manche (Avranches, Coutances, Villedieu-les-Poêles). Nos consultants se déplacent depuis Rennes (1 h 10) ou Caen (1 h 20), ou en visio.",
+      a: "Oui, Axion-IA intervient à Granville et sur toute la côte ouest de la Manche (Avranches, Coutances, Villedieu-les-Poêles). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les TPE de la pêche et ostréiculture ?",
@@ -65,7 +65,7 @@ export const GRANVILLE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Granville ?",
-      a: "Nos consultants viennent de Rennes (1 h 10) ou Caen (1 h 20). Gare de Granville (TER Paris-Montparnasse 3 h). Multi-jours : hébergement local.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Gare de Granville (TER Paris-Montparnasse 3 h). Multi-jours : hébergement local.",
     },
   ],
 };

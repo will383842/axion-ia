@@ -245,7 +245,7 @@ export const MALAKOFF_COPY: VilleCopy = {
     },
     {
       q: "Axion-IA couvre-t-il les communes autour de Malakoff ?",
-      a: "Oui, nous intervenons également à Vanves, Montrouge, Châtillon, Clamart, Bagneux et dans les arrondissements limitrophes de Paris (14e et 15e), depuis notre base à Malakoff.",
+      a: "Oui, nous intervenons également à Vanves, Montrouge, Châtillon, Clamart, Bagneux et dans les arrondissements limitrophes de Paris (14e et 15e),.",
     },
     {
       q: "Quels secteurs locaux servez-vous à Malakoff ?",

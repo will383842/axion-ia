@@ -65,7 +65,7 @@ export const VILLERS_LE_LAC_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Villers-le-Lac ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Pour les missions multi-jours, hébergement local possible.",
+      a: "Nous intervenons partout en France, sur place ou à distance.",
     },
   ],
 };

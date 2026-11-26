@@ -236,7 +236,7 @@ export const AULNAY_SOUS_BOIS_COPY: VilleCopy = {
     },
     {
       q: "Intervenez-vous dans les communes proches d'Aulnay-sous-Bois ?",
-      a: "Oui, nous nous déplaçons aussi à Sevran, Le Blanc-Mesnil, Villepinte, Gonesse, Bondy, Livry-Gargan et Les Pavillons-sous-Bois, au même tarif.",
+      a: "Oui, nous nous déplaçons aussi à Sevran, Le Blanc-Mesnil, Villepinte, Gonesse, Bondy, Livry-Gargan et Les Pavillons-sous-Bois.",
     },
     {
       q: "Comment Axion-IA garantit-il la conformité RGPD à Aulnay-sous-Bois ?",

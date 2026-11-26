@@ -65,7 +65,7 @@ export const PARIGNE_L_EVEQUE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Parigné-l'Évêque ?",
-      a: "Nos consultants interviennent depuis Le Mans (15 min). Déplacement sur site dans vos locaux professionnels, atelier ou exploitation. Gare TGV Le Mans à 20 min, Paris en 55 min TGV.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Déplacement sur site dans vos locaux professionnels, atelier ou exploitation. Gare TGV Le Mans à 20 min, Paris en 55 min TGV.",
     },
   ],
 };

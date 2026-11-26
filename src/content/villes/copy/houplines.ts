@@ -49,7 +49,7 @@ export const HOUPLINES_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Houplines et dans le bassin armentiérois ?",
-      a: "Oui, Axion-IA intervient à Houplines et dans toute l'agglomération d'Armentières (Armentières, Erquinghem-Lys, Bois-Grenier, Frelinghien) ainsi que la frontière belge des bords de Lys (Comines, Ploegsteert). Nos consultants viennent de Lille (25 min) et couvrent l'ensemble du bassin armentiérois et flandre franco-belge.",
+      a: "Oui, Axion-IA intervient à Houplines et dans toute l'agglomération d'Armentières (Armentières, Erquinghem-Lys, Bois-Grenier, Frelinghien) ainsi que la frontière belge des bords de Lys (Comines, Ploegsteert). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les PME textile-industrie armentiéroises ?",

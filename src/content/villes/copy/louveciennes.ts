@@ -65,7 +65,7 @@ export const LOUVECIENNES_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Louveciennes ?",
-      a: "Nos consultants rejoignent Louveciennes via le Transilien L (25 min Paris Saint-Lazare) ou par l'A13/A86. La Défense à 15 min.",
+      a: "Nous intervenons partout en France, sur place ou à distance. La Défense à 15 min.",
     },
   ],
 };

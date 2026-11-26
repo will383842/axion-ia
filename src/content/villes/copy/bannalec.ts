@@ -65,7 +65,7 @@ export const BANNALEC_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Bannalec ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Gare Bannalec desservie par TER Quimper-Lorient. Pour les multi-jours, hébergement local possible (hôtels Quimperlé).",
+      a: "Nous intervenons partout en France, sur place ou à distance. Gare Bannalec desservie par TER Quimper-Lorient.",
     },
   ],
 };

@@ -77,7 +77,7 @@ export const ARGENTEUIL_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Combien coûte un audit IA opérationnel à Argenteuil ?",
-      a: "Le tarif dépend du niveau retenu — Audit sur place, Ciblé, Stratégique PME ou Stratégique ETI. Tarifs publics affichés sur la page Audit, calibrés selon votre taille (TPE, PME, ETI, grande entreprise). Aucun supplément géographique : le tarif est identique à Argenteuil et partout en France.",
+      a: "Le tarif dépend du niveau retenu — Audit sur place, Ciblé, Stratégique PME ou Stratégique ETI. Tarifs publics affichés sur la page Audit, calibrés selon votre taille (TPE, PME, ETI, grande entreprise).",
     },
     {
       q: "Avez-vous des clients dans le secteur BTP à Argenteuil ?",
@@ -85,7 +85,7 @@ export const ARGENTEUIL_COPY: VilleCopy = {
     },
     {
       q: "Pouvez-vous intervenir dans les communes voisines (Bezons, Sartrouville, Colombes) ?",
-      a: "Oui. Tout le bassin argentin est notre zone d'intervention : Bezons (3 km), Sannois (3 km), Houilles (4 km), Cormeilles-en-Parisis (4 km), Sartrouville (5 km), Colombes (5 km), Bois-Colombes (6 km). Aucun supplément de zone.",
+      a: "Oui. Tout le bassin argentin est notre zone d'intervention : Bezons (3 km), Sannois (3 km), Houilles (4 km), Cormeilles-en-Parisis (4 km), Sartrouville (5 km), Colombes (5 km), Bois-Colombes (6 km).",
     },
     {
       q: "Quels secteurs sont prioritaires à Argenteuil pour une mission IA ?",
@@ -188,7 +188,7 @@ export const ARGENTEUIL_COPY: VilleCopy = {
           },
           {
             q: "Intervenez-vous aussi sur les sites des communes voisines (Bezons, Sartrouville, Colombes) ?",
-            a: "Oui. Tout le bassin argentin est notre zone d'intervention : Bezons, Sartrouville, Colombes, Cormeilles-en-Parisis, Houilles, Sannois et au-delà vers La Défense. Aucun supplément de zone.",
+            a: "Oui. Tout le bassin argentin est notre zone d'intervention : Bezons, Sartrouville, Colombes, Cormeilles-en-Parisis, Houilles, Sannois et au-delà vers La Défense.",
           },
           {
             q: "Faut-il être déjà avancé sur l'IA pour solliciter un audit ?",

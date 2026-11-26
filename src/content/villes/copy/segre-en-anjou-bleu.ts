@@ -65,7 +65,7 @@ export const SEGRE_EN_ANJOU_BLEU_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une intervention à Segré-en-Anjou Bleu ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Segré-en-Anjou Bleu est à 45 min d'Angers (D775) et de sa gare TGV Saint-Laud. Pour les missions multi-jours, hébergement local possible.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Segré-en-Anjou Bleu est à 45 min d'Angers (D775) et de sa gare TGV Saint-Laud.",
     },
   ],
 };

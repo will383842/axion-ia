@@ -65,7 +65,7 @@ export const TAIN_L_HERMITAGE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Tain-l'Hermitage ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Pour les multi-jours, hébergement local possible (gîtes domaines).",
+      a: "Nous intervenons partout en France, sur place ou à distance.",
     },
   ],
 };

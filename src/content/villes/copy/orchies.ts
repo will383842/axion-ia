@@ -49,7 +49,7 @@ export const ORCHIES_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Orchies et dans la Pévèle ?",
-      a: "Oui, Axion-IA intervient à Orchies et dans tout le Pévèle Carembault (Templeuve, Cysoing, Pont-à-Marcq, Mons-en-Pévèle). Nos consultants viennent de Lille (30 min) et couvrent l'ensemble du bassin Pévèle-Douaisis.",
+      a: "Oui, Axion-IA intervient à Orchies et dans tout le Pévèle Carembault (Templeuve, Cysoing, Pont-à-Marcq, Mons-en-Pévèle). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous la filière chicorée à Orchies ?",

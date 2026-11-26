@@ -65,7 +65,7 @@ export const VEXIN_SUR_EPTE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Vexin-sur-Epte ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Pour les multi-jours, hébergement local possible.",
+      a: "Nous intervenons partout en France, sur place ou à distance.",
     },
   ],
 };

@@ -65,7 +65,7 @@ export const CARHAIX_PLOUGUER_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Carhaix-Plouguer ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Gare TER Carhaix accessible (ligne vers Guingamp). Pour les multi-jours, hébergement local possible.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Gare TER Carhaix accessible (ligne vers Guingamp).",
     },
   ],
 };

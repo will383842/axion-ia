@@ -49,7 +49,7 @@ export const LANNILIS_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Lannilis et dans le Pays des Abers ?",
-      a: "Oui, Axion-IA intervient à Lannilis et dans tout le Pays des Abers (Plouguerneau, Landéda, Plabennec, Plouvien). Brest à 25 min en voiture, déplacements depuis l'agence Bretagne.",
+      a: "Oui, Axion-IA intervient à Lannilis et dans tout le Pays des Abers (Plouguerneau, Landéda, Plabennec, Plouvien). Brest à 25 min en voiture, déplacement sur site partout en France.",
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Lannilis  ?",

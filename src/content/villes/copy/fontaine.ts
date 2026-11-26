@@ -236,7 +236,7 @@ export const FONTAINE_COPY: VilleCopy = {
     },
     {
       q: "Intervenez-vous dans les communes proches de Fontaine ?",
-      a: "Oui, nous nous déplaçons aussi à Sassenage, Seyssinet-Pariset, Engins et Saint-Nizier-du-Moucherotte, au même tarif.",
+      a: "Oui, nous nous déplaçons aussi à Sassenage, Seyssinet-Pariset, Engins et Saint-Nizier-du-Moucherotte.",
     },
     {
       q: "Comment Axion-IA garantit-il la conformité RGPD à Fontaine ?",

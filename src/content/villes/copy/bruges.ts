@@ -242,7 +242,7 @@ export const BRUGES_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Bruges ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Pour les multi-jours, hébergement local possible (hôtels Bordeaux Lac à proximité).",
+      a: "Nous intervenons partout en France, sur place ou à distance.",
     },
   ],
 };

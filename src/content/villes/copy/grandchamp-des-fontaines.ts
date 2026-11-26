@@ -65,7 +65,7 @@ export const GRANDCHAMP_DES_FONTAINES_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une intervention depuis Nantes ?",
-      a: "Nos consultants se déplacent depuis Nantes centre (20 min). Formats demi-journée ou journée complète.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Formats demi-journée ou journée complète.",
     },
   ],
 };

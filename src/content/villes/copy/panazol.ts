@@ -65,7 +65,7 @@ export const PANAZOL_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Limoges centre ?",
-      a: "Nos consultants viennent de Limoges centre (10 min en voiture). Panazol est directement desservie par le réseau STLC.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Panazol est directement desservie par le réseau STLC.",
     },
   ],
 };

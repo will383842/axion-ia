@@ -50,7 +50,7 @@ export const JACOU_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Jacou et dans les communes limitrophes ?",
-      a: "Oui. Nous intervenons à Jacou (34830) et dans les communes limitrophes : Castelnau-le-Lez, Clapiers, Le Crès et Teyran. Déplacement depuis Montpellier en 12 min via tramway T2 (terminus Jacou) ou voiture.",
+      a: "Oui. Nous intervenons à Jacou (34830) et dans les communes limitrophes : Castelnau-le-Lez, Clapiers, Le Crès et Teyran. Nous nous déplaçons chez vous, partout en France.",
     },
     {
       q: "Quels sont vos tarifs pour une mission IA à Jacou ?",
@@ -70,7 +70,7 @@ export const JACOU_COPY: VilleCopy = {
     },
     {
       q: "Êtes-vous accessibles depuis Castelnau-le-Lez ou Le Crès en transports ?",
-      a: "Oui. Le tramway T2 dessert Castelnau-le-Lez puis Jacou (terminus). Bus 22 et 36 connectent Le Crès, Clapiers et Teyran. Pour vos équipes basées dans ces communes, les ateliers Axion-IA à Jacou sont accessibles sans voiture.",
+      a: "Oui. Le tramway T2 dessert Castelnau-le-Lez puis Jacou (terminus). Bus 22 et 36 connectent Le Crès, Clapiers et Teyran. Pour vos équipes basées dans ces communes, nous nous déplaçons chez vous.",
     },
   ],
 };

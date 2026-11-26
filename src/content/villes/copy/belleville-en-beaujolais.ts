@@ -65,7 +65,7 @@ export const BELLEVILLE_EN_BEAUJOLAIS_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Belleville-en-Beaujolais ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Pour les multi-jours, hébergement local possible (gîtes vignoble).",
+      a: "Nous intervenons partout en France, sur place ou à distance.",
     },
   ],
 };

@@ -65,7 +65,7 @@ export const GEX_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Lyon ou Genève ?",
-      a: "Nos consultants viennent de Lyon (1h30) ou Genève (20 min).",
+      a: "Nous intervenons partout en France, sur place ou à distance.",
     },
   ],
 };

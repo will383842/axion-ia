@@ -36,8 +36,8 @@ export const MAISONS_ALFORT_COPY: VilleCopy = {
       en: "Audit sur place 4h sur site à Maisons-Alfort pour cabinets vétérinaires, laboratoires, professions libérales et PME : cartographie des processus et plan d'automatisation, à partir de {{price:audit-flash|flat}}.",
     },
     interventions: {
-      fr: "Interventions ponctuelles à Maisons-Alfort pour automatiser RDV, dossiers patients, devis, facturation et reporting des TPE et PME locales, dès {{price:intervention-4h|flat}}, déplacement sous 5 jours ouvrés.",
-      en: "Interventions ponctuelles à Maisons-Alfort pour automatiser RDV, dossiers patients, devis, facturation et reporting des TPE et PME locales, dès {{price:intervention-4h|flat}}, déplacement sous 5 jours ouvrés.",
+      fr: "Interventions ponctuelles à Maisons-Alfort pour automatiser RDV, dossiers patients, devis, facturation et reporting des TPE et PME locales, dès {{price:intervention-4h|flat}}.",
+      en: "Interventions ponctuelles à Maisons-Alfort pour automatiser RDV, dossiers patients, devis, facturation et reporting des TPE et PME locales, dès {{price:intervention-4h|flat}}.",
     },
     implementation: {
       fr: "Implémentation IA en code source à Maisons-Alfort (intégration logiciel métier santé, ERP, CRM, outils laboratoire) à partir de {{price:impl-poc|entry}}, hébergement RGPD France.",

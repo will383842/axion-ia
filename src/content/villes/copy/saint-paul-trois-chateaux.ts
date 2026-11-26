@@ -65,7 +65,7 @@ export const SAINT_PAUL_TROIS_CHATEAUX_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Saint-Paul-Trois-Châteaux ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Pour les multi-jours, hébergement local possible.",
+      a: "Nous intervenons partout en France, sur place ou à distance.",
     },
   ],
 };
