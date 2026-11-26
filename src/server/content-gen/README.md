@@ -65,6 +65,18 @@ annonçait encore « openai → anthropic (fallback si 503/429) », corrigé le
 le job plutôt que de dépenser sur Anthropic. **NE PAS le remettre sans accord
 explicite de Will** (cf. `providers/provider-router.ts`, `ROLE_TO_PROVIDERS`).
 
+### Qui écrit, qui relit (état réel du code)
+
+- **Par défaut** : écriture ET relecture (juge) par OpenAI `gpt-4o`.
+- **Voie Claude** (`providers/blog-claude.ts`), seulement si `CONTENT_GEN_BLOG_CLAUDE="true"`
+  ET type autorisé (`CONTENT_GEN_CLAUDE_TYPES`, blog par défaut) ; pour l'écriture, la
+  demande doit aussi être marquée par le générateur (`blogClaudeRole`, cf. `provider-router.ts`).
+  Écriture par **Claude Sonnet 5.5** (`claude-sonnet-5-5`), relecture
+  (`reviewer/llm-judge.ts`, forçable sur OpenAI via `sansClaude`) par **Claude Opus 5.5**
+  (`claude-opus-5-5`) ; le rôle « court » (FAQ, pages ville…) passe aussi par Sonnet 5.5.
+  Plafonds invalides ou atteints, suspension, limite de relectures par jour : refus
+  (`BlogClaudeRefusError`), le job échoue, sans repli sur GPT-4o ni autre fournisseur.
+
 ## Garde-fous (§ 0.4)
 
 | Garde-fou        | Module                                    | Comportement                                              |
@@ -116,7 +128,7 @@ désactivation.
 | Provider    | Cap mensuel    | Model default                                    |
 | ----------- | -------------- | ------------------------------------------------ |
 | OpenAI text | $200           | gpt-4o ($2.50/$10/1M)                            |
-| Anthropic   | $100           | claude-sonnet-4-6 ($3/$15/1M + cache $0.30 read) |
+| Anthropic   | $100           | claude-sonnet-5-5 ($2/$10/1M + cache $0.10 read) |
 | Perplexity  | $80            | sonar-pro ($3/$15/1M + $0.005/search)            |
 | Unsplash    | $0 (free tier) | unsplash-api-v1 (50/h quota)                     |
 
