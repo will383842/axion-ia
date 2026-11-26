@@ -1548,6 +1548,13 @@ function buildAdminNavSocle(adminPrefix: string): ReadonlyArray<AdminNavItem> {
       icon: "Siren",
       group: "finances",
     },
+    // Garantie Journée IA (CGV 47.10) : suivi des échéances de remboursement (PR 2/3, 2026-11-25).
+    {
+      href: `${base}/garanties-journee-ia`,
+      label: "Garantie Journée IA (remboursements)",
+      icon: "ShieldCheck",
+      group: "finances",
+    },
     // 🔴 2026-09-23 — DÉPLACÉ EN QUEUE DU GROUPE (cf. le commentaire en tête
     // de « Facturation (Hub) », plus haut : ordre « chaud avant froid »). Un
     // rapport en lecture seule se consulte après avoir agi, pas avant.

@@ -115,15 +115,19 @@ const EMPREINTES: Readonly<
     version: 6,
   },
   convention: {
-    // v8 — 19/11/2026 : clause financeur (§ 5), clause 5 bis et ligne Qualiopi imprimées seulement
+    // v9 — 25/11/2026 : § 3, paragraphe de la garantie de remboursement de la Journée IA
+    // (`TEXTE_GARANTIE_JOURNEE_IA`, CGV 47.10), imprimé seulement si `data.journeeIa === true` ;
+    // v8 archivée.
+    // (v8 — 19/11/2026 : clause financeur (§ 5), clause 5 bis et ligne Qualiopi imprimées seulement
     // si la certification est obtenue à la génération (`data.certificationObtenue`), texte des
     // clauses inchangé et gardé ; v7 archivée.
     // (v7 — 18/11/2026 : refonte au style de la charte 2027 (`charte/v1`), texte inchangé.
     // v6 — 16/10/2026 : mention handicap, L15, NC12. v5 — 04/10/2026 : clause de condition suspensive OPCO.)
-    // v9 — 25/11/2026 : l'acompte versé reste acquis en cas d'annulation, sans condition de délai
-    // (§ 4) ; dédit formation facturé à part, ni imputable ni pris en charge par un OPCO ; v8 archivée.
-    sha: "3bf448546f1faf6f5e424dec3679d2979194a4801ae62e084339cf7f638342a1",
-    version: 9,
+    // v9 — 25/11/2026 : garantie Journée IA (§ 3), v8 archivée.
+    // v10 — 25/11/2026 : l'acompte versé reste acquis en cas d'annulation, sans condition de délai
+    // (§ 4) ; dédit formation facturé à part, ni imputable ni pris en charge par un OPCO ; v9 archivée.
+    sha: "eb5aaa82da297ee05e41de8a19e0a1586de11542d9694e3a0af348e6852b5214",
+    version: 10,
   },
   convention_tripartite: {
     // v7 — 18/11/2026 : refonte au style de la charte 2027, texte inchangé ; v6 archivée.
@@ -352,9 +356,11 @@ const EMPREINTES_ARCHIVES: Readonly<Record<string, string>> = {
   "convention.v6.tsx": "ecfd0277704317e97b34c135203f42f246f7fa932d4bb9887c7e9bb3a2bc5218",
   // 19/11/2026 : copie conforme du gabarit courant du 18/11, mention figée.
   "convention.v7.tsx": "73047fbf99819d59ed81b2a7523e1c960b51c80921a085d14a24983b8cd2bf1c",
+  // 25/11/2026 : copie conforme du gabarit courant du 19/11, mention figée.
+  "convention.v8.tsx": "6f5bccb9116ff3846249fba85bc95369ab8b1f236c4bf650262a5bc8e159c86c",
   // 25/11/2026 : copies conformes des gabarits courants d'avant la règle de l'acompte acquis
   // (mention légale figée dans le fichier).
-  "convention.v8.tsx": "6f5bccb9116ff3846249fba85bc95369ab8b1f236c4bf650262a5bc8e159c86c",
+  "convention.v9.tsx": "4bd0a3df6f9cedd1ff86000937058c9c97a33ed23524fe1122a553b42f1f8ce6",
   "convention-tripartite.v7.tsx":
     "1c9a167628836c062e5af9a11cf1f52998325b65682ece4efe6fe231bbc11ac5",
   "convention-tripartite.v6.tsx":

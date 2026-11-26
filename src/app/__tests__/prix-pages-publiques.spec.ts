@@ -240,6 +240,12 @@ const FICHIERS_EXEMPTES: Readonly<Record<string, string>> = {
 
 const EXCEPTIONS: ReadonlyArray<{ fichier: string; motif: RegExp; raison: string }> = [
   {
+    fichier: "app/[locale]/_accueil/contenu.ts",
+    motif: /formatAmount\(seuilGarantieEur\(\), "fr"\)/,
+    raison:
+      "seuil de la garantie de la Journée IA (3 fois son prix HT), calculé depuis pricing.ts par seuilGarantieEur()",
+  },
+  {
     fichier: "components/sections/AuditConversionBlocks.tsx",
     motif: /30 k€|€30k/,
     raison: "devis opaque d'un concurrent (repoussoir), pas un tarif Axion-IA",

@@ -19,7 +19,12 @@ import { echeancierPhases } from "@/server/qualiopi/devis/offre-calculs";
 import { DECLENCHEURS } from "@/server/qualiopi/devis/vue-formules";
 import type { RegimeTva, TotauxFacture } from "@/server/qualiopi/legal/tva";
 import type { PayloadAssistantV1 } from "./payload";
-import { TEXTE_DELAIS, TEXTE_GARANTIE, TEXTE_PLAFOND_RESPONSABILITE } from "./textes-rubriques";
+import {
+  TEXTE_DELAIS,
+  TEXTE_GARANTIE,
+  TEXTE_GARANTIE_JOURNEE_IA,
+  TEXTE_PLAFOND_RESPONSABILITE,
+} from "./textes-rubriques";
 import type { ErreurChamp } from "./validation-etapes";
 
 /** Titre du premier paragraphe : sert aussi à reconnaître un texte produit par l'assistant. */
@@ -93,6 +98,10 @@ export function texteConditionsPrixUnique(
     paragraphes.push(
       `Garantie de ${jours} jours.\n${nonVide(p.nonImprime["phraseGarantie"]) ?? TEXTE_GARANTIE}`,
     );
+
+  // Journée IA : garantie de remboursement (CGV 47.10). Après l'échéancier : le contrôle
+  // d'échéancier ne relit que le premier paragraphe.
+  if (p.journeeIa === true) paragraphes.push(TEXTE_GARANTIE_JOURNEE_IA);
 
   paragraphes.push(TEXTE_PLAFOND_RESPONSABILITE);
   const texte = paragraphes.join("\n\n");

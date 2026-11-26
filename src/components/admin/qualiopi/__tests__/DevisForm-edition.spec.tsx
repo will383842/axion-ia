@@ -92,6 +92,8 @@ describe("DevisForm — édition", () => {
         activite: "formation",
         refClient: "BC-12",
         conditionsParticulieres: null,
+        // Case « Journée IA » : toujours envoyée en édition (décocher efface la colonne).
+        journeeIa: false,
       },
     });
     expect(creer).not.toHaveBeenCalled();
@@ -121,5 +123,37 @@ describe("DevisForm — édition", () => {
     fireEvent.click(screen.getByRole("button", { name: "Enregistrer le brouillon" }));
     await waitFor(() => expect(modifier).toHaveBeenCalled());
     expect("refClient" in modifier.mock.calls[0]![0].input).toBe(false);
+  });
+
+  it("Journée IA : la case reflète la colonne, le paragraphe imprimé n'est pas dans le champ libre", async () => {
+    const { TEXTE_GARANTIE_JOURNEE_IA } =
+      await import("@/server/qualiopi/devis/assistant/textes-rubriques");
+    render(
+      <DevisForm
+        clients={[{ id: CLIENT_ID, numero: "AXI-CLI-001", raisonSociale: "ACME" }]}
+        offres={[]}
+        activites={[{ value: "formation", label: "Formation" }]}
+        basePath="/b"
+        edition={{
+          ...edition,
+          conditionsParticulieres: `Mon texte\n\n${TEXTE_GARANTIE_JOURNEE_IA}`,
+          journeeIa: true,
+        }}
+        defaultClientId={CLIENT_ID}
+      />,
+    );
+    const case_ = screen.getByRole("checkbox", {
+      name: "Journée IA : imprimer la garantie de remboursement (CGV art. 47.10)",
+    });
+    expect((case_ as HTMLInputElement).checked).toBe(true);
+    expect((screen.getByLabelText(/Conditions particulières/) as HTMLTextAreaElement).value).toBe(
+      "Mon texte",
+    );
+    fireEvent.click(case_);
+    fireEvent.click(screen.getByRole("button", { name: "Enregistrer le brouillon" }));
+    await waitFor(() => expect(modifier).toHaveBeenCalled());
+    const input = modifier.mock.calls[0]![0].input;
+    expect(input.journeeIa).toBe(false);
+    expect(input.conditionsParticulieres).toBe("Mon texte");
   });
 });

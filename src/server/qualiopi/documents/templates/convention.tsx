@@ -24,6 +24,7 @@ import {
   tauxFr,
 } from "@/server/qualiopi/documents/templates/pieces-charte";
 import { ACOMPTE_DEFAUT_PERCENT } from "@/server/qualiopi/documents/acompte-defaut";
+import { TEXTE_GARANTIE_JOURNEE_IA } from "@/server/qualiopi/devis/assistant/textes-rubriques";
 import { LEGAL_MENTIONS } from "@/server/qualiopi/legal/legal-mentions";
 import type { OrganismeIdentite } from "@/server/qualiopi/documents/organisme";
 import {
@@ -75,6 +76,12 @@ export interface ConventionData {
    * GARDÉ ici, mot pour mot, pour le jour de la certification.
    */
   certificationObtenue?: boolean;
+  /**
+   * Journée IA : garantie de remboursement (CGV art. 47.10) imprimée en § 3. Photo de
+   * `Devis.journeeIa` du devis de la session, prise à la GÉNÉRATION ; absent = faux. Une
+   * convention déjà signée garde son instantané : elle ne change pas.
+   */
+  journeeIa?: boolean;
   // Conditions financières
   prixHt: number;
   acomptePercent?: number;
@@ -437,6 +444,9 @@ export function ConventionPdf({
             centrale européenne majoré de 10 points, ainsi qu&apos;une indemnité forfaitaire de
             recouvrement de 40 € (articles L.441-10 et D.441-5 du Code de commerce).
           </Text>
+          {data.journeeIa === true ? (
+            <Text style={stylesPiece.paragraphe}>{TEXTE_GARANTIE_JOURNEE_IA}</Text>
+          ) : null}
         </SectionCarte>
 
         {/* 4. Conditions d'annulation */}

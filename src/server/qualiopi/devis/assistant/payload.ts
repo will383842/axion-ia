@@ -58,6 +58,12 @@ export interface PayloadAssistantV1 {
   opco: OpcoSaisie;
   formules: SaisieFormules;
   textes: TexteCopie[];
+  /**
+   * Journée IA : imprimer la garantie de remboursement (CGV art. 47.10). Devis à prix unique
+   * seulement. Miroir de la colonne `Devis.journeeIa`, qui reste la source de vérité (relue à
+   * la réouverture). Faux par défaut.
+   */
+  journeeIa: boolean;
   /** Champs de la maquette sans place dans le moteur (D1). Bornés par la taille globale. */
   nonImprime: Record<string, unknown>;
   /** Écrit par le serveur seulement : toute valeur reçue du navigateur est à ignorer. */
@@ -122,6 +128,7 @@ export function payloadVide(tvaStandardPct: number): PayloadAssistantV1 {
     opco: {},
     formules: saisieVide(tvaStandardPct),
     textes: [],
+    journeeIa: false,
     nonImprime: {},
     sync: { devisId: null, devisMajLe: null },
   };
@@ -366,6 +373,7 @@ export function lirePayload(
       opco: lireOpco(brut.opco),
       formules: lireFormules(brut.formules, TAUX_TVA_STANDARD),
       textes: lireTextes(brut.textes),
+      journeeIa: brut.journeeIa === true,
       nonImprime: estObjet(brut.nonImprime) ? { ...brut.nonImprime } : {},
       sync: {
         devisId: chaineOuNull(sync.devisId),

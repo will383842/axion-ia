@@ -34,6 +34,7 @@ vi.mock("../facturation", () => ({ facturerCommissionsDues: () => d.facturer() }
 vi.mock("@/lib/prisma", () => ({
   prisma: {
     presentationEntreprise: { findMany: () => d.presentations() },
+    presentationReservation: { findMany: vi.fn(async () => []) },
     commissionApporteur: { groupBy: () => d.groupBy(), findMany: vi.fn(async () => []) },
     pieceApporteur: { findMany: () => d.pieces(), count: () => d.piecesCount() },
     devis: { findMany: () => d.devis() },

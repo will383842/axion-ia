@@ -35,6 +35,10 @@ vi.mock("@/lib/prisma", () => {
         return { count: 1 };
       }),
     },
+    presentationReservation: {
+      findMany: vi.fn(async () => []),
+      updateMany: vi.fn(async () => ({ count: 0 })),
+    },
     presentationEntreprise: {
       findMany: vi.fn(async () => etat.presentations),
       update: vi.fn(async (a: Record<string, unknown>) => {

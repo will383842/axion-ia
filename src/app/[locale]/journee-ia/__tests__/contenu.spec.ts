@@ -6,8 +6,10 @@ import {
   RAPPORT_COMPLET,
   gainExempleEur,
   remplacerJetons,
+  SEUIL_DEVIS_DEDUCTION_EUR,
+  seuilGarantieEur,
 } from "@/content/journee-ia-commun";
-import { JOURNEE_IA_TIER } from "@/content/pricing";
+import { JOURNEE_IA_TIER, formatAmount } from "@/content/pricing";
 import { META_DESCRIPTION_MAX } from "@/lib/seo";
 import {
   CONTENU,
@@ -44,7 +46,7 @@ const toutLeTexte = [...textes(CONTENU), ...textes(TEXTES_ANNEXES), TITRE, DESCR
 const tout = toutLeTexte.join("\n");
 
 /** Mots visibles de CONTENU hors FAQ, re-mesurés le 09/11/2026 après la nouvelle carte des gains (était 872). */
-const MOTS_MESURES = 948;
+const MOTS_MESURES = 1013; // re-mesuré le 25/11/2026 (déduction détaillée, légende du seuil de garantie ; était 948)
 /** Mots du premier écran (l'accroche, sans le titre mis en couleur), mesurés de même. */
 const MOTS_PREMIER_ECRAN = 204; // re-mesuré le 09/11/2026 (nouvelle carte des gains ; était 183)
 
@@ -164,7 +166,15 @@ describe("Journée IA — contenu.ts", () => {
   });
 
   it("n'écrit aucun montant : ni symbole €, ni chiffre de prix", () => {
-    expect(tout).not.toContain("€");
+    // Seul le seuil de la garantie (3 fois le prix, calculé par `seuilGarantieEur()`) porte un « € ».
+    const sansSeuil = tout
+      .split(formatAmount(seuilGarantieEur(), "fr", { compact: true }))
+      .join("")
+      .split(formatAmount(seuilGarantieEur(), "fr"))
+      .join("")
+      .split(formatAmount(SEUIL_DEVIS_DEDUCTION_EUR, "fr")) // devis minimal de la déduction (CGV 47.7)
+      .join("");
+    expect(sansSeuil).not.toContain("€");
     // « en heures et en euros » est un libellé ; c'est un nombre suivi de « euros » qui est un montant.
     expect(tout).not.toMatch(/\d[\s\u00a0\u202f]*(euros?|eur)\b/i);
     expect(tout).not.toMatch(/\b1[\s\u00a0\u202f.]?490\b/);
@@ -223,7 +233,7 @@ describe("Journée IA — contenu.ts", () => {
     expect(CONTENU.prix.rapport).toBe(RAPPORT_COMPLET);
     expect(GARANTIE_PHRASE).toContain(DEBUT_PROMESSE);
     expect(CONTENU.prix.titreGarantie).toBe(
-      "Pas 3 fois le prix en gains identifiés\u202f? Remboursement sur demande.",
+      `Moins de ${formatAmount(seuilGarantieEur(), "fr")} de gains identifiés\u202f? Remboursement sur demande.`,
     );
     // La FAQ répète la phrase et la condition, mot pour mot.
     const faqGarantie = faq.find((f) => f.id === "faq-garantie");
@@ -232,12 +242,12 @@ describe("Journée IA — contenu.ts", () => {
     expect(JSON.stringify(CONTENU)).not.toMatch(/calculés sur un an/);
   });
 
-  it("a treize questions, aux identifiants uniques", () => {
-    expect(faq).toHaveLength(13);
+  it("a quatorze questions, aux identifiants uniques", () => {
+    expect(faq).toHaveLength(14);
     const ids = faq.map((f) => f.id);
-    expect(new Set(ids).size).toBe(13);
+    expect(new Set(ids).size).toBe(14);
     for (const id of ids) expect(id).toMatch(/^faq-[a-z-]+$/);
-    expect(new Set(faq.map((f) => f.question)).size).toBe(13);
+    expect(new Set(faq.map((f) => f.question)).size).toBe(14);
     for (const f of faq) expect(f.question.endsWith("?"), f.id).toBe(true);
   });
 
