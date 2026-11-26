@@ -50,7 +50,7 @@ import {
 } from "./regle-attribution";
 import { ajouterMois, finDeProtection } from "./regles";
 import { validationParRendezVousActive } from "./interrupteur-rendez-vous";
-import { finReservation, regleDe } from "./regle-attribution";
+import { finReservation, regleDe, type RegleAttribution } from "./regle-attribution";
 import { enregistrerReservation, lireReservations } from "./reservation-presentation";
 import { annoncerRefus } from "./refus-annonce";
 import { annoncerAttribution } from "./attribution-annonce";
@@ -203,6 +203,16 @@ export function nomComplet(prenomChiffre: string, nomChiffre: string): string {
 }
 
 export function dateCourte(d: Date): string {
+  return d.toLocaleDateString("fr-FR", {
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+    timeZone: "Europe/Paris",
+  });
+}
+
+/** « 24 janvier 2027 », heure de Paris (fin de réservation de l'accusé « rendez-vous »). */
+export function dateLongue(d: Date): string {
   return d.toLocaleDateString("fr-FR", {
     day: "numeric",
     month: "long",
@@ -592,6 +602,11 @@ interface DonneesEnvoi {
     personneEmail: string;
   };
   apporteur: { id: string; prenom: string; nom: string; email: string };
+  /**
+   * La règle de l'apporteur (`regleDe`, calculée au chargement). Absent ou `null` : la règle en
+   * vigueur (contrat 2.6, « 30 jours »), textes INCHANGÉS.
+   */
+  regle?: RegleAttribution;
 }
 
 const MOTIF_PAR_REPONSE = {
@@ -635,20 +650,34 @@ export function construireEnvoisReponse(
         ...commun,
         jobId: `entreprise-contact-apporteur-${d.presentation.id}`,
       },
-      {
-        gabarit: "apporteur-presentation-recue",
-        payload: avecTexteLibre(
-          {
-            contactName: nomApporteur,
-            entreprise: d.presentation.denomination,
-            datePresentation,
-            personnePresentee: d.presentation.personneNom,
+      d.regle === "rendez_vous"
+        ? {
+            // Validation par rendez-vous (contrat ≥ 2.8, interrupteur allumé) : l'accusé « 60 jours ».
+            // Pas de texte réécrit : le gabarit n'en porte pas (lot 7a, relu par le dirigeant).
+            gabarit: "apporteur-presentation-recue-rendez-vous",
+            payload: {
+              contactName: nomApporteur,
+              entreprise: d.presentation.denomination,
+              // `finReservation` est déjà la fin du 60e jour (jour 1 = la saisie, minuit Paris, N1).
+              dateFinReservation: dateLongue(finReservation(d.presentation.recueAt)),
+            },
+            ...versApporteur,
+            jobId: `apporteur-presentation-recue-${d.presentation.id}`,
+          }
+        : {
+            gabarit: "apporteur-presentation-recue",
+            payload: avecTexteLibre(
+              {
+                contactName: nomApporteur,
+                entreprise: d.presentation.denomination,
+                datePresentation,
+                personnePresentee: d.presentation.personneNom,
+              },
+              o.textes?.["apporteur-presentation-recue"],
+            ),
+            ...versApporteur,
+            jobId: `apporteur-presentation-recue-${d.presentation.id}`,
           },
-          o.textes?.["apporteur-presentation-recue"],
-        ),
-        ...versApporteur,
-        jobId: `apporteur-presentation-recue-${d.presentation.id}`,
-      },
     ];
   }
   return [
@@ -674,7 +703,11 @@ async function chargerDonneesEnvoi(
 ): Promise<(DonneesEnvoi & { statut: StatutPresentation; contactEnvoyeAt: Date | null }) | null> {
   const p = await prisma.presentationEntreprise.findUnique({
     where: { id },
-    include: { apporteur: { select: { id: true, prenom: true, nom: true, email: true } } },
+    include: {
+      apporteur: {
+        select: { id: true, prenom: true, nom: true, email: true, signatureApporteur: true },
+      },
+    },
   });
   if (!p) return null;
   return {
@@ -693,6 +726,7 @@ async function chargerDonneesEnvoi(
       nom: decryptPii(p.apporteur.nom) ?? "",
       email: decryptPii(p.apporteur.email) ?? "",
     },
+    regle: regleDe(p.apporteur.signatureApporteur, validationParRendezVousActive()),
   };
 }
 

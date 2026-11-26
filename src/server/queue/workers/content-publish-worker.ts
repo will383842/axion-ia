@@ -1006,7 +1006,9 @@ async function executePublishPipeline(
           title,
           ...(refreshSlugChanged ? { slug: regeneratedSlug } : {}),
           body: bodyHtmlForPersist,
-          ...(bodyText ? { bodyText } : {}),
+          // Rafraîchissement : un bodyText vide écrase l'ancien (sinon le rattrapage
+          // vectoriserait l'ancien texte alors que la publication a vu le nouveau HTML).
+          bodyText: bodyText || null,
           metaTitle,
           ...(metaDescription ? { metaDescription } : {}),
         },
@@ -1148,6 +1150,7 @@ async function executePublishPipeline(
       title,
       ...(metaDescription ? { metaDescription } : {}),
       ...(bodyText ? { bodyText } : {}),
+      bodyHtml: bodyHtmlForPersist,
     });
     await logStep(
       cgJob.id,
