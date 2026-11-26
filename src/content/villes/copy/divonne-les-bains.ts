@@ -49,7 +49,7 @@ export const DIVONNE_LES_BAINS_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Divonne-les-Bains et pays de Gex ?",
-      a: "Nous intervenons dans vos locaux à Divonne-les-Bains, partout en France.",
+      a: "Oui. Nous intervenons à Divonne-les-Bains et dans tout le pays de Gex (Gex, Ferney-Voltaire, Saint-Genis-Pouilly, Prévessin-Moëns), sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les acteurs tourisme thermal et casino ?",

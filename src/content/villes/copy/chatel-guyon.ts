@@ -49,7 +49,7 @@ export const CHATEL_GUYON_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Châtel-Guyon et alentours ?",
-      a: "Nous intervenons dans vos locaux à Châtel-Guyon, partout en France.",
+      a: "Oui, Axion-IA intervient à Châtel-Guyon et dans tout le nord de Clermont Métropole (Riom, Clermont-Ferrand, Vichy).",
     },
     {
       q: "Travaillez-vous avec les établissements thermaux ?",

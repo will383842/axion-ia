@@ -230,7 +230,7 @@ export const DECINES_CHARPIEU_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Intervenez-vous à Décines-Charpieu ?",
-      a: "Oui. Nous intervenons dans vos locaux à Décines-Charpieu, partout en France, sur place ou à distance.",
+      a: "Oui. Nos consultants interviennent directement dans vos locaux à Décines-Charpieu et dans tout l'est lyonnais. La première rencontre se fait sur site afin de comprendre votre activité réelle avant toute recommandation.",
     },
     {
       q: "Quels types d'entreprises accompagnez-vous à Décines-Charpieu ?",

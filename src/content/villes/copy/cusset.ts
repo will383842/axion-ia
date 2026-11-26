@@ -49,7 +49,7 @@ export const CUSSET_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Cusset et agglomération Vichy ?",
-      a: "Nous intervenons partout en France, sur place ou à distance.",
+      a: "Oui. Nous intervenons à Cusset et dans toute l'agglomération de Vichy (Vichy, Bellerive-sur-Allier, Abrest), sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les PME tertiaires et industrielles ?",

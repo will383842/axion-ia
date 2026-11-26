@@ -49,7 +49,7 @@ export const DOURDAN_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Dourdan et sud Essonne ?",
-      a: "Nous intervenons dans vos locaux à Dourdan, partout en France.",
+      a: "Oui, Axion-IA intervient à Dourdan et dans tout le sud Essonne-Hurepoix (Étampes, Arpajon).",
     },
     {
       q: "Travaillez-vous avec les commerçants du centre historique ?",
@@ -65,7 +65,7 @@ export const DOURDAN_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Dourdan ?",
-      a: "Nos consultants se déplacent sur site.",
+      a: "Nous intervenons sur site, dans vos locaux à Dourdan, ou à distance.",
     },
   ],
 };

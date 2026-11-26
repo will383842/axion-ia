@@ -53,7 +53,7 @@ export const DOMERAT_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Domérat et dans l'agglomération de Montluçon ?",
-      a: "Oui. Nous intervenons partout en France, sur place ou à distance.",
+      a: "Oui. Nous intervenons à Domérat et dans toute l'agglomération montluçonnaise (Montluçon, Désertines, Huriel, Prémilhat), sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les TPE artisanales et les commerces de Domérat ?",

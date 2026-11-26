@@ -230,7 +230,7 @@ export const EPERNAY_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Intervenez-vous à Épernay ?",
-      a: "Oui. Nous intervenons dans vos locaux à Épernay, partout en France, sur place ou à distance.",
+      a: "Oui. Nous intervenons directement dans vos caves, bureaux ou domaines à Épernay et dans la vallée de la Marne. La première rencontre se fait sur site, afin de comprendre votre activité viticole avant toute recommandation.",
     },
     {
       q: "Quels types d'entreprises accompagnez-vous à Épernay ?",

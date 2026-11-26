@@ -49,7 +49,7 @@ export const ELBEUF_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Elbeuf et boucle de Seine ?",
-      a: "Nous intervenons partout en France, sur place ou à distance.",
+      a: "Oui, Axion-IA intervient à Elbeuf et dans toute la boucle de Seine (Cléon, Saint-Aubin-lès-Elbeuf, Oissel, Louviers), sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les PME industrielles d'Elbeuf ?",

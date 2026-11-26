@@ -246,7 +246,7 @@ export const CLICHY_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Clichy ?",
-      a: "Nous nous déplaçons sur site.",
+      a: "Nous intervenons sur site à Clichy.",
     },
     {
       q: "Proposez-vous un accompagnement individuel pour les dirigeants ?",

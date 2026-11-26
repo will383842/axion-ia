@@ -425,7 +425,7 @@ export const CRETEIL_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Intervenez-vous à Créteil pour les audits et interventions ?",
-      a: "Oui. Nous intervenons dans vos locaux à Créteil, partout en France, sur place ou à distance.",
+      a: "Oui. Williams et l'équipe Axion-IA interviennent sur site à Créteil et dans les communes limitrophes du Val-de-Marne : Maisons-Alfort, Alfortville, Saint-Maur-des-Fossés, Bonneuil-sur-Marne, Limeil-Brévannes, Valenton et Choisy-le-Roi. Les sessions peuvent aussi se tenir en format hybride selon vos contraintes.",
     },
     {
       q: "Quels sont les tarifs pour un audit ou une intervention IA d'une TPE/PME cristolienne ?",

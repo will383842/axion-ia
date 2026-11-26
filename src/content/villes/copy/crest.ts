@@ -49,7 +49,7 @@ export const CREST_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Crest et vallée de la Drôme ?",
-      a: "Nous intervenons partout en France, sur place ou à distance.",
+      a: "Oui. Nous intervenons à Crest et dans toute la vallée de la Drôme (Aouste-sur-Sye, Saillans, Mirabel-et-Blacons, Die), sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les acteurs du tourisme patrimonial Tour de Crest ?",

@@ -49,7 +49,7 @@ export const ETRECHY_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Étréchy et dans la Vallée de la Juine ?",
-      a: "Nous intervenons dans vos locaux à Étréchy, partout en France.",
+      a: "Oui, Axion-IA intervient à Étréchy et dans la Vallée de la Juine (Étampes, Dourdan, Massy).",
     },
     {
       q: "Accompagnez-vous les artisans BTP du sud Essonne ?",

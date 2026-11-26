@@ -49,7 +49,7 @@ export const ELNE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Elne et dans la plaine du Roussillon ?",
-      a: "Nous intervenons partout en France, sur place ou à distance.",
+      a: "Oui, Axion-IA intervient à Elne et dans toute la plaine du Roussillon (Saint-Cyprien, Argelès-sur-Mer, Perpignan), sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les agriculteurs et arboriculteurs ?",

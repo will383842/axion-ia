@@ -65,7 +65,7 @@ export const CREUTZWALD_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Creutzwald ?",
-      a: "Nous intervenons dans vos locaux à Creutzwald, partout en France.",
+      a: "Nous intervenons sur place à Creutzwald, comme partout en France, ou à distance.",
     },
   ],
 };

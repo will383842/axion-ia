@@ -49,7 +49,7 @@ export const NOVES_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Noves et dans la Petite Crau ?",
-      a: "Nous intervenons dans vos locaux à Noves, partout en France. Couverture complète Vallée du Rhône sud via A7.",
+      a: "Oui. Nous intervenons à Noves et dans la Petite Crau, avec une couverture complète de la Vallée du Rhône sud, sur place ou à distance.",
     },
     {
       q: "Quel est le tarif d'un audit IA à Noves  ?",

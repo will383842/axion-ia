@@ -47,7 +47,7 @@ export const SAINT_MARTIN_LE_VINOUX_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Saint-Martin-le-Vinoux et nord grenoblois ?",
-      a: "Oui, Axion-IA intervient à Saint-Martin-le-Vinoux et tout le nord grenoblois (Saint-Égrève, La Tronche, Corenc, Le Sappey-en-Chartreuse). Couverture de la métropole grenobloise via tramway E ou A48.",
+      a: "Oui, Axion-IA intervient à Saint-Martin-le-Vinoux et tout le nord grenoblois (Saint-Égrève, La Tronche, Corenc, Le Sappey-en-Chartreuse). Couverture de toute la métropole.",
     },
     {
       q: "Accompagnez-vous les PME tertiaires saint-martinoises ?",

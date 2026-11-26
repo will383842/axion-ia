@@ -49,7 +49,7 @@ export const MONTLHERY_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Montlhéry et dans le Hurepoix ?",
-      a: "Oui, Axion-IA intervient à Montlhéry et dans tout le Hurepoix (Linas, Longpont-sur-Orge, Arpajon, La Ville-du-Bois, Nozay). Couverture axe RN20 et communes environnantes.",
+      a: "Oui, Axion-IA intervient à Montlhéry et dans tout le Hurepoix (Linas, Longpont-sur-Orge, Arpajon, La Ville-du-Bois, Nozay). Couverture des communes environnantes.",
     },
     {
       q: "Travaillez-vous avec les restaurateurs et commerçants du centre historique ?",

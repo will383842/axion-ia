@@ -246,7 +246,7 @@ export const DAX_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Dax ?",
-      a: "Nous nous déplaçons sur site.",
+      a: "Nous intervenons sur site à Dax.",
     },
     {
       q: "Proposez-vous un accompagnement individuel pour les dirigeants ?",

@@ -49,7 +49,7 @@ export const CHAMPAGNOLE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Champagnole et sur le plateau du Jura ?",
-      a: "Nous intervenons partout en France, sur place ou à distance.",
+      a: "Oui, Axion-IA intervient à Champagnole et sur l'ensemble du plateau jurassien (Lons-le-Saunier, Pontarlier, Besançon). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les plasturgistes et lunettiers de Champagnole ?",

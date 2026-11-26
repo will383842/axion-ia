@@ -234,7 +234,7 @@ export const CHAUMONT_COPY: VilleCopy = {
     },
     {
       q: "Intervenez-vous à Chaumont ?",
-      a: "Oui. Nous intervenons dans vos locaux à Chaumont, partout en France, sur place ou à distance.",
+      a: "Oui. Nous intervenons directement dans vos locaux à Chaumont, au centre-ville, à Plein'Est, La Vendue ou Dame Huguenotte.",
     },
     {
       q: "Quels délais pour une intervention IA à Chaumont ?",

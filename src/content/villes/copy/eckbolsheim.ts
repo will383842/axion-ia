@@ -65,7 +65,7 @@ export const ECKBOLSHEIM_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Eckbolsheim ?",
-      a: "Nous intervenons dans vos locaux à Eckbolsheim, partout en France.",
+      a: "Nous intervenons sur place à Eckbolsheim, comme partout en France, ou à distance.",
     },
   ],
 };

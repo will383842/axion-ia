@@ -49,7 +49,7 @@ export const FECAMP_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Fécamp et Côte d'Albâtre ?",
-      a: "Nous intervenons partout en France, sur place ou à distance.",
+      a: "Oui, Axion-IA intervient à Fécamp et sur toute la Côte d'Albâtre (Étretat, Yvetot, Saint-Valery-en-Caux). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les PME de la filière pêche fécampoise ?",

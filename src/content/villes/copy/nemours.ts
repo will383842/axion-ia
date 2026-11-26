@@ -49,7 +49,7 @@ export const NEMOURS_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il a Nemours et dans le sud Seine-et-Marne ?",
-      a: "Oui, Axion-IA intervient a Nemours et dans tout le sud de la Seine-et-Marne. Paris a 1h15 via A6, gare Transilien R.",
+      a: "Oui, Axion-IA intervient a Nemours et dans tout le sud de la Seine-et-Marne. Nous intervenons sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les PME industrielles du secteur de Nemours ?",

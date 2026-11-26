@@ -49,7 +49,7 @@ export const CHAMPAGNE_SUR_OISE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Champagne-sur-Oise et nord Val-d'Oise ?",
-      a: "Nous intervenons dans vos locaux à Champagne-sur-Oise, partout en France.",
+      a: "Oui, Axion-IA intervient à Champagne-sur-Oise et dans tout le nord du Val-d'Oise (L'Isle-Adam, Persan-Beaumont, Cergy-Pontoise).",
     },
     {
       q: "Travaillez-vous avec les commerçants et artisans de Champagne-sur-Oise ?",

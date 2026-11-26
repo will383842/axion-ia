@@ -49,7 +49,7 @@ export const ALTKIRCH_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Altkirch et dans le Sundgau ?",
-      a: "Oui, Axion-IA intervient à Altkirch et dans tout le Sundgau (Dannemarie, Ferrette, Hirsingue, Waldighoffen). Proximité Bâle et EuroAirport facilitant nos déplacements consultants.",
+      a: "Oui, Axion-IA intervient à Altkirch et dans tout le Sundgau (Dannemarie, Ferrette, Hirsingue, Waldighoffen). Nous intervenons sur place ou à distance.",
     },
     {
       q: "Quel est le tarif d'un audit IA à Altkirch  ?",

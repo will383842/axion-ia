@@ -124,7 +124,7 @@ export const EVREUX_COPY: VilleCopy = {
           },
           {
             q: "Intervenez-vous à Évreux pour ce type de projet ?",
-            a: "Oui. Nous intervenons dans vos locaux à Évreux, partout en France, sur place ou à distance.",
+            a: "Oui. Nous démarrons par un atelier sur site à Évreux, sur le Parc d'activités du Long Buisson ou dans l'agglomération Évreux Portes de Normandie, afin d'observer vos parcours réels et auditer l'existant avant toute conception.",
           },
           {
             q: "Gérez-vous l'UX/UI, le mobile et l'e-commerce, ou seulement l'IA ?",
@@ -230,7 +230,7 @@ export const EVREUX_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Intervenez-vous à Évreux ?",
-      a: "Oui. Nous intervenons dans vos locaux à Évreux, partout en France, sur place ou à distance.",
+      a: "Oui. Nous intervenons directement dans vos locaux à Évreux et dans l'Eure. La première rencontre se fait sur site afin de comprendre vos processus industriels ou de services avant toute recommandation.",
     },
     {
       q: "Quels types d'entreprises accompagnez-vous à Évreux ?",

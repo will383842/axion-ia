@@ -49,7 +49,7 @@ export const CRUSEILLES_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Cruseilles et dans le Genevois ?",
-      a: "Nous intervenons partout en France, sur place ou à distance.",
+      a: "Oui. Nous intervenons à Cruseilles et dans tout le Genevois haut-savoyard (Saint-Julien-en-Genevois, Annecy, Genève), sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les artisans et commerçants de Cruseilles ?",

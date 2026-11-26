@@ -65,7 +65,7 @@ export const ROQUEBRUNE_SUR_ARGENS_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Roquebrune-sur-Argens ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Déplacement sur site dans vos locaux professionnels, hôtel, camping, domaine viticole ou commerce. A8 directe.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Intervention sur site dans vos locaux professionnels, hôtel, camping, domaine viticole ou commerce.",
     },
   ],
 };

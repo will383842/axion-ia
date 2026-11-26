@@ -34,8 +34,8 @@ export const MONTROUGE_COPY: VilleCopy = {
       en: "Audit IA à Montrouge : diagnostic pour TPE commerce, cabinets libéraux, agences de services et PME tertiaires du sud Grand Paris. Audit sur place 4 h à {{price:audit-flash|flat}}, livrable ROI chiffré. Adapté aux écosystèmes financier et télécoms du territoire.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Montrouge, accès direct métro M4/M13. Ateliers ciblés pour TPE, PME et professions libérales : automatisation back-office, classification emails, IA métier. Formation 4 h à {{price:intervention-4h|flat}}.",
-      en: "Interventions IA sur site à Montrouge, accès direct métro M4/M13. Ateliers ciblés pour TPE, PME et professions libérales : automatisation back-office, classification emails, IA métier. Formation 4 h à {{price:intervention-4h|flat}}.",
+      fr: "Interventions IA sur site à Montrouge. Ateliers ciblés pour TPE, PME et professions libérales : automatisation back-office, classification emails, IA métier. Formation 4 h à {{price:intervention-4h|flat}}.",
+      en: "Interventions IA sur site à Montrouge. Ateliers ciblés pour TPE, PME et professions libérales : automatisation back-office, classification emails, IA métier. Formation 4 h à {{price:intervention-4h|flat}}.",
     },
     implementation: {
       fr: "Implémentation IA à Montrouge : intégration aux outils existants (CRM, ERP, bureautique) pour PME tertiaires et cabinets libéraux. Code propriétaire client, pas de no-code, pas de SaaS verrouillé. À partir de {{price:impl-poc|entry}}.",

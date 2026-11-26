@@ -142,7 +142,7 @@ export const FICHE_TOULOUSE: FicheLocale = {
       "À Toulouse, l’Urssaf recense 16 880 établissements employeurs privés et 247 636 salariés au 31 décembre 2025. Les activités scientifiques et techniques en comptent 3 913, le commerce 3 011, les autres services 1 918 et l’hébergement-restauration 1 851. Dans la fabrication de matériels de transport, 28 établissements emploient 30 964 salariés.",
     ecosysteme:
       "Aerospace Valley est le pôle de compétitivité de l’aéronautique, de l’espace et des drones, actif en Occitanie et en Nouvelle-Aquitaine. L’Université de Toulouse est une communauté d’universités et d’établissements, utile pour situer l’offre de formation locale. L’aéroport Toulouse-Blagnac complète ces repères institutionnels. Nous ne nommons aucune entreprise : cela éviterait de laisser croire à des références que nous n’avons pas.",
-    zone: "Toulouse Métropole réunit 37 communes et 832 348 habitants. Nous venons dans vos locaux, à Toulouse ou dans l’une de ces communes, sans bureau sur place. L’aéroport Toulouse-Blagnac est celui de l’agglomération ; les conditions de déplacement sont détaillées dans notre politique de déplacement. Parmi les communes de l’intercommunalité : Aigrefeuille, Aucamville, Aussonne, Balma, Beaupuy. Le matin : audit (2 à 4 h selon l’entreprise) ; l’après-midi : formation de 4 h, jusqu’à 15 personnes.",
+    zone: "Toulouse Métropole réunit 37 communes et 832 348 habitants. Nous intervenons dans vos locaux, à Toulouse ou dans l’une de ces communes, sans bureau sur place. Parmi les communes de l’intercommunalité : Aigrefeuille, Aucamville, Aussonne, Balma, Beaupuy. Le matin : audit (2 à 4 h selon l’entreprise) ; l’après-midi : formation de 4 h, jusqu’à 15 personnes.",
   },
   faqLocale: [
     {

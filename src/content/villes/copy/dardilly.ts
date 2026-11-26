@@ -49,7 +49,7 @@ export const DARDILLY_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Dardilly et Techlid ?",
-      a: "Nous intervenons partout en France, sur place ou à distance.",
+      a: "Oui. Nous intervenons à Dardilly et dans tout le technopôle Techlid / Nord-Ouest lyonnais (Écully, Limonest, Charbonnières-les-Bains), sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les PME technologiques Techlid ?",

@@ -65,7 +65,7 @@ export const VOUNEUIL_SOUS_BIARD_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Vouneuil-sous-Biard ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Alternative : vol direct aéroport Poitiers-Biard (sur la commune).",
+      a: "Nous intervenons partout en France, sur place ou à distance. Intervention sur site ou en visio.",
     },
   ],
 };

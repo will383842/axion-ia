@@ -65,7 +65,7 @@ export const FAULQUEMONT_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Faulquemont ?",
-      a: "Nous intervenons dans vos locaux à Faulquemont, partout en France.",
+      a: "Nous intervenons sur place à Faulquemont, comme partout en France, ou à distance.",
     },
   ],
 };

@@ -49,7 +49,7 @@ export const DELLE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Delle et frontière suisse ?",
-      a: "Nous intervenons dans vos locaux à Delle, partout en France.",
+      a: "Oui. Nous intervenons à Delle et dans tout le bassin transfrontalier sud du Territoire de Belfort (Belfort, Montbéliard, Boncourt côté suisse), sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les PME industrielles et sous-traitance ?",

@@ -63,7 +63,7 @@ export const COGOLIN_COPY: VilleCopy = {
     },
     {
       q: "Quels délais pour une mission à Cogolin ?",
-      a: "Intervention sous 5 jours ouvrés. Nos consultants se déplacent sur site.",
+      a: "Intervention sous 5 jours ouvrés. Nos consultants interviennent sur site.",
     },
   ],
 };

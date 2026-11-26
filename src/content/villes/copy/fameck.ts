@@ -65,7 +65,7 @@ export const FAMECK_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Fameck ?",
-      a: "Nous intervenons dans vos locaux à Fameck, partout en France.",
+      a: "Nous intervenons sur place à Fameck, comme partout en France, ou à distance.",
     },
   ],
 };

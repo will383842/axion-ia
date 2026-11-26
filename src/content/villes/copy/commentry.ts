@@ -53,7 +53,7 @@ export const COMMENTRY_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Commentry et dans le bassin de Montluçon ?",
-      a: "Nous intervenons partout en France, sur place ou à distance.",
+      a: "Oui. Nous intervenons à Commentry et dans tout le bassin montluçonnais (Montluçon, Domérat, Désertines, Néris-les-Bains), sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les PME industrielles ?",

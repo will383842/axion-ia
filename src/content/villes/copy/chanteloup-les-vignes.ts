@@ -49,7 +49,7 @@ export const CHANTELOUP_LES_VIGNES_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Chanteloup-les-Vignes et boucle de Seine ?",
-      a: "Nous intervenons dans vos locaux à Chanteloup-les-Vignes, partout en France.",
+      a: "Oui, Axion-IA intervient à Chanteloup-les-Vignes et dans la boucle de Seine (Poissy, Conflans-Sainte-Honorine, Cergy-Pontoise).",
     },
     {
       q: "Travaillez-vous avec les TPE artisans BTP de Chanteloup ?",

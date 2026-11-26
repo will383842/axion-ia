@@ -65,7 +65,7 @@ export const MONTFORT_SUR_MEU_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Montfort-sur-Meu ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. TER possible gare de Montfort-sur-Meu. Intervention sur site ou en visio.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Intervention sur site ou en visio.",
     },
   ],
 };

@@ -65,7 +65,7 @@ export const MONTAUBAN_DE_BRETAGNE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Montauban-de-Bretagne ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. TER possible gare de Montauban-de-Bretagne. Intervention sur site ou en visio.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Intervention sur site ou en visio.",
     },
   ],
 };

@@ -49,7 +49,7 @@ export const CROISSY_SUR_SEINE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Croissy-sur-Seine et bords de Seine ouest ?",
-      a: "Nous intervenons dans vos locaux à Croissy-sur-Seine, partout en France.",
+      a: "Oui. Nous intervenons à Croissy-sur-Seine et dans les communes voisines (Le Vésinet, Chatou), sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les cabinets conseil et gestion de patrimoine ?",

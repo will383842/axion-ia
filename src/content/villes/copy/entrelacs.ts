@@ -65,7 +65,7 @@ export const ENTRELACS_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Entrelacs ?",
-      a: "Nous intervenons partout en France, sur place ou à distance.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Pour les missions de plusieurs jours, un hébergement sur place est possible si nécessaire.",
     },
   ],
 };

@@ -231,7 +231,7 @@ export const CHOISY_LE_ROI_COPY: VilleCopy = {
     },
     {
       q: "Intervenez-vous à Choisy-le-Roi ?",
-      a: "Oui. Nous intervenons dans vos locaux à Choisy-le-Roi, partout en France, sur place ou à distance.",
+      a: "Oui. Les interventions se déroulent dans vos locaux, à Choisy-le-Roi ou dans les communes limitrophes (Vitry-sur-Seine, Thiais, Créteil, Orly, Alfortville).",
     },
     {
       q: "Quels délais pour une implémentation IA à Choisy-le-Roi ?",
@@ -247,7 +247,7 @@ export const CHOISY_LE_ROI_COPY: VilleCopy = {
     },
     {
       q: "Intervenez-vous aussi dans les communes limitrophes de Choisy-le-Roi ?",
-      a: "Nous intervenons partout en France, sur place ou à distance.",
+      a: "Oui. Nous intervenons à Vitry-sur-Seine, Thiais, Créteil, Orly, Alfortville, Valenton et Villeneuve-Saint-Georges.",
     },
   ],
 };

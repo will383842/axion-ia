@@ -230,7 +230,7 @@ export const ERMONT_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Intervenez-vous à Ermont ?",
-      a: "Oui. Nous intervenons dans vos locaux à Ermont, partout en France, sur place ou à distance.",
+      a: "Oui. Nous intervenons directement dans vos locaux à Ermont et dans le Val-d'Oise. La première rencontre se fait toujours sur site pour bien comprendre votre activité.",
     },
     {
       q: "Quels types d'entreprises accompagnez-vous à Ermont ?",

@@ -65,7 +65,7 @@ export const AIRE_SUR_L_ADOUR_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Aire-sur-l'Adour ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Sortie autoroute A65 directe. Mission sur site dans votre établissement.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Mission sur site dans votre établissement.",
     },
   ],
 };

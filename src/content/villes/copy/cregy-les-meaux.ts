@@ -49,7 +49,7 @@ export const CREGY_LES_MEAUX_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Crégy-lès-Meaux et environs ?",
-      a: "Nous intervenons dans vos locaux à Crégy-lès-Meaux, partout en France.",
+      a: "Oui. Nous intervenons à Crégy-lès-Meaux et dans toute l'agglomération meldoise (Meaux centre et communes voisines), sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les commerces des zones commerciales ?",

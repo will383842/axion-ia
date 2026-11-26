@@ -49,7 +49,7 @@ export const DIGOIN_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Digoin et dans le Charolais ?",
-      a: "Nous intervenons dans vos locaux à Digoin, partout en France.",
+      a: "Oui. Nous intervenons à Digoin et dans tout le Charolais (Paray-le-Monial, Moulins, Roanne), sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les artisans céramistes et faïenciers ?",

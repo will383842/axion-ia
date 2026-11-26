@@ -49,7 +49,7 @@ export const ELVEN_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Elven et dans le pays de Vannes ?",
-      a: "Nous intervenons dans vos locaux à Elven, partout en France.",
+      a: "Oui, Axion-IA intervient à Elven et dans tout le pays de Vannes (Vannes, Rennes), sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les exploitants agricoles bretons ?",

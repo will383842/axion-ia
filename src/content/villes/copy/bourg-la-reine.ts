@@ -34,8 +34,8 @@ export const BOURG_LA_REINE_COPY: VilleCopy = {
       en: "Audit IA à Bourg-la-Reine : diagnostic pour TPE commerçants, cabinets libéraux (médecins, avocats, experts-comptables), agences de services et PME du sud 92. Audit sur place 4 h à {{price:audit-flash|flat}}, livrable ROI chiffré.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Bourg-la-Reine, accès direct RER B. Ateliers ciblés pour TPE commerce, professions libérales et PME : automatisation gestion clients, classification documents, IA métier sur mesure. Formation 4 h à {{price:intervention-4h|flat}}.",
-      en: "Interventions IA sur site à Bourg-la-Reine, accès direct RER B. Ateliers ciblés pour TPE commerce, professions libérales et PME : automatisation gestion clients, classification documents, IA métier sur mesure. Formation 4 h à {{price:intervention-4h|flat}}.",
+      fr: "Interventions IA sur site à Bourg-la-Reine. Ateliers ciblés pour TPE commerce, professions libérales et PME : automatisation gestion clients, classification documents, IA métier sur mesure. Formation 4 h à {{price:intervention-4h|flat}}.",
+      en: "Interventions IA sur site à Bourg-la-Reine. Ateliers ciblés pour TPE commerce, professions libérales et PME : automatisation gestion clients, classification documents, IA métier sur mesure. Formation 4 h à {{price:intervention-4h|flat}}.",
     },
     implementation: {
       fr: "Implémentation IA à Bourg-la-Reine : intégration aux outils existants (CRM, ERP, bureautique) pour PME tertiaires et professions libérales. Code propriétaire client, pas de no-code, pas de SaaS verrouillé. À partir de {{price:impl-poc|entry}}.",

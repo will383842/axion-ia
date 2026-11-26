@@ -49,7 +49,7 @@ export const CHASSIEU_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Chassieu et Eurexpo ?",
-      a: "Nous intervenons partout en France, sur place ou à distance.",
+      a: "Oui, Axion-IA intervient à Chassieu et dans toute la zone Eurexpo et l'est lyonnais (Genas, Bron). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les acteurs événementiels Eurexpo ?",

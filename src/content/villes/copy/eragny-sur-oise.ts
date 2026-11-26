@@ -49,7 +49,7 @@ export const ERAGNY_SUR_OISE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Éragny-sur-Oise et agglo Cergy-Pontoise ?",
-      a: "Nous intervenons dans vos locaux à Éragny-sur-Oise, partout en France.",
+      a: "Oui, Axion-IA intervient à Éragny-sur-Oise et dans toute l'agglomération Cergy-Pontoise (Cergy, Paris La Défense, Paris centre).",
     },
     {
       q: "Travaillez-vous avec les commerçants de la zone commerciale ?",

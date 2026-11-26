@@ -49,7 +49,7 @@ export const CHARBONNIERES_LES_BAINS_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Charbonnières-les-Bains et ouest lyonnais ?",
-      a: "Nous intervenons partout en France, sur place ou à distance.",
+      a: "Oui, Axion-IA intervient à Charbonnières-les-Bains et dans tout l'ouest lyonnais (Écully, Dardilly, Tassin). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les acteurs tourisme thermal et casino ?",

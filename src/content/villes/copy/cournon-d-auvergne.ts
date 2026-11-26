@@ -49,7 +49,7 @@ export const COURNON_D_AUVERGNE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Cournon-d'Auvergne et Clermont Métropole ?",
-      a: "Nous intervenons partout en France, sur place ou à distance.",
+      a: "Oui. Nous intervenons à Cournon-d'Auvergne et dans toute Clermont Auvergne Métropole (Clermont-Ferrand, Chamalières, Beaumont, Aubière), sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les PME tertiaires et industrielles ?",
