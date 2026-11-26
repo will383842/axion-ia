@@ -435,10 +435,12 @@ export function ConventionTripartitePdf({
             l&apos;organisme ne les lui propose pas dans ce délai, l&apos;organisme rembourse au
             client les sommes versées pour l&apos;action concernée. Pour la seule personne morale
             non professionnelle, et hors force majeure et faute du client, il lui verse en outre une
-            indemnité d&apos;un montant égal à l&apos;acompte. Sauf faute lourde ou dolosive, le
-            client professionnel ne reçoit jamais d&apos;indemnité en plus. Les sommes suivantes
-            sont dues ; l&apos;acompte versé s&apos;impute sur elles et, sauf dans les cas prévus au
-            dernier alinéa, n&apos;est pas restitué ; la somme due ne dépasse pas le prix HT :
+            indemnité d&apos;un montant égal à l&apos;acompte, sans préjudice de la réparation du
+            préjudice qu&apos;elle prouve, sur laquelle cette indemnité s&apos;impute. Sauf faute
+            lourde ou dolosive, le client professionnel ne reçoit jamais d&apos;indemnité en plus.
+            Les sommes suivantes sont dues ; l&apos;acompte versé s&apos;impute sur elles et, sauf
+            dans les cas prévus au dernier alinéa, n&apos;est pas restitué ; la somme due ne dépasse
+            pas le prix HT :
           </Text>
           <Text style={local.listItem}>
             • Annulation à plus de 15 jours ouvrés avant le début : aucune somme en plus de

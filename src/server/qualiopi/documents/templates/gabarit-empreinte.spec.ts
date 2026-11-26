@@ -131,7 +131,7 @@ const EMPREINTES: Readonly<
     // v10 archivée.
     // v12 — 26/11/2026 : l'organisme REPORTE au lieu d'annuler (2 dates sous 3 mois, sans frais,
     // acompte reporté ; CGV 46.4) ; v11 archivée.
-    sha: "699f0a75f60f3aa9cb0b73cad12b4d9cd6cfbac7b51dc85aeb0439f1ddab3a8d",
+    sha: "3ae9c8aa6b0962275ecd918e0f7fb17ee9e92010bb31832c347ecc90e7ab5a8c",
     version: 12,
   },
   convention_tripartite: {
@@ -141,7 +141,7 @@ const EMPREINTES: Readonly<
     // v9 — 26/11/2026 : même règle de l'acompte et même clause réciproque (§ 4), mot pour mot ;
     // v8 archivée.
     // v10 — 26/11/2026 : même règle de report sans frais (§ 4), mot pour mot ; v9 archivée.
-    sha: "45acdbd3b63c5c284b6507e8c3efb282d73ea911017bfff71cd2edc89f4e492e",
+    sha: "29d6d301ad2535e71bfa5b40ccdea2919dd5f20c711fc9e28aed4119907ba492",
     version: 10,
   },
   contrat_formation: {
