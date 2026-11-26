@@ -136,7 +136,7 @@ const PALIERS = [
   },
   {
     id: PALIER_JOURNEE_IA,
-    libelle: "Journée IA (500 € par journée)",
+    libelle: "Journée IA, forfait par journée",
     detail: `${euros(FORFAIT_JOURNEE_IA_CENTS)} par journée, au prorata du prix payé (quantité = journées)`,
   },
 ];
