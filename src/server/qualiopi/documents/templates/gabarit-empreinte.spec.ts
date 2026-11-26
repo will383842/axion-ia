@@ -115,13 +115,16 @@ const EMPREINTES: Readonly<
     version: 6,
   },
   convention: {
-    // v8 — 19/11/2026 : clause financeur (§ 5), clause 5 bis et ligne Qualiopi imprimées seulement
+    // v9 — 25/11/2026 : § 3, paragraphe de la garantie de remboursement de la Journée IA
+    // (`TEXTE_GARANTIE_JOURNEE_IA`, CGV 47.10), imprimé seulement si `data.journeeIa === true` ;
+    // v8 archivée.
+    // (v8 — 19/11/2026 : clause financeur (§ 5), clause 5 bis et ligne Qualiopi imprimées seulement
     // si la certification est obtenue à la génération (`data.certificationObtenue`), texte des
     // clauses inchangé et gardé ; v7 archivée.
     // (v7 — 18/11/2026 : refonte au style de la charte 2027 (`charte/v1`), texte inchangé.
     // v6 — 16/10/2026 : mention handicap, L15, NC12. v5 — 04/10/2026 : clause de condition suspensive OPCO.)
-    sha: "fd6947a62fc4ce0131d35f5f2a5eefcd1973b2a7434f448fedb96806599d651f",
-    version: 8,
+    sha: "a287da8b30e905b5821ddb60aca317001af681664085f6783748e595b080adaa",
+    version: 9,
   },
   convention_tripartite: {
     // v7 — 18/11/2026 : refonte au style de la charte 2027, texte inchangé ; v6 archivée.
@@ -349,6 +352,8 @@ const EMPREINTES_ARCHIVES: Readonly<Record<string, string>> = {
   "convention.v6.tsx": "ecfd0277704317e97b34c135203f42f246f7fa932d4bb9887c7e9bb3a2bc5218",
   // 19/11/2026 : copie conforme du gabarit courant du 18/11, mention figée.
   "convention.v7.tsx": "73047fbf99819d59ed81b2a7523e1c960b51c80921a085d14a24983b8cd2bf1c",
+  // 25/11/2026 : copie conforme du gabarit courant du 19/11, mention figée.
+  "convention.v8.tsx": "6f5bccb9116ff3846249fba85bc95369ab8b1f236c4bf650262a5bc8e159c86c",
   "convention-tripartite.v6.tsx":
     "e994a458883987781d2b3b4b4d2d2c00dc782ee8248fe75d6846b4544f4a7660",
   "contrat-formation.v2.tsx": "50a48f4ac853f805ab112d463ae15a2a61c5548eb02231db18aee78b420b3fa3",
