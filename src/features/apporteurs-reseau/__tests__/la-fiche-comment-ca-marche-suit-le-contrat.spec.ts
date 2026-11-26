@@ -21,13 +21,16 @@ describe("fiche « Comment ça marche » ↔ contrat 2.3", () => {
     /relevé chaque début de mois/,
     /Barème/,
     /Dès que nous l'avons contactée/,
+    /par conférence/, // contrat 2.8 : la conférence ne donne plus de commission
   ])("ne contient plus %s", (motif) => expect(texte).not.toMatch(motif));
 
   it("dit ce que dit le contrat : formulaire seul, 60 jours de réservation, 6 mois depuis le rendez-vous, 3 mois une seule fois, commission due au paiement à 100 %, SIREN actif", () => {
     expect(texte).toMatch(/un e-mail ne vaut pas déclaration/);
     expect(texte).toMatch(/réservée 60 jours/);
     expect(texte).toMatch(/6 mois à compter du jour de ce rendez-vous ou de cette signature/);
-    expect(texte).not.toMatch(/prestation est <?b?>?réalisée|6 mois à compter de votre déclaration|réalisée et entièrement payée/);
+    expect(texte).not.toMatch(
+      /prestation est <?b?>?réalisée|6 mois à compter de votre déclaration|réalisée et entièrement payée/,
+    );
     expect(texte).toMatch(/3 mois de plus, une seule fois/);
     expect(texte).toMatch(/même si le travail n'est pas encore livré/);
     expect(texte).toMatch(/SIREN valide et actif/);
