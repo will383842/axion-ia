@@ -602,7 +602,11 @@ export function htLignesRecurrentesRestantesCents(
     (s, l) => s + htLignesRecurrentesCents(l),
     0,
   );
-  return Math.min(htLignesRecurrentesCents(lignesCommande), Math.max(0, facture - rendu));
+  const duDevisBrut = htLignesRecurrentesCents(lignesCommande);
+  // Les factures ne portent pas toute la maintenance du devis (acomptes à ligne unique, facture libre
+  // « selon devis ») : leur détail ne prouve rien, la maintenance du devis reste retirée.
+  if (facture < duDevisBrut) return duDevis;
+  return Math.min(duDevisBrut, Math.max(0, facture - rendu));
 }
 
 /** Base commissionnable : le net HT moins les lignes récurrentes du devis (jamais négatif). */

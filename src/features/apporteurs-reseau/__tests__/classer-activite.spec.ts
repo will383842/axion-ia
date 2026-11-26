@@ -101,6 +101,24 @@ describe("ligne « à qualifier » d'une activité inconnue : qualifiable ou cla
     expect(etat.maj[0]!.data).toMatchObject({ montantCents: 0, statut: "versee" });
     expect(etat.maj[1]!.where).toMatchObject({ apporteurId: "PAR1", parrainage: true });
   });
+  it("classement manuel en conférence signée AVANT le 26/11/2026 : forfait de l'ancien contrat (500 €)", async () => {
+    etat.signeeAt = new Date("2026-11-20T00:00:00Z");
+    etat.commission = { ...ligne, factureHtCents: 210_000 };
+    const r = await classerActiviteCommission("C1", "conference");
+    expect(r.ok).toBe(true);
+    expect(etat.maj[0]!.data).toMatchObject({ montantCents: 50_000 });
+  });
+  it("palier « conférence » d'une commande signée AVANT le 26/11/2026 : 500 € ; APRÈS : refus", async () => {
+    etat.signeeAt = new Date("2026-11-20T00:00:00Z");
+    etat.commission = { ...ligne, activite: "conference", factureHtCents: 210_000 };
+    const avant = await qualifierCommission("C1", "conference", 1);
+    expect(avant).toEqual({ ok: true, montantCents: 50_000 });
+    etat.maj.length = 0;
+    etat.signeeAt = new Date("2026-12-01T00:00:00Z");
+    const apres = await qualifierCommission("C1", "conference", 1);
+    expect(apres.ok).toBe(false);
+    expect(etat.maj).toHaveLength(0);
+  });
   it("facture typée formation : le palier « Conférence » ne se qualifie plus (aucune commission)", async () => {
     etat.commission = { ...ligne, activite: "formation", factureHtCents: 100_000 };
     const r = await qualifierCommission("C1", "conference", 1);

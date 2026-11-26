@@ -358,6 +358,16 @@ describe("lignes récurrentes : cas limites", () => {
     expect(htLignesRecurrentesRestantesCents(devis, [], [devis, devis])).toBe(15_000);
     expect(htLignesRecurrentesRestantesCents(devis, [avoirTotal, avoirTotal], [devis])).toBe(0);
   });
+  it("deux acomptes à ligne unique sans solde : la maintenance du devis reste retirée (600 €, pas 622,50 €)", () => {
+    const devis = [
+      { designation: "Mise en service", quantite: 1, prixUnitaireHtCents: 400_000 },
+      { designation: "Maintenance", quantite: 1, prixUnitaireHtCents: 15_000 },
+    ];
+    const acompte = [
+      { designation: "Acompte de 50 % — devis D1", quantite: 1, prixUnitaireHtCents: 207_500 },
+    ];
+    expect(htLignesRecurrentesRestantesCents(devis, [], [acompte, acompte])).toBe(15_000);
+  });
   it("avoir « Maintenance » + facture complémentaire de maintenance : récurrent restant = 150", () => {
     const devis = [{ designation: "Maintenance", quantite: 1, prixUnitaireHtCents: 15_000 }];
     const avoir = [{ designation: "Maintenance", quantite: 1, prixUnitaireHtCents: -15_000 }];

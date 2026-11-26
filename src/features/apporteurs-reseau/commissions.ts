@@ -409,17 +409,20 @@ export async function classerActiviteCommission(
   // Développement web : jamais de commission rétroactive (4.1) — une commande signée avant la date
   // d'effet est close à 0 €, comme au passage quotidien. Date illisible : close aussi (prudence).
   let venteAnterieure = false;
-  if (choisie === "site_web") {
+  // Conférence : une commande signée avant la date d'effet garde le forfait de l'ancien contrat.
+  let signeeAt: Date | null = null;
+  if (choisie === "site_web" || choisie === "conference") {
     const fac = await prisma.factureFormation.findUnique({
       where: { id: c.factureId },
       select: { emiseAt: true, devis: { select: { acceptedAt: true } } },
     });
-    const signeeAt = fac?.devis?.acceptedAt ?? fac?.emiseAt ?? null;
-    venteAnterieure = !signeeAt || signeeAt < DEVELOPPEMENT_WEB_COMMISSIONNE_DEPUIS;
+    signeeAt = fac?.devis?.acceptedAt ?? fac?.emiseAt ?? null;
+    if (choisie === "site_web")
+      venteAnterieure = !signeeAt || signeeAt < DEVELOPPEMENT_WEB_COMMISSIONNE_DEPUIS;
   }
   const calc: CalculCommission = venteAnterieure
     ? { statut: "aucune" }
-    : calculerCommission({ activite: choisie, factureHtCents: c.factureHtCents });
+    : calculerCommission({ activite: choisie, factureHtCents: c.factureHtCents, signeeAt });
   if (calc.statut === "aucune") {
     // La vraie raison, jamais un message générique : une commande de développement web signée avant
     // la date d'effet n'est pas « sans commission », elle est antérieure au contrat 2.8.

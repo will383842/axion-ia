@@ -800,11 +800,18 @@ describe("commande mixte : mise en service + maintenance", () => {
   it("facture refaite après un avoir total : la commission reste 600 € (jamais 622,50 €)", async () => {
     const f1 = { ...fm, lignes: LM(1, 15_000) } as unknown as F;
     const f2 = { ...fm, id: "F2", lignes: LM(1, 15_000) } as unknown as F;
-    const av = { ...avm("payee", 415_000), lignes: LM(1, -15_000) } as unknown as F;
+    const av = {
+      ...avm("payee", 415_000),
+      lignes: [
+        { designation: "Mise en service du site", quantite: 1, prixUnitaireHtCents: -400_000 },
+        { designation: "Maintenance mensuelle", quantite: 1, prixUnitaireHtCents: -15_000 },
+      ],
+    } as unknown as F;
     d.factures = [f1, f2, av];
     d.lignes = [lm()];
     await reprendreApresAvoirsClients(LE);
-    expect(ecritures()).not.toContainEqual(expect.objectContaining({ montantCents: 62_250 }));
+    expect(d.reduire).not.toHaveBeenCalled();
+    expect(ecritures()).toEqual([]);
   });
 
   it("avoir « Maintenance » puis facture complémentaire de maintenance : 600 €, pas 622,50 €", async () => {
@@ -822,6 +829,7 @@ describe("commande mixte : mise en service + maintenance", () => {
     d.factures = [f1, f2, av];
     d.lignes = [lm()];
     await reprendreApresAvoirsClients(LE);
-    expect(ecritures()).not.toContainEqual(expect.objectContaining({ montantCents: 62_250 }));
+    expect(d.reduire).not.toHaveBeenCalled();
+    expect(ecritures()).toEqual([]);
   });
 });
