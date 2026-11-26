@@ -99,7 +99,7 @@ describe("textes de la validation par rendez-vous (apporteur et page)", () => {
       "Après votre déclaration, nous prenons contact avec l'entreprise de votre part.",
       "Cet établissement vous est réservé 6 mois à compter de votre déclaration. Si vous avez rencontré la direction de l'entreprise, écrivez-nous : nous pouvons étendre votre réservation à toute l'entreprise.",
       "Si elle a déjà été présentée ou nous est déjà connue, nous vous le disons.",
-      "Toute commande signée pendant cette période vous est commissionnée, dès que la prestation est réalisée et entièrement payée.",
+      "Toute commande signée pendant cette période vous est commissionnée, dès que le client a payé l'intégralité, même si la prestation n'est pas encore livrée.",
     ]);
   });
 });

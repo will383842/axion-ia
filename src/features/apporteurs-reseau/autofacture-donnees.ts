@@ -8,6 +8,7 @@
 
 import { ajouterJoursOuvres, estJourFerieFrance } from "@/lib/jours-ouvres";
 import { PALIERS_FORMATION } from "./regles";
+import { PREFIXE_PALIER_COMPLEMENT } from "./commandes";
 import { sirenValide } from "./regles-dossier";
 import type { AutofactureData } from "@/server/qualiopi/documents/templates/autofacture-honoraires";
 import type { OrganismeIdentite } from "@/server/qualiopi/documents/organisme";
@@ -99,6 +100,9 @@ export function designationCommission(c: CommissionPourAutofacture): string {
   // Art. 4.6 : aucun montant par filleul. Ni prix facturé, ni prix public, ni palier du filleul.
   // Art. 4.6 : une ligne unique, sans identité du filleul, sans commande, prix ni commission.
   if (c.parrainage) return LIBELLE_PARRAINAGE;
+  // Complément : le client a de nouveau payé la commande après une reprise ou une réduction.
+  if (c.palier?.startsWith(PREFIXE_PALIER_COMPLEMENT))
+    return `Commission d'apport (${c.activite}) — complément : le client a de nouveau payé la commande (art. 4.5)`;
   // Conférence : forfait fixe par commande, ni palier de formation ni prix public à rappeler.
   if (c.activite === "conference") {
     const prixConf =
@@ -313,9 +317,18 @@ export function jourParis(d: Date): string {
   }).format(d);
 }
 
-/** Échéance ferme : jour de Paris de l'émission + 30 jours calendaires (rendue à midi UTC). */
-export function echeancePaiement(emission: Date): Date {
-  const [a, m, j] = jourParis(emission).split("-").map(Number);
+/**
+ * Échéance ferme : jour de Paris + 30 jours calendaires (rendue à midi UTC). Règle du 25/11 : le
+ * délai court depuis le PAIEMENT INTÉGRAL du client (`paiementIntegral`), pas depuis l'émission de
+ * l'autofacture (qui peut attendre une donnée de l'apporteur). Sans date de paiement connue, ou si
+ * elle est postérieure à l'émission, on garde l'émission (jamais plus tard que l'ancien calcul).
+ */
+export function echeancePaiement(emission: Date, paiementIntegral?: Date | null): Date {
+  const depart =
+    paiementIntegral && paiementIntegral.getTime() < emission.getTime()
+      ? paiementIntegral
+      : emission;
+  const [a, m, j] = jourParis(depart).split("-").map(Number);
   return new Date(Date.UTC(a!, m! - 1, j! + ECHEANCE_JOURS, 12));
 }
 
@@ -349,6 +362,7 @@ export function objectifVirement(emission: Date): Date {
 export function etatEcheances(
   emission: Date,
   maintenant: Date,
+  paiementIntegral?: Date | null,
 ): {
   objectif: Date;
   echeance: Date;
@@ -356,7 +370,7 @@ export function etatEcheances(
   echeanceDepassee: boolean;
 } {
   const objectif = objectifVirement(emission);
-  const echeance = echeancePaiement(emission);
+  const echeance = echeancePaiement(emission, paiementIntegral);
   const jour = jourParis(maintenant);
   return {
     objectif,
@@ -394,6 +408,8 @@ export function donneesManquantesAutofacture(a: {
 
 /** Données du gabarit, ou le motif pour lequel la pièce ne peut pas être établie. */
 export function construireDonneesAutofacture(e: {
+  /** Paiement intégral du client : le délai de 30 jours court de là (règle du 25/11). */
+  paiementIntegral?: Date | null;
   numero: string;
   /** Période des prestations imprimée sur la pièce, ex. « commissions exigibles au 6 octobre 2026 ». */
   periodeLibelle: string;
@@ -425,7 +441,7 @@ export function construireDonneesAutofacture(e: {
       dateEmission: dateFr(e.dateEmission),
       // L'autofacture est datée du jour d'établissement ; la date de prestation est l'encaissement retenu.
       datePrestation: dateFr(dateEncaissementRetenue(e.dateEmission)),
-      dateEcheance: dateFr(echeancePaiement(e.dateEmission)),
+      dateEcheance: dateFr(echeancePaiement(e.dateEmission, e.paiementIntegral)),
       contestationAvant: dateFr(limite),
       periodeLabel: e.periodeLibelle,
       sousTraitant: {

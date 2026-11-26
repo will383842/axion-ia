@@ -71,6 +71,7 @@ export function etatInitial(p: ParamsInitiaux): EtatAssistant {
     proposition: "prix_unique",
     formulesActives: p.formulesActives,
     garantie: { afficher: true, jours: "", phrase: "" },
+    garantieJournee: false,
     delais: { texte: "", fourchette: "" },
     achat: {
       phases: [phaseSolde("phase-a-1")],
@@ -332,6 +333,10 @@ export function deserialiser(brut: unknown): ResultatLecture {
   return {
     ok: true,
     etape: etape as Etape,
-    etat: JSON.parse(JSON.stringify(etat)) as EtatAssistant,
+    // Un ancien brouillon n'a pas ce champ : faux (la colonne du devis fait foi à la réouverture).
+    etat: {
+      ...(JSON.parse(JSON.stringify(etat)) as EtatAssistant),
+      garantieJournee: etat["garantieJournee"] === true,
+    },
   };
 }

@@ -3,6 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import type { ReactNode } from "react";
+import { DELAI_RAPPORT_JOURS_OUVRES } from "@/content/journee-ia-commun";
 import type { Chiffres } from "./chiffres";
 
 export function SectionsPub({
@@ -302,7 +303,7 @@ export function SectionsPub({
                     </span>
                     <span className="t">
                       <b>Dans leurs locaux, partout en France.</b> Rapport et plan d’action sur 90
-                      jours sous 3 jours ouvrés.
+                      jours sous {DELAI_RAPPORT_JOURS_OUVRES} jours ouvrés.
                     </span>
                   </li>
                 </ul>

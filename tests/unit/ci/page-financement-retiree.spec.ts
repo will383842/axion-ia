@@ -67,7 +67,7 @@ describe("aucun chemin vers la page dans le code ni dans les fichiers publics", 
 
 describe("déduction de la Journée IA", () => {
   const phrase =
-    "Si vous nous confiez ensuite la mise en place d’une automatisation ou d’une intégration dans les 60 jours, les 1 490 € HT de la Journée IA sont déduits de votre devis.";
+    "Si vous signez, dans les 60 jours suivant la journée, un devis de mise en place d'une automatisation ou d'une intégration d'au moins 5 000 € HT avant déduction, les 1 490 € HT de la Journée IA sont déduits de ce devis, une seule fois. Cette déduction ne se cumule pas avec un remboursement au titre de la garantie.";
   const norm = (t: string) => t.replace(/[\u202f\u00a0]/g, " ");
 
   it("la phrase est exacte une fois le prix résolu", () => {

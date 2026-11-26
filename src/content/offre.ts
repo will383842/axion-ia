@@ -14,7 +14,12 @@
 //
 // ⚠️ `journee-ia-commun.ts` ne doit jamais importer ce fichier (sens unique, pas de cycle).
 
-import { CONDITION_GARANTIE, GARANTIE_PHRASE, RAPPORT_COMPLET } from "@/content/journee-ia-commun";
+import {
+  CONDITION_GARANTIE,
+  DELAI_RAPPORT_JOURS_OUVRES,
+  GARANTIE_PHRASE,
+  RAPPORT_COMPLET,
+} from "@/content/journee-ia-commun";
 import { JOURNEE_IA_TIER, formatTierPrice } from "@/content/pricing";
 
 /** Le rendez-vous gratuit, UNIQUE, qui ouvre toute relation (décision de Williams, 08/11/2026). */
@@ -39,7 +44,7 @@ export interface DerouleJournee {
   readonly matin: "audit";
   readonly apresMidi: "formation";
   readonly heuresFormationApresMidi: 4;
-  readonly rapportJoursOuvres: 3;
+  readonly rapportJoursOuvres: typeof DELAI_RAPPORT_JOURS_OUVRES;
   readonly planActionJours: 90;
 }
 
@@ -73,7 +78,7 @@ export const OFFRE_JOURNEE_IA: OffreJourneeIa = {
     matin: "audit",
     apresMidi: "formation",
     heuresFormationApresMidi: 4,
-    rapportJoursOuvres: 3,
+    rapportJoursOuvres: DELAI_RAPPORT_JOURS_OUVRES,
     planActionJours: 90,
   },
   cible: { libelle: "PME et TPE", effectifMin: 2, effectifMax: 250 },
