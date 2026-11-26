@@ -49,7 +49,7 @@ export const FLORANGE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Florange ?",
-      a: "Oui, Axion-IA intervient à Florange et dans la vallée de la Fensch (Hayange, Sérémange-Erzange, Uckange). Consultants via A30/A31 ou gare SNCF Hayange/Thionville. Position stratégique frontière Luxembourg (30 min).",
+      a: "Oui, Axion-IA intervient à Florange et dans la vallée de la Fensch (Hayange, Sérémange-Erzange, Uckange).",
     },
     {
       q: "Travaillez-vous avec les PME industrielles et sous-traitants ?",
@@ -65,7 +65,7 @@ export const FLORANGE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Florange ?",
-      a: "Nos consultants se déplacent via autoroutes A30/A31 ou gares SNCF de Hayange/Thionville. Position stratégique vallée Fensch, Luxembourg à 30 min, Metz à 30 min.",
+      a: "Nous intervenons dans vos locaux à Florange, partout en France.",
     },
   ],
 };

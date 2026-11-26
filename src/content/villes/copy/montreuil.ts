@@ -88,8 +88,8 @@ export const MONTREUIL_COPY: VilleCopy = {
       a: "Oui. Les directions financières, équipes crédit, compliance et gestion des risques figurent parmi nos profils d'intervention récurrents. Nos démos s'appuient sur vos données réelles (reporting, scoring, contrats) pour montrer l'IA appliquée à vos vrais workflows.",
     },
     {
-      q: "Comment rejoindre Montreuil pour une intervention depuis Paris ou la banlieue ?",
-      a: "Le centre-ville et le Bas-Montreuil sont directement desservis par le métro ligne 9 (Croix de Chavaux, Robespierre, Mairie de Montreuil). Depuis Paris intra-muros, le trajet est court. Nos consultants gèrent leur déplacement",
+      q: "Intervenez-vous à Montreuil ?",
+      a: "Oui. Nous intervenons dans vos locaux à Montreuil, partout en France, sur place ou à distance.",
     },
     {
       q: "En combien de temps pouvez-vous démarrer une mission à Montreuil ?",

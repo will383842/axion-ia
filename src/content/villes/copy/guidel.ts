@@ -64,8 +64,8 @@ export const GUIDEL_COPY: VilleCopy = {
       a: "Oui, gestion devis, planning chantiers, suivi marges, maintenance prédictive, optimisation supply chain, e-commerce pour artisans BTP et professionnels du nautisme de Guidel.",
     },
     {
-      q: "Comment accéder à Guidel depuis Paris ?",
-      a: "Gare TGV de Lorient à 25 min (Paris-Montparnasse à 3 h en TGV direct). Aéroport Lorient Bretagne Sud à 15 min. Voie express RN 165 à 5 min.",
+      q: "Intervenez-vous à Guidel ?",
+      a: "Oui. Nous intervenons dans vos locaux à Guidel, partout en France, sur place ou à distance.",
     },
   ],
 };

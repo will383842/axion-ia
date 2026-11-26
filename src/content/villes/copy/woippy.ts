@@ -49,7 +49,7 @@ export const WOIPPY_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Woippy ?",
-      a: "Oui, Axion-IA intervient à Woippy et dans toute Metz Métropole (Metz, La Maxe, Saint-Julien-lès-Metz). Consultants via gare Metz-Ville à 10 min ou autoroutes A31/A4. Position stratégique nord-Metz.",
+      a: "Oui, Axion-IA intervient à Woippy et dans toute Metz Métropole (Metz, La Maxe, Saint-Julien-lès-Metz). Position stratégique nord-Metz.",
     },
     {
       q: "Travaillez-vous avec les PME logistique et services ?",

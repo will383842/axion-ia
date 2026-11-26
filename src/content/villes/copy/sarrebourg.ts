@@ -49,7 +49,7 @@ export const SARREBOURG_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Sarrebourg ?",
-      a: "Oui, Axion-IA intervient à Sarrebourg et dans son arrondissement (Phalsbourg, Saverne à proximité). Consultants via gare SNCF Sarrebourg (TGV) ou A4. Position carrefour entre Metz, Nancy, Strasbourg.",
+      a: "Oui, Axion-IA intervient à Sarrebourg et dans son arrondissement (Phalsbourg, Saverne à proximité). Position carrefour entre Metz, Nancy, Strasbourg.",
     },
     {
       q: "Travaillez-vous avec les PME industrielles et cristalliers ?",

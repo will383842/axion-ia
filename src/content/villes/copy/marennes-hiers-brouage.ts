@@ -49,7 +49,7 @@ export const MARENNES_HIERS_BROUAGE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Marennes-Hiers-Brouage ?",
-      a: "Oui, Axion-IA intervient à Marennes-Hiers-Brouage et tout le bassin ostréicole Marennes-Oléron. Nos consultants accèdent facilement via Rochefort (20 min) ou La Rochelle (40 min, N137).",
+      a: "Oui, Axion-IA intervient à Marennes-Hiers-Brouage et tout le bassin ostréicole Marennes-Oléron.",
     },
     {
       q: "Quels services IA pour les ostréiculteurs de Marennes ?",

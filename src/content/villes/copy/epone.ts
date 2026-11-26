@@ -49,7 +49,7 @@ export const EPONE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Épône et dans la vallée de Seine ?",
-      a: "Oui, Axion-IA intervient à Épône et dans toute la vallée de Seine yvelinoise (Mantes-la-Jolie à 10 min, Les Mureaux à 10 min, Aubergenville, Mézières-sur-Seine). Nos consultants se déplacent via A13 ou Transilien J.",
+      a: "Oui, Axion-IA intervient à Épône et dans toute la vallée de Seine yvelinoise (Mantes-la-Jolie à 10 min, Les Mureaux à 10 min, Aubergenville, Mézières-sur-Seine).",
     },
     {
       q: "Accompagnez-vous les PME logistiques de l'axe Seine ?",

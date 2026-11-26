@@ -49,7 +49,7 @@ export const SAINT_JEAN_DE_VEDAS_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Saint-Jean-de-Védas ?",
-      a: "Oui, Axion-IA intervient à Saint-Jean-de-Védas et dans toute l'agglomération de Montpellier sud-ouest. Consultants accessibles via le tramway T2 (10 min Montpellier centre), la gare TGV Montpellier-Saint-Roch (15 min) et l'aéroport (15 min).",
+      a: "Oui, Axion-IA intervient à Saint-Jean-de-Védas et dans toute l'agglomération de Montpellier sud-ouest.",
     },
     {
       q: "Quel est le tarif d'un audit IA à Saint-Jean-de-Védas  ?",

@@ -64,8 +64,8 @@ export const LIEUSAINT_COPY: VilleCopy = {
       a: "Oui, nos interventions IA sur site à Lieusaint sont adaptées aux TPE artisans et commerces. Formats demi-journée ou journée complète, vos équipes repartent autonomes sur les outils IA configurés métier.",
     },
     {
-      q: "Comment accédez-vous à Lieusaint depuis Paris ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Accès direct A5 et Francilienne N104.",
+      q: "Intervenez-vous à Lieusaint ?",
+      a: "Oui. Nous intervenons dans vos locaux à Lieusaint, partout en France, sur place ou à distance.",
     },
   ],
 };

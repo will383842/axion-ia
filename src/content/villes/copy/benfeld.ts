@@ -49,7 +49,7 @@ export const BENFELD_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Benfeld ?",
-      a: "Oui, Axion-IA intervient à Benfeld et dans le Ried alsacien (Erstein, Sélestat, Marckolsheim). Consultants via A35 ou gares SNCF. Bassin rural et agricole entre Strasbourg et Sélestat, au bord de l'Ill.",
+      a: "Oui, Axion-IA intervient à Benfeld et dans le Ried alsacien (Erstein, Sélestat, Marckolsheim). Bassin rural et agricole entre Strasbourg et Sélestat, au bord de l'Ill.",
     },
     {
       q: "Travaillez-vous avec les TPE/PME agriculture et agroalimentaire ?",
@@ -65,7 +65,7 @@ export const BENFELD_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Benfeld ?",
-      a: "Nos consultants se déplacent via autoroute A35 (accès direct 5 min) ou gares SNCF. Bassin rural et agricole du Ried, entre Strasbourg (35 min) et Sélestat (15 min).",
+      a: "Nous intervenons dans vos locaux à Benfeld, partout en France.",
     },
   ],
 };

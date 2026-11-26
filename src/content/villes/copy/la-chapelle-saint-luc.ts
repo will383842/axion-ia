@@ -64,8 +64,8 @@ export const LA_CHAPELLE_SAINT_LUC_COPY: VilleCopy = {
       a: "Oui, CRM client, automatisation devis, gestion stocks, planning interventions, fidélisation, communication locale pour commerces et artisans de proximité TPE/PME.",
     },
     {
-      q: "Comment accéder à La Chapelle-Saint-Luc depuis Paris ?",
-      a: "TGV Paris-Est à Troyes en 1 h 30, puis 5 min en voiture. Autoroute A5 directe en 1 h 45. Aéroport CDG à 1 h 45.",
+      q: "Intervenez-vous à La Chapelle-Saint-Luc ?",
+      a: "Oui. Nous intervenons dans vos locaux à La Chapelle-Saint-Luc, partout en France, sur place ou à distance.",
     },
   ],
 };

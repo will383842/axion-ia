@@ -64,8 +64,8 @@ export const LANNILIS_COPY: VilleCopy = {
       a: "Oui, devis automatisés, planning chantiers, suivi clients, gestion stocks commerces, fidélisation locale, présence Google Business Profile pour artisans et commerçants.",
     },
     {
-      q: "Comment accéder à Lannilis depuis Brest ?",
-      a: "Lannilis est à 25 min de Brest en voiture (D788). Gare TGV Brest à 30 min, aéroport Brest-Bretagne à 25 min.",
+      q: "Intervenez-vous à Lannilis ?",
+      a: "Oui. Nous intervenons dans vos locaux à Lannilis, partout en France, sur place ou à distance.",
     },
   ],
 };

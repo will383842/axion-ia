@@ -64,8 +64,8 @@ export const MONDEVILLE_COPY: VilleCopy = {
       a: "L'Audit sur place démarre à {{price:audit-flash|flat}}. Tarifs publics consultables sur notre site. Devis adapté selon la taille de votre structure (TPE, PME, ETI) et la complexité de vos processus métier.",
     },
     {
-      q: "Êtes-vous accessibles en transport depuis Mondeville ?",
-      a: "Oui, Mondeville est desservie par le tramway T2 depuis Caen centre. Nos consultants se déplacent directement sur site.",
+      q: "Intervenez-vous à Mondeville ?",
+      a: "Oui. Nous intervenons dans vos locaux à Mondeville, partout en France, sur place ou à distance.",
     },
   ],
 };

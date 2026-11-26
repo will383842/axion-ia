@@ -65,7 +65,7 @@ export const LEGE_CAP_FERRET_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Lège-Cap-Ferret ?",
-      a: "Nos consultants interviennent dans vos locaux sur la presqu'île ou en visio. Depuis Bordeaux (1h). Missions adaptées aux saisonnalités du Bassin.",
+      a: "Nos consultants interviennent dans vos locaux sur la presqu'île ou en visio. Missions adaptées aux saisonnalités du Bassin.",
     },
   ],
 };

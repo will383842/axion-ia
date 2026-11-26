@@ -49,7 +49,7 @@ export const TONNEINS_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Tonneins et dans le Val de Garonne ?",
-      a: "Oui, Axion-IA intervient à Tonneins et dans tout le Val de Garonne (Marmande, Aiguillon, Damazan, Clairac). Consultants accessibles via la gare SNCF Tonneins (TER Bordeaux-Agen).",
+      a: "Oui, Axion-IA intervient à Tonneins et dans tout le Val de Garonne (Marmande, Aiguillon, Damazan, Clairac).",
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Tonneins  ?",

@@ -49,7 +49,7 @@ export const NOYON_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Noyon ?",
-      a: "Oui, Axion-IA intervient à Noyon et dans le Noyonnais (Guiscard, Chauny, Ribécourt). Consultants via gare SNCF Noyon (ligne Compiègne–Saint-Quentin). Compiègne à 25 min.",
+      a: "Oui, Axion-IA intervient à Noyon et dans le Noyonnais (Guiscard, Chauny, Ribécourt).",
     },
     {
       q: "Quels tarifs pour un audit IA à Noyon ?",

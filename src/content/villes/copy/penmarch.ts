@@ -64,8 +64,8 @@ export const PENMARCH_COPY: VilleCopy = {
       a: "Oui, optimisation lignes de production conserveries, traçabilité matière première mer, devis automatisés artisans, planning chantiers, suivi clients et fidélisation locale.",
     },
     {
-      q: "Comment accéder à Penmarch depuis Quimper ?",
-      a: "Penmarch est à 30 min de Quimper en voiture (D785). Gare TGV Quimper à 35 min, aéroport Quimper-Cornouaille à 25 min.",
+      q: "Intervenez-vous à Penmarch ?",
+      a: "Oui. Nous intervenons dans vos locaux à Penmarch, partout en France, sur place ou à distance.",
     },
   ],
 };

@@ -65,7 +65,7 @@ export const FERRIERE_LA_GRANDE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Ferrière-la-Grande ?",
-      a: "Depuis Lille : 1h15 via A2/N2. Depuis Valenciennes : 35 min. Gare de Maubeuge (TER). Missions sur site à Ferrière-la-Grande ou en visio.",
+      a: "Gare de Maubeuge (TER). Missions sur site à Ferrière-la-Grande ou en visio.",
     },
   ],
 };

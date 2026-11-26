@@ -49,7 +49,7 @@ export const BON_ENCONTRE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Bon-Encontre et dans l'agglo d'Agen ?",
-      a: "Oui, Axion-IA intervient à Bon-Encontre et dans toute l'agglomération d'Agen (Agen, Le Passage, Boé, Foulayronnes). Consultants accessibles via la gare SNCF Agen (TGV Paris-Agen, 5 min de Bon-Encontre).",
+      a: "Oui, Axion-IA intervient à Bon-Encontre et dans toute l'agglomération d'Agen (Agen, Le Passage, Boé, Foulayronnes).",
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Bon-Encontre  ?",

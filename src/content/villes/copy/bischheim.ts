@@ -49,7 +49,7 @@ export const BISCHHEIM_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Bischheim ?",
-      a: "Oui, Axion-IA intervient à Bischheim et dans la couronne nord de l'Eurométropole de Strasbourg (Schiltigheim, Hoenheim, Souffelweyersheim, La Wantzenau). Consultants via tramway B/F, gare TER Bischheim ou autoroutes A4 / A35 (accès immédiat). Strasbourg centre à 10 min.",
+      a: "Oui, Axion-IA intervient à Bischheim et dans la couronne nord de l'Eurométropole de Strasbourg (Schiltigheim, Hoenheim, Souffelweyersheim, La Wantzenau).",
     },
     {
       q: "Travaillez-vous avec les TPE/PME industrielles et logistiques ?",
@@ -65,7 +65,7 @@ export const BISCHHEIM_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Bischheim ?",
-      a: "Nos consultants se déplacent via tramway B/F de l'Eurométropole, gare TER Bischheim, ou autoroutes A4 / A35 (accès immédiat). Strasbourg centre à 10 min, aéroport Strasbourg-Entzheim à 25 min, frontière allemande à 15 min.",
+      a: "Nous intervenons dans vos locaux à Bischheim, partout en France.",
     },
   ],
 };

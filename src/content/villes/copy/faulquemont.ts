@@ -49,7 +49,7 @@ export const FAULQUEMONT_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Faulquemont ?",
-      a: "Oui, Axion-IA intervient à Faulquemont et dans le bassin de la Moselle-est (Saint-Avold, Boulay, Creutzwald, Forbach). Consultants via A4 (accès 15 min) ou gare SNCF Faulquemont sur la ligne Metz-Strasbourg. Position centrale du district urbain et du pays de Nied.",
+      a: "Oui, Axion-IA intervient à Faulquemont et dans le bassin de la Moselle-est (Saint-Avold, Boulay, Creutzwald, Forbach). Position centrale du district urbain et du pays de Nied.",
     },
     {
       q: "Travaillez-vous avec les TPE/PME industrielles et de sous-traitance ?",
@@ -65,7 +65,7 @@ export const FAULQUEMONT_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Faulquemont ?",
-      a: "Nos consultants se déplacent via autoroute A4 (accès 15 min) ou gare SNCF Faulquemont (ligne Metz-Strasbourg). Position centrale entre Metz (35 min) et la Sarre.",
+      a: "Nous intervenons dans vos locaux à Faulquemont, partout en France.",
     },
   ],
 };

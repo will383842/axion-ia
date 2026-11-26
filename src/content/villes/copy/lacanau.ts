@@ -65,7 +65,7 @@ export const LACANAU_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Lacanau ?",
-      a: "Nos consultants interviennent dans vos locaux ou en visio. Depuis Bordeaux (50 min). Missions adaptées aux saisonnalités touristiques.",
+      a: "Nos consultants interviennent dans vos locaux ou en visio. Missions adaptées aux saisonnalités touristiques.",
     },
   ],
 };

@@ -64,8 +64,8 @@ export const LAXOU_COPY: VilleCopy = {
       a: "Oui, agents conversationnels, gestion stocks, programmes fidélité, gestion documentaire, prise de rendez-vous augmentée, facturation intelligente pour TPE retail et professions libérales.",
     },
     {
-      q: "Comment accéder à Laxou depuis Paris ?",
-      a: "Paris-Est à 1 h 30 (TGV via Nancy + 10 min). Autoroute A33 accessible en 5 min. Nancy centre à 10 min.",
+      q: "Intervenez-vous à Laxou ?",
+      a: "Oui. Nous intervenons dans vos locaux à Laxou, partout en France, sur place ou à distance.",
     },
   ],
 };

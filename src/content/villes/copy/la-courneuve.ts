@@ -58,7 +58,7 @@ export const LA_COURNEUVE_COPY: VilleCopy = {
           "Les ZAE Mermoz (83 ha, ~200 établissements) et Rateau (logistique et recyclage, parcs Urbaparc et Parc des Damiers) concentrent un tissu de négoce, d'entreposage et de commerce de gros qui gagne à passer de l'appel téléphonique au catalogue en ligne avec devis automatisé et suivi de commande.",
           "La présence du centre fiduciaire de la Banque de France — entièrement automatisé, traitant plus d'un milliard de billets par an — et de groupes comme Derichebourg Propreté, Paprec ou Arabelle Services fait de La Courneuve un territoire où l'automatisation des process est une réalité quotidienne, pas une abstraction : nous parlons le même langage que vos opérations.",
           "La reconversion de la friche Babcock & Wilcox en « Fabrique des cultures » (30 000 m² de halles, industries culturelles et créatives) et l'arrivée de la gare Grand Paris Express Six-Routes en 2027 attirent de nouveaux acteurs : artisans, studios créatifs, e-commerçants et PME de services qui ont besoin d'un site rapide, mobile et vendeur dès leur installation.",
-          "Nous nous déplaçons sur site — entrepôts de Mermoz, ateliers de Rateau, bureaux du centre-ville près du parc Georges-Valbon — pour cadrer le projet avec vous, et nous couvrons tout le nord francilien via le RER B, le tramway T1 et bientôt les lignes 16/17.",
+          "Nous nous déplaçons sur site — entrepôts de Mermoz, ateliers de Rateau, bureaux du centre-ville près du parc Georges-Valbon — pour cadrer le projet avec vous, et nous couvrons tout le nord francilien.",
         ],
         methodology: [
           {
@@ -124,7 +124,7 @@ export const LA_COURNEUVE_COPY: VilleCopy = {
           },
           {
             q: "Axion-IA se déplace-t-il sur site à La Courneuve ?",
-            a: "Oui. Nous venons dans vos locaux — entrepôt de la ZAE Mermoz, atelier de Rateau, bureau du centre-ville ou près de la future gare Six-Routes — pour le cadrage et la recette finale. Nous couvrons tout le nord francilien via le RER B, le tramway T1 et, à partir de 2027, les lignes 16 et 17 du Grand Paris Express.",
+            a: "Oui. Nous venons dans vos locaux — entrepôt de la ZAE Mermoz, atelier de Rateau, bureau du centre-ville ou près de la future gare Six-Routes — pour le cadrage et la recette finale.",
           },
           {
             q: "Combien de temps pour recevoir un devis ?",

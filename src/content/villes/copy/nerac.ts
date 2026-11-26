@@ -49,7 +49,7 @@ export const NERAC_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Nérac et dans le pays d'Albret ?",
-      a: "Oui, Axion-IA intervient à Nérac et dans tout le pays d'Albret (Lavardac, Barbaste, Mézin, Francescas). Consultants accessibles via Agen (gare TGV Paris-Agen, 30 min de Nérac).",
+      a: "Oui, Axion-IA intervient à Nérac et dans tout le pays d'Albret (Lavardac, Barbaste, Mézin, Francescas).",
     },
     {
       q: "Quel est le tarif d'un audit IA à Nérac  ?",

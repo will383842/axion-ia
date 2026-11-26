@@ -234,7 +234,7 @@ export const LA_SEYNE_SUR_MER_COPY: VilleCopy = {
     },
     {
       q: "Vous déplacez-vous à La Seyne-sur-Mer ?",
-      a: "Oui. La Seyne-sur-Mer est accessible par TGV via Toulon (3h45 depuis Paris-Gare de Lyon), puis ~10 min en TER ou voiture. Williams intervient directement dans vos locaux, des Sablettes au centre-ville en passant par les zones d'activité.",
+      a: "Oui. Williams intervient directement dans vos locaux, des Sablettes au centre-ville en passant par les zones d'activité.",
     },
     {
       q: "Quels délais pour une intervention IA à La Seyne-sur-Mer ?",

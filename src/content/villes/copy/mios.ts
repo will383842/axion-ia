@@ -65,7 +65,7 @@ export const MIOS_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Mios ?",
-      a: "Nos consultants interviennent dans vos locaux à Mios ou en visio. Depuis Bordeaux (40 min A63). Tarifs et planning convenus en amont, livrables documentés.",
+      a: "Nos consultants interviennent dans vos locaux à Mios ou en visio. Tarifs et planning convenus en amont, livrables documentés.",
     },
   ],
 };

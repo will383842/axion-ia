@@ -49,7 +49,7 @@ export const SAINTE_LIVRADE_SUR_LOT_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Sainte-Livrade-sur-Lot ?",
-      a: "Oui, Axion-IA intervient à Sainte-Livrade-sur-Lot et dans toute la vallée du Lot (Villeneuve-sur-Lot, Casseneuil, Bias, Penne-d'Agenais). Consultants accessibles via Agen (gare TGV, 25 min).",
+      a: "Oui, Axion-IA intervient à Sainte-Livrade-sur-Lot et dans toute la vallée du Lot (Villeneuve-sur-Lot, Casseneuil, Bias, Penne-d'Agenais).",
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Sainte-Livrade-sur-Lot  ?",

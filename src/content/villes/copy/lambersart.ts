@@ -241,8 +241,8 @@ export const LAMBERSART_COPY: VilleCopy = {
       a: "Pour les PME tertiaires de la MEL, nous proposons les 5 services Axion-IA : audit IA (Sur place à Stratégique), interventions sur site (formations équipes), implémentation IA (agents, automatisations), coaching 1-to-1 dirigeants, et plateformes web/SaaS IA sur mesure. Tarifs publics.",
     },
     {
-      q: "Comment se passe une intervention depuis Paris ?",
-      a: "Nous intervenons partout en France, sur place ou à distance.",
+      q: "Intervenez-vous à Lambersart ?",
+      a: "Oui. Nous intervenons dans vos locaux à Lambersart, partout en France, sur place ou à distance.",
     },
   ],
 };

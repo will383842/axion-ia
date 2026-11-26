@@ -234,7 +234,7 @@ export const LIMEIL_BREVANNES_COPY: VilleCopy = {
       a: "Déplacement sur site dans les 5 jours ouvrés suivant la confirmation. Accès rapide par RER A (Boissy-Saint-Léger) ou RER D (Créteil-Pompadour) depuis Paris.",
     },
     {
-      q: "Quelles communes proches sont couvertes depuis Limeil-Brévannes ?",
+      q: "Quelles communes proches couvrez-vous autour de Limeil-Brévannes ?",
       a: "Nous couvrons les communes limitrophes : Créteil, Bonneuil-sur-Marne, Valenton, Boissy-Saint-Léger, Villecresnes et Yerres.",
     },
     {

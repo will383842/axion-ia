@@ -49,7 +49,7 @@ export const SEICHAMPS_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Seichamps ?",
-      a: "Oui, Axion-IA intervient à Seichamps et dans les communes de l'est nancéien (Saulxures-lès-Nancy, Pulnoy, Essey-lès-Nancy, Tomblaine). Consultants via autoroute A33 ou gare SNCF Nancy.",
+      a: "Oui, Axion-IA intervient à Seichamps et dans les communes de l'est nancéien (Saulxures-lès-Nancy, Pulnoy, Essey-lès-Nancy, Tomblaine).",
     },
     {
       q: "Travaillez-vous avec les commerces et artisans seichampois ?",

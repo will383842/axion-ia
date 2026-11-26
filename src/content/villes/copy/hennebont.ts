@@ -64,8 +64,8 @@ export const HENNEBONT_COPY: VilleCopy = {
       a: "Oui, automatisation production, maintenance prédictive, qualité, gestion stocks, planification, reporting KPI, optimisation supply chain pour les PME industrie d'Hennebont.",
     },
     {
-      q: "Comment accéder à Hennebont depuis Rennes ou Nantes ?",
-      a: "Gare SNCF d'Hennebont (TER Rennes-Quimper). Rennes à 1 h 45, Nantes à 2 h en voiture via RN 165. Aéroport Lorient à 20 min.",
+      q: "Intervenez-vous à Hennebont ?",
+      a: "Oui. Nous intervenons dans vos locaux à Hennebont, partout en France, sur place ou à distance.",
     },
   ],
 };

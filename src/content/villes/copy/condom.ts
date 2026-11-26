@@ -49,7 +49,7 @@ export const CONDOM_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Condom dans le Gers ?",
-      a: "Oui, Axion-IA intervient à Condom et dans tout le Gers ouest. Consultants accessibles via Agen (gare TGV, 40 min) et l'aéroport Toulouse-Blagnac à 1h30. Intervention sous 5 jours ouvrés.",
+      a: "Oui, Axion-IA intervient à Condom et dans tout le Gers ouest. Intervention sous 5 jours ouvrés.",
     },
     {
       q: "Quel est le tarif d'un audit IA à Condom  ?",

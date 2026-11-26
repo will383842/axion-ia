@@ -65,7 +65,7 @@ export const LANTON_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Lanton ?",
-      a: "Nos consultants interviennent dans vos locaux à Lanton ou en visio. Depuis Bordeaux (45 min). Tarifs et planning convenus en amont.",
+      a: "Nos consultants interviennent dans vos locaux à Lanton ou en visio. Tarifs et planning convenus en amont.",
     },
   ],
 };

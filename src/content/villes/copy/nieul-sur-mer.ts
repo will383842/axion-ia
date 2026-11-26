@@ -49,7 +49,7 @@ export const NIEUL_SUR_MER_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Nieul-sur-Mer ?",
-      a: "Oui, Axion-IA intervient à Nieul-sur-Mer et toute l'agglomération de La Rochelle nord (Lagord, Puilboreau, Saint-Xandre). Nos consultants accèdent facilement via la gare TGV de La Rochelle à 12 min.",
+      a: "Oui, Axion-IA intervient à Nieul-sur-Mer et toute l'agglomération de La Rochelle nord (Lagord, Puilboreau, Saint-Xandre).",
     },
     {
       q: "Quels services IA pour les professions libérales à Nieul-sur-Mer ?",

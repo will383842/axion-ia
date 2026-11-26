@@ -93,6 +93,27 @@ const PRESENCE: ReadonlyArray<readonly [string, RegExp]> = [
     "origine des consultants",
     /(?<!et )[Cc]onsultants? (?:venant )?(?:de|depuis) [A-ZÉ]|se deplacent|(?:[Cc]onsultants?|[Ee]xperts?|Williams)[^."?]{0,100}(?:depuis|venant de) [A-ZÉ]|couvrez-vous depuis|couvertes par Axion-IA depuis|se déplace-t-il[^?]*depuis|visio depuis [A-ZÉ]|[Oo]n se déplace sur site depuis|arrivent (?:via|par|le matin|en une)|base nationale|logistique mission multi-jours/u,
   ],
+  [
+    "trajet de l'équipe (consultants via, accèdent, accessibles…)",
+    /(?:[Nn]os consultants|[Nn]os intervenants|[Nn]otre équipe|[Nn]os équipes|[Cc]onsultants)(?:(?!\.\s)[^"]){0,80}\b(?:via|accèdent|accedent|accessibles?|arrivent (?:via|par|facilement|directement|en gare|en \d)|se déplacent (?:via|par|depuis)|viennent (?:via|par|depuis)|sont à [A-ZÉ][^".]{0,30} en \d|depuis|par la route)\b/u,
+  ],
+  [
+    "trajet « nous … via la gare / l'autoroute »",
+    /\b[Nn]ous (?:venons|nous déplaçons|couvrons|intervenons|rejoignons)[^".]{0,80}\bvia (?:le |la |l['’]|les |une? )?(?:gare|RER|tram|route|RN|A\d|N\d|autoroute|aéroport|TER|Transilien)|déplacements? via\b/u,
+  ],
+  ["nous rejoignons", /nous rejoignons/iu],
+  ["Depuis <Ville>, nous", /\b[Dd]epuis [A-ZÉ][^".]{1,80}, nous\b/u],
+  ["fragment Depuis <Ville> (N min)", /(?:^|[.!?"] )Depuis [A-ZÉ][^".]{1,40}\(\d[^)]*\)/u],
+  ["Couvrez-vous … depuis", /couvrez-vous[^"?]{0,60}depuis/iu],
+  ["consultants depuis", /consultants? depuis/iu],
+  [
+    "trajet gare/autoroute des consultants",
+    /consultants?[^".]{0,60}(?:via|par) (?:la |l['’])?(?:gare|autoroute|aéroport|tramway|N\d|A\d)/iu,
+  ],
+  [
+    "question de FAQ qui suppose une base ailleurs",
+    /\bq: "[^"]*(?:intervention depuis [A-ZÉ]|accéder à [^"?]* depuis|accédez-vous|[Êê]tes-vous accessibles|[Cc]omment (?:se rendre|[A-ZÉ][^"?]* est-elle desservie)|[Cc]ouvrez-vous[^"?]* depuis|couvertes depuis|[Ii]ntervenez-vous [^"?]* depuis [A-ZÉ])/u,
+  ],
   ["lieux Axion-IA", /ateliers Axion-IA à|nos points de cadrage/u],
   [
     "basé à",

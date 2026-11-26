@@ -132,7 +132,7 @@ export const MASSY_COPY: VilleCopy = {
           },
           {
             q: "Intervenez-vous au-delà de Massy, dans le sud de l'Essonne et vers Saclay ?",
-            a: "Oui. Depuis Massy, interconnectée par la gare TGV et les RER B et C, nous couvrons l'ouest de l'Essonne, le plateau de Saclay et le sud francilien. Le kick-off et la recette se font sur site ; les itérations de développement se déroulent en hybride présentiel/distance.",
+            a: "Oui. Nous intervenons dans vos locaux à Massy, dans l'ouest de l'Essonne, sur le plateau de Saclay et dans le sud francilien. Le kick-off et la recette se font sur site ; les itérations de développement se déroulent en hybride présentiel/distance.",
           },
         ],
         guarantees:

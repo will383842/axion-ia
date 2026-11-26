@@ -64,8 +64,8 @@ export const JANZE_COPY: VilleCopy = {
       a: "Oui, optimisation lignes de production agroalimentaires, traçabilité matière première, devis automatisés artisans, planning chantiers, fidélisation clients pour ateliers et commerces.",
     },
     {
-      q: "Comment accéder à Janzé depuis Rennes ?",
-      a: "Janzé est à 30 min de Rennes en voiture (D463 et D34). Gare TGV Rennes à 35 min, aéroport Rennes-Saint-Jacques à 25 min.",
+      q: "Intervenez-vous à Janzé ?",
+      a: "Oui. Nous intervenons dans vos locaux à Janzé, partout en France, sur place ou à distance.",
     },
   ],
 };

@@ -49,7 +49,7 @@ export const GEISPOLSHEIM_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Geispolsheim ?",
-      a: "Oui, Axion-IA intervient à Geispolsheim et dans toute la zone sud de l'eurométropole strasbourgeoise (Illkirch-Graffenstaden, Ostwald, Fegersheim, Lipsheim). Consultants via gare TER ou autoroute A35. Strasbourg centre à 15 min.",
+      a: "Oui, Axion-IA intervient à Geispolsheim et dans toute la zone sud de l'eurométropole strasbourgeoise (Illkirch-Graffenstaden, Ostwald, Fegersheim, Lipsheim).",
     },
     {
       q: "Travaillez-vous avec les PME agroalimentaires et arboriculteurs ?",
@@ -65,7 +65,7 @@ export const GEISPOLSHEIM_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Geispolsheim ?",
-      a: "Nos consultants se déplacent via gare TER Geispolsheim (ligne Strasbourg–Sélestat) ou autoroute A35. Strasbourg centre à 15 min, aéroport Entzheim à 10 min.",
+      a: "Nous intervenons dans vos locaux à Geispolsheim, partout en France.",
     },
   ],
 };

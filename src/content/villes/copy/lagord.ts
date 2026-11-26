@@ -49,7 +49,7 @@ export const LAGORD_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Lagord ?",
-      a: "Oui, Axion-IA intervient à Lagord et toute l'agglomération de La Rochelle nord (Nieul-sur-Mer, Puilboreau, Saint-Xandre, Dompierre-sur-Mer). Nos consultants accèdent facilement via la gare TGV de La Rochelle à 10 min.",
+      a: "Oui, Axion-IA intervient à Lagord et toute l'agglomération de La Rochelle nord (Nieul-sur-Mer, Puilboreau, Saint-Xandre, Dompierre-sur-Mer).",
     },
     {
       q: "Quels services IA pour les professions libérales à Lagord ?",

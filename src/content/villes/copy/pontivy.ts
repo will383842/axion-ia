@@ -64,8 +64,8 @@ export const PONTIVY_COPY: VilleCopy = {
       a: "Oui, CRM clients, fidélisation, gestion rendez-vous, dossier patient, télémédecine, optimisation administrative pour commerces de centre-ville et professionnels de santé.",
     },
     {
-      q: "Comment accéder à Pontivy depuis Rennes ou Vannes ?",
-      a: "Gare SNCF de Pontivy (TER). Rennes à 1 h 30 via RN 24, Vannes à 50 min via RN 24, Lorient à 50 min. Aéroport Lorient à 1 h.",
+      q: "Intervenez-vous à Pontivy ?",
+      a: "Oui. Nous intervenons dans vos locaux à Pontivy, partout en France, sur place ou à distance.",
     },
   ],
 };

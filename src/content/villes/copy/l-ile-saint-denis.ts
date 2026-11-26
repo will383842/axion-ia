@@ -64,8 +64,8 @@ export const L_ILE_SAINT_DENIS_COPY: VilleCopy = {
       a: "L'Audit sur place démarre à {{price:audit-flash|flat}} pour une session de 4 heures sur site. Pour les audits approfondis (Audit Stratégique), comptez entre {{price:audit-cible-solo|num}} et {{price:audit-cible-avance}} selon le périmètre. Tarifs publics et transparents.",
     },
     {
-      q: "Comment accéder à L'Île-Saint-Denis pour une mission ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Intervention dans vos locaux, atelier pratique avec vos équipes. Sessions en visio également possibles.",
+      q: "Intervenez-vous à L'Île-Saint-Denis ?",
+      a: "Oui. Nous intervenons dans vos locaux à L'Île-Saint-Denis, partout en France, sur place ou à distance.",
     },
   ],
 };

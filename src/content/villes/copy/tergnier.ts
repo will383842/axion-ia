@@ -49,7 +49,7 @@ export const TERGNIER_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Tergnier ?",
-      a: "Oui, Axion-IA intervient à Tergnier et dans tout le Chaunois et Saint-Quentinois (Chauny, Saint-Quentin, La Fère, Laon). Consultants via gare SNCF Tergnier (nœud ferroviaire) ou A26.",
+      a: "Oui, Axion-IA intervient à Tergnier et dans tout le Chaunois et Saint-Quentinois (Chauny, Saint-Quentin, La Fère, Laon).",
     },
     {
       q: "Travaillez-vous avec les PME logistique et maintenance ferroviaire ?",

@@ -65,7 +65,7 @@ export const LE_HAILLAN_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission au Haillan ?",
-      a: "Nos consultants interviennent dans vos locaux au Haillan ou en visio. Depuis Bordeaux centre (15 min). Proche aéroport Mérignac (10 min). Livrables documentés.",
+      a: "Nos consultants interviennent dans vos locaux au Haillan ou en visio. Livrables documentés.",
     },
   ],
 };

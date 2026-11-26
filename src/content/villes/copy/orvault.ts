@@ -241,8 +241,8 @@ export const ORVAULT_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les cabinets professionnels à Orvault (santé, conseil, expertise) sur leurs cas IA respectant la confidentialité : agents conversationnels patients/clients, automatisation gestion documentaire, classification dossiers. RGPD strict, hébergement UE.",
     },
     {
-      q: "Comment se passe une intervention depuis Paris ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Tarifs publics et transparents, pas de devis opaque.",
+      q: "Intervenez-vous à Orvault ?",
+      a: "Oui. Nous intervenons dans vos locaux à Orvault, partout en France, sur place ou à distance.",
     },
   ],
 };

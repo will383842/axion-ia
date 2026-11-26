@@ -69,8 +69,8 @@ export const JACOU_COPY: VilleCopy = {
       a: "Commerces de détail (premier secteur, 23,6 % des entreprises), cabinets libéraux santé/conseil, artisans BTP, PME services aux entreprises, restauration, immobilier. Cas typiques : agents IA RDV cabinet médical, chatbot commerce, automatisation devis artisan, suivi stock restaurant.",
     },
     {
-      q: "Êtes-vous accessibles depuis Castelnau-le-Lez ou Le Crès en transports ?",
-      a: "Oui. Le tramway T2 dessert Castelnau-le-Lez puis Jacou (terminus). Bus 22 et 36 connectent Le Crès, Clapiers et Teyran. Pour vos équipes basées dans ces communes, nous nous déplaçons chez vous.",
+      q: "Intervenez-vous à Jacou ?",
+      a: "Oui. Nous intervenons dans vos locaux à Jacou, partout en France, sur place ou à distance.",
     },
   ],
 };

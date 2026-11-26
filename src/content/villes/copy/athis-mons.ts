@@ -239,8 +239,8 @@ export const ATHIS_MONS_COPY: VilleCopy = {
       a: `Pour les TPE, PME et ETI d'Athis-Mons, nous planifions l'Audit sur place sous 5 jours ouvrés après validation. ${DELAI_ACCES_PHRASE} La date de la formation est convenue avec vous.`,
     },
     {
-      q: "Couvrez-vous aussi Juvisy-sur-Orge, Paray-Vieille-Poste et Ablon-sur-Seine depuis Athis-Mons ?",
-      a: "Oui, nous nous déplaçons dans les communes limitrophes d'Athis-Mons : Juvisy-sur-Orge, Paray-Vieille-Poste, Savigny-sur-Orge, Villeneuve-le-Roi et Ablon-sur-Seine.",
+      q: "Intervenez-vous aussi à Juvisy-sur-Orge, Paray-Vieille-Poste et Ablon-sur-Seine ?",
+      a: "Oui, nous intervenons dans vos locaux dans les communes limitrophes d'Athis-Mons : Juvisy-sur-Orge, Paray-Vieille-Poste, Savigny-sur-Orge, Villeneuve-le-Roi et Ablon-sur-Seine.",
     },
     {
       q: "Comment Axion-IA garantit-il la conformité RGPD à Athis-Mons ?",

@@ -49,7 +49,7 @@ export const VILLERS_SAINT_PAUL_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Villers-Saint-Paul et dans l'agglomération creilloise ?",
-      a: "Oui, Axion-IA intervient à Villers-Saint-Paul et dans toute l'agglomération creilloise (Creil, Nogent-sur-Oise, Montataire, Verneuil-en-Halatte). Consultants accessibles via gare de Creil (TER/Intercités Paris-Nord, 35 min).",
+      a: "Oui, Axion-IA intervient à Villers-Saint-Paul et dans toute l'agglomération creilloise (Creil, Nogent-sur-Oise, Montataire, Verneuil-en-Halatte).",
     },
     {
       q: "Quel est le tarif d'un audit IA à Villers-Saint-Paul  ?",

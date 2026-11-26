@@ -49,7 +49,7 @@ export const FAMECK_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Fameck ?",
-      a: "Oui, Axion-IA intervient à Fameck et dans toute la Vallée de la Fensch et l'agglomération de Thionville (Hayange, Florange, Uckange, Serémange-Erzange). Consultants via gare SNCF Fameck ou autoroute A30.",
+      a: "Oui, Axion-IA intervient à Fameck et dans toute la Vallée de la Fensch et l'agglomération de Thionville (Hayange, Florange, Uckange, Serémange-Erzange).",
     },
     {
       q: "Travaillez-vous avec les PME industrielles et sous-traitants ?",
@@ -65,7 +65,7 @@ export const FAMECK_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Fameck ?",
-      a: "Nos consultants se déplacent via gare SNCF Fameck (ligne Metz–Luxembourg) ou autoroute A30. Thionville à 8 min, Metz à 30 min, Luxembourg à 35 min.",
+      a: "Nous intervenons dans vos locaux à Fameck, partout en France.",
     },
   ],
 };

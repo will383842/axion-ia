@@ -49,7 +49,7 @@ export const BRESSUIRE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Bressuire et dans le bocage bressuirais ?",
-      a: "Oui, Axion-IA intervient à Bressuire et dans tout le bocage bressuirais (Cerizay, Mauléon, Moncoutant, Nueil-les-Aubiers). Nos consultants accèdent via la gare de Bressuire ou par la route (N249, A83).",
+      a: "Oui, Axion-IA intervient à Bressuire et dans tout le bocage bressuirais (Cerizay, Mauléon, Moncoutant, Nueil-les-Aubiers).",
     },
     {
       q: "Quels services IA pour les PME agroalimentaires de Bressuire ?",

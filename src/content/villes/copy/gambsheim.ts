@@ -49,7 +49,7 @@ export const GAMBSHEIM_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Gambsheim et dans le Ried Nord ?",
-      a: "Oui, Axion-IA intervient à Gambsheim et dans le Ried Nord alsacien (Kilstett, Offendorf, Herrlisheim, Fort-Louis). Consultants accessibles via gare TER Gambsheim (ligne Strasbourg-Lauterbourg) ou A35. Strasbourg centre à 25 min.",
+      a: "Oui, Axion-IA intervient à Gambsheim et dans le Ried Nord alsacien (Kilstett, Offendorf, Herrlisheim, Fort-Louis).",
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Gambsheim  ?",

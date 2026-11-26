@@ -49,7 +49,7 @@ export const ORTHEZ_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Orthez et dans le Béarn des Gaves ?",
-      a: "Oui, Axion-IA intervient à Orthez et dans le Béarn des Gaves (Salies-de-Béarn, Sauveterre-de-Béarn, Puyoô). Nos consultants accèdent via la gare TER Orthez (30 min Pau, 45 min Bayonne) ou l'A64.",
+      a: "Oui, Axion-IA intervient à Orthez et dans le Béarn des Gaves (Salies-de-Béarn, Sauveterre-de-Béarn, Puyoô).",
     },
     {
       q: "Quels services IA pour les PME agroalimentaires d'Orthez ?",

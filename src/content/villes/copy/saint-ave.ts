@@ -64,8 +64,8 @@ export const SAINT_AVE_COPY: VilleCopy = {
       a: "Oui, gestion clientèle, facturation, agenda, marketing local, fidélisation, automatisation administrative pour libéraux et commerces de proximité de Saint-Avé.",
     },
     {
-      q: "Comment accéder à Saint-Avé ?",
-      a: "Gare TGV de Vannes à 15 min (Paris-Montparnasse à 2 h 30 en TGV direct). Nantes à 1 h 30 via RN 165. Aéroport Lorient à 50 min.",
+      q: "Intervenez-vous à Saint-Avé ?",
+      a: "Oui. Nous intervenons dans vos locaux à Saint-Avé, partout en France, sur place ou à distance.",
     },
   ],
 };

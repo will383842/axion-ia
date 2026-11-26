@@ -130,7 +130,7 @@ export const BEZONS_COPY: VilleCopy = {
           },
           {
             q: "Vous déplacez-vous sur site à Bezons et dans les communes voisines ?",
-            a: "Oui. Nous intervenons à Bezons via le tramway T2 (terminus Pont de Bezons, douze minutes de La Défense) et couvrons Argenteuil, Sartrouville, Houilles, Carrières-sur-Seine, Colombes et Nanterre, qui partagent le même tissu de PME et de sous-traitants.",
+            a: "Oui. Nous intervenons dans vos locaux à Bezons et couvrons Argenteuil, Sartrouville, Houilles, Carrières-sur-Seine, Colombes et Nanterre, qui partagent le même tissu de PME et de sous-traitants.",
           },
         ],
         guarantees:

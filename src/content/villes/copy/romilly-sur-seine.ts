@@ -64,8 +64,8 @@ export const ROMILLY_SUR_SEINE_COPY: VilleCopy = {
       a: "Oui, optimisation tournées, gestion entrepôts, suivi expéditions, automatisation facturation, prévision stocks, reporting clients pour TPE/PME logistique et transport.",
     },
     {
-      q: "Comment accéder à Romilly-sur-Seine ?",
-      a: "TER direct Paris-Est à Romilly en 1 h 30. Autoroute A5 puis N19 en 1 h 30 en voiture. Aéroport CDG à 2 h.",
+      q: "Intervenez-vous à Romilly-sur-Seine ?",
+      a: "Oui. Nous intervenons dans vos locaux à Romilly-sur-Seine, partout en France, sur place ou à distance.",
     },
   ],
 };

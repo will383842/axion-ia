@@ -64,8 +64,8 @@ export const LE_PECQ_COPY: VilleCopy = {
       a: "L'audit sur place IA démarre à {{price:audit-flash|flat}} pour les TPE/PME au Pecq. Diagnostic complet en 1 journée : cartographie processus, opportunités IA priorisées, ROI estimé, plan d'action.",
     },
     {
-      q: "Comment se rendre au Pecq depuis Paris ?",
-      a: "Le Pecq est desservi par la gare Le Vésinet-Le Pecq (RER A, La Défense 20 min, Châtelet 35 min). Nos consultants se déplacent dans votre local pour les interventions sur site.",
+      q: "Intervenez-vous au Pecq ?",
+      a: "Oui. Nous intervenons dans vos locaux au Pecq, partout en France, sur place ou à distance.",
     },
   ],
 };

@@ -64,8 +64,8 @@ export const AURAY_COPY: VilleCopy = {
       a: "Oui, traçabilité production, gestion stocks, e-commerce, planning chantiers, maintenance prédictive, optimisation supply chain pour ostréiculteurs et nautisme du golfe.",
     },
     {
-      q: "Comment accéder à Auray depuis Paris ?",
-      a: "Gare SNCF d'Auray (TGV direct Paris-Quimper), Paris-Montparnasse à 3 h. Aéroport Lorient à 30 min, aéroport Nantes à 1 h 30.",
+      q: "Intervenez-vous à Auray ?",
+      a: "Oui. Nous intervenons dans vos locaux à Auray, partout en France, sur place ou à distance.",
     },
   ],
 };

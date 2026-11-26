@@ -49,7 +49,7 @@ export const GOND_PONTOUVRE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Gond-Pontouvre ?",
-      a: "Oui, Axion-IA intervient à Gond-Pontouvre et toute l'agglomération GrandAngoulême nord. Nos consultants accèdent facilement via la gare TGV d'Angoulême à 10 min (Paris 2h05 direct).",
+      a: "Oui, Axion-IA intervient à Gond-Pontouvre et toute l'agglomération GrandAngoulême nord.",
     },
     {
       q: "Quels services IA pour les commerces à Gond-Pontouvre ?",

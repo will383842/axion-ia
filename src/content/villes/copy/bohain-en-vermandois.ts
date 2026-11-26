@@ -49,7 +49,7 @@ export const BOHAIN_EN_VERMANDOIS_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Bohain-en-Vermandois ?",
-      a: "Oui, Axion-IA intervient à Bohain-en-Vermandois et dans tout le Vermandois axonais (Saint-Quentin, Le Catelet, Vermand, Beaurevoir). Consultants via gare SNCF Bohain ou autoroute A26 (sortie Saint-Quentin).",
+      a: "Oui, Axion-IA intervient à Bohain-en-Vermandois et dans tout le Vermandois axonais (Saint-Quentin, Le Catelet, Vermand, Beaurevoir).",
     },
     {
       q: "Travaillez-vous avec les ateliers textile et la sous-traitance ?",
@@ -65,7 +65,7 @@ export const BOHAIN_EN_VERMANDOIS_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Bohain-en-Vermandois ?",
-      a: "Nos consultants se déplacent via gare SNCF Bohain (ligne Paris-Nord–Maubeuge) ou autoroute A26. Saint-Quentin à 25 min, Cambrai à 30 min, Lille à 1h15.",
+      a: "Nous intervenons dans vos locaux à Bohain-en-Vermandois, partout en France.",
     },
   ],
 };

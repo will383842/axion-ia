@@ -65,7 +65,7 @@ export const LE_BOURGET_DU_LAC_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission au Bourget-du-Lac ?",
-      a: "Nos consultants interviennent sur site (campus, Technolac, vos locaux) ou en visio. Depuis Chambéry (10 min) ou Lyon (1h20 A43).",
+      a: "Nos consultants interviennent sur site (campus, Technolac, vos locaux) ou en visio.",
     },
   ],
 };

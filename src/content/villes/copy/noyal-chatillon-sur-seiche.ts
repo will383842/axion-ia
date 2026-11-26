@@ -64,8 +64,8 @@ export const NOYAL_CHATILLON_SUR_SEICHE_COPY: VilleCopy = {
       a: "Oui, devis automatisés artisans, planning chantiers, suivi clients, prise de rendez-vous médicaux et paramédicaux, gestion administrative pour cabinets libéraux.",
     },
     {
-      q: "Comment accéder à Noyal-Châtillon-sur-Seiche depuis Rennes ?",
-      a: "Noyal-Châtillon-sur-Seiche est à 15 min de Rennes en voiture (rocade sud). Gare TGV Rennes à 20 min, aéroport Rennes-Saint-Jacques à 10 min.",
+      q: "Intervenez-vous à Noyal-Châtillon-sur-Seiche ?",
+      a: "Oui. Nous intervenons dans vos locaux à Noyal-Châtillon-sur-Seiche, partout en France, sur place ou à distance.",
     },
   ],
 };

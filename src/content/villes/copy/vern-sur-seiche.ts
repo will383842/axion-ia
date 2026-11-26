@@ -64,8 +64,8 @@ export const VERN_SUR_SEICHE_COPY: VilleCopy = {
       a: "Oui, devis automatisés, planning chantiers, suivi clients, gestion stocks, fidélisation locale, présence Google Business Profile pour artisans, commerçants et services de proximité.",
     },
     {
-      q: "Comment accéder à Vern-sur-Seiche depuis Rennes ?",
-      a: "Vern-sur-Seiche est à 15 min de Rennes en voiture (rocade sud-est). Gare TGV Rennes à 20 min, aéroport Rennes-Saint-Jacques à 15 min.",
+      q: "Intervenez-vous à Vern-sur-Seiche ?",
+      a: "Oui. Nous intervenons dans vos locaux à Vern-sur-Seiche, partout en France, sur place ou à distance.",
     },
   ],
 };

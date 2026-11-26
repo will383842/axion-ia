@@ -49,7 +49,7 @@ export const SAINT_DIE_DES_VOSGES_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Saint-Dié-des-Vosges ?",
-      a: "Oui, Axion-IA intervient à Saint-Dié-des-Vosges et dans la vallée de la Meurthe (Raon-l'Étape, Senones, Fraize, Gérardmer). Consultants accessibles via gare SNCF Saint-Dié (TER Strasbourg/Nancy). Strasbourg à 1h15, Nancy à 1h20.",
+      a: "Oui, Axion-IA intervient à Saint-Dié-des-Vosges et dans la vallée de la Meurthe (Raon-l'Étape, Senones, Fraize, Gérardmer).",
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Saint-Dié-des-Vosges  ?",

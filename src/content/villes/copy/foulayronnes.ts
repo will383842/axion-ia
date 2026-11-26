@@ -49,7 +49,7 @@ export const FOULAYRONNES_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Foulayronnes et dans l'agglo d'Agen ?",
-      a: "Oui, Axion-IA intervient à Foulayronnes et dans toute l'agglomération d'Agen (Agen, Le Passage, Bon-Encontre, Boé). Consultants accessibles via la gare SNCF Agen (TGV Paris-Agen, 10 min de Foulayronnes).",
+      a: "Oui, Axion-IA intervient à Foulayronnes et dans toute l'agglomération d'Agen (Agen, Le Passage, Bon-Encontre, Boé).",
     },
     {
       q: "Quel est le tarif d'un audit IA à Foulayronnes  ?",

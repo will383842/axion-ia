@@ -233,7 +233,7 @@ export const ELANCOURT_COPY: VilleCopy = {
     },
     {
       q: "Sous quel délai Axion-IA se déplace-t-il à Élancourt ?",
-      a: "Nous intervenons sur site à Élancourt dans un délai de 5 jours ouvrés après contractualisation, avec accès via la RN12 ou les gares de La Verrière et Trappes.",
+      a: "Nous intervenons dans vos locaux, partout en France.",
     },
     {
       q: "Axion-IA couvre-t-il les communes voisines d'Élancourt ?",

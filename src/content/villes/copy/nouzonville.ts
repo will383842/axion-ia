@@ -64,8 +64,8 @@ export const NOUZONVILLE_COPY: VilleCopy = {
       a: "Oui, gestion planning, suivi commandes donneurs d'ordre, contrôle qualité, traçabilité, automatisation reporting, optimisation flux production pour sous-traitants TPE/PME.",
     },
     {
-      q: "Comment accéder à Nouzonville depuis Paris ?",
-      a: "TGV Paris-Est à Charleville-Mézières en 2 h, puis 10 min en voiture. Autoroute A34 via Reims. Aéroport CDG à 2 h 30.",
+      q: "Intervenez-vous à Nouzonville ?",
+      a: "Oui. Nous intervenons dans vos locaux à Nouzonville, partout en France, sur place ou à distance.",
     },
   ],
 };

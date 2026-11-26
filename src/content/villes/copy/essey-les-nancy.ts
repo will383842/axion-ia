@@ -64,8 +64,8 @@ export const ESSEY_LES_NANCY_COPY: VilleCopy = {
       a: "Oui, automatisation workflow, CRM augmenté, classification documents, devis intelligents, planning chantiers, gestion administrative pour TPE tertiaires et artisans BTP de l'est nancéien.",
     },
     {
-      q: "Comment accéder à Essey-lès-Nancy depuis Paris ?",
-      a: "Paris-Est à 1 h 30 (TGV via Nancy + 10 min). Autoroute A33 accessible en 5 min. Nancy centre à 10 min.",
+      q: "Intervenez-vous à Essey-lès-Nancy ?",
+      a: "Oui. Nous intervenons dans vos locaux à Essey-lès-Nancy, partout en France, sur place ou à distance.",
     },
   ],
 };

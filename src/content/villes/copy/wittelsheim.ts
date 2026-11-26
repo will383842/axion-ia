@@ -49,7 +49,7 @@ export const WITTELSHEIM_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Wittelsheim ?",
-      a: "Oui, Axion-IA intervient à Wittelsheim et dans le bassin potassique mulhousien (Mulhouse, Cernay, Wittenheim, Staffelfelden). Consultants via A36 (10 min) ou gare de Mulhouse-Ville (20 min). Proximité de l'aéroport Bâle-Mulhouse (25 min).",
+      a: "Oui, Axion-IA intervient à Wittelsheim et dans le bassin potassique mulhousien (Mulhouse, Cernay, Wittenheim, Staffelfelden).",
     },
     {
       q: "Travaillez-vous avec les TPE/PME industrielles et logistiques ?",

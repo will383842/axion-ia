@@ -49,7 +49,7 @@ export const CHAMPNIERS_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Champniers et ses zones d'activités ?",
-      a: "Oui, Axion-IA intervient à Champniers, ses zones d'activités (parc Agora, ZI) et toute l'agglomération GrandAngoulême nord. Nos consultants accèdent facilement via la N10 ou la gare TGV d'Angoulême à 15 min.",
+      a: "Oui, Axion-IA intervient à Champniers, ses zones d'activités (parc Agora, ZI) et toute l'agglomération GrandAngoulême nord.",
     },
     {
       q: "Quels services IA pour les PME logistiques à Champniers ?",

@@ -64,8 +64,8 @@ export const SAINT_ANDRE_LES_VERGERS_COPY: VilleCopy = {
       a: "Oui, gestion réservations, automatisation prises de commande, suivi stocks cuisine, planning équipes, fidélisation client, reporting ventes pour restaurateurs et hôteliers.",
     },
     {
-      q: "Comment accéder à Saint-André-les-Vergers ?",
-      a: "TGV Paris-Est à Troyes en 1 h 30, puis 10 min en voiture. Autoroute A5 directe en 1 h 45. Aéroport CDG à 1 h 45.",
+      q: "Intervenez-vous à Saint-André-les-Vergers ?",
+      a: "Oui. Nous intervenons dans vos locaux à Saint-André-les-Vergers, partout en France, sur place ou à distance.",
     },
   ],
 };

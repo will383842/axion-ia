@@ -65,7 +65,7 @@ export const SAINT_MAIXENT_L_ECOLE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA sur site à Saint-Maixent ?",
-      a: "Nous intervenons à Saint-Maixent-l'École, desservie par la gare TGV et l'A10 (échangeur dédié). Niort à 25 min voiture. Mission sur site dans vos locaux.",
+      a: "Mission sur site dans vos locaux.",
     },
   ],
 };

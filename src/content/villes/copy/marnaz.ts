@@ -65,7 +65,7 @@ export const MARNAZ_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une intervention IA sur site à Marnaz ?",
-      a: "Nos consultants viennent directement dans votre atelier ou bureau d'études à Marnaz. Formats demi-journée ou journée complète, avec configuration d'outils IA adaptés à votre métier d'usinage et sous-traitance.",
+      a: "Nous intervenons dans vos locaux à Marnaz, partout en France. Formats demi-journée ou journée complète, avec configuration d'outils IA adaptés à votre métier d'usinage et sous-traitance.",
     },
   ],
 };

@@ -49,7 +49,7 @@ export const FAREBERSVILLER_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Farébersviller ?",
-      a: "Oui, Axion-IA intervient à Farébersviller et dans tout le Bassin houiller mosellan (Freyming-Merlebach, Hombourg-Haut, Saint-Avold, Forbach). Consultants via autoroute A4 ou gare SNCF Freyming-Merlebach.",
+      a: "Oui, Axion-IA intervient à Farébersviller et dans tout le Bassin houiller mosellan (Freyming-Merlebach, Hombourg-Haut, Saint-Avold, Forbach).",
     },
     {
       q: "Accompagnez-vous les commerces et la grande distribution ?",
@@ -65,7 +65,7 @@ export const FAREBERSVILLER_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Farébersviller ?",
-      a: "Nos consultants se déplacent via autoroute A4 ou gare SNCF Freyming-Merlebach (à 5 min). Saint-Avold à 10 min, Metz à 50 min.",
+      a: "Nous intervenons dans vos locaux à Farébersviller, partout en France.",
     },
   ],
 };

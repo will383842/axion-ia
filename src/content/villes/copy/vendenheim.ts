@@ -49,7 +49,7 @@ export const VENDENHEIM_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Vendenheim ?",
-      a: "Oui, Axion-IA intervient à Vendenheim et dans le nord de l'Eurométropole strasbourgeoise (Strasbourg, Schiltigheim, Reichstett, Mundolsheim). Consultants via A4/A35 ou tram. Accès direct aux zones d'activités.",
+      a: "Oui, Axion-IA intervient à Vendenheim et dans le nord de l'Eurométropole strasbourgeoise (Strasbourg, Schiltigheim, Reichstett, Mundolsheim). Accès direct aux zones d'activités.",
     },
     {
       q: "Travaillez-vous avec les TPE/PME logistique et commerce de gros ?",

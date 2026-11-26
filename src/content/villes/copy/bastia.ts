@@ -124,7 +124,7 @@ export const BASTIA_COPY: VilleCopy = {
           },
           {
             q: "Quel délai pour un devis, et où intervenez-vous autour de Bastia ?",
-            a: "Le devis est remis à partir de 24-48 h selon la complexité du projet. Nous intervenons à Bastia et dans les communes voisines (Furiani, Ville-di-Pietrabugno, Barbaggio, Patrimonio) ainsi que sur la plaine orientale, avec déplacements sur site organisés via l'aéroport Bastia-Poretta.",
+            a: "Nous intervenons dans vos locaux à Bastia, partout en France. Le devis est remis à partir de 24-48 h selon la complexité du projet.",
           },
           {
             q: "Où sont hébergées les données et suis-je dépendant de vous ensuite ?",

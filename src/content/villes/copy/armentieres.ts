@@ -236,7 +236,7 @@ export const ARMENTIERES_COPY: VilleCopy = {
     },
     {
       q: "Quelles communes proches d'Armentières sont couvertes par Axion-IA ?",
-      a: "Nous nous déplaçons à La Chapelle-d'Armentières, Houplines, Erquinghem-Lys, Nieppe et Comines-Warneton côté belge, ainsi que vers Lille et sa première couronne via l'A25.",
+      a: "Nous intervenons dans vos locaux, partout en France.",
     },
     {
       q: "Quels secteurs locaux Axion-IA accompagne-t-il à Armentières ?",

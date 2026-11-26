@@ -65,7 +65,7 @@ export const MISSILLAC_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission en zone rurale ?",
-      a: "Nos consultants se déplacent directement dans votre hôtel, exploitation ou bureau à Missillac. Depuis Saint-Nazaire (30 min) ou Nantes (1h). Formats demi-journée ou journée complète.",
+      a: "Nous intervenons dans vos locaux à Missillac, partout en France. Nos consultants se déplacent directement dans votre hôtel, exploitation ou bureau à Missillac. Formats demi-journée ou journée complète.",
     },
   ],
 };

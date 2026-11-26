@@ -64,8 +64,8 @@ export const AVON_COPY: VilleCopy = {
       a: "Oui, nos interventions IA sur site à Avon sont adaptées aux TPE artisans et commerces. Formats demi-journée ou journée complète, vos équipes repartent autonomes sur les outils IA configurés métier.",
     },
     {
-      q: "Comment accédez-vous à Avon depuis Paris ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Avon est la porte d'entrée ferroviaire du bassin Fontainebleau.",
+      q: "Intervenez-vous à Avon ?",
+      a: "Oui. Nous intervenons dans vos locaux à Avon, partout en France, sur place ou à distance.",
     },
   ],
 };

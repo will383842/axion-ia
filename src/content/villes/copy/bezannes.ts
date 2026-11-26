@@ -64,8 +64,8 @@ export const BEZANNES_COPY: VilleCopy = {
       a: "Oui, CRM augmenté, automatisation propositions commerciales, gestion planning missions, facturation intelligente, reporting client pour cabinets et PME.",
     },
     {
-      q: "Comment accéder à Bezannes depuis Paris ?",
-      a: "Gare TGV Champagne-Ardenne sur place, Paris-Est à 45 min en TGV direct. Autoroute A4 à 5 min. Aéroport CDG à 1 h 30.",
+      q: "Intervenez-vous à Bezannes ?",
+      a: "Oui. Nous intervenons dans vos locaux à Bezannes, partout en France, sur place ou à distance.",
     },
   ],
 };

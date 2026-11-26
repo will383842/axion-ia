@@ -65,7 +65,7 @@ export const DECHY_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Dechy ?",
-      a: "Depuis Lille : 35 min via A1. Depuis Paris : TGV Douai en 50 min. Missions sur site à Dechy ou en visio.",
+      a: "Missions sur site à Dechy ou en visio.",
     },
   ],
 };

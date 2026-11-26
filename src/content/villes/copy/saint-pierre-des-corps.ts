@@ -64,8 +64,8 @@ export const SAINT_PIERRE_DES_CORPS_COPY: VilleCopy = {
       a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Automatisation devis, gestion clients, facturation.",
     },
     {
-      q: "Comment se rendre à Saint-Pierre-des-Corps ?",
-      a: "Gare TGV Saint-Pierre-des-Corps directement sur place (Paris-Montparnasse 1h05). Accès immédiat.",
+      q: "Intervenez-vous à Saint-Pierre-des-Corps ?",
+      a: "Oui. Nous intervenons dans vos locaux à Saint-Pierre-des-Corps, partout en France, sur place ou à distance.",
     },
   ],
 };

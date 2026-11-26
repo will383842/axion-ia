@@ -49,7 +49,7 @@ export const MAULEON_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Mauléon et dans le bocage bressuirais ?",
-      a: "Oui, Axion-IA intervient à Mauléon et dans tout le bocage bressuirais (Bressuire, Cerizay, Nueil-les-Aubiers, Moncoutant). Nos consultants accèdent par la route (Bressuire 20 min, Cholet 25 min).",
+      a: "Oui, Axion-IA intervient à Mauléon et dans tout le bocage bressuirais (Bressuire, Cerizay, Nueil-les-Aubiers, Moncoutant).",
     },
     {
       q: "Quels services IA pour les artisans espadrillers de Mauléon ?",

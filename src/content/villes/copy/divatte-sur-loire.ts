@@ -65,7 +65,7 @@ export const DIVATTE_SUR_LOIRE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une intervention à Divatte-sur-Loire ?",
-      a: "Nos consultants se déplacent directement dans votre domaine, exploitation ou bureau à Divatte-sur-Loire. Depuis Nantes, 25 min de trajet. Formats demi-journée ou journée complète.",
+      a: "Nous intervenons dans vos locaux à Divatte-sur-Loire, partout en France. Nos consultants se déplacent directement dans votre domaine, exploitation ou bureau à Divatte-sur-Loire. Formats demi-journée ou journée complète.",
     },
   ],
 };

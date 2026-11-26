@@ -49,7 +49,7 @@ export const TULLE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Tulle et en Corrèze ?",
-      a: "Oui, Axion-IA intervient à Tulle et dans toute la Corrèze (Brive, Ussel, Égletons). Consultants via gare SNCF Tulle ou aéroport Brive-Vallée de la Dordogne.",
+      a: "Oui, Axion-IA intervient à Tulle et dans toute la Corrèze (Brive, Ussel, Égletons).",
     },
     {
       q: "Quel est le tarif d'un audit IA à Tulle  ?",

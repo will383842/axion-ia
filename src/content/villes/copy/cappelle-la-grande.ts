@@ -49,7 +49,7 @@ export const CAPPELLE_LA_GRANDE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Cappelle-la-Grande ?",
-      a: "Oui, Axion-IA intervient à Cappelle-la-Grande et dans l'agglomération de Dunkerque (Dunkerque, Saint-Pol-sur-Mer, Grande-Synthe, Coudekerque-Branche). Consultants via A16 ou gare SNCF de Dunkerque. Bassin résidentiel adossé au pôle portuaire et industriel.",
+      a: "Oui, Axion-IA intervient à Cappelle-la-Grande et dans l'agglomération de Dunkerque (Dunkerque, Saint-Pol-sur-Mer, Grande-Synthe, Coudekerque-Branche). Bassin résidentiel adossé au pôle portuaire et industriel.",
     },
     {
       q: "Travaillez-vous avec les TPE/PME services et commerces ?",
@@ -65,7 +65,7 @@ export const CAPPELLE_LA_GRANDE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Cappelle-la-Grande ?",
-      a: "Nos consultants se déplacent via autoroute A16 (5 min) ou gare SNCF de Dunkerque (12 min). Bassin résidentiel de l'agglomération de Dunkerque, proximité immédiate du port et des zones industrielles.",
+      a: "Nous intervenons dans vos locaux à Cappelle-la-Grande, partout en France. Bassin résidentiel de l'agglomération de Dunkerque, proximité immédiate du port et des zones industrielles.",
     },
   ],
 };

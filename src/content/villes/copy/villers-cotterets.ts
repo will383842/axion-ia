@@ -49,7 +49,7 @@ export const VILLERS_COTTERETS_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Villers-Cotterêts ?",
-      a: "Oui, Axion-IA intervient à Villers-Cotterêts et dans le sud de l'Aisne (Soissons, La Ferté-Milon, Crépy-en-Valois). Consultants via gare SNCF Villers-Cotterêts ou autoroute A1 (sortie Vauciennes).",
+      a: "Oui, Axion-IA intervient à Villers-Cotterêts et dans le sud de l'Aisne (Soissons, La Ferté-Milon, Crépy-en-Valois).",
     },
     {
       q: "Travaillez-vous avec les acteurs du tourisme et du patrimoine ?",

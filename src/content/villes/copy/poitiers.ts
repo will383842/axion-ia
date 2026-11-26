@@ -138,7 +138,7 @@ export const POITIERS_COPY: VilleCopy = {
           },
           {
             q: "Vous déplacez-vous dans toute la Vienne ?",
-            a: "Oui. Nos consultants interviennent sur site à Poitiers, au Téléport et au parc du Futuroscope, à Saint-Benoît et dans l'ensemble des communes de la Vienne, accessibles par l'A10. La formation se tient dans vos locaux, sur vos postes, dans votre environnement de travail réel.",
+            a: "Oui. La formation se tient dans vos locaux, sur vos postes, dans votre environnement de travail réel.",
           },
         ],
         guarantees:
@@ -230,7 +230,7 @@ export const POITIERS_COPY: VilleCopy = {
           },
           {
             q: "Vous déplacez-vous dans toute la Vienne ?",
-            a: "Oui. Nos consultants interviennent sur site à Poitiers, au Téléport et au parc du Futuroscope, à Saint-Benoît et dans l'ensemble des communes de la Vienne, accessibles par l'A10. La formation se tient dans vos locaux, sur vos postes, dans votre environnement de travail réel.",
+            a: "Oui. La formation se tient dans vos locaux, sur vos postes, dans votre environnement de travail réel.",
           },
         ],
         guarantees:

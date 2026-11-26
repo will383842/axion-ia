@@ -65,7 +65,7 @@ export const LE_BARP_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission au Barp ?",
-      a: "Nos consultants interviennent dans vos locaux ou en visio. Depuis Bordeaux (30 min A63). Livrables documentés, tarifs publics.",
+      a: "Nos consultants interviennent dans vos locaux ou en visio. Livrables documentés, tarifs publics.",
     },
   ],
 };

@@ -49,7 +49,7 @@ export const L_ISLE_JOURDAIN_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à L'Isle-Jourdain dans le Gers ?",
-      a: "Oui, Axion-IA intervient à L'Isle-Jourdain et dans tout le Gers nord. Consultants accessibles via la gare SNCF L'Isle-Jourdain (ligne Toulouse-Auch) et l'aéroport Toulouse-Blagnac à 40 min.",
+      a: "Oui, Axion-IA intervient à L'Isle-Jourdain et dans tout le Gers nord.",
     },
     {
       q: "Quel est le tarif d'un audit IA à L'Isle-Jourdain  ?",

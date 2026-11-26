@@ -64,8 +64,8 @@ export const ORGERES_COPY: VilleCopy = {
       a: "Gestion agenda augmentée, CRM patients ou clients, automatisation administrative et comptable, dictée IA, reporting intelligent et agents conversationnels pour les professions libérales orgéroises.",
     },
     {
-      q: "Comment Orgères est-elle desservie depuis Paris ?",
-      a: "Paris-Rennes en 1h25 (TGV direct). Orgères est à 15 min du centre de Rennes (D163) et à 15 min de l'aéroport Rennes-Saint-Jacques. Mission sur site ou visio selon vos préférences.",
+      q: "Intervenez-vous à Orgères ?",
+      a: "Oui. Nous intervenons dans vos locaux à Orgères, partout en France, sur place ou à distance.",
     },
   ],
 };

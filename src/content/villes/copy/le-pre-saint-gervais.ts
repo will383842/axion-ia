@@ -49,7 +49,7 @@ export const LE_PRE_SAINT_GERVAIS_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il au Pré-Saint-Gervais et dans l'est parisien ?",
-      a: "Oui, Axion-IA intervient au Pré-Saint-Gervais et dans toute la première couronne est (Les Lilas, Pantin, Romainville, Bagnolet, Bobigny). Accès direct par métro ligne 11 depuis Paris, 20 min Châtelet.",
+      a: "Oui, Axion-IA intervient au Pré-Saint-Gervais et dans toute la première couronne est (Les Lilas, Pantin, Romainville, Bagnolet, Bobigny). Nous intervenons dans vos locaux, partout en France.",
     },
     {
       q: "Quel est le tarif d'un audit IA au Pré-Saint-Gervais ?",

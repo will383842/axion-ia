@@ -64,8 +64,8 @@ export const SAINT_CYR_SUR_LOIRE_COPY: VilleCopy = {
       a: "Audit sur place {{price:audit-flash|flat}}, coaching 1-to-1 {{price:intervention-membre-equipe|flat}}. Gestion rendez-vous, automatisation administratif, classification documents.",
     },
     {
-      q: "Comment accéder à Saint-Cyr-sur-Loire ?",
-      a: "Paris à 1h15 TGV (gare Saint-Pierre-des-Corps), puis 20 min. Consultants sur site Tours Métropole.",
+      q: "Intervenez-vous à Saint-Cyr-sur-Loire ?",
+      a: "Oui. Nous intervenons dans vos locaux à Saint-Cyr-sur-Loire, partout en France, sur place ou à distance.",
     },
   ],
 };

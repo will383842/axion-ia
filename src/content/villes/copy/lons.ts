@@ -49,7 +49,7 @@ export const LONS_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Lons et dans la zone commerciale nord Pau ?",
-      a: "Oui, Axion-IA intervient à Lons et dans toute la zone nord de l'agglomération paloise. Nos consultants accèdent facilement via l'aéroport Pau-Pyrénées (5 min) ou la gare de Pau.",
+      a: "Oui, Axion-IA intervient à Lons et dans toute la zone nord de l'agglomération paloise.",
     },
     {
       q: "Quels services IA pour les commerces et le retail à Lons ?",
