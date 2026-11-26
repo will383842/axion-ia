@@ -1,0 +1,6 @@
+Échec : aucun correctif légitime dans les fichiers de la fiche (PR #1721, sha e05ed31a).
+
+- Rouge : « tests des fichiers touchés » et « tests des nouveaux fichiers de test », tous deux sur `tests/charte/garde-charte.test.ts` (4 tests : zones strictes `src/moteurs`, `src/briques/motion`, `src/briques/habillage`, et cliquet « compositions », ligne 86).
+- Cause : ces 4 échecs sont IDENTIQUES sur `origin/master` (65dcd08f, worktree propre). Ils viennent du code de master (`src/moteurs/conformite-zone-sure.ts`, `src/briques/motion/habillage-commun/*`, `terminal-commande.tsx`, `controle-piece-neuve.ts`, et `ImageComposee.tsx`, `MacroInterface.tsx`, `PlancheEtiquettes.tsx`, `PlancheTraits.tsx`, `petits-objets/polices.ts` au-dessus de la liste figée), pas de la branche.
+- Seule « réparation » possible : relever les compteurs de `tests/charte/compositions-restantes/*.json` (affaiblit le cliquet, interdit) ou toucher des fichiers hors fiche (interdit). Rien n'a été modifié ni poussé sur la branche Studio.
+- Fait : merge de `origin/master` dans la branche (sans conflit, 0d301e3b, local seulement : un merge ne produit pas de patch). `jetons-charte.test.ts` échoue en local faute de `remotion` installé ; `tsc` donne 154 erreurs locales (environnement, non comparées à master). Magasin pnpm local en lecture seule : installé avec `--store-dir`.
