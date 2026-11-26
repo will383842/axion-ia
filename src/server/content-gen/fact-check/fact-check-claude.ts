@@ -12,6 +12,12 @@
 import type { BarriereRelecture } from "../quality/barrieres-publication";
 import { extractClaims } from "./claims-extractor";
 import { verifierAffirmationsAvecClaude, type ResultatFactCheck } from "../clients/claude-search";
+import { equipeEditorialeActive, type EnvEquipeEditoriale } from "./equipe-editoriale-drapeau";
+import {
+  verifierTexteFinal,
+  type DossierPreuves,
+  type ResultatVerificationFinale,
+} from "./verificateur-deux-phases";
 
 export {
   factCheckClaudeActif,
@@ -27,6 +33,16 @@ export interface DecisionFactCheckClaude {
   readonly affirmations: number;
   readonly coutUsd: number;
   readonly recherches: number;
+  /** Phrases marquées À RETIRER (vérificateur en deux phases seulement ; absent sinon). */
+  readonly phrasesARetirer?: ReadonlyArray<string>;
+}
+
+/** Options du vérificateur en deux phases (`CONTENT_EQUIPE_EDITORIALE`). */
+export interface OptionsDeuxPhases {
+  readonly env?: EnvEquipeEditoriale;
+  /** Dossier de la phase A, constitué avant la rédaction. */
+  readonly dossier?: DossierPreuves;
+  readonly verifierFinal?: typeof verifierTexteFinal;
 }
 
 type Verifier = typeof verifierAffirmationsAvecClaude;
@@ -39,11 +55,15 @@ export async function decisionFactCheckClaude(
     readonly texte: string;
   },
   verifier: Verifier = verifierAffirmationsAvecClaude,
+  options: OptionsDeuxPhases = {},
 ): Promise<DecisionFactCheckClaude> {
   // Phrases dédoublonnées : un même énoncé revient une fois par motif détecté et serait payé N fois.
   const affirmations = [...new Set(extractClaims(args.texte).map((c) => c.sentence))];
   if (affirmations.length === 0) {
     return { barriere: null, sources: [], affirmations: 0, coutUsd: 0, recherches: 0 };
+  }
+  if (equipeEditorialeActive(options.env)) {
+    return decisionDeuxPhases(args, affirmations, options);
   }
   let resultat: ResultatFactCheck;
   try {
@@ -92,6 +112,67 @@ export async function decisionFactCheckClaude(
           note: v.note,
           sources: v.sources,
         })),
+      },
+    },
+  };
+}
+
+const DOSSIER_VIDE: DossierPreuves = {
+  preuves: [],
+  refusees: 0,
+  recherches: 0,
+  coutUsd: 0,
+  sources: [],
+};
+
+/** Phase B : ne lève jamais ; erreur = barrière « non vérifié » (fail-closed). */
+async function decisionDeuxPhases(
+  args: { readonly jobId: string; readonly contentType: string },
+  phrases: ReadonlyArray<string>,
+  options: OptionsDeuxPhases,
+): Promise<DecisionFactCheckClaude> {
+  const dossier = options.dossier ?? DOSSIER_VIDE;
+  const verifierFinal = options.verifierFinal ?? verifierTexteFinal;
+  let r: ResultatVerificationFinale;
+  try {
+    r = await verifierFinal({
+      jobId: args.jobId,
+      contentType: args.contentType,
+      phrases,
+      dossier,
+    });
+  } catch (err) {
+    return {
+      barriere: {
+        code: "fact-check-claude",
+        libelle: `Vérification finale par Claude indisponible : article NON vérifié, relecture humaine requise (${err instanceof Error ? err.message : String(err)})`,
+        detail: { erreur: true, affirmations: phrases.length },
+      },
+      sources: dossier.sources,
+      affirmations: phrases.length,
+      coutUsd: dossier.coutUsd,
+      recherches: dossier.recherches,
+    };
+  }
+  const base = {
+    sources: r.sources,
+    affirmations: phrases.length,
+    coutUsd: r.coutUsd + dossier.coutUsd,
+    recherches: r.recherches + dossier.recherches,
+  };
+  if (r.aRetirer.length === 0) return { ...base, barriere: null, phrasesARetirer: [] };
+  return {
+    ...base,
+    phrasesARetirer: r.aRetirer,
+    barriere: {
+      code: "fact-check-claude",
+      libelle: `Vérification finale par Claude : ${r.aRetirer.length} phrase(s) non confirmée(s), à retirer — article NON publié, relecture humaine`,
+      detail: {
+        a_retirer: r.aRetirer.length,
+        constats: r.phrases
+          .filter((p) => p.statut === "a_retirer")
+          .slice(0, 20)
+          .map((p) => ({ phrase: p.phrase, note: p.note })),
       },
     },
   };
