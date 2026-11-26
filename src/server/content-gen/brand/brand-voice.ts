@@ -39,7 +39,7 @@ export const BRAND_VOICE_AXION_IA = {
       "chiffres uniquement s'ils sont fournis avec leur source et son adresse",
       "questions rhétoriques courtes",
       "étapes précises actionnables",
-      "retour terrain de petites et moyennes entreprises",
+      "exemples concrets de petites et moyennes entreprises, signalés comme illustratifs",
     ],
   },
   vocabulary: {

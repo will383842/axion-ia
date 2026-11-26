@@ -263,10 +263,11 @@ export const MOTIFS_INTERDITS: ReadonlyArray<MotifInterdit> = [
     // partout en France ». « hébergement » seul n'est PAS interdit (hébergement des données,
     // d'un site) : on vise un frais, un statut (inclus, offert, gratuit, pris en charge…) ou
     // l'association à un repas / déplacement. Faux positif assumé : « l'hébergement est inclus
-    // dans l'abonnement » (envoi en relecture). Bornes de mot : « déplacer », « repasser »,
+    // dans l'abonnement » et les contenus hôtellerie-restauration (« repas offerts aux clients »)
+    // : règle absolue du dirigeant, envoi en relecture. Bornes de mot : « déplacer », « repasser »,
     // « repartir » ne déclenchent rien.
     re: new RegExp(
-      String.raw`${B}frais (?:de |d'|des |pour (?:le |les )?)?(?:deplacements?|hebergements?|repas|restauration|transports?|voyages?|bouche|sejours?|kilometriques?)${E}|${B}frais kilometriques${E}|${B}(?:deplacements?|hebergements?|repas|dejeuners?|diners?|nuitees?)(?: du formateur| de notre formateur| des formateurs?| de l'intervenant)?(?: et| ou|,)? (?:les |le |l')?(?:(?:deplacements?|hebergements?|repas|dejeuners?|diners?|nuitees?)${E}|(?:sont |est )?(?:inclus|incluse|incluses|offert|offerte|offertes|offerts|gratuits?|gratuite?s?|compris|comprise|comprises|pris en charge|prises? en charge|factures?|facturee?s?|a (?:votre|notre) charge|sur devis|en sus|en supplement)${E})|${B}(?:deplacements?|hebergements?|repas) (?:du|des|de notre|de l') ?(?:formateurs?|intervenants?|consultants?)${E}|${B}(?:prenons|prend|prenez|assumons|offrons|incluons) (?:en charge )?(?:le |les |l')?(?:deplacements?|hebergements?|repas)${E}|${B}(?:nous )?nous deplacons? (?:gratuitement|sans frais|sans supplement)|${B}(?:nous |axion-?ia )?(?:nous )?deplacons?(?: et|,) ?[^.!?]{0,40}(?:frais|supplement)`,
+      String.raw`${B}frais (?:de |d'|des |pour (?:le |les )?)?(?:deplacements?|hebergements?|repas|restauration|transports?|voyages?|bouche|sejours?)${E}|${B}frais kilometriques (?:sont |est )?(?:inclus|offerts?|compris|gratuits?|pris en charge|factures?)${E}|${B}(?:deplacements?|hebergements?|repas(?: du midi| du soir)?|dejeuners?|diners?|nuitees?)(?: du formateur| de notre formateur| des formateurs?| de l'intervenant)?(?: et| ou|,)? (?:les |le |l')?(?:(?:deplacements?|hebergements?|repas|dejeuners?|diners?|nuitees?)${E}|(?:sont |est )?(?:inclus|incluse|incluses|offert|offerte|offertes|offerts|gratuits?|gratuite?s?|compris|comprise|comprises|pris en charge|prises? en charge|factures?|facturee?s?|a (?:votre|notre) charge|sur devis|en sus|en supplement)${E})|${B}(?:deplacements?|hebergements?|repas) (?:du|des|de notre|de l') ?(?:formateurs?|intervenants?|consultants?)${E}|${B}(?:prenons|prend|prenez|assumons|offrons|incluons) (?:en charge )?(?:le |les |l')?(?:deplacements?|hebergements?|repas)${E}|${B}(?:nous )?nous deplacons? (?:gratuitement|sans frais|sans supplement)|${B}(?:nous |axion-?ia )?(?:nous )?deplacons?(?: et|,) ?[^.!?]{0,40}(?:frais|supplement)`,
       "g",
     ),
     raison:
@@ -275,16 +276,16 @@ export const MOTIFS_INTERDITS: ReadonlyArray<MotifInterdit> = [
   {
     code: "prix-barre",
     re: new RegExp(
-      String.raw`${B}(?:prix|tarif)s? barre(?:e|s|es)?${E}|${B}ancien (?:prix|tarif)${E}|${B}anciennement [0-9]|${B}au lieu de [0-9][0-9 ]*(?:€|euros?|eur${E})|${B}prix promotionnel${E}|${B}tarif promotionnel${E}|${B}remises? de [0-9]`,
+      String.raw`${B}(?:prix|tarif)s? barre(?:e|s|es)?${E}|${B}ancien (?:prix|tarif)${E}|${B}anciennement [0-9][0-9 ]*(?:€|euros?)|${B}au lieu de [0-9][0-9 ]*(?:€|euros?|eur${E})`,
       "g",
     ),
     raison:
-      "Prix barré, ancien prix ou remise : le tarif s'affiche seul (1 490 € HT), sans prix barré ni ancien prix.",
+      "Prix barré ou ancien prix : le tarif s'affiche seul (1 490 € HT), sans prix barré ni ancien prix.",
   },
   {
     code: "preuve-sociale-vague",
     re: new RegExp(
-      String.raw`${B}nos retours? (?:de )?terrain${E}|${B}retours? (?:de )?terrain (?:d'|de )?(?:axion|nos|notre)|${B}retours? (?:de )?terrain d'une? [a-z]|${B}d'apres nos (?:clients?|retours?|observations?|experiences?)${E}|${B}selon nos (?:clients?|retours?)${E}|${B}nos clients (?:nous )?(?:disent|confient|rapportent|racontent|expliquent|temoignent|constatent|apprecient|remercient|sont unanimes|ont constate|ont observe)${E}|${B}nos clients nous ont (?:dit|confie|rapporte|raconte|explique)${E}`,
+      String.raw`${B}nos retours? (?:de )?terrain${E}|${B}retours? (?:de )?terrain (?:d'|de )?(?:axion|nos|notre)|${B}retours? (?:de )?terrain d'une? (?:pme|tpe|entreprise|societe|cabinet|agence|commerce)${E}|${B}d'apres nos (?:clients?|retours?|observations?|experiences?)${E}|${B}selon nos (?:clients?|retours?)${E}|${B}nos clients (?:nous )?(?:disent|confient|rapportent|racontent|expliquent|temoignent|constatent|apprecient|remercient|sont unanimes|ont constate|ont observe)${E}|${B}nos clients nous ont (?:dit|confie|rapporte|raconte|explique)${E}`,
       "g",
     ),
     raison:

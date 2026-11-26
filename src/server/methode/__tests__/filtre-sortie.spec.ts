@@ -513,7 +513,7 @@ describe("approbation — marquée et douteuse : refusée ; marquée et saine : 
     expect(motifRefus(fiche(`Écrire à ${COURRIEL}.`))).toBe("courriel");
     expect(motifRefus(fiche(`Appeler le ${TELEPHONE}.`))).toBe("telephone");
     expect(motifRefus(fiche("Un gain garanti."))).toMatch(/^doctrine:/);
-    expect(motifRefus(fiche("Une remise de 20 % ce mois-ci."))).toBe("pourcentage");
+    expect(motifRefus(fiche("Un taux de 20 % ce mois-ci."))).toBe("pourcentage");
     expect(motifRefus(fiche(SAINE, [ETIQUETTE_CHIFFRES]))).toBe(`etiquette:${ETIQUETTE_CHIFFRES}`);
   });
 
