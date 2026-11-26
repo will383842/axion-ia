@@ -147,6 +147,10 @@ export const env = createEnv({
     // ÉTEINT ; seule « true » allume. Texte libre : une valeur mal saisie ne fait jamais planter
     // l'application. Lot 2 (2026-11-25) : rien ne le lit encore.
     APPORTEURS_VALIDATION_RDV: z.string().optional(),
+    // Espace apporteur : page « Mes commissions » (lecture seule) et route de téléchargement des
+    // factures. Lu par le SITE (`apporteurs-reseau/interrupteur-mes-commissions.ts`). ABSENT =
+    // ÉTEINT ; seule « true » allume. Texte libre : une valeur mal saisie ne fait jamais planter.
+    APPORTEUR_MES_COMMISSIONS_ENABLED: z.string().optional(),
     // Boîte d'Axion IA qui reçoit les essais de la console (jamais le prospect). Lue par le WORKER.
     // Texte libre (une faute de frappe ne doit jamais empêcher le démarrage) : `adresseEssai()`
     // la vérifie et l'essai échoue, visible au journal, si elle est invalide.
@@ -821,6 +825,7 @@ export const env = createEnv({
     QUESTIONNAIRE_EXPORT_COMPLET_ENABLED: process.env.QUESTIONNAIRE_EXPORT_COMPLET_ENABLED,
     TOUR_TELEGRAM_ENABLED: process.env.TOUR_TELEGRAM_ENABLED,
     APPORTEURS_VALIDATION_RDV: process.env.APPORTEURS_VALIDATION_RDV,
+    APPORTEUR_MES_COMMISSIONS_ENABLED: process.env.APPORTEUR_MES_COMMISSIONS_ENABLED,
     QUESTIONNAIRE_PREAUDIT_ADRESSE_ESSAI: process.env.QUESTIONNAIRE_PREAUDIT_ADRESSE_ESSAI,
     IDCC_OPCO_IMPORT_ENABLED: process.env.IDCC_OPCO_IMPORT_ENABLED,
     VISIO_ADRESSES_DE_TEST: process.env.VISIO_ADRESSES_DE_TEST,

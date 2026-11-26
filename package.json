@@ -268,9 +268,9 @@
       "running": false
     },
     {
-      "name": "Routes /apporteur/dossier (lien secret, noindex — dossier d'apporteur en ligne) — 26 KB cumulé",
+      "name": "Routes /apporteur/dossier (lien secret, noindex, hors budget des 15 pages stratégiques — page Mes commissions 100 % serveur, mesuré 26,41 kB le 26/11) — 27 KB cumulé",
       "path": ".next/static/chunks/app/apporteur/**/page-*.js",
-      "limit": "26 KB",
+      "limit": "27 KB",
       "running": false
     },
     {
