@@ -914,7 +914,7 @@ describe("commande mixte : mise en service + maintenance", () => {
       expect(ecritures()).toEqual([]);
     });
 
-    it("une ligne déjà gonflée à 750 € est ramenée à 600 € au plus (jamais remontée au-delà)", async () => {
+    it("même commande, ligne à 600 € : aucune écriture à 750 € (jamais remontée au-delà du plafond)", async () => {
       d.factures = [
         facDe("F1", 100_000, lignesDe(100_000), 500_000),
         facDe("F2", 100_000, unique(500_000), 500_000),
@@ -923,6 +923,17 @@ describe("commande mixte : mise en service + maintenance", () => {
       d.lignes = [ligne({ activite: "site_web", factureHtCents: 400_000, montantCents: 60_000 })];
       await reprendreApresAvoirsClients(LE);
       expect(ecritures()).not.toContainEqual(expect.objectContaining({ montantCents: 75_000 }));
+    });
+
+    it("non-régression : acompte + solde détaillés → 600 €, aucune écriture", async () => {
+      d.factures = [
+        facDe("F1", 15_000, lignesDe(15_000), 207_500),
+        facDe("F2", 15_000, lignesDe(15_000), 207_500),
+      ];
+      d.lignes = [ligne({ activite: "site_web", factureHtCents: 400_000, montantCents: 60_000 })];
+      await reprendreApresAvoirsClients(LE);
+      expect(d.reduire).not.toHaveBeenCalled();
+      expect(ecritures()).toEqual([]);
     });
 
     it("deux acomptes à ligne unique, avoir partiel « maintenance », complément « Maintenance » : jamais au-delà de 600 €", async () => {

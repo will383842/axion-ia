@@ -560,6 +560,40 @@ describe("passage quotidien : commission par commande soldée", () => {
         expect(etat.crees[0]).toMatchObject({ montantCents: 60_000 });
       });
 
+      it("non-régression : avoir annulé → 600 € (l'avoir sans effet ne change rien)", async () => {
+        etat.payees = [{ id: "F1", devisId: "D1" }];
+        etat.lignes = [f("F1")];
+        etat.avoirs = [
+          {
+            ...avoirTotal("AV", "F1", ligneUnique(-10_000, "Avoir partiel"), 10_000),
+            statut: "annulee",
+          },
+        ];
+        await passerReseauApporteurs(MAINTENANT);
+        expect(etat.crees[0]).toMatchObject({ factureHtCents: 400_000, montantCents: 60_000 });
+      });
+
+      it("non-régression : avoir « Maintenance » + facture complémentaire « Maintenance » → 600 €", async () => {
+        const maint = (m: number) => [
+          { designation: "Maintenance mensuelle", quantite: 1, prixUnitaireHtCents: m },
+        ];
+        etat.payees = [{ id: "F2", devisId: "D1" }];
+        etat.lignes = [
+          f("F1"),
+          fac({
+            id: "F2",
+            activite: "site_web",
+            montantHtCents: 15_000,
+            lignes: maint(15_000),
+            devis: DEVIS,
+          }),
+        ];
+        etat.avoirs = [avoirTotal("AV", "F1", maint(-15_000), 15_000)];
+        await passerReseauApporteurs(MAINTENANT);
+        expect(etat.crees).toHaveLength(1);
+        expect(etat.crees[0]).toMatchObject({ factureHtCents: 400_000, montantCents: 60_000 });
+      });
+
       it("non-régression : acompte + solde détaillés → 600 €", async () => {
         const part = (id: string) =>
           fac({ id, activite: "site_web", montantHtCents: 207_500, lignes: LM, devis: DEVIS });
