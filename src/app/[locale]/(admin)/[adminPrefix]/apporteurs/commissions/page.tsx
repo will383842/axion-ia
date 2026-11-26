@@ -624,7 +624,7 @@ export default async function CommissionsApporteursPage({ params, searchParams }
                         <option value="audit">Audit (30 %)</option>
                         <option value="implementation">Intégration (15 %)</option>
                         <option value="conference">Conférence (500 € fixes)</option>
-                        <option value="site_web">Site web (aucune commission)</option>
+                        <option value="site_web">Site web (15 %)</option>
                       </select>
                     </label>
                     <button type="submit" className="admin-button-secondary">

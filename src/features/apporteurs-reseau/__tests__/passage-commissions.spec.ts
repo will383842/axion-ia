@@ -362,9 +362,19 @@ describe("passage quotidien : commission par commande soldée", () => {
   });
 
   it("développement web : 15 % du HT facturé (A1.5 du contrat 2.8), soldé et attribué", async () => {
-    unePayee({ activite: "site_web", montantHtCents: 200_000 });
+    unePayee({
+      activite: "site_web",
+      montantHtCents: 200_000,
+      devis: { acceptedAt: new Date("2026-12-01T00:00:00Z") },
+    });
     await passerReseauApporteurs(MAINTENANT);
     expect(etat.crees[0]).toMatchObject({ montantCents: 30_000 });
+  });
+
+  it("développement web signé AVANT la date d'effet : aucune commission rétroactive", async () => {
+    unePayee({ activite: "site_web", montantHtCents: 400_000 });
+    await passerReseauApporteurs(MAINTENANT);
+    expect(etat.crees).toEqual([]);
   });
 
   it("implémentation : 15 % du HT ; 1-to-1 : aucune commission", async () => {

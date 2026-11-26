@@ -354,7 +354,7 @@ export type ActiviteClassable = (typeof ACTIVITES_CLASSABLES)[number];
 /**
  * Une ligne « à qualifier » qui n'est pas une formation (activité de la facture inconnue) :
  * Williams la classe. 1-to-1, audit, intégration : la commission se calcule tout de suite sur le
- * HT facturé. Site web : aucune commission (annexe 1, A1.5), la ligne est close à 0 €. Formation :
+ * HT facturé. Site web : 15 % du HT facturé (annexe 1, A1.5 du contrat 2.8). Coaching : aucune commission, ligne close à 0 €. Formation :
  * l'activité est posée, le palier se choisit ensuite comme d'habitude.
  */
 export async function classerActiviteCommission(
@@ -467,7 +467,7 @@ async function qualifierPartParrainage(
   });
   if (!part || part.statut !== "a_qualifier") return;
   // La fenêtre de 6 mois a déjà été vérifiée à la création de la ligne.
-  const montant = Math.floor((montantFilleulCents * PARRAINAGE_BPS) / 10_000);
+  const montant = Math.round((montantFilleulCents * PARRAINAGE_BPS) / 10_000);
   const v = await statutApresVigilance(part.apporteurId, montant, maintenant, part.id);
   await prisma.commissionApporteur.updateMany({
     where: { id: part.id, statut: "a_qualifier" },

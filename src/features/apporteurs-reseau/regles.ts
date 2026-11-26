@@ -357,8 +357,16 @@ export const PALIERS_FORMATION = [
 ] as const;
 export type PalierFormation = (typeof PALIERS_FORMATION)[number]["id"];
 
+/**
+ * Développement web (A1.5 du contrat 2.8) : commissionné seulement pour une commande signée à partir
+ * de cette date (4.1 : une nouvelle grille ne vaut que pour les ventes signées après son entrée en
+ * vigueur ; jamais de commission rétroactive sur les ventes passées). ⚠️ À RECALER par le pilote sur
+ * la date de la fusion du contrat 2.8 (`CONTRAT_VERSION`).
+ */
+export const DEVELOPPEMENT_WEB_COMMISSIONNE_DEPUIS = new Date("2026-11-26T00:00:00Z");
+
 /** Taux de l'annexe 1, en points de base, par activité facturée. */
-/** ⚠️ `un_a_un` reste 30 % ICI (grille affichée, contrat 2.6, pricing.ts) ; le CALCUL ne le paie plus (aucune commission, décision du 25/11) jusqu'à la grille/contrat 2.8. */
+/** ⚠️ `un_a_un` reste 30 % ICI (grille affichée, contrat 2.6, pricing.ts) ; le CALCUL ne le paie plus (aucune commission, décision du 25/11 ; contrat 2.8, A1.3). */
 export const TAUX_BPS = {
   audit: 3000,
   implementation: 1500,
@@ -488,7 +496,7 @@ export function calculerCommission(e: {
   quantite?: number;
 }): CalculCommission {
   if (e.activite === null) return { statut: "a_qualifier" };
-  // Coaching « one to one » (décision du 25/11, A1.3) : aucune commission, comme le site web.
+  // Coaching « one to one » (décision du 25/11, A1.3) : aucune commission.
   if (e.activite === "un_a_un") return { statut: "aucune" };
   if (
     e.activite === "conference" ||
