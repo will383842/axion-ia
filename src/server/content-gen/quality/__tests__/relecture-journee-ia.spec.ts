@@ -7,6 +7,7 @@ import {
   barriereJourneeIA,
   exigeRelectureHumaine,
   mentionneJourneeIA,
+  statutApresJugeJourneeIA,
 } from "../relecture-journee-ia";
 
 describe("mentionneJourneeIA", () => {
@@ -114,4 +115,36 @@ describe("barriereJourneeIA", () => {
   it("rend null sinon", () => {
     expect(barriereJourneeIA({ output: { bodyHtml: "<p>Rien</p>" } })).toBeNull();
   });
+});
+
+describe("statutApresJugeJourneeIA (boucle qualité, verdict « publish » du juge)", () => {
+  it("renvoie en relecture un contenu Journée IA que le juge a approuvé (aucun job de publication)", () => {
+    expect(
+      statutApresJugeJourneeIA("approved", {
+        output: { bodyHtml: "<p>Notre Journée IA à 297 € HT</p>" },
+      }),
+    ).toBe("needs_review");
+  });
+
+  it("détecte la mention dans la charge d'entrée et dans le nom de campagne", () => {
+    expect(
+      statutApresJugeJourneeIA("approved", { output: {}, inputPayload: { sujet: "journée IA" } }),
+    ).toBe("needs_review");
+    expect(
+      statutApresJugeJourneeIA("approved", { output: {}, campaignName: "Campagne Journée IA" }),
+    ).toBe("needs_review");
+  });
+
+  it("laisse passer un contenu sans rapport", () => {
+    expect(
+      statutApresJugeJourneeIA("approved", { output: { bodyHtml: "<p>Guide RGPD</p>" } }),
+    ).toBe("approved");
+  });
+
+  it.each(["quality_improving", "needs_review", "quarantined_critical"])(
+    "ne touche pas au statut « %s »",
+    (s) => {
+      expect(statutApresJugeJourneeIA(s, { output: { bodyHtml: "Journée IA" } })).toBe(s);
+    },
+  );
 });

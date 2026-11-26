@@ -122,3 +122,15 @@ export function barriereJourneeIA(contenu: ContenuARelire): BarriereRelecture | 
       }
     : null;
 }
+
+/**
+ * Boucle qualité : le verdict « publish » du juge (statut `approved`) devient `needs_review`
+ * pour tout contenu qui parle de la Journée IA, donc aucun job `publish-<id>` n'est enfilé.
+ * Les autres statuts sont rendus tels quels.
+ */
+export function statutApresJugeJourneeIA<S extends string>(
+  statut: S,
+  contenu: ContenuARelire,
+): S | "needs_review" {
+  return statut === "approved" && exigeRelectureHumaine(contenu) ? "needs_review" : statut;
+}
