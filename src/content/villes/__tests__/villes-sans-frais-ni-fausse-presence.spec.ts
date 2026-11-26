@@ -122,6 +122,21 @@ const PRESENCE: ReadonlyArray<readonly [string, RegExp]> = [
     "trajet de l'équipe en train, avion ou RER",
     /(?:Williams|[Nn]os consultants|[Nn]otre équipe)[^."]{0,60}(?:prenn?ent|prend) (?:le |l['’])?(?:TGV|train|avion|RER)|(?:se déplace|[Dd]éplacement)[^."]{0,60}\b(?:via|par le (?:train|RER|TGV)|grâce au|en \d)/u,
   ],
+  ["aux mêmes tarifs", /aux m[êe]mes tarifs/iu],
+  ["phrase cassée par une suppression (« ,, » ou « , . »)", /,\s*,|,\s*\.|\s,/u],
+  [
+    "transport après « se déplace / kick-off / intervenons / intervient »",
+    /(?:se déplac\w*|[Kk]ick-off|[Nn]ous intervenons|intervient|interviennent|déplacements?)[^."]{0,120}\b(?:RER|TGV|TER|gare|métro|autoroute|aéroport|A\d{1,3}|RN ?\d+|tram\w*|Transilien|périphérique|rocade)\b/u,
+  ],
+  ["Williams se déplace", /Williams se déplace/u],
+  [
+    "Proximité / proche d'un transport (phrase isolée)",
+    /(?:^|[.!?"] )(?:À )?(?:[Pp]roximité|[Pp]roche)[^.]{0,60}\b(?:TGV|aéroport|gare|RER|autoroute|A\d{1,3})\b/u,
+  ],
+  [
+    "question d'accès ou de trajet",
+    /\bq: "[^"]*(?:[Cc]omment (?:venir|rejoindre|accéder|arriver)|[Tt]emps de trajet|[Cc]ombien de temps[^"?]* (?:pour venir|de trajet)|[Ee]st-il facile (?:de|d['’])(?:accéder|venir|rejoindre)|[Aa]ccès (?:à|depuis)|[Aa]ccessibilit|[Cc]omment se passe[^"?]* déplacement|[Cc]omment [^"?]* gère-t-elle les déplacements|vos déplacements|bien desservie|[Cc]omment rejoindre|[Cc]omment venez-vous|se déplacent?-(?:il|ils|elle)s?)/u,
+  ],
   ["lieux Axion-IA", /ateliers Axion-IA à|nos points de cadrage/u],
   [
     "basé à",
@@ -145,7 +160,7 @@ const TRAJET_FAQ: ReadonlyArray<readonly [string, RegExp]> = [
   ],
   [
     "durée d'accès",
-    /^(?!.*(?:devis|séance|audit|livrable|atelier|sous \d)).*(?:(?<![\p{L}\d])(?:à|est à|sont à|en) \d+ ?(?:min\b|minutes|km)|(?<![\p{L}\d])(?:à|est à|sont à) \d+ ?h\d*\b|\(\d+ ?(?:min|h\d*)[^)]*\))/u,
+    /^(?!.*(?:devis|séance|livrable|atelier|sous \d)).*(?:(?<![\p{L}\d])(?:à|est à|sont à|en) \d+ ?(?:min\b|minutes|km)|(?<![\p{L}\d])(?:à|est à|sont à) \d+ ?h\d*\b|\(\d+ ?(?:min|h\d*)[^)]*\))/u,
   ],
   [
     "gare ou aéroport cité seul",
@@ -171,6 +186,12 @@ function fautesFaq(motif: RegExp): string[] {
   return out;
 }
 
+/** Échoue en listant TOUTES les fautes (fichier:ligne), sans troncature du diff. */
+function vide(fautesTrouvees: string[]): void {
+  if (fautesTrouvees.length > 0)
+    throw new Error(`${fautesTrouvees.length} faute(s) :\n${fautesTrouvees.join("\n")}`);
+}
+
 describe("villes · ni frais de déplacement, ni fausse présence, ni Grenoble", () => {
   it("les sources sont lues (garde contre un test vide)", () => {
     expect(SOURCES.filter((f) => f.startsWith("copy/")).length).toBeGreaterThan(2000);
@@ -191,14 +212,21 @@ describe("villes · ni frais de déplacement, ni fausse présence, ni Grenoble",
 
   for (const [nom, motif] of FRAIS)
     it(`aucune mention de frais ou de prix du déplacement : ${nom}`, () =>
-      expect(fautes(motif)).toEqual([]));
+      vide(fautes(motif)));
 
   for (const [nom, motif] of PRESENCE)
-    it(`aucune fausse présence locale : ${nom}`, () => expect(fautes(motif)).toEqual([]));
+    it(`aucune fausse présence locale : ${nom}`, () => vide(fautes(motif)));
 
   for (const [nom, motif] of TRAJET_FAQ)
     it(`réponses de FAQ sans trajet ni durée d'accès : ${nom}`, () =>
-      expect(fautesFaq(motif)).toEqual([]));
+      vide(fautesFaq(motif)));
+
+  it("les réponses « devis » gardent leur délai (« 24 à 48 h ») : jamais moins que sur main", () => {
+    const motif = /^\s*a: ".*24 ?(?:à|-) ?48/u;
+    let n = 0;
+    for (const [f, lignes] of LIGNES) if (f.startsWith("copy/")) n += lignes.filter((l) => motif.test(l)).length;
+    expect(n).toBeGreaterThanOrEqual(712);
+  });
 
   it("« Grenoble » n'apparaît que sur la page de Grenoble", () => {
     expect(fautes(/Grenoble/u, (f) => f === "copy/grenoble.ts")).toEqual([]);
