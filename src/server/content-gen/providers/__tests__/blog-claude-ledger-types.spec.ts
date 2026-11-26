@@ -40,7 +40,7 @@ vi.mock("@/lib/prisma", () => {
         }),
         $queryRaw: vi.fn(async (q: { sql: string; values: unknown[] }) => {
           etat.requetes.push({ sql: q.sql, values: q.values });
-          if (q.sql.includes("SELECT 1 FROM content_gen_jobs")) {
+          if (q.sql.includes("FROM content_gen_jobs WHERE id")) {
             return etat.jobTypeOk ? [{ "?column?": 1 }] : [];
           }
           const total = etat.lignes.reduce((s, l) => s + l.costUsd, 0);
@@ -104,7 +104,7 @@ afterEach(() => vi.unstubAllEnvs());
 describe("types autorisés dans le registre", () => {
   it("défaut : le contrôle du job ne liste que les 4 types blog", async () => {
     await reserverCout({ ...base, jobId: "j1" });
-    const job = etat.requetes.find((r) => r.sql.includes("SELECT 1 FROM content_gen_jobs"))!;
+    const job = etat.requetes.find((r) => r.sql.includes("FROM content_gen_jobs WHERE id"))!;
     expect([...job.values].filter((v) => typeof v === "string" && v !== "j1").sort()).toEqual([
       "blog_article",
       "blog_from_keywords",
@@ -116,7 +116,7 @@ describe("types autorisés dans le registre", () => {
   it("`tous` : le contrôle du job liste toute l'énumération", async () => {
     vi.stubEnv("CONTENT_GEN_CLAUDE_TYPES", "tous");
     await reserverCout({ ...base, jobId: "j1" });
-    const job = etat.requetes.find((r) => r.sql.includes("SELECT 1 FROM content_gen_jobs"))!;
+    const job = etat.requetes.find((r) => r.sql.includes("FROM content_gen_jobs WHERE id"))!;
     expect(job.values).toContain("landing_ville");
     expect(job.values).toContain("qa_derived");
   });
