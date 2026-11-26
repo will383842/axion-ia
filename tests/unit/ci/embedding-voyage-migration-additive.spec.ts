@@ -13,7 +13,7 @@ const SQL_BRUT = readFileSync(
     process.cwd(),
     "prisma",
     "migrations",
-    "20261126100000_add_article_embedding_voyage",
+    "20261126130000_add_article_embedding_voyage",
     "migration.sql",
   ),
   "utf8",

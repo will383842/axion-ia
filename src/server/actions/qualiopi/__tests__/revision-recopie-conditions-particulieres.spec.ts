@@ -34,7 +34,7 @@ import { reviseDevisAction } from "../devis";
 
 const ORIGINE = "66666666-6666-4666-8666-666666666666";
 
-function semer(conditionsParticulieres: string | null) {
+function semer(conditionsParticulieres: string | null, journeeIa = false) {
   const f = fausseBaseDevis({ collisionsAuCreate: 0 });
   f.etat.devis.push({
     id: ORIGINE,
@@ -50,6 +50,7 @@ function semer(conditionsParticulieres: string | null) {
     montantOpcoEstimeCents: null,
     resteAChargeCents: null,
     conditionsParticulieres,
+    journeeIa,
   });
   const db = f.db as unknown as {
     devis: {
@@ -86,5 +87,20 @@ describe("reviseDevisAction — conditions particulières", () => {
     await reviseDevisAction(ORIGINE);
     const revision = etat.devis.find((d) => d["replacesDevisId"] === ORIGINE);
     expect(revision && "conditionsParticulieres" in revision).toBe(false);
+  });
+
+  it("Journée IA : la case (colonne journeeIa) est recopiée, la révision ne la perd pas", async () => {
+    const { etat, selects } = semer("Acompte de 30 %.", true);
+    await reviseDevisAction(ORIGINE);
+    expect(selects.some((s) => s?.["journeeIa"] === true)).toBe(true);
+    const revision = etat.devis.find((d) => d["replacesDevisId"] === ORIGINE);
+    expect(revision?.["journeeIa"]).toBe(true);
+  });
+
+  it("Journée IA fausse : rien n'est écrit (défaut de la colonne)", async () => {
+    const { etat } = semer("Acompte de 30 %.", false);
+    await reviseDevisAction(ORIGINE);
+    const revision = etat.devis.find((d) => d["replacesDevisId"] === ORIGINE);
+    expect(revision && "journeeIa" in revision).toBe(false);
   });
 });
