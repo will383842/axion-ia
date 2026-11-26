@@ -24,7 +24,24 @@
 
 import { Worker, type Job } from "bullmq";
 import { prisma } from "@/lib/prisma";
+import { redis } from "@/lib/redis";
+import { SITE_URL } from "@/lib/site-url";
+import {
+  isRoutableArticleSlug,
+  resolveArticleRoute,
+} from "@/server/content-gen/blog/resolve-article-route";
 import { captureWorkerError } from "@/server/queue/lib/sentry-worker";
+import { gscInspectUrl, gscPageMetricsForUrl } from "@/server/content-gen/seo/gsc-client";
+import { equipeEditorialeActive } from "@/server/content-gen/equipe/maillage";
+import {
+  choisirCandidatsMiseAJour,
+  estCannibalise,
+  suivreArticles,
+  controlerLiensArticles,
+  type MagasinSuivi,
+  type SignauxArticle,
+} from "@/server/content-gen/equipe/suivi-publication";
+import { chargerCarteRequetes } from "@/server/content-gen/strategie/carte-requetes-source";
 
 const QUEUE_NAME = "content-refresh";
 const DEFAULT_OLDER_THAN_DAYS = 14;
@@ -34,6 +51,12 @@ interface RefreshJobData {
   readonly trigger: "cron-weekly" | "manual";
   readonly olderThanDays?: number;
   readonly maxPerRun?: number;
+  /**
+   * Facultatif (le worker peut tourner une version différente de l'application) :
+   * absent = scan de rafraîchissement, comme avant. Les autres tâches ne
+   * s'exécutent que si CONTENT_EQUIPE_EDITORIALE=true.
+   */
+  readonly tache?: "suivi-publication" | "liens-hebdo";
 }
 
 export interface ContentRefreshResult {
@@ -41,6 +64,7 @@ export interface ContentRefreshResult {
   readonly flaggedCount: number;
   readonly refreshedCount: number;
   readonly checkedAt: string;
+  readonly suivi?: Readonly<Record<string, number>>;
 }
 
 const ENABLED_ENV = process.env.CONTENT_REFRESH_ENABLED === "true";
@@ -51,11 +75,118 @@ function envInt(name: string, fallback: number): number {
   return Number.isFinite(n) && n > 0 ? n : fallback;
 }
 
+const JOUR_MS = 24 * 60 * 60 * 1000;
+
+/** URL publique réelle d'un article (guides, actualités et blog n'ont pas la même route). */
+function urlArticle(a: {
+  isNews: boolean;
+  templateVariant: string | null;
+  translations: ReadonlyArray<{ slug: string }>;
+}): string | null {
+  const slug = a.translations[0]?.slug;
+  if (!isRoutableArticleSlug(slug)) return null;
+  return `${SITE_URL}/fr/${resolveArticleRoute({ isNews: a.isNews, templateVariant: a.templateVariant, slug: slug ?? null })}/${slug}`;
+}
+
+const TTL_S = 200 * 24 * 3600;
+
+/** Mémoire des jalons faits, du quota du jour et des relevés : Redis, TTL borné. */
+function magasinRedis(maintenant: Date): MagasinSuivi {
+  const jour = maintenant.toISOString().slice(0, 10);
+  return {
+    dejaFait: async (c) => (await redis.exists(`suivi-pub:fait:${c}`)) === 1,
+    marquer: async (c) => void (await redis.set(`suivi-pub:fait:${c}`, "1", "EX", TTL_S)),
+    reserverQuota: async (n, max) => {
+      const cle = `suivi-pub:quota:${jour}`;
+      const total = await redis.incrby(cle, n);
+      await redis.expire(cle, 2 * 24 * 3600);
+      if (total <= max) return n;
+      const accorde = Math.max(0, n - (total - max));
+      await redis.decrby(cle, n - accorde);
+      return accorde;
+    },
+    compterEchec: async (c) => {
+      const cle = `suivi-pub:essais:${c}`;
+      const n = await redis.incr(cle);
+      await redis.expire(cle, TTL_S);
+      return n;
+    },
+    lirePositions: async (id) => {
+      const [a, b] = await redis.mget(`suivi-pub:pos:${id}:j28`, `suivi-pub:pos:${id}:j90`);
+      return { j28: a === null ? null : Number(a), j90: b === null ? null : Number(b) };
+    },
+    ecrirePosition: async (id, jalon, position) => {
+      await redis.set(`suivi-pub:pos:${id}:${jalon.slice(-3)}`, String(position), "EX", TTL_S);
+    },
+  };
+}
+
+async function articlesPublies(take: number) {
+  return prisma.article.findMany({
+    where: { status: "published", indexationTier: "tier_1_indexable", publishedAt: { not: null } },
+    orderBy: { publishedAt: "desc" },
+    take,
+    select: {
+      id: true,
+      publishedAt: true,
+      updatedAt: true,
+      isNews: true,
+      templateVariant: true,
+      translations: { where: { locale: "fr" }, select: { slug: true, body: true }, take: 1 },
+    },
+  });
+}
+
+async function runTacheEquipe(
+  tache: "suivi-publication" | "liens-hebdo",
+  checkedAt: string,
+): Promise<ContentRefreshResult> {
+  const maintenant = new Date(checkedAt);
+  const magasin = magasinRedis(maintenant);
+  const articles = await articlesPublies(500);
+  const base = { scannedCount: articles.length, flaggedCount: 0, refreshedCount: 0, checkedAt };
+  if (tache === "suivi-publication") {
+    const r = await suivreArticles(
+      articles.flatMap((a) => {
+        const url = urlArticle(a);
+        return url && a.publishedAt ? [{ id: a.id, url, publieLe: a.publishedAt }] : [];
+      }),
+      {
+        magasin,
+        maintenant,
+        inspecter: (url) => gscInspectUrl(url),
+        positions: async (url, jours) => {
+          const m = await gscPageMetricsForUrl(url, jours);
+          return m && m.impressions > 0
+            ? { position: m.position, impressions: m.impressions }
+            : null;
+        },
+      },
+    );
+    return { ...base, suivi: { ...r } };
+  }
+  // liens-hebdo : liens cassés (maillage vérifié) + alerte de cannibalisation.
+  const casses = await controlerLiensArticles(
+    articles.map((a) => ({ id: a.id, corps: a.translations[0]?.body ?? "" })),
+    async (id, n) =>
+      void (await redis.set(`suivi-pub:liens:${id}`, String(n), "EX", 14 * 24 * 3600)),
+  );
+  const carte = await chargerCarteRequetes().catch(() => null);
+  if (carte && carte.cannibalisations.length > 0) {
+    console.log(`[content-refresh] cannibalisation : ${carte.cannibalisations.length} requête(s)`);
+  }
+  return { ...base, flaggedCount: casses, suivi: { liensCasses: casses } };
+}
+
 async function runRefreshJob(job: Job<RefreshJobData>): Promise<ContentRefreshResult> {
   const checkedAt = new Date().toISOString();
   if (!ENABLED_ENV) {
     console.log("[content-refresh] disabled (CONTENT_REFRESH_ENABLED!=true) — skip");
     return { scannedCount: 0, flaggedCount: 0, refreshedCount: 0, checkedAt };
+  }
+
+  if (job.data.tache && equipeEditorialeActive()) {
+    return runTacheEquipe(job.data.tache, checkedAt);
   }
 
   const olderThanDays =
@@ -66,25 +197,68 @@ async function runRefreshJob(job: Job<RefreshJobData>): Promise<ContentRefreshRe
 
   // Scan : articles tier-1 publiés non rafraîchis depuis > olderThanDays, du
   // plus ancien au plus récent (les plus décayés d'abord). Best-effort.
+  const equipe = equipeEditorialeActive();
   const stale = await prisma.article
     .findMany({
       where: {
         status: "published",
         indexationTier: "tier_1_indexable",
-        updatedAt: { lte: cutoff },
+        // Interrupteur allumé : les règles de suivi remplacent le cutoff fixe.
+        ...(equipe ? {} : { updatedAt: { lte: cutoff } }),
       },
       orderBy: { updatedAt: "asc" },
-      take: maxPerRun,
+      take: equipe ? 500 : maxPerRun,
       select: {
         id: true,
         updatedAt: true,
+        isNews: true,
+        templateVariant: true,
         translations: { where: { locale: "fr" }, select: { slug: true }, take: 1 },
       },
     })
     .catch(() => []);
 
   const now = Date.now();
-  const candidates = stale.map((a) => ({
+  let retenus = stale;
+  if (equipe) {
+    const magasin = magasinRedis(new Date(now));
+    const cannib = (await chargerCarteRequetes().catch(() => null))?.cannibalisations ?? [];
+    const signaux: SignauxArticle[] = await Promise.all(
+      stale.map(async (a) => {
+        const url = urlArticle(a);
+        const pos = await magasin.lirePositions(a.id).catch(() => ({ j28: null, j90: null }));
+        const liens = Number(await redis.get(`suivi-pub:liens:${a.id}`).catch(() => 0)) || 0;
+        return {
+          id: a.id,
+          ageJours: Math.round((now - a.updatedAt.getTime()) / JOUR_MS),
+          positionActuelle: pos.j90,
+          positionReference: pos.j28,
+          preuveExpireLe: null, // aucune source de péremption en base à ce jour
+          liensCasses: liens,
+          cannibalisation: url ? estCannibalise(url, cannib) : false,
+        };
+      }),
+    );
+    // Délai de grâce de 28 jours après un signalement : un relevé de position
+    // n'est écrit qu'une fois, il ne doit pas re-signaler l'article à chaque passage.
+    const choisis: string[] = [];
+    // Le filet d'âge passe en dernier : il ne doit pas masquer les vrais signaux.
+    const vrais = (c: { raisons: readonly string[] }) =>
+      c.raisons.some((r) => r !== "age-maximum") ? 0 : 1;
+    const ordonnes = choisirCandidatsMiseAJour(signaux, new Date(now)).sort(
+      (a, b) => vrais(a) - vrais(b),
+    );
+    for (const c of ordonnes) {
+      if (choisis.length >= maxPerRun) break;
+      const ok = await redis
+        .set(`suivi-pub:alerte:${c.id}`, "1", "EX", 28 * 24 * 3600, "NX")
+        .catch(() => "OK"); // Redis indisponible : on retient l'article plutôt que de tout perdre
+      if (ok === "OK") choisis.push(c.id);
+    }
+    const ids = new Set(choisis);
+    retenus = stale.filter((a) => ids.has(a.id));
+  }
+  const candidates = retenus.map((a) => ({
     slug: a.translations[0]?.slug ?? a.id,
     ageDays: Math.round((now - a.updatedAt.getTime()) / (24 * 60 * 60 * 1000)),
   }));

@@ -8,12 +8,17 @@
  *   - Pas de boucle improve avec re-prompt cible
  *
  * Cette implementation livre :
- *   - Reviewer Claude Sonnet 4.6 (distinct du generator pour eviter self-judge bias)
+ *   - Reviewer. Etat reel du code (le biais d'auto-jugement n'est evite que sur la voie Claude) :
+ *     par defaut GPT-4o (JUDGE_MODEL, comme la generation) ; relecture par
+ *     Claude Opus 5.5 ("claude-opus-5-5", role "relecture") quand
+ *     CONTENT_GEN_BLOG_CLAUDE="true" ET le type est autorise (CONTENT_GEN_CLAUDE_TYPES).
+ *     L'ecriture, elle, passe par Claude Sonnet 5.5 sous les memes conditions (+ demande marquee par le generateur, `blogClaudeRole`).
+ *     `options.sansClaude` force la relecture sur OpenAI.
  *   - Rubric 7 dimensions (factual_accuracy, depth, originality, readability,
  *     seo_completeness, value_to_reader, tone_axionia_alignment)
- *   - Verdict : publish (>= 8.5) | improve (7-8.5) | reject (< 7)
+ *   - Verdict : publish (>= 8.5) | improve (6.0-8.5) | reject (< 6.0)
  *   - Issues[] avec severity + section + fix suggestion
- *   - Cost tracking via provider anthropic existing
+ *   - Cost tracking via le provider utilise (OpenAI par defaut, Anthropic sur la voie Claude)
  *
  * Seuils editorial Will (D1 décision 2026-05-21 — aligné P5 D-P5-2 60/100) :
  *   - publish : globalScore >= 8.5 ET 0 P0 issue
@@ -383,7 +388,7 @@ export function parseJudgeResponse(
 }
 
 /**
- * Review un article via Claude Sonnet (reviewer LLM).
+ * Review un article (reviewer LLM : GPT-4o par defaut, Claude Opus 5.5 sur la voie Claude).
  *
  * Cost approx : ~$0.03-0.06 par article (input ~3-5k tokens + output ~500-800).
  * Latency : ~5-15s (streaming).
