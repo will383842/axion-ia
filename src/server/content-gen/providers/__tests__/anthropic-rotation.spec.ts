@@ -70,7 +70,7 @@ import {
 import type { FauxRedis } from "./faux-redis-cles";
 
 const fauxRedis = redisImporte as unknown as FauxRedis;
-import { ProviderError } from "../IProvider";
+import { ProviderError, estSortieJsonTronquee, coutErreurTronquee } from "../IProvider";
 
 const APIError = Anthropic.APIError as unknown as new (s: number, m: string) => Error;
 
@@ -235,6 +235,27 @@ describe("chemin blog : réservation", () => {
     expect(solderReservation.mock.calls[0]![1]).toBeGreaterThan(0);
   });
 
+  it("max_tokens sans aucun texte (réflexion consommée) : erreur « tronquée » claire, coût porté, réservation soldée", async () => {
+    create.mockImplementation(async () =>
+      (async function* () {
+        yield { type: "message_start", message: { usage: { input_tokens: 10 } } };
+        yield {
+          type: "message_delta",
+          usage: { output_tokens: 2600 },
+          delta: { stop_reason: "max_tokens" },
+        };
+      })(),
+    );
+    const err = await anthropicProvider.generate(reqBlog).catch((e: unknown) => e);
+    expect(err).toBeInstanceOf(ProviderError);
+    expect((err as Error).message).toMatch(/tronquée/);
+    expect((err as Error).message).not.toMatch(/empty content/);
+    expect(estSortieJsonTronquee(err)).toBe(true);
+    expect(coutErreurTronquee(err)).toBeGreaterThan(0);
+    expect(solderReservation).toHaveBeenCalledTimes(1);
+    expect(solderReservation.mock.calls[0]![1]).toBeGreaterThan(0);
+  });
+
   it("refus HTTP avant flux : soldée à 0 ; un seul essai", async () => {
     create.mockRejectedValue(new APIError(500, "boom"));
     await expect(anthropicProvider.generate(reqBlog)).rejects.toBeInstanceOf(ProviderError);
@@ -361,7 +382,6 @@ describe("réservation : cas limites (constats G2)", () => {
   });
 
   it("M4 : JSON tronqué par max_tokens = erreur reconnaissable par les boucles de plan", async () => {
-    const { estSortieJsonTronquee } = await import("../IProvider");
     create.mockImplementation(async () => flux('{"a":', "max_tokens"));
     const err = await anthropicProvider
       .generate({ ...(reqBlog as object), responseFormatJson: true } as never)
