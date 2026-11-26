@@ -15,12 +15,13 @@
 import type { CoverageScope, CoverageStatus } from "../../../../prisma/generated/client";
 import type { AdminTone } from "./admin-labels";
 
-// ─── Périmètre (CoverageScope, 4 valeurs) ────────────────────────────────────
+// ─── Périmètre (CoverageScope, 5 valeurs) ────────────────────────────────────
 export const PERIMETRE_CAMPAGNE_LABELS_FR = {
   ville: "Une ville",
   departement: "Un département",
   region: "Une région",
   multi: "Plusieurs zones",
+  national: "France entière",
 } as const satisfies Record<CoverageScope, string>;
 
 /** Libellé FR d'un périmètre lu depuis un `string` ; l'inconnu est CITÉ. */
