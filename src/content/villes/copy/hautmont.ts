@@ -61,7 +61,7 @@ export const HAUTMONT_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Hautmont ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Intervention sur site dans votre atelier, usine ou bureau. ",
+      a: "Nous intervenons partout en France, sur place ou à distance. Intervention sur site dans votre atelier, usine ou bureau.",
     },
     {
       q: "Proposez-vous des solutions IA pour la transition industrielle du Sambre-Avesnois ?",

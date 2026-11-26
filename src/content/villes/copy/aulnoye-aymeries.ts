@@ -65,7 +65,7 @@ export const AULNOYE_AYMERIES_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Aulnoye-Aymeries ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Intervention sur site dans votre usine, atelier, commerce ou en visio. ",
+      a: "Nous intervenons partout en France, sur place ou à distance. Intervention sur site dans votre usine, atelier, commerce ou en visio.",
     },
   ],
 };

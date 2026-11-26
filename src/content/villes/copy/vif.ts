@@ -65,7 +65,7 @@ export const VIF_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une intervention rurale ?",
-      a: "Sur place ou à distance, selon votre besoin. ",
+      a: "Sur place ou à distance, selon votre besoin.",
     },
   ],
 };

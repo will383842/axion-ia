@@ -61,7 +61,7 @@ export const WATTIGNIES_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Wattignies ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Intervention sur site dans vos locaux professionnels ou en visio. ",
+      a: "Nous intervenons partout en France, sur place ou à distance. Intervention sur site dans vos locaux professionnels ou en visio.",
     },
     {
       q: "Proposez-vous des formations IA individuelles pour dirigeants à Wattignies ?",

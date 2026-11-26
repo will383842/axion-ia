@@ -65,7 +65,7 @@ export const LIFFRE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Liffré ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Possibilité visio pour les sessions courtes. ",
+      a: "Nous intervenons partout en France, sur place ou à distance. Possibilité visio pour les sessions courtes.",
     },
   ],
 };

@@ -65,7 +65,7 @@ export const COUTANCES_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Coutances ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Gare de Coutances (TER Caen). ",
+      a: "Nous intervenons partout en France, sur place ou à distance. Gare de Coutances (TER Caen).",
     },
   ],
 };

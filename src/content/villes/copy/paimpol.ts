@@ -65,7 +65,7 @@ export const PAIMPOL_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Paimpol ?",
-      a: "TGV Paris-Guingamp (3h30) puis TER Guingamp-Paimpol (30 min). Saint-Brieuc à 45 min. ",
+      a: "TGV Paris-Guingamp (3h30) puis TER Guingamp-Paimpol (30 min). Saint-Brieuc à 45 min.",
     },
   ],
 };

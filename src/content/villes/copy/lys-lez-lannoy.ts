@@ -65,7 +65,7 @@ export const LYS_LEZ_LANNOY_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Lys-lez-Lannoy ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Intervention sur site dans votre commerce, atelier, bureau ou en visio. ",
+      a: "Nous intervenons partout en France, sur place ou à distance. Intervention sur site dans votre commerce, atelier, bureau ou en visio.",
     },
   ],
 };

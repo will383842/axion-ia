@@ -65,7 +65,7 @@ export const DONGES_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Donges ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Gare TER Donges desservie. ",
+      a: "Nous intervenons partout en France, sur place ou à distance. Gare TER Donges desservie.",
     },
   ],
 };

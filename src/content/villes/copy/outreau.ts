@@ -65,7 +65,7 @@ export const OUTREAU_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission Axion-IA chez nos clients ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Gare TGV Calais-Fréthun à 30 min. ",
+      a: "Nous intervenons partout en France, sur place ou à distance. Gare TGV Calais-Fréthun à 30 min.",
     },
   ],
 };

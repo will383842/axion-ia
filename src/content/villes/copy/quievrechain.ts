@@ -65,7 +65,7 @@ export const QUIEVRECHAIN_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Quiévrechain ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Intervention sur site dans vos locaux industriels, bureau, commerce ou en visio. ",
+      a: "Nous intervenons partout en France, sur place ou à distance. Intervention sur site dans vos locaux industriels, bureau, commerce ou en visio.",
     },
   ],
 };

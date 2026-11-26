@@ -65,7 +65,7 @@ export const NEUVILLE_EN_FERRAIN_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Neuville-en-Ferrain ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Intervention sur site dans votre entrepôt, atelier, bureau ou en visio. ",
+      a: "Nous intervenons partout en France, sur place ou à distance. Intervention sur site dans votre entrepôt, atelier, bureau ou en visio.",
     },
   ],
 };

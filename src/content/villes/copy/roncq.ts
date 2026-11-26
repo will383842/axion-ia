@@ -61,7 +61,7 @@ export const RONCQ_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Roncq ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Intervention sur site dans vos locaux commerciaux, entrepôt ou bureau. ",
+      a: "Nous intervenons partout en France, sur place ou à distance. Intervention sur site dans vos locaux commerciaux, entrepôt ou bureau.",
     },
     {
       q: "Proposez-vous des solutions IA pour les prestataires logistiques de Roncq ?",

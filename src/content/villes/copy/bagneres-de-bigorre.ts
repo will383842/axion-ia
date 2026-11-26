@@ -65,7 +65,7 @@ export const BAGNERES_DE_BIGORRE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Bagnères-de-Bigorre ?",
-      a: "Bagnères est à 25 min de Tarbes (D935), 30 min de l'aéroport Tarbes-Lourdes. Nos consultants interviennent sur site. ",
+      a: "Bagnères est à 25 min de Tarbes (D935), 30 min de l'aéroport Tarbes-Lourdes. Nos consultants interviennent sur site.",
     },
   ],
 };

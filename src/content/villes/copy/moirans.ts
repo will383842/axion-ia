@@ -65,7 +65,7 @@ export const MOIRANS_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une intervention ?",
-      a: "Sur place ou à distance, selon votre besoin. ",
+      a: "Sur place ou à distance, selon votre besoin.",
     },
   ],
 };

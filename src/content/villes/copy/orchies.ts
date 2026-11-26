@@ -65,7 +65,7 @@ export const ORCHIES_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Orchies ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Intervention sur site dans votre exploitation, unité de transformation, commerce ou en visio. ",
+      a: "Nous intervenons partout en France, sur place ou à distance. Intervention sur site dans votre exploitation, unité de transformation, commerce ou en visio.",
     },
   ],
 };

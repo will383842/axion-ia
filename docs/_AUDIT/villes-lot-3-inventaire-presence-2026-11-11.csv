@@ -2808,3 +2808,10 @@ yerres.ts;87;"""Code, bases et contenus livrés chez vous (hébergement UE possi
 yerres.ts;131;"sement, données structurées et contenus locaux (centre-ville, Mont Griffon, parc Caillebotte) pour ressortir sur les rec";LEGITIME;locaux (sens courant : acteurs/commerces locaux, locaux d'activité)
 yerres.ts;139;"contrôlés à la livraison. Code source, bases et contenus livrés dans votre infrastructure (hébergement UE possible), co";LEGITIME;base (données, connaissances, nautique…)
 yerres.ts;249;"a: ""Yerres est à 25 minutes de Paris-Gare de Lyon par le RER D et à 15 minutes d'Orly. Nous intervenons sur site.""";FAUTIF;présence locale suggérée — corrigé
+quievrechain.ts;68;"vos locaux industriels, bureau, commerce ou en visio."",";LEGITIME;après correction — locaux du client
+ronchin.ts;64;"vos locaux professionnels ou en visio."",";LEGITIME;après correction — locaux du client
+roncq.ts;64;"vos locaux commerciaux, entrepôt ou bureau."",";LEGITIME;après correction — locaux du client
+saint-amand-les-eaux.ts;64;"vos locaux professionnels ou en visio."",";LEGITIME;après correction — locaux du client
+sallanches.ts;68;"vos locaux à Sallanches ou en visio. Nous intervenons partout en France, sur place ou à distance."",";LEGITIME;après correction — locaux du client
+wallers.ts;68;"vos locaux industriels, bureau, commerce, site touristique ou en visio."",";LEGITIME;après correction — locaux du client
+wattignies.ts;64;"vos locaux professionnels ou en visio."",";LEGITIME;après correction — locaux du client

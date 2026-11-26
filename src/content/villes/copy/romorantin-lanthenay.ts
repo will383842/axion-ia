@@ -65,7 +65,7 @@ export const ROMORANTIN_LANTHENAY_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Romorantin-Lanthenay ?",
-      a: "Nous intervenons partout en France, sur place ou à distance, y compris à Romorantin-Lanthenay. ",
+      a: "Nous intervenons partout en France, sur place ou à distance, y compris à Romorantin-Lanthenay.",
     },
   ],
 };

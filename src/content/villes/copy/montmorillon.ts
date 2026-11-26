@@ -65,7 +65,7 @@ export const MONTMORILLON_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission Axion-IA chez nos clients ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Alternative : Limoges (1h15 route). ",
+      a: "Nous intervenons partout en France, sur place ou à distance. Alternative : Limoges (1h15 route).",
     },
   ],
 };

@@ -65,7 +65,7 @@ export const CLUSES_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Cluses ?",
-      a: "Nos consultants interviennent sur site dans votre atelier ou bureau d'études à Cluses, ou en visio. ",
+      a: "Nos consultants interviennent sur site dans votre atelier ou bureau d'études à Cluses, ou en visio.",
     },
   ],
 };

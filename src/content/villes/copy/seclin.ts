@@ -65,7 +65,7 @@ export const SECLIN_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Seclin ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Intervention dans votre établissement de santé, entrepôt, bureau ou en visio. ",
+      a: "Nous intervenons partout en France, sur place ou à distance. Intervention dans votre établissement de santé, entrepôt, bureau ou en visio.",
     },
   ],
 };

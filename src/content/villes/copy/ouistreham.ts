@@ -65,7 +65,7 @@ export const OUISTREHAM_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Ouistreham ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Déplacement direct sur site (hôtel, restaurant, port, commerce). ",
+      a: "Nous intervenons partout en France, sur place ou à distance. Déplacement direct sur site (hôtel, restaurant, port, commerce).",
     },
   ],
 };

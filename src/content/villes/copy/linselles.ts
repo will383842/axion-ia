@@ -65,7 +65,7 @@ export const LINSELLES_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Linselles ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Intervention sur site dans votre atelier textile, bureau, commerce ou en visio. ",
+      a: "Nous intervenons partout en France, sur place ou à distance. Intervention sur site dans votre atelier textile, bureau, commerce ou en visio.",
     },
   ],
 };
