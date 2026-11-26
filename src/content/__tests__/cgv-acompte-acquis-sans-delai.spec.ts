@@ -1,5 +1,5 @@
 /**
- * Décision du dirigeant (25/11/2026) : dès qu'un client a versé un acompte, il le perd s'il annule
+ * Décision du dirigeant (26/11/2026) : dès qu'un client a versé un acompte, il le perd s'il annule
  * la commande, SANS condition de délai. La règle « annulée à plus de 15 jours ouvrés, les acomptes
  * versés sont intégralement remboursés » n'existe plus nulle part. Le droit de rétractation légal
  * reste réservé, la TVA reste facturée, le dédit de formation est facturé à part.
