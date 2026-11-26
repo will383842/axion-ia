@@ -45,6 +45,7 @@ import { logStep } from "../shared/generation-log";
 import type { Generator, GeneratorBaseInput, GeneratorOutput } from "./types";
 import { injectBrandVoice } from "../brand/brand-voice";
 import { consigneAngle } from "../brand/positionnement";
+import { consigneJourneeIA } from "../knowledge/journee-ia-fiche";
 import { REGLE_CHIFFRES_SOURCES, sectionChiffresVerifies } from "../kb/chiffres-verifies";
 import { pickInternalExpert, buildExpertQuote } from "../brand/expert-bank";
 import { getGlossaryContext } from "../brand/glossary-context";
@@ -197,6 +198,7 @@ ${glossaryContext ? `\n${glossaryContext}` : ""}
 ## Avis d'expert
 "expertTake" = une prise de position de ${expert.name} (${expert.title}) : perspective d'expert concise et utile, sans chiffre inventé.
 ${consigneAngle(input.jobId)}
+${consigneJourneeIA(mandatoryTitle)}
 ${sectionChiffresVerifies()}## Output attendu (JSON)
 { title, metaTitle, metaDescription, slug, directAnswer, faq:[{q,a}×8], tags, keyTakeaway, expertTake, outline:[{h2,brief}×8] }`;
 
@@ -506,6 +508,7 @@ ${glossaryContext ? `\n${glossaryContext}` : ""}
       directAnswer: parsed.directAnswer ?? "",
       bodyHtml: parsed.bodyHtml,
       bodyText,
+      kbEntryIds: kbChunks.map((c) => c.entryId),
       faq: (parsed.faq ?? []).map((q) => ({ question: q.q, answer: q.a })),
       tags: parsed.tags ?? [],
       // Refonte templates 2026-06-22 — point clé + avis d'expert interne. Le

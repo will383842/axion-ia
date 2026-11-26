@@ -40,7 +40,10 @@ export type CodeInterdit =
   | "slogan-recopie"
   | "reservation-paiement"
   | "tva-non-facturee"
-  | "texte-admin";
+  | "texte-admin"
+  | "frais-deplacement"
+  | "prix-barre"
+  | "preuve-sociale-vague";
 
 export interface OptionsInterdits {
   /** Contenu d'actualité (RSS) : une citation d'un tiers est permise. */
@@ -252,6 +255,39 @@ export const MOTIFS_INTERDITS: ReadonlyArray<MotifInterdit> = [
     code: "texte-admin",
     re: new RegExp(String.raw`section indisponible|re-?generation recommandee|lorem ipsum`, "g"),
     raison: "Texte d'administration ou de remplissage resté dans le contenu.",
+  },
+  {
+    code: "frais-deplacement",
+    // Règle du dirigeant : jamais de frais de déplacement, d'hébergement ni de repas dans un
+    // contenu (ni inclus, ni offerts, ni sur devis). Seule formule permise : « dans vos locaux,
+    // partout en France ». « hébergement » seul n'est PAS interdit (hébergement des données,
+    // d'un site) : on vise l'hébergement du formateur, c'est-à-dire accolé à un frais, à un
+    // statut (inclus, offert…) ou à un repas / déplacement. Bornes de mot : « déplacer »,
+    // « repasser », « repartir » ne déclenchent rien.
+    re: new RegExp(
+      String.raw`${B}frais (?:de |d'|des |pour (?:le |les )?)?(?:deplacements?|hebergements?|repas|restauration|transports?|voyages?|bouche|sejours?)${E}|${B}(?:deplacements?|hebergements?|repas|restauration|nuitees?)(?: et| ou|,)? (?:les |le |l')?(?:(?:deplacements?|hebergements?|repas|restauration|nuitees?)${E}|(?:sont |est )?(?:inclus|incluse|incluses|offert|offerte|offertes|offerts|compris|comprise|comprises|pris en charge|prises? en charge|factures?|facturee?s?|a (?:votre|notre) charge|sur devis|en sus|en supplement)${E})|${B}(?:deplacements?|hebergements?|repas) (?:du|des) (?:formateurs?|intervenants?|consultants?)${E}|${B}(?:nous|axion-?ia) (?:nous )?(?:deplacons?|deplace) (?:et|sans)[^.!?]{0,40}(?:frais|supplement)`,
+      "g",
+    ),
+    raison:
+      "Frais de déplacement, d'hébergement ou de repas évoqués (inclus, offerts, sur devis…) : interdit. Seule formule permise : « dans vos locaux, partout en France ».",
+  },
+  {
+    code: "prix-barre",
+    re: new RegExp(
+      String.raw`${B}(?:prix|tarif)s? barre(?:e|s|es)?${E}|${B}ancien (?:prix|tarif)${E}|${B}(?:prix|tarif) (?:initial|d'origine|public habituel)${E}`,
+      "g",
+    ),
+    raison:
+      "Prix barré ou ancien prix : le tarif s'affiche seul (1 490 € HT), sans prix barré ni ancien prix.",
+  },
+  {
+    code: "preuve-sociale-vague",
+    re: new RegExp(
+      String.raw`${B}nos retours? (?:de )?terrain${E}|${B}retours? (?:de )?terrain (?:d'|de )?(?:axion|nos|notre)|${B}d'apres nos (?:clients?|retours?|observations?|experiences?)${E}|${B}selon nos (?:clients?|retours?)${E}|${B}nos clients (?:nous )?(?:disent|confient|rapportent|racontent|expliquent)${E}`,
+      "g",
+    ),
+    raison:
+      "Preuve sociale invérifiable (« nos retours terrain », « d'après nos clients ») : aucun client ni retour public. Retirer, ou citer une source publique.",
   },
 ];
 

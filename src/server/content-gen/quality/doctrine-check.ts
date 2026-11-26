@@ -68,6 +68,9 @@ const PATTERN_PAR_CODE: Readonly<Record<CodeInterdit, string>> = {
   "reservation-paiement": "reservation-paiement",
   "tva-non-facturee": "tva-non-facturee",
   "texte-admin": "texte-admin",
+  "frais-deplacement": "frais-deplacement",
+  "prix-barre": "prix-barre",
+  "preuve-sociale-vague": "preuve-sociale-vague",
 };
 
 const AXIONIA_KEYWORDS = [
