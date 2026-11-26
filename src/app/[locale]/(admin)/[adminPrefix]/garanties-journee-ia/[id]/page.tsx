@@ -258,7 +258,10 @@ export default async function GarantieFichePage({ params, searchParams }: PagePr
                 </label>
                 <label className="flex flex-col gap-1 text-sm">
                   Identifiant de l&apos;avoir (uniquement pour « Offrir un avoir », facultatif ;
-                  ignoré pour un remboursement : l&apos;avoir est alors émis par la décision)
+                  ignoré pour un remboursement : l&apos;avoir est alors émis par la décision). Un
+                  bon d&apos;achat offert à titre exceptionnel ne s&apos;émet JAMAIS en avoir du Hub
+                  sur la facture (cela reprendrait la commission de l&apos;apporteur) : laissez ce
+                  champ vide.
                   <input name="avoirId" defaultValue={d.avoirId ?? ""} className="admin-input" />
                 </label>
                 <label className="flex flex-col gap-1 text-sm">

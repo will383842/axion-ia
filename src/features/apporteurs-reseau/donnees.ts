@@ -34,7 +34,7 @@ import { enregistrerSiret, siretDe } from "./siret-apporteur";
 import { CLE_REGISTRE_INDISPONIBLE, etatDeLaPage, vigilanceDemandee } from "./signature-regles";
 import { argentEnJeu, retraitDe } from "./retrait";
 import { validationParRendezVousActive } from "./interrupteur-rendez-vous";
-import { regleDe, type RegleAttribution } from "./regle-attribution";
+import { regleDe, versionAuMoins, type RegleAttribution } from "./regle-attribution";
 
 // Antivirus muet : une alerte Sentry par 15 minutes au plus (garde en mémoire), sans donnée
 // personnelle — la garde est celle du dépôt commun (FAC-6), le canal celui du réseau.
@@ -227,6 +227,8 @@ export interface DossierVue {
   aContratSigne: boolean;
   /** `regleDe(signature, interrupteur)` : « rendez_vous » ou `null` (contrat 2.6, inchangé). */
   regleAttribution?: RegleAttribution;
+  /** Contrat signé en 2.8 ou après : la commission ne dépend plus de la réalisation (art. 4.2), interrupteur ou non. */
+  contratDepuis2_8?: boolean;
   pieces: PieceVue[];
 }
 
@@ -280,6 +282,7 @@ export async function lireDossier(apporteurId: string): Promise<DossierVue | nul
     signeParSocieteAt: a.signeParSocieteAt,
     aContratSigne: !!a.contratSigneCle,
     regleAttribution: regleDe(a.signatureApporteur, validationParRendezVousActive()),
+    contratDepuis2_8: versionAuMoins(a.signatureApporteur, "2.8"),
     pieces: a.pieces.map((p) => ({ ...p, type: p.type as TypePiece })),
   };
 }
