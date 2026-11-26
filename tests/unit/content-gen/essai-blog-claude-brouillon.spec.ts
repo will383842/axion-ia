@@ -5,14 +5,15 @@
  */
 import { describe, it, expect, vi, beforeEach } from "vitest";
 
-const { jobCreate, jobUpdate, bullQueueCtor, revalidatePath, reviewCreate, articleCreate } = vi.hoisted(() => ({
-  jobCreate: vi.fn(),
-  jobUpdate: vi.fn(),
-  bullQueueCtor: vi.fn(),
-  revalidatePath: vi.fn(),
-  reviewCreate: vi.fn(),
-  articleCreate: vi.fn(),
-}));
+const { jobCreate, jobUpdate, bullQueueCtor, revalidatePath, reviewCreate, articleCreate } =
+  vi.hoisted(() => ({
+    jobCreate: vi.fn(),
+    jobUpdate: vi.fn(),
+    bullQueueCtor: vi.fn(),
+    revalidatePath: vi.fn(),
+    reviewCreate: vi.fn(),
+    articleCreate: vi.fn(),
+  }));
 
 vi.mock("@/lib/prisma", () => ({
   prisma: {
@@ -70,7 +71,7 @@ function deps(over: Partial<DepsEssai> = {}): DepsEssai {
   } as DepsEssai;
 }
 
-const ENV_OK = { CONTENT_GEN_BLOG_CLAUDE: "true" } as NodeJS.ProcessEnv;
+const ENV_OK = { CONTENT_GEN_BLOG_CLAUDE: "true" } as unknown as NodeJS.ProcessEnv;
 
 beforeEach(() => {
   vi.clearAllMocks();
@@ -81,9 +82,11 @@ beforeEach(() => {
 describe("essai blog Claude en brouillon", () => {
   it("refuse sans drapeau : rien n'est créé ni généré", async () => {
     const d = deps();
-    await expect(lancerEssai(TITRE, d, {} as NodeJS.ProcessEnv)).rejects.toThrow(/CONTENT_GEN_BLOG_CLAUDE/);
+    await expect(lancerEssai(TITRE, d, {} as unknown as NodeJS.ProcessEnv)).rejects.toThrow(
+      /CONTENT_GEN_BLOG_CLAUDE/,
+    );
     await expect(
-      lancerEssai(TITRE, d, { CONTENT_GEN_BLOG_CLAUDE: "1" } as NodeJS.ProcessEnv),
+      lancerEssai(TITRE, d, { CONTENT_GEN_BLOG_CLAUDE: "1" } as unknown as NodeJS.ProcessEnv),
     ).rejects.toThrow();
     expect(d.creerJob).not.toHaveBeenCalled();
     expect(d.generer).not.toHaveBeenCalled();
@@ -114,10 +117,15 @@ describe("essai blog Claude en brouillon", () => {
     expect(r.mots).toBe(900);
     expect(r.coutReelUsd).toBe(0.2);
     expect(d.creerJob).toHaveBeenCalledWith(
-      expect.objectContaining({ idempotencyKey: expect.stringMatching(new RegExp(`^${PREFIXE_CLE}`)) }),
+      expect.objectContaining({
+        idempotencyKey: expect.stringMatching(new RegExp(`^${PREFIXE_CLE}`)),
+      }),
     );
     expect(d.enregistrer).toHaveBeenCalledTimes(1);
-    expect(d.ecrireFichier).toHaveBeenCalledWith("/tmp/essai-job1.html", expect.stringContaining("noindex"));
+    expect(d.ecrireFichier).toHaveBeenCalledWith(
+      "/tmp/essai-job1.html",
+      expect.stringContaining("noindex"),
+    );
     expect(bullQueueCtor).not.toHaveBeenCalled();
     expect(revalidatePath).not.toHaveBeenCalled();
     expect(reviewCreate).not.toHaveBeenCalled();
@@ -146,5 +154,45 @@ describe("essai blog Claude en brouillon", () => {
     expect(src).not.toMatch(/status:\s*"(approved|needs_review|published|queued|publishing)"/);
     expect(src).not.toMatch(/from "bullmq"|revalidatePath|indexnow|reviewQueue|enqueue/i);
     expect((src.match(/status:/g) ?? []).length).toBe(1);
+  });
+});
+
+describe("garde-fous contre le rejeu et plafond par job", () => {
+  it("estJobEssaiClaude reconnaît la clé et le marqueur", async () => {
+    const { estJobEssaiClaude } = await import("@/server/content-gen/essai-claude");
+    expect(estJobEssaiClaude({ idempotencyKey: "essai-claude-1" })).toBe(true);
+    expect(estJobEssaiClaude({ inputPayload: { essaiClaude: true } })).toBe(true);
+    expect(estJobEssaiClaude({ idempotencyKey: "autre", inputPayload: { a: 1 } })).toBe(false);
+  });
+
+  it("requeueContentGenJob refuse un job d'essai sans toucher file ni base", async () => {
+    const { requeueContentGenJob } = await import("@/server/content-gen/recovery/backlog-recovery");
+    const queue = { getJob: vi.fn(), add: vi.fn() };
+    const ok = await requeueContentGenJob(queue as never, {
+      id: "j",
+      contentType: "blog_from_title",
+      targetSearchIntent: "informational",
+      inputPayload: { essaiClaude: true },
+      retryCount: 99,
+    });
+    expect(ok).toBe(false);
+    expect(queue.getJob).not.toHaveBeenCalled();
+    expect(queue.add).not.toHaveBeenCalled();
+    expect(jobUpdate).not.toHaveBeenCalled();
+  });
+
+  it("le job créé porte plafondJobUsd = 3 et statut cancelled ; les update n'écrivent aucun statut", async () => {
+    jobCreate.mockResolvedValue({ id: "jx" });
+    jobUpdate.mockResolvedValue({});
+    const mod = await import("../../../scripts/content-gen/essai-blog-claude-brouillon");
+    const reel = (mod as unknown as { depsReelles: DepsEssai }).depsReelles;
+    await reel.creerJob({ idempotencyKey: "essai-claude-x", titre: TITRE });
+    const data = jobCreate.mock.calls[0]![0].data;
+    expect(data.status).toBe("cancelled");
+    expect(data.retryCount).toBe(99);
+    expect(data.inputPayload).toMatchObject({ essaiClaude: true, plafondJobUsd: 3 });
+    await reel.enregistrer("jx", sortie(), 0.2);
+    await reel.marquerEchec("jx", "m");
+    for (const c of jobUpdate.mock.calls) expect(c[0].data).not.toHaveProperty("status");
   });
 });

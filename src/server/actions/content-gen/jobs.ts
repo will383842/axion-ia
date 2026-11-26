@@ -8,6 +8,7 @@
 
 "use server";
 
+import { estJobEssaiClaude } from "@/server/content-gen/essai-claude";
 import * as Sentry from "@sentry/nextjs";
 
 import { Queue } from "bullmq";
@@ -275,6 +276,11 @@ export async function retryJob(id: string): Promise<void> {
     });
     if (!dbJob) {
       throw new Error("job_introuvable : ce job n'existe pas (ou plus) en base.");
+    }
+    if (estJobEssaiClaude({ inputPayload: dbJob.inputPayload })) {
+      throw new Error(
+        "essai_non_rejouable : brouillon d'essai Claude, il ne se rejoue jamais (le worker le publierait).",
+      );
     }
     if (dbJob.contentType === "landing_ville") {
       throw new Error(

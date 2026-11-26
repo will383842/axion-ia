@@ -11,6 +11,7 @@ interface Etat {
   totaux: number[];
   echecBase: boolean;
   jobExiste: boolean;
+  jobCap: number | null;
   ordre: string[];
   sqls: string[];
   options: unknown[];
@@ -22,6 +23,7 @@ const etat: Etat = {
   totaux: [],
   echecBase: false,
   jobExiste: true,
+  jobCap: null,
   ordre: [],
   sqls: [],
   options: [],
@@ -35,10 +37,11 @@ vi.mock("@/lib/prisma", () => {
     }),
     $queryRaw: vi.fn(async (q: { sql: string }) => {
       etat.sqls.push(q.sql);
-      if (q.sql.includes("SELECT 1 FROM content_gen_jobs")) {
+      if (q.sql.includes("FROM content_gen_jobs WHERE id")) {
         etat.ordre.push("job");
-        return etat.jobExiste ? [{ "?column?": 1 }] : [];
+        return etat.jobExiste ? [{ plafondJobUsd: etat.jobCap === null ? null : String(etat.jobCap) }] : [];
       }
+      if (q.sql.includes('"jobId" =')) return [{ total: (etat.jobCap ?? 0) + 1 }];
       etat.ordre.push("cumul");
       return [{ total: etat.totaux.shift() ?? 0 }];
     }),
@@ -116,6 +119,7 @@ beforeEach(() => {
   etat.totaux = [];
   etat.echecBase = false;
   etat.jobExiste = true;
+  etat.jobCap = null;
   etat.ordre = [];
   etat.sqls = [];
   etat.options = [];
@@ -170,6 +174,12 @@ describe("reserverCout", () => {
     await expect(reserverCout(base)).rejects.toMatchObject({ code: "reserve_qualiopi" });
     expect(etat.lignes).toHaveLength(0);
   });
+  it("plafond par job : refus `plafond_job` quand le cumul du job le dépasse", async () => {
+    etat.jobCap = 0.5;
+    await expect(reserverCout(base)).rejects.toMatchObject({ code: "plafond_job" });
+    expect(etat.compteur).toBe(10);
+  });
+
   it("job inconnu ou d'un autre type = refus, aucune ligne écrite", async () => {
     etat.jobExiste = false;
     await expect(reserverCout(base)).rejects.toMatchObject({ code: "config_invalide" });

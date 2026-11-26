@@ -12,12 +12,15 @@
  *     `docker exec -e`), sans titre, ou si l'estimation du pire cas dépasse 3 $ ;
  *  2. crée un `ContentGenJob` de type `blog_from_title`, DÉJÀ au statut `cancelled`
  *     avec `retryCount` au maximum : aucun balayage ne reprend un `cancelled`
- *     (la reprise ne lit que `failed`, le délai de grâce que `queued`, l'approbation
+ *     (la reprise automatique ne lit que `failed`, le délai de grâce que `queued`, l'approbation
  *     groupée que `needs_review`, la publication que `approved`) ;
  *  3. appelle `generate()` : le texte passe par Claude (plafonds en base respectés) ;
  *  4. écrit le résultat dans `outputJsonRaw` SANS toucher au statut ;
  *  5. écrit le HTML dans /tmp/essai-<jobId>.html (aucune page de la console n'affiche
  *     `outputJsonRaw` d'un job `cancelled`, la route d'aperçu exige un jeton signé).
+ *
+ * Garde-fous contre le rejeu : `requeueContentGenJob`, `retryJob` et le worker refusent tout job
+ * marqué essai (`essai-claude.ts`) ; « Rejouer » ne peut donc pas le faire publier.
  *
  * Ce que le script NE fait JAMAIS : file BullMQ, ReviewQueue, statut publiable,
  * Article, revalidatePath, IndexNow, sitemap, e-mail, Telegram (hors alertes de plafond
@@ -36,7 +39,9 @@ import { interrupteurBlogClaude, MODELES } from "@/server/content-gen/providers/
 import { typeClaudeAutorise } from "@/server/content-gen/providers/types-claude";
 import type { GeneratorBaseInput, GeneratorOutput } from "@/server/content-gen/generators/types";
 
-export const PREFIXE_CLE = "essai-claude-";
+import { PREFIXE_CLE_ESSAI } from "@/server/content-gen/essai-claude";
+
+export const PREFIXE_CLE = PREFIXE_CLE_ESSAI;
 export const PLAFOND_ESTIMATION_USD = 3;
 /** Statut final : aucun lecteur ne le reprend, l'approuve, le publie ni ne le supprime. */
 export const STATUT_FINAL = "cancelled" as const;
@@ -46,14 +51,16 @@ export const MARQUEUR_ERREUR = "essai-claude : brouillon manuel, ne jamais repre
 export class ErreurEssai extends Error {}
 
 /**
- * Pire cas du générateur : 2 plans (2 600 tokens de sortie) + 2 expansions de
- * 2 tranches (5 000 tokens de sortie chacune), entrées larges. Sert de garde,
+ * Pire cas du générateur : 2 plans (2 600 tokens de sortie) + 2 itérations × 2 tranches
+ * × 2 essais (relance d'une tranche par `expandOutlineChunked`) = 8 expansions de
+ * 5 000 tokens de sortie, entrées larges. Le plafond PAR JOB (`plafondJobUsd`, lu par
+ * `reserverCout`) est ce qui arrête réellement la dépense à 3 $. Sert de garde,
  * pas de prévision : le coût réel typique est de l'ordre de 0,15 $.
  */
 export function estimerCoutMaxUsd(): number {
   const modele = MODELES.ecriture;
   const plans = 2 * computeCost(modele, 0, 2600, 0, 12_000);
-  const expansions = 4 * computeCost(modele, 0, 5000, 0, 15_000);
+  const expansions = 8 * computeCost(modele, 0, 5000, 0, 15_000);
   return plans + expansions;
 }
 
@@ -74,7 +81,11 @@ export interface ResultatEssai {
 }
 
 function echapper(s: string): string {
-  return s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+  return s
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;");
 }
 
 export function htmlLecture(s: GeneratorOutput): string {
@@ -100,7 +111,9 @@ export async function lancerEssai(
   env: NodeJS.ProcessEnv = process.env,
 ): Promise<ResultatEssai> {
   if (env["CONTENT_GEN_BLOG_CLAUDE"] !== "true") {
-    throw new ErreurEssai("CONTENT_GEN_BLOG_CLAUDE doit valoir exactement « true » (docker exec -e)");
+    throw new ErreurEssai(
+      "CONTENT_GEN_BLOG_CLAUDE doit valoir exactement « true » (docker exec -e)",
+    );
   }
   const titre = (titreBrut ?? "").trim();
   if (titre.length < 10 || titre.length > 140) {
@@ -108,7 +121,9 @@ export async function lancerEssai(
   }
   if (!interrupteurBlogClaude() || !typeClaudeAutorise("blog_from_title")) {
     // Sans cela le routeur écrirait via OpenAI en silence : on refuse plutôt.
-    throw new ErreurEssai("blog_from_title n'est pas autorisé via Claude (CONTENT_GEN_CLAUDE_TYPES)");
+    throw new ErreurEssai(
+      "blog_from_title n'est pas autorisé via Claude (CONTENT_GEN_CLAUDE_TYPES)",
+    );
   }
   const estimation = estimerCoutMaxUsd();
   if (!(estimation <= PLAFOND_ESTIMATION_USD)) {
@@ -119,7 +134,9 @@ export async function lancerEssai(
 
   const cle = `${PREFIXE_CLE}${Date.now()}-${Math.random().toString(36).slice(2, 10)}`;
   const jobId = await deps.creerJob({ idempotencyKey: cle, titre });
-  console.log(`Job créé : ${jobId} (statut ${STATUT_FINAL}, jamais repris). Estimation max ${estimation.toFixed(2)} $.`);
+  console.log(
+    `Job créé : ${jobId} (statut ${STATUT_FINAL}, jamais repris). Estimation max ${estimation.toFixed(2)} $.`,
+  );
 
   let sortie: GeneratorOutput;
   try {
@@ -130,19 +147,23 @@ export async function lancerEssai(
       primaryKeyword: titre,
     });
   } catch (err) {
-    const message = err instanceof Error ? err.message.replace(/\b\w+:\/\/\S+/g, "[url masquée]") : "erreur";
+    const message =
+      err instanceof Error ? err.message.replace(/\b\w+:\/\/\S+/g, "[url masquée]") : "erreur";
     await deps.marquerEchec(jobId, `${MARQUEUR_ERREUR} — échec : ${message}`.slice(0, 500));
-    throw new ErreurEssai(`génération échouée : ${message} (job ${jobId}, coût réel : voir cost_ledger)`);
+    throw new ErreurEssai(
+      `génération échouée : ${message} (job ${jobId}, coût réel : voir cost_ledger)`,
+    );
   }
 
-  await deps.enregistrer(jobId, sortie, sortie.totalCostUsd);
+  // Le fichier d'abord : l'article est payé, une panne de base ne doit pas le perdre.
   const fichierHtml = `/tmp/essai-${jobId}.html`;
   deps.ecrireFichier(fichierHtml, htmlLecture(sortie));
+  await deps.enregistrer(jobId, sortie, sortie.totalCostUsd);
   const coutReelUsd = await deps.coutReel(jobId);
   return { jobId, coutReelUsd, mots: sortie.wordCount, fichierHtml };
 }
 
-const depsReelles: DepsEssai = {
+export const depsReelles: DepsEssai = {
   async creerJob({ idempotencyKey, titre }) {
     const job = await prisma.contentGenJob.create({
       data: {
@@ -152,7 +173,11 @@ const depsReelles: DepsEssai = {
         retryCount: RETRY_MAXIMUM,
         errorMessage: MARQUEUR_ERREUR,
         primaryProvider: "anthropic",
-        inputPayload: { primaryKeyword: titre, essaiClaude: true },
+        inputPayload: {
+          primaryKeyword: titre,
+          essaiClaude: true,
+          plafondJobUsd: PLAFOND_ESTIMATION_USD,
+        },
         createdBy: "script:essai-claude",
       },
       select: { id: true },
@@ -186,14 +211,21 @@ const depsReelles: DepsEssai = {
 async function principal(): Promise<void> {
   const r = await lancerEssai(process.argv[2], depsReelles);
   console.log(`jobId       : ${r.jobId}`);
-  console.log(`coût réel   : ${r.coutReelUsd.toFixed(4)} $ (cost_ledger)`);
+  console.log(
+    `coût compté  : ${r.coutReelUsd.toFixed(4)} $ (cost_ledger, réservations comprises : ≥ coût réel)`,
+  );
   console.log(`mots        : ${r.mots}`);
-  console.log(`lecture     : ${r.fichierHtml} (à copier : docker cp <conteneur>:${r.fichierHtml} .)`);
-  console.log(`JSON brut   : ContentGenJob.outputJsonRaw du job ${r.jobId} (aucune page admin ne l'affiche pour un job cancelled)`);
+  console.log(
+    `lecture     : ${r.fichierHtml} (à copier : docker cp <conteneur>:${r.fichierHtml} .)`,
+  );
+  console.log(
+    `JSON brut   : ContentGenJob.outputJsonRaw du job ${r.jobId} (aucune page admin ne l'affiche pour un job cancelled)`,
+  );
 }
 
 if (process.argv[1] && /essai(-blog-claude-brouillon)?\.[cm]?[tj]s$/.test(process.argv[1])) {
   principal()
+    .then(() => new Promise((r) => setTimeout(r, 3000))) // laisse finir une alerte de plafond
     .then(() => prisma.$disconnect())
     .then(() => process.exit(0))
     .catch((err: unknown) => {
