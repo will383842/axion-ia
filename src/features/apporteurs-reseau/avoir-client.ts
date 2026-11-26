@@ -620,11 +620,17 @@ export async function reprendreApresAvoirsClients(
   // Les factures d'origine qui portent un avoir (le statut de l'avoir est jugé plus bas).
   const avoirs = await prisma.factureFormation.findMany({
     where: { avoirDeId: { not: null } },
-    select: { avoirDeId: true, devisId: true },
+    select: { avoirDeId: true },
   });
   const origines = [...new Set(avoirs.map((a) => a.avoirDeId).filter((x): x is string => !!x))];
   if (origines.length === 0) return bilan;
-  const devis = [...new Set(avoirs.map((a) => a.devisId).filter((x): x is string => !!x))];
+  // La commande se retrouve par le devis de la facture d'ORIGINE (avoirDeId → facture → devisId),
+  // jamais par celui de l'avoir : un avoir posé sur l'acompte vaut un avoir posé sur le solde.
+  const facturesOrigine = await prisma.factureFormation.findMany({
+    where: { id: { in: origines } },
+    select: { id: true, devisId: true },
+  });
+  const devis = [...new Set(facturesOrigine.map((f) => f.devisId).filter((x): x is string => !!x))];
   const surLeDevis = devis.length
     ? await prisma.factureFormation.findMany({
         where: { devisId: { in: devis }, avoirDeId: null },

@@ -37,7 +37,9 @@ const d = vi.hoisted(() => ({
 
 type Where = Record<string, unknown>;
 const correspond = (f: F, w: Where): boolean => {
-  if (w.id !== undefined && f.id !== w.id) return false;
+  const id = w.id as string | { in: string[] } | undefined;
+  if (typeof id === "string" && f.id !== id) return false;
+  if (id && typeof id === "object" && !id.in.includes(f.id)) return false;
   if (w.avoirDeId === null && f.avoirDeId !== null) return false;
   const a = w.avoirDeId as { not?: null; in?: string[] } | undefined;
   if (a && typeof a === "object" && "not" in a && f.avoirDeId === null) return false;
@@ -61,9 +63,11 @@ vi.mock("@/lib/prisma", () => {
       ),
     },
     commissionApporteur: {
-      findMany: vi.fn(async ({ where }: { where: Where }) =>
-        "palier" in where ? d.reprisesDeja : d.lignes,
-      ),
+      findMany: vi.fn(async ({ where }: { where: Where }) => {
+        if ("palier" in where) return d.reprisesDeja;
+        const ids = (where.factureId as { in?: string[] } | undefined)?.in;
+        return ids ? d.lignes.filter((l) => ids.includes(l.factureId as string)) : d.lignes;
+      }),
       updateMany: (...a: unknown[]) => d.maj(...(a as [])),
       create: (...a: unknown[]) => d.cree(...(a as [])),
       findFirst: vi.fn(async () => d.filleulHorsGroupe),
@@ -101,6 +105,7 @@ vi.mock("../ajustement", async (orig) => {
   };
 });
 
+import { commissionPourPrixConserve } from "../ajustement";
 import { dateDeLAnnulation, reprendreApresAvoirsClients } from "../avoir-client";
 
 const LE = new Date("2026-10-09T11:10:00Z");
@@ -438,6 +443,67 @@ describe("facture refaite sous le même devis, pas encore payée (point 1 de l'e
     const b = await reprendreApresAvoirsClients(LE);
     expect(b).toMatchObject({ reduites: 0, annulees: 0, retenues: 0, reprises: 0 });
     expect(d.reduire).not.toHaveBeenCalled();
+  });
+});
+
+// Un avoir posé sur la facture d'ACOMPTE d'un devis compte comme un avoir posé sur le solde du même
+// devis : la commande se retrouve par le devis de la facture d'ORIGINE (avoirDeId → facture →
+// devisId), jamais par le devisId de l'avoir (qui peut être vide).
+describe("Journée IA payée en acompte + solde : avoir sur l'acompte vu par la commission", () => {
+  const D_JI = { montantTotalHtCents: 149_000 };
+  const jiFacture = (id: string, montant: number): F => ({
+    ...facture,
+    id,
+    devisId: "D1",
+    montantHtCents: montant,
+    devis: D_JI,
+  });
+  const jiAvoir = (id: string, de: string, montant: number): F =>
+    avoir(-montant, { id, avoirDeId: de, devisId: null });
+  const ligneJi = () =>
+    ligne({
+      factureId: "F1",
+      palier: "journee-ia",
+      prixPublicHtCents: 149_000,
+      factureHtCents: 149_000,
+      montantCents: 50_000,
+    });
+
+  it("avoirs partiels (100 € sur l'acompte, 50 € sur le solde) : 500 € au prorata du net gardé, au centime", async () => {
+    d.factures = [
+      jiFacture("AC", 59_600),
+      jiFacture("F1", 89_400),
+      jiAvoir("AV1", "AC", 10_000),
+      jiAvoir("AV2", "F1", 5_000),
+    ];
+    d.lignes = [ligneJi()];
+    await reprendreApresAvoirsClients(LE);
+    // 1 340 € gardés sur 1 490 € : 500 × 134 000 / 149 000 = 449,664… → 449,66 €.
+    expect(d.reduire).toHaveBeenCalledWith("c1", 134_000, expect.any(String));
+    expect(commissionPourPrixConserve(ligneJi() as never, 134_000)).toBe(44_966);
+    expect(d.annuler).not.toHaveBeenCalled();
+  });
+
+  it("avoir partiel sur l'acompte seul (100 €) : la ligne du solde est réduite aussi", async () => {
+    d.factures = [jiFacture("AC", 59_600), jiFacture("F1", 89_400), jiAvoir("AV1", "AC", 10_000)];
+    d.lignes = [ligneJi()];
+    await reprendreApresAvoirsClients(LE);
+    // 500 × 139 000 / 149 000 = 466,44… → 466,44 €.
+    expect(d.reduire).toHaveBeenCalledWith("c1", 139_000, expect.any(String));
+    expect(commissionPourPrixConserve(ligneJi() as never, 139_000)).toBe(46_644);
+  });
+
+  it("avoir total sur l'acompte ET sur le solde : commission annulée", async () => {
+    d.factures = [
+      jiFacture("AC", 59_600),
+      jiFacture("F1", 89_400),
+      jiAvoir("AV1", "AC", 59_600),
+      jiAvoir("AV2", "F1", 89_400),
+    ];
+    d.lignes = [ligneJi()];
+    const b = await reprendreApresAvoirsClients(LE);
+    expect(b.annulees).toBe(1);
+    expect(d.annuler).toHaveBeenCalledWith("c1", expect.stringContaining("Art. 4.5"));
   });
 });
 
