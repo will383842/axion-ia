@@ -30,6 +30,7 @@ import { urlDossier } from "./jeton";
 import { signalerErreurReseau } from "./signaler";
 import {
   calculerCommission,
+  DEVELOPPEMENT_WEB_COMMISSIONNE_DEPUIS,
   commissionJourneeIaCents,
   PALIER_JOURNEE_IA,
   PRIX_REFERENCE_JOURNEE_IA_CENTS,
@@ -389,7 +390,20 @@ export async function classerActiviteCommission(
       ? { ok: true, message: "Classée en formation : choisissez maintenant son palier." }
       : { ok: false, message: "Cette commission vient d'être modifiée." };
   }
-  const calc = calculerCommission({ activite: choisie, factureHtCents: c.factureHtCents });
+  // Développement web : jamais de commission rétroactive (4.1) — une commande signée avant la date
+  // d'effet est close à 0 €, comme au passage quotidien. Date illisible : close aussi (prudence).
+  let venteAnterieure = false;
+  if (choisie === "site_web") {
+    const fac = await prisma.factureFormation.findUnique({
+      where: { id: c.factureId },
+      select: { emiseAt: true, devis: { select: { acceptedAt: true } } },
+    });
+    const signeeAt = fac?.devis?.acceptedAt ?? fac?.emiseAt ?? null;
+    venteAnterieure = !signeeAt || signeeAt < DEVELOPPEMENT_WEB_COMMISSIONNE_DEPUIS;
+  }
+  const calc: CalculCommission = venteAnterieure
+    ? { statut: "aucune" }
+    : calculerCommission({ activite: choisie, factureHtCents: c.factureHtCents });
   if (calc.statut === "aucune") {
     const r = await prisma.commissionApporteur.updateMany({
       where: { id, statut: "a_qualifier" },

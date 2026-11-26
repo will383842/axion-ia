@@ -3,6 +3,7 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 const etat = vi.hoisted(() => ({
   commission: null as Record<string, unknown> | null,
   parrainId: null as string | null,
+  signeeAt: new Date("2026-12-01T00:00:00Z") as Date | null,
   maj: [] as Array<{ where: Record<string, unknown>; data: Record<string, unknown> }>,
 }));
 
@@ -21,6 +22,9 @@ vi.mock("@/lib/prisma", () => ({
         },
       ),
       aggregate: vi.fn(async () => ({ _sum: { montantCents: 0 } })),
+    },
+    factureFormation: {
+      findUnique: vi.fn(async () => ({ emiseAt: etat.signeeAt, devis: null })),
     },
     pieceApporteur: { findMany: vi.fn(async () => []) },
     apporteurReseau: {
@@ -47,6 +51,7 @@ beforeEach(() => {
   etat.commission = { ...ligne };
   etat.parrainId = null;
   etat.maj = [];
+  etat.signeeAt = new Date("2026-12-01T00:00:00Z");
 });
 
 describe("ligne « à qualifier » d'une activité inconnue : qualifiable ou classée « aucune »", () => {
@@ -71,6 +76,14 @@ describe("ligne « à qualifier » d'une activité inconnue : qualifiable ou cla
       montantCents: 30_000,
       statut: "due",
     });
+  });
+  it("site web signé AVANT la date d'effet : ligne close à 0 €, part du parrain close aussi", async () => {
+    etat.signeeAt = new Date("2026-10-15T00:00:00Z");
+    etat.parrainId = "PAR1";
+    const r = await classerActiviteCommission("C1", "site_web");
+    expect(r.ok).toBe(true);
+    expect(etat.maj[0]!.data).toMatchObject({ montantCents: 0, statut: "versee" });
+    expect(etat.maj[1]!.where).toMatchObject({ apporteurId: "PAR1", parrainage: true });
   });
   it("coaching (un_a_un) : aucune commission, ligne close à 0 € (jamais due)", async () => {
     const r = await classerActiviteCommission("C1", "un_a_un");
