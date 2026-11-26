@@ -65,7 +65,7 @@ export const SAINTE_SIGOLENE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Sainte-Sigolène ?",
-      a: "Saint-Étienne (40 min).",
+      a: "Nous intervenons dans vos locaux à Sainte-Sigolène, partout en France.",
     },
   ],
 };

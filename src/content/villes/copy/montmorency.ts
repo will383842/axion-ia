@@ -245,7 +245,7 @@ export const MONTMORENCY_COPY: VilleCopy = {
       a: "Oui. Les TPE puis les PME sont notre public prioritaire à Montmorency. Nous adaptons les formats aux petites structures de services et commerces. Les ETI restent un public marginal de notre activité.",
     },
     {
-      q: "Comment se déroule une mission Axion-IA chez nos clients ?",
+      q: "Comment se déroule une mission Axion-IA à Montmorency ?",
       a: "Nous intervenons partout en France, sur place dans vos locaux ou à distance en visio. Après le cadrage de votre besoin, nous planifions l'intervention et livrons un résultat actionnable.",
     },
   ],

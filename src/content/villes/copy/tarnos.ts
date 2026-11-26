@@ -65,7 +65,7 @@ export const TARNOS_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Tarnos ?",
-      a: "Nous intervenons partout en France, sur place ou à distance, en zone industrielle ou au bureau. Tarnos est à 10 min de Bayonne centre, 15 min de la gare de Bayonne et 20 min de l'aéroport de Biarritz.",
+      a: "Nous intervenons partout en France, sur place ou à distance, en zone industrielle ou au bureau.",
     },
   ],
 };

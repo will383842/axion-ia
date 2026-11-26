@@ -64,8 +64,8 @@ export const SAINT_GIRONS_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les acteurs du tourisme montagne et thermalisme du Couserans (Aulus-les-Bains, gîtes, refuges, hébergements) : agents conversationnels multilingues, automatisation réservations, gestion saisonnalité, classification avis.",
     },
     {
-      q: "Saint-Girons est-il accessible pour une mission sur site ?",
-      a: "Nous intervenons partout en France, sur place ou à distance, y compris en vallées de montagne. Saint-Girons est accessible en voiture par l'A64 et la D117 ; pas de gare directe, mais des bus régionaux.",
+      q: "Intervenez-vous à Saint-Girons ?",
+      a: "Oui. Nous intervenons dans vos locaux à Saint-Girons, partout en France, sur place ou à distance.",
     },
   ],
 };

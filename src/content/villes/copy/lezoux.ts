@@ -49,7 +49,7 @@ export const LEZOUX_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Lezoux et en Limagne ?",
-      a: "Oui, Axion-IA intervient à Lezoux et toute la plaine de la Limagne est (Billom, Vertaizon, Pont-du-Château). Couverture étendue bassin Thiers-Lezoux et accès Clermont-Ferrand en 30 min.",
+      a: "Oui, Axion-IA intervient à Lezoux et toute la plaine de la Limagne est (Billom, Vertaizon, Pont-du-Château).",
     },
     {
       q: "Accompagnez-vous les artisans d'art céramistes à Lezoux ?",
@@ -64,7 +64,7 @@ export const LEZOUX_COPY: VilleCopy = {
       a: "Pour les TPE artisans et commerçants ruraux à Lezoux, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, gestion stocks, visibilité en ligne.",
     },
     {
-      q: "Comment se déroule une mission Axion-IA chez nos clients ?",
+      q: "Comment se déroule une mission Axion-IA à Lezoux ?",
       a: "Nous intervenons partout en France, sur place dans vos locaux ou à distance en visio. Après le cadrage de votre besoin, nous planifions l'intervention et livrons un résultat actionnable.",
     },
   ],

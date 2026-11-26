@@ -65,7 +65,7 @@ export const TRIEL_SUR_SEINE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Triel-sur-Seine ?",
-      a: "Paris-Saint-Lazare (40 min Transilien J), gare de Triel-sur-Seine sur place. Poissy à 10 min. Tarifs publics.",
+      a: "Nous intervenons dans vos locaux à Triel-sur-Seine, partout en France. Tarifs publics.",
     },
   ],
 };

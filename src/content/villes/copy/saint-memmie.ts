@@ -65,7 +65,7 @@ export const SAINT_MEMMIE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Saint-Memmie ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Saint-Memmie est à 7 min de la gare SNCF de Châlons-en-Champagne.",
+      a: "Nous intervenons partout en France, sur place ou à distance.",
     },
   ],
 };

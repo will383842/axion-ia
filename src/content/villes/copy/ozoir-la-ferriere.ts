@@ -125,7 +125,7 @@ const VILLE_COPY: VilleCopy = {
           },
           {
             q: "Travaillez-vous avec les entreprises des zones industrielles d'Ozoir ?",
-            a: "Oui. La Z.I. Sud (pôle logistique de près de 27 ha) et la Z.I. Nord (21 ha, industrie et négoce) concentrent transporteurs, logisticiens et industriels comme Titeflex Europe ou La Parmentière. Pour eux, on développe portails fournisseurs, suivi de tournées, espaces clients et agents d'automatisation des bons de commande, branchés sur leur ERP ou WMS existant.",
+            a: "Oui. Nous intervenons dans vos locaux à Ozoir-la-Ferrière pour les TPE, partout en France. La Z.I. Sud (pôle logistique de près de 27 ha) et la Z.I. Pour eux, on développe portails fournisseurs, suivi de tournées, espaces clients et agents d'automatisation des bons de commande, branchés sur leur ERP ou WMS existant.",
           },
           {
             q: "Mes données restent-elles en Europe ?",
@@ -211,7 +211,7 @@ const VILLE_COPY: VilleCopy = {
           },
           {
             q: "Travaillez-vous avec les entreprises des zones industrielles d'Ozoir ?",
-            a: "Oui. La Z.I. Sud (pôle logistique de près de 27 ha) et la Z.I. Nord (21 ha, industrie et négoce) concentrent transporteurs, logisticiens et industriels comme Titeflex Europe ou La Parmentière. Pour eux, on développe portails fournisseurs, suivi de tournées, espaces clients et agents d'automatisation des bons de commande, branchés sur leur ERP ou WMS existant.",
+            a: "Oui. Nous intervenons dans vos locaux à Ozoir-la-Ferrière pour les TPE, partout en France. La Z.I. Sud (pôle logistique de près de 27 ha) et la Z.I. Pour eux, on développe portails fournisseurs, suivi de tournées, espaces clients et agents d'automatisation des bons de commande, branchés sur leur ERP ou WMS existant.",
           },
           {
             q: "Mes données restent-elles en Europe ?",
@@ -246,7 +246,7 @@ const VILLE_COPY: VilleCopy = {
       a: "Audit sur place bookable sous 5 à 10 jours ouvrés selon disponibilités. Formation collective livrée en 2 à 4 semaines selon complexité du cadrage. Pour les artisans BTP en pic de charge, planification adaptée au calendrier de chantiers.",
     },
     {
-      q: "Quelles communes proches couvrez-vous autour de Ozoir-la-Ferrière ?",
+      q: "Quelles communes proches couvrez-vous autour d'Ozoir-la-Ferrière ?",
       a: "Axion-IA intervient aussi sur Pontault-Combault, Roissy-en-Brie, Lésigny, Pontcarré, Férolles-Attilly, Chevry-Cossigny et Gretz-Armainvilliers, ainsi que plus largement l'est seine-et-marnais.",
     },
     {

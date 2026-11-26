@@ -232,7 +232,7 @@ export const COMBS_LA_VILLE_COPY: VilleCopy = {
     },
     {
       q: "Quels délais pour intervenir à Combs-la-Ville ?",
-      a: "Nous intervenons sous 5 jours ouvrés après validation. La gare RER D Combs-la-Ville – Quincy facilite le déplacement sur site.",
+      a: "Nous intervenons sous 5 jours ouvrés après validation.",
     },
     {
       q: "Axion-IA couvre-t-il les communes proches comme Lieusaint, Brie-Comte-Robert ou Moissy-Cramayel ?",

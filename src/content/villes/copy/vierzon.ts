@@ -246,7 +246,7 @@ export const VIERZON_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Vierzon ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Vierzon est à 20 minutes de Bourges et sur l'A71.",
+      a: "Nous intervenons partout en France, sur place ou à distance.",
     },
   ],
 };

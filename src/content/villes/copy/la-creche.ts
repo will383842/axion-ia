@@ -64,7 +64,7 @@ export const LA_CRECHE_COPY: VilleCopy = {
       a: "Pour les professions libérales et commerces de La Crèche, nous proposons les 5 services Axion-IA : audit IA (Sur place à Stratégique), interventions sur site, implémentation IA (agents, automatisations), coaching 1-to-1, et plateformes web/SaaS IA sur mesure.",
     },
     {
-      q: "Comment se déroule une mission Axion-IA chez nos clients ?",
+      q: "Comment se déroule une mission Axion-IA à La Crèche ?",
       a: "Nous intervenons partout en France, sur place dans vos locaux ou à distance en visio. Après le cadrage de votre besoin, nous planifions l'intervention et livrons un résultat actionnable.",
     },
   ],

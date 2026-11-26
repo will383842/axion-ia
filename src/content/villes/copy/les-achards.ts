@@ -64,7 +64,7 @@ export const LES_ACHARDS_COPY: VilleCopy = {
       a: "Oui, nos interventions forment vos équipes aux outils IA pratiques : devis automatisé, RDV intelligents, agents conversationnels clients, génération de documents, marketing local, gestion stocks. Sur site aux Achards ou en visio.",
     },
     {
-      q: "Comment se déroule une mission Axion-IA chez nos clients ?",
+      q: "Comment se déroule une mission Axion-IA aux Achards ?",
       a: "Nous intervenons partout en France, sur place dans vos locaux ou à distance en visio. Après le cadrage de votre besoin, nous planifions l'intervention et livrons un résultat actionnable.",
     },
   ],

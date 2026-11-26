@@ -227,7 +227,7 @@ export const MELUN_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Melun ?",
-      a: "Oui, Axion-IA intervient à Melun et dans les communes limitrophes : Dammarie-lès-Lys, Le Mée-sur-Seine, La Rochette, Vaux-le-Pénil, Maincy, Rubelles, Vert-Saint-Denis, Voisenon. Trajet Paris-Melun en 25 min par Transilien R.",
+      a: "Oui, Axion-IA intervient à Melun et dans les communes limitrophes : Dammarie-lès-Lys, Le Mée-sur-Seine, La Rochette, Vaux-le-Pénil, Maincy, Rubelles, Vert-Saint-Denis, Voisenon.",
     },
     {
       q: "Quels sont les tarifs pour une mission IA à Melun ?",

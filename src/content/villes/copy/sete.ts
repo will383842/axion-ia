@@ -129,7 +129,7 @@ export const SETE_COPY: VilleCopy = {
           },
           {
             q: "Intervenez-vous dans les communes de Sète Agglopôle Méditerranée ?",
-            a: "Oui : Frontignan (Saipol, dépôt GDH/BP), Marseillan, Bouzigues, Loupian, Mèze (Le Corsaire de Thau) et Balaruc-les-Bains, soit l'unité urbaine d'environ 95 662 habitants, ainsi que l'aire montpelliéraine à 37 km. Accès par la gare TGV/Intercités/TER Occitanie et l'A9 ; kick-off et recette systématiquement en présentiel.",
+            a: "Nous intervenons dans vos locaux à Sète, partout en France. Oui : Frontignan (Saipol, dépôt GDH/BP), Marseillan, Bouzigues, Loupian, Mèze (Le Corsaire de Thau) et Balaruc-les-Bains, soit l'unité urbaine d'environ 95 662 habitants, ainsi que l'aire montpelliéraine à 37 km.",
           },
         ],
         guarantees:

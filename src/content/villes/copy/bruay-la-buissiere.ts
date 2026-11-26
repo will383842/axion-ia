@@ -231,7 +231,7 @@ export const BRUAY_LA_BUISSIERE_COPY: VilleCopy = {
     },
     {
       q: "Axion-IA se déplace-t-il à Bruay-la-Buissière ?",
-      a: "Oui, nos consultants se déplacent à Bruay-la-Buissière et dans toute l'agglomération Béthune-Bruay Artois Lys Romane (Béthune, Lens, Houdain, Divion, Auchel) sous 5 jours ouvrés. Accès direct via A26.",
+      a: "Nous intervenons dans vos locaux à Bruay-la-Buissière, partout en France. Oui, nos consultants se déplacent à Bruay-la-Buissière et dans toute l'agglomération Béthune-Bruay Artois Lys Romane (Béthune, Lens, Houdain, Divion, Auchel) sous 5 jours ouvrés.",
     },
     {
       q: "Quelles communes proches couvrez-vous autour de Bruay-la-Buissière ?",

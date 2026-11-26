@@ -132,7 +132,7 @@ export const LES_SABLES_D_OLONNE_COPY: VilleCopy = {
           },
           {
             q: "Quel délai pour un devis et qui garde la main sur le site ?",
-            a: "Le devis est remis à partir de 24-48 h selon la complexité, après un premier échange. Vous restez propriétaire de la stack : code, contenus et accès vous appartiennent, le site est éditable par vos équipes ou par tout prestataire de la région, sans verrou éditeur ni dépendance à Axion-IA.",
+            a: "Nous intervenons dans vos locaux aux Sables-d'Olonne, partout en France. Le devis est remis à partir de 24-48 h selon la complexité, après un premier échange.",
           },
         ],
         guarantees:

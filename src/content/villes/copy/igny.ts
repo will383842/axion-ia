@@ -64,7 +64,7 @@ export const IGNY_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les PME ingénierie et conseil proches de Paris-Saclay sur leurs cas IA : automatisation reporting, classification données techniques, prédiction délais projets, optimisation ressources.",
     },
     {
-      q: "Comment se déroule une mission Axion-IA chez nos clients ?",
+      q: "Comment se déroule une mission Axion-IA à Igny ?",
       a: "Nous intervenons partout en France, sur place ou à distance. Aéroport Orly à 20 min.",
     },
   ],

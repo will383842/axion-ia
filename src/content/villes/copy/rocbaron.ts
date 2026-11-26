@@ -49,7 +49,7 @@ export const ROCBARON_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Rocbaron et dans le Centre-Var ?",
-      a: "Oui, Axion-IA intervient à Rocbaron et dans tout le Centre-Var (Brignoles, La Roquebrussanne, Forcalqueiret, Garéoult, Néoules). Accès direct via A57 et axes départementaux.",
+      a: "Oui, Axion-IA intervient à Rocbaron et dans tout le Centre-Var (Brignoles, La Roquebrussanne, Forcalqueiret, Garéoult, Néoules).",
     },
     {
       q: "Tarifs audit IA à Rocbaron  : quel budget prévoir ?",
@@ -65,7 +65,7 @@ export const ROCBARON_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une intervention à Rocbaron ?",
-      a: "Nous intervenons partout en France, sur place ou à distance, dans vos locaux ou domaines. Rocbaron est à 15 min de Brignoles et 40 min de Toulon via A57.",
+      a: "Nous intervenons partout en France, sur place ou à distance, dans vos locaux ou domaines.",
     },
   ],
 };

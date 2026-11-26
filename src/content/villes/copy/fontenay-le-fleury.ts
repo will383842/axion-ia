@@ -65,7 +65,7 @@ export const FONTENAY_LE_FLEURY_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Fontenay-le-Fleury ?",
-      a: "Versailles (5 min). Vélizy-Villacoublay (10 min). Paris La Défense (25 min). Paris Montparnasse (30 min transilien N/U).",
+      a: "Nous intervenons dans vos locaux à Fontenay-le-Fleury, partout en France.",
     },
   ],
 };

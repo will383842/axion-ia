@@ -65,7 +65,7 @@ export const DEOLS_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Déols ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Déols est à 5 minutes de Châteauroux centre.",
+      a: "Nous intervenons partout en France, sur place ou à distance.",
     },
   ],
 };

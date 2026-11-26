@@ -64,7 +64,7 @@ export const LONGVIC_COPY: VilleCopy = {
       a: "Audit sur place {{price:audit-flash|flat}}, automatisation reporting et conformité, gestion documentaire, suivi qualité, optimisation cycles production pour la filière aéronautique et défense liée à l'ancienne base aérienne 102.",
     },
     {
-      q: "Comment se déroule une mission Axion-IA chez nos clients ?",
+      q: "Comment se déroule une mission Axion-IA à Longvic ?",
       a: "Nous intervenons partout en France, sur place dans vos locaux ou à distance en visio. Après le cadrage de votre besoin, nous planifions l'intervention et livrons un résultat actionnable.",
     },
   ],

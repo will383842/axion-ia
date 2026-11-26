@@ -65,7 +65,7 @@ export const VILLENEUVE_EN_RETZ_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une intervention à Villeneuve-en-Retz ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Villeneuve-en-Retz est à 35 min de l'aéroport Nantes Atlantique.",
+      a: "Nous intervenons partout en France, sur place ou à distance.",
     },
   ],
 };

@@ -49,7 +49,7 @@ export const LE_PONTET_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il au Pontet et dans l'agglomération d'Avignon ?",
-      a: "Oui, Axion-IA intervient au Pontet et dans tout le Grand Avignon (Avignon, Sorgues, Vedène, Bédarrides, Morières-lès-Avignon, Entraigues-sur-la-Sorgue). Accès direct via A7 et N7.",
+      a: "Oui, Axion-IA intervient au Pontet et dans tout le Grand Avignon (Avignon, Sorgues, Vedène, Bédarrides, Morières-lès-Avignon, Entraigues-sur-la-Sorgue).",
     },
     {
       q: "Quel est le tarif d'un audit IA au Pontet ?",
@@ -65,7 +65,7 @@ export const LE_PONTET_COPY: VilleCopy = {
     },
     {
       q: "Comment se déplace Axion-IA au Pontet ?",
-      a: "Le Pontet est à 5 min d'Avignon via A7 et N7. Nos consultants se déplacent dans vos locaux.",
+      a: "Nos consultants se déplacent dans vos locaux.",
     },
   ],
 };

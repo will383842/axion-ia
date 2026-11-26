@@ -49,7 +49,7 @@ export const SAINT_ANDRE_LES_VERGERS_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Saint-André-les-Vergers et dans l'agglo Troyes ?",
-      a: "Oui, Axion-IA intervient à Saint-André-les-Vergers et dans toute l'agglomération de Troyes. Nous intervenons partout en France, sur place ou à distance. Saint-André-les-Vergers est à 10 min de Troyes centre et 5 min de l'A5.",
+      a: "Oui, Axion-IA intervient à Saint-André-les-Vergers et dans toute l'agglomération de Troyes. Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Combien coûte un audit IA à Saint-André-les-Vergers  ?",

@@ -65,7 +65,7 @@ export const ALBERTVILLE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Albertville ?",
-      a: "Chambéry (50 min). Aéroport Lyon-Saint-Exupéry (1h30). Gare TGV Albertville directe.",
+      a: "Nous intervenons dans vos locaux à Albertville, partout en France, avec un démarrage sous 5 jours ouvrés après validation du devis.",
     },
   ],
 };

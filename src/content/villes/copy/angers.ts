@@ -1018,7 +1018,7 @@ export const ANGERS_COPY: VilleCopy = {
     },
     {
       q: "En combien de temps pouvez-vous démarrer une mission à Angers ?",
-      a: "Le délai dépend de votre besoin (urgence, complexité, taille de la mission). Nous calons une date de démarrage avec vous lors du brief de cadrage initial, et tenons l'engagement contractuel à la signature. La proximité TGV Paris-Angers (1h21) facilite les déplacements de nos consultants pour les kicks-off rapides.",
+      a: "Nous intervenons dans vos locaux à Angers, partout en France. Le délai dépend de votre besoin (urgence, complexité, taille de la mission). Nous calons une date de démarrage avec vous lors du brief de cadrage initial, et tenons l'engagement contractuel à la signature.",
     },
   ],
 };

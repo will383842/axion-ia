@@ -232,7 +232,7 @@ export const MURET_COPY: VilleCopy = {
     },
     {
       q: "Sous quel délai pouvez-vous intervenir à Muret ?",
-      a: "Notre équipe se déplace à Muret dans un délai de 5 jours ouvrés après validation de la mission. Muret est accessible via A64 et la gare TER (terminus du réseau Tisséo).",
+      a: "Nous intervenons dans vos locaux à Muret, partout en France. Notre équipe se déplace à Muret dans un délai de 5 jours ouvrés après validation de la mission.",
     },
     {
       q: "Couvrez-vous les communes proches de Muret ?",

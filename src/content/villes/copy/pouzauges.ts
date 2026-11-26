@@ -65,7 +65,7 @@ export const POUZAUGES_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission IA à Pouzauges ?",
-      a: "Nos consultants interviennent directement dans vos locaux à Pouzauges. Nous intervenons partout en France, sur place ou à distance. Pouzauges est à 35 km de Cholet et 25 km de l'A87.",
+      a: "Nos consultants interviennent directement dans vos locaux à Pouzauges. Nous intervenons partout en France, sur place ou à distance.",
     },
   ],
 };

@@ -65,7 +65,7 @@ export const BEAUMONT_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Beaumont ?",
-      a: "Clermont-Ferrand centre (10 min). Aéroport Clermont à 30 min. Tarifs publics.",
+      a: "Nous intervenons dans vos locaux à Beaumont, partout en France. Tarifs publics.",
     },
   ],
 };

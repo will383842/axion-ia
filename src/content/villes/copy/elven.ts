@@ -65,7 +65,7 @@ export const ELVEN_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Elven ?",
-      a: "Vannes (20 min), Rennes (1h). Gare TGV Vannes à 20 min.",
+      a: "Nous intervenons dans vos locaux à Elven, partout en France.",
     },
   ],
 };

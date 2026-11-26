@@ -235,7 +235,7 @@ const VILLE_COPY: VilleCopy = {
     },
     {
       q: "Williams se déplace-t-il vraiment à Illkirch-Graffenstaden ?",
-      a: "Oui. Williams arrive en TGV à Strasbourg (gare centrale) puis rejoint Illkirch-Graffenstaden en tram A ou E (15 min). Pour les missions au Parc d'Innovation, station « Parc d'Innovation » directe sur la ligne A.",
+      a: "Oui. Nous intervenons dans vos locaux à Illkirch-Graffenstaden pour les TPE, partout en France. Pour les missions au Parc d'Innovation, station « Parc d'Innovation » directe sur la ligne A.",
     },
     {
       q: "Quels secteurs locaux Axion-IA accompagne-t-il à Illkirch-Graffenstaden ?",
@@ -246,7 +246,7 @@ const VILLE_COPY: VilleCopy = {
       a: "Audit sur place bookable sous 5 à 10 jours ouvrés. Formation collective livrée en 2 à 4 semaines selon complexité. Axion-IA peut intervenir dès la semaine suivante pour cadrer un besoin urgent (panne de process, automatisation à fenêtre courte).",
     },
     {
-      q: "Quelles communes proches couvrez-vous autour de Illkirch-Graffenstaden ?",
+      q: "Quelles communes proches couvrez-vous autour d'Illkirch-Graffenstaden ?",
       a: "Axion-IA intervient aussi sur Strasbourg, Ostwald, Geispolsheim, Eschau, Fegersheim et plus largement l'Eurométropole.",
     },
     {

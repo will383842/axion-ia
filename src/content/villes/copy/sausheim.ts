@@ -49,7 +49,7 @@ export const SAUSHEIM_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Sausheim et dans l'agglomération mulhousienne ?",
-      a: "Oui, Axion-IA intervient à Sausheim et sur toute Mulhouse Alsace Agglomération (Mulhouse, Illzach, Rixheim, Kingersheim, Wittenheim). Accès direct via A35/A36. Proximité immédiate avec Bâle et l'EuroAirport facilitant les missions transfrontalières.",
+      a: "Oui, Axion-IA intervient à Sausheim et sur toute Mulhouse Alsace Agglomération (Mulhouse, Illzach, Rixheim, Kingersheim, Wittenheim). Proximité immédiate avec Bâle et l'EuroAirport facilitant les missions transfrontalières.",
     },
     {
       q: "Quel est le tarif d'un audit IA à Sausheim  ?",

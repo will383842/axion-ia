@@ -235,7 +235,7 @@ const VILLE_COPY: VilleCopy = {
     },
     {
       q: "Williams se déplace-t-il vraiment à Villenave-d'Ornon ?",
-      a: "Oui. Williams intervient sur site à Villenave-d'Ornon, desservie par le tram C et la gare TER de Villenave-d'Ornon. Nous intervenons partout en France, sur place ou à distance.",
+      a: "Oui. Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quels secteurs locaux Axion-IA accompagne-t-il à Villenave-d'Ornon ?",

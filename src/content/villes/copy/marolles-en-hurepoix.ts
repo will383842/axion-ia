@@ -64,7 +64,7 @@ export const MAROLLES_EN_HUREPOIX_COPY: VilleCopy = {
       a: "Oui, implémentation IA pour PME tertiaires du sud-Essonne depuis Marolles : CRM augmentés, classification documents, automatisations workflow. Tarifs publics, ROI chiffré contractuel.",
     },
     {
-      q: "Comment se déroule une mission Axion-IA chez nos clients ?",
+      q: "Comment se déroule une mission Axion-IA à Marolles-en-Hurepoix ?",
       a: "Nous intervenons partout en France, sur place dans vos locaux ou à distance en visio. Après le cadrage de votre besoin, nous planifions l'intervention et livrons un résultat actionnable.",
     },
   ],

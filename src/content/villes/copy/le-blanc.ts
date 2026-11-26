@@ -65,7 +65,7 @@ export const LE_BLANC_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA au Blanc ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. La gare du Blanc offre une desserte limitée ; la gare de Châteauroux (Intercités Paris-Austerlitz 2h15) est la connexion principale.",
+      a: "Nous intervenons partout en France, sur place ou à distance.",
     },
   ],
 };

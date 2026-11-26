@@ -122,7 +122,7 @@ export const VILLEPARISIS_COPY: VilleCopy = {
           },
           {
             q: "Quels délais pour un devis et un premier rendez-vous à Villeparisis ?",
-            a: "Devis à partir de 24-48 h selon la complexité. Le kick-off se tient sur place à Villeparisis — accès direct en RER B (gare Villeparisis–Mitry-le-Neuf) ou via l'A104 — ou en visio si vous préférez démarrer plus vite.",
+            a: "Nous intervenons dans vos locaux à Villeparisis, partout en France. Devis à partir de 24-48 h selon la complexité.",
           },
           {
             q: "Travaillez-vous avec les artisans BTP et la filière matériaux locale ?",
@@ -248,7 +248,7 @@ export const VILLEPARISIS_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les PME logistique et transport autour de Paris-CDG ?",
-      a: "Oui. Villeparisis est à 15 km de Paris-Charles-de-Gaulle et 5 min de Tremblay-en-France (plateforme CDG). Nous travaillons avec PME transport routier, logistique entrepôt et prestataires aéroportuaires. Cas typiques : RAG documents douane, classification incidents, agents IA suivi flotte.",
+      a: "Oui. Nous intervenons dans vos locaux à Villeparisis, partout en France. Nous travaillons avec PME transport routier, logistique entrepôt et prestataires aéroportuaires. Cas typiques : RAG documents douane, classification incidents, agents IA suivi flotte.",
     },
   ],
 };

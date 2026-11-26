@@ -65,7 +65,7 @@ export const PONT_DU_CHATEAU_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Pont-du-Château ?",
-      a: "Clermont-Ferrand (15 min). Aéroport Clermont à 25 min.",
+      a: "Nous intervenons dans vos locaux à Pont-du-Château, partout en France.",
     },
   ],
 };

@@ -130,7 +130,7 @@ export const PAU_COPY: VilleCopy = {
           },
           {
             q: "Où sont hébergées les données et le code de ma plateforme ?",
-            a: "Hébergement en Union européenne par défaut, conformité RGPD documentée. Le code source, les modèles IA et les accès restent intégralement chez vous : pas de lock-in éditeur, reprise possible par vos équipes ou par tout intégrateur palois.",
+            a: "Nous intervenons dans vos locaux à Pau, partout en France. Hébergement en Union européenne par défaut, conformité RGPD documentée.",
           },
         ],
         guarantees:
@@ -236,7 +236,7 @@ export const PAU_COPY: VilleCopy = {
     },
     {
       q: "Quels délais de déplacement pour une mission à Pau ?",
-      a: "Nous intervenons sous 5 jours ouvrés. Pau est desservie par le TGV, la gare Bordeaux Saint-Jean (2 h via A65 ou rail) et l'aéroport Pau Pyrénées. Possibilité d'audit visio sous 48 h.",
+      a: "Nous intervenons sous 5 jours ouvrés.",
     },
     {
       q: "Quelles garanties RGPD et AI Act pour les missions à Pau ?",

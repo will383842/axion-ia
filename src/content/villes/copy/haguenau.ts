@@ -232,7 +232,7 @@ export const HAGUENAU_COPY: VilleCopy = {
     },
     {
       q: "Vous déplacez-vous à Haguenau ?",
-      a: "Oui. Williams se déplace à Haguenau sous 5 jours ouvrés. L'accès s'effectue par la gare de Haguenau (TER toutes les 15 min depuis Strasbourg), l'A4 via la D1340 ou l'aéroport de Strasbourg-Entzheim à 40 km.",
+      a: "Oui. Nous intervenons dans vos locaux à Haguenau, partout en France. Williams se déplace à Haguenau sous 5 jours ouvrés.",
     },
     {
       q: "Quelles communes de l'agglomération haguenovienne couvrez-vous ?",

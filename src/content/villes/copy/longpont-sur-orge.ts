@@ -64,7 +64,7 @@ export const LONGPONT_SUR_ORGE_COPY: VilleCopy = {
       a: "Oui, implémentation IA pour PME tertiaires du Hurepoix : CRM augmentés, classification documents, automatisations workflow. Tarifs publics, ROI chiffré contractuel.",
     },
     {
-      q: "Comment se déroule une mission Axion-IA chez nos clients ?",
+      q: "Comment se déroule une mission Axion-IA à Longpont-sur-Orge ?",
       a: "Nous intervenons partout en France, sur place ou à distance. Tarifs transparents.",
     },
   ],

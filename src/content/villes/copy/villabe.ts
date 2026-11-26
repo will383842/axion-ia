@@ -65,7 +65,7 @@ export const VILLABE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Villabé ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Accès direct A6 et Francilienne N104.",
+      a: "Nous intervenons partout en France, sur place ou à distance.",
     },
   ],
 };

@@ -64,7 +64,7 @@ export const LA_RICAMARIE_COPY: VilleCopy = {
       a: "Pour les indépendants et professions libérales à La Ricamarie, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : agents IA prise de RDV, classification documents, CRM augmentés.",
     },
     {
-      q: "Comment se déroule une mission Axion-IA chez nos clients ?",
+      q: "Comment se déroule une mission Axion-IA à La Ricamarie ?",
       a: "Nous intervenons partout en France, sur place ou à distance. Tarifs transparents.",
     },
   ],

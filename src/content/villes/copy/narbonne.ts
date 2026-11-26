@@ -245,7 +245,7 @@ export const NARBONNE_COPY: VilleCopy = {
       a: "Audit sur place, intervention 1 journée formation, coaching 1-to-1 dirigeants. Cas d'usage : automatisation devis chantiers rénovation patrimoine (centre antique) et résidentiel littoral, OCR factures fournisseurs, suivi planning équipes, génération comptes-rendus de chantier, photos avant/après IA.",
     },
     {
-      q: "Comment se déroule une mission Axion-IA chez nos clients ?",
+      q: "Comment se déroule une mission Axion-IA à Narbonne ?",
       a: "Nous intervenons partout en France, sur place dans vos locaux ou à distance en visio. Après le cadrage de votre besoin, nous planifions l'intervention et livrons un résultat actionnable.",
     },
   ],

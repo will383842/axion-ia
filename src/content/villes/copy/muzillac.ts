@@ -64,7 +64,7 @@ export const MUZILLAC_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les acteurs du tourisme littoral à Muzillac et alentours : hôtels, campings, restaurants, locations saisonnières. Automatisation réservations, agents conversationnels multilingue, classification avis clients, gestion saisonnalité.",
     },
     {
-      q: "Comment se déroule une mission Axion-IA chez nos clients ?",
+      q: "Comment se déroule une mission Axion-IA à Muzillac ?",
       a: "Nous intervenons partout en France, sur place ou à distance. Intervention sur site dans vos locaux ou en visio.",
     },
   ],

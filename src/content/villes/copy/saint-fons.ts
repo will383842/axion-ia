@@ -49,7 +49,7 @@ export const SAINT_FONS_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Saint-Fons et Vallée de la Chimie sud lyonnais ?",
-      a: "Oui, Axion-IA intervient à Saint-Fons et toute la Vallée de la Chimie sud lyonnaise (Vénissieux limitrophe, Feyzin, Pierre-Bénite, Solaize, Givors). Couverture Métropole de Lyon. Consultants stéphanois ou lyonnais (15 min métro/tramway).",
+      a: "Oui, Axion-IA intervient à Saint-Fons et toute la Vallée de la Chimie sud lyonnaise (Vénissieux limitrophe, Feyzin, Pierre-Bénite, Solaize, Givors). Couverture Métropole de Lyon.",
     },
     {
       q: "Travaillez-vous avec les sous-traitants techniques chimie ?",

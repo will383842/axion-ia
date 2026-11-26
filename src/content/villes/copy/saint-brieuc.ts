@@ -231,7 +231,7 @@ export const SAINT_BRIEUC_COPY: VilleCopy = {
     },
     {
       q: "Comment Axion-IA se déplace-t-il à Saint-Brieuc ?",
-      a: "Le site est accessible par TGV, par avion à l'aéroport Saint-Brieuc Armor (Trémuson, 12 km) ou en voiture via la RN 12 (E50).",
+      a: "Nous intervenons dans vos locaux à Saint-Brieuc, partout en France.",
     },
     {
       q: "Quels délais pour démarrer une mission IA à Saint-Brieuc ?",

@@ -65,7 +65,7 @@ export const ARPAJON_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Arpajon ?",
-      a: "RER C Arpajon direct depuis Paris (35 min). Évry-Courcouronnes à 20 min. Orly à 20 min. Massy-Palaiseau TGV à 15 min.",
+      a: "Nous intervenons dans vos locaux à Arpajon, partout en France.",
     },
   ],
 };

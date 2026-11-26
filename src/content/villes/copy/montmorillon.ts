@@ -64,8 +64,8 @@ export const MONTMORILLON_COPY: VilleCopy = {
       a: "Pour les TPE artisans BTP et commerçants à Montmorillon, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation pratique, coaching 1-to-1. Cas typiques : automatisation devis, gestion stocks, agents IA prise de RDV, marketing digital.",
     },
     {
-      q: "Comment se déroule une mission Axion-IA chez nos clients ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Alternative : Limoges (1h15 route).",
+      q: "Comment se déroule une mission Axion-IA à Montmorillon ?",
+      a: "Nous intervenons partout en France, sur place ou à distance.",
     },
   ],
 };

@@ -246,7 +246,7 @@ export const BEAUNE_COPY: VilleCopy = {
     },
     {
       q: "Quel est le délai moyen pour démarrer une mission IA à Beaune ?",
-      a: "Nous démarrons une mission à Beaune sous 5 à 10 jours ouvrés en moyenne, selon la disponibilité de nos experts seniors et la complexité du projet. La gare SNCF de Beaune et l'A6 facilitent les venues hebdomadaires depuis Paris (2h15 TGV via Dijon) ou Lyon (1h45 par autoroute).",
+      a: "Nous intervenons dans vos locaux, partout en France. Nous démarrons une mission à Beaune sous 5 à 10 jours ouvrés en moyenne, selon la disponibilité de nos experts seniors et la complexité du projet.",
     },
     {
       q: "Axion-IA garantit-il la conformité RGPD et AI Act à Beaune ?",

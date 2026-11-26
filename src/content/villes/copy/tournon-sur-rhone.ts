@@ -65,7 +65,7 @@ export const TOURNON_SUR_RHONE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Tournon-sur-Rhône ?",
-      a: "Lyon (1h A7) ou Valence (20 min).",
+      a: "Nous intervenons dans vos locaux à Tournon-sur-Rhône, partout en France.",
     },
   ],
 };

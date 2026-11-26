@@ -120,7 +120,7 @@ export const MONTROUGE_COPY: VilleCopy = {
           },
           {
             q: "Intervenez-vous sur place à Montrouge et dans les communes limitrophes ?",
-            a: "Oui. Kick-off et recette se font sur site à Montrouge — quartier Évergreen, rue Barbès, centre-ville — accès direct métro M4 (Mairie de Montrouge, Barbara) et M13 (Châtillon-Montrouge). Nous nous déplaçons aussi à Paris 14e, Arcueil, Bagneux, Châtillon, Gentilly et Malakoff. Les itérations de développement se font en hybride présentiel/distance.",
+            a: "Oui. Nous nous déplaçons aussi à Paris 14e, Arcueil, Bagneux, Châtillon, Gentilly et Malakoff. Les itérations de développement se font en hybride présentiel/distance.",
           },
           {
             q: "Quel délai pour un devis de site web ou de plateforme SaaS à Montrouge ?",
@@ -226,7 +226,7 @@ export const MONTROUGE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Montrouge ?",
-      a: "Oui, Axion-IA intervient à Montrouge et dans tout le sud du Grand Paris. Accès direct métro M4 (Mairie de Montrouge, Barbara) et M13 (Châtillon-Montrouge). Nous nous déplaçons aussi à Arcueil, Bagneux, Châtillon, Gentilly et Malakoff, communes limitrophes.",
+      a: "Oui, Axion-IA intervient à Montrouge et dans tout le sud du Grand Paris. Nous nous déplaçons aussi à Arcueil, Bagneux, Châtillon, Gentilly et Malakoff, communes limitrophes.",
     },
     {
       q: "Quels sont les tarifs Axion-IA à Montrouge ?",

@@ -97,7 +97,7 @@ export const VILLEURBANNE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une intervention à Villeurbanne ?",
-      a: "Nos consultants se déplacent directement dans vos locaux villeurbannais. Nous intervenons partout en France, sur place ou à distance. Villeurbanne est desservie par le métro TCL ligne A (stations Laurent Bonnevay ou Gratte-Ciel), le tramway T1/T4, le périphérique nord et l'A42 ; la gare TGV Lyon Part-Dieu est à environ 3 km.",
+      a: "Nos consultants se déplacent directement dans vos locaux villeurbannais. Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Axion-IA travaille-t-il avec FORVIA MATERI'ACT ou les ETI industrielles de Villeurbanne ?",

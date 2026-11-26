@@ -65,7 +65,7 @@ export const VERNOUILLET_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Vernouillet ?",
-      a: "Chartres (35 min) ou Paris Montparnasse (1h15 TER via Dreux).",
+      a: "Nous intervenons dans vos locaux à Vernouillet, partout en France.",
     },
   ],
 };

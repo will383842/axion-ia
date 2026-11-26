@@ -72,7 +72,7 @@ export const LAGNIEU_COPY: VilleCopy = {
       a: "Chaque déploiement intègre l'analyse RGPD (données techniques, clients, agricoles) et nous privilégions un hébergement européen. Vous restez propriétaire de vos données, sans dépendance technique.",
     },
     {
-      q: "Comment se déroule une mission Axion-IA chez nos clients ?",
+      q: "Comment se déroule une mission Axion-IA à Lagnieu ?",
       a: "Nous intervenons partout en France, sur place dans vos locaux ou à distance en visio. Après le cadrage de votre besoin, nous planifions l'intervention et livrons un résultat actionnable.",
     },
   ],

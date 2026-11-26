@@ -65,7 +65,7 @@ export const VENELLES_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une intervention à Venelles ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Venelles est à 10 min d'Aix-en-Provence et 30 min de Marseille via A51.",
+      a: "Nous intervenons partout en France, sur place ou à distance.",
     },
   ],
 };

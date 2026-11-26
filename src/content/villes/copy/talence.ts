@@ -129,7 +129,7 @@ export const TALENCE_COPY: VilleCopy = {
           },
           {
             q: "Intervenez-vous au-delà de Talence, sur le Sud-Bordeaux ?",
-            a: "Oui. Nos consultants se déplacent à Talence et sur le périmètre TISD — Gradignan, Villenave-d'Ornon, Pessac, Bègles — et plus largement Bordeaux Métropole. Talence est desservie par le tramway B (stations Peixotto, Béthanie, Arts et Métiers) et la rocade A630 (sorties 16 et 17).",
+            a: "Oui. Nous intervenons dans vos locaux à Talence, partout en France. Nos consultants se déplacent à Talence et sur le périmètre TISD — Gradignan, Villenave-d'Ornon, Pessac, Bègles — et plus largement Bordeaux Métropole.",
           },
         ],
         guarantees:

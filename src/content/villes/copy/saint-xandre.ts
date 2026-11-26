@@ -49,7 +49,7 @@ export const SAINT_XANDRE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Saint-Xandre ?",
-      a: "Oui, Axion-IA intervient à Saint-Xandre et toute l'agglomération de La Rochelle (Lagord, Puilboreau, Nieul-sur-Mer, Dompierre-sur-Mer). La gare TGV de La Rochelle est à 15 min.",
+      a: "Oui, Axion-IA intervient à Saint-Xandre et toute l'agglomération de La Rochelle (Lagord, Puilboreau, Nieul-sur-Mer, Dompierre-sur-Mer).",
     },
     {
       q: "Quels services IA pour les PME à Saint-Xandre ?",

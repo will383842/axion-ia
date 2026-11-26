@@ -65,7 +65,7 @@ export const SAINT_VALLIER_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Saint-Vallier ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Saint-Vallier est à 20 min de la gare du Creusot-TGV et 40 min de Chalon-sur-Saône.",
+      a: "Nous intervenons partout en France, sur place ou à distance.",
     },
   ],
 };

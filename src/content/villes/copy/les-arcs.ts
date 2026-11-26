@@ -49,7 +49,7 @@ export const LES_ARCS_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il aux Arcs et dans le centre-Var ?",
-      a: "Oui, Axion-IA intervient aux Arcs et dans tout le centre-Var (Draguignan, Vidauban, Trans-en-Provence, Le Luc, Lorgues, Le Muy). Hub TGV Les Arcs-Draguignan facilitant l'accès Paris en 4 h.",
+      a: "Oui, Axion-IA intervient aux Arcs et dans tout le centre-Var (Draguignan, Vidauban, Trans-en-Provence, Le Luc, Lorgues, Le Muy).",
     },
     {
       q: "Quel est le tarif d'un audit IA pour un domaine viticole aux Arcs ?",

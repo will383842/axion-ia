@@ -132,7 +132,7 @@ export const OULLINS_PIERRE_BENITE_COPY: VilleCopy = {
           },
           {
             q: "Sous quel délai puis-je obtenir un devis ?",
-            a: "Nous établissons un devis à partir de 24 à 48 h selon la complexité. Un premier échange — sur site à Oullins-Pierre-Bénite, accessible par le métro B à 15 min de Part-Dieu, ou en visio — suffit à cadrer le périmètre, le socle technique et les fonctions IA pertinentes pour votre activité.",
+            a: "Nous intervenons dans vos locaux à Oullins-Pierre-Bénite, partout en France. Nous établissons un devis à partir de 24 à 48 h selon la complexité.",
           },
         ],
         guarantees:

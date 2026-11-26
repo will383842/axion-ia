@@ -118,11 +118,11 @@ export const NOISY_LE_SEC_COPY: VilleCopy = {
           },
           {
             q: "Pouvez-vous accompagner les artisans et PME du BTP liés à la ZAC de la Plaine de l'Ourcq ?",
-            a: "Oui. La ZAC Quartier durable de la Plaine de l'Ourcq (35 ha, environ 75 000 m² d'activités et 30 000 m² de bureaux, livraison visée 2029) génère une forte demande dans la construction. Nous construisons pour les artisans et PME du bâtiment des sites de devis en ligne, des suivis de chantier et des boutiques e-commerce de matériaux, optimisés mobile et SEO local.",
+            a: "Oui. Nous intervenons dans vos locaux à Noisy-le-Sec, partout en France. Nous construisons pour les artisans et PME du bâtiment des sites de devis en ligne, des suivis de chantier et des boutiques e-commerce de matériaux, optimisés mobile et SEO local.",
           },
           {
             q: "Faites-vous de l'e-commerce multi-CMS pour les commerçants de Noisy-le-Sec ?",
-            a: "Oui. Pour les boutiques du centre-ville et des marchés, desservies par la gare RER E, le tramway T1 et bientôt la gare Pont de Bondy de la ligne 15 du Grand Paris Express, nous déployons des vitrines e-commerce sur Shopify, WooCommerce ou PrestaShop, avec click-and-collect, recommandation produit IA et search sémantique.",
+            a: "Oui. Nous intervenons dans vos locaux à Noisy-le-Sec, partout en France.",
           },
           {
             q: "Quels délais pour un devis ?",

@@ -65,7 +65,7 @@ export const SELESTAT_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Sélestat ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Sélestat est desservie par l'autoroute A35 et sa gare TER, entre Strasbourg (30 min) et Colmar (20 min), à 25 min de l'aéroport Strasbourg-Entzheim.",
+      a: "Nous intervenons partout en France, sur place ou à distance.",
     },
   ],
 };

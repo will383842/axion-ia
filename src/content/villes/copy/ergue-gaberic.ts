@@ -49,7 +49,7 @@ export const ERGUE_GABERIC_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Ergué-Gabéric et dans l'agglomération de Quimper ?",
-      a: "Oui, Axion-IA intervient à Ergué-Gabéric et dans toute l'agglomération de Quimper (Pluguffan, Plomelin, Briec, Fouesnant, Bénodet). Couverture également Lorient (1h) et Brest (1h15).",
+      a: "Oui, Axion-IA intervient à Ergué-Gabéric et dans toute l'agglomération de Quimper (Pluguffan, Plomelin, Briec, Fouesnant, Bénodet).",
     },
     {
       q: "Travaillez-vous avec les PME industrielles des zones d'activités gabéricoises ?",

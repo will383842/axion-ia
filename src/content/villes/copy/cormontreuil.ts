@@ -65,7 +65,7 @@ export const CORMONTREUIL_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Cormontreuil ?",
-      a: "Paris-Est à 45 min en TGV (gare Champagne-Ardenne Bezannes à 10 min de Cormontreuil). Autoroute A4 accessible en 10 min.",
+      a: "Nous intervenons dans vos locaux à Cormontreuil, partout en France. Paris-Est à 45 min en TGV (gare Champagne-Ardenne Bezannes à 10 min de Cormontreuil).",
     },
   ],
 };

@@ -65,7 +65,7 @@ export const LEZIGNAN_CORBIERES_COPY: VilleCopy = {
     },
     {
       q: "Comment Lézignan-Corbières est-elle accessible ?",
-      a: "Lézignan-Corbières est desservie par la gare SNCF (ligne Toulouse-Narbonne) et l'autoroute A61 (20 min de Narbonne, 35 min de Carcassonne). Carrefour routier pratique pour nos consultants.",
+      a: "Nous intervenons dans vos locaux à Lézignan-Corbières, partout en France. Carrefour routier pratique pour nos consultants.",
     },
   ],
 };

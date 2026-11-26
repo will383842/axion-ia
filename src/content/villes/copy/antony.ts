@@ -240,7 +240,7 @@ export const ANTONY_COPY: VilleCopy = {
     },
     {
       q: "Quels délais d'intervention sur site à Antony ?",
-      a: "Nos consultants se déplacent sur site à Antony sous 5 jours ouvrés après validation. Accès direct depuis Paris par le RER B (5 stations) ou l'A86. Antony est à 8 km de la porte d'Orléans.",
+      a: "Nos consultants se déplacent sur site à Antony sous 5 jours ouvrés après validation.",
     },
     {
       q: "Comment Axion-IA garantit la conformité RGPD à Antony ?",

@@ -233,7 +233,7 @@ export const MAISONS_LAFFITTE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une intervention IA à Maisons-Laffitte ?",
-      a: "Nous nous déplaçons sur site, que ce soit dans le Parc privé, au centre-ville ou directement dans les écuries du quartier de l'hippodrome. Accès par le RER A (gare de Maisons-Laffitte) ou par la RD308.",
+      a: "Nous nous déplaçons sur site, que ce soit dans le Parc privé, au centre-ville ou directement dans les écuries du quartier de l'hippodrome.",
     },
     {
       q: "Axion-IA couvre-t-il les communes voisines de Maisons-Laffitte ?",

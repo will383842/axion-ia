@@ -65,7 +65,7 @@ export const VIARMES_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Viarmes ?",
-      a: "Luzarches (5 min). Beaumont-sur-Oise (10 min). Aéroport CDG (20 min). Paris Gare du Nord (40 min via ligne H).",
+      a: "Nous intervenons dans vos locaux à Viarmes, partout en France.",
     },
   ],
 };

@@ -65,7 +65,7 @@ export const CROSNE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Crosne ?",
-      a: "Crosne est desservie par le RER D (gare de Crosne). Tarifs transparents.",
+      a: "Nous intervenons dans vos locaux à Crosne, partout en France. Tarifs transparents.",
     },
   ],
 };

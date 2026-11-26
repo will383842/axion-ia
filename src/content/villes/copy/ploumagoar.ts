@@ -65,7 +65,7 @@ export const PLOUMAGOAR_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Ploumagoar ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Ploumagoar est à 5 min de la gare TGV de Guingamp (ligne Paris-Brest), 30 min de Saint-Brieuc et 35 min de Lannion.",
+      a: "Nous intervenons partout en France, sur place ou à distance.",
     },
   ],
 };

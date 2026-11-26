@@ -65,7 +65,7 @@ export const SAULX_LES_CHARTREUX_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Saulx-les-Chartreux ?",
-      a: "Massy TGV (10 min). Paris centre (30 min par N20 ou A6). Orly (15 min).",
+      a: "Nous intervenons dans vos locaux à Saulx-les-Chartreux, partout en France.",
     },
   ],
 };

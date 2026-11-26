@@ -126,7 +126,7 @@ export const TAVERNY_COPY: VilleCopy = {
           },
           {
             q: "Couvrez-vous les communes autour de Taverny ?",
-            a: "Oui. Nous intervenons sur tout le nord-ouest du Val-d'Oise : Saint-Leu-la-Forêt, Le Plessis-Bouchard, Franconville, Beauchamp, Bessancourt (où s'étend la base aérienne 921), Frépillon, Pierrelaye et Villiers-Adam. Taverny est accessible par l'A15, l'A115, l'A86, la Francilienne, le RER C et la ligne H.",
+            a: "Oui. Nous intervenons sur tout le nord-ouest du Val-d'Oise : Saint-Leu-la-Forêt, Le Plessis-Bouchard, Franconville, Beauchamp, Bessancourt (où s'étend la base aérienne 921), Frépillon, Pierrelaye et Villiers-Adam.",
           },
           {
             q: "Sous quel délai avez-vous un devis, et quel délai pour le site ?",

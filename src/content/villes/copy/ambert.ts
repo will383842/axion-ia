@@ -65,7 +65,7 @@ export const AMBERT_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Ambert ?",
-      a: "Clermont-Ferrand (1h15). Aéroport Clermont à 1h20.",
+      a: "Nous intervenons dans vos locaux à Ambert, partout en France.",
     },
   ],
 };

@@ -543,7 +543,7 @@ export const SAINT_DENIS_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une intervention à Saint-Denis ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Saint-Denis est directement desservi par le RER D, le RER B (La Plaine–Stade de France) et le métro ligne 13.",
+      a: "Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Intervenez-vous aussi dans les communes Plaine Commune voisines ?",

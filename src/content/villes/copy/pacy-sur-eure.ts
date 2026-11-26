@@ -64,7 +64,7 @@ export const PACY_SUR_EURE_COPY: VilleCopy = {
       a: "Pour les TPE et professions libérales à Pacy-sur-Eure, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation comptabilité, gestion agenda, classification documents, chatbot cabinet.",
     },
     {
-      q: "Comment se déroule une mission Axion-IA chez nos clients ?",
+      q: "Comment se déroule une mission Axion-IA à Pacy-sur-Eure ?",
       a: "Nous intervenons partout en France, sur place ou à distance. Tarifs transparents.",
     },
   ],

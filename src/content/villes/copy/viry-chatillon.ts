@@ -246,7 +246,7 @@ export const VIRY_CHATILLON_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Viry-Châtillon ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Viry-Châtillon est desservie par le RER D et l'A6, à 10 minutes d'Orly.",
+      a: "Nous intervenons partout en France, sur place ou à distance.",
     },
   ],
 };

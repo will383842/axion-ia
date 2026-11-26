@@ -127,7 +127,7 @@ export const PUTEAUX_COPY: VilleCopy = {
           },
           {
             q: "Vous déplacez-vous dans les tours de La Défense et au centre de Puteaux ?",
-            a: "Oui. Le kick-off et la recette se font sur site, dans vos locaux à Puteaux (92800), y compris dans les tours de La Défense, comme au centre-ville ou près de l'Île de Puteaux. Accès par le RER A et E, la ligne 1, le tramway T2 et les Transilien L et U.",
+            a: "Oui. Le kick-off et la recette se font sur site, dans vos locaux à Puteaux (92800), y compris dans les tours de La Défense, comme au centre-ville ou près de l'Île de Puteaux.",
           },
           {
             q: "Où sont hébergées les données et restons-nous propriétaires du code ?",

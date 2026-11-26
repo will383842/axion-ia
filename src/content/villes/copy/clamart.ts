@@ -132,7 +132,7 @@ export const CLAMART_COPY: VilleCopy = {
           },
           {
             q: "Combien de temps avant de recevoir un devis et de démarrer ?",
-            a: "Le devis est transmis à partir de 24 à 48 h selon la complexité du projet. Le kick-off a ensuite lieu sur site à Clamart — bureaux du parc Noveos, cabinet médical proche d'Antoine-Béclère ou commerce du centre — la ville étant desservie par le tramway T6 et bientôt par la gare Grand Paris Express Ligne 15 à Fort d'Issy-Vanves-Clamart.",
+            a: "Nous intervenons dans vos locaux à Clamart, partout en France. Le devis est transmis à partir de 24 à 48 h selon la complexité du projet.",
           },
         ],
         guarantees:

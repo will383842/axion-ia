@@ -64,7 +64,7 @@ export const L_ISLE_ADAM_COPY: VilleCopy = {
       a: "Pour les PME tertiaires installées à L'Isle-Adam et bords de l'Oise, audit Stratégique, intervention formation équipes, implémentation IA complète (agents, automatisation, classification). ROI chiffré contractuel.",
     },
     {
-      q: "Comment se déroule une mission Axion-IA chez nos clients ?",
+      q: "Comment se déroule une mission Axion-IA à L'Isle-Adam ?",
       a: "Nous intervenons partout en France, sur place dans vos locaux ou à distance en visio. Après le cadrage de votre besoin, nous planifions l'intervention et livrons un résultat actionnable.",
     },
   ],

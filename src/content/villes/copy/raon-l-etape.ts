@@ -65,7 +65,7 @@ export const RAON_L_ETAPE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Raon-l''Étape ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Raon-l'Étape est desservie par sa gare SNCF (ligne Lunéville–Saint-Dié) et la RN59, à 15 min de Saint-Dié et 12 min de Baccarat.",
+      a: "Nous intervenons partout en France, sur place ou à distance.",
     },
   ],
 };

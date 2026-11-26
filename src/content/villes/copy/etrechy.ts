@@ -65,7 +65,7 @@ export const ETRECHY_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Étréchy ?",
-      a: "Paris centre (50 min RER C). Massy TGV (25 min). Étampes (10 min).",
+      a: "Nous intervenons dans vos locaux à Étréchy, partout en France.",
     },
   ],
 };

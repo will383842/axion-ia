@@ -232,7 +232,7 @@ export const VILLENEUVE_SAINT_GEORGES_COPY: VilleCopy = {
     },
     {
       q: "Quels délais pour une intervention à Villeneuve-Saint-Georges ?",
-      a: "Nous intervenons sur site à Villeneuve-Saint-Georges dans les 5 jours ouvrés après validation de la mission. Les deux gares du RER D et la RN6 facilitent la planification.",
+      a: "Nous intervenons sur site à Villeneuve-Saint-Georges dans les 5 jours ouvrés après validation de la mission.",
     },
     {
       q: "Quelles communes autour de Villeneuve-Saint-Georges couvrez-vous ?",

@@ -65,7 +65,7 @@ export const SOISY_SOUS_MONTMORENCY_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Soisy-sous-Montmorency ?",
-      a: "Enghien-les-Bains (5 min). Montmorency (5 min). Paris Gare du Nord (30 min transilien). CDG (30 min).",
+      a: "Nous intervenons dans vos locaux à Soisy-sous-Montmorency, partout en France.",
     },
   ],
 };

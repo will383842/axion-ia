@@ -38,6 +38,13 @@ const TRAJET = [
   /^(?:Notre équipe|Nos équipes) se déplace[^.]*\b(?:via|depuis)\b/u,
   /^Notre équipe se déplace sur site à [^.]*\. L['’]accès depuis/u,
 ];
+/** Phrases de réponse de FAQ (`a:`) : desserte, accès par un moyen de transport, durées d'accès. */
+const TRAJET_FAQ = [
+  /\b(?:[Aa]ccès|accessible|[Dd]esserte|desservi\w*)\b[^.]*\b(?:via|par|depuis|direct\w*|rapide|RER|TGV|TER|gare|tram\w*|métro|A\d{1,3}|autoroute|aéroport)\b/u,
+  /\b(?:RER|TGV|TER|gare|aéroport|tram\w*|métro|autoroute|A\d{1,3}|RN ?\d+)\b[^.]*(?:\bà \d+ ?(?:min|h)|\(\d+ ?(?:min|h)|nous permet|permettent|facilit)/u,
+  /^(?!.*(?:devis|séance|audit|livrable|atelier|sous \d)).*(?:\b(?:à|est à|sont à|en) \d+ ?(?:min\b|minutes|km)|\b(?:à|est à|sont à) \d+ ?h\d*\b|\(\d+ ?(?:min|h\d*)[^)]*\))/u,
+  /(?:rejoindre|venues?|venir)[^.]*depuis [A-ZÉ]/u,
+];
 const DUREE = /\d+ ?(?:min|h)\b|\dh\d{0,2}\b/u;
 const INTERVENTION = /interv(?:en|ient)|venons|déplaçons|sur site|locaux/u;
 
@@ -52,11 +59,13 @@ function nomVille(src) {
 const STRING_LINE = /^(\s*(?:a: |q: )?)"((?:[^"\\]|\\.)*)"(,?)$/u;
 
 function traiterTexte(texte, lieu, avecNeutre) {
+  if (/\b(?:Yes|We |Our |The |Axion-IA's)\b/u.test(texte)) return texte; // texte anglais : EN désactivé, hors périmètre
+  const regles = avecNeutre ? [...TRAJET, ...TRAJET_FAQ] : TRAJET;
   const phrases = texte.split(/(?<=[.!?])\s+(?=[A-ZÉÀÂ«"])/u);
   const gardees = [];
   let apresRetrait = false;
   for (const p of phrases) {
-    if (TRAJET.some((r) => r.test(p))) {
+    if (regles.some((r) => r.test(p))) {
       apresRetrait = true;
       continue;
     }

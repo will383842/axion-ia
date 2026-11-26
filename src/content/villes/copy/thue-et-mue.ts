@@ -65,7 +65,7 @@ export const THUE_ET_MUE_COPY: VilleCopy = {
     },
     {
       q: "Thue et Mue est-elle proche de l'aéroport Caen-Carpiquet ?",
-      a: "Oui, Thue et Mue est à 10 min de l'aéroport Caen-Carpiquet. Caen centre est à 15 min. Tarifs transparents.",
+      a: "Nous intervenons dans vos locaux à Thue, partout en France. Tarifs transparents.",
     },
   ],
 };

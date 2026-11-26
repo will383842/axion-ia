@@ -116,7 +116,7 @@ export const VILLEMOMBLE_COPY: VilleCopy = {
         faq: [
           {
             q: "Pouvez-vous créer un site avec prise de RDV pour un cabinet de la Maison de Santé de Villemomble ?",
-            a: "Oui. Nous concevons des sites de santé avec agent conversationnel de prise de RDV connecté à votre agenda, rappels automatiques et orientation des patients, dans le respect strict du RGPD et du secret médical. La Maison de Santé du 25 avenue du Raincy est desservie par le RER E, ce qui facilite nos ateliers sur place.",
+            a: "Oui. Nous intervenons dans vos locaux à Villemomble, partout en France. Nous concevons des sites de santé avec agent conversationnel de prise de RDV connecté à votre agenda, rappels automatiques et orientation des patients, dans le respect strict du RGPD et du secret médical.",
           },
           {
             q: "Faites-vous des boutiques e-commerce pour les commerçants de l'avenue Outrebon et des marchés ?",

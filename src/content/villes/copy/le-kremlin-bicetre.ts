@@ -232,7 +232,7 @@ export const LE_KREMLIN_BICETRE_COPY: VilleCopy = {
     },
     {
       q: "Vos consultants se déplacent-ils sur site au Kremlin-Bicêtre ?",
-      a: "Oui. La commune jouxte Paris à la porte d'Italie, accessible par les lignes 7 et 14 du métro. Nous nous déplaçons pour les phases d'observation et de mise en route ; le suivi peut ensuite se faire en visio si vous préférez.",
+      a: "Oui. Nous nous déplaçons pour les phases d'observation et de mise en route ; le suivi peut ensuite se faire en visio si vous préférez.",
     },
     {
       q: "Intervenez-vous dans les communes voisines du Kremlin-Bicêtre ?",

@@ -240,7 +240,7 @@ export const EPINAY_SUR_SEINE_COPY: VilleCopy = {
     },
     {
       q: "Quels délais pour une intervention sur site à Épinay-sur-Seine ?",
-      a: "Nos consultants se déplacent sur site sous 5 jours ouvrés après validation. Accès direct depuis Paris par le RER C, le tramway T8 ou T11, ou par l'A86 et l'A15.",
+      a: "Nous intervenons dans vos locaux à Épinay-sur-Seine, partout en France, sous 5 jours ouvrés après validation.",
     },
     {
       q: "Comment Axion-IA assure la conformité RGPD à Épinay-sur-Seine ?",

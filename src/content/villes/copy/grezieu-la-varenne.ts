@@ -64,7 +64,7 @@ export const GREZIEU_LA_VARENNE_COPY: VilleCopy = {
       a: "Pour les TPE artisans BTP et commerçants à Grézieu-la-Varenne, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1.",
     },
     {
-      q: "Comment se déroule une mission Axion-IA chez nos clients ?",
+      q: "Comment se déroule une mission Axion-IA à Grézieu-la-Varenne ?",
       a: "Nous intervenons partout en France, sur place dans vos locaux ou à distance en visio. Après le cadrage de votre besoin, nous planifions l'intervention et livrons un résultat actionnable.",
     },
   ],

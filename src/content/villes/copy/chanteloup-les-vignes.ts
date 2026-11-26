@@ -65,7 +65,7 @@ export const CHANTELOUP_LES_VIGNES_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Chanteloup-les-Vignes ?",
-      a: "Paris-Saint-Lazare (45 min Transilien J), gare de Chanteloup-les-Vignes sur place. Poissy à 10 min. Tarifs publics.",
+      a: "Nous intervenons dans vos locaux à Chanteloup-les-Vignes, partout en France. Tarifs publics.",
     },
   ],
 };

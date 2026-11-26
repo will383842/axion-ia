@@ -64,8 +64,8 @@ export const MAUGES_SUR_LOIRE_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les TPE artisans BTP et commerçants de toutes les communes déléguées de Mauges-sur-Loire (Saint-Florent-le-Vieil, Montjean, La Pommeraye) sur des cas IA concrets et accessibles.",
     },
     {
-      q: "Comment se déroule une mission Axion-IA chez nos clients ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. La gare TER d'Ancenis est à 10 min.",
+      q: "Comment se déroule une mission Axion-IA à Mauges-sur-Loire ?",
+      a: "Nous intervenons partout en France, sur place ou à distance.",
     },
   ],
 };

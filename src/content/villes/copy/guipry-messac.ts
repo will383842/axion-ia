@@ -65,7 +65,7 @@ export const GUIPRY_MESSAC_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission sur un territoire rural comme Guipry-Messac ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Gare TER Messac-Guipry accessible (30 min Rennes). Interventions sur site dans vos locaux, exploitation ou commerce. Visio possible pour le suivi entre sessions.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Interventions sur site dans vos locaux, exploitation ou commerce. Visio possible pour le suivi entre sessions.",
     },
   ],
 };

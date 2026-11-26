@@ -65,7 +65,7 @@ export const VAUX_SUR_SEINE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Vaux-sur-Seine ?",
-      a: "Vaux-sur-Seine est desservie par le Transilien J (gare de Vaux-sur-Seine) et l'A13.",
+      a: "Nous intervenons dans vos locaux à Vaux-sur-Seine, partout en France.",
     },
   ],
 };

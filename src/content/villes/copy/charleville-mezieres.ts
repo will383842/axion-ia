@@ -246,7 +246,7 @@ export const CHARLEVILLE_MEZIERES_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Charleville-Mézières ?",
-      a: "Reims est à 1h par l'A34, avec une gare TGV reliant Paris en 45 min. Nous nous déplaçons sur site à Charleville-Mézières.",
+      a: "Nous nous déplaçons sur site à Charleville-Mézières.",
     },
     {
       q: "Proposez-vous un accompagnement individuel pour les dirigeants ?",

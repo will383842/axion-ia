@@ -64,7 +64,7 @@ export const MARCOUSSIS_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les PME et bureaux d'études du plateau de Courtabœuf (Les Ulis) à 10 min de Marcoussis : automatisation documentaire, agents conversationnels internes, veille sectorielle augmentée, CRM IA. Audit sur place {{price:audit-flash|flat}}.",
     },
     {
-      q: "Comment se déroule une mission Axion-IA chez nos clients ?",
+      q: "Comment se déroule une mission Axion-IA à Marcoussis ?",
       a: "Nous intervenons partout en France, sur place ou à distance. Gare RER B Massy-Palaiseau à 15 min, gare RER C Arpajon à 10 min. Tarifs transparents.",
     },
   ],

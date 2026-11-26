@@ -122,7 +122,7 @@ export const IVRY_SUR_SEINE_COPY: VilleCopy = {
           },
           {
             q: "Travaillez-vous avec les PME qui s'implantent dans la ZAC Ivry Confluences ?",
-            a: "Oui. La ZAC Ivry Confluences (145 ha, 340 000 m² tertiaires et productifs aménagés par Sadev 94, arrivée de la Caisse des Dépôts) attire des PME de services et d'industrie légère. Nous y déployons portails clients, intranets IA et automatisation des process commerciaux, en code sur mesure intégré à vos outils existants.",
+            a: "Oui. Nous intervenons dans vos locaux, partout en France. Nous y déployons portails clients, intranets IA et automatisation des process commerciaux, en code sur mesure intégré à vos outils existants.",
           },
           {
             q: "Vos plateformes santé et silver-économie sont-elles conformes RGPD ?",
@@ -130,7 +130,7 @@ export const IVRY_SUR_SEINE_COPY: VilleCopy = {
           },
           {
             q: "Quels délais pour un devis sur un projet de site ou SaaS à Ivry-sur-Seine ?",
-            a: "Nous transmettons un devis à partir de 24-48 h selon la complexité du projet. Le kick-off se tient sur site à Ivry-sur-Seine (Ivry-Port, ZAC Confluences, Cap de Seine ou centre-ville), facilement accessible par la ligne 7, le RER C et le tramway T9.",
+            a: "Nous intervenons dans vos locaux, partout en France. Nous transmettons un devis à partir de 24-48 h selon la complexité du projet.",
           },
         ],
         guarantees:
@@ -232,10 +232,10 @@ export const IVRY_SUR_SEINE_COPY: VilleCopy = {
     },
     {
       q: "Quels délais pour une intervention à Ivry-sur-Seine ?",
-      a: "Nous intervenons à Ivry-sur-Seine dans les 5 jours ouvrés après validation. La desserte par la ligne 7, le RER C et le tramway T9 facilite l'accès depuis Paris.",
+      a: "Nous intervenons à Ivry-sur-Seine dans les 5 jours ouvrés après validation.",
     },
     {
-      q: "Quelles communes proches couvrez-vous autour de Ivry-sur-Seine ?",
+      q: "Quelles communes proches couvrez-vous autour d'Ivry-sur-Seine ?",
       a: "Nous intervenons dans vos locaux à Ivry-sur-Seine et dans les communes limitrophes : Paris, Charenton-le-Pont, Alfortville, Vitry-sur-Seine, Le Kremlin-Bicêtre et Villejuif.",
     },
     {

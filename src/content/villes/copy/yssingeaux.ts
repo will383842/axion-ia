@@ -65,7 +65,7 @@ export const YSSINGEAUX_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Yssingeaux ?",
-      a: "Saint-Étienne (50 min) ou Lyon (1h30).",
+      a: "Nous intervenons dans vos locaux à Yssingeaux, partout en France.",
     },
   ],
 };

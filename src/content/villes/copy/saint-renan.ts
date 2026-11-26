@@ -49,7 +49,7 @@ export const SAINT_RENAN_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Saint-Renan et dans le Pays d'Iroise ?",
-      a: "Oui, Axion-IA intervient à Saint-Renan et dans tout le Pays d'Iroise (Plouzané, Guilers, Le Conquet, Plougonvelin, Locmaria-Plouzané). Couverture également Brest Métropole (15 min) et accès littoral iroisien.",
+      a: "Oui, Axion-IA intervient à Saint-Renan et dans tout le Pays d'Iroise (Plouzané, Guilers, Le Conquet, Plougonvelin, Locmaria-Plouzané).",
     },
     {
       q: "Travaillez-vous avec les commerçants et enseignes de Saint-Renan ?",

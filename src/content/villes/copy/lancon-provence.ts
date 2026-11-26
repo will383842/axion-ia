@@ -49,7 +49,7 @@ export const LANCON_PROVENCE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Lançon-Provence et dans la Crau ?",
-      a: "Oui, Axion-IA intervient à Lançon-Provence et dans toute la Crau (Salon-de-Provence, Saint-Chamas, Cornillon-Confoux, La Fare-les-Oliviers, Pélissanne). Accès direct A7-A8.",
+      a: "Oui, Axion-IA intervient à Lançon-Provence et dans toute la Crau (Salon-de-Provence, Saint-Chamas, Cornillon-Confoux, La Fare-les-Oliviers, Pélissanne).",
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Lançon-Provence  ?",
@@ -65,7 +65,7 @@ export const LANCON_PROVENCE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déplace Axion-IA à Lançon-Provence ?",
-      a: "Lançon-Provence est à 10 min de Salon et 35 min de Marseille via A7-A8. Nos consultants se déplacent dans vos locaux.",
+      a: "Nos consultants se déplacent dans vos locaux.",
     },
   ],
 };

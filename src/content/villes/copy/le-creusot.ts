@@ -220,7 +220,7 @@ export const LE_CREUSOT_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il au Creusot ?",
-      a: "Oui, Axion-IA intervient au Creusot (71200) et dans toute la Communauté urbaine Le Creusot Montceau-lès-Mines : Montceau-les-Mines, Le Breuil, Torcy, Montcenis, Marmagne, Saint-Sernin-du-Bois. Accès direct via la gare TGV Le Creusot-Montceau-Montchanin (Paris 1h20, Lyon 40 min).",
+      a: "Oui, Axion-IA intervient au Creusot (71200) et dans toute la Communauté urbaine Le Creusot Montceau-lès-Mines : Montceau-les-Mines, Le Breuil, Torcy, Montcenis, Marmagne, Saint-Sernin-du-Bois.",
     },
     {
       q: "Quels sont les tarifs Axion-IA au Creusot ?",
@@ -240,7 +240,7 @@ export const LE_CREUSOT_COPY: VilleCopy = {
     },
     {
       q: "Vous déplacez-vous sur site au Creusot ?",
-      a: "Oui, nous nous déplaçons chez vous, partout en France ; la gare Le Creusot-Montceau-Montchanin (TGV) est à 10 km du centre. Pour les missions récurrentes, planification mensuelle sur site et visio entre deux.",
+      a: "Pour les missions récurrentes, planification mensuelle sur site et visio entre deux.",
     },
   ],
   // EN mirror FR (Will rule 2026-05-22 : NE JAMAIS traduire EN pour villes).

@@ -246,7 +246,7 @@ export const YERRES_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Yerres ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Yerres est desservie par le RER D, à 15 minutes d'Orly.",
+      a: "Nous intervenons partout en France, sur place ou à distance.",
     },
   ],
 };

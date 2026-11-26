@@ -125,7 +125,7 @@ export const CORMEILLES_EN_PARISIS_COPY: VilleCopy = {
           },
           {
             q: "Intervenez-vous dans les communes autour de Cormeilles-en-Parisis ?",
-            a: "Oui, sur l'ensemble de la CA Val Parisis et des communes limitrophes : Sannois, Franconville, Montigny-lès-Cormeilles, Herblay, La Frette-sur-Seine, ainsi que Argenteuil, Sartrouville et Maisons-Laffitte. Le kick-off se fait sur site, accessible via la ligne J depuis Paris Saint-Lazare et l'A15.",
+            a: "Nous intervenons dans vos locaux à Cormeilles-en-Parisis pour les TPE, partout en France. Oui, sur l'ensemble de la CA Val Parisis et des communes limitrophes : Sannois, Franconville, Montigny-lès-Cormeilles, Herblay, La Frette-sur-Seine, ainsi que Argenteuil, Sartrouville et Maisons-Laffitte.",
           },
         ],
         guarantees:

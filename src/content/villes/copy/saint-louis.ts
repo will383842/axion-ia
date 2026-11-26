@@ -231,7 +231,7 @@ export const SAINT_LOUIS_COPY: VilleCopy = {
     },
     {
       q: "Sous quel délai Axion-IA peut intervenir à Saint-Louis ?",
-      a: "Nous nous engageons à intervenir sur site à Saint-Louis dans un délai de 5 jours ouvrés après validation. Accès via EuroAirport Bâle-Mulhouse (2 km), gare TER Saint-Louis ou A35.",
+      a: "Nous nous engageons à intervenir sur site à Saint-Louis dans un délai de 5 jours ouvrés après validation.",
     },
     {
       q: "Quelles communes proches de Saint-Louis couvrez-vous ?",

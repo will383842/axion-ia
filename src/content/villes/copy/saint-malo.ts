@@ -242,7 +242,7 @@ export const SAINT_MALO_COPY: VilleCopy = {
     },
     {
       q: "Quel délai pour une première intervention à Saint-Malo ?",
-      a: "Nous visons un démarrage sous cinq jours ouvrés après validation, selon nos disponibilités. La desserte TGV via Rennes et la N137 nous permettent d'intervenir sur toute la côte d'Émeraude et le pays malouin.",
+      a: "Nous intervenons dans vos locaux, partout en France. Nous visons un démarrage sous cinq jours ouvrés après validation, selon nos disponibilités.",
     },
     {
       q: "Comment garantissez-vous la conformité RGPD à Saint-Malo ?",

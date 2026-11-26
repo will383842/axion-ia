@@ -65,7 +65,7 @@ export const VILLERUPT_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Villerupt ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Villerupt, commune frontalière desservie par l'A30/A31, est à 25 min de Luxembourg et 50 min de Metz.",
+      a: "Nous intervenons partout en France, sur place ou à distance.",
     },
   ],
 };

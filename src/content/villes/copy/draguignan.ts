@@ -231,7 +231,7 @@ export const DRAGUIGNAN_COPY: VilleCopy = {
     },
     {
       q: "Sous quel délai Axion-IA peut intervenir à Draguignan ?",
-      a: "Nous nous engageons à intervenir sur site à Draguignan dans un délai de 5 jours ouvrés après validation de la demande. Pour les TPE et PME de la Dracénie, l'accès se fait via la gare TGV Les Arcs–Draguignan ou A8 sortie Le Muy.",
+      a: "Nous nous engageons à intervenir sur site à Draguignan dans un délai de 5 jours ouvrés après validation de la demande.",
     },
     {
       q: "Quelles communes proches de Draguignan couvrez-vous ?",

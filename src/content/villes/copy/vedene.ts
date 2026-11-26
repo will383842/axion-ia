@@ -65,7 +65,7 @@ export const VEDENE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une intervention à Vedène ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Vedène est à 10 min d'Avignon centre et 15 min de la gare TGV via A7.",
+      a: "Nous intervenons partout en France, sur place ou à distance.",
     },
   ],
 };

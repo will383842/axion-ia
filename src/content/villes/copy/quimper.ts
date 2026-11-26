@@ -132,7 +132,7 @@ export const QUIMPER_COPY: VilleCopy = {
           },
           {
             q: "L'hébergement et les données sont-ils conformes au RGPD, et suis-je dépendant d'Axion-IA ensuite ?",
-            a: "Hébergement en Union européenne par défaut, chiffrement au repos et en transit, journalisation des accès et contrat de sous-traitance art. 28 RGPD signé avant tout traitement de données personnelles, briques IA comprises. Vous récupérez l'intégralité du code et des accès : aucun lock-in — la solution est maintenue en interne ou par tout intégrateur breton après notre mission.",
+            a: "Nous intervenons dans vos locaux, partout en France. Hébergement en Union européenne par défaut, chiffrement au repos et en transit, journalisation des accès et contrat de sous-traitance art. 28 RGPD signé avant tout traitement de données personnelles, briques IA comprises.",
           },
         ],
         guarantees:

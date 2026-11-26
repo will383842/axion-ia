@@ -128,7 +128,7 @@ export const BOURG_EN_BRESSE_COPY: VilleCopy = {
           },
           {
             q: "Intervenez-vous sur place à Bourg-en-Bresse et dans l'Ain ?",
-            a: "Oui. Nous nous déplaçons dans l'agglomération — Parc Cadran, CENORD, Norelan, centre-ville, exploitations de la Bresse — et auprès des acteurs touristiques de Brou ou du pôle salons Ekinox / Ainterexpo. Le lancement se fait à Bourg-en-Bresse, puis les itérations en visio (1h, A40/A42).",
+            a: "Oui. Nous nous déplaçons dans l'agglomération — Parc Cadran, CENORD, Norelan, centre-ville, exploitations de la Bresse — et auprès des acteurs touristiques de Brou ou du pôle salons Ekinox / Ainterexpo.",
           },
           {
             q: "Vos sites respectent-ils le RGPD et où sont hébergées les données ?",

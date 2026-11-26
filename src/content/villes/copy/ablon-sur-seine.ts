@@ -69,7 +69,7 @@ export const ABLON_SUR_SEINE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Ablon-sur-Seine ?",
-      a: "Ablon-sur-Seine est à 25 minutes de Paris-Austerlitz par le RER C, avec sa gare sur place, et à 10 minutes d'Orly. Nos consultants se déplacent sur site ou interviennent en visio.",
+      a: "Nos consultants se déplacent sur site ou interviennent en visio.",
     },
   ],
 };

@@ -49,7 +49,7 @@ export const GUER_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Guer et dans le Morbihan intérieur ?",
-      a: "Oui, Axion-IA intervient à Guer et dans le Morbihan intérieur (Ploërmel, Malestroit, Josselin, Mauron, Beignon). Couverture Vannes (45 min), Rennes (55 min) et axe Ploërmel-Redon.",
+      a: "Oui, Axion-IA intervient à Guer et dans le Morbihan intérieur (Ploërmel, Malestroit, Josselin, Mauron, Beignon).",
     },
     {
       q: "Travaillez-vous avec les prestataires du secteur défense à Guer ?",
@@ -65,7 +65,7 @@ export const GUER_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA sur site à Guer ?",
-      a: "Nos consultants se déplacent dans vos locaux à Guer ou interviennent en visio. Gare de Guer accessible en TER depuis Rennes et Vannes.",
+      a: "Nos consultants se déplacent dans vos locaux à Guer ou interviennent en visio.",
     },
   ],
 };

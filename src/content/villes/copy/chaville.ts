@@ -132,7 +132,7 @@ export const CHAVILLE_COPY: VilleCopy = {
           },
           {
             q: "Pouvez-vous créer une billetterie ou un site pour un commerce ou un lieu culturel chavillois ?",
-            a: "Oui. Pour un commerçant du marché de Chaville, on bâtit une vitrine e-commerce avec click-and-collect, devis automatisés et agent conversationnel multilingue. Pour un lieu comme l'Atrium ou une association, on conçoit réservation et billetterie en ligne, recherche sémantique de la programmation et newsletters automatisées, le tout accessible, rapide (Web Vitals contrôlés) et hébergé en Europe.",
+            a: "Oui. Nous intervenons dans vos locaux à Chaville, partout en France. Pour un commerçant du marché de Chaville, on bâtit une vitrine e-commerce avec click-and-collect, devis automatisés et agent conversationnel multilingue.",
           },
         ],
         guarantees:
@@ -218,7 +218,7 @@ export const CHAVILLE_COPY: VilleCopy = {
           },
           {
             q: "Pouvez-vous créer une billetterie ou un site pour un commerce ou un lieu culturel chavillois ?",
-            a: "Oui. Pour un commerçant du marché de Chaville, on bâtit une vitrine e-commerce avec click-and-collect, devis automatisés et agent conversationnel multilingue. Pour un lieu comme l'Atrium ou une association, on conçoit réservation et billetterie en ligne, recherche sémantique de la programmation et newsletters automatisées, le tout accessible, rapide (Web Vitals contrôlés) et hébergé en Europe.",
+            a: "Oui. Nous intervenons dans vos locaux à Chaville, partout en France. Pour un commerçant du marché de Chaville, on bâtit une vitrine e-commerce avec click-and-collect, devis automatisés et agent conversationnel multilingue.",
           },
         ],
         guarantees:

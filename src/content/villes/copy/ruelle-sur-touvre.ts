@@ -49,7 +49,7 @@ export const RUELLE_SUR_TOUVRE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Ruelle-sur-Touvre ?",
-      a: "Oui, Axion-IA intervient à Ruelle-sur-Touvre et toute l'agglomération GrandAngoulême. La gare TGV d'Angoulême est à 10 min.",
+      a: "Oui, Axion-IA intervient à Ruelle-sur-Touvre et toute l'agglomération GrandAngoulême.",
     },
     {
       q: "Quels services IA pour les PME industrielles à Ruelle-sur-Touvre ?",

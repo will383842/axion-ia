@@ -61,7 +61,7 @@ export const SAINT_ETIENNE_DE_MONTLUC_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une intervention à Saint-Étienne-de-Montluc ?",
-      a: "Nous intervenons partout en France, sur place ou à distance, directement dans vos locaux. Saint-Étienne-de-Montluc est desservie par la gare TER de la ligne Nantes-Saint-Nazaire, à 20 min de la gare de Nantes.",
+      a: "Nous intervenons partout en France, sur place ou à distance, directement dans vos locaux.",
     },
     {
       q: "Travaillez-vous avec les professions libérales ?",

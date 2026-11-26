@@ -65,7 +65,7 @@ export const TONNEINS_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Tonneins ?",
-      a: "Nos consultants interviennent sur site à Tonneins et dans le Val de Garonne. Déplacement direct sur votre site industriel, atelier ou bureau. Gare SNCF Tonneins desservie par TER Bordeaux-Agen.",
+      a: "Nos consultants interviennent sur site à Tonneins et dans le Val de Garonne. Déplacement direct sur votre site industriel, atelier ou bureau.",
     },
   ],
 };

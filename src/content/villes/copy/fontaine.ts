@@ -130,7 +130,7 @@ export const FONTAINE_COPY: VilleCopy = {
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
-            a: "Oui. Après le cadrage sur site à Fontaine — accessible en quelques minutes par la ligne A du tram ou l'A480 — on remet un devis ferme en forfait fixe. Le délai dépend de la complexité, à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, pas de surprise en cours de route.",
+            a: "Oui. Nous intervenons dans vos locaux, partout en France. Pas de régie, pas de dérive horaire cachée, pas de surprise en cours de route.",
           },
         ],
         guarantees:
@@ -216,7 +216,7 @@ export const FONTAINE_COPY: VilleCopy = {
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
-            a: "Oui. Après le cadrage sur site à Fontaine — accessible en quelques minutes par la ligne A du tram ou l'A480 — on remet un devis ferme en forfait fixe. Le délai dépend de la complexité, à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, pas de surprise en cours de route.",
+            a: "Oui. Nous intervenons dans vos locaux, partout en France. Pas de régie, pas de dérive horaire cachée, pas de surprise en cours de route.",
           },
         ],
         guarantees:
@@ -232,7 +232,7 @@ export const FONTAINE_COPY: VilleCopy = {
     },
     {
       q: "Quels délais pour intervenir à Fontaine ?",
-      a: "Nous intervenons généralement sous 5 à 10 jours ouvrés à Fontaine. La ligne A du tramway et l'A480 assurent un accès rapide aux zones Vouillants, Les Plans et L'Argentière.",
+      a: "Nous intervenons généralement sous 5 à 10 jours ouvrés à Fontaine.",
     },
     {
       q: "Intervenez-vous dans les communes proches de Fontaine ?",

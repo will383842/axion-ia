@@ -65,7 +65,7 @@ export const VILLECRESNES_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Villecresnes ?",
-      a: "Paris-Gare de Lyon (30 min RER A via Boissy-Saint-Léger). Aéroport Orly à 20 min.",
+      a: "Nous intervenons dans vos locaux à Villecresnes, partout en France.",
     },
   ],
 };

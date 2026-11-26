@@ -49,7 +49,7 @@ export const POURRIERES_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Pourrières et dans la vallée de l'Arc ?",
-      a: "Oui, Axion-IA intervient à Pourrières et dans toute la vallée de l'Arc (Trets, Saint-Maximin, Puyloubier, Rousset, Châteauneuf-le-Rouge). Accès direct via A8.",
+      a: "Oui, Axion-IA intervient à Pourrières et dans toute la vallée de l'Arc (Trets, Saint-Maximin, Puyloubier, Rousset, Châteauneuf-le-Rouge).",
     },
     {
       q: "Tarifs audit IA à Pourrières  : quel budget prévoir ?",
@@ -65,7 +65,7 @@ export const POURRIERES_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une intervention à Pourrières ?",
-      a: "Nous intervenons partout en France, sur place ou à distance, dans vos locaux ou domaines. Pourrières est à 25 min d'Aix-en-Provence et 15 min de Saint-Maximin via A8.",
+      a: "Nous intervenons partout en France, sur place ou à distance, dans vos locaux ou domaines.",
     },
   ],
 };

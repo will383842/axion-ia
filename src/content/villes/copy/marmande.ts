@@ -65,7 +65,7 @@ export const MARMANDE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Marmande ?",
-      a: "Nos consultants interviennent sur site à Marmande et dans le Marmandais. Déplacement direct sur votre exploitation, usine ou bureau. Gare SNCF Marmande desservie par TER Bordeaux-Agen.",
+      a: "Nos consultants interviennent sur site à Marmande et dans le Marmandais. Déplacement direct sur votre exploitation, usine ou bureau.",
     },
   ],
 };

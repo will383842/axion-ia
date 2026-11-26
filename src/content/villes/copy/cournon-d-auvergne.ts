@@ -65,7 +65,7 @@ export const COURNON_D_AUVERGNE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Cournon-d'Auvergne ?",
-      a: "Lyon (1h45).",
+      a: "Nous intervenons dans vos locaux à Cournon-d'Auvergne, partout en France.",
     },
   ],
 };

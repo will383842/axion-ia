@@ -65,7 +65,7 @@ export const RIOM_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Riom ?",
-      a: "Clermont (15 min). Aéroport Clermont à 10 min.",
+      a: "Nous intervenons dans vos locaux à Riom, partout en France.",
     },
   ],
 };

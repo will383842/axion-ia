@@ -125,7 +125,7 @@ export const LIMEIL_BREVANNES_COPY: VilleCopy = {
           },
           {
             q: "Comment se passent vos déplacements à Limeil-Brévannes ?",
-            a: "Nos consultants se déplacent sur site pour les ateliers de cadrage et la recette. Le bassin est désormais desservi par le Câble C1, premier téléphérique urbain d'Île-de-France (ouvert le 13 décembre 2025) reliant Pointe du Lac (métro 8) à Villeneuve-Saint-Georges via Limeil-Brévannes, en complément des RN19 et A86. Nous couvrons aussi Créteil, Valenton, Bonneuil-sur-Marne, Boissy-Saint-Léger et Villecresnes.",
+            a: "Nos consultants se déplacent sur site pour les ateliers de cadrage et la recette. Nous couvrons aussi Créteil, Valenton, Bonneuil-sur-Marne, Boissy-Saint-Léger et Villecresnes.",
           },
           {
             q: "Sous quel délai obtient-on un devis ?",
@@ -231,7 +231,7 @@ export const LIMEIL_BREVANNES_COPY: VilleCopy = {
     },
     {
       q: "Quel est le délai pour une intervention à Limeil-Brévannes ?",
-      a: "Déplacement sur site dans les 5 jours ouvrés suivant la confirmation. Accès rapide par RER A (Boissy-Saint-Léger) ou RER D (Créteil-Pompadour) depuis Paris.",
+      a: "Déplacement sur site dans les 5 jours ouvrés suivant la confirmation.",
     },
     {
       q: "Quelles communes proches couvrez-vous autour de Limeil-Brévannes ?",

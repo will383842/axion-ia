@@ -65,7 +65,7 @@ export const AUBIGNAN_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Aubignan ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Déplacement sur site dans vos locaux professionnels, domaine viticole, exploitation agricole ou commerce. Comtat Venaissin bien desservi via A7 et D942.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Déplacement sur site dans vos locaux professionnels, domaine viticole, exploitation agricole ou commerce.",
     },
   ],
 };

@@ -242,7 +242,7 @@ export const CANNES_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Cannes ?",
-      a: "Nice (30 min A8) ou Sophia Antipolis (15 min). Possibilité de combiner Cannes + Antibes + Mougins en une journée.",
+      a: "Nous intervenons dans vos locaux à Cannes, partout en France. Possibilité de combiner Cannes + Antibes + Mougins en une journée.",
     },
   ],
 };

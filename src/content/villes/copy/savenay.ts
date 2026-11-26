@@ -53,7 +53,7 @@ export const SAVENAY_COPY: VilleCopy = {
     },
     {
       q: "La gare TGV de Savenay facilite-t-elle les missions ?",
-      a: "Oui, la gare TGV de Savenay facilite l'accès à la commune pour les rendez-vous sur site. Nous intervenons partout en France, sur place ou à distance.",
+      a: "Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les exploitations agricoles du bocage ?",
@@ -65,7 +65,7 @@ export const SAVENAY_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les PME tertiaires et services ?",
-      a: "Oui, nous accompagnons les PME tertiaires installées à Savenay et nord estuaire sur leurs cas IA : automatisation processus, classification documents, agents conversationnels, reporting automatisé. Gare TGV = accès rapide consultants.",
+      a: "Nous intervenons dans vos locaux à Savenay, partout en France. Oui, nous accompagnons les PME tertiaires installées à Savenay et nord estuaire sur leurs cas IA : automatisation processus, classification documents, agents conversationnels, reporting automatisé.",
     },
   ],
 };

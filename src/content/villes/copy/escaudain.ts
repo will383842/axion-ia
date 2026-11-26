@@ -65,7 +65,7 @@ export const ESCAUDAIN_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Escaudain ?",
-      a: "Paris-Nord (1h45 via TGV Valenciennes puis 15 min route). Lille à 45 min.",
+      a: "Nous intervenons dans vos locaux à Escaudain, partout en France.",
     },
   ],
 };

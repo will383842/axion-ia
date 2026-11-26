@@ -242,7 +242,7 @@ export const SAINT_GENIS_LAVAL_COPY: VilleCopy = {
     },
     {
       q: "Quel délai pour une première intervention à Saint-Genis-Laval ?",
-      a: "Nous visons un démarrage sous cinq jours ouvrés après validation, selon nos disponibilités. La desserte par le tramway T2 et le métro B nous permet d'être réactifs sur tout le sud de la métropole lyonnaise.",
+      a: "Nous intervenons dans vos locaux, partout en France. Nous visons un démarrage sous cinq jours ouvrés après validation, selon nos disponibilités.",
     },
     {
       q: "Comment garantissez-vous la conformité RGPD à Saint-Genis-Laval ?",

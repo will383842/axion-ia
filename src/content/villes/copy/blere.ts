@@ -65,7 +65,7 @@ export const BLERE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Bléré ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Accès direct A85 ou D976 vallée du Cher.",
+      a: "Nous intervenons partout en France, sur place ou à distance.",
     },
   ],
 };

@@ -246,7 +246,7 @@ export const VERSAILLES_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Versailles ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Versailles est desservie par le RER C, à 10 minutes de Saint-Quentin-en-Yvelines et 30 minutes d'Orly.",
+      a: "Nous intervenons partout en France, sur place ou à distance.",
     },
   ],
 };

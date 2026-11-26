@@ -231,7 +231,7 @@ export const LE_BOUSCAT_COPY: VilleCopy = {
     },
     {
       q: "Williams se déplace-t-il vraiment au Bouscat ?",
-      a: "Oui. Le Bouscat est accessible par le tramway TBM, la gare du Bouscat-Sainte-Germaine et la rocade A630 (sortie 7). Les interventions se déroulent dans vos locaux, au Bouscat ou dans les communes limitrophes (Bordeaux, Bruges, Eysines).",
+      a: "Oui. Les interventions se déroulent dans vos locaux, au Bouscat ou dans les communes limitrophes (Bordeaux, Bruges, Eysines).",
     },
     {
       q: "Quels délais pour une implémentation IA au Bouscat ?",

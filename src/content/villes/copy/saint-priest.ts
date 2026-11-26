@@ -132,7 +132,7 @@ export const SAINT_PRIEST_COPY: VilleCopy = {
           },
           {
             q: "Quel délai pour un devis à Saint-Priest ?",
-            a: "Un devis est remis à partir de 24 à 48 h selon la complexité du projet. La desserte par le tram T2, la rocade est et l'A43 nous permet de venir cadrer le projet sur site, de la ZI Mi-Plaine au Parc Technologique de Lyon, sans friction d'agenda.",
+            a: "Nous intervenons dans vos locaux, partout en France. Un devis est remis à partir de 24 à 48 h selon la complexité du projet.",
           },
         ],
         guarantees:
@@ -242,7 +242,7 @@ export const SAINT_PRIEST_COPY: VilleCopy = {
     },
     {
       q: "Quel délai pour une première intervention à Saint-Priest ?",
-      a: "Nous visons un démarrage sous cinq jours ouvrés après validation, selon nos disponibilités. La desserte par le tramway T2 et la rocade est nous permettent d'être réactifs sur tout l'est de la métropole lyonnaise.",
+      a: "Nous intervenons dans vos locaux, partout en France. Nous visons un démarrage sous cinq jours ouvrés après validation, selon nos disponibilités.",
     },
     {
       q: "Comment garantissez-vous la conformité RGPD à Saint-Priest ?",

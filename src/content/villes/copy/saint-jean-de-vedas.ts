@@ -65,7 +65,7 @@ export const SAINT_JEAN_DE_VEDAS_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Saint-Jean-de-Védas ?",
-      a: "Nos consultants interviennent sur site à Saint-Jean-de-Védas et dans l'agglo Montpellier, directement dans votre entreprise. Nous intervenons partout en France, sur place ou à distance. Saint-Jean-de-Védas est desservie par le tramway T2.",
+      a: "Nos consultants interviennent sur site à Saint-Jean-de-Védas et dans l'agglo Montpellier, directement dans votre entreprise. Nous intervenons partout en France, sur place ou à distance.",
     },
   ],
 };

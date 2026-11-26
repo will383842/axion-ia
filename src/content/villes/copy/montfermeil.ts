@@ -130,7 +130,7 @@ export const MONTFERMEIL_COPY: VilleCopy = {
           },
           {
             q: "Quel est le délai pour obtenir un devis à Montfermeil ?",
-            a: "Un devis sous 24 à 48 h selon la complexité, après un premier échange de cadrage. Le kick-off se fait sur place à Montfermeil — accès T4 (trois stations) et, à terme, gare Clichy-Montfermeil de la ligne 16 du Grand Paris Express.",
+            a: "Nous intervenons dans vos locaux à Montfermeil, partout en France. Un devis sous 24 à 48 h selon la complexité, après un premier échange de cadrage.",
           },
         ],
         guarantees:

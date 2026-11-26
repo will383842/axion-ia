@@ -47,7 +47,7 @@ export const SAINT_EGREVE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Saint-Égrève et nord-ouest grenoblois ?",
-      a: "Oui, Axion-IA intervient à Saint-Égrève et tout le nord-ouest grenoblois (Fontaine, Sassenage, Le Fontanil-Cornillon, Voreppe). Couverture de la métropole grenobloise (« La Métro ») et accès via tramway E ou A48 vers Lyon.",
+      a: "Oui, Axion-IA intervient à Saint-Égrève et tout le nord-ouest grenoblois (Fontaine, Sassenage, Le Fontanil-Cornillon, Voreppe).",
     },
     {
       q: "Travaillez-vous avec le Centre hospitalier Alpes-Isère (CHAI) ?",

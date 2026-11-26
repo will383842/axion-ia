@@ -238,7 +238,7 @@ export const BONDY_COPY: VilleCopy = {
     },
     {
       q: "Intervenez-vous sur site à Bondy ?",
-      a: "Oui. Bondy est à une quinzaine de minutes de Paris par le RER E et desservie par le tram T4 et l'A3. Un expert senior se déplace dans vos locaux pour les ateliers de cadrage et les étapes clés, le reste du projet pouvant être mené à distance.",
+      a: "Oui. Un expert senior se déplace dans vos locaux pour les ateliers de cadrage et les étapes clés, le reste du projet pouvant être mené à distance.",
     },
     {
       q: "Par où commencer un projet IA à Bondy ?",

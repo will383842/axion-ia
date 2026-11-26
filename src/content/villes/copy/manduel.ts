@@ -61,7 +61,7 @@ export const MANDUEL_COPY: VilleCopy = {
     },
     {
       q: "L'accessibilité TGV facilite-t-elle vos interventions ?",
-      a: "Oui, la gare TGV Nîmes Pont du Gard à Manduel (Paris 2h50) facilite nos interventions. Nos consultants peuvent venir de toute la France en demi-journée pour des missions sur site.",
+      a: "Nos consultants peuvent venir de toute la France en demi-journée pour des missions sur site.",
     },
     {
       q: "Quels délais pour démarrer une mission IA à Manduel ?",

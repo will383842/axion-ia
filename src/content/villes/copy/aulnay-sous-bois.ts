@@ -232,7 +232,7 @@ export const AULNAY_SOUS_BOIS_COPY: VilleCopy = {
     },
     {
       q: "Quels délais pour une intervention à Aulnay-sous-Bois (93600) ?",
-      a: "Nous intervenons sous 5 à 10 jours ouvrés à Aulnay-sous-Bois. Le RER B (14 km de Paris) et l'A1/A3 facilitent un déplacement rapide sur Garonor ou Parinor.",
+      a: "Nous intervenons sous 5 à 10 jours ouvrés à Aulnay-sous-Bois.",
     },
     {
       q: "Intervenez-vous dans les communes proches d'Aulnay-sous-Bois ?",

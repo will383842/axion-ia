@@ -65,7 +65,7 @@ export const LEVES_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Lèves ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Lèves est à 5 minutes de Chartres.",
+      a: "Nous intervenons partout en France, sur place ou à distance.",
     },
   ],
 };

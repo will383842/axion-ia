@@ -65,7 +65,7 @@ export const VILLEPREUX_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Villepreux ?",
-      a: "Paris-Montparnasse (35 min Transilien N), gare Villepreux-Les Clayes sur place. Versailles et Saint-Quentin-en-Yvelines à 10 min. Tarifs publics.",
+      a: "Nous intervenons dans vos locaux à Villepreux, partout en France. Tarifs publics.",
     },
   ],
 };

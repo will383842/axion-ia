@@ -49,7 +49,7 @@ export const PONT_L_ABBE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Pont-l'Abbé et dans le Pays Bigouden ?",
-      a: "Oui, Axion-IA intervient à Pont-l'Abbé et dans tout le Pays Bigouden (Loctudy, Plobannalec-Lesconil, Penmarc'h, Guilvinec, Bénodet). Couverture également Quimper (20 min) et accès littoral sud-finistérien.",
+      a: "Oui, Axion-IA intervient à Pont-l'Abbé et dans tout le Pays Bigouden (Loctudy, Plobannalec-Lesconil, Penmarc'h, Guilvinec, Bénodet).",
     },
     {
       q: "Travaillez-vous avec les acteurs du tourisme et de l'artisanat bigouden ?",

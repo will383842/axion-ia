@@ -119,7 +119,7 @@ export const FRANCONVILLE_COPY: VilleCopy = {
           },
           {
             q: "Vous déplacez-vous dans les zones d'activité de Franconville ?",
-            a: "Oui, nos développeurs interviennent sur tout Franconville et Val Parisis : ZAE de l'Ermitage, ZAE des Montfrais, ZAE de la Porte du Parisis, pôles de proximité du centre-ville, de la gare, de Cadet de Vaux et de l'Épine-Guyon. La première rencontre se fait toujours sur site, accès A15 et RD14 facilités.",
+            a: "Nous intervenons dans vos locaux, partout en France. Oui, nos développeurs interviennent sur tout Franconville et Val Parisis : ZAE de l'Ermitage, ZAE des Montfrais, ZAE de la Porte du Parisis, pôles de proximité du centre-ville, de la gare, de Cadet de Vaux et de l'Épine-Guyon.",
           },
           {
             q: "L'IA peut-elle aider un artisan de la ZAE de l'Ermitage à gagner des chantiers ?",

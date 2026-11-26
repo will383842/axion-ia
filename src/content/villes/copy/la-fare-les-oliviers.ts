@@ -49,7 +49,7 @@ export const LA_FARE_LES_OLIVIERS_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à La Fare-les-Oliviers et autour de l'étang de Berre ?",
-      a: "Oui, Axion-IA intervient à La Fare-les-Oliviers et dans tout le pourtour nord de l'étang de Berre (Velaux, Coudoux, Ventabren, Pélissanne, Lançon-Provence, Berre-l'Étang). Accès A7-A8 immédiat.",
+      a: "Oui, Axion-IA intervient à La Fare-les-Oliviers et dans tout le pourtour nord de l'étang de Berre (Velaux, Coudoux, Ventabren, Pélissanne, Lançon-Provence, Berre-l'Étang).",
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à La Fare-les-Oliviers  ?",
@@ -65,7 +65,7 @@ export const LA_FARE_LES_OLIVIERS_COPY: VilleCopy = {
     },
     {
       q: "Comment se déplace Axion-IA à La Fare-les-Oliviers ?",
-      a: "La Fare-les-Oliviers est à 15 min de Salon et 20 min d'Aix via D113/A7. Nos consultants se déplacent dans vos locaux.",
+      a: "Nos consultants se déplacent dans vos locaux.",
     },
   ],
 };

@@ -233,7 +233,7 @@ export const SAINT_CLOUD_COPY: VilleCopy = {
     },
     {
       q: "Quels délais pour une intervention IA à Saint-Cloud ?",
-      a: "Nous intervenons à Saint-Cloud sous 5 jours ouvrés après validation. Accès via gare SNCF Saint-Cloud, Val d'Or ou tramway T2 (4 stations dans la commune).",
+      a: "Nous intervenons à Saint-Cloud sous 5 jours ouvrés après validation.",
     },
     {
       q: "Axion-IA couvre-t-il Suresnes, Boulogne-Billancourt, Garches ou Sèvres ?",

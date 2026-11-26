@@ -49,7 +49,7 @@ export const LA_TRINITE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à La Trinité et vallée du Paillon ?",
-      a: "Oui, Axion-IA intervient à La Trinité et dans toute la vallée du Paillon (Drap, Contes, L'Escarène, Peillon). Couverture Métropole Nice Côte d'Azur complète et accès rapide depuis Nice centre (10 min).",
+      a: "Oui, Axion-IA intervient à La Trinité et dans toute la vallée du Paillon (Drap, Contes, L'Escarène, Peillon).",
     },
     {
       q: "Travaillez-vous avec les TPE et artisans BTP de La Trinité ?",
@@ -64,7 +64,7 @@ export const LA_TRINITE_COPY: VilleCopy = {
       a: "Pour les professions libérales de La Trinité (avocats, médecins, comptables, architectes), nous proposons : automatisation secrétariat, transcription consultations, classification dossiers, agents IA prise de RDV. Coaching 1-to-1 personnalisé.",
     },
     {
-      q: "Comment se déroule une mission Axion-IA chez nos clients ?",
+      q: "Comment se déroule une mission Axion-IA à La Trinité ?",
       a: "Nous intervenons partout en France, sur place ou à distance. Formats flexibles : demi-journée audit, journée intervention, mission implémentation multi-semaines.",
     },
   ],

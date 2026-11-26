@@ -65,7 +65,7 @@ export const FURIANI_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Furiani ?",
-      a: "Aéroport Bastia-Poretta (15 min), port de Bastia (10 min). Vols et ferries quotidiens depuis le continent.",
+      a: "Nous intervenons dans vos locaux à Furiani, partout en France. Vols et ferries quotidiens depuis le continent.",
     },
   ],
 };

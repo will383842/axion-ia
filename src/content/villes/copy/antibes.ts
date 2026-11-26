@@ -238,7 +238,7 @@ export const ANTIBES_COPY: VilleCopy = {
     },
     {
       q: "Faut-il aller jusqu'à Sophia Antipolis pour vous rencontrer ?",
-      a: "Non. Nous venons à votre adresse à Antibes — port, vieille ville, Juan-les-Pins ou Cap d'Antibes. Sophia Antipolis est à 7 km mais notre logique est inverse : nous apportons l'expertise IA chez les TPE et PME locales, là où elles travaillent, sans les obliger à se déplacer.",
+      a: "Non. Nous venons à votre adresse à Antibes — port, vieille ville, Juan-les-Pins ou Cap d'Antibes.",
     },
     {
       q: "Combien coûte un accompagnement IA pour une TPE d'Antibes ?",

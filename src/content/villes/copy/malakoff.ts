@@ -233,7 +233,7 @@ export const MALAKOFF_COPY: VilleCopy = {
     },
     {
       q: "Comment Axion-IA se déplace-t-il à Malakoff ?",
-      a: "Williams et l'équipe Axion-IA se déplacent sur site à Malakoff sous 5 jours ouvrés en moyenne après validation du devis. La ligne 13 et la gare Transilien Vanves-Malakoff facilitent l'accès depuis le reste de l'Île-de-France.",
+      a: "Williams et l'équipe Axion-IA se déplacent sur site à Malakoff sous 5 jours ouvrés en moyenne après validation du devis.",
     },
     {
       q: "Quels délais pour un audit IA à Malakoff ?",

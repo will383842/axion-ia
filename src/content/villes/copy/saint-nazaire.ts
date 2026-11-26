@@ -242,7 +242,7 @@ export const SAINT_NAZAIRE_COPY: VilleCopy = {
     },
     {
       q: "Quel délai pour démarrer une mission à Saint-Nazaire ?",
-      a: "Nous visons un démarrage sous cinq jours ouvrés après validation, selon nos disponibilités. La desserte TGV et l'axe Nantes nous permettent d'intervenir rapidement sur toute la presqu'île et l'agglomération.",
+      a: "Nous intervenons dans vos locaux, partout en France. Nous visons un démarrage sous cinq jours ouvrés après validation, selon nos disponibilités.",
     },
     {
       q: "Comment assurez-vous la conformité RGPD à Saint-Nazaire ?",

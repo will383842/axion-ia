@@ -64,7 +64,7 @@ export const MELLE_COPY: VilleCopy = {
       a: "Pour les acteurs du tourisme patrimonial à Melle (mines d'argent, églises romanes UNESCO), nous proposons : agents conversationnels visiteurs multilingues, automatisation réservations, classification archives patrimoniales, et plateformes web IA sur mesure.",
     },
     {
-      q: "Comment se déroule une mission Axion-IA chez nos clients ?",
+      q: "Comment se déroule une mission Axion-IA à Melle ?",
       a: "Nous intervenons partout en France, sur place dans vos locaux ou à distance en visio. Après le cadrage de votre besoin, nous planifions l'intervention et livrons un résultat actionnable.",
     },
   ],

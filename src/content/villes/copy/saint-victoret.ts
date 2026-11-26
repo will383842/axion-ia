@@ -65,7 +65,7 @@ export const SAINT_VICTORET_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une intervention à Saint-Victoret ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Saint-Victoret est à 5 min de l'aéroport et 25 min de Marseille par A55.",
+      a: "Nous intervenons partout en France, sur place ou à distance.",
     },
   ],
 };

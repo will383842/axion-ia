@@ -49,7 +49,7 @@ export const ALTKIRCH_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Altkirch et dans le Sundgau ?",
-      a: "Oui, Axion-IA intervient à Altkirch et dans tout le Sundgau (Dannemarie, Ferrette, Hirsingue, Waldighoffen). Accès direct via A36 depuis Mulhouse en 25 min. Proximité Bâle et EuroAirport facilitant nos déplacements consultants.",
+      a: "Oui, Axion-IA intervient à Altkirch et dans tout le Sundgau (Dannemarie, Ferrette, Hirsingue, Waldighoffen). Proximité Bâle et EuroAirport facilitant nos déplacements consultants.",
     },
     {
       q: "Quel est le tarif d'un audit IA à Altkirch  ?",

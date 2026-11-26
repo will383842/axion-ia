@@ -65,7 +65,7 @@ export const CHATEAUDUN_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Châteaudun ?",
-      a: "Chartres (45 min) ou Orléans (50 min).",
+      a: "Nous intervenons dans vos locaux à Châteaudun, partout en France.",
     },
   ],
 };

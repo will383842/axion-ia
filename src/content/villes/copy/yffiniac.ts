@@ -65,7 +65,7 @@ export const YFFINIAC_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Yffiniac ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Accès direct par la N12. Gare TGV de Saint-Brieuc sur la ligne Paris-Brest.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Gare TGV de Saint-Brieuc sur la ligne Paris-Brest.",
     },
   ],
 };

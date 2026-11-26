@@ -230,7 +230,7 @@ export const THIONVILLE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Thionville et dans le nord mosellan ?",
-      a: "Oui, Axion-IA accompagne les TPE et PME de Thionville et du bassin frontalier (Yutz, Hayange, vallée de la Fensch, Cattenom). Metz et Luxembourg sont à 20 min par le rail.",
+      a: "Nous intervenons dans vos locaux à Thionville, partout en France. Oui, Axion-IA accompagne les TPE et PME de Thionville et du bassin frontalier (Yutz, Hayange, vallée de la Fensch, Cattenom).",
     },
     {
       q: "Accompagnez-vous les entreprises tournées vers le Luxembourg ?",
@@ -246,7 +246,7 @@ export const THIONVILLE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Thionville ?",
-      a: "Nous intervenons partout en France, sur place ou à distance, dans tout le nord mosellan. Thionville est à 20 min de Metz et de Luxembourg par le rail.",
+      a: "Nous intervenons partout en France, sur place ou à distance, dans tout le nord mosellan.",
     },
   ],
 };

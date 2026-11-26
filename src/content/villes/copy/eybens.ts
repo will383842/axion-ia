@@ -47,7 +47,7 @@ export const EYBENS_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Eybens et sud-est grenoblois ?",
-      a: "Oui, Axion-IA intervient à Eybens et tout le sud-est grenoblois (Échirolles, Pont-de-Claix, Poisat, Bresson, Brié-et-Angonnes). Couverture de la métropole grenobloise et accès rapide via tramway A ou A480.",
+      a: "Oui, Axion-IA intervient à Eybens et tout le sud-est grenoblois (Échirolles, Pont-de-Claix, Poisat, Bresson, Brié-et-Angonnes).",
     },
     {
       q: "Accompagnez-vous les professions libérales eybinois ?",

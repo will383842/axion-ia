@@ -246,7 +246,7 @@ export const COLMAR_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Colmar ?",
-      a: "Colmar est accessible en TGV (gare en centre-ville) et nos consultants couvrent tout le centre-Alsace.",
+      a: "Nous intervenons dans vos locaux à Colmar, partout en France.",
     },
   ],
 };

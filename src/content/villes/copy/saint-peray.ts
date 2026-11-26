@@ -65,7 +65,7 @@ export const SAINT_PERAY_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Saint-Péray ?",
-      a: "Lyon (1h) ou Valence (10 min).",
+      a: "Nous intervenons dans vos locaux à Saint-Péray, partout en France.",
     },
   ],
 };

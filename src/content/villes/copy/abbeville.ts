@@ -246,7 +246,7 @@ export const ABBEVILLE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Abbeville ?",
-      a: "Abbeville est à 1 h 30 de Paris en train, 50 minutes d'Amiens et sur l'A16. Nos consultants se déplacent sur site ou interviennent en visio.",
+      a: "Nos consultants se déplacent sur site ou interviennent en visio.",
     },
   ],
 };

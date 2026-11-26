@@ -57,7 +57,7 @@ export const PONT_DE_CHERUY_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les opérateurs logistiques aéroportuaires ?",
-      a: "Oui, nous accompagnons les opérateurs logistiques aire Lyon-Saint-Exupéry (20 min) sur leurs cas IA : optimisation tournées, automatisation préparation commandes, prédiction demande, agents IA service client B2B multilingue.",
+      a: "Nous intervenons dans vos locaux à Pont-de-Chéruy, partout en France.",
     },
     {
       q: "Quels services pour les TPE et artisans chérulane ?",

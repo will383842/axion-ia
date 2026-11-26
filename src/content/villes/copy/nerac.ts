@@ -65,7 +65,7 @@ export const NERAC_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Nérac ?",
-      a: "Nos consultants interviennent sur site à Nérac et dans le Néracais. Déplacement direct sur votre domaine, hôtel ou bureau. Accès via Agen (30 min D656), aéroport Agen-La Garenne à 35 min.",
+      a: "Nos consultants interviennent sur site à Nérac et dans le Néracais. Déplacement direct sur votre domaine, hôtel ou bureau.",
     },
   ],
 };

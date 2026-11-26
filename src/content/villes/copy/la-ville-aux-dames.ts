@@ -60,7 +60,7 @@ export const LA_VILLE_AUX_DAMES_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les professions libérales (cabinets médicaux, juridiques, comptables) sur leurs cas IA : automatisation prise de RDV, classification dossiers, agents conversationnels patients/clients, rédaction assistée. Audit sur place {{price:audit-flash|flat}}.",
     },
     {
-      q: "Comment se déroule une mission Axion-IA chez nos clients ?",
+      q: "Comment se déroule une mission Axion-IA à La Ville-aux-Dames ?",
       a: "Nous intervenons partout en France, sur place dans vos locaux ou à distance en visio. Après le cadrage de votre besoin, nous planifions l'intervention et livrons un résultat actionnable.",
     },
     {

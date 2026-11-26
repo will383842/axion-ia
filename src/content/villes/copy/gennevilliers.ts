@@ -129,7 +129,7 @@ export const GENNEVILLIERS_COPY: VilleCopy = {
           },
           {
             q: "Intervenez-vous sur place et dans les communes voisines ?",
-            a: "Oui, nous nous déplaçons à Gennevilliers pour les ateliers UX et les recettes — la commune est très accessible (RER C, métro 13, tramway T1, A15/A86, Paris à 2,1 km). Nous couvrons aussi Asnières-sur-Seine, Colombes, Villeneuve-la-Garenne, Saint-Ouen, Épinay-sur-Seine, L'Île-Saint-Denis et Argenteuil.",
+            a: "Nous intervenons dans vos locaux, partout en France. Nous couvrons aussi Asnières-sur-Seine, Colombes, Villeneuve-la-Garenne, Saint-Ouen, Épinay-sur-Seine, L'Île-Saint-Denis et Argenteuil.",
           },
         ],
         guarantees:
@@ -231,7 +231,7 @@ export const GENNEVILLIERS_COPY: VilleCopy = {
     },
     {
       q: "Sous quel délai Axion-IA peut-il intervenir à Gennevilliers ?",
-      a: "Notre équipe se déplace à Gennevilliers sous 5 jours ouvrés. Les accès RER C, métro 13 et autoroutes A15/A86 rendent la commune particulièrement rapide à rejoindre depuis Paris ou la province.",
+      a: "Nous intervenons dans vos locaux, partout en France. Notre équipe se déplace à Gennevilliers sous 5 jours ouvrés.",
     },
     {
       q: "Intervenez-vous à Asnières-sur-Seine, Colombes ou Villeneuve-la-Garenne ?",

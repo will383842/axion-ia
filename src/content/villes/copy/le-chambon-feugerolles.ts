@@ -64,7 +64,7 @@ export const LE_CHAMBON_FEUGEROLLES_COPY: VilleCopy = {
       a: "Pour les indépendants et professions libérales au Chambon-Feugerolles, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : agents IA prise de RDV, classification documents, CRM augmentés.",
     },
     {
-      q: "Comment se déroule une mission Axion-IA chez nos clients ?",
+      q: "Comment se déroule une mission Axion-IA au Chambon-Feugerolles ?",
       a: "Nous intervenons partout en France, sur place dans vos locaux ou à distance en visio. Après le cadrage de votre besoin, nous planifions l'intervention et livrons un résultat actionnable.",
     },
   ],

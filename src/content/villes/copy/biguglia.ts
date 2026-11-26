@@ -65,7 +65,7 @@ export const BIGUGLIA_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Biguglia ?",
-      a: "Aéroport Bastia-Poretta (15 min), port de Bastia (15 min). Vols et ferries quotidiens depuis le continent.",
+      a: "Nous intervenons dans vos locaux à Biguglia, partout en France. Vols et ferries quotidiens depuis le continent.",
     },
   ],
 };

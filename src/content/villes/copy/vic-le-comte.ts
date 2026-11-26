@@ -65,7 +65,7 @@ export const VIC_LE_COMTE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Vic-le-Comte ?",
-      a: "Clermont-Ferrand (25 min). Aéroport Clermont à 30 min.",
+      a: "Nous intervenons dans vos locaux à Vic-le-Comte, partout en France.",
     },
   ],
 };

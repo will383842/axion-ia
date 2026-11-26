@@ -49,7 +49,7 @@ export const LOCHES_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Loches et en Touraine sud ?",
-      a: "Oui, Axion-IA intervient à Loches et dans toute la Touraine sud (Beaulieu-lès-Loches, Ferrière-sur-Beaulieu, Perrusson, Ligueil). Couverture depuis Tours (45 min voiture) ou Paris (3h TGV via Tours). Sous-préfecture, pôle administratif du sud tourangeau.",
+      a: "Oui, Axion-IA intervient à Loches et dans toute la Touraine sud (Beaulieu-lès-Loches, Ferrière-sur-Beaulieu, Perrusson, Ligueil). Sous-préfecture, pôle administratif du sud tourangeau.",
     },
     {
       q: "Travaillez-vous avec les acteurs du tourisme patrimonial lochois ?",

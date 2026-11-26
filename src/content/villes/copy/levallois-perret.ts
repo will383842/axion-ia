@@ -128,7 +128,7 @@ export const LEVALLOIS_PERRET_COPY: VilleCopy = {
           },
           {
             q: "Intervenez-vous sur site à Levallois-Perret pour la conception ?",
-            a: "Oui. La centralité de Levallois — métro 3, Transilien à quelques minutes de Saint-Lazare, La Défense à 5 minutes — nous permet de tenir les ateliers UX/UI et les points de recette directement dans vos locaux, sans logistique lourde.",
+            a: "Oui. Nous intervenons dans vos locaux, partout en France.",
           },
           {
             q: "Comment garantissez-vous la conformité RGPD pour mon site ou ma plateforme ?",
@@ -238,7 +238,7 @@ export const LEVALLOIS_PERRET_COPY: VilleCopy = {
     },
     {
       q: "Intervenez-vous sur site à Levallois-Perret ?",
-      a: "Oui. Grâce à la centralité de Levallois-Perret, desservie par le métro 3 et le Transilien à quelques minutes de Saint-Lazare et de La Défense, un expert senior se déplace facilement dans vos locaux pour les ateliers de cadrage et les points clés du projet.",
+      a: "Oui. Nous intervenons dans vos locaux, partout en France.",
     },
     {
       q: "Par où commencer un projet IA à Levallois-Perret ?",

@@ -49,7 +49,7 @@ export const FOIX_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Foix, préfecture de l'Ariège ?",
-      a: "Oui, Axion-IA intervient à Foix et dans tout le bassin fuxéen (Verniolle, Varilhes, Montgailhard, Tarascon-sur-Ariège). La préfecture est desservie par la gare SNCF et l'A66/N20 depuis Toulouse (1h15).",
+      a: "Oui, Axion-IA intervient à Foix et dans tout le bassin fuxéen (Verniolle, Varilhes, Montgailhard, Tarascon-sur-Ariège).",
     },
     {
       q: "Accompagnez-vous les acteurs du tourisme patrimonial à Foix ?",

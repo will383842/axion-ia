@@ -116,7 +116,7 @@ export const MASSY_COPY: VilleCopy = {
         faq: [
           {
             q: "Concevez-vous des plateformes web et SaaS pour les sièges et ESN de Massy-Atlantis ?",
-            a: "Oui. Le quartier Atlantis (90 hectares, environ 12 000 salariés) est notre cœur de cible à Massy : sièges sociaux comme Carrefour, Crédit Agricole Consumer Finance/Sofinco, Orange Labs, et l'écosystème d'ESN et de cabinets de conseil autour. Nous y livrons portails B2B, espaces clients et SaaS métier avec chatbot RAG, recherche sémantique et agents conversationnels intégrés à vos outils.",
+            a: "Oui. Nous intervenons dans vos locaux à Massy, partout en France. Nous y livrons portails B2B, espaces clients et SaaS métier avec chatbot RAG, recherche sémantique et agents conversationnels intégrés à vos outils.",
           },
           {
             q: "Faites-vous de l'e-commerce et de l'UX/UI, ou seulement de l'IA ?",
@@ -245,7 +245,7 @@ export const MASSY_COPY: VilleCopy = {
       a: "Audit sur place pour cartographier les automatisations utiles, intervention d'une journée pour un premier cas d'usage concret, puis coaching 1-to-1 du dirigeant. Agents conversationnels pour la relation client B2B.",
     },
     {
-      q: "Comment se déroule une mission Axion-IA chez nos clients ?",
+      q: "Comment se déroule une mission Axion-IA à Massy ?",
       a: "Nous intervenons partout en France, sur place dans vos locaux ou à distance en visio. Après le cadrage de votre besoin, nous planifions l'intervention et livrons un résultat actionnable.",
     },
   ],

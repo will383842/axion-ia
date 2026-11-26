@@ -238,7 +238,7 @@ export const FRESNES_COPY: VilleCopy = {
     },
     {
       q: "Combien de temps faut-il pour démarrer un projet IA à Fresnes ?",
-      a: "Pour une TPE ou PME basée à Fresnes ou dans le Val-de-Marne, le démarrage opérationnel intervient sous 5 jours ouvrés après signature. La proximité de l'A86 et du RER B Antony nous permet d'organiser une première session sur site sans contrainte logistique pour vos équipes.",
+      a: "Pour une TPE ou PME basée à Fresnes ou dans le Val-de-Marne, le démarrage opérationnel intervient sous 5 jours ouvrés après signature.",
     },
     {
       q: "Travaillez-vous avec les sous-traitants de l'écosystème Sanofi Pasteur à Fresnes ?",

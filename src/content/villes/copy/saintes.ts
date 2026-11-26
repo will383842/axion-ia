@@ -248,7 +248,7 @@ export const SAINTES_COPY: VilleCopy = {
     },
     {
       q: "Proposez-vous des sessions 1-to-1 pour dirigeants saintais ?",
-      a: "Oui. Sessions un-à-un à Saintes à {{price:intervention-dirigeants|flat}} (1h30), sur site ou visio. Cible : dirigeants de TPE/PME du tertiaire, du commerce coopératif ou du tourisme souhaitant cadrer leur stratégie IA en code custom.",
+      a: "Oui. Nous intervenons dans vos locaux, partout en France. Cible : dirigeants de TPE/PME du tertiaire, du commerce coopératif ou du tourisme souhaitant cadrer leur stratégie IA en code custom.",
     },
   ],
 };

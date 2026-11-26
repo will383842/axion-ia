@@ -65,7 +65,7 @@ export const WOIPPY_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Woippy ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Woippy est à 10 min de la gare Metz-Ville et de Metz centre, desservie par les autoroutes A31/A4, à 25 min de Thionville.",
+      a: "Nous intervenons partout en France, sur place ou à distance.",
     },
   ],
 };

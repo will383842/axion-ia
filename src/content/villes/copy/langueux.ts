@@ -64,7 +64,7 @@ export const LANGUEUX_COPY: VilleCopy = {
       a: "Optimisation supply chain, prédiction demande, gestion entrepôt augmentée, automatisation commandes et traçabilité, reporting temps réel pour logisticiens et distributeurs.",
     },
     {
-      q: "Comment se déroule une mission Axion-IA chez nos clients ?",
+      q: "Comment se déroule une mission Axion-IA à Langueux ?",
       a: "Nous intervenons partout en France, sur place dans vos locaux ou à distance en visio. Après le cadrage de votre besoin, nous planifions l'intervention et livrons un résultat actionnable.",
     },
   ],

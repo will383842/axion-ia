@@ -65,7 +65,7 @@ export const MONTVAL_SUR_LOIR_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Montval-sur-Loir ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Déplacement sur site dans votre domaine, exploitation ou commerce. Gare SNCF Château-du-Loir accessible en train direct.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Déplacement sur site dans votre domaine, exploitation ou commerce.",
     },
   ],
 };

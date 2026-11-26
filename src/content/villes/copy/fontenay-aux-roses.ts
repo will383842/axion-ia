@@ -226,7 +226,7 @@ export const FONTENAY_AUX_ROSES_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Fontenay-aux-Roses ?",
-      a: "Oui, Axion-IA intervient à Fontenay-aux-Roses et tout le sud-ouest des Hauts-de-Seine (Châtenay-Malabry, Le Plessis-Robinson, Bourg-la-Reine, Sceaux, Bagneux). Couverture également plateau de Saclay (15 min) et Paris intra-muros (20 min RER B).",
+      a: "Oui, Axion-IA intervient à Fontenay-aux-Roses et tout le sud-ouest des Hauts-de-Seine (Châtenay-Malabry, Le Plessis-Robinson, Bourg-la-Reine, Sceaux, Bagneux).",
     },
     {
       q: "Accompagnez-vous le CEA Fontenay-aux-Roses et structures de recherche ?",

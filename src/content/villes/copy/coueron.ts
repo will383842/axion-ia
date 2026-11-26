@@ -247,7 +247,7 @@ export const COUERON_COPY: VilleCopy = {
     },
     {
       q: "Proposez-vous des sessions de coaching 1-to-1 pour dirigeants couëronnais ?",
-      a: "Oui. Sessions un-à-un à Couëron à partir de {{price:intervention-dirigeants|flat}} (1h30), sur site ou en visio. Cible : dirigeants de TPE/PME souhaitant cadrer leur feuille de route IA sans dépendance no-code.",
+      a: "Oui. Nous intervenons dans vos locaux, partout en France. Cible : dirigeants de TPE/PME souhaitant cadrer leur feuille de route IA sans dépendance no-code.",
     },
   ],
 };

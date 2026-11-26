@@ -49,7 +49,7 @@ export const PERIGNY_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Périgny et dans l'agglomération de La Rochelle ?",
-      a: "Oui, Axion-IA intervient à Périgny et toute l'agglomération de La Rochelle (Aytré, Lagord, Dompierre-sur-Mer, Nieul-sur-Mer). La gare TGV de La Rochelle est à 12 min.",
+      a: "Oui, Axion-IA intervient à Périgny et toute l'agglomération de La Rochelle (Aytré, Lagord, Dompierre-sur-Mer, Nieul-sur-Mer).",
     },
     {
       q: "Quels services IA pour les PME technologiques à Périgny ?",

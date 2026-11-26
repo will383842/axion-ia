@@ -232,7 +232,7 @@ export const CAGNES_SUR_MER_COPY: VilleCopy = {
     },
     {
       q: "Williams se déplace-t-il vraiment à Cagnes-sur-Mer ?",
-      a: "Oui. Williams (fondateur Axion-IA) se déplace en personne à Cagnes-sur-Mer, généralement sous 5 jours ouvrés. L'accès s'effectue par l'A8 (sorties 47 ou 48), la gare SNCF de Cagnes-sur-Mer ou l'aéroport Nice Côte d'Azur situé à 13 km.",
+      a: "Oui. Nous intervenons dans vos locaux à Cagnes-sur-Mer, partout en France. Williams (fondateur Axion-IA) se déplace en personne à Cagnes-sur-Mer, généralement sous 5 jours ouvrés.",
     },
     {
       q: "Quelles communes proches de Cagnes-sur-Mer couvrez-vous lors d'un déplacement ?",

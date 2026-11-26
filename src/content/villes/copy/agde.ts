@@ -124,7 +124,7 @@ export const AGDE_COPY: VilleCopy = {
           },
           {
             q: "Travaillez-vous avec les start-up de l'incubateur GIGAMED au parc Héliopôle de Bessan ?",
-            a: "Oui. Le parc Héliopôle (34 ha, fibre 1 Gb/s, incubateur GIGAMED) accueille des jeunes pousses et PME numériques pour qui nous développons des plateformes SaaS IA-native sur mesure — chatbot RAG, search sémantique, agents, automatisations — plutôt qu'une simple vitrine. Kick-off sur place, itérations à distance.",
+            a: "Oui. Nous intervenons dans vos locaux, partout en France. Kick-off sur place, itérations à distance.",
           },
           {
             q: "Faites-vous vraiment l'UX/UI et le design, pas seulement l'IA ?",

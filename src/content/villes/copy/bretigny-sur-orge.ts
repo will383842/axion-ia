@@ -128,7 +128,7 @@ export const BRETIGNY_SUR_ORGE_COPY: VilleCopy = {
           },
           {
             q: "Pouvez-vous m'aider à vendre au-delà du bassin local ?",
-            a: "Oui. Avec la connexion RER C (30 min d'Austerlitz) et l'axe N20, votre marché dépasse largement Brétigny. On construit une boutique e-commerce et un SEO local calibrés pour Évry-Courcouronnes, Massy, Sainte-Geneviève-des-Bois et le sud-IDF, avec recherche sémantique et parcours d'achat optimisés mobile-first pour convertir cette clientèle régionale.",
+            a: "Oui. Nous intervenons dans vos locaux à Brétigny-sur-Orge, partout en France. On construit une boutique e-commerce et un SEO local calibrés pour Évry-Courcouronnes, Massy, Sainte-Geneviève-des-Bois et le sud-IDF, avec recherche sémantique et parcours d'achat optimisés mobile-first pour convertir cette clientèle régionale.",
           },
         ],
         guarantees:
@@ -214,7 +214,7 @@ export const BRETIGNY_SUR_ORGE_COPY: VilleCopy = {
           },
           {
             q: "Pouvez-vous m'aider à vendre au-delà du bassin local ?",
-            a: "Oui. Avec la connexion RER C (30 min d'Austerlitz) et l'axe N20, votre marché dépasse largement Brétigny. On construit une boutique e-commerce et un SEO local calibrés pour Évry-Courcouronnes, Massy, Sainte-Geneviève-des-Bois et le sud-IDF, avec recherche sémantique et parcours d'achat optimisés mobile-first pour convertir cette clientèle régionale.",
+            a: "Oui. Nous intervenons dans vos locaux à Brétigny-sur-Orge, partout en France. On construit une boutique e-commerce et un SEO local calibrés pour Évry-Courcouronnes, Massy, Sainte-Geneviève-des-Bois et le sud-IDF, avec recherche sémantique et parcours d'achat optimisés mobile-first pour convertir cette clientèle régionale.",
           },
         ],
         guarantees:
@@ -226,7 +226,7 @@ export const BRETIGNY_SUR_ORGE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Brétigny-sur-Orge et sud Essonne ?",
-      a: "Oui, Axion-IA intervient à Brétigny-sur-Orge et tout le sud-Essonne (Évry-Courcouronnes, Massy, Sainte-Geneviève-des-Bois, Saint-Michel-sur-Orge). Couverture sud-IDF, desservie par le RER C.",
+      a: "Oui, Axion-IA intervient à Brétigny-sur-Orge et tout le sud-Essonne (Évry-Courcouronnes, Massy, Sainte-Geneviève-des-Bois, Saint-Michel-sur-Orge).",
     },
     {
       q: "Travaillez-vous avec les structures de santé bréthignolaises ?",

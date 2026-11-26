@@ -231,7 +231,7 @@ export const BOUGUENAIS_COPY: VilleCopy = {
     },
     {
       q: "Sous quel délai Axion-IA peut-il intervenir à Bouguenais ?",
-      a: "Nous nous déplaçons à Bouguenais sous 5 jours ouvrés en moyenne. L'aéroport Nantes-Atlantique à 2 km et la gare TGV de Nantes à 20 minutes facilitent notre venue depuis toute la France.",
+      a: "Nous nous déplaçons à Bouguenais sous 5 jours ouvrés en moyenne.",
     },
     {
       q: "Intervenez-vous aussi à Rezé, Saint-Aignan-Grandlieu ou Bouaye ?",

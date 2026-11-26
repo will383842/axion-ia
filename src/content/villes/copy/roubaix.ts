@@ -442,7 +442,7 @@ export const ROUBAIX_COPY: VilleCopy = {
     },
     {
       q: "Proposez-vous des formats courts pour les dirigeants de TPE qui manquent de temps ?",
-      a: "Oui. L'Audit sur place (4h sur site) est conçu pour les dirigeants sans disponibilité étendue — restitution le jour même, plan d'action immédiatement actionnable. Le 1-to-1 dirigeant démarre à {{price:intervention-dirigeants|flat}} en format modulaire. Aucun engagement multi-mois requis pour démarrer.",
+      a: "Oui. Le 1-to-1 dirigeant démarre à {{price:intervention-dirigeants|flat}} en format modulaire. Aucun engagement multi-mois requis pour démarrer.",
     },
   ],
 };

@@ -65,7 +65,7 @@ export const SARREBOURG_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Sarrebourg ?",
-      a: "Sarrebourg est desservie par la gare SNCF (TGV) et l'autoroute A4. Position carrefour stratégique Metz/Nancy/Strasbourg.",
+      a: "Nous intervenons dans vos locaux à Sarrebourg, partout en France. Position carrefour stratégique Metz/Nancy/Strasbourg.",
     },
   ],
 };

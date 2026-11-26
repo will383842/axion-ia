@@ -65,7 +65,7 @@ export const VOISINS_LE_BRETONNEUX_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Voisins-le-Bretonneux ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Voisins-le-Bretonneux est à 10 min de la gare de SQY et 25 min de l'aéroport d'Orly. Tarifs publics.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Tarifs publics.",
     },
   ],
 };

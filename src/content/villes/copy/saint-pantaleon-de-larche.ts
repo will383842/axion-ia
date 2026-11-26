@@ -61,7 +61,7 @@ export const SAINT_PANTALEON_DE_LARCHE_COPY: VilleCopy = {
     },
     {
       q: "Quel délai pour démarrer une mission IA à Saint-Pantaléon-de-Larche ?",
-      a: "Intervention sous 5 jours ouvrés. Brive à 10 min, A20 accès direct. Déplacements sur site ou sessions en visio selon vos préférences.",
+      a: "Intervention sous 5 jours ouvrés. Déplacements sur site ou sessions en visio selon vos préférences.",
     },
     {
       q: "Proposez-vous du coaching IA individuel dans l'agglo Brive ?",

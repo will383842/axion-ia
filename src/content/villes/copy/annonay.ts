@@ -65,7 +65,7 @@ export const ANNONAY_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Annonay ?",
-      a: "Lyon (1h15) ou Saint-Étienne (45 min). Tarifs publics.",
+      a: "Nous intervenons dans vos locaux à Annonay, partout en France. Tarifs publics.",
     },
   ],
 };

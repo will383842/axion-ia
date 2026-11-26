@@ -128,7 +128,7 @@ export const JOUE_LES_TOURS_COPY: VilleCopy = {
           },
           {
             q: "Intervenez-vous sur site à Joué-lès-Tours ?",
-            a: "Oui. Le kick-off et les étapes clés se font dans vos locaux — Parc de la Liodière, Deux Lions, ZI Gutenberg ou Cugnot. Joué est desservie par la ligne A du tramway (terminus L'Heure Tranquille) et se situe à environ 7 km des gares de Tours et Saint-Pierre-des-Corps. Le reste peut être mené à distance.",
+            a: "Oui. Le kick-off et les étapes clés se font dans vos locaux — Parc de la Liodière, Deux Lions, ZI Gutenberg ou Cugnot. Le reste peut être mené à distance.",
           },
           {
             q: "Sous quel délai obtient-on un devis et le site est-il conforme RGPD ?",

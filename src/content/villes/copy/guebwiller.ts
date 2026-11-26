@@ -65,7 +65,7 @@ export const GUEBWILLER_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Guebwiller ?",
-      a: "Nous intervenons dans vos locaux à Guebwiller, partout en France. Position centrale Mulhouse/Colmar, accès Suisse-Allemagne via aéroport Bâle-Mulhouse.",
+      a: "Nous intervenons dans vos locaux à Guebwiller, partout en France.",
     },
   ],
 };

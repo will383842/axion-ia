@@ -227,7 +227,7 @@ export const SARTROUVILLE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Sartrouville ?",
-      a: "Oui, Axion-IA intervient à Sartrouville et dans les communes limitrophes : Houilles, Carrières-sur-Seine, Montesson, Maisons-Laffitte, Cormeilles-en-Parisis, Argenteuil, Bezons. Trajet Paris-Sartrouville en 20 min via RER A ou Transilien L.",
+      a: "Oui, Axion-IA intervient à Sartrouville et dans les communes limitrophes : Houilles, Carrières-sur-Seine, Montesson, Maisons-Laffitte, Cormeilles-en-Parisis, Argenteuil, Bezons.",
     },
     {
       q: "Quels sont les tarifs pour une mission IA à Sartrouville ?",

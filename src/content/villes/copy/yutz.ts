@@ -61,7 +61,7 @@ export const YUTZ_COPY: VilleCopy = {
     },
     {
       q: "L'IA peut-elle aider les entreprises frontalières luxembourgeoises de Yutz ?",
-      a: "Oui, Yutz est à 25 min du Luxembourg. Nous accompagnons les TPE/PME servant les travailleurs frontaliers et les entreprises luxembourgeoises : agents conversationnels multilingues FR/DE/LU, automatisation administrative cross-border, CRM clients frontaliers et marketing digital ciblé.",
+      a: "Nous intervenons dans vos locaux à Yutz, partout en France. Nous accompagnons les TPE/PME servant les travailleurs frontaliers et les entreprises luxembourgeoises : agents conversationnels multilingues FR/DE/LU, automatisation administrative cross-border, CRM clients frontaliers et marketing digital ciblé.",
     },
     {
       q: "Proposez-vous des formations IA à Yutz ?",

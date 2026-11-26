@@ -65,7 +65,7 @@ export const SAINT_REMY_DE_PROVENCE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une intervention à Saint-Rémy-de-Provence ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Saint-Rémy-de-Provence est à 25 min d'Avignon et d'Arles via D5/D99.",
+      a: "Nous intervenons partout en France, sur place ou à distance.",
     },
   ],
 };

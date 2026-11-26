@@ -128,7 +128,7 @@ export const CHAMBERY_COPY: VilleCopy = {
           },
           {
             q: "Le délai pour obtenir un devis sites web / SaaS à Chambéry ?",
-            a: "À partir de 24 à 48 h selon la complexité. Après un premier échange de cadrage, nous vous renvoyons un périmètre chiffré et clair. La gare TGV Chambéry-Challes-les-Eaux et l'A43 facilitent nos venues sur site à Savoie Technolac, à Bissy ou dans les stations.",
+            a: "Nous intervenons dans vos locaux, partout en France. À partir de 24 à 48 h selon la complexité. Après un premier échange de cadrage, nous vous renvoyons un périmètre chiffré et clair.",
           },
           {
             q: "Mes données et mon code restent-ils chez moi après le projet ?",
@@ -246,7 +246,7 @@ export const CHAMBERY_COPY: VilleCopy = {
     },
     {
       q: "Quel est le délai moyen pour démarrer une mission IA à Chambéry ?",
-      a: "Nous démarrons une mission à Chambéry sous 5 à 10 jours ouvrés en moyenne, selon la disponibilité de nos experts seniors et la complexité du projet. La gare TGV Chambéry-Challes-les-Eaux et l'A43 facilitent les venues hebdomadaires depuis Paris ou Lyon.",
+      a: "Nous intervenons dans vos locaux, partout en France. Nous démarrons une mission à Chambéry sous 5 à 10 jours ouvrés en moyenne, selon la disponibilité de nos experts seniors et la complexité du projet.",
     },
     {
       q: "Axion-IA garantit-il la conformité RGPD et AI Act à Chambéry ?",

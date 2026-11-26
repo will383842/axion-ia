@@ -49,7 +49,7 @@ export const COULOUNIEIX_CHAMIERS_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Coulounieix-Chamiers ?",
-      a: "Oui, Axion-IA intervient à Coulounieix-Chamiers et dans toute l'agglomération de Périgueux (Boulazac, Trélissac, Marsac). Périgueux à 5 min, A89 accès direct.",
+      a: "Oui, Axion-IA intervient à Coulounieix-Chamiers et dans toute l'agglomération de Périgueux (Boulazac, Trélissac, Marsac).",
     },
     {
       q: "Tarifs audit IA à Coulounieix-Chamiers  : quel budget prévoir ?",

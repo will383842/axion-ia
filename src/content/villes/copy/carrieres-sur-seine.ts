@@ -65,7 +65,7 @@ export const CARRIERES_SUR_SEINE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Carrières-sur-Seine ?",
-      a: "Chatou (3 min). Nanterre (5 min). Paris La Défense (10 min). Paris Saint-Lazare (15 min transilien J/L).",
+      a: "Nous intervenons dans vos locaux à Carrières-sur-Seine, partout en France.",
     },
   ],
 };

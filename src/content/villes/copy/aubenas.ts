@@ -65,7 +65,7 @@ export const AUBENAS_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Aubenas ?",
-      a: "Lyon (2h) ou Valence (1h).",
+      a: "Nous intervenons dans vos locaux à Aubenas, partout en France.",
     },
   ],
 };

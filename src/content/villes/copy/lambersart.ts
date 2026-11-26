@@ -112,7 +112,7 @@ export const LAMBERSART_COPY: VilleCopy = {
         faq: [
           {
             q: "Intervenez-vous sur le parc du Pont Royal et la zone de La Cessoie à Lambersart ?",
-            a: "Oui. Nous nous déplaçons sur site à Lambersart, aussi bien au parc du Pont Royal (Thales SIX GTS France, OPEN-Sopra Steria, Engie et les autres établissements de l'avenue du Bois) que sur la zone d'activités de La Cessoie (BTP, froid industriel, ingénierie, propreté). Lille centre est à ~10 min en métro ligne 2 et Lille-Europe à ~15 min, ce qui facilite les ateliers de conception en présentiel.",
+            a: "Oui. Nous nous déplaçons sur site à Lambersart, aussi bien au parc du Pont Royal (Thales SIX GTS France, OPEN-Sopra Steria, Engie et les autres établissements de l'avenue du Bois) que sur la zone d'activités de La Cessoie (BTP, froid industriel, ingénierie, propreté).",
           },
           {
             q: "Pouvez-vous gérer les contraintes de sécurité et de souveraineté des acteurs tech de Lambersart ?",

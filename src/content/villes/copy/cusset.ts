@@ -65,7 +65,7 @@ export const CUSSET_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Cusset ?",
-      a: "Clermont-Ferrand (1h) ou Lyon (2h).",
+      a: "Nous intervenons dans vos locaux à Cusset, partout en France.",
     },
   ],
 };

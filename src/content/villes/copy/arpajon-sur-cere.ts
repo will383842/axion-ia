@@ -65,7 +65,7 @@ export const ARPAJON_SUR_CERE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Arpajon-sur-Cère ?",
-      a: "Clermont-Ferrand (2h). Tarifs publics.",
+      a: "Nous intervenons dans vos locaux à Arpajon-sur-Cère, partout en France. Tarifs publics.",
     },
   ],
 };

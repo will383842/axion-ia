@@ -65,7 +65,7 @@ export const CARVIN_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Carvin ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Carvin est accessible directement par l'A1. Tarifs transparents.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Tarifs transparents.",
     },
   ],
 };

@@ -49,7 +49,7 @@ export const SAINTE_SOULLE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Sainte-Soulle ?",
-      a: "Oui, Axion-IA intervient à Sainte-Soulle et toute l'agglomération de La Rochelle. La gare TGV de La Rochelle est à 15 min, et la N11 dessert la commune.",
+      a: "Oui, Axion-IA intervient à Sainte-Soulle et toute l'agglomération de La Rochelle.",
     },
     {
       q: "Quels services IA pour les exploitants agricoles à Sainte-Soulle ?",

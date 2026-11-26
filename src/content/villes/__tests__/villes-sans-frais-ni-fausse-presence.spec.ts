@@ -121,6 +121,40 @@ const PRESENCE: ReadonlyArray<readonly [string, RegExp]> = [
   ],
 ];
 
+/** Réponses de FAQ (`a:`) : aucune phrase de trajet, de desserte ni de durée d'accès. */
+const TRAJET_FAQ: ReadonlyArray<readonly [string, RegExp]> = [
+  [
+    "accès / desserte par un moyen de transport",
+    /\b(?:[Aa]ccès|accessible|[Dd]esserte|desservi\w*)\b[^.]*\b(?:via|par|depuis|direct\w*|rapide|RER|TGV|TER|gare|tram\w*|métro|A\d{1,3}|autoroute|aéroport)\b/u,
+  ],
+  [
+    "moyen de transport + durée, ou « nous permet / facilite »",
+    /\b(?:RER|TGV|TER|gare|aéroport|tram\w*|métro|autoroute|A\d{1,3}|RN ?\d+)\b[^.]*(?:\bà \d+ ?(?:min|h)|\(\d+ ?(?:min|h)|nous permet|permettent|facilit)/u,
+  ],
+  [
+    "durée d'accès",
+    /^(?!.*(?:devis|séance|audit|livrable|atelier|sous \d)).*(?:\b(?:à|est à|sont à|en) \d+ ?(?:min\b|minutes|km)|\b(?:à|est à|sont à) \d+ ?h\d*\b|\(\d+ ?(?:min|h\d*)[^)]*\))/u,
+  ],
+  ["rejoindre depuis", /(?:rejoindre|venues?|venir)[^.]*depuis [A-ZÉ]/u],
+];
+
+function fautesFaq(motif: RegExp): string[] {
+  const out: string[] = [];
+  for (const [f, lignes] of LIGNES) {
+    if (!f.startsWith("copy/")) continue;
+    lignes.forEach((l, i) => {
+      const m = /^\s*a: "(.*)",?$/u.exec(l);
+      if (
+        m &&
+        !/\b(?:Yes|We |Our |The |Axion-IA's)\b/u.test(m[1]!) &&
+        m[1]!.split(/(?<=[.!?])\s+(?=[A-ZÉÀ«"])/u).some((p) => motif.test(p))
+      )
+        out.push(`${f}:${i + 1}`);
+    });
+  }
+  return out;
+}
+
 describe("villes · ni frais de déplacement, ni fausse présence, ni Grenoble", () => {
   it("les sources sont lues (garde contre un test vide)", () => {
     expect(SOURCES.filter((f) => f.startsWith("copy/")).length).toBeGreaterThan(2000);
@@ -145,6 +179,10 @@ describe("villes · ni frais de déplacement, ni fausse présence, ni Grenoble",
 
   for (const [nom, motif] of PRESENCE)
     it(`aucune fausse présence locale : ${nom}`, () => expect(fautes(motif)).toEqual([]));
+
+  for (const [nom, motif] of TRAJET_FAQ)
+    it(`réponses de FAQ sans trajet ni durée d'accès : ${nom}`, () =>
+      expect(fautesFaq(motif)).toEqual([]));
 
   it("« Grenoble » n'apparaît que sur la page de Grenoble", () => {
     expect(fautes(/Grenoble/u, (f) => f === "copy/grenoble.ts")).toEqual([]);

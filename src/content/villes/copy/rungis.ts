@@ -65,7 +65,7 @@ export const RUNGIS_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Rungis ?",
-      a: "Paris-Denfert-Rochereau (20 min RER B, gare Pont de Rungis). Aéroport Orly à 5 min.",
+      a: "Nous intervenons dans vos locaux à Rungis, partout en France.",
     },
   ],
 };

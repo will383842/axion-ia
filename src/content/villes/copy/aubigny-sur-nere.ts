@@ -65,7 +65,7 @@ export const AUBIGNY_SUR_NERE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Aubigny-sur-Nère ?",
-      a: "Bourges (45 min) ou Orléans (1h15).",
+      a: "Nous intervenons dans vos locaux à Aubigny-sur-Nère, partout en France.",
     },
   ],
 };

@@ -64,8 +64,8 @@ export const LOUVRES_COPY: VilleCopy = {
       a: "Pour les professions libérales à Louvres, nous proposons audit IA adapté, intervention formation 1 journée, coaching 1-to-1, implémentation agents conversationnels et automatisation. RGPD strict, secret professionnel respecté.",
     },
     {
-      q: "Comment se déroule une mission Axion-IA chez nos clients ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Proximité directe Roissy-CDG (10 min).",
+      q: "Comment se déroule une mission Axion-IA à Louvres ?",
+      a: "Nous intervenons partout en France, sur place ou à distance.",
     },
   ],
 };

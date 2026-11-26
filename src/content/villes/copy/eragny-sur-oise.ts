@@ -65,7 +65,7 @@ export const ERAGNY_SUR_OISE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Éragny-sur-Oise ?",
-      a: "Cergy-Pontoise (5 min). Paris La Défense (30 min RER A). Paris centre (40 min). CDG (40 min).",
+      a: "Nous intervenons dans vos locaux à Éragny-sur-Oise, partout en France.",
     },
   ],
 };

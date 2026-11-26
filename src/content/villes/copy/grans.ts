@@ -49,7 +49,7 @@ export const GRANS_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Grans et dans le pays salonais ?",
-      a: "Oui, Axion-IA intervient à Grans et dans toute l'agglomération de Salon-de-Provence (Salon, Lançon-Provence, Miramas, Istres, La Fare-les-Oliviers, Pélissanne). Accès A54.",
+      a: "Oui, Axion-IA intervient à Grans et dans toute l'agglomération de Salon-de-Provence (Salon, Lançon-Provence, Miramas, Istres, La Fare-les-Oliviers, Pélissanne).",
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Grans  ?",
@@ -65,7 +65,7 @@ export const GRANS_COPY: VilleCopy = {
     },
     {
       q: "Comment se déplace Axion-IA à Grans ?",
-      a: "Grans est à 10 min de Salon-de-Provence et 30 min d'Aix-en-Provence via A54. Nos consultants se déplacent dans vos locaux.",
+      a: "Nos consultants se déplacent dans vos locaux.",
     },
   ],
 };

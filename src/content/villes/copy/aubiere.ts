@@ -65,7 +65,7 @@ export const AUBIERE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Aubière ?",
-      a: "Clermont-Ferrand centre (10 min). Aéroport Clermont à 25 min. Tarifs publics.",
+      a: "Nous intervenons dans vos locaux à Aubière, partout en France. Tarifs publics.",
     },
   ],
 };

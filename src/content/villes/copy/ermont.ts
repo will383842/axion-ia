@@ -230,7 +230,7 @@ export const ERMONT_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA se déplace-t-il à Ermont ?",
-      a: "Oui, nos consultants se rendent directement dans vos locaux à Ermont et dans le Val-d'Oise. Grâce à la gare Ermont-Eaubonne, l'accès est rapide, et la première rencontre se fait toujours sur site pour bien comprendre votre activité.",
+      a: "Oui, nos consultants se rendent directement dans vos locaux à Ermont et dans le Val-d'Oise.",
     },
     {
       q: "Quels types d'entreprises accompagnez-vous à Ermont ?",

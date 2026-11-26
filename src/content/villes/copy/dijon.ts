@@ -996,7 +996,7 @@ export const DIJON_COPY: VilleCopy = {
     },
     {
       q: "Axion-IA intervient-il dans toute la métropole dijonnaise ?",
-      a: "Oui. Nos interventions couvrent Dijon intra-muros et les communes de la métropole : Chenôve, Talant, Quetigny, Longvic, Fontaine-lès-Dijon, Saint-Apollinaire, Marsannay-la-Côte. Au-delà, l'ensemble du bassin bourguignon est accessible via la LGV Dijon-Ville.",
+      a: "Oui. Nos interventions couvrent Dijon intra-muros et les communes de la métropole : Chenôve, Talant, Quetigny, Longvic, Fontaine-lès-Dijon, Saint-Apollinaire, Marsannay-la-Côte.",
     },
     {
       q: "Quels secteurs dijonnais sont prioritaires pour l'IA ?",

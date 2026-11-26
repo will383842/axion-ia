@@ -226,7 +226,7 @@ export const SAINT_SEBASTIEN_SUR_LOIRE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Saint-Sébastien-sur-Loire ?",
-      a: "Oui, Axion-IA intervient à Saint-Sébastien-sur-Loire et toute Nantes Métropole (Nantes, Rezé, Vertou, Basse-Goulaine, Orvault, Saint-Herblain). Couverture complète Loire-Atlantique et accès TGV Paris (2h).",
+      a: "Oui, Axion-IA intervient à Saint-Sébastien-sur-Loire et toute Nantes Métropole (Nantes, Rezé, Vertou, Basse-Goulaine, Orvault, Saint-Herblain).",
     },
     {
       q: "Accompagnez-vous les TPE et artisans sébastiennaises ?",

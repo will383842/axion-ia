@@ -65,7 +65,7 @@ export const ANDRESY_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Andrésy ?",
-      a: "Conflans-Sainte-Honorine (5 min). Poissy (10 min). Paris La Défense (25 min). Paris Saint-Lazare (35 min transilien J).",
+      a: "Nous intervenons dans vos locaux à Andrésy, partout en France.",
     },
   ],
 };

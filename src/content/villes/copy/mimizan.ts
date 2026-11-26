@@ -64,7 +64,7 @@ export const MIMIZAN_COPY: VilleCopy = {
       a: "Pour les TPE commerçants et artisans à Mimizan, audit sur place {{price:audit-flash|flat}}, coaching 1-to-1, intervention formation. Cas typiques : automatisation devis, gestion stocks saisonniers, agents IA communication, facturation automatisée.",
     },
     {
-      q: "Comment se déroule une mission Axion-IA chez nos clients ?",
+      q: "Comment se déroule une mission Axion-IA à Mimizan ?",
       a: "Nous intervenons partout en France, sur place dans vos locaux ou à distance en visio. Après le cadrage de votre besoin, nous planifions l'intervention et livrons un résultat actionnable.",
     },
   ],

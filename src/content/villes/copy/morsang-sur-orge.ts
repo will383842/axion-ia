@@ -231,7 +231,7 @@ export const MORSANG_SUR_ORGE_COPY: VilleCopy = {
     },
     {
       q: "Axion-IA se déplace-t-il à Morsang-sur-Orge ?",
-      a: "Oui, nous nous déplaçons chez vous à Morsang-sur-Orge, accessible par la N20, l'A6 ou le tramway T12. Délai d'intervention sous 5 jours ouvrés.",
+      a: "Délai d'intervention sous 5 jours ouvrés.",
     },
     {
       q: "Quelles communes proches couvrez-vous autour de Morsang-sur-Orge ?",

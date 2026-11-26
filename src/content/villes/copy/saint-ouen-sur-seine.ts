@@ -114,7 +114,7 @@ export const SAINT_OUEN_SUR_SEINE_COPY: VilleCopy = {
         faq: [
           {
             q: "Intervenez-vous sur site à Saint-Ouen-sur-Seine pour un projet de site ou de SaaS ?",
-            a: "Oui. Le kick-off se tient dans vos locaux à Saint-Ouen — ZAC Victor-Hugo, plateaux des Docks, siège Alstom ou boutique des Puces — et nous nous déplaçons sur tout le nord du Grand Paris (Saint-Denis, Clichy, Asnières, 17e/18e). Saint-Ouen est desservie par le métro 14, le métro 13, le RER C et le tramway T3b.",
+            a: "Oui. Le kick-off se tient dans vos locaux à Saint-Ouen — ZAC Victor-Hugo, plateaux des Docks, siège Alstom ou boutique des Puces — et nous nous déplaçons sur tout le nord du Grand Paris (Saint-Denis, Clichy, Asnières, 17e/18e).",
           },
           {
             q: "Pouvez-vous créer une boutique en ligne pour un antiquaire ou un marchand des Puces de Saint-Ouen ?",

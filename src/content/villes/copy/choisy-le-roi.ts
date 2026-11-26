@@ -231,7 +231,7 @@ export const CHOISY_LE_ROI_COPY: VilleCopy = {
     },
     {
       q: "Williams se déplace-t-il vraiment à Choisy-le-Roi ?",
-      a: "Oui. Choisy-le-Roi est accessible en 25 minutes depuis Paris via le RER C ou la ligne 9 du tramway. Les interventions se déroulent dans vos locaux, dans la commune ou les communes limitrophes (Vitry-sur-Seine, Thiais, Créteil, Orly, Alfortville).",
+      a: "Oui. Les interventions se déroulent dans vos locaux, dans la commune ou les communes limitrophes (Vitry-sur-Seine, Thiais, Créteil, Orly, Alfortville).",
     },
     {
       q: "Quels délais pour une implémentation IA à Choisy-le-Roi ?",

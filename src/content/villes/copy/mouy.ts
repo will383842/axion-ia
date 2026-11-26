@@ -64,7 +64,7 @@ export const MOUY_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les PME industrielles légères du sud de l'Oise (Mouy, Creil, Senlis, Beauvais) sur prédiction maintenance, contrôle qualité par vision, optimisation production, classification rapports HSE. ROI chiffré contractuel.",
     },
     {
-      q: "Comment se déroule une mission Axion-IA chez nos clients ?",
+      q: "Comment se déroule une mission Axion-IA à Mouy ?",
       a: "Nous intervenons partout en France, sur place dans vos locaux ou à distance en visio. Après le cadrage de votre besoin, nous planifions l'intervention et livrons un résultat actionnable.",
     },
   ],

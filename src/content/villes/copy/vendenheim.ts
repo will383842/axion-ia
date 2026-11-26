@@ -49,7 +49,7 @@ export const VENDENHEIM_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Vendenheim ?",
-      a: "Oui, Axion-IA intervient à Vendenheim et dans le nord de l'Eurométropole strasbourgeoise (Strasbourg, Schiltigheim, Reichstett, Mundolsheim). Accès direct aux zones d'activités.",
+      a: "Oui, Axion-IA intervient à Vendenheim et dans le nord de l'Eurométropole strasbourgeoise (Strasbourg, Schiltigheim, Reichstett, Mundolsheim).",
     },
     {
       q: "Travaillez-vous avec les TPE/PME logistique et commerce de gros ?",
@@ -65,7 +65,7 @@ export const VENDENHEIM_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Vendenheim ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Vendenheim est desservie par les autoroutes A4/A35 et le tram strasbourgeois, à 15 min de la gare TGV de Strasbourg et au plus près des zones d'activités.",
+      a: "Nous intervenons partout en France, sur place ou à distance.",
     },
   ],
 };

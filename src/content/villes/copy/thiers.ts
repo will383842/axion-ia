@@ -65,7 +65,7 @@ export const THIERS_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Thiers ?",
-      a: "Clermont-Ferrand (45 min). Aéroport Clermont à 55 min.",
+      a: "Nous intervenons dans vos locaux à Thiers, partout en France.",
     },
   ],
 };

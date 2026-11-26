@@ -232,7 +232,7 @@ export const CASTELNAU_LE_LEZ_COPY: VilleCopy = {
     },
     {
       q: "Quels délais pour une intervention IA à Castelnau-le-Lez ?",
-      a: "Nous nous engageons à intervenir sur site à Castelnau-le-Lez dans les 5 jours ouvrés après validation de la mission. La proximité de la gare Saint-Roch et de l'aéroport Montpellier-Méditerranée facilite la planification.",
+      a: "Nous nous engageons à intervenir sur site à Castelnau-le-Lez dans les 5 jours ouvrés après validation de la mission.",
     },
     {
       q: "Quelles communes proches couvrez-vous autour de Castelnau-le-Lez ?",

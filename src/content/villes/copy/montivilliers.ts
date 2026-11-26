@@ -64,7 +64,7 @@ export const MONTIVILLIERS_COPY: VilleCopy = {
       a: "L'audit sur place propose un tarif d'entrée accessible pour les TPE. Pour les PME logistiques et tertiaires, l'audit stratégique complet est adapté au périmètre. Tarifs publics, pas de devis opaque.",
     },
     {
-      q: "Comment se déroule une mission Axion-IA chez nos clients ?",
+      q: "Comment se déroule une mission Axion-IA à Montivilliers ?",
       a: "Nous intervenons partout en France, sur place dans vos locaux ou à distance en visio. Après le cadrage de votre besoin, nous planifions l'intervention et livrons un résultat actionnable.",
     },
   ],

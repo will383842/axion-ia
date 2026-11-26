@@ -65,7 +65,7 @@ export const WISSOUS_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Wissous ?",
-      a: "Paris centre (25 min par A6 ou RER C). Massy TGV (10 min). Orly (5 min).",
+      a: "Nous intervenons dans vos locaux à Wissous, partout en France.",
     },
   ],
 };

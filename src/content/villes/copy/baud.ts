@@ -49,7 +49,7 @@ export const BAUD_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Baud et dans le centre Morbihan ?",
-      a: "Oui, Axion-IA intervient à Baud et dans tout le centre Morbihan (Locminé, Guémené-sur-Scorff, Bubry, Camors). Couverture Lorient (30 min), Pontivy (25 min) et Vannes (50 min).",
+      a: "Oui, Axion-IA intervient à Baud et dans tout le centre Morbihan (Locminé, Guémené-sur-Scorff, Bubry, Camors).",
     },
     {
       q: "Travaillez-vous avec les PME agroalimentaires de Baud ?",
@@ -65,7 +65,7 @@ export const BAUD_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA sur site à Baud ?",
-      a: "Nos consultants se déplacent dans vos locaux à Baud ou interviennent en visio. Lorient est à 30 min, Pontivy à 25 min.",
+      a: "Nos consultants se déplacent dans vos locaux à Baud ou interviennent en visio.",
     },
   ],
 };

@@ -62,7 +62,7 @@ export const MEYLAN_COPY: VilleCopy = {
       a: "Pour les PME logiciel/SaaS d'Inovallée, nous proposons les 5 services Axion-IA : audit IA (Stratégique PME), interventions sur site (formations équipes tech), implémentation IA (agents conversationnels produit, classification base de connaissances), coaching 1-to-1 CTO, et plateformes web/SaaS IA sur mesure.",
     },
     {
-      q: "Comment se déroule une mission Axion-IA chez nos clients ?",
+      q: "Comment se déroule une mission Axion-IA à Meylan ?",
       a: "Nous intervenons partout en France, sur place dans vos locaux ou à distance en visio. Après le cadrage de votre besoin, nous planifions l'intervention et livrons un résultat actionnable.",
     },
   ],

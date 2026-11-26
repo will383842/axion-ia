@@ -132,7 +132,7 @@ export const PONTAULT_COMBAULT_COPY: VilleCopy = {
           },
           {
             q: "Quel délai et quelles garanties pour un site à Pontault-Combault ?",
-            a: "Le devis est remis à partir de 24 à 48 h selon la complexité du périmètre. Hébergement en Union européenne et conformité RGPD intégrés dès la conception. Vous restez propriétaire du code, des données et du contenu, transférables à tout prestataire — aucun verrou éditeur. La desserte par le RER E et l'A4 nous permet d'intervenir sur site dans tout l'est francilien.",
+            a: "Nous intervenons dans vos locaux, partout en France. Le devis est remis à partir de 24 à 48 h selon la complexité du périmètre. Hébergement en Union européenne et conformité RGPD intégrés dès la conception. Vous restez propriétaire du code, des données et du contenu, transférables à tout prestataire — aucun verrou éditeur.",
           },
         ],
         guarantees:
@@ -242,7 +242,7 @@ export const PONTAULT_COMBAULT_COPY: VilleCopy = {
     },
     {
       q: "Quel délai pour une première intervention à Pontault-Combault ?",
-      a: "Nous visons un démarrage sous cinq jours ouvrés après validation, selon nos disponibilités. La desserte par le RER E et l'A4 nous permet d'être réactifs sur tout l'est francilien.",
+      a: "Nous intervenons dans vos locaux, partout en France. Nous visons un démarrage sous cinq jours ouvrés après validation, selon nos disponibilités.",
     },
     {
       q: "Comment garantissez-vous la conformité RGPD à Pontault-Combault ?",

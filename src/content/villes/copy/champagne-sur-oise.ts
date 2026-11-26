@@ -65,7 +65,7 @@ export const CHAMPAGNE_SUR_OISE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Champagne-sur-Oise ?",
-      a: "L'Isle-Adam (3 min). Persan-Beaumont (5 min). Cergy-Pontoise (25 min). Paris Gare du Nord (45 min). CDG (35 min).",
+      a: "Nous intervenons dans vos locaux à Champagne-sur-Oise, partout en France.",
     },
   ],
 };

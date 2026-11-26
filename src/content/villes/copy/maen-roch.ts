@@ -64,7 +64,7 @@ export const MAEN_ROCH_COPY: VilleCopy = {
       a: "Automatisation devis et factures, agents IA prise de RDV, gestion stocks intelligente, CRM augmenté commerçants de bourg, fidélisation clients. Audit sur place {{price:audit-flash|flat}} adapté aux petites structures rurales.",
     },
     {
-      q: "Comment se déroule une mission Axion-IA chez nos clients ?",
+      q: "Comment se déroule une mission Axion-IA à Maen Roch ?",
       a: "Nous intervenons partout en France, sur place dans vos locaux ou à distance en visio. Après le cadrage de votre besoin, nous planifions l'intervention et livrons un résultat actionnable.",
     },
   ],

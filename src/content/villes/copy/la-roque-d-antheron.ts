@@ -49,7 +49,7 @@ export const LA_ROQUE_D_ANTHERON_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à La Roque-d'Anthéron et dans la vallée de la Durance ?",
-      a: "Oui, Axion-IA intervient à La Roque-d'Anthéron et dans toute la vallée de la Durance (Lambesc, Pertuis, Cadenet, Mallemort, Charleval). Accès A51 vers Aix et Marseille.",
+      a: "Oui, Axion-IA intervient à La Roque-d'Anthéron et dans toute la vallée de la Durance (Lambesc, Pertuis, Cadenet, Mallemort, Charleval).",
     },
     {
       q: "Quel est le tarif d'un audit IA à La Roque-d'Anthéron  ?",
@@ -65,7 +65,7 @@ export const LA_ROQUE_D_ANTHERON_COPY: VilleCopy = {
     },
     {
       q: "Comment se déplace Axion-IA à La Roque-d'Anthéron ?",
-      a: "La Roque-d'Anthéron est à 30 min d'Aix-en-Provence et 25 min de Salon-de-Provence. Nos consultants se déplacent dans vos locaux.",
+      a: "Nos consultants se déplacent dans vos locaux.",
     },
   ],
 };

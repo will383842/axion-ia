@@ -49,7 +49,7 @@ export const URRUGNE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Urrugne et sur la corniche basque ?",
-      a: "Oui, Axion-IA intervient à Urrugne et sur toute la corniche basque sud (Hendaye, Ciboure, Saint-Jean-de-Luz). La gare d'Hendaye et l'aéroport de Biarritz (20 min) desservent la commune.",
+      a: "Oui, Axion-IA intervient à Urrugne et sur toute la corniche basque sud (Hendaye, Ciboure, Saint-Jean-de-Luz).",
     },
     {
       q: "Quels services IA pour les producteurs du terroir basque à Urrugne ?",

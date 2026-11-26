@@ -124,7 +124,7 @@ export const SAINT_RAPHAEL_COPY: VilleCopy = {
           },
           {
             q: "Quels CMS et technologies e-commerce utilisez-vous ?",
-            a: "Nous travaillons en multi-CMS selon votre besoin : Shopify, WooCommerce ou PrestaShop pour l'e-commerce, ou un développement SaaS sur mesure (framework moderne) pour les plateformes métier des technoparcs. Le choix est justifié au cadrage, sans lock-in éditeur : le code et les accès restent à votre nom, reprenables par tout prestataire du bassin Fréjus-Saint-Raphaël.",
+            a: "Nous intervenons dans vos locaux, partout en France. Nous travaillons en multi-CMS selon votre besoin : Shopify, WooCommerce ou PrestaShop pour l'e-commerce, ou un développement SaaS sur mesure (framework moderne) pour les plateformes métier des technoparcs.",
           },
           {
             q: "Vos sites sont-ils optimisés pour la recherche locale et les assistants IA ?",
@@ -242,7 +242,7 @@ export const SAINT_RAPHAEL_COPY: VilleCopy = {
     },
     {
       q: "Quel délai pour une première intervention à Saint-Raphaël ?",
-      a: "Nous visons un démarrage sous cinq jours ouvrés après validation, selon nos disponibilités. La gare TGV de Valescure et l'A8 nous permettent d'intervenir sur tout l'est varois et le bassin Fréjus-Saint-Raphaël.",
+      a: "Nous intervenons dans vos locaux, partout en France. Nous visons un démarrage sous cinq jours ouvrés après validation, selon nos disponibilités.",
     },
     {
       q: "Comment garantissez-vous la conformité RGPD à Saint-Raphaël ?",

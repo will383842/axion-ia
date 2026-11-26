@@ -83,7 +83,7 @@ export const PERPIGNAN_COPY: VilleCopy = {
     },
     {
       q: "Axion-IA peut-il accompagner des entreprises transfrontalières France-Espagne ?",
-      a: "Oui. Perpignan est à 30 km de la frontière espagnole et à ~80 min TGV de Barcelone. Nous accompagnons les entreprises à dimension transfrontalière (négoce Roussillon-Catalogne, coopérations Eurorégion Pyrénées-Méditerranée) sur leurs usages IA : traduction automatique, gestion documentaire bilingue, analyse données logistiques cross-border.",
+      a: "Oui. Nous intervenons dans vos locaux à Perpignan, partout en France. Nous accompagnons les entreprises à dimension transfrontalière (négoce Roussillon-Catalogne, coopérations Eurorégion Pyrénées-Méditerranée) sur leurs usages IA : traduction automatique, gestion documentaire bilingue, analyse données logistiques cross-border.",
     },
     {
       q: "Quels secteurs sont prioritaires à Perpignan pour une mission IA ?",

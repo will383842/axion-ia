@@ -49,7 +49,7 @@ export const LA_BOUILLADISSE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à La Bouilladisse et alentours ?",
-      a: "Oui, Axion-IA intervient à La Bouilladisse et dans tout l'est marseillais (Aubagne, Gémenos, Roquevaire, Peypin, Cadolive). Accès rapide A52 vers Marseille et Aix-en-Provence.",
+      a: "Oui, Axion-IA intervient à La Bouilladisse et dans tout l'est marseillais (Aubagne, Gémenos, Roquevaire, Peypin, Cadolive).",
     },
     {
       q: "Combien coûte un audit IA à La Bouilladisse  ?",
@@ -65,7 +65,7 @@ export const LA_BOUILLADISSE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déplace Axion-IA à La Bouilladisse ?",
-      a: "La Bouilladisse est à 10 min d'Aubagne et 30 min de Marseille par A52. Nos consultants se déplacent dans vos locaux.",
+      a: "Nos consultants se déplacent dans vos locaux.",
     },
   ],
 };

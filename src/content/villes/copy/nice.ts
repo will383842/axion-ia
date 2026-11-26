@@ -991,8 +991,8 @@ export const NICE_COPY: VilleCopy = {
       a: "Quatre paliers tarifaires publics couvrent toutes les configurations niçoises et azuréennes — Sur place pour les TPE indépendantes du Vieux-Nice ou de la Promenade, Ciblé pour les PME hôtellerie premium et services Côte d'Azur, Stratégique PME pour les scale-ups Sophia Antipolis et acteurs French Tech, Stratégique ETI pour les groupes hôteliers, opérateurs tourisme d'affaires et grandes tech de Sophia. La grille appliquée à Nice est strictement identique à celle de Paris ou Lyon — aucune pondération PACA.",
     },
     {
-      q: "Intervenez-vous à Nice ?",
-      a: "Oui. Nous intervenons dans vos locaux à Nice, partout en France, sur place ou à distance.",
+      q: "Intervenez-vous aussi à Sophia Antipolis, Antibes et Cannes ?",
+      a: "Oui. Nous intervenons dans vos locaux à Sophia Antipolis, Antibes, Cannes, Grasse et Menton, partout en France, sur place ou à distance.",
     },
     {
       q: "Quels secteurs sont prioritaires à Nice et sur la Côte d'Azur ?",

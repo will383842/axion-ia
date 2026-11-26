@@ -65,7 +65,7 @@ export const SAUSSET_LES_PINS_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une intervention à Sausset-les-Pins ?",
-      a: "Nous intervenons partout en France, sur place ou à distance, dans vos locaux. Sausset-les-Pins est desservie par le TER et l'A55.",
+      a: "Nous intervenons partout en France, sur place ou à distance, dans vos locaux.",
     },
   ],
 };
