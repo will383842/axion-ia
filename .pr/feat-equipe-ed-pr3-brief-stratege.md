@@ -23,3 +23,17 @@ Donner à l'équipe éditoriale une fiche de brief SEO validée, et un premier r
 ## Risques
 
 Faibles : modules inertes, aucune migration, aucun champ de job BullMQ. Le `typecheck` complet demande ~12 Go de tas Node sur ce runner. `pnpm-lock.yaml` inchangé.
+
+## Garde-fous ajoutés après relecture
+
+- Type de contenu `blog_from_keywords` (existant, autorisé par défaut par la porte Claude, aucune migration).
+- URL cible : https et hôte du site exigés (option `hoteSite`, défaut `axion-ia.com`).
+- Une origine `search-console` ou `plan-editorial` absente des questions connues est rétrogradée en `autre-source`.
+- Mot-clé possédé retrouvé dans la réponse du modèle : accepté seulement en `mise-a-jour` sur l'URL propriétaire.
+- Sujet ou mot-clé vide : refus sans appel au modèle.
+
+## Points mineurs laissés pour une PR suivante
+
+Erreur `ZodError` (et non `StrategieError`) sur une question connue invalide ; hôte du site non normalisé (`www.`, majuscules) ; URL libre déjà propriétaire d'un autre mot-clé ; coût non remonté en cas d'échec après appel (il est bien soldé par la porte) ; test du type autorisé sensible à `CONTENT_GEN_CLAUDE_TYPES`.
+
+VERDICT OPUS : BON
