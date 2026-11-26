@@ -251,7 +251,7 @@ export default async function VillePage({ params }: Props) {
                 {h1Ville(ville)}
               </h1>
               <p className="text-fg-soft mt-6 text-lg leading-relaxed sm:text-xl">
-                {`Une journée chez vous, ${aVille(ville.nameFr)}, comme partout en France : le matin, nous chiffrons vos plus gros gains ; l’après-midi, nous formons vos équipes sur leurs propres dossiers.`}
+                {`Une journée chez vous, ${aVille(ville.nameFr)}, comme partout en France : le matin, nous repérons vos plus gros gains ; l’après-midi, nous formons vos équipes sur leurs propres dossiers.`}
               </p>
               <div className="text-fg-muted mt-6 flex flex-wrap items-center gap-x-5 gap-y-2 text-sm">
                 <span className="inline-flex items-center gap-2">
@@ -358,7 +358,7 @@ export default async function VillePage({ params }: Props) {
             {
               titre: "Le matin : l’audit",
               texte:
-                "Audit dans vos locaux (de 2 à 4 h selon la structuration de l’entreprise) : nous cartographions l’entreprise service par service, faisons le point avec vous sur vos priorités et chiffrons vos plus gros gains, en heures et en euros.",
+                "Audit dans vos locaux (de 2 à 4 h selon la structuration de l’entreprise) : nous cartographions l’entreprise service par service, faisons le point avec vous sur vos priorités et repérons vos plus gros gains, classés par priorité ; le rapport les chiffre en heures et en euros.",
             },
             {
               titre: "L’après-midi : la formation",

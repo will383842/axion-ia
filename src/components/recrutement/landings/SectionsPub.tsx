@@ -265,7 +265,7 @@ export function SectionsPub({
               <div className="corps">
                 <div className="ruban-j" aria-label="Déroulé de la journée">
                   <span className="matin">
-                    9 h – 12 h<i>Audit&nbsp;: leurs gains, chiffrés</i>
+                    2 à 4 h<i>Audit&nbsp;: leurs gains repérés et classés</i>
                   </span>
                   <span className="aprem">
                     13 h 30 – 17 h 30<i>Formation des équipes sur leurs dossiers</i>
@@ -314,7 +314,7 @@ export function SectionsPub({
                 La seule phrase à retenir
               </p>
               <blockquote>
-                Je connais un organisme qui, en une journée dans votre entreprise, chiffre ce que
+                Je connais un organisme qui, en une journée dans votre entreprise, repère ce que
                 l’IA peut vous faire gagner et forme votre équipe. Je vous mets en relation&nbsp;?
               </blockquote>
               <p className="note">

@@ -32,7 +32,7 @@ export const TITRE = "Axion-IA · Audit et formation IA pour PME et TPE";
 
 /** Meta description (le prix est un jeton ; ≤ `META_DESCRIPTION_MAX` une fois résolue). */
 export const DESCRIPTION_META =
-  "Par où commencer avec l’IA ? En une journée chez vous, partout en France : vos plus gros gains chiffrés, vos équipes formées. {{PRIX}}.";
+  "Par où commencer avec l’IA ? En une journée chez vous, partout en France : vos gros gains repérés, chiffrés dans le rapport, vos équipes formées. {{PRIX}}.";
 
 /** Sous-ligne de la carte d'aperçu `/api/og`. */
 export const OG_EYEBROW = "Partenaire IA des PME et TPE";
@@ -60,8 +60,7 @@ export const CONTENU = {
     titrePartie1: "On vous parle d’IA partout. Vous ne savez plus par où commencer.",
     titreEm: "Nous, si.",
     titrePartie2: "",
-    sousTitre:
-      "Commencez par la Journée IA, chez vous. Le matin, nous cartographions votre entreprise, faisons le point ensemble sur vos priorités et chiffrons vos plus gros gains le jour même, en heures et en euros\u202f: ceux qui rapportent le plus et se mettent en place le plus vite. L’après-midi, nous formons vos équipes.",
+    sousTitre: `Commencez par la Journée IA, chez vous. Le matin, nous cartographions votre entreprise, faisons le point ensemble sur vos priorités et repérons vos plus gros gains, classés par priorité\u202f: ceux qui rapportent le plus et se mettent en place le plus vite. Le rapport, sous ${DELAI_RAPPORT_JOURS_OUVRES} jours ouvrés, les chiffre en heures et en euros. L’après-midi, nous formons vos équipes.`,
     lienJournee: "Découvrir la Journée IA · {{PRIX}}",
     reassurance: MICRO_TEXTE_RDV,
   },
@@ -75,12 +74,12 @@ export const CONTENU = {
       surtitre: "Dans votre entreprise · partout en France",
       titre: "La Journée IA : audit et formation IA chez vous",
       accroche:
-        "En une journée, vous savez par où commencer, chiffres à l’appui, et vos équipes sont formées.",
+        "En une journée, vous savez par où commencer, vos priorités classées, et vos équipes sont formées.",
       tuiles: [
         {
           repere: "Le matin · l’audit",
           texte:
-            "De 2 à 4 h selon la structuration de l’entreprise. Votre entreprise est cartographiée service par service et nous faisons le point ensemble sur vos priorités : les 3 à 5 tâches au meilleur retour sur investissement et les plus rapides à mettre en place, découvertes le jour même et chiffrées en heures et en euros.",
+            "De 2 à 4 h selon la structuration de l’entreprise. Votre entreprise est cartographiée service par service et nous faisons le point ensemble sur vos priorités : les 3 à 5 tâches au meilleur retour sur investissement et les plus rapides à mettre en place, repérées et classées par priorité pendant la journée, puis chiffrées en heures et en euros dans le rapport.",
         },
         {
           repere: "L’après-midi · 4 h de formation",
@@ -171,7 +170,7 @@ export const CONTENU = {
     texte:
       "Nous partons de ce que vivent un dirigeant et ses équipes quand le temps manque, dans votre métier. Tout est écrit avant de commencer : le déroulé, ce que vous recevez, le prix.",
     citation:
-      "« Dans chaque entreprise, des heures se perdent sans bruit. Nous les trouvons, nous les chiffrons et nous les rendons à votre productivité, à votre rentabilité et à votre chiffre d’affaires. Nous en sommes sûrs au point de garantir la journée sur les gains identifiés. »",
+      "« Dans chaque entreprise, des heures se perdent sans bruit. Nous les trouvons, nous les chiffrons dans le rapport et nous les rendons à votre productivité, à votre rentabilité et à votre chiffre d’affaires. Nous en sommes sûrs au point de garantir la journée sur les gains identifiés. »",
     signature: "Williams Jullin, fondateur d’Axion-IA",
     lien: "Voir le parcours de Williams Jullin",
     altPortrait: "Portrait de Williams Jullin, fondateur d’Axion-IA",
@@ -215,7 +214,7 @@ export const CONTENU = {
 
   pmeTpe: {
     titre: "Nous accompagnons les PME et les TPE dans l’IA",
-    chapeau: `Axion-IA aide les PME et les TPE françaises, ${EFFECTIF_CIBLE}, à commencer avec l’IA : une journée sur place pour cartographier l’entreprise, chiffrer ses plus gros gains et former les équipes, puis la mise en place.`,
+    chapeau: `Axion-IA aide les PME et les TPE françaises, ${EFFECTIF_CIBLE}, à commencer avec l’IA : une journée sur place pour cartographier l’entreprise, repérer ses plus gros gains (chiffrés dans le rapport) et former les équipes, puis la mise en place.`,
     tpe: {
       titre: "TPE",
       accroche: "Le dirigeant fait tout, souvent le soir.",
@@ -225,7 +224,7 @@ export const CONTENU = {
       titre: "PME",
       accroche: "Plusieurs services, des équipes qui utilisent déjà l’IA chacune de leur côté.",
       detail:
-        "Nous chiffrons service par service et formons vos équipes sur leurs propres dossiers.",
+        "Nous cartographions service par service, chiffrons dans le rapport et formons vos équipes sur leurs propres dossiers.",
     },
     lienFormations: "La formation IA en entreprise, sur vos propres tâches",
     lienAudit: "L’audit IA pour PME et TPE",
@@ -303,7 +302,7 @@ export const CONTENU = {
         id: "faq-devis-relances",
         question: "Peut-on automatiser les devis et les relances avec l’IA ?",
         reponse:
-          "Oui, on peut automatiser les devis et les relances avec l’IA. Elle prépare le devis à partir de vos modèles et de vos notes ; les relances partent à la date que vous avez validée, et vous relisez avant chaque envoi. La Journée IA commence par chiffrer, chez vous, le temps réellement passé sur ces tâches, pour savoir si cela vaut la peine.",
+          "Oui, on peut automatiser les devis et les relances avec l’IA. Elle prépare le devis à partir de vos modèles et de vos notes ; les relances partent à la date que vous avez validée, et vous relisez avant chaque envoi. La Journée IA commence par repérer, chez vous, le temps réellement passé sur ces tâches, pour savoir si cela vaut la peine.",
       },
       {
         id: "faq-chatgpt",

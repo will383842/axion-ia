@@ -51,7 +51,7 @@ export const QUESTIONS_REFERENCE: Readonly<Record<string, QuestionReference>> = 
     id: "ref-commencer",
     question: "Par où commencer avec l’IA dans une PME ?",
     reponse:
-      "Pour commencer avec l’IA dans une PME, partez de vos tâches, pas d’un outil. Axion-IA cartographie l’entreprise service par service, chiffre vos plus gros gains en heures et en euros, puis retient 3 à 5 priorités. Le premier pas est gratuit : un Diagnostic IA de 45 minutes, en visio ou par téléphone, avant de décider de la Journée IA.",
+      "Pour commencer avec l’IA dans une PME, partez de vos tâches, pas d’un outil. Axion-IA cartographie l’entreprise service par service, repère vos plus gros gains, retient 3 à 5 priorités, puis les chiffre en heures et en euros dans le rapport. Le premier pas est gratuit : un Diagnostic IA de 45 minutes, en visio ou par téléphone, avant de décider de la Journée IA.",
     sujet: "PME",
     source: "src/app/[locale]/_accueil/contenu.ts (faq-commencer)",
   },
@@ -89,7 +89,7 @@ export const QUESTIONS_REFERENCE: Readonly<Record<string, QuestionReference>> = 
   "ref-audit-contenu": {
     id: "ref-audit-contenu",
     question: "Que contient un audit IA pour une PME ?",
-    reponse: `Un audit IA en PME cartographie l’entreprise service par service, repère les tâches répétitives et chiffre chacune en heures et en euros. Il les classe par rentabilité et par rapidité de mise en place, retient 3 à 5 priorités écrites, puis se prolonge par un rapport chiffré avec un plan d’action sur 90 jours, remis sous ${DELAI_RAPPORT_JOURS_OUVRES} jours ouvrés dans le cadre de la Journée IA.`,
+    reponse: `Un audit IA en PME cartographie l’entreprise service par service, repère les tâches répétitives, les classe par rentabilité et retient 3 à 5 priorités. Le rapport chiffre ensuite chacune en heures et en euros, avec un plan d’action sur 90 jours, remis sous ${DELAI_RAPPORT_JOURS_OUVRES} jours ouvrés dans le cadre de la Journée IA.`,
     sujet: "audit IA",
     source: "src/content/journee-ia-commun.ts (DESCRIPTION_SERVICE_JOURNEE_IA, RAPPORT_COMPLET)",
   },
@@ -112,7 +112,7 @@ export const QUESTIONS_REFERENCE: Readonly<Record<string, QuestionReference>> = 
     id: "ref-audit-vs-formation",
     question: "Audit IA ou formation IA : par quoi commencer ?",
     reponse:
-      "Audit IA et formation IA se complètent, et le mieux est de les enchaîner. L’audit décrit votre situation et fixe les priorités ; la formation change les pratiques des équipes sur leurs propres dossiers. La Journée IA d’Axion-IA fait les deux le même jour, dans vos locaux : l’audit du matin oriente la formation de l’après-midi, avec 3 à 5 priorités écrites le soir.",
+      "Audit IA et formation IA se complètent, et le mieux est de les enchaîner. L’audit décrit votre situation et fixe les priorités ; la formation change les pratiques des équipes sur leurs propres dossiers. La Journée IA d’Axion-IA fait les deux le même jour, dans vos locaux : l’audit du matin oriente la formation de l’après-midi, avec 3 à 5 priorités.",
     sujet: "audit IA",
     source: "src/content/journee-ia-commun.ts (DESCRIPTION_SERVICE_JOURNEE_IA)",
   },
@@ -128,7 +128,7 @@ export const QUESTIONS_REFERENCE: Readonly<Record<string, QuestionReference>> = 
     id: "ref-automatiser-premier",
     question: "Quelles tâches automatiser en premier dans une PME ?",
     reponse:
-      "Dans une PME, les premières tâches à automatiser avec l’IA sont celles qui reviennent souvent, suivent des règles claires et prennent un temps mesurable : devis, relances, comptes rendus, tri des e-mails. Commencez par un ou deux flux seulement, relisez les résultats, puis étendez. La Journée IA chiffre ces tâches en heures et en euros et les classe par rentabilité.",
+      "Dans une PME, les premières tâches à automatiser avec l’IA sont celles qui reviennent souvent, suivent des règles claires et prennent un temps mesurable : devis, relances, comptes rendus, tri des e-mails. Commencez par un ou deux flux seulement, relisez les résultats, puis étendez. La Journée IA les repère et les classe par rentabilité ; le rapport les chiffre en heures et en euros.",
     sujet: "automatiser",
     source: "src/app/[locale]/_accueil/contenu.ts, src/content/implementation-fr-overrides.ts",
   },
