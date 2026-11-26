@@ -17,7 +17,7 @@ const INTERDITS = [
   /sans\s+discussion/i,
   /5\s+fois/i,
 ];
-const SHA256_GUIDE = "2aa7d0cfab222d0f5903b529634966a95a1a6d70a85193ca47c98c1e4072d21b";
+const SHA256_GUIDE = "4357be38fc0e8faa0fcb6aac623b8d20a9f14c8bccf8261e66d8efdcf2b61c5d";
 
 describe("le guide de démarrage", () => {
   const chemin = join(racine, FICHIER_PRIVE_GUIDE);
