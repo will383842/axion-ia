@@ -97,7 +97,7 @@ export const ROUEN_COPY: VilleCopy = {
       a: "Oui. Nous accompagnons les startups et scale-ups de l'écosystème normand — Seinari, Normandie Web Xperts, Village by CA Normandie-Seine. Notre offre est calibrée pour les structures en phase de scale qui veulent passer du POC IA à un déploiement opérationnel.",
     },
     {
-      q: "Vos consultants se déplacent-ils sur le Technopôle du Madrillet ?",
+      q: "Intervenez-vous sur le Technopôle du Madrillet ?",
       a: "Oui. Le Technopôle du Madrillet (Saint-Étienne-du-Rouvray) fait partie de nos terrains habituels à Rouen, avec une forte densité d'entreprises INSA/ESIGELEC-issues, de PME industrielles et de laboratoires CNRS. Nos consultants connaissent les spécificités IT et industrielles de ce site.",
     },
   ],

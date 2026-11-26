@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const SAINT_LAURENT_DU_VAR_COPY: VilleCopy = {
   pitchFr:
-    "Saint-Laurent-du-Var, banlieue ouest de Nice (06), concentre commerces, services tertiaires, immobilier touristique et tissu PME en bord de Méditerranée. Proximité immédiate aéroport Nice-Côte d'Azur. Axion-IA y intervient pour les entreprises de la métropole niçoise et acteurs du tourisme premium.",
+    "Saint-Laurent-du-Var, banlieue ouest de Nice (06), concentre commerces, services tertiaires, immobilier touristique et tissu PME en bord de Méditerranée. Axion-IA y intervient pour les entreprises de la métropole niçoise et acteurs du tourisme premium.",
   pitchEn:
-    "Saint-Laurent-du-Var, banlieue ouest de Nice (06), concentre commerces, services tertiaires, immobilier touristique et tissu PME en bord de Méditerranée. Proximité immédiate aéroport Nice-Côte d'Azur. Axion-IA y intervient pour les entreprises de la métropole niçoise et acteurs du tourisme premium.",
+    "Saint-Laurent-du-Var, banlieue ouest de Nice (06), concentre commerces, services tertiaires, immobilier touristique et tissu PME en bord de Méditerranée. Axion-IA y intervient pour les entreprises de la métropole niçoise et acteurs du tourisme premium.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Laurent-du-Var (06) sur la Côte d'Azur. Nous accompagnons les PME tertiaires niçoises, agences immobilières premium, acteurs du tourisme (hôtels, restauration), commerces et services aux entreprises sur leurs cas IA — diagnostic chiffré, démos terrain.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Laurent-du-Var (06) sur la Côte d'Azur. Nous accompagnons les PME tertiaires niçoises, agences immobilières premium, acteurs du tourisme (hôtels, restauration), commerces et services aux entreprises sur leurs cas IA — diagnostic chiffré, démos terrain.",
   seoHook: "commerce détail & tourisme hôtellerie",
   ecosystemFr:
-    "Saint-Laurent-du-Var concentre le tissu commercial et tertiaire ouest de Nice : centre commercial CAP3000 (le plus grand de France hors région parisienne), agences immobilières premium côte d'Azur, hôtels et restauration tourisme, PME services. Proximité immédiate aéroport Nice-Côte d'Azur (2e aéroport français hors Paris).",
+    "Saint-Laurent-du-Var concentre le tissu commercial et tertiaire ouest de Nice : centre commercial CAP3000 (le plus grand de France hors région parisienne), agences immobilières premium côte d'Azur, hôtels et restauration tourisme, PME services.",
   ecosystemEn:
-    "Saint-Laurent-du-Var concentre le tissu commercial et tertiaire ouest de Nice : centre commercial CAP3000 (le plus grand de France hors région parisienne), agences immobilières premium côte d'Azur, hôtels et restauration tourisme, PME services. Proximité immédiate aéroport Nice-Côte d'Azur (2e aéroport français hors Paris).",
+    "Saint-Laurent-du-Var concentre le tissu commercial et tertiaire ouest de Nice : centre commercial CAP3000 (le plus grand de France hors région parisienne), agences immobilières premium côte d'Azur, hôtels et restauration tourisme, PME services.",
   distancesFr:
     "Gare Saint-Laurent-du-Var (TER, 5 min Nice-Ville). Aéroport Nice-Côte d'Azur à 5 min. Tramway T2 vers Cagnes-sur-Mer. Accès Monaco 30 min, Cannes 20 min via A8.",
   distancesEn:

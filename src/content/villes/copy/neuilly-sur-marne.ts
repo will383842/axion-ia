@@ -37,8 +37,8 @@ export const NEUILLY_SUR_MARNE_COPY: VilleCopy = {
       en: "Audit sur place IA à Neuilly-sur-Marne dès {{price:audit-flash|flat}} — 4 heures pour cartographier les processus à automatiser dans votre commerce, structure de services ou cabinet médico-social.",
     },
     interventions: {
-      fr: "Intervention en groupe à Neuilly-sur-Marne dès {{price:intervention-4h|flat}} — Williams se déplace sur site pour automatiser un workflow (relances, planning, reporting).",
-      en: "Intervention en groupe à Neuilly-sur-Marne dès {{price:intervention-4h|flat}} — Williams se déplace sur site pour automatiser un workflow (relances, planning, reporting).",
+      fr: "Intervention en groupe à Neuilly-sur-Marne dès {{price:intervention-4h|flat}} — Williams intervient sur site pour automatiser un workflow (relances, planning, reporting).",
+      en: "Intervention en groupe à Neuilly-sur-Marne dès {{price:intervention-4h|flat}} — Williams intervient sur site pour automatiser un workflow (relances, planning, reporting).",
     },
     implementation: {
       fr: "Implémentation IA en code custom à Neuilly-sur-Marne dès {{price:impl-poc|entry}} — développement sur mesure et conformité RGPD pour les TPE et PME du Nord-Est parisien.",
@@ -232,8 +232,8 @@ export const NEUILLY_SUR_MARNE_COPY: VilleCopy = {
       a: "Les interventions IA à Neuilly-sur-Marne démarrent à {{price:intervention-4h|flat}} pour une intervention en groupe. L'Audit sur place 4 heures débute à {{price:audit-flash|flat}}, l'accompagnement un-à-un dirigeant à {{price:intervention-dirigeants|flat}}. Tarifs publics et fermes.",
     },
     {
-      q: "Comment Axion-IA gère-t-elle les déplacements à Neuilly-sur-Marne ?",
-      a: "Nous nous déplaçons chez vous, partout en France. Délai standard : 5 jours ouvrés après confirmation.",
+      q: "Intervenez-vous à Neuilly-sur-Marne ?",
+      a: "Oui, nous intervenons dans vos locaux à Neuilly-sur-Marne, comme partout en France. Délai standard : 5 jours ouvrés après confirmation.",
     },
     {
       q: "Axion-IA intervient-elle dans les communes proches de Neuilly-sur-Marne ?",

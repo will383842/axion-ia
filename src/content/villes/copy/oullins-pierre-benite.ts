@@ -64,7 +64,7 @@ export const OULLINS_PIERRE_BENITE_COPY: VilleCopy = {
           {
             step: "Cadrage à Oullins-Pierre-Bénite",
             detail:
-              "Kick-off sur site — au centre-ville d'Oullins (métro B Oullins-Centre), sur la plateforme de Pierre-Bénite ou aux abords de l'Hôpital Lyon Sud — pour cartographier vos parcours réels : devis sous-traitance chimie, prise de rendez-vous santé, vitrine commerce de la Grande Rue, ou espace client SaaS. On repart avec les cas d'usage IA prioritaires et le périmètre du site.",
+              "Kick-off sur site — au centre-ville d'Oullins, sur la plateforme de Pierre-Bénite ou aux abords de l'Hôpital Lyon Sud — pour cartographier vos parcours réels : devis sous-traitance chimie, prise de rendez-vous santé, vitrine commerce de la Grande Rue, ou espace client SaaS. On repart avec les cas d'usage IA prioritaires et le périmètre du site.",
           },
           {
             step: "Architecture et choix techniques",

@@ -6,9 +6,9 @@ import type { VilleCopy } from "./types";
 
 export const SAINTES_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA accompagne les TPE et PME de Saintes, sous-préfecture de Charente-Maritime de 25 400 habitants, deuxième pôle urbain du département après La Rochelle. Le tissu local est dominé par le tertiaire (administration, banque, santé, éducation), un pôle commercial régional, le siège de Coop Atlantique (première coopérative de consommateurs de France) et quelques activités industrielles ciblées (électronique, dépôt SNCF, levage). Williams se déplace sur site pour cadrer et déployer les cas d'usage IA en code custom.",
+    "Axion-IA accompagne les TPE et PME de Saintes, sous-préfecture de Charente-Maritime de 25 400 habitants, deuxième pôle urbain du département après La Rochelle. Le tissu local est dominé par le tertiaire (administration, banque, santé, éducation), un pôle commercial régional, le siège de Coop Atlantique (première coopérative de consommateurs de France) et quelques activités industrielles ciblées (électronique, dépôt SNCF, levage). Williams intervient sur site pour cadrer et déployer les cas d'usage IA en code custom.",
   pitchEn:
-    "Axion-IA accompagne les TPE et PME de Saintes, sous-préfecture de Charente-Maritime de 25 400 habitants, deuxième pôle urbain du département après La Rochelle. Le tissu local est dominé par le tertiaire (administration, banque, santé, éducation), un pôle commercial régional, le siège de Coop Atlantique (première coopérative de consommateurs de France) et quelques activités industrielles ciblées (électronique, dépôt SNCF, levage). Williams se déplace sur site pour cadrer et déployer les cas d'usage IA en code custom.",
+    "Axion-IA accompagne les TPE et PME de Saintes, sous-préfecture de Charente-Maritime de 25 400 habitants, deuxième pôle urbain du département après La Rochelle. Le tissu local est dominé par le tertiaire (administration, banque, santé, éducation), un pôle commercial régional, le siège de Coop Atlantique (première coopérative de consommateurs de France) et quelques activités industrielles ciblées (électronique, dépôt SNCF, levage). Williams intervient sur site pour cadrer et déployer les cas d'usage IA en code custom.",
   directAnswerFr:
     "Axion-IA est un cabinet d'IA appliquée qui se déplace à Saintes (17100, Charente-Maritime) pour accompagner les TPE et PME locales. Williams réalise des audits de processus, prototype et implémente des solutions IA en code custom (Python/TypeScript, pas de no-code). Audits Sur place à partir de {{price:audit-flash|flat}}. Nous couvrons le tertiaire administratif et bancaire, la santé, le siège de Coop Atlantique, le pôle commercial régional, le dépôt ferroviaire SNCF et le tissu touristique gallo-romain.",
   directAnswerEn:
@@ -32,8 +32,8 @@ export const SAINTES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saintes pour TPE/PME tertiaires, commerces, structures coopératives et acteurs touristiques. Williams se déplace sur site pour cartographier les processus métiers et prioriser 3 à 5 cas d'usage IA réalistes à 90 jours.",
-      en: "Audit IA à Saintes pour TPE/PME tertiaires, commerces, structures coopératives et acteurs touristiques. Williams se déplace sur site pour cartographier les processus métiers et prioriser 3 à 5 cas d'usage IA réalistes à 90 jours.",
+      fr: "Audit IA à Saintes pour TPE/PME tertiaires, commerces, structures coopératives et acteurs touristiques. Williams intervient sur site pour cartographier les processus métiers et prioriser 3 à 5 cas d'usage IA réalistes à 90 jours.",
+      en: "Audit IA à Saintes pour TPE/PME tertiaires, commerces, structures coopératives et acteurs touristiques. Williams intervient sur site pour cartographier les processus métiers et prioriser 3 à 5 cas d'usage IA réalistes à 90 jours.",
     },
     interventions: {
       fr: "Interventions ponctuelles à Saintes pour PME tertiaires, agences bancaires régionales, acteurs du tourisme patrimonial. Refonte prompts, intégration LLM via APIs, debug de pipelines IA existants.",
@@ -236,7 +236,7 @@ export const SAINTES_COPY: VilleCopy = {
     },
     {
       q: "Quels délais pour démarrer une mission IA à Saintes ?",
-      a: "Williams se déplace à Saintes dans les 5 à 7 jours ouvrés après signature du devis. L'Audit sur place débouche sur un rendu écrit sous 7 jours ouvrés post-intervention.",
+      a: "Williams intervient à Saintes dans les 5 à 7 jours ouvrés après signature du devis. L'Audit sur place débouche sur un rendu écrit sous 7 jours ouvrés post-intervention.",
     },
     {
       q: "Comment Axion-IA assure-t-elle la conformité RGPD à Saintes ?",

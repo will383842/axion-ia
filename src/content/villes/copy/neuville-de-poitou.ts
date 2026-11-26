@@ -14,9 +14,9 @@ export const NEUVILLE_DE_POITOU_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Neuville-de-Poitou (86). Nous accompagnons tous types d'activités : TPE artisans, PME tertiaires, exploitants agricoles, commerçants, professions libérales et services aux entreprises du nord de Grand Poitiers, à proximité du Futuroscope.",
   seoHook: "commerce proximité & artisanat services",
   ecosystemFr:
-    "Neuville-de-Poitou (5 513 hab) est le bourg-centre historique du nord de la Vienne, intégré à Grand Poitiers. Pôle de commerces et services pour les communes rurales environnantes. Proximité Futuroscope (10 min), axe A10. Tissu TPE artisans, PME tertiaires, agriculture céréalière, professions libérales et commerces de proximité.",
+    "Neuville-de-Poitou (5 513 hab) est le bourg-centre historique du nord de la Vienne, intégré à Grand Poitiers. Pôle de commerces et services pour les communes rurales environnantes. Tissu TPE artisans, PME tertiaires, agriculture céréalière, professions libérales et commerces de proximité.",
   ecosystemEn:
-    "Neuville-de-Poitou (5 513 hab) est le bourg-centre historique du nord de la Vienne, intégré à Grand Poitiers. Pôle de commerces et services pour les communes rurales environnantes. Proximité Futuroscope (10 min), axe A10. Tissu TPE artisans, PME tertiaires, agriculture céréalière, professions libérales et commerces de proximité.",
+    "Neuville-de-Poitou (5 513 hab) est le bourg-centre historique du nord de la Vienne, intégré à Grand Poitiers. Pôle de commerces et services pour les communes rurales environnantes. Tissu TPE artisans, PME tertiaires, agriculture céréalière, professions libérales et commerces de proximité.",
   distancesFr:
     "Poitiers centre à 15 min. Futuroscope à 10 min. Gare TGV Futuroscope à 10 min (TGV Paris 1h30). Aéroport Poitiers-Biard à 20 min. Châtellerault à 30 min. Axe A10 Paris-Bordeaux à 10 min.",
   distancesEn:

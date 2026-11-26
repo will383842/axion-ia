@@ -232,7 +232,7 @@ export const SAINTE_GENEVIEVE_DES_BOIS_COPY: VilleCopy = {
     },
     {
       q: "Combien de temps faut-il pour une intervention IA à Sainte-Geneviève-des-Bois ?",
-      a: "Williams se déplace habituellement sous 5 à 10 jours ouvrés à Sainte-Geneviève-des-Bois (Essonne). Une intervention ciblée dure généralement 1 à 3 jours sur site, selon la complexité du projet.",
+      a: "Williams intervient habituellement sous 5 à 10 jours ouvrés à Sainte-Geneviève-des-Bois (Essonne). Une intervention ciblée dure généralement 1 à 3 jours sur site, selon la complexité du projet.",
     },
     {
       q: "Axion-IA propose-t-il des solutions conformes au RGPD à Sainte-Geneviève-des-Bois ?",

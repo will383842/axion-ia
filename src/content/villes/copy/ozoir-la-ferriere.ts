@@ -5,7 +5,7 @@
 import type { VilleCopy } from "./types";
 
 const PITCH_FR =
-  "Axion-IA accompagne les TPE et PME d'Ozoir-la-Ferrière, commune de 21 238 habitants en Seine-et-Marne, à 31 km à l'est de Paris. Williams se déplace sur site auprès des artisans, commerçants, professions libérales et PME de la zone d'activités locale pour livrer du code custom — Python ou TypeScript — pérenne, documenté, sans dépendance no-code.";
+  "Axion-IA accompagne les TPE et PME d'Ozoir-la-Ferrière, commune de 21 238 habitants en Seine-et-Marne. Williams intervient sur site auprès des artisans, commerçants, professions libérales et PME de la zone d'activités locale pour livrer du code custom — Python ou TypeScript — pérenne, documenté, sans dépendance no-code.";
 
 const DIRECT_ANSWER_FR =
   "Axion-IA intervient à Ozoir-la-Ferrière pour les TPE et PME de Seine-et-Marne : artisans du BTP de la Brie, commerçants du marché du mercredi et samedi (Place Horizon), entreprises de la zone d'activités locale, professions libérales et cabinets indépendants. Nous nous déplaçons chez vous pour cadrer le besoin sur place, livrer du code custom et former l'équipe. Audit sur place {{price:audit-flash|flat}}, Formation 4 h {{price:intervention-4h|flat}}, 1-à-1 {{price:intervention-dirigeants|flat}}.";
