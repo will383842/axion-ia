@@ -106,7 +106,16 @@ jobs:
             fi
             rm -f "$err"
           }
+          # Résumé lisible de la réponse de Claude (dépôt PRIVÉ ; la clé API est retirée de l'environnement
+          # des commandes de Claude et GitHub masque les secrets dans le journal).
+          resume_claude() {
+            jq -r '.[] | select(.type=="result") |
+              "Résumé de Claude : \(.subtype // "?"), erreur=\(.is_error), tours=\(.num_turns // 0), coût=\(.total_cost_usd // 0) $, durée=\((.duration_ms // 0) / 1000 | floor) s",
+              "Outils refusés : \([.permission_denials[]? | .tool_name] | unique | join(", ") | if . == "" then "aucun" else . end)",
+              "Fin de la réponse : \((.result // "") | tostring | .[-600:] | gsub("\n"; " ⏎ "))"' "$1" 2>/dev/null || true
+          }
           EOF
+          git ls-remote --heads origin | sort > "$RUNNER_TEMP/branches-avant.txt"
 
       - name: Claude (premier compte)
         id: run1
@@ -128,6 +137,7 @@ jobs:
           jq -s '.' "$RUNNER_TEMP/brut-run1.json" > "$f" 2>/dev/null || echo '[]' > "$f"
           rm -f "$RUNNER_TEMP/brut-run1.json"
           echo "execution_file=$f" >> "$GITHUB_OUTPUT"
+          resume_claude "$f"
           if jq -e 'any(.[]; .type == "result" and .is_error == false)' "$f" >/dev/null 2>&1; then
             echo "conclusion=success" >> "$GITHUB_OUTPUT"
           else
@@ -173,6 +183,7 @@ jobs:
           jq -s '.' "$RUNNER_TEMP/brut-run2.json" > "$f" 2>/dev/null || echo '[]' > "$f"
           rm -f "$RUNNER_TEMP/brut-run2.json"
           echo "execution_file=$f" >> "$GITHUB_OUTPUT"
+          resume_claude "$f"
           if jq -e 'any(.[]; .type == "result" and .is_error == false)' "$f" >/dev/null 2>&1; then
             echo "conclusion=success" >> "$GITHUB_OUTPUT"
           else
@@ -208,5 +219,11 @@ jobs:
           C1: ${{ steps.run1.outputs.conclusion }}
           C2: ${{ steps.run2.outputs.conclusion }}
         run: |
-          if [ "$C1" = "success" ] || [ "$C2" = "success" ]; then echo "Claude a terminé."; else
+          if [ "$C1" != "success" ] && [ "$C2" != "success" ]; then
             echo "::error::Aucune exécution de Claude n'a réussi : voir le diagnostic de l'étape « Claude (premier compte) »."; exit 1; fi
+          # Toute consigne doit pousser une branche (code, ou verdict/<nom> pour une relecture) : sinon, échec.
+          git ls-remote --heads origin | sort > "$RUNNER_TEMP/branches-apres.txt"
+          nouvelles=$(comm -13 "$RUNNER_TEMP/branches-avant.txt" "$RUNNER_TEMP/branches-apres.txt" | awk '{print $2}' | sed 's#refs/heads/##')
+          if [ -z "$nouvelles" ]; then
+            echo "::error::Claude a fini sans pousser aucune branche : voir « Résumé de Claude » et « Fin de la réponse » plus haut."; exit 1; fi
+          echo "Claude a terminé. Branches poussées (créées ou mises à jour) :"; printf '  %s\n' $nouvelles
