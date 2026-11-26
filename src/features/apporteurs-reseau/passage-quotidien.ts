@@ -515,13 +515,56 @@ async function etapeBasculeRegleRendezVous(
   bilan: BilanPassageReseau,
 ): Promise<void> {
   if (!validationParRendezVousActive()) return;
+  const basculees: Array<{ denomination: string; terme: Date }> = [];
+  try {
+    await basculerParPages(maintenant, bilan, basculees);
+  } finally {
+    await signalerBascules(basculees, maintenant);
+  }
+}
+
+/**
+ * Une seule alerte interne par passage qui a basculé quelque chose : le rapprochement des rendez-vous
+ * ne se déclenche qu'à l'apparition d'un rendez-vous, donc un rendez-vous DÉJÀ pris ou tenu avant la
+ * bascule n'est jamais proposé tout seul : à vérifier à la main. Signale aussi les termes courts.
+ */
+async function signalerBascules(
+  basculees: ReadonlyArray<{ denomination: string; terme: Date }>,
+  maintenant: Date,
+): Promise<void> {
+  if (basculees.length === 0) return;
+  const jour = maintenant.toISOString().slice(0, 10);
+  const liste = basculees
+    .slice(0, 50)
+    .map((b) => {
+      const reste = Math.max(0, Math.ceil((b.terme.getTime() - maintenant.getTime()) / 86_400_000));
+      return `${b.denomination} (jusqu'au ${dateEnClair(b.terme)}${reste <= 15 ? `, ${reste} j restants` : ""})`;
+    })
+    .join(" ; ");
+  await alerteInterne({
+    jobId: `apporteur-bascule-lot-${jour}`,
+    code: "apporteur_bascule_rendez_vous",
+    titre: `${basculees.length} présentation(s) passée(s) à la règle du rendez-vous`,
+    message: `Ces présentations en attente ne sont plus confirmées par le silence : ${liste}. Vérifiez les rendez-vous déjà pris ou tenus avec ces entreprises depuis la saisie : ils ne sont pas proposés automatiquement. À valider dans la console (Apporteurs › Entreprises présentées).`,
+    cibleType: "PresentationEntreprise",
+    cibleId: "bascule",
+    maintenant,
+  });
+}
+
+async function basculerParPages(
+  maintenant: Date,
+  bilan: BilanPassageReseau,
+  basculees: Array<{ denomination: string; terme: Date }>,
+): Promise<void> {
   let curseur: { at: Date; id: string } | null = null;
   for (let page = 0; page < PAGES_ECHEANCES_MAX; page++) {
     const lignes: Array<{
       id: string;
       denomination: string;
       recueAt: Date;
-      apporteur: { statut: string; signatureApporteur: unknown; signeParSocieteAt: Date | null };
+      contactEnvoyeAt: Date | null;
+      apporteur: { statut: string; signatureApporteur: unknown };
     }> = await prisma.presentationEntreprise.findMany({
       where: {
         statut: "reservee",
@@ -538,7 +581,8 @@ async function etapeBasculeRegleRendezVous(
         id: true,
         denomination: true,
         recueAt: true,
-        apporteur: { select: { statut: true, signatureApporteur: true, signeParSocieteAt: true } },
+        contactEnvoyeAt: true,
+        apporteur: { select: { statut: true, signatureApporteur: true } },
       },
       orderBy: [{ recueAt: "asc" }, { id: "asc" }],
       take: PAGE_ECHEANCES,
@@ -563,8 +607,13 @@ async function etapeBasculeRegleRendezVous(
         apporteur: {
           statut: p.apporteur.statut,
           signature: p.apporteur.signatureApporteur,
-          signeParSocieteAt: p.apporteur.signeParSocieteAt,
         },
+        // Même date que l'étape (a) : atteinte, la présentation est déjà acquise.
+        silenceAtteint:
+          (p.contactEnvoyeAt
+            ? dateConfirmationTaciteAvecContact(p.contactEnvoyeAt, p.recueAt)
+            : dateConfirmationTaciteSansContact(p.recueAt)
+          ).getTime() <= maintenant.getTime(),
         aUneLigne: false,
         rebond: rebonds.has(p.id),
         actif: true,
@@ -592,25 +641,29 @@ async function etapeBasculeRegleRendezVous(
             });
             return true;
           });
-          if (ok) bilan.basculees += 1;
+          if (ok) {
+            bilan.basculees += 1;
+            basculees.push({ denomination: p.denomination, terme: d.reserveeJusquAt });
+          }
         } catch (err) {
+          // Table absente (migration pas encore passée) : on s'arrête, sans erreur.
+          if (tableAbsente(err)) return;
           // Clé primaire déjà prise : une autre ligne est née entre-temps, rien à faire.
           if ((err as { code?: unknown })?.code !== "P2002") throw err;
         }
-      } else if (d.motif === "terme_depasse" || d.motif === "rebond") {
+      } else if (d.motif === "rebond" || d.motif === "terme_depasse") {
+        // Terme dépassé sans rebond : le silence confirme au plus tard le lendemain, rien à signaler.
         bilan.basculeesEcartees += 1;
-        await alerteInterne({
-          jobId: `apporteur-bascule-ecartee-${p.id}`,
-          code: "apporteur_bascule_ecartee",
-          titre: `Présentation non basculée vers la règle du rendez-vous : ${p.denomination}`,
-          message:
-            d.motif === "rebond"
-              ? `La prise de contact de ${p.denomination} est revenue en erreur : l'ancienne règle est suspendue et la présentation n'a pas été basculée vers la règle du rendez-vous. À trancher dans la console (Apporteurs › Entreprises présentées).`
-              : `La présentation de ${p.denomination} (saisie le ${dateEnClair(p.recueAt)}) a déjà dépassé ses 60 jours : elle n'a pas été basculée vers la règle du rendez-vous et reste sous l'ancienne règle. À trancher dans la console (Apporteurs › Entreprises présentées).`,
-          cibleType: "PresentationEntreprise",
-          cibleId: p.id,
-          maintenant,
-        });
+        if (d.motif === "rebond")
+          await alerteInterne({
+            jobId: `apporteur-bascule-ecartee-rebond-${p.id}`,
+            code: "apporteur_bascule_ecartee",
+            titre: `Présentation non basculée vers la règle du rendez-vous : ${p.denomination}`,
+            message: `La prise de contact de ${p.denomination} est revenue en erreur : l'ancienne règle est suspendue et la présentation n'a pas été basculée vers la règle du rendez-vous. À trancher dans la console (Apporteurs › Entreprises présentées).`,
+            cibleType: "PresentationEntreprise",
+            cibleId: p.id,
+            maintenant,
+          });
       }
     }
     if (lignes.length < PAGE_ECHEANCES) return;

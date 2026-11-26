@@ -25,6 +25,7 @@ const db = vi.hoisted(() => ({
     payload: Record<string, unknown>;
     jobId: string;
   }>,
+  createErreur: null as null | { code: string },
   audit: [] as Array<Record<string, any>>, // eslint-disable-line @typescript-eslint/no-explicit-any
   jobIds: new Set<string>(),
   /** Appelé juste APRÈS une lecture des présentations : simule un autre processus qui écrit entre lecture et écriture. */
@@ -141,6 +142,7 @@ vi.mock("@/lib/prisma", () => {
         return r ? { ...r } : null;
       }),
       create: vi.fn(async (a: { data: Ligne }) => {
+        if (db.createErreur) throw Object.assign(new Error("table"), db.createErreur);
         if (db.res.some((x) => x.presentationId === a.data.presentationId))
           throw Object.assign(new Error("unique"), { code: "P2002" });
         db.res.push({
@@ -305,6 +307,7 @@ beforeEach(() => {
   db.jobIds.clear();
   db.apresLecture = null;
   db.apresLectureRes = null;
+  db.createErreur = null;
   vi.mocked(envoyer).mockClear();
 });
 
@@ -329,8 +332,8 @@ describe("basculeVersRendezVous (décision pure)", () => {
     apporteur: {
       statut: "signe",
       signature: { version: "2.8" },
-      signeParSocieteAt: new Date("2026-08-01T09:00:00Z"),
     },
+    silenceAtteint: false,
     aUneLigne: false,
     rebond: false,
     actif: true,
@@ -344,7 +347,7 @@ describe("basculeVersRendezVous (décision pure)", () => {
     ["interrupteur", { actif: false }],
     ["version", { apporteur: { ...base.apporteur, signature: { version: "2.6" } } }],
     ["statut_apporteur", { apporteur: { ...base.apporteur, statut: "resilie" } }],
-    ["avant_prise_effet", { recueAt: new Date("2026-07-30T09:00:00Z") }],
+    ["silence_acquis", { silenceAtteint: true }],
     ["deja_reglee", { aUneLigne: true }],
     ["deja_reglee", { statut: "confirmee" }],
     ["rebond", { rebond: true }],
@@ -391,6 +394,30 @@ describe("étape « bascule-regle-rendez-vous »", () => {
     expect(b.basculees).toBe(1);
     expect(b.confirmeesTacites).toBe(0);
     expect(db.pres[0]!.statut).toBe("reservee");
+  });
+
+  it("la date du silence est DÉJÀ atteinte (passage à 10 h, silence à 9 h) : pas de bascule, la confirmation tacite joue", async () => {
+    allume();
+    db.pres.push(
+      paul({
+        recueAt: new Date("2026-10-01T09:00:00Z"),
+        contactEnvoyeAt: new Date("2026-10-27T09:00:00Z"),
+      }),
+    );
+    const b = await passerReseauApporteurs(new Date("2026-11-26T10:00:00Z"));
+    expect(b).toMatchObject({ basculees: 0, confirmeesTacites: 1 });
+    expect(db.res).toHaveLength(0);
+    expect(db.pres[0]!.statut).toBe("confirmee");
+  });
+
+  it("une alerte interne unique par passage liste les présentations basculées (rendez-vous déjà tenus à vérifier)", async () => {
+    allume();
+    db.pres.push(paul());
+    await passerReseauApporteurs(VINGT_SIX);
+    await passerReseauApporteurs(VINGT_SIX);
+    const lots = db.alertes.filter((a) => a.jobId.startsWith("apporteur-bascule-lot-"));
+    expect(lots).toHaveLength(1);
+    expect(String(lots[0]!.payload.message)).toContain("Acme");
   });
 
   it("déjà attribuée définitivement (silence, réponse, prolongation) : objet strictement identique, aucune ligne", async () => {
@@ -440,13 +467,12 @@ describe("étape « bascule-regle-rendez-vous »", () => {
     },
   );
 
-  it("saisie antérieure à la signature de la Société : aucune ligne (art. 13.5)", async () => {
+  it("table de réservation absente (P2021) : l'étape s'arrête sans erreur au bilan", async () => {
     allume();
-    db.pres.push(
-      paul({ apporteur: signe28({ signeParSocieteAt: new Date("2026-11-20T09:00:00Z") }) }),
-    );
-    expect((await passerReseauApporteurs(VINGT_SIX)).basculees).toBe(0);
-    expect(db.res).toHaveLength(0);
+    db.pres.push(paul());
+    db.createErreur = { code: "P2021" };
+    const b = await passerReseauApporteurs(VINGT_SIX);
+    expect(b).toMatchObject({ basculees: 0, erreurs: 0 });
   });
 
   it("apporteur résilié : aucune ligne ; en préavis (toujours signé) : bascule", async () => {
@@ -470,16 +496,15 @@ describe("étape « bascule-regle-rendez-vous »", () => {
     },
   );
 
-  it("terme déjà dépassé (saisie il y a 61 jours) : pas de bascule, UNE alerte interne, comptée ; rejoué sans nouvelle alerte", async () => {
+  it("terme dépassé alors que le silence n'est pas atteint : pas de bascule, comptée, sans alerte (le silence confirme le lendemain)", async () => {
     allume();
-    db.pres.push(paul({ recueAt: j(VINGT_SIX, -61) }));
+    db.pres.push(paul({ recueAt: new Date("2026-09-27T09:00:00Z") }));
     const b = await passerReseauApporteurs(VINGT_SIX);
     expect(b).toMatchObject({ basculees: 0, basculeesEcartees: 1 });
     expect(db.res).toHaveLength(0);
-    const alertes = () => db.alertes.filter((a) => a.jobId === "apporteur-bascule-ecartee-P1");
-    expect(alertes()).toHaveLength(1);
-    await passerReseauApporteurs(j(VINGT_SIX, 0));
-    expect(alertes()).toHaveLength(1);
+    expect(db.alertes.filter((a) => a.jobId.startsWith("apporteur-bascule-ecartee"))).toHaveLength(
+      0,
+    );
   });
 
   it("prise de contact revenue en erreur : écartée et signalée, pas de ligne", async () => {
@@ -489,6 +514,10 @@ describe("étape « bascule-regle-rendez-vous »", () => {
     const b = await passerReseauApporteurs(VINGT_SIX);
     expect(b).toMatchObject({ basculees: 0, basculeesEcartees: 1 });
     expect(db.res).toHaveLength(0);
+    await passerReseauApporteurs(VINGT_SIX);
+    expect(
+      db.alertes.filter((a) => a.jobId === "apporteur-bascule-ecartee-rebond-P1"),
+    ).toHaveLength(1);
   });
 
   it("rejeu et ligne native : un second passage ne crée rien, une ligne native n'est pas modifiée", async () => {
@@ -506,9 +535,9 @@ describe("étape « bascule-regle-rendez-vous »", () => {
   it("concurrence : une ligne née entre la lecture et l'écriture empêche la création, état cohérent", async () => {
     allume();
     db.pres.push(paul());
-    db.apresLecture = (where) => {
-      if (where.statut !== "reservee" || db.res.length) return;
-      db.apresLecture = null;
+    // Née APRÈS le pré-filtre des réservations : seule la garde dans la transaction peut la voir.
+    db.apresLectureRes = () => {
+      db.apresLectureRes = null;
       db.res.push(reservation({ reserveeJusquAt: j(VINGT_SIX, 40) }));
     };
     const b = await passerReseauApporteurs(VINGT_SIX);

@@ -80,7 +80,7 @@ export type MotifBasculeRefusee =
   | "interrupteur"
   | "version"
   | "statut_apporteur"
-  | "avant_prise_effet"
+  | "silence_acquis"
   | "deja_reglee"
   | "rebond"
   | "terme_depasse";
@@ -88,15 +88,17 @@ export type MotifBasculeRefusee =
 /**
  * Cette présentation EN ATTENTE (`reservee`, sans ligne de réservation) passe-t-elle de l'ancienne
  * règle (silence) à la règle du rendez-vous ? Oui si l'interrupteur est allumé, l'apporteur est
- * `signe` à la version 2.8 ou plus, la saisie n'est pas antérieure à la prise d'effet de son contrat
- * (art. 13.5) et le terme (`finReservation`) n'est pas déjà dépassé. Une prise de contact revenue en
+ * `signe` à la version 2.8 ou plus, la date du silence n'est pas déjà atteinte (la présentation est alors
+ * acquise, la confirmation tacite la traite) et le terme (`finReservation`) n'est pas déjà dépassé. Une prise de contact revenue en
  * erreur suspend l'ancienne règle sans limite : la présentation peut avoir plus de 60 jours, elle
  * n'est pas basculée (l'appelant la signale). Ne modifie rien, rend le terme à enregistrer.
  */
 export function basculeVersRendezVous(e: {
   statut: string;
   recueAt: Date;
-  apporteur: { statut: string; signature: unknown; signeParSocieteAt: Date | null };
+  apporteur: { statut: string; signature: unknown };
+  /** La date de confirmation par le silence est atteinte : la présentation est déjà acquise (art. 3.2). */
+  silenceAtteint: boolean;
   aUneLigne: boolean;
   rebond: boolean;
   actif: boolean;
@@ -107,10 +109,8 @@ export function basculeVersRendezVous(e: {
   if (e.apporteur.statut !== "signe") return { bascule: false, motif: "statut_apporteur" };
   if (!versionAuMoins(e.apporteur.signature, VERSION_REGLE_RENDEZ_VOUS))
     return { bascule: false, motif: "version" };
-  const effet = e.apporteur.signeParSocieteAt;
-  if (effet && !(e.recueAt.getTime() >= effet.getTime()))
-    return { bascule: false, motif: "avant_prise_effet" };
   if (e.rebond) return { bascule: false, motif: "rebond" };
+  if (e.silenceAtteint) return { bascule: false, motif: "silence_acquis" };
   const terme = finReservation(e.recueAt);
   if (!(terme.getTime() >= e.maintenant.getTime()))
     return { bascule: false, motif: "terme_depasse" };
