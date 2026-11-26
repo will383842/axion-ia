@@ -93,6 +93,10 @@ describe("encart", () => {
     const b = renderToStaticMarkup(await rendre());
     expect(a).toBe(b);
   });
+  it.each(["TRUE", "1", " true "])("interrupteur « %s » : éteint, encart null", async (v) => {
+    process.env.APPORTEUR_CHALLENGES_ESPACE_ENABLED = v;
+    expect(await rendre()).toBeNull();
+  });
   it("interrupteur éteint, aucun challenge publié, table illisible : rien", async () => {
     delete process.env.APPORTEUR_CHALLENGES_ESPACE_ENABLED;
     expect(await rendre()).toBeNull();
@@ -116,6 +120,10 @@ describe("règlement : réservé aux apporteurs signés", () => {
   it("affiche le texte publié tel quel", async () => {
     const html = renderToStaticMarkup(await Page(params()));
     expect(texte(html)).toContain("Rien n'est attendu de vous. Le seuil est de dix.");
+  });
+  it.each(["TRUE", "1", " true "])("interrupteur « %s » : règlement 404", async (v) => {
+    process.env.APPORTEUR_CHALLENGES_ESPACE_ENABLED = v;
+    await expect(Page(params())).rejects.toThrow("NOT_FOUND");
   });
   const REFUS: ReadonlyArray<readonly [string, () => void, string]> = [
     [

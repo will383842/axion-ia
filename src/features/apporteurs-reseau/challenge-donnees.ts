@@ -7,8 +7,10 @@
  */
 import { prisma } from "@/lib/prisma";
 
+import { MESSAGES_ERREUR, type CodeErreur } from "./challenge-messages";
+
 import {
-  empreinteReglement,
+  empreinteChallenge,
   periodesSeChevauchent,
   type CritereChallenge,
   type ProduitChallenge,
@@ -66,13 +68,20 @@ export async function lireEncartChallenge(aujourdhui: string): Promise<VueEncart
   };
 }
 
-/** Le règlement publié le plus récent, commencé à `aujourdhui` ; encore lisible après la fin. */
+/**
+ * Le règlement publié le plus récent, commencé à `aujourdhui` ; encore lisible après la fin ET
+ * après l'archivage (le texte fonde la prime : seul l'encart disparaît à l'archivage).
+ */
 export async function lireReglementChallenge(
   aujourdhui: string,
 ): Promise<VueReglementChallenge | null> {
   const c = await prisma.challengeApporteur.findFirst({
-    where: { statut: "publie", debutLe: { lte: deJour(aujourdhui) } },
-    orderBy: { debutLe: "desc" },
+    where: {
+      statut: { in: ["publie", "archive"] },
+      publieAt: { not: null },
+      debutLe: { lte: deJour(aujourdhui) },
+    },
+    orderBy: [{ debutLe: "desc" }, { publieAt: "desc" }],
     select: { titre: true, reglement: true, debutLe: true, finLe: true },
   });
   if (!c) return null;
@@ -166,7 +175,9 @@ export async function creerBrouillon(s: SaisieChallenge, auteur: string): Promis
   return c.id;
 }
 
-export type ResultatEcriture = { ok: true } | { ok: false; message: string };
+export type ResultatEcriture = { ok: true } | { ok: false; code: CodeErreur; message: string };
+
+const refus = (code: CodeErreur) => ({ ok: false, code, message: MESSAGES_ERREUR[code] }) as const;
 
 /** Modifie un brouillon, et seulement un brouillon : après publication, la règle est figée. */
 export async function modifierBrouillon(id: string, s: SaisieChallenge): Promise<ResultatEcriture> {
@@ -174,64 +185,69 @@ export async function modifierBrouillon(id: string, s: SaisieChallenge): Promise
     where: { id, statut: "brouillon" },
     data: donnees(s),
   });
-  return r.count === 1
-    ? { ok: true }
-    : {
-        ok: false,
-        message: "Ce challenge n'est plus un brouillon : sa règle ne peut plus être modifiée.",
-      };
+  return r.count === 1 ? { ok: true } : refus("pas_brouillon");
+}
+
+export interface OptionsPublication {
+  /** Jour civil de Paris du geste (« AAAA-MM-JJ »). */
+  aujourdhui: string;
+  /** Case « Je publie un challenge déjà commencé », revérifiée par l'action. */
+  confirmeDejaCommence: boolean;
 }
 
 /**
- * Publie un brouillon : fige la règle (empreinte du règlement), refuse un chevauchement avec un
- * challenge déjà publié du même produit. Transaction sérialisable : deux publications simultanées
- * ne passent pas toutes les deux.
+ * Publie un brouillon : fige la règle (empreinte de la règle complète), refuse une période déjà
+ * terminée, exige une confirmation si elle a déjà commencé, refuse un chevauchement avec un
+ * challenge déjà publié du même produit (les archivés sont ignorés : point à trancher avant le
+ * lot 7, non-cumul de deux primes). Transaction sérialisable : deux publications simultanées ne
+ * passent pas toutes les deux.
  */
 export async function publierChallenge(
   id: string,
   auteur: string,
   version: string,
+  options: OptionsPublication,
 ): Promise<ResultatEcriture> {
   return prisma.$transaction(
     async (tx) => {
       const c = await tx.challengeApporteur.findUnique({ where: { id } });
-      if (!c || c.statut !== "brouillon")
-        return { ok: false, message: "Seul un brouillon peut être publié." } as const;
+      if (!c || c.statut !== "brouillon") return refus("pas_publiable");
       // Ce que l'administrateur a relu doit être ce qui est figé.
-      if (c.majAt.toISOString() !== version)
-        return {
-          ok: false,
-          message: "Ce challenge vient d'être modifié : rechargez la page et relisez-le.",
-        } as const;
+      if (c.majAt.toISOString() !== version) return refus("modifie");
+      const moi = { debutLe: enJour(c.debutLe), finLe: enJour(c.finLe) };
+      if (moi.finLe < options.aujourdhui) return refus("termine");
+      if (moi.debutLe < options.aujourdhui && !options.confirmeDejaCommence)
+        return refus("deja_commence");
       const memes = await tx.challengeApporteur.findMany({
         where: { statut: "publie", produit: c.produit },
         select: { debutLe: true, finLe: true },
       });
-      const moi = { debutLe: enJour(c.debutLe), finLe: enJour(c.finLe) };
       if (
         memes.some((m) =>
           periodesSeChevauchent(moi, { debutLe: enJour(m.debutLe), finLe: enJour(m.finLe) }),
         )
       )
-        return {
-          ok: false,
-          message: "Un challenge déjà publié pour ce produit couvre une partie de cette période.",
-        } as const;
+        return refus("chevauche");
       const r = await tx.challengeApporteur.updateMany({
         where: { id, statut: "brouillon" },
         data: {
           statut: "publie",
           publieAt: new Date(),
           publiePar: auteur,
-          reglementSha256: empreinteReglement(c.reglement),
+          reglementSha256: empreinteChallenge({
+            titre: c.titre,
+            debutLe: moi.debutLe,
+            finLe: moi.finLe,
+            paiementJusquAu: c.paiementJusquAu ? enJour(c.paiementJusquAu) : null,
+            produit: c.produit as ProduitChallenge,
+            critere: c.critere as CritereChallenge,
+            seuil: c.seuil,
+            primeHtCents: c.primeHtCents,
+            reglement: c.reglement,
+          }),
         },
       });
-      return r.count === 1
-        ? ({ ok: true } as const)
-        : ({
-            ok: false,
-            message: "Ce challenge vient d'être modifié : rechargez la page.",
-          } as const);
+      return r.count === 1 ? ({ ok: true } as const) : refus("modifie");
     },
     { isolationLevel: "Serializable" },
   );
@@ -243,7 +259,5 @@ export async function archiverChallenge(id: string): Promise<ResultatEcriture> {
     where: { id, statut: "publie" },
     data: { statut: "archive" },
   });
-  return r.count === 1
-    ? { ok: true }
-    : { ok: false, message: "Seul un challenge publié peut être archivé." };
+  return r.count === 1 ? { ok: true } : refus("pas_archivable");
 }

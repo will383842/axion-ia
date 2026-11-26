@@ -49,3 +49,21 @@ Remplace #2315 (en conflit) : branche neuve `feat/apporteurs-challenges-v2` part
 - ⚠️ **`.github/` non modifié** (consigne) : la déclaration des deux interrupteurs dans la liste fermée de `.github/workflows/coolify-drapeau.yml`, mentionnée plus haut, est à reprendre à la main si #2315 l'avait ajoutée.
 - **Lockfile** : `pnpm-lock.yaml` inchangé.
 - **Vérifications** : `pnpm prisma:generate`, `pnpm typecheck` (vert), `eslint` sur les fichiers touchés (vert), `pnpm vitest run` sur `src/features/apporteurs-reseau`, `src/app/apporteur/dossier`, `admin-nav.test.ts`, les deux specs CI touchées : 131 fichiers, 1732 tests verts.
+
+## Tour 2 (relecture Opus, VERDICT-PR-2361)
+
+**Corrigé**
+
+1. **Couche données mordue** : `challenge-donnees.spec.ts` (prisma bouchonné qui enregistre les arguments) : filtre `statut: "brouillon"` (modification ET publication), `{ isolationLevel: "Serializable" }`, refus si `version` ne correspond pas, refus si un publié du même produit chevauche (bornes incluses), empreinte posée = `empreinteChallenge(règle)`. Mutations appliquées puis restaurées, toutes détectées : filtre brouillon de `modifierBrouillon` (1 échec), idem à la publication (1), `Serializable` retiré (1), contrôle de version neutralisé (1), chevauchement neutralisé (4).
+2. **Filtre de formules** : objectif imposé (« votre/vos objectif(s) », « objectif de / à atteindre / fixé »), « vous devez », « vous êtes tenu », « obligatoire », classement publié/hebdomadaire/mensuel, « premier / top du classement », « ne vous reste », « plus qu'un/une/N », `!` et `！`. `’` → `'` et espaces insécables (U+00A0, U+202F) → espace avant le test. Formules, pas mots isolés : « aucun objectif », « aucun classement » restent acceptés (testé). Cas ajoutés au `it.each` de `challenge-regles.spec.ts`. Le garde `challenges-invitation-libre.spec.ts` interdit le mot « classement » dans les fichiers de challenge : le filtre, qui nomme ce qu'il interdit, en est exempté pour ce seul mot.
+3. **Règlement d'un challenge archivé** : `lireReglementChallenge` lit `statut IN ('publie','archive')` avec `publieAt` non nul ; l'encart ne montre que les publiés en cours. Tests (données + `reglementVisible`).
+4. **Interrupteur espace** : `it.each(["TRUE","1"," true "])` → encart null et règlement 404.
+5. **Publication** : refus si `finLe` < jour de Paris ; si `debutLe` < aujourd'hui, case supplémentaire « Je publie un challenge déjà commencé » (affichée par la fiche, **revérifiée côté serveur**). Tests.
+6. **Empreinte** : SHA-256 d'une forme canonique JSON à clés ordonnées (titre, debutLe, finLe, paiementJusquAu, produit, critere, seuil, primeHtCents, reglement). `verifierEmpreinteChallenge(challenge)` exportée (pour le lot 7) et testée. La colonne `reglement_sha256` garde son type : **aucune migration** (rien n'est publié en prod).
+7. **`?retour=` / `?erreur=`** : codes traduits par une table fermée (`challenge-messages.ts`), code inconnu ou hérité (`toString`…) = rien d'affiché ; limité aux pages challenges. Test de rendu des deux pages.
+
+**⚠️ Point 7, À TRANCHER PAR WILL AVANT LE LOT 7 (non modifié)** : le contrôle de chevauchement ignore les challenges `archive` (chemin de correction documenté : « archivez-le et créez-en un nouveau »). Deux règles peuvent donc couvrir la même période pour le même produit ; si les droits du premier « restent acquis », un apporteur pourrait cumuler **deux primes pour les mêmes Journées**. Décision attendue : soit inclure les archivés (déjà publiés) dans le contrôle, soit écrire la règle de non-cumul avant le calcul de la prime.
+
+**Non traité (hors périmètre de la consigne)** : constat 9 (`.github/workflows/coolify-drapeau.yml`, validation de `cible` pour les deux interrupteurs) : pas le droit de toucher à `.github/`.
+
+**Vérifications** : `pnpm prisma:generate`, `pnpm typecheck` (vert), eslint et prettier sur les fichiers touchés, `pnpm vitest run` sur `src/features/apporteurs-reseau`, `src/app/apporteur`, `tests/unit/ci`, `src/lib/admin-nav.test.ts` : 272 fichiers, 2759 tests verts. `pnpm-lock.yaml` inchangé.

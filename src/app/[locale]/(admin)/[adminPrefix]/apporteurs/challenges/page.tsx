@@ -15,6 +15,7 @@ import {
   montantEnLettres,
   type EtatListe,
 } from "@/features/apporteurs-reseau/challenge-regles";
+import { messageErreur, messageRetour } from "@/features/apporteurs-reseau/challenge-messages";
 import { challengesConsoleActifs } from "@/features/apporteurs-reseau/interrupteur-challenges-console";
 import { peutEngager } from "@/server/auth/habilitations";
 import { gardePage } from "@/server/auth/garde-page";
@@ -66,14 +67,14 @@ export default async function ChallengesPage({ params, searchParams }: PageProps
           aucun décompte, aucun objectif individuel.
         </p>
       </AdminCard>
-      {sp.retour ? (
+      {messageRetour(sp.retour) ? (
         <p role="status" className="text-[color:var(--color-admin-success)]">
-          {sp.retour.slice(0, 300)}
+          {messageRetour(sp.retour)}
         </p>
       ) : null}
-      {sp.erreur ? (
+      {messageErreur(sp.erreur) ? (
         <p role="alert" className="text-[color:var(--color-admin-danger)]">
-          {sp.erreur.slice(0, 300)}
+          {messageErreur(sp.erreur)}
         </p>
       ) : null}
       {tous.length === 0 ? <p>Aucun challenge pour l&apos;instant.</p> : null}

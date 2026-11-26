@@ -129,9 +129,44 @@ export function validerSaisie(brut: Record<string, string | undefined>): Resulta
   };
 }
 
-/** Empreinte SHA-256 (hexadécimal) du règlement, posée à la publication. */
-export function empreinteReglement(reglement: string): string {
-  return createHash("sha256").update(reglement, "utf8").digest("hex");
+type RegleFigee = Pick<
+  SaisieChallenge,
+  | "titre"
+  | "debutLe"
+  | "finLe"
+  | "paiementJusquAu"
+  | "produit"
+  | "critere"
+  | "seuil"
+  | "primeHtCents"
+  | "reglement"
+>;
+
+/**
+ * Empreinte SHA-256 (hexadécimal) de la règle COMPLÈTE, posée à la publication : forme canonique
+ * (JSON à clés ordonnées) du titre, des dates, du produit, du critère, du seuil, de la prime et
+ * du règlement. Ce que l'encart affiche et ce que le calcul de la prime lira est couvert.
+ */
+export function empreinteChallenge(c: RegleFigee): string {
+  const canonique = JSON.stringify({
+    titre: c.titre,
+    debutLe: c.debutLe,
+    finLe: c.finLe,
+    paiementJusquAu: c.paiementJusquAu ?? null,
+    produit: c.produit,
+    critere: c.critere,
+    seuil: c.seuil,
+    primeHtCents: c.primeHtCents,
+    reglement: c.reglement,
+  });
+  return createHash("sha256").update(canonique, "utf8").digest("hex");
+}
+
+/** Vrai si l'empreinte enregistrée est celle de la règle telle qu'elle est lue maintenant. */
+export function verifierEmpreinteChallenge(
+  c: RegleFigee & { reglementSha256: string | null },
+): boolean {
+  return c.reglementSha256 !== null && c.reglementSha256 === empreinteChallenge(c);
 }
 
 /** Deux périodes (bornes incluses) se recouvrent-elles ? */
@@ -164,12 +199,15 @@ export function encartVisible(
   return c.statut === "publie" && c.debutLe <= aujourdhui && aujourdhui <= c.finLe;
 }
 
-/** La page du règlement : publié, à partir du premier jour (reste lisible après la fin). */
+/**
+ * La page du règlement : publié (ou archivé après publication), à partir du premier jour. Reste
+ * lisible après la fin et après l'archivage : c'est le texte qui fonde la prime.
+ */
 export function reglementVisible(
   c: { statut: StatutChallenge; debutLe: string },
   aujourdhui: string,
 ): boolean {
-  return c.statut === "publie" && c.debutLe <= aujourdhui;
+  return (c.statut === "publie" || c.statut === "archive") && c.debutLe <= aujourdhui;
 }
 
 const MOIS = [

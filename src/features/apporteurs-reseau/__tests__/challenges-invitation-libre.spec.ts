@@ -31,10 +31,14 @@ describe("challenges : invitation libre", () => {
       expect(lire(f), f).not.toMatch(/enqueueEmail|from "\.\/envois"|nodemailer|sendMail/);
   });
   it("aucun rang, aucun classement, aucun nombre de participants, aucun export", () => {
-    for (const f of challenge)
-      expect(lire(f).replace(/\/\*[\s\S]*?\*\/|\/\/.*$/gm, ""), f).not.toMatch(
-        /\brang\b|\bparticipants?\b|\bclassement\b|exporter|\/export\b/i,
-      );
+    for (const f of challenge) {
+      const code = lire(f).replace(/\/\*[\s\S]*?\*\/|\/\/.*$/gm, "");
+      // Le filtre de formules NOMME les classements qu'il interdit : seul « classement » y est permis.
+      const motif = f.endsWith("challenge-textes-interdits.ts")
+        ? /\brang\b|\bparticipants?\b|exporter|\/export\b/i
+        : /\brang\b|\bparticipants?\b|\bclassement\b|exporter|\/export\b/i;
+      expect(code, f).not.toMatch(motif);
+    }
   });
   it("le schéma n'a aucun champ « apporteurs concernés » ni seuil individuel", () => {
     const schema = readFileSync(join(AR, "..", "..", "..", "prisma", "schema.prisma"), "utf8");

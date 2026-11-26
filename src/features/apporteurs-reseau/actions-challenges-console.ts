@@ -12,6 +12,7 @@ import { redirect } from "next/navigation";
 import * as Sentry from "@sentry/nextjs";
 
 import { auth } from "@/auth";
+import { jourParis } from "./autofacture-donnees";
 import { adminPath } from "@/lib/admin-path";
 import { prisma } from "@/lib/prisma";
 import { peutEngager } from "@/server/auth/habilitations";
@@ -23,6 +24,7 @@ import {
   publierChallenge,
 } from "./challenge-donnees";
 import { validerSaisie } from "./challenge-regles";
+import { MESSAGES_ERREUR, type CodeErreur } from "./challenge-messages";
 import { challengesConsoleActifs } from "./interrupteur-challenges-console";
 
 export type EtatFormulaireChallenge =
@@ -41,15 +43,16 @@ const CHAMPS_CHALLENGE = [
   "reglement",
 ] as const;
 
-type Session = { ok: true; adminId: string } | { ok: false; message: string };
+type Session = { ok: true; adminId: string } | { ok: false; code: CodeErreur; message: string };
 
 async function sessionArgent(): Promise<Session> {
-  if (!challengesConsoleActifs()) return { ok: false, message: "Les challenges sont éteints." };
+  if (!challengesConsoleActifs())
+    return { ok: false, code: "eteint", message: MESSAGES_ERREUR.eteint };
   const session = await auth();
-  if (!session?.user?.id) return { ok: false, message: "Session expirée : reconnectez-vous." };
+  if (!session?.user?.id) return { ok: false, code: "session", message: MESSAGES_ERREUR.session };
   const role = (session.user as { role?: string }).role;
   if (!peutEngager(role, "facturer"))
-    return { ok: false, message: "Seul un administrateur peut gérer les challenges." };
+    return { ok: false, code: "role", message: MESSAGES_ERREUR.role };
   return { ok: true, adminId: session.user.id };
 }
 
@@ -113,57 +116,54 @@ export async function enregistrerBrouillonAction(
     return { etat: "erreur", message: "Enregistrement impossible. Réessayez.", valeurs };
   }
   revalidatePath(liste());
-  redirect(
-    `${liste()}/${cible}?retour=${encodeURIComponent("Brouillon enregistré. Rien n'est visible des apporteurs.")}`,
-  );
+  redirect(`${liste()}/${cible}?retour=brouillon`);
 }
 
 /** Publication : trois cases obligatoires, vérifiées ICI (jamais seulement par le navigateur). */
 export async function publierChallengeAction(fd: FormData): Promise<void> {
   const id = texte(fd, "id");
-  const retourne = (m: string): never =>
-    redirect(`${liste()}/${UUID.test(id) ? id : ""}?erreur=${encodeURIComponent(m)}`);
+  const retourne = (code: CodeErreur): never =>
+    redirect(`${liste()}/${UUID.test(id) ? id : ""}?erreur=${code}`);
   const s = await sessionArgent();
-  if (!s.ok) return retourne(s.message);
-  if (!UUID.test(id))
-    return redirect(`${liste()}?erreur=${encodeURIComponent("Challenge inconnu.")}`);
-  if (!["case1", "case2", "case3"].every((k) => texte(fd, k) === "oui"))
-    return retourne("Cochez les trois cases pour publier.");
+  if (!s.ok) return retourne(s.code);
+  if (!UUID.test(id)) return redirect(`${liste()}?erreur=inconnu`);
+  if (!["case1", "case2", "case3"].every((k) => texte(fd, k) === "oui")) return retourne("cases");
   // Le `redirect` lève une exception : il reste HORS du `try`, sinon le `catch` l'avalerait.
-  let message: string | null = null;
+  let code: CodeErreur | null = null;
   try {
-    const r = await publierChallenge(id, s.adminId, texte(fd, "version"));
+    const r = await publierChallenge(id, s.adminId, texte(fd, "version"), {
+      aujourdhui: jourParis(new Date()),
+      confirmeDejaCommence: texte(fd, "case4") === "oui",
+    });
     if (r.ok) await tracer("challenge_apporteur.publie", id, s.adminId, {});
-    else message = r.message;
+    else code = r.code;
   } catch (err) {
     Sentry.captureException(err, { tags: { action: "apporteurs-challenge-publier" } });
-    message = "Publication impossible. Réessayez.";
+    code = "publication";
   }
-  if (message) return retourne(message);
+  if (code) return retourne(code);
   revalidatePath(liste());
-  redirect(
-    `${liste()}/${id}?retour=${encodeURIComponent("Challenge publié. Son règlement ne peut plus être modifié.")}`,
-  );
+  redirect(`${liste()}/${id}?retour=publie`);
 }
 
 export async function archiverChallengeAction(fd: FormData): Promise<void> {
   const id = texte(fd, "id");
-  const vers = (cle: "erreur" | "retour", m: string, avecId = false): never =>
-    redirect(`${liste()}${avecId ? `/${id}` : ""}?${cle}=${encodeURIComponent(m)}`);
+  const vers = (cle: "erreur" | "retour", code: string, avecId = false): never =>
+    redirect(`${liste()}${avecId ? `/${id}` : ""}?${cle}=${code}`);
   const s = await sessionArgent();
-  if (!s.ok) return vers("erreur", s.message);
+  if (!s.ok) return vers("erreur", s.code);
   if (!UUID.test(id) || texte(fd, "confirmer") !== "oui")
-    return vers("erreur", "Confirmez d'abord l'archivage.");
-  let message: string | null = null;
+    return vers("erreur", "confirmer_archivage");
+  let code: CodeErreur | null = null;
   try {
     const r = await archiverChallenge(id);
     if (r.ok) await tracer("challenge_apporteur.archive", id, s.adminId, {});
-    else message = r.message;
+    else code = r.code;
   } catch (err) {
     Sentry.captureException(err, { tags: { action: "apporteurs-challenge-archiver" } });
-    message = "Archivage impossible. Réessayez.";
+    code = "archivage";
   }
-  if (message) return vers("erreur", message, true);
+  if (code) return vers("erreur", code, true);
   revalidatePath(liste());
-  return vers("retour", "Challenge archivé.");
+  return vers("retour", "archive");
 }

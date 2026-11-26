@@ -23,7 +23,19 @@ const FORMULES: ReadonlyArray<{ motif: RegExp; libelle: string }> = [
   { motif: /\bd[ée]p[êe]chez/i, libelle: "« dépêchez-vous »" },
   { motif: /\bvous [êe]tes [àa] \d+/i, libelle: "« vous êtes à N »" },
   { motif: /\b\d+ sur \d+\b/i, libelle: "« N sur M » (compteur de progression)" },
-  { motif: /!/, libelle: "un point d'exclamation" },
+  { motif: /[!！]/, libelle: "un point d'exclamation" },
+  { motif: /\bne vous reste\b/i, libelle: "« ne vous reste »" },
+  { motif: /\bplus qu'\s*(une?|\d+)/i, libelle: "« plus qu'un / qu'une / qu'N »" },
+  { motif: /\b(votre|vos|ton|tes) objectifs?\b/i, libelle: "« votre objectif » (objectif imposé)" },
+  { motif: /\bobjectif (de|à atteindre|fixé)/i, libelle: "« objectif de / à atteindre / fixé »" },
+  { motif: /\bvous devez\b/i, libelle: "« vous devez » (obligation)" },
+  { motif: /\bvous [êe]tes tenu/i, libelle: "« vous êtes tenu » (obligation)" },
+  { motif: /\bobligatoire\b/i, libelle: "« obligatoire »" },
+  {
+    motif: /\bclassement (publié|hebdomadaire|mensuel)/i,
+    libelle: "un classement publié, hebdomadaire ou mensuel",
+  },
+  { motif: /\b(1er|premier|top) du classement/i, libelle: "« premier / top du classement »" },
   { motif: /\bGrenoble\b/i, libelle: "« Grenoble »" },
   { motif: /\baucun gain garanti\b/i, libelle: "« Aucun gain garanti »" },
   { motif: /\bsans discussion\b/i, libelle: "« sans discussion »" },
@@ -31,6 +43,8 @@ const FORMULES: ReadonlyArray<{ motif: RegExp; libelle: string }> = [
 ];
 
 /** Les formules interdites trouvées dans `texte` (liste vide : le texte passe). */
-export function formulesInterdites(texte: string): string[] {
+export function formulesInterdites(brut: string): string[] {
+  // Apostrophe typographique → droite ; espaces insécables (fine ou non) → espace.
+  const texte = brut.replace(/[’‘]/g, "'").replace(/[\u00a0\u202f]/g, " ");
   return FORMULES.filter((f) => f.motif.test(texte)).map((f) => f.libelle);
 }

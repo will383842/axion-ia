@@ -1,10 +1,11 @@
 // Challenges d'apporteurs : règles pures, filtre de formules, textes. Données FICTIVES.
+import { createHash } from "node:crypto";
 import { readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
 
 import {
   encartVisible,
-  empreinteReglement,
+  empreinteChallenge,
   etatDansLaListe,
   eurosVersCentimes,
   jourValide,
@@ -13,6 +14,7 @@ import {
   phrasesDeLEncart,
   reglementVisible,
   validerSaisie,
+  verifierEmpreinteChallenge,
 } from "../challenge-regles";
 import { formulesInterdites } from "../challenge-textes-interdits";
 
@@ -36,6 +38,8 @@ describe("filtre de formules de pression", () => {
     expect(formulesInterdites("Le dernier jour de paiement client est le 31 mars 2027.")).toEqual(
       [],
     );
+    expect(formulesInterdites("Aucun objectif individuel n'est fixé.")).toEqual([]);
+    expect(formulesInterdites("Il n'y a aucun classement, ni publié ni affiché.")).toEqual([]);
     expect(formulesInterdites("Une Journée ne compte plus que si elle est payée.")).toEqual([]);
   });
   it.each([
@@ -53,6 +57,27 @@ describe("filtre de formules de pression", () => {
     "Aucun gain garanti",
     "sans discussion",
     "5 fois plus",
+    "Votre objectif : dix Journées.",
+    "Vos objectifs sont fixés.",
+    "Un objectif de dix Journées",
+    "Objectif à atteindre : dix",
+    "Vous devez atteindre ce seuil.",
+    "Vous êtes tenu de signer.",
+    "Participation obligatoire",
+    "Classement publié chaque semaine.",
+    "Classement hebdomadaire",
+    "Classement mensuel",
+    "Le premier du classement gagne",
+    "Le top du classement",
+    "Il ne vous reste que trois jours.",
+    "Plus qu’une semaine",
+    "Plus qu'un jour",
+    "Plus qu'3 jours",
+    "Plus qu\u2019une semaine",
+    "Plus qu'\u00a0une semaine",
+    "Super prime ！",
+    "Super prime\u202f!",
+    "Il\u00a0vous\u00a0reste 3 jours",
   ])("refuse : %s", (t) => {
     expect(formulesInterdites(t).length).toBeGreaterThan(0);
   });
@@ -124,10 +149,38 @@ describe("dates et montants", () => {
     expect(periodesSeChevauchent(a, { debutLe: "2026-12-31", finLe: "2027-01-10" })).toBe(true);
     expect(periodesSeChevauchent(a, { debutLe: "2027-01-01", finLe: "2027-01-10" })).toBe(false);
   });
-  it("l'empreinte du règlement est un SHA-256 stable", () => {
-    expect(empreinteReglement("abc")).toBe(
-      "ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad",
-    );
+  const REGLE = {
+    titre: "T",
+    debutLe: "2026-12-01",
+    finLe: "2026-12-31",
+    paiementJusquAu: null,
+    produit: "journee-ia" as const,
+    critere: "facturees_dans_la_periode" as const,
+    seuil: 10,
+    primeHtCents: 200_000,
+    reglement: "R",
+  };
+  it("l'empreinte couvre la règle complète, en forme canonique", () => {
+    const canonique =
+      '{"titre":"T","debutLe":"2026-12-01","finLe":"2026-12-31","paiementJusquAu":null,"produit":"journee-ia","critere":"facturees_dans_la_periode","seuil":10,"primeHtCents":200000,"reglement":"R"}';
+    expect(empreinteChallenge(REGLE)).toBe(createHash("sha256").update(canonique).digest("hex"));
+  });
+  it.each([
+    ["titre", { titre: "U" }],
+    ["debutLe", { debutLe: "2026-12-02" }],
+    ["finLe", { finLe: "2026-12-30" }],
+    ["paiementJusquAu", { paiementJusquAu: "2027-01-31" }],
+    ["seuil", { seuil: 11 }],
+    ["primeHtCents", { primeHtCents: 200_001 }],
+    ["reglement", { reglement: "S" }],
+  ])("l'empreinte change quand %s change", (_n, modif) => {
+    expect(empreinteChallenge({ ...REGLE, ...modif })).not.toBe(empreinteChallenge(REGLE));
+  });
+  it("verifierEmpreinteChallenge : vrai si intacte, faux si altérée ou absente", () => {
+    const sha = empreinteChallenge(REGLE);
+    expect(verifierEmpreinteChallenge({ ...REGLE, reglementSha256: sha })).toBe(true);
+    expect(verifierEmpreinteChallenge({ ...REGLE, seuil: 1, reglementSha256: sha })).toBe(false);
+    expect(verifierEmpreinteChallenge({ ...REGLE, reglementSha256: null })).toBe(false);
   });
 });
 
@@ -145,6 +198,7 @@ describe("visibilité (jours civils de Paris, bornes incluses)", () => {
     expect(reglementVisible(c, "2026-11-30")).toBe(false);
     expect(reglementVisible(c, "2027-02-01")).toBe(true);
     expect(reglementVisible({ ...c, statut: "brouillon" }, "2026-12-10")).toBe(false);
+    expect(reglementVisible({ ...c, statut: "archive" }, "2027-02-01")).toBe(true);
   });
   it("classement de la liste", () => {
     expect(etatDansLaListe({ ...c, statut: "brouillon" }, "2026-12-10")).toBe("brouillon");

@@ -148,22 +148,20 @@ describe("création et publication", () => {
     expect(h.publier).not.toHaveBeenCalled();
   });
   it("un refus métier est montré tel quel, sans passer par Sentry", async () => {
-    h.publier.mockResolvedValueOnce({
-      ok: false,
-      message: "Un challenge déjà publié couvre cette période.",
-    } as never);
+    h.publier.mockResolvedValueOnce({ ok: false, code: "chevauche", message: "x" } as never);
     const r = await lancer(
       publierChallengeAction(
         fd({ id: ID, case1: "oui", case2: "oui", case3: "oui", version: "v1" }),
       ),
     );
-    expect(decodeURIComponent(r)).toContain("Un challenge déjà publié couvre cette période.");
+    expect(r).toContain("erreur=chevauche");
     h.archiver.mockResolvedValueOnce({
       ok: false,
-      message: "Seul un challenge publié peut être archivé.",
+      code: "pas_archivable",
+      message: "x",
     } as never);
     const a = await lancer(archiverChallengeAction(fd({ id: ID, confirmer: "oui" })));
-    expect(decodeURIComponent(a)).toContain("Seul un challenge publié peut être archivé.");
+    expect(a).toContain("erreur=pas_archivable");
     expect(h.journal).not.toHaveBeenCalled();
   });
 });
@@ -181,6 +179,24 @@ describe("version relue", () => {
         }),
       ),
     );
-    expect(h.publier).toHaveBeenCalledWith(ID, "adm-1", "2026-11-25T10:00:00.000Z");
+    expect(h.publier).toHaveBeenCalledWith(
+      ID,
+      "adm-1",
+      "2026-11-25T10:00:00.000Z",
+      expect.objectContaining({ confirmeDejaCommence: false }),
+    );
+  });
+  it("la case « déjà commencé » est transmise, revérifiée côté serveur", async () => {
+    await lancer(
+      publierChallengeAction(
+        fd({ id: ID, case1: "oui", case2: "oui", case3: "oui", case4: "oui", version: "v" }),
+      ),
+    );
+    expect(h.publier).toHaveBeenLastCalledWith(
+      ID,
+      "adm-1",
+      "v",
+      expect.objectContaining({ confirmeDejaCommence: true, aujourdhui: expect.any(String) }),
+    );
   });
 });

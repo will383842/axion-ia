@@ -13,12 +13,14 @@ import {
   archiverChallengeAction,
   publierChallengeAction,
 } from "@/features/apporteurs-reseau/actions-challenges-console";
+import { jourParis } from "@/features/apporteurs-reseau/autofacture-donnees";
 import { lireChallenge } from "@/features/apporteurs-reseau/challenge-donnees";
 import {
   LIBELLE_CRITERE,
   LIBELLE_PRODUIT,
   montantEnLettres,
 } from "@/features/apporteurs-reseau/challenge-regles";
+import { messageErreur, messageRetour } from "@/features/apporteurs-reseau/challenge-messages";
 import { challengesConsoleActifs } from "@/features/apporteurs-reseau/interrupteur-challenges-console";
 import { peutEngager } from "@/server/auth/habilitations";
 import { gardePage } from "@/server/auth/garde-page";
@@ -43,6 +45,7 @@ export default async function ChallengePage({ params, searchParams }: PageProps)
   if (!c) notFound();
   const peutEcrire = peutEngager(acces.role, "facturer");
   const sp = await searchParams;
+  const aujourdhui = jourParis(new Date());
   const retour = `/fr/${adminPrefix}/apporteurs/challenges`;
 
   return (
@@ -56,14 +59,14 @@ export default async function ChallengePage({ params, searchParams }: PageProps)
           </Link>
         }
       />
-      {sp.retour ? (
+      {messageRetour(sp.retour) ? (
         <p role="status" className="text-[color:var(--color-admin-success)]">
-          {sp.retour.slice(0, 300)}
+          {messageRetour(sp.retour)}
         </p>
       ) : null}
-      {sp.erreur ? (
+      {messageErreur(sp.erreur) ? (
         <p role="alert" className="text-[color:var(--color-admin-danger)]">
-          {sp.erreur.slice(0, 300)}
+          {messageErreur(sp.erreur)}
         </p>
       ) : null}
 
@@ -122,6 +125,12 @@ export default async function ChallengePage({ params, searchParams }: PageProps)
                 <input type="checkbox" name="case3" value="oui" required />
                 <span>Les conditions sont les mêmes pour tous les apporteurs.</span>
               </label>
+              {c.debutLe < aujourdhui ? (
+                <label className="flex items-start gap-2">
+                  <input type="checkbox" name="case4" value="oui" required />
+                  <span>Je publie un challenge déjà commencé.</span>
+                </label>
+              ) : null}
               <div>
                 <button type="submit" className="admin-button-primary">
                   Publier le challenge
