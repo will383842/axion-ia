@@ -60,7 +60,7 @@ export interface VilleServiceCopyLocale {
    * 4-6 raisons spécifiques pourquoi Axion-IA à cette ville × service
    * (data INSEE locale + secteurs B2B + cas clients secteurs présents).
    * Ex pour audit Paris : "Pôle prioritaire 5j moyenne kick-off",
-   * "Frais déplacement intra-Paris inclus", "Tissu PME/ETI 215K entreprises", etc.
+   * "Tissu PME/ETI 215K entreprises", etc.
    */
   whyHere: ReadonlyArray<string>;
   /**

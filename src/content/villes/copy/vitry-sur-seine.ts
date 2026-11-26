@@ -134,7 +134,7 @@ export const VITRY_SUR_SEINE_COPY: VilleCopy = {
           },
           {
             q: "Vos formations sont-elles éligibles aux fonds de formation ?",
-            a: "Nos formations sont facturées en direct sur devis HT et s'intègrent dans votre plan de développement des compétences. Votre service RH ou comptable peut les traiter comme une prestation de montée en compétences. Le devis détaille le format, le nombre de participants et les objectifs. Aucun surcoût n'est appliqué pour le déplacement à Vitry-sur-Seine.",
+            a: "Nos formations sont facturées en direct sur devis HT et s'intègrent dans votre plan de développement des compétences. Votre service RH ou comptable peut les traiter comme une prestation de montée en compétences. Le devis détaille le format, le nombre de participants et les objectifs.",
           },
           {
             q: "Comment traitez-vous la conformité RGPD pendant la formation ?",
@@ -142,7 +142,7 @@ export const VITRY_SUR_SEINE_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Créneau garanti dès la confirmation de réservation. En cas de problème technique de notre fait, la session est reportée et compensée. L'objectif est l'autonomie : si vos collaborateurs ne sont pas à l'aise le lendemain matin sur les outils installés, une séance de remédiation est prévue. Vocabulaire et démos ajustés à votre secteur vitriot — industrie chimique, R&D, construction, commerce ou santé — sans session générique recyclée. Aucun surcoût de déplacement à Vitry-sur-Seine, hébergement des données en UE et prise en compte du RGPD intégrés à chaque recommandation.",
+          "Créneau garanti dès la confirmation de réservation. En cas de problème technique de notre fait, la session est reportée et compensée. L'objectif est l'autonomie : si vos collaborateurs ne sont pas à l'aise le lendemain matin sur les outils installés, une séance de remédiation est prévue. Vocabulaire et démos ajustés à votre secteur vitriot — industrie chimique, R&D, construction, commerce ou santé — sans session générique recyclée. Hébergement des données en UE et prise en compte du RGPD intégrés à chaque recommandation.",
       },
       en: {
         hero: "Les formations IA en entreprise d'Axion-IA à Vitry-sur-Seine se déroulent sur site, dans vos locaux des Ardoines, du Port-à-l'Anglais ou du centre-ville. Vos collaborateurs ne repartent pas avec un support de slides : ils repartent avec des outils IA installés sur leur poste et configurés pour leur travail réel — veille documentaire en R&D, traitement d'emails, rédaction de fiches techniques, suivi qualité. Williams se déplace pour calibrer chaque session sur votre secteur dominant — industrie chimique et pharmaceutique, recherche scientifique, construction ou commerce — avec des démos construites sur vos propres documents anonymisés. Formats de la demi-journée à deux jours, de la TPE vitriote au comité de direction.",
@@ -228,7 +228,7 @@ export const VITRY_SUR_SEINE_COPY: VilleCopy = {
           },
           {
             q: "Vos formations sont-elles éligibles aux fonds de formation ?",
-            a: "Nos formations sont facturées en direct sur devis HT et s'intègrent dans votre plan de développement des compétences. Votre service RH ou comptable peut les traiter comme une prestation de montée en compétences. Le devis détaille le format, le nombre de participants et les objectifs. Aucun surcoût n'est appliqué pour le déplacement à Vitry-sur-Seine.",
+            a: "Nos formations sont facturées en direct sur devis HT et s'intègrent dans votre plan de développement des compétences. Votre service RH ou comptable peut les traiter comme une prestation de montée en compétences. Le devis détaille le format, le nombre de participants et les objectifs.",
           },
           {
             q: "Comment traitez-vous la conformité RGPD pendant la formation ?",
@@ -236,7 +236,7 @@ export const VITRY_SUR_SEINE_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Créneau garanti dès la confirmation de réservation. En cas de problème technique de notre fait, la session est reportée et compensée. L'objectif est l'autonomie : si vos collaborateurs ne sont pas à l'aise le lendemain matin sur les outils installés, une séance de remédiation est prévue. Vocabulaire et démos ajustés à votre secteur vitriot — industrie chimique, R&D, construction, commerce ou santé — sans session générique recyclée. Aucun surcoût de déplacement à Vitry-sur-Seine, hébergement des données en UE et prise en compte du RGPD intégrés à chaque recommandation.",
+          "Créneau garanti dès la confirmation de réservation. En cas de problème technique de notre fait, la session est reportée et compensée. L'objectif est l'autonomie : si vos collaborateurs ne sont pas à l'aise le lendemain matin sur les outils installés, une séance de remédiation est prévue. Vocabulaire et démos ajustés à votre secteur vitriot — industrie chimique, R&D, construction, commerce ou santé — sans session générique recyclée. Hébergement des données en UE et prise en compte du RGPD intégrés à chaque recommandation.",
       },
     },
     sitesWeb: {
@@ -418,7 +418,7 @@ export const VITRY_SUR_SEINE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Quels sont les tarifs d'une intervention IA à Vitry-sur-Seine ?",
-      a: "Les tarifs Axion-IA sont publics : Audit sur place (4h) à partir de {{price:audit-flash|flat}}, intervention collective à partir de {{price:intervention-4h|flat}}, implémentation à partir de {{price:intervention-dirigeants|flat}}, accompagnement 1-to-1 dirigeant à partir de {{price:intervention-dirigeants|flat}}. Aucun surcoût lié au déplacement à Vitry-sur-Seine n'est appliqué — consultez la grille complète sur le site.",
+      a: "Les tarifs Axion-IA sont publics : Audit sur place (4h) à partir de {{price:audit-flash|flat}}, intervention collective à partir de {{price:intervention-4h|flat}}, implémentation à partir de {{price:intervention-dirigeants|flat}}, accompagnement 1-to-1 dirigeant à partir de {{price:intervention-dirigeants|flat}}.",
     },
     {
       q: "Axion-IA se déplace-t-il réellement sur site à Vitry-sur-Seine ?",

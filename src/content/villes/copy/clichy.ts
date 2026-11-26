@@ -222,7 +222,7 @@ export const CLICHY_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Detailed quote from 24 to 48 hours depending on complexity, scope and deliverables set in writing before any start. UX/UI and mobile design, multi-CMS e-commerce and AI bricks built to measure. EU hosting by default, GDPR compliance, full client ownership of code and data. Kick-off and acceptance in person in Clichy (rue Martre, rue Marc Bloch, Écoquartier du Bac, Intencity incubator) or the inner ring; travel costs, if any, billed separately. On delivery, your team is trained and autonomous — no vendor lock-in, no imposed dependence.",
+          "Detailed quote from 24 to 48 hours depending on complexity, scope and deliverables set in writing before any start. UX/UI and mobile design, multi-CMS e-commerce and AI bricks built to measure. EU hosting by default, GDPR compliance, full client ownership of code and data. Kick-off and acceptance in person in Clichy (rue Martre, rue Marc Bloch, Écoquartier du Bac, Intencity incubator) or the inner ring. On delivery, your team is trained and autonomous — no vendor lock-in, no imposed dependence.",
       },
     },
   },

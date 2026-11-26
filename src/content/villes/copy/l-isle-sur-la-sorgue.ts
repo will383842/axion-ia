@@ -242,7 +242,7 @@ export const L_ISLE_SUR_LA_SORGUE_COPY: VilleCopy = {
     },
     {
       q: "Axion-IA intervient-il dans les communes autour de L'Isle-sur-la-Sorgue ?",
-      a: "Oui. Nous nous déplaçons également à Avignon, Cavaillon, Carpentras et dans le reste du Comtat Venaissin pour des prestations sur site, sans surcoût caché.",
+      a: "Oui. Nous nous déplaçons également à Avignon, Cavaillon, Carpentras et dans le reste du Comtat Venaissin pour des prestations sur site.",
     },
     {
       q: "Vos solutions respectent-elles le RGPD à L'Isle-sur-la-Sorgue ?",

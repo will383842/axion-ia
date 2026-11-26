@@ -65,7 +65,7 @@ export const TRITH_SAINT_LEGER_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Trith-Saint-Léger ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Coûts de déplacement séparés du forfait, tarifs transparents.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Tarifs transparents.",
     },
   ],
 };

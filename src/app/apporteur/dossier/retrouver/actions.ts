@@ -10,6 +10,7 @@
 //   · rien pour un dossier refusé ou résilié (le lien mènerait à une page neutre) ;
 //   · une fiche RETIRÉE reçoit son lien : son espace reste ouvert au dépôt des attestations.
 
+import { argentEnJeu } from "@/features/apporteurs-reseau/retrait";
 import { z } from "zod";
 
 import { envoyer } from "@/features/apporteurs-reseau/envois";
@@ -68,7 +69,13 @@ export async function demanderLienEspace(
     where: { emailHash: empreinte },
     select: { id: true, prenom: true, statut: true, versionLien: true, email: true },
   });
-  if (fiche && etatDeLaPage(fiche.statut) !== "neutre") {
+  // B1 bis (lot L1b) : un résilié dont de l'argent est encore en jeu retrouve son espace
+  // (mode restreint) ; sans argent, rien.
+  if (
+    fiche &&
+    (etatDeLaPage(fiche.statut) !== "neutre" ||
+      (fiche.statut === "resilie" && (await argentEnJeu(fiche.id))))
+  ) {
     const lien = urlDossier(fiche.id, fiche.versionLien);
     // Relecture sécurité (a1) : l'envoi part à l'adresse ENREGISTRÉE sur la fiche, jamais à
     // celle tapée dans le formulaire (même empreinte ne vaut pas même adresse).

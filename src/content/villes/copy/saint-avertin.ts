@@ -65,7 +65,7 @@ export const SAINT_AVERTIN_COPY: VilleCopy = {
     },
     {
       q: "Comment accéder à Saint-Avertin ?",
-      a: "Paris à 1h15 TGV (gare Saint-Pierre-des-Corps), puis 15 min. Consultants sur site Tours Métropole. Frais de déplacement en sus.",
+      a: "Paris à 1h15 TGV (gare Saint-Pierre-des-Corps), puis 15 min. Consultants sur site Tours Métropole.",
     },
   ],
 };
