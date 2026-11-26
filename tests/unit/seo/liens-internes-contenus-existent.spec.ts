@@ -66,9 +66,8 @@ function routeExiste(cible: string): boolean {
 // Fichiers dont les `href` visent la console admin (relatifs au préfixe admin).
 const EXCLUS = new Set(["src/content/imprimes.ts"]);
 
-// Morts connus dans le périmètre d'une autre PR (voir docs/rapports/liens-2026-11-26.md, section 3).
-// `/sites-web` n'existe pas (bonne cible : `/sites-web-augmentes`) ; donnée non affichée aujourd'hui.
-const MORTS_CONNUS = new Set(["src/content/careers/categories.ts → /sites-web"]);
+// Morts connus tolérés (vide : le dernier, `/sites-web` dans careers/categories.ts, est corrigé).
+const MORTS_CONNUS = new Set<string>();
 
 const MOTIF_LIEN =
   /(?:\b\w*[Hh]ref(?!En\b)\w*\s*[:=]\s*\{?\s*["'`]|\]\()(\/(?:fr\/)?[a-z0-9][A-Za-z0-9_\-/.]*)(?:[#?][^"'`)\s]*)?["'`)]/g;
