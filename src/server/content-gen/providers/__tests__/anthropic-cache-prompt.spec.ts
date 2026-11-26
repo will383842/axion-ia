@@ -99,12 +99,25 @@ describe("cache de prompt : bloc système", () => {
 });
 
 describe("cache de prompt : coût", () => {
-  it("création = 1,25 × le prix d'entrée, lecture = 0,1 × (Sonnet et Opus 5.5)", () => {
+  it("création = 1,25 × l'entrée ; lecture au tarif du dépôt (Sonnet 0,2 $/M, Opus 0,2 $/M)", () => {
     for (const modele of ["claude-sonnet-5-5", "claude-opus-5-5"]) {
       const entree = computeCost(modele, M, 0, 0, 0);
       expect(computeCost(modele, 0, 0, 0, M)).toBeCloseTo(1.25 * entree, 10);
-      expect(computeCost(modele, 0, 0, M, 0)).toBeCloseTo(0.1 * entree, 10);
+      // Lecture : jamais sous le tarif officiel (marge côté Sonnet), jamais au-dessus de l'entrée.
+      expect(computeCost(modele, 0, 0, M, 0)).toBeCloseTo(0.2, 10);
     }
+  });
+
+  it("Opus 5.5 : l'usage de cache est compté dans le coût de l'appel", async () => {
+    configModel = "claude-opus-5-5";
+    create.mockImplementation(async () =>
+      fluxAvecUsage(
+        { input_tokens: 500, cache_creation_input_tokens: 2000, cache_read_input_tokens: 4000 },
+        1000,
+      )(),
+    );
+    const r = await anthropicProvider.generate(req);
+    expect(r.costUsd).toBeCloseTo((500 * 4 + 2000 * 5 + 4000 * 0.2 + 1000 * 20) / M, 10);
   });
 
   it("l'usage renvoyé (création) est compté dans le coût de l'appel", async () => {

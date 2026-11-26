@@ -58,9 +58,7 @@ const PRICING: Record<
   "claude-opus-5-5": {
     input: 4.0 / 1_000_000,
     output: 20.0 / 1_000_000,
-    // Lecture du cache = 0,1 × le prix d'entrée (comme Sonnet) : jamais en dessous, les
-    // plafonds en dollars se tiennent sur ce chiffre.
-    cacheRead: 0.4 / 1_000_000,
+    cacheRead: 0.2 / 1_000_000,
     cacheWrite: 5.0 / 1_000_000,
   },
   "claude-sonnet-5-5": {
