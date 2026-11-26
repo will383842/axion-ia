@@ -14,11 +14,13 @@
 import {
   CONDITION_GARANTIE,
   DELAI_RAPPORT_JOURS_OUVRES,
+  GARANTIE_PHRASE,
   JETON_PRIX,
   MULTIPLE_GARANTIE,
   remplacerJetons,
   seuilGarantieEur,
 } from "@/content/journee-ia-commun";
+import { JOURNEE_IA_TIER } from "@/content/pricing";
 import { JETON_PRIX_JOURNEE_IA } from "../brand/consigne-prix";
 
 export interface InterditJourneeIA {
@@ -98,6 +100,41 @@ export function construireFicheJourneeIA(): string {
     `- ${CONDITION_GARANTIE} Citer cette condition chaque fois que la garantie est citée.`,
     "- Pour le paiement, la réservation et les modalités contractuelles : renvoyer aux CGV et au rendez-vous avec l'équipe.",
   ].join("\n");
+}
+
+/**
+ * Faits de RÉFÉRENCE pour le juge de fidélité (relecture, pas rédaction) : même source
+ * unique que `construireFicheJourneeIA`, sans consigne de rédaction ni jeton. Lève si une
+ * donnée est illisible (le contrôle échoue alors fermé : relecture humaine).
+ * Zone / acompte : formulés d'après les pages et les CGV (`legal.ts`, art. 47.6 ; le déplacement est un sujet interdit,
+ * décision du dirigeant) ; le nom de la ville du siège ne s'écrit jamais.
+ */
+export function faitsJourneeIAPourRelecture(): string {
+  if (JOURNEE_IA_TIER.priceFlat == null) {
+    throw new Error("prix de la Journée IA illisible (priceFlat absent)");
+  }
+  seuilGarantieEur();
+  const prix = remplacerJetons(JETON_PRIX);
+  if (!/\d/.test(prix)) throw new Error("prix de la Journée IA non affichable");
+  if (!Number.isInteger(MULTIPLE_GARANTIE) || MULTIPLE_GARANTIE <= 0) {
+    throw new Error("multiple de la garantie illisible");
+  }
+  if (!GARANTIE_PHRASE.includes(`${MULTIPLE_GARANTIE} fois`)) {
+    throw new Error("phrase de garantie incohérente avec le multiple");
+  }
+  const texte = [
+    "FAITS DU SITE SUR LA JOURNÉE IA (source unique ; ne s'appliquent qu'aux passages de l'article qui parlent de la Journée IA, pas aux autres offres, formations ou au diagnostic en visio) :",
+    `- Prix : ${prix}. Prix unique et SEUL prix public : tout autre montant, remise, prix barré ou « à partir de » est une contradiction.`,
+    `- Garantie : ${GARANTIE_PHRASE} Elle porte sur les gains IDENTIFIÉS dans le rapport, jamais sur des gains obtenus. Aucun autre multiple que ${MULTIPLE_GARANTIE} fois le prix HT.`,
+    `- ${CONDITION_GARANTIE} La présence du décideur est exigée pendant l'audit.`,
+    `- Rapport remis sous ${DELAI_RAPPORT_JOURS_OUVRES} jours ouvrés après la journée.`,
+    "- Format : une seule journée en présentiel, dans les locaux de l'entreprise (audit le matin, formation l'après-midi). La Journée IA elle-même n'est jamais à distance.",
+    "- Zone : partout en France, outre-mer compris. Les pages n'annoncent aucune ville d'implantation comme base d'intervention : en annoncer une est une contradiction. « Grenoble » ne s'écrit jamais, pas même comme siège social : le nommer est une contradiction.",
+    "- Déplacement : sujet interdit. Un article ne mentionne jamais de frais de déplacement, d'hébergement ou de repas, quels qu'ils soient (gratuits, inclus, compris dans une région, facturés, en sus). Toute mention est une contradiction. Seule formule permise : « dans vos locaux, partout en France ».",
+    "- Acompte : les pages renvoient aux CGV. Aucun montant ni taux d'acompte n'est annoncé : en annoncer un est une contradiction. Écrire qu'un acompte est demandé, ou qu'il n'est pas remboursé en cas d'annulation, est permis et n'est PAS une contradiction. Selon les CGV (art. 47.6), l'acompte versé par un client professionnel ou une personne morale non professionnelle reste acquis en cas d'annulation par le client, quel que soit le délai ; seule la personne physique non professionnelle est remboursée (inutile de le mentionner). Un article qui promet un remboursement de l'acompte à un client professionnel est une contradiction.",
+  ].join("\n");
+  if (texte.includes("{{")) throw new Error("jeton non résolu dans les faits de l'offre");
+  return texte;
 }
 
 /** Le sujet touche-t-il la Journée IA ? (« journée IA », « journées d'audit », « audit IA en une journée »…) */
