@@ -9,6 +9,9 @@
  *
  * Usage : seed via `prisma/seeds/content-gen/seed-kb-facts.ts`
  * Indexation FTS Postgres déjà en place via KbEntry.content + tsvector.
+ *
+ * ⚠️ 26/11/2026 : les faits tiers chiffrés sans adresse profonde et les « retours terrain » chiffrés
+ * ont été retirés (docs/content-gen/KB-QUARANTAINE-2026-11-26.md). Le nombre de faits n'est plus un objectif.
  */
 
 import { DELAI_RAPPORT_JOURS_OUVRES } from "@/content/journee-ia-commun";
@@ -55,15 +58,6 @@ export const KB_INTERVENTIONS_FORMATIONS: readonly KbFact[] = [
     verticales: ["interventions_formations"],
     confidence: 0.95,
   },
-  {
-    id: "form-005",
-    text: "Microsoft 365 Copilot est adopté par plus de 85 % des grandes entreprises françaises ayant une licence M365 E3/E5, selon IDC France 2025 — ce qui en fait un outil prioritaire en formation IA B2B.",
-    source: "IDC France — Baromètre IA en entreprise 2025",
-    sourceUrl: "https://www.idc.com",
-    verifiedAt: "2026-05-01",
-    verticales: ["interventions_formations"],
-    confidence: 0.78,
-  },
   // ── Publics cibles ───────────────────────────────────────────────────────
   {
     id: "form-006",
@@ -73,15 +67,6 @@ export const KB_INTERVENTIONS_FORMATIONS: readonly KbFact[] = [
     verifiedAt: "2026-05-01",
     verticales: ["interventions_formations"],
     confidence: 0.95,
-  },
-  {
-    id: "form-007",
-    text: "64 % des salariés français déclarent n'avoir reçu aucune formation IA de leur employeur en 2024, alors que 71 % estiment que l'IA va modifier leur métier dans les 3 ans (DARES, enquête compétences numériques 2024).",
-    source: "DARES — Enquête compétences numériques 2024",
-    sourceUrl: "https://dares.travail-emploi.gouv.fr",
-    verifiedAt: "2026-05-01",
-    verticales: ["interventions_formations"],
-    confidence: 0.82,
   },
   // ── ROI mesurable ────────────────────────────────────────────────────────
   {
@@ -130,24 +115,6 @@ export const KB_INTERVENTIONS_FORMATIONS: readonly KbFact[] = [
     confidence: 0.92,
   },
   // ── Marché de la formation IA en France ─────────────────────────────────
-  {
-    id: "form-015",
-    text: "Le marché de la formation professionnelle IA en France est estimé à 1,2 milliard d'euros en 2025, avec une croissance annuelle de 35 % portée par la demande des PME (Numeum, ex-Syntec Numérique, 2025).",
-    source: "Numeum (ex-Syntec Numérique) — Rapport formation IA 2025",
-    sourceUrl: "https://numeum.fr",
-    verifiedAt: "2026-08-11",
-    verticales: ["interventions_formations"],
-    confidence: 0.75,
-  },
-  {
-    id: "form-016",
-    text: "France Num recense 47 % des PME françaises ayant engagé au moins une action de formation IA en 2024 — contre 12 % en 2022, soit une multiplication par 4 en deux ans.",
-    source: "France Num — Baromètre numérique des TPE-PME 2024",
-    sourceUrl: "https://www.francenum.gouv.fr",
-    verifiedAt: "2026-05-01",
-    verticales: ["interventions_formations"],
-    confidence: 0.8,
-  },
   // ── Pédagogie et méthode ─────────────────────────────────────────────────
   {
     id: "form-017",
@@ -159,15 +126,6 @@ export const KB_INTERVENTIONS_FORMATIONS: readonly KbFact[] = [
     confidence: 0.95,
   },
   // ── Secteurs cibles ──────────────────────────────────────────────────────
-  {
-    id: "form-019",
-    text: "Les secteurs les plus demandeurs de formation IA en 2025 sont : conseil/audit (28 %), immobilier/construction (19 %), commerce/distribution (17 %), agroalimentaire (13 %) et santé (9 %) — selon France Num.",
-    source: "France Num — Baromètre numérique des TPE-PME 2024",
-    sourceUrl: "https://www.francenum.gouv.fr",
-    verifiedAt: "2026-05-01",
-    verticales: ["interventions_formations"],
-    confidence: 0.77,
-  },
   // ── Interventions ponctuelles ────────────────────────────────────────────
   {
     id: "form-020",
@@ -233,15 +191,6 @@ export const KB_INTERVENTIONS_FORMATIONS: readonly KbFact[] = [
     verticales: ["interventions_formations"],
     confidence: 0.88,
   },
-  {
-    id: "form-026",
-    text: "En France, les entreprises de 50 à 249 salariés (PME) représentent 73 % des formations IA achetées en 2024, dépassant les grandes entreprises dont les DSI gèrent l'internalisation progressivement.",
-    source: "Numeum (ex-Syntec Numérique) — Rapport formation IA 2025",
-    sourceUrl: "https://numeum.fr",
-    verifiedAt: "2026-05-01",
-    verticales: ["interventions_formations"],
-    confidence: 0.75,
-  },
   // ── Effets organisationnels ───────────────────────────────────────────────
   {
     id: "form-027",
@@ -266,15 +215,6 @@ export const KB_INTERVENTIONS_FORMATIONS: readonly KbFact[] = [
     verifiedAt: "2026-05-01",
     verticales: ["interventions_formations"],
     confidence: 0.95,
-  },
-  {
-    id: "form-029",
-    text: "La résistance au changement est citée comme principal frein à l'adoption de l'IA par 52 % des dirigeants de PME française — d'où l'importance de formations ancrées dans les cas d'usage métier réels.",
-    source: "BPI France — Rapport IA & PME 2024",
-    sourceUrl: "https://www.bpifrance.fr",
-    verifiedAt: "2026-05-01",
-    verticales: ["interventions_formations"],
-    confidence: 0.82,
   },
   {
     id: "form-030",
@@ -313,42 +253,6 @@ export const KB_INTERVENTIONS_FORMATIONS: readonly KbFact[] = [
   },
   // ── Durée et modalités de formation IA en France ─────────────────────────
   {
-    id: "form-033",
-    text: "La durée moyenne d'une formation IA en entreprise en France est de 3 à 5 jours (21 à 35 heures), selon les données du Baromètre Formation Professionnelle 2024 publié par France Compétences.",
-    source: "France Compétences — Baromètre Formation Professionnelle 2024",
-    sourceUrl: "https://www.francecompetences.fr",
-    verifiedAt: "2026-05-22",
-    verticales: ["interventions_formations"],
-    confidence: 0.82,
-  },
-  {
-    id: "form-034",
-    text: "En 2024, 45 % des entreprises françaises de plus de 10 salariés ont formé au moins un collaborateur aux outils IA — une hausse de 18 points par rapport à 2022 (DARES, Enquête Formation Continue 2024).",
-    source: "DARES — Enquête Formation Continue en entreprise 2024",
-    sourceUrl: "https://dares.travail-emploi.gouv.fr",
-    verifiedAt: "2026-05-22",
-    verticales: ["interventions_formations"],
-    confidence: 0.83,
-  },
-  {
-    id: "form-035",
-    text: "Le coût moyen d'un formateur IA certifié en France se situe entre 800 et 1 800 € HT par jour en 2025, avec une prime pour les formateurs spécialisés en IA générative (LLM, prompting avancé) atteignant 2 500 € HT/jour." /* price-exempt: stat marché tierce */,
-    source: "Numeum (ex-Syntec Numérique) — Baromètre des métiers du numérique 2025",
-    sourceUrl: "https://numeum.fr",
-    verifiedAt: "2026-05-22",
-    verticales: ["interventions_formations"],
-    confidence: 0.77,
-  },
-  {
-    id: "form-036",
-    text: "Le taux de satisfaction global des formations IA inter-entreprises en France dépasse 80 % selon le baromètre Cegos 2024, avec un score NPS moyen de +42 pour les formations appliquées au poste de travail.",
-    source: "Cegos — Baromètre Formation Professionnelle 2024",
-    sourceUrl: "https://www.cegos.fr",
-    verifiedAt: "2026-05-22",
-    verticales: ["interventions_formations"],
-    confidence: 0.78,
-  },
-  {
     id: "form-037",
     text: "Les formations IA génèrent un gain de productivité moyen de 25 % sur les tâches administratives récurrentes, mesuré 6 mois après la formation — selon une étude McKinsey menée sur 1 200 salariés européens en 2024.",
     source: "McKinsey — Upskilling the European Workforce, 2024",
@@ -359,72 +263,9 @@ export const KB_INTERVENTIONS_FORMATIONS: readonly KbFact[] = [
     confidence: 0.85,
   },
   // ── Secteurs banque, assurance, retail, santé ─────────────────────────────
-  {
-    id: "form-041",
-    text: "Le secteur bancaire et assurantiel est le plus avancé en matière de formation IA en France : 73 % des grandes banques et 68 % des assureurs ont lancé un programme de formation IA pour leurs équipes en 2024 (France Assureurs, ex-FFA).",
-    source: "France Assureurs (ex-FFA) — Rapport IA et formation 2024",
-    sourceUrl: "https://www.franceassureurs.fr",
-    verifiedAt: "2026-08-11",
-    verticales: ["interventions_formations"],
-    confidence: 0.78,
-  },
-  {
-    id: "form-042",
-    text: "Le retail et la grande distribution investissent massivement en formation IA sur les usages merchandising (prévision des ventes, optimisation des stocks, personnalisation des promotions) — représentant 14 % des budgets formation IA sectoriels en 2024.",
-    source: "Institut du Commerce — Observatoire IA et commerce 2024",
-    sourceUrl: "https://www.institut-du-commerce.fr",
-    verifiedAt: "2026-05-22",
-    verticales: ["interventions_formations"],
-    confidence: 0.74,
-  },
-  {
-    id: "form-043",
-    text: "Dans le secteur de la santé, 42 % des établissements hospitaliers français ont formé des équipes soignantes et administratives à l'IA médicale en 2024, principalement sur les outils de rédaction de comptes rendus médicaux et de codage CIM-10.",
-    source: "DREES — Rapport sur la transformation numérique des établissements de santé 2024",
-    sourceUrl: "https://drees.solidarites-sante.gouv.fr",
-    verifiedAt: "2026-05-22",
-    verticales: ["interventions_formations"],
-    confidence: 0.77,
-  },
   // ── Alternance et reconversion ────────────────────────────────────────────
-  {
-    id: "form-044",
-    text: "Les contrats d'apprentissage en IA (BTS, BUT, Licence Pro, Master) ont progressé de 67 % entre 2022 et 2024 en France — France Compétences recense 12 400 apprentis formés sur des parcours incluant au moins 30 % d'IA en 2024.",
-    source: "France Compétences — Rapport apprentissage et métiers du numérique 2024",
-    sourceUrl: "https://www.francecompetences.fr",
-    verifiedAt: "2026-05-22",
-    verticales: ["interventions_formations"],
-    confidence: 0.79,
-  },
   // ── Certification des compétences IA ─────────────────────────────────────
-  {
-    id: "form-049",
-    text: "L'OCDE évalue à 3,2 % du PIB français le retour potentiel des investissements en formation IA sur 10 ans — soit 80 milliards d'euros cumulés — grâce aux gains de productivité dans les secteurs services, industrie et agriculture.",
-    source: "OCDE — L'IA et la croissance de la productivité, 2024",
-    sourceUrl: "https://www.oecd.org/fr/intelligence-artificielle",
-    verifiedAt: "2026-05-22",
-    verticales: ["interventions_formations"],
-    confidence: 0.8,
-  },
   // ── Ingénierie pédagogique IA ─────────────────────────────────────────────
-  {
-    id: "form-050",
-    text: "Les formations IA utilisant la méthode « apprendre en faisant » (learning by doing) avec des cas réels obtiennent un taux de rétention des compétences 40 % supérieur aux formations magistrales, selon les recherches en sciences cognitives.",
-    source: "INSERM — Plasticité neuronale et apprentissage technologique chez l'adulte 2024",
-    sourceUrl: "https://www.inserm.fr",
-    verifiedAt: "2026-05-22",
-    verticales: ["interventions_formations"],
-    confidence: 0.72,
-  },
-  {
-    id: "form-051",
-    text: "Le blended learning (présentiel + e-learning asynchrone) est le format dominant pour les formations IA en entreprise en 2025 : 58 % des programmes adoptent ce format hybride selon le Baromètre Cegos 2025.",
-    source: "Cegos — Baromètre des pratiques de formation 2025",
-    sourceUrl: "https://www.cegos.fr",
-    verifiedAt: "2026-05-22",
-    verticales: ["interventions_formations"],
-    confidence: 0.76,
-  },
   // ── Soft skills et leadership IA ──────────────────────────────────────────
   {
     id: "form-052",
@@ -435,54 +276,9 @@ export const KB_INTERVENTIONS_FORMATIONS: readonly KbFact[] = [
     verticales: ["interventions_formations"],
     confidence: 0.87,
   },
-  {
-    id: "form-053",
-    text: "En France, Numeum (ex-Syntec Numérique) identifie un déficit de 80 000 professionnels maîtrisant l'IA applicative d'ici 2027 — créant une pression sans précédent sur les organismes de formation certifiés et les formateurs experts.",
-    source: "Numeum (ex-Syntec Numérique) — Livre blanc métiers IA 2025",
-    sourceUrl: "https://numeum.fr",
-    verifiedAt: "2026-08-11",
-    verticales: ["interventions_formations"],
-    confidence: 0.78,
-  },
   // ── Formation IA et secteur public ───────────────────────────────────────
-  {
-    id: "form-054",
-    text: "La Direction Interministérielle du Numérique (DINUM) a lancé en 2024 un programme de formation IA pour 50 000 agents de l'État sur 3 ans — avec des modules obligatoires sur l'usage responsable de l'IA générative dans le service public.",
-    source: "DINUM — Programme Albert-IA et formation des agents publics 2024",
-    sourceUrl: "https://www.numerique.gouv.fr",
-    verifiedAt: "2026-05-22",
-    verticales: ["interventions_formations"],
-    confidence: 0.86,
-  },
   // ── Tendances 2025-2026 ───────────────────────────────────────────────────
-  {
-    id: "form-055",
-    text: "La formation IA en micro-learning (modules de 10-15 minutes accessibles sur mobile) progresse de 120 % en France en 2024-2025 — format privilégié pour les managers de terrain et les équipes commerciales en déplacement.",
-    source: "Cegos — Tendances e-learning et mobile learning 2025",
-    sourceUrl: "https://www.cegos.fr",
-    verifiedAt: "2026-05-22",
-    verticales: ["interventions_formations"],
-    confidence: 0.74,
-  },
-  {
-    id: "form-056",
-    text: "BNP Paribas, Société Générale et Crédit Agricole ont chacun formé plus de 10 000 collaborateurs aux outils IA en 2024 — avec un focus sur la détection de fraude, l'analyse de risque crédit et la relation client augmentée.",
-    source: "Fédération Bancaire Française — Rapport IA et formation bancaire 2024",
-    sourceUrl: "https://www.fbf.fr",
-    verifiedAt: "2026-05-22",
-    verticales: ["interventions_formations"],
-    confidence: 0.76,
-  },
   // ── Industrie et PME manufacturières ─────────────────────────────────────
-  {
-    id: "form-057",
-    text: "L'industrie manufacturière française est le secteur où le retard en formation IA est le plus marqué : seules 28 % des PME industrielles ont formé des opérateurs à l'IA en 2024, contre 54 % dans les services (DARES, Enquête compétences industrie 2024).",
-    source: "DARES — Enquête compétences industrie et numérique 2024",
-    sourceUrl: "https://dares.travail-emploi.gouv.fr",
-    verifiedAt: "2026-05-22",
-    verticales: ["interventions_formations"],
-    confidence: 0.81,
-  },
   // ── Enjeux réglementaires formation ──────────────────────────────────────
   {
     id: "form-059",
@@ -504,24 +300,6 @@ export const KB_INTERVENTIONS_FORMATIONS: readonly KbFact[] = [
     confidence: 0.91,
   },
   // ── ROI formation, études complémentaires ─────────────────────────────────
-  {
-    id: "form-061",
-    text: "Une étude LinkedIn Learning (2025) montre que les entreprises qui forment activement leurs salariés à l'IA affichent un taux de rétention des talents 34 % supérieur à la moyenne sectorielle — la formation IA devient un argument de marque employeur.",
-    source: "LinkedIn Learning — Rapport impact formation 2025",
-    sourceUrl: "https://learning.linkedin.com",
-    verifiedAt: "2026-05-22",
-    verticales: ["interventions_formations"],
-    confidence: 0.78,
-  },
-  {
-    id: "form-062",
-    text: "Selon le BCG (Boston Consulting Group, 2024), les entreprises ayant investi dans la formation IA de l'ensemble de leurs équipes (pas seulement IT) réalisent 3,5× plus de valeur économique de l'IA que celles limitant la formation aux seuls techniciens.",
-    source: "BCG — Closing the AI Talent Gap, 2024",
-    sourceUrl: "https://www.bcg.com/publications",
-    verifiedAt: "2026-05-22",
-    verticales: ["interventions_formations"],
-    confidence: 0.83,
-  },
   // ── Formations sectorielles spécialisées ──────────────────────────────────
   {
     id: "form-063",
@@ -542,24 +320,6 @@ export const KB_INTERVENTIONS_FORMATIONS: readonly KbFact[] = [
     confidence: 0.92,
   },
   // ── Chiffres complémentaires DARES/INSEE ──────────────────────────────────
-  {
-    id: "form-065",
-    text: "L'INSEE recense en 2024 que les entreprises de services aux entreprises consacrent en moyenne 2,8 % de leur masse salariale à la formation — avec une part croissante (estimée à 0,7 point) dédiée spécifiquement aux compétences IA depuis 2023.",
-    source: "INSEE — Enquête sur l'accès des entreprises à la formation continue 2024",
-    sourceUrl: "https://www.insee.fr/fr/statistiques",
-    verifiedAt: "2026-05-22",
-    verticales: ["interventions_formations"],
-    confidence: 0.79,
-  },
-  {
-    id: "form-066",
-    text: "DARES indique que le nombre d'heures de formation professionnelle dédiées aux compétences numériques (dont IA) a augmenté de 48 % entre 2022 et 2024, passant de 42 millions à 62 millions d'heures stagiaires.",
-    source: "DARES — Bilan formation professionnelle continue 2024",
-    sourceUrl: "https://dares.travail-emploi.gouv.fr",
-    verifiedAt: "2026-05-22",
-    verticales: ["interventions_formations"],
-    confidence: 0.81,
-  },
   // ── Formats innovants ─────────────────────────────────────────────────────
   {
     id: "form-067",
@@ -655,15 +415,6 @@ export const KB_INTERVENTIONS_FORMATIONS: readonly KbFact[] = [
     confidence: 0.8,
   },
   // ── Résultats terrain Axion-IA ────────────────────────────────────────────
-  {
-    id: "form-079",
-    text: "Les simulations IA (chatbot formateur, scénarios de jeu de rôle automatisés avec LLM) sont adoptées par 22 % des grandes entreprises françaises pour la formation à la négociation commerciale et à la gestion de conflits RH en 2025.",
-    source: "Markess by exægis — Étude IA et formation professionnelle 2025",
-    sourceUrl: "https://www.markess.com",
-    verifiedAt: "2026-05-22",
-    verticales: ["interventions_formations"],
-    confidence: 0.72,
-  },
   {
     id: "form-080",
     // 🔴 Audit certification 2026-07-26 (F55). Auto-déclaration de résultat non

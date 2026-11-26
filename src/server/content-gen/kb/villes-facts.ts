@@ -11,6 +11,9 @@
  *
  * Format : { id, text, source, sourceUrl, verifiedAt, verticales, confidence }
  * Usage : seed via `prisma/seeds/content-gen/seed-kb-facts.ts` (ALL_KB_FACTS)
+ *
+ * ⚠️ 26/11/2026 : les faits tiers chiffrés sans adresse profonde et les « retours terrain » chiffrés
+ * ont été retirés (docs/content-gen/KB-QUARANTAINE-2026-11-26.md). Le nombre de faits n'est plus un objectif.
  */
 
 import type { KbFact } from "./audits";
@@ -31,15 +34,6 @@ export const KB_VILLES_ECONOMY: readonly KbFact[] = [
     confidence: 0.95,
   },
   {
-    id: "ville-002",
-    text: "Paris concentre le plus grand écosystème startup d'Europe continentale avec Station F (plus grand campus startup au monde, 1 000 startups hébergées), la French Tech Paris et plus de 3 500 startups actives.",
-    source: "Station F — Rapport 2024",
-    sourceUrl: "https://stationf.co",
-    verifiedAt: "2026-05-25",
-    verticales: ["villes"],
-    confidence: 0.88,
-  },
-  {
     id: "ville-003",
     text: "L'Île-de-France représente 31 % du PIB national français et accueille les sièges de 65 % des entreprises du CAC 40, avec une forte concentration dans les secteurs tech, finance et conseil.",
     source: "INSEE — Comptes régionaux 2022",
@@ -47,24 +41,6 @@ export const KB_VILLES_ECONOMY: readonly KbFact[] = [
     verifiedAt: "2026-05-25",
     verticales: ["villes"],
     confidence: 0.9,
-  },
-  {
-    id: "ville-004",
-    text: "Paris s'est hissée au 3e rang mondial des villes les plus attractives pour les investissements étrangers (EY European Attractiveness Survey 2023), devant Amsterdam et Berlin.",
-    source: "EY — European Attractiveness Survey 2023",
-    sourceUrl: "https://www.ey.com/fr_fr/attractiveness",
-    verifiedAt: "2026-05-25",
-    verticales: ["villes"],
-    confidence: 0.85,
-  },
-  {
-    id: "ville-005",
-    text: "Le quartier Paris-Saclay / Plateau de Saclay regroupe plus de 15 grandes écoles et universités, 300 laboratoires de recherche et vise à devenir le 3e cluster mondial scientifique et technologique.",
-    source: "Paris-Saclay — Dossier de presse 2024",
-    sourceUrl: "https://www.paris-saclay.com",
-    verifiedAt: "2026-05-25",
-    verticales: ["villes"],
-    confidence: 0.85,
   },
   // LYON
   {
@@ -75,42 +51,6 @@ export const KB_VILLES_ECONOMY: readonly KbFact[] = [
     verifiedAt: "2026-05-25",
     verticales: ["villes"],
     confidence: 0.95,
-  },
-  {
-    id: "ville-007",
-    text: "Lyon accueille TUBÀ (hub d'innovation urbaine mutualisé unique en France), Le H7 (incubateur numérique sur 10 000 m²) et Axelera (pôle de compétitivité chimie-environnement). L'écosystème tech lyonnais compte plus de 1 200 startups.",
-    source: "Métropole de Lyon — Rapport économique 2024",
-    sourceUrl: "https://www.grandlyon.com",
-    verifiedAt: "2026-05-25",
-    verticales: ["villes"],
-    confidence: 0.85,
-  },
-  {
-    id: "ville-008",
-    text: "Lyon est la capitale mondiale de la gastronomie et un hub majeur en biotech/healthtech avec Biopôle Lyon, qui regroupe plus de 80 entreprises et laboratoires du secteur life sciences.",
-    source: "Biopôle Lyon — Annuaire 2024",
-    sourceUrl: "https://www.biopole.fr",
-    verifiedAt: "2026-05-25",
-    verticales: ["villes"],
-    confidence: 0.85,
-  },
-  {
-    id: "ville-009",
-    text: "La métropole de Lyon représente un PIB d'environ 85 milliards d'euros, soit la 2e métropole la plus productive de France après Paris.",
-    source: "INSEE — Comptes régionaux Auvergne-Rhône-Alpes 2022",
-    sourceUrl: "https://www.insee.fr/fr/statistiques",
-    verifiedAt: "2026-05-25",
-    verticales: ["villes"],
-    confidence: 0.82,
-  },
-  {
-    id: "ville-010",
-    text: "Lyon abrite l'École Normale Supérieure de Lyon, l'Université Claude Bernard Lyon 1 et l'INSA Lyon, formant un vivier de talents tech et scientifiques alimentant l'écosystème IA local.",
-    source: "Université de Lyon — Données 2024",
-    sourceUrl: "https://www.universite-lyon.fr",
-    verifiedAt: "2026-05-25",
-    verticales: ["villes"],
-    confidence: 0.92,
   },
   // MARSEILLE
   {
@@ -131,24 +71,6 @@ export const KB_VILLES_ECONOMY: readonly KbFact[] = [
     verticales: ["villes"],
     confidence: 0.83,
   },
-  {
-    id: "ville-013",
-    text: "Le Grand Port Maritime de Marseille (GPMM) est le 1er port français et 5e port européen, traitant plus de 80 millions de tonnes de marchandises par an — un secteur majeur pour l'IA logistique.",
-    source: "GPMM — Rapport annuel 2023",
-    sourceUrl: "https://www.marseille-port.fr",
-    verifiedAt: "2026-05-25",
-    verticales: ["villes"],
-    confidence: 0.9,
-  },
-  {
-    id: "ville-014",
-    text: "Aix-Marseille Université (AMU) est la plus grande université francophone du monde avec 80 000 étudiants et 16 facultés/écoles, générant un fort vivier de talents pour les entreprises tech de la région.",
-    source: "Aix-Marseille Université — Données institutionnelles 2024",
-    sourceUrl: "https://www.univ-amu.fr",
-    verifiedAt: "2026-05-25",
-    verticales: ["villes"],
-    confidence: 0.92,
-  },
   // TOULOUSE
   {
     id: "ville-015",
@@ -158,24 +80,6 @@ export const KB_VILLES_ECONOMY: readonly KbFact[] = [
     verifiedAt: "2026-05-25",
     verticales: ["villes"],
     confidence: 0.95,
-  },
-  {
-    id: "ville-016",
-    text: "Toulouse est la capitale européenne de l'aéronautique et du spatial, abritant Airbus (siège mondial), Thales Alenia Space, Safran et le CNES. Le secteur aérospatial génère plus de 100 000 emplois directs dans la région.",
-    source: "Aerospace Valley — Chiffres clés 2024",
-    sourceUrl: "https://www.aerospace-valley.com",
-    verifiedAt: "2026-05-25",
-    verticales: ["villes"],
-    confidence: 0.92,
-  },
-  {
-    id: "ville-017",
-    text: "Toulouse accueille plus de 115 000 étudiants dans ses universités et grandes écoles (Université Paul Sabatier, ISAE-SUPAERO, UT Capitole, Toulouse Business School), en faisant l'une des villes les plus jeunes de France.",
-    source: "Toulouse Métropole — Portrait statistique 2024",
-    sourceUrl: "https://www.toulouse-metropole.fr",
-    verifiedAt: "2026-05-25",
-    verticales: ["villes"],
-    confidence: 0.88,
   },
   {
     id: "ville-018",
@@ -205,15 +109,6 @@ export const KB_VILLES_ECONOMY: readonly KbFact[] = [
     verticales: ["villes"],
     confidence: 0.83,
   },
-  {
-    id: "ville-021",
-    text: "Bordeaux accueille le Digital Campus Bordeaux, Darwin Ecosystème (lieu d'innovation durable sur 8 ha) et plusieurs incubateurs spécialisés en agri-food tech liés à la filière viticole mondiale.",
-    source: "Bordeaux Métropole — Innovation 2024",
-    sourceUrl: "https://www.bordeaux-metropole.fr",
-    verifiedAt: "2026-05-25",
-    verticales: ["villes"],
-    confidence: 0.82,
-  },
   // NICE
   {
     id: "ville-022",
@@ -223,15 +118,6 @@ export const KB_VILLES_ECONOMY: readonly KbFact[] = [
     verifiedAt: "2026-05-25",
     verticales: ["villes"],
     confidence: 0.93,
-  },
-  {
-    id: "ville-023",
-    text: "Nice abrite Sophia Antipolis, le 1er technopôle d'Europe (créé 1969), sur 2 300 ha avec plus de 2 400 entreprises et 37 000 salariés dans les secteurs IT, télécoms, pharmaceutique et R&D.",
-    source: "Sophia Antipolis Foundation — Rapport 2024",
-    sourceUrl: "https://www.sophia-antipolis.fr",
-    verifiedAt: "2026-05-25",
-    verticales: ["villes"],
-    confidence: 0.92,
   },
   {
     id: "ville-024",
@@ -251,15 +137,6 @@ export const KB_VILLES_ECONOMY: readonly KbFact[] = [
     verifiedAt: "2026-05-25",
     verticales: ["villes"],
     confidence: 0.95,
-  },
-  {
-    id: "ville-026",
-    text: "Nantes abrite plus de 800 entreprises numériques et 10 000 emplois dans le secteur digital. Le Digital League, cluster numérique de l'Ouest, fédère les acteurs tech de Nantes et des Pays de la Loire.",
-    source: "Nantes Métropole — Rapport numérique 2024",
-    sourceUrl: "https://www.nantesmetropole.fr",
-    verifiedAt: "2026-05-25",
-    verticales: ["villes"],
-    confidence: 0.83,
   },
   {
     id: "ville-027",
@@ -289,15 +166,6 @@ export const KB_VILLES_ECONOMY: readonly KbFact[] = [
     verticales: ["villes"],
     confidence: 0.8,
   },
-  {
-    id: "ville-030",
-    text: "L'Université de Strasbourg (Unistra) est classée parmi les meilleures universités françaises et compte 8 prix Nobel parmi ses anciens. Elle génère un fort vivier de talents en sciences, médecine et droit européen.",
-    source: "Université de Strasbourg — Bilan 2024",
-    sourceUrl: "https://www.unistra.fr",
-    verifiedAt: "2026-05-25",
-    verticales: ["villes"],
-    confidence: 0.9,
-  },
   // MONTPELLIER
   {
     id: "ville-031",
@@ -308,24 +176,6 @@ export const KB_VILLES_ECONOMY: readonly KbFact[] = [
     verticales: ["villes"],
     confidence: 0.95,
   },
-  {
-    id: "ville-032",
-    text: "Montpellier accueille Cap Oméga (1er incubateur public de France en nombre de startups créées), Business & Innovation Center (BIC) et l'Agropolis International — unique cluster mondial agrosciences.",
-    source: "Montpellier Méditerranée Métropole — Innovation 2024",
-    sourceUrl: "https://www.montpellier3m.fr",
-    verifiedAt: "2026-05-25",
-    verticales: ["villes"],
-    confidence: 0.83,
-  },
-  {
-    id: "ville-033",
-    text: "Montpellier abrite plus de 70 000 étudiants, dont 10 000 étrangers, dans ses universités et grandes écoles (Université de Montpellier, Montpellier Business School, SupAgro). Le ratio étudiants/habitants en fait l'une des villes les plus jeunes de France.",
-    source: "Montpellier Métropole — Données étudiantes 2024",
-    sourceUrl: "https://www.montpellier3m.fr",
-    verifiedAt: "2026-05-25",
-    verticales: ["villes"],
-    confidence: 0.88,
-  },
   // LILLE
   {
     id: "ville-034",
@@ -335,15 +185,6 @@ export const KB_VILLES_ECONOMY: readonly KbFact[] = [
     verifiedAt: "2026-05-25",
     verticales: ["villes"],
     confidence: 0.95,
-  },
-  {
-    id: "ville-035",
-    text: "Lille occupe une position logistique unique au carrefour des axes Paris-Londres-Bruxelles. EuraTechnologies, 1er incubateur tech du Nord de France (400 entreprises, 7 000 emplois), en fait le hub numérique de référence des Hauts-de-France.",
-    source: "EuraTechnologies — Rapport 2024",
-    sourceUrl: "https://www.euratechnologies.com",
-    verifiedAt: "2026-05-25",
-    verticales: ["villes"],
-    confidence: 0.9,
   },
   {
     id: "ville-036",
@@ -363,24 +204,6 @@ export const KB_VILLES_ECONOMY: readonly KbFact[] = [
     verifiedAt: "2026-05-25",
     verticales: ["villes"],
     confidence: 0.93,
-  },
-  {
-    id: "ville-038",
-    text: "Rennes est le berceau de nombreuses entreprises telecom majeures (Orange, Technicolor) et abrite Rennes Atalante, 1er technopôle de Bretagne avec 300 entreprises. La French Tech Rennes Saint-Malo fédère 600+ startups.",
-    source: "Rennes Atalante — Rapport 2024",
-    sourceUrl: "https://www.rennes-atalante.fr",
-    verifiedAt: "2026-05-25",
-    verticales: ["villes"],
-    confidence: 0.87,
-  },
-  {
-    id: "ville-039",
-    text: "Rennes accueille l'Université de Rennes 1, l'Université Rennes 2 et de grandes écoles (INSA Rennes, CentraleSupélec, Sciences Po Rennes), formant 65 000 étudiants — 30 % de la population de la ville.",
-    source: "Université de Rennes — Données 2024",
-    sourceUrl: "https://www.univ-rennes1.fr",
-    verifiedAt: "2026-05-25",
-    verticales: ["villes"],
-    confidence: 0.88,
   },
   // ROUEN
   {
@@ -429,15 +252,6 @@ export const KB_VILLES_ECONOMY: readonly KbFact[] = [
     verifiedAt: "2026-05-25",
     verticales: ["villes"],
     confidence: 0.93,
-  },
-  {
-    id: "ville-048",
-    text: "Saint-Étienne est Ville Créative Design UNESCO depuis 2010 — 1ère ville française à obtenir ce label. La Cité du Design accueille 150+ entreprises innovantes et l'École Supérieure d'Art et Design (ESADSE).",
-    source: "Cité du Design — Rapport 2024",
-    sourceUrl: "https://www.citedudesign.com",
-    verifiedAt: "2026-05-25",
-    verticales: ["villes"],
-    confidence: 0.9,
   },
   // LE HAVRE
   {
@@ -506,15 +320,6 @@ export const KB_VILLES_ECONOMY: readonly KbFact[] = [
     verticales: ["villes"],
     confidence: 0.93,
   },
-  {
-    id: "ville-056",
-    text: "Reims accueille le pôle de compétitivité Industries & Agro-Ressources (IAR) et développe des compétences en IA appliquée à la viticulture (analyse de sols, prévisions météo, robotique viticole). La filière représente 6 milliards d'euros d'exportations/an.",
-    source: "Comité Champagne — Données 2024",
-    sourceUrl: "https://www.comite-champagne.fr",
-    verifiedAt: "2026-05-25",
-    verticales: ["villes"],
-    confidence: 0.82,
-  },
   // CLERMONT-FERRAND
   {
     id: "ville-057",
@@ -524,15 +329,6 @@ export const KB_VILLES_ECONOMY: readonly KbFact[] = [
     verifiedAt: "2026-05-25",
     verticales: ["villes"],
     confidence: 0.93,
-  },
-  {
-    id: "ville-058",
-    text: "Clermont-Ferrand accueille Vichy-Auvergne-Innovations et un écosystème industriel 4.0 centré sur le pneu intelligent, la mobilité et les matériaux avancés. Michelin y expérimente l'IA pour l'optimisation de ses processus de fabrication.",
-    source: "Michelin — Rapport développement durable 2023",
-    sourceUrl: "https://www.michelin.com",
-    verifiedAt: "2026-05-25",
-    verticales: ["villes"],
-    confidence: 0.8,
   },
   // METZ
   {
@@ -582,15 +378,6 @@ export const KB_VILLES_ECONOMY: readonly KbFact[] = [
     verticales: ["villes"],
     confidence: 0.93,
   },
-  {
-    id: "ville-064",
-    text: "Tours accueille le pôle de compétitivité S2E2 (Smart Electricity Cluster) spécialisé en énergie électrique intelligente et compte des acteurs en IoT industriel et smart grid, profitant de la proximité avec les centrales nucléaires de la Loire.",
-    source: "S2E2 — Chiffres clés 2024",
-    sourceUrl: "https://www.s2e2.fr",
-    verifiedAt: "2026-05-25",
-    verticales: ["villes"],
-    confidence: 0.82,
-  },
   // CAEN
   {
     id: "ville-065",
@@ -600,15 +387,6 @@ export const KB_VILLES_ECONOMY: readonly KbFact[] = [
     verifiedAt: "2026-05-25",
     verticales: ["villes"],
     confidence: 0.92,
-  },
-  {
-    id: "ville-066",
-    text: "Caen accueille le pôle TES (Transactions Electroniques Sécurisées) et Caen-La-Mer Invest qui fédère des startups en cybersécurité, semiconducteurs et numérique. L'Université de Caen-Normandie compte 25 000 étudiants.",
-    source: "Caen La Mer — Innovation 2024",
-    sourceUrl: "https://www.caenlamer.fr",
-    verifiedAt: "2026-05-25",
-    verticales: ["villes"],
-    confidence: 0.78,
   },
   // BREST
   {
@@ -658,15 +436,6 @@ export const KB_VILLES_ECONOMY: readonly KbFact[] = [
     verticales: ["villes"],
     confidence: 0.92,
   },
-  {
-    id: "ville-072",
-    text: "Orléans est au cœur de Cosmetic Valley, le 1er pôle de compétitivité mondial de la cosmétique (3 000 entreprises, 90 000 emplois). L'IA appliquée à la formulation cosmétique (skin AI, personnalisation) y connaît un essor significatif.",
-    source: "Cosmetic Valley — Rapport 2024",
-    sourceUrl: "https://www.cosmeticvalley.com",
-    verifiedAt: "2026-05-25",
-    verticales: ["villes"],
-    confidence: 0.85,
-  },
   // CLERMONT-FERRAND (done above), AMIENS
   {
     id: "ville-073",
@@ -676,15 +445,6 @@ export const KB_VILLES_ECONOMY: readonly KbFact[] = [
     verifiedAt: "2026-05-25",
     verticales: ["villes"],
     confidence: 0.93,
-  },
-  {
-    id: "ville-074",
-    text: "Amiens abrite l'Université de Picardie Jules-Verne (28 000 étudiants) et accueille des entreprises phares en industrie (Toyota, Whirlpool reconvertis) avec une spécialisation croissante en robotique et IA industrielle pour la logistique e-commerce.",
-    source: "Hauts-de-France Invest — 2024",
-    sourceUrl: "https://www.hautsdefrance-invest.fr",
-    verifiedAt: "2026-05-25",
-    verticales: ["villes"],
-    confidence: 0.78,
   },
   // PERPIGNAN
   {
@@ -705,15 +465,6 @@ export const KB_VILLES_ECONOMY: readonly KbFact[] = [
     verifiedAt: "2026-05-25",
     verticales: ["villes"],
     confidence: 0.93,
-  },
-  {
-    id: "ville-077",
-    text: "Besançon concentre des compétences mondiales en horlogerie de précision, microtechniques et optique. Temis Innovation, principal parc scientifique, héberge 130 entreprises innovantes en microrobotique, chirurgie assistée par IA et instrumentation.",
-    source: "Temis Innovation — Rapport 2024",
-    sourceUrl: "https://www.temis-innovation.fr",
-    verifiedAt: "2026-05-25",
-    verticales: ["villes"],
-    confidence: 0.85,
   },
   // POITIERS
   {
@@ -844,15 +595,6 @@ export const KB_VILLES_ECONOMY: readonly KbFact[] = [
     verticales: ["villes"],
     confidence: 0.93,
   },
-  {
-    id: "ville-091",
-    text: "Aix-en-Provence concentre des campus d'excellence : Aix-Marseille Université (AMU), Sciences Po Aix, KEDGE Business School et l'École Centrale de Marseille. Ce vivier de 50 000+ étudiants alimente l'écosystème tech de la métropole AMP.",
-    source: "Aix-Marseille Université — 2024",
-    sourceUrl: "https://www.univ-amu.fr",
-    verifiedAt: "2026-05-25",
-    verticales: ["villes"],
-    confidence: 0.88,
-  },
   // MONTBÉLIARD
   {
     id: "ville-092",
@@ -924,25 +666,7 @@ export const KB_VILLES_ECONOMY: readonly KbFact[] = [
     confidence: 0.88,
   },
   // ÎLE-DE-FRANCE (hors Paris)
-  {
-    id: "ville-099",
-    text: "La région Île-de-France concentre 40 % des emplois de la recherche française et accueille 7 des 10 meilleures universités françaises. Les villes de Versailles, Saint-Denis et Évry-Courcouronnes constituent des sous-clusters tech importants dans l'orbite parisienne.",
-    source: "INSEE — Découpages territoriaux 2024",
-    sourceUrl: "https://www.insee.fr/fr/statistiques",
-    verifiedAt: "2026-05-25",
-    verticales: ["villes"],
-    confidence: 0.88,
-  },
   // FRENCH TECH GLOBAL
-  {
-    id: "ville-100",
-    text: "En 2024, la France compte 15 licornes actives (startups valorisées à plus d'1 milliard d'euros), dont Mistral AI (IA générative), Contentsquare, Ledger et Doctolib. La moitié est basée en Île-de-France, l'autre dans les grandes métropoles régionales.",
-    source: "French Tech — Rapport licornes 2024",
-    sourceUrl: "https://lafrenchtech.com",
-    verifiedAt: "2026-05-25",
-    verticales: ["villes"],
-    confidence: 0.85,
-  },
 ];
 
 // ---------------------------------------------------------------------------
@@ -1256,15 +980,6 @@ export const KB_ROI_IA: readonly KbFact[] = [
     confidence: 0.88,
   },
   {
-    id: "roi-ia-004",
-    text: "Une étude IDC (2024) révèle que pour chaque dollar investi en IA, les entreprises obtiennent en moyenne 3,5 dollars de retour, avec des écarts importants selon la maturité : les 'leaders IA' obtiennent 4,6 $ de ROI contre 2,9 $ pour les 'débutants'.",
-    source: "IDC — AI ROI Study 2024",
-    sourceUrl: "https://www.idc.com",
-    verifiedAt: "2026-05-25",
-    verticales: ["implementations"],
-    confidence: 0.82,
-  },
-  {
     id: "roi-ia-005",
     text: "Selon BCG (2023), les entreprises qui adoptent l'IA de manière systématique (formation + processus + données) obtiennent des gains de productivité 1,5x supérieurs à celles qui déploient l'IA en silos projet par projet.",
     source: "BCG — The CEO's Guide to the Generative AI Revolution 2023",
@@ -1272,24 +987,6 @@ export const KB_ROI_IA: readonly KbFact[] = [
     verifiedAt: "2026-05-25",
     verticales: ["implementations"],
     confidence: 0.85,
-  },
-  {
-    id: "roi-ia-006",
-    text: "Forrester Research (2024) estime que l'automatisation des processus métiers par l'IA réduit le coût de traitement des documents de 60 à 80 %, avec un délai de retour sur investissement moyen de 8 à 14 mois.",
-    source: "Forrester — The Business Case For AI Automation 2024",
-    sourceUrl: "https://www.forrester.com",
-    verifiedAt: "2026-05-25",
-    verticales: ["implementations"],
-    confidence: 0.8,
-  },
-  {
-    id: "roi-ia-007",
-    text: "Selon une étude OCDE (2023), les travailleurs augmentés par l'IA voient leur productivité augmenter de 14 à 37 % selon les tâches, avec les gains les plus élevés pour les professions réglementées (droit, médecine, comptabilité).",
-    source: "OCDE — The Impact of AI on the Labour Market 2023",
-    sourceUrl: "https://www.oecd.org/employment/labour-stats/",
-    verifiedAt: "2026-05-25",
-    verticales: ["un_a_un", "implementations"],
-    confidence: 0.88,
   },
   {
     id: "roi-ia-008",
@@ -1320,15 +1017,6 @@ export const KB_ROI_IA: readonly KbFact[] = [
     confidence: 0.82,
   },
   {
-    id: "roi-ia-011",
-    text: "Bain & Company (2024) estime que les entreprises industrielles qui déploient l'IA pour la maintenance prédictive réduisent leurs coûts de maintenance de 10-25 % et leur downtime de 20-50 %, avec un ROI de 2-5x en 2 ans.",
-    source: "Bain & Company — Manufacturing AI ROI 2024",
-    sourceUrl: "https://www.bain.com",
-    verifiedAt: "2026-05-25",
-    verticales: ["implementations"],
-    confidence: 0.8,
-  },
-  {
     id: "roi-ia-012",
     text: "Selon PwC (2023), l'IA pourrait contribuer à hauteur de 15 700 milliards USD à l'économie mondiale d'ici 2030, dont 6 600 milliards par gains de productivité et 9 100 milliards par effets de consommation (personnalisation des produits).",
     source: "PwC — Sizing the Prize: What's the real value of AI for your business? 2023",
@@ -1337,24 +1025,6 @@ export const KB_ROI_IA: readonly KbFact[] = [
     verifiedAt: "2026-05-25",
     verticales: ["implementations"],
     confidence: 0.88,
-  },
-  {
-    id: "roi-ia-013",
-    text: "D'après le rapport BPI France 'IA & PME 2024', 31 % des PME françaises ayant adopté l'IA reportent un gain de plus de 10 % sur leurs coûts opérationnels dans les 18 premiers mois, principalement via l'automatisation administrative.",
-    source: "BPI France — Rapport IA & PME 2024",
-    sourceUrl: "https://www.bpifrance.fr",
-    verifiedAt: "2026-05-25",
-    verticales: ["implementations", "audits"],
-    confidence: 0.82,
-  },
-  {
-    id: "roi-ia-014",
-    text: "La réduction du temps de traitement des factures par l'IA est de 70-85 % selon les études de cabinets (Deloitte, 2023), avec un taux d'erreur réduit de 90 %. Pour une PME traitant 500 factures/mois, l'économie annuelle est estimée à 20 000-40 000 euros." /* price-exempt: économie marché Deloitte, pas un tarif Axion */,
-    source: "Deloitte — AI in Finance Operations 2023",
-    sourceUrl: "https://www.deloitte.com",
-    verifiedAt: "2026-05-25",
-    verticales: ["implementations"],
-    confidence: 0.78,
   },
   {
     id: "roi-ia-015",
@@ -1403,42 +1073,6 @@ export const KB_ROI_IA: readonly KbFact[] = [
     confidence: 0.82,
   },
   {
-    id: "roi-ia-020",
-    text: "Le secteur de la santé affiche parmi les meilleurs ROI de l'IA : la détection précoce des maladies par IA réduit les coûts de traitement de 30-50 %, et les erreurs de diagnostic médical de 20-30 % (études Nature Medicine, The Lancet 2023-2024).",
-    source: "Nature Medicine + The Lancet — AI in Healthcare Reviews 2023-2024",
-    sourceUrl: "https://www.nature.com/nm",
-    verifiedAt: "2026-05-25",
-    verticales: ["implementations"],
-    confidence: 0.85,
-  },
-  {
-    id: "roi-ia-021",
-    text: "Selon Numeum (ex-Syntec Numérique, 2024), le marché français de l'IA atteint 6,5 milliards d'euros en 2024 (+35 % vs 2023) avec une projection à 15 milliards d'euros en 2027, tirée par les PME adoptant les solutions cloud IA.",
-    source: "Numeum (ex-Syntec Numérique) — Panorama IA France 2024",
-    sourceUrl: "https://numeum.fr",
-    verifiedAt: "2026-08-11",
-    verticales: ["implementations"],
-    confidence: 0.8,
-  },
-  {
-    id: "roi-ia-022",
-    text: "Selon DARES/France Stratégie (2024), 30 % des emplois français présentent un potentiel de transformation fort par l'IA (sans suppression, mais évolution substantielle des tâches). Les métiers de la comptabilité, du juridique et du secrétariat sont les plus concernés.",
-    source: "France Stratégie — Les métiers en 2030 : quelle automatisation par l'IA ? 2024",
-    sourceUrl: "https://www.strategie.gouv.fr",
-    verifiedAt: "2026-05-25",
-    verticales: ["implementations", "un_a_un"],
-    confidence: 0.85,
-  },
-  {
-    id: "roi-ia-023",
-    text: "L'IA pour la personnalisation e-commerce augmente le taux de conversion de 15 à 30 % et la valeur panier moyen de 10 à 20 %, selon des études Salesforce/Dynamic Yield (2024). Les retailers IA-natifs affichent un EBITDA supérieur de 5 points.",
-    source: "Salesforce + Dynamic Yield — AI in E-commerce 2024",
-    sourceUrl: "https://www.salesforce.com",
-    verifiedAt: "2026-05-25",
-    verticales: ["sites_web_augmentes", "implementations"],
-    confidence: 0.8,
-  },
-  {
     id: "roi-ia-024",
     text: "Selon une étude Boston Consulting Group (2023) sur 1 000 entreprises, les 10 % d'entreprises les plus avancées en IA génèrent 3x plus de valeur de l'IA que la médiane, soulignant l'importance d'un déploiement stratégique vs tactique.",
     source: "BCG — Winning with AI 2023",
@@ -1467,24 +1101,6 @@ export const KB_ROI_IA: readonly KbFact[] = [
     confidence: 0.82,
   },
   {
-    id: "roi-ia-027",
-    text: "L'automatisation par IA des processus RH (planification, paie, onboarding) réduit le temps administratif RH de 40-60 %, permettant aux DRH de consacrer 30 % de temps supplémentaire aux sujets stratégiques (culture, talents, engagement).",
-    source: "Mercer — HR Technology Survey 2024",
-    sourceUrl: "https://www.mercer.com",
-    verifiedAt: "2026-05-25",
-    verticales: ["implementations"],
-    confidence: 0.78,
-  },
-  {
-    id: "roi-ia-028",
-    text: "Selon IDC France (2024), les investissements IA des entreprises françaises ont augmenté de 43 % en 2023, avec une concentration sur 3 cas d'usage : chatbots/assistants virtuels (28 %), analyse de données (24 %) et automatisation de documents (19 %).",
-    source: "IDC France — AI Spending Guide 2024",
-    sourceUrl: "https://www.idc.com/fr",
-    verifiedAt: "2026-05-25",
-    verticales: ["implementations"],
-    confidence: 0.8,
-  },
-  {
     id: "roi-ia-029",
     text: "La mise en place d'un assistant IA pour le service client réduit le coût par interaction de 40-70 % et améliore la satisfaction client (CSAT) de 10-25 points, selon des études Gartner et Zendesk CX Trends 2024.",
     source: "Gartner + Zendesk — CX Trends 2024",
@@ -1492,15 +1108,6 @@ export const KB_ROI_IA: readonly KbFact[] = [
     verifiedAt: "2026-05-25",
     verticales: ["implementations", "sites_web_augmentes"],
     confidence: 0.82,
-  },
-  {
-    id: "roi-ia-030",
-    text: "Selon Accenture (2024), les PME qui adoptent l'IA dans leurs processus cœur de métier réduisent leur délai de mise sur le marché (time-to-market) de 20-35 % grâce à la génération assistée de documentation, prototypage et tests automatisés.",
-    source: "Accenture — AI Adoption in SMEs 2024",
-    sourceUrl: "https://www.accenture.com/fr-fr",
-    verifiedAt: "2026-05-25",
-    verticales: ["implementations"],
-    confidence: 0.78,
   },
   {
     id: "roi-ia-031",
@@ -1522,15 +1129,6 @@ export const KB_ROI_IA: readonly KbFact[] = [
     confidence: 0.78,
   },
   {
-    id: "roi-ia-033",
-    text: "Une étude Wavestone/EY (2024) sur 350 grandes entreprises françaises montre que le délai médian de retour sur investissement d'un projet IA est de 11 mois, avec 62 % des projets atteignant le ROI cible en moins de 18 mois.",
-    source: "Wavestone — Baromètre IA 2024",
-    sourceUrl: "https://www.wavestone.com/insights/",
-    verifiedAt: "2026-05-25",
-    verticales: ["implementations"],
-    confidence: 0.78,
-  },
-  {
     id: "roi-ia-034",
     text: "Selon McKinsey (2024), les entreprises dans les 25 % supérieurs d'adoption IA ont 1,4x plus de probabilité d'avoir une croissance de revenus supérieure à 15 % et 1,6x plus de probabilité d'avoir réduit leurs coûts de plus de 10 % par rapport aux autres.",
     source: "McKinsey — The State of AI in 2024",
@@ -1538,33 +1136,6 @@ export const KB_ROI_IA: readonly KbFact[] = [
     verifiedAt: "2026-05-25",
     verticales: ["implementations"],
     confidence: 0.85,
-  },
-  {
-    id: "roi-ia-035",
-    text: "L'IA de détection des fraudes dans les transactions financières réduit les faux positifs de 50-70 % et améliore le taux de détection des fraudes réelles de 30-40 %, selon des études Feedzai/McKinsey sur le secteur bancaire (2023-2024).",
-    source: "McKinsey — AI in Financial Services 2023",
-    sourceUrl: "https://www.mckinsey.com/industries/financial-services",
-    verifiedAt: "2026-05-25",
-    verticales: ["implementations"],
-    confidence: 0.82,
-  },
-  {
-    id: "roi-ia-036",
-    text: "Selon France Num (2024), les PME françaises qui ont adopté au moins un outil IA dans leur gestion quotidienne réalisent en moyenne 8 heures d'économie hebdomadaire par collaborateur, soit l'équivalent d'un 5e jour de productivité par mois.",
-    source: "France Num — Baromètre transformation numérique 2024",
-    sourceUrl: "https://www.francenum.gouv.fr",
-    verifiedAt: "2026-05-25",
-    verticales: ["implementations", "un_a_un"],
-    confidence: 0.78,
-  },
-  {
-    id: "roi-ia-037",
-    text: "L'IA pour la génération de contenu SEO permet de multiplier par 3 à 5 le volume de pages indexées, avec un trafic organique augmenté de 60-120 % en 12 mois, selon des études SE Ranking/Semrush sur des sites B2B ayant déployé des stratégies IA-SEO (2024).",
-    source: "Semrush — AI Content Strategy Report 2024",
-    sourceUrl: "https://www.semrush.com/blog/ai-content/",
-    verifiedAt: "2026-05-25",
-    verticales: ["sites_web_augmentes"],
-    confidence: 0.75,
   },
   {
     id: "roi-ia-038",
@@ -1585,33 +1156,6 @@ export const KB_ROI_IA: readonly KbFact[] = [
     confidence: 0.85,
   },
   {
-    id: "roi-ia-040",
-    text: "Selon l'étude Baromètre Sopra Steria/IFOP (2024) sur les entreprises françaises, 54 % des salariés estiment que l'IA leur fait gagner du temps sur des tâches à faible valeur, mais 78 % réclament une formation spécifique pour en exploiter pleinement le potentiel.",
-    source: "Sopra Steria + IFOP — Baromètre IA & Travail 2024",
-    sourceUrl: "https://www.soprasteria.com/fr",
-    verifiedAt: "2026-05-25",
-    verticales: ["un_a_un", "implementations"],
-    confidence: 0.8,
-  },
-  {
-    id: "roi-ia-041",
-    text: "L'IA dans l'agriculture de précision génère des économies de 15-20 % sur les intrants (engrais, pesticides) et augmente les rendements de 5-10 %, selon des études INRAE/Arvalis sur des exploitations agricoles françaises équipées de capteurs IoT + IA (2023).",
-    source: "INRAE + Arvalis — IA et agriculture de précision 2023",
-    sourceUrl: "https://www.inrae.fr",
-    verifiedAt: "2026-05-25",
-    verticales: ["implementations"],
-    confidence: 0.82,
-  },
-  {
-    id: "roi-ia-042",
-    text: "Selon Gartner (2024), les entreprises qui déploient l'IA pour l'assistance au développement logiciel (copilots de code) voient leur vélocité de développement augmenter de 30-50 %, avec une réduction des bugs de 15-25 %.",
-    source: "Gartner — AI Augmented Development 2024",
-    sourceUrl: "https://www.gartner.com/en/information-technology",
-    verifiedAt: "2026-05-25",
-    verticales: ["sites_web_augmentes", "implementations"],
-    confidence: 0.82,
-  },
-  {
     id: "roi-ia-043",
     text: "Selon le rapport Bain & Company 'GenAI in Retail' (2024), les retailers ayant déployé l'IA pour la personnalisation des recommandations produits ont vu leur valeur vie client (LTV) augmenter de 15-25 % sur 24 mois.",
     source: "Bain & Company — GenAI in Retail 2024",
@@ -1626,51 +1170,6 @@ export const KB_ROI_IA: readonly KbFact[] = [
     source: "Gartner — Top Strategic Technology Trends 2025",
     sourceUrl:
       "https://www.gartner.com/en/articles/gartner-top-10-strategic-technology-trends-for-2025",
-    verifiedAt: "2026-05-25",
-    verticales: ["implementations"],
-    confidence: 0.8,
-  },
-  {
-    id: "roi-ia-045",
-    text: "Selon une étude Deloitte (2024), chaque euro investi dans la formation aux outils IA génère 4 euros de gain de productivité sur 3 ans, faisant de la formation IA l'investissement ROI le plus élevé dans la transformation digitale." /* price-exempt: ratio ROI marché Deloitte, pas un tarif Axion */,
-    source: "Deloitte — AI Skills & ROI Report 2024",
-    sourceUrl: "https://www.deloitte.com",
-    verifiedAt: "2026-05-25",
-    verticales: ["un_a_un", "implementations"],
-    confidence: 0.78,
-  },
-  {
-    id: "roi-ia-046",
-    text: "L'IA de prédiction de churn client permet de réduire le taux d'attrition de 15-25 % et d'augmenter la rétention des abonnés, générant un impact direct sur le MRR. Le ROI moyen d'un projet anti-churn IA est estimé à 5-8x sur 18 mois (Forrester, 2024).",
-    source: "Forrester — AI for Customer Retention 2024",
-    sourceUrl: "https://www.forrester.com",
-    verifiedAt: "2026-05-25",
-    verticales: ["implementations", "sites_web_augmentes"],
-    confidence: 0.78,
-  },
-  {
-    id: "roi-ia-047",
-    text: "Selon le Global AI Index (Tortoise Media, 2024), la France se classe au 6e rang mondial pour l'implémentation IA dans les entreprises, derrière les USA, Chine, Royaume-Uni, Canada et Allemagne, mais devant tous les autres pays européens.",
-    source: "Tortoise Media — Global AI Index 2024",
-    sourceUrl: "https://www.tortoisemedia.com/intelligence/global-ai",
-    verifiedAt: "2026-05-25",
-    verticales: ["implementations"],
-    confidence: 0.82,
-  },
-  {
-    id: "roi-ia-048",
-    text: "L'IA appliquée à l'analyse des avis clients (NLP) réduit de 80 % le temps d'analyse des feedbacks et permet d'identifier des problèmes produit en moyenne 45 jours plus tôt qu'une analyse manuelle, selon Qualtrics XM Institute (2024).",
-    source: "Qualtrics XM Institute — AI in Voice of Customer 2024",
-    sourceUrl: "https://www.qualtrics.com/xm-institute/",
-    verifiedAt: "2026-05-25",
-    verticales: ["implementations"],
-    confidence: 0.8,
-  },
-  {
-    id: "roi-ia-049",
-    text: "Selon une enquête Ernst & Young (2024), 89 % des CFO français considèrent l'IA comme prioritaire dans leur stratégie financière pour 2025-2026, principalement pour : la clôture comptable accélérée (-40 % de délai), la prévision budgétaire (+30 % de précision) et la détection des fraudes.",
-    source: "Ernst & Young — CFO Survey France 2024",
-    sourceUrl: "https://www.ey.com/fr_fr",
     verifiedAt: "2026-05-25",
     verticales: ["implementations"],
     confidence: 0.8,
