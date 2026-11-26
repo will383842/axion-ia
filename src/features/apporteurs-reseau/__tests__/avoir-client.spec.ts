@@ -779,4 +779,16 @@ describe("commande mixte : mise en service + maintenance", () => {
     expect(d.reduire).not.toHaveBeenCalled();
     expect(ecritures()).toEqual([]);
   });
+
+  it("avoir de 150 € qui annule la maintenance : la commission reste 600 € (pas de double déduction)", async () => {
+    const av = {
+      ...avm("payee", 15_000),
+      lignes: [{ designation: "Maintenance mensuelle", quantite: 1, prixUnitaireHtCents: -15_000 }],
+    } as unknown as F;
+    d.factures = [fm, av];
+    d.lignes = [lm()];
+    await reprendreApresAvoirsClients(LE);
+    expect(d.reduire).not.toHaveBeenCalled();
+    expect(ecritures()).toEqual([]);
+  });
 });

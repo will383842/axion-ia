@@ -546,9 +546,23 @@ export function htLignesRecurrentesCents(lignes: unknown): number {
     // Quantité 0 ou négative (option non retenue) : la ligne ne pèse rien ; illisible : 1.
     const q = typeof o.quantite === "number" ? Math.max(0, o.quantite) : 1;
     const pu = typeof o.prixUnitaireHtCents === "number" ? o.prixUnitaireHtCents : 0;
-    total += Math.round(q * pu);
+    total += Math.abs(Math.round(q * pu));
   }
   return Math.max(0, total);
+}
+
+/**
+ * Lignes récurrentes RESTANTES d'une commande : celles du devis (ou de la facture) moins la part
+ * récurrente des avoirs actifs (un avoir qui annule la maintenance ne doit pas la déduire deux fois,
+ * une fois dans le net et une fois ici). Un avoir à ligne générique (« avoir partiel ») ne se
+ * rattache à aucune ligne : prudence, il réduit la base commissionnable. Jamais négatif. Pur.
+ */
+export function htLignesRecurrentesRestantesCents(
+  lignesCommande: unknown,
+  lignesDesAvoirsActifs: readonly unknown[],
+): number {
+  const rendu = lignesDesAvoirsActifs.reduce<number>((s, l) => s + htLignesRecurrentesCents(l), 0);
+  return Math.max(0, htLignesRecurrentesCents(lignesCommande) - rendu);
 }
 
 /** Base commissionnable : le net HT moins les lignes récurrentes du devis (jamais négatif). */

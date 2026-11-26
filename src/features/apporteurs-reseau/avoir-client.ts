@@ -47,7 +47,7 @@ import {
 import { dejaEnvoye, statutApresVigilance } from "./commissions";
 import {
   ajouterMois,
-  htLignesRecurrentesCents,
+  htLignesRecurrentesRestantesCents,
   FORFAIT_CONFERENCE_CENTS,
   PALIER_CONFERENCE,
   PALIER_JOURNEE_IA,
@@ -211,7 +211,7 @@ async function prevenirRetenue(apporteurId: string, numeroAvoir: string, avoir?:
   }
 }
 
-type FactureLue = FactureDeCommande & { createdAt: Date | null };
+type FactureLue = FactureDeCommande & { createdAt: Date | null; lignes?: unknown };
 
 const CHAMPS = {
   id: true,
@@ -221,6 +221,7 @@ const CHAMPS = {
   montantHtCents: true,
   emiseAt: true,
   createdAt: true,
+  lignes: true,
 } as const;
 
 /** Les factures d'une commande et leurs avoirs, tous statuts (le tri est fait par la source unique). */
@@ -252,7 +253,12 @@ async function facturesDeLaCommande(factureId: string): Promise<{
   const total = f.devis?.montantTotalHtCents;
   const recurrentCents = f.devis?.journeeIa
     ? 0
-    : htLignesRecurrentesCents(f.devis ? f.devis.lignes : f.lignes);
+    : htLignesRecurrentesRestantesCents(
+        f.devis ? f.devis.lignes : f.lignes,
+        avoirs
+          .filter((a) => a.statut !== "brouillon" && a.statut !== "annulee")
+          .map((a) => a.lignes),
+      );
   return {
     membres,
     avoirs,

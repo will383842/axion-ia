@@ -84,7 +84,7 @@ import { signalerErreurReseau } from "./signaler";
 import {
   ajouterJours,
   ajouterMois,
-  baseHorsLignesRecurrentes,
+  htLignesRecurrentesRestantesCents,
   calculerCommission,
   DEVELOPPEMENT_WEB_COMMISSIONNE_DEPUIS,
   calculerCommissionJourneeIa,
@@ -857,6 +857,7 @@ async function etapeCommissions(maintenant: Date, bilan: BilanPassageReseau): Pr
       avoirDeId: true,
       montantHtCents: true,
       emiseAt: true,
+      lignes: true,
     },
   });
   const parId = new Map(lignes.map((f) => [f.id, f]));
@@ -991,12 +992,20 @@ async function etapeCommissions(maintenant: Date, bilan: BilanPassageReseau): Pr
     }
     // Règle du 25/11 : maintenance, abonnement, hébergement, licence sur la même facture que la
     // mise en service = 0 € ; seule la mise en service donne 15 %.
-    const baseCommissionnable = f.devis?.journeeIa
-      ? commande.baseApresAvoirsCents
-      : baseHorsLignesRecurrentes(
-          commande.baseApresAvoirsCents,
+    const avoirsActifs = avoirsLignes.filter(
+      (a) =>
+        a.statut !== "brouillon" &&
+        a.statut !== "annulee" &&
+        a.avoirDeId !== null &&
+        commande.factureIds.includes(a.avoirDeId),
+    );
+    const recurrentCents = f.devis?.journeeIa
+      ? 0
+      : htLignesRecurrentesRestantesCents(
           f.devis ? f.devis.lignes : f.lignes,
+          avoirsActifs.map((a) => a.lignes),
         );
+    const baseCommissionnable = Math.max(0, commande.baseApresAvoirsCents - recurrentCents);
     // Journée IA : repérée par `devis.journee_ia` (aucune valeur d'énumération nouvelle).
     const calc =
       f.devis?.journeeIa === true

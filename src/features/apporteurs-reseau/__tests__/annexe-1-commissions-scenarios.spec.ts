@@ -12,6 +12,7 @@ import {
   baseHorsLignesRecurrentes,
   calculerCommission,
   htLignesRecurrentesCents,
+  htLignesRecurrentesRestantesCents,
   partParrainage,
 } from "../regles";
 
@@ -325,5 +326,16 @@ describe("lignes récurrentes : cas limites", () => {
     expect(
       htLignesRecurrentesCents([{ designation: "Maintenance", prixUnitaireHtCents: 15_000 }]),
     ).toBe(15_000);
+  });
+  it("un avoir qui annule la maintenance la retire des lignes récurrentes restantes (base 4 000 €)", () => {
+    const devis = [
+      { designation: "Mise en service", quantite: 1, prixUnitaireHtCents: 400_000 },
+      { designation: "Maintenance", quantite: 1, prixUnitaireHtCents: 15_000 },
+    ];
+    const avoir = [{ designation: "Maintenance", quantite: 1, prixUnitaireHtCents: -15_000 }];
+    expect(htLignesRecurrentesRestantesCents(devis, [avoir])).toBe(0);
+    expect(htLignesRecurrentesRestantesCents(devis, [])).toBe(15_000);
+    // net 4 150 − 150 (avoir) = 4 000, moins 0 de récurrent restant = 4 000 → 600 €
+    expect(baseHorsLignesRecurrentes(4_000_00, [])).toBe(4_000_00);
   });
 });
