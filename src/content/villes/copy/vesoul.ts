@@ -49,7 +49,7 @@ export const VESOUL_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Vesoul et en Haute-Saône ?",
-      a: "Nous intervenons partout en France, sur place ou à distance.",
+      a: "Oui, Axion-IA intervient à Vesoul et dans toute la Haute-Saône. Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les sous-traitants automobile de Vesoul ?",

@@ -124,7 +124,7 @@ export const VERNON_COPY: VilleCopy = {
           },
           {
             q: "Gérez-vous l'accueil multilingue des visiteurs de Giverny ?",
-            a: "Oui. Nous intervenons dans vos locaux à Vernon, partout en France. L'accueil reste fluide même au pic de la saison touristique du printemps et de l'été.",
+            a: "Oui. Pour l'hôtellerie, la restauration et les commerces proches des jardins de Monet, à Giverny, on déploie des chatbots et agents conversationnels multilingues, des parcours de réservation directe, de la billetterie et de la gestion d'avis, ancrés sur vos contenus réels et accessibles 24h/24. L'accueil reste fluide même au pic de la saison touristique du printemps et de l'été.",
           },
           {
             q: "Mes données et celles de mes clients restent-elles en Europe ?",
@@ -210,7 +210,7 @@ export const VERNON_COPY: VilleCopy = {
           },
           {
             q: "Gérez-vous l'accueil multilingue des visiteurs de Giverny ?",
-            a: "Oui. Nous intervenons dans vos locaux à Vernon, partout en France. L'accueil reste fluide même au pic de la saison touristique du printemps et de l'été.",
+            a: "Oui. Pour l'hôtellerie, la restauration et les commerces proches des jardins de Monet, à Giverny, on déploie des chatbots et agents conversationnels multilingues, des parcours de réservation directe, de la billetterie et de la gestion d'avis, ancrés sur vos contenus réels et accessibles 24h/24. L'accueil reste fluide même au pic de la saison touristique du printemps et de l'été.",
           },
           {
             q: "Mes données et celles de mes clients restent-elles en Europe ?",

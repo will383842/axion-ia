@@ -49,7 +49,7 @@ export const VERNOUILLET_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Vernouillet et agglomération Dreux ?",
-      a: "Nous intervenons partout en France, sur place ou à distance.",
+      a: "Oui, Axion-IA intervient à Vernouillet et dans toute l'agglomération de Dreux (Dreux, Cherisy, Luray). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les TPE/PME tertiaires de Vernouillet ?",

@@ -49,7 +49,7 @@ export const VIC_LE_COMTE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Vic-le-Comte et sud Clermont ?",
-      a: "Nous intervenons dans vos locaux à Vic-le-Comte, partout en France.",
+      a: "Oui. Axion-IA intervient à Vic-le-Comte et dans tout le sud clermontois, notamment à Issoire, au Cendre et à Clermont-Ferrand.",
     },
     {
       q: "Travaillez-vous avec les exploitants agricoles vallée Allier ?",

@@ -246,7 +246,7 @@ export const VERTOU_COPY: VilleCopy = {
     },
     {
       q: "Axion-IA travaille-t-elle avec l'écosystème industriel Manitou et Saint-Nazaire ?",
-      a: "Oui. Nous intervenons dans vos locaux, partout en France. Cas d'usage typiques : prévision de stocks, maintenance prédictive, copilotes méthodes.",
+      a: "Oui. Nous intervenons auprès des sous-traitants gravitant autour de Manitou (chariots élévateurs, 4 500 salariés Ancenis-Vertou), des fournisseurs Airbus Nantes et des PME servant les chantiers navals de Saint-Nazaire. Cas d'usage typiques : prévision de stocks, maintenance prédictive, copilotes méthodes.",
     },
     {
       q: "Comment Axion-IA garantit-elle la conformité RGPD et AI Act à Vertou ?",

@@ -49,7 +49,7 @@ export const VIARMES_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Viarmes et dans le Pays de France ?",
-      a: "Nous intervenons dans vos locaux à Viarmes, partout en France.",
+      a: "Oui. Axion-IA intervient à Viarmes et dans tout le Pays de France, notamment à Luzarches et à Beaumont-sur-Oise.",
     },
     {
       q: "Travaillez-vous avec les commerçants et artisans de Viarmes ?",

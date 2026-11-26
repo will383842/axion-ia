@@ -49,7 +49,7 @@ export const VAUGNERAY_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Vaugneray et monts du Lyonnais ?",
-      a: "Nous intervenons partout en France, sur place ou à distance.",
+      a: "Oui, Axion-IA intervient à Vaugneray et dans tout l'ouest lyonnais / monts du Lyonnais (Craponne, Brindas, Grézieu-la-Varenne, Yzeron). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les agriculteurs monts du Lyonnais ?",
