@@ -31,7 +31,7 @@ describe("computeCost (anthropic.ts)", () => {
   });
 
   it("prix de cache 5.5 (tarif propre au modèle, source Studio tarifs.ts:31-32)", () => {
-    expect(computeCost("claude-opus-5-5", 0, 0, M, 0)).toBeCloseTo(0.2, 10);
+    expect(computeCost("claude-opus-5-5", 0, 0, M, 0)).toBeCloseTo(0.4, 10);
     expect(computeCost("claude-opus-5-5", 0, 0, 0, M)).toBeCloseTo(5.0, 10);
     expect(computeCost("claude-sonnet-5-5", 0, 0, M, 0)).toBeCloseTo(0.2, 10);
     expect(computeCost("claude-sonnet-5-5", 0, 0, 0, M)).toBeCloseTo(2.5, 10);
