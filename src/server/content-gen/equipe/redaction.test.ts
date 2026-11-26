@@ -186,3 +186,10 @@ describe("consigneRedactionEquipe : échappement", () => {
     );
   });
 });
+
+describe("consigneRedactionEquipe : signe du chiffre", () => {
+  it("conserve le signe d'un chiffre négatif", () => {
+    const c = consigneRedactionEquipe({ dossier: dossier([preuve({ chiffre: "-12 %" })]) }, ACTIF);
+    expect(c).toContain("chiffre : -12 %");
+  });
+});
