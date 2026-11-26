@@ -42,7 +42,10 @@ export function estRouteInterneConnue(
   if (typeof url !== "string" || !url.startsWith("/") || url.startsWith("//")) return false;
   const chemin = url.split(/[?#]/)[0] ?? "";
   let segs = segments(chemin);
-  if (segs[0] === "fr" || segs[0] === "en") segs = segs.slice(1);
+  // EN est désactivé (/en/* → 301) : jamais de lien /en/…
+  if (segs[0] === "en") return false;
+  if (segs[0] === "fr") segs = segs.slice(1);
+  if (url.includes("\\")) return false;
   if (segs.some((s) => s === "." || s === "..")) return false;
   return routes.some((route) => {
     const modele = segments(route);
@@ -70,8 +73,9 @@ export interface OptionsLienExterne {
 }
 
 function hoteInterdit(h: string): boolean {
-  const hote = h.toLowerCase();
+  const hote = h.toLowerCase().replace(/\.+$/, "");
   return (
+    !hote.includes(".") ||
     hote === "localhost" ||
     hote.endsWith(".localhost") ||
     hote.endsWith(".internal") ||
@@ -79,6 +83,15 @@ function hoteInterdit(h: string): boolean {
     hote.startsWith("[") ||
     /^\d{1,3}(\.\d{1,3}){3}$/.test(hote)
   );
+}
+
+/** Niveau du domaine ; un sous-domaine d'un domaine exclu est exclu. */
+function niveauDuDomaine(domaine: string): NiveauSource {
+  const parts = domaine.toLowerCase().split(".");
+  for (let i = 0; i < parts.length - 1; i++) {
+    if (computeTrustTier(parts.slice(i).join(".")) === "excluded") return "excluded";
+  }
+  return computeTrustTier(domaine);
 }
 
 async function requete(
@@ -106,11 +119,12 @@ export async function verifierLienExterne(
   } catch {
     return { ok: false, raison: "url-invalide" };
   }
-  if (u.protocol !== "https:" && u.protocol !== "http:") return { ok: false, raison: "protocole" };
+  if (u.protocol !== "https:") return { ok: false, raison: "protocole" };
+  if (u.port !== "" && u.port !== "443") return { ok: false, raison: "port" };
   if (hoteInterdit(u.hostname)) return { ok: false, raison: "hote-interdit" };
 
   const domaine = extractDomain(url) ?? u.hostname;
-  const niveau: NiveauSource = options.niveau ?? computeTrustTier(domaine);
+  const niveau: NiveauSource = options.niveau ?? niveauDuDomaine(domaine);
   if (niveau === "low" || niveau === "excluded") return { ok: false, raison: "source-faible" };
 
   const fetchImpl: FetchLike = options.fetchImpl ?? ((i, init) => fetch(i, init));
@@ -123,6 +137,8 @@ export async function verifierLienExterne(
     rep = null;
   }
   // HEAD refusé ou en échec : on retente en GET avant de conclure.
+  if (rep !== null && [403, 405, 501].includes(rep.status))
+    await rep.body?.cancel().catch(() => {});
   if (rep === null || rep.status === 405 || rep.status === 501 || rep.status === 403) {
     try {
       rep = await requete(fetchImpl, url, "GET", delai);
@@ -130,6 +146,7 @@ export async function verifierLienExterne(
       return { ok: false, raison: "injoignable" };
     }
   }
+  await rep.body?.cancel().catch(() => {});
   if (rep.status >= 300 && rep.status < 400) return { ok: false, raison: "redirection" };
   if (rep.status !== 200) return { ok: false, raison: `code-${rep.status}` };
   return { ok: true };

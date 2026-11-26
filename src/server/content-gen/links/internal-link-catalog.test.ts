@@ -39,7 +39,34 @@ describe("catalogue V2", () => {
   });
 });
 
+describe("garde-fous V2", () => {
+  it("n'ajoute pas les pages utilitaires, ni un slug dangereux", () => {
+    const c = construireCatalogueDynamique({
+      ...sources,
+      routes: [...routes, "/rgpd", "/design"],
+      articles: [{ slug: 'x"><b', title: "Audit cabinets comptables" }],
+    });
+    const urls = c.map((e) => e.url);
+    expect(urls).not.toContain("/rgpd");
+    expect(urls).not.toContain("/design");
+    expect(urls.some((u) => u.includes('"'))).toBe(false);
+  });
+  it("une ville homonyme d'un mot courant ne matche pas un sujet voisin", () => {
+    const c = construireCatalogueDynamique({
+      ...sources,
+      villes: [{ slug: "sens", nameFr: "Sens" }],
+    });
+    expect(getRelevantInternalLinks(["sensibilisation"], [], 5, c)).toEqual([]);
+  });
+});
+
 describe("interrupteur", () => {
+  it("éteint : même sortie que le catalogue V1 sur un corpus qui produit des liens", () => {
+    const corps = "<p>Un audit et une formation, avec un devis.</p>";
+    const sortie = injectInternalLinks(corps, "audit formation devis");
+    expect(sortie).toContain('href="/audit"');
+    expect(sortie).not.toContain("/journee-ia");
+  });
   it("éteint : catalogue statique, pas de lien Journée IA", () => {
     expect(getCatalogue().some((e) => e.url === "/journee-ia")).toBe(false);
     expect(injectInternalLinks("<p>Une journée IA à Lyon.</p>", "journée lyon")).toBe(

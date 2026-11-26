@@ -59,6 +59,29 @@ describe("liens externes (réseau simulé)", () => {
     expect((await verifierLienExterne("https://reddit.com/x", { fetchImpl: f })).ok).toBe(false);
     expect(f).not.toHaveBeenCalled();
   });
+  it("refuse http, port non standard, hôte sans point, point final", async () => {
+    const f = vi.fn();
+    for (const u of [
+      "http://exemple.fr/",
+      "https://exemple.fr:8443/",
+      "https://redis/",
+      "https://localhost./",
+      "https://old.reddit.com/x",
+    ]) {
+      expect((await verifierLienExterne(u, { fetchImpl: f })).ok).toBe(false);
+    }
+    expect(f).not.toHaveBeenCalled();
+  });
+  it("refuse une redirection renvoyée par le GET de repli", async () => {
+    const f = vi.fn().mockResolvedValueOnce(rep(403)).mockResolvedValueOnce(rep(302));
+    expect((await verifierLienExterne("https://exemple.fr/a", { fetchImpl: f })).raison).toBe(
+      "redirection",
+    );
+  });
+  it("refuse /en/… et les contre-obliques", () => {
+    expect(estRouteInterneConnue("/en/blog/x")).toBe(false);
+    expect(estRouteInterneConnue("/\\evil.com")).toBe(false);
+  });
   it("refuse un lien injoignable (délai dépassé)", async () => {
     const f = vi.fn().mockRejectedValue(new Error("abort"));
     expect((await verifierLienExterne("https://exemple.fr/a", { fetchImpl: f })).raison).toBe(

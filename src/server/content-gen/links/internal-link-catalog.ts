@@ -14,15 +14,18 @@
  */
 
 import { routing } from "@/i18n/routing";
-import { getIndexableVilles } from "@/content/villes";
+import { getVillesCitablesMaillageHydratees } from "@/content/villes";
 import { equipeEditorialeActive, estRouteInterneConnue } from "../equipe/maillage";
 import { linkPhraseOutsideAnchors } from "./anchor-safe-link";
+import { titlePhrases } from "./inject-deep-links";
 
 /** Entrée du catalogue : topic → URL canonique FR. */
 export interface InternalLinkEntry {
   readonly topic: string;
   readonly url: string;
   readonly keywords: readonly string[];
+  /** Si vrai : ne correspond qu'à un sujet identique au mot-clé (noms de villes). */
+  readonly exact?: boolean;
 }
 
 const STATIC_CATALOG: readonly InternalLinkEntry[] = [
@@ -108,15 +111,6 @@ export interface SourcesCatalogue {
   readonly articles: readonly ArticlePublie[];
 }
 
-const MOTS_VIDES = new Set(["les", "des", "une", "pour", "avec", "dans", "sur", "par", "aux"]);
-
-function motsDuTitre(titre: string): string[] {
-  return titre
-    .toLowerCase()
-    .split(/[^\p{L}\p{N}]+/u)
-    .filter((w) => w.length > 3 && !MOTS_VIDES.has(w));
-}
-
 /**
  * V2 — construit le catalogue depuis les sources. Pure et déterministe.
  * Ne retient que des URLs qui correspondent à une route connue.
@@ -137,20 +131,14 @@ export function construireCatalogueDynamique(src: SourcesCatalogue): InternalLin
       topic: `audit IA ${v.nameFr}`,
       url: `/audit/par-ville/${v.slug}`,
       keywords: [v.nameFr],
+      exact: true,
     });
   }
   for (const a of src.articles) {
-    const mots = motsDuTitre(a.title);
-    if (mots.length === 0) continue;
-    const phrases = mots.slice(0, -1).map((m, i) => `${m} ${mots[i + 1]}`);
-    ajouter({ topic: a.title, url: `/blog/${a.slug}`, keywords: [...phrases, ...mots] });
-  }
-  for (const r of src.routes) {
-    const segs = r.split("/").filter(Boolean);
-    if (segs.length !== 1 || segs[0]!.startsWith("[")) continue;
-    const mots = segs[0]!.split("-").filter((w) => w.length > 3);
-    if (mots.length === 0) continue;
-    ajouter({ topic: segs[0]!, url: r, keywords: [segs[0]!.replace(/-/g, " ")] });
+    if (!/^[a-z0-9-]+$/.test(a.slug)) continue;
+    const phrases = titlePhrases(a.title);
+    if (phrases.length === 0) continue;
+    ajouter({ topic: a.title, url: `/blog/${a.slug}`, keywords: phrases });
   }
   return out;
 }
@@ -162,7 +150,7 @@ export function getCatalogue(
   if (!equipeEditorialeActive()) return STATIC_CATALOG;
   return construireCatalogueDynamique({
     routes: Object.keys(routing.pathnames),
-    villes: getIndexableVilles(),
+    villes: getVillesCitablesMaillageHydratees(),
     articles,
   });
 }
@@ -187,7 +175,7 @@ export function getRelevantInternalLinks(
     if (seen.has(entry.url)) continue;
     const entryKeywordsNorm = entry.keywords.map((k) => k.toLowerCase());
     const matches = normalizedTopics.some((t) =>
-      entryKeywordsNorm.some((k) => k.includes(t) || t.includes(k)),
+      entryKeywordsNorm.some((k) => (entry.exact ? k === t : k.includes(t) || t.includes(k))),
     );
     if (matches) {
       results.push(entry);
