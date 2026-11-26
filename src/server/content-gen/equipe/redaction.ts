@@ -81,7 +81,7 @@ export function consigneRedactionEquipe(
   } else {
     for (const p of preuves) {
       lignes.push(
-        `- ${esc(p.affirmation)}${p.chiffre ? ` — chiffre : ${esc(p.chiffre)}` : ""} (${esc(p.url)})`,
+        `- ${esc(p.affirmation)}${p.chiffre ? ` — ${esc(`chiffre : ${p.chiffre}`)}` : ""} (${esc(p.url)})`,
       );
     }
   }
