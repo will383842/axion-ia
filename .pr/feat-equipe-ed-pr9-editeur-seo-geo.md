@@ -23,3 +23,12 @@ Un éditeur qui corrige les articles par petites touches, derrière `CONTENT_EQU
 - Interrupteur éteint : aucun changement de comportement (testé). Allumé : les notes SEO changent de grille.
 - L'éditeur n'est pas encore branché dans un générateur : cette PR livre le module, la note et le JSON-LD.
 - `typecheck` exige `NODE_OPTIONS=--max-old-space-size=8192` sur ce poste.
+
+## Précisions après relecture
+
+- Un remplacement ne peut jamais toucher le balisage : ni dans l'ancien ni dans le nouveau texte, aucune balise ne peut changer, être coupée ou ajoutée, et l'ancien texte ne peut pas viser l'intérieur d'une balise (lien, attribut). Sur H1 et métas, le total des anciens textes remplacés est plafonné à 60 % du champ.
+- La grille « équipe » s'applique à tous les générateurs qui appellent `computeSeoScore` quand l'interrupteur est allumé (pas seulement le blog) : à surveiller sur les seuils de publication au moment de l'allumage.
+- Reste à faire au branchement : borner aussi la longueur du « nouveau » sur les champs courts (le dépassement remonte déjà dans `problemesRestants`).
+- `editerSeo` n'est appelé par aucun générateur dans cette PR.
+
+VERDICT OPUS : BON
