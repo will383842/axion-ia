@@ -9,8 +9,9 @@ import { commandesSoldees, type FactureDeCommande } from "../commandes";
 import {
   ADRESSE_VALIDE_JOURS,
   PALIERS_FORMATION,
-  FORFAIT_CONFERENCE_CENTS,
+  baseHorsLignesRecurrentes,
   calculerCommission,
+  htLignesRecurrentesCents,
   partParrainage,
 } from "../regles";
 
@@ -248,82 +249,27 @@ describe("formation : nombre de sessions du même palier dans une commande", () 
   });
 });
 
-describe("conférence : 500 € HT fixes par conférence, sans prorata (décision du 06/10)", () => {
+describe("conférence : aucune commission (contrat 2.8, décision de Will)", () => {
   const conf = (ht: number, extra: object = {}) =>
     calculerCommission({ activite: "conference", factureHtCents: ht, ...extra });
-  const f = (o: Partial<FactureDeCommande>): FactureDeCommande => ({
-    id: "F1",
-    devisId: null,
-    statut: "payee",
-    avoirDeId: null,
-    montantHtCents: 300_000,
-    emiseAt: new Date("2026-10-01T10:00:00Z"),
-    ...o,
-  });
 
-  it("le forfait vient de la source unique du site : 500 €", () => {
-    expect(FORFAIT_CONFERENCE_CENTS).toBe(50_000);
+  it("aucune commission, quels que soient le prix, la remise ou le nombre de conférences", () => {
+    for (const ht of [0, 30_000, 210_000, 300_000])
+      for (const quantite of [undefined, 1, 3])
+        expect(conf(ht, { quantite })).toEqual({ statut: "aucune" });
   });
-  it("conférence au plein tarif = 500 €", () => {
-    expect(montant(conf(300_000))).toBe(50_000);
-  });
-  it("conférence remisée de 30 % = toujours 500 €", () => {
-    expect(montant(conf(210_000))).toBe(50_000);
-  });
-  it("une commande de trois conférences : 3 × 500 € = 1 500 €", () => {
-    expect(montant(conf(300_000, { quantite: 3 }))).toBe(150_000);
-  });
-  it("jamais plus que le prix HT facturé (A1.4 bis) : 3 conférences facturées 300 € = 300 €", () => {
-    expect(montant(conf(30_000, { quantite: 3 }))).toBe(30_000);
-  });
-  it("un nombre de conférences invalide (0, 2,5, 100) vaut 1", () => {
-    for (const quantite of [0, 2.5, 100]) expect(montant(conf(300_000, { quantite }))).toBe(50_000);
-  });
-  it("facture de conférence typée formation, palier conférence choisi : 500 € par conférence, sans prorata", () => {
-    const r = calculerCommission({
-      activite: "formation",
-      palier: "conference",
-      quantite: 2,
-      factureHtCents: 100_000,
-    });
-    expect(montant(r)).toBe(100_000);
-    expect(r.statut === "calculee" && r.palier).toBe("conference");
-  });
-  it("commande remboursée en totalité (HT nul) : rien", () => {
-    expect(montant(conf(0))).toBe(0);
-  });
-  it("2 conférences dans 2 commandes = 2 forfaits", () => {
-    const commandes = commandesSoldees([
-      f({ id: "A", devisId: "D1" }),
-      f({ id: "B", devisId: "D2" }),
-    ]);
-    expect(commandes).toHaveLength(2);
-    const total = commandes.reduce((s, c) => s + (montant(conf(c.totalHtCents)) ?? 0), 0);
-    expect(total).toBe(100_000);
-  });
-  it("une commande de conférence avec acompte seul payé = rien (règle de la commande soldée)", () => {
-    const acompte = f({ id: "ACO", devisId: "D1", montantHtCents: 100_000 });
-    expect(commandesSoldees([acompte], new Map([["D1", 300_000]]))).toEqual([]);
-  });
-  it("acompte + solde payés : une seule commande, donc un seul forfait", () => {
-    const c = commandesSoldees(
-      [
-        f({ id: "ACO", devisId: "D1", montantHtCents: 100_000 }),
-        f({ id: "SOL", devisId: "D1", montantHtCents: 200_000 }),
-      ],
-      new Map([["D1", 300_000]]),
-    );
-    expect(c).toHaveLength(1);
-    expect(montant(conf(c[0]!.totalHtCents))).toBe(50_000);
-  });
-  it("parrain 10 % sur la commission de conférence = 50 €", () => {
+  it("facture typée formation avec le palier « conférence » : aucune commission non plus", () => {
     expect(
-      partParrainage({
-        commissionFilleulCents: FORFAIT_CONFERENCE_CENTS,
-        filleulSigneAt: new Date("2026-09-01T10:00:00Z"),
-        commandeSigneeAt: new Date("2026-10-06T10:00:00Z"),
+      calculerCommission({
+        activite: "formation",
+        palier: "conference",
+        quantite: 2,
+        factureHtCents: 100_000,
       }),
-    ).toBe(5_000);
+    ).toEqual({ statut: "aucune" });
+  });
+  it("aucune commission, donc aucune part de parrain (le passage ne crée rien)", () => {
+    expect(conf(300_000).statut).toBe("aucune");
   });
   it("formation inchangée : 4 h 250 €, 1 jour 500 €, 2 jours 1 000 €, 3 sessions d'un jour 1 500 €", () => {
     const fm = (palier: string, ht: number, quantite = 1) =>
@@ -332,5 +278,35 @@ describe("conférence : 500 € HT fixes par conférence, sans prorata (décisio
     expect(fm("formation-generale-1j", 190_000)).toBe(50_000);
     expect(fm("formation-generale-2j", 360_000)).toBe(100_000);
     expect(fm("formation-generale-1j", 570_000, 3)).toBe(150_000);
+  });
+});
+
+describe("moteur : conférence et lignes récurrentes (contrat 2.8, décisions du 25/11)", () => {
+  it("conférence = 0 € : rien créé, quelle que soit la forme (activité ou palier)", () => {
+    expect(calculerCommission({ activite: "conference", factureHtCents: 300_000 })).toEqual({
+      statut: "aucune",
+    });
+    expect(
+      calculerCommission({ activite: "formation", factureHtCents: 300_000, palier: "conference" }),
+    ).toEqual({ statut: "aucune" });
+  });
+
+  it("maintenance sur la même facture : 4 000 € de mise en service + 150 € de maintenance → 600 €", () => {
+    const lignes = [
+      { designation: "Mise en service du site", quantite: 1, prixUnitaireHtCents: 400_000 },
+      { designation: "Maintenance mensuelle", quantite: 1, prixUnitaireHtCents: 15_000 },
+    ];
+    expect(htLignesRecurrentesCents(lignes)).toBe(15_000);
+    const base = baseHorsLignesRecurrentes(415_000, lignes);
+    expect(base).toBe(400_000);
+    const c = calculerCommission({ activite: "site_web", factureHtCents: base });
+    expect(c.statut === "calculee" && c.montantCents).toBe(60_000);
+  });
+
+  it("une facture de maintenance seule donne 0 €", () => {
+    const lignes = [
+      { designation: "Abonnement hébergement", quantite: 12, prixUnitaireHtCents: 5_000 },
+    ];
+    expect(baseHorsLignesRecurrentes(60_000, lignes)).toBe(0);
   });
 });

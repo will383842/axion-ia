@@ -84,6 +84,7 @@ import { signalerErreurReseau } from "./signaler";
 import {
   ajouterJours,
   ajouterMois,
+  baseHorsLignesRecurrentes,
   calculerCommission,
   DEVELOPPEMENT_WEB_COMMISSIONNE_DEPUIS,
   calculerCommissionJourneeIa,
@@ -987,6 +988,11 @@ async function etapeCommissions(maintenant: Date, bilan: BilanPassageReseau): Pr
     } else {
       p = qui.presentation;
     }
+    // Règle du 25/11 : maintenance, abonnement, hébergement, licence sur la même facture que la
+    // mise en service = 0 € ; seule la mise en service donne 15 %.
+    const baseCommissionnable = f.devis?.journeeIa
+      ? commande.baseApresAvoirsCents
+      : baseHorsLignesRecurrentes(commande.baseApresAvoirsCents, f.devis?.lignes);
     // Journée IA : repérée par `devis.journee_ia` (aucune valeur d'énumération nouvelle).
     const calc =
       f.devis?.journeeIa === true
@@ -997,7 +1003,7 @@ async function etapeCommissions(maintenant: Date, bilan: BilanPassageReseau): Pr
           })
         : calculerCommission({
             activite: (f.activite ?? null) as ActiviteCommission | null,
-            factureHtCents: commande.baseApresAvoirsCents,
+            factureHtCents: baseCommissionnable,
             palier: null,
           });
     if (calc.statut === "aucune") continue;
@@ -1018,7 +1024,7 @@ async function etapeCommissions(maintenant: Date, bilan: BilanPassageReseau): Pr
       presentationId: p.id,
       factureId: commande.factureCleId,
       activite: f.activite ?? "inconnue",
-      factureHtCents: commande.baseApresAvoirsCents,
+      factureHtCents: baseCommissionnable,
     };
 
     // La commission de l'apporteur.

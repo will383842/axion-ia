@@ -405,6 +405,11 @@ export async function classerActiviteCommission(
     ? { statut: "aucune" }
     : calculerCommission({ activite: choisie, factureHtCents: c.factureHtCents });
   if (calc.statut === "aucune") {
+    // La vraie raison, jamais un message générique : une commande de développement web signée avant
+    // la date d'effet n'est pas « sans commission », elle est antérieure au contrat 2.8.
+    const raison = venteAnterieure
+      ? "Commande antérieure au contrat 2.8 (développement web) : aucune commission, ligne close à 0 €."
+      : "Aucune commission pour ce type de prestation : ligne close à 0 €.";
     const r = await prisma.commissionApporteur.updateMany({
       where: { id, statut: "a_qualifier" },
       data: {
@@ -420,7 +425,7 @@ export async function classerActiviteCommission(
     await clorePartParrainage(c.factureId, c.apporteurId, maintenant);
     return {
       ok: true,
-      message: "Aucune commission pour ce type de prestation : ligne close à 0 €.",
+      message: raison,
     };
   }
   if (calc.statut !== "calculee") return { ok: false, message: "Calcul impossible." };

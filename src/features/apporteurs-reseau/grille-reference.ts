@@ -28,7 +28,7 @@ import {
   UN_A_UN_RECURRING_TIER,
   type PricingTier,
 } from "@/content/pricing";
-import { FORFAIT_CONFERENCE_CENTS, PALIERS_FORMATION, TAUX_BPS } from "./regles";
+import { PALIERS_FORMATION, TAUX_BPS } from "./regles";
 
 export interface LigneGrille {
   /** Les cellules, dans l'ordre des colonnes du tableau. */
@@ -198,11 +198,9 @@ export function grilleDeReference(): readonly TableauGrille[] {
     {
       cle: "A1.4 bis",
       titre: "Conférences",
-      regle: "Forfait par conférence signée et payée, quel que soit le nombre de participants.",
+      regle: "Aucune commission sur les conférences (contrat 2.8).",
       colonnes: ["Prestation", "Commission"],
-      lignes: [
-        { cellules: ["Conférence", `${euros(FORFAIT_CONFERENCE_CENTS / 100)} HT par conférence`] },
-      ],
+      lignes: [{ cellules: ["Conférence", "Aucune"] }],
     },
     {
       cle: "A1.5",

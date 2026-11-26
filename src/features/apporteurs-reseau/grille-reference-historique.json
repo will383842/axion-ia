@@ -191,6 +191,10 @@
     {
       "depuisLe": "2026-10-08",
       "cellules": ["Conférence", "500 € HT par conférence"]
+    },
+    {
+      "depuisLe": "2026-11-26",
+      "cellules": ["Conférence", "Aucune"]
     }
   ],
   "A1.5 | Maintenance": [

@@ -14,7 +14,7 @@ import {
 import { CONTRAT_V2_MARKDOWN } from "../contrat-v2";
 import {
   CONFIRMATION_TACITE_JOURS,
-  FORFAIT_CONFERENCE_CENTS,
+  calculerCommission,
   PALIERS_FORMATION,
   PARRAINAGE_BPS,
   PARRAINAGE_MOIS,
@@ -72,10 +72,12 @@ describe("parité contrat / code : les nombres clés sont les mêmes", () => {
     expect(TEXTE).not.toMatch(/solde est inférieur à \d+ € hors taxes/);
     expect(TEXTE).not.toMatch(/premier jour ouvré de chaque mois/);
   });
-  it("contrat 2.8 : plus de forfait de conférence (A1.4 bis supprimée) ; le code l'a encore jusqu'au lot de la grille", () => {
+  it("contrat 2.8 : plus de forfait de conférence (A1.4 bis supprimée) ; le moteur ne paie rien", () => {
     expect(TEXTE).not.toMatch(/par conférence figurant à la commande/);
     expect(TEXTE).not.toContain("A1.4 bis");
-    expect(FORFAIT_CONFERENCE_CENTS / 100).toBe(500);
+    expect(calculerCommission({ activite: "conference", factureHtCents: 300_000 })).toEqual({
+      statut: "aucune",
+    });
   });
   it("échéance ferme de trente jours après l'émission de l'autofacture (art. 5.3)", () => {
     expect(TEXTE).toMatch(/trentième jour suivant son émission/);

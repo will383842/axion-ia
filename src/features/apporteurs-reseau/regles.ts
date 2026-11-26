@@ -360,8 +360,8 @@ export type PalierFormation = (typeof PALIERS_FORMATION)[number]["id"];
 /**
  * Développement web (A1.5 du contrat 2.8) : commissionné seulement pour une commande signée à partir
  * de cette date (4.1 : une nouvelle grille ne vaut que pour les ventes signées après son entrée en
- * vigueur ; jamais de commission rétroactive sur les ventes passées). ⚠️ À RECALER par le pilote sur
- * la date de la fusion du contrat 2.8 (`CONTRAT_VERSION`).
+ * vigueur ; jamais de commission rétroactive sur les ventes passées). Recalée le 26/11/2026, date de
+ * fusion prévue du contrat 2.8 (`CONTRAT_VERSION`) ; à recaler encore si la fusion glisse.
  */
 export const DEVELOPPEMENT_WEB_COMMISSIONNE_DEPUIS = new Date("2026-11-26T00:00:00Z");
 
@@ -485,7 +485,7 @@ export type CalculCommission =
  * - formation : forfait × min(1, HT facturé ÷ prix public), arrondi au centime le plus proche
  *   (décision du 25/11 ; art. 4.1 bis) ; sans palier connu, elle reste « à qualifier », jamais zéro ;
  * - coaching « one to one » : aucune ; audit 30 %, intégration 15 % du HT, arrondi au centime le plus proche ;
- * - conférence : forfait fixe de 500 € par commande, sans prorata ;
+ * - conférence : aucune commission (contrat 2.8) ;
  * - développement web : 15 % du HT facturé (annexe 1, A1.5 du contrat 2.8).
  */
 export function calculerCommission(e: {
@@ -498,21 +498,9 @@ export function calculerCommission(e: {
   if (e.activite === null) return { statut: "a_qualifier" };
   // Coaching « one to one » (décision du 25/11, A1.3) : aucune commission.
   if (e.activite === "un_a_un") return { statut: "aucune" };
-  if (
-    e.activite === "conference" ||
-    (e.activite === "formation" && e.palier === PALIER_CONFERENCE)
-  ) {
-    // Forfait fixe par conférence : aucun prorata de remise ; `quantite` = nombre de conférences de
-    // la commande. Jamais plus que le prix HT facturé (annexe 1, A1.4 bis) ; une commande vide ou
-    // remboursée (HT ≤ 0) ne rapporte rien.
-    const ht = Math.max(0, e.factureHtCents);
-    return {
-      statut: "calculee",
-      montantCents: Math.min(FORFAIT_CONFERENCE_CENTS * quantiteSessions(e.quantite), ht),
-      palier: PALIER_CONFERENCE,
-      prixPublicCents: null,
-    };
-  }
+  // Conférence (contrat 2.8, décision de Will) : 0 €, aucune ligne, aucune part de parrain.
+  if (e.activite === "conference" || (e.activite === "formation" && e.palier === PALIER_CONFERENCE))
+    return { statut: "aucune" };
   if (e.activite === "formation") {
     const p = PALIERS_FORMATION.find((x) => x.id === e.palier);
     if (!p) return { statut: "a_qualifier" };
@@ -537,6 +525,32 @@ export function calculerCommission(e: {
     palier: null,
     prixPublicCents: null,
   };
+}
+
+/**
+ * Lignes d'abonnement, de maintenance, d'hébergement ou de licence portées par un devis (règle du
+ * 25/11 : rien dessus ; seule la mise en service donne 15 %). Repère : désignation. Pur.
+ */
+const LIGNE_RECURRENTE = /maintenance|abonnement|h[ée]bergement|licence/i;
+
+export function htLignesRecurrentesCents(lignes: unknown): number {
+  if (!Array.isArray(lignes)) return 0;
+  let total = 0;
+  for (const l of lignes) {
+    if (!l || typeof l !== "object") continue;
+    const o = l as Record<string, unknown>;
+    const d = typeof o.designation === "string" ? o.designation : "";
+    if (!LIGNE_RECURRENTE.test(d)) continue;
+    const q = typeof o.quantite === "number" && o.quantite > 0 ? o.quantite : 1;
+    const pu = typeof o.prixUnitaireHtCents === "number" ? o.prixUnitaireHtCents : 0;
+    total += Math.round(q * pu);
+  }
+  return Math.max(0, total);
+}
+
+/** Base commissionnable : le net HT moins les lignes récurrentes du devis (jamais négatif). */
+export function baseHorsLignesRecurrentes(netHtCents: number, lignes: unknown): number {
+  return Math.max(0, netHtCents - htLignesRecurrentesCents(lignes));
 }
 
 /** Nombre de sessions retenu : entier de 1 à 99 ; toute autre valeur vaut 1. */
