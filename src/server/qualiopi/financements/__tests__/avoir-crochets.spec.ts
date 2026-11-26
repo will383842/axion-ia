@@ -187,4 +187,31 @@ describe("genererAvoirFacture avec crochets", () => {
     );
     expect(r).toMatchObject({ montantHtCents: 99_000, montantTtcCents: 118_800 });
   });
+  it("transaction de l'APPELANT (`tx`) : aucune transaction propre, numéro lu dans cette transaction, PDF différé", async () => {
+    const r = await genererAvoirFacture(
+      { factureId: "fac-1", montantTtcCents: 60_000, motif: "m" },
+      { tx: h.tx as never },
+    );
+    expect(h.prisma.$transaction).not.toHaveBeenCalled();
+    expect(transactionFait).not.toHaveBeenCalled();
+    expect(h.ordre).toEqual(["verrou", "create"]);
+    // Rien n'est validé : pas de PDF ici, l'appelant le produit après commit.
+    expect(h.prisma.factureFormation.update).not.toHaveBeenCalled();
+    expect(r.documentId).toBeNull();
+    expect(typeof r.produirePdf).toBe("function");
+    await r.produirePdf?.();
+    expect(h.prisma.factureFormation.update).toHaveBeenCalledTimes(1);
+  });
+  it("avec `tx`, un conflit de numéro n'est PAS rejoué (la transaction est abandonnée) : l'erreur remonte", async () => {
+    h.tx.factureFormation.create.mockRejectedValueOnce(
+      Object.assign(new Error("dup"), { code: "P2002" }),
+    );
+    await expect(
+      genererAvoirFacture(
+        { factureId: "fac-1", montantTtcCents: 60_000, motif: "m" },
+        { tx: h.tx as never },
+      ),
+    ).rejects.toThrow("dup");
+    expect(h.tx.factureFormation.create).toHaveBeenCalledTimes(1);
+  });
 });

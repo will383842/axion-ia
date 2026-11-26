@@ -110,3 +110,47 @@ export function refusVirementSansAvoir(
   }
   return null;
 }
+
+/** Une facture touchée par un remboursement : `capaciteTtcCents` = ce qui peut encore lui être rendu. */
+export interface FactureARembourser {
+  id: string;
+  numero: string;
+  capaciteTtcCents: number;
+}
+
+export type RepartitionRemboursement =
+  | { ok: true; parts: { id: string; numero: string; ttcCents: number }[] }
+  | { ok: false; message: string };
+
+const eurosFr = (c: number) => (c / 100).toFixed(2).replace(".", ",");
+
+/**
+ * Répartit un remboursement TTC sur les factures d'un même devis : d'abord la DERNIÈRE (le solde),
+ * puis les précédentes (l'acompte) pour le reste. `factures` est dans l'ordre d'émission (la plus
+ * ancienne d'abord). Tout est en centimes entiers : aucun arrondi, la somme des parts égale toujours
+ * `montantTtcCents`. Une facture sans capacité est sautée ; un montant supérieur au total encore
+ * remboursable est refusé (jamais écrêté en silence).
+ */
+export function repartirRemboursement(
+  factures: readonly FactureARembourser[],
+  montantTtcCents: number,
+): RepartitionRemboursement {
+  if (!Number.isInteger(montantTtcCents) || montantTtcCents <= 0)
+    return { ok: false, message: "Montant remboursé invalide." };
+  const total = factures.reduce((n, f) => n + Math.max(0, f.capaciteTtcCents), 0);
+  if (montantTtcCents > total)
+    return {
+      ok: false,
+      message: `Le remboursement (${eurosFr(montantTtcCents)} € TTC) dépasse le total payé et encore remboursable de la commande (${eurosFr(total)} € TTC).`,
+    };
+  let reste = montantTtcCents;
+  const parts: { id: string; numero: string; ttcCents: number }[] = [];
+  for (const f of [...factures].reverse()) {
+    if (reste <= 0) break;
+    const part = Math.min(reste, Math.max(0, f.capaciteTtcCents));
+    if (part <= 0) continue;
+    parts.push({ id: f.id, numero: f.numero, ttcCents: part });
+    reste -= part;
+  }
+  return { ok: true, parts };
+}

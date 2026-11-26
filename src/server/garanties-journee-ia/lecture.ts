@@ -119,6 +119,9 @@ export interface FactureGarantie {
   numero: string;
   restantHtCents: number;
   restantTtcCents: number;
+  /** Encaissé (paiements réussis) moins les avoirs déjà émis, plafonné au reste TTC : le rendable. */
+  rendableTtcCents: number;
+  destinataire: string;
 }
 
 /**
@@ -146,6 +149,8 @@ export async function facturesCandidates(
       montantHtCents: true,
       montantTvaCents: true,
       montantTtcCents: true,
+      destinataire: true,
+      payments: { where: { status: "succeeded" }, select: { amountCents: true } },
     },
     orderBy: { createdAt: "asc" },
   });
@@ -159,22 +164,30 @@ export async function facturesCandidates(
     const htAvoirs = siens.reduce((n, a) => n + Math.abs(a.montantHtCents), 0);
     // HT + TVA, comme `genererAvoirFacture` : un seul calcul du reste, pas deux qui divergent.
     const ttcAvoirs = Math.abs(siens.reduce((n, a) => n + a.montantHtCents + a.montantTvaCents, 0));
+    const restantTtcCents = (f.montantTtcCents ?? f.montantHtCents + f.montantTvaCents) - ttcAvoirs;
+    const encaisse = f.payments.reduce((n, p) => n + p.amountCents, 0);
     return {
       id: f.id,
       numero: f.numero,
       restantHtCents: f.montantHtCents - htAvoirs,
-      restantTtcCents: (f.montantTtcCents ?? f.montantHtCents + f.montantTvaCents) - ttcAvoirs,
+      restantTtcCents,
+      rendableTtcCents: Math.max(0, Math.min(restantTtcCents, encaisse - ttcAvoirs)),
+      destinataire: f.destinataire,
     };
   });
 }
 
-/** La facture à rectifier : celle du dossier, sinon la saisie (parmi les candidates), sinon l'unique. */
-export async function resoudreFactureGarantie(
+/**
+ * Les factures à rectifier pour un remboursement : toutes celles du devis/de la mission (acompte +
+ * solde), dans l'ordre d'émission, avec ce qu'on peut encore rendre sur chacune. Le montant décidé
+ * est réparti ensuite par `repartirRemboursement`. Refus : aucune facture, facture adressée à un
+ * financeur (OPCO, France Travail : le remboursement passe par lui, à traiter à la main), facture
+ * choisie hors du dossier, ou plus rien à rendre.
+ */
+export async function resoudreFacturesGarantie(
   d: Pick<DossierGarantie, "clientId" | "auditMissionId" | "devisId" | "factureId">,
-  saisie: string | null,
-): Promise<{ ok: true; facture: FactureGarantie } | { ok: false; message: string }> {
+): Promise<{ ok: true; factures: FactureGarantie[] } | { ok: false; message: string }> {
   const candidates = await facturesCandidates(d);
-  const choisie = d.factureId ?? saisie;
   if (candidates.length === 0) {
     return {
       ok: false,
@@ -182,21 +195,20 @@ export async function resoudreFactureGarantie(
         "Aucune facture émise n'est rattachée à cette Journée IA (mission ou devis) : émettre la facture avant de décider un remboursement.",
     };
   }
-  if (candidates.length > 1) {
-    // Acompte + solde : la commission est portée par la DERNIÈRE facture du devis, un avoir sur
-    // l'acompte ne la ferait pas reprendre. Cas non couvert ici : escaladé à Will.
+  if (candidates.some((f) => f.destinataire === "opco" || f.destinataire === "france_travail")) {
     return {
       ok: false,
       message:
-        "Plusieurs factures correspondent (acompte et solde) : le remboursement se fait par le Hub factures, un avoir par facture, jusqu'à décision de Will.",
+        "Une facture de cette Journée IA est adressée à un financeur (OPCO ou France Travail) : à traiter à la main par le dirigeant, aucun avoir n'est émis ici.",
     };
   }
-  const facture = candidates[0];
-  if (choisie && facture?.id !== choisie)
-    return { ok: false, message: "Facture invalide pour ce dossier." };
-  if (!facture || facture.restantHtCents <= 0 || facture.restantTtcCents <= 0)
-    return { ok: false, message: "Cette facture est déjà entièrement couverte par des avoirs." };
-  return { ok: true, facture };
+  if (!candidates.some((f) => f.rendableTtcCents > 0))
+    return {
+      ok: false,
+      message:
+        "Plus rien à rembourser : les factures sont couvertes par des avoirs ou non encaissées.",
+    };
+  return { ok: true, factures: candidates };
 }
 
 /** Numéro de l'avoir et de la facture liés au dossier (affichage de la fiche). */

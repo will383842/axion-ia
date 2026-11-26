@@ -330,6 +330,8 @@ export interface GenererAvoirResult {
   montantHtCents: number;
   /** TTC de l'avoir, valeur ABSOLUE (positive). */
   montantTtcCents: number;
+  /** Présent seulement avec `options.tx` : produit le PDF (fail-soft) une fois la transaction validée. */
+  produirePdf?: () => Promise<string | null>;
 }
 
 export interface AvoirCree {
@@ -345,6 +347,14 @@ export interface AvoirCree {
  * numéro consommé. Fournir un crochet force une vraie transaction (même canal partners fermé).
  */
 export interface OptionsAvoir {
+  /**
+   * Transaction OUVERTE par l'appelant (remboursement de garantie sur plusieurs factures : un avoir par
+   * facture, tous ou aucun). L'avoir y est créé sans transaction propre ; le numéro est lu dans cette
+   * transaction (les avoirs non validés y sont visibles) ; pas de nouvel essai sur conflit de numéro
+   * (la transaction est déjà abandonnée par la base : l'erreur remonte, tout est annulé) ; le PDF n'est
+   * PAS produit ici (rien n'est validé) : l'appelant appelle `produirePdf()` du résultat APRÈS commit.
+   */
+  tx?: Prisma.TransactionClient;
   avant?: (tx: Prisma.TransactionClient) => Promise<void>;
   apres?: (tx: Prisma.TransactionClient, avoir: AvoirCree) => Promise<void>;
 }
@@ -488,7 +498,7 @@ export async function genererAvoirFacture(
   const formatDate = (d: Date) => d.toLocaleDateString("fr-FR");
 
   let avoirCree: AvoirCree | null = null;
-  const avecCrochets = Boolean(options.avant || options.apres);
+  const avecCrochets = Boolean(options.avant || options.apres || options.tx);
 
   for (let attempt = 1; attempt <= MAX_ATTEMPTS; attempt++) {
     // 🔴 V20. `facture` et `avoir` partagent la TABLE `factures_formation` mais
@@ -499,7 +509,7 @@ export async function genererAvoirFacture(
     const numero = estNumeroEssai(origine.numero)
       ? numeroEssai("avoir")
       : await nextNumero("avoir", annee, (prefixe) =>
-          prisma.factureFormation.findMany({
+          (options.tx ?? prisma).factureFormation.findMany({
             where: { numero: { startsWith: prefixe } },
             select: { numero: true },
           }),
@@ -564,9 +574,11 @@ export async function genererAvoirFacture(
       };
       // Crochets fournis → vraie transaction, même canal partners fermé (là, `transactionFaitFacturation`
       // n'en ouvre pas) : l'avoir et l'écriture de la garantie vivent et meurent ensemble.
-      const avoir = avecCrochets
-        ? await prisma.$transaction((tx) => travail(tx))
-        : await transactionFaitFacturation(prisma, travail);
+      const avoir = options.tx
+        ? await travail(options.tx)
+        : avecCrochets
+          ? await prisma.$transaction((tx) => travail(tx))
+          : await transactionFaitFacturation(prisma, travail);
       avoirCree = avoir;
       break;
     } catch (err: unknown) {
@@ -575,7 +587,7 @@ export async function genererAvoirFacture(
         err !== null &&
         "code" in err &&
         (err as { code: string }).code === "P2002";
-      if (isP2002 && attempt < MAX_ATTEMPTS) continue;
+      if (isP2002 && attempt < MAX_ATTEMPTS && !options.tx) continue;
       throw err;
     }
   }
@@ -615,22 +627,37 @@ export async function genererAvoirFacture(
     avoirSurNumero: origine.numero,
     motifAvoir: input.motif,
   };
-  let documentId: string | null = null;
-  try {
-    const docResult = await generateDocument({
-      type: "avoir",
-      identite,
-      element: React.createElement(FacturePdf, { data: factureData }),
-      ...(origine.clientId !== null ? { refs: { clientId: origine.clientId } } : {}),
-    });
-    documentId = docResult.id;
-    await prisma.factureFormation.update({
-      where: { id: avoirCree.id },
-      data: { documentId },
-    });
-  } catch {
-    // Fail-soft : l'avoir reste émis sans PDF si le renderer échoue.
+  const produirePdf = async (): Promise<string | null> => {
+    let documentId: string | null = null;
+    try {
+      const docResult = await generateDocument({
+        type: "avoir",
+        identite,
+        element: React.createElement(FacturePdf, { data: factureData }),
+        ...(origine.clientId !== null ? { refs: { clientId: origine.clientId } } : {}),
+      });
+      documentId = docResult.id;
+      await prisma.factureFormation.update({
+        where: { id: avoirId },
+        data: { documentId },
+      });
+    } catch {
+      // Fail-soft : l'avoir reste émis sans PDF si le renderer échoue.
+    }
+    return documentId;
+  };
+  const avoirId = avoirCree.id;
+  if (options.tx) {
+    return {
+      avoirId,
+      numero: avoirCree.numero,
+      documentId: null,
+      montantHtCents: avoirCree.montantHtCents,
+      montantTtcCents: avoirCree.montantTtcCents,
+      produirePdf,
+    };
   }
+  const documentId = await produirePdf();
 
   return {
     avoirId: avoirCree.id,

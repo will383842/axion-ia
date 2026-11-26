@@ -6,6 +6,7 @@ import {
   refusDecision,
   refusDemande,
   refusVirement,
+  repartirRemboursement,
   verifierMontantAvoir,
 } from "../regles";
 
@@ -163,5 +164,56 @@ describe("réponse tardive et plafonds", () => {
     expect(plafondRemboursementCents(447_000)).toBe(536_400);
     expect(eurosEnCentimes("9999999999")).toBeNull();
     expect(eurosEnCentimes("1234,56")).toBe(123456);
+  });
+});
+
+describe("repartirRemboursement : le solde d'abord, puis l'acompte", () => {
+  // Devis 1 490 € HT : acompte 447 € HT (536,40 € TTC), solde 1 043 € HT (1 251,60 € TTC).
+  const f = [
+    { id: "AC", numero: "ACOMPTE", capaciteTtcCents: 53_640 },
+    { id: "SO", numero: "SOLDE", capaciteTtcCents: 125_160 },
+  ];
+  const parts = (m: number) => {
+    const r = repartirRemboursement(f, m);
+    if (!r.ok) throw new Error(r.message);
+    return r.parts.map((p) => [p.id, p.ttcCents]);
+  };
+  it("remboursement TOTAL : un avoir par facture, somme exacte", () => {
+    expect(parts(178_800)).toEqual([
+      ["SO", 125_160],
+      ["AC", 53_640],
+    ]);
+  });
+  it("partiel qui tient dans le solde : ne touche que le solde", () => {
+    expect(parts(100_000)).toEqual([["SO", 100_000]]);
+    expect(parts(125_160)).toEqual([["SO", 125_160]]);
+  });
+  it("partiel qui déborde : solde soldé, le reste sur l'acompte", () => {
+    expect(parts(125_161)).toEqual([
+      ["SO", 125_160],
+      ["AC", 1],
+    ]);
+    expect(parts(150_000)).toEqual([
+      ["SO", 125_160],
+      ["AC", 24_840],
+    ]);
+  });
+  it("montant > total payé : refus (jamais écrêté), montant nul ou non entier : refus", () => {
+    expect(repartirRemboursement(f, 178_801)).toMatchObject({ ok: false });
+    expect(repartirRemboursement(f, 0)).toMatchObject({ ok: false });
+    expect(repartirRemboursement(f, 10.5)).toMatchObject({ ok: false });
+  });
+  it("facture sans capacité (acompte non payé ou déjà avoirée) : sautée", () => {
+    const sansAcompte = [{ ...f[0]!, capaciteTtcCents: 0 }, f[1]!];
+    const r = repartirRemboursement(sansAcompte, 125_160);
+    expect(r.ok && r.parts.map((p) => p.id)).toEqual(["SO"]);
+    expect(repartirRemboursement(sansAcompte, 125_161)).toMatchObject({ ok: false });
+  });
+  it("centimes : la somme des parts égale TOUJOURS le montant (aucun arrondi, 10 000 montants)", () => {
+    for (let i = 0; i < 10_000; i++) {
+      const m = 1 + ((i * 7919) % 178_800);
+      const r = repartirRemboursement(f, m);
+      expect(r.ok && r.parts.reduce((n, p) => n + p.ttcCents, 0)).toBe(m);
+    }
   });
 });

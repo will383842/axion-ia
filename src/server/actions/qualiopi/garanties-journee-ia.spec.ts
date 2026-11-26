@@ -18,56 +18,62 @@ vi.mock("@/server/actions/qualiopi/_guards", () => ({
   donneesJournalQualiopi: vi.fn(async (i: { action: string }) => ({ action: i.action })),
 }));
 
-const { tx, prisma } = vi.hoisted(() => {
+const { tx, prisma, emisPartages } = vi.hoisted(() => {
+  const emisPartages = { liste: [] as Array<{ factureId: string; montantTtcCents: number }> };
   const tx = {
     garantieJourneeIa: { create: vi.fn(), update: vi.fn(), findUnique: vi.fn() },
     activityLog: { create: vi.fn() },
     $executeRaw: vi.fn(),
   };
   const prisma = {
-    $transaction: vi.fn(async (fn: (t: typeof tx) => Promise<unknown>) => fn(tx)),
+    // Simule le retour arrière : tout avoir « émis » dans une transaction qui échoue disparaît.
+    $transaction: vi.fn(async (fn: (t: typeof tx) => Promise<unknown>) => {
+      const avant = emisPartages.liste.length;
+      try {
+        return await fn(tx);
+      } catch (e) {
+        emisPartages.liste.length = avant;
+        throw e;
+      }
+    }),
     auditMission: { findUnique: vi.fn() },
     client: { findUnique: vi.fn() },
     garantieJourneeIa: { findUnique: vi.fn() },
   };
-  return { tx, prisma };
+  return { tx, prisma, emisPartages };
 });
 vi.mock("@/lib/prisma", () => ({ prisma }));
 
 const lireGarantie = vi.fn();
 const dossiersDejaRembourses = vi.fn();
-const resoudreFactureGarantie = vi.fn();
+const resoudreFacturesGarantie = vi.fn();
 vi.mock("@/server/garanties-journee-ia/lecture", () => ({
   lireGarantie: (...a: unknown[]) => lireGarantie(...a),
   dossiersDejaRembourses: (...a: unknown[]) => dossiersDejaRembourses(...a),
-  resoudreFactureGarantie: (...a: unknown[]) => resoudreFactureGarantie(...a),
+  resoudreFacturesGarantie: (...a: unknown[]) => resoudreFacturesGarantie(...a),
 }));
 
 // Faux `genererAvoirFacture` : rejoue les crochets comme le vrai (avant → création → après) dans
 // la transaction simulée ; un compteur d'avoirs permet de prouver « un seul avoir ».
 const FACTURE = "33333333-3333-4333-8333-333333333333";
-const avoirsEmis: Array<{ factureId: string; montantTtcCents: number }> = [];
+const avoirsEmis = emisPartages.liste;
 const genererAvoirFacture = vi.fn(
-  async (
-    input: { factureId: string; montantTtcCents?: number },
-    o: {
-      avant?: (t: typeof tx) => Promise<void>;
-      apres?: (t: typeof tx, a: Record<string, unknown>) => Promise<void>;
-    },
-  ) => {
-    await prisma.$transaction(async (t) => {
-      await o.avant?.(t);
-      avoirsEmis.push({ factureId: input.factureId, montantTtcCents: input.montantTtcCents ?? 0 });
-      await o.apres?.(t, {
-        id: "44444444-4444-4444-8444-444444444444",
-        numero: "AXI-AVO-2026-001",
-        montantHtCents: Math.round((input.montantTtcCents ?? 0) / 1.2),
-        montantTtcCents: input.montantTtcCents ?? 0,
-      });
-    });
-    return { avoirId: "44444444-4444-4444-8444-444444444444" };
+  async (input: { factureId: string; montantTtcCents?: number }, o: { tx?: typeof tx }) => {
+    // Une seule voie, DANS la transaction de l'appelant (jamais de transaction propre ici).
+    expect(o.tx).toBe(tx);
+    avoirsEmis.push({ factureId: input.factureId, montantTtcCents: input.montantTtcCents ?? 0 });
+    const n = avoirsEmis.length;
+    return {
+      avoirId: `44444444-4444-4444-8444-44444444444${3 + n}`,
+      numero: `AXI-AVO-2026-00${n}`,
+      documentId: null,
+      montantHtCents: Math.round((input.montantTtcCents ?? 0) / 1.2),
+      montantTtcCents: input.montantTtcCents ?? 0,
+      produirePdf: pdf,
+    };
   },
 );
+const pdf = vi.fn(async () => "doc");
 vi.mock("@/server/qualiopi/financements/facture-libre", () => ({
   genererAvoirFacture: (...a: [never, never]) => genererAvoirFacture(...a),
 }));
@@ -111,6 +117,14 @@ const dossier = {
   auditMissionId: null,
   factureId: null,
 };
+const fact = (id: string, numero: string, rendableTtcCents: number) => ({
+  id,
+  numero,
+  restantHtCents: Math.round(rendableTtcCents / 1.2),
+  restantTtcCents: rendableTtcCents,
+  rendableTtcCents,
+  destinataire: "entreprise",
+});
 const va = async (p: Promise<unknown>) =>
   await p.then(
     () => "ok",
@@ -133,14 +147,18 @@ beforeEach(() => {
     virementLe: null,
     archiveLe: null,
   });
-  resoudreFactureGarantie.mockResolvedValue({
+  resoudreFacturesGarantie.mockResolvedValue({
     ok: true,
-    facture: {
-      id: FACTURE,
-      numero: "AXI-FAC-2026-010",
-      restantHtCents: 200000,
-      restantTtcCents: 240000,
-    },
+    factures: [
+      {
+        id: FACTURE,
+        numero: "AXI-FAC-2026-010",
+        restantHtCents: 200000,
+        restantTtcCents: 240000,
+        rendableTtcCents: 240000,
+        destinataire: "entreprise",
+      },
+    ],
   });
 });
 
@@ -272,18 +290,134 @@ describe("décision, virement, archivage", () => {
       "44444444-4444-4444-8444-444444444444",
     );
   });
-  it("remboursement : sans facture rattachée, ou plusieurs, ou reste insuffisant → refus, aucun avoir", async () => {
-    resoudreFactureGarantie.mockResolvedValueOnce({ ok: false, message: "Aucune facture émise" });
+  it("remboursement : sans facture rattachée, financeur, ou montant > total payé → refus, aucun avoir", async () => {
+    resoudreFacturesGarantie.mockResolvedValueOnce({ ok: false, message: "Aucune facture émise" });
     expect(await va(enregistrerDecisionGarantieJourneeIaAction(remb()))).toMatch(
       /erreur=Aucune%20facture/,
     );
-    resoudreFactureGarantie.mockResolvedValueOnce({
-      ok: true,
-      facture: { id: FACTURE, numero: "F1", restantHtCents: 50000, restantTtcCents: 60000 },
+    resoudreFacturesGarantie.mockResolvedValueOnce({
+      ok: false,
+      message: "Une facture est adressée à un financeur : à traiter à la main par le dirigeant",
     });
-    expect(await va(enregistrerDecisionGarantieJourneeIaAction(remb()))).toMatch(/reste%20/);
+    expect(await va(enregistrerDecisionGarantieJourneeIaAction(remb()))).toMatch(/financeur/);
+    resoudreFacturesGarantie.mockResolvedValueOnce({
+      ok: true,
+      factures: [fact("F1", "A", 60000)],
+    });
+    expect(await va(enregistrerDecisionGarantieJourneeIaAction(remb()))).toMatch(
+      /erreur=.*d%C3%A9passe%20le%20total%20pay/,
+    );
     expect(genererAvoirFacture).not.toHaveBeenCalled();
     expect(tx.garantieJourneeIa.update).not.toHaveBeenCalled();
+  });
+  describe("acompte + solde : un avoir par facture, atomique", () => {
+    const ACOMPTE = "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa";
+    const SOLDE = "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb";
+    const deux = () =>
+      resoudreFacturesGarantie.mockResolvedValue({
+        ok: true,
+        factures: [fact(ACOMPTE, "ACOMPTE", 53640), fact(SOLDE, "SOLDE", 125160)],
+      });
+    it("avoir TOTAL (178,80 + …) : un avoir sur le solde puis un sur l'acompte, total viré = somme", async () => {
+      deux();
+      const r = await va(
+        enregistrerDecisionGarantieJourneeIaAction(remb({ montantRembourseEuros: "1788" })),
+      );
+      expect(r).toMatch(/ok=decision/);
+      expect(avoirsEmis).toEqual([
+        { factureId: SOLDE, montantTtcCents: 125160 },
+        { factureId: ACOMPTE, montantTtcCents: 53640 },
+      ]);
+      expect(tx.garantieJourneeIa.update.mock.calls[0]?.[0].data).toMatchObject({
+        montantRembourseCents: 178800,
+        factureId: SOLDE,
+      });
+      const actions = tx.activityLog.create.mock.calls.map((c) => c[0].data.action);
+      expect(actions).toEqual([
+        "qualiopi.garantie_journee_ia.decision",
+        "facturation.avoir.emettre",
+        "facturation.avoir.emettre",
+      ]);
+      expect(pdf).toHaveBeenCalledTimes(2);
+    });
+    it("remboursement PARTIEL : ne touche que le solde", async () => {
+      deux();
+      await va(enregistrerDecisionGarantieJourneeIaAction(remb({ montantRembourseEuros: "1000" })));
+      expect(avoirsEmis).toEqual([{ factureId: SOLDE, montantTtcCents: 100000 }]);
+    });
+    it("remboursement PARTIEL qui déborde : solde soldé, le reste sur l'acompte", async () => {
+      deux();
+      await va(enregistrerDecisionGarantieJourneeIaAction(remb({ montantRembourseEuros: "1500" })));
+      expect(avoirsEmis).toEqual([
+        { factureId: SOLDE, montantTtcCents: 125160 },
+        { factureId: ACOMPTE, montantTtcCents: 24840 },
+      ]);
+    });
+    it("montant > total payé : refus, aucun avoir", async () => {
+      deux();
+      const r = await va(
+        enregistrerDecisionGarantieJourneeIaAction(remb({ montantRembourseEuros: "1788,01" })),
+      );
+      expect(r).toMatch(/erreur=/);
+      expect(genererAvoirFacture).not.toHaveBeenCalled();
+    });
+    it("ATOMICITÉ : le second avoir échoue → aucun avoir ne reste, garantie non écrite, pas de PDF", async () => {
+      deux();
+      genererAvoirFacture.mockImplementationOnce(async (input) => {
+        avoirsEmis.push({
+          factureId: input.factureId,
+          montantTtcCents: input.montantTtcCents ?? 0,
+        });
+        return {
+          avoirId: "44444444-4444-4444-8444-444444444444",
+          numero: "AXI-AVO-2026-001",
+          documentId: null,
+          montantHtCents: 104300,
+          montantTtcCents: 125160,
+          produirePdf: pdf,
+        };
+      });
+      genererAvoirFacture.mockRejectedValueOnce(new Error("TVA ambiguë sur l'acompte"));
+      const r = await va(
+        enregistrerDecisionGarantieJourneeIaAction(remb({ montantRembourseEuros: "1788" })),
+      );
+      expect(r).toMatch(/erreur=TVA/);
+      expect(avoirsEmis).toHaveLength(0);
+      expect(tx.garantieJourneeIa.update).not.toHaveBeenCalled();
+      expect(pdf).not.toHaveBeenCalled();
+    });
+    it("REJEU après succès : aucun nouvel avoir (le dossier porte le total)", async () => {
+      deux();
+      lireGarantie.mockResolvedValue({
+        ...dossier,
+        decision: "remboursement",
+        decisionLe: "2026-12-12",
+        montantRembourseCents: 178800,
+        avoirId: "44444444-4444-4444-8444-444444444444",
+      });
+      const r = await va(
+        enregistrerDecisionGarantieJourneeIaAction(remb({ montantRembourseEuros: "1788" })),
+      );
+      expect(r).toMatch(/ok=decision/);
+      expect(genererAvoirFacture).not.toHaveBeenCalled();
+    });
+    it("DOUBLE CLIC simultané : le second voit l'avoir sous verrou, n'émet rien", async () => {
+      deux();
+      tx.garantieJourneeIa.findUnique
+        .mockResolvedValueOnce({ decision: null, avoirId: null, virementLe: null, archiveLe: null })
+        .mockResolvedValueOnce({
+          decision: "remboursement",
+          avoirId: "44444444-4444-4444-8444-444444444444",
+          virementLe: null,
+          archiveLe: null,
+        });
+      const f = () => remb({ montantRembourseEuros: "1788" });
+      await va(enregistrerDecisionGarantieJourneeIaAction(f()));
+      const second = await va(enregistrerDecisionGarantieJourneeIaAction(f()));
+      expect(second).toMatch(/erreur=.*vient%20d/);
+      expect(avoirsEmis).toHaveLength(2);
+      expect(tx.garantieJourneeIa.update).toHaveBeenCalledTimes(1);
+    });
   });
   it("DOUBLE CLIC après succès (avoir déjà lié, même montant) : aucun second avoir", async () => {
     lireGarantie.mockResolvedValue({
