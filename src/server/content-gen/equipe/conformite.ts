@@ -77,6 +77,17 @@ const inchange: ResultatConformite = {
   coutUsd: 0,
 };
 
+/** Les montants s'écrivent aussi « 3&nbsp;500&nbsp;&euro; » : on décode avant la garde de prix. */
+function decoderEntites(t: string): string {
+  return t
+    .replace(
+      /&(?:nbsp|thinsp|ensp|emsp);|&#(?:160|8239|8201|8194|8195);|&#x(?:a0|202f|2009);/gi,
+      " ",
+    )
+    .replace(/&euro;|&#8364;|&#x20ac;/gi, "€")
+    .replace(/[\u00a0\u202f\u2009]/g, " ");
+}
+
 function barrieresDeCode(
   entree: EntreeConformite,
   original: Record<string, unknown>,
@@ -87,7 +98,12 @@ function barrieresDeCode(
     financementPublicAutorise: entree.financementPublicAutorise ?? false,
   };
   const ancienCorps = typeof original["bodyText"] === "string" ? original["bodyText"] : "";
-  const texte = [textePublic(sortieNormalisee(original)), ancienCorps].join("\n");
+  // Texte public SANS le corps (titre, méta, FAQ…), puis le HTML BRUT : les détecteurs de
+  // tutoiement (citations, code) et de prix barré lisent eux-mêmes les balises.
+  const html = typeof original["bodyHtml"] === "string" ? original["bodyHtml"] : "";
+  const texte = [textePublic({ ...original, bodyText: "", bodyHtml: "" }), html, ancienCorps].join(
+    "\n",
+  );
   const vus = new Set<string>();
   for (const v of controlerSurfacePublication(original, opts)) {
     vus.add(v.code);
@@ -105,7 +121,7 @@ function barrieresDeCode(
       libelle: `Interdit de publication « ${d.code} » dans le texte public : ${d.extrait}`,
     });
   }
-  for (const p of findNonSsotPrices(texte)) {
+  for (const p of findNonSsotPrices(decoderEntites(texte))) {
     constats.push({
       code: "prix-hors-ssot",
       libelle: `Montant hors source unique des tarifs : ${p.amount}`,
@@ -149,14 +165,20 @@ export async function controlerConformite(
     };
   }
   let normalisee: Record<string, unknown> = {};
+  let barrieresEnErreur = false;
   try {
     normalisee = sortieNormalisee(entree.output as Record<string, unknown>);
     constats.push(...barrieresDeCode(entree, entree.output as Record<string, unknown>));
   } catch (e) {
+    barrieresEnErreur = true;
     constats.push({
       code: "erreur-conformite",
       libelle: `Barrières de code en erreur (${messageErreur(e)}) : texte NON vérifié`,
     });
+  }
+  // Pas d'appel payant au juge si le texte n'a pas pu être préparé : relecture humaine d'office.
+  if (barrieresEnErreur) {
+    return { actif: true, decision: "relecture-humaine", constats, coutUsd };
   }
   // Fidélité par modèle : obligatoire ici (`actif: true`), ne lève jamais.
   try {

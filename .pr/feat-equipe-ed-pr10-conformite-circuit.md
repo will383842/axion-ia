@@ -8,7 +8,7 @@ Ajouter l'étape de conformité finale du circuit, derrière `CONTENT_EQUIPE_EDI
 ## Fichiers
 
 - `src/server/content-gen/equipe/conformite.ts` (nouveau) : `controlerConformite`, `conformiteApresReecriture`.
-- `src/server/content-gen/equipe/conformite.test.ts` (nouveau, 17 tests).
+- `src/server/content-gen/equipe/conformite.test.ts` (nouveau, 31 tests).
 - Aucun motif dupliqué : réutilise `interdits-publication`, `price-gate`, `vouvoiement`, `fidelite-llm`, `equipe-editoriale-drapeau`.
 
 ## Tests

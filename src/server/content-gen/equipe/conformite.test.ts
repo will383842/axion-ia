@@ -149,14 +149,17 @@ describe("échec fermé", () => {
   });
   it("une barrière de code qui lève → relecture humaine", async () => {
     const { d } = deps();
+    // `tags` n'est lu que par le contrôle de surface : seule la barrière de code lève.
     const bizarre = {
-      get title(): string {
+      ...PROPRE,
+      get tags(): string[] {
         throw new Error("boom");
       },
     };
     const r = await controlerConformite({ ...base, output: bizarre, env: ON }, d);
     expect(r.decision).toBe("relecture-humaine");
     expect(r.constats.map((c) => c.code)).toContain("erreur-conformite");
+    expect(d.juger).not.toHaveBeenCalled();
   });
 });
 
@@ -260,5 +263,24 @@ describe("texte final : HTML, sorties vides, montants", () => {
       bodyHtml: "<p>Amende de 35 000 euros.</p>",
     });
     expect(c).toContain("prix-hors-ssot");
+  });
+});
+
+describe("HTML brut et entités", () => {
+  it.each([
+    "<p>Comptez 3&nbsp;500&nbsp;€.</p>",
+    "<p>Comptez 3 500 &euro;.</p>",
+    "<p>Comptez 3&#8239;500&#8239;€.</p>",
+  ])("montant écrit avec entités (%s) → refusé", async (bodyHtml) => {
+    const { codes: c } = await codes({ ...PROPRE, bodyHtml });
+    expect(c).toContain("prix-hors-ssot");
+  });
+  it("tutoiement cité dans du code ou une citation : pas de faux positif", async () => {
+    const { r } = await codes({
+      ...PROPRE,
+      bodyHtml:
+        "<p>Vous rédigez vos consignes.</p><code>tu es un expert, tu réponds</code><blockquote>Tu dois, tu peux</blockquote>",
+    });
+    expect(r.decision).toBe("publier");
   });
 });
