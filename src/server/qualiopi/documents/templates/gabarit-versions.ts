@@ -101,7 +101,7 @@ export type TypeGabaritSignable =
  * | `convention_tripartite` | 7 | 18/11 — même refonte, aucun texte changé. **v6 archivée** |
  * | `convention` | 8 | 19/11 — clause financeur, 5 bis et ligne Qualiopi imprimées seulement si certification obtenue (photo `data.certificationObtenue`) ; v7 archivée |
  * | `convention` | 9 | 25/11 — § 3 : paragraphe de la garantie de remboursement de la Journée IA (CGV art. 47.10), imprimé seulement si `data.journeeIa === true` (photo de `Devis.journeeIa`) ; v8 archivée |
- * | `convention_tripartite` | 8 | 25/11 — même règle de l'acompte que la convention v10 (report ajouté). **v7 archivée** |
+ * | `convention_tripartite` | 8 | 26/11 — même règle de l'acompte que la convention v10 (report ajouté). **v7 archivée** |
  * | `convention` | 10 | 26/11 — acompte acquis en cas d'annulation sans condition de délai (suppression de « plus de 15 jours ouvrés : 0 % ») ; dédit formation facturé à part, non imputable sur les fonds de la formation (et, dans la tripartite ou la bipartite certifiée, non pris en charge par un OPCO). **v9 archivée** |
  * | `contrat_formation` | 3 | 18/11 — même refonte, aucun texte changé. **v2 archivée** |
  * | les autres | 1 | texte inchangé depuis l'origine |
@@ -178,7 +178,7 @@ export const GABARIT_VERSIONS: Record<TypeGabaritSignable, number> = {
   */
   convention: 10,
   /* v7 — 18/11/2026, refonte au style de la charte 2027 (texte inchangé) ; v6 archivée. */
-  /* v8 — 25/11/2026, même règle de l'acompte acquis que la bipartite (section 4) ; v7 archivée. */
+  /* v8 — 26/11/2026, même règle de l'acompte acquis que la bipartite (section 4) ; v7 archivée. */
   convention_tripartite: 8,
   /* v3 — 18/11/2026, refonte au style de la charte 2027 (texte inchangé) ; v2 archivée. */
   contrat_formation: 3,
