@@ -67,7 +67,7 @@ export const MAISONS_ALFORT_COPY: VilleCopy = {
           {
             step: "Atelier de conception à Maisons-Alfort",
             detail:
-              "Kick-off sur site dans vos locaux maisonnais — campus ENVA/ANSES, cabinet de la ligne 8, futur quartier de la gare Vert de Maisons — pour cadrer arborescence, design UX/UI, parcours mobile et périmètre e-commerce ou SaaS.",
+              "Kick-off sur site dans vos locaux maisonnais — campus ENVA/ANSES, cabinets libéraux, futur quartier Vert de Maisons — pour cadrer arborescence, design UX/UI, parcours mobile et périmètre e-commerce ou SaaS.",
           },
           {
             step: "Design et prototype",

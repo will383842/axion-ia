@@ -14,9 +14,9 @@ export const LURE_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Lure (70), sous-préfecture de Haute-Saône. Nous accompagnons TPE et PME : industries locales, artisans BTP, commerçants, professionnels de santé, professions libérales et services aux entreprises du Pays de Lure.",
   seoHook: "industrie métallurgique & artisanat second",
   ecosystemFr:
-    "Lure est la sous-préfecture du nord Haute-Saône, pôle de services et de commerces pour le Pays de Lure (~25 000 hab bassin de vie). Tissu de TPE/PME industrielles (métallurgie, agroalimentaire), artisanat BTP, centre hospitalier, professions libérales. Proximité Luxeuil-les-Bains (15 min) et Belfort (30 min A36).",
+    "Lure est la sous-préfecture du nord Haute-Saône, pôle de services et de commerces pour le Pays de Lure (~25 000 hab bassin de vie). Tissu de TPE/PME industrielles (métallurgie, agroalimentaire), artisanat BTP, centre hospitalier, professions libérales. Bassin de vie incluant Luxeuil-les-Bains.",
   ecosystemEn:
-    "Lure est la sous-préfecture du nord Haute-Saône, pôle de services et de commerces pour le Pays de Lure (~25 000 hab bassin de vie). Tissu de TPE/PME industrielles (métallurgie, agroalimentaire), artisanat BTP, centre hospitalier, professions libérales. Proximité Luxeuil-les-Bains (15 min) et Belfort (30 min A36).",
+    "Lure est la sous-préfecture du nord Haute-Saône, pôle de services et de commerces pour le Pays de Lure (~25 000 hab bassin de vie). Tissu de TPE/PME industrielles (métallurgie, agroalimentaire), artisanat BTP, centre hospitalier, professions libérales. Bassin de vie incluant Luxeuil-les-Bains.",
   distancesFr:
     "Gare de Lure (TER Belfort-Vesoul, 25 min Belfort, 30 min Vesoul). Gare TGV Belfort-Montbéliard à 40 min. Aéroport Bâle-Mulhouse à 1h15. Axe RN19 vers Belfort et Vesoul. Luxeuil-les-Bains à 15 min.",
   distancesEn:

@@ -7,9 +7,9 @@ import type { VilleCopy } from "./types";
 
 export const PUTEAUX_COPY: VilleCopy = {
   pitchFr:
-    "Puteaux (92800, 44 002 habitants en 2023) est une commune des Hauts-de-Seine située sur la rive gauche de la Seine, qui accueille une partie significative du quartier d'affaires de La Défense (Grande Arche, CNIT, Les Quatre Temps). Si les sièges des grands groupes y dominent l'image, le territoire concentre aussi un tissu dense de TPE et PME : cabinets de conseil, prestataires de services aux entreprises, commerces, restaurants, artisans, agences spécialisées. Axion-IA accompagne ces structures avec du code custom Python/Node — pas de no-code, pas de dépendance plateforme. Williams se déplace sur site à Puteaux, Courbevoie, Nanterre, Suresnes ou Neuilly-sur-Seine.",
+    "Puteaux (92800, 44 002 habitants en 2023) est une commune des Hauts-de-Seine située sur la rive gauche de la Seine, qui accueille une partie significative du quartier d'affaires de La Défense (Grande Arche, CNIT, Les Quatre Temps). Si les sièges des grands groupes y dominent l'image, le territoire concentre aussi un tissu dense de TPE et PME : cabinets de conseil, prestataires de services aux entreprises, commerces, restaurants, artisans, agences spécialisées. Axion-IA accompagne ces structures avec du code custom Python/Node — pas de no-code, pas de dépendance plateforme. Williams intervient sur site à Puteaux, Courbevoie, Nanterre, Suresnes ou Neuilly-sur-Seine.",
   pitchEn:
-    "Puteaux (92800, 44 002 habitants en 2023) est une commune des Hauts-de-Seine située sur la rive gauche de la Seine, qui accueille une partie significative du quartier d'affaires de La Défense (Grande Arche, CNIT, Les Quatre Temps). Si les sièges des grands groupes y dominent l'image, le territoire concentre aussi un tissu dense de TPE et PME : cabinets de conseil, prestataires de services aux entreprises, commerces, restaurants, artisans, agences spécialisées. Axion-IA accompagne ces structures avec du code custom Python/Node — pas de no-code, pas de dépendance plateforme. Williams se déplace sur site à Puteaux, Courbevoie, Nanterre, Suresnes ou Neuilly-sur-Seine.",
+    "Puteaux (92800, 44 002 habitants en 2023) est une commune des Hauts-de-Seine située sur la rive gauche de la Seine, qui accueille une partie significative du quartier d'affaires de La Défense (Grande Arche, CNIT, Les Quatre Temps). Si les sièges des grands groupes y dominent l'image, le territoire concentre aussi un tissu dense de TPE et PME : cabinets de conseil, prestataires de services aux entreprises, commerces, restaurants, artisans, agences spécialisées. Axion-IA accompagne ces structures avec du code custom Python/Node — pas de no-code, pas de dépendance plateforme. Williams intervient sur site à Puteaux, Courbevoie, Nanterre, Suresnes ou Neuilly-sur-Seine.",
   directAnswerFr:
     "Axion-IA intervient à Puteaux (Hauts-de-Seine, 92800) sur site, dans le quartier d'affaires de La Défense et au-delà, auprès des TPE et PME — cabinets de conseil, prestataires de services, agences, commerces, restaurants. Nous intervenons partout en France, sur place ou à distance. Nous proposons un Audit sur place de 4 heures dès {{price:audit-flash|flat}} pour cartographier vos processus, une Formation 4 h dès {{price:intervention-4h|flat}} pour automatiser un flux métier (devis, relances, reporting), et un accompagnement 1-to-1 dirigeant dès {{price:intervention-dirigeants|flat}}. Code custom, RGPD et AI Act.",
   directAnswerEn:
@@ -33,8 +33,8 @@ export const PUTEAUX_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit sur place IA à Puteaux dès {{price:audit-flash|flat}} — Williams se déplace dans vos locaux à La Défense ou en centre-ville pour cartographier vos processus en 4 heures.",
-      en: "Audit sur place IA à Puteaux dès {{price:audit-flash|flat}} — Williams se déplace dans vos locaux à La Défense ou en centre-ville pour cartographier vos processus en 4 heures.",
+      fr: "Audit sur place IA à Puteaux dès {{price:audit-flash|flat}} — Williams intervient dans vos locaux à La Défense ou en centre-ville pour cartographier vos processus en 4 heures.",
+      en: "Audit sur place IA à Puteaux dès {{price:audit-flash|flat}} — Williams intervient dans vos locaux à La Défense ou en centre-ville pour cartographier vos processus en 4 heures.",
     },
     interventions: {
       fr: "Formation collective à Puteaux dès {{price:intervention-4h|flat}} — automatisation d'un processus métier (devis, relances, reporting) pour TPE et PME du quartier d'affaires.",
@@ -232,8 +232,8 @@ export const PUTEAUX_COPY: VilleCopy = {
       a: "À Puteaux, l'Audit sur place débute à {{price:audit-flash|flat}} (4 heures sur site), la Formation 4 h à {{price:intervention-4h|flat}} et l'accompagnement 1-to-1 dirigeant à {{price:intervention-dirigeants|flat}}. Tarifs publics consultables sur axion-ia.com.",
     },
     {
-      q: "Williams se déplace-t-il dans les entreprises de Puteaux et de La Défense ?",
-      a: "Oui, Williams se déplace dans vos locaux à Puteaux (92800), y compris dans les tours de La Défense. Nous intervenons partout en France, sur place ou à distance.",
+      q: "Intervenez-vous dans les entreprises de Puteaux et de La Défense ?",
+      a: "Oui, nous intervenons dans vos locaux à Puteaux (92800), y compris dans les tours de La Défense, comme partout en France, sur place ou à distance.",
     },
     {
       q: "Sous quel délai Axion-IA intervient à Puteaux ?",

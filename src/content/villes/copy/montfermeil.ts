@@ -216,7 +216,7 @@ export const MONTFERMEIL_COPY: VilleCopy = {
           },
           {
             q: "How long does it take to get a quote in Montfermeil?",
-            a: "A quote within 24 to 48 hours depending on complexity, after an initial framing exchange. The kick-off takes place on site in Montfermeil, as everywhere in France.",
+            a: "A quote within 24 to 48 hours depending on complexity, after an initial framing exchange. We work on site at your premises in Montfermeil, as everywhere in France.",
           },
         ],
         guarantees:

@@ -233,7 +233,7 @@ export const LUNEL_COPY: VilleCopy = {
     },
     {
       q: "Sous quel délai Axion-IA peut-il intervenir à Lunel ?",
-      a: "Williams se déplace sur Lunel sous 5 jours ouvrés en moyenne après validation du devis. Les missions courtes (audit, formation) peuvent démarrer plus rapidement.",
+      a: "Williams intervient sur site à Lunel sous 5 jours ouvrés en moyenne après validation du devis. Les missions courtes (audit, formation) peuvent démarrer plus rapidement.",
     },
     {
       q: "Quelles communes autour de Lunel sont couvertes ?",

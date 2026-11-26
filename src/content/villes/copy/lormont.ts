@@ -68,7 +68,7 @@ export const LORMONT_COPY: VilleCopy = {
           {
             step: "Conception UX/UI",
             detail:
-              "Wireframes, design system et maquettes Figma à votre marque ; prototype cliquable testé avant tout développement, pensé mobile-first pour une clientèle de proximité souvent sur smartphone, en déplacement entre Génicart, Carriet et Bordeaux par le tramway.",
+              "Wireframes, design system et maquettes Figma à votre marque ; prototype cliquable testé avant tout développement, pensé mobile-first pour une clientèle de proximité souvent sur smartphone, de Génicart à Carriet.",
           },
           {
             step: "Développement par sprints",
@@ -154,7 +154,7 @@ export const LORMONT_COPY: VilleCopy = {
           {
             step: "Conception UX/UI",
             detail:
-              "Wireframes, design system et maquettes Figma à votre marque ; prototype cliquable testé avant tout développement, pensé mobile-first pour une clientèle de proximité souvent sur smartphone, en déplacement entre Génicart, Carriet et Bordeaux par le tramway.",
+              "Wireframes, design system et maquettes Figma à votre marque ; prototype cliquable testé avant tout développement, pensé mobile-first pour une clientèle de proximité souvent sur smartphone, de Génicart à Carriet.",
           },
           {
             step: "Développement par sprints",

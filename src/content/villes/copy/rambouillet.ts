@@ -237,7 +237,7 @@ export const RAMBOUILLET_COPY: VilleCopy = {
     },
     {
       q: "Intervenez-vous aussi dans les communes proches de Rambouillet ?",
-      a: "Oui — nous nous déplaçons à Poigny-la-Forêt, Les Bréviaires, Le Perray-en-Yvelines, Vieille-Église-en-Yvelines, Clairefontaine-en-Yvelines, Gazeran, Orcemont et Sonchamp aux mêmes tarifs publics.",
+      a: "Oui — nous intervenons à Poigny-la-Forêt, Les Bréviaires, Le Perray-en-Yvelines, Vieille-Église-en-Yvelines, Clairefontaine-en-Yvelines, Gazeran, Orcemont et Sonchamp.",
     },
     {
       q: "Comment Axion-IA garantit-il la conformité RGPD à Rambouillet ?",
