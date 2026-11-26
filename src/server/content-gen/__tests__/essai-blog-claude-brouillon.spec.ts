@@ -42,7 +42,7 @@ import {
   STATUT_FINAL,
   RETRY_MAXIMUM,
   type DepsEssai,
-} from "../../../scripts/content-gen/essai-blog-claude-brouillon";
+} from "../../../../scripts/content-gen/essai-blog-claude-brouillon";
 
 const TITRE = "Comment un dirigeant de PME cadre un premier projet d'IA";
 
@@ -144,7 +144,7 @@ describe("essai blog Claude en brouillon", () => {
 
   it("les écritures réelles ne changent jamais le statut au-delà de cancelled", async () => {
     // Les deps réelles passent par prisma (mocké) : on les exerce via un import dynamique du module.
-    const mod = await import("../../../scripts/content-gen/essai-blog-claude-brouillon");
+    const mod = await import("../../../../scripts/content-gen/essai-blog-claude-brouillon");
     expect(mod.STATUT_FINAL).toBe("cancelled");
     const { readFileSync } = await import("node:fs");
     const src = readFileSync("scripts/content-gen/essai-blog-claude-brouillon.ts", "utf8")
@@ -184,7 +184,7 @@ describe("garde-fous contre le rejeu et plafond par job", () => {
   it("le job créé porte plafondJobUsd = 3 et statut cancelled ; les update n'écrivent aucun statut", async () => {
     jobCreate.mockResolvedValue({ id: "jx" });
     jobUpdate.mockResolvedValue({});
-    const mod = await import("../../../scripts/content-gen/essai-blog-claude-brouillon");
+    const mod = await import("../../../../scripts/content-gen/essai-blog-claude-brouillon");
     const reel = (mod as unknown as { depsReelles: DepsEssai }).depsReelles;
     await reel.creerJob({ idempotencyKey: "essai-claude-x", titre: TITRE });
     const data = jobCreate.mock.calls[0]![0].data;
