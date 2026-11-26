@@ -224,7 +224,7 @@ describe("BlogPosting équipe éditoriale (PR 9)", () => {
     expect(ld["reviewedBy"]).toEqual({ "@type": "Person", name: "Alex Martin" });
   });
 
-  it("dateModified honnête : pas avant la publication, pas dans le futur", () => {
+  it("dateModified honnête : pas avant la publication, bornée à maintenant", () => {
     expect(dateModifieeHonnete("2026-01-10", "2026-02-01", maintenant)).toBe(
       "2026-02-01T00:00:00.000Z",
     );
@@ -232,7 +232,7 @@ describe("BlogPosting équipe éditoriale (PR 9)", () => {
       "2026-01-10T00:00:00.000Z",
     );
     expect(dateModifieeHonnete("2026-01-10", "2027-01-01", maintenant)).toBe(
-      "2026-01-10T00:00:00.000Z",
+      "2026-06-01T00:00:00.000Z",
     );
     expect(dateModifieeHonnete("2026-01-10", "nimporte quoi", maintenant)).toBe(
       "2026-01-10T00:00:00.000Z",

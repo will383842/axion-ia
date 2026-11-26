@@ -289,7 +289,7 @@ export interface BlogPostingEquipeInput extends ArticleJsonLdInput {
 }
 
 /**
- * `dateModified` honnête : jamais antérieure à la publication, jamais dans le futur, et
+ * `dateModified` honnête : jamais antérieure à la publication, bornée à « maintenant », et
  * repliée sur la publication si la date de mise à jour est illisible.
  */
 export function dateModifieeHonnete(
@@ -300,8 +300,8 @@ export function dateModifieeHonnete(
   const pub = new Date(publishedAt);
   const maj = new Date(updatedAt);
   if (Number.isNaN(maj.getTime()) || maj.getTime() < pub.getTime()) return pub.toISOString();
-  if (maj.getTime() > maintenant.getTime()) return pub.toISOString();
-  return maj.toISOString();
+  // Dans le futur : bornée à « maintenant » (jamais une date qui n'est pas encore arrivée).
+  return new Date(Math.min(maj.getTime(), maintenant.getTime())).toISOString();
 }
 
 /**

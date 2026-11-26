@@ -24,7 +24,11 @@ import {
   equipeEditorialeActive,
   type EnvEquipeEditoriale,
 } from "../fact-check/equipe-editoriale-drapeau";
-import { detecterPassagesCitables, PASSAGES_CITABLES_MIN } from "./passages-citables";
+import {
+  detecterPassagesCitables,
+  extraireBlocs,
+  PASSAGES_CITABLES_MIN,
+} from "./passages-citables";
 import { normaliserTitre } from "./outline-validator";
 
 export interface SeoScoreInput {
@@ -293,10 +297,7 @@ function scorePrimaryKeywordEquipe(input: SeoScoreInput): { got: number; reason?
   if (!input.primaryKeyword) return { got: 0, reason: "primaryKeyword absent" };
   const kw = normaliserTitre(input.primaryKeyword);
   const a = (t: string) => kw.length > 0 && ` ${normaliserTitre(t)} `.includes(` ${kw} `);
-  const blocs = (b: string) =>
-    [...input.bodyHtml.matchAll(new RegExp(`<${b}(?:\\s[^>]*)?>([\\s\\S]*?)</${b}>`, "gi"))].map(
-      (m) => m[1] ?? "",
-    );
+  const blocs = (b: "p" | "h2" | "h1") => extraireBlocs(input.bodyHtml, b);
   const inTitle = a(input.title);
   const inH1 = input.hasPageH1 ? inTitle : blocs("h1").some(a);
   const inMeta = a(input.metaDescription);

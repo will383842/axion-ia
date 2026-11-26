@@ -30,7 +30,7 @@ export function texteSansBalises(html: string): string {
 
 export const compterMots = (s: string) => s.split(/\s+/).filter(Boolean).length;
 
-export function extraireBlocs(html: string, balise: "p" | "h2"): string[] {
+export function extraireBlocs(html: string, balise: "p" | "h1" | "h2"): string[] {
   const re = new RegExp(`<${balise}(?:\\s[^>]*)?>([\\s\\S]*?)</${balise}>`, "gi");
   return [...html.matchAll(re)].map((m) => texteSansBalises(m[1] ?? "")).filter(Boolean);
 }

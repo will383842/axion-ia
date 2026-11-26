@@ -78,3 +78,18 @@ describe("computeSeoScore — grille équipe éditoriale", () => {
     );
   });
 });
+
+describe("computeSeoScore équipe — mot-clé lu dans le texte, pas dans les balises", () => {
+  it("un lien contenant le mot-clé dans son href n'est pas un faux positif", () => {
+    const r = computeSeoScore(
+      {
+        ...ENTREE,
+        title: "Guide",
+        metaDescription: "x".repeat(150),
+        bodyHtml: `<p>Voir <a href="/fr/blog/audit-ia">ici</a></p><h2>Etapes</h2>`,
+      },
+      ON,
+    );
+    expect(r.breakdown.find((c) => c.criterion.startsWith("Primary"))?.got).toBe(0);
+  });
+});

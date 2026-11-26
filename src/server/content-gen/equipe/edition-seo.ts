@@ -208,7 +208,8 @@ export interface ResultatRemplacements {
   readonly refuses: ReadonlyArray<RemplacementRefuse>;
 }
 
-const MARQUEURS_DANGEREUX = /<\s*(?:script|iframe|object|embed|style)\b|\son\w+\s*=|javascript:/i;
+const MARQUEURS_DANGEREUX =
+  /<\s*(?:script|iframe|object|embed|style|svg)\b|on\w+\s*=|javascript:|data:text/i;
 
 function occurrences(texte: string, motif: string): number {
   let n = 0;
@@ -246,6 +247,21 @@ export function appliquerRemplacements(
       refuser("ancien identique au nouveau");
       continue;
     }
+    const balisesAvant = r.ancien.match(/<[^>]*>/g) ?? [];
+    const balisesApres = r.nouveau.match(/<[^>]*>/g) ?? [];
+    if (
+      balisesAvant.length !== balisesApres.length ||
+      balisesAvant.some((b, i) => b !== balisesApres[i]) ||
+      (r.champ !== "corpsHtml" && /[<>]/.test(`${r.ancien}${r.nouveau}`)) ||
+      /[<>]/.test(r.nouveau.replace(/<[^>]*>/g, ""))
+    ) {
+      refuser("balisage modifié (remplacement de texte seulement)");
+      continue;
+    }
+    if (r.champ !== "corpsHtml" && r.ancien.length > 0.6 * champs[r.champ].length) {
+      refuser("champ réécrit en grande partie (réécriture refusée)");
+      continue;
+    }
     if (MARQUEURS_DANGEREUX.test(r.nouveau)) {
       refuser("balise ou attribut dangereux");
       continue;
@@ -258,6 +274,14 @@ export function appliquerRemplacements(
     if (n > 1) {
       refuser("ancien texte ambigu (plusieurs occurrences)");
       continue;
+    }
+    if (r.champ === "corpsHtml") {
+      // Le texte visé ne doit pas tomber à l'intérieur d'une balise (href, class, alt…).
+      const avant = champs.corpsHtml.slice(0, champs.corpsHtml.indexOf(r.ancien));
+      if (avant.lastIndexOf("<") > avant.lastIndexOf(">")) {
+        refuser("balisage modifié (remplacement de texte seulement)");
+        continue;
+      }
     }
     if (r.champ === "corpsHtml") {
       const ajout = Math.max(r.ancien.length, r.nouveau.length);
@@ -333,6 +357,15 @@ export async function editerSeo(
   }
   const problemes = verifierRegles(args.article, args.brief);
   if (problemes.length === 0) return { statut: "conforme", article: args.article };
+  // La FAQ n'est pas un champ éditable : sans autre défaut corrigible, aucun appel payant.
+  if (problemes.every((x) => x.code === "faq_nombre" || x.code === "faq_redondante")) {
+    return {
+      statut: "echec",
+      article: args.article,
+      raison: "rien de corrigible par remplacement",
+      problemes,
+    };
+  }
 
   const generer = deps.generer ?? genererTexteBlogClaude;
   let reponse: GenerationResponse;

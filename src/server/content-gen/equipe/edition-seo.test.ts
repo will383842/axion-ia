@@ -153,18 +153,14 @@ describe("appliquerRemplacements", () => {
       "ancien texte introuvable",
       "ancien texte ambigu (plusieurs occurrences)",
       "ancien identique au nouveau",
-      "balise ou attribut dangereux",
+      "balisage modifié (remplacement de texte seulement)",
     ]);
     expect(r.article).toEqual(a);
   });
   it("refuse une réécriture (plus de 25 % du corps)", () => {
-    const a = bon();
+    const a = { ...bon(), corpsHtml: `<p>${mots(200)}</p>` };
     const r = appliquerRemplacements(a, [
-      {
-        champ: "corpsHtml",
-        ancien: a.corpsHtml.slice(0, a.corpsHtml.length / 2),
-        nouveau: "court",
-      },
+      { champ: "corpsHtml", ancien: mots(100), nouveau: "court" },
     ]);
     expect(r.appliques).toHaveLength(0);
     expect(r.refuses[0]?.raison).toContain("réécriture");
@@ -211,12 +207,13 @@ describe("editerSeo", () => {
     expect(generer).not.toHaveBeenCalled();
   });
   it("demande Sonnet par la porte existante et applique les remplacements", async () => {
-    const a = { ...bon(), metaTitre: "audit ia court" };
-    const nouveau = caracteres(55);
+    const a = { ...bon(), metaTitre: "audit ia " + "mot ".repeat(7) + "court" };
     const generer = vi.fn(async (_req: unknown, _role: string) =>
       reponse(
         JSON.stringify({
-          remplacements: [{ champ: "metaTitre", ancien: "audit ia court", nouveau }],
+          remplacements: [
+            { champ: "metaTitre", ancien: "court", nouveau: "x".repeat(10) + " complet" },
+          ],
         }),
       ),
     );
@@ -225,7 +222,9 @@ describe("editerSeo", () => {
     expect(generer.mock.calls[0]?.[1]).toBe("ecriture");
     expect(r.statut).toBe("corrige");
     if (r.statut === "corrige") {
-      expect(r.article.metaTitre).toBe(nouveau);
+      expect(r.article.metaTitre).toBe(
+        "audit ia " + "mot ".repeat(7) + "x".repeat(10) + " complet",
+      );
       expect(r.problemesRestants.map((p) => p.code)).not.toContain("meta_titre_longueur");
       expect(r.coutUsd).toBe(0.01);
     }
@@ -254,5 +253,40 @@ describe("editerSeo", () => {
       { generer: async () => reponse(JSON.stringify({ corpsHtml: "<p>tout</p>" })), env: ON },
     );
     expect(r3.statut).toBe("echec");
+  });
+});
+
+describe("appliquerRemplacements — balisage et champs courts", () => {
+  it("refuse de changer un lien, une balise ou un attribut d'événement", () => {
+    const a = {
+      ...bon(),
+      corpsHtml: `<p>Voir <a href="/fr/blog/x">notre audit</a> ici</p>${"y".repeat(400)}`,
+    };
+    const r = appliquerRemplacements(a, [
+      {
+        champ: "corpsHtml",
+        ancien: 'href="/fr/blog/x"',
+        nouveau: 'href="https://mauvais.example"',
+      },
+      { champ: "corpsHtml", ancien: "<p>Voir", nouveau: "<p>Voir<img src=x/onerror=a()>" },
+      { champ: "corpsHtml", ancien: "notre audit", nouveau: "notre audit IA" },
+    ]);
+    expect(r.appliques.map((x) => x.nouveau)).toEqual(["notre audit IA"]);
+    expect(r.refuses).toHaveLength(2);
+  });
+  it("refuse de réécrire un champ court en entier", () => {
+    const r = appliquerRemplacements(bon(), [
+      { champ: "h1", ancien: "Audit IA : le guide", nouveau: "Tout autre titre" },
+    ]);
+    expect(r.appliques).toHaveLength(0);
+  });
+  it("aucun appel payant si seule la FAQ est en défaut", async () => {
+    const generer = vi.fn();
+    const r = await editerSeo(
+      { jobId: "j", article: { ...bon(), faq: [] }, brief: BRIEF },
+      { generer, env: ON },
+    );
+    expect(generer).not.toHaveBeenCalled();
+    expect(r.statut).toBe("echec");
   });
 });
