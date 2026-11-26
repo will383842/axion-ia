@@ -49,7 +49,7 @@ export const PLUVIGNER_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Pluvigner et dans le pays d'Auray ?",
-      a: "Nous intervenons partout en France, sur place ou à distance.",
+      a: "Oui, Axion-IA intervient à Pluvigner et dans tout le pays d'Auray (Auray, Vannes, Carnac, Belz, Baud). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les exploitations agricoles autour de Pluvigner ?",

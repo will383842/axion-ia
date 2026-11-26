@@ -49,7 +49,7 @@ export const NYONS_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Nyons et Drôme provençale ?",
-      a: "Nous intervenons partout en France, sur place ou à distance.",
+      a: "Oui, Axion-IA intervient à Nyons et dans toute la Drôme provençale (Vaison-la-Romaine, Buis-les-Baronnies, Valréas, Tulette).",
     },
     {
       q: "Travaillez-vous avec les oléiculteurs AOP Nyons ?",

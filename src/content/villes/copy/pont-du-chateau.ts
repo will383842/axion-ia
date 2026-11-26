@@ -49,7 +49,7 @@ export const PONT_DU_CHATEAU_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Pont-du-Château et agglomération clermontoise ?",
-      a: "Nous intervenons dans vos locaux à Pont-du-Château, partout en France.",
+      a: "Oui, Axion-IA intervient à Pont-du-Château et dans toute l'agglomération clermontoise (Clermont-Ferrand, Lempdes, Cournon-d'Auvergne).",
     },
     {
       q: "Travaillez-vous avec les entreprises de logistique et entreposage ?",

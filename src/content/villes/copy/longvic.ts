@@ -49,7 +49,7 @@ export const LONGVIC_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Longvic et sud Dijon Métropole ?",
-      a: "Nous intervenons dans vos locaux à Longvic, partout en France.",
+      a: "Oui, Axion-IA intervient à Longvic et dans tout le sud de Dijon Métropole, ainsi qu'à Dijon et Beaune.",
     },
     {
       q: "Travaillez-vous avec les PME industrielles et logistiques de Longvic ?",

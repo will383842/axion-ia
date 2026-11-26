@@ -49,7 +49,7 @@ export const MONTBRISON_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Montbrison et plaine du Forez ?",
-      a: "Couverture Loire Forez Agglo. Nous intervenons partout en France, sur place ou à distance.",
+      a: "Oui. Nous intervenons à Montbrison et dans toute la plaine du Forez (Feurs, Saint-Just-Saint-Rambert, Boën-sur-Lignon), sur le territoire de Loire Forez Agglo.",
     },
     {
       q: "Travaillez-vous avec les producteurs AOP Fourme de Montbrison ?",

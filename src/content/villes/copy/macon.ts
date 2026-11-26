@@ -230,7 +230,7 @@ export const MACON_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Intervenez-vous à Mâcon ?",
-      a: "Oui. Nous intervenons dans vos locaux à Mâcon, partout en France, sur place ou à distance.",
+      a: "Oui. Nos experts IA seniors interviennent directement dans vos locaux à Mâcon et dans le sud de la Saône-et-Loire, de Charnay-lès-Mâcon à Tournus, pour observer vos processus réels avant toute recommandation.",
     },
     {
       q: "Travaillez-vous avec les domaines viticoles du Mâconnais ?",

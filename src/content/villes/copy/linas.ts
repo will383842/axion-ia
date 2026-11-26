@@ -49,7 +49,7 @@ export const LINAS_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Linas et Montlhéry ?",
-      a: "Nous intervenons dans vos locaux à Linas, partout en France.",
+      a: "Oui, Axion-IA intervient à Linas et dans tout le Hurepoix : Montlhéry, Longjumeau, Évry.",
     },
     {
       q: "Accompagnez-vous les entreprises de zone d'activités ?",

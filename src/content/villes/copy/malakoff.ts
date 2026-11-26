@@ -233,7 +233,7 @@ export const MALAKOFF_COPY: VilleCopy = {
     },
     {
       q: "Intervenez-vous à Malakoff ?",
-      a: "Oui. Nous intervenons dans vos locaux à Malakoff, partout en France, sur place ou à distance.",
+      a: "Oui. Williams et l'équipe Axion-IA interviennent à Malakoff sous 5 jours ouvrés en moyenne après validation du devis, sur place ou à distance.",
     },
     {
       q: "Quels délais pour un audit IA à Malakoff ?",

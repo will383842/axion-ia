@@ -49,7 +49,7 @@ export const MEHUN_SUR_YEVRE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Mehun-sur-Yèvre et Berry ?",
-      a: "Nous intervenons partout en France, sur place ou à distance.",
+      a: "Oui. Nous intervenons à Mehun-sur-Yèvre et dans tout le bassin berruyer (Bourges, Vierzon), sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les artisans porcelaine et céramique ?",

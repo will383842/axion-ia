@@ -65,7 +65,7 @@ export const LUDRES_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Ludres ?",
-      a: "Nous intervenons dans vos locaux à Ludres, partout en France.",
+      a: "Nous intervenons sur place à Ludres, comme partout en France, ou à distance.",
     },
   ],
 };

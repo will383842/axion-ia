@@ -49,7 +49,7 @@ export const LUZARCHES_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Luzarches et Pays de France ?",
-      a: "Nous intervenons dans vos locaux à Luzarches, partout en France.",
+      a: "Oui. Nous intervenons à Luzarches et dans tout le Pays de France (Chantilly, Sarcelles), sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les commerçants et artisans de Luzarches ?",

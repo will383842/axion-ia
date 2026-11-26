@@ -49,7 +49,7 @@ export const ORGEVAL_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Orgeval et dans l'ouest Yvelines ?",
-      a: "Nous intervenons dans vos locaux à Orgeval, partout en France.",
+      a: "Oui, Axion-IA intervient à Orgeval et dans tout l'ouest des Yvelines (Poissy, Saint-Germain-en-Laye, Villennes-sur-Seine, Maule).",
     },
     {
       q: "Accompagnez-vous les freelances et auto-entrepreneurs à Orgeval ?",

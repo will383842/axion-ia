@@ -235,8 +235,8 @@ export const PAU_COPY: VilleCopy = {
       a: "Audit sur place {{price:audit-flash|flat}} (diagnostic et plan d'action sous 7 jours), Formation 4 h {{price:intervention-4h|flat}} (atelier sur site), Implémentation et Coaching 1-to-1 dès {{price:intervention-dirigeants|flat}}. Tarifs publics affichés, pas de devis opaque.",
     },
     {
-      q: "Quels délais de déplacement pour une mission à Pau ?",
-      a: "Nous intervenons sous 5 jours ouvrés.",
+      q: "Quels délais d'intervention pour une mission à Pau ?",
+      a: "Nous intervenons sous 5 jours ouvrés. Possibilité d'audit visio sous 48 h.",
     },
     {
       q: "Quelles garanties RGPD et AI Act pour les missions à Pau ?",

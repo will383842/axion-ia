@@ -230,7 +230,7 @@ export const PLAISIR_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Intervenez-vous à Plaisir ?",
-      a: "Oui. Nous intervenons dans vos locaux à Plaisir, partout en France, sur place ou à distance.",
+      a: "Oui. Nos experts IA interviennent dans vos locaux à Plaisir, qu'il s'agisse d'un commerce du pôle Grand Plaisir, d'un atelier des Gâtines ou d'une PME de la Clef-Saint-Pierre. L'audit terrain reste le meilleur moyen de cibler les automatisations utiles.",
     },
     {
       q: "Quels types d'entreprises accompagnez-vous à Plaisir ?",

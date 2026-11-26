@@ -49,7 +49,7 @@ export const OISSEL_SUR_SEINE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Oissel-sur-Seine et agglo Rouen sud ?",
-      a: "Nous intervenons partout en France, sur place ou à distance.",
+      a: "Oui, Axion-IA intervient à Oissel-sur-Seine et dans toute l'agglo rouennaise sud (Elbeuf, Saint-Étienne-du-Rouvray, Sotteville-lès-Rouen, Rouen centre).",
     },
     {
       q: "Travaillez-vous avec les PME industrielles et logistiques ?",

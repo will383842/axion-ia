@@ -49,7 +49,7 @@ export const LENTILLY_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Lentilly et NO lyonnais ?",
-      a: "Nous intervenons partout en France, sur place ou à distance.",
+      a: "Oui, Axion-IA intervient à Lentilly et dans tout le nord-ouest lyonnais : L'Arbresle, Dardilly, Écully, La Tour-de-Salvagny.",
     },
     {
       q: "Accompagnez-vous les professions libérales lentillois ?",

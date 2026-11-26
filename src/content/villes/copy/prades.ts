@@ -49,7 +49,7 @@ export const PRADES_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Prades et dans le Conflent ?",
-      a: "Nous intervenons partout en France, sur place ou à distance.",
+      a: "Oui, Axion-IA intervient à Prades et dans tout le Conflent (Villefranche-de-Conflent, Ille-sur-Têt, Vernet-les-Bains, Mosset). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les professionnels de santé et services ?",

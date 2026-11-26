@@ -49,7 +49,7 @@ export const LES_ESSARTS_LE_ROI_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il aux Essarts-le-Roi et autour de Rambouillet ?",
-      a: "Nous intervenons dans vos locaux aux Essarts-le-Roi, partout en France.",
+      a: "Oui, Axion-IA intervient aux Essarts-le-Roi et dans tout le sud des Yvelines : Rambouillet, Saint-Quentin-en-Yvelines, Le Perray-en-Yvelines, Auffargis.",
     },
     {
       q: "Accompagnez-vous les indépendants et auto-entrepreneurs du sud Yvelines ?",

@@ -49,7 +49,7 @@ export const LONGWY_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Longwy et zone frontalière Luxembourg ?",
-      a: "Nous intervenons partout en France, sur place ou à distance.",
+      a: "Oui, Axion-IA intervient à Longwy et dans toute la zone transfrontalière, côté Luxembourg comme côté Belgique.",
     },
     {
       q: "Tarifs audit IA à Longwy  : quel budget prévoir ?",

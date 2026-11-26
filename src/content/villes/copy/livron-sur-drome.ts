@@ -49,7 +49,7 @@ export const LIVRON_SUR_DROME_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Livron-sur-Drôme et sud Valence ?",
-      a: "Nous intervenons partout en France, sur place ou à distance.",
+      a: "Oui, Axion-IA intervient à Livron-sur-Drôme et dans tout le sud de Valence : Loriol-sur-Drôme, Crest, La Voulte-sur-Rhône.",
     },
     {
       q: "Travaillez-vous avec les agriculteurs vallée Rhône ?",

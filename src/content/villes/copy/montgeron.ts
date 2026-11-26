@@ -247,7 +247,7 @@ export const MONTGERON_COPY: VilleCopy = {
     },
     {
       q: "Intervenez-vous à Montgeron ?",
-      a: "Oui. Nous intervenons dans vos locaux à Montgeron, partout en France, sur place ou à distance.",
+      a: "Oui. Nous intervenons sur site à Montgeron : aucune mission initiale en distanciel, nous observons les processus réels dans vos locaux.",
     },
   ],
 };

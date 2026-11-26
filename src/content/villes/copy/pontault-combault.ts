@@ -230,7 +230,7 @@ export const PONTAULT_COMBAULT_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Intervenez-vous à Pontault-Combault ?",
-      a: "Oui. Nous intervenons dans vos locaux à Pontault-Combault, partout en France, sur place ou à distance.",
+      a: "Oui. Nos experts IA interviennent dans vos locaux à Pontault-Combault, des zones commerciales aux entrepôts logistiques en passant par les ateliers d'artisans. L'audit terrain reste le meilleur moyen de cibler des automatisations utiles.",
     },
     {
       q: "Quelles entreprises accompagnez-vous à Pontault-Combault ?",

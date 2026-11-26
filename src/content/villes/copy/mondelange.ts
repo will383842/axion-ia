@@ -65,7 +65,7 @@ export const MONDELANGE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Mondelange ?",
-      a: "Nous intervenons dans vos locaux à Mondelange, partout en France.",
+      a: "Nous intervenons sur place à Mondelange, comme partout en France, ou à distance.",
     },
   ],
 };

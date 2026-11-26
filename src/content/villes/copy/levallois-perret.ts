@@ -128,7 +128,7 @@ export const LEVALLOIS_PERRET_COPY: VilleCopy = {
           },
           {
             q: "Intervenez-vous sur site à Levallois-Perret pour la conception ?",
-            a: "Oui. Nous intervenons dans vos locaux, partout en France.",
+            a: "Oui. Nous tenons les ateliers UX/UI et les points de recette directement dans vos locaux à Levallois-Perret, sans logistique lourde.",
           },
           {
             q: "Comment garantissez-vous la conformité RGPD pour mon site ou ma plateforme ?",
@@ -238,7 +238,7 @@ export const LEVALLOIS_PERRET_COPY: VilleCopy = {
     },
     {
       q: "Intervenez-vous sur site à Levallois-Perret ?",
-      a: "Oui. Nous intervenons dans vos locaux, partout en France.",
+      a: "Oui. Un expert senior intervient dans vos locaux à Levallois-Perret pour les ateliers de cadrage et les points clés du projet.",
     },
     {
       q: "Par où commencer un projet IA à Levallois-Perret ?",

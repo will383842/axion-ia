@@ -49,7 +49,7 @@ export const MAGNY_EN_VEXIN_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Magny-en-Vexin et dans le Vexin français ?",
-      a: "Nous intervenons dans vos locaux à Magny-en-Vexin, partout en France.",
+      a: "Oui. Nous intervenons à Magny-en-Vexin et dans tout le Vexin français (Cergy-Pontoise, Mantes-la-Jolie, Gisors), sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les commerçants et artisans de Magny-en-Vexin ?",

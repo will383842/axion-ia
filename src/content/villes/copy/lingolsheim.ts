@@ -230,7 +230,7 @@ export const LINGOLSHEIM_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Lingolsheim et dans l'Eurométropole ?",
-      a: "Nous intervenons partout en France, sur place ou à distance.",
+      a: "Oui. Nous intervenons à Lingolsheim et dans l'Eurométropole de Strasbourg : Strasbourg, Illkirch-Graffenstaden, Ostwald, Eckbolsheim.",
     },
     {
       q: "Travaillez-vous avec les TPE et artisans lingolsheimois ?",

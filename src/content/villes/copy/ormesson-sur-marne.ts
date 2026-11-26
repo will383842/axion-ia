@@ -49,7 +49,7 @@ export const ORMESSON_SUR_MARNE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Ormesson-sur-Marne et bords de Marne ?",
-      a: "Nous intervenons dans vos locaux à Ormesson-sur-Marne, partout en France.",
+      a: "Oui, Axion-IA intervient à Ormesson-sur-Marne et dans tout le secteur des bords de Marne (Sucy-en-Brie, Noiseau, Créteil).",
     },
     {
       q: "Travaillez-vous avec les TPE et artisans d'Ormesson-sur-Marne ?",

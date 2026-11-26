@@ -49,7 +49,7 @@ export const LUCCIANA_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Lucciana et dans la plaine orientale ?",
-      a: "Nous intervenons dans vos locaux à Lucciana, partout en France.",
+      a: "Oui. Nous intervenons à Lucciana et dans toute l'agglomération bastiaise et la plaine orientale, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les exploitants viticoles et arboricoles de la plaine orientale ?",

@@ -65,7 +65,7 @@ export const PERIGNY_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA sur site à Périgny ?",
-      a: "Nous intervenons partout en France, sur place ou à distance.",
+      a: "Nous intervenons sur place à Périgny, dans vos locaux, bureau ou cabinet, comme partout en France, ou à distance.",
     },
   ],
 };

@@ -49,7 +49,7 @@ export const MARLY_LA_VILLE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Marly-la-Ville et nord Val-d'Oise ?",
-      a: "Nous intervenons dans vos locaux à Marly-la-Ville, partout en France.",
+      a: "Oui. Nous intervenons à Marly-la-Ville et dans tout le nord Val-d'Oise (Fosses, Luzarches), sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les commerçants et artisans de Marly-la-Ville ?",

@@ -155,7 +155,7 @@ export const NICE_COPY: VilleCopy = {
           },
           {
             q: "Intervenez-vous à Nice ?",
-            a: "Oui. Nous intervenons dans vos locaux à Nice, partout en France, sur place ou à distance.",
+            a: "Oui. Nous intervenons sur site dans toute la métropole Nice Côte d'Azur, ainsi qu'à Sophia Antipolis, Antibes, Cannes, Grasse et Menton.",
           },
           {
             q: "Différence avec un audit Big Four ou un cabinet de conseil traditionnel ?",
@@ -992,7 +992,7 @@ export const NICE_COPY: VilleCopy = {
     },
     {
       q: "Intervenez-vous aussi à Sophia Antipolis, Antibes et Cannes ?",
-      a: "Oui. Nous intervenons dans vos locaux à Sophia Antipolis, Antibes, Cannes, Grasse et Menton, partout en France, sur place ou à distance.",
+      a: "Oui. Nous couvrons l'ensemble du bassin métropolitain : Grand Arénas, Nice Méridia, Sophia Antipolis, Antibes, Cannes, Grasse et Menton. Tous les formats (audit, intervention, implémentation) sont disponibles en présentiel sur ce périmètre.",
     },
     {
       q: "Quels secteurs sont prioritaires à Nice et sur la Côte d'Azur ?",

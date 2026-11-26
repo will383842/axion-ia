@@ -231,7 +231,7 @@ export const LIMEIL_BREVANNES_COPY: VilleCopy = {
     },
     {
       q: "Quel est le délai pour une intervention à Limeil-Brévannes ?",
-      a: "Déplacement sur site dans les 5 jours ouvrés suivant la confirmation.",
+      a: "Intervention sur site dans les 5 jours ouvrés suivant la confirmation.",
     },
     {
       q: "Quelles communes proches couvrez-vous autour de Limeil-Brévannes ?",

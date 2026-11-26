@@ -65,7 +65,7 @@ export const MOLSHEIM_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Molsheim ?",
-      a: "Nous intervenons dans vos locaux à Molsheim, partout en France.",
+      a: "Nous intervenons sur place à Molsheim, comme partout en France, ou à distance.",
     },
   ],
 };

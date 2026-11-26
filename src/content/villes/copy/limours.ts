@@ -49,7 +49,7 @@ export const LIMOURS_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Limours et dans le Hurepoix ?",
-      a: "Nous intervenons dans vos locaux à Limours, partout en France.",
+      a: "Oui, Axion-IA intervient à Limours et dans le Hurepoix : Orsay, Dourdan, Massy et les communes voisines.",
     },
     {
       q: "Accompagnez-vous les artisans BTP en zone semi-rurale ?",

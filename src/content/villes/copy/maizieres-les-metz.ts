@@ -65,7 +65,7 @@ export const MAIZIERES_LES_METZ_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Maizières-lès-Metz ?",
-      a: "Nous intervenons dans vos locaux à Maizières-lès-Metz, partout en France.",
+      a: "Nous intervenons sur place à Maizières-lès-Metz, comme partout en France, ou à distance.",
     },
   ],
 };

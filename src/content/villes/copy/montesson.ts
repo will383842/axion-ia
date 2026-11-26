@@ -49,7 +49,7 @@ export const MONTESSON_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Montesson et sur la plaine de Montesson ?",
-      a: "Nous intervenons dans vos locaux à Montesson, partout en France.",
+      a: "Oui. Nous intervenons à Montesson et dans toute la boucle de Seine (Le Vésinet, Sartrouville, La Défense).",
     },
     {
       q: "Travaillez-vous avec les commerçants et artisans de Montesson ?",

@@ -49,7 +49,7 @@ export const OLLAINVILLE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Ollainville et sud Essonne ?",
-      a: "Nous intervenons dans vos locaux à Ollainville, partout en France.",
+      a: "Oui, Axion-IA intervient à Ollainville et dans tout le sud Essonne (Arpajon, Brétigny-sur-Orge, Évry-Courcouronnes).",
     },
     {
       q: "Travaillez-vous avec les artisans et commerçants d'Ollainville ?",

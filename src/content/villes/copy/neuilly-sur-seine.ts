@@ -232,7 +232,7 @@ export const NEUILLY_SUR_SEINE_COPY: VilleCopy = {
     },
     {
       q: "Intervenez-vous à Neuilly-sur-Seine ?",
-      a: "Oui. Nous intervenons dans vos locaux à Neuilly-sur-Seine, partout en France, sur place ou à distance.",
+      a: "Oui. Nous intervenons sur site à Neuilly-sur-Seine sous 5 jours ouvrés.",
     },
     {
       q: "Quelles communes proches de Neuilly-sur-Seine couvrez-vous ?",

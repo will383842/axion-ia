@@ -418,7 +418,7 @@ export const NANTERRE_COPY: VilleCopy = {
     },
     {
       q: "Intervenez-vous à Nanterre sur place ou à distance ?",
-      a: "Oui. Nous intervenons dans vos locaux à Nanterre, partout en France, sur place ou à distance.",
+      a: "Oui. Nous intervenons sur site chez le client à Nanterre, en présentiel dans vos locaux, que vous soyez sur ZAC Seine Arche, La Défense ou ailleurs dans le 92. Les formats hybrides (présentiel + distanciel) sont possibles selon le programme retenu.",
     },
     {
       q: "Une ETI multi-sites avec siège à Nanterre peut-elle déployer l'IA progressivement ?",

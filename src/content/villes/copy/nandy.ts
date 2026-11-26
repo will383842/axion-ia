@@ -49,7 +49,7 @@ export const NANDY_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Nandy et dans le sud Seine-et-Marne ?",
-      a: "Nous intervenons partout en France, sur place ou à distance.",
+      a: "Oui, Axion-IA intervient à Nandy et dans toute l'agglomération Grand Paris Sud (Sénart, Cesson, Savigny-le-Temple, Melun). Nous couvrons le sud Seine-et-Marne et l'Essonne.",
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Nandy  ?",

@@ -65,7 +65,7 @@ export const PUILBOREAU_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA sur site à Puilboreau ?",
-      a: "Nous intervenons partout en France, sur place ou à distance.",
+      a: "Nous intervenons sur place à Puilboreau, dans vos locaux commerciaux, bureau ou entrepôt, comme partout en France, ou à distance.",
     },
   ],
 };

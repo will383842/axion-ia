@@ -230,7 +230,7 @@ export const MASSY_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Intervenez-vous à Massy ?",
-      a: "Oui. Nous intervenons dans vos locaux à Massy, partout en France, sur place ou à distance.",
+      a: "Oui. Nos experts IA interviennent dans vos locaux à Massy, notamment au quartier Atlantis, pour audits, interventions et implémentations, généralement sous cinq jours ouvrés après validation.",
     },
     {
       q: "Accompagnez-vous les ESN et cabinets de conseil de Massy ?",
