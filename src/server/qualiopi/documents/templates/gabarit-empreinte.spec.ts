@@ -123,14 +123,18 @@ const EMPREINTES: Readonly<
     // clauses inchangé et gardé ; v7 archivée.
     // (v7 — 18/11/2026 : refonte au style de la charte 2027 (`charte/v1`), texte inchangé.
     // v6 — 16/10/2026 : mention handicap, L15, NC12. v5 — 04/10/2026 : clause de condition suspensive OPCO.)
-    sha: "a287da8b30e905b5821ddb60aca317001af681664085f6783748e595b080adaa",
-    version: 9,
+    // v10 — 26/11/2026 : l'acompte versé reste acquis en cas d'annulation, sans condition de délai
+    // (§ 4) ; dédit formation facturé à part, ni imputable ni pris en charge par un OPCO ; v9 archivée.
+    // (v9 — 25/11/2026 : paragraphe de la garantie Journée IA, § 3.)
+    sha: "a356c7d4afacce4b9993af3994948999cd2c228dceb6a5f5f91430a34a07ad10",
+    version: 10,
   },
   convention_tripartite: {
     // v7 — 18/11/2026 : refonte au style de la charte 2027, texte inchangé ; v6 archivée.
     // (v6 — 16/10/2026 : même mention handicap, mot pour mot.)
-    sha: "23672fe072fb72fd852b3ae940423389d5acc9dfcacbe5646f6f535f2bebd956",
-    version: 7,
+    // v8 — 26/11/2026 : même règle de l'acompte acquis (§ 4), mot pour mot ; v7 archivée.
+    sha: "2b5bf9ac8e135e6d879c1a5f956e8a8d38465fca77113984225f68047bab20c2",
+    version: 8,
   },
   contrat_formation: {
     // v3 — 18/11/2026 : refonte au style de la charte 2027, texte inchangé ; v2 archivée.
@@ -354,6 +358,11 @@ const EMPREINTES_ARCHIVES: Readonly<Record<string, string>> = {
   "convention.v7.tsx": "73047fbf99819d59ed81b2a7523e1c960b51c80921a085d14a24983b8cd2bf1c",
   // 25/11/2026 : copie conforme du gabarit courant du 19/11, mention figée.
   "convention.v8.tsx": "6f5bccb9116ff3846249fba85bc95369ab8b1f236c4bf650262a5bc8e159c86c",
+  // 26/11/2026 : copies conformes des gabarits courants d'avant la règle de l'acompte acquis
+  // (mention légale figée dans le fichier).
+  "convention.v9.tsx": "4bd0a3df6f9cedd1ff86000937058c9c97a33ed23524fe1122a553b42f1f8ce6",
+  "convention-tripartite.v7.tsx":
+    "1c9a167628836c062e5af9a11cf1f52998325b65682ece4efe6fe231bbc11ac5",
   "convention-tripartite.v6.tsx":
     "e994a458883987781d2b3b4b4d2d2c00dc782ee8248fe75d6846b4544f4a7660",
   "contrat-formation.v2.tsx": "50a48f4ac853f805ab112d463ae15a2a61c5548eb02231db18aee78b420b3fa3",

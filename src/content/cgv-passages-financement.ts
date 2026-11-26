@@ -12,7 +12,7 @@
  */
 import { CGV_AVEC_PASSAGES_FINANCEMENT } from "./cgv-version";
 
-export type IdentifiantPassageCgv = "7.2" | "48.1" | "48.4" | "49.2" | "49.9";
+export type IdentifiantPassageCgv = "7.2" | "48.1" | "48.4" | "49.2" | "49.5" | "49.9";
 
 const PASSAGES: Readonly<Record<IdentifiantPassageCgv, { normale: string; certifiee: string }>> = {
   "7.2": {
@@ -32,6 +32,10 @@ const PASSAGES: Readonly<Record<IdentifiantPassageCgv, { normale: string; certif
     normale: "la formation est commandée et payée par une entreprise. Si une telle",
     certifiee:
       "la formation est commandée et payée par une entreprise, ou financée par un tiers. Si une telle",
+  },
+  "49.5": {
+    normale: "",
+    certifiee: " ni prises en charge par un opérateur de compétences",
   },
   "49.9": {
     normale: "elle ne vaut pas attestation de conformité à une réglementation.",
