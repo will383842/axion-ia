@@ -39,6 +39,7 @@ import {
 import { dateFr, etatEcheances } from "@/features/apporteurs-reseau/autofacture-donnees";
 import {
   euros,
+  lirePalierMixte,
   PALIER_CONFERENCE,
   PALIER_JOURNEE_IA,
   PALIERS_FORMATION,
@@ -515,8 +516,10 @@ export default async function CommissionsApporteursPage({ params, searchParams }
                       ? "Conférence"
                       : c.palier === PALIER_JOURNEE_IA
                         ? "Journée IA"
-                        : (PALIERS_FORMATION.find((p) => p.id === c.palier)?.libelle ??
-                          (c.palier === PALIER_HORS_GRILLE ? LIBELLE_HORS_GRILLE : c.palier))}
+                        : lirePalierMixte(c.palier)
+                          ? libelleMixte(c.palier)
+                          : (PALIERS_FORMATION.find((p) => p.id === c.palier)?.libelle ??
+                            (c.palier === PALIER_HORS_GRILLE ? LIBELLE_HORS_GRILLE : c.palier))}
                   </p>
                 ) : null}
                 {c.statut === "a_qualifier" && !c.parrainage
@@ -650,4 +653,14 @@ export default async function CommissionsApporteursPage({ params, searchParams }
       ) : null}
     </div>
   );
+}
+
+/** Commande mixte (palier `mixte:`, art. 4.1 bis) : « Journée IA (1 490 € HT) + audit (2 900 € HT) ». */
+function libelleMixte(palier: string): string {
+  const p = lirePalierMixte(palier);
+  if (!p) return palier;
+  const autre =
+    PALIERS_FORMATION.find((x) => x.id === p.autre)?.libelle ??
+    (p.autre === "formation" ? "formation (palier à choisir)" : p.autre);
+  return `Journée IA${p.journees > 1 ? ` × ${p.journees}` : ""} (${euros(p.journeeIaHtCents)} HT) + ${autre} (${euros(p.autreHtCents)} HT)`;
 }

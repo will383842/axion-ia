@@ -103,6 +103,94 @@ export function journeeIaDeLaCommande(e: {
   return mentions.length > 0 ? { suspecte: true } : null;
 }
 
+/** La ligne a-t-elle un montant lisible (quantité et prix unitaire numériques) ? */
+function ligneLisible(l: LigneDeFacture): boolean {
+  const q = typeof l.quantite === "number" ? l.quantite : Number(l.quantite);
+  return (
+    Number.isFinite(q) &&
+    typeof l.prixUnitaireHtCents === "number" &&
+    Number.isFinite(l.prixUnitaireHtCents)
+  );
+}
+
+/** Ligne d'acompte (« Acompte de 30 % — devis … ») ou sa déduction sur le solde (« Acompte déjà facturé — … »). */
+function ligneDAcompte(l: LigneDeFacture): boolean {
+  return /^acompte\b/.test(normaliser(l.designation));
+}
+
+/**
+ * VENTILATION d'une commande qui porte une Journée IA (art. 4.1 bis : « à défaut de prix public pour
+ * l'une d'elles, selon la ventilation du devis »), lue sur les lignes de ses factures (hors avoirs) :
+ * HT des lignes POSITIVES « Journée IA », HT des autres lignes positives, nombre de journées.
+ * Les lignes d'acompte et leurs déductions sur le solde sont ignorées (la facture de solde reprend
+ * toutes les lignes du devis, `planifierFacturationDevis`).
+ *
+ * Commande MIXTE (autre HT > 0) : rien n'est deviné. La ventilation est « incertaine » dès qu'une
+ * ligne est illisible, qu'une autre ligne négative existe (remise globale, déduction : à répartir
+ * selon un prorata que le devis ne donne pas), ou que les lignes ne retombent pas sur le total du
+ * devis (facture refaite, lignes modifiées). Une commande sans autre ligne n'est jamais incertaine :
+ * son forfait se calcule sur la base de la commande, remises comprises.
+ */
+export function ventilerJourneeIa(e: {
+  /** Les lignes de CHAQUE facture de la commande (hors avoirs). */
+  lignes: readonly unknown[];
+  /** Base de signature de la commande (total du devis, sinon HT des factures). */
+  baseSignatureCents: number;
+}): { journeeIaHtCents: number; autreHtCents: number; journees: number } | { incertaine: string } {
+  const toutes = e.lignes.flatMap(lignesLisibles).filter((l) => !ligneDAcompte(l));
+  let journeeIa = 0;
+  let autre = 0;
+  let journees = 0;
+  let illisible = false;
+  let negative = false;
+  for (const l of toutes) {
+    if (!ligneLisible(l)) {
+      illisible = true;
+      continue;
+    }
+    const m = Math.round(montantDeLigne(l));
+    if (m < 0) negative = true;
+    if (m <= 0) continue;
+    if (MOTIF_JOURNEE_IA.test(normaliser(l.designation))) {
+      journeeIa += m;
+      const n = typeof l.quantite === "number" ? l.quantite : Number(l.quantite);
+      journees += Number.isInteger(n) && n > 0 ? n : 1;
+    } else {
+      autre += m;
+    }
+  }
+  const base = {
+    journeeIaHtCents: journeeIa,
+    autreHtCents: autre,
+    journees: Math.max(1, journees),
+  };
+  if (autre === 0 && !illisible) return base;
+  if (illisible) return { incertaine: "une ligne de facture est illisible" };
+  if (negative)
+    return {
+      incertaine: "une remise ou une déduction globale porte sur l'ensemble de la commande",
+    };
+  if (journeeIa + autre !== e.baseSignatureCents)
+    return {
+      incertaine: `les lignes des factures (${journeeIa + autre} centimes) ne retombent pas sur le total du devis (${e.baseSignatureCents} centimes)`,
+    };
+  return base;
+}
+
+/** Hébergement, maintenance, licence, abonnement (A1.6 : sommes non commissionnées). */
+const MOTIF_RECURRENT = /\b(hebergement|maintenance|licences?|abonnements?)\b/;
+
+/**
+ * Lignes POSITIVES d'une commande qui RESSEMBLENT à des sommes non commissionnées (A1.6). Rien n'est
+ * exclu sur cette seule ressemblance : l'appelant alerte Williams, qui tranche.
+ */
+export function lignesRecurrentesSuspectes(lignes: readonly unknown[]): string[] {
+  return lignes
+    .flatMap(lignesLisibles)
+    .filter((l) => montantDeLigne(l) > 0 && MOTIF_RECURRENT.test(normaliser(l.designation)))
+    .map((l) => String(l.designation));
+}
+
 export interface CommandeSoldee {
   /** Clé de la commission (contrainte d'unicité facture/apporteur) : la dernière facture émise. */
   factureCleId: string;

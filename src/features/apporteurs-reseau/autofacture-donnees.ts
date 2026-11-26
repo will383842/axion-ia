@@ -7,7 +7,12 @@
  */
 
 import { ajouterJoursOuvres, estJourFerieFrance } from "@/lib/jours-ouvres";
-import { PALIERS_FORMATION } from "./regles";
+import {
+  lirePalierMixte,
+  PALIERS_FORMATION,
+  PRIX_REFERENCE_JOURNEE_IA_CENTS,
+  type PartsMixtes,
+} from "./regles";
 import { PREFIXE_PALIER_COMPLEMENT } from "./commandes";
 import { sirenValide } from "./regles-dossier";
 import type { AutofactureData } from "@/server/qualiopi/documents/templates/autofacture-honoraires";
@@ -84,6 +89,32 @@ export function libelleMois(mois: string): string {
 
 export const LIBELLE_PARRAINAGE = "Parrainage (art. 4.6)";
 
+const LIBELLE_AUTRE: Record<string, string> = {
+  audit: "audit",
+  implementation: "automatisation ou intégration",
+  site_web: "développement web",
+  un_a_un: "accompagnement individuel (sans commission)",
+  conference: "conférence (sans commission)",
+};
+
+/**
+ * Désignation d'une commande mixte : la Journée IA (prix public, prix facturé) et l'autre partie
+ * (prix facturé), le prix facturé de chaque partie étant le net de la commande réparti au prorata de
+ * leur HT de signature (`regles.ts#commissionMixte`, même calcul).
+ */
+function designationMixte(p: PartsMixtes, factureHtCents: number | null): string {
+  const base = p.journeeIaHtCents + p.autreHtCents;
+  const net = factureHtCents === null ? base : Math.max(0, Math.min(factureHtCents, base));
+  const netJ = base > 0 ? Math.round((p.journeeIaHtCents * net) / base) : 0;
+  const netA = net - netJ;
+  const f = PALIERS_FORMATION.find((x) => x.id === p.autre);
+  const autre = f
+    ? `formation, palier ${f.id}${p.sessions > 1 ? ` × ${p.sessions} sessions` : ""} (prix public ${eurosHt(f.prixCents * p.sessions)} HT)`
+    : (LIBELLE_AUTRE[p.autre] ?? p.autre);
+  const journees = p.journees > 1 ? ` × ${p.journees}` : "";
+  return `Commission d'apport — Journée IA${journees} : prix public ${eurosHt(PRIX_REFERENCE_JOURNEE_IA_CENTS * p.journees)} HT, prix facturé ${eurosHt(netJ)} HT ; ${autre} : prix facturé ${eurosHt(netA)} HT (art. 4.1 bis)`;
+}
+
 /**
  * Une reprise est un AVOIR d'autofacture (art. 4.5), jamais une autofacture diminuée en silence :
  * la ligne le dit et renvoie à l'autofacture d'origine (numéro et mois) quand on la connaît.
@@ -111,6 +142,9 @@ export function designationCommission(c: CommissionPourAutofacture): string {
         : "";
     return `Commission d'apport — conférence${prixConf}`;
   }
+  // Commande MIXTE (Journée IA + autre prestation, art. 4.1 bis) : chaque partie avec son prix.
+  const mixte = lirePalierMixte(c.palier);
+  if (mixte) return designationMixte(mixte, c.factureHtCents ?? null);
   const base = `Commission d'apport (${c.activite})`;
   // Plusieurs sessions du même palier : le prix public porté est celui de TOUTES les sessions.
   const paliers = PALIERS_FORMATION.find((p) => p.id === c.palier);

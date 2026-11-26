@@ -242,3 +242,141 @@ describe("jamais de ligne à 0,00 €, jamais d'acompte commissionné", () => {
     expect(etat.crees).toEqual([expect.objectContaining({ apporteurId: "APP1", montantCents: 3 })]);
   });
 });
+
+// Relecture du lot « grille » : devis MIXTE. La Journée IA garde son forfait calculé sur SES lignes
+// (A1.1, art. 4.1 bis) ; les autres lignes gardent la commission de leur activité (A1.4, A1.5, A1.2).
+// Une seule ligne de commission par commande et par apporteur (unicité facture/apporteur/parrainage) :
+// son palier `mixte:` porte la ventilation, relue par les avoirs.
+describe("devis mixte : Journée IA + autre prestation", () => {
+  const mixte = (o: {
+    activite: string | null;
+    autre: [string, number];
+    jia?: number;
+    extra?: Array<ReturnType<typeof ligneJ>>;
+    total?: number;
+  }) => {
+    const jia = o.jia ?? 149_000;
+    const total = o.total ?? jia + o.autre[1];
+    return fac({
+      activite: o.activite,
+      montantHtCents: total,
+      lignes: [ligneJ("Journée IA", jia), ligneJ(o.autre[0], o.autre[1]), ...(o.extra ?? [])],
+      devis: { acceptedAt: new Date("2026-11-01T00:00:00Z"), montantTotalHtCents: total },
+    });
+  };
+  beforeEach(() => {
+    etat.journees = [{ id: "D1", journeeIa: true }];
+  });
+
+  it("Journée IA 1 490 + audit 2 900 : 500 + 870 = 1 370 €, une seule ligne", async () => {
+    etat.lignes = [mixte({ activite: "audit", autre: ["Audit IA approfondi", 290_000] })];
+    const bilan = await passerFacturationApporteurs(MAINTENANT);
+    expect(bilan.erreurs).toBe(0);
+    expect(etat.crees).toEqual([
+      expect.objectContaining({
+        activite: "journee_ia",
+        palier: "mixte:1x149000+audit:290000",
+        prixPublicHtCents: 149_000,
+        factureHtCents: 439_000,
+        montantCents: 137_000,
+        statut: "due",
+      }),
+    ]);
+  });
+
+  it("Journée IA 1 490 + automatisation 6 000 : 500 + 900 = 1 400 €", async () => {
+    etat.lignes = [mixte({ activite: "implementation", autre: ["Automatisation", 600_000] })];
+    await passerFacturationApporteurs(MAINTENANT);
+    expect(etat.crees).toEqual([expect.objectContaining({ montantCents: 140_000 })]);
+  });
+
+  it("part du parrain : 10 % de la commission mixte", async () => {
+    etat.presentations = [protegee(true)];
+    etat.lignes = [mixte({ activite: "audit", autre: ["Audit", 290_000] })];
+    await passerFacturationApporteurs(MAINTENANT);
+    expect(etat.crees).toEqual([
+      expect.objectContaining({ apporteurId: "APP1", montantCents: 137_000 }),
+      expect.objectContaining({ apporteurId: "PAR1", parrainage: true, montantCents: 13_700 }),
+    ]);
+  });
+
+  it("Journée IA 1 000 + formation 1 900 : à qualifier (palier de formation), ventilation gardée, alerte unique", async () => {
+    etat.lignes = [
+      mixte({ activite: "formation", autre: ["Formation IA 1 jour", 190_000], jia: 100_000 }),
+    ];
+    await passerFacturationApporteurs(MAINTENANT);
+    expect(etat.crees).toEqual([
+      expect.objectContaining({
+        statut: "a_qualifier",
+        activite: "formation",
+        palier: "mixte:1x100000+formation:190000",
+        factureHtCents: 290_000,
+      }),
+    ]);
+    expect(etat.crees[0]).not.toHaveProperty("montantCents");
+    const a = etat.alertes.filter((x) => x.payload.code === "apporteur_journee_ia_mixte");
+    expect(a).toHaveLength(1);
+    expect(a[0]!.opts.jobId).toBe("apporteur-journee-ia-mixte-F");
+    expect(String(a[0]!.payload.message)).toMatch(/335,57/);
+  });
+
+  it("remise globale sur une commande mixte : à qualifier + alerte, aucun montant deviné", async () => {
+    etat.lignes = [
+      mixte({
+        activite: "audit",
+        autre: ["Audit", 290_000],
+        extra: [ligneJ("Remise", -40_000)],
+        total: 399_000,
+      }),
+    ];
+    await passerFacturationApporteurs(MAINTENANT);
+    expect(etat.crees).toEqual([
+      expect.objectContaining({ statut: "a_qualifier", activite: "inconnue" }),
+    ]);
+    expect(etat.crees[0]).not.toHaveProperty("montantCents");
+    expect(
+      etat.alertes.filter((x) => x.payload.code === "apporteur_journee_ia_mixte"),
+    ).toHaveLength(1);
+  });
+
+  it("autre partie sans activité : à qualifier + alerte", async () => {
+    etat.lignes = [mixte({ activite: null, autre: ["Prestation", 100_000] })];
+    await passerFacturationApporteurs(MAINTENANT);
+    expect(etat.crees).toEqual([expect.objectContaining({ statut: "a_qualifier" })]);
+    expect(
+      etat.alertes.filter((x) => x.payload.code === "apporteur_journee_ia_mixte"),
+    ).toHaveLength(1);
+  });
+});
+
+describe("A1.6 — ligne d'hébergement ou de maintenance dans un devis de site web", () => {
+  it("rien n'est exclu en silence : commission inchangée + UNE alerte interne", async () => {
+    etat.lignes = [
+      fac({
+        activite: "site_web",
+        montantHtCents: 324_000,
+        lignes: [ligneJ("Site vitrine", 300_000), ligneJ("Hébergement 12 mois", 24_000)],
+        devis: { acceptedAt: new Date("2026-11-01T00:00:00Z"), montantTotalHtCents: 324_000 },
+      }),
+    ];
+    await passerFacturationApporteurs(MAINTENANT);
+    expect(etat.crees).toEqual([expect.objectContaining({ montantCents: 48_600 })]);
+    const a = etat.alertes.filter((x) => x.payload.code === "apporteur_ligne_recurrente");
+    expect(a).toHaveLength(1);
+    expect(a[0]!.opts.jobId).toBe("apporteur-ligne-recurrente-F");
+    expect(String(a[0]!.payload.message)).toMatch(/Hébergement 12 mois/);
+  });
+
+  it("devis d'audit avec une ligne « maintenance » : pas concerné (seuls site web et intégration)", async () => {
+    etat.lignes = [
+      fac({
+        activite: "audit",
+        montantHtCents: 100_000,
+        lignes: [ligneJ("Audit maintenance industrielle", 100_000)],
+        devis: { acceptedAt: new Date("2026-11-01T00:00:00Z"), montantTotalHtCents: 100_000 },
+      }),
+    ];
+    await passerFacturationApporteurs(MAINTENANT);
+    expect(etat.alertes.filter((x) => x.payload.code === "apporteur_ligne_recurrente")).toEqual([]);
+  });
+});

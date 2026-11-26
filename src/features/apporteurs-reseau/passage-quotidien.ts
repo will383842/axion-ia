@@ -66,6 +66,7 @@ import {
   type Etablissement,
 } from "./etablissement-presentation";
 import { reprendreApresAvoirsClients } from "./avoir-client";
+import { commissionJourneeIa } from "./commission-commande-mixte";
 import { annulerLignesHorsGrille } from "./lignes-hors-grille";
 import { regenererAvoirsSansPiece } from "./manquement";
 import { alerterHorsGrille } from "./hors-grille";
@@ -75,6 +76,7 @@ import {
   commandesSoldees,
   factureEstUnAcompte,
   journeeIaDeLaCommande,
+  lignesRecurrentesSuspectes,
   ligneNeutralisee,
   PREFIXE_PALIER_COMPLEMENT,
   soldeDesLignesLiees,
@@ -1021,25 +1023,46 @@ async function etapeCommissions(maintenant: Date, bilan: BilanPassageReseau): Pr
     } else {
       p = qui.presentation;
     }
+    const lignesCommande = commande.factureIds.map((id) => parId.get(id)?.lignes ?? []);
     const journee = journeeIaDeLaCommande({
       devisJourneeIa: commande.devisId && journeesIa ? journeesIa.has(commande.devisId) : null,
-      lignes: commande.factureIds.map((id) => parId.get(id)?.lignes ?? []),
+      lignes: lignesCommande,
     });
-    const calc: CalculCommission =
+    const activitesCommande = new Set(
+      commande.factureIds
+        .map((id) => parId.get(id)?.activite ?? null)
+        .filter((a): a is NonNullable<typeof a> => a !== null),
+    );
+    const activiteCommande = activitesCommande.size === 1 ? [...activitesCommande][0]! : null;
+    const { calc, activite, palierAQualifier, alerteMixte } =
       journee && "reconnue" in journee
-        ? calculerCommission({
-            activite: "journee_ia",
-            factureHtCents: commande.baseApresAvoirsCents,
+        ? commissionJourneeIa({
+            lignes: lignesCommande,
             quantite: journee.quantite,
+            baseSignatureCents: commande.baseSignatureCents,
+            baseApresAvoirsCents: commande.baseApresAvoirsCents,
+            activiteAutre: activitesCommande.size > 1 ? null : activiteCommande,
           })
         : journee
           ? // Journée IA NON reconnue : rien n'est deviné, la ligne attend Williams (alerte plus bas).
-            { statut: "a_qualifier" }
-          : calculerCommission({
-              activite: (f.activite ?? null) as ActiviteCommission | null,
-              factureHtCents: commande.baseApresAvoirsCents,
-              palier: null,
-            });
+            // Activité « inconnue », pour que Williams puisse la classer dans la console
+            // (`classerActiviteCommission` refuse une ligne typée « formation »).
+            {
+              calc: { statut: "a_qualifier" } as CalculCommission,
+              activite: "inconnue",
+              palierAQualifier: null,
+              alerteMixte: null,
+            }
+          : {
+              calc: calculerCommission({
+                activite: (f.activite ?? null) as ActiviteCommission | null,
+                factureHtCents: commande.baseApresAvoirsCents,
+                palier: null,
+              }),
+              activite: f.activite ?? "inconnue",
+              palierAQualifier: null,
+              alerteMixte: null,
+            };
     if (calc.statut === "aucune") continue;
     // Jamais de ligne de commission à 0,00 € (arrondi, prix nul) : rien n'est créé.
     if (calc.statut === "calculee" && calc.montantCents <= 0) continue;
@@ -1059,13 +1082,7 @@ async function etapeCommissions(maintenant: Date, bilan: BilanPassageReseau): Pr
     const base = {
       presentationId: p.id,
       factureId: commande.factureCleId,
-      // Journée IA suspecte : activité « inconnue », pour que Williams puisse la classer dans la
-      // console (`classerActiviteCommission` refuse une ligne typée « formation »).
-      activite: journee
-        ? "reconnue" in journee
-          ? "journee_ia"
-          : "inconnue"
-        : (f.activite ?? "inconnue"),
+      activite,
       factureHtCents: commande.baseApresAvoirsCents,
     };
 
@@ -1102,6 +1119,32 @@ async function etapeCommissions(maintenant: Date, bilan: BilanPassageReseau): Pr
           cibleId: commande.factureCleId,
           maintenant,
         });
+      if (alerteMixte)
+        await alerteInterne({
+          jobId: `apporteur-journee-ia-mixte-${commande.factureCleId}`,
+          code: "apporteur_journee_ia_mixte",
+          titre: "Commande payée avec Journée IA et autre prestation : à qualifier",
+          message: `Une commande payée de l'entreprise SIREN ${siren} porte une Journée IA et une autre prestation. ${alerteMixte} Aucun montant n'a été deviné : la commission de l'apporteur est créée « à qualifier » (Apporteurs › Commissions).`,
+          cibleType: "FactureFormation",
+          cibleId: commande.factureCleId,
+          maintenant,
+        });
+      // A1.6 : une ligne qui ressemble à de l'hébergement, de la maintenance, une licence ou un
+      // abonnement dans une commande de mise en place n'est jamais exclue en silence (ni devinée).
+      const recurrentes =
+        activiteCommande === "site_web" || activiteCommande === "implementation"
+          ? lignesRecurrentesSuspectes(lignesCommande)
+          : [];
+      if (recurrentes.length > 0)
+        await alerteInterne({
+          jobId: `apporteur-ligne-recurrente-${commande.factureCleId}`,
+          code: "apporteur_ligne_recurrente",
+          titre: "Commission sur une commande avec hébergement ou maintenance : à vérifier",
+          message: `Une commande payée de l'entreprise SIREN ${siren} (site web ou intégration) porte des lignes qui ressemblent à des sommes non commissionnées (annexe 1, A1.6 : abonnements, maintenance, hébergement, licences) : ${recurrentes.map((x) => `« ${x} »`).join(", ")}. Rien n'a été exclu automatiquement : la commission est calculée sur tout le HT de la commande. Vérifiez-la et réduisez-la si besoin dans la console (Apporteurs › Commissions).`,
+          cibleType: "FactureFormation",
+          cibleId: commande.factureCleId,
+          maintenant,
+        });
       try {
         if (calc.statut === "calculee") {
           const v = await statutApresVigilance(p.apporteurId, calc.montantCents, maintenant);
@@ -1121,7 +1164,12 @@ async function etapeCommissions(maintenant: Date, bilan: BilanPassageReseau): Pr
           }
         } else {
           await prisma.commissionApporteur.create({
-            data: { ...base, apporteurId: p.apporteurId, statut: "a_qualifier" },
+            data: {
+              ...base,
+              apporteurId: p.apporteurId,
+              ...(palierAQualifier ? { palier: palierAQualifier } : {}),
+              statut: "a_qualifier",
+            },
             select: { id: true },
           });
         }

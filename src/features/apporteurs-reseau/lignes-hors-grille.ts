@@ -11,6 +11,11 @@
 //     jamais, art. 4.5) : Williams est alerté UNE fois et tranche ;
 //   · versée → jamais reprise par cette règle (seul un avoir du client la réduit, `avoir-client.ts`).
 //
+// Jamais une ligne LIÉE : un complément (`complement-de:`) rend à l'apporteur ce qu'une reprise lui
+// avait retiré sur une ligne acquise, une reprise (`reprise-de:`) corrige une ligne versée. Ni l'un ni
+// l'autre n'est annulé par cette règle. L'étape est idempotente : une ligne annulée sort de la
+// requête, une alerte ne part qu'une fois (`dejaEnvoye`) ; rejouée, elle ne crée ni n'annule rien.
+//
 // Une part de parrain restée modifiable alors que la ligne de son filleul est déjà annulée (passage
 // interrompu entre les deux écritures) est annulée à son tour. Aucun e-mail à l'apporteur.
 //
@@ -21,8 +26,10 @@ import { prisma } from "@/lib/prisma";
 import { enqueueEmail } from "@/server/queue/queues";
 
 import { annulerCommission } from "./ajustement";
+import { PREFIXE_PALIER_COMPLEMENT } from "./commandes";
 import { dejaEnvoye } from "./commissions";
 import { PALIER_CONFERENCE } from "./regles";
+import { PREFIXE_PALIER_REPRISE } from "./resiliation";
 import { signalerErreurReseau } from "./signaler";
 
 const MODIFIABLES = ["a_qualifier", "due", "en_attente_vigilance"] as const;
@@ -30,8 +37,16 @@ const MODIFIABLES = ["a_qualifier", "due", "en_attente_vigilance"] as const;
 export const MOTIF_HORS_GRILLE =
   "Contrat 2.8, annexe 1 (A1.3 et A1.6) : aucune commission sur le coaching individuel ni sur les conférences ; ligne non facturée annulée.";
 
+/** Préfixes des lignes LIÉES à une ligne d'origine (complément, reprise) : jamais touchées ici. */
+const PREFIXES_LIES = [PREFIXE_PALIER_COMPLEMENT, PREFIXE_PALIER_REPRISE, "reprise:"] as const;
+
+function estLigneLiee(palier: string | null): boolean {
+  return !!palier && PREFIXES_LIES.some((x) => palier.startsWith(x));
+}
+
 /** La ligne relève-t-elle d'une prestation que la grille 2.8 ne commissionne plus ? */
 export function estHorsGrille(l: { activite: string; palier: string | null }): boolean {
+  if (estLigneLiee(l.palier)) return false;
   return l.activite === "conference" || l.activite === "un_a_un" || l.palier === PALIER_CONFERENCE;
 }
 
@@ -92,6 +107,16 @@ export async function annulerLignesHorsGrille(
     where: {
       statut: { in: [...MODIFIABLES] },
       OR: [{ activite: { in: ["conference", "un_a_un"] } }, { palier: PALIER_CONFERENCE }],
+      // Compléments et reprises : jamais. En SQL, `NOT (palier LIKE …)` est NULL pour un palier NULL
+      // (ligne écartée à tort) : le palier NULL est donc gardé explicitement.
+      AND: [
+        {
+          OR: [
+            { palier: null },
+            { NOT: PREFIXES_LIES.map((x) => ({ palier: { startsWith: x } })) },
+          ],
+        },
+      ],
     },
     select: {
       id: true,

@@ -20,7 +20,9 @@ import { prisma } from "@/lib/prisma";
 
 import {
   calculerCommission,
+  commissionMixte,
   euros,
+  lirePalierMixte,
   PALIER_CONFERENCE,
   PALIER_JOURNEE_IA,
   PARRAINAGE_BPS,
@@ -103,6 +105,9 @@ function quantiteDe(l: { palier: string | null; prixPublicHtCents: number | null
  * Annexe 1 du contrat 2.8 : une ancienne ligne de conférence ou de coaching (A1.3, A1.6) vaut 0 —
  * l'appelant l'ANNULE (`reduireCommission`), jamais une ligne à 0,00 €. Une ligne DÉJÀ facturée
  * n'est jamais recalculée ici : `avoir-client.ts` la réduit au prorata de l'avoir.
+ *
+ * Commande MIXTE (palier `mixte:`, Journée IA + autre prestation) : le prix net est réparti entre les
+ * deux parties au prorata de leur HT de signature, chacune suit sa règle (`regles.ts#commissionMixte`).
  */
 export function commissionPourPrixConserve(
   l: {
@@ -115,6 +120,11 @@ export function commissionPourPrixConserve(
 ): number | null {
   if (l.activite === "conference" || l.palier === PALIER_CONFERENCE || l.activite === "un_a_un")
     return 0;
+  const mixte = lirePalierMixte(l.palier);
+  if (mixte) {
+    const m = commissionMixte(mixte, prixHtCents);
+    return m.statut === "calculee" ? m.montantCents : null;
+  }
   const calc = calculerCommission({
     activite: l.activite as ActiviteCommission,
     factureHtCents: prixHtCents,

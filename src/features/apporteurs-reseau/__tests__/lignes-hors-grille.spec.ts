@@ -140,3 +140,74 @@ describe("annulation des anciennes lignes non facturées", () => {
     expect(d.annuler).not.toHaveBeenCalled();
   });
 });
+
+// Relecture : un COMPLÉMENT ou une REPRISE d'une ligne déjà versée n'est jamais annulé par cette règle
+// (le complément rend à l'apporteur ce qu'une reprise lui avait retiré sur une ligne acquise), et
+// l'étape est idempotente : rejouée, elle ne crée ni n'annule rien de plus.
+describe("compléments et reprises : jamais touchés ; rejeu sans effet", () => {
+  it("palier `complement-de:` ou `reprise-de:` : ni annulé, ni modifié", async () => {
+    d.lignes = [
+      l({ id: "K1", palier: "complement-de:C0", factureId: "aleatoire-1" }),
+      l({ id: "K2", activite: "un_a_un", palier: "complement-de:C9", statut: "a_qualifier" }),
+      l({ id: "R1", palier: "reprise-de:C0", montantCents: -10_000 }),
+      l({ id: "R2", palier: "reprise:C0", montantCents: -10_000 }),
+    ];
+    expect(estHorsGrille({ activite: "conference", palier: "complement-de:C0" })).toBe(false);
+    const r = await annulerLignesHorsGrille(MAINTENANT);
+    expect(r).toEqual({ annulees: 0, alertes: 0 });
+    expect(d.annuler).not.toHaveBeenCalled();
+    expect(d.maj).toEqual([]);
+  });
+
+  it("la requête elle-même écarte compléments et reprises", async () => {
+    const { prisma } = await import("@/lib/prisma");
+    const fm = prisma.commissionApporteur.findMany as unknown as {
+      mock: { calls: Array<[{ where: Record<string, unknown> }]> };
+    };
+    await annulerLignesHorsGrille(MAINTENANT);
+    const where = fm.mock.calls.at(-1)![0].where;
+    expect(JSON.stringify(where)).toContain("complement-de:");
+    expect(JSON.stringify(where)).toContain("reprise");
+  });
+
+  it("rejouée 3 fois : une annulation au premier passage, rien ensuite", async () => {
+    const vivante = l({});
+    d.lignes = [vivante];
+    d.annuler.mockImplementation(async (id: string) => {
+      // La ligne annulée sort de la requête (statut « annulee ») au passage suivant.
+      d.lignes = d.lignes.filter((x) => x.id !== id);
+      return { ok: true };
+    });
+    const bilans = [];
+    for (let i = 0; i < 3; i += 1) bilans.push(await annulerLignesHorsGrille(MAINTENANT));
+    expect(bilans).toEqual([
+      { annulees: 1, alertes: 0 },
+      { annulees: 0, alertes: 0 },
+      { annulees: 0, alertes: 0 },
+    ]);
+    expect(d.annuler).toHaveBeenCalledTimes(1);
+    d.annuler.mockImplementation(async () => ({ ok: true }));
+  });
+
+  it("ligne facturée rejouée 3 fois : une seule alerte, aucune modification", async () => {
+    d.lignes = [l({ autofactureNumero: "AXI-APP-2026-0002" })];
+    const { dejaEnvoye } = await import("../commissions");
+    const envoyes = new Set<string>();
+    (
+      dejaEnvoye as unknown as { mockImplementation: (f: (j: string) => unknown) => void }
+    ).mockImplementation(async (j: string) => envoyes.has(j));
+    const { enqueueEmail } = await import("@/server/queue/queues");
+    (
+      enqueueEmail as unknown as { mockImplementation: (f: (...a: unknown[]) => unknown) => void }
+    ).mockImplementation(async (...a: unknown[]) => {
+      const opts = a[4] as { jobId: string };
+      envoyes.add(opts.jobId);
+      d.alertes.push({ payload: a[3] as Record<string, unknown>, opts });
+      return { enqueued: true };
+    });
+    for (let i = 0; i < 3; i += 1) await annulerLignesHorsGrille(MAINTENANT);
+    expect(d.alertes).toHaveLength(1);
+    expect(d.annuler).not.toHaveBeenCalled();
+    expect(d.maj).toEqual([]);
+  });
+});

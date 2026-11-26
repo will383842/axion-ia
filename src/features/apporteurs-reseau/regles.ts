@@ -12,7 +12,6 @@
 
 import { IDENTITE_LEGALE } from "@/lib/identite-legale-ssot";
 import { normaliserNaf } from "@/lib/siret";
-import { JOURNEE_IA_TIER } from "@/content/pricing";
 import { etatSeuilVigilance } from "@/lib/vigilance";
 
 import {
@@ -372,12 +371,16 @@ export const TAUX_BPS = {
 
 /**
  * Journée IA (annexe 1 du contrat 2.8, A1.1, et art. 4.1 bis) : forfait de 500 € HT par journée,
- * réduit au prorata du prix payé par rapport au prix de référence (1 490 € HT, `JOURNEE_IA_TIER`,
- * source unique avec la page /journee-ia), arrondi au centime le plus proche, jamais plus de
- * 500 € par journée. Elle est reconnue par `devis.journee_ia` (`journeeIaDeLaCommande`).
+ * réduit au prorata du prix payé par rapport au prix de référence de 1 490 € HT, arrondi au centime
+ * le plus proche, jamais plus de 500 € par journée. Elle est reconnue par `devis.journee_ia`
+ * (`journeeIaDeLaCommande`).
+ *
+ * ⚠️ Le prix de référence est une valeur du CONTRAT (annexe 1, A1.1), figée ici : il ne suit pas le
+ * prix affiché sur le site (`pricing.ts`). Art. 13.1 : les prix pratiqués envers les clients sont sans
+ * effet sur les prix de référence tant qu'un avenant ne les a pas modifiés. Épinglé par un test.
  */
 export const FORFAIT_JOURNEE_IA_CENTS = 50_000;
-export const PRIX_REFERENCE_JOURNEE_IA_CENTS = Math.round((JOURNEE_IA_TIER.priceFlat ?? 0) * 100);
+export const PRIX_REFERENCE_JOURNEE_IA_CENTS = 149_000;
 /** Palier posé sur la ligne d'une Journée IA (et activité `journee_ia`, colonne texte libre). */
 export const PALIER_JOURNEE_IA = "journee-ia";
 
@@ -425,7 +428,8 @@ export function calculerCommission(e: {
   /** Formation : nombre de sessions identiques du palier ; Journée IA : nombre de journées (1 par défaut). */
   quantite?: number;
 }): CalculCommission {
-  if (e.activite === null) return { statut: "a_qualifier" };
+  // Fenêtre app↔worker : une valeur inconnue ou un montant illisible ne donne jamais un NaN.
+  if (e.activite === null || !Number.isFinite(e.factureHtCents)) return { statut: "a_qualifier" };
   if (e.activite === "un_a_un" || e.activite === "conference" || e.palier === PALIER_CONFERENCE)
     return { statut: "aucune" };
   if (e.activite === "journee_ia") {
@@ -456,14 +460,109 @@ export function calculerCommission(e: {
       prixPublicCents: p.prixCents * q,
     };
   }
-  const bps: number | undefined = TAUX_BPS[e.activite];
-  // Activité inconnue (valeur texte lue en base, hors du type) : jamais un montant NaN.
-  if (bps === undefined) return { statut: "a_qualifier" };
+  // Activité inconnue (valeur texte lue en base, hors du type, écrite par une version plus récente) :
+  // jamais un montant NaN, la ligne attend Williams.
+  const bps = tauxDe(e.activite);
+  if (bps === null) return { statut: "a_qualifier" };
   return {
     statut: "calculee",
     montantCents: Math.round((Math.max(0, e.factureHtCents) * bps) / 10_000),
     palier: null,
     prixPublicCents: null,
+  };
+}
+
+/** Taux d'une activité au pourcentage (A1.4, A1.5), `null` pour toute autre valeur. */
+function tauxDe(activite: string): number | null {
+  if (activite !== "audit" && activite !== "implementation" && activite !== "site_web") return null;
+  return TAUX_BPS[activite];
+}
+
+// ── Commande MIXTE : Journée IA + autre prestation (art. 4.1 bis) ────────────────────────────────
+//
+// « Lorsque plusieurs prestations sont vendues à un prix global, ce prix est réparti entre elles au
+// prorata de leurs prix publics hors taxes et, à défaut de prix public pour l'une d'elles, selon la
+// ventilation du devis. » La Journée IA garde son forfait (A1.1), calculé sur le HT de SES lignes ;
+// l'autre partie garde la commission de son activité (A1.4 audit 30 %, A1.5 15 %, A1.2 forfait de
+// formation, A1.3 coaching : rien). Une seule ligne de commission par commande et par apporteur
+// (unicité facture/apporteur/parrainage, sans migration) : son PALIER porte la ventilation, pour
+// qu'un avoir la recalcule par la même règle (`ajustement.ts#commissionPourPrixConserve`).
+//
+// Format : `mixte:<journées>x<HT Journée IA>+<autre>[*<sessions>]:<HT autre>`, centimes, ≤ 60
+// caractères. `<autre>` : activité (audit, implementation, site_web, un_a_un, conference), palier de
+// formation choisi, ou `formation` tant que le palier n'est pas choisi (ligne « à qualifier »).
+
+export const PREFIXE_PALIER_MIXTE = "mixte:";
+
+export interface PartsMixtes {
+  journees: number;
+  journeeIaHtCents: number;
+  autre: string;
+  /** Formation : nombre de sessions du palier choisi (1 sinon). */
+  sessions: number;
+  autreHtCents: number;
+}
+
+export function palierMixte(p: PartsMixtes): string {
+  const sessions = p.sessions > 1 ? `*${p.sessions}` : "";
+  return `${PREFIXE_PALIER_MIXTE}${p.journees}x${p.journeeIaHtCents}+${p.autre}${sessions}:${p.autreHtCents}`;
+}
+
+const MOTIF_PALIER_MIXTE =
+  /^mixte:(\d{1,2})x(\d{1,10})\+([a-z0-9_-]{1,30})(?:\*(\d{1,2}))?:(\d{1,10})$/;
+
+/** Relit un palier `mixte:` ; `null` pour tout autre palier ou un palier illisible. */
+export function lirePalierMixte(palier: string | null | undefined): PartsMixtes | null {
+  const m = typeof palier === "string" ? MOTIF_PALIER_MIXTE.exec(palier) : null;
+  if (!m) return null;
+  const journees = Number(m[1]);
+  const sessions = m[4] === undefined ? 1 : Number(m[4]);
+  if (journees < 1 || sessions < 1) return null;
+  return {
+    journees,
+    journeeIaHtCents: Number(m[2]),
+    autre: m[3]!,
+    sessions,
+    autreHtCents: Number(m[5]),
+  };
+}
+
+/**
+ * La commission d'une commande mixte pour un prix HT net `netCents` (base de signature, ou net après
+ * avoirs) : le net est réparti entre les deux parties au prorata de leur HT de signature (un avoir les
+ * réduit dans la même proportion, art. 4.5), puis chaque partie suit sa propre règle. « À qualifier »
+ * tant que l'autre partie n'a pas de règle certaine (formation sans palier, activité inconnue).
+ */
+export function commissionMixte(p: PartsMixtes, netCents: number): CalculCommission {
+  const base = p.journeeIaHtCents + p.autreHtCents;
+  if (!Number.isFinite(netCents) || base <= 0) return { statut: "a_qualifier" };
+  const net = Math.max(0, Math.min(netCents, base));
+  const netJournee = Math.round((p.journeeIaHtCents * net) / base);
+  const netAutre = net - netJournee;
+  const journee = forfaitAuProrata(
+    FORFAIT_JOURNEE_IA_CENTS,
+    PRIX_REFERENCE_JOURNEE_IA_CENTS,
+    netJournee,
+    p.journees,
+  );
+  const prixJournee = PRIX_REFERENCE_JOURNEE_IA_CENTS * p.journees;
+  let autre: number;
+  let prixAutre = 0;
+  if (p.autre === "un_a_un" || p.autre === "conference") {
+    autre = 0;
+  } else if (tauxDe(p.autre) !== null) {
+    autre = Math.round((netAutre * tauxDe(p.autre)!) / 10_000);
+  } else {
+    const f = PALIERS_FORMATION.find((x) => x.id === p.autre);
+    if (!f) return { statut: "a_qualifier" };
+    autre = forfaitAuProrata(f.forfaitCents, f.prixCents, netAutre, p.sessions);
+    prixAutre = f.prixCents * p.sessions;
+  }
+  return {
+    statut: "calculee",
+    montantCents: journee + autre,
+    palier: palierMixte(p),
+    prixPublicCents: prixJournee + prixAutre,
   };
 }
 

@@ -28,13 +28,20 @@ import { siretDe, siretsDe } from "./siret-apporteur";
 import { envoyer, type ResultatEnvoi } from "./envois";
 import { urlDossier } from "./jeton";
 import { signalerErreurReseau } from "./signaler";
+import { FACTURE_HORS_ESSAI } from "@/server/qualiopi/essai/perimetre";
+import { journeeIaDeLaCommande } from "./commandes";
+import { commissionJourneeIa } from "./commission-commande-mixte";
 import {
   calculerCommission,
+  commissionMixte,
   etatVigilance,
   euros,
+  lirePalierMixte,
   PALIER_CONFERENCE,
   PALIERS_FORMATION,
   PARRAINAGE_BPS,
+  quantiteSessions,
+  type CalculCommission,
 } from "./regles";
 
 type RegimeApporteur = ApporteurPourAutofacture["regimeTva"];
@@ -284,6 +291,7 @@ export async function qualifierCommission(
       factureId: true,
       parrainage: true,
       activite: true,
+      palier: true,
       factureHtCents: true,
       statut: true,
     },
@@ -293,6 +301,36 @@ export async function qualifierCommission(
     return { ok: false, message: "Cette commission n'est pas à qualifier." };
   if (c.activite !== "formation" && c.activite !== "conference")
     return { ok: false, message: "Seule une formation se qualifie par palier." };
+  // Commande MIXTE Journée IA + formation (palier `mixte:…+formation:…`, art. 4.1 bis) : la commission
+  // est la somme de la part Journée IA (A1.1) et du forfait du palier choisi (A1.2).
+  const mixte = lirePalierMixte(c.palier);
+  if (mixte && mixte.autre === "formation") {
+    const calcMixte = commissionMixte(
+      {
+        ...mixte,
+        autre: palier === PALIER_CONFERENCE ? "conference" : palier,
+        sessions: quantiteSessions(quantite),
+      },
+      c.factureHtCents,
+    );
+    if (calcMixte.statut !== "calculee" || calcMixte.montantCents <= 0)
+      return { ok: false, message: "Calcul impossible pour ce palier." };
+    const vm = await statutApresVigilance(c.apporteurId, calcMixte.montantCents, maintenant, c.id);
+    const rm = await prisma.commissionApporteur.updateMany({
+      where: { id, statut: "a_qualifier" },
+      data: {
+        activite: "journee_ia",
+        palier: calcMixte.palier,
+        prixPublicHtCents: calcMixte.prixPublicCents,
+        montantCents: calcMixte.montantCents,
+        statut: vm.statut,
+      },
+    });
+    if (rm.count !== 1) return { ok: false, message: "Cette commission vient d'être qualifiée." };
+    if (vm.demander) await demanderVigilance(c.apporteurId, "premiere");
+    await qualifierPartParrainage(c.factureId, c.apporteurId, calcMixte.montantCents, maintenant);
+    return { ok: true, montantCents: calcMixte.montantCents };
+  }
   const calc = calculerCommission({
     activite: palier === PALIER_CONFERENCE ? "conference" : "formation",
     factureHtCents: c.factureHtCents,
@@ -384,7 +422,38 @@ export async function classerActiviteCommission(
       ? { ok: true, message: "Classée en formation : choisissez maintenant son palier." }
       : { ok: false, message: "Cette commission vient d'être modifiée." };
   }
-  const calc = calculerCommission({ activite: choisie, factureHtCents: c.factureHtCents });
+  let calc: CalculCommission;
+  if (choisie === "journee_ia") {
+    // Journée IA classée à la main : nombre de journées et ventilation lus sur les lignes des
+    // factures de la commande, comme au passage (`commission-commande-mixte.ts`, source unique).
+    const lu = await lireCommandeDeLaLigne(c.factureId, c.factureHtCents);
+    const j = journeeIaDeLaCommande({ devisJourneeIa: true, lignes: lu.lignes });
+    const r = commissionJourneeIa({
+      lignes: lu.lignes,
+      quantite: j && "reconnue" in j ? j.quantite : 1,
+      baseSignatureCents: lu.baseSignatureCents,
+      baseApresAvoirsCents: c.factureHtCents,
+      activiteAutre: lu.activite,
+    });
+    if (r.palierAQualifier) {
+      // Journée IA + formation : le palier de formation se choisit ensuite (`qualifierCommission`).
+      const u = await prisma.commissionApporteur.updateMany({
+        where: { id, statut: "a_qualifier" },
+        data: { activite: r.activite, palier: r.palierAQualifier },
+      });
+      return u.count === 1
+        ? { ok: true, message: `Journée IA et formation. ${r.alerteMixte ?? ""}`.trim() }
+        : { ok: false, message: "Cette commission vient d'être modifiée." };
+    }
+    if (r.calc.statut !== "calculee")
+      return {
+        ok: false,
+        message: `Commande mixte : ${r.alerteMixte ?? "calcul impossible."} Réglez-la par un ajustement.`,
+      };
+    calc = r.calc;
+  } else {
+    calc = calculerCommission({ activite: choisie, factureHtCents: c.factureHtCents });
+  }
   if (calc.statut === "aucune") {
     const r = await prisma.commissionApporteur.updateMany({
       where: { id, statut: "a_qualifier" },
@@ -405,6 +474,8 @@ export async function classerActiviteCommission(
     data: {
       activite: choisie,
       ...(calc.palier ? { palier: calc.palier } : {}),
+      // Prix public (Journée IA : 1 490 € × journées) : un avoir recalcule la ligne juste.
+      ...(calc.prixPublicCents !== null ? { prixPublicHtCents: calc.prixPublicCents } : {}),
       montantCents: calc.montantCents,
       statut: v.statut,
     },
@@ -413,6 +484,48 @@ export async function classerActiviteCommission(
   if (v.demander) await demanderVigilance(c.apporteurId, "premiere");
   await qualifierPartParrainage(c.factureId, c.apporteurId, calc.montantCents, maintenant);
   return { ok: true, message: `Qualifiée : ${euros(calc.montantCents)}.` };
+}
+
+/**
+ * Les lignes des factures de la commande d'une commission (toutes les factures du même devis, hors
+ * avoirs, brouillons et pièces annulées), l'activité commune de ces factures (`null` si absente ou
+ * divergente) et la base de signature (total du devis, sinon HT des factures, sinon `repli`).
+ */
+async function lireCommandeDeLaLigne(
+  factureId: string,
+  repliCents: number,
+): Promise<{ lignes: unknown[]; activite: string | null; baseSignatureCents: number }> {
+  const f = await prisma.factureFormation.findUnique({
+    where: { id: factureId },
+    select: {
+      id: true,
+      devisId: true,
+      activite: true,
+      montantHtCents: true,
+      lignes: true,
+      devis: { select: { montantTotalHtCents: true } },
+    },
+  });
+  if (!f) return { lignes: [], activite: null, baseSignatureCents: repliCents };
+  const membres = f.devisId
+    ? await prisma.factureFormation.findMany({
+        where: {
+          ...FACTURE_HORS_ESSAI,
+          devisId: f.devisId,
+          avoirDeId: null,
+          statut: { notIn: ["brouillon", "annulee"] },
+        },
+        select: { id: true, activite: true, montantHtCents: true, lignes: true },
+      })
+    : [f];
+  const liste = membres.length > 0 ? membres : [f];
+  const activites = new Set(liste.map((m) => m.activite).filter((a) => a !== null));
+  return {
+    lignes: liste.map((m) => m.lignes),
+    activite: activites.size === 1 ? String([...activites][0]) : null,
+    baseSignatureCents:
+      f.devis?.montantTotalHtCents ?? liste.reduce((s, m) => s + m.montantHtCents, 0),
+  };
 }
 
 /** Annule la part du parrain d'une commission sans commission (jamais une ligne à 0,00 €). */
@@ -451,8 +564,17 @@ async function qualifierPartParrainage(
     select: { id: true, statut: true, apporteurId: true },
   });
   if (!part || part.statut !== "a_qualifier") return;
-  // La fenêtre de 6 mois a déjà été vérifiée à la création de la ligne.
-  const montant = Math.floor((montantFilleulCents * PARRAINAGE_BPS) / 10_000);
+  // La fenêtre de 6 mois a déjà été vérifiée à la création de la ligne. Arrondi au centime le plus
+  // proche (art. 4.6, même règle que `ajustement.ts#partDuParrain` et le passage).
+  const montant = Math.round((Math.max(0, montantFilleulCents) * PARRAINAGE_BPS) / 10_000);
+  if (montant <= 0) {
+    // Jamais de ligne à 0,00 € : la part est ANNULÉE.
+    await prisma.commissionApporteur.updateMany({
+      where: { id: part.id, statut: "a_qualifier" },
+      data: { statut: "annulee", palier: "aucune-commission" },
+    });
+    return;
+  }
   const v = await statutApresVigilance(part.apporteurId, montant, maintenant, part.id);
   await prisma.commissionApporteur.updateMany({
     where: { id: part.id, statut: "a_qualifier" },
