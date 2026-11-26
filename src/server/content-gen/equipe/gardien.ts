@@ -177,7 +177,7 @@ export async function decider(brief: Brief, deps: DependancesGardien): Promise<D
   // Un brief « mise-a-jour » ne se compare pas à son propre article.
   const urlCible = normaliserUrl(brief.urlCible);
   const top = [...voisins]
-    .filter((v) => !v.url || normaliserUrl(v.url) !== urlCible)
+    .filter((v) => brief.type !== "mise-a-jour" || !v.url || normaliserUrl(v.url) !== urlCible)
     .sort((a, b) => b.similarity - a.similarity)[0];
   const { duplicateThreshold, similarThreshold } = getDedupThresholds(getEmbeddingProvider());
 
@@ -223,7 +223,7 @@ export async function decider(brief: Brief, deps: DependancesGardien): Promise<D
     return {
       decision: "reorienter",
       angle: `${angleArbitre ? `${angleArbitre.angle} ` : ""}La question « ${q} » est déjà traitée par une FAQ du site : la retirer du brief ou la traiter sous un angle distinct.`,
-      raison: `${deja.length} question(s) du brief déjà couverte(s) par une FAQ.`,
+      raison: `${deja.length} question(s) du brief déjà couverte(s) par une FAQ.${angleArbitre ? ` Arbitre : ${angleArbitre.raison}` : ""}`,
     };
   }
 

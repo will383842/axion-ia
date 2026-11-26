@@ -315,3 +315,12 @@ describe("corrections de relecture", () => {
     expect((await decider(brief, d)).decision).toBe("relecture_humaine");
   });
 });
+
+describe("brief neuf sur une URL déjà publiée", () => {
+  it("n'exclut pas le voisin : mettre_a_jour, pas feu_vert", async () => {
+    const d = deps({
+      voisins: vi.fn().mockResolvedValue([{ id: "moi", similarity: 0.95, url: brief.urlCible }]),
+    });
+    expect((await decider(brief, d)).decision).toBe("mettre_a_jour");
+  });
+});
