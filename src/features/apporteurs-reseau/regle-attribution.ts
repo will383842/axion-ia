@@ -80,12 +80,29 @@ export function finDeProtectionRendezVous(rendezVousAt: Date): Date {
 export const DELAI_MINIMAL_BASCULE_JOURS = 30;
 
 /**
+ * Marqueur de la clause transitoire de l'article 13.5 dans le TEXTE SIGNÉ archivé. La bascule ne
+ * vaut que pour un apporteur dont le texte signé contient cette clause : une 2.8 signée avant
+ * son ajout (même numéro de version, autre texte) n'a pas accepté cette exception.
+ */
+export const MARQUEUR_CLAUSE_BASCULE =
+  "Par exception, les présentations encore en attente d'attribution";
+
+/** Le texte signé archivé porte-t-il la clause transitoire ? Sans texte archivé : non. */
+export function texteSigneContientClauseBascule(signature: unknown): boolean {
+  if (typeof signature !== "object" || signature === null || Array.isArray(signature)) return false;
+  if (!Object.hasOwn(signature, "texte")) return false;
+  const texte = (signature as { texte?: unknown }).texte;
+  return typeof texte === "string" && texte.includes(MARQUEUR_CLAUSE_BASCULE);
+}
+
+/**
  * Terme de la réservation d'une présentation BASCULÉE : le plus tardif du terme normal (fin du
  * 60e jour depuis la saisie) et de la date de bascule + 30 jours (art. 13.5, clause transitoire).
  */
 export function termeApresBascule(recueAt: Date, maintenant: Date): Date {
   const normal = finReservation(recueAt);
-  const minimal = new Date(maintenant.getTime() + DELAI_MINIMAL_BASCULE_JOURS * 86_400_000);
+  // Fin du jour annoncé (minuit, heure de Paris) : le jour de la bascule est le jour 1.
+  const minimal = finDuNiemeJourParis(maintenant, DELAI_MINIMAL_BASCULE_JOURS + 1);
   return normal.getTime() >= minimal.getTime() ? normal : minimal;
 }
 
@@ -105,7 +122,8 @@ export type MotifBasculeRefusee =
  * acquise, la confirmation tacite la traite) et le terme (`finReservation`) n'est pas déjà dépassé. Une prise de contact revenue en
  * erreur suspend l'ancienne règle sans limite : la présentation peut avoir plus de 60 jours, elle
  * n'est pas basculée (l'appelant la signale). Ne modifie rien, rend le terme à enregistrer
- * (`termeApresBascule` : au moins 30 jours à compter de la bascule).
+ * (`termeApresBascule` : au moins 30 jours à compter de la bascule). Le texte signé archivé doit
+ * contenir la clause transitoire (`MARQUEUR_CLAUSE_BASCULE`), sinon motif « version ».
  */
 export function basculeVersRendezVous(e: {
   statut: string;
@@ -122,6 +140,8 @@ export function basculeVersRendezVous(e: {
   if (e.statut !== "reservee" || e.aUneLigne) return { bascule: false, motif: "deja_reglee" };
   if (e.apporteur.statut !== "signe") return { bascule: false, motif: "statut_apporteur" };
   if (!versionAuMoins(e.apporteur.signature, VERSION_REGLE_RENDEZ_VOUS))
+    return { bascule: false, motif: "version" };
+  if (!texteSigneContientClauseBascule(e.apporteur.signature))
     return { bascule: false, motif: "version" };
   if (e.rebond) return { bascule: false, motif: "rebond" };
   if (e.silenceAtteint) return { bascule: false, motif: "silence_acquis" };

@@ -223,9 +223,12 @@ vi.mock("@/lib/prisma", () => {
     },
     activityLog: {
       create: vi.fn(async (a: { data: Ligne }) => {
-        db.audit.push(a.data);
+        db.audit.push({ ...a.data, createdAt: new Date() });
         return {};
       }),
+      findMany: vi.fn(async (a: { where: { action: string } }) =>
+        db.audit.filter((l) => l.action === a.where.action).map((l) => ({ targetId: l.targetId })),
+      ),
     },
     pieceApporteur: { findMany: vi.fn(async () => []) },
     devis: { findMany: vi.fn(async () => db.devis) },
@@ -248,7 +251,12 @@ vi.mock("@/lib/prisma", () => {
 });
 
 import { passerReseauApporteurs } from "../passage-quotidien";
-import { basculeVersRendezVous, termeApresBascule } from "../regle-attribution";
+import {
+  DELAI_MINIMAL_BASCULE_JOURS,
+  MARQUEUR_CLAUSE_BASCULE,
+  basculeVersRendezVous,
+  termeApresBascule,
+} from "../regle-attribution";
 import { idsPriseDeContactRebondie } from "../rebonds";
 import { envoyer } from "../envois";
 
@@ -315,12 +323,16 @@ beforeEach(() => {
   vi.mocked(envoyer).mockClear();
 });
 
+/** Signature 2.8 dont le texte archivé porte la clause transitoire de l'article 13.5. */
+const SIG28 = { version: "2.8", texte: `… 13.5 … ${MARQUEUR_CLAUSE_BASCULE} le jour où … …` };
 const DIX_NOV = new Date("2026-11-10T09:00:00Z");
 const VINGT_SIX = new Date("2026-11-26T08:00:00Z");
+/** Fin du 30e jour suivant le 26/11/2026, minuit heure de Paris (UTC+1 en décembre). */
+const FIN_JOUR_30 = new Date("2026-12-26T22:59:59.999Z");
 const signe28 = (o: Ligne = {}) =>
   apporteur({
     statut: "signe",
-    signatureApporteur: { version: "2.8" },
+    signatureApporteur: SIG28,
     signeParSocieteAt: new Date("2026-08-01T09:00:00Z"),
     ...o,
   });
@@ -335,7 +347,7 @@ describe("basculeVersRendezVous (décision pure)", () => {
     recueAt: DIX_NOV,
     apporteur: {
       statut: "signe",
-      signature: { version: "2.8" },
+      signature: SIG28,
     },
     silenceAtteint: false,
     aUneLigne: false,
@@ -350,6 +362,7 @@ describe("basculeVersRendezVous (décision pure)", () => {
   it.each([
     ["interrupteur", { actif: false }],
     ["version", { apporteur: { ...base.apporteur, signature: { version: "2.6" } } }],
+    ["version", { apporteur: { ...base.apporteur, signature: { version: "2.8" } } }],
     ["statut_apporteur", { apporteur: { ...base.apporteur, statut: "resilie" } }],
     ["silence_acquis", { silenceAtteint: true }],
     ["deja_reglee", { aUneLigne: true }],
@@ -361,24 +374,55 @@ describe("basculeVersRendezVous (décision pure)", () => {
   });
 });
 
+describe("clause transitoire dans le texte signé (art. 13.5)", () => {
+  const base = {
+    statut: "reservee",
+    recueAt: DIX_NOV,
+    apporteur: { statut: "signe", signature: SIG28 as unknown },
+    silenceAtteint: false,
+    aUneLigne: false,
+    rebond: false,
+    actif: true,
+    maintenant: VINGT_SIX,
+  };
+  it("2.8 signée sans la clause → pas de bascule", () => {
+    const signature = { version: "2.8", texte: "13.5 sans l'exception transitoire" };
+    expect(basculeVersRendezVous({ ...base, apporteur: { ...base.apporteur, signature } })).toEqual(
+      { bascule: false, motif: "version" },
+    );
+  });
+  it("2.8 sans texte archivé → pas de bascule", () => {
+    const signature = { version: "2.8" };
+    expect(basculeVersRendezVous({ ...base, apporteur: { ...base.apporteur, signature } })).toEqual(
+      { bascule: false, motif: "version" },
+    );
+  });
+  it("2.9 sans la clause → pas de bascule non plus (le texte fait foi)", () => {
+    const signature = { version: "2.9", texte: "autre texte" };
+    expect(basculeVersRendezVous({ ...base, apporteur: { ...base.apporteur, signature } })).toEqual(
+      { bascule: false, motif: "version" },
+    );
+  });
+});
+
 describe("terme d'une présentation basculée (art. 13.5 : au moins 30 jours)", () => {
   it("max(terme normal, bascule + 30 jours) : terme normal plus tardif → inchangé", () => {
     expect(termeApresBascule(DIX_NOV, VINGT_SIX)).toEqual(new Date("2027-01-08T22:59:59.999Z"));
   });
   it("terme normal plus proche (4 jours) → bascule + 30 jours", () => {
     const recue = new Date("2026-09-30T09:00:00Z"); // terme normal : 29/11
-    expect(termeApresBascule(recue, VINGT_SIX)).toEqual(j(VINGT_SIX, 30));
+    expect(termeApresBascule(recue, VINGT_SIX)).toEqual(FIN_JOUR_30);
     const d = basculeVersRendezVous({
       statut: "reservee",
       recueAt: recue,
-      apporteur: { statut: "signe", signature: { version: "2.8" } },
+      apporteur: { statut: "signe", signature: SIG28 },
       silenceAtteint: false,
       aUneLigne: false,
       rebond: false,
       actif: true,
       maintenant: VINGT_SIX,
     });
-    expect(d).toEqual({ bascule: true, reserveeJusquAt: j(VINGT_SIX, 30) });
+    expect(d).toEqual({ bascule: true, reserveeJusquAt: FIN_JOUR_30 });
   });
 });
 
@@ -392,10 +436,44 @@ describe("étape « bascule-regle-rendez-vous »", () => {
       }),
     );
     await passerReseauApporteurs(VINGT_SIX);
-    expect(db.res[0]!.reserveeJusquAt).toEqual(j(VINGT_SIX, 30));
+    expect(db.res[0]!.reserveeJusquAt).toEqual(FIN_JOUR_30);
     const b = await passerReseauApporteurs(new Date("2026-12-10T08:00:00Z"));
     expect(b.reservationsEchues).toBe(0);
     expect(db.pres[0]!.statut).toBe("reservee");
+  });
+
+  it("rendez-vous pris le dernier jour annoncé, à 20 h (Paris) → retenu", async () => {
+    const { reservationOccupe } = await import("../regle-attribution");
+    const recue = new Date("2026-09-30T09:00:00Z");
+    const terme = termeApresBascule(recue, VINGT_SIX);
+    const pris = new Date("2026-12-26T19:00:00Z"); // 20 h à Paris
+    expect(pris.getTime()).toBeLessThanOrEqual(terme.getTime());
+    expect(
+      reservationOccupe(
+        { recueAt: recue, reserveeJusquAt: terme, rendezVousEnAttentePrisAt: pris },
+        new Date("2026-12-27T08:00:00Z"),
+      ),
+    ).toBe(true);
+    expect(DELAI_MINIMAL_BASCULE_JOURS).toBe(30);
+  });
+
+  it("e-mail de bascule non parti : alerte interne par présentation, reprise au passage suivant sans doublon", async () => {
+    allume();
+    db.pres.push(paul());
+    vi.mocked(envoyer).mockResolvedValueOnce("echec" as never);
+    await passerReseauApporteurs(VINGT_SIX);
+    expect(
+      db.alertes.filter((a) => a.jobId === "apporteur-bascule-email-non-parti-P1"),
+    ).toHaveLength(1);
+    await passerReseauApporteurs(j(VINGT_SIX, 1));
+    const envois = vi
+      .mocked(envoyer)
+      .mock.calls.map((c) => c[0])
+      .filter((e) => e.gabarit === "apporteur-presentation-regle-rendez-vous");
+    expect(envois).toHaveLength(2); // l'échec, puis la reprise
+    expect(
+      db.alertes.filter((a) => a.jobId === "apporteur-bascule-email-non-parti-P1"),
+    ).toHaveLength(1);
   });
 
   it("l'apporteur est prévenu par e-mail (une fois par présentation), avec l'entreprise et la date limite", async () => {
@@ -414,6 +492,14 @@ describe("étape « bascule-regle-rendez-vous »", () => {
       payload: { entreprise: "Acme", dateLimite: "8 janvier 2027" },
     });
     expect(appels[0]!.payload).not.toHaveProperty("gabaritRepli");
+    // Deux passages : la clé idempotente (dejaEnvoye) empêche un second envoi.
+    db.jobIds.add("apporteur-bascule-regle-P1");
+    await passerReseauApporteurs(j(VINGT_SIX, 1));
+    expect(
+      vi
+        .mocked(envoyer)
+        .mock.calls.filter((c) => c[0].gabarit === "apporteur-presentation-regle-rendez-vous"),
+    ).toHaveLength(1);
   });
 
   it("apporteur qui passe en 2.8 APRÈS une première exécution : la bascule a lieu au passage suivant", async () => {

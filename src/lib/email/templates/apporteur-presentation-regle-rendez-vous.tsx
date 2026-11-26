@@ -34,12 +34,12 @@ export const COPY_REGLE_RENDEZ_VOUS = {
   title: "La règle de validation change pour cette entreprise",
   preview: "Elle est désormais validée au premier rendez-vous tenu.",
   corps: (e: string) =>
-    `Votre présentation de ${e || "cette entreprise"} était en attente. Depuis l'acceptation de la version 2.8 de votre contrat, elle suit la règle du premier rendez-vous tenu (article 3.2) : elle est validée à votre nom dès qu'un premier rendez-vous avec Axion-IA a eu lieu.`,
+    `Votre présentation de l'entreprise ${e || "concernée"} était en attente. Depuis l'acceptation de la version 2.8 de votre contrat, elle suit la règle du premier rendez-vous tenu (article 3.2) : elle est validée à votre nom dès qu'un premier rendez-vous avec Axion-IA a eu lieu, ou dès qu'une commande est signée.`,
   date: (d: string) =>
     d
-      ? `Pour cela, ce rendez-vous doit être pris au plus tard le ${d}. Passé cette date sans rendez-vous pris, la réservation prend fin.`
-      : "Pour cela, ce rendez-vous doit être pris dans les trente jours. Passé ce délai sans rendez-vous pris, la réservation prend fin.",
-  fin: "Un rendez-vous déjà pris avec cette entreprise est à nous signaler en répondant à ce message.",
+      ? `Pour cela, ce rendez-vous doit être pris au plus tard le ${d}. Passé cette date sans rendez-vous pris ni commande signée, la réservation prend fin.`
+      : "Pour cela, ce rendez-vous doit être pris dans les trente jours. Passé ce délai sans rendez-vous pris ni commande signée, la réservation prend fin.",
+  fin: "Si un rendez-vous a déjà été pris avec cette entreprise depuis votre présentation, vous pouvez nous le signaler en répondant à ce message ; vous n'y êtes pas tenu.",
 } as const;
 
 export const apporteurPresentationRegleRendezVousSubject = (

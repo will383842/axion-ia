@@ -50,6 +50,7 @@ import {
   annoncerAttribution,
   annoncerBascule,
   dateEnClair,
+  jobIdAnnonceBascule,
 } from "./attribution-annonce";
 import { envoyer } from "./envois";
 import { enregistrerReservation, lireReservations, tableAbsente } from "./reservation-presentation";
@@ -539,7 +540,7 @@ async function etapeConfirmationTacite(maintenant: Date, bilan: BilanPassageRese
 /**
  * Décision de Will (26/11/2026) : les présentations EN ATTENTE faites sous l'ancienne règle (silence)
  * passent à la règle du 1er rendez-vous tenu ou du devis signé. Une ligne de réservation est ajoutée
- * (terme = fin du 60e jour depuis la saisie) ; rien n'est modifié ni supprimé sur la présentation, et
+ * (terme = `termeApresBascule` : au moins 30 jours après la bascule) ; rien n'est modifié ni supprimé sur la présentation, et
  * une attribution déjà définitive (`confirmee`) n'est jamais lue. Interrupteur éteint : rien.
  */
 async function etapeBasculeRegleRendezVous(
@@ -549,6 +550,7 @@ async function etapeBasculeRegleRendezVous(
   if (!validationParRendezVousActive()) return;
   const basculees: Array<{ id: string; denomination: string; terme: Date }> = [];
   try {
+    await reprendreAnnoncesBascule(maintenant);
     await basculerParPages(maintenant, bilan, basculees);
   } finally {
     await signalerBascules(basculees, maintenant);
@@ -593,6 +595,69 @@ async function signalerBascules(
     cibleId: "bascule",
     maintenant,
   });
+}
+
+/**
+ * L'e-mail de bascule est promis par le contrat (art. 13.5) : s'il n'est pas parti (pas d'adresse,
+ * erreur d'envoi), une alerte interne par présentation demande de prévenir l'apporteur à la main.
+ * Clé idempotente `annoncerBascule` : un e-mail déjà parti n'alerte pas et ne repart pas.
+ */
+async function annoncerBasculeOuAlerter(
+  id: string,
+  denomination: string,
+  terme: Date,
+  maintenant: Date,
+): Promise<void> {
+  if (await annoncerBascule(id, terme)) return;
+  if (await dejaEnvoye(jobIdAnnonceBascule(id))) return;
+  await alerteInterne({
+    jobId: `apporteur-bascule-email-non-parti-${id}`,
+    code: "apporteur_bascule_email_non_parti",
+    titre: `E-mail de bascule non parti : ${denomination}`,
+    message: `L'e-mail annonçant à l'apporteur le passage de ${denomination} à la règle du rendez-vous (terme : ${dateEnClair(terme)}) n'est pas parti : à prévenir à la main. Il sera retenté au prochain passage.`,
+    cibleType: "PresentationEntreprise",
+    cibleId: id,
+    maintenant,
+  });
+}
+
+/** Fenêtre de reprise des e-mails de bascule non partis (jours). */
+const REPRISE_BASCULE_JOURS = 35;
+
+/**
+ * Reprise : une présentation basculée (journal `apporteur.presentation_basculee_rendez_vous`), encore
+ * non validée, dont l'e-mail n'est pas parti (arrêt du processus entre la transaction et l'envoi,
+ * erreur d'envoi) est ré-annoncée au passage suivant. La clé idempotente évite tout doublon.
+ */
+async function reprendreAnnoncesBascule(maintenant: Date): Promise<void> {
+  try {
+    const depuis = new Date(maintenant.getTime() - REPRISE_BASCULE_JOURS * 86_400_000);
+    const logs = await prisma.activityLog.findMany({
+      where: {
+        action: "apporteur.presentation_basculee_rendez_vous",
+        targetType: "presentation_entreprise",
+        createdAt: { gte: depuis },
+      },
+      select: { targetId: true },
+      orderBy: { createdAt: "desc" },
+      take: 200,
+    });
+    const ids = [...new Set(logs.map((l) => l.targetId).filter((x): x is string => !!x))];
+    if (ids.length === 0) return;
+    const reservations = await lireReservations(ids);
+    const pres = await prisma.presentationEntreprise.findMany({
+      where: { id: { in: ids }, statut: "reservee" },
+      select: { id: true, denomination: true },
+    });
+    for (const p of pres) {
+      const r = reservations.get(p.id);
+      if (!r || r.valideeAt || r.echueAt) continue;
+      await annoncerBasculeOuAlerter(p.id, p.denomination, r.reserveeJusquAt, maintenant);
+    }
+  } catch (err) {
+    if (tableAbsente(err)) return;
+    signalerErreurReseau("reprise des e-mails de bascule", err);
+  }
 }
 
 async function basculerParPages(
@@ -687,7 +752,7 @@ async function basculerParPages(
           if (ok) {
             bilan.basculees += 1;
             basculees.push({ id: p.id, denomination: p.denomination, terme: d.reserveeJusquAt });
-            await annoncerBascule(p.id, d.reserveeJusquAt);
+            await annoncerBasculeOuAlerter(p.id, p.denomination, d.reserveeJusquAt, maintenant);
           }
         } catch (err) {
           // Table absente (migration pas encore passée) : on s'arrête, sans erreur.
