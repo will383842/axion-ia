@@ -231,8 +231,8 @@ export const LA_VALETTE_DU_VAR_COPY: VilleCopy = {
       a: "Audit sur place 4h dès {{price:audit-flash|flat}}, intervention terrain dès {{price:intervention-4h|flat}}, implémentation code custom dès {{price:impl-poc|entry}}. Grille tarifaire publique sur notre page Pricing, sans frais cachés ni abonnement obligatoire.",
     },
     {
-      q: "Vos consultants se déplacent-ils sur la ZAC Valgora et les communes proches ?",
-      a: "Oui. Nous intervenons à La Valette-du-Var (ZAC Valgora, centre, Avenue de l'Université) ainsi qu'à Toulon, La Garde, La Farlède, Solliès-Ville et Le Revest-les-Eaux — communes limitrophes intégrées dans nos déplacements.",
+      q: "Intervenez-vous sur la ZAC Valgora et dans les communes proches ?",
+      a: "Oui. Nous intervenons à La Valette-du-Var (ZAC Valgora, centre, Avenue de l'Université) ainsi qu'à Toulon, La Garde, La Farlède, Solliès-Ville et Le Revest-les-Eaux, comme partout en France.",
     },
     {
       q: "Quels délais pour une intervention IA à La Valette-du-Var ?",

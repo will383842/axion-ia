@@ -124,7 +124,7 @@ export const MANOSQUE_COPY: VilleCopy = {
           },
           {
             q: "Travaillez-vous avec les prestataires de Cadarache, ITER et des sites industriels du bassin ?",
-            a: "Oui. Nous intervenons dans vos locaux à Manosque, partout en France. Pour les PME prestataires high-tech de l'écosystème Cadarache-ITER,, et les acteurs industriels comme Géosel-Géométhane, on construit des portails clients, des plateformes documentaires, de la recherche sémantique sur normes et procédures, et des automatisations B2B branchées sur votre SI. On peut aussi greffer une brique IA sur l'existant sans refonte.",
+            a: "Oui. Nous intervenons dans vos locaux à Manosque, partout en France. Pour les PME prestataires high-tech de l'écosystème Cadarache-ITER et les acteurs industriels comme Géosel-Géométhane, on construit des portails clients, des plateformes documentaires, de la recherche sémantique sur normes et procédures, et des automatisations B2B branchées sur votre SI. On peut aussi greffer une brique IA sur l'existant sans refonte.",
           },
           {
             q: "Mes données clients restent-elles en Europe ?",
@@ -210,7 +210,7 @@ export const MANOSQUE_COPY: VilleCopy = {
           },
           {
             q: "Travaillez-vous avec les prestataires de Cadarache, ITER et des sites industriels du bassin ?",
-            a: "Oui. Nous intervenons dans vos locaux à Manosque, partout en France. Pour les PME prestataires high-tech de l'écosystème Cadarache-ITER,, et les acteurs industriels comme Géosel-Géométhane, on construit des portails clients, des plateformes documentaires, de la recherche sémantique sur normes et procédures, et des automatisations B2B branchées sur votre SI. On peut aussi greffer une brique IA sur l'existant sans refonte.",
+            a: "Oui. Nous intervenons dans vos locaux à Manosque, partout en France. Pour les PME prestataires high-tech de l'écosystème Cadarache-ITER et les acteurs industriels comme Géosel-Géométhane, on construit des portails clients, des plateformes documentaires, de la recherche sémantique sur normes et procédures, et des automatisations B2B branchées sur votre SI. On peut aussi greffer une brique IA sur l'existant sans refonte.",
           },
           {
             q: "Mes données clients restent-elles en Europe ?",

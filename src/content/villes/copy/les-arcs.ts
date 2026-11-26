@@ -53,7 +53,7 @@ export const LES_ARCS_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA pour un domaine viticole aux Arcs ?",
-      a: "L'audit sur place (4 heures, diagnostic + ROI chiffré) démarre à {{price:audit-flash|flat}}. Adapté aux domaines viticoles Côtes de Provence, artisans et restaurateurs arcois. Tarifs publics, sans engagement.",
+      a: "L'audit sur place, d'une durée de 4 heures avec diagnostic et ROI chiffré, est proposé dès {{price:audit-flash|flat}}. Adapté aux domaines viticoles Côtes de Provence, artisans et restaurateurs arcois. Tarifs publics, sans engagement.",
     },
     {
       q: "Accompagnez-vous les domaines viticoles de la Maison des Vins du Var ?",

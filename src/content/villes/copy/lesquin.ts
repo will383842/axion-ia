@@ -65,7 +65,7 @@ export const LESQUIN_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Lesquin ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Intervention sur site dans votre entrepôt, bureau de zone, hôtel ou en visio. Proximité immédiate de l'aéroport Lille-Lesquin et nœud A1/A27.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Intervention sur site dans votre entrepôt, bureau de zone, hôtel ou en visio.",
     },
   ],
 };

@@ -14,9 +14,9 @@ export const LES_AVENIERES_VEYRINS_THUELLIN_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient aux Avenières Veyrins-Thuellin (38). Nous accompagnons tous types d'activités : PME industrielles Nord-Isère, TPE artisans BTP, commerçants, agriculteurs/éleveurs du Bas-Dauphiné, indépendants, professions libérales et services aux entreprises de la Communauté de communes Les Vals du Dauphiné.",
   seoHook: "industrielles nord-isère & agriculture",
   ecosystemFr:
-    "Les Avenières Veyrins-Thuellin appartient à la Communauté de communes Les Vals du Dauphiné, en Bas-Dauphiné Nord-Isère. Position géographique en bordure de la vallée du Rhône, axe Lyon-Chambéry. Tissu PME industrielles, activité agricole notable (élevage, céréales), commerces, TPE artisanat BTP. Proximité aéroport Lyon-Saint-Exupéry (40 min).",
+    "Les Avenières Veyrins-Thuellin appartient à la Communauté de communes Les Vals du Dauphiné, en Bas-Dauphiné Nord-Isère. Position géographique en bordure de la vallée du Rhône, axe Lyon-Chambéry. Tissu PME industrielles, activité agricole notable (élevage, céréales), commerces, TPE artisanat BTP.",
   ecosystemEn:
-    "Les Avenières Veyrins-Thuellin appartient à la Communauté de communes Les Vals du Dauphiné, en Bas-Dauphiné Nord-Isère. Position géographique en bordure de la vallée du Rhône, axe Lyon-Chambéry. Tissu PME industrielles, activité agricole notable (élevage, céréales), commerces, TPE artisanat BTP. Proximité aéroport Lyon-Saint-Exupéry (40 min).",
+    "Les Avenières Veyrins-Thuellin appartient à la Communauté de communes Les Vals du Dauphiné, en Bas-Dauphiné Nord-Isère. Position géographique en bordure de la vallée du Rhône, axe Lyon-Chambéry. Tissu PME industrielles, activité agricole notable (élevage, céréales), commerces, TPE artisanat BTP.",
   distancesFr:
     "Gare Belley/La Tour-du-Pin à 20 min. Aéroport Lyon-Saint-Exupéry à 40 min. Lyon centre à 1h. Chambéry à 1h. Bourgoin-Jallieu à 25 min. Axe A43 vers Lyon/Chambéry.",
   distancesEn:

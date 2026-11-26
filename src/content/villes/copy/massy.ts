@@ -64,7 +64,7 @@ export const MASSY_COPY: VilleCopy = {
           {
             step: "Cadrage à Massy",
             detail:
-              "Kick-off dans vos locaux à Massy — quartier Atlantis, pôle gare Massy TGV ou parc Vilgénis/Vilmorin — pour cartographier vos parcours utilisateurs, vos outils existants (CRM, ERP, PIM, CMS) et le cas d'usage IA prioritaire de votre site ou SaaS.",
+              "Lancement dans vos locaux à Massy — quartier Atlantis, pôle Massy-Vilgénis ou parc Vilmorin — pour cartographier vos parcours utilisateurs, vos outils existants (CRM, ERP, PIM, CMS) et le cas d'usage IA prioritaire de votre site ou SaaS.",
           },
           {
             step: "Conception UX/UI et architecture",
@@ -150,7 +150,7 @@ export const MASSY_COPY: VilleCopy = {
           {
             step: "Framing in Massy",
             detail:
-              "Kick-off at your offices in Massy — Atlantis district, Massy TGV station hub or Vilgénis/Vilmorin park — to map your user journeys, existing tools (CRM, ERP, PIM, CMS) and the priority AI use case for your site or SaaS.",
+              "Launch at your offices in Massy — Atlantis district, Vilgénis hub or Vilmorin park — to map your user journeys, existing tools (CRM, ERP, PIM, CMS) and the priority AI use case for your site or SaaS.",
           },
           {
             step: "UX/UI design and architecture",

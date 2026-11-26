@@ -124,7 +124,7 @@ export const LOOS_COPY: VilleCopy = {
           },
           {
             q: "Accompagnez-vous les entreprises du parc Eurasanté ?",
-            a: "Oui. Pour les medtech, biotech et laboratoires de la ZAC Est Eurasanté et du Hub (350 avenue Eugène Avinée), on conçoit portails clients, espaces de recherche sécurisés, recherche sémantique sur la documentation scientifique et agents internes. On se déplace sur site, la station de métro CHU-Eurasanté étant à quelques minutes du parc.",
+            a: "Oui. Pour les medtech, biotech et laboratoires de la ZAC Est Eurasanté et du Hub (350 avenue Eugène Avinée), on conçoit portails clients, espaces de recherche sécurisés, recherche sémantique sur la documentation scientifique et agents internes. Nous intervenons sur site, dans vos locaux à Loos.",
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
@@ -210,7 +210,7 @@ export const LOOS_COPY: VilleCopy = {
           },
           {
             q: "Accompagnez-vous les entreprises du parc Eurasanté ?",
-            a: "Oui. Pour les medtech, biotech et laboratoires de la ZAC Est Eurasanté et du Hub (350 avenue Eugène Avinée), on conçoit portails clients, espaces de recherche sécurisés, recherche sémantique sur la documentation scientifique et agents internes. On se déplace sur site, la station de métro CHU-Eurasanté étant à quelques minutes du parc.",
+            a: "Oui. Pour les medtech, biotech et laboratoires de la ZAC Est Eurasanté et du Hub (350 avenue Eugène Avinée), on conçoit portails clients, espaces de recherche sécurisés, recherche sémantique sur la documentation scientifique et agents internes. Nous intervenons sur site, dans vos locaux à Loos.",
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",

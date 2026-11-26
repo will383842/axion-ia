@@ -1010,8 +1010,8 @@ export const LILLE_COPY: VilleCopy = {
       a: "Oui. Plusieurs de nos références lilloise concernent le retail omnicanal, l'e-commerce et la logistique. Les cas clients récents sont consultables dans la rubrique Cas concrets, filtrables par secteur et par taille d'entreprise.",
     },
     {
-      q: "Lille est-elle bien desservie pour accueillir des consultants Axion-IA ?",
-      a: "Nous intervenons dans vos locaux à Lille, partout en France. Excellemment. Lille-Europe est la seule gare française directement connectée à Londres, Bruxelles et Paris. Le métro Ilévia permet de rejoindre Villeneuve-d'Ascq et Roubaix en moins de 20 minutes.",
+      q: "Intervenez-vous à Lille ?",
+      a: "Oui, nous intervenons dans vos locaux à Lille, comme partout en France, ainsi qu'à Villeneuve-d'Ascq et Roubaix.",
     },
   ],
 };

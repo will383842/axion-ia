@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const MANDUEL_COPY: VilleCopy = {
   pitchFr:
-    "Manduel (30), commune gardoise des Costières accueillant la gare TGV Nîmes Pont du Gard. Tissu TPE/PME viticulture Costières de Nîmes, services aux entreprises, logistique, commerces et artisanat BTP. Axion-IA y intervient pour tous types d'activités de la zone gare TGV / Costières.",
+    "Manduel (30), commune gardoise des Costières, proche de Nîmes Pont du Gard. Tissu TPE/PME viticulture Costières de Nîmes, services aux entreprises, logistique, commerces et artisanat BTP. Nous intervenons dans vos locaux à Manduel, comme partout en France, pour tous types d'activités de la zone des Costières.",
   pitchEn:
-    "Manduel (30), commune gardoise des Costières accueillant la gare TGV Nîmes Pont du Gard. Tissu TPE/PME viticulture Costières de Nîmes, services aux entreprises, logistique, commerces et artisanat BTP. Axion-IA y intervient pour tous types d'activités de la zone gare TGV / Costières.",
+    "Manduel (30), commune gardoise des Costières, proche de Nîmes Pont du Gard. Tissu TPE/PME viticulture Costières de Nîmes, services aux entreprises, logistique, commerces et artisanat BTP. Nous intervenons dans vos locaux à Manduel, comme partout en France, pour tous types d'activités de la zone des Costières.",
   directAnswerFr:
     "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Manduel (30). Nous accompagnons les TPE, PME et ETI locales : viticulteurs Costières de Nîmes, entreprises de services, logisticiens, commerçants et artisans BTP de la zone gare TGV. Audit sur place sur mesure.",
   directAnswerEn:
@@ -48,8 +48,8 @@ export const MANDUEL_COPY: VilleCopy = {
   },
   faqGeolocalisee: [
     {
-      q: "Axion-IA intervient-il à Manduel et zone gare TGV ?",
-      a: "Oui, Axion-IA intervient à Manduel et dans toute la zone Costières / gare TGV (Redessan, Marguerittes, Bouillargues, Garons).",
+      q: "Intervenez-vous à Manduel et dans les Costières ?",
+      a: "Oui, nous intervenons dans vos locaux à Manduel et dans toute la zone des Costières (Redessan, Marguerittes, Bouillargues, Garons), comme partout en France.",
     },
     {
       q: "Quel est le tarif d'un audit IA à Manduel  ?",
@@ -60,12 +60,12 @@ export const MANDUEL_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les viticulteurs Costières de Nîmes autour de Manduel : prédiction vendanges, classification parcelles, automatisation traçabilité, vente directe.",
     },
     {
-      q: "L'accessibilité TGV facilite-t-elle vos interventions ?",
-      a: "Nos consultants peuvent venir de toute la France en demi-journée pour des missions sur site.",
+      q: "Comment se déroule une intervention à Manduel ?",
+      a: "Nous intervenons dans vos locaux à Manduel, comme partout en France, pour des missions sur site, avec des sessions visio possibles pour le cadrage et le suivi.",
     },
     {
       q: "Quels délais pour démarrer une mission IA à Manduel ?",
-      a: "Démarrage sous 5 jours ouvrés après validation. Nos consultants se déplacent sur site à Manduel. Possibilité de sessions visio pour les phases de cadrage et suivi.",
+      a: "Démarrage sous 5 jours ouvrés après validation. Nos consultants interviennent sur site à Manduel. Possibilité de sessions visio pour les phases de cadrage et suivi.",
     },
   ],
 };

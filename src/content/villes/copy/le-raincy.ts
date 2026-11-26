@@ -64,7 +64,7 @@ export const LE_RAINCY_COPY: VilleCopy = {
       a: "Pour les commerçants et artisans du Raincy : agents conversationnels vitrine en ligne, automatisation gestion stocks et commandes fournisseurs, outils planning et réservation, classification comptable automatisée. Audit sur place {{price:audit-flash|flat}} adapté aux petites structures.",
     },
     {
-      q: "Comment se passe le déplacement pour une mission au Raincy ?",
+      q: "Comment se déroule une intervention au Raincy ?",
       a: "Nous intervenons partout en France, sur place ou à distance. Intervention sur vos cas métier réels, équipes autonomes en fin de journée.",
     },
   ],

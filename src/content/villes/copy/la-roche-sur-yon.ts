@@ -232,7 +232,7 @@ export const LA_ROCHE_SUR_YON_COPY: VilleCopy = {
       a: "À La Roche-sur-Yon, l'Audit sur place débute à {{price:audit-flash|flat}} (4 heures sur site), la Formation 4 h à {{price:intervention-4h|flat}} et l'accompagnement 1-to-1 dirigeant à {{price:intervention-dirigeants|flat}}. Tarifs publics sur axion-ia.com.",
     },
     {
-      q: "Williams se déplace-t-il dans les entreprises de La Roche-sur-Yon ?",
+      q: "Intervenez-vous dans les entreprises de La Roche-sur-Yon ?",
       a: "Intervention sur site sans visioconférence imposée.",
     },
     {

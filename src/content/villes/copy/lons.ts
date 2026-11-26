@@ -14,9 +14,9 @@ export const LONS_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Lons (64). Nous accompagnons TPE, PME et commerces de la zone nord de l'agglomération paloise : retail, logistique, services aux entreprises, artisanat. Audit sur place sur mesure.",
   seoHook: "commerce grande & logistique transport",
   ecosystemFr:
-    "Lons est un pôle commercial majeur au nord de Pau, 13 606 habitants. Zones d'activités commerciales (grandes surfaces, retail, enseignes nationales), PME logistique et transport, TPE artisans, services aux entreprises. Proximité immédiate de l'aéroport Pau-Pyrénées et de la technopole Hélioparc.",
+    "Lons est un pôle commercial majeur au nord de Pau, 13 606 habitants. Zones d'activités commerciales (grandes surfaces, retail, enseignes nationales), PME logistique et transport, TPE artisans, services aux entreprises. Technopole Hélioparc voisine.",
   ecosystemEn:
-    "Lons est un pôle commercial majeur au nord de Pau, 13 606 habitants. Zones d'activités commerciales (grandes surfaces, retail, enseignes nationales), PME logistique et transport, TPE artisans, services aux entreprises. Proximité immédiate de l'aéroport Pau-Pyrénées et de la technopole Hélioparc.",
+    "Lons est un pôle commercial majeur au nord de Pau, 13 606 habitants. Zones d'activités commerciales (grandes surfaces, retail, enseignes nationales), PME logistique et transport, TPE artisans, services aux entreprises. Technopole Hélioparc voisine.",
   distancesFr:
     "Gare de Pau à 8 min voiture (TGV Paris 4h20 direct). Aéroport Pau-Pyrénées à 5 min. Accès A64 (Bayonne-Toulouse) immédiat. Centre-ville Pau à 5 km. Tarbes à 40 min.",
   distancesEn:

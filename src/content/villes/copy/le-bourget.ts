@@ -14,9 +14,9 @@ export const LE_BOURGET_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient au Bourget (93). Nous accompagnons tous types d'activités : TPE prestataires, PME industrielles et de services, sous-traitants aéronautiques, commerçants, artisans et professions libérales de cette ville historique de l'aviation. Audit sur place sur mesure.",
   seoHook: "TPE & PME Seine-Saint-Denis",
   ecosystemFr:
-    "Le Bourget est indissociable de l'aéronautique : l'aéroport d'affaires Paris-Le Bourget (1er d'Europe), le musée de l'Air et de l'Espace et le salon international du Bourget (biennal) structurent l'économie locale. Tissu PME sous-traitants aéronautiques, TPE prestataires événementiels et logistiques, commerces de proximité. Proximité de la Plaine Saint-Denis, du Stade de France et de l'axe RER B vers Paris.",
+    "Le Bourget est indissociable de l'aéronautique : l'aéroport d'affaires Paris-Le Bourget (1er d'Europe), le musée de l'Air et de l'Espace et le salon international du Bourget (biennal) structurent l'économie locale. Tissu PME sous-traitants aéronautiques, TPE prestataires événementiels et logistiques, commerces de proximité. Voisinage de la Plaine Saint-Denis et du Stade de France.",
   ecosystemEn:
-    "Le Bourget est indissociable de l'aéronautique : l'aéroport d'affaires Paris-Le Bourget (1er d'Europe), le musée de l'Air et de l'Espace et le salon international du Bourget (biennal) structurent l'économie locale. Tissu PME sous-traitants aéronautiques, TPE prestataires événementiels et logistiques, commerces de proximité. Proximité de la Plaine Saint-Denis, du Stade de France et de l'axe RER B vers Paris.",
+    "Le Bourget est indissociable de l'aéronautique : l'aéroport d'affaires Paris-Le Bourget (1er d'Europe), le musée de l'Air et de l'Espace et le salon international du Bourget (biennal) structurent l'économie locale. Tissu PME sous-traitants aéronautiques, TPE prestataires événementiels et logistiques, commerces de proximité. Voisinage de la Plaine Saint-Denis et du Stade de France.",
   distancesFr:
     "Gare du Bourget (RER B, 20 min Gare du Nord). Aéroport Paris-Le Bourget attenant. Aéroport Paris-CDG à 15 min via A1. Paris-La Villette à 10 min. Tramway T11 Express vers Épinay et Noisy-le-Sec.",
   distancesEn:

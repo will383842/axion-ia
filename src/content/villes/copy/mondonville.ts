@@ -14,9 +14,9 @@ export const MONDONVILLE_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Mondonville (31). Nous accompagnons TPE artisans, PME de services, professions libérales et commerçants du nord-ouest Toulouse. Audit sur place sur mesure.",
   seoHook: "artisanat & commerce détail",
   ecosystemFr:
-    "Mondonville est une commune résidentielle du nord-ouest de Toulouse, entre Cornebarrieu et Aussonne. Tissu TPE artisans, PME de services, commerces de proximité, professions libérales. Proximité de l'aéroport et du pôle aéronautique.",
+    "Mondonville est une commune résidentielle du nord-ouest de Toulouse, entre Cornebarrieu et Aussonne. Tissu TPE artisans, PME de services, commerces de proximité, professions libérales. Au cœur du pôle aéronautique toulousain.",
   ecosystemEn:
-    "Mondonville est une commune résidentielle du nord-ouest de Toulouse, entre Cornebarrieu et Aussonne. Tissu TPE artisans, PME de services, commerces de proximité, professions libérales. Proximité de l'aéroport et du pôle aéronautique.",
+    "Mondonville est une commune résidentielle du nord-ouest de Toulouse, entre Cornebarrieu et Aussonne. Tissu TPE artisans, PME de services, commerces de proximité, professions libérales. Au cœur du pôle aéronautique toulousain.",
   distancesFr:
     "Toulouse centre à 20 min (D902). Aéroport Toulouse-Blagnac à 10 min. Gare Matabiau à 25 min. Cornebarrieu à 5 min. Aussonne à 5 min.",
   distancesEn:

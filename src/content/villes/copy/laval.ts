@@ -237,7 +237,7 @@ export const LAVAL_COPY: VilleCopy = {
     },
     {
       q: "Intervenez-vous aussi dans les communes proches de Laval ?",
-      a: "Oui — nous nous déplaçons à Changé, Saint-Berthevin, Bonchamp-lès-Laval, Montigné-le-Brillant, L'Huisserie et Entrammes aux mêmes tarifs publics.",
+      a: "Oui — nous intervenons à Changé, Saint-Berthevin, Bonchamp-lès-Laval, Montigné-le-Brillant, L'Huisserie et Entrammes, comme partout en France.",
     },
     {
       q: "Comment Axion-IA garantit-il la conformité RGPD à Laval ?",

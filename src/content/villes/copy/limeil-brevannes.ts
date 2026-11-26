@@ -124,8 +124,8 @@ export const LIMEIL_BREVANNES_COPY: VilleCopy = {
             a: "Les deux. Nous revendiquons l'UX/UI, le mobile-first, le e-commerce multi-CMS (WordPress, Shopify, headless) et le développement sur mesure, augmentés par l'IA. Une PME du Parc des entrepreneurs peut nous confier une boutique en ligne comme une ETI peut nous confier un SaaS IA-native complet.",
           },
           {
-            q: "Comment se passent vos déplacements à Limeil-Brévannes ?",
-            a: "Nos consultants se déplacent sur site pour les ateliers de cadrage et la recette. Nous couvrons aussi Créteil, Valenton, Bonneuil-sur-Marne, Boissy-Saint-Léger et Villecresnes.",
+            q: "Intervenez-vous à Limeil-Brévannes ?",
+            a: "Oui, nos consultants interviennent sur site pour les ateliers de cadrage et la recette. Nous couvrons aussi Créteil, Valenton, Bonneuil-sur-Marne, Boissy-Saint-Léger et Villecresnes.",
           },
           {
             q: "Sous quel délai obtient-on un devis ?",

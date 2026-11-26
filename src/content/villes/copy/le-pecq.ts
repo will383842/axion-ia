@@ -14,9 +14,9 @@ export const LE_PECQ_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient au Pecq (78). Nous accompagnons tous types d'activités : TPE et PME tertiaires, professions libérales, commerces de centre-ville, restaurateurs, artisans, indépendants et services aux particuliers de cette commune résidentielle face à Saint-Germain-en-Laye.",
   seoHook: "commerce proximité & professions libérales",
   ecosystemFr:
-    "Le Pecq est une commune résidentielle en bords de Seine, directement face à Saint-Germain-en-Laye (pont du Pecq). Tissu économique dominé par les commerces de centre-ville, restaurants en bords de Seine, professions libérales (santé, conseil), TPE/PME tertiaires, artisans et services. Proximité immédiate du RER A (gare Le Vésinet-Le Pecq) et du centre commercial régional de Saint-Germain-en-Laye.",
+    "Le Pecq est une commune résidentielle en bords de Seine, directement face à Saint-Germain-en-Laye (pont du Pecq). Tissu économique dominé par les commerces de centre-ville, restaurants en bords de Seine, professions libérales (santé, conseil), TPE/PME tertiaires, artisans et services. Voisinage immédiat du centre commercial régional de Saint-Germain-en-Laye.",
   ecosystemEn:
-    "Le Pecq est une commune résidentielle en bords de Seine, directement face à Saint-Germain-en-Laye (pont du Pecq). Tissu économique dominé par les commerces de centre-ville, restaurants en bords de Seine, professions libérales (santé, conseil), TPE/PME tertiaires, artisans et services. Proximité immédiate du RER A (gare Le Vésinet-Le Pecq) et du centre commercial régional de Saint-Germain-en-Laye.",
+    "Le Pecq est une commune résidentielle en bords de Seine, directement face à Saint-Germain-en-Laye (pont du Pecq). Tissu économique dominé par les commerces de centre-ville, restaurants en bords de Seine, professions libérales (santé, conseil), TPE/PME tertiaires, artisans et services. Voisinage immédiat du centre commercial régional de Saint-Germain-en-Laye.",
   distancesFr:
     "Gare Le Vésinet-Le Pecq (RER A, Paris-La Défense 20 min, Châtelet 35 min). Saint-Germain-en-Laye à 3 min voiture (pont du Pecq). Marly-le-Roi à 5 min. Versailles à 20 min. Aéroport Roissy-CDG à 45 min.",
   distancesEn:

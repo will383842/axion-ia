@@ -236,7 +236,7 @@ export const LE_PLESSIS_TREVISE_COPY: VilleCopy = {
     },
     {
       q: "Quels délais pour une implémentation IA au Plessis-Trévise ?",
-      a: "Williams se déplace habituellement sous 5 à 10 jours ouvrés au Plessis-Trévise. Les délais d'implémentation varient selon la complexité du projet, généralement 2 à 6 semaines pour une PME locale.",
+      a: "Williams intervient habituellement sous 5 à 10 jours ouvrés au Plessis-Trévise. Les délais d'implémentation varient selon la complexité du projet, généralement 2 à 6 semaines pour une PME locale.",
     },
     {
       q: "Axion-IA respecte-t-il le RGPD lors de ses interventions au Plessis-Trévise ?",

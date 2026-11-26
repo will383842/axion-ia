@@ -249,8 +249,8 @@ export const LE_CANNET_COPY: VilleCopy = {
       a: "Nous accompagnons en priorité le commerce de proximité, l'hôtellerie-restauration, les services aux entreprises et l'événementiel lié aux grands rendez-vous cannois (Festival, MIPIM, MIPCOM).",
     },
     {
-      q: "Vos consultants se déplacent-ils réellement au Cannet ou tout est-il à distance ?",
-      a: "Nos consultants se déplacent physiquement au Cannet pour les phases de cadrage et d'ateliers utilisateurs. Le développement est ensuite effectué à distance, avec des points hebdomadaires en visio et un retour sur site pour la mise en production.",
+      q: "Intervenez-vous réellement sur site au Cannet ou tout est-il à distance ?",
+      a: "Nos consultants interviennent physiquement au Cannet pour les phases de cadrage et d'ateliers utilisateurs. Le développement est ensuite effectué à distance, avec des points hebdomadaires en visio et un retour sur site pour la mise en production.",
     },
   ],
 };
