@@ -128,7 +128,7 @@ export const DREUX_COPY: VilleCopy = {
           },
           {
             q: "Sous quel délai recevons-nous un devis ?",
-            a: "À partir de 24 à 48 h selon la complexité. Un site vitrine pour un commerce de la Z.A. des Châtelets se chiffre vite ; un SaaS réglementaire pour un industriel pharma demande un cadrage technique plus poussé. Dans tous les cas, le devis est clair, détaillé et sans engagement.",
+            a: "Nous intervenons dans vos locaux, partout en France. Un site vitrine pour un commerce de la Z.A. des Châtelets se chiffre vite ; un SaaS réglementaire pour un industriel pharma demande un cadrage technique plus poussé. Dans tous les cas, le devis est clair, détaillé et sans engagement.",
           },
           {
             q: "Nos données et notre code restent-ils chez nous ?",

@@ -245,8 +245,8 @@ export const VIRY_CHATILLON_COPY: VilleCopy = {
       a: "Optimisation des tournées, suivi automatisé des livraisons, traitement des demandes entrantes et reporting d'activité. L'objectif est de réduire les tâches répétitives et de fiabiliser le pilotage pour des structures à taille humaine.",
     },
     {
-      q: "Comment se déroule une mission à Viry-Châtillon ?",
-      a: "Nous intervenons partout en France, sur place ou à distance.",
+      q: "Intervenez-vous à Viry-Châtillon ?",
+      a: "Oui. Nous intervenons dans vos locaux à Viry-Châtillon, partout en France, sur place ou à distance.",
     },
   ],
 };

@@ -49,7 +49,7 @@ export const TERVILLE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Terville ?",
-      a: "Oui, Axion-IA intervient à Terville et dans toute l'agglomération de Thionville (Yutz, Florange, Fameck, Hayange). Autoroute A31 sortie Thionville, gare SNCF Thionville à 10 min.",
+      a: "Oui, Axion-IA intervient à Terville et dans toute l'agglomération de Thionville (Yutz, Florange, Fameck, Hayange).",
     },
     {
       q: "Travaillez-vous avec les commerces du centre Géric ?",

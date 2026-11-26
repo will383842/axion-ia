@@ -65,7 +65,7 @@ export const CONDOM_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Condom ?",
-      a: "Nos consultants interviennent sur site à Condom et dans le Gers ouest. Déplacement direct dans votre entreprise. Agen (gare TGV) à 40 min, Auch à 45 min, Toulouse-Blagnac à 1h30.",
+      a: "Nos consultants interviennent sur site à Condom et dans le Gers ouest. Déplacement direct dans votre entreprise.",
     },
   ],
 };

@@ -229,8 +229,8 @@ export const ERMONT_COPY: VilleCopy = {
 
   faqGeolocalisee: [
     {
-      q: "Axion-IA se déplace-t-il à Ermont ?",
-      a: "Oui, nos consultants se rendent directement dans vos locaux à Ermont et dans le Val-d'Oise.",
+      q: "Intervenez-vous à Ermont ?",
+      a: "Oui. Nous intervenons dans vos locaux à Ermont, partout en France, sur place ou à distance.",
     },
     {
       q: "Quels types d'entreprises accompagnez-vous à Ermont ?",

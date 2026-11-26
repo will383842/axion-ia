@@ -49,7 +49,7 @@ export const CABRIES_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Cabriès et autour de Plan de Campagne ?",
-      a: "Oui, Axion-IA intervient à Cabriès et dans tout le secteur Plan de Campagne (Les Pennes-Mirabeau, Vitrolles, Bouc-Bel-Air, Simiane-Collongue, Septèmes-les-Vallons). Proximité aéroport Marseille-Provence et A51.",
+      a: "Oui, Axion-IA intervient à Cabriès et dans tout le secteur Plan de Campagne (Les Pennes-Mirabeau, Vitrolles, Bouc-Bel-Air, Simiane-Collongue, Septèmes-les-Vallons).",
     },
     {
       q: "Quel est le tarif d'un audit IA à Cabriès  ?",
@@ -64,8 +64,8 @@ export const CABRIES_COPY: VilleCopy = {
       a: "Oui, nous intervenons en restauration sur prévision affluence, optimisation pertes alimentaires, automatisation prise commande, agents IA réservation, marketing avis locaux et e-réputation.",
     },
     {
-      q: "Comment se déplace Axion-IA à Cabriès ?",
-      a: "Nos consultants se déplacent dans vos locaux.",
+      q: "Intervenez-vous à Cabriès ?",
+      a: "Oui. Nous intervenons dans vos locaux à Cabriès, partout en France, sur place ou à distance.",
     },
   ],
 };

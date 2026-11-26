@@ -64,8 +64,8 @@ export const SAINT_PIERRE_EN_FAUCIGNY_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les TPE artisans BTP à Saint-Pierre-en-Faucigny sur des cas IA pratiques : automatisation devis chantier, agents IA prise de RDV, classification photos chantier, gestion planning équipes et suivi de chantier.",
     },
     {
-      q: "Comment se déroule une mission à Saint-Pierre-en-Faucigny ?",
-      a: "Nous intervenons partout en France, sur place ou à distance : dans vos locaux à Saint-Pierre-en-Faucigny (atelier, chantier, commerce) ou en visio.",
+      q: "Intervenez-vous à Saint-Pierre-en-Faucigny ?",
+      a: "Oui. Nous intervenons dans vos locaux à Saint-Pierre-en-Faucigny, partout en France, sur place ou à distance.",
     },
   ],
 };

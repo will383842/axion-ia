@@ -64,8 +64,8 @@ export const YSSINGEAUX_COPY: VilleCopy = {
       a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1.",
     },
     {
-      q: "Comment se déroule une mission à Yssingeaux ?",
-      a: "Nous intervenons dans vos locaux à Yssingeaux, partout en France.",
+      q: "Intervenez-vous à Yssingeaux ?",
+      a: "Oui. Nous intervenons dans vos locaux à Yssingeaux, partout en France, sur place ou à distance.",
     },
   ],
 };

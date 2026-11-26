@@ -64,8 +64,8 @@ export const BONDOUFLE_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les PME services aux entreprises du bassin Évry-Courcouronnes sur leurs cas IA : automatisation reporting, CRM intelligent, classification emails, rédaction assistée, gestion RH.",
     },
     {
-      q: "Comment se déroule une mission à Bondoufle ?",
-      a: "Nous intervenons partout en France, sur place ou à distance.",
+      q: "Intervenez-vous à Bondoufle ?",
+      a: "Oui. Nous intervenons dans vos locaux à Bondoufle, partout en France, sur place ou à distance.",
     },
   ],
 };

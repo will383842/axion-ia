@@ -246,8 +246,8 @@ export const CAHORS_COPY: VilleCopy = {
       a: "Domaines viticoles AOC Cahors (e-commerce, gestion de cave, allocations), restauration touristique (réservations, gestion menu), commerce de centre-ville UNESCO (fidélisation), et professions libérales (comptables, notaires, avocats) du Lot.",
     },
     {
-      q: "Williams se déplace-t-il vraiment sur site à Cahors ou tout se fait à distance ?",
-      a: "Williams se déplace physiquement à Cahors pour les phases Audit et Implémentation. Les phases de développement code sont remote, mais chaque mission inclut au moins une journée sur site pour la prise de besoin et la recette.",
+      q: "Intervenez-vous à Cahors ou tout se fait à distance ?",
+      a: "Oui. Nous intervenons dans vos locaux à Cahors ou tout se fait à distance, partout en France, sur place ou à distance.",
     },
   ],
 };

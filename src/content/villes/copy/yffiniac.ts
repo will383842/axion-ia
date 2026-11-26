@@ -49,7 +49,7 @@ export const YFFINIAC_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Yffiniac et dans l'agglomération de Saint-Brieuc ?",
-      a: "Oui, Axion-IA intervient à Yffiniac et dans toute l'agglomération de Saint-Brieuc (Ploufragan, Trégueux, Plérin, Langueux, Plédran, Hillion). Saint-Brieuc centre à 10 min, Lamballe à 15 min, Rennes à 1h.",
+      a: "Oui, Axion-IA intervient à Yffiniac et dans toute l'agglomération de Saint-Brieuc (Ploufragan, Trégueux, Plérin, Langueux, Plédran, Hillion).",
     },
     {
       q: "Travaillez-vous avec les PME de services de l'agglomération briochine ?",
@@ -65,7 +65,7 @@ export const YFFINIAC_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Yffiniac ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Gare TGV de Saint-Brieuc sur la ligne Paris-Brest.",
+      a: "Nous intervenons partout en France, sur place ou à distance.",
     },
   ],
 };

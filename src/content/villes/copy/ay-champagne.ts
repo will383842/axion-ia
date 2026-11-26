@@ -49,7 +49,7 @@ export const AY_CHAMPAGNE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Aÿ-Champagne et sur la Montagne de Reims ?",
-      a: "Oui, Axion-IA intervient à Aÿ-Champagne et dans tout le vignoble champenois. Épernay à 5 min, Reims à 25 min, Paris à 1 h 15 via A4.",
+      a: "Oui, Axion-IA intervient à Aÿ-Champagne et dans tout le vignoble champenois.",
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Aÿ-Champagne  ?",
@@ -64,8 +64,8 @@ export const AY_CHAMPAGNE_COPY: VilleCopy = {
       a: "Oui, réservation en ligne IA, gestion planning dégustations, CRM visiteurs, marketing automatisé, reporting fréquentation, fidélisation clients.",
     },
     {
-      q: "Comment se déroule une mission à Aÿ-Champagne ?",
-      a: "Reims à 25 min par route, Épernay à 5 min. Paris à 1 h 15 via A4. Gare SNCF Aÿ sur ligne Reims-Épernay.",
+      q: "Intervenez-vous à Aÿ-Champagne ?",
+      a: "Oui. Nous intervenons dans vos locaux à Aÿ-Champagne, partout en France, sur place ou à distance.",
     },
   ],
 };

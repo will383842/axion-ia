@@ -49,7 +49,7 @@ export const BERRE_L_ETANG_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Berre-l'Étang et étang de Berre ?",
-      a: "Oui, Axion-IA intervient à Berre-l'Étang et sur tout le pourtour de l'étang de Berre (Rognac à 5 min, Vitrolles à 10 min, Martigues à 15 min). Couverture complète du bassin pétrochimique.",
+      a: "Nous intervenons dans vos locaux à Berre-l'Étang, partout en France. Couverture complète du bassin pétrochimique.",
     },
     {
       q: "Quels sont les tarifs pour un audit IA à Berre-l'Étang ?",
@@ -65,7 +65,7 @@ export const BERRE_L_ETANG_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Berre-l'Étang ?",
-      a: "Nos consultants interviennent sur site à Berre-l'Étang sous 5 jours ouvrés. Aéroport Marseille Provence à 10 min, Aix à 30 min.",
+      a: "Nos consultants interviennent sur site à Berre-l'Étang sous 5 jours ouvrés.",
     },
   ],
 };

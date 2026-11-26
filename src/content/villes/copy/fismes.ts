@@ -49,7 +49,7 @@ export const FISMES_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Fismes et dans la vallée de la Vesle ?",
-      a: "Oui, Axion-IA intervient à Fismes et dans tout le secteur Vesle-Tardenois. Reims à 30 min, Soissons à 30 min, Paris à 1 h 20 via A4.",
+      a: "Oui, Axion-IA intervient à Fismes et dans tout le secteur Vesle-Tardenois.",
     },
     {
       q: "Tarifs audit IA à Fismes  : quel budget prévoir ?",
@@ -64,8 +64,8 @@ export const FISMES_COPY: VilleCopy = {
       a: "Oui, CRM augmenté, prise de rendez-vous IA, gestion planning, fidélisation clients, reporting intelligent pour commerces et cabinets de santé.",
     },
     {
-      q: "Comment se déroule une mission à Fismes ?",
-      a: "Reims à 30 min par route. Paris à 1 h 20 via A4. Gare SNCF Fismes sur ligne Reims-Laon.",
+      q: "Intervenez-vous à Fismes ?",
+      a: "Oui. Nous intervenons dans vos locaux à Fismes, partout en France, sur place ou à distance.",
     },
   ],
 };

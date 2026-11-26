@@ -49,7 +49,7 @@ export const NAINTRE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Naintré et Châtelleraudais ?",
-      a: "Oui, Axion-IA intervient à Naintré et tout le Châtelleraudais (Châtellerault centre à 5 min, Cenon-sur-Vienne, Thuré, Ingrandes-sur-Vienne). Nous intervenons partout en France, sur place ou à distance.",
+      a: "Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les PME industrielles du Châtelleraudais ?",

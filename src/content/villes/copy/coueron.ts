@@ -230,8 +230,8 @@ export const COUERON_COPY: VilleCopy = {
       a: "Nos audits Sur place à Couëron démarrent à {{price:audit-flash|flat}} pour 4 heures sur site. Tarifs publics consultables sur axion-ia.com/tarifs. Devis personnalisé sous 48 h pour les missions plus longues.",
     },
     {
-      q: "Williams se déplace-t-il à Couëron pour intervenir sur site ?",
-      a: "Oui. Williams se déplace à Couëron (44220) et dans tout Nantes Métropole — Indre, Saint-Herblain, Sautron, Saint-Étienne-de-Montluc, Saint-Jean-de-Boiseau, Le Pellerin.",
+      q: "Intervenez-vous à Couëron pour intervenir sur site ?",
+      a: "Oui. Nous intervenons dans vos locaux à Couëron, partout en France, sur place ou à distance.",
     },
     {
       q: "Quels délais pour démarrer une mission IA à Couëron ?",

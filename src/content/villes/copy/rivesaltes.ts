@@ -49,7 +49,7 @@ export const RIVESALTES_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Rivesaltes et la vallée de l'Agly ?",
-      a: "Oui, Axion-IA intervient à Rivesaltes et toute la vallée de l'Agly (Saint-Estève à 5 min, Espira-de-l'Agly, Baixas, Cases-de-Pène). Nous intervenons partout en France, sur place ou à distance.",
+      a: "Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les viticulteurs AOC Muscat et Rivesaltes ?",
@@ -65,7 +65,7 @@ export const RIVESALTES_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Rivesaltes ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Aéroport Perpignan-Rivesaltes à 3 min. Missions sur site dans votre cave, bureau ou commerce. Visio possible. Tarifs publics.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Missions sur site dans votre cave, bureau ou commerce. Visio possible. Tarifs publics.",
     },
   ],
 };

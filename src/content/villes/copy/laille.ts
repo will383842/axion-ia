@@ -49,7 +49,7 @@ export const LAILLE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Laillé et dans le sud rennais ?",
-      a: "Oui, Axion-IA intervient à Laillé et dans toute la couronne sud de Rennes Métropole (Bruz, Chartres-de-Bretagne, Pont-Péan, Orgères, Guichen). Gare TGV de Rennes à 20 min, Paris en 1h25.",
+      a: "Oui, Axion-IA intervient à Laillé et dans toute la couronne sud de Rennes Métropole (Bruz, Chartres-de-Bretagne, Pont-Péan, Orgères, Guichen).",
     },
     {
       q: "Quel est le tarif d'un audit IA à Laillé  ?",

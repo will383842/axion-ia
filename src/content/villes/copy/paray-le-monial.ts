@@ -64,8 +64,8 @@ export const PARAY_LE_MONIAL_COPY: VilleCopy = {
       a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : agents IA prise de RDV, automatisation devis, CRM commerçants centre-ville.",
     },
     {
-      q: "Comment se déroule une mission Axion-IA à Paray-le-Monial ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Le Creusot-TGV à 50 min.",
+      q: "Intervenez-vous à Paray-le-Monial ?",
+      a: "Oui. Nous intervenons dans vos locaux à Paray-le-Monial, partout en France, sur place ou à distance.",
     },
   ],
 };

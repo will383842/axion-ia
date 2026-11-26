@@ -129,7 +129,7 @@ const VILLE_COPY: VilleCopy = {
           },
           {
             q: "Quel délai pour un devis et Williams se déplace-t-il sur site ?",
-            a: "Devis détaillé à partir de 24 à 48 h selon la complexité du projet. Williams se déplace sur site à Villenave-d'Ornon — Centre Commercial Bordeaux Sud, ZAC Madère, SIM d'Hourcade, ISVV/INRAE ou secteur Pont-de-la-Maye.",
+            a: "Williams se déplace sur site à Villenave-d'Ornon — Centre Commercial Bordeaux Sud, ZAC Madère, SIM d'Hourcade, ISVV/INRAE ou secteur Pont-de-la-Maye.",
           },
           {
             q: "Comment garantissez-vous la conformité RGPD, notamment pour la santé-innovation du site Robert-Picqué ?",
@@ -234,8 +234,8 @@ const VILLE_COPY: VilleCopy = {
       a: "Audit sur place {{price:audit-flash|flat}} (4 h sur site), Formation 4 h {{price:intervention-4h|flat}} (cadrage + livraison d'un automatisme), accompagnement 1-à-1 {{price:intervention-dirigeants|flat}}. Tarifs publics consultables, pas de licence SaaS récurrente — vous êtes propriétaire du code livré.",
     },
     {
-      q: "Williams se déplace-t-il vraiment à Villenave-d'Ornon ?",
-      a: "Oui. Nous intervenons partout en France, sur place ou à distance.",
+      q: "Intervenez-vous à Villenave-d'Ornon ?",
+      a: "Oui. Nous intervenons dans vos locaux à Villenave-d'Ornon, partout en France, sur place ou à distance.",
     },
     {
       q: "Quels secteurs locaux Axion-IA accompagne-t-il à Villenave-d'Ornon ?",

@@ -64,8 +64,8 @@ export const SAINT_JACQUES_DE_LA_LANDE_COPY: VilleCopy = {
       a: "Pour les TPE, artisans et commerçants à Saint-Jacques-de-la-Lande, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, gestion stocks.",
     },
     {
-      q: "Comment se déroule une mission à Saint-Jacques-de-la-Lande ?",
-      a: "Nous intervenons partout en France, sur place ou à distance.",
+      q: "Intervenez-vous à Saint-Jacques-de-la-Lande ?",
+      a: "Oui. Nous intervenons dans vos locaux à Saint-Jacques-de-la-Lande, partout en France, sur place ou à distance.",
     },
   ],
 };

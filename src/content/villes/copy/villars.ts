@@ -49,7 +49,7 @@ export const VILLARS_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Villars et nord-ouest Saint-Étienne ?",
-      a: "Oui, Axion-IA intervient à Villars et toute la banlieue nord-ouest stéphanoise (Saint-Étienne à 10 min, La Talaudière à 5 min, Sorbiers). Nous intervenons partout en France, sur place ou à distance.",
+      a: "Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les PME tertiaires et industrielles ?",
@@ -64,8 +64,8 @@ export const VILLARS_COPY: VilleCopy = {
       a: "Pour les TPE artisans BTP et commerçants à Villars, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV.",
     },
     {
-      q: "Comment se déroule une mission à Villars ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Tarifs transparents.",
+      q: "Intervenez-vous à Villars ?",
+      a: "Oui. Nous intervenons dans vos locaux à Villars, partout en France, sur place ou à distance.",
     },
   ],
 };

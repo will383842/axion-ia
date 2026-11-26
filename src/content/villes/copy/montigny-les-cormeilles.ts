@@ -231,8 +231,8 @@ export const MONTIGNY_LES_CORMEILLES_COPY: VilleCopy = {
       a: "Nos tarifs publics démarrent à {{price:audit-flash|flat}} pour un Audit sur place et {{price:intervention-4h|flat}} pour une intervention en groupe. L'implémentation et l'accompagnement un-à-un débutent à {{price:intervention-dirigeants|flat}}, sans frais cachés.",
     },
     {
-      q: "Axion-IA se déplace-t-il sur site à Montigny-lès-Cormeilles (95370) ?",
-      a: "Oui, nos consultants prennent le RER C ou le Transilien H jusqu'à Montigny-Beauchamp, ou le Transilien J jusqu'à La Frette-Montigny.",
+      q: "Intervenez-vous à Montigny-lès-Cormeilles (95370) ?",
+      a: "Oui. Nous intervenons dans vos locaux à Montigny-lès-Cormeilles (95370), partout en France, sur place ou à distance.",
     },
     {
       q: "Quels délais pour démarrer un projet IA à Montigny-lès-Cormeilles ?",

@@ -49,7 +49,7 @@ export const GIGNAC_LA_NERTHE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Gignac-la-Nerthe ?",
-      a: "Oui, Axion-IA intervient à Gignac-la-Nerthe et sur tout le sud de l'étang de Berre (Martigues à 10 min, Châteauneuf-les-Martigues à 5 min, Carry-le-Rouet). Couverture complète Côte Bleue.",
+      a: "Nous intervenons dans vos locaux à Gignac-la-Nerthe, partout en France. Couverture complète Côte Bleue.",
     },
     {
       q: "Quels sont les tarifs pour un audit IA à Gignac-la-Nerthe ?",
@@ -65,7 +65,7 @@ export const GIGNAC_LA_NERTHE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Gignac-la-Nerthe ?",
-      a: "Nos consultants interviennent sur site à Gignac-la-Nerthe sous 5 jours ouvrés. Marseille à 30 min, Martigues à 10 min.",
+      a: "Nos consultants interviennent sur site à Gignac-la-Nerthe sous 5 jours ouvrés.",
     },
   ],
 };

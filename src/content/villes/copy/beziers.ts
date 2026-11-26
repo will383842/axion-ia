@@ -246,8 +246,8 @@ export const BEZIERS_COPY: VilleCopy = {
       a: "Les TPE et PME viticoles (environ 2 000 ha autour de Béziers), l'hôtellerie-restauration touristique autour du Canal du Midi et de Fonseranes, le commerce de détail et la construction tirent un bénéfice direct des automatisations IA en code custom.",
     },
     {
-      q: "Williams se déplace-t-il vraiment chez les clients à Béziers ?",
-      a: "Oui, déplacement systématique sur site à Béziers (gare ligne Montpellier-Perpignan ou aéroport Béziers Cap d'Agde à 15 km). Pas d'audit à distance pour les premières missions : nous observons les processus réels en présentiel.",
+      q: "Intervenez-vous à Béziers ?",
+      a: "Oui. Nous intervenons dans vos locaux à Béziers, partout en France, sur place ou à distance.",
     },
   ],
 };

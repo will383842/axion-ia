@@ -124,7 +124,7 @@ export const CREIL_COPY: VilleCopy = {
           },
           {
             q: "Sous combien de temps obtient-on un devis ?",
-            a: "À partir de 24 à 48 h selon la complexité du projet. Après un premier échange de cadrage à Creil ou en visio, nous vous remettons un périmètre fonctionnel chiffré et clair — pas de devis opaque. Le calendrier de réalisation précis est calé ensuite avec vos équipes.",
+            a: "Nous intervenons dans vos locaux à Creil, partout en France. Après un premier échange de cadrage à Creil ou en visio, nous vous remettons un périmètre fonctionnel chiffré et clair — pas de devis opaque. Le calendrier de réalisation précis est calé ensuite avec vos équipes.",
           },
           {
             q: "À qui appartiennent le code et les données après le projet ?",

@@ -64,8 +64,8 @@ export const CHATEAURENARD_COPY: VilleCopy = {
       a: "Oui, nous intervenons en agriculture sur prévision de rendement, gestion irrigation prédictive, optimisation main-d'œuvre saisonnière, traçabilité parcellaire, marketing vente directe.",
     },
     {
-      q: "Comment se déplace Axion-IA à Châteaurenard ?",
-      a: "Nos consultants se déplacent dans vos locaux ou au MIN.",
+      q: "Intervenez-vous à Châteaurenard ?",
+      a: "Oui. Nous intervenons dans vos locaux à Châteaurenard, partout en France, sur place ou à distance.",
     },
   ],
 };

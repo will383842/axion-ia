@@ -64,8 +64,8 @@ export const LE_CANNET_DES_MAURES_COPY: VilleCopy = {
       a: "Oui, nous intervenons en BTP, artisanat et commerce de proximité sur automatisation devis, gestion planning chantiers, content marketing local, fiches Google Business, SAV conversationnel.",
     },
     {
-      q: "Comment se déplace Axion-IA au Cannet-des-Maures ?",
-      a: "Nos consultants se déplacent dans vos locaux ou domaines.",
+      q: "Intervenez-vous au Cannet-des-Maures ?",
+      a: "Oui. Nous intervenons dans vos locaux au Cannet-des-Maures, partout en France, sur place ou à distance.",
     },
   ],
 };

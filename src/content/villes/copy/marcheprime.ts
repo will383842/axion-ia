@@ -65,7 +65,7 @@ export const MARCHEPRIME_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Marcheprime ?",
-      a: "Nos consultants interviennent dans vos locaux ou en visio. Gare TER Marcheprime. Livrables documentés, tarifs publics.",
+      a: "Nos consultants interviennent dans vos locaux ou en visio. Livrables documentés, tarifs publics.",
     },
   ],
 };

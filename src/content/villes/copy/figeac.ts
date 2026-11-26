@@ -64,8 +64,8 @@ export const FIGEAC_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les hébergements, restaurants et acteurs touristiques sur le chemin de Saint-Jacques : chatbots multilingues pèlerins, automatisation réservations, classification avis, marketing IA ciblé saison pèlerinage.",
     },
     {
-      q: "Comment se déroule une mission à Figeac ?",
-      a: "Nous intervenons dans vos locaux à Figeac, partout en France. Gare SNCF Figeac (ligne Brive-Toulouse). Tarifs transparents.",
+      q: "Intervenez-vous à Figeac ?",
+      a: "Oui. Nous intervenons dans vos locaux à Figeac, partout en France, sur place ou à distance.",
     },
   ],
 };

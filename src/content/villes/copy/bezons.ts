@@ -11,9 +11,9 @@ export const BEZONS_COPY: VilleCopy = {
   pitchEn:
     "Axion-IA accompagne les TPE et PME de Bezons (36 434 habitants, Val-d'Oise) dans leur transformation par l'intelligence artificielle. Située sur la rive droite de la Seine, à la frontière des Hauts-de-Seine et des Yvelines, Bezons abrite le siège mondial d'Atos ainsi que des implantations SFR et Darty, héritages d'un tissu industriel historique (Rhône-Poulenc, Hispano-Suiza). Nous intervenons partout en France, sur place ou à distance.",
   directAnswerFr:
-    "À Bezons (95870, Val-d'Oise, 36 434 habitants), Axion-IA intervient sur site auprès des TPE et PME, et complémentairement des ETI implantées localement comme Atos, SFR ou Darty. Notre cabinet national se déplace via le tramway T2 reliant La Défense en douze minutes, ou par les autoroutes A14, A15 et A86. Nous proposons des audits IA, des automatisations métier en code custom (jamais no-code) et un accompagnement un-à-un des dirigeants, avec un premier tarif public à {{price:intervention-4h|flat}}, dans le respect du RGPD et de l'AI Act.",
+    "À Bezons (95870, Val-d'Oise, 36 434 habitants), Axion-IA intervient sur site auprès des TPE et PME, et complémentairement des ETI implantées localement comme Atos, SFR ou Darty. Nous proposons des audits IA, des automatisations métier en code custom (jamais no-code) et un accompagnement un-à-un des dirigeants, avec un premier tarif public à {{price:intervention-4h|flat}}, dans le respect du RGPD et de l'AI Act.",
   directAnswerEn:
-    "À Bezons (95870, Val-d'Oise, 36 434 habitants), Axion-IA intervient sur site auprès des TPE et PME, et complémentairement des ETI implantées localement comme Atos, SFR ou Darty. Notre cabinet national se déplace via le tramway T2 reliant La Défense en douze minutes, ou par les autoroutes A14, A15 et A86. Nous proposons des audits IA, des automatisations métier en code custom (jamais no-code) et un accompagnement un-à-un des dirigeants, avec un premier tarif public à {{price:intervention-4h|flat}}, dans le respect du RGPD et de l'AI Act.",
+    "À Bezons (95870, Val-d'Oise, 36 434 habitants), Axion-IA intervient sur site auprès des TPE et PME, et complémentairement des ETI implantées localement comme Atos, SFR ou Darty. Nous proposons des audits IA, des automatisations métier en code custom (jamais no-code) et un accompagnement un-à-un des dirigeants, avec un premier tarif public à {{price:intervention-4h|flat}}, dans le respect du RGPD et de l'AI Act.",
   seoHook: "Atos, SFR, Darty & tramway T2 La Défense",
   ecosystemFr:
     "Bezons est marquée par un héritage industriel fort (anciennement Rhône-Poulenc, Hispano-Suiza, Le Joint français) reconverti en pôle tertiaire de premier plan : Atos y maintient son siège mondial, aux côtés de SFR et Darty. La commune borde Argenteuil, Sartrouville, Houilles, Carrières-sur-Seine, Colombes et Nanterre, ce qui place les TPE et PME locales dans l'aire d'influence directe de La Défense, accessible en douze minutes par le tramway T2.",
@@ -231,8 +231,8 @@ export const BEZONS_COPY: VilleCopy = {
       a: "Nos tarifs publics démarrent à {{price:audit-flash|flat}} pour un Audit sur place et {{price:intervention-4h|flat}} pour une intervention au format collectif (1 journée) à Bezons. L'implémentation et l'accompagnement un-à-un débutent à {{price:intervention-dirigeants|flat}}, sans frais cachés.",
     },
     {
-      q: "Axion-IA se déplace-t-il sur site à Bezons (Val-d'Oise) ?",
-      a: "Oui. Nous intervenons partout en France, sur place ou à distance.",
+      q: "Intervenez-vous à Bezons (Val-d'Oise) ?",
+      a: "Oui. Nous intervenons dans vos locaux à Bezons (Val-d'Oise), partout en France, sur place ou à distance.",
     },
     {
       q: "Quels délais pour démarrer un projet IA à Bezons ?",

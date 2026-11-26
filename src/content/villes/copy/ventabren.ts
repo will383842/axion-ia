@@ -49,7 +49,7 @@ export const VENTABREN_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Ventabren et dans l'ouest aixois ?",
-      a: "Oui, Axion-IA intervient à Ventabren et dans tout l'ouest aixois (Coudoux à 5 min, Velaux, Éguilles, Aix à 15 min). Proximité immédiate gare TGV Aix-en-Provence et technopôle de l'Arbois.",
+      a: "Nous intervenons dans vos locaux à Ventabren, partout en France. Proximité immédiate gare TGV Aix-en-Provence et technopôle de l'Arbois.",
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Ventabren  ?",

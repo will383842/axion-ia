@@ -49,7 +49,7 @@ export const MALEMORT_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Malemort et dans l'agglo Brive ?",
-      a: "Oui, Axion-IA intervient à Malemort et dans toute l'agglomération de Brive (Saint-Pantaléon-de-Larche, Ussac, Allassac). Gare SNCF Brive à 5 min, aéroport à 15 min.",
+      a: "Oui, Axion-IA intervient à Malemort et dans toute l'agglomération de Brive (Saint-Pantaléon-de-Larche, Ussac, Allassac).",
     },
     {
       q: "Tarifs audit IA à Malemort  : quel budget prévoir ?",
@@ -61,7 +61,7 @@ export const MALEMORT_COPY: VilleCopy = {
     },
     {
       q: "Quel délai pour démarrer une mission IA à Malemort ?",
-      a: "Intervention sous 5 jours ouvrés. Brive à 5 min, aéroport à 15 min.",
+      a: "Nous intervenons dans vos locaux à Malemort, partout en France. Intervention sous 5 jours ouvrés.",
     },
     {
       q: "Proposez-vous des formations IA pour équipes commerce à Malemort ?",

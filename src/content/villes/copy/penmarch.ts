@@ -49,7 +49,7 @@ export const PENMARCH_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Penmarch et dans le Pays Bigouden ?",
-      a: "Oui, Axion-IA intervient à Penmarch et dans tout le Pays Bigouden (Le Guilvinec, Pont-l'Abbé, Plomeur, Loctudy, Plobannalec-Lesconil). Quimper à 30 min en voiture.",
+      a: "Oui, Axion-IA intervient à Penmarch et dans tout le Pays Bigouden (Le Guilvinec, Pont-l'Abbé, Plomeur, Loctudy, Plobannalec-Lesconil).",
     },
     {
       q: "Tarifs audit IA à Penmarch  : quel budget prévoir ?",

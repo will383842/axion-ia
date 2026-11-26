@@ -230,8 +230,8 @@ export const BUSSY_SAINT_GEORGES_COPY: VilleCopy = {
       a: "Nos tarifs publics démarrent à {{price:audit-flash|flat}} pour un Audit sur place de 4 heures à Bussy-Saint-Georges. Les interventions et implémentations suivantes sont facturées sur devis selon le périmètre validé après l'audit.",
     },
     {
-      q: "Sous quel délai Axion-IA se déplace-t-il sur site à Bussy-Saint-Georges ?",
-      a: "Williams se déplace sur site à Bussy-Saint-Georges dans un délai de 5 jours ouvrés à compter de la signature du devis, selon la disponibilité du planning.",
+      q: "Intervenez-vous à Bussy-Saint-Georges ?",
+      a: "Oui. Nous intervenons dans vos locaux à Bussy-Saint-Georges, partout en France, sur place ou à distance.",
     },
     {
       q: "Intervenez-vous dans les communes proches de Bussy-Saint-Georges ?",

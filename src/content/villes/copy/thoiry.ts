@@ -68,8 +68,8 @@ export const THOIRY_COPY: VilleCopy = {
       a: "Audit sur place pour cadrer les priorités, intervention d'une journée pour rendre vos équipes autonomes, et coaching individuel. Tous nos tarifs sont publics et transparents.",
     },
     {
-      q: "Comment se déroule une mission à Thoiry ?",
-      a: "Nous intervenons partout en France, sur place ou à distance.",
+      q: "Intervenez-vous à Thoiry ?",
+      a: "Oui. Nous intervenons dans vos locaux à Thoiry, partout en France, sur place ou à distance.",
     },
     {
       q: "Comment Axion-IA garantit-il la conformité RGPD à Thoiry ?",

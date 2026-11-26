@@ -64,8 +64,8 @@ export const APT_COPY: VilleCopy = {
       a: "Oui, nous intervenons en hôtellerie-restauration Luberon sur gestion des réservations, agents conversationnels multilingues, content marketing nature et patrimoine, e-réputation et optimisation Google Business.",
     },
     {
-      q: "Comment se déplace Axion-IA à Apt ?",
-      a: "Nos consultants se déplacent dans vos locaux malgré la ruralité du Luberon.",
+      q: "Intervenez-vous à Apt ?",
+      a: "Oui. Nous intervenons dans vos locaux à Apt, partout en France, sur place ou à distance.",
     },
   ],
 };

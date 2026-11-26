@@ -65,7 +65,7 @@ export const PORDIC_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Pordic ?",
-      a: "Paris-Saint-Brieuc en 2h45 (TGV direct), puis 15 min jusqu'à Pordic. Rennes à 1h10.",
+      a: "Nous intervenons dans vos locaux à Pordic, partout en France. Paris-Saint-Brieuc (TGV direct), puis 15 min jusqu'à Pordic.",
     },
   ],
 };

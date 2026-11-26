@@ -49,7 +49,7 @@ export const LUNEVILLE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Lunéville et dans le Lunévillois ?",
-      a: "Oui, Axion-IA intervient à Lunéville et tout le Lunévillois (Baccarat à 20 min, Badonviller, Blâmont). Nous intervenons partout en France, sur place ou à distance.",
+      a: "Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les artisans faïenciers de Lunéville ?",

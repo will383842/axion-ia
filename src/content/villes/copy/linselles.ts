@@ -49,7 +49,7 @@ export const LINSELLES_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Linselles et à la frontière belge ?",
-      a: "Oui, Axion-IA intervient à Linselles et dans tout le nord de la Métropole Européenne de Lille (Tourcoing, Roubaix, Wattrelos, Bondues, Marquette-lez-Lille), incluant les flux transfrontaliers vers Mouscron (Belgique, 5 min). Nos consultants couvrent l'ensemble du bassin lillois-belge.",
+      a: "Oui, Axion-IA intervient à Linselles et dans tout le nord de la Métropole Européenne de Lille (Tourcoing, Roubaix, Wattrelos, Bondues, Marquette-lez-Lille), incluant les flux transfrontaliers vers Mouscron. Nos consultants couvrent l'ensemble du bassin lillois-belge.",
     },
     {
       q: "Accompagnez-vous les PME textile-confection à Linselles ?",

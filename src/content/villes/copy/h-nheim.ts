@@ -49,7 +49,7 @@ export const H_NHEIM_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Hœnheim et dans l'Eurométropole de Strasbourg ?",
-      a: "Oui, Axion-IA intervient à Hœnheim et sur toute l'Eurométropole de Strasbourg (Strasbourg, Bischheim, Schiltigheim, Souffelweyersheim). Strasbourg centre à 15 min en tram B (terminus Hœnheim-Gare).",
+      a: "Oui, Axion-IA intervient à Hœnheim et sur toute l'Eurométropole de Strasbourg (Strasbourg, Bischheim, Schiltigheim, Souffelweyersheim).",
     },
     {
       q: "Tarifs audit IA à Hœnheim  : quel budget prévoir ?",

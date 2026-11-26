@@ -123,8 +123,8 @@ export const HYERES_COPY: VilleCopy = {
             a: "Oui. La fréquentation de Porquerolles est plafonnée (~6 000 visiteurs/jour) et les traversées TLV-TVM limitées (~4 000 passagers/jour). Nous développons des moteurs de réservation qui respectent ces jauges, gèrent le multilingue et lissent les pics de saison vers Porquerolles, Port-Cros et Le Levant.",
           },
           {
-            q: "Axion-IA se déplace-t-il sur site à Hyères et dans la presqu'île ?",
-            a: "Oui. Nous intervenons dans vos locaux à Hyères — exploitations sous serre, hôtels, campings, caves des Côtes de Provence, ZAE du Chibasson, secteur de l'aéroport — et dans les communes voisines : Toulon, La Garde, Carqueiranne, La Crau.",
+            q: "Intervenez-vous à Hyères et dans la presqu'île ?",
+            a: "Oui. Nous intervenons dans vos locaux à Hyères et dans la presqu'île, partout en France, sur place ou à distance.",
           },
           {
             q: "Faut-il être une grande entreprise pour un site ou un SaaS avec Axion-IA ?",
@@ -229,8 +229,8 @@ export const HYERES_COPY: VilleCopy = {
 
   faqGeolocalisee: [
     {
-      q: "Axion-IA se déplace-t-il sur site à Hyères et vers les îles d'Or ?",
-      a: "Oui. Notre cabinet d'experts IA se déplace dans vos locaux à Hyères et sur l'ensemble de la presqu'île pour observer vos processus réels, généralement sous cinq jours ouvrés.",
+      q: "Intervenez-vous à Hyères et vers les îles d'Or ?",
+      a: "Oui. Nous intervenons dans vos locaux à Hyères et vers les îles d'Or, partout en France, sur place ou à distance.",
     },
     {
       q: "Quels gains l'IA apporte-t-elle à un hôtelier ou un viticulteur de Hyères ?",

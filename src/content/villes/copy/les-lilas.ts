@@ -231,8 +231,8 @@ export const LES_LILAS_COPY: VilleCopy = {
       a: "Audits Sur place à partir de {{price:audit-flash|flat}} pour 4 heures sur site aux Lilas. Tarifs publics sur axion-ia.com/tarifs. Devis personnalisé sous 48 h pour les missions plus longues.",
     },
     {
-      q: "Williams se déplace-t-il aux Lilas pour intervenir sur site ?",
-      a: "Oui. Williams se déplace aux Lilas (93260) et dans les communes limitrophes : Pantin, Bagnolet, Le Pré-Saint-Gervais, Romainville, ainsi que le 19e et 20e arrondissements de Paris.",
+      q: "Intervenez-vous aux Lilas pour intervenir sur site ?",
+      a: "Oui. Nous intervenons dans vos locaux aux Lilas, partout en France, sur place ou à distance.",
     },
     {
       q: "Quels délais pour démarrer une mission IA aux Lilas ?",

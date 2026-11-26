@@ -64,8 +64,8 @@ export const SAINT_PERAY_COPY: VilleCopy = {
       a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1.",
     },
     {
-      q: "Comment se déroule une mission à Saint-Péray ?",
-      a: "Nous intervenons dans vos locaux à Saint-Péray, partout en France.",
+      q: "Intervenez-vous à Saint-Péray ?",
+      a: "Oui. Nous intervenons dans vos locaux à Saint-Péray, partout en France, sur place ou à distance.",
     },
   ],
 };

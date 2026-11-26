@@ -49,7 +49,7 @@ export const ORGEVAL_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Orgeval et dans l'ouest Yvelines ?",
-      a: "Oui, Axion-IA intervient à Orgeval et dans tout l'ouest des Yvelines (Poissy à 10 min, Saint-Germain-en-Laye à 15 min, Villennes-sur-Seine, Maule).",
+      a: "Nous intervenons dans vos locaux à Orgeval, partout en France.",
     },
     {
       q: "Accompagnez-vous les freelances et auto-entrepreneurs à Orgeval ?",
@@ -64,8 +64,8 @@ export const ORGEVAL_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les PME conseil et prestataires tertiaires d'Orgeval et de l'ouest francilien : automatisation workflows, reporting augmenté, CRM intelligent, agents conversationnels B2B, classification documentaire IA.",
     },
     {
-      q: "Comment se déroule une mission à Orgeval ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Gare de Villennes-sur-Seine (Transilien J) à 8 min.",
+      q: "Intervenez-vous à Orgeval ?",
+      a: "Oui. Nous intervenons dans vos locaux à Orgeval, partout en France, sur place ou à distance.",
     },
   ],
 };

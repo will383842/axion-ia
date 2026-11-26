@@ -231,8 +231,8 @@ export const SAINTES_COPY: VilleCopy = {
       a: "Audits Sur place à partir de {{price:audit-flash|flat}} pour 4 heures sur site à Saintes. Tarifs publics sur axion-ia.com/tarifs. Devis personnalisé sous 48 h pour missions plus longues.",
     },
     {
-      q: "Williams se déplace-t-il à Saintes pour intervenir sur site ?",
-      a: "Oui. Williams se déplace à Saintes (17100) et dans les communes limitrophes : Chaniers, Chermignac, Fontcouverte, Bussac-sur-Charente, ainsi qu'à Cognac et dans toute la Charente-Maritime. Nous intervenons partout en France, sur place ou à distance.",
+      q: "Intervenez-vous à Saintes pour intervenir sur site ?",
+      a: "Oui. Nous intervenons dans vos locaux à Saintes, partout en France, sur place ou à distance.",
     },
     {
       q: "Quels délais pour démarrer une mission IA à Saintes ?",

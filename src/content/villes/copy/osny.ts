@@ -49,7 +49,7 @@ export const OSNY_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Osny et agglo Cergy-Pontoise ?",
-      a: "Oui, Axion-IA intervient à Osny et toute l'agglomération Cergy-Pontoise (Cergy à 5 min, Paris La Défense à 35 min, Paris Saint-Lazare à 40 min transilien J).",
+      a: "Nous intervenons dans vos locaux à Osny, partout en France.",
     },
     {
       q: "Travaillez-vous avec les commerçants et artisans d'Osny ?",

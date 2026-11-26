@@ -64,8 +64,8 @@ export const BONDUES_COPY: VilleCopy = {
       a: "Pour les TPE commerçants haut de gamme et artisans BTP à Bondues, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, classification photos chantiers, marketing local, gestion fidélité.",
     },
     {
-      q: "Comment se déroule une mission à Bondues ?",
-      a: "Nous intervenons partout en France, sur place ou à distance.",
+      q: "Intervenez-vous à Bondues ?",
+      a: "Oui. Nous intervenons dans vos locaux à Bondues, partout en France, sur place ou à distance.",
     },
   ],
 };

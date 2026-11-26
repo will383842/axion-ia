@@ -49,7 +49,7 @@ export const VILLE_LA_GRAND_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Ville-la-Grand et Grand Genève ?",
-      a: "Oui, Axion-IA intervient à Ville-la-Grand et tout le Grand Genève (Annemasse à 5 min, Genève à 10 min). Aéroport Genève-Cointrin à 15 min.",
+      a: "Nous intervenons dans vos locaux à Ville-la-Grand, partout en France.",
     },
     {
       q: "Tarifs audit IA à Ville-la-Grand  : quel budget prévoir ?",

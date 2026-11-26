@@ -64,8 +64,8 @@ export const MONTEUX_COPY: VilleCopy = {
       a: "Oui, nous intervenons auprès des parcs de loisirs, hôteliers et restaurateurs sur gestion réservations, agents conversationnels multilingues, content marketing local et optimisation des fiches Google Business.",
     },
     {
-      q: "Comment se déplace Axion-IA à Monteux ?",
-      a: "Nos consultants se déplacent dans vos locaux.",
+      q: "Intervenez-vous à Monteux ?",
+      a: "Oui. Nous intervenons dans vos locaux à Monteux, partout en France, sur place ou à distance.",
     },
   ],
 };

@@ -49,7 +49,7 @@ export const NANDY_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Nandy et dans le sud Seine-et-Marne ?",
-      a: "Oui, Axion-IA intervient à Nandy et dans toute l'agglomération Grand Paris Sud (Sénart, Cesson, Savigny-le-Temple, Melun à 15 min). Nous intervenons partout en France, sur place ou à distance.",
+      a: "Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Nandy  ?",
@@ -64,8 +64,8 @@ export const NANDY_COPY: VilleCopy = {
       a: "Oui, nous intervenons auprès des PME tertiaires et prestataires de services implantés dans les zones d'activités de Sénart : automatisation workflow, agents conversationnels B2B, reporting augmenté, CRM intelligent.",
     },
     {
-      q: "Comment se déroule une mission à Nandy ?",
-      a: "Nous intervenons partout en France, sur place ou à distance.",
+      q: "Intervenez-vous à Nandy ?",
+      a: "Oui. Nous intervenons dans vos locaux à Nandy, partout en France, sur place ou à distance.",
     },
   ],
 };

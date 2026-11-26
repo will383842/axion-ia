@@ -64,8 +64,8 @@ export const MORIERES_LES_AVIGNON_COPY: VilleCopy = {
       a: "Oui, nous intervenons en BTP et commerce de proximité sur automatisation devis et chiffrage, gestion planning chantiers, content marketing local, fiches Google Business et SAV conversationnel.",
     },
     {
-      q: "Comment se déplace Axion-IA à Morières-lès-Avignon ?",
-      a: "Nos consultants se déplacent dans vos locaux.",
+      q: "Intervenez-vous à Morières-lès-Avignon ?",
+      a: "Oui. Nous intervenons dans vos locaux à Morières-lès-Avignon, partout en France, sur place ou à distance.",
     },
   ],
 };

@@ -49,7 +49,7 @@ export const ORSAY_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Orsay et sur le campus Paris-Saclay ?",
-      a: "Oui, Axion-IA intervient à Orsay et sur tout le campus Paris-Saclay (Palaiseau à 5 min, Massy TGV à 10 min, Paris centre à 30 min en RER B).",
+      a: "Nous intervenons dans vos locaux à Orsay, partout en France.",
     },
     {
       q: "Travaillez-vous avec les startups deeptech du plateau de Saclay ?",

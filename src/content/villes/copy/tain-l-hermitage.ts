@@ -64,8 +64,8 @@ export const TAIN_L_HERMITAGE_COPY: VilleCopy = {
       a: "Pour les TPE artisans et commerçants oenotouristiques à Tain-l'Hermitage, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : agents conversationnels multilingue, automatisation réservations dégustations.",
     },
     {
-      q: "Comment se déroule une mission à Tain-l'Hermitage ?",
-      a: "Nous intervenons partout en France, sur place ou à distance.",
+      q: "Intervenez-vous à Tain-l'Hermitage ?",
+      a: "Oui. Nous intervenons dans vos locaux à Tain-l'Hermitage, partout en France, sur place ou à distance.",
     },
   ],
 };

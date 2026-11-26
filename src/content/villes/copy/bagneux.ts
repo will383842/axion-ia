@@ -242,7 +242,7 @@ export const BAGNEUX_COPY: VilleCopy = {
     },
     {
       q: "Intervenez-vous aussi à Montrouge, Châtillon ou Fontenay-aux-Roses ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Déplacement rapide grâce au métro et au périphérique.",
+      a: "Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Vos solutions IA sont-elles conformes au RGPD ?",

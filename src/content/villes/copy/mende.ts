@@ -65,7 +65,7 @@ export const MENDE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Mende ?",
-      a: "Gare SNCF Mende (ligne Clermont-Nîmes). Missions possibles sur site ou en visio.",
+      a: "Missions possibles sur site ou en visio.",
     },
   ],
 };

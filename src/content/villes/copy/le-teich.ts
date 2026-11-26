@@ -65,7 +65,7 @@ export const LE_TEICH_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission au Teich ?",
-      a: "Nos consultants interviennent dans vos locaux au Teich ou en visio. Gare TER Le Teich accessible. Missions adaptées aux saisonnalités touristiques.",
+      a: "Nos consultants interviennent dans vos locaux au Teich ou en visio. Missions adaptées aux saisonnalités touristiques.",
     },
   ],
 };

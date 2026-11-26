@@ -159,7 +159,7 @@ export const BOULOGNE_BILLANCOURT_COPY: VilleCopy = {
           },
           {
             q: "Intervenez-vous aussi dans les communes limitrophes (Issy-les-Moulineaux, Meudon, Saint-Cloud) ?",
-            a: "Oui. Le bassin Boulogne-Billancourt est notre zone d'intervention complète : Issy-les-Moulineaux (~2 km), Vanves (~3 km), Sèvres (~3 km), Meudon (~4 km), Saint-Cloud (~3 km) et bien sûr Paris 15e et 16e limitrophes.",
+            a: "Oui. Le bassin Boulogne-Billancourt est notre zone d'intervention complète : Issy-les-Moulineaux, Vanves, Sèvres, Meudon, Saint-Cloud et bien sûr Paris 15e et 16e limitrophes.",
           },
           {
             q: "Faut-il être déjà avancé sur l'IA pour solliciter un audit ?",
@@ -1009,7 +1009,7 @@ export const BOULOGNE_BILLANCOURT_COPY: VilleCopy = {
     },
     {
       q: "Intervenez-vous aussi dans les communes limitrophes (Issy-les-Moulineaux, Meudon, Saint-Cloud, Sèvres) ?",
-      a: "Oui. Le bassin Boulogne-Billancourt est notre zone d'intervention complète : Issy-les-Moulineaux (~2 km), Vanves (~3 km), Sèvres (~3 km), Saint-Cloud (~3 km), Meudon (~4 km), et Paris 15e/16e limitrophes.",
+      a: "Oui. Le bassin Boulogne-Billancourt est notre zone d'intervention complète : Issy-les-Moulineaux, Vanves, Sèvres, Saint-Cloud, Meudon, et Paris 15e/16e limitrophes.",
     },
   ],
 };

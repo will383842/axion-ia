@@ -49,7 +49,7 @@ export const BOISSY_SAINT_LEGER_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Boissy-Saint-Léger et est Val-de-Marne ?",
-      a: "Oui, Axion-IA intervient à Boissy-Saint-Léger et dans tout l'est du Val-de-Marne (Sucy-en-Brie, Limeil-Brévannes, La Queue-en-Brie, Villecresnes). Terminus RER A, Paris à 35 min.",
+      a: "Oui, Axion-IA intervient à Boissy-Saint-Léger et dans tout l'est du Val-de-Marne (Sucy-en-Brie, Limeil-Brévannes, La Queue-en-Brie, Villecresnes).",
     },
     {
       q: "Accompagnez-vous les professions libérales et cabinets de santé ?",

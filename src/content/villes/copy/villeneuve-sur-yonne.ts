@@ -64,8 +64,8 @@ export const VILLENEUVE_SUR_YONNE_COPY: VilleCopy = {
       a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1.",
     },
     {
-      q: "Comment se déroule une mission à Villeneuve-sur-Yonne ?",
-      a: "Nous intervenons partout en France, sur place ou à distance.",
+      q: "Intervenez-vous à Villeneuve-sur-Yonne ?",
+      a: "Oui. Nous intervenons dans vos locaux à Villeneuve-sur-Yonne, partout en France, sur place ou à distance.",
     },
   ],
 };

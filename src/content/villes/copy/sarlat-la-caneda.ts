@@ -49,7 +49,7 @@ export const SARLAT_LA_CANEDA_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Sarlat-la-Canéda ?",
-      a: "Oui, Axion-IA intervient à Sarlat et dans tout le Périgord Noir (Montignac-Lascaux, Domme, La Roque-Gageac). Gare SNCF Sarlat ou aéroport Brive à 50 min.",
+      a: "Oui, Axion-IA intervient à Sarlat et dans tout le Périgord Noir (Montignac-Lascaux, Domme, La Roque-Gageac).",
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Sarlat  ?",
@@ -61,7 +61,7 @@ export const SARLAT_LA_CANEDA_COPY: VilleCopy = {
     },
     {
       q: "Quel délai pour démarrer une mission IA à Sarlat ?",
-      a: "Intervention sous 5 jours ouvrés. Brive à 45 min, Périgueux à 1h15. Déplacements sur site ou sessions en visio selon vos préférences.",
+      a: "Intervention sous 5 jours ouvrés. Déplacements sur site ou sessions en visio selon vos préférences.",
     },
     {
       q: "L'IA peut-elle aider la filière foie gras et truffes du Périgord ?",

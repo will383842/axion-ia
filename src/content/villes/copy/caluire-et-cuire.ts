@@ -132,7 +132,7 @@ export const CALUIRE_ET_CUIRE_COPY: VilleCopy = {
           },
           {
             q: "Sous quel délai recevons-nous un devis ?",
-            a: "À partir de 24 à 48 h selon la complexité, après un premier échange. Nous intervenons partout en France, sur place ou à distance.",
+            a: "Nous intervenons partout en France, sur place ou à distance.",
           },
         ],
         guarantees:
@@ -230,7 +230,7 @@ export const CALUIRE_ET_CUIRE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Caluire-et-Cuire et dans la Métropole de Lyon ?",
-      a: "Oui, Axion-IA se déplace sur site à Caluire-et-Cuire et dans toute la Métropole (Lyon Part-Dieu à 10 min). Nous accompagnons en priorité les TPE et PME, puis les ETI en complément.",
+      a: "Nous intervenons dans vos locaux, partout en France. Nous accompagnons en priorité les TPE et PME, puis les ETI en complément.",
     },
     {
       q: "Travaillez-vous avec les professions de santé et libérales ?",

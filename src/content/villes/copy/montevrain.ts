@@ -49,7 +49,7 @@ export const MONTEVRAIN_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Montévrain et dans le pôle Val d'Europe ?",
-      a: "Oui, Axion-IA intervient à Montévrain et dans tout le pôle Val d'Europe / Marne-la-Vallée (Chessy, Serris, Bailly-Romainvilliers, Bussy-Saint-Georges). Gare TGV Marne-la-Vallée-Chessy à 5 min.",
+      a: "Oui, Axion-IA intervient à Montévrain et dans tout le pôle Val d'Europe / Marne-la-Vallée (Chessy, Serris, Bailly-Romainvilliers, Bussy-Saint-Georges).",
     },
     {
       q: "Quel est le prix d'un audit IA à Montévrain ?",

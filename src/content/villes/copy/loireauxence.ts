@@ -49,7 +49,7 @@ export const LOIREAUXENCE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Loireauxence ?",
-      a: "Oui, Axion-IA intervient à Loireauxence et dans tout l'est Loire-Atlantique (Ancenis à 10 min, Oudon, Ligné, Le Loroux-Bottereau). Gare Ancenis TER Nantes-Angers desservie. Couverture complète département 44.",
+      a: "Nous intervenons dans vos locaux à Loireauxence, partout en France. Couverture complète département 44.",
     },
     {
       q: "Accompagnez-vous les TPE artisans et exploitants agricoles ?",
@@ -60,8 +60,8 @@ export const LOIREAUXENCE_COPY: VilleCopy = {
       a: "Pour les PME tertiaires du bassin Ancenis-Nantes, nous proposons audit IA (Sur place à Stratégique), interventions sur site, implémentation IA (agents, automatisations), coaching 1-to-1 dirigeants, et plateformes web/SaaS IA. Tarifs publics.",
     },
     {
-      q: "Comment se déroule une mission à Loireauxence ?",
-      a: "Nous intervenons partout en France, sur place ou à distance.",
+      q: "Intervenez-vous à Loireauxence ?",
+      a: "Oui. Nous intervenons dans vos locaux à Loireauxence, partout en France, sur place ou à distance.",
     },
     {
       q: "L'audit sur place {{price:audit-flash|flat}} convient-il aux petites structures ?",

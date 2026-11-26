@@ -49,7 +49,7 @@ export const ONNAING_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Onnaing et dans l'agglo valenciennoise ?",
-      a: "Oui, Axion-IA intervient à Onnaing et dans toute l'agglomération de Valenciennes (Petite-Forêt, Bruay-sur-l'Escaut, Anzin, Saint-Amand-les-Eaux, Denain), incluant les zones industrielles automobiles et la frontière belge (Quiévrain, 10 min). Nos consultants couvrent l'ensemble du bassin valenciennois.",
+      a: "Oui, Axion-IA intervient à Onnaing et dans toute l'agglomération de Valenciennes (Petite-Forêt, Bruay-sur-l'Escaut, Anzin, Saint-Amand-les-Eaux, Denain), incluant les zones industrielles automobiles et la frontière belge. Nos consultants couvrent l'ensemble du bassin valenciennois.",
     },
     {
       q: "Accompagnez-vous les sous-traitants automobile à Onnaing ?",

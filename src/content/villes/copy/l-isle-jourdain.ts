@@ -65,7 +65,7 @@ export const L_ISLE_JOURDAIN_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à L'Isle-Jourdain ?",
-      a: "Nos consultants interviennent sur site à L'Isle-Jourdain. Déplacement direct dans votre entreprise. Gare SNCF L'Isle-Jourdain sur la ligne Toulouse-Auch. Aéroport Toulouse-Blagnac à 40 min. Intervention sous 5 jours ouvrés.",
+      a: "Nos consultants interviennent sur site à L'Isle-Jourdain. Déplacement direct dans votre entreprise. Intervention sous 5 jours ouvrés.",
     },
   ],
 };

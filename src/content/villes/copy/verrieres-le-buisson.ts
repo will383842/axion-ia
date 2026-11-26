@@ -49,7 +49,7 @@ export const VERRIERES_LE_BUISSON_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Verrières-le-Buisson et nord Essonne ?",
-      a: "Oui, Axion-IA intervient à Verrières-le-Buisson et tout le nord Essonne (Antony à 5 min, Massy TGV à 10 min, Paris centre à 25 min). Aéroport Orly à 15 min.",
+      a: "Nous intervenons dans vos locaux à Verrières-le-Buisson, partout en France.",
     },
     {
       q: "Travaillez-vous avec les professions libérales et cabinets conseil ?",
@@ -64,8 +64,8 @@ export const VERRIERES_LE_BUISSON_COPY: VilleCopy = {
       a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1.",
     },
     {
-      q: "Comment se déroule une mission à Verrières-le-Buisson ?",
-      a: "Nous intervenons dans vos locaux à Verrières-le-Buisson, partout en France.",
+      q: "Intervenez-vous à Verrières-le-Buisson ?",
+      a: "Oui. Nous intervenons dans vos locaux à Verrières-le-Buisson, partout en France, sur place ou à distance.",
     },
   ],
 };

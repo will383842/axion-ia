@@ -49,7 +49,7 @@ export const JUVISY_SUR_ORGE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Juvisy-sur-Orge et nord Essonne ?",
-      a: "Oui, Axion-IA intervient à Juvisy-sur-Orge et tout le nord Essonne (Athis-Mons à 5 min, Orly à 10 min, Paris-Austerlitz à 20 min via RER C, Paris-Gare de Lyon à 25 min via RER D).",
+      a: "Nous intervenons dans vos locaux à Juvisy-sur-Orge, partout en France.",
     },
     {
       q: "Travaillez-vous avec les PME tertiaires de Juvisy-sur-Orge ?",

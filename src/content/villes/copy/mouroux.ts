@@ -49,7 +49,7 @@ export const MOUROUX_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Mouroux et dans l'agglomération Coulommiers ?",
-      a: "Oui, Axion-IA intervient à Mouroux et dans toute l'agglomération de Coulommiers (Coulommiers à 5 min, La Ferté-sous-Jouarre à 20 min, Meaux à 25 min). Nous intervenons partout en France, sur place ou à distance.",
+      a: "Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quel est le tarif d'un audit IA à Mouroux  ?",
@@ -64,8 +64,8 @@ export const MOUROUX_COPY: VilleCopy = {
       a: "Oui, nous intervenons auprès des TPE artisans et commerçants de Mouroux et de l'agglomération Coulommiers : automatisation devis et facturation, gestion planning, communication digitale, fidélisation clients. Formats courts adaptés.",
     },
     {
-      q: "Comment se déroule une mission à Mouroux ?",
-      a: "Nous intervenons partout en France, sur place ou à distance.",
+      q: "Intervenez-vous à Mouroux ?",
+      a: "Oui. Nous intervenons dans vos locaux à Mouroux, partout en France, sur place ou à distance.",
     },
   ],
 };

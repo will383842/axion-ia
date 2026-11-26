@@ -64,8 +64,8 @@ export const LE_PONTET_COPY: VilleCopy = {
       a: "Oui, nous intervenons en BTP, artisanat, commerce et professions libérales sur automatisation devis, gestion planning, content marketing local, fiches Google Business, SAV conversationnel.",
     },
     {
-      q: "Comment se déplace Axion-IA au Pontet ?",
-      a: "Nos consultants se déplacent dans vos locaux.",
+      q: "Intervenez-vous au Pontet ?",
+      a: "Oui. Nous intervenons dans vos locaux au Pontet, partout en France, sur place ou à distance.",
     },
   ],
 };

@@ -64,8 +64,8 @@ export const BOLLENE_COPY: VilleCopy = {
       a: "Oui, nous intervenons en BTP, artisanat, sous-traitance industrielle (Tricastin) et commerce de proximité sur automatisation devis, gestion documentaire qualité, content marketing local, fiches Google Business, SAV conversationnel.",
     },
     {
-      q: "Comment se déplace Axion-IA à Bollène ?",
-      a: "Nos consultants se déplacent dans vos locaux ou domaines.",
+      q: "Intervenez-vous à Bollène ?",
+      a: "Oui. Nous intervenons dans vos locaux à Bollène, partout en France, sur place ou à distance.",
     },
   ],
 };

@@ -63,7 +63,7 @@ export const SIMIANE_COLLONGUE_COPY: VilleCopy = {
     },
     {
       q: "Pouvez-vous intervenir sur les commerces du Plan de Campagne ?",
-      a: "Oui, les commerces de prestige situés à Plan de Campagne (Cabriès, à 10 min de Simiane-Collongue) bénéficient de nos missions content marketing local, fiches Google Business, agents conversationnels SAV, automatisation campagnes email, classification feedback clients.",
+      a: "Nous intervenons dans vos locaux à Simiane-Collongue, partout en France.",
     },
     {
       q: "Comment se passe une intervention à Simiane-Collongue ?",

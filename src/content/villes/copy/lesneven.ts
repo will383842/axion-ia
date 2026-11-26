@@ -64,8 +64,8 @@ export const LESNEVEN_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les agriculteurs et éleveurs du Pays de Léon sur leurs cas IA : prédiction météo, classification photos cultures, automatisation traçabilité parcellaire, gestion troupeau, vente directe.",
     },
     {
-      q: "Comment se déroule une mission à Lesneven ?",
-      a: "Nous intervenons partout en France, sur place ou à distance.",
+      q: "Intervenez-vous à Lesneven ?",
+      a: "Oui. Nous intervenons dans vos locaux à Lesneven, partout en France, sur place ou à distance.",
     },
   ],
 };

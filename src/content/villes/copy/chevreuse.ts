@@ -49,7 +49,7 @@ export const CHEVREUSE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Chevreuse et dans la vallée de Chevreuse ?",
-      a: "Oui, Axion-IA intervient à Chevreuse et dans tout le PNR de la Haute Vallée de Chevreuse (Saint-Rémy-lès-Chevreuse à 5 min, Cernay-la-Ville, Dampierre-en-Yvelines, Gif-sur-Yvette à 10 min). Nos consultants se déplacent sur site ou en visio.",
+      a: "Nos consultants se déplacent sur site ou en visio.",
     },
     {
       q: "Tarifs audit IA à Chevreuse  : quel budget prévoir ?",

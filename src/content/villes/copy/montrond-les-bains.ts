@@ -49,7 +49,7 @@ export const MONTROND_LES_BAINS_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Montrond-les-Bains et plaine Forez ?",
-      a: "Oui, Axion-IA intervient à Montrond-les-Bains et toute la plaine du Forez (Saint-Galmier à 10 min, Andrézieux-Bouthéon, Sury-le-Comtal, Feurs). Couverture Loire Forez Agglo. Nous intervenons partout en France, sur place ou à distance.",
+      a: "Couverture Loire Forez Agglo. Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les acteurs thermalisme et casino ?",

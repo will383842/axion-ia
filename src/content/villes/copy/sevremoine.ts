@@ -231,8 +231,8 @@ export const SEVREMOINE_COPY: VilleCopy = {
       a: "Nos tarifs publics démarrent à {{price:audit-flash|flat}} pour un Audit sur place et {{price:intervention-4h|flat}} pour une formation collective. L'implémentation et l'accompagnement un-à-un débutent à {{price:intervention-dirigeants|flat}}, sans frais cachés.",
     },
     {
-      q: "Axion-IA se déplace-t-il sur site à Sèvremoine (Maine-et-Loire) ?",
-      a: "Oui. Nous intervenons partout en France, sur place ou à distance.",
+      q: "Intervenez-vous à Sèvremoine (Maine-et-Loire) ?",
+      a: "Oui. Nous intervenons dans vos locaux à Sèvremoine (Maine-et-Loire), partout en France, sur place ou à distance.",
     },
     {
       q: "Quels délais pour démarrer un projet IA à Sèvremoine ?",

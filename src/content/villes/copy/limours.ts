@@ -49,7 +49,7 @@ export const LIMOURS_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Limours et dans le Hurepoix ?",
-      a: "Oui, Axion-IA intervient à Limours et dans le Hurepoix : Orsay à 15 min, Dourdan à 15 min, Massy TGV à 20 min, Paris centre à 40 min par N118 ou A10.",
+      a: "Nous intervenons dans vos locaux à Limours, partout en France.",
     },
     {
       q: "Accompagnez-vous les artisans BTP en zone semi-rurale ?",

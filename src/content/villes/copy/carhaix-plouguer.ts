@@ -64,8 +64,8 @@ export const CARHAIX_PLOUGUER_COPY: VilleCopy = {
       a: "Pour les TPE artisans BTP et commerçants à Carhaix-Plouguer, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, gestion stocks.",
     },
     {
-      q: "Comment se déroule une mission à Carhaix-Plouguer ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Gare TER Carhaix accessible (ligne vers Guingamp).",
+      q: "Intervenez-vous à Carhaix-Plouguer ?",
+      a: "Oui. Nous intervenons dans vos locaux à Carhaix-Plouguer, partout en France, sur place ou à distance.",
     },
   ],
 };

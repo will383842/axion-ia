@@ -230,8 +230,8 @@ export const LE_GRAND_QUEVILLY_COPY: VilleCopy = {
       a: "Audit sur place dès {{price:audit-flash|flat}} (4 heures), intervention sur site dès {{price:intervention-4h|flat}}. Tarifs publics sur axion-ia.com — pas de devis opaque.",
     },
     {
-      q: "Comment Axion-IA se déplace-t-il au Grand-Quevilly ?",
-      a: "Nous intervenons dans vos locaux au Grand-Quevilly, partout en France.",
+      q: "Intervenez-vous au Grand-Quevilly ?",
+      a: "Oui. Nous intervenons dans vos locaux au Grand-Quevilly, partout en France, sur place ou à distance.",
     },
     {
       q: "Quels délais pour démarrer une mission IA au Grand-Quevilly ?",

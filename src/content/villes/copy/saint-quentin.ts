@@ -233,8 +233,8 @@ export const SAINT_QUENTIN_COPY: VilleCopy = {
       a: "Oui. Les PME de mécanique, de plasturgie et de travail des métaux, héritières du tissu industriel saint-quentinois, figurent parmi nos cibles prioritaires. Nous automatisons leurs flux administratifs et de production documentaire, sans toucher à leurs lignes de fabrication.",
     },
     {
-      q: "Axion-IA se déplace-t-il sur site à Saint-Quentin ?",
-      a: "Oui, nos experts IA interviennent dans vos locaux, du centre historique aux ateliers et à la ZAC du Bois de la Chocque. L'audit terrain reste le meilleur moyen de cibler des automatisations vraiment utiles à votre métier.",
+      q: "Intervenez-vous à Saint-Quentin ?",
+      a: "Oui. Nous intervenons dans vos locaux à Saint-Quentin, partout en France, sur place ou à distance.",
     },
     {
       q: "Quelles entreprises accompagnez-vous en priorité ici ?",

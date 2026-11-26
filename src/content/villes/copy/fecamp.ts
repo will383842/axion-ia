@@ -49,7 +49,7 @@ export const FECAMP_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Fécamp et Côte d'Albâtre ?",
-      a: "Oui, Axion-IA intervient à Fécamp et toute la Côte d'Albâtre (Étretat à 15 km, Yvetot, Saint-Valery-en-Caux). Nous intervenons partout en France, sur place ou à distance.",
+      a: "Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les PME de la filière pêche fécampoise ?",
@@ -64,8 +64,8 @@ export const FECAMP_COPY: VilleCopy = {
       a: "L'audit sur place propose un tarif d'entrée accessible pour les TPE. Pour les PME maritimes et touristiques, l'audit stratégique complet est adapté au périmètre. Tarifs publics, pas de devis opaque.",
     },
     {
-      q: "Comment se déroule une mission à Fécamp ?",
-      a: "Nous intervenons partout en France, sur place ou à distance.",
+      q: "Intervenez-vous à Fécamp ?",
+      a: "Oui. Nous intervenons dans vos locaux à Fécamp, partout en France, sur place ou à distance.",
     },
   ],
 };

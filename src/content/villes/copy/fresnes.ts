@@ -234,7 +234,7 @@ export const FRESNES_COPY: VilleCopy = {
     },
     {
       q: "Quels secteurs d'activité accompagnez-vous en priorité à Fresnes ?",
-      a: "Nous adressons en priorité les TPE et PME de quatre filières locales : l'écosystème santé-biotech autour de Sanofi Pasteur, la logistique et l'e-commerce gravitant autour du MIN de Rungis (5 km) et de l'aéroport d'Orly (8 km), les sièges tertiaires du Grand Paris Sud et le BTP lié au NPNRU.",
+      a: "Nous intervenons dans vos locaux, partout en France. Nous adressons en priorité les TPE et PME de quatre filières locales : l'écosystème santé-biotech autour de Sanofi Pasteur, la logistique et l'e-commerce gravitant autour du MIN de Rungis et de l'aéroport d'Orly, les sièges tertiaires du Grand Paris Sud et le BTP lié au NPNRU.",
     },
     {
       q: "Combien de temps faut-il pour démarrer un projet IA à Fresnes ?",

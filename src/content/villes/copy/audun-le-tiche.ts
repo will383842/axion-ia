@@ -49,7 +49,7 @@ export const AUDUN_LE_TICHE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Audun-le-Tiche ?",
-      a: "Oui, Axion-IA intervient à Audun-le-Tiche et dans tout le Pays-Haut (Villerupt, Russange, Aumetz, Hettange-Grande). Gare SNCF Audun-le-Tiche sur ligne Thionville-Longwy, Esch-sur-Alzette à 5 min.",
+      a: "Oui, Axion-IA intervient à Audun-le-Tiche et dans tout le Pays-Haut (Villerupt, Russange, Aumetz, Hettange-Grande).",
     },
     {
       q: "Travaillez-vous avec les entreprises liées à l'économie transfrontalière ?",
@@ -65,7 +65,7 @@ export const AUDUN_LE_TICHE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Audun-le-Tiche ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Luxembourg à 20 min, Thionville à 25 min, Metz à 50 min.",
+      a: "Nous intervenons partout en France, sur place ou à distance.",
     },
   ],
 };

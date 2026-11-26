@@ -65,7 +65,7 @@ export const MARCK_COPY: VilleCopy = {
     },
     {
       q: "Quels délais pour démarrer une mission à Marck ?",
-      a: "Intervention sous 5 jours ouvrés après validation. Gare Calais-Fréthun (Eurostar/TGV) à proximité. Nous intervenons partout en France, sur place ou à distance.",
+      a: "Intervention sous 5 jours ouvrés après validation. Nous intervenons partout en France, sur place ou à distance.",
     },
   ],
 };

@@ -230,8 +230,8 @@ export const CLICHY_SOUS_BOIS_COPY: VilleCopy = {
       a: "Audit sur place dès {{price:audit-flash|flat}} (4 heures), intervention sur site dès {{price:intervention-4h|flat}}. Tous nos tarifs sont publics et consultables sur axion-ia.com — pas de devis opaque.",
     },
     {
-      q: "Comment Axion-IA se déplace-t-il à Clichy-sous-Bois ?",
-      a: "Nous intervenons dans vos locaux, partout en France. La commune ne dispose pas d'autoroute ni de gare ferroviaire propre.",
+      q: "Intervenez-vous à Clichy-sous-Bois ?",
+      a: "Oui. Nous intervenons dans vos locaux à Clichy-sous-Bois, partout en France, sur place ou à distance.",
     },
     {
       q: "Quels délais pour démarrer une mission IA à Clichy-sous-Bois ?",

@@ -65,7 +65,7 @@ export const MOELAN_SUR_MER_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Moëlan-sur-Mer ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Gare TGV de Lorient sur la ligne Paris-Quimper.",
+      a: "Nous intervenons partout en France, sur place ou à distance.",
     },
   ],
 };

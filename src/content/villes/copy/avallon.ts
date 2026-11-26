@@ -49,7 +49,7 @@ export const AVALLON_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Avallon et dans le Morvan ?",
-      a: "Oui, Axion-IA intervient à Avallon et tout le bassin nord-Morvan (Auxerre à 50 min, Dijon à 1h15, Paris-Bercy à 2h en train, A6 sortie 22 à 5 min).",
+      a: "Nous intervenons dans vos locaux à Avallon, partout en France.",
     },
     {
       q: "Travaillez-vous avec les hôteliers et restaurateurs du Morvan ?",
@@ -64,8 +64,8 @@ export const AVALLON_COPY: VilleCopy = {
       a: "Audit sur place {{price:audit-flash|flat}}, automatisation traçabilité, outils viticulture, gestion stocks et logistique, reporting commercial, optimisation cycles production.",
     },
     {
-      q: "Comment se déroule une mission à Avallon ?",
-      a: "Paris-Bercy à 2h en train (gare Avallon). Dijon à 1h15 par A6. Auxerre à 50 min.",
+      q: "Intervenez-vous à Avallon ?",
+      a: "Oui. Nous intervenons dans vos locaux à Avallon, partout en France, sur place ou à distance.",
     },
   ],
 };

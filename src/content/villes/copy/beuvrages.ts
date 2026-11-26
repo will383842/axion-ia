@@ -64,8 +64,8 @@ export const BEUVRAGES_COPY: VilleCopy = {
       a: "Pour les commerçants et professions libérales à Beuvrages, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : agents conversationnels, automatisation RDV, fidélisation.",
     },
     {
-      q: "Comment se déroule une mission à Beuvrages ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Tarifs publics.",
+      q: "Intervenez-vous à Beuvrages ?",
+      a: "Oui. Nous intervenons dans vos locaux à Beuvrages, partout en France, sur place ou à distance.",
     },
   ],
 };

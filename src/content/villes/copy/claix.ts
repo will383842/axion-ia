@@ -49,7 +49,7 @@ export const CLAIX_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Claix et sud-ouest grenoblois ?",
-      a: "Oui, Axion-IA intervient à Claix et tout le sud-ouest de la métropole grenobloise (Pont-de-Claix, Seyssins, Saint-Paul-de-Varces, Veurey-Voroize). Couverture également Vercors périphérique (Lans-en-Vercors, Villard-de-Lans 40 min N532).",
+      a: "Oui, Axion-IA intervient à Claix et tout le sud-ouest de la métropole grenobloise (Pont-de-Claix, Seyssins, Saint-Paul-de-Varces, Veurey-Voroize). Couverture également Vercors périphérique.",
     },
     {
       q: "Accompagnez-vous les professions libérales claixoises ?",

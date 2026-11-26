@@ -64,8 +64,8 @@ export const LURE_COPY: VilleCopy = {
       a: "Oui, interventions et coaching 1-to-1 adaptés aux commerçants : gestion stocks IA, marketing local automatisé, agents conversationnels, comptabilité simplifiée. Formats journée ou demi-journée sur site à Lure.",
     },
     {
-      q: "Comment se déroule une mission Axion-IA à Lure ?",
-      a: "Nous intervenons partout en France, sur place ou à distance.",
+      q: "Intervenez-vous à Lure ?",
+      a: "Oui. Nous intervenons dans vos locaux à Lure, partout en France, sur place ou à distance.",
     },
   ],
 };

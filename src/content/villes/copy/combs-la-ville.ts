@@ -247,8 +247,8 @@ export const COMBS_LA_VILLE_COPY: VilleCopy = {
       a: "TPE et PME locales prioritairement : artisans BTP, commerces de détail, restaurateurs, PME logistiques proches de la RN 104, exploitations agricoles du plateau de Brie. Les ETI restent l'exception, notre cœur de cible étant la TPE et la PME.",
     },
     {
-      q: "Axion-IA se déplace-t-il vraiment sur site à Combs-la-Ville ?",
-      a: "Oui, nous nous déplaçons physiquement à Combs-la-Ville et dans toute la Seine-et-Marne pour audit, interventions et sessions 1-to-1. Le travail à distance reste possible pour la phase d'implémentation.",
+      q: "Intervenez-vous à Combs-la-Ville ?",
+      a: "Oui. Nous intervenons dans vos locaux à Combs-la-Ville, partout en France, sur place ou à distance.",
     },
   ],
 };

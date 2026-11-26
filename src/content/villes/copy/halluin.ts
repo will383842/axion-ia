@@ -121,7 +121,7 @@ export const HALLUIN_COPY: VilleCopy = {
           },
           {
             q: "Mes données restent-elles en Europe, côté FR et BE ?",
-            a: "Oui. Toute la chaîne IA est hébergeable en UE (OVHcloud Roubaix à 15 km, Scaleway), conforme RGPD côté France et GDPR côté Belgique, avec DPA signé. Pour un opérateur cross-border, nous documentons la base légale et les transferts intra-UE. Vous gardez la propriété complète de vos données, pesées matières, modèles et code — rien ne part hors Europe.",
+            a: "Oui. Nous intervenons dans vos locaux, partout en France. Pour un opérateur cross-border, nous documentons la base légale et les transferts intra-UE. Vous gardez la propriété complète de vos données, pesées matières, modèles et code — rien ne part hors Europe.",
           },
           {
             q: "Pouvez-vous gérer un site multilingue franco-belge ?",
@@ -207,7 +207,7 @@ export const HALLUIN_COPY: VilleCopy = {
           },
           {
             q: "Mes données restent-elles en Europe, côté FR et BE ?",
-            a: "Oui. Toute la chaîne IA est hébergeable en UE (OVHcloud Roubaix à 15 km, Scaleway), conforme RGPD côté France et GDPR côté Belgique, avec DPA signé. Pour un opérateur cross-border, nous documentons la base légale et les transferts intra-UE. Vous gardez la propriété complète de vos données, pesées matières, modèles et code — rien ne part hors Europe.",
+            a: "Oui. Nous intervenons dans vos locaux, partout en France. Pour un opérateur cross-border, nous documentons la base légale et les transferts intra-UE. Vous gardez la propriété complète de vos données, pesées matières, modèles et code — rien ne part hors Europe.",
           },
           {
             q: "Pouvez-vous gérer un site multilingue franco-belge ?",
@@ -246,8 +246,8 @@ export const HALLUIN_COPY: VilleCopy = {
       a: "Logistique et transport routier cross-border, valorisation et tri des déchets, commerce de détail multi-sites, agriculture périurbaine, et PME industrielles héritières du tissu textile/ameublement reconverties.",
     },
     {
-      q: "Williams se déplace-t-il vraiment sur site à Halluin ou tout se fait à distance ?",
-      a: "Williams se déplace physiquement à Halluin pour les phases Audit et Implémentation (1 à 2 journées). Les développements code sont remote, avec démos hebdomadaires et recette finale sur site, y compris dans la zone des Cinq-Voies.",
+      q: "Intervenez-vous à Halluin ou tout se fait à distance ?",
+      a: "Oui. Nous intervenons dans vos locaux à Halluin ou tout se fait à distance, partout en France, sur place ou à distance.",
     },
   ],
 };

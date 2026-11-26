@@ -245,8 +245,8 @@ export const DOUAI_COPY: VilleCopy = {
       a: "Optimisation des tournées et entrepôts, suivi de livraison, prédiction de maintenance et automatisation administrative. Tarifs publics, sans devis opaque.",
     },
     {
-      q: "Comment se déroule une mission à Douai ?",
-      a: "Nous intervenons partout en France, sur place ou à distance.",
+      q: "Intervenez-vous à Douai ?",
+      a: "Oui. Nous intervenons dans vos locaux à Douai, partout en France, sur place ou à distance.",
     },
     {
       q: "Vos interventions sont-elles conformes au RGPD ?",

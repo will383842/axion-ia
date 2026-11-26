@@ -49,7 +49,7 @@ export const LA_FERTE_MACE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à La Ferté-Macé et bocage ornais ?",
-      a: "Oui, Axion-IA intervient à La Ferté-Macé et tout le bocage ornais (Flers à 20 km, Bagnoles-de-l'Orne à 8 km, Domfront, Argentan à 35 km). Nous intervenons partout en France, sur place ou à distance.",
+      a: "Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les acteurs du tourisme vert ferthois ?",

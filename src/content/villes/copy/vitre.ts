@@ -65,7 +65,7 @@ export const VITRE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Vitré ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Paris direct en 1h30 TGV.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Paris direct TGV.",
     },
   ],
 };

@@ -49,7 +49,7 @@ export const TARARE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Tarare et NO lyonnais ?",
-      a: "Oui, Axion-IA intervient à Tarare et tout le NO lyonnais (L'Arbresle à 15 min, Amplepuis, Thizy-les-Bourgs, Pontcharra-sur-Turdine). Nous intervenons partout en France, sur place ou à distance.",
+      a: "Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les PME textile mousseline de Tarare ?",
@@ -64,8 +64,8 @@ export const TARARE_COPY: VilleCopy = {
       a: "Pour les TPE artisans BTP et commerçants à Tarare, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV.",
     },
     {
-      q: "Comment se déroule une mission à Tarare ?",
-      a: "Nous intervenons partout en France, sur place ou à distance.",
+      q: "Intervenez-vous à Tarare ?",
+      a: "Oui. Nous intervenons dans vos locaux à Tarare, partout en France, sur place ou à distance.",
     },
   ],
 };

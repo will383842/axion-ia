@@ -229,8 +229,8 @@ export const MONTBELIARD_COPY: VilleCopy = {
 
   faqGeolocalisee: [
     {
-      q: "Axion-IA se déplace-t-il sur site à Montbéliard ?",
-      a: "Oui. Nos experts IA seniors interviennent directement dans vos ateliers à Montbéliard et dans tout le pays de Montbéliard, de Sochaux à Audincourt, pour observer vos processus réels avant toute recommandation.",
+      q: "Intervenez-vous à Montbéliard ?",
+      a: "Oui. Nous intervenons dans vos locaux à Montbéliard, partout en France, sur place ou à distance.",
     },
     {
       q: "Un sous-traitant automobile peut-il bénéficier de l'IA à Montbéliard ?",

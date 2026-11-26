@@ -245,8 +245,8 @@ export const VIERZON_COPY: VilleCopy = {
       a: "Oui, les TPE sont notre priorité. Pour artisans et commerçants, nous mettons en place devis automatisés, gestion de planning, relances clients et facturation intelligente, après un audit qui chiffre le retour attendu.",
     },
     {
-      q: "Comment se déroule une mission à Vierzon ?",
-      a: "Nous intervenons partout en France, sur place ou à distance.",
+      q: "Intervenez-vous à Vierzon ?",
+      a: "Oui. Nous intervenons dans vos locaux à Vierzon, partout en France, sur place ou à distance.",
     },
   ],
 };

@@ -230,8 +230,8 @@ export const SAINT_BRIEUC_COPY: VilleCopy = {
       a: "Audit sur place dès {{price:audit-flash|flat}} (4 heures), intervention sur site dès {{price:intervention-4h|flat}}. Tarifs publics sur axion-ia.com — pas de devis opaque.",
     },
     {
-      q: "Comment Axion-IA se déplace-t-il à Saint-Brieuc ?",
-      a: "Nous intervenons dans vos locaux à Saint-Brieuc, partout en France.",
+      q: "Intervenez-vous à Saint-Brieuc ?",
+      a: "Oui. Nous intervenons dans vos locaux à Saint-Brieuc, partout en France, sur place ou à distance.",
     },
     {
       q: "Quels délais pour démarrer une mission IA à Saint-Brieuc ?",

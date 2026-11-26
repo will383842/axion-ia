@@ -248,8 +248,8 @@ export const LENS_COPY: VilleCopy = {
       a: "TPE et PME du bassin minier reconverti : commerces de détail, artisans BTP, logistique, santé, restauration, industries agroalimentaires et métallurgiques. Les ETI restent minoritaires dans notre clientèle, axée TPE et PME.",
     },
     {
-      q: "Axion-IA se déplace-t-il vraiment sur site à Lens ?",
-      a: "Oui, nous nous déplaçons physiquement à Lens et dans tout le Pas-de-Calais pour audit, interventions et sessions 1-to-1. Implémentation et suivi peuvent ensuite se faire à distance si vous le souhaitez.",
+      q: "Intervenez-vous à Lens ?",
+      a: "Oui. Nous intervenons dans vos locaux à Lens, partout en France, sur place ou à distance.",
     },
   ],
 };

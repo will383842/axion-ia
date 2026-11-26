@@ -128,7 +128,7 @@ export const VAULX_EN_VELIN_COPY: VilleCopy = {
           },
           {
             q: "Sous quel délai recevons-nous un devis ?",
-            a: "À partir de 24 à 48 h selon la complexité de votre projet. Après un premier échange sur votre activité — négoce, sous-traitance industrielle ou commerce — nous vous transmettons une proposition chiffrée claire, sans abonnement caché ni dépendance à un éditeur.",
+            a: "Nous intervenons dans vos locaux, partout en France. Après un premier échange sur votre activité — négoce, sous-traitance industrielle ou commerce — nous vous transmettons une proposition chiffrée claire, sans abonnement caché ni dépendance à un éditeur.",
           },
           {
             q: "Où sont hébergées les données et le site est-il conforme RGPD ?",
@@ -229,8 +229,8 @@ export const VAULX_EN_VELIN_COPY: VilleCopy = {
 
   faqGeolocalisee: [
     {
-      q: "Axion-IA se déplace-t-il sur site à Vaulx-en-Velin ?",
-      a: "Oui. Nos experts IA seniors interviennent directement dans vos locaux à Vaulx-en-Velin et dans tout l'est de la métropole lyonnaise, afin d'observer vos processus réels avant toute recommandation.",
+      q: "Intervenez-vous à Vaulx-en-Velin ?",
+      a: "Oui. Nous intervenons dans vos locaux à Vaulx-en-Velin, partout en France, sur place ou à distance.",
     },
     {
       q: "Mon atelier industriel peut-il bénéficier de l'IA à Vaulx-en-Velin ?",

@@ -64,8 +64,8 @@ export const PRIVAS_COPY: VilleCopy = {
       a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1.",
     },
     {
-      q: "Comment se déroule une mission à Privas ?",
-      a: "Nous intervenons dans vos locaux à Privas, partout en France.",
+      q: "Intervenez-vous à Privas ?",
+      a: "Oui. Nous intervenons dans vos locaux à Privas, partout en France, sur place ou à distance.",
     },
   ],
 };

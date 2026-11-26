@@ -65,7 +65,7 @@ export const LATTES_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Lattes ?",
-      a: "Nos consultants interviennent sur site à Lattes et dans l'agglo Montpellier. Déplacement direct dans votre entreprise. Tramway T3 direct, gare TGV Montpellier à 15 min, aéroport Montpellier-Méditerranée à 10 min.",
+      a: "Nos consultants interviennent sur site à Lattes et dans l'agglo Montpellier. Déplacement direct dans votre entreprise.",
     },
   ],
 };

@@ -49,7 +49,7 @@ export const CORMONTREUIL_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Cormontreuil et dans l'agglomération de Reims ?",
-      a: "Oui, Axion-IA intervient à Cormontreuil et dans toute l'agglomération rémoise. Gare TGV Bezannes à 10 min, Paris-Est à 45 min en TGV.",
+      a: "Oui, Axion-IA intervient à Cormontreuil et dans toute l'agglomération rémoise.",
     },
     {
       q: "Quel est le tarif d'un audit IA à Cormontreuil  ?",
@@ -64,8 +64,8 @@ export const CORMONTREUIL_COPY: VilleCopy = {
       a: "Oui, planification chantiers IA, devis automatisés, CRM augmenté, gestion planning, facturation intelligente pour artisans et commerçants.",
     },
     {
-      q: "Comment se déroule une mission à Cormontreuil ?",
-      a: "Nous intervenons dans vos locaux à Cormontreuil, partout en France. Paris-Est à 45 min en TGV (gare Champagne-Ardenne Bezannes à 10 min de Cormontreuil).",
+      q: "Intervenez-vous à Cormontreuil ?",
+      a: "Oui. Nous intervenons dans vos locaux à Cormontreuil, partout en France, sur place ou à distance.",
     },
   ],
 };

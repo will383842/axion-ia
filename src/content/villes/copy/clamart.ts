@@ -246,7 +246,7 @@ export const CLAMART_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Clamart ?",
-      a: "Clamart est à environ 15 min de Paris-Montparnasse par le Transilien. Nous nous déplaçons sur site.",
+      a: "Clamart est nsilien. Nous nous déplaçons sur site.",
     },
     {
       q: "Proposez-vous un accompagnement individuel pour les dirigeants ?",

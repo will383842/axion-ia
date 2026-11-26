@@ -49,7 +49,7 @@ export const EPINAY_SOUS_SENART_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Épinay-sous-Sénart ?",
-      a: "Oui, Axion-IA intervient à Épinay-sous-Sénart et tout le bassin Sénart (Brunoy, Yerres, Boussy-Saint-Antoine, Quincy-sous-Sénart). Gare RER D directe, Paris à 30 min.",
+      a: "Oui, Axion-IA intervient à Épinay-sous-Sénart et tout le bassin Sénart (Brunoy, Yerres, Boussy-Saint-Antoine, Quincy-sous-Sénart).",
     },
     {
       q: "Travaillez-vous avec les TPE artisans BTP du secteur ?",
@@ -64,8 +64,8 @@ export const EPINAY_SOUS_SENART_COPY: VilleCopy = {
       a: "Audit IA (Sur place {{price:audit-flash|flat}} à Stratégique), interventions sur site, implémentation IA (agents conversationnels, automatisations métier), coaching 1-to-1 dirigeants, plateformes web/SaaS IA sur mesure.",
     },
     {
-      q: "Comment se déroule une mission à Épinay-sous-Sénart ?",
-      a: "Nous intervenons dans vos locaux à Épinay-sous-Sénart, partout en France.",
+      q: "Intervenez-vous à Épinay-sous-Sénart ?",
+      a: "Oui. Nous intervenons dans vos locaux à Épinay-sous-Sénart, partout en France, sur place ou à distance.",
     },
   ],
 };

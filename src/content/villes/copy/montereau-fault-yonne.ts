@@ -226,7 +226,7 @@ export const MONTEREAU_FAULT_YONNE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Montereau-Fault-Yonne et autour ?",
-      a: "Oui, Axion-IA intervient à Montereau-Fault-Yonne et dans les communes du Pays de Montereau : Varennes-sur-Seine, La Grande-Paroisse, Saint-Germain-Laval, Cannes-Écluse, Marolles-sur-Seine, Forges. Gare directe Paris en 1h.",
+      a: "Oui, Axion-IA intervient à Montereau-Fault-Yonne et dans les communes du Pays de Montereau : Varennes-sur-Seine, La Grande-Paroisse, Saint-Germain-Laval, Cannes-Écluse, Marolles-sur-Seine, Forges.",
     },
     {
       q: "Quel est le tarif d'un audit IA à Montereau-Fault-Yonne ?",

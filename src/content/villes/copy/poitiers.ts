@@ -415,8 +415,8 @@ export const POITIERS_COPY: VilleCopy = {
 
   faqGeolocalisee: [
     {
-      q: "Axion-IA se déplace-t-il sur site à Poitiers ?",
-      a: "Oui. Nos experts IA seniors interviennent directement dans vos locaux à Poitiers et dans toute la Vienne, jusqu'au pôle du Futuroscope, pour observer vos processus réels avant toute recommandation.",
+      q: "Intervenez-vous à Poitiers ?",
+      a: "Oui. Nous intervenons dans vos locaux à Poitiers, partout en France, sur place ou à distance.",
     },
     {
       q: "Une PME d'assurance ou de services peut-elle profiter de l'IA à Poitiers ?",

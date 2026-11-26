@@ -64,8 +64,8 @@ export const PAMIERS_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les PME métallurgie et fonderie du bassin pamiséen sur des cas IA industriels concrets : contrôle qualité visuel, prédiction maintenance, optimisation process de production, classification documents techniques.",
     },
     {
-      q: "Pamiers est-elle accessible pour vos consultants ?",
-      a: "Nos consultants interviennent sur site, format atelier pratique dans vos locaux.",
+      q: "Intervenez-vous à Pamiers ?",
+      a: "Oui. Nous intervenons dans vos locaux à Pamiers, partout en France, sur place ou à distance.",
     },
   ],
 };

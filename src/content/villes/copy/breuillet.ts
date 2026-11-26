@@ -64,8 +64,8 @@ export const BREUILLET_COPY: VilleCopy = {
       a: "Oui, notre Audit sur place de 4 heures est disponible à partir de {{price:audit-flash|flat}}, idéal pour les PME de Breuillet souhaitant un diagnostic rapide de leurs processus avant toute implémentation IA.",
     },
     {
-      q: "Comment se déroule une mission à Breuillet ?",
-      a: "Nous intervenons dans vos locaux à Breuillet, partout en France.",
+      q: "Intervenez-vous à Breuillet ?",
+      a: "Oui. Nous intervenons dans vos locaux à Breuillet, partout en France, sur place ou à distance.",
     },
   ],
 };

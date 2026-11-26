@@ -49,7 +49,7 @@ export const DOUVAINE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Douvaine et dans le Chablais ?",
-      a: "Oui, Axion-IA intervient à Douvaine et dans tout le Chablais-Grand Genève (Thonon à 15 min, Annemasse à 20 min, Sciez, Loisin, Ballaison). Nous intervenons partout en France, sur place ou à distance.",
+      a: "Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les viticulteurs du Chablais ?",

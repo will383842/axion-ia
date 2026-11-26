@@ -246,8 +246,8 @@ export const MONTGERON_COPY: VilleCopy = {
       a: "Les TPE et PME des commerces de proximité (RN6, centre-ville), les cabinets de santé et professions libérales, les agences immobilières et les artisans BTP du Val d'Yerres Val de Seine tirent un bénéfice direct des automatisations IA en code custom.",
     },
     {
-      q: "Williams se déplace-t-il vraiment sur site à Montgeron ?",
-      a: "Oui, nous intervenons systématiquement dans vos locaux à Montgeron. Aucune mission initiale en distanciel : observation des processus réels dans vos locaux.",
+      q: "Intervenez-vous à Montgeron ?",
+      a: "Oui. Nous intervenons dans vos locaux à Montgeron, partout en France, sur place ou à distance.",
     },
   ],
 };

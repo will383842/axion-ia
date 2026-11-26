@@ -64,8 +64,8 @@ export const PAIMPOL_COPY: VilleCopy = {
       a: "Audit sur place {{price:audit-flash|flat}}, CRM augmenté, gestion commandes et réservations IA, fidélisation clients, optimisation stocks saisonniers, agents IA prise de commande pour restaurateurs.",
     },
     {
-      q: "Comment se déroule une mission à Paimpol ?",
-      a: "Nous intervenons dans vos locaux à Paimpol, partout en France.",
+      q: "Intervenez-vous à Paimpol ?",
+      a: "Oui. Nous intervenons dans vos locaux à Paimpol, partout en France, sur place ou à distance.",
     },
   ],
 };

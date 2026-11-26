@@ -49,7 +49,7 @@ export const ORMESSON_SUR_MARNE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Ormesson-sur-Marne et bords de Marne ?",
-      a: "Oui, Axion-IA intervient à Ormesson-sur-Marne et tout le secteur bords de Marne (Sucy-en-Brie, Noiseau, Créteil à 15 min, Paris à 35 min). Aéroport Orly à 25 min.",
+      a: "Nous intervenons dans vos locaux à Ormesson-sur-Marne, partout en France.",
     },
     {
       q: "Travaillez-vous avec les TPE et artisans d'Ormesson-sur-Marne ?",

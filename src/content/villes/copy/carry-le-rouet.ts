@@ -64,8 +64,8 @@ export const CARRY_LE_ROUET_COPY: VilleCopy = {
       a: "Oui, nous intervenons en restauration sur automatisation menus saisonniers (oursinades, poisson local), gestion réservations événementielles, content marketing autour des oursinades, fiches Google Business multilingues, SAV conversationnel.",
     },
     {
-      q: "Comment se déplace Axion-IA à Carry-le-Rouet ?",
-      a: "Nos consultants se déplacent dans vos locaux.",
+      q: "Intervenez-vous à Carry-le-Rouet ?",
+      a: "Oui. Nous intervenons dans vos locaux à Carry-le-Rouet, partout en France, sur place ou à distance.",
     },
   ],
 };

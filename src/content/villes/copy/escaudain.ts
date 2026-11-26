@@ -49,7 +49,7 @@ export const ESCAUDAIN_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Escaudain et bassin minier du Nord ?",
-      a: "Oui, Axion-IA intervient à Escaudain et tout le bassin minier (Denain à 5 min, Valenciennes à 15 min, Douai à 20 min, Lille à 45 min).",
+      a: "Nous intervenons dans vos locaux à Escaudain, partout en France.",
     },
     {
       q: "Travaillez-vous avec les TPE et artisans d'Escaudain ?",
@@ -64,8 +64,8 @@ export const ESCAUDAIN_COPY: VilleCopy = {
       a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1, implémentation outils IA métier.",
     },
     {
-      q: "Comment se déroule une mission à Escaudain ?",
-      a: "Nous intervenons dans vos locaux à Escaudain, partout en France.",
+      q: "Intervenez-vous à Escaudain ?",
+      a: "Oui. Nous intervenons dans vos locaux à Escaudain, partout en France, sur place ou à distance.",
     },
   ],
 };

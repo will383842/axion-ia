@@ -229,8 +229,8 @@ export const L_ISLE_SUR_LA_SORGUE_COPY: VilleCopy = {
 
   faqGeolocalisee: [
     {
-      q: "Axion-IA se déplace-t-il sur site à L'Isle-sur-la-Sorgue ?",
-      a: "Oui. Notre cabinet d'experts IA se déplace directement dans vos galeries, hôtels ou commerces de L'Isle-sur-la-Sorgue pour observer vos processus réels, généralement sous cinq jours ouvrés.",
+      q: "Intervenez-vous à L'Isle-sur-la-Sorgue ?",
+      a: "Oui. Nous intervenons dans vos locaux à L'Isle-sur-la-Sorgue, partout en France, sur place ou à distance.",
     },
     {
       q: "Quels gains l'IA apporte-t-elle à un antiquaire de L'Isle-sur-la-Sorgue ?",

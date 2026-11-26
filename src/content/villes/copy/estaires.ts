@@ -64,8 +64,8 @@ export const ESTAIRES_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les exploitations agricoles et négoces de Flandre-Lys : outils IA agriculture de précision, traçabilité filière lin, automatisation gestion parcellaire, prédiction rendements, optimisation logistique.",
     },
     {
-      q: "Comment se déroule une mission à Estaires ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Hazebrouck à 15 min, Armentières à 15 min, Lille à 35 min.",
+      q: "Intervenez-vous à Estaires ?",
+      a: "Oui. Nous intervenons dans vos locaux à Estaires, partout en France, sur place ou à distance.",
     },
   ],
 };

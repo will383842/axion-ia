@@ -64,8 +64,8 @@ export const VILLABE_COPY: VilleCopy = {
       a: "Oui, implémentation IA pour enseignes commerciales de Villabé : agents conversationnels clients, analyse prédictive ventes, CRM augmentés, automatisation gestion RH. Tarifs publics, ROI chiffré contractuel.",
     },
     {
-      q: "Comment se déroule une mission à Villabé ?",
-      a: "Nous intervenons partout en France, sur place ou à distance.",
+      q: "Intervenez-vous à Villabé ?",
+      a: "Oui. Nous intervenons dans vos locaux à Villabé, partout en France, sur place ou à distance.",
     },
   ],
 };

@@ -37,8 +37,8 @@ export const NEUILLY_SUR_MARNE_COPY: VilleCopy = {
       en: "Audit sur place IA à Neuilly-sur-Marne dès {{price:audit-flash|flat}} — 4 heures pour cartographier les processus à automatiser dans votre commerce, structure de services ou cabinet médico-social.",
     },
     interventions: {
-      fr: "Intervention en groupe à Neuilly-sur-Marne dès {{price:intervention-4h|flat}} — Williams se déplace sur site via le RER A, B ou E pour automatiser un workflow (relances, planning, reporting).",
-      en: "Intervention en groupe à Neuilly-sur-Marne dès {{price:intervention-4h|flat}} — Williams se déplace sur site via le RER A, B ou E pour automatiser un workflow (relances, planning, reporting).",
+      fr: "Intervention en groupe à Neuilly-sur-Marne dès {{price:intervention-4h|flat}} — Williams se déplace sur site pour automatiser un workflow (relances, planning, reporting).",
+      en: "Intervention en groupe à Neuilly-sur-Marne dès {{price:intervention-4h|flat}} — Williams se déplace sur site pour automatiser un workflow (relances, planning, reporting).",
     },
     implementation: {
       fr: "Implémentation IA en code custom à Neuilly-sur-Marne dès {{price:impl-poc|entry}} — développement sur mesure et conformité RGPD pour les TPE et PME du Nord-Est parisien.",

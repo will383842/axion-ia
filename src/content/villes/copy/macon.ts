@@ -229,8 +229,8 @@ export const MACON_COPY: VilleCopy = {
 
   faqGeolocalisee: [
     {
-      q: "Axion-IA se déplace-t-il vraiment sur site à Mâcon ?",
-      a: "Oui. Nos experts IA seniors interviennent directement dans vos locaux à Mâcon et dans le sud de la Saône-et-Loire, de Charnay-lès-Mâcon à Tournus, pour observer vos processus réels avant toute recommandation.",
+      q: "Intervenez-vous à Mâcon ?",
+      a: "Oui. Nous intervenons dans vos locaux à Mâcon, partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les domaines viticoles du Mâconnais ?",

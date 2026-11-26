@@ -49,7 +49,7 @@ export const PUBLIER_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Publier et dans le Chablais ?",
-      a: "Oui, Axion-IA intervient à Publier et sur tout le Chablais lémanique (Thonon-les-Bains à 5 min, Évian-les-Bains à 5 min, Sciez, Douvaine). Nous intervenons partout en France, sur place ou à distance.",
+      a: "Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les établissements thermaux d'Amphion ?",

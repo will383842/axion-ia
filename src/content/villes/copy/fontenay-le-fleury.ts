@@ -49,7 +49,7 @@ export const FONTENAY_LE_FLEURY_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Fontenay-le-Fleury et dans la plaine de Versailles ?",
-      a: "Oui, Axion-IA intervient à Fontenay-le-Fleury et toute la plaine de Versailles (Versailles à 5 min, Vélizy-Villacoublay à 10 min, Paris La Défense à 25 min, Paris Montparnasse à 30 min).",
+      a: "Nous intervenons dans vos locaux à Fontenay-le-Fleury, partout en France.",
     },
     {
       q: "Travaillez-vous avec les commerçants et artisans de Fontenay-le-Fleury ?",
@@ -64,8 +64,8 @@ export const FONTENAY_LE_FLEURY_COPY: VilleCopy = {
       a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Outils IA réservation, gestion salle, fidélisation clientèle.",
     },
     {
-      q: "Comment se déroule une mission à Fontenay-le-Fleury ?",
-      a: "Nous intervenons dans vos locaux à Fontenay-le-Fleury, partout en France.",
+      q: "Intervenez-vous à Fontenay-le-Fleury ?",
+      a: "Oui. Nous intervenons dans vos locaux à Fontenay-le-Fleury, partout en France, sur place ou à distance.",
     },
   ],
 };

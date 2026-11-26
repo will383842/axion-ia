@@ -49,7 +49,7 @@ export const PLAN_DE_CUQUES_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Plan-de-Cuques ?",
-      a: "Oui, Axion-IA intervient à Plan-de-Cuques et dans tout le nord-est de Marseille (Allauch à 5 min, Marseille 11e/12e, Aubagne à 25 min). Couverture complète métropole Aix-Marseille.",
+      a: "Nous intervenons dans vos locaux à Plan-de-Cuques, partout en France. Couverture complète métropole Aix-Marseille.",
     },
     {
       q: "Quels sont les tarifs pour un audit IA à Plan-de-Cuques ?",

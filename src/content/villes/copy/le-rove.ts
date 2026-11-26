@@ -64,8 +64,8 @@ export const LE_ROVE_COPY: VilleCopy = {
       a: "Oui, nous intervenons en plaisance, plongée et locations sur gestion planning sorties mer et réservations, content marketing calanques (Niolon, La Vesse), fiches Google Business multilingues, agents conversationnels accueil, SAV.",
     },
     {
-      q: "Comment se déplace Axion-IA au Rove ?",
-      a: "Nos consultants se déplacent dans vos locaux.",
+      q: "Intervenez-vous au Rove ?",
+      a: "Oui. Nous intervenons dans vos locaux au Rove, partout en France, sur place ou à distance.",
     },
   ],
 };

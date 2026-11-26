@@ -116,7 +116,7 @@ export const CARCASSONNE_COPY: VilleCopy = {
         faq: [
           {
             q: "Pouvez-vous gérer le multilingue pour la clientèle touristique de Carcassonne ?",
-            a: "Nous intervenons dans vos locaux, partout en France. Oui, c'est même central ici. Nous livrons des sites et moteurs de réservation FR/EN/ES, avec un agent IA capable de répondre 24/7 dans la langue du visiteur.",
+            a: "Oui, c'est même central ici. Nous intervenons dans vos locaux, partout en France. Nous livrons des sites et moteurs de réservation FR/EN/ES, avec un agent IA capable de répondre 24/7 dans la langue du visiteur.",
           },
           {
             q: "Faites-vous des boutiques de vente de vin en ligne pour les domaines du Minervois ou des Corbières ?",

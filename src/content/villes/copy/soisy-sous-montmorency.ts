@@ -49,7 +49,7 @@ export const SOISY_SOUS_MONTMORENCY_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Soisy-sous-Montmorency et vallée de Montmorency ?",
-      a: "Oui, Axion-IA intervient à Soisy-sous-Montmorency et toute la vallée de Montmorency (Enghien-les-Bains à 5 min, Montmorency à 5 min, Paris Gare du Nord à 30 min).",
+      a: "Nous intervenons dans vos locaux à Soisy-sous-Montmorency, partout en France.",
     },
     {
       q: "Travaillez-vous avec les commerçants et artisans de Soisy ?",
@@ -64,8 +64,8 @@ export const SOISY_SOUS_MONTMORENCY_COPY: VilleCopy = {
       a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Outils IA réservation, gestion salle, fidélisation clientèle.",
     },
     {
-      q: "Comment se déroule une mission à Soisy-sous-Montmorency ?",
-      a: "Nous intervenons dans vos locaux à Soisy-sous-Montmorency, partout en France.",
+      q: "Intervenez-vous à Soisy-sous-Montmorency ?",
+      a: "Oui. Nous intervenons dans vos locaux à Soisy-sous-Montmorency, partout en France, sur place ou à distance.",
     },
   ],
 };

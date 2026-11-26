@@ -65,7 +65,7 @@ export const LE_PASSAGE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA au Passage ?",
-      a: "Nos consultants interviennent sur site au Passage et dans l'agglomération d'Agen. Déplacement direct sur votre commerce, atelier ou bureau. Gare TGV Agen à 5 min, aéroport Agen-La Garenne à 10 min.",
+      a: "Nos consultants interviennent sur site au Passage et dans l'agglomération d'Agen. Déplacement direct sur votre commerce, atelier ou bureau.",
     },
   ],
 };

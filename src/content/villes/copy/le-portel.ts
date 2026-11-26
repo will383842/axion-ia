@@ -65,7 +65,7 @@ export const LE_PORTEL_COPY: VilleCopy = {
     },
     {
       q: "Quels délais pour une mission au Portel ?",
-      a: "Intervention sous 5 jours ouvrés après validation. Gare Boulogne-Ville à 5 min, Lille à 1h30. Nos consultants se déplacent sur site.",
+      a: "Intervention sous 5 jours ouvrés après validation. Nos consultants se déplacent sur site.",
     },
   ],
 };

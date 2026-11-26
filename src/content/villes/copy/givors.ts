@@ -229,8 +229,8 @@ export const GIVORS_COPY: VilleCopy = {
 
   faqGeolocalisee: [
     {
-      q: "Axion-IA se déplace-t-il à Givors ?",
-      a: "Oui, nos consultants se rendent directement dans vos locaux à Givors et dans le sud lyonnais. La première rencontre se fait sur site afin de comprendre vos processus industriels ou logistiques avant toute recommandation.",
+      q: "Intervenez-vous à Givors ?",
+      a: "Oui. Nous intervenons dans vos locaux à Givors, partout en France, sur place ou à distance.",
     },
     {
       q: "Quels types d'entreprises accompagnez-vous à Givors ?",

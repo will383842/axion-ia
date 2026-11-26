@@ -49,7 +49,7 @@ export const VIRIAT_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Viriat et agglomération Bourg-en-Bresse ?",
-      a: "Oui, Axion-IA intervient à Viriat et toute l'agglomération burgienne (Bourg-en-Bresse à 5 min, Péronnas, Saint-Denis-lès-Bourg). Nous intervenons partout en France, sur place ou à distance.",
+      a: "Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les éleveurs volaille de Bresse AOC ?",
@@ -64,8 +64,8 @@ export const VIRIAT_COPY: VilleCopy = {
       a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1.",
     },
     {
-      q: "Comment se déroule une mission à Viriat ?",
-      a: "Nous intervenons partout en France, sur place ou à distance.",
+      q: "Intervenez-vous à Viriat ?",
+      a: "Oui. Nous intervenons dans vos locaux à Viriat, partout en France, sur place ou à distance.",
     },
   ],
 };

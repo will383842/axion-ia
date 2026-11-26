@@ -64,8 +64,8 @@ export const PLONEOUR_LANVERN_COPY: VilleCopy = {
       a: "Pour les TPE artisans BTP et commerçants à Plonéour-Lanvern, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, gestion stocks, comptabilité simplifiée.",
     },
     {
-      q: "Comment se déroule une mission à Plonéour-Lanvern ?",
-      a: "Nous intervenons partout en France, sur place ou à distance.",
+      q: "Intervenez-vous à Plonéour-Lanvern ?",
+      a: "Oui. Nous intervenons dans vos locaux à Plonéour-Lanvern, partout en France, sur place ou à distance.",
     },
   ],
 };

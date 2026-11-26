@@ -65,7 +65,7 @@ export const CARENTAN_LES_MARAIS_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Carentan-les-Marais ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Gare de Carentan (TER Paris 2 h 30 via Caen).",
+      a: "Nous intervenons partout en France, sur place ou à distance.",
     },
   ],
 };

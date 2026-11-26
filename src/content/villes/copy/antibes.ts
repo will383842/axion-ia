@@ -124,11 +124,11 @@ export const ANTIBES_COPY: VilleCopy = {
           },
           {
             q: "Travaillez-vous avec les éditeurs logiciels et scale-ups proches de Sophia Antipolis ?",
-            a: "Oui. Sophia Antipolis, à 7 km et en partie sur la commune d'Antibes, concentre plus de 30 000 emplois et un vivier d'éditeurs (écosystème Amadeus, ingénieurs des écoles du technopôle). Pour ces structures, nous concevons des plateformes SaaS IA-native : chatbot RAG sur votre documentation, recherche sémantique, agents conversationnels, copilotes internes — en code custom, hébergés en Union européenne, sans lock-in éditeur.",
+            a: "Oui. Nous intervenons dans vos locaux, partout en France. Pour ces structures, nous concevons des plateformes SaaS IA-native : chatbot RAG sur votre documentation, recherche sémantique, agents conversationnels, copilotes internes — en code custom, hébergés en Union européenne, sans lock-in éditeur.",
           },
           {
             q: "Sous combien de temps puis-je avoir un devis ?",
-            a: "À partir de 24 à 48 h selon la complexité. Pour une e-boutique d'artisan du Safranier ou une vitrine de commerce, le chiffrage est rapide ; pour un portail brokerage yachting multilingue avec intégrations ou un SaaS IA-native, il faut un court cadrage pour préciser le périmètre avant de chiffrer.",
+            a: "Nous intervenons dans vos locaux, partout en France. Pour une e-boutique d'artisan du Safranier ou une vitrine de commerce, le chiffrage est rapide ; pour un portail brokerage yachting multilingue avec intégrations ou un SaaS IA-native, il faut un court cadrage pour préciser le périmètre avant de chiffrer.",
           },
           {
             q: "Comment garantissez-vous la conformité RGPD pour une clientèle internationale fortunée ?",
@@ -234,7 +234,7 @@ export const ANTIBES_COPY: VilleCopy = {
     },
     {
       q: "Quels secteurs d'Antibes accompagnez-vous le plus ?",
-      a: "Principalement les TPE et PME du yachting et des services portuaires (Port Vauban, brokers, refit), l'hôtellerie-restauration premium du Cap d'Antibes et de Juan-les-Pins, le commerce et l'artisanat de la vieille ville, le BTP de rénovation prestige, ainsi que les acteurs tech en lien avec Sophia Antipolis située à 7 km.",
+      a: "Nous intervenons dans vos locaux, partout en France.",
     },
     {
       q: "Faut-il aller jusqu'à Sophia Antipolis pour vous rencontrer ?",

@@ -231,8 +231,8 @@ export const VANVES_COPY: VilleCopy = {
       a: "L'Audit sur place 4h sur site à Vanves démarre à {{price:audit-flash|flat}}. Une intervention ciblée est facturée {{price:intervention-4h|flat}}, une implémentation complète à partir de {{price:impl-poc|entry}}. Tarifs publics fixes, devis signé avant démarrage, aucun abonnement.",
     },
     {
-      q: "Williams se déplace-t-il à Vanves ?",
-      a: "Oui, Williams se déplace sur site à Vanves sous 5 jours ouvrés (souvent moins). Nous intervenons partout en France, sur place ou à distance.",
+      q: "Intervenez-vous à Vanves ?",
+      a: "Oui. Nous intervenons dans vos locaux à Vanves, partout en France, sur place ou à distance.",
     },
     {
       q: "Quelles communes proches de Vanves couvrez-vous ?",

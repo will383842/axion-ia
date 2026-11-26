@@ -241,8 +241,8 @@ export const BRUGES_COPY: VilleCopy = {
       a: "Pour les professions libérales à Bruges et nord Bordeaux (médecins, avocats, expertise-comptable, consultants), audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation pratique, coaching 1-to-1. Cas IA : agents conversationnels patients/clients, automatisation gestion RDV, classification dossiers. RGPD strict.",
     },
     {
-      q: "Comment se déroule une mission à Bruges ?",
-      a: "Nous intervenons partout en France, sur place ou à distance.",
+      q: "Intervenez-vous à Bruges ?",
+      a: "Oui. Nous intervenons dans vos locaux à Bruges, partout en France, sur place ou à distance.",
     },
   ],
 };

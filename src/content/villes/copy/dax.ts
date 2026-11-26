@@ -246,7 +246,7 @@ export const DAX_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Dax ?",
-      a: "Dax est à environ 1h de Bordeaux en TGV et à 40 min de Bayonne. Nous nous déplaçons sur site.",
+      a: "Nous nous déplaçons sur site.",
     },
     {
       q: "Proposez-vous un accompagnement individuel pour les dirigeants ?",

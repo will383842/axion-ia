@@ -49,7 +49,7 @@ export const PREVESSIN_MOENS_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Prévessin-Moëns et pays de Gex ?",
-      a: "Oui, Axion-IA intervient à Prévessin-Moëns et tout le pays de Gex (Saint-Genis-Pouilly à 5 min, Ferney-Voltaire, Gex, Divonne). Genève à 15 min.",
+      a: "Nous intervenons dans vos locaux à Prévessin-Moëns, partout en France.",
     },
     {
       q: "Travaillez-vous avec les PME technologiques CERN ?",
@@ -64,8 +64,8 @@ export const PREVESSIN_MOENS_COPY: VilleCopy = {
       a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1.",
     },
     {
-      q: "Comment se déroule une mission à Prévessin-Moëns ?",
-      a: "Nous intervenons partout en France, sur place ou à distance.",
+      q: "Intervenez-vous à Prévessin-Moëns ?",
+      a: "Oui. Nous intervenons dans vos locaux à Prévessin-Moëns, partout en France, sur place ou à distance.",
     },
   ],
 };

@@ -49,7 +49,7 @@ export const LA_RICHE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à La Riche et agglo Tours ?",
-      a: "Oui, Axion-IA intervient à La Riche et toute l'agglomération tourangelle (Tours centre à 5 min, Fondettes à 5 min, Saint-Cyr-sur-Loire, Joué-lès-Tours).",
+      a: "Nous intervenons dans vos locaux à La Riche, partout en France.",
     },
     {
       q: "Travaillez-vous avec les PME tertiaires de La Riche ?",
@@ -65,7 +65,7 @@ export const LA_RICHE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à La Riche ?",
-      a: "Nos consultants interviennent sur site à La Riche (Tours centre à 5 min).",
+      a: "Nous intervenons dans vos locaux à La Riche, partout en France.",
     },
   ],
 };

@@ -49,7 +49,7 @@ export const ROSNY_SUR_SEINE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Rosny-sur-Seine et dans le bassin mantois ?",
-      a: "Oui, Axion-IA intervient à Rosny-sur-Seine et dans tout le bassin mantois (Mantes-la-Jolie à 5 min, Les Mureaux, Bonnières-sur-Seine). Nous intervenons partout en France, sur place ou à distance.",
+      a: "Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les PME industrielles de l'axe Seine ?",
@@ -64,8 +64,8 @@ export const ROSNY_SUR_SEINE_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les TPE artisans et commerçants de Rosny-sur-Seine sur leurs cas IA : devis automatisé, gestion planning, agents conversationnels clients, CRM augmenté, facturation intelligente. Solutions simples et concrètes.",
     },
     {
-      q: "Comment se déroule une mission à Rosny-sur-Seine ?",
-      a: "Nous intervenons partout en France, sur place ou à distance.",
+      q: "Intervenez-vous à Rosny-sur-Seine ?",
+      a: "Oui. Nous intervenons dans vos locaux à Rosny-sur-Seine, partout en France, sur place ou à distance.",
     },
   ],
 };

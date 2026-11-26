@@ -231,8 +231,8 @@ export const LANNION_COPY: VilleCopy = {
       a: "L'Audit sur place démarre à {{price:audit-flash|flat}} (4 h sur site). Les interventions de développement code custom démarrent à {{price:intervention-4h|flat}}. Les sessions un-à-un dirigeants débutent à {{price:intervention-dirigeants|flat}}. Grille publiée sur axion-ia.com.",
     },
     {
-      q: "Comment Axion-IA se déplace-t-il à Lannion ?",
-      a: "Nos consultants prennent le TGV jusqu'à la gare de Lannion ou l'avion vers l'aéroport Lannion-Côte de Granit, puis se rendent sur site (centre-ville ou technopole Anticipa) sous 5 jours ouvrés après validation.",
+      q: "Intervenez-vous à Lannion ?",
+      a: "Oui. Nous intervenons dans vos locaux à Lannion, partout en France, sur place ou à distance.",
     },
     {
       q: "Intervenez-vous dans les communes proches de Lannion ?",

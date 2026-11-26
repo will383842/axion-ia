@@ -49,7 +49,7 @@ export const SAUSSET_LES_PINS_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Sausset-les-Pins et sur la Côte Bleue ?",
-      a: "Oui, Axion-IA intervient à Sausset-les-Pins et toute la Côte Bleue (Carry-le-Rouet, Ensuès-la-Redonne, Martigues, Châteauneuf-les-Martigues). Gare TER locale, aéroport Marseille-Provence à 15 min.",
+      a: "Oui, Axion-IA intervient à Sausset-les-Pins et toute la Côte Bleue (Carry-le-Rouet, Ensuès-la-Redonne, Martigues, Châteauneuf-les-Martigues).",
     },
     {
       q: "Quel est le tarif d'un audit IA pour un restaurant à Sausset-les-Pins ?",

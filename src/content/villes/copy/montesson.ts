@@ -49,7 +49,7 @@ export const MONTESSON_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Montesson et sur la plaine de Montesson ?",
-      a: "Oui, Axion-IA intervient à Montesson et toute la boucle de Seine (Le Vésinet à 5 min, Sartrouville à 5 min, Paris La Défense à 15 min, Paris Saint-Lazare à 20 min).",
+      a: "Nous intervenons dans vos locaux à Montesson, partout en France.",
     },
     {
       q: "Travaillez-vous avec les commerçants et artisans de Montesson ?",

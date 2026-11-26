@@ -49,7 +49,7 @@ export const BOUAYE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Bouaye ?",
-      a: "Oui, Axion-IA intervient à Bouaye et toute Nantes Métropole (Bouguenais, Rezé, Saint-Herblain, Nantes centre). Couverture complète Loire-Atlantique. Aéroport Nantes-Atlantique à 10 min.",
+      a: "Oui, Axion-IA intervient à Bouaye et toute Nantes Métropole (Bouguenais, Rezé, Saint-Herblain, Nantes centre). Couverture complète Loire-Atlantique.",
     },
     {
       q: "Accompagnez-vous les TPE et artisans de Bouaye ?",

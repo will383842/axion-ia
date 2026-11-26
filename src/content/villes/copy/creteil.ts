@@ -424,8 +424,8 @@ export const CRETEIL_COPY: VilleCopy = {
 
   faqGeolocalisee: [
     {
-      q: "Axion-IA se déplace-t-il physiquement à Créteil pour les audits et interventions ?",
-      a: "Oui. Williams et l'équipe Axion-IA se déplacent sur site à Créteil et dans les communes limitrophes du Val-de-Marne : Maisons-Alfort, Alfortville, Saint-Maur-des-Fossés, Bonneuil-sur-Marne, Limeil-Brévannes, Valenton et Choisy-le-Roi. Les sessions peuvent aussi se tenir en format hybride selon vos contraintes.",
+      q: "Intervenez-vous à Créteil pour les audits et interventions ?",
+      a: "Oui. Nous intervenons dans vos locaux à Créteil, partout en France, sur place ou à distance.",
     },
     {
       q: "Quels sont les tarifs pour un audit ou une intervention IA d'une TPE/PME cristolienne ?",
@@ -449,7 +449,7 @@ export const CRETEIL_COPY: VilleCopy = {
     },
     {
       q: "Quelle différence entre une intervention collective et un accompagnement 1-to-1 dirigeant ?",
-      a: "L'intervention collective (dès {{price:intervention-4h|flat}}) s'adresse à une équipe de 2 à 15 personnes : prise en main d'outils IA, cas d'usage métier, mise en pratique. Le 1-to-1 dirigeant (dès {{price:intervention-dirigeants|flat}}) est un format individuel centré sur la stratégie IA : feuille de route, gouvernance, arbitrages make-or-buy. Les deux formats sont disponibles à Créteil.",
+      a: "L'intervention collective s'adresse à une équipe de 2 à 15 personnes : prise en main d'outils IA, cas d'usage métier, mise en pratique. Le 1-to-1 dirigeant (dès {{price:intervention-dirigeants|flat}}) est un format individuel centré sur la stratégie IA : feuille de route, gouvernance, arbitrages make-or-buy. Les deux formats sont disponibles à Créteil.",
     },
   ],
 };

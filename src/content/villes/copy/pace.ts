@@ -65,7 +65,7 @@ export const PACE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Pacé ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Intervention sur site dans vos locaux ou en visio selon vos préférences. Aéroport Rennes-Bretagne à 15 min. Tarifs transparents.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Intervention sur site dans vos locaux ou en visio selon vos préférences. Tarifs transparents.",
     },
   ],
 };

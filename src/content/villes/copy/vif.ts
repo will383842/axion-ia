@@ -49,7 +49,7 @@ export const VIF_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Vif et sud-grenoblois rural ?",
-      a: "Oui, Axion-IA intervient à Vif et tout le sud grenoblois rural (Varces-Allières-et-Risset, Saint-Paul-de-Varces, Le Gua, Miribel-Lanchâtre, Monestier-de-Clermont à 30 min). Nous intervenons partout en France, sur place ou à distance.",
+      a: "Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les agriculteurs et éleveurs vifards ?",

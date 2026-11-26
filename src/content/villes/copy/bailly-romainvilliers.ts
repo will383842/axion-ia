@@ -49,7 +49,7 @@ export const BAILLY_ROMAINVILLIERS_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Bailly-Romainvilliers et dans le Val d'Europe ?",
-      a: "Oui, Axion-IA intervient à Bailly-Romainvilliers et dans tout le Val d'Europe (Serris, Chessy, Montévrain, Magny-le-Hongre). Gare RER A Val d'Europe à 5 min, Paris à 40 min.",
+      a: "Oui, Axion-IA intervient à Bailly-Romainvilliers et dans tout le Val d'Europe (Serris, Chessy, Montévrain, Magny-le-Hongre).",
     },
     {
       q: "Combien coûte un audit IA à Bailly-Romainvilliers  ?",

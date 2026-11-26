@@ -49,7 +49,7 @@ export const SAINT_AVERTIN_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Saint-Avertin et Tours sud ?",
-      a: "Oui, Axion-IA intervient à Saint-Avertin et tout le sud de Tours Métropole (Chambray-lès-Tours, Larçay, Véretz). Tours centre à 10 min.",
+      a: "Oui, Axion-IA intervient à Saint-Avertin et tout le sud de Tours Métropole (Chambray-lès-Tours, Larçay, Véretz).",
     },
     {
       q: "Travaillez-vous avec les cabinets conseil et professions libérales ?",

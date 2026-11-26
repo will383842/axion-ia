@@ -123,7 +123,7 @@ export const ANGOULEME_COPY: VilleCopy = {
           },
           {
             q: "Sous quel délai obtenez-je un devis pour mon projet à Angoulême ?",
-            a: "À partir de 24 à 48 h selon la complexité. Après un premier échange sur votre métier — studio Magelis, éditeur de jeu, industriel ou packageur — nous vous envoyons un devis chiffré avec le périmètre, l'architecture proposée et la couche IA envisagée.",
+            a: "Nous intervenons dans vos locaux, partout en France. Après un premier échange sur votre métier — studio Magelis, éditeur de jeu, industriel ou packageur — nous vous envoyons un devis chiffré avec le périmètre, l'architecture proposée et la couche IA envisagée.",
           },
           {
             q: "Faites-vous l'UX/UI, le mobile et l'e-commerce, ou seulement de l'IA ?",

@@ -61,7 +61,7 @@ export const COULOUNIEIX_CHAMIERS_COPY: VilleCopy = {
     },
     {
       q: "Quel délai pour démarrer une mission IA à Coulounieix-Chamiers ?",
-      a: "Intervention sous 5 jours ouvrés. Périgueux à 5 min, Bordeaux à 1h30 A89. Déplacements sur site ou sessions en visio selon vos préférences.",
+      a: "Intervention sous 5 jours ouvrés. Déplacements sur site ou sessions en visio selon vos préférences.",
     },
     {
       q: "Proposez-vous du coaching IA pour professions libérales à Périgueux ?",

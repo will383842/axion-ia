@@ -245,8 +245,8 @@ export const VILLEJUIF_COPY: VilleCopy = {
       a: "Oui, les TPE et professions libérales sont notre priorité à Villejuif. Nous déployons prise de rendez-vous IA, gestion des demandes patients, relances et reporting, après un audit qui chiffre le retour sur investissement.",
     },
     {
-      q: "Comment se déroule une mission à Villejuif ?",
-      a: "Nous intervenons partout en France, sur place ou à distance.",
+      q: "Intervenez-vous à Villejuif ?",
+      a: "Oui. Nous intervenons dans vos locaux à Villejuif, partout en France, sur place ou à distance.",
     },
   ],
 };

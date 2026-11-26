@@ -230,8 +230,8 @@ export const MORSANG_SUR_ORGE_COPY: VilleCopy = {
       a: "Audit sur place {{price:audit-flash|flat}} (4 h sur site, livré sous 5 jours ouvrés), interventions sur site à partir de {{price:intervention-4h|flat}} la demi-journée, coaching 1-to-1 dirigeant à partir de {{price:intervention-dirigeants|flat}}. Tarifs publics consultables.",
     },
     {
-      q: "Axion-IA se déplace-t-il à Morsang-sur-Orge ?",
-      a: "Délai d'intervention sous 5 jours ouvrés.",
+      q: "Intervenez-vous à Morsang-sur-Orge ?",
+      a: "Oui. Nous intervenons dans vos locaux à Morsang-sur-Orge, partout en France, sur place ou à distance.",
     },
     {
       q: "Quelles communes proches couvrez-vous autour de Morsang-sur-Orge ?",

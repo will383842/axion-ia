@@ -49,7 +49,7 @@ export const TRIEL_SUR_SEINE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Triel-sur-Seine et bords de Seine ?",
-      a: "Oui, Axion-IA intervient à Triel-sur-Seine et dans les communes voisines des bords de Seine (Poissy à 10 min, Cergy-Pontoise à 15 min, Paris-Saint-Lazare à 40 min via Transilien J).",
+      a: "Nous intervenons dans vos locaux à Triel-sur-Seine, partout en France.",
     },
     {
       q: "Travaillez-vous avec les PME conseil et ingénierie de Triel ?",
@@ -64,8 +64,8 @@ export const TRIEL_SUR_SEINE_COPY: VilleCopy = {
       a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1, implémentation outils IA métier.",
     },
     {
-      q: "Comment se déroule une mission à Triel-sur-Seine ?",
-      a: "Nous intervenons dans vos locaux à Triel-sur-Seine, partout en France. Tarifs publics.",
+      q: "Intervenez-vous à Triel-sur-Seine ?",
+      a: "Oui. Nous intervenons dans vos locaux à Triel-sur-Seine, partout en France, sur place ou à distance.",
     },
   ],
 };

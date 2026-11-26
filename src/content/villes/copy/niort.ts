@@ -246,8 +246,8 @@ export const NIORT_COPY: VilleCopy = {
       a: "Mutuelles et assurances (et leurs sous-traitants), courtage, expertise comptable, formation continue, agences de communication B2B, sous-traitance aéronautique Safran, et PME logistiques de l'A10/A83.",
     },
     {
-      q: "Williams se déplace-t-il vraiment sur site à Niort ou tout se fait à distance ?",
-      a: "Williams se déplace physiquement à Niort (TGV Paris-Niort 2h) pour les phases Audit et Implémentation. Les développements code sont remote, avec démos hebdomadaires et recette sur site, y compris dans la ZAC de Chauray ou au siège d'une mutuelle.",
+      q: "Intervenez-vous à Niort ou tout se fait à distance ?",
+      a: "Oui. Nous intervenons dans vos locaux à Niort ou tout se fait à distance, partout en France, sur place ou à distance.",
     },
   ],
 };

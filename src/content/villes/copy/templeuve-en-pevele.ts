@@ -64,8 +64,8 @@ export const TEMPLEUVE_EN_PEVELE_COPY: VilleCopy = {
       a: "Pour les TPE commerçants à Templeuve-en-Pévèle, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : agents IA conversationnels FAQ, automatisation marketing local, classification photos produits, gestion fidélité client.",
     },
     {
-      q: "Comment se déroule une mission à Templeuve-en-Pévèle ?",
-      a: "Nous intervenons partout en France, sur place ou à distance.",
+      q: "Intervenez-vous à Templeuve-en-Pévèle ?",
+      a: "Oui. Nous intervenons dans vos locaux à Templeuve-en-Pévèle, partout en France, sur place ou à distance.",
     },
   ],
 };

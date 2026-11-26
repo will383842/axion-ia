@@ -238,7 +238,7 @@ export const AUCH_COPY: VilleCopy = {
     },
     {
       q: "Quels délais d'intervention IA à Auch ?",
-      a: "Nous planifions une intervention sur site à Auch sous 5 jours ouvrés après confirmation, et parfois plus rapidement en visio. Devis et calendrier fournis en 48 h.",
+      a: "Nous planifions une intervention sur site à Auch sous 5 jours ouvrés après confirmation, et parfois plus rapidement en visio. Devis et calendrier fournis.",
     },
     {
       q: "Comment Axion-IA garantit-il la conformité RGPD à Auch ?",

@@ -49,7 +49,7 @@ export const MACHECOUL_SAINT_MEME_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Machecoul-Saint-Même ?",
-      a: "Oui, Axion-IA intervient à Machecoul-Saint-Même et dans tout le sud Loire-Atlantique (Pornic, Challans, Saint-Philbert-de-Grand-Lieu). Couverture complète département 44, Nantes à 50 min.",
+      a: "Oui, Axion-IA intervient à Machecoul-Saint-Même et dans tout le sud Loire-Atlantique (Pornic, Challans, Saint-Philbert-de-Grand-Lieu).",
     },
     {
       q: "Accompagnez-vous les PME agroalimentaires ?",
@@ -64,8 +64,8 @@ export const MACHECOUL_SAINT_MEME_COPY: VilleCopy = {
       a: "Oui, l'IA apporte des gains concrets aux activités rurales : gestion parcellaire, traçabilité, prévisions, automatisation administrative, agents IA relation client. Adapté aux TPE agricoles et maraîchères du marais breton.",
     },
     {
-      q: "Comment se déroule une mission à Machecoul-Saint-Même ?",
-      a: "Nous intervenons partout en France, sur place ou à distance.",
+      q: "Intervenez-vous à Machecoul-Saint-Même ?",
+      a: "Oui. Nous intervenons dans vos locaux à Machecoul-Saint-Même, partout en France, sur place ou à distance.",
     },
   ],
 };

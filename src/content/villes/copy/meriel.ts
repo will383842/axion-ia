@@ -49,7 +49,7 @@ export const MERIEL_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Mériel et vallée de l'Oise ?",
-      a: "Oui, Axion-IA intervient à Mériel et toute la vallée de l'Oise (L'Isle-Adam à 5 min, Auvers-sur-Oise à 10 min, Cergy-Pontoise à 20 min, Paris à 40 min). Gare Transilien H Mériel.",
+      a: "Nous intervenons dans vos locaux à Mériel, partout en France.",
     },
     {
       q: "Travaillez-vous avec les commerçants et artisans de Mériel ?",

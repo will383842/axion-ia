@@ -123,8 +123,8 @@ export const EVREUX_COPY: VilleCopy = {
             a: "Oui. Pour les industriels et sous-traitants de la ZAC du Long Buisson — par exemple un partenaire de Compin ou de Schneider Electric — nous intégrons portail de commande, configurateur de devis et catalogue produits à votre ERP existant, sans imposer de changement d'outil.",
           },
           {
-            q: "Axion-IA se déplace-t-il à Évreux pour ce type de projet ?",
-            a: "Oui. Nous démarrons par un atelier sur site à Évreux, sur le Parc d'activités du Long Buisson ou dans l'agglomération Évreux Portes de Normandie, afin d'observer vos parcours réels et auditer l'existant avant toute conception.",
+            q: "Intervenez-vous à Évreux pour ce type de projet ?",
+            a: "Oui. Nous intervenons dans vos locaux à Évreux, partout en France, sur place ou à distance.",
           },
           {
             q: "Gérez-vous l'UX/UI, le mobile et l'e-commerce, ou seulement l'IA ?",
@@ -229,8 +229,8 @@ export const EVREUX_COPY: VilleCopy = {
 
   faqGeolocalisee: [
     {
-      q: "Axion-IA se déplace-t-il à Évreux ?",
-      a: "Oui, nos consultants se rendent directement dans vos locaux à Évreux et dans l'Eure. La première rencontre se fait sur site afin de comprendre vos processus industriels ou de services avant toute recommandation.",
+      q: "Intervenez-vous à Évreux ?",
+      a: "Oui. Nous intervenons dans vos locaux à Évreux, partout en France, sur place ou à distance.",
     },
     {
       q: "Quels types d'entreprises accompagnez-vous à Évreux ?",

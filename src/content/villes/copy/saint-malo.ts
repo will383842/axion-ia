@@ -233,8 +233,8 @@ export const SAINT_MALO_COPY: VilleCopy = {
       a: "Oui. Les acteurs du tourisme d'Intra-Muros et de la côte d'Émeraude figurent parmi nos cibles prioritaires. Nous automatisons réservations, relances et gestion administrative, en tenant compte de la forte saisonnalité de l'activité malouine.",
     },
     {
-      q: "Axion-IA se déplace-t-il sur site à Saint-Malo ?",
-      a: "Oui, nos experts IA interviennent dans vos locaux, d'Intra-Muros aux zones d'activités du pays malouin et aux sites du port. L'audit terrain reste le meilleur moyen de cibler des automatisations vraiment utiles à votre métier.",
+      q: "Intervenez-vous à Saint-Malo ?",
+      a: "Oui. Nous intervenons dans vos locaux à Saint-Malo, partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les PME agroalimentaires du bassin malouin ?",

@@ -53,7 +53,7 @@ export const JASSANS_RIOTTIER_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Jassans-Riottier et dans le val de Saône ?",
-      a: "Oui, Axion-IA accompagne les TPE et PME de Jassans-Riottier et de tout le val de Saône Ain (Villefranche en rive opposée, Trévoux à 10 min, Reyrieux). Nous intervenons partout en France, sur place ou à distance.",
+      a: "Oui, Axion-IA accompagne les TPE et PME de Jassans-Riottier et de tout le val de Saône Ain. Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les professions libérales ?",

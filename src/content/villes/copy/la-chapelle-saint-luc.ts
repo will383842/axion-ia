@@ -49,7 +49,7 @@ export const LA_CHAPELLE_SAINT_LUC_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à La Chapelle-Saint-Luc et dans l'agglo Troyes ?",
-      a: "Oui, Axion-IA intervient à La Chapelle-Saint-Luc et dans toute l'agglomération de Troyes. Troyes centre à 5 min, A5 à 10 min, Paris-Est à 1 h 30 en TGV depuis Troyes.",
+      a: "Oui, Axion-IA intervient à La Chapelle-Saint-Luc et dans toute l'agglomération de Troyes.",
     },
     {
       q: "Combien coûte un audit IA à La Chapelle-Saint-Luc  ?",

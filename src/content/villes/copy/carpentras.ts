@@ -234,8 +234,8 @@ const VILLE_COPY: VilleCopy = {
       a: "Audit sur place {{price:audit-flash|flat}} (4 h sur site), Formation 4 h {{price:intervention-4h|flat}} (cadrage + livraison d'un automatisme), accompagnement 1-à-1 {{price:intervention-dirigeants|flat}}. Tarifs publics consultables, pas de licence SaaS récurrente : vous êtes propriétaire du code livré.",
     },
     {
-      q: "Williams se déplace-t-il vraiment à Carpentras ?",
-      a: "Oui. Williams prend le TGV Paris-Avignon puis le TER Avignon-Carpentras (30 km, 38 min) pour intervenir sur site auprès des TPE et PME du Comtat Venaissin.",
+      q: "Intervenez-vous à Carpentras ?",
+      a: "Oui. Nous intervenons dans vos locaux à Carpentras, partout en France, sur place ou à distance.",
     },
     {
       q: "Quels secteurs locaux Axion-IA accompagne-t-il à Carpentras ?",

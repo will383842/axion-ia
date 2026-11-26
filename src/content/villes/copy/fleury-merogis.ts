@@ -49,7 +49,7 @@ export const FLEURY_MEROGIS_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Fleury-Mérogis et environs ?",
-      a: "Oui, Axion-IA intervient à Fleury-Mérogis et alentours (Sainte-Geneviève-des-Bois à 5 min, Évry-Courcouronnes à 10 min, Orly à 15 min, Paris à 30 min).",
+      a: "Nous intervenons dans vos locaux à Fleury-Mérogis, partout en France.",
     },
     {
       q: "Travaillez-vous avec les PME industrielles des zones d'activités ?",
@@ -64,8 +64,8 @@ export const FLEURY_MEROGIS_COPY: VilleCopy = {
       a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1.",
     },
     {
-      q: "Comment se déroule une mission à Fleury-Mérogis ?",
-      a: "Nous intervenons dans vos locaux à Fleury-Mérogis, partout en France.",
+      q: "Intervenez-vous à Fleury-Mérogis ?",
+      a: "Oui. Nous intervenons dans vos locaux à Fleury-Mérogis, partout en France, sur place ou à distance.",
     },
   ],
 };

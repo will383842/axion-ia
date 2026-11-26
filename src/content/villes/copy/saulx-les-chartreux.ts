@@ -49,7 +49,7 @@ export const SAULX_LES_CHARTREUX_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Saulx-les-Chartreux ?",
-      a: "Oui, Axion-IA intervient à Saulx-les-Chartreux et dans le secteur Longjumeau-Massy : Longjumeau à 5 min, Massy TGV à 10 min, Palaiseau à 10 min, Paris centre à 30 min par N20 ou A6.",
+      a: "Nous intervenons dans vos locaux à Saulx-les-Chartreux, partout en France.",
     },
     {
       q: "Accompagnez-vous les exploitants maraîchers ?",
@@ -64,8 +64,8 @@ export const SAULX_LES_CHARTREUX_COPY: VilleCopy = {
       a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : gestion RDV, CRM patients/clients, conformité RGPD, fidélisation, marketing local.",
     },
     {
-      q: "Comment se déroule une mission à Saulx-les-Chartreux ?",
-      a: "Nous intervenons dans vos locaux à Saulx-les-Chartreux, partout en France.",
+      q: "Intervenez-vous à Saulx-les-Chartreux ?",
+      a: "Oui. Nous intervenons dans vos locaux à Saulx-les-Chartreux, partout en France, sur place ou à distance.",
     },
   ],
 };

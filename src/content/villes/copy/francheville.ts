@@ -64,8 +64,8 @@ export const FRANCHEVILLE_COPY: VilleCopy = {
       a: "Pour les TPE artisans BTP et commerçants à Francheville, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV.",
     },
     {
-      q: "Comment se déroule une mission à Francheville ?",
-      a: "Nous intervenons partout en France, sur place ou à distance.",
+      q: "Intervenez-vous à Francheville ?",
+      a: "Oui. Nous intervenons dans vos locaux à Francheville, partout en France, sur place ou à distance.",
     },
   ],
 };

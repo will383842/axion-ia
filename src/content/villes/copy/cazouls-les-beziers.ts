@@ -64,8 +64,8 @@ export const CAZOULS_LES_BEZIERS_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les acteurs de l'œnotourisme du Biterrois : chatbots multilingues visiteurs, automatisation réservations dégustations, classification avis clients, marketing IA ciblé saison touristique canal du Midi.",
     },
     {
-      q: "Comment se déroule une mission à Cazouls-lès-Béziers ?",
-      a: "Nous intervenons partout en France, sur place ou à distance.",
+      q: "Intervenez-vous à Cazouls-lès-Béziers ?",
+      a: "Oui. Nous intervenons dans vos locaux à Cazouls-lès-Béziers, partout en France, sur place ou à distance.",
     },
   ],
 };

@@ -49,7 +49,7 @@ export const ILLE_SUR_TET_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Ille-sur-Têt et dans la vallée de la Têt ?",
-      a: "Oui, Axion-IA intervient à Ille-sur-Têt et toute la vallée de la Têt (Prades à 15 min, Vinça, Millas, Néfiach). Nous intervenons partout en France, sur place ou à distance.",
+      a: "Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les arboriculteurs et producteurs de fruits ?",

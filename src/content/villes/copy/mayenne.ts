@@ -65,7 +65,7 @@ export const MAYENNE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission Axion-IA à Mayenne ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Gare TER Mayenne desservie. Format mixte sur site + visio. Tarifs publics.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Format mixte sur site + visio. Tarifs publics.",
     },
   ],
 };

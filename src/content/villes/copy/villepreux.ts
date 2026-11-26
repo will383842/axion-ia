@@ -49,7 +49,7 @@ export const VILLEPREUX_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Villepreux et plaine de Versailles ?",
-      a: "Oui, Axion-IA intervient à Villepreux et dans toute la plaine de Versailles (Versailles à 10 min, Saint-Quentin-en-Yvelines à 10 min, Paris-Montparnasse à 35 min via Transilien N).",
+      a: "Nous intervenons dans vos locaux à Villepreux, partout en France.",
     },
     {
       q: "Travaillez-vous avec les TPE artisans BTP de Villepreux ?",
@@ -64,8 +64,8 @@ export const VILLEPREUX_COPY: VilleCopy = {
       a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1, implémentation outils IA métier.",
     },
     {
-      q: "Comment se déroule une mission à Villepreux ?",
-      a: "Nous intervenons dans vos locaux à Villepreux, partout en France. Tarifs publics.",
+      q: "Intervenez-vous à Villepreux ?",
+      a: "Oui. Nous intervenons dans vos locaux à Villepreux, partout en France, sur place ou à distance.",
     },
   ],
 };

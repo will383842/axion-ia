@@ -49,7 +49,7 @@ export const LAMBALLE_ARMOR_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Lamballe-Armor et baie de Saint-Brieuc ?",
-      a: "Oui, Axion-IA intervient à Lamballe-Armor (ex-Lamballe, Meslin, Morieux, Planguenoual) et tout le bassin baie de Saint-Brieuc (Saint-Brieuc à 15 min, Dinan à 25 min, Rennes à 1h, Paris-Montparnasse à 2h45 en TGV).",
+      a: "Nous intervenons dans vos locaux à Lamballe-Armor, partout en France.",
     },
     {
       q: "Travaillez-vous avec les PME agroalimentaires de Lamballe-Armor ?",

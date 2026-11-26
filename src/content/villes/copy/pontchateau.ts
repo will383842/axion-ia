@@ -64,8 +64,8 @@ export const PONTCHATEAU_COPY: VilleCopy = {
       a: "Pour les TPE artisans BTP et commerçants à Pontchâteau, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, gestion stocks.",
     },
     {
-      q: "Comment se déroule une mission à Pontchâteau ?",
-      a: "Nous intervenons partout en France, sur place ou à distance.",
+      q: "Intervenez-vous à Pontchâteau ?",
+      a: "Oui. Nous intervenons dans vos locaux à Pontchâteau, partout en France, sur place ou à distance.",
     },
   ],
 };

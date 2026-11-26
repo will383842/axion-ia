@@ -65,7 +65,7 @@ export const BELIN_BELIET_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Belin-Béliet ?",
-      a: "Nos consultants interviennent dans vos locaux ou en visio. Gare TER Belin-Béliet. Noeud A63/A65 accessible. Livrables documentés.",
+      a: "Nos consultants interviennent dans vos locaux ou en visio. Noeud A63/A65 accessible. Livrables documentés.",
     },
   ],
 };

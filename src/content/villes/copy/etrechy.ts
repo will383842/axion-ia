@@ -49,7 +49,7 @@ export const ETRECHY_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Étréchy et dans la Vallée de la Juine ?",
-      a: "Oui, Axion-IA intervient à Étréchy et dans la Vallée de la Juine : Étampes à 10 min, Dourdan à 15 min, Massy TGV à 25 min, Paris centre à 50 min en RER C.",
+      a: "Nous intervenons dans vos locaux à Étréchy, partout en France.",
     },
     {
       q: "Accompagnez-vous les artisans BTP du sud Essonne ?",
@@ -64,8 +64,8 @@ export const ETRECHY_COPY: VilleCopy = {
       a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : gestion stocks, agents IA prise de commande, fidélisation client, marketing local.",
     },
     {
-      q: "Comment se déroule une mission à Étréchy ?",
-      a: "Nous intervenons dans vos locaux à Étréchy, partout en France.",
+      q: "Intervenez-vous à Étréchy ?",
+      a: "Oui. Nous intervenons dans vos locaux à Étréchy, partout en France, sur place ou à distance.",
     },
   ],
 };

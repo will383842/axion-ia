@@ -65,7 +65,7 @@ export const AUNEAU_BLEURY_SAINT_SYMPHORIEN_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Auneau-Bleury-Saint-Symphorien ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Gare d'Auneau-Aunay (TER vers Chartres).",
+      a: "Nous intervenons partout en France, sur place ou à distance.",
     },
   ],
 };

@@ -238,7 +238,7 @@ export const JOUE_LES_TOURS_COPY: VilleCopy = {
     },
     {
       q: "Intervenez-vous sur site à Joué-lès-Tours ?",
-      a: "Oui. Joué-lès-Tours est à une dizaine de minutes du centre de Tours et à 7 km des gares de Tours et Saint-Pierre-des-Corps. Un expert senior se déplace dans vos locaux pour les ateliers de cadrage et les étapes clés, le reste pouvant être mené à distance.",
+      a: "Oui. Un expert senior se déplace dans vos locaux pour les ateliers de cadrage et les étapes clés, le reste pouvant être mené à distance.",
     },
     {
       q: "Par où commencer un projet IA à Joué-lès-Tours ?",

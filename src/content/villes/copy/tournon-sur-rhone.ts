@@ -64,8 +64,8 @@ export const TOURNON_SUR_RHONE_COPY: VilleCopy = {
       a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1.",
     },
     {
-      q: "Comment se déroule une mission à Tournon-sur-Rhône ?",
-      a: "Nous intervenons dans vos locaux à Tournon-sur-Rhône, partout en France.",
+      q: "Intervenez-vous à Tournon-sur-Rhône ?",
+      a: "Oui. Nous intervenons dans vos locaux à Tournon-sur-Rhône, partout en France, sur place ou à distance.",
     },
   ],
 };

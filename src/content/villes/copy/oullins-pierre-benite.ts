@@ -230,7 +230,7 @@ export const OULLINS_PIERRE_BENITE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Oullins-Pierre-Bénite et au sud de Lyon ?",
-      a: "Oui, Axion-IA intervient à Oullins-Pierre-Bénite et dans tout le sud de la métropole lyonnaise (Saint-Genis-Laval, La Mulatière, Sainte-Foy-lès-Lyon). Nos consultants se déplacent sur site (métro B, 15 min) ou animent les sessions en visio.",
+      a: "Oui, Axion-IA intervient à Oullins-Pierre-Bénite et dans tout le sud de la métropole lyonnaise (Saint-Genis-Laval, La Mulatière, Sainte-Foy-lès-Lyon). Nos consultants se déplacent sur site ou animent les sessions en visio.",
     },
     {
       q: "Quels secteurs accompagnez-vous en priorité ici ?",

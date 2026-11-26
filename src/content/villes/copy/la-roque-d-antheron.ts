@@ -64,8 +64,8 @@ export const LA_ROQUE_D_ANTHERON_COPY: VilleCopy = {
       a: "Oui, nous intervenons en artisanat, commerce et viticulture sur automatisation devis, content marketing local (oenotourisme, AOP Coteaux d'Aix), fiches Google Business, SAV conversationnel, gestion administrative simplifiée.",
     },
     {
-      q: "Comment se déplace Axion-IA à La Roque-d'Anthéron ?",
-      a: "Nos consultants se déplacent dans vos locaux.",
+      q: "Intervenez-vous à La Roque-d'Anthéron ?",
+      a: "Oui. Nous intervenons dans vos locaux à La Roque-d'Anthéron, partout en France, sur place ou à distance.",
     },
   ],
 };

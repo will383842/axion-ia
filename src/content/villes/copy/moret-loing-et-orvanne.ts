@@ -49,7 +49,7 @@ export const MORET_LOING_ET_ORVANNE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il a Moret-Loing-et-Orvanne et ses environs ?",
-      a: "Oui, Axion-IA intervient a Moret-Loing-et-Orvanne et dans tout le sud Seine-et-Marne (Fontainebleau a 10 min, Nemours a 10 min, Montereau a 15 min). Paris a 1h10, gare Transilien R a Moret-Veneux-les-Sablons.",
+      a: "Oui, Axion-IA intervient a Moret-Loing-et-Orvanne et dans tout le sud Seine-et-Marne. Paris a 1h10, gare Transilien R a Moret-Veneux-les-Sablons.",
     },
     {
       q: "Travaillez-vous avec les acteurs du tourisme patrimonial et culturel ?",

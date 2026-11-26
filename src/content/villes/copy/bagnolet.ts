@@ -242,7 +242,7 @@ export const BAGNOLET_COPY: VilleCopy = {
     },
     {
       q: "Intervenez-vous aussi à Montreuil, Pantin ou Les Lilas ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Déplacement rapide grâce au métro et au périphérique.",
+      a: "Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Vos solutions IA sont-elles conformes au RGPD ?",

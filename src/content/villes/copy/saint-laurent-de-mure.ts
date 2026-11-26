@@ -49,7 +49,7 @@ export const SAINT_LAURENT_DE_MURE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Saint-Laurent-de-Mure et aire Saint-Exupéry ?",
-      a: "Oui, Axion-IA intervient à Saint-Laurent-de-Mure et toute l'aire Saint-Exupéry (aéroport à 5 min, Genas, Saint-Bonnet-de-Mure, Chassieu). Nous intervenons partout en France, sur place ou à distance.",
+      a: "Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les opérateurs logistiques ?",
@@ -64,8 +64,8 @@ export const SAINT_LAURENT_DE_MURE_COPY: VilleCopy = {
       a: "Pour les TPE artisans BTP et commerçants, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1.",
     },
     {
-      q: "Comment se déroule une mission à Saint-Laurent-de-Mure ?",
-      a: "Nous intervenons partout en France, sur place ou à distance.",
+      q: "Intervenez-vous à Saint-Laurent-de-Mure ?",
+      a: "Oui. Nous intervenons dans vos locaux à Saint-Laurent-de-Mure, partout en France, sur place ou à distance.",
     },
   ],
 };

@@ -61,7 +61,7 @@ export const MONTATAIRE_COPY: VilleCopy = {
     },
     {
       q: "Quel délai pour une intervention IA à Montataire ?",
-      a: "Nous intervenons généralement sous 5 jours ouvrés à Montataire. Creil à 5 min, Paris-Gare du Nord à 40 min via TER.",
+      a: "Nous intervenons généralement sous 5 jours ouvrés à Montataire.",
     },
     {
       q: "Comment Axion-IA garantit-il la conformité RGPD à Montataire ?",

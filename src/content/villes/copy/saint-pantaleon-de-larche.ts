@@ -49,7 +49,7 @@ export const SAINT_PANTALEON_DE_LARCHE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Saint-Pantaléon-de-Larche ?",
-      a: "Oui, Axion-IA intervient à Saint-Pantaléon-de-Larche et dans toute l'agglomération briviste. Brive à 10 min, aéroport Brive-Vallée de la Dordogne à 20 min.",
+      a: "Oui, Axion-IA intervient à Saint-Pantaléon-de-Larche et dans toute l'agglomération briviste.",
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Saint-Pantaléon-de-Larche  ?",

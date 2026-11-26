@@ -125,7 +125,7 @@ const VILLE_COPY: VilleCopy = {
           },
           {
             q: "Travaillez-vous avec les entreprises des zones industrielles d'Ozoir ?",
-            a: "Oui. Nous intervenons dans vos locaux à Ozoir-la-Ferrière pour les TPE, partout en France. La Z.I. Sud (pôle logistique de près de 27 ha) et la Z.I. Pour eux, on développe portails fournisseurs, suivi de tournées, espaces clients et agents d'automatisation des bons de commande, branchés sur leur ERP ou WMS existant.",
+            a: "Oui. Nous intervenons dans vos locaux, partout en France. Pour eux, on développe portails fournisseurs, suivi de tournées, espaces clients et agents d'automatisation des bons de commande, branchés sur leur ERP ou WMS existant.",
           },
           {
             q: "Mes données restent-elles en Europe ?",
@@ -211,7 +211,7 @@ const VILLE_COPY: VilleCopy = {
           },
           {
             q: "Travaillez-vous avec les entreprises des zones industrielles d'Ozoir ?",
-            a: "Oui. Nous intervenons dans vos locaux à Ozoir-la-Ferrière pour les TPE, partout en France. La Z.I. Sud (pôle logistique de près de 27 ha) et la Z.I. Pour eux, on développe portails fournisseurs, suivi de tournées, espaces clients et agents d'automatisation des bons de commande, branchés sur leur ERP ou WMS existant.",
+            a: "Oui. Nous intervenons dans vos locaux, partout en France. Pour eux, on développe portails fournisseurs, suivi de tournées, espaces clients et agents d'automatisation des bons de commande, branchés sur leur ERP ou WMS existant.",
           },
           {
             q: "Mes données restent-elles en Europe ?",
@@ -234,8 +234,8 @@ const VILLE_COPY: VilleCopy = {
       a: "Audit sur place {{price:audit-flash|flat}} (4 h sur site), Formation 4 h {{price:intervention-4h|flat}} (cadrage + livraison d'un automatisme), accompagnement 1-à-1 {{price:intervention-dirigeants|flat}}. Tarifs publics consultables, aucune licence SaaS récurrente — vous êtes propriétaire du code livré.",
     },
     {
-      q: "Williams se déplace-t-il vraiment à Ozoir-la-Ferrière ?",
-      a: "Oui. Nous nous déplaçons chez vous, partout en France, pour intervenir sur site auprès des TPE et PME ozoiriennes.",
+      q: "Intervenez-vous à Ozoir-la-Ferrière ?",
+      a: "Oui. Nous intervenons dans vos locaux à Ozoir-la-Ferrière, partout en France, sur place ou à distance.",
     },
     {
       q: "Quels secteurs locaux Axion-IA accompagne-t-il à Ozoir-la-Ferrière ?",

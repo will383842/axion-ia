@@ -64,8 +64,8 @@ export const ENTRAIGUES_SUR_LA_SORGUE_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les maraîchers sur prévision de récoltes, traçabilité produits, optimisation tournées de livraison, gestion stocks frais et automatisation administrative coopératives.",
     },
     {
-      q: "Comment se déplace Axion-IA à Entraigues-sur-la-Sorgue ?",
-      a: "Nos consultants se déplacent dans vos locaux.",
+      q: "Intervenez-vous à Entraigues-sur-la-Sorgue ?",
+      a: "Oui. Nous intervenons dans vos locaux à Entraigues-sur-la-Sorgue, partout en France, sur place ou à distance.",
     },
   ],
 };

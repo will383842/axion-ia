@@ -64,8 +64,8 @@ export const AMBILLY_COPY: VilleCopy = {
       a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, gestion stocks, classification documents, chatbot clientèle.",
     },
     {
-      q: "Comment se déroule une mission à Ambilly ?",
-      a: "Nous intervenons partout en France, sur place ou à distance.",
+      q: "Intervenez-vous à Ambilly ?",
+      a: "Oui. Nous intervenons dans vos locaux à Ambilly, partout en France, sur place ou à distance.",
     },
   ],
 };

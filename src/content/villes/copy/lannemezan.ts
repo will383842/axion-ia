@@ -65,7 +65,7 @@ export const LANNEMEZAN_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Lannemezan ?",
-      a: "Gare SNCF Lannemezan (ligne Toulouse-Bayonne). Nos consultants interviennent sur site.",
+      a: "Nos consultants interviennent sur site.",
     },
   ],
 };

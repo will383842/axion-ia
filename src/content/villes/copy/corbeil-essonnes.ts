@@ -246,7 +246,7 @@ export const CORBEIL_ESSONNES_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Corbeil-Essonnes ?",
-      a: "Corbeil-Essonnes est à environ 30 min de Paris-Gare de Lyon par le RER D. Nous nous déplaçons sur site.",
+      a: "Corbeil-Essonnes est D. Nous nous déplaçons sur site.",
     },
     {
       q: "Proposez-vous un accompagnement individuel pour les dirigeants ?",

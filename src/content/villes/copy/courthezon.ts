@@ -64,8 +64,8 @@ export const COURTHEZON_COPY: VilleCopy = {
       a: "Oui, nous intervenons en oenotourisme sur gestion des réservations, agents conversationnels multilingues, content marketing terroir, e-réputation, optimisation Google Business et création d'expériences oenotouristiques.",
     },
     {
-      q: "Comment se déplace Axion-IA à Courthézon ?",
-      a: "Nos consultants se déplacent dans vos domaines et locaux.",
+      q: "Intervenez-vous à Courthézon ?",
+      a: "Oui. Nous intervenons dans vos locaux à Courthézon, partout en France, sur place ou à distance.",
     },
   ],
 };

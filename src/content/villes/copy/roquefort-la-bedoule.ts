@@ -49,7 +49,7 @@ export const ROQUEFORT_LA_BEDOULE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Roquefort-la-Bédoule et dans le sud-est marseillais ?",
-      a: "Oui, Axion-IA intervient à Roquefort-la-Bédoule et dans tout le sud-est marseillais (Cassis à 10 min, Aubagne à 10 min, La Ciotat, Carnoux). Couverture complète bassin est marseillais.",
+      a: "Nous intervenons dans vos locaux à Roquefort-la-Bédoule, partout en France. Couverture complète bassin est marseillais.",
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Roquefort-la-Bédoule  ?",

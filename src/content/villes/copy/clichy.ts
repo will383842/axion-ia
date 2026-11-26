@@ -128,7 +128,7 @@ export const CLICHY_COPY: VilleCopy = {
           },
           {
             q: "Sous quel délai puis-je avoir un devis ?",
-            a: "À partir de 24 à 48 h selon la complexité. Après un échange de cadrage rapide, nous vous transmettons un périmètre clair et un devis détaillé. Le kick-off se fait ensuite sur site à Clichy ou en proche couronne (Levallois, Asnières, Saint-Ouen, Paris 17e).",
+            a: "Après un échange de cadrage rapide, nous vous transmettons un périmètre clair et un devis détaillé. Le kick-off se fait ensuite sur site à Clichy ou en proche couronne (Levallois, Asnières, Saint-Ouen, Paris 17e).",
           },
           {
             q: "Mes données et mon site sont-ils hébergés en conformité RGPD ?",
@@ -246,7 +246,7 @@ export const CLICHY_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Clichy ?",
-      a: "Clichy est à environ 15 min de Paris centre et de La Défense, et à 10 min de Paris-Saint-Lazare. Nous nous déplaçons sur site.",
+      a: "Nous nous déplaçons sur site.",
     },
     {
       q: "Proposez-vous un accompagnement individuel pour les dirigeants ?",

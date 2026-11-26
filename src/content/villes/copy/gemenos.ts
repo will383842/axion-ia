@@ -64,8 +64,8 @@ export const GEMENOS_COPY: VilleCopy = {
       a: "Oui, nous accompagnons avocats, médecins, consultants et experts-comptables : rédaction assistée, automatisation gestion cabinet, classification dossiers, agents IA prise de RDV clients.",
     },
     {
-      q: "Comment se déplace Axion-IA à Gémenos ?",
-      a: "Nos consultants se déplacent dans vos locaux.",
+      q: "Intervenez-vous à Gémenos ?",
+      a: "Oui. Nous intervenons dans vos locaux à Gémenos, partout en France, sur place ou à distance.",
     },
   ],
 };

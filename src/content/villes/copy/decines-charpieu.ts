@@ -128,7 +128,7 @@ export const DECINES_CHARPIEU_COPY: VilleCopy = {
           },
           {
             q: "Sous quel délai obtient-on un devis ?",
-            a: "À partir de 24 à 48 h selon la complexité. Après un premier échange sur votre projet — vitrine, e-commerce, plateforme événementielle ou portail logistique — nous vous transmettons un cadrage chiffré, sans montant générique affiché à l'avance.",
+            a: "Nous intervenons dans vos locaux, partout en France. Après un premier échange sur votre projet — vitrine, e-commerce, plateforme événementielle ou portail logistique — nous vous transmettons un cadrage chiffré, sans montant générique affiché à l'avance.",
           },
           {
             q: "Où sont hébergées les données de mon site ?",
@@ -229,8 +229,8 @@ export const DECINES_CHARPIEU_COPY: VilleCopy = {
 
   faqGeolocalisee: [
     {
-      q: "Axion-IA se déplace-t-il à Décines-Charpieu ?",
-      a: "Oui, nos consultants se déplacent directement dans vos locaux à Décines-Charpieu et dans tout l'est lyonnais. La première rencontre se fait sur site afin de comprendre votre activité réelle avant toute recommandation.",
+      q: "Intervenez-vous à Décines-Charpieu ?",
+      a: "Oui. Nous intervenons dans vos locaux à Décines-Charpieu, partout en France, sur place ou à distance.",
     },
     {
       q: "Quels types d'entreprises accompagnez-vous à Décines-Charpieu ?",

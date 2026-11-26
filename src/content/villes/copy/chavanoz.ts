@@ -64,8 +64,8 @@ export const CHAVANOZ_COPY: VilleCopy = {
       a: "Pour les TPE artisans BTP et commerçants à Chavanoz, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV.",
     },
     {
-      q: "Comment se déroule une mission à Chavanoz ?",
-      a: "Nous intervenons partout en France, sur place ou à distance.",
+      q: "Intervenez-vous à Chavanoz ?",
+      a: "Oui. Nous intervenons dans vos locaux à Chavanoz, partout en France, sur place ou à distance.",
     },
   ],
 };

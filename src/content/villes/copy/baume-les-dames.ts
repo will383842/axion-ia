@@ -49,7 +49,7 @@ export const BAUME_LES_DAMES_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Baume-les-Dames et dans la vallée du Doubs ?",
-      a: "Oui, Axion-IA intervient à Baume-les-Dames et dans toute la vallée du Doubs (Clerval, Rougemont, L'Isle-sur-le-Doubs, Pont-les-Moulins). Couverture Besançon à 30 min et Montbéliard à 40 min.",
+      a: "Oui, Axion-IA intervient à Baume-les-Dames et dans toute la vallée du Doubs (Clerval, Rougemont, L'Isle-sur-le-Doubs, Pont-les-Moulins).",
     },
     {
       q: "Travaillez-vous avec les PME industrielles du secteur ?",
@@ -65,7 +65,7 @@ export const BAUME_LES_DAMES_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Baume-les-Dames ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Gare TER de Baume-les-Dames sur la ligne Besançon-Montbéliard. Tarifs publics et transparents.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Tarifs publics et transparents.",
     },
   ],
 };

@@ -64,8 +64,8 @@ export const ROSPORDEN_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les acteurs du tourisme vert et hébergeurs autour de Rosporden sur leurs cas IA : agents conversationnels réservation, gestion saisonnalité, classification avis clients, tarification dynamique.",
     },
     {
-      q: "Comment se déroule une mission à Rosporden ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Gare TER Rosporden accessible (ligne Quimper-Lorient).",
+      q: "Intervenez-vous à Rosporden ?",
+      a: "Oui. Nous intervenons dans vos locaux à Rosporden, partout en France, sur place ou à distance.",
     },
   ],
 };

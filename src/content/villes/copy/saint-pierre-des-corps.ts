@@ -49,7 +49,7 @@ export const SAINT_PIERRE_DES_CORPS_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Saint-Pierre-des-Corps et Tours ?",
-      a: "Oui, Axion-IA intervient à Saint-Pierre-des-Corps et toute Tours Métropole (Tours, Joué-lès-Tours, Chambray-lès-Tours, Saint-Cyr-sur-Loire). Gare TGV sur place, Paris à 1h05.",
+      a: "Oui, Axion-IA intervient à Saint-Pierre-des-Corps et toute Tours Métropole (Tours, Joué-lès-Tours, Chambray-lès-Tours, Saint-Cyr-sur-Loire).",
     },
     {
       q: "Travaillez-vous avec les PME logistique et transport ferroviaire ?",

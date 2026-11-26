@@ -49,7 +49,7 @@ export const SAINT_VALLIER_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Saint-Vallier et dans le bassin Montceau ?",
-      a: "Oui, Axion-IA intervient à Saint-Vallier et tout le bassin Le Creusot-Montceau (Montceau-les-Mines à 5 min, Le Creusot-TGV à 20 min, Chalon-sur-Saône à 40 min).",
+      a: "Nous intervenons dans vos locaux à Saint-Vallier, partout en France.",
     },
     {
       q: "Travaillez-vous avec les PME industrielles en reconversion ?",
@@ -64,8 +64,8 @@ export const SAINT_VALLIER_COPY: VilleCopy = {
       a: "Optimisation tournées livraison, prédiction demande, gestion flotte véhicules, automatisation administrative transport. Intervention sur site entrepôt ou en visio.",
     },
     {
-      q: "Comment se déroule une mission à Saint-Vallier ?",
-      a: "Nous intervenons partout en France, sur place ou à distance.",
+      q: "Intervenez-vous à Saint-Vallier ?",
+      a: "Oui. Nous intervenons dans vos locaux à Saint-Vallier, partout en France, sur place ou à distance.",
     },
   ],
 };

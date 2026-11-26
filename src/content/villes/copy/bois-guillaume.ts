@@ -49,7 +49,7 @@ export const BOIS_GUILLAUME_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Bois-Guillaume et agglo Rouen ?",
-      a: "Oui, Axion-IA intervient à Bois-Guillaume et toute la Métropole Rouen Normandie (Rouen centre à 10 min, Mont-Saint-Aignan, Isneauville, Bihorel). Nous intervenons partout en France, sur place ou à distance.",
+      a: "Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les professions libérales et cabinets médicaux ?",
@@ -64,8 +64,8 @@ export const BOIS_GUILLAUME_COPY: VilleCopy = {
       a: "L'audit sur place est tarifé selon vos enjeux pour les TPE et professions libérales. Pour les PME tertiaires, l'audit stratégique complet est adapté au périmètre. Tarifs publics, pas de devis opaque.",
     },
     {
-      q: "Comment se déroule une mission à Bois-Guillaume ?",
-      a: "Nous intervenons partout en France, sur place ou à distance.",
+      q: "Intervenez-vous à Bois-Guillaume ?",
+      a: "Oui. Nous intervenons dans vos locaux à Bois-Guillaume, partout en France, sur place ou à distance.",
     },
   ],
 };

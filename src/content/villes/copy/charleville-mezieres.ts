@@ -132,7 +132,7 @@ export const CHARLEVILLE_MEZIERES_COPY: VilleCopy = {
           },
           {
             q: "Quels sont vos délais et où intervenez-vous ?",
-            a: "Nous établissons un devis à partir de 24-48 h selon la complexité, après le cadrage. Nous intervenons sur site à Charleville-Mézières et dans l'agglomération Ardenne Métropole — Villers-Semeuse, les Ayvelles, Nouzonville, Bogny-sur-Meuse, Sedan — et travaillons aussi en visio. Reims est à environ 1h par l'A34.",
+            a: "Nous établissons un devis à partir de 24-48 h selon la complexité, après le cadrage. Nous intervenons sur site à Charleville-Mézières et dans l'agglomération Ardenne Métropole — Villers-Semeuse, les Ayvelles, Nouzonville, Bogny-sur-Meuse, Sedan — et travaillons aussi en visio. Reims est par l'A34.",
           },
         ],
         guarantees:

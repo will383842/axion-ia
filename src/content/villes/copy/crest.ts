@@ -49,7 +49,7 @@ export const CREST_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Crest et vallée de la Drôme ?",
-      a: "Oui, Axion-IA intervient à Crest et toute la vallée de la Drôme (Aouste-sur-Sye, Saillans, Mirabel-et-Blacons, Die à 40 min). Nous intervenons partout en France, sur place ou à distance.",
+      a: "Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les acteurs du tourisme patrimonial Tour de Crest ?",
@@ -64,8 +64,8 @@ export const CREST_COPY: VilleCopy = {
       a: "Pour les TPE artisans BTP et commerçants à Crest, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, classification photos.",
     },
     {
-      q: "Comment se déroule une mission à Crest ?",
-      a: "Nous intervenons partout en France, sur place ou à distance.",
+      q: "Intervenez-vous à Crest ?",
+      a: "Oui. Nous intervenons dans vos locaux à Crest, partout en France, sur place ou à distance.",
     },
   ],
 };

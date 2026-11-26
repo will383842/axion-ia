@@ -231,8 +231,8 @@ export const GARGES_LES_GONESSE_COPY: VilleCopy = {
       a: "Nos tarifs publics démarrent à {{price:audit-flash|flat}} pour un Audit sur place et {{price:intervention-4h|flat}} pour le format d'une journée à Garges-lès-Gonesse. L'implémentation et l'accompagnement un-à-un débutent à {{price:intervention-dirigeants|flat}}.",
     },
     {
-      q: "Axion-IA se déplace-t-il sur site à Garges-lès-Gonesse (95140) ?",
-      a: "Oui, nos consultants prennent le RER D jusqu'à la gare Garges-Sarcelles ou le tramway T5.",
+      q: "Intervenez-vous à Garges-lès-Gonesse (95140) ?",
+      a: "Oui. Nous intervenons dans vos locaux à Garges-lès-Gonesse (95140), partout en France, sur place ou à distance.",
     },
     {
       q: "Quels délais pour démarrer un projet IA à Garges-lès-Gonesse ?",

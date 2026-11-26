@@ -246,7 +246,7 @@ export const CASTRES_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Castres ?",
-      a: "Toulouse est à environ 1h15 par l'autoroute Castres-Toulouse. Nous nous déplaçons sur site à Castres.",
+      a: "Toulouse est par l'autoroute Castres-Toulouse. Nous nous déplaçons sur site à Castres.",
     },
     {
       q: "Proposez-vous un accompagnement individuel pour les dirigeants ?",

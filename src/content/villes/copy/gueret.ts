@@ -61,7 +61,7 @@ export const GUERET_COPY: VilleCopy = {
     },
     {
       q: "Quel délai pour démarrer une mission IA à Guéret ?",
-      a: "Intervention sous 5 à 7 jours ouvrés. Limoges à 1h30, Montluçon à 1h15. Déplacements sur site ou sessions en visio selon vos préférences.",
+      a: "Intervention sous 5 à 7 jours ouvrés. Déplacements sur site ou sessions en visio selon vos préférences.",
     },
     {
       q: "Comment Axion-IA garantit-il la conformité RGPD à Guéret ?",

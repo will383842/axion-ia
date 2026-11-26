@@ -49,7 +49,7 @@ export const CREGY_LES_MEAUX_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Crégy-lès-Meaux et environs ?",
-      a: "Oui, Axion-IA intervient à Crégy-lès-Meaux et toute l'agglomération meldoise (Meaux centre à 5 min, gare Transilien à 8 min, CDG à 30 min, Paris à 45 min).",
+      a: "Nous intervenons dans vos locaux à Crégy-lès-Meaux, partout en France.",
     },
     {
       q: "Accompagnez-vous les commerces des zones commerciales ?",

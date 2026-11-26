@@ -114,12 +114,24 @@ const PRESENCE: ReadonlyArray<readonly [string, RegExp]> = [
     "question de FAQ qui suppose une base ailleurs",
     /\bq: "[^"]*(?:intervention depuis [A-ZÉ]|accéder à [^"?]* depuis|accédez-vous|[Êê]tes-vous accessibles|[Cc]omment (?:se rendre|[A-ZÉ][^"?]* est-elle desservie)|[Cc]ouvrez-vous[^"?]* depuis|couvertes depuis|[Ii]ntervenez-vous [^"?]* depuis [A-ZÉ])/u,
   ],
+  [
+    "question sur le déplacement ou l'accès de l'équipe",
+    /\bq: "[^"]*(?:[Cc]omment (?:se déplace|Axion-IA se déplace|Williams se déplace)|[Cc]omment [^"?]* est-elle accessible|[Pp]our vos consultants|distance entre)/u,
+  ],
+  [
+    "trajet de l'équipe en train, avion ou RER",
+    /(?:Williams|[Nn]os consultants|[Nn]otre équipe)[^."]{0,60}(?:prenn?ent|prend) (?:le |l['’])?(?:TGV|train|avion|RER)|(?:se déplace|[Dd]éplacement)[^."]{0,60}\b(?:via|par le (?:train|RER|TGV)|grâce au|en \d)/u,
+  ],
   ["lieux Axion-IA", /ateliers Axion-IA à|nos points de cadrage/u],
   [
     "basé à",
     /(?:Axion-IA|[Nn]ous|[Nn]otre (?:équipe|cabinet)|[Nn]os (?:consultants|équipes|experts)|Williams|étant)(?:(?!entreprises|clients|PME|ETI|groupe|commerces|structures)[^".]){0,40}\b(?:basée?s?|installée?s?|implantée?s?) (?:à|au|aux|sur|dans|en) (?!France)/u,
   ],
 ];
+
+/** Contenu métier : une phrase qui promet un livrable décrit la ville, pas un trajet de l'équipe. */
+const PROTEGE =
+  /accompagn|nous déployons|on (?:livre|développe|construit)|nous livrons|nous développons/u;
 
 /** Réponses de FAQ (`a:`) : aucune phrase de trajet, de desserte ni de durée d'accès. */
 const TRAJET_FAQ: ReadonlyArray<readonly [string, RegExp]> = [
@@ -129,11 +141,15 @@ const TRAJET_FAQ: ReadonlyArray<readonly [string, RegExp]> = [
   ],
   [
     "moyen de transport + durée, ou « nous permet / facilite »",
-    /\b(?:RER|TGV|TER|gare|aéroport|tram\w*|métro|autoroute|A\d{1,3}|RN ?\d+)\b[^.]*(?:\bà \d+ ?(?:min|h)|\(\d+ ?(?:min|h)|nous permet|permettent|facilit)/u,
+    /\b(?:RER|TGV|TER|gare|aéroport|tram\w*|métro|autoroute|A\d{1,3}|RN ?\d+)\b[^.]*(?:(?<![\p{L}\d])à \d+ ?(?:min|h)|\(\d+ ?(?:min|h)|nous permet|permettent|facilit)/u,
   ],
   [
     "durée d'accès",
-    /^(?!.*(?:devis|séance|audit|livrable|atelier|sous \d)).*(?:\b(?:à|est à|sont à|en) \d+ ?(?:min\b|minutes|km)|\b(?:à|est à|sont à) \d+ ?h\d*\b|\(\d+ ?(?:min|h\d*)[^)]*\))/u,
+    /^(?!.*(?:devis|séance|audit|livrable|atelier|sous \d)).*(?:(?<![\p{L}\d])(?:à|est à|sont à|en) \d+ ?(?:min\b|minutes|km)|(?<![\p{L}\d])(?:à|est à|sont à) \d+ ?h\d*\b|\(\d+ ?(?:min|h\d*)[^)]*\))/u,
+  ],
+  [
+    "gare ou aéroport cité seul",
+    /^(?:Gare|Aéroport|Proche (?:de l['’])?(?:aéroport|gare)|Proximité (?:directe )?(?:de l['’])?(?:aéroport|gare|Roissy|Orly))\b/u,
   ],
   ["rejoindre depuis", /(?:rejoindre|venues?|venir)[^.]*depuis [A-ZÉ]/u],
 ];
@@ -147,7 +163,7 @@ function fautesFaq(motif: RegExp): string[] {
       if (
         m &&
         !/\b(?:Yes|We |Our |The |Axion-IA's)\b/u.test(m[1]!) &&
-        m[1]!.split(/(?<=[.!?])\s+(?=[A-ZÉÀ«"])/u).some((p) => motif.test(p))
+        m[1]!.split(/(?<=[.!?])\s+(?=[A-ZÉÀ«"])/u).some((p) => !PROTEGE.test(p) && motif.test(p))
       )
         out.push(`${f}:${i + 1}`);
     });

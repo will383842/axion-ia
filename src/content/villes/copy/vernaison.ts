@@ -64,8 +64,8 @@ export const VERNAISON_COPY: VilleCopy = {
       a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1.",
     },
     {
-      q: "Comment se déroule une mission à Vernaison ?",
-      a: "Nous intervenons partout en France, sur place ou à distance.",
+      q: "Intervenez-vous à Vernaison ?",
+      a: "Oui. Nous intervenons dans vos locaux à Vernaison, partout en France, sur place ou à distance.",
     },
   ],
 };

@@ -49,7 +49,7 @@ export const CORTE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Corte et dans le centre Corse ?",
-      a: "Oui, Axion-IA intervient à Corte et dans tout le centre Corse (Venaco, Vivario, Ghisoni, Aléria). Couverture Bastia à 1h10 et Ajaccio à 1h15 par la T20.",
+      a: "Oui, Axion-IA intervient à Corte et dans tout le centre Corse (Venaco, Vivario, Ghisoni, Aléria).",
     },
     {
       q: "Accompagnez-vous les structures liées à l'Université de Corse ?",

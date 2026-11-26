@@ -231,8 +231,8 @@ export const CAGNES_SUR_MER_COPY: VilleCopy = {
       a: "L'Audit sur place 4h sur site à Cagnes-sur-Mer démarre à {{price:audit-flash|flat}} (cartographie processus + 3 quick wins). Une intervention ciblée est facturée {{price:intervention-4h|flat}}, une implémentation complète à partir de {{price:impl-poc|entry}}. Tarifs publics fixes, sans abonnement.",
     },
     {
-      q: "Williams se déplace-t-il vraiment à Cagnes-sur-Mer ?",
-      a: "Oui. Nous intervenons dans vos locaux à Cagnes-sur-Mer, partout en France. Williams (fondateur Axion-IA) se déplace en personne à Cagnes-sur-Mer, généralement sous 5 jours ouvrés.",
+      q: "Intervenez-vous à Cagnes-sur-Mer ?",
+      a: "Oui. Nous intervenons dans vos locaux à Cagnes-sur-Mer, partout en France, sur place ou à distance.",
     },
     {
       q: "Quelles communes proches de Cagnes-sur-Mer couvrez-vous lors d'un déplacement ?",

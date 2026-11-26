@@ -49,7 +49,7 @@ export const EPONE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Épône et dans la vallée de Seine ?",
-      a: "Oui, Axion-IA intervient à Épône et dans toute la vallée de Seine yvelinoise (Mantes-la-Jolie à 10 min, Les Mureaux à 10 min, Aubergenville, Mézières-sur-Seine).",
+      a: "Nous intervenons dans vos locaux à Épône, partout en France.",
     },
     {
       q: "Accompagnez-vous les PME logistiques de l'axe Seine ?",
@@ -64,8 +64,8 @@ export const EPONE_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les TPE artisans et commerçants d'Épône sur leurs cas IA : devis automatisé, gestion planning, agents conversationnels clients, CRM augmenté, facturation intelligente. Solutions simples et concrètes.",
     },
     {
-      q: "Comment se déroule une mission à Épône ?",
-      a: "Nous intervenons partout en France, sur place ou à distance.",
+      q: "Intervenez-vous à Épône ?",
+      a: "Oui. Nous intervenons dans vos locaux à Épône, partout en France, sur place ou à distance.",
     },
   ],
 };

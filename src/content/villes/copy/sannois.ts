@@ -122,7 +122,7 @@ export const SANNOIS_COPY: VilleCopy = {
           },
           {
             q: "Combien de temps pour recevoir un devis ?",
-            a: "À partir de 24 à 48 h selon la complexité du projet. Après un premier échange à Sannois ou en visio, nous vous envoyons un périmètre chiffré clair, sans montant caché.",
+            a: "Nous intervenons dans vos locaux, partout en France. Après un premier échange à Sannois ou en visio, nous vous envoyons un périmètre chiffré clair, sans montant caché.",
           },
           {
             q: "Quels CMS et technologies utilisez-vous pour l'e-commerce ?",

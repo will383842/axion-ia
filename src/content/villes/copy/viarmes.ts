@@ -49,7 +49,7 @@ export const VIARMES_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Viarmes et dans le Pays de France ?",
-      a: "Oui, Axion-IA intervient à Viarmes et tout le Pays de France (Luzarches à 5 min, Beaumont-sur-Oise à 10 min, aéroport CDG à 20 min, Paris Gare du Nord à 40 min). Gare Transilien Viarmes ligne H.",
+      a: "Nous intervenons dans vos locaux à Viarmes, partout en France.",
     },
     {
       q: "Travaillez-vous avec les commerçants et artisans de Viarmes ?",
@@ -64,8 +64,8 @@ export const VIARMES_COPY: VilleCopy = {
       a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1.",
     },
     {
-      q: "Comment se déroule une mission à Viarmes ?",
-      a: "Nous intervenons dans vos locaux à Viarmes, partout en France.",
+      q: "Intervenez-vous à Viarmes ?",
+      a: "Oui. Nous intervenons dans vos locaux à Viarmes, partout en France, sur place ou à distance.",
     },
   ],
 };

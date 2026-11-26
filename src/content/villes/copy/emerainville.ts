@@ -49,7 +49,7 @@ export const EMERAINVILLE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Émerainville et dans Marne-la-Vallée ?",
-      a: "Oui, Axion-IA intervient à Émerainville et dans toute l'agglomération Marne-la-Vallée (Pontault-Combault, Croissy-Beaubourg, Torcy, Lognes). RER A Émerainville-Pontault-Combault, Paris à 35 min.",
+      a: "Oui, Axion-IA intervient à Émerainville et dans toute l'agglomération Marne-la-Vallée (Pontault-Combault, Croissy-Beaubourg, Torcy, Lognes).",
     },
     {
       q: "Combien coûte un audit IA à Émerainville  ?",

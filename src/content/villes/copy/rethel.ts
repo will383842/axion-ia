@@ -49,7 +49,7 @@ export const RETHEL_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Rethel et dans le Rethélois ?",
-      a: "Oui, Axion-IA intervient à Rethel et dans tout le Rethélois (Acy-Romance, Sault-lès-Rethel, Bourg-Fidèle). Couverture Reims à 40 km et Charleville-Mézières à 40 km par l'A34.",
+      a: "Oui, Axion-IA intervient à Rethel et dans tout le Rethélois (Acy-Romance, Sault-lès-Rethel, Bourg-Fidèle).",
     },
     {
       q: "Accompagnez-vous la filière agroalimentaire boudin blanc de Rethel ?",

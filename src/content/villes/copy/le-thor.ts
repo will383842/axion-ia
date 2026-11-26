@@ -64,8 +64,8 @@ export const LE_THOR_COPY: VilleCopy = {
       a: "Oui, nous intervenons en négoce agroalimentaire sur optimisation logistique, gestion stocks frais, prévision demande, content marketing export multilingue et automatisation des certifications qualité.",
     },
     {
-      q: "Comment se déplace Axion-IA au Thor ?",
-      a: "Nos consultants se déplacent dans vos locaux.",
+      q: "Intervenez-vous au Thor ?",
+      a: "Oui. Nous intervenons dans vos locaux au Thor, partout en France, sur place ou à distance.",
     },
   ],
 };

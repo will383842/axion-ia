@@ -49,7 +49,7 @@ export const NOUZONVILLE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Nouzonville et dans la vallée de la Meuse ?",
-      a: "Oui, Axion-IA intervient à Nouzonville et dans toute la vallée de la Meuse ardennaise. Charleville-Mézières à 10 min, Sedan à 30 min, Reims à 1 h via A34.",
+      a: "Oui, Axion-IA intervient à Nouzonville et dans toute la vallée de la Meuse ardennaise.",
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Nouzonville  ?",

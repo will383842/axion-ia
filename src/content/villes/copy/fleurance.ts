@@ -65,7 +65,7 @@ export const FLEURANCE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Fleurance ?",
-      a: "Nos consultants interviennent sur site à Fleurance et dans la Lomagne gersoise. Déplacement direct dans votre entreprise. Auch à 25 min, Agen (gare TGV) à 35 min, Toulouse-Blagnac à 1h10.",
+      a: "Nos consultants interviennent sur site à Fleurance et dans la Lomagne gersoise. Déplacement direct dans votre entreprise.",
     },
   ],
 };

@@ -49,7 +49,7 @@ export const AURAY_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Auray et dans le golfe du Morbihan ?",
-      a: "Oui, Axion-IA intervient à Auray et dans tout le golfe du Morbihan. Vannes à 20 min, Lorient à 30 min, Quiberon à 30 min, voie express RN 165 sur place.",
+      a: "Oui, Axion-IA intervient à Auray et dans tout le golfe du Morbihan.",
     },
     {
       q: "Quel est le tarif d'un audit IA à Auray  ?",

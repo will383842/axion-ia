@@ -49,7 +49,7 @@ export const VERDUN_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Verdun et en Meuse ?",
-      a: "Oui, Axion-IA intervient à Verdun et sur toute la Meuse (Bar-le-Duc, Commercy, Étain, Stenay). Gare Meuse TGV à 25 min, Paris à 1h05 en TGV.",
+      a: "Oui, Axion-IA intervient à Verdun et sur toute la Meuse (Bar-le-Duc, Commercy, Étain, Stenay).",
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Verdun  ?",

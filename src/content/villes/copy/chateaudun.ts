@@ -64,8 +64,8 @@ export const CHATEAUDUN_COPY: VilleCopy = {
       a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Formats adaptés aux petites structures.",
     },
     {
-      q: "Comment se déroule une mission à Châteaudun ?",
-      a: "Nous intervenons dans vos locaux à Châteaudun, partout en France.",
+      q: "Intervenez-vous à Châteaudun ?",
+      a: "Oui. Nous intervenons dans vos locaux à Châteaudun, partout en France, sur place ou à distance.",
     },
   ],
 };

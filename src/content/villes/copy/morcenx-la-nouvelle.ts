@@ -65,7 +65,7 @@ export const MORCENX_LA_NOUVELLE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Morcenx-la-Nouvelle ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Gare SNCF Morcenx sur la ligne Bordeaux-Hendaye. Mission sur site dans votre établissement.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Mission sur site dans votre établissement.",
     },
   ],
 };

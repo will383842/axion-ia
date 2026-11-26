@@ -128,7 +128,7 @@ export const SAINT_NAZAIRE_COPY: VilleCopy = {
           },
           {
             q: "Sous quel délai recevons-nous un devis ?",
-            a: "À partir de 24 à 48 h selon la complexité de votre projet. Pour un site vitrine, le chiffrage est rapide ; pour un portail fournisseur ou une plateforme SaaS intégrée à votre ERP/GPAO, nous prenons le temps d'un court cadrage avant de vous remettre une proposition ferme.",
+            a: "Nous intervenons dans vos locaux, partout en France. Pour un site vitrine, le chiffrage est rapide ; pour un portail fournisseur ou une plateforme SaaS intégrée à votre ERP/GPAO, nous prenons le temps d'un court cadrage avant de vous remettre une proposition ferme.",
           },
           {
             q: "Où sont hébergées les données et le site ?",
@@ -233,8 +233,8 @@ export const SAINT_NAZAIRE_COPY: VilleCopy = {
       a: "Oui. Les sous-traitants et PME de la filière naval-aéronautique de Saint-Nazaire figurent parmi nos cibles prioritaires. Nous automatisons leurs flux administratifs et reporting qualité, sans intervenir sur leurs procédés industriels ni leurs systèmes critiques.",
     },
     {
-      q: "Axion-IA se déplace-t-il sur site à Saint-Nazaire ?",
-      a: "Oui, nos experts IA viennent dans vos locaux, des zones d'activités proches des Chantiers de l'Atlantique et d'Airbus aux PME de la presqu'île. L'observation terrain est le meilleur point de départ pour cibler des automatisations vraiment utiles.",
+      q: "Intervenez-vous à Saint-Nazaire ?",
+      a: "Oui. Nous intervenons dans vos locaux à Saint-Nazaire, partout en France, sur place ou à distance.",
     },
     {
       q: "Quelles entreprises accompagnez-vous en priorité ici ?",

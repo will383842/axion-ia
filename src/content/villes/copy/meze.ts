@@ -65,7 +65,7 @@ export const MEZE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Mèze ?",
-      a: "Nos consultants interviennent sur site à Mèze et dans le bassin de Thau. Déplacement direct dans votre exploitation ou entreprise. Sète à 15 min, Montpellier à 30 min, aéroport à 25 min.",
+      a: "Nos consultants interviennent sur site à Mèze et dans le bassin de Thau. Déplacement direct dans votre exploitation ou entreprise.",
     },
   ],
 };

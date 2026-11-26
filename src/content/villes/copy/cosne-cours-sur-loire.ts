@@ -49,7 +49,7 @@ export const COSNE_COURS_SUR_LOIRE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Cosne-Cours-sur-Loire et dans la Nièvre ?",
-      a: "Oui, Axion-IA intervient à Cosne-Cours-sur-Loire et dans toute la Nièvre nord (Nevers à 50 min, Bourges à 50 min, Paris à 2 h via A77). Nos consultants couvrent le Val de Loire nivernais et le nord Bourgogne.",
+      a: "Nous intervenons dans vos locaux à Cosne-Cours-sur-Loire, partout en France. Nos consultants couvrent le Val de Loire nivernais et le nord Bourgogne.",
     },
     {
       q: "Accompagnez-vous les industriels et artisans de Cosne-Cours-sur-Loire ?",
@@ -65,7 +65,7 @@ export const COSNE_COURS_SUR_LOIRE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Cosne-Cours-sur-Loire ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Gare SNCF Cosne-sur-Loire sur la ligne Paris-Nevers. Intervention sur site.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Intervention sur site.",
     },
   ],
 };

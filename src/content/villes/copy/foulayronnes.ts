@@ -65,7 +65,7 @@ export const FOULAYRONNES_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Foulayronnes ?",
-      a: "Nos consultants interviennent sur site à Foulayronnes et dans l'agglomération d'Agen. Déplacement direct sur votre atelier, commerce ou bureau. Gare TGV Agen à 10 min, aéroport Agen-La Garenne à 15 min.",
+      a: "Nos consultants interviennent sur site à Foulayronnes et dans l'agglomération d'Agen. Déplacement direct sur votre atelier, commerce ou bureau.",
     },
   ],
 };

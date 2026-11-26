@@ -49,7 +49,7 @@ export const ISSOIRE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Issoire et sud Puy-de-Dôme ?",
-      a: "Oui, Axion-IA intervient à Issoire et tout le sud Puy-de-Dôme (Brioude à 25 min, Parentignat, Saint-Germain-Lembron). Nous intervenons partout en France, sur place ou à distance.",
+      a: "Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les PME aéronautique/métallurgie ?",

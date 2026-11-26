@@ -65,7 +65,7 @@ export const LOUVECIENNES_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Louveciennes ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. La Défense à 15 min.",
+      a: "Nous intervenons partout en France, sur place ou à distance.",
     },
   ],
 };

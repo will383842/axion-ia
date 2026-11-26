@@ -49,7 +49,7 @@ export const JANZE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Janzé et dans le sud-est rennais ?",
-      a: "Oui, Axion-IA intervient à Janzé et dans tout le sud-est de Rennes (Châteaugiron, Retiers, La Guerche-de-Bretagne, Argentré-du-Plessis). Rennes à 30 min en voiture.",
+      a: "Oui, Axion-IA intervient à Janzé et dans tout le sud-est de Rennes (Châteaugiron, Retiers, La Guerche-de-Bretagne, Argentré-du-Plessis).",
     },
     {
       q: "Tarifs audit IA à Janzé  : quel budget prévoir ?",

@@ -232,8 +232,8 @@ export const MALAKOFF_COPY: VilleCopy = {
       a: "À Malakoff, nos tarifs publics démarrent à {{price:audit-flash|flat}} pour un Audit sur place de 4 heures, {{price:intervention-4h|flat}} pour une intervention sur site et {{price:intervention-dirigeants|flat}} pour un accompagnement un-à-un destiné aux dirigeants de TPE et PME.",
     },
     {
-      q: "Comment Axion-IA se déplace-t-il à Malakoff ?",
-      a: "Williams et l'équipe Axion-IA se déplacent sur site à Malakoff sous 5 jours ouvrés en moyenne après validation du devis.",
+      q: "Intervenez-vous à Malakoff ?",
+      a: "Oui. Nous intervenons dans vos locaux à Malakoff, partout en France, sur place ou à distance.",
     },
     {
       q: "Quels délais pour un audit IA à Malakoff ?",
@@ -245,7 +245,7 @@ export const MALAKOFF_COPY: VilleCopy = {
     },
     {
       q: "Axion-IA couvre-t-il les communes autour de Malakoff ?",
-      a: "Oui, nous intervenons également à Vanves, Montrouge, Châtillon, Clamart, Bagneux et dans les arrondissements limitrophes de Paris (14e et 15e),.",
+      a: "Oui, nous intervenons également à Vanves, Montrouge, Châtillon, Clamart, Bagneux et dans les arrondissements limitrophes de Paris (14e et 15e).",
     },
     {
       q: "Quels secteurs locaux servez-vous à Malakoff ?",

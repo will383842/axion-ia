@@ -1011,7 +1011,7 @@ export const LILLE_COPY: VilleCopy = {
     },
     {
       q: "Lille est-elle bien desservie pour accueillir des consultants Axion-IA ?",
-      a: "Excellemment. Lille-Europe est la seule gare française directement connectée à Londres (Eurostar 82 min), Bruxelles (Thalys 38 min) et Paris (TGV 62 min). Le métro Ilévia permet de rejoindre Villeneuve-d'Ascq et Roubaix en moins de 20 minutes.",
+      a: "Nous intervenons dans vos locaux à Lille, partout en France. Excellemment. Lille-Europe est la seule gare française directement connectée à Londres, Bruxelles et Paris. Le métro Ilévia permet de rejoindre Villeneuve-d'Ascq et Roubaix en moins de 20 minutes.",
     },
   ],
 };

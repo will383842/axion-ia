@@ -65,7 +65,7 @@ export const GRANVILLE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Granville ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Gare de Granville (TER Paris-Montparnasse 3 h).",
+      a: "Nous intervenons partout en France, sur place ou à distance.",
     },
   ],
 };

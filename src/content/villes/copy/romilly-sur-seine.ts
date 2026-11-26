@@ -49,7 +49,7 @@ export const ROMILLY_SUR_SEINE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Romilly-sur-Seine et dans l'ouest aubois ?",
-      a: "Oui, Axion-IA intervient à Romilly-sur-Seine et dans tout l'ouest aubois. Troyes à 40 min via N19, Paris-Est à 1 h 30 en TER direct, Nogent-sur-Seine à 20 min.",
+      a: "Oui, Axion-IA intervient à Romilly-sur-Seine et dans tout l'ouest aubois.",
     },
     {
       q: "Combien coûte un audit IA à Romilly-sur-Seine  ?",

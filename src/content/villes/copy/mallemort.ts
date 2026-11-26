@@ -64,8 +64,8 @@ export const MALLEMORT_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les artisans BTP : automatisation devis et facturation, gestion planning chantiers, photos avant/après, suivi heures et matériaux, agents IA prise de RDV clients.",
     },
     {
-      q: "Comment se déplace Axion-IA à Mallemort ?",
-      a: "Nos consultants se déplacent dans vos locaux.",
+      q: "Intervenez-vous à Mallemort ?",
+      a: "Oui. Nous intervenons dans vos locaux à Mallemort, partout en France, sur place ou à distance.",
     },
   ],
 };

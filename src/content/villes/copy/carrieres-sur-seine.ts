@@ -49,7 +49,7 @@ export const CARRIERES_SUR_SEINE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Carrières-sur-Seine et en boucle de Seine ?",
-      a: "Oui, Axion-IA intervient à Carrières-sur-Seine et toute la boucle de Seine (Chatou à 3 min, Nanterre à 5 min, Paris La Défense à 10 min, Paris Saint-Lazare à 15 min transilien J/L).",
+      a: "Nous intervenons dans vos locaux à Carrières-sur-Seine, partout en France.",
     },
     {
       q: "Travaillez-vous avec les commerçants et artisans de Carrières-sur-Seine ?",
@@ -64,8 +64,8 @@ export const CARRIERES_SUR_SEINE_COPY: VilleCopy = {
       a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Outils IA estimation, gestion mandats, CRM acquéreurs, vitrines augmentées.",
     },
     {
-      q: "Comment se déroule une mission à Carrières-sur-Seine ?",
-      a: "Nous intervenons dans vos locaux à Carrières-sur-Seine, partout en France.",
+      q: "Intervenez-vous à Carrières-sur-Seine ?",
+      a: "Oui. Nous intervenons dans vos locaux à Carrières-sur-Seine, partout en France, sur place ou à distance.",
     },
   ],
 };

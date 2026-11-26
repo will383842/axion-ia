@@ -229,8 +229,8 @@ export const LA_GARDE_COPY: VilleCopy = {
 
   faqGeolocalisee: [
     {
-      q: "Axion-IA se déplace-t-il sur site à La Garde ?",
-      a: "Oui. Notre cabinet d'experts IA se déplace directement dans vos locaux à La Garde et dans la métropole toulonnaise, généralement sous cinq jours ouvrés après validation de la mission.",
+      q: "Intervenez-vous à La Garde ?",
+      a: "Oui. Nous intervenons dans vos locaux à La Garde, partout en France, sur place ou à distance.",
     },
     {
       q: "Quels gains l'IA apporte-t-elle à une TPE de services de La Garde ?",

@@ -49,7 +49,7 @@ export const LE_MEE_SUR_SEINE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il au Mée-sur-Seine et agglomération Melun ?",
-      a: "Oui, Axion-IA intervient au Mée-sur-Seine et toute l'agglomération melunaise (Melun à 5 min, Corbeil-Essonnes à 20 min, Paris Gare de Lyon à 45 min en RER D). Gare RER D Le Mée.",
+      a: "Nous intervenons dans vos locaux au Mée-sur-Seine, partout en France.",
     },
     {
       q: "Travaillez-vous avec les commerçants et artisans du Mée-sur-Seine ?",

@@ -49,7 +49,7 @@ export const PLOUMAGOAR_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Ploumagoar et dans le bassin de Guingamp ?",
-      a: "Oui, Axion-IA intervient à Ploumagoar et dans tout le bassin guingampais (Guingamp, Pabu, Grâces, Saint-Agathon, Bourbriac). Gare TGV de Guingamp à 5 min, Saint-Brieuc à 30 min, Lannion à 35 min.",
+      a: "Oui, Axion-IA intervient à Ploumagoar et dans tout le bassin guingampais (Guingamp, Pabu, Grâces, Saint-Agathon, Bourbriac).",
     },
     {
       q: "Travaillez-vous avec les PME agroalimentaires du bassin guingampais ?",

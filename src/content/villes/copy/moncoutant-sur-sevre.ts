@@ -49,7 +49,7 @@ export const MONCOUTANT_SUR_SEVRE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Moncoutant-sur-Sèvre et Bocage bressuirais ?",
-      a: "Oui, Axion-IA intervient à Moncoutant-sur-Sèvre et tout le Bocage bressuirais (Bressuire à 20 min, Cerizay, Mauléon, Le Pin). Nous intervenons partout en France, sur place ou à distance.",
+      a: "Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les PME industrielles du Bocage bressuirais ?",

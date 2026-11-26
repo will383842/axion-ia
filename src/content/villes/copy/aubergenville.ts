@@ -64,8 +64,8 @@ export const AUBERGENVILLE_COPY: VilleCopy = {
       a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Outils IA réservation, gestion salle, fidélisation clientèle.",
     },
     {
-      q: "Comment se déroule une mission à Aubergenville ?",
-      a: "Nous intervenons dans vos locaux à Aubergenville, partout en France.",
+      q: "Intervenez-vous à Aubergenville ?",
+      a: "Oui. Nous intervenons dans vos locaux à Aubergenville, partout en France, sur place ou à distance.",
     },
   ],
 };

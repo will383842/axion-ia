@@ -49,7 +49,7 @@ export const SAINT_CYR_SUR_LOIRE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Saint-Cyr-sur-Loire et Tours nord ?",
-      a: "Oui, Axion-IA intervient à Saint-Cyr-sur-Loire et tout le nord de Tours Métropole (Fondettes, La Membrolle-sur-Choisille, Mettray). Tours centre à 10 min.",
+      a: "Oui, Axion-IA intervient à Saint-Cyr-sur-Loire et tout le nord de Tours Métropole (Fondettes, La Membrolle-sur-Choisille, Mettray).",
     },
     {
       q: "Travaillez-vous avec les commerces des zones Atlantes et Petite Arche ?",

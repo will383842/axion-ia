@@ -49,7 +49,7 @@ export const GREZIEU_LA_VARENNE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Grézieu-la-Varenne et ouest lyonnais ?",
-      a: "Oui, Axion-IA intervient à Grézieu-la-Varenne et tout l'ouest lyonnais (Craponne à 5 min, Vaugneray, Francheville, Brindas). Nous intervenons partout en France, sur place ou à distance.",
+      a: "Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les professions libérales grézillons ?",

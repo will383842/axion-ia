@@ -64,8 +64,8 @@ export const TRITH_SAINT_LEGER_COPY: VilleCopy = {
       a: "Pour les commerçants et professions libérales à Trith-Saint-Léger, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : agents conversationnels, automatisation RDV, fidélisation clients.",
     },
     {
-      q: "Comment se déroule une mission à Trith-Saint-Léger ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Tarifs transparents.",
+      q: "Intervenez-vous à Trith-Saint-Léger ?",
+      a: "Oui. Nous intervenons dans vos locaux à Trith-Saint-Léger, partout en France, sur place ou à distance.",
     },
   ],
 };

@@ -49,7 +49,7 @@ export const SAINT_MARTIN_DE_CRAU_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Saint-Martin-de-Crau ?",
-      a: "Oui, Axion-IA intervient à Saint-Martin-de-Crau et dans toute la plaine de la Crau (Arles à 15 min, Istres à 15 min, Salon-de-Provence à 25 min). Couverture complète Bouches-du-Rhône ouest.",
+      a: "Nous intervenons dans vos locaux à Saint-Martin-de-Crau, partout en France. Couverture complète Bouches-du-Rhône ouest.",
     },
     {
       q: "Quels sont les tarifs pour un audit IA à Saint-Martin-de-Crau ?",

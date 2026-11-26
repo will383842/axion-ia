@@ -710,7 +710,7 @@ export const NICE_COPY: VilleCopy = {
           },
           {
             q: "Que se passe-t-il si mon agenda de dirigeant impose un report de séance ?",
-            a: "Aucun problème. Les séances se calent sur votre agenda, pas l'inverse. Un report anticipé est sans frais. Très tardif (moins de 24h) : participation partielle aux frais de blocage consultant. Le programme s'adapte à la réalité d'un agenda dirigeant.",
+            a: "Nous intervenons dans vos locaux à Nice, partout en France. Aucun problème. Les séances se calent sur votre agenda, pas l'inverse. Un report anticipé est sans frais. Très tardif : participation partielle aux frais de blocage consultant. Le programme s'adapte à la réalité d'un agenda dirigeant.",
           },
         ],
         guarantees:

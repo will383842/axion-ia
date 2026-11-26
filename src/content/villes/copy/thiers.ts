@@ -49,7 +49,7 @@ export const THIERS_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Thiers et bassin coutelier ?",
-      a: "Oui, Axion-IA intervient à Thiers et tout le bassin coutelier (Clermont à 45 min, Vichy à 40 min, Lyon à 2h). Aéroport Clermont à 55 min.",
+      a: "Nous intervenons dans vos locaux à Thiers, partout en France.",
     },
     {
       q: "Travaillez-vous avec les couteliers et métallurgistes ?",
@@ -64,8 +64,8 @@ export const THIERS_COPY: VilleCopy = {
       a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1.",
     },
     {
-      q: "Comment se déroule une mission à Thiers ?",
-      a: "Nous intervenons dans vos locaux à Thiers, partout en France.",
+      q: "Intervenez-vous à Thiers ?",
+      a: "Oui. Nous intervenons dans vos locaux à Thiers, partout en France, sur place ou à distance.",
     },
   ],
 };

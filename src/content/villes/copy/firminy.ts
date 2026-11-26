@@ -49,7 +49,7 @@ export const FIRMINY_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Firminy et vallée Ondaine ?",
-      a: "Oui, Axion-IA intervient à Firminy et toute la vallée de l'Ondaine (Le Chambon-Feugerolles à 5 min, Unieux, Fraisses). Couverture Saint-Étienne Métropole. Nous intervenons partout en France, sur place ou à distance.",
+      a: "Couverture Saint-Étienne Métropole. Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les acteurs du Site Le Corbusier UNESCO ?",
@@ -64,8 +64,8 @@ export const FIRMINY_COPY: VilleCopy = {
       a: "Pour les TPE artisans BTP et commerçants à Firminy, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, classification photos chantier.",
     },
     {
-      q: "Comment se déroule une mission à Firminy ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Tarifs transparents.",
+      q: "Intervenez-vous à Firminy ?",
+      a: "Oui. Nous intervenons dans vos locaux à Firminy, partout en France, sur place ou à distance.",
     },
   ],
 };

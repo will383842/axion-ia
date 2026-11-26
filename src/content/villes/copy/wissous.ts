@@ -49,7 +49,7 @@ export const WISSOUS_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Wissous et autour d'Orly ?",
-      a: "Oui, Axion-IA intervient à Wissous et dans tout le secteur Orly-Rungis : Antony à 5 min, Massy TGV à 10 min, Paris centre à 25 min par A6 ou RER C.",
+      a: "Nous intervenons dans vos locaux à Wissous, partout en France.",
     },
     {
       q: "Accompagnez-vous les entreprises logistiques proches d'Orly ?",
@@ -64,8 +64,8 @@ export const WISSOUS_COPY: VilleCopy = {
       a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, gestion stocks, suivi chantier.",
     },
     {
-      q: "Comment se déroule une mission à Wissous ?",
-      a: "Nous intervenons dans vos locaux à Wissous, partout en France.",
+      q: "Intervenez-vous à Wissous ?",
+      a: "Oui. Nous intervenons dans vos locaux à Wissous, partout en France, sur place ou à distance.",
     },
   ],
 };

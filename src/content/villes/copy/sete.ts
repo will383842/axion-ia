@@ -129,7 +129,7 @@ export const SETE_COPY: VilleCopy = {
           },
           {
             q: "Intervenez-vous dans les communes de Sète Agglopôle Méditerranée ?",
-            a: "Nous intervenons dans vos locaux à Sète, partout en France. Oui : Frontignan (Saipol, dépôt GDH/BP), Marseillan, Bouzigues, Loupian, Mèze (Le Corsaire de Thau) et Balaruc-les-Bains, soit l'unité urbaine d'environ 95 662 habitants, ainsi que l'aire montpelliéraine à 37 km.",
+            a: "Nous intervenons dans vos locaux à Sète, partout en France.",
           },
         ],
         guarantees:
@@ -235,7 +235,7 @@ export const SETE_COPY: VilleCopy = {
     },
     {
       q: "Axion-IA intervient-elle dans les communes autour de Sète ?",
-      a: "Oui, nous couvrons Sète Agglopôle Méditerranée (unité urbaine de 95 662 habitants) : Frontignan, Marseillan, Bouzigues, Loupian, Mèze et Balaruc-les-Bains, ainsi que l'aire montpelliéraine (37 km).",
+      a: "Oui, nous couvrons Sète Agglopôle Méditerranée (unité urbaine de 95 662 habitants) : Frontignan, Marseillan, Bouzigues, Loupian, Mèze et Balaruc-les-Bains, ainsi que l'aire montpelliéraine. Nous intervenons dans vos locaux à Sète, partout en France.",
     },
     {
       q: "Comment Axion-IA garantit la conformité RGPD à Sète ?",
@@ -246,8 +246,8 @@ export const SETE_COPY: VilleCopy = {
       a: "Les TPE et PME du port (pêche, transitaires, plaisance), les conchyliculteurs de l'étang de Thau (huîtres et moules de Bouzigues), les hôteliers-restaurateurs du lido et les viticulteurs environnants tirent un bénéfice direct des automatisations IA codées sur mesure.",
     },
     {
-      q: "Williams se déplace-t-il vraiment sur site à Sète ?",
-      a: "Oui, déplacement systématique sur site à Sète via la gare ferroviaire (TGV, Intercités, TER Occitanie) ou l'A9. Aucune mission initiale en distanciel : observation des processus réels dans vos locaux, du quai au comptoir.",
+      q: "Intervenez-vous à Sète ?",
+      a: "Oui. Nous intervenons dans vos locaux à Sète, partout en France, sur place ou à distance.",
     },
   ],
 };

@@ -49,7 +49,7 @@ export const OLLAINVILLE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Ollainville et sud Essonne ?",
-      a: "Oui, Axion-IA intervient à Ollainville et tout le sud Essonne (Arpajon à 5 min, Brétigny-sur-Orge à 10 min, Évry-Courcouronnes à 20 min, Paris à 45 min).",
+      a: "Nous intervenons dans vos locaux à Ollainville, partout en France.",
     },
     {
       q: "Travaillez-vous avec les artisans et commerçants d'Ollainville ?",

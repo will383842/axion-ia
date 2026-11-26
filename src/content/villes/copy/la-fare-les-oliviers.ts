@@ -64,8 +64,8 @@ export const LA_FARE_LES_OLIVIERS_COPY: VilleCopy = {
       a: "Oui, nos interventions et coaching 1-to-1 sont disponibles en présentiel (vos locaux à La Fare-les-Oliviers) ou en visio. Format flexible adapté aux cadres et professions libérales.",
     },
     {
-      q: "Comment se déplace Axion-IA à La Fare-les-Oliviers ?",
-      a: "Nos consultants se déplacent dans vos locaux.",
+      q: "Intervenez-vous à La Fare-les-Oliviers ?",
+      a: "Oui. Nous intervenons dans vos locaux à La Fare-les-Oliviers, partout en France, sur place ou à distance.",
     },
   ],
 };

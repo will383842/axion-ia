@@ -49,7 +49,7 @@ export const MENNECY_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Mennecy et sud Essonne ?",
-      a: "Oui, Axion-IA intervient à Mennecy et tout le sud Essonne (Corbeil-Essonnes à 10 min, Évry-Courcouronnes à 15 min, Paris à 45 min). Gare RER D Mennecy.",
+      a: "Nous intervenons dans vos locaux à Mennecy, partout en France.",
     },
     {
       q: "Travaillez-vous avec les commerçants et artisans de Mennecy ?",

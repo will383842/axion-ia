@@ -49,7 +49,7 @@ export const NEUVILLE_EN_FERRAIN_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Neuville-en-Ferrain et à la frontière belge ?",
-      a: "Oui, Axion-IA intervient à Neuville-en-Ferrain et dans toute l'agglomération de Tourcoing (Roubaix, Wattrelos, Bondues, Halluin, Linselles), incluant les flux transfrontaliers vers Mouscron-Rekkem (Belgique, 2 min). Nos consultants couvrent l'ensemble du bassin lillois-tourquennois et franco-belge.",
+      a: "Oui, Axion-IA intervient à Neuville-en-Ferrain et dans toute l'agglomération de Tourcoing (Roubaix, Wattrelos, Bondues, Halluin, Linselles), incluant les flux transfrontaliers vers Mouscron-Rekkem. Nos consultants couvrent l'ensemble du bassin lillois-tourquennois et franco-belge.",
     },
     {
       q: "Accompagnez-vous les grossistes et logisticiens transfrontaliers ?",

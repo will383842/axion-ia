@@ -49,7 +49,7 @@ export const EPINAY_SUR_ORGE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Épinay-sur-Orge et dans la vallée de l'Orge ?",
-      a: "Oui, Axion-IA intervient à Épinay-sur-Orge et toute la vallée de l'Orge (Savigny-sur-Orge, Sainte-Geneviève-des-Bois, Longjumeau, Massy). Gare RER C directe.",
+      a: "Oui, Axion-IA intervient à Épinay-sur-Orge et toute la vallée de l'Orge (Savigny-sur-Orge, Sainte-Geneviève-des-Bois, Longjumeau, Massy).",
     },
     {
       q: "Travaillez-vous avec les professions libérales et professionnels de santé ?",
@@ -64,8 +64,8 @@ export const EPINAY_SUR_ORGE_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les PME du bassin Massy-Longjumeau sur leurs cas IA : automatisation reporting, CRM intelligent, classification documents, optimisation processus RH, gestion projet assistée.",
     },
     {
-      q: "Comment se déroule une mission à Épinay-sur-Orge ?",
-      a: "Nous intervenons dans vos locaux à Épinay-sur-Orge, partout en France.",
+      q: "Intervenez-vous à Épinay-sur-Orge ?",
+      a: "Oui. Nous intervenons dans vos locaux à Épinay-sur-Orge, partout en France, sur place ou à distance.",
     },
   ],
 };

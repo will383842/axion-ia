@@ -49,7 +49,7 @@ export const NOYAL_CHATILLON_SUR_SEICHE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Noyal-Châtillon-sur-Seiche et au sud de Rennes ?",
-      a: "Oui, Axion-IA intervient à Noyal-Châtillon-sur-Seiche et dans tout le sud rennais (Chartres-de-Bretagne, Bruz, Vern-sur-Seiche, Saint-Jacques-de-la-Lande). Rennes centre à 15 min.",
+      a: "Oui, Axion-IA intervient à Noyal-Châtillon-sur-Seiche et dans tout le sud rennais (Chartres-de-Bretagne, Bruz, Vern-sur-Seiche, Saint-Jacques-de-la-Lande).",
     },
     {
       q: "Tarifs audit IA à Noyal-Châtillon-sur-Seiche  : quel budget prévoir ?",

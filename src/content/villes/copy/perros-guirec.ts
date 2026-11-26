@@ -64,8 +64,8 @@ export const PERROS_GUIREC_COPY: VilleCopy = {
       a: "Gestion réservations IA (excursions Sept-Îles, activités nautiques, thalasso), agents conversationnels multilingues, optimisation tarification dynamique, reporting fréquentation, marketing automatisé.",
     },
     {
-      q: "Comment se déroule une mission à Perros-Guirec ?",
-      a: "Nous intervenons dans vos locaux à Perros-Guirec, partout en France.",
+      q: "Intervenez-vous à Perros-Guirec ?",
+      a: "Oui. Nous intervenons dans vos locaux à Perros-Guirec, partout en France, sur place ou à distance.",
     },
   ],
 };

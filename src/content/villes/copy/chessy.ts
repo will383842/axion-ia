@@ -49,7 +49,7 @@ export const CHESSY_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Chessy et autour de Disneyland Paris ?",
-      a: "Oui, Axion-IA intervient à Chessy et dans tout le pôle Marne-la-Vallée (Serris, Montévrain, Bailly-Romainvilliers, Bussy-Saint-Georges). Gare TGV/RER Marne-la-Vallée-Chessy sur place, Paris à 40 min.",
+      a: "Oui, Axion-IA intervient à Chessy et dans tout le pôle Marne-la-Vallée (Serris, Montévrain, Bailly-Romainvilliers, Bussy-Saint-Georges).",
     },
     {
       q: "Quel est le tarif d'un audit IA à Chessy  ?",

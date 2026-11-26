@@ -49,7 +49,7 @@ export const LA_CHAPELLE_SAINT_MESMIN_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à La Chapelle-Saint-Mesmin et dans Orléans Métropole ?",
-      a: "Oui, Axion-IA intervient à La Chapelle-Saint-Mesmin et dans tout Orléans Métropole (Orléans à 10 min, Paris à 1h15). Gare TGV Orléans à 15 min, A10 à proximité.",
+      a: "Nous intervenons dans vos locaux à La Chapelle-Saint-Mesmin, partout en France.",
     },
     {
       q: "Travaillez-vous avec les PME industrielles verre et matériaux ?",

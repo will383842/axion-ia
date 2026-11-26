@@ -232,8 +232,8 @@ export const AUXERRE_COPY: VilleCopy = {
       a: "Les audits IA à Auxerre démarrent à {{price:audit-flash|flat}} pour un Audit sur place de 4 heures sur site, puis l'Audit Ciblé à partir de {{price:audit-cible|entry}} pour un périmètre plus large. Tarifs publics affichés, sans devis caché.",
     },
     {
-      q: "Williams se déplace-t-il à Auxerre ?",
-      a: "Oui, Williams se déplace à Auxerre (gare d'Auxerre-Saint-Gervais, A6) pour réaliser audits, interventions et implémentations directement chez vous, dans un délai de 5 jours ouvrés.",
+      q: "Intervenez-vous à Auxerre ?",
+      a: "Oui. Nous intervenons dans vos locaux à Auxerre, partout en France, sur place ou à distance.",
     },
     {
       q: "Quels secteurs auxerrois Axion-IA accompagne-t-il ?",

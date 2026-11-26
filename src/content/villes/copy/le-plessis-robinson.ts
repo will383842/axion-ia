@@ -229,8 +229,8 @@ export const LE_PLESSIS_ROBINSON_COPY: VilleCopy = {
 
   faqGeolocalisee: [
     {
-      q: "Axion-IA se déplace-t-il au Plessis-Robinson ?",
-      a: "Nous intervenons partout en France, sur place ou à distance.",
+      q: "Intervenez-vous au Plessis-Robinson ?",
+      a: "Oui. Nous intervenons dans vos locaux au Plessis-Robinson, partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les TPE et commerces robinsonnais ?",

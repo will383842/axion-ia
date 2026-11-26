@@ -238,7 +238,7 @@ export const FLEURY_LES_AUBRAIS_COPY: VilleCopy = {
     },
     {
       q: "Quels délais d'intervention IA à Fleury-les-Aubrais ?",
-      a: "Nous planifions une intervention sur site à Fleury-les-Aubrais sous 5 jours ouvrés après confirmation, en visio sous 48 h. Devis et calendrier fournis en 48 h.",
+      a: "Nous planifions une intervention sur site à Fleury-les-Aubrais sous 5 jours ouvrés après confirmation, en visio sous 48 h. Devis et calendrier fournis.",
     },
     {
       q: "Comment Axion-IA garantit-il la conformité RGPD à Fleury-les-Aubrais ?",

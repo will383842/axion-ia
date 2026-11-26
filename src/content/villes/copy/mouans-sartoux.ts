@@ -65,7 +65,7 @@ export const MOUANS_SARTOUX_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission Axion-IA à Mouans-Sartoux ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Gare Mouans-Sartoux sur ligne TER Cannes-Grasse. Formats flexibles : demi-journée audit, journée intervention, mission implémentation multi-semaines.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Formats flexibles : demi-journée audit, journée intervention, mission implémentation multi-semaines.",
     },
   ],
 };

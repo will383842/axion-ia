@@ -230,7 +230,7 @@ export const COLMAR_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Colmar et dans le centre-Alsace ?",
-      a: "Oui, Axion-IA accompagne les TPE et PME de Colmar et de tout le centre-Alsace (Sélestat, Kaysersberg, Ribeauvillé, la route des vins). Gare TGV en centre-ville, aéroport de Bâle-Mulhouse à 50 km.",
+      a: "Oui, Axion-IA accompagne les TPE et PME de Colmar et de tout le centre-Alsace (Sélestat, Kaysersberg, Ribeauvillé, la route des vins). Nous intervenons dans vos locaux à Colmar, partout en France.",
     },
     {
       q: "Accompagnez-vous les domaines viticoles de la route des vins ?",

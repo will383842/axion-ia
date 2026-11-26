@@ -64,8 +64,8 @@ export const PLOUHINEC_COPY: VilleCopy = {
       a: "Pour les TPE artisans BTP, maritimes et commerçants à Plouhinec, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation pratique, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, gestion stocks saisonniers.",
     },
     {
-      q: "Comment se déroule une mission à Plouhinec ?",
-      a: "Nous intervenons partout en France, sur place ou à distance.",
+      q: "Intervenez-vous à Plouhinec ?",
+      a: "Oui. Nous intervenons dans vos locaux à Plouhinec, partout en France, sur place ou à distance.",
     },
   ],
 };

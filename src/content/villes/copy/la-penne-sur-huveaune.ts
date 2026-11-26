@@ -64,8 +64,8 @@ export const LA_PENNE_SUR_HUVEAUNE_COPY: VilleCopy = {
       a: "Oui, nos interventions et coaching 1-to-1 sont disponibles en présentiel (vos locaux) ou en visio. Format flexible adapté aux cadres et indépendants de la vallée de l'Huveaune.",
     },
     {
-      q: "Comment se déplace Axion-IA à La Penne-sur-Huveaune ?",
-      a: "Nos consultants se déplacent dans vos locaux.",
+      q: "Intervenez-vous à La Penne-sur-Huveaune ?",
+      a: "Oui. Nous intervenons dans vos locaux à La Penne-sur-Huveaune, partout en France, sur place ou à distance.",
     },
   ],
 };

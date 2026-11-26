@@ -65,7 +65,7 @@ export const PLOUDALMEZEAU_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Ploudalmézeau ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Gare TGV de Brest sur la ligne Paris-Brest.",
+      a: "Nous intervenons partout en France, sur place ou à distance.",
     },
   ],
 };

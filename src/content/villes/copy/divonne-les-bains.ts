@@ -49,7 +49,7 @@ export const DIVONNE_LES_BAINS_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Divonne-les-Bains et pays de Gex ?",
-      a: "Oui, Axion-IA intervient à Divonne-les-Bains et tout le pays de Gex (Gex à 15 min, Ferney-Voltaire, Saint-Genis-Pouilly, Prévessin-Moëns). Genève à 20 min.",
+      a: "Nous intervenons dans vos locaux à Divonne-les-Bains, partout en France.",
     },
     {
       q: "Travaillez-vous avec les acteurs tourisme thermal et casino ?",
@@ -64,8 +64,8 @@ export const DIVONNE_LES_BAINS_COPY: VilleCopy = {
       a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1.",
     },
     {
-      q: "Comment se déroule une mission à Divonne-les-Bains ?",
-      a: "Nous intervenons partout en France, sur place ou à distance.",
+      q: "Intervenez-vous à Divonne-les-Bains ?",
+      a: "Oui. Nous intervenons dans vos locaux à Divonne-les-Bains, partout en France, sur place ou à distance.",
     },
   ],
 };

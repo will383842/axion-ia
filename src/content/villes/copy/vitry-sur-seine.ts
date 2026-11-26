@@ -308,7 +308,7 @@ export const VITRY_SUR_SEINE_COPY: VilleCopy = {
           },
           {
             q: "Je suis une PME productive qui s'installe aux Ardoines : quel type de site web me conseillez-vous ?",
-            a: "Les ZAC Les Ardoines (Gare Ardoines et Seine Gare Vitry) accueillent à nouveau de l'industrie productive, de la logistique et des locaux d'activité à 3 km de Paris. Pour ces profils, nous concevons des portails clients et de l'e-commerce B2B avec configurateur de catalogue technique, recherche sémantique sur vos fiches et documentation, et intégration à votre ERP — pas une vitrine générique.",
+            a: "Nous intervenons dans vos locaux, partout en France. Pour ces profils, nous concevons des portails clients et de l'e-commerce B2B avec configurateur de catalogue technique, recherche sémantique sur vos fiches et documentation, et intégration à votre ERP — pas une vitrine générique.",
           },
           {
             q: "Travaillez-vous avec les acteurs culturels du quartier MAC VAL ?",
@@ -421,8 +421,8 @@ export const VITRY_SUR_SEINE_COPY: VilleCopy = {
       a: "Les tarifs Axion-IA sont publics : Audit sur place (4h) à partir de {{price:audit-flash|flat}}, intervention collective à partir de {{price:intervention-4h|flat}}, implémentation à partir de {{price:intervention-dirigeants|flat}}, accompagnement 1-to-1 dirigeant à partir de {{price:intervention-dirigeants|flat}}.",
     },
     {
-      q: "Axion-IA se déplace-t-il réellement sur site à Vitry-sur-Seine ?",
-      a: "Oui. Axion-IA est un cabinet national qui intervient sur site chez le client. Williams et l'équipe se déplacent à Vitry-sur-Seine pour les audits, interventions et implémentations.",
+      q: "Intervenez-vous à Vitry-sur-Seine ?",
+      a: "Oui. Nous intervenons dans vos locaux à Vitry-sur-Seine, partout en France, sur place ou à distance.",
     },
     {
       q: "Une PME vitriote sans DSI peut-elle bénéficier d'une implémentation IA clés en main ?",
@@ -438,7 +438,7 @@ export const VITRY_SUR_SEINE_COPY: VilleCopy = {
     },
     {
       q: "Quel format d'intervention est adapté à un artisan ou une TPE de Vitry-sur-Seine ?",
-      a: "Pour une TPE ou un artisan, l'Audit sur place (4h, à partir de {{price:audit-flash|flat}}) permet d'identifier rapidement un premier outil IA rentable — relance client, devis automatisé, gestion administrative. Le format collectif (1 journée) (à partir de {{price:intervention-4h|flat}}) assure ensuite la prise en main opérationnelle sur site à Vitry-sur-Seine.",
+      a: "Pour une TPE ou un artisan, l'Audit sur place (4h, à partir de {{price:audit-flash|flat}}) permet d'identifier rapidement un premier outil IA rentable — relance client, devis automatisé, gestion administrative. Le format collectif (1 journée) assure ensuite la prise en main opérationnelle sur site à Vitry-sur-Seine.",
     },
   ],
 };

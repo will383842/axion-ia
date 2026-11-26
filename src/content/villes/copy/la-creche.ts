@@ -49,7 +49,7 @@ export const LA_CRECHE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à La Crèche et bassin niortais ?",
-      a: "Oui, Axion-IA intervient à La Crèche et tout le bassin niortais est (Niort à 15 min, Saint-Maixent-l'École, Chauray, Échiré). Nous intervenons partout en France, sur place ou à distance. Couverture complète du Haut-Val-de-Sèvre.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Couverture complète du Haut-Val-de-Sèvre.",
     },
     {
       q: "Travaillez-vous avec les artisans BTP de La Crèche ?",

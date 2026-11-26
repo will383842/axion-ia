@@ -49,7 +49,7 @@ export const DOURDAN_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Dourdan et sud Essonne ?",
-      a: "Oui, Axion-IA intervient à Dourdan et tout le sud Essonne-Hurepoix (Étampes à 15 min, Arpajon à 20 min). Gare RER C Dourdan terminus, Paris à 50 min.",
+      a: "Nous intervenons dans vos locaux à Dourdan, partout en France.",
     },
     {
       q: "Travaillez-vous avec les commerçants du centre historique ?",

@@ -64,8 +64,8 @@ export const FOS_SUR_MER_COPY: VilleCopy = {
       a: "Oui, nous intervenons en sous-traitance industrielle sur maintenance prédictive, contrôle qualité, gestion HSE documentaire, automatisation chiffrage, agents IA support technique terrain.",
     },
     {
-      q: "Comment se déplace Axion-IA à Fos-sur-Mer ?",
-      a: "Nos consultants se déplacent dans vos locaux ou sur site portuaire.",
+      q: "Intervenez-vous à Fos-sur-Mer ?",
+      a: "Oui. Nous intervenons dans vos locaux à Fos-sur-Mer, partout en France, sur place ou à distance.",
     },
   ],
 };

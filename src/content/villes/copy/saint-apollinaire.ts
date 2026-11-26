@@ -64,8 +64,8 @@ export const SAINT_APOLLINAIRE_COPY: VilleCopy = {
       a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1.",
     },
     {
-      q: "Comment se déroule une mission à Saint-Apollinaire ?",
-      a: "Nous intervenons dans vos locaux à Saint-Apollinaire, partout en France.",
+      q: "Intervenez-vous à Saint-Apollinaire ?",
+      a: "Oui. Nous intervenons dans vos locaux à Saint-Apollinaire, partout en France, sur place ou à distance.",
     },
   ],
 };

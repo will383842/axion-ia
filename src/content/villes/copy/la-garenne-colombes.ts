@@ -229,8 +229,8 @@ export const LA_GARENNE_COLOMBES_COPY: VilleCopy = {
 
   faqGeolocalisee: [
     {
-      q: "Axion-IA se déplace-t-il à La Garenne-Colombes ?",
-      a: "Nous intervenons partout en France, sur place ou à distance.",
+      q: "Intervenez-vous à La Garenne-Colombes ?",
+      a: "Oui. Nous intervenons dans vos locaux à La Garenne-Colombes, partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les TPE et indépendants garennois ?",

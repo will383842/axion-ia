@@ -246,7 +246,7 @@ export const DAMMARIE_LES_LYS_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une intervention IA à Dammarie-les-Lys ?",
-      a: "Nos consultants se déplacent sur site (Melun à 8 min, Paris Gare de Lyon à 45 min). L'intervention dure au moins une journée, sous forme d'atelier pratique dans vos locaux, pour rendre vos équipes autonomes.",
+      a: "L'intervention dure au moins une journée, sous forme d'atelier pratique dans vos locaux, pour rendre vos équipes autonomes.",
     },
     {
       q: "Axion-IA respecte-t-il le RGPD lors de ses interventions ?",

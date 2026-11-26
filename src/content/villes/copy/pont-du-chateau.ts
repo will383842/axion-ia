@@ -49,7 +49,7 @@ export const PONT_DU_CHATEAU_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Pont-du-Château et agglomération clermontoise ?",
-      a: "Oui, Axion-IA intervient à Pont-du-Château et toute l'agglomération clermontoise (Clermont à 15 min, Lempdes, Cournon-d'Auvergne). Aéroport Clermont à 25 min.",
+      a: "Nous intervenons dans vos locaux à Pont-du-Château, partout en France.",
     },
     {
       q: "Travaillez-vous avec les entreprises de logistique et entreposage ?",
@@ -64,8 +64,8 @@ export const PONT_DU_CHATEAU_COPY: VilleCopy = {
       a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1.",
     },
     {
-      q: "Comment se déroule une mission à Pont-du-Château ?",
-      a: "Nous intervenons dans vos locaux à Pont-du-Château, partout en France.",
+      q: "Intervenez-vous à Pont-du-Château ?",
+      a: "Oui. Nous intervenons dans vos locaux à Pont-du-Château, partout en France, sur place ou à distance.",
     },
   ],
 };

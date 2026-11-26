@@ -49,7 +49,7 @@ export const MORANGIS_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Morangis et zone Orly ?",
-      a: "Oui, Axion-IA intervient à Morangis et toute la zone Orly (aéroport à 5 min, Chilly-Mazarin à 5 min, Massy TGV à 15 min, Paris centre à 25 min).",
+      a: "Nous intervenons dans vos locaux à Morangis, partout en France.",
     },
     {
       q: "Travaillez-vous avec les entreprises de logistique aéroportuaire ?",

@@ -49,7 +49,7 @@ export const ELVEN_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Elven et dans le pays de Vannes ?",
-      a: "Oui, Axion-IA intervient à Elven et dans tout le pays de Vannes (Vannes à 20 min, Rennes à 1h). Gare TGV Vannes à 20 min, aéroport Nantes-Atlantique à 1h45.",
+      a: "Nous intervenons dans vos locaux à Elven, partout en France.",
     },
     {
       q: "Travaillez-vous avec les exploitants agricoles bretons ?",
@@ -64,8 +64,8 @@ export const ELVEN_COPY: VilleCopy = {
       a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1.",
     },
     {
-      q: "Comment se déroule une mission à Elven ?",
-      a: "Nous intervenons dans vos locaux à Elven, partout en France.",
+      q: "Intervenez-vous à Elven ?",
+      a: "Oui. Nous intervenons dans vos locaux à Elven, partout en France, sur place ou à distance.",
     },
   ],
 };

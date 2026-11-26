@@ -49,7 +49,7 @@ export const FLERS_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Flers et dans le bocage ornais ?",
-      a: "Oui, Axion-IA intervient à Flers et tout le bocage ornais (Condé-en-Normandie à 15 km, Domfront, Tinchebray). Nous intervenons partout en France, sur place ou à distance.",
+      a: "Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les PME industrielles de Flers ?",

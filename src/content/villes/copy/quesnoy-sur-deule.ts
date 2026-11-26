@@ -64,8 +64,8 @@ export const QUESNOY_SUR_DEULE_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les PME transport et logistique fluviale de Quesnoy-sur-Deûle : optimisation tournées, traçabilité expéditions, automatisation planning, gestion documentaire, agents IA relation client B2B.",
     },
     {
-      q: "Comment se déroule une mission à Quesnoy-sur-Deûle ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Gare Lille Flandres à 15 min, gare TGV Lille Europe à 18 min.",
+      q: "Intervenez-vous à Quesnoy-sur-Deûle ?",
+      a: "Oui. Nous intervenons dans vos locaux à Quesnoy-sur-Deûle, partout en France, sur place ou à distance.",
     },
   ],
 };

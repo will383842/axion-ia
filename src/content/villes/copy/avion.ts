@@ -64,8 +64,8 @@ export const AVION_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les structures ESS et associations du bassin minier sur leurs cas IA : automatisation rapports d'activité, agents IA accueil, classification dossiers bénéficiaires, optimisation planning intervenants, outils collaboratifs.",
     },
     {
-      q: "Comment se déroule une mission à Avion ?",
-      a: "Nous intervenons partout en France, sur place ou à distance.",
+      q: "Intervenez-vous à Avion ?",
+      a: "Oui. Nous intervenons dans vos locaux à Avion, partout en France, sur place ou à distance.",
     },
   ],
 };

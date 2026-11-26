@@ -547,7 +547,7 @@ export const SAINT_DENIS_COPY: VilleCopy = {
     },
     {
       q: "Intervenez-vous aussi dans les communes Plaine Commune voisines ?",
-      a: "Oui. Nous intervenons dans toute l'intercommunalité Plaine Commune : Saint-Ouen (3 km de Saint-Denis), Aubervilliers (3 km), Épinay-sur-Seine (4 km), Pierrefitte-sur-Seine (4 km), Stains (5 km), Villetaneuse (5 km), L'Île-Saint-Denis. Plus largement, nous intervenons partout en France, sur place ou à distance.",
+      a: "Oui. Nous intervenons dans toute l'intercommunalité Plaine Commune : Saint-Ouen, Aubervilliers, Épinay-sur-Seine, Pierrefitte-sur-Seine, Stains, Villetaneuse, L'Île-Saint-Denis. Plus largement, nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "En combien de temps pouvez-vous démarrer une mission à Saint-Denis ?",

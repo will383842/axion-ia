@@ -247,8 +247,8 @@ export const CARRIERES_SOUS_POISSY_COPY: VilleCopy = {
       a: "Nous accompagnons en priorité les TPE et PME de la construction automobile (autour du centre technique PSA), du commerce de gros et de détail, de la logistique et de la construction implantées dans les zones d'activité du bord de Seine et des Trois Cèdres.",
     },
     {
-      q: "Williams se déplace-t-il sur site à Carrières-sous-Poissy ?",
-      a: "Oui, Williams se déplace (gare de Poissy, RER A, à proximité). Les interventions se font directement dans vos locaux.",
+      q: "Intervenez-vous à Carrières-sous-Poissy ?",
+      a: "Oui. Nous intervenons dans vos locaux à Carrières-sous-Poissy, partout en France, sur place ou à distance.",
     },
   ],
 };

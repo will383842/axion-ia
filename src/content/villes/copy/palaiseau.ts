@@ -231,8 +231,8 @@ export const PALAISEAU_COPY: VilleCopy = {
       a: "L'Audit sur place 4 heures à Palaiseau démarre à {{price:audit-flash|flat}}. Les interventions ciblées sur site commencent à {{price:intervention-4h|flat}}. Tarifs publics complets sur notre page tarifs.",
     },
     {
-      q: "Williams se déplace-t-il sur site à Palaiseau ?",
-      a: "Nous nous déplaçons chez vous, partout en France.",
+      q: "Intervenez-vous à Palaiseau ?",
+      a: "Oui. Nous intervenons dans vos locaux à Palaiseau, partout en France, sur place ou à distance.",
     },
     {
       q: "Quels délais pour un audit à Palaiseau ?",

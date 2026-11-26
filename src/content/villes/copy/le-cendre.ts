@@ -49,7 +49,7 @@ export const LE_CENDRE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il au Cendre et sud Clermont ?",
-      a: "Oui, Axion-IA intervient au Cendre et tout le sud Clermont Métropole (Cournon-d'Auvergne à 5 min, Clermont-Ferrand à 15 min, Issoire à 25 min). Aéroport Clermont à 20 min.",
+      a: "Nous intervenons dans vos locaux au Cendre, partout en France.",
     },
     {
       q: "Travaillez-vous avec les professions libérales ?",

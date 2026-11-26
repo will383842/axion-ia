@@ -49,7 +49,7 @@ export const UNIEUX_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Unieux et vallée Ondaine ?",
-      a: "Oui, Axion-IA intervient à Unieux et toute la vallée de l'Ondaine (Firminy limitrophe à 5 min, Le Chambon-Feugerolles à 5 min, Fraisses). Couverture Saint-Étienne Métropole. Nous intervenons partout en France, sur place ou à distance.",
+      a: "Couverture Saint-Étienne Métropole. Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les PME métallurgiques vallée Ondaine ?",
@@ -64,8 +64,8 @@ export const UNIEUX_COPY: VilleCopy = {
       a: "Pour les indépendants et professions libérales à Unieux, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : agents IA prise de RDV, classification documents, CRM augmentés.",
     },
     {
-      q: "Comment se déroule une mission à Unieux ?",
-      a: "Nous intervenons partout en France, sur place ou à distance.",
+      q: "Intervenez-vous à Unieux ?",
+      a: "Oui. Nous intervenons dans vos locaux à Unieux, partout en France, sur place ou à distance.",
     },
   ],
 };

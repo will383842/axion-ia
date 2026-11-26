@@ -49,7 +49,7 @@ export const MOIRANS_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Moirans et Pays voironnais ?",
-      a: "Oui, Axion-IA intervient à Moirans et tout le Pays voironnais / Sud Grésivaudan (Voiron à 10 min, Tullins, Saint-Marcellin, La Buisse, Coublevie, Voreppe). Nous intervenons partout en France, sur place ou à distance.",
+      a: "Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les PME industrielles du Voironnais ?",

@@ -64,8 +64,8 @@ export const SAINT_RAMBERT_D_ALBON_COPY: VilleCopy = {
       a: "Pour les TPE artisans BTP et commerçants à Saint-Rambert-d'Albon, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, classification photos.",
     },
     {
-      q: "Comment se déroule une mission à Saint-Rambert-d'Albon ?",
-      a: "Nous intervenons partout en France, sur place ou à distance.",
+      q: "Intervenez-vous à Saint-Rambert-d'Albon ?",
+      a: "Oui. Nous intervenons dans vos locaux à Saint-Rambert-d'Albon, partout en France, sur place ou à distance.",
     },
   ],
 };

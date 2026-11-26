@@ -64,8 +64,8 @@ export const MIONS_COPY: VilleCopy = {
       a: "Pour les TPE artisans BTP et commerçants à Mions, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV.",
     },
     {
-      q: "Comment se déroule une mission Axion-IA à Mions ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Tarifs transparents.",
+      q: "Intervenez-vous à Mions ?",
+      a: "Oui. Nous intervenons dans vos locaux à Mions, partout en France, sur place ou à distance.",
     },
   ],
 };

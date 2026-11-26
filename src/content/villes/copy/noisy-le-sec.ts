@@ -122,7 +122,7 @@ export const NOISY_LE_SEC_COPY: VilleCopy = {
           },
           {
             q: "Faites-vous de l'e-commerce multi-CMS pour les commerçants de Noisy-le-Sec ?",
-            a: "Oui. Nous intervenons dans vos locaux à Noisy-le-Sec, partout en France.",
+            a: "Oui. Pour les boutiques du centre-ville et des marchés, desservies par la gare RER E, le tramway T1 et bientôt la gare Pont de Bondy de la ligne 15 du Grand Paris Express, nous déployons des vitrines e-commerce sur Shopify, WooCommerce ou PrestaShop, avec click-and-collect, recommandation produit IA et search sémantique.",
           },
           {
             q: "Quels délais pour un devis ?",

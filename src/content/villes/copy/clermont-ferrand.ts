@@ -1007,7 +1007,7 @@ export const CLERMONT_FERRAND_COPY: VilleCopy = {
     },
     {
       q: "Pouvez-vous démarrer une mission depuis l'aéroport de Clermont-Ferrand (CFE) ?",
-      a: "L'aéroport de Clermont-Ferrand Auvergne (Aulnat, 6 km) dessert Paris-Orly, Lyon et Amsterdam. Nos consultants peuvent arriver directement sur Clermont en avion pour les missions longues, ou en Intercités Paris-Bercy (~3 h) pour les kick-offs et restitutions.",
+      a: "Nous intervenons dans vos locaux à Clermont-Ferrand, partout en France. L'aéroport de Clermont-Ferrand Auvergne dessert Paris-Orly, Lyon et Amsterdam. Nos consultants peuvent arriver directement sur Clermont en avion pour les missions longues, ou en Intercités Paris-Bercy pour les kick-offs et restitutions.",
     },
     {
       q: "Vos interventions sont-elles compatibles avec les formations financées pour les TPE/PME ?",

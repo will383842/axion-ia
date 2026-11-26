@@ -49,7 +49,7 @@ export const MARLY_LA_VILLE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Marly-la-Ville et nord Val-d'Oise ?",
-      a: "Oui, Axion-IA intervient à Marly-la-Ville et tout le nord Val-d'Oise (Fosses à 5 min, aéroport CDG à 10 min, Luzarches à 10 min, Paris à 40 min via A1).",
+      a: "Nous intervenons dans vos locaux à Marly-la-Ville, partout en France.",
     },
     {
       q: "Travaillez-vous avec les commerçants et artisans de Marly-la-Ville ?",

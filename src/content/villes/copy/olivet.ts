@@ -229,8 +229,8 @@ export const OLIVET_COPY: VilleCopy = {
 
   faqGeolocalisee: [
     {
-      q: "Axion-IA se déplace-t-il sur site à Olivet ?",
-      a: "Oui. Nos experts IA seniors interviennent directement dans vos locaux à Olivet et dans toute la métropole orléanaise, jusqu'à Orléans et Saran, pour observer vos processus réels avant toute recommandation.",
+      q: "Intervenez-vous à Olivet ?",
+      a: "Oui. Nous intervenons dans vos locaux à Olivet, partout en France, sur place ou à distance.",
     },
     {
       q: "Une PME de la Cosmetic Valley peut-elle profiter de l'IA à Olivet ?",

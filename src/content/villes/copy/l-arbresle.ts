@@ -49,7 +49,7 @@ export const L_ARBRESLE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à L'Arbresle et vallée Brévenne ?",
-      a: "Oui, Axion-IA intervient à L'Arbresle et toute la vallée de la Brévenne (Lentilly à 5 min, Tarare à 15 min, Sain-Bel). Nous intervenons partout en France, sur place ou à distance.",
+      a: "Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les PME tertiaires et industrielles ?",
@@ -64,8 +64,8 @@ export const L_ARBRESLE_COPY: VilleCopy = {
       a: "Pour les TPE artisans BTP et commerçants à L'Arbresle, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1.",
     },
     {
-      q: "Comment se déroule une mission Axion-IA à L'Arbresle ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Tarifs transparents.",
+      q: "Intervenez-vous à L'Arbresle ?",
+      a: "Oui. Nous intervenons dans vos locaux à L'Arbresle, partout en France, sur place ou à distance.",
     },
   ],
 };

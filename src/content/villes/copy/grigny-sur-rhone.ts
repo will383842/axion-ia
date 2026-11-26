@@ -49,7 +49,7 @@ export const GRIGNY_SUR_RHONE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Grigny et sud lyonnais ?",
-      a: "Oui, Axion-IA intervient à Grigny et tout le sud lyonnais (Givors limitrophe, Vienne à 15 min, Feyzin, Saint-Fons). Nous intervenons partout en France, sur place ou à distance.",
+      a: "Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les PME tertiaires et industrielles ?",

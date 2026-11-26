@@ -229,8 +229,8 @@ export const ALENCON_COPY: VilleCopy = {
 
   faqGeolocalisee: [
     {
-      q: "Axion-IA se déplace-t-il vraiment à Alençon ?",
-      a: "Oui. Williams se déplace sur site à Alençon ; la gare du Mans (environ 2 h de Paris) puis l'A28 ou un transfert local desservent la ville. Le délai standard de déplacement est de 5 jours ouvrés après validation de la prestation, avec confirmation écrite des horaires d'intervention sur site dans la préfecture de l'Orne.",
+      q: "Intervenez-vous à Alençon ?",
+      a: "Oui. Nous intervenons dans vos locaux à Alençon, partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les sous-traitants automobiles de Faurecia à Alençon ?",

@@ -233,8 +233,8 @@ export const SAINT_GENIS_LAVAL_COPY: VilleCopy = {
       a: "Oui. Cabinets, établissements de soins et structures médicales du sud lyonnais figurent parmi nos cibles. Nous automatisons rendez-vous, comptes rendus et tâches administratives, avec une gouvernance des données de santé strictement conforme au RGPD.",
     },
     {
-      q: "Axion-IA se déplace-t-il sur site à Saint-Genis-Laval ?",
-      a: "Oui, nos experts IA interviennent dans vos locaux, du quartier de l'Observatoire à la ZI de Sacuny. L'audit terrain reste la meilleure façon de cibler des automatisations réellement utiles à votre métier.",
+      q: "Intervenez-vous à Saint-Genis-Laval ?",
+      a: "Oui. Nous intervenons dans vos locaux à Saint-Genis-Laval, partout en France, sur place ou à distance.",
     },
     {
       q: "Quelles entreprises accompagnez-vous en priorité ici ?",

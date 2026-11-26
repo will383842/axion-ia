@@ -49,7 +49,7 @@ export const GEX_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Gex et pays de Gex ?",
-      a: "Oui, Axion-IA intervient à Gex et tout le pays de Gex (Ferney-Voltaire, Saint-Genis-Pouilly, Divonne-les-Bains, Prévessin-Moëns). Genève à 20 min. Nous intervenons partout en France, sur place ou à distance.",
+      a: "Oui, Axion-IA intervient à Gex et tout le pays de Gex (Ferney-Voltaire, Saint-Genis-Pouilly, Divonne-les-Bains, Prévessin-Moëns). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec l'économie frontalière Genève ?",

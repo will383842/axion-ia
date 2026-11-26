@@ -64,8 +64,8 @@ export const PANAZOL_COPY: VilleCopy = {
       a: "Pour les professions libérales à Panazol (médecins, avocats, experts-comptables), audit sur place {{price:audit-flash|flat}}, intervention formation, coaching 1-to-1. Cas typiques : automatisation secrétariat, classification documents, synthèse dossiers, agents IA.",
     },
     {
-      q: "Comment se déroule une mission Axion-IA à Panazol ?",
-      a: "Nous intervenons partout en France, sur place ou à distance.",
+      q: "Intervenez-vous à Panazol ?",
+      a: "Oui. Nous intervenons dans vos locaux à Panazol, partout en France, sur place ou à distance.",
     },
   ],
 };

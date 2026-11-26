@@ -229,8 +229,8 @@ export const HENIN_BEAUMONT_COPY: VilleCopy = {
 
   faqGeolocalisee: [
     {
-      q: "Axion-IA se déplace-t-il sur site à Hénin-Beaumont ?",
-      a: "Oui. Nos experts IA seniors interviennent directement dans vos locaux à Hénin-Beaumont et dans toute l'agglomération Hénin-Carvin, pour observer vos processus réels avant toute recommandation.",
+      q: "Intervenez-vous à Hénin-Beaumont ?",
+      a: "Oui. Nous intervenons dans vos locaux à Hénin-Beaumont, partout en France, sur place ou à distance.",
     },
     {
       q: "Une entreprise de logistique ou d'e-commerce peut-elle profiter de l'IA à Hénin-Beaumont ?",

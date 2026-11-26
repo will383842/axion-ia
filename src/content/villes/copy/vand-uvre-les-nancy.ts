@@ -128,7 +128,7 @@ export const VAND_UVRE_LES_NANCY_COPY: VilleCopy = {
           },
           {
             q: "Sous quel délai puis-je avoir un devis à Vandœuvre-lès-Nancy ?",
-            a: "À partir de 24 à 48 h selon la complexité. Après un premier échange sur votre projet — site vitrine de commerce, plateforme SaaS du Technopôle ou portail santé de Brabois — nous vous transmettons une proposition chiffrée et un périmètre clair, sans engagement de poursuivre avec nous.",
+            a: "Nous intervenons dans vos locaux, partout en France. Après un premier échange sur votre projet — site vitrine de commerce, plateforme SaaS du Technopôle ou portail santé de Brabois — nous vous transmettons une proposition chiffrée et un périmètre clair, sans engagement de poursuivre avec nous.",
           },
           {
             q: "Le site ou la plateforme reste-t-il ma propriété ?",

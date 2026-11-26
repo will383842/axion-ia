@@ -49,7 +49,7 @@ export const ESCHAU_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Eschau et dans l''Eurométropole de Strasbourg ?",
-      a: "Oui, Axion-IA intervient à Eschau et sur toute l''Eurométropole de Strasbourg (Illkirch-Graffenstaden, Geispolsheim, Plobsheim, Fegersheim). Strasbourg centre à 15 min, Paris à 1h45 en TGV.",
+      a: "Oui, Axion-IA intervient à Eschau et sur toute l''Eurométropole de Strasbourg (Illkirch-Graffenstaden, Geispolsheim, Plobsheim, Fegersheim).",
     },
     {
       q: "Quel est le tarif d''un audit IA à Eschau ?",

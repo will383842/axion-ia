@@ -49,7 +49,7 @@ export const TRELISSAC_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Trélissac ?",
-      a: "Oui, Axion-IA intervient à Trélissac et dans toute l'agglomération de Périgueux (Boulazac, Coulounieix-Chamiers, Marsac). Périgueux à 7 min, A89 accès proche.",
+      a: "Oui, Axion-IA intervient à Trélissac et dans toute l'agglomération de Périgueux (Boulazac, Coulounieix-Chamiers, Marsac).",
     },
     {
       q: "Combien coûte un audit IA à Trélissac  ?",
@@ -61,7 +61,7 @@ export const TRELISSAC_COPY: VilleCopy = {
     },
     {
       q: "Quel délai pour démarrer une mission IA à Trélissac ?",
-      a: "Intervention sous 5 jours ouvrés. Périgueux à 7 min, Bordeaux à 1h30 A89. Déplacements sur site ou sessions en visio selon vos préférences.",
+      a: "Intervention sous 5 jours ouvrés. Déplacements sur site ou sessions en visio selon vos préférences.",
     },
     {
       q: "Proposez-vous des formations IA pour équipes logistique à Trélissac ?",

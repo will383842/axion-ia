@@ -230,7 +230,7 @@ export const COUDEKERQUE_BRANCHE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Coudekerque-Branche et dans l'agglomération de Dunkerque ?",
-      a: "Oui. Nous couvrons Coudekerque-Branche et la communauté urbaine de Dunkerque (Dunkerque centre à 5 min, Saint-Pol-sur-Mer, Grande-Synthe). Nous intervenons partout en France, sur place ou à distance.",
+      a: "Oui. Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les TPE de transport, maintenance et commerce ?",

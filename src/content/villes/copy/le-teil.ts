@@ -53,7 +53,7 @@ export const LE_TEIL_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il au Teil et dans le sud-Ardèche ?",
-      a: "Oui, Axion-IA intervient au Teil et dans tout le sud de l'Ardèche–vallée du Rhône (Montélimar sur la rive opposée, Viviers, Alba-la-Romaine, Aubenas à 30 min). Nous intervenons partout en France, sur place ou à distance.",
+      a: "Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les PME industrielles du Teil ?",

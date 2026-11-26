@@ -64,8 +64,8 @@ export const VERNEUIL_D_AVRE_ET_D_ITON_COPY: VilleCopy = {
       a: "Pour les TPE et commerçants à Verneuil d'Avre et d'Iton, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : gestion stocks, chatbot accueil, automatisation facturation, agents IA prise de RDV.",
     },
     {
-      q: "Comment se déroule une mission à Verneuil d'Avre et d'Iton ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Tarifs transparents.",
+      q: "Intervenez-vous à Verneuil d'Avre et d'Iton ?",
+      a: "Oui. Nous intervenons dans vos locaux à Verneuil d'Avre et d'Iton, partout en France, sur place ou à distance.",
     },
   ],
 };

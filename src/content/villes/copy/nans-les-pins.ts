@@ -64,8 +64,8 @@ export const NANS_LES_PINS_COPY: VilleCopy = {
       a: "Oui, nous intervenons en BTP, artisanat et commerce de proximité sur automatisation devis, gestion planning chantiers, content marketing local, fiches Google Business, SAV conversationnel.",
     },
     {
-      q: "Comment se déplace Axion-IA à Nans-les-Pins ?",
-      a: "Nos consultants se déplacent dans vos locaux.",
+      q: "Intervenez-vous à Nans-les-Pins ?",
+      a: "Oui. Nous intervenons dans vos locaux à Nans-les-Pins, partout en France, sur place ou à distance.",
     },
   ],
 };

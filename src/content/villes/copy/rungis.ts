@@ -49,7 +49,7 @@ export const RUNGIS_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Rungis et au MIN ?",
-      a: "Oui, Axion-IA intervient à Rungis et dans l'enceinte du Marché international (MIN). Orly à 5 min, Créteil à 15 min, Paris-Denfert à 20 min via RER B.",
+      a: "Oui, Axion-IA intervient à Rungis et dans l'enceinte du Marché international (MIN).",
     },
     {
       q: "Travaillez-vous avec les grossistes alimentaires du MIN ?",
@@ -64,8 +64,8 @@ export const RUNGIS_COPY: VilleCopy = {
       a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1, implémentation outils IA métier alimentaire.",
     },
     {
-      q: "Comment se déroule une mission à Rungis ?",
-      a: "Nous intervenons dans vos locaux à Rungis, partout en France.",
+      q: "Intervenez-vous à Rungis ?",
+      a: "Oui. Nous intervenons dans vos locaux à Rungis, partout en France, sur place ou à distance.",
     },
   ],
 };

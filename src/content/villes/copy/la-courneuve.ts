@@ -123,12 +123,12 @@ export const LA_COURNEUVE_COPY: VilleCopy = {
             a: "Oui. Pour les garages et l'après-vente automobile de La Courneuve, on conçoit un site vitrine mobile rapide avec prise de rendez-vous en ligne, demande de devis et chatbot de qualification (type de véhicule, prestation, créneau). Le tout hébergé en Union européenne et conforme RGPD.",
           },
           {
-            q: "Axion-IA se déplace-t-il sur site à La Courneuve ?",
-            a: "Oui. Nous venons dans vos locaux — entrepôt de la ZAE Mermoz, atelier de Rateau, bureau du centre-ville ou près de la future gare Six-Routes — pour le cadrage et la recette finale.",
+            q: "Intervenez-vous à La Courneuve ?",
+            a: "Oui. Nous intervenons dans vos locaux à La Courneuve, partout en France, sur place ou à distance.",
           },
           {
             q: "Combien de temps pour recevoir un devis ?",
-            a: "À partir de 24 à 48 h selon la complexité du projet. Un site vitrine pour artisan est cadré rapidement ; une plateforme SaaS logistique avec intégration ERP demande un échange plus poussé. Dans tous les cas, le devis est public et sans engagement.",
+            a: "Nous intervenons dans vos locaux, partout en France. Un site vitrine pour artisan est cadré rapidement ; une plateforme SaaS logistique avec intégration ERP demande un échange plus poussé. Dans tous les cas, le devis est public et sans engagement.",
           },
           {
             q: "Où sont hébergées mes données et est-ce conforme RGPD ?",
@@ -229,8 +229,8 @@ export const LA_COURNEUVE_COPY: VilleCopy = {
 
   faqGeolocalisee: [
     {
-      q: "Axion-IA se déplace-t-il sur site à La Courneuve ?",
-      a: "Oui. Notre cabinet d'experts IA se déplace directement dans vos entrepôts, ateliers ou bureaux à La Courneuve et dans le Grand Paris, généralement sous cinq jours ouvrés après validation de la mission.",
+      q: "Intervenez-vous à La Courneuve ?",
+      a: "Oui. Nous intervenons dans vos locaux à La Courneuve, partout en France, sur place ou à distance.",
     },
     {
       q: "Quels gains l'IA apporte-t-elle à une TPE de logistique de La Courneuve ?",

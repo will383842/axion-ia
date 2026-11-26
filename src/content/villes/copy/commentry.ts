@@ -53,7 +53,7 @@ export const COMMENTRY_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Commentry et dans le bassin de Montluçon ?",
-      a: "Oui, Axion-IA intervient à Commentry et tout le bassin montluçonnais (Montluçon à 15 min, Domérat, Désertines, Néris-les-Bains). Nous intervenons partout en France, sur place ou à distance.",
+      a: "Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les PME industrielles ?",
@@ -68,8 +68,8 @@ export const COMMENTRY_COPY: VilleCopy = {
       a: "Agents conversationnels, automatisation de la prise de RDV, classification de dossiers et CRM augmentés. RGPD strict, sans dépendance imposée.",
     },
     {
-      q: "Comment se déroule une mission à Commentry ?",
-      a: "Nous intervenons partout en France, sur place ou à distance.",
+      q: "Intervenez-vous à Commentry ?",
+      a: "Oui. Nous intervenons dans vos locaux à Commentry, partout en France, sur place ou à distance.",
     },
     {
       q: "Vos interventions sont-elles conformes au RGPD ?",

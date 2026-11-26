@@ -130,7 +130,7 @@ export const LE_PERREUX_SUR_MARNE_COPY: VilleCopy = {
           },
           {
             q: "Couvrez-vous aussi les communes autour du Perreux-sur-Marne ?",
-            a: "Nous intervenons dans vos locaux au Perreux-sur-Marne, partout en France. Oui : Nogent-sur-Marne, Bry-sur-Marne, Fontenay-sous-Bois, Neuilly-Plaisance et Champigny-sur-Marne, et plus largement l'Est parisien.",
+            a: "Oui : Nogent-sur-Marne, Bry-sur-Marne, Fontenay-sous-Bois, Neuilly-Plaisance et Champigny-sur-Marne, et plus largement l'Est parisien. Nous intervenons dans vos locaux au Perreux-sur-Marne, partout en France.",
           },
         ],
         guarantees:

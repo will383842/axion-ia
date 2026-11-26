@@ -128,7 +128,7 @@ export const CHAMBERY_COPY: VilleCopy = {
           },
           {
             q: "Le délai pour obtenir un devis sites web / SaaS à Chambéry ?",
-            a: "Nous intervenons dans vos locaux, partout en France. À partir de 24 à 48 h selon la complexité. Après un premier échange de cadrage, nous vous renvoyons un périmètre chiffré et clair.",
+            a: "Nous intervenons dans vos locaux, partout en France. Après un premier échange de cadrage, nous vous renvoyons un périmètre chiffré et clair.",
           },
           {
             q: "Mes données et mon code restent-ils chez moi après le projet ?",

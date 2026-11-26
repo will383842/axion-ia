@@ -230,7 +230,7 @@ export const AIX_LES_BAINS_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Aix-les-Bains et autour du lac du Bourget ?",
-      a: "Nous intervenons dans vos locaux à Aix-les-Bains, partout en France. Oui, Axion-IA accompagne les TPE et PME d'Aix-les-Bains et de tout le bassin du lac (Chambéry à 15 min, Le Bourget-du-Lac, Grésy-sur-Aix).",
+      a: "Oui, Axion-IA accompagne les TPE et PME d'Aix-les-Bains et de tout le bassin du lac. Nous intervenons dans vos locaux à Aix-les-Bains, partout en France.",
     },
     {
       q: "Accompagnez-vous les hôtels et hébergements thermaux ?",

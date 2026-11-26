@@ -127,7 +127,7 @@ export const DRANCY_COPY: VilleCopy = {
           },
           {
             q: "Sous quel délai obtient-on un devis pour un projet de site ou de SaaS à Drancy ?",
-            a: "À partir de 24 à 48 h selon la complexité du projet, après un premier échange de cadrage. Le devis est ferme et détaillé : scope, livrables, hébergement et accompagnement. Aucun jeu de devis opaque.",
+            a: "Nous intervenons dans vos locaux, partout en France. Le devis est ferme et détaillé : scope, livrables, hébergement et accompagnement. Aucun jeu de devis opaque.",
           },
           {
             q: "Où sont hébergées les données et le site conçus à Drancy ?",

@@ -235,7 +235,7 @@ export const GARDANNE_COPY: VilleCopy = {
     },
     {
       q: "Axion-IA couvre-t-elle les communes autour de Gardanne ?",
-      a: "Oui, nous intervenons dans toute la Métropole d'Aix-Marseille-Provence, notamment Aix-en-Provence (15 km), Marseille (25 km), Bouc-Bel-Air, Mimet, Meyreuil et Simiane-Collongue.",
+      a: "Oui, nous intervenons dans toute la Métropole d'Aix-Marseille-Provence, notamment Aix-en-Provence, Marseille, Bouc-Bel-Air, Mimet, Meyreuil et Simiane-Collongue.",
     },
     {
       q: "Comment garantissez-vous la conformité RGPD à Gardanne ?",
@@ -246,8 +246,8 @@ export const GARDANNE_COPY: VilleCopy = {
       a: "Les TPE et PME de la sous-traitance industrielle (gravitant autour d'Alteo), les artisans BTP, les bureaux d'études microélectronique liés à l'École des Mines, et les services tertiaires métropolitains gagnent le plus en automatisation IA custom.",
     },
     {
-      q: "Williams se déplace-t-il sur site à Gardanne ?",
-      a: "Oui, déplacement systématique sur site à Gardanne (gare SNCF directe, A51/A8/A52, TGV Aix à 20 min, aéroport Marseille-Provence à 25 min). Pas d'audit à distance pour les premières missions.",
+      q: "Intervenez-vous à Gardanne ?",
+      a: "Oui. Nous intervenons dans vos locaux à Gardanne, partout en France, sur place ou à distance.",
     },
   ],
 };

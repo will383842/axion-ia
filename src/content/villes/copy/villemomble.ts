@@ -245,8 +245,8 @@ export const VILLEMOMBLE_COPY: VilleCopy = {
       a: "Agents conversationnels B2B, automatisation de workflows, CRM augmentés et plateformes web sur mesure. Tarifs publics, sans devis opaque.",
     },
     {
-      q: "Comment se déroule une mission à Villemomble ?",
-      a: "Nous intervenons partout en France, sur place ou à distance.",
+      q: "Intervenez-vous à Villemomble ?",
+      a: "Oui. Nous intervenons dans vos locaux à Villemomble, partout en France, sur place ou à distance.",
     },
     {
       q: "Vos interventions sont-elles conformes au RGPD ?",

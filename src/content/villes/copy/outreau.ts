@@ -64,8 +64,8 @@ export const OUTREAU_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les professionnels du tourisme littoral (hôtels, restaurants, campings, offices de tourisme) sur agents conversationnels multilingues, automatisation réservations, classification avis, optimisation tarification saisonnière.",
     },
     {
-      q: "Comment se déroule une mission Axion-IA à Outreau ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Gare TGV Calais-Fréthun à 30 min.",
+      q: "Intervenez-vous à Outreau ?",
+      a: "Oui. Nous intervenons dans vos locaux à Outreau, partout en France, sur place ou à distance.",
     },
   ],
 };

@@ -65,7 +65,7 @@ export const MORTAGNE_SUR_SEVRE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Mortagne-sur-Sèvre ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Déplacement sur site dans vos locaux industriels, atelier ou bureau. Nantes à 1h, Puy du Fou à 20 min.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Déplacement sur site dans vos locaux industriels, atelier ou bureau.",
     },
   ],
 };

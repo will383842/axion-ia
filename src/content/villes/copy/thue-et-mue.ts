@@ -65,7 +65,7 @@ export const THUE_ET_MUE_COPY: VilleCopy = {
     },
     {
       q: "Thue et Mue est-elle proche de l'aéroport Caen-Carpiquet ?",
-      a: "Nous intervenons dans vos locaux à Thue, partout en France. Tarifs transparents.",
+      a: "Nous intervenons dans vos locaux à Thue et Mue, partout en France. Tarifs transparents.",
     },
   ],
 };

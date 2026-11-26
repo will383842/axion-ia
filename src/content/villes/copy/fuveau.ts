@@ -64,8 +64,8 @@ export const FUVEAU_COPY: VilleCopy = {
       a: "Oui, nous intervenons auprès des PME tertiaires sur automatisation back-office, CRM intelligents, gestion commerciale, agents IA support client, automatisation reporting et tableaux de bord.",
     },
     {
-      q: "Comment se déplace Axion-IA à Fuveau ?",
-      a: "Nos consultants se déplacent dans vos locaux.",
+      q: "Intervenez-vous à Fuveau ?",
+      a: "Oui. Nous intervenons dans vos locaux à Fuveau, partout en France, sur place ou à distance.",
     },
   ],
 };

@@ -65,7 +65,7 @@ export const HAUTE_GOULAINE_COPY: VilleCopy = {
     },
     {
       q: "Intervenez-vous dans les domaines viticoles sur site ?",
-      a: "Nous intervenons dans vos locaux à Haute-Goulaine, partout en France. Oui, nos consultants se déplacent directement dans votre domaine, chai, bureau ou commerce à Haute-Goulaine. Formats demi-journée ou journée complète.",
+      a: "Oui, nos consultants se déplacent directement dans votre domaine, chai, bureau ou commerce à Haute-Goulaine. Nous intervenons dans vos locaux à Haute-Goulaine, partout en France. Formats demi-journée ou journée complète.",
     },
   ],
 };

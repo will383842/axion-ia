@@ -49,7 +49,7 @@ export const LUZARCHES_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Luzarches et Pays de France ?",
-      a: "Oui, Axion-IA intervient à Luzarches et tout le Pays de France (Chantilly à 10 min, Sarcelles à 20 min, Paris Gare du Nord à 45 min). Gare Transilien H Luzarches (terminus).",
+      a: "Nous intervenons dans vos locaux à Luzarches, partout en France.",
     },
     {
       q: "Travaillez-vous avec les commerçants et artisans de Luzarches ?",

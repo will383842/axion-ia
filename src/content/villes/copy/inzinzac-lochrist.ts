@@ -49,7 +49,7 @@ export const INZINZAC_LOCHRIST_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Inzinzac-Lochrist et dans la vallée du Blavet ?",
-      a: "Oui, Axion-IA intervient à Inzinzac-Lochrist et dans toute la vallée du Blavet (Hennebont à 10 min, Lorient à 20 min, Lanester, Languidic, Caudan). Nous intervenons partout en France, sur place ou à distance.",
+      a: "Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les PME industrielles d'Inzinzac-Lochrist ?",

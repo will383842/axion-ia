@@ -64,8 +64,8 @@ export const SORBIERS_COPY: VilleCopy = {
       a: "Pour les PME tertiaires et commerces à Sorbiers, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : agents IA fidélité client, automatisation workflow, classification documents.",
     },
     {
-      q: "Comment se déroule une mission à Sorbiers ?",
-      a: "Nous intervenons partout en France, sur place ou à distance.",
+      q: "Intervenez-vous à Sorbiers ?",
+      a: "Oui. Nous intervenons dans vos locaux à Sorbiers, partout en France, sur place ou à distance.",
     },
   ],
 };

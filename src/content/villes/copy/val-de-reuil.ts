@@ -64,8 +64,8 @@ export const VAL_DE_REUIL_COPY: VilleCopy = {
       a: "Pour les TPE et artisans à Val-de-Reuil, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, gestion planning, classification photos chantier, facturation.",
     },
     {
-      q: "Comment se déroule une mission à Val-de-Reuil ?",
-      a: "Nous intervenons partout en France, sur place ou à distance.",
+      q: "Intervenez-vous à Val-de-Reuil ?",
+      a: "Oui. Nous intervenons dans vos locaux à Val-de-Reuil, partout en France, sur place ou à distance.",
     },
   ],
 };

@@ -65,7 +65,7 @@ export const FOIX_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Foix ?",
-      a: "Nos consultants se déplacent à Foix par le train (gare SNCF ligne Toulouse-Latour-de-Carol) ou en voiture (A66/N20, 1h15 Toulouse). Intervention 1 journée minimum, format atelier pratique dans vos locaux.",
+      a: "Intervention 1 journée minimum, format atelier pratique dans vos locaux.",
     },
   ],
 };

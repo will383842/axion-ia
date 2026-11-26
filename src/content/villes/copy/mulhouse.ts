@@ -195,7 +195,7 @@ export const MULHOUSE_COPY: VilleCopy = {
           },
           {
             q: "Intervenez-vous aussi dans les communes du bassin (Riedisheim, Kingersheim, Illzach) ?",
-            a: "Oui. Le bassin mulhousien entier est notre zone d'intervention : Riedisheim (2 km), Kingersheim (3 km), Illzach (4 km), Pfastatt (5 km), Lutterbach (6 km), Brunstatt-Didenheim (7 km), Rixheim (8 km) et les zones industrielles.",
+            a: "Oui. Le bassin mulhousien entier est notre zone d'intervention : Riedisheim, Kingersheim, Illzach, Pfastatt, Lutterbach, Brunstatt-Didenheim, Rixheim et les zones industrielles.",
           },
           {
             q: "Faut-il être déjà avancé sur l'IA pour solliciter un audit ?",

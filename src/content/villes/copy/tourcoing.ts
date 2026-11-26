@@ -409,8 +409,8 @@ export const TOURCOING_COPY: VilleCopy = {
       a: "L'Audit sur place (4h) démarre à {{price:audit-flash|flat}} — il couvre l'identification des processus automatisables et la priorisation de 3 chantiers. Pour une PME textile ou commerciale de Tourcoing, ce format suffit généralement à poser un premier plan d'action concret. Les tarifs complets sont publics sur le site.",
     },
     {
-      q: "Axion-IA se déplace-t-il physiquement à Tourcoing ou tout est-il à distance ?",
-      a: "Nos interventions se déroulent sur site chez le client à Tourcoing — audit, session collective, accompagnement dirigeant. Nous sommes un cabinet national qui se déplace partout en France. Certains formats peuvent être hybrides selon la configuration de l'entreprise, mais le présentiel reste notre mode par défaut.",
+      q: "Intervenez-vous à Tourcoing ou tout est-il à distance ?",
+      a: "Oui. Nous intervenons dans vos locaux à Tourcoing ou tout est-il à distance, partout en France, sur place ou à distance.",
     },
     {
       q: "Une entreprise du secteur textile à Tourcoing peut-elle bénéficier d'une implémentation IA clés en main ?",

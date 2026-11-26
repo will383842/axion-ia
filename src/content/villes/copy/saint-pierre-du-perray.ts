@@ -49,7 +49,7 @@ export const SAINT_PIERRE_DU_PERRAY_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Saint-Pierre-du-Perray ?",
-      a: "Oui, Axion-IA intervient à Saint-Pierre-du-Perray et tout le bassin Évry-Sénart (Évry-Courcouronnes à 10 min, Corbeil-Essonnes à 15 min). Accès Paris 40 min, Orly 25 min.",
+      a: "Nous intervenons dans vos locaux à Saint-Pierre-du-Perray, partout en France.",
     },
     {
       q: "Travaillez-vous avec les TPE artisans BTP de Saint-Pierre-du-Perray ?",
@@ -64,8 +64,8 @@ export const SAINT_PIERRE_DU_PERRAY_COPY: VilleCopy = {
       a: "Audit IA (Sur place {{price:audit-flash|flat}} à Stratégique), interventions sur site, implémentation IA (agents conversationnels, automatisations métier), coaching 1-to-1 dirigeants, plateformes web/SaaS IA sur mesure.",
     },
     {
-      q: "Comment se déroule une mission à Saint-Pierre-du-Perray ?",
-      a: "Évry-Courcouronnes à 10 min. Paris centre à 40 min (A6 direct). Orly à 25 min. Gare RER D Lieusaint-Moissy à 10 min.",
+      q: "Intervenez-vous à Saint-Pierre-du-Perray ?",
+      a: "Oui. Nous intervenons dans vos locaux à Saint-Pierre-du-Perray, partout en France, sur place ou à distance.",
     },
   ],
 };

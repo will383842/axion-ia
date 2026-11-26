@@ -65,7 +65,7 @@ export const VILLERS_COTTERETS_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Villers-Cotterêts ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Soissons à 25 min, Compiègne à 30 min.",
+      a: "Nous intervenons partout en France, sur place ou à distance.",
     },
   ],
 };

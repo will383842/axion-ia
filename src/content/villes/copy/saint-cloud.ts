@@ -119,7 +119,7 @@ export const SAINT_CLOUD_COPY: VilleCopy = {
           },
           {
             q: "Pouvez-vous créer un e-commerce ou une boutique en ligne pour un commerce de Saint-Cloud ?",
-            a: "Oui. Nous développons l'e-commerce en multi-CMS (Shopify, WooCommerce, solutions headless) pour les commerces du centre-ville, de la gare Val d'Or et de la ZAC Bords de Seine : catalogue, paiement, mobile-first, et briques IA (recherche, recommandation, chatbot). Devis à partir de 24 à 48 h selon la complexité.",
+            a: "Oui. Nous intervenons dans vos locaux, partout en France. Nous développons l'e-commerce en multi-CMS (Shopify, WooCommerce, solutions headless) pour les commerces du centre-ville, de la gare Val d'Or et de la ZAC Bords de Seine : catalogue, paiement, mobile-first, et briques IA (recherche, recommandation, chatbot).",
           },
           {
             q: "Concevez-vous des sites événementiels ou de billetterie pour le Domaine national ou l'Hippodrome de Saint-Cloud ?",
@@ -248,8 +248,8 @@ export const SAINT_CLOUD_COPY: VilleCopy = {
       a: "TPE et PME tertiaires prioritairement : cabinets de conseil, professions libérales (juridiques, comptables, santé), agences de communication, PME de services, commerces de centre-ville et restauration. Les ETI restent un complément, notre cœur de cible étant la TPE et la PME.",
     },
     {
-      q: "Axion-IA se déplace-t-il sur site à Saint-Cloud, y compris au siège d'un client ?",
-      a: "Oui, nous nous déplaçons physiquement à Saint-Cloud pour audit, interventions et sessions 1-to-1. Implémentation et suivi peuvent ensuite se faire à distance.",
+      q: "Intervenez-vous à Saint-Cloud, y compris au siège d'un client ?",
+      a: "Oui. Nous intervenons dans vos locaux à Saint-Cloud, y compris au siège d'un client, partout en France, sur place ou à distance.",
     },
   ],
 };

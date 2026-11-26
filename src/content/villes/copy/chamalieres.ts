@@ -53,7 +53,7 @@ export const CHAMALIERES_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Chamalières et dans Clermont Auvergne Métropole ?",
-      a: "Oui. Nous couvrons Chamalières et toute la métropole clermontoise (Clermont-Ferrand à 5 min, Royat, Beaumont, Cournon). Nous intervenons partout en France, sur place ou à distance.",
+      a: "Oui. Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les professions libérales et cabinets de santé ?",

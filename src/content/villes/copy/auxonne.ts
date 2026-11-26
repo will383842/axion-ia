@@ -64,8 +64,8 @@ export const AUXONNE_COPY: VilleCopy = {
       a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1.",
     },
     {
-      q: "Comment se déroule une mission à Auxonne ?",
-      a: "Nous intervenons dans vos locaux à Auxonne, partout en France.",
+      q: "Intervenez-vous à Auxonne ?",
+      a: "Oui. Nous intervenons dans vos locaux à Auxonne, partout en France, sur place ou à distance.",
     },
   ],
 };

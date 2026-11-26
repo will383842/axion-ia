@@ -49,7 +49,7 @@ export const LONGVIC_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Longvic et sud Dijon Métropole ?",
-      a: "Oui, Axion-IA intervient à Longvic et tout le sud de Dijon Métropole (Dijon centre à 15 min par tram T2, Beaune à 30 min, Paris-Bercy à 1h30 en TGV via Dijon, aéroport Dijon-Bourgogne sur place).",
+      a: "Nous intervenons dans vos locaux à Longvic, partout en France.",
     },
     {
       q: "Travaillez-vous avec les PME industrielles et logistiques de Longvic ?",

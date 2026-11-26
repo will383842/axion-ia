@@ -49,7 +49,7 @@ export const RIOM_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Riom et nord Clermont ?",
-      a: "Oui, Axion-IA intervient à Riom et tout le nord Clermont Métropole (Clermont à 15 min, Volvic, Châtel-Guyon). Aéroport Clermont à 10 min.",
+      a: "Nous intervenons dans vos locaux à Riom, partout en France.",
     },
     {
       q: "Travaillez-vous avec les acteurs tourisme patrimoine Renaissance ?",
@@ -64,8 +64,8 @@ export const RIOM_COPY: VilleCopy = {
       a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1.",
     },
     {
-      q: "Comment se déroule une mission à Riom ?",
-      a: "Nous intervenons dans vos locaux à Riom, partout en France.",
+      q: "Intervenez-vous à Riom ?",
+      a: "Oui. Nous intervenons dans vos locaux à Riom, partout en France, sur place ou à distance.",
     },
   ],
 };

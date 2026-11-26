@@ -49,7 +49,7 @@ export const SEDAN_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Sedan et dans le Sedanais ?",
-      a: "Oui, Axion-IA intervient à Sedan et dans tout le Sedanais (Bazeilles, Donchery, Floing, Glaire). Couverture Charleville-Mézières à 25 km et Reims à 1h par l'A34.",
+      a: "Oui, Axion-IA intervient à Sedan et dans tout le Sedanais (Bazeilles, Donchery, Floing, Glaire).",
     },
     {
       q: "Accompagnez-vous les PME industrielles et métallurgiques de Sedan ?",

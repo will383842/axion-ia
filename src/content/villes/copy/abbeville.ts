@@ -230,7 +230,7 @@ export const ABBEVILLE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Abbeville et dans la Somme ?",
-      a: "Oui, Axion-IA accompagne les TPE et PME d'Abbeville, de la baie de Somme et du Ponthieu. Nos consultants se déplacent sur site, à 1 h 30 de Paris par le train ou 50 minutes d'Amiens, ou interviennent en visio.",
+      a: "Oui, Axion-IA accompagne les TPE et PME d'Abbeville, de la baie de Somme et du Ponthieu. Nous intervenons dans vos locaux à Abbeville, partout en France.",
     },
     {
       q: "Travaillez-vous avec les PME agroalimentaires et industrielles abbevilloises ?",

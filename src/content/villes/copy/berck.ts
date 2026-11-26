@@ -64,8 +64,8 @@ export const BERCK_COPY: VilleCopy = {
       a: "Pour les commerçants et professions paramédicales à Berck, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : agents IA conversationnels, automatisation RDV, fidélisation client.",
     },
     {
-      q: "Comment se déroule une mission à Berck ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Tarifs publics.",
+      q: "Intervenez-vous à Berck ?",
+      a: "Oui. Nous intervenons dans vos locaux à Berck, partout en France, sur place ou à distance.",
     },
   ],
 };

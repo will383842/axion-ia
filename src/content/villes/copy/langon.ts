@@ -65,7 +65,7 @@ export const LANGON_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Langon ?",
-      a: "Nos consultants interviennent dans vos locaux ou en visio. Gare SNCF Langon accessible. Tarifs et planning convenus en amont, livrables documentés.",
+      a: "Nos consultants interviennent dans vos locaux ou en visio. Tarifs et planning convenus en amont, livrables documentés.",
     },
   ],
 };

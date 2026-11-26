@@ -65,7 +65,7 @@ export const LESPARRE_MEDOC_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Lesparre-Médoc ?",
-      a: "Nos consultants interviennent dans vos locaux ou en visio. Gare SNCF Lesparre-Médoc (TER Bordeaux). Livrables documentés.",
+      a: "Nos consultants interviennent dans vos locaux ou en visio. Livrables documentés.",
     },
   ],
 };

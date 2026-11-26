@@ -119,7 +119,7 @@ export const FRANCONVILLE_COPY: VilleCopy = {
           },
           {
             q: "Vous déplacez-vous dans les zones d'activité de Franconville ?",
-            a: "Nous intervenons dans vos locaux, partout en France. Oui, nos développeurs interviennent sur tout Franconville et Val Parisis : ZAE de l'Ermitage, ZAE des Montfrais, ZAE de la Porte du Parisis, pôles de proximité du centre-ville, de la gare, de Cadet de Vaux et de l'Épine-Guyon.",
+            a: "Oui, nos développeurs interviennent sur tout Franconville et Val Parisis : ZAE de l'Ermitage, ZAE des Montfrais, ZAE de la Porte du Parisis, pôles de proximité du centre-ville, de la gare, de Cadet de Vaux et de l'Épine-Guyon. Nous intervenons dans vos locaux, partout en France.",
           },
           {
             q: "L'IA peut-elle aider un artisan de la ZAE de l'Ermitage à gagner des chantiers ?",
@@ -227,8 +227,8 @@ export const FRANCONVILLE_COPY: VilleCopy = {
 
   faqGeolocalisee: [
     {
-      q: "Axion-IA se déplace-t-il à Franconville ?",
-      a: "Oui, nos consultants se rendent directement dans vos locaux à Franconville et dans le Val-d'Oise. La première rencontre se fait sur site, afin de bien comprendre votre activité commerciale ou de services avant toute recommandation.",
+      q: "Intervenez-vous à Franconville ?",
+      a: "Oui. Nous intervenons dans vos locaux à Franconville, partout en France, sur place ou à distance.",
     },
     {
       q: "Quels types d'entreprises accompagnez-vous à Franconville ?",

@@ -37,8 +37,8 @@ export const GRIGNY_COPY: VilleCopy = {
       en: "Audit sur place IA à Grigny dès {{price:audit-flash|flat}} — 4 heures pour identifier 3 à 5 automatisations prioritaires dans le commerce, le transport ou la construction.",
     },
     interventions: {
-      fr: "Formation collective à Grigny dès {{price:intervention-4h|flat}} — Williams se déplace sur site via le RER D ou l'A6 pour automatiser facturation, planning ou suivi clients.",
-      en: "Formation collective à Grigny dès {{price:intervention-4h|flat}} — Williams se déplace sur site via le RER D ou l'A6 pour automatiser facturation, planning ou suivi clients.",
+      fr: "Formation collective à Grigny dès {{price:intervention-4h|flat}} — Williams se déplace sur site pour automatiser facturation, planning ou suivi clients.",
+      en: "Formation collective à Grigny dès {{price:intervention-4h|flat}} — Williams se déplace sur site pour automatiser facturation, planning ou suivi clients.",
     },
     implementation: {
       fr: "Implémentation IA en code custom à Grigny dès {{price:impl-poc|entry}} — développement sur mesure, hébergement Europe et RGPD by design pour les TPE et PME de l'Essonne.",

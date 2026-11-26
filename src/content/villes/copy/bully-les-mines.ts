@@ -64,8 +64,8 @@ export const BULLY_LES_MINES_COPY: VilleCopy = {
       a: "Pour les commerçants et professions libérales à Bully-les-Mines, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : agents IA conversationnels, automatisation RDV, fidélisation.",
     },
     {
-      q: "Comment se déroule une mission à Bully-les-Mines ?",
-      a: "Nous intervenons partout en France, sur place ou à distance.",
+      q: "Intervenez-vous à Bully-les-Mines ?",
+      a: "Oui. Nous intervenons dans vos locaux à Bully-les-Mines, partout en France, sur place ou à distance.",
     },
   ],
 };

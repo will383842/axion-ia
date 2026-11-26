@@ -49,7 +49,7 @@ export const SAINT_PIERRE_LES_NEMOURS_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Saint-Pierre-lès-Nemours ?",
-      a: "Oui, Axion-IA intervient à Saint-Pierre-lès-Nemours et tout le sud Seine-et-Marne (Nemours à 5 min, Fontainebleau à 20 min, gare ligne R à 3 min, Paris à 1h15).",
+      a: "Nous intervenons dans vos locaux à Saint-Pierre-lès-Nemours, partout en France.",
     },
     {
       q: "Accompagnez-vous les artisans et petits commerces ?",

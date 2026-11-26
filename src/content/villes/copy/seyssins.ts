@@ -47,7 +47,7 @@ export const SEYSSINS_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Seyssins et ouest grenoblois ?",
-      a: "Oui, Axion-IA intervient à Seyssins et tout l'ouest de la métropole grenobloise (Seyssinet-Pariset, Fontaine, Sassenage, Saint-Égrève). Couverture via tramway A ou A480, accès Vercors périphérique (Saint-Nizier-du-Moucherotte 30 min).",
+      a: "Oui, Axion-IA intervient à Seyssins et tout l'ouest de la métropole grenobloise (Seyssinet-Pariset, Fontaine, Sassenage, Saint-Égrève). Couverture via tramway A ou A480, accès Vercors périphérique.",
     },
     {
       q: "Accompagnez-vous les professions libérales seyssinoises ?",

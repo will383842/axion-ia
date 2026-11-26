@@ -229,8 +229,8 @@ export const VITROLLES_COPY: VilleCopy = {
 
   faqGeolocalisee: [
     {
-      q: "Axion-IA se déplace-t-il sur site à Vitrolles ?",
-      a: "Oui. Nos experts IA seniors interviennent directement dans vos locaux à Vitrolles, notamment dans la ZAC de l'Anjoly, et tout autour de l'étang de Berre, pour observer vos processus réels avant toute recommandation.",
+      q: "Intervenez-vous à Vitrolles ?",
+      a: "Oui. Nous intervenons dans vos locaux à Vitrolles, partout en France, sur place ou à distance.",
     },
     {
       q: "Une entreprise de transport ou de logistique peut-elle profiter de l'IA à Vitrolles ?",

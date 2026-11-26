@@ -57,15 +57,15 @@ export const PONT_DE_CHERUY_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les opérateurs logistiques aéroportuaires ?",
-      a: "Nous intervenons dans vos locaux à Pont-de-Chéruy, partout en France.",
+      a: "Oui, nous accompagnons les opérateurs logistiques aire Lyon-Saint-Exupéry sur leurs cas IA : optimisation tournées, automatisation préparation commandes, prédiction demande, agents IA service client B2B multilingue. Nous intervenons dans vos locaux à Pont-de-Chéruy, partout en France.",
     },
     {
       q: "Quels services pour les TPE et artisans chérulane ?",
       a: "Pour les TPE artisans BTP et commerçants à Pont-de-Chéruy, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, classification photos, gestion stocks.",
     },
     {
-      q: "Comment se déroule une mission à Pont-de-Chéruy ?",
-      a: "Nous intervenons partout en France, sur place ou à distance.",
+      q: "Intervenez-vous à Pont-de-Chéruy ?",
+      a: "Oui. Nous intervenons dans vos locaux à Pont-de-Chéruy, partout en France, sur place ou à distance.",
     },
   ],
 };

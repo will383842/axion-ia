@@ -238,7 +238,7 @@ export const ROCHEFORT_COPY: VilleCopy = {
     },
     {
       q: "Comment rejoignez-vous Rochefort ?",
-      a: "Nous intervenons dans vos locaux à Rochefort, partout en France. Les déplacements sur Marennes-Oléron (40 km) et l'Île d'Aix sont organisés en continuité de mission.",
+      a: "Nous intervenons dans vos locaux à Rochefort, partout en France. Les déplacements sur Marennes-Oléron et l'Île d'Aix sont organisés en continuité de mission.",
     },
     {
       q: "Vos architectures IA sont-elles compatibles avec les contraintes aéronautiques de Stelia et Sabena Technics ?",

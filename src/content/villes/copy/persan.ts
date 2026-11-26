@@ -64,8 +64,8 @@ export const PERSAN_COPY: VilleCopy = {
       a: "Pour les professions libérales à Persan, nous proposons audit IA adapté, intervention formation 1 journée, coaching 1-to-1, implémentation agents conversationnels et automatisation. RGPD strict, secret professionnel respecté.",
     },
     {
-      q: "Comment se déroule une mission à Persan ?",
-      a: "Nous intervenons partout en France, sur place ou à distance.",
+      q: "Intervenez-vous à Persan ?",
+      a: "Oui. Nous intervenons dans vos locaux à Persan, partout en France, sur place ou à distance.",
     },
   ],
 };

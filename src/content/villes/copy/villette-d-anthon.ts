@@ -64,8 +64,8 @@ export const VILLETTE_D_ANTHON_COPY: VilleCopy = {
       a: "Pour les TPE artisans BTP et commerçants à Villette-d'Anthon, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, classification photos, gestion stocks.",
     },
     {
-      q: "Comment se déroule une mission à Villette-d'Anthon ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Tarifs transparents.",
+      q: "Intervenez-vous à Villette-d'Anthon ?",
+      a: "Oui. Nous intervenons dans vos locaux à Villette-d'Anthon, partout en France, sur place ou à distance.",
     },
   ],
 };

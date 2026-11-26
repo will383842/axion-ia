@@ -229,8 +229,8 @@ export const JOINVILLE_LE_PONT_COPY: VilleCopy = {
 
   faqGeolocalisee: [
     {
-      q: "Axion-IA se déplace-t-il sur site à Joinville-le-Pont ?",
-      a: "Oui. Notre cabinet d'experts IA se déplace directement dans vos locaux à Joinville-le-Pont et dans l'est parisien, généralement sous cinq jours ouvrés après validation de la mission.",
+      q: "Intervenez-vous à Joinville-le-Pont ?",
+      a: "Oui. Nous intervenons dans vos locaux à Joinville-le-Pont, partout en France, sur place ou à distance.",
     },
     {
       q: "Quels gains l'IA apporte-t-elle à une agence créative de Joinville-le-Pont ?",

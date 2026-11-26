@@ -49,7 +49,7 @@ export const FURIANI_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Furiani et dans l'agglomération bastiaise ?",
-      a: "Oui, Axion-IA intervient à Furiani et dans toute l'agglomération bastiaise (Bastia à 10 min, Corte à 1h05). Aéroport Bastia-Poretta à 15 min, port de Bastia à 10 min.",
+      a: "Nous intervenons dans vos locaux à Furiani, partout en France.",
     },
     {
       q: "Travaillez-vous avec les commerces et services de l'agglo Bastia ?",

@@ -49,7 +49,7 @@ export const CHATEL_GUYON_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Châtel-Guyon et alentours ?",
-      a: "Oui, Axion-IA intervient à Châtel-Guyon et tout le nord Clermont Métropole (Riom à 5 min, Clermont-Ferrand à 20 min, Vichy à 30 min). Aéroport Clermont à 25 min.",
+      a: "Nous intervenons dans vos locaux à Châtel-Guyon, partout en France.",
     },
     {
       q: "Travaillez-vous avec les établissements thermaux ?",
@@ -64,8 +64,8 @@ export const CHATEL_GUYON_COPY: VilleCopy = {
       a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1.",
     },
     {
-      q: "Comment se déroule une mission à Châtel-Guyon ?",
-      a: "Nous intervenons dans vos locaux à Châtel-Guyon, partout en France.",
+      q: "Intervenez-vous à Châtel-Guyon ?",
+      a: "Oui. Nous intervenons dans vos locaux à Châtel-Guyon, partout en France, sur place ou à distance.",
     },
   ],
 };

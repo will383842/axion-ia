@@ -227,7 +227,7 @@ export const OYONNAX_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Oyonnax ?",
-      a: "Oui, Axion-IA intervient à Oyonnax et dans toute la Plastics Vallée : Arbent, Bellignat, Dortan, Géovreisset, Samognat, ainsi que la communauté d'agglomération Haut-Bugey. Déplacement en 1h30 depuis Lyon ou 1h depuis Bourg-en-Bresse.",
+      a: "Oui, Axion-IA intervient à Oyonnax et dans toute la Plastics Vallée : Arbent, Bellignat, Dortan, Géovreisset, Samognat, ainsi que la communauté d'agglomération Haut-Bugey.",
     },
     {
       q: "Quels sont les tarifs pour un audit IA à Oyonnax ?",

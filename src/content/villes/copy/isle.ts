@@ -64,8 +64,8 @@ export const ISLE_COPY: VilleCopy = {
       a: "Pour les TPE artisans BTP et commerçants à Isle, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, gestion stocks et planning chantiers.",
     },
     {
-      q: "Comment se déroule une mission Axion-IA à Isle ?",
-      a: "Nous intervenons partout en France, sur place ou à distance.",
+      q: "Intervenez-vous à Isle ?",
+      a: "Oui. Nous intervenons dans vos locaux à Isle, partout en France, sur place ou à distance.",
     },
   ],
 };

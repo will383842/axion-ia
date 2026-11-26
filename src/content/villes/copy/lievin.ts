@@ -130,7 +130,7 @@ export const LIEVIN_COPY: VilleCopy = {
           },
           {
             q: "Intervenez-vous dans les communes voisines de Liévin ?",
-            a: "Oui : Lens, Avion (La Gaillette), Angres, Bully-les-Mines, Aix-Noulette, Éleu-dit-Leauwette, Grenay, Loos-en-Gohelle, ainsi qu'Arras (15 km) et Lille (30 km), via l'A21, l'A26 et la gare SNCF de Liévin.",
+            a: "Oui : Lens, Avion (La Gaillette), Angres, Bully-les-Mines, Aix-Noulette, Éleu-dit-Leauwette, Grenay, Loos-en-Gohelle, ainsi qu'Arras et Lille, via l'A21, l'A26 et la gare SNCF de Liévin. Nous intervenons dans vos locaux, partout en France.",
           },
         ],
         guarantees:
@@ -232,11 +232,11 @@ export const LIEVIN_COPY: VilleCopy = {
     },
     {
       q: "Quels délais pour une intervention à Liévin ?",
-      a: "Déplacement sur site sous cinq jours ouvrés depuis la signature, Audit sur place livré en 4 heures, implémentations courantes (factures, relances, reporting) déployées en deux à trois semaines.",
+      a: "Nous intervenons dans vos locaux, partout en France.",
     },
     {
       q: "Intervenez-vous dans les communes voisines de Liévin ?",
-      a: "Oui : Lens, Avion, Angres, Bully-les-Mines, Aix-Noulette, Éleu-dit-Leauwette, Givenchy-en-Gohelle, Grenay, Loos-en-Gohelle sont couvertes, ainsi qu'Arras (15 km) et Lille (30 km).",
+      a: "Oui : Lens, Avion, Angres, Bully-les-Mines, Aix-Noulette, Éleu-dit-Leauwette, Givenchy-en-Gohelle, Grenay, Loos-en-Gohelle sont couvertes, ainsi qu'Arras et Lille. Nous intervenons dans vos locaux, partout en France.",
     },
     {
       q: "Vos automatisations à Liévin respectent-elles le RGPD ?",

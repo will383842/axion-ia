@@ -226,7 +226,7 @@ export const BASTIA_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Bastia et en Haute-Corse ?",
-      a: "Oui, Axion-IA intervient à Bastia et dans les communes voisines (Furiani, Ville-di-Pietrabugno, Barbaggio, Patrimonio) ainsi que sur la plaine orientale. Déplacement sur site organisé via l'aéroport Bastia-Poretta.",
+      a: "Oui, Axion-IA intervient à Bastia et dans les communes voisines (Furiani, Ville-di-Pietrabugno, Barbaggio, Patrimonio) ainsi que sur la plaine orientale.",
     },
     {
       q: "Quel est le tarif d'un audit IA pour une TPE à Bastia ?",

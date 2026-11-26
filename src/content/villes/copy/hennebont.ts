@@ -49,7 +49,7 @@ export const HENNEBONT_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Hennebont et sur Lorient Agglomération ?",
-      a: "Oui, Axion-IA intervient à Hennebont et dans toute Lorient Agglomération. Lorient centre à 15 min, aéroport Lorient Bretagne Sud à 20 min, voie express RN 165 sur place.",
+      a: "Oui, Axion-IA intervient à Hennebont et dans toute Lorient Agglomération.",
     },
     {
       q: "Tarifs audit IA à Hennebont  : quel budget prévoir ?",

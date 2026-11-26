@@ -64,8 +64,8 @@ export const CUGES_LES_PINS_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les acteurs du tourisme et loisirs : agents conversationnels réservation multilingues, yield management saisonnier, automatisation gestion flux visiteurs, marketing ciblé.",
     },
     {
-      q: "Comment se déplace Axion-IA à Cuges-les-Pins ?",
-      a: "Nos consultants se déplacent dans vos locaux.",
+      q: "Intervenez-vous à Cuges-les-Pins ?",
+      a: "Oui. Nous intervenons dans vos locaux à Cuges-les-Pins, partout en France, sur place ou à distance.",
     },
   ],
 };

@@ -49,7 +49,7 @@ export const SEPTEMES_LES_VALLONS_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Septèmes-les-Vallons ?",
-      a: "Oui, Axion-IA intervient à Septèmes-les-Vallons et dans tout le nord de Marseille (Les Pennes-Mirabeau à 5 min, Plan de Campagne à 10 min, Cabriès, Bouc-Bel-Air). Couverture complète métropole nord.",
+      a: "Nous intervenons dans vos locaux à Septèmes-les-Vallons, partout en France. Couverture complète métropole nord.",
     },
     {
       q: "Quels sont les tarifs pour un audit IA à Septèmes-les-Vallons ?",

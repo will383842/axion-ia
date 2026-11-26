@@ -246,7 +246,7 @@ export const LES_ULIS_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une intervention IA aux Ulis ?",
-      a: "Nos consultants se déplacent (Massy TGV à 15 min, Paris-Orly à 25 min). L'intervention dure au moins une journée, sous forme d'atelier pratique dans vos locaux, pour rendre vos équipes autonomes.",
+      a: "L'intervention dure au moins une journée, sous forme d'atelier pratique dans vos locaux, pour rendre vos équipes autonomes.",
     },
     {
       q: "Axion-IA respecte-t-il le RGPD lors de ses interventions aux Ulis ?",

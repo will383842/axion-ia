@@ -236,7 +236,7 @@ export const DENAIN_COPY: VilleCopy = {
     },
     {
       q: "Intervenez-vous dans les communes proches de Denain ?",
-      a: "Oui, nous couvrons Douchy-les-Mines, Escaudain, Lourches, Haulchin, Haveluy, Wallers, Oisy, Wavrechain-sous-Denain ainsi que Valenciennes à 10 km.",
+      a: "Nous intervenons dans vos locaux, partout en France.",
     },
     {
       q: "Vos automatisations à Denain sont-elles conformes au RGPD ?",

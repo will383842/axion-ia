@@ -126,7 +126,7 @@ export const MAUBEUGE_COPY: VilleCopy = {
           },
           {
             q: "Intervenez-vous dans les communes voisines de Maubeuge ?",
-            a: "Oui : Louvroil, Feignies, Rousies, Assevent, Aulnoye-Aymeries, Recquignies et l'ensemble de l'Agglomération Maubeuge Val de Sambre. Le kick-off se fait sur site, sur le parc de Grévaux-les-Guides, à La Marlière ou dans vos locaux. La proximité belge (7 km via la N2) nous permet aussi de livrer des plateformes bilingues pour votre clientèle transfrontalière.",
+            a: "Oui : Louvroil, Feignies, Rousies, Assevent, Aulnoye-Aymeries, Recquignies et l'ensemble de l'Agglomération Maubeuge Val de Sambre. Le kick-off se fait sur site, sur le parc de Grévaux-les-Guides, à La Marlière ou dans vos locaux. La proximité belge nous permet aussi de livrer des plateformes bilingues pour votre clientèle transfrontalière.",
           },
           {
             q: "Où sont hébergées les données et combien de temps pour démarrer ?",
@@ -212,7 +212,7 @@ export const MAUBEUGE_COPY: VilleCopy = {
           },
           {
             q: "Intervenez-vous dans les communes voisines de Maubeuge ?",
-            a: "Oui : Louvroil, Feignies, Rousies, Assevent, Aulnoye-Aymeries, Recquignies et l'ensemble de l'Agglomération Maubeuge Val de Sambre. Le kick-off se fait sur site, sur le parc de Grévaux-les-Guides, à La Marlière ou dans vos locaux. La proximité belge (7 km via la N2) nous permet aussi de livrer des plateformes bilingues pour votre clientèle transfrontalière.",
+            a: "Oui : Louvroil, Feignies, Rousies, Assevent, Aulnoye-Aymeries, Recquignies et l'ensemble de l'Agglomération Maubeuge Val de Sambre. Le kick-off se fait sur site, sur le parc de Grévaux-les-Guides, à La Marlière ou dans vos locaux. La proximité belge nous permet aussi de livrer des plateformes bilingues pour votre clientèle transfrontalière.",
           },
           {
             q: "Où sont hébergées les données et combien de temps pour démarrer ?",

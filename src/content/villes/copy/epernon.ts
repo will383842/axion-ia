@@ -64,8 +64,8 @@ export const EPERNON_COPY: VilleCopy = {
       a: "Oui, nos formats sont adaptés aux TPE artisans BTP et commerçants de proximité : automatisation devis, chatbots prise de RDV, gestion stocks, agents IA plannings, présence en ligne.",
     },
     {
-      q: "Comment se déroule une mission à Épernon ?",
-      a: "Nous intervenons dans vos locaux à Épernon, partout en France. Tarifs transparents.",
+      q: "Intervenez-vous à Épernon ?",
+      a: "Oui. Nous intervenons dans vos locaux à Épernon, partout en France, sur place ou à distance.",
     },
   ],
 };

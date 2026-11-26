@@ -49,7 +49,7 @@ export const LORIOL_SUR_DROME_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Loriol-sur-Drôme et sud Valence ?",
-      a: "Oui, Axion-IA intervient à Loriol-sur-Drôme et tout le sud-Valence (Livron-sur-Drôme limitrophe, Crest à 25 min, La Voulte-sur-Rhône). Nous intervenons partout en France, sur place ou à distance.",
+      a: "Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les arboriculteurs vallée Rhône ?",

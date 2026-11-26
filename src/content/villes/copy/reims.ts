@@ -333,7 +333,7 @@ export const REIMS_COPY: VilleCopy = {
           },
           {
             q: "Vos consultants peuvent-ils venir dans le bassin Champagne (Épernay, Châlons, Troyes) ?",
-            a: "Oui. Nous couvrons l'ensemble du bassin Champagne-Ardenne, dont Épernay (~30 km de Reims), Châlons-en-Champagne (~45 km) et Troyes (~80 km). Nous intervenons partout en France, sur place ou à distance.",
+            a: "Oui. Nous couvrons l'ensemble du bassin Champagne-Ardenne, dont Épernay, Châlons-en-Champagne et Troyes. Nous intervenons partout en France, sur place ou à distance.",
           },
           {
             q: "Les outils installés sur les postes sont-ils adaptés au secteur Champagne ?",
@@ -998,7 +998,7 @@ export const REIMS_COPY: VilleCopy = {
     },
     {
       q: "Couvrez-vous le bassin Champagne au-delà de Reims ?",
-      a: "Oui. Nos interventions couvrent l'ensemble du bassin Champagne-Ardenne : Épernay (~30 km), Châlons-en-Champagne (~45 km), Troyes (~80 km), ainsi que les communes du Grand Reims (Bezannes, Tinqueux, Cormontreuil). Nous intervenons partout en France, sur place ou à distance.",
+      a: "Oui. Nos interventions couvrent l'ensemble du bassin Champagne-Ardenne : Épernay, Châlons-en-Champagne, Troyes, ainsi que les communes du Grand Reims (Bezannes, Tinqueux, Cormontreuil). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quels secteurs rémois sont prioritaires pour l'IA opérationnelle ?",

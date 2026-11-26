@@ -231,8 +231,8 @@ export const NEUILLY_SUR_SEINE_COPY: VilleCopy = {
       a: "L'Audit sur place 4h sur site à Neuilly-sur-Seine démarre à {{price:audit-flash|flat}}. Une intervention ciblée est facturée {{price:intervention-4h|flat}}, une implémentation complète à partir de {{price:impl-poc|entry}}. Tarifs publics fixes, devis signé avant démarrage, aucun abonnement.",
     },
     {
-      q: "Williams se déplace-t-il à Neuilly-sur-Seine ?",
-      a: "Oui, Williams se déplace sur site à Neuilly-sur-Seine sous 5 jours ouvrés.",
+      q: "Intervenez-vous à Neuilly-sur-Seine ?",
+      a: "Oui. Nous intervenons dans vos locaux à Neuilly-sur-Seine, partout en France, sur place ou à distance.",
     },
     {
       q: "Quelles communes proches de Neuilly-sur-Seine couvrez-vous ?",

@@ -65,7 +65,7 @@ export const LE_RELECQ_KERHUON_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA au Relecq-Kerhuon ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. ",
+      a: "Nous intervenons partout en France, sur place ou à distance.",
     },
   ],
 };

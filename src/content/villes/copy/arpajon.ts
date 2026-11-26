@@ -49,7 +49,7 @@ export const ARPAJON_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Arpajon et dans le Hurepoix ?",
-      a: "Oui, Axion-IA intervient à Arpajon et tout le Hurepoix essonnien (Saint-Germain-lès-Arpajon, Brétigny-sur-Orge, Linas, Montlhéry). Gare RER C Arpajon, Paris à 35 min.",
+      a: "Oui, Axion-IA intervient à Arpajon et tout le Hurepoix essonnien (Saint-Germain-lès-Arpajon, Brétigny-sur-Orge, Linas, Montlhéry).",
     },
     {
       q: "Travaillez-vous avec les commerçants du marché d'Arpajon ?",
@@ -64,8 +64,8 @@ export const ARPAJON_COPY: VilleCopy = {
       a: "Audit IA (Sur place {{price:audit-flash|flat}} à Stratégique), interventions sur site, implémentation IA (agents conversationnels, automatisations métier), coaching 1-to-1 dirigeants, plateformes web/SaaS IA sur mesure.",
     },
     {
-      q: "Comment se déroule une mission à Arpajon ?",
-      a: "Nous intervenons dans vos locaux à Arpajon, partout en France.",
+      q: "Intervenez-vous à Arpajon ?",
+      a: "Oui. Nous intervenons dans vos locaux à Arpajon, partout en France, sur place ou à distance.",
     },
   ],
 };

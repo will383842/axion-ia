@@ -49,7 +49,7 @@ export const AUDINCOURT_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Audincourt et dans le Pays de Montbéliard ?",
-      a: "Oui, Axion-IA intervient à Audincourt et dans tout le Pays de Montbéliard (Montbéliard, Valentigney, Sochaux, Hérimoncourt, Bavans). Gare TGV Belfort-Montbéliard à 15 min. Nous intervenons partout en France, sur place ou à distance.",
+      a: "Oui, Axion-IA intervient à Audincourt et dans tout le Pays de Montbéliard (Montbéliard, Valentigney, Sochaux, Hérimoncourt, Bavans). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les sous-traitants automobile et équipementiers ?",

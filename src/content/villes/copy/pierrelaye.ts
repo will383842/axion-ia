@@ -49,7 +49,7 @@ export const PIERRELAYE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Pierrelaye et Val Parisis ?",
-      a: "Oui, Axion-IA intervient à Pierrelaye et dans toute l'agglomération Val Parisis (Franconville, Herblay-sur-Seine, Beauchamp, Montigny-lès-Cormeilles). Paris Gare du Nord à 30 min en Transilien H.",
+      a: "Oui, Axion-IA intervient à Pierrelaye et dans toute l'agglomération Val Parisis (Franconville, Herblay-sur-Seine, Beauchamp, Montigny-lès-Cormeilles).",
     },
     {
       q: "Accompagnez-vous les artisans BTP de Pierrelaye ?",

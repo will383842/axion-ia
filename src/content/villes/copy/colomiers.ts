@@ -245,8 +245,8 @@ export const COLOMIERS_COPY: VilleCopy = {
       a: "Agents conversationnels techniques, automatisation documentaire, classification, copilotes de rédaction et CRM augmentés. Tarifs publics, sans devis opaque.",
     },
     {
-      q: "Comment se déroule une mission à Colomiers ?",
-      a: "Nous intervenons partout en France, sur place ou à distance.",
+      q: "Intervenez-vous à Colomiers ?",
+      a: "Oui. Nous intervenons dans vos locaux à Colomiers, partout en France, sur place ou à distance.",
     },
     {
       q: "Vos interventions sont-elles conformes au RGPD ?",

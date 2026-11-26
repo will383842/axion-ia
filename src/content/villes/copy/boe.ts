@@ -65,7 +65,7 @@ export const BOE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Boé ?",
-      a: "Nos consultants interviennent sur site à Boé et dans l'agglomération d'Agen. Déplacement direct sur votre site logistique, atelier ou bureau. Aéroport Agen-La Garenne sur la commune, gare TGV Agen à 10 min.",
+      a: "Nos consultants interviennent sur site à Boé et dans l'agglomération d'Agen. Déplacement direct sur votre site logistique, atelier ou bureau.",
     },
   ],
 };

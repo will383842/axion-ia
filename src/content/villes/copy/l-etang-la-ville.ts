@@ -49,7 +49,7 @@ export const L_ETANG_LA_VILLE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à L'Étang-la-Ville ?",
-      a: "Oui, Axion-IA intervient à L'Étang-la-Ville et dans tout le secteur forêt de Marly (Saint-Germain-en-Laye à 5 min, Mareil-Marly, Noisy-le-Roi, Versailles à 15 min). Nos consultants se déplacent sur site ou en visio.",
+      a: "Nos consultants se déplacent sur site ou en visio.",
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à L'Étang-la-Ville  ?",

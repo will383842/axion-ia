@@ -65,7 +65,7 @@ export const MAUGUIO_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Mauguio ?",
-      a: "Nos consultants interviennent sur site à Mauguio et dans l'agglo Montpellier est. Déplacement direct dans votre entreprise. Aéroport Montpellier-Méditerranée à 5 min, gare TGV Montpellier à 20 min.",
+      a: "Nos consultants interviennent sur site à Mauguio et dans l'agglo Montpellier est. Déplacement direct dans votre entreprise.",
     },
   ],
 };

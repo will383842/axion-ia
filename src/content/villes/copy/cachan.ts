@@ -131,7 +131,7 @@ export const CACHAN_COPY: VilleCopy = {
           },
           {
             q: "Intervenez-vous aussi autour de Cachan et dans quel délai recevez-vous un devis ?",
-            a: "Nous intervenons à Cachan et dans les communes limitrophes — Arcueil, Bagneux, Villejuif, Bourg-la-Reine, L'Haÿ-les-Roses — ainsi que sur tout le Val-de-Marne et l'Île-de-France, à 15 min de Paris en RER B (et bientôt ligne 15 Sud). Le devis est remis à partir de 24-48 h selon la complexité du projet.",
+            a: "Nous intervenons dans vos locaux, partout en France.",
           },
         ],
         guarantees:

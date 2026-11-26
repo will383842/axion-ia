@@ -53,7 +53,7 @@ export const CESSY_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Cessy et dans le pays de Gex ?",
-      a: "Nous intervenons dans vos locaux à Cessy, partout en France. Oui, Axion-IA accompagne les TPE et PME de Cessy et de tout le pays de Gex (Gex à 5 min, Ferney-Voltaire, Saint-Genis-Pouilly, Divonne).",
+      a: "Oui, Axion-IA accompagne les TPE et PME de Cessy et de tout le pays de Gex (Gex, Ferney-Voltaire, Saint-Genis-Pouilly, Divonne). Nous intervenons dans vos locaux à Cessy, partout en France.",
     },
     {
       q: "Travaillez-vous avec l'économie frontalière de Genève ?",

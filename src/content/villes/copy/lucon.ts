@@ -65,7 +65,7 @@ export const LUCON_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Luçon ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Déplacement sur site dans vos locaux professionnels ou exploitation. A83 à 15 min.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Déplacement sur site dans vos locaux professionnels ou exploitation.",
     },
   ],
 };

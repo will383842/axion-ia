@@ -49,7 +49,7 @@ export const PARMAIN_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Parmain et vallée de l'Oise ?",
-      a: "Oui, Axion-IA intervient à Parmain et toute la vallée de l'Oise (L'Isle-Adam à 3 min, Beaumont-sur-Oise à 10 min, Cergy-Pontoise à 25 min, Paris à 45 min). Gare Transilien L'Isle-Adam–Parmain.",
+      a: "Nous intervenons dans vos locaux à Parmain, partout en France.",
     },
     {
       q: "Travaillez-vous avec les commerçants et artisans de Parmain ?",

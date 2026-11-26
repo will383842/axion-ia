@@ -49,7 +49,7 @@ export const LES_ESSARTS_LE_ROI_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il aux Essarts-le-Roi et autour de Rambouillet ?",
-      a: "Oui, Axion-IA intervient aux Essarts-le-Roi et dans tout le sud des Yvelines (Rambouillet à 10 min, Saint-Quentin-en-Yvelines à 15 min, Le Perray-en-Yvelines, Auffargis).",
+      a: "Nous intervenons dans vos locaux aux Essarts-le-Roi, partout en France.",
     },
     {
       q: "Accompagnez-vous les indépendants et auto-entrepreneurs du sud Yvelines ?",
@@ -64,8 +64,8 @@ export const LES_ESSARTS_LE_ROI_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les TPE artisans bâtiment et espaces verts des Essarts-le-Roi et du sud Yvelines : devis automatisé, gestion planning IA, suivi chantier augmenté, CRM clients, facturation intelligente. Solutions terrain concrètes.",
     },
     {
-      q: "Comment se déroule une mission aux Essarts-le-Roi ?",
-      a: "Nous intervenons partout en France, sur place ou à distance.",
+      q: "Intervenez-vous aux Essarts-le-Roi ?",
+      a: "Oui. Nous intervenons dans vos locaux aux Essarts-le-Roi, partout en France, sur place ou à distance.",
     },
   ],
 };

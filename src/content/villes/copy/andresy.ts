@@ -49,7 +49,7 @@ export const ANDRESY_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Andrésy et à la confluence Seine-Oise ?",
-      a: "Oui, Axion-IA intervient à Andrésy et tout le secteur confluence (Conflans-Sainte-Honorine à 5 min, Poissy à 10 min, Paris La Défense à 25 min, Paris Saint-Lazare à 35 min transilien J).",
+      a: "Nous intervenons dans vos locaux à Andrésy, partout en France.",
     },
     {
       q: "Travaillez-vous avec les commerçants et artisans d'Andrésy ?",
@@ -64,8 +64,8 @@ export const ANDRESY_COPY: VilleCopy = {
       a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Outils IA réservation, gestion salle, fidélisation clientèle.",
     },
     {
-      q: "Comment se déroule une mission à Andrésy ?",
-      a: "Nous intervenons dans vos locaux à Andrésy, partout en France.",
+      q: "Intervenez-vous à Andrésy ?",
+      a: "Oui. Nous intervenons dans vos locaux à Andrésy, partout en France, sur place ou à distance.",
     },
   ],
 };

@@ -246,8 +246,8 @@ export const VENISSIEUX_COPY: VilleCopy = {
       a: "Sous-traitance automobile (équipementiers Renault Trucks, Bosch), métallurgie et travail des métaux, logistique industrielle de la rocade Est, BTP et second œuvre, et négoce B2B des zones Chêne-Velin et Parilly.",
     },
     {
-      q: "Williams se déplace-t-il vraiment sur site à Vénissieux ou tout se fait à distance ?",
-      a: "Williams se déplace physiquement à Vénissieux pour les phases Audit et Implémentation. Les développements code sont remote, avec démos hebdomadaires et recette sur site dans la ZI ou au Parilly.",
+      q: "Intervenez-vous à Vénissieux ou tout se fait à distance ?",
+      a: "Oui. Nous intervenons dans vos locaux à Vénissieux ou tout se fait à distance, partout en France, sur place ou à distance.",
     },
   ],
 };

@@ -49,7 +49,7 @@ export const REVIN_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Revin et dans la vallée de la Meuse ?",
-      a: "Oui, Axion-IA intervient à Revin et dans toute la vallée de la Meuse (Fumay, Monthermé, Bogny-sur-Meuse, Haybes). Couverture Charleville-Mézières à 35 km et Givet à 25 km par la N51.",
+      a: "Oui, Axion-IA intervient à Revin et dans toute la vallée de la Meuse (Fumay, Monthermé, Bogny-sur-Meuse, Haybes).",
     },
     {
       q: "Accompagnez-vous les PME métallurgiques et industrielles de Revin ?",

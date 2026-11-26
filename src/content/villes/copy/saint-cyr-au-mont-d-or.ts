@@ -64,8 +64,8 @@ export const SAINT_CYR_AU_MONT_D_OR_COPY: VilleCopy = {
       a: "Pour les TPE artisans BTP et commerçants, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1.",
     },
     {
-      q: "Comment se déroule une mission à Saint-Cyr-au-Mont-d'Or ?",
-      a: "Nous intervenons partout en France, sur place ou à distance.",
+      q: "Intervenez-vous à Saint-Cyr-au-Mont-d'Or ?",
+      a: "Oui. Nous intervenons dans vos locaux à Saint-Cyr-au-Mont-d'Or, partout en France, sur place ou à distance.",
     },
   ],
 };

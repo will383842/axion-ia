@@ -232,8 +232,8 @@ export const ISSY_LES_MOULINEAUX_COPY: VilleCopy = {
       a: "L'Audit sur place 4 heures à Issy-les-Moulineaux démarre à {{price:audit-flash|flat}}. Les interventions ciblées sur site commencent à {{price:intervention-4h|flat}}. Tarifs publics complets sur notre page tarifs.",
     },
     {
-      q: "Comment Williams se déplace-t-il à Issy-les-Moulineaux ?",
-      a: "Nous nous déplaçons chez vous, partout en France.",
+      q: "Intervenez-vous à Issy-les-Moulineaux ?",
+      a: "Oui. Nous intervenons dans vos locaux à Issy-les-Moulineaux, partout en France, sur place ou à distance.",
     },
     {
       q: "Quels délais pour un audit à Issy-les-Moulineaux ?",

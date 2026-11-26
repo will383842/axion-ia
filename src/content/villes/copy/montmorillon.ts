@@ -49,7 +49,7 @@ export const MONTMORILLON_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Montmorillon et sud-est Vienne ?",
-      a: "Oui, Axion-IA intervient à Montmorillon et tout le Montmorillonnais / sud-est Vienne (Lussac-les-Châteaux, Saint-Savin-sur-Gartempe, Chauvigny à 40 min). Nous intervenons partout en France, sur place ou à distance.",
+      a: "Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les artisans métiers du livre ?",
@@ -64,8 +64,8 @@ export const MONTMORILLON_COPY: VilleCopy = {
       a: "Pour les TPE artisans BTP et commerçants à Montmorillon, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation pratique, coaching 1-to-1. Cas typiques : automatisation devis, gestion stocks, agents IA prise de RDV, marketing digital.",
     },
     {
-      q: "Comment se déroule une mission Axion-IA à Montmorillon ?",
-      a: "Nous intervenons partout en France, sur place ou à distance.",
+      q: "Intervenez-vous à Montmorillon ?",
+      a: "Oui. Nous intervenons dans vos locaux à Montmorillon, partout en France, sur place ou à distance.",
     },
   ],
 };

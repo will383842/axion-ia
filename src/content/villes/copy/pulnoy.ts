@@ -49,7 +49,7 @@ export const PULNOY_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Pulnoy et dans le Grand Nancy ?",
-      a: "Oui, Axion-IA intervient à Pulnoy et sur toute la métropole du Grand Nancy (Nancy, Essey-lès-Nancy, Saint-Max, Vandœuvre, Laxou). Gare TGV Nancy-Ville à 15 min, Paris à 1h30 en TGV.",
+      a: "Oui, Axion-IA intervient à Pulnoy et sur toute la métropole du Grand Nancy (Nancy, Essey-lès-Nancy, Saint-Max, Vandœuvre, Laxou).",
     },
     {
       q: "Quel est le tarif d'un audit IA à Pulnoy  ?",

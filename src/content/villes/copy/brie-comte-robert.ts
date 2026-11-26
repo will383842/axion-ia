@@ -49,7 +49,7 @@ export const BRIE_COMTE_ROBERT_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Brie-Comte-Robert et Brie française ?",
-      a: "Oui, Axion-IA intervient à Brie-Comte-Robert et toute la Brie française (Melun à 20 min, Créteil à 20 min, Paris à 35 min).",
+      a: "Nous intervenons dans vos locaux à Brie-Comte-Robert, partout en France.",
     },
     {
       q: "Travaillez-vous avec les commerçants et artisans de Brie-Comte-Robert ?",
@@ -64,8 +64,8 @@ export const BRIE_COMTE_ROBERT_COPY: VilleCopy = {
       a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Outils IA réservation, gestion salle, fidélisation clientèle.",
     },
     {
-      q: "Comment se déroule une mission à Brie-Comte-Robert ?",
-      a: "Nous intervenons dans vos locaux à Brie-Comte-Robert, partout en France.",
+      q: "Intervenez-vous à Brie-Comte-Robert ?",
+      a: "Oui. Nous intervenons dans vos locaux à Brie-Comte-Robert, partout en France, sur place ou à distance.",
     },
   ],
 };

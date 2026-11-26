@@ -64,8 +64,8 @@ export const BRIOUDE_COPY: VilleCopy = {
       a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1.",
     },
     {
-      q: "Comment se déroule une mission à Brioude ?",
-      a: "Nous intervenons dans vos locaux à Brioude, partout en France.",
+      q: "Intervenez-vous à Brioude ?",
+      a: "Oui. Nous intervenons dans vos locaux à Brioude, partout en France, sur place ou à distance.",
     },
   ],
 };

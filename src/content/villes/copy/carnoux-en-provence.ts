@@ -64,8 +64,8 @@ export const CARNOUX_EN_PROVENCE_COPY: VilleCopy = {
       a: "Oui, nos interventions et coaching 1-to-1 sont disponibles en présentiel (vos locaux à Carnoux) ou en visio. Format flexible adapté aux indépendants et freelances en télétravail.",
     },
     {
-      q: "Comment se déplace Axion-IA à Carnoux-en-Provence ?",
-      a: "Nos consultants se déplacent dans vos locaux.",
+      q: "Intervenez-vous à Carnoux-en-Provence ?",
+      a: "Oui. Nous intervenons dans vos locaux à Carnoux-en-Provence, partout en France, sur place ou à distance.",
     },
   ],
 };

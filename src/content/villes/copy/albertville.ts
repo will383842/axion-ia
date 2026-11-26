@@ -49,7 +49,7 @@ export const ALBERTVILLE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Albertville et dans les vallées savoyardes ?",
-      a: "Oui, Axion-IA intervient à Albertville et les quatre vallées (Chambéry à 50 min, Annecy à 45 min, Bourg-Saint-Maurice à 45 min). Gare TGV Albertville, aéroport Lyon à 1h30.",
+      a: "Nous intervenons dans vos locaux à Albertville, partout en France.",
     },
     {
       q: "Travaillez-vous avec les stations de montagne et sports d'hiver ?",
@@ -64,8 +64,8 @@ export const ALBERTVILLE_COPY: VilleCopy = {
       a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1.",
     },
     {
-      q: "Comment se déroule une mission à Albertville ?",
-      a: "Nous intervenons dans vos locaux à Albertville, partout en France, avec un démarrage sous 5 jours ouvrés après validation du devis.",
+      q: "Intervenez-vous à Albertville ?",
+      a: "Oui. Nous intervenons dans vos locaux à Albertville, partout en France, sur place ou à distance.",
     },
   ],
 };

@@ -49,7 +49,7 @@ export const VALENTON_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Valenton et sud Val-de-Marne ?",
-      a: "Oui, Axion-IA intervient à Valenton et dans tout le sud du Val-de-Marne (Villeneuve-Saint-Georges, Limeil-Brévannes, Bonneuil-sur-Marne, Créteil à 15 min). Aéroport Orly à 15 min.",
+      a: "Nous intervenons dans vos locaux à Valenton, partout en France.",
     },
     {
       q: "Travaillez-vous avec les entreprises de transport et logistique ?",

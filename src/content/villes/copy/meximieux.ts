@@ -49,7 +49,7 @@ export const MEXIMIEUX_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Meximieux et plaine de l'Ain ?",
-      a: "Oui, Axion-IA intervient à Meximieux et toute la plaine de l'Ain (Miribel à 20 min, Ambérieu à 15 min, Pérouges). Nous intervenons partout en France, sur place ou à distance.",
+      a: "Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les PME tertiaires et industrielles ?",

@@ -169,7 +169,7 @@ export const RENNES_COPY: VilleCopy = {
           },
           {
             q: "Intervenez-vous aussi sur les communes du bassin rennais (Cesson-Sévigné, Bruz, La Janais) ?",
-            a: "Oui. Nous couvrons l'ensemble du bassin rennais : Atalante Beaulieu et ViaSilva (Cesson-Sévigné), Ker-Lann (Bruz / ENSAI), Pôle d'Excellence Industrielle La Janais (Chartres-de-Bretagne), Saint-Grégoire et Pacé. Distance parcourue dans les faits de 0 à 15 km du centre-ville.",
+            a: "Oui. Nous intervenons dans vos locaux à Rennes, partout en France. Nous couvrons l'ensemble du bassin rennais : Atalante Beaulieu et ViaSilva (Cesson-Sévigné), Ker-Lann (Bruz / ENSAI), Pôle d'Excellence Industrielle La Janais (Chartres-de-Bretagne), Saint-Grégoire et Pacé.",
           },
           {
             q: "Avez-vous de l'expérience dans l'écosystème French Tech Rennes ?",

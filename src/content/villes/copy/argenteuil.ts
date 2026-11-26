@@ -85,7 +85,7 @@ export const ARGENTEUIL_COPY: VilleCopy = {
     },
     {
       q: "Pouvez-vous intervenir dans les communes voisines (Bezons, Sartrouville, Colombes) ?",
-      a: "Oui. Tout le bassin argentin est notre zone d'intervention : Bezons (3 km), Sannois (3 km), Houilles (4 km), Cormeilles-en-Parisis (4 km), Sartrouville (5 km), Colombes (5 km), Bois-Colombes (6 km).",
+      a: "Oui. Tout le bassin argentin est notre zone d'intervention : Bezons, Sannois, Houilles, Cormeilles-en-Parisis, Sartrouville, Colombes, Bois-Colombes.",
     },
     {
       q: "Quels secteurs sont prioritaires à Argenteuil pour une mission IA ?",
@@ -97,7 +97,7 @@ export const ARGENTEUIL_COPY: VilleCopy = {
     },
     {
       q: "Intervenez-vous aussi vers La Défense ou Cergy pour les entreprises d'Argenteuil qui ont des sites multiples ?",
-      a: "Oui. La géographie du Grand Paris est notre terrain courant : La Défense (~8 km), Cergy (~20 km), Saint-Denis (~12 km), le bassin Saint-Lazare. Si votre entreprise argenteuillaise a des équipes réparties, nous adaptons le format pour couvrir les différents sites.",
+      a: "Oui. Nous intervenons dans vos locaux à Argenteuil, partout en France. La géographie du Grand Paris est notre terrain courant : La Défense, Cergy, Saint-Denis, le bassin Saint-Lazare. Si votre entreprise argenteuillaise a des équipes réparties, nous adaptons le format pour couvrir les différents sites.",
     },
   ],
 

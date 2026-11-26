@@ -128,7 +128,7 @@ export const GRADIGNAN_COPY: VilleCopy = {
           },
           {
             q: "Combien de temps avant d'avoir un devis ?",
-            a: "À partir de 24 à 48 h selon la complexité du projet. Après notre rencontre sur place à Gradignan, vous recevez un devis chiffré et lisible, sans jeu d'options opaques. Le périmètre est fixé avant toute ligne de code.",
+            a: "Nous intervenons dans vos locaux, partout en France. Après notre rencontre sur place à Gradignan, vous recevez un devis chiffré et lisible, sans jeu d'options opaques. Le périmètre est fixé avant toute ligne de code.",
           },
           {
             q: "Où sont hébergées les données de mes clients ?",
@@ -229,8 +229,8 @@ export const GRADIGNAN_COPY: VilleCopy = {
 
   faqGeolocalisee: [
     {
-      q: "Axion-IA se déplace-t-il à Gradignan ?",
-      a: "Oui, nos consultants se rendent directement dans vos locaux à Gradignan et dans la métropole bordelaise. La première rencontre se fait sur site, afin de bien comprendre votre activité de services ou de commerce avant toute recommandation.",
+      q: "Intervenez-vous à Gradignan ?",
+      a: "Oui. Nous intervenons dans vos locaux à Gradignan, partout en France, sur place ou à distance.",
     },
     {
       q: "Quels types d'entreprises accompagnez-vous à Gradignan ?",

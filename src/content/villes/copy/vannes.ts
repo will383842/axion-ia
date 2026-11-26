@@ -242,7 +242,7 @@ export const VANNES_COPY: VilleCopy = {
     },
     {
       q: "Comment rejoindre vos clients vannetais ?",
-      a: "Vannes est reliée à Paris-Montparnasse par TGV en 2 h 45, gare en centre-ville. L'aéroport Lorient Bretagne Sud (50 km) et Rennes-Saint-Jacques (110 km) complètent la desserte. Nous intervenons partout en France, sur place ou à distance.",
+      a: "Vannes est reliée à Paris-Montparnasse par TGV, gare en centre-ville. L'aéroport Lorient Bretagne Sud et Rennes-Saint-Jacques complètent la desserte. Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "L'Université Bretagne Sud joue-t-elle un rôle dans l'écosystème IA local ?",

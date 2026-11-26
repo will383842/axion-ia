@@ -118,7 +118,7 @@ export const LA_MADELEINE_COPY: VilleCopy = {
           },
           {
             q: "Pouvez-vous moderniser une boutique des Grands Boulevards ou du centre ?",
-            a: "Oui. Nous intervenons dans vos locaux à La Madeleine pour les TPE, partout en France.",
+            a: "Oui. Pour les commerces de la rue du Général de Gaulle et de l'axe des Grands Boulevards desservi par l'arrêt Romarin, on livre un site ou une boutique mobile-first avec click-and-collect, paiement en ligne et chatbot multilingue, intégrés à votre caisse ou votre stock existant, pour capter la clientèle de proximité madeleinoise et au-delà, jusqu'à Euralille.",
           },
           {
             q: "Travaillez-vous avec les sièges sociaux et bureaux du Romarin ou du Parc LINEO ?",
@@ -204,7 +204,7 @@ export const LA_MADELEINE_COPY: VilleCopy = {
           },
           {
             q: "Pouvez-vous moderniser une boutique des Grands Boulevards ou du centre ?",
-            a: "Oui. Nous intervenons dans vos locaux à La Madeleine pour les TPE, partout en France.",
+            a: "Oui. Pour les commerces de la rue du Général de Gaulle et de l'axe des Grands Boulevards desservi par l'arrêt Romarin, on livre un site ou une boutique mobile-first avec click-and-collect, paiement en ligne et chatbot multilingue, intégrés à votre caisse ou votre stock existant, pour capter la clientèle de proximité madeleinoise et au-delà, jusqu'à Euralille.",
           },
           {
             q: "Travaillez-vous avec les sièges sociaux et bureaux du Romarin ou du Parc LINEO ?",

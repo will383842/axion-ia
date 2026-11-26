@@ -49,7 +49,7 @@ export const MORNANT_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Mornant et pays mornantais ?",
-      a: "Oui, Axion-IA intervient à Mornant et tout le pays mornantais SO lyonnais (Brignais à 10 min, Givors à 15 min, Saint-Laurent-d'Agny). Nous intervenons partout en France, sur place ou à distance.",
+      a: "Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les viticulteurs AOC Coteaux-du-Lyonnais ?",

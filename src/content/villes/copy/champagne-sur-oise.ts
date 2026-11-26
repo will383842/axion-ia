@@ -49,7 +49,7 @@ export const CHAMPAGNE_SUR_OISE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Champagne-sur-Oise et nord Val-d'Oise ?",
-      a: "Oui, Axion-IA intervient à Champagne-sur-Oise et tout le nord Val-d'Oise (L'Isle-Adam à 3 min, Persan-Beaumont à 5 min, Cergy-Pontoise à 25 min, Paris à 45 min). Gare Transilien H.",
+      a: "Nous intervenons dans vos locaux à Champagne-sur-Oise, partout en France.",
     },
     {
       q: "Travaillez-vous avec les commerçants et artisans de Champagne-sur-Oise ?",
@@ -64,8 +64,8 @@ export const CHAMPAGNE_SUR_OISE_COPY: VilleCopy = {
       a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Outils IA planification chantier, devis automatisés, suivi temps et facturation.",
     },
     {
-      q: "Comment se déroule une mission à Champagne-sur-Oise ?",
-      a: "Nous intervenons dans vos locaux à Champagne-sur-Oise, partout en France.",
+      q: "Intervenez-vous à Champagne-sur-Oise ?",
+      a: "Oui. Nous intervenons dans vos locaux à Champagne-sur-Oise, partout en France, sur place ou à distance.",
     },
   ],
 };

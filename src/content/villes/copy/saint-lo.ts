@@ -64,8 +64,8 @@ export const SAINT_LO_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les administrations et services publics à Saint-Lô sur leurs cas IA : agents conversationnels accueil usagers, classification documents, automatisation workflow, conformité RGPD intégrée.",
     },
     {
-      q: "Comment se déroule une mission à Saint-Lô ?",
-      a: "Nous intervenons partout en France, sur place ou à distance.",
+      q: "Intervenez-vous à Saint-Lô ?",
+      a: "Oui. Nous intervenons dans vos locaux à Saint-Lô, partout en France, sur place ou à distance.",
     },
   ],
 };

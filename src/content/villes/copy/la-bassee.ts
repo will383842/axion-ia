@@ -64,8 +64,8 @@ export const LA_BASSEE_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les exploitations agricoles périurbaines de La Bassée : outils IA agriculture de précision, automatisation gestion parcellaire, prédiction rendements, optimisation approvisionnement, gestion administrative PAC.",
     },
     {
-      q: "Comment se déroule une mission à La Bassée ?",
-      a: "Nous intervenons dans vos locaux à La Bassée, partout en France.",
+      q: "Intervenez-vous à La Bassée ?",
+      a: "Oui. Nous intervenons dans vos locaux à La Bassée, partout en France, sur place ou à distance.",
     },
   ],
 };

@@ -128,7 +128,7 @@ export const PLAISIR_COPY: VilleCopy = {
           },
           {
             q: "Combien de temps pour recevoir un devis à Plaisir ?",
-            a: "À partir de 24 à 48 h selon la complexité, après un premier échange de cadrage. Un site vitrine pour un commerçant du Grand Plaisir se chiffre vite ; une plateforme SaaS pour un sous-traitant aéronautique de SQY demande un cadrage plus poussé, donc un délai un peu plus long.",
+            a: "Nous intervenons dans vos locaux, partout en France. Un site vitrine pour un commerçant du Grand Plaisir se chiffre vite ; une plateforme SaaS pour un sous-traitant aéronautique de SQY demande un cadrage plus poussé, donc un délai un peu plus long.",
           },
           {
             q: "Mes données et celles de mes clients restent-elles en Europe ?",
@@ -229,8 +229,8 @@ export const PLAISIR_COPY: VilleCopy = {
 
   faqGeolocalisee: [
     {
-      q: "Axion-IA se déplace-t-il vraiment sur site à Plaisir ?",
-      a: "Oui. Nos experts IA viennent dans vos locaux à Plaisir, qu'il s'agisse d'un commerce du pôle Grand Plaisir, d'un atelier des Gâtines ou d'une PME de la Clef-Saint-Pierre. L'audit terrain reste le meilleur moyen de cibler les automatisations utiles.",
+      q: "Intervenez-vous à Plaisir ?",
+      a: "Oui. Nous intervenons dans vos locaux à Plaisir, partout en France, sur place ou à distance.",
     },
     {
       q: "Quels types d'entreprises accompagnez-vous à Plaisir ?",

@@ -49,7 +49,7 @@ export const VOISINS_LE_BRETONNEUX_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Voisins-le-Bretonneux et Saint-Quentin-en-Yvelines ?",
-      a: "Oui, Axion-IA intervient à Voisins-le-Bretonneux et sur tout le technopôle SQY (gare SQY RER C à 10 min, Versailles à 15 min, Paris-Montparnasse à 30 min via Transilien N).",
+      a: "Nous intervenons dans vos locaux à Voisins-le-Bretonneux, partout en France.",
     },
     {
       q: "Travaillez-vous avec les PME tech et ingénierie du technopôle SQY ?",
@@ -64,8 +64,8 @@ export const VOISINS_LE_BRETONNEUX_COPY: VilleCopy = {
       a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1, implémentation outils IA métier.",
     },
     {
-      q: "Comment se déroule une mission à Voisins-le-Bretonneux ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Tarifs publics.",
+      q: "Intervenez-vous à Voisins-le-Bretonneux ?",
+      a: "Oui. Nous intervenons dans vos locaux à Voisins-le-Bretonneux, partout en France, sur place ou à distance.",
     },
   ],
 };

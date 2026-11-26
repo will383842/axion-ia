@@ -64,8 +64,8 @@ export const VENDOME_COPY: VilleCopy = {
       a: "Pour les TPE artisans BTP et commerçants à Vendôme, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, gestion stocks, classification documents.",
     },
     {
-      q: "Comment se déroule une mission à Vendôme ?",
-      a: "Nous intervenons partout en France, sur place ou à distance.",
+      q: "Intervenez-vous à Vendôme ?",
+      a: "Oui. Nous intervenons dans vos locaux à Vendôme, partout en France, sur place ou à distance.",
     },
   ],
 };
