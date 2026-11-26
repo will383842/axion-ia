@@ -66,12 +66,15 @@ import {
   type Etablissement,
 } from "./etablissement-presentation";
 import { reprendreApresAvoirsClients } from "./avoir-client";
+import { annulerLignesHorsGrille } from "./lignes-hors-grille";
 import { regenererAvoirsSansPiece } from "./manquement";
 import { alerterHorsGrille } from "./hors-grille";
 import { chiffrerPiecesEnClair } from "./pieces-chiffrement";
 import {
   commandeRenduePourLaLigne,
   commandesSoldees,
+  factureEstUnAcompte,
+  journeeIaDeLaCommande,
   ligneNeutralisee,
   PREFIXE_PALIER_COMPLEMENT,
   soldeDesLignesLiees,
@@ -97,6 +100,7 @@ import {
   PROLONGATION_FAITS_RECENTS_JOURS,
   PROLONGATION_MOIS,
   type ActiviteCommission,
+  type CalculCommission,
 } from "./regles";
 
 /** Renouvellement de l'attestation de vigilance : tant de jours avant son échéance. */
@@ -266,6 +270,7 @@ type NomEtape =
   | "confirmation-tacite"
   | "terme"
   | "commissions"
+  | "lignes-hors-grille"
   | "avoirs-clients"
   | "autofacturation"
   | "vigilance"
@@ -282,6 +287,7 @@ type NomEtape =
 
 const ETAPES_FACTURATION: readonly NomEtape[] = [
   "commissions",
+  "lignes-hors-grille",
   "avoirs-clients",
   "autofacturation",
   "avoirs-sans-piece",
@@ -321,6 +327,9 @@ async function passer(
     ["confirmation-tacite", () => etapeConfirmationTacite(maintenant, bilan)],
     ["terme", () => etapeTerme(maintenant, bilan)],
     ["commissions", () => etapeCommissions(maintenant, bilan)],
+    // Annexe 1 du contrat 2.8 (A1.3, A1.6) : les anciennes lignes de conférence ou de coaching pas
+    // encore facturées sont annulées AVANT que l'autofacturation horaire ne les facture.
+    ["lignes-hors-grille", async () => void (await annulerLignesHorsGrille(maintenant))],
     // Les commissions devenues dues (ci-dessus) sont facturées dans la foulée, puis celles que la
     // vigilance libère (ci-dessous) le sont au passage horaire suivant.
     // Art. 4.5 (essai réel du 09/10) : une facture client annulée ou réduite par un avoir réduit,
@@ -791,6 +800,30 @@ async function lireReservationsNonValidees(): Promise<Map<string, Date>> {
   return m;
 }
 
+/**
+ * Les devis marqués « Journée IA » (`devis.journee_ia`, annexe 1 du contrat 2.8, A1.1). Rend `null`
+ * si la colonne n'a pas pu être lue (P2022 : worker en avance sur la migration de l'app, cf.
+ * « DEUX conteneurs » d'AGENTS.md) : la commande n'est alors jamais reconnue comme Journée IA, au
+ * plus « suspecte » (`journeeIaDeLaCommande`). Toute autre erreur remonte.
+ */
+async function lireJourneesIa(devisIds: readonly string[]): Promise<Set<string> | null> {
+  if (devisIds.length === 0) return new Set();
+  try {
+    const ds = await prisma.devis.findMany({
+      where: { id: { in: [...devisIds] }, journeeIa: true },
+      select: { id: true, journeeIa: true },
+    });
+    return new Set(ds.filter((d) => d.journeeIa === true).map((d) => d.id));
+  } catch (err) {
+    if (colonneAbsente(err)) return null;
+    throw err;
+  }
+}
+
+function colonneAbsente(err: unknown): boolean {
+  return typeof err === "object" && err !== null && (err as { code?: unknown }).code === "P2022";
+}
+
 function parSiren<T extends { siren: string }>(l: readonly T[]): Map<string, T[]> {
   const m = new Map<string, T[]>();
   for (const x of l) m.set(x.siren, [...(m.get(x.siren) ?? []), x]);
@@ -838,10 +871,13 @@ async function etapeCommissions(maintenant: Date, bilan: BilanPassageReseau): Pr
       activite: true,
       montantHtCents: true,
       emiseAt: true,
+      lignes: true,
       devis: { select: { acceptedAt: true, montantTotalHtCents: true } },
       client: { select: { siren: true, siret: true } },
     },
   });
+  // Art. 4.3 (contrat 2.8) : une facture d'acompte ne solde jamais seule une commande sans devis.
+  const facturesLues = lignes.map((l) => ({ ...l, estAcompte: factureEstUnAcompte(l.lignes) }));
   const avoirsLignes = await prisma.factureFormation.findMany({
     where: { avoirDeId: { in: lignes.map((f) => f.id) } },
     select: {
@@ -853,13 +889,17 @@ async function etapeCommissions(maintenant: Date, bilan: BilanPassageReseau): Pr
       emiseAt: true,
     },
   });
-  const parId = new Map(lignes.map((f) => [f.id, f]));
+  const parId = new Map(facturesLues.map((f) => [f.id, f]));
   const totauxDevis = new Map<string, number>();
   for (const l of lignes) {
     if (l.devisId && l.devis) totauxDevis.set(l.devisId, l.devis.montantTotalHtCents);
   }
-  const commandes = commandesSoldees([...lignes, ...avoirsLignes], totauxDevis);
+  const commandes = commandesSoldees([...facturesLues, ...avoirsLignes], totauxDevis);
   if (commandes.length === 0) return;
+  // Annexe 1 du contrat 2.8, A1.1 : la Journée IA est reconnue par `devis.journee_ia`.
+  const journeesIa = await lireJourneesIa([
+    ...new Set(commandes.map((c) => c.devisId).filter((d): d is string => !!d)),
+  ]);
   // Contrat 2.6 : le SIRET de l'établissement qui commande (devis, sinon fiche client) et les
   // décisions de Williams sur les commandes « à attribuer ».
   const siretsDevis = await lireSiretsDevis([
@@ -981,12 +1021,28 @@ async function etapeCommissions(maintenant: Date, bilan: BilanPassageReseau): Pr
     } else {
       p = qui.presentation;
     }
-    const calc = calculerCommission({
-      activite: (f.activite ?? null) as ActiviteCommission | null,
-      factureHtCents: commande.baseApresAvoirsCents,
-      palier: null,
+    const journee = journeeIaDeLaCommande({
+      devisJourneeIa: commande.devisId && journeesIa ? journeesIa.has(commande.devisId) : null,
+      lignes: commande.factureIds.map((id) => parId.get(id)?.lignes ?? []),
     });
+    const calc: CalculCommission =
+      journee && "reconnue" in journee
+        ? calculerCommission({
+            activite: "journee_ia",
+            factureHtCents: commande.baseApresAvoirsCents,
+            quantite: journee.quantite,
+          })
+        : journee
+          ? // Journée IA NON reconnue : rien n'est deviné, la ligne attend Williams (alerte plus bas).
+            { statut: "a_qualifier" }
+          : calculerCommission({
+              activite: (f.activite ?? null) as ActiviteCommission | null,
+              factureHtCents: commande.baseApresAvoirsCents,
+              palier: null,
+            });
     if (calc.statut === "aucune") continue;
+    // Jamais de ligne de commission à 0,00 € (arrondi, prix nul) : rien n'est créé.
+    if (calc.statut === "calculee" && calc.montantCents <= 0) continue;
     // JAMAIS deux apporteurs commissionnés pour une même entreprise : si une autre personne a déjà
     // une commission (hors part de parrain) sur cette commande, rien n'est créé et Williams tranche.
     if (
@@ -1003,7 +1059,13 @@ async function etapeCommissions(maintenant: Date, bilan: BilanPassageReseau): Pr
     const base = {
       presentationId: p.id,
       factureId: commande.factureCleId,
-      activite: f.activite ?? "inconnue",
+      // Journée IA suspecte : activité « inconnue », pour que Williams puisse la classer dans la
+      // console (`classerActiviteCommission` refuse une ligne typée « formation »).
+      activite: journee
+        ? "reconnue" in journee
+          ? "journee_ia"
+          : "inconnue"
+        : (f.activite ?? "inconnue"),
       factureHtCents: commande.baseApresAvoirsCents,
     };
 
@@ -1030,6 +1092,16 @@ async function etapeCommissions(maintenant: Date, bilan: BilanPassageReseau): Pr
       });
     }
     if (!deja.has(f.id, p.apporteurId, false, commande)) {
+      if (journee && "suspecte" in journee)
+        await alerteInterne({
+          jobId: `apporteur-journee-ia-non-reconnue-${commande.factureCleId}`,
+          code: "apporteur_journee_ia_non_reconnue",
+          titre: "Commande payée qui mentionne une Journée IA non reconnue : à qualifier",
+          message: `Une commande payée de l'entreprise SIREN ${siren} porte une ligne « Journée IA » alors que son devis n'est pas marqué « Journée IA » (ou n'a pas pu être lu). Aucun montant n'a été deviné : la commission de l'apporteur est créée « à qualifier ». Classez-la dans la console (Apporteurs › Commissions) : « Journée IA » (500 € au prorata de 1 490 € HT) si c'en est une, sinon son activité réelle.`,
+          cibleType: "FactureFormation",
+          cibleId: commande.factureCleId,
+          maintenant,
+        });
       try {
         if (calc.statut === "calculee") {
           const v = await statutApresVigilance(p.apporteurId, calc.montantCents, maintenant);
@@ -1080,6 +1152,8 @@ async function etapeCommissions(maintenant: Date, bilan: BilanPassageReseau): Pr
           filleulSigneAt: signeParSocieteAt,
           commandeSigneeAt: signeeAt,
         });
+        // Jamais de ligne à 0,00 € : une part arrondie à zéro n'est pas créée.
+        if (part <= 0) continue;
         const v = await statutApresVigilance(parrainId, part, maintenant);
         await prisma.commissionApporteur.create({
           data: {

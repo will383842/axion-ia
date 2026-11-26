@@ -16,6 +16,91 @@ export interface FactureDeCommande {
   avoirDeId: string | null;
   montantHtCents: number;
   emiseAt: Date | null;
+  /**
+   * Facture d'ACOMPTE (`factureEstUnAcompte`, lu dans ses lignes). Sans total de devis connu, une
+   * commande qui en contient une n'est jamais soldée (art. 4.3 du contrat 2.8 : un acompte ne
+   * déclenche aucune commission). Absent = pas un acompte (comportement d'avant).
+   */
+  estAcompte?: boolean;
+}
+
+/** Une ligne de facture, telle que stockée (`FactureFormation.lignes`, JSON). */
+interface LigneDeFacture {
+  designation?: unknown;
+  quantite?: unknown;
+  prixUnitaireHtCents?: unknown;
+}
+
+function lignesLisibles(brut: unknown): LigneDeFacture[] {
+  return Array.isArray(brut)
+    ? brut.filter((l): l is LigneDeFacture => !!l && typeof l === "object")
+    : [];
+}
+
+/** Désignation normalisée : minuscules, sans accents, apostrophes droites, espaces simples. */
+function normaliser(designation: unknown): string {
+  return typeof designation === "string"
+    ? designation
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "")
+        .replace(/[\u2019\u2018`]/g, "'")
+        .replace(/\s+/g, " ")
+        .toLowerCase()
+        .trim()
+    : "";
+}
+
+/** Montant HT d'une ligne (quantité × prix unitaire) ; 0 si illisible. */
+function montantDeLigne(l: LigneDeFacture): number {
+  const q = typeof l.quantite === "number" ? l.quantite : Number(l.quantite);
+  const p = typeof l.prixUnitaireHtCents === "number" ? l.prixUnitaireHtCents : NaN;
+  return Number.isFinite(q) && Number.isFinite(p) ? q * p : 0;
+}
+
+/**
+ * Facture d'ACOMPTE : une de ses lignes POSITIVES commence par « Acompte » (libellé posé par
+ * `planifierFacturationDevis` : « Acompte de 30 % — devis … »). La déduction portée par une facture
+ * de solde (« Acompte déjà facturé — facture … », montant négatif) n'en fait pas un acompte.
+ */
+export function factureEstUnAcompte(lignes: unknown): boolean {
+  return lignesLisibles(lignes).some(
+    (l) => montantDeLigne(l) > 0 && /^acompte\b/.test(normaliser(l.designation)),
+  );
+}
+
+/** « Journée IA », « journée d'IA », « JOURNEE IA » (accents et casse ignorés). */
+const MOTIF_JOURNEE_IA = /\bjournee (d'|de )?ia\b/;
+
+/**
+ * La commande porte-t-elle une JOURNÉE IA (annexe 1 du contrat 2.8, A1.1) ?
+ *
+ *   · `devisJourneeIa === true` (colonne `devis.journee_ia`, seule source qui fait foi) : reconnue ;
+ *     le nombre de journées est la somme des quantités des lignes POSITIVES « Journée IA » des
+ *     factures de la commande, 1 à défaut ;
+ *   · sinon, si une ligne POSITIVE d'une facture de la commande s'appelle « Journée IA » (critère
+ *     prudent : jamais une ligne négative, qui est la déduction de l'art. 4.1 ter sur une commande
+ *     suivante) : SUSPECTE. Le passage ne devine rien : ligne « à qualifier » et alerte interne ;
+ *   · sinon : `null` (la commande suit sa propre activité).
+ *
+ * `devisJourneeIa === null` : la colonne n'a pas pu être lue (ou pas de devis) ; seule la mention
+ * dans les lignes compte, et elle ne rend la commande que suspecte.
+ */
+export function journeeIaDeLaCommande(e: {
+  devisJourneeIa: boolean | null;
+  /** Les lignes de CHAQUE facture de la commande (hors avoirs). */
+  lignes: readonly unknown[];
+}): { reconnue: true; quantite: number } | { suspecte: true } | null {
+  const mentions = e.lignes
+    .flatMap(lignesLisibles)
+    .filter((l) => montantDeLigne(l) > 0 && MOTIF_JOURNEE_IA.test(normaliser(l.designation)));
+  if (e.devisJourneeIa === true) {
+    const q = mentions.reduce((s, l) => {
+      const n = typeof l.quantite === "number" ? l.quantite : Number(l.quantite);
+      return s + (Number.isInteger(n) && n > 0 ? n : 1);
+    }, 0);
+    return { reconnue: true, quantite: q > 0 ? q : 1 };
+  }
+  return mentions.length > 0 ? { suspecte: true } : null;
 }
 
 export interface CommandeSoldee {
@@ -113,6 +198,9 @@ export function commandesSoldees(
     if (membres.length === 0 || membres.some((f) => f.statut !== "payee")) continue;
     const devisId = membres[0]!.devisId;
     const totalDevis = devisId ? totauxDevis?.get(devisId) : undefined;
+    // Art. 4.3 (contrat 2.8) : un acompte ne prouve jamais le paiement à 100 %. Sans total de devis
+    // pour le comparer (facture sans devis, devis disparu), un acompte gardé ne rapporte rien.
+    if (totalDevis === undefined && membres.some((f) => f.estAcompte === true)) continue;
     if (totalDevis !== undefined && membres.reduce((s, f) => s + f.montantHtCents, 0) < totalDevis)
       continue;
     const { brutCents, netCents: net } = netDeLaCommande(membres, avoirs);

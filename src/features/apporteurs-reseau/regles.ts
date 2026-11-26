@@ -12,7 +12,7 @@
 
 import { IDENTITE_LEGALE } from "@/lib/identite-legale-ssot";
 import { normaliserNaf } from "@/lib/siret";
-import { COMMISSION_CONFERENCE_EUR } from "@/content/pricing";
+import { JOURNEE_IA_TIER } from "@/content/pricing";
 import { etatSeuilVigilance } from "@/lib/vigilance";
 
 import {
@@ -357,21 +357,39 @@ export const PALIERS_FORMATION = [
 ] as const;
 export type PalierFormation = (typeof PALIERS_FORMATION)[number]["id"];
 
-/** Taux de l'annexe 1, en points de base, par activité facturée. */
-/** ⚠️ `un_a_un` reste 30 % ICI (grille affichée, contrat 2.6, pricing.ts) ; le CALCUL ne le paie plus (aucune commission, décision du 25/11) jusqu'à la grille/contrat 2.8. */
-export const TAUX_BPS = { audit: 3000, implementation: 1500, un_a_un: 3000 } as const;
+/**
+ * Taux de l'annexe 1, en points de base, par activité facturée (contrat 2.8 : A1.4 audit vendu seul
+ * 30 % ; A1.5 automatisations, intégrations et tout développement, site web compris, 15 %).
+ * ⚠️ `un_a_un` reste 30 % ICI pour la grille AFFICHÉE (contrat 2.6 signé, pricing.ts) ; le CALCUL
+ * ne le paie plus (annexe 1 2.8, A1.3 : aucune commission sur le coaching « one to one »).
+ */
+export const TAUX_BPS = {
+  audit: 3000,
+  implementation: 1500,
+  site_web: 1500,
+  un_a_un: 3000,
+} as const;
 
 /**
- * Conférence : un forfait fixe PAR CONFÉRENCE (quel que soit le nombre de participants), sans
- * prorata de remise ; une commande de plusieurs conférences : forfait × nombre de conférences. Source unique : `COMMISSION_CONFERENCE_EUR` (décision du 2026-10-01,
- * publiée sur le site), en centimes.
+ * Journée IA (annexe 1 du contrat 2.8, A1.1, et art. 4.1 bis) : forfait de 500 € HT par journée,
+ * réduit au prorata du prix payé par rapport au prix de référence (1 490 € HT, `JOURNEE_IA_TIER`,
+ * source unique avec la page /journee-ia), arrondi au centime le plus proche, jamais plus de
+ * 500 € par journée. Elle est reconnue par `devis.journee_ia` (`journeeIaDeLaCommande`).
  */
-export const FORFAIT_CONFERENCE_CENTS = COMMISSION_CONFERENCE_EUR * 100;
-/** Palier posé sur la ligne d'une conférence. */
+export const FORFAIT_JOURNEE_IA_CENTS = 50_000;
+export const PRIX_REFERENCE_JOURNEE_IA_CENTS = Math.round((JOURNEE_IA_TIER.priceFlat ?? 0) * 100);
+/** Palier posé sur la ligne d'une Journée IA (et activité `journee_ia`, colonne texte libre). */
+export const PALIER_JOURNEE_IA = "journee-ia";
+
+/**
+ * Palier historique d'une conférence. Annexe 1 du contrat 2.8 (A1.6, règle de Will du 25/11 : « rien
+ * sur […] les conférences ») : AUCUNE commission. Les lignes déjà créées gardent ce palier ; celles
+ * qui ne sont pas encore facturées sont annulées par `lignes-hors-grille.ts`.
+ */
 export const PALIER_CONFERENCE = "conference";
 
 export type ActiviteCommission =
-  "formation" | "un_a_un" | "audit" | "implementation" | "site_web" | "conference";
+  "formation" | "un_a_un" | "audit" | "implementation" | "site_web" | "conference" | "journee_ia";
 
 export type CalculCommission =
   | {
@@ -384,56 +402,63 @@ export type CalculCommission =
   | { statut: "aucune" };
 
 /**
- * La commission d'une facture soldée.
+ * Forfait au prorata (art. 4.1 bis) : forfait × nombre × (HT facturé ÷ prix public × nombre), arrondi
+ * au centime le plus proche, jamais plus que forfait × nombre ; un HT nul ou négatif ne rapporte rien.
+ */
+function forfaitAuProrata(forfaitCents: number, prixCents: number, ht: number, q: number): number {
+  const h = Math.max(0, ht);
+  return h >= prixCents * q ? forfaitCents * q : Math.round((forfaitCents * h) / prixCents);
+}
+
+/**
+ * La commission d'une facture soldée (annexe 1 du contrat 2.8) :
+ * - Journée IA : 500 € × HT payé ÷ 1 490 €, plafonné à 500 € par journée (A1.1, art. 4.1 bis) ;
  * - formation : forfait × min(1, HT facturé ÷ prix public), arrondi au centime le plus proche
- *   (décision du 25/11 ; art. 4.1 bis) ; sans palier connu, elle reste « à qualifier », jamais zéro ;
- * - coaching « one to one » : aucune ; audit 30 %, intégration 15 % du HT, arrondi au centime le plus proche ;
- * - conférence : forfait fixe de 500 € par commande, sans prorata ;
- * - développement web : aucune (annexe 1, A1.5).
+ *   (A1.2, art. 4.1 bis) ; sans palier connu, elle reste « à qualifier », jamais zéro ;
+ * - audit 30 % ; automatisation, intégration et développement web 15 % du HT (A1.4, A1.5) ;
+ * - coaching « one to one » et conférence : aucune (A1.3, A1.6).
  */
 export function calculerCommission(e: {
   activite: ActiviteCommission | null;
   factureHtCents: number;
   palier?: string | null;
-  /** Formation : nombre de sessions identiques du palier dans la commande (1 par défaut). */
+  /** Formation : nombre de sessions identiques du palier ; Journée IA : nombre de journées (1 par défaut). */
   quantite?: number;
 }): CalculCommission {
   if (e.activite === null) return { statut: "a_qualifier" };
-  // Coaching « one to one » (décision du 25/11, A1.3) : aucune commission, comme le site web.
-  if (e.activite === "site_web" || e.activite === "un_a_un") return { statut: "aucune" };
-  if (
-    e.activite === "conference" ||
-    (e.activite === "formation" && e.palier === PALIER_CONFERENCE)
-  ) {
-    // Forfait fixe par conférence : aucun prorata de remise ; `quantite` = nombre de conférences de
-    // la commande. Jamais plus que le prix HT facturé (annexe 1, A1.4 bis) ; une commande vide ou
-    // remboursée (HT ≤ 0) ne rapporte rien.
-    const ht = Math.max(0, e.factureHtCents);
+  if (e.activite === "un_a_un" || e.activite === "conference" || e.palier === PALIER_CONFERENCE)
+    return { statut: "aucune" };
+  if (e.activite === "journee_ia") {
+    const q = quantiteSessions(e.quantite);
     return {
       statut: "calculee",
-      montantCents: Math.min(FORFAIT_CONFERENCE_CENTS * quantiteSessions(e.quantite), ht),
-      palier: PALIER_CONFERENCE,
-      prixPublicCents: null,
+      montantCents: forfaitAuProrata(
+        FORFAIT_JOURNEE_IA_CENTS,
+        PRIX_REFERENCE_JOURNEE_IA_CENTS,
+        e.factureHtCents,
+        q,
+      ),
+      palier: PALIER_JOURNEE_IA,
+      prixPublicCents: PRIX_REFERENCE_JOURNEE_IA_CENTS * q,
     };
   }
   if (e.activite === "formation") {
     const p = PALIERS_FORMATION.find((x) => x.id === e.palier);
     if (!p) return { statut: "a_qualifier" };
-    const ht = Math.max(0, e.factureHtCents);
     // Le forfait du palier vaut pour UNE session (la durée est déjà dans le palier : 4 h = 250 €,
     // 1 jour = 500 €, 2 jours = 1 000 €). Plusieurs sessions identiques dans la même commande :
     // forfait × nombre de sessions, au prorata du prix si le prix baisse, plafonné au plein tarif.
     const q = quantiteSessions(e.quantite);
-    const montant =
-      ht >= p.prixCents * q ? p.forfaitCents * q : Math.round((p.forfaitCents * ht) / p.prixCents);
     return {
       statut: "calculee",
-      montantCents: montant,
+      montantCents: forfaitAuProrata(p.forfaitCents, p.prixCents, e.factureHtCents, q),
       palier: p.id,
       prixPublicCents: p.prixCents * q,
     };
   }
-  const bps = TAUX_BPS[e.activite];
+  const bps: number | undefined = TAUX_BPS[e.activite];
+  // Activité inconnue (valeur texte lue en base, hors du type) : jamais un montant NaN.
+  if (bps === undefined) return { statut: "a_qualifier" };
   return {
     statut: "calculee",
     montantCents: Math.round((Math.max(0, e.factureHtCents) * bps) / 10_000),

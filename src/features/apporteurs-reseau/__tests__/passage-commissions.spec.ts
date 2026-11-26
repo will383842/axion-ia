@@ -361,10 +361,10 @@ describe("passage quotidien : commission par commande soldée", () => {
     expect(etat.crees).toEqual([]);
   });
 
-  it("développement web : aucune commission, même soldé et attribué", async () => {
-    unePayee({ activite: "site_web" });
+  it("développement web : 15 % du HT (contrat 2.8, annexe 1, A1.5)", async () => {
+    unePayee({ activite: "site_web", montantHtCents: 200_000 });
     await passerReseauApporteurs(MAINTENANT);
-    expect(etat.crees).toEqual([]);
+    expect(etat.crees[0]).toMatchObject({ montantCents: 30_000 });
   });
 
   it("implémentation : 15 % du HT ; 1-to-1 : aucune commission", async () => {

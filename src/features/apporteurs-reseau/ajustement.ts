@@ -22,8 +22,9 @@ import {
   calculerCommission,
   euros,
   PALIER_CONFERENCE,
+  PALIER_JOURNEE_IA,
   PARRAINAGE_BPS,
-  TAUX_BPS,
+  PRIX_REFERENCE_JOURNEE_IA_CENTS,
   type ActiviteCommission,
 } from "./regles";
 import { enregistrerReprise, PREFIXE_PALIER_REPRISE } from "./resiliation";
@@ -82,14 +83,27 @@ const DEJA_FACTUREE =
 export const partDuParrain = (commissionFilleulCents: number): number =>
   Math.round((Math.max(0, commissionFilleulCents) * PARRAINAGE_BPS) / 10_000);
 
-/** Nombre de sessions retenu à la création (formation) : prix public ÷ prix du palier. */
+/**
+ * Nombre de sessions (formation) ou de journées (Journée IA) retenu à la création : prix public ÷
+ * prix du palier.
+ */
 function quantiteDe(l: { palier: string | null; prixPublicHtCents: number | null }): number {
+  if (l.palier === PALIER_JOURNEE_IA)
+    return l.prixPublicHtCents
+      ? Math.max(1, Math.round(l.prixPublicHtCents / PRIX_REFERENCE_JOURNEE_IA_CENTS))
+      : 1;
   const calc = calculerCommission({ activite: "formation", factureHtCents: 0, palier: l.palier });
   if (calc.statut !== "calculee" || !calc.prixPublicCents || !l.prixPublicHtCents) return 1;
   return Math.max(1, Math.round(l.prixPublicHtCents / calc.prixPublicCents));
 }
 
-/** La commission recalculée pour un prix HT net conservé ; `null` si la règle ne s'applique pas. */
+/**
+ * La commission recalculée pour un prix HT net conservé ; `null` si la règle ne s'applique pas.
+ *
+ * Annexe 1 du contrat 2.8 : une ancienne ligne de conférence ou de coaching (A1.3, A1.6) vaut 0 —
+ * l'appelant l'ANNULE (`reduireCommission`), jamais une ligne à 0,00 €. Une ligne DÉJÀ facturée
+ * n'est jamais recalculée ici : `avoir-client.ts` la réduit au prorata de l'avoir.
+ */
 export function commissionPourPrixConserve(
   l: {
     activite: string;
@@ -97,20 +111,10 @@ export function commissionPourPrixConserve(
     prixPublicHtCents: number | null;
   },
   prixHtCents: number,
-  montantActuelCents?: number,
+  _montantActuelCents?: number,
 ): number | null {
-  // Conférence : forfait fixe sans prorata (A1.4 bis), seulement plafonné au prix HT facturé.
-  if (l.activite === "conference" || l.palier === PALIER_CONFERENCE)
-    return montantActuelCents === undefined ? null : Math.min(montantActuelCents, prixHtCents);
-  // Anciennes lignes de coaching créées à 30 % avant la décision du 25/11 : réduites à leur taux
-  // d'origine sur le prix net (plafonnées au montant actuel), jamais laissées intactes.
-  if (l.activite === "un_a_un")
-    return montantActuelCents === undefined
-      ? null
-      : Math.min(
-          montantActuelCents,
-          Math.round((Math.max(0, prixHtCents) * TAUX_BPS.un_a_un) / 10_000),
-        );
+  if (l.activite === "conference" || l.palier === PALIER_CONFERENCE || l.activite === "un_a_un")
+    return 0;
   const calc = calculerCommission({
     activite: l.activite as ActiviteCommission,
     factureHtCents: prixHtCents,
@@ -234,6 +238,9 @@ export async function reduireCommission(
   const nouveau = commissionPourPrixConserve(avant, prixConserveHtCents, avant.montantCents);
   if (nouveau === null)
     return { ok: false, message: "La règle de calcul ne s'applique pas à cette ligne." };
+  // Jamais de ligne à 0,00 € : une commission qui ne vaut plus rien est ANNULÉE (avec sa part de
+  // parrain), par le même geste tracé que l'annulation.
+  if (nouveau <= 0) return annulerCommission(id, m, acteurId);
   if (nouveau >= avant.montantCents)
     return {
       ok: false,

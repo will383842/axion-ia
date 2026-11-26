@@ -108,7 +108,7 @@ describe("réseau d'apporteurs — règles du contrat v2", () => {
     ).toEqual({ statut: "a_qualifier" });
   });
 
-  it("audit 30 %, intégration 15 %, 1-to-1 et web aucune", () => {
+  it("audit 30 %, intégration 15 %, web 15 % (contrat 2.8, A1.5), 1-to-1 aucune", () => {
     const m = (activite: "audit" | "implementation" | "un_a_un") => {
       const r = calculerCommission({ activite, factureHtCents: 190_000 });
       return r.statut === "calculee" ? r.montantCents : -1;
@@ -116,8 +116,9 @@ describe("réseau d'apporteurs — règles du contrat v2", () => {
     expect(m("audit")).toBe(57_000);
     expect(m("implementation")).toBe(28_500);
     expect(m("un_a_un")).toBe(-1); // aucune commission (25/11)
-    expect(calculerCommission({ activite: "site_web", factureHtCents: 100_000 })).toEqual({
-      statut: "aucune",
+    expect(calculerCommission({ activite: "site_web", factureHtCents: 100_000 })).toMatchObject({
+      statut: "calculee",
+      montantCents: 15_000,
     });
     expect(calculerCommission({ activite: null, factureHtCents: 100_000 })).toEqual({
       statut: "a_qualifier",

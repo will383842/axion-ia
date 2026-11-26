@@ -322,6 +322,8 @@ export function jourParis(d: Date): string {
  * délai court depuis le PAIEMENT INTÉGRAL du client (`paiementIntegral`), pas depuis l'émission de
  * l'autofacture (qui peut attendre une donnée de l'apporteur). Sans date de paiement connue, ou si
  * elle est postérieure à l'émission, on garde l'émission (jamais plus tard que l'ancien calcul).
+ * Lot « grille » : l'échéance n'est JAMAIS antérieure au jour d'émission de l'autofacture (une
+ * autofacture émise plus de 30 jours après le paiement est échue le jour même, jamais avant).
  */
 export function echeancePaiement(emission: Date, paiementIntegral?: Date | null): Date {
   const depart =
@@ -329,7 +331,10 @@ export function echeancePaiement(emission: Date, paiementIntegral?: Date | null)
       ? paiementIntegral
       : emission;
   const [a, m, j] = jourParis(depart).split("-").map(Number);
-  return new Date(Date.UTC(a!, m! - 1, j! + ECHEANCE_JOURS, 12));
+  const echeance = new Date(Date.UTC(a!, m! - 1, j! + ECHEANCE_JOURS, 12));
+  const [ae, me, je] = jourParis(emission).split("-").map(Number);
+  const jourEmission = new Date(Date.UTC(ae!, me! - 1, je!, 12));
+  return echeance.getTime() < jourEmission.getTime() ? jourEmission : echeance;
 }
 
 function estOuvre(d: Date): boolean {

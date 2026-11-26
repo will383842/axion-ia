@@ -39,8 +39,8 @@ import {
 import { dateFr, etatEcheances } from "@/features/apporteurs-reseau/autofacture-donnees";
 import {
   euros,
-  FORFAIT_CONFERENCE_CENTS,
   PALIER_CONFERENCE,
+  PALIER_JOURNEE_IA,
   PALIERS_FORMATION,
 } from "@/features/apporteurs-reseau/regles";
 import { CommandeAAttribuer } from "@/components/admin/apporteurs/CommandeAAttribuer";
@@ -74,6 +74,7 @@ const ACTIVITE: Record<string, string> = {
   implementation: "Intégration",
   site_web: "Site web",
   conference: "Conférence",
+  journee_ia: "Journée IA",
 };
 
 /**
@@ -129,8 +130,8 @@ const PALIERS = [
   })),
   {
     id: PALIER_CONFERENCE,
-    libelle: "Conférence (500 € fixes)",
-    detail: `${euros(FORFAIT_CONFERENCE_CENTS)} par commande`,
+    libelle: "Conférence (aucune commission)",
+    detail: "contrat 2.8, annexe 1 : la ligne est annulée",
   },
 ];
 
@@ -512,8 +513,10 @@ export default async function CommissionsApporteursPage({ params, searchParams }
                   <p className="text-[length:var(--text-admin-sm)]">
                     {c.palier === PALIER_CONFERENCE
                       ? "Conférence"
-                      : (PALIERS_FORMATION.find((p) => p.id === c.palier)?.libelle ??
-                        (c.palier === PALIER_HORS_GRILLE ? LIBELLE_HORS_GRILLE : c.palier))}
+                      : c.palier === PALIER_JOURNEE_IA
+                        ? "Journée IA"
+                        : (PALIERS_FORMATION.find((p) => p.id === c.palier)?.libelle ??
+                          (c.palier === PALIER_HORS_GRILLE ? LIBELLE_HORS_GRILLE : c.palier))}
                   </p>
                 ) : null}
                 {c.statut === "a_qualifier" && !c.parrainage
@@ -604,11 +607,12 @@ export default async function CommissionsApporteursPage({ params, searchParams }
                           Choisir…
                         </option>
                         <option value="formation">Formation (puis palier)</option>
-                        <option value="un_a_un">1-to-1 (30 %)</option>
+                        <option value="journee_ia">Journée IA (500 € au prorata de 1 490 €)</option>
                         <option value="audit">Audit (30 %)</option>
                         <option value="implementation">Intégration (15 %)</option>
-                        <option value="conference">Conférence (500 € fixes)</option>
-                        <option value="site_web">Site web (aucune commission)</option>
+                        <option value="site_web">Site web (15 %)</option>
+                        <option value="un_a_un">1-to-1 (aucune commission)</option>
+                        <option value="conference">Conférence (aucune commission)</option>
                       </select>
                     </label>
                     <button type="submit" className="admin-button-secondary">

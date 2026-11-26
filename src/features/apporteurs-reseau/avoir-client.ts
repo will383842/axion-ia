@@ -45,7 +45,7 @@ import {
   type SoldeDesLignesLiees,
 } from "./commandes";
 import { dejaEnvoye, statutApresVigilance } from "./commissions";
-import { ajouterMois, FORFAIT_CONFERENCE_CENTS, PALIER_CONFERENCE, TAUX_BPS } from "./regles";
+import { ajouterMois, PALIER_CONFERENCE } from "./regles";
 import { litigeDisponible } from "./litige";
 import { envoyer } from "./envois";
 import { retenir, type Piece } from "./manquement";
@@ -114,15 +114,37 @@ interface Calcul {
   palier: string | null;
   prixPublicHtCents: number | null;
   montantCents: number;
+  /** Prix HT sur lequel la ligne a été calculée (prorata d'une ancienne ligne hors grille). */
+  factureHtCents?: number;
+}
+
+/**
+ * Ancienne ligne de conférence ou de coaching (A1.3, A1.6 du contrat 2.8 : plus aucune commission).
+ * Encore modifiable, elle est annulée (`lignes-hors-grille.ts`) ; DÉJÀ facturée ou versée, elle reste
+ * acquise et un avoir du client ne la réduit que dans la proportion de l'argent rendu (art. 4.5 :
+ * « réduite dans la même proportion »), arrondi au centime le plus proche — jamais reprise en entier
+ * pour un avoir partiel.
+ */
+function horsGrille(l: Calcul): boolean {
+  return l.activite === "conference" || l.palier === PALIER_CONFERENCE || l.activite === "un_a_un";
+}
+
+function prorataHorsGrille(l: Calcul, netCents: number): number {
+  const base = l.factureHtCents ?? 0;
+  if (base <= 0 || netCents >= base) return l.montantCents;
+  return Math.min(l.montantCents, Math.round((l.montantCents * Math.max(0, netCents)) / base));
 }
 
 /** Le montant cible d'une ligne pour un prix net (part du parrain : 10 % du filleul recalculé). */
 export function cibleApresAvoir(l: Calcul, netCents: number, filleul?: Calcul): number | null {
   if (netCents <= 0) return 0;
   if (filleul) {
-    const f = commissionPourPrixConserve(filleul, netCents, filleul.montantCents);
+    const f = horsGrille(filleul)
+      ? prorataHorsGrille(filleul, netCents)
+      : commissionPourPrixConserve(filleul, netCents, filleul.montantCents);
     return f === null ? null : Math.min(l.montantCents, partDuParrain(f));
   }
+  if (horsGrille(l)) return prorataHorsGrille(l, netCents);
   const c = commissionPourPrixConserve(l, netCents, l.montantCents);
   return c === null ? null : Math.min(l.montantCents, c);
 }
@@ -131,16 +153,12 @@ export function cibleApresAvoir(l: Calcul, netCents: number, filleul?: Calcul): 
  * La commission CIBLE d'une ligne de FILLEUL pour l'état final de la commande (décision du 25/11) :
  * fonction du seul net payé plafonné à la base (`etatDeLaCommande`), jamais de l'ordre des passages.
  * Jamais plus que la commission calculée sur la base. `null` : la règle ne s'applique pas.
- *   · conférence : forfait fixe, au plus le montant de la ligne ou un forfait, et le net ;
- *   · ancien coaching (30 %) : ne remonte jamais au-delà du montant de la ligne.
+ * Ancienne ligne de conférence ou de coaching : prorata de son propre montant, jamais au-delà.
  */
 export function cibleEtatFinal(l: Calcul, netCibleCents: number, baseCents: number): number | null {
   const net = Math.max(0, Math.min(netCibleCents, baseCents));
   if (net <= 0) return 0;
-  if (l.activite === "conference" || l.palier === PALIER_CONFERENCE)
-    return Math.min(Math.max(l.montantCents, FORFAIT_CONFERENCE_CENTS), net);
-  if (l.activite === "un_a_un")
-    return Math.min(l.montantCents, Math.round((net * TAUX_BPS.un_a_un) / 10_000));
+  if (horsGrille(l)) return prorataHorsGrille({ factureHtCents: baseCents, ...l }, net);
   return commissionPourPrixConserve(l, net);
 }
 

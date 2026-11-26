@@ -11,11 +11,12 @@ import {
   ECHEANCE_JOURS,
   OBJECTIF_VIREMENT_JOURS_OUVRES,
 } from "../autofacture-donnees";
+import { COMMISSION_CONFERENCE_EUR } from "@/content/pricing";
+
 import { CONTRAT_V2_MARKDOWN } from "../contrat-v2";
 import {
   ADRESSE_VALIDE_JOURS,
   CONFIRMATION_TACITE_JOURS,
-  FORFAIT_CONFERENCE_CENTS,
   PALIERS_FORMATION,
   PARRAINAGE_BPS,
   PARRAINAGE_MOIS,
@@ -82,8 +83,11 @@ describe("parité contrat / code : les nombres clés sont les mêmes", () => {
     expect(TEXTE).not.toMatch(/premier jour ouvré de chaque mois/);
   });
   it("conférence : 500 € HT par conférence, jamais « Aucune » (A1.4 bis, A1.5)", () => {
+    // TEXTE du contrat 2.6 signé (contrat-v2.ts, non modifié). Lot « grille » : le CALCUL suit déjà
+    // l'annexe 1 du 2.8, qui ne commissionne plus la conférence (A1.6) — `grille-v28.spec.ts`. Le
+    // forfait affiché (pricing.ts) reste celui du texte 2.6 jusqu'au passage à `CONTRAT_VERSION` 2.8.
     expect(TEXTE).toMatch(/500 € hors taxes par conférence figurant à la commande/);
-    expect(FORFAIT_CONFERENCE_CENTS / 100).toBe(500);
+    expect(COMMISSION_CONFERENCE_EUR).toBe(500);
     // A1.5 ne doit plus lister la conférence parmi les prestations non commissionnées.
     const a15 = TEXTE.slice(
       TEXTE.indexOf("A1.5 — Prestations non commissionnées"),

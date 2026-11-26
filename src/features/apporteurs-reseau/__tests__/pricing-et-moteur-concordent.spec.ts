@@ -15,7 +15,7 @@ import {
   type FormationDuree,
 } from "@/content/pricing";
 import { resoudreCommission } from "@/server/partners/commission";
-import { FORFAIT_CONFERENCE_CENTS, PALIERS_FORMATION, TAUX_BPS } from "../regles";
+import { calculerCommission, PALIERS_FORMATION, TAUX_BPS } from "../regles";
 
 const COMMISSION_PAR_DUREE: Record<string, string> = {
   "4h": "com-formation-4h",
@@ -41,8 +41,14 @@ describe("pricing.ts ↔ moteur de calcul (regles.ts)", () => {
     }
   });
 
-  it("la conférence", () => {
-    expect(getCommissionById("com-conference").flatEur).toBe(FORFAIT_CONFERENCE_CENTS / 100);
+  // ⚠️ DIVERGENCE ASSUMÉE (lot « grille », contrat 2.8, annexe 1, A1.6) : le moteur ne paie plus la
+  // conférence ; pricing.ts publie encore le forfait du contrat 2.6 signé (500 €). L'affichage public
+  // suit le texte 2.8 dans le lot du contrat, pas dans ce lot de calcul.
+  it("la conférence : le moteur ne paie plus rien, pricing.ts affiche encore le forfait 2.6", () => {
+    expect(calculerCommission({ activite: "conference", factureHtCents: 300_000 })).toEqual({
+      statut: "aucune",
+    });
+    expect(getCommissionById("com-conference").flatEur).toBe(500);
   });
 
   it("les paliers 1-to-1 (dont le coaching) et la demi-journée pointent vers leur commission", () => {

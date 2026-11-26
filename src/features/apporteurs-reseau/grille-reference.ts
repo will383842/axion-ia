@@ -9,6 +9,11 @@
 //   · `regles.ts` : prix et forfaits des formations (PALIERS_FORMATION), taux (TAUX_BPS),
 //     forfait de la conférence ;
 //   · `pricing.ts` : prix publics des audits, des implémentations et du 1-to-1.
+//
+// ⚠️ Lot « grille » (contrat 2.8) : cette page AFFICHE encore la grille du contrat 2.6 signé (texte
+// comparé par la garde ci-dessous). Le CALCUL suit déjà l'annexe 1 du 2.8 : la conférence (A1.4 bis
+// ci-dessous) et le coaching (A1.2) ne rapportent plus rien, la Journée IA rapporte 500 € au prorata,
+// le développement web 15 %. La mise à jour de l'affichage suit le texte 2.8 (lot du contrat).
 // Seuls les LIBELLÉS sont écrits ici : ce sont ceux de l'annexe 1. La garde
 // `la-grille-de-reference-est-celle-du-contrat.spec.ts` compare chaque ligne au texte signé :
 // une divergence rougit la CI.
@@ -23,12 +28,13 @@
 
 import {
   AUDIT_TIERS,
+  COMMISSION_CONFERENCE_EUR,
   IMPLEMENTATION_TIERS,
   INTERVENTION_TIERS,
   UN_A_UN_RECURRING_TIER,
   type PricingTier,
 } from "@/content/pricing";
-import { FORFAIT_CONFERENCE_CENTS, PALIERS_FORMATION, TAUX_BPS } from "./regles";
+import { PALIERS_FORMATION, TAUX_BPS } from "./regles";
 
 export interface LigneGrille {
   /** Les cellules, dans l'ordre des colonnes du tableau. */
@@ -197,7 +203,7 @@ export function grilleDeReference(): readonly TableauGrille[] {
       regle: "Forfait par conférence signée et payée, quel que soit le nombre de participants.",
       colonnes: ["Prestation", "Commission"],
       lignes: [
-        { cellules: ["Conférence", `${euros(FORFAIT_CONFERENCE_CENTS / 100)} HT par conférence`] },
+        { cellules: ["Conférence", `${euros(COMMISSION_CONFERENCE_EUR)} HT par conférence`] },
       ],
     },
     {

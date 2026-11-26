@@ -299,6 +299,17 @@ export async function qualifierCommission(
     palier,
     quantite,
   });
+  // Annexe 1 du contrat 2.8 (A1.6) : une conférence ne rapporte rien. La ligne est ANNULÉE (jamais
+  // close à 0,00 €), et la part du parrain avec elle.
+  if (calc.statut === "aucune") {
+    const r = await prisma.commissionApporteur.updateMany({
+      where: { id, statut: "a_qualifier" },
+      data: { activite: "conference", palier: PALIER_CONFERENCE, statut: "annulee" },
+    });
+    if (r.count !== 1) return { ok: false, message: "Cette commission vient d'être qualifiée." };
+    await clorePartParrainage(c.factureId, c.apporteurId);
+    return { ok: true, montantCents: 0 };
+  }
   if (calc.statut !== "calculee")
     return { ok: false, message: "Calcul impossible pour ce palier." };
   const v = await statutApresVigilance(c.apporteurId, calc.montantCents, maintenant, c.id);
@@ -319,7 +330,10 @@ export async function qualifierCommission(
   return { ok: true, montantCents: calc.montantCents };
 }
 
-/** Activités qu'une ligne « à qualifier » peut recevoir quand la facture n'en portait pas. */
+/**
+ * Activités qu'une ligne « à qualifier » peut recevoir quand la facture n'en portait pas (ou qu'une
+ * Journée IA n'a pas été reconnue : `journee_ia`, une journée, 500 € au prorata, A1.1).
+ */
 export const ACTIVITES_CLASSABLES = [
   "formation",
   "un_a_un",
@@ -327,14 +341,16 @@ export const ACTIVITES_CLASSABLES = [
   "implementation",
   "site_web",
   "conference",
+  "journee_ia",
 ] as const;
 export type ActiviteClassable = (typeof ACTIVITES_CLASSABLES)[number];
 
 /**
  * Une ligne « à qualifier » qui n'est pas une formation (activité de la facture inconnue) :
- * Williams la classe. 1-to-1, audit, intégration : la commission se calcule tout de suite sur le
- * HT facturé. Site web : aucune commission (annexe 1, A1.5), la ligne est close à 0 €. Formation :
- * l'activité est posée, le palier se choisit ensuite comme d'habitude.
+ * Williams la classe. Audit (30 %), intégration et site web (15 %), Journée IA (500 € au prorata) :
+ * la commission se calcule tout de suite sur le HT facturé (annexe 1 du contrat 2.8). Coaching et
+ * conférence : aucune commission (A1.3, A1.6), la ligne est ANNULÉE (jamais close à 0,00 €).
+ * Formation : l'activité est posée, le palier se choisit ensuite comme d'habitude.
  */
 export async function classerActiviteCommission(
   id: string,
@@ -372,20 +388,14 @@ export async function classerActiviteCommission(
   if (calc.statut === "aucune") {
     const r = await prisma.commissionApporteur.updateMany({
       where: { id, statut: "a_qualifier" },
-      data: {
-        activite: choisie,
-        palier: "aucune-commission",
-        montantCents: 0,
-        statut: "versee",
-        verseeAt: maintenant,
-      },
+      data: { activite: choisie, palier: "aucune-commission", statut: "annulee" },
     });
     if (r.count !== 1) return { ok: false, message: "Cette commission vient d'être modifiée." };
     // La part du parrain suit la commission du filleul : aucune non plus.
-    await clorePartParrainage(c.factureId, c.apporteurId, maintenant);
+    await clorePartParrainage(c.factureId, c.apporteurId);
     return {
       ok: true,
-      message: "Aucune commission pour ce type de prestation : ligne close à 0 €.",
+      message: "Aucune commission pour ce type de prestation : ligne annulée.",
     };
   }
   if (calc.statut !== "calculee") return { ok: false, message: "Calcul impossible." };
@@ -405,12 +415,8 @@ export async function classerActiviteCommission(
   return { ok: true, message: `Qualifiée : ${euros(calc.montantCents)}.` };
 }
 
-/** Ferme à 0 € la part du parrain d'une commission sans commission. */
-async function clorePartParrainage(
-  factureId: string,
-  filleulId: string,
-  maintenant: Date,
-): Promise<void> {
+/** Annule la part du parrain d'une commission sans commission (jamais une ligne à 0,00 €). */
+async function clorePartParrainage(factureId: string, filleulId: string): Promise<void> {
   const filleul = await prisma.apporteurReseau.findUnique({
     where: { id: filleulId },
     select: { parrainId: true },
@@ -418,7 +424,7 @@ async function clorePartParrainage(
   if (!filleul?.parrainId) return;
   await prisma.commissionApporteur.updateMany({
     where: { factureId, apporteurId: filleul.parrainId, parrainage: true, statut: "a_qualifier" },
-    data: { montantCents: 0, statut: "versee", verseeAt: maintenant, palier: "aucune-commission" },
+    data: { statut: "annulee", palier: "aucune-commission" },
   });
 }
 
