@@ -4,6 +4,7 @@
  * Ces barrières s'appliquent toujours : elles ne font que refuser des textes.
  */
 
+import { MULTIPLE_GARANTIE } from "@/content/journee-ia-commun";
 import { describe, expect, it } from "vitest";
 import {
   detecterInterdits,
@@ -36,6 +37,15 @@ const BLOQUANTS: ReadonlyArray<[CodeInterdit, string]> = [
   ["multiple-garantie", "Garantie x10 sur l'investissement."],
   ["multiple-garantie", "Remboursé si les gains identifiés sont inférieurs à 10x le tarif."],
   ["multiple-garantie", "Une garantie à quatre fois le prix de la journée."],
+  ["frais-venue", "Déplacements facturés en sus."],
+  ["frais-venue", "Nos formateurs se déplacent gratuitement."],
+  ["prix-barre", "Tarif normal : 1 990 €"],
+  ["prix-barre", "Au lieu de payer 1 990 €, venez nous voir."],
+  ["multiple-garantie", "Garantie de cinq fois l'investissement."],
+  ["multiple-garantie", "Remboursé si les gains ne valent pas le double du prix."],
+  ["multiple-garantie", "Garantie : 500 % du prix en gains."],
+  ["multiple-garantie", "Garantie x3,5 sur le prix."],
+  ["seuil-garantie-euros", "Garantie : 3 fois le prix HT, soit 4 470 € de gains identifiés."],
   ["seuil-garantie-euros", "Garantie de 4 470 € de gains identifiés."],
   ["seuil-garantie-euros", "La garantie s'applique si les gains sont inférieurs à 4 470 €."],
   ["seuil-garantie-euros", "Seuil de garantie : 4 470 euros."],
@@ -62,6 +72,20 @@ const SAINS: ReadonlyArray<string> = [
   "Le texte barré dans un document Word indique une suppression.",
   "Le prix de l'énergie a doublé, ce qui pèse sur les PME.",
   "Les gains identifiés dans le rapport sont une estimation.",
+  "Le robot assure le déplacement des palettes dans l'entrepôt.",
+  "La mise à jour inclut le déplacement des dossiers vers le cloud.",
+  "Le temps de trajet compris dans le temps de travail est rémunéré.",
+  "Photographiez vos tickets de repas et factures.",
+  "Automatisez le remboursement des déplacements de vos salariés.",
+  "En EHPAD, la prise en charge des repas est un poste clé.",
+  "Le centre offre une infrastructure d'hébergement européen de premier plan.",
+  "La garantie décennale coûte en moyenne 1 500 € par an.",
+  "La garantie constructeur couvre les réparations jusqu'à 500 €.",
+  "Le seuil de rentabilité de 50 000 € est atteint en mars.",
+  "Il faut garantir la fiabilité : relire deux fois le montant saisi.",
+  "Un écran 2560 x 1440, garantie 3 ans.",
+  "Paiement en 4x, garantie 3 fois le prix HT.",
+  "Le remboursement d'un prêt coûte parfois deux fois le montant emprunté.",
   "Un tarif normal pour ce type de prestation en France.",
 ];
 
@@ -91,6 +115,10 @@ describe("barrières de code — volume et réutilisation", () => {
   it("compte au moins 30 cas dont 15 phrases légitimes", () => {
     expect(BLOQUANTS.length + SAINS.length).toBeGreaterThanOrEqual(30);
     expect(SAINS.length).toBeGreaterThanOrEqual(15);
+  });
+
+  it("le « 3 » des barrières suit le multiple de la garantie du site", () => {
+    expect(MULTIPLE_GARANTIE).toBe(3);
   });
 
   it("motifInterdit rend un motif sans état (sans drapeau g) pour chaque code", () => {

@@ -45,8 +45,8 @@ export const INTERDITS_JOURNEE_IA: readonly InterditJourneeIA[] = [
   {
     libelle:
       "toute mention du déplacement, de l'hébergement ou des repas (frais, inclus, offert, pris en charge)",
-    // Motifs partagés ; le motif local ne garde que « inclut le deplacement » (verbe + nom).
-    motif: /inclut le deplacement/,
+    // Motifs partagés ; le motif local ne garde que « inclut le deplacement » (verbe + nom) et « frais kilométriques ».
+    motif: /inclut le deplacement|frais kilometriques/,
     partage: new RegExp(
       `${motifInterdit("frais-deplacement").source}|${motifInterdit("frais-venue").source}`,
     ),

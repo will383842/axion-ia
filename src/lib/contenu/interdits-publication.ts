@@ -122,7 +122,7 @@ const MONTANT_EUROS = String.raw`${B}[0-9][0-9 .,]{0,12}(?:€|euros?|eur${E})`;
  * « 3 fois », « trois fois », « x3 », « 3x » sont écartés par la tête négative. Le « N fois » exige
  * un complément de prix pour ne pas prendre « payable en 2 fois » ni « 2 fois par an ».
  */
-const MULTIPLE_AUTRE = String.raw`(?!(?:3|trois)(?![0-9.,]*[0-9]) ?(?:fois|x|×)|[x×] ?3${E})(?:(?:[0-9]+(?:[.,][0-9]+)?|un|deux|quatre|cinq|six|sept|huit|neuf|dix|douze|quinze|vingt|cent) fois (?:le |son |votre |notre |du |ce )?(?:prix|tarif|montant|investissement|mise|somme|cout|budget)|[x×] ?[0-9]+${E}|${B}[0-9]+ ?[x×]${E})`;
+const MULTIPLE_AUTRE = String.raw`(?!(?:3|trois)(?![0-9.,]*[0-9]) ?(?:fois|x|×)|[x×]3(?![.,]?[0-9]))(?:(?:[0-9]+(?:[.,][0-9]+)?|un|deux|quatre|cinq|six|sept|huit|neuf|dix|douze|quinze|vingt|cent) fois (?:le |la |l'|son |sa |votre |vos |notre |leur |du |ce |cet |cette )?(?:prix|tarif|montant|investissement|mise|somme investie|somme|cout|budget)|(?:double|quadruple|quintuple|decuple) (?:du |de |des |de l')?(?:prix|tarif|montant|investissement|mise|somme investie|somme|cout|budget)|(?!300 ?%)[0-9]{3,4} ?% (?:du |de |des |de l')?(?:prix|tarif|montant|investissement|mise|somme investie|somme|cout|budget)|[x×][0-9]+(?:[.,][0-9]+)?(?![0-9x×])|[0-9]+ ?[x×] (?:le |la |l'|son |sa |votre |vos |notre |leur |du |ce |cet |cette )?(?:prix|tarif|montant|investissement|mise|somme investie|somme|cout|budget))`;
 
 // Motif NDA / certificat suivi d'un numéro (repris de doctrine-check.ts, porté
 // sur le texte normalisé).
@@ -295,7 +295,7 @@ export const MOTIFS_INTERDITS: ReadonlyArray<MotifInterdit> = [
   {
     code: "prix-barre",
     re: new RegExp(
-      String.raw`${B}(?:prix|tarif)s? barre(?:e|s|es)?${E}|${B}ancien (?:prix|tarif)${E}|${B}anciennement [0-9][0-9 ]*(?:€|euros?)|${B}au lieu de [0-9][0-9 ]*(?:€|euros?|eur${E})|~~[^~]{0,40}[0-9][^~]{0,25}(?:€|euros?|eur${E})[^~]{0,15}~~|${B}prix (?:normal|habituel|public|catalogue|de base)${E} ?:? ?[0-9][0-9 ]*(?:€|euros?|eur${E})`,
+      String.raw`${B}(?:prix|tarif)s? barre(?:e|s|es)?${E}|${B}ancien (?:prix|tarif)${E}|${B}anciennement [0-9][0-9 ]*(?:€|euros?)|${B}au lieu de (?:payer )?[0-9][0-9 ]*(?:€|euros?|eur${E})|~~[^~]{0,40}[0-9][^~]{0,25}(?:€|euros?|eur${E})[^~]{0,15}~~|${B}(?:prix|tarif) (?:normal|habituel|habituellement constate)${E} ?:? ?[0-9][0-9 ]*(?:€|euros?|eur${E})`,
       "g",
     ),
     raison:
@@ -310,7 +310,7 @@ export const MOTIFS_INTERDITS: ReadonlyArray<MotifInterdit> = [
     // seul n'est pas visé (hébergement de données) : il faut qu'il soit relié au formateur, à un
     // repas, à un déplacement ou à un « frais ».
     re: new RegExp(
-      String.raw`${B}frais (?:de |d'|des )?(?:deplacements?|hebergements?|repas|restauration|transports?|voyages?|sejours?|bouche|trajets?)${E}|${B}(?:deplacements?|trajets?|repas|dejeuners?|diners?|nuitees?|hebergements? (?:du|des|de notre|de l') ?(?:formateurs?|intervenants?|consultants?|equipes?))(?: [a-z']+){0,4} (?:inclus|incluse|incluses|inclut|offert|offerte|offertes|offerts|gratuits?|gratuite?s?|compris|comprise|comprises|pris en charge|prise en charge|prises en charge|factures?|facturee?s?|refacturee?s?|rembourse|rembourses?|en sus|en supplement|sur devis|a (?:votre|notre|la) charge|avec supplement)${E}|${B}(?:prise en charge|prises en charge|facturation|refacturation|remboursement|gratuite) (?:du|des|de l'|de la|de) ?(?:deplacements?|trajets?|repas|hebergements?|nuitees?|dejeuners?|diners?)${E}|${B}(?:nous |axion-?ia )?(?:prenons|prend|prenez|assumons|assure|assurons|offrons|offre|incluons|inclut|incluant|facturons|facture|refacturons|refacture|remboursons|rembourse)(?: [a-z']+){0,2} (?:en charge )?(?:les |le |la |l'|vos |votre |nos |notre )?(?:frais )?(?:de |des |d')?(?:deplacements?|trajets?|repas|hebergements?|nuitees?|dejeuners?|diners?)${E}`,
+      String.raw`${B}frais (?:de |d'|des )?(?:deplacements?|hebergements?|repas|restauration|transports?|voyages?|sejours?|bouche|trajets?)${E}|${B}(?:deplacements?|repas|dejeuners?|diners?|nuitees?|hebergements? (?:du|des|de notre|de l') ?(?:formateurs?|intervenants?|consultants?|equipes?))(?: [a-z']+){0,4} (?:inclus|incluse|incluses|inclut|offert|offerte|offertes|offerts|gratuits?|gratuite?s?|compris(?! dans le temps| entre)|comprise|comprises|pris en charge|prise en charge|prises en charge|(?:est|sont|sera|seront|restent?) (?:re)?facturee?s?|(?:re)?facturee?|en sus|en supplement|sur devis|a (?:votre|notre|la) charge|avec supplement)${E}|${B}(?:deplacements|hebergements|nuitees) (?:re)?factures${E}|${B}prises? en charge (?:du|des|de) ?(?:frais de )?(?:deplacements?|trajets?|nuitees?)${E}|${B}(?:nous|axion-?ia) (?:nous )?(?:prenons|prend|assumons|assurons|offrons|incluons|facturons|refacturons|remboursons)(?: [a-z']+){0,2} (?:en charge )?(?:les |le |la |l'|vos |votre |nos |notre )?(?:frais )?(?:de |des |d')?(?:deplacements?|trajets?|repas|nuitees?|dejeuners?|diners?|hebergements? (?:du|des) (?:formateurs?|intervenants?))${E}|${B}se deplacent? (?:gratuitement|sans frais)${E}`,
       "g",
     ),
     raison:
@@ -319,10 +319,10 @@ export const MOTIFS_INTERDITS: ReadonlyArray<MotifInterdit> = [
   {
     code: "multiple-garantie",
     // La garantie ne se formule que « 3 fois le prix » en « gains identifiés ». Tout autre
-    // multiple (2 fois, 5 fois, x10, 10x…) à portée d'un mot de garantie / remboursement bloque.
-    // « 3 fois » / « trois fois » / « x3 » / « 3x » sont les seuls permis.
+    // multiple (2 fois, 5 fois, x10, 10x, double, 300 %…) à portée d'un mot de garantie
+    // bloque. Le « 3 » est écrit ici ; un test le compare à MULTIPLE_GARANTIE.
     re: new RegExp(
-      String.raw`(?:garanti\w*|rembours\w*)[^.!?;]{0,90}${B}${MULTIPLE_AUTRE}|${B}${MULTIPLE_AUTRE}[^.!?;]{0,90}(?:garanti\w*|rembours\w*)`,
+      String.raw`${B}(?:garantie?s?|garantit|garantissons|garantissez)${E}[^.!?;]{0,90}${B}${MULTIPLE_AUTRE}|${B}rembours\w*(?=[^.!?;]{0,90}(?:gains?|identifie))[^.!?;]{0,90}${B}${MULTIPLE_AUTRE}|${B}${MULTIPLE_AUTRE}[^.!?;]{0,90}${B}(?:garantie?s?|garantit|garantissons|garantissez)${E}`,
       "g",
     ),
     raison:
@@ -331,9 +331,10 @@ export const MOTIFS_INTERDITS: ReadonlyArray<MotifInterdit> = [
   {
     code: "seuil-garantie-euros",
     // Un montant en euros présenté comme seuil de la garantie (multiple × prix) : jamais cité,
-    // seulement « 3 fois le prix ».
+    // seulement « 3 fois le prix ». Hors contexte de gains identifiés (garantie décennale,
+    // seuil de rentabilité, prêt…), rien ne bloque.
     re: new RegExp(
-      String.raw`garantie(?: [a-z']+){0,5}(?: ?:)? (?:(?:de|a|d'|jusqu'a|des|au-dela de|superieurs? a|inferieurs? a|atteignent|depassent|atteignant) )?${MONTANT_EUROS}|${B}seuils?(?: [a-z']+){0,4}(?: ?:)? (?:(?:de|a|d') ?)?${MONTANT_EUROS}|(?:rembours\w*|garanti\w*)[^.!?;]{0,80}(?:inferieurs?|moins|sous|atteign\w*|depass\w*|superieurs?)(?: [a-z']+){0,3} ${MONTANT_EUROS}|${MONTANT_EUROS} (?:de|en) (?:gains?|economies) identifies?[^.!?;]{0,40}garanti\w*`,
+      String.raw`${B}seuils? (?:de |d')?(?:la )?garantie(?: [a-z']+){0,3}(?: ?:)? (?:(?:de|a|d') ?)?${MONTANT_EUROS}|${B}garantie(?: [a-z']+){0,5}(?: ?: ?| (?:de|a|d'|jusqu'a|des|au-dela de|superieurs? a|inferieurs? a|atteignent|depassent) )${MONTANT_EUROS}(?=[^.!?;]{0,40}(?:gains?|identifie))|${B}garantie(?=[^.!?;]{0,60}(?:gains?|identifie|fois le))[^.!?;]{0,60}${B}(?:soit|ce qui fait|correspond a|equivaut a|equivalent a)(?: environ)? ${MONTANT_EUROS}|${B}garantie(?=[^.!?;]{0,80}gains?)[^.!?;]{0,80}(?:inferieurs?|moins|sous|atteign\w*|depass\w*)(?: [a-z']+){0,3} ${MONTANT_EUROS}|${B}rembours\w*(?=[^.!?;]{0,60}(?:gains?|identifie))[^.!?;]{0,80}(?:inferieurs?|moins|sous|atteign\w*|depass\w*)(?: [a-z']+){0,3} ${MONTANT_EUROS}|${MONTANT_EUROS} (?:de|en) (?:gains?|economies) identifies?[^.!?;]{0,40}garanti\w*`,
       "g",
     ),
     raison:
