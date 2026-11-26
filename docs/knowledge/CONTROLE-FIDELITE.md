@@ -63,3 +63,12 @@ ORDER BY e.review_due_at ASC;
 ```
 
 Relire une fiche = la vérifier à sa source puis repousser `reviewDueAt` ; jamais la supprimer.
+
+## Contrôle par Claude (K5)
+
+Second contrôle, sémantique, sous le même interrupteur : `CONTENT_FIDELITY_CHECK` exactement `true`
+(seule valeur qui l'allume). Il compare l'article aux fiches publiées pertinentes via Claude
+(`fact-check/fidelite-llm.ts`, `fidelite-llm-sources.ts`) et rend `conforme` ou `contradiction`
+avec citations ; une contradiction, une erreur ou un plafond atteint envoient en relecture
+(barrière `fidelite-llm`, fail-closed). Exploitation : `docs/runbooks/R01-kill-switch.md`,
+section « Contrôle de fidélité par Claude ».

@@ -165,6 +165,18 @@ Décision du dirigeant : tout le contenu passe sur Claude, budget **200 $ par mo
 
 Un refus de plafond ne relance jamais le job (échec définitif, aucune régénération payante) et il n'y a **aucun secours vers OpenAI** pour un type autorisé : un job refusé échoue, il faut le relancer à la main après avoir relevé le plafond. Une demande qui n'est pas marquée « contenu via Claude » (notamment le chatbot, type `qa_derived`) ne bascule jamais, même avec `tous`. ⚠️ Le marquage des générateurs hors blog arrive dans une PR suivante : tant qu'elle n'est pas fusionnée, `tous` n'envoie à Claude que ce qui est déjà marqué (le blog).
 
+### Contrôle de fidélité par Claude (K5) : `CONTENT_FIDELITY_CHECK`
+
+Un article qui contredit la base de connaissances (prix 1 490 € HT seul prix public, garantie, présence du dirigeant, présentiel, couverture nationale, acompte, déplacement, ville d'implantation) ne doit jamais partir en ligne. Interrupteur : variable `CONTENT_FIDELITY_CHECK` (application **worker**, en exécution). **Éteint par défaut ; seule la valeur exacte `true` allume** (`TRUE`, ` true`, `dry-run`, `1` n'allument PAS ce contrôle). Éteint : aucun appel, aucune clé ajoutée au résultat.
+
+- Allumé, le worker cherche les fiches publiées pertinentes (recherche existante de la base + fiches de l'offre), puis demande à Claude (modèle de relecture, celui du juge) un verdict `conforme` ou `contradiction` avec citations. Une contradiction ajoute la barrière `fidelite-llm` : le contenu passe en `needs_review` avec la raison, **aucune publication n'est enfilée**.
+- **Fail-closed** : erreur du fournisseur, plafond jour/mois ou `blog_claude_juge_max_jour` atteint, interrupteur `CONTENT_GEN_BLOG_CLAUDE` éteint ou type non autorisé, recherche indisponible, aucune fiche retrouvée, réponse inexploitable → `needs_review` (« article NON vérifié »). Jamais de publication par défaut.
+- **Coût** : compté dans le budget Claude existant (porte `blog-claude` : réservation, plafonds, solde réel), ~0,10 $ par article. Le rôle « relecture » consomme `blog_claude_juge_max_jour` (partagé avec le juge de la boucle qualité) : le dimensionner en conséquence.
+- **Prérequis avant d'allumer** : `CONTENT_GEN_BLOG_CLAUDE=true`, `CONTENT_GEN_CLAUDE_TYPES` couvrant les types générés, plafonds posés, et vérifier qu'une recherche « Journée IA prix garantie » rend bien des fiches **publiées** et correctes (les brouillons ne sont pas lus : sans fiche, tout part en relecture).
+- ⚠️ La même variable pilote aussi le contrôle lexical (`true` = actif, `dry-run` = essai à blanc ; cf. `docs/knowledge/CONTROLE-FIDELITE.md`). `true` allume donc les deux. Valeur non canonique (`TRUE`) : lexical actif, contrôle par Claude éteint, une ligne de journal le dit.
+- **Lire** : `GenerationLog`, étape `validation`, « Contrôle de fidélité par Claude » ; résultat persisté `fideliteLlm: { statut, coutUsd }`.
+- **Retour arrière** : retirer la variable, redémarrer le worker. Rien à nettoyer.
+
 ### Si le blog est suspendu
 
 Après plusieurs refus de crédit le drapeau de suspension se pose seul et une alerte part. Seul le fondateur le lève, après avoir rechargé ou corrigé la cause : la même procédure de copie que dans « Allumer » (le script n'est pas dans l'image worker : `docker cp`, puis `docker exec -w /app <conteneur-worker> node_modules/.bin/tsx scripts/content-gen/poser-plafonds-blog-claude.ts --lever-suspension`, à sec), puis avec `--reel`. Les compteurs de refus (clés Redis `blog-claude:refus-credit` et `blog-claude:refus-auth`, fenêtre de 24 h chacune) n'est **pas** remis à zéro par le script : les supprimer à la main dans Redis après la levée, sinon un seul refus de plus peut re-suspendre aussitôt.

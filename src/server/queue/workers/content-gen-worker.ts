@@ -48,6 +48,16 @@ import {
   modeControleFidelite,
 } from "@/server/content-gen/fact-check/fidelite-branchement";
 import {
+  controleFideliteLlmActif,
+  barriereFideliteLlm,
+  decisionFideliteLlm,
+  type DecisionFideliteLlm,
+} from "@/server/content-gen/fact-check/fidelite-llm";
+import {
+  jugerAvecClaude,
+  rechercherFichesPertinentes,
+} from "@/server/content-gen/fact-check/fidelite-llm-sources";
+import {
   decisionFactCheckClaude,
   factCheckClaudeActif,
   MARQUEUR_FACT_CHECK_CLAUDE,
@@ -1008,6 +1018,56 @@ async function processJob(job: Job<ContentGenJobPayload>): Promise<void> {
       }
     }
 
+    // K5 — contrôle de fidélité PAR CLAUDE (`CONTENT_FIDELITY_CHECK` = exactement « true » ;
+    // ÉTEINT par défaut : aucun appel, aucune clé ajoutée). FAIL-CLOSED : contradiction, erreur,
+    // plafond atteint ou réponse inexploitable ajoutent une barrière → needs_review, jamais de
+    // publication par défaut. Coût compté dans le budget Claude existant (porte blog-claude).
+    let coutFideliteLlmUsd = 0;
+    let statutFideliteLlm: string | null = null;
+    if (controleFideliteLlmActif()) {
+      let d: DecisionFideliteLlm;
+      try {
+        d = await decisionFideliteLlm(
+          {
+            actif: true,
+            jobId: contentGenJobId,
+            contentType,
+            output,
+            kbEntryIds: output.kbEntryIds,
+          },
+          { rechercherFiches: rechercherFichesPertinentes, juger: jugerAvecClaude },
+        );
+      } catch (err) {
+        d = {
+          executee: true,
+          fiches: 0,
+          verdict: null,
+          coutUsd: 0,
+          barriere: barriereFideliteLlm({
+            erreur: err instanceof Error ? err.message : String(err),
+          }),
+        };
+      }
+      coutFideliteLlmUsd = d.coutUsd;
+      statutFideliteLlm = d.verdict?.statut ?? "erreur";
+      await logStep(
+        contentGenJobId,
+        "validation",
+        d.barriere
+          ? `Contrôle de fidélité par Claude : ${d.barriere.libelle}`
+          : `Contrôle de fidélité par Claude : conforme (${d.fiches} fiches)`,
+        { fiches: d.fiches, cout_usd: d.coutUsd, ...(d.barriere?.detail ?? {}) },
+      );
+      if (d.barriere) barrieresRelecture.push(d.barriere);
+    } else if (modeFidelite === "actif") {
+      await logStep(
+        contentGenJobId,
+        "validation",
+        "Contrôle de fidélité par Claude éteint : CONTENT_FIDELITY_CHECK doit valoir exactement « true »",
+        {},
+      );
+    }
+
     // PR 5 — fact-check par Claude avec recherche web (`CONTENT_GEN_FACTCHECK_CLAUDE`, ÉTEINT
     // par défaut : le bloc ne s'exécute pas et rien ne change). Allumé : une affirmation non
     // vérifiée, une erreur, un plafond atteint ou une recherche indisponible ajoutent une
@@ -1307,6 +1367,9 @@ async function processJob(job: Job<ContentGenJobPayload>): Promise<void> {
       topicFingerprint,
       // PR 5 — sources du fact-check par Claude (clé ABSENTE tant que le drapeau est éteint).
       ...(sourcesFactCheck ? { sourcesFactCheck, coutFactCheckUsd } : {}),
+      ...(statutFideliteLlm
+        ? { fideliteLlm: { statut: statutFideliteLlm, coutUsd: coutFideliteLlmUsd } }
+        : {}),
       // Preuve de vérification : seule sa présence permet de sauter le fact-check d'avant
       // et de publier (cf. content-publish-worker, content-fact-check-worker).
       ...(factCheckClaudeAboutiSansReserve ? { [MARQUEUR_FACT_CHECK_CLAUDE]: true } : {}),
@@ -1427,7 +1490,7 @@ async function processJob(job: Job<ContentGenJobPayload>): Promise<void> {
         doctrineCheckPassed: !blockingFail,
         tokensInput: 0, // détaillé via CostLedger
         tokensOutput: output.totalTokens,
-        costUsd: output.totalCostUsd + coutFactCheckUsd,
+        costUsd: output.totalCostUsd + coutFactCheckUsd + coutFideliteLlmUsd,
         outputJsonRaw: persistedOutput as never,
       },
     });
@@ -1447,7 +1510,10 @@ async function processJob(job: Job<ContentGenJobPayload>): Promise<void> {
     // AUCUN code n'incrémentait cette clé — le cap était une garde morte.
     // Fail-open dans le helper : un échec d'écriture ne casse jamais le job.
     if (improvementFeedback !== undefined) {
-      await addQualityLoopSpend(output.totalCostUsd + coutFactCheckUsd, contentGenJobId);
+      await addQualityLoopSpend(
+        output.totalCostUsd + coutFactCheckUsd + coutFideliteLlmUsd,
+        contentGenJobId,
+      );
     }
 
     if (nextStatus === "quality_improving") {

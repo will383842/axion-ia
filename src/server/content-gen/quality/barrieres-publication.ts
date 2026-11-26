@@ -66,6 +66,7 @@ export type CodeBarriere =
   | "accroche-trop-proche"
   | "moins-de-850-mots"
   | "fidelite-kb"
+  | "fidelite-llm"
   | "fact-check-claude"
   | "journee-ia";
 
