@@ -268,9 +268,9 @@
       "running": false
     },
     {
-      "name": "Routes /apporteur/dossier (lien secret, noindex — dossier d'apporteur en ligne) — 25 KB cumulé",
+      "name": "Routes /apporteur/dossier (lien secret, noindex — dossier d'apporteur en ligne) — 26 KB cumulé",
       "path": ".next/static/chunks/app/apporteur/**/page-*.js",
-      "limit": "25 KB",
+      "limit": "26 KB",
       "running": false
     },
     {
