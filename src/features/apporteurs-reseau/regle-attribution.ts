@@ -6,8 +6,9 @@
  * se tenir après) ; la protection de six mois part du jour du rendez-vous tenu ; un rendez-vous
  * pris AVANT la saisie ne compte pas.
  *
- * Lot 2 (2026-11-25) : ces fonctions ne sont lues par AUCUN appelant. Les contrats 2.6 et
- * antérieurs restent sous la confirmation par le silence (`regles.ts`, art. 3.2).
+ * Les contrats 2.6 et antérieurs restent sous la confirmation par le silence (`regles.ts`, art. 3.2).
+ * `basculeVersRendezVous` (26/11/2026, décision de Will) : une présentation EN ATTENTE, faite sous
+ * l'ancienne règle par un apporteur déjà en 2.8, passe à la règle du rendez-vous.
  *
  * ⚠️ Module PUR : ni base, ni environnement, ni `server-only`. L'interrupteur vit à part
  * (`interrupteur-rendez-vous.ts`) et se passe en argument (`regleDe(signature, actif)`).
@@ -73,6 +74,47 @@ export function finReservation(recueAt: Date): Date {
 /** Fin de la protection : six mois à compter du rendez-vous TENU. */
 export function finDeProtectionRendezVous(rendezVousAt: Date): Date {
   return ajouterMois(rendezVousAt, PROTECTION_MOIS);
+}
+
+export type MotifBasculeRefusee =
+  | "interrupteur"
+  | "version"
+  | "statut_apporteur"
+  | "avant_prise_effet"
+  | "deja_reglee"
+  | "rebond"
+  | "terme_depasse";
+
+/**
+ * Cette présentation EN ATTENTE (`reservee`, sans ligne de réservation) passe-t-elle de l'ancienne
+ * règle (silence) à la règle du rendez-vous ? Oui si l'interrupteur est allumé, l'apporteur est
+ * `signe` à la version 2.8 ou plus, la saisie n'est pas antérieure à la prise d'effet de son contrat
+ * (art. 13.5) et le terme (`finReservation`) n'est pas déjà dépassé. Une prise de contact revenue en
+ * erreur suspend l'ancienne règle sans limite : la présentation peut avoir plus de 60 jours, elle
+ * n'est pas basculée (l'appelant la signale). Ne modifie rien, rend le terme à enregistrer.
+ */
+export function basculeVersRendezVous(e: {
+  statut: string;
+  recueAt: Date;
+  apporteur: { statut: string; signature: unknown; signeParSocieteAt: Date | null };
+  aUneLigne: boolean;
+  rebond: boolean;
+  actif: boolean;
+  maintenant: Date;
+}): { bascule: true; reserveeJusquAt: Date } | { bascule: false; motif: MotifBasculeRefusee } {
+  if (e.actif !== true) return { bascule: false, motif: "interrupteur" };
+  if (e.statut !== "reservee" || e.aUneLigne) return { bascule: false, motif: "deja_reglee" };
+  if (e.apporteur.statut !== "signe") return { bascule: false, motif: "statut_apporteur" };
+  if (!versionAuMoins(e.apporteur.signature, VERSION_REGLE_RENDEZ_VOUS))
+    return { bascule: false, motif: "version" };
+  const effet = e.apporteur.signeParSocieteAt;
+  if (effet && !(e.recueAt.getTime() >= effet.getTime()))
+    return { bascule: false, motif: "avant_prise_effet" };
+  if (e.rebond) return { bascule: false, motif: "rebond" };
+  const terme = finReservation(e.recueAt);
+  if (!(terme.getTime() >= e.maintenant.getTime()))
+    return { bascule: false, motif: "terme_depasse" };
+  return { bascule: true, reserveeJusquAt: terme };
 }
 
 export type MotifRendezVousRefuse =

@@ -49,8 +49,13 @@ import {
   dateEnClair,
 } from "./attribution-annonce";
 import { envoyer } from "./envois";
-import { lireReservations, tableAbsente } from "./reservation-presentation";
-import { finDeProtectionRendezVous, reservationOccupe } from "./regle-attribution";
+import { enregistrerReservation, lireReservations, tableAbsente } from "./reservation-presentation";
+import {
+  basculeVersRendezVous,
+  finDeProtectionRendezVous,
+  reservationOccupe,
+} from "./regle-attribution";
+import { validationParRendezVousActive } from "./interrupteur-rendez-vous";
 import { facturerCommissionsDues } from "./facturation";
 import { alerterPiecesVigilanceDeposees } from "./alerte-vigilance";
 import {
@@ -175,6 +180,10 @@ export interface BilanPassageReseau {
   reservationsEchues: number;
   /** Échéances suspendues : un rendez-vous pris pendant la réservation reste à trancher. */
   echeancesSuspendues: number;
+  /** Présentations en attente passées de l'ancienne règle à la règle du rendez-vous. */
+  basculees: number;
+  /** Présentations en attente NON basculées (terme dépassé ou prise de contact en erreur), signalées. */
+  basculeesEcartees: number;
   /** Entreprises validées par une commande signée pendant la réservation. */
   validationsParCommande: number;
   erreurs: number;
@@ -267,6 +276,7 @@ export function dateDeCommande(f: {
 
 /** Étapes du passage, dans l'ordre. `facturation` = celles du job HORAIRE. */
 type NomEtape =
+  | "bascule-regle-rendez-vous"
   | "confirmation-tacite"
   | "terme"
   | "commissions"
@@ -309,6 +319,8 @@ function bilanVide(): BilanPassageReseau {
     rappelsDossier: 0,
     reservationsEchues: 0,
     echeancesSuspendues: 0,
+    basculees: 0,
+    basculeesEcartees: 0,
     validationsParCommande: 0,
     erreurs: 0,
   };
@@ -322,6 +334,9 @@ async function passer(
   const etapes: Array<[NomEtape, () => Promise<void>]> = [
     // Lot L1b (en PREMIER : les étapes suivantes ne traitent plus l'apporteur comme « signe » le jour de l'effet) : la résiliation notifiée prend effet à sa date (préavis de 30 jours en 11.1).
     ["resiliations-echues", async () => void (await executerResiliationsEchues(maintenant))],
+    // AVANT la confirmation par le silence : une présentation qui bascule aujourd'hui ne doit pas
+    // être confirmée par le silence dans le même passage.
+    ["bascule-regle-rendez-vous", () => etapeBasculeRegleRendezVous(maintenant, bilan)],
     ["confirmation-tacite", () => etapeConfirmationTacite(maintenant, bilan)],
     ["terme", () => etapeTerme(maintenant, bilan)],
     ["commissions", () => etapeCommissions(maintenant, bilan)],
@@ -484,6 +499,123 @@ async function etapeConfirmationTacite(maintenant: Date, bilan: BilanPassageRese
     });
     bilan.confirmeesTacites += r.count;
     if (r.count === 1) await annoncerAttribution(p.id, "confirmee");
+  }
+}
+
+// (g bis) ─────────────────────────────────────────────────────────────
+
+/**
+ * Décision de Will (26/11/2026) : les présentations EN ATTENTE faites sous l'ancienne règle (silence)
+ * passent à la règle du 1er rendez-vous tenu ou du devis signé. Une ligne de réservation est ajoutée
+ * (terme = fin du 60e jour depuis la saisie) ; rien n'est modifié ni supprimé sur la présentation, et
+ * une attribution déjà définitive (`confirmee`) n'est jamais lue. Interrupteur éteint : rien.
+ */
+async function etapeBasculeRegleRendezVous(
+  maintenant: Date,
+  bilan: BilanPassageReseau,
+): Promise<void> {
+  if (!validationParRendezVousActive()) return;
+  let curseur: { at: Date; id: string } | null = null;
+  for (let page = 0; page < PAGES_ECHEANCES_MAX; page++) {
+    const lignes: Array<{
+      id: string;
+      denomination: string;
+      recueAt: Date;
+      apporteur: { statut: string; signatureApporteur: unknown; signeParSocieteAt: Date | null };
+    }> = await prisma.presentationEntreprise.findMany({
+      where: {
+        statut: "reservee",
+        ...(curseur
+          ? {
+              OR: [
+                { recueAt: { gt: curseur.at } },
+                { recueAt: curseur.at, id: { gt: curseur.id } },
+              ],
+            }
+          : {}),
+      },
+      select: {
+        id: true,
+        denomination: true,
+        recueAt: true,
+        apporteur: { select: { statut: true, signatureApporteur: true, signeParSocieteAt: true } },
+      },
+      orderBy: [{ recueAt: "asc" }, { id: "asc" }],
+      take: PAGE_ECHEANCES,
+    });
+    if (lignes.length === 0) return;
+    let reservees: Awaited<ReturnType<typeof lireReservations>>;
+    try {
+      reservees = await lireReservations(lignes.map((l) => l.id));
+    } catch (err) {
+      if (tableAbsente(err)) return;
+      throw err;
+    }
+    const sansLigne = lignes.filter((l) => !reservees.has(l.id));
+    const rebonds =
+      sansLigne.length > 0
+        ? await idsPriseDeContactRebondie(sansLigne.map((l) => l.id))
+        : new Set<string>();
+    for (const p of sansLigne) {
+      const d = basculeVersRendezVous({
+        statut: "reservee",
+        recueAt: p.recueAt,
+        apporteur: {
+          statut: p.apporteur.statut,
+          signature: p.apporteur.signatureApporteur,
+          signeParSocieteAt: p.apporteur.signeParSocieteAt,
+        },
+        aUneLigne: false,
+        rebond: rebonds.has(p.id),
+        actif: true,
+        maintenant,
+      });
+      if (d.bascule) {
+        try {
+          const ok = await prisma.$transaction(async (tx) => {
+            // Garde RELUE dans la transaction : une confirmation ou une ligne née depuis la lecture l'emporte.
+            const cur = await tx.presentationEntreprise.findUnique({
+              where: { id: p.id },
+              select: { statut: true },
+            });
+            if (cur?.statut !== "reservee") return false;
+            if (await tx.presentationReservation.findUnique({ where: { presentationId: p.id } }))
+              return false;
+            await enregistrerReservation(p.id, d.reserveeJusquAt, tx);
+            await tx.activityLog.create({
+              data: {
+                action: "apporteur.presentation_basculee_rendez_vous",
+                targetType: "presentation_entreprise",
+                targetId: p.id,
+                changes: { reserveeJusquAt: d.reserveeJusquAt.toISOString() } as object,
+              },
+            });
+            return true;
+          });
+          if (ok) bilan.basculees += 1;
+        } catch (err) {
+          // Clé primaire déjà prise : une autre ligne est née entre-temps, rien à faire.
+          if ((err as { code?: unknown })?.code !== "P2002") throw err;
+        }
+      } else if (d.motif === "terme_depasse" || d.motif === "rebond") {
+        bilan.basculeesEcartees += 1;
+        await alerteInterne({
+          jobId: `apporteur-bascule-ecartee-${p.id}`,
+          code: "apporteur_bascule_ecartee",
+          titre: `Présentation non basculée vers la règle du rendez-vous : ${p.denomination}`,
+          message:
+            d.motif === "rebond"
+              ? `La prise de contact de ${p.denomination} est revenue en erreur : l'ancienne règle est suspendue et la présentation n'a pas été basculée vers la règle du rendez-vous. À trancher dans la console (Apporteurs › Entreprises présentées).`
+              : `La présentation de ${p.denomination} (saisie le ${dateEnClair(p.recueAt)}) a déjà dépassé ses 60 jours : elle n'a pas été basculée vers la règle du rendez-vous et reste sous l'ancienne règle. À trancher dans la console (Apporteurs › Entreprises présentées).`,
+          cibleType: "PresentationEntreprise",
+          cibleId: p.id,
+          maintenant,
+        });
+      }
+    }
+    if (lignes.length < PAGE_ECHEANCES) return;
+    const der = lignes[lignes.length - 1]!;
+    curseur = { at: der.recueAt, id: der.id };
   }
 }
 
