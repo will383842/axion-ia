@@ -25,8 +25,8 @@ export const TEXTE_PLAFOND_RESPONSABILITE =
  * Paragraphe imprimé sur un devis (conditions particulières) et sur la convention quand la case
  * « Journée IA » est cochée. ASSEMBLÉ depuis le socle commun de la Journée IA : la phrase de
  * remboursement et sa condition ne sont jamais réécrites ici. Aucun montant, aucune déclaration
- * demandée au client ; renvoi à l'article 47.10 des conditions générales.
+ * demandée au client ; renvoi à l'article 47.10 des conditions générales de vente, en tête et en pied.
  */
-export const TEXTE_GARANTIE_JOURNEE_IA = `Garantie de remboursement de la Journée IA (article 47.10 des conditions générales). ${GARANTIE_PHRASE} ${CONDITION_GARANTIE}`;
+export const TEXTE_GARANTIE_JOURNEE_IA = `Garantie de remboursement de la Journée IA (article 47.10 des conditions générales). ${GARANTIE_PHRASE} ${CONDITION_GARANTIE} Cette garantie s'applique dans les conditions et limites de l'article 47.10 des conditions générales de vente.`;
 
 export const VERSION_TEXTES_RUBRIQUES = "code-2026-11-19";

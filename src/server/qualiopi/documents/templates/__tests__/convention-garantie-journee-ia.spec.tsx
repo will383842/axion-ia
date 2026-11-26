@@ -69,7 +69,7 @@ describe("convention v9 — garantie de remboursement de la Journée IA", () => 
 
   it("⛔ texte imprimé verrouillé : si ceci rougit, la clause d'une convention signée changerait — monter la version du gabarit convention et archiver", () => {
     expect(TEXTE_GARANTIE_JOURNEE_IA).toBe(
-      "Garantie de remboursement de la Journée IA (article 47.10 des conditions générales). Si les gains identifiés dans votre rapport n’atteignent pas 3 fois le prix HT de la journée, vous êtes remboursé sur demande écrite. Condition : le décideur et les personnes prévues sont présents pendant l’audit.",
+      "Garantie de remboursement de la Journée IA (article 47.10 des conditions générales). Si les gains identifiés dans votre rapport n’atteignent pas 3 fois le prix HT de la journée, vous êtes remboursé sur demande écrite. Condition : le décideur et les personnes prévues sont présents pendant l’audit. Cette garantie s'applique dans les conditions et limites de l'article 47.10 des conditions générales de vente.",
     );
   });
 

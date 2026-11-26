@@ -387,11 +387,18 @@ export function DevisForm({
 
     // Même contrôle que le serveur, sur le texte NORMALISÉ (le serveur le refuserait de toute façon).
     const texteNormalise = normaliserConditionsParticulieres(conditionsParticulieres);
+    // Ce qui sera imprimé : le texte saisi PLUS le paragraphe de la garantie quand la case est cochée.
+    const texteImprime = avecGarantieJourneeIa(texteNormalise, journeeIa);
     if (
-      texteNormalise !== null &&
-      nombreDeLignes(texteNormalise) > CONDITIONS_PARTICULIERES_LIGNES_MAX
+      texteImprime !== null &&
+      (texteImprime.length > CONDITIONS_PARTICULIERES_MAX ||
+        nombreDeLignes(texteImprime) > CONDITIONS_PARTICULIERES_LIGNES_MAX)
     ) {
-      setError(MESSAGE_CONDITIONS_PARTICULIERES_LIGNES);
+      setError(
+        texteImprime.length > CONDITIONS_PARTICULIERES_MAX
+          ? "Les conditions particulières sont trop longues pour y ajouter la garantie de remboursement de la Journée IA (4 000 caractères et 80 lignes au plus)."
+          : MESSAGE_CONDITIONS_PARTICULIERES_LIGNES,
+      );
       return;
     }
 
@@ -742,7 +749,7 @@ export function DevisForm({
               className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)] tabular-nums"
               aria-live="polite"
             >
-              {`${conditionsParticulieres.length} / ${CONDITIONS_PARTICULIERES_MAX}`}
+              {`${(avecGarantieJourneeIa(conditionsParticulieres, journeeIa) ?? "").length} / ${CONDITIONS_PARTICULIERES_MAX}`}
             </p>
             <label className="flex items-center gap-[var(--space-admin-2)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg)]">
               <input

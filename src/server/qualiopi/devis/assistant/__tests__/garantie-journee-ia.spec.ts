@@ -30,7 +30,7 @@ import { TEXTE_GARANTIE_JOURNEE_IA } from "../textes-rubriques";
 describe("TEXTE_GARANTIE_JOURNEE_IA", () => {
   it("est assemblé depuis le socle commun, sans le réécrire", () => {
     expect(TEXTE_GARANTIE_JOURNEE_IA).toBe(
-      `Garantie de remboursement de la Journée IA (article 47.10 des conditions générales). ${GARANTIE_PHRASE} ${CONDITION_GARANTIE}`,
+      `Garantie de remboursement de la Journée IA (article 47.10 des conditions générales). ${GARANTIE_PHRASE} ${CONDITION_GARANTIE} Cette garantie s'applique dans les conditions et limites de l'article 47.10 des conditions générales de vente.`,
     );
     expect(TEXTE_GARANTIE_JOURNEE_IA).toContain(GARANTIE_PHRASE);
     expect(TEXTE_GARANTIE_JOURNEE_IA).toContain(CONDITION_GARANTIE);
@@ -39,7 +39,7 @@ describe("TEXTE_GARANTIE_JOURNEE_IA", () => {
   it("ne porte aucun montant, aucun mot interdit", () => {
     expect(TEXTE_GARANTIE_JOURNEE_IA).not.toMatch(/€|euro|\d\s?%/i);
     // Le seul chiffre est le renvoi à l'article 47.10 et le multiple de la garantie (« 3 fois »).
-    expect(TEXTE_GARANTIE_JOURNEE_IA.replace("47.10", "")).not.toMatch(/\d{2,}/);
+    expect(TEXTE_GARANTIE_JOURNEE_IA.replaceAll("47.10", "")).not.toMatch(/\d{2,}/);
     for (const mot of [
       "grenoble",
       "aucun gain garanti",
