@@ -45,7 +45,13 @@ import {
   type SoldeDesLignesLiees,
 } from "./commandes";
 import { dejaEnvoye, statutApresVigilance } from "./commissions";
-import { ajouterMois, PALIER_CONFERENCE } from "./regles";
+import {
+  ajouterMois,
+  ciblesMixtesApresAvoir,
+  euros,
+  lirePalierMixte,
+  PALIER_CONFERENCE,
+} from "./regles";
 import { litigeDisponible } from "./litige";
 import { envoyer } from "./envois";
 import { retenir, type Piece } from "./manquement";
@@ -474,6 +480,51 @@ async function alerterRepriseRefusee(
   }
 }
 
+/**
+ * Avoir PARTIEL sur une ligne mixte (palier `mixte:`, Journée IA + autre prestation) : le code ne sait
+ * pas quelle prestation est remboursée. La cible appliquée est la PLUS BASSE des imputations possibles
+ * (`regles.ts#ventilationMixteRetenue` : jamais de sur-versement) ; Williams impute et régularise.
+ * UNE alerte interne par ligne et par prix net (jamais l'apporteur). Ne lève pas.
+ */
+async function alerterAvoirMixte(
+  ligneId: string,
+  palier: string | null,
+  netCents: number,
+  maintenant: Date,
+): Promise<void> {
+  const p = lirePalierMixte(palier);
+  if (!p) return;
+  const base = p.journeeIaHtCents + p.autreHtCents;
+  if (netCents <= 0 || netCents >= base) return;
+  const cibles = ciblesMixtesApresAvoir(p, netCents);
+  const jobId = `apporteur-avoir-mixte-${ligneId}-${netCents}`;
+  try {
+    if (await dejaEnvoye(jobId)) return;
+    const montants = cibles
+      ? ` La commission a été ramenée à la cible la plus basse (${euros(cibles.basse)}, avoir imputé sur la partie la mieux commissionnée) ; si l'avoir porte sur l'autre partie, elle vaudrait jusqu'à ${euros(cibles.haute)}.`
+      : "";
+    await enqueueEmail(
+      "qualiopi-alerte-interne",
+      destinataireAlertesInternes(),
+      "fr",
+      {
+        niveau: "important",
+        code: "apporteur_avoir_mixte",
+        titre: "Avoir partiel sur une commande mixte (Journée IA + autre prestation) : à trancher",
+        message: `Un avoir partiel ramène une commande mixte (Journée IA ${euros(p.journeeIaHtCents)} HT + ${p.autre} ${euros(p.autreHtCents)} HT) à ${euros(netCents)} HT net. Le calcul ne sait pas quelle prestation est remboursée.${montants} Indiquez quelle partie l'avoir rembourse et régularisez dans la console (Apporteurs › Commissions).`,
+        cibleType: "CommissionApporteur",
+        cibleId: ligneId,
+        rubrique: "apporteurs",
+        chemin: "apporteurs/commissions",
+        createdAt: maintenant.toLocaleDateString("fr-FR"),
+      },
+      { jobId, entityType: "CommissionApporteur", entityId: ligneId },
+    );
+  } catch (err) {
+    signalerErreurReseau("alerte avoir mixte", err);
+  }
+}
+
 /** Reprise sur UNE ligne versée (origine ou complément), plafonnée à sa propre ligne ; alerte si refus. */
 async function reprendreSurLaLigne(
   id: string,
@@ -729,6 +780,9 @@ export async function reprendreApresAvoirsClients(
       for (const l of ordre) {
         const montant = l.montantCents ?? 0;
         if (l.parrainage && parrainParAjustement) continue;
+        // Ligne mixte et avoir PARTIEL actif : alerte « à trancher » (la cible reste la plus basse).
+        if (!l.parrainage && !sansAvoirActif)
+          await alerterAvoirMixte(l.id, l.palier, net, maintenant);
 
         if (!l.autofactureNumero && estModifiable(l.statut) && l.parrainage) {
           if (sansAvoirActif) continue;

@@ -509,7 +509,7 @@ export function palierMixte(p: PartsMixtes): string {
 }
 
 const MOTIF_PALIER_MIXTE =
-  /^mixte:(\d{1,2})x(\d{1,10})\+([a-z0-9_-]{1,30})(?:\*(\d{1,2}))?:(\d{1,10})$/;
+  /^mixte:(\d{1,3})x(\d{1,10})\+([a-z0-9_-]{1,30})(?:\*(\d{1,2}))?:(\d{1,10})$/;
 
 /** Relit un palier `mixte:` ; `null` pour tout autre palier ou un palier illisible. */
 export function lirePalierMixte(palier: string | null | undefined): PartsMixtes | null {
@@ -527,42 +527,106 @@ export function lirePalierMixte(palier: string | null | undefined): PartsMixtes 
   };
 }
 
+/** Part EXACTE (non arrondie) de la Journée IA pour `netJ` centimes HT : 500 € au prorata, plafonnée. */
+function partJourneeExacte(journees: number, netJ: number): number {
+  const h = Math.max(0, netJ);
+  return h >= PRIX_REFERENCE_JOURNEE_IA_CENTS * journees
+    ? FORFAIT_JOURNEE_IA_CENTS * journees
+    : (FORFAIT_JOURNEE_IA_CENTS * h) / PRIX_REFERENCE_JOURNEE_IA_CENTS;
+}
+
+/** Part EXACTE de l'autre prestation pour `netA` centimes HT ; `null` sans règle certaine. */
+function partAutreExacte(p: PartsMixtes, netA: number): number | null {
+  const h = Math.max(0, netA);
+  if (p.autre === "un_a_un" || p.autre === "conference") return 0;
+  const bps = tauxDe(p.autre);
+  if (bps !== null) return (h * bps) / 10_000;
+  const f = PALIERS_FORMATION.find((x) => x.id === p.autre);
+  if (!f) return null;
+  return h >= f.prixCents * p.sessions
+    ? f.forfaitCents * p.sessions
+    : (f.forfaitCents * h) / f.prixCents;
+}
+
+/**
+ * Les deux imputations EXTRÊMES d'un avoir partiel sur une commande mixte : tout sur la Journée IA
+ * d'abord, ou tout sur l'autre partie d'abord. Chaque part étant linéaire (ou plafonnée) dans son HT,
+ * la commission totale est concave dans la répartition : son minimum et son maximum sont à ces deux
+ * bornes, et le prorata global tombe toujours entre elles. `null` sans règle certaine.
+ */
+function imputationsMixtes(
+  p: PartsMixtes,
+  netCents: number,
+): Array<{ netJournee: number; netAutre: number; exact: number }> | null {
+  const base = p.journeeIaHtCents + p.autreHtCents;
+  if (!Number.isFinite(netCents) || base <= 0) return null;
+  const net = Math.max(0, Math.min(netCents, base));
+  const surJournee = Math.max(0, net - p.autreHtCents); // avoir imputé d'abord sur la Journée IA
+  const surAutre = Math.max(0, net - p.journeeIaHtCents); // avoir imputé d'abord sur l'autre partie
+  const splits =
+    net >= base
+      ? [{ netJournee: p.journeeIaHtCents, netAutre: p.autreHtCents }]
+      : [
+          { netJournee: surJournee, netAutre: net - surJournee },
+          { netJournee: net - surAutre, netAutre: surAutre },
+        ];
+  const out: Array<{ netJournee: number; netAutre: number; exact: number }> = [];
+  for (const s of splits) {
+    const autre = partAutreExacte(p, s.netAutre);
+    if (autre === null) return null;
+    out.push({ ...s, exact: partJourneeExacte(p.journees, s.netJournee) + autre });
+  }
+  return out;
+}
+
+/**
+ * La ventilation RETENUE d'une commande mixte pour un prix net : sans avoir, le HT de signature de
+ * chaque partie ; avec un avoir PARTIEL, le code ne sait pas quelle prestation est remboursée — il
+ * retient l'imputation qui donne la commission la PLUS BASSE (jamais de sur-versement) et le passage
+ * des avoirs alerte Williams, qui tranche (`avoir-client.ts`, alerte `apporteur_avoir_mixte`).
+ */
+export function ventilationMixteRetenue(
+  p: PartsMixtes,
+  netCents: number,
+): { netJournee: number; netAutre: number; montantCents: number } | null {
+  const im = imputationsMixtes(p, netCents);
+  if (!im) return null;
+  const basse = im.reduce((a, b) => (b.exact < a.exact ? b : a));
+  // Un seul arrondi, sur le total (jamais deux arrondis de parts qui se cumulent).
+  return {
+    netJournee: basse.netJournee,
+    netAutre: basse.netAutre,
+    montantCents: Math.round(basse.exact),
+  };
+}
+
+/** Avoir partiel sur une ligne mixte : commission la plus basse (appliquée) et la plus haute possible. */
+export function ciblesMixtesApresAvoir(
+  p: PartsMixtes,
+  netCents: number,
+): { basse: number; haute: number } | null {
+  const im = imputationsMixtes(p, netCents);
+  if (!im) return null;
+  const v = im.map((x) => Math.round(x.exact));
+  return { basse: Math.min(...v), haute: Math.max(...v) };
+}
+
 /**
  * La commission d'une commande mixte pour un prix HT net `netCents` (base de signature, ou net après
- * avoirs) : le net est réparti entre les deux parties au prorata de leur HT de signature (un avoir les
- * réduit dans la même proportion, art. 4.5), puis chaque partie suit sa propre règle. « À qualifier »
- * tant que l'autre partie n'a pas de règle certaine (formation sans palier, activité inconnue).
+ * avoirs) : chaque partie suit sa propre règle sur son HT. Avec un avoir partiel, l'imputation la plus
+ * prudente est retenue (`ventilationMixteRetenue`). « À qualifier » tant que l'autre partie n'a pas de
+ * règle certaine (formation sans palier, activité inconnue).
  */
 export function commissionMixte(p: PartsMixtes, netCents: number): CalculCommission {
-  const base = p.journeeIaHtCents + p.autreHtCents;
-  if (!Number.isFinite(netCents) || base <= 0) return { statut: "a_qualifier" };
-  const net = Math.max(0, Math.min(netCents, base));
-  const netJournee = Math.round((p.journeeIaHtCents * net) / base);
-  const netAutre = net - netJournee;
-  const journee = forfaitAuProrata(
-    FORFAIT_JOURNEE_IA_CENTS,
-    PRIX_REFERENCE_JOURNEE_IA_CENTS,
-    netJournee,
-    p.journees,
-  );
-  const prixJournee = PRIX_REFERENCE_JOURNEE_IA_CENTS * p.journees;
-  let autre: number;
-  let prixAutre = 0;
-  if (p.autre === "un_a_un" || p.autre === "conference") {
-    autre = 0;
-  } else if (tauxDe(p.autre) !== null) {
-    autre = Math.round((netAutre * tauxDe(p.autre)!) / 10_000);
-  } else {
-    const f = PALIERS_FORMATION.find((x) => x.id === p.autre);
-    if (!f) return { statut: "a_qualifier" };
-    autre = forfaitAuProrata(f.forfaitCents, f.prixCents, netAutre, p.sessions);
-    prixAutre = f.prixCents * p.sessions;
-  }
+  const v = ventilationMixteRetenue(p, netCents);
+  if (!v) return { statut: "a_qualifier" };
+  const f = PALIERS_FORMATION.find((x) => x.id === p.autre);
   return {
     statut: "calculee",
-    montantCents: journee + autre,
+    montantCents: v.montantCents,
     palier: palierMixte(p),
-    prixPublicCents: prixJournee + prixAutre,
+    prixPublicCents:
+      PRIX_REFERENCE_JOURNEE_IA_CENTS * p.journees + (f ? f.prixCents * p.sessions : 0),
   };
 }
 

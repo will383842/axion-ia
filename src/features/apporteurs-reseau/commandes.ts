@@ -128,14 +128,23 @@ function ligneDAcompte(l: LigneDeFacture): boolean {
  * Commande MIXTE (autre HT > 0) : rien n'est deviné. La ventilation est « incertaine » dès qu'une
  * ligne est illisible, qu'une autre ligne négative existe (remise globale, déduction : à répartir
  * selon un prorata que le devis ne donne pas), ou que les lignes ne retombent pas sur le total du
- * devis (facture refaite, lignes modifiées). Une commande sans autre ligne n'est jamais incertaine :
- * son forfait se calcule sur la base de la commande, remises comprises.
+ * devis (facture refaite, lignes modifiées), qu'une autre ligne ressemble à une somme non
+ * commissionnée (A1.6) ou à une activité différente de celle de la facture. Une commande sans autre
+ * ligne n'est jamais incertaine : son forfait se calcule sur la base de la commande, remises comprises.
+ * Devis marqué sans ligne « Journée IA » : une seule ligne positive en tient lieu, plusieurs sont
+ * incertaines.
  */
 export function ventilerJourneeIa(e: {
   /** Les lignes de CHAQUE facture de la commande (hors avoirs). */
   lignes: readonly unknown[];
   /** Base de signature de la commande (total du devis, sinon HT des factures). */
   baseSignatureCents: number;
+  /**
+   * Activité des factures de la commande (une seule) : les autres lignes doivent lui ressembler.
+   * Absente ou `null` : la cohérence n'est pas vérifiée ici (l'appelant met la commande « à
+   * qualifier » faute d'activité).
+   */
+  activiteAutre?: string | null;
 }): { journeeIaHtCents: number; autreHtCents: number; journees: number } | { incertaine: string } {
   const toutes = e.lignes.flatMap(lignesLisibles).filter((l) => !ligneDAcompte(l));
   let journeeIa = 0;
@@ -143,6 +152,7 @@ export function ventilerJourneeIa(e: {
   let journees = 0;
   let illisible = false;
   let negative = false;
+  const autres: LigneDeFacture[] = [];
   for (const l of toutes) {
     if (!ligneLisible(l)) {
       illisible = true;
@@ -157,15 +167,43 @@ export function ventilerJourneeIa(e: {
       journees += Number.isInteger(n) && n > 0 ? n : 1;
     } else {
       autre += m;
+      autres.push(l);
     }
   }
+  if (illisible) return { incertaine: "une ligne de facture est illisible" };
+  // Devis marqué « Journée IA » sans ligne qui en porte le nom (libellé libre : « Atelier IA sur
+  // site ») : une seule ligne positive, c'est la Journée IA (jamais 0 €) ; plusieurs, rien n'est deviné.
+  if (journeeIa === 0 && autres.length === 1)
+    return { journeeIaHtCents: autre, autreHtCents: 0, journees: 1 };
+  if (journeeIa === 0 && autres.length > 1)
+    return {
+      incertaine: `le devis est marqué « Journée IA » mais aucune ligne ne s'appelle « Journée IA » (${autres.map((x) => `« ${String(x.designation)} »`).join(", ")}) : la part de la Journée IA n'est pas connue`,
+    };
   const base = {
     journeeIaHtCents: journeeIa,
     autreHtCents: autre,
     journees: Math.max(1, journees),
   };
-  if (autre === 0 && !illisible) return base;
-  if (illisible) return { incertaine: "une ligne de facture est illisible" };
+  if (autre === 0) return base;
+  // A1.6 : hébergement, maintenance, licence, abonnement ne sont jamais commissionnés, et le code ne
+  // sait pas les retirer avec certitude d'une commande mixte : « à qualifier », quelle que soit
+  // l'activité de la facture.
+  const recurrentes = autres.filter((l) => MOTIF_RECURRENT.test(normaliser(l.designation)));
+  if (recurrentes.length > 0)
+    return {
+      incertaine: `annexe 1, A1.6 : ${recurrentes.map((x) => `« ${String(x.designation)} »`).join(", ")} ressemble à une somme non commissionnée (abonnement, maintenance, hébergement, licence)`,
+    };
+  // La part « autre » suit l'activité de la facture : seulement si chacune de ses lignes est
+  // cohérente avec elle (jamais 30 % d'audit sur une automatisation, jamais un taux sur du coaching).
+  if (e.activiteAutre) {
+    const discordantes = autres.filter((l) =>
+      activitesRessemblantes(l.designation).some((a) => a !== e.activiteAutre),
+    );
+    if (discordantes.length > 0)
+      return {
+        incertaine: `${discordantes.map((x) => `« ${String(x.designation)} »`).join(", ")} ne ressemble pas à l'activité de la facture (${e.activiteAutre}) : la commission de l'autre partie ne peut pas être calculée avec certitude`,
+      };
+  }
   if (negative)
     return {
       incertaine: "une remise ou une déduction globale porte sur l'ensemble de la commande",
@@ -179,6 +217,24 @@ export function ventilerJourneeIa(e: {
 
 /** Hébergement, maintenance, licence, abonnement (A1.6 : sommes non commissionnées). */
 const MOTIF_RECURRENT = /\b(hebergement|maintenance|licences?|abonnements?)\b/;
+
+/**
+ * Activités auxquelles une ligne RESSEMBLE (désignation) : coaching, conférence, formation, audit,
+ * automatisation/intégration, site web. Une ligne neutre (« Atelier d'idéation ») n'en a aucune.
+ */
+const MOTIFS_ACTIVITE: ReadonlyArray<readonly [string, RegExp]> = [
+  ["un_a_un", /\b(coaching|one to one|one-to-one|accompagnement individuel)\b/],
+  ["conference", /\b(conferences?|keynote)\b/],
+  ["formation", /\bformations?\b/],
+  ["audit", /\baudits?\b/],
+  ["implementation", /\b(automatisations?|integrations?|implementations?|agents? ia|chatbots?)\b/],
+  ["site_web", /\b(sites? (web|internet|vitrine)|developpement web)\b/],
+];
+
+function activitesRessemblantes(designation: unknown): string[] {
+  const d = normaliser(designation);
+  return MOTIFS_ACTIVITE.filter(([, re]) => re.test(d)).map(([a]) => a);
+}
 
 /**
  * Lignes POSITIVES d'une commande qui RESSEMBLENT à des sommes non commissionnées (A1.6). Rien n'est

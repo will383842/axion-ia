@@ -1131,8 +1131,11 @@ async function etapeCommissions(maintenant: Date, bilan: BilanPassageReseau): Pr
         });
       // A1.6 : une ligne qui ressemble à de l'hébergement, de la maintenance, une licence ou un
       // abonnement dans une commande de mise en place n'est jamais exclue en silence (ni devinée).
+      // Commande à Journée IA reconnue : ces lignes la rendent « à qualifier », quelle que soit
+      // l'activité de la facture, et l'alerte unique ci-dessus (`alerteMixte`) les cite.
       const recurrentes =
-        activiteCommande === "site_web" || activiteCommande === "implementation"
+        (activiteCommande === "site_web" || activiteCommande === "implementation") &&
+        !(journee && "reconnue" in journee)
           ? lignesRecurrentesSuspectes(lignesCommande)
           : [];
       if (recurrentes.length > 0)

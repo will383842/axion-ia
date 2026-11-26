@@ -9,6 +9,7 @@
 import { ajouterJoursOuvres, estJourFerieFrance } from "@/lib/jours-ouvres";
 import {
   lirePalierMixte,
+  ventilationMixteRetenue,
   PALIERS_FORMATION,
   PRIX_REFERENCE_JOURNEE_IA_CENTS,
   type PartsMixtes,
@@ -99,14 +100,15 @@ const LIBELLE_AUTRE: Record<string, string> = {
 
 /**
  * Désignation d'une commande mixte : la Journée IA (prix public, prix facturé) et l'autre partie
- * (prix facturé), le prix facturé de chaque partie étant le net de la commande réparti au prorata de
- * leur HT de signature (`regles.ts#commissionMixte`, même calcul).
+ * (prix facturé), le prix facturé de chaque partie étant la ventilation RETENUE par le calcul
+ * (`regles.ts#ventilationMixteRetenue` : HT de signature, ou imputation la plus prudente d'un avoir).
  */
 function designationMixte(p: PartsMixtes, factureHtCents: number | null): string {
   const base = p.journeeIaHtCents + p.autreHtCents;
   const net = factureHtCents === null ? base : Math.max(0, Math.min(factureHtCents, base));
-  const netJ = base > 0 ? Math.round((p.journeeIaHtCents * net) / base) : 0;
-  const netA = net - netJ;
+  const v = ventilationMixteRetenue(p, net);
+  const netJ = v ? v.netJournee : p.journeeIaHtCents;
+  const netA = v ? v.netAutre : net - netJ;
   const f = PALIERS_FORMATION.find((x) => x.id === p.autre);
   const autre = f
     ? `formation, palier ${f.id}${p.sessions > 1 ? ` × ${p.sessions} sessions` : ""} (prix public ${eurosHt(f.prixCents * p.sessions)} HT)`

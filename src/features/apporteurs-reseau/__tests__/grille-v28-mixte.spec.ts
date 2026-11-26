@@ -169,7 +169,7 @@ describe("commission d'une commande mixte (art. 4.1 bis + A1.1, A1.4, A1.5, A1.2
     expect(commissionMixte(p, 249_000)).toMatchObject({ montantCents: 50_000 });
   });
 
-  it("avoir de moitié : chaque part est réduite dans la même proportion (art. 4.5)", () => {
+  it("avoir de moitié : imputation la plus prudente (tout sur la Journée IA), jamais de sur-versement", () => {
     const p = {
       journees: 1,
       journeeIaHtCents: 149_000,
@@ -177,7 +177,9 @@ describe("commission d'une commande mixte (art. 4.1 bis + A1.1, A1.4, A1.5, A1.2
       sessions: 1,
       autreHtCents: 290_000,
     };
-    expect(commissionMixte(p, 219_500)).toMatchObject({ montantCents: 25_000 + 43_500 });
+    // Le code ne sait pas quelle partie est remboursée : 0 € de Journée IA + 30 % de 2 195 € = 658,50 €
+    // (le prorata global donnerait 685 €, l'imputation sur l'audit 711,50 €).
+    expect(commissionMixte(p, 219_500)).toMatchObject({ montantCents: 65_850 });
     expect(commissionMixte(p, 0)).toMatchObject({ montantCents: 0 });
   });
 
@@ -212,12 +214,12 @@ describe("une ligne mixte suit les avoirs par la même règle (réduction, état
     factureHtCents: 439_000,
     montantCents: 137_000,
   };
-  it("prix conservé réduit : recalcul sur les deux parts", () => {
-    expect(commissionPourPrixConserve(ligne, 219_500, 137_000)).toBe(68_500);
+  it("prix conservé réduit : recalcul sur les deux parts, imputation la plus basse", () => {
+    expect(commissionPourPrixConserve(ligne, 219_500, 137_000)).toBe(65_850);
   });
   it("cible après avoir et état final : même montant, jamais au-delà de la ligne", () => {
-    expect(cibleApresAvoir(ligne, 219_500)).toBe(68_500);
-    expect(cibleEtatFinal(ligne, 219_500, 439_000)).toBe(68_500);
+    expect(cibleApresAvoir(ligne, 219_500)).toBe(65_850);
+    expect(cibleEtatFinal(ligne, 219_500, 439_000)).toBe(65_850);
     expect(cibleEtatFinal(ligne, 439_000, 439_000)).toBe(137_000);
   });
 });
