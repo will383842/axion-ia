@@ -455,7 +455,9 @@ const GenererAvoirSchema = z.object({
 
 export async function genererAvoirAction(
   rawInput: unknown,
-): Promise<{ data: { avoirId: string; numero: string } } | { error: string }> {
+): Promise<
+  { data: { avoirId: string; numero: string } } | { error: string; confirmationRequise?: true }
+> {
   if (process.env["DATABASE_URL"]?.includes("stub.invalid")) {
     return { error: "Indisponible au build." };
   }
@@ -469,7 +471,7 @@ export async function genererAvoirAction(
       parsed.data.confirmerReprise !== true &&
       (await factureCommissionneeParApporteur(parsed.data.factureId))
     ) {
-      return { error: MESSAGE_AVOIR_COMMISSION };
+      return { error: MESSAGE_AVOIR_COMMISSION, confirmationRequise: true };
     }
     const result = await genererAvoirFacture({
       factureId: parsed.data.factureId,
@@ -486,6 +488,7 @@ export async function genererAvoirAction(
         avoirNumero: result.numero,
         motif: parsed.data.motif,
         montantPartielHtCents: parsed.data.montantPartielHtCents ?? null,
+        confirmerReprise: parsed.data.confirmerReprise === true,
       },
       session,
     });
