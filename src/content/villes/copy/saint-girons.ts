@@ -64,8 +64,8 @@ export const SAINT_GIRONS_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les acteurs du tourisme montagne et thermalisme du Couserans (Aulus-les-Bains, gîtes, refuges, hébergements) : agents conversationnels multilingues, automatisation réservations, gestion saisonnalité, classification avis.",
     },
     {
-      q: "Intervenez-vous à Saint-Girons ?",
-      a: "Oui. Nous intervenons sur place à Saint-Girons, comme partout en France, ou à distance, y compris en vallées de montagne.",
+      q: "Quel délai pour recevoir un devis à Saint-Girons ?",
+      a: "Devis et calendrier fournis en 48 h, après un premier échange de cadrage.",
     },
   ],
 };

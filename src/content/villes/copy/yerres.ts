@@ -214,7 +214,7 @@ export const YERRES_COPY: VilleCopy = {
           },
           {
             q: "Will my site be fast and well ranked for local searches?",
-            a: "Yes. We deliver sites checked on Web Vitals and optimised for SEO/AEO, with business listings, structured data and local content (town centre, Mont Griffon, Caillebotte park) so you show up for searches by Yerres residents and visitors arriving via the RER D.",
+            a: "Yes. We deliver sites checked on Web Vitals and optimised for SEO/AEO, with business listings, structured data and local content (town centre, Mont Griffon, Caillebotte park) so you show up for searches by Yerres residents and visitors. Axion-IA works anywhere in France, on site or remotely, including in Yerres.",
           },
           {
             q: "Is the quote firm and the price fixed?",

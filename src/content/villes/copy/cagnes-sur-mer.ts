@@ -235,8 +235,8 @@ export const CAGNES_SUR_MER_COPY: VilleCopy = {
       a: "Oui. Nous intervenons sur place à Cagnes-sur-Mer, comme partout en France, ou à distance, généralement sous 5 jours ouvrés.",
     },
     {
-      q: "Quelles communes proches de Cagnes-sur-Mer couvrez-vous lors d'un déplacement ?",
-      a: "Lors d'un déplacement à Cagnes-sur-Mer, nous pouvons enchaîner des rendez-vous à Saint-Laurent-du-Var, Villeneuve-Loubet, La Colle-sur-Loup, Saint-Paul-de-Vence, Vence, La Gaude, Nice ou Antibes — toutes à moins de 25 minutes.",
+      q: "Quelles communes proches de Cagnes-sur-Mer couvrez-vous ?",
+      a: "Axion IA intervient partout en France, sur site ou à distance : à Cagnes-sur-Mer comme à Saint-Laurent-du-Var, Villeneuve-Loubet, La Colle-sur-Loup, Saint-Paul-de-Vence, Vence, La Gaude, Nice ou Antibes.",
     },
     {
       q: "Quels secteurs cagnois Axion-IA accompagne-t-il en priorité ?",

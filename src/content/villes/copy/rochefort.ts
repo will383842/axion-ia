@@ -237,10 +237,6 @@ export const ROCHEFORT_COPY: VilleCopy = {
       a: "Notre priorité reste les TPE et PME du bassin rochefortais, mais nous accompagnons en complément les ETI locales (Stelia Aerospace, Sabena Technics, Daher à proximité) lorsqu'elles sollicitent un regard d'experts IA seniors externe sur un cas d'usage spécifique.",
     },
     {
-      q: "Intervenez-vous à Rochefort ?",
-      a: "Oui. Axion IA intervient partout en France, sur site ou à distance, y compris à Rochefort.",
-    },
-    {
       q: "Vos architectures IA sont-elles compatibles avec les contraintes aéronautiques de Stelia et Sabena Technics ?",
       a: "Oui. Nous concevons des architectures IA souveraines, hébergées en France ou en UE, conformes RGPD, AI Act et compatibles avec les exigences qualité et traçabilité des donneurs d'ordre aéronautiques (Airbus, Boeing). Nos audits couvrent explicitement la chaîne de sous-traitance Stelia Aerospace et Sabena Technics.",
     },

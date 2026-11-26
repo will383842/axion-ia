@@ -94,7 +94,7 @@ export const RENNES_COPY: VilleCopy = {
           "Tissu économique rennais dense et contrasté : TPE du centre historique, PME en croissance à ViaSilva, ETI numériques à Atalante Beaulieu, sites GE comme Canon CRF et Orange Innovation à Cesson-Sévigné.",
           "Présence forte de l'écosystème French Tech Rennes Saint-Malo : scale-ups deep-tech et IA nées de l'IRISA et de l'Inria, souvent en phase de passage du POC à la production.",
           "Restitutions toujours en présentiel à Rennes : ateliers d'idéation dans vos locaux, lecture du livrable avec votre comité de direction, plan d'action remis en main propre.",
-          "Aucun devis opaque : tarifs publics affichés, vous savez exactement ce que vous engagez avant de signer. Même grille tarifaire qu'à Paris ou Lyon.",
+          "Aucun devis opaque : tarifs publics affichés, vous savez exactement ce que vous engagez avant de signer. Axion IA intervient partout en France, sur site ou à distance.",
           "Vous gardez le contrôle : votre plan d'action est exécutable avec n'importe quel prestataire rennais ou en interne après notre audit.",
         ],
         methodology: [

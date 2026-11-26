@@ -230,7 +230,7 @@ export const CASTRES_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Castres et dans le Tarn ?",
-      a: "Oui, Axion-IA accompagne les TPE et PME de Castres et de tout le sud du Tarn (Mazamet, Labruguière, Aussillon, Saïx). Nous nous déplaçons sur site et travaillons aussi en visio.",
+      a: "Oui, Axion-IA accompagne les TPE et PME de Castres et de tout le sud du Tarn (Mazamet, Labruguière, Aussillon, Saïx). Axion IA intervient partout en France, sur site ou à distance.",
     },
     {
       q: "Travaillez-vous avec la filière pharmaceutique et cosmétique locale ?",
@@ -243,10 +243,6 @@ export const CASTRES_COPY: VilleCopy = {
     {
       q: "Vos solutions IA sont-elles conformes au RGPD ?",
       a: "Oui. Toutes nos implémentations à Castres respectent le RGPD et privilégient des architectures souveraines. Vous gardez la maîtrise de vos données et la propriété des outils déployés.",
-    },
-    {
-      q: "Intervenez-vous à Castres ?",
-      a: "Oui. Axion IA intervient partout en France, sur site ou à distance, y compris à Castres.",
     },
     {
       q: "Proposez-vous un accompagnement individuel pour les dirigeants ?",

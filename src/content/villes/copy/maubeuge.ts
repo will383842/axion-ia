@@ -142,7 +142,7 @@ export const MAUBEUGE_COPY: VilleCopy = {
           "The automotive supply chain around the Renault Maubeuge plant (Kangoo E-TECH Electric, R4 E-Tech) creates real demand for supplier portals, parts configurators and online order tracking for tier-1 and tier-2 subcontractors of the Val de Sambre.",
           "The metallurgy-energy sector (Vallourec's seamless tubes at Aulnoye-Aymeries, Interfit, Cerec at Recquignies) and nuclear players (Framatome, SRMS on Grévaux-les-Guides) require platforms able to index dense technical documentation: we deploy semantic search and RAG chatbots over standards, material sheets and procedures.",
           "Named local industrial SMEs — Carnière/Défossez (automotive and home appliances), CBM (industrial packaging), Aciérie et Fonderie de la Haute Sambre — often have brochure-only sites: we turn them into sales tools with product catalogue, automated quote requests and a B2B client area.",
-          "A cross-border location 7 km from Belgium via the N2 and the Douzies campus (computer-science IUT attached to Valenciennes): we build bilingual platforms ready for Belgian customers and draw on a local technical talent pool.",
+          "A cross-border location next to Belgium and the Douzies campus (computer-science IUT attached to Valenciennes): we build bilingual platforms ready for Belgian customers and draw on a local technical talent pool.",
         ],
         methodology: [
           {

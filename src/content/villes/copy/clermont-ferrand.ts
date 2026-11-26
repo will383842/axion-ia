@@ -1006,10 +1006,6 @@ export const CLERMONT_FERRAND_COPY: VilleCopy = {
       a: "Nos déploiements dans le bassin couvrent prioritairement l'industrie manufacturière (filière pneumatique, équipementiers), l'agroalimentaire (coopératives, IAA Auvergne), la recherche et les biotechnologies (UCA, ISIMA, Biopôle), et les services B2B. Tout secteur avec des workflows documentaires répétitifs est éligible à un audit.",
     },
     {
-      q: "Intervenez-vous à Clermont-Ferrand ?",
-      a: "Oui. Axion IA intervient partout en France, sur site ou à distance, y compris à Clermont-Ferrand.",
-    },
-    {
       q: "Vos interventions sont-elles compatibles avec les formations financées pour les TPE/PME ?",
       a: "Nos interventions sont facturées en direct sur devis HT. Elles s'intègrent dans votre plan de développement des compétences. Votre service RH ou comptable peut les traiter comme une prestation de conseil. La CCI Puy-de-Dôme peut vous orienter sur les dispositifs régionaux complémentaires.",
     },

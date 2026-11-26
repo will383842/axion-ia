@@ -141,7 +141,7 @@ export const BUSSY_SAINT_GEORGES_COPY: VilleCopy = {
           "The Gustave-Eiffel park concentrates distribution and logistics players (TD Synnex for IT, Logistique Galeries Lafayette for warehousing, Toyota Material Handling for materials handling): we build B2B portals, order-tracking interfaces and WMS/ERP/EDI connectors directly useful to these flows.",
           "Bussy-Saint-Georges is becoming a video game and esports hub: a Gaming House in the Sycomore eco-district and the future Odyssée museum (2,200+ consoles, opening 2026). For these projects we design online ticketing, community spaces, gaming e-commerce stores and tournament platforms (Bussy Esport Masters).",
           "The fabric includes Taiwanese companies (Asialand, MSI) and a population where nearly one resident in two is of Asian origin: we deliver multilingual FR/English/Chinese sites and SaaS, designed for cross-border commerce and a genuinely international audience.",
-          "The ZAC Léonard-de-Vinci (created 2005, A4 exit 12 three minutes away, RER A twelve minutes) and the Sycomore eco-district gather SMEs and local retailers (Agora Parc II programme): for them, multi-CMS e-commerce storefronts, online booking and mobile-first UX/UI are our day-to-day work.",
+          "The ZAC Léonard-de-Vinci (created 2005) and the Sycomore eco-district gather SMEs and local retailers (Agora Parc II programme): for them, multi-CMS e-commerce storefronts, online booking and mobile-first UX/UI are our day-to-day work.",
         ],
         methodology: [
           {

@@ -52,10 +52,6 @@ export const SAVENAY_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Savenay et tout le nord estuaire de la Loire (Campbon, Lavau-sur-Loire, Prinquiau, Pontchâteau). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
-      q: "Intervenez-vous sur site à Savenay ?",
-      a: "Oui. Nous intervenons sur place à Savenay, comme partout en France, ou à distance.",
-    },
-    {
       q: "Travaillez-vous avec les exploitations agricoles du bocage ?",
       a: "Oui, nous accompagnons les exploitants agricoles du bocage autour de Savenay sur leurs cas IA : traçabilité élevage, prédiction rendements, classification photos parcelles, automatisation administratif PAC, optimisation rations.",
     },
@@ -66,6 +62,10 @@ export const SAVENAY_COPY: VilleCopy = {
     {
       q: "Accompagnez-vous les PME tertiaires et services ?",
       a: "Oui, nous accompagnons les PME tertiaires installées à Savenay et nord estuaire sur leurs cas IA : automatisation processus, classification documents, agents conversationnels, reporting automatisé. Nous intervenons dans vos locaux à Savenay, partout en France.",
+    },
+    {
+      q: "Quel délai pour recevoir un devis à Savenay ?",
+      a: "Devis et calendrier fournis en 48 h, après un premier échange de cadrage.",
     },
   ],
 };

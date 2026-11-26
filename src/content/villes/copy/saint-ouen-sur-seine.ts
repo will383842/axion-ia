@@ -200,7 +200,7 @@ export const SAINT_OUEN_SUR_SEINE_COPY: VilleCopy = {
         faq: [
           {
             q: "Do you work on site in Saint-Ouen-sur-Seine for a website or SaaS project?",
-            a: "Yes. The kick-off takes place at your premises in Saint-Ouen — ZAC Victor-Hugo, Docks floors, Alstom HQ or a Flea Market shop — and we travel across the northern Grand Paris area (Saint-Denis, Clichy, Asnières, 17th/18th). Saint-Ouen is served by metro 14, metro 13, RER C and tram T3b.",
+            a: "Yes. The kick-off takes place at your premises in Saint-Ouen — ZAC Victor-Hugo, Docks floors, Alstom HQ or a Flea Market shop. Axion-IA works anywhere in France, on site or remotely, including in Saint-Ouen-sur-Seine.",
           },
           {
             q: "Can you build an online shop for a Saint-Ouen antique or flea-market dealer?",

@@ -123,6 +123,8 @@ const PRESENCE: ReadonlyArray<readonly [string, RegExp]> = [
     /(?:Williams|[Nn]os consultants|[Nn]otre équipe)[^."]{0,60}(?:prenn?ent|prend) (?:le |l['’])?(?:TGV|train|avion|RER)|(?:se déplace|[Dd]éplacement)[^."]{0,60}\b(?:via|par le (?:train|RER|TGV)|grâce au|en \d)/u,
   ],
   ["aux mêmes tarifs", /aux m[êe]mes tarifs/iu],
+  ["même grille tarifaire qu'à Paris ou Lyon", /m[êe]me grille tarifaire/iu],
+  ["surcoût saison", /surco[uû]t[^".]{0,20}saison/iu],
   ["phrase cassée par une suppression (« ,, » ou « , . »)", /,\s*,|,\s*\.|\s,/u],
   [
     "transport après « se déplace / kick-off / intervenons / intervient »",
@@ -197,6 +199,10 @@ const ANGLAIS: ReadonlyArray<readonly [string, RegExp]> = [
     /(?:^|["'.!?:] |a: ")(?:Yes\. )?From [A-ZÉ][^".,]{0,60}, (?:we|our|interconnected|served|connected)\b|well-connected|\bLGV ~|accessible (?:via|by)|(?:on-site )?visits arranged via|\(via [A-Z][^)]*(?:airport|station)\)/u,
   ],
   ["surcharge", /\b(?:zone|travel|geographic\w*|no) surcharge|surcharge\b/iu],
+  [
+    "transport ou desserte (EN) : served by / reachable by / minutes away / via the A",
+    /\b(?:served|reachable|reached) (?:by|via) (?:the )?(?:tram|RER|metro|métro|Métro|TGV|A\d)|\bminutes? (?:away|from (?:central )?[A-Z])|\bvia the (?:T\d|A\d|N\d|tram|RER)|\bvia the A\d/u,
+  ],
   ["logistics costs", /logistics? costs?/iu],
   ["same rate card", /same rate card|same (?:rates?|prices?|pricing) as/iu],
   [

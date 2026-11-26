@@ -140,7 +140,7 @@ export const HOUILLES_COPY: VilleCopy = {
         whyHere: [
           "Proximity retail drives Houilles: the Association des commerçants et artisans de Houilles (ACAH) has over 200 members and the downtown market gathers 160 traders — an ideal base for click-and-collect e-commerce sites, AI-generated product listings and digital loyalty programs in the spirit of the Myloope card.",
           "The Braderie de Houilles (1,500 to 2,000 exhibitors, 25,000 to 30,000 visitors at Parc Charles-de-Gaulle) calls for concrete event web platforms: exhibitor registration, interactive map, ticketing, multichannel communication — SaaS use cases we know how to deliver.",
-          "An affluent, connected local clientele: the Réveil-Matin district concentrates young executives (median household income around €39,200, 65% homeowners), 6 minutes from La Défense on the RER A — a public that buys online and expects fast, mobile, reliable sites.",
+          "An affluent, connected local clientele: the Réveil-Matin district concentrates young executives (median household income around €39,200, 65% homeowners) — a public that buys online and expects fast, mobile, reliable sites.",
           "An ecosystem of art craftspeople and liberal professions (health, legal, consulting) that needs credible storefronts: online booking, portfolios, automated quotes, conversational agents — beyond mere design, we embed AI into tools that are useful day to day.",
         ],
         methodology: [

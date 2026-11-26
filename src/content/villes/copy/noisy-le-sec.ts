@@ -141,7 +141,7 @@ export const NOISY_LE_SEC_COPY: VilleCopy = {
         whyHere: [
           "Logistics and railway maintenance at the heart of the territory: around the SNCF Paris-Est Technicentre and the Le Terminal / Groux business park (~9.74 ha, ~162 businesses less than 10 minutes from the RER), we equip carriers, technical cleaning firms (such as Samsic Transport) and electrical installation providers (such as Transport Tertiaire Industrie) with intervention-tracking, planning and parts portals.",
           "Construction and BTP over-represented: the Quartier durable de la Plaine de l'Ourcq development (35 ha, ~75,000 m² of activities and 30,000 m² of offices led by Est Ensemble and Séquano by 2029) drives demand among building trades — we build their online quoting sites, site-tracking tools and materials e-commerce.",
-          "Local retail and services: for town-centre and market shops, served by the RER E station, the T1 tram and soon the Pont de Bondy station on Grand Paris Express line 15, we deploy multi-CMS e-commerce storefronts (Shopify, WooCommerce, PrestaShop) with click-and-collect and product AI.",
+          "Local retail and services: for town-centre and market shops, we deploy multi-CMS e-commerce storefronts (Shopify, WooCommerce, PrestaShop) with click-and-collect and product AI.",
           "Healthcare and business services: clinics and follow-up care centres, such as the Clinique de Soins de Suite de Noisy-le-Sec, and providers across the 4 business zones (ZI du Parc, Sous les Plâtres, ZAC des Guillaumes) receive GDPR-compliant booking, conversational-agent and document-classification platforms.",
         ],
         methodology: [
@@ -208,7 +208,7 @@ export const NOISY_LE_SEC_COPY: VilleCopy = {
           },
           {
             q: "Do you build multi-CMS e-commerce for Noisy-le-Sec shops?",
-            a: "Yes. For town-centre and market shops, served by the RER E station, the T1 tram and soon the Pont de Bondy station on Grand Paris Express line 15, we deploy e-commerce storefronts on Shopify, WooCommerce or PrestaShop, with click-and-collect, AI product recommendation and semantic search.",
+            a: "Yes. For town-centre and market shops, we deploy e-commerce storefronts on Shopify, WooCommerce or PrestaShop, with click-and-collect, AI product recommendation and semantic search.",
           },
           {
             q: "How fast is a quote?",

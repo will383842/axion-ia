@@ -209,7 +209,7 @@ export const GAGNY_COPY: VilleCopy = {
           },
           {
             q: "How quickly do you start a project in Gagny?",
-            a: "The quote is issued from 24-48 h depending on complexity. Framing happens in person in Gagny — reachable via RER E (Gagny and Le Chénay – Gagny stations, ~20 min from Paris-Est) — then development runs in a hybrid on-site and remote mode.",
+            a: "The quote is issued from 24-48 h depending on complexity. Axion-IA works anywhere in France, on site or remotely, including in Gagny: framing happens in person, then development runs in a hybrid on-site and remote mode.",
           },
           {
             q: "Is my data and that of my Gagny customers protected?",

@@ -126,7 +126,7 @@ export const MEAUX_COPY: VilleCopy = {
           },
           {
             q: "Intervenez-vous pour les entreprises du Parc d'Activités du Pays de Meaux et de la ZAE La Hayette ?",
-            a: "Oui, nous nous déplaçons sur le PAPM (intersection RN3/A140 — voisinage de Gaches Chimie, C&A, Prologis, Les Saisons de Meaux) et sur la ZAE La Hayette à Mareuil-lès-Meaux. Nous y déployons portails B2B, suivi de commandes, devis automatisés et intégrations ERP/WMS pilotées par l'IA.",
+            a: "Oui, Axion IA intervient partout en France, sur site ou à distance, notamment sur le PAPM (voisinage de Gaches Chimie, C&A, Prologis, Les Saisons de Meaux) et sur la ZAE La Hayette à Mareuil-lès-Meaux. Nous y déployons portails B2B, suivi de commandes, devis automatisés et intégrations ERP/WMS pilotées par l'IA.",
           },
           {
             q: "Sous quel délai obtient-on un devis pour un site ou un SaaS à Meaux ?",

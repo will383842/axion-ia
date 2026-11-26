@@ -153,7 +153,7 @@ export const VILLEPARISIS_COPY: VilleCopy = {
           {
             step: "Kick-off in Villeparisis",
             detail:
-              "First on-site visit, reachable by RER B (Villeparisis–Mitry-le-Neuf station) or via the A104, to observe your real flows: counter and stock for Ambrésis retail, dock and rounds for CDG-geared carriers, workshop and sites for craftsmen. We start from your screens and documents, not a theoretical spec.",
+              "First on-site visit, to observe your real flows: counter and stock for Ambrésis retail, dock and rounds for CDG-geared carriers, workshop and sites for craftsmen. We start from your screens and documents, not a theoretical spec.",
           },
           {
             step: "UX/UI mock-ups + AI demos on your data",

@@ -143,7 +143,7 @@ export const CACHAN_COPY: VilleCopy = {
           "Cachan's business profile is heavily technical: in 2024, scientific, technical and administrative-support activities led new registrations (214), ahead of retail and hospitality (154) and information and communication (76) — exactly the firms that need fast websites and tailored business SaaS tools rather than generic templates.",
           "Engineering ecosystem anchored around ESTP (construction, public works, civil engineering) and the ENS Paris-Saclay legacy: for design and technical offices we build AI-native platforms (semantic search across standards and technical specifications, RAG chatbot over project documentation, tender-document generation).",
           "A fabric of freelancers and young ventures incubated at La Fabrique (avenue de la Division-Leclerc) and Start Way coworking: high-performance showcase sites, multi-CMS e-commerce stores (WooCommerce, Shopify, PrestaShop, Sylius) and SaaS MVPs delivered fast, with no dependency on a proprietary platform.",
-          "Retail and services across the Gare Arcueil-Cachan / RD920, town-centre and La Plaine hubs, 15 minutes from Paris by RER B and soon on Line 15 South: we equip their local visibility (mobile sites, booking, product pages, e-commerce automations) ahead of the announced densification of the station district.",
+          "Retail and services across the Gare Arcueil-Cachan / RD920, town-centre and La Plaine hubs: we equip their local visibility (mobile sites, booking, product pages, e-commerce automations). Axion-IA works anywhere in France, on site or remotely, including in Cachan.",
         ],
         methodology: [
           {

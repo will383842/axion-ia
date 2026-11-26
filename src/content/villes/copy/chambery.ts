@@ -144,7 +144,7 @@ export const CHAMBERY_COPY: VilleCopy = {
           "Chambéry is a French Tech capital (French Tech in the Alps, Digital Savoie): the Savoie Technolac SaaS ecosystem — Pixminds, Lunabee Studio, Geomap-imagis, Resalab — has concrete needs in semantic search, conversational agents and RAG chatbots that we build bespoke, not from recycled templates.",
           "Alpine tourism is our most specific ground: for resort hotel-restaurants (Trois Vallées, Les Arcs, La Plagne) and Alpes Tourisme Lab startups, we design booking platforms, seasonal multilingual assistants and e-commerce sites tuned to ski-season peaks.",
           "We treat brand e-commerce as a discipline in its own right: for Savoyard icons (Opinel, Cafés Folliet) and the outdoor brands of Savoie Hexapole, multi-CMS stores (Shopify, WooCommerce, headless), AI-generated product sheets and product recommendation, with polished UX/UI and mobile.",
-          "Our consultants travel across the Chambéry basin: Savoie Technolac (Le Bourget-du-Lac, La Motte-Servolex), the Bissy business park, the historic centre, Université Savoie Mont Blanc, and up to the Tarentaise and Maurienne resorts 30-90 minutes away.",
+          "Axion-IA works anywhere in France, on site or remotely, including in Chambéry: Savoie Technolac (Le Bourget-du-Lac, La Motte-Servolex), the Bissy business park, the historic centre, Université Savoie Mont Blanc and the Tarentaise and Maurienne resorts.",
         ],
         methodology: [
           {

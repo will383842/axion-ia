@@ -141,7 +141,7 @@ export const TAVERNY_COPY: VilleCopy = {
         whyHere: [
           "Taverny's industrial core — Châtaigniers, Chêne Bocquet, Écouardes — is made of precision-engineering, spring and sheet-metal workshops (CGR, CIFR Industries, CFP Industries) still selling via PDF catalogues and manual quotes: an AI-augmented site that prices a part from a drawing or spec sheet transforms their sales cycle.",
           "These subcontractors work B2B with recurring principals: we build SaaS customer/supplier portals (order tracking, acknowledgements, quality reports, follow-ups) rather than plain showcases, because the value sits in the back-office, not the home page.",
-          "Taverny is served by the A15, A115, A86, Francilienne, RER C and line H: an SME owner in the Châtaigniers park welcomes us on the shop floor, then signs off mock-ups as iterations progress.",
+          "Axion-IA works anywhere in France, on site or remotely, including in Taverny: an SME owner in the Châtaigniers park welcomes us on the shop floor, then signs off mock-ups as iterations progress.",
           "Beyond industry, the town mixes local retail, heavy-vehicle trade (IVECO 'Le Poids Lourd 95', Chêne Bocquet) and services tied to the Creil-Taverny defence base site: we tailor the SaaS to each model (parts e-commerce, workshop booking, document portal).",
         ],
         methodology: [
@@ -212,7 +212,7 @@ export const TAVERNY_COPY: VilleCopy = {
           },
           {
             q: "Do you cover the towns around Taverny?",
-            a: "Yes. We operate across the whole north-west of Val-d'Oise: Saint-Leu-la-Forêt, Le Plessis-Bouchard, Franconville, Beauchamp, Bessancourt (where air base 921 extends), Frépillon, Pierrelaye and Villiers-Adam. Taverny is reached via the A15, A115, A86, Francilienne, RER C and line H.",
+            a: "Yes. We operate across the whole north-west of Val-d'Oise: Saint-Leu-la-Forêt, Le Plessis-Bouchard, Franconville, Beauchamp, Bessancourt (where air base 921 extends), Frépillon, Pierrelaye and Villiers-Adam. Axion-IA works anywhere in France, on site or remotely, including in Taverny.",
           },
           {
             q: "How fast is the quote, and how long for the site?",

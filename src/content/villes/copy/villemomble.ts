@@ -144,7 +144,7 @@ export const VILLEMOMBLE_COPY: VilleCopy = {
           "A dense fabric of local micro-businesses and SMEs — roughly one business per thirteen residents: our Villemomble projects start from concrete needs, such as a building-trade craftsperson wanting online quotes, an Outrebon retailer wanting a storefront tied to the 'Cœurs de ville' loyalty card, or a Maison de Santé practice wanting smart appointment booking.",
           "The ZA La Garenne business park (about 12.29 hectares, nearly 125 companies) and the Hôtel d'entreprises near the A3/A86 concentrate service SMEs and craft workshops: client portals, automated quoting and bespoke SaaS tools answer real processes there.",
           "Strong local retail around avenue Outrebon and the two municipal markets: we build multi-CMS e-commerce stores, click-and-collect and digital loyalty tied to the retail dynamism driven by the ADEEV (121 avenue de Rosny).",
-          "RER E accessibility (Le Raincy-Villemomble-Montfermeil station, about a 3-minute walk from the Outrebon market): we work on site or remotely, anywhere in France, for scoping workshops and acceptance, then iterate remotely on your data.",
+          "Axion-IA works anywhere in France, on site or remotely, including in Villemomble: scoping workshops and acceptance, then remote iterations on your data.",
         ],
         methodology: [
           {
@@ -202,7 +202,7 @@ export const VILLEMOMBLE_COPY: VilleCopy = {
         faq: [
           {
             q: "Can you build a site with appointment booking for a Maison de Santé practice in Villemomble?",
-            a: "Yes. We build healthcare sites with an appointment-booking conversational agent connected to your calendar, automatic reminders and patient routing, with strict GDPR and medical-confidentiality compliance. The Maison de Santé at 25 avenue du Raincy is served by the RER E, which makes on-site workshops easy.",
+            a: "Yes. We build healthcare sites with an appointment-booking conversational agent connected to your calendar, automatic reminders and patient routing, with strict GDPR and medical-confidentiality compliance. The Maison de Santé at 25 avenue du Raincy can host on-site workshops: Axion-IA works anywhere in France, on site or remotely, including in Villemomble.",
           },
           {
             q: "Do you build e-commerce stores for avenue Outrebon retailers and the markets?",

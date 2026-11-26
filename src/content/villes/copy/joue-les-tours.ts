@@ -214,7 +214,7 @@ export const JOUE_LES_TOURS_COPY: VilleCopy = {
           },
           {
             q: "Do you work on site in Joué-lès-Tours?",
-            a: "Yes. The kick-off and key stages take place at your premises — Liodière park, Deux Lions, Gutenberg or Cugnot industrial zones. Joué is served by tram line A (L'Heure Tranquille terminus) and sits about 7 km from the Tours and Saint-Pierre-des-Corps stations. The rest can be run remotely.",
+            a: "Yes. The kick-off and key stages take place at your premises — Liodière park, Deux Lions, Gutenberg or Cugnot industrial zones. Axion-IA works anywhere in France, on site or remotely, including in Joué-lès-Tours.",
           },
           {
             q: "How fast is a quote and is the site GDPR-compliant?",

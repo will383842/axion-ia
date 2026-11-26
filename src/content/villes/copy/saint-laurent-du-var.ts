@@ -139,7 +139,7 @@ export const SAINT_LAURENT_DU_VAR_COPY: VilleCopy = {
         whyHere: [
           "High-volume retail and e-commerce: brands and shops of the CAP3000 ecosystem (nearly 300 stores, around 50 restaurants, ~10 million visitors a year) — an ideal ground for omnichannel sites, click & collect, catalogues and AI-augmented checkout funnels.",
           "Marina and nautical sector: with over 1,000 berths and a 34 M€ works programme (new 20-year concession from 2026), the port's shops, harbour offices, charter firms and boater services need online booking, berth management and digitised customer relations.",
-          "Multilingual tourist flow: 5 minutes from Nice-Côte d'Azur airport (France's second busiest outside Paris), hotels, restaurants and premium agencies require FR/EN/IT/DE chatbots and journeys grounded in their own content — not a generic widget.",
+          "Multilingual tourist flow: with an international visitor base, hotels, restaurants and premium agencies require FR/EN/IT/DE chatbots and journeys grounded in their own content — not a generic widget.",
           "B2B fabric of the P.A. Saint-Laurent park (44 ha, ~794 firms: ADREXO, BARBERO TRANSPORTS, FRANCE BETON PROJECT, animated by the APAL club) and the neighbouring Éco-Vallée (Virbac, Arkopharma, Schneider Electric, Malongo): client portals, automated quotes and business SaaS for logistics, transport, construction and wholesale.",
         ],
         methodology: [
@@ -210,7 +210,7 @@ export const SAINT_LAURENT_DU_VAR_COPY: VilleCopy = {
           },
           {
             q: "Do you handle multilingual for the airport tourist clientele?",
-            a: "Yes. 5 minutes from Nice-Côte d'Azur airport (France's second busiest outside Paris), your clientele is international. We deliver FR/EN/IT/DE chatbots and journeys grounded in your own content (menus, rooms, services), not a generic module — adapted to Mediterranean seasonality.",
+            a: "Yes. Your clientele is international. Axion-IA works anywhere in France, on site or remotely, including in Saint-Laurent-du-Var. We deliver FR/EN/IT/DE chatbots and journeys grounded in your own content (menus, rooms, services), not a generic module — adapted to Mediterranean seasonality.",
           },
           {
             q: "Which technologies do you work with and where is the data hosted?",

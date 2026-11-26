@@ -236,7 +236,7 @@ export const HAGUENAU_COPY: VilleCopy = {
     },
     {
       q: "Quelles communes de l'agglomération haguenovienne couvrez-vous ?",
-      a: "Lors d'un déplacement à Haguenau, nous couvrons aussi la Communauté d'agglomération : Bischwiller, Schweighouse-sur-Moder, Brumath, Soufflenheim, Mertzwiller et Niederbronn-les-Bains, toutes accessibles en moins de 30 minutes.",
+      a: "Axion IA intervient partout en France, sur site ou à distance : à Haguenau comme dans la Communauté d'agglomération — Bischwiller, Schweighouse-sur-Moder, Brumath, Soufflenheim, Mertzwiller et Niederbronn-les-Bains.",
     },
     {
       q: "Quels secteurs haguenoviens Axion-IA accompagne-t-il en priorité ?",

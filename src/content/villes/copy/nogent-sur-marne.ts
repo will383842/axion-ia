@@ -144,7 +144,7 @@ export const NOGENT_SUR_MARNE_COPY: VilleCopy = {
           "The tertiary hub of the Cité d'Affaires Nogent Baltard (Eiffage offices above the RER A) and the Bourrelier Group head office drive demand for business portals and internal SaaS apps that we build AI-native (semantic document search, conversational agents, back-office automation).",
           "The local healthcare sector — Hôpital Privé Armand Brillard (Ramsay, av. Watteau), the new Maison médicale Nogent Baltard, many liberal practices — needs booking websites, patient pre-qualification and GDPR-compliant portals with controlled hosting of health data.",
           "The Pavillon Baltard (2,700 sqm, up to 2,200 people, fairs and congresses) and the events/guinguette ecosystem on the Marne riverbanks call for AI-augmented ticketing, booking and event-planning sites (programme assistant, automatic replies, exhibitor tracking).",
-          "The upmarket residential economy — estate agencies, wealth management, premium retail and restaurants of the Cœur de Nogent — values polished mobile-first UX/UI with multi-CMS e-commerce and automated client replies, 10 minutes from Paris by RER A and RER E.",
+          "The upmarket residential economy — estate agencies, wealth management, premium retail and restaurants of the Cœur de Nogent — values polished mobile-first UX/UI with multi-CMS e-commerce and automated client replies. Axion-IA works anywhere in France, on site or remotely, including in Nogent-sur-Marne.",
         ],
         methodology: [
           {
@@ -214,7 +214,7 @@ export const NOGENT_SUR_MARNE_COPY: VilleCopy = {
           },
           {
             q: "Will the site be fast and well-ranked on mobile?",
-            a: "Yes. We design mobile-first with strong attention to performance (load time, smoothness) and local SEO. This is decisive for Cœur de Nogent retailers and practices targeting nearby clients 10 minutes from Paris by RER.",
+            a: "Yes. We design mobile-first with strong attention to performance (load time, smoothness) and local SEO. This is decisive for Cœur de Nogent retailers and practices targeting nearby clients.",
           },
           {
             q: "How quickly can a website project start in Nogent-sur-Marne?",

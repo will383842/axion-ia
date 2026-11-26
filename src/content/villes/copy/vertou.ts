@@ -241,10 +241,6 @@ export const VERTOU_COPY: VilleCopy = {
       a: "Nous automatisons les tâches chronophages des domaines Muscadet : extraction des commandes négoce, saisie des registres caves, génération de fiches techniques AOC, réponses email export. Les vignerons gagnent du temps sur l'administratif pour se concentrer sur la vigne et la commercialisation.",
     },
     {
-      q: "Intervenez-vous à Vertou ?",
-      a: "Oui. Nous intervenons sur place à Vertou, comme partout en France, ou à distance.",
-    },
-    {
       q: "Axion-IA travaille-t-elle avec l'écosystème industriel Manitou et Saint-Nazaire ?",
       a: "Oui. Nous intervenons auprès des sous-traitants gravitant autour de Manitou (chariots élévateurs, 4 500 salariés Ancenis-Vertou), des fournisseurs Airbus Nantes et des PME servant les chantiers navals de Saint-Nazaire. Cas d'usage typiques : prévision de stocks, maintenance prédictive, copilotes méthodes.",
     },

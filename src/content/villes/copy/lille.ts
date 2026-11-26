@@ -1009,9 +1009,5 @@ export const LILLE_COPY: VilleCopy = {
       q: "Avez-vous des références dans le retail et l'e-commerce lillois ?",
       a: "Oui. Plusieurs de nos références lilloise concernent le retail omnicanal, l'e-commerce et la logistique. Les cas clients récents sont consultables dans la rubrique Cas concrets, filtrables par secteur et par taille d'entreprise.",
     },
-    {
-      q: "Intervenez-vous à Lille ?",
-      a: "Oui, nous intervenons dans vos locaux à Lille, comme partout en France, ainsi qu'à Villeneuve-d'Ascq et Roubaix.",
-    },
   ],
 };

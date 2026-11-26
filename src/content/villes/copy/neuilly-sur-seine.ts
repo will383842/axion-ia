@@ -142,7 +142,7 @@ export const NEUILLY_SUR_SEINE_COPY: VilleCopy = {
           "French capital of luxury and cosmetics headquarters: Chanel (135 avenue Charles-de-Gaulle), Sephora-LVMH (rue Ybry) and Dior set e-commerce, multilingual product page, configurator and mobile-experience standards that we power with semantic search and AI content generation.",
           "Media, broadcast and advertising hub with Groupe M6 (89 avenue Charles-de-Gaulle), RTL and JCDecaux: high-traffic content portals, digital asset management (DAM), AI-assisted recommendation and moderation demand performant, observable platforms.",
           "Concentration of consulting and audit firms — Deloitte, PwC, Bureau Veritas — and business legal professions (lawyers, notaries): we build secure client portals, RAG knowledge bases and document assistants with strict GDPR isolation of sensitive data.",
-          "Exceptional density of around 13,000 companies over 3.7 km² served by metro line 1 (Pont de Neuilly, Les Sablons, Porte Maillot) next to La Défense: fast on-site work, kick-off and acceptance in person at your Neuilly offices.",
+          "Exceptional density of around 13,000 companies over 3.7 km². Axion-IA works anywhere in France, on site or remotely, including in Neuilly-sur-Seine: kick-off and acceptance in person at your offices.",
         ],
         methodology: [
           {
@@ -236,7 +236,7 @@ export const NEUILLY_SUR_SEINE_COPY: VilleCopy = {
     },
     {
       q: "Quelles communes proches de Neuilly-sur-Seine couvrez-vous ?",
-      a: "Lors d'un déplacement à Neuilly-sur-Seine, nous couvrons aussi Levallois-Perret, Courbevoie, Puteaux, La Défense, Paris 16e et Paris 17e — toutes à moins de 15 minutes en transport.",
+      a: "Axion IA intervient partout en France, sur site ou à distance : à Neuilly-sur-Seine comme à Levallois-Perret, Courbevoie, Puteaux, La Défense, Paris 16e et Paris 17e.",
     },
     {
       q: "Quels secteurs neuilléens Axion-IA accompagne-t-il en priorité ?",

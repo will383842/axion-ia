@@ -141,7 +141,7 @@ export const SARTROUVILLE_COPY: VilleCopy = {
           "Sartrouville's fabric is dominated by precision industrial subcontracting at Le Prunay (electronics, mechanics, metalworking, plastics, aeronautics/automotive/aerospace prototypes and series): these workshops need technical quote configurators, order-tracking portals and structured product catalogues, not decorative showcases.",
           "Les Perriers concentrate cosmetics, industrial design and wholesale trade — a manufacturer like Académie Scientifique de Beauté or a fastener distributor like Fontana Fasteners has B2B e-commerce needs (per-client pricing, technical references, safety sheets) that we handle on the main CMS platforms and in headless setups.",
           "Les Sureaux host digital and business-services activities tied to the As'tech and NextMove competitiveness clusters: these firms expect SaaS platforms and AI integrations (semantic search, agents) that match their technical demands.",
-          "The Urban Free Zone (ZFU) and the Sartrouville business incubator feed a steady stream of young SMEs and freelancers: we deliver scalable sites and SaaS MVPs sized for a structure that starts small then grows, 15 minutes from La Défense via the Transilien L and RER A.",
+          "The Urban Free Zone (ZFU) and the Sartrouville business incubator feed a steady stream of young SMEs and freelancers: we deliver scalable sites and SaaS MVPs sized for a structure that starts small then grows. Axion-IA works anywhere in France, on site or remotely, including in Sartrouville.",
         ],
         methodology: [
           {

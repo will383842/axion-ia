@@ -216,7 +216,7 @@ export const SAINTE_GENEVIEVE_DES_BOIS_COPY: VilleCopy = {
           },
           {
             q: "Do you cover the communes around Sainte-Geneviève-des-Bois?",
-            a: "Yes, across the whole Cœur d'Essonne Agglomération and neighboring communes: Villiers-sur-Orge, Épinay-sur-Orge, Morsang-sur-Orge, Fleury-Mérogis, Brétigny-sur-Orge, Saint-Michel-sur-Orge and Longpont-sur-Orge. The area is served by RER C (Le Perray station) and the RN104.",
+            a: "Yes, across the whole Cœur d'Essonne Agglomération and neighboring communes: Villiers-sur-Orge, Épinay-sur-Orge, Morsang-sur-Orge, Fleury-Mérogis, Brétigny-sur-Orge, Saint-Michel-sur-Orge and Longpont-sur-Orge. Axion-IA works anywhere in France, on site or remotely, including in Sainte-Geneviève-des-Bois.",
           },
         ],
         guarantees:

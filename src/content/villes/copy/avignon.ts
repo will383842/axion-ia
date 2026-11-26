@@ -322,7 +322,7 @@ export const AVIGNON_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée, pas de surcoût « saison Festival ». Mise en ligne sans downtime quand on augmente l'existant. Web Vitals, accessibilité et test de charge contrôlés à la livraison, en particulier pour absorber le pic de juillet. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun abonnement imposé, transférable à tout prestataire du Vaucluse ou repris en interne.",
+          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée. Axion IA intervient partout en France, sur site ou à distance. Mise en ligne sans downtime quand on augmente l'existant. Web Vitals, accessibilité et test de charge contrôlés à la livraison, en particulier pour absorber le pic de juillet. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun abonnement imposé, transférable à tout prestataire du Vaucluse ou repris en interne.",
       },
       en: {
         hero: "In Avignon, Axion-IA designs and augments websites, applications and SaaS platforms with built-in AI: bespoke UX/UI, RAG chatbot grounded in your content, semantic search, agents and automations. Two local realities drive the spec — the summer peak of the Festival (In and Off) and the food/natural-ingredients cluster of Agroparc. Quote from 24-48 h depending on project complexity, EU hosting, code and data yours. On-site Avignon kick-off, remote iterations.",

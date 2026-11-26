@@ -60,12 +60,12 @@ export const BOUAYE_COPY: VilleCopy = {
       a: "Pour les PME tertiaires du sud-ouest nantais, nous proposons audit IA (Sur place à Stratégique), interventions sur site, implémentation IA (agents, automatisations), coaching 1-to-1 dirigeants, et plateformes web/SaaS IA sur mesure. Tarifs publics.",
     },
     {
-      q: "Intervenez-vous à Bouaye ?",
-      a: "Oui, nous intervenons dans vos locaux à Bouaye, comme partout en France, sur place ou à distance. Tarifs publics et transparents.",
-    },
-    {
       q: "L'IA est-elle pertinente pour les activités autour du lac de Grand-Lieu ?",
       a: "Oui, l'IA apporte des gains concrets aux activités touristiques et nature : agents conversationnels réservation, automatisation gestion planning, relation client personnalisée. Adapté aux TPE du secteur tourisme et loisirs de Bouaye.",
+    },
+    {
+      q: "Quel délai pour recevoir un devis à Bouaye ?",
+      a: "Devis et calendrier fournis en 48 h, après un premier échange de cadrage.",
     },
   ],
 };

@@ -64,8 +64,8 @@ export const PLEURTUIT_COPY: VilleCopy = {
       a: "Pour les TPE artisans BTP et commerçants de Pleurtuit, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, gestion planning chantiers.",
     },
     {
-      q: "Intervenez-vous à Pleurtuit ?",
-      a: "Oui, nous intervenons dans vos locaux à Pleurtuit, comme partout en France, sur place ou à distance.",
+      q: "Quel délai pour recevoir un devis à Pleurtuit ?",
+      a: "Devis et calendrier fournis en 48 h, après un premier échange de cadrage.",
     },
   ],
 };

@@ -64,8 +64,8 @@ export const LE_VESINET_COPY: VilleCopy = {
       a: "L'audit sur place IA démarre à {{price:audit-flash|flat}} pour les TPE/PME au Vésinet. Diagnostic complet en 1 journée : cartographie processus, opportunités IA priorisées, ROI estimé, plan d'action.",
     },
     {
-      q: "Intervenez-vous au Vésinet ?",
-      a: "Oui. Nous intervenons sur place au Vésinet, dans votre cabinet ou vos locaux, comme partout en France, ou à distance.",
+      q: "Quel délai pour recevoir un devis au Vésinet ?",
+      a: "Devis et calendrier fournis en 48 h, après un premier échange de cadrage.",
     },
   ],
 };

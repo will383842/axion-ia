@@ -218,7 +218,7 @@ export const CHARLEVILLE_MEZIERES_COPY: VilleCopy = {
           },
           {
             q: "What are your timelines and where do you operate?",
-            a: "We provide a quote within 24-48 hours depending on complexity, after framing. We operate on site in Charleville-Mézières and across the Ardenne Métropole area — Villers-Semeuse, Les Ayvelles, Nouzonville, Bogny-sur-Meuse, Sedan — and also work remotely. Reims is about 1h away via the A34.",
+            a: "We provide a quote within 24-48 hours depending on complexity, after framing. Axion-IA works anywhere in France, on site or remotely, including Charleville-Mézières and the Ardenne Métropole area — Villers-Semeuse, Les Ayvelles, Nouzonville, Bogny-sur-Meuse, Sedan.",
           },
         ],
         guarantees:
