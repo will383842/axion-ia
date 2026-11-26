@@ -9,7 +9,7 @@
 // recopiées.
 
 import { DATE_MISE_A_JOUR_PRIX_AUDIT_IA } from "@/content/prix-audit-ia-date";
-import { RAPPORT_COMPLET } from "@/content/journee-ia-commun";
+import { DELAI_RAPPORT_JOURS_OUVRES, RAPPORT_COMPLET } from "@/content/journee-ia-commun";
 import { PHRASE_AUDIT_APPROFONDI, reponseReference } from "@/content/questions-reference";
 
 export const PATH = "/prix-audit-ia";
@@ -19,8 +19,7 @@ export { DATE_MISE_A_JOUR_PRIX_AUDIT_IA };
 export const TITRE = "Combien coûte un audit IA pour une TPE ou une PME ? · Axion-IA";
 
 /** Réponse directe en trois phrases : première ligne de la page, de la meta description et de l'extrait. */
-export const REPONSE_DIRECTE =
-  "L’audit IA d’Axion-IA est compris dans la Journée IA, au prix unique de {{PRIX}}. L’audit du matin convient aux entreprises de 2 à 250 salariés ; seule la formation de l’après-midi est limitée à 15 personnes. La journée comprend l’audit le matin (2 à 4 h selon l’entreprise), la formation l’après-midi, puis le rapport complet sous 3 jours ouvrés.";
+export const REPONSE_DIRECTE = `L’audit IA d’Axion-IA est compris dans la Journée IA, au prix unique de {{PRIX}}. L’audit du matin convient aux entreprises de 2 à 250 salariés ; seule la formation de l’après-midi est limitée à 15 personnes. La journée comprend l’audit le matin (2 à 4 h selon l’entreprise), la formation l’après-midi, puis le rapport complet sous ${DELAI_RAPPORT_JOURS_OUVRES} jours ouvrés.`;
 
 export const DESCRIPTION_META =
   "Un audit IA pour une TPE ou une PME : {{PRIX}}, prix unique, compris dans la Journée IA (audit pour 2 à 250 salariés, formation de l’après-midi jusqu’à 15 personnes). Formation et automatisation : sur devis écrit.";

@@ -65,7 +65,7 @@ export const PARENTIS_EN_BORN_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'entrée pour une mission à Parentis-en-Born ?",
-      a: "L'audit sur place propose un tarif d'entrée accessible, livrable en 5 jours ouvrés. Inclut diagnostic complet, cartographie processus automatisables, ROI chiffré et feuille de route IA. Déplacement inclus dans le pays de Born.",
+      a: "L'audit sur place propose un tarif d'entrée accessible, livrable en 5 jours ouvrés. Inclut diagnostic complet, cartographie processus automatisables, ROI chiffré et feuille de route IA.",
     },
   ],
 };

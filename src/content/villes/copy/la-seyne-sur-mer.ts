@@ -246,7 +246,7 @@ export const LA_SEYNE_SUR_MER_COPY: VilleCopy = {
     },
     {
       q: "Intervenez-vous aussi dans les communes proches de La Seyne-sur-Mer ?",
-      a: "Oui. Nous nous déplaçons également à Ollioules, Six-Fours-les-Plages, Saint-Mandrier-sur-Mer, Toulon et Sanary-sur-Mer. Le déplacement est inclus dans le forfait dans un rayon de 20 km autour de La Seyne-sur-Mer.",
+      a: "Oui. Nous nous déplaçons également à Ollioules, Six-Fours-les-Plages, Saint-Mandrier-sur-Mer, Toulon et Sanary-sur-Mer.",
     },
     {
       q: "Comment Axion-IA garantit la conformité RGPD à La Seyne-sur-Mer ?",

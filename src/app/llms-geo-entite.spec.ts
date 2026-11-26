@@ -4,7 +4,7 @@
  *  1. La ligne « Avis clients » n'existe que si au moins un avis est publié (même règle
  *     que les pages /avis, qui répondent 404 sinon).
  *  2. La Journée IA : description du nœud Service, garantie et condition MOT POUR MOT ;
- *     le rapport complet dans `llms-full.txt` (la description dit déjà « sous 3 jours ouvrés »,
+ *     le rapport complet dans `llms-full.txt` (la description dit déjà « sous 10 jours ouvrés »,
  *     et `llms.txt` n'écrit plus rien deux fois : refonte du 20/11/2026).
  *  3. Aucun mot proscrit (hors ligne du Tour France IA, décision en attente).
  *  4. Voix « nous » : aucune promesse d'intervention personnelle du fondateur.
@@ -32,6 +32,7 @@ import {
   GARANTIE_PHRASE,
   RAPPORT_COMPLET,
   remplacerJetons,
+  DELAI_RAPPORT_JOURS_OUVRES,
 } from "@/content/journee-ia-commun";
 import {
   ACCESSIBILITE_LLMS,
@@ -84,7 +85,7 @@ describe("2. La Journée IA : description, garantie et rapport, mot pour mot", (
     expect(corps).toContain(remplacerJetons(DESCRIPTION_SERVICE_JOURNEE_IA));
     expect(corps).toContain(GARANTIE_PHRASE);
     expect(corps).toContain(CONDITION_GARANTIE);
-    expect(corps).toContain("remis sous 3 jours ouvrés");
+    expect(corps).toContain(`remis sous ${DELAI_RAPPORT_JOURS_OUVRES} jours ouvrés`);
     expect(corps).toContain("2 à 4 h d’audit");
     expect(corps).not.toContain("{{");
   });

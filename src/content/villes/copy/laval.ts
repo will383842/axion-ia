@@ -229,7 +229,7 @@ export const LAVAL_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Quels sont vos tarifs pour une intervention à Laval ?",
-      a: "À Laval (53000), l'Audit sur place 4h démarre à {{price:audit-flash|flat}}, la Formation 4 h à {{price:intervention-4h|flat}} et l'Implémentation à {{price:impl-poc|entry}}. Tarifs publics, sans abonnement, déplacement TGV ou A81 inclus.",
+      a: "À Laval (53000), l'Audit sur place 4h démarre à {{price:audit-flash|flat}}, la Formation 4 h à {{price:intervention-4h|flat}} et l'Implémentation à {{price:impl-poc|entry}}. Tarifs publics, sans abonnement.",
     },
     {
       q: "Sous quel délai vous déplacez-vous à Laval ?",
@@ -237,7 +237,7 @@ export const LAVAL_COPY: VilleCopy = {
     },
     {
       q: "Intervenez-vous aussi dans les communes proches de Laval ?",
-      a: "Oui — nous nous déplaçons à Changé, Saint-Berthevin, Bonchamp-lès-Laval, Montigné-le-Brillant, L'Huisserie et Entrammes aux mêmes tarifs publics, sans surcoût kilométrique.",
+      a: "Oui — nous nous déplaçons à Changé, Saint-Berthevin, Bonchamp-lès-Laval, Montigné-le-Brillant, L'Huisserie et Entrammes aux mêmes tarifs publics.",
     },
     {
       q: "Comment Axion-IA garantit-il la conformité RGPD à Laval ?",

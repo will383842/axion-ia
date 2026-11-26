@@ -6,6 +6,7 @@
  * recopié) et ne dépend d'aucune base. L'ordre des sections et le format sont gardés par
  * `llms-cible.spec.ts`.
  */
+import { seuilGarantieEur } from "@/content/journee-ia-commun";
 import { describe, expect, it, vi } from "vitest";
 
 vi.mock("@/lib/seo", () => ({ SITE_URL: "https://axion-ia.com" }));
@@ -59,7 +60,9 @@ describe("bloc référence de llms*.txt", () => {
 
   it("seul prix publié : celui de la Journée IA (aucun autre montant)", () => {
     const montants = COMPLET.match(/\d[\d\s  .]*\s?€/g) ?? [];
-    expect(new Set(montants.map((m) => m.replace(/\D/g, "")))).toEqual(new Set(["1490"]));
+    expect(new Set(montants.map((m) => m.replace(/\D/g, "")))).toEqual(
+      new Set(["1490", String(seuilGarantieEur())]),
+    );
   });
 
   it("toutes les URL sont absolues, en /fr, et correspondent à une route existante", () => {

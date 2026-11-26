@@ -27,7 +27,7 @@ interface FaqGeoEntry {
 // FAQ génériques services × géographie (Sprint 14.10.2 refonte) :
 // — sans prix hardcodés (tarifs depuis pricing.ts via les pages services)
 // — sans délais concrets (durées variables selon mission)
-// — sans « frais inclus » (frais de déplacement facturés à part)
+// — sans « frais inclus » (aucune mention de frais : CGV uniquement)
 // — vocabulaire accessible, blocs courts.
 const FAQS_BY_SERVICE: Record<
   "audit" | "interventions" | "implementation" | "sites-web-augmentes" | "un-a-un",
@@ -237,7 +237,7 @@ const FAQS_BY_SERVICE: Record<
       },
       en: {
         q: "Is 1-to-1 coaching available in regional areas?",
-        a: "Yes, across mainland France. Regular sessions are conducted remotely; intensive on-site sessions are available in all regions, quoted with travel costs included.",
+        a: "Yes, across mainland France. Regular sessions are conducted remotely; intensive on-site sessions are available in all regions.",
       },
     },
     {

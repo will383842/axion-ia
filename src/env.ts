@@ -610,6 +610,10 @@ export const env = createEnv({
     // Cf. _AUDIT/PROMPT-CONTENT-GENERATOR-MASTER-2026.md § 24.1 + Annexe A.
     OPENAI_API_KEY: z.string().optional(),
     ANTHROPIC_API_KEY: z.string().optional(),
+    // Types de contenu autorisés via Claude (interrupteur général : CONTENT_GEN_BLOG_CLAUDE).
+    // Absent/vide/`blog` = les 4 types blog ; `tous` ; ou liste de types séparés par des
+    // virgules (type inconnu ignoré + avertissement). Cf. providers/types-claude.ts.
+    CONTENT_GEN_CLAUDE_TYPES: z.string().optional(),
     PERPLEXITY_API_KEY: z.string().optional(),
     UNSPLASH_ACCESS_KEY: z.string().optional(),
     /// Voyage AI key pour embeddings KB V4 (`voyage-3-lite` dim 1024).
@@ -906,6 +910,7 @@ export const env = createEnv({
     // Content Generator V1 (Sprint 1 Day 1 AGT-B)
     OPENAI_API_KEY: process.env.OPENAI_API_KEY,
     ANTHROPIC_API_KEY: process.env.ANTHROPIC_API_KEY,
+    CONTENT_GEN_CLAUDE_TYPES: process.env.CONTENT_GEN_CLAUDE_TYPES,
     PERPLEXITY_API_KEY: process.env.PERPLEXITY_API_KEY,
     UNSPLASH_ACCESS_KEY: process.env.UNSPLASH_ACCESS_KEY,
     VOYAGE_API_KEY: process.env.VOYAGE_API_KEY,

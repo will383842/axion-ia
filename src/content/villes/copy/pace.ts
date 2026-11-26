@@ -65,7 +65,7 @@ export const PACE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Pacé ?",
-      a: "Nos consultants viennent de Rennes centre (10 min route D29). Intervention sur site dans vos locaux ou en visio selon vos préférences. Aéroport Rennes-Bretagne à 15 min. Coûts de déplacement séparés du forfait, tarifs transparents.",
+      a: "Nos consultants viennent de Rennes centre (10 min route D29). Intervention sur site dans vos locaux ou en visio selon vos préférences. Aéroport Rennes-Bretagne à 15 min. Tarifs transparents.",
     },
   ],
 };

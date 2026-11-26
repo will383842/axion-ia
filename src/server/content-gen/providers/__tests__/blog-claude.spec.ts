@@ -309,8 +309,12 @@ describe("plafonds invalides = refus avant tout appel", () => {
 });
 
 describe("modèles exacts, jamais de temperature", () => {
-  it("écriture = sonnet 5.5, relecture = opus 5.5", () => {
-    expect(MODELES).toEqual({ ecriture: "claude-sonnet-5-5", relecture: "claude-opus-5-5" });
+  it("écriture et court = sonnet 5.5, relecture = opus 5.5", () => {
+    expect(MODELES).toEqual({
+      ecriture: "claude-sonnet-5-5",
+      relecture: "claude-opus-5-5",
+      court: "claude-sonnet-5-5",
+    });
   });
   it("transmet le modèle du rôle, sans temperature ni preferredProvider, avec réservation", async () => {
     sdk.mockResolvedValue(REPONSE);
