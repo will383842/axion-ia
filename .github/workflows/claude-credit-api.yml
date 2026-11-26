@@ -4,7 +4,8 @@
 #   - le bac à sable de la CLI exige bubblewrap + socat et l'autorisation des espaces de noms (AppArmor) ;
 #   - GITHUB_TOKEN ne peut pas créer de PR : Claude pousse une branche, la session pilote ouvre la PR
 #     (et la CI se déclenche normalement, puisque la PR est ouverte par un humain) ;
-#   - aucun pas qui tourne APRÈS Claude sur ce runner ne reçoit de secret ; la sortie du modèle n'est jamais affichée.
+#   - aucun pas après Claude ne reçoit de secret, SAUF la relance sur le compte suivant (rare : crédit épuisé) ;
+#     la sortie du modèle n'est jamais affichée.
 # Déclenchement MANUEL seulement, par le propriétaire du dépôt, depuis main. Plusieurs exécutions peuvent tourner en parallèle.
 # Ne JAMAIS activer le mode debug sur ce workflow, ni publier d'artefact.
 #
@@ -53,7 +54,6 @@ jobs:
     permissions:
       contents: write
       pull-requests: write
-      issues: write
     steps:
       - uses: actions/checkout@v6
         with:
@@ -66,7 +66,6 @@ jobs:
       - uses: actions/setup-node@v7
         with:
           node-version: ${{ env.NODE_VERSION }}
-          cache: pnpm
 
       - name: Écrire la consigne (fichier non suivi par git)
         env:
@@ -99,7 +98,7 @@ jobs:
           TOURS: ${{ inputs.tours_max }}
         run: |
           f="$RUNNER_TEMP/execution-run1.json"
-          env -u GITHUB_ENV -u GITHUB_STEP_SUMMARY -u GITHUB_PATH -u GITHUB_OUTPUT timeout 7800 claude -p "Ta consigne est dans le fichier .consigne-claude.md à la racine du dépôt. Lis-le et exécute-le. Ne le committe jamais. Tu ne peux pas ouvrir de PR : pousse la branche demandée et écris le corps de PR dans le fichier versionné demandé." \
+          env -u GITHUB_ENV -u GITHUB_STEP_SUMMARY -u GITHUB_PATH -u GITHUB_OUTPUT timeout 4200 claude -p "Ta consigne est dans le fichier .consigne-claude.md à la racine du dépôt. Lis-le et exécute-le. Ne le committe jamais. Tu ne peux pas ouvrir de PR : pousse la branche demandée et écris le corps de PR dans le fichier versionné demandé." \
             --model "$MODELE" --max-turns "$TOURS" \
             --allowedTools Bash,Read,Edit,Write,Glob,Grep,Agent,TodoWrite \
             --output-format json > "$RUNNER_TEMP/brut-run1.json" 2>/dev/null || true
@@ -140,7 +139,7 @@ jobs:
           TOURS: ${{ inputs.tours_max }}
         run: |
           f="$RUNNER_TEMP/execution-run2.json"
-          env -u GITHUB_ENV -u GITHUB_STEP_SUMMARY -u GITHUB_PATH -u GITHUB_OUTPUT timeout 7800 claude -p "Ta consigne est dans le fichier .consigne-claude.md à la racine du dépôt. Lis-le et exécute-le. Ne le committe jamais. Tu ne peux pas ouvrir de PR : pousse la branche demandée et écris le corps de PR dans le fichier versionné demandé." \
+          env -u GITHUB_ENV -u GITHUB_STEP_SUMMARY -u GITHUB_PATH -u GITHUB_OUTPUT timeout 4200 claude -p "Ta consigne est dans le fichier .consigne-claude.md à la racine du dépôt. Lis-le et exécute-le. Ne le committe jamais. Tu ne peux pas ouvrir de PR : pousse la branche demandée et écris le corps de PR dans le fichier versionné demandé." \
             --model "$MODELE" --max-turns "$TOURS" \
             --allowedTools Bash,Read,Edit,Write,Glob,Grep,Agent,TodoWrite \
             --output-format json > "$RUNNER_TEMP/brut-run2.json" 2>/dev/null || true
