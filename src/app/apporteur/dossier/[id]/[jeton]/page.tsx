@@ -35,11 +35,13 @@ import {
 } from "@/features/apporteurs-reseau/signature";
 
 import { lireDeclarationsDe } from "@/features/apporteurs-reseau/declaration-entreprise";
+import { RESERVATION_PROVISOIRE_JOURS } from "@/features/apporteurs-reseau/regle-attribution";
 import { ID_DOSSIER_EXEMPLE } from "@/features/apporteurs-reseau/jeton";
 
 import { ContratLisible } from "./ContratLisible";
 import { Coquille, EcranEtat } from "./Coquille";
 import { DeclarationEntreprise } from "./DeclarationEntreprise";
+import { lignesComment } from "./textes-comment";
 import { DepotPiece } from "./DepotPiece";
 import { DossierEnLigne, type DossierPublic } from "./DossierEnLigne";
 import { ListeDeclarations } from "./ListeDeclarations";
@@ -146,7 +148,15 @@ export default async function DossierApporteurPage({ params }: PageProps) {
             </a>
           ) : null}
         </EcranEtat>
-        <DeclarationEntreprise id={dossier.id} jeton={jeton} protectionMois={PROTECTION_MOIS} />
+        <DeclarationEntreprise
+          id={dossier.id}
+          jeton={jeton}
+          lignesComment={lignesComment(
+            dossier.regleAttribution ?? null,
+            PROTECTION_MOIS,
+            RESERVATION_PROVISOIRE_JOURS,
+          )}
+        />
         <ListeDeclarations declarations={declarations} />
         {/* Tout ce qui lui a été remis, au même endroit (2026-11-25). */}
         <a

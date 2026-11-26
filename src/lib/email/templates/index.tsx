@@ -209,6 +209,10 @@ import {
   ApporteurManquementEmail,
   ApporteurVirementFaitEmail,
 } from "./apporteur-demarrage";
+import {
+  apporteurPresentationRecueRendezVousSubject,
+  ApporteurPresentationRecueRendezVousEmail,
+} from "./apporteur-presentation-recue-rendez-vous";
 import { ApporteurLienEspaceEmail, apporteurLienEspaceSubject } from "./apporteur-lien-espace";
 import {
   ApporteurResiliationEffectiveEmail,
@@ -680,6 +684,10 @@ const TEMPLATES: TemplateMap = {
   "apporteur-presentation-non-retenue": {
     subject: apporteurPresentationNonRetenueSubject,
     component: ApporteurPresentationNonRetenueEmail,
+  },
+  "apporteur-presentation-recue-rendez-vous": {
+    subject: apporteurPresentationRecueRendezVousSubject,
+    component: ApporteurPresentationRecueRendezVousEmail,
   },
   "entreprise-prise-de-contact-apporteur": {
     subject: entrepriseConfirmationApporteurSubject,

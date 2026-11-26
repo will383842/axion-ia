@@ -1,8 +1,8 @@
 // E-mail — l'accusé envoyé à l'APPORTEUR après la saisie d'une entreprise, variante
-// « validation par rendez-vous » (lot 7a, 2026-11-25). ⛔ GABARIT NEUF, NON BRANCHÉ : il
-// n'est inscrit ni dans le registre (`index.tsx`), ni dans le catalogue d'aperçu, ni dans
-// `envois.ts`. Rien ne l'envoie ; un autre lot le branchera, derrière l'interrupteur de la
-// future règle (contrat 2.8), après relecture du texte par le dirigeant.
+// « validation par rendez-vous » (lot 7a, 2026-11-25). BRANCHÉ (lot 7b) : émis par
+// `presentations.ts` (`construireEnvoisReponse`) seulement quand `regleDe` vaut `rendez_vous`
+// (interrupteur `APPORTEURS_VALIDATION_RDV` allumé ET contrat signé ≥ 2.8). Sans `gabaritRepli`
+// (voir `interrupteur-rendez-vous.ts`).
 //
 // L'accusé EN SERVICE (`apporteur-presentation-recue`, dans `apporteur-demarrage.tsx`,
 // contrat 2.6 : attribution par le silence, « 30 jours ») reste intact.
@@ -26,16 +26,13 @@
 import { Text } from "@react-email/components";
 
 import { EmailLayout, emailStyles } from "./_layout";
+import { RESERVATION_PROVISOIRE_JOURS } from "@/features/apporteurs-reseau/regle-attribution";
 import { salutation } from "../salutation";
 import { FENETRE_ATTRIBUTION_APPORTEUR_MOIS } from "@/lib/commercial-application/kit-apporteur";
 import type { Locale } from "../../../../prisma/generated/client";
 
-/**
- * Durée pendant laquelle l'entreprise est gardée à l'apporteur (future règle, contrat 2.8).
- * Écrite ici tant que la règle n'est pas codée : le lot qui branchera ce gabarit la reliera
- * à la constante des règles du réseau.
- */
-export const RESERVATION_RENDEZ_VOUS_JOURS = 60;
+/** Durée pendant laquelle l'entreprise est gardée à l'apporteur : celle du moteur des règles. */
+export const RESERVATION_RENDEZ_VOUS_JOURS = RESERVATION_PROVISOIRE_JOURS;
 
 interface Payload {
   /** L'apporteur : son prénom, ou à défaut le premier mot de `contactName`. */
@@ -68,7 +65,7 @@ export const COPY_PRESENTATION_RECUE_RENDEZ_VOUS = {
     `Nous avons bien reçu votre présentation de ${e || "l'entreprise"} : elle vous est gardée ${jours} jours${date ? `, jusqu'au ${date}` : " à compter de votre saisie"}.`,
   suiteTitre: "La suite",
   validation: (date: string | null, jours: number, mois: number) =>
-    `Elle sera validée à votre nom dès qu'un premier rendez-vous avec Axion-IA aura eu lieu, s'il a été pris ${date ? "avant cette date" : `pendant ces ${jours} jours`}. Les ${mois} mois pendant lesquels elle vous est rattachée partent alors du jour de ce rendez-vous.`,
+    `Elle sera validée à votre nom dès qu'un premier rendez-vous avec Axion-IA aura eu lieu, s'il a été pris ${date ? "jusqu'à cette date incluse" : `pendant ces ${jours} jours`}. Les ${mois} mois pendant lesquels elle vous est rattachée partent alors du jour de ce rendez-vous.`,
   devis: (jours: number) => `Un devis signé pendant ces ${jours} jours compte aussi.`,
   sansRendezVous:
     "Sans rendez-vous pris d'ici là, la réservation prend fin automatiquement ; vous pourrez nous présenter de nouveau cette entreprise après un nouveau contact avec elle.",

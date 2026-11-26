@@ -14,6 +14,7 @@ import {
   declarerEntrepriseAction,
   rechercherEntrepriseDeclarationAction,
 } from "./actions-declaration";
+
 import { TEXTES } from "./textes";
 import { TEXTES_DECLARATION as T } from "./textes-declaration";
 
@@ -62,12 +63,12 @@ function Champ({
 export function DeclarationEntreprise({
   id,
   jeton,
-  protectionMois,
+  lignesComment,
 }: {
   id: string;
   jeton: string;
-  /** Durée de la réservation (`PROTECTION_MOIS`), passée par la page : jamais écrite ici. */
-  protectionMois: number;
+  /** Lignes de « Comment ça se passe », calculées par la page (jamais écrites ici). */
+  lignesComment: readonly string[];
 }) {
   const router = useRouter();
   const uid = useId();
@@ -131,7 +132,7 @@ export function DeclarationEntreprise({
       <div className="bg-sand mt-3 rounded-xl p-3 text-[15px] leading-relaxed">
         <p className="font-bold">{T.commentTitre}</p>
         <ul className="mt-1 grid gap-1">
-          {T.comment(protectionMois).map((l) => (
+          {lignesComment.map((l) => (
             <li key={l}>• {l}</li>
           ))}
         </ul>
