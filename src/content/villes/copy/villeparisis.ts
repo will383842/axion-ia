@@ -208,7 +208,7 @@ export const VILLEPARISIS_COPY: VilleCopy = {
           },
           {
             q: "How fast can you provide a quote and a first meeting in Villeparisis?",
-            a: "Quote from 24-48 h depending on complexity. The kick-off is held on site in Villeparisis — direct access by RER B (Villeparisis–Mitry-le-Neuf station) or via the A104 — or by video call if you prefer to start sooner.",
+            a: "Quote from 24-48 h depending on complexity. The kick-off is held on site in Villeparisis, or by video call if you prefer to start sooner.",
           },
           {
             q: "Do you work with BTP craftsmen and the local materials sector?",

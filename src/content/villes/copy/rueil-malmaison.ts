@@ -150,7 +150,7 @@ export const RUEIL_MALMAISON_COPY: VilleCopy = {
           {
             step: "Framing in Rueil-Malmaison",
             detail:
-              "Kick-off workshop at your Rueil-sur-Seine offices (or near the Mobipôle RER A hub): we map your real user journeys, brand constraints toward major clients (Schneider Electric, Danone, Stellantis) and the priority AI use cases for your site or SaaS.",
+              "Kick-off workshop at your Rueil-sur-Seine offices: we map your real user journeys, brand constraints toward major clients (Schneider Electric, Danone, Stellantis) and the priority AI use cases for your site or SaaS.",
           },
           {
             step: "Architecture & UX/UI mockups",
@@ -250,7 +250,7 @@ export const RUEIL_MALMAISON_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Rueil-Malmaison ?",
-      a: "Nous démarrons par un audit, puis intervenons sur site ou en visio, à 8 km de La Défense. Livrables documentés, équipes formées, aucune dépendance technique imposée.",
+      a: "Nous démarrons par un audit, puis intervenons sur site ou en visio. Livrables documentés, équipes formées, aucune dépendance technique imposée.",
     },
   ],
 };

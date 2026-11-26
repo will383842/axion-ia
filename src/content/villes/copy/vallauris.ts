@@ -7,9 +7,9 @@ import type { VilleCopy } from "./types";
 
 export const VALLAURIS_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA accompagne les TPE et PME de Vallauris (06220, Alpes-Maritimes, 29 259 habitants en 2023), commune réputée pour sa céramique d'art revitalisée par Pablo Picasso et abritant le Musée national Picasso. À 13,04 km² et 2 244 habitants au km², Vallauris combine ateliers de poterie, commerces touristiques, hôtellerie-restauration et services tertiaires, à proximité immédiate du pôle technologique de Sophia Antipolis. Williams se déplace sur site pour automatiser vos processus en code custom — pas de no-code.",
+    "Axion-IA accompagne les TPE et PME de Vallauris (06220, Alpes-Maritimes, 29 259 habitants en 2023), commune réputée pour sa céramique d'art revitalisée par Pablo Picasso et abritant le Musée national Picasso. À 13,04 km² et 2 244 habitants au km², Vallauris combine ateliers de poterie, commerces touristiques, hôtellerie-restauration et services tertiaires, à proximité immédiate du pôle technologique de Sophia Antipolis. Williams intervient sur site pour automatiser vos processus en code custom — pas de no-code.",
   pitchEn:
-    "Axion-IA accompagne les TPE et PME de Vallauris (06220, Alpes-Maritimes, 29 259 habitants en 2023), commune réputée pour sa céramique d'art revitalisée par Pablo Picasso et abritant le Musée national Picasso. À 13,04 km² et 2 244 habitants au km², Vallauris combine ateliers de poterie, commerces touristiques, hôtellerie-restauration et services tertiaires, à proximité immédiate du pôle technologique de Sophia Antipolis. Williams se déplace sur site pour automatiser vos processus en code custom — pas de no-code.",
+    "Axion-IA accompagne les TPE et PME de Vallauris (06220, Alpes-Maritimes, 29 259 habitants en 2023), commune réputée pour sa céramique d'art revitalisée par Pablo Picasso et abritant le Musée national Picasso. À 13,04 km² et 2 244 habitants au km², Vallauris combine ateliers de poterie, commerces touristiques, hôtellerie-restauration et services tertiaires, à proximité immédiate du pôle technologique de Sophia Antipolis. Williams intervient sur site pour automatiser vos processus en code custom — pas de no-code.",
   directAnswerFr:
     "À Vallauris (Alpes-Maritimes, 06220), Axion-IA conçoit des automatisations IA sur mesure en code custom pour les TPE et PME locales — ateliers de céramique d'art, commerces touristiques, hôtels et restaurants, agences immobilières, services tertiaires et acteurs proches du pôle Sophia Antipolis. Williams intervient sur place pour un Audit sur place dès {{price:audit-flash|flat}}, une Formation 4 h dès {{price:intervention-4h|flat}}, ou un accompagnement un-à-un dès {{price:intervention-dirigeants|flat}}.",
   directAnswerEn:
@@ -233,7 +233,7 @@ export const VALLAURIS_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une intervention IA à Vallauris ?",
-      a: "Nous intervenons dans vos locaux, partout en France. Williams se déplace à Vallauris, généralement sous 5 jours ouvrés. La formation collective cible un workflow concret : facturation, planning, relances, intégration CRM.",
+      a: "Nous intervenons dans vos locaux, partout en France. Williams intervient sur site à Vallauris, généralement sous 5 jours ouvrés. La formation collective cible un workflow concret : facturation, planning, relances, intégration CRM.",
     },
     {
       q: "Axion-IA intervient-elle dans les communes proches de Vallauris ?",

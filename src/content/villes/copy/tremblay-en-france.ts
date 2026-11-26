@@ -122,7 +122,7 @@ export const TREMBLAY_EN_FRANCE_COPY: VilleCopy = {
           },
           {
             q: "Vous déplacez-vous sur site dans les zones d'activité de Tremblay-en-France ?",
-            a: "Oui. Nous tenons le kick-off et la recette en présentiel à Aérolians Paris, Paris-Nord 2, Garonor, Roissypôle ou Tremblay-CDG, accessibles par le RER B (CDG Terminaux 1 et 2, Vert-Galant) et les autoroutes A1, A104 et A3. Observer vos quais et vos écrans d'exploitation est indispensable avant de coder.",
+            a: "Oui. Nous tenons le kick-off et la recette en présentiel à Aérolians Paris, Paris-Nord 2, Garonor, Roissypôle ou Tremblay-CDG. Observer vos quais et vos écrans d'exploitation est indispensable avant de coder.",
           },
           {
             q: "Sous quel délai obtient-on un devis ?",
@@ -208,7 +208,7 @@ export const TREMBLAY_EN_FRANCE_COPY: VilleCopy = {
           },
           {
             q: "Do you travel on site to Tremblay-en-France business zones?",
-            a: "Yes. We hold the kick-off and acceptance in person at Aérolians Paris, Paris-Nord 2, Garonor, Roissypôle or Tremblay-CDG, reachable via RER B (CDG Terminals 1 and 2, Vert-Galant) and the A1, A104 and A3 motorways. Observing your docks and operations screens is essential before coding.",
+            a: "Yes. We hold the kick-off and acceptance in person at Aérolians Paris, Paris-Nord 2, Garonor, Roissypôle or Tremblay-CDG. Observing your docks and operations screens is essential before coding.",
           },
           {
             q: "How quickly do we get a quote?",

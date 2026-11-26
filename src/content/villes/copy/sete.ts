@@ -231,7 +231,7 @@ export const SETE_COPY: VilleCopy = {
     },
     {
       q: "Quels délais pour une mission à Sète ?",
-      a: "Williams se déplace à Sète sous 5 à 7 jours ouvrés après brief. Audit sur place livré en 4 heures sur site, implémentations entre 2 et 6 semaines selon le périmètre.",
+      a: "Williams intervient à Sète sous 5 à 7 jours ouvrés après brief. Audit sur place livré en 4 heures sur site, implémentations entre 2 et 6 semaines selon le périmètre.",
     },
     {
       q: "Axion-IA intervient-elle dans les communes autour de Sète ?",

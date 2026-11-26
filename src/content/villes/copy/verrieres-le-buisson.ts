@@ -14,9 +14,9 @@ export const VERRIERES_LE_BUISSON_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Verrières-le-Buisson (91). Nous accompagnons TPE et PME : professions libérales, cabinets conseil, PME tertiaires, commerçants de proximité, artisans nord Essonne. Audit sur place sur mesure.",
   seoHook: "TPE & PME Essonne",
   ecosystemFr:
-    "Verrières-le-Buisson est une commune résidentielle verdoyante du nord de l'Essonne, en limite des Hauts-de-Seine (Antony, Châtenay-Malabry). Proximité Massy TGV et pôle Paris-Saclay. Tissu professions libérales, TPE conseil, PME tertiaires, commerces, artisanat.",
+    "Verrières-le-Buisson est une commune résidentielle verdoyante du nord de l'Essonne, en limite des Hauts-de-Seine (Antony, Châtenay-Malabry). Voisinage du pôle Paris-Saclay. Tissu professions libérales, TPE conseil, PME tertiaires, commerces, artisanat.",
   ecosystemEn:
-    "Verrières-le-Buisson est une commune résidentielle verdoyante du nord de l'Essonne, en limite des Hauts-de-Seine (Antony, Châtenay-Malabry). Proximité Massy TGV et pôle Paris-Saclay. Tissu professions libérales, TPE conseil, PME tertiaires, commerces, artisanat.",
+    "Verrières-le-Buisson est une commune résidentielle verdoyante du nord de l'Essonne, en limite des Hauts-de-Seine (Antony, Châtenay-Malabry). Voisinage du pôle Paris-Saclay. Tissu professions libérales, TPE conseil, PME tertiaires, commerces, artisanat.",
   distancesFr:
     "Antony à 5 min. Massy TGV à 10 min. Paris centre à 25 min. Aéroport Paris-Orly à 15 min.",
   distancesEn:

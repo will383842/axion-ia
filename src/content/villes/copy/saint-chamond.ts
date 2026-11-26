@@ -231,7 +231,7 @@ export const SAINT_CHAMOND_COPY: VilleCopy = {
       a: "L'Audit sur place démarre à {{price:audit-flash|flat}} (4 h), une intervention sur site à Saint-Chamond démarre à {{price:intervention-4h|flat}}. Tous nos prix sont publics sur la page Tarifs, sans abonnement caché.",
     },
     {
-      q: "Vos consultants se déplacent-ils réellement à Saint-Chamond ?",
+      q: "Comment se déroule une intervention à Saint-Chamond ?",
       a: "Oui. Les phases d'observation et de mise en route se font sur site à Saint-Chamond ; le suivi peut ensuite continuer en visio si vous préférez. Nous intervenons partout en France, sur place ou à distance.",
     },
     {
