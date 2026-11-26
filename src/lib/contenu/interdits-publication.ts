@@ -43,6 +43,9 @@ export type CodeInterdit =
   | "texte-admin"
   | "frais-deplacement"
   | "prix-barre"
+  | "frais-venue"
+  | "multiple-garantie"
+  | "seuil-garantie-euros"
   | "preuve-sociale-vague";
 
 export interface OptionsInterdits {
@@ -86,7 +89,13 @@ export interface MotifInterdit {
  *  9. toutes les espaces (insécables comprises) → une espace.
  */
 export function normaliserPourControle(t: string): string {
-  let s = (t ?? "").replace(/<[^>]*>/g, " ");
+  // Les balises de texte barré deviennent « ~~ » AVANT le retrait du HTML : sinon
+  // « <del>1 990 €</del> » se réduit à « 1 990 € » et le prix barré passe inaperçu.
+  let s = (t ?? "").replace(
+    /<(del|s|strike)(?:\s[^>]*)?>([\s\S]*?)<\/\1\s*>/gi,
+    (_m, _tag: string, dedans: string) => ` ~~${dedans}~~ `,
+  );
+  s = s.replace(/<[^>]*>/g, " ");
   s = s
     .replace(/&nbsp;|&#160;/gi, " ")
     .replace(/&rsquo;|&#8217;|&apos;|&#39;/gi, "'")
@@ -104,6 +113,16 @@ export function normaliserPourControle(t: string): string {
   s = s.replace(/[  -   　\s]+/g, " ");
   return s;
 }
+
+/** Montant en euros (texte normalisé) : « 4 470 € », « 4470 euros », « 4.470 eur ». */
+const MONTANT_EUROS = String.raw`${B}[0-9][0-9 .,]{0,12}(?:€|euros?|eur${E})`;
+
+/**
+ * Multiple AUTRE que 3 (texte normalisé) : « 2 fois le prix », « cinq fois le tarif », « x10 », « 10x ».
+ * « 3 fois », « trois fois », « x3 », « 3x » sont écartés par la tête négative. Le « N fois » exige
+ * un complément de prix pour ne pas prendre « payable en 2 fois » ni « 2 fois par an ».
+ */
+const MULTIPLE_AUTRE = String.raw`(?!(?:3|trois)(?![0-9.,]*[0-9]) ?(?:fois|x|×)|[x×] ?3${E})(?:(?:[0-9]+(?:[.,][0-9]+)?|un|deux|quatre|cinq|six|sept|huit|neuf|dix|douze|quinze|vingt|cent) fois (?:le |son |votre |notre |du |ce )?(?:prix|tarif|montant|investissement|mise|somme|cout|budget)|[x×] ?[0-9]+${E}|${B}[0-9]+ ?[x×]${E})`;
 
 // Motif NDA / certificat suivi d'un numéro (repris de doctrine-check.ts, porté
 // sur le texte normalisé).
@@ -276,11 +295,49 @@ export const MOTIFS_INTERDITS: ReadonlyArray<MotifInterdit> = [
   {
     code: "prix-barre",
     re: new RegExp(
-      String.raw`${B}(?:prix|tarif)s? barre(?:e|s|es)?${E}|${B}ancien (?:prix|tarif)${E}|${B}anciennement [0-9][0-9 ]*(?:€|euros?)|${B}au lieu de [0-9][0-9 ]*(?:€|euros?|eur${E})`,
+      String.raw`${B}(?:prix|tarif)s? barre(?:e|s|es)?${E}|${B}ancien (?:prix|tarif)${E}|${B}anciennement [0-9][0-9 ]*(?:€|euros?)|${B}au lieu de [0-9][0-9 ]*(?:€|euros?|eur${E})|~~[^~]{0,40}[0-9][^~]{0,25}(?:€|euros?|eur${E})[^~]{0,15}~~|${B}prix (?:normal|habituel|public|catalogue|de base)${E} ?:? ?[0-9][0-9 ]*(?:€|euros?|eur${E})`,
       "g",
     ),
     raison:
       "Prix barré ou ancien prix : le tarif s'affiche seul (1 490 € HT), sans prix barré ni ancien prix.",
+  },
+  {
+    code: "frais-venue",
+    // Barrière de code (lot « équipe éditoriale », PR 1) : aucun texte publié ne parle de
+    // déplacement, d'hébergement ni de repas FACTURÉS, pris en charge, inclus ou offerts.
+    // Le motif exige un contexte de facturation / prise en charge : « le déplacement d'une
+    // tâche », « un repas d'équipe », « déplacer un rendez-vous » ne bloquent pas. « hébergement »
+    // seul n'est pas visé (hébergement de données) : il faut qu'il soit relié au formateur, à un
+    // repas, à un déplacement ou à un « frais ».
+    re: new RegExp(
+      String.raw`${B}frais (?:de |d'|des )?(?:deplacements?|hebergements?|repas|restauration|transports?|voyages?|sejours?|bouche|trajets?)${E}|${B}(?:deplacements?|trajets?|repas|dejeuners?|diners?|nuitees?|hebergements? (?:du|des|de notre|de l') ?(?:formateurs?|intervenants?|consultants?|equipes?))(?: [a-z']+){0,4} (?:inclus|incluse|incluses|inclut|offert|offerte|offertes|offerts|gratuits?|gratuite?s?|compris|comprise|comprises|pris en charge|prise en charge|prises en charge|factures?|facturee?s?|refacturee?s?|rembourse|rembourses?|en sus|en supplement|sur devis|a (?:votre|notre|la) charge|avec supplement)${E}|${B}(?:prise en charge|prises en charge|facturation|refacturation|remboursement|gratuite) (?:du|des|de l'|de la|de) ?(?:deplacements?|trajets?|repas|hebergements?|nuitees?|dejeuners?|diners?)${E}|${B}(?:nous |axion-?ia )?(?:prenons|prend|prenez|assumons|assure|assurons|offrons|offre|incluons|inclut|incluant|facturons|facture|refacturons|refacture|remboursons|rembourse)(?: [a-z']+){0,2} (?:en charge )?(?:les |le |la |l'|vos |votre |nos |notre )?(?:frais )?(?:de |des |d')?(?:deplacements?|trajets?|repas|hebergements?|nuitees?|dejeuners?|diners?)${E}`,
+      "g",
+    ),
+    raison:
+      "Déplacement, hébergement ou repas évoqués comme facturés, inclus, offerts ou pris en charge : interdit. Seule formule permise : « dans vos locaux, partout en France ».",
+  },
+  {
+    code: "multiple-garantie",
+    // La garantie ne se formule que « 3 fois le prix » en « gains identifiés ». Tout autre
+    // multiple (2 fois, 5 fois, x10, 10x…) à portée d'un mot de garantie / remboursement bloque.
+    // « 3 fois » / « trois fois » / « x3 » / « 3x » sont les seuls permis.
+    re: new RegExp(
+      String.raw`(?:garanti\w*|rembours\w*)[^.!?;]{0,90}${B}${MULTIPLE_AUTRE}|${B}${MULTIPLE_AUTRE}[^.!?;]{0,90}(?:garanti\w*|rembours\w*)`,
+      "g",
+    ),
+    raison:
+      "Multiple de garantie autre que « 3 fois le prix » (en gains identifiés) : interdit. Reprendre la formule exacte du site.",
+  },
+  {
+    code: "seuil-garantie-euros",
+    // Un montant en euros présenté comme seuil de la garantie (multiple × prix) : jamais cité,
+    // seulement « 3 fois le prix ».
+    re: new RegExp(
+      String.raw`garantie(?: [a-z']+){0,5}(?: ?:)? (?:(?:de|a|d'|jusqu'a|des|au-dela de|superieurs? a|inferieurs? a|atteignent|depassent|atteignant) )?${MONTANT_EUROS}|${B}seuils?(?: [a-z']+){0,4}(?: ?:)? (?:(?:de|a|d') ?)?${MONTANT_EUROS}|(?:rembours\w*|garanti\w*)[^.!?;]{0,80}(?:inferieurs?|moins|sous|atteign\w*|depass\w*|superieurs?)(?: [a-z']+){0,3} ${MONTANT_EUROS}|${MONTANT_EUROS} (?:de|en) (?:gains?|economies) identifies?[^.!?;]{0,40}garanti\w*`,
+      "g",
+    ),
+    raison:
+      "Montant en euros présenté comme seuil de garantie : interdit. Écrire « 3 fois le prix HT en gains identifiés », sans montant.",
   },
   {
     code: "preuve-sociale-vague",
@@ -292,6 +349,17 @@ export const MOTIFS_INTERDITS: ReadonlyArray<MotifInterdit> = [
       "Preuve sociale invérifiable (« nos retours terrain », « d'après nos clients ») : aucun client ni retour public. Retirer, ou citer une source publique.",
   },
 ];
+
+/**
+ * Motif d'un code, SANS état (sans drapeau `g`), à appliquer à un texte DÉJÀ normalisé par
+ * `normaliserPourControle`. Pour les lecteurs qui ont leur propre structure (ex. la fiche
+ * Journée IA) et ne doivent pas dupliquer les motifs. Lève si le code n'a pas de motif.
+ */
+export function motifInterdit(code: CodeInterdit): RegExp {
+  const m = MOTIFS_INTERDITS.find((x) => x.code === code);
+  if (!m) throw new Error(`aucun motif pour le code d'interdit « ${code} »`);
+  return new RegExp(m.re.source, m.re.flags.replace("g", ""));
+}
 
 /** Raison lisible d'un code (journaux, rapports). */
 export function raisonInterdit(code: CodeInterdit): string {

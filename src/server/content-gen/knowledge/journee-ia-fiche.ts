@@ -21,6 +21,7 @@ import {
   seuilGarantieEur,
 } from "@/content/journee-ia-commun";
 import { JOURNEE_IA_TIER } from "@/content/pricing";
+import { motifInterdit, normaliserPourControle } from "@/lib/contenu/interdits-publication";
 import { JETON_PRIX_JOURNEE_IA } from "../brand/consigne-prix";
 
 export interface InterditJourneeIA {
@@ -28,6 +29,11 @@ export interface InterditJourneeIA {
   readonly libelle: string;
   /** Motif sur texte normalisé (minuscules, sans accents, espaces simples). */
   readonly motif: RegExp;
+  /**
+   * Motif PARTAGÉ (source unique `interdits-publication.ts`), appliqué au texte normalisé par
+   * `normaliserPourControle` : les barrières de code ne sont pas redéfinies ici.
+   */
+  readonly partage?: RegExp;
 }
 
 const SEUIL_GARANTIE_CHIFFRES = String(seuilGarantieEur());
@@ -36,17 +42,27 @@ const SEUIL_GARANTIE_TEXTE = SEUIL_GARANTIE_CHIFFRES.replace(/\B(?=(\d{3})+$)/g,
 /** Ce que le modèle ne doit jamais écrire à propos de la Journée IA. */
 export const INTERDITS_JOURNEE_IA: readonly InterditJourneeIA[] = [
   { libelle: "« Grenoble »", motif: /grenobl/ },
-  { libelle: "frais de déplacement", motif: /frais de deplacement|frais kilometriques/ },
   {
-    libelle: "toute mention du déplacement (« déplacement inclus », offert, pris en charge)",
-    motif:
-      /deplacements? (?:\w+ ){0,2}(?:inclus|compris|offerts?|pris en charge|gratuits?)|inclut le deplacement/,
+    libelle:
+      "toute mention du déplacement, de l'hébergement ou des repas (frais, inclus, offert, pris en charge)",
+    // Motifs partagés ; le motif local ne garde que « inclut le deplacement » (verbe + nom).
+    motif: /inclut le deplacement/,
+    partage: new RegExp(
+      `${motifInterdit("frais-deplacement").source}|${motifInterdit("frais-venue").source}`,
+    ),
   },
   {
     libelle: "tout prix barré ou prix « avant »",
+    // Le motif local garde ce que la source commune ne vise pas : « barre » seul, prix initial,
+    // promotionnel, remise chiffrée.
     motif: /\bbarre|prix initial|anciennement|prix promotionnel|remise de \d/,
+    partage: motifInterdit("prix-barre"),
   },
-  { libelle: "« 5 fois »", motif: /\b5 ?fois\b|\bcinq fois\b|\b5 ?x\b|\bx ?5\b|\b5 ?×|quintuple/ },
+  {
+    libelle: "« 5 fois » (et tout multiple de garantie autre que le multiple du site)",
+    motif: /\b5 ?fois\b|\bcinq fois\b|\b5 ?x\b|\bx ?5\b|\b5 ?×|quintuple/,
+    partage: motifInterdit("multiple-garantie"),
+  },
   {
     // Le seuil de la garantie en euros (multiple × prix) : jamais cité, seulement « N fois ».
     libelle: `« ${SEUIL_GARANTIE_TEXTE} € » (seuil de la garantie en euros)`,
@@ -84,7 +100,10 @@ function normaliser(texte: string): string {
 /** Libellés des interdits présents dans un texte (`[]` si aucun). */
 export function trouveInterdits(texte: string): string[] {
   const n = normaliser(texte);
-  return INTERDITS_JOURNEE_IA.filter((i) => i.motif.test(n)).map((i) => i.libelle);
+  const np = normaliserPourControle(texte);
+  return INTERDITS_JOURNEE_IA.filter((i) => i.motif.test(n) || (i.partage?.test(np) ?? false)).map(
+    (i) => i.libelle,
+  );
 }
 
 /** Les faits, construits depuis les constantes. */
