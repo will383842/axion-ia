@@ -65,7 +65,7 @@ export const SAINT_BENOIT_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Saint-Benoît ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Pour les multi-jours, hébergement Poitiers centre.",
+      a: "Nous intervenons partout en France, sur place ou à distance.",
     },
   ],
 };

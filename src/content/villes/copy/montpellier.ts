@@ -162,7 +162,7 @@ export const MONTPELLIER_COPY: VilleCopy = {
           },
           {
             q: "Pouvez-vous intervenir sur les communes voisines (Castelnau-le-Lez, Lattes, Mauguio) ?",
-            a: "Oui. Nos interventions couvrent l'ensemble de la Métropole de Montpellier ainsi que les communes du bassin héraultais. Le tarif d'audit est identique quelle que soit la commune d'intervention dans la zone.",
+            a: "Oui. Nos interventions couvrent l'ensemble de la Métropole de Montpellier ainsi que les communes du bassin héraultais.",
           },
           {
             q: "Faut-il être déjà mature sur l'IA pour vous solliciter ?",

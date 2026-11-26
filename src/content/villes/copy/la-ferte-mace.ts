@@ -60,8 +60,8 @@ export const LA_FERTE_MACE_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les TPE artisans BTP et commerçants de La Ferté-Macé sur des cas IA pratiques : automatisation devis, agents IA prise de RDV, gestion administrative simplifiée. Audit sur place {{price:audit-flash|flat}}.",
     },
     {
-      q: "Comment se passe une mission depuis Caen ou Paris ?",
-      a: "Nous intervenons partout en France, sur place ou à distance.",
+      q: "Comment se déroule une mission Axion-IA chez nos clients ?",
+      a: "Nous intervenons partout en France, sur place dans vos locaux ou à distance en visio. Après le cadrage de votre besoin, nous planifions l'intervention et livrons un résultat actionnable.",
     },
     {
       q: "Quel budget prévoir pour un audit IA à La Ferté-Macé ?",

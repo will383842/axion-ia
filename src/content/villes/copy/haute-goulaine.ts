@@ -49,7 +49,7 @@ export const HAUTE_GOULAINE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Haute-Goulaine et est nantais ?",
-      a: "Oui, Axion-IA intervient à Haute-Goulaine et tout l'est nantais (Vertou, Basse-Goulaine, Le Loroux-Bottereau, Vallet). Consultants depuis Nantes centre (15 min). Couverture complète vignoble nantais.",
+      a: "Oui, Axion-IA intervient à Haute-Goulaine et tout l'est nantais (Vertou, Basse-Goulaine, Le Loroux-Bottereau, Vallet). Nous intervenons partout en France, sur place ou à distance. Couverture complète vignoble nantais.",
     },
     {
       q: "Accompagnez-vous les domaines viticoles du Muscadet ?",

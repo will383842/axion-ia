@@ -64,8 +64,8 @@ export const GIBERVILLE_COPY: VilleCopy = {
       a: "Pour les commerces et professions libérales à Giberville, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : chatbot accueil, automatisation facturation, gestion agenda, classification documents.",
     },
     {
-      q: "Comment se passe une mission depuis Caen ou Paris ?",
-      a: "Nous intervenons partout en France, sur place ou à distance.",
+      q: "Comment se déroule une mission Axion-IA chez nos clients ?",
+      a: "Nous intervenons partout en France, sur place dans vos locaux ou à distance en visio. Après le cadrage de votre besoin, nous planifions l'intervention et livrons un résultat actionnable.",
     },
   ],
 };

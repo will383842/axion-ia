@@ -65,7 +65,7 @@ export const LE_BOURGET_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une intervention IA sur site au Bourget ?",
-      a: "Nos consultants se déplacent dans vos locaux au Bourget, accessibles en 20 min depuis Paris (RER B). Formation pratique sur vos cas métier réels, équipes autonomes en fin de journée.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Formation pratique sur vos cas métier réels, équipes autonomes en fin de journée.",
     },
   ],
 };

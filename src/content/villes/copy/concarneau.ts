@@ -228,7 +228,7 @@ export const CONCARNEAU_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Quels sont les tarifs d'Axion-IA pour une intervention IA à Concarneau ?",
-      a: "L'Audit sur place 4h démarre à {{price:audit-flash|flat}}, l'intervention essentielle sur site à {{price:intervention-4h|flat}}, et une implémentation codée sur mesure à {{price:impl-poc|entry}}. Les tarifs sont publiés sur axion-ia.com/tarifs et identiques en Finistère.",
+      a: "L'Audit sur place 4h démarre à {{price:audit-flash|flat}}, l'intervention essentielle sur site à {{price:intervention-4h|flat}}, et une implémentation codée sur mesure à {{price:impl-poc|entry}}. Les tarifs sont publiés sur axion-ia.com/tarifs.",
     },
     {
       q: "Axion-IA se déplace-t-il dans les communes limitrophes de Concarneau ?",

@@ -65,7 +65,7 @@ export const MAGNY_LES_HAMEAUX_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Magny-les-Hameaux ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Intervention sur site ou en visio.",
+      a: "Nous intervenons partout en France, sur place ou à distance.",
     },
   ],
 };

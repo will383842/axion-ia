@@ -49,7 +49,7 @@ export const MIONS_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Mions et SE lyonnais ?",
-      a: "Oui, Axion-IA intervient à Mions et tout le SE lyonnais (Corbas limitrophe, Saint-Priest, Vénissieux, Chassieu). Couverture Métropole de Lyon. Consultants depuis Lyon (20 min).",
+      a: "Oui, Axion-IA intervient à Mions et tout le SE lyonnais (Corbas limitrophe, Saint-Priest, Vénissieux, Chassieu). Couverture Métropole de Lyon. Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les opérateurs logistiques ?",
@@ -64,7 +64,7 @@ export const MIONS_COPY: VilleCopy = {
       a: "Pour les TPE artisans BTP et commerçants à Mions, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV.",
     },
     {
-      q: "Comment se passe une mission depuis Lyon ?",
+      q: "Comment se déroule une mission Axion-IA chez nos clients ?",
       a: "Nous intervenons partout en France, sur place ou à distance. Tarifs transparents.",
     },
   ],

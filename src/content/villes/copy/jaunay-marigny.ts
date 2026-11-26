@@ -64,8 +64,8 @@ export const JAUNAY_MARIGNY_COPY: VilleCopy = {
       a: "Pour les TPE artisans et commerçants à Jaunay-Marigny, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation pratique, coaching 1-to-1. Cas typiques : automatisation devis, gestion stocks, agents IA prise de RDV, marketing digital.",
     },
     {
-      q: "Comment se déroule une mission depuis Paris ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Pour les multi-jours, hébergement hôtels du Futuroscope.",
+      q: "Comment se déroule une mission Axion-IA chez nos clients ?",
+      a: "Nous intervenons partout en France, sur place dans vos locaux ou à distance en visio. Après le cadrage de votre besoin, nous planifions l'intervention et livrons un résultat actionnable.",
     },
   ],
 };

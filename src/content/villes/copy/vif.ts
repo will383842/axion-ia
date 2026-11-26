@@ -65,7 +65,7 @@ export const VIF_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une intervention rurale ?",
-      a: "Sur place ou à distance, selon votre besoin. Pour les missions de plusieurs jours en zone rurale, un hébergement local est possible.",
+      a: "Sur place ou à distance, selon votre besoin. ",
     },
   ],
 };

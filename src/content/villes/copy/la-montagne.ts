@@ -49,7 +49,7 @@ export const LA_MONTAGNE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à La Montagne et sud-ouest Nantes ?",
-      a: "Oui, Axion-IA intervient à La Montagne et tout le sud-ouest nantais (Bouguenais, Saint-Jean-de-Boiseau, Indre, Le Pellerin). Consultants depuis Nantes centre (15 min). Couverture complète sud-ouest métropole.",
+      a: "Oui, Axion-IA intervient à La Montagne et tout le sud-ouest nantais (Bouguenais, Saint-Jean-de-Boiseau, Indre, Le Pellerin). Nous intervenons partout en France, sur place ou à distance. Couverture complète sud-ouest métropole.",
     },
     {
       q: "Accompagnez-vous les professions libérales de La Montagne ?",

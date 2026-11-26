@@ -49,7 +49,7 @@ export const NUEIL_LES_AUBIERS_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Nueil-les-Aubiers et dans le bocage bressuirais ?",
-      a: "Oui, Axion-IA intervient à Nueil-les-Aubiers et tout le bocage bressuirais (Bressuire à 10 min, Mauléon, Cerizay, Argenton-les-Vallées). Consultants depuis Niort (50 min) ou Cholet (30 min). Couverture complète du nord Deux-Sèvres.",
+      a: "Oui, Axion-IA intervient à Nueil-les-Aubiers et tout le bocage bressuirais (Bressuire à 10 min, Mauléon, Cerizay, Argenton-les-Vallées). Nous intervenons partout en France, sur place ou à distance. Couverture complète du nord Deux-Sèvres.",
     },
     {
       q: "Travaillez-vous avec les PME industrielles du bocage ?",

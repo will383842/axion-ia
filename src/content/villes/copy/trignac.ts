@@ -65,7 +65,7 @@ export const TRIGNAC_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Trignac ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Hébergement local pour les missions multi-jours.",
+      a: "Nous intervenons partout en France, sur place ou à distance.",
     },
   ],
 };

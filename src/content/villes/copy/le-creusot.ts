@@ -240,7 +240,7 @@ export const LE_CREUSOT_COPY: VilleCopy = {
     },
     {
       q: "Vous déplacez-vous sur site au Creusot ?",
-      a: "Oui, nos consultants se déplacent depuis Paris (1h20 en TGV) ou Lyon (40 min en TGV) jusqu'à la gare Le Creusot-Montceau-Montchanin (10 km du centre). Pour les missions récurrentes, planification mensuelle sur site et visio entre deux.",
+      a: "Oui, nous nous déplaçons chez vous, partout en France ; la gare Le Creusot-Montceau-Montchanin (TGV) est à 10 km du centre. Pour les missions récurrentes, planification mensuelle sur site et visio entre deux.",
     },
   ],
   // EN mirror FR (Will rule 2026-05-22 : NE JAMAIS traduire EN pour villes).

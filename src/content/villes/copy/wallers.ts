@@ -65,7 +65,7 @@ export const WALLERS_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Wallers ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Intervention sur site dans vos locaux industriels, bureau, commerce, site touristique ou en visio. Pour missions multi-jours, hébergement à Valenciennes ou Douai.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Intervention sur site dans vos locaux industriels, bureau, commerce, site touristique ou en visio. ",
     },
   ],
 };

@@ -56,7 +56,18 @@ const FRAIS: ReadonlyArray<readonly [string, RegExp]> = [
     /(?:tarifs?|grille|prix)[^".]{0,30}(?:identiques?|le même|les mêmes)[^".]{0,40}(?:partout|ailleurs|quel que soit)/iu,
   ],
   ["au même tarif", /au même tarif/u],
-  ["hébergement local", /hébergement local possibles?/u],
+  [
+    "hébergement local",
+    /(?<!d['’]|fibre, )h[ée]bergement (?:local|possible)|multi-jours[^".]{0,20}h[ée]bergement/iu,
+  ],
+  [
+    "surfacturation / majoration",
+    /surfacturation g[ée]ographique|majoration sp[ée]cifique|co[uû]ts? logistiques?/iu,
+  ],
+  [
+    "identiques selon la zone",
+    /\bet identiques\b|identiques? (?:à|sur|en|quelle que soit|dans)\b[^".]{0,40}(?:commune|zone|ville|Gap|[Cc]ouronne|intra-muros|agglo)|identique quelle que soit/iu,
+  ],
   [
     "prix + déplacement",
     /\{\{price:[^}]+\}\}[^".]{0,80}(?<!en )[Dd]éplacement(?! sur site)|(?<!en )[Dd]éplacement(?! sur site)[^".]{0,80}\{\{price:/u,
@@ -66,7 +77,7 @@ const FRAIS: ReadonlyArray<readonly [string, RegExp]> = [
 const PRESENCE: ReadonlyArray<readonly [string, RegExp]> = [
   [
     "consultants viennent de <Ville>",
-    /Nos consultants (?:seniors )?(?:viennent (?:de|depuis|d['’])|se déplacent[^."]{0,40}depuis|interviennent depuis|rejoignent)/u,
+    /[Nn]os consultants (?:seniors )?(?:viennent (?:de|depuis|d['’])|se déplacent[^."]{0,60}depuis|interviennent[^."]{0,40}depuis|rejoignent|arrivent (?:depuis|en \d))|(?:^|[ "(.])Consultants depuis [A-ZÉ]|Nous arrivons[^."]{0,30}depuis|consultants hors région/u,
   ],
   ["Williams depuis <Ville>", /Williams[^".]{0,60}depuis [A-ZÉ]/u],
   [

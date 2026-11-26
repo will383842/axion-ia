@@ -65,7 +65,7 @@ export const ONNAING_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Onnaing ?",
-      a: "Nos consultants interviennent à Onnaing depuis Valenciennes (10 min) ou Lille (50 min A23). Intervention sur site dans votre usine, atelier, entrepôt logistique ou en visio. Proximité A2 Paris-Bruxelles et pôle Toyota.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Intervention sur site dans votre usine, atelier, entrepôt logistique ou en visio. Proximité A2 Paris-Bruxelles et pôle Toyota.",
     },
   ],
 };

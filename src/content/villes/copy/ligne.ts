@@ -49,7 +49,7 @@ export const LIGNE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Ligné et nord-est Nantes ?",
-      a: "Oui, Axion-IA intervient à Ligné et tout le nord-est nantais (Nort-sur-Erdre, Héric, Ancenis, Petit-Mars). Consultants depuis Nantes centre (30 min). Couverture complète nord-est Loire-Atlantique.",
+      a: "Oui, Axion-IA intervient à Ligné et tout le nord-est nantais (Nort-sur-Erdre, Héric, Ancenis, Petit-Mars). Nous intervenons partout en France, sur place ou à distance. Couverture complète nord-est Loire-Atlantique.",
     },
     {
       q: "Accompagnez-vous les exploitations agricoles ?",

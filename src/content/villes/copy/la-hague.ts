@@ -65,7 +65,7 @@ export const LA_HAGUE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à La Hague ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Gare de Cherbourg (TER Paris-Saint-Lazare 3 h). Multi-jours : hébergement Cherbourg.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Gare de Cherbourg (TER Paris-Saint-Lazare 3 h).",
     },
   ],
 };

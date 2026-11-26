@@ -65,7 +65,7 @@ export const SCIEZ_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Sciez ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Multi-jours : hébergement local bord de lac possible.",
+      a: "Nous intervenons partout en France, sur place ou à distance.",
     },
   ],
 };

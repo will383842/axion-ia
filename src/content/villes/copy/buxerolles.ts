@@ -65,7 +65,7 @@ export const BUXEROLLES_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Buxerolles ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Pour les multi-jours, hébergement Poitiers centre.",
+      a: "Nous intervenons partout en France, sur place ou à distance.",
     },
   ],
 };

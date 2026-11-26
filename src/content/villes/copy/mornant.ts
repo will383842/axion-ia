@@ -49,7 +49,7 @@ export const MORNANT_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Mornant et pays mornantais ?",
-      a: "Oui, Axion-IA intervient à Mornant et tout le pays mornantais SO lyonnais (Brignais à 10 min, Givors à 15 min, Saint-Laurent-d'Agny). Consultants depuis Lyon (30 min).",
+      a: "Oui, Axion-IA intervient à Mornant et tout le pays mornantais SO lyonnais (Brignais à 10 min, Givors à 15 min, Saint-Laurent-d'Agny). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les viticulteurs AOC Coteaux-du-Lyonnais ?",
@@ -64,8 +64,8 @@ export const MORNANT_COPY: VilleCopy = {
       a: "Pour les TPE artisans BTP et commerçants à Mornant, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1.",
     },
     {
-      q: "Comment se passe une mission depuis Lyon ?",
-      a: "Nous intervenons partout en France, sur place ou à distance.",
+      q: "Comment se déroule une mission Axion-IA chez nos clients ?",
+      a: "Nous intervenons partout en France, sur place dans vos locaux ou à distance en visio. Après le cadrage de votre besoin, nous planifions l'intervention et livrons un résultat actionnable.",
     },
   ],
 };

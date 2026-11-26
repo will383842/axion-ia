@@ -65,7 +65,7 @@ export const MEUNG_SUR_LOIRE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Meung-sur-Loire ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Gare de Meung-sur-Loire desservie par le TER Orléans-Blois-Tours. Pour les multi-jours, hébergement local ou Orléans.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Gare de Meung-sur-Loire desservie par le TER Orléans-Blois-Tours. ",
     },
   ],
 };

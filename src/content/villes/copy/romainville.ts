@@ -246,7 +246,7 @@ export const ROMAINVILLE_COPY: VilleCopy = {
     },
     {
       q: "Quels sont vos tarifs pour une TPE ou PME à Romainville ?",
-      a: "Nos tarifs publics sont identiques à Romainville, Paris et toute l'Île-de-France —. Consultez la page tarifs du site pour le détail audit / intervention / implémentation / accompagnement un-à-un, calibrés TPE et PME en priorité.",
+      a: "Nos tarifs sont publics. Consultez la page tarifs du site pour le détail audit / intervention / implémentation / accompagnement un-à-un, calibrés TPE et PME en priorité.",
     },
   ],
 };

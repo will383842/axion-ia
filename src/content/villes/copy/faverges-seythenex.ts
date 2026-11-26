@@ -65,7 +65,7 @@ export const FAVERGES_SEYTHENEX_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Faverges-Seythenex ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Intervention sur site dans votre usine, exploitation ou commerce. Pour missions multi-jours, hébergement local montagne.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Intervention sur site dans votre usine, exploitation ou commerce. ",
     },
   ],
 };

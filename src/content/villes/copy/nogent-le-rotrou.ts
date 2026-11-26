@@ -49,7 +49,7 @@ export const NOGENT_LE_ROTROU_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Nogent-le-Rotrou et dans le Perche ?",
-      a: "Oui, Axion-IA intervient à Nogent-le-Rotrou et tout le Perche eurélien (Thiron-Gardais, La Loupe, Authon-du-Perche). Consultants depuis Paris (1h50) ou Chartres (50 min).",
+      a: "Oui, Axion-IA intervient à Nogent-le-Rotrou et tout le Perche eurélien (Thiron-Gardais, La Loupe, Authon-du-Perche). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les PME industrielles de Nogent-le-Rotrou ?",

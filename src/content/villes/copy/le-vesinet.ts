@@ -49,7 +49,7 @@ export const LE_VESINET_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il au Vésinet et ouest parisien ?",
-      a: "Oui, Axion-IA intervient au Vésinet et tout l'ouest parisien (Chatou, Croissy-sur-Seine, Le Pecq, Saint-Germain-en-Laye, Marly-le-Roi, Montesson). Nos consultants arrivent en 18 min depuis La Défense via le RER A.",
+      a: "Oui, Axion-IA intervient au Vésinet et tout l'ouest parisien (Chatou, Croissy-sur-Seine, Le Pecq, Saint-Germain-en-Laye, Marly-le-Roi, Montesson). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les professions libérales haut de gamme au Vésinet ?",

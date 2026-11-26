@@ -49,7 +49,7 @@ export const NEUVILLE_SUR_SAONE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Neuville-sur-Saône et nord lyonnais ?",
-      a: "Oui, Axion-IA intervient à Neuville-sur-Saône et tout le nord lyonnais (Fontaines-sur-Saône limitrophe, Rillieux-la-Pape, Caluire-et-Cuire). Consultants depuis Lyon (20 min).",
+      a: "Oui, Axion-IA intervient à Neuville-sur-Saône et tout le nord lyonnais (Fontaines-sur-Saône limitrophe, Rillieux-la-Pape, Caluire-et-Cuire). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les professions libérales neuvillois ?",
@@ -64,7 +64,7 @@ export const NEUVILLE_SUR_SAONE_COPY: VilleCopy = {
       a: "Pour les TPE artisans BTP et commerçants à Neuville-sur-Saône, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis.",
     },
     {
-      q: "Comment se passe une mission depuis Lyon ?",
+      q: "Comment se déroule une mission Axion-IA chez nos clients ?",
       a: "Nous intervenons partout en France, sur place ou à distance. Tarifs transparents.",
     },
   ],

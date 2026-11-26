@@ -49,7 +49,7 @@ export const GRANDCHAMP_DES_FONTAINES_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Grandchamp-des-Fontaines et nord Nantes ?",
-      a: "Oui, Axion-IA intervient à Grandchamp-des-Fontaines et tout le nord nantais (Treillières, Héric, Nort-sur-Erdre, La Chapelle-sur-Erdre). Consultants depuis Nantes centre (20 min). Couverture complète nord métropole.",
+      a: "Oui, Axion-IA intervient à Grandchamp-des-Fontaines et tout le nord nantais (Treillières, Héric, Nort-sur-Erdre, La Chapelle-sur-Erdre). Nous intervenons partout en France, sur place ou à distance. Couverture complète nord métropole.",
     },
     {
       q: "Accompagnez-vous les PME tertiaires des zones d'activités ?",

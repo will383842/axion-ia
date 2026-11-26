@@ -49,7 +49,7 @@ export const MONTROND_LES_BAINS_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Montrond-les-Bains et plaine Forez ?",
-      a: "Oui, Axion-IA intervient à Montrond-les-Bains et toute la plaine du Forez (Saint-Galmier à 10 min, Andrézieux-Bouthéon, Sury-le-Comtal, Feurs). Couverture Loire Forez Agglo. Consultants depuis Lyon (1h) ou Saint-Étienne (30 min).",
+      a: "Oui, Axion-IA intervient à Montrond-les-Bains et toute la plaine du Forez (Saint-Galmier à 10 min, Andrézieux-Bouthéon, Sury-le-Comtal, Feurs). Couverture Loire Forez Agglo. Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les acteurs thermalisme et casino ?",
@@ -64,8 +64,8 @@ export const MONTROND_LES_BAINS_COPY: VilleCopy = {
       a: "Pour les TPE artisans BTP et commerçants à Montrond-les-Bains, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, classification photos.",
     },
     {
-      q: "Comment se passe une mission depuis Lyon ou Saint-Étienne ?",
-      a: "Nous intervenons partout en France, sur place ou à distance.",
+      q: "Comment se déroule une mission Axion-IA chez nos clients ?",
+      a: "Nous intervenons partout en France, sur place dans vos locaux ou à distance en visio. Après le cadrage de votre besoin, nous planifions l'intervention et livrons un résultat actionnable.",
     },
   ],
 };

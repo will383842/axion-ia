@@ -65,7 +65,7 @@ export const SAINT_JAMES_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Saint-James ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Gare d'Avranches (TER). Multi-jours : hébergement Avranches.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Gare d'Avranches (TER).",
     },
   ],
 };

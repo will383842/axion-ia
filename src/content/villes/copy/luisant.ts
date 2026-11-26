@@ -49,7 +49,7 @@ export const LUISANT_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Luisant et dans l'agglomération de Chartres ?",
-      a: "Oui, Axion-IA intervient à Luisant et toute l'agglomération de Chartres (Mainvilliers, Lucé, Lèves, Champhol). Consultants depuis Paris (1h20 A11) ou gare de Chartres (TER 1h10).",
+      a: "Oui, Axion-IA intervient à Luisant et toute l'agglomération de Chartres (Mainvilliers, Lucé, Lèves, Champhol). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les professions libérales de Luisant ?",

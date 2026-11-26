@@ -64,8 +64,8 @@ export const ITTEVILLE_COPY: VilleCopy = {
       a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : gestion stocks, fidélisation client, agents IA commande, marketing local.",
     },
     {
-      q: "Comment se passe une mission depuis Paris ou Évry ?",
-      a: "Évry-Courcouronnes (20 min). Corbeil-Essonnes (15 min). Paris centre (45 min par N104/A6).",
+      q: "Comment se déroule une mission Axion-IA chez nos clients ?",
+      a: "Nous intervenons partout en France, sur place dans vos locaux ou à distance en visio. Après le cadrage de votre besoin, nous planifions l'intervention et livrons un résultat actionnable.",
     },
   ],
 };

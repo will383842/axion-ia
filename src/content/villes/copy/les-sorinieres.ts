@@ -64,7 +64,7 @@ export const LES_SORINIERES_COPY: VilleCopy = {
       a: "Pour les TPE artisans BTP et commerçants aux Sorinières, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, gestion planning IA, agents IA prise de commandes.",
     },
     {
-      q: "Comment se passe une mission depuis Nantes ?",
+      q: "Comment se déroule une mission Axion-IA chez nos clients ?",
       a: "Nos consultants sont aux Sorinières en 12 min depuis Nantes centre via le périphérique sud. Première couronne, accès très rapide.",
     },
   ],

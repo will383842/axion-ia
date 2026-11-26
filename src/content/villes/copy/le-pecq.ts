@@ -49,7 +49,7 @@ export const LE_PECQ_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il au Pecq et Saint-Germain-en-Laye ?",
-      a: "Oui, Axion-IA intervient au Pecq et tout le secteur Saint-Germain-en-Laye (Marly-le-Roi, Le Vésinet, Chatou, Croissy-sur-Seine, Fourqueux). Nos consultants arrivent en 20 min depuis La Défense via le RER A.",
+      a: "Oui, Axion-IA intervient au Pecq et tout le secteur Saint-Germain-en-Laye (Marly-le-Roi, Le Vésinet, Chatou, Croissy-sur-Seine, Fourqueux). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les restaurateurs et commerçants du Pecq ?",

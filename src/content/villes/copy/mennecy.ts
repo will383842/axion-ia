@@ -64,8 +64,8 @@ export const MENNECY_COPY: VilleCopy = {
       a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1.",
     },
     {
-      q: "Comment se passe une mission depuis Évry ou Paris ?",
-      a: "Évry-Courcouronnes (15 min). Corbeil-Essonnes (10 min). Paris centre (45 min). Aéroport Orly (25 min).",
+      q: "Comment se déroule une mission Axion-IA chez nos clients ?",
+      a: "Nous intervenons partout en France, sur place dans vos locaux ou à distance en visio. Après le cadrage de votre besoin, nous planifions l'intervention et livrons un résultat actionnable.",
     },
   ],
 };

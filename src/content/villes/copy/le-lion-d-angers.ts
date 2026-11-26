@@ -64,7 +64,7 @@ export const LE_LION_D_ANGERS_COPY: VilleCopy = {
       a: "Oui, notre format 1-to-1 permet un accompagnement personnalisé pour les dirigeants TPE/PME du Lion-d'Angers. Sessions sur site, dans votre exploitation ou en visio, à partir de {{price:intervention-dirigeants|flat}}.",
     },
     {
-      q: "Comment se passe une mission IA depuis Angers ?",
+      q: "Comment se déroule une mission Axion-IA chez nos clients ?",
       a: "Nous intervenons partout en France, sur place ou à distance. Tarifs publics.",
     },
   ],

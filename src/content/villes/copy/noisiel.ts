@@ -65,7 +65,7 @@ export const NOISIEL_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission Axion-IA à Noisiel ?",
-      a: "Nos consultants interviennent à Noisiel (35 min depuis Paris via RER A gare Noisiel, ou 40 min en voiture via A4). Intervention dans vos locaux, atelier pratique avec vos équipes, livraison d'outils configurés.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Intervention dans vos locaux, atelier pratique avec vos équipes, livraison d'outils configurés.",
     },
   ],
 };

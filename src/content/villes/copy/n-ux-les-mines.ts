@@ -64,7 +64,7 @@ export const N_UX_LES_MINES_COPY: VilleCopy = {
       a: "Pour les commerçants et professions libérales à Nœux-les-Mines, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : agents IA conversationnels, automatisation RDV, fidélisation.",
     },
     {
-      q: "Comment se passe une mission à Nœux-les-Mines depuis Lille ?",
+      q: "Comment se déroule une mission Axion-IA chez nos clients ?",
       a: "Nous intervenons partout en France, sur place ou à distance. Béthune est à 10 min. Tarifs transparents.",
     },
   ],

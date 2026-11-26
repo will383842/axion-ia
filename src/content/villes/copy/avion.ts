@@ -65,7 +65,7 @@ export const AVION_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Avion ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Hébergement local possible (hôtels Lens).",
+      a: "Nous intervenons partout en France, sur place ou à distance.",
     },
   ],
 };

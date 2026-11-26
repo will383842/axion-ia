@@ -63,7 +63,7 @@ export const SAINT_EGREVE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Saint-Égrève ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Pour les missions de plusieurs jours, un hébergement local est possible.",
+      a: "Nous intervenons partout en France, sur place ou à distance.",
     },
   ],
 };

@@ -65,7 +65,7 @@ export const FIGEAC_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Figeac ?",
-      a: "Figeac est à 1h40 de Toulouse par A20. Gare SNCF Figeac (ligne Brive-Toulouse). Pour missions multi-jours, hébergement local centre médiéval. Tarifs transparents.",
+      a: "Figeac est à 1h40 de Toulouse par A20. Gare SNCF Figeac (ligne Brive-Toulouse).  Tarifs transparents.",
     },
   ],
 };

@@ -49,7 +49,7 @@ export const GUINGAMP_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Guingamp et bassin du Trégor ?",
-      a: "Oui, Axion-IA intervient à Guingamp et tout le bassin Trégor-Goëlo (Lannion, Paimpol, Bégard, Belle-Isle-en-Terre). Nos consultants arrivent en 3h depuis Paris (TGV direct Guingamp).",
+      a: "Oui, Axion-IA intervient à Guingamp et tout le bassin Trégor-Goëlo (Lannion, Paimpol, Bégard, Belle-Isle-en-Terre). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les entreprises agroalimentaires ?",
@@ -65,7 +65,7 @@ export const GUINGAMP_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Guingamp ?",
-      a: "TGV Paris-Guingamp en 3h (direct, noeud TER Lannion/Paimpol/Carhaix). Saint-Brieuc à 30 min. Hébergement local disponible.",
+      a: "TGV Paris-Guingamp en 3h (direct, noeud TER Lannion/Paimpol/Carhaix). Saint-Brieuc à 30 min. ",
     },
   ],
 };

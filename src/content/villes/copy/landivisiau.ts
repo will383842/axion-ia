@@ -65,7 +65,7 @@ export const LANDIVISIAU_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Landivisiau ?",
-      a: "Nos consultants arrivent depuis Brest (35 min N12) ou par TER gare de Landivisiau.",
+      a: "Nous intervenons partout en France, sur place ou à distance.",
     },
   ],
 };

@@ -52,7 +52,7 @@ const DEPLACE = "Nous nous déplaçons chez vous, partout en France.";
 
 /** Phrase « Nos consultants rejoignent / viennent d'… » : remplacée, ou retirée si la ligne dit déjà « partout en France ». */
 const PHRASE_CONSULTANTS =
-  /(^|["“] ?|[.!?] )(?:Oui\. )?Nos consultants (?:seniors )?(?:rejoignent|viennent d['’]|viennent de|viennent depuis)[^."]*\.(?= |"|$)/gu;
+  /(^|["“] ?|[.!?] )(?:Oui\. )?(?:[Nn]os consultants (?:seniors )?(?:rejoignent|viennent d['’]|viennent de|viennent depuis|interviennent à [^."]*?depuis|interviennent[^."]{0,40}depuis|arrivent (?:depuis|en \d)|se déplacent[^."]{0,60}depuis)|Consultants depuis [A-ZÉ]|Nous arrivons[^."]{0,30}depuis)[^."]*\.(?= |"|$)/gu;
 
 function phraseConsultants(ligne) {
   const dejaDit = ligne.includes("partout en France");
@@ -65,6 +65,20 @@ function phraseConsultants(ligne) {
 }
 
 const REGLES_BASE = [
+  [
+    /(?<=[.!?] )(?:Pour (?:les )?(?:missions |interventions )?(?:de plusieurs jours|multi-jours)[^.,"]*, |Pour missions multi-jours, )(?:un )?h[ée]bergement[^."]*\./gu,
+    "",
+  ],
+  [
+    /(?<=[.!?] |["“])(?:Multi-jours ?: ?)?(?:Un )?[Hh][ée]bergement (?:local|possible|disponible)[^."]*\./gu,
+    "",
+  ],
+  [
+    / ?(?:Pour (?:les )?(?:missions )?(?:de plusieurs jours|multi-jours)[^.,"]*, )(?:un )?h[ée]bergement[^."]*\./gu,
+    "",
+  ],
+  [/ Hébergement local possible \([^)]*\)\./gu, ""],
+  [/ Hébergement local[^."]*\./gu, ""],
   [/Williams se déplace-t-il à ([^"?]*?) depuis Paris ?\?/gu, "Vous déplacez-vous à $1 ?"],
   [
     /Williams se déplace(?: sur site)? depuis Paris(?: \([^)]*\))?(?: (?:via|en|par)[^."]*?)?(?= pour )/gu,

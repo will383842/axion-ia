@@ -61,7 +61,7 @@ export const LOIREAUXENCE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Loireauxence ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Hébergement local pour missions multi-jours.",
+      a: "Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "L'audit sur place {{price:audit-flash|flat}} convient-il aux petites structures ?",

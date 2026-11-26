@@ -65,7 +65,7 @@ export const CALVI_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission Axion-IA à Calvi ?",
-      a: "Après un premier échange gratuit, nous planifions l'intervention sous 5 jours. Nous intervenons partout en France, sur place ou à distance. Intervention sur site ou en visio. Livrable actionnable.",
+      a: "Après un premier échange gratuit, nous planifions l'intervention sous 5 jours. Nous intervenons partout en France, sur place ou à distance. Livrable actionnable.",
     },
   ],
 };

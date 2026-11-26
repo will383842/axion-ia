@@ -49,7 +49,7 @@ export const MORTAGNE_SUR_SEVRE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Mortagne-sur-Sèvre et dans le bocage vendéen ?",
-      a: "Oui, Axion-IA intervient à Mortagne-sur-Sèvre et dans tout le bocage vendéen (Les Herbiers, Cholet, Pouzauges). Consultants depuis Cholet (20 min) ou Les Herbiers (15 min).",
+      a: "Oui, Axion-IA intervient à Mortagne-sur-Sèvre et dans tout le bocage vendéen (Les Herbiers, Cholet, Pouzauges). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quels services IA pour les PME industrielles de Mortagne-sur-Sèvre ?",

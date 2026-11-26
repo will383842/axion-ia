@@ -65,7 +65,7 @@ export const VENDOME_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Vendôme ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Pour les multi-jours, hébergement local bords du Loir.",
+      a: "Nous intervenons partout en France, sur place ou à distance.",
     },
   ],
 };

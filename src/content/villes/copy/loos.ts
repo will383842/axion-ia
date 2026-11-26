@@ -246,7 +246,7 @@ export const LOOS_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Loos ?",
-      a: "Nos consultants interviennent dans vos locaux ou en visio, depuis Lille. Périmètre, planning et tarifs sont fixés en amont, sans surprise.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Périmètre, planning et tarifs sont fixés en amont, sans surprise.",
     },
     {
       q: "Comment garantissez-vous la conformité RGPD ?",

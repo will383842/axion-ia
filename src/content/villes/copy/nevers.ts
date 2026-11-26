@@ -245,7 +245,7 @@ export const NEVERS_COPY: VilleCopy = {
       a: "Non. Nous partons de vos logiciels actuels et commençons par un audit ciblé. L'objectif est un retour sur investissement rapide et mesurable, accessible à une TPE comme à une PME, pas un grand chantier coûteux.",
     },
     {
-      q: "Comment se passe une mission depuis Clermont-Ferrand ou Lyon ?",
+      q: "Comment se déroule une mission Axion-IA chez nos clients ?",
       a: "Le diagnostic et les sessions clés se déroulent sur site à Nevers ; le suivi se poursuit en visio.",
     },
   ],

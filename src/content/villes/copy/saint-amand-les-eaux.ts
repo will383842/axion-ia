@@ -61,7 +61,7 @@ export const SAINT_AMAND_LES_EAUX_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Saint-Amand-les-Eaux ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Intervention sur site dans vos locaux professionnels ou en visio. Pour missions multi-jours, hébergement à Valenciennes ou Saint-Amand-les-Eaux.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Intervention sur site dans vos locaux professionnels ou en visio. ",
     },
     {
       q: "Proposez-vous des solutions IA pour l'artisanat faïencier ?",

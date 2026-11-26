@@ -130,7 +130,7 @@ export const LE_PLESSIS_TREVISE_COPY: VilleCopy = {
           },
           {
             q: "Intervenez-vous sur place au Plessis-Trévise et le devis est-il ferme ?",
-            a: "Oui. Le cadrage se fait en présentiel au Plessis-Trévise, nous nous déplaçons chez vous, généralement sous 5 à 10 jours ouvrés. Après ce cadrage, on remet un devis ferme en forfait fixe, à partir de 24-48 h pour un projet simple comme une vitrine de commerçant. Pas de régie, pas de dérive horaire cachée ; les itérations se font ensuite à distance en visio.",
+            a: "Oui. Le cadrage se fait en présentiel au Plessis-Trévise : nous nous déplaçons chez vous, généralement sous 5 à 10 jours ouvrés. Après ce cadrage, on remet un devis ferme en forfait fixe, à partir de 24-48 h pour un projet simple comme une vitrine de commerçant. Pas de régie, pas de dérive horaire cachée ; les itérations se font ensuite à distance en visio.",
           },
         ],
         guarantees:
@@ -216,7 +216,7 @@ export const LE_PLESSIS_TREVISE_COPY: VilleCopy = {
           },
           {
             q: "Intervenez-vous sur place au Plessis-Trévise et le devis est-il ferme ?",
-            a: "Oui. Le cadrage se fait en présentiel au Plessis-Trévise, nous nous déplaçons chez vous, généralement sous 5 à 10 jours ouvrés. Après ce cadrage, on remet un devis ferme en forfait fixe, à partir de 24-48 h pour un projet simple comme une vitrine de commerçant. Pas de régie, pas de dérive horaire cachée ; les itérations se font ensuite à distance en visio.",
+            a: "Oui. Le cadrage se fait en présentiel au Plessis-Trévise : nous nous déplaçons chez vous, généralement sous 5 à 10 jours ouvrés. Après ce cadrage, on remet un devis ferme en forfait fixe, à partir de 24-48 h pour un projet simple comme une vitrine de commerçant. Pas de régie, pas de dérive horaire cachée ; les itérations se font ensuite à distance en visio.",
           },
         ],
         guarantees:

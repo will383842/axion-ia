@@ -65,7 +65,7 @@ export const FLINES_LEZ_RACHES_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Flines-lez-Râches ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Intervention sur site dans votre exploitation, atelier, bureau, commerce ou en visio. Pour missions multi-jours, hébergement à Douai ou Orchies.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Intervention sur site dans votre exploitation, atelier, bureau, commerce ou en visio. ",
     },
   ],
 };

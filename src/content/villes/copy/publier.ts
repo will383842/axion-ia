@@ -65,7 +65,7 @@ export const PUBLIER_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Publier ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Pour les missions multi-jours, hébergement local sur la rive du Léman.",
+      a: "Nous intervenons partout en France, sur place ou à distance.",
     },
   ],
 };

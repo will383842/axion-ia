@@ -64,7 +64,7 @@ export const LIMOURS_COPY: VilleCopy = {
       a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : gestion stocks, fidélisation client, agents IA commande, marketing local.",
     },
     {
-      q: "Comment se passe une mission depuis Paris ou Massy ?",
+      q: "Comment se déroule une mission Axion-IA chez nos clients ?",
       a: "Massy TGV (20 min). Paris centre (40 min par N118 ou A10). Orly (25 min).",
     },
   ],

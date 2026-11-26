@@ -82,7 +82,7 @@ export const BOULOGNE_BILLANCOURT_COPY: VilleCopy = {
         whyHere: [
           "Boulogne-Billancourt est l'un de nos principaux terrains d'intervention en proche couronne parisienne : la concentration de sièges de grands groupes (Renault, TF1, Boursorama) et de PME conseil génère une forte demande d'audits IA opérationnels.",
           "Tissu B2B très sectorisé dans nos missions boulonnaises : grands groupes du Trapèze et du Quai du Point-du-Jour, PME conseil et services informatiques, startups et scale-ups numériques, cabinets de conseil proches Paris 15e/16e.",
-          "Nos consultants se déplacent sur l'ensemble de la commune et les communes du bassin : Issy-les-Moulineaux, Meudon, Saint-Cloud, Sèvres, Vanves —",
+          "Nos consultants se déplacent sur l'ensemble de la commune et les communes du bassin : Issy-les-Moulineaux, Meudon, Saint-Cloud, Sèvres, Vanves.",
           "Restitutions toujours en présentiel : ateliers d'idéation dans vos locaux boulonnais, lecture du livrable avec votre comité de direction, plan d'action remis en main propre.",
           "Aucun jeu de devis opaque : tarifs publics affichés, vous savez exactement ce que vous payez avant de signer.",
           "Vous gardez le contrôle : votre plan d'action est exécutable avec n'importe quel prestataire ou en interne après notre audit — aucun lock-in Axion-IA.",

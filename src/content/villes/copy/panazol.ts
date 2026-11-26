@@ -64,7 +64,7 @@ export const PANAZOL_COPY: VilleCopy = {
       a: "Pour les professions libérales à Panazol (médecins, avocats, experts-comptables), audit sur place {{price:audit-flash|flat}}, intervention formation, coaching 1-to-1. Cas typiques : automatisation secrétariat, classification documents, synthèse dossiers, agents IA.",
     },
     {
-      q: "Comment se passe une mission depuis Limoges centre ?",
+      q: "Comment se déroule une mission Axion-IA chez nos clients ?",
       a: "Nous intervenons partout en France, sur place ou à distance. Panazol est directement desservie par le réseau STLC.",
     },
   ],

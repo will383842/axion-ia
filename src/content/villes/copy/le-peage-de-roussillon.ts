@@ -64,7 +64,7 @@ export const LE_PEAGE_DE_ROUSSILLON_COPY: VilleCopy = {
       a: "Pour les TPE artisans BTP et commerçants au Péage-de-Roussillon, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, classification photos, gestion stocks.",
     },
     {
-      q: "Comment se passe une mission depuis Lyon ou Valence ?",
+      q: "Comment se déroule une mission Axion-IA chez nos clients ?",
       a: "Nous intervenons partout en France, sur place ou à distance. Tarifs transparents.",
     },
   ],

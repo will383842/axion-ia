@@ -84,7 +84,7 @@ export const REIMS_COPY: VilleCopy = {
           "Les grandes maisons de Champagne (LVMH/MHCS, Taittinger, Vranken-Pommery, Lanson-BCC) ont des équipes commerciales, export, marketing et RH éligibles à des cas IA structurés — comptes-rendus de dégustation, traduction multilingue automatique, qualification de leads B2B internationaux.",
           "L'industrie Pomacle-Bazancourt (bioraffinerie 3 Mt biomasse/an) et le pôle Bioeconomy For Change regroupent des ETI et PME industrielles avec des workflows qualité, R&D et supply chain candidats à l'automatisation IA.",
           "NEOMA Business School, Sciences Po Reims et l'URCA forment chaque année des milliers de jeunes professionnels : leurs équipes pédagogiques et administratives accélèrent significativement avec l'IA sur la gestion de contenu, le suivi étudiant, la production de rapports.",
-          " Nous intervenons partout en France, sur place ou à distance.",
+          "Nous intervenons partout en France, sur place ou à distance.",
           "Restitutions toujours en présentiel dans vos locaux à Reims ou en bassin Champagne. Plan d'action remis en main propre, exécutable avec n'importe quel prestataire ou en interne.",
         ],
         methodology: [

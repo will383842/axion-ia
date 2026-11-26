@@ -61,7 +61,7 @@ export const SUCE_SUR_ERDRE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Sucé-sur-Erdre ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Pour les missions multi-jours, hébergement local en bords d'Erdre.",
+      a: "Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "L'audit sur place est-il adapté aux petites structures ?",
