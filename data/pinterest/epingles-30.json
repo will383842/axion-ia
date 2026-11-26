@@ -1,0 +1,528 @@
+[
+  {
+    "url": "https://axion-ia.com/fr/blog/evaluation-prompts-ia-production-pme",
+    "tableaux": [
+      "Prompts IA prêts à l'emploi pour le bureau"
+    ],
+    "titre": "Évaluation des prompts IA : tester ses consignes avant la production",
+    "description": "Pour évaluer un prompt IA, on compare ses réponses à ce que l'on attend, on note ses erreurs, puis on le corrige. C'est la méthode à suivre avant de confier une consigne à toute l'équipe d'une TPE ou d'une PME. L'article présente l'analyse qualitative, l'attention aux biais et le rôle de l'évaluation dans la formation. Un bon prompt se mesure, il ne se devine pas. Lisez l'article pour structurer vos tests.",
+    "alt": "Clap de cinéma tenu par deux mains, avec des notes de scène écrites au feutre sur la tablette blanche",
+    "image": "https://images.unsplash.com/photo-1582675053918-347dd7cf5807?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w5NTEzMjN8MHwxfHNlYXJjaHwxMHx8ZXZhbHVhdGlvbiUyMHByb21wdHMlMjBwcm9kdWN0aW9ufGVufDF8MHx8fDE3OTEzOTUxNzl8MA&ixlib=rb-4.1.0&q=80&w=1080",
+    "mots_cles": [
+      "évaluation prompts IA",
+      "prompt engineering",
+      "PME",
+      "qualité des réponses IA",
+      "biais"
+    ]
+  },
+  {
+    "url": "https://axion-ia.com/fr/blog/accelerer-time-to-market-eti-ia-montfermeil",
+    "tableaux": [
+      "Automatiser son entreprise avec l'IA",
+      "L'IA par métier et par secteur / IA dans le commerce"
+    ],
+    "titre": "Time-to-market avec l'IA : accélérer une ETI de la distribution",
+    "description": "Oui, l'IA peut aider une ETI à réduire le délai entre la conception d'un produit et sa mise en vente, en allégeant les processus manuels et la gestion des données. L'article raconte le cas d'une ETI de la distribution et la méthode en cinq étapes : audit sur devis, stratégie IA sur 18 mois, projet pilote, formation des équipes, intégration. Lisez l'article pour voir comment démarrer dans votre PME ou TPE.",
+    "alt": "Enseigne rouge « Public Market Center » surmontée d'une grande horloge, devant un marché couvert décoré",
+    "image": "https://images.unsplash.com/photo-1577685829197-5fa2c5490a5d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w5NTEzMjN8MHwxfHNlYXJjaHwyM3x8YWNjZWxlcmVyJTIwdGltZSUyMG1hcmtldCUyMHVuZSUyMGV0aSUyMGdyYWNlfGVufDF8MHx8fDE3OTEzNzgxMzF8MA&ixlib=rb-4.1.0&q=80&w=1080",
+    "mots_cles": [
+      "time-to-market",
+      "IA ETI",
+      "distribution",
+      "automatisation",
+      "stratégie IA"
+    ]
+  },
+  {
+    "url": "https://axion-ia.com/fr/blog/seminaire-ia-dirigeants-strategie",
+    "tableaux": [
+      "Journée IA en entreprise : audit et formation",
+      "L'IA par fonction / direction générale"
+    ],
+    "titre": "Séminaire IA pour dirigeants : stratégie, gouvernance et plan d'action",
+    "description": "Un séminaire IA de plusieurs jours aide un dirigeant de PME à décider seul de sa stratégie IA, sans dépendre du jargon. L'article décrit une immersion en modules interactifs et études de cas : priorisation des cas d'usage, gouvernance, éthique, communication interne et stratégie sur 18 mois. L'objectif est de repartir avec un plan d'action concret pour son entreprise. Lisez l'article pour voir si ce format vous convient.",
+    "alt": "Public assis dans une salle lumineuse, au premier plan un homme à lunettes et chemise blanche qui écoute une conférence",
+    "image": "https://images.unsplash.com/photo-1742860861441-80465e4aeaca?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w5NTEzMjN8MHwxfHNlYXJjaHwyNXx8c2VtaW5haXJlJTIwcG91ciUyMGRpcmlnZWFudHMlMjBzdXIlMjBwbHVzaWV1cnMlMjBqb3Vyc3xlbnwxfDB8fHwxNzkxMjQ0ODM3fDA&ixlib=rb-4.1.0&q=80&w=1080",
+    "mots_cles": [
+      "séminaire IA dirigeants",
+      "stratégie IA",
+      "gouvernance IA",
+      "PME",
+      "plan d'action"
+    ]
+  },
+  {
+    "url": "https://axion-ia.com/fr/blog/devenir-formateur-ia-certifie-ecole-privee-management-cachan",
+    "tableaux": [
+      "Former ses équipes à l'IA"
+    ],
+    "titre": "Formateur IA : le parcours pour enseigner l'IA en école de management",
+    "description": "Pour devenir formateur IA dans une école privée de management, il faut comprendre l'IA, se former, obtenir une certification reconnue et accumuler de l'expérience de terrain. L'article déroule le parcours étape par étape, avec des conseils pratiques : commencer par des cours en ligne gratuits, choisir une formation à modules pratiques. Un guide utile pour un dirigeant, un manager ou un consultant qui veut transmettre l'IA. Lisez l'article.",
+    "alt": "Trois personnes en tenue de bureau autour d'une table regardent des graphiques circulaires imprimés et un ordinateur portable",
+    "image": "https://images.unsplash.com/photo-1758518729841-308509f69a7f?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w5NTEzMjN8MHwxfHNlYXJjaHwxMXx8Zm9ybWF0ZXVyJTIwY2VydGlmaWUlMjBlY29sZSUyMHByaXZlZSUyMG1hbmFnZW1lbnR8ZW58MXwwfHx8MTc5MTEzMDA2NXww&ixlib=rb-4.1.0&q=80&w=1080",
+    "mots_cles": [
+      "formateur IA",
+      "formation IA",
+      "école de management",
+      "certification IA",
+      "compétences IA"
+    ]
+  },
+  {
+    "url": "https://axion-ia.com/fr/blog/certification-ia-managers-lhay-les-roses",
+    "tableaux": [
+      "Former ses équipes à l'IA",
+      "IA et réglementation : RGPD et AI Act"
+    ],
+    "titre": "Certification IA pour managers : piloter des projets IA conformes",
+    "description": "Une certification IA donne au manager de PME les repères pour superviser des projets IA et rester dans le cadre de l'AI Act. L'article explique pourquoi elle compte, comment se déroule le parcours (gestion de projet IA, conformité, éthique, cas réels, simulations) et pourquoi les contenus sont mis à jour régulièrement. Il rappelle l'erreur classique : lancer un projet sans données structurées ni utilisateurs formés. Lisez l'article.",
+    "alt": "Silhouette d'une tête humaine ouverte, d'où s'échappent des particules lumineuses autour des lettres « AI », sur fond sombre",
+    "image": "https://images.unsplash.com/photo-1770233621425-5d9ee7a0a700?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w5NTEzMjN8MHwxfHNlYXJjaHwxfHxjZXJ0aWZpY2F0aW9uJTIwaW50ZWxsaWdlbmNlJTIwYXJ0aWZpY2llbGxlJTIwbWFuYWdlcnN8ZW58MXwwfHx8MTc5MTExODkyM3ww&ixlib=rb-4.1.0&q=80&w=1080",
+    "mots_cles": [
+      "certification IA",
+      "managers",
+      "AI Act",
+      "gestion de projet IA",
+      "formation IA"
+    ]
+  },
+  {
+    "url": "https://axion-ia.com/fr/blog/utiliser-ia-automatiser-comptabilite-pme-chatenay-malabry",
+    "tableaux": [
+      "Automatiser son entreprise avec l'IA",
+      "L'IA par fonction / comptabilité et finance"
+    ],
+    "titre": "Automatiser la comptabilité d'une PME avec l'IA : méthode en étapes",
+    "description": "Oui, une PME peut automatiser une partie de sa comptabilité avec l'IA, à condition de choisir les bonnes tâches. L'article propose une méthode simple : repérer les tâches répétitives (saisie, rapprochement bancaire, factures), choisir des outils compatibles avec vos logiciels, les intégrer, puis impliquer l'équipe comptable. Un guide de dirigeant à dirigeant pour gagner du temps sans désorganiser la TPE. Lisez l'article pour démarrer.",
+    "alt": "Panneau doré portant l'inscription « Porte automatique » en lettres noires, photographié de près",
+    "image": "https://images.unsplash.com/photo-1624542314857-5c0696f925d3?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w5NTEzMjN8MHwxfHNlYXJjaHw0fHx1dGlsaXNlciUyMHBvdXIlMjBhdXRvbWF0aXNlciUyMGNvbXB0YWJpbGl0ZXxlbnwxfDB8fHwxNzkwODQ4MDgxfDA&ixlib=rb-4.1.0&q=80&w=1080",
+    "mots_cles": [
+      "IA comptabilité",
+      "automatisation comptable",
+      "PME",
+      "rapprochement bancaire",
+      "facturation"
+    ]
+  },
+  {
+    "url": "https://axion-ia.com/fr/blog/certification-formation-ia-professionnelle-france-2026-roanne",
+    "tableaux": [
+      "Former ses équipes à l'IA",
+      "L'IA par métier et par secteur / IA dans l'industrie"
+    ],
+    "titre": "Certification formation IA : le cas d'une entreprise industrielle",
+    "description": "Une entreprise industrielle peut structurer sa formation IA et la faire reconnaître, même sans expertise interne. L'article raconte le cas d'une entreprise manquant de ressources qualifiées : audit des besoins en compétences, repérage des lacunes, puis méthode en cinq étapes jusqu'à la formation des équipes. Un retour d'expérience utile aux dirigeants de PME industrielles qui veulent monter en compétences partout en France. Lisez l'article.",
+    "alt": "Façade ancienne gravée d'une longue inscription latine, surmontée d'un drapeau français sous un ciel bleu",
+    "image": "https://images.unsplash.com/photo-1701605918342-7bfd34c5bf2a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w5NTEzMjN8MHwxfHNlYXJjaHwyOHx8Y2VydGlmaWNhdGlvbiUyMGZvcm1hdGlvbiUyMHByb2Zlc3Npb25uZWxsZSUyMGZyYW5jZSUyMDIwMjZ8ZW58MXwwfHx8MTc5MDg2NTUwMnww&ixlib=rb-4.1.0&q=80&w=1080",
+    "mots_cles": [
+      "certification formation IA",
+      "industrie",
+      "compétences IA",
+      "audit",
+      "PME"
+    ]
+  },
+  {
+    "url": "https://axion-ia.com/fr/blog/utiliser-ia-recrutement-formation-rh",
+    "tableaux": [
+      "L'IA par métier et par secteur / IA en ressources humaines",
+      "L'IA par fonction / RH"
+    ],
+    "titre": "IA pour le recrutement et la formation RH : cas d'usage en PME",
+    "description": "L'IA aide une PME à recruter et à former, à condition de rester éthique et de garder l'humain aux commandes. L'article passe en revue le tri de CV, la rédaction d'offres d'emploi, les chatbots pour les candidats et le repérage des besoins de formation. Il rappelle les risques de biais et le cadre réglementaire à respecter. Un guide pour les dirigeants et responsables RH de TPE et de PME. Lisez l'article.",
+    "alt": "Rang de personnes en chemise bleu clair vues de dos dans un couloir, en file, les bras le long du corps",
+    "image": "https://images.unsplash.com/photo-1718375505724-9bcac5ac25e9?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w5NTEzMjN8MHwxfHNlYXJjaHwxfHx1dGlsaXNlciUyMHBvdXIlMjByZWNydXRlbWVudCUyMGZvcm1hdGlvbnxlbnwxfDB8fHwxNzkwODgyMjA0fDA&ixlib=rb-4.1.0&q=80&w=1080",
+    "mots_cles": [
+      "IA recrutement",
+      "tri de CV",
+      "formation RH",
+      "offres d'emploi",
+      "PME"
+    ]
+  },
+  {
+    "url": "https://axion-ia.com/fr/blog/atelier-ia-dirigeants-pme-1-journee-alternatives",
+    "tableaux": [
+      "Journée IA en entreprise : audit et formation",
+      "L'IA par fonction / direction générale"
+    ],
+    "titre": "Atelier IA d'une journée pour dirigeants de PME : les alternatives",
+    "description": "Pour un dirigeant de PME, un atelier IA d'une journée n'est pas la seule voie. L'article compare cinq options : un cabinet comme Axion-IA, un outil en ligne généraliste, le recrutement d'un profil IA, une agence web ou un grand cabinet. Chacune est présentée avec ses forces et ses limites. À vous de choisir selon vos objectifs, votre budget et votre besoin de suivi. Lisez l'article avant de décider.",
+    "alt": "Groupe de participants assis dans une salle claire, certains souriants, écoutant un intervenant hors champ pendant un atelier",
+    "image": "https://images.unsplash.com/photo-1742860889158-8cafd645f398?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w5NTEzMjN8MHwxfHNlYXJjaHwzfHxhdGVsaWVyJTIwcG91ciUyMGRpcmlnZWFudHMlMjBqb3VybmVlfGVufDF8MHx8fDE3OTA4ODg0NzJ8MA&ixlib=rb-4.1.0&q=80&w=1080",
+    "mots_cles": [
+      "atelier IA dirigeants",
+      "journée IA",
+      "PME",
+      "comparatif",
+      "stratégie IA"
+    ]
+  },
+  {
+    "url": "https://axion-ia.com/fr/blog/formation-ia-gpt-fine-tuning-personnalisation-saint-herblain",
+    "tableaux": [
+      "Outils IA : ChatGPT, Claude, Copilot"
+    ],
+    "titre": "Formation GPT : fine-tuning et personnalisation des modèles pour l'entreprise",
+    "description": "Le fine-tuning permet d'adapter un modèle GPT aux besoins précis d'une entreprise, par exemple pour la relation client. L'article explique ce que cela change, ce qu'on apprend en formation (créer de bons prompts, intégrer ChatGPT et Claude dans le travail quotidien, respecter le RGPD) et pourquoi la personnalisation compte pour une PME. Un point de départ pour un dirigeant qui veut aller plus loin que l'usage de base. Lisez l'article.",
+    "alt": "Écran d'ordinateur affichant la page d'accueil de ChatGPT avec trois colonnes : exemples, capacités et limites",
+    "image": "https://images.unsplash.com/photo-1676573408178-a5f280c3a320?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w5NTEzMjN8MHwxfHNlYXJjaHw2fHxmb3JtYXRpb24lMjBncHQlMjBmaW5lJTIwdHVuaW5nJTIwcGVyc29ubmFsaXNhdGlvbnxlbnwxfDB8fHwxNzkwODkzODU5fDA&ixlib=rb-4.1.0&q=80&w=1080",
+    "mots_cles": [
+      "fine-tuning GPT",
+      "ChatGPT",
+      "personnalisation IA",
+      "formation IA",
+      "RGPD"
+    ]
+  },
+  {
+    "url": "https://axion-ia.com/fr/blog/calculateur-roi-formateur-ia-certifie-ecole-privee-management",
+    "tableaux": [
+      "Former ses équipes à l'IA"
+    ],
+    "titre": "Formateur IA certifié : mesurer le retour sur investissement",
+    "description": "Faire appel à un formateur IA certifié peut être rentable pour une école de management, à condition de le calculer. L'article donne une méthode simple : le temps gagné grâce à l'IA, multiplié par le salaire moyen des formateurs et par le volume mensuel de formations, moins le coût de l'IA. Il explique aussi pourquoi former à l'IA compte pour retenir ses équipes. Un outil de raisonnement pour dirigeant. Lisez l'article.",
+    "alt": "Quatre lettres de jeu de société formant le mot « FORM » posées sur une table en bois, sur fond de plante flou",
+    "image": "https://images.unsplash.com/photo-1740818576322-923d300dcb95?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w5NTEzMjN8MHwxfHNlYXJjaHwyfHxmb3JtYXRldXIlMjBjZXJ0aWZpZSUyMGVjb2xlJTIwcHJpdmVlJTIwbWFuYWdlbWVudHxlbnwxfDB8fHwxNzkwODk5Mjg3fDA&ixlib=rb-4.1.0&q=80&w=1080",
+    "mots_cles": [
+      "formateur IA certifié",
+      "retour sur investissement",
+      "ROI formation",
+      "école de management",
+      "formation IA"
+    ]
+  },
+  {
+    "url": "https://axion-ia.com/fr/blog/ia-drh-pme-france-optimisation-rh",
+    "tableaux": [
+      "L'IA par fonction / RH",
+      "L'IA par métier et par secteur / IA en ressources humaines"
+    ],
+    "titre": "IA pour les RH en PME : ce que peut faire un DRH dès maintenant",
+    "description": "L'IA permet à un DRH de PME de se libérer des tâches répétitives pour se consacrer aux personnes. L'article détaille trois chantiers : l'administratif (congés, paie, suivi des temps), le recrutement et la gestion des talents. Il situe le rôle d'Axion-IA, qui accompagne les entreprises dans cette intégration, et renvoie vers le guide sur la stratégie IA. Une lecture pour dirigeants et responsables RH de TPE et de PME. Lisez l'article.",
+    "alt": "Façade bleue d'un restaurant-bar en pierre, avec des tables et chaises de terrasse devant, dans une rue pavée",
+    "image": "https://images.unsplash.com/photo-1591401119145-8099f9ffa604?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w5NTEzMjN8MHwxfHNlYXJjaHwxNHx8cG91ciUyMGRyaCUyMGZyYW5jZXxlbnwxfDB8fHwxNzkwOTM5NzQ4fDA&ixlib=rb-4.1.0&q=80&w=1080",
+    "mots_cles": [
+      "IA pour DRH",
+      "RH PME",
+      "automatisation RH",
+      "recrutement IA",
+      "gestion des talents"
+    ]
+  },
+  {
+    "url": "https://axion-ia.com/fr/blog/formation-ia-dirigeants-gains-decisionnels",
+    "tableaux": [
+      "Former ses équipes à l'IA",
+      "L'IA par fonction / direction générale"
+    ],
+    "titre": "Formation IA pour dirigeants : mieux décider avec l'IA",
+    "description": "Se former à l'IA aide un dirigeant de PME à analyser ses données et à décider avec plus de recul. L'article présente trois bénéfices : une prise de décision mieux éclairée, une gouvernance de l'IA solide (politique d'usage, risques de biais, traçabilité) et une stratégie sur 18 mois. Axion-IA cible les dirigeants de PME et d'ETI. Un guide pour passer de la curiosité à une feuille de route claire. Lisez l'article.",
+    "alt": "Six dés de lettres posés sur une table en bois, avec un gobelet renversé derrière, qui forment le mot « DEMENZ »",
+    "image": "https://images.unsplash.com/photo-1637065933799-18a7a36ee31b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w5NTEzMjN8MHwxfHNlYXJjaHwyMHx8YmVuZWZpY2VzJTIwZm9ybWF0aW9uJTIwZGlyaWdlYW50cyUyMGdhaW5zJTIwZGVjaXNpb25uZWxzfGVufDF8MHx8fDE3OTA5NDYwNjZ8MA&ixlib=rb-4.1.0&q=80&w=1080",
+    "mots_cles": [
+      "formation IA dirigeants",
+      "prise de décision",
+      "gouvernance IA",
+      "stratégie IA",
+      "PME"
+    ]
+  },
+  {
+    "url": "https://axion-ia.com/fr/blog/formation-ia-certification-professionnelle-montlucon",
+    "tableaux": [
+      "Former ses équipes à l'IA"
+    ],
+    "titre": "Formation IA avec certification professionnelle : les étapes à suivre",
+    "description": "Pour suivre une formation IA débouchant sur une certification professionnelle, procédez en étapes. L'article vous guide : évaluer votre niveau (débutant, intermédiaire, avancé), repérer une formation reconnue par des organismes officiels, comparer les avis d'anciens participants, puis planifier le parcours. Des astuces concrètes pour un dirigeant ou un salarié de PME qui veut des compétences IA reconnues. Lisez l'article pour choisir sans vous tromper.",
+    "alt": "Drapeau français flottant sur un mât, vu en contre-plongée sur un ciel bleu légèrement nuageux",
+    "image": "https://images.unsplash.com/photo-1551866442-64e75e911c23?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w5NTEzMjN8MHwxfHNlYXJjaHwxfHxmb3JtYXRpb24lMjBjZXJ0aWZpY2F0aW9uJTIwcHJvZmVzc2lvbm5lbGxlJTIwZnJhbmNlfGVufDF8MHx8fDE3OTA5NTE1OTB8MA&ixlib=rb-4.1.0&q=80&w=1080",
+    "mots_cles": [
+      "formation IA certifiante",
+      "certification professionnelle",
+      "compétences IA",
+      "PME",
+      "formation en entreprise"
+    ]
+  },
+  {
+    "url": "https://axion-ia.com/fr/blog/comparatif-meilleures-certifications-ia-france-2026",
+    "tableaux": [
+      "Former ses équipes à l'IA",
+      "IA et réglementation : RGPD et AI Act"
+    ],
+    "titre": "Certifications IA en France : le comparatif pour les entreprises",
+    "description": "Les certifications IA rassurent clients et partenaires, mais elles ne se valent pas. L'article compare les repères français en s'appuyant sur le référentiel LNE Certif IA, qui évalue les systèmes IA de la conception à la maintenance. Il explique l'effet d'une certification sur la crédibilité et la conformité d'une entreprise. Un panorama utile à un dirigeant de PME qui veut y voir clair avant de s'engager. Lisez l'article.",
+    "alt": "Affiches collées sur un mur recouvert de graffitis, portant le texte « La meilleure des retraites, c'est… »",
+    "image": "https://images.unsplash.com/photo-1679757183533-a3345c5a1136?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w5NTEzMjN8MHwxfHNlYXJjaHwyfHxtZWlsbGV1cmVzJTIwY2VydGlmaWNhdGlvbnMlMjBmcmFuY2UlMjAyMDI2JTIwY29tcGFyYXRpZnxlbnwxfDB8fHwxNzkwOTYzMTUyfDA&ixlib=rb-4.1.0&q=80&w=1080",
+    "mots_cles": [
+      "certifications IA",
+      "comparatif",
+      "LNE Certif IA",
+      "conformité",
+      "PME"
+    ]
+  },
+  {
+    "url": "https://axion-ia.com/fr/blog/formation-ia-accessible-salarie-sans-bagage-technique-thiais",
+    "tableaux": [
+      "Former ses équipes à l'IA"
+    ],
+    "titre": "Formation IA pour salariés sans bagage technique : par où commencer",
+    "description": "Oui, un salarié sans bagage technique peut apprendre à se servir de l'IA dans son travail. L'article explique les freins (peur de l'inconnu, complexité perçue) et la réponse : évaluer le niveau et les attentes de chacun, puis proposer des démonstrations en direct, des exercices pratiques et des supports clairs. Un guide pour les dirigeants de TPE et de PME qui veulent embarquer toute l'équipe. Lisez l'article.",
+    "alt": "Pictogramme blanc de fauteuil roulant peint sur un sol d'asphalte gris",
+    "image": "https://images.unsplash.com/photo-1652377513043-eef71f5504fb?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w5NTEzMjN8MHwxfHNlYXJjaHw1fHxmb3JtYXRpb24lMjBhY2Nlc3NpYmxlJTIwc2FsYXJpZSUyMHNhbnMlMjBiYWdhZ2UlMjB0ZWNobmlxdWV8ZW58MXwwfHx8MTc5MDk1NzE3Nnww&ixlib=rb-4.1.0&q=80&w=1080",
+    "mots_cles": [
+      "formation IA débutants",
+      "salariés",
+      "accessibilité",
+      "PME",
+      "adoption de l'IA"
+    ]
+  },
+  {
+    "url": "https://axion-ia.com/fr/blog/formation-ia-classique-ou-formateur-qui-code-que-choisir",
+    "tableaux": [
+      "Former ses équipes à l'IA"
+    ],
+    "titre": "Formation IA classique ou formateur qui code : comment choisir",
+    "description": "Cela dépend de vos objectifs : la formation IA classique donne une base théorique solide, le formateur qui code permet une application pratique immédiate. L'article compare les deux, avec les bootcamps intensifs d'Axion-IA, et invite à partir de vos besoins et de votre contexte. Une aide à la décision pour un dirigeant de PME qui hésite entre comprendre l'IA et construire des solutions. Lisez l'article.",
+    "alt": "Gros plan sur un écran rempli de lignes de code informatique colorées sur fond sombre",
+    "image": "https://images.unsplash.com/photo-1516259762381-22954d7d3ad2?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w5NTEzMjN8MHwxfHNlYXJjaHwxfHxmb3JtYXRpb24lMjBjbGFzc2lxdWUlMjBmb3JtYXRldXIlMjBxdWklMjBjb2RlJTIwcXVlJTIwY2hvaXNpcnxlbnwxfDB8fHwxNzkwOTM0MzIyfDA&ixlib=rb-4.1.0&q=80&w=1080",
+    "mots_cles": [
+      "formation IA",
+      "formateur qui code",
+      "bootcamp IA",
+      "théorie et pratique",
+      "PME"
+    ]
+  },
+  {
+    "url": "https://axion-ia.com/fr/blog/formation-ia-achat-approvisionnement-sainte-genevieve-des-bois",
+    "tableaux": [
+      "L'IA par fonction / service achats",
+      "Former ses équipes à l'IA"
+    ],
+    "titre": "IA pour les achats et l'approvisionnement : ce que la formation apporte",
+    "description": "Former ses acheteurs à l'IA aide à mieux gérer les stocks et à prévoir la demande. L'article présente les bénéfices d'une formation modulaire : études de cas concrets, sessions en demi-journée dans le planning des équipes, accompagnement par un référent IA interne et rôle du champion IA, relais qui ancre les acquis après la formation. Un guide pour dirigeants de PME en logistique et distribution. Lisez l'article.",
+    "alt": "Rangée de conteneurs rouges et bleus alignés sur un parking de camions, sous un ciel bleu à nuages blancs",
+    "image": "https://images.unsplash.com/photo-1659841448455-5da6f2255292?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w5NTEzMjN8MHwxfHNlYXJjaHwxOXx8Zm9ybWF0aW9uJTIwYWNoYXQlMjBhcHByb3Zpc2lvbm5lbWVudHxlbnwxfDB8fHwxNzkwODU5Njg5fDA&ixlib=rb-4.1.0&q=80&w=1080",
+    "mots_cles": [
+      "IA achats",
+      "approvisionnement",
+      "gestion des stocks",
+      "champion IA",
+      "formation IA"
+    ]
+  },
+  {
+    "url": "https://axion-ia.com/fr/blog/formation-chatgpt-redaction-synthese-noisy-le-sec",
+    "tableaux": [
+      "Outils IA : ChatGPT, Claude, Copilot",
+      "Gagner du temps au travail grâce à l'IA"
+    ],
+    "titre": "Formation ChatGPT pour la rédaction et la synthèse en entreprise",
+    "description": "Oui, ChatGPT peut faire gagner du temps à toute personne qui écrit en entreprise : mails, comptes rendus, synthèses. L'article présente la formation : théorie et pratique, présentiel et e-learning, modules en demi-journée, adaptation aux besoins de chaque entreprise. Elle couvre ChatGPT, Claude et Copilot Microsoft 365, avec le prompt engineering au cœur. Un guide pour dirigeants de TPE et de PME. Lisez l'article.",
+    "alt": "Écran affichant l'annonce « Introducing ChatGPT Plus » sur fond violet, avec le logo OpenAI en haut à gauche",
+    "image": "https://images.unsplash.com/photo-1675557010061-315772f6efef?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w5NTEzMjN8MHwxfHNlYXJjaHwyfHxmb3JtYXRpb24lMjBjaGF0Z3B0JTIwcG91ciUyMHJlZGFjdGlvbiUyMHN5bnRoZXNlfGVufDF8MHx8fDE3OTA0MTU5NTd8MA&ixlib=rb-4.1.0&q=80&w=1080",
+    "mots_cles": [
+      "formation ChatGPT",
+      "rédaction IA",
+      "synthèse",
+      "Copilot",
+      "TPE PME"
+    ]
+  },
+  {
+    "url": "https://axion-ia.com/fr/blog/formation-prompt-engineering-equipes-pme",
+    "tableaux": [
+      "Prompts IA prêts à l'emploi pour le bureau",
+      "Former ses équipes à l'IA"
+    ],
+    "titre": "Formation au prompt engineering : donner à vos équipes les bons réflexes",
+    "description": "Savoir écrire de bonnes consignes à une IA change la qualité du travail d'une équipe de PME. L'article définit le prompt engineering, ses bénéfices (précision, moins d'allers-retours, tâches répétitives allégées) et les formats d'Axion-IA, de la demi-journée à l'immersion plus longue. Il explique pourquoi cette pratique suffit à beaucoup d'usages, sans réglages complexes. Lisez l'article pour former vos équipes.",
+    "alt": "Pompiers casqués en tenue jaune réfléchissante regroupés devant un bâtiment en pierre, l'un tenant une feuille de papier",
+    "image": "https://images.unsplash.com/photo-1581094373271-1fa59e2ab263?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w5NTEzMjN8MHwxfHNlYXJjaHwyMHx8Zm9ybWF0aW9uJTIwcHJvbXB0JTIwZW5naW5lZXJpbmclMjBwb3VyJTIwbGVzJTIwZXF1aXBlc3xlbnwxfDB8fHwxNzkwNDI3NjI5fDA&ixlib=rb-4.1.0&q=80&w=1080",
+    "mots_cles": [
+      "prompt engineering",
+      "formation équipes",
+      "PME",
+      "LLM",
+      "consignes IA"
+    ]
+  },
+  {
+    "url": "https://axion-ia.com/fr/blog/certification-formation-ia-professionnelle-france-2026-caluire-et-cuire",
+    "tableaux": [
+      "Former ses équipes à l'IA"
+    ],
+    "titre": "Certification formation IA professionnelle en 2026 : comment s'y préparer",
+    "description": "Pour obtenir une certification en formation IA, il faut choisir le bon programme et préparer sa candidature avec soin. L'article donne les repères : définir ses objectifs professionnels, regarder la reconnaissance du programme, vérifier l'expérience des formateurs, rassembler les documents et les prérequis. Un guide pratique pour les dirigeants et salariés de PME qui veulent des compétences IA reconnues. Lisez l'article pour avancer pas à pas.",
+    "alt": "Bâtiment de pierre jaune surmonté d'un drapeau français, portant une inscription latine gravée sous un ciel bleu uni",
+    "image": "https://images.unsplash.com/photo-1681490443101-2e791dd49a9b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w5NTEzMjN8MHwxfHNlYXJjaHwxfHxjZXJ0aWZpY2F0aW9uJTIwZm9ybWF0aW9uJTIwcHJvZmVzc2lvbm5lbGxlJTIwZnJhbmNlJTIwMjAyNnxlbnwxfDB8fHwxNzkwNDMzMDg0fDA&ixlib=rb-4.1.0&q=80&w=1080",
+    "mots_cles": [
+      "certification IA",
+      "formation professionnelle",
+      "compétences IA",
+      "2026",
+      "PME"
+    ]
+  },
+  {
+    "url": "https://axion-ia.com/fr/blog/formation-ia-vente-commercial-b2b",
+    "tableaux": [
+      "L'IA par fonction / commerciaux et vente"
+    ],
+    "titre": "IA pour la vente B2B : prospection et qualification des leads",
+    "description": "L'IA aide une équipe commerciale à prospecter plus juste et à qualifier ses leads. L'article présente les usages : outils de ciblage comme LinkedIn Sales Navigator assistés par IA, prévisions de vente plus fiables, messages personnalisés. Les commerciaux libèrent du temps pour la relation client. Axion-IA forme ces équipes. Un guide pour les dirigeants de PME qui vendent à d'autres entreprises. Lisez l'article.",
+    "alt": "Gros plan sur une table de mixage audio noire avec des rangées de boutons rouges, blancs et bleus",
+    "image": "https://images.unsplash.com/photo-1620455992636-3118c85e30f6?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w5NTEzMjN8MHwxfHNlYXJjaHwyM3x8Zm9ybWF0aW9uJTIwdmVudGUlMjBjb21tZXJjaWFsJTIwYjJifGVufDF8MHx8fDE3OTA0NTY0NDR8MA&ixlib=rb-4.1.0&q=80&w=1080",
+    "mots_cles": [
+      "IA vente B2B",
+      "prospection",
+      "qualification des leads",
+      "commerciaux",
+      "PME"
+    ]
+  },
+  {
+    "url": "https://axion-ia.com/fr/blog/certification-ia-managers-bagnolet",
+    "tableaux": [
+      "Former ses équipes à l'IA"
+    ],
+    "titre": "Certification IA pour managers : retour d'expérience d'un groupe de managers",
+    "description": "Une certification IA donne aux managers les moyens de décider en connaissance de cause. L'article raconte l'accompagnement d'un groupe de managers qui manquait de compétences pour mesurer l'impact des solutions IA. Axion-IA a appliqué sa méthode en cinq étapes : audit ciblé, formation intensive, simulations, mise en pratique, évaluation finale. Un retour d'expérience utile aux dirigeants de PME. Lisez l'article.",
+    "alt": "Silhouette d'une tête humaine ouverte, d'où s'échappent des particules lumineuses autour des lettres « AI », sur fond sombre",
+    "image": "https://images.unsplash.com/photo-1770233621425-5d9ee7a0a700?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w5NTEzMjN8MHwxfHNlYXJjaHwxfHxjZXJ0aWZpY2F0aW9uJTIwaW50ZWxsaWdlbmNlJTIwYXJ0aWZpY2llbGxlJTIwbWFuYWdlcnN8ZW58MXwwfHx8MTc5MDQ0NDc1Mnww&ixlib=rb-4.1.0&q=80&w=1080",
+    "mots_cles": [
+      "certification IA",
+      "managers",
+      "retour d'expérience",
+      "formation intensive",
+      "PME"
+    ]
+  },
+  {
+    "url": "https://axion-ia.com/fr/blog/comparatif-formation-claude-anthropic-equipe-france",
+    "tableaux": [
+      "Outils IA : ChatGPT, Claude, Copilot"
+    ],
+    "titre": "Formation Claude d'Anthropic pour les équipes : comment choisir",
+    "description": "Pour choisir une formation sur Claude d'Anthropic, partez du niveau de votre équipe et de vos usages. L'article présente les formats (présentiel, en ligne, hybride), les ateliers pratiques sur des cas réels, la demi-journée pour initier sans bloquer le travail et le coaching pour approfondir. Claude sert à répondre aux clients, rédiger ou analyser. Un comparatif pour les dirigeants de PME en France. Lisez l'article.",
+    "alt": "Foule défilant avec des drapeaux sur une avenue parisienne, devant un grand bâtiment, voitures au premier plan",
+    "image": "https://images.unsplash.com/photo-1572296157683-6fcfd132804e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w5NTEzMjN8MHwxfHNlYXJjaHwxN3x8Zm9ybWF0aW9uJTIwY2xhdWRlJTIwYW50aHJvcGljJTIwZXF1aXBlJTIwZnJhbmNlfGVufDF8MHx8fDE3OTA0NTAxMzh8MA&ixlib=rb-4.1.0&q=80&w=1080",
+    "mots_cles": [
+      "formation Claude",
+      "Anthropic",
+      "outils IA",
+      "PME",
+      "formation équipes"
+    ]
+  },
+  {
+    "url": "https://axion-ia.com/fr/blog/formation-prompt-engineering-entreprise-fontenay-sous-bois",
+    "tableaux": [
+      "Prompts IA prêts à l'emploi pour le bureau"
+    ],
+    "titre": "Formation au prompt engineering en entreprise : les bénéfices pour vos équipes",
+    "description": "Former ses équipes au prompt engineering, c'est leur apprendre à donner des consignes précises à l'IA. L'article rappelle que c'est une compétence très recherchée, puis montre les usages en entreprise : automatiser des tâches, améliorer le service client, soutenir les décisions. Axion-IA propose des programmes sur site, adaptés à chaque PME. Un guide pour les dirigeants de TPE et de PME. Lisez l'article.",
+    "alt": "Femme à lunettes assise devant un ordinateur portable dans un atelier technique, entourée de câbles et d'équipements",
+    "image": "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w5NTEzMjN8MHwxfHNlYXJjaHwxfHxmb3JtYXRpb24lMjBwcm9tcHQlMjBlbmdpbmVlcmluZyUyMGVudHJlcHJpc2V8ZW58MXwwfHx8MTc5MDQ2MTkxNXww&ixlib=rb-4.1.0&q=80&w=1080",
+    "mots_cles": [
+      "prompt engineering",
+      "formation entreprise",
+      "PME",
+      "service client",
+      "automatisation"
+    ]
+  },
+  {
+    "url": "https://axion-ia.com/fr/blog/formation-ia-equipe-rh-optimisation-efficacite",
+    "tableaux": [
+      "L'IA par fonction / RH",
+      "Former ses équipes à l'IA"
+    ],
+    "titre": "Formation IA pour les équipes RH : outils et bonnes pratiques",
+    "description": "Former une équipe RH à l'IA, c'est lui donner des outils pour mieux recruter et accompagner les talents. L'article présente ChatGPT pour rédiger des contenus RH, Copilot Microsoft 365 pour les tâches administratives, Claude et Perplexity pour la recherche, ainsi que l'attention à porter aux biais. La formation tient en une demi-journée. Un guide pour les dirigeants et responsables RH de TPE et de PME. Lisez l'article.",
+    "alt": "Équipe de footballeurs en maillots jaunes et gris numérotés, serrés en cercle les bras sur les épaules, sur un terrain",
+    "image": "https://images.unsplash.com/photo-1641159009736-8a5fd4e52fef?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w5NTEzMjN8MHwxfHNlYXJjaHw1fHxmb3JtYXRpb24lMjBlcXVpcGV8ZW58MXwwfHx8MTc5MDUwNzcyOXww&ixlib=rb-4.1.0&q=80&w=1080",
+    "mots_cles": [
+      "formation IA RH",
+      "équipes RH",
+      "ChatGPT",
+      "Copilot",
+      "recrutement"
+    ]
+  },
+  {
+    "url": "https://axion-ia.com/fr/blog/formation-ia-certification-professionnelle-france-stains",
+    "tableaux": [
+      "Former ses équipes à l'IA"
+    ],
+    "titre": "Formation IA avec certification professionnelle : l'enjeu pour les entreprises",
+    "description": "La certification professionnelle en IA atteste des compétences d'un salarié et rassure l'entreprise sur le niveau de ses équipes. L'article explique ses avantages pour l'entreprise comme pour l'employé : crédibilité, évolutions de carrière, montée en compétences. Il décrit les programmes, de l'initiation aux techniques avancées, souvent adaptés au secteur. Un guide pour les dirigeants de PME qui veulent former leurs équipes. Lisez l'article.",
+    "alt": "Vue aérienne de Paris avec la tour Eiffel au loin, une avenue bordée d'arbres et des immeubles haussmanniens",
+    "image": "https://images.unsplash.com/photo-1583850830388-47f5adb07b59?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w5NTEzMjN8MHwxfHNlYXJjaHwyOXx8Zm9ybWF0aW9uJTIwY2VydGlmaWNhdGlvbiUyMHByb2Zlc3Npb25uZWxsZSUyMGZyYW5jZXxlbnwxfDB8fHwxNzkwNTI0ODc0fDA&ixlib=rb-4.1.0&q=80&w=1080",
+    "mots_cles": [
+      "certification professionnelle IA",
+      "formation IA",
+      "équipes",
+      "compétences",
+      "PME"
+    ]
+  },
+  {
+    "url": "https://axion-ia.com/fr/blog/table-ronde-ia-dirigeants-entreprise-garges-les-gonesse",
+    "tableaux": [
+      "Intelligence artificielle pour PME",
+      "L'IA par fonction / direction générale"
+    ],
+    "titre": "Table ronde IA pour dirigeants d'entreprise : stratégie et gouvernance",
+    "description": "Une table ronde IA permet à des dirigeants d'échanger sur l'IA dans un cadre collaboratif et de repartir avec des idées applicables. L'article en détaille l'intérêt : alignement stratégique, gouvernance, gestion des risques, conformité, éthique. Il donne des critères de choix : sujets, expertise des intervenants, personnalisation. Un guide pour les dirigeants de PME qui veulent cadrer leurs premiers pas. Lisez l'article.",
+    "alt": "Six hommes assis autour d'une table ronde dans une salle moderne aux suspensions circulaires, discutant en réunion",
+    "image": "https://images.unsplash.com/photo-1595419580155-6e6691f102cd?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w5NTEzMjN8MHwxfHNlYXJjaHwxNHx8dGFibGUlMjByb25kZSUyMGRpcmlnZWFudHMlMjBlbnRyZXByaXNlfGVufDF8MHx8fDE3OTA1MTQwNzV8MA&ixlib=rb-4.1.0&q=80&w=1080",
+    "mots_cles": [
+      "table ronde IA",
+      "dirigeants",
+      "gouvernance IA",
+      "stratégie IA",
+      "PME"
+    ]
+  },
+  {
+    "url": "https://axion-ia.com/fr/blog/formation-copilot-microsoft-365-entreprise-poissy",
+    "tableaux": [
+      "Outils IA : ChatGPT, Claude, Copilot"
+    ],
+    "titre": "Formation Copilot Microsoft 365 en entreprise : Word, Excel, Teams",
+    "description": "Copilot Microsoft 365 permet de gagner du temps dans les outils que vos équipes utilisent déjà. L'article explique la formation : automatisation des tâches répétitives, analyse de données, format hybride mêlant sessions en ligne et ateliers sur site, couverture de Word, Excel, PowerPoint et Teams. Les participants découvrent aussi d'autres outils comme ChatGPT. Un guide pour les dirigeants de PME équipées Microsoft. Lisez l'article.",
+    "alt": "Cockpit d'un petit avion vu depuis le siège passager, avec le tableau de bord et la piste en arrière-plan",
+    "image": "https://images.unsplash.com/photo-1541611519634-a334c7446a68?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w5NTEzMjN8MHwxfHNlYXJjaHwxMHx8Zm9ybWF0aW9uJTIwY29waWxvdHxlbnwxfDB8fHwxNzkwNTMxMTU2fDA&ixlib=rb-4.1.0&q=80&w=1080",
+    "mots_cles": [
+      "Copilot Microsoft 365",
+      "formation Copilot",
+      "Word Excel Teams",
+      "productivité",
+      "PME"
+    ]
+  },
+  {
+    "url": "https://axion-ia.com/fr/blog/atelier-ia-dirigeants-pme-1-journee",
+    "tableaux": [
+      "Journée IA en entreprise : audit et formation",
+      "L'IA par fonction / direction générale"
+    ],
+    "titre": "Atelier IA d'une journée pour dirigeants de PME : stratégie et gouvernance",
+    "description": "Un atelier IA d'une journée suffit à un dirigeant de PME pour poser une stratégie IA claire. L'article présente le contenu : gouvernance et politique d'usage, priorisation des cas d'usage, gestion du changement et communication interne pour éviter l'anxiété des équipes, puis un plan stratégique remis à la fin. Axion-IA l'anime. Lisez l'article pour voir si cette journée répond à votre besoin.",
+    "alt": "Femme debout devant un mur couvert de papiers collants colorés, expliquant à quatre personnes assises autour d'une table",
+    "image": "https://images.unsplash.com/photo-1646066490017-c935b1a1eb0f?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w5NTEzMjN8MHwxfHNlYXJjaHwxOXx8YXRlbGllciUyMHBvdXIlMjBkaXJpZ2VhbnRzJTIwam91cm5lZXxlbnwxfDB8fHwxNzkwNTQyODE4fDA&ixlib=rb-4.1.0&q=80&w=1080",
+    "mots_cles": [
+      "atelier IA dirigeants",
+      "journée IA",
+      "gestion du changement",
+      "gouvernance",
+      "PME"
+    ]
+  }
+]
