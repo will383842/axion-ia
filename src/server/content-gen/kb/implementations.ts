@@ -1,9 +1,8 @@
 /**
  * KB sectorielle — Verticale Implémentations IA (P6 2026-05-22).
  *
- * Fiches sourcées (78 à l'origine, voir ci-dessous) sur les implémentations IA en entreprise France.
- * Sources : McKinsey, Gartner, Forrester, BPI France, DGE, Numeum (ex-Syntec Numérique),
- *           AI Act EUR-Lex, France Num, OCDE, Axion-IA terrain.
+ * Fiches sourcées (78 à l'origine) sur les implémentations IA en entreprise France.
+ * Sources : celles déclarées par chaque fiche (`source` et `sourceUrl`).
  *
  * Format : { id, text, source, sourceUrl, verifiedAt, verticales, confidence }
  *
@@ -379,15 +378,6 @@ export const KB_IMPLEMENTATIONS: readonly KbFact[] = [
   },
   // ── Chiffres OCDE supplémentaires ─────────────────────────────────────────
   // ── Écosystème IA France ──────────────────────────────────────────────────
-  {
-    id: "impl-076",
-    text: "Le programme « France 2030 » alloue 1,8 milliard d'euros aux projets d'IA industrielle et de souveraineté numérique sur 5 ans — dont une part significative destine au financement d'implémentations IA dans les PME françaises via des appels à projets sectoriels." /* price-exempt: stat marché tierce */,
-    source: "Gouvernement français — Plan France 2030, volet IA 2024",
-    sourceUrl: "https://www.gouvernement.fr/france-2030",
-    verifiedAt: "2026-05-22",
-    verticales: ["implementations"],
-    confidence: 0.86,
-  },
   // ── Gestion de projet IA ──────────────────────────────────────────────────
   {
     id: "impl-077",

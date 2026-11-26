@@ -1,9 +1,8 @@
 /**
  * KB sectorielle — Verticale Coaching 1-to-1 / Un-à-un (P6 2026-05-22).
  *
- * Fiches sourcées (59 à l'origine, voir ci-dessous) sur le coaching individuel IA pour CEO/fondateurs/managers.
- * Sources : ICF France, Syntec Conseil, BPI France, Harvard Business Review,
- *           OCDE, Axion-IA terrain.
+ * Fiches sourcées (59 à l'origine) sur le coaching individuel IA pour CEO/fondateurs/managers.
+ * Sources : celles déclarées par chaque fiche (`source` et `sourceUrl`).
  *
  * Format : { id, text, source, sourceUrl, verifiedAt, verticales, confidence }
  *

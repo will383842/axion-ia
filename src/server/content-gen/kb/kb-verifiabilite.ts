@@ -39,9 +39,12 @@ export function contientUnChiffre(texte: string): boolean {
   return /\d/.test(sansNombresDeReference(texte)) || QUANTITE_EN_LETTRES.test(texte);
 }
 
-/** Derniers segments qui désignent une liste ou une rubrique, jamais un document. */
+/** Segments (n'importe où dans le chemin) qui désignent une liste ou une rubrique, jamais un document. */
 const SEGMENTS_GENERIQUES =
   /^(insights?|our-insights|blog|research|recherche|publications?|resources?|ressources|reports?|rapports?|news|actualites|centre-de-recherche|solutions|capabilities|industries|topics)$/i;
+
+/** Rubriques qui rendent l'adresse générique où qu'elles soient dans le chemin. */
+const RUBRIQUES_A_TOUT_NIVEAU = /^(insights?|our-insights|topics|methodologies)$/i;
 
 export function estFaitAxion(fait: FaitVerifiable): boolean {
   return /axion-ia/i.test(fait.source) || /axion-ia\.com/.test(fait.sourceUrl);
@@ -50,7 +53,7 @@ export function estFaitAxion(fait: FaitVerifiable): boolean {
 /**
  * Adresse « profonde » : elle désigne un document ou une page précise, pas un accueil ni une
  * rubrique générale. Profonde si : 3 segments de chemin ou plus, ou paramètres/ancre, ou
- * dernier segment non générique (liste, rubrique, blog…) avec un chiffre, une extension .html/.pdf ou un titre (≥ 3 mots à tirets).
+ * dernier segment (hors année) non générique (liste, rubrique, blog…) avec un chiffre, une extension .html/.pdf ou un titre (≥ 3 mots à tirets).
  */
 export function aAdresseProfonde(url: string): boolean {
   let u: URL;
@@ -62,11 +65,13 @@ export function aAdresseProfonde(url: string): boolean {
   const segments = u.pathname.split("/").filter(Boolean);
   const dernier = segments[segments.length - 1] ?? "";
   if (SEGMENTS_GENERIQUES.test(dernier)) return false;
+  if (segments.some((segment) => RUBRIQUES_A_TOUT_NIVEAU.test(segment))) return false;
+  const dernierSansAnnee = dernier.replace(/\b(19|20)\d{2}\b/g, "");
   return (
     segments.length >= 3 ||
     u.search !== "" ||
     u.hash !== "" ||
-    /\d|\.(html|pdf)$/.test(dernier) ||
+    /\d|\.(html|pdf)$/.test(dernierSansAnnee) ||
     (dernier.match(/-/g) ?? []).length >= 2
   );
 }

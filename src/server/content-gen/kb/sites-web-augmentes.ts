@@ -1,9 +1,8 @@
 /**
  * KB sectorielle — Verticale Web & Digital IA / Sites Web Augmentés (P6 2026-05-22).
  *
- * Fiches sourcées (60 à l'origine, voir ci-dessous) sur la création et l'augmentation de sites web par l'IA en France.
- * Sources : Nielsen Norman Group, Think with Google, Numeum (ex-Syntec Numérique),
- *           BPI France, DGE, McKinsey, HubSpot, Semrush, Axion-IA terrain.
+ * Fiches sourcées (60 à l'origine) sur la création et l'augmentation de sites web par l'IA en France.
+ * Sources : celles déclarées par chaque fiche (`source` et `sourceUrl`).
  *
  * Format : { id, text, source, sourceUrl, verifiedAt, verticales, confidence }
  *

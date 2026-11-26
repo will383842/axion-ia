@@ -1,9 +1,8 @@
 /**
  * KB sectorielle — Verticale Audits IA (P4 Sprint P1 KB pilote 2026-05-21).
  *
- * Fiches sourcées (60 à l'origine, voir ci-dessous) sourcés sur l'audit IA en entreprise France.
- * Sources : INSEE, BPI France, DARES, France Num, Numeum (ex-Syntec Numérique), CGPME,
- *           ANSSI, CNIL, AI Act eur-lex.europa.eu, AFNOR, ISO.
+ * Fiches sourcées (60 à l'origine) sur l'audit IA en entreprise France.
+ * Sources : celles déclarées par chaque fiche (`source` et `sourceUrl`).
  *
  * Format : { id, text, source, sourceUrl, verifiedAt, verticales, confidence }
  *
@@ -126,15 +125,6 @@ export const KB_AUDITS: readonly KbFact[] = [
     verifiedAt: "2026-11-08",
     verticales: ["audits"],
     confidence: 0.7,
-  },
-  {
-    id: "audit-018",
-    text: "L'audit de biais IA repose sur 3 métriques de référence : disparate impact ratio (>0.80), equalized odds (écart <5 %) et demographic parity (écart <10 %), conformément à la norme NIST AI RMF 1.0.",
-    source: "NIST — AI Risk Management Framework 1.0",
-    sourceUrl: "https://www.nist.gov/itl/ai-risk-management-framework",
-    verifiedAt: "2026-05-22",
-    verticales: ["audits"],
-    confidence: 0.93,
   },
   {
     id: "audit-020",
@@ -269,15 +259,6 @@ export const KB_AUDITS: readonly KbFact[] = [
   },
   // ── ROI, performance économique ───────────────────────────────────────────
   {
-    id: "audit-036",
-    text: "Selon McKinsey (State of AI 2024), seules 11 % des entreprises ayant déployé une IA générative ont mesuré formellement le ROI — un audit ROI permet de structurer les KPIs et identifier les usages à abandonner.",
-    source: "McKinsey — The State of AI 2024",
-    sourceUrl: "https://www.mckinsey.com/capabilities/quantumblack/our-insights/the-state-of-ai",
-    verifiedAt: "2026-05-22",
-    verticales: ["audits"],
-    confidence: 0.89,
-  },
-  {
     id: "audit-037",
     text: "L'audit ROI IA mesure 4 leviers : gain de productivité (heures économisées × coût horaire), réduction des erreurs (coût/erreur évitée), accélération du time-to-market et création de revenus nouveaux.",
     source: "Axion-IA — Méthodologie ROI IA 2026",
@@ -285,15 +266,6 @@ export const KB_AUDITS: readonly KbFact[] = [
     verifiedAt: "2026-05-22",
     verticales: ["audits"],
     confidence: 0.9,
-  },
-  {
-    id: "audit-038",
-    text: "Selon Gartner (Hype Cycle 2024), 30 % des projets IA générative devaient être abandonnés après la phase POC d'ici fin 2025, faute de ROI démontré (projection publiée en 2024) — l'audit early-stage évite l'écueil.",
-    source: "Gartner — Hype Cycle for Generative AI 2024",
-    sourceUrl: "https://www.gartner.com/en/research/methodologies/gartner-hype-cycle",
-    verifiedAt: "2026-05-22",
-    verticales: ["audits"],
-    confidence: 0.85,
   },
   // ── Outils, méthodologies, frameworks d'audit ─────────────────────────────
   {
