@@ -49,7 +49,7 @@ export const MORTEAU_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il a Morteau et dans le Haut-Doubs ?",
-      a: "Oui, Axion-IA intervient a Morteau et dans tout le Haut-Doubs (Villers-le-Lac, Pontarlier, Maiche, Les Fins). Besancon a 65 km, frontiere suisse a 10 km.",
+      a: "Oui, Axion-IA intervient a Morteau et dans tout le Haut-Doubs (Villers-le-Lac, Pontarlier, Maiche, Les Fins). Nous intervenons sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les producteurs de saucisse de Morteau IGP ?",
