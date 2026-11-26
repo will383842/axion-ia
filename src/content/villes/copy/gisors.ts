@@ -65,7 +65,7 @@ export const GISORS_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Paris ou Rouen ?",
-      a: "Nos consultants viennent de Paris (1h15 train direct gare Gisors) ou Rouen (55 min). Pour les multi-jours, hébergement local possible. Coûts de déplacement séparés du forfait, tarifs transparents.",
+      a: "Nos consultants viennent de Paris (1h15 train direct gare Gisors) ou Rouen (55 min). Pour les multi-jours, hébergement local possible. Tarifs transparents.",
     },
   ],
 };

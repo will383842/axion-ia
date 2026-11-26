@@ -14,6 +14,15 @@ describe("pastilles du menu « Apporteurs d'affaires »", () => {
       label: "présentations à traiter",
     });
   });
+  it("les rendez-vous proposés s'ajoutent à ce que le dirigeant a à traiter, rien d'autre", () => {
+    expect(
+      badgeApporteurs(`${BASE}/apporteurs/entreprises`, BASE, {
+        ...c,
+        presentations: 0,
+        propositions: 2,
+      }),
+    ).toMatchObject({ count: 2, label: "présentations et rendez-vous proposés à traiter" });
+  });
   it("pièces de vigilance déposées sur « Apporteurs signés »", () => {
     expect(badgeApporteurs(`${BASE}/apporteurs`, BASE, c)).toMatchObject({
       count: 2,

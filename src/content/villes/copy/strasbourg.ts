@@ -695,7 +695,7 @@ export const STRASBOURG_COPY: VilleCopy = {
             sizeLabel: "Grande entreprise",
             price: "Parcours grands comptes et institutions — sur devis",
             detail:
-              "Pour cadres des institutions européennes (Parlement, Conseil de l'Europe, CEDH), grandes organisations (Crédit Mutuel, ARTE, Hager Group) et sites de grands groupes pharma (Eli Lilly, Actavis). Format confidentiel haut niveau, agenda adapté aux contraintes institutionnelles. Frais en sus.",
+              "Pour cadres des institutions européennes (Parlement, Conseil de l'Europe, CEDH), grandes organisations (Crédit Mutuel, ARTE, Hager Group) et sites de grands groupes pharma (Eli Lilly, Actavis). Format confidentiel haut niveau, agenda adapté aux contraintes institutionnelles.",
           },
         ],
         faq: [
@@ -787,7 +787,7 @@ export const STRASBOURG_COPY: VilleCopy = {
             sizeLabel: "Large enterprise",
             price: "Large accounts and institutions programme — on quote",
             detail:
-              "For European institution officials (Parliament, Council of Europe, ECHR), large organisations (Crédit Mutuel, ARTE, Hager Group) and large pharma sites (Eli Lilly, Actavis). Confidential senior format, schedule adapted to institutional constraints. Expenses billed separately.",
+              "For European institution officials (Parliament, Council of Europe, ECHR), large organisations (Crédit Mutuel, ARTE, Hager Group) and large pharma sites (Eli Lilly, Actavis). Confidential senior format, schedule adapted to institutional constraints.",
           },
         ],
         faq: [

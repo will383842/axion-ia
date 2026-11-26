@@ -49,7 +49,7 @@ export const IDRON_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Idron et dans l'agglo Pau sud ?",
-      a: "Oui, Axion-IA intervient à Idron et dans toute l'agglomération Pau Béarn Pyrénées (Pau, Jurançon, Gan, Billère, Lescar, Lons). Déplacement inclus dans l'agglo paloise.",
+      a: "Oui, Axion-IA intervient à Idron et dans toute l'agglomération Pau Béarn Pyrénées (Pau, Jurançon, Gan, Billère, Lescar, Lons).",
     },
     {
       q: "Quels services IA pour les professions libérales d'Idron ?",

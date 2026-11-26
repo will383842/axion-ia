@@ -60,7 +60,7 @@ export const ATHIS_MONS_COPY: VilleCopy = {
           "Athis-Mons est un point de gouvernance du ciel français : CRNA Nord, DSAC-Nord et SNA Région Parisienne y sont co-implantés. L'écosystème de prestataires, bureaux d'études et services tournés vers l'aviation civile et Orly a des besoins de portails documentaires et d'outils internes que nous savons sécuriser et structurer.",
           "13,6 % de l'emprise de l'aéroport Paris-Orly (Groupe ADP) est sur la commune : les TPE/PME de la logistique, du fret, de l'assistance et des services aéroportuaires ont besoin de plateformes de suivi opérationnel, de prise de rendez-vous et de devis en ligne adaptées à des flux 24/7.",
           "Le commerce de détail local — centre commercial Carrefour Athis-Mons et ses ~40 enseignes, commerçants du Pont d'Athis et des quartiers — relève d'e-commerce multi-CMS (WooCommerce, PrestaShop, Shopify) et de vitrines mobiles rapides, avec click-and-collect et IA de recommandation.",
-          "Desserte RER C (gare d'Athis-Mons) et tramway T7 vers Villejuif : nous intervenons sur site sans surcoût dans tout le bassin Grand-Orly Seine Bièvre (Juvisy-sur-Orge, Paray-Vieille-Poste, Savigny-sur-Orge, Ablon-sur-Seine, Villeneuve-le-Roi).",
+          "Desserte RER C (gare d'Athis-Mons) et tramway T7 vers Villejuif : nous intervenons sur site dans tout le bassin Grand-Orly Seine Bièvre (Juvisy-sur-Orge, Paray-Vieille-Poste, Savigny-sur-Orge, Ablon-sur-Seine, Villeneuve-le-Roi).",
         ],
         methodology: [
           {
@@ -240,7 +240,7 @@ export const ATHIS_MONS_COPY: VilleCopy = {
     },
     {
       q: "Couvrez-vous aussi Juvisy-sur-Orge, Paray-Vieille-Poste et Ablon-sur-Seine depuis Athis-Mons ?",
-      a: "Oui, nous nous déplaçons sans surcoût dans les communes limitrophes d'Athis-Mons : Juvisy-sur-Orge, Paray-Vieille-Poste, Savigny-sur-Orge, Villeneuve-le-Roi et Ablon-sur-Seine.",
+      a: "Oui, nous nous déplaçons dans les communes limitrophes d'Athis-Mons : Juvisy-sur-Orge, Paray-Vieille-Poste, Savigny-sur-Orge, Villeneuve-le-Roi et Ablon-sur-Seine.",
     },
     {
       q: "Comment Axion-IA garantit-il la conformité RGPD à Athis-Mons ?",
