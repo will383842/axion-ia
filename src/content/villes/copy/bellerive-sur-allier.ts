@@ -53,7 +53,7 @@ export const BELLERIVE_SUR_ALLIER_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Bellerive-sur-Allier et dans l'agglomération de Vichy ?",
-      a: "Nous intervenons partout en France, sur place ou à distance.",
+      a: "Oui. Nous intervenons à Bellerive-sur-Allier et dans toute l'agglomération vichyssoise (Vichy, Cusset, Abrest), sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les hôteliers et restaurateurs du thermalisme ?",

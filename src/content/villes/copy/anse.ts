@@ -49,7 +49,7 @@ export const ANSE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Anse et Beaujolais méridional ?",
-      a: "Nous intervenons partout en France, sur place ou à distance.",
+      a: "Oui. Axion-IA intervient à Anse et dans tout le Beaujolais méridional : Villefranche-sur-Saône, Limas, Gleizé et Belleville. Nous intervenons sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les viticulteurs Beaujolais ?",

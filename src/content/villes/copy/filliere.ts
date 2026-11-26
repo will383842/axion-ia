@@ -49,7 +49,7 @@ export const FILLIERE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Fillière et nord Annecy ?",
-      a: "Déplacement sur site.",
+      a: "Oui. Nous intervenons à Fillière et dans tout le nord du bassin annécien (La Roche-sur-Foron, Annecy), sur site.",
     },
     {
       q: "Combien coûte un audit IA à Fillière  ?",

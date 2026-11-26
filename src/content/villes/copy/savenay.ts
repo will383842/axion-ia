@@ -52,8 +52,8 @@ export const SAVENAY_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Savenay et tout le nord estuaire de la Loire (Campbon, Lavau-sur-Loire, Prinquiau, Pontchâteau). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
-      q: "La gare TGV de Savenay facilite-t-elle les missions ?",
-      a: "Nous intervenons partout en France, sur place ou à distance.",
+      q: "Intervenez-vous sur site à Savenay ?",
+      a: "Oui. Nous intervenons sur place à Savenay, comme partout en France, ou à distance.",
     },
     {
       q: "Travaillez-vous avec les exploitations agricoles du bocage ?",

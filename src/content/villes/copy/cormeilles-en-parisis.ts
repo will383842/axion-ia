@@ -36,8 +36,8 @@ export const CORMEILLES_EN_PARISIS_COPY: VilleCopy = {
       en: "Réaliser un audit IA à Cormeilles-en-Parisis pour les TPE et PME des zones Champs-Guillaume et Bois Rochefort — identifier les automatisations prioritaires (devis, planning, gestion stock).",
     },
     interventions: {
-      fr: "Intervenir à Cormeilles-en-Parisis (16 min depuis Paris Saint-Lazare) pour automatiser les processus métier des artisans BTP et commerçants locaux — code custom, pas de no-code.",
-      en: "Intervenir à Cormeilles-en-Parisis (16 min depuis Paris Saint-Lazare) pour automatiser les processus métier des artisans BTP et commerçants locaux — code custom, pas de no-code.",
+      fr: "Intervenir à Cormeilles-en-Parisis pour automatiser les processus métier des artisans BTP et commerçants locaux — code custom, pas de no-code.",
+      en: "Intervenir à Cormeilles-en-Parisis pour automatiser les processus métier des artisans BTP et commerçants locaux — code custom, pas de no-code.",
     },
     implementation: {
       fr: "Implémenter des solutions IA sur mesure à Cormeilles-en-Parisis pour les TPE et PME du commerce et du BTP.",
@@ -56,7 +56,7 @@ export const CORMEILLES_EN_PARISIS_COPY: VilleCopy = {
           "Tissu industriel et BTP dominant : la carrière de gypse Placoplatre (Saint-Gobain), l'usine Placo et les ~40 établissements de la ZAE Carrefour des Champs Guillaume (9,48 ha, BTP et petit transport) ont des besoins concrets — configurateurs de devis plâtrerie-construction, suivi de chantier, portails fournisseurs — que nous traitons en applications web sur mesure.",
           "Le quartier Seine Parisii (reconversion de la friche Lafarge : 1 200 logements, marina ~110 anneaux mise en eau prévue avril 2026, 1er label BBCA Quartier de France) crée une vague d'activité pour promoteurs, services de proximité, loisirs nautiques et commerces : autant de vitrines web et plateformes de réservation à lancer.",
           "Commerce de proximité concentré : ~50 commerces le long de l'avenue Foch avec la locomotive Auchan, et un droit de préemption commercial instauré par la ville en 2025 pour redynamiser le centre — un contexte propice aux e-commerce locaux, click & collect et fiches Google Business optimisées que nous déployons en multi-CMS.",
-          "Accès direct depuis Paris (ligne J Transilien depuis Saint-Lazare, A15 sortie Herblay, A115) : nos kick-offs se tiennent sur site à Cormeilles-en-Parisis, dans les Bois Rochefort, les Champs Guillaume ou avenue Foch.",
+          "Nos kick-offs se tiennent sur site à Cormeilles-en-Parisis, dans les Bois Rochefort, les Champs Guillaume ou avenue Foch.",
         ],
         methodology: [
           {

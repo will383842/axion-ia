@@ -65,7 +65,7 @@ export const BENFELD_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Benfeld ?",
-      a: "Nous intervenons dans vos locaux à Benfeld, partout en France.",
+      a: "Nous intervenons dans vos locaux à Benfeld, dans le bassin rural et agricole du Ried, ou en visio.",
     },
   ],
 };

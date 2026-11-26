@@ -49,7 +49,7 @@ export const ANNONAY_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Annonay et nord-Ardèche ?",
-      a: "Nous intervenons partout en France, sur place ou à distance.",
+      a: "Oui. Axion-IA intervient à Annonay et dans tout le nord-Ardèche : Davézieux, Tournon-sur-Rhône et Saint-Marcel-lès-Annonay. Nous intervenons sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les PME industrielles nord-Ardèche ?",

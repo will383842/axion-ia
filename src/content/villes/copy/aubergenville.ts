@@ -49,7 +49,7 @@ export const AUBERGENVILLE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Aubergenville et dans la vallée de Seine ?",
-      a: "Nous intervenons dans vos locaux à Aubergenville, partout en France.",
+      a: "Oui. Axion-IA intervient à Aubergenville et dans toute la vallée de Seine yvelinoise : Mantes-la-Jolie et Poissy.",
     },
     {
       q: "Travaillez-vous avec les PME industrie et logistique d'Aubergenville ?",

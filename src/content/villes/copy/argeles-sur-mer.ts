@@ -49,7 +49,7 @@ export const ARGELES_SUR_MER_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Argelès-sur-Mer et sur la Côte Vermeille ?",
-      a: "Nous intervenons partout en France, sur place ou à distance.",
+      a: "Oui. Axion-IA intervient à Argelès-sur-Mer et sur toute la Côte Vermeille : Collioure, Saint-Cyprien, Banyuls et Port-Vendres. Nous intervenons sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les campings et l'hôtellerie de plein air ?",

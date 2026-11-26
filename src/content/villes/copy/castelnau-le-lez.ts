@@ -56,7 +56,7 @@ export const CASTELNAU_LE_LEZ_COPY: VilleCopy = {
           "Pôle jeu vidéo et numérique reconnu : la présence du studio Ubisoft Montpellier et des activités tech du secteur Eurêka crée un terreau d'exigence en matière d'interfaces. Nous bâtissons des UX/UI soignées, performantes (Web Vitals tenus) et des plateformes SaaS IA-native à la hauteur de cet écosystème, avec recherche sémantique et agents conversationnels sur vos propres données.",
           "Tissu à dominante services spécialisés et activités administratives (23,6 %) et commerce-hôtellerie-restauration (21,4 %) sur 3 319 établissements recensés fin 2019 : pour les commerces de l'avenue de l'Europe et les artisans, on greffe l'IA sur l'existant (widget, plugin, API) ou on monte une boutique e-commerce multi-CMS — WordPress, Shopify, WooCommerce, PrestaShop, Magento — sans refonte lourde ni interruption de service.",
           "Cabinets libéraux et structures de santé du secteur Eurêka : nos chatbots RAG multilingues et nos moteurs de recherche sémantique répondent aux patients et clients à partir de vos seuls contenus, avec prise de rendez-vous en ligne, tri des demandes et automatisation des relances. Aucune donnée patient ne quitte l'UE sans DPA.",
-          "Commune intégrée à la métropole et desservie par 8 stations de la ligne 2 du tramway (depuis décembre 2006), à ~5 km de la gare Saint-Roch : déplacements simples sur site pour des employeurs comme Logitrade, Sud Service SAS ou Eiffage Construction, et toute la chaîne IA est hébergeable en UE, conforme RGPD et AI Act — vos données clients et vos modèles restent maîtrisés et transférables.",
+          "Commune intégrée à la métropole de Montpellier : interventions sur site pour des employeurs comme Logitrade, Sud Service SAS ou Eiffage Construction, et toute la chaîne IA est hébergeable en UE, conforme RGPD et AI Act — vos données clients et vos modèles restent maîtrisés et transférables.",
         ],
         methodology: [
           {
@@ -142,7 +142,7 @@ export const CASTELNAU_LE_LEZ_COPY: VilleCopy = {
           "Pôle jeu vidéo et numérique reconnu : la présence du studio Ubisoft Montpellier et des activités tech du secteur Eurêka crée un terreau d'exigence en matière d'interfaces. Nous bâtissons des UX/UI soignées, performantes (Web Vitals tenus) et des plateformes SaaS IA-native à la hauteur de cet écosystème, avec recherche sémantique et agents conversationnels sur vos propres données.",
           "Tissu à dominante services spécialisés et activités administratives (23,6 %) et commerce-hôtellerie-restauration (21,4 %) sur 3 319 établissements recensés fin 2019 : pour les commerces de l'avenue de l'Europe et les artisans, on greffe l'IA sur l'existant (widget, plugin, API) ou on monte une boutique e-commerce multi-CMS — WordPress, Shopify, WooCommerce, PrestaShop, Magento — sans refonte lourde ni interruption de service.",
           "Cabinets libéraux et structures de santé du secteur Eurêka : nos chatbots RAG multilingues et nos moteurs de recherche sémantique répondent aux patients et clients à partir de vos seuls contenus, avec prise de rendez-vous en ligne, tri des demandes et automatisation des relances. Aucune donnée patient ne quitte l'UE sans DPA.",
-          "Commune intégrée à la métropole et desservie par 8 stations de la ligne 2 du tramway (depuis décembre 2006), à ~5 km de la gare Saint-Roch : déplacements simples sur site pour des employeurs comme Logitrade, Sud Service SAS ou Eiffage Construction, et toute la chaîne IA est hébergeable en UE, conforme RGPD et AI Act — vos données clients et vos modèles restent maîtrisés et transférables.",
+          "Commune intégrée à la métropole de Montpellier : interventions sur site pour des employeurs comme Logitrade, Sud Service SAS ou Eiffage Construction, et toute la chaîne IA est hébergeable en UE, conforme RGPD et AI Act — vos données clients et vos modèles restent maîtrisés et transférables.",
         ],
         methodology: [
           {
@@ -248,7 +248,7 @@ export const CASTELNAU_LE_LEZ_COPY: VilleCopy = {
     },
     {
       q: "Vous déplacez-vous sur site à Castelnau-le-Lez ?",
-      a: "Oui, notre équipe se déplace directement sur site à Castelnau-le-Lez pour les audits, interventions et implémentations. Le tramway ligne 2 et la proximité de Montpellier rendent le déplacement simple.",
+      a: "Oui, nous intervenons directement sur site à Castelnau-le-Lez pour les audits, interventions et implémentations.",
     },
   ],
 };

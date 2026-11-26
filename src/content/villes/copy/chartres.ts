@@ -246,7 +246,7 @@ export const CHARTRES_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Chartres ?",
-      a: "Chartres est de Paris-Montparnasse en TER direct. Nous nous déplaçons sur site.",
+      a: "Nous intervenons sur place à Chartres, comme partout en France, ou à distance selon les phases de la mission.",
     },
     {
       q: "Proposez-vous un accompagnement individuel pour les dirigeants ?",

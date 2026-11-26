@@ -49,7 +49,7 @@ export const BOIS_LE_ROI_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Bois-le-Roi et dans le secteur de Fontainebleau ?",
-      a: "Nous intervenons partout en France, sur place ou à distance.",
+      a: "Oui. Nous intervenons à Bois-le-Roi et dans tout le secteur sud Seine-et-Marne (Fontainebleau, Melun, Samois-sur-Seine, Chartrettes), sur place ou à distance.",
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Bois-le-Roi  ?",

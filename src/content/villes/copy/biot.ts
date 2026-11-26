@@ -65,7 +65,7 @@ export const BIOT_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Biot ?",
-      a: "Formats flexibles : demi-journée audit, journée intervention, mission multi-semaines.",
+      a: "Nos consultants interviennent directement au village de Biot ou en zone Sophia Antipolis. Formats flexibles : demi-journée audit, journée intervention, mission multi-semaines.",
     },
   ],
 };

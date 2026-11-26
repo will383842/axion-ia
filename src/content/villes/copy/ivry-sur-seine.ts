@@ -228,7 +228,7 @@ export const IVRY_SUR_SEINE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Quels sont les tarifs Axion-IA à Ivry-sur-Seine ?",
-      a: "Tarifs publics : Audit sur place 4h dès {{price:audit-flash|flat}}, Formation 4 h dès {{price:intervention-4h|flat}}, implémentation ou 1-to-1 dès {{price:intervention-dirigeants|flat}}. Mêmes tarifs partout en France.",
+      a: "Tarifs publics : Audit sur place 4h dès {{price:audit-flash|flat}}, Formation 4 h dès {{price:intervention-4h|flat}}, implémentation ou 1-to-1 dès {{price:intervention-dirigeants|flat}}.",
     },
     {
       q: "Quels délais pour une intervention à Ivry-sur-Seine ?",
@@ -248,7 +248,7 @@ export const IVRY_SUR_SEINE_COPY: VilleCopy = {
     },
     {
       q: "Vous déplacez-vous sur site à Ivry-sur-Seine ?",
-      a: "Oui, notre équipe se déplace directement à Ivry-sur-Seine pour audits, interventions et implémentations. Le métro ligne 7 (4 stations sur la commune) rend le déplacement très simple depuis Paris.",
+      a: "Oui, nous intervenons directement à Ivry-sur-Seine pour audits, interventions et implémentations.",
     },
   ],
 };

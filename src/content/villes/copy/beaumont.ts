@@ -49,7 +49,7 @@ export const BEAUMONT_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Beaumont et sud Clermont ?",
-      a: "Nous intervenons dans vos locaux à Beaumont, partout en France.",
+      a: "Oui. Nous intervenons sur place à Beaumont et dans tout le sud de l'agglomération clermontoise (Ceyrat, Romagnat, Aubière), comme partout en France, ou à distance.",
     },
     {
       q: "Travaillez-vous avec les professions libérales ?",

@@ -49,7 +49,7 @@ export const BRIGNAIS_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Brignais et SO lyonnais ?",
-      a: "Nous intervenons partout en France, sur place ou à distance.",
+      a: "Oui, Axion-IA intervient à Brignais et dans tout le SO lyonnais (Oullins, Pierre-Bénite, Givors, Chaponost). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les professions libérales brignairotes ?",

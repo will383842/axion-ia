@@ -242,7 +242,7 @@ export const BAGNOLET_COPY: VilleCopy = {
     },
     {
       q: "Intervenez-vous aussi à Montreuil, Pantin ou Les Lilas ?",
-      a: "Nous intervenons partout en France, sur place ou à distance.",
+      a: "Oui. Nous couvrons l'est parisien : Montreuil, Pantin, Les Lilas, Romainville et Paris intra-muros, ainsi que Bagnolet.",
     },
     {
       q: "Vos solutions IA sont-elles conformes au RGPD ?",

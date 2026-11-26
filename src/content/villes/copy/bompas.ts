@@ -49,7 +49,7 @@ export const BOMPAS_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Bompas et dans l'agglo Perpignan ?",
-      a: "Nous intervenons partout en France, sur place ou à distance.",
+      a: "Oui. Nous intervenons à Bompas et dans toute Perpignan Méditerranée Métropole (Perpignan, Pia, Canet-en-Roussillon), sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les PME des zones d'activités ?",

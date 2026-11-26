@@ -49,7 +49,7 @@ export const BOIS_GUILLAUME_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Bois-Guillaume et agglo Rouen ?",
-      a: "Nous intervenons partout en France, sur place ou à distance.",
+      a: "Oui. Nous intervenons à Bois-Guillaume et dans toute la Métropole Rouen Normandie (Rouen, Mont-Saint-Aignan, Isneauville, Bihorel), sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les professions libérales et cabinets médicaux ?",

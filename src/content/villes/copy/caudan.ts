@@ -49,7 +49,7 @@ export const CAUDAN_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Caudan et dans Lorient Agglomération ?",
-      a: "Nous intervenons partout en France, sur place ou à distance.",
+      a: "Oui, Axion-IA intervient à Caudan et dans toute Lorient Agglomération (Lorient, Lanester, Hennebont, Plœmeur, Languidic). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les PME industrielles des zones Manebos et Kerpont ?",

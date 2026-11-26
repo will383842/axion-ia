@@ -247,7 +247,7 @@ export const HALLUIN_COPY: VilleCopy = {
     },
     {
       q: "Intervenez-vous à Halluin ou tout se fait à distance ?",
-      a: "Oui. Nous intervenons dans vos locaux à Halluin ou tout se fait à distance, partout en France, sur place ou à distance.",
+      a: "Oui. Nous intervenons sur place à Halluin, comme partout en France, pour les phases Audit et Implémentation (1 à 2 journées). Les développements code sont remote, avec démos hebdomadaires et recette finale sur site, y compris dans la zone des Cinq-Voies.",
     },
   ],
 };

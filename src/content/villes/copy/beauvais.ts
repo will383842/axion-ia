@@ -132,7 +132,7 @@ export const BEAUVAIS_COPY: VilleCopy = {
           },
           {
             q: "Sous quel délai obtient-on un devis et travaillez-vous dans tout l'Oise ?",
-            a: "Devis à partir de 24 à 48 h selon la complexité. Nous intervenons à Beauvais et dans tout le sud de l'Oise (Compiègne, Creil, Clermont), dans vos locaux — usine, bureau d'études, atelier agroalimentaire ou entrepôt de l'Éco-Parc de Beauvais-Tillé. Nous intervenons partout en France, sur place ou à distance.",
+            a: "Devis à partir de 24 à 48 h selon la complexité. Nous intervenons à Beauvais et dans tout le sud de l'Oise (Compiègne, Creil, Clermont), dans vos locaux — usine, bureau d'études, atelier agroalimentaire ou entrepôt de l'Éco-Parc de Beauvais-Tillé, sur place ou à distance.",
           },
         ],
         guarantees:
@@ -230,7 +230,7 @@ export const BEAUVAIS_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Beauvais et dans l'Oise ?",
-      a: "Nous intervenons partout en France, sur place ou à distance.",
+      a: "Oui. Nous intervenons à Beauvais et dans tout le sud de l'Oise (Compiègne, Creil, Clermont), sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les TPE et artisans beauvaisiens ?",

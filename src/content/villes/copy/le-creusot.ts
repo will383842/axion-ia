@@ -239,8 +239,8 @@ export const LE_CREUSOT_COPY: VilleCopy = {
       a: "Nous accompagnons en priorité les TPE et PME sous-traitantes d'ArcelorMittal Industeel, Framatome, Alstom, Safran et General Electric : mécanique de précision, métallurgie, contrôle qualité, maintenance industrielle. Cas typiques : maintenance prédictive, vision contrôle qualité, automatisation devis et réponse appels d'offres.",
     },
     {
-      q: "Vous déplacez-vous sur site au Creusot ?",
-      a: "Pour les missions récurrentes, planification mensuelle sur site et visio entre deux.",
+      q: "Intervenez-vous sur site au Creusot ?",
+      a: "Oui. Pour les missions récurrentes, planification mensuelle sur site et visio entre deux.",
     },
   ],
   // EN mirror FR (Will rule 2026-05-22 : NE JAMAIS traduire EN pour villes).

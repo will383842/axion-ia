@@ -49,7 +49,7 @@ export const ARPAJON_SUR_CERE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Arpajon-sur-Cère et agglomération Aurillac ?",
-      a: "Nous intervenons partout en France, sur place ou à distance.",
+      a: "Oui. Axion-IA intervient à Arpajon-sur-Cère et dans toute l'agglomération aurillacoise : Aurillac, Ytrac et Naucelles. Nous intervenons sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les éleveurs Salers ?",

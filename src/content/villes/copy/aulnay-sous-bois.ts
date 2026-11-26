@@ -232,7 +232,7 @@ export const AULNAY_SOUS_BOIS_COPY: VilleCopy = {
     },
     {
       q: "Quels délais pour une intervention à Aulnay-sous-Bois (93600) ?",
-      a: "Nous intervenons sous 5 à 10 jours ouvrés à Aulnay-sous-Bois.",
+      a: "Nous intervenons sous 5 à 10 jours ouvrés à Aulnay-sous-Bois, notamment sur les zones de Garonor et de Parinor.",
     },
     {
       q: "Intervenez-vous dans les communes proches d'Aulnay-sous-Bois ?",

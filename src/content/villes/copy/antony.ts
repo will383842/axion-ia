@@ -240,7 +240,7 @@ export const ANTONY_COPY: VilleCopy = {
     },
     {
       q: "Quels délais d'intervention sur site à Antony ?",
-      a: "Nos consultants se déplacent sur site à Antony sous 5 jours ouvrés après validation.",
+      a: "Nous intervenons sur site à Antony sous 5 jours ouvrés après validation.",
     },
     {
       q: "Comment Axion-IA garantit la conformité RGPD à Antony ?",

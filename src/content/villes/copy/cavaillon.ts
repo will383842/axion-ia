@@ -232,7 +232,7 @@ export const CAVAILLON_COPY: VilleCopy = {
     },
     {
       q: "Sous quels délais Axion-IA intervient-il à Cavaillon ?",
-      a: "Nous nous déplaçons à Cavaillon sous 5 jours ouvrés après validation.",
+      a: "Nous intervenons à Cavaillon sous 5 jours ouvrés après validation, pour des interventions courtes ou récurrentes.",
     },
     {
       q: "Axion-IA couvre-t-il les communes autour de Cavaillon ?",

@@ -58,7 +58,7 @@ export const BOURG_SAINT_ANDEOL_COPY: VilleCopy = {
     },
     {
       q: "Couvrez-vous les communes proches comme Pierrelatte, Saint-Marcel-d'Ardèche ou Donzère ?",
-      a: "Oui. Nous intervenons dans vos locaux à Bourg-Saint-Andéol, partout en France.",
+      a: "Oui. Axion-IA couvre tout le sud-Ardèche et la rive gauche du Rhône : Pierrelatte, Saint-Marcel-d'Ardèche, Donzère, Gras, Bidon, Saint-Montan, ainsi que Viviers et Saint-Paul-Trois-Châteaux.",
     },
     {
       q: "Comment Axion-IA garantit-il la conformité RGPD à Bourg-Saint-Andéol ?",

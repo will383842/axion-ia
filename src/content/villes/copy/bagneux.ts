@@ -242,7 +242,7 @@ export const BAGNEUX_COPY: VilleCopy = {
     },
     {
       q: "Intervenez-vous aussi à Montrouge, Châtillon ou Fontenay-aux-Roses ?",
-      a: "Nous intervenons partout en France, sur place ou à distance.",
+      a: "Oui. Nous couvrons le sud des Hauts-de-Seine : Montrouge, Châtillon, Fontenay-aux-Roses, Malakoff, Arcueil et Paris intra-muros, ainsi que Bagneux.",
     },
     {
       q: "Vos solutions IA sont-elles conformes au RGPD ?",

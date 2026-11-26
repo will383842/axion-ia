@@ -247,7 +247,7 @@ export const VENISSIEUX_COPY: VilleCopy = {
     },
     {
       q: "Intervenez-vous à Vénissieux ou tout se fait à distance ?",
-      a: "Oui. Nous intervenons dans vos locaux à Vénissieux ou tout se fait à distance, partout en France, sur place ou à distance.",
+      a: "Oui. Nous intervenons sur place à Vénissieux, comme partout en France, pour les phases Audit et Implémentation. Les développements code sont remote, avec démos hebdomadaires et recette sur site dans la ZI ou au Parilly.",
     },
   ],
 };

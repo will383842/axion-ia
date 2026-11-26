@@ -132,7 +132,7 @@ export const CASTRES_COPY: VilleCopy = {
           },
           {
             q: "Combien de temps pour obtenir un devis et où nous rencontrez-vous ?",
-            a: "Nous intervenons dans vos locaux à Castres, partout en France. Le devis est remis à partir de 24 à 48 h selon la complexité du projet.",
+            a: "Le devis est remis à partir de 24 à 48 h selon la complexité du projet. Nous intervenons sur site à Castres et dans le sud du Tarn (Campus Chartreuse, zones de Mélou et de la Chartreuse, centre-ville), ou à distance.",
           },
         ],
         guarantees:

@@ -65,7 +65,7 @@ export const BAUD_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA sur site à Baud ?",
-      a: "Nos consultants se déplacent dans vos locaux à Baud ou interviennent en visio.",
+      a: "Nos consultants interviennent dans vos locaux à Baud ou en visio.",
     },
   ],
 };

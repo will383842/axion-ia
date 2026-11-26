@@ -49,7 +49,7 @@ export const AUBIERE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Aubière et campus Cézeaux ?",
-      a: "Nous intervenons dans vos locaux à Aubière, partout en France.",
+      a: "Oui. Axion-IA intervient à Aubière, sur le campus Cézeaux et dans toute l'agglomération clermontoise : Clermont-Ferrand, Cournon et Beaumont.",
     },
     {
       q: "Travaillez-vous avec les startups deeptech du campus ?",

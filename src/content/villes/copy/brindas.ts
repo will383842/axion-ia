@@ -49,7 +49,7 @@ export const BRINDAS_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Brindas et ouest lyonnais ?",
-      a: "Nous intervenons partout en France, sur place ou à distance.",
+      a: "Oui, Axion-IA intervient à Brindas et dans tout l'ouest lyonnais (Craponne, Vaugneray, Francheville, monts du Lyonnais). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les professions libérales brindassiens ?",

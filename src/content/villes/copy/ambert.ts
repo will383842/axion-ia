@@ -49,7 +49,7 @@ export const AMBERT_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Ambert et dans le Livradois-Forez ?",
-      a: "Nous intervenons dans vos locaux à Ambert, partout en France.",
+      a: "Oui. Axion-IA intervient à Ambert et dans tout le Livradois-Forez, de Thiers à Clermont-Ferrand.",
     },
     {
       q: "Travaillez-vous avec les fromageries AOP Fourme d'Ambert ?",

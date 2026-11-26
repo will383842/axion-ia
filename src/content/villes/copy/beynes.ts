@@ -49,7 +49,7 @@ export const BEYNES_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Beynes et dans la plaine de Versailles ?",
-      a: "Nous intervenons dans vos locaux à Beynes, partout en France.",
+      a: "Oui. Nous intervenons sur place à Beynes et dans toute la plaine de Versailles ouest (Plaisir, Thiverval-Grignon, Jouars-Pontchartrain, Versailles), comme partout en France, ou à distance.",
     },
     {
       q: "Accompagnez-vous les artisans et TPE à Beynes ?",

@@ -49,7 +49,7 @@ export const BROU_SUR_CHANTEREINE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Brou-sur-Chantereine ?",
-      a: "Nous intervenons dans vos locaux à Brou-sur-Chantereine, partout en France.",
+      a: "Oui, Axion-IA intervient à Brou-sur-Chantereine et dans toute l'agglomération chelloise (Chelles, Marne-la-Vallée).",
     },
     {
       q: "Accompagnez-vous les artisans et petits commerces ?",

@@ -49,7 +49,7 @@ export const CARRIERES_SUR_SEINE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Carrières-sur-Seine et en boucle de Seine ?",
-      a: "Nous intervenons dans vos locaux à Carrières-sur-Seine, partout en France.",
+      a: "Oui, Axion-IA intervient à Carrières-sur-Seine et dans toute la boucle de Seine (Chatou, Nanterre, Paris La Défense, Paris Saint-Lazare).",
     },
     {
       q: "Travaillez-vous avec les commerçants et artisans de Carrières-sur-Seine ?",

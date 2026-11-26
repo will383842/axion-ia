@@ -230,7 +230,7 @@ export const ALENCON_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Intervenez-vous à Alençon ?",
-      a: "Oui. Nous intervenons dans vos locaux à Alençon, partout en France, sur place ou à distance.",
+      a: "Oui. Nous intervenons sur site à Alençon, préfecture de l'Orne, comme partout en France, ou à distance. Le délai standard d'intervention est de 5 jours ouvrés après validation de la prestation, avec confirmation écrite des horaires d'intervention sur site.",
     },
     {
       q: "Travaillez-vous avec les sous-traitants automobiles de Faurecia à Alençon ?",

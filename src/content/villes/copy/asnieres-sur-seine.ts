@@ -228,7 +228,7 @@ export const ASNIERES_SUR_SEINE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Intervenez-vous à Asnières-sur-Seine pour les audits ?",
-      a: "Oui. Nous intervenons dans vos locaux à Asnières-sur-Seine, partout en France, sur place ou à distance.",
+      a: "Oui. Williams et l'équipe Axion-IA interviennent sur site dans vos locaux asniérois. L'audit se déroule en immersion dans votre environnement de travail réel, ce qui garantit une lecture précise de vos processus.",
     },
     {
       q: "Quels sont les tarifs d'un audit IA pour une PME basée à Asnières-sur-Seine ?",

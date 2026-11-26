@@ -49,7 +49,7 @@ export const CABESTANY_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Cabestany et dans l'agglo Perpignan ?",
-      a: "Nous intervenons partout en France, sur place ou à distance.",
+      a: "Oui, Axion-IA intervient à Cabestany et dans toute Perpignan Méditerranée Métropole (Perpignan, Saleilles, Canet-en-Roussillon, Toulouges). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les commerces des zones commerciales ?",

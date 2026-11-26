@@ -242,7 +242,7 @@ export const ARCUEIL_COPY: VilleCopy = {
     },
     {
       q: "Intervenez-vous aussi à Cachan, Gentilly ou Montrouge ?",
-      a: "Nous intervenons partout en France, sur place ou à distance.",
+      a: "Oui. Nous couvrons le sud parisien : Cachan, Gentilly, Montrouge, Bagneux, Villejuif et Paris intra-muros, comme Arcueil.",
     },
     {
       q: "Vos solutions IA sont-elles conformes au RGPD ?",

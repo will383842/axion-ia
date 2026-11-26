@@ -232,7 +232,7 @@ export const CAGNES_SUR_MER_COPY: VilleCopy = {
     },
     {
       q: "Intervenez-vous à Cagnes-sur-Mer ?",
-      a: "Oui. Nous intervenons dans vos locaux à Cagnes-sur-Mer, partout en France, sur place ou à distance.",
+      a: "Oui. Nous intervenons sur place à Cagnes-sur-Mer, comme partout en France, ou à distance, généralement sous 5 jours ouvrés.",
     },
     {
       q: "Quelles communes proches de Cagnes-sur-Mer couvrez-vous lors d'un déplacement ?",

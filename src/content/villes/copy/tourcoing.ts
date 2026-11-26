@@ -410,7 +410,7 @@ export const TOURCOING_COPY: VilleCopy = {
     },
     {
       q: "Intervenez-vous à Tourcoing ou tout est-il à distance ?",
-      a: "Oui. Nous intervenons dans vos locaux à Tourcoing ou tout est-il à distance, partout en France, sur place ou à distance.",
+      a: "Oui. Nos interventions se déroulent sur site chez le client à Tourcoing — audit, session collective, accompagnement dirigeant. Certains formats peuvent être hybrides selon la configuration de l'entreprise, mais le présentiel reste notre mode par défaut.",
     },
     {
       q: "Une entreprise du secteur textile à Tourcoing peut-elle bénéficier d'une implémentation IA clés en main ?",

@@ -49,7 +49,7 @@ export const CHABEUIL_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Chabeuil et Valence Romans Agglo ?",
-      a: "Nous intervenons partout en France, sur place ou à distance.",
+      a: "Oui, Axion-IA intervient à Chabeuil et dans toute Valence Romans Agglo (Valence, Romans, Bourg-lès-Valence). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les acteurs aéronautiques Valence-Chabeuil ?",

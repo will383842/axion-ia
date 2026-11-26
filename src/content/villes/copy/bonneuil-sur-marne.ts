@@ -49,7 +49,7 @@ export const BONNEUIL_SUR_MARNE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Bonneuil-sur-Marne et sud-est Val-de-Marne ?",
-      a: "Nous intervenons dans vos locaux à Bonneuil-sur-Marne, partout en France.",
+      a: "Oui. Nous intervenons sur place à Bonneuil-sur-Marne et dans tout le sud-est du Val-de-Marne (Créteil, Sucy-en-Brie, Valenton, Limeil-Brévannes), comme partout en France, ou à distance.",
     },
     {
       q: "Travaillez-vous avec les entreprises de logistique du port fluvial ?",

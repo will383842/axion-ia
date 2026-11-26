@@ -49,7 +49,7 @@ export const ALBERTVILLE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Albertville et dans les vallées savoyardes ?",
-      a: "Nous intervenons dans vos locaux à Albertville, partout en France.",
+      a: "Oui. Axion-IA intervient à Albertville et dans les quatre vallées : Chambéry, Annecy et Bourg-Saint-Maurice.",
     },
     {
       q: "Travaillez-vous avec les stations de montagne et sports d'hiver ?",

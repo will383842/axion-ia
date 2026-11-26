@@ -49,7 +49,7 @@ export const BRIE_COMTE_ROBERT_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Brie-Comte-Robert et Brie française ?",
-      a: "Nous intervenons dans vos locaux à Brie-Comte-Robert, partout en France.",
+      a: "Oui, Axion-IA intervient à Brie-Comte-Robert et dans toute la Brie française (Melun, Créteil, Paris).",
     },
     {
       q: "Travaillez-vous avec les commerçants et artisans de Brie-Comte-Robert ?",

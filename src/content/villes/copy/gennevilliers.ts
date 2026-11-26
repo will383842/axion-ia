@@ -55,7 +55,7 @@ export const GENNEVILLIERS_COPY: VilleCopy = {
           "Le port de Gennevilliers concentre des flux logistiques massifs (conteneurs, BTP, métallurgie, produits valorisables) opérés par Amazon, DHL Supply Chain, Calberson, DB Schenker, DSV ou Lafarge : nous construisons des portails clients, des espaces de suivi d'expédition et des plateformes de devis qui parlent à ce métier multimodal.",
           "Plus de 2 500 établissements de la zone industrielle — négoce de matériaux, transport fluvial/routier, sous-traitance industrielle — ont besoin de sites web qui convertissent en B2B : configurateurs produits, catalogues techniques, prise de RDV transporteur. Nous codons ces fonctions, pas du template.",
           "Le tissu industriel issu de Le Carbone (usine de 1914 devenue Mersen) et de l'ancienne Chausson/Renault ETG laisse des PME mécaniques et métallurgiques qui modernisent leurs interfaces : extranet fournisseurs, documentation produit interrogeable par IA, recherche sémantique sur fiches techniques.",
-          "Desserte exceptionnelle (RER C, métro 13 à Gabriel Péri, tramway T1, A15/A86, Paris à 2,1 km) : nous intervenons sur site rapidement pour les ateliers UX et les recettes, à Gennevilliers comme dans les communes limitrophes (Asnières, Colombes, Villeneuve-la-Garenne, Saint-Ouen).",
+          "Nous intervenons sur site pour les ateliers UX et les recettes, à Gennevilliers comme dans les communes limitrophes (Asnières, Colombes, Villeneuve-la-Garenne, Saint-Ouen).",
         ],
         methodology: [
           {
@@ -215,7 +215,7 @@ export const GENNEVILLIERS_COPY: VilleCopy = {
           },
           {
             q: "Do you work on site and in nearby towns?",
-            a: "Yes, we come to Gennevilliers for UX workshops and acceptance testing — the town is highly accessible (RER C, metro 13, tram T1, A15/A86, Paris 2.1 km away). We also cover Asnières-sur-Seine, Colombes, Villeneuve-la-Garenne, Saint-Ouen, Épinay-sur-Seine, L'Île-Saint-Denis and Argenteuil.",
+            a: "Yes, we work on site in Gennevilliers for UX workshops and acceptance testing. We also cover Asnières-sur-Seine, Colombes, Villeneuve-la-Garenne, Saint-Ouen, Épinay-sur-Seine, L'Île-Saint-Denis and Argenteuil.",
           },
         ],
         guarantees:

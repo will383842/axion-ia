@@ -49,7 +49,7 @@ export const BIGUGLIA_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Biguglia et dans l'agglomération bastiaise ?",
-      a: "Nous intervenons dans vos locaux à Biguglia, partout en France.",
+      a: "Oui. Nous intervenons sur place à Biguglia et dans toute l'agglomération bastiaise (Bastia, Corte), comme partout en France, ou à distance.",
     },
     {
       q: "Travaillez-vous avec les commerces et services de l'agglo Bastia ?",

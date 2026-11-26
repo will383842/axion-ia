@@ -49,7 +49,7 @@ export const AVALLON_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Avallon et dans le Morvan ?",
-      a: "Nous intervenons dans vos locaux à Avallon, partout en France.",
+      a: "Oui. Nous intervenons sur place à Avallon et dans tout le bassin nord-Morvan, comme partout en France, ou à distance.",
     },
     {
       q: "Travaillez-vous avec les hôteliers et restaurateurs du Morvan ?",

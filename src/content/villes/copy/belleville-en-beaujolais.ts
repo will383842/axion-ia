@@ -49,7 +49,7 @@ export const BELLEVILLE_EN_BEAUJOLAIS_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Belleville-en-Beaujolais et vignoble beaujolais ?",
-      a: "Nous intervenons partout en France, sur place ou à distance.",
+      a: "Oui. Nous intervenons à Belleville-en-Beaujolais et dans tout le vignoble du Beaujolais (Villefranche-sur-Saône, Morgon, Brouilly, Fleurie, Beaujeu), sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les viticulteurs AOC Beaujolais et crus ?",

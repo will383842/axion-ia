@@ -49,7 +49,7 @@ export const ANDRESY_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Andrésy et à la confluence Seine-Oise ?",
-      a: "Nous intervenons dans vos locaux à Andrésy, partout en France.",
+      a: "Oui. Axion-IA intervient à Andrésy et sur tout le secteur de la confluence : Conflans-Sainte-Honorine, Poissy et Paris La Défense.",
     },
     {
       q: "Travaillez-vous avec les commerçants et artisans d'Andrésy ?",

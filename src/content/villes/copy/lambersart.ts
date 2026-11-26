@@ -54,7 +54,7 @@ export const LAMBERSART_COPY: VilleCopy = {
           "Le parc du Pont Royal (avenue du Bois, ~113 établissements, extension de ~23 000 m²) concentre un pôle numérique et industriel exigeant — Thales SIX GTS France, OPEN-Sopra Steria, Engie — pour qui une plateforme IA doit tenir des standards de sécurité, de souveraineté et d'intégration que nous traitons en code custom, pas en template.",
           "La zone de La Cessoie (~6,75 ha, ~164 établissements BTP et services industriels : Nord France Constructions, Soc Nord Inox, Cofrino, Sixense Engineering, Pro Impec) a besoin de sites vitrines crédibles, de portails de devis/chantier et d'e-commerce pièces ou prestations — des outils métier, pas des plaquettes.",
           "Les professions libérales lambersartoises (médecins, avocats, expert-comptables, consultants) et les commerces du Canon d'Or attendent des sites de prise de RDV, des espaces clients confidentiels et un e-commerce de proximité reliés à la dynamique « J'achète à Lambersart » — UX mobile-first, RGPD strict pour les données sensibles.",
-          "Tout se pilote dans la MEL : Lille centre à ~10 min en métro ligne 2, Lille-Europe à ~15 min (TGV Paris ~1h, Bruxelles ~35 min), ce qui rend les ateliers de conception sur site à Lambersart simples à caler, y compris pour les équipes du Pont Royal et de La Cessoie.",
+          "Tout se pilote dans la MEL : les ateliers de conception se tiennent sur site à Lambersart, y compris pour les équipes du Pont Royal et de La Cessoie.",
         ],
         methodology: [
           {

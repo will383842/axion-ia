@@ -49,7 +49,7 @@ export const AIFFRES_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Aiffres et agglomération Niort ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Couverture complète des Deux-Sèvres.",
+      a: "Oui. Axion-IA intervient à Aiffres et dans toute l'agglomération niortaise : Niort, Chauray, Bessines et Prahecq. Nous intervenons sur place ou à distance, avec une couverture complète des Deux-Sèvres.",
     },
     {
       q: "Travaillez-vous avec les PME tertiaires du bassin niortais ?",

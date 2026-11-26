@@ -247,7 +247,7 @@ export const CAHORS_COPY: VilleCopy = {
     },
     {
       q: "Intervenez-vous à Cahors ou tout se fait à distance ?",
-      a: "Oui. Nous intervenons dans vos locaux à Cahors ou tout se fait à distance, partout en France, sur place ou à distance.",
+      a: "Oui. Nous intervenons sur place à Cahors, comme partout en France, pour les phases Audit et Implémentation. Les phases de développement code sont remote, mais chaque mission inclut au moins une journée sur site pour la prise de besoin et la recette.",
     },
   ],
 };

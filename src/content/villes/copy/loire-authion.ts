@@ -64,8 +64,8 @@ export const LOIRE_AUTHION_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les exploitations maraîchères et fruitières de Loire-Authion sur des cas IA concrets : prédiction météo et récolte, automatisation irrigation, gestion stocks et commercialisation circuits courts, traçabilité phytosanitaire.",
     },
     {
-      q: "Comment vos consultants se rendent-ils à Loire-Authion ?",
-      a: "Nous intervenons partout en France, sur place ou à distance.",
+      q: "Intervenez-vous sur site à Loire-Authion ?",
+      a: "Oui. Nous intervenons sur place à Loire-Authion, comme partout en France, ou à distance.",
     },
   ],
 };

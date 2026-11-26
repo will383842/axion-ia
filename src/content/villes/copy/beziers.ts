@@ -247,7 +247,7 @@ export const BEZIERS_COPY: VilleCopy = {
     },
     {
       q: "Intervenez-vous à Béziers ?",
-      a: "Oui. Nous intervenons dans vos locaux à Béziers, partout en France, sur place ou à distance.",
+      a: "Oui. Nous intervenons sur place à Béziers : pas d'audit à distance pour les premières missions, nous observons les processus réels en présentiel.",
     },
   ],
 };
