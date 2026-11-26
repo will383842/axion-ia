@@ -5,11 +5,14 @@ import type { EtatEcheance, NiveauEcheance } from "@/lib/garantie-journee-ia/pre
  * le TEXTE (« Dépassée de 3 j », « Aujourd'hui », « Dans 4 j », « Clos ») la double toujours.
  */
 const CLASSES: Record<NiveauEcheance, string> = {
-  rouge: "bg-red-100 text-red-900 border-red-300",
-  orange: "bg-orange-100 text-orange-900 border-orange-300",
-  jaune: "bg-yellow-100 text-yellow-900 border-yellow-300",
-  vert: "bg-green-100 text-green-900 border-green-300",
-  gris: "bg-gray-100 text-gray-700 border-gray-300",
+  rouge:
+    "border-[color:var(--color-admin-error-fg)] bg-[color:var(--color-admin-error-soft)] text-[color:var(--color-admin-error-fg)] font-semibold",
+  orange:
+    "border-[color:var(--color-admin-warning)] bg-[color:var(--color-admin-warning-soft)] text-[color:var(--color-admin-warning-fg)] font-semibold",
+  jaune:
+    "border-[color:var(--color-admin-warning-fg)] bg-[color:var(--color-admin-warning-soft)] text-[color:var(--color-admin-warning-fg)]",
+  vert: "border-[color:var(--color-admin-success-fg)] bg-[color:var(--color-admin-success-soft)] text-[color:var(--color-admin-success-fg)]",
+  gris: "border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-surface-2)] text-[color:var(--color-admin-fg-muted)]",
 };
 
 const NOM: Record<NiveauEcheance, string> = {
@@ -40,7 +43,7 @@ export function BadgeHorsDelai(): React.ReactElement {
     <span
       data-niveau="rouge"
       data-hors-delai="oui"
-      className="inline-flex items-center rounded-full border border-red-300 bg-red-100 px-2 py-0.5 text-xs font-semibold text-red-900"
+      className="inline-flex items-center rounded-full border border-[color:var(--color-admin-error-fg)] bg-[color:var(--color-admin-error-soft)] px-2 py-0.5 text-xs font-semibold text-[color:var(--color-admin-error-fg)]"
     >
       Hors délai
     </span>

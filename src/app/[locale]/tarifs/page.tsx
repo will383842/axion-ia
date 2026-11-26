@@ -29,8 +29,10 @@ import {
 import {
   CHEMIN_JOURNEE_IA,
   CONDITION_GARANTIE,
+  DELAI_RAPPORT_JOURS_OUVRES,
   DEROULE_JOURNEE_IA,
   GARANTIE_PHRASE,
+  MULTIPLE_GARANTIE,
   RAPPORT_COMPLET,
   lienDiagnostic,
 } from "@/content/journee-ia-commun";
@@ -45,7 +47,7 @@ import { faqItems as faqReference } from "@/content/questions-reference";
 //
 // 🔑 UN SEUL prix public : celui de La Journée IA, lu dans `pricing.ts`
 // (`formatTierPrice(JOURNEE_IA_TIER)`). Elle est en tête de la page, avec son
-// rapport (sous 3 jours ouvrés) et sa garantie, mot pour mot depuis
+// rapport (sous le délai des CGV) et sa garantie, mot pour mot depuis
 // `journee-ia-commun.ts`. Tout le reste est « sur devis écrit » : aucune carte de
 // cette page n'affiche un autre montant, même si l'interrupteur des prix publics
 // de `pricing.ts` venait à être levé.
@@ -76,8 +78,8 @@ function titreMeta(isFr: boolean): string {
 
 function descriptionMeta(isFr: boolean): string {
   return isFr
-    ? `La Journée IA : ${formatTierPrice(JOURNEE_IA_TIER, "fr")}, rapport complet sous 3 jours ouvrés et garantie écrite. Formations, audit approfondi et projets IA : sur devis écrit.`
-    : `The AI Day: ${formatTierPrice(JOURNEE_IA_TIER, "en")}, full report within 3 business days and a written guarantee. Trainings, in-depth audit and AI projects: on written quote.`;
+    ? `La Journée IA : ${formatTierPrice(JOURNEE_IA_TIER, "fr")}, rapport complet sous ${DELAI_RAPPORT_JOURS_OUVRES} jours ouvrés et garantie écrite. Formations, audit approfondi et projets IA : sur devis écrit.`
+    : `The AI Day: ${formatTierPrice(JOURNEE_IA_TIER, "en")}, full report within ${DELAI_RAPPORT_JOURS_OUVRES} business days and a written guarantee. Trainings, in-depth audit and AI projects: on written quote.`;
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
@@ -149,7 +151,7 @@ export default async function PricingPage({ params }: Props) {
 
   const heroDesc = isFr
     ? `${RAPPORT_COMPLET} ${GARANTIE_PHRASE} Tout le reste — formations, audit approfondi, accompagnement individuel, mise en place de l'IA — est sur devis écrit, sous 48 h ouvrées.`
-    : `Full report within 3 business days after the day. If the gains identified do not exceed 3 times the price of the day, we refund you within 30 days. Everything else — trainings, in-depth audit, 1-to-1 support, AI deployment — is on written quote, within 48 business hours.`;
+    : `Full report within ${DELAI_RAPPORT_JOURS_OUVRES} business days after the day. If the gains identified in the report do not reach ${MULTIPLE_GARANTIE} times the price of the day excl. VAT, you are refunded on written request. Everything else — trainings, in-depth audit, 1-to-1 support, AI deployment — is on written quote, within 48 business hours.`;
 
   // Accompagnement individuel : Collaborateur & Dirigeant × 1 jour + coaching régulier.
   // Les formats 2 jours ont été RETIRÉS de la vente (décision Will 2026-07-17).
@@ -274,7 +276,7 @@ export default async function PricingPage({ params }: Props) {
         {
           id: "prix-journee-ia",
           question: "How much does the AI Day cost?",
-          answer: `${prixJournee}, single price. A 2 to 4 h audit in the morning on your premises, 4 h of team training in the afternoon. Full report within 3 business days. ${GARANTIE_PHRASE}`,
+          answer: `${prixJournee}, single price. A 2 to 4 h audit in the morning on your premises, 4 h of team training in the afternoon. Full report within ${DELAI_RAPPORT_JOURS_OUVRES} business days. If the gains identified in the report do not reach ${MULTIPLE_GARANTIE} times the price of the day excl. VAT, you are refunded on written request.`,
         },
         {
           id: "prix-formation-ia",

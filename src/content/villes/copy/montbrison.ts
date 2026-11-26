@@ -65,7 +65,7 @@ export const MONTBRISON_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Lyon ou Saint-Étienne ?",
-      a: "Nos consultants viennent de Lyon (1h15) ou Saint-Étienne (30 min). Pour les multi-jours, hébergement local possible (hôtels Forez). Coûts de déplacement séparés du forfait, tarifs transparents.",
+      a: "Nos consultants viennent de Lyon (1h15) ou Saint-Étienne (30 min). Pour les multi-jours, hébergement local possible (hôtels Forez). Tarifs transparents.",
     },
   ],
 };

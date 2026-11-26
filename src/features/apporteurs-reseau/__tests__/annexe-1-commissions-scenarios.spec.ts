@@ -44,7 +44,7 @@ describe("formation : forfait au prorata du HT facturé, arrondi à l'inférieur
     ).toBe(40_000);
   });
 
-  it("arrondi au centime INFÉRIEUR : 1 199,99 € sur la formation de 4 h donne 249,99 €, pas 250 €", () => {
+  it("arrondi au centime le plus proche : 1 199,99 € sur la formation de 4 h donne 250 €", () => {
     expect(
       montant(
         calculerCommission({
@@ -53,7 +53,7 @@ describe("formation : forfait au prorata du HT facturé, arrondi à l'inférieur
           factureHtCents: 119_999,
         }),
       ),
-    ).toBe(24_999);
+    ).toBe(25_000);
   });
 
   it("jamais plus que le forfait : 2 jours vendus 10 000 € HT restent à 1 000 €", () => {
@@ -91,17 +91,17 @@ describe("formation : forfait au prorata du HT facturé, arrondi à l'inférieur
 
 describe("autres activités : taux de l'annexe 1 sur le HT, arrondi à l'inférieur", () => {
   it("audit 30 %", () => {
-    expect(montant(calculerCommission({ activite: "audit", factureHtCents: 333_33 }))).toBe(9_999);
+    expect(montant(calculerCommission({ activite: "audit", factureHtCents: 333_33 }))).toBe(10_000);
   });
   it("implémentation 15 %", () => {
     expect(
       montant(calculerCommission({ activite: "implementation", factureHtCents: 100_001 })),
     ).toBe(15_000);
   });
-  it("1-to-1 et coaching à la séance : 30 % (le coaching se classe en « un_a_un »)", () => {
-    expect(montant(calculerCommission({ activite: "un_a_un", factureHtCents: 90_000 }))).toBe(
-      27_000,
-    );
+  it("1-to-1 et coaching : aucune commission (décision du 25/11)", () => {
+    expect(calculerCommission({ activite: "un_a_un", factureHtCents: 90_000 })).toEqual({
+      statut: "aucune",
+    });
   });
   it("développement web : aucune commission", () => {
     expect(calculerCommission({ activite: "site_web", factureHtCents: 500_000 })).toEqual({
@@ -112,14 +112,14 @@ describe("autres activités : taux de l'annexe 1 sur le HT, arrondi à l'inféri
 
 describe("parrain : 10 % de la commission du filleul, pendant 6 mois", () => {
   const filleulSigneAt = new Date("2026-03-31T10:00:00Z");
-  it("le dernier jour des 6 mois (30 septembre) : 10 %, arrondi à l'inférieur", () => {
+  it("le dernier jour des 6 mois (30 septembre) : 10 %, arrondi au plus proche", () => {
     expect(
       partParrainage({
         commissionFilleulCents: 12_345,
         filleulSigneAt,
         commandeSigneeAt: new Date("2026-09-30T10:00:00Z"),
       }),
-    ).toBe(1_234);
+    ).toBe(1_235);
   });
   it("le lendemain : rien", () => {
     expect(

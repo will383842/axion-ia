@@ -49,7 +49,7 @@ export const SAINT_PIERRE_D_IRUBE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Saint-Pierre-d'Irube ?",
-      a: "Oui, Axion-IA intervient à Saint-Pierre-d'Irube et dans toute l'agglomération Pays Basque (Bayonne, Anglet, Biarritz, Boucau, Mouguerre). Déplacement inclus dans l'agglo bayonnaise.",
+      a: "Oui, Axion-IA intervient à Saint-Pierre-d'Irube et dans toute l'agglomération Pays Basque (Bayonne, Anglet, Biarritz, Boucau, Mouguerre).",
     },
     {
       q: "Quels services IA pour les PME de services de Saint-Pierre-d'Irube ?",

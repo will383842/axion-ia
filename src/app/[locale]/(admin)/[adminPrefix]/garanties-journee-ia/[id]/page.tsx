@@ -75,17 +75,26 @@ export default async function GarantieFichePage({ params, searchParams }: PagePr
         breadcrumbs={<Link href={`/${locale}/${adminPrefix}/garanties-journee-ia`}>← Liste</Link>}
       />
       {q.erreur ? (
-        <p role="alert" className="mb-4 rounded border border-red-300 bg-red-50 p-3 text-sm">
+        <p
+          role="alert"
+          className="mb-4 rounded border border-[color:var(--color-admin-error-fg)] bg-[color:var(--color-admin-error-soft)] p-3 text-sm text-[color:var(--color-admin-error-fg)]"
+        >
           {q.erreur}
         </p>
       ) : null}
       {q.ok ? (
-        <p role="status" className="mb-4 rounded border border-green-300 bg-green-50 p-3 text-sm">
+        <p
+          role="status"
+          className="mb-4 rounded border border-[color:var(--color-admin-success-fg)] bg-[color:var(--color-admin-success-soft)] p-3 text-sm text-[color:var(--color-admin-success-fg)]"
+        >
           Enregistré.
         </p>
       ) : null}
       {autres.length > 0 || q.avertissement === "siren" ? (
-        <p role="alert" className="mb-4 rounded border border-yellow-300 bg-yellow-50 p-3 text-sm">
+        <p
+          role="alert"
+          className="mb-4 rounded border border-[color:var(--color-admin-warning-fg)] bg-[color:var(--color-admin-warning-soft)] p-3 text-sm text-[color:var(--color-admin-warning-fg)]"
+        >
           Attention : un autre dossier du même SIREN a déjà une décision de remboursement (garantie
           « une seule fois », art. 47.10 e). Le groupe de sociétés n&apos;est pas contrôlé : à vous
           de juger.
@@ -97,14 +106,20 @@ export default async function GarantieFichePage({ params, searchParams }: PagePr
 
       <h2 className="mb-2 text-lg font-semibold">Échéances</h2>
       {horsDelai ? (
-        <p role="alert" className="mb-2 rounded border border-red-300 bg-red-50 p-3 text-sm">
+        <p
+          role="alert"
+          className="mb-2 rounded border border-[color:var(--color-admin-error-fg)] bg-[color:var(--color-admin-error-soft)] p-3 text-sm text-[color:var(--color-admin-error-fg)]"
+        >
           <BadgeHorsDelai /> Demande reçue après les 30 jours suivant la remise du rapport. Aucune
           acceptation tacite : décider au cas par cas (rembourser, refuser ou offrir un avoir). Si «
           Rembourser » est choisi, le virement est dû sous 30 jours après la décision.
         </p>
       ) : null}
       {reputee ? (
-        <p role="alert" className="mb-2 rounded border border-red-300 bg-red-50 p-3 text-sm">
+        <p
+          role="alert"
+          className="mb-2 rounded border border-[color:var(--color-admin-error-fg)] bg-[color:var(--color-admin-error-soft)] p-3 text-sm text-[color:var(--color-admin-error-fg)]"
+        >
           Demande réputée acceptée : aucune réponse écrite dans les 15 jours (état calculé, non
           enregistré). Le virement est dû.
         </p>

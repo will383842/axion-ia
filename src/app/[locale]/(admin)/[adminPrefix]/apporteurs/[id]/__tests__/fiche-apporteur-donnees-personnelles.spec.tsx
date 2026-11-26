@@ -47,6 +47,9 @@ vi.mock("@/features/apporteurs-reseau/solde-negatif", () => ({
   lireSoldeNegatif: async () => null,
 }));
 vi.mock("@/features/apporteurs-reseau/siret-apporteur", () => ({ siretDe: async () => null }));
+vi.mock("@/features/apporteurs-reseau/resiliation", () => ({
+  lireResiliationEnCours: async () => null,
+}));
 // Retirer / supprimer (2026-10-07) : hors du sujet de ce test, simulés.
 vi.mock("@/components/admin/apporteurs/fiche/RetraitDuReseau", () => ({
   RetraitDuReseau: () => null,

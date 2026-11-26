@@ -35,6 +35,14 @@ import type { ProviderKey, Prisma } from "../../../../prisma/generated/client";
 export const TEXT_CHAIN_PROVIDERS: ReadonlyArray<ProviderKey> = ["openai"];
 
 /**
+ * ⚠️ Le kill switch global et l'alerte de plafond se décident sur `TEXT_CHAIN_PROVIDERS`
+ * (openai SEUL), que `CONTENT_GEN_BLOG_CLAUDE` soit allumé ou non, dans l'app comme dans le
+ * worker : une décision qui dépendrait d'une variable d'environnement pourrait diverger entre
+ * les deux conteneurs. Le plafond de Claude est tenu à part par `blog-claude-ledger`
+ * (10 $/jour, 200 $/mois).
+ */
+
+/**
  * Audit final P1-9 fix — gestion automatique du dépassement cost cap.
  *
  * Actions cascadées (docstring aligné Fix 2026-08-15 F1/F2) :

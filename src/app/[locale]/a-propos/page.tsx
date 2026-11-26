@@ -19,6 +19,7 @@ import { ABOUT_TIMELINE, ABOUT_TEAM } from "@/content/transversal";
 import { ABOUT_PHOTO_CREDITS } from "@/content/a-propos/about-photos";
 import { UnsplashCredit } from "@/components/media/UnsplashCredit";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
+import { Link } from "@/i18n/navigation";
 import {
   buildProductMetadata,
   buildPersonJsonLd,
@@ -607,6 +608,20 @@ export default async function About({ params }: Props) {
               />
             </div>
           </div>
+          <p className="text-fg-soft mt-10 text-base leading-relaxed">
+            {isFr
+              ? "Axion-IA s'appuie aussi sur un réseau d'indépendants qui présentent la Journée IA aux dirigeants qu'ils connaissent. "
+              : "Axion-IA also relies on a network of independents who introduce the AI Day to business owners they know. "}
+            <Link
+              href={"/devenir-commercial-ia" as never}
+              className="text-terracotta font-semibold underline underline-offset-4"
+            >
+              {isFr
+                ? "Devenir apporteur d'affaires indépendant"
+                : "Become an independent business referrer"}
+            </Link>
+            .
+          </p>
         </Container>
       </Section>
 

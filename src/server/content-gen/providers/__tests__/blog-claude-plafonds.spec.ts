@@ -106,7 +106,7 @@ describe("validerPlafondsBlog", () => {
     };
     expect(m({ jour: 21 })).toBe("Plafond du jour hors bornes de garde (0 < jour ≤ 20)");
     expect(m({ jour: 9, mois: 7 })).toBe(
-      "Plafond du jour ne peut pas dépasser Plafond mensuel du blog",
+      "Plafond du jour ne peut pas dépasser Plafond mensuel du contenu via Claude",
     );
     expect(m({ reserve: -1 })).toBe("Réserve Qualiopi doit être ≥ 0");
     expect(m({ jugeMax: 0 })).toBe("Relectures max par jour : entier entre 1 et 500");
