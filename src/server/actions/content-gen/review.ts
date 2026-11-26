@@ -9,6 +9,7 @@
 
 "use server";
 
+import { publicationSansPreuveFactCheck } from "@/server/content-gen/fact-check/fact-check-claude-drapeau";
 import * as Sentry from "@sentry/nextjs";
 
 import { Queue } from "bullmq";
@@ -275,7 +276,7 @@ export async function bulkApproveReviews(
         status: "pending",
         job: { qualityScore: { gte: minScore } },
       },
-      include: { job: { select: { id: true } } },
+      include: { job: { select: { id: true, contentType: true, outputJsonRaw: true } } },
       take: limit,
     });
     // Fix 2026-08-15 (audit e2e, E9) — isolation par item (motif déjà appliqué à
@@ -287,6 +288,19 @@ export async function bulkApproveReviews(
     let approved = 0;
     const failures: string[] = [];
     for (const r of candidates) {
+      // PR 5 : l'approbation groupée ne publie jamais un article sans preuve de fact-check
+      // Claude (drapeau actif pour son type) : il reste en relecture individuelle.
+      if (
+        r.job &&
+        publicationSansPreuveFactCheck({
+          contentType: r.job.contentType,
+          output: r.job.outputJsonRaw,
+          existingArticle: false,
+          reviewedBy: null,
+        })
+      ) {
+        continue;
+      }
       try {
         const res = await prisma.reviewQueue.updateMany({
           where: { id: r.id, status: "pending" },

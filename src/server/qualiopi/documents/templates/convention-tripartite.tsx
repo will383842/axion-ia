@@ -432,7 +432,7 @@ export function ConventionTripartitePdf({
           <Text style={local.listItem}>
             • Annulation à plus de 15 jours ouvrés avant le début : aucune somme en plus de
             l&apos;acompte versé, qui reste acquis à l&apos;organisme lorsque le client est
-            professionnel et lui est restitué sinon
+            professionnel
           </Text>
           <Text style={local.listItem}>
             • Annulation entre 8 et 15 jours ouvrés avant le début : 50 % du prix HT
@@ -450,21 +450,22 @@ export function ConventionTripartitePdf({
             l&apos;acompte versé reste alors imputé sur le prix.
           </Text>
           <Text style={stylesPiece.paragraphe}>
-            Pour le client professionnel, les sommes ainsi conservées ou dues, acompte compris,
-            constituent un dédit : elles ne sont pas le prix d&apos;une action de formation, sont
-            facturées à part (mention « Indemnité de dédit – ne constitue pas une dépense de
-            formation professionnelle »), ne peuvent être imputées sur les fonds de la formation
-            professionnelle ni prises en charge par un opérateur de compétences, et restent à la
-            charge du client. Seules les heures de formation effectivement réalisées constituent une
-            dépense de formation ; les autres sommes perçues pour des heures non réalisées et non
-            couvertes par le dédit sont remboursées (article L.6354-1 du Code du travail). En cas
-            d&apos;annulation par le client professionnel, la facture d&apos;acompte est annulée par
-            avoir et son montant porté sur la facture de dédit. La taxe sur la valeur ajoutée
-            s&apos;applique à ces sommes comme au prix, sans exonération. L&apos;acompte n&apos;est
-            pas acquis si l&apos;annulation résulte d&apos;un manquement ou d&apos;une annulation de
-            l&apos;organisme, d&apos;un cas de force majeure, de l&apos;exercice d&apos;un droit de
-            rétractation légal, ou de tout autre cas prévu à l&apos;article 6.5 des conditions
-            générales de vente.
+            Les sommes ainsi conservées ou dues, y compris l&apos;acompte conservé du client
+            professionnel, constituent un dédit : elles ne sont pas le prix d&apos;une action de
+            formation, sont facturées à part (mention « Indemnité de dédit – ne constitue pas une
+            dépense de formation professionnelle »), ne peuvent être imputées sur les fonds de la
+            formation professionnelle ni prises en charge par un opérateur de compétences, et
+            restent à la charge du client. Seules les heures de formation effectivement réalisées
+            constituent une dépense de formation ; les autres sommes perçues pour des heures non
+            réalisées et non couvertes par le dédit sont remboursées (article L.6354-1 du Code du
+            travail). En cas d&apos;annulation par le client professionnel, la facture
+            d&apos;acompte est annulée par avoir et son montant porté sur la facture de dédit ; pour
+            la personne morale non professionnelle, elle est annulée par avoir et l&apos;acompte lui
+            est restitué. La taxe sur la valeur ajoutée s&apos;applique à ces sommes comme au prix,
+            sans exonération. L&apos;acompte n&apos;est pas acquis si l&apos;annulation résulte
+            d&apos;un manquement ou d&apos;une annulation de l&apos;organisme, d&apos;un cas de
+            force majeure, de l&apos;exercice d&apos;un droit de rétractation légal, ou de tout
+            autre cas prévu à l&apos;article 6.5 des conditions générales de vente.
             {data.conditionSuspensiveOpco
               ? " La défaillance de la condition suspensive de l'article 5 bis rend la présente convention caduque ; les sommes versées sont alors restituées."
               : ""}

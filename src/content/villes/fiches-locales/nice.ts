@@ -149,7 +149,7 @@ export const FICHE_NICE: FicheLocale = {
       "Nice compte 13 953 établissements employeurs privés, qui emploient 111 608 salariés (Urssaf, 31 décembre 2025). Les activités scientifiques, techniques et administratives en regroupent 2 924 et le commerce 2 695, soit presque le même ordre de grandeur. Viennent ensuite l’hébergement-restauration (1 782) et la construction (1 449).",
     ecosysteme:
       "L’Université Côte d’Azur, implantée à Nice, Sophia-Antipolis, Cannes, Grasse et Menton, est le principal repère institutionnel de la formation supérieure et de la recherche. L’aéroport Nice Côte d’Azur est celui de la métropole. Nous n’indiquons ici ni technopôle ni entreprise que nous n’aurions pas vérifié sur une source officielle.",
-    zone: "La Métropole Nice Côte d’Azur rassemble 51 communes et 568 596 habitants. La Journée IA se tient dans vos locaux, à Nice ou dans l’une d’elles. Nous n’avons pas de bureau sur place. Pour les modalités de déplacement, consultez la politique de déplacement. Parmi les communes de l’intercommunalité : Aspremont, Bairols, Beaulieu-sur-Mer, Belvédère, Bonson. Le matin : audit (2 à 4 h selon l’entreprise) ; l’après-midi : formation de 4 h, jusqu’à 15 personnes.",
+    zone: "La Métropole Nice Côte d’Azur rassemble 51 communes et 568 596 habitants. La Journée IA se tient dans vos locaux, à Nice ou dans l’une d’elles. Nous n’avons pas de bureau sur place. Pour les modalités de déplacement, consultez la politique de déplacement. Parmi les communes de l’intercommunalité : Aspremont, Bairols, Beaulieu-sur-Mer, Belvédère, Bonson. Le matin : audit (2 à 4 h selon la structuration de l’entreprise) ; l’après-midi : formation de 4 h, jusqu’à 15 personnes.",
   },
   faqLocale: [
     {

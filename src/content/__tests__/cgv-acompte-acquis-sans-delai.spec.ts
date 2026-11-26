@@ -38,15 +38,15 @@ describe("CGV : l'acompte versé reste acquis, sans condition de délai", () => 
         "l'acompte prévu au devis reste acquis à Axion-IA, à concurrence des sommes effectivement versées",
       );
       expect(art(46)).toContain(
-        "aucune somme n'est due en plus de l'acompte versé, qui reste acquis",
+        "aucune somme n'est due en plus de l'acompte versé, qui reste acquis lorsque le Client est professionnel",
       );
       expect(art(46)).toContain("n'est jamais inférieure au montant hors taxes de l'acompte versé");
       expect(art(47)).toContain(
-        "reste acquis à Axion-IA en cas d'annulation par le Client, quel que soit le délai",
+        "l'acompte prévu au devis, dès qu'il est versé, reste acquis à Axion-IA en cas d'annulation par le Client, quel que soit le délai",
       );
       expect(art(47)).not.toContain("pour la seule Journée IA (article 47.10) : dès que");
       expect(art(49)).toContain(
-        "l'acompte prévu au devis reste acquis à Axion-IA en cas d'annulation par le Client, quel que soit le délai",
+        "l'acompte prévu au devis reste acquis à Axion-IA, lorsque le Client est professionnel, en cas d'annulation par le Client, quel que soit le délai",
       );
       expect(art(42)).toContain("n'est jamais inférieur au montant hors taxes de l'acompte versé");
     });

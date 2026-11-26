@@ -2680,6 +2680,8 @@ enum CoverageScope {
   departement
   region
   multi
+  /// « France entière » : file globale des villes, sans ancre propre.
+  national
 }
 
 /// 12 types d'organisation cible (§ 25 v1.7 — audience mix).

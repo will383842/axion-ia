@@ -132,3 +132,31 @@ describe("saisie d'un montant en euros", () => {
     expect(montantEnCentimes("")).toBeNull();
   });
 });
+
+describe("Journée IA « à qualifier » : réglée à 500 € par journée au prorata (A1.1)", () => {
+  it("activité inconnue, 2 journées payées 2 980 € : 1 000 €, prix public 2 980 € enregistré", async () => {
+    etat.commission = { ...ligne, factureHtCents: 298_000 };
+    const r = await qualifierCommission("C1", "journee-ia", 2);
+    expect(r).toEqual({ ok: true, montantCents: 100_000 });
+    expect(etat.maj[0]!.data).toMatchObject({
+      palier: "journee-ia",
+      prixPublicHtCents: 298_000,
+      montantCents: 100_000,
+      statut: "due",
+    });
+  });
+  it("audit, 1 journée remisée à 1 341 € : 450 €", async () => {
+    etat.commission = { ...ligne, activite: "audit", factureHtCents: 134_100 };
+    expect(await qualifierCommission("C1", "journee-ia", 1)).toEqual({
+      ok: true,
+      montantCents: 45_000,
+    });
+  });
+  it("facture de coaching : la décision humaine reste possible (500 € par journée)", async () => {
+    etat.commission = { ...ligne, activite: "un_a_un", factureHtCents: 149_000 };
+    expect(await qualifierCommission("C1", "journee-ia", 1)).toEqual({
+      ok: true,
+      montantCents: 50_000,
+    });
+  });
+});

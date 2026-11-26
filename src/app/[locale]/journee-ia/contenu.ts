@@ -63,7 +63,8 @@ export const CONTENU = {
       "Le matin, nous cartographions votre entreprise et faisons le point ensemble sur vos priorités\u202f: vos plus gros gains, chiffrés le jour même, ceux qui rapportent le plus et se mettent en place le plus vite. L’après-midi, nous formons vos équipes. Dans vos locaux, partout en France.",
     cta: LIBELLE_CTA,
     lienDecide: "Déjà décidé\u202f? Fixons la date ensemble",
-    microTexte: "Diagnostic IA · 45 minutes · en visio ou par téléphone · sans engagement",
+    microTexte:
+      "Diagnostic IA gratuit et facultatif · 45 minutes · en visio ou par téléphone · sans engagement",
     tuiles: [
       { valeur: JETON_PRIX, legende: "une fois, sans remise" },
       // Tuile mise en valeur (filet terracotta) : l’attestation remise à chaque personne formée.
@@ -72,7 +73,10 @@ export const CONTENU = {
         legende: "formation + attestation par personne",
         attestation: true,
       },
-      { valeur: "Le soir même", legende: "vos priorités écrites" },
+      {
+        valeur: `Sous ${DELAI_RAPPORT_JOURS_OUVRES} jours ouvrés`,
+        legende: "vos priorités, dans le rapport détaillé",
+      },
       {
         valeur: formatAmount(seuilGarantieEur(), "fr", { compact: true }),
         legende: "de gains identifiés, ou remboursé sur demande →",
@@ -100,14 +104,13 @@ export const CONTENU = {
         suite: "de temps payé par an",
       },
       prix: { avant: "La Journée IA\u202f:", montant: JETON_PRIX, apres: ", une fois." },
-      // Le ruban de la carte des gains : audit le matin, formation l'après-midi, priorités le soir.
+      // Le ruban de la carte des gains : audit le matin, formation l'après-midi, priorités dans le rapport détaillé.
       ruban: {
         audit: "Audit",
         formation: "Formation",
         heures: ["9\u00a0h", "12\u00a0h", "13\u00a0h 30", "17\u00a0h 30"],
       },
-      ariaLabelRuban:
-        "Déroulé\u202f: audit de 9\u00a0h à 12\u00a0h, formation de 13\u00a0h 30 à 17\u00a0h 30, priorités écrites à 17\u00a0h 30",
+      ariaLabelRuban: `Déroulé\u202f: audit de 9\u00a0h à 12\u00a0h, formation de 13\u00a0h 30 à 17\u00a0h 30, rapport détaillé avec vos priorités sous ${DELAI_RAPPORT_JOURS_OUVRES} jours ouvrés`,
     },
   },
   enBref: EN_BREF_JOURNEE_IA,
@@ -179,10 +182,10 @@ export const CONTENU = {
       {
         icone: "plan",
         jalons: [
-          { moment: "17\u00a0h 30", texte: "Vos 3 à 5 priorités, écrites avant notre départ" },
+          { moment: "17\u00a0h 30", texte: "Fin de la journée\u202f: le point final avec vous" },
           {
             moment: `Sous ${DELAI_RAPPORT_JOURS_OUVRES} jours ouvrés`,
-            texte: "Le rapport complet",
+            texte: "Le rapport détaillé, avec vos 3 à 5 priorités",
           },
         ],
       },
@@ -318,7 +321,7 @@ export const CONTENU = {
     {
       id: "faq-rapport",
       question: "Quand recevons-nous le rapport\u202f?",
-      reponse: `Le soir même, vous avez vos priorités écrites. Le rapport complet et le plan d’action sur 90 jours suivent sous ${DELAI_RAPPORT_JOURS_OUVRES} jours ouvrés\u00a0: ce délai nous permet de vérifier chaque chiffre.`,
+      reponse: `Vos priorités sont écrites dans le rapport détaillé, remis sous ${DELAI_RAPPORT_JOURS_OUVRES} jours ouvrés après la journée, avec le plan d’action sur 90 jours\u00a0: ce délai nous permet de vérifier chaque chiffre.`,
     },
     {
       id: "faq-personnes",
@@ -372,9 +375,9 @@ export const CONTENU = {
   ],
   rendezVous: {
     surtitre: "Prochaine étape",
-    titre: "Diagnostic IA\u202f: 45 minutes pour commencer",
+    titre: "Diagnostic IA gratuit et facultatif\u202f: 45 minutes pour commencer",
     etapes: [
-      "Diagnostic IA, 45 min\u202f: une première tâche chiffrée",
+      "Diagnostic IA, 45 min, gratuit et facultatif\u202f: une première tâche chiffrée",
       "Journée IA, chez vous",
       "Mise en place, seulement si vous le décidez",
     ],
