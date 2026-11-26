@@ -65,7 +65,7 @@ export const RUMILLY_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Rumilly ?",
-      a: "Nos consultants interviennent sur site dans votre usine, exploitation ou commerce à Rumilly, ou en visio. Nous intervenons partout en France, sur place ou à distance. Hébergement local possible pour missions multi-jours.",
+      a: "Nos consultants interviennent sur site dans votre usine, exploitation ou commerce à Rumilly, ou en visio. Nous intervenons partout en France, sur place ou à distance.",
     },
   ],
 };

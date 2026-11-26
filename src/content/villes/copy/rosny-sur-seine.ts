@@ -14,9 +14,9 @@ export const ROSNY_SUR_SEINE_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Rosny-sur-Seine (78). Nous accompagnons TPE et PME : artisans bords de Seine, PME industrielles et logistiques du bassin mantois, commerçants et professions libérales de ce pôle résidentiel historique près du château de Sully.",
   seoHook: "artisanat bâtiment & industrie logistique",
   ecosystemFr:
-    "Rosny-sur-Seine est une commune des bords de Seine dans les Yvelines, à l'ouest immédiat de Mantes-la-Jolie. Patrimoine remarquable avec le château de Sully. Tissu économique : TPE artisanat bâtiment et services, PME industrielles et logistiques (axe Seine), commerces de centre-bourg, professions libérales et services à la personne. Proximité des zones d'activités mantaises et de l'axe A13.",
+    "Rosny-sur-Seine est une commune des bords de Seine dans les Yvelines, à l'ouest immédiat de Mantes-la-Jolie. Patrimoine remarquable avec le château de Sully. Tissu économique : TPE artisanat bâtiment et services, PME industrielles et logistiques (axe Seine), commerces de centre-bourg, professions libérales et services à la personne. Zones d'activités mantaises voisines.",
   ecosystemEn:
-    "Rosny-sur-Seine est une commune des bords de Seine dans les Yvelines, à l'ouest immédiat de Mantes-la-Jolie. Patrimoine remarquable avec le château de Sully. Tissu économique : TPE artisanat bâtiment et services, PME industrielles et logistiques (axe Seine), commerces de centre-bourg, professions libérales et services à la personne. Proximité des zones d'activités mantaises et de l'axe A13.",
+    "Rosny-sur-Seine est une commune des bords de Seine dans les Yvelines, à l'ouest immédiat de Mantes-la-Jolie. Patrimoine remarquable avec le château de Sully. Tissu économique : TPE artisanat bâtiment et services, PME industrielles et logistiques (axe Seine), commerces de centre-bourg, professions libérales et services à la personne. Zones d'activités mantaises voisines.",
   distancesFr:
     "Mantes-la-Jolie à 5 min, Gare de Rosny-sur-Seine (Transilien J Paris Saint-Lazare ~55 min). A13 accès direct, Les Mureaux à 15 min, Poissy à 25 min. Paris La Défense à 45 min par A13.",
   distancesEn:
@@ -49,7 +49,7 @@ export const ROSNY_SUR_SEINE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Rosny-sur-Seine et dans le bassin mantois ?",
-      a: "Oui, Axion-IA intervient à Rosny-sur-Seine et dans tout le bassin mantois (Mantes-la-Jolie à 5 min, Les Mureaux, Bonnières-sur-Seine). Nous intervenons partout en France, sur place ou à distance.",
+      a: "Oui, Axion-IA intervient à Rosny-sur-Seine et dans tout le bassin mantois (Mantes-la-Jolie, Les Mureaux, Bonnières-sur-Seine). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les PME industrielles de l'axe Seine ?",
@@ -65,7 +65,7 @@ export const ROSNY_SUR_SEINE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Rosny-sur-Seine ?",
-      a: "Nous intervenons partout en France, sur place ou à distance.",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Rosny-sur-Seine, comme partout en France, ou à distance.",
     },
   ],
 };

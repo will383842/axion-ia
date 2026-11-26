@@ -11,9 +11,9 @@ export const NOISY_LE_SEC_COPY: VilleCopy = {
   pitchEn:
     "Noisy-le-Sec (93, Seine-Saint-Denis) compte environ 45 500 habitants, à 5 km de Paris via la N3. Ville historiquement ferroviaire (ancien grand dépôt SNCF), elle accueille un tissu dense de TPE artisans, commerces de proximité, PME services et BTP, dans une zone bien desservie (RER E, T1, métro 11 à proximité, A3 et A86). Axion-IA accompagne le tissu professionnel local de l'Est parisien.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Noisy-le-Sec (93) auprès des TPE et PME de l'Est parisien : artisans BTP, commerçants de proximité, PME services, professions libérales et acteurs de la logistique ferroviaire et urbaine. Nos consultants se déplacent depuis Paris en 20 min (RER E ou A3). Audit sur place {{price:audit-flash|flat}}, code custom, conformité RGPD intégrée.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Noisy-le-Sec (93) auprès des TPE et PME de l'Est parisien : artisans BTP, commerçants de proximité, PME services, professions libérales et acteurs de la logistique ferroviaire et urbaine. Nous intervenons partout en France, sur place ou à distance. Audit sur place {{price:audit-flash|flat}}, code custom, conformité RGPD intégrée.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Noisy-le-Sec (93) auprès des TPE et PME de l'Est parisien : artisans BTP, commerçants de proximité, PME services, professions libérales et acteurs de la logistique ferroviaire et urbaine. Nos consultants se déplacent depuis Paris en 20 min (RER E ou A3). Audit sur place {{price:audit-flash|flat}}, code custom, conformité RGPD intégrée.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Noisy-le-Sec (93) auprès des TPE et PME de l'Est parisien : artisans BTP, commerçants de proximité, PME services, professions libérales et acteurs de la logistique ferroviaire et urbaine. Nous intervenons partout en France, sur place ou à distance. Audit sur place {{price:audit-flash|flat}}, code custom, conformité RGPD intégrée.",
   seoHook: "TPE & PME Est parisien",
   ecosystemFr:
     "Noisy-le-Sec, en limite Est de Paris (5 km via N3), est historiquement marquée par l'activité ferroviaire SNCF (dépôt, ateliers). Aujourd'hui le tissu local mêle TPE artisans, commerces de proximité, PME services, BTP et logistique urbaine. La ville bénéficie d'une desserte exceptionnelle (RER E, tramway T1, métro 11 prolongé, autoroutes A3 et A86) et de la proximité immédiate de Bobigny, Bondy, Rosny-sous-Bois, Montreuil et Romainville.",
@@ -55,7 +55,7 @@ export const NOISY_LE_SEC_COPY: VilleCopy = {
         whyHere: [
           "Logistique et maintenance ferroviaire au cœur du territoire: autour du Technicentre SNCF de Paris-Est et du Parc d'activités Le Terminal / Groux (~9,74 ha, ~162 entreprises à moins de 10 min du RER), nous outillons les transporteurs, sociétés de nettoyage technique (type Samsic Transport) et prestataires d'installation électrique (type Transport Tertiaire Industrie) avec des portails de suivi d'interventions, de planning et de pièces.",
           "BTP et construction sur-représentés: la ZAC Quartier durable de la Plaine de l'Ourcq (35 ha, ~75 000 m² d'activités et 30 000 m² de bureaux pilotés par Est Ensemble et Séquano d'ici 2029) alimente artisans et PME du bâtiment — nous construisons leurs sites de devis en ligne, suivis de chantier et e-commerce de matériaux.",
-          "Commerce et services de proximité: pour les boutiques du centre-ville et des marchés, desservies par la gare RER E, le tramway T1 et bientôt la gare Pont de Bondy de la ligne 15 du Grand Paris Express, nous déployons des vitrines e-commerce multi-CMS (Shopify, WooCommerce, PrestaShop) avec click-and-collect et IA produit.",
+          "Commerce et services de proximité: pour les boutiques du centre-ville et des marchés, nous déployons des vitrines e-commerce multi-CMS (Shopify, WooCommerce, PrestaShop) avec click-and-collect et IA produit.",
           "Santé et services aux entreprises: cliniques et centres de soins de suite, comme la Clinique de Soins de Suite de Noisy-le-Sec, et prestataires des 4 zones d'activités (ZI du Parc, Sous les Plâtres, ZAC des Guillaumes) reçoivent des plateformes de prise de rendez-vous, d'agents conversationnels et de classification documentaire conformes RGPD.",
         ],
         methodology: [
@@ -118,11 +118,11 @@ export const NOISY_LE_SEC_COPY: VilleCopy = {
           },
           {
             q: "Pouvez-vous accompagner les artisans et PME du BTP liés à la ZAC de la Plaine de l'Ourcq ?",
-            a: "Oui. La ZAC Quartier durable de la Plaine de l'Ourcq (35 ha, environ 75 000 m² d'activités et 30 000 m² de bureaux, livraison visée 2029) génère une forte demande dans la construction. Nous construisons pour les artisans et PME du bâtiment des sites de devis en ligne, des suivis de chantier et des boutiques e-commerce de matériaux, optimisés mobile et SEO local.",
+            a: "Oui. Nous construisons pour les artisans et PME du bâtiment des sites de devis en ligne, des suivis de chantier et des boutiques e-commerce de matériaux, optimisés mobile et SEO local.",
           },
           {
             q: "Faites-vous de l'e-commerce multi-CMS pour les commerçants de Noisy-le-Sec ?",
-            a: "Oui. Pour les boutiques du centre-ville et des marchés, desservies par la gare RER E, le tramway T1 et bientôt la gare Pont de Bondy de la ligne 15 du Grand Paris Express, nous déployons des vitrines e-commerce sur Shopify, WooCommerce ou PrestaShop, avec click-and-collect, recommandation produit IA et search sémantique.",
+            a: "Oui. Pour les boutiques du centre-ville et des marchés, nous déployons des vitrines e-commerce sur Shopify, WooCommerce ou PrestaShop, avec click-and-collect, recommandation produit IA et search sémantique.",
           },
           {
             q: "Quels délais pour un devis ?",
@@ -141,7 +141,7 @@ export const NOISY_LE_SEC_COPY: VilleCopy = {
         whyHere: [
           "Logistics and railway maintenance at the heart of the territory: around the SNCF Paris-Est Technicentre and the Le Terminal / Groux business park (~9.74 ha, ~162 businesses less than 10 minutes from the RER), we equip carriers, technical cleaning firms (such as Samsic Transport) and electrical installation providers (such as Transport Tertiaire Industrie) with intervention-tracking, planning and parts portals.",
           "Construction and BTP over-represented: the Quartier durable de la Plaine de l'Ourcq development (35 ha, ~75,000 m² of activities and 30,000 m² of offices led by Est Ensemble and Séquano by 2029) drives demand among building trades — we build their online quoting sites, site-tracking tools and materials e-commerce.",
-          "Local retail and services: for town-centre and market shops, served by the RER E station, the T1 tram and soon the Pont de Bondy station on Grand Paris Express line 15, we deploy multi-CMS e-commerce storefronts (Shopify, WooCommerce, PrestaShop) with click-and-collect and product AI.",
+          "Local retail and services: for town-centre and market shops, we deploy multi-CMS e-commerce storefronts (Shopify, WooCommerce, PrestaShop) with click-and-collect and product AI.",
           "Healthcare and business services: clinics and follow-up care centres, such as the Clinique de Soins de Suite de Noisy-le-Sec, and providers across the 4 business zones (ZI du Parc, Sous les Plâtres, ZAC des Guillaumes) receive GDPR-compliant booking, conversational-agent and document-classification platforms.",
         ],
         methodology: [
@@ -208,7 +208,7 @@ export const NOISY_LE_SEC_COPY: VilleCopy = {
           },
           {
             q: "Do you build multi-CMS e-commerce for Noisy-le-Sec shops?",
-            a: "Yes. For town-centre and market shops, served by the RER E station, the T1 tram and soon the Pont de Bondy station on Grand Paris Express line 15, we deploy e-commerce storefronts on Shopify, WooCommerce or PrestaShop, with click-and-collect, AI product recommendation and semantic search.",
+            a: "Yes. For town-centre and market shops, we deploy e-commerce storefronts on Shopify, WooCommerce or PrestaShop, with click-and-collect, AI product recommendation and semantic search.",
           },
           {
             q: "How fast is a quote?",
@@ -228,7 +228,7 @@ export const NOISY_LE_SEC_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Noisy-le-Sec ?",
-      a: "Oui, Axion-IA intervient à Noisy-le-Sec et dans tout l'Est parisien (Bobigny, Bondy, Rosny-sous-Bois, Montreuil, Romainville, Pantin). Nos consultants se déplacent depuis Paris en 20 min via RER E ou A3.",
+      a: "Oui, Axion-IA intervient à Noisy-le-Sec et dans tout l'Est parisien (Bobigny, Bondy, Rosny-sous-Bois, Montreuil, Romainville, Pantin). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quels sont les tarifs d'un audit IA à Noisy-le-Sec ?",

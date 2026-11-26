@@ -85,7 +85,7 @@ export const VILLEURBANNE_COPY: VilleCopy = {
     },
     {
       q: "Combien coûte un audit IA à Villeurbanne ?",
-      a: "Le tarif dépend du niveau retenu — Audit sur place, Ciblé, Stratégique PME ou Stratégique ETI. Tarifs publics affichés sur la page Audit, calibrés selon votre taille (TPE, PME, ETI, grande entreprise) et votre périmètre. Aucun supplément géographique : le tarif est identique à Villeurbanne et partout en France.",
+      a: "Le tarif dépend du niveau retenu — Audit sur place, Ciblé, Stratégique PME ou Stratégique ETI. Tarifs publics affichés sur la page Audit, calibrés selon votre taille (TPE, PME, ETI, grande entreprise) et votre périmètre.",
     },
     {
       q: "Quels secteurs sont prioritaires à Villeurbanne pour une mission IA ?",
@@ -97,7 +97,7 @@ export const VILLEURBANNE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une intervention à Villeurbanne ?",
-      a: "Nos consultants se déplacent directement dans vos locaux villeurbannais. Nous intervenons partout en France, sur place ou à distance. Villeurbanne est desservie par le métro TCL ligne A (stations Laurent Bonnevay ou Gratte-Ciel), le tramway T1/T4, le périphérique nord et l'A42 ; la gare TGV Lyon Part-Dieu est à environ 3 km.",
+      a: "Nous intervenons directement dans vos locaux villeurbannais, comme partout en France, ou à distance.",
     },
     {
       q: "Axion-IA travaille-t-il avec FORVIA MATERI'ACT ou les ETI industrielles de Villeurbanne ?",

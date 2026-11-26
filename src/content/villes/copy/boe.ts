@@ -49,7 +49,7 @@ export const BOE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Boé et dans l'agglo d'Agen ?",
-      a: "Oui, Axion-IA intervient à Boé et dans toute l'agglomération d'Agen (Agen, Le Passage, Bon-Encontre, Foulayronnes). Consultants accessibles via l'aéroport Agen-La Garenne (sur la commune) ou la gare TGV Agen (10 min).",
+      a: "Oui, Axion-IA intervient à Boé et dans toute l'agglomération d'Agen (Agen, Le Passage, Bon-Encontre, Foulayronnes).",
     },
     {
       q: "Combien coûte un audit IA à Boé  ?",
@@ -65,7 +65,7 @@ export const BOE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Boé ?",
-      a: "Nos consultants interviennent sur site à Boé et dans l'agglomération d'Agen. Déplacement direct sur votre site logistique, atelier ou bureau. Aéroport Agen-La Garenne sur la commune, gare TGV Agen à 10 min.",
+      a: "Nos consultants interviennent sur site à Boé et dans l'agglomération d'Agen. Déplacement direct sur votre site logistique, atelier ou bureau.",
     },
   ],
 };

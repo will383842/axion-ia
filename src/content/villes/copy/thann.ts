@@ -49,7 +49,7 @@ export const THANN_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Thann et dans la vallée de la Thur ?",
-      a: "Oui, Axion-IA intervient à Thann et sur toute la Communauté de communes Thann-Cernay et la vallée de la Thur (Cernay, Vieux-Thann, Wattwiller, Saint-Amarin). Nous intervenons partout en France, sur place ou à distance. Thann est desservie par la N66/A36, à 30 min de Mulhouse.",
+      a: "Oui, Axion-IA intervient à Thann et sur toute la Communauté de communes Thann-Cernay et la vallée de la Thur (Cernay, Vieux-Thann, Wattwiller, Saint-Amarin). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Combien coûte un audit IA à Thann  ?",

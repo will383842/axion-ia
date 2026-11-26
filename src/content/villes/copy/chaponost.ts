@@ -49,7 +49,7 @@ export const CHAPONOST_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Chaponost et SO lyonnais ?",
-      a: "Oui, Axion-IA intervient à Chaponost et tout le SO lyonnais (Brignais à 5 min, Francheville, Oullins, Craponne). Nous intervenons partout en France, sur place ou à distance.",
+      a: "Oui, Axion-IA intervient à Chaponost et dans tout le sud-ouest lyonnais (Brignais, Francheville, Oullins, Craponne). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les professions libérales chaponostois ?",
@@ -65,7 +65,7 @@ export const CHAPONOST_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Chaponost ?",
-      a: "Nous intervenons partout en France, sur place ou à distance.",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Chaponost, comme partout en France, ou à distance.",
     },
   ],
 };

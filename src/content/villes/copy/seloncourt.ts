@@ -49,7 +49,7 @@ export const SELONCOURT_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il a Seloncourt et dans le Pays de Montbeliard ?",
-      a: "Oui, Axion-IA intervient a Seloncourt et dans tout le Pays de Montbeliard (Audincourt, Valentigney, Sochaux, Montbeliard). Gare TGV Belfort-Montbeliard a 18 km.",
+      a: "Oui, Axion-IA intervient a Seloncourt et dans tout le Pays de Montbeliard (Audincourt, Valentigney, Sochaux, Montbeliard).",
     },
     {
       q: "Accompagnez-vous les sous-traitants automobile de Seloncourt ?",

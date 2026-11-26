@@ -49,7 +49,7 @@ export const ERAGNY_SUR_OISE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Éragny-sur-Oise et agglo Cergy-Pontoise ?",
-      a: "Oui, Axion-IA intervient à Éragny-sur-Oise et toute l'agglomération Cergy-Pontoise (Cergy à 5 min, Paris La Défense à 30 min en RER A, Paris centre à 40 min).",
+      a: "Oui, Axion-IA intervient à Éragny-sur-Oise et dans toute l'agglomération Cergy-Pontoise (Cergy, Paris La Défense, Paris centre).",
     },
     {
       q: "Travaillez-vous avec les commerçants de la zone commerciale ?",
@@ -65,7 +65,7 @@ export const ERAGNY_SUR_OISE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Éragny-sur-Oise ?",
-      a: "Cergy-Pontoise (5 min). Paris La Défense (30 min RER A). Paris centre (40 min). CDG (40 min).",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Éragny-sur-Oise, comme partout en France, ou à distance.",
     },
   ],
 };

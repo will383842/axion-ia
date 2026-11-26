@@ -132,7 +132,7 @@ export const POISSY_COPY: VilleCopy = {
           },
           {
             q: "Quel délai pour recevoir un devis et démarrer le projet à Poissy ?",
-            a: "Un devis détaillé est fourni à partir de 24-48 h selon la complexité du projet, après un premier échange. La desserte de Poissy par le RER A, le Transilien J et l'A14 nous permet de venir cadrer sur site rapidement, du Technoparc aux ateliers de la Seine aval.",
+            a: "Un devis détaillé est fourni à partir de 24-48 h selon la complexité du projet, après un premier échange.",
           },
         ],
         guarantees:
@@ -242,7 +242,7 @@ export const POISSY_COPY: VilleCopy = {
     },
     {
       q: "Quel délai pour démarrer une mission à Poissy ?",
-      a: "Nous visons un démarrage sous cinq jours ouvrés après validation, selon nos disponibilités. La desserte de Poissy par le RER A et l'A14 nous permet d'intervenir rapidement sur tout l'ouest des Yvelines.",
+      a: "Nous visons un démarrage sous cinq jours ouvrés après validation, selon nos disponibilités.",
     },
     {
       q: "Comment assurez-vous la conformité RGPD à Poissy ?",

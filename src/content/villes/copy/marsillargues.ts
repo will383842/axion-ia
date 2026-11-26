@@ -49,7 +49,7 @@ export const MARSILLARGUES_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Marsillargues ?",
-      a: "Oui, Axion-IA intervient à Marsillargues et dans toute la Petite Camargue héraultaise (Lunel, Aigues-Mortes, La Grande-Motte, Saint-Laurent-d'Aigouze). Nos consultants viennent depuis Montpellier en 30 min.",
+      a: "Oui, Axion-IA intervient à Marsillargues et dans toute la Petite Camargue héraultaise (Lunel, Aigues-Mortes, La Grande-Motte, Saint-Laurent-d'Aigouze). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Proposez-vous un audit IA pour les exploitations viticoles et agricoles ?",

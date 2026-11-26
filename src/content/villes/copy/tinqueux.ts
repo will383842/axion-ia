@@ -49,7 +49,7 @@ export const TINQUEUX_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Tinqueux et dans l'agglomération de Reims ?",
-      a: "Oui, Axion-IA intervient à Tinqueux et dans toute l'agglomération rémoise (Reims, Cormontreuil, Bétheny, Saint-Brice-Courcelles). Gare TGV Reims à 10 min, Paris à 45 min en TGV.",
+      a: "Oui, Axion-IA intervient à Tinqueux et dans toute l'agglomération rémoise (Reims, Cormontreuil, Bétheny, Saint-Brice-Courcelles).",
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Tinqueux  ?",

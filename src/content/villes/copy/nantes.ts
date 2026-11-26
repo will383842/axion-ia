@@ -185,7 +185,7 @@ export const NANTES_COPY: VilleCopy = {
         whyHere: [
           "Nantes is a strategic hub for Axion-IA: aeronautics, shipbuilding, agri-food, French Tech digital and biotech concentrate AI cases with strong ROI potential.",
           "Nantes B2B fabric well-represented in our references: industrial mid-caps (aeronautics, composites, naval), agri-food SMEs, French Tech scale-ups, Euronantes consulting firms.",
-          "Our consultants travel across the whole Nantes metropolis — Île de Nantes, Euronantes Gare, La Chantrerie, Saint-Herblain, Bouguenais — and the wider basin (Saint-Nazaire, Rennes, Angers).",
+          "Axion-IA works anywhere in France, on site or remotely, including across the whole Nantes metropolis — Île de Nantes, Euronantes Gare, La Chantrerie, Saint-Herblain, Bouguenais — and the wider basin (Saint-Nazaire, Rennes, Angers).",
           "Read-outs always in person at your premises: ideation workshop, deliverable walk-through with your leadership, action plan handed over face to face.",
           "No opaque quote game: public pricing, you know exactly what you pay before signing.",
           "Your action plan is executable with any vendor or in-house — no Axion-IA lock-in.",
@@ -1012,7 +1012,7 @@ export const NANTES_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Combien coûte un audit IA opérationnel à Nantes ?",
-      a: "Le tarif dépend du niveau retenu — Audit sur place, Ciblé, Stratégique PME ou Stratégique ETI. Tarifs publics affichés sur la page Audit, choix calibré selon votre taille (TPE, PME, ETI, grande entreprise) et votre périmètre nantais. Aucun supplément géographique : le tarif est identique à celui pratiqué partout en France.",
+      a: "Le tarif dépend du niveau retenu — Audit sur place, Ciblé, Stratégique PME ou Stratégique ETI. Tarifs publics affichés sur la page Audit, choix calibré selon votre taille (TPE, PME, ETI, grande entreprise) et votre périmètre nantais.",
     },
     {
       q: "Avez-vous des cas clients dans la région nantaise ?",
@@ -1032,7 +1032,7 @@ export const NANTES_COPY: VilleCopy = {
     },
     {
       q: "Intervenez-vous dans le bassin Saint-Nazaire pour l'industrie navale ?",
-      a: "Oui. Le bassin économique Nantes–Saint-Nazaire fait partie de notre périmètre d'intervention Grand Ouest. Les sites industriels (construction navale, sous-traitance aéronautique, énergies marines) sont accessibles depuis notre base nantaise.",
+      a: "Oui. Le bassin économique Nantes–Saint-Nazaire fait partie de notre périmètre d'intervention Grand Ouest. Les sites industriels (construction navale, sous-traitance aéronautique, énergies marines) sont accessibles.",
     },
   ],
 };

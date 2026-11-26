@@ -65,7 +65,7 @@ export const BILLY_MONTIGNY_COPY: VilleCopy = {
     },
     {
       q: "Quels délais pour une mission à Billy-Montigny ?",
-      a: "Intervention sous 5 jours ouvrés après validation. Gare de Lens à 10 min, Lille à 35 min A1. Nos consultants se déplacent sur site.",
+      a: "Intervention sous 5 jours ouvrés après validation. Nos consultants se déplacent sur site.",
     },
   ],
 };

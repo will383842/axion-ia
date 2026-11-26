@@ -49,7 +49,7 @@ export const CHAUVIGNY_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Chauvigny et vallée de la Vienne ?",
-      a: "Oui, Axion-IA intervient à Chauvigny et toute la vallée de la Vienne est (Saint-Savin-sur-Gartempe à 15 min, Lussac-les-Châteaux, Civaux). Nous intervenons partout en France, sur place ou à distance.",
+      a: "Oui, Axion-IA intervient à Chauvigny et dans toute la vallée de la Vienne est (Saint-Savin-sur-Gartempe, Lussac-les-Châteaux, Civaux). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les carriers et artisans pierre de Chauvigny ?",
@@ -65,7 +65,7 @@ export const CHAUVIGNY_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Chauvigny ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Pour les multi-jours, hébergement local ou Poitiers centre. Tarifs transparents.",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Chauvigny, comme partout en France, ou à distance.",
     },
   ],
 };

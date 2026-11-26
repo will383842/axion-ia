@@ -61,7 +61,7 @@ export const WERVICQ_SUD_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Wervicq-Sud ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Aéroport Lille-Lesquin à 35 min. Pour les missions multi-jours, hébergement local possible.",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Wervicq-Sud, comme partout en France, ou à distance.",
     },
     {
       q: "Quels secteurs accompagnez-vous à Wervicq-Sud ?",

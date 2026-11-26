@@ -49,7 +49,7 @@ export const TRANS_EN_PROVENCE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Trans-en-Provence et dans l'agglomération dracénoise ?",
-      a: "Oui, Axion-IA intervient à Trans-en-Provence et dans toute la Dracénie (Draguignan, Les Arcs, Lorgues, La Motte, Le Muy, Vidauban). Hub TGV Les Arcs-Draguignan à 10 min.",
+      a: "Oui, Axion-IA intervient à Trans-en-Provence et dans toute la Dracénie (Draguignan, Les Arcs, Lorgues, La Motte, Le Muy, Vidauban).",
     },
     {
       q: "Quel est le tarif d'un audit IA pour une TPE artisanale à Trans-en-Provence ?",

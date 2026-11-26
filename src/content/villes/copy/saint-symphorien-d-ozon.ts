@@ -49,7 +49,7 @@ export const SAINT_SYMPHORIEN_D_OZON_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Saint-Symphorien-d'Ozon et SE lyonnais ?",
-      a: "Oui, Axion-IA intervient à Saint-Symphorien-d'Ozon et tout le SE lyonnais (Corbas à 10 min, Mions, Chaponnay, Vienne à 20 min). Nous intervenons partout en France, sur place ou à distance.",
+      a: "Oui. Nous intervenons à Saint-Symphorien-d'Ozon et dans tout le sud-est lyonnais : Corbas, Mions, Chaponnay et Vienne, comme partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les opérateurs logistiques ?",
@@ -65,7 +65,7 @@ export const SAINT_SYMPHORIEN_D_OZON_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Saint-Symphorien-d'Ozon ?",
-      a: "Nous intervenons partout en France, sur place ou à distance.",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Saint-Symphorien-d'Ozon, comme partout en France, ou à distance.",
     },
   ],
 };

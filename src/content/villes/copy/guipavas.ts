@@ -65,7 +65,7 @@ export const GUIPAVAS_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Guipavas ?",
-      a: "Nos consultants rejoignent Guipavas via l'aéroport Brest-Bretagne (sur la commune) ou la gare de Brest (TGV, 10 min).",
+      a: "Nous intervenons partout en France, sur place ou à distance.",
     },
   ],
 };

@@ -49,7 +49,7 @@ export const ROUSSET_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Rousset et à l'est d'Aix-en-Provence ?",
-      a: "Oui, Axion-IA intervient à Rousset et dans tout l'est aixois (Trets, Peynier, Châteauneuf-le-Rouge, Fuveau, Pourrières). Proximité immédiate de la zone industrielle microélectronique et accès direct A8.",
+      a: "Oui, Axion-IA intervient à Rousset et dans tout l'est aixois (Trets, Peynier, Châteauneuf-le-Rouge, Fuveau, Pourrières).",
     },
     {
       q: "Combien coûte un audit IA à Rousset  ?",
@@ -65,7 +65,7 @@ export const ROUSSET_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une intervention à Rousset ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Rousset est à 15 min d'Aix-en-Provence et 40 min de Marseille via A8.",
+      a: "Nous intervenons partout en France, sur place ou à distance.",
     },
   ],
 };

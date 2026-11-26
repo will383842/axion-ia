@@ -49,7 +49,7 @@ export const BETHENY_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Bétheny et dans le nord de Reims ?",
-      a: "Oui, Axion-IA intervient à Bétheny et dans tout le nord rémois (Cernay-lès-Reims, Witry-lès-Reims, La Neuvillette). Gare TGV Reims à 10 min, Paris à 45 min en TGV.",
+      a: "Oui, Axion-IA intervient à Bétheny et dans tout le nord rémois (Cernay-lès-Reims, Witry-lès-Reims, La Neuvillette).",
     },
     {
       q: "Tarifs audit IA à Bétheny  : quel budget prévoir ?",

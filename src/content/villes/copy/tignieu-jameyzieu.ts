@@ -57,7 +57,7 @@ export const TIGNIEU_JAMEYZIEU_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les logisticiens rhodaniens ?",
-      a: "Oui, nous accompagnons les opérateurs logistiques du bassin rhodanien (proximité Lyon-Saint-Exupéry à 25 min) sur leurs cas IA : optimisation tournées, automatisation préparation commandes, prédiction demande, agents IA service client B2B. ROI chiffré contractuel avant mission.",
+      a: "Oui, nous accompagnons les opérateurs logistiques du bassin rhodanien sur leurs cas IA : optimisation tournées, automatisation préparation commandes, prédiction demande, agents IA service client B2B. ROI chiffré contractuel avant mission.",
     },
     {
       q: "Quels services pour les TPE artisans et commerçants ?",
@@ -65,7 +65,7 @@ export const TIGNIEU_JAMEYZIEU_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une intervention ?",
-      a: "Sur place ou à distance, selon votre besoin. Pour les missions multi-jours, hébergement local possible (hôtels Bourgoin-Jallieu ou Lyon-Saint-Exupéry).",
+      a: "Sur place ou à distance, selon votre besoin.",
     },
   ],
 };

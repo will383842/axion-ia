@@ -36,8 +36,8 @@ export const VITRY_SUR_SEINE_COPY: VilleCopy = {
       en: "Audit IA à Vitry-sur-Seine : nous cartographions vos processus métier — notamment dans les secteurs R&D et santé présents sur la ville — pour identifier 3 chantiers IA prioritaires chiffrés. Détail complet sur la sous-page /audits.",
     },
     interventions: {
-      fr: "Intervention collective à Vitry-sur-Seine : Williams se déplace sur site pour former vos équipes aux outils IA adaptés à votre secteur — industrie, construction ou services. Formats demi-journée à deux jours. Détail sur /interventions.",
-      en: "Intervention collective à Vitry-sur-Seine : Williams se déplace sur site pour former vos équipes aux outils IA adaptés à votre secteur — industrie, construction ou services. Formats demi-journée à deux jours. Détail sur /interventions.",
+      fr: "Intervention collective à Vitry-sur-Seine : Williams intervient sur site pour former vos équipes aux outils IA adaptés à votre secteur — industrie, construction ou services. Formats demi-journée à deux jours. Détail sur /interventions.",
+      en: "Intervention collective à Vitry-sur-Seine : Williams intervient sur site pour former vos équipes aux outils IA adaptés à votre secteur — industrie, construction ou services. Formats demi-journée à deux jours. Détail sur /interventions.",
     },
     implementation: {
       fr: "Implémentation IA à Vitry-sur-Seine : déploiement d'outils RAG (Retrieval-Augmented Generation), automatisation de workflows et intégration dans votre SI existant — sans dépendance à un éditeur unique. Détail sur /implementations.",
@@ -51,7 +51,7 @@ export const VITRY_SUR_SEINE_COPY: VilleCopy = {
   services: {
     interventions: {
       fr: {
-        hero: "Les formations IA en entreprise d'Axion-IA à Vitry-sur-Seine se déroulent sur site, dans vos locaux des Ardoines, du Port-à-l'Anglais ou du centre-ville. Vos collaborateurs ne repartent pas avec un support de slides : ils repartent avec des outils IA installés sur leur poste et configurés pour leur travail réel — veille documentaire en R&D, traitement d'emails, rédaction de fiches techniques, suivi qualité. Williams se déplace pour calibrer chaque session sur votre secteur dominant — industrie chimique et pharmaceutique, recherche scientifique, construction ou commerce — avec des démos construites sur vos propres documents anonymisés. Formats de la demi-journée à deux jours, de la TPE vitriote au comité de direction.",
+        hero: "Les formations IA en entreprise d'Axion-IA à Vitry-sur-Seine se déroulent sur site, dans vos locaux des Ardoines, du Port-à-l'Anglais ou du centre-ville. Vos collaborateurs ne repartent pas avec un support de slides : ils repartent avec des outils IA installés sur leur poste et configurés pour leur travail réel — veille documentaire en R&D, traitement d'emails, rédaction de fiches techniques, suivi qualité. Williams calibre chaque session sur votre secteur dominant — industrie chimique et pharmaceutique, recherche scientifique, construction ou commerce — avec des démos construites sur vos propres documents anonymisés. Formats de la demi-journée à deux jours, de la TPE vitriote au comité de direction.",
         whyHere: [
           "Vitry-sur-Seine concentre des profils techniques et scientifiques exigeants — autour du Centre de recherche Sanofi Vitry et des pôles Medicen Paris Region et Systematic Paris-Region — qui réclament des sessions IA calibrées par métier, pas des ateliers génériques.",
           "Toute la commune est couverte en présentiel : ZAC Les Ardoines, Port à l'Anglais, ZAC Rouget de Lisle et centre-ville près du MAC VAL. Williams arrive sur site.",
@@ -145,7 +145,7 @@ export const VITRY_SUR_SEINE_COPY: VilleCopy = {
           "Créneau garanti dès la confirmation de réservation. En cas de problème technique de notre fait, la session est reportée et compensée. L'objectif est l'autonomie : si vos collaborateurs ne sont pas à l'aise le lendemain matin sur les outils installés, une séance de remédiation est prévue. Vocabulaire et démos ajustés à votre secteur vitriot — industrie chimique, R&D, construction, commerce ou santé — sans session générique recyclée. Hébergement des données en UE et prise en compte du RGPD intégrés à chaque recommandation.",
       },
       en: {
-        hero: "Les formations IA en entreprise d'Axion-IA à Vitry-sur-Seine se déroulent sur site, dans vos locaux des Ardoines, du Port-à-l'Anglais ou du centre-ville. Vos collaborateurs ne repartent pas avec un support de slides : ils repartent avec des outils IA installés sur leur poste et configurés pour leur travail réel — veille documentaire en R&D, traitement d'emails, rédaction de fiches techniques, suivi qualité. Williams se déplace pour calibrer chaque session sur votre secteur dominant — industrie chimique et pharmaceutique, recherche scientifique, construction ou commerce — avec des démos construites sur vos propres documents anonymisés. Formats de la demi-journée à deux jours, de la TPE vitriote au comité de direction.",
+        hero: "Les formations IA en entreprise d'Axion-IA à Vitry-sur-Seine se déroulent sur site, dans vos locaux des Ardoines, du Port-à-l'Anglais ou du centre-ville. Vos collaborateurs ne repartent pas avec un support de slides : ils repartent avec des outils IA installés sur leur poste et configurés pour leur travail réel — veille documentaire en R&D, traitement d'emails, rédaction de fiches techniques, suivi qualité. Williams calibre chaque session sur votre secteur dominant — industrie chimique et pharmaceutique, recherche scientifique, construction ou commerce — avec des démos construites sur vos propres documents anonymisés. Formats de la demi-journée à deux jours, de la TPE vitriote au comité de direction.",
         whyHere: [
           "Vitry-sur-Seine concentre des profils techniques et scientifiques exigeants — autour du Centre de recherche Sanofi Vitry et des pôles Medicen Paris Region et Systematic Paris-Region — qui réclament des sessions IA calibrées par métier, pas des ateliers génériques.",
           "Toute la commune est couverte en présentiel : ZAC Les Ardoines, Port à l'Anglais, ZAC Rouget de Lisle et centre-ville près du MAC VAL. Williams arrive sur site.",
@@ -308,7 +308,7 @@ export const VITRY_SUR_SEINE_COPY: VilleCopy = {
           },
           {
             q: "Je suis une PME productive qui s'installe aux Ardoines : quel type de site web me conseillez-vous ?",
-            a: "Les ZAC Les Ardoines (Gare Ardoines et Seine Gare Vitry) accueillent à nouveau de l'industrie productive, de la logistique et des locaux d'activité à 3 km de Paris. Pour ces profils, nous concevons des portails clients et de l'e-commerce B2B avec configurateur de catalogue technique, recherche sémantique sur vos fiches et documentation, et intégration à votre ERP — pas une vitrine générique.",
+            a: "Les ZAC Les Ardoines (Gare Ardoines et Seine Gare Vitry) accueillent à nouveau de l'industrie productive, de la logistique et des locaux d'activité. Pour ces profils, nous concevons des portails clients et de l'e-commerce B2B avec configurateur de catalogue technique, recherche sémantique sur vos fiches et documentation, et intégration à votre ERP — pas une vitrine générique.",
           },
           {
             q: "Travaillez-vous avec les acteurs culturels du quartier MAC VAL ?",
@@ -421,8 +421,8 @@ export const VITRY_SUR_SEINE_COPY: VilleCopy = {
       a: "Les tarifs Axion-IA sont publics : Audit sur place (4h) à partir de {{price:audit-flash|flat}}, intervention collective à partir de {{price:intervention-4h|flat}}, implémentation à partir de {{price:intervention-dirigeants|flat}}, accompagnement 1-to-1 dirigeant à partir de {{price:intervention-dirigeants|flat}}.",
     },
     {
-      q: "Axion-IA se déplace-t-il réellement sur site à Vitry-sur-Seine ?",
-      a: "Oui. Axion-IA est un cabinet national qui intervient sur site chez le client. Williams et l'équipe se déplacent à Vitry-sur-Seine pour les audits, interventions et implémentations.",
+      q: "Intervenez-vous à Vitry-sur-Seine ?",
+      a: "Oui. Nous intervenons sur place à Vitry-sur-Seine, comme partout en France, ou à distance.",
     },
     {
       q: "Une PME vitriote sans DSI peut-elle bénéficier d'une implémentation IA clés en main ?",
@@ -438,7 +438,7 @@ export const VITRY_SUR_SEINE_COPY: VilleCopy = {
     },
     {
       q: "Quel format d'intervention est adapté à un artisan ou une TPE de Vitry-sur-Seine ?",
-      a: "Pour une TPE ou un artisan, l'Audit sur place (4h, à partir de {{price:audit-flash|flat}}) permet d'identifier rapidement un premier outil IA rentable — relance client, devis automatisé, gestion administrative. Le format collectif (1 journée) (à partir de {{price:intervention-4h|flat}}) assure ensuite la prise en main opérationnelle sur site à Vitry-sur-Seine.",
+      a: "Pour une TPE ou un artisan, l'Audit sur place (4h, à partir de {{price:audit-flash|flat}}) permet d'identifier rapidement un premier outil IA rentable — relance client, devis automatisé, gestion administrative. Le format collectif (1 journée) assure ensuite la prise en main opérationnelle sur site à Vitry-sur-Seine.",
     },
   ],
 };

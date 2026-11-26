@@ -78,7 +78,7 @@ export const ROUEN_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Combien coûte un audit IA opérationnel à Rouen ?",
-      a: "Le tarif dépend du niveau retenu — Audit sur place, Ciblé, Stratégique PME ou Stratégique ETI. Tarifs publics affichés sur la page Audit, calibrés selon votre taille (TPE, PME, ETI, grande entreprise) et votre périmètre. Aucun supplément géographique : le tarif est identique à Rouen et partout en France.",
+      a: "Le tarif dépend du niveau retenu — Audit sur place, Ciblé, Stratégique PME ou Stratégique ETI. Tarifs publics affichés sur la page Audit, calibrés selon votre taille (TPE, PME, ETI, grande entreprise) et votre périmètre.",
     },
     {
       q: "Avez-vous des références clients dans la Métropole Rouen Normandie ?",
@@ -97,7 +97,7 @@ export const ROUEN_COPY: VilleCopy = {
       a: "Oui. Nous accompagnons les startups et scale-ups de l'écosystème normand — Seinari, Normandie Web Xperts, Village by CA Normandie-Seine. Notre offre est calibrée pour les structures en phase de scale qui veulent passer du POC IA à un déploiement opérationnel.",
     },
     {
-      q: "Vos consultants se déplacent-ils sur le Technopôle du Madrillet ?",
+      q: "Intervenez-vous sur le Technopôle du Madrillet ?",
       a: "Oui. Le Technopôle du Madrillet (Saint-Étienne-du-Rouvray) fait partie de nos terrains habituels à Rouen, avec une forte densité d'entreprises INSA/ESIGELEC-issues, de PME industrielles et de laboratoires CNRS. Nos consultants connaissent les spécificités IT et industrielles de ce site.",
     },
   ],
@@ -279,7 +279,7 @@ export const ROUEN_COPY: VilleCopy = {
           },
           {
             q: "Do you cover Métropole communes (Madrillet, Vatine, Petit-Quevilly, Mont-Saint-Aignan)?",
-            a: "Yes. Our consultants travel to all communes of the Métropole Rouen Normandie — from Madrillet (INSA, ESIGELEC) to Mont-Saint-Aignan (Vatine, NEOMA), from Petit-Quevilly (Lubrizol, Safran) to Saint-Étienne-du-Rouvray and Grand-Quevilly. We work anywhere in France, on site or remotely.",
+            a: "Yes. We cover all communes of the Métropole Rouen Normandie, including Madrillet (INSA, ESIGELEC), Mont-Saint-Aignan (Vatine, NEOMA), Petit-Quevilly (Lubrizol, Safran), Saint-Étienne-du-Rouvray and Grand-Quevilly. We work anywhere in France, on site or remotely.",
           },
           {
             q: "Do I need AI maturity to engage you?",

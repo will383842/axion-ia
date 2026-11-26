@@ -49,7 +49,7 @@ export const CONDE_SUR_L_ESCAUT_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Condé-sur-l'Escaut et agglomération de Valenciennes ?",
-      a: "Oui, Axion-IA intervient à Condé-sur-l'Escaut et toute l'agglomération de Valenciennes (15 min en voiture, frontière belge à 5 min, Lille à 50 min).",
+      a: "Oui, Axion IA intervient partout en France, sur site ou à distance, y compris à Condé-sur-l'Escaut et dans toute l'agglomération de Valenciennes.",
     },
     {
       q: "Travaillez-vous avec les TPE et artisans de Condé-sur-l'Escaut ?",
@@ -65,7 +65,7 @@ export const CONDE_SUR_L_ESCAUT_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Condé-sur-l'Escaut ?",
-      a: "Paris-Nord (1h45 via TGV Valenciennes puis 15 min route). Frontière belge à 5 min.",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Condé-sur-l'Escaut, comme partout en France, ou à distance.",
     },
   ],
 };

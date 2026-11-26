@@ -64,8 +64,8 @@ export const MONTEUX_COPY: VilleCopy = {
       a: "Oui, nous intervenons auprès des parcs de loisirs, hôteliers et restaurateurs sur gestion réservations, agents conversationnels multilingues, content marketing local et optimisation des fiches Google Business.",
     },
     {
-      q: "Comment se déplace Axion-IA à Monteux ?",
-      a: "Monteux est à 20 min d'Avignon et 10 min de Carpentras via D942. Nos consultants se déplacent dans vos locaux.",
+      q: "Comment se déroule une mission à Monteux ?",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Monteux, comme partout en France, ou à distance.",
     },
   ],
 };

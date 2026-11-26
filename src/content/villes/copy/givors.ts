@@ -74,7 +74,7 @@ export const GIVORS_COPY: VilleCopy = {
           {
             step: "Développement par sprints",
             detail:
-              "Greffe IA sur l'existant ou build IA-native : e-commerce, portail de commande B2B, devis logistiques automatisés, chatbot RAG multilingue, recherche sémantique, agents et automatisations. Démos hebdomadaires en visio depuis Lyon, code versionné et livré au fil de l'eau.",
+              "Greffe IA sur l'existant ou build IA-native : e-commerce, portail de commande B2B, devis logistiques automatisés, chatbot RAG multilingue, recherche sémantique, agents et automatisations. Démos hebdomadaires en visio, code versionné et livré au fil de l'eau.",
           },
           {
             step: "Recette + mise en ligne",
@@ -160,7 +160,7 @@ export const GIVORS_COPY: VilleCopy = {
           {
             step: "Développement par sprints",
             detail:
-              "Greffe IA sur l'existant ou build IA-native : e-commerce, portail de commande B2B, devis logistiques automatisés, chatbot RAG multilingue, recherche sémantique, agents et automatisations. Démos hebdomadaires en visio depuis Lyon, code versionné et livré au fil de l'eau.",
+              "Greffe IA sur l'existant ou build IA-native : e-commerce, portail de commande B2B, devis logistiques automatisés, chatbot RAG multilingue, recherche sémantique, agents et automatisations. Démos hebdomadaires en visio, code versionné et livré au fil de l'eau.",
           },
           {
             step: "Recette + mise en ligne",
@@ -229,8 +229,8 @@ export const GIVORS_COPY: VilleCopy = {
 
   faqGeolocalisee: [
     {
-      q: "Axion-IA se déplace-t-il à Givors ?",
-      a: "Oui, nos consultants se rendent directement dans vos locaux à Givors et dans le sud lyonnais. La première rencontre se fait sur site afin de comprendre vos processus industriels ou logistiques avant toute recommandation.",
+      q: "Intervenez-vous à Givors ?",
+      a: "Oui. Nous intervenons dans vos locaux à Givors et dans le sud lyonnais. La première rencontre se fait sur site afin de comprendre vos processus industriels ou logistiques avant toute recommandation.",
     },
     {
       q: "Quels types d'entreprises accompagnez-vous à Givors ?",

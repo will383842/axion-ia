@@ -65,7 +65,7 @@ export const VIZILLE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une intervention ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Pour les multi-jours, hébergement local possible (hôtels Vizille ou Oisans).",
+      a: "Nous intervenons partout en France, sur place ou à distance.",
     },
   ],
 };

@@ -233,8 +233,8 @@ export const SAINT_ETIENNE_DU_ROUVRAY_COPY: VilleCopy = {
       a: "Oui. Les sous-traitants industriels et PME de maintenance de la vallée de la Seine, autour de Saint-Étienne-du-Rouvray, font partie de nos cibles prioritaires. Nous automatisons leurs flux administratifs et reporting, sans intervenir sur leurs procédés industriels critiques.",
     },
     {
-      q: "Axion-IA se déplace-t-il sur site à Saint-Étienne-du-Rouvray ?",
-      a: "Oui, nos experts IA viennent dans vos locaux, des zones industrielles de la vallée de la Seine au technopôle du Madrillet. L'observation terrain reste le meilleur point de départ pour cibler des automatisations vraiment utiles.",
+      q: "Intervenez-vous à Saint-Étienne-du-Rouvray ?",
+      a: "Oui. Nous intervenons dans vos locaux à Saint-Étienne-du-Rouvray, des zones industrielles de la vallée de la Seine au technopôle du Madrillet. L'observation terrain reste le meilleur point de départ pour cibler des automatisations vraiment utiles.",
     },
     {
       q: "Quelles entreprises accompagnez-vous en priorité ici ?",
@@ -242,7 +242,7 @@ export const SAINT_ETIENNE_DU_ROUVRAY_COPY: VilleCopy = {
     },
     {
       q: "Quel délai pour démarrer une mission à Saint-Étienne-du-Rouvray ?",
-      a: "Nous visons un démarrage sous cinq jours ouvrés après validation, selon nos disponibilités. La proximité de Rouen et l'accès par l'A13 nous permettent d'intervenir rapidement sur toute la métropole.",
+      a: "Nous visons un démarrage sous cinq jours ouvrés après validation, selon nos disponibilités.",
     },
     {
       q: "Comment assurez-vous la conformité RGPD à Saint-Étienne-du-Rouvray ?",

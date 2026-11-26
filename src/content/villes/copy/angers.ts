@@ -998,7 +998,7 @@ export const ANGERS_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Combien coûte un audit IA opérationnel à Angers ?",
-      a: "Le tarif dépend du niveau retenu — Audit sur place, Ciblé, Stratégique PME ou Stratégique ETI. Tarifs publics affichés sur la page Audit, choix calibré selon votre taille (TPE, PME, ETI, grande entreprise) et votre secteur. Aucun supplément géographique : le tarif est le même à Angers que partout en France.",
+      a: "Le tarif dépend du niveau retenu — Audit sur place, Ciblé, Stratégique PME ou Stratégique ETI. Tarifs publics affichés sur la page Audit, choix calibré selon votre taille (TPE, PME, ETI, grande entreprise) et votre secteur.",
     },
     {
       q: "Axion-IA intervient-il dans la filière végétale angevine (Vegepolys Valley) ?",
@@ -1018,7 +1018,7 @@ export const ANGERS_COPY: VilleCopy = {
     },
     {
       q: "En combien de temps pouvez-vous démarrer une mission à Angers ?",
-      a: "Le délai dépend de votre besoin (urgence, complexité, taille de la mission). Nous calons une date de démarrage avec vous lors du brief de cadrage initial, et tenons l'engagement contractuel à la signature. La proximité TGV Paris-Angers (1h21) facilite les déplacements de nos consultants pour les kicks-off rapides.",
+      a: "Le délai dépend de votre besoin (urgence, complexité, taille de la mission). Nous calons une date de démarrage avec vous lors du brief de cadrage initial, et tenons l'engagement contractuel à la signature.",
     },
   ],
 };

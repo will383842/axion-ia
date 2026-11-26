@@ -36,8 +36,8 @@ export const CORMEILLES_EN_PARISIS_COPY: VilleCopy = {
       en: "Réaliser un audit IA à Cormeilles-en-Parisis pour les TPE et PME des zones Champs-Guillaume et Bois Rochefort — identifier les automatisations prioritaires (devis, planning, gestion stock).",
     },
     interventions: {
-      fr: "Intervenir à Cormeilles-en-Parisis (16 min depuis Paris Saint-Lazare) pour automatiser les processus métier des artisans BTP et commerçants locaux — code custom, pas de no-code.",
-      en: "Intervenir à Cormeilles-en-Parisis (16 min depuis Paris Saint-Lazare) pour automatiser les processus métier des artisans BTP et commerçants locaux — code custom, pas de no-code.",
+      fr: "Intervenir à Cormeilles-en-Parisis pour automatiser les processus métier des artisans BTP et commerçants locaux — code custom, pas de no-code.",
+      en: "Intervenir à Cormeilles-en-Parisis pour automatiser les processus métier des artisans BTP et commerçants locaux — code custom, pas de no-code.",
     },
     implementation: {
       fr: "Implémenter des solutions IA sur mesure à Cormeilles-en-Parisis pour les TPE et PME du commerce et du BTP.",
@@ -56,7 +56,7 @@ export const CORMEILLES_EN_PARISIS_COPY: VilleCopy = {
           "Tissu industriel et BTP dominant : la carrière de gypse Placoplatre (Saint-Gobain), l'usine Placo et les ~40 établissements de la ZAE Carrefour des Champs Guillaume (9,48 ha, BTP et petit transport) ont des besoins concrets — configurateurs de devis plâtrerie-construction, suivi de chantier, portails fournisseurs — que nous traitons en applications web sur mesure.",
           "Le quartier Seine Parisii (reconversion de la friche Lafarge : 1 200 logements, marina ~110 anneaux mise en eau prévue avril 2026, 1er label BBCA Quartier de France) crée une vague d'activité pour promoteurs, services de proximité, loisirs nautiques et commerces : autant de vitrines web et plateformes de réservation à lancer.",
           "Commerce de proximité concentré : ~50 commerces le long de l'avenue Foch avec la locomotive Auchan, et un droit de préemption commercial instauré par la ville en 2025 pour redynamiser le centre — un contexte propice aux e-commerce locaux, click & collect et fiches Google Business optimisées que nous déployons en multi-CMS.",
-          "Accès direct depuis Paris (ligne J Transilien depuis Saint-Lazare, A15 sortie Herblay, A115) : nos kick-offs se tiennent sur site à Cormeilles-en-Parisis, dans les Bois Rochefort, les Champs Guillaume ou avenue Foch.",
+          "Nos kick-offs se tiennent sur site à Cormeilles-en-Parisis, dans les Bois Rochefort, les Champs Guillaume ou avenue Foch.",
         ],
         methodology: [
           {
@@ -125,7 +125,7 @@ export const CORMEILLES_EN_PARISIS_COPY: VilleCopy = {
           },
           {
             q: "Intervenez-vous dans les communes autour de Cormeilles-en-Parisis ?",
-            a: "Oui, sur l'ensemble de la CA Val Parisis et des communes limitrophes : Sannois, Franconville, Montigny-lès-Cormeilles, Herblay, La Frette-sur-Seine, ainsi que Argenteuil, Sartrouville et Maisons-Laffitte. Le kick-off se fait sur site, accessible via la ligne J depuis Paris Saint-Lazare et l'A15.",
+            a: "Oui, sur l'ensemble de la CA Val Parisis et des communes limitrophes : Sannois, Franconville, Montigny-lès-Cormeilles, Herblay, La Frette-sur-Seine, ainsi que Argenteuil, Sartrouville et Maisons-Laffitte. Axion IA intervient partout en France, sur site ou à distance.",
           },
         ],
         guarantees:
@@ -137,7 +137,7 @@ export const CORMEILLES_EN_PARISIS_COPY: VilleCopy = {
           "Dominant industrial and construction fabric: the Placoplatre gypsum quarry (Saint-Gobain), the Placo plant and the ~40 establishments of the Carrefour des Champs Guillaume business park (9.48 ha, construction and small transport) have concrete needs — plastering/construction quote configurators, site-tracking tools, supplier portals — that we deliver as custom web applications.",
           "The Seine Parisii district (conversion of the Lafarge brownfield: 1,200 homes, a ~110-berth marina set to be water-filled in April 2026, France's first BBCA District label) is driving a wave of activity for developers, local services, nautical leisure and shops — all requiring web showcases and booking platforms.",
           "Concentrated local retail: ~50 shops along Avenue Foch with the Auchan anchor, and a commercial pre-emption right introduced by the city in 2025 to revitalise the centre — a context well suited to local e-commerce, click & collect and optimised Google Business profiles, which we deploy in multi-CMS.",
-          "Direct access from Paris (Transilien line J from Saint-Lazare, A15 Herblay exit, A115): our kick-offs take place on site in Cormeilles-en-Parisis — in Bois Rochefort, Champs Guillaume or on Avenue Foch — without disproportionate logistics costs.",
+          "Axion-IA works anywhere in France, on site or remotely: our kick-offs take place in Cormeilles-en-Parisis — in Bois Rochefort, Champs Guillaume or on Avenue Foch.",
         ],
         methodology: [
           {
@@ -206,7 +206,7 @@ export const CORMEILLES_EN_PARISIS_COPY: VilleCopy = {
           },
           {
             q: "Do you operate in the communes around Cormeilles-en-Parisis?",
-            a: "Yes, across the whole CA Val Parisis and neighbouring communes: Sannois, Franconville, Montigny-lès-Cormeilles, Herblay, La Frette-sur-Seine, as well as Argenteuil, Sartrouville and Maisons-Laffitte. The kick-off takes place on site, accessible via line J from Paris Saint-Lazare and the A15.",
+            a: "Yes, across the whole CA Val Parisis and neighbouring communes: Sannois, Franconville, Montigny-lès-Cormeilles, Herblay, La Frette-sur-Seine, as well as Argenteuil, Sartrouville and Maisons-Laffitte. The kick-off takes place on site, as everywhere in France.",
           },
         ],
         guarantees:
@@ -222,7 +222,7 @@ export const CORMEILLES_EN_PARISIS_COPY: VilleCopy = {
     },
     {
       q: "Quels sont les délais pour une intervention IA à Cormeilles-en-Parisis ?",
-      a: "Williams se déplace habituellement sous 5 à 10 jours ouvrés à Cormeilles-en-Parisis (ligne J, Paris Saint-Lazare à 16 minutes). Les délais d'implémentation varient selon la complexité du projet, généralement 2 à 6 semaines.",
+      a: "Williams intervient habituellement sous 5 à 10 jours ouvrés à Cormeilles-en-Parisis. Les délais d'implémentation varient selon la complexité du projet, généralement 2 à 6 semaines.",
     },
     {
       q: "Axion-IA se déplace-t-il dans les communes autour de Cormeilles-en-Parisis ?",

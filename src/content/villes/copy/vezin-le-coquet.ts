@@ -65,7 +65,7 @@ export const VEZIN_LE_COQUET_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Vezin-le-Coquet ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Possibilité métro ligne b proximité Le Gast. Intervention sur site ou en visio.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Intervention sur site ou en visio.",
     },
   ],
 };

@@ -65,7 +65,7 @@ export const SAINT_LO_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Saint-Lô ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Pour les missions multi-jours, hébergement local.",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Saint-Lô, comme partout en France, ou à distance.",
     },
   ],
 };

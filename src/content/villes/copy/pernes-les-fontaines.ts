@@ -65,7 +65,7 @@ export const PERNES_LES_FONTAINES_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une intervention à Pernes-les-Fontaines ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Pernes-les-Fontaines est à 10 min de Carpentras et 25 min d'Avignon via D938.",
+      a: "Nous intervenons partout en France, sur place ou à distance.",
     },
   ],
 };

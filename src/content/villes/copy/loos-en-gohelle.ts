@@ -49,7 +49,7 @@ export const LOOS_EN_GOHELLE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il a Loos-en-Gohelle pres des terrils UNESCO ?",
-      a: "Oui, Axion-IA intervient a Loos-en-Gohelle et dans tout le bassin lensois (Lens, Lievin, Henin-Beaumont). Consultants depuis Lille (50 min TER) ou Paris (TGV 1h15 via Lens).",
+      a: "Oui, Axion-IA intervient a Loos-en-Gohelle et dans tout le bassin lensois (Lens, Lievin, Henin-Beaumont). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quels services IA pour les structures ESS de Loos-en-Gohelle ?",

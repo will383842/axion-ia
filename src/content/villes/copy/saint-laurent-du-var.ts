@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const SAINT_LAURENT_DU_VAR_COPY: VilleCopy = {
   pitchFr:
-    "Saint-Laurent-du-Var, banlieue ouest de Nice (06), concentre commerces, services tertiaires, immobilier touristique et tissu PME en bord de Méditerranée. Proximité immédiate aéroport Nice-Côte d'Azur. Axion-IA y intervient pour les entreprises de la métropole niçoise et acteurs du tourisme premium.",
+    "Saint-Laurent-du-Var, banlieue ouest de Nice (06), concentre commerces, services tertiaires, immobilier touristique et tissu PME en bord de Méditerranée. Axion-IA y intervient pour les entreprises de la métropole niçoise et acteurs du tourisme premium.",
   pitchEn:
-    "Saint-Laurent-du-Var, banlieue ouest de Nice (06), concentre commerces, services tertiaires, immobilier touristique et tissu PME en bord de Méditerranée. Proximité immédiate aéroport Nice-Côte d'Azur. Axion-IA y intervient pour les entreprises de la métropole niçoise et acteurs du tourisme premium.",
+    "Saint-Laurent-du-Var, banlieue ouest de Nice (06), concentre commerces, services tertiaires, immobilier touristique et tissu PME en bord de Méditerranée. Axion-IA y intervient pour les entreprises de la métropole niçoise et acteurs du tourisme premium.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Laurent-du-Var (06) sur la Côte d'Azur. Nous accompagnons les PME tertiaires niçoises, agences immobilières premium, acteurs du tourisme (hôtels, restauration), commerces et services aux entreprises sur leurs cas IA — diagnostic chiffré, démos terrain.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Laurent-du-Var (06) sur la Côte d'Azur. Nous accompagnons les PME tertiaires niçoises, agences immobilières premium, acteurs du tourisme (hôtels, restauration), commerces et services aux entreprises sur leurs cas IA — diagnostic chiffré, démos terrain.",
   seoHook: "commerce détail & tourisme hôtellerie",
   ecosystemFr:
-    "Saint-Laurent-du-Var concentre le tissu commercial et tertiaire ouest de Nice : centre commercial CAP3000 (le plus grand de France hors région parisienne), agences immobilières premium côte d'Azur, hôtels et restauration tourisme, PME services. Proximité immédiate aéroport Nice-Côte d'Azur (2e aéroport français hors Paris).",
+    "Saint-Laurent-du-Var concentre le tissu commercial et tertiaire ouest de Nice : centre commercial CAP3000 (le plus grand de France hors région parisienne), agences immobilières premium côte d'Azur, hôtels et restauration tourisme, PME services.",
   ecosystemEn:
-    "Saint-Laurent-du-Var concentre le tissu commercial et tertiaire ouest de Nice : centre commercial CAP3000 (le plus grand de France hors région parisienne), agences immobilières premium côte d'Azur, hôtels et restauration tourisme, PME services. Proximité immédiate aéroport Nice-Côte d'Azur (2e aéroport français hors Paris).",
+    "Saint-Laurent-du-Var concentre le tissu commercial et tertiaire ouest de Nice : centre commercial CAP3000 (le plus grand de France hors région parisienne), agences immobilières premium côte d'Azur, hôtels et restauration tourisme, PME services.",
   distancesFr:
     "Gare Saint-Laurent-du-Var (TER, 5 min Nice-Ville). Aéroport Nice-Côte d'Azur à 5 min. Tramway T2 vers Cagnes-sur-Mer. Accès Monaco 30 min, Cannes 20 min via A8.",
   distancesEn:
@@ -53,7 +53,7 @@ export const SAINT_LAURENT_DU_VAR_COPY: VilleCopy = {
         whyHere: [
           "Retail et e-commerce à fort volume : enseignes et commerces de l'écosystème CAP3000 (près de 300 boutiques, une cinquantaine de restaurants, ~10 millions de visiteurs/an) — un terrain idéal pour des sites omnicanaux, click & collect, catalogues et tunnels d'achat augmentés par l'IA.",
           "Nautisme et port de plaisance : avec plus de 1 000 anneaux et un programme de 34 M€ de travaux (nouvelle concession 20 ans dès 2026), les commerces du port, capitaineries, loueurs et services plaisanciers ont besoin de réservation en ligne, gestion d'anneaux et relation client digitalisée.",
-          "Trafic touristique multilingue : à 5 min de l'aéroport Nice-Côte d'Azur (2e aéroport français hors Paris), hôtels, restauration et agences premium exigent des chatbots et parcours FR/EN/IT/DE ancrés sur leurs propres contenus — pas un widget générique.",
+          "Trafic touristique multilingue : hôtels, restauration et agences premium exigent des chatbots et parcours FR/EN/IT/DE ancrés sur leurs propres contenus — pas un widget générique.",
           "Tissu B2B du parc P.A. Saint-Laurent (44 ha, ~794 entreprises : ADREXO, BARBERO TRANSPORTS, FRANCE BETON PROJECT, animé par le club APAL) et de l'Éco-Vallée voisine (Virbac, Arkopharma, Schneider Electric, Malongo) : portails clients, devis automatisés et SaaS métier pour la logistique, le transport, le BTP et le négoce.",
         ],
         methodology: [
@@ -124,7 +124,7 @@ export const SAINT_LAURENT_DU_VAR_COPY: VilleCopy = {
           },
           {
             q: "Gérez-vous le multilingue pour la clientèle touristique de l'aéroport ?",
-            a: "Oui. À 5 min de l'aéroport Nice-Côte d'Azur (2e aéroport français hors Paris), votre clientèle est internationale. Nous livrons des chatbots et parcours FR/EN/IT/DE ancrés sur vos propres contenus (cartes, chambres, prestations), pas un module générique — adaptés à la saisonnalité méditerranéenne.",
+            a: "Oui. Votre clientèle touristique est internationale. Nous livrons des chatbots et parcours FR/EN/IT/DE ancrés sur vos propres contenus (cartes, chambres, prestations), pas un module générique — adaptés à la saisonnalité méditerranéenne.",
           },
           {
             q: "Avec quelles technologies travaillez-vous et où sont hébergées les données ?",
@@ -139,7 +139,7 @@ export const SAINT_LAURENT_DU_VAR_COPY: VilleCopy = {
         whyHere: [
           "High-volume retail and e-commerce: brands and shops of the CAP3000 ecosystem (nearly 300 stores, around 50 restaurants, ~10 million visitors a year) — an ideal ground for omnichannel sites, click & collect, catalogues and AI-augmented checkout funnels.",
           "Marina and nautical sector: with over 1,000 berths and a 34 M€ works programme (new 20-year concession from 2026), the port's shops, harbour offices, charter firms and boater services need online booking, berth management and digitised customer relations.",
-          "Multilingual tourist flow: 5 minutes from Nice-Côte d'Azur airport (France's second busiest outside Paris), hotels, restaurants and premium agencies require FR/EN/IT/DE chatbots and journeys grounded in their own content — not a generic widget.",
+          "Multilingual tourist flow: with an international visitor base, hotels, restaurants and premium agencies require FR/EN/IT/DE chatbots and journeys grounded in their own content — not a generic widget.",
           "B2B fabric of the P.A. Saint-Laurent park (44 ha, ~794 firms: ADREXO, BARBERO TRANSPORTS, FRANCE BETON PROJECT, animated by the APAL club) and the neighbouring Éco-Vallée (Virbac, Arkopharma, Schneider Electric, Malongo): client portals, automated quotes and business SaaS for logistics, transport, construction and wholesale.",
         ],
         methodology: [
@@ -210,7 +210,7 @@ export const SAINT_LAURENT_DU_VAR_COPY: VilleCopy = {
           },
           {
             q: "Do you handle multilingual for the airport tourist clientele?",
-            a: "Yes. 5 minutes from Nice-Côte d'Azur airport (France's second busiest outside Paris), your clientele is international. We deliver FR/EN/IT/DE chatbots and journeys grounded in your own content (menus, rooms, services), not a generic module — adapted to Mediterranean seasonality.",
+            a: "Yes. Your clientele is international. Axion-IA works anywhere in France, on site or remotely, including in Saint-Laurent-du-Var. We deliver FR/EN/IT/DE chatbots and journeys grounded in your own content (menus, rooms, services), not a generic module — adapted to Mediterranean seasonality.",
           },
           {
             q: "Which technologies do you work with and where is the data hosted?",

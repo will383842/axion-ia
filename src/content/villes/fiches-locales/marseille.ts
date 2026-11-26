@@ -204,7 +204,7 @@ export const FICHE_MARSEILLE: FicheLocale = {
       "Marseille compte 26 897 établissements employeurs du secteur privé, pour 269 307 salariés (Urssaf, 31 décembre 2025). Le commerce arrive en tête avec 5 463 établissements, devant les activités scientifiques, techniques et services administratifs (5 063). L’enseignement, la santé et l’action sociale, dans leur part privée, en réunissent 3 100, et l’hébergement-restauration 2 969. L’information et la communication comptent 886 établissements et 9 094 salariés.",
     ecosysteme:
       "Trois repères institutionnels structurent l’innovation marseillaise. Aix-Marseille Université, qui se présente comme une université pluridisciplinaire répartie sur plusieurs campus. Le Pôle Mer Méditerranée, qui accompagne les acteurs du maritime dans des projets d’économie bleue. Aktantis, ex-pôle SCS, qui fédère micro-électronique, cybersécurité, objets connectés, IA et photonique. Nous ne citons aucune entreprise privée : ces institutions servent seulement à situer le territoire où une journée d’audit et de formation à l’IA peut s’organiser.",
-    zone: "La ville appartient à la Métropole d’Aix-Marseille-Provence (92 communes, 1 922 626 habitants). Nous venons dans vos locaux, dans la ville ou dans l’une de ces communes, sans bureau à proximité. L’aéroport Marseille Provence dessert la métropole ; les modalités de déplacement figurent sur la page dédiée. Parmi les communes de l’intercommunalité : Aix-en-Provence, Allauch, Alleins, Aubagne, Auriol. Le matin : audit (2 à 4 h selon la structuration de l’entreprise) ; l’après-midi : formation de 4 h, jusqu’à 15 personnes.",
+    zone: "La ville appartient à la Métropole d’Aix-Marseille-Provence (92 communes, 1 922 626 habitants). Nous intervenons dans vos locaux, dans la ville ou dans l’une de ces communes, sans bureau à proximité. Parmi les communes de l’intercommunalité : Aix-en-Provence, Allauch, Alleins, Aubagne, Auriol. Le matin : audit (2 à 4 h selon l’entreprise) ; l’après-midi : formation de 4 h, jusqu’à 15 personnes.",
   },
   faqLocale: [
     {
@@ -217,7 +217,7 @@ export const FICHE_MARSEILLE: FicheLocale = {
     },
     {
       q: "Quels acteurs institutionnels de l’innovation existent autour de Marseille ?",
-      a: "On peut citer Aix-Marseille Université, le Pôle Mer Méditerranée pour le maritime et Aktantis pour le numérique deeptech. Ils ne sont pas nos partenaires : ce sont des repères institutionnels pour situer le territoire. Pour un déplacement, l’aéroport Marseille Provence est celui de la métropole. Les liens vers chaque site officiel figurent en bas de page, avec la date de consultation.",
+      a: "On peut citer Aix-Marseille Université, le Pôle Mer Méditerranée pour le maritime et Aktantis pour le numérique deeptech. Ils ne sont pas nos partenaires : ce sont des repères institutionnels pour situer le territoire. Les liens vers chaque site officiel figurent en bas de page, avec la date de consultation.",
     },
   ],
 };

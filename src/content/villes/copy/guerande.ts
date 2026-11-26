@@ -49,7 +49,7 @@ export const GUERANDE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Guérande ?",
-      a: "Oui, Axion-IA intervient à Guérande et sur toute la presqu'île guérandaise (La Baule, Le Croisic, Le Pouliguen, Batz-sur-Mer). Nos consultants se déplacent depuis Nantes (1h15) ou Saint-Nazaire (20 min).",
+      a: "Oui, Axion-IA intervient à Guérande et sur toute la presqu'île guérandaise (La Baule, Le Croisic, Le Pouliguen, Batz-sur-Mer). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Combien coûte un audit IA à Guérande  ?",

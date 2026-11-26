@@ -421,8 +421,8 @@ export const ROUBAIX_COPY: VilleCopy = {
 
   faqGeolocalisee: [
     {
-      q: "Axion-IA se déplace-t-il physiquement à Roubaix pour les audits et interventions ?",
-      a: "Oui. Williams et l'équipe Axion-IA se déplacent sur site à Roubaix pour les audits, interventions collectives et implémentations. Le format présentiel est privilégié pour les sessions de travail sur vos outils et données réels. Les échanges de cadrage peuvent se tenir en visioconférence selon votre préférence.",
+      q: "Intervenez-vous à Roubaix pour les audits et interventions ?",
+      a: "Oui. Williams et l'équipe Axion-IA interviennent sur site à Roubaix pour les audits, interventions collectives et implémentations. Le format présentiel est privilégié pour les sessions de travail sur vos outils et données réels. Les échanges de cadrage peuvent se tenir en visioconférence selon votre préférence.",
     },
     {
       q: "Quels sont les tarifs pour un audit IA d'une PME roubaisienne ?",

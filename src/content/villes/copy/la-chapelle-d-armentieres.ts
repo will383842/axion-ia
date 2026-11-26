@@ -49,7 +49,7 @@ export const LA_CHAPELLE_D_ARMENTIERES_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à La Chapelle-d'Armentières et agglomération de Lille ouest ?",
-      a: "Oui, Axion-IA intervient à La Chapelle-d'Armentières et tout le secteur Lille ouest (Armentières à 5 min, Lille à 20 min, frontière belge à 5 min).",
+      a: "Oui, Axion IA intervient partout en France, sur site ou à distance, y compris à La Chapelle-d'Armentières et dans tout le secteur Lille ouest.",
     },
     {
       q: "Travaillez-vous avec les TPE et artisans de La Chapelle-d'Armentières ?",
@@ -64,8 +64,8 @@ export const LA_CHAPELLE_D_ARMENTIERES_COPY: VilleCopy = {
       a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1, implémentation outils IA métier.",
     },
     {
-      q: "Comment se déroule une mission depuis Paris ?",
-      a: "Paris-Nord (1h05 via TGV Lille-Europe puis 20 min route). Frontière belge à 5 min.",
+      q: "Comment se déroule une mission Axion-IA à La Chapelle-d'Armentières ?",
+      a: "Nous intervenons partout en France, sur place dans vos locaux ou à distance en visio. Après le cadrage de votre besoin, nous planifions l'intervention et livrons un résultat actionnable.",
     },
   ],
 };

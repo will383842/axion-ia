@@ -51,7 +51,7 @@ export const COMBS_LA_VILLE_COPY: VilleCopy = {
   services: {
     sitesWeb: {
       fr: {
-        hero: "Axion-IA conçoit et augmente à Combs-la-Ville des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour cette commune de 23 350 habitants en Seine-et-Marne (77380), intégrée à l'agglomération Grand Paris Sud Seine Essonne Sénart, où le tissu mêle commerces du centre-ville, artisans BTP du plateau de Brie, PME logistiques le long de la Francilienne (RN 104, sorties 24-25) et exploitations céréalières occupant près de la moitié du foncier communal. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel près de la gare RER D Combs-la-Ville – Quincy, itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à Combs-la-Ville des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour cette commune de 23 350 habitants en Seine-et-Marne (77380), intégrée à l'agglomération Grand Paris Sud Seine Essonne Sénart, où le tissu mêle commerces du centre-ville, artisans BTP du plateau de Brie, PME logistiques le long de la Francilienne (RN 104, sorties 24-25) et exploitations céréalières occupant près de la moitié du foncier communal. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off sur site à Combs-la-Ville, itérations à distance.",
         whyHere: [
           "Carrefour logistique du sud francilien : avec la Francilienne (RN 104, sorties 24-25) et la proximité immédiate de Lieusaint et Moissy-Cramayel, les PME de transport et d'entreposage gagnent à des portails de suivi de tournées, à une recherche sémantique sur leurs bordereaux et à des agents qui automatisent devis, étiquettes et relances clients depuis l'ERP.",
           "Pôle commercial du Carré Sénart à deux pas et marché du centre-ville : pour le commerce de détail et la restauration combs-la-villais, on construit des boutiques e-commerce multi-CMS (WooCommerce, Shopify, PrestaShop, Magento) avec UX mobile-first et chatbots ancrés sur le catalogue, pour capter une clientèle de bassin de vie élargi entre Sénart et la vallée de l'Yerres.",
@@ -137,7 +137,7 @@ export const COMBS_LA_VILLE_COPY: VilleCopy = {
           "Devis ferme en forfait fixe, remis à partir de 24-48 h selon la complexité : pas de régie ni de dérive horaire cachée. Mise en ligne sans downtime quand on augmente un site ou une boutique déjà en activité. Web Vitals (LCP, INP, CLS visé nul) et accessibilité contrôlés à la livraison. Code source, bases de données et modèles livrés dans votre infrastructure, hébergement UE possible, conformes RGPD et AI Act : propriété totale, aucun verrou technique, aucun abonnement imposé. Projet transférable à tout prestataire local de Seine-et-Marne ou repris en interne par vos équipes, formation incluse.",
       },
       en: {
-        hero: "Axion-IA conçoit et augmente à Combs-la-Ville des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour cette commune de 23 350 habitants en Seine-et-Marne (77380), intégrée à l'agglomération Grand Paris Sud Seine Essonne Sénart, où le tissu mêle commerces du centre-ville, artisans BTP du plateau de Brie, PME logistiques le long de la Francilienne (RN 104, sorties 24-25) et exploitations céréalières occupant près de la moitié du foncier communal. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel près de la gare RER D Combs-la-Ville – Quincy, itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à Combs-la-Ville des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour cette commune de 23 350 habitants en Seine-et-Marne (77380), intégrée à l'agglomération Grand Paris Sud Seine Essonne Sénart, où le tissu mêle commerces du centre-ville, artisans BTP du plateau de Brie, PME logistiques le long de la Francilienne (RN 104, sorties 24-25) et exploitations céréalières occupant près de la moitié du foncier communal. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off sur site à Combs-la-Ville, itérations à distance.",
         whyHere: [
           "Carrefour logistique du sud francilien : avec la Francilienne (RN 104, sorties 24-25) et la proximité immédiate de Lieusaint et Moissy-Cramayel, les PME de transport et d'entreposage gagnent à des portails de suivi de tournées, à une recherche sémantique sur leurs bordereaux et à des agents qui automatisent devis, étiquettes et relances clients depuis l'ERP.",
           "Pôle commercial du Carré Sénart à deux pas et marché du centre-ville : pour le commerce de détail et la restauration combs-la-villais, on construit des boutiques e-commerce multi-CMS (WooCommerce, Shopify, PrestaShop, Magento) avec UX mobile-first et chatbots ancrés sur le catalogue, pour capter une clientèle de bassin de vie élargi entre Sénart et la vallée de l'Yerres.",
@@ -232,7 +232,7 @@ export const COMBS_LA_VILLE_COPY: VilleCopy = {
     },
     {
       q: "Quels délais pour intervenir à Combs-la-Ville ?",
-      a: "Nous intervenons sous 5 jours ouvrés après validation. La gare RER D Combs-la-Ville – Quincy facilite le déplacement sur site.",
+      a: "Nous intervenons sous 5 jours ouvrés après validation.",
     },
     {
       q: "Axion-IA couvre-t-il les communes proches comme Lieusaint, Brie-Comte-Robert ou Moissy-Cramayel ?",
@@ -247,8 +247,8 @@ export const COMBS_LA_VILLE_COPY: VilleCopy = {
       a: "TPE et PME locales prioritairement : artisans BTP, commerces de détail, restaurateurs, PME logistiques proches de la RN 104, exploitations agricoles du plateau de Brie. Les ETI restent l'exception, notre cœur de cible étant la TPE et la PME.",
     },
     {
-      q: "Axion-IA se déplace-t-il vraiment sur site à Combs-la-Ville ?",
-      a: "Oui, nous nous déplaçons physiquement à Combs-la-Ville et dans toute la Seine-et-Marne pour audit, interventions et sessions 1-to-1. Le travail à distance reste possible pour la phase d'implémentation.",
+      q: "Comment se déroule une mission à Combs-la-Ville ?",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Combs-la-Ville, comme partout en France, ou à distance.",
     },
   ],
 };

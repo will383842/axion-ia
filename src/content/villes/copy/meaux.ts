@@ -126,7 +126,7 @@ export const MEAUX_COPY: VilleCopy = {
           },
           {
             q: "Intervenez-vous pour les entreprises du Parc d'Activités du Pays de Meaux et de la ZAE La Hayette ?",
-            a: "Oui, nous nous déplaçons sur le PAPM (intersection RN3/A140 — voisinage de Gaches Chimie, C&A, Prologis, Les Saisons de Meaux) et sur la ZAE La Hayette à Mareuil-lès-Meaux. Nous y déployons portails B2B, suivi de commandes, devis automatisés et intégrations ERP/WMS pilotées par l'IA.",
+            a: "Oui, Axion IA intervient partout en France, sur site ou à distance, notamment sur le PAPM (voisinage de Gaches Chimie, C&A, Prologis, Les Saisons de Meaux) et sur la ZAE La Hayette à Mareuil-lès-Meaux. Nous y déployons portails B2B, suivi de commandes, devis automatisés et intégrations ERP/WMS pilotées par l'IA.",
           },
           {
             q: "Sous quel délai obtient-on un devis pour un site ou un SaaS à Meaux ?",
@@ -212,7 +212,7 @@ export const MEAUX_COPY: VilleCopy = {
           },
           {
             q: "Do you work with companies in the Parc d'Activités du Pays de Meaux and the La Hayette business zone?",
-            a: "Yes, we travel to the PAPM (RN3/A140 junction — neighbourhood of Gaches Chimie, C&A, Prologis, Les Saisons de Meaux) and to the La Hayette business zone in Mareuil-lès-Meaux. There we deploy B2B portals, order tracking, automated quotes and AI-driven ERP/WMS integrations.",
+            a: "Yes. Axion-IA works anywhere in France, on site or remotely, including at the PAPM (neighbourhood of Gaches Chimie, C&A, Prologis, Les Saisons de Meaux) and in the La Hayette business zone in Mareuil-lès-Meaux. There we deploy B2B portals, order tracking, automated quotes and AI-driven ERP/WMS integrations.",
           },
           {
             q: "How fast do we get a quote for a website or SaaS in Meaux?",
@@ -239,8 +239,8 @@ export const MEAUX_COPY: VilleCopy = {
       a: `Pour les TPE, PME et ETI de Meaux, l'Audit sur place est planifié sous 5 jours ouvrés. ${DELAI_ACCES_PHRASE} La date de la formation est convenue avec vous.`,
     },
     {
-      q: "Couvrez-vous Trilport, Villenoy et Nanteuil-lès-Meaux depuis Meaux ?",
-      a: "Oui, nous nous déplaçons dans les communes limitrophes de Meaux : Chambry, Chauconin-Neufmontiers, Crégy-lès-Meaux, Fublaines, Mareuil-lès-Meaux, Nanteuil-lès-Meaux, Poincy, Trilport et Villenoy.",
+      q: "Intervenez-vous à Trilport, Villenoy et Nanteuil-lès-Meaux ?",
+      a: "Oui, nous intervenons dans vos locaux dans les communes limitrophes de Meaux : Chambry, Chauconin-Neufmontiers, Crégy-lès-Meaux, Fublaines, Mareuil-lès-Meaux, Nanteuil-lès-Meaux, Poincy, Trilport et Villenoy.",
     },
     {
       q: "Comment Axion-IA garantit-il la conformité RGPD à Meaux ?",

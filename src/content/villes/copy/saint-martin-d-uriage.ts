@@ -63,7 +63,7 @@ export const SAINT_MARTIN_D_URIAGE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une intervention ?",
-      a: "Sur place ou à distance, selon votre besoin. Pour les multi-jours, hébergement local possible (hôtels Uriage).",
+      a: "Sur place ou à distance, selon votre besoin.",
     },
   ],
 };

@@ -64,8 +64,8 @@ export const GEMENOS_COPY: VilleCopy = {
       a: "Oui, nous accompagnons avocats, médecins, consultants et experts-comptables : rédaction assistée, automatisation gestion cabinet, classification dossiers, agents IA prise de RDV clients.",
     },
     {
-      q: "Comment se déplace Axion-IA à Gémenos ?",
-      a: "Gémenos est à 30 min de Marseille par A52/A50 et 10 min d'Aubagne. Nos consultants se déplacent dans vos locaux.",
+      q: "Comment se déroule une mission à Gémenos ?",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Gémenos, comme partout en France, ou à distance.",
     },
   ],
 };

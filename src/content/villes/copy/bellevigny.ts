@@ -49,7 +49,7 @@ export const BELLEVIGNY_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Bellevigny et dans l'agglo yonnaise ?",
-      a: "Oui, Axion-IA intervient à Bellevigny et dans toute l'agglomération de La Roche-sur-Yon. Centre-ville à 10 min. Déplacements sur site couvrent l'agglo et le bocage vendéen.",
+      a: "Oui, Axion-IA intervient à Bellevigny et dans toute l'agglomération de La Roche-sur-Yon. Déplacements sur site couvrent l'agglo et le bocage vendéen.",
     },
     {
       q: "Quels services IA pour les TPE et PME de Bellevigny ?",

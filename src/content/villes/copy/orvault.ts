@@ -226,7 +226,7 @@ export const ORVAULT_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Orvault et Nantes Métropole ?",
-      a: "Oui, Axion-IA intervient à Orvault et toute Nantes Métropole (Nantes, Saint-Herblain, Sautron, Carquefou, Couëron). Couverture nord nantaise complète et accès TGV Paris (2h) ou voiture (4h).",
+      a: "Oui, Axion-IA intervient à Orvault et toute Nantes Métropole (Nantes, Saint-Herblain, Sautron, Carquefou, Couëron).",
     },
     {
       q: "Accompagnez-vous les TPE et artisans d'Orvault ?",
@@ -241,8 +241,8 @@ export const ORVAULT_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les cabinets professionnels à Orvault (santé, conseil, expertise) sur leurs cas IA respectant la confidentialité : agents conversationnels patients/clients, automatisation gestion documentaire, classification dossiers. RGPD strict, hébergement UE.",
     },
     {
-      q: "Comment se passe une intervention depuis Paris ?",
-      a: "Nos consultants viennent de Paris en TGV (2h Nantes) pour les missions sur site à Orvault. Tarifs publics et transparents, pas de devis opaque.",
+      q: "Comment se déroule une mission à Orvault ?",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Orvault, comme partout en France, ou à distance.",
     },
   ],
 };

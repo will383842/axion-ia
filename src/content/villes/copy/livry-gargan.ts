@@ -6,9 +6,9 @@ import type { VilleCopy } from "./types";
 
 export const LIVRY_GARGAN_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA accompagne les TPE et PME de Livry-Gargan, commune de 47 228 habitants en Seine-Saint-Denis (93) située à environ 15 km au nord-est de Paris. Cabinet IA francophone basé en France, nous intervenons sur site auprès des commerces de la RN3, artisans du BTP, professionnels de santé libéraux et structures de services du nord-est francilien. Notre approche développe du code custom — pas de no-code générique — pour les Livryens patrons de très petites entreprises, entre canal de l'Ourcq et hauteurs de l'Aulnoye.",
+    "Axion-IA accompagne les TPE et PME de Livry-Gargan, commune de 47 228 habitants en Seine-Saint-Denis (93) située à environ 15 km au nord-est de Paris. Cabinet IA francophone basé en France, nous intervenons sur site auprès des commerces de proximité, artisans du BTP, professionnels de santé libéraux et structures de services du nord-est francilien. Notre approche développe du code custom — pas de no-code générique — pour les Livryens patrons de très petites entreprises, entre canal de l'Ourcq et hauteurs de l'Aulnoye.",
   pitchEn:
-    "Axion-IA accompagne les TPE et PME de Livry-Gargan, commune de 47 228 habitants en Seine-Saint-Denis (93) située à environ 15 km au nord-est de Paris. Cabinet IA francophone basé en France, nous intervenons sur site auprès des commerces de la RN3, artisans du BTP, professionnels de santé libéraux et structures de services du nord-est francilien. Notre approche développe du code custom — pas de no-code générique — pour les Livryens patrons de très petites entreprises, entre canal de l'Ourcq et hauteurs de l'Aulnoye.",
+    "Axion-IA accompagne les TPE et PME de Livry-Gargan, commune de 47 228 habitants en Seine-Saint-Denis (93) située à environ 15 km au nord-est de Paris. Cabinet IA francophone basé en France, nous intervenons sur site auprès des commerces de proximité, artisans du BTP, professionnels de santé libéraux et structures de services du nord-est francilien. Notre approche développe du code custom — pas de no-code générique — pour les Livryens patrons de très petites entreprises, entre canal de l'Ourcq et hauteurs de l'Aulnoye.",
   directAnswerFr:
     "Axion-IA se déplace à Livry-Gargan pour accompagner les TPE et PME du nord-est francilien dans l'adoption de l'intelligence artificielle. Nous priorisons les TPE et PME locales — commerces, artisans du BTP, cabinets de santé libéraux, structures de services le long de la RN3 — avant les rares ETI. Audit sur place à partir de {{price:audit-flash|flat}}, intervention sur site à partir de {{price:intervention-4h|flat}}, sessions un-à-un dirigeant sur devis. Tarifs publics consultables.",
   directAnswerEn:
@@ -66,7 +66,7 @@ export const LIVRY_GARGAN_COPY: VilleCopy = {
           {
             step: "Conception UX/UI",
             detail:
-              "Wireframes, design system et maquettes Figma à votre marque, pensés mobile-first pour une clientèle qui consulte depuis le tram T4 ou en déplacement le long de la RN3 ; prototype testé avant tout développement.",
+              "Wireframes, design system et maquettes Figma à votre marque, pensés mobile-first pour une clientèle qui consulte depuis son smartphone ; prototype testé avant tout développement.",
           },
           {
             step: "Développement par sprints",
@@ -227,11 +227,11 @@ export const LIVRY_GARGAN_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Quels sont les tarifs Axion-IA pour une mission à Livry-Gargan ?",
-      a: "Audit sur place à partir de {{price:audit-flash|flat}}, intervention sur site à partir de {{price:intervention-4h|flat}}, session un-à-un dirigeant sur devis. Tarifs publics affichés, sans surcoût géographique pour la Seine-Saint-Denis.",
+      a: "Audit sur place à partir de {{price:audit-flash|flat}}, intervention sur site à partir de {{price:intervention-4h|flat}}, session un-à-un dirigeant sur devis. Tarifs publics affichés.",
     },
     {
       q: "Sous quel délai Axion-IA peut intervenir à Livry-Gargan ?",
-      a: "Nous nous engageons à intervenir sur site à Livry-Gargan dans un délai de 5 jours ouvrés après validation. L'accès se fait via la RN3, l'A3 ou par les gares RER B / T4 des communes voisines.",
+      a: "Nous nous engageons à intervenir sur site à Livry-Gargan dans un délai de 5 jours ouvrés après validation.",
     },
     {
       q: "Quelles communes proches de Livry-Gargan couvrez-vous ?",

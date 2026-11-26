@@ -74,7 +74,7 @@ export const BESANCON_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Combien coûte un audit IA opérationnel à Besançon ?",
-      a: "Le tarif dépend du niveau retenu — Audit sur place, Ciblé, Stratégique PME ou Stratégique ETI. Tarifs publics affichés sur la page Audit, choix calibré selon votre taille (TPE, PME, ETI, grande entreprise) et votre périmètre. Aucun supplément géographique : le tarif est identique à Besançon et partout en France.",
+      a: "Le tarif dépend du niveau retenu — Audit sur place, Ciblé, Stratégique PME ou Stratégique ETI. Tarifs publics affichés sur la page Audit, choix calibré selon votre taille (TPE, PME, ETI, grande entreprise) et votre périmètre.",
     },
     {
       q: "Avez-vous des références dans les microtechniques ou le biomédical bisontins ?",
@@ -86,7 +86,7 @@ export const BESANCON_COPY: VilleCopy = {
     },
     {
       q: "Intervenez-vous aussi dans les communes du Grand Besançon (École-Valentin, Chalezeule, Saint-Vit) ?",
-      a: "Oui. Le bassin du Grand Besançon est notre territoire d'intervention complet : École-Valentin, Chalezeule, Pirey, Devecey, Saône, Saint-Vit et toutes les communes proches. Aucun supplément de zone.",
+      a: "Oui. Le bassin du Grand Besançon est notre territoire d'intervention complet : École-Valentin, Chalezeule, Pirey, Devecey, Saône, Saint-Vit et toutes les communes proches.",
     },
     {
       q: "En combien de temps pouvez-vous démarrer une mission à Besançon ?",
@@ -185,7 +185,7 @@ export const BESANCON_COPY: VilleCopy = {
           },
           {
             q: "Intervenez-vous aussi dans les communes du Grand Besançon ?",
-            a: "Oui. Le Grand Besançon est notre territoire complet. Nos consultants se déplacent dans toutes les communes — de Chalezeule à École-Valentin, de Pirey à Saint-Vit, de Devecey à Saône. Aucun supplément de zone.",
+            a: "Oui. Le Grand Besançon est notre territoire complet. Nos consultants se déplacent dans toutes les communes — de Chalezeule à École-Valentin, de Pirey à Saint-Vit, de Devecey à Saône.",
           },
           {
             q: "Faut-il être déjà avancé sur l'IA pour solliciter un audit ?",
@@ -277,7 +277,7 @@ export const BESANCON_COPY: VilleCopy = {
           },
           {
             q: "Do you cover Grand Besançon communes?",
-            a: "Yes. Grand Besançon is our full territory. Our consultants travel to all communes — from Chalezeule to École-Valentin, Pirey to Saint-Vit, Devecey to Saône. No zone surcharge.",
+            a: "Yes. Grand Besançon is our full territory. We work in all communes of the area: Chalezeule, École-Valentin, Pirey, Saint-Vit, Devecey and Saône.",
           },
           {
             q: "Do I need AI maturity to engage you?",

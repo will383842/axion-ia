@@ -49,7 +49,7 @@ export const VILLERS_LES_NANCY_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Villers-lès-Nancy et agglo Nancy ?",
-      a: "Oui, Axion-IA intervient à Villers-lès-Nancy et toute la métropole du Grand Nancy (Nancy centre, Vandœuvre-lès-Nancy, Laxou, Maxéville, Saint-Max). Consultants via gare Nancy-Ville TGV Est.",
+      a: "Oui, Axion-IA intervient à Villers-lès-Nancy et toute la métropole du Grand Nancy (Nancy centre, Vandœuvre-lès-Nancy, Laxou, Maxéville, Saint-Max).",
     },
     {
       q: "Travaillez-vous avec les labos et chercheurs du campus Brabois ?",

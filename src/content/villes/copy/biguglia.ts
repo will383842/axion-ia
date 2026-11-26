@@ -49,7 +49,7 @@ export const BIGUGLIA_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Biguglia et dans l'agglomération bastiaise ?",
-      a: "Oui, Axion-IA intervient à Biguglia et dans toute l'agglomération bastiaise (Bastia à 15 min, Corte à 1h). Aéroport Bastia-Poretta à 15 min, port de Bastia à 15 min.",
+      a: "Oui. Nous intervenons sur place à Biguglia et dans toute l'agglomération bastiaise (Bastia, Corte), comme partout en France, ou à distance.",
     },
     {
       q: "Travaillez-vous avec les commerces et services de l'agglo Bastia ?",
@@ -65,7 +65,7 @@ export const BIGUGLIA_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Biguglia ?",
-      a: "Aéroport Bastia-Poretta (15 min), port de Bastia (15 min). Vols et ferries quotidiens depuis le continent.",
+      a: "Une mission à Biguglia démarre par un échange de cadrage, puis se déroule sur site ou à distance, avec des livrables remis et documentés.",
     },
   ],
 };

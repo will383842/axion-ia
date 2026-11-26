@@ -14,9 +14,9 @@ export const CASTELGINEST_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Castelginest (31). Nous accompagnons TPE artisans, PME de services, professions libérales et commerçants du nord de Toulouse. Audit sur place sur mesure.",
   seoHook: "artisanat & logistique transport",
   ecosystemFr:
-    "Castelginest est une commune résidentielle et économique du nord de Toulouse. Tissu TPE artisans, PME de services et logistique, commerces centre-bourg, professions libérales. Proximité de l'axe A62 et des zones d'emploi nord toulousaines.",
+    "Castelginest est une commune résidentielle et économique du nord de Toulouse. Tissu TPE artisans, PME de services et logistique, commerces centre-bourg, professions libérales, avec les zones d'emploi nord toulousaines.",
   ecosystemEn:
-    "Castelginest est une commune résidentielle et économique du nord de Toulouse. Tissu TPE artisans, PME de services et logistique, commerces centre-bourg, professions libérales. Proximité de l'axe A62 et des zones d'emploi nord toulousaines.",
+    "Castelginest est une commune résidentielle et économique du nord de Toulouse. Tissu TPE artisans, PME de services et logistique, commerces centre-bourg, professions libérales, avec les zones d'emploi nord toulousaines.",
   distancesFr:
     "Toulouse centre à 15 min (D4). Gare Matabiau à 20 min. Aéroport Toulouse-Blagnac à 25 min. Aucamville à 3 min. Launaguet à 5 min.",
   distancesEn:

@@ -49,7 +49,7 @@ export const SAVERNE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Saverne et dans le Pays de Saverne ?",
-      a: "Oui, Axion-IA intervient à Saverne et sur tout le Pays de Saverne (Phalsbourg, Marmoutier, Wasselonne, Hochfelden). Gare TGV Saverne sur la ligne Paris-Strasbourg, Paris en 2h, Strasbourg à 45 min via A4.",
+      a: "Oui, Axion-IA intervient à Saverne et sur tout le Pays de Saverne (Phalsbourg, Marmoutier, Wasselonne, Hochfelden).",
     },
     {
       q: "Combien coûte un audit IA à Saverne  ?",

@@ -231,6 +231,13 @@ const BANNED_PHRASES = [
   "nos bureaux",
   "à proximité",
   "proximité géographique",
+  // Règle Will : aucun frais ni prix de déplacement sur les pages (CGV seulement).
+  "déplacement inclus",
+  "déplacement compris",
+  "surcoût géographique",
+  "supplément géographique",
+  "au même tarif",
+  "hébergement local",
   // Anti-doctrine tarifs publics
   "contactez-nous pour plus de détails",
   "contactez-nous pour un devis",
@@ -557,7 +564,7 @@ ${CONSIGNE_PRIX}
 - distancesFr : 15-30 mots OBLIGATOIRE, 1 phrase factuelle avec NOMS précis tirés du KB (gares, aéroports, métro).
 - topSectorsNaf : 4-6 secteurs en libellés COURTS (max 5 mots) issus du KB.topSectorsNaf simplifiés.
 - servicesContext : 4 sections (audit/interventions/implementation/unAUn) — 22-40 mots OBLIGATOIRE chacune. Forme recommandée : "[Verbe d'action] à ${ville.nameFr} [contexte précis avec ≥ 1 nom KB] — [bénéfice concret]." Bannir : "transformation digitale efficace", "gain de compétitivité", "développement personnalisé".
-- faqGeolocalisee : 4-6 Q/R B2B local pertinentes (tarifs, déplacement intra-ville, délais, RGPD, formats)
+- faqGeolocalisee : 4-6 Q/R B2B local pertinentes (délais, méthode, RGPD, formats ; jamais de tarif ni de montant lié au trajet)
   - Q : 12-22 mots, question concrète d'un prospect ${ville.nameFr}
   - A : 35-65 mots OBLIGATOIRE, FACTUELLE. Pour les tarifs : « ${FORMULE_SUR_DEVIS} » (seule la Journée IA peut être chiffrée, via le jeton ${JETON_PRIX_JOURNEE_IA}). JAMAIS de montant en chiffres, JAMAIS "contactez-nous pour devis".
 ## INTERDICTIONS DURES — pénalité -10 par occurrence

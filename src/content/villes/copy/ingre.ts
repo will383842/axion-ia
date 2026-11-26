@@ -49,7 +49,7 @@ export const INGRE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il a Ingre et dans l'agglomeration orleanaise ?",
-      a: "Oui, Axion-IA intervient a Ingre et dans toute Orleans Metropole (Orleans, Saran, Fleury-les-Aubrais, Saint-Jean-de-la-Ruelle). Orleans centre a 10 min, Paris a 1h20 A10.",
+      a: "Oui, Axion-IA intervient a Ingre et dans toute Orleans Metropole (Orleans, Saran, Fleury-les-Aubrais, Saint-Jean-de-la-Ruelle). Nous intervenons sur place ou à distance.",
     },
     {
       q: "Quel est le tarif d'un audit IA a Ingre ?",

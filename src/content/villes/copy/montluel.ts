@@ -9,18 +9,18 @@ export const MONTLUEL_COPY: VilleCopy = {
   pitchEn:
     "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui accompagne les TPE et PME de Montluel, commune de la Côtière dans l'Ain, aux portes de l'est lyonnais et de l'aéroport Lyon-Saint-Exupéry. Ce territoire mêle PME tertiaires et logistiques, exploitations agricoles de la plaine de l'Ain, artisans du bâtiment et commerces. Nous y ancrons l'IA dans le concret : suivi des flux, devis, relances, traçabilité et gestion administrative.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Montluel (Ain), sur la Côtière, près de l'aéroport Lyon-Saint-Exupéry. Nous accompagnons en priorité les TPE et PME : PME tertiaires et logistiques de la Côtière, agriculteurs de la plaine de l'Ain, artisans du bâtiment, commerçants et services aux entreprises. Audit pragmatique, formation des équipes sur site et implémentation d'outils concrets, sans jargon. Les ETI restent une cible marginale de notre activité.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Montluel (Ain), sur la Côtière. Nous accompagnons en priorité les TPE et PME : PME tertiaires et logistiques de la Côtière, agriculteurs de la plaine de l'Ain, artisans du bâtiment, commerçants et services aux entreprises. Audit pragmatique, formation des équipes sur site et implémentation d'outils concrets, sans jargon. Les ETI restent une cible marginale de notre activité.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Montluel (Ain), sur la Côtière, près de l'aéroport Lyon-Saint-Exupéry. Nous accompagnons en priorité les TPE et PME : PME tertiaires et logistiques de la Côtière, agriculteurs de la plaine de l'Ain, artisans du bâtiment, commerçants et services aux entreprises. Audit pragmatique, formation des équipes sur site et implémentation d'outils concrets, sans jargon. Les ETI restent une cible marginale de notre activité.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Montluel (Ain), sur la Côtière. Nous accompagnons en priorité les TPE et PME : PME tertiaires et logistiques de la Côtière, agriculteurs de la plaine de l'Ain, artisans du bâtiment, commerçants et services aux entreprises. Audit pragmatique, formation des équipes sur site et implémentation d'outils concrets, sans jargon. Les ETI restent une cible marginale de notre activité.",
   seoHook: "logistique Côtière & agriculture",
   ecosystemFr:
     "Montluel, sur la Côtière de l'Ain, profite de sa position stratégique entre Lyon et l'aéroport Lyon-Saint-Exupéry pour attirer activités logistiques et PME tertiaires, tandis que la plaine de l'Ain conserve une forte vocation agricole. Le tissu local associe entrepôts et transport, PME de services, exploitations agricoles, artisanat du bâtiment et commerce de proximité. Ces TPE et PME, dépendantes de flux tendus et de marges serrées, trouvent dans l'IA opérationnelle un levier direct de productivité et de traçabilité.",
   ecosystemEn:
     "Montluel, sur la Côtière de l'Ain, profite de sa position stratégique entre Lyon et l'aéroport Lyon-Saint-Exupéry pour attirer activités logistiques et PME tertiaires, tandis que la plaine de l'Ain conserve une forte vocation agricole. Le tissu local associe entrepôts et transport, PME de services, exploitations agricoles, artisanat du bâtiment et commerce de proximité. Ces TPE et PME, dépendantes de flux tendus et de marges serrées, trouvent dans l'IA opérationnelle un levier direct de productivité et de traçabilité.",
   distancesFr:
-    "Montluel est à 30 min du centre de Lyon et à 15 min de l'aéroport Lyon-Saint-Exupéry, sur l'axe A42. Miribel est à 15 min, Meximieux à 10 min, Bourg-en-Bresse à 45 min. Nos consultants se déplacent depuis Lyon sur toute la Côtière et la plaine de l'Ain : Miribel, Beynost, Meximieux et Pérouges.",
+    "Montluel est à 30 min du centre de Lyon et à 15 min de l'aéroport Lyon-Saint-Exupéry, sur l'axe A42. Miribel est à 15 min, Meximieux à 10 min, Bourg-en-Bresse à 45 min. Nous intervenons partout en France, sur place ou à distance.",
   distancesEn:
-    "Montluel est à 30 min du centre de Lyon et à 15 min de l'aéroport Lyon-Saint-Exupéry, sur l'axe A42. Miribel est à 15 min, Meximieux à 10 min, Bourg-en-Bresse à 45 min. Nos consultants se déplacent depuis Lyon sur toute la Côtière et la plaine de l'Ain : Miribel, Beynost, Meximieux et Pérouges.",
+    "Montluel est à 30 min du centre de Lyon et à 15 min de l'aéroport Lyon-Saint-Exupéry, sur l'axe A42. Miribel est à 15 min, Meximieux à 10 min, Bourg-en-Bresse à 45 min. Nous intervenons partout en France, sur place ou à distance.",
   topSectorsNaf: [
     "PME logistiques & transport",
     "Agriculture plaine de l'Ain",
@@ -53,7 +53,7 @@ export const MONTLUEL_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Montluel et sur la Côtière de l'Ain ?",
-      a: "Oui, Axion-IA accompagne les TPE et PME de Montluel et de toute la Côtière (Miribel à 15 min, Meximieux à 10 min, Beynost). Aéroport Saint-Exupéry à 15 min, consultants depuis Lyon (30 min).",
+      a: "Oui, Axion-IA accompagne les TPE et PME de Montluel et de toute la Côtière. Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les PME logistiques près de Saint-Exupéry ?",
@@ -68,8 +68,8 @@ export const MONTLUEL_COPY: VilleCopy = {
       a: "Audit sur place, intervention d'une journée de formation et coaching 1-to-1. Nous adaptons les formats au quotidien des TPE locales, sans jargon technique.",
     },
     {
-      q: "Comment se passe une mission depuis Lyon ?",
-      a: "Nos consultants se déplacent depuis Lyon (30 min).",
+      q: "Comment se déroule une mission Axion-IA à Montluel ?",
+      a: "Nous intervenons partout en France, sur place dans vos locaux ou à distance en visio. Après le cadrage de votre besoin, nous planifions l'intervention et livrons un résultat actionnable.",
     },
   ],
 };

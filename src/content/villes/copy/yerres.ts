@@ -128,7 +128,7 @@ export const YERRES_COPY: VilleCopy = {
           },
           {
             q: "Mon site sera-t-il rapide et bien référencé pour des recherches locales ?",
-            a: "Oui. On livre des sites contrôlés sur les Web Vitals et optimisés SEO/AEO, avec fiches établissement, données structurées et contenus locaux (centre-ville, Mont Griffon, parc Caillebotte) pour ressortir sur les recherches des Yerrois et des visiteurs venus par le RER D.",
+            a: "Oui. On livre des sites contrôlés sur les Web Vitals et optimisés SEO/AEO, avec fiches établissement, données structurées et contenus locaux (centre-ville, Mont Griffon, parc Caillebotte) pour ressortir sur les recherches des Yerrois et des visiteurs.",
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
@@ -214,7 +214,7 @@ export const YERRES_COPY: VilleCopy = {
           },
           {
             q: "Will my site be fast and well ranked for local searches?",
-            a: "Yes. We deliver sites checked on Web Vitals and optimised for SEO/AEO, with business listings, structured data and local content (town centre, Mont Griffon, Caillebotte park) so you show up for searches by Yerres residents and visitors arriving via the RER D.",
+            a: "Yes. We deliver sites checked on Web Vitals and optimised for SEO/AEO, with business listings, structured data and local content (town centre, Mont Griffon, Caillebotte park) so you show up for searches by Yerres residents and visitors. Axion-IA works anywhere in France, on site or remotely, including in Yerres.",
           },
           {
             q: "Is the quote firm and the price fixed?",
@@ -246,7 +246,7 @@ export const YERRES_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Yerres ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Yerres est desservie par le RER D, à 15 minutes d'Orly.",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Yerres, comme partout en France, ou à distance.",
     },
   ],
 };

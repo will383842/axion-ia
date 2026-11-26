@@ -65,7 +65,7 @@ export const SAINT_PIERRE_D_IRUBE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA sur site à Saint-Pierre-d'Irube ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Mission sur site dans vos locaux à Saint-Pierre-d'Irube, commune à 8 min de la gare de Bayonne et 15 min de l'aéroport Biarritz Pays Basque.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Mission sur site dans vos locaux à Saint-Pierre-d'Irube.",
     },
   ],
 };

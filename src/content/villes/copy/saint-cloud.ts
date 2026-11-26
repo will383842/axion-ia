@@ -11,9 +11,9 @@ export const SAINT_CLOUD_COPY: VilleCopy = {
   pitchEn:
     "Saint-Cloud (29 855 habitants, 92210), commune des Hauts-de-Seine intégrée à l'Établissement public territorial Paris Ouest La Défense (POLD) et à la Métropole du Grand Paris, est située à environ 10 km à l'ouest de Paris. Axion-IA, cabinet IA pour TPE et PME francophones, se déplace sur place pour accompagner les cabinets de conseil, professions libérales, agences et PME tertiaires installées notamment dans le complexe de bureaux Les Collines et la ZAC Bords de Seine (Dassault Aviation y occupe des surfaces significatives). Notre code est custom (pas de no-code), avec automatisation devis, relances, reporting et outils internes. Tarifs publics dès {{price:audit-flash|flat}}.",
   directAnswerFr:
-    "À Saint-Cloud (92210, Hauts-de-Seine, EPT Paris Ouest La Défense), Axion-IA accompagne les TPE et PME tertiaires : cabinets de conseil, professions libérales, agences de communication, PME de services, professionnels de santé installés autour des gares de Saint-Cloud et du Val d'Or. Nous déployons des automatisations sur mesure (code custom Node/Python/Postgres, pas de no-code SaaS) pour automatiser devis, relances, reporting et outils métier internes. Tarifs publics : Audit sur place dès {{price:audit-flash|flat}}, intervention sur site dès {{price:intervention-4h|flat}}, implémentation dès {{price:intervention-dirigeants|flat}}. Déplacement sous 5 jours ouvrés.",
+    "À Saint-Cloud (92210, Hauts-de-Seine, EPT Paris Ouest La Défense), Axion-IA accompagne les TPE et PME tertiaires : cabinets de conseil, professions libérales, agences de communication, PME de services, professionnels de santé installés autour des gares de Saint-Cloud et du Val d'Or. Nous déployons des automatisations sur mesure (code custom Node/Python/Postgres, pas de no-code SaaS) pour automatiser devis, relances, reporting et outils métier internes. Tarifs publics : Audit sur place dès {{price:audit-flash|flat}}, intervention sur site dès {{price:intervention-4h|flat}}, implémentation dès {{price:intervention-dirigeants|flat}}.",
   directAnswerEn:
-    "À Saint-Cloud (92210, Hauts-de-Seine, EPT Paris Ouest La Défense), Axion-IA accompagne les TPE et PME tertiaires : cabinets de conseil, professions libérales, agences de communication, PME de services, professionnels de santé installés autour des gares de Saint-Cloud et du Val d'Or. Nous déployons des automatisations sur mesure (code custom Node/Python/Postgres, pas de no-code SaaS) pour automatiser devis, relances, reporting et outils métier internes. Tarifs publics : Audit sur place dès {{price:audit-flash|flat}}, intervention sur site dès {{price:intervention-4h|flat}}, implémentation dès {{price:intervention-dirigeants|flat}}. Déplacement sous 5 jours ouvrés.",
+    "À Saint-Cloud (92210, Hauts-de-Seine, EPT Paris Ouest La Défense), Axion-IA accompagne les TPE et PME tertiaires : cabinets de conseil, professions libérales, agences de communication, PME de services, professionnels de santé installés autour des gares de Saint-Cloud et du Val d'Or. Nous déployons des automatisations sur mesure (code custom Node/Python/Postgres, pas de no-code SaaS) pour automatiser devis, relances, reporting et outils métier internes. Tarifs publics : Audit sur place dès {{price:audit-flash|flat}}, intervention sur site dès {{price:intervention-4h|flat}}, implémentation dès {{price:intervention-dirigeants|flat}}.",
   seoHook: "TPE/PME tertiaires Hauts-de-Seine ouest",
   ecosystemFr:
     "Saint-Cloud appartient à l'EPT Paris Ouest La Défense et à la Métropole du Grand Paris, dans un environnement résidentiel et tertiaire haut de gamme aux portes de La Défense. Le tissu économique mêle un complexe de bureaux significatif (Les Collines), la ZAC Bords de Seine (Dassault Aviation y occupe des surfaces commerciales importantes), des professions libérales, des agences de communication, des cabinets de conseil et des commerces de centre-ville. Communes limitrophes : Suresnes, Rueil-Malmaison, Garches, Marnes-la-Coquette, Sèvres, Ville-d'Avray et Boulogne-Billancourt.",
@@ -119,7 +119,7 @@ export const SAINT_CLOUD_COPY: VilleCopy = {
           },
           {
             q: "Pouvez-vous créer un e-commerce ou une boutique en ligne pour un commerce de Saint-Cloud ?",
-            a: "Oui. Nous développons l'e-commerce en multi-CMS (Shopify, WooCommerce, solutions headless) pour les commerces du centre-ville, de la gare Val d'Or et de la ZAC Bords de Seine : catalogue, paiement, mobile-first, et briques IA (recherche, recommandation, chatbot). Devis à partir de 24 à 48 h selon la complexité.",
+            a: "Oui. Nous développons l'e-commerce en multi-CMS (Shopify, WooCommerce, solutions headless) pour les commerces du centre-ville, du quartier Val d'Or et de la ZAC Bords de Seine : catalogue, paiement, mobile-first, et briques IA (recherche, recommandation, chatbot). Devis à partir de 24 à 48 h selon la complexité.",
           },
           {
             q: "Concevez-vous des sites événementiels ou de billetterie pour le Domaine national ou l'Hippodrome de Saint-Cloud ?",
@@ -233,7 +233,7 @@ export const SAINT_CLOUD_COPY: VilleCopy = {
     },
     {
       q: "Quels délais pour une intervention IA à Saint-Cloud ?",
-      a: "Nous intervenons à Saint-Cloud sous 5 jours ouvrés après validation. Accès via gare SNCF Saint-Cloud, Val d'Or ou tramway T2 (4 stations dans la commune).",
+      a: "Nous intervenons à Saint-Cloud sous 5 jours ouvrés après validation.",
     },
     {
       q: "Axion-IA couvre-t-il Suresnes, Boulogne-Billancourt, Garches ou Sèvres ?",
@@ -248,8 +248,8 @@ export const SAINT_CLOUD_COPY: VilleCopy = {
       a: "TPE et PME tertiaires prioritairement : cabinets de conseil, professions libérales (juridiques, comptables, santé), agences de communication, PME de services, commerces de centre-ville et restauration. Les ETI restent un complément, notre cœur de cible étant la TPE et la PME.",
     },
     {
-      q: "Axion-IA se déplace-t-il sur site à Saint-Cloud, y compris au siège d'un client ?",
-      a: "Oui, nous nous déplaçons physiquement à Saint-Cloud pour audit, interventions et sessions 1-to-1. Implémentation et suivi peuvent ensuite se faire à distance.",
+      q: "Intervenez-vous à Saint-Cloud, y compris au siège d'un client ?",
+      a: "Oui. Axion IA intervient physiquement à Saint-Cloud, y compris au siège d'un client, pour l'audit, les interventions et les sessions 1-to-1. L'implémentation et le suivi peuvent ensuite se faire à distance.",
     },
   ],
 };

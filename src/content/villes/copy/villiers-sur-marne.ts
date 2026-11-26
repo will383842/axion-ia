@@ -142,7 +142,7 @@ export const VILLIERS_SUR_MARNE_COPY: VilleCopy = {
           "Eastern Paris Image and Sound cluster (INA, Studios de Bry, École Georges Méliès) straddling Villiers/Bry: we design SaaS platforms for audiovisual archive management, AI-assisted cataloguing, media libraries and the websites of the cluster's production companies and technical providers.",
           "Marne Europe development zone (EPAMARNE, 80,000 m² of offices, 17,000 m² of retail, convention centre) on the former VDO right-of-way: we support upcoming tertiary tenants, events venues and new retail with AI-native sites and back-offices ready for the Line 15 station opening.",
           "Big-box retail zones (IKEA, Bricorama, zones created from 1977 to 1999) and Marne-la-Vallée e-commerce logistics at the A4/A104 junction: we build multi-CMS e-commerce sites and logistics-tracking platforms for retail, cosmetics, medical devices and events.",
-          "A fabric of ~4,388 mostly micro and small businesses (retail, construction, transport, consulting): we deliver high-performance showcase and e-commerce sites (UX/UI, mobile, Web Vitals). Villiers-sur-Marne is served by the RER E (Villiers-sur-Marne — Le Plessis-Trévise station) and the A4.",
+          "A fabric of ~4,388 mostly micro and small businesses (retail, construction, transport, consulting): we deliver high-performance showcase and e-commerce sites (UX/UI, mobile, Web Vitals). Axion-IA works anywhere in France, on site or remotely, including in Villiers-sur-Marne.",
         ],
         methodology: [
           {
@@ -208,11 +208,11 @@ export const VILLIERS_SUR_MARNE_COPY: VilleCopy = {
           },
           {
             q: "Do you build e-commerce sites for Villiers-sur-Marne retail and logistics?",
-            a: "Yes, multi-CMS or custom code depending on your back-office. We work with retail in the activity zones (IKEA, Bricorama style) and Marne-la-Vallée e-commerce logistics (A4/A104 junction, luxury, cosmetics, medical devices): online stores, order tracking, support agents and AI-augmented product search.",
+            a: "Yes, multi-CMS or custom code depending on your back-office. We work with retail in the activity zones (IKEA, Bricorama style) and Marne-la-Vallée e-commerce logistics (luxury, cosmetics, medical devices): online stores, order tracking, support agents and AI-augmented product search.",
           },
           {
             q: "How quickly do we receive a quote in Villiers-sur-Marne?",
-            a: "We send a quote from 24-48 h depending on project complexity, after an initial framing exchange. We work anywhere in France, on site or remotely (Villiers-sur-Marne is reachable via RER E, Le Plessis-Trévise station, ~18-32 min, or the A4).",
+            a: "We send a quote from 24-48 h depending on project complexity, after an initial framing exchange. We work on site at Villiers-sur-Marne, like everywhere in France, or remotely.",
           },
           {
             q: "Where is the data hosted and does the code stay with us?",

@@ -49,7 +49,7 @@ export const SAINT_JEAN_DE_LUZ_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Saint-Jean-de-Luz et sur la Côte Basque ?",
-      a: "Oui, Axion-IA intervient à Saint-Jean-de-Luz et sur toute la Côte Basque (Ciboure, Hendaye, Bayonne, Biarritz, Anglet). Consultants accessibles via la gare SNCF Saint-Jean-de-Luz—Ciboure (TGV Paris) et l'aéroport Biarritz.",
+      a: "Oui, Axion-IA intervient à Saint-Jean-de-Luz et sur toute la Côte Basque (Ciboure, Hendaye, Bayonne, Biarritz, Anglet).",
     },
     {
       q: "Quel est le tarif d'un audit IA à Saint-Jean-de-Luz  ?",

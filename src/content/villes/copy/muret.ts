@@ -232,11 +232,11 @@ export const MURET_COPY: VilleCopy = {
     },
     {
       q: "Sous quel délai pouvez-vous intervenir à Muret ?",
-      a: "Notre équipe se déplace à Muret dans un délai de 5 jours ouvrés après validation de la mission. Muret est accessible via A64 et la gare TER (terminus du réseau Tisséo).",
+      a: "Nous démarrons à Muret dans un délai de 5 jours ouvrés après validation de la mission.",
     },
     {
       q: "Couvrez-vous les communes proches de Muret ?",
-      a: "Oui, nous intervenons également à Saubens (2,8 km), Seysses (4,3 km), Villate (4,5 km) et plus largement dans le Muretain Agglo et le sud de la métropole toulousaine.",
+      a: "Oui, nous intervenons également à Saubens, Seysses, Villate et plus largement dans le Muretain Agglo et le sud de la métropole toulousaine.",
     },
     {
       q: "Vos solutions IA sont-elles conformes RGPD à Muret ?",

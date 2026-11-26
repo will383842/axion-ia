@@ -49,7 +49,7 @@ export const SAINT_GENIS_POUILLY_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Saint-Genis-Pouilly et pays de Gex ?",
-      a: "Oui, Axion-IA intervient à Saint-Genis-Pouilly et tout le pays de Gex (Ferney-Voltaire à 5 min, Gex à 10 min, Divonne-les-Bains, Prévessin-Moëns). Genève à 15 min. Nous intervenons partout en France, sur place ou à distance.",
+      a: "Oui. Nous intervenons à Saint-Genis-Pouilly et dans tout le pays de Gex (Ferney-Voltaire, Gex, Divonne-les-Bains, Prévessin-Moëns), sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les PME technologiques proximité CERN ?",
@@ -65,7 +65,7 @@ export const SAINT_GENIS_POUILLY_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Saint-Genis-Pouilly ?",
-      a: "Nous intervenons partout en France, sur place ou à distance.",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Saint-Genis-Pouilly, comme partout en France, ou à distance.",
     },
   ],
 };

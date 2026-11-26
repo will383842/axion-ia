@@ -55,8 +55,8 @@ export const AUXERRE_COPY: VilleCopy = {
         hero: "Axion-IA conçoit des sites web et plateformes SaaS augmentés par l'IA pour le tissu économique auxerrois — préfecture de l'Yonne et premier bassin d'emploi du département, avec 7 536 entreprises actives dans l'agglomération de l'Auxerrois. Nous travaillons aussi bien pour les ETI industrielles locales (HMY France à Monéteau, leader de l'agencement et du mobilier de magasin ; les agroalimentaires Duc et Eurial Ultra Frais) que pour les domaines viticoles du Chablisien (Irancy, Saint-Bris-le-Vineux, Chitry) qui veulent vendre en ligne, et pour les commerces et services du centre-ville. Code sur mesure, UX/UI et mobile-first, e-commerce multi-CMS, brique IA (chatbot RAG, recherche sémantique, agents) — hébergement en Union européenne, conforme RGPD, sans verrou éditeur.",
         whyHere: [
           "L'Auxerrois est un territoire d'ETI : près d'un tiers des salariés du secteur marchand de l'Yonne dépendent d'une entreprise de taille intermédiaire. Des sites comme HMY France à Monéteau ou les agroalimentaires Duc et Eurial Ultra Frais ont des besoins web B2B (portail revendeurs, configurateur produit, espace client) que nous savons coder.",
-          "La filière viticole de Chablis (Chardonnay, à dix minutes d'Auxerre) est un terrain e-commerce naturel : nous construisons des boutiques en ligne pour les domaines d'Irancy, Saint-Bris-le-Vineux ou Chitry — vente de bouteilles, allocation par millésime, expédition, click-and-collect au caveau — avec une couche IA pour les fiches produit et le support client multilingue.",
-          "Le parc d'activités AuxR_Parc à Appoigny (34 ha, 33 lots en façade de l'A6) attire de nouvelles implantations : nous accompagnons ces structures sur leur présence web fondatrice, leur SaaS métier et leurs intégrations dès l'installation.",
+          "La filière viticole de Chablis (Chardonnay) est un terrain e-commerce naturel : nous construisons des boutiques en ligne pour les domaines d'Irancy, Saint-Bris-le-Vineux ou Chitry — vente de bouteilles, allocation par millésime, expédition, click-and-collect au caveau — avec une couche IA pour les fiches produit et le support client multilingue.",
+          "Le parc d'activités AuxR_Parc à Appoigny (34 ha, 33 lots) attire de nouvelles implantations : nous accompagnons ces structures sur leur présence web fondatrice, leur SaaS métier et leurs intégrations dès l'installation.",
           "Le tissu commerce-tourisme local — du centre historique aux retombées de l'AJ Auxerre (stade Abbé-Deschamps) en passant par la Cité des Climats et Vins de Bourgogne — génère une demande de sites vitrines, de réservation et de e-commerce que nous traitons en mobile-first, avec une vraie attention au RGPD et à la performance.",
         ],
         methodology: [
@@ -123,7 +123,7 @@ export const AUXERRE_COPY: VilleCopy = {
           },
           {
             q: "Travaillez-vous avec les entreprises qui s'implantent au parc AuxR_Parc à Appoigny ?",
-            a: "Oui. Le parc d'activités AuxR_Parc (34 hectares en bordure de l'A6 à Appoigny) accueille de nouvelles structures : nous les accompagnons sur leur présence web fondatrice, leur SaaS métier et leurs intégrations dès l'installation, sur site ou à distance depuis Auxerre.",
+            a: "Oui. Le parc d'activités AuxR_Parc (34 hectares à Appoigny) accueille de nouvelles structures : nous les accompagnons sur leur présence web fondatrice, leur SaaS métier et leurs intégrations dès l'installation, sur site ou à distance.",
           },
           {
             q: "Sous quel délai démarrez-vous un projet à Auxerre ?",
@@ -141,8 +141,8 @@ export const AUXERRE_COPY: VilleCopy = {
         hero: "Axion-IA designs AI-augmented websites and SaaS platforms for the Auxerre business community — capital of the Yonne department and its leading employment area, with 7,536 active businesses across the Auxerrois agglomeration. We work for local industrial mid-caps (HMY France in Monéteau, a leader in store fittings and retail furniture; food groups Duc and Eurial Ultra Frais) as well as for the Chablis wine estates (Irancy, Saint-Bris-le-Vineux, Chitry) wanting to sell online, and for downtown shops and services. Custom code, UX/UI and mobile-first, multi-CMS e-commerce, an AI layer (RAG chatbot, semantic search, agents) — hosted in the European Union, GDPR-compliant, with no vendor lock-in.",
         whyHere: [
           "The Auxerrois is mid-cap territory: nearly a third of the Yonne's market-sector employees work for an intermediate-sized enterprise. Sites such as HMY France in Monéteau or the food groups Duc and Eurial Ultra Frais have B2B web needs (reseller portal, product configurator, client area) that we know how to build.",
-          "The Chablis wine industry (Chardonnay, ten minutes from Auxerre) is a natural e-commerce ground: we build online stores for estates in Irancy, Saint-Bris-le-Vineux or Chitry — bottle sales, vintage allocation, shipping, cellar click-and-collect — with an AI layer for product sheets and multilingual customer support.",
-          "The AuxR_Parc business park in Appoigny (34 ha, 33 plots fronting the A6) attracts new arrivals: we support these companies on their founding web presence, their business SaaS and their integrations from day one.",
+          "The Chablis wine industry (Chardonnay) is a natural e-commerce ground: we build online stores for estates in Irancy, Saint-Bris-le-Vineux or Chitry — bottle sales, vintage allocation, shipping, cellar click-and-collect — with an AI layer for product sheets and multilingual customer support.",
+          "The AuxR_Parc business park in Appoigny (34 ha, 33 plots) attracts new arrivals: we support these companies on their founding web presence, their business SaaS and their integrations from day one.",
           "The local retail-tourism fabric — from the historic centre to the spin-off from AJ Auxerre (Abbé-Deschamps stadium) and the Cité des Climats et Vins de Bourgogne — drives demand for showcase, booking and e-commerce sites that we handle mobile-first, with genuine attention to GDPR and performance.",
         ],
         methodology: [
@@ -232,8 +232,8 @@ export const AUXERRE_COPY: VilleCopy = {
       a: "Les audits IA à Auxerre démarrent à {{price:audit-flash|flat}} pour un Audit sur place de 4 heures sur site, puis l'Audit Ciblé à partir de {{price:audit-cible|entry}} pour un périmètre plus large. Tarifs publics affichés, sans devis caché.",
     },
     {
-      q: "Williams se déplace-t-il à Auxerre ?",
-      a: "Oui, Williams se déplace à Auxerre (gare d'Auxerre-Saint-Gervais, A6) pour réaliser audits, interventions et implémentations directement chez vous, dans un délai de 5 jours ouvrés.",
+      q: "Intervenez-vous à Auxerre ?",
+      a: "Oui, nous intervenons à Auxerre pour réaliser audits, interventions et implémentations directement chez vous, dans un délai de 5 jours ouvrés.",
     },
     {
       q: "Quels secteurs auxerrois Axion-IA accompagne-t-il ?",

@@ -49,7 +49,7 @@ export const SAINT_JULIEN_DE_CONCELLES_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Saint-Julien-de-Concelles ?",
-      a: "Oui, Axion-IA intervient à Saint-Julien-de-Concelles et tout le vignoble nantais (Basse-Goulaine, Vertou, Le Loroux-Bottereau, La Chapelle-Heulin). Couverture complète Loire-Atlantique, Nantes centre à 20 min.",
+      a: "Oui, Axion-IA intervient à Saint-Julien-de-Concelles et tout le vignoble nantais (Basse-Goulaine, Vertou, Le Loroux-Bottereau, La Chapelle-Heulin).",
     },
     {
       q: "Accompagnez-vous les maraîchers et vignerons ?",

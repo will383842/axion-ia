@@ -14,9 +14,9 @@ export const PIERRELAYE_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Pierrelaye (95). Nous accompagnons TPE et PME : artisans, commerçants de proximité, PME de services, professions libérales et entreprises de l'agglomération Val Parisis. Audit sur place sur mesure.",
   seoHook: "artisanat second & commerce proximité",
   ecosystemFr:
-    "Pierrelaye fait partie de l'agglomération Val Parisis et conserve une plaine maraîchère historique en cours de reconversion. Tissu économique de TPE artisanales, commerces de proximité, PME tertiaires et professions libérales. Proximité Cergy-Pontoise, Franconville et axes A15/A115 vers Paris et la Défense.",
+    "Pierrelaye fait partie de l'agglomération Val Parisis et conserve une plaine maraîchère historique en cours de reconversion. Tissu économique de TPE artisanales, commerces de proximité, PME tertiaires et professions libérales. Commune du Val-d'Oise, en lien avec les bassins économiques de Cergy-Pontoise et Franconville.",
   ecosystemEn:
-    "Pierrelaye fait partie de l'agglomération Val Parisis et conserve une plaine maraîchère historique en cours de reconversion. Tissu économique de TPE artisanales, commerces de proximité, PME tertiaires et professions libérales. Proximité Cergy-Pontoise, Franconville et axes A15/A115 vers Paris et la Défense.",
+    "Pierrelaye fait partie de l'agglomération Val Parisis et conserve une plaine maraîchère historique en cours de reconversion. Tissu économique de TPE artisanales, commerces de proximité, PME tertiaires et professions libérales. Commune du Val-d'Oise, en lien avec les bassins économiques de Cergy-Pontoise et Franconville.",
   distancesFr:
     "Gare de Pierrelaye (Transilien H) à Paris Gare du Nord en 30 min. Cergy-Pontoise à 15 min. Franconville à 5 min. Herblay-sur-Seine à 8 min. Autoroutes A15 et A115 à proximité. La Défense à 25 min.",
   distancesEn:
@@ -49,7 +49,7 @@ export const PIERRELAYE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Pierrelaye et Val Parisis ?",
-      a: "Oui, Axion-IA intervient à Pierrelaye et dans toute l'agglomération Val Parisis (Franconville, Herblay-sur-Seine, Beauchamp, Montigny-lès-Cormeilles). Paris Gare du Nord à 30 min en Transilien H.",
+      a: "Oui, Axion-IA intervient à Pierrelaye et dans toute l'agglomération Val Parisis (Franconville, Herblay-sur-Seine, Beauchamp, Montigny-lès-Cormeilles).",
     },
     {
       q: "Accompagnez-vous les artisans BTP de Pierrelaye ?",

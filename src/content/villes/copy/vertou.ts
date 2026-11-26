@@ -241,12 +241,8 @@ export const VERTOU_COPY: VilleCopy = {
       a: "Nous automatisons les tâches chronophages des domaines Muscadet : extraction des commandes négoce, saisie des registres caves, génération de fiches techniques AOC, réponses email export. Les vignerons gagnent du temps sur l'administratif pour se concentrer sur la vigne et la commercialisation.",
     },
     {
-      q: "Quelle est la distance entre Vertou et Nantes pour une intervention ?",
-      a: "Vertou est limitrophe Sud de Nantes : 13 km du centre, accessible en tramway TAN et bus, à 15 km de l'aéroport Nantes-Atlantique. Nous intervenons partout en France, sur place ou à distance.",
-    },
-    {
       q: "Axion-IA travaille-t-elle avec l'écosystème industriel Manitou et Saint-Nazaire ?",
-      a: "Oui. Nous intervenons auprès des sous-traitants gravitant autour de Manitou (chariots élévateurs, 4 500 salariés Ancenis-Vertou), des fournisseurs Airbus Nantes à 15 km et des PME servant les chantiers navals de Saint-Nazaire à 60 km. Cas d'usage typiques : prévision de stocks, maintenance prédictive, copilotes méthodes.",
+      a: "Oui. Nous intervenons auprès des sous-traitants gravitant autour de Manitou (chariots élévateurs, 4 500 salariés Ancenis-Vertou), des fournisseurs Airbus Nantes et des PME servant les chantiers navals de Saint-Nazaire. Cas d'usage typiques : prévision de stocks, maintenance prédictive, copilotes méthodes.",
     },
     {
       q: "Comment Axion-IA garantit-elle la conformité RGPD et AI Act à Vertou ?",

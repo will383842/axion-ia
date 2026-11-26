@@ -65,7 +65,7 @@ export const RIVES_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une intervention ?",
-      a: "Sur place ou à distance, selon votre besoin. Pour les multi-jours, hébergement local possible (hôtels Voiron).",
+      a: "Sur place ou à distance, selon votre besoin.",
     },
   ],
 };

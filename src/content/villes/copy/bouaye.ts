@@ -14,9 +14,9 @@ export const BOUAYE_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Bouaye (44). Nous accompagnons les TPE, indépendants, PME tertiaires, commerçants et professions libérales de cette commune résidentielle du sud-ouest nantais sur leurs cas IA opérationnels. Audit sur place sur mesure.",
   seoHook: "artisanat & services aux",
   ecosystemFr:
-    "Bouaye est une commune résidentielle du sud-ouest de Nantes Métropole, en bordure du lac de Grand-Lieu (réserve naturelle). Tissu TPE artisans, commerces de proximité, PME tertiaires, professions libérales. Proximité aéroport Nantes-Atlantique (10 min) et pôle Bouguenais.",
+    "Bouaye est une commune résidentielle du sud-ouest de Nantes Métropole, en bordure du lac de Grand-Lieu (réserve naturelle). Tissu TPE artisans, commerces de proximité, PME tertiaires, professions libérales. Voisinage du pôle économique de Bouguenais.",
   ecosystemEn:
-    "Bouaye est une commune résidentielle du sud-ouest de Nantes Métropole, en bordure du lac de Grand-Lieu (réserve naturelle). Tissu TPE artisans, commerces de proximité, PME tertiaires, professions libérales. Proximité aéroport Nantes-Atlantique (10 min) et pôle Bouguenais.",
+    "Bouaye est une commune résidentielle du sud-ouest de Nantes Métropole, en bordure du lac de Grand-Lieu (réserve naturelle). Tissu TPE artisans, commerces de proximité, PME tertiaires, professions libérales. Voisinage du pôle économique de Bouguenais.",
   distancesFr:
     "Nantes centre à 15 min par D723. Aéroport Nantes-Atlantique à 10 min. Bouguenais à 5 min. Gare Nantes (TGV Paris 2h15) à 20 min. Saint-Philbert-de-Grand-Lieu à 15 min.",
   distancesEn:
@@ -49,7 +49,7 @@ export const BOUAYE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Bouaye ?",
-      a: "Oui, Axion-IA intervient à Bouaye et toute Nantes Métropole (Bouguenais, Rezé, Saint-Herblain, Nantes centre). Couverture complète Loire-Atlantique. Aéroport Nantes-Atlantique à 10 min.",
+      a: "Oui, Axion-IA intervient à Bouaye et toute Nantes Métropole (Bouguenais, Rezé, Saint-Herblain, Nantes centre). Couverture complète Loire-Atlantique.",
     },
     {
       q: "Accompagnez-vous les TPE et artisans de Bouaye ?",
@@ -60,12 +60,12 @@ export const BOUAYE_COPY: VilleCopy = {
       a: "Pour les PME tertiaires du sud-ouest nantais, nous proposons audit IA (Sur place à Stratégique), interventions sur site, implémentation IA (agents, automatisations), coaching 1-to-1 dirigeants, et plateformes web/SaaS IA sur mesure. Tarifs publics.",
     },
     {
-      q: "Comment se passe le déplacement à Bouaye ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Tarifs publics et transparents.",
-    },
-    {
       q: "L'IA est-elle pertinente pour les activités autour du lac de Grand-Lieu ?",
       a: "Oui, l'IA apporte des gains concrets aux activités touristiques et nature : agents conversationnels réservation, automatisation gestion planning, relation client personnalisée. Adapté aux TPE du secteur tourisme et loisirs de Bouaye.",
+    },
+    {
+      q: "Quel délai pour recevoir un devis à Bouaye ?",
+      a: "Devis et calendrier fournis en 48 h, après un premier échange de cadrage.",
     },
   ],
 };

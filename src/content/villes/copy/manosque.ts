@@ -124,7 +124,7 @@ export const MANOSQUE_COPY: VilleCopy = {
           },
           {
             q: "Travaillez-vous avec les prestataires de Cadarache, ITER et des sites industriels du bassin ?",
-            a: "Oui. Pour les PME prestataires high-tech de l'écosystème Cadarache-ITER, à 30 min, et les acteurs industriels comme Géosel-Géométhane, on construit des portails clients, des plateformes documentaires, de la recherche sémantique sur normes et procédures, et des automatisations B2B branchées sur votre SI. On peut aussi greffer une brique IA sur l'existant sans refonte.",
+            a: "Oui. Pour les PME prestataires high-tech de l'écosystème Cadarache-ITER et les acteurs industriels comme Géosel-Géométhane, on construit des portails clients, des plateformes documentaires, de la recherche sémantique sur normes et procédures, et des automatisations B2B branchées sur votre SI. On peut aussi greffer une brique IA sur l'existant sans refonte.",
           },
           {
             q: "Mes données clients restent-elles en Europe ?",
@@ -210,7 +210,7 @@ export const MANOSQUE_COPY: VilleCopy = {
           },
           {
             q: "Travaillez-vous avec les prestataires de Cadarache, ITER et des sites industriels du bassin ?",
-            a: "Oui. Pour les PME prestataires high-tech de l'écosystème Cadarache-ITER, à 30 min, et les acteurs industriels comme Géosel-Géométhane, on construit des portails clients, des plateformes documentaires, de la recherche sémantique sur normes et procédures, et des automatisations B2B branchées sur votre SI. On peut aussi greffer une brique IA sur l'existant sans refonte.",
+            a: "Oui. Pour les PME prestataires high-tech de l'écosystème Cadarache-ITER et les acteurs industriels comme Géosel-Géométhane, on construit des portails clients, des plateformes documentaires, de la recherche sémantique sur normes et procédures, et des automatisations B2B branchées sur votre SI. On peut aussi greffer une brique IA sur l'existant sans refonte.",
           },
           {
             q: "Mes données clients restent-elles en Europe ?",
@@ -230,7 +230,7 @@ export const MANOSQUE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Manosque et en Haute-Provence ?",
-      a: "Oui, Axion-IA intervient à Manosque et tout le bassin du pays de Forcalquier-Montagne de Lure (Volx, Sainte-Tulle, Gréoux-les-Bains). Nos consultants viennent d'Aix-en-Provence, à 50 minutes.",
+      a: "Oui, Axion-IA intervient à Manosque et tout le bassin du pays de Forcalquier-Montagne de Lure (Volx, Sainte-Tulle, Gréoux-les-Bains). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les TPE du tourisme et de la cosmétique ?",
@@ -246,7 +246,7 @@ export const MANOSQUE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Manosque ?",
-      a: "Nos consultants se déplacent depuis Aix-en-Provence ou en visio.",
+      a: "Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Vos interventions sont-elles conformes au RGPD ?",

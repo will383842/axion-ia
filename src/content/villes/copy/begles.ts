@@ -161,7 +161,7 @@ export const BEGLES_COPY: VilleCopy = {
           {
             step: "Acceptance + go-live",
             detail:
-              "Acceptance tests, Web Vitals and SEO/AEO validated, production release without downtime. Quick access from Bordeaux-Saint-Jean (high-speed rail) in 10 minutes.",
+              "Acceptance tests, Web Vitals and SEO/AEO validated, production release without downtime. Axion-IA works anywhere in France, on site or remotely, including in Bègles.",
           },
           {
             step: "Delivery + autonomy",
@@ -226,7 +226,7 @@ export const BEGLES_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Bègles et dans Bordeaux Métropole ?",
-      a: "Oui, Axion-IA intervient à Bègles et dans toute Bordeaux Métropole (Bordeaux, Talence, Villenave-d'Ornon, Floirac, Bouliac, Latresne). Accès gare Bordeaux-Saint-Jean (TGV) à 10 min.",
+      a: "Oui, Axion-IA intervient à Bègles et dans toute Bordeaux Métropole (Bordeaux, Talence, Villenave-d'Ornon, Floirac, Bouliac, Latresne).",
     },
     {
       q: "Quel est le tarif d'un audit IA à Bègles ?",
@@ -242,7 +242,7 @@ export const BEGLES_COPY: VilleCopy = {
     },
     {
       q: "Quels sont les délais d'intervention à Bègles ?",
-      a: "Williams se déplace à Bègles sous 5 jours ouvrés en moyenne. Mission sur site dans vos locaux Terres Neuves, sur chantier BTP ou en boutique. Accès via A630 rocade sortie 20 ou tramway TBM lignes C et F.",
+      a: "Williams intervient à Bègles sous 5 jours ouvrés en moyenne. Mission sur site dans vos locaux Terres Neuves, sur chantier BTP ou en boutique.",
     },
   ],
 };

@@ -49,7 +49,7 @@ export const CLOYES_LES_TROIS_RIVIERES_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Cloyes-les-Trois-Rivières et dans la vallée du Loir ?",
-      a: "Oui, Axion-IA intervient à Cloyes-les-Trois-Rivières et dans toute la vallée du Loir eurélienne (Châteaudun, Bonneval, Saint-Denis-les-Ponts). Couverture également Vendôme à 30 min, Chartres à 50 min et Tours à 1h15.",
+      a: "Oui, Axion-IA intervient à Cloyes-les-Trois-Rivières et dans toute la vallée du Loir eurélienne (Châteaudun, Bonneval, Saint-Denis-les-Ponts).",
     },
     {
       q: "Travaillez-vous avec les exploitations agricoles et PME agroalimentaires de Beauce ?",

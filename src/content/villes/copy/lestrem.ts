@@ -49,7 +49,7 @@ export const LESTREM_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il a Lestrem et dans le bassin de la Lys ?",
-      a: "Oui, Axion-IA intervient a Lestrem et dans tout le bassin de la Lys (Bethune, Armentieres, La Bassee, Estaires). Consultants depuis Lille (45 min TER) ou Paris (TGV 1h + 45 min).",
+      a: "Oui, Axion-IA intervient a Lestrem et dans tout le bassin de la Lys (Bethune, Armentieres, La Bassee, Estaires). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quel est le tarif d'un audit IA a Lestrem ?",

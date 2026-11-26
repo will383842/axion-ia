@@ -49,7 +49,7 @@ export const CHAURAY_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Chauray et agglomération Niort ?",
-      a: "Oui, Axion-IA intervient à Chauray et toute l'agglomération niortaise (Niort à 5 min, Aiffres, Bessines, Échiré). Nous intervenons partout en France, sur place ou à distance. Couverture complète des Deux-Sèvres.",
+      a: "Oui, Axion-IA intervient à Chauray et dans toute l'agglomération niortaise (Niort, Aiffres, Bessines, Échiré). Nous intervenons partout en France, sur place ou à distance. Couverture complète des Deux-Sèvres.",
     },
     {
       q: "Travaillez-vous avec les prestataires des mutuelles niortaises ?",
@@ -65,7 +65,7 @@ export const CHAURAY_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Chauray ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Pour les multi-jours, hébergement local possible.",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Chauray, comme partout en France, ou à distance.",
     },
   ],
 };

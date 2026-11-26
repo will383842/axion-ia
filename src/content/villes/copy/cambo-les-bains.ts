@@ -49,7 +49,7 @@ export const CAMBO_LES_BAINS_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Cambo-les-Bains ?",
-      a: "Oui, Axion-IA intervient à Cambo-les-Bains et dans le Pays Basque intérieur (Espelette, Hasparren, Ustaritz, Saint-Pée-sur-Nivelle). Nos consultants accèdent via Bayonne (20 min) ou l'aéroport Biarritz (25 min).",
+      a: "Oui, Axion-IA intervient à Cambo-les-Bains et dans le Pays Basque intérieur (Espelette, Hasparren, Ustaritz, Saint-Pée-sur-Nivelle).",
     },
     {
       q: "Quels services IA pour les établissements thermaux de Cambo ?",
@@ -65,7 +65,7 @@ export const CAMBO_LES_BAINS_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA sur site à Cambo-les-Bains ?",
-      a: "Nos consultants accèdent à Cambo-les-Bains par la route (20 min Bayonne, D932). Mission sur site dans vos thermes, hébergement ou commerce.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Mission sur site dans vos thermes, hébergement ou commerce.",
     },
   ],
 };

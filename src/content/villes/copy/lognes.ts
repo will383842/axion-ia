@@ -64,8 +64,8 @@ export const LOGNES_COPY: VilleCopy = {
       a: "Oui, nos interventions IA sur site à Lognes sont adaptées aux TPE artisans et commerces. Formats demi-journée ou journée complète, vos équipes repartent autonomes sur les outils IA configurés métier.",
     },
     {
-      q: "Comment accédez-vous à Lognes depuis Paris ?",
-      a: "Nos consultants rejoignent Lognes en 30 min depuis Paris Châtelet (RER A, station Lognes). Proximité A4 et gare TGV Marne-la-Vallée Chessy.",
+      q: "Comment se déroule une mission à Lognes ?",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Lognes, comme partout en France, ou à distance.",
     },
   ],
 };

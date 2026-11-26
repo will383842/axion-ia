@@ -41,8 +41,8 @@ export const LORMONT_COPY: VilleCopy = {
       en: "Nos interventions à Lormont automatisent typiquement des tâches répétitives de PME locales : devis BTP, suivi commercial centres 4 Pavillons et Génicart, ou réponses clients commerce et restauration.",
     },
     implementation: {
-      fr: "Pour les TPE et PME de Lormont, nous implémentons des solutions IA en code custom intégrées aux outils existants (ERP, CRM, comptabilité), sans dépendance no-code, avec déplacements depuis Bordeaux en 15 minutes via le tramway A.",
-      en: "Pour les TPE et PME de Lormont, nous implémentons des solutions IA en code custom intégrées aux outils existants (ERP, CRM, comptabilité), sans dépendance no-code, avec déplacements depuis Bordeaux en 15 minutes via le tramway A.",
+      fr: "Pour les TPE et PME de Lormont, nous implémentons des solutions IA en code custom intégrées aux outils existants (ERP, CRM, comptabilité), sans dépendance no-code, avec déplacement sur site.",
+      en: "Pour les TPE et PME de Lormont, nous implémentons des solutions IA en code custom intégrées aux outils existants (ERP, CRM, comptabilité), sans dépendance no-code, avec déplacement sur site.",
     },
     unAUn: {
       fr: "L'accompagnement un-à-un à Lormont permet aux dirigeants de TPE/PME de la rive droite bordelaise de monter en compétence IA à leur rythme, avec un référent unique sur 3 à 6 mois.",
@@ -68,7 +68,7 @@ export const LORMONT_COPY: VilleCopy = {
           {
             step: "Conception UX/UI",
             detail:
-              "Wireframes, design system et maquettes Figma à votre marque ; prototype cliquable testé avant tout développement, pensé mobile-first pour une clientèle de proximité souvent sur smartphone, en déplacement entre Génicart, Carriet et Bordeaux par le tramway.",
+              "Wireframes, design system et maquettes Figma à votre marque ; prototype cliquable testé avant tout développement, pensé mobile-first pour une clientèle de proximité souvent sur smartphone, de Génicart à Carriet.",
           },
           {
             step: "Développement par sprints",
@@ -154,7 +154,7 @@ export const LORMONT_COPY: VilleCopy = {
           {
             step: "Conception UX/UI",
             detail:
-              "Wireframes, design system et maquettes Figma à votre marque ; prototype cliquable testé avant tout développement, pensé mobile-first pour une clientèle de proximité souvent sur smartphone, en déplacement entre Génicart, Carriet et Bordeaux par le tramway.",
+              "Wireframes, design system et maquettes Figma à votre marque ; prototype cliquable testé avant tout développement, pensé mobile-first pour une clientèle de proximité souvent sur smartphone, de Génicart à Carriet.",
           },
           {
             step: "Développement par sprints",
@@ -233,7 +233,7 @@ export const LORMONT_COPY: VilleCopy = {
     },
     {
       q: "Sous quel délai Axion-IA peut-il se déplacer à Lormont ?",
-      a: "Notre équipe se déplace sur site à Lormont sous 5 jours ouvrés en moyenne, avec accès direct depuis Bordeaux centre par les tramways A et E ou via la rocade A630.",
+      a: "Notre équipe intervient sur site à Lormont sous 5 jours ouvrés en moyenne après validation.",
     },
     {
       q: "Couvrez-vous les communes limitrophes de Lormont ?",

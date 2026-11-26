@@ -14,9 +14,9 @@ export const CADAUJAC_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Cadaujac (33). Nous accompagnons TPE et PME du sud bordelais : vignerons des Graves et Pessac-Léognan, artisans BTP, commerçants et professions libérales. Audit sur place sur mesure.",
   seoHook: "viticulture graves & services personne",
   ecosystemFr:
-    "Cadaujac est une commune viticole des Graves, en limite sud de Bordeaux Métropole. Vignoble AOC Pessac-Léognan et Graves, tissu TPE artisanat BTP en croissance, commerces et professions libérales. Proximité Léognan, Villenave-d'Ornon et A62.",
+    "Cadaujac est une commune viticole des Graves, en limite sud de Bordeaux Métropole. Vignoble AOC Pessac-Léognan et Graves, tissu TPE artisanat BTP en croissance, commerces et professions libérales. Proximité de Léognan et de Villenave-d'Ornon.",
   ecosystemEn:
-    "Cadaujac est une commune viticole des Graves, en limite sud de Bordeaux Métropole. Vignoble AOC Pessac-Léognan et Graves, tissu TPE artisanat BTP en croissance, commerces et professions libérales. Proximité Léognan, Villenave-d'Ornon et A62.",
+    "Cadaujac est une commune viticole des Graves, en limite sud de Bordeaux Métropole. Vignoble AOC Pessac-Léognan et Graves, tissu TPE artisanat BTP en croissance, commerces et professions libérales. Proximité de Léognan et de Villenave-d'Ornon.",
   distancesFr:
     "Bordeaux centre à 20 min (A62/rocade). Léognan à 10 min. Gare Bordeaux Saint-Jean à 25 min. Aéroport Bordeaux-Mérignac à 30 min.",
   distancesEn:

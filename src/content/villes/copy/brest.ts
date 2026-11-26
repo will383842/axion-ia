@@ -161,7 +161,7 @@ export const BREST_COPY: VilleCopy = {
             a: "Sur les audits Stratégique PME dans la sous-traitance navale et la logistique, les gains identifiés portent typiquement sur la gestion documentaire, la rédaction de comptes-rendus techniques et la qualification de leads. Le livrable détaille les chiffres précis pour votre cas.",
           },
           {
-            q: "Vos consultants se déplacent-ils jusqu'au Technopôle Brest-Iroise ou à Guipavas ?",
+            q: "Intervenez-vous au Technopôle Brest-Iroise ou à Guipavas ?",
             a: "Oui. Nous intervenons en présentiel sur l'ensemble de Brest Métropole — Plouzané, Guipavas, Gouesnou, Le Relecq-Kerhuon, Plougastel-Daoulas — ainsi que dans le Finistère.",
           },
           {
@@ -998,7 +998,7 @@ export const BREST_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Combien coûte un audit IA opérationnel à Brest ?",
-      a: "Le tarif dépend du niveau retenu — Audit sur place, Ciblé, Stratégique PME ou Stratégique ETI. Tarifs publics affichés sur la page Audit, choix calibré selon votre taille (TPE, PME, ETI, grande entreprise) et votre périmètre. Aucun supplément géographique : le tarif est le même à Brest que partout en France.",
+      a: "Le tarif dépend du niveau retenu — Audit sur place, Ciblé, Stratégique PME ou Stratégique ETI. Tarifs publics affichés sur la page Audit, choix calibré selon votre taille (TPE, PME, ETI, grande entreprise) et votre périmètre.",
     },
     {
       q: "Axion-IA intervient-il sur site à Brest et dans le Finistère ?",

@@ -55,7 +55,7 @@ export const BUSSY_SAINT_GEORGES_COPY: VilleCopy = {
           "Le parc Gustave-Eiffel concentre des acteurs de la distribution et de la logistique (TD Synnex pour l'IT, Logistique Galeries Lafayette pour l'entreposage, Toyota Material Handling pour la manutention) : nous y construisons des portails B2B, des interfaces de suivi de commandes et des connecteurs WMS/ERP/EDI directement utiles à ces flux.",
           "Bussy-Saint-Georges devient un pôle jeu vidéo et esports : Gaming House dans l'éco-quartier du Sycomore et futur musée Odyssée (collection de 2 200+ consoles, ouverture 2026). Pour ces projets nous concevons billetterie en ligne, espaces communautaires, boutiques e-commerce gaming et plateformes de tournoi (Bussy Esport Masters).",
           "Le tissu compte des entreprises taïwanaises (Asialand, MSI) et une population dont près d'un habitant sur deux est d'origine asiatique : nous livrons des sites et SaaS multilingues FR/anglais/chinois, pensés pour le commerce transfrontalier et une audience internationale réelle.",
-          "La ZAC Léonard-de-Vinci (créée en 2005, A4 sortie 12 à 3 min, RER A à 12 min) et la ZAC du Sycomore regroupent des PME/PMI et des commerces de proximité (programme Agora Parc II) : pour elles, vitrines e-commerce multi-CMS, prise de rendez-vous et UX/UI mobile-first sont nos chantiers courants.",
+          "La ZAC Léonard-de-Vinci (créée en 2005) et la ZAC du Sycomore regroupent des PME/PMI et des commerces de proximité (programme Agora Parc II) : pour elles, vitrines e-commerce multi-CMS, prise de rendez-vous et UX/UI mobile-first sont nos chantiers courants.",
         ],
         methodology: [
           {
@@ -141,7 +141,7 @@ export const BUSSY_SAINT_GEORGES_COPY: VilleCopy = {
           "The Gustave-Eiffel park concentrates distribution and logistics players (TD Synnex for IT, Logistique Galeries Lafayette for warehousing, Toyota Material Handling for materials handling): we build B2B portals, order-tracking interfaces and WMS/ERP/EDI connectors directly useful to these flows.",
           "Bussy-Saint-Georges is becoming a video game and esports hub: a Gaming House in the Sycomore eco-district and the future Odyssée museum (2,200+ consoles, opening 2026). For these projects we design online ticketing, community spaces, gaming e-commerce stores and tournament platforms (Bussy Esport Masters).",
           "The fabric includes Taiwanese companies (Asialand, MSI) and a population where nearly one resident in two is of Asian origin: we deliver multilingual FR/English/Chinese sites and SaaS, designed for cross-border commerce and a genuinely international audience.",
-          "The ZAC Léonard-de-Vinci (created 2005, A4 exit 12 three minutes away, RER A twelve minutes) and the Sycomore eco-district gather SMEs and local retailers (Agora Parc II programme): for them, multi-CMS e-commerce storefronts, online booking and mobile-first UX/UI are our day-to-day work.",
+          "The ZAC Léonard-de-Vinci (created 2005) and the Sycomore eco-district gather SMEs and local retailers (Agora Parc II programme): for them, multi-CMS e-commerce storefronts, online booking and mobile-first UX/UI are our day-to-day work.",
         ],
         methodology: [
           {
@@ -230,8 +230,8 @@ export const BUSSY_SAINT_GEORGES_COPY: VilleCopy = {
       a: "Nos tarifs publics démarrent à {{price:audit-flash|flat}} pour un Audit sur place de 4 heures à Bussy-Saint-Georges. Les interventions et implémentations suivantes sont facturées sur devis selon le périmètre validé après l'audit.",
     },
     {
-      q: "Sous quel délai Axion-IA se déplace-t-il sur site à Bussy-Saint-Georges ?",
-      a: "Williams se déplace sur site à Bussy-Saint-Georges dans un délai de 5 jours ouvrés à compter de la signature du devis, selon la disponibilité du planning.",
+      q: "Sous quel délai Axion-IA intervient-il sur site à Bussy-Saint-Georges ?",
+      a: "Nous intervenons sur site à Bussy-Saint-Georges dans un délai de 5 jours ouvrés à compter de la signature du devis, selon la disponibilité du planning.",
     },
     {
       q: "Intervenez-vous dans les communes proches de Bussy-Saint-Georges ?",

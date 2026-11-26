@@ -49,7 +49,7 @@ export const CHANTELOUP_LES_VIGNES_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Chanteloup-les-Vignes et boucle de Seine ?",
-      a: "Oui, Axion-IA intervient à Chanteloup-les-Vignes et dans la boucle de Seine (Poissy à 10 min, Conflans-Sainte-Honorine à 10 min, Cergy-Pontoise à 15 min, Paris-Saint-Lazare à 45 min via Transilien J).",
+      a: "Oui, Axion-IA intervient à Chanteloup-les-Vignes et dans la boucle de Seine (Poissy, Conflans-Sainte-Honorine, Cergy-Pontoise).",
     },
     {
       q: "Travaillez-vous avec les TPE artisans BTP de Chanteloup ?",
@@ -65,7 +65,7 @@ export const CHANTELOUP_LES_VIGNES_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Chanteloup-les-Vignes ?",
-      a: "Paris-Saint-Lazare (45 min Transilien J), gare de Chanteloup-les-Vignes sur place. Poissy à 10 min. Tarifs publics.",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Chanteloup-les-Vignes, comme partout en France, ou à distance.",
     },
   ],
 };

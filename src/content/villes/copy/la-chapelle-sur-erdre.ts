@@ -229,8 +229,8 @@ export const LA_CHAPELLE_SUR_ERDRE_COPY: VilleCopy = {
 
   faqGeolocalisee: [
     {
-      q: "Axion-IA se déplace-t-il sur site à La Chapelle-sur-Erdre ?",
-      a: "Oui. Notre cabinet d'experts IA se déplace directement dans vos locaux à La Chapelle-sur-Erdre et dans la métropole nantaise, généralement sous cinq jours ouvrés après validation de la mission.",
+      q: "Intervenez-vous à La Chapelle-sur-Erdre ?",
+      a: "Oui. Nous intervenons sur place à La Chapelle-sur-Erdre, comme partout en France, ou à distance.",
     },
     {
       q: "Quels gains l'IA apporte-t-elle à une TPE de services de La Chapelle-sur-Erdre ?",

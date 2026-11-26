@@ -49,7 +49,7 @@ export const PLEDRAN_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Plédran et dans l'agglomération de Saint-Brieuc ?",
-      a: "Oui, Axion-IA intervient à Plédran et dans toute l'agglomération de Saint-Brieuc (Ploufragan, Trégueux, Plérin, Langueux, Yffiniac). Saint-Brieuc centre à 10 min, Rennes à 1h par voie express.",
+      a: "Oui, Axion-IA intervient à Plédran et dans toute l'agglomération de Saint-Brieuc (Ploufragan, Trégueux, Plérin, Langueux, Yffiniac).",
     },
     {
       q: "Travaillez-vous avec les PME de services de l'agglomération briochine ?",
@@ -65,7 +65,7 @@ export const PLEDRAN_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Plédran ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Gare TGV de Saint-Brieuc sur la ligne Paris-Brest.",
+      a: "Nous intervenons partout en France, sur place ou à distance.",
     },
   ],
 };

@@ -11,9 +11,9 @@ export const BEZONS_COPY: VilleCopy = {
   pitchEn:
     "Axion-IA accompagne les TPE et PME de Bezons (36 434 habitants, Val-d'Oise) dans leur transformation par l'intelligence artificielle. Située sur la rive droite de la Seine, à la frontière des Hauts-de-Seine et des Yvelines, Bezons abrite le siège mondial d'Atos ainsi que des implantations SFR et Darty, héritages d'un tissu industriel historique (Rhône-Poulenc, Hispano-Suiza). Nous intervenons partout en France, sur place ou à distance.",
   directAnswerFr:
-    "À Bezons (95870, Val-d'Oise, 36 434 habitants), Axion-IA intervient sur site auprès des TPE et PME, et complémentairement des ETI implantées localement comme Atos, SFR ou Darty. Notre cabinet national se déplace via le tramway T2 reliant La Défense en douze minutes, ou par les autoroutes A14, A15 et A86. Nous proposons des audits IA, des automatisations métier en code custom (jamais no-code) et un accompagnement un-à-un des dirigeants, avec un premier tarif public à {{price:intervention-4h|flat}}, dans le respect du RGPD et de l'AI Act.",
+    "À Bezons (95870, Val-d'Oise, 36 434 habitants), Axion-IA intervient sur site auprès des TPE et PME, et complémentairement des ETI implantées localement comme Atos, SFR ou Darty. Nous proposons des audits IA, des automatisations métier en code custom (jamais no-code) et un accompagnement un-à-un des dirigeants, avec un premier tarif public à {{price:intervention-4h|flat}}, dans le respect du RGPD et de l'AI Act.",
   directAnswerEn:
-    "À Bezons (95870, Val-d'Oise, 36 434 habitants), Axion-IA intervient sur site auprès des TPE et PME, et complémentairement des ETI implantées localement comme Atos, SFR ou Darty. Notre cabinet national se déplace via le tramway T2 reliant La Défense en douze minutes, ou par les autoroutes A14, A15 et A86. Nous proposons des audits IA, des automatisations métier en code custom (jamais no-code) et un accompagnement un-à-un des dirigeants, avec un premier tarif public à {{price:intervention-4h|flat}}, dans le respect du RGPD et de l'AI Act.",
+    "À Bezons (95870, Val-d'Oise, 36 434 habitants), Axion-IA intervient sur site auprès des TPE et PME, et complémentairement des ETI implantées localement comme Atos, SFR ou Darty. Nous proposons des audits IA, des automatisations métier en code custom (jamais no-code) et un accompagnement un-à-un des dirigeants, avec un premier tarif public à {{price:intervention-4h|flat}}, dans le respect du RGPD et de l'AI Act.",
   seoHook: "Atos, SFR, Darty & tramway T2 La Défense",
   ecosystemFr:
     "Bezons est marquée par un héritage industriel fort (anciennement Rhône-Poulenc, Hispano-Suiza, Le Joint français) reconverti en pôle tertiaire de premier plan : Atos y maintient son siège mondial, aux côtés de SFR et Darty. La commune borde Argenteuil, Sartrouville, Houilles, Carrières-sur-Seine, Colombes et Nanterre, ce qui place les TPE et PME locales dans l'aire d'influence directe de La Défense, accessible en douze minutes par le tramway T2.",
@@ -51,7 +51,7 @@ export const BEZONS_COPY: VilleCopy = {
   services: {
     sitesWeb: {
       fr: {
-        hero: "Bezons (Val-d'Oise, 95870) n'est pas une banlieue tertiaire générique : c'est l'adresse du siège mondial d'Atos SE et d'Eviden, réunis dans l'immeuble River Ouest au 80 quai Voltaire, au cœur d'un bassin IT dense où Bull et Dell occupent la Z.I. EST (24,63 hectares, près de 329 entreprises). Axion-IA y conçoit des sites web et plateformes SaaS augmentés par l'IA pour les TPE, PME et sous-traitants gravitant autour de cet écosystème d'éditeurs logiciels et de sièges sociaux, à douze minutes de La Défense par le tramway T2. Code custom, hébergement Union européenne conforme RGPD, zéro dépendance éditeur — pour des dirigeants bezonnais qui veulent une plateforme qu'ils maîtrisent, pas une location.",
+        hero: "Bezons (Val-d'Oise, 95870) n'est pas une banlieue tertiaire générique : c'est l'adresse du siège mondial d'Atos SE et d'Eviden, réunis dans l'immeuble River Ouest au 80 quai Voltaire, au cœur d'un bassin IT dense où Bull et Dell occupent la Z.I. EST (24,63 hectares, près de 329 entreprises). Axion-IA y conçoit des sites web et plateformes SaaS augmentés par l'IA pour les TPE, PME et sous-traitants gravitant autour de cet écosystème d'éditeurs logiciels et de sièges sociaux. Code custom, hébergement Union européenne conforme RGPD, zéro dépendance éditeur — pour des dirigeants bezonnais qui veulent une plateforme qu'ils maîtrisent, pas une location.",
         whyHere: [
           "L'écosystème IT de Bezons est notre terrain naturel : autour d'Atos, d'Eviden et de Bull, un tissu dense de sous-traitants, d'éditeurs logiciels et de prestataires de services numériques a besoin de portails clients, d'espaces SaaS et de sites métiers fiables — exactement ce que nous construisons en code custom.",
           "La restructuration en cours d'Atos (projet « All In Pacific », consolidation du campus de Bezons d'ici fin 2025) libère un vivier de talents et d'anciens prestataires qui montent leurs propres structures : ces nouvelles PME numériques bezonnaises ont besoin d'une plateforme web crédible dès le premier jour.",
@@ -130,14 +130,14 @@ export const BEZONS_COPY: VilleCopy = {
           },
           {
             q: "Vous déplacez-vous sur site à Bezons et dans les communes voisines ?",
-            a: "Oui. Nous intervenons à Bezons via le tramway T2 (terminus Pont de Bezons, douze minutes de La Défense) et couvrons Argenteuil, Sartrouville, Houilles, Carrières-sur-Seine, Colombes et Nanterre, qui partagent le même tissu de PME et de sous-traitants.",
+            a: "Oui. Nous intervenons dans vos locaux à Bezons et couvrons Argenteuil, Sartrouville, Houilles, Carrières-sur-Seine, Colombes et Nanterre, qui partagent le même tissu de PME et de sous-traitants.",
           },
         ],
         guarantees:
           "Plateforme livrée en code custom, sans verrou éditeur : vous gardez l'intégralité du code source, des modèles IA et des accès, transférables à tout intégrateur d'Île-de-France ou repris en interne. Hébergement en Union européenne par défaut, conformité RGPD et AI Act, DPO sur demande — un cadre adapté aux exigences de souveraineté de l'écosystème IT bezonnais (Atos, Eviden, Bull et leurs sous-traitants). Périmètre et livrables figés au démarrage, devis remis à partir de 24 à 48 h selon la complexité. Aucune dépendance contractuelle continue imposée.",
       },
       en: {
-        hero: "Bezons (Val-d'Oise, 95870) is no generic office suburb: it is the address of Atos SE's and Eviden's world headquarters, housed together in the River Ouest building at 80 quai Voltaire, at the heart of a dense IT cluster where Bull and Dell occupy the Z.I. EST activity zone (24.63 hectares, nearly 329 companies). Axion-IA designs AI-augmented websites and SaaS platforms for the micro-businesses, SMEs and subcontractors orbiting this ecosystem of software publishers and corporate headquarters, twelve minutes from La Défense on the T2 tram. Custom code, European Union hosting compliant with GDPR, zero vendor lock-in — for Bezons leaders who want a platform they own, not a rental.",
+        hero: "Bezons (Val-d'Oise, 95870) is no generic office suburb: it is the address of Atos SE's and Eviden's world headquarters, housed together in the River Ouest building at 80 quai Voltaire, at the heart of a dense IT cluster where Bull and Dell occupy the Z.I. EST activity zone (24.63 hectares, nearly 329 companies). Axion-IA designs AI-augmented websites and SaaS platforms for the micro-businesses, SMEs and subcontractors orbiting this ecosystem of software publishers and corporate headquarters. Axion-IA works anywhere in France, on site or remotely, including in Bezons. Custom code, European Union hosting compliant with GDPR, zero vendor lock-in — for Bezons leaders who want a platform they own, not a rental.",
         whyHere: [
           "Bezons' IT ecosystem is our natural ground: around Atos, Eviden and Bull sits a dense fabric of subcontractors, software publishers and digital service providers needing reliable client portals, SaaS spaces and business websites — exactly what we build in custom code.",
           "Atos' ongoing restructuring (the 'All In Pacific' project consolidating the Bezons campus by end of 2025) frees a pool of talent and former providers launching their own structures: these new Bezons digital SMEs need a credible web platform from day one.",
@@ -216,7 +216,7 @@ export const BEZONS_COPY: VilleCopy = {
           },
           {
             q: "Do you travel on site to Bezons and neighbouring communes?",
-            a: "Yes. We work in Bezons via the T2 tram (Pont de Bezons terminus, twelve minutes from La Défense) and cover Argenteuil, Sartrouville, Houilles, Carrières-sur-Seine, Colombes and Nanterre, which share the same fabric of SMEs and subcontractors.",
+            a: "Yes. Axion-IA works anywhere in France, on site or remotely, including in Bezons and neighbouring communes such as Argenteuil, Sartrouville, Houilles, Carrières-sur-Seine, Colombes and Nanterre, which share the same fabric of SMEs and subcontractors.",
           },
         ],
         guarantees:
@@ -231,8 +231,8 @@ export const BEZONS_COPY: VilleCopy = {
       a: "Nos tarifs publics démarrent à {{price:audit-flash|flat}} pour un Audit sur place et {{price:intervention-4h|flat}} pour une intervention au format collectif (1 journée) à Bezons. L'implémentation et l'accompagnement un-à-un débutent à {{price:intervention-dirigeants|flat}}, sans frais cachés.",
     },
     {
-      q: "Axion-IA se déplace-t-il sur site à Bezons (Val-d'Oise) ?",
-      a: "Oui. Nous intervenons partout en France, sur place ou à distance.",
+      q: "Comment se déroule une mission à Bezons (Val-d'Oise) ?",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Bezons (Val-d'Oise), comme partout en France, ou à distance.",
     },
     {
       q: "Quels délais pour démarrer un projet IA à Bezons ?",

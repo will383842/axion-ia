@@ -65,7 +65,7 @@ export const EGLY_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Égly ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Accès rapide via RER C Brétigny ou route RN20.",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Égly, comme partout en France, ou à distance.",
     },
   ],
 };

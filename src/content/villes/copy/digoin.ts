@@ -49,7 +49,7 @@ export const DIGOIN_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Digoin et dans le Charolais ?",
-      a: "Oui, Axion-IA intervient à Digoin et tout le Charolais (Paray-le-Monial à 20 min, Moulins à 30 min, Roanne à 45 min). Le Creusot-TGV à 50 min, Lyon à 1h45.",
+      a: "Oui. Nous intervenons à Digoin et dans tout le Charolais (Paray-le-Monial, Moulins, Roanne), sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les artisans céramistes et faïenciers ?",
@@ -65,7 +65,7 @@ export const DIGOIN_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Digoin ?",
-      a: "Lyon à 1h45 via A6, Roanne à 45 min. Le Creusot-TGV à 50 min.",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Digoin, comme partout en France, ou à distance.",
     },
   ],
 };

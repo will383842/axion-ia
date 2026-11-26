@@ -64,7 +64,7 @@ export const L_HAY_LES_ROSES_COPY: VilleCopy = {
           {
             step: "Cadrage à L'Haÿ-les-Roses",
             detail:
-              "Kick-off sur site, à L'Haÿ-les-Roses ou dans le secteur gare des ZAC Lallier / Paul Hochart : nous cartographions votre activité (commerce de proximité, artisan du bâtiment, profession de santé, PME tertiaire), vos canaux d'acquisition et les parcours clients à digitaliser.",
+              "Kick-off sur site, à L'Haÿ-les-Roses ou dans le secteur des ZAC Lallier / Paul Hochart : nous cartographions votre activité (commerce de proximité, artisan du bâtiment, profession de santé, PME tertiaire), vos canaux d'acquisition et les parcours clients à digitaliser.",
           },
           {
             step: "Conception UX/UI mobile-first",
@@ -229,8 +229,8 @@ export const L_HAY_LES_ROSES_COPY: VilleCopy = {
 
   faqGeolocalisee: [
     {
-      q: "Axion-IA se déplace-t-il sur site à L'Haÿ-les-Roses ?",
-      a: "Oui. Notre cabinet d'experts IA se déplace directement dans vos locaux à L'Haÿ-les-Roses et dans le sud francilien, généralement sous cinq jours ouvrés après validation de la mission.",
+      q: "Intervenez-vous à L'Haÿ-les-Roses ?",
+      a: "Oui. Nous intervenons sur place à L'Haÿ-les-Roses, comme partout en France, ou à distance.",
     },
     {
       q: "Quels gains l'IA apporte-t-elle à un artisan de L'Haÿ-les-Roses ?",

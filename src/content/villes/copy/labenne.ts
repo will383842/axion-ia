@@ -49,7 +49,7 @@ export const LABENNE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Labenne et le sud des Landes ?",
-      a: "Oui, Axion-IA intervient à Labenne et tout le sud des Landes (Capbreton, Ondres, Tarnos, Saint-Martin-de-Seignanx). Couverture plage, zone commerciale et bourg. Déplacement depuis Bayonne (15 min A63).",
+      a: "Oui, Axion-IA intervient à Labenne et tout le sud des Landes (Capbreton, Ondres, Tarnos, Saint-Martin-de-Seignanx). Couverture plage, zone commerciale et bourg. Nous nous déplaçons chez vous, partout en France.",
     },
     {
       q: "Proposez-vous des audits IA pour les campings labennais ?",
@@ -64,8 +64,8 @@ export const LABENNE_COPY: VilleCopy = {
       a: "Pour les TPE artisans BTP et restaurateurs à Labenne, audit sur place {{price:audit-flash|flat}}, coaching 1-to-1, intervention formation. Cas typiques : automatisation devis, gestion réservations, classification avis clients, facturation.",
     },
     {
-      q: "Comment se passe une mission à Labenne depuis Bayonne ?",
-      a: "Labenne est à 15 min de Bayonne par A63 (sortie directe). Nos consultants interviennent facilement sur site. Aéroport Biarritz à 20 min. Tarifs transparents.",
+      q: "Comment se déroule une mission Axion-IA à Labenne ?",
+      a: "Nous intervenons partout en France, sur place dans vos locaux ou à distance en visio. Après le cadrage de votre besoin, nous planifions l'intervention et livrons un résultat actionnable.",
     },
   ],
 };

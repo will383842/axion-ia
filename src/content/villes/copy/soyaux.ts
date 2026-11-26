@@ -49,7 +49,7 @@ export const SOYAUX_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Soyaux et dans l'agglomération d'Angoulême ?",
-      a: "Oui, Axion-IA intervient à Soyaux et toute l'agglomération GrandAngoulême (Angoulême, La Couronne, Saint-Yrieix, Ruelle-sur-Touvre, Gond-Pontouvre). La gare TGV d'Angoulême est à 10 min.",
+      a: "Oui, Axion-IA intervient à Soyaux et toute l'agglomération GrandAngoulême (Angoulême, La Couronne, Saint-Yrieix, Ruelle-sur-Touvre, Gond-Pontouvre).",
     },
     {
       q: "Quels services IA pour les PME tertiaires à Soyaux ?",
@@ -65,7 +65,7 @@ export const SOYAUX_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA sur site à Soyaux ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Mission sur site dans vos locaux, bureau ou commerce à Soyaux, commune à 10 min de la gare TGV d'Angoulême.",
+      a: "Nous intervenons partout en France, sur place ou à distance.",
     },
   ],
 };

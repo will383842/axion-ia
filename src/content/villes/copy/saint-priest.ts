@@ -132,7 +132,7 @@ export const SAINT_PRIEST_COPY: VilleCopy = {
           },
           {
             q: "Quel délai pour un devis à Saint-Priest ?",
-            a: "Un devis est remis à partir de 24 à 48 h selon la complexité du projet. La desserte par le tram T2, la rocade est et l'A43 nous permet de venir cadrer le projet sur site, de la ZI Mi-Plaine au Parc Technologique de Lyon, sans friction d'agenda.",
+            a: "Un devis est remis à partir de 24 à 48 h selon la complexité du projet.",
           },
         ],
         guarantees:
@@ -233,8 +233,8 @@ export const SAINT_PRIEST_COPY: VilleCopy = {
       a: "Oui. Les sous-traitants industriels et PME mécaniques de Saint-Priest et de l'est lyonnais figurent parmi nos cibles prioritaires. Nous automatisons leurs flux administratifs et leur reporting, sans intervenir sur leurs lignes de production.",
     },
     {
-      q: "Axion-IA se déplace-t-il sur site à Saint-Priest ?",
-      a: "Oui, nos experts IA interviennent dans vos locaux, des zones industrielles au Parc Technologique de Lyon. L'audit terrain reste le meilleur moyen de cibler des automatisations réellement utiles à votre métier.",
+      q: "Intervenez-vous sur site à Saint-Priest ?",
+      a: "Oui. Nous intervenons dans vos locaux, des zones industrielles au Parc Technologique de Lyon. L'audit terrain reste le meilleur moyen de cibler des automatisations réellement utiles à votre métier.",
     },
     {
       q: "Accompagnez-vous les PME tech du Parc Technologique de Lyon ?",
@@ -242,7 +242,7 @@ export const SAINT_PRIEST_COPY: VilleCopy = {
     },
     {
       q: "Quel délai pour une première intervention à Saint-Priest ?",
-      a: "Nous visons un démarrage sous cinq jours ouvrés après validation, selon nos disponibilités. La desserte par le tramway T2 et la rocade est nous permettent d'être réactifs sur tout l'est de la métropole lyonnaise.",
+      a: "Nous visons un démarrage sous cinq jours ouvrés après validation, selon nos disponibilités.",
     },
     {
       q: "Comment garantissez-vous la conformité RGPD à Saint-Priest ?",

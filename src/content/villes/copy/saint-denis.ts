@@ -531,7 +531,7 @@ export const SAINT_DENIS_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Combien coûte un audit IA opérationnel à Saint-Denis ?",
-      a: "Le tarif dépend du niveau retenu — Audit sur place, Ciblé, Stratégique PME ou Stratégique ETI. Tarifs publics affichés sur la page Audit, calibrés selon votre taille (TPE, PME, ETI, grande entreprise). Aucun supplément géographique : le tarif est identique à Saint-Denis et partout en France.",
+      a: "Le tarif dépend du niveau retenu — Audit sur place, Ciblé, Stratégique PME ou Stratégique ETI. Tarifs publics affichés sur la page Audit, calibrés selon votre taille (TPE, PME, ETI, grande entreprise).",
     },
     {
       q: "Pouvez-vous intervenir dans des entrepôts logistiques ou sur des chantiers Grand Paris ?",
@@ -543,11 +543,11 @@ export const SAINT_DENIS_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une intervention à Saint-Denis ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Saint-Denis est directement desservi par le RER D, le RER B (La Plaine–Stade de France) et le métro ligne 13.",
+      a: "Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Intervenez-vous aussi dans les communes Plaine Commune voisines ?",
-      a: "Oui. Nous intervenons dans toute l'intercommunalité Plaine Commune : Saint-Ouen (3 km de Saint-Denis), Aubervilliers (3 km), Épinay-sur-Seine (4 km), Pierrefitte-sur-Seine (4 km), Stains (5 km), Villetaneuse (5 km), L'Île-Saint-Denis. Plus largement, nous intervenons partout en France, sur place ou à distance.",
+      a: "Oui. Nous intervenons dans toute l'intercommunalité Plaine Commune : Saint-Ouen, Aubervilliers, Épinay-sur-Seine, Pierrefitte-sur-Seine, Stains, Villetaneuse, L'Île-Saint-Denis. Plus largement, nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "En combien de temps pouvez-vous démarrer une mission à Saint-Denis ?",

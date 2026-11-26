@@ -49,7 +49,7 @@ export const LOIRE_AUTHION_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Loire-Authion et dans le bassin horticole angevin ?",
-      a: "Oui, Axion-IA intervient à Loire-Authion et dans tout le bassin horticole angevin (Mazé-Milon, Beaufort-en-Anjou, Les Ponts-de-Cé, Trélazé). Nos consultants se déplacent depuis Angers centre en 15 minutes.",
+      a: "Oui, Axion-IA intervient à Loire-Authion et dans tout le bassin horticole angevin (Mazé-Milon, Beaufort-en-Anjou, Les Ponts-de-Cé, Trélazé). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "L'IA peut-elle aider les pépinières et horticulteurs du val d'Authion ?",
@@ -64,8 +64,8 @@ export const LOIRE_AUTHION_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les exploitations maraîchères et fruitières de Loire-Authion sur des cas IA concrets : prédiction météo et récolte, automatisation irrigation, gestion stocks et commercialisation circuits courts, traçabilité phytosanitaire.",
     },
     {
-      q: "Comment vos consultants se rendent-ils à Loire-Authion ?",
-      a: "Nos consultants viennent d'Angers centre (15 min D347). La gare TGV Angers Saint-Laud est à 20 min. L'A11 est à 10 min. Pour les missions multi-jours, hébergement local possible.",
+      q: "Intervenez-vous sur site à Loire-Authion ?",
+      a: "Oui. Nous intervenons sur place à Loire-Authion, comme partout en France, ou à distance.",
     },
   ],
 };

@@ -49,7 +49,7 @@ export const VILLERS_LE_LAC_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Villers-le-Lac et dans le Haut-Doubs ?",
-      a: "Oui, Axion-IA intervient à Villers-le-Lac et dans tout le Haut-Doubs (Morteau, Les Fins, Le Locle côté suisse, Pontarlier). Couverture également Besançon métropole à 1h10 et clients suisses voisins également accompagnés.",
+      a: "Oui, Axion-IA intervient à Villers-le-Lac et dans tout le Haut-Doubs (Morteau, Les Fins, Le Locle côté suisse, Pontarlier). Nous accompagnons aussi les entreprises de Besançon métropole et les clients suisses voisins.",
     },
     {
       q: "Travaillez-vous avec les entreprises horlogères du Val de Morteau ?",
@@ -65,7 +65,7 @@ export const VILLERS_LE_LAC_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Villers-le-Lac ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Pour les missions multi-jours, hébergement local possible.",
+      a: "Nous intervenons partout en France, sur place ou à distance.",
     },
   ],
 };

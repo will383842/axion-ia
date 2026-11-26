@@ -65,7 +65,7 @@ export const SAINT_FLOUR_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Saint-Flour ?",
-      a: "Clermont-Ferrand (1h30 A75).",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Saint-Flour, comme partout en France, ou à distance.",
     },
   ],
 };

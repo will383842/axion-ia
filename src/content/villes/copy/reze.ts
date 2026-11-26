@@ -36,8 +36,8 @@ export const REZE_COPY: VilleCopy = {
       en: "Audit IA sur place 4h à Rezé dès {{price:audit-flash|flat}} — cartographie des automatisations pour TPE/PME de la zone Atout-Sud, du MIN et des artisans locaux.",
     },
     interventions: {
-      fr: "Intervention sur site à Rezé dès {{price:intervention-4h|flat}} — déplacement consultant Atout-Sud, ZAC de la Brosse, ZAC de la Jaguère, et communes limitrophes (Nantes, Vertou, Bouguenais).",
-      en: "Intervention sur site à Rezé dès {{price:intervention-4h|flat}} — déplacement consultant Atout-Sud, ZAC de la Brosse, ZAC de la Jaguère, et communes limitrophes (Nantes, Vertou, Bouguenais).",
+      fr: "Intervention sur site à Rezé dès {{price:intervention-4h|flat}} — Atout-Sud, ZAC de la Brosse, ZAC de la Jaguère, et communes limitrophes (Nantes, Vertou, Bouguenais).",
+      en: "Intervention sur site à Rezé dès {{price:intervention-4h|flat}} — Atout-Sud, ZAC de la Brosse, ZAC de la Jaguère, et communes limitrophes (Nantes, Vertou, Bouguenais).",
     },
     implementation: {
       fr: "Implémentation code custom à Rezé dès {{price:impl-poc|entry}} — automatisations devis, factures, stock et logistique pour commerces et structures du MIN.",
@@ -231,8 +231,8 @@ export const REZE_COPY: VilleCopy = {
       a: "Audit sur place 4h dès {{price:audit-flash|flat}}, intervention sur site dès {{price:intervention-4h|flat}}, implémentation code custom dès {{price:impl-poc|entry}}. Grille publique disponible sur notre page Pricing, sans frais cachés ni abonnement imposé.",
     },
     {
-      q: "Vos consultants se déplacent-ils sur Atout-Sud, le MIN et les communes voisines ?",
-      a: "Oui. Nous intervenons sur la zone Atout-Sud (Trentemoult / Pont-Rousseau), la ZAC de la Brosse (Marché d'Intérêt National), la ZAC de la Jaguère, et nous déplaçons aussi à Nantes, Vertou, Les Sorinières, Pont-Saint-Martin et Bouguenais.",
+      q: "Intervenez-vous sur Atout-Sud, le MIN et les communes voisines ?",
+      a: "Oui. Nous intervenons sur la zone Atout-Sud (Trentemoult / Pont-Rousseau), la ZAC de la Brosse (Marché d'Intérêt National), la ZAC de la Jaguère, et aussi à Nantes, Vertou, Les Sorinières, Pont-Saint-Martin et Bouguenais.",
     },
     {
       q: "Quels délais pour démarrer un projet IA à Rezé ?",

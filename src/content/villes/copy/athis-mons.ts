@@ -60,7 +60,7 @@ export const ATHIS_MONS_COPY: VilleCopy = {
           "Athis-Mons est un point de gouvernance du ciel français : CRNA Nord, DSAC-Nord et SNA Région Parisienne y sont co-implantés. L'écosystème de prestataires, bureaux d'études et services tournés vers l'aviation civile et Orly a des besoins de portails documentaires et d'outils internes que nous savons sécuriser et structurer.",
           "13,6 % de l'emprise de l'aéroport Paris-Orly (Groupe ADP) est sur la commune : les TPE/PME de la logistique, du fret, de l'assistance et des services aéroportuaires ont besoin de plateformes de suivi opérationnel, de prise de rendez-vous et de devis en ligne adaptées à des flux 24/7.",
           "Le commerce de détail local — centre commercial Carrefour Athis-Mons et ses ~40 enseignes, commerçants du Pont d'Athis et des quartiers — relève d'e-commerce multi-CMS (WooCommerce, PrestaShop, Shopify) et de vitrines mobiles rapides, avec click-and-collect et IA de recommandation.",
-          "Desserte RER C (gare d'Athis-Mons) et tramway T7 vers Villejuif : nous intervenons sur site dans tout le bassin Grand-Orly Seine Bièvre (Juvisy-sur-Orge, Paray-Vieille-Poste, Savigny-sur-Orge, Ablon-sur-Seine, Villeneuve-le-Roi).",
+          "Nous intervenons sur site dans tout le bassin Grand-Orly Seine Bièvre (Juvisy-sur-Orge, Paray-Vieille-Poste, Savigny-sur-Orge, Ablon-sur-Seine, Villeneuve-le-Roi).",
         ],
         methodology: [
           {
@@ -134,7 +134,7 @@ export const ATHIS_MONS_COPY: VilleCopy = {
           },
           {
             q: "Couvrez-vous les communes autour d'Athis-Mons ?",
-            a: "Oui, nous nous déplaçons dans tout le territoire Grand-Orly Seine Bièvre : Juvisy-sur-Orge, Paray-Vieille-Poste, Savigny-sur-Orge, Ablon-sur-Seine et Villeneuve-le-Roi, accessibles via le RER C et le tramway T7.",
+            a: "Oui, nous intervenons dans tout le territoire Grand-Orly Seine Bièvre : Juvisy-sur-Orge, Paray-Vieille-Poste, Savigny-sur-Orge, Ablon-sur-Seine et Villeneuve-le-Roi.",
           },
         ],
         guarantees:
@@ -146,7 +146,7 @@ export const ATHIS_MONS_COPY: VilleCopy = {
           "Athis-Mons is a control point of French airspace: CRNA Nord, DSAC-Nord and SNA Région Parisienne are co-located here. The ecosystem of providers, engineering firms and services geared toward civil aviation and Orly needs document portals and internal tools that we know how to secure and structure.",
           "13.6% of the Paris-Orly airport footprint (Groupe ADP) is on the town: logistics, freight, handling and airport-services SMEs need operational tracking platforms, online booking and quoting tailored to 24/7 flows.",
           "Local retail — the Carrefour Athis-Mons shopping centre with its ~40 brands, Pont d'Athis and neighbourhood shops — calls for multi-CMS e-commerce (WooCommerce, PrestaShop, Shopify) and fast mobile storefronts with click-and-collect and recommendation AI.",
-          "RER C (Athis-Mons station) and tram T7 to Villejuif: we work on site at no extra cost across the Grand-Orly Seine Bièvre area (Juvisy-sur-Orge, Paray-Vieille-Poste, Savigny-sur-Orge, Ablon-sur-Seine, Villeneuve-le-Roi).",
+          "We work on site across the Grand-Orly Seine Bièvre area (Juvisy-sur-Orge, Paray-Vieille-Poste, Savigny-sur-Orge, Ablon-sur-Seine, Villeneuve-le-Roi).",
         ],
         methodology: [
           {
@@ -220,7 +220,7 @@ export const ATHIS_MONS_COPY: VilleCopy = {
           },
           {
             q: "Do you cover the towns around Athis-Mons?",
-            a: "Yes, we travel across the Grand-Orly Seine Bièvre territory: Juvisy-sur-Orge, Paray-Vieille-Poste, Savigny-sur-Orge, Ablon-sur-Seine and Villeneuve-le-Roi, reachable via RER C and tram T7.",
+            a: "Yes. Axion-IA works anywhere in France, on site or remotely, including across the Grand-Orly Seine Bièvre territory: Juvisy-sur-Orge, Paray-Vieille-Poste, Savigny-sur-Orge, Ablon-sur-Seine and Villeneuve-le-Roi.",
           },
         ],
         guarantees:
@@ -239,8 +239,8 @@ export const ATHIS_MONS_COPY: VilleCopy = {
       a: `Pour les TPE, PME et ETI d'Athis-Mons, nous planifions l'Audit sur place sous 5 jours ouvrés après validation. ${DELAI_ACCES_PHRASE} La date de la formation est convenue avec vous.`,
     },
     {
-      q: "Couvrez-vous aussi Juvisy-sur-Orge, Paray-Vieille-Poste et Ablon-sur-Seine depuis Athis-Mons ?",
-      a: "Oui, nous nous déplaçons dans les communes limitrophes d'Athis-Mons : Juvisy-sur-Orge, Paray-Vieille-Poste, Savigny-sur-Orge, Villeneuve-le-Roi et Ablon-sur-Seine.",
+      q: "Intervenez-vous aussi à Juvisy-sur-Orge, Paray-Vieille-Poste et Ablon-sur-Seine ?",
+      a: "Oui, nous intervenons dans vos locaux dans les communes limitrophes d'Athis-Mons : Juvisy-sur-Orge, Paray-Vieille-Poste, Savigny-sur-Orge, Villeneuve-le-Roi et Ablon-sur-Seine.",
     },
     {
       q: "Comment Axion-IA garantit-il la conformité RGPD à Athis-Mons ?",

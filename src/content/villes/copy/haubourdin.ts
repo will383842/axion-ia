@@ -65,7 +65,7 @@ export const HAUBOURDIN_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission Axion-IA à Haubourdin ?",
-      a: "Nos consultants interviennent depuis Lille en 12 min. Haubourdin fait partie de la MEL. Sessions sur site ou en visio selon vos préférences.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Haubourdin fait partie de la MEL. Sessions sur site ou en visio selon vos préférences.",
     },
   ],
 };

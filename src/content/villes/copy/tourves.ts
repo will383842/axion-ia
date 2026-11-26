@@ -49,7 +49,7 @@ export const TOURVES_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Tourves et dans le Centre-Var ?",
-      a: "Oui, Axion-IA intervient à Tourves et dans tout le Centre-Var (Brignoles, Saint-Maximin, Bras, Mazaugues, La Celle). Accès direct via A8.",
+      a: "Oui, Axion-IA intervient à Tourves et dans tout le Centre-Var (Brignoles, Saint-Maximin, Bras, Mazaugues, La Celle).",
     },
     {
       q: "Tarifs audit IA à Tourves  : quel budget prévoir ?",
@@ -65,7 +65,7 @@ export const TOURVES_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une intervention à Tourves ?",
-      a: "Nous intervenons partout en France, sur place ou à distance, dans vos locaux ou domaines. Tourves est à 10 min de Brignoles et 15 min de Saint-Maximin via A8.",
+      a: "Nous intervenons partout en France, sur place ou à distance, dans vos locaux ou domaines.",
     },
   ],
 };

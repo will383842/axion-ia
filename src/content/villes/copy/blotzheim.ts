@@ -49,7 +49,7 @@ export const BLOTZHEIM_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Blotzheim et autour de Bâle ?",
-      a: "Oui, Axion-IA intervient à Blotzheim et sur toute Saint-Louis Agglomération (Saint-Louis, Hégenheim, Hésingue, Village-Neuf). Position trinationale FR/CH/DE, accès direct via A35 et proximité immédiate de l'EuroAirport facilitant nos missions consultants.",
+      a: "Oui, Axion-IA intervient à Blotzheim et sur toute Saint-Louis Agglomération (Saint-Louis, Hégenheim, Hésingue, Village-Neuf).",
     },
     {
       q: "Tarifs audit IA à Blotzheim  : quel budget prévoir ?",

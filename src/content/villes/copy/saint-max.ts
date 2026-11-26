@@ -64,8 +64,8 @@ export const SAINT_MAX_COPY: VilleCopy = {
       a: "Oui, devis intelligents, planning chantiers, automatisation administrative, gestion documentaire cabinets, facturation augmentée pour artisans et professionnels libéraux.",
     },
     {
-      q: "Comment accéder à Saint-Max ?",
-      a: "Paris-Est à 1 h 30 (TGV via Nancy + 10 min). Autoroute A33 accessible en 10 min. Nancy centre à 10 min.",
+      q: "Comment se déroule une mission à Saint-Max ?",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Saint-Max, comme partout en France, ou à distance.",
     },
   ],
 };

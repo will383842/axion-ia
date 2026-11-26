@@ -49,7 +49,7 @@ export const SAINT_CHERON_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Saint-Chéron et vallée de l'Orge ?",
-      a: "Oui, Axion-IA intervient à Saint-Chéron et toute la vallée de l'Orge (Dourdan à 10 min, Arpajon à 15 min, Évry-Courcouronnes à 25 min). Gare RER C Saint-Chéron.",
+      a: "Oui, Axion-IA intervient à Saint-Chéron et dans toute la vallée de l'Orge (Dourdan, Arpajon, Évry-Courcouronnes). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les commerçants et artisans de Saint-Chéron ?",
@@ -65,7 +65,7 @@ export const SAINT_CHERON_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Saint-Chéron ?",
-      a: "Dourdan (10 min). Arpajon (15 min). Évry-Courcouronnes (25 min). Paris centre (50 min RER C). Orly (30 min).",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Saint-Chéron, comme partout en France, ou à distance.",
     },
   ],
 };

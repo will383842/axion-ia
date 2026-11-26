@@ -49,7 +49,7 @@ export const OLLAINVILLE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Ollainville et sud Essonne ?",
-      a: "Oui, Axion-IA intervient à Ollainville et tout le sud Essonne (Arpajon à 5 min, Brétigny-sur-Orge à 10 min, Évry-Courcouronnes à 20 min, Paris à 45 min).",
+      a: "Oui, Axion-IA intervient à Ollainville et dans tout le sud Essonne (Arpajon, Brétigny-sur-Orge, Évry-Courcouronnes).",
     },
     {
       q: "Travaillez-vous avec les artisans et commerçants d'Ollainville ?",
@@ -64,8 +64,8 @@ export const OLLAINVILLE_COPY: VilleCopy = {
       a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Outils IA de planification, suivi parcelles, gestion administrative.",
     },
     {
-      q: "Comment se passe une mission depuis Arpajon ou Évry ?",
-      a: "Arpajon (5 min). Brétigny-sur-Orge (10 min). Évry-Courcouronnes (20 min). Paris centre (45 min). Orly (25 min).",
+      q: "Comment se déroule une mission Axion-IA à Ollainville ?",
+      a: "Nous intervenons partout en France, sur place dans vos locaux ou à distance en visio. Après le cadrage de votre besoin, nous planifions l'intervention et livrons un résultat actionnable.",
     },
   ],
 };

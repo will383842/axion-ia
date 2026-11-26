@@ -49,7 +49,7 @@ export const SAINTE_LIVRADE_SUR_LOT_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Sainte-Livrade-sur-Lot ?",
-      a: "Oui, Axion-IA intervient à Sainte-Livrade-sur-Lot et dans toute la vallée du Lot (Villeneuve-sur-Lot, Casseneuil, Bias, Penne-d'Agenais). Consultants accessibles via Agen (gare TGV, 25 min).",
+      a: "Oui, Axion-IA intervient à Sainte-Livrade-sur-Lot et dans toute la vallée du Lot (Villeneuve-sur-Lot, Casseneuil, Bias, Penne-d'Agenais).",
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Sainte-Livrade-sur-Lot  ?",
@@ -65,7 +65,7 @@ export const SAINTE_LIVRADE_SUR_LOT_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Sainte-Livrade-sur-Lot ?",
-      a: "Nos consultants interviennent sur site à Sainte-Livrade-sur-Lot et dans la vallée du Lot, directement sur votre exploitation ou dans votre entreprise. Nous intervenons partout en France, sur place ou à distance. Sainte-Livrade est à 25 min d'Agen par la D911.",
+      a: "Nos consultants interviennent sur site à Sainte-Livrade-sur-Lot et dans la vallée du Lot, directement sur votre exploitation ou dans votre entreprise. Nous intervenons partout en France, sur place ou à distance.",
     },
   ],
 };

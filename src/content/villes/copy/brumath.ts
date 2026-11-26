@@ -49,7 +49,7 @@ export const BRUMATH_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Brumath ?",
-      a: "Oui, Axion-IA intervient à Brumath et dans toute la zone nord de l'eurométropole strasbourgeoise (Vendenheim, Mommenheim, Bischwiller, Hoerdt). Consultants via gare SNCF Brumath ou autoroute A4. Strasbourg accessible en 20 min.",
+      a: "Oui, Axion-IA intervient à Brumath et dans toute la zone nord de l'eurométropole strasbourgeoise (Vendenheim, Mommenheim, Bischwiller, Hoerdt).",
     },
     {
       q: "Travaillez-vous avec les PME agroalimentaires et industrielles ?",
@@ -65,7 +65,7 @@ export const BRUMATH_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Brumath ?",
-      a: "Nos consultants se déplacent via gare SNCF Brumath (ligne Strasbourg–Saverne) ou autoroute A4. Strasbourg à 20 min, Haguenau à 15 min, aéroport Entzheim à 35 min.",
+      a: "Une mission à Brumath démarre par un échange de cadrage, puis se déroule sur site ou à distance, avec des livrables remis et documentés.",
     },
   ],
 };

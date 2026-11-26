@@ -64,8 +64,8 @@ export const CUGES_LES_PINS_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les acteurs du tourisme et loisirs : agents conversationnels réservation multilingues, yield management saisonnier, automatisation gestion flux visiteurs, marketing ciblé.",
     },
     {
-      q: "Comment se déplace Axion-IA à Cuges-les-Pins ?",
-      a: "Cuges-les-Pins est à 15 min d'Aubagne et 35 min de Marseille. Nos consultants se déplacent dans vos locaux.",
+      q: "Comment se déroule une mission à Cuges-les-Pins ?",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Cuges-les-Pins, comme partout en France, ou à distance.",
     },
   ],
 };

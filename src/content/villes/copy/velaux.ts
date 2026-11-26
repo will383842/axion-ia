@@ -49,7 +49,7 @@ export const VELAUX_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Velaux et autour de l'étang de Berre ?",
-      a: "Oui, Axion-IA intervient à Velaux et dans tout le pourtour nord de l'étang de Berre (Coudoux, La Fare-les-Oliviers, Ventabren, Vitrolles, Cabriès, Rognac, Berre-l'Étang). Accès A7-A8 immédiat.",
+      a: "Oui, Axion-IA intervient à Velaux et dans tout le pourtour nord de l'étang de Berre (Coudoux, La Fare-les-Oliviers, Ventabren, Vitrolles, Cabriès, Rognac, Berre-l'Étang).",
     },
     {
       q: "Tarifs audit IA à Velaux  : quel budget prévoir ?",
@@ -65,7 +65,7 @@ export const VELAUX_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une intervention à Velaux ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Velaux est à 20 min d'Aix et 15 min de Marignane via A7-A8.",
+      a: "Nous intervenons partout en France, sur place ou à distance.",
     },
   ],
 };

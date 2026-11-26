@@ -49,7 +49,7 @@ export const FACHES_THUMESNIL_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Faches-Thumesnil et dans l'agglomération lilloise ?",
-      a: "Oui, Axion-IA intervient à Faches-Thumesnil et sur toute la Métropole Européenne de Lille (Lille, Ronchin, Lesquin, Wattignies, Seclin). Métro ligne 1 et A1 facilitent l'accès depuis Lille centre en 10 minutes.",
+      a: "Oui, Axion-IA intervient à Faches-Thumesnil et sur toute la Métropole Européenne de Lille (Lille, Ronchin, Lesquin, Wattignies, Seclin).",
     },
     {
       q: "Tarifs audit IA à Faches-Thumesnil  : quel budget prévoir ?",

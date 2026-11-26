@@ -49,7 +49,7 @@ export const HETTANGE_GRANDE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Hettange-Grande ?",
-      a: "Oui, Axion-IA intervient à Hettange-Grande et dans tout le Pays des Trois Frontières (Volmerange-les-Mines, Ottange, Fontoy, Audun-le-Tiche). Gare SNCF Hettange-Grande sur ligne Thionville-Luxembourg.",
+      a: "Oui, Axion-IA intervient à Hettange-Grande et dans tout le Pays des Trois Frontières (Volmerange-les-Mines, Ottange, Fontoy, Audun-le-Tiche).",
     },
     {
       q: "Travaillez-vous avec les entreprises liées au flux frontalier Luxembourg ?",
@@ -65,7 +65,7 @@ export const HETTANGE_GRANDE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Hettange-Grande ?",
-      a: "Nos consultants arrivent via gare SNCF Hettange-Grande ou autoroute A31/D653. Thionville à 10 min, Luxembourg à 25 min, Metz à 40 min.",
+      a: "Nous intervenons partout en France, sur place ou à distance.",
     },
   ],
 };

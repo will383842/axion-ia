@@ -49,7 +49,7 @@ export const GUILHERAND_GRANGES_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Guilherand-Granges et agglomération Valence ?",
-      a: "Oui, Axion-IA intervient à Guilherand-Granges et toute l'agglomération valentinoise (Valence face rive, Bourg-lès-Valence, Romans). Consultants depuis Lyon (1h) ou TGV Valence 2h15.",
+      a: "Oui, Axion-IA intervient à Guilherand-Granges et toute l'agglomération valentinoise (Valence face rive, Bourg-lès-Valence, Romans). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les PME tertiaires et industrielles ?",
@@ -64,8 +64,8 @@ export const GUILHERAND_GRANGES_COPY: VilleCopy = {
       a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1.",
     },
     {
-      q: "Comment se passe une mission depuis Lyon ?",
-      a: "Lyon (1h A7). TGV Paris Valence 2h15 + 10 min.",
+      q: "Comment se déroule une mission Axion-IA à Guilherand-Granges ?",
+      a: "Nous intervenons partout en France, sur place dans vos locaux ou à distance en visio. Après le cadrage de votre besoin, nous planifions l'intervention et livrons un résultat actionnable.",
     },
   ],
 };

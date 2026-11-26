@@ -65,7 +65,7 @@ export const VILLEBON_SUR_YVETTE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Villebon-sur-Yvette ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Aéroport Orly à 20 min.",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Villebon-sur-Yvette, comme partout en France, ou à distance.",
     },
   ],
 };

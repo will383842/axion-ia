@@ -49,7 +49,7 @@ export const OBERNAI_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Obernai et sur la Route des Vins ?",
-      a: "Oui, Axion-IA intervient à Obernai et sur toute la Route des Vins d'Alsace (Barr, Mittelbergheim, Andlau, Sélestat). Strasbourg à 30 min via A35, gare SNCF Obernai connectée à la ligne Strasbourg-Sélestat.",
+      a: "Oui, Axion-IA intervient à Obernai et sur toute la Route des Vins d'Alsace (Barr, Mittelbergheim, Andlau, Sélestat).",
     },
     {
       q: "Combien coûte un audit IA à Obernai  ?",

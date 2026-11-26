@@ -49,7 +49,7 @@ export const ECKBOLSHEIM_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Eckbolsheim ?",
-      a: "Oui, Axion-IA intervient à Eckbolsheim et dans l'agglomération strasbourgeoise (Strasbourg, Schiltigheim, Lingolsheim, Wolfisheim). Consultants via A35 ou tram strasbourgeois. Bassin de vie intégré à l'Eurométropole.",
+      a: "Oui, Axion-IA intervient à Eckbolsheim et dans l'agglomération strasbourgeoise (Strasbourg, Schiltigheim, Lingolsheim, Wolfisheim). Bassin de vie intégré à l'Eurométropole.",
     },
     {
       q: "Travaillez-vous avec les commerces et artisans d'Eckbolsheim ?",
@@ -65,7 +65,7 @@ export const ECKBOLSHEIM_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Eckbolsheim ?",
-      a: "Nos consultants se déplacent via autoroute A35 (5 min) ou tram strasbourgeois. Proximité immédiate du centre de Strasbourg (10 min) et de la gare TGV (12 min).",
+      a: "Nous intervenons sur place à Eckbolsheim, comme partout en France, ou à distance.",
     },
   ],
 };

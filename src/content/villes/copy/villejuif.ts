@@ -246,7 +246,7 @@ export const VILLEJUIF_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Villejuif ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Villejuif est à 15 minutes d'Orly et reliée au Grand Paris Express (gare Institut Gustave Roussy).",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Villejuif, comme partout en France, ou à distance.",
     },
   ],
 };

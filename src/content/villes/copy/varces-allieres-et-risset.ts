@@ -63,7 +63,7 @@ export const VARCES_ALLIERES_ET_RISSET_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une intervention ?",
-      a: "Sur place ou à distance, selon votre besoin. Pour les missions de plusieurs jours, un hébergement local est possible.",
+      a: "Sur place ou à distance, selon votre besoin.",
     },
   ],
 };

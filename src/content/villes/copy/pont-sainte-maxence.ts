@@ -49,7 +49,7 @@ export const PONT_SAINTE_MAXENCE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Pont-Sainte-Maxence ?",
-      a: "Oui, Axion-IA intervient à Pont-Sainte-Maxence et dans le bassin Senlis–Creil–Compiègne. Consultants via gare SNCF Pont-Sainte-Maxence ou autoroute A1. Senlis et Creil à 10 min.",
+      a: "Oui, Axion-IA intervient à Pont-Sainte-Maxence et dans le bassin Senlis–Creil–Compiègne.",
     },
     {
       q: "Quels tarifs pour un audit IA à Pont-Sainte-Maxence ?",
@@ -61,7 +61,7 @@ export const PONT_SAINTE_MAXENCE_COPY: VilleCopy = {
     },
     {
       q: "Quel délai pour une intervention IA à Pont-Sainte-Maxence ?",
-      a: "Nous intervenons généralement sous 5 jours ouvrés à Pont-Sainte-Maxence. Senlis à 10 min, Creil à 10 min, Paris à 45 min via TER.",
+      a: "Nous intervenons généralement sous 5 jours ouvrés à Pont-Sainte-Maxence.",
     },
     {
       q: "Comment Axion-IA garantit-il la conformité RGPD à Pont-Sainte-Maxence ?",

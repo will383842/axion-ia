@@ -49,7 +49,7 @@ export const GRAY_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Gray et dans le sud Haute-Saône ?",
-      a: "Oui, Axion-IA intervient à Gray et sur tout le sud Haute-Saône et val de Saône (Gy, Pesmes, Dampierre-sur-Salon, Arc-les-Gray). Nos consultants se déplacent depuis Dijon (45 min) ou Besançon (50 min).",
+      a: "Oui, Axion-IA intervient à Gray et sur tout le sud Haute-Saône et val de Saône (Gy, Pesmes, Dampierre-sur-Salon, Arc-les-Gray). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Gray  ?",
@@ -65,7 +65,7 @@ export const GRAY_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Gray ?",
-      a: "Nos consultants se déplacent à Gray depuis Dijon (45 min) ou Besançon (50 min). Interventions sur site (commerce, atelier, bureau). Formats journée ou demi-journée.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Interventions sur site (commerce, atelier, bureau). Formats journée ou demi-journée.",
     },
   ],
 };

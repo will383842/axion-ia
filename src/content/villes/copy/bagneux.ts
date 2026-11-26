@@ -230,7 +230,7 @@ export const BAGNEUX_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Bagneux ?",
-      a: "Oui, Axion-IA accompagne les TPE et PME de Bagneux et du sud des Hauts-de-Seine. Bagneux est desservie par la ligne 4 prolongée et le périphérique. Nous intervenons partout en France, sur place ou à distance, et travaillons aussi en visio. Tarifs publics.",
+      a: "Oui, Axion-IA accompagne les TPE et PME de Bagneux et du sud des Hauts-de-Seine. Nous intervenons partout en France, sur place ou à distance, et travaillons aussi en visio. Tarifs publics.",
     },
     {
       q: "Quels gains IA pour un artisan BTP ou un commerce balnéolais ?",
@@ -242,7 +242,7 @@ export const BAGNEUX_COPY: VilleCopy = {
     },
     {
       q: "Intervenez-vous aussi à Montrouge, Châtillon ou Fontenay-aux-Roses ?",
-      a: "Oui, nous couvrons le sud des Hauts-de-Seine : Montrouge, Châtillon, Fontenay-aux-Roses, Malakoff, Arcueil et Paris intra-muros, depuis Bagneux. Déplacement rapide grâce au métro et au périphérique.",
+      a: "Oui. Nous couvrons le sud des Hauts-de-Seine : Montrouge, Châtillon, Fontenay-aux-Roses, Malakoff, Arcueil et Paris intra-muros, ainsi que Bagneux.",
     },
     {
       q: "Vos solutions IA sont-elles conformes au RGPD ?",

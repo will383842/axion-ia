@@ -49,7 +49,7 @@ export const CANTELEU_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Canteleu et agglo Rouen ouest ?",
-      a: "Oui, Axion-IA intervient à Canteleu et toute l'agglo rouennaise ouest (Maromme à 5 min, Déville-lès-Rouen, Saint-Étienne-du-Rouvray, Rouen centre à 10 min). Nous intervenons partout en France, sur place ou à distance.",
+      a: "Oui, Axion-IA intervient à Canteleu et dans toute l'agglo rouennaise ouest (Maromme, Déville-lès-Rouen, Saint-Étienne-du-Rouvray, Rouen centre). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les PME tertiaires cantelusiennes ?",
@@ -65,7 +65,7 @@ export const CANTELEU_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Canteleu ?",
-      a: "Nous intervenons partout en France, sur place ou à distance.",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Canteleu, comme partout en France, ou à distance.",
     },
   ],
 };

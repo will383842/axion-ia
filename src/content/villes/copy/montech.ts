@@ -14,9 +14,9 @@ export const MONTECH_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Montech (82). Nous accompagnons TPE artisans, PME de services et logistique, commerçants, exploitants agricoles et professions libérales du sud Tarn-et-Garonne. Audit sur place sur mesure.",
   seoHook: "bassin montéchois",
   ecosystemFr:
-    "Montech (6 663 hab) est une commune en croissance du sud Tarn-et-Garonne, sur le canal latéral à la Garonne. Célèbre pour sa pente d'eau unique en Europe. Économie résidentielle et agricole : arboriculture, grandes cultures, PME tertiaires et logistique. Proximité Montauban (15 min), Toulouse (40 min via A62). Communes limitrophes : Escatalens, Lacourt-Saint-Pierre.",
+    "Montech (6 663 hab) est une commune en croissance du sud Tarn-et-Garonne, sur le canal latéral à la Garonne. Célèbre pour sa pente d'eau unique en Europe. Économie résidentielle et agricole : arboriculture, grandes cultures, PME tertiaires et logistique. Communes limitrophes : Escatalens, Lacourt-Saint-Pierre.",
   ecosystemEn:
-    "Montech (6 663 hab) est une commune en croissance du sud Tarn-et-Garonne, sur le canal latéral à la Garonne. Célèbre pour sa pente d'eau unique en Europe. Économie résidentielle et agricole : arboriculture, grandes cultures, PME tertiaires et logistique. Proximité Montauban (15 min), Toulouse (40 min via A62). Communes limitrophes : Escatalens, Lacourt-Saint-Pierre.",
+    "Montech (6 663 hab) est une commune en croissance du sud Tarn-et-Garonne, sur le canal latéral à la Garonne. Célèbre pour sa pente d'eau unique en Europe. Économie résidentielle et agricole : arboriculture, grandes cultures, PME tertiaires et logistique. Communes limitrophes : Escatalens, Lacourt-Saint-Pierre.",
   distancesFr:
     "Montauban à 15 min. Toulouse centre à 40 min (A62). Castelsarrasin à 15 min. Gare SNCF Montauban-Ville-Bourbon à 15 min (TGV Paris 4h). Aéroport Toulouse-Blagnac à 45 min.",
   distancesEn:
@@ -49,7 +49,7 @@ export const MONTECH_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Montech ?",
-      a: "Oui, Axion-IA intervient à Montech et dans le sud Tarn-et-Garonne (Escatalens, Lacourt-Saint-Pierre, Montbeton, Castelsarrasin). Nos consultants se déplacent depuis Montauban (15 min) ou Toulouse (40 min).",
+      a: "Oui, Axion-IA intervient à Montech et dans le sud Tarn-et-Garonne (Escatalens, Lacourt-Saint-Pierre, Montbeton, Castelsarrasin). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quel est le tarif d'un audit IA pour une TPE à Montech ?",

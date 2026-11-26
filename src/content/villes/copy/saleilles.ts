@@ -49,7 +49,7 @@ export const SALEILLES_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Saleilles et dans l'agglo Perpignan ?",
-      a: "Oui, Axion-IA intervient à Saleilles et toute Perpignan Méditerranée Métropole (Cabestany à 5 min, Perpignan à 10 min, Canet-en-Roussillon à 8 min). Nous intervenons partout en France, sur place ou à distance.",
+      a: "Oui. Axion-IA intervient à Saleilles et dans toute Perpignan Méditerranée Métropole, notamment à Cabestany, Perpignan et Canet-en-Roussillon.",
     },
     {
       q: "Travaillez-vous avec les PME tertiaires ?",
