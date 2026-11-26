@@ -98,6 +98,11 @@ interface Payload {
   sommeVirement?: string;
   /** Régime de TVA de la pièce (figé à son émission) : dit si la somme virée est « TVA comprise ». */
   regimeTva?: "assujetti" | "franchise_293b";
+  /** Changement de régime de TVA : régime, n° de TVA, date d'effet en clair, variante annulation. */
+  regime?: string;
+  numeroTva?: string;
+  effetAu?: string;
+  annule?: boolean;
   /** Relevé : compensation intégrale par les reprises (art. 12.4), rien à virer. */
   compense?: boolean;
   numeroAutofacture?: string;
@@ -395,6 +400,28 @@ export const COPY_DEMARRAGE = {
       "Elle vous reste attachée. Nous vous écrirons dès l'issue de la contestation : la commission sera alors versée, ou ajustée selon le prix finalement conservé.",
     levee:
       "La contestation du client est close : votre commission reprend son cours. Elle vous sera facturée et versée dans les conditions habituelles ; si le prix conservé a changé, le décompte vous l'indiquera.",
+  },
+  regimeTva: {
+    // Contrat 2.8, art. 4.7 et 6.3 : l'apporteur est prévenu du changement de son régime de TVA.
+    // ⛔ Aucun montant (la commission reste hors taxes) ; jamais de « débits » ; pas de gabaritRepli.
+    subject: "Votre régime de TVA est mis à jour",
+    subjectAnnule: "Votre changement de régime de TVA est annulé",
+    title: "Régime de TVA mis à jour",
+    titleAnnule: "Changement de régime annulé",
+    preview: "Votre nouveau régime s'applique aux autofactures établies à partir de cette date.",
+    // Chaque morceau est facultatif : une valeur absente ne laisse jamais de virgule ni d'espace orphelin.
+    texte: (regime: string, numero: string, effet: string) => {
+      const quand = effet ? `à compter du ${effet}, ` : "";
+      const detail =
+        regime === "assujetti"
+          ? `${quand}vous facturez la TVA${numero ? ` (n° ${numero})` : ""}`
+          : regime === "franchise_293b"
+            ? `${quand}vous ne facturez pas la TVA (franchise en base, article 293 B du CGI)`
+            : "";
+      return `Nous avons enregistré votre changement de régime de TVA${detail ? ` : ${detail}` : ""}. Il s'applique aux autofactures établies à partir de cette date (article 4.7 de votre contrat). Les factures déjà émises ne sont pas modifiées. Si ce changement est inexact, répondez à ce message (article 6.3).`;
+    },
+    annule: (effet: string) =>
+      `Le changement de régime de TVA prévu${effet ? ` à compter du ${effet}` : ""} est annulé : votre régime actuel reste inchangé. Si vous ne l'attendiez pas, répondez à ce message.`,
   },
   commissionAvoirClient: {
     // Art. 4.5 : la facture du client a été annulée par un avoir ALORS QUE la commission était
@@ -1068,6 +1095,45 @@ export function ApporteurCommissionSuspensionEmail({ locale, payload }: Props) {
       <Text style={emailStyles.paragraphStyle}>{bonjour(prenomDe(p))}</Text>
       <Text style={emailStyles.paragraphStyle}>{levee ? t.levee : t.suspendue}</Text>
       {levee ? null : <Text style={emailStyles.paragraphStyle}>{t.suspendueSuite}</Text>}
+    </EmailLayout>
+  );
+}
+
+// ── Changement de régime de TVA (contrat 2.8, art. 4.7 et 6.3) ───────────
+
+export const apporteurRegimeTvaSubject = (
+  _locale: Locale,
+  payload?: Record<string, unknown>,
+): string =>
+  (payload as Payload | undefined)?.annule
+    ? COPY_DEMARRAGE.regimeTva.subjectAnnule
+    : COPY_DEMARRAGE.regimeTva.subject;
+
+export function ApporteurRegimeTvaEmail({ locale, payload }: Props) {
+  const p = payload as Payload;
+  const t = COPY_DEMARRAGE.regimeTva;
+  const annule = p.annule === true;
+  return (
+    <EmailLayout
+      famille="B"
+      preview={annule ? t.subjectAnnule : t.preview}
+      title={annule ? t.titleAnnule : t.title}
+      locale={locale === "fr" ? "fr" : "en"}
+      sansReseauxSociaux
+      signature="fondateur-court"
+    >
+      {/* Salutation ET information sur la même ligne (aperçu de la boîte de réception, §3.6). */}
+      <Text style={emailStyles.paragraphStyle}>
+        {`${bonjour(prenomDe(p))} ${
+          annule
+            ? t.annule(texteOuNull(p.effetAu) ?? "")
+            : t.texte(
+                texteOuNull(p.regime) ?? "",
+                texteOuNull(p.numeroTva) ?? "",
+                texteOuNull(p.effetAu) ?? "",
+              )
+        }`}
+      </Text>
     </EmailLayout>
   );
 }

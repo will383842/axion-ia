@@ -10,7 +10,7 @@ import { decryptPii } from "@/lib/pii-crypto";
 import type { ApporteurReseauStatut } from "../../../prisma/generated/client";
 
 import { lireContenuPiece } from "./pieces-chiffrement";
-import { STATUTS_CUMUL, piecesVigilanceConformes } from "./commissions";
+import { STATUTS_CUMUL, cumulVigilanceCents, piecesVigilanceConformes } from "./commissions";
 import { lireDossier } from "./donnees";
 import { SEUIL_VIGILANCE_CENTS } from "./regles";
 import { idsRetires } from "./retrait";
@@ -210,9 +210,12 @@ export async function lireFicheApporteur(id: string) {
       select: { id: true },
     }),
   ]);
-  const cumulVigilanceCents = commissions
+  // Art. 6.2 : le cumul est apprécié TOUTES TAXES COMPRISES, au régime de chaque pièce (figé) — la
+  // MÊME fonction que la décision (`cumulVigilanceCents`), pour que la console et elle ne divergent pas.
+  const cumulHt = commissions
     .filter((c) => (STATUTS_CUMUL as readonly string[]).includes(c.statut))
     .reduce((s, c) => s + (c.montantCents ?? 0), 0);
+  const cumulTtc = await cumulVigilanceCents(id).catch(() => cumulHt);
   const nom = (x: { prenom: string; nom: string }) =>
     `${decryptPii(x.prenom) ?? ""} ${decryptPii(x.nom) ?? ""}`.trim();
   return {
@@ -230,7 +233,7 @@ export async function lireFicheApporteur(id: string) {
     commissions: commissions as CommissionDeLApporteur[],
     /** Cumul vers le seuil de 5 000 € (art. 5.4) et état des deux pièces demandées. */
     vigilance: {
-      cumulCents: cumulVigilanceCents,
+      cumulCents: cumulTtc,
       seuilCents: SEUIL_VIGILANCE_CENTS,
       piecesConformes: piecesVigilanceConformes(piecesVigilance, new Date()),
       piecesEnAttente: piecesVigilance.filter((p) => p.statut === "deposee").length,
@@ -419,4 +422,51 @@ export async function lireReservationsOuvertes(): Promise<ReservationOuverteVue[
     });
   }
   return sorties;
+}
+
+export interface ChangementRegimeTvaVu {
+  id: string;
+  regimeTva: "assujetti" | "franchise_293b";
+  numeroTva: string | null;
+  regimeAvant: "assujetti" | "franchise_293b" | null;
+  /** « AAAA-MM-JJ » (jour de Paris). */
+  effetAu: string;
+  saisiAt: Date;
+  annule: boolean;
+}
+
+/**
+ * L'historique des changements de régime de TVA d'un apporteur (le plus récent d'abord). Table
+ * absente (migration pas encore passée) : liste vide, la fiche reste lisible.
+ */
+export async function lireChangementsRegimeTva(
+  apporteurId: string,
+): Promise<ChangementRegimeTvaVu[]> {
+  try {
+    const l = await prisma.apporteurRegimeTvaChangement.findMany({
+      where: { apporteurId },
+      orderBy: [{ effetAu: "desc" }, { saisiAt: "desc" }],
+      take: 50,
+      select: {
+        id: true,
+        regimeTva: true,
+        numeroTva: true,
+        regimeAvant: true,
+        effetAu: true,
+        saisiAt: true,
+        annuleAt: true,
+      },
+    });
+    return l.map((c) => ({
+      id: c.id,
+      regimeTva: c.regimeTva,
+      numeroTva: c.numeroTva,
+      regimeAvant: c.regimeAvant,
+      effetAu: c.effetAu.toISOString().slice(0, 10),
+      saisiAt: c.saisiAt,
+      annule: c.annuleAt !== null,
+    }));
+  } catch {
+    return [];
+  }
 }

@@ -16797,6 +16797,53 @@ model CommissionApporteur {
   @@map("commissions_apporteur")
 }
 
+/// Une pièce de la série AXI-APP (autofacture ou avoir d'autofacture) FIGÉE à son émission :
+/// régime et n° de TVA imprimés, totaux du PDF. Le virement, les avoirs, la compensation, la DAS2,
+/// « Mes commissions » et le cumul de vigilance lisent CE régime, jamais celui de la fiche.
+/// Sans clé étrangère (fenêtre app/worker). Totaux NULL = pièce reprise à la migration.
+/// rgpd: technique — numéros, montants, régime ; aucune donnée personnelle en clair
+model PieceAutofactureApporteur {
+  numero           String             @id @db.VarChar(40)
+  apporteurId      String             @map("apporteur_id") @db.Uuid
+  /// « facture » | « avoir » (contrôlé par le code).
+  genre            String             @db.VarChar(10)
+  regimeTva        RegimeTvaApporteur @map("regime_tva")
+  numeroTva        String?            @map("numero_tva") @db.VarChar(20)
+  totalHtCents     Int?               @map("total_ht_cents")
+  totalTvaCents    Int?               @map("total_tva_cents")
+  totalTtcCents    Int?               @map("total_ttc_cents")
+  /// Avoir : l'autofacture rectifiée (dont il prend le régime).
+  factureRectifiee String?            @map("facture_rectifiee") @db.VarChar(40)
+  emiseAt          DateTime           @map("emise_at") @db.Timestamptz(3)
+  /// « emission » | « reprise_migration » | « rattrapage » (contrôlé par le code).
+  origine          String             @db.VarChar(20)
+  creeAt           DateTime           @default(now()) @map("cree_at") @db.Timestamptz(3)
+
+  @@index([apporteurId])
+  @@map("pieces_autofacture_apporteur")
+}
+
+/// Changement de régime de TVA d'un apporteur APRÈS signature (contrat 2.8, art. 4.7 et 6.3).
+/// Régime applicable au jour J = le changement non annulé de plus grande `effetAu` ≤ J
+/// (à égalité, le plus récent saisi), sinon la fiche. Sans clé étrangère.
+/// rgpd: technique — régime et n° de TVA d'une entreprise ; auteur = id d'administrateur
+model ApporteurRegimeTvaChangement {
+  id             String              @id @default(uuid()) @db.Uuid
+  apporteurId    String              @map("apporteur_id") @db.Uuid
+  regimeAvant    RegimeTvaApporteur? @map("regime_avant")
+  numeroTvaAvant String?             @map("numero_tva_avant") @db.VarChar(20)
+  regimeTva      RegimeTvaApporteur  @map("regime_tva")
+  numeroTva      String?             @map("numero_tva") @db.VarChar(20)
+  /// Jour de Paris à compter duquel le régime s'applique aux autofactures établies.
+  effetAu        DateTime            @map("effet_au") @db.Date
+  saisiAt        DateTime            @default(now()) @map("saisi_at") @db.Timestamptz(3)
+  saisiPar       String?             @map("saisi_par") @db.Uuid
+  annuleAt       DateTime?           @map("annule_at") @db.Timestamptz(3)
+
+  @@index([apporteurId, effetAu])
+  @@map("apporteur_regime_tva_changements")
+}
+
 // ════════════════════════════════════════════════════════════════════════════
 // FORMATEURS FREELANCE — SCHÉMA N° 1 : SOCLE DU PARCOURS (2026-10-10)
 //

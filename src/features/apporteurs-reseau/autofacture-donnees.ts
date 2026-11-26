@@ -40,6 +40,11 @@ export interface CommissionPourAutofacture {
   readonly origineNumero?: string | null;
   /** « AAAA-MM » du mois d'émission de l'autofacture d'origine. */
   readonly origineMois?: string | null;
+  /**
+   * Paiement intégral du client pour CETTE commande (jour du crédit, art. 4.0) : la date de la
+   * prestation de l'autofacture (art. 4.7). Absent ou `null` : inconnu.
+   */
+  readonly paiementIntegralAt?: Date | null;
 }
 
 export interface ApporteurPourAutofacture {
@@ -499,6 +504,41 @@ export function donneesManquantesAutofacture(a: {
   return manques;
 }
 
+/** Les commissions qui deviennent une ligne d'autofacture, dans l'ordre (comme `lignesAutofacture`). */
+function commissionsLignes(
+  commissions: readonly CommissionPourAutofacture[],
+): CommissionPourAutofacture[] {
+  return commissions.filter((c) => c.montantCents !== null && c.montantCents !== 0);
+}
+
+/**
+ * Date de la PRESTATION d'une autofacture : le jour (Paris) du paiement intégral du client, SANS
+ * report au jour ouvré (le report sert à la date d'établissement, art. 5.1). Une seule date : « 10
+ * octobre 2026 ». Plusieurs : « du 3 novembre 2026 au 5 novembre 2026 », et chaque ligne de
+ * commission porte sa date. Jamais pour la part de parrainage (art. 4.6 : rien sur la commande du
+ * filleul) ni pour une reprise. Aucune date connue : `null` (repli de l'appelant).
+ */
+function datesDePrestation(
+  commissions: readonly CommissionPourAutofacture[],
+): { libelle: string; suffixes: Map<string, string> } | null {
+  const connues = commissionsLignes(commissions).filter(
+    (c) => c.statut !== "reprise" && !c.parrainage && c.paiementIntegralAt,
+  );
+  if (connues.length === 0) return null;
+  const jours = [...new Set(connues.map((c) => jourParis(c.paiementIntegralAt!)))].sort();
+  const dateDuJour = (j: string) => dateFr(new Date(`${j}T12:00:00Z`));
+  if (jours.length === 1) return { libelle: dateDuJour(jours[0]!), suffixes: new Map() };
+  return {
+    libelle: `du ${dateDuJour(jours[0]!)} au ${dateDuJour(jours[jours.length - 1]!)}`,
+    suffixes: new Map(
+      connues.map((c) => [
+        c.id,
+        ` — encaissement intégral le ${dateDuJour(jourParis(c.paiementIntegralAt!))}`,
+      ]),
+    ),
+  };
+}
+
 /** Données du gabarit, ou le motif pour lequel la pièce ne peut pas être établie. */
 export function construireDonneesAutofacture(e: {
   /** Paiement intégral du client : le délai de 30 jours court de là (règle du 25/11). */
@@ -520,7 +560,13 @@ export function construireDonneesAutofacture(e: {
   const adresse = e.apporteur.adresse?.trim();
   if (!siren || !adresse)
     return { ok: false, motif: "identité de facturation de l'apporteur incomplète" };
-  const lignes = e.avoir ? lignesAvoir(e.commissions) : lignesAutofacture(e.commissions);
+  const prestation = e.avoir ? null : datesDePrestation(e.commissions);
+  const lignes = e.avoir
+    ? lignesAvoir(e.commissions)
+    : lignesAutofacture(e.commissions).map((l, i) => {
+        const suffixe = prestation?.suffixes.get(commissionsLignes(e.commissions)[i]!.id);
+        return suffixe ? { ...l, designation: `${l.designation}${suffixe}` } : l;
+      });
   if (lignes.length === 0) return { ok: false, motif: "aucune commission à facturer" };
   if (totalHtCents(lignes) !== e.totalAttenduCents)
     return { ok: false, motif: "total des lignes différent du total versé" };
@@ -532,8 +578,9 @@ export function construireDonneesAutofacture(e: {
     data: {
       numero: e.numero,
       dateEmission: dateFr(e.dateEmission),
-      // L'autofacture est datée du jour d'établissement ; la date de prestation est l'encaissement retenu.
-      datePrestation: dateFr(dateEncaissementRetenue(e.dateEmission)),
+      // L'autofacture est datée du jour d'établissement ; la date de prestation est celle de
+      // l'encaissement INTÉGRAL du client (art. 4.7) quand elle est connue, sinon l'encaissement retenu.
+      datePrestation: prestation?.libelle ?? dateFr(dateEncaissementRetenue(e.dateEmission)),
       dateEcheance: dateFr(echeancePaiement(e.dateEmission, e.paiementIntegral)),
       contestationAvant: dateFr(limite),
       periodeLabel: e.periodeLibelle,

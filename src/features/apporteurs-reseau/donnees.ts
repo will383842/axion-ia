@@ -29,6 +29,7 @@ import { alerterPieceVigilance } from "./alerte-vigilance";
 import { chiffrerContenuPiece } from "./pieces-chiffrement";
 import { jetonDossierValide, lienDossierBienForme } from "./jeton";
 import { estStatutJuridique, ibanValide, PIECES_VIGILANCE, type TypePiece } from "./regles";
+import { numeroTvaValide } from "./regles-dossier";
 import { signalerErreurReseau } from "./signaler";
 import { enregistrerSiret, siretDe } from "./siret-apporteur";
 import { CLE_REGISTRE_INDISPONIBLE, etatDeLaPage, vigilanceDemandee } from "./signature-regles";
@@ -389,10 +390,7 @@ export async function enregistrerActivite(
 ): Promise<{ ok: true } | { ok: false; message: string }> {
   if (!estStatutJuridique(s.statutJuridique))
     return { ok: false, message: "Choisissez votre statut." };
-  if (
-    s.regimeTva === "assujetti" &&
-    !/^FR[0-9A-Z]{2}\d{9}$/.test((s.numeroTva ?? "").replace(/\s+/g, "").toUpperCase())
-  ) {
+  if (s.regimeTva === "assujetti" && !numeroTvaValide(s.numeroTva)) {
     return { ok: false, message: "Indiquez votre numéro de TVA (FR suivi de 11 caractères)." };
   }
   if (s.iban !== null && s.iban !== "" && !ibanValide(s.iban)) {

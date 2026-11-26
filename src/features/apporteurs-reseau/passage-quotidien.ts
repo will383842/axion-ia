@@ -52,6 +52,8 @@ import { envoyer } from "./envois";
 import { lireReservations, tableAbsente } from "./reservation-presentation";
 import { finDeProtectionRendezVous, reservationOccupe } from "./regle-attribution";
 import { facturerCommissionsDues } from "./facturation";
+import { basculerRegimesDuJour } from "./regime-tva";
+import { figerPiecesManquantes } from "./tva-pieces";
 import { alerterPiecesVigilanceDeposees } from "./alerte-vigilance";
 import {
   AVANT_2_6,
@@ -371,10 +373,23 @@ async function passer(
   return bilan;
 }
 
+/**
+ * Le premier rattrapage qui suit le démarrage du worker est ATTENDU (pièces émises par l'ancien
+ * worker pendant la fenêtre de mise en ligne) : il n'alerte pas ; les suivants, si.
+ */
+let premierPassageApresMiseEnLigne = true;
+
 /** Le passage QUOTIDIEN : toutes les étapes. */
 export async function passerReseauApporteurs(
   maintenant: Date = new Date(),
 ): Promise<BilanPassageReseau> {
+  // Un changement de régime arrivé à échéance met la fiche à jour AVANT toute facturation du passage.
+  // (La facturation lit `regimeApplicableAu` : elle ne dépend pas de cette bascule.)
+  try {
+    await basculerRegimesDuJour(maintenant);
+  } catch (err) {
+    signalerErreurReseau("passage quotidien : bascule du régime de TVA", err);
+  }
   const bilan = await passer(maintenant, null);
   // Les commissions libérées par la vigilance ce matin sont facturées tout de suite, pas dans l'heure.
   if (bilan.liberees > 0) {
@@ -399,6 +414,20 @@ export async function passerFacturationApporteurs(
 }
 
 async function etapeAutofacturation(maintenant: Date, bilan: BilanPassageReseau): Promise<void> {
+  // Le régime de chaque pièce déjà émise est FIGÉ avant toute nouvelle émission : rattrapage des
+  // pièces émises sans l'être (ancien worker pendant la fenêtre de mise en ligne). Jamais bloquant.
+  try {
+    const rattrapees = await figerPiecesManquantes();
+    if (rattrapees > 0 && !premierPassageApresMiseEnLigne) {
+      signalerErreurReseau(
+        "pièces d'autofacture émises sans régime figé",
+        new Error(`${rattrapees} pièce(s) figée(s) au rattrapage`),
+      );
+    }
+    premierPassageApresMiseEnLigne = false;
+  } catch (err) {
+    signalerErreurReseau("passage : régime de TVA des pièces déjà émises", err);
+  }
   const r = await facturerCommissionsDues(maintenant);
   bilan.autofacturesEmises += r.autofactures;
   bilan.commissionsFacturees += r.commissions;

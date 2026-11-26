@@ -47,6 +47,9 @@ vi.mock("@/features/apporteurs-reseau/solde-negatif", () => ({
   lireSoldeNegatif: async () => null,
 }));
 vi.mock("@/features/apporteurs-reseau/siret-apporteur", () => ({ siretDe: async () => null }));
+vi.mock("@/components/admin/apporteurs/fiche/ChangerRegimeTva", () => ({
+  ChangerRegimeTva: () => null,
+}));
 vi.mock("@/features/apporteurs-reseau/resiliation", () => ({
   lireResiliationEnCours: async () => null,
 }));
@@ -113,6 +116,7 @@ vi.mock("@/features/apporteurs-reseau/requetes-console", async () => {
   return {
     LIBELLE_STATUT_APPORTEUR: { a_verifier: "À vérifier" },
     lireFicheApporteur: () => Promise.resolve(fiche),
+    lireChangementsRegimeTva: async () => [],
   };
 });
 

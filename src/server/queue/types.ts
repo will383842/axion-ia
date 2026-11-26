@@ -183,6 +183,7 @@ export type EmailJobName =
   | "apporteur-dossier-a-verifier"
   | "apporteur-dossier-recu"
   | "apporteur-commission-suspension"
+  | "apporteur-regime-tva"
   | "apporteur-manquement"
   | "apporteur-resiliation-notifiee"
   | "apporteur-resiliation-effective"
