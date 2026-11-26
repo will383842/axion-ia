@@ -40,6 +40,20 @@ describe("faitsReferenceOffre", () => {
     expect(t).toMatch(/Toute mention est une contradiction/);
   });
 
+  it("Grenoble ne s'écrit jamais, siège compris", () => {
+    const t = faitsReferenceOffre().texte;
+    expect(t).toMatch(/« Grenoble » ne s'écrit jamais/);
+    expect(t).not.toMatch(/n'en est pas une/);
+  });
+
+  it("acompte : demander un acompte et le dire non remboursé est permis, taux et montant interdits", () => {
+    const t = faitsReferenceOffre().texte;
+    expect(t).toMatch(/Aucun montant ni taux d'acompte/);
+    expect(t).toMatch(/permis et n'est PAS une contradiction/);
+    expect(t).not.toMatch(/caractère systématique/);
+    expect(t).not.toMatch(/devis/i);
+  });
+
   it("lève si le prix est illisible", async () => {
     vi.resetModules();
     vi.doMock("@/content/pricing", async (orig) => {
