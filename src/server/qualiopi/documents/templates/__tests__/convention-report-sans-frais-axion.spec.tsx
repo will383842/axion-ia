@@ -2,8 +2,8 @@
 
 /**
  * Conventions v12 (bipartite) / v10 (tripartite) — § 4 : l'organisme REPORTE au lieu d'annuler
- * (CGV 46.4). Au moins 2 nouvelles dates dans les 3 mois, sans frais, acompte reporté ; remboursement
- * et indemnité égale (personne morale non professionnelle seule) uniquement si aucune date ne convient.
+ * (CGV 46.4). Au moins 2 nouvelles dates dans les 6 mois, sans frais, 1re date réputée acceptée sans réponse, acompte reporté
+ * ou bon d'achat 12 mois ; remboursement et indemnité égale (personne morale non professionnelle seule) en dernier recours.
  */
 import React from "react";
 import { readFileSync } from "node:fs";
@@ -59,10 +59,14 @@ const data: ConventionData = {
 const FRAGMENTS = [
   "n'annule pas",
   "reporte la prestation sans frais pour le client",
-  "au moins 2 nouvelles dates situées dans les 3 mois suivant la date qu'il ne peut pas tenir",
-  "acompte versé est reporté sur la nouvelle date et rien n'est remboursé",
+  "dans les 30 jours suivant cette information, au moins 2 nouvelles dates situées dans les 6 mois suivant la date qu'il ne peut pas tenir",
+  "délai de réponse raisonnable d'au moins 10 jours ouvrés",
+  "réputé accepter la première date proposée",
+  "rien n'est remboursé",
+  "seconde série d'au moins 2, toujours dans les 6 mois",
+  "bon d'achat (avoir) du montant des sommes versées, valable 12 mois",
   "Ce report n'est pas une annulation par le client",
-  "Si aucune des dates proposées ne convient au client",
+  "Le remboursement n'intervient qu'en dernier recours",
   "Pour la seule personne morale non professionnelle",
   "client professionnel ne reçoit jamais d'indemnité en plus",
 ];
@@ -83,6 +87,7 @@ describe("conventions : report sans frais à l'initiative de l'organisme (§ 4)"
     for (const f of FRAGMENTS) expect(plat).toContain(f);
     expect(plat).not.toContain("renonce à l'exécuter");
     expect(plat).not.toContain("n'accepte pas le report proposé");
+    expect(plat).not.toContain("son silence valant refus");
   });
 
   it("tripartite (source) : mêmes engagements, sans ancienne formule d'annulation par l'organisme", () => {

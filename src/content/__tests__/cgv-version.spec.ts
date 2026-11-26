@@ -15,11 +15,11 @@ import { CGV_VERSION, CGV_VERSION_LIBELLE, CGV_VERSION_LIBELLE_EN } from "@/cont
  * Empreinte du texte FR pour la version courante. À mettre à jour AVEC CGV_VERSION.
  * Deux variantes existent (`cgv-passages-financement.ts`) : chacune a sa paire figée.
  */
-const EMPREINTE_TEXTE_FR = "b135534adbf8ef37c7ecb5f021dc9d6151c0402f809378a6df77e94b465432b3";
+const EMPREINTE_TEXTE_FR = "84275ad81c22fcc4018f0421631e3a1d18069a676dcab68178893e7e20c9e056";
 const VERSION_DE_L_EMPREINTE = "2026-11-30";
 /** Variante « certifiée » (QUALIOPI_CERTIFICATION_OBTENUE=true) : version suffixée « -f ». */
 const EMPREINTE_TEXTE_FR_CERTIFIEE =
-  "08c8d8ef8e736abbe34e55f1397d295211e06f3070763767d97d54b5eeb63077";
+  "195c8b2d9ff5febce3a2a99f87c6ba36e10b6a2a3879b270a0a30b98b627fed0";
 const VERSION_DE_L_EMPREINTE_CERTIFIEE = "2026-11-30-f";
 
 afterEach(() => {

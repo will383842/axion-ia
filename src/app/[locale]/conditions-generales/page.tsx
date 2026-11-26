@@ -68,9 +68,9 @@ export const revalidate = 3600;
 // physique de l'article 49.2 reste remboursée en totalité. Le texte du 28/11 est archivé (@/content/cgv-archives).
 //
 // 2026-11-30 : décision du dirigeant (26/11) — Axion-IA n'annule jamais, elle REPORTE : si elle ne peut pas tenir une date,
-// report sans frais avec au moins 2 nouvelles dates sous 3 mois, acompte reporté (article 46.4, clause unique à laquelle
+// report sans frais avec au moins 2 nouvelles dates sous 6 mois (première date réputée acceptée sans réponse, bon d'achat possible) (article 46.4, clause unique à laquelle
 // renvoient 6.5, 17.4, 49, 50.2 et 53.3). Remboursement (et indemnité égale, personne morale non professionnelle seule)
-// uniquement si aucune date ne convient. Le texte du 29/11 est archivé (@/content/cgv-archives).
+// uniquement en dernier recours (aucune date convenue sous 6 mois et bon d'achat non choisi). Le texte du 29/11 est archivé (@/content/cgv-archives).
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;
