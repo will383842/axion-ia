@@ -20,7 +20,9 @@ import {
   GARANTIE,
   GARANTIE_PHRASE,
   remplacerJetons,
+  seuilGarantieEur,
 } from "@/content/journee-ia-commun";
+import { formatAmount } from "@/content/pricing";
 import { FOUNDER_PERSON_ID } from "@/lib/brand";
 import { META_DESCRIPTION_MAX, SITE_URL } from "@/lib/seo";
 import { PAGE_IMAGES_MANIFEST } from "@/lib/seo/page-images";
@@ -204,7 +206,9 @@ describe("accueil : la garantie et le titre", () => {
   const journee = CONTENU.deuxFacons.blocJournee;
 
   it("affiche « Garantie écrite « 3 fois le prix ». », la phrase du socle puis la condition", () => {
-    expect(journee.garantieTitre).toBe("Garantie écrite « 3 fois le prix ».");
+    expect(journee.garantieTitre).toBe(
+      `Garantie écrite « 3 fois le prix », soit ${formatAmount(seuilGarantieEur(), "fr")} de gains identifiés.`,
+    );
     expect(`${journee.garantieDebut}${journee.garantieEngagement}`).toBe(GARANTIE_PHRASE);
     expect(journee.condition).toBe(CONDITION_GARANTIE);
     // La phrase du socle est bien la fin de la garantie complète de la landing.

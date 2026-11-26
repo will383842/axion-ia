@@ -19,7 +19,16 @@
  *
  * Volontairement absent : l'audit approfondi (durée non décidée) et le nom du fondateur.
  */
-import { remplacerJetons } from "./journee-ia-commun";
+import {
+  DELAI_RAPPORT_JOURS_OUVRES,
+  MULTIPLE_GARANTIE,
+  remplacerJetons,
+  seuilGarantieEur,
+} from "./journee-ia-commun";
+import { formatAmount } from "./pricing";
+
+/** Seuil de la garantie (3 fois le prix HT de la journée), calculé, jamais tapé. */
+const SEUIL = formatAmount(seuilGarantieEur(), "fr");
 
 /** Phrase unique sur l'audit approfondi : importée par la page /prix-audit-ia pour ne jamais diverger. */
 export const PHRASE_AUDIT_APPROFONDI =
@@ -49,8 +58,7 @@ export const QUESTIONS_REFERENCE: Readonly<Record<string, QuestionReference>> = 
   "ref-journee-prix": {
     id: "ref-journee-prix",
     question: "Combien coûte la Journée IA ?",
-    reponse:
-      "La Journée IA d’Axion-IA coûte {{PRIX}}, prix unique. L’audit du matin convient aux entreprises de 2 à 250 salariés (2 à 4 h selon l’entreprise) ; la formation de 4 h l’après-midi accueille jusqu’à 15 personnes. La journée comprend aussi 3 à 5 priorités écrites le soir, puis le rapport chiffré et le plan d’action sous 3 jours ouvrés. Si la Journée IA n’identifie pas des gains d’au moins 3 fois son prix, elle est remboursée.",
+    reponse: `La Journée IA d’Axion-IA coûte {{PRIX}}, prix unique. L’audit du matin convient aux entreprises de 2 à 250 salariés (2 à 4 h selon l’entreprise) ; la formation de 4 h l’après-midi accueille jusqu’à 15 personnes. La journée comprend aussi 3 à 5 priorités écrites le soir, puis le rapport chiffré et le plan d’action sous ${DELAI_RAPPORT_JOURS_OUVRES} jours ouvrés. Si les gains identifiés dans ce rapport, sur 12 mois, n'atteignent pas ${MULTIPLE_GARANTIE} fois son prix HT, soit ${SEUIL}, elle est remboursée sur demande écrite.`,
     sujet: "Journée IA",
     source: "src/content/pricing.ts, src/content/journee-ia-commun.ts",
   },
@@ -81,8 +89,7 @@ export const QUESTIONS_REFERENCE: Readonly<Record<string, QuestionReference>> = 
   "ref-audit-contenu": {
     id: "ref-audit-contenu",
     question: "Que contient un audit IA pour une PME ?",
-    reponse:
-      "Un audit IA en PME cartographie l’entreprise service par service, repère les tâches répétitives et chiffre chacune en heures et en euros. Il les classe par rentabilité et par rapidité de mise en place, retient 3 à 5 priorités écrites, puis se prolonge par un rapport chiffré avec un plan d’action sur 90 jours, remis sous 3 jours ouvrés dans le cadre de la Journée IA.",
+    reponse: `Un audit IA en PME cartographie l’entreprise service par service, repère les tâches répétitives et chiffre chacune en heures et en euros. Il les classe par rentabilité et par rapidité de mise en place, retient 3 à 5 priorités écrites, puis se prolonge par un rapport chiffré avec un plan d’action sur 90 jours, remis sous ${DELAI_RAPPORT_JOURS_OUVRES} jours ouvrés dans le cadre de la Journée IA.`,
     sujet: "audit IA",
     source: "src/content/journee-ia-commun.ts (DESCRIPTION_SERVICE_JOURNEE_IA, RAPPORT_COMPLET)",
   },

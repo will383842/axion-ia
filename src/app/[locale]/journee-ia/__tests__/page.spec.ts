@@ -149,7 +149,7 @@ describe("jsonLdJourneeIa()", () => {
     expect(faq.isPartOf).toEqual({ "@id": webPage["@id"] });
   });
 
-  it("la FAQPage reprend les 13 questions et réponses visibles, mot pour mot", () => {
+  it("la FAQPage reprend les 14 questions et réponses visibles, mot pour mot", () => {
     expect(faq.mainEntity.map((q) => q.name)).toEqual(CONTENU.faq.map((f) => f.question));
     expect(faq.mainEntity.map((q) => q.acceptedAnswer.text)).toEqual(
       CONTENU.faq.map((f) => remplacerJetons(f.reponse)),
