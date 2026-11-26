@@ -20,6 +20,8 @@
 //
 // ⚠️ Atteint par le WORKER (job horaire `reseau-facturation`, tsx hors Next) : aucun `server-only`.
 
+import { randomUUID } from "node:crypto";
+
 import { decryptPii } from "@/lib/pii-crypto";
 import { prisma } from "@/lib/prisma";
 
@@ -30,8 +32,15 @@ import {
   reduireCommission,
 } from "./ajustement";
 import { dateFr } from "./autofacture-donnees";
-import { netDeLaCommande, type FactureDeCommande } from "./commandes";
-import { ajouterMois } from "./regles";
+import {
+  etatDeLaCommande,
+  netDeLaCommande,
+  PREFIXE_MOTIF_COMMANDE_NON_SOLDEE,
+  PREFIXE_PALIER_COMPLEMENT,
+  type FactureDeCommande,
+} from "./commandes";
+import { ajouterMois, FORFAIT_CONFERENCE_CENTS, PALIER_CONFERENCE, TAUX_BPS } from "./regles";
+import { litigeDisponible } from "./litige";
 import { envoyer } from "./envois";
 import { retenir, type Piece } from "./manquement";
 import { enregistrerReprise, PREFIXE_PALIER_REPRISE } from "./resiliation";
@@ -61,6 +70,9 @@ const CHAMPS_LIGNE = {
   autofactureEmiseAt: true,
   verseeAt: true,
   creeAt: true,
+  presentationId: true,
+  litigeDepuis: true,
+  litigeMotif: true,
 } as const;
 
 /** Les avoirs de moins de 24 mois (art. 4.5 : la reprise court de la date de CHAQUE annulation). */
@@ -81,6 +93,14 @@ export interface BilanAvoirsClients {
   annulees: number;
   retenues: number;
   reprises: number;
+  /** Lignes pas encore facturées remontées vers la cible (le net payé est revenu). */
+  remontees: number;
+  /** Compléments créés sur une ligne facturée (reprise ou réduction compensée). */
+  complements: number;
+  /** Lignes suspendues : facture refaite ou complément émis, pas encore payé. */
+  suspendues: number;
+  /** Suspensions automatiques levées (la commande est de nouveau dans un état final). */
+  suspensionsLevees: number;
 }
 
 interface Calcul {
@@ -99,6 +119,23 @@ export function cibleApresAvoir(l: Calcul, netCents: number, filleul?: Calcul): 
   }
   const c = commissionPourPrixConserve(l, netCents, l.montantCents);
   return c === null ? null : Math.min(l.montantCents, c);
+}
+
+/**
+ * La commission CIBLE d'une ligne de FILLEUL pour l'état final de la commande (décision du 25/11) :
+ * fonction du seul net payé plafonné à la base (`etatDeLaCommande`), jamais de l'ordre des passages.
+ * Jamais plus que la commission calculée sur la base. `null` : la règle ne s'applique pas.
+ *   · conférence : forfait fixe, au plus le montant de la ligne ou un forfait, et le net ;
+ *   · ancien coaching (30 %) : ne remonte jamais au-delà du montant de la ligne.
+ */
+export function cibleEtatFinal(l: Calcul, netCibleCents: number, baseCents: number): number | null {
+  const net = Math.max(0, Math.min(netCibleCents, baseCents));
+  if (net <= 0) return 0;
+  if (l.activite === "conference" || l.palier === PALIER_CONFERENCE)
+    return Math.min(Math.max(l.montantCents, FORFAIT_CONFERENCE_CENTS), net);
+  if (l.activite === "un_a_un")
+    return Math.min(l.montantCents, Math.round((net * TAUX_BPS.un_a_un) / 10_000));
+  return commissionPourPrixConserve(l, net);
 }
 
 /** La date de l'annulation : celle de l'avoir actif le plus récent (émission, sinon création). */
@@ -172,12 +209,14 @@ const CHAMPS = {
 } as const;
 
 /** Les factures d'une commande et leurs avoirs, tous statuts (le tri est fait par la source unique). */
-async function facturesDeLaCommande(
-  factureId: string,
-): Promise<{ membres: FactureLue[]; avoirs: FactureLue[] } | null> {
+async function facturesDeLaCommande(factureId: string): Promise<{
+  membres: FactureLue[];
+  avoirs: FactureLue[];
+  totalDevisCents?: number;
+} | null> {
   const f = await prisma.factureFormation.findUnique({
     where: { id: factureId },
-    select: { id: true, devisId: true },
+    select: { id: true, devisId: true, devis: { select: { montantTotalHtCents: true } } },
   });
   if (!f) return null;
   const membres = (await prisma.factureFormation.findMany({
@@ -188,13 +227,238 @@ async function facturesDeLaCommande(
     where: { avoirDeId: { in: membres.map((m) => m.id) } },
     select: CHAMPS,
   })) as FactureLue[];
-  return { membres, avoirs };
+  const total = f.devis?.montantTotalHtCents;
+  return { membres, avoirs, ...(typeof total === "number" ? { totalDevisCents: total } : {}) };
+}
+
+type LigneLue = {
+  id: string;
+  apporteurId: string;
+  factureId: string;
+  presentationId: string | null;
+  parrainage: boolean;
+  statut: string;
+  activite: string;
+  palier: string | null;
+  montantCents: number | null;
+  autofactureNumero: string | null;
+  litigeDepuis: Date | null;
+  litigeMotif: string | null;
+};
+
+const motifRetour = (net: number) =>
+  `Décision du 25/11 : le client a de nouveau payé la commande (net ${(net / 100).toFixed(2).replace(".", ",")} € HT) : la commission revient à sa cible.`;
+
+/** Les reprises (valeur absolue) et les compléments encore actifs d'une ligne d'origine. */
+async function reprisesEtComplements(
+  db: Pick<typeof prisma, "commissionApporteur">,
+  apporteurId: string,
+  id: string,
+): Promise<{ reprisCents: number; complementsCents: number }> {
+  const ls = await db.commissionApporteur.findMany({
+    where: {
+      apporteurId,
+      palier: { in: [`${PREFIXE_PALIER_REPRISE}${id}`, `${PREFIXE_PALIER_COMPLEMENT}${id}`] },
+    },
+    select: { palier: true, montantCents: true, statut: true },
+  });
+  let reprisCents = 0;
+  let complementsCents = 0;
+  for (const x of ls ?? []) {
+    if ((x.palier ?? "").startsWith(PREFIXE_PALIER_COMPLEMENT)) {
+      if (x.statut !== "annulee" && x.statut !== "retenue")
+        complementsCents += Math.max(0, x.montantCents ?? 0);
+    } else reprisCents += Math.abs(x.montantCents ?? 0);
+  }
+  return { reprisCents, complementsCents };
+}
+
+/**
+ * REMONTÉE d'une ligne pas encore facturée vers sa cible : écriture CONDITIONNELLE sur le montant
+ * lu (deux passages simultanés : un seul gagne), tracée. Rend vrai si CE passage l'a remontée.
+ */
+async function remonter(
+  l: { id: string },
+  avant: number,
+  cible: number,
+  netCents: number,
+  motif: string,
+): Promise<boolean> {
+  const u = await prisma.commissionApporteur.updateMany({
+    where: {
+      id: l.id,
+      montantCents: avant,
+      autofactureNumero: null,
+      statut: { in: [...MODIFIABLES] },
+    },
+    data: { montantCents: cible, factureHtCents: netCents },
+  });
+  if (u.count !== 1) return false;
+  await tracerRemontee(l.id, { avantCents: avant, apresCents: cible, motif });
+  return true;
+}
+
+/** Les parts du parrain pas encore facturées suivent la remontée du filleul (art. 4.6). */
+async function remonterParrain(
+  groupe: readonly LigneLue[],
+  cible: number,
+  motif: string,
+): Promise<number> {
+  let n = 0;
+  for (const p of groupe) {
+    if (!p.parrainage || p.autofactureNumero || !estModifiable(p.statut)) continue;
+    const avant = p.montantCents ?? 0;
+    if (cible <= avant) continue;
+    const u = await prisma.commissionApporteur.updateMany({
+      where: {
+        id: p.id,
+        montantCents: avant,
+        autofactureNumero: null,
+        statut: { in: [...MODIFIABLES] },
+      },
+      data: { montantCents: cible },
+    });
+    if (u.count === 1) {
+      n += 1;
+      await tracerRemontee(p.id, { avantCents: avant, apresCents: cible, motif });
+    }
+  }
+  return n;
+}
+
+async function tracerRemontee(id: string, changes: Record<string, unknown>): Promise<void> {
+  try {
+    await prisma.activityLog.create({
+      data: {
+        adminUserId: null,
+        action: "commission_apporteur.remontee",
+        targetType: "commission_apporteur",
+        targetId: id,
+        changes: changes as object,
+      },
+    });
+  } catch {
+    // La trace ne fait jamais échouer le passage.
+  }
+}
+
+/**
+ * COMPLÉMENT d'une ligne facturée : l'apporteur retrouve ce que la reprise (ou la réduction faite
+ * avant facturation) lui avait retiré, à hauteur de `plafond` (la cible). Sous le MÊME verrou que
+ * la reprise (`reprise:<id>`) et après RELECTURE : deux passages simultanés ne complètent qu'une
+ * fois, un rejeu est sans effet. Rend le montant complété (0 si rien).
+ */
+async function completer(
+  l: LigneLue,
+  montant: number,
+  plafond: number,
+  motif: string,
+): Promise<number> {
+  const premier = await reprisesEtComplements(prisma, l.apporteurId, l.id);
+  if (montant - premier.reprisCents + premier.complementsCents >= plafond) return 0;
+  const cents = await prisma.$transaction(async (tx) => {
+    await tx.$executeRaw`SELECT pg_advisory_xact_lock(hashtext(${`reprise:${l.id}`}))`;
+    const r = await reprisesEtComplements(tx, l.apporteurId, l.id);
+    const aCompleter = plafond - (montant - r.reprisCents + r.complementsCents);
+    if (aCompleter <= 0) return 0;
+    await tx.commissionApporteur.create({
+      data: {
+        apporteurId: l.apporteurId,
+        presentationId: l.presentationId,
+        // Pas de clé étrangère : la ligne porte son propre identifiant (même usage que la reprise).
+        factureId: randomUUID(),
+        parrainage: l.parrainage,
+        activite: l.activite,
+        palier: `${PREFIXE_PALIER_COMPLEMENT}${l.id}`,
+        factureHtCents: 0,
+        montantCents: aCompleter,
+        statut: "due",
+      },
+      select: { id: true },
+    });
+    return aCompleter;
+  });
+  if (cents > 0) await tracerRemontee(l.id, { complementCents: cents, motif });
+  return cents;
+}
+
+/** Retire (annule ou réduit) les compléments pas encore facturés, à hauteur de `cents`. */
+async function retirerComplementsNonFactures(
+  l: { id: string; apporteurId: string },
+  cents: number,
+  motif: string,
+): Promise<number> {
+  const cs = await prisma.commissionApporteur.findMany({
+    where: {
+      apporteurId: l.apporteurId,
+      palier: `${PREFIXE_PALIER_COMPLEMENT}${l.id}`,
+      autofactureNumero: null,
+      statut: { in: [...MODIFIABLES] },
+    },
+    select: { id: true, montantCents: true, statut: true },
+  });
+  let retire = 0;
+  for (const c of cs ?? []) {
+    const m = c.montantCents ?? 0;
+    const part = Math.min(m, cents - retire);
+    if (part <= 0) break;
+    const u = await prisma.commissionApporteur.updateMany({
+      where: { id: c.id, montantCents: m, autofactureNumero: null, statut: c.statut as never },
+      data: part === m ? { statut: "annulee" } : { montantCents: m - part },
+    });
+    if (u.count === 1) {
+      retire += part;
+      await tracer(c.id, { avantCents: m, apresCents: m - part, motif });
+    }
+  }
+  return retire;
+}
+
+/**
+ * Suspension AUTOMATIQUE des lignes ni versées ni reprises (même effet qu'une contestation : ni
+ * autofacture ni virement). Jamais par-dessus une contestation saisie par Williams. Aucun e-mail.
+ */
+async function suspendre(groupe: readonly LigneLue[], maintenant: Date): Promise<number> {
+  const ids = groupe.filter((l) => estModifiable(l.statut) && !l.litigeDepuis).map((l) => l.id);
+  if (ids.length === 0) return 0;
+  const u = await prisma.commissionApporteur.updateMany({
+    where: { id: { in: ids }, litigeDepuis: null, statut: { in: [...MODIFIABLES] } },
+    data: {
+      litigeDepuis: maintenant,
+      litigeMotif: `${PREFIXE_MOTIF_COMMANDE_NON_SOLDEE} facture refaite ou complément émis, pas encore payé : la commission attend le paiement (ou l'annulation) pour suivre l'argent gardé.`,
+    },
+  });
+  return u.count;
+}
+
+/** Lève la seule suspension AUTOMATIQUE (jamais une contestation saisie à la main). */
+async function leverSuspension(groupe: readonly LigneLue[]): Promise<number> {
+  const ids = groupe
+    .filter(
+      (l) => l.litigeDepuis && (l.litigeMotif ?? "").startsWith(PREFIXE_MOTIF_COMMANDE_NON_SOLDEE),
+    )
+    .map((l) => l.id);
+  if (ids.length === 0) return 0;
+  const u = await prisma.commissionApporteur.updateMany({
+    where: { id: { in: ids }, litigeMotif: { startsWith: PREFIXE_MOTIF_COMMANDE_NON_SOLDEE } },
+    data: { litigeDepuis: null, litigeMotif: null },
+  });
+  return u.count;
 }
 
 export async function reprendreApresAvoirsClients(
   maintenant: Date = new Date(),
 ): Promise<BilanAvoirsClients> {
-  const bilan: BilanAvoirsClients = { reduites: 0, annulees: 0, retenues: 0, reprises: 0 };
+  const bilan: BilanAvoirsClients = {
+    reduites: 0,
+    annulees: 0,
+    retenues: 0,
+    reprises: 0,
+    remontees: 0,
+    complements: 0,
+    suspendues: 0,
+    suspensionsLevees: 0,
+  };
 
   // Les factures d'origine qui portent un avoir (le statut de l'avoir est jugé plus bas).
   const avoirs = await prisma.factureFormation.findMany({
@@ -233,9 +497,13 @@ export async function reprendreApresAvoirsClients(
       autofactureEmiseAt: true,
       verseeAt: true,
       creeAt: true,
+      presentationId: true,
+      litigeDepuis: true,
+      litigeMotif: true,
     },
   });
   if (lignes.length === 0) return bilan;
+  const suspensionPossible = await litigeDisponible();
 
   const parFacture = new Map<string, typeof lignes>();
   for (const l of lignes) parFacture.set(l.factureId, [...(parFacture.get(l.factureId) ?? []), l]);
@@ -244,21 +512,31 @@ export async function reprendreApresAvoirsClients(
     try {
       const lu = await facturesDeLaCommande(factureId);
       if (!lu) continue;
-      // Seules les factures PAYÉES comptent : une facture refaite sous le même devis et pas encore
-      // payée ne « remplace » pas l'argent rendu par l'avoir (sinon la commission d'origine
-      // survivrait, puis une seconde serait créée au paiement de la facture refaite).
-      const payees = lu.membres.filter((m) => m.statut === "payee");
-      const { netCents: netPaye, avoirs: actifs } = netDeLaCommande(payees, lu.avoirs);
-      // Facture(s) encore à payer (émises, non annulées) : on ne fait qu'ANNULER quand tout l'argent
-      // payé est rendu. Une réduction ou une reprise partielle attend le paiement : la commande
-      // soldée est alors jugée sur le devis entier, et une commission réduite ne remonte jamais.
-      const impayees = lu.membres.some(
-        (m) => !["payee", "brouillon", "annulee"].includes(m.statut),
+      // ÉTAT FINAL de la commande (décision du 25/11) : seules les factures PAYÉES comptent, net
+      // de leurs avoirs, plafonnées à la base de signature. La cible ne dépend que de cet état,
+      // jamais du moment où le passage l'a vu : la ligne se réduit quand l'argent part, REMONTE
+      // quand il revient (facture refaite ou complément payé), sans jamais dépasser la cible.
+      const etat = etatDeLaCommande(lu.membres, lu.avoirs, lu.totalDevisCents);
+      const { avoirs: actifs } = netDeLaCommande(
+        lu.membres.filter((m) => m.statut === "payee"),
+        lu.avoirs,
       );
-      if (impayees && netPaye > 0) continue;
-      const netCents = netPaye;
-      if (actifs.length === 0) continue; // avoir brouillon ou annulé : sans effet
-      const net = Math.max(0, netCents);
+      if (actifs.length === 0) {
+        // avoir brouillon ou annulé : sans effet (une suspension automatique est levée)
+        if (suspensionPossible) bilan.suspensionsLevees += await leverSuspension(groupe);
+        continue;
+      }
+      // Une facture refaite ou un complément est émis mais pas payé : la commande n'est plus
+      // soldée par du payé. Rien ne part (ni autofacture ni virement) et aucun montant ne bouge
+      // tant que l'état n'est pas final : il sera jugé d'un coup, au paiement ou à l'annulation.
+      // Exception : plus RIEN de payé n'est gardé → la ligne est annulée (ou retenue, reprise) tout
+      // de suite ; la facture refaite, une fois payée, fonde une commission neuve (même résultat).
+      if (etat.enAttente && etat.netPayeCents > 0) {
+        if (suspensionPossible) bilan.suspendues += await suspendre(groupe, maintenant);
+        continue;
+      }
+      if (suspensionPossible) bilan.suspensionsLevees += await leverSuspension(groupe);
+      const net = etat.netCibleCents;
       // Dette a1 (a) : le délai de 24 mois de l'art. 4.5 s'apprécie AVOIR PAR AVOIR. Pour une ligne
       // déjà facturée (retenue, reprise), seuls comptent les avoirs de moins de 24 mois ; un avoir
       // plus ancien ne profite jamais du délai d'un avoir récent.
@@ -309,7 +587,22 @@ export async function reprendreApresAvoirsClients(
         }
 
         if (!l.autofactureNumero && estModifiable(l.statut)) {
-          if (net >= l.factureHtCents) continue; // déjà au prix net (idempotence)
+          if (net > l.factureHtCents) {
+            // L'argent est revenu : la ligne REMONTE vers la cible (et la part du parrain la suit).
+            const cible = cibleEtatFinal({ ...l, montantCents: montant }, net, etat.baseCents);
+            if (cible !== null && cible > montant) {
+              if (await remonter(l, montant, cible, net, motifRetour(net))) {
+                bilan.remontees += 1;
+                bilan.remontees += await remonterParrain(
+                  groupe,
+                  partDuParrain(cible),
+                  motifRetour(net),
+                );
+              }
+            }
+            continue;
+          }
+          if (net === l.factureHtCents) continue; // déjà au prix net (idempotence)
           const r =
             net <= 0
               ? await annulerCommission(l.id, motif)
@@ -319,6 +612,30 @@ export async function reprendreApresAvoirsClients(
             else bilan.reduites += 1;
           }
           continue;
+        }
+
+        // Ligne FACTURÉE (due facturée ou versée) : l'argent est revenu après une reprise, ou après
+        // une réduction faite avant sa facturation → COMPLÉMENT (ligne « due » qui renvoie à elle),
+        // jamais au-delà de la cible ni, pour une ligne jamais réduite, de son propre montant.
+        if (l.statut === "versee" || (l.statut === "due" && l.autofactureNumero)) {
+          const reference = l.parrainage ? filleul : l;
+          if (reference && reference.montantCents !== null) {
+            const cibleF = cibleEtatFinal(
+              { ...reference, montantCents: reference.montantCents ?? 0 },
+              net,
+              etat.baseCents,
+            );
+            if (cibleF !== null) {
+              const reduiteAvant = reference.factureHtCents < net;
+              const cibleL = l.parrainage ? partDuParrain(cibleF) : cibleF;
+              const plafond = reduiteAvant ? cibleL : Math.min(cibleL, montant);
+              const c = await completer(l, montant, plafond, motifRetour(net));
+              if (c > 0) {
+                bilan.complements += 1;
+                continue;
+              }
+            }
+          }
         }
 
         // Relecture de a1 : la base est le prix de la LIGNE à sa création (`factureHtCents`, déjà net
@@ -374,12 +691,16 @@ export async function reprendreApresAvoirsClients(
         }
 
         if (l.statut === "versee") {
-          const deja = await prisma.commissionApporteur.findMany({
-            where: { apporteurId: l.apporteurId, palier: `${PREFIXE_PALIER_REPRISE}${l.id}` },
-            select: { montantCents: true },
-          });
-          const repris = deja.reduce((s, x) => s + Math.abs(x.montantCents ?? 0), 0);
-          const aReprendre = montant - cible - repris;
+          const { reprisCents: repris, complementsCents } = await reprisesEtComplements(
+            prisma,
+            l.apporteurId,
+            l.id,
+          );
+          let aReprendre = montant + complementsCents - cible - repris;
+          if (aReprendre <= 0) continue;
+          // Un complément pas encore facturé se retire d'abord (jamais une reprise de ce qui
+          // n'a pas été versé) ; le reste seulement est repris.
+          aReprendre -= await retirerComplementsNonFactures(l, aReprendre, motif);
           if (aReprendre <= 0) continue;
           // `enregistrerReprise` relit sous verrou : un passage concurrent ne reprend pas deux fois.
           const r = await enregistrerReprise({

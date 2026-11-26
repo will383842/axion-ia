@@ -8,6 +8,7 @@
 
 import { ajouterJoursOuvres, estJourFerieFrance } from "@/lib/jours-ouvres";
 import { PALIERS_FORMATION } from "./regles";
+import { PREFIXE_PALIER_COMPLEMENT } from "./commandes";
 import { sirenValide } from "./regles-dossier";
 import type { AutofactureData } from "@/server/qualiopi/documents/templates/autofacture-honoraires";
 import type { OrganismeIdentite } from "@/server/qualiopi/documents/organisme";
@@ -99,6 +100,9 @@ export function designationCommission(c: CommissionPourAutofacture): string {
   // Art. 4.6 : aucun montant par filleul. Ni prix facturé, ni prix public, ni palier du filleul.
   // Art. 4.6 : une ligne unique, sans identité du filleul, sans commande, prix ni commission.
   if (c.parrainage) return LIBELLE_PARRAINAGE;
+  // Complément : le client a de nouveau payé la commande après une reprise ou une réduction.
+  if (c.palier?.startsWith(PREFIXE_PALIER_COMPLEMENT))
+    return `Commission d'apport (${c.activite}) — complément : le client a de nouveau payé la commande (art. 4.5)`;
   // Conférence : forfait fixe par commande, ni palier de formation ni prix public à rappeler.
   if (c.activite === "conference") {
     const prixConf =

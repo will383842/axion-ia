@@ -134,6 +134,10 @@ vi.mock("@/lib/prisma", () => {
       }),
     },
     presentationReservation: {
+      findUnique: vi.fn(async (a: { where: { presentationId: string } }) => {
+        const r = db.res.find((x) => x.presentationId === a.where.presentationId);
+        return r ? { ...r } : null;
+      }),
       findMany: vi.fn(async (a: { where: Ligne }) => {
         const r = db.res.filter((x) => ok(x, a.where)).map((x) => ({ ...x }));
         db.apresLectureRes?.(a.where);
@@ -407,6 +411,55 @@ describe("échéance de la réservation", () => {
     expect(db.pres[0]!.statut).toBe("dementie");
   });
 
+  it("verdict D : lecture TRIÉE (échéance la plus ancienne d'abord) et par pages, jusqu'au bout", async () => {
+    const { prisma } = await import("@/lib/prisma");
+    const fm = vi.mocked(prisma.presentationReservation.findMany);
+    fm.mockClear();
+    // 500 réservations suspendues (rendez-vous pris, pas encore tenu) puis une échue « libre ».
+    for (let i = 0; i < 500; i++) {
+      const id = `S${String(i).padStart(3, "0")}`;
+      db.pres.push(pres({ id }));
+      db.res.push(
+        reservation({
+          presentationId: id,
+          reserveeJusquAt: j(MAINT, -30),
+          rendezVousPrisAt: j(RECUE, 10),
+        }),
+      );
+    }
+    db.pres.push(pres({ id: "Z" }));
+    db.res.push(reservation({ presentationId: "Z", reserveeJusquAt: j(MAINT, -5) }));
+    // Le faux ne sait ni trier ni borner : il applique l'ordre et la taille demandés.
+    fm.mockImplementation((async (a: { where: Ligne; orderBy?: unknown; take?: number }) => {
+      const r = db.res
+        .filter((x) => ok(x, a.where))
+        .sort(
+          (x, y) =>
+            x.reserveeJusquAt.getTime() - y.reserveeJusquAt.getTime() ||
+            String(x.presentationId).localeCompare(String(y.presentationId)),
+        )
+        .slice(0, a.take ?? Infinity)
+        .map((x) => ({ ...x }));
+      return r;
+    }) as never);
+    const b = await passerReseauApporteurs(MAINT);
+    const appelEcheances = fm.mock.calls.find(
+      (c) => (c[0] as { orderBy?: unknown }).orderBy !== undefined,
+    );
+    expect((appelEcheances![0] as { orderBy: unknown }).orderBy).toEqual([
+      { reserveeJusquAt: "asc" },
+      { presentationId: "asc" },
+    ]);
+    expect(b.reservationsEchues).toBe(1);
+    expect(db.pres.find((p) => p.id === "Z")).toMatchObject({ statut: "terminee" });
+    fm.mockReset();
+    fm.mockImplementation((async (a: { where: Ligne }) => {
+      const r = db.res.filter((x) => ok(x, a.where)).map((x) => ({ ...x }));
+      db.apresLectureRes?.(a.where);
+      return r;
+    }) as never);
+  });
+
   it("un rendez-vous pris pendant la réservation et pas encore tenu garde l'entreprise", async () => {
     db.pres.push(pres());
     db.res.push(reservation({ rendezVousPrisAt: j(RECUE, 40) }));
@@ -603,6 +656,48 @@ describe("commande signée pendant la réservation, sans rendez-vous", () => {
     expect(
       db.alertes.filter((a) => a.jobId === "apporteur-commande-en-reservation-D1"),
     ).toHaveLength(1);
+  });
+
+  it("verdict G : l'alerte a ÉCHOUÉ au passage de la validation → au suivant, toujours aucun e-mail « commande signée », l'alerte est retentée", async () => {
+    const signee = j(RECUE, 30);
+    db.pres.push(pres());
+    db.res.push(reservation({ reserveeJusquAt: j(MAINT, 10) }));
+    db.devis.push({ id: "D1", acceptedAt: signee, client: { siren: "123456782", siret: null } });
+    const { enqueueEmail } = await import("@/server/queue/queues");
+    vi.mocked(enqueueEmail).mockRejectedValueOnce(new Error("Redis indisponible"));
+    await passerReseauApporteurs(j(RECUE, 32));
+    expect(db.pres[0]).toMatchObject({ statut: "confirmee" });
+    expect(db.res[0]).toMatchObject({ validationSource: "commande", valideeParId: "systeme" });
+    expect(db.alertes).toHaveLength(0);
+    await passerReseauApporteurs(j(RECUE, 33));
+    expect(envoyer).not.toHaveBeenCalled();
+    expect(
+      db.alertes.filter((a) => a.jobId === "apporteur-commande-en-reservation-D1"),
+    ).toHaveLength(1);
+  });
+
+  it("une commande signée APRÈS la validation (protection en cours) reçoit bien son annonce", async () => {
+    db.pres.push(
+      pres({
+        statut: "confirmee",
+        confirmeeAt: j(RECUE, 30),
+        protegeeJusquAt: j(RECUE, 210),
+      }),
+    );
+    db.res.push(
+      reservation({
+        validationSource: "commande",
+        valideeAt: j(RECUE, 31),
+        valideeParId: "systeme",
+      }),
+    );
+    db.devis.push({
+      id: "D2",
+      acceptedAt: j(RECUE, 40),
+      client: { siren: "123456782", siret: null },
+    });
+    await passerReseauApporteurs(j(RECUE, 41));
+    expect(envoyer).toHaveBeenCalledTimes(1);
   });
 
   it("l'échéance et la validation par commande ne gagnent jamais toutes les deux", async () => {

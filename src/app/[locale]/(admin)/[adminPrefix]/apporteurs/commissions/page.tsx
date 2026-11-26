@@ -314,7 +314,7 @@ export default async function CommissionsApporteursPage({ params, searchParams }
                     <Echeances
                       emission={c.emissionAt}
                       maintenant={maintenant}
-                      paiementIntegral={c.encaisseeAt}
+                      paiementIntegral={c.paiementIntegralAt}
                     />
                   </>
                 ) : null}

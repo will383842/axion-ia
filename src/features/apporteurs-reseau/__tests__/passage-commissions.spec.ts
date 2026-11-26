@@ -55,7 +55,14 @@ vi.mock("@/lib/prisma", () => ({
     },
     commissionApporteur: {
       findMany: vi.fn(async (a?: { where?: { palier?: unknown } }) =>
-        a?.where?.palier ? etat.reprises : etat.commissions,
+        a?.where?.palier
+          ? etat.reprises
+          : // Les lignes existantes sont nées au paiement de la première facture (10/09), avant
+            // toute facture refaite : c'est leur date de création qui borne la commande « rendue ».
+            etat.commissions.map((c) => ({
+              creeAt: new Date("2026-09-10T00:00:00Z"),
+              ...(c as Record<string, unknown>),
+            })),
       ),
       groupBy: vi.fn(async () => []),
       create: vi.fn(async (a: { data: Record<string, unknown> }) => {
@@ -251,6 +258,52 @@ describe("passage quotidien : commission par commande soldée", () => {
       etat.reprises = [{ palier: "reprise-de:C1", montantCents: -30_000 }];
       await passerReseauApporteurs(MAINTENANT);
       expect(etat.crees).toEqual([]);
+    });
+    it("verdict E : filleul déjà recréé VIVANT sur B, part du parrain manquante (l'ancienne annulée) → elle renaît", async () => {
+      avecParrain();
+      etat.commissions = [
+        { factureId: "A", apporteurId: "APP1", parrainage: false, statut: "annulee" },
+        { factureId: "A", apporteurId: "PAR1", parrainage: true, statut: "annulee" },
+        {
+          factureId: "B",
+          apporteurId: "APP1",
+          parrainage: false,
+          statut: "due",
+          montantCents: 60_000,
+          creeAt: new Date("2026-10-01T00:00:00Z"),
+        },
+      ];
+      await passerReseauApporteurs(MAINTENANT);
+      expect(etat.crees).toHaveLength(1);
+      expect(etat.crees[0]).toMatchObject({ apporteurId: "PAR1", parrainage: true });
+    });
+    it("verdict F : avoir total rattaché à l'ACOMPTE, ligne sur le solde annulée, refaite payée → recréée", async () => {
+      etat.payees = [
+        { id: "AC", devisId: "D1" },
+        { id: "SO", devisId: "D1" },
+        { id: "R", devisId: "D1" },
+      ];
+      etat.lignes = [
+        fac({ id: "AC", montantHtCents: 60_000 }),
+        fac({ id: "SO", montantHtCents: 140_000, emiseAt: new Date("2026-09-05T00:00:00Z") }),
+        fac({ id: "R", montantHtCents: 200_000, emiseAt: new Date("2026-09-20T00:00:00Z") }),
+      ];
+      etat.avoirs = [
+        {
+          id: "AV",
+          devisId: "D1",
+          statut: "emise",
+          avoirDeId: "AC",
+          montantHtCents: -200_000,
+          emiseAt: null,
+        },
+      ];
+      etat.commissions = [
+        { factureId: "SO", apporteurId: "APP1", parrainage: false, statut: "annulee" },
+      ];
+      await passerReseauApporteurs(MAINTENANT);
+      expect(etat.crees).toHaveLength(1);
+      expect(etat.crees[0]).toMatchObject({ apporteurId: "APP1", factureId: "R" });
     });
     it("c1 encore « due » (avoir pas encore traité), A rendue, B payée : aucune seconde commission", async () => {
       avecParrain();

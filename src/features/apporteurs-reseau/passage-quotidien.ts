@@ -69,7 +69,7 @@ import { reprendreApresAvoirsClients } from "./avoir-client";
 import { regenererAvoirsSansPiece } from "./manquement";
 import { alerterHorsGrille } from "./hors-grille";
 import { chiffrerPiecesEnClair } from "./pieces-chiffrement";
-import { commandesSoldees, ligneNeutralisee } from "./commandes";
+import { commandeRenduePourLaLigne, commandesSoldees, ligneNeutralisee } from "./commandes";
 import { PREFIXE_PALIER_REPRISE } from "./resiliation";
 import { idsPriseDeContactRebondie } from "./rebonds";
 import { urlDossier } from "./jeton";
@@ -871,25 +871,25 @@ async function etapeCommissions(maintenant: Date, bilan: BilanPassageReseau): Pr
       parrainage: true,
       statut: true,
       montantCents: true,
+      creeAt: true,
     },
   });
   const toutesCle = new Set(
     existantesToutes.map((e) => `${e.factureId}|${e.apporteurId}|${e.parrainage ? 1 : 0}`),
   );
-  // Une ligne ne cesse de bloquer (facture refaite sous le même devis) que si sa facture a été
-  // entièrement rendue au client par avoir ET si la ligne est RÉELLEMENT neutralisée (annulée,
-  // retenue, ou versée avec reprises égales à son montant). Sinon l'argent est encore en jeu : une
-  // seconde commission le paierait deux fois (600 € + 600 € pour un devis de 2 000 €).
-  const facturesRendues = new Set(
-    lignes
-      .filter((l) => {
-        const avoirsDe = avoirsLignes
-          .filter((a) => a.avoirDeId === l.id && !["brouillon", "annulee"].includes(a.statut))
-          .reduce((s, a) => s + a.montantHtCents, 0);
-        return l.montantHtCents + avoirsDe <= 0;
-      })
-      .map((l) => l.id),
-  );
+  // Une ligne ne cesse de bloquer (facture refaite sous le même devis) que si la COMMANDE qu'elle
+  // couvrait a été entièrement rendue au client par avoir — quelle que soit la facture du devis à
+  // laquelle l'avoir est rattaché (`commandeRenduePourLaLigne`) — ET si la ligne est RÉELLEMENT
+  // neutralisée (annulée, retenue, ou versée avec reprises égales à son montant). Sinon l'argent est
+  // encore en jeu : une seconde commission le paierait deux fois (600 € + 600 € pour 2 000 €).
+  const commandeDe = new Map<string, (typeof commandes)[number]>();
+  for (const c of commandes) for (const id of c.factureIds) commandeDe.set(id, c);
+  const rendue = (e: { factureId: string; creeAt: Date }): boolean => {
+    const c = commandeDe.get(e.factureId);
+    if (!c) return false;
+    const membres = c.factureIds.map((id) => parId.get(id)).filter((x) => !!x);
+    return commandeRenduePourLaLigne(membres, avoirsLignes, e.creeAt);
+  };
   const versees = existantesToutes.filter((e) => e.statut === "versee");
   const reprisesParLigne = new Map<string, number>();
   if (versees.length > 0) {
@@ -902,10 +902,9 @@ async function etapeCommissions(maintenant: Date, bilan: BilanPassageReseau): Pr
       reprisesParLigne.set(id, (reprisesParLigne.get(id) ?? 0) + Math.abs(r.montantCents ?? 0));
     }
   }
-  const existantes = existantesToutes.filter(
-    (e) =>
-      !(facturesRendues.has(e.factureId) && ligneNeutralisee(e, reprisesParLigne.get(e.id) ?? 0)),
-  );
+  const neutralisee = (e: (typeof existantesToutes)[number]) =>
+    ligneNeutralisee(e, reprisesParLigne.get(e.id) ?? 0);
+  const existantes = existantesToutes.filter((e) => !(rendue(e) && neutralisee(e)));
   const cle = (f: string, a: string, p: boolean) => `${f}|${a}|${p ? 1 : 0}`;
   const dejaCle = new Set(existantes.map((e) => cle(e.factureId, e.apporteurId, e.parrainage)));
   // Une commission déjà créée sur n'importe quelle facture de la commande vaut pour la commande.
@@ -981,6 +980,26 @@ async function etapeCommissions(maintenant: Date, bilan: BilanPassageReseau): Pr
 
     // La commission de l'apporteur.
     let filleulCreeCeTour = false;
+    const bloquantes = existantes.filter(
+      (e) =>
+        e.apporteurId === p.apporteurId &&
+        !e.parrainage &&
+        commande.factureIds.includes(e.factureId),
+    );
+    if (bloquantes.length > 0 && bloquantes.every(neutralisee)) {
+      // Jamais de blocage SILENCIEUX : la commande est de nouveau soldée, la seule commission de
+      // l'apporteur est neutralisée, mais la commande n'est pas entièrement rendue. Williams
+      // tranche (une alerte, une fois) ; rien n'est créé à l'aveugle.
+      await alerteInterne({
+        jobId: `apporteur-commande-bloquee-${commande.factureCleId}-${p.apporteurId}`,
+        code: "apporteur_commande_bloquee",
+        titre: "Commande de nouveau payée, commission neutralisée : à trancher",
+        message: `Une commande payée de l'entreprise SIREN ${siren} porte une commission annulée, retenue ou reprise, alors que la commande n'a pas été entièrement rendue au client. Aucune nouvelle commission n'a été créée. À trancher dans la console (Apporteurs › Commissions).`,
+        cibleType: "FactureFormation",
+        cibleId: commande.factureCleId,
+        maintenant,
+      });
+    }
     if (!deja.has(f.id, p.apporteurId, false, commande)) {
       try {
         if (calc.statut === "calculee") {
@@ -1017,12 +1036,13 @@ async function etapeCommissions(maintenant: Date, bilan: BilanPassageReseau): Pr
     if (!parrainId || !signeParSocieteAt || !dansFenetreParrainage(signeParSocieteAt, signeeAt))
       continue;
     if (deja.has(f.id, parrainId, true, commande)) continue;
-    // Une part de parrain annulée (avoir total) ne renaît qu'avec la commission du filleul créée
-    // dans CE passage : jamais seule à côté d'un filleul repris ou retenu (même résultat avant/après).
-    if (
-      !filleulCreeCeTour &&
-      commande.factureIds.some((id) => toutesCle.has(`${id}|${parrainId}|1`))
-    )
+    // Une part de parrain annulée (avoir total) ne renaît qu'à côté d'une commission du filleul
+    // VIVANTE sur la commande : créée dans CE passage, ou déjà là et non neutralisée (un passage
+    // précédent a pu créer le filleul puis échouer sur le parrain). Jamais seule à côté d'un
+    // filleul repris ou retenu (même résultat avant/après).
+    const filleulVivant =
+      filleulCreeCeTour || (bloquantes.length > 0 && !bloquantes.every(neutralisee));
+    if (!filleulVivant && commande.factureIds.some((id) => toutesCle.has(`${id}|${parrainId}|1`)))
       continue;
     try {
       if (calc.statut === "calculee") {
@@ -1128,10 +1148,16 @@ async function etapeCommandeSignee(maintenant: Date, bilan: BilanPassageReseau):
     // La commission est due ; si la réservation court encore, l'entreprise est validée à la date de
     // signature (six mois). Williams en est averti en console, UNE fois par devis. Jamais d'e-mail à
     // l'apporteur : ce n'est pas l'annonce d'une commande d'une entreprise protégée.
-    if (p.reservation) {
+    // Validée par CETTE commande à un passage précédent (l'alerte avait pu échouer) : la
+    // présentation est désormais `confirmee`, mais l'e-mail « commande signée » ne part jamais
+    // pour elle ; l'alerte interne est retentée (idempotente) jusqu'à ce qu'elle parte.
+    const valideeLe = p.reservation ? null : await valideeParCommandeLe(p.id);
+    const dejaValidee = valideeLe !== null && d.acceptedAt!.getTime() <= valideeLe.getTime();
+    if (p.reservation || dejaValidee) {
       const validee =
-        p.statut === "reservee" && (await validerParCommande(p.id, d.acceptedAt!, maintenant));
-      if (validee) {
+        dejaValidee ||
+        (p.statut === "reservee" && (await validerParCommande(p.id, d.acceptedAt!, maintenant)));
+      if (validee && !dejaValidee) {
         bilan.validationsParCommande += 1;
         p.statut = "confirmee";
         p.reservation = null;
@@ -1191,7 +1217,7 @@ async function validerParCommande(
     return await prisma.$transaction(async (tx) => {
       const r = await tx.presentationReservation.updateMany({
         where: { presentationId, echueAt: null, valideeAt: null },
-        data: { valideeAt: maintenant, validationSource: "commande" },
+        data: { valideeAt: maintenant, validationSource: "commande", valideeParId: "systeme" },
       });
       if (r.count !== 1) return false;
       const q = await tx.presentationEntreprise.updateMany({
@@ -1208,6 +1234,20 @@ async function validerParCommande(
   } catch (err) {
     if (err instanceof Annule) return false;
     throw err;
+  }
+}
+
+/** Date de validation d'une réservation par une COMMANDE signée (sinon `null`, table absente comprise). */
+async function valideeParCommandeLe(presentationId: string): Promise<Date | null> {
+  try {
+    const r = await prisma.presentationReservation.findUnique({
+      where: { presentationId },
+      select: { valideeAt: true, validationSource: true },
+    });
+    return r?.validationSource === "commande" ? (r.valideeAt ?? null) : null;
+  } catch (err) {
+    if (!tableAbsente(err)) throw err;
+    return null;
   }
 }
 
@@ -1236,29 +1276,65 @@ async function lirePropositionsOuvertes(presentationId: string): Promise<Date[]>
  * l'échéance et alerte Williams en interne, une fois. Aucun e-mail à l'apporteur, jamais.
  * Aucune prolongation : `faitsDeLaSociete` n'est jamais lu pour une réservation.
  */
+/** Taille d'une page de réservations échues ; le passage les lit TOUTES, page après page. */
+const PAGE_ECHEANCES = 500;
+/** Garde-fou : au plus 40 pages (20 000 réservations) par passage. */
+const PAGES_ECHEANCES_MAX = 40;
+
+type ReservationEchue = {
+  presentationId: string;
+  reserveeJusquAt: Date;
+  rendezVousPrisAt: Date | null;
+  rendezVousAt: Date | null;
+};
+
 async function etapeReservationsEchues(maintenant: Date, bilan: BilanPassageReseau): Promise<void> {
-  let lignes: Array<{
-    presentationId: string;
-    reserveeJusquAt: Date;
-    rendezVousPrisAt: Date | null;
-    rendezVousAt: Date | null;
-  }>;
-  try {
-    lignes = await prisma.presentationReservation.findMany({
-      where: { echueAt: null, valideeAt: null, reserveeJusquAt: { lt: maintenant } },
-      select: {
-        presentationId: true,
-        reserveeJusquAt: true,
-        rendezVousPrisAt: true,
-        rendezVousAt: true,
-      },
-      take: 500,
-    });
-  } catch (err) {
-    if (tableAbsente(err)) return;
-    throw err;
+  // Ordre STABLE (les plus anciennes échéances d'abord) et lecture par CURSEUR : une réservation
+  // suspendue (rendez-vous à trancher) reste dans le filtre, mais ne masque jamais les suivantes.
+  let curseur: { at: Date; id: string } | null = null;
+  for (let page = 0; page < PAGES_ECHEANCES_MAX; page++) {
+    let lignes: ReservationEchue[];
+    try {
+      lignes = await prisma.presentationReservation.findMany({
+        where: {
+          echueAt: null,
+          valideeAt: null,
+          reserveeJusquAt: { lt: maintenant },
+          ...(curseur
+            ? {
+                OR: [
+                  { reserveeJusquAt: { gt: curseur.at } },
+                  { reserveeJusquAt: curseur.at, presentationId: { gt: curseur.id } },
+                ],
+              }
+            : {}),
+        },
+        select: {
+          presentationId: true,
+          reserveeJusquAt: true,
+          rendezVousPrisAt: true,
+          rendezVousAt: true,
+        },
+        orderBy: [{ reserveeJusquAt: "asc" }, { presentationId: "asc" }],
+        take: PAGE_ECHEANCES,
+      });
+    } catch (err) {
+      if (tableAbsente(err)) return;
+      throw err;
+    }
+    if (lignes.length === 0) return;
+    await traiterReservationsEchues(lignes, maintenant, bilan);
+    if (lignes.length < PAGE_ECHEANCES) return;
+    const der = lignes[lignes.length - 1]!;
+    curseur = { at: der.reserveeJusquAt, id: der.presentationId };
   }
-  if (lignes.length === 0) return;
+}
+
+async function traiterReservationsEchues(
+  lignes: readonly ReservationEchue[],
+  maintenant: Date,
+  bilan: BilanPassageReseau,
+): Promise<void> {
   const presentations = await prisma.presentationEntreprise.findMany({
     where: { id: { in: lignes.map((l) => l.presentationId) }, statut: "reservee" },
     select: { id: true, denomination: true, recueAt: true },

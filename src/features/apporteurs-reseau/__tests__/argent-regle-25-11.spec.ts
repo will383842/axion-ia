@@ -3,7 +3,9 @@ import { describe, expect, it } from "vitest";
 import { echeancePaiement } from "../autofacture-donnees";
 import { calculerCommission } from "../regles";
 import {
+  commandeRenduePourLaLigne,
   commandesSoldees,
+  etatDeLaCommande,
   ligneNeutralisee,
   netDeLaCommande,
   type FactureDeCommande,
@@ -43,9 +45,17 @@ describe("base de la commission = net HT à la signature", () => {
     expect(c!.baseSignatureCents).toBe(500_000);
   });
 
-  it("devis modifié après signature : la base suit le total arrêté, pas la facturation", () => {
-    const [c] = commandesSoldees([f("A"), f("B")], new Map([["D1", 1_000_000]]));
-    expect(c!.baseSignatureCents).toBe(1_000_000);
+  it("devis MODIFIÉ après signature : ce module ne fige rien, la base suit le total RELU", () => {
+    // Vérité (verdict B) : la base est le `montantTotalHtCents` lu au passage. Elle est stable
+    // parce qu'un devis envoyé ne se modifie plus (devis-classique-modifier.spec.ts, « refuse un
+    // devis qui n'est plus brouillon ») — pas parce que ce module la fige.
+    const factures = [f("A", { montantHtCents: 600_000 }), f("B", { montantHtCents: 600_000 })];
+    const [signe] = commandesSoldees(factures, new Map([["D1", 1_000_000]]));
+    expect(signe!.baseSignatureCents).toBe(1_000_000);
+    // Le même devis, relu après une modification de son total (1 200 €) :
+    const [modifie] = commandesSoldees(factures, new Map([["D1", 1_200_000]]));
+    expect(modifie!.baseSignatureCents).toBe(1_200_000);
+    expect(modifie!.baseApresAvoirsCents).toBe(1_200_000);
   });
 
   it("acompte payé, solde non payé ou non facturé : aucune commande soldée", () => {
@@ -173,5 +183,85 @@ describe("tour 4 : facture refaite sous le même devis, jamais deux commissions 
     expect(ligneNeutralisee({ statut: "annulee", montantCents: 60_000 }, 0)).toBe(true);
     expect(ligneNeutralisee({ statut: "retenue", montantCents: 60_000 }, 0)).toBe(true);
     expect(ligneNeutralisee({ statut: "versee", montantCents: 60_000 }, 60_000)).toBe(true);
+  });
+});
+
+describe("verdict A (900eb08f) : état final de la commande, indépendant de l'ordre des passages", () => {
+  // Devis 2 000 € HT. Quel que soit le chemin, l'état final payé de 2 000 € donne la base 2 000 €.
+  const D = 200_000;
+  const tard = new Date("2026-11-20T10:00:00Z");
+  const cas: Array<[string, FactureDeCommande[], FactureDeCommande[]]> = [
+    [
+      "S45 : avoir total sur le solde, solde refait",
+      [f("AC", { montantHtCents: 60_000 }), f("SO", { montantHtCents: 140_000 })],
+      [avoir("AV", "SO", 140_000), f("SR", { montantHtCents: 140_000, emiseAt: tard })],
+    ],
+    [
+      "S63 : facture unique, avoir partiel 500, complément 500",
+      [f("F1", { montantHtCents: 200_000 })],
+      [avoir("AV", "F1", 50_000), f("CP", { montantHtCents: 50_000, emiseAt: tard })],
+    ],
+    [
+      "S65 : avoir total sur l'acompte, acompte refait",
+      [f("AC", { montantHtCents: 60_000 }), f("SO", { montantHtCents: 140_000 })],
+      [avoir("AV", "AC", 60_000), f("AR", { montantHtCents: 60_000, emiseAt: tard })],
+    ],
+  ];
+  it.each(cas)("%s → net cible 2 000 € vu d'un coup ou après coup", (_n, avant, apres) => {
+    const tout = [...avant, ...apres];
+    const membres = tout.filter((x) => x.avoirDeId === null);
+    const avoirs = tout.filter((x) => x.avoirDeId !== null);
+    const e = etatDeLaCommande(membres, avoirs, D);
+    expect(e).toMatchObject({ baseCents: D, netCibleCents: D, enAttente: false });
+    const [c] = commandesSoldees(tout, new Map([["D1", D]]));
+    expect(c!.baseApresAvoirsCents).toBe(e.netCibleCents);
+  });
+
+  it("refaite ÉMISE mais impayée : en attente (rien ne part), net cible = le payé seul", () => {
+    const e = etatDeLaCommande(
+      [
+        f("AC", { montantHtCents: 60_000 }),
+        f("SO", { montantHtCents: 140_000 }),
+        f("SR", { montantHtCents: 140_000, statut: "emise" }),
+      ],
+      [avoir("AV", "SO", 140_000)],
+      D,
+    );
+    expect(e).toMatchObject({ enAttente: true, netPayeCents: 60_000, netCibleCents: 60_000 });
+  });
+
+  it("acompte + solde normaux (sans avoir) : solde impayé mais payé ≥ base → jamais « en attente »", () => {
+    const e = etatDeLaCommande(
+      [f("A", { montantHtCents: 200_000 }), f("X", { montantHtCents: 10_000, statut: "emise" })],
+      [],
+      D,
+    );
+    expect(e.enAttente).toBe(false);
+  });
+});
+
+describe("verdict F (900eb08f) : avoir total rattaché à une AUTRE facture du devis", () => {
+  it("ligne sur le solde, avoir total de 2 000 € sur l'acompte : la commande est rendue", () => {
+    const cree = new Date("2026-11-02T00:00:00Z");
+    expect(
+      commandeRenduePourLaLigne(
+        [
+          f("AC", { montantHtCents: 60_000 }),
+          f("SO", { montantHtCents: 140_000 }),
+          f("SR", { montantHtCents: 200_000, emiseAt: new Date("2026-11-10T00:00:00Z") }),
+        ],
+        [avoir("AV", "AC", 200_000)],
+        cree,
+      ),
+    ).toBe(true);
+  });
+  it("avoir partiel : pas rendue (la ligne continue de bloquer)", () => {
+    expect(
+      commandeRenduePourLaLigne(
+        [f("AC", { montantHtCents: 60_000 }), f("SO", { montantHtCents: 140_000 })],
+        [avoir("AV", "SO", 140_000)],
+        new Date("2026-11-02T00:00:00Z"),
+      ),
+    ).toBe(false);
   });
 });

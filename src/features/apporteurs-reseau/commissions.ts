@@ -486,6 +486,11 @@ export interface CommissionVue {
   creeAt: Date;
   /** Encaissement (paiement soldant la facture), repli : création de la ligne. */
   encaisseeAt: Date;
+  /**
+   * Paiement INTÉGRAL de la commande (`paiementIntegralLe`, même source que l'autofacture, son PDF
+   * et l'alerte « à virer ») : le délai de 30 jours en part. Lu pour les lignes facturées.
+   */
+  paiementIntegralAt: Date | null;
   /** Date d'émission de l'autofacture (`autofactureEmiseAt`, repli sur la dernière écriture). */
   emissionAt: Date;
 }
@@ -514,6 +519,12 @@ export async function lireCommissions(
   });
   const numero = new Map(factures.map((f) => [f.id, f.numero]));
   const paye = new Map(factures.map((f) => [f.id, f.paidAt]));
+  // Une seule source pour l'échéance de 30 jours : le paiement intégral de la commande.
+  const integral = new Map<string, Date | null>();
+  for (const l of lignes) {
+    if (l.statut !== "due" || !l.autofactureNumero || integral.has(l.factureId)) continue;
+    integral.set(l.factureId, await paiementIntegralLe([l.factureId]));
+  }
   return lignes.map((l) => ({
     id: l.id,
     apporteurId: l.apporteurId,
@@ -540,6 +551,7 @@ export async function lireCommissions(
     verseeAt: l.verseeAt,
     creeAt: l.creeAt,
     encaisseeAt: paye.get(l.factureId) ?? l.creeAt,
+    paiementIntegralAt: integral.get(l.factureId) ?? null,
     emissionAt: l.autofactureEmiseAt ?? l.majAt,
   }));
 }
