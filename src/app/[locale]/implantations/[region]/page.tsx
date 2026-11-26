@@ -161,7 +161,7 @@ export default async function RegionPage({ params }: Props) {
               {h1Region(region)}
             </h1>
             <p className="text-fg-soft mt-6 text-lg leading-relaxed sm:text-xl">
-              {`Une journée chez vous, ${enRegion(region)}, comme partout en France : le matin, nous chiffrons vos plus gros gains ; l’après-midi, nous formons vos équipes sur leurs propres dossiers.`}
+              {`Une journée chez vous, ${enRegion(region)}, comme partout en France : le matin, nous repérons vos plus gros gains ; l’après-midi, nous formons vos équipes sur leurs propres dossiers.`}
             </p>
             <div className="text-fg-muted mt-6 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-sm">
               <span className="inline-flex items-center gap-2">

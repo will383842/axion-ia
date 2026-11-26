@@ -59,8 +59,7 @@ export const CONTENU = {
       "La Journée IA\u202f: l’audit IA de votre PME le matin, vos équipes formées l’après-midi.",
     // Mots mis en terracotta dans le titre.
     titreAccent: "vos équipes formées l’après-midi.",
-    phrase:
-      "Le matin, nous cartographions votre entreprise et faisons le point ensemble sur vos priorités\u202f: vos plus gros gains, chiffrés le jour même, ceux qui rapportent le plus et se mettent en place le plus vite. L’après-midi, nous formons vos équipes. Dans vos locaux, partout en France.",
+    phrase: `Le matin, nous cartographions votre entreprise et faisons le point ensemble sur vos priorités\u202f: vos plus gros gains repérés et classés par priorité, puis chiffrés en heures et en euros dans le rapport sous ${DELAI_RAPPORT_JOURS_OUVRES} jours ouvrés. L’après-midi, nous formons vos équipes. Dans vos locaux, partout en France.`,
     cta: LIBELLE_CTA,
     lienDecide: "Déjà décidé\u202f? Fixons la date ensemble",
     microTexte:
@@ -108,9 +107,9 @@ export const CONTENU = {
       ruban: {
         audit: "Audit",
         formation: "Formation",
-        heures: ["9\u00a0h", "12\u00a0h", "13\u00a0h 30", "17\u00a0h 30"],
+        heures: ["2 à 4\u00a0h", "", "13\u00a0h 30", "17\u00a0h 30"],
       },
-      ariaLabelRuban: `Déroulé\u202f: audit de 9\u00a0h à 12\u00a0h, formation de 13\u00a0h 30 à 17\u00a0h 30, rapport détaillé avec vos priorités sous ${DELAI_RAPPORT_JOURS_OUVRES} jours ouvrés`,
+      ariaLabelRuban: `Déroulé\u202f: audit de 2 à 4\u00a0h selon la structuration de l’entreprise, formation de 13\u00a0h 30 à 17\u00a0h 30, rapport détaillé avec vos priorités sous ${DELAI_RAPPORT_JOURS_OUVRES} jours ouvrés`,
     },
   },
   enBref: EN_BREF_JOURNEE_IA,
@@ -171,7 +170,12 @@ export const CONTENU = {
       },
       {
         icone: "audit",
-        jalons: [{ moment: "9\u00a0h – 12\u00a0h", texte: "La cartographie, service par service" }],
+        jalons: [
+          {
+            moment: "De 2 à 4\u00a0h selon la structuration de l’entreprise",
+            texte: "La cartographie, service par service",
+          },
+        ],
       },
       {
         icone: "formation",
@@ -205,7 +209,7 @@ export const CONTENU = {
       { icone: "audit", titre: "La carte de vos services\u202f: où partent vos heures" },
       {
         icone: "calcul",
-        titre: "Vos 3 à 5 plus gros gains, chiffrés en heures et en euros le jour même",
+        titre: "Vos 3 à 5 plus gros gains, repérés et classés par priorité pendant la journée",
       },
       { icone: "formation", titre: "Formation sur vos dossiers" },
       { icone: "regles", titre: "Vos règles d’usage de l’IA" },
@@ -278,7 +282,7 @@ export const CONTENU = {
     phrase:
       "Les intervenants d’Axion-IA qui viennent chez vous sont nommés dans votre devis, avec leurs qualités.",
     citation:
-      "«\u202fDans chaque entreprise, des heures se perdent sans bruit. Nous les trouvons, nous les chiffrons et nous les rendons à votre productivité, à votre rentabilité et à votre chiffre d’affaires. Nous en sommes sûrs au point de garantir la journée sur les gains identifiés.\u202f»",
+      "«\u202fDans chaque entreprise, des heures se perdent sans bruit. Nous les trouvons, nous les chiffrons dans le rapport et nous les rendons à votre productivité, à votre rentabilité et à votre chiffre d’affaires. Nous en sommes sûrs au point de garantir la journée sur les gains identifiés.\u202f»",
     auteur: "Williams Jullin, fondateur d’Axion-IA",
     lien: "Le parcours de Williams Jullin",
     lienHref: "/equipe/williams",
@@ -316,7 +320,7 @@ export const CONTENU = {
       id: "faq-temps",
       question: "Combien de temps cela prend-il à nos équipes\u202f?",
       reponse:
-        "Le matin, de 9\u00a0h à 12\u00a0h (13\u00a0h dans les plus grandes entreprises), chaque service nous reçoit à son tour, puis le total et les 3 à 5 tâches prioritaires sont validés avec vous. L’après-midi, de 13\u00a0h 30 à 17\u00a0h 30, les personnes formées travaillent 4 heures sur leurs propres dossiers.",
+        "Le matin, de 2 à 4\u00a0h selon la structuration de l’entreprise (les horaires et la date sont fixés avec vous), chaque service nous reçoit à son tour, puis le total et les 3 à 5 tâches prioritaires sont validés avec vous. L’après-midi, de 13\u00a0h 30 à 17\u00a0h 30, les personnes formées travaillent 4 heures sur leurs propres dossiers.",
     },
     {
       id: "faq-rapport",
@@ -357,7 +361,7 @@ export const CONTENU = {
       liens: [{ href: "/secteurs", libelle: "L’IA par secteur" }],
       question: "Est-ce que ça marche dans notre secteur\u202f?",
       reponse:
-        "Nous intervenons dans tous les secteurs. Nous partons de vos tâches, pas d’un métier\u00a0: un atelier ne vit pas la même journée qu’un cabinet, et l’audit le montre dès le matin. Il y a toujours des heures à récupérer : l’audit les chiffre, et la garantie porte dessus. Voir l’IA par secteur.",
+        "Nous intervenons dans tous les secteurs. Nous partons de vos tâches, pas d’un métier\u00a0: un atelier ne vit pas la même journée qu’un cabinet, et l’audit le montre dès le matin. Il y a toujours des heures à récupérer : l’audit les repère, le rapport les chiffre, et la garantie porte dessus. Voir l’IA par secteur.",
     },
     {
       id: "faq-connaitre",

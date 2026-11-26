@@ -42,7 +42,7 @@ export function AuditFormatsCards({ isFr: _isFr }: AuditFormatsCardsProps) {
       eyebrow: "TPE et PME",
       title: "La Journée IA",
       tagline:
-        "Une journée dans votre entreprise : nous chiffrons le temps perdu avec vos équipes et nous les formons sur leurs propres dossiers.",
+        "Une journée dans votre entreprise : nous repérons le temps perdu avec vos équipes et nous les formons sur leurs propres dossiers.",
       meta: `${formatTierPrice(JOURNEE_IA_TIER, "fr", { compact: true })} HT · 1 journée dans vos locaux`,
       cta: "Découvrir La Journée IA",
     },

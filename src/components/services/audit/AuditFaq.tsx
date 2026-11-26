@@ -68,7 +68,7 @@ function buildFrFaqs(): ReadonlyArray<AuditFaqItem> {
     {
       id: "starting-point",
       question: "Que faire si je ne sais pas par où commencer avec l'IA ?",
-      answer: `Si vous ne savez pas par où commencer avec l'IA, commencez par La Journée IA : l'audit du matin chiffre vos priorités, la formation de l'après-midi met vos équipes au travail, et le rapport complet arrive sous ${DELAI_RAPPORT_JOURS_OUVRES} jours ouvrés. Le module Implémentation peut ensuite prendre le relais, sur devis écrit.`,
+      answer: `Si vous ne savez pas par où commencer avec l'IA, commencez par La Journée IA : l'audit du matin repère et classe vos priorités, la formation de l'après-midi met vos équipes au travail, et le rapport complet arrive sous ${DELAI_RAPPORT_JOURS_OUVRES} jours ouvrés. Le module Implémentation peut ensuite prendre le relais, sur devis écrit.`,
     },
     ...faqItems(["ref-audit-contenu", "ref-audit-prix", "ref-audit-vs-info"]).map(
       ({ id, question, answer }) => ({

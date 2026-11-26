@@ -262,7 +262,7 @@ export function enBrefVille(
     `Nous n’avons pas de bureau ${a} : nous venons dans votre entreprise, à la date fixée avec vous.`,
   );
   return [
-    `La Journée IA est une journée d’audit et de formation à l’IA que nous menons dans les locaux de votre entreprise ${a}, comme partout en France. Le matin, l’audit cartographie votre entreprise et chiffre vos plus gros gains, en heures et en euros. L’après-midi, vos équipes sont formées 4 heures sur leurs propres dossiers, avec une attestation par participant.`,
+    `La Journée IA est une journée d’audit et de formation à l’IA que nous menons dans les locaux de votre entreprise ${a}, comme partout en France. Le matin, l’audit cartographie votre entreprise et repère vos plus gros gains, classés par priorité ; le rapport, sous ${DELAI_RAPPORT_JOURS_OUVRES} jours ouvrés, les chiffre en heures et en euros. L’après-midi, vos équipes sont formées 4 heures sur leurs propres dossiers, avec une attestation par participant.`,
     local.join(" "),
     remplacerJetons(`${RAPPORT_COMPLET} Prix : {{PRIX}}. ${GARANTIE_PHRASE} ${CONDITION_GARANTIE}`),
   ];
@@ -282,7 +282,7 @@ export function faqVille(v: VilleLocale): ReadonlyArray<{ q: string; a: string }
     },
     {
       q: "Comment se déroule la journée ?",
-      a: "Le matin, l’audit cartographie votre entreprise et chiffre vos plus gros gains, en heures et en euros. L’après-midi, vos équipes sont formées 4 heures sur leurs propres dossiers, avec une attestation par participant.",
+      a: `Le matin, l’audit cartographie votre entreprise et repère vos plus gros gains, classés par priorité ; le rapport, sous ${DELAI_RAPPORT_JOURS_OUVRES} jours ouvrés, les chiffre en heures et en euros. L’après-midi, vos équipes sont formées 4 heures sur leurs propres dossiers, avec une attestation par participant.`,
     },
     {
       q: "Quand recevons-nous le rapport ?",
