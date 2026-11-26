@@ -247,7 +247,7 @@ export const AUBERVILLIERS_COPY: VilleCopy = {
     },
     {
       q: "Quelles communes proches couvrez-vous autour d'Aubervilliers ?",
-      a: "Nous intervenons aussi à Saint-Denis, Pantin, La Courneuve, Bobigny, Paris 18e et 19e, Saint-Ouen-sur-Seine. Métro 7/12 ou tramway T3b suffisent pour la majorité des déplacements.",
+      a: "Nous intervenons aussi à Saint-Denis, Pantin, La Courneuve, Bobigny, Paris 18e et 19e, Saint-Ouen-sur-Seine.",
     },
   ],
 };

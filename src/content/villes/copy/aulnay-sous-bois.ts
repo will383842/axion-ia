@@ -122,7 +122,7 @@ export const AULNAY_SOUS_BOIS_COPY: VilleCopy = {
           },
           {
             q: "Quels délais pour un devis site web ou SaaS à Aulnay-sous-Bois ?",
-            a: "Le devis est établi à partir de 24-48 h selon la complexité du projet, après un premier échange de cadrage. Nous nous déplaçons sur site à Aulnay (RER B, A1/A3) pour comprendre vos flux avant de chiffrer.",
+            a: "Le devis est établi à partir de 24-48 h selon la complexité du projet, après un premier échange de cadrage. Nous intervenons sur site à Aulnay pour comprendre vos flux avant de chiffrer.",
           },
           {
             q: "Gérez-vous les contraintes de traçabilité des industriels de la ZI Les Mardelles ?",

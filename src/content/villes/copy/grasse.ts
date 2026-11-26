@@ -230,8 +230,8 @@ export const GRASSE_COPY: VilleCopy = {
       a: "L'Audit sur place 4h à Grasse démarre à {{price:audit-flash|flat}}. Les interventions et implémentations sont ensuite chiffrées sur devis, selon le périmètre validé après l'audit. Tous nos tarifs publics sont consultables en ligne.",
     },
     {
-      q: "Comment se déroule une mission à Grasse ?",
-      a: "Après un premier échange de cadrage, nous intervenons sur place à Grasse, comme partout en France, ou à distance.",
+      q: "Sous quel délai Axion-IA intervient-il à Grasse ?",
+      a: "Nous intervenons sur site à Grasse dans un délai de 5 jours ouvrés à compter de la signature du devis, selon la disponibilité du planning.",
     },
     {
       q: "Intervenez-vous dans les communes proches de Grasse ?",

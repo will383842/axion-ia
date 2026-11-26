@@ -253,7 +253,7 @@ export const NANCY_COPY: VilleCopy = {
           },
           {
             q: "Do you cover Grand Nancy communes?",
-            a: "Yes. The Grand Nancy is our full territory: Vandœuvre-lès-Nancy (Brabois), Laxou, Villers-lès-Nancy, Maxéville, Tomblaine, Jarville-la-Malgrange, Saint-Max. No zone surcharge.",
+            a: "Yes. The Grand Nancy is our full territory: Vandœuvre-lès-Nancy (Brabois), Laxou, Villers-lès-Nancy, Maxéville, Tomblaine, Jarville-la-Malgrange, Saint-Max.",
           },
           {
             q: "Do I need AI maturity to engage you?",

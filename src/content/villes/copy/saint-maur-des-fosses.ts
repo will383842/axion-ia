@@ -56,7 +56,7 @@ export const SAINT_MAUR_DES_FOSSES_COPY: VilleCopy = {
           "Les marchés de La Varenne (Place de Stalingrad) et d'Adamville rouvrent en 2026 entièrement rénovés, avec Halle gourmande, Traiteur Village et l'Atelier du Marché : les commerçants ont besoin de vitrines e-commerce, de click-and-collect et de cartes en ligne — pas de simple page Facebook.",
           "Forte densité de professions libérales et de santé autour de la Clinique Gaston Métivet (94 lits, maternité, chirurgie) : sites de cabinets, prise de RDV intelligente, formulaires conformes RGPD pour données de patients et de clients sensibles.",
           "54 % des entreprises créées à Saint-Maur en 2024 sont des entreprises individuelles, et 588 relèvent d'activités scientifiques et techniques : un vivier d'indépendants et de micro-structures qui ont besoin d'un site rapide, d'un copilote IA de contenu et d'un mini-SaaS métier, sans budget grand-compte.",
-          "Quatre gares RER A et un réseau local actif (Saint-Maur Entreprendre) : nous nous déplaçons dans le Vieux Saint-Maur, La Varenne et Adamville pour cadrer le projet en présentiel, sans réduire un commerçant ou un cabinet à un template générique.",
+          "Un réseau local actif (Saint-Maur Entreprendre) : nous intervenons dans le Vieux Saint-Maur, La Varenne et Adamville pour cadrer le projet en présentiel, sans réduire un commerçant ou un cabinet à un template générique.",
         ],
         methodology: [
           {

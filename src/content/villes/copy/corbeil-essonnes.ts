@@ -144,7 +144,7 @@ export const CORBEIL_ESSONNES_COPY: VilleCopy = {
           "Southern Île-de-France around Corbeil-Essonnes concentrates highly technical industrial subcontracting: workshops and suppliers aligned with Safran Aircraft Engines (additive manufacturing, laser drilling, robotized welding) and the Altis/X-FAB silicon foundry. These SMEs need supplier portals, technical quote configurators and AI-searchable document bases, not generic showcase sites.",
           "The Centre Hospitalier Sud Francilien (av. Serge Dassault, 1068 beds) structures a healthcare and associated-services ecosystem (providers, medical devices, practices): we deploy contact platforms, document triage and assistants compliant with health-data confidentiality constraints.",
           "Along the Seine, Moulins Soufflet (generation 4.0 mill operational since 2022) and the Apport-Paris business park (21.8 ha, trade, plumbing-heating distribution, logistics) call for B2B e-commerce sites, product catalogs and automated order-tracking tools.",
-          "At Coquibus (13.44 ha) and Montconseil, the automotive, retail and services fabric, completed by the UPS Corbeil-Essonnes/Évry logistics hub, drives demand for multi-CMS online stores, appointment booking and support agents — reachable from Paris-Gare de Lyon in ~30 min on the RER D.",
+          "At Coquibus (13.44 ha) and Montconseil, the automotive, retail and services fabric, completed by the UPS Corbeil-Essonnes/Évry logistics hub, drives demand for multi-CMS online stores, appointment booking and support agents.",
         ],
         methodology: [
           {

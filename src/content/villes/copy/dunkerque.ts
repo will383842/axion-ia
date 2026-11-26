@@ -410,8 +410,8 @@ export const DUNKERQUE_COPY: VilleCopy = {
       a: "Nos interventions essentielles débutent à {{price:intervention-4h|flat}}, les audits sur place à {{price:audit-flash|flat}} et les sessions 1-to-1 à {{price:intervention-dirigeants|flat}}. Les tarifs publics sont consultables sur notre site.",
     },
     {
-      q: "Comment se déroule une mission à Dunkerque ?",
-      a: "Après un premier échange de cadrage, nous intervenons sur place à Dunkerque, comme partout en France, ou à distance.",
+      q: "Sous quel délai Axion-IA intervient-il à Dunkerque ?",
+      a: "Nous intervenons à Dunkerque sous 5 jours ouvrés en moyenne après validation du devis. Les missions de formation ou d'audit peuvent démarrer plus rapidement selon disponibilités.",
     },
     {
       q: "Quelles communes autour de Dunkerque sont couvertes ?",

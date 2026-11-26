@@ -216,7 +216,7 @@ export const LIEVIN_COPY: VilleCopy = {
           },
           {
             q: "Do you cover the communes around Liévin?",
-            a: "Yes, with no intervention surcharge: Lens, Avion (La Gaillette), Angres, Bully-les-Mines, Aix-Noulette, Éleu-dit-Leauwette, Grenay, Loos-en-Gohelle, plus Arras (15 km) and Lille (30 km), via the A21, A26 and Liévin SNCF station.",
+            a: "Yes. Lens, Avion (La Gaillette), Angres, Bully-les-Mines, Aix-Noulette, Éleu-dit-Leauwette, Grenay, Loos-en-Gohelle, plus Arras and Lille.",
           },
         ],
         guarantees:

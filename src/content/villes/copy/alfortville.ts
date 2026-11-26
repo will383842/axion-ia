@@ -231,8 +231,8 @@ export const ALFORTVILLE_COPY: VilleCopy = {
       a: "Les interventions Axion-IA à Alfortville démarrent à {{price:intervention-4h|flat}}, l'Audit sur place 4h à {{price:audit-flash|flat}}, et l'implémentation à {{price:impl-poc|entry}}. Tous nos tarifs sont publics sur axion-ia.com.",
     },
     {
-      q: "Comment se déroule une mission à Alfortville ?",
-      a: "Après un premier échange de cadrage, nous intervenons sur place à Alfortville, comme partout en France, ou à distance.",
+      q: "Sous quel délai Axion-IA intervient-il à Alfortville ?",
+      a: "Nous intervenons à Alfortville sous 5 jours ouvrés après signature du devis. Pour une demande urgente, une visioconférence de cadrage peut être planifiée sous 48 h.",
     },
     {
       q: "Axion-IA intervient-il dans les communes proches d'Alfortville ?",

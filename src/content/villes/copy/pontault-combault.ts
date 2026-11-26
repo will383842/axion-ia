@@ -218,7 +218,7 @@ export const PONTAULT_COMBAULT_COPY: VilleCopy = {
           },
           {
             q: "What lead time and guarantees for a site in Pontault-Combault?",
-            a: "The quote is issued from 24 to 48 hours depending on scope complexity. EU hosting and GDPR compliance built in from design. You remain owner of the code, data and content, transferable to any provider — no vendor lock-in. RER E and A4 access let us work on site across eastern Île-de-France.",
+            a: "The quote is issued from 24 to 48 hours depending on scope complexity. EU hosting and GDPR compliance built in from design. You remain owner of the code, data and content, transferable to any provider — no vendor lock-in. We work on site at Pontault-Combault, like everywhere in France.",
           },
         ],
         guarantees:

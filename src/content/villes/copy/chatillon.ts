@@ -57,7 +57,7 @@ export const CHATILLON_COPY: VilleCopy = {
           "Châtillon concentre une densité numérique rare en proche banlieue sud grâce au Campus Orange Gardens (~72 000 m², ~3 500 personnes, Orange 5G Lab et Data Studio) : nous construisons sites vitrines et plateformes SaaS pour les sous-traitants tech, éditeurs et freelances data/dev qui gravitent autour de ce technocentre.",
           "Le siège AXA Assistance France (6 rue André Gide) structure un micro-écosystème assurance/assistance/services : nous outillons les cabinets, courtiers et prestataires B2B de ce secteur avec des portails clients, espaces sécurisés et automatisations de devis et de relances.",
           "L'arrivée de la gare Grand Paris Express ligne 15 Sud Châtillon-Montrouge (ouverture visée 2027, ~95 000 voyageurs/jour attendus) densifie le quartier en commerces et services : nous préparons les TPE locales avec sites e-commerce multi-CMS, prise de rendez-vous et visibilité mobile avant l'ouverture.",
-          "Nous nous déplaçons sur tout le sud des Hauts-de-Seine — Châtillon, Clamart, Montrouge, Malakoff, Bagneux, Fontenay-aux-Roses — pour cadrer le projet sur site, près du terminus métro 13, du tramway T6 ou de l'A86, sans visioconférence imposée.",
+          "Nous intervenons sur tout le sud des Hauts-de-Seine — Châtillon, Clamart, Montrouge, Malakoff, Bagneux, Fontenay-aux-Roses — pour cadrer le projet sur site, sans visioconférence imposée.",
         ],
         methodology: [
           {

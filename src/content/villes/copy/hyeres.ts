@@ -229,8 +229,8 @@ export const HYERES_COPY: VilleCopy = {
 
   faqGeolocalisee: [
     {
-      q: "Comment se déroule une mission à Hyères et vers les îles d'Or ?",
-      a: "Après un premier échange de cadrage, nous intervenons sur place à Hyères et vers les îles d'Or, comme partout en France, ou à distance.",
+      q: "Intervenez-vous sur site à Hyères et vers les îles d'Or ?",
+      a: "Oui. Notre cabinet d'experts IA intervient dans vos locaux à Hyères et sur l'ensemble de la presqu'île pour observer vos processus réels, généralement sous cinq jours ouvrés.",
     },
     {
       q: "Quels gains l'IA apporte-t-elle à un hôtelier ou un viticulteur de Hyères ?",

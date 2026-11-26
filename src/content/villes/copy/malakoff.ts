@@ -57,7 +57,7 @@ export const MALAKOFF_COPY: VilleCopy = {
           "Filière audiovisuelle/postproduction sur-représentée localement : Malakoff Studio, Time-Line Factory (rue Paul Vaillant-Couturier), Black Snow Production (rue de la Tour), McFly Prod, Teslart et Le Magasin génèrent des besoins très concrets — catalogues d'assets vidéo, transcription/dérushage, sous-titrage et doublage, devis et plannings de tournage — où l'IA apporte un gain mesurable.",
           "Écosystème coopératif et ESS dense : le tiers-lieu CASACO (SCIC, ~45 postes, une centaine de coworkers) et la démarche MALACOOP (CASACO, la Ressourcerie, le tiers-lieu La Tréso artisanat/numérique/fabrication) concentrent indépendants, télétravailleurs et équipes de startups qui ont besoin de plateformes légères et d'outils mutualisés plutôt que d'usines à gaz.",
           "Tissu de très petites structures : ~5 800 entreprises majoritairement en entreprise individuelle, effectif moyen autour de 5 salariés ; le premier secteur de créations 2024 est « activités spécialisées, scientifiques et techniques » — un public d'agences, cabinets et freelances pour qui un site rapide et un SaaS sobre comptent plus qu'un site vitrine surdimensionné.",
-          "Proximité immédiate de Paris sans les coûts parisiens : quatre stations de la ligne 13 et la gare Transilien Vanves-Malakoff (ligne N) placent Montparnasse à ~4 km ; nous nous déplaçons sur site à Malakoff, Vanves, Montrouge, Châtillon, Clamart, Bagneux et les 14e/15e arrondissements limitrophes.",
+          "Proximité immédiate de Paris sans les coûts parisiens : nous intervenons sur site à Malakoff, Vanves, Montrouge, Châtillon, Clamart, Bagneux et les 14e/15e arrondissements limitrophes.",
         ],
         methodology: [
           {

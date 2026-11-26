@@ -280,7 +280,7 @@ export const ARGENTEUIL_COPY: VilleCopy = {
           },
           {
             q: "Do you cover neighbouring communes (Bezons, Sartrouville, Colombes)?",
-            a: "Yes. The full Argenteuil basin is our territory: Bezons, Sartrouville, Colombes, Cormeilles-en-Parisis, Houilles, Sannois and through to La Défense. No zone surcharge.",
+            a: "Yes. The full Argenteuil basin is our territory: Bezons, Sartrouville, Colombes, Cormeilles-en-Parisis, Houilles, Sannois and through to La Défense.",
           },
           {
             q: "Do I need AI maturity to engage you?",

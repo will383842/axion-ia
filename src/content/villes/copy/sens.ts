@@ -238,7 +238,7 @@ export const SENS_COPY: VilleCopy = {
     },
     {
       q: "Quel délai pour une intervention IA à Sens ?",
-      a: "Nous nous engageons à intervenir sur site à Sens dans un délai de 5 à 8 jours ouvrés après prise de contact, via la gare SNCF ou l'A19.",
+      a: "Nous nous engageons à intervenir sur site à Sens dans un délai de 5 à 8 jours ouvrés après prise de contact.",
     },
     {
       q: "Comment Axion-IA garantit-elle la conformité RGPD à Sens ?",

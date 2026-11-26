@@ -239,7 +239,7 @@ export const VILLIERS_LE_BEL_COPY: VilleCopy = {
     },
     {
       q: "Quel délai pour une intervention sur site à Villiers-le-Bel ?",
-      a: "Délai standard : 5 jours ouvrés après cadrage. Intervention rapide possible sous 48-72h en Val-d'Oise selon la disponibilité consultant Paris (RER D ~25 min).",
+      a: "Délai standard : 5 jours ouvrés après cadrage. Intervention rapide possible sous 48-72h en Val-d'Oise selon la disponibilité de nos consultants.",
     },
     {
       q: "Comment Axion-IA assure-t-il la conformité RGPD à Villiers-le-Bel ?",

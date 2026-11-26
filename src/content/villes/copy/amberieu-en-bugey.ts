@@ -49,7 +49,7 @@ export const AMBERIEU_EN_BUGEY_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Ambérieu-en-Bugey et Bugey ?",
-      a: "Oui, Axion-IA intervient à Ambérieu-en-Bugey et tout le Bugey (Lagnieu, Belley, Saint-Vulbas). TER Lyon 40 min. Nous intervenons partout en France, sur place ou à distance.",
+      a: "Oui, Axion-IA intervient à Ambérieu-en-Bugey et tout le Bugey (Lagnieu, Belley, Saint-Vulbas), sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les acteurs ferroviaires ?",

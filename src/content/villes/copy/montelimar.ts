@@ -238,7 +238,7 @@ export const MONTELIMAR_COPY: VilleCopy = {
     },
     {
       q: "Quel délai pour une intervention IA à Montélimar ?",
-      a: "Nous nous engageons à intervenir sur site à Montélimar dans un délai de 5 à 8 jours ouvrés après prise de contact, via la gare SNCF ou l'A7 (sorties Montélimar-Nord et Sud).",
+      a: "Nous nous engageons à intervenir sur site à Montélimar dans un délai de 5 à 8 jours ouvrés après prise de contact.",
     },
     {
       q: "Comment Axion-IA garantit-elle la conformité RGPD à Montélimar ?",

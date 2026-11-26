@@ -36,8 +36,8 @@ export const CONCARNEAU_COPY: VilleCopy = {
       en: "À Concarneau, l'audit Axion-IA cible les conserveries, mareyeurs et hôtels-restaurants saisonniers : cartographie des tâches manuelles (saisie criée, facturation, devis, planning saisonnier) et chiffrage des automatisations rentables. Audit sur place 4h à partir de {{price:audit-flash|flat}} sur site.",
     },
     interventions: {
-      fr: "Nos interventions à Concarneau couvrent les TPE-PME du port de pêche et de la Ville Close : automatisation des bons de commande mareyage, devis chantiers navals, suivi des réservations hôtelières via OTA. Intervention essentielle dès {{price:intervention-4h|flat}}, équipe nationale déplacée sur site.",
-      en: "Nos interventions à Concarneau couvrent les TPE-PME du port de pêche et de la Ville Close : automatisation des bons de commande mareyage, devis chantiers navals, suivi des réservations hôtelières via OTA. Intervention essentielle dès {{price:intervention-4h|flat}}, équipe nationale déplacée sur site.",
+      fr: "Nos interventions à Concarneau couvrent les TPE-PME du port de pêche et de la Ville Close : automatisation des bons de commande mareyage, devis chantiers navals, suivi des réservations hôtelières via OTA. Intervention essentielle dès {{price:intervention-4h|flat}}, réalisée sur site.",
+      en: "Nos interventions à Concarneau couvrent les TPE-PME du port de pêche et de la Ville Close : automatisation des bons de commande mareyage, devis chantiers navals, suivi des réservations hôtelières via OTA. Intervention essentielle dès {{price:intervention-4h|flat}}, réalisée sur site.",
     },
     implementation: {
       fr: "L'implémentation à Concarneau s'adresse aux PME de l'agroalimentaire et de l'industrie navale qui veulent un outil IA codé sur mesure (Python/Node), hébergé en France, sans abonnement Zapier ou Make. Dès {{price:impl-poc|entry}}, code livré et documenté.",

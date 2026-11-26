@@ -139,7 +139,7 @@ export const GOUSSAINVILLE_COPY: VilleCopy = {
           "Goussainville lives off Roissy air freight: our sites and SaaS are calibrated for the forwarders and carriers of the Le Pied de Fer, Le Pont de la Brèche and Dessous de l'Orme zones — shipment tracking, carrier portal, customs documents — where Dachser and Barsan Global Logistics set the local pace.",
           "A dense fabric of micro-businesses and SMEs (564 establishments in services, commerce and transport): we build B2B showcase sites and multi-CMS e-commerce for couriers (Messageries Courses Express), B2B services and wholesale trade, rather than generic sites with no business grounding.",
           "The Vieux Pays, a village deserted since the 1970s and now revitalised, hosts film shoots, photo shoots and the Abracadaparc treetop course opened in 2024: we equip ticketing, booking and online presence for these tourism and cultural activities with embedded AI.",
-          "Located 10 minutes from Roissy, served by the RER D and the A1/A104/A3 motorways: our consultants travel on site across Goussainville's activity zones and neighbouring towns (Le Thillay, Louvres, Gonesse, Sarcelles) for in-person framing.",
+          "We work on site at Goussainville, like everywhere in France, across its activity zones and neighbouring towns (Le Thillay, Louvres, Gonesse, Sarcelles) for in-person framing.",
         ],
         methodology: [
           {

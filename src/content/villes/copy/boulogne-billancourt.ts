@@ -174,7 +174,7 @@ export const BOULOGNE_BILLANCOURT_COPY: VilleCopy = {
         whyHere: [
           "Boulogne-Billancourt is one of our main engagement hubs in the Paris inner ring: the concentration of large-group HQs (Renault, TF1, Boursorama) and consulting SMEs drives strong operational AI audit demand.",
           "Very sectorised B2B fabric in our Boulogne missions: Trapèze and Quai du Point-du-Jour large groups, consulting and IT services SMEs, digital startups, consulting firms close to Paris 15th/16th.",
-          "Our consultants travel to the full municipality and basin communes: Issy-les-Moulineaux, Meudon, Saint-Cloud, Sèvres, Vanves — no zone surcharge.",
+          "We work across the full municipality and basin communes: Issy-les-Moulineaux, Meudon, Saint-Cloud, Sèvres, Vanves.",
           "Read-outs always in person: ideation workshops at your Boulogne offices, deliverable walk-through with your leadership, action plan handed over face to face.",
           "No opaque quote game: public pricing, you know exactly what you pay before signing.",
           "You keep control: your action plan is executable with any vendor or in-house after our audit — no Axion-IA lock-in.",

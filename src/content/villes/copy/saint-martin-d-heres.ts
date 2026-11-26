@@ -232,8 +232,8 @@ export const SAINT_MARTIN_D_HERES_COPY: VilleCopy = {
       a: "Nos audits sur place débutent à {{price:audit-flash|flat}}, nos interventions essentielles à {{price:intervention-4h|flat}} et nos sessions 1-to-1 à {{price:intervention-dirigeants|flat}}. Tarifs publics consultables sur notre site.",
     },
     {
-      q: "Intervenez-vous à Saint-Martin-d'Hères ?",
-      a: "Oui. Nous intervenons sur place à Saint-Martin-d'Hères, comme partout en France, ou à distance.",
+      q: "Sous quel délai Axion-IA intervient-il à Saint-Martin-d'Hères ?",
+      a: "Williams intervient à Saint-Martin-d'Hères sous 5 jours ouvrés en moyenne après validation du devis. Les missions courtes peuvent démarrer plus rapidement selon disponibilités.",
     },
     {
       q: "Quelles communes autour de Saint-Martin-d'Hères sont couvertes ?",

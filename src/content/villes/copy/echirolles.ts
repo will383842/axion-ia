@@ -231,8 +231,8 @@ export const ECHIROLLES_COPY: VilleCopy = {
       a: "Les interventions Axion-IA à Échirolles démarrent à {{price:intervention-4h|flat}}, l'Audit sur place 4h à {{price:audit-flash|flat}}, et l'implémentation à {{price:impl-poc|entry}}. Tous nos tarifs sont publics sur axion-ia.com.",
     },
     {
-      q: "Comment se déroule une mission à Échirolles ?",
-      a: "Après un premier échange de cadrage, nous intervenons sur place à Échirolles, comme partout en France, ou à distance.",
+      q: "Sous quel délai Axion-IA intervient-il à Échirolles ?",
+      a: "Nous intervenons sur site à Échirolles sous 5 jours ouvrés après signature du devis. Pour les demandes urgentes, un cadrage en visioconférence est proposé sous 48 h.",
     },
     {
       q: "Axion-IA intervient-il dans les communes proches d'Échirolles ?",

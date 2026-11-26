@@ -141,7 +141,7 @@ export const GENNEVILLIERS_COPY: VilleCopy = {
           "The Port of Gennevilliers concentrates massive logistics flows (containers, construction, metallurgy, recyclables) operated by Amazon, DHL Supply Chain, Calberson, DB Schenker, DSV and Lafarge: we build customer portals, shipment-tracking spaces and quoting platforms that speak this multimodal trade.",
           "More than 2,500 establishments in the industrial zone — material trading, river/road transport, industrial subcontracting — need websites that convert in B2B: product configurators, technical catalogues, carrier booking. We code these functions, not templates.",
           "The industrial fabric stemming from Le Carbone (1914 plant, now Mersen) and the former Chausson/Renault ETG leaves mechanical and metallurgical SMEs modernising their interfaces: supplier extranets, AI-searchable product documentation, semantic search over datasheets.",
-          "Outstanding access (RER C, metro line 13 at Gabriel Péri, tram T1, A15/A86, Paris 2.1 km away): we come on site quickly for UX workshops and acceptance testing, in Gennevilliers and neighbouring towns (Asnières, Colombes, Villeneuve-la-Garenne, Saint-Ouen).",
+          "We work on site for UX workshops and acceptance testing, in Gennevilliers and neighbouring towns (Asnières, Colombes, Villeneuve-la-Garenne, Saint-Ouen).",
         ],
         methodology: [
           {

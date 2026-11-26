@@ -147,7 +147,7 @@ export const CLICHY_SOUS_BOIS_COPY: VilleCopy = {
           {
             step: "Scoping in Clichy-sous-Bois",
             detail:
-              "On-site workshop (T4 tram access, Mairie de Clichy-sous-Bois or Clichy-Montfermeil stop): goals, audit of the existing site and content, customer journeys. Firm quote from 24-48 h depending on complexity.",
+              "On-site workshop: goals, audit of the existing site and content, customer journeys. Firm quote from 24-48 h depending on complexity.",
           },
           {
             step: "UX/UI design",
@@ -215,7 +215,7 @@ export const CLICHY_SOUS_BOIS_COPY: VilleCopy = {
           },
           {
             q: "How do you come on-site and where is my data hosted?",
-            a: "We travel by T4 tram (Mairie de Clichy-sous-Bois, Romain Rolland, Clichy-Montfermeil stops) or by car via Le Raincy and Livry-Gargan; the town has no motorway or rail station of its own, and the Grand Paris Express line 16 station is expected around 2027. Your data and code can be hosted in the EU (GDPR), with full ownership and no imposed subscription.",
+            a: "We work on site at Clichy-sous-Bois, like everywhere in France, or remotely. Your data and code can be hosted in the EU (GDPR), with full ownership and no imposed subscription.",
           },
         ],
         guarantees:

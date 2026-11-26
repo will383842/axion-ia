@@ -173,7 +173,7 @@ export const NIMES_COPY: VilleCopy = {
           "The presence of BRL Groupe (HQ) and agri-food supply chains (Royal Canin Aimargues, Perrier Vergèze) creates real demand for document automation and operational data management.",
           "CHU Carémeau and Gard medico-social structures represent fertile ground for AI applied to administrative management and care coordination.",
           "Parc Georges Besse concentrates tertiary and digital structures where AI use cases (lead qualification, content generation, contract analysis) are immediately activatable.",
-          "Public pricing, no geographic surcharge: Nîmes rate is the same as anywhere in France.",
+          "Public pricing: you know exactly what you pay before signing.",
           "Read-out always in person at your Nîmes premises: deliverable workshop handed face-to-face to your leadership or steering committee.",
         ],
         methodology: [

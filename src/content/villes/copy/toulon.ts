@@ -172,7 +172,7 @@ export const TOULON_COPY: VilleCopy = {
           "Toulon's industrial fabric is unique in France: Naval Group, Thales Underwater Systems, CNIM, Marine nationale — we understand the specific confidentiality, data sovereignty and business-process constraints of maritime defence.",
           "Pôle Mer Méditerranée (headquartered in Toulon) brings together SMEs and mid-caps in naval engineering, boating, marine energy and underwater robotics — all with high AI automation potential.",
           "Toulon's digital ecosystem is growing fast: French Tech Toulon Var, TVT Innovation, ISEN Méditerranée (AI/cybersecurity), LIS-CNRS (UTLN AI lab) — our audits tap into this local talent pool.",
-          "No opaque quote game: public pricing, you know exactly what you pay before signing. No geographical surcharge vs other French cities.",
+          "No opaque quote game: public pricing, you know exactly what you pay before signing.",
           "You stay in control: your action plan is executable with any vendor or in-house — no Axion-IA lock-in.",
         ],
         methodology: [

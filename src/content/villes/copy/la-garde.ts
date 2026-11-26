@@ -229,8 +229,8 @@ export const LA_GARDE_COPY: VilleCopy = {
 
   faqGeolocalisee: [
     {
-      q: "Comment se déroule une mission à La Garde ?",
-      a: "Après un premier échange de cadrage, nous intervenons sur place à La Garde, comme partout en France, ou à distance.",
+      q: "Intervenez-vous sur site à La Garde ?",
+      a: "Oui. Notre cabinet d'experts IA intervient directement dans vos locaux à La Garde et dans la métropole toulonnaise, généralement sous cinq jours ouvrés après validation de la mission.",
     },
     {
       q: "Quels gains l'IA apporte-t-elle à une TPE de services de La Garde ?",

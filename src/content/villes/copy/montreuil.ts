@@ -203,7 +203,7 @@ export const MONTREUIL_COPY: VilleCopy = {
         whyHere: [
           "Montreuil packs an exceptional sectorised B2B fabric for its size: digital (Ubisoft, Capgemini), finance (AFD, BNP Paribas Personal Finance), IT consulting and social economy — all sectors where operational AI delivers measurable ROI fast.",
           "Bas-Montreuil is our primary intervention zone in Seine-Saint-Denis: our consultants are familiar with the constraints of creative teams (gaming, media), IT departments and financial back-offices present in this district.",
-          "Our consultants travel across the full commune and neighbouring areas: Bas-Montreuil, Croix de Chavaux, Mairie de Montreuil, Bagnolet, Vincennes, Rosny-sous-Bois, Fontenay-sous-Bois.",
+          "We work across the full commune and neighbouring areas: Bas-Montreuil, Croix de Chavaux, Mairie de Montreuil, Bagnolet, Vincennes, Rosny-sous-Bois, Fontenay-sous-Bois.",
           "Read-outs always in person: ideation workshops at your Montreuil offices, deliverable walk-through with your leadership, action plan handed over face to face.",
           "No opaque quote game: public pricing, you know exactly what you pay before signing.",
           "You keep control: your action plan is executable with any vendor or in-house after our audit — no Axion-IA lock-in.",
@@ -280,7 +280,7 @@ export const MONTREUIL_COPY: VilleCopy = {
           },
           {
             q: "Do you cover Bagnolet, Vincennes or Rosny-sous-Bois?",
-            a: "Yes. The full Montreuil employment basin is our territory: Bagnolet, Vincennes, Romainville, Rosny-sous-Bois, Fontenay-sous-Bois, Le Pré-Saint-Gervais. No zone surcharge.",
+            a: "Yes. The full Montreuil employment basin is our territory: Bagnolet, Vincennes, Romainville, Rosny-sous-Bois, Fontenay-sous-Bois, Le Pré-Saint-Gervais.",
           },
           {
             q: "Do I need AI maturity to engage you?",

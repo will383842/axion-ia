@@ -229,8 +229,8 @@ export const JOINVILLE_LE_PONT_COPY: VilleCopy = {
 
   faqGeolocalisee: [
     {
-      q: "Intervenez-vous à Joinville-le-Pont ?",
-      a: "Oui. Nous intervenons sur place à Joinville-le-Pont, comme partout en France, ou à distance.",
+      q: "Intervenez-vous sur site à Joinville-le-Pont ?",
+      a: "Oui. Notre cabinet d'experts IA intervient directement dans vos locaux à Joinville-le-Pont et dans l'est parisien, généralement sous cinq jours ouvrés après validation de la mission.",
     },
     {
       q: "Quels gains l'IA apporte-t-elle à une agence créative de Joinville-le-Pont ?",

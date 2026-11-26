@@ -214,7 +214,7 @@ export const LE_CANNET_COPY: VilleCopy = {
           },
           {
             q: "Do you work beyond Le Cannet, across the Cannes Pays de Lérins agglomeration?",
-            a: "Yes, with no perimeter surcharge: Cannes, Mougins, Vallauris, Mandelieu-la-Napoule, Théoule-sur-Mer and the whole Cannes Pays de Lérins agglomeration, plus nearby Antibes and Grasse. The kick-off is on site; development continues remotely with regular check-ins.",
+            a: "Yes. Cannes, Mougins, Vallauris, Mandelieu-la-Napoule, Théoule-sur-Mer and the whole Cannes Pays de Lérins agglomeration, plus nearby Antibes and Grasse. The kick-off is on site; development continues remotely with regular check-ins.",
           },
           {
             q: "How quickly do we get a quote for a site or SaaS platform?",

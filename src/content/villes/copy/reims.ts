@@ -24,7 +24,7 @@ export const REIMS_COPY: VilleCopy = {
   pitchFr:
     "Reims regroupe 5 701 établissements actifs, les sièges des grandes maisons de Champagne (Veuve Clicquot, Taittinger, Ruinart, Pommery, Mumm, Lanson), NEOMA Business School, Sciences Po et l'Université de Reims — à 45 minutes de Paris en TGV. Axion-IA y intervient sur site auprès des TPE, PME, ETI et GE du Grand Reims et du bassin Champagne.",
   pitchEn:
-    "Reims hosts 5,701 active businesses, the headquarters of major Champagne houses (Veuve Clicquot, Taittinger, Ruinart, Pommery, Mumm, Lanson), NEOMA Business School, Sciences Po and the University of Reims — 45 minutes from Paris by TGV. Axion-IA delivers on site to micro-businesses, SMEs, mid-caps and large enterprises across Greater Reims and the Champagne basin.",
+    "Reims hosts 5,701 active businesses, the headquarters of major Champagne houses (Veuve Clicquot, Taittinger, Ruinart, Pommery, Mumm, Lanson), NEOMA Business School, Sciences Po and the University of Reims. Axion-IA delivers on site to micro-businesses, SMEs, mid-caps and large enterprises across Greater Reims and the Champagne basin.",
 
   servicesContext: {
     audit: {
@@ -170,13 +170,13 @@ export const REIMS_COPY: VilleCopy = {
           "Engagement contractuel : livrable remis dans les délais convenus à la signature. Conformité RGPD, hébergement données en UE par défaut, DPO sur demande. Aucun lock-in technologique : votre plan d'action est exécutable avec n'importe quel prestataire ou en interne.",
       },
       en: {
-        hero: "Axion-IA's AI audit maps what can be automated at your company and quantifies the 12-24 month return on investment. Four tiers from Sur place to Mid-cap Strategic cover every size, from Grand Reims micro-businesses to publicly listed or LVMH-owned Champagne houses. Reims, the world's Champagne capital, 45 minutes from Paris by TGV, is a high-potential B2B AI market — premium agri-food, industrial bioeconomy, academic tertiary — that we know in depth.",
+        hero: "Axion-IA's AI audit maps what can be automated at your company and quantifies the 12-24 month return on investment. Four tiers from Sur place to Mid-cap Strategic cover every size, from Grand Reims micro-businesses to publicly listed or LVMH-owned Champagne houses. Reims, the world's Champagne capital, is a high-potential B2B AI market — premium agri-food, industrial bioeconomy, academic tertiary — that we know in depth.",
         whyHere: [
           "Reims concentrates high-value sectors — Champagne, agri-food, bioeconomy, higher education — where operational AI delivers measurable gains: traceability, export document generation, international commercial qualification.",
           "Major Champagne houses (LVMH/MHCS, Taittinger, Vranken-Pommery, Lanson-BCC) have commercial, export, marketing and HR teams eligible for structured AI use cases — tasting notes, automatic multilingual translation, international B2B lead qualification.",
           "Pomacle-Bazancourt industry (3 Mt biomass/year biorefinery) and the Bioeconomy For Change hub group industrial SMEs and mid-caps with quality, R&D and supply chain workflows ripe for AI automation.",
           "NEOMA Business School, Sciences Po Reims and URCA train thousands of young professionals each year: their academic and administrative teams accelerate significantly with AI for content management, student tracking and report production.",
-          "No geographic surcharge: the same price anywhere in France. We work anywhere in France, on site or remotely.",
+          "We work on site in Reims, like everywhere in France, or remotely.",
           "Read-outs always in person at your Reims or Champagne basin offices. Action plan handed over face to face, executable with any vendor or in-house.",
         ],
         methodology: [
@@ -901,7 +901,7 @@ export const REIMS_COPY: VilleCopy = {
       en: {
         hero: "In Reims, Axion-IA designs and augments websites, applications and SaaS platforms with built-in AI: bespoke UX/UI, RAG chatbot grounded in your content, semantic search, agents and automations. Quote from 24-48 h depending on project complexity, EU hosting, code and data yours. On-site Reims kick-off, remote iterations.",
         whyHere: [
-          "Reims web & SaaS projects: Champagne & luxury houses (Veuve Clicquot, Taittinger, Ruinart, Pommery, Mumm), premium e-commerce & export, schools (NEOMA, Sciences Po), 45 min from Paris by TGV.",
+          "Reims web & SaaS projects: Champagne & luxury houses (Veuve Clicquot, Taittinger, Ruinart, Pommery, Mumm), premium e-commerce & export, schools (NEOMA, Sciences Po).",
           "Full UX/UI design if needed — research, wireframes, design system, Figma prototype — not just the AI brick.",
           "Augment the existing site (widget, API, plugin) or a bespoke AI-native platform, whichever pays off best at 18 months.",
           "Champagne e-commerce & export: premium multilingual sites, recommendation, shopping assistant, brand storytelling — the DNA of the Reims area internationally.",

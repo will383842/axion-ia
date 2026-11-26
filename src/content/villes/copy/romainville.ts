@@ -218,7 +218,7 @@ export const ROMAINVILLE_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Quote from 24 to 48 hours depending on complexity, with no geographic surcharge — our rates are identical anywhere in France. EU hosting compliant with GDPR by default, with reinforced sovereignty constraints for the sensitive data of Biocitech labs. No vendor lock-in: code, data and hosting belong to you and are reversible to your teams or any local integrator. Kick-off and acceptance always in person in Romainville.",
+          "Quote from 24 to 48 hours depending on complexity. EU hosting compliant with GDPR by default, with reinforced sovereignty constraints for the sensitive data of Biocitech labs. No vendor lock-in: code, data and hosting belong to you and are reversible to your teams or any local integrator. Kick-off and acceptance always in person in Romainville.",
       },
     },
   },

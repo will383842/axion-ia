@@ -58,7 +58,7 @@ export const CLICHY_COPY: VilleCopy = {
           "Écosystème beauté-cosmétique et retail unique : le voisinage des sièges L'Oréal (rue Martre, Link-It) et Monoprix (rue Marc Bloch) tire un tissu de prestataires — agences, studios créatifs, e-commerçants, sous-traitants packaging et logistique — pour lesquels nous construisons sites de marque, configurateurs produit et portails B2B IA-native.",
           "Pôle communication et publicité dense (agences type 14 Septembre, bd Victor Hugo, sociétés de conseil en systèmes et logiciels) : nous outillons leur production éditoriale et leur relation client avec des plateformes à génération de contenu et search sémantique intégrés.",
           "Reconversion industrielle en cours (Écoquartier du Bac, ZAC Bac d'Asnières — 27 500 m² de bureaux neufs, aménageurs Citallios/SEM 92, incubateur Intencity rue d'Estienne d'Orves) : les jeunes structures et artisans qui s'y installent ont besoin de vitrines e-commerce et d'outils métier sur mesure, sans budget DSI.",
-          "Effet Grand Paris (prolongement ligne 14 vers Saint-Ouen/Porte de Clichy, ligne 13 Mairie de Clichy, RER C, T3b) : nous nous déplaçons sur site dans tout Clichy et la proche couronne (Levallois, Asnières, Saint-Ouen, Paris 17e) pour les ateliers de cadrage et de recette.",
+          "Effet Grand Paris (prolongement de la ligne 14 vers Saint-Ouen/Porte de Clichy) : nous intervenons sur site dans tout Clichy et la proche couronne (Levallois, Asnières, Saint-Ouen, Paris 17e) pour les ateliers de cadrage et de recette.",
         ],
         methodology: [
           {

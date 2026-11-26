@@ -141,7 +141,7 @@ export const CHOISY_LE_ROI_COPY: VilleCopy = {
           "Local Choisy fabric: industrial and technical suppliers of the Val de Seine business park (Fedrigoni France for specialty papers, Cegelec for electrical and HVAC engineering), micro-businesses and SMEs in land transport, wholesale trade and construction — customer portals, catalogues and B2B e-commerce augmented with AI.",
           "Structuring water and environmental services: with the SEDIF Edmond-Pépin drinking-water plant operated by Veolia (La Franciliane) and its regulatory reporting duties (Seine discharges), we build data-tracking platforms, technical-document extraction and compliance-report generation.",
           "Full UX/UI design if needed — research, wireframes, design system, Figma prototype — not just the AI brick, for wholesalers, hauliers and engineering offices set between the dock, the RER C and the T9 tram.",
-          "Seine / Rungis / Orly logistics: 6 km from the Rungis wholesale market and 7 km from Paris-Orly, flows of purchase orders, consignment notes and supplier invoices are heavy — AI grafted onto your existing tools handles them without a rebuild, strict EU hosting, data yours.",
+          "Seine / Rungis / Orly logistics: with the Rungis wholesale market and Paris-Orly nearby, flows of purchase orders, consignment notes and supplier invoices are heavy — AI grafted onto your existing tools handles them without a rebuild, strict EU hosting, data yours.",
         ],
         methodology: [
           {
@@ -215,7 +215,7 @@ export const CHOISY_LE_ROI_COPY: VilleCopy = {
           },
           {
             q: "Which technologies do you work with, and do you cover neighbouring towns?",
-            a: "Any modern stack exposing an API: WordPress, Shopify, WooCommerce, PrestaShop, Magento, Next.js, Laravel, Django, Vue, React, Angular. We pick the best for your goals and adapt to your existing setup. We work with no zone surcharge in Vitry-sur-Seine, Thiais, Créteil, Orly, Alfortville, Valenton and Villeneuve-Saint-Georges, all under 15 minutes from Choisy-le-Roi.",
+            a: "Any modern stack exposing an API: WordPress, Shopify, WooCommerce, PrestaShop, Magento, Next.js, Laravel, Django, Vue, React, Angular. We pick the best for your goals and adapt to your existing setup. We work in Choisy-le-Roi and in neighbouring towns: Vitry-sur-Seine, Thiais, Créteil, Orly, Alfortville, Valenton and Villeneuve-Saint-Georges.",
           },
         ],
         guarantees:

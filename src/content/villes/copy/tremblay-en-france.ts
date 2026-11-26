@@ -56,7 +56,7 @@ export const TREMBLAY_EN_FRANCE_COPY: VilleCopy = {
           "Tremblay-en-France est un pôle fret/logistique unique en France : siège Air France à Roissypôle, parc Aérolians Paris (198 ha, ~250-317 entreprises dont FedEx Express, Airbus Helicopters, Daher Aerospace et Mondial Relay) et 577 entreprises sur Paris-Nord 2. Nos plateformes IA sont calibrées pour ces métiers de l'express et de l'entreposage.",
           "Nous bâtissons des portails clients et SaaS de tracking pour les commissionnaires de transport et entrepôts e-commerce : suivi colis temps réel, génération de bordereaux et d'AWB, recherche sémantique dans la documentation douanière, agents conversationnels multilingues pour les flux internationaux CDG.",
           "Le commerce local (centre commercial Aéroville, ~3 000 emplois depuis 2013) et les futurs occupants du Parc des Expositions Paris-Nord Villepinte (extension Aérolians, ligne 17 du Grand Paris Express) ont besoin de vitrines e-commerce multi-CMS, de prise de rendez-vous et de catalogues performants en mobile.",
-          "Nous intervenons sur site dans les quatre zones — Roissypôle, Aérolians Paris, Paris-Nord 2, Garonor et Tremblay-CDG — accessibles par le RER B (CDG Terminaux 1 et 2, Vert-Galant) et les autoroutes A1, A104 et A3.",
+          "Nous intervenons sur site dans les quatre zones — Roissypôle, Aérolians Paris, Paris-Nord 2, Garonor et Tremblay-CDG.",
         ],
         methodology: [
           {
@@ -231,8 +231,8 @@ export const TREMBLAY_EN_FRANCE_COPY: VilleCopy = {
       a: "L'Audit sur place 4h à Tremblay-en-France démarre à {{price:audit-flash|flat}}. Les interventions et implémentations sont ensuite chiffrées sur devis, selon le périmètre validé après l'audit. Tous nos tarifs publics sont consultables en ligne.",
     },
     {
-      q: "Comment se déroule une mission à Tremblay-en-France pour des audits ?",
-      a: "Après un premier échange de cadrage, nous intervenons sur place à Tremblay-en-France, comme partout en France, ou à distance.",
+      q: "Axion-IA intervient-il à Tremblay-en-France pour des audits ?",
+      a: "Oui, Williams intervient sur site à Tremblay-en-France (Paris-Nord 2, Roissypôle, Tremblay-CDG ou centre-ville) dans un délai de 5 jours ouvrés à compter de la signature du devis.",
     },
     {
       q: "Intervenez-vous dans les communes proches de Tremblay-en-France ?",

@@ -231,8 +231,8 @@ export const MAISONS_ALFORT_COPY: VilleCopy = {
       a: "Les interventions Axion-IA à Maisons-Alfort démarrent à {{price:intervention-4h|flat}}, l'Audit sur place 4h à {{price:audit-flash|flat}}, et l'implémentation à {{price:impl-poc|entry}}. Les tarifs publics complets sont disponibles sur axion-ia.com.",
     },
     {
-      q: "Comment se déroule une mission à Maisons-Alfort ?",
-      a: "Après un premier échange de cadrage, nous intervenons sur place à Maisons-Alfort, comme partout en France, ou à distance.",
+      q: "Sous quel délai Axion-IA intervient-il à Maisons-Alfort ?",
+      a: "Nous intervenons sur site à Maisons-Alfort sous 5 jours ouvrés après signature du devis. Un cadrage en visioconférence peut être organisé sous 48 h en cas d'urgence.",
     },
     {
       q: "Axion-IA intervient-il dans les communes proches de Maisons-Alfort ?",
