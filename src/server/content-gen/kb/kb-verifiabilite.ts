@@ -21,7 +21,7 @@ function sansNombresDeReference(texte: string): string {
     .replace(/\d{4}\/\d+/g, "")
     .replace(/\b(19|20)\d{2}\b/g, "")
     .replace(/\bAFNOR\s+Spec\s+\d+/gi, "")
-    .replace(/\b(Lyon|Paris|Aix-Marseille|Grenoble)\s+\d\b/g, "")
+    .replace(/\b(Lyon|Paris|Aix-Marseille)\s+\d\b/g, "")
     .replace(/\b\w+\s+\d\.0\b/g, "")
     .replace(/\bS\d+E\d+\b/g, "")
     .replace(/ISO(\/IEC)?\s?\d+(:\d+)?/g, "")

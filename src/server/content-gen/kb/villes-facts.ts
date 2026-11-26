@@ -1,10 +1,10 @@
 /**
  * KB sectorielle — Villes françaises + AI Act + ROI IA (Sprint A Ville DRY 2026-05-25).
  *
- * Fiches (175 avant le 26/11/2026) réparties en 3 catégories : en 3 catégories :
- *   - ville_economy (100) : données démographiques et écosystèmes tech des villes françaises
- *   - ai_act (30) : Règlement UE 2024/1689 — obligations, calendrier, classification
- *   - roi_ia (50) : études publiques McKinsey/Gartner/Forrester/BCG/IDC/OCDE
+ * Fiches (175 avant le 26/11/2026) réparties en 3 catégories :
+ *   - ville_economy (97 à l'origine) : données démographiques et écosystèmes tech des villes françaises
+ *   - ai_act (29 à l'origine) : Règlement UE 2024/1689 — obligations, calendrier, classification
+ *   - roi_ia (49 à l'origine) : études publiques McKinsey/Gartner/Forrester/BCG/IDC/OCDE
  *
  * Sources : INSEE 2024, French Tech, AI Act EUR-Lex, études publiques cabinets.
  * Confiance : uniquement faits à ≥ 0.75. Statistiques incertaines → confidence 0.70-0.75 + note source.
@@ -19,7 +19,7 @@
 import type { KbFact } from "./audits";
 
 // ---------------------------------------------------------------------------
-// VILLE ECONOMY (100 fiches à l'origine)
+// VILLE ECONOMY (97 fiches à l'origine)
 // ---------------------------------------------------------------------------
 
 export const KB_VILLES_ECONOMY: readonly KbFact[] = [
@@ -697,7 +697,7 @@ export const KB_VILLES_ECONOMY: readonly KbFact[] = [
 ];
 
 // ---------------------------------------------------------------------------
-// AI ACT (30 fiches à l'origine)
+// AI ACT (29 fiches à l'origine)
 // ---------------------------------------------------------------------------
 
 export const KB_AI_ACT: readonly KbFact[] = [
@@ -972,7 +972,7 @@ export const KB_AI_ACT: readonly KbFact[] = [
 ];
 
 // ---------------------------------------------------------------------------
-// ROI IA (50 fiches à l'origine)
+// ROI IA (49 fiches à l'origine)
 // ---------------------------------------------------------------------------
 
 export const KB_ROI_IA: readonly KbFact[] = [

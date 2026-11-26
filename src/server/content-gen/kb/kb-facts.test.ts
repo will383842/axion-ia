@@ -1,7 +1,7 @@
 /**
  * Tests structurels KB facts — Verticales sectorielles (V-15 expansion 2026-05-22).
  *
- * Vérifie pour les 5 verticales :
+ * Vérifie pour les 5 verticales et villes-facts :
  *   - Aucun nombre minimal de faits (un compte à atteindre pousse à remplir, pas à vérifier)
  *   - Tout fait chiffré d'un organisme tiers a une adresse profonde (audit 26/11/2026)
  *   - Unicité des IDs
