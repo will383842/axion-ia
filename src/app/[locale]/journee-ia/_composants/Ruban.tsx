@@ -1,4 +1,4 @@
-// Le ruban de la journée : audit le matin, formation l'après-midi, priorités écrites le soir.
+// Le ruban de la journée : audit le matin, formation l'après-midi, rapport détaillé avec vos priorités sous 10 jours ouvrés.
 // Composant serveur, aucun état. Les textes viennent de `contenu.ts` ; le dessin est un SVG
 // à échelle fixe (viewBox 320 × 64) qui s'adapte à la largeur de la carte. Texte de 12 px au moins.
 

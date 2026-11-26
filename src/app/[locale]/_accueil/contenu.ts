@@ -80,7 +80,7 @@ export const CONTENU = {
         {
           repere: "Le matin · l’audit",
           texte:
-            "De 2 à 4 h selon la structuration de l’entreprise : votre entreprise cartographiée service par service, le point fait ensemble sur vos priorités : les 3 à 5 tâches au meilleur retour sur investissement et les plus rapides à mettre en place, découvertes le jour même et chiffrées en heures et en euros.",
+            "De 2 à 4 h selon la structuration de l’entreprise. Votre entreprise est cartographiée service par service et nous faisons le point ensemble sur vos priorités : les 3 à 5 tâches au meilleur retour sur investissement et les plus rapides à mettre en place, découvertes le jour même et chiffrées en heures et en euros.",
         },
         {
           repere: "L’après-midi · 4 h de formation",

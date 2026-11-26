@@ -58,7 +58,7 @@ export const QUESTIONS_REFERENCE: Readonly<Record<string, QuestionReference>> = 
   "ref-journee-prix": {
     id: "ref-journee-prix",
     question: "Combien coûte la Journée IA ?",
-    reponse: `La Journée IA d’Axion-IA coûte {{PRIX}}, prix unique. L’audit du matin convient aux entreprises de 2 à 250 salariés (2 à 4 h selon la structuration de l’entreprise) ; la formation de 4 h l’après-midi accueille jusqu’à 15 personnes. La journée comprend aussi 3 à 5 priorités écrites le soir, puis le rapport chiffré et le plan d’action sous ${DELAI_RAPPORT_JOURS_OUVRES} jours ouvrés. Si les gains identifiés dans ce rapport, sur 12 mois, n'atteignent pas ${MULTIPLE_GARANTIE} fois son prix HT, soit ${SEUIL}, elle est remboursée sur demande écrite.`,
+    reponse: `La Journée IA d’Axion-IA coûte {{PRIX}}, prix unique. L’audit du matin convient aux entreprises de 2 à 250 salariés (2 à 4 h selon la structuration de l’entreprise) ; la formation de 4 h l’après-midi accueille jusqu’à 15 personnes. La journée comprend aussi le rapport détaillé, remis sous ${DELAI_RAPPORT_JOURS_OUVRES} jours ouvrés, avec vos 3 à 5 priorités chiffrées et le plan d’action sur 90 jours. Si les gains identifiés dans ce rapport, sur 12 mois, n'atteignent pas ${MULTIPLE_GARANTIE} fois son prix HT, soit ${SEUIL}, elle est remboursée sur demande écrite.`,
     sujet: "Journée IA",
     source: "src/content/pricing.ts, src/content/journee-ia-commun.ts",
   },
