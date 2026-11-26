@@ -603,9 +603,9 @@ export function ConventionPdf({
               l&apos;organisme à ses propres obligations (inexécution de tout ou partie de
               l&apos;action, défaut des justificatifs de réalisation qui lui incombent) ou d&apos;un
               report à l&apos;initiative de l&apos;organisme (article 46.4 des conditions générales
-              de vente). En cas de report, si le financeur ne maintient pas sa prise en charge
-              pour la date retenue, le client peut refuser cette date et le remboursement prévu
-              à l&apos;article 4 s&apos;applique.
+              de vente). En cas de report, si le financeur ne maintient pas sa prise en charge pour
+              la date retenue, le client peut refuser cette date et le remboursement prévu à
+              l&apos;article 4 s&apos;applique.
             </Text>
           ) : null}
         </SectionCarte>
