@@ -8,6 +8,7 @@ import {
   etatDeLaCommande,
   ligneNeutralisee,
   netDeLaCommande,
+  soldeDesLignesLiees,
   type FactureDeCommande,
 } from "../commandes";
 
@@ -263,5 +264,39 @@ describe("verdict F (900eb08f) : avoir total rattaché à une AUTRE facture du d
         new Date("2026-11-02T00:00:00Z"),
       ),
     ).toBe(false);
+  });
+});
+
+describe("tour 2/2 : état et solde, sources uniques", () => {
+  it("défaut 3 : une refaite émise mais entièrement annulée par son avoir n'est pas « en attente »", () => {
+    const e = etatDeLaCommande(
+      [
+        f("AC", { montantHtCents: 60_000 }),
+        f("SO", { montantHtCents: 140_000 }),
+        f("SR", { montantHtCents: 140_000, statut: "emise" }),
+      ],
+      [avoir("AVS", "SO", 140_000), avoir("AVR", "SR", 140_000)],
+      200_000,
+    );
+    expect(e.enAttente).toBe(false);
+    expect(e.netCibleCents).toBe(60_000);
+  });
+  it("défauts 1 et 4 : le solde d'une ligne compte ses compléments nets de LEURS reprises", () => {
+    const solde = soldeDesLignesLiees(
+      "c1",
+      [
+        { palier: "reprise-de:c1", montantCents: -21_000 },
+        { id: "k1", palier: "complement-de:c1", montantCents: 21_000, statut: "versee" },
+        { palier: "reprise-de:k1", montantCents: -5_000 },
+        { id: "k2", palier: "complement-de:c1", montantCents: 9_000, statut: "annulee" },
+      ],
+      "reprise-de:",
+    );
+    expect(solde).toMatchObject({ reprisCents: 21_000, complementsCents: 16_000 });
+    expect(solde.complements[0]).toMatchObject({ id: "k1", reprisCents: 5_000 });
+    // 300 versés, 210 repris, 160 encore complétés : la ligne n'est PAS neutralisée.
+    expect(ligneNeutralisee({ statut: "versee", montantCents: 30_000 }, 21_000 - 16_000)).toBe(
+      false,
+    );
   });
 });

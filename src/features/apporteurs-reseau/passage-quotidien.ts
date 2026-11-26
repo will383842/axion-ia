@@ -69,7 +69,13 @@ import { reprendreApresAvoirsClients } from "./avoir-client";
 import { regenererAvoirsSansPiece } from "./manquement";
 import { alerterHorsGrille } from "./hors-grille";
 import { chiffrerPiecesEnClair } from "./pieces-chiffrement";
-import { commandeRenduePourLaLigne, commandesSoldees, ligneNeutralisee } from "./commandes";
+import {
+  commandeRenduePourLaLigne,
+  commandesSoldees,
+  ligneNeutralisee,
+  PREFIXE_PALIER_COMPLEMENT,
+  soldeDesLignesLiees,
+} from "./commandes";
 import { PREFIXE_PALIER_REPRISE } from "./resiliation";
 import { idsPriseDeContactRebondie } from "./rebonds";
 import { urlDossier } from "./jeton";
@@ -891,15 +897,38 @@ async function etapeCommissions(maintenant: Date, bilan: BilanPassageReseau): Pr
     return commandeRenduePourLaLigne(membres, avoirsLignes, e.creeAt);
   };
   const versees = existantesToutes.filter((e) => e.statut === "versee");
+  // Tour 2/2 (défaut 1) : une ligne versée n'est neutralisée que si ses reprises couvrent son
+  // montant ET ses compléments vivants (`soldeDesLignesLiees`, source unique avec `avoir-client.ts`) :
+  // une ligne reprise puis complétée bloque, jamais une ligne neuve à côté de son complément.
   const reprisesParLigne = new Map<string, number>();
   if (versees.length > 0) {
-    const reprises = await prisma.commissionApporteur.findMany({
-      where: { palier: { in: versees.map((e) => `${PREFIXE_PALIER_REPRISE}${e.id}`) } },
-      select: { palier: true, montantCents: true },
+    const liees = await prisma.commissionApporteur.findMany({
+      where: {
+        palier: {
+          in: versees.flatMap((e) => [
+            `${PREFIXE_PALIER_REPRISE}${e.id}`,
+            `${PREFIXE_PALIER_COMPLEMENT}${e.id}`,
+          ]),
+        },
+      },
+      select: { id: true, palier: true, montantCents: true, statut: true },
     });
-    for (const r of reprises) {
-      const id = (r.palier ?? "").slice(PREFIXE_PALIER_REPRISE.length);
-      reprisesParLigne.set(id, (reprisesParLigne.get(id) ?? 0) + Math.abs(r.montantCents ?? 0));
+    const complements = liees.filter((x) => (x.palier ?? "").startsWith(PREFIXE_PALIER_COMPLEMENT));
+    const reprisesDesComplements = complements.length
+      ? (
+          await prisma.commissionApporteur.findMany({
+            where: { palier: { in: complements.map((c) => `${PREFIXE_PALIER_REPRISE}${c.id}`) } },
+            select: { id: true, palier: true, montantCents: true, statut: true },
+          })
+        ).filter((r) => complements.some((c) => r.palier === `${PREFIXE_PALIER_REPRISE}${c.id}`))
+      : [];
+    for (const e of versees) {
+      const solde = soldeDesLignesLiees(
+        e.id,
+        [...liees, ...reprisesDesComplements],
+        PREFIXE_PALIER_REPRISE,
+      );
+      reprisesParLigne.set(e.id, solde.reprisCents - solde.complementsCents);
     }
   }
   const neutralisee = (e: (typeof existantesToutes)[number]) =>

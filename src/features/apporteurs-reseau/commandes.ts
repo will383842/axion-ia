@@ -176,7 +176,18 @@ export function etatDeLaCommande(
     baseCents: base,
     netPayeCents: netPaye,
     netCibleCents: netCible,
-    enAttente: actifs.some((f) => f.statut !== "payee") && netCible < base,
+    // Défaut 3 (tour 2/2) : une facture émise mais pas payée n'est « en attente » que si ses avoirs
+    // ne l'annulent pas déjà (net propre > 0) ; une refaite entièrement annulée ne bloque plus rien.
+    enAttente:
+      actifs.some(
+        (f) =>
+          f.statut !== "payee" &&
+          f.montantHtCents +
+            avoirs
+              .filter((a) => a.avoirDeId === f.id && !STATUTS_SANS_EFFET.has(a.statut))
+              .reduce((s, a) => s + a.montantHtCents, 0) >
+            0,
+      ) && netCible < base,
     avecAvoir: tous.avoirs.length > 0,
   };
 }
@@ -218,4 +229,51 @@ export function ligneNeutralisee(
   if (ligne.statut === "annulee" || ligne.statut === "retenue") return true;
   if (ligne.statut === "versee") return reprisesCents >= (ligne.montantCents ?? 0);
   return false;
+}
+
+/** Une ligne de reprise ou de complément liée à une commission d'origine (champ `palier`). */
+export interface LigneLiee {
+  id?: string;
+  palier: string | null;
+  montantCents: number | null;
+  statut?: string | null;
+}
+
+export interface SoldeDesLignesLiees {
+  /** Reprises (valeur absolue) portées par la ligne d'origine elle-même. */
+  reprisCents: number;
+  /** Compléments encore VIVANTS : montant des compléments ni annulés ni retenus, moins leurs reprises. */
+  complementsCents: number;
+  /** Les compléments, avec les reprises déjà faites sur chacun (plafond propre à sa ligne). */
+  complements: Array<{ id: string; statut: string; montantCents: number; reprisCents: number }>;
+}
+
+/**
+ * Le SOLDE d'une ligne d'origine (tour 2/2, défauts 1 et 4) : ses reprises et ses compléments
+ * vivants, chaque complément net de ses PROPRES reprises (`<prefixeReprise><id du complément>`).
+ * Source unique du passage (création d'une ligne neuve) et de la reprise après avoir : une ligne
+ * reprise puis complétée n'est plus neutralisée, et un complément repris n'est plus vivant.
+ */
+export function soldeDesLignesLiees(
+  origineId: string,
+  liees: readonly LigneLiee[],
+  prefixeReprise: string,
+): SoldeDesLignesLiees {
+  const complements = liees
+    .filter((x) => x.palier === `${PREFIXE_PALIER_COMPLEMENT}${origineId}`)
+    .map((x) => ({
+      id: x.id ?? "",
+      statut: x.statut ?? "due",
+      montantCents: Math.max(0, x.montantCents ?? 0),
+      reprisCents: liees
+        .filter((r) => !!x.id && r.palier === `${prefixeReprise}${x.id}`)
+        .reduce((s, r) => s + Math.abs(r.montantCents ?? 0), 0),
+    }));
+  const reprisCents = liees
+    .filter((r) => r.palier === `${prefixeReprise}${origineId}`)
+    .reduce((s, r) => s + Math.abs(r.montantCents ?? 0), 0);
+  const complementsCents = complements
+    .filter((c) => c.statut !== "annulee" && c.statut !== "retenue")
+    .reduce((s, c) => s + Math.max(0, c.montantCents - c.reprisCents), 0);
+  return { reprisCents, complementsCents, complements };
 }

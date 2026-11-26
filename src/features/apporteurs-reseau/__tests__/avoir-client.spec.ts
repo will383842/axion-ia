@@ -78,6 +78,12 @@ vi.mock("@/lib/prisma", () => {
   return { prisma };
 });
 vi.mock("../litige", () => ({ litigeDisponible: async () => d.litige }));
+// Tour 2/2 (défaut 7) : le complément passe par la vigilance comme toute commission neuve.
+vi.mock("../commissions", () => ({
+  statutApresVigilance: vi.fn(async () => ({ statut: "due", demander: false })),
+  dejaEnvoye: vi.fn(async () => false),
+}));
+vi.mock("@/server/queue/queues", () => ({ enqueueEmail: vi.fn(async () => ({ enqueued: true })) }));
 vi.mock("../envois", () => ({ envoyer: (...a: unknown[]) => d.envoyer(...(a as [])) }));
 vi.mock("../signaler", () => ({ signalerErreurReseau: vi.fn() }));
 vi.mock("../manquement", () => ({ retenir: (...a: unknown[]) => d.retenir(...(a as [])) }));
@@ -706,5 +712,22 @@ describe("défaut A : facture refaite émise mais IMPAYÉE → ni autofacture ni
     const b = await reprendreApresAvoirsClients(LE);
     expect(b.suspensionsLevees).toBe(1);
     expect(d.reduire).toHaveBeenCalledWith("c1", 60_000, expect.any(String));
+  });
+});
+
+describe("tour 2/2 (défaut 4) : une reprise refusée n'est jamais silencieuse", () => {
+  it("refus de `enregistrerReprise` → une alerte interne, clé unique par ligne et montant", async () => {
+    const { enqueueEmail } = await import("@/server/queue/queues");
+    d.lignes = [ligne({ statut: "versee", verseeAt: LE, autofactureNumero: "AXI-APP-2026-0001" })];
+    d.reprise.mockResolvedValueOnce({ ok: false, message: "Plafond dépassé." } as never);
+    await reprendreApresAvoirsClients(LE);
+    expect(enqueueEmail).toHaveBeenCalledTimes(1);
+    expect(enqueueEmail).toHaveBeenCalledWith(
+      "qualiopi-alerte-interne",
+      expect.any(String),
+      "fr",
+      expect.objectContaining({ code: "apporteur_reprise_refusee" }),
+      expect.objectContaining({ jobId: "apporteur-reprise-refusee-c1-100" }),
+    );
   });
 });
