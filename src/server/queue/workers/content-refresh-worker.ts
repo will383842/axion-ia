@@ -242,9 +242,17 @@ async function runRefreshJob(job: Job<RefreshJobData>): Promise<ContentRefreshRe
     // Délai de grâce de 28 jours après un signalement : un relevé de position
     // n'est écrit qu'une fois, il ne doit pas re-signaler l'article à chaque passage.
     const choisis: string[] = [];
-    for (const c of choisirCandidatsMiseAJour(signaux, new Date(now))) {
+    // Le filet d'âge passe en dernier : il ne doit pas masquer les vrais signaux.
+    const vrais = (c: { raisons: readonly string[] }) =>
+      c.raisons.some((r) => r !== "age-maximum") ? 0 : 1;
+    const ordonnes = choisirCandidatsMiseAJour(signaux, new Date(now)).sort(
+      (a, b) => vrais(a) - vrais(b),
+    );
+    for (const c of ordonnes) {
       if (choisis.length >= maxPerRun) break;
-      const ok = await redis.set(`suivi-pub:alerte:${c.id}`, "1", "EX", 28 * 24 * 3600, "NX");
+      const ok = await redis
+        .set(`suivi-pub:alerte:${c.id}`, "1", "EX", 28 * 24 * 3600, "NX")
+        .catch(() => "OK"); // Redis indisponible : on retient l'article plutôt que de tout perdre
       if (ok === "OK") choisis.push(c.id);
     }
     const ids = new Set(choisis);
