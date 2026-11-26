@@ -126,14 +126,14 @@ const EMPREINTES: Readonly<
     // v10 — 26/11/2026 : l'acompte versé reste acquis en cas d'annulation, sans condition de délai
     // (§ 4) ; dédit formation facturé à part, ni imputable ni pris en charge par un OPCO ; v9 archivée.
     // (v9 — 25/11/2026 : paragraphe de la garantie Journée IA, § 3.)
-    sha: "456be682718a476c86527df679987370375c906d6c0e724748fbec26b2a838da",
+    sha: "3d056115d22cc9a719685605248b82b7088e4b658d877422521b3115279aad91",
     version: 10,
   },
   convention_tripartite: {
     // v7 — 18/11/2026 : refonte au style de la charte 2027, texte inchangé ; v6 archivée.
     // (v6 — 16/10/2026 : même mention handicap, mot pour mot.)
     // v8 — 25/11/2026 : même règle de l'acompte acquis (§ 4), mot pour mot ; v7 archivée.
-    sha: "f9cb2936c91251270fafd3c5defaa8da31f8fbee31093750ebd2984efab2f676",
+    sha: "0035b8e11b6c23e87ce2dd2d55f5994255d0503ca35d4f357d7065251ebfbbe6",
     version: 8,
   },
   contrat_formation: {

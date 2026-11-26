@@ -473,7 +473,8 @@ export function ConventionPdf({
           </Text>
           <Text style={local.listItem}>
             • Annulation à plus de 15 jours ouvrés avant le début : aucune somme en plus de
-            l&apos;acompte versé, qui reste acquis au client professionnel
+            l&apos;acompte versé, qui reste acquis à l&apos;organisme lorsque le client est
+            professionnel
           </Text>
           <Text style={local.listItem}>
             • Annulation entre 8 et 15 jours ouvrés avant le début : 50 % du prix HT
