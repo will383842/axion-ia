@@ -128,7 +128,7 @@ export const QUESTIONS_REFERENCE: Readonly<Record<string, QuestionReference>> = 
     id: "ref-automatiser-premier",
     question: "Quelles tâches automatiser en premier dans une PME ?",
     reponse:
-      "Dans une PME, les premières tâches à automatiser avec l’IA sont celles qui reviennent souvent, suivent des règles claires et prennent un temps mesurable : devis, relances, comptes rendus, tri des e-mails. Commencez par un ou deux flux seulement, relisez les résultats, puis étendez. La Journée IA chiffre ces tâches en heures et en euros et les classe par rentabilité.",
+      "Dans une PME, les premières tâches à automatiser avec l’IA sont celles qui reviennent souvent, suivent des règles claires et prennent un temps mesurable : devis, relances, comptes rendus, tri des e-mails. Commencez par un ou deux flux seulement, relisez les résultats, puis étendez. La Journée IA les repère et les classe par rentabilité ; le rapport les chiffre en heures et en euros.",
     sujet: "automatiser",
     source: "src/app/[locale]/_accueil/contenu.ts, src/content/implementation-fr-overrides.ts",
   },

@@ -32,7 +32,7 @@ export const TITRE = "Axion-IA · Audit et formation IA pour PME et TPE";
 
 /** Meta description (le prix est un jeton ; ≤ `META_DESCRIPTION_MAX` une fois résolue). */
 export const DESCRIPTION_META =
-  "Par où commencer avec l’IA ? En une journée chez vous, partout en France : vos plus gros gains chiffrés, vos équipes formées. {{PRIX}}.";
+  "Par où commencer avec l’IA ? En une journée chez vous, partout en France : vos plus gros gains repérés (chiffrés dans le rapport), vos équipes formées. {{PRIX}}.";
 
 /** Sous-ligne de la carte d'aperçu `/api/og`. */
 export const OG_EYEBROW = "Partenaire IA des PME et TPE";
@@ -170,7 +170,7 @@ export const CONTENU = {
     texte:
       "Nous partons de ce que vivent un dirigeant et ses équipes quand le temps manque, dans votre métier. Tout est écrit avant de commencer : le déroulé, ce que vous recevez, le prix.",
     citation:
-      "« Dans chaque entreprise, des heures se perdent sans bruit. Nous les trouvons, nous les chiffrons et nous les rendons à votre productivité, à votre rentabilité et à votre chiffre d’affaires. Nous en sommes sûrs au point de garantir la journée sur les gains identifiés. »",
+      "« Dans chaque entreprise, des heures se perdent sans bruit. Nous les trouvons, nous les chiffrons dans le rapport et nous les rendons à votre productivité, à votre rentabilité et à votre chiffre d’affaires. Nous en sommes sûrs au point de garantir la journée sur les gains identifiés. »",
     signature: "Williams Jullin, fondateur d’Axion-IA",
     lien: "Voir le parcours de Williams Jullin",
     altPortrait: "Portrait de Williams Jullin, fondateur d’Axion-IA",
@@ -302,7 +302,7 @@ export const CONTENU = {
         id: "faq-devis-relances",
         question: "Peut-on automatiser les devis et les relances avec l’IA ?",
         reponse:
-          "Oui, on peut automatiser les devis et les relances avec l’IA. Elle prépare le devis à partir de vos modèles et de vos notes ; les relances partent à la date que vous avez validée, et vous relisez avant chaque envoi. La Journée IA commence par chiffrer, chez vous, le temps réellement passé sur ces tâches, pour savoir si cela vaut la peine.",
+          "Oui, on peut automatiser les devis et les relances avec l’IA. Elle prépare le devis à partir de vos modèles et de vos notes ; les relances partent à la date que vous avez validée, et vous relisez avant chaque envoi. La Journée IA commence par repérer, chez vous, le temps réellement passé sur ces tâches, pour savoir si cela vaut la peine.",
       },
       {
         id: "faq-chatgpt",

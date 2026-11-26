@@ -314,7 +314,7 @@ export function SectionsPub({
                 La seule phrase à retenir
               </p>
               <blockquote>
-                Je connais un organisme qui, en une journée dans votre entreprise, chiffre ce que
+                Je connais un organisme qui, en une journée dans votre entreprise, repère ce que
                 l’IA peut vous faire gagner et forme votre équipe. Je vous mets en relation&nbsp;?
               </blockquote>
               <p className="note">
