@@ -36,6 +36,10 @@ import { prisma } from "@/lib/prisma";
 import { blogFromTitleGenerator } from "@/server/content-gen/generators/blog-from-title";
 import { computeCost } from "@/server/content-gen/providers/anthropic";
 import { interrupteurBlogClaude, MODELES } from "@/server/content-gen/providers/blog-claude";
+import {
+  MAX_TOKENS_EXPANSION_CLAUDE,
+  MAX_TOKENS_PLAN_CLAUDE,
+} from "@/server/content-gen/providers/blog-claude-budgets";
 import { typeClaudeAutorise } from "@/server/content-gen/providers/types-claude";
 import type { GeneratorBaseInput, GeneratorOutput } from "@/server/content-gen/generators/types";
 
@@ -51,16 +55,16 @@ export const MARQUEUR_ERREUR = "essai-claude : brouillon manuel, ne jamais repre
 export class ErreurEssai extends Error {}
 
 /**
- * Pire cas du générateur : 2 plans (2 600 tokens de sortie) + 2 itérations × 2 tranches
- * × 2 essais (relance d'une tranche par `expandOutlineChunked`) = 8 expansions de
- * 5 000 tokens de sortie, entrées larges. Le plafond PAR JOB (`plafondJobUsd`, lu par
+ * Pire cas du générateur : 2 plans (MAX_TOKENS_PLAN_CLAUDE de sortie) + 2 itérations × 2
+ * tranches × 2 essais (relance d'une tranche par `expandOutlineChunked`) = 8 expansions de
+ * MAX_TOKENS_EXPANSION_CLAUDE de sortie, entrées larges. Le plafond PAR JOB (`plafondJobUsd`, lu par
  * `reserverCout`) est ce qui arrête réellement la dépense à 3 $. Sert de garde,
  * pas de prévision : le coût réel typique est de l'ordre de 0,15 $.
  */
 export function estimerCoutMaxUsd(): number {
   const modele = MODELES.ecriture;
-  const plans = 2 * computeCost(modele, 0, 2600, 0, 12_000);
-  const expansions = 8 * computeCost(modele, 0, 5000, 0, 15_000);
+  const plans = 2 * computeCost(modele, 0, MAX_TOKENS_PLAN_CLAUDE, 0, 12_000);
+  const expansions = 8 * computeCost(modele, 0, MAX_TOKENS_EXPANSION_CLAUDE, 0, 15_000);
   return plans + expansions;
 }
 
