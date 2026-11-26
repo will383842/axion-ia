@@ -20,12 +20,18 @@
 
 import type { PrismaClient } from "../../../../prisma/generated/client";
 import { embed, buildEmbeddingInput, OPENAI_EMBEDDING_DIMENSION } from "./openai-embedder";
+import { embedVoyage, VOYAGE_EMBEDDING_DIMENSION } from "./voyage-embedder";
+import { readKillSwitchFailSafe } from "@/server/content-gen/config-store";
+import { getEmbeddingProvider } from "./embedding-provider";
+import { buildVoyageEmbeddingText } from "./texte-a-vectoriser";
 
 export interface PersistArticleEmbeddingInput {
   readonly articleId: string;
   readonly title: string;
   readonly metaDescription?: string;
   readonly bodyText?: string;
+  /** HTML stocké (article_translations.body) : repli de bodyText vide, comme au rattrapage. */
+  readonly bodyHtml?: string;
 }
 
 export interface PersistArticleEmbeddingResult {
@@ -35,8 +41,25 @@ export interface PersistArticleEmbeddingResult {
   readonly dimensions?: number;
 }
 
+/** Remet embedding_voyage à NULL (best-effort) pour que le rattrapage le recalcule. */
+async function invaliderEmbeddingVoyage(prisma: PrismaClient, articleId: string): Promise<void> {
+  try {
+    await prisma.$executeRaw`
+      UPDATE articles SET embedding_voyage = NULL WHERE id = ${articleId}::uuid
+    `;
+  } catch {
+    /* best-effort : ne jamais bloquer la publication */
+  }
+}
+
 /**
  * Calcule l'embedding du contenu article et persiste dans articles.embedding.
+ *
+ * Le fournisseur vient de `CONTENT_EMBEDDING_PROVIDER` (PR4) :
+ *  - `openai` (défaut) : comportement historique, colonne `embedding` (1536).
+ *  - `voyage` : Voyage voyage-3, colonne `embedding_voyage` (1024). Clé absente ou
+ *    panne Voyage → warning journalisé, colonne laissée NULL (rattrapée par le worker),
+ *    la publication continue.
  *
  * Garantit : ne throw JAMAIS. Retourne un résultat structuré pour logging.
  * Le caller doit traiter `persisted=false` comme non-bloquant.
@@ -46,15 +69,69 @@ export async function persistArticleEmbedding(
   input: PersistArticleEmbeddingInput,
 ): Promise<PersistArticleEmbeddingResult> {
   try {
-    const text = buildEmbeddingInput({
-      title: input.title,
-      ...(input.metaDescription ? { metaDescription: input.metaDescription } : {}),
-      ...(input.bodyText ? { bodyText: input.bodyText } : {}),
-    });
-
-    const result = await embed(text);
+    const provider = getEmbeddingProvider();
+    // Voyage : fabrication unique, partagée avec le rattrapage (texte-a-vectoriser.ts).
+    const text =
+      provider === "voyage"
+        ? buildVoyageEmbeddingText({
+            title: input.title,
+            metaDescription: input.metaDescription ?? null,
+            bodyText: input.bodyText ?? null,
+            bodyHtml: input.bodyHtml ?? null,
+          })
+        : buildEmbeddingInput({
+            title: input.title,
+            ...(input.metaDescription ? { metaDescription: input.metaDescription } : {}),
+            ...(input.bodyText ? { bodyText: input.bodyText } : {}),
+          });
+    if (provider === "voyage") {
+      // Coupure d'urgence (fail-safe : état illisible = arrêt). Colonne laissée NULL,
+      // le rattrapage la remplira une fois la coupure levée.
+      const killSwitch = await readKillSwitchFailSafe();
+      if (killSwitch.active) {
+        await invaliderEmbeddingVoyage(prisma, input.articleId);
+        console.warn(
+          JSON.stringify({
+            event: "persist_article_embedding_voyage_kill_switch",
+            articleId: input.articleId,
+          }),
+        );
+        return { persisted: false, reason: "disabled" };
+      }
+    }
+    const result = provider === "voyage" ? await embedVoyage(text) : await embed(text);
     if (result === null) {
+      if (provider === "voyage") {
+        // Un vecteur périmé (article rafraîchi) ne serait jamais recalculé : on remet NULL.
+        await invaliderEmbeddingVoyage(prisma, input.articleId);
+        console.warn(
+          JSON.stringify({
+            event: "persist_article_embedding_voyage_unavailable",
+            articleId: input.articleId,
+            note: "embedding_voyage laissé NULL, rattrapage par le worker",
+          }),
+        );
+      }
       return { persisted: false, reason: "disabled" };
+    }
+
+    if (provider === "voyage") {
+      if (result.embedding.length !== VOYAGE_EMBEDDING_DIMENSION) {
+        await invaliderEmbeddingVoyage(prisma, input.articleId);
+        return { persisted: false, reason: "no_embedding", dimensions: result.embedding.length };
+      }
+      const voyageLiteral = `[${result.embedding.join(",")}]`;
+      await prisma.$executeRaw`
+        UPDATE articles
+        SET embedding_voyage = ${voyageLiteral}::vector
+        WHERE id = ${input.articleId}::uuid
+      `;
+      return {
+        persisted: true,
+        reason: "ok",
+        tokensUsed: result.tokensUsed,
+        dimensions: result.embedding.length,
+      };
     }
 
     if (result.embedding.length !== OPENAI_EMBEDDING_DIMENSION) {
@@ -87,6 +164,9 @@ export async function persistArticleEmbedding(
         error: err instanceof Error ? err.message : String(err),
       }),
     );
+    if (getEmbeddingProvider() === "voyage") {
+      await invaliderEmbeddingVoyage(prisma, input.articleId);
+    }
     return { persisted: false, reason: "exception" };
   }
 }
