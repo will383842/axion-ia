@@ -64,6 +64,11 @@ import {
   factCheckClaudeActif,
   MARQUEUR_FACT_CHECK_CLAUDE,
 } from "@/server/content-gen/fact-check/fact-check-claude";
+import { equipeEditorialeActive } from "@/server/content-gen/fact-check/equipe-editoriale-drapeau";
+import {
+  constituerDossierPreuves,
+  type DossierPreuves,
+} from "@/server/content-gen/fact-check/verificateur-deux-phases";
 import { financementPublicCitable } from "@/server/qualiopi/config/financing";
 import { readContentGenConfig } from "@/server/actions/content-gen/_settings";
 // Fix 2026-08-15 (audit e2e, C8) — lecture du kill switch en fail-SAFE : une
@@ -638,6 +643,33 @@ async function processJob(job: Job<ContentGenJobPayload>): Promise<void> {
       }
     }
 
+    // PR 7 — phase A du vérificateur (`CONTENT_EQUIPE_EDITORIALE` + fact-check Claude actifs,
+    // éteint par défaut) : dossier de preuves AVANT la rédaction. Une erreur n'arrête pas la
+    // génération : la phase B tournera sans dossier et marquera tout à retirer (fail-closed).
+    let dossierPreuves: DossierPreuves | undefined;
+    if (equipeEditorialeActive() && factCheckClaudeActif(contentType)) {
+      try {
+        dossierPreuves = await constituerDossierPreuves({
+          jobId: contentGenJobId,
+          contentType,
+          sujet: resolvedKeyword ?? targetSearchIntent ?? contentType,
+        });
+        await logStep(
+          contentGenJobId,
+          "validation",
+          `Dossier de preuves : ${dossierPreuves.preuves.length} preuve(s), ${dossierPreuves.refusees} refusée(s)`,
+          { recherches: dossierPreuves.recherches, cout_usd: dossierPreuves.coutUsd },
+        );
+      } catch (err) {
+        await logStep(
+          contentGenJobId,
+          "validation",
+          `Dossier de preuves indisponible : ${err instanceof Error ? err.message : String(err)}`,
+          {},
+        );
+      }
+    }
+
     const startedAt = Date.now();
     let output = await generator.generate({
       jobId: contentGenJobId,
@@ -1091,16 +1123,20 @@ async function processJob(job: Job<ContentGenJobPayload>): Promise<void> {
     let factCheckClaudeAboutiSansReserve = false;
     let coutFactCheckUsd = 0;
     if (factCheckClaudeActif(contentType)) {
-      const decisionFc = await decisionFactCheckClaude({
-        jobId: contentGenJobId,
-        contentType,
-        texte: [
-          output.title,
-          output.directAnswer,
-          output.bodyHtml,
-          ...output.faq.map((f) => f.answer),
-        ].join(". "),
-      });
+      const decisionFc = await decisionFactCheckClaude(
+        {
+          jobId: contentGenJobId,
+          contentType,
+          texte: [
+            output.title,
+            output.directAnswer,
+            output.bodyHtml,
+            ...output.faq.map((f) => f.answer),
+          ].join(". "),
+        },
+        undefined,
+        dossierPreuves ? { dossier: dossierPreuves } : {},
+      );
       sourcesFactCheck = decisionFc.sources;
       coutFactCheckUsd = decisionFc.coutUsd;
       factCheckClaudeAboutiSansReserve = decisionFc.barriere === null;

@@ -9,7 +9,7 @@ vi.mock("@/lib/prisma", () => ({ prisma: {} }));
 vi.mock("@/lib/redis", () => ({ redis: {} }));
 vi.mock("@/server/notifications", () => ({ notify: vi.fn() }));
 
-import type { ReponseMessages } from "../../clients/claude-search";
+import { fraisFixesMaxUsd, type ReponseMessages } from "../../clients/claude-search";
 import { equipeEditorialeActive } from "../equipe-editoriale-drapeau";
 import { decisionFactCheckClaude } from "../fact-check-claude";
 import {
@@ -40,7 +40,12 @@ function reponse(
       },
       ...(opts.lues ?? []).map((url) => ({
         type: "web_fetch_tool_result",
-        content: { type: "web_fetch_result", url, retrieved_at: "2026-11-26T10:00:00Z" },
+        content: {
+          type: "web_fetch_result",
+          url,
+          retrieved_at: "2026-11-26T10:00:00Z",
+          content: { source: { data: "Le marché pèse 40 milliards d'euros en 2025." } },
+        },
       })),
       { type: "text", text: texte },
     ],
@@ -220,6 +225,51 @@ describe("phase B — vérification finale", () => {
     expect(outils(appeler).some((t) => t["type"] === "web_fetch_20260318")).toBe(true);
   });
 
+  it("une preuve dont le chiffre n'est pas celui de la phrase ne confirme pas (preuve hors sujet)", async () => {
+    const appeler = vi.fn(async () =>
+      reponse(JSON.stringify([{ id: 1, statut: "confirmee", preuve: 1, url: null }])),
+    );
+    const r = await verifierTexteFinal(
+      { jobId: "j", contentType: "blog_article", phrases: ["Le taux est de 15 %."], dossier },
+      deps(appeler),
+      MAINTENANT,
+    );
+    expect(r.aRetirer).toEqual(["Le taux est de 15 %."]);
+  });
+
+  it("une page lue qui ne contient pas le chiffre ne confirme pas", async () => {
+    const appeler = vi.fn(async () =>
+      reponse(JSON.stringify([{ id: 1, statut: "confirmee", preuve: null, url: URL_B }]), {
+        lectures: 1,
+        lues: [URL_B],
+      }),
+    );
+    const r = await verifierTexteFinal(
+      {
+        jobId: "j",
+        contentType: "blog_article",
+        phrases: ["Le marché pèse 55 milliards."],
+        dossier,
+      },
+      deps(appeler),
+      MAINTENANT,
+    );
+    expect(r.aRetirer).toHaveLength(1);
+  });
+
+  it("sans outil de recherche envoyé, un usage sans compteur de recherches vaut zéro", async () => {
+    const appeler = vi.fn(async () => ({
+      ...reponse("[]"),
+      usage: { input_tokens: 10, output_tokens: 5 },
+    }));
+    const r = await verifierTexteFinal(
+      { jobId: "j", contentType: "blog_article", phrases, dossier: { ...dossier, recherches: 6 } },
+      deps(appeler),
+      MAINTENANT,
+    );
+    expect(r.recherches).toBe(0);
+  });
+
   it("une preuve expirée ne confirme plus rien", async () => {
     const appeler = vi.fn(async () =>
       reponse(JSON.stringify([{ id: 1, statut: "confirmee", preuve: 1, url: null }])),
@@ -284,6 +334,13 @@ describe("phase B — vérification finale", () => {
     );
     expect(ordre).toEqual(["reserver", "appel"]);
     expect(d.solder).toHaveBeenCalledTimes(1);
+  });
+});
+
+describe("réservation", () => {
+  it("valeur par défaut inchangée ; les lectures de page augmentent la borne", () => {
+    expect(fraisFixesMaxUsd()).toBe(fraisFixesMaxUsd(5, 0, 0));
+    expect(fraisFixesMaxUsd(4, 3, 15_000)).toBeGreaterThan(fraisFixesMaxUsd(4, 0, 0));
   });
 });
 

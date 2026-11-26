@@ -157,7 +157,7 @@ export function fraisFixesMaxUsd(
     n * PRIX_RECHERCHE_USD +
     computeCost(
       MODELES.court,
-      JETONS_ENTREE_PAR_RECHERCHE * ((n * (n + 1)) / 2) +
+      JETONS_ENTREE_PAR_RECHERCHE * ((n * (n + 1)) / 2 + n * lecturesPages) +
         lecturesPages * jetonsParLecture * (n + lecturesPages + 1),
       MAX_TOKENS_SORTIE * Math.max(1, n + lecturesPages),
       0,

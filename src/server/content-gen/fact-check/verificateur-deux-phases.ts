@@ -176,7 +176,8 @@ async function appelerAvecReservation(
   }
 
   const usage = reponse.usage;
-  const recherches = usage?.server_tool_use?.web_search_requests;
+  const recherches =
+    usage?.server_tool_use?.web_search_requests ?? (a.recherchesMax === 0 ? 0 : undefined);
   const lectures = usage?.server_tool_use?.web_fetch_requests ?? 0;
   if (
     !usage ||
@@ -234,17 +235,32 @@ function tableauJson(texte: string): unknown[] {
 }
 
 /** URL des pages RÉELLEMENT lues par l'outil (jamais celles que le modèle écrit seul). */
-function pagesLues(reponse: ReponseMessages): Set<string> {
-  const lues = new Set<string>();
+function pagesLues(reponse: ReponseMessages): Map<string, string> {
+  const lues = new Map<string, string>();
   for (const bloc of reponse.content) {
     if (bloc.type !== "web_fetch_tool_result") continue;
-    const c = bloc.content as { type?: unknown; url?: unknown } | undefined;
-    if (c && c.type === "web_fetch_result" && urlValide(c.url)) lues.add(c.url);
+    const c = bloc.content as
+      { type?: unknown; url?: unknown; content?: { source?: { data?: unknown } } } | undefined;
+    if (c && c.type === "web_fetch_result" && urlValide(c.url)) {
+      const data = c.content?.source?.data;
+      lues.set(c.url, typeof data === "string" ? data : "");
+    }
   }
   return lues;
 }
 
 const normaliser = (s: string) => s.replace(/[\s  ]+/g, "").toLowerCase();
+
+/** Nombres d'une phrase, sans espaces (« 1 200 » → « 1200 »). */
+function nombresDe(phrase: string): string[] {
+  return (phrase.match(/\d+(?:[\s\u00a0\u202f.,]\d+)*/g) ?? []).map((n) => normaliser(n));
+}
+
+/** Chaque nombre de la phrase doit figurer dans le texte de la preuve ou de la page lue. */
+function nombresPresents(phrase: string, texte: string): boolean {
+  const t = normaliser(texte);
+  return nombresDe(phrase).every((n) => t.includes(n));
+}
 
 // ── Phase A ──────────────────────────────────────────────────────────────────
 
@@ -389,11 +405,13 @@ export async function verifierTexteFinal(
     const note = typeof ligne?.["note"] === "string" ? ligne["note"].slice(0, 400) : "";
     if (ligne?.["statut"] === "confirmee") {
       const idx = ligne["preuve"];
-      if (typeof idx === "number" && Number.isInteger(idx) && actives[idx - 1]) {
-        return { phrase, statut: "confirmee", url: actives[idx - 1]!.url, via: "dossier", note };
+      const preuve =
+        typeof idx === "number" && Number.isInteger(idx) ? actives[idx - 1] : undefined;
+      if (preuve && nombresPresents(phrase, `${preuve.extrait} ${preuve.chiffre ?? ""}`)) {
+        return { phrase, statut: "confirmee", url: preuve.url, via: "dossier", note };
       }
       const url = ligne["url"];
-      if (urlValide(url) && lues.has(url)) {
+      if (urlValide(url) && lues.has(url) && nombresPresents(phrase, lues.get(url)!)) {
         return { phrase, statut: "confirmee", url, via: "lecture", note };
       }
     }
