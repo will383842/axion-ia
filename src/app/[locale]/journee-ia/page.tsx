@@ -284,7 +284,7 @@ export default async function JourneeIaPage({ params }: Props) {
   // `rdv=diagnostic` : le Diagnostic IA gratuit de 45 minutes, seul rendez-vous.
   const lien = (depuis: string) => `/appel?rdv=diagnostic&depuis=${depuis}`;
   // « Déjà décidé ? » : un message via /contact, jamais le diagnostic ni une réservation en ligne.
-  const lienDirect = (depuis: string) => `/contact?depuis=${depuis}`;
+  const lienDirect = (depuis: string) => `/contact?depuis=${depuis}&type=journee_ia`;
 
   const [serviceJsonLd, webPageJsonLd, faqJsonLd] = jsonLdJourneeIa();
 

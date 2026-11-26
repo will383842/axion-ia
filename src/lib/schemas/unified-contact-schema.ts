@@ -11,7 +11,7 @@ import { FORMES_ACCEPTEES, telephoneEstLisible } from "@/lib/telephone";
 
 // ---- Types & enums ---------------------------------------------------------
 
-// 12 types couvrant 100 % des demandes possibles (v2 2026-05-28).
+// 13 types couvrant 100 % des demandes possibles (v2 2026-05-28 ; + journee_ia).
 //
 // Organisation en 2 groupes visuels côté UI (TYPE_GROUPS ci-dessous), mais le
 // schema reste à plat (discriminant unique). Les nouveaux types (presse,
@@ -20,6 +20,7 @@ import { FORMES_ACCEPTEES, telephoneEstLisible } from "@/lib/telephone";
 // notif/email/Telegram routé via les helpers de actions.ts.
 export const UNIFIED_CONTACT_TYPES = [
   // Groupe 1 — Projet IA pour mon entreprise (intent commercial)
+  "journee_ia",
   "audit",
   "implementation",
   "formation",
@@ -36,10 +37,10 @@ export const UNIFIED_CONTACT_TYPES = [
 ] as const;
 export type UnifiedContactType = (typeof UNIFIED_CONTACT_TYPES)[number];
 
-// Groupes UI — partitionnent les 12 types pour le segmented control bi-section.
+// Groupes UI — partitionnent les 13 types pour le segmented control bi-section.
 // Évite la liste de 12 boutons en ligne (cognitive overload).
 export const TYPE_GROUPS = {
-  projet: ["audit", "implementation", "formation", "un_a_un", "devis"],
+  projet: ["journee_ia", "audit", "implementation", "formation", "un_a_un", "devis"],
   autre: [
     "partenariat",
     "presse",
@@ -177,6 +178,7 @@ export type UnifiedContactInput = z.infer<typeof unifiedContactSchema>;
 export function unifiedTypeLabel(type: UnifiedContactType, locale: "fr" | "en"): string {
   const labels: Record<UnifiedContactType, { fr: string; en: string }> = {
     // Groupe 1 — Projet IA pour mon entreprise
+    journee_ia: { fr: "Journée IA (1 journée sur site)", en: "AI Day (one on-site day)" },
     audit: { fr: "Audit IA", en: "AI audit" },
     implementation: { fr: "Intégration sur-mesure", en: "Bespoke integration" },
     formation: { fr: "Formation IA", en: "AI training" },
@@ -198,6 +200,10 @@ export function unifiedTypeLabel(type: UnifiedContactType, locale: "fr" | "en"):
 // visiteur vers le bon type (très visible 2026 UX : Linear, Stripe le font).
 export function unifiedTypeHint(type: UnifiedContactType, locale: "fr" | "en"): string {
   const hints: Record<UnifiedContactType, { fr: string; en: string }> = {
+    journee_ia: {
+      fr: "Une journée avec votre équipe pour passer à l'IA",
+      en: "One day with your team to get started with AI",
+    },
     audit: {
       fr: "Diagnostic 360°, opportunités IA dans votre métier",
       en: "360° diagnostic, AI opportunities for your business",
