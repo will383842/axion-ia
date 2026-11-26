@@ -49,7 +49,7 @@ export const BOUC_BEL_AIR_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Bouc-Bel-Air ?",
-      a: "Nous intervenons dans vos locaux à Bouc-Bel-Air, partout en France. Couverture complète du nord de Marseille.",
+      a: "Oui, Axion-IA intervient à Bouc-Bel-Air et sur tout l'axe Aix-Marseille (Aix, Marseille, Gardanne, Plan de Campagne). Couverture complète du nord de Marseille.",
     },
     {
       q: "Quels sont les tarifs pour un audit IA à Bouc-Bel-Air ?",

@@ -49,7 +49,7 @@ export const AURIOL_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Auriol et vallée de l'Huveaune ?",
-      a: "Nous intervenons dans vos locaux à Auriol, partout en France. Couverture complète de l'est marseillais et piémont Sainte-Baume.",
+      a: "Oui, Axion-IA intervient à Auriol et dans toute la vallée de l'Huveaune (Roquevaire, Aubagne, Trets). Couverture complète de l'est marseillais et piémont Sainte-Baume.",
     },
     {
       q: "Quels sont les tarifs pour un audit IA à Auriol ?",

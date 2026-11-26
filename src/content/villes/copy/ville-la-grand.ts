@@ -49,7 +49,7 @@ export const VILLE_LA_GRAND_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Ville-la-Grand et Grand Genève ?",
-      a: "Nous intervenons dans vos locaux à Ville-la-Grand, partout en France.",
+      a: "Oui, Axion-IA intervient à Ville-la-Grand et dans tout le Grand Genève (Annemasse, Genève).",
     },
     {
       q: "Tarifs audit IA à Ville-la-Grand  : quel budget prévoir ?",

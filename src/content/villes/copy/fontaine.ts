@@ -62,7 +62,7 @@ export const FONTAINE_COPY: VilleCopy = {
           {
             step: "Cadrage à Fontaine",
             detail:
-              "Atelier sur site dans les zones Vouillants, Les Plans ou L'Argentière, ou en cœur de ville près de la rue de la Liberté : objectifs, parcours utilisateurs, audit de la stack et des contenus existants. Accès rapide par la ligne A du tram et l'A480. Devis ferme à partir de 24-48 h selon la complexité.",
+              "Atelier sur site dans les zones Vouillants, Les Plans ou L'Argentière, ou en cœur de ville près de la rue de la Liberté : objectifs, parcours utilisateurs, audit de la stack et des contenus existants. Devis ferme à partir de 24-48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI",
@@ -148,7 +148,7 @@ export const FONTAINE_COPY: VilleCopy = {
           {
             step: "Cadrage à Fontaine",
             detail:
-              "Atelier sur site dans les zones Vouillants, Les Plans ou L'Argentière, ou en cœur de ville près de la rue de la Liberté : objectifs, parcours utilisateurs, audit de la stack et des contenus existants. Accès rapide par la ligne A du tram et l'A480. Devis ferme à partir de 24-48 h selon la complexité.",
+              "Atelier sur site dans les zones Vouillants, Les Plans ou L'Argentière, ou en cœur de ville près de la rue de la Liberté : objectifs, parcours utilisateurs, audit de la stack et des contenus existants. Devis ferme à partir de 24-48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI",

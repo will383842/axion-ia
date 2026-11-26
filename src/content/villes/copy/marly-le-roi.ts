@@ -65,7 +65,7 @@ export const MARLY_LE_ROI_COPY: VilleCopy = {
     },
     {
       q: "Intervenez-vous aussi à Saint-Germain-en-Laye et Versailles ?",
-      a: "Nous intervenons dans vos locaux à Marly-le-Roi, partout en France.",
+      a: "Oui, Axion-IA couvre tout le secteur : Saint-Germain-en-Laye, Le Pecq, Le Vésinet, Louveciennes, Bougival et Versailles.",
     },
   ],
 };

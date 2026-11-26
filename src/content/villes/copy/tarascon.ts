@@ -49,7 +49,7 @@ export const TARASCON_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Tarascon et environs ?",
-      a: "Nous intervenons dans vos locaux à Tarascon, partout en France. Couverture complète des Bouches-du-Rhône nord.",
+      a: "Oui, Axion-IA intervient à Tarascon et dans tout le bassin rhodanien (Arles, Avignon, Beaucaire, Saint-Rémy-de-Provence). Couverture complète des Bouches-du-Rhône nord.",
     },
     {
       q: "Quels sont les tarifs pour un audit IA à Tarascon ?",

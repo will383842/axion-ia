@@ -49,7 +49,7 @@ export const VERRIERES_LE_BUISSON_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Verrières-le-Buisson et nord Essonne ?",
-      a: "Nous intervenons dans vos locaux à Verrières-le-Buisson, partout en France.",
+      a: "Oui, Axion-IA intervient à Verrières-le-Buisson et dans tout le nord Essonne (Antony, Massy, Paris centre).",
     },
     {
       q: "Travaillez-vous avec les professions libérales et cabinets conseil ?",

@@ -49,7 +49,7 @@ export const VOUNEUIL_SOUS_BIARD_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Vouneuil-sous-Biard et Grand Poitiers ouest ?",
-      a: "Nous intervenons dans vos locaux à Vouneuil-sous-Biard, partout en France. L'aéroport Poitiers-Biard est sur la commune.",
+      a: "Oui, Axion-IA intervient à Vouneuil-sous-Biard et dans toute l'agglomération Grand Poitiers ouest (Poitiers centre, Biard, Béruges, Lusignan).",
     },
     {
       q: "Travaillez-vous avec les PME des zones d'activités ?",

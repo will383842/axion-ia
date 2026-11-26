@@ -49,7 +49,7 @@ export const BERRE_L_ETANG_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Berre-l'Étang et étang de Berre ?",
-      a: "Nous intervenons dans vos locaux à Berre-l'Étang, partout en France. Couverture complète du bassin pétrochimique.",
+      a: "Oui, Axion-IA intervient à Berre-l'Étang et sur tout le pourtour de l'étang de Berre (Rognac, Vitrolles, Martigues). Couverture complète du bassin pétrochimique.",
     },
     {
       q: "Quels sont les tarifs pour un audit IA à Berre-l'Étang ?",

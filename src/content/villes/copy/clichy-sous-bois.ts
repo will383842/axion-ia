@@ -61,7 +61,7 @@ export const CLICHY_SOUS_BOIS_COPY: VilleCopy = {
           {
             step: "Cadrage à Clichy-sous-Bois",
             detail:
-              "Atelier sur site (accès tram T4, station Mairie de Clichy-sous-Bois ou Clichy-Montfermeil) : objectifs, audit de l'existant et des contenus, parcours clients. Devis ferme à partir de 24-48 h selon la complexité.",
+              "Atelier sur site à Clichy-sous-Bois ou Montfermeil : objectifs, audit de l'existant et des contenus, parcours clients. Devis ferme à partir de 24-48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI",

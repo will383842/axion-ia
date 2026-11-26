@@ -49,7 +49,7 @@ export const ESCAUDAIN_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Escaudain et bassin minier du Nord ?",
-      a: "Nous intervenons dans vos locaux à Escaudain, partout en France.",
+      a: "Oui, Axion-IA intervient à Escaudain et dans tout le bassin minier (Denain, Valenciennes, Douai, Lille).",
     },
     {
       q: "Travaillez-vous avec les TPE et artisans d'Escaudain ?",

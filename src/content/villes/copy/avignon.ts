@@ -60,7 +60,7 @@ export const AVIGNON_COPY: VilleCopy = {
           "La filière agroalimentaire provençale d'Agroparc, première zone d'activité du Vaucluse (~600 établissements, ~6 500 emplois) avec INRAE, Givaudan France Naturals et McCormick France, demande un vocabulaire précis : traçabilité, contrôle qualité, recherche documentaire. Nos sessions ajustent les exemples à ce contexte.",
           "Le format collectif d'une journée convient aux structures avignonnaises de quelques personnes à plusieurs dizaines de collaborateurs, par groupes de 2 à 15 personnes : hôtels, compagnies, cabinets, commerces et PME de terroir.",
           "Le format Conférence s'adresse aux plénières d'entreprise et aux événements professionnels ; le format Dirigeant permet un cadrage en huis-clos pour les directions de TPE, PME et ETI du Vaucluse.",
-          "Avignon est accessible et facile à desservir en présentiel : la gare TGV est à environ 5 km du centre (Paris en 2h40, Marseille en 35 min), avec l'aéroport d'Avignon-Provence et les axes A7 / A9.",
+          "Nous intervenons en présentiel à Avignon et dans tout le Vaucluse.",
         ],
         methodology: [
           {
@@ -152,7 +152,7 @@ export const AVIGNON_COPY: VilleCopy = {
           "La filière agroalimentaire provençale d'Agroparc, première zone d'activité du Vaucluse (~600 établissements, ~6 500 emplois) avec INRAE, Givaudan France Naturals et McCormick France, demande un vocabulaire précis : traçabilité, contrôle qualité, recherche documentaire. Nos sessions ajustent les exemples à ce contexte.",
           "Le format collectif d'une journée convient aux structures avignonnaises de quelques personnes à plusieurs dizaines de collaborateurs, par groupes de 2 à 15 personnes : hôtels, compagnies, cabinets, commerces et PME de terroir.",
           "Le format Conférence s'adresse aux plénières d'entreprise et aux événements professionnels ; le format Dirigeant permet un cadrage en huis-clos pour les directions de TPE, PME et ETI du Vaucluse.",
-          "Avignon est accessible et facile à desservir en présentiel : la gare TGV est à environ 5 km du centre (Paris en 2h40, Marseille en 35 min), avec l'aéroport d'Avignon-Provence et les axes A7 / A9.",
+          "Nous intervenons en présentiel à Avignon et dans tout le Vaucluse.",
         ],
         methodology: [
           {

@@ -58,7 +58,7 @@ export const VILLEMOMBLE_COPY: VilleCopy = {
           "Tissu de TPE-PME de proximité dense — environ une entreprise pour treize habitants : nos chantiers à Villemomble partent des besoins concrets d'un artisan BTP qui veut un devis en ligne, d'un commerçant Outrebon qui veut une vitrine connectée à la carte 'Cœurs de ville', ou d'un cabinet de la Maison de Santé qui veut une prise de RDV intelligente.",
           "La ZA La Garenne (environ 12,29 ha, près de 125 entreprises) et l'Hôtel d'entreprises près de l'A3/A86 concentrent des PME de services et ateliers artisanaux : portails clients, devis automatisés et outils SaaS métier sur mesure y répondent à des process réels.",
           "Commerce de proximité fort autour de l'avenue Outrebon et des deux marchés municipaux : nous construisons boutiques e-commerce multi-CMS, click-and-collect et fidélité numérique adossés au dynamisme commerçant animé par l'ADEEV (121 avenue de Rosny).",
-          "Accessibilité RER E (gare Le Raincy-Villemomble-Montfermeil, à environ 3 min à pied du marché Outrebon) : nous intervenons partout en France, sur place ou à distance, pour les ateliers de cadrage et la recette, puis itérons à distance sur vos données.",
+          "Nous intervenons sur place à Villemomble, comme partout en France, ou à distance, pour les ateliers de cadrage et la recette, puis itérons à distance sur vos données.",
         ],
         methodology: [
           {

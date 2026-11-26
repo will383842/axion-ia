@@ -642,7 +642,7 @@ export const STRASBOURG_COPY: VilleCopy = {
           "La dimension trilingue FR/DE/EN de l'Eurodistrict fait de Strasbourg un cas particulier : nous conduisons les séances dans la langue de travail du dirigeant, y compris en mode bilingue pour les profils franco-allemands de l'Eurodistrict Strasbourg-Ortenau.",
           "Les institutions européennes et les organismes internationaux (Parlement, Conseil de l'Europe, INSP ex-ENA) emploient des cadres de haut niveau soumis à des contraintes de confidentialité fortes — notre coaching 1-to-1 répond exactement à ce besoin d'accompagnement discret.",
           "Les dirigeants des PME et ETI biotech du PII (Alsace BioValley, Eli Lilly, IRCAD) ont besoin d'intégrer l'IA dans leur pratique sans exposer leurs données cliniques ou de R&D — notre approche souveraine et confidentielle est calibrée pour ces contraintes.",
-          "Accessibilité maximale : gare de Strasbourg desservie par le TGV et l'ICE — nous intervenons sur place.",
+          "Accompagnement en présentiel : nous intervenons sur place à Strasbourg.",
           "Aucun group dynamics : vous progressez à votre rythme, sur vos vraies questions, dans votre langue de travail, sans vous adapter à un niveau collectif qui n'est pas le vôtre.",
         ],
         methodology: [

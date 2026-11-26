@@ -44,8 +44,8 @@ export const VILLEPARISIS_COPY: VilleCopy = {
       en: "Implémentation IA à Villeparisis en code custom : automatisation devis artisan BTP, chatbot client commerce, suivi commande restaurant/hôtel proche CDG, optimisation tournées logistique, classification documents transport.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Villeparisis : sessions sur site (accès RER B direct) ou en visio pour dirigeants TPE/PME, artisans et responsables logistique. Dès {{price:intervention-dirigeants|flat}}.",
-      en: "Coaching 1-to-1 à Villeparisis : sessions sur site (accès RER B direct) ou en visio pour dirigeants TPE/PME, artisans et responsables logistique. Dès {{price:intervention-dirigeants|flat}}.",
+      fr: "Coaching 1-to-1 à Villeparisis : sessions sur site ou en visio pour dirigeants TPE/PME, artisans et responsables logistique. Dès {{price:intervention-dirigeants|flat}}.",
+      en: "Coaching 1-to-1 à Villeparisis : sessions sur site ou en visio pour dirigeants TPE/PME, artisans et responsables logistique. Dès {{price:intervention-dirigeants|flat}}.",
     },
   },
   services: {
@@ -67,7 +67,7 @@ export const VILLEPARISIS_COPY: VilleCopy = {
           {
             step: "Kick-off à Villeparisis",
             detail:
-              "Première venue sur site, accessible en RER B (gare Villeparisis–Mitry-le-Neuf) ou via l'A104, pour observer vos vrais flux : comptoir et stock pour le retail de l'Ambrésis, quai et tournées pour les transporteurs orientés CDG, atelier et chantiers pour les artisans. On part de vos écrans et documents, pas d'un cahier des charges théorique.",
+              "Première intervention sur site pour observer vos vrais flux : comptoir et stock pour le retail de l'Ambrésis, quai et tournées pour les transporteurs orientés CDG, atelier et chantiers pour les artisans. On part de vos écrans et documents, pas d'un cahier des charges théorique.",
           },
           {
             step: "Maquettage UX/UI + démos IA sur vos données",

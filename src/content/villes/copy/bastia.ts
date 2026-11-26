@@ -65,7 +65,7 @@ export const BASTIA_COPY: VilleCopy = {
           {
             step: "Kick-off sur site à Bastia",
             detail:
-              "Nous venons dans vos locaux à Bastia, Furiani, Ville-di-Pietrabugno ou sur la plaine orientale (accès via l'aéroport Bastia-Poretta) pour observer vos outils réels, vos parcours clients et vos contraintes de saisonnalité.",
+              "Nous intervenons dans vos locaux à Bastia, Furiani, Ville-di-Pietrabugno ou sur la plaine orientale pour observer vos outils réels, vos parcours clients et vos contraintes de saisonnalité.",
           },
           {
             step: "Conception UX/UI et architecture",

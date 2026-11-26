@@ -68,7 +68,7 @@ export const ISSY_LES_MOULINEAUX_COPY: VilleCopy = {
           {
             step: "Kick-off à Issy-les-Moulineaux",
             detail:
-              "Première venue dans vos locaux du Val de Seine (accès métro 12 Mairie d'Issy / Corentin Celton, RER C ou tramway T2) : revue de l'existant, maquettes de l'arborescence, choix de la stack (Next.js, CMS headless, ou multi-CMS selon votre besoin e-commerce) et des modèles IA.",
+              "Première intervention dans vos locaux du Val de Seine : revue de l'existant, maquettes de l'arborescence, choix de la stack (Next.js, CMS headless, ou multi-CMS selon votre besoin e-commerce) et des modèles IA.",
           },
           {
             step: "Conception UX/UI et IA-native",

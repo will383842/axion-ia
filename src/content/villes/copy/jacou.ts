@@ -43,8 +43,8 @@ export const JACOU_COPY: VilleCopy = {
       en: "Implémentation IA à Jacou en code custom : automatisation prise de RDV cabinet santé, chatbot client commerce, classification dossiers, gestion devis artisan, suivi caisse restauration.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Jacou : sessions sur site (accès tram T2 direct) ou en visio pour professions libérales, dirigeants TPE/PME, artisans et gérants commerce. Dès {{price:intervention-dirigeants|flat}}.",
-      en: "Coaching 1-to-1 à Jacou : sessions sur site (accès tram T2 direct) ou en visio pour professions libérales, dirigeants TPE/PME, artisans et gérants commerce. Dès {{price:intervention-dirigeants|flat}}.",
+      fr: "Coaching 1-to-1 à Jacou : sessions sur site ou en visio pour professions libérales, dirigeants TPE/PME, artisans et gérants commerce. Dès {{price:intervention-dirigeants|flat}}.",
+      en: "Coaching 1-to-1 à Jacou : sessions sur site ou en visio pour professions libérales, dirigeants TPE/PME, artisans et gérants commerce. Dès {{price:intervention-dirigeants|flat}}.",
     },
   },
   faqGeolocalisee: [

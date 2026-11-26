@@ -236,7 +236,7 @@ export const VANVES_COPY: VilleCopy = {
     },
     {
       q: "Quelles communes proches de Vanves couvrez-vous ?",
-      a: "Lors d'un déplacement à Vanves, nous couvrons aussi Malakoff, Issy-les-Moulineaux, Clamart, Châtillon, Montrouge et Paris 15e — toutes à moins de 15 minutes via la ligne 13 ou l'A86.",
+      a: "À Vanves, nous couvrons aussi Malakoff, Issy-les-Moulineaux, Clamart, Châtillon, Montrouge et Paris 15e.",
     },
     {
       q: "Quels secteurs vanvéens Axion-IA accompagne-t-il en priorité ?",

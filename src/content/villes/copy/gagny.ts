@@ -57,7 +57,7 @@ export const GAGNY_COPY: VilleCopy = {
           "Gagny entre dans une décennie de transformation urbaine : l'écoquartier Le Parc de Maison Blanche (labellisé ÉcoQuartier 2018, aménagé par C-DU, ~4 200 logements jusqu'en 2031, nouveau pôle commercial du Château d'eau) va faire éclore des commerces et services de proximité qui ont besoin d'une vitrine web et e-commerce dès l'ouverture.",
           "Le projet Cœur de Ville / Îlot Centre-Ville dévoilé en 2022 (halle gourmande, brasserie bistronomie, coiffeur, équipement sport/fitness) crée une vague de nouvelles enseignes gabiniennes : nous bâtissons leurs sites, réservation en ligne et boutiques multi-CMS avant même l'inauguration.",
           "Le tissu réel est dominé par l'artisanat du BTP — héritage des carrières de gypse de Gagny et amplifié par le chantier exceptionnel de comblement des Carrières de l'Ouest (> 16,5 M€) : artisans, entreprises de second œuvre et géotechnique ont besoin de sites de devis, suivi de chantier et qualification de leads pilotés par l'IA.",
-          "Desservie par deux gares du RER E (Gagny et Le Chénay – Gagny) à ~20 min de Paris-Est, Gagny est accessible en présentiel ; nous croisons aussi des acteurs structurés déjà implantés (Sodexo, Veolia Eau, SNCF, l'entreprise du bâtiment AÏNA) et le tissu associatif commerçant du Village du Chénay.",
+          "Nous intervenons en présentiel à Gagny ; nous croisons aussi des acteurs structurés déjà implantés (Sodexo, Veolia Eau, SNCF, l'entreprise du bâtiment AÏNA) et le tissu associatif commerçant du Village du Chénay.",
         ],
         methodology: [
           {
