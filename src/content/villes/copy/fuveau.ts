@@ -49,7 +49,7 @@ export const FUVEAU_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Fuveau et dans le pays de la Sainte-Victoire ?",
-      a: "Oui, Axion-IA intervient à Fuveau et dans tout le pays de la Sainte-Victoire (Gardanne, Trets, Peynier, Rousset, Châteauneuf-le-Rouge, Meyreuil). Proximité Aix-en-Provence et axes A8/A52.",
+      a: "Oui, Axion-IA intervient à Fuveau et dans tout le pays de la Sainte-Victoire (Gardanne, Trets, Peynier, Rousset, Châteauneuf-le-Rouge, Meyreuil).",
     },
     {
       q: "Quel est le tarif d'un audit IA à Fuveau  ?",

@@ -232,7 +232,7 @@ export const HAGUENAU_COPY: VilleCopy = {
     },
     {
       q: "Vous déplacez-vous à Haguenau ?",
-      a: "Oui. Nous intervenons dans vos locaux à Haguenau, partout en France. Williams se déplace à Haguenau sous 5 jours ouvrés.",
+      a: "Oui. Nous intervenons dans vos locaux à Haguenau, partout en France. Williams intervient à Haguenau sous 5 jours ouvrés.",
     },
     {
       q: "Quelles communes de l'agglomération haguenovienne couvrez-vous ?",

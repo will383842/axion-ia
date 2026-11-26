@@ -64,7 +64,7 @@ export const L_HAY_LES_ROSES_COPY: VilleCopy = {
           {
             step: "Cadrage à L'Haÿ-les-Roses",
             detail:
-              "Kick-off sur site, à L'Haÿ-les-Roses ou dans le secteur gare des ZAC Lallier / Paul Hochart : nous cartographions votre activité (commerce de proximité, artisan du bâtiment, profession de santé, PME tertiaire), vos canaux d'acquisition et les parcours clients à digitaliser.",
+              "Kick-off sur site, à L'Haÿ-les-Roses ou dans le secteur des ZAC Lallier / Paul Hochart : nous cartographions votre activité (commerce de proximité, artisan du bâtiment, profession de santé, PME tertiaire), vos canaux d'acquisition et les parcours clients à digitaliser.",
           },
           {
             step: "Conception UX/UI mobile-first",

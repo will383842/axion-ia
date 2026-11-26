@@ -236,7 +236,7 @@ export const EVRY_COURCOURONNES_COPY: VilleCopy = {
     },
     {
       q: "Quels délais pour une intervention IA à Évry-Courcouronnes ?",
-      a: "Williams se déplace sur site à Évry-Courcouronnes dans un délai de 5 jours ouvrés après validation, par RER D ou A6.",
+      a: "Williams intervient sur site à Évry-Courcouronnes dans un délai de 5 jours ouvrés après validation.",
     },
     {
       q: "Comment Axion-IA assure-t-il la conformité RGPD à Évry-Courcouronnes ?",

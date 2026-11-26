@@ -206,7 +206,7 @@ export const CORMEILLES_EN_PARISIS_COPY: VilleCopy = {
           },
           {
             q: "Do you operate in the communes around Cormeilles-en-Parisis?",
-            a: "Yes, across the whole CA Val Parisis and neighbouring communes: Sannois, Franconville, Montigny-lès-Cormeilles, Herblay, La Frette-sur-Seine, as well as Argenteuil, Sartrouville and Maisons-Laffitte. The kick-off takes place on site, accessible via line J from Paris Saint-Lazare and the A15.",
+            a: "Yes, across the whole CA Val Parisis and neighbouring communes: Sannois, Franconville, Montigny-lès-Cormeilles, Herblay, La Frette-sur-Seine, as well as Argenteuil, Sartrouville and Maisons-Laffitte. The kick-off takes place on site, as everywhere in France.",
           },
         ],
         guarantees:
@@ -222,7 +222,7 @@ export const CORMEILLES_EN_PARISIS_COPY: VilleCopy = {
     },
     {
       q: "Quels sont les délais pour une intervention IA à Cormeilles-en-Parisis ?",
-      a: "Williams se déplace habituellement sous 5 à 10 jours ouvrés à Cormeilles-en-Parisis (ligne J, Paris Saint-Lazare à 16 minutes). Les délais d'implémentation varient selon la complexité du projet, généralement 2 à 6 semaines.",
+      a: "Williams intervient habituellement sous 5 à 10 jours ouvrés à Cormeilles-en-Parisis. Les délais d'implémentation varient selon la complexité du projet, généralement 2 à 6 semaines.",
     },
     {
       q: "Axion-IA se déplace-t-il dans les communes autour de Cormeilles-en-Parisis ?",

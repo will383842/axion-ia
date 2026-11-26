@@ -49,7 +49,7 @@ export const COURTHEZON_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Courthézon et autour de Châteauneuf-du-Pape ?",
-      a: "Oui, Axion-IA intervient à Courthézon et autour de Châteauneuf-du-Pape (Bédarrides, Sorgues, Orange, Avignon). Proximité immédiate du bassin rhodanien via A7 et D907.",
+      a: "Oui, Axion-IA intervient à Courthézon et autour de Châteauneuf-du-Pape (Bédarrides, Sorgues, Orange, Avignon). Nous intervenons dans vos locaux, comme partout en France.",
     },
     {
       q: "Tarifs audit IA à Courthézon  : quel budget prévoir ?",

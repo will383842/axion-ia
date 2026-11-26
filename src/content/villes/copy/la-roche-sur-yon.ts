@@ -7,9 +7,9 @@ import type { VilleCopy } from "./types";
 
 export const LA_ROCHE_SUR_YON_COPY: VilleCopy = {
   pitchFr:
-    "La Roche-sur-Yon (85000, 54 849 habitants en 2023) est la préfecture de la Vendée, en région Pays de la Loire, à 70 km de Nantes. Desservie par le TGV depuis 2008 et reliée par l'A87, la ville structure un bassin industriel et tertiaire majeur. Axion-IA accompagne les TPE et PME locales — sous-traitants industriels, commerces, cabinets, services aux entreprises, exploitations agroalimentaires — pour automatiser leurs processus opérationnels (devis, relances, reporting, gestion stock) avec du code custom Python/Node. Williams se déplace sur site à La Roche-sur-Yon ainsi qu'à Mouilleron-le-Captif, Dompierre-sur-Yon, La Ferrière, Venansault, La Chaize-le-Vicomte ou Aubigny-Les Clouzeaux pour des interventions concrètes et mesurables.",
+    "La Roche-sur-Yon (85000, 54 849 habitants en 2023) est la préfecture de la Vendée, en région Pays de la Loire. La ville structure un bassin industriel et tertiaire majeur. Axion-IA accompagne les TPE et PME locales — sous-traitants industriels, commerces, cabinets, services aux entreprises, exploitations agroalimentaires — pour automatiser leurs processus opérationnels (devis, relances, reporting, gestion stock) avec du code custom Python/Node. Williams intervient sur site à La Roche-sur-Yon ainsi qu'à Mouilleron-le-Captif, Dompierre-sur-Yon, La Ferrière, Venansault, La Chaize-le-Vicomte ou Aubigny-Les Clouzeaux pour des interventions concrètes et mesurables.",
   pitchEn:
-    "La Roche-sur-Yon (85000, 54 849 habitants en 2023) est la préfecture de la Vendée, en région Pays de la Loire, à 70 km de Nantes. Desservie par le TGV depuis 2008 et reliée par l'A87, la ville structure un bassin industriel et tertiaire majeur. Axion-IA accompagne les TPE et PME locales — sous-traitants industriels, commerces, cabinets, services aux entreprises, exploitations agroalimentaires — pour automatiser leurs processus opérationnels (devis, relances, reporting, gestion stock) avec du code custom Python/Node. Williams se déplace sur site à La Roche-sur-Yon ainsi qu'à Mouilleron-le-Captif, Dompierre-sur-Yon, La Ferrière, Venansault, La Chaize-le-Vicomte ou Aubigny-Les Clouzeaux pour des interventions concrètes et mesurables.",
+    "La Roche-sur-Yon (85000, 54 849 habitants en 2023) est la préfecture de la Vendée, en région Pays de la Loire. La ville structure un bassin industriel et tertiaire majeur. Axion-IA accompagne les TPE et PME locales — sous-traitants industriels, commerces, cabinets, services aux entreprises, exploitations agroalimentaires — pour automatiser leurs processus opérationnels (devis, relances, reporting, gestion stock) avec du code custom Python/Node. Williams intervient sur site à La Roche-sur-Yon ainsi qu'à Mouilleron-le-Captif, Dompierre-sur-Yon, La Ferrière, Venansault, La Chaize-le-Vicomte ou Aubigny-Les Clouzeaux pour des interventions concrètes et mesurables.",
   directAnswerFr:
     "Axion-IA intervient à La Roche-sur-Yon (Vendée, 85000), préfecture des Pays de la Loire à 70 km de Nantes, auprès des TPE et PME du bassin yonnais. Nous proposons un Audit sur place de 4 heures dès {{price:audit-flash|flat}} pour cartographier vos processus, une Formation 4 h dès {{price:intervention-4h|flat}} pour automatiser un flux métier (devis, relances, reporting, gestion stock), et un accompagnement 1-to-1 dirigeant dès {{price:intervention-dirigeants|flat}}. Code custom Python/Node, RGPD et AI Act.",
   directAnswerEn:
@@ -33,8 +33,8 @@ export const LA_ROCHE_SUR_YON_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit sur place IA à La Roche-sur-Yon dès {{price:audit-flash|flat}} — Williams se déplace dans vos locaux (gare TGV ou A87) pour cartographier vos processus en 4 heures.",
-      en: "Audit sur place IA à La Roche-sur-Yon dès {{price:audit-flash|flat}} — Williams se déplace dans vos locaux (gare TGV ou A87) pour cartographier vos processus en 4 heures.",
+      fr: "Audit sur place IA à La Roche-sur-Yon dès {{price:audit-flash|flat}} — Williams intervient dans vos locaux pour cartographier vos processus en 4 heures.",
+      en: "Audit sur place IA à La Roche-sur-Yon dès {{price:audit-flash|flat}} — Williams intervient dans vos locaux pour cartographier vos processus en 4 heures.",
     },
     interventions: {
       fr: "Formation collective à La Roche-sur-Yon dès {{price:intervention-4h|flat}} — automatisation d'un processus métier (devis, relances, gestion stock) pour TPE et PME vendéennes.",

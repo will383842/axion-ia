@@ -249,7 +249,7 @@ export const CHOLET_COPY: VilleCopy = {
       a: "Nous accompagnons en priorité l'industrie de la chaussure, le textile-habillement, l'équipement automobile, l'électronique et l'agroalimentaire — les filières historiques du deuxième bassin d'emploi des Pays de la Loire.",
     },
     {
-      q: "Vos consultants se déplacent-ils réellement à Cholet ou tout est-il fait à distance ?",
+      q: "Intervenez-vous réellement à Cholet ou tout est-il fait à distance ?",
       a: "Nos consultants se déplacent physiquement à Cholet pour les phases de cadrage et d'ateliers utilisateurs. Le développement est ensuite effectué à distance, avec des points hebdomadaires en visio et un retour sur site pour la mise en production.",
     },
   ],

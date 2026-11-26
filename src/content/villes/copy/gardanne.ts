@@ -231,7 +231,7 @@ export const GARDANNE_COPY: VilleCopy = {
     },
     {
       q: "Quels délais pour une mission à Gardanne ?",
-      a: "Williams se déplace à Gardanne sous 5 à 7 jours ouvrés après brief. Audit sur place livré en 4 heures sur site, implémentations entre 2 et 6 semaines selon la complexité.",
+      a: "Williams intervient sur site à Gardanne sous 5 à 7 jours ouvrés après brief. Audit sur place livré en 4 heures sur site, implémentations entre 2 et 6 semaines selon la complexité.",
     },
     {
       q: "Axion-IA couvre-t-elle les communes autour de Gardanne ?",

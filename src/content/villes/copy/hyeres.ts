@@ -58,7 +58,7 @@ export const HYERES_COPY: VilleCopy = {
           "Filière fleur coupée surreprésentée : ~350 horticulteurs du bassin hyérois et la SICA Marché aux Fleurs (1er marché de France, 4e européen) ont besoin de portails de commande, de catalogues variétaux (roses, œillets, gerberas, strélitzias) et de tableaux de bord de production sous serre — pas d'un site vitrine générique.",
           "Tourisme insulaire à forte jauge : la fréquentation de Porquerolles est plafonnée (~6 000 visiteurs/jour) et les traversées TLV-TVM limitées (~4 000 passagers/jour). Nous construisons des moteurs de réservation qui gèrent ces quotas, le multilingue et les pics de saison, hébergement de plein air compris.",
           "Bassin de TPE/PME saisonnières : ~2 035 TPE et ~95 PME à Hyères, dont la charge bascule entre haute et basse saison. Nos plateformes IA-native automatisent devis, relances et e-commerce (vente directe pépinières, domaines viticoles, produits insulaires) sans dépendance éditeur.",
-          "Ancrage zones d'activité et déplacements : nous intervenons sur la ZAE du Chibasson (85 entreprises, ~2 000 emplois), le futur pôle horticole de 16 ha, l'aéroport (concession VINCI Airports) et les communes voisines — Toulon, La Garde, Carqueiranne, La Crau.",
+          "Ancrage zones d'activité : nous intervenons sur la ZAE du Chibasson (85 entreprises, ~2 000 emplois), le futur pôle horticole de 16 ha, la plateforme aéroportuaire (concession VINCI Airports) et les communes voisines — Toulon, La Garde, Carqueiranne, La Crau.",
         ],
         methodology: [
           {

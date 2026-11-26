@@ -250,7 +250,7 @@ export const CHAVILLE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Chaville ?",
-      a: "Nous démarrons par un audit, puis intervenons sur site ou en visio, à 15 min de Paris-Montparnasse. Livrables documentés, équipes formées, aucune dépendance technique imposée.",
+      a: "Nous démarrons par un audit, puis intervenons sur site ou en visio. Livrables documentés, équipes formées, aucune dépendance technique imposée.",
     },
   ],
 };

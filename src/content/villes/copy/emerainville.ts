@@ -14,9 +14,9 @@ export const EMERAINVILLE_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Émerainville (77). Nous accompagnons TPE et PME : entreprises logistique et transport, prestataires de services aux entreprises, commerçants, artisans BTP et sociétés tertiaires des zones d'activités. Audit sur place sur mesure.",
   seoHook: "logistique transport & artisanat",
   ecosystemFr:
-    "Émerainville fait partie de l'agglomération Marne-la-Vallée et dispose de zones d'activités économiques accueillant des entreprises logistique, transport, services tertiaires et commerce. Proximité A4 et RER A (gare Émerainville-Pontault-Combault). Le tissu économique local repose sur des TPE et PME diversifiées.",
+    "Émerainville fait partie de l'agglomération Marne-la-Vallée et dispose de zones d'activités économiques accueillant des entreprises logistique, transport, services tertiaires et commerce. Le tissu économique local repose sur des TPE et PME diversifiées.",
   ecosystemEn:
-    "Émerainville fait partie de l'agglomération Marne-la-Vallée et dispose de zones d'activités économiques accueillant des entreprises logistique, transport, services tertiaires et commerce. Proximité A4 et RER A (gare Émerainville-Pontault-Combault). Le tissu économique local repose sur des TPE et PME diversifiées.",
+    "Émerainville fait partie de l'agglomération Marne-la-Vallée et dispose de zones d'activités économiques accueillant des entreprises logistique, transport, services tertiaires et commerce. Le tissu économique local repose sur des TPE et PME diversifiées.",
   distancesFr:
     "Gare RER A Émerainville-Pontault-Combault à proximité. Paris-Gare de Lyon à 35 min RER. A4 accès direct. Roissy-CDG à 40 min. Marne-la-Vallée-Chessy à 15 min.",
   distancesEn:

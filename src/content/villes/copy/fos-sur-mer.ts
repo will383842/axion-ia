@@ -49,7 +49,7 @@ export const FOS_SUR_MER_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Fos-sur-Mer et dans le bassin portuaire ouest ?",
-      a: "Oui, Axion-IA intervient à Fos-sur-Mer et dans tout le bassin portuaire (Port-Saint-Louis-du-Rhône, Istres, Martigues, Port-de-Bouc, Saint-Mitre-les-Remparts). Proximité A55 et terminaux GPMM.",
+      a: "Oui, Axion-IA intervient à Fos-sur-Mer et dans tout le bassin portuaire (Port-Saint-Louis-du-Rhône, Istres, Martigues, Port-de-Bouc, Saint-Mitre-les-Remparts). Activité portuaire et terminaux GPMM.",
     },
     {
       q: "Quel est le tarif d'un audit IA à Fos-sur-Mer  ?",

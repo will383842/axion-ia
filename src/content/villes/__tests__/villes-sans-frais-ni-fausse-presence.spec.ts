@@ -160,7 +160,7 @@ const TRAJET_FAQ: ReadonlyArray<readonly [string, RegExp]> = [
   ],
   [
     "durée d'accès",
-    /^(?!.*(?:devis|séance|livrable|atelier|sous \d)).*(?:(?<![\p{L}\d])(?:à|est à|sont à|en) \d+ ?(?:min\b|minutes|km)|(?<![\p{L}\d])(?:à|est à|sont à) \d+ ?h\d*\b|\(\d+ ?(?:min|h\d*)[^)]*\))/u,
+    /^(?!.*(?:devis|séance|livrable|atelier|sous \d|24 ?(?:à|-) ?48|\b4 ?h(?:eures?)?\b|audit sur place)).*(?:(?<![\p{L}\d])(?:à|est à|sont à|en) \d+ ?(?:min\b|minutes|km)|(?<![\p{L}\d])(?:à|est à|sont à) \d+ ?h\d*\b|\(\d+ ?(?:min|h\d*)[^)]*\))/u,
   ],
   [
     "gare ou aéroport cité seul",

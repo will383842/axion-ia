@@ -128,7 +128,7 @@ export const CLICHY_COPY: VilleCopy = {
           },
           {
             q: "Sous quel délai puis-je avoir un devis ?",
-            a: "À partir de 24 à 48 h selon la complexité. Après un échange de cadrage rapide, nous vous transmettons un périmètre clair et un devis détaillé. Le kick-off se fait ensuite sur site à Clichy ou en proche couronne (Levallois, Asnières, Saint-Ouen, Paris 17e).",
+            a: "À partir de 24 à 48 h selon la complexité. Après un échange de cadrage rapide, nous vous transmettons un périmètre clair et un devis détaillé. Le démarrage se fait ensuite sur site à Clichy, comme partout en France.",
           },
           {
             q: "Mes données et mon site sont-ils hébergés en conformité RGPD ?",

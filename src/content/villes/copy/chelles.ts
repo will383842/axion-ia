@@ -237,7 +237,7 @@ export const CHELLES_COPY: VilleCopy = {
     },
     {
       q: "Intervenez-vous aussi dans les communes proches de Chelles ?",
-      a: "Oui — nous nous déplaçons à Gagny, Montfermeil, Vaires-sur-Marne, Brou-sur-Chantereine, Courtry, Le Pin, Coubron, Neuilly-sur-Marne, Gournay-sur-Marne, Champs-sur-Marne et Noisiel aux mêmes tarifs publics.",
+      a: "Oui — nous intervenons à Gagny, Montfermeil, Vaires-sur-Marne, Brou-sur-Chantereine, Courtry, Le Pin, Coubron, Neuilly-sur-Marne, Gournay-sur-Marne, Champs-sur-Marne et Noisiel.",
     },
     {
       q: "Comment Axion-IA garantit-il la conformité RGPD à Chelles ?",

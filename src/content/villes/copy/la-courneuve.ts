@@ -64,7 +64,7 @@ export const LA_COURNEUVE_COPY: VilleCopy = {
           {
             step: "Cadrage à La Courneuve",
             detail:
-              "Kick-off sur site dans vos locaux — entrepôt de la ZAE Mermoz, atelier de Rateau ou bureau près de la gare Six-Routes. On cartographie votre activité réelle (catalogue négoce, flux logistiques, parc de véhicules, prestations) et vos objectifs : vendre en ligne, automatiser les devis, fluidifier le suivi de commande.",
+              "Kick-off sur site dans vos locaux — entrepôt de la ZAE Mermoz, atelier de Rateau ou bureau du quartier des Six-Routes. On cartographie votre activité réelle (catalogue négoce, flux logistiques, parc de véhicules, prestations) et vos objectifs : vendre en ligne, automatiser les devis, fluidifier le suivi de commande.",
           },
           {
             step: "Architecture et contenu",

@@ -127,7 +127,7 @@ export const CHATILLON_COPY: VilleCopy = {
           },
           {
             q: "Sous quel délai pouvez-vous démarrer à Châtillon ?",
-            a: "Après un premier échange, le devis est remis à partir de 24 à 48 h selon la complexité. Williams se déplace ensuite sur site à Châtillon (métro 13, tram T6 ou A86) pour le cadrage, puis nous lançons l'architecture et les maquettes.",
+            a: "Après un premier échange, le devis est remis à partir de 24 à 48 h selon la complexité. Williams intervient ensuite sur site à Châtillon pour le cadrage, puis nous lançons l'architecture et les maquettes.",
           },
           {
             q: "Où sont hébergées les données et qui possède le code ?",
@@ -135,7 +135,7 @@ export const CHATILLON_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Devis remis à partir de 24 à 48 h selon la complexité. Sites et plateformes en code custom Python/Node, hébergés en Union européenne, conformes RGPD et AI Act, avec respect d'un budget de performance Web Vitals strict. Aucune dépendance no-code ni lock-in éditeur : vous êtes propriétaire du code et restez libre de faire évoluer la solution en interne ou avec tout intégrateur. Williams se déplace dans vos locaux à Châtillon et dans le sud des Hauts-de-Seine (Clamart, Montrouge, Malakoff, Bagneux, Fontenay-aux-Roses) pour le cadrage et le transfert.",
+          "Devis remis à partir de 24 à 48 h selon la complexité. Sites et plateformes en code custom Python/Node, hébergés en Union européenne, conformes RGPD et AI Act, avec respect d'un budget de performance Web Vitals strict. Aucune dépendance no-code ni lock-in éditeur : vous êtes propriétaire du code et restez libre de faire évoluer la solution en interne ou avec tout intégrateur. Williams intervient dans vos locaux à Châtillon et dans le sud des Hauts-de-Seine (Clamart, Montrouge, Malakoff, Bagneux, Fontenay-aux-Roses) pour le cadrage et le transfert.",
       },
       en: {
         hero: "AI-augmented websites and SaaS platforms in Châtillon (92320): Axion-IA builds high-performance sites and custom business applications for micro-businesses and SMEs across the southern inner suburbs of Paris, anchored in the town's real fabric — subcontractors and software vendors orbiting the Orange Gardens campus (Orange Technocentre, 5G Lab, Data Studio, av. de la République), insurance and assistance providers in the wake of the AXA Assistance headquarters (rue André Gide), and shops and tradespeople around the future Line 15 South Châtillon-Montrouge station. Custom Python/Node code, UX/UI, mobile and multi-CMS e-commerce, EU/GDPR hosting, zero proprietary no-code dependency.",
@@ -232,8 +232,8 @@ export const CHATILLON_COPY: VilleCopy = {
       a: "À Châtillon, l'Audit sur place débute à {{price:audit-flash|flat}} (4 heures sur site), la Formation 4 h à {{price:intervention-4h|flat}} et l'accompagnement 1-to-1 dirigeant à {{price:intervention-dirigeants|flat}}. Tarifs publics consultables sur axion-ia.com.",
     },
     {
-      q: "Williams se déplace-t-il dans les entreprises de Châtillon ?",
-      a: "Oui, Williams se rend directement dans vos locaux à Châtillon (92320), accessibles par le terminus métro 13 Châtillon-Montrouge, le tramway T6 ou l'A86. Pas de visioconférence imposée : intervention sur site.",
+      q: "Intervenez-vous dans les entreprises de Châtillon ?",
+      a: "Oui, Williams intervient directement dans vos locaux à Châtillon (92320), comme partout en France. Pas de visioconférence imposée : intervention sur site.",
     },
     {
       q: "Sous quel délai Axion-IA peut-il intervenir à Châtillon ?",
