@@ -12,6 +12,8 @@
 # Usage (depuis une session pilote) :
 #   gh workflow run claude-credit-api.yml -R will383842/axion-ia --ref main \
 #     -f consigne="$(cat consigne.md)" -f modele=claude-sonnet-5-5 -f compte=A -f tours_max=150
+# CE DÉPÔT EST PUBLIC et ses journaux d'Actions aussi : la consigne est lue dans $GITHUB_EVENT_PATH,
+# jamais via `env:` (qui l'afficherait en clair), et aucun texte de réponse n'est journalisé.
 # La consigne doit nommer la branche à pousser et demander le corps de PR dans un fichier versionné
 # (par ex. .pr/<branche>.md) ; la session pilote ouvre ensuite la PR avec ce corps.
 
@@ -21,7 +23,7 @@ on:
   workflow_dispatch:
     inputs:
       consigne:
-        description: "Consigne complète (texte). Doit nommer la branche à pousser."
+        description: "Consigne complète (texte). Doit nommer la branche à pousser. Jamais affichée dans le journal."
         required: true
       modele:
         description: "Modèle"
@@ -67,13 +69,15 @@ jobs:
         with:
           node-version: ${{ env.NODE_VERSION }}
 
-      - name: Écrire la consigne (fichier non suivi par git)
-        env:
-          CONSIGNE: ${{ inputs.consigne }}
+      # ⚠️ DÉPÔT PUBLIC : la consigne ne passe JAMAIS par `env:` ni par `${{ inputs.consigne }}` dans un
+      #    script — les deux s'affichent en clair dans le journal public. On la lit dans le fichier
+      #    d'événement du runner ($GITHUB_EVENT_PATH), qui n'est ni affiché ni exposé par l'API publique.
+      - name: Écrire la consigne (fichier non suivi par git, jamais affiché)
         run: |
-          printf '%s\n' "$CONSIGNE" > .consigne-claude.md
+          jq -r '.inputs.consigne // empty' "$GITHUB_EVENT_PATH" > .consigne-claude.md
           echo ".consigne-claude.md" >> .git/info/exclude
-          test -s .consigne-claude.md
+          test -s .consigne-claude.md || { echo "::error::Consigne vide."; exit 1; }
+          echo "Consigne écrite : $(wc -c < .consigne-claude.md) octets."
 
       - name: Installer Claude Code, le bac à sable et l'identité git
         run: |
