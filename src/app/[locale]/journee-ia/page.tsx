@@ -772,11 +772,8 @@ export default async function JourneeIaPage({ params }: Props) {
             id="garantie"
             className={`border-border-on-mocha border-l-terracotta-on-mocha bg-mocha-soft ${s["ombre-mocha"]} relative scroll-mt-20 overflow-hidden rounded-xl border border-l-4 p-5 sm:p-8 lg:col-start-2 lg:row-span-2 lg:row-start-1 lg:mt-7 lg:self-start`}
           >
-            <span aria-hidden="true" className={s.x3}>
-              ×3
-            </span>
             <div className="relative text-base leading-relaxed">
-              <h3 className="text-mocha-fg mb-3 flex items-start gap-2.5 pr-14 text-xl leading-snug font-extrabold sm:pr-0">
+              <h3 className="text-mocha-fg mb-3 flex items-start gap-2.5 text-xl leading-snug font-extrabold">
                 <ShieldCheck
                   className="text-terracotta-on-mocha mt-0.5 size-[30px] flex-none"
                   strokeWidth={1.75}

@@ -24,6 +24,7 @@ import { prisma } from "@/lib/prisma";
 import { isQualiopiCertificationObtenue } from "@/server/qualiopi/config/flag";
 import { requireAdminWrite, logQualiopiActivity } from "@/server/actions/qualiopi/_guards";
 import {
+  conditionsAvecJourneeIa,
   entreeDevisClassiqueSchema,
   estimationOpcoDevis,
   mentionTvaDevisClassique,
@@ -83,6 +84,7 @@ export async function modifierDevisClassiqueBrouillonAction(
       offreSha256: true,
       updatedAt: true,
       dateValidite: true,
+      conditionsParticulieres: true,
     },
   });
   if (!actuel) return { error: "Devis introuvable" };
@@ -115,6 +117,14 @@ export async function modifierDevisClassiqueBrouillonAction(
     if ("erreur" in r) return { error: r.erreur };
     conditions = r.texte;
   }
+  // Journée IA : clé présente = la colonne et le paragraphe imprimé suivent la case (clé absente
+  // de `conditions` : on part du texte enregistré, sans l'effacer). Clé `journeeIa` absente = rien.
+  if (v.journeeIa !== undefined) {
+    const base = conditions !== undefined ? conditions : actuel.conditionsParticulieres;
+    const r = conditionsAvecJourneeIa(base, v.journeeIa);
+    if ("error" in r) return { error: r.error };
+    conditions = r.texte;
+  }
 
   const { count } = await prisma.devis.updateMany({
     where: { id, statut: "brouillon", offreSha256: null, updatedAt: attendu },
@@ -138,6 +148,7 @@ export async function modifierDevisClassiqueBrouillonAction(
         : {}),
       // Conditions particulières : même règle. `null` (ou texte vide, normalisé en `null`) efface.
       ...(conditions !== undefined ? { conditionsParticulieres: conditions } : {}),
+      ...(v.journeeIa !== undefined ? { journeeIa: v.journeeIa } : {}),
     },
   });
   if (count === 0) return { error: MSG_PERIME };

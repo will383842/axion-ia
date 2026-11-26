@@ -111,10 +111,10 @@ async function lirePlafonds(role: RoleBlogClaude): Promise<PlafondsValides> {
     throw refuser("Plafond mensuel global invalide", "config_invalide");
   }
   if (!nombrePositif(jourUsd) || jourUsd > BORNE_DURE_JOUR_USD) {
-    throw refuser("Plafond du jour du blog absent ou invalide", "config_invalide");
+    throw refuser("Plafond du jour du contenu via Claude absent ou invalide", "config_invalide");
   }
   if (!nombrePositif(moisBlogUsd) || moisBlogUsd > BORNE_DURE_MOIS_USD) {
-    throw refuser("Plafond du mois du blog absent ou invalide", "config_invalide");
+    throw refuser("Plafond du mois du contenu via Claude absent ou invalide", "config_invalide");
   }
   if (!nombreNonNegatif(reserve)) {
     throw refuser("Réserve Qualiopi absente ou invalide", "config_invalide");
@@ -194,7 +194,7 @@ export async function assertPlafondsClaude(
     throw refuser("Frais fixes invalides", "config_invalide");
   }
   if (!interrupteurBlogClaude()) {
-    throw refuser("Texte du blog via Claude : interrupteur éteint", "eteint");
+    throw refuser("Texte via Claude : interrupteur éteint", "eteint");
   }
   const model = MODELES[role];
   if (
@@ -308,7 +308,7 @@ export async function genererTexteBlogClaude(
   role: RoleBlogClaude,
 ): Promise<GenerationResponse> {
   if (!interrupteurBlogClaude()) {
-    throw refuser("Texte du blog via Claude : interrupteur éteint", "eteint");
+    throw refuser("Texte via Claude : interrupteur éteint", "eteint");
   }
   const { model, reservation } = await assertPlafondsClaude(req, role);
 

@@ -11,6 +11,7 @@
 // Les espaces insécables (U+202F avant « ? : ; ! », U+00A0 avant « h », « % », « n° ») et les
 // apostrophes « ’ » sont ceux de la maquette : ne pas les « normaliser ».
 
+import { formatAmount } from "@/content/pricing";
 import { reponseReference } from "@/content/questions-reference";
 import {
   CONDITION_GARANTIE,
@@ -21,7 +22,14 @@ import {
   MENTION_DECLARATION_OF,
   RAPPORT_COMPLET,
   DEDUCTION_JOURNEE_IA,
+  DELAI_RAPPORT_JOURS_OUVRES,
+  MAJORATION_PLANCHER_COUT_HORAIRE_PCT,
+  MULTIPLE_GARANTIE,
+  seuilGarantieEur,
 } from "@/content/journee-ia-commun";
+
+/** Seuil de la garantie, calculé depuis le prix de la journée (jamais tapé à la main). */
+const SEUIL = formatAmount(seuilGarantieEur(), "fr");
 
 // Le jeton de prix et la garantie vivent dans le module commun (partagés avec l'accueil, le
 // JSON-LD et llms*.txt) ; on les réexporte pour les importeurs actuels (`prix.ts`, les tests).
@@ -65,7 +73,11 @@ export const CONTENU = {
         attestation: true,
       },
       { valeur: "Le soir même", legende: "vos priorités écrites" },
-      { valeur: "Garantie ×3", legende: "voir la condition →", ancre: "#garantie" },
+      {
+        valeur: formatAmount(seuilGarantieEur(), "fr", { compact: true }),
+        legende: "de gains identifiés, ou remboursé sur demande →",
+        ancre: "#garantie",
+      },
     ],
     carteDesGains: {
       titre: "Votre entreprise, cartographiée",
@@ -168,7 +180,10 @@ export const CONTENU = {
         icone: "plan",
         jalons: [
           { moment: "17\u00a0h 30", texte: "Vos 3 à 5 priorités, écrites avant notre départ" },
-          { moment: "Sous 3 jours ouvrés", texte: "Le rapport complet" },
+          {
+            moment: `Sous ${DELAI_RAPPORT_JOURS_OUVRES} jours ouvrés`,
+            texte: "Le rapport complet",
+          },
         ],
       },
     ],
@@ -194,7 +209,7 @@ export const CONTENU = {
       {
         icone: "plan",
         titre: "Plan d’action à 90 jours",
-        delai: "Rapport complet sous 3 jours ouvrés",
+        delai: `Rapport complet sous ${DELAI_RAPPORT_JOURS_OUVRES} jours ouvrés`,
       },
     ],
   },
@@ -215,7 +230,7 @@ export const CONTENU = {
     lignes: ["Dans vos locaux", "Sans remise", "Devis écrit, rien à payer en ligne"],
     deduction: DEDUCTION_JOURNEE_IA,
     ancre: "Dans cet exemple type, la journée coûte moins de deux mois de ces heures.",
-    titreGarantie: "Pas 3 fois le prix en gains identifiés\u202f? Remboursement sur demande.",
+    titreGarantie: `Moins de ${SEUIL} de gains identifiés\u202f? Remboursement sur demande.`,
     garantie: GARANTIE_PHRASE,
     condition: CONDITION_GARANTIE,
     rapport: RAPPORT_COMPLET,
@@ -284,6 +299,11 @@ export const CONTENU = {
       reponse: `${GARANTIE_PHRASE} ${CONDITION_GARANTIE}`,
     },
     {
+      id: "faq-garantie-calcul",
+      question: "Comment calculez-vous les gains identifiés\u202f?",
+      reponse: `Dans votre rapport, remis sous ${DELAI_RAPPORT_JOURS_OUVRES} jours ouvrés après la journée, nous chiffrons ce que votre entreprise peut gagner en 12 mois en appliquant le plan\u202f: pour chaque tâche retenue, les heures gagnées par semaine × 45 semaines × le coût horaire charges comprises que vous nous indiquez, les dépenses évitées, et les erreurs, retards et pénalités évités. Ce coût n'est jamais retenu en dessous du salaire minimum horaire brut majoré de ${MAJORATION_PLANCHER_COUT_HORAIRE_PCT}\u00a0%. Nous retirons seulement le coût des abonnements et licences des outils nécessaires. Si le total n'atteint pas ${SEUIL}, soit ${MULTIPLE_GARANTIE} fois le prix HT de la journée, vous nous demandez le remboursement par écrit dans les 30 jours suivant la remise du rapport\u202f; nous vérifions et vous répondons par écrit sous 15 jours\u202f; si la demande est acceptée, nous vous remboursons par virement sous 30 jours. Le remboursement n'a lieu qu'une seule fois par entreprise ou par groupe et ne se cumule pas avec la déduction du prix de la journée sur un devis de mise en place.`,
+    },
+    {
       id: "faq-preparer",
       question: "Que faut-il préparer\u202f?",
       reponse:
@@ -298,8 +318,7 @@ export const CONTENU = {
     {
       id: "faq-rapport",
       question: "Quand recevons-nous le rapport\u202f?",
-      reponse:
-        "Le soir même, vous avez vos priorités écrites. Le rapport complet et le plan d’action sur 90 jours suivent sous 3 jours ouvrés\u00a0: ce délai nous permet de vérifier chaque chiffre.",
+      reponse: `Le soir même, vous avez vos priorités écrites. Le rapport complet et le plan d’action sur 90 jours suivent sous ${DELAI_RAPPORT_JOURS_OUVRES} jours ouvrés\u00a0: ce délai nous permet de vérifier chaque chiffre.`,
     },
     {
       id: "faq-personnes",

@@ -36,6 +36,7 @@ import {
 import { nextNumero } from "@/server/qualiopi/numbering/allocate";
 import { withNumberRetry } from "@/server/qualiopi/numbering/retry";
 import {
+  conditionsAvecJourneeIa,
   entreeDevisClassiqueSchema,
   estimationOpcoDevis,
   mentionTvaDevisClassique,
@@ -153,6 +154,15 @@ export async function createDevisAction(
   // Calculer le total HT en centimes
   const montantTotalHtCents = totalHtClassiqueCents(v.lignes);
 
+  // Journée IA : la case (colonne `journeeIa`) imprime la garantie dans les conditions
+  // particulières ; idempotent si l'assistant l'a déjà écrite.
+  let conditionsParticulieres = v.conditionsParticulieres ?? null;
+  if (v.journeeIa === true) {
+    const r = conditionsAvecJourneeIa(conditionsParticulieres, true);
+    if ("error" in r) return { error: r.error };
+    conditionsParticulieres = r.texte;
+  }
+
   const year = new Date().getFullYear();
 
   // Date de validité : +30 jours
@@ -199,9 +209,8 @@ export async function createDevisAction(
           dateValidite,
           ...(v.activite !== undefined ? { activite: v.activite } : {}),
           ...(v.refClient !== undefined ? { refClient: v.refClient } : {}),
-          ...(v.conditionsParticulieres
-            ? { conditionsParticulieres: v.conditionsParticulieres }
-            : {}),
+          ...(conditionsParticulieres ? { conditionsParticulieres } : {}),
+          ...(v.journeeIa === true ? { journeeIa: true } : {}),
           ...(v.financementSuggere !== undefined
             ? { financementSuggere: v.financementSuggere }
             : {}),
@@ -1291,6 +1300,7 @@ export async function reviseDevisAction(
       offre: true,
       offreSha256: true,
       conditionsParticulieres: true,
+      journeeIa: true,
     },
   });
   if (!origine) return { error: "Devis introuvable" };
@@ -1369,6 +1379,7 @@ export async function reviseDevisAction(
           ...(origine.conditionsParticulieres !== null
             ? { conditionsParticulieres: origine.conditionsParticulieres }
             : {}),
+          ...(origine.journeeIa ? { journeeIa: true } : {}),
           ...(origine.financementSuggere !== null
             ? { financementSuggere: origine.financementSuggere }
             : {}),

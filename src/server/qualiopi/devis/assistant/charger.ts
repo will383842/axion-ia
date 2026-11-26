@@ -246,6 +246,7 @@ export async function chargerAssistantDevis(
         lignes: true,
         financementSuggere: true,
         montantOpcoEstimeCents: true,
+        journeeIa: true,
       },
     });
     if (!devis)
@@ -338,7 +339,8 @@ export async function chargerAssistantDevis(
       isQualiopiCertificationObtenue(),
     );
     if ("refus" in ouverture && ouverture.motif !== "opco") return refus(ouverture.refus);
-    payload = lu.payload;
+    // La colonne `Devis.journeeIa` est la source de vérité : relue ici, jamais le brouillon.
+    payload = { ...lu.payload, journeeIa: devis.journeeIa === true };
     brouillon = { id: lie.id, revision: lie.revision };
   }
 

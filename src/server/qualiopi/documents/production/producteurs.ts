@@ -406,6 +406,8 @@ export async function produireConvention(
         },
       },
       montantHtCents: true,
+      // Journée IA : la case du devis d'origine (colonne `Devis.journeeIa`), photographiée ici.
+      devis: { select: { journeeIa: true } },
       formationSnapshot: true,
       formation: {
         select: {
@@ -494,6 +496,7 @@ export async function produireConvention(
           ...(opts?.acomptePercent !== undefined ? { acomptePercent: opts.acomptePercent } : {}),
           dateConvention: formatDateFr(new Date()),
           certificationObtenue: certifie,
+          ...(session.devis?.journeeIa === true ? { journeeIa: true } : {}),
           ...(condition !== null ? { conditionSuspensiveOpco: condition.clause } : {}),
         },
         // `resolveLieuDocument` (ci-dessus) garde l'identité d'origine ; seul le numéro Qualiopi
