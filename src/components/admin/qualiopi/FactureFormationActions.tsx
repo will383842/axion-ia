@@ -45,6 +45,8 @@ export interface FactureFormationActionsProps {
   contactEmail: string | null;
   /** Le rôle courant peut-il écrire (admin/super_admin) ? Sinon lecture seule. */
   canWrite: boolean;
+  /** Facture (ou sœur du même devis) portant une commission d'apporteur non annulée. */
+  commissionApporteur?: boolean;
 }
 
 type Panel = "paiement" | "avoir" | "email" | null;
@@ -75,6 +77,7 @@ export function FactureFormationActions({
   estAvoir,
   contactEmail,
   canWrite,
+  commissionApporteur = false,
 }: FactureFormationActionsProps): React.ReactElement {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
@@ -97,6 +100,7 @@ export function FactureFormationActions({
 
   // Avoir
   const [motif, setMotif] = useState<string>("");
+  const [confirmerReprise, setConfirmerReprise] = useState<boolean>(false);
   const [avoirPartiel, setAvoirPartiel] = useState<boolean>(false);
   const [avoirMontantEur, setAvoirMontantEur] = useState<string>((montantHtCents / 100).toFixed(2));
 
@@ -172,6 +176,7 @@ export function FactureFormationActions({
       const res = await genererAvoirAction({
         factureId,
         motif: motif.trim(),
+        ...(commissionApporteur && confirmerReprise ? { confirmerReprise: true } : {}),
         ...(montantPartielHtCents !== undefined ? { montantPartielHtCents } : {}),
       });
       if ("error" in res) {
@@ -431,6 +436,24 @@ export function FactureFormationActions({
                 disabled={isPending}
                 className={inputCls}
               />
+            </div>
+          )}
+          {commissionApporteur && (
+            <div role="alert" className="text-[length:var(--text-admin-sm)]">
+              <p>
+                Cette facture porte une commission d&apos;apporteur : un avoir la reprend au
+                prorata. S&apos;il s&apos;agit d&apos;un bon d&apos;achat offert, ne l&apos;émettez
+                pas comme avoir.
+              </p>
+              <label className="mt-[var(--space-admin-2)] flex items-center gap-[var(--space-admin-2)]">
+                <input
+                  type="checkbox"
+                  checked={confirmerReprise}
+                  onChange={(e) => setConfirmerReprise(e.target.checked)}
+                  disabled={isPending}
+                />
+                Je confirme : c&apos;est un vrai remboursement
+              </label>
             </div>
           )}
           <button
