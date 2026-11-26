@@ -4,7 +4,8 @@
  *  - le chatbot (`qa_derived` non marqué) et les juges OpenAI ne sont JAMAIS marqués ;
  *  - tout éteint (sans interrupteur, ou type hors liste) : la requête qui atteint OpenAI
  *    est identique à celle d'avant (le champ `blogClaudeRole` n'y arrive jamais) ;
- *  - aucun modèle Haiku, aucun prompt de générateur ne parle de frais de déplacement.
+ *  - aucun modèle Haiku, aucune source de générateur ne parle de frais de déplacement (la fiche Journée IA
+ *    ne les cite que comme interdit).
  */
 import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
@@ -121,7 +122,7 @@ describe("marquage des générateurs", () => {
     for (const f of [
       ...GENERATEURS_MARQUES,
       "content-gen/generators/blog-from-rss.ts",
-      // positionnement.ts est exclu : depuis #2311 il cite les frais de déplacement
+      // positionnement.ts est exclu : il cite les frais de déplacement
       // uniquement comme interdit (« jamais de prix, ni d'acompte, ni de frais de déplacement »).
     ]) {
       expect(lire(f)).not.toMatch(/frais\s+(de\s+)?d[ée]placement/i);
