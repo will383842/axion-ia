@@ -465,11 +465,11 @@ export function ConventionPdf({
             (article 1231-5 du Code civil, qui laisse au juge la faculté de modérer une pénalité
             manifestement excessive). Cette règle vise le client professionnel ; elle ne
             s&apos;applique pas à la personne morale non professionnelle (articles 6.5 et 53.3 des
-            conditions générales de vente), pour laquelle l&apos;acompte est restitué en cas
-            d&apos;annulation avant le début, sous réserve de la part réalisée. Les sommes suivantes
-            sont dues ; l&apos;acompte versé s&apos;impute sur elles et, sauf pour la personne
-            morale non professionnelle et dans les cas prévus au dernier alinéa, n&apos;est pas
-            restitué ; la somme due ne dépasse pas le prix HT :
+            conditions générales de vente), pour laquelle l&apos;acompte est restitué en
+            totalité en cas d&apos;annulation avant le début. Les sommes suivantes sont dues ;
+            pour le client professionnel, l&apos;acompte versé s&apos;impute sur elles et, sauf
+            dans les cas prévus au dernier alinéa, n&apos;est pas restitué ; la somme due ne
+            dépasse pas le prix HT :
           </Text>
           <Text style={local.listItem}>
             • Annulation à plus de 15 jours ouvrés avant le début : aucune somme en plus de

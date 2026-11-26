@@ -75,6 +75,16 @@ describe("CGV : l'acompte versé reste acquis, sans condition de délai", () => 
     });
   }
 
+  it("personne morale non professionnelle : restitution intégrale avant le début, sans « part réalisée » (6.5)", async () => {
+    for (const certifiee of [false, true]) {
+      const { art } = await charger(certifiee);
+      expect(art(6)).toContain(
+        "l'acompte est remboursé en totalité en cas d'annulation avant le début.",
+      );
+      expect(art(6)).not.toContain("sous réserve de la part réalisée");
+    }
+  });
+
   it("l'opérateur de compétences n'est cité qu'après la certification (variante certifiée seulement)", async () => {
     const normale = await charger(false);
     const certifiee = await charger(true);
