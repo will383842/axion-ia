@@ -36,7 +36,14 @@ const date = (d: Date) =>
 
 export function ListeDeclarations({
   declarations,
+  regle = null,
 }: {
+  /**
+   * Règle d'attribution de l'apporteur : `rendez_vous` = contrat 2.8, où la commission ne dépend
+   * plus de la réalisation de la prestation (art. 4.2) : aucune ligne « réalisée / en attente ».
+   * Les apporteurs restés en 2.6 gardent leurs lignes d'origine.
+   */
+  regle?: "rendez_vous" | null;
   declarations: ReadonlyArray<{
     id: string;
     denomination: string;
@@ -67,7 +74,7 @@ export function ListeDeclarations({
               <div className="min-w-0">
                 <p className="truncate text-[17px] font-bold">{d.denomination}</p>
                 <p className="text-fg-soft text-[15px]">{date(d.recueAt)}</p>
-                {d.prestation ? (
+                {d.prestation && regle !== "rendez_vous" ? (
                   <p className="text-fg-soft text-[15px]">
                     {d.prestation.etat === "realisee"
                       ? T.prestationRealisee(date(d.prestation.le))

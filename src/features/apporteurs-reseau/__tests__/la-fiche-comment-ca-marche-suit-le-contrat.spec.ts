@@ -23,11 +23,13 @@ describe("fiche « Comment ça marche » ↔ contrat 2.3", () => {
     /Dès que nous l'avons contactée/,
   ])("ne contient plus %s", (motif) => expect(texte).not.toMatch(motif));
 
-  it("dit ce que dit le contrat : formulaire seul, 6 mois depuis la déclaration, 3 mois une seule fois, prestation réalisée et payée, SIREN actif", () => {
+  it("dit ce que dit le contrat : formulaire seul, 60 jours de réservation, 6 mois depuis le rendez-vous, 3 mois une seule fois, commission due au paiement à 100 %, SIREN actif", () => {
     expect(texte).toMatch(/un e-mail ne vaut pas déclaration/);
-    expect(texte).toMatch(/6 mois à compter de votre déclaration/);
+    expect(texte).toMatch(/réservée 60 jours/);
+    expect(texte).toMatch(/6 mois à compter du jour du rendez-vous/);
+    expect(texte).not.toMatch(/prestation est <?b?>?réalisée|6 mois à compter de votre déclaration|réalisée et entièrement payée/);
     expect(texte).toMatch(/3 mois de plus, une seule fois/);
-    expect(texte).toMatch(/prestation est réalisée/);
+    expect(texte).toMatch(/même si le travail n'est pas encore livré/);
     expect(texte).toMatch(/SIREN valide et actif/);
     expect(texte).toMatch(/24 mois/);
     // Et le contrat le dit bien (si le contrat change, ce test oblige à relire la fiche).

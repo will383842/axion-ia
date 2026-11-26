@@ -1,7 +1,12 @@
 import { describe, expect, it } from "vitest";
 
 import { CONTRAT_V2_MARKDOWN, CONTRAT_VERSION } from "../contrat-v2";
-import { ACCEPTATIONS } from "../regles-dossier";
+import {
+  ACCEPTATIONS,
+  LIBELLE_ART_4_5_AVANT_2_8,
+  estDepuis2_8,
+  texteAcceptation,
+} from "../regles-dossier";
 
 // Contrat 2.3 (décision de Will, 07/10/2026) : la commission n'est due que sur une prestation
 // RÉALISÉE et intégralement encaissée ; reprise quelle qu'en soit la cause, sous garde-fou ;
@@ -84,8 +89,24 @@ describe("contrat 2.3 (état en 2.8) : commission due à l'encaissement intégra
   });
 
   it("la case d'acceptation de l'article 4.5 dit ce qu'elle accepte", () => {
-    const a45 = ACCEPTATIONS.find((a) => a.cle === "art_4_5")!.texte;
-    expect(a45).toContain("prestation non réalisée");
+    // Contrat 2.8 : plus de condition de réalisation ; l'article 3.2 est cité.
+    const a45 = texteAcceptation("art_4_5", CONTRAT_VERSION)!;
+    expect(a45).not.toContain("prestation non réalisée");
     expect(a45).toContain("vingt-quatre mois");
+    expect(a45).toContain("article 3.2");
+    expect(ACCEPTATIONS.find((a) => a.cle === "art_4_5")!.texte).toBe(a45);
+  });
+
+  it("une preuve signée en 2.6 garde mot pour mot son libellé d'origine", () => {
+    for (const v of ["2.5", "2.6"]) {
+      expect(texteAcceptation("art_4_5", v)).toBe(LIBELLE_ART_4_5_AVANT_2_8);
+    }
+    expect(LIBELLE_ART_4_5_AVANT_2_8).toBe(
+      "J'accepte l'article 4.5 (recalcul et reprise d'une commission : avoir, remboursement, geste commercial ou prestation non réalisée, pendant vingt-quatre mois).",
+    );
+    // Les autres cases ne changent pas avec la version.
+    expect(texteAcceptation("art_7", "2.6")).toBe(texteAcceptation("art_7", "2.8"));
+    expect(estDepuis2_8("2.10")).toBe(true);
+    expect(estDepuis2_8("2.7")).toBe(false);
   });
 });
