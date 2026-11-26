@@ -25,3 +25,7 @@ Réseau simulé : plafond respecté, extrait manquant refusé, URL inventée ref
 - Les versions `_20260318` des outils n'ont pas été essayées contre l'API réelle (aucun appel réseau dans ce lot) ; `pause_turn` est traité comme un échec (article en relecture).
 - Interrupteur allumé, davantage d'articles peuvent partir en relecture humaine (fail-closed voulu).
 
+## Relecture Opus
+Deux tours. Tour 1 : « À CORRIGER » (réservation sous-estimée, chiffres non recoupés, phase A non branchée) : corrigé. Tour 2 : aucun problème élevé ; deux points moyens corrigés ensuite (nombres comparés comme entiers, plafond de 6 conservé si la phase A échoue). Reste connu : le coût de la phase A peut manquer dans `costUsd` du job si une phase échoue après avoir soldé (le registre de coûts, lui, est juste).
+
+VERDICT OPUS : BON

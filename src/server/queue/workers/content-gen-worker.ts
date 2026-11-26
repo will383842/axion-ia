@@ -67,6 +67,7 @@ import {
 import { equipeEditorialeActive } from "@/server/content-gen/fact-check/equipe-editoriale-drapeau";
 import {
   constituerDossierPreuves,
+  PLAFOND_RECHERCHES_PHASE_A,
   type DossierPreuves,
 } from "@/server/content-gen/fact-check/verificateur-deux-phases";
 import { financementPublicCitable } from "@/server/qualiopi/config/financing";
@@ -667,6 +668,14 @@ async function processJob(job: Job<ContentGenJobPayload>): Promise<void> {
           `Dossier de preuves indisponible : ${err instanceof Error ? err.message : String(err)}`,
           {},
         );
+        // Des recherches ont pu partir avant l'échec : la phase B garde le plafond de 6.
+        dossierPreuves = {
+          preuves: [],
+          refusees: 0,
+          recherches: PLAFOND_RECHERCHES_PHASE_A,
+          coutUsd: 0,
+          sources: [],
+        };
       }
     }
 

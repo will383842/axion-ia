@@ -258,8 +258,14 @@ function nombresDe(phrase: string): string[] {
 
 /** Chaque nombre de la phrase doit figurer dans le texte de la preuve ou de la page lue. */
 function nombresPresents(phrase: string, texte: string): boolean {
-  const t = normaliser(texte);
-  return nombresDe(phrase).every((n) => t.includes(n));
+  // Nombres entiers comparés entre eux (« 12 » n'est pas trouvé dans « 2012 »).
+  const presents = new Set(
+    (texte.match(/\d+(?:[ \u00a0\u202f.,]\d+)*/g) ?? []).flatMap((n) => [
+      normaliser(n),
+      ...n.split(/[ \u00a0\u202f]/),
+    ]),
+  );
+  return nombresDe(phrase).every((n) => presents.has(n));
 }
 
 // ── Phase A ──────────────────────────────────────────────────────────────────
