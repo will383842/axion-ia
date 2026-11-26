@@ -617,6 +617,13 @@ export const CATALOGUE: Readonly<Record<EmailJobName, FicheEmail>> = {
     destinataire: "l'apporteur qui a présenté l'entreprise",
     source: "features/apporteurs-reseau/envois.ts",
   },
+  "apporteur-presentation-regle-rendez-vous": {
+    categorie: "recrutement",
+    quand:
+      "Passage quotidien : une présentation en attente d'un apporteur signé ≥ 2.8 passe à la règle du premier rendez-vous tenu (art. 13.5)",
+    destinataire: "l'apporteur qui a présenté l'entreprise",
+    source: "features/apporteurs-reseau/envois.ts",
+  },
   "apporteur-presentation-refusee": {
     categorie: "recrutement",
     quand: "Bouton « Déjà connue » ou « Hors champ » d'une entreprise présentée, après aperçu",

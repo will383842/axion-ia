@@ -32,6 +32,8 @@
 import { FACTURE_HORS_ESSAI } from "@/server/qualiopi/essai/perimetre";
 import { destinataireAlertesInternes } from "@/lib/destinataires-internes";
 import { prisma } from "@/lib/prisma";
+import { createHash } from "node:crypto";
+
 import { decryptPii } from "@/lib/pii-crypto";
 import { enqueueEmail } from "@/server/queue/queues";
 
@@ -46,6 +48,7 @@ import {
 import {
   alerterDeclarationsSansReponse,
   annoncerAttribution,
+  annoncerBascule,
   dateEnClair,
 } from "./attribution-annonce";
 import { envoyer } from "./envois";
@@ -544,7 +547,7 @@ async function etapeBasculeRegleRendezVous(
   bilan: BilanPassageReseau,
 ): Promise<void> {
   if (!validationParRendezVousActive()) return;
-  const basculees: Array<{ denomination: string; terme: Date }> = [];
+  const basculees: Array<{ id: string; denomination: string; terme: Date }> = [];
   try {
     await basculerParPages(maintenant, bilan, basculees);
   } finally {
@@ -558,11 +561,22 @@ async function etapeBasculeRegleRendezVous(
  * bascule n'est jamais proposé tout seul : à vérifier à la main. Signale aussi les termes courts.
  */
 async function signalerBascules(
-  basculees: ReadonlyArray<{ denomination: string; terme: Date }>,
+  basculees: ReadonlyArray<{ id: string; denomination: string; terme: Date }>,
   maintenant: Date,
 ): Promise<void> {
   if (basculees.length === 0) return;
-  const jour = maintenant.toISOString().slice(0, 10);
+  // Jour à l'heure de Paris ; la clé dépend AUSSI du contenu (hachage des ids basculés) : un second
+  // passage le même jour, qui bascule d'autres présentations, n'est pas avalé par la dédup.
+  const jour = maintenant.toLocaleDateString("sv-SE", { timeZone: "Europe/Paris" });
+  const empreinte = createHash("sha256")
+    .update(
+      basculees
+        .map((b) => b.id)
+        .sort()
+        .join(","),
+    )
+    .digest("hex")
+    .slice(0, 12);
   const liste = basculees
     .slice(0, 50)
     .map((b) => {
@@ -571,7 +585,7 @@ async function signalerBascules(
     })
     .join(" ; ");
   await alerteInterne({
-    jobId: `apporteur-bascule-lot-${jour}`,
+    jobId: `apporteur-bascule-lot-${jour}-${empreinte}`,
     code: "apporteur_bascule_rendez_vous",
     titre: `${basculees.length} présentation(s) passée(s) à la règle du rendez-vous`,
     message: `Ces présentations en attente ne sont plus confirmées par le silence : ${liste}. Vérifiez les rendez-vous déjà pris ou tenus avec ces entreprises depuis la saisie : ils ne sont pas proposés automatiquement. À valider dans la console (Apporteurs › Entreprises présentées).`,
@@ -584,7 +598,7 @@ async function signalerBascules(
 async function basculerParPages(
   maintenant: Date,
   bilan: BilanPassageReseau,
-  basculees: Array<{ denomination: string; terme: Date }>,
+  basculees: Array<{ id: string; denomination: string; terme: Date }>,
 ): Promise<void> {
   let curseur: { at: Date; id: string } | null = null;
   for (let page = 0; page < PAGES_ECHEANCES_MAX; page++) {
@@ -672,13 +686,17 @@ async function basculerParPages(
           });
           if (ok) {
             bilan.basculees += 1;
-            basculees.push({ denomination: p.denomination, terme: d.reserveeJusquAt });
+            basculees.push({ id: p.id, denomination: p.denomination, terme: d.reserveeJusquAt });
+            await annoncerBascule(p.id, d.reserveeJusquAt);
           }
         } catch (err) {
           // Table absente (migration pas encore passée) : on s'arrête, sans erreur.
           if (tableAbsente(err)) return;
           // Clé primaire déjà prise : une autre ligne est née entre-temps, rien à faire.
-          if ((err as { code?: unknown })?.code !== "P2002") throw err;
+          if ((err as { code?: unknown })?.code === "P2002") continue;
+          // Toute autre erreur : comptée au bilan, la boucle continue (une ligne en échec ne bloque pas les suivantes).
+          bilan.erreurs += 1;
+          signalerErreurReseau("bascule vers la règle du rendez-vous", err);
         }
       } else if (d.motif === "rebond" || d.motif === "terme_depasse") {
         // Terme dépassé sans rebond : le silence confirme au plus tard le lendemain, rien à signaler.

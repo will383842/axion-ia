@@ -372,6 +372,8 @@ const GABARITS_APRES_SIGNATURE: readonly string[] = [
   // 2026-11-25 : « l'entreprise n'a pas pu être retenue », écartée depuis la console — envoyé à un
   // apporteur SIGNÉ qui a présenté une entreprise ; aucun barème ni montant.
   "apporteur-presentation-non-retenue.tsx",
+  // 2026-11-26 : bascule vers la règle du rendez-vous (art. 13.5) ; aucun barème ni montant.
+  "apporteur-presentation-regle-rendez-vous.tsx",
   // Lot L1a (2026-11-25) : notification de résiliation et prise d'effet — apporteur SIGNÉ ;
   // aucun barème ni montant.
   "apporteur-resiliation-notifiee.tsx",

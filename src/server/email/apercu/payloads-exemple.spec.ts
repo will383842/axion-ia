@@ -184,7 +184,8 @@ describe("le jeu de données d'exemple couvre tous les gabarits", () => {
     // et `miseEnDemeureLe` ont leur valeur d'exemple.
     // RELEVÉ À 93 : `apporteur-presentation-non-retenue`, l'e-mail à l'apporteur « entreprise non
     // retenue ». Champs tous facultatifs.
-    expect(tous.length).toBe(93);
+    // RELEVÉ À 94 : `apporteur-presentation-regle-rendez-vous` (bascule, art. 13.5). Champs tous facultatifs.
+    expect(tous.length).toBe(94);
   });
 
   it.each(tous.map((g) => g.nom))("%s : tous ses champs requis ont une valeur d'exemple", (nom) => {

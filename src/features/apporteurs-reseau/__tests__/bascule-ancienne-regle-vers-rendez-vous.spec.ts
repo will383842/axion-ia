@@ -26,6 +26,8 @@ const db = vi.hoisted(() => ({
     jobId: string;
   }>,
   createErreur: null as null | { code: string },
+  /** Si renseigné, `createErreur` ne frappe que cette présentation. */
+  erreurPour: null as null | string,
   audit: [] as Array<Record<string, any>>, // eslint-disable-line @typescript-eslint/no-explicit-any
   jobIds: new Set<string>(),
   /** Appelé juste APRÈS une lecture des présentations : simule un autre processus qui écrit entre lecture et écriture. */
@@ -142,7 +144,8 @@ vi.mock("@/lib/prisma", () => {
         return r ? { ...r } : null;
       }),
       create: vi.fn(async (a: { data: Ligne }) => {
-        if (db.createErreur) throw Object.assign(new Error("table"), db.createErreur);
+        if (db.createErreur && (!db.erreurPour || db.erreurPour === a.data.presentationId))
+          throw Object.assign(new Error("table"), db.createErreur);
         if (db.res.some((x) => x.presentationId === a.data.presentationId))
           throw Object.assign(new Error("unique"), { code: "P2002" });
         db.res.push({
@@ -245,7 +248,7 @@ vi.mock("@/lib/prisma", () => {
 });
 
 import { passerReseauApporteurs } from "../passage-quotidien";
-import { basculeVersRendezVous } from "../regle-attribution";
+import { basculeVersRendezVous, termeApresBascule } from "../regle-attribution";
 import { idsPriseDeContactRebondie } from "../rebonds";
 import { envoyer } from "../envois";
 
@@ -308,6 +311,7 @@ beforeEach(() => {
   db.apresLecture = null;
   db.apresLectureRes = null;
   db.createErreur = null;
+  db.erreurPour = null;
   vi.mocked(envoyer).mockClear();
 });
 
@@ -357,7 +361,121 @@ describe("basculeVersRendezVous (décision pure)", () => {
   });
 });
 
+describe("terme d'une présentation basculée (art. 13.5 : au moins 30 jours)", () => {
+  it("max(terme normal, bascule + 30 jours) : terme normal plus tardif → inchangé", () => {
+    expect(termeApresBascule(DIX_NOV, VINGT_SIX)).toEqual(new Date("2027-01-08T22:59:59.999Z"));
+  });
+  it("terme normal plus proche (4 jours) → bascule + 30 jours", () => {
+    const recue = new Date("2026-09-30T09:00:00Z"); // terme normal : 29/11
+    expect(termeApresBascule(recue, VINGT_SIX)).toEqual(j(VINGT_SIX, 30));
+    const d = basculeVersRendezVous({
+      statut: "reservee",
+      recueAt: recue,
+      apporteur: { statut: "signe", signature: { version: "2.8" } },
+      silenceAtteint: false,
+      aUneLigne: false,
+      rebond: false,
+      actif: true,
+      maintenant: VINGT_SIX,
+    });
+    expect(d).toEqual({ bascule: true, reserveeJusquAt: j(VINGT_SIX, 30) });
+  });
+});
+
 describe("étape « bascule-regle-rendez-vous »", () => {
+  it("terme court : la ligne enregistrée laisse 30 jours, et l'échéance ne la clôt pas avant", async () => {
+    allume();
+    db.pres.push(
+      paul({
+        recueAt: new Date("2026-10-01T09:00:00Z"),
+        contactEnvoyeAt: new Date("2026-10-27T09:00:00Z"),
+      }),
+    );
+    await passerReseauApporteurs(VINGT_SIX);
+    expect(db.res[0]!.reserveeJusquAt).toEqual(j(VINGT_SIX, 30));
+    const b = await passerReseauApporteurs(new Date("2026-12-10T08:00:00Z"));
+    expect(b.reservationsEchues).toBe(0);
+    expect(db.pres[0]!.statut).toBe("reservee");
+  });
+
+  it("l'apporteur est prévenu par e-mail (une fois par présentation), avec l'entreprise et la date limite", async () => {
+    allume();
+    db.pres.push(paul());
+    await passerReseauApporteurs(VINGT_SIX);
+    const appels = vi
+      .mocked(envoyer)
+      .mock.calls.map((c) => c[0])
+      .filter((e) => e.gabarit === "apporteur-presentation-regle-rendez-vous");
+    expect(appels).toHaveLength(1);
+    expect(appels[0]).toMatchObject({
+      destinataire: "a@b.fr",
+      entityId: "P1",
+      jobId: "apporteur-bascule-regle-P1",
+      payload: { entreprise: "Acme", dateLimite: "8 janvier 2027" },
+    });
+    expect(appels[0]!.payload).not.toHaveProperty("gabaritRepli");
+  });
+
+  it("apporteur qui passe en 2.8 APRÈS une première exécution : la bascule a lieu au passage suivant", async () => {
+    allume();
+    db.pres.push(paul({ apporteur: signe28({ signatureApporteur: { version: "2.6" } }) }));
+    expect((await passerReseauApporteurs(VINGT_SIX)).basculees).toBe(0);
+    expect(db.res).toHaveLength(0);
+    db.pres[0]!.apporteur = signe28();
+    const b = await passerReseauApporteurs(j(VINGT_SIX, 1));
+    expect(b.basculees).toBe(1);
+    expect(db.res[0]!.reserveeJusquAt.getTime()).toBeGreaterThanOrEqual(j(VINGT_SIX, 31).getTime());
+  });
+
+  it("alerte de lot : deux passages le même jour qui basculent des présentations différentes → deux alertes", async () => {
+    allume();
+    db.pres.push(paul());
+    await passerReseauApporteurs(VINGT_SIX);
+    db.pres.push(paul({ id: "P2", denomination: "Beta" }));
+    await passerReseauApporteurs(j(VINGT_SIX, 0.1));
+    const lots = db.alertes.filter((a) => a.jobId.startsWith("apporteur-bascule-lot-"));
+    expect(lots).toHaveLength(2);
+    expect(new Set(lots.map((l) => l.jobId)).size).toBe(2);
+    expect(String(lots[1]!.payload.message)).toContain("Beta");
+  });
+
+  it("alerte de lot : le jour de la clé est celui de Paris (23 h 30 UTC le 26 → 27 novembre)", async () => {
+    allume();
+    db.pres.push(paul());
+    await passerReseauApporteurs(new Date("2026-11-26T23:30:00Z"));
+    const lot = db.alertes.find((a) => a.jobId.startsWith("apporteur-bascule-lot-"))!;
+    expect(lot.jobId).toMatch(/^apporteur-bascule-lot-2026-11-27-[0-9a-f]{12}$/);
+  });
+
+  it("erreur non-P2002 au milieu d'une page : comptée au bilan, les suivantes basculent quand même", async () => {
+    allume();
+    db.pres.push(
+      paul({ id: "P1", recueAt: new Date("2026-11-01T09:00:00Z") }),
+      paul({ id: "P2", recueAt: new Date("2026-11-02T09:00:00Z") }),
+      paul({ id: "P3", recueAt: new Date("2026-11-03T09:00:00Z") }),
+    );
+    db.createErreur = { code: "P2034" };
+    db.erreurPour = "P2";
+    const b = await passerReseauApporteurs(VINGT_SIX);
+    expect(b.erreurs).toBe(1);
+    expect(b.basculees).toBe(2);
+    expect(db.res.map((r) => r.presentationId).sort()).toEqual(["P1", "P3"]);
+  });
+
+  it("course avec une confirmation manuelle (console) entre la lecture et l'écriture : aucune ligne, la confirmée reste intacte", async () => {
+    allume();
+    db.pres.push(paul());
+    db.apresLecture = (where) => {
+      if (where.statut !== "reservee") return;
+      db.apresLecture = null;
+      db.pres[0]!.statut = "confirmee";
+    };
+    const b = await passerReseauApporteurs(VINGT_SIX);
+    expect(b.basculees).toBe(0);
+    expect(db.res).toHaveLength(0);
+    expect(db.pres[0]!.statut).toBe("confirmee");
+  });
+
   it("Paul : une ligne rendez_vous est créée, statut et dates inchangés, pas de confirmation par le silence ensuite", async () => {
     allume();
     db.pres.push(paul());

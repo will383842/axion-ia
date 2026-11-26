@@ -76,6 +76,19 @@ export function finDeProtectionRendezVous(rendezVousAt: Date): Date {
   return ajouterMois(rendezVousAt, PROTECTION_MOIS);
 }
 
+/** Délai minimal laissé à l'apporteur, à compter de la bascule, pour obtenir le rendez-vous (contrat 2.8, art. 13.5). */
+export const DELAI_MINIMAL_BASCULE_JOURS = 30;
+
+/**
+ * Terme de la réservation d'une présentation BASCULÉE : le plus tardif du terme normal (fin du
+ * 60e jour depuis la saisie) et de la date de bascule + 30 jours (art. 13.5, clause transitoire).
+ */
+export function termeApresBascule(recueAt: Date, maintenant: Date): Date {
+  const normal = finReservation(recueAt);
+  const minimal = new Date(maintenant.getTime() + DELAI_MINIMAL_BASCULE_JOURS * 86_400_000);
+  return normal.getTime() >= minimal.getTime() ? normal : minimal;
+}
+
 export type MotifBasculeRefusee =
   | "interrupteur"
   | "version"
@@ -91,7 +104,8 @@ export type MotifBasculeRefusee =
  * `signe` à la version 2.8 ou plus, la date du silence n'est pas déjà atteinte (la présentation est alors
  * acquise, la confirmation tacite la traite) et le terme (`finReservation`) n'est pas déjà dépassé. Une prise de contact revenue en
  * erreur suspend l'ancienne règle sans limite : la présentation peut avoir plus de 60 jours, elle
- * n'est pas basculée (l'appelant la signale). Ne modifie rien, rend le terme à enregistrer.
+ * n'est pas basculée (l'appelant la signale). Ne modifie rien, rend le terme à enregistrer
+ * (`termeApresBascule` : au moins 30 jours à compter de la bascule).
  */
 export function basculeVersRendezVous(e: {
   statut: string;
@@ -114,7 +128,7 @@ export function basculeVersRendezVous(e: {
   const terme = finReservation(e.recueAt);
   if (!(terme.getTime() >= e.maintenant.getTime()))
     return { bascule: false, motif: "terme_depasse" };
-  return { bascule: true, reserveeJusquAt: terme };
+  return { bascule: true, reserveeJusquAt: termeApresBascule(e.recueAt, e.maintenant) };
 }
 
 export type MotifRendezVousRefuse =
