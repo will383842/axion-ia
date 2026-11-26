@@ -277,7 +277,7 @@ export const BESANCON_COPY: VilleCopy = {
           },
           {
             q: "Do you cover Grand Besançon communes?",
-            a: "Yes. Grand Besançon is our full territory. We work in all communes — from Chalezeule to École-Valentin, Pirey to Saint-Vit, Devecey to Saône.",
+            a: "Yes. Grand Besançon is our full territory. We work in all communes of the area: Chalezeule, École-Valentin, Pirey, Saint-Vit, Devecey and Saône.",
           },
           {
             q: "Do I need AI maturity to engage you?",
