@@ -47,7 +47,10 @@ const FRAIS: ReadonlyArray<readonly [string, RegExp]> = [
     /frais (?:de déplacement|de trajet|de route|de transport|kilométriques?|d['’]hébergement|de logement|de repas)|défraiement|indemnités? kilométriques?/iu,
   ],
   ["en sus", /\ben sus\b/u],
-  ["supplément / surcoût géographique", /(?:supplément|surcoût) (?:géographique|de zone|de déplacement)/iu],
+  [
+    "supplément / surcoût géographique",
+    /(?:supplément|surcoût) (?:géographique|de zone|de déplacement)/iu,
+  ],
   [
     "tarif identique partout",
     /(?:tarifs?|grille|prix)[^".]{0,30}(?:identiques?|le même|les mêmes)[^".]{0,40}(?:partout|ailleurs|quel que soit)/iu,
@@ -66,7 +69,10 @@ const PRESENCE: ReadonlyArray<readonly [string, RegExp]> = [
     /Nos consultants (?:seniors )?(?:viennent (?:de|depuis|d['’])|se déplacent[^."]{0,40}depuis|interviennent depuis|rejoignent)/u,
   ],
   ["Williams depuis <Ville>", /Williams[^".]{0,60}depuis [A-ZÉ]/u],
-  ["déplacement depuis <Ville>", /[Dd]éplacements? (?:rapide |direct |simple )?depuis (?!notre)[A-ZÉ]/u],
+  [
+    "déplacement depuis <Ville>",
+    /[Dd]éplacements? (?:rapide |direct |simple )?depuis (?!notre)[A-ZÉ]/u,
+  ],
   ["notre base locale", /depuis notre base (?!nationale)|notre base [a-zé]+ise\b/u],
   ["lieux Axion-IA", /ateliers Axion-IA à|nos points de cadrage/u],
   [

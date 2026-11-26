@@ -187,7 +187,7 @@ plescop.ts;45;"vos locaux ou en visio. Professions libérales, gérants TPE, dir
 plescop.ts;46;"ng 1-to-1 à Plescop : sessions dans vos locaux ou en visio. Professions libérales, gérants TPE, dirigeants PME et indépe";LEGITIME;locaux du client
 plescop.ts;46;"vos locaux ou en visio. Professions libérales, gérants TPE, dirigeants PME et indépendants de l'agglomération vannetaise";LEGITIME;locaux du client
 plescop.ts;68;"""Nos consultants se déplacent dans vos locaux à Plescop ou interviennent en visio. Vannes centre est à 10 min. Pour les";FAUTIF;présence locale suggérée — corrigé
-plescop.ts;68;"vos locaux à Plescop ou en visio. Pour les missions multi-jours, hébergement local possible."",";LEGITIME;après correction — locaux du client
+plescop.ts;68;"vos locaux à Plescop ou en visio."",";LEGITIME;après correction — locaux du client
 plesse.ts;52;"E, exploitants agricoles et commerçants locaux."",";LEGITIME;locaux (sens courant : acteurs/commerces locaux, locaux d'activité)
 pleurtuit.ts;45;"1-to-1 à Pleurtuit : sessions dans vos locaux Côte d'Émeraude ou en visio. Dirigeants TPE/PME tourisme, hôteliers, comm";LEGITIME;locaux du client
 pleurtuit.ts;45;"vos locaux Côte d'Émeraude ou en visio. Dirigeants TPE/PME tourisme, hôteliers, commerçants et artisans souhaitant intég";LEGITIME;locaux du client
@@ -213,7 +213,7 @@ pluneret.ts;45;"vos locaux ou en visio. Artisans, gérants TPE, dirigeants PME e
 pluneret.ts;46;"g 1-to-1 à Pluneret : sessions dans vos locaux ou en visio. Artisans, gérants TPE, dirigeants PME et professionnels du t";LEGITIME;locaux du client
 pluneret.ts;46;"vos locaux ou en visio. Artisans, gérants TPE, dirigeants PME et professionnels du tourisme du Pays d'Auray souhaitant m";LEGITIME;locaux du client
 pluneret.ts;68;"""Nos consultants se déplacent dans vos locaux à Pluneret ou interviennent en visio. Auray est à 5 min, Vannes à 20 min.";FAUTIF;présence locale suggérée — corrigé
-pluneret.ts;68;"vos locaux à Pluneret ou en visio. Pour les missions multi-jours, hébergement local possible."",";LEGITIME;après correction — locaux du client
+pluneret.ts;68;"vos locaux à Pluneret ou en visio."",";LEGITIME;après correction — locaux du client
 pluvigner.ts;68;"site dans votre exploitation, atelier, locaux ou cabinet."",";LEGITIME;locaux (sens courant : acteurs/commerces locaux, locaux d'activité)
 poissy.ts;21;"""Poissy est reliée à Paris par le RER A et la ligne J du Transilien depuis sa gare, avec La Défense atteignable en u";FAUTIF;présence locale suggérée — corrigé
 poissy.ts;23;"""Poissy est reliée à Paris par le RER A et la ligne J du Transilien depuis sa gare, avec La Défense atteignable en u";FAUTIF;présence locale suggérée — corrigé
