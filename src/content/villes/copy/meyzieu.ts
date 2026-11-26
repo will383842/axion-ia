@@ -230,7 +230,7 @@ export const MEYZIEU_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Intervenez-vous à Meyzieu ?",
-      a: "Oui. Nous intervenons dans vos locaux à Meyzieu, partout en France, sur place ou à distance.",
+      a: "Oui. Nos experts IA seniors interviennent directement dans vos locaux à Meyzieu, notamment dans la zone de la Mi-Plaine, et dans tout l'est lyonnais, pour observer vos processus réels avant toute recommandation.",
     },
     {
       q: "Une PME industrielle ou logistique peut-elle bénéficier de l'IA à Meyzieu ?",

@@ -49,7 +49,7 @@ export const MORMANT_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Mormant et environs ?",
-      a: "Nous intervenons dans vos locaux à Mormant, partout en France.",
+      a: "Oui. Nous intervenons à Mormant et dans toute la Brie seine-et-marnaise (Melun, Provins, Combs-la-Ville).",
     },
     {
       q: "Accompagnez-vous les exploitants agricoles ?",

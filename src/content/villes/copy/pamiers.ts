@@ -65,7 +65,7 @@ export const PAMIERS_COPY: VilleCopy = {
     },
     {
       q: "Intervenez-vous à Pamiers ?",
-      a: "Oui. Nous intervenons dans vos locaux à Pamiers, partout en France, sur place ou à distance.",
+      a: "Oui. Nous intervenons sur place à Pamiers, comme partout en France, ou à distance, en format atelier pratique dans vos locaux.",
     },
   ],
 };

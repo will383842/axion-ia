@@ -49,7 +49,7 @@ export const PARMAIN_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Parmain et vallée de l'Oise ?",
-      a: "Nous intervenons dans vos locaux à Parmain, partout en France.",
+      a: "Oui, Axion-IA intervient à Parmain et dans toute la vallée de l'Oise (L'Isle-Adam, Beaumont-sur-Oise, Cergy-Pontoise).",
     },
     {
       q: "Travaillez-vous avec les commerçants et artisans de Parmain ?",

@@ -234,7 +234,7 @@ export const QUIMPER_COPY: VilleCopy = {
     },
     {
       q: "Intervenez-vous à Quimper ?",
-      a: "Oui. Nous intervenons dans vos locaux à Quimper, partout en France, sur place ou à distance.",
+      a: "Oui. Nous intervenons directement dans vos locaux à Quimper, du centre historique aux zones d'activité de Créac'h Gwen et aux faïenceries de Locmaria. Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quels délais pour une intervention IA à Quimper ?",

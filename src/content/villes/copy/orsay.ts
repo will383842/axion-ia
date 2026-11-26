@@ -49,7 +49,7 @@ export const ORSAY_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Orsay et sur le campus Paris-Saclay ?",
-      a: "Oui, Axion-IA intervient à Orsay et sur tout le campus Paris-Saclay (Palaiseau, Massy, Gif-sur-Yvette).",
+      a: "Oui, Axion-IA intervient à Orsay et sur tout le campus Paris-Saclay (Palaiseau, Massy).",
     },
     {
       q: "Travaillez-vous avec les startups deeptech du plateau de Saclay ?",

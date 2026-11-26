@@ -137,8 +137,8 @@ export const POITIERS_COPY: VilleCopy = {
             a: "Nos interventions sont facturées en direct sur devis HT et s'intègrent dans votre plan de développement des compétences. Votre service RH ou comptable peut les traiter comme une prestation. La Formation 4 heures est affichée à {{price:intervention-4h|flat}} ; les autres formats sont chiffrés selon la durée et l'effectif.",
           },
           {
-            q: "Vous déplacez-vous dans toute la Vienne ?",
-            a: "Oui. La formation se tient dans vos locaux, sur vos postes, dans votre environnement de travail réel.",
+            q: "Intervenez-vous dans toute la Vienne ?",
+            a: "Oui. Nos consultants interviennent sur site à Poitiers, au Téléport et au parc du Futuroscope, à Saint-Benoît et dans l'ensemble des communes de la Vienne. La formation se tient dans vos locaux, sur vos postes, dans votre environnement de travail réel.",
           },
         ],
         guarantees:
@@ -229,8 +229,8 @@ export const POITIERS_COPY: VilleCopy = {
             a: "Nos interventions sont facturées en direct sur devis HT et s'intègrent dans votre plan de développement des compétences. Votre service RH ou comptable peut les traiter comme une prestation. La Formation 4 heures est affichée à {{price:intervention-4h|flat}} ; les autres formats sont chiffrés selon la durée et l'effectif.",
           },
           {
-            q: "Vous déplacez-vous dans toute la Vienne ?",
-            a: "Oui. La formation se tient dans vos locaux, sur vos postes, dans votre environnement de travail réel.",
+            q: "Intervenez-vous dans toute la Vienne ?",
+            a: "Oui. Nos consultants interviennent sur site à Poitiers, au Téléport et au parc du Futuroscope, à Saint-Benoît et dans l'ensemble des communes de la Vienne. La formation se tient dans vos locaux, sur vos postes, dans votre environnement de travail réel.",
           },
         ],
         guarantees:
@@ -416,7 +416,7 @@ export const POITIERS_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Intervenez-vous à Poitiers ?",
-      a: "Oui. Nous intervenons dans vos locaux à Poitiers, partout en France, sur place ou à distance.",
+      a: "Oui. Nos experts IA seniors interviennent directement dans vos locaux à Poitiers et dans toute la Vienne, jusqu'au pôle du Futuroscope, pour observer vos processus réels avant toute recommandation.",
     },
     {
       q: "Une PME d'assurance ou de services peut-elle profiter de l'IA à Poitiers ?",

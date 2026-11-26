@@ -49,7 +49,7 @@ export const MERIEL_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Mériel et vallée de l'Oise ?",
-      a: "Nous intervenons dans vos locaux à Mériel, partout en France.",
+      a: "Oui. Nous intervenons à Mériel et dans toute la vallée de l'Oise (L'Isle-Adam, Auvers-sur-Oise, Cergy-Pontoise), sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les commerçants et artisans de Mériel ?",

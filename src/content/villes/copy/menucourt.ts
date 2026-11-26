@@ -49,7 +49,7 @@ export const MENUCOURT_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Menucourt et agglo Cergy-Pontoise ?",
-      a: "Nous intervenons dans vos locaux à Menucourt, partout en France.",
+      a: "Oui. Nous intervenons à Menucourt et dans toute l'agglomération de Cergy-Pontoise (Cergy, Conflans-Sainte-Honorine), sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les commerçants et artisans de Menucourt ?",

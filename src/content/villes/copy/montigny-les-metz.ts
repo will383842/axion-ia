@@ -231,7 +231,7 @@ export const MONTIGNY_LES_METZ_COPY: VilleCopy = {
     },
     {
       q: "Sous quel délai Axion-IA peut-il intervenir à Montigny-lès-Metz ?",
-      a: "Nous nous déplaçons à Montigny-lès-Metz sous 5 jours ouvrés en moyenne.",
+      a: "Nous intervenons à Montigny-lès-Metz sous 5 jours ouvrés en moyenne.",
     },
     {
       q: "Intervenez-vous aussi à Metz, Marly ou Moulins-lès-Metz ?",

@@ -49,7 +49,7 @@ export const MONTIVILLIERS_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Montivilliers et agglo du Havre ?",
-      a: "Nous intervenons partout en France, sur place ou à distance.",
+      a: "Oui. Nous intervenons à Montivilliers et dans toute l'agglomération du Havre (Le Havre, Harfleur, Octeville-sur-Mer, Gonfreville-l'Orcher).",
     },
     {
       q: "Travaillez-vous avec les PME logistiques du port du Havre ?",

@@ -89,7 +89,7 @@ export const MONTREUIL_COPY: VilleCopy = {
     },
     {
       q: "Intervenez-vous à Montreuil ?",
-      a: "Oui. Nous intervenons dans vos locaux à Montreuil, partout en France, sur place ou à distance.",
+      a: "Oui. Nous intervenons sur place à Montreuil, comme partout en France, ou à distance.",
     },
     {
       q: "En combien de temps pouvez-vous démarrer une mission à Montreuil ?",

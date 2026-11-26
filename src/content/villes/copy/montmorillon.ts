@@ -49,7 +49,7 @@ export const MONTMORILLON_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Montmorillon et sud-est Vienne ?",
-      a: "Nous intervenons partout en France, sur place ou à distance.",
+      a: "Oui. Nous intervenons à Montmorillon et dans tout le Montmorillonnais / sud-est Vienne (Lussac-les-Châteaux, Saint-Savin-sur-Gartempe, Chauvigny).",
     },
     {
       q: "Travaillez-vous avec les artisans métiers du livre ?",

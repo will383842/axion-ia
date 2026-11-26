@@ -49,7 +49,7 @@ export const MENNECY_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Mennecy et sud Essonne ?",
-      a: "Nous intervenons dans vos locaux à Mennecy, partout en France.",
+      a: "Oui. Nous intervenons à Mennecy et dans tout le sud Essonne (Corbeil-Essonnes, Évry-Courcouronnes), sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les commerçants et artisans de Mennecy ?",

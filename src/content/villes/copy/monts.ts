@@ -65,7 +65,7 @@ export const MONTS_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission Axion-IA à Monts ?",
-      a: "Nous intervenons partout en France, sur place ou à distance.",
+      a: "Nous intervenons sur place à Monts, comme partout en France, ou à distance.",
     },
   ],
 };

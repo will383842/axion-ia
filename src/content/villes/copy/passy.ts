@@ -49,7 +49,7 @@ export const PASSY_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Passy et vallée de l'Arve ?",
-      a: "Nous intervenons partout en France, sur place ou à distance.",
+      a: "Oui, Axion-IA intervient à Passy et dans toute la vallée de l'Arve (Sallanches, Chamonix, Cluses). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Combien coûte un audit IA à Passy  ?",

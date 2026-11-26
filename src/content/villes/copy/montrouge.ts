@@ -120,7 +120,7 @@ export const MONTROUGE_COPY: VilleCopy = {
           },
           {
             q: "Intervenez-vous sur place à Montrouge et dans les communes limitrophes ?",
-            a: "Oui. Nous nous déplaçons aussi à Paris 14e, Arcueil, Bagneux, Châtillon, Gentilly et Malakoff. Les itérations de développement se font en hybride présentiel/distance.",
+            a: "Oui. Kick-off et recette se font sur site à Montrouge (quartier Évergreen, rue Barbès, centre-ville). Nous intervenons aussi à Paris 14e, Arcueil, Bagneux, Châtillon, Gentilly et Malakoff. Les itérations de développement se font en hybride présentiel/distance.",
           },
           {
             q: "Quel délai pour un devis de site web ou de plateforme SaaS à Montrouge ?",

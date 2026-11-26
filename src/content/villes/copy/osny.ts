@@ -49,7 +49,7 @@ export const OSNY_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Osny et agglo Cergy-Pontoise ?",
-      a: "Nous intervenons dans vos locaux à Osny, partout en France.",
+      a: "Oui, Axion-IA intervient à Osny et dans toute l'agglomération de Cergy-Pontoise (Cergy).",
     },
     {
       q: "Travaillez-vous avec les commerçants et artisans d'Osny ?",

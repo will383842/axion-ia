@@ -65,7 +65,7 @@ export const PARTHENAY_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA sur site à Parthenay ?",
-      a: "Nous intervenons partout en France, sur place ou à distance.",
+      a: "Nous intervenons sur place à Parthenay, comme partout en France, ou à distance. Mission sur site dans vos exploitations, ateliers ou commerces.",
     },
   ],
 };

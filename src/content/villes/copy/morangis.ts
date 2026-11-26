@@ -49,7 +49,7 @@ export const MORANGIS_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Morangis et zone Orly ?",
-      a: "Nous intervenons dans vos locaux à Morangis, partout en France.",
+      a: "Oui. Nous intervenons à Morangis et dans toute la zone Orly (Orly, Chilly-Mazarin, Massy).",
     },
     {
       q: "Travaillez-vous avec les entreprises de logistique aéroportuaire ?",
