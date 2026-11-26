@@ -57,6 +57,7 @@ import {
   jugerAvecClaude,
   rechercherFichesPertinentes,
 } from "@/server/content-gen/fact-check/fidelite-llm-sources";
+import { faitsReferenceOffre } from "@/server/content-gen/fact-check/faits-offre";
 import {
   decisionFactCheckClaude,
   factCheckClaudeActif,
@@ -1035,7 +1036,11 @@ async function processJob(job: Job<ContentGenJobPayload>): Promise<void> {
             output,
             kbEntryIds: output.kbEntryIds,
           },
-          { rechercherFiches: rechercherFichesPertinentes, juger: jugerAvecClaude },
+          {
+            rechercherFiches: rechercherFichesPertinentes,
+            juger: jugerAvecClaude,
+            faitsOffre: faitsReferenceOffre,
+          },
         );
       } catch (err) {
         d = {

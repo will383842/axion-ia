@@ -13,6 +13,7 @@
 
 import type { BarriereRelecture } from "../quality/barrieres-publication";
 import { extraireJsonTolerant } from "../providers/anthropic";
+import { resolvePriceTokensDeep } from "@/content/pricing-tokens";
 
 export type EnvFidelite = Readonly<Record<string, string | undefined>>;
 
@@ -44,7 +45,7 @@ export const MAX_CARACTERES_FICHE = 12_000;
 export const MAX_CARACTERES_ARTICLE = 60_000;
 
 /** Constante figée : rien de variable (cache de prompt), aucun fait chiffré (la source est la base). */
-export const SYSTEME_FIDELITE = `Tu es relecteur de fidélité. Tu compares un article aux fiches de la base de connaissances fournies. Seules les fiches font foi.
+export const SYSTEME_FIDELITE = `Tu es relecteur de fidélité. Tu compares un article aux fiches de la base de connaissances fournies. Seules les fiches font foi. La première fiche (faits du site, source unique) prévaut en cas de désaccord entre fiches.
 
 Une affirmation de l'article absente des fiches n'est PAS une contradiction. Est une contradiction toute affirmation de l'article incompatible avec une fiche.
 
@@ -156,6 +157,8 @@ export interface DependancesFideliteLlm {
     output: unknown;
     kbEntryIds?: ReadonlyArray<string>;
   }) => Promise<ReadonlyArray<FicheReference>>;
+  /** Faits de l'offre tirés de la source unique (lève si illisible). TOUJOURS envoyés au juge. */
+  readonly faitsOffre: () => FicheReference;
   readonly juger: (a: {
     jobId: string;
     contentType: string;
@@ -193,9 +196,17 @@ export async function decisionFideliteLlm(
 ): Promise<DecisionFideliteLlm> {
   if (!args.actif) return { executee: false, fiches: 0, verdict: null, barriere: null, coutUsd: 0 };
   try {
-    let fiches: ReadonlyArray<FicheReference>;
+    let faits: FicheReference;
     try {
-      fiches = await deps.rechercherFiches({
+      faits = deps.faitsOffre();
+    } catch (err) {
+      return echec(
+        `faits de l'offre illisibles : ${err instanceof Error ? err.message : String(err)}`,
+      );
+    }
+    let base: ReadonlyArray<FicheReference>;
+    try {
+      base = await deps.rechercherFiches({
         output: args.output,
         ...(args.kbEntryIds ? { kbEntryIds: args.kbEntryIds } : {}),
       });
@@ -204,11 +215,16 @@ export async function decisionFideliteLlm(
         `recherche des fiches indisponible : ${err instanceof Error ? err.message : String(err)}`,
       );
     }
-    if (fiches.length === 0) return echec("aucune fiche de référence retrouvée");
-    if (fiches.length > MAX_FICHES || fiches.some((f) => f.texte.length > MAX_CARACTERES_FICHE)) {
+    // Compte sur la liste COMPLÈTE : jamais de coupe silencieuse.
+    if (base.length > MAX_FICHES) {
+      console.warn(`[fidelite-llm] ${base.length} fiches > ${MAX_FICHES} : relecture humaine`);
+      return echec(`trop de fiches pour le contrôle (${base.length} > ${MAX_FICHES})`, base.length);
+    }
+    const fiches = [faits, ...base.filter((f) => f.id !== faits.id)];
+    if (fiches.some((f) => f.texte.length > MAX_CARACTERES_FICHE)) {
       return echec("fiches trop volumineuses pour le contrôle", fiches.length);
     }
-    const article = textePublic(args.output);
+    const article = textePublic(resolvePriceTokensDeep(args.output, "fr"));
     if (article.length > MAX_CARACTERES_ARTICLE) {
       return echec("article trop long pour le contrôle", fiches.length);
     }

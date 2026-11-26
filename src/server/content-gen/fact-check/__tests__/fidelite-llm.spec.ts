@@ -8,6 +8,7 @@ vi.mock("@/lib/prisma", () => ({ prisma: {} }));
 vi.mock("@/lib/redis", () => ({ redis: {} }));
 vi.mock("@/server/notifications", () => ({ notify: vi.fn() }));
 
+import { faitsReferenceOffre, ID_FAITS_OFFRE } from "../faits-offre";
 import {
   analyserVerdictFidelite,
   barriereFideliteLlm,
@@ -35,7 +36,8 @@ function deps(sortie: string | Error, fiches: ReadonlyArray<FicheReference> | Er
     if (sortie instanceof Error) throw sortie;
     return { output: sortie, costUsd: 0.08 };
   });
-  return { rechercherFiches, juger } satisfies DependancesFideliteLlm;
+  const faitsOffre = vi.fn(() => faitsReferenceOffre());
+  return { rechercherFiches, juger, faitsOffre } satisfies DependancesFideliteLlm;
 }
 
 const BASE = { actif: true, jobId: "j1", contentType: "blog_article", output: { title: "t" } };
@@ -68,6 +70,7 @@ describe("decisionFideliteLlm", () => {
     const r = await decisionFideliteLlm({ ...BASE, actif: false }, d);
     expect(d.rechercherFiches).not.toHaveBeenCalled();
     expect(d.juger).not.toHaveBeenCalled();
+    expect(d.faitsOffre).not.toHaveBeenCalled();
     expect(r).toMatchObject({ executee: false, barriere: null, coutUsd: 0 });
   });
 
@@ -107,25 +110,93 @@ describe("decisionFideliteLlm", () => {
     expect(r.barriere?.code).toBe("fidelite-llm");
   });
 
-  it("recherche en erreur ou sans fiche : barrière, le juge n'est pas appelé", async () => {
-    for (const f of [new Error("db"), []] as const) {
-      const d = deps('{"statut":"conforme","citations":[]}', f);
-      const r = await decisionFideliteLlm(BASE, d);
-      expect(r.barriere?.code).toBe("fidelite-llm");
-      expect(d.juger).not.toHaveBeenCalled();
-    }
+  it("recherche en erreur : barrière, le juge n'est pas appelé", async () => {
+    const d = deps('{"statut":"conforme","citations":[]}', new Error("db"));
+    const r = await decisionFideliteLlm(BASE, d);
+    expect(r.barriere?.code).toBe("fidelite-llm");
+    expect(d.juger).not.toHaveBeenCalled();
   });
 
-  it("fiches trop nombreuses ou trop longues : barrière, pas de coupe silencieuse", async () => {
-    for (const f of [
-      Array.from({ length: 11 }, (_, i) => ({ ...FICHE, id: `f${i}` })),
-      [{ ...FICHE, texte: "x".repeat(12_001) }],
-    ]) {
-      const d = deps('{"statut":"conforme","citations":[]}', f);
-      const r = await decisionFideliteLlm(BASE, d);
-      expect(r.barriere?.code).toBe("fidelite-llm");
-      expect(d.juger).not.toHaveBeenCalled();
-    }
+  it("AUCUNE fiche en base : le juge tourne avec les faits de la source unique, seuls", async () => {
+    const d = deps('{"statut":"conforme","citations":[]}', []);
+    const r = await decisionFideliteLlm(BASE, d);
+    expect(r.barriere).toBeNull();
+    expect(r.fiches).toBe(1);
+    expect(d.juger).toHaveBeenCalledTimes(1);
+  });
+
+  it("article contradictoire (990 €, 2 fois, Grenoble, déplacement) sans fiche en base : le juge reçoit les faits et la contradiction ressort", async () => {
+    const d = deps(contradiction("990 € HT, garantie 2 fois, Grenoble, frais de déplacement"), []);
+    const r = await decisionFideliteLlm(
+      { ...BASE, output: { title: "t", bodyText: "990 € HT, garantie 2 fois, Grenoble" } },
+      d,
+    );
+    const prompt = (d.juger.mock.calls[0] as unknown as [{ userPrompt: string }])[0].userPrompt;
+    const faits = faitsReferenceOffre().texte;
+    expect(prompt).toContain(faits);
+    expect(faits).toMatch(/3 fois/);
+    expect(faits).toMatch(/partout en France/);
+    expect(faits).toMatch(/déplacement/);
+    expect(r.barriere?.code).toBe("fidelite-llm");
+    expect(r.verdict).toMatchObject({ statut: "contradiction" });
+  });
+
+  it("les faits sont AVANT les fiches de la base dans le prompt", async () => {
+    const d = deps('{"statut":"conforme","citations":[]}');
+    await decisionFideliteLlm(BASE, d);
+    const prompt = (d.juger.mock.calls[0] as unknown as [{ userPrompt: string }])[0].userPrompt;
+    expect(prompt.indexOf(ID_FAITS_OFFRE)).toBeGreaterThanOrEqual(0);
+    expect(prompt.indexOf(ID_FAITS_OFFRE)).toBeLessThan(prompt.indexOf("fiche-ji"));
+  });
+
+  it("source unique illisible : barrière « NON vérifié », ni recherche ni juge", async () => {
+    const d = deps('{"statut":"conforme","citations":[]}');
+    d.faitsOffre.mockImplementation(() => {
+      throw new Error("prix absent");
+    });
+    const r = await decisionFideliteLlm(BASE, d);
+    expect(r.barriere?.code).toBe("fidelite-llm");
+    expect(r.barriere?.libelle).toContain("NON vérifié");
+    expect(d.rechercherFiches).not.toHaveBeenCalled();
+    expect(d.juger).not.toHaveBeenCalled();
+  });
+
+  it("fiches de la base : 10 passent (+ faits), 11 bloquent avec le compte, jamais de coupe", async () => {
+    const fiches = (n: number) => Array.from({ length: n }, (_, i) => ({ ...FICHE, id: `f${i}` }));
+    const ok = deps('{"statut":"conforme","citations":[]}', fiches(10));
+    const r10 = await decisionFideliteLlm(BASE, ok);
+    expect(r10.barriere).toBeNull();
+    expect(r10.fiches).toBe(11);
+    const ko = deps('{"statut":"conforme","citations":[]}', fiches(11));
+    const r11 = await decisionFideliteLlm(BASE, ko);
+    expect(r11.barriere?.code).toBe("fidelite-llm");
+    expect(JSON.stringify(r11.barriere)).toContain("11");
+    expect(ko.juger).not.toHaveBeenCalled();
+  });
+
+  it("fiche trop longue : barrière, pas de coupe silencieuse", async () => {
+    const d = deps('{"statut":"conforme","citations":[]}', [
+      { ...FICHE, texte: "x".repeat(12_001) },
+    ]);
+    const r = await decisionFideliteLlm(BASE, d);
+    expect(r.barriere?.code).toBe("fidelite-llm");
+    expect(d.juger).not.toHaveBeenCalled();
+  });
+
+  it("citation sur les faits de la source unique : conservée, titre dans le libellé", async () => {
+    const c = JSON.stringify({
+      statut: "contradiction",
+      citations: [
+        {
+          extrait_article: "990 €",
+          fiche_id: ID_FAITS_OFFRE,
+          extrait_fiche: "x",
+          explication: "y",
+        },
+      ],
+    });
+    const r = await decisionFideliteLlm(BASE, deps(c, []));
+    expect(r.barriere?.libelle).toContain(faitsReferenceOffre().titre);
   });
 
   it("article trop long : barrière, le juge n'est pas appelé", async () => {
