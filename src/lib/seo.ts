@@ -1178,6 +1178,8 @@ export const ORGANIZATION_SAME_AS: readonly string[] = [
   "https://www.f6s.com/axion-ia1",
   "https://www.crunchbase.com/organization/axion-ia",
   "https://www.youtube.com/@Axion-IA-com",
+  // Profil pro Pinterest, créé le 26/11/2026.
+  "https://www.pinterest.com/axion_ia/",
 ];
 
 // Layout-level Organization JSON-LD — single source of truth for AEO/GEO 2026
