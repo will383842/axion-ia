@@ -53,16 +53,6 @@ export function estUrlServable(url: string | null | undefined): boolean {
   }
 }
 
-/**
- * Brique partagée — Sources & méthodologie (chantier templates 2026-06-21).
- *
- * Rend la liste des sources citées (déjà chargées via ContentCitation /
- * `view.citations`, mais émises uniquement dans le JSON-LD jusqu'ici → invisibles
- * pour l'utilisateur et pour l'extraction LLM par bloc). Liens en `nofollow`
- * (E-E-A-T : on cite sans transmettre d'autorité) + date « dernière vérification ».
- *
- * Composant serveur, 0 JS, hauteur réservée (CLS = 0).
- */
 /** Source que le bloc affiche réellement (URL servable + libellé non vide). */
 export function sourceAffichable(s: { name?: string | null; url: string }): boolean {
   return estUrlServable(s.url) && (s.name?.trim().length ?? 0) > 0;
@@ -75,6 +65,16 @@ export function aDesSourcesAffichables(
   return !!items && items.some(sourceAffichable);
 }
 
+/**
+ * Brique partagée — Sources & méthodologie (chantier templates 2026-06-21).
+ *
+ * Rend la liste des sources citées (déjà chargées via ContentCitation /
+ * `view.citations`, mais émises uniquement dans le JSON-LD jusqu'ici → invisibles
+ * pour l'utilisateur et pour l'extraction LLM par bloc). Liens en `nofollow`
+ * (E-E-A-T : on cite sans transmettre d'autorité) + date « dernière vérification ».
+ *
+ * Composant serveur, 0 JS, hauteur réservée (CLS = 0).
+ */
 export function ArticleSources({ items, locale, lastVerified }: ArticleSourcesProps) {
   if (!items || items.length === 0) return null;
   // Refonte AEO 2026-06-22 — ne garder que les sources avec une URL http(s)
