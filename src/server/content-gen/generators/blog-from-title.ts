@@ -22,6 +22,10 @@ import { generate as routerGenerate } from "../providers/provider-router";
 import { coutErreurTronquee, estSortieJsonTronquee } from "../providers/IProvider";
 import { UnrecoverableError } from "bullmq";
 import { interrupteurBlogClaude } from "../providers/blog-claude";
+import {
+  MAX_TOKENS_EXPANSION_CLAUDE,
+  MAX_TOKENS_PLAN_CLAUDE,
+} from "../providers/blog-claude-budgets";
 import { hashPrompt } from "../provenance/provenance-logger";
 import { retrieve as kbRetrieve } from "../kb-client";
 import { computeReadabilityFr } from "../quality/readability";
@@ -212,7 +216,7 @@ ${sectionChiffresVerifies()}## Output attendu (JSON)
             planAttempt === 0
               ? planUserPrompt
               : `${planUserPrompt}\n\n## Correction\nLe "metaTitle" DOIT couvrir le mot-clé du titre "${safeTitle}" (≤ 60 caractères ; « IA » accepté pour « intelligence artificielle »).`,
-          maxTokens: 2600,
+          maxTokens: interrupteurBlogClaude() ? MAX_TOKENS_PLAN_CLAUDE : 2600,
           temperature: 0.6,
         });
       } catch (err) {
@@ -293,7 +297,9 @@ ${sectionChiffresVerifies()}## Output attendu (JSON)
         outline: plan.outline ?? [],
         chunkSize: 4,
         expandSystem,
-        maxTokens: input.templateOverride?.maxTokens ?? 5000,
+        maxTokens:
+          input.templateOverride?.maxTokens ??
+          (interrupteurBlogClaude() ? MAX_TOKENS_EXPANSION_CLAUDE : 5000),
         temperature: input.templateOverride?.temperature ?? (iteration === 0 ? 0.7 : 0.5),
         buildUserPrompt: ({ chunkText, isFirst, isLast }) =>
           `Rédige le CORPS HTML (sections de l'article) pour le titre : "${safeTitle}" (intent ${safeIntent}, audience ${safeAudienceSize}).

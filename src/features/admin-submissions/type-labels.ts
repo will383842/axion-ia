@@ -25,9 +25,10 @@ export const DB_TYPE_LABELS: Record<string, string> = {
   quote_request: "Devis",
 };
 
-/** Labels FR pour les 12 valeurs de unifiedType (form discriminator). */
+/** Labels FR pour les 13 valeurs de unifiedType (form discriminator). */
 export const UNIFIED_TYPE_LABELS: Record<string, string> = {
   // Groupe 1 — Projet IA pour mon entreprise
+  journee_ia: "Journée IA",
   audit: "Audit IA",
   implementation: "Intégration sur-mesure",
   formation: "Formation IA",
