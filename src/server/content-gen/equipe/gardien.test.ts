@@ -136,10 +136,10 @@ describe("decider — règles en code", () => {
     expect(r).toMatchObject({ angle: expect.stringContaining("Combien de temps ?") });
   });
 
-  it("toutes les questions couvertes par la FAQ et aucune autre : écarter", async () => {
+  it("question unique couverte par la FAQ : reorienter", async () => {
     // une seule question, déjà en FAQ, mot-clé libre → on réoriente (il reste le mot-clé)
     const r = await decider(brief, deps({ faq: ["combien de temps"] }));
-    expect(r.decision).not.toBe("feu_vert");
+    expect(r.decision).toBe("reorienter");
   });
 });
 
@@ -221,7 +221,6 @@ describe("gardienPuisEcrire", () => {
       deps({ voisins: vi.fn().mockRejectedValue(new Error("x")) }),
       ecrire,
     );
-    await gardienPuisEcrire(brief, deps({ env: {} }), ecrire);
     expect(ecrire).not.toHaveBeenCalled();
   });
 
@@ -231,5 +230,88 @@ describe("gardienPuisEcrire", () => {
     const r = await gardienPuisEcrire(brief, deps(), ecrire);
     expect(ecrire).toHaveBeenCalledTimes(1);
     expect(r.resultat).toBe("texte");
+  });
+});
+
+describe("corrections de relecture", () => {
+  it("ignore l'article visé lui-même parmi les voisins", async () => {
+    const d = deps({
+      voisins: vi.fn().mockResolvedValue([{ id: "moi", similarity: 0.95, url: brief.urlCible }]),
+    });
+    expect((await decider({ ...brief, type: "mise-a-jour" }, d)).decision).toBe("feu_vert");
+  });
+
+  it("similarité NaN ou hors [0 ; 1] : relecture humaine", async () => {
+    for (const s of [Number.NaN, 1.2, -0.1]) {
+      const d = deps({ voisins: vi.fn().mockResolvedValue(voisin(s)) });
+      expect((await decider(brief, d)).decision).toBe("relecture_humaine");
+    }
+  });
+
+  it("reorienter de l'arbitre + question en FAQ : l'angle cumule les deux", async () => {
+    const arbitre: Arbitre = vi
+      .fn()
+      .mockResolvedValue({ decision: "reorienter", angle: "Angle PME", raison: "r" });
+    const r = await decider(brief, {
+      ...deps({ voisins: vi.fn().mockResolvedValue(voisin(0.82)), faq: ["combien de temps"] }),
+      arbitre,
+    });
+    expect(r).toMatchObject({
+      decision: "reorienter",
+      angle: expect.stringContaining("Angle PME"),
+    });
+    expect(r).toMatchObject({ angle: expect.stringContaining("FAQ") });
+  });
+
+  it("arbitre « ecarter » et « feu_vert » + FAQ", async () => {
+    const zone = voisin(0.82);
+    const ec: Arbitre = vi.fn().mockResolvedValue({ decision: "ecarter", raison: "doublon" });
+    expect(
+      (await decider(brief, deps({ voisins: vi.fn().mockResolvedValue(zone), arbitre: ec })))
+        .decision,
+    ).toBe("ecarter");
+    const fv: Arbitre = vi.fn().mockResolvedValue({ decision: "feu_vert", raison: "ok" });
+    const r = await decider(
+      brief,
+      deps({ voisins: vi.fn().mockResolvedValue(zone), arbitre: fv, faq: ["combien de temps"] }),
+    );
+    expect(r.decision).toBe("reorienter");
+  });
+
+  it("voisins non triés : le plus proche est retenu", async () => {
+    const d = deps({
+      voisins: vi.fn().mockResolvedValue([
+        { id: "a", similarity: 0.5, url: "https://axion-ia.com/a" },
+        { id: "b", similarity: 0.9, url: "https://axion-ia.com/b" },
+      ]),
+    });
+    expect(await decider(brief, d)).toMatchObject({ article: { id: "b" } });
+  });
+
+  it("interrupteur éteint : gardienPuisEcrire laisse l'écriture comme avant", async () => {
+    const { gardienPuisEcrire } = await import("./gardien");
+    const ecrire = vi.fn().mockResolvedValue("t");
+    await gardienPuisEcrire(brief, deps({ env: {} }), ecrire);
+    expect(ecrire).toHaveBeenCalledTimes(1);
+  });
+
+  it("arbitreClaude : rôle court, JSON au milieu de prose, JSON cassé", async () => {
+    const { arbitreClaude } = await import("./gardien");
+    const generer = vi.fn().mockResolvedValue({
+      output: 'Voici : {"decision":"feu_vert","raison":"ok"} fin',
+      costUsd: 0,
+    });
+    const r = await arbitreClaude(generer)({ brief, voisin: { id: "1", similarity: 0.82 } });
+    expect(r).toMatchObject({ decision: "feu_vert" });
+    expect(generer.mock.calls[0]![1]).toBe("court");
+    const casse = vi.fn().mockResolvedValue({ output: "{pas du json}", costUsd: 0 });
+    await expect(
+      arbitreClaude(casse)({ brief, voisin: { id: "1", similarity: 0.82 } }),
+    ).rejects.toThrow();
+    const d = deps({
+      voisins: vi.fn().mockResolvedValue(voisin(0.82)),
+      arbitre: arbitreClaude(casse),
+    });
+    expect((await decider(brief, d)).decision).toBe("relecture_humaine");
   });
 });

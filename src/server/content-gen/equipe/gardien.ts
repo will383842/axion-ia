@@ -74,7 +74,7 @@ export function normaliserQuestion(brut: string): string {
   return brut
     .toLowerCase()
     .normalize("NFD")
-    .replace(/[̀-ͯ]/g, "")
+    .replace(/[\u0300-\u036f]/g, "")
     .replace(/œ/g, "oe")
     .replace(/æ/g, "ae")
     .replace(/[^a-z0-9]+/g, " ")
@@ -101,7 +101,7 @@ const decisionArbitreSchema = z.discriminatedUnion("decision", [
   z.object({ decision: z.literal("ecarter"), raison: z.string().trim().min(1).max(500) }),
 ]);
 
-const SYSTEME_ARBITRE = `Tu arbitres un risque de doublon entre un brief d'article et un article déjà publié, dont la similarité est entre 0,80 et 0,85.
+const SYSTEME_ARBITRE = `Tu arbitres un risque de doublon entre un brief d'article et un article déjà publié, dont la similarité est entre le seuil « similaire » et le seuil « doublon » (environ 0,80 à 0,85).
 Réponds UNIQUEMENT par un objet JSON :
 {"decision": "feu_vert"|"reorienter"|"mettre_a_jour"|"ecarter", "angle": "... (seulement pour reorienter)", "raison": "..."}
 - feu_vert : les deux traitent des sujets réellement distincts ; reorienter : propose un angle distinct ; mettre_a_jour : l'article publié doit être enrichi ; ecarter : doublon pur.
@@ -171,7 +171,14 @@ export async function decider(brief: Brief, deps: DependancesGardien): Promise<D
   } catch {
     return relecture("Lecture des articles voisins impossible : relecture humaine.");
   }
-  const top = [...voisins].sort((a, b) => b.similarity - a.similarity)[0];
+  if (voisins.some((v) => !Number.isFinite(v.similarity) || v.similarity < 0 || v.similarity > 1)) {
+    return relecture("Similarité invalide reçue : relecture humaine.");
+  }
+  // Un brief « mise-a-jour » ne se compare pas à son propre article.
+  const urlCible = normaliserUrl(brief.urlCible);
+  const top = [...voisins]
+    .filter((v) => !v.url || normaliserUrl(v.url) !== urlCible)
+    .sort((a, b) => b.similarity - a.similarity)[0];
   const { duplicateThreshold, similarThreshold } = getDedupThresholds(getEmbeddingProvider());
 
   if (top && top.similarity >= duplicateThreshold) {
@@ -188,6 +195,7 @@ export async function decider(brief: Brief, deps: DependancesGardien): Promise<D
     };
   }
 
+  let angleArbitre: { angle: string; raison: string } | null = null;
   if (top && top.similarity >= similarThreshold) {
     try {
       const brute = await (deps.arbitre ?? arbitreClaude())({ brief, voisin: top });
@@ -198,7 +206,7 @@ export async function decider(brief: Brief, deps: DependancesGardien): Promise<D
         return { decision: "mettre_a_jour", article: articleDe(top), raison: r.raison };
       }
       if (r.decision === "reorienter") {
-        return { decision: "reorienter", angle: r.angle, raison: r.raison };
+        angleArbitre = { angle: r.angle, raison: r.raison };
       }
       if (r.decision === "ecarter") return { decision: "ecarter", raison: r.raison };
       // feu_vert de l'arbitre : on continue vers le contrôle FAQ.
@@ -214,11 +222,14 @@ export async function decider(brief: Brief, deps: DependancesGardien): Promise<D
     const q = deja[0]!.question;
     return {
       decision: "reorienter",
-      angle: `La question « ${q} » est déjà traitée par une FAQ du site : la retirer du brief ou la traiter sous un angle distinct.`,
+      angle: `${angleArbitre ? `${angleArbitre.angle} ` : ""}La question « ${q} » est déjà traitée par une FAQ du site : la retirer du brief ou la traiter sous un angle distinct.`,
       raison: `${deja.length} question(s) du brief déjà couverte(s) par une FAQ.`,
     };
   }
 
+  if (angleArbitre) {
+    return { decision: "reorienter", angle: angleArbitre.angle, raison: angleArbitre.raison };
+  }
   return { decision: "feu_vert", raison: "Aucun doublon, aucune cannibalisation détectés." };
 }
 
@@ -229,7 +240,7 @@ export function autoriseEcriture(d: DecisionGardien): boolean {
 
 /**
  * Garde unique devant l'écriture : `ecrire` n'est appelée que si la décision l'autorise.
- * `desactive` ne passe pas ici : l'appelant sans équipe éditoriale garde son chemin d'avant.
+ * Interrupteur éteint (`desactive`) : `ecrire` est appelée, comme avant l'équipe éditoriale.
  */
 export async function gardienPuisEcrire<T>(
   brief: Brief,
@@ -237,6 +248,7 @@ export async function gardienPuisEcrire<T>(
   ecrire: (decision: DecisionGardien) => Promise<T>,
 ): Promise<{ readonly decision: DecisionGardien; readonly resultat?: T }> {
   const decision = await decider(brief, deps);
-  if (!autoriseEcriture(decision)) return { decision };
+  // Interrupteur éteint : comportement d'avant, l'écriture n'est pas filtrée.
+  if (decision.decision !== "desactive" && !autoriseEcriture(decision)) return { decision };
   return { decision, resultat: await ecrire(decision) };
 }
