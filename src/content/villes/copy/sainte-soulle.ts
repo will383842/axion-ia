@@ -65,7 +65,7 @@ export const SAINTE_SOULLE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA sur site à Sainte-Soulle ?",
-      a: "Nous intervenons partout en France, sur place ou à distance.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Mission sur site dans vos locaux, exploitation ou commerce à Sainte-Soulle.",
     },
   ],
 };

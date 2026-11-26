@@ -97,7 +97,7 @@ export const VILLEURBANNE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une intervention à Villeurbanne ?",
-      a: "Nos consultants se déplacent directement dans vos locaux villeurbannais. Nous intervenons partout en France, sur place ou à distance.",
+      a: "Nous intervenons directement dans vos locaux villeurbannais, comme partout en France, ou à distance.",
     },
     {
       q: "Axion-IA travaille-t-il avec FORVIA MATERI'ACT ou les ETI industrielles de Villeurbanne ?",

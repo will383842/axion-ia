@@ -49,7 +49,7 @@ export const VOISINS_LE_BRETONNEUX_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Voisins-le-Bretonneux et Saint-Quentin-en-Yvelines ?",
-      a: "Nous intervenons dans vos locaux à Voisins-le-Bretonneux, partout en France.",
+      a: "Oui. Axion-IA intervient à Voisins-le-Bretonneux et sur tout le technopôle de Saint-Quentin-en-Yvelines, notamment à Versailles.",
     },
     {
       q: "Travaillez-vous avec les PME tech et ingénierie du technopôle SQY ?",

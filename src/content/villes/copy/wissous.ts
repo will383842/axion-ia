@@ -49,7 +49,7 @@ export const WISSOUS_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Wissous et autour d'Orly ?",
-      a: "Nous intervenons dans vos locaux à Wissous, partout en France.",
+      a: "Oui. Axion-IA intervient à Wissous et dans tout le secteur Orly-Rungis, notamment à Antony et à Massy.",
     },
     {
       q: "Accompagnez-vous les entreprises logistiques proches d'Orly ?",
