@@ -991,7 +991,7 @@ export const LYON_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Combien coûte un audit IA opérationnel à Lyon ?",
-      a: "Quatre paliers tarifaires publics couvrent toutes les configurations lyonnaises — Sur place pour les TPE Presqu'île/Vieux Lyon, Ciblé pour les PME Villeurbanne IT et Vaise, Stratégique PME pour les cabinets de banque Part-Dieu et services Confluence, Stratégique ETI pour les industriels Vallée de la Chimie, biotechs Gerland et grands comptes Écully/Saint-Priest. La grille appliquée à Lyon est strictement identique à celle de Paris ou Marseille — aucune pondération régionale ni surcoût Auvergne-Rhône-Alpes.",
+      a: "Quatre paliers tarifaires publics couvrent toutes les configurations lyonnaises — Sur place pour les TPE Presqu'île/Vieux Lyon, Ciblé pour les PME Villeurbanne IT et Vaise, Stratégique PME pour les cabinets de banque Part-Dieu et services Confluence, Stratégique ETI pour les industriels Vallée de la Chimie, biotechs Gerland et grands comptes Écully/Saint-Priest. La grille appliquée à Lyon est strictement identique à celle de Paris ou Marseille.",
     },
     {
       q: "Avez-vous des cas clients dans la Métropole de Lyon ?",

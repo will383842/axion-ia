@@ -468,7 +468,7 @@ export function JobOfferForm({ initial, natureLue = false }: Props) {
             defaultChecked={initial?.isCommission ?? false}
             disabled={pending}
           />
-          100 % commission (omet baseSalary, JobPosting incentiveCompensation)
+          100 % commission (aucun JobPosting pour cette offre, sauf mission freelance)
         </label>
         <input type="hidden" name="salaryVisible" value="false" />
         <label className="admin-checkbox">

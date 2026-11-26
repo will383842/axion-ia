@@ -222,7 +222,7 @@ export const VIRY_CHATILLON_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Clear commitment: scope, deliverables and schedule fixed in the quote, delivered within 24-48 h depending on complexity. EU hosting by default, GDPR compliance, DPO on request. No vendor lock-in — documented, transferable code and CMS, executable by any Essonne integrator or in-house. Your team is trained to administer the site and AI automations; maintenance stays optional, never imposed. On-site travel costs to Viry-Châtillon are billed separately by zone.",
+          "Clear commitment: scope, deliverables and schedule fixed in the quote, delivered within 24-48 h depending on complexity. EU hosting by default, GDPR compliance, DPO on request. No vendor lock-in — documented, transferable code and CMS, executable by any Essonne integrator or in-house. Your team is trained to administer the site and AI automations; maintenance stays optional, never imposed.",
       },
     },
   },

@@ -217,7 +217,7 @@ export const LIBOURNE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA se déplace-t-il physiquement à Libourne pour les audits et interventions ?",
-      a: "Oui. L'équipe Axion-IA se déplace sur site à Libourne et dans les communes du Libournais : Saint-Émilion, Pomerol, Fronsac, Arveyres, Génissac, Saint-Denis-de-Pile et Coutras. Les sessions peuvent aussi se tenir en format hybride. Un défraiement transport est appliqué hors Île-de-France selon les modalités précisées au devis.",
+      a: "Oui. L'équipe Axion-IA se déplace sur site à Libourne et dans les communes du Libournais : Saint-Émilion, Pomerol, Fronsac, Arveyres, Génissac, Saint-Denis-de-Pile et Coutras. Les sessions peuvent aussi se tenir en format hybride.",
     },
     {
       q: "Quels sont les tarifs pour une intervention IA d'une PME et ETI libournaise ?",
