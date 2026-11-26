@@ -49,7 +49,7 @@ export const LA_RICAMARIE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à La Ricamarie et sud Saint-Étienne ?",
-      a: "Nous intervenons partout en France, sur place ou à distance.",
+      a: "Oui, Axion-IA intervient à La Ricamarie et dans toute la banlieue sud stéphanoise (Saint-Étienne, Le Chambon-Feugerolles, Firminy).",
     },
     {
       q: "Travaillez-vous avec les PME industrielles diversifiées ?",

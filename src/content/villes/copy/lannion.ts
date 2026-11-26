@@ -232,7 +232,7 @@ export const LANNION_COPY: VilleCopy = {
     },
     {
       q: "Intervenez-vous à Lannion ?",
-      a: "Oui. Nous intervenons dans vos locaux à Lannion, partout en France, sur place ou à distance.",
+      a: "Oui. Nous intervenons sur site à Lannion (centre-ville ou technopole Anticipa) sous 5 jours ouvrés après validation, ou à distance.",
     },
     {
       q: "Intervenez-vous dans les communes proches de Lannion ?",

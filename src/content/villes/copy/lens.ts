@@ -249,7 +249,7 @@ export const LENS_COPY: VilleCopy = {
     },
     {
       q: "Intervenez-vous à Lens ?",
-      a: "Oui. Nous intervenons dans vos locaux à Lens, partout en France, sur place ou à distance.",
+      a: "Oui. Nous intervenons sur site à Lens et dans tout le Pas-de-Calais pour l'audit, les interventions et les sessions 1-to-1. Implémentation et suivi peuvent ensuite se faire à distance si vous le souhaitez.",
     },
   ],
 };

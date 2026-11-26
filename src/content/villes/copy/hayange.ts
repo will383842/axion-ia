@@ -65,7 +65,7 @@ export const HAYANGE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Hayange ?",
-      a: "Nous intervenons dans vos locaux à Hayange, partout en France.",
+      a: "Nous intervenons sur place à Hayange, comme partout en France, ou à distance.",
     },
   ],
 };

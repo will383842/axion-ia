@@ -49,7 +49,7 @@ export const GARCHES_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Garches et dans l'ouest parisien ?",
-      a: "Nous intervenons partout en France, sur place ou à distance.",
+      a: "Oui, Axion-IA intervient à Garches et dans tout l'ouest des Hauts-de-Seine (Saint-Cloud, Rueil-Malmaison, Vaucresson, Marnes-la-Coquette). Nous intervenons sur place à Garches, comme partout en France, ou à distance.",
     },
     {
       q: "Accompagnez-vous les professions médicales à Garches ?",

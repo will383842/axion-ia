@@ -237,7 +237,7 @@ export const GONESSE_COPY: VilleCopy = {
     },
     {
       q: "Couvrez-vous les communes proches comme Roissy-en-France, Goussainville ou Villiers-le-Bel ?",
-      a: "Oui. Nous intervenons dans vos locaux à Gonesse, partout en France.",
+      a: "Oui. Axion-IA couvre tout l'est du Val-d'Oise et la zone Roissy CDG : Roissy-en-France, Goussainville, Villiers-le-Bel, Arnouville, Le Thillay, Bonneuil-en-France, Tremblay-en-France et Aulnay-sous-Bois.",
     },
     {
       q: "Comment Axion-IA garantit-il la conformité RGPD à Gonesse ?",

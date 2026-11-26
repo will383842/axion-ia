@@ -49,7 +49,7 @@ export const LE_MESNIL_SAINT_DENIS_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il au Mesnil-Saint-Denis et dans le sud Yvelines ?",
-      a: "Nous intervenons dans vos locaux au Mesnil-Saint-Denis, partout en France.",
+      a: "Oui, Axion-IA intervient au Mesnil-Saint-Denis et dans tout le sud des Yvelines (Trappes, Saint-Quentin-en-Yvelines, Chevreuse, Versailles), sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les PME informatiques près de Saint-Quentin-en-Yvelines ?",

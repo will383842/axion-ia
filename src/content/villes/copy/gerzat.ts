@@ -49,7 +49,7 @@ export const GERZAT_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Gerzat et nord Clermont ?",
-      a: "Nous intervenons dans vos locaux à Gerzat, partout en France.",
+      a: "Oui, Axion-IA intervient à Gerzat et dans tout le nord de l'agglomération clermontoise (Clermont-Ferrand, Cébazat, Riom).",
     },
     {
       q: "Travaillez-vous avec les entreprises de logistique zone nord ?",

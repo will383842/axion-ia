@@ -123,7 +123,7 @@ export const GAGNY_COPY: VilleCopy = {
           },
           {
             q: "Sous quel délai démarrez-vous un projet à Gagny ?",
-            a: "Nous intervenons dans vos locaux, partout en France. Le devis est établi à partir de 24-48 h selon la complexité.",
+            a: "Le devis est établi à partir de 24-48 h selon la complexité. Le cadrage se fait en présentiel à Gagny, puis le développement s'organise en mode hybride sur site et à distance.",
           },
           {
             q: "Mes données et celles de mes clients gabiniens sont-elles protégées ?",

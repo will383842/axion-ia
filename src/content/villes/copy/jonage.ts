@@ -49,7 +49,7 @@ export const JONAGE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Jonage et est lyonnais ?",
-      a: "Nous intervenons partout en France, sur place ou à distance.",
+      a: "Oui, Axion-IA intervient à Jonage et dans tout l'est lyonnais (Meyzieu limitrophe, Décines-Charpieu, Chassieu).",
     },
     {
       q: "Travaillez-vous avec les PME tertiaires et industrielles ?",

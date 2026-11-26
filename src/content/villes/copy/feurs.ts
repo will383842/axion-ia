@@ -49,7 +49,7 @@ export const FEURS_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Feurs et plaine Forez ?",
-      a: "Couverture Loire Forez Agglo. Nous intervenons partout en France, sur place ou à distance.",
+      a: "Oui, Axion-IA intervient à Feurs et dans toute la plaine du Forez (Montbrison, Saint-Just-Saint-Rambert, Boën-sur-Lignon). Couverture Loire Forez Agglo. Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les acteurs de l'hippodrome de Feurs ?",

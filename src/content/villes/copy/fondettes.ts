@@ -49,7 +49,7 @@ export const FONDETTES_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Fondettes et ouest Tours ?",
-      a: "Nous intervenons dans vos locaux à Fondettes, partout en France.",
+      a: "Oui. Nous intervenons à Fondettes et dans tout l'ouest de Tours Métropole (La Riche, Luynes, Saint-Cyr-sur-Loire), sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les PME tertiaires de Fondettes ?",

@@ -49,7 +49,7 @@ export const LE_PORT_MARLY_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il au Port-Marly ?",
-      a: "Nos consultants se déplacent sur site ou en visio.",
+      a: "Oui, Axion-IA intervient au Port-Marly et dans toute la boucle de Seine ouest (Marly-le-Roi, Bougival, Saint-Germain-en-Laye, La Défense), sur site ou en visio.",
     },
     {
       q: "Quel est le tarif d'un audit IA au Port-Marly ?",

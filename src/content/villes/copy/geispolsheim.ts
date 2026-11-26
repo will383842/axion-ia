@@ -65,7 +65,7 @@ export const GEISPOLSHEIM_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Geispolsheim ?",
-      a: "Nous intervenons dans vos locaux à Geispolsheim, partout en France.",
+      a: "Nous intervenons sur place à Geispolsheim, comme partout en France, ou à distance.",
     },
   ],
 };

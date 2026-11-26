@@ -130,7 +130,7 @@ export const GARGES_LES_GONESSE_COPY: VilleCopy = {
           },
           {
             q: "Intervenez-vous dans les communes voisines de Garges-lès-Gonesse ?",
-            a: "Oui. Nous intervenons dans vos locaux, partout en France.",
+            a: "Oui. Nous couvrons Sarcelles, Arnouville, Bonneuil-en-France (Val-d'Oise) ainsi que Dugny et Stains (Seine-Saint-Denis), qui bordent Garges et partagent le tissu logistique et commercial de Roissy Pays de France.",
           },
         ],
         guarantees:

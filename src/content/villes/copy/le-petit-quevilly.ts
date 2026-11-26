@@ -231,8 +231,8 @@ export const LE_PETIT_QUEVILLY_COPY: VilleCopy = {
       a: "L'Audit sur place 4h démarre à {{price:audit-flash|flat}}, l'intervention essentielle sur site à {{price:intervention-4h|flat}}, et une implémentation codée sur mesure à {{price:impl-poc|entry}}. Tarifs publiés sur axion-ia.com/tarifs.",
     },
     {
-      q: "Axion-IA se déplace-t-il dans les communes autour du Petit-Quevilly ?",
-      a: "Oui. Nous intervenons dans vos locaux au Petit-Quevilly, partout en France.",
+      q: "Intervenez-vous dans les communes autour du Petit-Quevilly ?",
+      a: "Oui. Nous intervenons sur les communes limitrophes Rouen, Le Grand-Quevilly et Sotteville-lès-Rouen, ainsi qu'à Saint-Étienne-du-Rouvray, Bihorel, Mont-Saint-Aignan et Canteleu, sur toute la Métropole Rouen Normandie.",
     },
     {
       q: "Quels délais pour un audit IA au Petit-Quevilly ?",

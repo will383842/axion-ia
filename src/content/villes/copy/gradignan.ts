@@ -230,7 +230,7 @@ export const GRADIGNAN_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Intervenez-vous à Gradignan ?",
-      a: "Oui. Nous intervenons dans vos locaux à Gradignan, partout en France, sur place ou à distance.",
+      a: "Oui. Nous intervenons dans vos locaux à Gradignan et dans la métropole bordelaise. La première rencontre se fait sur site, afin de bien comprendre votre activité de services ou de commerce avant toute recommandation.",
     },
     {
       q: "Quels types d'entreprises accompagnez-vous à Gradignan ?",

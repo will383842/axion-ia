@@ -124,7 +124,7 @@ export const LA_COURNEUVE_COPY: VilleCopy = {
           },
           {
             q: "Intervenez-vous à La Courneuve ?",
-            a: "Oui. Nous intervenons dans vos locaux à La Courneuve, partout en France, sur place ou à distance.",
+            a: "Oui. Nous intervenons dans vos locaux — entrepôt de la ZAE Mermoz, atelier de Rateau ou bureau du centre-ville — pour le cadrage et la recette finale, sur place à La Courneuve ou à distance.",
           },
           {
             q: "Combien de temps pour recevoir un devis ?",
@@ -230,7 +230,7 @@ export const LA_COURNEUVE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Intervenez-vous à La Courneuve ?",
-      a: "Oui. Nous intervenons dans vos locaux à La Courneuve, partout en France, sur place ou à distance.",
+      a: "Oui. Notre cabinet d'experts IA intervient directement dans vos entrepôts, ateliers ou bureaux à La Courneuve et dans le Grand Paris, généralement sous cinq jours ouvrés après validation de la mission.",
     },
     {
       q: "Quels gains l'IA apporte-t-elle à une TPE de logistique de La Courneuve ?",

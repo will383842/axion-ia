@@ -232,7 +232,7 @@ export const LA_CELLE_SAINT_CLOUD_COPY: VilleCopy = {
     },
     {
       q: "Sous quels délais Axion-IA intervient-il à La Celle-Saint-Cloud ?",
-      a: "Nous nous déplaçons sur site à La Celle-Saint-Cloud sous 5 jours ouvrés.",
+      a: "Nous intervenons sur site à La Celle-Saint-Cloud sous 5 jours ouvrés.",
     },
     {
       q: "Axion-IA couvre-t-il les communes autour de La Celle-Saint-Cloud ?",

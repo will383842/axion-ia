@@ -233,7 +233,7 @@ export const LA_ROCHE_SUR_YON_COPY: VilleCopy = {
     },
     {
       q: "Intervenez-vous dans les entreprises de La Roche-sur-Yon ?",
-      a: "Intervention sur site sans visioconférence imposée.",
+      a: "Oui, nous intervenons directement dans vos locaux à La Roche-sur-Yon (85000). Intervention sur site sans visioconférence imposée.",
     },
     {
       q: "Sous quel délai Axion-IA intervient à La Roche-sur-Yon ?",

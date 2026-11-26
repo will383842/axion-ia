@@ -124,7 +124,7 @@ export const HYERES_COPY: VilleCopy = {
           },
           {
             q: "Intervenez-vous à Hyères et dans la presqu'île ?",
-            a: "Oui. Nous intervenons dans vos locaux à Hyères et dans la presqu'île, partout en France, sur place ou à distance.",
+            a: "Oui. Nous intervenons dans vos locaux à Hyères — exploitations sous serre, hôtels, campings, caves des Côtes de Provence, ZAE du Chibasson — et dans les communes voisines : Toulon, La Garde, Carqueiranne, La Crau.",
           },
           {
             q: "Faut-il être une grande entreprise pour un site ou un SaaS avec Axion-IA ?",

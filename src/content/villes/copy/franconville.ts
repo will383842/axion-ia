@@ -228,7 +228,7 @@ export const FRANCONVILLE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Intervenez-vous à Franconville ?",
-      a: "Oui. Nous intervenons dans vos locaux à Franconville, partout en France, sur place ou à distance.",
+      a: "Oui. Nous intervenons directement dans vos locaux à Franconville et dans le Val-d'Oise. La première rencontre se fait sur site, afin de bien comprendre votre activité commerciale ou de services avant toute recommandation.",
     },
     {
       q: "Quels types d'entreprises accompagnez-vous à Franconville ?",

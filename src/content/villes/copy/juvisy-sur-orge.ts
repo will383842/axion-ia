@@ -49,7 +49,7 @@ export const JUVISY_SUR_ORGE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Juvisy-sur-Orge et nord Essonne ?",
-      a: "Nous intervenons dans vos locaux à Juvisy-sur-Orge, partout en France.",
+      a: "Oui, Axion-IA intervient à Juvisy-sur-Orge et dans tout le nord Essonne (Athis-Mons, Orly).",
     },
     {
       q: "Travaillez-vous avec les PME tertiaires de Juvisy-sur-Orge ?",

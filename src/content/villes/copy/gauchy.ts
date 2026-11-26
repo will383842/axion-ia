@@ -65,7 +65,7 @@ export const GAUCHY_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Gauchy ?",
-      a: "Nous intervenons dans vos locaux à Gauchy, partout en France.",
+      a: "Nous intervenons sur place à Gauchy, comme partout en France, ou à distance.",
     },
   ],
 };

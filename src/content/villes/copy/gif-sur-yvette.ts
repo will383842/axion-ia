@@ -230,7 +230,7 @@ export const GIF_SUR_YVETTE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Intervenez-vous à Gif-sur-Yvette ?",
-      a: "Oui. Nous intervenons dans vos locaux à Gif-sur-Yvette, partout en France, sur place ou à distance.",
+      a: "Oui. Nous intervenons dans vos locaux à Gif-sur-Yvette et sur le plateau de Saclay. La première rencontre se fait sur site afin de comprendre votre activité scientifique ou technologique avant toute recommandation.",
     },
     {
       q: "Quels types d'entreprises accompagnez-vous à Gif-sur-Yvette ?",

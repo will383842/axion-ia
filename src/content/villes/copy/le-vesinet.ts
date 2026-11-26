@@ -65,7 +65,7 @@ export const LE_VESINET_COPY: VilleCopy = {
     },
     {
       q: "Intervenez-vous au Vésinet ?",
-      a: "Oui. Nous intervenons dans vos locaux au Vésinet, partout en France, sur place ou à distance.",
+      a: "Oui. Nous intervenons sur place au Vésinet, dans votre cabinet ou vos locaux, comme partout en France, ou à distance.",
     },
   ],
 };

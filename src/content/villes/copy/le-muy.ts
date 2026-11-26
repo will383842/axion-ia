@@ -63,7 +63,7 @@ export const LE_MUY_COPY: VilleCopy = {
     },
     {
       q: "Quels délais pour une mission au Muy ?",
-      a: "Intervention sous 5 jours ouvrés. Nos consultants se déplacent sur site.",
+      a: "Intervention sous 5 jours ouvrés. Nos consultants interviennent sur site.",
     },
   ],
 };

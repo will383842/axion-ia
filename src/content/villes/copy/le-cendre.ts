@@ -49,7 +49,7 @@ export const LE_CENDRE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il au Cendre et sud Clermont ?",
-      a: "Nous intervenons dans vos locaux au Cendre, partout en France.",
+      a: "Oui, Axion-IA intervient au Cendre et sur tout le sud de Clermont Métropole (Cournon-d'Auvergne, Clermont-Ferrand, Issoire), sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les professions libérales ?",

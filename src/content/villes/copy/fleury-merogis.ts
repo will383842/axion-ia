@@ -49,7 +49,7 @@ export const FLEURY_MEROGIS_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Fleury-Mérogis et environs ?",
-      a: "Nous intervenons dans vos locaux à Fleury-Mérogis, partout en France.",
+      a: "Oui. Nous intervenons sur place à Fleury-Mérogis et alentours (Sainte-Geneviève-des-Bois, Évry-Courcouronnes, Orly), comme partout en France, ou à distance.",
     },
     {
       q: "Travaillez-vous avec les PME industrielles des zones d'activités ?",

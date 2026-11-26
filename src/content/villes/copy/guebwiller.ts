@@ -65,7 +65,7 @@ export const GUEBWILLER_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Guebwiller ?",
-      a: "Nous intervenons dans vos locaux à Guebwiller, partout en France.",
+      a: "Nous intervenons sur place à Guebwiller, comme partout en France, ou à distance.",
     },
   ],
 };

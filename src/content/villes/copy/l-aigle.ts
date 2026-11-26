@@ -49,7 +49,7 @@ export const L_AIGLE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à L'Aigle et dans le Pays d'Ouche ?",
-      a: "Nous intervenons partout en France, sur place ou à distance.",
+      a: "Oui, Axion-IA intervient à L'Aigle et dans tout le Pays d'Ouche (Verneuil-sur-Avre, Mortagne-au-Perche, Rugles).",
     },
     {
       q: "Travaillez-vous avec les PME métallurgiques de L'Aigle ?",

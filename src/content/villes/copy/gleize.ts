@@ -49,7 +49,7 @@ export const GLEIZE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Gleizé et agglo Villefranche ?",
-      a: "Nous intervenons partout en France, sur place ou à distance.",
+      a: "Oui, Axion-IA intervient à Gleizé et dans toute l'agglomération Villefranche Beaujolais Saône (Villefranche limitrophe, Anse, Limas, Belleville).",
     },
     {
       q: "Travaillez-vous avec les viticulteurs Beaujolais ?",

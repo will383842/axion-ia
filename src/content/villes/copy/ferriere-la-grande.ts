@@ -61,7 +61,7 @@ export const FERRIERE_LA_GRANDE_COPY: VilleCopy = {
     },
     {
       q: "Y a-t-il des opportunités transfrontalières avec la Belgique ?",
-      a: "Nous intervenons dans vos locaux à Ferrière-la-Grande, partout en France.",
+      a: "Oui, la proximité de la frontière belge offre des opportunités IA transfrontalières : gestion multilingue, conformité double réglementaire, agents IA support client FR/NL/EN.",
     },
     {
       q: "Comment se déroule une mission à Ferrière-la-Grande ?",

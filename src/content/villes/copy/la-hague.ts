@@ -65,7 +65,7 @@ export const LA_HAGUE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à La Hague ?",
-      a: "Nous intervenons partout en France, sur place ou à distance.",
+      a: "Nous intervenons à La Hague sur place ou à distance, selon votre besoin.",
     },
   ],
 };

@@ -49,7 +49,7 @@ export const FOURMIES_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Fourmies et dans l'Avesnois ?",
-      a: "Oui, Axion-IA intervient à Fourmies et dans tout l'Avesnois (Avesnes-sur-Helpe, Trélon, Wignehies, Anor).",
+      a: "Oui, Axion-IA intervient à Fourmies et dans tout l'Avesnois (Avesnes-sur-Helpe, Trélon, Wignehies, Anor) et couvre le sud du département du Nord.",
     },
     {
       q: "Accompagnez-vous les TPE et PME industrielles de Fourmies ?",

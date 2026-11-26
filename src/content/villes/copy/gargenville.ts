@@ -49,7 +49,7 @@ export const GARGENVILLE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Gargenville et dans le Mantois ?",
-      a: "Nous intervenons dans vos locaux à Gargenville, partout en France.",
+      a: "Oui, Axion-IA intervient à Gargenville et dans tout le bassin Mantois (Mantes-la-Jolie, Issou, Limay, Porcheville, Poissy), avec une couverture de l'ouest des Yvelines.",
     },
     {
       q: "Accompagnez-vous les artisans et TPE à Gargenville ?",

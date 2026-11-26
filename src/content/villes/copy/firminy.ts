@@ -49,7 +49,7 @@ export const FIRMINY_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Firminy et vallée Ondaine ?",
-      a: "Couverture Saint-Étienne Métropole. Nous intervenons partout en France, sur place ou à distance.",
+      a: "Oui, Axion-IA intervient à Firminy et dans toute la vallée de l'Ondaine (Le Chambon-Feugerolles, Unieux, Fraisses). Couverture Saint-Étienne Métropole. Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les acteurs du Site Le Corbusier UNESCO ?",

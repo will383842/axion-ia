@@ -65,7 +65,7 @@ export const L_ILE_SAINT_DENIS_COPY: VilleCopy = {
     },
     {
       q: "Intervenez-vous à L'Île-Saint-Denis ?",
-      a: "Oui. Nous intervenons dans vos locaux à L'Île-Saint-Denis, partout en France, sur place ou à distance.",
+      a: "Oui. Nous intervenons sur place à L'Île-Saint-Denis, avec un atelier pratique auprès de vos équipes, ou en visio.",
     },
   ],
 };

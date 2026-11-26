@@ -49,7 +49,7 @@ export const LE_MEE_SUR_SEINE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il au Mée-sur-Seine et agglomération Melun ?",
-      a: "Nous intervenons dans vos locaux au Mée-sur-Seine, partout en France.",
+      a: "Oui, Axion-IA intervient au Mée-sur-Seine et dans toute l'agglomération melunaise (Melun, Corbeil-Essonnes), sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les commerçants et artisans du Mée-sur-Seine ?",

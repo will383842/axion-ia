@@ -231,7 +231,7 @@ export const LE_BOUSCAT_COPY: VilleCopy = {
     },
     {
       q: "Intervenez-vous au Bouscat ?",
-      a: "Oui. Nous intervenons dans vos locaux au Bouscat, partout en France, sur place ou à distance.",
+      a: "Oui. Les interventions se déroulent dans vos locaux, au Bouscat ou dans les communes limitrophes (Bordeaux, Bruges, Eysines), sur place ou à distance.",
     },
     {
       q: "Quels délais pour une implémentation IA au Bouscat ?",
@@ -247,7 +247,7 @@ export const LE_BOUSCAT_COPY: VilleCopy = {
     },
     {
       q: "Intervenez-vous dans les communes limitrophes du Bouscat ?",
-      a: "Nous intervenons partout en France, sur place ou à distance.",
+      a: "Oui. Nous intervenons à Bordeaux, Bruges et Eysines, communes limitrophes du Bouscat.",
     },
   ],
 };

@@ -65,7 +65,7 @@ export const GUER_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA sur site à Guer ?",
-      a: "Nos consultants se déplacent dans vos locaux à Guer ou interviennent en visio.",
+      a: "Nous intervenons dans vos locaux à Guer ou en visio.",
     },
   ],
 };

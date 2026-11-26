@@ -49,7 +49,7 @@ export const FONTENAY_LE_FLEURY_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Fontenay-le-Fleury et dans la plaine de Versailles ?",
-      a: "Nous intervenons dans vos locaux à Fontenay-le-Fleury, partout en France.",
+      a: "Oui. Nous intervenons à Fontenay-le-Fleury et dans toute la plaine de Versailles (Versailles, Vélizy-Villacoublay, Paris La Défense), sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les commerçants et artisans de Fontenay-le-Fleury ?",

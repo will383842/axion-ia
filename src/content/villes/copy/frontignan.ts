@@ -230,7 +230,7 @@ export const FRONTIGNAN_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Frontignan et autour de l'étang de Thau ?",
-      a: "Nous intervenons partout en France, sur place ou à distance.",
+      a: "Oui, Axion-IA intervient à Frontignan et dans tout le bassin de Thau (Sète, Mèze, Balaruc-les-Bains). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les viticulteurs du Muscat de Frontignan ?",

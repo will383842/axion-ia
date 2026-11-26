@@ -232,7 +232,7 @@ export const FONTAINE_COPY: VilleCopy = {
     },
     {
       q: "Quels délais pour intervenir à Fontaine ?",
-      a: "Nous intervenons généralement sous 5 à 10 jours ouvrés à Fontaine.",
+      a: "Nous intervenons généralement sous 5 à 10 jours ouvrés à Fontaine, y compris dans les zones Vouillants, Les Plans et L'Argentière.",
     },
     {
       q: "Intervenez-vous dans les communes proches de Fontaine ?",

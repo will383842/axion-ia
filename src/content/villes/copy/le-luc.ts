@@ -63,7 +63,7 @@ export const LE_LUC_COPY: VilleCopy = {
     },
     {
       q: "Quels délais pour une mission au Luc ?",
-      a: "Intervention sous 5 jours ouvrés. Nos consultants se déplacent sur site.",
+      a: "Intervention sous 5 jours ouvrés. Nos consultants interviennent sur site.",
     },
   ],
 };

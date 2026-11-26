@@ -49,7 +49,7 @@ export const LE_BOULOU_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il au Boulou et dans le Vallespir frontalier ?",
-      a: "Nous intervenons partout en France, sur place ou à distance.",
+      a: "Oui, Axion-IA intervient au Boulou et dans tout le Vallespir frontalier (Céret, Le Perthus, Maureillas, Saint-Jean-Pla-de-Corts), sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les PME transport et logistique transfrontalière ?",

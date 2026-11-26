@@ -49,7 +49,7 @@ export const ITTEVILLE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Itteville et dans le sud Essonne ?",
-      a: "Nous intervenons dans vos locaux à Itteville, partout en France.",
+      a: "Oui, Axion-IA intervient à Itteville et dans tout le sud Essonne : Mennecy, La Ferté-Alais, Corbeil-Essonnes, Évry-Courcouronnes.",
     },
     {
       q: "Accompagnez-vous les artisans BTP en zone rurale ?",

@@ -65,7 +65,7 @@ export const HIRSON_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Hirson ?",
-      a: "Nous intervenons dans vos locaux à Hirson, partout en France.",
+      a: "Nous intervenons sur place à Hirson, comme partout en France, ou à distance.",
     },
   ],
 };

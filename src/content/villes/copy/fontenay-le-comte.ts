@@ -65,7 +65,7 @@ export const FONTENAY_LE_COMTE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Fontenay-le-Comte ?",
-      a: "Déplacement sur site dans vos locaux professionnels.",
+      a: "Intervention sur site dans vos locaux professionnels.",
     },
   ],
 };

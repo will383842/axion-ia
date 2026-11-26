@@ -49,7 +49,7 @@ export const L_ARBRESLE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à L'Arbresle et vallée Brévenne ?",
-      a: "Nous intervenons partout en France, sur place ou à distance.",
+      a: "Oui, Axion-IA intervient à L'Arbresle et dans toute la vallée de la Brévenne (Lentilly, Tarare, Sain-Bel).",
     },
     {
       q: "Travaillez-vous avec les PME tertiaires et industrielles ?",

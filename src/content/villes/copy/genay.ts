@@ -53,7 +53,7 @@ export const GENAY_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Genay et dans le nord lyonnais ?",
-      a: "Nous intervenons partout en France, sur place ou à distance.",
+      a: "Oui, Axion-IA intervient à Genay et dans tout le nord de la métropole de Lyon (Neuville-sur-Saône, Massieux, Villefranche-sur-Saône). Nous intervenons sur place à Genay, comme partout en France, ou à distance.",
     },
     {
       q: "Travaillez-vous avec les PME industrielles et logistiques de Genay ?",

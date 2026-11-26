@@ -49,7 +49,7 @@ export const HAUTS_DE_BIENNE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Hauts de Bienne et dans le Haut-Jura ?",
-      a: "Nous intervenons partout en France, sur place ou à distance.",
+      a: "Oui, Axion-IA intervient à Hauts de Bienne (Morez, Les Rousses) et dans tout le Haut-Jura (Saint-Claude, Lons-le-Saunier, Genève).",
     },
     {
       q: "Accompagnez-vous les lunettiers du Haut-Jura ?",

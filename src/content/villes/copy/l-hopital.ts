@@ -65,7 +65,7 @@ export const L_HOPITAL_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à L'Hôpital ?",
-      a: "Nous intervenons dans vos locaux à L'Hôpital, partout en France.",
+      a: "Nous intervenons sur place à L'Hôpital, comme partout en France, ou à distance.",
     },
   ],
 };

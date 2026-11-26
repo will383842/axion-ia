@@ -65,7 +65,7 @@ export const LA_FLECHE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission IA à La Flèche ?",
-      a: "Format mixte sur site + visio pour optimiser le temps. Tarifs publics.",
+      a: "Nous intervenons à La Flèche en format mixte, sur site + visio, pour optimiser le temps. Tarifs publics.",
     },
   ],
 };

@@ -49,7 +49,7 @@ export const IRIGNY_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Irigny et sud lyonnais ?",
-      a: "Nous intervenons partout en France, sur place ou à distance.",
+      a: "Oui, Axion-IA intervient à Irigny et dans tout le sud lyonnais (Pierre-Bénite, Oullins, Brignais, Vernaison).",
     },
     {
       q: "Accompagnez-vous les professions libérales irignois ?",
