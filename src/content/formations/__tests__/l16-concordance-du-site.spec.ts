@@ -241,7 +241,7 @@ describe("L16 — prix : les conditions réelles remplacent « prix fixe, sans s
     // Paiement : plus de seuil à 5 000 € HT, des phases fixées au devis (art. 9.1).
     expect(texte).toMatch(/Le devis découpe le travail en phases/);
     // Barème d'annulation à date convenue : v3 art. 46.2.
-    expect(texte).toMatch(/plus de 15 jours, aucune somme due/);
+    expect(texte).toMatch(/plus de 15 jours, aucune somme n'est due en plus de l'acompte versé/);
     expect(texte).toMatch(/entre 8 et 15 jours, 50 % du prix HT reste dû/);
     expect(texte).toMatch(/moins de 8 jours, 100 % du prix HT reste dû/);
     // Report : v3 art. 46.3.
@@ -252,6 +252,10 @@ describe("L16 — prix : les conditions réelles remplacent « prix fixe, sans s
     expect(liste).toContain("selon les phases et l'échéancier fixés au devis");
     expect(liste).not.toContain("5 000 € ht");
     expect(liste).toContain("15 jours ouvrés");
+    // Décision du 25/11/2026 : l'acompte versé reste acquis, sans condition de délai.
+    expect(liste).toContain("l'acompte prévu au devis reste acquis en cas d'annulation");
+    expect(liste).not.toContain("aucune somme n'est due.");
+    expect(liste).not.toContain("remboursé");
     expect(liste).toContain("entre 8 et 15 jours ouvrés, 50 % du prix ht");
     expect(liste).toContain("moins de 8 jours ouvrés");
     expect(liste).toContain("dans les 3 mois");

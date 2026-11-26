@@ -9,6 +9,7 @@ import cgv20261118 from "./cgv-2026-11-18.json";
 import cgv20261119 from "./cgv-2026-11-19.json";
 import cgv20261121 from "./cgv-2026-11-21.json";
 import cgv20261126 from "./cgv-2026-11-26.json";
+import cgv20261127 from "./cgv-2026-11-27.json";
 
 export interface TexteCgvFr {
   readonly title: string;
@@ -23,12 +24,13 @@ export interface CgvArchivee {
 }
 
 export const CGV_ARCHIVES: Readonly<
-  Record<"2026-11-18" | "2026-11-19" | "2026-11-21" | "2026-11-26", CgvArchivee>
+  Record<"2026-11-18" | "2026-11-19" | "2026-11-21" | "2026-11-26" | "2026-11-27", CgvArchivee>
 > = {
   "2026-11-18": { libelle: "18 novembre 2026", fr: cgv20261118 as TexteCgvFr },
   "2026-11-19": { libelle: "19 novembre 2026", fr: cgv20261119 as TexteCgvFr },
   "2026-11-21": { libelle: "21 novembre 2026", fr: cgv20261121 as TexteCgvFr },
   "2026-11-26": { libelle: "26 novembre 2026", fr: cgv20261126 as TexteCgvFr },
+  "2026-11-27": { libelle: "27 novembre 2026", fr: cgv20261127 as TexteCgvFr },
 };
 
 /** Texte archivé de la version demandée, `null` si cette version n'est pas archivée. */
