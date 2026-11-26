@@ -85,7 +85,7 @@ vi.mock("@/lib/prisma", () => {
   const tx = {
     $executeRaw: vi.fn(async () => 1),
     $queryRaw: vi.fn(async (q: { sql: string }) =>
-      q.sql.includes("SELECT 1 FROM content_gen_jobs")
+      q.sql.includes("FROM content_gen_jobs WHERE id")
         ? [{ "?column?": 1 }]
         : [{ total: reg.lignes.reduce((s, l) => s + l.costUsd, 0) }],
     ),

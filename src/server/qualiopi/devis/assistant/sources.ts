@@ -18,6 +18,7 @@ export const CANAUX_SOURCES_DEVIS: ReadonlyArray<InboxChannel> = ["appel", "mess
  * types unifiés des messages, types de base sans type unifié, types de rendez-vous.
  */
 export const NATURES_GARDEES: ReadonlyArray<string> = [
+  "journee_ia",
   "audit",
   "implementation",
   "formation",

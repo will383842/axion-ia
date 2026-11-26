@@ -19,6 +19,7 @@
  * Rate-limit 10/min (alignée OpenAI tier 5).
  */
 
+import { estJobEssaiClaude } from "@/server/content-gen/essai-claude";
 import { barriereJourneeIA } from "@/server/content-gen/quality/relecture-journee-ia";
 import { Queue, Worker, type Job, UnrecoverableError } from "bullmq";
 import { prisma } from "@/lib/prisma";
@@ -352,6 +353,14 @@ async function processJob(job: Job<ContentGenJobPayload>): Promise<void> {
     // Pas de retry sur job introuvable — UnrecoverableError marque le job fail
     // sans backoff inutile.
     throw new UnrecoverableError(`ContentGenJob ${contentGenJobId} not found`);
+  }
+  // Brouillon d'essai : jamais régénéré ni publié par le worker (même si un rejeu l'a enfilé).
+  if (
+    estJobEssaiClaude({ idempotencyKey: dbJob.idempotencyKey, inputPayload: dbJob.inputPayload })
+  ) {
+    throw new UnrecoverableError(
+      `ContentGenJob ${contentGenJobId} : brouillon d'essai, jamais généré par le worker`,
+    );
   }
   // Sprint A-suite P6 — Item 3. Log correlationId pour traçabilité end-to-end.
   if (dbJob.correlationId) {

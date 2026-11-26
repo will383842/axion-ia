@@ -37,7 +37,8 @@ export type CodeRefusBlogClaude =
   | "reserve_qualiopi"
   | "juge_limite"
   | "base_indisponible"
-  | "credit_refuse";
+  | "credit_refuse"
+  | "plafond_job";
 
 /** Refus de la porte : NON relançable par BullMQ (UnrecoverableError). */
 export class BlogClaudeRefusError extends UnrecoverableError {
@@ -197,7 +198,7 @@ export async function reserverCout(p: ParamsReservation): Promise<Reservation> {
           throw new BlogClaudeRefusError("Aucun type de contenu autorisé", "config_invalide");
         }
         const job = await tx.$queryRaw<Array<unknown>>(
-          Prisma.sql`SELECT 1 FROM content_gen_jobs WHERE id = ${p.jobId} AND "contentType"::text IN (${Prisma.join(autorises)})`,
+          Prisma.sql`SELECT "inputPayload"->>'plafondJobUsd' AS "plafondJobUsd" FROM content_gen_jobs WHERE id = ${p.jobId} AND "contentType"::text IN (${Prisma.join(autorises)})`,
         );
         if (!Array.isArray(job) || job.length === 0) {
           throw new BlogClaudeRefusError(
@@ -217,6 +218,21 @@ export async function reserverCout(p: ParamsReservation): Promise<Reservation> {
           },
           select: { id: true },
         });
+
+        // Plafond PAR JOB (optionnel, posé par le script d'essai : `inputPayload.plafondJobUsd`).
+        const brut = (job[0] as { plafondJobUsd?: unknown } | undefined)?.plafondJobUsd;
+        if (brut !== undefined && brut !== null) {
+          const plafondJob = Number(brut);
+          if (!(Number.isFinite(plafondJob) && plafondJob > 0)) {
+            throw new BlogClaudeRefusError("Plafond du job illisible", "config_invalide");
+          }
+          const lignes = await tx.$queryRaw<Array<{ total: number | string | null }>>(
+            Prisma.sql`SELECT COALESCE(SUM("costUsd"), 0)::float8 AS total FROM cost_ledger WHERE "jobId" = ${p.jobId}`,
+          );
+          if (Number(lignes[0]?.total ?? 0) > plafondJob) {
+            throw new BlogClaudeRefusError("Plafond du job atteint", "plafond_job");
+          }
+        }
 
         // Cumuls recalculés EN INCLUANT la ligne qui vient d'être posée.
         const cumulJourUsd = await cumulContenu(tx, minuitParis(maintenant));
