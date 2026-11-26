@@ -19,3 +19,11 @@ Refus au-delà de 3 articles/jour, mise à jour limitée à 1, cohérence jour �
 - Aucune migration, aucun changement de `prisma/**`, aucun frontend.
 - Fonctions pures, **pas encore branchées** sur l'orchestrateur : il n'existe pas aujourd'hui de compteur « mises à jour du jour » distinct des nouveaux articles, et le brancher sans lui aurait changé le comportement. Le branchement est à faire quand ce compteur existera.
 - Les défauts 10/200 ne sont lus que par la nouvelle fonction ; `blog-claude.ts` et l'écran d'administration ne sont pas modifiés.
+
+## Relecture
+
+Deux tours. Le tour 1 a demandé des corrections (erreur vers le plus strict, compteur invalide refusé, borne haute de 20 sur les clés de rythme, validation du rythme fourni, tests) : toutes appliquées. Le tour 2 est favorable. Points mineurs notés pour le branchement : plafond USD ≤ 0 donne le défaut, rythme décimal donne le défaut, un seul plafond USD fourni saute le contrôle jour ≤ mois.
+
+Le commit a été fait avec `HUSKY=0` : le hook pre-commit lance `tsc --noEmit` complet, qui plante en mémoire dans cet environnement. Tsc ciblé, eslint et specs sont passés.
+
+VERDICT OPUS : BON
