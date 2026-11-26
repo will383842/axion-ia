@@ -72,7 +72,12 @@ describe("offre.ts — les faits de la source", () => {
   it("reprend la garantie mot pour mot, sans rien inventer", () => {
     expect(OFFRE_JOURNEE_IA.garantie.phrase).toBe(GARANTIE_PHRASE);
     expect(OFFRE_JOURNEE_IA.garantie.condition).toBe(CONDITION_GARANTIE);
-    expect(OFFRE_JOURNEE_IA.garantie.brouillon).toBe(true);
+    expect(OFFRE_JOURNEE_IA.garantie).not.toHaveProperty("brouillon");
+    expect(OFFRE_JOURNEE_IA.garantie.multiplePrixHt).toBe(3);
+    expect(OFFRE_JOURNEE_IA.garantie.delaiDemandeJours).toBe(30);
+    expect(OFFRE_JOURNEE_IA.garantie.delaiReponseJours).toBe(15);
+    expect(OFFRE_JOURNEE_IA.garantie.delaiVirementJours).toBe(30);
+    expect(OFFRE_JOURNEE_IA.deroule.rapportJoursOuvres).toBe(10);
   });
 });
 
