@@ -108,7 +108,7 @@ const MULTIPLE_RE =
 const CONTEXTE_MULTIPLE =
   /(?<![\p{L}])(?:prix|garantie|tarif|rembours\p{L}*|investissement|gains?)(?![\p{L}])/iu;
 const SANS_DISCUSSION =
-  /sans\s+(?:\p{L}+\s+){0,2}(?:discussions?|n[ée]gociations?|questions?|conditions?|justificatifs?)(?![\p{L}])|simple\s+demande/iu;
+  /sans\s+(?:\p{L}+\s+){0,3}(?:discussions?|discuter|n[ée]gociations?|n[ée]gocier|questions?|conditions?|justif\p{L}*|d[ée]bat|contestation|formalit[ée]s?|exception)(?![\p{L}])|simple\s+demande|quoi qu[’']il arrive|aucune question|sur simple (?:mail|appel|e-?mail)|demande\s+[ée]crite\s+ou|par un simple appel/iu;
 const DEMANDE_ECRITE = /sur\s+demande\s+[ée]crite/i;
 const QUATRE_MILLE = /(?<!\d)4[\s\u00a0\u202f.,]?470(?!\d)/;
 function autreMultiple(texte: string): boolean {
@@ -139,7 +139,7 @@ function autreMultiple(texte: string): boolean {
 }
 /** Lieu : seule formule admise « dans vos locaux, partout en France ». */
 const DEPLACEMENT_ET_ANNEXES =
-  /d[ée]placement|(?:se|nous|vous)\s+d[ée]pla[cç]|h[ée]bergement|\brepas\b|\bkm\b|kilom[èe]tre|auvergne|\bfrais\b|\brayon\b|\btrajets?\b|\bvenue\b|rh[ôo]ne[- ]alpes|\bsuppl[ée]ments?(?![\p{L}])|p[ée]age|(?:p[ée]age|carburant)[^.]*\bessence\b|\bessence\b[^.]*(?:p[ée]age|carburant|trajet)|\bcarburant\b|surco[ûu]t|pr[èe]s de chez vous|(?:intervention|pr[ée]sence|[ée]quipe|agence)s?\s+locale?s?\b|\ben sus\b|\bforfait\b|transport de l[’']intervenant|(?:venue|zone|distance|r[ée]gion|trajet)[^.]*sur devis|sur devis[^.]*(?:venue|zone|distance|r[ée]gion|trajet)/iu;
+  /d[ée]placement|d[ée]fraie|indemnit[ée]s?|\bis[èe]re\b|(?:se|nous|vous)\s+d[ée]pla[cç]|h[ée]bergement|\brepas\b|\bkm\b|kilom[èe]tre|auvergne|\bfrais\b|\brayon\b|\btrajets?\b|\bvenue\b|rh[ôo]ne[- ]alpes|\bsuppl[ée]ments?(?![\p{L}])|p[ée]age|(?:p[ée]age|carburant)[^.]*\bessence\b|\bessence\b[^.]*(?:p[ée]age|carburant|trajet)|\bcarburant\b|surco[ûu]t|pr[èe]s de chez vous|(?:intervention|pr[ée]sence|[ée]quipe|agence)s?\s+locale?s?\b|\ben sus\b|\bforfait\b|transport de l[’']intervenant|(?:venue|zone|distance|r[ée]gion|trajet)[^.]*sur devis|sur devis[^.]*(?:venue|zone|distance|r[ée]gion|trajet)/iu;
 /**
  * Présence locale : « agence / bureaux / basé à Lyon », « nous sommes situés à / dans Lyon ».
  * Le mot-clé se lit sans tenir compte de la casse (« NOUS SOMMES SITUÉS À LYON »), mais le lieu doit
@@ -251,7 +251,11 @@ function reglesDuPack(texte: string): string[] {
   }
   const phrases = texte.split(/(?<=[.!?])\s+|\n/);
   for (const ph of phrases) {
-    if (/\b(?:acomptes?|arrhes|annul\p{L}*|r[ée]tractation)\b/iu.test(ph))
+    if (
+      /\b(?:acomptes?|arrhes|annul\p{L}*|r[ée]tractation|d[ée]dit|d[ée]sistement|p[ée]nalit\p{L}*|versement)\b|[àa] la commande|report(?:er)?\s+la\s+(?:journ|date)/iu.test(
+        ph,
+      )
+    )
       raisons.push("acompte, annulation et rétractation : relèvent des CGV, jamais d'une fiche");
     if (/voyage|billet|\btrain\b|\bavion\b|[àa] votre charge/i.test(ph))
       raisons.push("frais de voyage ou de transport : relèvent des CGV");
@@ -272,6 +276,27 @@ function reglesDuPack(texte: string): string[] {
         /(?<![\p{L}])gains?(?![\p{L}])[^.]*\sfois\s+(?:plus|sup[ée]rieur)/iu.test(ph))
     )
       raisons.push("multiple de garantie : seule la garantie « 3 fois » le prix HT existe");
+    if (
+      /rapport/i.test(ph) &&
+      !/devis/i.test(ph) &&
+      /(?:sous|dans|en|d[ée]lai\s+de|d[ée]lai\s+d[’']environ|apr[èe]s)\s+(?:les\s+|le\s+|un\s+|une\s+)?(?:\d+|[a-zé]+)\s*(?:h\b|heures?|jours?|semaines?|mois)\b|lendemain|quinzaine|huitaine|dans le mois/iu.test(
+        ph.replace(/\b(?:10|dix)\s+jours\s+ouvr[ée]s\b/gi, ""),
+      )
+    )
+      raisons.push("délai du rapport : 10 jours ouvrés, aucun autre délai chiffré");
+    if (/mille\s+(?:\p{L}+[\s-]+){0,6}euros?/iu.test(ph))
+      raisons.push("montant en euros écrit en lettres interdit");
+    if (
+      /rembours/i.test(ph) &&
+      !DEMANDE_ECRITE.test(ph) &&
+      !/\b(?:aucun|aucune|jamais|pas|sans garantir|ne promettons)\b/i.test(ph)
+    )
+      raisons.push("remboursement : uniquement sur demande écrite, dans la garantie encadrée");
+    if (
+      /rembours\p{L}*[^.]*garanti|garanti[^.]*rembours/iu.test(ph) &&
+      !/rembours/i.test(ph.replace(/garanti/gi, ""))
+    )
+      raisons.push("remboursement garanti hors garantie encadrée");
     if (/garanti|rembours/i.test(ph)) {
       if (/€|\beuros?\b|\beur\b|mille\s+\p{L}*\s*(?:cent|euro)/iu.test(ph))
         raisons.push("garantie : aucun montant en euros");
@@ -302,25 +327,25 @@ function reglesDuPack(texte: string): string[] {
  * remboursement sur demande écrite. Le reste (montant, autre multiple, « sans discussion », gain
  * garanti) est déjà rejeté par `reglesDuPack`. Une fiche qui ne parle pas de garantie n'est pas concernée.
  */
+/** Phrase de garantie encadrée (D03 révisée) : le chatbot n'est autorisé que sur la réponse qui la porte, rien d'autre. */
+export const PHRASE_GARANTIE_CHATBOT =
+  "La journée est garantie sur les gains identifiés dans le rapport : s’ils n’atteignent pas 3 fois le prix HT de la journée, vous êtes remboursé sur demande écrite.";
+export const REPONSE_GARANTIE_CHATBOT = `Non, nous ne promettons aucune augmentation de chiffre d’affaires et nous n’annonçons jamais un gain à l’avance : l’audit identifie et chiffre, avec ses hypothèses, les gains possibles. En revanche, ${PHRASE_GARANTIE_CHATBOT.charAt(0).toLowerCase()}${PHRASE_GARANTIE_CHATBOT.slice(1)} Ce ne sont jamais des gains obtenus qui sont garantis.`;
+const normaliserTexte = (t: string): string =>
+  t
+    .replace(/[\u00a0\u202f]/g, " ")
+    .replace(/['‘]/g, "’")
+    .replace(/\s+/g, " ")
+    .trim();
+
+/**
+ * D03 révisée (26/11/2026) : « texte exact ». Le marquage chatbot n'est posé que si la réponse est,
+ * à la normalisation des espaces et apostrophes près, IDENTIQUE au texte de référence, ET passe la porte.
+ * Toute divergence (un mot ajouté ou retiré) fait perdre le marquage : la fiche reste un brouillon.
+ */
 export function estGarantieChatbot(l: LignePack): boolean {
   if (!controlerFiche(l).ok) return false;
-  const { reponse } = texteDeLaFiche(l);
-  const phrases = reponse.split(/(?<=[.!?])\s+|\n/).filter(Boolean);
-  const encadree = (ph: string) =>
-    /garanti/i.test(ph) &&
-    GAINS_IDENTIFIES.test(ph) &&
-    MULTIPLE_GARANTIE_RE.test(ph) &&
-    DEMANDE_ECRITE.test(ph) &&
-    /prix\s+HT|HT\s+de la journ[ée]e|prix\s+de la journ[ée]e\s+HT/i.test(ph) &&
-    !/€|euros?|\beur\b|\d/i.test(ph.replace(/\b3\s+fois\b/g, ""));
-  const negation = (ph: string) =>
-    /\b(?:aucun|aucune|jamais|ne promettons|n[’']annon[cç]ons)\b/i.test(ph);
-  const concernees = phrases.filter((ph) => /garanti|rembours/i.test(ph));
-  // Exactement une phrase encadrée ; toute autre phrase de garantie ou de remboursement est une négation.
-  return (
-    concernees.filter(encadree).length === 1 &&
-    concernees.every((ph) => encadree(ph) || negation(ph))
-  );
+  return normaliserTexte(texteDeLaFiche(l).reponse) === normaliserTexte(REPONSE_GARANTIE_CHATBOT);
 }
 
 export function controlerFiche(l: LignePack): ControleFiche {

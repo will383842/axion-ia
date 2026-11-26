@@ -47,6 +47,7 @@ async function main() {
     aImporterEnBrouillon: rapport.aImporter.length,
     rejets: rapport.rejets,
     horsRag: rapport.horsRag,
+    chatbotAutorise: rapport.aImporter.filter((f) => f.chatbotAutorise).map((f) => f.entry.slug),
     contradictionsEcartees: rapport.contradictions,
     quasiDoublons: rapport.quasiDoublons,
     parStatut: { draft: rapport.aImporter.length, published: 0 },

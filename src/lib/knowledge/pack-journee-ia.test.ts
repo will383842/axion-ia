@@ -9,6 +9,7 @@ import {
   analyserPack,
   controlerFiche,
   estGarantieChatbot,
+  REPONSE_GARANTIE_CHATBOT,
   evaluerGardeCommit,
   importerBrouillons,
   lignesDepuisJsonl,
@@ -800,8 +801,7 @@ describe("importerBrouillons — fiches non brouillon, bodyJson", () => {
 });
 
 describe("D03 révisée le 26/11/2026 — garantie autorisée pour le chatbot, texte encadré", () => {
-  const conforme =
-    "La journée est garantie sur les gains identifiés dans le rapport : s’ils n’atteignent pas 3 fois le prix HT de la journée, vous êtes remboursé sur demande écrite.";
+  const conforme = REPONSE_GARANTIE_CHATBOT;
   it("accepte la fiche garantie conforme et la marque chatbot", () => {
     const l = faq({ answer_draft: conforme });
     expect(controlerFiche(l).ok).toBe(true);
@@ -842,8 +842,7 @@ describe("D03 révisée le 26/11/2026 — garantie autorisée pour le chatbot, t
 });
 
 describe("D03 révisée — variantes adverses (relecture)", () => {
-  const G =
-    "La journée est garantie sur les gains identifiés dans le rapport : s’ils n’atteignent pas 3 fois le prix HT de la journée, vous êtes remboursé sur demande écrite.";
+  const G = REPONSE_GARANTIE_CHATBOT;
   it("rejette toute promesse ajoutée à la phrase encadrée", () => {
     for (const x of [
       "Vos gains obtenus sont garantis.",
@@ -872,8 +871,36 @@ describe("D03 révisée — variantes adverses (relecture)", () => {
   it("n’autorise qu’une seule fiche chatbot dans un lot", () => {
     const r = analyserPack([
       faq({ id: "GEO-901", answer_draft: G }),
-      faq({ id: "GEO-902", answer_draft: `${G} Merci.` }),
+      faq({ id: "GEO-902", answer_draft: G }),
     ]);
     expect(r.aImporter.filter((f) => f.chatbotAutorise)).toHaveLength(1);
+  });
+});
+
+describe("D03 révisée — texte exact", () => {
+  it("un caractère ajouté ou retiré fait perdre le marquage chatbot", () => {
+    const T = REPONSE_GARANTIE_CHATBOT;
+    expect(estGarantieChatbot(faq({ answer_draft: T }))).toBe(true);
+    expect(estGarantieChatbot(faq({ answer_draft: `${T} Merci.` }))).toBe(false);
+    expect(estGarantieChatbot(faq({ answer_draft: T.slice(0, -1) }))).toBe(false);
+    expect(
+      estGarantieChatbot(faq({ answer_draft: T.replace("remboursé", "remboursé vite") })),
+    ).toBe(false);
+  });
+  it("rejette à l’import les variantes de « sans discussion » et d’acompte", () => {
+    for (const x of [
+      "Remboursé sans justification.",
+      "Remboursé sans avoir à vous justifier.",
+      "Remboursé sans débat ni contestation.",
+      "Remboursé sans discuter.",
+      "Remboursé sur demande écrite ou orale.",
+      "Un premier versement de 30 % est demandé à la commande.",
+      "Un dédit s’applique en cas de désistement.",
+      "Le rapport est remis sous 15 jours.",
+      "Le rapport arrive sous quinzaine.",
+      "Des indemnités de route s’ajoutent.",
+      "Cela représente quatre mille quatre cent soixante-dix euros de gains.",
+    ])
+      expect(controlerFiche(faq({ answer_draft: x })).ok, x).toBe(false);
   });
 });

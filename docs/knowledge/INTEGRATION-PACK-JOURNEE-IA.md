@@ -101,8 +101,12 @@ Essai à sec (aucune base) : `pnpm tsx scripts/import-knowledge-pack-journee-ia.
 
 ## D03 révisée le 26/11/2026 : ce que « autorisée pour le chatbot » veut dire
 
-Une seule fiche garantie (GEO-009) porte `chatbotAutorise` dans le rapport d'import et la mention « Chatbot : autorisée » dans sa note de relecture.
-**Ce marqueur n'est pas stocké en base** et la fiche reste importée en `draft` / `team` / `internal` : le chatbot ne lit que `published` + `public`,
-donc il ne la servira qu'après une **publication humaine** en `public` / `public`. Le texte doit alors rester celui du pack : 3 fois le prix HT, sur les
-« gains identifiés » du rapport, remboursement sur demande écrite, aucun montant, aucun délai chiffré, jamais « sans discussion », « sur simple demande »,
-« 5 fois » ni un autre multiple ou pourcentage. Le validateur rejette ces variantes et toute promesse ajoutée (« gains obtenus garantis », « remboursement intégral »).
+Une seule fiche garantie (GEO-009) est marquée `chatbotAutorise` (champ du rapport d'import, affiché par le script) et porte la mention
+« Chatbot : autorisée » dans sa note de relecture (`briefMarkdown`, persistée). Il n'y a **pas de colonne dédiée en base** : la fiche reste importée
+en `draft` / `team` / `internal`. Le chatbot ne lit que `published` + `public` : il ne la servira qu'après une **publication humaine** en `public` / `public`.
+
+Règle du « texte exact » : le marquage n'est posé que si la réponse est **identique** au texte de référence (`REPONSE_GARANTIE_CHATBOT`, normalisation des
+espaces et apostrophes seulement) : 3 fois le prix HT, sur les « gains identifiés » du rapport, remboursement sur demande écrite, aucun montant, aucun délai
+chiffré. Tout mot ajouté ou retiré fait perdre le marquage. Par ailleurs le validateur d'import rejette (en plus de la doctrine) : tout autre multiple ou
+pourcentage, tout montant, « sans discussion » et ses variantes, « gain garanti », remboursement hors demande écrite, acompte et annulation, délai de rapport chiffré.
+Il s'agit d'un filet par motifs, pas d'une preuve : la relecture humaine avant publication reste obligatoire.
