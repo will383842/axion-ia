@@ -36,7 +36,14 @@ const date = (d: Date) =>
 
 export function ListeDeclarations({
   declarations,
+  contratDepuis2_8 = false,
 }: {
+  /**
+   * Contrat signé en 2.8 ou après, où la commission ne dépend
+   * plus de la réalisation de la prestation (art. 4.2) : aucune ligne « réalisée / en attente ».
+   * Les apporteurs restés en 2.6 gardent leurs lignes d'origine.
+   */
+  contratDepuis2_8?: boolean;
   declarations: ReadonlyArray<{
     id: string;
     denomination: string;
@@ -67,7 +74,7 @@ export function ListeDeclarations({
               <div className="min-w-0">
                 <p className="truncate text-[17px] font-bold">{d.denomination}</p>
                 <p className="text-fg-soft text-[15px]">{date(d.recueAt)}</p>
-                {d.prestation ? (
+                {d.prestation && !contratDepuis2_8 ? (
                   <p className="text-fg-soft text-[15px]">
                     {d.prestation.etat === "realisee"
                       ? T.prestationRealisee(date(d.prestation.le))

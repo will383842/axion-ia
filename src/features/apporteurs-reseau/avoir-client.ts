@@ -47,6 +47,8 @@ import {
 import { dejaEnvoye, statutApresVigilance } from "./commissions";
 import {
   ajouterMois,
+  htLignesRecurrentesRestantesCents,
+  plafondBaseCommissionnableCents,
   FORFAIT_CONFERENCE_CENTS,
   PALIER_CONFERENCE,
   PALIER_JOURNEE_IA,
@@ -210,7 +212,7 @@ async function prevenirRetenue(apporteurId: string, numeroAvoir: string, avoir?:
   }
 }
 
-type FactureLue = FactureDeCommande & { createdAt: Date | null };
+type FactureLue = FactureDeCommande & { createdAt: Date | null; lignes?: unknown };
 
 const CHAMPS = {
   id: true,
@@ -220,6 +222,7 @@ const CHAMPS = {
   montantHtCents: true,
   emiseAt: true,
   createdAt: true,
+  lignes: true,
 } as const;
 
 /** Les factures d'une commande et leurs avoirs, tous statuts (le tri est fait par la source unique). */
@@ -227,10 +230,20 @@ async function facturesDeLaCommande(factureId: string): Promise<{
   membres: FactureLue[];
   avoirs: FactureLue[];
   totalDevisCents?: number;
+  /** HT des lignes de maintenance / abonnement du devis : jamais dans la base (règle du 25/11). */
+  recurrentCents: number;
+  /** Plafond strict : total HT du devis − récurrent brut (Infinity si total inconnu). */
+  plafondCents: number;
 } | null> {
   const f = await prisma.factureFormation.findUnique({
     where: { id: factureId },
-    select: { id: true, devisId: true, devis: { select: { montantTotalHtCents: true } } },
+    select: {
+      id: true,
+      devisId: true,
+      lignes: true,
+      montantHtCents: true,
+      devis: { select: { montantTotalHtCents: true, journeeIa: true, lignes: true } },
+    },
   });
   if (!f) return null;
   const membres = (await prisma.factureFormation.findMany({
@@ -242,7 +255,29 @@ async function facturesDeLaCommande(factureId: string): Promise<{
     select: CHAMPS,
   })) as FactureLue[];
   const total = f.devis?.montantTotalHtCents;
-  return { membres, avoirs, ...(typeof total === "number" ? { totalDevisCents: total } : {}) };
+  const recurrentCents = f.devis?.journeeIa
+    ? 0
+    : htLignesRecurrentesRestantesCents(
+        f.devis ? f.devis.lignes : f.lignes,
+        avoirs
+          .filter((a) => a.statut !== "brouillon" && a.statut !== "annulee")
+          .map((a) => a.lignes),
+        membres
+          .filter((m) => m.statut !== "brouillon" && m.statut !== "annulee")
+          .map((m) => m.lignes),
+      );
+  const plafondCents = plafondBaseCommissionnableCents(
+    f.devis ? f.devis.montantTotalHtCents : f.montantHtCents,
+    f.devis ? f.devis.lignes : f.lignes,
+    f.devis?.journeeIa === true,
+  );
+  return {
+    membres,
+    avoirs,
+    recurrentCents,
+    plafondCents,
+    ...(typeof total === "number" ? { totalDevisCents: total } : {}),
+  };
 }
 
 type LigneLue = {
@@ -705,7 +740,15 @@ export async function reprendreApresAvoirsClients(
         continue;
       }
       if (suspensionPossible) bilan.suspensionsLevees += await leverSuspension(groupe);
-      const net = etat.netCibleCents;
+      // La commission est calculée hors lignes récurrentes : la cible se lit sur la même base
+      // (sinon un avoir ferait REMONTER une commission de 600 € à 607,50 €).
+      // Plafond strict (26/11) APRÈS ce calcul : jamais au-delà de « total HT − récurrent brut »,
+      // y compris pour la remontée d'une ligne lors d'une reprise.
+      const net = Math.min(Math.max(0, etat.netCibleCents - lu.recurrentCents), lu.plafondCents);
+      const baseHorsRecurrent = Math.min(
+        Math.max(0, etat.baseCents - lu.recurrentCents),
+        lu.plafondCents,
+      );
       // Dette a1 (a) : le délai de 24 mois de l'art. 4.5 s'apprécie AVOIR PAR AVOIR. Pour une ligne
       // déjà facturée (retenue, reprise), seuls comptent les avoirs de moins de 24 mois ; un avoir
       // plus ancien ne profite jamais du délai d'un avoir récent.
@@ -761,7 +804,7 @@ export async function reprendreApresAvoirsClients(
             // L'argent est revenu : la ligne REMONTE vers la cible. Tour 2/2 (défaut 6) : la part du
             // parrain suit l'ÉTAT FINAL du filleul, que la remontée ait lieu dans CE passage ou
             // dans un précédent (passage interrompu entre les deux écritures).
-            const cible = cibleEtatFinal({ ...l, montantCents: montant }, net, etat.baseCents);
+            const cible = cibleEtatFinal({ ...l, montantCents: montant }, net, baseHorsRecurrent);
             if (cible === null) continue;
             let apres = montant;
             if (net > l.factureHtCents && cible > montant) {
@@ -801,7 +844,7 @@ export async function reprendreApresAvoirsClients(
           const cibleF = cibleEtatFinal(
             { ...reference, montantCents: reference.montantCents ?? 0 },
             net,
-            etat.baseCents,
+            baseHorsRecurrent,
           );
           if (cibleF !== null) {
             const reduiteAvant = reference.factureHtCents < net;

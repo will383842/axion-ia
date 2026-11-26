@@ -28,7 +28,7 @@ import {
   UN_A_UN_RECURRING_TIER,
   type PricingTier,
 } from "@/content/pricing";
-import { FORFAIT_CONFERENCE_CENTS, PALIERS_FORMATION, TAUX_BPS } from "./regles";
+import { PALIERS_FORMATION, TAUX_BPS } from "./regles";
 
 export interface LigneGrille {
   /** Les cellules, dans l'ordre des colonnes du tableau. */
@@ -91,7 +91,8 @@ export function grilleDeReference(): readonly TableauGrille[] {
     return { cellules: [nom!, duree!, euros(p.prixCents / 100), euros(p.forfaitCents / 100)] };
   });
 
-  const unAUn = pourcent(TAUX_BPS.un_a_un);
+  // Annexe 1, A1.3 : aucune commission sur l'accompagnement individuel (décision du 2026-11-25).
+  const unAUn = "Aucune";
   const accompagnement: LigneGrille[] = [
     ["Accompagnement dirigeant", "1 jour", palier("intervention-dirigeants", INTERVENTION_TIERS)],
     [
@@ -160,6 +161,8 @@ export function grilleDeReference(): readonly TableauGrille[] {
   ).map(([nom, id]) => ({
     cellules: [nom, prixImpl(palier(id, IMPLEMENTATION_TIERS)), impl],
   }));
+  // Contrat 2.8, A1.5 : tout développement effectué pour l'entreprise est commissionné comme une implémentation.
+  implementations.push({ cellules: ["Développement web", "sur devis", impl] });
 
   return [
     {
@@ -173,7 +176,8 @@ export function grilleDeReference(): readonly TableauGrille[] {
     {
       cle: "A1.2",
       titre: "Accompagnement individuel et coaching (1-to-1)",
-      regle: `${unAUn} du montant hors taxes facturé.`,
+      regle:
+        "Aucune commission : l'accompagnement individuel (coaching « one to one »), vendu à la séance ou à la journée, relève des prestations non commissionnées (A1.5 ci-dessous).",
       colonnes: ["Prestation", "Durée", "Prix public HT", "Commission"],
       lignes: accompagnement,
     },
@@ -194,11 +198,9 @@ export function grilleDeReference(): readonly TableauGrille[] {
     {
       cle: "A1.4 bis",
       titre: "Conférences",
-      regle: "Forfait par conférence signée et payée, quel que soit le nombre de participants.",
+      regle: "Aucune commission sur les conférences (contrat 2.8).",
       colonnes: ["Prestation", "Commission"],
-      lignes: [
-        { cellules: ["Conférence", `${euros(FORFAIT_CONFERENCE_CENTS / 100)} HT par conférence`] },
-      ],
+      lignes: [{ cellules: ["Conférence", "Aucune"] }],
     },
     {
       cle: "A1.5",
@@ -207,7 +209,6 @@ export function grilleDeReference(): readonly TableauGrille[] {
         "Ces prestations ne donnent lieu à aucune commission. Le « coup de projecteur » (podcast, interview, page dédiée), fourni gratuitement, n'en donne pas non plus.",
       colonnes: ["Prestation", "Commission"],
       lignes: [
-        { cellules: ["Développement web", "Aucune"] },
         { cellules: ["Maintenance", "Aucune"] },
         { cellules: ["Intervention sur demande", "Aucune"] },
       ],

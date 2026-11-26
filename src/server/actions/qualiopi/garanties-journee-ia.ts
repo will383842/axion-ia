@@ -448,6 +448,43 @@ export async function enregistrerDecisionGarantieJourneeIaAction(
   const avoirId = decision === "avoir" ? texte(formData, "avoirId") || null : null;
   if (avoirId && !uuid.safeParse(avoirId).success)
     refuser(fiche(id), "Identifiant d'avoir invalide.");
+  // Contrat apporteur 2.8, art. 4.5 : un bon d'achat offert à titre exceptionnel ne reprend aucune
+  // commission, alors qu'un avoir du Hub rattaché à une facture commissionnée la reprend
+  // (`reprendreApresAvoirsClients`). Cette décision n'émet aucun avoir : on refuse donc de relier
+  // un tel avoir. Même périmètre que la reprise : la commission peut être portée par une autre
+  // facture du même devis (acompte / solde).
+  if (avoirId) {
+    const piece = await prisma.factureFormation.findUnique({
+      where: { id: avoirId },
+      select: {
+        numero: true,
+        avoirDe: { select: { id: true, numero: true, devisId: true } },
+      },
+    });
+    if (!piece) refuser(fiche(id), "Aucune pièce de facturation ne porte cet identifiant d'avoir.");
+    if (!piece.avoirDe)
+      refuser(
+        fiche(id),
+        `La pièce ${piece.numero} n'est pas un avoir : un bon d'achat ne s'enregistre pas avec l'identifiant d'une facture.`,
+      );
+    const memeDevis = piece.avoirDe.devisId
+      ? await prisma.factureFormation.findMany({
+          where: { devisId: piece.avoirDe.devisId, avoirDeId: null },
+          select: { id: true },
+        })
+      : [];
+    const commissions = await prisma.commissionApporteur.count({
+      where: {
+        factureId: { in: [piece.avoirDe.id, ...memeDevis.map((f) => f.id)] },
+        statut: { not: "annulee" },
+      },
+    });
+    if (commissions > 0)
+      refuser(
+        fiche(id),
+        `L'avoir ${piece.numero} est imputé sur la facture ${piece.avoirDe.numero}, qui porte une commission d'apporteur : cet avoir fait reprendre la commission de l'apporteur au prochain passage (contrat apporteur, art. 4.5), alors qu'un bon d'achat offert à titre exceptionnel ne reprend rien. Ne l'enregistrez pas ici et prévenez le pilote : l'avoir est déjà émis, la commission est à corriger à la main. À l'avenir, n'émettez jamais un bon d'achat comme avoir du Hub sur une facture commissionnée ; si le client est remboursé en argent, choisissez « Rembourser ».`,
+      );
+  }
 
   let conflit: string | null = null;
   try {

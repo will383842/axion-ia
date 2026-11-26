@@ -339,6 +339,18 @@ describe("sans avoir", () => {
     const b = await reprendreApresAvoirsClients(LE);
     expect(b).toMatchObject({ reduites: 0, annulees: 0, retenues: 0, reprises: 0 });
   });
+
+  it("bon d'achat offert (aucun avoir du Hub) : aucune reprise, même sur une commission versée (art. 4.5)", async () => {
+    d.factures = [facture];
+    d.lignes = [ligne({ statut: "versee", autofactureNumero: "AXI-APP-2026-0001", verseeAt: LE })];
+    const b = await reprendreApresAvoirsClients(LE);
+    expect(b).toMatchObject({ reduites: 0, annulees: 0, retenues: 0, reprises: 0 });
+    expect(d.maj).not.toHaveBeenCalled();
+    expect(d.annuler).not.toHaveBeenCalled();
+    expect(d.reduire).not.toHaveBeenCalled();
+    expect(d.retenir).not.toHaveBeenCalled();
+    expect(d.reprise).not.toHaveBeenCalled();
+  });
 });
 
 describe("dettes de a1 sur #1398", () => {
@@ -749,5 +761,218 @@ describe("tour 2/2 (défaut 4) : une reprise refusée n'est jamais silencieuse",
       expect.objectContaining({ code: "apporteur_reprise_refusee" }),
       expect.objectContaining({ jobId: "apporteur-reprise-refusee-c1-100" }),
     );
+  });
+});
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Commande mixte (règle du 25/11) : 4 000 € de mise en service + 150 € de maintenance, devis à
+// 4 150 €. La commission (15 % de 4 000 € = 600 €) se calcule hors maintenance ; un avoir ne doit
+// jamais la faire REMONTER (607,50 €, 622,50 €) mais la réduire sur la même base.
+// ─────────────────────────────────────────────────────────────────────────────
+describe("commande mixte : mise en service + maintenance", () => {
+  const DM = {
+    montantTotalHtCents: 415_000,
+    journeeIa: false,
+    lignes: [
+      { designation: "Mise en service du site", quantite: 1, prixUnitaireHtCents: 400_000 },
+      { designation: "Maintenance mensuelle", quantite: 1, prixUnitaireHtCents: 15_000 },
+    ],
+  };
+  const fm = {
+    ...facture,
+    id: "F1",
+    devisId: "D1",
+    montantHtCents: 415_000,
+    lignes: DM.lignes,
+    devis: DM,
+  } as unknown as F;
+  const avm = (statut: string, montant: number) =>
+    ({
+      ...avoir(-montant),
+      id: "AV",
+      avoirDeId: "F1",
+      devisId: "D1",
+      statut,
+      devis: DM,
+    }) as unknown as F;
+  const lm = () => ligne({ activite: "site_web", factureHtCents: 400_000, montantCents: 60_000 });
+
+  it("avoir de 100 € : la commission baisse à 585 € (jamais 607,50 €)", async () => {
+    d.factures = [fm, avm("payee", 10_000)];
+    d.lignes = [lm()];
+    await reprendreApresAvoirsClients(LE);
+    expect(d.reduire).toHaveBeenCalledWith("c1", 390_000, expect.any(String));
+    expect(ecritures()).not.toContainEqual(expect.objectContaining({ montantCents: 60_750 }));
+  });
+
+  it("avoir annulé : rien ne bouge, la commission ne remonte pas au-dessus de 600 €", async () => {
+    d.factures = [fm, avm("annulee", 10_000)];
+    d.lignes = [lm()];
+    await reprendreApresAvoirsClients(LE);
+    expect(d.reduire).not.toHaveBeenCalled();
+    expect(ecritures()).toEqual([]);
+  });
+
+  it("avoir de 150 € qui annule la maintenance : la commission reste 600 € (pas de double déduction)", async () => {
+    const av = {
+      ...avm("payee", 15_000),
+      lignes: [{ designation: "Maintenance mensuelle", quantite: 1, prixUnitaireHtCents: -15_000 }],
+    } as unknown as F;
+    d.factures = [fm, av];
+    d.lignes = [lm()];
+    await reprendreApresAvoirsClients(LE);
+    expect(d.reduire).not.toHaveBeenCalled();
+    expect(ecritures()).toEqual([]);
+  });
+  const LM = (qte: number, pu: number) => [
+    { designation: "Mise en service du site", quantite: 1, prixUnitaireHtCents: 400_000 },
+    { designation: "Maintenance mensuelle", quantite: qte, prixUnitaireHtCents: pu },
+  ];
+
+  it("facture refaite après un avoir total : la commission reste 600 € (jamais 622,50 €)", async () => {
+    const f1 = { ...fm, lignes: LM(1, 15_000) } as unknown as F;
+    const f2 = { ...fm, id: "F2", lignes: LM(1, 15_000) } as unknown as F;
+    const av = {
+      ...avm("payee", 415_000),
+      lignes: [
+        { designation: "Mise en service du site", quantite: 1, prixUnitaireHtCents: -400_000 },
+        { designation: "Maintenance mensuelle", quantite: 1, prixUnitaireHtCents: -15_000 },
+      ],
+    } as unknown as F;
+    d.factures = [f1, f2, av];
+    d.lignes = [lm()];
+    await reprendreApresAvoirsClients(LE);
+    expect(d.reduire).not.toHaveBeenCalled();
+    expect(ecritures()).toEqual([]);
+  });
+
+  it("avoir « Maintenance » puis facture complémentaire de maintenance : 600 €, pas 622,50 €", async () => {
+    const f1 = { ...fm, lignes: LM(1, 15_000) } as unknown as F;
+    const f2 = {
+      ...fm,
+      id: "F2",
+      montantHtCents: 15_000,
+      lignes: [{ designation: "Maintenance mensuelle", quantite: 1, prixUnitaireHtCents: 15_000 }],
+    } as unknown as F;
+    const av = {
+      ...avm("payee", 15_000),
+      lignes: [{ designation: "Maintenance mensuelle", quantite: 1, prixUnitaireHtCents: -15_000 }],
+    } as unknown as F;
+    d.factures = [f1, f2, av];
+    d.lignes = [lm()];
+    await reprendreApresAvoirsClients(LE);
+    expect(d.reduire).not.toHaveBeenCalled();
+    expect(ecritures()).toEqual([]);
+  });
+  // PLAFOND STRICT (décision du pilote 26/11) : la remontée d'une ligne ne dépasse jamais
+  // « total HT du devis − récurrent brut du devis ».
+  describe("plafond strict à la remontée", () => {
+    const lignesDe = (maint: number) => [
+      { designation: "Mise en service du site", quantite: 1, prixUnitaireHtCents: 400_000 },
+      { designation: "Maintenance mensuelle", quantite: 1, prixUnitaireHtCents: maint },
+    ];
+    const unique = (m: number) => [
+      { designation: "Prestation selon devis", quantite: 1, prixUnitaireHtCents: m },
+    ];
+    const devisDe = (maint: number) => ({
+      montantTotalHtCents: 400_000 + maint,
+      journeeIa: false,
+      lignes: lignesDe(maint),
+    });
+    const facDe = (id: string, maint: number, lignes: unknown[], montant: number) =>
+      ({
+        ...facture,
+        id,
+        devisId: "D1",
+        montantHtCents: montant,
+        lignes,
+        devis: devisDe(maint),
+      }) as unknown as F;
+    const avTotal = (maint: number) =>
+      ({
+        ...avoir(-(400_000 + maint)),
+        id: "AV",
+        avoirDeId: "F1",
+        devisId: "D1",
+        statut: "payee",
+        devis: devisDe(maint),
+        lignes: [
+          { designation: "Mise en service du site", quantite: 1, prixUnitaireHtCents: -400_000 },
+          { designation: "Maintenance mensuelle", quantite: 1, prixUnitaireHtCents: -maint },
+        ],
+      }) as unknown as F;
+
+    it("devis 4 000 € + 1 000 €, F1 détaillée, avoir total, F2 « Prestation selon devis » 5 000 € : la ligne ne remonte pas au-delà de 600 €", async () => {
+      d.factures = [
+        facDe("F1", 100_000, lignesDe(100_000), 500_000),
+        facDe("F2", 100_000, unique(500_000), 500_000),
+        avTotal(100_000),
+      ];
+      d.lignes = [ligne({ activite: "site_web", factureHtCents: 400_000, montantCents: 60_000 })];
+      await reprendreApresAvoirsClients(LE);
+      expect(d.reduire).not.toHaveBeenCalled();
+      expect(ecritures()).toEqual([]);
+    });
+
+    it("devis 4 000 € + 150 €, refaite en ligne unique 4 150 € : reste 600 €", async () => {
+      d.factures = [
+        facDe("F1", 15_000, lignesDe(15_000), 415_000),
+        facDe("F2", 15_000, unique(415_000), 415_000),
+        avTotal(15_000),
+      ];
+      d.lignes = [ligne({ activite: "site_web", factureHtCents: 400_000, montantCents: 60_000 })];
+      await reprendreApresAvoirsClients(LE);
+      expect(d.reduire).not.toHaveBeenCalled();
+      expect(ecritures()).toEqual([]);
+    });
+
+    it("même commande, ligne à 600 € : aucune écriture à 750 € (jamais remontée au-delà du plafond)", async () => {
+      d.factures = [
+        facDe("F1", 100_000, lignesDe(100_000), 500_000),
+        facDe("F2", 100_000, unique(500_000), 500_000),
+        avTotal(100_000),
+      ];
+      d.lignes = [ligne({ activite: "site_web", factureHtCents: 400_000, montantCents: 60_000 })];
+      await reprendreApresAvoirsClients(LE);
+      expect(ecritures()).not.toContainEqual(expect.objectContaining({ montantCents: 75_000 }));
+    });
+
+    it("non-régression : acompte + solde détaillés → 600 €, aucune écriture", async () => {
+      d.factures = [
+        facDe("F1", 15_000, lignesDe(15_000), 207_500),
+        facDe("F2", 15_000, lignesDe(15_000), 207_500),
+      ];
+      d.lignes = [ligne({ activite: "site_web", factureHtCents: 400_000, montantCents: 60_000 })];
+      await reprendreApresAvoirsClients(LE);
+      expect(d.reduire).not.toHaveBeenCalled();
+      expect(ecritures()).toEqual([]);
+    });
+
+    it("deux acomptes à ligne unique, avoir partiel « maintenance », complément « Maintenance » : jamais au-delà de 600 €", async () => {
+      const ac = (id: string) => facDe(id, 15_000, unique(207_500), 207_500);
+      const comp = facDe(
+        "F3",
+        15_000,
+        [{ designation: "Maintenance", quantite: 1, prixUnitaireHtCents: 15_000 }],
+        15_000,
+      );
+      const av = {
+        ...avoir(-15_000),
+        id: "AV",
+        avoirDeId: "F1",
+        devisId: "D1",
+        statut: "payee",
+        devis: devisDe(15_000),
+        lignes: [
+          { designation: "Avoir partiel — maintenance", quantite: 1, prixUnitaireHtCents: -15_000 },
+        ],
+      } as unknown as F;
+      d.factures = [ac("F1"), ac("F2"), comp, av];
+      d.lignes = [ligne({ activite: "site_web", factureHtCents: 400_000, montantCents: 60_000 })];
+      await reprendreApresAvoirsClients(LE);
+      expect(ecritures()).not.toContainEqual(
+        expect.objectContaining({ montantCents: expect.any(Number) }),
+      );
+    });
   });
 });

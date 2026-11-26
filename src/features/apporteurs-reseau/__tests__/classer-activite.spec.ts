@@ -3,6 +3,7 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 const etat = vi.hoisted(() => ({
   commission: null as Record<string, unknown> | null,
   parrainId: null as string | null,
+  signeeAt: new Date("2026-12-01T00:00:00Z") as Date | null,
   maj: [] as Array<{ where: Record<string, unknown>; data: Record<string, unknown> }>,
 }));
 
@@ -21,6 +22,9 @@ vi.mock("@/lib/prisma", () => ({
         },
       ),
       aggregate: vi.fn(async () => ({ _sum: { montantCents: 0 } })),
+    },
+    factureFormation: {
+      findUnique: vi.fn(async () => ({ emiseAt: etat.signeeAt, devis: null })),
     },
     pieceApporteur: { findMany: vi.fn(async () => []) },
     apporteurReseau: {
@@ -47,6 +51,7 @@ beforeEach(() => {
   etat.commission = { ...ligne };
   etat.parrainId = null;
   etat.maj = [];
+  etat.signeeAt = new Date("2026-12-01T00:00:00Z");
 });
 
 describe("ligne « à qualifier » d'une activité inconnue : qualifiable ou classée « aucune »", () => {
@@ -63,46 +68,62 @@ describe("ligne « à qualifier » d'une activité inconnue : qualifiable ou cla
     await classerActiviteCommission("C1", "implementation");
     expect(etat.maj[0]!.data).toMatchObject({ montantCents: 30_000 });
   });
-  it("site web : aucune commission, ligne close à 0 € (jamais due)", async () => {
+  it("site web : 15 % du HT facturé (A1.5 du contrat 2.8), la ligne devient due", async () => {
     const r = await classerActiviteCommission("C1", "site_web");
     expect(r.ok).toBe(true);
     expect(etat.maj[0]!.data).toMatchObject({
-      montantCents: 0,
-      statut: "versee",
-      palier: "aucune-commission",
-    });
-  });
-  it("site web avec un parrain : la part du parrain est close à 0 € aussi", async () => {
-    etat.parrainId = "PAR1";
-    await classerActiviteCommission("C1", "site_web");
-    expect(etat.maj[1]!.where).toMatchObject({ apporteurId: "PAR1", parrainage: true });
-    expect(etat.maj[1]!.data).toMatchObject({ montantCents: 0 });
-  });
-  it("classement manuel d'une ligne à qualifier en conférence : 500 € fixes, due", async () => {
-    etat.commission = { ...ligne, factureHtCents: 210_000 };
-    const r = await classerActiviteCommission("C1", "conference");
-    expect(r.ok).toBe(true);
-    expect(etat.maj[0]!.data).toMatchObject({
-      activite: "conference",
-      palier: "conference",
-      montantCents: 50_000,
+      activite: "site_web",
+      montantCents: 30_000,
       statut: "due",
     });
   });
-  it("conférence : la part du parrain suit (10 % de 500 € = 50 €)", async () => {
+  it("site web signé AVANT la date d'effet : ligne close à 0 €, part du parrain close aussi", async () => {
+    etat.signeeAt = new Date("2026-10-15T00:00:00Z");
     etat.parrainId = "PAR1";
-    await classerActiviteCommission("C1", "conference");
+    const r = await classerActiviteCommission("C1", "site_web");
+    expect(r.ok).toBe(true);
+    expect(r.message).toMatch(/antérieure au contrat 2\.8/);
+    expect(r.message).not.toMatch(/ce type de prestation/);
+    expect(etat.maj[0]!.data).toMatchObject({ montantCents: 0, statut: "versee" });
+    expect(etat.maj[1]!.where).toMatchObject({ apporteurId: "PAR1", parrainage: true });
+  });
+  it("coaching (un_a_un) : aucune commission, ligne close à 0 € (jamais due)", async () => {
+    const r = await classerActiviteCommission("C1", "un_a_un");
+    expect(r.ok).toBe(true);
+    expect(r.message).toMatch(/ce type de prestation/);
+    expect(etat.maj[0]!.data).toMatchObject({ montantCents: 0, statut: "versee" });
+  });
+  it("classement manuel en conférence : aucune commission, ligne close à 0 €, part du parrain close", async () => {
+    etat.commission = { ...ligne, factureHtCents: 210_000 };
+    etat.parrainId = "PAR1";
+    const r = await classerActiviteCommission("C1", "conference");
+    expect(r.ok).toBe(true);
+    expect(etat.maj[0]!.data).toMatchObject({ montantCents: 0, statut: "versee" });
+    expect(etat.maj[1]!.where).toMatchObject({ apporteurId: "PAR1", parrainage: true });
+  });
+  it("classement manuel en conférence signée AVANT le 26/11/2026 : forfait de l'ancien contrat (500 €)", async () => {
+    etat.signeeAt = new Date("2026-11-20T00:00:00Z");
+    etat.commission = { ...ligne, factureHtCents: 210_000 };
+    const r = await classerActiviteCommission("C1", "conference");
+    expect(r.ok).toBe(true);
     expect(etat.maj[0]!.data).toMatchObject({ montantCents: 50_000 });
   });
-  it("facture typée formation : le palier « Conférence » de la qualification pose 500 €", async () => {
+  it("palier « conférence » d'une commande signée AVANT le 26/11/2026 : 500 € ; APRÈS : refus", async () => {
+    etat.signeeAt = new Date("2026-11-20T00:00:00Z");
+    etat.commission = { ...ligne, activite: "conference", factureHtCents: 210_000 };
+    const avant = await qualifierCommission("C1", "conference", 1);
+    expect(avant).toEqual({ ok: true, montantCents: 50_000 });
+    etat.maj.length = 0;
+    etat.signeeAt = new Date("2026-12-01T00:00:00Z");
+    const apres = await qualifierCommission("C1", "conference", 1);
+    expect(apres.ok).toBe(false);
+    expect(etat.maj).toHaveLength(0);
+  });
+  it("facture typée formation : le palier « Conférence » ne se qualifie plus (aucune commission)", async () => {
     etat.commission = { ...ligne, activite: "formation", factureHtCents: 100_000 };
     const r = await qualifierCommission("C1", "conference", 1);
-    expect(r).toEqual({ ok: true, montantCents: 50_000 });
-    expect(etat.maj[0]!.data).toMatchObject({
-      activite: "conference",
-      palier: "conference",
-      montantCents: 50_000,
-    });
+    expect(r.ok).toBe(false);
+    expect(etat.maj).toHaveLength(0);
   });
   it("formation : l'activité est posée, le palier se choisit ensuite", async () => {
     const r = await classerActiviteCommission("C1", "formation");

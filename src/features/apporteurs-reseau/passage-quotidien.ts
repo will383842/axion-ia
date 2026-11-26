@@ -84,7 +84,10 @@ import { signalerErreurReseau } from "./signaler";
 import {
   ajouterJours,
   ajouterMois,
+  htLignesRecurrentesRestantesCents,
+  plafondBaseCommissionnableCents,
   calculerCommission,
+  DEVELOPPEMENT_WEB_COMMISSIONNE_DEPUIS,
   calculerCommissionJourneeIa,
   commandeCouverte,
   CONFIRMATION_TACITE_JOURS,
@@ -839,6 +842,7 @@ async function etapeCommissions(maintenant: Date, bilan: BilanPassageReseau): Pr
       activite: true,
       montantHtCents: true,
       emiseAt: true,
+      lignes: true,
       devis: {
         select: { acceptedAt: true, montantTotalHtCents: true, journeeIa: true, lignes: true },
       },
@@ -854,6 +858,7 @@ async function etapeCommissions(maintenant: Date, bilan: BilanPassageReseau): Pr
       avoirDeId: true,
       montantHtCents: true,
       emiseAt: true,
+      lignes: true,
     },
   });
   const parId = new Map(lignes.map((f) => [f.id, f]));
@@ -951,6 +956,8 @@ async function etapeCommissions(maintenant: Date, bilan: BilanPassageReseau): Pr
     const signeeAt = dateDeCommande(f);
     const siren = f.client?.siren;
     if (!signeeAt || !siren) continue;
+    // Développement web : jamais de commission rétroactive sur une commande signée avant la date d'effet.
+    if (f.activite === "site_web" && signeeAt < DEVELOPPEMENT_WEB_COMMISSIONNE_DEPUIS) continue;
     const siret = siretDeLaCommande({
       devisSiret: f.devisId ? siretsDevis.get(f.devisId) : null,
       clientSiret: f.client?.siret,
@@ -984,6 +991,41 @@ async function etapeCommissions(maintenant: Date, bilan: BilanPassageReseau): Pr
     } else {
       p = qui.presentation;
     }
+    // Règle du 25/11 : maintenance, abonnement, hébergement, licence sur la même facture que la
+    // mise en service = 0 € ; seule la mise en service donne 15 %.
+    const avoirsActifs = avoirsLignes.filter(
+      (a) =>
+        a.statut !== "brouillon" &&
+        a.statut !== "annulee" &&
+        a.avoirDeId !== null &&
+        commande.factureIds.includes(a.avoirDeId),
+    );
+    const recurrentCents = f.devis?.journeeIa
+      ? 0
+      : htLignesRecurrentesRestantesCents(
+          f.devis ? f.devis.lignes : f.lignes,
+          avoirsActifs.map((a) => a.lignes),
+          lignes
+            .filter(
+              (m) =>
+                commande.factureIds.includes(m.id) &&
+                m.avoirDeId === null &&
+                m.statut !== "brouillon" &&
+                m.statut !== "annulee",
+            )
+            .map((m) => m.lignes),
+        );
+    // Plafond strict (26/11) : jamais plus que « total HT du devis − récurrent brut du devis »,
+    // APRÈS le calcul ci-dessus (prorata des avoirs partiels, avoir annulé…), qui reste en place.
+    const plafondBase = plafondBaseCommissionnableCents(
+      f.devis ? f.devis.montantTotalHtCents : f.montantHtCents,
+      f.devis ? f.devis.lignes : f.lignes,
+      f.devis?.journeeIa === true,
+    );
+    const baseCommissionnable = Math.min(
+      Math.max(0, commande.baseApresAvoirsCents - recurrentCents),
+      plafondBase,
+    );
     // Journée IA : repérée par `devis.journee_ia` (aucune valeur d'énumération nouvelle).
     const calc =
       f.devis?.journeeIa === true
@@ -994,8 +1036,9 @@ async function etapeCommissions(maintenant: Date, bilan: BilanPassageReseau): Pr
           })
         : calculerCommission({
             activite: (f.activite ?? null) as ActiviteCommission | null,
-            factureHtCents: commande.baseApresAvoirsCents,
+            factureHtCents: baseCommissionnable,
             palier: null,
+            signeeAt,
           });
     if (calc.statut === "aucune") continue;
     // JAMAIS deux apporteurs commissionnés pour une même entreprise : si une autre personne a déjà
@@ -1015,7 +1058,7 @@ async function etapeCommissions(maintenant: Date, bilan: BilanPassageReseau): Pr
       presentationId: p.id,
       factureId: commande.factureCleId,
       activite: f.activite ?? "inconnue",
-      factureHtCents: commande.baseApresAvoirsCents,
+      factureHtCents: baseCommissionnable,
     };
 
     // La commission de l'apporteur.

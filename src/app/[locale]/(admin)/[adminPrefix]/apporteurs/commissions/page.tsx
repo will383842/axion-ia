@@ -39,7 +39,6 @@ import {
 import { dateFr, etatEcheances } from "@/features/apporteurs-reseau/autofacture-donnees";
 import {
   euros,
-  FORFAIT_CONFERENCE_CENTS,
   PALIER_CONFERENCE,
   PALIER_JOURNEE_IA,
   FORFAIT_JOURNEE_IA_CENTS,
@@ -129,11 +128,6 @@ const PALIERS = [
     libelle: p.libelle,
     detail: `${euros(p.forfaitCents)} si ${euros(p.prixCents)} HT`,
   })),
-  {
-    id: PALIER_CONFERENCE,
-    libelle: "Conférence (500 € fixes)",
-    detail: `${euros(FORFAIT_CONFERENCE_CENTS)} par commande`,
-  },
   {
     id: PALIER_JOURNEE_IA,
     libelle: "Journée IA, forfait par journée",
@@ -620,11 +614,11 @@ export default async function CommissionsApporteursPage({ params, searchParams }
                           Choisir…
                         </option>
                         <option value="formation">Formation (puis palier)</option>
-                        <option value="un_a_un">1-to-1 (30 %)</option>
+                        <option value="un_a_un">1-to-1 (aucune commission)</option>
                         <option value="audit">Audit (30 %)</option>
                         <option value="implementation">Intégration (15 %)</option>
-                        <option value="conference">Conférence (500 € fixes)</option>
-                        <option value="site_web">Site web (aucune commission)</option>
+                        <option value="conference">Conférence (aucune commission)</option>
+                        <option value="site_web">Site web (15 %)</option>
                       </select>
                     </label>
                     <button type="submit" className="admin-button-secondary">
