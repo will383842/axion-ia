@@ -123,15 +123,15 @@ export function faitsJourneeIAPourRelecture(): string {
     throw new Error("phrase de garantie incohérente avec le multiple");
   }
   const texte = [
-    "FAITS DU SITE SUR LA JOURNÉE IA (source unique, prévalent sur toute autre fiche) :",
-    `- Prix : ${prix} (HT). Prix unique et SEUL prix public : tout autre montant, remise, prix barré ou « à partir de » est une contradiction.`,
+    "FAITS DU SITE SUR LA JOURNÉE IA (source unique ; ne s'appliquent qu'aux passages de l'article qui parlent de la Journée IA, pas aux autres offres, formations ou au diagnostic en visio) :",
+    `- Prix : ${prix}. Prix unique et SEUL prix public : tout autre montant, remise, prix barré ou « à partir de » est une contradiction.`,
     `- Garantie : ${GARANTIE_PHRASE} Elle porte sur les gains IDENTIFIÉS dans le rapport, jamais sur des gains obtenus. Aucun autre multiple que ${MULTIPLE_GARANTIE} fois le prix HT.`,
-    `- ${CONDITION_GARANTIE} La présence du dirigeant (décideur) est exigée.`,
+    `- ${CONDITION_GARANTIE} La présence du décideur est exigée pendant l'audit.`,
     `- Rapport remis sous ${DELAI_RAPPORT_JOURS_OUVRES} jours ouvrés après la journée.`,
-    "- Format : une seule journée en présentiel, dans les locaux de l'entreprise (audit le matin, formation l'après-midi). Jamais à distance.",
-    "- Zone : partout en France, outre-mer compris. Les pages n'annoncent aucune ville d'implantation : en annoncer une comme base d'intervention est une contradiction.",
-    "- Déplacement : les pages n'annoncent aucun frais de déplacement, d'hébergement ou de repas ; en annoncer, ou promettre un déplacement gratuit, contredit les pages.",
-    "- Acompte : les pages renvoient aux CGV. Selon les CGV (art. 47.6), l'acompte versé par un client professionnel reste acquis en cas d'annulation par le client, quel que soit le délai.",
+    "- Format : une seule journée en présentiel, dans les locaux de l'entreprise (audit le matin, formation l'après-midi). La Journée IA elle-même n'est jamais à distance.",
+    "- Zone : partout en France, outre-mer compris. Les pages n'annoncent aucune ville d'implantation comme base d'intervention : en annoncer une est une contradiction (citer le siège social tel qu'il figure aux mentions légales n'en est pas une).",
+    "- Déplacement : les pages n'annoncent aucun frais de déplacement, d'hébergement ou de repas. Selon les CGV (art. 47.5), le déplacement est compris en Auvergne-Rhône-Alpes et, ailleurs, les frais sont indiqués au devis. Un article qui annonce un montant ou une règle de frais précis, absent des pages comme des CGV, est une contradiction.",
+    "- Acompte : les pages renvoient aux CGV. Il n'y a d'acompte que s'il est prévu au devis. Selon les CGV (art. 47.6), l'acompte versé par un client professionnel ou une personne morale non professionnelle reste acquis en cas d'annulation par le client, quel que soit le délai ; la personne physique non professionnelle est remboursée. Un article qui promet un remboursement de l'acompte à un client professionnel est une contradiction.",
   ].join("\n");
   if (texte.includes("{{")) throw new Error("jeton non résolu dans les faits de l'offre");
   return texte;

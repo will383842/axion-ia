@@ -27,13 +27,9 @@ export const rechercherFichesPertinentes: DependancesFideliteLlm["rechercherFich
   };
   for (const id of kbEntryIds ?? []) ajouter(id);
   const titre = (o.title ?? "").trim();
-  if (titre.length > 0) {
-    const r = await retrieveAvecMode({
-      query: titre,
-      locale: "fr",
-      k: Math.max(1, MAX_FICHES - ordre.length),
-      mode: "hybrid",
-    });
+  const places = MAX_FICHES - ordre.length;
+  if (titre.length > 0 && places > 0) {
+    const r = await retrieveAvecMode({ query: titre, locale: "fr", k: places, mode: "hybrid" });
     for (const c of r.chunks) ajouter(c.entryId);
   }
   if (ordre.length === 0) return [];
