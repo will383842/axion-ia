@@ -106,8 +106,8 @@ export function construireFicheJourneeIA(): string {
  * Faits de RÉFÉRENCE pour le juge de fidélité (relecture, pas rédaction) : même source
  * unique que `construireFicheJourneeIA`, sans consigne de rédaction ni jeton. Lève si une
  * donnée est illisible (le contrôle échoue alors fermé : relecture humaine).
- * Zone / déplacement / acompte : formulés d'après les pages et les CGV (`legal.ts`, art. 47.5
- * et 47.6) ; le siège étant réellement à Grenoble, on ne l'écrit pas « pas à Grenoble ».
+ * Zone / acompte : formulés d'après les pages et les CGV (`legal.ts`, art. 47.6 ; le déplacement est un sujet interdit,
+ * décision du dirigeant) ; le siège étant réellement à Grenoble, on ne l'écrit pas « pas à Grenoble ».
  */
 export function faitsJourneeIAPourRelecture(): string {
   if (JOURNEE_IA_TIER.priceFlat == null) {
@@ -130,8 +130,8 @@ export function faitsJourneeIAPourRelecture(): string {
     `- Rapport remis sous ${DELAI_RAPPORT_JOURS_OUVRES} jours ouvrés après la journée.`,
     "- Format : une seule journée en présentiel, dans les locaux de l'entreprise (audit le matin, formation l'après-midi). La Journée IA elle-même n'est jamais à distance.",
     "- Zone : partout en France, outre-mer compris. Les pages n'annoncent aucune ville d'implantation comme base d'intervention : en annoncer une est une contradiction (citer le siège social tel qu'il figure aux mentions légales n'en est pas une).",
-    "- Déplacement : les pages n'annoncent aucun frais de déplacement, d'hébergement ou de repas. Selon les CGV (art. 47.5), le déplacement est compris en Auvergne-Rhône-Alpes et, ailleurs, les frais sont indiqués au devis. Un article qui annonce un montant ou une règle de frais précis, absent des pages comme des CGV, est une contradiction.",
-    "- Acompte : les pages renvoient aux CGV. Il n'y a d'acompte que s'il est prévu au devis. Selon les CGV (art. 47.6), l'acompte versé par un client professionnel ou une personne morale non professionnelle reste acquis en cas d'annulation par le client, quel que soit le délai ; la personne physique non professionnelle est remboursée. Un article qui promet un remboursement de l'acompte à un client professionnel est une contradiction.",
+    "- Déplacement : sujet interdit. Un article ne mentionne jamais de frais de déplacement, d'hébergement ou de repas, quels qu'ils soient (gratuits, inclus, compris dans une région, facturés, en sus). Toute mention est une contradiction. Seule formule permise : « dans vos locaux, partout en France ».",
+    "- Acompte : les pages renvoient aux CGV. Selon les CGV (art. 47.6), l'acompte versé par un client professionnel ou une personne morale non professionnelle reste acquis en cas d'annulation par le client, quel que soit le délai ; la personne physique non professionnelle est remboursée. Un article qui promet un remboursement de l'acompte à un client professionnel est une contradiction.",
   ].join("\n");
   if (texte.includes("{{")) throw new Error("jeton non résolu dans les faits de l'offre");
   return texte;

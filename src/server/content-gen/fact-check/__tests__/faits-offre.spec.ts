@@ -25,10 +25,19 @@ describe("faitsReferenceOffre", () => {
     expect(f.texte).toContain(CONDITION_GARANTIE);
     expect(f.texte).toMatch(/présentiel/);
     expect(f.texte).toMatch(/partout en France/);
-    expect(f.texte).toMatch(/déplacement/);
+    expect(f.texte).toMatch(/Déplacement : sujet interdit/);
+    expect(f.texte).toContain("dans vos locaux, partout en France");
     expect(f.texte).toMatch(/acompte/);
     expect(f.texte).not.toContain("{{");
     expect(f.texte.length).toBeLessThanOrEqual(MAX_CARACTERES_FICHE);
+  });
+
+  it("le sujet des frais de déplacement est interdit : aucune règle de frais dans les faits", () => {
+    const t = faitsReferenceOffre().texte;
+    expect(t).not.toMatch(/Auvergne/i);
+    expect(t).not.toMatch(/devis/i);
+    expect(t).not.toContain("47.5");
+    expect(t).toMatch(/Toute mention est une contradiction/);
   });
 
   it("lève si le prix est illisible", async () => {

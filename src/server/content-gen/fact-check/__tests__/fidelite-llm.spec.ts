@@ -136,9 +136,44 @@ describe("decisionFideliteLlm", () => {
     expect(prompt).toContain(faits);
     expect(faits).toMatch(/3 fois/);
     expect(faits).toMatch(/partout en France/);
-    expect(faits).toMatch(/déplacement/);
+    expect(faits).toMatch(/Déplacement : sujet interdit/);
     expect(r.barriere?.code).toBe("fidelite-llm");
     expect(r.verdict).toMatchObject({ statut: "contradiction" });
+  });
+
+  it.each([
+    "déplacement offert en Auvergne-Rhône-Alpes",
+    "frais de déplacement sur devis hors région",
+    "déplacement inclus",
+  ])(
+    "déplacement interdit (%s) : un juge qui suit le prompt rend une contradiction, needs_review",
+    async (phrase) => {
+      const d = deps("", []);
+      d.juger.mockImplementation((async (a: { systemPrompt: string; userPrompt: string }) => {
+        const regle =
+          /sujet interdit/.test(a.userPrompt) &&
+          /toute mention vaut contradiction/i.test(a.systemPrompt);
+        const mention =
+          /d[ée]placement/i.test(a.userPrompt.split(ID_FAITS_OFFRE).pop() ?? "") &&
+          a.userPrompt.includes(phrase);
+        return {
+          output: regle && mention ? contradiction(phrase) : '{"statut":"conforme","citations":[]}',
+          costUsd: 0.01,
+        };
+      }) as never);
+      const r = await decisionFideliteLlm(
+        { ...BASE, output: { title: "t", bodyText: `La Journée IA : ${phrase}.` } },
+        d,
+      );
+      expect(r.verdict).toMatchObject({ statut: "contradiction" });
+      expect(r.barriere?.code).toBe("fidelite-llm");
+      expect(r.barriere?.libelle).toContain("NON publié");
+    },
+  );
+
+  it("le prompt du juge porte la règle : aucune règle de frais, toute mention vaut contradiction", () => {
+    expect(SYSTEME_FIDELITE).toMatch(/toute mention vaut contradiction/i);
+    expect(SYSTEME_FIDELITE).not.toMatch(/Auvergne|devis|47\.5/);
   });
 
   it("les faits sont AVANT les fiches de la base dans le prompt", async () => {

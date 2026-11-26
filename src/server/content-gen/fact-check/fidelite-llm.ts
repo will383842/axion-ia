@@ -49,7 +49,7 @@ export const SYSTEME_FIDELITE = `Tu es relecteur de fidélité. Tu compares un a
 
 Une affirmation de l'article absente des fiches n'est PAS une contradiction. Est une contradiction toute affirmation de l'article incompatible avec une fiche.
 
-Points d'attention : prix ou montant, remise, autre prix public ; garantie (formulation, multiple, objet « gains identifiés » contre « gains obtenus ») ; présence du dirigeant ; format présentiel ou distanciel ; lieu ou zone d'intervention (ville d'implantation, région, couverture nationale) ; frais de déplacement, d'hébergement ou de repas ; acompte, annulation, délais.
+Points d'attention : prix ou montant, remise, autre prix public ; garantie (formulation, multiple, objet « gains identifiés » contre « gains obtenus ») ; présence du dirigeant ; format présentiel ou distanciel ; lieu ou zone d'intervention (ville d'implantation, région, couverture nationale) ; frais de déplacement, d'hébergement ou de repas (aucune règle de frais n'est décrite dans les fiches : toute mention vaut contradiction, quelle qu'elle soit : offerte, incluse, comprise, facturée ou en sus ; seule la formule « dans vos locaux, partout en France » est permise) ; acompte, annulation, délais.
 
 En cas de doute sur une incompatibilité réelle : contradiction.
 

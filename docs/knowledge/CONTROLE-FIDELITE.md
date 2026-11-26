@@ -72,3 +72,13 @@ Second contrôle, sémantique, sous le même interrupteur : `CONTENT_FIDELITY_CH
 avec citations ; une contradiction, une erreur ou un plafond atteint envoient en relecture
 (barrière `fidelite-llm`, fail-closed). Exploitation : `docs/runbooks/R01-kill-switch.md`,
 section « Contrôle de fidélité par Claude ».
+
+### Déplacement : sujet interdit (décision du dirigeant, 26/11/2026)
+
+Les articles ne parlent **jamais** de frais de déplacement, d'hébergement ou de repas : ni
+« compris » dans une région, ni « sur devis » ailleurs, ni « déplacement inclus ». C'est au cas par
+cas, et seule la CGV (art. 47.5) en traite. Le bloc des faits de l'offre ne décrit donc **aucune
+règle de frais** (il ne cite ni région, ni devis, ni article des CGV) : il déclare le sujet interdit.
+Pour le juge (prompt `SYSTEME_FIDELITE`), toute mention de ces frais vaut contradiction, donc
+barrière `fidelite-llm` et `needs_review` (rien ne se publie). Seule formule permise : « dans vos
+locaux, partout en France ».
