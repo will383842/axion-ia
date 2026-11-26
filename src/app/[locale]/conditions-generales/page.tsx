@@ -63,7 +63,7 @@ export const revalidate = 3600;
 // réservée (49.2, 53.2). Le texte du 27/11 est archivé (@/content/cgv-archives).
 //
 // 2026-11-29 : décision du dirigeant (26/11) — la personne morale non professionnelle (53.3) perd aussi son
-// acompte si elle annule, comme le Client professionnel, avec la clause RÉCIPROQUE exigée par R.212-2 1° du code
+// acompte si elle annule, comme le Client professionnel, avec la clause RÉCIPROQUE exigée par R.212-2 2° (applicable aux non-professionnels par R.212-5) du code
 // de la consommation (annulation par Axion-IA hors force majeure : acompte rendu + indemnité égale). La personne
 // physique de l'article 49.2 reste remboursée en totalité. Le texte du 28/11 est archivé (@/content/cgv-archives).
 

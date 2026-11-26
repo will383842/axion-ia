@@ -180,7 +180,7 @@ export const GABARIT_VERSIONS: Record<TypeGabaritSignable, number> = {
   */
   /*
     v11 — 26/11/2026, décision du dirigeant : la personne morale non professionnelle perd aussi
-    l'acompte, avec la clause réciproque exigée par R.212-2 1° du code de la consommation (§ 4) ;
+    l'acompte, avec la clause réciproque exigée par R.212-2 2° (applicable aux non-professionnels par R.212-5) du code de la consommation (§ 4) ;
     v10 archivée.
   */
   convention: 11,

@@ -411,7 +411,7 @@ export function ConventionTripartitePdf({
         {/* 4. Conditions d'annulation */}
         <SectionCarte title="4. Conditions d'annulation et acompte">
           {/*
-            🔴 26/11/2026 — décision du dirigeant : dès qu'un acompte est versé, il reste acquis si le client annule, SANS condition de délai ; la personne morale non professionnelle (CGV 53.3) est traitée comme le client professionnel, avec la clause RÉCIPROQUE (R.212-2 1° du code de la consommation : annulation par l'organisme hors force majeure → acompte rendu + indemnité égale). L'ancienne ligne « Annulation à plus de
+            🔴 26/11/2026 — décision du dirigeant : dès qu'un acompte est versé, il reste acquis si le client annule, SANS condition de délai ; la personne morale non professionnelle (CGV 53.3) est traitée comme le client professionnel, avec la clause RÉCIPROQUE (R.212-2 2° (applicable aux non-professionnels par R.212-5) du code de la consommation : annulation par l'organisme hors force majeure → acompte rendu + indemnité égale). L'ancienne ligne « Annulation à plus de
             15 jours ouvrés avant le début : 0 % » (acomptes remboursés) est supprimée. Les
             montants dus au-delà de l'acompte (50 % / 100 %) sont inchangés mais ne sont jamais
             inférieurs à l'acompte versé. TVA : aucune exonération.
@@ -423,7 +423,8 @@ export function ConventionTripartitePdf({
             (article 1231-5 du Code civil, qui laisse au juge la faculté de modérer une pénalité
             manifestement excessive). Cette règle vise le client professionnel et la personne morale
             non professionnelle (articles 6.5 et 53.3 des conditions générales de vente). Si
-            l&apos;organisme annule la prestation, hors force majeure et hors faute du client, il
+            l&apos;organisme annule la prestation, hors force majeure et hors faute du client, et
+            que la personne morale non professionnelle n&apos;accepte pas le report proposé, il
             rembourse à la personne morale non professionnelle l&apos;acompte versé et lui verse une
             indemnité d&apos;un montant égal à cet acompte. Les sommes suivantes sont dues ;
             l&apos;acompte versé s&apos;impute sur elles et, sauf dans les cas prévus au dernier

@@ -129,7 +129,7 @@ const EMPREINTES: Readonly<
     // v11 — 26/11/2026 : la personne morale non professionnelle perd aussi l'acompte (§ 4), avec
     // clause réciproque (acompte rendu + indemnité égale si l'organisme annule hors force majeure) ;
     // v10 archivée.
-    sha: "2fda67d444d52a9ce6666c0e01b7fde1b767bb18e48a288af678a7cef8e7b23e",
+    sha: "9b488cde5e153ef659fc657094633c106f624db94542b2d78ca540ac228506d3",
     version: 11,
   },
   convention_tripartite: {
@@ -138,7 +138,7 @@ const EMPREINTES: Readonly<
     // v8 — 26/11/2026 : même règle de l'acompte acquis (§ 4), mot pour mot ; v7 archivée.
     // v9 — 26/11/2026 : même règle de l'acompte et même clause réciproque (§ 4), mot pour mot ;
     // v8 archivée.
-    sha: "99f910c16bc8f62bfa6b9c54905084e02134847ba6e2aaa4b66c05a9a1954ee6",
+    sha: "26d2884bfe5c2ec104e5fb4101f1e91caea84f7cafd48f7bc955016cf144f9cb",
     version: 9,
   },
   contrat_formation: {
