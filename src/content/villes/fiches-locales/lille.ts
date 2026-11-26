@@ -200,7 +200,7 @@ export const FICHE_LILLE: FicheLocale = {
       "Lille compte 9 176 établissements employeurs privés et 117 695 salariés au 31 décembre 2025 (Urssaf). Les activités scientifiques, techniques et administratives en regroupent 1 894 et le commerce 1 707. Suivent l’hébergement-restauration (1 389) et les autres services (1 045). L’information et la communication regroupent 584 établissements et 10 031 salariés.",
     ecosysteme:
       "L’Université de Lille est le repère de la formation supérieure. EuraTechnologies, site d’innovation lillois, réunit entreprises tech, startups, laboratoires et écoles. L’aéroport de Lille est celui de la métropole. Nous ne citons aucune entreprise : même une marque installée dans un lieu d’innovation pourrait passer pour notre client.",
-    zone: "La Métropole Européenne de Lille rassemble 95 communes et 1 194 040 habitants. La Journée IA a lieu dans vos locaux, à Lille ou dans l’une de ces communes, sans bureau sur place. La politique de déplacement précise le cadre. Parmi les communes de l’intercommunalité : Allennes-les-Marais, Annœullin, Anstaing, Armentières, Aubers. Le matin : audit (2 à 4 h selon l’entreprise) ; l’après-midi : formation de 4 h, jusqu’à 15 personnes.",
+    zone: "La Métropole Européenne de Lille rassemble 95 communes et 1 194 040 habitants. La Journée IA a lieu dans vos locaux, à Lille ou dans l’une de ces communes, sans bureau sur place. La politique de déplacement précise le cadre. Parmi les communes de l’intercommunalité : Allennes-les-Marais, Annœullin, Anstaing, Armentières, Aubers. Le matin : audit (2 à 4 h selon la structuration de l’entreprise) ; l’après-midi : formation de 4 h, jusqu’à 15 personnes.",
   },
   faqLocale: [
     {

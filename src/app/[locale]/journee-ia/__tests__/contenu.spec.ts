@@ -48,7 +48,7 @@ const tout = toutLeTexte.join("\n");
 /** Mots visibles de CONTENU hors FAQ, re-mesurés le 09/11/2026 après la nouvelle carte des gains (était 872). */
 const MOTS_MESURES = 1013; // re-mesuré le 25/11/2026 (déduction détaillée, légende du seuil de garantie ; était 948)
 /** Mots du premier écran (l'accroche, sans le titre mis en couleur), mesurés de même. */
-const MOTS_PREMIER_ECRAN = 204; // re-mesuré le 09/11/2026 (nouvelle carte des gains ; était 183)
+const MOTS_PREMIER_ECRAN = 218; // re-mesuré le 26/11/2026 (diagnostic « gratuit et facultatif », priorités dans le rapport détaillé ; était 204)
 
 describe("Journée IA — contenu.ts", () => {
   it("tient dans une fourchette de mots (plancher −10 %, plafond +5 % : pas de « blockhaus »)", () => {
@@ -57,10 +57,17 @@ describe("Journée IA — contenu.ts", () => {
     expect(n).toBeLessThanOrEqual(Math.ceil(MOTS_MESURES * 1.05));
   });
 
-  it("porte 194 à 214 mots au premier écran (accroche sans le titre accentué)", () => {
+  it("porte 208 à 228 mots au premier écran (accroche sans le titre accentué)", () => {
     const n = compte(textes(CONTENU.accroche));
     expect(n).toBeGreaterThanOrEqual(MOTS_PREMIER_ECRAN - 10);
     expect(n).toBeLessThanOrEqual(MOTS_PREMIER_ECRAN + 10);
+  });
+
+  it("annonce le diagnostic « gratuit et facultatif » et place les priorités dans le rapport détaillé", () => {
+    expect(CONTENU.accroche.microTexte).toContain("gratuit et facultatif");
+    const t = remplacerJetons(JSON.stringify(CONTENU));
+    expect(t).not.toMatch(/soir même|avant notre départ|3 jours ouvrés/);
+    expect(t).toContain("rapport détaillé");
   });
 
   it("n'a qu'un seul libellé de bouton : « Réserver un appel »", () => {
