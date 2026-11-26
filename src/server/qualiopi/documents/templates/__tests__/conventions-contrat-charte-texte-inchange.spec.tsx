@@ -219,7 +219,13 @@ function corps(
  * comparaison avec l'ancienne version ; son texte est verrouillé plus bas.
  */
 function neutraliserAnnulation(texte: string): string {
-  return texte.replace(/4\. Conditions d'annulation.*?(?=5\. [A-ZÉ])/su, "");
+  // 26/11/2026 (v10 tripartite) : l'OPCO est informé d'un report à l'initiative de l'organisme (§ 5).
+  return texte
+    .replace(/4\. Conditions d'annulation.*?(?=5\. [A-ZÉ])/su, "")
+    .replace(
+      /\)\s*ou d'un report à l'initiative de l'organisme.*?l'article 4 s'applique\./su,
+      ").",
+    );
 }
 
 /** Section 4 du texte NON neutralisé, pour en verrouiller le contenu. */

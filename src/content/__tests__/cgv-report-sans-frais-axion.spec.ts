@@ -36,7 +36,7 @@ describe("CGV : report à l'initiative d'Axion-IA, sans frais", () => {
       expect(a).toContain("Axion-IA n'annule pas une prestation à date convenue");
       expect(a).toContain("sans frais pour le Client");
       expect(a).toContain("au moins 2 nouvelles dates");
-      expect(a).toContain("dans les 3 mois suivant la date initiale");
+      expect(a).toContain("dans les 3 mois suivant la date qu'elle ne peut pas tenir");
       expect(a).toContain("l'acompte versé est reporté sur elle : rien n'est remboursé");
       expect(a).toContain("n'est pas une annulation par lui");
       expect(a).toContain("l'acompte ne devient pas acquis à Axion-IA de ce fait");
@@ -54,12 +54,12 @@ describe("CGV : report à l'initiative d'Axion-IA, sans frais", () => {
       const { alinea, tout } = await charger(certifiee);
       const a = alinea(46, "46.4");
       expect(a).toContain(
-        "pour la seule personne morale non professionnelle (article 53.3) et hors force majeure (article 39) et hors faute du Client, une indemnité égale à l'acompte",
+        "Pour la seule personne morale non professionnelle (article 53.3), hors force majeure (article 39) et hors faute du Client, Axion-IA verse en outre une indemnité égale à l'acompte",
       );
-      expect(a).toContain("Le Client professionnel ne reçoit jamais d'indemnité en plus");
+      expect(a).toContain("le Client professionnel ne reçoit jamais d'indemnité en plus");
       const a53 = alinea(53, "53.3");
       expect(a53).toContain(
-        "Cette indemnité ne vise qu'elle : le Client professionnel n'en reçoit jamais",
+        "Cette indemnité ne vise qu'elle : sauf faute lourde ou dolosive, le Client professionnel n'en reçoit jamais",
       );
       expect(a53).toContain("Axion-IA n'annule pas la prestation");
       expect(a53).toContain("au moins 2 nouvelles dates dans les 3 mois");
@@ -73,7 +73,9 @@ describe("CGV : report à l'initiative d'Axion-IA, sans frais", () => {
       const { art, alinea } = await charger(certifiee);
       expect(art(6)).toContain("d'un report à l'initiative d'Axion-IA (article 46.4)");
       expect(art(6)).not.toContain("d'une annulation par Axion-IA");
-      expect(art(6)).toContain("En cas de report (articles 46.3 et 46.4), l'acompte reste imputé");
+      expect(art(6)).toContain(
+        "En cas de report (articles 46.3 et 46.4), l'acompte est reporté sur la nouvelle date et reste imputé",
+      );
       expect(alinea(17, "17.4")).toContain("au moins 2 nouvelles dates dans les 3 mois");
       expect(alinea(17, "17.4")).toContain("que dans les cas prévus à l'article 46.4");
       expect(art(49)).toContain("le report à l'initiative d'Axion-IA suit l'article 46.4");

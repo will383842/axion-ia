@@ -422,18 +422,23 @@ export function ConventionTripartitePdf({
             le délai d&apos;annulation. Il est conservé à titre de dédit et d&apos;indemnité
             (article 1231-5 du Code civil, qui laisse au juge la faculté de modérer une pénalité
             manifestement excessive). Cette règle vise le client professionnel et la personne morale
-            non professionnelle (articles 6.5 et 53.3 des conditions générales de vente).             L&apos;organisme n&apos;annule pas : s&apos;il ne peut pas tenir la date convenue, il
+            non professionnelle (articles 6.5 et 53.3 des conditions générales de vente).
+            L&apos;organisme n&apos;annule pas : s&apos;il ne peut pas tenir la date convenue, il en
+            informe le client par écrit dès qu&apos;il a connaissance de l&apos;empêchement, puis
             reporte la prestation sans frais pour le client, en lui proposant par écrit au moins 2
-            nouvelles dates situées dans les 3 mois suivant la date initiale ; l&apos;acompte versé
-            est reporté sur la nouvelle date et rien n&apos;est remboursé (article 46.4 des
-            conditions générales de vente). Ce report n&apos;est pas une annulation par le client.
-            Si aucune des dates proposées ne convient à la personne morale non professionnelle, ou
-            si l&apos;organisme ne les propose pas dans le délai, hors force majeure et hors faute
-            du client, il lui rembourse l&apos;acompte versé et lui verse une indemnité d&apos;un
-            montant égal à cet acompte ; le client professionnel ne reçoit jamais d&apos;indemnité
-            en plus, seulement les sommes versées. Les sommes suivantes sont dues ;
-            l&apos;acompte versé s&apos;impute sur elles et, sauf dans les cas prévus au dernier
-            alinéa, n&apos;est pas restitué ; la somme due ne dépasse pas le prix HT :
+            nouvelles dates situées dans les 3 mois suivant la date qu&apos;il ne peut pas tenir,
+            dans les 10 jours ouvrés suivant cette information ; le client fait connaître son choix
+            dans les 10 jours ouvrés suivant la proposition, son silence valant refus.
+            L&apos;acompte versé est reporté sur la nouvelle date et rien n&apos;est remboursé
+            (article 46.4 des conditions générales de vente). Ce report n&apos;est pas une
+            annulation par le client. Si aucune des dates proposées ne convient au client, ou si
+            l&apos;organisme ne les lui propose pas dans ce délai, l&apos;organisme rembourse au
+            client les sommes versées pour l&apos;action concernée. Pour la seule personne morale
+            non professionnelle, et hors force majeure et faute du client, il lui verse en outre une
+            indemnité d&apos;un montant égal à l&apos;acompte. Sauf faute lourde ou dolosive, le
+            client professionnel ne reçoit jamais d&apos;indemnité en plus. Les sommes suivantes
+            sont dues ; l&apos;acompte versé s&apos;impute sur elles et, sauf dans les cas prévus au
+            dernier alinéa, n&apos;est pas restitué ; la somme due ne dépasse pas le prix HT :
           </Text>
           <Text style={local.listItem}>
             • Annulation à plus de 15 jours ouvrés avant le début : aucune somme en plus de
@@ -466,9 +471,9 @@ export function ConventionTripartitePdf({
             d&apos;annulation par le client, la facture d&apos;acompte est annulée par avoir et son
             montant porté sur la facture de dédit. La taxe sur la valeur ajoutée s&apos;applique à
             ces sommes comme au prix, sans exonération. L&apos;acompte n&apos;est pas acquis si
-            l&apos;annulation résulte d&apos;un manquement ou d&apos;un report à
-            l&apos;initiative de l&apos;organisme, d&apos;un cas de force majeure, de l&apos;exercice d&apos;un droit de
-            rétractation légal, ou de tout autre cas prévu à l&apos;article 6.5 des conditions
+            l&apos;annulation résulte d&apos;un manquement ou d&apos;un report à l&apos;initiative
+            de l&apos;organisme, d&apos;un cas de force majeure, de l&apos;exercice d&apos;un droit
+            de rétractation légal, ou de tout autre cas prévu à l&apos;article 6.5 des conditions
             générales de vente.
             {data.conditionSuspensiveOpco
               ? " La défaillance de la condition suspensive de l'article 5 bis rend la présente convention caduque ; les sommes versées sont alors restituées."
@@ -525,7 +530,12 @@ export function ConventionTripartitePdf({
             d&apos;exécution prévues aux conditions générales de vente, et sauf lorsque la
             réduction, la caducité ou le non-paiement résulte d&apos;un manquement de
             l&apos;organisme à ses propres obligations (inexécution de tout ou partie de
-            l&apos;action, défaut des justificatifs de réalisation qui lui incombent).
+            l&apos;action, défaut des justificatifs de réalisation qui lui incombent) ou d&apos;un
+            report à l&apos;initiative de l&apos;organisme (article 46.4 des conditions générales de
+            vente). En cas de report, l&apos;organisme en informe l&apos;OPCO et demande la
+            modification de l&apos;accord ; si l&apos;OPCO ne maintient pas sa prise en charge pour
+            la date retenue, le client peut refuser cette date et le remboursement prévu à
+            l&apos;article 4 s&apos;applique.
           </Text>
         </SectionCarte>
 

@@ -59,11 +59,12 @@ const data: ConventionData = {
 const FRAGMENTS = [
   "n'annule pas",
   "reporte la prestation sans frais pour le client",
-  "au moins 2 nouvelles dates situées dans les 3 mois suivant la date initiale",
-  "l'acompte versé est reporté sur la nouvelle date et rien n'est remboursé",
+  "au moins 2 nouvelles dates situées dans les 3 mois suivant la date qu'il ne peut pas tenir",
+  "acompte versé est reporté sur la nouvelle date et rien n'est remboursé",
   "Ce report n'est pas une annulation par le client",
-  "Si aucune des dates proposées ne convient à la personne morale non professionnelle",
-  "le client professionnel ne reçoit jamais d'indemnité en plus",
+  "Si aucune des dates proposées ne convient au client",
+  "Pour la seule personne morale non professionnelle",
+  "client professionnel ne reçoit jamais d'indemnité en plus",
 ];
 
 describe("conventions : report sans frais à l'initiative de l'organisme (§ 4)", () => {
