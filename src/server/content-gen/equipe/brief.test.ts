@@ -1,5 +1,6 @@
 import { describe, it, expect } from "vitest";
 import { readFileSync } from "node:fs";
+import { resolve } from "node:path";
 import { briefSchema, importerPlanEditorial } from "./brief";
 
 const valide = {
@@ -65,7 +66,10 @@ describe("importerPlanEditorial", () => {
   });
 
   it("lit les 40 articles du plan du dépôt", () => {
-    const plan = readFileSync("docs/contenu/plan-editorial-journee-ia-2026-11.md", "utf8");
+    const plan = readFileSync(
+      resolve(process.cwd(), "docs/contenu/plan-editorial-journee-ia-2026-11.md"),
+      "utf8",
+    );
     const { briefs, rejets } = importerPlanEditorial(plan);
     expect(rejets).toEqual([]);
     expect(briefs).toHaveLength(40);

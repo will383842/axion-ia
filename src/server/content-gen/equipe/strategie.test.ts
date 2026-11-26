@@ -1,6 +1,6 @@
 import { describe, it, expect, vi } from "vitest";
 import { construireCarte } from "../strategie/carte-requetes";
-import { produireBrief, StrategieError, type GenererTexte } from "./strategie";
+import { CONTENU_BRIEF, produireBrief, StrategieError, type GenererTexte } from "./strategie";
 
 const ACTIF = { CONTENT_EQUIPE_EDITORIALE: "true" };
 const carte = construireCarte([
@@ -84,5 +84,61 @@ describe("produireBrief", () => {
       { carte, generer: modele(pris), env: ACTIF },
     );
     expect(r.statut).toBe("refus");
+  });
+
+  it("mot-clé possédé repris par le modèle sur la même URL en « neuf » : refus", async () => {
+    const meme = {
+      ...brief,
+      motCle: "service pilote IA",
+      urlCible: "https://axion-ia.com/fr/blog/pilote",
+    };
+    const r = await produireBrief(
+      { jobId: "j", sujet: "former" },
+      { carte, generer: modele(meme), env: ACTIF },
+    );
+    expect(r.statut).toBe("refus");
+    const maj = await produireBrief(
+      { jobId: "j", sujet: "former" },
+      { carte, generer: modele({ ...meme, type: "mise-a-jour" }), env: ACTIF },
+    );
+    expect(maj.statut).toBe("brief");
+  });
+
+  it("refuse une URL cible hors du site", async () => {
+    const hors = { ...brief, urlCible: "https://evil.example/x" };
+    await expect(
+      produireBrief({ jobId: "j", sujet: "former" }, { carte, generer: modele(hors), env: ACTIF }),
+    ).rejects.toBeInstanceOf(StrategieError);
+  });
+
+  it("rétrograde en autre-source une origine non fournie", async () => {
+    const faux = {
+      ...brief,
+      questions: [{ question: "Q ?", origine: "search-console", reference: "inventée" }],
+    };
+    const r = await produireBrief(
+      { jobId: "j", sujet: "former" },
+      { carte, generer: modele(faux), env: ACTIF },
+    );
+    expect(r.statut === "brief" && r.brief.questions[0]!.origine).toBe("autre-source");
+  });
+
+  it("refuse un sujet ou un mot-clé vide sans appeler le modèle", async () => {
+    const generer = modele(brief);
+    await expect(
+      produireBrief({ jobId: "j", sujet: " " }, { carte, generer, env: ACTIF }),
+    ).rejects.toBeInstanceOf(StrategieError);
+    await expect(
+      produireBrief(
+        { jobId: "j", sujet: "x", motCleVise: "de la" },
+        { carte, generer, env: ACTIF },
+      ),
+    ).rejects.toBeInstanceOf(StrategieError);
+    expect(generer).not.toHaveBeenCalled();
+  });
+
+  it("le type de contenu passe la porte Claude par défaut", async () => {
+    const { typeClaudeAutorise } = await import("../providers/types-claude");
+    expect(typeClaudeAutorise(CONTENU_BRIEF)).toBe(true);
   });
 });

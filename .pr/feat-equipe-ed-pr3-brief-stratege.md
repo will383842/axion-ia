@@ -12,7 +12,7 @@ Donner à l'équipe éditoriale une fiche de brief SEO validée, et un premier r
 
 ## Tests
 
-12 tests Vitest : question sans origine refusée, URL/type invalides, import du plan (40 briefs, 40 URL distinctes, ligne incomplète écartée), mot-clé possédé → refus sans modèle (modèle simulé), mise à jour proposée, mot-clé libre → un seul appel `court`, interrupteur éteint (absent, « 1 », « TRUE ») → aucun appel. `tsc --noEmit` et eslint passent.
+17 tests Vitest : question sans origine refusée, URL/type invalides, import du plan (40 briefs, 40 URL distinctes, ligne incomplète écartée), mot-clé possédé → refus sans modèle (modèle simulé), mise à jour proposée, mot-clé libre → un seul appel `court`, interrupteur éteint (absent, « 1 », « TRUE ») → aucun appel. `tsc --noEmit` et eslint passent.
 
 ## Choix à connaître
 

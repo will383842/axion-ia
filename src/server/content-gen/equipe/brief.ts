@@ -34,9 +34,7 @@ export const briefSchema = z
     urlCible: z
       .string()
       .url()
-      .refine((u) => u.startsWith("https://") || u.startsWith("http://localhost"), {
-        message: "URL absolue en https attendue",
-      }),
+      .refine((u) => u.startsWith("https://"), { message: "URL absolue en https attendue" }),
     cluster: texte(200),
     type: z.enum(TYPES_BRIEF),
   })
