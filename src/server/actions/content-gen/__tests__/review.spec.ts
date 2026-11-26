@@ -158,6 +158,18 @@ describe("approveReview", () => {
     expect(queueAddMock).toHaveBeenCalled();
   });
 
+  it("un job publish terminé (renvoi en relecture) est retiré avant le nouvel ajout", async () => {
+    const remove = vi.fn(async () => undefined);
+    queueGetJobMock.mockResolvedValueOnce({ getState: async () => "completed", remove } as never);
+    await approveReview("rev-ia");
+    expect(remove).toHaveBeenCalledTimes(1);
+    expect(queueAddMock).toHaveBeenCalledWith(
+      "publish",
+      expect.anything(),
+      expect.objectContaining({ jobId: "publish-rev-ia" }),
+    );
+  });
+
   it("throw si pas de session admin", async () => {
     authMock.mockResolvedValue(null);
     await expect(approveReview("rev-1")).rejects.toThrow("unauthorized");

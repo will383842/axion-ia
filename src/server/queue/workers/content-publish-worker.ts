@@ -437,10 +437,9 @@ async function executePublishPipeline(
   // par la console), le contenu retourne en relecture, quelle que soit sa note.
   if (!existingArticle && !review.reviewedBy) {
     const campagne = cgJob.campaignId
-      ? await prisma.coverageCampaign.findUnique({
-          where: { id: cgJob.campaignId },
-          select: { name: true },
-        })
+      ? await prisma.coverageCampaign
+          .findUnique({ where: { id: cgJob.campaignId }, select: { name: true } })
+          .catch(() => null)
       : null;
     if (
       exigeRelectureHumaine({

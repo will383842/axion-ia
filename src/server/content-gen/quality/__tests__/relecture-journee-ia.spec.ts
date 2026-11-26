@@ -36,6 +36,23 @@ describe("mentionneJourneeIA", () => {
     expect(mentionneJourneeIA(t)).toBe(false);
   });
 
+  it.each([
+    "Pour 1 490 euros",
+    "1&nbsp;490&nbsp;€ HT",
+    "1 490 &euro;",
+    "soit 1 788 € TTC",
+    "garantie de 4 470 €",
+    "Si les gains n’atteignent pas 3 fois le prix HT de la journée, vous êtes remboursé",
+    "journée d'intelligence artificielle",
+    "Journée intelligence artificielle",
+  ])("détecte aussi « %s »", (t) => {
+    expect(mentionneJourneeIA(t)).toBe(true);
+  });
+
+  it("ne confond pas avec d'autres montants", () => {
+    expect(mentionneJourneeIA("Un budget de 11 490 € ou 14 900 €")).toBe(false);
+  });
+
   it("détecte le prix et la garantie de l'offre", () => {
     expect(mentionneJourneeIA("Pour 1 490 € HT, une journée")).toBe(true);
     expect(mentionneJourneeIA("tarif 1490€ HT")).toBe(true);

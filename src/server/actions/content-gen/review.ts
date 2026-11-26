@@ -90,11 +90,14 @@ async function enqueuePublish(reviewQueueId: string, promoteToTier1: boolean): P
     );
     return;
   }
-  await queue.add(
-    "publish",
-    { reviewQueueId, promoteToTier1 },
-    { jobId: `publish-${reviewQueueId}` },
-  );
+  // Motif anti-zombie : un job `publish-<id>` terminé (ex. renvoyé en relecture par le filet
+  // Journée IA du worker de publication) squatte la clé et BullMQ ignorerait l'`add`.
+  const bullJobId = `publish-${reviewQueueId}`;
+  const existing = await queue.getJob(bullJobId);
+  const action = resolveReenqueueAction(existing ? await existing.getState() : null);
+  if (action === "remove-then-enqueue" && existing) await existing.remove();
+  if (action === "skip-in-flight") return;
+  await queue.add("publish", { reviewQueueId, promoteToTier1 }, { jobId: bullJobId });
 }
 
 export interface ReviewRow {
@@ -272,24 +275,56 @@ export async function bulkApproveReviews(
     LimitSchema.parse(limit);
     if (minScore < 0 || minScore > 100) throw new Error("score_range");
     if (limit < 1 || limit > 500) throw new Error("limit_range");
-    const candidates = await prisma.reviewQueue.findMany({
-      where: {
-        status: "pending",
-        job: { qualityScore: { gte: minScore } },
-      },
-      include: {
-        job: {
-          select: {
-            id: true,
-            contentType: true,
-            outputJsonRaw: true,
-            inputPayload: true,
-            campaign: { select: { name: true } },
+    // Les contenus écartés (Journée IA, fact-check Claude absent) sont filtrés AVANT la limite :
+    // sinon, au-delà de `limit` revues écartées, chaque lancement relirait les mêmes lignes.
+    const candidates: Array<{
+      id: string;
+      job: { id: string; contentType: string; outputJsonRaw: unknown } | null;
+    }> = [];
+    let ecartees = 0;
+    for (let lot = 0; lot < 10 && candidates.length < limit; lot++) {
+      const page = await prisma.reviewQueue.findMany({
+        where: {
+          status: "pending",
+          job: { qualityScore: { gte: minScore } },
+        },
+        include: {
+          job: {
+            select: {
+              id: true,
+              contentType: true,
+              outputJsonRaw: true,
+              inputPayload: true,
+              campaign: { select: { name: true } },
+            },
           },
         },
-      },
-      take: limit,
-    });
+        orderBy: { createdAt: "asc" },
+        skip: lot * limit,
+        take: limit,
+      });
+      for (const r of page) {
+        if (candidates.length >= limit) break;
+        // PR 5 : jamais sans preuve de fact-check Claude (drapeau actif pour son type).
+        // Offre « Journée IA » : jamais en groupe, quelle que soit la note.
+        const ecarte =
+          r.job &&
+          (publicationSansPreuveFactCheck({
+            contentType: r.job.contentType,
+            output: r.job.outputJsonRaw,
+            existingArticle: false,
+            reviewedBy: null,
+          }) ||
+            exigeRelectureHumaine({
+              output: r.job.outputJsonRaw,
+              inputPayload: r.job.inputPayload,
+              campaignName: r.job.campaign?.name ?? null,
+            }));
+        if (ecarte) ecartees++;
+        else candidates.push(r);
+      }
+      if (page.length < limit) break;
+    }
     // Fix 2026-08-15 (audit e2e, E9) — isolation par item (motif déjà appliqué à
     // `retryAllFailed`) : avant, une exception à l'item k laissait la revue k
     // `approved` SANS job publish ET interrompait k+1..N. On isole chaque item,
@@ -299,31 +334,6 @@ export async function bulkApproveReviews(
     let approved = 0;
     const failures: string[] = [];
     for (const r of candidates) {
-      // PR 5 : l'approbation groupée ne publie jamais un article sans preuve de fact-check
-      // Claude (drapeau actif pour son type) : il reste en relecture individuelle.
-      if (
-        r.job &&
-        publicationSansPreuveFactCheck({
-          contentType: r.job.contentType,
-          output: r.job.outputJsonRaw,
-          existingArticle: false,
-          reviewedBy: null,
-        })
-      ) {
-        continue;
-      }
-      // Offre « Journée IA » : l'approbation groupée ne la publie jamais, quelle que soit la
-      // note. Elle reste en attente, à approuver une par une par un admin.
-      if (
-        r.job &&
-        exigeRelectureHumaine({
-          output: r.job.outputJsonRaw,
-          inputPayload: r.job.inputPayload,
-          campaignName: r.job.campaign?.name ?? null,
-        })
-      ) {
-        continue;
-      }
       try {
         const res = await prisma.reviewQueue.updateMany({
           where: { id: r.id, status: "pending" },
@@ -356,7 +366,13 @@ export async function bulkApproveReviews(
       session,
       action: "content-gen.review.bulk-approve",
       targetType: "ReviewQueue",
-      changes: { minScore, count: approved, selected: candidates.length, failed: failures.length },
+      changes: {
+        minScore,
+        count: approved,
+        selected: candidates.length,
+        failed: failures.length,
+        skippedForHumanReview: ecartees,
+      },
     });
     revalidatePath(adminBase());
     return { approved };

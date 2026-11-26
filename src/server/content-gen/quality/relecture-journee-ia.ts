@@ -10,6 +10,7 @@
  * Module PUR : aucune base, aucun Next, aucun Redis.
  */
 
+import { JOURNEE_IA_TIER } from "@/content/pricing";
 import type { BarriereRelecture } from "./barrieres-publication";
 
 export interface ContenuARelire {
@@ -30,16 +31,36 @@ function normaliser(texte: string): string {
     .replace(/[^a-z0-9/]+/g, " ");
 }
 
-// « journee ia », « journee d ia », « journee de l ia », « journees ia », « /journee-ia » (normalisé).
-const RE_JOURNEE_IA = /journees?(?:\s+(?:de\s+l|de|d))?\s*ia\b/;
-// 1 490 € HT, 1490€, 1.490 EUR (prix public de l'offre, SSOT pricing.ts).
-const RE_PRIX = /\b1[\s  .,]?490\s*(?:€|eur\b)/i;
-const RE_GARANTIE = /satisfait\s+ou\s+rembours/;
+// « journee ia », « journee d ia », « journee de l ia », « journees ia », « /journee-ia »,
+// « journee d intelligence artificielle », « journee intelligence artificielle » (normalisé).
+const RE_JOURNEE_IA = /journees?(?:\s+(?:de\s+l|de|d))?\s*(?:ia\b|intelligence\s+artificielle)/;
+// Garantie réelle (GARANTIE_PHRASE de journee-ia-commun.ts) et formule « satisfait ou remboursé ».
+const RE_GARANTIE =
+  /satisfait\s+ou\s+rembours|n atteignent\s+pas\s+3\s+fois\s+le\s+prix\s+ht|3\s+fois\s+le\s+prix\s+ht\s+de\s+la\s+journee/;
+
+/** Montants de l'offre : HT (SSOT pricing.ts), TTC à 20 %, seuil de garantie 3 × HT. */
+const PRIX_HT = JOURNEE_IA_TIER.priceFlat ?? 1490;
+const MONTANTS_OFFRE: ReadonlyArray<number> = [PRIX_HT, Math.round(PRIX_HT * 1.2), PRIX_HT * 3];
+
+const ENTITES: ReadonlyArray<readonly [RegExp, string]> = [
+  [/&nbsp;|&#160;|&#xa0;|&thinsp;|&#8239;/gi, " "],
+  [/&euro;|&#8364;|&#x20ac;/gi, "€"],
+];
+
+/** Un des montants de l'offre suivi de € / EUR / euros (séparateurs de milliers tolérés). */
+function mentionneMontantOffre(texte: string): boolean {
+  let t = texte;
+  for (const [re, rempl] of ENTITES) t = t.replace(re, rempl);
+  return MONTANTS_OFFRE.some((m) => {
+    const milliers = String(m).replace(/\B(?=(\d{3})+(?!\d))/g, "[\\s\\u00a0\\u202f.,]?");
+    return new RegExp(`(?<![\\d])${milliers}\\s*(?:€|eur(?:os?)?\\b)`, "i").test(t);
+  });
+}
 
 /** Vrai si le texte parle de la Journée IA : nom, lien, prix ou garantie. */
 export function mentionneJourneeIA(texte: string): boolean {
   if (!texte) return false;
-  if (RE_PRIX.test(texte)) return true;
+  if (mentionneMontantOffre(texte)) return true;
   const n = normaliser(texte);
   return RE_JOURNEE_IA.test(n) || RE_GARANTIE.test(n);
 }
