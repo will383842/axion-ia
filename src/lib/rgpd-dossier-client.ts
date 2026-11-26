@@ -52,6 +52,26 @@ export const EXCLUSIONS_EXPORT_DOSSIER: ReadonlyArray<{
   readonly motif: string;
 }> = [
   {
+    modele: "ApporteurChangementIban",
+    motif:
+      "vos demandes de changement de compte bancaire déposées depuis votre espace d'apporteur : leur date, leur état et les quatre derniers caractères du compte demandé vous sont rendus sur demande écrite sous un mois (contact@axion-ia.com) ; l'IBAN d'une demande refusée ou contestée n'est pas rendu, car il peut être celui d'un tiers.",
+  },
+  {
+    modele: "ApporteurChangementIbanRib",
+    motif:
+      "le RIB joint à une demande de changement de compte : il peut porter les coordonnées d'un tiers ; sa copie vous est rendue sur demande écrite sous un mois (contact@axion-ia.com), tiers occultés.",
+  },
+  {
+    modele: "ApporteurIbanHistorique",
+    motif:
+      "l'historique de vos comptes bancaires successifs : les comptes validés vous sont rendus sur demande écrite sous un mois (contact@axion-ia.com).",
+  },
+  {
+    modele: "ApporteurVirementCompte",
+    motif:
+      "le compte (empreinte et quatre derniers caractères, jamais l'IBAN) sur lequel chaque virement vous a été déclaré, par autofacture : rendu sur demande écrite sous un mois (contact@axion-ia.com).",
+  },
+  {
     modele: "ConsoleCommande",
     motif:
       "la copie, transmise à notre console des automatisations, de ce que vous avez choisi en " +

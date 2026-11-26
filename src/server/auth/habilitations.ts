@@ -123,7 +123,17 @@ export type ActeEngageant =
    * et `reader` passent `requireAdminWrite` ou moins, et ne doivent pas pouvoir
    * écrire au nom de l'organisme. À contrôler CÔTÉ SERVEUR dans chaque action.
    */
-  | "ecrire_email_manuel";
+  | "ecrire_email_manuel"
+  /**
+   * Valider ou refuser le changement d'IBAN d'un apporteur après sa signature (plan
+   * `docs/plans/apporteurs-changement-iban-2026-11-25.md`, §2.2 point 6).
+   *
+   * 🔴 RÈGLE DU DIRIGEANT (2026-11-25) : le rôle le plus élevé, `super_admin` SEUL. C'est le premier
+   * acte de la matrice qui exclut `admin` : changer le compte sur lequel l'argent part est le geste
+   * que la fraude vise, et la validation est l'acte d'une seule personne. Un `admin` voit la demande
+   * et ne peut ni la valider ni la refuser. Sans appelant avant le lot 4 du chantier.
+   */
+  | "valider_changement_iban";
 
 /**
  * Les rôles du produit, du plus au moins étendu.
@@ -298,6 +308,8 @@ export const HABILITATIONS: Readonly<Record<ActeEngageant, ReadonlyArray<RoleAdm
   rouvrir_dossier: ["super_admin", "admin"],
   piloter_interrupteurs: ["super_admin", "admin"],
   ecrire_email_manuel: ["super_admin", "admin"],
+  // Règle du dirigeant : rôle le plus élevé. `admin` n'y figure PAS, volontairement.
+  valider_changement_iban: ["super_admin"],
 };
 
 /**
@@ -337,6 +349,9 @@ export const MOTIF_REFUS: Readonly<Record<ActeEngageant, string>> = {
   ecrire_email_manuel:
     "Écrire un e-mail à la main le fait partir au nom du fondateur et engage l'organisme : " +
     "acte réservé à la direction (administrateur).",
+  valider_changement_iban:
+    "Changer le compte bancaire sur lequel un apporteur est payé engage l'organisme : " +
+    "acte réservé au rôle le plus élevé (super administrateur).",
 };
 
 /**
