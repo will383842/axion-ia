@@ -36,6 +36,10 @@ import { readContentGenConfig } from "@/server/actions/content-gen/_settings";
 import { readKillSwitchFailSafe } from "@/server/content-gen/config-store";
 import { revalidateContent } from "@/server/content-gen/shared/revalidate-content";
 import { captureWorkerError } from "@/server/queue/lib/sentry-worker";
+import {
+  factCheckClaudeActif,
+  factCheckClaudePasse,
+} from "@/server/content-gen/fact-check/fact-check-claude-drapeau";
 
 const QUEUE_NAME = "content-fact-check";
 
@@ -178,6 +182,33 @@ async function processJob(job: Job<FactCheckJobPayload>): Promise<void> {
   if (killSwitch.active) {
     console.log(`[fact-check] kill switch active, skip article ${articleId}`);
     return;
+  }
+
+  // PR 5 — type vérifié AVANT publication par Claude (preuve `factCheckClaudePasse` écrite
+  // par le worker de génération) : ni Perplexity ni correction OpenAI ici. Sans preuve (job
+  // généré avant l'allumage), le contrôle d'avant s'applique, mais la publication, elle,
+  // est refusée par le worker de publication. Drapeau éteint
+  // (défaut) : `factCheckClaudeActif` rend faux, le code d'avant s'exécute à l'identique.
+  // (Lecture en base SEULEMENT drapeau allumé : éteint, aucune requête de plus.)
+  if (process.env["CONTENT_GEN_FACTCHECK_CLAUDE"] === "true") {
+    // Pas de `.catch` : base illisible = le job échoue et BullMQ le rejoue ; jamais de
+    // repli silencieux vers Perplexity.
+    const jobPourType = await prisma.contentGenJob.findUnique({
+      where: { id: contentGenJobId },
+      select: { contentType: true, outputJsonRaw: true },
+    });
+    // Saut SEULEMENT sur preuve (marqueur écrit par le worker de génération). Sans preuve
+    // (job généré avant l'allumage), le contrôle d'avant s'applique : jamais « non vérifié ».
+    if (
+      jobPourType &&
+      factCheckClaudeActif(jobPourType.contentType) &&
+      factCheckClaudePasse(jobPourType.outputJsonRaw)
+    ) {
+      console.log(
+        `[fact-check] article ${articleId} : vérifié avant publication par Claude, Perplexity/OpenAI non appelés`,
+      );
+      return;
+    }
   }
 
   const article = await prisma.article.findUnique({

@@ -46,6 +46,11 @@ import {
   decisionFidelite,
   modeControleFidelite,
 } from "@/server/content-gen/fact-check/fidelite-branchement";
+import {
+  decisionFactCheckClaude,
+  factCheckClaudeActif,
+  MARQUEUR_FACT_CHECK_CLAUDE,
+} from "@/server/content-gen/fact-check/fact-check-claude";
 import { financementPublicCitable } from "@/server/qualiopi/config/financing";
 import { readContentGenConfig } from "@/server/actions/content-gen/_settings";
 // Fix 2026-08-15 (audit e2e, C8) — lecture du kill switch en fail-SAFE : une
@@ -1002,6 +1007,44 @@ async function processJob(job: Job<ContentGenJobPayload>): Promise<void> {
       }
     }
 
+    // PR 5 — fact-check par Claude avec recherche web (`CONTENT_GEN_FACTCHECK_CLAUDE`, ÉTEINT
+    // par défaut : le bloc ne s'exécute pas et rien ne change). Allumé : une affirmation non
+    // vérifiée, une erreur, un plafond atteint ou une recherche indisponible ajoutent une
+    // barrière de relecture (article NON publié) ; jamais de repli sur OpenAI/Perplexity.
+    // Les sources trouvées (URL) sont gardées dans `sourcesFactCheck` du résultat persisté.
+    let sourcesFactCheck: ReadonlyArray<{ url: string; title: string }> | null = null;
+    let factCheckClaudeAboutiSansReserve = false;
+    let coutFactCheckUsd = 0;
+    if (factCheckClaudeActif(contentType)) {
+      const decisionFc = await decisionFactCheckClaude({
+        jobId: contentGenJobId,
+        contentType,
+        texte: [
+          output.title,
+          output.directAnswer,
+          output.bodyHtml,
+          ...output.faq.map((f) => f.answer),
+        ].join(". "),
+      });
+      sourcesFactCheck = decisionFc.sources;
+      coutFactCheckUsd = decisionFc.coutUsd;
+      factCheckClaudeAboutiSansReserve = decisionFc.barriere === null;
+      await logStep(
+        contentGenJobId,
+        "validation",
+        decisionFc.barriere
+          ? `Fact-check par Claude : ${decisionFc.barriere.libelle}`
+          : `Fact-check par Claude : ${decisionFc.affirmations} affirmation(s) vérifiée(s), ${decisionFc.sources.length} source(s)`,
+        {
+          affirmations: decisionFc.affirmations,
+          recherches: decisionFc.recherches,
+          cout_usd: decisionFc.coutUsd,
+          ...(decisionFc.barriere?.detail ?? {}),
+        },
+      );
+      if (decisionFc.barriere) barrieresRelecture.push(decisionFc.barriere);
+    }
+
     const barrieresFail = barrieresRelecture.length > 0;
     if (barrieresFail) {
       await logStep(
@@ -1245,6 +1288,11 @@ async function processJob(job: Job<ContentGenJobPayload>): Promise<void> {
       // #2 2026-06-14 — Fingerprint sémantique (persisté sur Article au publish
       // pour alimenter la dedup cross-entry des prochaines générations).
       topicFingerprint,
+      // PR 5 — sources du fact-check par Claude (clé ABSENTE tant que le drapeau est éteint).
+      ...(sourcesFactCheck ? { sourcesFactCheck, coutFactCheckUsd } : {}),
+      // Preuve de vérification : seule sa présence permet de sauter le fact-check d'avant
+      // et de publier (cf. content-publish-worker, content-fact-check-worker).
+      ...(factCheckClaudeAboutiSansReserve ? { [MARQUEUR_FACT_CHECK_CLAUDE]: true } : {}),
       // Lot L2 — barrières de relecture franchies (traçabilité console).
       ...(barrieresFail
         ? {
@@ -1362,7 +1410,7 @@ async function processJob(job: Job<ContentGenJobPayload>): Promise<void> {
         doctrineCheckPassed: !blockingFail,
         tokensInput: 0, // détaillé via CostLedger
         tokensOutput: output.totalTokens,
-        costUsd: output.totalCostUsd,
+        costUsd: output.totalCostUsd + coutFactCheckUsd,
         outputJsonRaw: persistedOutput as never,
       },
     });
@@ -1382,7 +1430,7 @@ async function processJob(job: Job<ContentGenJobPayload>): Promise<void> {
     // AUCUN code n'incrémentait cette clé — le cap était une garde morte.
     // Fail-open dans le helper : un échec d'écriture ne casse jamais le job.
     if (improvementFeedback !== undefined) {
-      await addQualityLoopSpend(output.totalCostUsd, contentGenJobId);
+      await addQualityLoopSpend(output.totalCostUsd + coutFactCheckUsd, contentGenJobId);
     }
 
     if (nextStatus === "quality_improving") {
