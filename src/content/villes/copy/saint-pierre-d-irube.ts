@@ -65,7 +65,7 @@ export const SAINT_PIERRE_D_IRUBE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA sur site à Saint-Pierre-d'Irube ?",
-      a: "Nous intervenons partout en France, sur place ou à distance.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Mission sur site dans vos locaux à Saint-Pierre-d'Irube.",
     },
   ],
 };

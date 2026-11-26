@@ -233,8 +233,8 @@ export const SAINT_RAPHAEL_COPY: VilleCopy = {
       a: "Oui. Les acteurs du tourisme et de l'hôtellerie-restauration du front de mer figurent parmi nos cibles prioritaires. Nous automatisons réservations, relances et gestion administrative, en tenant compte des fortes pointes d'activité estivales de la station.",
     },
     {
-      q: "Intervenez-vous à Saint-Raphaël ?",
-      a: "Oui. Nous intervenons dans vos locaux à Saint-Raphaël, partout en France, sur place ou à distance.",
+      q: "Intervenez-vous sur site à Saint-Raphaël ?",
+      a: "Oui. Nous intervenons dans vos locaux, du front de mer aux ports de plaisance et au bassin Fréjus-Saint-Raphaël. L'audit terrain reste le meilleur moyen de cibler des automatisations vraiment utiles à votre métier.",
     },
     {
       q: "Travaillez-vous avec les acteurs du nautisme à Saint-Raphaël ?",

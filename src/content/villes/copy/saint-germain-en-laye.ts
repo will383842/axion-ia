@@ -217,7 +217,7 @@ export const SAINT_GERMAIN_EN_LAYE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Intervenez-vous à Saint-Germain-en-Laye pour les audits et interventions ?",
-      a: "Oui. Nous intervenons dans vos locaux à Saint-Germain-en-Laye, partout en France, sur place ou à distance.",
+      a: "Oui. Nous intervenons sur site à Saint-Germain-en-Laye et dans les communes limitrophes des Yvelines : Le Pecq, Le Vésinet, Chambourcy, Mareil-Marly, Saint-Nom-la-Bretèche, L'Étang-la-Ville, Poissy, Achères et Maisons-Laffitte. Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quels sont les tarifs pour une intervention IA d'une PME et ETI saint-germanoise ?",

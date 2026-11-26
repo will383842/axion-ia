@@ -49,7 +49,7 @@ export const SAINT_PAUL_TROIS_CHATEAUX_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Saint-Paul-Trois-Châteaux et Tricastin ?",
-      a: "Nous intervenons partout en France, sur place ou à distance.",
+      a: "Oui. Nous intervenons à Saint-Paul-Trois-Châteaux et dans tout le bassin Tricastin : Pierrelatte, Donzère, Bollène et Grignan, comme partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les trufficulteurs Tricastin ?",

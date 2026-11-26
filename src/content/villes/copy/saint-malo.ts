@@ -234,7 +234,7 @@ export const SAINT_MALO_COPY: VilleCopy = {
     },
     {
       q: "Intervenez-vous à Saint-Malo ?",
-      a: "Oui. Nous intervenons dans vos locaux à Saint-Malo, partout en France, sur place ou à distance.",
+      a: "Oui. Nous intervenons dans vos locaux à Saint-Malo, d'Intra-Muros aux zones d'activités du pays malouin et aux sites du port. L'audit terrain reste le meilleur moyen de cibler des automatisations vraiment utiles à votre métier.",
     },
     {
       q: "Travaillez-vous avec les PME agroalimentaires du bassin malouin ?",

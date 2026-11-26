@@ -61,7 +61,7 @@ export const SAINT_ETIENNE_DE_MONTLUC_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une intervention à Saint-Étienne-de-Montluc ?",
-      a: "Nous intervenons partout en France, sur place ou à distance, directement dans vos locaux.",
+      a: "Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les professions libérales ?",

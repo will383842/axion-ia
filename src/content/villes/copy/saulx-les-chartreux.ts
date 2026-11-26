@@ -49,7 +49,7 @@ export const SAULX_LES_CHARTREUX_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Saulx-les-Chartreux ?",
-      a: "Nous intervenons dans vos locaux à Saulx-les-Chartreux, partout en France.",
+      a: "Oui. Axion-IA intervient à Saulx-les-Chartreux et dans le secteur Longjumeau-Massy, notamment à Longjumeau, Massy et Palaiseau.",
     },
     {
       q: "Accompagnez-vous les exploitants maraîchers ?",

@@ -234,7 +234,7 @@ export const SAINT_ETIENNE_DU_ROUVRAY_COPY: VilleCopy = {
     },
     {
       q: "Intervenez-vous à Saint-Étienne-du-Rouvray ?",
-      a: "Oui. Nous intervenons dans vos locaux à Saint-Étienne-du-Rouvray, partout en France, sur place ou à distance.",
+      a: "Oui. Nous intervenons dans vos locaux à Saint-Étienne-du-Rouvray, des zones industrielles de la vallée de la Seine au technopôle du Madrillet. L'observation terrain reste le meilleur point de départ pour cibler des automatisations vraiment utiles.",
     },
     {
       q: "Quelles entreprises accompagnez-vous en priorité ici ?",

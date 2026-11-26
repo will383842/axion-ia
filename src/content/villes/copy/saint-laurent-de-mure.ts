@@ -49,7 +49,7 @@ export const SAINT_LAURENT_DE_MURE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Saint-Laurent-de-Mure et aire Saint-Exupéry ?",
-      a: "Nous intervenons partout en France, sur place ou à distance.",
+      a: "Oui. Nous intervenons à Saint-Laurent-de-Mure et dans toute l'aire Saint-Exupéry (Genas, Saint-Bonnet-de-Mure, Chassieu), sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les opérateurs logistiques ?",

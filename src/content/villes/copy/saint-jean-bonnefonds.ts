@@ -49,7 +49,7 @@ export const SAINT_JEAN_BONNEFONDS_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Saint-Jean-Bonnefonds et nord-est Saint-Étienne ?",
-      a: "Nous intervenons partout en France, sur place ou à distance.",
+      a: "Oui. Nous intervenons à Saint-Jean-Bonnefonds et dans toute la banlieue nord-est stéphanoise (Saint-Étienne, Sorbiers, La Talaudière), sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les PME tertiaires et industrielles ?",

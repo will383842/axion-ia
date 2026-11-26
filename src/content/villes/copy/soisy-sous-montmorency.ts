@@ -49,7 +49,7 @@ export const SOISY_SOUS_MONTMORENCY_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Soisy-sous-Montmorency et vallée de Montmorency ?",
-      a: "Nous intervenons dans vos locaux à Soisy-sous-Montmorency, partout en France.",
+      a: "Oui. Axion-IA intervient à Soisy-sous-Montmorency et dans toute la vallée de Montmorency, notamment à Enghien-les-Bains et Montmorency.",
     },
     {
       q: "Travaillez-vous avec les commerçants et artisans de Soisy ?",

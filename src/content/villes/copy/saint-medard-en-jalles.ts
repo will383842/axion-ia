@@ -128,7 +128,7 @@ export const SAINT_MEDARD_EN_JALLES_COPY: VilleCopy = {
           },
           {
             q: "Intervenez-vous au-delà de Saint-Médard, dans la métropole bordelaise ?",
-            a: "Oui. Nous intervenons dans vos locaux à Saint-Médard-en-Jalles, partout en France.",
+            a: "Oui. Saint-Médard-en-Jalles est la commune la plus étendue de Bordeaux Métropole ; nous intervenons aussi à Bordeaux, Mérignac, Le Haillan, Martignas-sur-Jalle et sur l'ensemble de l'OIM Aéroparc.",
           },
         ],
         guarantees:

@@ -49,7 +49,7 @@ export const SAINT_GENIS_LES_OLLIERES_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Saint-Genis-les-Ollières et ouest lyonnais ?",
-      a: "Nous intervenons partout en France, sur place ou à distance.",
+      a: "Oui. Nous intervenons à Saint-Genis-les-Ollières et dans tout l'ouest lyonnais (Craponne, Grézieu-la-Varenne, Tassin), sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les professions libérales ?",

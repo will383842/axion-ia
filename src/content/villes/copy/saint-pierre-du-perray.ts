@@ -49,7 +49,7 @@ export const SAINT_PIERRE_DU_PERRAY_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Saint-Pierre-du-Perray ?",
-      a: "Nous intervenons dans vos locaux à Saint-Pierre-du-Perray, partout en France.",
+      a: "Oui. Nous intervenons à Saint-Pierre-du-Perray et dans tout le bassin Évry-Sénart, notamment à Évry-Courcouronnes et Corbeil-Essonnes.",
     },
     {
       q: "Travaillez-vous avec les TPE artisans BTP de Saint-Pierre-du-Perray ?",

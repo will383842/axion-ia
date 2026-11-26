@@ -49,7 +49,7 @@ export const YZEURE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Yzeure et agglomération Moulins ?",
-      a: "Nous intervenons partout en France, sur place ou à distance.",
+      a: "Oui. Axion-IA intervient à Yzeure et dans toute l'agglomération moulinoise (Moulins, Avermes, Toulon-sur-Allier), sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les éleveurs charolais ?",

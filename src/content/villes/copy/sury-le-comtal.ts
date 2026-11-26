@@ -49,7 +49,7 @@ export const SURY_LE_COMTAL_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Sury-le-Comtal et Loire Forez Agglo ?",
-      a: "Nous intervenons partout en France, sur place ou à distance.",
+      a: "Oui. Axion-IA intervient à Sury-le-Comtal et dans toute Loire Forez Agglo, notamment à Saint-Just-Saint-Rambert, Andrézieux-Bouthéon, Montbrison et Feurs.",
     },
     {
       q: "Travaillez-vous avec les PME tertiaires foréziennes ?",

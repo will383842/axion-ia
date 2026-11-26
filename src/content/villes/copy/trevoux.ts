@@ -49,7 +49,7 @@ export const TREVOUX_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Trévoux et val de Saône Ain ?",
-      a: "Nous intervenons partout en France, sur place ou à distance.",
+      a: "Oui, Axion-IA intervient à Trévoux et dans tout le val de Saône Ain (Reyrieux, Jassans-Riottier, Villefranche). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les acteurs tourisme patrimoine Dombes ?",

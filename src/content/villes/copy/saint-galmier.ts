@@ -49,7 +49,7 @@ export const SAINT_GALMIER_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Saint-Galmier et plaine Forez ?",
-      a: "Couverture Loire Forez Agglo. Nous intervenons partout en France, sur place ou à distance.",
+      a: "Oui. Nous intervenons à Saint-Galmier et dans toute la plaine du Forez (Montrond-les-Bains, Andrézieux-Bouthéon, Sury-le-Comtal), sur place ou à distance. Couverture Loire Forez Agglo.",
     },
     {
       q: "Travaillez-vous avec la filière agroalimentaire eau minérale ?",

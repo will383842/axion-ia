@@ -65,7 +65,7 @@ export const SAINT_GIRONS_COPY: VilleCopy = {
     },
     {
       q: "Intervenez-vous à Saint-Girons ?",
-      a: "Oui. Nous intervenons dans vos locaux à Saint-Girons, partout en France, sur place ou à distance.",
+      a: "Oui. Nous intervenons sur place à Saint-Girons, comme partout en France, ou à distance, y compris en vallées de montagne.",
     },
   ],
 };

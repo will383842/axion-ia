@@ -49,7 +49,7 @@ export const SAINT_MARCELLIN_EN_FOREZ_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Saint-Marcellin-en-Forez et Loire Forez Agglo ?",
-      a: "Nous intervenons partout en France, sur place ou à distance.",
+      a: "Oui. Nous intervenons à Saint-Marcellin-en-Forez et dans toute Loire Forez Agglo (Saint-Just-Saint-Rambert, Andrézieux-Bouthéon, Montbrison), sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les PME tertiaires foréziennes ?",

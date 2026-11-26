@@ -49,7 +49,7 @@ export const SAINT_MAURICE_L_EXIL_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Saint-Maurice-l'Exil et sud-Isère ?",
-      a: "Nous intervenons partout en France, sur place ou à distance.",
+      a: "Oui. Nous intervenons à Saint-Maurice-l'Exil et dans tout le sud-Isère et l'axe rhodanien : Roussillon limitrophe, Le Péage-de-Roussillon, Salaise-sur-Sanne et Vienne, comme partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les industriels et sous-traitants du bassin rhodanien ?",

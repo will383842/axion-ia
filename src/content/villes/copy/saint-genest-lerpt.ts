@@ -49,7 +49,7 @@ export const SAINT_GENEST_LERPT_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Saint-Genest-Lerpt et ouest Saint-Étienne ?",
-      a: "Nous intervenons partout en France, sur place ou à distance.",
+      a: "Oui. Nous intervenons à Saint-Genest-Lerpt et dans toute la banlieue ouest stéphanoise (Saint-Étienne, Roche-la-Molière, Firminy), sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les professions libérales genestois ?",

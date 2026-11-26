@@ -233,8 +233,8 @@ export const SAINT_NAZAIRE_COPY: VilleCopy = {
       a: "Oui. Les sous-traitants et PME de la filière naval-aéronautique de Saint-Nazaire figurent parmi nos cibles prioritaires. Nous automatisons leurs flux administratifs et reporting qualité, sans intervenir sur leurs procédés industriels ni leurs systèmes critiques.",
     },
     {
-      q: "Intervenez-vous à Saint-Nazaire ?",
-      a: "Oui. Nous intervenons dans vos locaux à Saint-Nazaire, partout en France, sur place ou à distance.",
+      q: "Intervenez-vous sur site à Saint-Nazaire ?",
+      a: "Oui. Nous intervenons dans vos locaux, des zones d'activités proches des Chantiers de l'Atlantique et d'Airbus aux PME de la presqu'île. L'observation terrain est le meilleur point de départ pour cibler des automatisations vraiment utiles.",
     },
     {
       q: "Quelles entreprises accompagnez-vous en priorité ici ?",

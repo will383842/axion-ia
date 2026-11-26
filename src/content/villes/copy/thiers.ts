@@ -49,7 +49,7 @@ export const THIERS_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Thiers et bassin coutelier ?",
-      a: "Nous intervenons dans vos locaux à Thiers, partout en France.",
+      a: "Oui. Axion-IA intervient à Thiers et dans tout le bassin coutelier, notamment à Clermont-Ferrand et Vichy.",
     },
     {
       q: "Travaillez-vous avec les couteliers et métallurgistes ?",

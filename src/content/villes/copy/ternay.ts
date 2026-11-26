@@ -53,7 +53,7 @@ export const TERNAY_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Ternay et dans le sud lyonnais ?",
-      a: "Nous intervenons partout en France, sur place ou à distance.",
+      a: "Oui. Axion-IA intervient à Ternay et dans tout le sud de la métropole de Lyon, sur l'axe Vienne, notamment à Communay, Grigny, Givors et Vienne.",
     },
     {
       q: "Travaillez-vous avec les PME logistiques et industrielles de Ternay ?",

@@ -231,8 +231,8 @@ export const SAINT_MAUR_DES_FOSSES_COPY: VilleCopy = {
       a: "Les interventions Axion-IA à Saint-Maur-des-Fossés démarrent à {{price:intervention-4h|flat}}, l'Audit sur place 4h à {{price:audit-flash|flat}}, et l'implémentation à {{price:impl-poc|entry}}. Tous les tarifs publics figurent sur axion-ia.com.",
     },
     {
-      q: "Intervenez-vous à Saint-Maur-des-Fossés ?",
-      a: "Oui. Nous intervenons dans vos locaux à Saint-Maur-des-Fossés, partout en France, sur place ou à distance.",
+      q: "Sous quel délai Axion-IA intervient-il à Saint-Maur-des-Fossés ?",
+      a: "Nous intervenons à Saint-Maur-des-Fossés sous 5 jours ouvrés après signature du devis, dans n'importe lequel des quartiers (Vieux Saint-Maur, La Varenne, Adamville). Cadrage en visioconférence possible sous 48 h.",
     },
     {
       q: "Axion-IA intervient-il dans les communes proches de Saint-Maur-des-Fossés ?",

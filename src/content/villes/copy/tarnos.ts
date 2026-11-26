@@ -64,8 +64,8 @@ export const TARNOS_COPY: VilleCopy = {
       a: "Pour les TPE artisans BTP et commerçants à Tarnos, audit sur place {{price:audit-flash|flat}}, coaching 1-to-1, intervention formation 1 journée. Cas typiques : automatisation devis, agents IA prise de RDV, gestion stocks, facturation automatisée.",
     },
     {
-      q: "Intervenez-vous à Tarnos ?",
-      a: "Oui. Nous intervenons dans vos locaux à Tarnos, partout en France, sur place ou à distance.",
+      q: "Comment se déroule une mission à Tarnos ?",
+      a: "Nous intervenons partout en France, sur place ou à distance, en zone industrielle ou au bureau.",
     },
   ],
 };

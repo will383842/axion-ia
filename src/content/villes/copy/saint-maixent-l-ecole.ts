@@ -65,7 +65,7 @@ export const SAINT_MAIXENT_L_ECOLE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA sur site à Saint-Maixent ?",
-      a: "Mission sur site dans vos locaux.",
+      a: "Nous intervenons à Saint-Maixent-l'École. Mission sur site dans vos locaux.",
     },
   ],
 };

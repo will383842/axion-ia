@@ -49,7 +49,7 @@ export const SAINT_GENIS_POUILLY_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Saint-Genis-Pouilly et pays de Gex ?",
-      a: "Nous intervenons partout en France, sur place ou à distance.",
+      a: "Oui. Nous intervenons à Saint-Genis-Pouilly et dans tout le pays de Gex (Ferney-Voltaire, Gex, Divonne-les-Bains, Prévessin-Moëns), sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les PME technologiques proximité CERN ?",

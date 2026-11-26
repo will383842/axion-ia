@@ -119,7 +119,7 @@ export const SAINT_MICHEL_SUR_ORGE_COPY: VilleCopy = {
           },
           {
             q: "Pouvez-vous outiller les artisans du BTP locaux ?",
-            a: "Oui. Nous intervenons dans vos locaux, partout en France. La construction pèse près de 10 % de l'emploi à Saint-Michel-sur-Orge et les artisans-commerçants représentent 5,3 % des actifs.",
+            a: "Oui. La construction pèse près de 10 % de l'emploi à Saint-Michel-sur-Orge et les artisans-commerçants représentent 5,3 % des actifs. On développe des devis assistés par IA, des plannings de chantiers, du suivi photo et des relances automatisées, branchés sur vos logiciels de compta et ERP existants, accessibles depuis le terrain en mobile, le long de l'Orge comme sur vos chantiers.",
           },
           {
             q: "Quels secteurs michellois gagnent le plus à un site avec IA ?",
@@ -205,7 +205,7 @@ export const SAINT_MICHEL_SUR_ORGE_COPY: VilleCopy = {
           },
           {
             q: "Pouvez-vous outiller les artisans du BTP locaux ?",
-            a: "Oui. Nous intervenons dans vos locaux, partout en France. La construction pèse près de 10 % de l'emploi à Saint-Michel-sur-Orge et les artisans-commerçants représentent 5,3 % des actifs.",
+            a: "Oui. La construction pèse près de 10 % de l'emploi à Saint-Michel-sur-Orge et les artisans-commerçants représentent 5,3 % des actifs. On développe des devis assistés par IA, des plannings de chantiers, du suivi photo et des relances automatisées, branchés sur vos logiciels de compta et ERP existants, accessibles depuis le terrain en mobile, le long de l'Orge comme sur vos chantiers.",
           },
           {
             q: "Quels secteurs michellois gagnent le plus à un site avec IA ?",

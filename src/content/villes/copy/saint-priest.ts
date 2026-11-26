@@ -233,8 +233,8 @@ export const SAINT_PRIEST_COPY: VilleCopy = {
       a: "Oui. Les sous-traitants industriels et PME mécaniques de Saint-Priest et de l'est lyonnais figurent parmi nos cibles prioritaires. Nous automatisons leurs flux administratifs et leur reporting, sans intervenir sur leurs lignes de production.",
     },
     {
-      q: "Intervenez-vous à Saint-Priest ?",
-      a: "Oui. Nous intervenons dans vos locaux à Saint-Priest, partout en France, sur place ou à distance.",
+      q: "Intervenez-vous sur site à Saint-Priest ?",
+      a: "Oui. Nous intervenons dans vos locaux, des zones industrielles au Parc Technologique de Lyon. L'audit terrain reste le meilleur moyen de cibler des automatisations réellement utiles à votre métier.",
     },
     {
       q: "Accompagnez-vous les PME tech du Parc Technologique de Lyon ?",

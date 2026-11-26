@@ -49,7 +49,7 @@ export const TRIEL_SUR_SEINE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Triel-sur-Seine et bords de Seine ?",
-      a: "Nous intervenons dans vos locaux à Triel-sur-Seine, partout en France.",
+      a: "Oui, Axion-IA intervient à Triel-sur-Seine et dans les communes voisines des bords de Seine (Poissy, Cergy-Pontoise).",
     },
     {
       q: "Travaillez-vous avec les PME conseil et ingénierie de Triel ?",
