@@ -10,7 +10,7 @@
  * V2 (derrière CONTENT_EQUIPE_EDITORIALE) : catalogue construit depuis les
  * pathnames du routage i18n, les villes et les articles publiés fournis par
  * l'appelant. Ordre de priorité : Journée IA, hubs statiques, pages villes,
- * articles proches, puis autres pages de premier niveau. Éteint : V1 inchangée.
+ * articles proches. Éteint : V1 inchangée.
  */
 
 import { routing } from "@/i18n/routing";

@@ -1,4 +1,4 @@
-import { describe, it, expect, afterEach } from "vitest";
+import { describe, it, expect, afterEach, beforeEach } from "vitest";
 import {
   construireCatalogueDynamique,
   getCatalogue,
@@ -12,6 +12,10 @@ const sources = {
   villes: [{ slug: "lyon", nameFr: "Lyon" }],
   articles: [{ slug: "audit-cabinets-comptables", title: "Audit IA des cabinets comptables" }],
 };
+
+beforeEach(() => {
+  delete process.env["CONTENT_EQUIPE_EDITORIALE"];
+});
 
 afterEach(() => {
   delete process.env["CONTENT_EQUIPE_EDITORIALE"];
