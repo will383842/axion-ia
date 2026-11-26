@@ -1,7 +1,7 @@
 /**
  * KB sectorielle — Verticale Audits IA (P4 Sprint P1 KB pilote 2026-05-21).
  *
- * 60 facts vérifiés sourcés sur l'audit IA en entreprise France.
+ * Fiches sourcées (60 à l'origine, voir ci-dessous) sourcés sur l'audit IA en entreprise France.
  * Sources : INSEE, BPI France, DARES, France Num, Numeum (ex-Syntec Numérique), CGPME,
  *           ANSSI, CNIL, AI Act eur-lex.europa.eu, AFNOR, ISO.
  *
@@ -43,6 +43,15 @@ export const KB_AUDITS: readonly KbFact[] = [
     verifiedAt: "2026-05-01",
     verticales: ["audits"],
     confidence: 0.95,
+  },
+  {
+    id: "audit-004",
+    text: "Le RGPD (Règlement UE 2016/679) exige une DPIA (Data Protection Impact Assessment) pour tout traitement IA à grande échelle impliquant des données personnelles — y compris les outils RH et CRM.",
+    source: "CNIL — Guide DPIA 2023",
+    sourceUrl: "https://www.cnil.fr/fr/intelligence-artificielle",
+    verifiedAt: "2026-05-01",
+    verticales: ["audits"],
+    confidence: 0.98,
   },
   {
     id: "audit-006",
@@ -287,6 +296,15 @@ export const KB_AUDITS: readonly KbFact[] = [
     confidence: 0.85,
   },
   // ── Outils, méthodologies, frameworks d'audit ─────────────────────────────
+  {
+    id: "audit-041",
+    text: "L'AFNOR Spec 2213 (mars 2024) propose un référentiel français pour l'audit d'IA frugale : critères d'évaluation environnementale, métriques de consommation énergétique et empreinte carbone des modèles.",
+    source: "AFNOR — Spec 2213:2024 IA frugale",
+    sourceUrl: "https://www.afnor.org",
+    verifiedAt: "2026-05-22",
+    verticales: ["audits"],
+    confidence: 0.9,
+  },
   {
     id: "audit-042",
     text: "Le LNE (Laboratoire national de métrologie) a publié en 2024 le premier référentiel français de certification IA : LNE Certif IA évalue 60 critères répartis sur conception, entraînement, déploiement et maintenance.",

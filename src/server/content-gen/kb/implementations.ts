@@ -1,7 +1,7 @@
 /**
  * KB sectorielle — Verticale Implémentations IA (P6 2026-05-22).
  *
- * 78 facts vérifiés sur les implémentations IA en entreprise France.
+ * Fiches sourcées (78 à l'origine, voir ci-dessous) sur les implémentations IA en entreprise France.
  * Sources : McKinsey, Gartner, Forrester, BPI France, DGE, Numeum (ex-Syntec Numérique),
  *           AI Act EUR-Lex, France Num, OCDE, Axion-IA terrain.
  *
@@ -252,56 +252,11 @@ export const KB_IMPLEMENTATIONS: readonly KbFact[] = [
     confidence: 0.92,
   },
   // ── Taux d'échec projets IA ───────────────────────────────────────────────
-  {
-    id: "impl-033",
-    text: "Gartner estime que 70 % des projets IA en entreprise n'atteignent pas la production en 2024 — principalement à cause du manque de qualité des données (42 %), de l'absence de sponsor exécutif (31 %) et d'une définition floue du ROI attendu (27 %).",
-    source: "Gartner — AI Project Failure Rates and Mitigation Strategies 2024",
-    sourceUrl: "https://www.gartner.com/en/information-technology/insights",
-    verifiedAt: "2026-05-22",
-    verticales: ["implementations"],
-    confidence: 0.83,
-  },
   // ── Durée implémentation IA PME ────────────────────────────────────────────
-  {
-    id: "impl-035",
-    text: "La durée moyenne d'implémentation IA pour une PME française (10 à 249 salariés) est de 6 à 18 mois selon la complexité — les projets de chatbot simple prennent 2 à 3 mois, les projets d'automatisation complète de processus 9 à 18 mois (McKinsey SME AI Survey France 2024).",
-    source: "McKinsey — SME AI Implementation Survey France 2024",
-    sourceUrl: "https://www.mckinsey.com/capabilities/quantumblack/our-insights",
-    verifiedAt: "2026-05-22",
-    verticales: ["implementations"],
-    confidence: 0.79,
-  },
-  {
-    id: "impl-036",
-    text: "Les projets IA dépassant 12 mois de déploiement ont 3 fois plus de risques d'abandon que ceux menés en moins de 6 mois — justifiant l'approche par sprints courts et MVP fonctionnels d'Axion-IA.",
-    source: "Gartner — Agile AI Implementation Best Practices 2024",
-    sourceUrl: "https://www.gartner.com/en/information-technology/insights",
-    verifiedAt: "2026-05-22",
-    verticales: ["implementations"],
-    confidence: 0.79,
-  },
   // ── ROI implémentation IA 12-24 mois ──────────────────────────────────────
-  {
-    id: "impl-037",
-    text: "McKinsey (2024) indique que les entreprises ayant implémenté l'IA dans leurs processus de vente constatent une augmentation de 10 à 20 % de leur chiffre d'affaires et une réduction de 15 à 30 % de leurs coûts de vente sur 24 mois.",
-    source: "McKinsey — AI in Sales: Quantifying the Business Impact 2024",
-    sourceUrl: "https://www.mckinsey.com/capabilities/growth-marketing-and-sales/our-insights",
-    verifiedAt: "2026-05-22",
-    verticales: ["implementations"],
-    confidence: 0.82,
-  },
   // ── Secteurs leaders adoption IA ──────────────────────────────────────────
   // ── Budget projets IA PME ──────────────────────────────────────────────────
   // ── Technos dominantes ────────────────────────────────────────────────────
-  {
-    id: "impl-044",
-    text: "Les technologies IA les plus déployées en entreprise française en 2024 selon Gartner : (1) LLM/IA générative (67 %), (2) NLP/traitement du langage naturel (54 %), (3) Computer Vision (38 %), (4) Machine Learning classique (36 %), (5) Robotic Process Automation + IA (29 %).",
-    source: "Gartner — Enterprise AI Technology Adoption France 2024",
-    sourceUrl: "https://www.gartner.com/en/information-technology/insights",
-    verifiedAt: "2026-05-22",
-    verticales: ["implementations"],
-    confidence: 0.8,
-  },
   // ── Barrières adoption ────────────────────────────────────────────────────
   // ── Rôle intégrateurs et ESN ──────────────────────────────────────────────
   // ── AI Act et impact projets ──────────────────────────────────────────────
@@ -325,15 +280,6 @@ export const KB_IMPLEMENTATIONS: readonly KbFact[] = [
     confidence: 0.94,
   },
   // ── Cas d'usage ROI-positifs ───────────────────────────────────────────────
-  {
-    id: "impl-053",
-    text: "L'automatisation de la rédaction de propositions commerciales via LLM réduit de 70 % le temps consacré par les commerciaux à cette tâche — tout en améliorant la personnalisation et la cohérence des offres (McKinsey, Sales AI Impact Study 2024).",
-    source: "McKinsey — Sales AI Impact Study 2024",
-    sourceUrl: "https://www.mckinsey.com/capabilities/growth-marketing-and-sales/our-insights",
-    verifiedAt: "2026-05-22",
-    verticales: ["implementations"],
-    confidence: 0.8,
-  },
   // ── Architecture données ──────────────────────────────────────────────────
   {
     id: "impl-055",
@@ -343,15 +289,6 @@ export const KB_IMPLEMENTATIONS: readonly KbFact[] = [
     verifiedAt: "2026-05-22",
     verticales: ["implementations"],
     confidence: 0.94,
-  },
-  {
-    id: "impl-056",
-    text: "Un data lake bien structuré (données centralisées, formatées et documentées) divise par 3 le temps de développement d'un projet IA — les entreprises qui investissent dans leur architecture données avant l'IA réduisent leur coût global de projet de 40 % en moyenne.",
-    source: "Gartner — Data Architecture and AI Project Economics 2024",
-    sourceUrl: "https://www.gartner.com/en/information-technology/insights",
-    verifiedAt: "2026-05-22",
-    verticales: ["implementations"],
-    confidence: 0.78,
   },
   {
     id: "impl-057",
@@ -408,26 +345,8 @@ export const KB_IMPLEMENTATIONS: readonly KbFact[] = [
     confidence: 0.91,
   },
   // ── Nouvelles tendances implémentation ────────────────────────────────────
-  {
-    id: "impl-064",
-    text: "Les agents IA autonomes (Agentic AI) capables d'exécuter des tâches complexes en plusieurs étapes sans intervention humaine représentent la prochaine vague d'implémentation IA en entreprise — Gartner prévoit qu'ils représenteront 40 % des déploiements IA en PME d'ici 2027.",
-    source: "Gartner — Agentic AI in Enterprise 2024",
-    sourceUrl: "https://www.gartner.com/en/information-technology/insights",
-    verifiedAt: "2026-05-22",
-    verticales: ["implementations"],
-    confidence: 0.76,
-  },
   // ── OCDE et compétitivité ─────────────────────────────────────────────────
   // ── Implémentation IA dans les RH ─────────────────────────────────────────
-  {
-    id: "impl-067",
-    text: "L'IA appliquée au recrutement (tri automatique de CV, scoring des candidats, entretiens assistés) réduit le temps de recrutement de 40 % en moyenne et améliore la qualité des recrues de 28 % — à condition d'auditer régulièrement les biais du modèle (Gartner HR AI Survey 2024).",
-    source: "Gartner — AI in HR and Talent Acquisition 2024",
-    sourceUrl: "https://www.gartner.com/en/human-resources/insights",
-    verifiedAt: "2026-05-22",
-    verticales: ["implementations"],
-    confidence: 0.79,
-  },
   // ── Implémentation IA finance ─────────────────────────────────────────────
   // ── Preuve sociale Axion-IA ───────────────────────────────────────────────
   {

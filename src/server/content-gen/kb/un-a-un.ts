@@ -1,7 +1,7 @@
 /**
  * KB sectorielle — Verticale Coaching 1-to-1 / Un-à-un (P6 2026-05-22).
  *
- * 59 facts vérifiés sur le coaching individuel IA pour CEO/fondateurs/managers.
+ * Fiches sourcées (59 à l'origine, voir ci-dessous) sur le coaching individuel IA pour CEO/fondateurs/managers.
  * Sources : ICF France, Syntec Conseil, BPI France, Harvard Business Review,
  *           OCDE, Axion-IA terrain.
  *
@@ -264,15 +264,6 @@ export const KB_UN_A_UN: readonly KbFact[] = [
     confidence: 0.95,
   },
   // ── Gap compétences IA au niveau C-level ─────────────────────────────────
-  {
-    id: "ua-030",
-    text: "McKinsey (2024) identifie le manque de compétences IA au niveau du management intermédiaire comme le principal frein à la mise en œuvre des stratégies IA en entreprise — cité par 58 % des CXO interrogés dans 15 pays.",
-    source: "McKinsey — State of AI in Business, 2024",
-    sourceUrl: "https://www.mckinsey.com/capabilities/quantumblack/our-insights",
-    verifiedAt: "2026-05-22",
-    verticales: ["un_a_un"],
-    confidence: 0.83,
-  },
   // ── Durée et structure des accompagnements ────────────────────────────────
   // ── ROI coaching individuel IA ────────────────────────────────────────────
   // ── Méthodologies coaching IA ─────────────────────────────────────────────
@@ -326,15 +317,6 @@ export const KB_UN_A_UN: readonly KbFact[] = [
     confidence: 0.93,
   },
   // ── Coaching et gestion du changement ────────────────────────────────────
-  {
-    id: "ua-048",
-    text: "McKinsey (2024) identifie que les transformations IA échouent dans 68 % des cas non pas pour des raisons technologiques, mais pour des facteurs humains et organisationnels — positionnant le coaching dirigeant comme un investissement de prévention d'échec.",
-    source: "McKinsey — Why AI transformations fail, 2024",
-    sourceUrl: "https://www.mckinsey.com/capabilities/quantumblack/our-insights",
-    verifiedAt: "2026-05-22",
-    verticales: ["un_a_un"],
-    confidence: 0.85,
-  },
   {
     id: "ua-049",
     text: "Les sessions de coaching 1-to-1 Axion-IA n'utilisent aucun outil IA pour traiter les informations confidentielles partagées par le coaché — les conversations sont enregistrées uniquement avec consentement écrit et les données stockées sur serveurs souverains français.",

@@ -18,8 +18,12 @@ interface FaitVerifiable {
 /** Texte débarrassé des nombres qui ne sont pas des statistiques (années, références de textes). */
 function sansNombresDeReference(texte: string): string {
   return texte
-    .replace(/\b(19|20)\d{2}\b/g, "")
     .replace(/\d{4}\/\d+/g, "")
+    .replace(/\b(19|20)\d{2}\b/g, "")
+    .replace(/\bAFNOR\s+Spec\s+\d+/gi, "")
+    .replace(/\b(Lyon|Paris|Aix-Marseille|Grenoble)\s+\d\b/g, "")
+    .replace(/\b\w+\s+\d\.0\b/g, "")
+    .replace(/\bS\d+E\d+\b/g, "")
     .replace(/ISO(\/IEC)?\s?\d+(:\d+)?/g, "")
     .replace(/\b(article|articles|annexe|art\.)\s?\d+[\w.()]*/gi, "")
     .replace(/\b(v|version)\s?\d+(\.\d+)*/gi, "")
@@ -27,9 +31,17 @@ function sansNombresDeReference(texte: string): string {
     .replace(/\b(GPT|Claude|Llama|H)-?\s?\d[\w.]*/g, "");
 }
 
+/** Quantités écrites en lettres (« multiplié par quatre », « deux fois plus »). */
+const QUANTITE_EN_LETTRES =
+  /\b(multipli[\wéè]+|divis[\wéè]+)\s+par\b|\b(deux|trois|quatre|cinq|six|sept|huit|neuf|dix|cent|mille)\s+fois\b|\b(doubl\w+|tripl\w+|moiti[ée])\b/i;
+
 export function contientUnChiffre(texte: string): boolean {
-  return /\d/.test(sansNombresDeReference(texte));
+  return /\d/.test(sansNombresDeReference(texte)) || QUANTITE_EN_LETTRES.test(texte);
 }
+
+/** Derniers segments qui désignent une liste ou une rubrique, jamais un document. */
+const SEGMENTS_GENERIQUES =
+  /^(insights?|our-insights|blog|research|recherche|publications?|resources?|ressources|reports?|rapports?|news|actualites|centre-de-recherche|solutions|capabilities|industries|topics)$/i;
 
 export function estFaitAxion(fait: FaitVerifiable): boolean {
   return /axion-ia/i.test(fait.source) || /axion-ia\.com/.test(fait.sourceUrl);
@@ -38,7 +50,7 @@ export function estFaitAxion(fait: FaitVerifiable): boolean {
 /**
  * Adresse « profonde » : elle désigne un document ou une page précise, pas un accueil ni une
  * rubrique générale. Profonde si : 3 segments de chemin ou plus, ou paramètres/ancre, ou
- * dernier segment avec un chiffre, une extension .html/.pdf ou un titre (≥ 3 mots à tirets).
+ * dernier segment non générique (liste, rubrique, blog…) avec un chiffre, une extension .html/.pdf ou un titre (≥ 3 mots à tirets).
  */
 export function aAdresseProfonde(url: string): boolean {
   let u: URL;
@@ -49,6 +61,7 @@ export function aAdresseProfonde(url: string): boolean {
   }
   const segments = u.pathname.split("/").filter(Boolean);
   const dernier = segments[segments.length - 1] ?? "";
+  if (SEGMENTS_GENERIQUES.test(dernier)) return false;
   return (
     segments.length >= 3 ||
     u.search !== "" ||

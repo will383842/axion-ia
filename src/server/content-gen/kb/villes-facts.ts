@@ -1,7 +1,7 @@
 /**
  * KB sectorielle — Villes françaises + AI Act + ROI IA (Sprint A Ville DRY 2026-05-25).
  *
- * 180 facts répartis en 3 catégories :
+ * Fiches (180 à l'origine) réparties en 3 catégories :
  *   - ville_economy (100) : données démographiques et écosystèmes tech des villes françaises
  *   - ai_act (30) : Règlement UE 2024/1689 — obligations, calendrier, classification
  *   - roi_ia (50) : études publiques McKinsey/Gartner/Forrester/BCG/IDC/OCDE
@@ -19,7 +19,7 @@
 import type { KbFact } from "./audits";
 
 // ---------------------------------------------------------------------------
-// VILLE ECONOMY (100 facts)
+// VILLE ECONOMY (100 fiches à l'origine)
 // ---------------------------------------------------------------------------
 
 export const KB_VILLES_ECONOMY: readonly KbFact[] = [
@@ -51,6 +51,15 @@ export const KB_VILLES_ECONOMY: readonly KbFact[] = [
     verifiedAt: "2026-05-25",
     verticales: ["villes"],
     confidence: 0.95,
+  },
+  {
+    id: "ville-010",
+    text: "Lyon abrite l'École Normale Supérieure de Lyon, l'Université Claude Bernard Lyon 1 et l'INSA Lyon, formant un vivier de talents tech et scientifiques alimentant l'écosystème IA local.",
+    source: "Université de Lyon — Données 2024",
+    sourceUrl: "https://www.universite-lyon.fr",
+    verifiedAt: "2026-05-25",
+    verticales: ["villes"],
+    confidence: 0.92,
   },
   // MARSEILLE
   {
@@ -330,6 +339,15 @@ export const KB_VILLES_ECONOMY: readonly KbFact[] = [
     verticales: ["villes"],
     confidence: 0.93,
   },
+  {
+    id: "ville-058",
+    text: "Clermont-Ferrand accueille Vichy-Auvergne-Innovations et un écosystème industriel 4.0 centré sur le pneu intelligent, la mobilité et les matériaux avancés. Michelin y expérimente l'IA pour l'optimisation de ses processus de fabrication.",
+    source: "Michelin — Rapport développement durable 2023",
+    sourceUrl: "https://www.michelin.com",
+    verifiedAt: "2026-05-25",
+    verticales: ["villes"],
+    confidence: 0.8,
+  },
   // METZ
   {
     id: "ville-059",
@@ -377,6 +395,15 @@ export const KB_VILLES_ECONOMY: readonly KbFact[] = [
     verifiedAt: "2026-05-25",
     verticales: ["villes"],
     confidence: 0.93,
+  },
+  {
+    id: "ville-064",
+    text: "Tours accueille le pôle de compétitivité S2E2 (Smart Electricity Cluster) spécialisé en énergie électrique intelligente et compte des acteurs en IoT industriel et smart grid, profitant de la proximité avec les centrales nucléaires de la Loire.",
+    source: "S2E2 — Chiffres clés 2024",
+    sourceUrl: "https://www.s2e2.fr",
+    verifiedAt: "2026-05-25",
+    verticales: ["villes"],
+    confidence: 0.82,
   },
   // CAEN
   {
@@ -670,7 +697,7 @@ export const KB_VILLES_ECONOMY: readonly KbFact[] = [
 ];
 
 // ---------------------------------------------------------------------------
-// AI ACT (30 facts)
+// AI ACT (30 fiches à l'origine)
 // ---------------------------------------------------------------------------
 
 export const KB_AI_ACT: readonly KbFact[] = [
@@ -945,7 +972,7 @@ export const KB_AI_ACT: readonly KbFact[] = [
 ];
 
 // ---------------------------------------------------------------------------
-// ROI IA (50 facts)
+// ROI IA (50 fiches à l'origine)
 // ---------------------------------------------------------------------------
 
 export const KB_ROI_IA: readonly KbFact[] = [
@@ -1045,15 +1072,6 @@ export const KB_ROI_IA: readonly KbFact[] = [
     confidence: 0.85,
   },
   {
-    id: "roi-ia-017",
-    text: "Une étude Capgemini (2024) révèle que les entreprises avec une stratégie IA mature affichent une croissance de revenus 2x supérieure et une satisfaction client 30 % plus élevée que la moyenne de leur secteur.",
-    source: "Capgemini Research Institute — AI and the Competitive Advantage 2024",
-    sourceUrl: "https://www.capgemini.com/fr-fr/solutions/centre-de-recherche/",
-    verifiedAt: "2026-05-25",
-    verticales: ["implementations"],
-    confidence: 0.8,
-  },
-  {
     id: "roi-ia-018",
     text: "L'IA appliquée au recrutement permet de réduire le temps de screening des CVs de 75 % et le coût par embauche de 30-40 %, selon des études LinkedIn et Workday (2024). Cependant, ces outils entrent dans le périmètre haut risque de l'AI Act.",
     source: "LinkedIn — Future of Recruiting 2024",
@@ -1077,15 +1095,6 @@ export const KB_ROI_IA: readonly KbFact[] = [
     text: "Selon une étude Boston Consulting Group (2023) sur 1 000 entreprises, les 10 % d'entreprises les plus avancées en IA génèrent 3x plus de valeur de l'IA que la médiane, soulignant l'importance d'un déploiement stratégique vs tactique.",
     source: "BCG — Winning with AI 2023",
     sourceUrl: "https://www.bcg.com/publications/2023/winning-with-ai",
-    verifiedAt: "2026-05-25",
-    verticales: ["implementations"],
-    confidence: 0.85,
-  },
-  {
-    id: "roi-ia-025",
-    text: "L'IA de prévision de la demande réduit les surstocks de 20-40 % et les ruptures de stock de 30-50 % dans la grande distribution, générant des économies de 2 à 5 % du CA selon McKinsey Supply Chain Report 2023.",
-    source: "McKinsey — Supply Chain AI Report 2023",
-    sourceUrl: "https://www.mckinsey.com/capabilities/operations/our-insights",
     verifiedAt: "2026-05-25",
     verticales: ["implementations"],
     confidence: 0.85,

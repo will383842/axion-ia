@@ -1,7 +1,7 @@
 /**
  * KB sectorielle — Verticale Interventions & Formations IA (P6 2026-05-22).
  *
- * 70 facts vérifiés sur la formation IA en entreprise France.
+ * Fiches sourcées (70 à l'origine, voir ci-dessous) sur la formation IA en entreprise France.
  * Sources : BPI France, France Num, DARES, Pôle Emploi, OCDE,
  *           Numeum (ex-Syntec Numérique), CPF DREETS, Axion-IA terrain.
  *
@@ -171,15 +171,6 @@ export const KB_INTERVENTIONS_FORMATIONS: readonly KbFact[] = [
     verticales: ["interventions_formations"],
     confidence: 0.95,
   },
-  {
-    id: "form-024",
-    text: "Le prompt engineering est identifié comme la compétence IA la plus recherchée par les employeurs français en 2025, avec 3 600 offres d'emploi mentionnant ce terme contre 420 en 2023 (LinkedIn France).",
-    source: "LinkedIn France — Rapport compétences émergentes 2025",
-    sourceUrl: "https://www.linkedin.com/business/talent/blog",
-    verifiedAt: "2026-05-01",
-    verticales: ["interventions_formations"],
-    confidence: 0.8,
-  },
   // ── Chiffres macro ────────────────────────────────────────────────────────
   {
     id: "form-025",
@@ -252,16 +243,6 @@ export const KB_INTERVENTIONS_FORMATIONS: readonly KbFact[] = [
     confidence: 0.95,
   },
   // ── Durée et modalités de formation IA en France ─────────────────────────
-  {
-    id: "form-037",
-    text: "Les formations IA génèrent un gain de productivité moyen de 25 % sur les tâches administratives récurrentes, mesuré 6 mois après la formation — selon une étude McKinsey menée sur 1 200 salariés européens en 2024.",
-    source: "McKinsey — Upskilling the European Workforce, 2024",
-    sourceUrl:
-      "https://www.mckinsey.com/capabilities/people-and-organizational-performance/our-insights",
-    verifiedAt: "2026-05-22",
-    verticales: ["interventions_formations"],
-    confidence: 0.85,
-  },
   // ── Secteurs banque, assurance, retail, santé ─────────────────────────────
   // ── Alternance et reconversion ────────────────────────────────────────────
   // ── Certification des compétences IA ─────────────────────────────────────
@@ -384,15 +365,6 @@ export const KB_INTERVENTIONS_FORMATIONS: readonly KbFact[] = [
     confidence: 0.93,
   },
   // ── Marché emploi et formation IA ─────────────────────────────────────────
-  {
-    id: "form-074",
-    text: "Selon les offres d'emploi publiées en France, le nombre d'annonces mentionnant explicitement l'IA comme compétence requise a été multiplié par plus de quatre entre 2022 et 2024, ce qui signale l'urgence d'une montée en compétences.",
-    source: "France Travail — Observatoire des métiers et compétences numériques 2024",
-    sourceUrl: "https://www.francetravail.fr",
-    verifiedAt: "2026-05-22",
-    verticales: ["interventions_formations"],
-    confidence: 0.7,
-  },
   // ── Accessibilité et inclusion ────────────────────────────────────────────
   {
     id: "form-075",

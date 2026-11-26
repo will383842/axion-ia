@@ -1,7 +1,7 @@
 /**
  * KB sectorielle — Verticale Web & Digital IA / Sites Web Augmentés (P6 2026-05-22).
  *
- * 60 facts vérifiés sur la création et l'augmentation de sites web par l'IA en France.
+ * Fiches sourcées (60 à l'origine, voir ci-dessous) sur la création et l'augmentation de sites web par l'IA en France.
  * Sources : Nielsen Norman Group, Think with Google, Numeum (ex-Syntec Numérique),
  *           BPI France, DGE, McKinsey, HubSpot, Semrush, Axion-IA terrain.
  *
@@ -183,15 +183,6 @@ export const KB_SITES_WEB_AUGMENTES: readonly KbFact[] = [
   },
   // ── Chatbots et taux de conversion ────────────────────────────────────────
   // ── Adoption chatbots IA en France ────────────────────────────────────────
-  {
-    id: "web-042",
-    text: "Les chatbots IA basés sur LLM ont un taux de résolution autonome de 65 à 85 % des demandes clients, contre 30 à 45 % pour les chatbots à arbres de décision — justifiant leur coût plus élevé au déploiement initial.",
-    source: "Gartner — Conversational AI Maturity Assessment 2024",
-    sourceUrl: "https://www.gartner.com/en/information-technology/insights",
-    verifiedAt: "2026-05-22",
-    verticales: ["sites_web_augmentes"],
-    confidence: 0.79,
-  },
   // ── Time on page et engagement ─────────────────────────────────────────────
   // ── Core Web Vitals et IA ─────────────────────────────────────────────────
   {
