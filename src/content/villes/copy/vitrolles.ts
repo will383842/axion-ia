@@ -128,7 +128,7 @@ export const VITROLLES_COPY: VilleCopy = {
           },
           {
             q: "Vous déplacez-vous sur site à Vitrolles ?",
-            a: "Oui. Nous intervenons directement dans vos locaux des parcs de l'Anjoly, de Couperigne, des Estroublans ou du Griffon, accessibles par l'A7/A55 et la gare de Vitrolles, pour cadrer le projet avec vos équipes avant le développement.",
+            a: "Oui. Nous intervenons directement dans vos locaux des parcs de l'Anjoly, de Couperigne, des Estroublans ou du Griffon, comme partout en France, pour cadrer le projet avec vos équipes avant le développement.",
           },
           {
             q: "Mes données et mon site restent-ils sous mon contrôle ?",

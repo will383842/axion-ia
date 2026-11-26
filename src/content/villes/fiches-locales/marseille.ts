@@ -217,7 +217,7 @@ export const FICHE_MARSEILLE: FicheLocale = {
     },
     {
       q: "Quels acteurs institutionnels de l’innovation existent autour de Marseille ?",
-      a: "On peut citer Aix-Marseille Université, le Pôle Mer Méditerranée pour le maritime et Aktantis pour le numérique deeptech. Ils ne sont pas nos partenaires : ce sont des repères institutionnels pour situer le territoire. Pour un déplacement, l’aéroport Marseille Provence est celui de la métropole. Les liens vers chaque site officiel figurent en bas de page, avec la date de consultation.",
+      a: "On peut citer Aix-Marseille Université, le Pôle Mer Méditerranée pour le maritime et Aktantis pour le numérique deeptech. Ils ne sont pas nos partenaires : ce sont des repères institutionnels pour situer le territoire. Les liens vers chaque site officiel figurent en bas de page, avec la date de consultation.",
     },
   ],
 };

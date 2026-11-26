@@ -64,7 +64,7 @@ export const VIRY_CHATILLON_COPY: VilleCopy = {
           {
             step: "Cadrage à Viry-Châtillon",
             detail:
-              "Kick-off sur site, dans vos locaux — showroom RN7, atelier, bureau du plateau Kennedy ou bord de lac. On cartographie vos parcours réels (demande de devis auto, prise de RDV atelier, réservation nautique, commande de pièces) et on fixe le périmètre du site ou du SaaS avant toute ligne de code.",
+              "Cadrage sur site, dans vos locaux — showroom automobile, atelier, bureau du plateau Kennedy ou bord de lac. On cartographie vos parcours réels (demande de devis auto, prise de RDV atelier, réservation nautique, commande de pièces) et on fixe le périmètre du site ou du SaaS avant toute ligne de code.",
           },
           {
             step: "Conception UX/UI et contenu",
@@ -150,7 +150,7 @@ export const VIRY_CHATILLON_COPY: VilleCopy = {
           {
             step: "Framing in Viry-Châtillon",
             detail:
-              "Kick-off on site, at your premises — RN7 showroom, workshop, Kennedy plateau office or lakeside. We map your real journeys (car quote request, workshop booking, watersports reservation, parts order) and set the scope of the site or SaaS before any line of code.",
+              "Framing on site, at your premises — dealership showroom, workshop, Kennedy plateau office or lakeside. We map your real journeys (car quote request, workshop booking, watersports reservation, parts order) and set the scope of the site or SaaS before any line of code.",
           },
           {
             step: "UX/UI design and content",

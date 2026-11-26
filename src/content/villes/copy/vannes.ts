@@ -242,7 +242,7 @@ export const VANNES_COPY: VilleCopy = {
     },
     {
       q: "Intervenez-vous auprès des entreprises vannetaises ?",
-      a: "Vannes est reliée à Paris-Montparnasse par TGV, gare en centre-ville. L'aéroport Lorient Bretagne Sud et Rennes-Saint-Jacques complètent la desserte. Nous intervenons partout en France, sur place ou à distance.",
+      a: "Oui. Nous intervenons dans vos locaux à Vannes, comme partout en France, sur place ou à distance.",
     },
     {
       q: "L'Université Bretagne Sud joue-t-elle un rôle dans l'écosystème IA local ?",

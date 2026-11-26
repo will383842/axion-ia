@@ -121,7 +121,7 @@ export const TREMBLAY_EN_FRANCE_COPY: VilleCopy = {
             a: "Oui. Nous construisons des boutiques e-commerce multi-CMS (Shopify, WooCommerce, PrestaShop ou stack headless sur mesure), mobile-first, avec recommandations produit et recherche augmentées par l'IA. Idéal pour les enseignes du centre commercial Aéroville et les distributeurs de Paris-Nord 2.",
           },
           {
-            q: "Vous déplacez-vous sur site dans les zones d'activité de Tremblay-en-France ?",
+            q: "Intervenez-vous sur site dans les zones d'activité de Tremblay-en-France ?",
             a: "Oui. Nous tenons le kick-off et la recette en présentiel à Aérolians Paris, Paris-Nord 2, Garonor, Roissypôle ou Tremblay-CDG. Observer vos quais et vos écrans d'exploitation est indispensable avant de coder.",
           },
           {
@@ -207,7 +207,7 @@ export const TREMBLAY_EN_FRANCE_COPY: VilleCopy = {
             a: "Yes. We build multi-CMS e-commerce stores (Shopify, WooCommerce, PrestaShop or custom headless stack), mobile-first, with AI-augmented product recommendations and search. Ideal for Aéroville shopping center brands and Paris-Nord 2 distributors.",
           },
           {
-            q: "Do you travel on site to Tremblay-en-France business zones?",
+            q: "Do you work on site in Tremblay-en-France business zones?",
             a: "Yes. We hold the kick-off and acceptance in person at Aérolians Paris, Paris-Nord 2, Garonor, Roissypôle or Tremblay-CDG. Observing your docks and operations screens is essential before coding.",
           },
           {
