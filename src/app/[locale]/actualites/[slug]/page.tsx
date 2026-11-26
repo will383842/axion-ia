@@ -52,7 +52,8 @@ import { findArticleSlugRedirect } from "@/server/content-gen/slug-history";
 import { sanitizeContentGenHtml } from "@/server/content-gen/shared/html-sanitizer";
 import { parseFaqItems } from "@/server/content-gen/shared/faq-items";
 import { ArticleFaq } from "@/components/content-gen/ArticleFaq";
-import { ArticleSources } from "@/components/content-gen/ArticleSources";
+import { compterMotsTexte, unSeulBlocSources } from "@/server/content-gen/shared/sources-et-chapo";
+import { ArticleSources, aDesSourcesAffichables } from "@/components/content-gen/ArticleSources";
 import { ArticleKeyTakeaway } from "@/components/content-gen/ArticleKeyTakeaway";
 import { ArticleExpertQuote } from "@/components/content-gen/ArticleExpertQuote";
 import { UnsplashCredit } from "@/components/media/UnsplashCredit";
@@ -267,7 +268,7 @@ export default async function NewsArticlePage({ params }: Props) {
   }
 
   const article = t.article;
-  const wordCount = (t.bodyText ?? t.body).trim().split(/\s+/).length;
+  const wordCount = compterMotsTexte(t.bodyText ?? t.body);
   const sourceUrl = article.newsSourceUrl;
   const sourceName = article.newsSourceName;
 
@@ -363,7 +364,15 @@ export default async function NewsArticlePage({ params }: Props) {
   // fallback pour un `body` réellement dépourvu de HTML (ancien contenu legacy).
   const hasHtmlBody =
     typeof t.body === "string" && /<(h[1-6]|p|ul|ol|blockquote|table|figure|div)\b/i.test(t.body);
-  const newsBodyToc = hasHtmlBody ? buildToc(sanitizeContentGenHtml(t.body)) : null;
+  // Audit B (2026-11-26) — un seul bloc « Sources » : avant `buildToc` (sommaire).
+  const newsBodyToc = hasHtmlBody
+    ? buildToc(
+        unSeulBlocSources(
+          sanitizeContentGenHtml(t.body),
+          aDesSourcesAffichables(citations.map((c) => ({ name: c.title, url: c.url }))),
+        ),
+      )
+    : null;
   // GEO-079/081 — voir `@/lib/content/liens-internes` : les liens internes des
   // corps persistes sont ecrits sans prefixe de langue et redirigent chacun.
   const bodyHtmlFallback = newsBodyToc ? prefixerLiensInternes(newsBodyToc.html, locale) : null;

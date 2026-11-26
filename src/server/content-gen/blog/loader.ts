@@ -70,6 +70,13 @@ export interface BlogArticleView {
   readonly ogImageHeight: number | null;
   /** VIS-08 — Alt sémantique de l'image hero (image-bank). null si absent. */
   readonly featuredImageAlt: string | null;
+  /**
+   * Dimensions réelles de la hero, connues seulement pour une photo de l'image-bank
+   * (ImageAsset). null pour une photo Unsplash hotlinkée (non mesurée en base) : le
+   * JSON-LD omet alors width/height au lieu de les inventer.
+   */
+  readonly featuredImageWidth: number | null;
+  readonly featuredImageHeight: number | null;
   /** VIS-03 — Réponse directe (snippet 0 / featured snippet). null si absente. */
   readonly directAnswer: string | null;
   /** Attribution photographe (CGU Unsplash §6 — obligatoire si photo Unsplash). */
@@ -128,6 +135,8 @@ function adaptFsPostToView(post: BlogPost, locale: Locale): BlogArticleView {
     ogImageWidth: null,
     ogImageHeight: null,
     featuredImageAlt: null,
+    featuredImageWidth: null,
+    featuredImageHeight: null,
     directAnswer: null,
     photographerName: null,
     photographerUrl: null,
@@ -199,7 +208,13 @@ export async function loadBlogArticleForView(
         ? prisma.imageAsset
             .findFirst({
               where: { filePath: { contains: dbArticle.featuredImage.split("/").pop() ?? "" } },
-              select: { photographerName: true, photographerUrl: true, sourceType: true },
+              select: {
+                photographerName: true,
+                photographerUrl: true,
+                sourceType: true,
+                width: true,
+                height: true,
+              },
             })
             .catch(() => null)
         : Promise.resolve(null),
@@ -259,6 +274,8 @@ export async function loadBlogArticleForView(
       ogImageHeight: dbArticle.ogImageHeight ?? null,
       // VIS-08 — Alt sémantique image-bank (fallback titre côté page si null).
       featuredImageAlt: dbArticle.featuredImageAlt ?? null,
+      featuredImageWidth: imageAsset?.width ?? null,
+      featuredImageHeight: imageAsset?.height ?? null,
       // VIS-03 — Snippet 0 généré (fallback excerpt côté page si null).
       directAnswer: dbArticle.directAnswer ?? null,
       // CGU Unsplash §6 — attribution photographe. Priorité au crédit porté par
@@ -337,6 +354,8 @@ export async function loadBlogIndexForView(
     ogImageWidth: null,
     ogImageHeight: null,
     featuredImageAlt: a.featuredImageAlt,
+    featuredImageWidth: null,
+    featuredImageHeight: null,
     directAnswer: null,
     photographerName: null,
     photographerUrl: null,
