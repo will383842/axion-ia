@@ -3,7 +3,7 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 const { prisma, creerOuActualiser } = vi.hoisted(() => ({
   prisma: {
     garantieJourneeIa: { findMany: vi.fn() },
-    alerteSysteme: { findMany: vi.fn(), updateMany: vi.fn() },
+    alerteSysteme: { findMany: vi.fn(), updateMany: vi.fn(), update: vi.fn() },
   },
   creerOuActualiser: vi.fn(),
 }));
@@ -33,6 +33,7 @@ beforeEach(() => {
   prisma.garantieJourneeIa.findMany.mockResolvedValue([base]);
   prisma.alerteSysteme.findMany.mockResolvedValue([]);
   prisma.alerteSysteme.updateMany.mockResolvedValue({ count: 0 });
+  prisma.alerteSysteme.update.mockResolvedValue({});
   creerOuActualiser.mockResolvedValue({ id: "a" });
   vi.spyOn(console, "log").mockImplementation(() => {});
   vi.spyOn(console, "warn").mockImplementation(() => {});
@@ -79,24 +80,26 @@ describe("passerGarantiesJourneeIa", () => {
       { ...base, rapportRemisLe: d("2026-12-03") },
     ]);
     prisma.alerteSysteme.findMany.mockResolvedValue([
-      { id: "x", code: "garantie_ji_rapport", cibleId: base.id },
+      { id: "x", code: "garantie_ji_rapport", cibleId: base.id, message: "M" },
     ]);
     prisma.alerteSysteme.updateMany.mockResolvedValue({ count: 1 });
     const b = await passerGarantiesJourneeIa(MAINTENANT);
     expect(creerOuActualiser).not.toHaveBeenCalled();
     expect(b.resolues).toBe(1);
-    expect(prisma.alerteSysteme.updateMany.mock.calls[0]?.[0].where).toEqual({ id: { in: ["x"] } });
+    const u = prisma.alerteSysteme.update.mock.calls[0]?.[0];
+    expect(u.where).toEqual({ id: "x" });
+    expect(u.data.message).toBe("M [refermée par le passage quotidien]");
   });
 
   it("dossier archivé : ignoré par la requête, ses alertes ouvertes sont refermées", async () => {
     prisma.garantieJourneeIa.findMany.mockResolvedValue([]);
     prisma.alerteSysteme.findMany.mockResolvedValue([
-      { id: "y", code: "garantie_ji_reponse", cibleId: base.id },
+      { id: "y", code: "garantie_ji_reponse", cibleId: base.id, message: "M" },
     ]);
     prisma.alerteSysteme.updateMany.mockResolvedValue({ count: 1 });
     await passerGarantiesJourneeIa(MAINTENANT);
     expect(prisma.garantieJourneeIa.findMany.mock.calls[0]?.[0].where).toEqual({ archiveLe: null });
-    expect(prisma.alerteSysteme.updateMany).toHaveBeenCalledTimes(1);
+    expect(prisma.alerteSysteme.update).toHaveBeenCalledTimes(1);
   });
 
   it("garde l'alerte encore voulue, ne referme que le reste, et ne touche qu'aux trois codes", async () => {
@@ -104,7 +107,7 @@ describe("passerGarantiesJourneeIa", () => {
       { id: "ok", code: "garantie_ji_rapport", cibleId: base.id },
     ]);
     await passerGarantiesJourneeIa(MAINTENANT);
-    expect(prisma.alerteSysteme.updateMany).not.toHaveBeenCalled();
+    expect(prisma.alerteSysteme.update).not.toHaveBeenCalled();
     expect(prisma.alerteSysteme.findMany.mock.calls[0]?.[0].where.code.in).toEqual([
       "garantie_ji_rapport",
       "garantie_ji_reponse",
@@ -137,6 +140,26 @@ describe("passerGarantiesJourneeIa", () => {
     expect(rep?.message).not.toContain("réputée acceptée");
   });
 
+  it("réponse tardive saisie : plus d'alerte de réponse, l'alerte ouverte est refermée", async () => {
+    prisma.garantieJourneeIa.findMany.mockResolvedValue([
+      {
+        ...base,
+        rapportRemisLe: d("2026-09-01"),
+        demandeRecueLe: d("2026-09-20"),
+        decision: "refus",
+        decisionLe: d("2026-10-10"),
+      },
+    ]);
+    prisma.alerteSysteme.findMany.mockResolvedValue([
+      { id: "r", code: "garantie_ji_reponse", cibleId: base.id, message: "M" },
+    ]);
+    await passerGarantiesJourneeIa(new Date("2026-11-26T06:50:00Z"));
+    expect(creerOuActualiser.mock.calls.some((c) => c[0].code === "garantie_ji_reponse")).toBe(
+      false,
+    );
+    expect(prisma.alerteSysteme.update).toHaveBeenCalledTimes(1);
+  });
+
   it("table absente (P2021) : journal, sortie propre, rien d'écrit", async () => {
     prisma.garantieJourneeIa.findMany.mockRejectedValue(
       Object.assign(new Error("no table"), { code: "P2021" }),
@@ -144,7 +167,7 @@ describe("passerGarantiesJourneeIa", () => {
     const b = await passerGarantiesJourneeIa(MAINTENANT);
     expect(b.tableAbsente).toBe(true);
     expect(creerOuActualiser).not.toHaveBeenCalled();
-    expect(prisma.alerteSysteme.updateMany).not.toHaveBeenCalled();
+    expect(prisma.alerteSysteme.update).not.toHaveBeenCalled();
     expect(console.warn).toHaveBeenCalledWith(expect.stringContaining("P2021"));
   });
 

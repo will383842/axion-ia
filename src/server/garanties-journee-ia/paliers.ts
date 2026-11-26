@@ -114,7 +114,8 @@ export function alerteVoulue(
     code,
     cibleId: dossierId,
     palier,
-    niveau: NIVEAU_PAR_PALIER[palier],
+    // Hors délai (« à trancher ») : la date n'est qu'indicative, jamais plus qu'« important ».
+    niveau: e.aTrancher && palier === "depassee" ? "important" : NIVEAU_PAR_PALIER[palier],
     echeance: e.type,
     ...texteAlerte(e.type, palier, e.date, clientNom, Boolean(e.aTrancher)),
   };

@@ -7,7 +7,7 @@
  * `alertes_systeme_dedup_ouverte_uniq` l'impose — dont le niveau, le titre et le message suivent le
  * palier. Idempotence : un second passage le même jour rend les mêmes textes, `creerOuActualiser`
  * ne touche à rien et ne ré-arme aucune notification ; un NOUVEAU palier met l'alerte à jour et
- * ré-arme `notifiedAt` (un e-mail par palier, jamais deux).
+ * ré-arme `notifiedAt` (au plus un e-mail par palier de niveau « important » ou « critique », donc dès J-2 ; J-5 reste à l'écran).
  *
  * Fermeture : par ce passage seulement (codes `resolutionAuto: false`). Une alerte ouverte dont
  * l'échéance est faite, dont le dossier est archivé ou dont le palier a disparu (date corrigée) est
@@ -67,7 +67,8 @@ export async function passerGarantiesJourneeIa(
         virementLe: true,
         client: { select: { raisonSociale: true } },
       },
-      take: PLAFOND,
+      orderBy: { id: "asc" },
+      take: PLAFOND + 1,
     });
   } catch (e) {
     if (estP2021(e)) {
@@ -79,6 +80,9 @@ export async function passerGarantiesJourneeIa(
     }
     throw e;
   }
+  // PLAFOND + 1 lus : le dépassement se voit sans confondre « exactement PLAFOND » et « davantage ».
+  const tronque = dossiers.length > PLAFOND;
+  if (tronque) dossiers = dossiers.slice(0, PLAFOND);
   bilan.dossiers = dossiers.length;
 
   const voulues: AlerteVoulue[] = [];
@@ -92,7 +96,14 @@ export async function passerGarantiesJourneeIa(
       virementLe: jourIso(d.virementLe),
     };
     for (const e of calculerEcheances(donnees, aujourdhui)) {
-      const v = alerteVoulue(d.id, d.client.raisonSociale, e, aujourdhui);
+      // Une décision datée clôt l'alerte de réponse, même tardive : l'obligation qui reste est le virement.
+      const close = e.type === "reponse" && donnees.decisionLe !== null;
+      const v = alerteVoulue(
+        d.id,
+        d.client.raisonSociale,
+        { ...e, faite: e.faite || close },
+        aujourdhui,
+      );
       if (v) voulues.push(v);
     }
   }
@@ -114,17 +125,23 @@ export async function passerGarantiesJourneeIa(
   const voulu = new Set(voulues.map((v) => `${v.code}::${v.cibleId}`));
   const ouvertes = await prisma.alerteSysteme.findMany({
     where: { code: { in: [...CODES_GARANTIE_JI] }, cibleType: CIBLE_TYPE_GARANTIE, resolue: false },
-    select: { id: true, code: true, cibleId: true },
+    select: { id: true, code: true, cibleId: true, message: true },
   });
-  const aResoudre = ouvertes
-    .filter((a) => !voulu.has(`${a.code}::${a.cibleId ?? ""}`))
-    .map((a) => a.id);
-  if (aResoudre.length > 0 && dossiers.length < PLAFOND) {
-    const { count } = await prisma.alerteSysteme.updateMany({
-      where: { id: { in: aResoudre } },
-      data: { resolue: true, resolueAt: new Date() },
-    });
-    bilan.resolues = count;
+  const aResoudre = ouvertes.filter((a) => !voulu.has(`${a.code}::${a.cibleId ?? ""}`));
+  if (aResoudre.length > 0 && !tronque) {
+    // Le message est marqué : sinon une alerte refermée ici bloquerait, comme un « Résoudre » humain,
+    // la re-création au même palier si le dossier redevient actif (désarchivage, date effacée).
+    for (const a of aResoudre) {
+      await prisma.alerteSysteme.update({
+        where: { id: a.id },
+        data: {
+          resolue: true,
+          resolueAt: new Date(),
+          message: `${a.message} [refermée par le passage quotidien]`,
+        },
+      });
+      bilan.resolues++;
+    }
   }
 
   // eslint-disable-next-line no-console -- journal du worker, comme les autres passages quotidiens
