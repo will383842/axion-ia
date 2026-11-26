@@ -7,7 +7,7 @@ import { UNIFIED_TYPE_LABELS } from "@/features/admin-submissions/type-labels";
 
 // Refonte « Boîte de réception » 2026-07-29 — filtre « Catégorie ».
 //
-// Il expose `details.unifiedType`, le type fin réel (12 valeurs, cf.
+// Il expose `details.unifiedType`, le type fin réel (13 valeurs, cf.
 // UNIFIED_TYPE_LABELS).
 //
 // 🔴 Le sélecteur « Type » qui le précédait a été RETIRÉ le 2026-09-19. Il
@@ -21,6 +21,7 @@ import { UNIFIED_TYPE_LABELS } from "@/features/admin-submissions/type-labels";
 // Les deux groupes reprennent la structure du formulaire public : projet IA
 // d'un côté, autres demandes de l'autre.
 const CLIENT_UNIFIED_TYPES = [
+  "journee_ia",
   "audit",
   "implementation",
   "formation",

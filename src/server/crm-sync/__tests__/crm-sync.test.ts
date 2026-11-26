@@ -216,14 +216,16 @@ describe("frontière du contrat site → CRM", () => {
     ]);
   });
 
-  it("couvre les 12 types du formulaire unifié, qui lui envoie `data.type` tel quel", () => {
+  it("couvre les types du formulaire unifié (sauf `journee_ia`, traduit en `formation`)", () => {
     // `submitUnifiedContactAction` passe `formType: data.type` sans traduction :
     // un type ajouté au formulaire et absent du contrat serait refusé par le CRM.
+    // Exception : `journee_ia` (absent du miroir CRM) part sous `formation`,
+    // cf. `crmFormTypeFor` dans `features/unified-contact/actions.ts`.
     const manquants = UNIFIED_CONTACT_TYPES.filter(
       (t) => !(CRM_FORM_TYPES as readonly string[]).includes(t),
     );
 
-    expect(manquants).toEqual([]);
+    expect(manquants).toEqual(["journee_ia"]);
   });
 });
 
