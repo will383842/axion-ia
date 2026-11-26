@@ -392,4 +392,27 @@ describe("Orchestrator — per-campaign dailyArticles budget (Phase 4)", () => {
     const createArg: any = contentGenJobCreateMock.mock.calls[0]?.[0];
     expect(["marseille", "toulouse"]).toContain(createArg?.data?.anchorVilleSlug);
   });
+
+  it("national sans ancres → file globale des villes (« partout en France »)", async () => {
+    const campaign = makeCampaign({
+      villeScopeMode: "global_queue",
+      customVilleSlugs: [],
+      anchorVilleSlugs: [],
+      scope: "national",
+      dailyArticles: 96,
+    });
+    campaignFindManyMock.mockResolvedValue([campaign]);
+    cityGenerationOrderFindManyMock.mockResolvedValue([
+      { villeSlug: "marseille" },
+      { villeSlug: "toulouse" },
+    ]);
+
+    const fn = getProcessor();
+    await fn(MOCK_JOB);
+
+    expect(cityGenerationOrderFindManyMock).toHaveBeenCalled();
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const createArg: any = contentGenJobCreateMock.mock.calls[0]?.[0];
+    expect(["marseille", "toulouse"]).toContain(createArg?.data?.anchorVilleSlug);
+  });
 });

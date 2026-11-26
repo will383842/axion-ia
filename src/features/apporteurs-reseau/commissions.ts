@@ -30,6 +30,11 @@ import { urlDossier } from "./jeton";
 import { signalerErreurReseau } from "./signaler";
 import {
   calculerCommission,
+  commissionJourneeIaCents,
+  PALIER_JOURNEE_IA,
+  PRIX_REFERENCE_JOURNEE_IA_CENTS,
+  quantiteSessions,
+  type CalculCommission,
   etatVigilance,
   euros,
   PALIER_CONFERENCE,
@@ -274,7 +279,11 @@ export async function qualifierCommission(
   quantite: number = 1,
   maintenant: Date = new Date(),
 ): Promise<{ ok: true; montantCents: number } | { ok: false; message: string }> {
-  if (palier !== PALIER_CONFERENCE && !PALIERS_FORMATION.some((p) => p.id === palier))
+  if (
+    palier !== PALIER_CONFERENCE &&
+    palier !== PALIER_JOURNEE_IA &&
+    !PALIERS_FORMATION.some((p) => p.id === palier)
+  )
     return { ok: false, message: "Palier inconnu." };
   const c = await prisma.commissionApporteur.findUnique({
     where: { id },
@@ -291,14 +300,26 @@ export async function qualifierCommission(
   if (!c) return { ok: false, message: "Commission introuvable." };
   if (c.statut !== "a_qualifier" || c.parrainage)
     return { ok: false, message: "Cette commission n'est pas à qualifier." };
-  if (c.activite !== "formation" && c.activite !== "conference")
+  const journeeIa = palier === PALIER_JOURNEE_IA;
+  // Journée IA (A1.1) : Williams tranche une commande que le passage n'a pas su lire seul ; elle
+  // peut porter l'activité formation, audit, intégration ou aucune (« inconnue »).
+  // Journée IA : décision humaine, quelle que soit l'activité de la facture.
+  if (!journeeIa && c.activite !== "formation" && c.activite !== "conference")
     return { ok: false, message: "Seule une formation se qualifie par palier." };
-  const calc = calculerCommission({
-    activite: palier === PALIER_CONFERENCE ? "conference" : "formation",
-    factureHtCents: c.factureHtCents,
-    palier,
-    quantite,
-  });
+  const q = quantiteSessions(quantite);
+  const calc: CalculCommission = journeeIa
+    ? {
+        statut: "calculee",
+        montantCents: commissionJourneeIaCents(c.factureHtCents, q),
+        palier: PALIER_JOURNEE_IA,
+        prixPublicCents: PRIX_REFERENCE_JOURNEE_IA_CENTS * q,
+      }
+    : calculerCommission({
+        activite: palier === PALIER_CONFERENCE ? "conference" : "formation",
+        factureHtCents: c.factureHtCents,
+        palier,
+        quantite,
+      });
   if (calc.statut !== "calculee")
     return { ok: false, message: "Calcul impossible pour ce palier." };
   const v = await statutApresVigilance(c.apporteurId, calc.montantCents, maintenant, c.id);

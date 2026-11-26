@@ -586,6 +586,8 @@ async function processJob(job: Job<QualityImproveJobPayload>): Promise<void> {
         },
         update: {
           status: "approved",
+          // Auto-approbation : un `reviewedBy` laissé par un refus humain ne doit pas valoir feu vert.
+          reviewedBy: null,
           reviewedAt: new Date(),
           reviewNotes: `[auto-pub juge] verdict=publish — éditorial ${judge?.globalScore.toFixed(1) ?? "?"}/10, qualité ${score}/100`,
         },

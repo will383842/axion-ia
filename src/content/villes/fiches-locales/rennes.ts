@@ -141,7 +141,7 @@ export const FICHE_RENNES: FicheLocale = {
       "Rennes recense 7 352 établissements employeurs privés et 84 956 salariés (Urssaf, 31 décembre 2025). Les activités scientifiques, techniques et administratives passent en tête (1 786), devant le commerce (1 255), les autres services (1 074) et l’hébergement-restauration (823). L’information et la communication regroupent 408 établissements et 8 737 salariés.",
     ecosysteme:
       "Valorial est le pôle de compétitivité de l’agriculture et de l’agroalimentaire dont le site évoque Rennes et la Bretagne. L’aéroport de Rennes dessert la métropole. Nous ne citons que des institutions vérifiées sur leur site officiel, sans nom d’entreprise : une marque citée près de notre offre pourrait passer pour une référence client, ce qui serait faux.",
-    zone: "Rennes Métropole compte 43 communes et 473 973 habitants. Nous venons dans vos locaux, à Rennes ou dans l’une de ces communes, sans bureau sur place. Voir la politique de déplacement. Parmi les communes de l’intercommunalité : Acigné, Bécherel, Betton, Bourgbarré, Brécé. Le matin : audit (2 à 4 h selon l’entreprise) ; l’après-midi : formation de 4 h, jusqu’à 15 personnes.",
+    zone: "Rennes Métropole compte 43 communes et 473 973 habitants. Nous venons dans vos locaux, à Rennes ou dans l’une de ces communes, sans bureau sur place. Voir la politique de déplacement. Parmi les communes de l’intercommunalité : Acigné, Bécherel, Betton, Bourgbarré, Brécé. Le matin : audit (2 à 4 h selon la structuration de l’entreprise) ; l’après-midi : formation de 4 h, jusqu’à 15 personnes.",
   },
   faqLocale: [
     {
