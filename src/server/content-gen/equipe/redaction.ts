@@ -17,6 +17,7 @@ import {
   type EnvEquipeEditoriale,
 } from "../fact-check/equipe-editoriale-drapeau";
 import type { DossierPreuves } from "../fact-check/verificateur-deux-phases";
+import { escapeLlmInput } from "../shared/prompt-input-escape";
 import { compterH2, PLANCHER_MOTS_RELECTURE } from "../quality/barrieres-publication";
 import { computeReadabilityFr } from "../quality/readability";
 import { detecterTutoiement } from "../quality/vouvoiement";
@@ -52,6 +53,8 @@ export interface ResultatRedaction {
 
 // ── Consigne d'écriture ─────────────────────────────────────────────────────
 
+const esc = (v: unknown): string => escapeLlmInput(v, { maxLen: 500 });
+
 export function consigneRedactionEquipe(
   ctx: ContexteRedaction,
   env: EnvEquipeEditoriale = process.env,
@@ -64,20 +67,22 @@ export function consigneRedactionEquipe(
     "- N'écris AUCUN chiffre (pourcentage, montant, année, effectif, délai chiffré) qui ne figure pas dans le dossier de preuves ci-dessous.",
     "- S'il manque une preuve pour une affirmation, écris la phrase SANS chiffre.",
     `- Le prix s'écrit uniquement par le jeton \`${JETON_PRIX_JOURNEE_IA}\`, jamais en chiffres.`,
-    "- Vouvoie le lecteur ; phrases de 20 mots en moyenne au plus ; respecte les <h2> du plan, dans l'ordre.",
+    "- Vouvoie le lecteur ; phrases de 20 mots en moyenne au plus ; rédige uniquement les sections demandées, dans l'ordre.",
   ];
-  if (ctx.plan) {
-    lignes.push("", "### Plan validé");
-    ctx.plan.sections.forEach((s, i) => {
-      lignes.push(`${i + 1}. ${s.h2}${s.preuve ? ` (preuve : ${s.preuve})` : ""}`);
-    });
+  // Les preuves rattachées aux sections du plan (texte venu du LLM du plan : échappé).
+  const preuvesPlan = (ctx.plan?.sections ?? []).filter((x) => x.preuve);
+  if (preuvesPlan.length > 0) {
+    lignes.push("", "### Preuves prévues par section");
+    for (const x of preuvesPlan) lignes.push(`- ${esc(x.h2)} : ${esc(x.preuve)}`);
   }
   lignes.push("", "### Dossier de preuves");
   if (preuves.length === 0) {
     lignes.push("(aucune preuve disponible : écris tout le texte sans aucun chiffre)");
   } else {
     for (const p of preuves) {
-      lignes.push(`- ${p.affirmation}${p.chiffre ? ` — chiffre : ${p.chiffre}` : ""} (${p.url})`);
+      lignes.push(
+        `- ${esc(p.affirmation)}${p.chiffre ? ` — chiffre : ${esc(p.chiffre)}` : ""} (${esc(p.url)})`,
+      );
     }
   }
   return `${lignes.join("\n")}\n`;
@@ -86,37 +91,37 @@ export function consigneRedactionEquipe(
 // ── Contrôle « chiffre absent du dossier » ──────────────────────────────────
 
 const NBSP = /[   ]/g;
-const NOMBRE = String.raw`\d+(?:[ .,]\d{3})*(?:[,.]\d+)?`;
-const UNITES = String.raw`(?:%|€|eur(?:os?)?\b|k€|m€|millions?|milliards?|salari[ée]s?|employ[ée]s?|collaborateurs?|personnes|entreprises|pme|tpe|postes|utilisateurs|clients)`;
+const NOMBRE = String.raw`\d{1,3}(?:[ .]\d{3})+(?:,\d+)?|\d+(?:[,.]\d+)?`;
+const UNITES = String.raw`(?:%|€|eur(?:os?)?\b|k€|m€|md€|millions?|milliards?|mds|jours?|semaines?|mois|ans|salari[ée]s?|employ[ée]s?|collaborateurs?|personnes|entreprises|pme|tpe|postes|utilisateurs|clients)`;
 const MOTIF_CHIFFRE = new RegExp(
-  `(?<![\\p{L}\\p{N}])(?:(${NOMBRE})\\s?${UNITES}|((?:19|20)\\d{2})(?![\\p{L}\\p{N}]))`,
+  `(?<![\\p{L}\\p{N},.])(?:(${NOMBRE})\\s?${UNITES}|((?:19|20)\\d{2})(?![\\p{L}\\p{N}]))`,
   "giu",
 );
 
 const sansBalises = (html: string): string =>
   html
     .replace(/\{\{[^}]*\}\}/g, " ")
-    .replace(/<(h[1-6])\b[^>]*>\s*(?:\d+\s*[.)\-:]\s*)/gi, "<$1>")
+    .replace(/<(h[1-6])\b[^>]*>\s*(?:\d{1,2}\s*[.)]\s+)/gi, "<$1>")
     .replace(/<\/(p|li|h[1-6]|div|td|th|blockquote)>/gi, ". ")
     .replace(/<[^>]*>/g, " ")
     .replace(/&nbsp;|&#160;/gi, " ")
     .replace(NBSP, " ")
     .replace(/\s+/g, " ")
+    .replace(/\.(?:\s*\.)+/g, ".")
     .trim();
 
-/** Forme canonique d'un nombre : chiffres seuls, virgule → point. */
+/** Forme canonique d'un nombre français : « 1 490,5 » et « 1.490,5 » → « 1490.5 ». */
 function canonique(brut: string): string {
-  const n = brut.replace(/\s/g, "").replace(",", ".");
+  let n = brut.replace(/\s/g, "");
+  if (n.includes(",")) n = n.replace(/\./g, "").replace(",", ".");
+  else if (/^\d{1,3}(?:\.\d{3})+$/.test(n)) n = n.replace(/\./g, "");
   return n.includes(".") ? String(Number(n)) : n.replace(/^0+(?=\d)/, "");
 }
 
 function nombresDe(texte: string): Set<string> {
-  const t = texte.replace(NBSP, " ");
   const out = new Set<string>();
-  for (const m of t.matchAll(/\d+(?:[ ]\d{3})*(?:[,.]\d+)?/g)) {
+  for (const m of texte.replace(NBSP, " ").matchAll(new RegExp(NOMBRE, "g"))) {
     out.add(canonique(m[0]));
-    // « 1 490 » mal lu en « 1 » + « 490 » : on garde aussi les groupes isolés.
-    for (const g of m[0].split(" ")) out.add(canonique(g));
   }
   return out;
 }
