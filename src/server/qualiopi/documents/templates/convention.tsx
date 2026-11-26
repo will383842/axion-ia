@@ -463,12 +463,12 @@ export function ConventionPdf({
             convention, dès qu&apos;il a été versé, reste acquis à l&apos;organisme, quel que soit
             le délai d&apos;annulation. Il est conservé à titre de dédit et d&apos;indemnité
             (article 1231-5 du Code civil, qui laisse au juge la faculté de modérer une pénalité
-            manifestement excessive). Cette règle vise le client professionnel ; elle ne s&apos;applique
-            pas à la personne morale non professionnelle (article 53.3 des conditions générales de
-            vente), pour laquelle l&apos;acompte est restitué en cas d&apos;annulation avant le
-            début, sous réserve de la part réalisée. Les sommes suivantes sont dues ; l&apos;acompte
-            versé s&apos;impute sur elles, sans être restitué hors les cas prévus au dernier alinéa,
-            et la somme due ne dépasse pas le prix HT :
+            manifestement excessive). Cette règle vise le client professionnel ; elle ne
+            s&apos;applique pas à la personne morale non professionnelle (article 53.3 des
+            conditions générales de vente), pour laquelle l&apos;acompte est restitué en cas
+            d&apos;annulation avant le début, sous réserve de la part réalisée. Les sommes suivantes
+            sont dues ; l&apos;acompte versé s&apos;impute sur elles, sans être restitué hors les
+            cas prévus au dernier alinéa, et la somme due ne dépasse pas le prix HT :
           </Text>
           <Text style={local.listItem}>
             • Annulation à plus de 15 jours ouvrés avant le début : aucune somme en plus de
@@ -506,12 +506,13 @@ export function ConventionPdf({
             et restent à la charge du client. Seules les heures de formation effectivement réalisées
             constituent une dépense de formation ; les autres sommes perçues pour des heures non
             réalisées et non couvertes par le dédit sont remboursées (article L.6354-1 du Code du
-            travail). En cas d&apos;annulation par le client, la facture d&apos;acompte est annulée par avoir et son
-            montant porté sur la facture de dédit. La taxe sur la valeur ajoutée s&apos;applique à
-            ces sommes comme au prix, sans exonération. L&apos;acompte n&apos;est pas acquis si
-            l&apos;annulation résulte d&apos;un manquement ou d&apos;une annulation de
-            l&apos;organisme, d&apos;un cas de force majeure, de l&apos;exercice d&apos;un droit
-            de rétractation légal, ou de tout autre cas prévu à l&apos;article 6.5 des conditions générales de vente.
+            travail). En cas d&apos;annulation par le client, la facture d&apos;acompte est annulée
+            par avoir et son montant porté sur la facture de dédit. La taxe sur la valeur ajoutée
+            s&apos;applique à ces sommes comme au prix, sans exonération. L&apos;acompte n&apos;est
+            pas acquis si l&apos;annulation résulte d&apos;un manquement ou d&apos;une annulation de
+            l&apos;organisme, d&apos;un cas de force majeure, de l&apos;exercice d&apos;un droit de
+            rétractation légal, ou de tout autre cas prévu à l&apos;article 6.5 des conditions
+            générales de vente.
           </Text>
         </SectionCarte>
 
