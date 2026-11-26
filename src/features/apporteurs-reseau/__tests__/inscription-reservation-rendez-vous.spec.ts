@@ -170,14 +170,14 @@ describe("inscription de la réservation à la création", () => {
     expect(db.reservations).toHaveLength(0);
   });
 
-  it("signataire 2.8 + interrupteur allumé : une ligne « rendez_vous » à J+60", async () => {
+  it("signataire 2.8 + interrupteur allumé : une ligne « rendez_vous » à la fin du 60e jour (Paris)", async () => {
     const r = await creerPresentation(saisie(A28), T0);
     expect(r.ok).toBe(true);
     expect(db.reservations).toEqual([
       {
         presentationId: db.presentations[0]!.id,
         regle: "rendez_vous",
-        reserveeJusquAt: jours(T0, 60),
+        reserveeJusquAt: new Date("2027-01-29T22:59:59.999Z"),
       },
     ]);
     expect(db.reservations[0]!.reserveeJusquAt).toEqual(finReservation(T0));
@@ -205,10 +205,10 @@ describe("doublon, échéance, périmètre", () => {
     expect(db.reservations).toHaveLength(1);
   });
 
-  it("redéclaration possible après l'échéance (J+60 inclus encore refusé, J+61 accepté)", async () => {
+  it("redéclaration possible après l'échéance (le 60e jour encore refusé, le lendemain accepté)", async () => {
     await creerPresentation(saisie(A28), T0);
-    expect((await creerPresentation(saisie(A28), jours(T0, 60))).ok).toBe(false);
-    expect((await creerPresentation(saisie(A28), jours(T0, 61))).ok).toBe(true);
+    expect((await creerPresentation(saisie(A28), jours(T0, 59))).ok).toBe(false);
+    expect((await creerPresentation(saisie(A28), jours(T0, 60))).ok).toBe(true);
     expect(db.presentations).toHaveLength(2);
     expect(db.reservations).toHaveLength(2);
   });

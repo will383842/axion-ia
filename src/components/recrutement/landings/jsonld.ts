@@ -1,8 +1,10 @@
 // Données structurées communes aux landings apporteurs : tout passe par les builders de
 // `src/lib/seo.ts` (WebPage, FAQPage), jamais de JSON-LD écrit à la main dans une page.
 //
-// ⛔ Jamais de JobPosting, de rémunération balisée, d'AggregateRating ni de Review (décision B5 du
-// 2026-09-19 ; gardes `jur-copy-indicative` et `plus-d-offre-d-emploi-google-pour-les-apporteurs`).
+// ⛔ Jamais ici de JobPosting, de rémunération balisée, d'AggregateRating ni de Review. B5 a été
+// levée le 25/11/2026 pour la seule page principale : son JobPosting est construit hors des
+// surfaces (`lib/seo/job-posting-apporteur.ts`), verrouillé par la spec
+// `plus-d-offre-d-emploi-google-pour-les-apporteurs` et la garde `jur-copy-indicative`.
 import { COMMERCIAL_OFFER_DATE_POSTED } from "@/content/recrutement/dates";
 import { FOUNDER_PERSON_ID } from "@/lib/brand";
 import type { Locale } from "@/i18n/routing";

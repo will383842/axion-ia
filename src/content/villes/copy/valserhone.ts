@@ -65,7 +65,7 @@ export const VALSERHONE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Valserhône ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. TGV Paris direct gare Bellegarde. Coûts de déplacement séparés du forfait, tarifs transparents.",
+      a: "Nous intervenons partout en France, sur place ou à distance. TGV Paris direct gare Bellegarde. Tarifs transparents.",
     },
   ],
 };

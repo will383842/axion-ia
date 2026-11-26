@@ -8,7 +8,7 @@
  * échec pour une cause purement administrative.
  */
 
-import { describe, it, expect, vi, beforeEach } from "vitest";
+import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 
 const persistMock = vi.fn();
 const readDirectMock = vi.fn();
@@ -175,5 +175,121 @@ describe("clearProviderFailureStreak", () => {
     await clearProviderFailureStreak("openai");
 
     expect(persistMock).not.toHaveBeenCalled();
+  });
+});
+
+describe("anthropic : critique seulement si CONTENT_GEN_BLOG_CLAUDE vaut true (lu à l'exécution)", () => {
+  afterEach(() => {
+    vi.unstubAllEnvs();
+  });
+
+  it("interrupteur éteint : une panne Anthropic ne compte pas, même toutesEpuisees", async () => {
+    vi.stubEnv("CONTENT_GEN_BLOG_CLAUDE", "");
+    mockState({ consecutive: 0 });
+    expect(
+      await recordPermanentProviderFailure("anthropic", "quota_exhausted", "tout", {
+        toutesEpuisees: true,
+      }),
+    ).toBe(false);
+    expect(persistMock).not.toHaveBeenCalled();
+    await clearProviderFailureStreak("anthropic");
+    expect(readDirectMock).not.toHaveBeenCalled();
+  });
+
+  it("interrupteur à « true » : compte, et la valeur est relue à chaque appel", async () => {
+    vi.stubEnv("CONTENT_GEN_BLOG_CLAUDE", "true");
+    mockState({ consecutive: 0 });
+    await recordPermanentProviderFailure("anthropic", "quota_exhausted", "tout", {
+      toutesEpuisees: true,
+    });
+    expect(persistMock).toHaveBeenCalled();
+
+    vi.clearAllMocks();
+    vi.stubEnv("CONTENT_GEN_BLOG_CLAUDE", "false");
+    await recordPermanentProviderFailure("anthropic", "quota_exhausted", "tout", {
+      toutesEpuisees: true,
+    });
+    expect(persistMock).not.toHaveBeenCalled();
+  });
+});
+
+describe("anthropic : rotation de clés, seule « toutesEpuisees » compte", () => {
+  beforeEach(() => {
+    vi.stubEnv("CONTENT_GEN_BLOG_CLAUDE", "true");
+  });
+  afterEach(() => {
+    vi.unstubAllEnvs();
+  });
+
+  it("une seule clé épuisée (sans drapeau, ou drapeau faux) ne compte JAMAIS, même au seuil", async () => {
+    mockState({ consecutive: QUOTA_HALT_THRESHOLD - 1 });
+
+    expect(await recordPermanentProviderFailure("anthropic", "quota_exhausted", "une clé")).toBe(
+      false,
+    );
+    expect(
+      await recordPermanentProviderFailure("anthropic", "quota_exhausted", "une clé", {
+        toutesEpuisees: false,
+      }),
+    ).toBe(false);
+    expect(
+      await recordPermanentProviderFailure("anthropic", "auth_failed", "une clé", {
+        toutesEpuisees: false,
+      }),
+    ).toBe(false);
+
+    expect(persistMock).not.toHaveBeenCalled();
+    expect(killSwitchWrites()).toHaveLength(0);
+    expect(alertMock).not.toHaveBeenCalled();
+  });
+
+  it("toutesEpuisees : compte, et coupe au seuil", async () => {
+    mockState({ consecutive: 0 });
+    expect(
+      await recordPermanentProviderFailure("anthropic", "quota_exhausted", "tout", {
+        toutesEpuisees: true,
+      }),
+    ).toBe(false);
+    const comptes = (persistMock.mock.calls as unknown[][]).find(
+      (c) => c[0] === "provider_quota_guard",
+    );
+    expect(Object.keys(comptes?.[1] as object)).toContain("anthropic");
+
+    vi.clearAllMocks();
+    persistMock.mockResolvedValue(undefined);
+    readDirectMock.mockImplementation(async (key: string) =>
+      key === "kill_switch"
+        ? { active: false }
+        : {
+            anthropic: {
+              consecutive: QUOTA_HALT_THRESHOLD - 1,
+              code: "quota_exhausted",
+              firstAt: "x",
+              lastAt: "x",
+              lastMessage: "",
+            },
+          },
+    );
+    expect(
+      await recordPermanentProviderFailure("anthropic", "auth_failed", "toutes refusées", {
+        toutesEpuisees: true,
+      }),
+    ).toBe(true);
+    expect(killSwitchWrites()).toHaveLength(1);
+  });
+
+  it("un code transitoire ne compte pas, même avec le drapeau", async () => {
+    mockState({ consecutive: 0 });
+    expect(
+      await recordPermanentProviderFailure("anthropic", "rate_limited", "429", {
+        toutesEpuisees: true,
+      }),
+    ).toBe(false);
+    expect(persistMock).not.toHaveBeenCalled();
+  });
+
+  it("OpenAI inchangé : compte sans drapeau", async () => {
+    mockState({ consecutive: QUOTA_HALT_THRESHOLD - 1 });
+    expect(await recordPermanentProviderFailure("openai", "quota_exhausted", "x")).toBe(true);
   });
 });

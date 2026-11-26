@@ -560,15 +560,16 @@ export const CATALOGUE: Readonly<Record<EmailJobName, FicheEmail>> = {
   "apporteur-resiliation-notifiee": {
     categorie: "recrutement",
     quand:
-      "Rien ne l'envoie encore — gabarit livré avant son émetteur (lot L1b, résiliation avec préavis)",
-    destinataire: "—",
-    source: null,
+      "Fiche de l'apporteur : « Notifier la résiliation » (article 11.1 avec préavis de 30 jours, 11.2 ou 12.5)",
+    destinataire: "l'apporteur dont le contrat est résilié",
+    source: "features/apporteurs-reseau/envois.ts",
   },
   "apporteur-resiliation-effective": {
     categorie: "recrutement",
-    quand: "Rien ne l'envoie encore — gabarit livré avant son émetteur (lot L1b, prise d'effet)",
-    destinataire: "—",
-    source: null,
+    quand:
+      "Le jour de la prise d'effet de la résiliation (passage quotidien, ou aussitôt en 11.2 et 12.5)",
+    destinataire: "l'apporteur dont le contrat prend fin",
+    source: "features/apporteurs-reseau/envois.ts",
   },
   "apporteur-non-commissionne": {
     categorie: "recrutement",

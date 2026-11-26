@@ -5360,6 +5360,8 @@ model Devis {
   livreAt                 DateTime? @map("livre_at")
   /// NULL pour toute pièce antérieure, jamais rétro-remplie.
   conditionsParticulieres String?   @map("conditions_particulieres") @db.Text
+  /// Journée IA vendue sous ce nom : imprime la garantie de remboursement (CGV art. 47.10). Lu par l'app seulement, jamais par le worker.
+  journeeIa               Boolean   @default(false) @map("journee_ia")
 
   /// Devis à formules (colonnes posées par la migration 20261104120000_devis_formules).
   /// `offre` NULL = devis classique, comportement INCHANGÉ. Tant que l'interrupteur
@@ -16569,6 +16571,31 @@ model ApporteurReseauRetrait {
   motif       String?  @db.Text
 
   @@map("apporteur_reseau_retrait")
+}
+
+/// Résiliation du contrat d'un apporteur en DEUX TEMPS (2026-11-25, lot L1b) : la notification
+/// écrite (article 11 ou 12.5), puis la prise d'effet à la date calculée (préavis de 30 jours en
+/// 11.1). Table séparée sans clé étrangère, comme `ApporteurReseauRetrait` : `ApporteurReseau` ne
+/// change pas pendant la fenêtre app/worker. Absente = aucune résiliation notifiée (lecture tolérante).
+/// rgpd: technique — dates, fondement et motif de la résiliation ; aucun nom, e-mail ni téléphone
+model ApporteurResiliation {
+  apporteurId        String    @id @map("apporteur_id") @db.Uuid
+  /// "societe" | "apporteur"
+  initiative         String    @db.VarChar(12)
+  /// "11.1" | "11.2" | "12.5"
+  fondement          String    @db.VarChar(8)
+  notifieeLe         DateTime  @map("notifiee_le") @db.Timestamptz(3)
+  effetLe            DateTime  @map("effet_le") @db.Timestamptz(3)
+  miseEnDemeureLe    DateTime? @map("mise_en_demeure_le") @db.Timestamptz(3)
+  motif              String?   @db.Text
+  parId              String    @map("par_id") @db.VarChar(64)
+  creeAt             DateTime  @default(now()) @map("cree_at") @db.Timestamptz(3)
+  executeeAt         DateTime? @map("executee_at") @db.Timestamptz(3)
+  emailNotifEnvoyeAt DateTime? @map("email_notif_envoye_at") @db.Timestamptz(3)
+  emailEffetEnvoyeAt DateTime? @map("email_effet_envoye_at") @db.Timestamptz(3)
+
+  @@index([effetLe, executeeAt])
+  @@map("apporteur_resiliation")
 }
 
 enum TypePieceApporteur {

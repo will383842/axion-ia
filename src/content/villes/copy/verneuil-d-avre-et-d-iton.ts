@@ -65,7 +65,7 @@ export const VERNEUIL_D_AVRE_ET_D_ITON_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Verneuil d'Avre et d'Iton ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Pour les multi-jours, hébergement local possible. Coûts de déplacement séparés du forfait, tarifs transparents.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Pour les multi-jours, hébergement local possible. Tarifs transparents.",
     },
   ],
 };

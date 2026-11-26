@@ -93,6 +93,7 @@ const SECTIONS_LLMS = [
   "Questions de dirigeants : réponses courtes",
   "Ressources de référence",
   "Qui sommes-nous, contact",
+  "Réseau d'apporteurs d'affaires indépendants",
   "Optional",
 ] as const;
 

@@ -1,7 +1,5 @@
-// Lot L1a : les deux gabarits de résiliation sont enregistrés, mais AUCUN émetteur n'existe encore.
-import { readdirSync, readFileSync, statSync } from "node:fs";
-import { join, relative } from "node:path";
-
+// Lot L1a : les deux gabarits de résiliation sont enregistrés (leur émetteur arrive en L1b ; la garde
+// de non-émission a été retirée avec lui).
 import { describe, expect, it } from "vitest";
 
 import { PAYLOAD_EXEMPLE } from "@/server/email/apercu/payloads-exemple";
@@ -25,40 +23,5 @@ describe("gabarits de résiliation (L1a)", () => {
   it("le jeu d'exemple porte les champs de la notification", () => {
     for (const c of ["fondement", "notifieeLe", "effetLe"])
       expect(PAYLOAD_EXEMPLE[c]).toBeDefined();
-  });
-
-  it("garde de non-émission : aucun fichier hors liste ne cite le nom (retirée par L1b)", () => {
-    const racine = join(process.cwd(), "src");
-    const permis = [
-      "lib/email/templates/",
-      "server/email/apercu/catalogue.ts",
-      "server/queue/types.ts",
-      "server/email/outbox-policy.ts",
-      "features/apporteurs-reseau/envois.ts",
-      "features/apporteurs-reseau/retrait.ts",
-      "features/apporteurs-reseau/__tests__/gabarits-resiliation.spec.ts",
-      "lib/email/templates/__tests__/",
-      // Gardes qui NOMMENT les gabarits (listes figées), sans les émettre.
-      "content/__tests__/remuneration-indicative.spec.ts",
-      "server/email/apercu/catalogue.spec.ts",
-      "server/email/apercu/payloads-exemple.spec.ts",
-      "lib/email/templates/aucun-gabarit-orphelin.spec.ts",
-    ];
-    const fautifs: string[] = [];
-    const parcourir = (d: string) => {
-      for (const f of readdirSync(d)) {
-        const p = join(d, f);
-        if (statSync(p).isDirectory()) {
-          if (f === "node_modules" || f === "generated") continue;
-          parcourir(p);
-        } else if (/\.(ts|tsx)$/.test(f)) {
-          const rel = relative(racine, p).replace(/\\/g, "/");
-          if (permis.some((x) => rel.startsWith(x))) continue;
-          if (readFileSync(p, "utf8").includes("apporteur-resiliation-")) fautifs.push(rel);
-        }
-      }
-    };
-    parcourir(racine);
-    expect(fautifs).toEqual([]);
   });
 });

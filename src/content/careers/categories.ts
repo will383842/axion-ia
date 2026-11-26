@@ -91,8 +91,8 @@ export const CAREER_CATEGORIES: ReadonlyArray<CareerCategory> = [
     en: "Sales",
     service: {
       href: "/devenir-commercial-ia",
-      fr: "Réseau commercial",
-      en: "Sales network",
+      fr: "Réseau d'apporteurs d'affaires",
+      en: "Business referrer network",
     },
   },
   {

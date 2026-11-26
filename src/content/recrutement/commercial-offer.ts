@@ -312,7 +312,7 @@ export const COMMERCIAL_FAQ_FIXED: ReadonlyArray<FaqItem> = [
 ];
 
 // ── MOTS-CLÉS SÉMANTIQUES (SEO/AEO) ───────────────────────────────────────────
-// Portée maximale : métiers, synonymes, intentions (emploi/job/argent/liberté),
+// Portée : statut d'apporteur, intentions de revenu complémentaire et d'indépendance,
 // cibles entreprises. Consommés par `keywords` des metadata + enrichissent la
 // citabilité LLM. Les variantes par ville sont ajoutées dynamiquement.
 //
@@ -323,26 +323,29 @@ export const COMMERCIAL_FAQ_FIXED: ReadonlyArray<FaqItem> = [
 // `le-tunnel-apporteur-ne-dit-jamais-agent-commercial.spec.ts` le vérifie.
 
 export const COMMERCIAL_KEYWORDS_BASE: ReadonlyArray<string> = [
-  "devenir commercial IA",
-  "commercial intelligence artificielle",
-  "emploi commercial IA",
-  "offre d'emploi IA",
-  "job dans l'IA",
-  "recrutement commercial",
-  "commercial indépendant",
   "apporteur d'affaires",
   "apporteur d'affaires indépendant",
+  "devenir apporteur d'affaires IA",
+  "apporteur d'affaires formation IA",
+  "apporteur d'affaires intelligence artificielle",
   "apport d'affaires formation IA",
   "recommander des formations IA",
-  "commercial freelance",
-  "réseau commercial",
-  "rémunération à la commission",
+  "réseau d'apporteurs d'affaires",
+  "revenu complémentaire",
   "revenus complémentaires",
-  "gagner de l'argent",
+  "complément de revenu",
+  "second revenu",
   "compléter ses revenus",
-  "emploi du temps libre",
+  "en plus de votre activité",
+  "à distance",
+  "sans investissement",
+  "sans diplôme",
+  "sans expérience",
   "travailler à son compte",
-  "reconversion commerciale",
+  "travailler à domicile",
+  "devenir indépendant",
+  "auto-entrepreneur",
+  "rémunération à la commission",
   "prospection entreprises",
   "formation IA",
   "audit IA",
@@ -355,55 +358,10 @@ export const COMMERCIAL_KEYWORDS_BASE: ReadonlyArray<string> = [
   "commerçants",
   "grandes entreprises",
   "dirigeants",
-  // Intentions de recherche élargies (promotion, revenus, carrière, business)
   "promouvoir l'IA",
-  "promoteur IA",
-  "distributeur IA",
-  "travailler dans l'IA",
-  "métier d'avenir",
-  "job d'avenir",
   "se reconvertir dans l'IA",
-  "carrière dans l'IA",
-  "complément de revenu",
-  "revenu complémentaire",
-  "second revenu",
-  "gagner sa vie avec l'IA",
-  "business dans l'IA",
   "se lancer dans l'IA",
   "opportunité IA",
-  "rejoindre un réseau commercial",
-  "freelance commercial",
-  "auto-entrepreneur commercial",
-  "commercial terrain",
-  "commercial B2B",
-  "offre d'emploi commercial IA",
-  "emploi indépendant",
-  "travailler à domicile",
-  "temps partiel rémunérateur",
-  // Intentions « chercheur d'emploi » (génériques + commercial)
-  "emploi",
-  "offre d'emploi",
-  "recrutement",
-  "embauche",
-  "poste à pourvoir",
-  "boulot",
-  "job",
-  "chercher un emploi",
-  "trouver un emploi",
-  "emploi qui recrute",
-  "recrute commercial",
-  "on recrute",
-  "poste de commercial",
-  "offre commercial",
-  "emploi commercial",
-  "emploi bien payé",
-  "emploi rémunérateur",
-  "job rémunérateur",
-  "emploi sans diplôme",
-  "emploi sans expérience",
-  "télétravail commercial",
-  "emploi flexible",
-  "devenir indépendant",
 ];
 
 /**
@@ -427,16 +385,17 @@ export function buildCommercialKeywords(
   if (options.financementAffichable) kw.push(...COMMERCIAL_KEYWORDS_FINANCEMENT);
   if (villeName) {
     kw.push(
-      `emploi commercial ${villeName}`,
-      `offre d'emploi IA ${villeName}`,
-      `devenir commercial ${villeName}`,
-      `commercial indépendant ${villeName}`,
-      `job IA ${villeName}`,
-      `recrutement commercial ${villeName}`,
+      `apporteur d'affaires ${villeName}`,
+      `apporteur d'affaires indépendant ${villeName}`,
+      `devenir apporteur d'affaires IA ${villeName}`,
+      `revenu complémentaire ${villeName}`,
     );
   }
   if (departementLabel)
-    kw.push(`emploi commercial ${departementLabel}`, `commercial IA ${departementLabel}`);
-  if (region) kw.push(`commercial IA ${region}`, `emploi IA ${region}`);
+    kw.push(
+      `apporteur d'affaires ${departementLabel}`,
+      `apporteur d'affaires IA ${departementLabel}`,
+    );
+  if (region) kw.push(`apporteur d'affaires ${region}`, `apporteur d'affaires IA ${region}`);
   return kw;
 }
