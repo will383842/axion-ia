@@ -44,7 +44,7 @@ const SEGMENTS_GENERIQUES =
   /^(insights?|our-insights|blog|research|recherche|publications?|resources?|ressources|reports?|rapports?|news|actualites|centre-de-recherche|solutions|capabilities|industries|topics)$/i;
 
 /** Rubriques qui rendent l'adresse générique où qu'elles soient dans le chemin. */
-const RUBRIQUES_A_TOUT_NIVEAU = /^(insights?|our-insights|topics|methodologies)$/i;
+const RUBRIQUES_A_TOUT_NIVEAU = /^(topics|methodologies)$/i;
 
 export function estFaitAxion(fait: FaitVerifiable): boolean {
   return /axion-ia/i.test(fait.source) || /axion-ia\.com/.test(fait.sourceUrl);

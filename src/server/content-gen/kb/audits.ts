@@ -1,7 +1,7 @@
 /**
  * KB sectorielle — Verticale Audits IA (P4 Sprint P1 KB pilote 2026-05-21).
  *
- * Fiches sourcées (60 à l'origine) sur l'audit IA en entreprise France.
+ * Fiches sourcées (60 avant le 26/11/2026) sur l'audit IA en entreprise France.
  * Sources : celles déclarées par chaque fiche (`source` et `sourceUrl`).
  *
  * Format : { id, text, source, sourceUrl, verifiedAt, verticales, confidence }
@@ -258,6 +258,15 @@ export const KB_AUDITS: readonly KbFact[] = [
     confidence: 0.91,
   },
   // ── ROI, performance économique ───────────────────────────────────────────
+  {
+    id: "audit-036",
+    text: "Selon McKinsey (State of AI 2024), seules 11 % des entreprises ayant déployé une IA générative ont mesuré formellement le ROI — un audit ROI permet de structurer les KPIs et identifier les usages à abandonner.",
+    source: "McKinsey — The State of AI 2024",
+    sourceUrl: "https://www.mckinsey.com/capabilities/quantumblack/our-insights/the-state-of-ai",
+    verifiedAt: "2026-05-22",
+    verticales: ["audits"],
+    confidence: 0.89,
+  },
   {
     id: "audit-037",
     text: "L'audit ROI IA mesure 4 leviers : gain de productivité (heures économisées × coût horaire), réduction des erreurs (coût/erreur évitée), accélération du time-to-market et création de revenus nouveaux.",

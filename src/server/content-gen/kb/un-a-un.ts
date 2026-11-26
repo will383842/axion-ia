@@ -1,7 +1,7 @@
 /**
  * KB sectorielle — Verticale Coaching 1-to-1 / Un-à-un (P6 2026-05-22).
  *
- * Fiches sourcées (59 à l'origine) sur le coaching individuel IA pour CEO/fondateurs/managers.
+ * Fiches sourcées (55 avant le 26/11/2026) sur le coaching individuel IA pour CEO/fondateurs/managers.
  * Sources : celles déclarées par chaque fiche (`source` et `sourceUrl`).
  *
  * Format : { id, text, source, sourceUrl, verifiedAt, verticales, confidence }

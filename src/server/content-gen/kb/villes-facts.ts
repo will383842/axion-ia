@@ -1,7 +1,7 @@
 /**
  * KB sectorielle — Villes françaises + AI Act + ROI IA (Sprint A Ville DRY 2026-05-25).
  *
- * Fiches (180 à l'origine) réparties en 3 catégories :
+ * Fiches (175 avant le 26/11/2026) réparties en 3 catégories : en 3 catégories :
  *   - ville_economy (100) : données démographiques et écosystèmes tech des villes françaises
  *   - ai_act (30) : Règlement UE 2024/1689 — obligations, calendrier, classification
  *   - roi_ia (50) : études publiques McKinsey/Gartner/Forrester/BCG/IDC/OCDE
@@ -977,6 +977,26 @@ export const KB_AI_ACT: readonly KbFact[] = [
 
 export const KB_ROI_IA: readonly KbFact[] = [
   {
+    id: "roi-ia-001",
+    text: "Selon McKinsey Global Institute (2023), l'adoption de l'IA générative pourrait ajouter 2 600 à 4 400 milliards USD par an à l'économie mondiale, avec des gains de productivité de 40 % dans certains processus administratifs.",
+    source: "McKinsey Global Institute — The Economic Potential of Generative AI 2023",
+    sourceUrl:
+      "https://www.mckinsey.com/capabilities/mckinsey-digital/our-insights/the-economic-potential-of-generative-ai",
+    verifiedAt: "2026-05-25",
+    verticales: ["implementations", "audits"],
+    confidence: 0.92,
+  },
+  {
+    id: "roi-ia-002",
+    text: "Selon McKinsey (2023), les cas d'usage IA les plus générateurs de valeur sont : la génération de contenu marketing (+5-15 % revenus), le service client (+10-40 % efficacité), la R&D accélérée (+25-35 % vitesse) et la supply chain (-5-10 % coûts).",
+    source: "McKinsey Global Institute — The Economic Potential of Generative AI 2023",
+    sourceUrl:
+      "https://www.mckinsey.com/capabilities/mckinsey-digital/our-insights/the-economic-potential-of-generative-ai",
+    verifiedAt: "2026-05-25",
+    verticales: ["implementations"],
+    confidence: 0.88,
+  },
+  {
     id: "roi-ia-003",
     text: "Selon Gartner, 80 % des entreprises devaient avoir utilisé des APIs ou des modèles IA génératifs en production à l'horizon 2026, contre moins de 5 % début 2023 — projection publiée en 2024, illustrant un rythme d'adoption sans précédent historique.",
     source: "Gartner — Hype Cycle for Artificial Intelligence 2024",
@@ -1025,6 +1045,15 @@ export const KB_ROI_IA: readonly KbFact[] = [
     confidence: 0.88,
   },
   {
+    id: "roi-ia-016",
+    text: "Selon Accenture Technology Vision 2024, 97 % des dirigeants d'entreprises pensent que l'IA sera au cœur de leur stratégie de croissance dans les 3 prochaines années, et 75 % prévoient d'augmenter leur budget IA de plus de 20 %.",
+    source: "Accenture — Technology Vision 2024",
+    sourceUrl: "https://www.accenture.com/fr-fr/insights/technology/technology-trends-2024",
+    verifiedAt: "2026-05-25",
+    verticales: ["implementations"],
+    confidence: 0.85,
+  },
+  {
     id: "roi-ia-018",
     text: "L'IA appliquée au recrutement permet de réduire le temps de screening des CVs de 75 % et le coût par embauche de 30-40 %, selon des études LinkedIn et Workday (2024). Cependant, ces outils entrent dans le périmètre haut risque de l'AI Act.",
     source: "LinkedIn — Future of Recruiting 2024",
@@ -1064,6 +1093,24 @@ export const KB_ROI_IA: readonly KbFact[] = [
     confidence: 0.78,
   },
   {
+    id: "roi-ia-034",
+    text: "Selon McKinsey (2024), les entreprises dans les 25 % supérieurs d'adoption IA ont 1,4x plus de probabilité d'avoir une croissance de revenus supérieure à 15 % et 1,6x plus de probabilité d'avoir réduit leurs coûts de plus de 10 % par rapport aux autres.",
+    source: "McKinsey — The State of AI in 2024",
+    sourceUrl: "https://www.mckinsey.com/capabilities/quantumblack/our-insights/the-state-of-ai",
+    verifiedAt: "2026-05-25",
+    verticales: ["implementations"],
+    confidence: 0.85,
+  },
+  {
+    id: "roi-ia-038",
+    text: "Selon une étude Accenture (2023) portant sur 1 500 entreprises mondiales, celles qui investissent simultanément dans la technologie IA, les données et les compétences humaines obtiennent un ROI 3x supérieur à celles qui n'investissent que dans la technologie.",
+    source: "Accenture — Total Enterprise Reinvention 2023",
+    sourceUrl: "https://www.accenture.com/fr-fr/insights/technology/total-enterprise-reinvention",
+    verifiedAt: "2026-05-25",
+    verticales: ["implementations"],
+    confidence: 0.85,
+  },
+  {
     id: "roi-ia-039",
     text: "L'IA dans la logistique (optimisation de tournées, gestion des entrepôts) génère des économies de 15-25 % sur les coûts de transport et de stockage, selon des études DHL/Amazon Robotics/McKinsey sur des déploiements à grande échelle (2023-2024).",
     source: "DHL + McKinsey — AI in Logistics 2023",
@@ -1071,6 +1118,15 @@ export const KB_ROI_IA: readonly KbFact[] = [
     verifiedAt: "2026-05-25",
     verticales: ["implementations"],
     confidence: 0.85,
+  },
+  {
+    id: "roi-ia-043",
+    text: "Selon le rapport Bain & Company 'GenAI in Retail' (2024), les retailers ayant déployé l'IA pour la personnalisation des recommandations produits ont vu leur valeur vie client (LTV) augmenter de 15-25 % sur 24 mois.",
+    source: "Bain & Company — GenAI in Retail 2024",
+    sourceUrl: "https://www.bain.com/insights/generative-ai-retail/",
+    verifiedAt: "2026-05-25",
+    verticales: ["implementations", "sites_web_augmentes"],
+    confidence: 0.8,
   },
   {
     id: "roi-ia-044",

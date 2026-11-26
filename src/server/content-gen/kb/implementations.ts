@@ -1,7 +1,7 @@
 /**
  * KB sectorielle — Verticale Implémentations IA (P6 2026-05-22).
  *
- * Fiches sourcées (78 à l'origine) sur les implémentations IA en entreprise France.
+ * Fiches sourcées (73 avant le 26/11/2026) sur les implémentations IA en entreprise France.
  * Sources : celles déclarées par chaque fiche (`source` et `sourceUrl`).
  *
  * Format : { id, text, source, sourceUrl, verifiedAt, verticales, confidence }

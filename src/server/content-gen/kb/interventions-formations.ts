@@ -1,7 +1,7 @@
 /**
  * KB sectorielle — Verticale Interventions & Formations IA (P6 2026-05-22).
  *
- * Fiches sourcées (70 à l'origine) sur la formation IA en entreprise France.
+ * Fiches sourcées (64 avant le 26/11/2026) sur la formation IA en entreprise France.
  * Sources : celles déclarées par chaque fiche (`source` et `sourceUrl`).
  *
  * Format : { id, text, source, sourceUrl, verifiedAt, verticales, confidence }
@@ -82,6 +82,16 @@ export const KB_INTERVENTIONS_FORMATIONS: readonly KbFact[] = [
     verifiedAt: "2026-05-01",
     verticales: ["interventions_formations"],
     confidence: 0.87,
+  },
+  {
+    id: "form-009",
+    text: "McKinsey Global Institute (2023) évalue à 45 minutes par jour le temps de travail récupérable par un salarié de bureau grâce à l'IA générative — soit ~3,75h/semaine pour un poste administratif.",
+    source: "McKinsey Global Institute — The economic potential of generative AI, 2023",
+    sourceUrl:
+      "https://www.mckinsey.com/capabilities/mckinsey-digital/our-insights/the-economic-potential-of-generative-ai",
+    verifiedAt: "2026-05-01",
+    verticales: ["interventions_formations"],
+    confidence: 0.88,
   },
   // ── Tarifs indicatifs ────────────────────────────────────────────────────
   {
