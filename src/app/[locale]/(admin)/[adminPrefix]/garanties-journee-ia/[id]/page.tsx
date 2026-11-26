@@ -215,8 +215,8 @@ export default async function GarantieFichePage({ params, searchParams }: PagePr
                     Avoir {pieces.avoirNumero} émis
                     {pieces.factureNumero ? ` sur la facture ${pieces.factureNumero}` : ""} : la
                     décision ne peut plus changer (pièce comptable). Acompte + solde : un avoir par
-                    facture touchée (le solde ici, l&apos;éventuel avoir d&apos;acompte figure au journal et
-                    au Hub factures).
+                    facture touchée (le solde ici, l&apos;éventuel avoir d&apos;acompte figure au
+                    journal et au Hub factures).
                   </p>
                 ) : null}
                 <label className="flex flex-col gap-1 text-sm">
