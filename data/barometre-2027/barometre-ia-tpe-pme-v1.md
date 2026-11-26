@@ -8,7 +8,7 @@ Repères de vocabulaire : une TPE compte moins de 10 salariés, une PME de 10 à
 
 ## 1. Résumé en 5 chiffres clés
 
-1. **40 %** des TPE et PME françaises déclaraient utiliser au moins une solution d'intelligence artificielle en 2026, contre 13 % en 2024 (Baromètre France Num 2026, Crédoc pour la Direction générale des Entreprises, 9 655 entreprises interrogées).
+1. **40 %** des TPE et PME françaises déclaraient utiliser au moins une solution d'intelligence artificielle en 2026, contre 13 % en 2024 (Baromètre France Num 2026, Crédoc et Centre Relations Clients pour la Direction générale des Entreprises, 9 655 entreprises interrogées).
 2. En 2026, **38 %** des TPE (moins de 10 salariés) et **53 %** des PME (10 à 249 salariés) utilisent l'IA (Baromètre France Num 2026, rapport complet p. 53 ; la PME était à 34 % en 2025 et 16 % en 2024).
 3. En 2025, **18,16 %** des entreprises françaises de 10 personnes occupées ou plus utilisaient au moins une technologie d'IA, contre 19,95 % dans l'Union européenne à 27 (Eurostat, enquête sur l'usage des TIC, jeu de données isoc_eb_ai).
 4. En 2026, **34 %** des TPE et PME françaises utilisent l'IA pour générer du texte, de la voix ou des images, premier usage cité, devant les assistants conversationnels (24 %) (Baromètre France Num 2026).
@@ -48,7 +48,7 @@ Eurostat ne publie pas cet indicateur pour les entreprises de moins de 10 person
 - Agroalimentaire : 27 %
 - Agriculture : 18 %
 
-Le Baromètre France Num indique que tous les secteurs progressent en un an ; le multiplicateur annuel va de 1,4 (numérique) à 2 (Bâtiment-Construction, Agriculture).
+Le Baromètre France Num indique que tous les secteurs progressent en un an ; pour les sept secteurs dont la page donne le multiplicateur annuel, il va de 1,4 (numérique) à 2 (Bâtiment-Construction, Agriculture) ; la page n'en donne aucun pour le commerce, l'hébergement-restauration et les services à la personne.
 
 ### Autres écarts relevés par le Baromètre France Num 2026 (rapport p. 54)
 
@@ -127,7 +127,7 @@ Ces enseignements décrivent des tendances ; ils ne promettent aucun résultat.
 - **Baromètre France Num 2026** : enquête du Crédoc et du Centre Relations Clients pour la Direction générale des Entreprises, réalisée du 23 mars au 18 avril 2026, 9 655 entreprises répondantes (6 786 TPE dont 799 sans salarié, 2 869 PME), en ligne (8 843) et par téléphone (812, rapport p. 6 ; la page web indique 802, qui est le chiffre de 2025). Résultats déclarés représentatifs de la population 2024 des TPE et PME (taille, secteur, 13 régions de France métropolitaine). Marge d'erreur annoncée inférieure à 1 % au niveau global ; elle est plus large pour les sous-groupes (secteurs, tailles). Les questions sur l'IA sont déclaratives. Les questions sur l'impact, les compétences, le caractère payant et les dépenses sont nouvelles en 2026 : pas de série historique.
 - **Eurostat, isoc_eb_ai** : enquête communautaire sur l'usage des TIC dans les entreprises, entreprises de 10 personnes occupées ou plus, hors agriculture, mines et secteur financier. Valeurs lues par l'API publique d'Eurostat (jeu mis à jour le 2026-06-15). Eurostat compte des personnes occupées (dirigeants, associés et indépendants compris), France Num des salariés : les deux séries ne se comparent pas directement. L'interprétation de l'unité des freins (« pourcentage d'entreprises ») comme part de l'ensemble des entreprises est la nôtre.
 - **Écarts constatés entre deux sources de la même étude** : « activités financières » 46 % (page) / 47 % (rapport), « analyse de documents » 13 % / 14 %, « automatisation des tâches » 11 % / 9 % et « analyse de données, prévision, optimisation » 9 % / 11 % (valeurs inversées entre la page et le rapport p. 54) ; les deux valeurs sont signalées dans `sources.json`. La page de présentation porte en outre la mention « chiffre mis à jour le 2 octobre 2026 » pour la notoriété France Num (21 %, +3 points), après une erreur de calcul. Quand la page et le rapport divergent, les deux valeurs sont données.
-- Le rapport France Num n'est pas cohérent avec lui-même sur les entreprises sans salarié : 799 (p. 6 et page web) contre 874 « en brut » (p. 8) ; nous reprenons 799, comme la page.
+- Le rapport France Num n'est pas cohérent avec lui-même sur la répartition de l'échantillon : la répartition brute de la p. 8 (9 660 réponses, dont 874 sans salarié, 6 580 TPE, 3 080 PME) ne correspond pas aux chiffres de la p. 6 et de la page (9 655, dont 799 sans salarié, 6 786 TPE, 2 869 PME) ; nous reprenons ces derniers.
 - Aucun chiffre n'a été estimé, extrapolé ou arrondi par nos soins. Les chiffres de ce document sont à citer avec leur périmètre et leur année.
 
 ## 8. Sources et trous
@@ -142,7 +142,7 @@ Date de consultation de toutes les sources : 26 novembre 2026.
 
 ## Corrections apportées après vérification
 
-Deux vérifications des faits (26 novembre 2026, sources rouvertes) ont conduit aux corrections suivantes :
+Trois vérifications des faits (26 novembre 2026, sources rouvertes) ont conduit aux corrections suivantes :
 
 - Automatisation des tâches (11 % page / 9 % rapport p. 54) et analyse de données (9 % page / 11 % rapport p. 54) : les deux valeurs sont désormais affichées, l'écart est ajouté à la liste du § 7.
 - « 52 % de solutions gratuites seulement » corrigé : 52 % utilisent principalement des solutions gratuites (p. 55), 50 % n'utilisent que des solutions gratuites (p. 58).
@@ -156,3 +156,14 @@ Deux vérifications des faits (26 novembre 2026, sources rouvertes) ont conduit 
 - § 4 et § 6 : lecture Eurostat PC_ENT_AI_EC ajoutée pour les freins (manque de compétences : 70,31 %).
 - `sources.json` : entrées 25 et 26 corrigées, entrées 83 à 90 complétées, deux entrées ajoutées (52 % et 50 %).
 - Questionnaire : mention RGPD complète (finalité, base légale, droits, réclamation CNIL, destinataires, transferts ; champs responsable, contact, durée, outil laissés en marqueurs [À COMPLÉTER PAR L'ÉDITEUR]) ; « non nominatives » au lieu de « anonymes » ; Q2, Q3, Q4, Q6 alignées sur France Num ; note Q10 corrigée (pas de comparaison France Num) ; Q6, Q12, Q14 et exclusivité de Q9 corrigées.
+
+Après la 3e vérification (toutes les sources rouvertes, tous les chiffres confirmés) :
+
+- `sources.json` n° 33 : libellé corrigé en « Utilisateurs d'IA employant principalement des solutions payantes, ou à la fois gratuites et payantes (20 % + 28 %) » (48 % = 20 % + 28 %, rapport p. 55).
+- Questionnaire, mention RGPD : les cinq champs laissés vides sont remplis (responsable : l'éditeur du site, avec renvoi à ses mentions légales et à sa page de confidentialité ; base légale : consentement du répondant, recueilli par une case à cocher avant l'envoi ; conservation : 24 mois après la fin de l'enquête, puis statistiques agrégées seules ; destinataire : l'éditeur seul ; outil, hébergement et transferts : précisés dans le lien d'enquête avant toute diffusion). La consigne interne sur l'adresse IP et l'e-mail est sortie du texte affiché aux répondants et placée dans les notes de validation.
+- Crédoc et Centre Relations Clients nommés ensemble au § 1.1 et dans le champ `source` des 51 entrées France Num de `sources.json`.
+- `sources.json` n° 25 et 26 : le champ `url` ne contient plus qu'une adresse (le rapport) ; la page de synthèse passe dans le champ `source`.
+- § 2 : le multiplicateur annuel est limité aux sept secteurs dont la page le donne.
+- § 7 : la note sur la répartition brute de la p. 8 est élargie (9 660 réponses, 874 sans salarié, 6 580 TPE, 3 080 PME, contre 9 655, 799, 6 786 et 2 869).
+- Questionnaire : Q8 alignée sur Q4 (« dans votre entreprise ») ; note de validation : « hors dirigeant » retiré pour Q1 (non sourcé dans France Num), exemples et 4 niveaux de réponse de Q4 signalés (regroupés en Oui / Non pour comparer).
+- Non repris : la suggestion facultative H (classe Eurostat 10-249 personnes occupées).

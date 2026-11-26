@@ -5,18 +5,18 @@
 Durée : 5 minutes maximum. 14 questions fermées + 2 questions ouvertes.
 
 **Mention RGPD (à afficher en tête du formulaire)** :
-- **Finalité** : vos réponses servent uniquement à des fins statistiques, pour établir le Baromètre 2027 de l'IA dans les TPE et PME. **Base légale** : [À COMPLÉTER PAR L'ÉDITEUR : intérêt légitime, ou consentement exprimé par l'envoi du formulaire].
+- **Finalité** : vos réponses servent uniquement à des fins statistiques, pour établir le Baromètre 2027 de l'IA dans les TPE et PME. **Base légale** : votre consentement, que vous donnez en cochant la case prévue avant l'envoi du formulaire.
 - **Données** : nous ne demandons ni votre nom, ni le nom de votre entreprise, ni vos coordonnées. Vos réponses ne sont pas nominatives. Faute d'identifiant, nous ne pourrons pas retrouver vos réponses après envoi ; vous pouvez arrêter à tout moment avant l'envoi. N'indiquez ni nom ni information permettant de vous identifier dans les réponses libres.
-- **Responsable du traitement et contact** : [À COMPLÉTER PAR L'ÉDITEUR : identité de l'organisme et adresse de contact].
-- **Durée de conservation des réponses** : [À COMPLÉTER PAR L'ÉDITEUR].
-- **Destinataires** : [À COMPLÉTER PAR L'ÉDITEUR : personnes habilitées à lire les réponses brutes]. Les résultats publiés sont agrégés.
-- **Outil de collecte, hébergement et transferts hors Union européenne** : [À COMPLÉTER PAR L'ÉDITEUR : outil, lieu d'hébergement, transfert hors UE oui ou non]. L'outil ne doit enregistrer ni adresse IP ni e-mail.
-- **Vos droits** : si une réponse peut être rattachée à vous, vous disposez des droits d'accès, de rectification, d'effacement, d'opposition et de limitation, à exercer auprès du contact ci-dessus. Vous pouvez aussi introduire une réclamation auprès de la CNIL (www.cnil.fr).
+- **Responsable du traitement et contact** : l'éditeur du site axion-ia.com. Ses coordonnées figurent dans ses mentions légales et dans sa page de confidentialité, auxquelles vous pouvez vous reporter pour exercer vos droits.
+- **Durée de conservation des réponses** : 24 mois après la fin de l'enquête ; ensuite, seules des statistiques agrégées sont gardées.
+- **Destinataires** : l'éditeur seul lit les réponses brutes. Les résultats publiés sont agrégés.
+- **Outil de collecte, hébergement et transferts hors Union européenne** : précisés dans le lien d'enquête avant toute diffusion.
+- **Vos droits** : si une réponse peut être rattachée à vous, vous disposez des droits d'accès, de rectification, d'effacement, d'opposition et de limitation, à exercer auprès de l'éditeur, selon les coordonnées indiquées ci-dessus. Vous pouvez aussi introduire une réclamation auprès de la CNIL (www.cnil.fr).
 - Aucun résultat publié ne portera sur un croisement de moins de 10 réponses.
 
 ## Votre entreprise
 
-**1. Combien de salariés compte votre entreprise (hors dirigeant) ?**
+**1. Combien de salariés compte votre entreprise ?**
 - ☐ 0  ☐ 1 à 4  ☐ 5 à 9  ☐ 10 à 19  ☐ 20 à 49  ☐ 50 à 249  ☐ 250 ou plus
 
 **2. Dans quel secteur travaille votre entreprise ? (une seule réponse)**
@@ -39,7 +39,7 @@ Durée : 5 minutes maximum. 14 questions fermées + 2 questions ouvertes.
 **7. Pour quels usages ? (plusieurs réponses possibles)**
 - ☐ Rédiger (e-mails, textes, devis)  ☐ Communication et réseaux sociaux  ☐ Recherche d'informations  ☐ Traduction  ☐ Analyse de documents ou de données  ☐ Comptabilité / gestion  ☐ Service client  ☐ Recrutement / ressources humaines  ☐ Automatiser des tâches répétitives  ☐ Autre
 
-**8. Depuis combien de temps utilisez-vous l'IA dans votre activité ?**
+**8. Depuis combien de temps utilisez-vous l'IA dans votre entreprise ?**
 - ☐ Moins de 6 mois  ☐ 6 à 12 mois  ☐ 1 à 2 ans  ☐ Plus de 2 ans
 
 **9. Quels effets avez-vous constatés, positifs ou négatifs ? (plusieurs réponses possibles)**
@@ -72,8 +72,9 @@ Durée : 5 minutes maximum. 14 questions fermées + 2 questions ouvertes.
 
 ## Notes pour la validation
 
+- Mention RGPD : l'outil de collecte ne doit enregistrer ni adresse IP ni e-mail (consigne interne, non affichée) ; sa mention affichée n'est à écrire qu'une fois l'outil choisi. La case de consentement est à prévoir dans l'outil. Outil, hébergement et transferts : à préciser dans le lien d'enquête avant toute diffusion.
 - Les champs ne demandent aucune donnée directement identifiante ; la région est la seule donnée de localisation (pas de ville, pas de code postal). Région × taille × secteur et réponses libres peuvent toutefois identifier une entreprise rare : d'où le terme « non nominatives » (et non « anonymes ») et la règle des 10 réponses minimum par case publiée.
-- Comparabilité avec le Baromètre France Num 2026 (rapport p. 6, 8, 9, 53, 55) : Q1 reprend ses 6 tranches de salariés hors dirigeant (« 250 ou plus » est hors de son champ : à exclure des comparaisons) ; Q2 reprend ses libellés de secteurs ; Q3 ses 13 régions métropolitaines ; Q4 et Q6 reprennent la formulation de ses questions (« au sein de votre entreprise » ; « principalement »). Q10 reprend des catégories proches d'Eurostat ; pas de comparaison France Num possible. Q7 ne reprend pas les 6 types d'usage de France Num (p. 54) : à aligner si une comparaison est voulue. Les échantillons ne seront pas représentatifs et il faudra l'indiquer à la publication.
+- Comparabilité avec le Baromètre France Num 2026 (rapport p. 6, 8, 9, 53, 55) : Q1 reprend ses 6 tranches de salariés (la précision « hors dirigeant » n'existe pas dans les documents France Num consultés : si elle est voulue, c'est un choix du questionnaire) ; « 250 ou plus » est hors de son champ : à exclure des comparaisons ; Q2 reprend ses libellés de secteurs ; Q3 ses 13 régions métropolitaines ; Q4 reprend la formulation de la question France Num (« au sein de votre entreprise »), mais avec des exemples et 4 niveaux de réponse, regroupés en Oui / Non pour comparer (les exemples peuvent faire répondre « Oui » plus souvent) ; Q6 reprend « principalement ». Q10 reprend des catégories proches d'Eurostat ; pas de comparaison France Num possible. Q7 ne reprend pas les 6 types d'usage de France Num (p. 54) : à aligner si une comparaison est voulue. Les échantillons ne seront pas représentatifs et il faudra l'indiquer à la publication.
 - Temps estimé : environ 4 à 5 minutes (14 fermées dont 5 à choix multiple : questions 5, 7, 9, 10 et 14) ; à chronométrer avec 5 personnes avant diffusion.
 - À décider : canal de diffusion, base de contacts, durée de collecte, seuil minimal de réponses avant publication.
 - Les questions ouvertes 15 et 16 peuvent contenir des données identifiantes : consigne affichée en tête ; relire et anonymiser avant tout usage.
