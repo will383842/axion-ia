@@ -41,3 +41,14 @@ describe("UnifiedContactForm — pastille « Journée IA »", () => {
     expect(page).toContain("/contact?depuis=${depuis}&type=journee_ia");
   });
 });
+
+describe("parité des listes en dur (console, fiche, devis)", () => {
+  it.each([
+    ["src/features/dossier-client/fiche-demande.ts"],
+    ["src/features/admin-submissions/type-labels.ts"],
+    ["src/app/[locale]/(admin)/[adminPrefix]/submissions/SubmissionFilters.tsx"],
+    ["src/server/qualiopi/devis/assistant/sources.ts"],
+  ])("%s connaît journee_ia", (chemin) => {
+    expect(lire(...chemin.split("/"))).toContain("journee_ia");
+  });
+});

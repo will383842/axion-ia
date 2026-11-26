@@ -833,7 +833,7 @@ function UnifiedContactFormBody({
             ACCENT_CLASSES[accent].hoverBorder,
             // Mise en avant permanente : bordure et fond terracotta dès l'état
             // repos, pour qu'elle se distingue des autres pastilles.
-            opt === "journee_ia" && "border-terracotta bg-terracotta-soft text-terracotta-deep",
+            opt === "journee_ia" && "border-terracotta text-terracotta-deep",
             PILL_CHECKED[accent],
           )}
         >
