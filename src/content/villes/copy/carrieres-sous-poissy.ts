@@ -7,9 +7,9 @@ import type { VilleCopy } from "./types";
 
 export const CARRIERES_SOUS_POISSY_COPY: VilleCopy = {
   pitchFr:
-    "Carrières-sous-Poissy, commune des Yvelines de 20 825 habitants située à une dizaine de kilomètres au nord-ouest de Saint-Germain-en-Laye, accueille un tissu de TPE et PME organisé autour des zones d'activité du bord de Seine et du quartier des Trois Cèdres (environ 15 hectares). Axion-IA accompagne les dirigeants locaux dans l'intégration concrète de l'IA opérationnelle : automatisation des relances, des devis, du traitement administratif. Williams se déplace sur site pour des missions ciblées TPE/PME en priorité, puis PME et ETI.",
+    "Carrières-sous-Poissy, commune des Yvelines de 20 825 habitants, accueille un tissu de TPE et PME organisé autour des zones d'activité du bord de Seine et du quartier des Trois Cèdres (environ 15 hectares). Axion-IA accompagne les dirigeants locaux dans l'intégration concrète de l'IA opérationnelle : automatisation des relances, des devis, du traitement administratif. Williams intervient sur site pour des missions ciblées TPE/PME en priorité, puis PME et ETI.",
   pitchEn:
-    "Carrières-sous-Poissy, commune des Yvelines de 20 825 habitants située à une dizaine de kilomètres au nord-ouest de Saint-Germain-en-Laye, accueille un tissu de TPE et PME organisé autour des zones d'activité du bord de Seine et du quartier des Trois Cèdres (environ 15 hectares). Axion-IA accompagne les dirigeants locaux dans l'intégration concrète de l'IA opérationnelle : automatisation des relances, des devis, du traitement administratif. Williams se déplace sur site pour des missions ciblées TPE/PME en priorité, puis PME et ETI.",
+    "Carrières-sous-Poissy, commune des Yvelines de 20 825 habitants, accueille un tissu de TPE et PME organisé autour des zones d'activité du bord de Seine et du quartier des Trois Cèdres (environ 15 hectares). Axion-IA accompagne les dirigeants locaux dans l'intégration concrète de l'IA opérationnelle : automatisation des relances, des devis, du traitement administratif. Williams intervient sur site pour des missions ciblées TPE/PME en priorité, puis PME et ETI.",
   directAnswerFr:
     "À Carrières-sous-Poissy, Axion-IA intervient sur site pour les TPE et PME des zones d'activité du bord de Seine et du quartier des Trois Cèdres. Le territoire compte le centre technique PSA Peugeot Citroën, spécialisé dans la recherche autoroutière et le développement de moteurs électriques, qui structure une partie de l'écosystème industriel local. Nos missions couvrent l'audit sur place 4 heures (à partir de {{price:audit-flash|flat}}), les interventions ponctuelles à partir de {{price:intervention-4h|flat}}, l'implémentation clé en main et l'accompagnement un-à-un des dirigeants — code custom Python/TypeScript, jamais de no-code.",
   directAnswerEn:
@@ -232,7 +232,7 @@ export const CARRIERES_SOUS_POISSY_COPY: VilleCopy = {
     },
     {
       q: "Quels délais pour une intervention IA à Carrières-sous-Poissy ?",
-      a: "Williams se déplace généralement sous 5 jours ouvrés après validation du brief. Pour un Audit sur place, le rapport est remis sous 7 jours après la visite sur site.",
+      a: "Williams intervient généralement sous 5 jours ouvrés après validation du brief. Pour un Audit sur place, le rapport est remis sous 7 jours après la visite sur site.",
     },
     {
       q: "Quelles communes voisines de Carrières-sous-Poissy couvrez-vous également ?",

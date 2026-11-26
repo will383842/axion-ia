@@ -232,7 +232,7 @@ export const AURILLAC_COPY: VilleCopy = {
     },
     {
       q: "Quels délais pour une intervention sur site à Aurillac ?",
-      a: "Williams se déplace à Aurillac sous 5 jours ouvrés après validation du devis. Pour un Audit sur place, le livrable est remis sous 5 jours après la visite. Une implémentation complète dure de 2 à 6 semaines selon le périmètre.",
+      a: "Williams intervient sur site à Aurillac sous 5 jours ouvrés après validation du devis. Pour un Audit sur place, le livrable est remis sous 5 jours après la visite. Une implémentation complète dure de 2 à 6 semaines selon le périmètre.",
     },
     {
       q: "Intervenez-vous dans les communes proches d'Aurillac ?",

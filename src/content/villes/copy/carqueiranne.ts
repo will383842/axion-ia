@@ -49,7 +49,7 @@ export const CARQUEIRANNE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Carqueiranne et sur le littoral toulonnais ?",
-      a: "Oui, Axion-IA intervient à Carqueiranne et sur tout le littoral est-toulonnais (Hyères, Le Pradet, La Garde, La Crau). Proximité immédiate de l'aéroport Toulon-Hyères.",
+      a: "Oui, Axion-IA intervient à Carqueiranne et sur tout le littoral est-toulonnais (Hyères, Le Pradet, La Garde, La Crau). Nous intervenons dans vos locaux à Carqueiranne, comme partout en France.",
     },
     {
       q: "Quel est le tarif d'un audit IA pour un restaurant de poisson à Carqueiranne ?",

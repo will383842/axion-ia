@@ -7,9 +7,9 @@ import type { VilleCopy } from "./types";
 
 export const ALFORTVILLE_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA accompagne les TPE et PME d'Alfortville, commune du Val-de-Marne de 45 531 habitants située en bord de Seine au sud-est de Paris. Notre cabinet intervient sur site auprès des commerçants, artisans, restaurateurs et PME industrielles installés autour des stations RER D Maisons-Alfort – Alfortville et Vert de Maisons, pour automatiser devis, relances clients, facturation et reporting via du code source sur-mesure.",
+    "Axion-IA accompagne les TPE et PME d'Alfortville, commune du Val-de-Marne de 45 531 habitants située en bord de Seine au sud-est de Paris. Notre cabinet intervient sur site auprès des commerçants, artisans, restaurateurs et PME industrielles installés à Alfortville, pour automatiser devis, relances clients, facturation et reporting via du code source sur-mesure.",
   pitchEn:
-    "Axion-IA accompagne les TPE et PME d'Alfortville, commune du Val-de-Marne de 45 531 habitants située en bord de Seine au sud-est de Paris. Notre cabinet intervient sur site auprès des commerçants, artisans, restaurateurs et PME industrielles installés autour des stations RER D Maisons-Alfort – Alfortville et Vert de Maisons, pour automatiser devis, relances clients, facturation et reporting via du code source sur-mesure.",
+    "Axion-IA accompagne les TPE et PME d'Alfortville, commune du Val-de-Marne de 45 531 habitants située en bord de Seine au sud-est de Paris. Notre cabinet intervient sur site auprès des commerçants, artisans, restaurateurs et PME industrielles installés à Alfortville, pour automatiser devis, relances clients, facturation et reporting via du code source sur-mesure.",
   directAnswerFr:
     "Axion-IA se déplace à Alfortville (Val-de-Marne, 45 531 habitants) pour auditer et automatiser les processus des TPE et PME locales. Bordée par Charenton-le-Pont, Maisons-Alfort, Ivry-sur-Seine, Vitry-sur-Seine, Choisy-le-Roi et Créteil, la commune accueille un tissu de commerces de détail, services aux entreprises, restauration et logistique urbaine porté par les axes A4 et A86. Nos interventions intègrent la conformité RGPD et reposent sur du code custom, jamais sur des outils no-code.",
   directAnswerEn:
@@ -130,7 +130,7 @@ export const ALFORTVILLE_COPY: VilleCopy = {
           },
           {
             q: "Sous quel délai obtient-on un devis pour un projet à Alfortville ?",
-            a: "Le devis est remis à partir de 24-48 h selon la complexité du projet, après un premier échange de cadrage. Le kick-off se tient ensuite sur site à Alfortville — secteur Confluence, abords des gares RER D ou zones d'activité des bords de Seine.",
+            a: "Le devis est remis à partir de 24-48 h selon la complexité du projet, après un premier échange de cadrage. Le kick-off se tient ensuite sur site à Alfortville — secteur Confluence ou zones d'activité des bords de Seine.",
           },
         ],
         guarantees:
@@ -216,7 +216,7 @@ export const ALFORTVILLE_COPY: VilleCopy = {
           },
           {
             q: "How fast can I get a quote for a project in Alfortville?",
-            a: "A quote is provided from 24-48 hours depending on project complexity, after an initial framing exchange. The kick-off then takes place on site in Alfortville — the Confluence area, near the RER D stations or the riverside business zones.",
+            a: "A quote is provided from 24-48 hours depending on project complexity, after an initial framing exchange. The kick-off then takes place on site in Alfortville — the Confluence area or the riverside business zones.",
           },
         ],
         guarantees:

@@ -246,7 +246,7 @@ export const BOURG_LA_REINE_COPY: VilleCopy = {
     },
     {
       q: "Faut-il être basé à Bourg-la-Reine pour travailler avec Axion-IA ?",
-      a: "Non. Nous intervenons aussi sur tout l'axe RER B sud (Antony, Sceaux, Massy, Cachan, L'Haÿ-les-Roses) et l'ensemble du Grand Paris. Coaching 1-to-1 disponible en visio si vous préférez le distanciel.",
+      a: "Non. Nous intervenons aussi à Antony, Sceaux, Massy, Cachan, L'Haÿ-les-Roses et dans l'ensemble du Grand Paris. Coaching 1-to-1 disponible en visio si vous préférez le distanciel.",
     },
   ],
 };

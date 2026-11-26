@@ -48,8 +48,8 @@ export const BEZANNES_COPY: VilleCopy = {
   },
   faqGeolocalisee: [
     {
-      q: "Axion-IA intervient-il à Bezannes et dans le pôle gare TGV ?",
-      a: "Oui, Axion-IA intervient à Bezannes et dans tout le pôle tertiaire gare TGV Champagne-Ardenne.",
+      q: "Intervenez-vous à Bezannes et dans son pôle tertiaire ?",
+      a: "Oui, nous intervenons dans vos locaux à Bezannes et dans tout le pôle tertiaire de Champagne-Ardenne, comme partout en France.",
     },
     {
       q: "Tarifs audit IA à Bezannes  : quel budget prévoir ?",

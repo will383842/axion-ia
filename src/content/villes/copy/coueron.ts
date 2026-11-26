@@ -31,8 +31,8 @@ export const COUERON_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Couëron pour les TPE/PME de la ZAC des Hauts de Couëron et les industriels du bassin métallurgique (héritage Tréfimétaux). Williams se déplace sur site pour cartographier les processus métiers et identifier 3 à 5 cas d'usage IA prioritaires.",
-      en: "Audit IA à Couëron pour les TPE/PME de la ZAC des Hauts de Couëron et les industriels du bassin métallurgique (héritage Tréfimétaux). Williams se déplace sur site pour cartographier les processus métiers et identifier 3 à 5 cas d'usage IA prioritaires.",
+      fr: "Audit IA à Couëron pour les TPE/PME de la ZAC des Hauts de Couëron et les industriels du bassin métallurgique (héritage Tréfimétaux). Williams intervient sur site pour cartographier les processus métiers et identifier 3 à 5 cas d'usage IA prioritaires.",
+      en: "Audit IA à Couëron pour les TPE/PME de la ZAC des Hauts de Couëron et les industriels du bassin métallurgique (héritage Tréfimétaux). Williams intervient sur site pour cartographier les processus métiers et identifier 3 à 5 cas d'usage IA prioritaires.",
     },
     interventions: {
       fr: "Interventions ponctuelles à Couëron pour les TPE/PME industrielles, commerciales ou tertiaires de Nantes Métropole. Débogage de pipelines IA, refonte de prompts, intégration LLM en code custom.",
@@ -235,7 +235,7 @@ export const COUERON_COPY: VilleCopy = {
     },
     {
       q: "Quels délais pour démarrer une mission IA à Couëron ?",
-      a: "Williams se déplace à Couëron dans les 5 jours ouvrés après signature du devis. Pour un Audit sur place, le rendu écrit est livré sous 7 jours ouvrés post-intervention.",
+      a: "Williams intervient à Couëron dans les 5 jours ouvrés après signature du devis. Pour un Audit sur place, le rendu écrit est livré sous 7 jours ouvrés post-intervention.",
     },
     {
       q: "Axion-IA garantit-il la conformité RGPD et AI Act à Couëron ?",

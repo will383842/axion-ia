@@ -242,7 +242,7 @@ export const BEGLES_COPY: VilleCopy = {
     },
     {
       q: "Quels sont les délais d'intervention à Bègles ?",
-      a: "Williams se déplace à Bègles sous 5 jours ouvrés en moyenne. Mission sur site dans vos locaux Terres Neuves, sur chantier BTP ou en boutique.",
+      a: "Williams intervient à Bègles sous 5 jours ouvrés en moyenne. Mission sur site dans vos locaux Terres Neuves, sur chantier BTP ou en boutique.",
     },
   ],
 };

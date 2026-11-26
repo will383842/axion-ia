@@ -230,7 +230,7 @@ export const BEAUNE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il sur site à Beaune et dans le vignoble bourguignon ?",
-      a: "Oui, nos experts IA seniors se déplacent à Beaune, dans tout le vignoble de la Côte de Beaune et de la Côte de Nuits (Meursault, Pommard, Volnay, Nuits-Saint-Georges) ainsi que dans l'agglomération dijonnaise à 45 km pour auditer, intégrer et former les équipes des TPE et PME locales directement sur leur site de production.",
+      a: "Oui, nos experts IA seniors interviennent à Beaune, dans tout le vignoble de la Côte de Beaune et de la Côte de Nuits (Meursault, Pommard, Volnay, Nuits-Saint-Georges) ainsi que dans l'agglomération dijonnaise pour auditer, intégrer et former les équipes des TPE et PME locales directement sur leur site de production.",
     },
     {
       q: "Quels secteurs accompagnez-vous prioritairement à Beaune ?",

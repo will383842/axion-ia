@@ -73,8 +73,8 @@ export const BESSAN_COPY: VilleCopy = {
       a: "TPE en priorité (commerces centre ancien fortifié, artisans BTP rénovation patrimoine, professions libérales) puis PME (viticulteurs cave coopérative ou domaines, exploitations agricoles, services aux entreprises pour l'agglo Agde-Pézenas).",
     },
     {
-      q: "Vos consultants se déplacent-ils à Bessan ou en visio uniquement ?",
-      a: "Les deux. Visio possible pour cadrage et coaching, sur site recommandé pour ateliers d'équipe.",
+      q: "Intervenez-vous à Bessan ou en visio uniquement ?",
+      a: "Les deux. Nous intervenons dans vos locaux à Bessan, comme partout en France. Visio possible pour cadrage et coaching, sur site recommandé pour ateliers d'équipe.",
     },
   ],
 };

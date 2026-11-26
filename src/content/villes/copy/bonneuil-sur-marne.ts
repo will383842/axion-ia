@@ -14,9 +14,9 @@ export const BONNEUIL_SUR_MARNE_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Bonneuil-sur-Marne (94). Nous accompagnons TPE et PME : entreprises logistiques et portuaires, PME transport et BTP, artisans, commerçants, prestataires de services du sud-est Val-de-Marne. Audit sur place sur mesure.",
   seoHook: "transport logistique & matériaux construction",
   ecosystemFr:
-    "Bonneuil-sur-Marne est structurée autour du port fluvial de Bonneuil (deuxième port fluvial IDF) et de zones d'activités logistiques et industrielles étendues. Tissu PME transport/logistique, BTP, TPE artisans, commerces de proximité et services aux entreprises. Proximité Créteil et A86.",
+    "Bonneuil-sur-Marne est structurée autour du port fluvial de Bonneuil (deuxième port fluvial IDF) et de zones d'activités logistiques et industrielles étendues. Tissu PME transport/logistique, BTP, TPE artisans, commerces de proximité et services aux entreprises. Bassin d'emploi de Créteil et du Val-de-Marne.",
   ecosystemEn:
-    "Bonneuil-sur-Marne est structurée autour du port fluvial de Bonneuil (deuxième port fluvial IDF) et de zones d'activités logistiques et industrielles étendues. Tissu PME transport/logistique, BTP, TPE artisans, commerces de proximité et services aux entreprises. Proximité Créteil et A86.",
+    "Bonneuil-sur-Marne est structurée autour du port fluvial de Bonneuil (deuxième port fluvial IDF) et de zones d'activités logistiques et industrielles étendues. Tissu PME transport/logistique, BTP, TPE artisans, commerces de proximité et services aux entreprises. Bassin d'emploi de Créteil et du Val-de-Marne.",
   distancesFr:
     "Créteil à 5 min. Paris Gare de Lyon à 25 min RER A via Sucy-Bonneuil. Aéroport Paris-Orly à 20 min A86. Autoroute A86 et RN19.",
   distancesEn:

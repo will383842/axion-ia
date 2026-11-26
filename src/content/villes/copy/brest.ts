@@ -161,7 +161,7 @@ export const BREST_COPY: VilleCopy = {
             a: "Sur les audits Stratégique PME dans la sous-traitance navale et la logistique, les gains identifiés portent typiquement sur la gestion documentaire, la rédaction de comptes-rendus techniques et la qualification de leads. Le livrable détaille les chiffres précis pour votre cas.",
           },
           {
-            q: "Vos consultants se déplacent-ils jusqu'au Technopôle Brest-Iroise ou à Guipavas ?",
+            q: "Intervenez-vous au Technopôle Brest-Iroise ou à Guipavas ?",
             a: "Oui. Nous intervenons en présentiel sur l'ensemble de Brest Métropole — Plouzané, Guipavas, Gouesnou, Le Relecq-Kerhuon, Plougastel-Daoulas — ainsi que dans le Finistère.",
           },
           {

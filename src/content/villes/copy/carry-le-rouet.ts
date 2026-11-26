@@ -49,7 +49,7 @@ export const CARRY_LE_ROUET_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Carry-le-Rouet et sur la Côte Bleue ?",
-      a: "Oui, Axion-IA intervient à Carry-le-Rouet et dans toute la Côte Bleue (Sausset-les-Pins, Ensuès-la-Redonne, Le Rove, Martigues). Proximité Marseille via A55 et TER Côte Bleue.",
+      a: "Oui, Axion-IA intervient à Carry-le-Rouet et dans toute la Côte Bleue (Sausset-les-Pins, Ensuès-la-Redonne, Le Rove, Martigues). Nous intervenons dans vos locaux à Carry-le-Rouet, comme partout en France.",
     },
     {
       q: "Quel est le tarif d'un audit IA à Carry-le-Rouet  ?",

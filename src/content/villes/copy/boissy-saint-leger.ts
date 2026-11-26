@@ -18,9 +18,9 @@ export const BOISSY_SAINT_LEGER_COPY: VilleCopy = {
   ecosystemEn:
     "Boissy-Saint-Léger est une commune résidentielle de l'est du Val-de-Marne, terminus du RER A branche Boissy. Tissu économique de proximité : commerces de centre-ville, TPE artisans BTP et maintenance, professions libérales, cabinets de santé, PME de services aux entreprises.",
   distancesFr:
-    "Terminus RER A Boissy-Saint-Léger (35 min Paris Nation). Créteil à 15 min. Aéroport Paris-Orly à 25 min A86. Proximité A4 et Francilienne N104.",
+    "Boissy-Saint-Léger, commune du Val-de-Marne aux portes de Créteil, dans le bassin d'emploi du Haut Val-de-Marne.",
   distancesEn:
-    "Terminus RER A Boissy-Saint-Léger (35 min Paris Nation). Créteil à 15 min. Aéroport Paris-Orly à 25 min A86. Proximité A4 et Francilienne N104.",
+    "Boissy-Saint-Léger, commune du Val-de-Marne aux portes de Créteil, dans le bassin d'emploi du Haut Val-de-Marne.",
   topSectorsNaf: [
     "Commerce de centre-ville",
     "Professions libérales & santé",

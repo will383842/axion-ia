@@ -214,7 +214,7 @@ export const BOURG_EN_BRESSE_COPY: VilleCopy = {
           },
           {
             q: "Do you work on site in Bourg-en-Bresse and the Ain?",
-            a: "Yes. We travel within the agglomeration — Parc Cadran, CENORD, Norelan, town centre, Bresse farms — and to tourism players at Brou or the Ekinox / Ainterexpo events hub. Kick-off happens in Bourg-en-Bresse, then iterations by video from Lyon (1h, A40/A42).",
+            a: "Yes. We work on site across the agglomeration — Parc Cadran, CENORD, Norelan, town centre, Bresse farms — and with tourism players at Brou or the Ekinox / Ainterexpo events hub. Kick-off happens on site in Bourg-en-Bresse, then iterations by video.",
           },
           {
             q: "Are your sites GDPR-compliant and where is data hosted?",

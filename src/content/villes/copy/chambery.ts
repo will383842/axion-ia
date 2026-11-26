@@ -230,7 +230,7 @@ export const CHAMBERY_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il sur site à Chambéry et dans les stations savoyardes ?",
-      a: "Oui, nos experts IA seniors se déplacent à Chambéry, dans toute la Savoie et les stations de Tarentaise et Maurienne (30 à 90 minutes du centre-ville) pour auditer, intégrer et former les équipes des TPE et PME locales directement sur leur site de production.",
+      a: "Oui, nos experts IA seniors interviennent à Chambéry, dans toute la Savoie et les stations de Tarentaise et Maurienne, pour auditer, intégrer et former les équipes des TPE et PME locales directement sur leur site de production.",
     },
     {
       q: "Quels secteurs accompagnez-vous prioritairement à Chambéry ?",

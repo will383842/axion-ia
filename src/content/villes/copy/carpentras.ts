@@ -5,7 +5,7 @@
 import type { VilleCopy } from "./types";
 
 const PITCH_FR =
-  "Axion-IA accompagne les TPE et PME de Carpentras, sous-préfecture du Vaucluse de 31 619 habitants au cœur du Comtat Venaissin. Williams se déplace sur site auprès des artisans, commerçants, exploitations viticoles et entreprises agroalimentaires locales pour automatiser, en code custom, leurs tâches administratives, devis et relances clients. Aucun no-code propriétaire, pas de SaaS verrouillant : du code documenté, livré et maintenable.";
+  "Axion-IA accompagne les TPE et PME de Carpentras, sous-préfecture du Vaucluse de 31 619 habitants au cœur du Comtat Venaissin. Williams intervient sur site auprès des artisans, commerçants, exploitations viticoles et entreprises agroalimentaires locales pour automatiser, en code custom, leurs tâches administratives, devis et relances clients. Aucun no-code propriétaire, pas de SaaS verrouillant : du code documenté, livré et maintenable.";
 
 const DIRECT_ANSWER_FR =
   "Axion-IA intervient à Carpentras pour les TPE et PME du Vaucluse : viticulteurs des AOC Ventoux et Côtes-du-Rhône, commerçants du marché provençal du vendredi (classé Site remarquable du goût), artisans BTP, professions libérales et restaurateurs. La ville est desservie par le réseau Avignon-TGV (30 km, 38 min de train). Nous intervenons partout en France, sur place ou à distance, pour cadrer le besoin, livrer du code custom Python ou TypeScript, et former l'équipe. Audit sur place {{price:audit-flash|flat}}, Formation 4 h {{price:intervention-4h|flat}}, accompagnement 1-à-1 {{price:intervention-dirigeants|flat}} — tarifs publics, pas de licence cachée.";
