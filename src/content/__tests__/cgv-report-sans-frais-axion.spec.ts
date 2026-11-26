@@ -37,13 +37,25 @@ describe("CGV : report à l'initiative d'Axion-IA, sans frais", () => {
       expect(a).toContain("sans frais pour le Client");
       expect(a).toContain("au moins 2 nouvelles dates");
       expect(a).toContain("dans les 30 jours suivant cette information");
-      expect(a).toContain("situées dans les 6 mois suivant la date qu'elle ne peut pas tenir");
+      expect(a).toContain("situées dans les 6 mois suivant la date initialement convenue");
       expect(a).toContain("d'au moins 10 Jours ouvrés");
       expect(a).toContain("il est réputé accepter la première date proposée");
       expect(a).toContain("rien n'est remboursé");
       expect(a).toContain("seconde série d'au moins 2 dates, toujours dans les 6 mois");
-      expect(a).toContain("le Client peut aussi proposer ses propres dates, qu'Axion-IA accepte si elle est disponible");
-      expect(a).toContain("bon d'achat (avoir) du montant des sommes versées, valable 12 mois et utilisable sur toute prestation d'Axion-IA");
+      expect(a).toContain(
+        "le Client peut aussi proposer ses propres dates, qu'Axion-IA accepte, sauf indisponibilité de l'intervenant justifiée par écrit",
+      );
+      expect(a).toContain(
+        "bon d'achat (avoir) du montant des sommes qu'il a lui-même versées, valable 12 mois et utilisable sur toute prestation d'Axion-IA",
+      );
+      expect(a).toContain("sans prolonger le délai de 6 mois");
+      expect(a).toContain(
+        "Pour la personne physique de l'article 49.2, le report n'a lieu qu'avec son accord exprès",
+      );
+      expect(a).toContain(
+        "la part non utilisée à l'expiration du bon lui est remboursée dans les 30 jours",
+      );
+      expect(a).toContain("Les sommes réglées par un tiers pour le compte du Client");
       expect(a).not.toContain("son silence valant refus");
       expect(a).not.toContain("dans les 3 mois");
       expect(a).toContain("n'est pas une annulation par lui");
@@ -56,7 +68,9 @@ describe("CGV : report à l'initiative d'Axion-IA, sans frais", () => {
       expect(a).toContain("Le remboursement n'intervient qu'en dernier recours");
       expect(a).toContain("aucune date n'a pu être convenue dans les 6 mois");
       expect(a).toContain("le Client n'a pas choisi le bon d'achat");
-      expect(a).toContain("ou Axion-IA ne lui a pas proposé de dates dans le délai de 30 jours ci-dessus");
+      expect(a).toContain(
+        "ou Axion-IA ne lui a pas proposé, dans le délai de 30 jours ci-dessus, au moins 2 dates",
+      );
     });
 
     it(`${variante} : l'indemnité égale ne vise que la personne morale non professionnelle, jamais le professionnel`, async () => {
@@ -74,7 +88,9 @@ describe("CGV : report à l'initiative d'Axion-IA, sans frais", () => {
       expect(a53).toContain("au moins 2 nouvelles dates dans les 6 mois");
       // Aucune autre clause n'ouvre une indemnité égale à l'acompte.
       expect(tout.match(/indemnité d'un montant égal à (cet |l')acompte/g)?.length ?? 0).toBe(2);
-      expect(alinea(53, "53.3")).toContain("notamment celles de l'article 42, si Axion-IA renonce à l'exécuter");
+      expect(alinea(53, "53.3")).toContain(
+        "notamment celles de l'article 42, si Axion-IA renonce à l'exécuter",
+      );
       expect(tout.match(/renonce à l'exécuter/g)?.length ?? 0).toBe(1);
       expect(tout).not.toContain("sauf report accepté par lui");
     });
@@ -84,7 +100,7 @@ describe("CGV : report à l'initiative d'Axion-IA, sans frais", () => {
       expect(art(6)).toContain("d'un report à l'initiative d'Axion-IA (article 46.4)");
       expect(art(6)).not.toContain("d'une annulation par Axion-IA");
       expect(art(6)).toContain(
-        "En cas de report (articles 46.3 et 46.4), l'acompte est reporté sur la nouvelle date et reste imputé",
+        "En cas de report (articles 46.3 et 46.4), l'acompte est reporté sur la nouvelle date, ou porté sur le bon d'achat de l'article 46.4, et reste imputé",
       );
       expect(alinea(17, "17.4")).toContain("au moins 2 nouvelles dates dans les 6 mois");
       expect(alinea(17, "17.4")).toContain("que dans les cas prévus à l'article 46.4");

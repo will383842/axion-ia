@@ -452,7 +452,7 @@ export function ConventionPdf({
         {/* 4. Conditions d'annulation */}
         <SectionCarte title="4. Conditions d'annulation et acompte">
           {/*
-            🔴 26/11/2026 — décision du dirigeant : dès qu'un acompte est versé, il reste acquis si le client annule, SANS condition de délai ; la personne morale non professionnelle (CGV 53.3) est traitée comme le client professionnel, avec la clause RÉCIPROQUE (R.212-2 2° (applicable aux non-professionnels par R.212-5) du code de la consommation) ; 26/11 (2e décision) : l'organisme REPORTE au lieu d'annuler (2 dates sous 6 mois, sans frais, acompte reporté) ; acompte rendu + indemnité égale (PM non pro seule) seulement si aucune date ne convient. L'ancienne ligne « Annulation à plus de
+            🔴 26/11/2026 — décision du dirigeant : dès qu'un acompte est versé, il reste acquis si le client annule, SANS condition de délai ; la personne morale non professionnelle (CGV 53.3) est traitée comme le client professionnel, avec la clause RÉCIPROQUE (R.212-2 2° (applicable aux non-professionnels par R.212-5) du code de la consommation) ; 26/11 (2e décision) : l'organisme REPORTE au lieu d'annuler (2 dates sous 6 mois, sans frais, acompte reporté) ; acompte rendu + indemnité égale (PM non pro seule) en dernier recours seulement. L'ancienne ligne « Annulation à plus de
             15 jours ouvrés avant le début : 0 % » (acomptes remboursés) est supprimée. Les
             montants dus au-delà de l'acompte (50 % / 100 %) sont inchangés mais ne sont jamais
             inférieurs à l'acompte versé. TVA : aucune exonération.
@@ -468,28 +468,38 @@ export function ConventionPdf({
             informe le client par écrit dès qu&apos;il a connaissance de l&apos;empêchement, puis
             reporte la prestation sans frais pour le client. Il lui propose par écrit, dans les 30
             jours suivant cette information, au moins 2 nouvelles dates situées dans les 6 mois
-            suivant la date qu&apos;il ne peut pas tenir, en fixant un délai de réponse raisonnable
-            d&apos;au moins 10 jours ouvrés. Sans réponse du client dans ce délai, le client est
-            réputé accepter la première date proposée. L&apos;acompte et les sommes versées sont
+            suivant la date initialement convenue, la première au moins 15 jours ouvrés après la fin
+            du délai de réponse, en fixant un délai de réponse raisonnable d&apos;au moins 10 jours
+            ouvrés, en rappelant l&apos;effet du silence et en relançant le client par écrit avant
+            l&apos;échéance. Sans réponse du client dans ce délai, le client est réputé accepter la
+            première date proposée ; il peut la déplacer une fois sans frais parmi les dates
+            proposées, sans consommer son propre report. L&apos;acompte et les sommes versées sont
             reportés sur la date retenue et rien n&apos;est remboursé (article 46.4 des conditions
             générales de vente). Si le client refuse les dates proposées, l&apos;organisme lui en
-            propose une seconde série d&apos;au moins 2, toujours dans les 6 mois ; le client peut
-            aussi proposer ses propres dates, que l&apos;organisme accepte s&apos;il est disponible.
-            À la place d&apos;un remboursement, le client peut choisir un bon d&apos;achat (avoir)
-            du montant des sommes versées, valable 12 mois et utilisable sur toute prestation de
-            l&apos;organisme. Ce report n&apos;est pas une annulation par le client. Le
-            remboursement n&apos;intervient qu&apos;en dernier recours : si aucune date n&apos;a pu
-            être convenue dans les 6 mois et que le client n&apos;a pas choisi le bon d&apos;achat,
-            ou si l&apos;organisme ne lui propose pas de dates dans le délai de 30 jours,
-            l&apos;organisme rembourse au client les sommes versées pour l&apos;action concernée.
-            Pour la seule personne morale
-            non professionnelle, et hors force majeure et faute du client, il lui verse en outre une
-            indemnité d&apos;un montant égal à l&apos;acompte, sans préjudice de la réparation du
-            préjudice qu&apos;elle prouve, sur laquelle cette indemnité s&apos;impute. Sauf faute
-            lourde ou dolosive, le client professionnel ne reçoit jamais d&apos;indemnité en plus.
-            Les sommes suivantes sont dues ; l&apos;acompte versé s&apos;impute sur elles et, sauf
-            dans les cas prévus au dernier alinéa, n&apos;est pas restitué ; la somme due ne dépasse
-            pas le prix HT :
+            propose, dans les 15 jours, une seconde série d&apos;au moins 2, toujours dans les 6
+            mois suivant la date initialement convenue ; le client peut aussi proposer ses propres
+            dates, que l&apos;organisme accepte sauf indisponibilité de l&apos;intervenant justifiée
+            par écrit (il ne peut en refuser plus de 2). Si l&apos;organisme ne peut pas tenir la
+            nouvelle date, le présent alinéa s&apos;applique de nouveau, sans prolonger le délai de
+            6 mois. À la place d&apos;un remboursement, le client peut choisir, par écrit et jamais
+            par son silence, un bon d&apos;achat (avoir) du montant des sommes qu&apos;il a lui-même
+            versées, valable 12 mois et utilisable sur toute prestation de l&apos;organisme ; la
+            part non utilisée à l&apos;expiration lui est remboursée dans les 30 jours, et la
+            personne morale non professionnelle qui le choisit renonce à l&apos;indemnité
+            ci-dessous. Les sommes réglées par un tiers pour le compte du client ne donnent jamais
+            lieu à bon d&apos;achat : elles sont remboursées à ce tiers. Ce report n&apos;est pas
+            une annulation par le client. Le remboursement n&apos;intervient qu&apos;en dernier
+            recours : si aucune date n&apos;a pu être convenue dans les 6 mois et que le client
+            n&apos;a pas choisi le bon d&apos;achat, ou si l&apos;organisme ne lui propose pas, dans
+            le délai de 30 jours, au moins 2 dates répondant aux conditions ci-dessus,
+            l&apos;organisme rembourse au client, dans les 30 jours, les sommes versées pour
+            l&apos;action concernée. Pour la seule personne morale non professionnelle, et hors
+            force majeure et faute du client, il lui verse en outre une indemnité d&apos;un montant
+            égal à l&apos;acompte, sans préjudice de la réparation du préjudice qu&apos;elle prouve,
+            sur laquelle cette indemnité s&apos;impute. Sauf faute lourde ou dolosive, le client
+            professionnel ne reçoit jamais d&apos;indemnité en plus. Les sommes suivantes sont dues
+            ; l&apos;acompte versé s&apos;impute sur elles et, sauf dans les cas prévus au dernier
+            alinéa, n&apos;est pas restitué ; la somme due ne dépasse pas le prix HT :
           </Text>
           <Text style={local.listItem}>
             • Annulation à plus de 15 jours ouvrés avant le début : aucune somme en plus de
@@ -611,9 +621,9 @@ export function ConventionPdf({
               l&apos;organisme à ses propres obligations (inexécution de tout ou partie de
               l&apos;action, défaut des justificatifs de réalisation qui lui incombent) ou d&apos;un
               report à l&apos;initiative de l&apos;organisme (article 46.4 des conditions générales
-              de vente). En cas de report, si le financeur ne maintient pas sa prise en charge
-              pour la date retenue, le client peut refuser cette date et le remboursement prévu
-              à l&apos;article 4 s&apos;applique.
+              de vente). En cas de report, si le financeur ne maintient pas sa prise en charge pour
+              la date retenue, le client peut refuser cette date et le remboursement prévu à
+              l&apos;article 4 s&apos;applique.
             </Text>
           ) : null}
         </SectionCarte>

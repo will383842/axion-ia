@@ -105,7 +105,7 @@ export type TypeGabaritSignable =
  * | `convention` | 10 | 26/11 — acompte acquis en cas d'annulation sans condition de délai (suppression de « plus de 15 jours ouvrés : 0 % ») ; dédit formation facturé à part, non imputable sur les fonds de la formation (et, dans la tripartite ou la bipartite certifiée, non pris en charge par un OPCO). **v9 archivée** |
  * | `convention_tripartite` | 9 | 26/11 — la personne morale non professionnelle perd aussi l'acompte, avec clause réciproque (§ 4, CGV 53.3). **v8 archivée** |
  * | `convention` | 11 | 26/11 — même règle (§ 4) : l'acompte reste acquis aussi pour la personne morale non professionnelle ; si l'organisme annule hors force majeure, acompte rendu + indemnité égale. **v10 archivée** |
- * | `convention_tripartite` | 10 | 26/11 — report à l'initiative de l'organisme, sans frais (au moins 2 dates dans les 6 mois, 1re date réputée acceptée sans réponse, acompte reporté ou bon d'achat 12 mois) ; remboursement et indemnité égale (personne morale non professionnelle seule) seulement si aucune date ne convient (§ 4, CGV 46.4). **v9 archivée** |
+ * | `convention_tripartite` | 10 | 26/11 — report à l'initiative de l'organisme, sans frais (au moins 2 dates dans les 6 mois, 1re date réputée acceptée sans réponse, acompte reporté ou bon d'achat 12 mois) ; remboursement et indemnité égale (personne morale non professionnelle seule) en dernier recours seulement (§ 4, CGV 46.4). **v9 archivée** |
  * | `convention` | 12 | 26/11 — même règle (§ 4). **v11 archivée** |
  * | `contrat_formation` | 3 | 18/11 — même refonte, aucun texte changé. **v2 archivée** |
  * | les autres | 1 | texte inchangé depuis l'origine |
