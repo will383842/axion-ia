@@ -462,25 +462,28 @@ export async function enregistrerDecisionGarantieJourneeIaAction(
       },
     });
     if (!piece) refuser(fiche(id), "Aucune pièce de facturation ne porte cet identifiant d'avoir.");
-    if (piece.avoirDe) {
-      const memeDevis = piece.avoirDe.devisId
-        ? await prisma.factureFormation.findMany({
-            where: { devisId: piece.avoirDe.devisId, avoirDeId: null },
-            select: { id: true },
-          })
-        : [];
-      const commissions = await prisma.commissionApporteur.count({
-        where: {
-          factureId: { in: [piece.avoirDe.id, ...memeDevis.map((f) => f.id)] },
-          statut: { not: "annulee" },
-        },
-      });
-      if (commissions > 0)
-        refuser(
-          fiche(id),
-          `L'avoir ${piece.numero} est imputé sur la facture ${piece.avoirDe.numero}, qui porte une commission d'apporteur : il ferait reprendre cette commission (contrat apporteur, art. 4.5). Un bon d'achat offert à titre exceptionnel n'est pas un avoir sur cette facture et ne reprend rien : laissez l'identifiant vide. Si le client est remboursé en argent, choisissez « Rembourser ».`,
-        );
-    }
+    if (!piece.avoirDe)
+      refuser(
+        fiche(id),
+        `La pièce ${piece.numero} n'est pas un avoir : un bon d'achat ne s'enregistre pas avec l'identifiant d'une facture.`,
+      );
+    const memeDevis = piece.avoirDe.devisId
+      ? await prisma.factureFormation.findMany({
+          where: { devisId: piece.avoirDe.devisId, avoirDeId: null },
+          select: { id: true },
+        })
+      : [];
+    const commissions = await prisma.commissionApporteur.count({
+      where: {
+        factureId: { in: [piece.avoirDe.id, ...memeDevis.map((f) => f.id)] },
+        statut: { not: "annulee" },
+      },
+    });
+    if (commissions > 0)
+      refuser(
+        fiche(id),
+        `L'avoir ${piece.numero} est imputé sur la facture ${piece.avoirDe.numero}, qui porte une commission d'apporteur : cet avoir fait reprendre la commission de l'apporteur au prochain passage (contrat apporteur, art. 4.5), alors qu'un bon d'achat offert à titre exceptionnel ne reprend rien. Ne l'enregistrez pas ici et prévenez le pilote : l'avoir est déjà émis, la commission est à corriger à la main. À l'avenir, n'émettez jamais un bon d'achat comme avoir du Hub sur une facture commissionnée ; si le client est remboursé en argent, choisissez « Rembourser ».`,
+      );
   }
 
   let conflit: string | null = null;

@@ -689,6 +689,15 @@ describe("décision, virement, archivage", () => {
       expect(r).toMatch(/ok=decision/);
       expect(tx.garantieJourneeIa.update.mock.calls[0]?.[0].data.avoirId).toBe(AVOIR);
     });
+    it("refuse l'identifiant d'une facture ordinaire (pas un avoir)", async () => {
+      prisma.factureFormation.findUnique.mockResolvedValue({
+        numero: "AXI-FAC-2026-100",
+        avoirDe: null,
+      });
+      const r = await va(enregistrerDecisionGarantieJourneeIaAction(avoirForm(AVOIR)));
+      expect(r).toMatch(/erreur=.*pas%20un%20avoir/);
+      expect(tx.garantieJourneeIa.update).not.toHaveBeenCalled();
+    });
     it("refuse un identifiant qui ne désigne aucune pièce", async () => {
       prisma.factureFormation.findUnique.mockResolvedValue(null);
       const r = await va(enregistrerDecisionGarantieJourneeIaAction(avoirForm(AVOIR)));
