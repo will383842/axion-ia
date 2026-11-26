@@ -82,7 +82,7 @@ const SYSTEM_PROMPT_PLAN =
 - Chaque chiffre cité est attribué à « Observatoire Axion-IA 2026 ».
 - Si un angle n'est pas couvert par les données, tu restes qualitatif (pas de chiffre inventé).
 - Angle opérationnel : ce que ces chiffres impliquent concrètement pour un dirigeant d'une petite ou moyenne entreprise française.
-- 0 délai chiffré, 0 frais de déplacement, 0 prix en dur, 0 numéro de téléphone (contact@axion-ia.com uniquement).
+- 0 délai chiffré, 0 prix en dur, 0 numéro de téléphone (contact@axion-ia.com uniquement).
 - "title" (le H1 affiché) : **50 à 60 caractères**, mot-clé/angle au tout début, cliquable. NE JAMAIS dépasser 60 caractères.
 - "metaTitle" : OBLIGATOIREMENT 50 à 60 caractères (compte les espaces), mot-clé au tout début. NE JAMAIS descendre sous 50 caractères : si trop court, ajoute une précision utile (bénéfice, secteur, métier visé…). NE PAS dépasser 60.
 - "metaDescription" : OBLIGATOIREMENT 140 à 160 caractères (compte les espaces), phrase complète avec bénéfice clair + mot-clé naturel. NE JAMAIS descendre sous 140 caractères : développe jusqu'à atteindre la fourchette. NE PAS dépasser 160.
@@ -216,6 +216,7 @@ ${sectionChiffresVerifies()}## Output attendu (JSON)
         jobId: input.jobId,
         contentType: "barometer_insight",
         role: "text",
+        blogClaudeRole: "ecriture",
         responseFormatJson: true,
         systemPrompt: planSystem,
         userPrompt:
@@ -278,6 +279,7 @@ ${sectionChiffresVerifies()}## Output attendu (JSON)
       const expandResult = await expandOutlineChunked({
         jobId: input.jobId,
         contentType: "barometer_insight",
+        blogClaudeRole: "ecriture",
         outline: plan.outline ?? [],
         chunkSize: 4,
         expandSystem,

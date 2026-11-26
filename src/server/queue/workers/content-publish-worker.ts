@@ -29,6 +29,7 @@
 // tentait de COMPLÉTER un job dont il avait rendu le lock → erreurs « job not
 // in active state » (cf. bullmq/dist/esm/classes/worker.js : DelayedError est
 // intercepté et n'émet PAS l'event `failed`).
+import { publicationSansPreuveFactCheck } from "@/server/content-gen/fact-check/fact-check-claude-drapeau";
 import { Queue, Worker, DelayedError, type Job } from "bullmq";
 import { prisma } from "@/lib/prisma";
 import { redis } from "@/lib/redis";
@@ -400,6 +401,36 @@ async function executePublishPipeline(
     actualite: cgJob.contentType === "blog_from_rss",
     financementPublicAutorise: financementPublicAutoriseAujourdhui(),
   });
+  // PR 5 — type soumis au fact-check Claude (drapeau allumé) : sans la preuve écrite par le
+  // worker de génération, l'article n'est PAS publié (relecture). Drapeau éteint : inerte.
+  // Une approbation HUMAINE (`reviewedBy` posé par la console) reste un feu vert délibéré.
+  if (
+    publicationSansPreuveFactCheck({
+      contentType: cgJob.contentType,
+      output,
+      existingArticle: Boolean(existingArticle),
+      reviewedBy: review.reviewedBy,
+    })
+  ) {
+    await logStepError(
+      cgJob.id,
+      "validation",
+      "Publication refusée : fact-check par Claude non passé (article non vérifié)",
+      { fact_check_claude: "absent" },
+    );
+    await prisma.contentGenJob.update({
+      where: { id: cgJob.id },
+      data: { status: "needs_review", errorMessage: "fact_check_claude_non_passe" },
+    });
+    await prisma.reviewQueue.update({
+      where: { id: reviewQueueId },
+      data: {
+        status: "pending",
+        reviewNotes: "[fact-check Claude] non passé : relecture humaine requise",
+      },
+    });
+    return;
+  }
   // Un article déjà inséré pour ce job (retry après insertion) n'est jamais retenu ici.
   if (!existingArticle && violationsSurface.length > 0) {
     const resume = resumerViolations(violationsSurface);

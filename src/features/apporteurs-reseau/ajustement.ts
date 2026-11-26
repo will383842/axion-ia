@@ -20,6 +20,9 @@ import { prisma } from "@/lib/prisma";
 
 import {
   calculerCommission,
+  commissionJourneeIaCents,
+  PALIER_JOURNEE_IA,
+  PRIX_REFERENCE_JOURNEE_IA_CENTS,
   euros,
   PALIER_CONFERENCE,
   PARRAINAGE_BPS,
@@ -99,6 +102,15 @@ export function commissionPourPrixConserve(
   prixHtCents: number,
   montantActuelCents?: number,
 ): number | null {
+  // Journée IA (A1.1) : 500 € par journée au prorata du prix net conservé, arrondi au plus proche.
+  // Avoir total (prix net 0) → 0 ; avoir partiel → prorata. Le nombre de journées se déduit du prix
+  // de référence enregistré à la création de la ligne.
+  if (l.palier === PALIER_JOURNEE_IA) {
+    const q = l.prixPublicHtCents
+      ? Math.max(1, Math.round(l.prixPublicHtCents / PRIX_REFERENCE_JOURNEE_IA_CENTS))
+      : 1;
+    return commissionJourneeIaCents(prixHtCents, q);
+  }
   // Conférence : forfait fixe sans prorata (A1.4 bis), seulement plafonné au prix HT facturé.
   if (l.activite === "conference" || l.palier === PALIER_CONFERENCE)
     return montantActuelCents === undefined ? null : Math.min(montantActuelCents, prixHtCents);

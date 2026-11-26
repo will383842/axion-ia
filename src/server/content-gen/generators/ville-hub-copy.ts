@@ -674,6 +674,7 @@ export async function generateVilleHubCopy(
       jobId: input.jobId ?? `ville-hub-${villeSlug}-${Date.now()}-iter${iteration}`,
       contentType: "landing_ville",
       role: "text",
+      blogClaudeRole: "ecriture",
       systemPrompt,
       userPrompt,
       maxTokens: 2400,

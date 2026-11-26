@@ -244,6 +244,7 @@ ${sectionChiffresVerifies()}## Output attendu (JSON strict, sans balise markdown
       jobId: input.jobId,
       contentType: config.contentTypeSlug as ContentType,
       role: "text",
+      blogClaudeRole: "ecriture",
       systemPrompt: systemPromptWithBrandVoice,
       userPrompt,
       maxTokens: 8000,

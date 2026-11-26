@@ -45,7 +45,13 @@ import {
   type SoldeDesLignesLiees,
 } from "./commandes";
 import { dejaEnvoye, statutApresVigilance } from "./commissions";
-import { ajouterMois, FORFAIT_CONFERENCE_CENTS, PALIER_CONFERENCE, TAUX_BPS } from "./regles";
+import {
+  ajouterMois,
+  FORFAIT_CONFERENCE_CENTS,
+  PALIER_CONFERENCE,
+  PALIER_JOURNEE_IA,
+  TAUX_BPS,
+} from "./regles";
 import { litigeDisponible } from "./litige";
 import { envoyer } from "./envois";
 import { retenir, type Piece } from "./manquement";
@@ -137,6 +143,8 @@ export function cibleApresAvoir(l: Calcul, netCents: number, filleul?: Calcul): 
 export function cibleEtatFinal(l: Calcul, netCibleCents: number, baseCents: number): number | null {
   const net = Math.max(0, Math.min(netCibleCents, baseCents));
   if (net <= 0) return 0;
+  // Journée IA d'abord : son palier l'emporte sur l'activité de la facture (coaching, conférence).
+  if (l.palier === PALIER_JOURNEE_IA) return commissionPourPrixConserve(l, net);
   if (l.activite === "conference" || l.palier === PALIER_CONFERENCE)
     return Math.min(Math.max(l.montantCents, FORFAIT_CONFERENCE_CENTS), net);
   if (l.activite === "un_a_un")

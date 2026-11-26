@@ -248,12 +248,12 @@ export async function erreurJugeNonRelancableCheminClaude(
   contentType: string,
 ): Promise<Error | null> {
   if (process.env["CONTENT_GEN_BLOG_CLAUDE"] !== "true") return null;
-  const { BLOG_TYPES, BlogClaudeRefusError } =
-    await import("@/server/content-gen/providers/blog-claude");
+  const { BlogClaudeRefusError } = await import("@/server/content-gen/providers/blog-claude");
+  const { typeClaudeAutorise } = await import("@/server/content-gen/providers/types-claude");
   const { ProviderError } = await import("@/server/content-gen/providers/IProvider");
   const { UnrecoverableError } = await import("bullmq");
   if (
-    BLOG_TYPES.has(contentType) &&
+    typeClaudeAutorise(contentType) &&
     (err instanceof BlogClaudeRefusError ||
       (err instanceof ProviderError && err.provider === "anthropic"))
   ) {
@@ -586,6 +586,8 @@ async function processJob(job: Job<QualityImproveJobPayload>): Promise<void> {
         },
         update: {
           status: "approved",
+          // Auto-approbation : un `reviewedBy` laissé par un refus humain ne doit pas valoir feu vert.
+          reviewedBy: null,
           reviewedAt: new Date(),
           reviewNotes: `[auto-pub juge] verdict=publish — éditorial ${judge?.globalScore.toFixed(1) ?? "?"}/10, qualité ${score}/100`,
         },
