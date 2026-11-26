@@ -12,6 +12,8 @@
 # Usage (depuis une session pilote) :
 #   gh workflow run claude-credit-api.yml -R will383842/axion-ia --ref main \
 #     -f consigne="$(cat consigne.md)" -f modele=claude-sonnet-5-5 -f compte=A -f tours_max=150
+# CE DÉPÔT EST PUBLIC et ses journaux d'Actions aussi : la consigne est lue dans $GITHUB_EVENT_PATH,
+# jamais via `env:` (qui l'afficherait en clair), et aucun texte de réponse n'est journalisé.
 # La consigne doit nommer la branche à pousser et demander le corps de PR dans un fichier versionné
 # (par ex. .pr/<branche>.md) ; la session pilote ouvre ensuite la PR avec ce corps.
 
@@ -21,7 +23,7 @@ on:
   workflow_dispatch:
     inputs:
       consigne:
-        description: "Consigne complète (texte). Doit nommer la branche à pousser."
+        description: "Consigne complète (texte). Doit nommer la branche à pousser. Jamais affichée dans le journal."
         required: true
       modele:
         description: "Modèle"
@@ -67,13 +69,15 @@ jobs:
         with:
           node-version: ${{ env.NODE_VERSION }}
 
-      - name: Écrire la consigne (fichier non suivi par git)
-        env:
-          CONSIGNE: ${{ inputs.consigne }}
+      # ⚠️ DÉPÔT PUBLIC : la consigne ne passe JAMAIS par `env:` ni par `${{ inputs.consigne }}` dans un
+      #    script — les deux s'affichent en clair dans le journal public. On la lit dans le fichier
+      #    d'événement du runner ($GITHUB_EVENT_PATH), qui n'est ni affiché ni exposé par l'API publique.
+      - name: Écrire la consigne (fichier non suivi par git, jamais affiché)
         run: |
-          printf '%s\n' "$CONSIGNE" > .consigne-claude.md
+          jq -r '.inputs.consigne // empty' "$GITHUB_EVENT_PATH" > .consigne-claude.md
           echo ".consigne-claude.md" >> .git/info/exclude
-          test -s .consigne-claude.md
+          test -s .consigne-claude.md || { echo "::error::Consigne vide."; exit 1; }
+          echo "Consigne écrite : $(wc -c < .consigne-claude.md) octets."
 
       - name: Installer Claude Code, le bac à sable et l'identité git
         run: |
@@ -106,7 +110,15 @@ jobs:
             fi
             rm -f "$err"
           }
+          # Résumé de l'exécution : NOMBRES et noms d'outils seulement. Le dépôt est PUBLIC (journaux publics) :
+          # le texte de la réponse de Claude n'est JAMAIS affiché.
+          resume_claude() {
+            jq -r '.[] | select(.type=="result") |
+              "Résumé de Claude : \(.subtype // "?" | tostring | .[0:40]), erreur=\(.is_error), tours=\(.num_turns // 0), coût=\(.total_cost_usd // 0) $, durée=\((.duration_ms // 0) / 1000 | floor) s, longueur de la réponse=\((.result // "") | tostring | length) caractères",
+              "Outils refusés : \([.permission_denials[]? | .tool_name | tostring | .[0:40]] | unique | join(", ") | if . == "" then "aucun" else . end)"' "$1" 2>/dev/null || true
+          }
           EOF
+          git ls-remote --heads origin | sort > "$RUNNER_TEMP/branches-avant.txt"
 
       - name: Claude (premier compte)
         id: run1
@@ -128,6 +140,7 @@ jobs:
           jq -s '.' "$RUNNER_TEMP/brut-run1.json" > "$f" 2>/dev/null || echo '[]' > "$f"
           rm -f "$RUNNER_TEMP/brut-run1.json"
           echo "execution_file=$f" >> "$GITHUB_OUTPUT"
+          resume_claude "$f"
           if jq -e 'any(.[]; .type == "result" and .is_error == false)' "$f" >/dev/null 2>&1; then
             echo "conclusion=success" >> "$GITHUB_OUTPUT"
           else
@@ -173,6 +186,7 @@ jobs:
           jq -s '.' "$RUNNER_TEMP/brut-run2.json" > "$f" 2>/dev/null || echo '[]' > "$f"
           rm -f "$RUNNER_TEMP/brut-run2.json"
           echo "execution_file=$f" >> "$GITHUB_OUTPUT"
+          resume_claude "$f"
           if jq -e 'any(.[]; .type == "result" and .is_error == false)' "$f" >/dev/null 2>&1; then
             echo "conclusion=success" >> "$GITHUB_OUTPUT"
           else
@@ -207,6 +221,19 @@ jobs:
         env:
           C1: ${{ steps.run1.outputs.conclusion }}
           C2: ${{ steps.run2.outputs.conclusion }}
+          F1: ${{ steps.run1.outputs.execution_file }}
+          F2: ${{ steps.run2.outputs.execution_file }}
         run: |
-          if [ "$C1" = "success" ] || [ "$C2" = "success" ]; then echo "Claude a terminé."; else
+          if [ "$C1" != "success" ] && [ "$C2" != "success" ]; then
             echo "::error::Aucune exécution de Claude n'a réussi : voir le diagnostic de l'étape « Claude (premier compte) »."; exit 1; fi
+          # Toute consigne doit pousser une branche (code, ou verdict/<nom> pour une relecture) : sinon, échec.
+          git ls-remote --heads origin | sort > "$RUNNER_TEMP/branches-apres.txt"
+          nouvelles=$(comm -13 "$RUNNER_TEMP/branches-avant.txt" "$RUNNER_TEMP/branches-apres.txt" | awk '{print $2}' | sed 's#refs/heads/##')
+          if [ -z "$nouvelles" ]; then
+            # Exception : relecture en lecture seule dont la réponse contient « VERDICT ».
+            for x in "$F1" "$F2"; do
+              if [ -n "$x" ] && [ -f "$x" ] && jq -e 'any(.[]; .type == "result" and ((.result // "") | tostring | test("VERDICT")))' "$x" >/dev/null 2>&1; then
+                echo "Claude a terminé (relecture sans branche : verdict présent dans la réponse)."; exit 0; fi
+            done
+            echo "::error::Claude a fini sans pousser aucune branche ni rendre de VERDICT : voir « Résumé de Claude » et « Outils refusés » plus haut."; exit 1; fi
+          echo "Claude a terminé. Branches poussées (créées ou mises à jour) :"; printf '  %s\n' $nouvelles
