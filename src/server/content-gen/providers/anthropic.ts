@@ -439,6 +439,11 @@ export const anthropicProvider: IProvider = {
         const stream = await client.messages.create({
           model,
           max_tokens: req.maxTokens ?? 4096,
+          // Chemin blog (hors relecture Opus) : effort bas, pour que la réflexion adaptative
+          // ne consomme pas le budget de sortie (elle compte dans max_tokens).
+          ...(req.blogClaudeRole !== undefined && req.blogClaudeRole !== "relecture"
+            ? { output_config: { effort: "low" as const } }
+            : {}),
           ...(sendTemperature ? { temperature: req.temperature } : {}),
           // System avec prompt caching (cache 5 min TTL côté Anthropic)
           system: [
@@ -522,6 +527,19 @@ export const anthropicProvider: IProvider = {
       } else if (stopReason) {
         // refusal / autre — log warning
         console.warn(`[anthropic] unexpected stop_reason: ${stopReason}`);
+      }
+      if (!fullText && stopReason === "max_tokens") {
+        // Budget entièrement consommé (réflexion) sans un seul caractère de texte :
+        // erreur « tronquée » explicite, jamais « empty content ». Déjà facturé.
+        const erreurTronquee = new ProviderError(
+          `Anthropic : ${MARQUE_JSON_TRONQUE} — aucun texte produit, budget max_tokens=${req.maxTokens ?? 4096} ` +
+            `entièrement consommé (${tokensOutput} jetons, réflexion comprise)`,
+          "invalid_response",
+          "anthropic",
+          false,
+        );
+        erreurTronquee.costUsd = coutReel();
+        throw erreurTronquee;
       }
       if (!fullText) {
         throw new ProviderError(
