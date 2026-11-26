@@ -1,0 +1,730 @@
+[
+  {
+    "chiffre": "Part des TPE-PME utilisant au moins une solution d'IA",
+    "valeur": "40 %",
+    "perimetre": "TPE et PME françaises (0 à 249 salariés, dont 799 sans salarié dans l'échantillon)",
+    "annee": 2026,
+    "source": "Baromètre France Num 2026 (Crédoc pour la DGE), enquête du 23 mars au 18 avril 2026, 9 655 entreprises dont 6 786 TPE",
+    "url": "https://www.francenum.gouv.fr/guides-et-conseils/strategie-numerique/comprendre-le-numerique/barometre-france-num-2026-le"
+  },
+  {
+    "chiffre": "Part des TPE-PME utilisant l'IA en 2024",
+    "valeur": "13 %",
+    "perimetre": "TPE et PME françaises (0 à 249 salariés, dont 799 sans salarié dans l'échantillon)",
+    "annee": 2024,
+    "source": "Baromètre France Num 2026 (Crédoc pour la DGE), enquête du 23 mars au 18 avril 2026, 9 655 entreprises dont 6 786 TPE (série historique)",
+    "url": "https://www.francenum.gouv.fr/guides-et-conseils/strategie-numerique/comprendre-le-numerique/barometre-france-num-2026-le"
+  },
+  {
+    "chiffre": "Part des TPE-PME utilisant l'IA en 2025",
+    "valeur": "26 %",
+    "perimetre": "TPE et PME françaises (0 à 249 salariés, dont 799 sans salarié dans l'échantillon)",
+    "annee": 2025,
+    "source": "Baromètre France Num 2026 (Crédoc pour la DGE), enquête du 23 mars au 18 avril 2026, 9 655 entreprises dont 6 786 TPE (série historique, rapport p. 53)",
+    "url": "https://www.francenum.gouv.fr/files/2026-09/Barom%C3%A8tre%20France%20Num%202026%20-%20Rapport%20final.pdf"
+  },
+  {
+    "chiffre": "Part des TPE utilisant l'IA",
+    "valeur": "38 %",
+    "perimetre": "TPE (moins de 10 salariés)",
+    "annee": 2026,
+    "source": "Baromètre France Num 2026 (Crédoc pour la DGE), enquête du 23 mars au 18 avril 2026, 9 655 entreprises dont 6 786 TPE (rapport p. 53)",
+    "url": "https://www.francenum.gouv.fr/files/2026-09/Barom%C3%A8tre%20France%20Num%202026%20-%20Rapport%20final.pdf"
+  },
+  {
+    "chiffre": "Part des PME utilisant l'IA",
+    "valeur": "53 %",
+    "perimetre": "PME (10 à 249 salariés)",
+    "annee": 2026,
+    "source": "Baromètre France Num 2026 (Crédoc pour la DGE), enquête du 23 mars au 18 avril 2026, 9 655 entreprises dont 6 786 TPE",
+    "url": "https://www.francenum.gouv.fr/guides-et-conseils/strategie-numerique/comprendre-le-numerique/barometre-france-num-2026-le"
+  },
+  {
+    "chiffre": "Part des PME utilisant l'IA en 2025",
+    "valeur": "34 %",
+    "perimetre": "PME (10 à 249 salariés)",
+    "annee": 2025,
+    "source": "Baromètre France Num 2026 (Crédoc pour la DGE), enquête du 23 mars au 18 avril 2026, 9 655 entreprises dont 6 786 TPE",
+    "url": "https://www.francenum.gouv.fr/guides-et-conseils/strategie-numerique/comprendre-le-numerique/barometre-france-num-2026-le"
+  },
+  {
+    "chiffre": "Part des PME utilisant l'IA en 2024",
+    "valeur": "16 %",
+    "perimetre": "PME (10 à 249 salariés)",
+    "annee": 2024,
+    "source": "Baromètre France Num 2026 (Crédoc pour la DGE), enquête du 23 mars au 18 avril 2026, 9 655 entreprises dont 6 786 TPE",
+    "url": "https://www.francenum.gouv.fr/guides-et-conseils/strategie-numerique/comprendre-le-numerique/barometre-france-num-2026-le"
+  },
+  {
+    "chiffre": "Part des entreprises utilisant l'IA, tranche 1 à 4 salariés",
+    "valeur": "36 %",
+    "perimetre": "TPE-PME, 1 à 4 salariés",
+    "annee": 2026,
+    "source": "Baromètre France Num 2026 (Crédoc pour la DGE), enquête du 23 mars au 18 avril 2026, 9 655 entreprises dont 6 786 TPE (rapport p. 54)",
+    "url": "https://www.francenum.gouv.fr/files/2026-09/Barom%C3%A8tre%20France%20Num%202026%20-%20Rapport%20final.pdf"
+  },
+  {
+    "chiffre": "Part des entreprises utilisant l'IA, tranche 5 à 9 salariés",
+    "valeur": "44 %",
+    "perimetre": "TPE-PME, 5 à 9 salariés",
+    "annee": 2026,
+    "source": "Baromètre France Num 2026 (Crédoc pour la DGE), enquête du 23 mars au 18 avril 2026, 9 655 entreprises dont 6 786 TPE (rapport p. 54)",
+    "url": "https://www.francenum.gouv.fr/files/2026-09/Barom%C3%A8tre%20France%20Num%202026%20-%20Rapport%20final.pdf"
+  },
+  {
+    "chiffre": "Part des entreprises utilisant l'IA, tranche 10 à 19 salariés",
+    "valeur": "48 %",
+    "perimetre": "TPE-PME, 10 à 19 salariés",
+    "annee": 2026,
+    "source": "Baromètre France Num 2026 (Crédoc pour la DGE), enquête du 23 mars au 18 avril 2026, 9 655 entreprises dont 6 786 TPE (rapport p. 54)",
+    "url": "https://www.francenum.gouv.fr/files/2026-09/Barom%C3%A8tre%20France%20Num%202026%20-%20Rapport%20final.pdf"
+  },
+  {
+    "chiffre": "Part des entreprises utilisant l'IA, tranche 20 à 49 salariés",
+    "valeur": "58 %",
+    "perimetre": "TPE-PME, 20 à 49 salariés",
+    "annee": 2026,
+    "source": "Baromètre France Num 2026 (Crédoc pour la DGE), enquête du 23 mars au 18 avril 2026, 9 655 entreprises dont 6 786 TPE (rapport p. 54)",
+    "url": "https://www.francenum.gouv.fr/files/2026-09/Barom%C3%A8tre%20France%20Num%202026%20-%20Rapport%20final.pdf"
+  },
+  {
+    "chiffre": "Part des entreprises utilisant l'IA, tranche 50 à 249 salariés",
+    "valeur": "62 %",
+    "perimetre": "TPE-PME, 50 à 249 salariés",
+    "annee": 2026,
+    "source": "Baromètre France Num 2026 (Crédoc pour la DGE), enquête du 23 mars au 18 avril 2026, 9 655 entreprises dont 6 786 TPE (rapport p. 54)",
+    "url": "https://www.francenum.gouv.fr/files/2026-09/Barom%C3%A8tre%20France%20Num%202026%20-%20Rapport%20final.pdf"
+  },
+  {
+    "chiffre": "Part des entreprises utilisant l'IA, secteur Numérique",
+    "valeur": "72 %",
+    "perimetre": "TPE-PME, secteur Numérique",
+    "annee": 2026,
+    "source": "Baromètre France Num 2026 (Crédoc pour la DGE), enquête du 23 mars au 18 avril 2026, 9 655 entreprises dont 6 786 TPE",
+    "url": "https://www.francenum.gouv.fr/guides-et-conseils/strategie-numerique/comprendre-le-numerique/barometre-france-num-2026-le"
+  },
+  {
+    "chiffre": "Part des entreprises utilisant l'IA, secteur Services spécialisés / techniques",
+    "valeur": "60 %",
+    "perimetre": "TPE-PME, secteur Services spécialisés / techniques",
+    "annee": 2026,
+    "source": "Baromètre France Num 2026 (Crédoc pour la DGE), enquête du 23 mars au 18 avril 2026, 9 655 entreprises dont 6 786 TPE",
+    "url": "https://www.francenum.gouv.fr/guides-et-conseils/strategie-numerique/comprendre-le-numerique/barometre-france-num-2026-le"
+  },
+  {
+    "chiffre": "Part des entreprises utilisant l'IA, secteur Activités financières",
+    "valeur": "46 % (page web) ; 47 % (rapport complet p. 54)",
+    "perimetre": "TPE-PME, secteur Activités financières",
+    "annee": 2026,
+    "source": "Baromètre France Num 2026 (Crédoc pour la DGE), enquête du 23 mars au 18 avril 2026, 9 655 entreprises dont 6 786 TPE",
+    "url": "https://www.francenum.gouv.fr/guides-et-conseils/strategie-numerique/comprendre-le-numerique/barometre-france-num-2026-le"
+  },
+  {
+    "chiffre": "Part des entreprises utilisant l'IA, secteur Services à la personne",
+    "valeur": "45 %",
+    "perimetre": "TPE-PME, secteur Services à la personne",
+    "annee": 2026,
+    "source": "Baromètre France Num 2026 (Crédoc pour la DGE), enquête du 23 mars au 18 avril 2026, 9 655 entreprises dont 6 786 TPE (rapport p. 54)",
+    "url": "https://www.francenum.gouv.fr/files/2026-09/Barom%C3%A8tre%20France%20Num%202026%20-%20Rapport%20final.pdf"
+  },
+  {
+    "chiffre": "Part des entreprises utilisant l'IA, secteur Commerce (détail et gros)",
+    "valeur": "34 %",
+    "perimetre": "TPE-PME, secteur Commerce (détail et gros)",
+    "annee": 2026,
+    "source": "Baromètre France Num 2026 (Crédoc pour la DGE), enquête du 23 mars au 18 avril 2026, 9 655 entreprises dont 6 786 TPE (rapport p. 54)",
+    "url": "https://www.francenum.gouv.fr/files/2026-09/Barom%C3%A8tre%20France%20Num%202026%20-%20Rapport%20final.pdf"
+  },
+  {
+    "chiffre": "Part des entreprises utilisant l'IA, secteur Hébergement-Restauration",
+    "valeur": "34 %",
+    "perimetre": "TPE-PME, secteur Hébergement-Restauration",
+    "annee": 2026,
+    "source": "Baromètre France Num 2026 (Crédoc pour la DGE), enquête du 23 mars au 18 avril 2026, 9 655 entreprises dont 6 786 TPE (rapport p. 54)",
+    "url": "https://www.francenum.gouv.fr/files/2026-09/Barom%C3%A8tre%20France%20Num%202026%20-%20Rapport%20final.pdf"
+  },
+  {
+    "chiffre": "Part des entreprises utilisant l'IA, secteur Bâtiment-Construction",
+    "valeur": "30 %",
+    "perimetre": "TPE-PME, secteur Bâtiment-Construction",
+    "annee": 2026,
+    "source": "Baromètre France Num 2026 (Crédoc pour la DGE), enquête du 23 mars au 18 avril 2026, 9 655 entreprises dont 6 786 TPE",
+    "url": "https://www.francenum.gouv.fr/guides-et-conseils/strategie-numerique/comprendre-le-numerique/barometre-france-num-2026-le"
+  },
+  {
+    "chiffre": "Part des entreprises utilisant l'IA, secteur Transport-Logistique",
+    "valeur": "29 %",
+    "perimetre": "TPE-PME, secteur Transport-Logistique",
+    "annee": 2026,
+    "source": "Baromètre France Num 2026 (Crédoc pour la DGE), enquête du 23 mars au 18 avril 2026, 9 655 entreprises dont 6 786 TPE",
+    "url": "https://www.francenum.gouv.fr/guides-et-conseils/strategie-numerique/comprendre-le-numerique/barometre-france-num-2026-le"
+  },
+  {
+    "chiffre": "Part des entreprises utilisant l'IA, secteur Agroalimentaire",
+    "valeur": "27 %",
+    "perimetre": "TPE-PME, secteur Agroalimentaire",
+    "annee": 2026,
+    "source": "Baromètre France Num 2026 (Crédoc pour la DGE), enquête du 23 mars au 18 avril 2026, 9 655 entreprises dont 6 786 TPE",
+    "url": "https://www.francenum.gouv.fr/guides-et-conseils/strategie-numerique/comprendre-le-numerique/barometre-france-num-2026-le"
+  },
+  {
+    "chiffre": "Part des entreprises utilisant l'IA, secteur Agriculture",
+    "valeur": "18 %",
+    "perimetre": "TPE-PME, secteur Agriculture",
+    "annee": 2026,
+    "source": "Baromètre France Num 2026 (Crédoc pour la DGE), enquête du 23 mars au 18 avril 2026, 9 655 entreprises dont 6 786 TPE",
+    "url": "https://www.francenum.gouv.fr/guides-et-conseils/strategie-numerique/comprendre-le-numerique/barometre-france-num-2026-le"
+  },
+  {
+    "chiffre": "Usage de l'IA : Génération de contenus (texte, voix, image)",
+    "valeur": "34 %",
+    "perimetre": "TPE-PME, base : échantillon total",
+    "annee": 2026,
+    "source": "Baromètre France Num 2026 (Crédoc pour la DGE), enquête du 23 mars au 18 avril 2026, 9 655 entreprises dont 6 786 TPE",
+    "url": "https://www.francenum.gouv.fr/guides-et-conseils/strategie-numerique/comprendre-le-numerique/barometre-france-num-2026-le"
+  },
+  {
+    "chiffre": "Usage de l'IA : Assistants conversationnels, chatbots, recherche d'informations",
+    "valeur": "24 %",
+    "perimetre": "TPE-PME, base : échantillon total",
+    "annee": 2026,
+    "source": "Baromètre France Num 2026 (Crédoc pour la DGE), enquête du 23 mars au 18 avril 2026, 9 655 entreprises dont 6 786 TPE",
+    "url": "https://www.francenum.gouv.fr/guides-et-conseils/strategie-numerique/comprendre-le-numerique/barometre-france-num-2026-le"
+  },
+  {
+    "chiffre": "Usage de l'IA : Analyse et classification de documents",
+    "valeur": "13 % (page web) ; 14 % (rapport p. 54)",
+    "perimetre": "TPE-PME, base : échantillon total",
+    "annee": 2026,
+    "source": "Baromètre France Num 2026 (Crédoc pour la DGE), enquête du 23 mars au 18 avril 2026, 9 655 entreprises dont 6 786 TPE",
+    "url": "https://www.francenum.gouv.fr/guides-et-conseils/strategie-numerique/comprendre-le-numerique/barometre-france-num-2026-le"
+  },
+  {
+    "chiffre": "Usage de l'IA : Automatisation des tâches",
+    "valeur": "11 %",
+    "perimetre": "TPE-PME, base : échantillon total",
+    "annee": 2026,
+    "source": "Baromètre France Num 2026 (Crédoc pour la DGE), enquête du 23 mars au 18 avril 2026, 9 655 entreprises dont 6 786 TPE",
+    "url": "https://www.francenum.gouv.fr/guides-et-conseils/strategie-numerique/comprendre-le-numerique/barometre-france-num-2026-le"
+  },
+  {
+    "chiffre": "Usage de l'IA : Analyse de données, prévision, optimisation",
+    "valeur": "9 %",
+    "perimetre": "TPE-PME, base : échantillon total",
+    "annee": 2026,
+    "source": "Baromètre France Num 2026 (Crédoc pour la DGE), enquête du 23 mars au 18 avril 2026, 9 655 entreprises dont 6 786 TPE",
+    "url": "https://www.francenum.gouv.fr/guides-et-conseils/strategie-numerique/comprendre-le-numerique/barometre-france-num-2026-le"
+  },
+  {
+    "chiffre": "Usage de l'IA : contrôle qualité, détection",
+    "valeur": "4 %",
+    "perimetre": "TPE-PME, base : échantillon total",
+    "annee": 2026,
+    "source": "Baromètre France Num 2026 (Crédoc pour la DGE), enquête du 23 mars au 18 avril 2026, 9 655 entreprises dont 6 786 TPE (rapport p. 54)",
+    "url": "https://www.francenum.gouv.fr/files/2026-09/Barom%C3%A8tre%20France%20Num%202026%20-%20Rapport%20final.pdf"
+  },
+  {
+    "chiffre": "Usagers de l'IA jugeant son impact positif",
+    "valeur": "68 %",
+    "perimetre": "TPE-PME utilisatrices d'IA (4 049 répondants)",
+    "annee": 2026,
+    "source": "Baromètre France Num 2026 (Crédoc pour la DGE), enquête du 23 mars au 18 avril 2026, 9 655 entreprises dont 6 786 TPE",
+    "url": "https://www.francenum.gouv.fr/guides-et-conseils/strategie-numerique/comprendre-le-numerique/barometre-france-num-2026-le"
+  },
+  {
+    "chiffre": "Impact positif, utilisateurs de solutions d'IA payantes",
+    "valeur": "84 %",
+    "perimetre": "TPE-PME utilisatrices d'IA payante",
+    "annee": 2026,
+    "source": "Baromètre France Num 2026 (Crédoc pour la DGE), enquête du 23 mars au 18 avril 2026, 9 655 entreprises dont 6 786 TPE",
+    "url": "https://www.francenum.gouv.fr/guides-et-conseils/strategie-numerique/comprendre-le-numerique/barometre-france-num-2026-le"
+  },
+  {
+    "chiffre": "Impact positif, utilisateurs de solutions d'IA gratuites",
+    "valeur": "56 %",
+    "perimetre": "TPE-PME utilisatrices d'IA gratuite",
+    "annee": 2026,
+    "source": "Baromètre France Num 2026 (Crédoc pour la DGE), enquête du 23 mars au 18 avril 2026, 9 655 entreprises dont 6 786 TPE (rapport p. 57)",
+    "url": "https://www.francenum.gouv.fr/files/2026-09/Barom%C3%A8tre%20France%20Num%202026%20-%20Rapport%20final.pdf"
+  },
+  {
+    "chiffre": "Part des TPE-PME recourant à des solutions d'IA payantes",
+    "valeur": "19 %",
+    "perimetre": "Ensemble des TPE-PME",
+    "annee": 2026,
+    "source": "Baromètre France Num 2026 (Crédoc pour la DGE), enquête du 23 mars au 18 avril 2026, 9 655 entreprises dont 6 786 TPE",
+    "url": "https://www.francenum.gouv.fr/guides-et-conseils/strategie-numerique/comprendre-le-numerique/barometre-france-num-2026-le"
+  },
+  {
+    "chiffre": "Part des PME recourant à des solutions d'IA payantes",
+    "valeur": "32 %",
+    "perimetre": "PME",
+    "annee": 2026,
+    "source": "Baromètre France Num 2026 (Crédoc pour la DGE), enquête du 23 mars au 18 avril 2026, 9 655 entreprises dont 6 786 TPE",
+    "url": "https://www.francenum.gouv.fr/guides-et-conseils/strategie-numerique/comprendre-le-numerique/barometre-france-num-2026-le"
+  },
+  {
+    "chiffre": "Utilisateurs d'IA recourant à des solutions payantes",
+    "valeur": "48 %",
+    "perimetre": "TPE-PME utilisatrices d'IA",
+    "annee": 2026,
+    "source": "Baromètre France Num 2026 (Crédoc pour la DGE), enquête du 23 mars au 18 avril 2026, 9 655 entreprises dont 6 786 TPE (rapport p. 55)",
+    "url": "https://www.francenum.gouv.fr/files/2026-09/Barom%C3%A8tre%20France%20Num%202026%20-%20Rapport%20final.pdf"
+  },
+  {
+    "chiffre": "Utilisateurs d'IA disposant de compétences en IA",
+    "valeur": "51 % (dont 40 % en interne)",
+    "perimetre": "TPE-PME utilisatrices d'IA",
+    "annee": 2026,
+    "source": "Baromètre France Num 2026 (Crédoc pour la DGE), enquête du 23 mars au 18 avril 2026, 9 655 entreprises dont 6 786 TPE (rapport p. 56)",
+    "url": "https://www.francenum.gouv.fr/files/2026-09/Barom%C3%A8tre%20France%20Num%202026%20-%20Rapport%20final.pdf"
+  },
+  {
+    "chiffre": "Utilisateurs d'IA cherchant à acquérir des compétences en IA",
+    "valeur": "18 %",
+    "perimetre": "TPE-PME utilisatrices d'IA",
+    "annee": 2026,
+    "source": "Baromètre France Num 2026 (Crédoc pour la DGE), enquête du 23 mars au 18 avril 2026, 9 655 entreprises dont 6 786 TPE (rapport p. 56)",
+    "url": "https://www.francenum.gouv.fr/files/2026-09/Barom%C3%A8tre%20France%20Num%202026%20-%20Rapport%20final.pdf"
+  },
+  {
+    "chiffre": "Utilisateurs d'IA sans compétence en IA ni projet d'en acquérir",
+    "valeur": "31 %",
+    "perimetre": "TPE-PME utilisatrices d'IA",
+    "annee": 2026,
+    "source": "Baromètre France Num 2026 (Crédoc pour la DGE), enquête du 23 mars au 18 avril 2026, 9 655 entreprises dont 6 786 TPE (rapport p. 56)",
+    "url": "https://www.francenum.gouv.fr/files/2026-09/Barom%C3%A8tre%20France%20Num%202026%20-%20Rapport%20final.pdf"
+  },
+  {
+    "chiffre": "Utilisateurs d'IA ayant engagé des dépenses d'IA en abonnements et licences",
+    "valeur": "43 %",
+    "perimetre": "TPE-PME utilisatrices d'IA",
+    "annee": 2026,
+    "source": "Baromètre France Num 2026 (Crédoc pour la DGE), enquête du 23 mars au 18 avril 2026, 9 655 entreprises dont 6 786 TPE (rapport p. 58)",
+    "url": "https://www.francenum.gouv.fr/files/2026-09/Barom%C3%A8tre%20France%20Num%202026%20-%20Rapport%20final.pdf"
+  },
+  {
+    "chiffre": "TPE-PME dont l'IA figure parmi les projets numériques 2026-2027",
+    "valeur": "18 %",
+    "perimetre": "Ensemble des TPE-PME",
+    "annee": 2026,
+    "source": "Baromètre France Num 2026 (Crédoc pour la DGE), enquête du 23 mars au 18 avril 2026, 9 655 entreprises dont 6 786 TPE",
+    "url": "https://www.francenum.gouv.fr/guides-et-conseils/strategie-numerique/comprendre-le-numerique/barometre-france-num-2026-le"
+  },
+  {
+    "chiffre": "Part des entreprises utilisant l'IA, dirigeant de moins de 30 ans",
+    "valeur": "57 %",
+    "perimetre": "TPE-PME",
+    "annee": 2026,
+    "source": "Baromètre France Num 2026 (Crédoc pour la DGE), enquête du 23 mars au 18 avril 2026, 9 655 entreprises dont 6 786 TPE (rapport p. 54)",
+    "url": "https://www.francenum.gouv.fr/files/2026-09/Barom%C3%A8tre%20France%20Num%202026%20-%20Rapport%20final.pdf"
+  },
+  {
+    "chiffre": "Part des entreprises utilisant l'IA, dirigeant de plus de 71 ans",
+    "valeur": "25 %",
+    "perimetre": "TPE-PME",
+    "annee": 2026,
+    "source": "Baromètre France Num 2026 (Crédoc pour la DGE), enquête du 23 mars au 18 avril 2026, 9 655 entreprises dont 6 786 TPE (rapport p. 54)",
+    "url": "https://www.francenum.gouv.fr/files/2026-09/Barom%C3%A8tre%20France%20Num%202026%20-%20Rapport%20final.pdf"
+  },
+  {
+    "chiffre": "Part des entreprises utilisant l'IA, dirigeant de niveau supérieur à Bac+3",
+    "valeur": "53 %",
+    "perimetre": "TPE-PME",
+    "annee": 2026,
+    "source": "Baromètre France Num 2026 (Crédoc pour la DGE), enquête du 23 mars au 18 avril 2026, 9 655 entreprises dont 6 786 TPE (rapport p. 54)",
+    "url": "https://www.francenum.gouv.fr/files/2026-09/Barom%C3%A8tre%20France%20Num%202026%20-%20Rapport%20final.pdf"
+  },
+  {
+    "chiffre": "Part des entreprises utilisant l'IA, dirigeant de niveau inférieur au Bac",
+    "valeur": "20 %",
+    "perimetre": "TPE-PME",
+    "annee": 2026,
+    "source": "Baromètre France Num 2026 (Crédoc pour la DGE), enquête du 23 mars au 18 avril 2026, 9 655 entreprises dont 6 786 TPE (rapport p. 54)",
+    "url": "https://www.francenum.gouv.fr/files/2026-09/Barom%C3%A8tre%20France%20Num%202026%20-%20Rapport%20final.pdf"
+  },
+  {
+    "chiffre": "Part des entreprises utilisant l'IA, clientèle BtoB / BtoC",
+    "valeur": "48 % / 33 %",
+    "perimetre": "TPE-PME",
+    "annee": 2026,
+    "source": "Baromètre France Num 2026 (Crédoc pour la DGE), enquête du 23 mars au 18 avril 2026, 9 655 entreprises dont 6 786 TPE (rapport p. 54)",
+    "url": "https://www.francenum.gouv.fr/files/2026-09/Barom%C3%A8tre%20France%20Num%202026%20-%20Rapport%20final.pdf"
+  },
+  {
+    "chiffre": "Dirigeants craignant la perte de données ou le piratage",
+    "valeur": "53 %",
+    "perimetre": "TPE-PME",
+    "annee": 2026,
+    "source": "Baromètre France Num 2026 (Crédoc pour la DGE), enquête du 23 mars au 18 avril 2026, 9 655 entreprises dont 6 786 TPE",
+    "url": "https://www.francenum.gouv.fr/guides-et-conseils/strategie-numerique/comprendre-le-numerique/barometre-france-num-2026-le"
+  },
+  {
+    "chiffre": "TPE-PME ayant subi au moins un incident de cybersécurité sur 12 mois",
+    "valeur": "39 %",
+    "perimetre": "TPE-PME",
+    "annee": 2026,
+    "source": "Baromètre France Num 2026 (Crédoc pour la DGE), enquête du 23 mars au 18 avril 2026, 9 655 entreprises dont 6 786 TPE",
+    "url": "https://www.francenum.gouv.fr/guides-et-conseils/strategie-numerique/comprendre-le-numerique/barometre-france-num-2026-le"
+  },
+  {
+    "chiffre": "TPE-PME estimant que le numérique apporte un bénéfice réel",
+    "valeur": "71 %",
+    "perimetre": "TPE-PME",
+    "annee": 2026,
+    "source": "Baromètre France Num 2026 (Crédoc pour la DGE), enquête du 23 mars au 18 avril 2026, 9 655 entreprises dont 6 786 TPE",
+    "url": "https://www.francenum.gouv.fr/guides-et-conseils/strategie-numerique/comprendre-le-numerique/barometre-france-num-2026-le"
+  },
+  {
+    "chiffre": "Entreprises disposant de compétences numériques (internes et/ou externes)",
+    "valeur": "66 %",
+    "perimetre": "TPE-PME",
+    "annee": 2026,
+    "source": "Baromètre France Num 2026 (Crédoc pour la DGE), enquête du 23 mars au 18 avril 2026, 9 655 entreprises dont 6 786 TPE",
+    "url": "https://www.francenum.gouv.fr/guides-et-conseils/strategie-numerique/comprendre-le-numerique/barometre-france-num-2026-le"
+  },
+  {
+    "chiffre": "Entreprises ayant suivi une formation au numérique en 2025",
+    "valeur": "21 %",
+    "perimetre": "TPE-PME",
+    "annee": 2025,
+    "source": "Baromètre France Num 2026 (Crédoc pour la DGE), enquête du 23 mars au 18 avril 2026, 9 655 entreprises dont 6 786 TPE",
+    "url": "https://www.francenum.gouv.fr/guides-et-conseils/strategie-numerique/comprendre-le-numerique/barometre-france-num-2026-le"
+  },
+  {
+    "chiffre": "Entreprises utilisant au moins une technologie d'IA, France, 10 salariés ou plus",
+    "valeur": "9,91 %",
+    "perimetre": "France, 10 salariés ou plus, entreprises de 10 salariés ou plus, hors agriculture, mines, secteur financier",
+    "annee": 2024,
+    "source": "Eurostat, jeu de données isoc_eb_ai (Artificial intelligence by size class of enterprise), mis à jour le 2026-06-15 ; consulté via l'API le 2026-11-26",
+    "url": "https://ec.europa.eu/eurostat/databrowser/view/isoc_eb_ai/default/table"
+  },
+  {
+    "chiffre": "Entreprises utilisant au moins une technologie d'IA, France, 10 salariés ou plus",
+    "valeur": "18,16 %",
+    "perimetre": "France, 10 salariés ou plus, entreprises de 10 salariés ou plus, hors agriculture, mines, secteur financier",
+    "annee": 2025,
+    "source": "Eurostat, jeu de données isoc_eb_ai (Artificial intelligence by size class of enterprise), mis à jour le 2026-06-15 ; consulté via l'API le 2026-11-26",
+    "url": "https://ec.europa.eu/eurostat/databrowser/view/isoc_eb_ai/default/table"
+  },
+  {
+    "chiffre": "Entreprises utilisant au moins une technologie d'IA, France, 10 à 49 salariés",
+    "valeur": "8,51 %",
+    "perimetre": "France, 10 à 49 salariés, entreprises de 10 salariés ou plus, hors agriculture, mines, secteur financier",
+    "annee": 2024,
+    "source": "Eurostat, jeu de données isoc_eb_ai (Artificial intelligence by size class of enterprise), mis à jour le 2026-06-15 ; consulté via l'API le 2026-11-26",
+    "url": "https://ec.europa.eu/eurostat/databrowser/view/isoc_eb_ai/default/table"
+  },
+  {
+    "chiffre": "Entreprises utilisant au moins une technologie d'IA, France, 10 à 49 salariés",
+    "valeur": "15,04 %",
+    "perimetre": "France, 10 à 49 salariés, entreprises de 10 salariés ou plus, hors agriculture, mines, secteur financier",
+    "annee": 2025,
+    "source": "Eurostat, jeu de données isoc_eb_ai (Artificial intelligence by size class of enterprise), mis à jour le 2026-06-15 ; consulté via l'API le 2026-11-26",
+    "url": "https://ec.europa.eu/eurostat/databrowser/view/isoc_eb_ai/default/table"
+  },
+  {
+    "chiffre": "Entreprises utilisant au moins une technologie d'IA, France, 50 à 249 salariés",
+    "valeur": "14,52 %",
+    "perimetre": "France, 50 à 249 salariés, entreprises de 10 salariés ou plus, hors agriculture, mines, secteur financier",
+    "annee": 2024,
+    "source": "Eurostat, jeu de données isoc_eb_ai (Artificial intelligence by size class of enterprise), mis à jour le 2026-06-15 ; consulté via l'API le 2026-11-26",
+    "url": "https://ec.europa.eu/eurostat/databrowser/view/isoc_eb_ai/default/table"
+  },
+  {
+    "chiffre": "Entreprises utilisant au moins une technologie d'IA, France, 50 à 249 salariés",
+    "valeur": "30,81 %",
+    "perimetre": "France, 50 à 249 salariés, entreprises de 10 salariés ou plus, hors agriculture, mines, secteur financier",
+    "annee": 2025,
+    "source": "Eurostat, jeu de données isoc_eb_ai (Artificial intelligence by size class of enterprise), mis à jour le 2026-06-15 ; consulté via l'API le 2026-11-26",
+    "url": "https://ec.europa.eu/eurostat/databrowser/view/isoc_eb_ai/default/table"
+  },
+  {
+    "chiffre": "Entreprises utilisant au moins une technologie d'IA, France, 250 salariés ou plus",
+    "valeur": "32,74 %",
+    "perimetre": "France, 250 salariés ou plus, entreprises de 10 salariés ou plus, hors agriculture, mines, secteur financier",
+    "annee": 2024,
+    "source": "Eurostat, jeu de données isoc_eb_ai (Artificial intelligence by size class of enterprise), mis à jour le 2026-06-15 ; consulté via l'API le 2026-11-26",
+    "url": "https://ec.europa.eu/eurostat/databrowser/view/isoc_eb_ai/default/table"
+  },
+  {
+    "chiffre": "Entreprises utilisant au moins une technologie d'IA, France, 250 salariés ou plus",
+    "valeur": "58,01 %",
+    "perimetre": "France, 250 salariés ou plus, entreprises de 10 salariés ou plus, hors agriculture, mines, secteur financier",
+    "annee": 2025,
+    "source": "Eurostat, jeu de données isoc_eb_ai (Artificial intelligence by size class of enterprise), mis à jour le 2026-06-15 ; consulté via l'API le 2026-11-26",
+    "url": "https://ec.europa.eu/eurostat/databrowser/view/isoc_eb_ai/default/table"
+  },
+  {
+    "chiffre": "Entreprises utilisant au moins une technologie d'IA, UE27, 10 salariés ou plus",
+    "valeur": "13,48 %",
+    "perimetre": "UE27, 10 salariés ou plus, entreprises de 10 salariés ou plus, hors agriculture, mines, secteur financier",
+    "annee": 2024,
+    "source": "Eurostat, jeu de données isoc_eb_ai (Artificial intelligence by size class of enterprise), mis à jour le 2026-06-15 ; consulté via l'API le 2026-11-26",
+    "url": "https://ec.europa.eu/eurostat/databrowser/view/isoc_eb_ai/default/table"
+  },
+  {
+    "chiffre": "Entreprises utilisant au moins une technologie d'IA, UE27, 10 salariés ou plus",
+    "valeur": "19,95 %",
+    "perimetre": "UE27, 10 salariés ou plus, entreprises de 10 salariés ou plus, hors agriculture, mines, secteur financier",
+    "annee": 2025,
+    "source": "Eurostat, jeu de données isoc_eb_ai (Artificial intelligence by size class of enterprise), mis à jour le 2026-06-15 ; consulté via l'API le 2026-11-26",
+    "url": "https://ec.europa.eu/eurostat/databrowser/view/isoc_eb_ai/default/table"
+  },
+  {
+    "chiffre": "Entreprises utilisant au moins une technologie d'IA, UE27, 10 à 49 salariés",
+    "valeur": "11,21 %",
+    "perimetre": "UE27, 10 à 49 salariés, entreprises de 10 salariés ou plus, hors agriculture, mines, secteur financier",
+    "annee": 2024,
+    "source": "Eurostat, jeu de données isoc_eb_ai (Artificial intelligence by size class of enterprise), mis à jour le 2026-06-15 ; consulté via l'API le 2026-11-26",
+    "url": "https://ec.europa.eu/eurostat/databrowser/view/isoc_eb_ai/default/table"
+  },
+  {
+    "chiffre": "Entreprises utilisant au moins une technologie d'IA, UE27, 10 à 49 salariés",
+    "valeur": "17,00 %",
+    "perimetre": "UE27, 10 à 49 salariés, entreprises de 10 salariés ou plus, hors agriculture, mines, secteur financier",
+    "annee": 2025,
+    "source": "Eurostat, jeu de données isoc_eb_ai (Artificial intelligence by size class of enterprise), mis à jour le 2026-06-15 ; consulté via l'API le 2026-11-26",
+    "url": "https://ec.europa.eu/eurostat/databrowser/view/isoc_eb_ai/default/table"
+  },
+  {
+    "chiffre": "Entreprises utilisant au moins une technologie d'IA, UE27, 50 à 249 salariés",
+    "valeur": "20,97 %",
+    "perimetre": "UE27, 50 à 249 salariés, entreprises de 10 salariés ou plus, hors agriculture, mines, secteur financier",
+    "annee": 2024,
+    "source": "Eurostat, jeu de données isoc_eb_ai (Artificial intelligence by size class of enterprise), mis à jour le 2026-06-15 ; consulté via l'API le 2026-11-26",
+    "url": "https://ec.europa.eu/eurostat/databrowser/view/isoc_eb_ai/default/table"
+  },
+  {
+    "chiffre": "Entreprises utilisant au moins une technologie d'IA, UE27, 50 à 249 salariés",
+    "valeur": "30,36 %",
+    "perimetre": "UE27, 50 à 249 salariés, entreprises de 10 salariés ou plus, hors agriculture, mines, secteur financier",
+    "annee": 2025,
+    "source": "Eurostat, jeu de données isoc_eb_ai (Artificial intelligence by size class of enterprise), mis à jour le 2026-06-15 ; consulté via l'API le 2026-11-26",
+    "url": "https://ec.europa.eu/eurostat/databrowser/view/isoc_eb_ai/default/table"
+  },
+  {
+    "chiffre": "Entreprises utilisant au moins une technologie d'IA, UE27, 250 salariés ou plus",
+    "valeur": "41,17 %",
+    "perimetre": "UE27, 250 salariés ou plus, entreprises de 10 salariés ou plus, hors agriculture, mines, secteur financier",
+    "annee": 2024,
+    "source": "Eurostat, jeu de données isoc_eb_ai (Artificial intelligence by size class of enterprise), mis à jour le 2026-06-15 ; consulté via l'API le 2026-11-26",
+    "url": "https://ec.europa.eu/eurostat/databrowser/view/isoc_eb_ai/default/table"
+  },
+  {
+    "chiffre": "Entreprises utilisant au moins une technologie d'IA, UE27, 250 salariés ou plus",
+    "valeur": "55,03 %",
+    "perimetre": "UE27, 250 salariés ou plus, entreprises de 10 salariés ou plus, hors agriculture, mines, secteur financier",
+    "annee": 2025,
+    "source": "Eurostat, jeu de données isoc_eb_ai (Artificial intelligence by size class of enterprise), mis à jour le 2026-06-15 ; consulté via l'API le 2026-11-26",
+    "url": "https://ec.europa.eu/eurostat/databrowser/view/isoc_eb_ai/default/table"
+  },
+  {
+    "chiffre": "France, technologie d'IA : analyse de texte (text mining)",
+    "valeur": "10,23 %",
+    "perimetre": "France, 10 salariés ou plus, entreprises de 10 salariés ou plus, hors agriculture, mines, secteur financier",
+    "annee": 2025,
+    "source": "Eurostat, jeu de données isoc_eb_ai (Artificial intelligence by size class of enterprise), mis à jour le 2026-06-15 ; consulté via l'API le 2026-11-26",
+    "url": "https://ec.europa.eu/eurostat/databrowser/view/isoc_eb_ai/default/table"
+  },
+  {
+    "chiffre": "France, technologie d'IA : génération de langage écrit/parlé ou de code",
+    "valeur": "7,82 %",
+    "perimetre": "France, 10 salariés ou plus, entreprises de 10 salariés ou plus, hors agriculture, mines, secteur financier",
+    "annee": 2025,
+    "source": "Eurostat, jeu de données isoc_eb_ai (Artificial intelligence by size class of enterprise), mis à jour le 2026-06-15 ; consulté via l'API le 2026-11-26",
+    "url": "https://ec.europa.eu/eurostat/databrowser/view/isoc_eb_ai/default/table"
+  },
+  {
+    "chiffre": "France, technologie d'IA : génération d'images, vidéo, son",
+    "valeur": "7,50 %",
+    "perimetre": "France, 10 salariés ou plus, entreprises de 10 salariés ou plus, hors agriculture, mines, secteur financier",
+    "annee": 2025,
+    "source": "Eurostat, jeu de données isoc_eb_ai (Artificial intelligence by size class of enterprise), mis à jour le 2026-06-15 ; consulté via l'API le 2026-11-26",
+    "url": "https://ec.europa.eu/eurostat/databrowser/view/isoc_eb_ai/default/table"
+  },
+  {
+    "chiffre": "France, technologie d'IA : reconnaissance vocale",
+    "valeur": "6,14 %",
+    "perimetre": "France, 10 salariés ou plus, entreprises de 10 salariés ou plus, hors agriculture, mines, secteur financier",
+    "annee": 2025,
+    "source": "Eurostat, jeu de données isoc_eb_ai (Artificial intelligence by size class of enterprise), mis à jour le 2026-06-15 ; consulté via l'API le 2026-11-26",
+    "url": "https://ec.europa.eu/eurostat/databrowser/view/isoc_eb_ai/default/table"
+  },
+  {
+    "chiffre": "France, technologie d'IA : automatisation de processus assistée par IA",
+    "valeur": "4,48 %",
+    "perimetre": "France, 10 salariés ou plus, entreprises de 10 salariés ou plus, hors agriculture, mines, secteur financier",
+    "annee": 2025,
+    "source": "Eurostat, jeu de données isoc_eb_ai (Artificial intelligence by size class of enterprise), mis à jour le 2026-06-15 ; consulté via l'API le 2026-11-26",
+    "url": "https://ec.europa.eu/eurostat/databrowser/view/isoc_eb_ai/default/table"
+  },
+  {
+    "chiffre": "France, technologie d'IA : apprentissage automatique pour l'analyse de données",
+    "valeur": "4,23 %",
+    "perimetre": "France, 10 salariés ou plus, entreprises de 10 salariés ou plus, hors agriculture, mines, secteur financier",
+    "annee": 2025,
+    "source": "Eurostat, jeu de données isoc_eb_ai (Artificial intelligence by size class of enterprise), mis à jour le 2026-06-15 ; consulté via l'API le 2026-11-26",
+    "url": "https://ec.europa.eu/eurostat/databrowser/view/isoc_eb_ai/default/table"
+  },
+  {
+    "chiffre": "France, technologie d'IA : reconnaissance d'images",
+    "valeur": "3,69 %",
+    "perimetre": "France, 10 salariés ou plus, entreprises de 10 salariés ou plus, hors agriculture, mines, secteur financier",
+    "annee": 2025,
+    "source": "Eurostat, jeu de données isoc_eb_ai (Artificial intelligence by size class of enterprise), mis à jour le 2026-06-15 ; consulté via l'API le 2026-11-26",
+    "url": "https://ec.europa.eu/eurostat/databrowser/view/isoc_eb_ai/default/table"
+  },
+  {
+    "chiffre": "France, technologie d'IA : robots autonomes",
+    "valeur": "1,73 %",
+    "perimetre": "France, 10 salariés ou plus, entreprises de 10 salariés ou plus, hors agriculture, mines, secteur financier",
+    "annee": 2025,
+    "source": "Eurostat, jeu de données isoc_eb_ai (Artificial intelligence by size class of enterprise), mis à jour le 2026-06-15 ; consulté via l'API le 2026-11-26",
+    "url": "https://ec.europa.eu/eurostat/databrowser/view/isoc_eb_ai/default/table"
+  },
+  {
+    "chiffre": "France, usage de l'IA pour : production",
+    "valeur": "3,79 %",
+    "perimetre": "France, 10 salariés ou plus, entreprises de 10 salariés ou plus, hors agriculture, mines, secteur financier",
+    "annee": 2025,
+    "source": "Eurostat, jeu de données isoc_eb_ai (Artificial intelligence by size class of enterprise), mis à jour le 2026-06-15 ; consulté via l'API le 2026-11-26",
+    "url": "https://ec.europa.eu/eurostat/databrowser/view/isoc_eb_ai/default/table"
+  },
+  {
+    "chiffre": "France, usage de l'IA pour : sécurité informatique",
+    "valeur": "3,16 %",
+    "perimetre": "France, 10 salariés ou plus, entreprises de 10 salariés ou plus, hors agriculture, mines, secteur financier",
+    "annee": 2025,
+    "source": "Eurostat, jeu de données isoc_eb_ai (Artificial intelligence by size class of enterprise), mis à jour le 2026-06-15 ; consulté via l'API le 2026-11-26",
+    "url": "https://ec.europa.eu/eurostat/databrowser/view/isoc_eb_ai/default/table"
+  },
+  {
+    "chiffre": "France, usage de l'IA pour : logistique",
+    "valeur": "1,15 %",
+    "perimetre": "France, 10 salariés ou plus, entreprises de 10 salariés ou plus, hors agriculture, mines, secteur financier",
+    "annee": 2025,
+    "source": "Eurostat, jeu de données isoc_eb_ai (Artificial intelligence by size class of enterprise), mis à jour le 2026-06-15 ; consulté via l'API le 2026-11-26",
+    "url": "https://ec.europa.eu/eurostat/databrowser/view/isoc_eb_ai/default/table"
+  },
+  {
+    "chiffre": "UE27, usage de l'IA pour : marketing ou ventes",
+    "valeur": "6,92 %",
+    "perimetre": "UE27, 10 salariés ou plus, entreprises de 10 salariés ou plus, hors agriculture, mines, secteur financier",
+    "annee": 2025,
+    "source": "Eurostat, jeu de données isoc_eb_ai (Artificial intelligence by size class of enterprise), mis à jour le 2026-06-15 ; consulté via l'API le 2026-11-26",
+    "url": "https://ec.europa.eu/eurostat/databrowser/view/isoc_eb_ai/default/table"
+  },
+  {
+    "chiffre": "UE27, usage de l'IA pour : administration et gestion",
+    "valeur": "6,19 %",
+    "perimetre": "UE27, 10 salariés ou plus, entreprises de 10 salariés ou plus, hors agriculture, mines, secteur financier",
+    "annee": 2025,
+    "source": "Eurostat, jeu de données isoc_eb_ai (Artificial intelligence by size class of enterprise), mis à jour le 2026-06-15 ; consulté via l'API le 2026-11-26",
+    "url": "https://ec.europa.eu/eurostat/databrowser/view/isoc_eb_ai/default/table"
+  },
+  {
+    "chiffre": "UE27, usage de l'IA pour : comptabilité, finance",
+    "valeur": "4,61 %",
+    "perimetre": "UE27, 10 salariés ou plus, entreprises de 10 salariés ou plus, hors agriculture, mines, secteur financier",
+    "annee": 2025,
+    "source": "Eurostat, jeu de données isoc_eb_ai (Artificial intelligence by size class of enterprise), mis à jour le 2026-06-15 ; consulté via l'API le 2026-11-26",
+    "url": "https://ec.europa.eu/eurostat/databrowser/view/isoc_eb_ai/default/table"
+  },
+  {
+    "chiffre": "UE27, usage de l'IA pour : production",
+    "valeur": "4,14 %",
+    "perimetre": "UE27, 10 salariés ou plus, entreprises de 10 salariés ou plus, hors agriculture, mines, secteur financier",
+    "annee": 2025,
+    "source": "Eurostat, jeu de données isoc_eb_ai (Artificial intelligence by size class of enterprise), mis à jour le 2026-06-15 ; consulté via l'API le 2026-11-26",
+    "url": "https://ec.europa.eu/eurostat/databrowser/view/isoc_eb_ai/default/table"
+  },
+  {
+    "chiffre": "UE27, usage de l'IA pour : sécurité informatique",
+    "valeur": "3,94 %",
+    "perimetre": "UE27, 10 salariés ou plus, entreprises de 10 salariés ou plus, hors agriculture, mines, secteur financier",
+    "annee": 2025,
+    "source": "Eurostat, jeu de données isoc_eb_ai (Artificial intelligence by size class of enterprise), mis à jour le 2026-06-15 ; consulté via l'API le 2026-11-26",
+    "url": "https://ec.europa.eu/eurostat/databrowser/view/isoc_eb_ai/default/table"
+  },
+  {
+    "chiffre": "UE27, usage de l'IA pour : R&D, innovation",
+    "valeur": "3,80 %",
+    "perimetre": "UE27, 10 salariés ou plus, entreprises de 10 salariés ou plus, hors agriculture, mines, secteur financier",
+    "annee": 2025,
+    "source": "Eurostat, jeu de données isoc_eb_ai (Artificial intelligence by size class of enterprise), mis à jour le 2026-06-15 ; consulté via l'API le 2026-11-26",
+    "url": "https://ec.europa.eu/eurostat/databrowser/view/isoc_eb_ai/default/table"
+  },
+  {
+    "chiffre": "UE27, usage de l'IA pour : logistique",
+    "valeur": "1,21 %",
+    "perimetre": "UE27, 10 salariés ou plus, entreprises de 10 salariés ou plus, hors agriculture, mines, secteur financier",
+    "annee": 2025,
+    "source": "Eurostat, jeu de données isoc_eb_ai (Artificial intelligence by size class of enterprise), mis à jour le 2026-06-15 ; consulté via l'API le 2026-11-26",
+    "url": "https://ec.europa.eu/eurostat/databrowser/view/isoc_eb_ai/default/table"
+  },
+  {
+    "chiffre": "UE27, entreprises n'utilisant pas l'IA à cause de : manque de compétences",
+    "valeur": "7,76 % (de l'ensemble des entreprises, lecture de l'unité PC_ENT)",
+    "perimetre": "UE27, 10 salariés ou plus, entreprises de 10 salariés ou plus, hors agriculture, mines, secteur financier",
+    "annee": 2025,
+    "source": "Eurostat, jeu de données isoc_eb_ai (Artificial intelligence by size class of enterprise), mis à jour le 2026-06-15 ; consulté via l'API le 2026-11-26",
+    "url": "https://ec.europa.eu/eurostat/databrowser/view/isoc_eb_ai/default/table"
+  },
+  {
+    "chiffre": "UE27, entreprises n'utilisant pas l'IA à cause de : incertitude sur les conséquences juridiques",
+    "valeur": "5,92 % (de l'ensemble des entreprises, lecture de l'unité PC_ENT)",
+    "perimetre": "UE27, 10 salariés ou plus, entreprises de 10 salariés ou plus, hors agriculture, mines, secteur financier",
+    "annee": 2025,
+    "source": "Eurostat, jeu de données isoc_eb_ai (Artificial intelligence by size class of enterprise), mis à jour le 2026-06-15 ; consulté via l'API le 2026-11-26",
+    "url": "https://ec.europa.eu/eurostat/databrowser/view/isoc_eb_ai/default/table"
+  },
+  {
+    "chiffre": "UE27, entreprises n'utilisant pas l'IA à cause de : protection des données et vie privée",
+    "valeur": "5,82 % (de l'ensemble des entreprises, lecture de l'unité PC_ENT)",
+    "perimetre": "UE27, 10 salariés ou plus, entreprises de 10 salariés ou plus, hors agriculture, mines, secteur financier",
+    "annee": 2025,
+    "source": "Eurostat, jeu de données isoc_eb_ai (Artificial intelligence by size class of enterprise), mis à jour le 2026-06-15 ; consulté via l'API le 2026-11-26",
+    "url": "https://ec.europa.eu/eurostat/databrowser/view/isoc_eb_ai/default/table"
+  },
+  {
+    "chiffre": "UE27, entreprises n'utilisant pas l'IA à cause de : disponibilité ou qualité des données",
+    "valeur": "4,80 % (de l'ensemble des entreprises, lecture de l'unité PC_ENT)",
+    "perimetre": "UE27, 10 salariés ou plus, entreprises de 10 salariés ou plus, hors agriculture, mines, secteur financier",
+    "annee": 2025,
+    "source": "Eurostat, jeu de données isoc_eb_ai (Artificial intelligence by size class of enterprise), mis à jour le 2026-06-15 ; consulté via l'API le 2026-11-26",
+    "url": "https://ec.europa.eu/eurostat/databrowser/view/isoc_eb_ai/default/table"
+  },
+  {
+    "chiffre": "UE27, entreprises n'utilisant pas l'IA à cause de : incompatibilité avec les systèmes existants",
+    "valeur": "4,59 % (de l'ensemble des entreprises, lecture de l'unité PC_ENT)",
+    "perimetre": "UE27, 10 salariés ou plus, entreprises de 10 salariés ou plus, hors agriculture, mines, secteur financier",
+    "annee": 2025,
+    "source": "Eurostat, jeu de données isoc_eb_ai (Artificial intelligence by size class of enterprise), mis à jour le 2026-06-15 ; consulté via l'API le 2026-11-26",
+    "url": "https://ec.europa.eu/eurostat/databrowser/view/isoc_eb_ai/default/table"
+  },
+  {
+    "chiffre": "UE27, entreprises n'utilisant pas l'IA à cause de : coûts jugés trop élevés",
+    "valeur": "4,24 % (de l'ensemble des entreprises, lecture de l'unité PC_ENT)",
+    "perimetre": "UE27, 10 salariés ou plus, entreprises de 10 salariés ou plus, hors agriculture, mines, secteur financier",
+    "annee": 2025,
+    "source": "Eurostat, jeu de données isoc_eb_ai (Artificial intelligence by size class of enterprise), mis à jour le 2026-06-15 ; consulté via l'API le 2026-11-26",
+    "url": "https://ec.europa.eu/eurostat/databrowser/view/isoc_eb_ai/default/table"
+  },
+  {
+    "chiffre": "UE27, entreprises n'utilisant pas l'IA à cause de : considérations éthiques",
+    "valeur": "2,72 % (de l'ensemble des entreprises, lecture de l'unité PC_ENT)",
+    "perimetre": "UE27, 10 salariés ou plus, entreprises de 10 salariés ou plus, hors agriculture, mines, secteur financier",
+    "annee": 2025,
+    "source": "Eurostat, jeu de données isoc_eb_ai (Artificial intelligence by size class of enterprise), mis à jour le 2026-06-15 ; consulté via l'API le 2026-11-26",
+    "url": "https://ec.europa.eu/eurostat/databrowser/view/isoc_eb_ai/default/table"
+  },
+  {
+    "chiffre": "UE27, entreprises n'utilisant pas l'IA à cause de : IA jugée inutile pour l'entreprise",
+    "valeur": "1,96 % (de l'ensemble des entreprises, lecture de l'unité PC_ENT)",
+    "perimetre": "UE27, 10 salariés ou plus, entreprises de 10 salariés ou plus, hors agriculture, mines, secteur financier",
+    "annee": 2025,
+    "source": "Eurostat, jeu de données isoc_eb_ai (Artificial intelligence by size class of enterprise), mis à jour le 2026-06-15 ; consulté via l'API le 2026-11-26",
+    "url": "https://ec.europa.eu/eurostat/databrowser/view/isoc_eb_ai/default/table"
+  }
+]
