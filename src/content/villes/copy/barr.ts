@@ -49,7 +49,7 @@ export const BARR_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Barr ?",
-      a: "Oui, Axion-IA intervient à Barr et dans le Piémont des Vosges (Obernai, Sélestat, Mont Sainte-Odile, Route des Vins). Consultants via A35 ou gares SNCF. Bassin viticole et touristique alsacien.",
+      a: "Oui, Axion-IA intervient à Barr et dans le Piémont des Vosges (Obernai, Sélestat, Mont Sainte-Odile, Route des Vins). Bassin viticole et touristique alsacien.",
     },
     {
       q: "Travaillez-vous avec les domaines viticoles et le tourisme ?",
@@ -65,7 +65,7 @@ export const BARR_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Barr ?",
-      a: "Nos consultants se déplacent via autoroute A35 (10 min) ou gares SNCF de Sélestat et Strasbourg. Bassin viticole stratégique sur la Route des Vins d'Alsace.",
+      a: "Une mission à Barr démarre par un échange de cadrage, puis se déroule sur site ou à distance, avec des livrables remis et documentés.",
     },
   ],
 };

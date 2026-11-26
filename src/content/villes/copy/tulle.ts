@@ -49,7 +49,7 @@ export const TULLE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Tulle et en Corrèze ?",
-      a: "Oui, Axion-IA intervient à Tulle et dans toute la Corrèze (Brive, Ussel, Égletons). Consultants via gare SNCF Tulle ou aéroport Brive-Vallée de la Dordogne.",
+      a: "Oui, Axion-IA intervient à Tulle et dans toute la Corrèze (Brive, Ussel, Égletons).",
     },
     {
       q: "Quel est le tarif d'un audit IA à Tulle  ?",
@@ -61,7 +61,7 @@ export const TULLE_COPY: VilleCopy = {
     },
     {
       q: "Quel délai pour démarrer une mission IA à Tulle ?",
-      a: "Intervention sous 5 jours ouvrés. Brive à 30 min, Limoges à 1h30. Déplacements sur site inclus ou sessions en visio selon vos préférences.",
+      a: "Intervention sous 5 jours ouvrés.",
     },
     {
       q: "Comment Axion-IA garantit-il la conformité RGPD à Tulle ?",

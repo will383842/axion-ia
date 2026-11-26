@@ -218,7 +218,7 @@ export const MONTELIMAR_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Contractual commitment on the scope defined at kick-off in Montélimar. EU hosting by default, GDPR compliance, data minimisation and DPO on request. Code, data and AI components remain wholly yours: the platform can be taken over by your teams or any Drôme provider, with no vendor lock-in. Mobile-first UX/UI, multi-CMS e-commerce and custom SaaS are covered by the same team. Quotes issued from 24-48 h depending on complexity; any travel costs are quoted case by case based on the zone.",
+          "Contractual commitment on the scope defined at kick-off in Montélimar. EU hosting by default, GDPR compliance, data minimisation and DPO on request. Code, data and AI components remain wholly yours: the platform can be taken over by your teams or any Drôme provider, with no vendor lock-in. Mobile-first UX/UI, multi-CMS e-commerce and custom SaaS are covered by the same team. Quotes issued from 24-48 h depending on complexity.",
       },
     },
   },
@@ -226,7 +226,7 @@ export const MONTELIMAR_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Montélimar et dans le sud-drômois ?",
-      a: "Oui, Axion-IA intervient à Montélimar et dans les communes voisines (Ancône, Châteauneuf-du-Rhône, Sauzet, Savasse, Allan, Le Teil, Rochemaure). Déplacement depuis Valence (43 min A7) ou Lyon (1h30).",
+      a: "Oui, Axion-IA intervient à Montélimar et dans les communes voisines (Ancône, Châteauneuf-du-Rhône, Sauzet, Savasse, Allan, Le Teil, Rochemaure). Nous nous déplaçons chez vous, partout en France.",
     },
     {
       q: "Quel est le tarif d'un audit IA pour une TPE nougatière à Montélimar ?",
@@ -238,7 +238,7 @@ export const MONTELIMAR_COPY: VilleCopy = {
     },
     {
       q: "Quel délai pour une intervention IA à Montélimar ?",
-      a: "Nous nous engageons à intervenir sur site à Montélimar dans un délai de 5 à 8 jours ouvrés après prise de contact, via la gare SNCF ou l'A7 (sorties Montélimar-Nord et Sud).",
+      a: "Nous nous engageons à intervenir sur site à Montélimar dans un délai de 5 à 8 jours ouvrés après prise de contact.",
     },
     {
       q: "Comment Axion-IA garantit-elle la conformité RGPD à Montélimar ?",

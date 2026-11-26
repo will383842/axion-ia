@@ -49,7 +49,7 @@ export const MONTESSON_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Montesson et sur la plaine de Montesson ?",
-      a: "Oui, Axion-IA intervient à Montesson et toute la boucle de Seine (Le Vésinet à 5 min, Sartrouville à 5 min, Paris La Défense à 15 min, Paris Saint-Lazare à 20 min).",
+      a: "Oui. Nous intervenons à Montesson et dans toute la boucle de Seine (Le Vésinet, Sartrouville, La Défense).",
     },
     {
       q: "Travaillez-vous avec les commerçants et artisans de Montesson ?",
@@ -64,8 +64,8 @@ export const MONTESSON_COPY: VilleCopy = {
       a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Outils IA réservation, gestion salle, fidélisation clientèle.",
     },
     {
-      q: "Comment se passe une mission depuis Paris ou La Défense ?",
-      a: "Le Vésinet (5 min). Sartrouville (5 min). Paris La Défense (15 min). Paris Saint-Lazare (20 min). RER A Le Vésinet–Le Pecq à 10 min.",
+      q: "Comment se déroule une mission Axion-IA à Montesson ?",
+      a: "Nous intervenons partout en France, sur place dans vos locaux ou à distance en visio. Après le cadrage de votre besoin, nous planifions l'intervention et livrons un résultat actionnable.",
     },
   ],
 };

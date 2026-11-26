@@ -22,6 +22,7 @@ import { clearProviderFailureStreak, recordPermanentProviderFailure } from "./qu
 import { openaiProvider } from "./openai";
 import { anthropicProvider } from "./anthropic";
 import { genererTexteBlogClaude, interrupteurBlogClaude } from "./blog-claude";
+import { typeClaudeAutorise } from "./types-claude";
 import { perplexityProvider } from "./perplexity";
 import { unsplashProvider } from "./unsplash";
 import type { ProviderKey, ProviderRole } from "../../../../prisma/generated/client";
@@ -134,10 +135,18 @@ const ROLE_TO_PROVIDERS = {
  * - Telegram alert si fallback déclenché 5+ fois en 30s.
  */
 export async function generate(requete: GenerationRequest): Promise<GenerationResponse> {
-  // Porte « texte du blog via Claude » : inerte tant que CONTENT_GEN_BLOG_CLAUDE ≠ "true".
-  // Ni try/catch ni suite vers OpenAI : un refus ou un échec de Claude fait échouer l'appel.
-  if (requete.blogClaudeRole === "ecriture" && interrupteurBlogClaude()) {
-    return genererTexteBlogClaude(requete, "ecriture");
+  // Porte « contenu via Claude » : inerte tant que CONTENT_GEN_BLOG_CLAUDE ≠ "true".
+  // Il faut TROIS conditions : demande explicitement marquée (`blogClaudeRole`), interrupteur
+  // allumé, et type de contenu dans la liste `CONTENT_GEN_CLAUDE_TYPES` (défaut : les 4 types
+  // blog). Le type SEUL ne suffit jamais (le chatbot émet `qa_derived` sans marquage : il
+  // reste sur OpenAI même avec « tous »). Ni try/catch ni suite vers OpenAI : un refus ou un
+  // échec de Claude fait échouer l'appel.
+  if (
+    requete.blogClaudeRole !== undefined &&
+    interrupteurBlogClaude() &&
+    typeClaudeAutorise(requete.contentType)
+  ) {
+    return genererTexteBlogClaude(requete, requete.blogClaudeRole);
   }
   // Interrupteur éteint : la requête transmise aux fournisseurs est celle d'avant
   // (le champ `blogClaudeRole` ne doit jamais atteindre OpenAI).
@@ -198,7 +207,9 @@ export async function generate(requete: GenerationRequest): Promise<GenerationRe
         // (solde épuisé, clé refusée) ne guérit pas d'elle-même : on la compte, et
         // au-delà du seuil la production s'arrête d'elle-même au lieu de brûler des
         // milliers de jobs en attendant qu'un humain s'en aperçoive.
-        await recordPermanentProviderFailure(provider.key, err.code, err.message);
+        await recordPermanentProviderFailure(provider.key, err.code, err.message, {
+          toutesEpuisees: (err as { toutesEpuisees?: unknown }).toutesEpuisees === true,
+        });
         throw err;
       }
       // sinon : try next provider in chain (fallback automatique)

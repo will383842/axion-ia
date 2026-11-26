@@ -250,7 +250,7 @@ export const BRIVE_LA_GAILLARDE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Brive-la-Gaillarde ?",
-      a: "Nous démarrons par un audit, puis intervenons sur site ou en visio, au carrefour A20/A89. Livrables documentés, équipes formées, aucune dépendance technique imposée.",
+      a: "Nous démarrons par un audit, puis intervenons sur site ou en visio. Livrables documentés, équipes formées, aucune dépendance technique imposée.",
     },
   ],
 };

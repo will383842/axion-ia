@@ -14,9 +14,9 @@ export const BOIS_LE_ROI_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Bois-le-Roi (77). Nous accompagnons TPE et PME : artisans, commerçants de village, professions libérales, PME de services et hébergeurs touristiques de cette commune résidentielle entre Seine et forêt de Fontainebleau.",
   seoHook: "artisanat services & commerce village",
   ecosystemFr:
-    "Bois-le-Roi est une commune résidentielle prisée en bords de Seine, aux portes de la forêt de Fontainebleau en Seine-et-Marne. Tissu économique : TPE artisanat et services à la personne, commerces de village, professions libérales (santé, conseil), PME prestataires de services, hébergements touristiques (gîtes, chambres d'hôtes). Proximité de Fontainebleau et de Melun via la gare Transilien R.",
+    "Bois-le-Roi est une commune résidentielle prisée en bords de Seine, aux portes de la forêt de Fontainebleau en Seine-et-Marne. Tissu économique : TPE artisanat et services à la personne, commerces de village, professions libérales (santé, conseil), PME prestataires de services, hébergements touristiques (gîtes, chambres d'hôtes). Bassin économique de Fontainebleau et de Melun.",
   ecosystemEn:
-    "Bois-le-Roi est une commune résidentielle prisée en bords de Seine, aux portes de la forêt de Fontainebleau en Seine-et-Marne. Tissu économique : TPE artisanat et services à la personne, commerces de village, professions libérales (santé, conseil), PME prestataires de services, hébergements touristiques (gîtes, chambres d'hôtes). Proximité de Fontainebleau et de Melun via la gare Transilien R.",
+    "Bois-le-Roi est une commune résidentielle prisée en bords de Seine, aux portes de la forêt de Fontainebleau en Seine-et-Marne. Tissu économique : TPE artisanat et services à la personne, commerces de village, professions libérales (santé, conseil), PME prestataires de services, hébergements touristiques (gîtes, chambres d'hôtes). Bassin économique de Fontainebleau et de Melun.",
   distancesFr:
     "Fontainebleau à 10 min, Melun à 15 min, Paris Gare de Lyon à 45 min via Transilien R (gare de Bois-le-Roi). A6 accessible en 10 min. Aéroport Paris-Orly à 40 min, Roissy-CDG à 1h.",
   distancesEn:
@@ -49,7 +49,7 @@ export const BOIS_LE_ROI_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Bois-le-Roi et dans le secteur de Fontainebleau ?",
-      a: "Oui, Axion-IA intervient à Bois-le-Roi et dans tout le secteur sud Seine-et-Marne (Fontainebleau à 10 min, Melun à 15 min, Samois-sur-Seine, Chartrettes). Nous intervenons partout en France, sur place ou à distance.",
+      a: "Oui. Nous intervenons à Bois-le-Roi et dans tout le secteur sud Seine-et-Marne (Fontainebleau, Melun, Samois-sur-Seine, Chartrettes), sur place ou à distance.",
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Bois-le-Roi  ?",
@@ -65,7 +65,7 @@ export const BOIS_LE_ROI_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Bois-le-Roi ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Tarifs publics.",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Bois-le-Roi, comme partout en France, ou à distance.",
     },
   ],
 };

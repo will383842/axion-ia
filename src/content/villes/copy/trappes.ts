@@ -242,7 +242,7 @@ export const TRAPPES_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Trappes ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Pour les interventions multi-jours, repas et hébergement local possibles selon vos préférences.",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Trappes, comme partout en France, ou à distance.",
     },
   ],
 };

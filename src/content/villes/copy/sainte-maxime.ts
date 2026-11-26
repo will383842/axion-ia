@@ -49,7 +49,7 @@ export const SAINTE_MAXIME_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Sainte-Maxime et dans le golfe de Saint-Tropez ?",
-      a: "Oui, Axion-IA intervient à Sainte-Maxime et dans tout le golfe de Saint-Tropez (Saint-Tropez, Grimaud, Cogolin, Port Grimaud). Consultants accessibles via A8 (Le Muy à 20 min) ou Cannes (50 min).",
+      a: "Oui, Axion-IA intervient à Sainte-Maxime et dans tout le golfe de Saint-Tropez (Saint-Tropez, Grimaud, Cogolin, Port Grimaud).",
     },
     {
       q: "Quels services IA pour les hôtels et restaurants de Sainte-Maxime ?",

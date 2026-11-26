@@ -39,6 +39,7 @@
  * - Fail-open : toute erreur est journalisée sans interrompre le tick.
  */
 
+import { estJobEssaiClaude } from "../essai-claude";
 import type { Queue } from "bullmq";
 import { prisma } from "@/lib/prisma";
 import { resolveReenqueueAction, type BullJobState } from "../queue/reenqueue-policy";
@@ -241,6 +242,9 @@ export async function requeueContentGenJob(
     readonly retryCount: number;
   },
 ): Promise<boolean> {
+  // Un brouillon d'essai (script essai-blog-claude-brouillon) ne se rejoue JAMAIS : le worker
+  // le régénérerait via OpenAI puis le publierait seul. Point commun de tous les rejeux.
+  if (estJobEssaiClaude({ inputPayload: job.inputPayload })) return false;
   const jobId = `gen-${job.id}`;
   const existing = await queue.getJob(jobId);
   const state = existing ? ((await existing.getState()) as BullJobState) : null;

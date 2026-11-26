@@ -230,7 +230,7 @@ export const ACHERES_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Achères et dans les Yvelines ?",
-      a: "Oui, Axion-IA accompagne les TPE et PME d'Achères et du secteur de Saint-Germain-en-Laye et Cergy-Pontoise. Nos consultants se déplacent sur site, à 35 minutes de Paris par le RER A, ou interviennent en visio.",
+      a: "Oui, Axion-IA accompagne les TPE et PME d'Achères et du secteur de Saint-Germain-en-Laye et Cergy-Pontoise. Axion IA intervient partout en France, sur site ou à distance.",
     },
     {
       q: "Travaillez-vous avec les prestataires logistiques et ferroviaires d'Achères ?",
@@ -246,7 +246,7 @@ export const ACHERES_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Achères ?",
-      a: "Achères est à 35 minutes de Paris-centre et 25 minutes de La Défense par le RER A. Nos consultants se déplacent sur site ou interviennent en visio.",
+      a: "Nos consultants se déplacent sur site ou interviennent en visio.",
     },
   ],
 };

@@ -84,6 +84,47 @@ export function ajouterJours(d: Date, jours: number): Date {
   return new Date(d.getTime() + jours * JOUR_MS);
 }
 
+const FORMAT_PARIS = new Intl.DateTimeFormat("en-GB", {
+  timeZone: "Europe/Paris",
+  year: "numeric",
+  month: "numeric",
+  day: "numeric",
+  hour: "numeric",
+  hourCycle: "h23",
+});
+
+function composantesParis(t: number): { y: number; m: number; d: number; h: number } {
+  const p: Record<string, number> = {};
+  for (const x of FORMAT_PARIS.formatToParts(new Date(t))) p[x.type] = Number(x.value);
+  return { y: p.year ?? NaN, m: p.month ?? NaN, d: p.day ?? NaN, h: p.hour ?? NaN };
+}
+
+/**
+ * Fonction UNIQUE de la fin d'un délai en jours calendaires (décision du dirigeant N1,
+ * 2026-11-25) : le dernier instant (23:59:59.999, heure de Paris, heure d'été/hiver comprise)
+ * du `n`-ième jour calendaire à Paris, le jour de `d` étant le jour 1, quelle que soit l'heure de
+ * la saisie. Exemple : 25 nov. 15 h, n = 60 → 23 janv. 23:59:59.999 ; le 24 janv. 00:00 est libre.
+ * Date illisible : `Invalid Date`.
+ */
+export function finDuNiemeJourParis(d: Date, n: number): Date {
+  if (!Number.isFinite(d.getTime())) return new Date(NaN);
+  const { y, m, d: j } = composantesParis(d.getTime());
+  const minuit = new Date(Date.UTC(y, m - 1, j + n)); // minuit Paris après le n-ième jour (jour 1 = jour de d), en « heure murale »
+  // Les changements d'heure ont lieu à 2 h/3 h, jamais à minuit : un seul des deux décalages tombe juste.
+  for (const decalageH of [1, 2]) {
+    const t = minuit.getTime() - decalageH * 3_600_000;
+    const c = composantesParis(t);
+    if (
+      c.h === 0 &&
+      c.d === minuit.getUTCDate() &&
+      c.m === minuit.getUTCMonth() + 1 &&
+      c.y === minuit.getUTCFullYear()
+    )
+      return new Date(t - 1);
+  }
+  return new Date(NaN);
+}
+
 // ── Dossier de l'apporteur ───────────────────────────────────────────────
 
 /**
@@ -316,8 +357,32 @@ export const PALIERS_FORMATION = [
 ] as const;
 export type PalierFormation = (typeof PALIERS_FORMATION)[number]["id"];
 
+/**
+ * Développement web (A1.5 du contrat 2.8) : commissionné seulement pour une commande signée à partir
+ * de cette date (4.1 : une nouvelle grille ne vaut que pour les ventes signées après son entrée en
+ * vigueur ; jamais de commission rétroactive sur les ventes passées). Recalée le 26/11/2026, date de
+ * fusion prévue du contrat 2.8 (`CONTRAT_VERSION`) ; à recaler encore si la fusion glisse.
+ */
+export const DEVELOPPEMENT_WEB_COMMISSIONNE_DEPUIS = new Date(
+  "2026-11-25T23:00:00Z",
+); /* 26/11/2026 00:00, heure de Paris */
+
+/**
+ * Conférence : plus de commission pour une commande signée à partir de cette date (même date d'effet
+ * que le développement web, décision du pilote du 26/11). Une conférence commandée AVANT garde le
+ * forfait de l'ancien contrat.
+ */
+export const CONFERENCE_SANS_COMMISSION_DEPUIS = DEVELOPPEMENT_WEB_COMMISSIONNE_DEPUIS;
+
 /** Taux de l'annexe 1, en points de base, par activité facturée. */
-export const TAUX_BPS = { audit: 3000, implementation: 1500, un_a_un: 3000 } as const;
+/** ⚠️ `un_a_un` reste 30 % ICI (grille affichée, contrat 2.6, pricing.ts) ; le CALCUL ne le paie plus (aucune commission, décision du 25/11 ; contrat 2.8, A1.3). */
+export const TAUX_BPS = {
+  audit: 3000,
+  implementation: 1500,
+  un_a_un: 3000,
+  /** A1.5 (contrat 2.8) : tout développement effectué pour l'entreprise, 15 % du HT facturé. */
+  site_web: 1500,
+} as const;
 
 /**
  * Conférence : un forfait fixe PAR CONFÉRENCE (quel que soit le nombre de participants), sans
@@ -331,6 +396,89 @@ export const PALIER_CONFERENCE = "conference";
 export type ActiviteCommission =
   "formation" | "un_a_un" | "audit" | "implementation" | "site_web" | "conference";
 
+/**
+ * Journée IA (annexe 1, A1.1, grille v3) : prix de référence et forfait, en centimes. Une
+ * Journée IA se repère par `devis.journee_ia`, jamais par une valeur d'énumération.
+ */
+export const PRIX_REFERENCE_JOURNEE_IA_CENTS = 149_000;
+export const FORFAIT_JOURNEE_IA_CENTS = 50_000;
+/** Palier posé sur la ligne de commission d'une Journée IA. */
+export const PALIER_JOURNEE_IA = "journee-ia";
+
+/**
+ * Commission d'une commande de Journées IA : 500 € par journée facturée, au prorata du prix
+ * payé (art. 4.1 bis : forfait × net HT ÷ prix de référence, jamais plus que le forfait),
+ * arrondie au centime le plus proche. `netHtCents` = base de la commission (net après avoirs :
+ * avoir total → 0, avoir partiel → prorata). `journees` = journées facturées de la commande.
+ * Un acompte ne donne jamais rien : la fonction ne reçoit que des commandes soldées.
+ */
+export function commissionJourneeIaCents(netHtCents: number, journees?: number): number {
+  const q = quantiteSessions(journees);
+  const net = Math.max(0, netHtCents);
+  if (net >= PRIX_REFERENCE_JOURNEE_IA_CENTS * q) return FORFAIT_JOURNEE_IA_CENTS * q;
+  return Math.round((FORFAIT_JOURNEE_IA_CENTS * net) / PRIX_REFERENCE_JOURNEE_IA_CENTS);
+}
+
+/** Une ligne de devis est-elle une Journée IA ? Repère du catalogue, sinon libellé (jamais une demi-journée). */
+function estLigneJourneeIa(l: Record<string, unknown>): boolean {
+  const code = [l.offreCode, l.offreTierId].some(
+    (v) => typeof v === "string" && /journee-ia/i.test(v),
+  );
+  const d = typeof l.designation === "string" ? l.designation : "";
+  return code || (/journ[ée]e/i.test(d) && /\bIA\b/i.test(d) && !/demi/i.test(d));
+}
+
+/**
+ * Lecture des lignes d'un devis marqué Journée IA : nombre de journées (quantités entières
+ * positives), présence d'autres lignes, et ambiguïté (quantité non entière). Pur.
+ */
+export function analyserLignesJourneeIa(lignes: unknown): {
+  journees: number;
+  autresLignes: boolean;
+  ambigue: boolean;
+} {
+  let journees = 0;
+  let autresLignes = false;
+  let ambigue = false;
+  if (!Array.isArray(lignes)) return { journees: 0, autresLignes: false, ambigue: true };
+  for (const l of lignes) {
+    if (!l || typeof l !== "object") continue;
+    const o = l as Record<string, unknown>;
+    if (!estLigneJourneeIa(o)) {
+      autresLignes = true;
+      continue;
+    }
+    if (typeof o.quantite === "number" && Number.isInteger(o.quantite) && o.quantite > 0)
+      journees += o.quantite;
+    else ambigue = true;
+  }
+  return { journees, autresLignes, ambigue };
+}
+
+/**
+ * Commission d'une commande dont le devis est marqué Journée IA (A1.1). Elle ne se calcule seule
+ * que si la commande est UNIQUEMENT des Journées IA, lisibles, d'une activité de facturation
+ * ordinaire ; dans tous les autres cas (autres lignes, quantité illisible, case cochée sur une
+ * facture de site web, de coaching, de conférence ou non classée) elle reste « à qualifier » :
+ * un humain tranche, jamais un montant silencieux.
+ */
+export function calculerCommissionJourneeIa(e: {
+  activite: ActiviteCommission | null;
+  lignes: unknown;
+  netHtCents: number;
+}): CalculCommission {
+  const a = analyserLignesJourneeIa(e.lignes);
+  const ordinaire =
+    e.activite === "formation" || e.activite === "audit" || e.activite === "implementation";
+  if (a.journees < 1 || a.autresLignes || a.ambigue || !ordinaire) return { statut: "a_qualifier" };
+  return {
+    statut: "calculee",
+    montantCents: commissionJourneeIaCents(e.netHtCents, a.journees),
+    palier: PALIER_JOURNEE_IA,
+    prixPublicCents: PRIX_REFERENCE_JOURNEE_IA_CENTS * a.journees,
+  };
+}
+
 export type CalculCommission =
   | {
       statut: "calculee";
@@ -343,11 +491,12 @@ export type CalculCommission =
 
 /**
  * La commission d'une facture soldée.
- * - formation : forfait × min(1, HT facturé ÷ prix public), arrondi au centime inférieur
- *   (art. 4.1 bis) ; sans palier connu, elle reste « à qualifier », jamais zéro ;
- * - 1-to-1 et coaching 30 %, audit 30 %, intégration 15 % du HT facturé ;
- * - conférence : forfait fixe de 500 € par commande, sans prorata ;
- * - développement web : aucune (annexe 1, A1.5).
+ * - formation : forfait × min(1, HT facturé ÷ prix public), arrondi au centime le plus proche
+ *   (décision du 25/11 ; art. 4.1 bis) ; sans palier connu, elle reste « à qualifier », jamais zéro ;
+ * - coaching « one to one » : aucune ; audit 30 %, intégration 15 % du HT, arrondi au centime le plus proche ;
+ * - conférence : aucune commission (contrat 2.8) pour une commande signée à partir du 26/11/2026 ;
+ *   avant, forfait de l'ancien contrat ;
+ * - développement web : 15 % du HT facturé (annexe 1, A1.5 du contrat 2.8).
  */
 export function calculerCommission(e: {
   activite: ActiviteCommission | null;
@@ -355,23 +504,28 @@ export function calculerCommission(e: {
   palier?: string | null;
   /** Formation : nombre de sessions identiques du palier dans la commande (1 par défaut). */
   quantite?: number;
+  /** Date de signature de la commande : une conférence signée avant l'entrée en vigueur garde le forfait. */
+  signeeAt?: Date | null;
 }): CalculCommission {
   if (e.activite === null) return { statut: "a_qualifier" };
-  if (e.activite === "site_web") return { statut: "aucune" };
+  // Coaching « one to one » (décision du 25/11, A1.3) : aucune commission.
+  if (e.activite === "un_a_un") return { statut: "aucune" };
+  // Conférence (contrat 2.8, décision de Will) : 0 €, aucune ligne, aucune part de parrain.
   if (
     e.activite === "conference" ||
     (e.activite === "formation" && e.palier === PALIER_CONFERENCE)
   ) {
-    // Forfait fixe par conférence : aucun prorata de remise ; `quantite` = nombre de conférences de
-    // la commande. Jamais plus que le prix HT facturé (annexe 1, A1.4 bis) ; une commande vide ou
-    // remboursée (HT ≤ 0) ne rapporte rien.
-    const ht = Math.max(0, e.factureHtCents);
-    return {
-      statut: "calculee",
-      montantCents: Math.min(FORFAIT_CONFERENCE_CENTS * quantiteSessions(e.quantite), ht),
-      palier: PALIER_CONFERENCE,
-      prixPublicCents: null,
-    };
+    // Commande signée avant la date d'effet : forfait de l'ancien contrat, plafonné au HT facturé.
+    if (e.signeeAt && e.signeeAt < CONFERENCE_SANS_COMMISSION_DEPUIS) {
+      const ht = Math.max(0, e.factureHtCents);
+      return {
+        statut: "calculee",
+        montantCents: Math.min(FORFAIT_CONFERENCE_CENTS * quantiteSessions(e.quantite), ht),
+        palier: PALIER_CONFERENCE,
+        prixPublicCents: null,
+      };
+    }
+    return { statut: "aucune" };
   }
   if (e.activite === "formation") {
     const p = PALIERS_FORMATION.find((x) => x.id === e.palier);
@@ -382,7 +536,7 @@ export function calculerCommission(e: {
     // forfait × nombre de sessions, au prorata du prix si le prix baisse, plafonné au plein tarif.
     const q = quantiteSessions(e.quantite);
     const montant =
-      ht >= p.prixCents * q ? p.forfaitCents * q : Math.floor((p.forfaitCents * ht) / p.prixCents);
+      ht >= p.prixCents * q ? p.forfaitCents * q : Math.round((p.forfaitCents * ht) / p.prixCents);
     return {
       statut: "calculee",
       montantCents: montant,
@@ -393,10 +547,88 @@ export function calculerCommission(e: {
   const bps = TAUX_BPS[e.activite];
   return {
     statut: "calculee",
-    montantCents: Math.floor((Math.max(0, e.factureHtCents) * bps) / 10_000),
+    montantCents: Math.round((Math.max(0, e.factureHtCents) * bps) / 10_000),
     palier: null,
     prixPublicCents: null,
   };
+}
+
+/**
+ * Lignes d'abonnement, de maintenance, d'hébergement ou de licence portées par un devis (règle du
+ * 25/11 : rien dessus ; seule la mise en service donne 15 %). Repère : désignation. Pur.
+ */
+const LIGNE_RECURRENTE = /maintenance|abonnement|h[ée]bergement|licence/i;
+
+export function htLignesRecurrentesCents(lignes: unknown): number {
+  if (!Array.isArray(lignes)) return 0;
+  let total = 0;
+  for (const l of lignes) {
+    if (!l || typeof l !== "object") continue;
+    const o = l as Record<string, unknown>;
+    const d = typeof o.designation === "string" ? o.designation : "";
+    if (!LIGNE_RECURRENTE.test(d)) continue;
+    // Quantité 0 ou négative (option non retenue) : la ligne ne pèse rien ; illisible : 1.
+    const q = typeof o.quantite === "number" ? Math.max(0, o.quantite) : 1;
+    const pu = typeof o.prixUnitaireHtCents === "number" ? o.prixUnitaireHtCents : 0;
+    total += Math.abs(Math.round(q * pu));
+  }
+  return Math.max(0, total);
+}
+
+/**
+ * Lignes récurrentes RESTANTES d'une commande : le MINIMUM entre (a) celles du devis (ou de la facture)
+ * et (b) celles des factures actives de la commande moins la part récurrente rendue par les avoirs
+ * actifs. (b) évite qu'une facture refaite après un avoir total, ou une facture complémentaire de
+ * maintenance, ne laisse la maintenance déduite deux fois du net (le net la contient déjà une fois
+ * de moins). Sans `lignesDesFacturesActives`, seul (a) moins les avoirs s'applique. Un avoir à ligne
+ * générique (« avoir partiel ») ne se rattache à aucune ligne : prudence, il réduit la base. Jamais
+ * négatif. Pur.
+ */
+export function htLignesRecurrentesRestantesCents(
+  lignesCommande: unknown,
+  lignesDesAvoirsActifs: readonly unknown[],
+  lignesDesFacturesActives?: readonly unknown[],
+): number {
+  const rendu = lignesDesAvoirsActifs.reduce<number>((s, l) => s + htLignesRecurrentesCents(l), 0);
+  const duDevis = Math.max(0, htLignesRecurrentesCents(lignesCommande) - rendu);
+  // Factures sans lignes détaillées (ligne unique, JSON vide) : on ne sait rien de leur récurrent,
+  // le plafond ne s'applique pas (prudence : la maintenance du devis reste retirée de la base).
+  if (
+    !lignesDesFacturesActives ||
+    !lignesDesFacturesActives.some((l) => Array.isArray(l) && l.length > 0)
+  )
+    return duDevis;
+  const facture = lignesDesFacturesActives.reduce<number>(
+    (s, l) => s + htLignesRecurrentesCents(l),
+    0,
+  );
+  const duDevisBrut = htLignesRecurrentesCents(lignesCommande);
+  // Les factures ne portent pas toute la maintenance du devis (acomptes à ligne unique, facture libre
+  // « selon devis ») : leur détail ne prouve rien, la maintenance du devis reste retirée.
+  if (facture < duDevisBrut) return duDevis;
+  return Math.min(duDevisBrut, Math.max(0, facture - rendu));
+}
+
+/**
+ * PLAFOND STRICT de la base commissionnable d'une commande (décision du pilote 26/11) : total HT du
+ * devis (à défaut, de la facture) moins le récurrent BRUT (maintenance, abonnement, hébergement,
+ * licence). Quelle que soit la façon dont les factures sont détaillées, la base ne le dépasse
+ * jamais. Total inconnu : aucun plafond (Infinity). Jamais négatif. Pur.
+ */
+export function plafondBaseCommissionnableCents(
+  totalHtCents: number | null | undefined,
+  lignesCommande: unknown,
+  journeeIa = false,
+): number {
+  if (typeof totalHtCents !== "number" || !Number.isFinite(totalHtCents))
+    return Number.POSITIVE_INFINITY;
+  const brut = journeeIa ? 0 : htLignesRecurrentesCents(lignesCommande);
+  return Math.max(0, totalHtCents - brut);
+}
+
+/** Base commissionnable : le net HT moins les lignes récurrentes du devis (jamais négatif). */
+export function baseHorsLignesRecurrentes(netHtCents: number, lignes: unknown): number {
+  return Math.max(0, netHtCents - htLignesRecurrentesCents(lignes));
 }
 
 /** Nombre de sessions retenu : entier de 1 à 99 ; toute autre valeur vaut 1. */
@@ -413,7 +645,7 @@ export function partParrainage(e: {
   const fin = ajouterMois(e.filleulSigneAt, PARRAINAGE_MOIS);
   if (e.commandeSigneeAt.getTime() < e.filleulSigneAt.getTime()) return 0;
   if (e.commandeSigneeAt.getTime() > fin.getTime()) return 0;
-  return Math.floor((e.commissionFilleulCents * PARRAINAGE_BPS) / 10_000);
+  return Math.round((e.commissionFilleulCents * PARRAINAGE_BPS) / 10_000);
 }
 
 /**

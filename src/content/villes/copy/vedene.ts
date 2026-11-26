@@ -49,7 +49,7 @@ export const VEDENE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Vedène et dans l'est avignonnais ?",
-      a: "Oui, Axion-IA intervient à Vedène et dans tout l'est avignonnais (Sorgues, Le Pontet, Entraigues-sur-la-Sorgue, Saint-Saturnin-lès-Avignon). Proximité immédiate d'Avignon TGV via A7.",
+      a: "Oui, Axion-IA intervient à Vedène et dans tout l'est avignonnais (Sorgues, Le Pontet, Entraigues-sur-la-Sorgue, Saint-Saturnin-lès-Avignon).",
     },
     {
       q: "Quel est le tarif d'un audit IA à Vedène  ?",
@@ -65,7 +65,7 @@ export const VEDENE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une intervention à Vedène ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Vedène est à 10 min d'Avignon centre et 15 min de la gare TGV via A7.",
+      a: "Nous intervenons partout en France, sur place ou à distance.",
     },
   ],
 };

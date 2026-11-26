@@ -313,7 +313,7 @@ export default async function Home({ params }: HomeProps) {
                 </Link>
                 <p className="mt-2.5 text-center text-[15px]">
                   {journee.decideDebut}{" "}
-                  <Link href={{ pathname: "/appel", query: { depuis: "accueil-bloc-journee" } }}>
+                  <Link href={{ pathname: "/contact", query: { depuis: "accueil-bloc-journee" } }}>
                     {journee.decideLien}
                   </Link>
                 </p>

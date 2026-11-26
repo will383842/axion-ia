@@ -14,9 +14,9 @@ export const LURE_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Lure (70), sous-préfecture de Haute-Saône. Nous accompagnons TPE et PME : industries locales, artisans BTP, commerçants, professionnels de santé, professions libérales et services aux entreprises du Pays de Lure.",
   seoHook: "industrie métallurgique & artisanat second",
   ecosystemFr:
-    "Lure est la sous-préfecture du nord Haute-Saône, pôle de services et de commerces pour le Pays de Lure (~25 000 hab bassin de vie). Tissu de TPE/PME industrielles (métallurgie, agroalimentaire), artisanat BTP, centre hospitalier, professions libérales. Proximité Luxeuil-les-Bains (15 min) et Belfort (30 min A36).",
+    "Lure est la sous-préfecture du nord Haute-Saône, pôle de services et de commerces pour le Pays de Lure (~25 000 hab bassin de vie). Tissu de TPE/PME industrielles (métallurgie, agroalimentaire), artisanat BTP, centre hospitalier, professions libérales. Bassin de vie incluant Luxeuil-les-Bains.",
   ecosystemEn:
-    "Lure est la sous-préfecture du nord Haute-Saône, pôle de services et de commerces pour le Pays de Lure (~25 000 hab bassin de vie). Tissu de TPE/PME industrielles (métallurgie, agroalimentaire), artisanat BTP, centre hospitalier, professions libérales. Proximité Luxeuil-les-Bains (15 min) et Belfort (30 min A36).",
+    "Lure est la sous-préfecture du nord Haute-Saône, pôle de services et de commerces pour le Pays de Lure (~25 000 hab bassin de vie). Tissu de TPE/PME industrielles (métallurgie, agroalimentaire), artisanat BTP, centre hospitalier, professions libérales. Bassin de vie incluant Luxeuil-les-Bains.",
   distancesFr:
     "Gare de Lure (TER Belfort-Vesoul, 25 min Belfort, 30 min Vesoul). Gare TGV Belfort-Montbéliard à 40 min. Aéroport Bâle-Mulhouse à 1h15. Axe RN19 vers Belfort et Vesoul. Luxeuil-les-Bains à 15 min.",
   distancesEn:
@@ -49,7 +49,7 @@ export const LURE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Lure et dans le nord Haute-Saône ?",
-      a: "Oui, Axion-IA intervient à Lure et sur tout le nord Haute-Saône (Luxeuil-les-Bains, Héricourt, Ronchamp, Faucogney). Nos consultants se déplacent depuis Belfort (30 min) ou Besançon (1h).",
+      a: "Oui, Axion-IA intervient à Lure et sur tout le nord Haute-Saône (Luxeuil-les-Bains, Héricourt, Ronchamp, Faucogney). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Lure  ?",
@@ -64,8 +64,8 @@ export const LURE_COPY: VilleCopy = {
       a: "Oui, interventions et coaching 1-to-1 adaptés aux commerçants : gestion stocks IA, marketing local automatisé, agents conversationnels, comptabilité simplifiée. Formats journée ou demi-journée sur site à Lure.",
     },
     {
-      q: "Comment se passe une mission IA à Lure depuis Paris ou Lyon ?",
-      a: "Nos consultants arrivent par TGV Belfort-Montbéliard (2h20 Paris) puis route vers Lure (40 min). Pour les multi-jours, hébergement local possible.",
+      q: "Comment se déroule une mission à Lure ?",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Lure, comme partout en France, ou à distance.",
     },
   ],
 };

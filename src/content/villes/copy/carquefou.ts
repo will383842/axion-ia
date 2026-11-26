@@ -230,7 +230,7 @@ export const CARQUEFOU_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Carquefou et dans la métropole nantaise ?",
-      a: "Oui, Axion-IA se déplace sur site à Carquefou, dans le parc de la Fleuriaye et dans toute la métropole de Nantes (15 min). Nous accompagnons en priorité les TPE et PME, puis les ETI en complément.",
+      a: "Oui, Axion IA intervient partout en France, sur site ou à distance, y compris à Carquefou et dans la métropole nantaise. Nous accompagnons en priorité les TPE et PME, puis les ETI en complément.",
     },
     {
       q: "Travaillez-vous avec les PMI et sous-traitants industriels ?",

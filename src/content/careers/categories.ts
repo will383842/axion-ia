@@ -34,7 +34,7 @@ export const CAREER_CATEGORIES: ReadonlyArray<CareerCategory> = [
     fr: "Développement",
     en: "Software development",
     service: {
-      href: "/sites-web",
+      href: "/sites-web-augmentes",
       fr: "Sites web & SaaS IA",
       en: "Websites & AI SaaS",
     },
@@ -64,7 +64,7 @@ export const CAREER_CATEGORIES: ReadonlyArray<CareerCategory> = [
     fr: "Design / UX-UI",
     en: "Design / UX-UI",
     service: {
-      href: "/sites-web",
+      href: "/sites-web-augmentes",
       fr: "Design & sites web",
       en: "Design & websites",
     },
@@ -91,8 +91,8 @@ export const CAREER_CATEGORIES: ReadonlyArray<CareerCategory> = [
     en: "Sales",
     service: {
       href: "/devenir-commercial-ia",
-      fr: "Réseau commercial",
-      en: "Sales network",
+      fr: "Réseau d'apporteurs d'affaires",
+      en: "Business referrer network",
     },
   },
   {

@@ -229,7 +229,7 @@ export const MEYZIEU_COPY: VilleCopy = {
 
   faqGeolocalisee: [
     {
-      q: "Axion-IA se déplace-t-il sur site à Meyzieu ?",
+      q: "Intervenez-vous à Meyzieu ?",
       a: "Oui. Nos experts IA seniors interviennent directement dans vos locaux à Meyzieu, notamment dans la zone de la Mi-Plaine, et dans tout l'est lyonnais, pour observer vos processus réels avant toute recommandation.",
     },
     {

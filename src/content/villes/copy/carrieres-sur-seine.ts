@@ -49,7 +49,7 @@ export const CARRIERES_SUR_SEINE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Carrières-sur-Seine et en boucle de Seine ?",
-      a: "Oui, Axion-IA intervient à Carrières-sur-Seine et toute la boucle de Seine (Chatou à 3 min, Nanterre à 5 min, Paris La Défense à 10 min, Paris Saint-Lazare à 15 min transilien J/L).",
+      a: "Oui, Axion-IA intervient à Carrières-sur-Seine et dans toute la boucle de Seine (Chatou, Nanterre, Paris La Défense, Paris Saint-Lazare).",
     },
     {
       q: "Travaillez-vous avec les commerçants et artisans de Carrières-sur-Seine ?",
@@ -65,7 +65,7 @@ export const CARRIERES_SUR_SEINE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Carrières-sur-Seine ?",
-      a: "Chatou (3 min). Nanterre (5 min). Paris La Défense (10 min). Paris Saint-Lazare (15 min transilien J/L).",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Carrières-sur-Seine, comme partout en France, ou à distance.",
     },
   ],
 };

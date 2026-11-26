@@ -18,6 +18,7 @@
  * (`buildImplantationsSitemap` filtre sur `getIndexableVilles`). Règle inchangée.
  */
 
+import { DELAI_RAPPORT_JOURS_OUVRES } from "@/content/journee-ia-commun";
 import { EncartEnVideo } from "@/components/videos/EncartEnVideo";
 import { THEME_GENERIQUE_VILLES } from "@/server/videos/encarts";
 import type { Metadata } from "next";
@@ -357,7 +358,7 @@ export default async function VillePage({ params }: Props) {
             {
               titre: "Le matin : l’audit",
               texte:
-                "2 à 4 h d’audit dans vos locaux : nous cartographions l’entreprise service par service, faisons le point avec vous sur vos priorités et chiffrons vos plus gros gains, en heures et en euros.",
+                "Audit dans vos locaux (de 2 à 4 h selon la structuration de l’entreprise) : nous cartographions l’entreprise service par service, faisons le point avec vous sur vos priorités et chiffrons vos plus gros gains, en heures et en euros.",
             },
             {
               titre: "L’après-midi : la formation",
@@ -366,8 +367,7 @@ export default async function VillePage({ params }: Props) {
             },
             {
               titre: "Ensuite : le rapport",
-              texte:
-                "Rapport chiffré sous 3 jours ouvrés : vos gains, les tâches à automatiser classées par rentabilité et votre plan d’action sur 90 jours.",
+              texte: `Rapport chiffré sous ${DELAI_RAPPORT_JOURS_OUVRES} jours ouvrés : vos gains, les tâches à automatiser classées par rentabilité et votre plan d’action sur 90 jours.`,
             },
           ].map((etape, i) => (
             <li
@@ -452,8 +452,8 @@ export default async function VillePage({ params }: Props) {
               {`Votre Journée IA ${aVille(ville.nameFr)} commence par 45 minutes gratuites`}
             </h2>
             <p className="text-paper/85 text-base leading-relaxed sm:text-lg">
-              Diagnostic IA de 45 minutes, en visio ou par téléphone : une première tâche chiffrée,
-              et la date de votre journée fixée ensemble.
+              Diagnostic IA de 45 minutes, gratuit et facultatif, en visio ou par téléphone : une
+              première tâche chiffrée, et la date de votre journée fixée ensemble.
             </p>
             <Link
               href={lienRendezVous(depuisVille(ville.slug, "bas")) as never}
@@ -486,7 +486,7 @@ function VilleStub({ ville, region, breadcrumbItems }: VilleStubProps) {
       titleAs="h1"
       eyebrow={`Implantations · ${region.nameFr}`}
       title={h1Ville(ville)}
-      description={`Nous menons la Journée IA dans les locaux de votre entreprise ${aVille(ville.nameFr)} (${libelleDepartement(ville)}), comme partout en France : audit le matin, formation de vos équipes l’après-midi, rapport chiffré sous 3 jours ouvrés.`}
+      description={`Nous menons la Journée IA dans les locaux de votre entreprise ${aVille(ville.nameFr)} (${libelleDepartement(ville)}), comme partout en France : audit le matin, formation de vos équipes l’après-midi, rapport chiffré sous ${DELAI_RAPPORT_JOURS_OUVRES} jours ouvrés.`}
     >
       <div className="mb-8">
         <Breadcrumbs items={breadcrumbItems} />

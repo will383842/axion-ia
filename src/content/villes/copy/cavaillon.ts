@@ -232,7 +232,7 @@ export const CAVAILLON_COPY: VilleCopy = {
     },
     {
       q: "Sous quels délais Axion-IA intervient-il à Cavaillon ?",
-      a: "Nous nous déplaçons à Cavaillon sous 5 jours ouvrés après validation. La proximité d'Avignon (24 km) et l'accès A7 sortie 25 facilitent nos interventions courtes ou récurrentes.",
+      a: "Nous intervenons à Cavaillon sous 5 jours ouvrés après validation, pour des interventions courtes ou récurrentes.",
     },
     {
       q: "Axion-IA couvre-t-il les communes autour de Cavaillon ?",

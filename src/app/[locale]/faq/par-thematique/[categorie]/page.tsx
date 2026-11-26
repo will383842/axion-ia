@@ -25,6 +25,7 @@ import {
 import { listFaqs, listFaqsByCategory, type FaqItem } from "@/lib/knowledge/readers";
 import { getFaqCategory, getAllFaqCategorySlugs, FAQ_CATEGORIES } from "@/content/faq-categories";
 import { FAQ_CATEGORY_ICONS, FAQ_CATEGORY_ICON_FALLBACK } from "@/content/faq-category-icons";
+import { resolvePriceTokensDeep } from "@/content/pricing-tokens";
 import { neutraliserSelonInterrupteur } from "@/components/qualiopi/affirmations-en-base";
 
 interface Props {
@@ -99,7 +100,9 @@ export default async function FaqCategoryPage({ params }: Props) {
   // Audit Qualiopi du 16/10/2026 — certaines FAQ EN BASE (extraites des articles)
   // nient ou affirment la certification : neutralisées au rendu selon
   // l'interrupteur, cf. `affirmations-en-base.ts`.
-  const faqs = neutraliserSelonInterrupteur(faqsBrutes);
+  // Les réponses peuvent porter un jeton `{{price:…}}` : résolu ici (SSOT
+  // pricing.ts), sinon il sortirait en clair dans le HTML et le JSON-LD.
+  const faqs = resolvePriceTokensDeep(neutraliserSelonInterrupteur(faqsBrutes), loc);
   const visible = visibleCategoryFaqs(faqs);
   const items = visible.map((entry) => ({
     id: entry.slug,

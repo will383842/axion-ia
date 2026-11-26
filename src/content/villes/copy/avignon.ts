@@ -60,7 +60,7 @@ export const AVIGNON_COPY: VilleCopy = {
           "La filière agroalimentaire provençale d'Agroparc, première zone d'activité du Vaucluse (~600 établissements, ~6 500 emplois) avec INRAE, Givaudan France Naturals et McCormick France, demande un vocabulaire précis : traçabilité, contrôle qualité, recherche documentaire. Nos sessions ajustent les exemples à ce contexte.",
           "Le format collectif d'une journée convient aux structures avignonnaises de quelques personnes à plusieurs dizaines de collaborateurs, par groupes de 2 à 15 personnes : hôtels, compagnies, cabinets, commerces et PME de terroir.",
           "Le format Conférence s'adresse aux plénières d'entreprise et aux événements professionnels ; le format Dirigeant permet un cadrage en huis-clos pour les directions de TPE, PME et ETI du Vaucluse.",
-          "Avignon est accessible et facile à desservir en présentiel : la gare TGV est à environ 5 km du centre (Paris en 2h40, Marseille en 35 min), avec l'aéroport d'Avignon-Provence et les axes A7 / A9.",
+          "Nous intervenons en présentiel à Avignon et dans tout le Vaucluse.",
         ],
         methodology: [
           {
@@ -138,7 +138,7 @@ export const AVIGNON_COPY: VilleCopy = {
           },
           {
             q: "Comment l'IA aide-t-elle pendant le Festival d'Avignon et le Off ?",
-            a: "Pendant le pic de juillet, l'IA aide à gérer l'afflux de demandes : réponses multilingues, suivi des réservations et de la billetterie, tri des emails et préparation des contenus. Nous formons vos équipes à ces usages concrets pour absorber la saison sans surcharge.",
+            a: "Pendant le pic de juillet, l'IA aide à gérer l'afflux de demandes : réponses multilingues, suivi des réservations et de la billetterie, tri des emails et préparation des contenus. Nous formons vos équipes à ces usages concrets pour absorber la saison sereinement.",
           },
         ],
         guarantees:
@@ -152,7 +152,7 @@ export const AVIGNON_COPY: VilleCopy = {
           "La filière agroalimentaire provençale d'Agroparc, première zone d'activité du Vaucluse (~600 établissements, ~6 500 emplois) avec INRAE, Givaudan France Naturals et McCormick France, demande un vocabulaire précis : traçabilité, contrôle qualité, recherche documentaire. Nos sessions ajustent les exemples à ce contexte.",
           "Le format collectif d'une journée convient aux structures avignonnaises de quelques personnes à plusieurs dizaines de collaborateurs, par groupes de 2 à 15 personnes : hôtels, compagnies, cabinets, commerces et PME de terroir.",
           "Le format Conférence s'adresse aux plénières d'entreprise et aux événements professionnels ; le format Dirigeant permet un cadrage en huis-clos pour les directions de TPE, PME et ETI du Vaucluse.",
-          "Avignon est accessible et facile à desservir en présentiel : la gare TGV est à environ 5 km du centre (Paris en 2h40, Marseille en 35 min), avec l'aéroport d'Avignon-Provence et les axes A7 / A9.",
+          "Nous intervenons en présentiel à Avignon et dans tout le Vaucluse.",
         ],
         methodology: [
           {
@@ -230,7 +230,7 @@ export const AVIGNON_COPY: VilleCopy = {
           },
           {
             q: "Comment l'IA aide-t-elle pendant le Festival d'Avignon et le Off ?",
-            a: "Pendant le pic de juillet, l'IA aide à gérer l'afflux de demandes : réponses multilingues, suivi des réservations et de la billetterie, tri des emails et préparation des contenus. Nous formons vos équipes à ces usages concrets pour absorber la saison sans surcharge.",
+            a: "Pendant le pic de juillet, l'IA aide à gérer l'afflux de demandes : réponses multilingues, suivi des réservations et de la billetterie, tri des emails et préparation des contenus. Nous formons vos équipes à ces usages concrets pour absorber la saison sereinement.",
           },
         ],
         guarantees:
@@ -322,7 +322,7 @@ export const AVIGNON_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée, pas de surcoût « saison Festival ». Mise en ligne sans downtime quand on augmente l'existant. Web Vitals, accessibilité et test de charge contrôlés à la livraison, en particulier pour absorber le pic de juillet. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun abonnement imposé, transférable à tout prestataire du Vaucluse ou repris en interne.",
+          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée. Axion IA intervient partout en France, sur site ou à distance. Mise en ligne sans downtime quand on augmente l'existant. Web Vitals, accessibilité et test de charge contrôlés à la livraison, en particulier pour absorber le pic de juillet. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun abonnement imposé, transférable à tout prestataire du Vaucluse ou repris en interne.",
       },
       en: {
         hero: "In Avignon, Axion-IA designs and augments websites, applications and SaaS platforms with built-in AI: bespoke UX/UI, RAG chatbot grounded in your content, semantic search, agents and automations. Two local realities drive the spec — the summer peak of the Festival (In and Off) and the food/natural-ingredients cluster of Agroparc. Quote from 24-48 h depending on project complexity, EU hosting, code and data yours. On-site Avignon kick-off, remote iterations.",
@@ -388,7 +388,7 @@ export const AVIGNON_COPY: VilleCopy = {
         faq: [
           {
             q: "How do you handle the summer peak of the Avignon Festival and the Off?",
-            a: "We size and load-test sites and platforms for July: the In gathers ~130,000 spectators and the Off ~1,780 shows across 248 venues (60th-edition figures). Concretely: multilingual booking/ticketing journeys, queueing and caching to absorb peaks, then back to normal load the rest of the year. No hidden season-related surcharge.",
+            a: "We size and load-test sites and platforms for July: the In gathers ~130,000 spectators and the Off ~1,780 shows across 248 venues (60th-edition figures). Concretely: multilingual booking/ticketing journeys, queueing and caching to absorb peaks, then back to normal load the rest of the year.",
           },
           {
             q: "Do you work with Agroparc's food and natural-ingredients industry?",
@@ -408,7 +408,7 @@ export const AVIGNON_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Firm fixed-price quote (from 24-48 h depending on complexity): no hidden hourly drift, no 'Festival season' surcharge. Release with no downtime when augmenting the existing site. Web Vitals, accessibility and load testing checked at delivery, in particular to absorb the July peak. Source code, databases and models delivered into your infrastructure (EU hosting available), GDPR- and AI-Act-compliant: full ownership, no imposed subscription, transferable to any Vaucluse provider or brought in-house.",
+          "Firm fixed-price quote (from 24-48 h depending on complexity): no hidden hourly drift. Release with no downtime when augmenting the existing site. Web Vitals, accessibility and load testing checked at delivery, in particular to absorb the July peak. Source code, databases and models delivered into your infrastructure (EU hosting available), GDPR- and AI-Act-compliant: full ownership, no imposed subscription, transferable to any Vaucluse provider or brought in-house.",
       },
     },
   },

@@ -49,7 +49,7 @@ export const PEYROLLES_EN_PROVENCE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Peyrolles-en-Provence et dans la vallée de la Durance ?",
-      a: "Oui, Axion-IA intervient à Peyrolles-en-Provence et dans toute la vallée de la Durance (Pertuis, Meyrargues, Jouques, Saint-Paul-lès-Durance, Le Puy-Sainte-Réparade). Accès A51 vers Aix et Manosque.",
+      a: "Oui, Axion-IA intervient à Peyrolles-en-Provence et dans toute la vallée de la Durance (Pertuis, Meyrargues, Jouques, Saint-Paul-lès-Durance, Le Puy-Sainte-Réparade).",
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Peyrolles-en-Provence  ?",
@@ -65,7 +65,7 @@ export const PEYROLLES_EN_PROVENCE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une intervention à Peyrolles-en-Provence ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Peyrolles-en-Provence est à 25 min d'Aix-en-Provence et 50 min de Marseille via A51.",
+      a: "Nous intervenons partout en France, sur place ou à distance.",
     },
   ],
 };

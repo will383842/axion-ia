@@ -229,7 +229,7 @@ export const VELIZY_VILLACOUBLAY_COPY: VilleCopy = {
 
   faqGeolocalisee: [
     {
-      q: "Axion-IA se déplace-t-il sur site à Vélizy-Villacoublay ?",
+      q: "Intervenez-vous à Vélizy-Villacoublay ?",
       a: "Oui. Nos experts IA seniors interviennent directement dans vos locaux à Vélizy-Villacoublay, notamment au sein d'Inovel Parc, et dans tout l'ouest francilien, pour observer vos processus réels avant toute recommandation.",
     },
     {

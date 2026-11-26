@@ -65,7 +65,7 @@ export const SAINT_PAUL_LES_DAX_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Saint-Paul-lès-Dax ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Saint-Paul-lès-Dax est à 5 min de la gare TGV de Dax. Pour les multi-jours, hébergement local Grand Dax.",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Saint-Paul-lès-Dax, comme partout en France, ou à distance.",
     },
   ],
 };

@@ -232,8 +232,8 @@ export const ELANCOURT_COPY: VilleCopy = {
       a: "Nos prestations à Élancourt démarrent à {{price:audit-flash|flat}} pour un Audit sur place de 4 heures, {{price:intervention-4h|flat}} pour une formation collective et {{price:impl-poc|entry}} pour une implémentation IA complète. Tarifs publics consultables sur axion-ia.com.",
     },
     {
-      q: "Sous quel délai Axion-IA se déplace-t-il à Élancourt ?",
-      a: "Nous intervenons sur site à Élancourt dans un délai de 5 jours ouvrés après contractualisation, avec accès via la RN12 ou les gares de La Verrière et Trappes.",
+      q: "Intervenez-vous à Élancourt ?",
+      a: "Oui. Nous intervenons sur place à Élancourt, comme partout en France, ou à distance.",
     },
     {
       q: "Axion-IA couvre-t-il les communes voisines d'Élancourt ?",

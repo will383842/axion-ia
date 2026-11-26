@@ -10,7 +10,7 @@
  */
 
 import type { ActiviteFacturation } from "../../../../prisma/generated/client";
-import { clampTauxLigneCreation } from "@/server/qualiopi/legal/tva";
+import { clampTauxLigneCreation, computeTotauxFacture } from "@/server/qualiopi/legal/tva";
 import { activitesDansPerimetreQualiopi } from "@/server/qualiopi/perimetre";
 import type { RegimeTva } from "@/server/qualiopi/legal/tva";
 import type { LigneFacture } from "@/server/qualiopi/documents/templates/facture";
@@ -256,4 +256,36 @@ export function planifierFacturationDevis(input: {
     tauxTvaPercent: f.tauxEffectifPercent,
   }));
   return { ok: true, estAcompte: false, lignes: [...input.lignesDevis, ...deductions] };
+}
+
+/**
+ * HT d'un avoir pour rendre EXACTEMENT `ttcCents` (centimes, > 0) — garantie Journée IA : le montant
+ * remboursé au client est un TTC. On ne divise pas à la main : on essaie les HT voisins de
+ * TTC/(1+taux) et on retient celui dont les totaux de l'avoir (même `computeTotauxFacture` que
+ * l'émission) valent exactement -TTC. Un TTC inatteignable au taux (ex. 0,03 € à 20 %) est refusé
+ * avec les deux montants voisins, jamais arrondi en silence.
+ */
+export function htPourTtcAvoir(
+  ttcCents: number,
+  regime: RegimeTva,
+  tauxLigneEffectifPercent: number,
+  tauxStandard: number,
+): { ok: true; htCents: number } | { ok: false; message: string } {
+  if (!Number.isInteger(ttcCents) || ttcCents <= 0)
+    return { ok: false, message: "Montant TTC invalide." };
+  const h0 = Math.round((ttcCents * 100) / (100 + tauxLigneEffectifPercent));
+  for (const h of [h0, h0 - 1, h0 + 1]) {
+    if (h <= 0) continue;
+    const t = computeTotauxFacture(
+      construireLignesAvoir([], h, "", tauxLigneEffectifPercent),
+      regime,
+      tauxStandard,
+    );
+    if (t.totalTtcCents === -ttcCents) return { ok: true, htCents: h };
+  }
+  const euros = (c: number) => (c / 100).toFixed(2).replace(".", ",");
+  return {
+    ok: false,
+    message: `Montant TTC impossible au taux de ${tauxLigneEffectifPercent} % : saisir ${euros(ttcCents - 1)} € ou ${euros(ttcCents + 1)} €.`,
+  };
 }

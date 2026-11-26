@@ -49,7 +49,7 @@ export const BOUCAU_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Boucau et dans l'agglo de Bayonne ?",
-      a: "Oui, Axion-IA intervient à Boucau et dans toute l'agglomération Pays Basque (Bayonne, Anglet, Biarritz, Saint-Pierre-d'Irube, Mouguerre). Déplacement inclus dans l'agglo bayonnaise.",
+      a: "Oui, Axion-IA intervient à Boucau et dans toute l'agglomération Pays Basque (Bayonne, Anglet, Biarritz, Saint-Pierre-d'Irube, Mouguerre).",
     },
     {
       q: "Quels services IA pour les PME industrielles de Boucau ?",
@@ -65,7 +65,7 @@ export const BOUCAU_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA sur site à Boucau ?",
-      a: "Nos consultants accèdent à Boucau via la gare de Bayonne (TGV 4h30 Paris direct, 10 min voiture) ou l'aéroport Biarritz Pays Basque (12 min). Mission sur site dans vos locaux.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Mission sur site dans vos locaux.",
     },
   ],
 };

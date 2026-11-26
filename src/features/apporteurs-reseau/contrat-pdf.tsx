@@ -19,7 +19,7 @@ import React from "react";
 import { Document, Page, StyleSheet, Text, View, pdf } from "@react-pdf/renderer";
 
 import { CONTRAT_V2_MARKDOWN, CONTRAT_VERSION } from "./contrat-v2";
-import { ACCEPTATIONS, DECLARATIONS, STATUTS_JURIDIQUES } from "./regles";
+import { DECLARATIONS, STATUTS_JURIDIQUES, texteAcceptation } from "./regles";
 
 export interface ValeursContrat {
   identite: string;
@@ -280,9 +280,7 @@ function Certificat({
   societe: SignatureSociete | null;
 }) {
   const libelle = (cle: string) =>
-    ACCEPTATIONS.find((a) => a.cle === cle)?.texte ??
-    DECLARATIONS.find((d) => d.cle === cle)?.texte ??
-    cle;
+    texteAcceptation(cle, version) ?? DECLARATIONS.find((d) => d.cle === cle)?.texte ?? cle;
   return (
     <View break>
       <Text style={s.certifTitre}>Certificat de signature électronique</Text>

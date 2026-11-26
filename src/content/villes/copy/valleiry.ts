@@ -49,7 +49,7 @@ export const VALLEIRY_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Valleiry et dans le Grand Genève ?",
-      a: "Oui, Axion-IA intervient à Valleiry et dans tout le Grand Genève côté français (Saint-Julien-en-Genevois à 10 min, Viry, Collonges, Archamps). Nous intervenons partout en France, sur place ou à distance.",
+      a: "Oui, Axion-IA intervient à Valleiry et dans tout le Grand Genève côté français (Saint-Julien-en-Genevois, Viry, Collonges, Archamps). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les entreprises transfrontalières à Valleiry ?",

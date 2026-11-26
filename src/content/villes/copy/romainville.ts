@@ -60,7 +60,7 @@ export const ROMAINVILLE_COPY: VilleCopy = {
           {
             step: "Cadrage à Romainville",
             detail:
-              "Kick-off sur site à Romainville — sur le parc Biocitech, dans une galerie de Komunuma, dans une enseigne de Paddock Paris ou dans vos locaux du quartier Bas-Pays (métro 11, station Romainville-Carnot, ou tram T1) — pour cartographier vos données réelles et le périmètre fonctionnel du site ou de la plateforme SaaS.",
+              "Kick-off sur site à Romainville — sur le parc Biocitech, dans une galerie de Komunuma, dans une enseigne de Paddock Paris ou chez vous dans le quartier Bas-Pays — pour cartographier vos données réelles et le périmètre fonctionnel du site ou de la plateforme SaaS.",
           },
           {
             step: "Conception UX/UI et architecture IA",
@@ -100,7 +100,7 @@ export const ROMAINVILLE_COPY: VilleCopy = {
             sizeLabel: "ETI",
             price: "Plateforme SaaS IA-native sur mesure",
             detail:
-              "Pour une ETI sciences de la vie ou un opérateur immobilier/retail du Grand Paris autour de la station Carnot : plateforme SaaS complète, agents conversationnels, gouvernance des données, montée en charge et sécurité.",
+              "Pour une ETI sciences de la vie ou un opérateur immobilier/retail du Grand Paris : plateforme SaaS complète, agents conversationnels, gouvernance des données, montée en charge et sécurité.",
           },
           {
             sizeLabel: "Grande entreprise",
@@ -124,7 +124,7 @@ export const ROMAINVILLE_COPY: VilleCopy = {
           },
           {
             q: "Faites-vous de l'e-commerce pour les enseignes de Paddock Paris et du commerce local ?",
-            a: "Oui. Paddock Paris, présenté comme le premier city outlet accessible en métro, et plus largement les ~29 000 m² de commerce de la ZAC de l'Horloge profitent de l'afflux de visiteurs via la ligne 11. Nous construisons des vitrines e-commerce multi-CMS (Shopify, WooCommerce, PrestaShop ou solution sur mesure), du click-and-collect, de la recommandation produit IA et des chatbots de vente, avec un design mobile-first et des Web Vitals optimisés pour la conversion.",
+            a: "Oui. Nous construisons des vitrines e-commerce multi-CMS (Shopify, WooCommerce, PrestaShop ou solution sur mesure), du click-and-collect, de la recommandation produit IA et des chatbots de vente, avec un design mobile-first et des Web Vitals optimisés pour la conversion.",
           },
           {
             q: "Êtes-vous indépendants d'un CMS, et que devient le code après la mission ?",
@@ -132,21 +132,21 @@ export const ROMAINVILLE_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Devis à partir de 24 à 48 h selon la complexité, sans surcoût géographique — nos tarifs sont identiques partout en France. Hébergement en Union européenne conforme RGPD par défaut, avec contraintes de souveraineté renforcées pour les données sensibles des labos Biocitech. Aucun verrou éditeur : code, données et hébergement vous appartiennent et sont réversibles vers vos équipes ou tout intégrateur local. Kick-off et recette toujours en présentiel à Romainville.",
+          "Devis à partir de 24 à 48 h selon la complexité. Hébergement en Union européenne conforme RGPD par défaut, avec contraintes de souveraineté renforcées pour les données sensibles des labos Biocitech. Aucun verrou éditeur : code, données et hébergement vous appartiennent et sont réversibles vers vos équipes ou tout intégrateur local. Kick-off et recette toujours en présentiel à Romainville.",
       },
       en: {
         hero: "Romainville (93230) is no generic suburb: it is a former Roussel-Uclaf pharmaceutical brownfield turned into a rare crossover between life sciences and contemporary art. The Biocitech park (102 avenue Gaston Roussel), the only ICPE-certified technology park in the Paris region, hosts biotech and fine-chemistry firms steps away from Komunuma, one of Europe's largest art districts (Fondation Fiminco, FRAC Île-de-France, galleries Air de Paris, In Situ and Vincent Sator). With the arrival of Métro line 11 (Romainville-Carnot station, June 2024), the brand-new Paddock Paris outlet retail and a fabric of ~1,400 businesses driven by services, construction and retail, Axion-IA designs AI-augmented websites and SaaS platforms here, on site, for organisations whose business needs are very different from a classic high-street shop.",
         whyHere: [
           "The Biocitech hub (avenue Gaston Roussel) concentrates biotech, biopharma and fine-chemistry micro-businesses and SMEs facing heavy documentary requirements (regulatory dossiers, ICPE safety sheets, batch traceability): we build AI-native platforms — semantic search over scientific corpora, RAG chatbots on quality procedures, structured extraction from regulatory PDFs.",
           "The Komunuma / Fondation Fiminco ecosystem and its galleries (Air de Paris, In Situ-Fabienne Leclerc, Imane Farès, Vincent Sator, Jocelyn Wolff) plus the international artist residency have very specific web needs: artwork catalogues, viewing rooms, exhibition ticketing, limited-edition e-commerce — bespoke sites that generic CMSs handle poorly.",
-          "The new ZAC de l'Horloge retail — Paddock Paris outlet (first city outlet accessible by metro), ~29,000 sqm of retail — calls for multi-CMS e-commerce storefronts, click-and-collect and AI product recommendation, now boosted by the visitor flow via line 11.",
+          "The new ZAC de l'Horloge retail — Paddock Paris outlet, ~29,000 sqm of retail — calls for multi-CMS e-commerce storefronts, click-and-collect and AI product recommendation.",
           "La Cité Maraîchère (municipal vertical urban farm) and the construction/services fabric (28% and 39% of local jobs) have concrete use cases: short-circuit selling, workshop booking, automated construction quotes, site tracking on Grand Paris works around the new Carnot station.",
         ],
         methodology: [
           {
             step: "Framing in Romainville",
             detail:
-              "Kick-off on site in Romainville — at the Biocitech park, in a Komunuma gallery, in a Paddock Paris store or at your premises in the Bas-Pays district. The site is reached via Métro line 11 (Romainville-Carnot station) or tram T1, to map your real data and the functional scope of the site or SaaS platform.",
+              "Kick-off on site in Romainville — at the Biocitech park, in a Komunuma gallery, in a Paddock Paris store or at your premises in the Bas-Pays district, to map your real data and the functional scope of the site or SaaS platform.",
           },
           {
             step: "UX/UI design and AI architecture",
@@ -186,7 +186,7 @@ export const ROMAINVILLE_COPY: VilleCopy = {
             sizeLabel: "Mid-cap",
             price: "Bespoke AI-native SaaS platform",
             detail:
-              "For a life-sciences mid-cap or a real-estate/retail operator of Greater Paris around Carnot station: full SaaS platform, conversational agents, data governance, scaling and security.",
+              "For a life-sciences mid-cap or a real-estate/retail operator of Greater Paris: full SaaS platform, conversational agents, data governance, scaling and security.",
           },
           {
             sizeLabel: "Large enterprise",
@@ -206,11 +206,11 @@ export const ROMAINVILLE_COPY: VilleCopy = {
           },
           {
             q: "How exactly do you operate in Romainville?",
-            a: "Our senior experts travel on site to Romainville — at Biocitech, in a Komunuma gallery, in a Paddock Paris store or at your premises in the Bas-Pays / ZAC de l'Horloge district. The site is served by Métro line 11 (Romainville-Carnot station, opened June 2024) and tram T1. Kick-off and acceptance are always done in person.",
+            a: "Axion-IA works anywhere in France, on site or remotely, including in Romainville — at Biocitech, in a Komunuma gallery, in a Paddock Paris store or at your premises in the Bas-Pays / ZAC de l'Horloge district. Kick-off and acceptance are always done in person.",
           },
           {
             q: "Do you do e-commerce for Paddock Paris stores and local retail?",
-            a: "Yes. Paddock Paris, presented as the first city outlet accessible by metro, and more broadly the ~29,000 sqm of retail of the ZAC de l'Horloge benefit from the visitor flow via line 11. We build multi-CMS e-commerce storefronts (Shopify, WooCommerce, PrestaShop or bespoke), click-and-collect, AI product recommendation and sales chatbots, with mobile-first design and Web Vitals optimised for conversion.",
+            a: "Yes. Paddock Paris and more broadly the ~29,000 sqm of retail of the ZAC de l'Horloge need strong online storefronts. We build multi-CMS e-commerce storefronts (Shopify, WooCommerce, PrestaShop or bespoke), click-and-collect, AI product recommendation and sales chatbots, with mobile-first design and Web Vitals optimised for conversion.",
           },
           {
             q: "Are you CMS-independent, and what happens to the code after the project?",
@@ -218,7 +218,7 @@ export const ROMAINVILLE_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Quote from 24 to 48 hours depending on complexity, with no geographic surcharge — our rates are identical anywhere in France. EU hosting compliant with GDPR by default, with reinforced sovereignty constraints for the sensitive data of Biocitech labs. No vendor lock-in: code, data and hosting belong to you and are reversible to your teams or any local integrator. Kick-off and acceptance always in person in Romainville.",
+          "Quote from 24 to 48 hours depending on complexity. EU hosting compliant with GDPR by default, with reinforced sovereignty constraints for the sensitive data of Biocitech labs. No vendor lock-in: code, data and hosting belong to you and are reversible to your teams or any local integrator. Kick-off and acceptance always in person in Romainville.",
       },
     },
   },
@@ -246,7 +246,7 @@ export const ROMAINVILLE_COPY: VilleCopy = {
     },
     {
       q: "Quels sont vos tarifs pour une TPE ou PME à Romainville ?",
-      a: "Nos tarifs publics sont identiques à Romainville, Paris et toute l'Île-de-France — pas de surcoût géographique. Consultez la page tarifs du site pour le détail audit / intervention / implémentation / accompagnement un-à-un, calibrés TPE et PME en priorité.",
+      a: "Nos tarifs sont publics. Consultez la page tarifs du site pour le détail audit / intervention / implémentation / accompagnement un-à-un, calibrés TPE et PME en priorité.",
     },
   ],
 };

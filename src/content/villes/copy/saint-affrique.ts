@@ -49,7 +49,7 @@ export const SAINT_AFFRIQUE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Saint-Affrique et sud Aveyron ?",
-      a: "Oui, Axion-IA intervient à Saint-Affrique et dans tout le sud Aveyron (Roquefort-sur-Soulzon, Vabres-l'Abbaye, Belmont-sur-Rance, Camarès). Couverture jusqu'à Millau (30 min).",
+      a: "Oui, Axion-IA intervient à Saint-Affrique et dans tout le sud Aveyron (Roquefort-sur-Soulzon, Vabres-l'Abbaye, Belmont-sur-Rance, Camarès).",
     },
     {
       q: "Accompagnez-vous les PME de la filière Roquefort ?",

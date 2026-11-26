@@ -27,7 +27,7 @@ interface FaqGeoEntry {
 // FAQ génériques services × géographie (Sprint 14.10.2 refonte) :
 // — sans prix hardcodés (tarifs depuis pricing.ts via les pages services)
 // — sans délais concrets (durées variables selon mission)
-// — sans « frais inclus » (frais de déplacement facturés à part)
+// — sans « frais inclus » (aucune mention de frais : CGV uniquement)
 // — vocabulaire accessible, blocs courts.
 const FAQS_BY_SERVICE: Record<
   "audit" | "interventions" | "implementation" | "sites-web-augmentes" | "un-a-un",
@@ -38,7 +38,7 @@ const FAQS_BY_SERVICE: Record<
       id: "audit-paris",
       fr: {
         q: "Réalisez-vous des audits IA à Paris et en Île-de-France ?",
-        a: "Oui. Paris et toute l'Île-de-France font partie de nos premiers pôles d'intervention. Quatre niveaux d'audit sont disponibles selon votre taille (TPE, PME, ETI, grande entreprise) et votre périmètre, sur devis et sans surcoût géographique.",
+        a: "Oui. Paris et toute l'Île-de-France font partie de nos premiers pôles d'intervention. Quatre niveaux d'audit sont disponibles selon votre taille (TPE, PME, ETI, grande entreprise) et votre périmètre, sur devis.",
       },
       en: {
         q: "Do you run AI audits in Paris and Greater Paris?",
@@ -187,7 +187,7 @@ const FAQS_BY_SERVICE: Record<
       id: "codage-regions",
       fr: {
         q: "Travaillez-vous avec des entreprises hors d'Île-de-France ?",
-        a: "Oui, partout en France métropolitaine. Le développement se fait principalement à distance (code, revues, démos en visio), avec des déplacements sur site pour le kick-off et la livraison. Aucun surcoût géographique.",
+        a: "Oui, partout en France métropolitaine. Le développement se fait principalement à distance (code, revues, démos en visio), avec des déplacements sur site pour le kick-off et la livraison.",
       },
       en: {
         q: "Do you work with companies outside Greater Paris?",
@@ -222,7 +222,7 @@ const FAQS_BY_SERVICE: Record<
       id: "unauun-paris",
       fr: {
         q: "L'accompagnement 1-to-1 est-il disponible à Paris ?",
-        a: "Oui. Paris est notre premier terrain pour l'accompagnement dirigeants 1-to-1. Les séances peuvent se dérouler sur site (vos bureaux ou les nôtres) ou à distance selon votre préférence. Même tarif quel que soit le lieu.",
+        a: "Oui. Paris est notre premier terrain pour l'accompagnement dirigeants 1-to-1. Les séances peuvent se dérouler sur site chez vous ou à distance selon votre préférence.",
       },
       en: {
         q: "Is the 1-to-1 coaching available in Paris?",
@@ -237,7 +237,7 @@ const FAQS_BY_SERVICE: Record<
       },
       en: {
         q: "Is 1-to-1 coaching available in regional areas?",
-        a: "Yes, across mainland France. Regular sessions are conducted remotely; intensive on-site sessions are available in all regions, quoted with travel costs included.",
+        a: "Yes, across mainland France. Regular sessions are conducted remotely; intensive on-site sessions are available in all regions.",
       },
     },
     {

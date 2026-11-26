@@ -49,7 +49,7 @@ export const ANDREZIEUX_BOUTHEON_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Andrézieux-Bouthéon et Saint-Étienne Métropole ?",
-      a: "Oui, Axion-IA intervient à Andrézieux-Bouthéon et toute Saint-Étienne Métropole (Saint-Étienne centre à 15 min, Veauche limitrophe, Saint-Just-Saint-Rambert à 5 min). Nous intervenons partout en France, sur place ou à distance.",
+      a: "Oui. Axion-IA intervient à Andrézieux-Bouthéon et dans toute Saint-Étienne Métropole : Saint-Étienne, Veauche et Saint-Just-Saint-Rambert. Nous intervenons sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les acteurs aéroportuaires Saint-Étienne-Bouthéon ?",
@@ -65,7 +65,7 @@ export const ANDREZIEUX_BOUTHEON_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Andrézieux-Bouthéon ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Pour les multi-jours, hébergement local possible. Coûts de déplacement séparés du forfait, tarifs transparents.",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Andrézieux-Bouthéon, comme partout en France, ou à distance.",
     },
   ],
 };

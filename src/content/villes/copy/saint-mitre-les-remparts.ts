@@ -65,7 +65,7 @@ export const SAINT_MITRE_LES_REMPARTS_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une intervention à Saint-Mitre-les-Remparts ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Saint-Mitre est à 10 min d'Istres et 45 min de Marseille par A55.",
+      a: "Nous intervenons partout en France, sur place ou à distance.",
     },
   ],
 };

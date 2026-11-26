@@ -49,7 +49,7 @@ export const WINTZENHEIM_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Wintzenheim et autour de Colmar ?",
-      a: "Oui, Axion-IA intervient à Wintzenheim et sur toute Colmar Agglomération (Colmar, Ingersheim, Turckheim, Eguisheim, Kaysersberg). Accès direct via A35 et gare TGV Colmar (Paris à 2h20).",
+      a: "Oui, Axion-IA intervient à Wintzenheim et sur toute Colmar Agglomération (Colmar, Ingersheim, Turckheim, Eguisheim, Kaysersberg).",
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Wintzenheim  ?",

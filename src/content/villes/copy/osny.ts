@@ -49,7 +49,7 @@ export const OSNY_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Osny et agglo Cergy-Pontoise ?",
-      a: "Oui, Axion-IA intervient à Osny et toute l'agglomération Cergy-Pontoise (Cergy à 5 min, Paris La Défense à 35 min, Paris Saint-Lazare à 40 min transilien J).",
+      a: "Oui, Axion-IA intervient à Osny et dans toute l'agglomération de Cergy-Pontoise (Cergy).",
     },
     {
       q: "Travaillez-vous avec les commerçants et artisans d'Osny ?",
@@ -64,8 +64,8 @@ export const OSNY_COPY: VilleCopy = {
       a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Outils IA réservation, gestion salle, fidélisation clientèle.",
     },
     {
-      q: "Comment se passe une mission depuis Cergy ou Paris ?",
-      a: "Cergy-Pontoise (5 min). Paris La Défense (35 min). Paris Saint-Lazare (40 min transilien J). CDG (45 min).",
+      q: "Comment se déroule une mission Axion-IA à Osny ?",
+      a: "Nous intervenons partout en France, sur place dans vos locaux ou à distance en visio. Après le cadrage de votre besoin, nous planifions l'intervention et livrons un résultat actionnable.",
     },
   ],
 };

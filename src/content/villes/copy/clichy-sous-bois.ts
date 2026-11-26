@@ -50,7 +50,7 @@ export const CLICHY_SOUS_BOIS_COPY: VilleCopy = {
   services: {
     sitesWeb: {
       fr: {
-        hero: "Axion-IA conçoit et augmente à Clichy-sous-Bois des sites web, boutiques en ligne et applications avec l'IA intégrée : UX/UI sur mesure, e-commerce multi-CMS, chatbot RAG ancré sur vos contenus, prise de rendez-vous et automatisations. Le tissu local est en pleine recomposition — émergence d'un nouveau pôle commercial avec l'opération Clichy Cœur de Ville (ZAC du Bas-Clichy), rez-de-chaussée actifs de l'ORCOD-IN du Chêne Pointu, et arrivée des Ateliers Médicis — autant de commerces de proximité, artisans du bâtiment et porteurs de projets culturels à doter d'une vraie présence en ligne. Devis à partir de 24-48 h selon la complexité, hébergement UE/RGPD, code et données à vous. Kick-off en présentiel à Clichy-sous-Bois (accès tram T4), itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à Clichy-sous-Bois des sites web, boutiques en ligne et applications avec l'IA intégrée : UX/UI sur mesure, e-commerce multi-CMS, chatbot RAG ancré sur vos contenus, prise de rendez-vous et automatisations. Le tissu local est en pleine recomposition — émergence d'un nouveau pôle commercial avec l'opération Clichy Cœur de Ville (ZAC du Bas-Clichy), rez-de-chaussée actifs de l'ORCOD-IN du Chêne Pointu, et arrivée des Ateliers Médicis — autant de commerces de proximité, artisans du bâtiment et porteurs de projets culturels à doter d'une vraie présence en ligne. Devis à partir de 24-48 h selon la complexité, hébergement UE/RGPD, code et données à vous. Kick-off sur site à Clichy-sous-Bois, itérations à distance.",
         whyHere: [
           "Commerces de proximité et rez-de-chaussée actifs issus de l'opération Clichy Cœur de Ville / ZAC du Bas-Clichy : site vitrine, fiche Google, click-and-collect ou e-commerce léger pour capter une clientèle de quartier en pleine recomposition.",
           "Artisans du bâtiment portés par le chantier NPNRU (démolitions/reconstructions du Chêne Pointu) : sites de devis en ligne, prise de rendez-vous et suivi de chantier automatisés, sans plateforme no-code propriétaire.",
@@ -61,7 +61,7 @@ export const CLICHY_SOUS_BOIS_COPY: VilleCopy = {
           {
             step: "Cadrage à Clichy-sous-Bois",
             detail:
-              "Atelier sur site (accès tram T4, station Mairie de Clichy-sous-Bois ou Clichy-Montfermeil) : objectifs, audit de l'existant et des contenus, parcours clients. Devis ferme à partir de 24-48 h selon la complexité.",
+              "Atelier sur site à Clichy-sous-Bois ou Montfermeil : objectifs, audit de l'existant et des contenus, parcours clients. Devis ferme à partir de 24-48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI",
@@ -128,15 +128,15 @@ export const CLICHY_SOUS_BOIS_COPY: VilleCopy = {
             a: "Oui. On conçoit l'expérience complète à Clichy-sous-Bois — research, wireframes, design system, maquettes Figma, e-commerce multi-CMS (WordPress, WooCommerce, Shopify, PrestaShop, Magento) — pour un commerce, un artisan ou un lieu culturel, avec ou sans IA. C'est un métier à part entière chez nous.",
           },
           {
-            q: "Comment venez-vous sur place et où sont hébergées mes données ?",
-            a: "Nous nous déplaçons en tram T4 (stations Mairie de Clichy-sous-Bois, Romain Rolland, Clichy-Montfermeil) ou en voiture via Le Raincy et Livry-Gargan ; la commune n'a ni autoroute ni gare ferroviaire propre, et la gare ligne 16 du Grand Paris Express est attendue vers 2027. Vos données et votre code sont hébergeables en UE (RGPD), avec propriété totale et aucun abonnement imposé.",
+            q: "Comment se déroule une intervention à Clichy-sous-Bois et où sont hébergées mes données ?",
+            a: "Axion IA intervient partout en France, sur site ou à distance. Vos données et votre code sont hébergeables en UE (RGPD), avec propriété totale et aucun abonnement imposé.",
           },
         ],
         guarantees:
           "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans interruption de service quand on augmente un site existant. Web Vitals, accessibilité et référencement local (SEO/AEO) contrôlés à la livraison — un atout pour les commerces du nouveau centre-ville du Bas-Clichy et les structures culturelles des Ateliers Médicis. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD : propriété totale, aucun abonnement imposé, transférable à tout prestataire de Seine-Saint-Denis ou repris en interne.",
       },
       en: {
-        hero: "In Clichy-sous-Bois, Axion-IA designs and augments websites, online stores and applications with built-in AI: bespoke UX/UI, multi-CMS e-commerce, RAG chatbot grounded in your content, booking and automations. The local fabric is being reshaped — a new retail hub emerging through the Clichy Cœur de Ville operation (ZAC du Bas-Clichy), active ground floors of the Chêne Pointu ORCOD-IN, and the arrival of the Ateliers Médicis — meaning local shops, building-trade craftsmen and cultural project leaders all needing a real online presence. Quote from 24-48 h depending on complexity, EU/GDPR hosting, code and data yours. On-site kick-off in Clichy-sous-Bois (T4 tram access), remote iterations.",
+        hero: "In Clichy-sous-Bois, Axion-IA designs and augments websites, online stores and applications with built-in AI: bespoke UX/UI, multi-CMS e-commerce, RAG chatbot grounded in your content, booking and automations. The local fabric is being reshaped — a new retail hub emerging through the Clichy Cœur de Ville operation (ZAC du Bas-Clichy), active ground floors of the Chêne Pointu ORCOD-IN, and the arrival of the Ateliers Médicis — meaning local shops, building-trade craftsmen and cultural project leaders all needing a real online presence. Quote from 24-48 h depending on complexity, EU/GDPR hosting, code and data yours. On-site kick-off in Clichy-sous-Bois, remote iterations.",
         whyHere: [
           "Local shops and active ground floors from the Clichy Cœur de Ville / ZAC du Bas-Clichy operation: showcase site, Google listing, click-and-collect or light e-commerce to capture a neighbourhood clientele in full transformation.",
           "Building-trade craftsmen driven by the NPNRU works (demolitions/reconstructions at Chêne Pointu): online quote sites, booking and automated worksite follow-up, with no proprietary no-code platform.",
@@ -147,7 +147,7 @@ export const CLICHY_SOUS_BOIS_COPY: VilleCopy = {
           {
             step: "Scoping in Clichy-sous-Bois",
             detail:
-              "On-site workshop (T4 tram access, Mairie de Clichy-sous-Bois or Clichy-Montfermeil stop): goals, audit of the existing site and content, customer journeys. Firm quote from 24-48 h depending on complexity.",
+              "On-site workshop: goals, audit of the existing site and content, customer journeys. Firm quote from 24-48 h depending on complexity.",
           },
           {
             step: "UX/UI design",
@@ -215,7 +215,7 @@ export const CLICHY_SOUS_BOIS_COPY: VilleCopy = {
           },
           {
             q: "How do you come on-site and where is my data hosted?",
-            a: "We travel by T4 tram (Mairie de Clichy-sous-Bois, Romain Rolland, Clichy-Montfermeil stops) or by car via Le Raincy and Livry-Gargan; the town has no motorway or rail station of its own, and the Grand Paris Express line 16 station is expected around 2027. Your data and code can be hosted in the EU (GDPR), with full ownership and no imposed subscription.",
+            a: "We work on site at Clichy-sous-Bois, like everywhere in France, or remotely. Your data and code can be hosted in the EU (GDPR), with full ownership and no imposed subscription.",
           },
         ],
         guarantees:
@@ -230,8 +230,8 @@ export const CLICHY_SOUS_BOIS_COPY: VilleCopy = {
       a: "Audit sur place dès {{price:audit-flash|flat}} (4 heures), intervention sur site dès {{price:intervention-4h|flat}}. Tous nos tarifs sont publics et consultables sur axion-ia.com — pas de devis opaque.",
     },
     {
-      q: "Comment Axion-IA se déplace-t-il à Clichy-sous-Bois ?",
-      a: "Nous venons sur site en tramway T4 (stations Mairie de Clichy-sous-Bois, Romain Rolland) ou en voiture via Le Raincy et Livry-Gargan. La commune ne dispose pas d'autoroute ni de gare ferroviaire propre.",
+      q: "Intervenez-vous à Clichy-sous-Bois ?",
+      a: "Oui. Nous intervenons sur place à Clichy-sous-Bois, comme partout en France, ou à distance.",
     },
     {
       q: "Quels délais pour démarrer une mission IA à Clichy-sous-Bois ?",

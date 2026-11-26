@@ -91,7 +91,7 @@ export const CLERMONT_FERRAND_COPY: VilleCopy = {
           "L'écosystème universitaire (UCA, ISIMA, Sigma Clermont) produit chaque année des jeunes ingénieurs IA — les TPE, PME et ETI locales ont besoin d'un audit structuré pour canaliser ces ressources vers des cas d'usage à ROI démontré.",
           "Le Technopôle La Pardieu et le Biopôle Clermont-Limagne accueillent des PME et ETI dans le conseil, les services, la biotech et l'agro — exactement les secteurs où l'IA de traitement documentaire et d'automatisation de workflows génère les gains les plus rapides.",
           "Restitutions toujours en présentiel à Clermont-Ferrand, dans vos locaux : ateliers d'idéation avec votre comité de direction, livrable PDF remis en main propre, plan d'action exécutable immédiatement.",
-          "Tarifs publics affichés, pas de devis opaque. Vous savez exactement ce que vous payez avant de signer — différenciateur décisif face aux cabinets traditionnels présents à Lyon ou Paris qui facturent des frais de déplacement en sus.",
+          "Tarifs publics affichés, pas de devis opaque. Vous savez exactement ce que vous payez avant de signer — différenciateur décisif face aux cabinets traditionnels présents à Lyon ou Paris.",
           "Votre plan d'action post-audit est exécutable avec n'importe quel prestataire ou en interne — aucun lock-in, aucune dépendance créée envers Axion-IA.",
         ],
         methodology: [
@@ -166,7 +166,7 @@ export const CLERMONT_FERRAND_COPY: VilleCopy = {
           },
           {
             q: "Différence avec un cabinet de conseil traditionnel basé à Lyon ou Paris ?",
-            a: "Nos consultants se déplacent à Clermont-Ferrand et facturent uniquement leur prestation — pas de surprime géographique. Tarifs publics, pas de devis à négocier. Méthode condensée, démos sur vos vraies données industrielles ou agro. Et surtout : aucun lock-in, vous repartez avec votre plan.",
+            a: "Axion IA intervient partout en France, sur site ou à distance, y compris à Clermont-Ferrand. Tarifs publics, pas de devis à négocier. Méthode condensée, démos sur vos vraies données industrielles ou agro. Et surtout : aucun lock-in, vous repartez avec votre plan.",
           },
           {
             q: "Faut-il être déjà mature sur l'IA pour commander un audit ?",
@@ -183,7 +183,7 @@ export const CLERMONT_FERRAND_COPY: VilleCopy = {
           "The university ecosystem (UCA, ISIMA, Sigma Clermont) trains AI engineers every year; local SMEs and mid-caps need a structured audit to channel those skills toward ROI-proven use cases.",
           "Technopôle La Pardieu and Biopôle Clermont-Limagne host consulting, services, biotech and agri-food SMEs — exactly the sectors where document-processing and workflow-automation AI delivers the fastest gains.",
           "Read-outs always in person in Clermont-Ferrand, at your offices: ideation workshops with your leadership, deliverable handed over face to face, immediately actionable plan.",
-          "Public pricing, no opaque quote: you know exactly what you pay before signing — a decisive differentiator vs Lyon- or Paris-based traditional consulting firms billing travel on top.",
+          "Public pricing, no opaque quote: you know exactly what you pay before signing — a decisive differentiator vs Lyon- or Paris-based traditional consulting firms.",
           "Your post-audit action plan is executable with any vendor or in-house — no lock-in, no dependency created on Axion-IA.",
         ],
         methodology: [
@@ -258,7 +258,7 @@ export const CLERMONT_FERRAND_COPY: VilleCopy = {
           },
           {
             q: "Difference vs a Lyon- or Paris-based traditional consulting firm?",
-            a: "Our consultants travel to Clermont-Ferrand and bill only their service — no geographic premium. Public pricing, no quote to negotiate. Condensed method, demos on your real industrial or agri-food data. And above all: no lock-in, you leave with your plan.",
+            a: "Our consultants work on site in Clermont-Ferrand or remotely, and bill only their service. Public pricing, no quote to negotiate. Condensed method, demos on your real industrial or agri-food data. And above all: no lock-in, you leave with your plan.",
           },
           {
             q: "Do I need AI maturity to order an audit?",
@@ -357,7 +357,7 @@ export const CLERMONT_FERRAND_COPY: VilleCopy = {
           },
           {
             q: "Que se passe-t-il en cas d'annulation ?",
-            a: "Plus l'annulation est anticipée, plus elle est neutre. Très anticipée : remboursement intégral. Quelques jours avant : participation partielle aux frais consultant déjà bloqué. Très tardive : la session est reportable une fois sans frais sur les mois suivants.",
+            a: "L'acompte prévu au devis, dès qu'il est versé, reste acquis en cas d'annulation, quel que soit le délai (hors rétractation légale et annulation de notre fait). Au-delà de l'acompte, rien n'est dû à plus de 15 jours ouvrés avant la date ; entre 8 et 15 jours ouvrés, 50 % du prix HT restent dus, et 100 % à moins de 8 jours ouvrés (jamais moins que l'acompte). La session est reportable une fois sans frais, dans les 3 mois.",
           },
         ],
         guarantees:
@@ -449,7 +449,7 @@ export const CLERMONT_FERRAND_COPY: VilleCopy = {
           },
           {
             q: "What happens with a cancellation?",
-            a: "The earlier the cancellation, the more neutral it is. Very early: full refund. A few days before: partial participation to consultant slot already blocked. Very late: the session is rebookable once free of charge in the following months.",
+            a: "The deposit set in the quote, once paid, is kept in the event of cancellation, whatever the notice (except statutory withdrawal and cancellation on our side). Beyond the deposit, nothing more is due more than 15 working days before the date; between 8 and 15 working days, 50% of the price excl. VAT is due, and 100% under 8 working days (never less than the deposit). The session can be rescheduled once free of charge, within 3 months.",
           },
         ],
         guarantees:
@@ -804,10 +804,6 @@ export const CLERMONT_FERRAND_COPY: VilleCopy = {
             a: "No. Coaching adapts to your level, from absolute beginner to advanced practitioner wishing to go further. The initial framing brief allows adjusting the programme before the session.",
           },
           {
-            q: "Are travel costs included?",
-            a: "No. These costs are communicated on a prior quote before confirmation.",
-          },
-          {
             q: "Can I organise several individual sessions for different staff members?",
             a: "Yes. Some Clermont companies organise several successive individual coachings for their key managers or experts rather than a group session. Volume discount possible — to be specified at framing.",
           },
@@ -995,7 +991,7 @@ export const CLERMONT_FERRAND_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Combien coûte un audit IA opérationnel à Clermont-Ferrand ?",
-      a: "Le tarif dépend du niveau retenu — Audit sur place, Ciblé, Stratégique PME ou Stratégique ETI. Tarifs publics affichés sur la page Audit, choix calibré selon votre taille (TPE, PME, ETI, grande entreprise) et votre périmètre. Aucun supplément géographique : le tarif est le même à Clermont-Ferrand qu'à Paris.",
+      a: "Le tarif dépend du niveau retenu — Audit sur place, Ciblé, Stratégique PME ou Stratégique ETI. Tarifs publics affichés sur la page Audit, choix calibré selon votre taille (TPE, PME, ETI, grande entreprise) et votre périmètre.",
     },
     {
       q: "Axion-IA intervient-il sur les sites industriels du bassin clermontois ?",
@@ -1008,10 +1004,6 @@ export const CLERMONT_FERRAND_COPY: VilleCopy = {
     {
       q: "Quels secteurs clermontois sont prioritaires pour l'IA ?",
       a: "Nos déploiements dans le bassin couvrent prioritairement l'industrie manufacturière (filière pneumatique, équipementiers), l'agroalimentaire (coopératives, IAA Auvergne), la recherche et les biotechnologies (UCA, ISIMA, Biopôle), et les services B2B. Tout secteur avec des workflows documentaires répétitifs est éligible à un audit.",
-    },
-    {
-      q: "Pouvez-vous démarrer une mission depuis l'aéroport de Clermont-Ferrand (CFE) ?",
-      a: "L'aéroport de Clermont-Ferrand Auvergne (Aulnat, 6 km) dessert Paris-Orly, Lyon et Amsterdam. Nos consultants peuvent arriver directement sur Clermont en avion pour les missions longues, ou en Intercités Paris-Bercy (~3 h) pour les kick-offs et restitutions.",
     },
     {
       q: "Vos interventions sont-elles compatibles avec les formations financées pour les TPE/PME ?",

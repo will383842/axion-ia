@@ -49,7 +49,7 @@ export const SAINT_ETIENNE_DE_MONTLUC_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Saint-Étienne-de-Montluc ?",
-      a: "Oui, Axion-IA intervient à Saint-Étienne-de-Montluc et dans le nord-ouest nantais (Couëron, Savenay, Le Temple-de-Bretagne). Gare TER desservie. Couverture complète Loire-Atlantique, Nantes à 20 min.",
+      a: "Oui, Axion-IA intervient à Saint-Étienne-de-Montluc et dans le nord-ouest nantais (Couëron, Savenay, Le Temple-de-Bretagne).",
     },
     {
       q: "Accompagnez-vous les TPE et artisans de Saint-Étienne-de-Montluc ?",
@@ -61,7 +61,7 @@ export const SAINT_ETIENNE_DE_MONTLUC_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une intervention à Saint-Étienne-de-Montluc ?",
-      a: "Nous intervenons partout en France, sur place ou à distance, directement dans vos locaux. Saint-Étienne-de-Montluc est desservie par la gare TER de la ligne Nantes-Saint-Nazaire, à 20 min de la gare de Nantes.",
+      a: "Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les professions libérales ?",

@@ -49,7 +49,7 @@ export const CHAMPAGNE_SUR_OISE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Champagne-sur-Oise et nord Val-d'Oise ?",
-      a: "Oui, Axion-IA intervient à Champagne-sur-Oise et tout le nord Val-d'Oise (L'Isle-Adam à 3 min, Persan-Beaumont à 5 min, Cergy-Pontoise à 25 min, Paris à 45 min). Gare Transilien H.",
+      a: "Oui, Axion-IA intervient à Champagne-sur-Oise et dans tout le nord du Val-d'Oise (L'Isle-Adam, Persan-Beaumont, Cergy-Pontoise).",
     },
     {
       q: "Travaillez-vous avec les commerçants et artisans de Champagne-sur-Oise ?",
@@ -65,7 +65,7 @@ export const CHAMPAGNE_SUR_OISE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Champagne-sur-Oise ?",
-      a: "L'Isle-Adam (3 min). Persan-Beaumont (5 min). Cergy-Pontoise (25 min). Paris Gare du Nord (45 min). CDG (35 min).",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Champagne-sur-Oise, comme partout en France, ou à distance.",
     },
   ],
 };

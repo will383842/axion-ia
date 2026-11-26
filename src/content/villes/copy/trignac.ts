@@ -49,7 +49,7 @@ export const TRIGNAC_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Trignac et Saint-Nazaire ?",
-      a: "Oui, Axion-IA intervient à Trignac et toute l'agglomération nazairienne (Saint-Nazaire, Montoir-de-Bretagne, Pornichet, La Baule). Couverture complète Loire-Atlantique, Nantes à 55 min.",
+      a: "Oui, Axion-IA intervient à Trignac et toute l'agglomération nazairienne (Saint-Nazaire, Montoir-de-Bretagne, Pornichet, La Baule).",
     },
     {
       q: "Accompagnez-vous les PME industrielles du bassin nazairien ?",
@@ -65,7 +65,7 @@ export const TRIGNAC_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Trignac ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Hébergement local pour les missions multi-jours.",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Trignac, comme partout en France, ou à distance.",
     },
   ],
 };

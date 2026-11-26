@@ -78,7 +78,7 @@ export const ROUEN_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Combien coûte un audit IA opérationnel à Rouen ?",
-      a: "Le tarif dépend du niveau retenu — Audit sur place, Ciblé, Stratégique PME ou Stratégique ETI. Tarifs publics affichés sur la page Audit, calibrés selon votre taille (TPE, PME, ETI, grande entreprise) et votre périmètre. Aucun supplément géographique : le tarif est identique à Rouen et partout en France.",
+      a: "Le tarif dépend du niveau retenu — Audit sur place, Ciblé, Stratégique PME ou Stratégique ETI. Tarifs publics affichés sur la page Audit, calibrés selon votre taille (TPE, PME, ETI, grande entreprise) et votre périmètre.",
     },
     {
       q: "Avez-vous des références clients dans la Métropole Rouen Normandie ?",
@@ -97,7 +97,7 @@ export const ROUEN_COPY: VilleCopy = {
       a: "Oui. Nous accompagnons les startups et scale-ups de l'écosystème normand — Seinari, Normandie Web Xperts, Village by CA Normandie-Seine. Notre offre est calibrée pour les structures en phase de scale qui veulent passer du POC IA à un déploiement opérationnel.",
     },
     {
-      q: "Vos consultants se déplacent-ils sur le Technopôle du Madrillet ?",
+      q: "Intervenez-vous sur le Technopôle du Madrillet ?",
       a: "Oui. Le Technopôle du Madrillet (Saint-Étienne-du-Rouvray) fait partie de nos terrains habituels à Rouen, avec une forte densité d'entreprises INSA/ESIGELEC-issues, de PME industrielles et de laboratoires CNRS. Nos consultants connaissent les spécificités IT et industrielles de ce site.",
     },
   ],
@@ -279,7 +279,7 @@ export const ROUEN_COPY: VilleCopy = {
           },
           {
             q: "Do you cover Métropole communes (Madrillet, Vatine, Petit-Quevilly, Mont-Saint-Aignan)?",
-            a: "Yes. Our consultants travel to all communes of the Métropole Rouen Normandie — from Madrillet (INSA, ESIGELEC) to Mont-Saint-Aignan (Vatine, NEOMA), from Petit-Quevilly (Lubrizol, Safran) to Saint-Étienne-du-Rouvray and Grand-Quevilly. We work anywhere in France, on site or remotely.",
+            a: "Yes. We cover all communes of the Métropole Rouen Normandie, including Madrillet (INSA, ESIGELEC), Mont-Saint-Aignan (Vatine, NEOMA), Petit-Quevilly (Lubrizol, Safran), Saint-Étienne-du-Rouvray and Grand-Quevilly. We work anywhere in France, on site or remotely.",
           },
           {
             q: "Do I need AI maturity to engage you?",
@@ -377,7 +377,7 @@ export const ROUEN_COPY: VilleCopy = {
           },
           {
             q: "Que se passe-t-il en cas d'annulation ?",
-            a: "Plus l'annulation est anticipée, plus elle est neutre. Très anticipée : remboursement intégral. Quelques jours avant : participation partielle aux frais consultant déjà bloqué. Très tardive : la session est reportable une fois sans frais sur les mois suivants.",
+            a: "L'acompte prévu au devis, dès qu'il est versé, reste acquis en cas d'annulation, quel que soit le délai (hors rétractation légale et annulation de notre fait). Au-delà de l'acompte, rien n'est dû à plus de 15 jours ouvrés avant la date ; entre 8 et 15 jours ouvrés, 50 % du prix HT restent dus, et 100 % à moins de 8 jours ouvrés (jamais moins que l'acompte). La session est reportable une fois sans frais, dans les 3 mois.",
           },
         ],
         guarantees:
@@ -469,7 +469,7 @@ export const ROUEN_COPY: VilleCopy = {
           },
           {
             q: "What happens with a cancellation?",
-            a: "The earlier the cancellation, the more neutral it is. Very early: full refund. A few days before: partial participation to consultant slot already blocked. Very late: the session is rebookable once free of charge in the following months.",
+            a: "The deposit set in the quote, once paid, is kept in the event of cancellation, whatever the notice (except statutory withdrawal and cancellation on our side). Beyond the deposit, nothing more is due more than 15 working days before the date; between 8 and 15 working days, 50% of the price excl. VAT is due, and 100% under 8 working days (never less than the deposit). The session can be rescheduled once free of charge, within 3 months.",
           },
         ],
         guarantees:

@@ -49,7 +49,7 @@ export const MORIERES_LES_AVIGNON_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Morières-lès-Avignon et dans le sud-est avignonnais ?",
-      a: "Oui, Axion-IA intervient à Morières-lès-Avignon et dans tout le sud-est avignonnais (Saint-Saturnin-lès-Avignon, Châteauneuf-de-Gadagne, Le Pontet). Proximité immédiate d'Avignon TGV via A7.",
+      a: "Oui, Axion-IA intervient à Morières-lès-Avignon et dans tout le sud-est avignonnais (Saint-Saturnin-lès-Avignon, Châteauneuf-de-Gadagne, Le Pontet). Axion IA intervient partout en France, sur site ou à distance.",
     },
     {
       q: "Tarifs audit IA à Morières-lès-Avignon  : quel budget prévoir ?",
@@ -64,8 +64,8 @@ export const MORIERES_LES_AVIGNON_COPY: VilleCopy = {
       a: "Oui, nous intervenons en BTP et commerce de proximité sur automatisation devis et chiffrage, gestion planning chantiers, content marketing local, fiches Google Business et SAV conversationnel.",
     },
     {
-      q: "Comment se déplace Axion-IA à Morières-lès-Avignon ?",
-      a: "Morières-lès-Avignon est à 10 min d'Avignon centre et 15 min de la gare TGV via D900 et A7. Nos consultants se déplacent dans vos locaux. Coûts de déplacement à part, tarification transparente.",
+      q: "Comment se déroule une mission à Morières-lès-Avignon ?",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Morières-lès-Avignon, comme partout en France, ou à distance.",
     },
   ],
 };

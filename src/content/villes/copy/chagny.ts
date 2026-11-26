@@ -49,7 +49,7 @@ export const CHAGNY_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Chagny et en Côte chalonnaise ?",
-      a: "Oui, Axion-IA intervient à Chagny et sur toute la Côte chalonnaise (Beaune, Chalon-sur-Saône, Mercurey, Rully, Givry). Gare TGV Le Creusot-Montchanin à 30 min, Paris à 1h20 en TGV.",
+      a: "Oui, Axion-IA intervient à Chagny et sur toute la Côte chalonnaise (Beaune, Chalon-sur-Saône, Mercurey, Rully, Givry).",
     },
     {
       q: "Combien coûte un audit IA à Chagny  ?",

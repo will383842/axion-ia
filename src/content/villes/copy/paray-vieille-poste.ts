@@ -49,7 +49,7 @@ export const PARAY_VIEILLE_POSTE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Paray-Vieille-Poste près d'Orly ?",
-      a: "Oui, Axion-IA intervient à Paray-Vieille-Poste et toute la zone aéroportuaire Orly (aéroport à 3 min, Paris à 20 min, Évry à 25 min). Secteurs logistique, fret, hôtellerie, services.",
+      a: "Axion IA intervient partout en France, sur site ou à distance. Secteurs logistique, fret, hôtellerie, services.",
     },
     {
       q: "Accompagnez-vous les entreprises de logistique aéroportuaire ?",

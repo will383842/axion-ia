@@ -49,7 +49,7 @@ export const MARNAZ_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Marnaz et dans la vallée de l'Arve ?",
-      a: "Oui, Axion-IA intervient à Marnaz et dans toute la vallée de l'Arve (Cluses, Scionzier, Thyez, Bonneville, Marignier). Nos consultants se déplacent depuis Annecy (50 min) ou Genève (40 min).",
+      a: "Oui, Axion-IA intervient à Marnaz et dans toute la vallée de l'Arve (Cluses, Scionzier, Thyez, Bonneville, Marignier). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les TPE du décolletage à Marnaz ?",
@@ -65,7 +65,7 @@ export const MARNAZ_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une intervention IA sur site à Marnaz ?",
-      a: "Nos consultants viennent directement dans votre atelier ou bureau d'études à Marnaz. Formats demi-journée ou journée complète, avec configuration d'outils IA adaptés à votre métier d'usinage et sous-traitance.",
+      a: "Axion IA intervient partout en France, sur site ou à distance. Formats demi-journée ou journée complète, avec configuration d'outils IA adaptés à votre métier d'usinage et sous-traitance.",
     },
   ],
 };

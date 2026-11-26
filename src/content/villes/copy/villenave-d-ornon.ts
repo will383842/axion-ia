@@ -5,10 +5,10 @@
 import type { VilleCopy } from "./types";
 
 const PITCH_FR =
-  "Axion-IA accompagne les TPE et PME de Villenave-d'Ornon, commune de 42 545 habitants au sud de Bordeaux Métropole, sur la rive gauche de la Garonne. Williams se déplace sur site auprès des artisans, commerçants, viticulteurs et entreprises de la zone d'activités locale pour livrer du code custom — Python ou TypeScript — propriétaire, documenté, sans dépendance no-code.";
+  "Axion-IA accompagne les TPE et PME de Villenave-d'Ornon, commune de 42 545 habitants au sud de Bordeaux Métropole, sur la rive gauche de la Garonne. Williams intervient sur site auprès des artisans, commerçants, viticulteurs et entreprises de la zone d'activités locale pour livrer du code custom — Python ou TypeScript — propriétaire, documenté, sans dépendance no-code.";
 
 const DIRECT_ANSWER_FR =
-  "Axion-IA intervient à Villenave-d'Ornon pour les TPE et PME girondines : viticulteurs des Graves et Pessac-Léognan, artisans BTP et sous-traitants de Bordeaux Métropole, commerçants de la zone d'activités (9,8 % du territoire communal), professions libérales et acteurs de la filière vigne-vin gravitant autour de l'ISVV. Williams se déplace sur place pour cadrer le besoin, livrer du code custom et former l'équipe. Audit sur place {{price:audit-flash|flat}}, Formation 4 h {{price:intervention-4h|flat}}, 1-à-1 {{price:intervention-dirigeants|flat}}.";
+  "Axion-IA intervient à Villenave-d'Ornon pour les TPE et PME girondines : viticulteurs des Graves et Pessac-Léognan, artisans BTP et sous-traitants de Bordeaux Métropole, commerçants de la zone d'activités (9,8 % du territoire communal), professions libérales et acteurs de la filière vigne-vin gravitant autour de l'ISVV. Williams intervient sur place pour cadrer le besoin, livrer du code custom et former l'équipe. Audit sur place {{price:audit-flash|flat}}, Formation 4 h {{price:intervention-4h|flat}}, 1-à-1 {{price:intervention-dirigeants|flat}}.";
 
 const ECOSYSTEM_FR =
   "Villenave-d'Ornon est la 6e commune de Gironde avec 42 545 habitants (Insee 2023), intégrée à Bordeaux Métropole. Le tissu économique combine une importante zone d'activités industrielle et commerciale (9,8 % du territoire), la filière vigne-vin avec l'Institut des Sciences de la Vigne et du Vin (ISVV) sur le site d'Inrae-Bordeaux, l'Hôpital militaire Robert-Picqué, un lycée agricole et un commerce de proximité dynamique. Les viticulteurs des AOC Graves et Pessac-Léognan constituent un bassin de clientèle local spécifique.";
@@ -128,8 +128,8 @@ const VILLE_COPY: VilleCopy = {
             a: "Selon le besoin : WordPress pour un site vitrine évolutif, Shopify ou Prestashop pour de l'e-commerce, ou une plateforme sur mesure (Next.js, Python) pour un SaaS IA-native. On revendique le multi-CMS : on choisit l'outil adapté à votre métier, pas l'inverse. Vous restez propriétaire du code et des accès.",
           },
           {
-            q: "Quel délai pour un devis et Williams se déplace-t-il sur site ?",
-            a: "Devis détaillé à partir de 24 à 48 h selon la complexité du projet. Williams se déplace sur site à Villenave-d'Ornon — Centre Commercial Bordeaux Sud, ZAC Madère, SIM d'Hourcade, ISVV/INRAE ou secteur Pont-de-la-Maye.",
+            q: "Quel délai pour un devis et intervenez-vous sur site ?",
+            a: "Devis détaillé à partir de 24 à 48 h selon la complexité du projet. Williams intervient sur site à Villenave-d'Ornon — Centre Commercial Bordeaux Sud, ZAC Madère, SIM d'Hourcade, ISVV/INRAE ou secteur Pont-de-la-Maye.",
           },
           {
             q: "Comment garantissez-vous la conformité RGPD, notamment pour la santé-innovation du site Robert-Picqué ?",
@@ -137,7 +137,7 @@ const VILLE_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Code custom propriétaire et documenté : vous êtes propriétaire de votre site ou plateforme, sans licence SaaS récurrente ni verrou éditeur. Hébergement sur cloud UE (OVHcloud, Scaleway), conformité RGPD par défaut, registre des traitements et DPA fournis. Stack portable, reprenable par tout intégrateur de Bordeaux Métropole ou par vos équipes. Devis détaillé à partir de 24 à 48 h selon la complexité ; frais de déplacement calculés selon la zone, en sus.",
+          "Code custom propriétaire et documenté : vous êtes propriétaire de votre site ou plateforme, sans licence SaaS récurrente ni verrou éditeur. Hébergement sur cloud UE (OVHcloud, Scaleway), conformité RGPD par défaut, registre des traitements et DPA fournis. Stack portable, reprenable par tout intégrateur de Bordeaux Métropole ou par vos équipes. Devis détaillé à partir de 24 à 48 h selon la complexité.",
       },
       en: {
         hero: "Axion-IA designs AI-augmented websites and SaaS platforms in Villenave-d'Ornon, Gironde's 6th-largest town and the southern gateway of Bordeaux Métropole. The town concentrates a very specific fabric: the environmental, water and waste services hub of the Centre Commercial Bordeaux Sud (SUEZ RV Sud-Ouest, SUEZ Organique, Dégremont France), the vine-and-wine research hub of the ISVV on the INRAE site (EGFV unit, Inno'Vin cluster, CIVB) and the emerging health-innovation cluster on the Robert-Picqué site. We deliver custom code — UX/UI, showcase sites, multi-CMS e-commerce, AI-native platforms (RAG chatbot, semantic search, agents) — hosted in the EU, GDPR by default, with no vendor lock-in.",
@@ -223,7 +223,7 @@ const VILLE_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Proprietary, documented custom code: you own your site or platform, with no recurring SaaS license or vendor lock-in. Hosting on EU cloud (OVHcloud, Scaleway), GDPR compliance by default, processing register and DPA provided. Portable stack, recoverable by any Bordeaux Métropole integrator or by your teams. Detailed quote from 24 to 48 hours depending on complexity; travel costs calculated by zone, billed separately.",
+          "Proprietary, documented custom code: you own your site or platform, with no recurring SaaS license or vendor lock-in. Hosting on EU cloud (OVHcloud, Scaleway), GDPR compliance by default, processing register and DPA provided. Portable stack, recoverable by any Bordeaux Métropole integrator or by your teams. Detailed quote from 24 to 48 hours depending on complexity.",
       },
     },
   },
@@ -234,8 +234,8 @@ const VILLE_COPY: VilleCopy = {
       a: "Audit sur place {{price:audit-flash|flat}} (4 h sur site), Formation 4 h {{price:intervention-4h|flat}} (cadrage + livraison d'un automatisme), accompagnement 1-à-1 {{price:intervention-dirigeants|flat}}. Tarifs publics consultables, pas de licence SaaS récurrente — vous êtes propriétaire du code livré.",
     },
     {
-      q: "Williams se déplace-t-il vraiment à Villenave-d'Ornon ?",
-      a: "Oui. Williams intervient sur site à Villenave-d'Ornon, desservie par le tram C et la gare TER de Villenave-d'Ornon. Nous intervenons partout en France, sur place ou à distance.",
+      q: "Comment se déroule une mission à Villenave-d'Ornon ?",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Villenave-d'Ornon, comme partout en France, ou à distance.",
     },
     {
       q: "Quels secteurs locaux Axion-IA accompagne-t-il à Villenave-d'Ornon ?",

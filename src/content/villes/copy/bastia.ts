@@ -65,7 +65,7 @@ export const BASTIA_COPY: VilleCopy = {
           {
             step: "Kick-off sur site à Bastia",
             detail:
-              "Nous venons dans vos locaux à Bastia, Furiani, Ville-di-Pietrabugno ou sur la plaine orientale (accès via l'aéroport Bastia-Poretta) pour observer vos outils réels, vos parcours clients et vos contraintes de saisonnalité.",
+              "Nous intervenons dans vos locaux à Bastia, Furiani, Ville-di-Pietrabugno ou sur la plaine orientale pour observer vos outils réels, vos parcours clients et vos contraintes de saisonnalité.",
           },
           {
             step: "Conception UX/UI et architecture",
@@ -124,7 +124,7 @@ export const BASTIA_COPY: VilleCopy = {
           },
           {
             q: "Quel délai pour un devis, et où intervenez-vous autour de Bastia ?",
-            a: "Le devis est remis à partir de 24-48 h selon la complexité du projet. Nous intervenons à Bastia et dans les communes voisines (Furiani, Ville-di-Pietrabugno, Barbaggio, Patrimonio) ainsi que sur la plaine orientale, avec déplacements sur site organisés via l'aéroport Bastia-Poretta.",
+            a: "Le devis est remis à partir de 24-48 h selon la complexité du projet. Nous intervenons à Bastia et dans les communes voisines (Furiani, Ville-di-Pietrabugno, Barbaggio, Patrimonio) ainsi que sur la plaine orientale.",
           },
           {
             q: "Où sont hébergées les données et suis-je dépendant de vous ensuite ?",
@@ -151,7 +151,7 @@ export const BASTIA_COPY: VilleCopy = {
           {
             step: "Kick-off on site in Bastia",
             detail:
-              "We come to your premises in Bastia, Furiani, Ville-di-Pietrabugno or across the eastern plain (via Bastia-Poretta airport) to observe your real tools, customer journeys and seasonality constraints.",
+              "We come to your premises in Bastia, Furiani, Ville-di-Pietrabugno or across the eastern plain to observe your real tools, customer journeys and seasonality constraints.",
           },
           {
             step: "UX/UI design and architecture",
@@ -210,7 +210,7 @@ export const BASTIA_COPY: VilleCopy = {
           },
           {
             q: "How fast is a quote, and where do you operate around Bastia?",
-            a: "Quotes are issued from 24-48 h depending on project complexity. We operate in Bastia and neighbouring communes (Furiani, Ville-di-Pietrabugno, Barbaggio, Patrimonio) as well as across the eastern plain, with on-site visits arranged via Bastia-Poretta airport.",
+            a: "Quotes are issued from 24-48 h depending on project complexity. We operate in Bastia and neighbouring communes (Furiani, Ville-di-Pietrabugno, Barbaggio, Patrimonio) as well as across the eastern plain. Axion-IA works anywhere in France, on site or remotely.",
           },
           {
             q: "Where is data hosted, and am I dependent on you afterwards?",
@@ -226,7 +226,7 @@ export const BASTIA_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Bastia et en Haute-Corse ?",
-      a: "Oui, Axion-IA intervient à Bastia et dans les communes voisines (Furiani, Ville-di-Pietrabugno, Barbaggio, Patrimonio) ainsi que sur la plaine orientale. Déplacement sur site organisé via l'aéroport Bastia-Poretta.",
+      a: "Oui, Axion-IA intervient à Bastia et dans les communes voisines (Furiani, Ville-di-Pietrabugno, Barbaggio, Patrimonio) ainsi que sur la plaine orientale.",
     },
     {
       q: "Quel est le tarif d'un audit IA pour une TPE à Bastia ?",

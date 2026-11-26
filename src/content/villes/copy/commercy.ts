@@ -49,7 +49,7 @@ export const COMMERCY_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Commercy et en Meuse ?",
-      a: "Oui, Axion-IA intervient à Commercy et sur toute la Meuse (Bar-le-Duc, Verdun, Saint-Mihiel, Ligny-en-Barrois). Gare Meuse TGV à 35 min, Paris à 1h05 en TGV.",
+      a: "Oui, Axion-IA intervient à Commercy et sur toute la Meuse (Bar-le-Duc, Verdun, Saint-Mihiel, Ligny-en-Barrois).",
     },
     {
       q: "Tarifs audit IA à Commercy  : quel budget prévoir ?",

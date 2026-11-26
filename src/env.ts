@@ -147,6 +147,10 @@ export const env = createEnv({
     // ÉTEINT ; seule « true » allume. Texte libre : une valeur mal saisie ne fait jamais planter
     // l'application. Lot 2 (2026-11-25) : rien ne le lit encore.
     APPORTEURS_VALIDATION_RDV: z.string().optional(),
+    // Espace apporteur : page « Mes commissions » (lecture seule) et route de téléchargement des
+    // factures. Lu par le SITE (`apporteurs-reseau/interrupteur-mes-commissions.ts`). ABSENT =
+    // ÉTEINT ; seule « true » allume. Texte libre : une valeur mal saisie ne fait jamais planter.
+    APPORTEUR_MES_COMMISSIONS_ENABLED: z.string().optional(),
     // Boîte d'Axion IA qui reçoit les essais de la console (jamais le prospect). Lue par le WORKER.
     // Texte libre (une faute de frappe ne doit jamais empêcher le démarrage) : `adresseEssai()`
     // la vérifie et l'essai échoue, visible au journal, si elle est invalide.
@@ -606,11 +610,21 @@ export const env = createEnv({
     // Cf. _AUDIT/PROMPT-CONTENT-GENERATOR-MASTER-2026.md § 24.1 + Annexe A.
     OPENAI_API_KEY: z.string().optional(),
     ANTHROPIC_API_KEY: z.string().optional(),
+    // Types de contenu autorisés via Claude (interrupteur général : CONTENT_GEN_BLOG_CLAUDE).
+    // Absent/vide/`blog` = les 4 types blog ; `tous` ; ou liste de types séparés par des
+    // virgules (type inconnu ignoré + avertissement). Cf. providers/types-claude.ts.
+    CONTENT_GEN_CLAUDE_TYPES: z.string().optional(),
+    // Fact-check par Claude avec recherche web (PR 5). Éteint par défaut : seule la valeur
+    // exacte `true` allume (et seulement si CONTENT_GEN_BLOG_CLAUDE=true et type autorisé).
+    CONTENT_GEN_FACTCHECK_CLAUDE: z.string().optional(),
     PERPLEXITY_API_KEY: z.string().optional(),
     UNSPLASH_ACCESS_KEY: z.string().optional(),
     /// Voyage AI key pour embeddings KB V4 (`voyage-3-lite` dim 1024).
     /// Sans clé → fallback stub déterministe SHA-256 (cf. src/lib/knowledge/embeddings.ts).
     VOYAGE_API_KEY: z.string().optional(),
+    /// Plafond quotidien de tokens des embeddings Voyage à la publication des articles
+    /// (défaut 1 000 000 si absent). Cf. src/server/content-gen/dedup/voyage-embedder.ts.
+    VOYAGE_EMBEDDINGS_MAX_TOKENS_PER_DAY: z.string().optional(),
     /// HMAC secret factory ingest API (cf. src/lib/knowledge/hmac.ts).
     /// Min 32 chars enforcé runtime par `getKbIngestSecret()` quand utilisé.
     KB_INGEST_SECRET: z.string().min(32).optional(),
@@ -814,6 +828,7 @@ export const env = createEnv({
     QUESTIONNAIRE_EXPORT_COMPLET_ENABLED: process.env.QUESTIONNAIRE_EXPORT_COMPLET_ENABLED,
     TOUR_TELEGRAM_ENABLED: process.env.TOUR_TELEGRAM_ENABLED,
     APPORTEURS_VALIDATION_RDV: process.env.APPORTEURS_VALIDATION_RDV,
+    APPORTEUR_MES_COMMISSIONS_ENABLED: process.env.APPORTEUR_MES_COMMISSIONS_ENABLED,
     QUESTIONNAIRE_PREAUDIT_ADRESSE_ESSAI: process.env.QUESTIONNAIRE_PREAUDIT_ADRESSE_ESSAI,
     IDCC_OPCO_IMPORT_ENABLED: process.env.IDCC_OPCO_IMPORT_ENABLED,
     VISIO_ADRESSES_DE_TEST: process.env.VISIO_ADRESSES_DE_TEST,
@@ -901,9 +916,12 @@ export const env = createEnv({
     // Content Generator V1 (Sprint 1 Day 1 AGT-B)
     OPENAI_API_KEY: process.env.OPENAI_API_KEY,
     ANTHROPIC_API_KEY: process.env.ANTHROPIC_API_KEY,
+    CONTENT_GEN_CLAUDE_TYPES: process.env.CONTENT_GEN_CLAUDE_TYPES,
+    CONTENT_GEN_FACTCHECK_CLAUDE: process.env.CONTENT_GEN_FACTCHECK_CLAUDE,
     PERPLEXITY_API_KEY: process.env.PERPLEXITY_API_KEY,
     UNSPLASH_ACCESS_KEY: process.env.UNSPLASH_ACCESS_KEY,
     VOYAGE_API_KEY: process.env.VOYAGE_API_KEY,
+    VOYAGE_EMBEDDINGS_MAX_TOKENS_PER_DAY: process.env.VOYAGE_EMBEDDINGS_MAX_TOKENS_PER_DAY,
     KB_INGEST_SECRET: process.env.KB_INGEST_SECRET,
     BACKUP_INGEST_SECRET: process.env.BACKUP_INGEST_SECRET,
     KB_AUTO_PUBLISH: process.env.KB_AUTO_PUBLISH,

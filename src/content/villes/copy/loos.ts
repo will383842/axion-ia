@@ -9,9 +9,9 @@ export const LOOS_COPY: VilleCopy = {
   pitchEn:
     "Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne les TPE et PME de Loos (59), commune de la Métropole Européenne de Lille. Adossée au pôle hospitalier régional (CHR) et à la recherche biomédicale, Loos concentre santé, services et commerces. Nous y déployons une IA opérationnelle, sobre et conforme RGPD pour les petites structures du territoire lillois.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Loos (59), dans la Métropole Européenne de Lille. Nous accompagnons en priorité les TPE puis les PME : cabinets de santé et structures paramédicales proches du CHR, professions libérales, commerces et PME de services. Audit sur place sur site, tarifs publics, déplacement rapide depuis Lille. Les ETI restent un cas marginal.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Loos (59), dans la Métropole Européenne de Lille. Nous accompagnons en priorité les TPE puis les PME : cabinets de santé et structures paramédicales proches du CHR, professions libérales, commerces et PME de services. Audit sur place sur site, tarifs publics, déplacement sur site partout en France. Les ETI restent un cas marginal.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Loos (59), dans la Métropole Européenne de Lille. Nous accompagnons en priorité les TPE puis les PME : cabinets de santé et structures paramédicales proches du CHR, professions libérales, commerces et PME de services. Audit sur place sur site, tarifs publics, déplacement rapide depuis Lille. Les ETI restent un cas marginal.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Loos (59), dans la Métropole Européenne de Lille. Nous accompagnons en priorité les TPE puis les PME : cabinets de santé et structures paramédicales proches du CHR, professions libérales, commerces et PME de services. Audit sur place sur site, tarifs publics, déplacement sur site partout en France. Les ETI restent un cas marginal.",
   seoHook: "santé & recherche",
   ecosystemFr:
     "Loos est marquée par le Centre Hospitalier Régional Universitaire de Lille et son écosystème santé : laboratoires, structures paramédicales, recherche biomédicale et professions libérales gravitent autour de ce pôle. Intégrée à la Métropole Européenne de Lille, la commune mêle ce tissu médical à un commerce de proximité actif et à des PME de services, terrain favorable à des automatisations IA respectueuses des données sensibles.",
@@ -74,7 +74,7 @@ export const LOOS_COPY: VilleCopy = {
           {
             step: "Développement par sprints",
             detail:
-              "Greffe IA sur l'existant ou build IA-native : portail patient, prise de rendez-vous, boutique e-commerce multi-CMS, chatbot RAG multilingue, recherche sémantique, agents et automatisations. Démos hebdomadaires en visio depuis Lille, code versionné et livré au fil de l'eau.",
+              "Greffe IA sur l'existant ou build IA-native : portail patient, prise de rendez-vous, boutique e-commerce multi-CMS, chatbot RAG multilingue, recherche sémantique, agents et automatisations. Démos hebdomadaires en visio, code versionné et livré au fil de l'eau.",
           },
           {
             step: "Recette + mise en ligne",
@@ -124,7 +124,7 @@ export const LOOS_COPY: VilleCopy = {
           },
           {
             q: "Accompagnez-vous les entreprises du parc Eurasanté ?",
-            a: "Oui. Pour les medtech, biotech et laboratoires de la ZAC Est Eurasanté et du Hub (350 avenue Eugène Avinée), on conçoit portails clients, espaces de recherche sécurisés, recherche sémantique sur la documentation scientifique et agents internes. On se déplace sur site, la station de métro CHU-Eurasanté étant à quelques minutes du parc.",
+            a: "Oui. Pour les medtech, biotech et laboratoires de la ZAC Est Eurasanté et du Hub (350 avenue Eugène Avinée), on conçoit portails clients, espaces de recherche sécurisés, recherche sémantique sur la documentation scientifique et agents internes. Nous intervenons sur site, dans vos locaux à Loos.",
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
@@ -160,7 +160,7 @@ export const LOOS_COPY: VilleCopy = {
           {
             step: "Développement par sprints",
             detail:
-              "Greffe IA sur l'existant ou build IA-native : portail patient, prise de rendez-vous, boutique e-commerce multi-CMS, chatbot RAG multilingue, recherche sémantique, agents et automatisations. Démos hebdomadaires en visio depuis Lille, code versionné et livré au fil de l'eau.",
+              "Greffe IA sur l'existant ou build IA-native : portail patient, prise de rendez-vous, boutique e-commerce multi-CMS, chatbot RAG multilingue, recherche sémantique, agents et automatisations. Démos hebdomadaires en visio, code versionné et livré au fil de l'eau.",
           },
           {
             step: "Recette + mise en ligne",
@@ -210,7 +210,7 @@ export const LOOS_COPY: VilleCopy = {
           },
           {
             q: "Accompagnez-vous les entreprises du parc Eurasanté ?",
-            a: "Oui. Pour les medtech, biotech et laboratoires de la ZAC Est Eurasanté et du Hub (350 avenue Eugène Avinée), on conçoit portails clients, espaces de recherche sécurisés, recherche sémantique sur la documentation scientifique et agents internes. On se déplace sur site, la station de métro CHU-Eurasanté étant à quelques minutes du parc.",
+            a: "Oui. Pour les medtech, biotech et laboratoires de la ZAC Est Eurasanté et du Hub (350 avenue Eugène Avinée), on conçoit portails clients, espaces de recherche sécurisés, recherche sémantique sur la documentation scientifique et agents internes. Nous intervenons sur site, dans vos locaux à Loos.",
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
@@ -230,7 +230,7 @@ export const LOOS_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Loos ?",
-      a: "Oui, Axion-IA intervient à Loos et dans toute la Métropole Européenne de Lille. Nos consultants se déplacent depuis Lille (6 km) pour rencontrer cabinets de santé, professions libérales et PME sur site.",
+      a: "Oui, Axion-IA intervient à Loos et dans toute la Métropole Européenne de Lille. Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Combien coûte un audit IA à Loos ?",
@@ -246,7 +246,7 @@ export const LOOS_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Loos ?",
-      a: "Nos consultants interviennent dans vos locaux ou en visio, depuis Lille. Périmètre, planning et tarifs sont fixés en amont, sans surprise.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Périmètre, planning et tarifs sont fixés en amont, sans surprise.",
     },
     {
       q: "Comment garantissez-vous la conformité RGPD ?",

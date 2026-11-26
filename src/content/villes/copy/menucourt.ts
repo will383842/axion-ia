@@ -49,7 +49,7 @@ export const MENUCOURT_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Menucourt et agglo Cergy-Pontoise ?",
-      a: "Oui, Axion-IA intervient à Menucourt et toute l'agglomération de Cergy-Pontoise (centre Cergy à 5 min, Conflans-Sainte-Honorine à 10 min, Paris La Défense à 35 min). Gare Transilien Menucourt.",
+      a: "Oui. Nous intervenons à Menucourt et dans toute l'agglomération de Cergy-Pontoise (Cergy, Conflans-Sainte-Honorine), sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les commerçants et artisans de Menucourt ?",
@@ -64,8 +64,8 @@ export const MENUCOURT_COPY: VilleCopy = {
       a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1.",
     },
     {
-      q: "Comment se passe une mission depuis Cergy ou Paris ?",
-      a: "Cergy-Pontoise centre (5 min). Conflans-Sainte-Honorine (10 min). Paris La Défense (35 min). Aéroport CDG (50 min).",
+      q: "Comment se déroule une mission Axion-IA à Menucourt ?",
+      a: "Nous intervenons partout en France, sur place dans vos locaux ou à distance en visio. Après le cadrage de votre besoin, nous planifions l'intervention et livrons un résultat actionnable.",
     },
   ],
 };

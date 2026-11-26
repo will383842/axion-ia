@@ -43,15 +43,16 @@ import {
   type ResultatEnvoi,
 } from "./envois";
 import { idsPriseDeContactRebondie } from "./rebonds";
-import { type ReservationProvisoire, reservationOccupe } from "./regle-attribution";
+import {
+  type ReservationProvisoire,
+  reservationOccupe,
+  versReservationProvisoire,
+} from "./regle-attribution";
 import { ajouterMois, finDeProtection } from "./regles";
 import { validationParRendezVousActive } from "./interrupteur-rendez-vous";
-import { finReservation, regleDe } from "./regle-attribution";
-import {
-  enregistrerReservation,
-  lireReservations,
-  versProvisoire,
-} from "./reservation-presentation";
+import { finReservation, regleDe, type RegleAttribution } from "./regle-attribution";
+import { enregistrerReservation, lireReservations } from "./reservation-presentation";
+import { annoncerRefus } from "./refus-annonce";
 import { annoncerAttribution } from "./attribution-annonce";
 
 // ── Signalements avant de répondre ───────────────────────────────────────
@@ -210,6 +211,16 @@ export function dateCourte(d: Date): string {
   });
 }
 
+/** « 24 janvier 2027 », heure de Paris (fin de réservation de l'accusé « rendez-vous »). */
+export function dateLongue(d: Date): string {
+  return d.toLocaleDateString("fr-FR", {
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+    timeZone: "Europe/Paris",
+  });
+}
+
 /** « lundi 5 octobre », en heure de Paris (format attendu par les gabarits). */
 export function dateGabarit(d: Date): string {
   return d.toLocaleDateString("fr-FR", {
@@ -290,8 +301,11 @@ export async function creerPresentation(
   if (
     siennes.some(
       (p) =>
-        presentationOccupe(p, maintenant, versProvisoire(reservations.get(p.id), p.recueAt)) &&
-        memePerimetre(moi, etabs.get(p.id)!),
+        presentationOccupe(
+          p,
+          maintenant,
+          versReservationProvisoire(p.recueAt, reservations.get(p.id)),
+        ) && memePerimetre(moi, etabs.get(p.id)!),
     )
   ) {
     return {
@@ -503,7 +517,7 @@ export function existeDeclarationPlusAncienne(
     protegeeJusquAt?: Date | null;
     recueAt?: Date | null;
     /** Règle par rendez-vous : la réservation de la déclaration, si elle en a une. */
-    reservation?: { reserveeJusquAt: Date } | null;
+    reservation?: { reserveeJusquAt: Date; rendezVousPrisAt?: Date | null } | null;
   }>,
   moi: { apporteurId: string; recueAt: Date },
   maintenant: Date,
@@ -516,9 +530,7 @@ export function existeDeclarationPlusAncienne(
       presentationOccupe(
         { statut: a.statut, protegeeJusquAt: a.protegeeJusquAt ?? null },
         maintenant,
-        a.reservation
-          ? { recueAt: a.recueAt ?? new Date(0), reserveeJusquAt: a.reservation.reserveeJusquAt }
-          : null,
+        a.reservation && a.recueAt ? versReservationProvisoire(a.recueAt, a.reservation) : null,
       ),
   );
 }
@@ -590,6 +602,11 @@ interface DonneesEnvoi {
     personneEmail: string;
   };
   apporteur: { id: string; prenom: string; nom: string; email: string };
+  /**
+   * La règle de l'apporteur (`regleDe`, calculée au chargement). Absent ou `null` : la règle en
+   * vigueur (contrat 2.6, « 30 jours »), textes INCHANGÉS.
+   */
+  regle?: RegleAttribution;
 }
 
 const MOTIF_PAR_REPONSE = {
@@ -633,20 +650,34 @@ export function construireEnvoisReponse(
         ...commun,
         jobId: `entreprise-contact-apporteur-${d.presentation.id}`,
       },
-      {
-        gabarit: "apporteur-presentation-recue",
-        payload: avecTexteLibre(
-          {
-            contactName: nomApporteur,
-            entreprise: d.presentation.denomination,
-            datePresentation,
-            personnePresentee: d.presentation.personneNom,
+      d.regle === "rendez_vous"
+        ? {
+            // Validation par rendez-vous (contrat ≥ 2.8, interrupteur allumé) : l'accusé « 60 jours ».
+            // Pas de texte réécrit : le gabarit n'en porte pas (lot 7a, relu par le dirigeant).
+            gabarit: "apporteur-presentation-recue-rendez-vous",
+            payload: {
+              contactName: nomApporteur,
+              entreprise: d.presentation.denomination,
+              // `finReservation` est déjà la fin du 60e jour (jour 1 = la saisie, minuit Paris, N1).
+              dateFinReservation: dateLongue(finReservation(d.presentation.recueAt)),
+            },
+            ...versApporteur,
+            jobId: `apporteur-presentation-recue-${d.presentation.id}`,
+          }
+        : {
+            gabarit: "apporteur-presentation-recue",
+            payload: avecTexteLibre(
+              {
+                contactName: nomApporteur,
+                entreprise: d.presentation.denomination,
+                datePresentation,
+                personnePresentee: d.presentation.personneNom,
+              },
+              o.textes?.["apporteur-presentation-recue"],
+            ),
+            ...versApporteur,
+            jobId: `apporteur-presentation-recue-${d.presentation.id}`,
           },
-          o.textes?.["apporteur-presentation-recue"],
-        ),
-        ...versApporteur,
-        jobId: `apporteur-presentation-recue-${d.presentation.id}`,
-      },
     ];
   }
   return [
@@ -672,7 +703,11 @@ async function chargerDonneesEnvoi(
 ): Promise<(DonneesEnvoi & { statut: StatutPresentation; contactEnvoyeAt: Date | null }) | null> {
   const p = await prisma.presentationEntreprise.findUnique({
     where: { id },
-    include: { apporteur: { select: { id: true, prenom: true, nom: true, email: true } } },
+    include: {
+      apporteur: {
+        select: { id: true, prenom: true, nom: true, email: true, signatureApporteur: true },
+      },
+    },
   });
   if (!p) return null;
   return {
@@ -691,6 +726,7 @@ async function chargerDonneesEnvoi(
       nom: decryptPii(p.apporteur.nom) ?? "",
       email: decryptPii(p.apporteur.email) ?? "",
     },
+    regle: regleDe(p.apporteur.signatureApporteur, validationParRendezVousActive()),
   };
 }
 
@@ -849,9 +885,10 @@ export async function dementirPresentation(
     where: { id, statut: { in: ["reservee", "confirmee"] } },
     data: { statut: "dementie" },
   });
-  return r.count === 1
-    ? { ok: true }
-    : { ok: false, message: "Cette présentation n'est plus en cours." };
+  if (r.count !== 1) return { ok: false, message: "Cette présentation n'est plus en cours." };
+  // Facultatif, éteint par défaut (APPORTEURS_EMAIL_REFUS) ; ne lève jamais.
+  await annoncerRefus(id, "dementie");
+  return { ok: true };
 }
 
 export async function noterPresentation(id: string, note: string): Promise<void> {

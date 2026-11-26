@@ -33,6 +33,8 @@ import { signalerErreurReseau } from "./signaler";
 import { enregistrerSiret, siretDe } from "./siret-apporteur";
 import { CLE_REGISTRE_INDISPONIBLE, etatDeLaPage, vigilanceDemandee } from "./signature-regles";
 import { argentEnJeu, retraitDe } from "./retrait";
+import { validationParRendezVousActive } from "./interrupteur-rendez-vous";
+import { regleDe, versionAuMoins, type RegleAttribution } from "./regle-attribution";
 
 // Antivirus muet : une alerte Sentry par 15 minutes au plus (garde en mémoire), sans donnée
 // personnelle — la garde est celle du dépôt commun (FAC-6), le canal celui du réseau.
@@ -223,6 +225,10 @@ export interface DossierVue {
   signeParSocieteAt: Date | null;
   /** Le contrat signé des deux parties existe (téléchargeable par l'apporteur). */
   aContratSigne: boolean;
+  /** `regleDe(signature, interrupteur)` : « rendez_vous » ou `null` (contrat 2.6, inchangé). */
+  regleAttribution?: RegleAttribution;
+  /** Contrat signé en 2.8 ou après : la commission ne dépend plus de la réalisation (art. 4.2), interrupteur ou non. */
+  contratDepuis2_8?: boolean;
   pieces: PieceVue[];
 }
 
@@ -275,6 +281,8 @@ export async function lireDossier(apporteurId: string): Promise<DossierVue | nul
     signeParApporteurAt: a.signeParApporteurAt,
     signeParSocieteAt: a.signeParSocieteAt,
     aContratSigne: !!a.contratSigneCle,
+    regleAttribution: regleDe(a.signatureApporteur, validationParRendezVousActive()),
+    contratDepuis2_8: versionAuMoins(a.signatureApporteur, "2.8"),
     pieces: a.pieces.map((p) => ({ ...p, type: p.type as TypePiece })),
   };
 }
@@ -291,9 +299,16 @@ export async function lireDossierParLien(
   const id = apporteurId.toLowerCase();
   const a = await prisma.apporteurReseau.findUnique({
     where: { id },
-    select: { versionLien: true },
+    select: { versionLien: true, statut: true },
   });
   if (!a || !jetonDossierValide(id, a.versionLien, jeton)) return null;
+  // Résilié (lot L1b, B1 bis) : mode restreint seulement si de l'argent est encore en jeu
+  // (le lien n'a alors pas été révoqué à la prise d'effet) ; sinon page neutre.
+  if (a.statut === "resilie") {
+    if (!(await argentEnJeu(id))) return null;
+    const vue = await lireDossier(id);
+    return vue ? { ...vue, restreint: true } : null;
+  }
   // Retiré du réseau (2026-10-07) : page neutre, QUEL QUE SOIT le lien — même un lien
   // recalculé sur la version courante n'ouvre pas un dossier retiré… sauf s'il reste de
   // l'ARGENT en jeu : la page s'ouvre alors en MODE RESTREINT (dépôt des attestations de

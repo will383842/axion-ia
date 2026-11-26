@@ -212,7 +212,7 @@ describe("CGV v3 — produits numériques", () => {
     // immédiat pour une FORMATION vendue à un particulier.
     const b = article(49);
     expect(b).toMatch(
-      /la convention l'emporte sur les présentes conditions, et les articles 6\.5, 14, 15 et 42 ne s'appliquent pas/,
+      /la convention l'emporte sur les présentes conditions, et l'article 6\.5 \(sauf son alinéa « Acompte acquis »\), les articles 14, 15 et 42 ne s'appliquent pas/,
     );
     expect(b).toMatch(/Axion-IA ne conclut pas de contrat de formation avec une personne physique/);
     expect(b).toMatch(/aucune somme n'est exigible pendant ce délai/);

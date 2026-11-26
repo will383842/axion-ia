@@ -7,13 +7,13 @@ import type { VilleCopy } from "./types";
 
 export const CHATILLON_COPY: VilleCopy = {
   pitchFr:
-    "Châtillon (92320, 36 705 habitants en 2023) est une commune des Hauts-de-Seine en petite couronne parisienne, terminus de la ligne 13 et desservie par le tramway T6. Axion-IA accompagne les TPE et PME implantées sur le territoire — commerces, cabinets de services, artisans et structures intermédiaires installées à proximité du Campus Orange Gardens, des dépôts SNCF/RATP ou du siège d'Orano — pour automatiser devis, relances, reporting et flux administratifs. Williams se déplace sur site à Châtillon, Clamart, Malakoff, Montrouge, Bagneux ou Fontenay-aux-Roses pour des interventions concrètes en code custom Python/Node, sans no-code propriétaire ni dépendance plateforme.",
+    "Châtillon (92320, 36 705 habitants en 2023) est une commune des Hauts-de-Seine en petite couronne parisienne. Axion-IA accompagne les TPE et PME implantées sur le territoire — commerces, cabinets de services, artisans et structures intermédiaires installées à proximité du Campus Orange Gardens, des dépôts SNCF/RATP ou du siège d'Orano — pour automatiser devis, relances, reporting et flux administratifs. Williams intervient sur site à Châtillon, Clamart, Malakoff, Montrouge, Bagneux ou Fontenay-aux-Roses pour des interventions concrètes en code custom Python/Node, sans no-code propriétaire ni dépendance plateforme.",
   pitchEn:
-    "Châtillon (92320, 36 705 habitants en 2023) est une commune des Hauts-de-Seine en petite couronne parisienne, terminus de la ligne 13 et desservie par le tramway T6. Axion-IA accompagne les TPE et PME implantées sur le territoire — commerces, cabinets de services, artisans et structures intermédiaires installées à proximité du Campus Orange Gardens, des dépôts SNCF/RATP ou du siège d'Orano — pour automatiser devis, relances, reporting et flux administratifs. Williams se déplace sur site à Châtillon, Clamart, Malakoff, Montrouge, Bagneux ou Fontenay-aux-Roses pour des interventions concrètes en code custom Python/Node, sans no-code propriétaire ni dépendance plateforme.",
+    "Châtillon (92320, 36 705 habitants en 2023) est une commune des Hauts-de-Seine en petite couronne parisienne. Axion-IA accompagne les TPE et PME implantées sur le territoire — commerces, cabinets de services, artisans et structures intermédiaires installées à proximité du Campus Orange Gardens, des dépôts SNCF/RATP ou du siège d'Orano — pour automatiser devis, relances, reporting et flux administratifs. Williams intervient sur site à Châtillon, Clamart, Malakoff, Montrouge, Bagneux ou Fontenay-aux-Roses pour des interventions concrètes en code custom Python/Node, sans no-code propriétaire ni dépendance plateforme.",
   directAnswerFr:
-    "Axion-IA intervient à Châtillon (Hauts-de-Seine, 92320) auprès des TPE et PME de la petite couronne sud parisienne. Williams se déplace dans les locaux des entreprises situées près du terminus métro 13 Châtillon-Montrouge, du tramway T6 ou de l'axe D906/A86. Nous proposons un Audit sur place de 4 heures dès {{price:audit-flash|flat}} pour cartographier vos processus, une Formation 4 h dès {{price:intervention-4h|flat}} pour automatiser une tâche répétitive (devis, factures, relances, reporting), et un accompagnement 1-to-1 dirigeant dès {{price:intervention-dirigeants|flat}}. Aucune dépendance no-code : code custom Python/Node, conforme RGPD et AI Act.",
+    "Axion-IA intervient à Châtillon (Hauts-de-Seine, 92320) auprès des TPE et PME de la petite couronne sud parisienne. Williams intervient dans vos locaux à Châtillon, comme partout en France. Nous proposons un Audit sur place de 4 heures dès {{price:audit-flash|flat}} pour cartographier vos processus, une Formation 4 h dès {{price:intervention-4h|flat}} pour automatiser une tâche répétitive (devis, factures, relances, reporting), et un accompagnement 1-to-1 dirigeant dès {{price:intervention-dirigeants|flat}}. Aucune dépendance no-code : code custom Python/Node, conforme RGPD et AI Act.",
   directAnswerEn:
-    "Axion-IA intervient à Châtillon (Hauts-de-Seine, 92320) auprès des TPE et PME de la petite couronne sud parisienne. Williams se déplace dans les locaux des entreprises situées près du terminus métro 13 Châtillon-Montrouge, du tramway T6 ou de l'axe D906/A86. Nous proposons un Audit sur place de 4 heures dès {{price:audit-flash|flat}} pour cartographier vos processus, une Formation 4 h dès {{price:intervention-4h|flat}} pour automatiser une tâche répétitive (devis, factures, relances, reporting), et un accompagnement 1-to-1 dirigeant dès {{price:intervention-dirigeants|flat}}. Aucune dépendance no-code : code custom Python/Node, conforme RGPD et AI Act.",
+    "Axion-IA intervient à Châtillon (Hauts-de-Seine, 92320) auprès des TPE et PME de la petite couronne sud parisienne. Williams intervient dans vos locaux à Châtillon, comme partout en France. Nous proposons un Audit sur place de 4 heures dès {{price:audit-flash|flat}} pour cartographier vos processus, une Formation 4 h dès {{price:intervention-4h|flat}} pour automatiser une tâche répétitive (devis, factures, relances, reporting), et un accompagnement 1-to-1 dirigeant dès {{price:intervention-dirigeants|flat}}. Aucune dépendance no-code : code custom Python/Node, conforme RGPD et AI Act.",
   seoHook: "TPE & PME 92 · IA opérationnelle sur site",
   ecosystemFr:
     "Châtillon accueille le Campus Orange Gardens (Technocentre Orange), le siège d'AXA Assistance et celui d'Orano relocalisé en 2019, ainsi que des dépôts de maintenance SNCF et RATP. Autour de ces grands donneurs d'ordre gravite un tissu dense de TPE et PME : sous-traitants tech, cabinets de conseil, prestataires de services aux entreprises, commerces et artisans répartis entre Clamart, Malakoff, Montrouge, Bagneux et Fontenay-aux-Roses. La proximité immédiate de Paris via la ligne 13 et l'A86 facilite les déplacements et l'accès aux clients franciliens.",
@@ -33,8 +33,8 @@ export const CHATILLON_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit sur place IA à Châtillon dès {{price:audit-flash|flat}} — Williams se déplace dans vos locaux (terminus métro 13 ou T6) pour cartographier vos processus en 4 heures.",
-      en: "Audit sur place IA à Châtillon dès {{price:audit-flash|flat}} — Williams se déplace dans vos locaux (terminus métro 13 ou T6) pour cartographier vos processus en 4 heures.",
+      fr: "Audit sur place IA à Châtillon dès {{price:audit-flash|flat}} — Williams intervient dans vos locaux pour cartographier vos processus en 4 heures.",
+      en: "Audit sur place IA à Châtillon dès {{price:audit-flash|flat}} — Williams intervient dans vos locaux pour cartographier vos processus en 4 heures.",
     },
     interventions: {
       fr: "Formation collective à Châtillon dès {{price:intervention-4h|flat}} — automatisation d'un processus métier (devis, relances, reporting) pour TPE et PME des Hauts-de-Seine sud.",
@@ -57,7 +57,7 @@ export const CHATILLON_COPY: VilleCopy = {
           "Châtillon concentre une densité numérique rare en proche banlieue sud grâce au Campus Orange Gardens (~72 000 m², ~3 500 personnes, Orange 5G Lab et Data Studio) : nous construisons sites vitrines et plateformes SaaS pour les sous-traitants tech, éditeurs et freelances data/dev qui gravitent autour de ce technocentre.",
           "Le siège AXA Assistance France (6 rue André Gide) structure un micro-écosystème assurance/assistance/services : nous outillons les cabinets, courtiers et prestataires B2B de ce secteur avec des portails clients, espaces sécurisés et automatisations de devis et de relances.",
           "L'arrivée de la gare Grand Paris Express ligne 15 Sud Châtillon-Montrouge (ouverture visée 2027, ~95 000 voyageurs/jour attendus) densifie le quartier en commerces et services : nous préparons les TPE locales avec sites e-commerce multi-CMS, prise de rendez-vous et visibilité mobile avant l'ouverture.",
-          "Nous nous déplaçons sur tout le sud des Hauts-de-Seine — Châtillon, Clamart, Montrouge, Malakoff, Bagneux, Fontenay-aux-Roses — pour cadrer le projet sur site, près du terminus métro 13, du tramway T6 ou de l'A86, sans visioconférence imposée.",
+          "Nous intervenons sur tout le sud des Hauts-de-Seine — Châtillon, Clamart, Montrouge, Malakoff, Bagneux, Fontenay-aux-Roses — pour cadrer le projet sur site, sans visioconférence imposée.",
         ],
         methodology: [
           {
@@ -127,7 +127,7 @@ export const CHATILLON_COPY: VilleCopy = {
           },
           {
             q: "Sous quel délai pouvez-vous démarrer à Châtillon ?",
-            a: "Après un premier échange, le devis est remis à partir de 24 à 48 h selon la complexité. Williams se déplace ensuite sur site à Châtillon (métro 13, tram T6 ou A86) pour le cadrage, puis nous lançons l'architecture et les maquettes.",
+            a: "Après un premier échange, le devis est remis à partir de 24 à 48 h selon la complexité. Williams intervient ensuite sur site à Châtillon pour le cadrage, puis nous lançons l'architecture et les maquettes.",
           },
           {
             q: "Où sont hébergées les données et qui possède le code ?",
@@ -135,7 +135,7 @@ export const CHATILLON_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Devis remis à partir de 24 à 48 h selon la complexité. Sites et plateformes en code custom Python/Node, hébergés en Union européenne, conformes RGPD et AI Act, avec respect d'un budget de performance Web Vitals strict. Aucune dépendance no-code ni lock-in éditeur : vous êtes propriétaire du code et restez libre de faire évoluer la solution en interne ou avec tout intégrateur. Williams se déplace dans vos locaux à Châtillon et dans le sud des Hauts-de-Seine (Clamart, Montrouge, Malakoff, Bagneux, Fontenay-aux-Roses) pour le cadrage et le transfert.",
+          "Devis remis à partir de 24 à 48 h selon la complexité. Sites et plateformes en code custom Python/Node, hébergés en Union européenne, conformes RGPD et AI Act, avec respect d'un budget de performance Web Vitals strict. Aucune dépendance no-code ni lock-in éditeur : vous êtes propriétaire du code et restez libre de faire évoluer la solution en interne ou avec tout intégrateur. Williams intervient dans vos locaux à Châtillon et dans le sud des Hauts-de-Seine (Clamart, Montrouge, Malakoff, Bagneux, Fontenay-aux-Roses) pour le cadrage et le transfert.",
       },
       en: {
         hero: "AI-augmented websites and SaaS platforms in Châtillon (92320): Axion-IA builds high-performance sites and custom business applications for micro-businesses and SMEs across the southern inner suburbs of Paris, anchored in the town's real fabric — subcontractors and software vendors orbiting the Orange Gardens campus (Orange Technocentre, 5G Lab, Data Studio, av. de la République), insurance and assistance providers in the wake of the AXA Assistance headquarters (rue André Gide), and shops and tradespeople around the future Line 15 South Châtillon-Montrouge station. Custom Python/Node code, UX/UI, mobile and multi-CMS e-commerce, EU/GDPR hosting, zero proprietary no-code dependency.",
@@ -143,7 +143,7 @@ export const CHATILLON_COPY: VilleCopy = {
           "Châtillon concentrates a rare digital density for the southern suburbs thanks to the Orange Gardens campus (~72,000 m², ~3,500 people, Orange 5G Lab and Data Studio): we build showcase sites and SaaS platforms for the tech subcontractors, software vendors and data/dev freelancers orbiting this technocentre.",
           "The AXA Assistance France headquarters (6 rue André Gide) structures an insurance/assistance/services micro-ecosystem: we equip the B2B firms, brokers and providers in this sector with client portals, secure areas and quote and follow-up automation.",
           "The arrival of the Grand Paris Express Line 15 South Châtillon-Montrouge station (opening targeted for 2027, ~95,000 daily passengers expected) is densifying the district with shops and services: we get local micro-businesses ready with multi-CMS e-commerce sites, online booking and mobile visibility before it opens.",
-          "We travel across the whole south of Hauts-de-Seine — Châtillon, Clamart, Montrouge, Malakoff, Bagneux, Fontenay-aux-Roses — to scope the project on site, near the Line 13 metro terminus, the T6 tram or the A86, with no mandatory video calls.",
+          "Axion-IA works anywhere in France, on site or remotely, including across the whole south of Hauts-de-Seine — Châtillon, Clamart, Montrouge, Malakoff, Bagneux, Fontenay-aux-Roses — with no mandatory video calls.",
         ],
         methodology: [
           {
@@ -213,7 +213,7 @@ export const CHATILLON_COPY: VilleCopy = {
           },
           {
             q: "How quickly can you start in Châtillon?",
-            a: "After an initial discussion, the quote is delivered from 24 to 48 hours depending on complexity. Williams then travels on site to Châtillon (Line 13 metro, T6 tram or A86) for scoping, then we launch the architecture and mockups.",
+            a: "After an initial discussion, the quote is delivered from 24 to 48 hours depending on complexity. Axion-IA works anywhere in France, on site or remotely, so we scope the project for Châtillon, then launch the architecture and mockups.",
           },
           {
             q: "Where is the data hosted and who owns the code?",
@@ -232,8 +232,8 @@ export const CHATILLON_COPY: VilleCopy = {
       a: "À Châtillon, l'Audit sur place débute à {{price:audit-flash|flat}} (4 heures sur site), la Formation 4 h à {{price:intervention-4h|flat}} et l'accompagnement 1-to-1 dirigeant à {{price:intervention-dirigeants|flat}}. Tarifs publics consultables sur axion-ia.com.",
     },
     {
-      q: "Williams se déplace-t-il dans les entreprises de Châtillon ?",
-      a: "Oui, Williams se rend directement dans vos locaux à Châtillon (92320), accessibles par le terminus métro 13 Châtillon-Montrouge, le tramway T6 ou l'A86. Pas de visioconférence imposée : intervention sur site.",
+      q: "Intervenez-vous dans les entreprises de Châtillon ?",
+      a: "Oui, Williams intervient directement dans vos locaux à Châtillon (92320), comme partout en France. Pas de visioconférence imposée : intervention sur site.",
     },
     {
       q: "Sous quel délai Axion-IA peut-il intervenir à Châtillon ?",

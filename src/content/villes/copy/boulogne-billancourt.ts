@@ -82,7 +82,7 @@ export const BOULOGNE_BILLANCOURT_COPY: VilleCopy = {
         whyHere: [
           "Boulogne-Billancourt est l'un de nos principaux terrains d'intervention en proche couronne parisienne : la concentration de sièges de grands groupes (Renault, TF1, Boursorama) et de PME conseil génère une forte demande d'audits IA opérationnels.",
           "Tissu B2B très sectorisé dans nos missions boulonnaises : grands groupes du Trapèze et du Quai du Point-du-Jour, PME conseil et services informatiques, startups et scale-ups numériques, cabinets de conseil proches Paris 15e/16e.",
-          "Nos consultants se déplacent sur l'ensemble de la commune et les communes du bassin : Issy-les-Moulineaux, Meudon, Saint-Cloud, Sèvres, Vanves — aucun supplément de zone.",
+          "Nos consultants se déplacent sur l'ensemble de la commune et les communes du bassin : Issy-les-Moulineaux, Meudon, Saint-Cloud, Sèvres, Vanves.",
           "Restitutions toujours en présentiel : ateliers d'idéation dans vos locaux boulonnais, lecture du livrable avec votre comité de direction, plan d'action remis en main propre.",
           "Aucun jeu de devis opaque : tarifs publics affichés, vous savez exactement ce que vous payez avant de signer.",
           "Vous gardez le contrôle : votre plan d'action est exécutable avec n'importe quel prestataire ou en interne après notre audit — aucun lock-in Axion-IA.",
@@ -159,7 +159,7 @@ export const BOULOGNE_BILLANCOURT_COPY: VilleCopy = {
           },
           {
             q: "Intervenez-vous aussi dans les communes limitrophes (Issy-les-Moulineaux, Meudon, Saint-Cloud) ?",
-            a: "Oui. Le bassin Boulogne-Billancourt est notre zone d'intervention complète : Issy-les-Moulineaux (~2 km), Vanves (~3 km), Sèvres (~3 km), Meudon (~4 km), Saint-Cloud (~3 km) et bien sûr Paris 15e et 16e limitrophes. Aucun supplément de zone.",
+            a: "Oui. Le bassin Boulogne-Billancourt est notre zone d'intervention complète : Issy-les-Moulineaux, Vanves, Sèvres, Meudon, Saint-Cloud et bien sûr Paris 15e et 16e limitrophes.",
           },
           {
             q: "Faut-il être déjà avancé sur l'IA pour solliciter un audit ?",
@@ -174,7 +174,7 @@ export const BOULOGNE_BILLANCOURT_COPY: VilleCopy = {
         whyHere: [
           "Boulogne-Billancourt is one of our main engagement hubs in the Paris inner ring: the concentration of large-group HQs (Renault, TF1, Boursorama) and consulting SMEs drives strong operational AI audit demand.",
           "Very sectorised B2B fabric in our Boulogne missions: Trapèze and Quai du Point-du-Jour large groups, consulting and IT services SMEs, digital startups, consulting firms close to Paris 15th/16th.",
-          "Our consultants travel to the full municipality and basin communes: Issy-les-Moulineaux, Meudon, Saint-Cloud, Sèvres, Vanves — no zone surcharge.",
+          "We work across the full municipality and basin communes: Issy-les-Moulineaux, Meudon, Saint-Cloud, Sèvres, Vanves.",
           "Read-outs always in person: ideation workshops at your Boulogne offices, deliverable walk-through with your leadership, action plan handed over face to face.",
           "No opaque quote game: public pricing, you know exactly what you pay before signing.",
           "You keep control: your action plan is executable with any vendor or in-house after our audit — no Axion-IA lock-in.",
@@ -251,7 +251,7 @@ export const BOULOGNE_BILLANCOURT_COPY: VilleCopy = {
           },
           {
             q: "Do you cover surrounding communes (Issy-les-Moulineaux, Meudon, Saint-Cloud)?",
-            a: "Yes. The Boulogne-Billancourt basin is our full territory: Issy-les-Moulineaux (~2 km), Vanves (~3 km), Sèvres (~3 km), Meudon (~4 km), Saint-Cloud (~3 km) and adjacent Paris 15th and 16th. No zone surcharge.",
+            a: "Yes. The Boulogne-Billancourt basin is our full territory: Issy-les-Moulineaux (~2 km), Vanves (~3 km), Sèvres (~3 km), Meudon (~4 km), Saint-Cloud (~3 km) and adjacent Paris 15th and 16th. Axion-IA works anywhere in France, on site or remotely.",
           },
           {
             q: "Do I need AI maturity to engage you?",
@@ -349,7 +349,7 @@ export const BOULOGNE_BILLANCOURT_COPY: VilleCopy = {
           },
           {
             q: "Que se passe-t-il en cas d'annulation ?",
-            a: "Plus l'annulation est anticipée, plus elle est neutre. Très anticipée : remboursement intégral. Quelques jours avant : participation partielle aux frais consultant déjà bloqué. Très tardive : la session est reportable une fois sans frais sur les mois suivants.",
+            a: "L'acompte prévu au devis, dès qu'il est versé, reste acquis en cas d'annulation, quel que soit le délai (hors rétractation légale et annulation de notre fait). Au-delà de l'acompte, rien n'est dû à plus de 15 jours ouvrés avant la date ; entre 8 et 15 jours ouvrés, 50 % du prix HT restent dus, et 100 % à moins de 8 jours ouvrés (jamais moins que l'acompte). La session est reportable une fois sans frais, dans les 3 mois.",
           },
         ],
         guarantees:
@@ -441,7 +441,7 @@ export const BOULOGNE_BILLANCOURT_COPY: VilleCopy = {
           },
           {
             q: "What happens with a cancellation?",
-            a: "The earlier the cancellation, the more neutral it is. Very early: full refund. A few days before: partial participation to consultant slot already blocked. Very late: the session is rebookable once free of charge in the following months.",
+            a: "The deposit set in the quote, once paid, is kept in the event of cancellation, whatever the notice (except statutory withdrawal and cancellation on our side). Beyond the deposit, nothing more is due more than 15 working days before the date; between 8 and 15 working days, 50% of the price excl. VAT is due, and 100% under 8 working days (never less than the deposit). The session can be rescheduled once free of charge, within 3 months.",
           },
         ],
         guarantees:
@@ -989,7 +989,7 @@ export const BOULOGNE_BILLANCOURT_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Combien coûte un audit IA opérationnel à Boulogne-Billancourt ?",
-      a: "Le tarif dépend du niveau retenu — Audit sur place, Ciblé, Stratégique PME ou Stratégique ETI. Tarifs publics affichés sur la page Audit, choix calibré selon votre taille (TPE, PME, ETI, grande entreprise) et votre périmètre. Aucun supplément géographique : le tarif est identique à Boulogne-Billancourt et partout en France.",
+      a: "Le tarif dépend du niveau retenu — Audit sur place, Ciblé, Stratégique PME ou Stratégique ETI. Tarifs publics affichés sur la page Audit, choix calibré selon votre taille (TPE, PME, ETI, grande entreprise) et votre périmètre.",
     },
     {
       q: "Avez-vous des cas clients à Boulogne-Billancourt ou dans le bassin ouest parisien ?",
@@ -1009,7 +1009,7 @@ export const BOULOGNE_BILLANCOURT_COPY: VilleCopy = {
     },
     {
       q: "Intervenez-vous aussi dans les communes limitrophes (Issy-les-Moulineaux, Meudon, Saint-Cloud, Sèvres) ?",
-      a: "Oui. Le bassin Boulogne-Billancourt est notre zone d'intervention complète : Issy-les-Moulineaux (~2 km), Vanves (~3 km), Sèvres (~3 km), Saint-Cloud (~3 km), Meudon (~4 km), et Paris 15e/16e limitrophes. Aucun supplément de zone.",
+      a: "Oui. Le bassin Boulogne-Billancourt est notre zone d'intervention complète : Issy-les-Moulineaux, Vanves, Sèvres, Saint-Cloud, Meudon, et Paris 15e/16e limitrophes.",
     },
   ],
 };

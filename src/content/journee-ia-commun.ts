@@ -18,6 +18,15 @@ export const JETON_PRIX = "{{PRIX}}";
 /** Délai de remise du rapport, valeur par défaut de l'art. 47.1 (c) des CGV, décision du 25/11/2026. */
 export const DELAI_RAPPORT_JOURS_OUVRES = 10;
 
+/** Délai, après la remise du rapport, pour demander le remboursement par écrit (CGV art. 47.10 f). */
+export const DELAI_DEMANDE_REMBOURSEMENT_JOURS = 30;
+
+/** Délai de réponse écrite d'Axion-IA à la demande (CGV art. 47.10 f). */
+export const DELAI_REPONSE_REMBOURSEMENT_JOURS = 15;
+
+/** Délai du virement, après l'acceptation de la demande (CGV art. 47.10 f). */
+export const DELAI_VIREMENT_REMBOURSEMENT_JOURS = 30;
+
 /** La seule phrase de remboursement : la fin exacte de `GARANTIE`. */
 export const GARANTIE_PHRASE =
   "Si les gains identifiés dans votre rapport n’atteignent pas 3 fois le prix HT de la journée, vous êtes remboursé sur demande écrite.";
@@ -29,9 +38,8 @@ export const GARANTIE = `Sous ${DELAI_RAPPORT_JOURS_OUVRES} jours ouvrés après
 export const CONDITION_GARANTIE =
   "Condition : le décideur et les personnes prévues sont présents pendant l’audit.";
 
-/** Le rapport, remis sous 3 jours ouvrés (décision de Williams). */
-export const RAPPORT_COMPLET =
-  "Sous 3 jours ouvrés après la journée, vous recevez votre rapport complet : vos gains chiffrés, les tâches à automatiser classées par rentabilité, et votre plan d’action sur 90 jours.";
+/** Le rapport, remis sous le délai de l'art. 47.1 (c) des CGV. */
+export const RAPPORT_COMPLET = `Sous ${DELAI_RAPPORT_JOURS_OUVRES} jours ouvrés après la journée, vous recevez votre rapport complet : vos gains chiffrés, les tâches à automatiser classées par rentabilité, et votre plan d’action sur 90 jours.`;
 
 /**
  * Multiple du prix HT de la journée sous lequel la journée est remboursée (garantie, CGV
@@ -64,8 +72,7 @@ export const NUMERO_DECLARATION_ACTIVITE = "84381100438";
 export const MENTION_DECLARATION_OF = `Enregistré sous le numéro ${NUMERO_DECLARATION_ACTIVITE}. Cet enregistrement ne vaut pas agrément de l’État.`;
 
 /** Le bloc « En bref » de l'accueil (le prix est un jeton). */
-export const EN_BREF_ACCUEIL =
-  "Axion-IA, partenaire IA des PME et des TPE fondé par Williams Jullin, intervient partout en France. Sa Journée IA se déroule dans les locaux de l’entreprise pour {{PRIX}}. Le matin, l’audit cartographie l’entreprise et chiffre ses plus gros gains, en heures et en euros. L’après-midi, les équipes sont formées sur leurs propres dossiers, avec une attestation par participant. Le rapport suit sous 3 jours ouvrés. Premier pas possible\u202f: un Diagnostic IA de 45 minutes, en visio ou par téléphone.";
+export const EN_BREF_ACCUEIL = `Axion-IA, partenaire IA des PME et des TPE fondé par Williams Jullin, intervient partout en France. Sa Journée IA se déroule dans les locaux de l’entreprise pour {{PRIX}}. Le matin, l’audit cartographie l’entreprise et chiffre ses plus gros gains, en heures et en euros. L’après-midi, les équipes sont formées sur leurs propres dossiers, avec une attestation par participant. Le rapport suit sous ${DELAI_RAPPORT_JOURS_OUVRES} jours ouvrés. Premier pas possible\u202f: un Diagnostic IA de 45 minutes, en visio ou par téléphone.`;
 
 /**
  * La présentation officielle d'Axion-IA (décision du dirigeant, 20/11/2026). SOURCE UNIQUE :
@@ -101,7 +108,7 @@ export const DESCRIPTION_SITE_EN =
 export const EN_BREF_JOURNEE_IA_PARAGRAPHES = [
   "La Journée IA est une journée d’audit et de formation à l’IA, menée par Axion-IA dans les locaux d’une PME ou d’une TPE (2 à 250 salariés), partout en France.",
   "Le matin, l’audit cartographie l’entreprise, fait le point avec le dirigeant sur ses priorités et chiffre ses plus gros gains, en heures et en euros. L’après-midi, les équipes sont formées 4 heures sur leurs propres dossiers, avec une attestation par participant.",
-  "Rapport chiffré sous 3 jours ouvrés. Prix\u202f: {{PRIX}}, garantie écrite sous condition.",
+  `Rapport chiffré sous ${DELAI_RAPPORT_JOURS_OUVRES} jours ouvrés. Prix\u202f: {{PRIX}}, garantie écrite sous condition.`,
 ] as const;
 
 /**
@@ -109,8 +116,7 @@ export const EN_BREF_JOURNEE_IA_PARAGRAPHES = [
  * (décision du dirigeant, 18/11/2026). Jamais applicable à une formation : ne l'écrire
  * sur aucune page formations. Le prix est le jeton, remplacé par `remplacerJetons()`.
  */
-export const DEDUCTION_JOURNEE_IA =
-  "Si vous nous confiez ensuite la mise en place d’une automatisation ou d’une intégration dans les 60 jours, les {{PRIX}} de la Journée IA sont déduits de votre devis.";
+export const DEDUCTION_JOURNEE_IA = `Si vous signez, dans les 60 jours suivant la journée, un devis de mise en place d'une automatisation ou d'une intégration d'au moins ${formatAmount(SEUIL_DEVIS_DEDUCTION_EUR, "fr")} avant déduction, les {{PRIX}} de la Journée IA sont déduits de ce devis, une seule fois. Cette déduction ne se cumule pas avec un remboursement au titre de la garantie.`;
 
 /** Le chemin de la landing (préfixé par la locale au rendu : `/fr/journee-ia`). */
 export const CHEMIN_JOURNEE_IA = "/journee-ia";
@@ -130,8 +136,7 @@ export function lienDiagnostic(depuis: string): string {
 export const EN_BREF_JOURNEE_IA = EN_BREF_JOURNEE_IA_PARAGRAPHES.join(" ");
 
 /** La description du nœud JSON-LD « Service » de la Journée IA (le prix est un jeton). */
-export const DESCRIPTION_SERVICE_JOURNEE_IA =
-  "Audit IA et formation des équipes en une seule journée, dans l’entreprise, partout en France\u202f: le matin, 2 à 4\u00a0h d’audit qui cartographie l’entreprise service par service, fait le point avec le dirigeant sur ses priorités et retient les 3 à 5 tâches au meilleur retour sur investissement, chacune chiffrée en heures et en euros\u202f; l’après-midi, 4\u00a0h de formation des équipes sur leurs propres dossiers, qui s’inscrit dans l’article 4 du règlement européen sur l’IA, avec une attestation de formation par participant\u202f; priorités écrites le soir même, rapport chiffré et plan d’action sur 90 jours remis sous 3 jours ouvrés. {{PRIX}}, prix unique.";
+export const DESCRIPTION_SERVICE_JOURNEE_IA = `Audit IA et formation des équipes en une seule journée, dans l’entreprise, partout en France\u202f: le matin, 2 à 4\u00a0h d’audit qui cartographie l’entreprise service par service, fait le point avec le dirigeant sur ses priorités et retient les 3 à 5 tâches au meilleur retour sur investissement, chacune chiffrée en heures et en euros\u202f; l’après-midi, 4\u00a0h de formation des équipes sur leurs propres dossiers, qui s’inscrit dans l’article 4 du règlement européen sur l’IA, avec une attestation de formation par participant\u202f; priorités écrites le soir même, rapport chiffré et plan d’action sur 90 jours remis sous ${DELAI_RAPPORT_JOURS_OUVRES} jours ouvrés. {{PRIX}}, prix unique.`;
 
 /**
  * L'exemple chiffré montré sur la landing et l'accueil. Le gain est calculé :

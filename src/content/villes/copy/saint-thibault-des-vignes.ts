@@ -65,7 +65,7 @@ export const SAINT_THIBAULT_DES_VIGNES_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Saint-Thibault-des-Vignes ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Gare de Lagny–Thorigny à 5 min. Intervention dans vos locaux ou en visio.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Intervention dans vos locaux ou en visio.",
     },
   ],
 };

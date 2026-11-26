@@ -14,9 +14,9 @@ export const SAINT_JORY_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Jory (31). Nous accompagnons TPE artisans, PME de services, professions libérales et commerçants du nord Toulouse. Audit sur place sur mesure.",
   seoHook: "logistique transport & artisanat",
   ecosystemFr:
-    "Saint-Jory est une commune des bords de Garonne au nord de Toulouse. Tissu TPE artisans, PME de services et logistique, commerces de centre-bourg, professions libérales. Proximité Castelnau-d'Estrétefonds et de l'axe A62.",
+    "Saint-Jory est une commune des bords de Garonne au nord de Toulouse. Tissu TPE artisans, PME de services et logistique, commerces de centre-bourg, professions libérales. Axion-IA y intervient dans vos locaux, comme partout en France.",
   ecosystemEn:
-    "Saint-Jory est une commune des bords de Garonne au nord de Toulouse. Tissu TPE artisans, PME de services et logistique, commerces de centre-bourg, professions libérales. Proximité Castelnau-d'Estrétefonds et de l'axe A62.",
+    "Saint-Jory est une commune des bords de Garonne au nord de Toulouse. Tissu TPE artisans, PME de services et logistique, commerces de centre-bourg, professions libérales. Axion-IA y intervient dans vos locaux, comme partout en France.",
   distancesFr:
     "Toulouse centre à 20 min (D4/A62). Gare Matabiau à 25 min. Aéroport Toulouse-Blagnac à 25 min. Castelnau-d'Estrétefonds à 8 min. Bruguières à 5 min.",
   distancesEn:

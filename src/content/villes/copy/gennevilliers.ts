@@ -55,7 +55,7 @@ export const GENNEVILLIERS_COPY: VilleCopy = {
           "Le port de Gennevilliers concentre des flux logistiques massifs (conteneurs, BTP, métallurgie, produits valorisables) opérés par Amazon, DHL Supply Chain, Calberson, DB Schenker, DSV ou Lafarge : nous construisons des portails clients, des espaces de suivi d'expédition et des plateformes de devis qui parlent à ce métier multimodal.",
           "Plus de 2 500 établissements de la zone industrielle — négoce de matériaux, transport fluvial/routier, sous-traitance industrielle — ont besoin de sites web qui convertissent en B2B : configurateurs produits, catalogues techniques, prise de RDV transporteur. Nous codons ces fonctions, pas du template.",
           "Le tissu industriel issu de Le Carbone (usine de 1914 devenue Mersen) et de l'ancienne Chausson/Renault ETG laisse des PME mécaniques et métallurgiques qui modernisent leurs interfaces : extranet fournisseurs, documentation produit interrogeable par IA, recherche sémantique sur fiches techniques.",
-          "Desserte exceptionnelle (RER C, métro 13 à Gabriel Péri, tramway T1, A15/A86, Paris à 2,1 km) : nous intervenons sur site rapidement pour les ateliers UX et les recettes, à Gennevilliers comme dans les communes limitrophes (Asnières, Colombes, Villeneuve-la-Garenne, Saint-Ouen).",
+          "Nous intervenons sur site pour les ateliers UX et les recettes, à Gennevilliers comme dans les communes limitrophes (Asnières, Colombes, Villeneuve-la-Garenne, Saint-Ouen).",
         ],
         methodology: [
           {
@@ -129,7 +129,7 @@ export const GENNEVILLIERS_COPY: VilleCopy = {
           },
           {
             q: "Intervenez-vous sur place et dans les communes voisines ?",
-            a: "Oui, nous nous déplaçons à Gennevilliers pour les ateliers UX et les recettes — la commune est très accessible (RER C, métro 13, tramway T1, A15/A86, Paris à 2,1 km). Nous couvrons aussi Asnières-sur-Seine, Colombes, Villeneuve-la-Garenne, Saint-Ouen, Épinay-sur-Seine, L'Île-Saint-Denis et Argenteuil.",
+            a: "Oui, Axion IA intervient partout en France, sur site ou à distance, notamment à Gennevilliers. Nous couvrons aussi Asnières-sur-Seine, Colombes, Villeneuve-la-Garenne, Saint-Ouen, Épinay-sur-Seine, L'Île-Saint-Denis et Argenteuil.",
           },
         ],
         guarantees:
@@ -141,7 +141,7 @@ export const GENNEVILLIERS_COPY: VilleCopy = {
           "The Port of Gennevilliers concentrates massive logistics flows (containers, construction, metallurgy, recyclables) operated by Amazon, DHL Supply Chain, Calberson, DB Schenker, DSV and Lafarge: we build customer portals, shipment-tracking spaces and quoting platforms that speak this multimodal trade.",
           "More than 2,500 establishments in the industrial zone — material trading, river/road transport, industrial subcontracting — need websites that convert in B2B: product configurators, technical catalogues, carrier booking. We code these functions, not templates.",
           "The industrial fabric stemming from Le Carbone (1914 plant, now Mersen) and the former Chausson/Renault ETG leaves mechanical and metallurgical SMEs modernising their interfaces: supplier extranets, AI-searchable product documentation, semantic search over datasheets.",
-          "Outstanding access (RER C, metro line 13 at Gabriel Péri, tram T1, A15/A86, Paris 2.1 km away): we come on site quickly for UX workshops and acceptance testing, in Gennevilliers and neighbouring towns (Asnières, Colombes, Villeneuve-la-Garenne, Saint-Ouen).",
+          "We work on site for UX workshops and acceptance testing, in Gennevilliers and neighbouring towns (Asnières, Colombes, Villeneuve-la-Garenne, Saint-Ouen).",
         ],
         methodology: [
           {
@@ -215,7 +215,7 @@ export const GENNEVILLIERS_COPY: VilleCopy = {
           },
           {
             q: "Do you work on site and in nearby towns?",
-            a: "Yes, we come to Gennevilliers for UX workshops and acceptance testing — the town is highly accessible (RER C, metro 13, tram T1, A15/A86, Paris 2.1 km away). We also cover Asnières-sur-Seine, Colombes, Villeneuve-la-Garenne, Saint-Ouen, Épinay-sur-Seine, L'Île-Saint-Denis and Argenteuil.",
+            a: "Yes, we work on site in Gennevilliers for UX workshops and acceptance testing. We also cover Asnières-sur-Seine, Colombes, Villeneuve-la-Garenne, Saint-Ouen, Épinay-sur-Seine, L'Île-Saint-Denis and Argenteuil.",
           },
         ],
         guarantees:
@@ -231,7 +231,7 @@ export const GENNEVILLIERS_COPY: VilleCopy = {
     },
     {
       q: "Sous quel délai Axion-IA peut-il intervenir à Gennevilliers ?",
-      a: "Notre équipe se déplace à Gennevilliers sous 5 jours ouvrés. Les accès RER C, métro 13 et autoroutes A15/A86 rendent la commune particulièrement rapide à rejoindre depuis Paris ou la province.",
+      a: "Notre équipe intervient à Gennevilliers sous 5 jours ouvrés.",
     },
     {
       q: "Intervenez-vous à Asnières-sur-Seine, Colombes ou Villeneuve-la-Garenne ?",

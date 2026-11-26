@@ -65,7 +65,7 @@ export const PORT_SAINT_LOUIS_DU_RHONE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une intervention à Port-Saint-Louis-du-Rhône ?",
-      a: "Nous intervenons partout en France, sur place ou à distance, dans vos locaux. Port-Saint-Louis-du-Rhône est accessible par l'A55 et l'A54.",
+      a: "Nous intervenons partout en France, sur place ou à distance, dans vos locaux.",
     },
   ],
 };

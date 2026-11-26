@@ -49,7 +49,7 @@ export const USTARITZ_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Ustaritz et dans le Labourd intérieur ?",
-      a: "Oui, Axion-IA intervient à Ustaritz et dans tout le Labourd intérieur (Cambo-les-Bains, Hasparren, Espelette). Nous intervenons partout en France, sur place ou à distance. Ustaritz est à 15 min de la gare de Bayonne en voiture et 20 min de l'aéroport de Biarritz.",
+      a: "Oui, Axion-IA intervient à Ustaritz et dans tout le Labourd intérieur (Cambo-les-Bains, Hasparren, Espelette). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quels services IA pour les agriculteurs basques d'Ustaritz ?",

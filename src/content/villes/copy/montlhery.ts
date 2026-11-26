@@ -49,7 +49,7 @@ export const MONTLHERY_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Montlhéry et dans le Hurepoix ?",
-      a: "Oui, Axion-IA intervient à Montlhéry et dans tout le Hurepoix (Linas, Longpont-sur-Orge, Arpajon, La Ville-du-Bois, Nozay). Couverture axe RN20 et communes environnantes.",
+      a: "Oui, Axion-IA intervient à Montlhéry et dans tout le Hurepoix (Linas, Longpont-sur-Orge, Arpajon, La Ville-du-Bois, Nozay). Couverture des communes environnantes.",
     },
     {
       q: "Travaillez-vous avec les restaurateurs et commerçants du centre historique ?",
@@ -64,8 +64,8 @@ export const MONTLHERY_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les organisateurs événementiels sur leurs cas IA : billetterie automatisée, chatbot participants, gestion logistique, CRM sponsors, communication ciblée.",
     },
     {
-      q: "Comment se passe une mission à Montlhéry depuis Paris ?",
-      a: "Nos consultants interviennent à Montlhéry (35 min depuis Paris via A6/RN20, Massy TGV à 15 min). Aéroport Orly à 20 min.",
+      q: "Comment se déroule une mission à Montlhéry ?",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Montlhéry, comme partout en France, ou à distance.",
     },
   ],
 };

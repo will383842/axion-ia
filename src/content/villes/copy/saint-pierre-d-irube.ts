@@ -49,7 +49,7 @@ export const SAINT_PIERRE_D_IRUBE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Saint-Pierre-d'Irube ?",
-      a: "Oui, Axion-IA intervient à Saint-Pierre-d'Irube et dans toute l'agglomération Pays Basque (Bayonne, Anglet, Biarritz, Boucau, Mouguerre). Déplacement inclus dans l'agglo bayonnaise.",
+      a: "Oui, Axion-IA intervient à Saint-Pierre-d'Irube et dans toute l'agglomération Pays Basque (Bayonne, Anglet, Biarritz, Boucau, Mouguerre).",
     },
     {
       q: "Quels services IA pour les PME de services de Saint-Pierre-d'Irube ?",
@@ -65,7 +65,7 @@ export const SAINT_PIERRE_D_IRUBE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA sur site à Saint-Pierre-d'Irube ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Mission sur site dans vos locaux à Saint-Pierre-d'Irube, commune à 8 min de la gare de Bayonne et 15 min de l'aéroport Biarritz Pays Basque.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Mission sur site dans vos locaux à Saint-Pierre-d'Irube.",
     },
   ],
 };

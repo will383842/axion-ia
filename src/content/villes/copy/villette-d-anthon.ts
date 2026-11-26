@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const VILLETTE_D_ANTHON_COPY: VilleCopy = {
   pitchFr:
-    "Villette-d'Anthon (38), commune du Nord-Isère dans l'aire lyonnaise est, est positionnée à la confluence de l'Ain et du Rhône. Proximité immédiate aéroport Lyon-Saint-Exupéry. Tissu PME industrielles, logistique, agriculture vallée, TPE artisans BTP, commerces. Axion-IA y conduit ses missions auprès des entreprises locales.",
+    "Villette-d'Anthon (38), commune du Nord-Isère dans l'aire lyonnaise est, est positionnée à la confluence de l'Ain et du Rhône. Tissu PME industrielles, logistique, agriculture vallée, TPE artisans BTP, commerces. Axion-IA y conduit ses missions auprès des entreprises locales.",
   pitchEn:
-    "Villette-d'Anthon (38), commune du Nord-Isère dans l'aire lyonnaise est, est positionnée à la confluence de l'Ain et du Rhône. Proximité immédiate aéroport Lyon-Saint-Exupéry. Tissu PME industrielles, logistique, agriculture vallée, TPE artisans BTP, commerces. Axion-IA y conduit ses missions auprès des entreprises locales.",
+    "Villette-d'Anthon (38), commune du Nord-Isère dans l'aire lyonnaise est, est positionnée à la confluence de l'Ain et du Rhône. Tissu PME industrielles, logistique, agriculture vallée, TPE artisans BTP, commerces. Axion-IA y conduit ses missions auprès des entreprises locales.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Villette-d'Anthon (38). Nous accompagnons tous types d'activités : PME industrielles et logistiques aire Saint-Exupéry, TPE artisans BTP, commerçants, agriculteurs vallée du Rhône, indépendants, professions libérales et services aux entreprises du Nord-Isère.",
   directAnswerEn:
@@ -49,7 +49,7 @@ export const VILLETTE_D_ANTHON_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Villette-d'Anthon et aire Saint-Exupéry ?",
-      a: "Oui, Axion-IA intervient à Villette-d'Anthon et toute l'aire est de Lyon (Janneyrias, Pont-de-Chéruy, Charvieu-Chavagneux). Spécialisation logistique Saint-Exupéry. Consultants de Lyon (30 min A43).",
+      a: "Oui, Axion-IA intervient à Villette-d'Anthon et toute l'aire est de Lyon (Janneyrias, Pont-de-Chéruy, Charvieu-Chavagneux). Spécialisation logistique Saint-Exupéry.",
     },
     {
       q: "Travaillez-vous avec les opérateurs logistiques aéroportuaires ?",
@@ -65,7 +65,7 @@ export const VILLETTE_D_ANTHON_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Villette-d'Anthon ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Pour les multi-jours, hébergement local possible. Coûts de déplacement séparés du forfait, tarifs transparents.",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Villette-d'Anthon, comme partout en France, ou à distance.",
     },
   ],
 };

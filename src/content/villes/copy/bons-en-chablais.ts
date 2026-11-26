@@ -65,7 +65,7 @@ export const BONS_EN_CHABLAIS_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Bons-en-Chablais ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Genève à 30 min via A40. Multi-jours : hébergement local possible.",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Bons-en-Chablais, comme partout en France, ou à distance.",
     },
   ],
 };

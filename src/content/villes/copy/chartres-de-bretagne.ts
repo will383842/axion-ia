@@ -65,7 +65,7 @@ export const CHARTRES_DE_BRETAGNE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Chartres-de-Bretagne ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Gare TER de Chartres-de-Bretagne sur la commune. Interventions directement dans vos locaux zone d'activités.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Interventions directement dans vos locaux zone d'activités.",
     },
   ],
 };

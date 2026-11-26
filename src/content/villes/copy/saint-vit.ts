@@ -49,7 +49,7 @@ export const SAINT_VIT_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Saint-Vit et entre Besançon et Dole ?",
-      a: "Oui, Axion-IA intervient à Saint-Vit et sur tout l'axe Besançon-Dole (Quingey, Arc-et-Senans, Osselle-Routelle, Byans-sur-Doubs). Couverture Besançon à 20 min et Dole à 25 min.",
+      a: "Oui, Axion-IA intervient à Saint-Vit et sur tout l'axe Besançon-Dole (Quingey, Arc-et-Senans, Osselle-Routelle, Byans-sur-Doubs).",
     },
     {
       q: "Travaillez-vous avec les PME industrielles et logistiques du secteur ?",
@@ -65,7 +65,7 @@ export const SAINT_VIT_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Saint-Vit ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Gare TER de Saint-Vit sur la ligne Besançon-Dole.",
+      a: "Nous intervenons partout en France, sur place ou à distance.",
     },
   ],
 };

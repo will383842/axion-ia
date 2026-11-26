@@ -38,6 +38,7 @@ import { CAS_CONCRETS_AFFICHES } from "@/content/preuves-sociales";
 import { TOUR_PREFIX, TOUR_PUBLIC } from "@/features/tour-de-france/visibilite";
 import { FOUNDER } from "@/lib/brand";
 import { COORDONNEES_PUBLIQUES } from "@/lib/identite-legale-ssot";
+import { EN_BREF_APPORTEURS } from "@/content/recrutement/en-bref-apporteurs";
 import { SITE_URL } from "@/lib/seo";
 // R7 (ordre de Williams du 08/11/2026) : aucun montant public hors Journée IA.
 import { recollerMontantsMasques } from "@/lib/seo/montant-public-texte";
@@ -119,13 +120,18 @@ ${ligneCasConcrets}${ligneAvis}
 - [Contact](${SITE_URL}/fr/contact): ${COORDONNEES_PUBLIQUES.contactEmail}.
 - [Presse](${SITE_URL}/fr/presse): dossier de presse et contact dédié.
 - [Accessibilité](${SITE_URL}/fr/accessibilite): ${ACCESSIBILITE_LLMS}
+
+## Réseau d'apporteurs d'affaires indépendants
+
+- [Devenir apporteur d’affaires indépendant](${SITE_URL}/fr/devenir-commercial-ia): ${EN_BREF_APPORTEURS}
+- [Dossier en 3 minutes](${SITE_URL}/fr/devenir-commercial-ia/candidature): une question par écran, sans CV.
+
 ${sectionVideos}
 ## Optional
 
 - [Version complète](${SITE_URL}/llms-full.txt): les réponses développées, le glossaire complet et la FAQ.
 - [Comparaisons](${SITE_URL}/fr/comparaisons): Axion-IA face aux autres options (consultants, agences, logiciels prêts à l’emploi).
 ${ligneObservatoireLlms(SITE_URL)}
-- [Devenir apporteur d’affaires](${SITE_URL}/fr/devenir-commercial-ia): réseau d’indépendants qui présentent la Journée IA à des dirigeants qu’ils connaissent.
 ${sectionTour}- [Banque d’images](${SITE_URL}/fr/galerie): visuels Axion-IA sous licence CC BY 4.0.
 - [Plan du site](${SITE_URL}/sitemap-index.xml): la liste de tous les plans du site.
 - [Plan de la base de connaissances](${SITE_URL}/sitemap-knowledge.xml): les fiches publiées, avec leur date de dernière révision.

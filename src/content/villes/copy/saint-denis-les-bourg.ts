@@ -53,7 +53,7 @@ export const SAINT_DENIS_LES_BOURG_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Saint-Denis-lès-Bourg ?",
-      a: "Oui, Axion-IA intervient à Saint-Denis-lès-Bourg et dans toute l'agglomération burgienne (Bourg-en-Bresse à 5 min, Viriat, Péronnas). Nous intervenons partout en France, sur place ou à distance.",
+      a: "Oui. Nous intervenons à Saint-Denis-lès-Bourg et dans toute l'agglomération burgienne (Bourg-en-Bresse, Viriat, Péronnas), sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les éleveurs et exploitants bressois ?",

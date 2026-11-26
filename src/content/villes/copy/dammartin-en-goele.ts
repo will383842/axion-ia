@@ -49,7 +49,7 @@ export const DAMMARTIN_EN_GOELE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il a Dammartin-en-Goele et dans le pays de Goele ?",
-      a: "Oui, Axion-IA intervient a Dammartin-en-Goele et dans tout le pays de Goele (Claye-Souilly a 15 min, Senlis a 15 min, Meaux a 20 min). Aeroport Roissy-CDG a 10 min, Paris a 40 min.",
+      a: "Oui, Axion-IA intervient a Dammartin-en-Goele et dans tout le pays de Goele.",
     },
     {
       q: "Travaillez-vous avec les operateurs logistique lies a Roissy-CDG ?",

@@ -49,7 +49,7 @@ export const LE_CANNET_DES_MAURES_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il au Cannet-des-Maures et dans le Centre-Var ?",
-      a: "Oui, Axion-IA intervient au Cannet-des-Maures et dans tout le Centre-Var (Le Luc, Vidauban, Les Mayons, Gonfaron, La Garde-Freinet). Accès direct via A8.",
+      a: "Oui, Axion-IA intervient au Cannet-des-Maures et dans tout le Centre-Var (Le Luc, Vidauban, Les Mayons, Gonfaron, La Garde-Freinet).",
     },
     {
       q: "Quel est le tarif d'un audit IA au Cannet-des-Maures ?",
@@ -64,8 +64,8 @@ export const LE_CANNET_DES_MAURES_COPY: VilleCopy = {
       a: "Oui, nous intervenons en BTP, artisanat et commerce de proximité sur automatisation devis, gestion planning chantiers, content marketing local, fiches Google Business, SAV conversationnel.",
     },
     {
-      q: "Comment se déplace Axion-IA au Cannet-des-Maures ?",
-      a: "Le Cannet-des-Maures est à 5 min du Luc et 25 min de Brignoles via A8. Nos consultants se déplacent dans vos locaux ou domaines.",
+      q: "Comment se déroule une mission au Cannet-des-Maures ?",
+      a: "Après un premier échange de cadrage, nous intervenons sur place au Cannet-des-Maures, comme partout en France, ou à distance.",
     },
   ],
 };

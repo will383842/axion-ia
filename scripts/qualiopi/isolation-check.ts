@@ -146,6 +146,15 @@ const ALLOWED_PATTERNS: ReadonlyArray<RegExp> = [
  * pour rien.
  */
 const CONSOMMATEURS_ASSUMES: ReadonlySet<string> = new Set([
+  // Garantie Journée IA : remboursement de la garantie, avoirs via `genererAvoirFacture` (voie unique) —
+  // `lecture.ts` consomme donc vraiment la facturation qualiopi. Nommé seul.
+  "src/server/garanties-journee-ia/lecture.ts",
+  // Garantie Journée IA, suivi des remboursements (PR 2/3, 25/11/2026) — la fiche et le formulaire de
+  // création appellent les Server Actions du dossier (`actions/qualiopi/garanties-journee-ia`, gardées par
+  // `requireAdminWrite` / `requireHabilitation("facturer")` du domaine, journal `ActivityLog` commun) : une
+  // seule garde et un seul journal, jamais recopiés. N'importent que ce module du domaine. Nommés seuls.
+  "src/app/[locale]/(admin)/[adminPrefix]/garanties-journee-ia/[id]/page.tsx",
+  "src/app/[locale]/(admin)/[adminPrefix]/garanties-journee-ia/nouveau/page.tsx",
   // Signature renforcée du devis, lot 4 bis (07/11/2026) — ce test de garde RGPD (aucune table ne garde une
   // donnée personnelle en silence) lit `COLONNES_SCELLEES_DOCUMENT` (colonnes scellées de la signature,
   // `document-reconstruction`) : c'est la liste unique des colonnes que l'effacement ne touche pas ; la

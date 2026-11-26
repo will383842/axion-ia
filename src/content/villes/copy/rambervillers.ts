@@ -49,7 +49,7 @@ export const RAMBERVILLERS_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Rambervillers ?",
-      a: "Oui, Axion-IA intervient à Rambervillers et dans toute la Plaine des Vosges (Épinal, Saint-Dié, Bruyères, Charmes). Consultants via gare SNCF Rambervillers ou RN420.",
+      a: "Oui, Axion-IA intervient à Rambervillers et dans toute la Plaine des Vosges (Épinal, Saint-Dié, Bruyères, Charmes).",
     },
     {
       q: "Travaillez-vous avec les PME céramique/faïence et bois ?",
@@ -65,7 +65,7 @@ export const RAMBERVILLERS_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Rambervillers ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Rambervillers est desservie par sa gare SNCF (ligne TER Lorraine) et la RN420/RD32, à 30 min d'Épinal et 35 min de Saint-Dié.",
+      a: "Nous intervenons partout en France, sur place ou à distance.",
     },
   ],
 };

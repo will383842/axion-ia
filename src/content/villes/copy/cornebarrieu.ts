@@ -14,9 +14,9 @@ export const CORNEBARRIEU_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Cornebarrieu (31). Nous accompagnons TPE et PME aéronautiques, sous-traitants industriels, professions libérales et commerçants du pôle aéroportuaire Toulouse. Audit sur place sur mesure.",
   seoHook: "TPE & PME Hte-Garonne",
   ecosystemFr:
-    "Cornebarrieu est une commune stratégique du pôle aéroportuaire toulousain. PME aéronautiques et sous-traitants, TPE de services aux entreprises, zone Aéroconstellation, professions libérales, commerces. Proximité immédiate de l'aéroport Toulouse-Blagnac et de Blagnac.",
+    "Cornebarrieu est une commune stratégique du pôle aéroportuaire toulousain. PME aéronautiques et sous-traitants, TPE de services aux entreprises, zone Aéroconstellation, professions libérales, commerces. Un tissu d'entreprises tourné vers l'aéronautique et ses sous-traitants.",
   ecosystemEn:
-    "Cornebarrieu est une commune stratégique du pôle aéroportuaire toulousain. PME aéronautiques et sous-traitants, TPE de services aux entreprises, zone Aéroconstellation, professions libérales, commerces. Proximité immédiate de l'aéroport Toulouse-Blagnac et de Blagnac.",
+    "Cornebarrieu est une commune stratégique du pôle aéroportuaire toulousain. PME aéronautiques et sous-traitants, TPE de services aux entreprises, zone Aéroconstellation, professions libérales, commerces. Un tissu d'entreprises tourné vers l'aéronautique et ses sous-traitants.",
   distancesFr:
     "Toulouse centre à 20 min (D902). Aéroport Toulouse-Blagnac à 5 min. Gare Matabiau à 25 min. Blagnac à 5 min. Beauzelle à 8 min.",
   distancesEn:

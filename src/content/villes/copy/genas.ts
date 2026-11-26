@@ -49,7 +49,7 @@ export const GENAS_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Genas et est lyonnais ?",
-      a: "Oui, Axion-IA intervient à Genas et tout l'est lyonnais (Chassieu limitrophe, Bron, Saint-Priest, aéroport Saint-Exupéry à 10 min). Nous intervenons partout en France, sur place ou à distance.",
+      a: "Oui, Axion-IA intervient à Genas et dans tout l'est lyonnais (Chassieu limitrophe, Bron, Saint-Priest). Nous intervenons sur place à Genas, comme partout en France, ou à distance.",
     },
     {
       q: "Travaillez-vous avec les PME zones d'activités ?",
@@ -65,7 +65,7 @@ export const GENAS_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Genas ?",
-      a: "Nous intervenons partout en France, sur place ou à distance.",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Genas, comme partout en France, ou à distance.",
     },
   ],
 };

@@ -56,7 +56,7 @@ export const CASTELNAU_LE_LEZ_COPY: VilleCopy = {
           "Pôle jeu vidéo et numérique reconnu : la présence du studio Ubisoft Montpellier et des activités tech du secteur Eurêka crée un terreau d'exigence en matière d'interfaces. Nous bâtissons des UX/UI soignées, performantes (Web Vitals tenus) et des plateformes SaaS IA-native à la hauteur de cet écosystème, avec recherche sémantique et agents conversationnels sur vos propres données.",
           "Tissu à dominante services spécialisés et activités administratives (23,6 %) et commerce-hôtellerie-restauration (21,4 %) sur 3 319 établissements recensés fin 2019 : pour les commerces de l'avenue de l'Europe et les artisans, on greffe l'IA sur l'existant (widget, plugin, API) ou on monte une boutique e-commerce multi-CMS — WordPress, Shopify, WooCommerce, PrestaShop, Magento — sans refonte lourde ni interruption de service.",
           "Cabinets libéraux et structures de santé du secteur Eurêka : nos chatbots RAG multilingues et nos moteurs de recherche sémantique répondent aux patients et clients à partir de vos seuls contenus, avec prise de rendez-vous en ligne, tri des demandes et automatisation des relances. Aucune donnée patient ne quitte l'UE sans DPA.",
-          "Commune intégrée à la métropole et desservie par 8 stations de la ligne 2 du tramway (depuis décembre 2006), à ~5 km de la gare Saint-Roch : déplacements simples sur site pour des employeurs comme Logitrade, Sud Service SAS ou Eiffage Construction, et toute la chaîne IA est hébergeable en UE, conforme RGPD et AI Act — vos données clients et vos modèles restent maîtrisés et transférables.",
+          "Commune intégrée à la métropole de Montpellier : interventions sur site pour des employeurs comme Logitrade, Sud Service SAS ou Eiffage Construction, et toute la chaîne IA est hébergeable en UE, conforme RGPD et AI Act — vos données clients et vos modèles restent maîtrisés et transférables.",
         ],
         methodology: [
           {
@@ -72,7 +72,7 @@ export const CASTELNAU_LE_LEZ_COPY: VilleCopy = {
           {
             step: "Développement par sprints",
             detail:
-              "Greffe IA sur l'existant ou build IA-native : e-commerce multi-CMS, chatbot RAG multilingue, recherche sémantique, agents et automatisation des devis et rendez-vous. Démos hebdomadaires en visio depuis Castelnau-le-Lez, code versionné et revu, intégration continue branchée sur votre SI (CRM, ERP).",
+              "Greffe IA sur l'existant ou build IA-native : e-commerce multi-CMS, chatbot RAG multilingue, recherche sémantique, agents et automatisation des devis et rendez-vous. Démos hebdomadaires en visio, code versionné et revu, intégration continue branchée sur votre SI (CRM, ERP).",
           },
           {
             step: "Recette + mise en ligne",
@@ -130,7 +130,7 @@ export const CASTELNAU_LE_LEZ_COPY: VilleCopy = {
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
-            a: "Oui. Après le cadrage sur site à Castelnau-le-Lez, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, pas de surcoût de déplacement : la ligne 2 du tramway et la proximité de la gare Saint-Roch rendent nos venues sur site simples.",
+            a: "Oui. Après le cadrage sur site à Castelnau-le-Lez, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée : la ligne 2 du tramway et la proximité de la gare Saint-Roch rendent nos venues sur site simples.",
           },
         ],
         guarantees:
@@ -142,7 +142,7 @@ export const CASTELNAU_LE_LEZ_COPY: VilleCopy = {
           "Pôle jeu vidéo et numérique reconnu : la présence du studio Ubisoft Montpellier et des activités tech du secteur Eurêka crée un terreau d'exigence en matière d'interfaces. Nous bâtissons des UX/UI soignées, performantes (Web Vitals tenus) et des plateformes SaaS IA-native à la hauteur de cet écosystème, avec recherche sémantique et agents conversationnels sur vos propres données.",
           "Tissu à dominante services spécialisés et activités administratives (23,6 %) et commerce-hôtellerie-restauration (21,4 %) sur 3 319 établissements recensés fin 2019 : pour les commerces de l'avenue de l'Europe et les artisans, on greffe l'IA sur l'existant (widget, plugin, API) ou on monte une boutique e-commerce multi-CMS — WordPress, Shopify, WooCommerce, PrestaShop, Magento — sans refonte lourde ni interruption de service.",
           "Cabinets libéraux et structures de santé du secteur Eurêka : nos chatbots RAG multilingues et nos moteurs de recherche sémantique répondent aux patients et clients à partir de vos seuls contenus, avec prise de rendez-vous en ligne, tri des demandes et automatisation des relances. Aucune donnée patient ne quitte l'UE sans DPA.",
-          "Commune intégrée à la métropole et desservie par 8 stations de la ligne 2 du tramway (depuis décembre 2006), à ~5 km de la gare Saint-Roch : déplacements simples sur site pour des employeurs comme Logitrade, Sud Service SAS ou Eiffage Construction, et toute la chaîne IA est hébergeable en UE, conforme RGPD et AI Act — vos données clients et vos modèles restent maîtrisés et transférables.",
+          "Commune intégrée à la métropole de Montpellier : interventions sur site pour des employeurs comme Logitrade, Sud Service SAS ou Eiffage Construction, et toute la chaîne IA est hébergeable en UE, conforme RGPD et AI Act — vos données clients et vos modèles restent maîtrisés et transférables.",
         ],
         methodology: [
           {
@@ -158,7 +158,7 @@ export const CASTELNAU_LE_LEZ_COPY: VilleCopy = {
           {
             step: "Développement par sprints",
             detail:
-              "Greffe IA sur l'existant ou build IA-native : e-commerce multi-CMS, chatbot RAG multilingue, recherche sémantique, agents et automatisation des devis et rendez-vous. Démos hebdomadaires en visio depuis Castelnau-le-Lez, code versionné et revu, intégration continue branchée sur votre SI (CRM, ERP).",
+              "Greffe IA sur l'existant ou build IA-native : e-commerce multi-CMS, chatbot RAG multilingue, recherche sémantique, agents et automatisation des devis et rendez-vous. Démos hebdomadaires en visio, code versionné et revu, intégration continue branchée sur votre SI (CRM, ERP).",
           },
           {
             step: "Recette + mise en ligne",
@@ -216,7 +216,7 @@ export const CASTELNAU_LE_LEZ_COPY: VilleCopy = {
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
-            a: "Oui. Après le cadrage sur site à Castelnau-le-Lez, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, pas de surcoût de déplacement : la ligne 2 du tramway et la proximité de la gare Saint-Roch rendent nos venues sur site simples.",
+            a: "Oui. Après le cadrage sur site à Castelnau-le-Lez, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée : la ligne 2 du tramway et la proximité de la gare Saint-Roch rendent nos venues sur site simples.",
           },
         ],
         guarantees:
@@ -228,15 +228,15 @@ export const CASTELNAU_LE_LEZ_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Quels sont les tarifs Axion-IA à Castelnau-le-Lez ?",
-      a: "Nos tarifs publics commencent à {{price:audit-flash|flat}} pour l'Audit sur place 4h, {{price:intervention-4h|flat}} pour le format d'une journée et {{price:intervention-dirigeants|flat}} pour une implémentation ou un accompagnement 1-to-1. Les TPE et PME locales bénéficient de la même grille tarifaire que partout en France.",
+      a: "Nos tarifs publics commencent à {{price:audit-flash|flat}} pour l'Audit sur place 4h, {{price:intervention-4h|flat}} pour le format d'une journée et {{price:intervention-dirigeants|flat}} pour une implémentation ou un accompagnement 1-to-1. Les TPE et PME locales bénéficient de tarifs publics clairs, sans surprise.",
     },
     {
       q: "Quels délais pour une intervention IA à Castelnau-le-Lez ?",
-      a: "Nous nous engageons à intervenir sur site à Castelnau-le-Lez dans les 5 jours ouvrés après validation de la mission. La proximité de la gare Saint-Roch et de l'aéroport Montpellier-Méditerranée facilite la planification.",
+      a: "Nous nous engageons à intervenir sur site à Castelnau-le-Lez dans les 5 jours ouvrés après validation de la mission.",
     },
     {
-      q: "Quelles communes proches couvrez-vous depuis Castelnau-le-Lez ?",
-      a: "Nous intervenons aussi dans les communes limitrophes : Montpellier, Clapiers, Le Crès, Jacou et Saint-Aunès. La ligne 2 du tramway relie directement la commune au centre de Montpellier.",
+      q: "Quelles communes proches couvrez-vous autour de Castelnau-le-Lez ?",
+      a: "Axion IA intervient partout en France, sur site ou à distance, y compris dans les communes limitrophes de Castelnau-le-Lez : Montpellier, Clapiers, Le Crès, Jacou et Saint-Aunès.",
     },
     {
       q: "Quels secteurs locaux accompagnez-vous à Castelnau-le-Lez ?",
@@ -248,7 +248,7 @@ export const CASTELNAU_LE_LEZ_COPY: VilleCopy = {
     },
     {
       q: "Vous déplacez-vous sur site à Castelnau-le-Lez ?",
-      a: "Oui, notre équipe se déplace directement sur site à Castelnau-le-Lez pour les audits, interventions et implémentations. Le tramway ligne 2 et la proximité de Montpellier rendent le déplacement simple, sans surcoût caché.",
+      a: "Oui, nous intervenons directement sur site à Castelnau-le-Lez pour les audits, interventions et implémentations.",
     },
   ],
 };

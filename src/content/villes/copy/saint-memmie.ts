@@ -49,7 +49,7 @@ export const SAINT_MEMMIE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Saint-Memmie et Châlons-en-Champagne ?",
-      a: "Oui, Axion-IA intervient à Saint-Memmie et dans toute l'agglomération châlonnaise. Châlons centre à 5 min, gare SNCF à 7 min, Paris-Est à 1 h 30.",
+      a: "Oui, Axion-IA intervient à Saint-Memmie et dans toute l'agglomération châlonnaise.",
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Saint-Memmie  ?",
@@ -65,7 +65,7 @@ export const SAINT_MEMMIE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Saint-Memmie ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Saint-Memmie est à 7 min de la gare SNCF de Châlons-en-Champagne.",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Saint-Memmie, comme partout en France, ou à distance.",
     },
   ],
 };

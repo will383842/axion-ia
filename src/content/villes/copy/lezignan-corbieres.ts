@@ -49,7 +49,7 @@ export const LEZIGNAN_CORBIERES_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Lézignan-Corbières ?",
-      a: "Oui, Axion-IA intervient à Lézignan-Corbières et dans tout le vignoble des Corbières (Fabrezan, Ferrals-les-Corbières, Boutenac, Lagrasse). Nos consultants viennent de Narbonne (20 min) ou Carcassonne (35 min).",
+      a: "Oui, Axion-IA intervient à Lézignan-Corbières et dans tout le vignoble des Corbières (Fabrezan, Ferrals-les-Corbières, Boutenac, Lagrasse). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les caves coopératives et viticulteurs AOC Corbières ?",
@@ -64,8 +64,8 @@ export const LEZIGNAN_CORBIERES_COPY: VilleCopy = {
       a: "Oui, les entreprises des zones d'activités de Lézignan-Corbières bénéficient de l'IA : automatisation gestion commerciale, agents conversationnels clients, optimisation logistique, classification documents, pilotage stocks.",
     },
     {
-      q: "Comment Lézignan-Corbières est-elle accessible ?",
-      a: "Lézignan-Corbières est desservie par la gare SNCF (ligne Toulouse-Narbonne) et l'autoroute A61 (20 min de Narbonne, 35 min de Carcassonne). Carrefour routier pratique pour nos consultants.",
+      q: "Comment se déroule une mission à Lézignan-Corbières ?",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Lézignan-Corbières, comme partout en France, ou à distance.",
     },
   ],
 };

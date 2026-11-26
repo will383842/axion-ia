@@ -14,7 +14,7 @@
 //
 // CE QUI CHANGE
 // -------------
-//   1. Sélecteur d'objet COMPACT : pastilles à emoji, les cinq intentions
+//   1. Sélecteur d'objet COMPACT : pastilles à emoji, les six intentions
 //      commerciales visibles, les sept autres repliées derrière « Autre sujet ».
 //      Le bloc passe d'environ 480 px de haut à environ 190 px.
 //   2. `<input type="radio">` NATIFS, visuellement masqués, au lieu de
@@ -85,11 +85,13 @@ const LABELS = {
     formAriaLabel: "Formulaire de contact Axion-IA",
     typeLabel: "Votre demande porte sur",
     typeMore: "Autre sujet",
+    nouveau: "Nouveau",
     typeMoreClose: "Masquer les autres sujets",
     typePrompt: "Un seul choix suffit — il oriente votre message vers la bonne personne.",
     // Libellés COURTS : ce sont des pastilles, pas des cartes. Le libellé long
     // reste dans `unifiedTypeLabel` (schema) pour les e-mails et la console.
     typeOptions: {
+      journee_ia: "Journée IA",
       audit: "Audit IA",
       implementation: "Intégration",
       formation: "Formation",
@@ -185,9 +187,11 @@ const LABELS = {
     formAriaLabel: "Axion-IA contact form",
     typeLabel: "Your request is about",
     typeMore: "Another topic",
+    nouveau: "New",
     typeMoreClose: "Hide other topics",
     typePrompt: "One choice is enough — it routes your message to the right person.",
     typeOptions: {
+      journee_ia: "AI Day",
       audit: "AI audit",
       implementation: "Integration",
       formation: "Training",
@@ -291,6 +295,7 @@ const LABELS = {
 // seul l'information, donc rien ne dépend de la police emoji du poste ni de la
 // couleur (WCAG 1.4.1).
 const TYPE_EMOJI: Record<UnifiedContactType, string> = {
+  journee_ia: "🗓️",
   audit: "🔍",
   implementation: "⚙️",
   formation: "🎓",
@@ -305,11 +310,12 @@ const TYPE_EMOJI: Record<UnifiedContactType, string> = {
   autre: "💬",
 };
 
-// Groupe 1 = les cinq accents de la palette services (le visiteur retrouve le
+// Groupe 1 = les accents de la palette services (le visiteur retrouve le
 // bleu de l'Audit et le sage de l'Implémentation vus dans le menu).
 // Groupe 2 = terracotta unique, à dessein : la polychromie reste réservée aux
 // intentions commerciales.
 const TYPE_ACCENT: Record<UnifiedContactType, ServiceAccent> = {
+  journee_ia: "terracotta",
   audit: "primary",
   implementation: "sage",
   formation: "terracotta",
@@ -356,6 +362,7 @@ const PILL_CHECKED: Record<ServiceAccent, string> = {
 function messagePlaceholder(type: UnifiedContactType | undefined, locale: "fr" | "en"): string {
   if (!type) return LABELS[locale].messagePlaceholderDefault;
   const fr: Record<UnifiedContactType, string> = {
+    journee_ia: "Votre entreprise, le nombre de personnes, la période souhaitée…",
     audit: "Votre métier, vos outils actuels, et ce que vous aimeriez qu'on regarde en priorité.",
     implementation:
       "Ce que vous voulez automatiser, sur quelles données, et avec quel outil aujourd'hui.",
@@ -373,6 +380,7 @@ function messagePlaceholder(type: UnifiedContactType | undefined, locale: "fr" |
     autre: "Dites-nous simplement de quoi il s'agit.",
   };
   const en: Record<UnifiedContactType, string> = {
+    journee_ia: "Your company, the number of people, the period you have in mind…",
     audit: "Your business, the tools you use today, and what you would like us to look at first.",
     implementation: "What you want to automate, on which data, and with which tool today.",
     formation: "How many people, which roles, starting level, and your possible dates.",
@@ -823,6 +831,9 @@ function UnifiedContactFormBody({
             "peer-focus-visible:ring-2 peer-focus-visible:ring-offset-2",
             compact ? "px-2.5 py-1.5 text-[12px]" : "px-3 py-2 text-[13px]",
             ACCENT_CLASSES[accent].hoverBorder,
+            // Mise en avant permanente : bordure et texte terracotta dès l'état
+            // repos, pour qu'elle se distingue des autres pastilles.
+            opt === "journee_ia" && "border-terracotta text-terracotta-deep",
             PILL_CHECKED[accent],
           )}
         >
@@ -830,6 +841,18 @@ function UnifiedContactFormBody({
             {TYPE_EMOJI[opt]}
           </span>
           {t.typeOptions[opt]}
+          {opt === "journee_ia" ? (
+            // Badge statique, dans le flux de la pastille : il ne change jamais
+            // de taille ni de place au clic (CLS = 0). `aria-hidden` : le nom
+            // accessible reste « Journée IA », sans « Nouveau » collé dedans.
+            <span
+              aria-hidden="true"
+              data-testid="badge-nouveau"
+              className="bg-terracotta rounded-full px-1.5 py-0.5 text-[10px] leading-none font-bold tracking-wide text-white uppercase"
+            >
+              {t.nouveau}
+            </span>
+          ) : null}
         </span>
       </label>
     );
@@ -846,7 +869,7 @@ function UnifiedContactFormBody({
       <HoneypotField />
 
       {/* Objet de la demande — pastilles compactes.
-          Cinq intentions commerciales visibles, sept périphériques repliées :
+          Six intentions commerciales visibles, sept périphériques repliées :
           le bloc tient en ~190 px au lieu de ~480 px, ce qui suffit à faire
           remonter « Prénom » dans le premier écran d'un téléphone. */}
       {!lockType ? (

@@ -65,7 +65,7 @@ export const LE_PALAIS_SUR_VIENNE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une intervention sur site ?",
-      a: "Nos consultants se déplacent au Palais-sur-Vienne depuis Limoges (10 min D29). Intervention 1 journée minimum, format atelier pratique dans vos locaux. Vos équipes repartent autonomes avec les outils IA configurés.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Intervention 1 journée minimum, format atelier pratique dans vos locaux. Vos équipes repartent autonomes avec les outils IA configurés.",
     },
   ],
 };

@@ -49,7 +49,7 @@ export const LAMBALLE_ARMOR_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Lamballe-Armor et baie de Saint-Brieuc ?",
-      a: "Oui, Axion-IA intervient à Lamballe-Armor (ex-Lamballe, Meslin, Morieux, Planguenoual) et tout le bassin baie de Saint-Brieuc (Saint-Brieuc à 15 min, Dinan à 25 min, Rennes à 1h, Paris-Montparnasse à 2h45 en TGV).",
+      a: "Oui, Axion-IA intervient à Lamballe-Armor (ex-Lamballe, Meslin, Morieux, Planguenoual) et dans tout le bassin baie de Saint-Brieuc (Saint-Brieuc, Dinan).",
     },
     {
       q: "Travaillez-vous avec les PME agroalimentaires de Lamballe-Armor ?",
@@ -64,8 +64,8 @@ export const LAMBALLE_ARMOR_COPY: VilleCopy = {
       a: "Audit sur place {{price:audit-flash|flat}}, gestion réservations IA, optimisation avis clients et e-réputation, fidélisation, reporting saisonnalité, marketing autour du Haras national et de la baie de Saint-Brieuc.",
     },
     {
-      q: "Comment se déroule une mission depuis Rennes ou Paris ?",
-      a: "Rennes à 1h. Paris-Montparnasse à 2h45 en TGV (gare Lamballe). Saint-Brieuc à 15 min.",
+      q: "Comment se déroule une mission Axion-IA à Lamballe-Armor ?",
+      a: "Nous intervenons partout en France, sur place dans vos locaux ou à distance en visio. Après le cadrage de votre besoin, nous planifions l'intervention et livrons un résultat actionnable.",
     },
   ],
 };

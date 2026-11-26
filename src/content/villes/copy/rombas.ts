@@ -65,7 +65,7 @@ export const ROMBAS_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Rombas ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Pour les multi-jours, hébergement local possible.",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Rombas, comme partout en France, ou à distance.",
     },
   ],
 };

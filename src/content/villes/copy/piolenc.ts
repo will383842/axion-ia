@@ -65,7 +65,7 @@ export const PIOLENC_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Piolenc ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Déplacement sur site dans vos locaux professionnels, exploitation agricole, domaine viticole ou commerce. Vallée du Rhône bien desservie via A7.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Déplacement sur site dans vos locaux professionnels, exploitation agricole, domaine viticole ou commerce.",
     },
   ],
 };

@@ -132,7 +132,7 @@ export const BRON_COPY: VilleCopy = {
           },
           {
             q: "Quel est le délai pour recevoir un devis et où vous déplacez-vous ?",
-            a: "Devis à partir de 24-48 h selon la complexité du projet. Nos consultants interviennent sur site à Bron et dans tout l'est de la Métropole — Villeurbanne, Vénissieux, Chassieu, Saint-Priest, Décines — à environ 15 minutes du centre de Lyon par les tramways T2/T5.",
+            a: "Devis à partir de 24-48 h selon la complexité du projet. Nos consultants interviennent sur site à Bron et dans tout l'est de la Métropole — Villeurbanne, Vénissieux, Chassieu, Saint-Priest et Décines.",
           },
         ],
         guarantees:
@@ -218,7 +218,7 @@ export const BRON_COPY: VilleCopy = {
           },
           {
             q: "How long for a quote and where do you travel?",
-            a: "Quote from 24-48 h depending on project complexity. Our consultants work on site in Bron and across the whole east of the Métropole — Villeurbanne, Vénissieux, Chassieu, Saint-Priest, Décines — about 15 minutes from central Lyon via the T2/T5 tramways.",
+            a: "Quote from 24-48 h depending on project complexity. Axion-IA works anywhere in France, on site or remotely, including in Bron.",
           },
         ],
         guarantees:

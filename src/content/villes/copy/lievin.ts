@@ -130,7 +130,7 @@ export const LIEVIN_COPY: VilleCopy = {
           },
           {
             q: "Intervenez-vous dans les communes voisines de Liévin ?",
-            a: "Oui, sans surcoût d'intervention : Lens, Avion (La Gaillette), Angres, Bully-les-Mines, Aix-Noulette, Éleu-dit-Leauwette, Grenay, Loos-en-Gohelle, ainsi qu'Arras (15 km) et Lille (30 km), via l'A21, l'A26 et la gare SNCF de Liévin.",
+            a: "Oui : Lens, Avion (La Gaillette), Angres, Bully-les-Mines, Aix-Noulette, Éleu-dit-Leauwette, Grenay, Loos-en-Gohelle, ainsi qu'Arras et Lille. Axion IA intervient partout en France, sur site ou à distance.",
           },
         ],
         guarantees:
@@ -216,7 +216,7 @@ export const LIEVIN_COPY: VilleCopy = {
           },
           {
             q: "Do you cover the communes around Liévin?",
-            a: "Yes, with no intervention surcharge: Lens, Avion (La Gaillette), Angres, Bully-les-Mines, Aix-Noulette, Éleu-dit-Leauwette, Grenay, Loos-en-Gohelle, plus Arras (15 km) and Lille (30 km), via the A21, A26 and Liévin SNCF station.",
+            a: "Yes. Lens, Avion (La Gaillette), Angres, Bully-les-Mines, Aix-Noulette, Éleu-dit-Leauwette, Grenay, Loos-en-Gohelle, plus Arras and Lille.",
           },
         ],
         guarantees:
@@ -232,11 +232,11 @@ export const LIEVIN_COPY: VilleCopy = {
     },
     {
       q: "Quels délais pour une intervention à Liévin ?",
-      a: "Déplacement sur site sous cinq jours ouvrés depuis la signature, Audit sur place livré en 4 heures, implémentations courantes (factures, relances, reporting) déployées en deux à trois semaines.",
+      a: "Nous intervenons sur site sous cinq jours ouvrés depuis la signature ; l'audit sur place est livré en 4 heures et les implémentations courantes (factures, relances, reporting) sont déployées en deux à trois semaines.",
     },
     {
       q: "Intervenez-vous dans les communes voisines de Liévin ?",
-      a: "Oui : Lens, Avion, Angres, Bully-les-Mines, Aix-Noulette, Éleu-dit-Leauwette, Givenchy-en-Gohelle, Grenay, Loos-en-Gohelle sont couvertes sans surcoût, ainsi qu'Arras (15 km) et Lille (30 km).",
+      a: "Oui : Lens, Avion, Angres, Bully-les-Mines, Aix-Noulette, Éleu-dit-Leauwette, Givenchy-en-Gohelle, Grenay, Loos-en-Gohelle sont couvertes, ainsi qu'Arras et Lille. Axion IA intervient partout en France, sur site ou à distance.",
     },
     {
       q: "Vos automatisations à Liévin respectent-elles le RGPD ?",

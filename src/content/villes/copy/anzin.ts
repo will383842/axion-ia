@@ -65,7 +65,7 @@ export const ANZIN_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Anzin ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Intervention sur site dans votre entreprise BTP, atelier industriel, commerce, bureau ou en visio. Pour missions multi-jours, hébergement à Valenciennes. Tarifs publics et transparents.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Intervention sur site dans votre entreprise BTP, atelier industriel, commerce, bureau ou en visio. Tarifs publics et transparents.",
     },
   ],
 };

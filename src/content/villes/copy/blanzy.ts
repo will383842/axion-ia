@@ -49,7 +49,7 @@ export const BLANZY_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Blanzy et dans le bassin Le Creusot-Montceau ?",
-      a: "Oui, Axion-IA intervient à Blanzy et dans tout le bassin Le Creusot-Montceau (Le Creusot, Montceau-les-Mines, Montchanin, Saint-Vallier). Gare TGV Le Creusot-Montchanin à 15 min, Paris à 1h20 en TGV.",
+      a: "Oui, Axion-IA intervient à Blanzy et dans tout le bassin Le Creusot-Montceau (Le Creusot, Montceau-les-Mines, Montchanin, Saint-Vallier).",
     },
     {
       q: "Combien coûte un audit IA à Blanzy  ?",

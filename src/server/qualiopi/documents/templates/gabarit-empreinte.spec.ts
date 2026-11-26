@@ -115,19 +115,31 @@ const EMPREINTES: Readonly<
     version: 6,
   },
   convention: {
-    // v8 — 19/11/2026 : clause financeur (§ 5), clause 5 bis et ligne Qualiopi imprimées seulement
+    // v9 — 25/11/2026 : § 3, paragraphe de la garantie de remboursement de la Journée IA
+    // (`TEXTE_GARANTIE_JOURNEE_IA`, CGV 47.10), imprimé seulement si `data.journeeIa === true` ;
+    // v8 archivée.
+    // (v8 — 19/11/2026 : clause financeur (§ 5), clause 5 bis et ligne Qualiopi imprimées seulement
     // si la certification est obtenue à la génération (`data.certificationObtenue`), texte des
     // clauses inchangé et gardé ; v7 archivée.
     // (v7 — 18/11/2026 : refonte au style de la charte 2027 (`charte/v1`), texte inchangé.
     // v6 — 16/10/2026 : mention handicap, L15, NC12. v5 — 04/10/2026 : clause de condition suspensive OPCO.)
-    sha: "fd6947a62fc4ce0131d35f5f2a5eefcd1973b2a7434f448fedb96806599d651f",
-    version: 8,
+    // v10 — 26/11/2026 : l'acompte versé reste acquis en cas d'annulation, sans condition de délai
+    // (§ 4) ; dédit formation facturé à part, ni imputable ni pris en charge par un OPCO ; v9 archivée.
+    // (v9 — 25/11/2026 : paragraphe de la garantie Journée IA, § 3.)
+    // v11 — 26/11/2026 : la personne morale non professionnelle perd aussi l'acompte (§ 4), avec
+    // clause réciproque (acompte rendu + indemnité égale si l'organisme annule hors force majeure) ;
+    // v10 archivée.
+    sha: "9b488cde5e153ef659fc657094633c106f624db94542b2d78ca540ac228506d3",
+    version: 11,
   },
   convention_tripartite: {
     // v7 — 18/11/2026 : refonte au style de la charte 2027, texte inchangé ; v6 archivée.
     // (v6 — 16/10/2026 : même mention handicap, mot pour mot.)
-    sha: "23672fe072fb72fd852b3ae940423389d5acc9dfcacbe5646f6f535f2bebd956",
-    version: 7,
+    // v8 — 26/11/2026 : même règle de l'acompte acquis (§ 4), mot pour mot ; v7 archivée.
+    // v9 — 26/11/2026 : même règle de l'acompte et même clause réciproque (§ 4), mot pour mot ;
+    // v8 archivée.
+    sha: "26d2884bfe5c2ec104e5fb4101f1e91caea84f7cafd48f7bc955016cf144f9cb",
+    version: 9,
   },
   contrat_formation: {
     // v3 — 18/11/2026 : refonte au style de la charte 2027, texte inchangé ; v2 archivée.
@@ -349,6 +361,18 @@ const EMPREINTES_ARCHIVES: Readonly<Record<string, string>> = {
   "convention.v6.tsx": "ecfd0277704317e97b34c135203f42f246f7fa932d4bb9887c7e9bb3a2bc5218",
   // 19/11/2026 : copie conforme du gabarit courant du 18/11, mention figée.
   "convention.v7.tsx": "73047fbf99819d59ed81b2a7523e1c960b51c80921a085d14a24983b8cd2bf1c",
+  // 25/11/2026 : copie conforme du gabarit courant du 19/11, mention figée.
+  "convention.v8.tsx": "6f5bccb9116ff3846249fba85bc95369ab8b1f236c4bf650262a5bc8e159c86c",
+  // 26/11/2026 : copies conformes des gabarits courants d'avant la règle de l'acompte acquis
+  // (mention légale figée dans le fichier).
+  "convention.v9.tsx": "4bd0a3df6f9cedd1ff86000937058c9c97a33ed23524fe1122a553b42f1f8ce6",
+  // 26/11/2026 : copies conformes des gabarits courants d'avant la réciprocité non-professionnel
+  // (mention légale figée dans le fichier).
+  "convention.v10.tsx": "58b6650ec812c0d8b6a2698fce9be4d4b889bef691ac8eba5bb3b6292ab0a903",
+  "convention-tripartite.v8.tsx":
+    "d972d3180bbcea219ae21c3aebb3398486a333e185c02eea2d621a5d06445081",
+  "convention-tripartite.v7.tsx":
+    "1c9a167628836c062e5af9a11cf1f52998325b65682ece4efe6fe231bbc11ac5",
   "convention-tripartite.v6.tsx":
     "e994a458883987781d2b3b4b4d2d2c00dc782ee8248fe75d6846b4544f4a7660",
   "contrat-formation.v2.tsx": "50a48f4ac853f805ab112d463ae15a2a61c5548eb02231db18aee78b420b3fa3",

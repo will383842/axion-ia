@@ -349,8 +349,8 @@ export default async function RegionPage({ params }: Props) {
               Votre Journée IA commence par 45 minutes gratuites
             </h2>
             <p className="text-paper/85 text-base leading-relaxed sm:text-lg">
-              Diagnostic IA de 45 minutes, en visio ou par téléphone : une première tâche chiffrée,
-              et la date de votre journée fixée ensemble.
+              Diagnostic IA de 45 minutes, gratuit et facultatif, en visio ou par téléphone : une
+              première tâche chiffrée, et la date de votre journée fixée ensemble.
             </p>
             <Link
               href={lienRendezVous(depuisRegion(region.slug, "bas")) as never}

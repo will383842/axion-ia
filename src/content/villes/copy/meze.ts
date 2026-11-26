@@ -49,7 +49,7 @@ export const MEZE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Mèze sur l'étang de Thau ?",
-      a: "Oui, Axion-IA intervient à Mèze et dans tout le bassin de Thau (Bouzigues, Marseillan, Sète). Consultants accessibles via la gare TGV Montpellier-Saint-Roch (35 min) et l'aéroport Montpellier-Méditerranée (25 min).",
+      a: "Oui, Axion-IA intervient à Mèze et dans tout le bassin de Thau (Bouzigues, Marseillan, Sète).",
     },
     {
       q: "Tarifs audit IA à Mèze  : quel budget prévoir ?",
@@ -65,7 +65,7 @@ export const MEZE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Mèze ?",
-      a: "Nos consultants interviennent sur site à Mèze et dans le bassin de Thau. Déplacement direct dans votre exploitation ou entreprise. Sète à 15 min, Montpellier à 30 min, aéroport à 25 min.",
+      a: "Nos consultants interviennent sur site à Mèze et dans le bassin de Thau. Déplacement direct dans votre exploitation ou entreprise.",
     },
   ],
 };

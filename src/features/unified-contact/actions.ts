@@ -26,6 +26,7 @@ import { headers, cookies } from "next/headers";
 import * as Sentry from "@sentry/nextjs";
 import { prisma } from "@/lib/prisma";
 import { syncFormSubmissionToCrm } from "@/server/crm-sync";
+import type { CrmFormType } from "@/server/crm-sync/types";
 import { CONSENT_FORM_REFS, recordConsentEvent } from "@/lib/consents";
 import { SubmissionType } from "../../../prisma/generated/client";
 import {
@@ -99,6 +100,7 @@ function submissionTypeFor(type: UnifiedContactType): SubmissionType {
       return SubmissionType.implementation;
     case "formation":
     case "un_a_un":
+    case "journee_ia":
       return SubmissionType.intervention;
     case "devis":
       return SubmissionType.quote_request;
@@ -114,6 +116,17 @@ function submissionTypeFor(type: UnifiedContactType): SubmissionType {
     case "autre":
       return SubmissionType.contact;
   }
+}
+
+/**
+ * Type de formulaire envoyé au CRM. `CRM_FORM_TYPES` est le miroir EXACT de
+ * `SiteSyncEvent::FORM_TYPES` (autre dépôt) : un type inconnu y est refusé 422
+ * et le lead est perdu. `journee_ia` n'y figure pas encore : il part donc sous
+ * `formation` (même famille : intervention). Le type réel reste au site, dans
+ * `details.unifiedType`. À retirer quand le CRM accepte `journee_ia`.
+ */
+function crmFormTypeFor(type: UnifiedContactType): CrmFormType {
+  return type === "journee_ia" ? "formation" : type;
 }
 
 // 🔑 Chaque gabarit rendu ici doit figurer dans `GABARITS_ACCUSE_MESSAGE`
@@ -135,6 +148,7 @@ function emailTemplateFor(type: UnifiedContactType): EmailJobName {
     // fait côté Telegram (catégories distinctes).
     case "formation":
     case "un_a_un":
+    case "journee_ia":
     case "partenariat":
     case "presse":
     case "recrutement":
@@ -314,7 +328,7 @@ export async function submitUnifiedContactAction(
     // rien du tout tant que `CRM_SYNC_ENABLED` n'est pas à "true".
     await syncFormSubmissionToCrm({
       subjectRef: `site:submission:${submission.id}`,
-      formType: data.type,
+      formType: crmFormTypeFor(data.type),
       occurredAt: submission.submittedAt,
       person: {
         email: data.email,

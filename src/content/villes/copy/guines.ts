@@ -49,7 +49,7 @@ export const GUINES_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il a Guines et dans le Calaisis ?",
-      a: "Oui, Axion-IA intervient a Guines et dans tout le Calaisis (Calais, Ardres, Coulogne, Sangatte). Consultants depuis Lille (1h15 TER) ou via Calais-Frethun (Eurostar 5 min).",
+      a: "Oui, Axion-IA intervient a Guines et dans tout le Calaisis (Calais, Ardres, Coulogne, Sangatte). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quels services IA pour les gites et hebergements de Guines ?",

@@ -142,7 +142,15 @@ const traces = (b: BaseEnMemoire, action: string) =>
 describe("le prédicat des types (exporté pour les autres lots)", () => {
   it("couvre les types commerciaux et le simulateur ROI, pas « autre » ni le chatbot", () => {
     expect([...TYPES_DEMANDE_AVEC_FICHE].sort()).toEqual(
-      ["audit", "devis", "formation", "implementation", "simulateur_roi", "un_a_un"].sort(),
+      [
+        "audit",
+        "devis",
+        "journee_ia",
+        "formation",
+        "implementation",
+        "simulateur_roi",
+        "un_a_un",
+      ].sort(),
     );
     for (const t of TYPES_DEMANDE_AVEC_FICHE) {
       expect(estDemandeAvecFiche({ type: "contact", details: { unifiedType: t } })).toBe(true);

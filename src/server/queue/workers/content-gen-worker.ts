@@ -19,11 +19,14 @@
  * Rate-limit 10/min (alignée OpenAI tier 5).
  */
 
+import { estJobEssaiClaude } from "@/server/content-gen/essai-claude";
+import { barriereJourneeIA } from "@/server/content-gen/quality/relecture-journee-ia";
 import { Queue, Worker, type Job, UnrecoverableError } from "bullmq";
 import { prisma } from "@/lib/prisma";
 import { getGenerator } from "@/server/content-gen/generators";
 import { generate as routerGenerate } from "@/server/content-gen/providers/provider-router";
-import { BLOG_TYPES, interrupteurBlogClaude } from "@/server/content-gen/providers/blog-claude";
+import { interrupteurBlogClaude } from "@/server/content-gen/providers/blog-claude";
+import { typeClaudeAutorise } from "@/server/content-gen/providers/types-claude";
 import { ProviderError } from "@/server/content-gen/providers/IProvider";
 import { ensureDirectAnswer } from "@/server/content-gen/shared/ensure-direct-answer";
 import { assertKbReady, KbNotReadyError } from "@/server/content-gen/kb-health";
@@ -45,6 +48,11 @@ import {
   decisionFidelite,
   modeControleFidelite,
 } from "@/server/content-gen/fact-check/fidelite-branchement";
+import {
+  decisionFactCheckClaude,
+  factCheckClaudeActif,
+  MARQUEUR_FACT_CHECK_CLAUDE,
+} from "@/server/content-gen/fact-check/fact-check-claude";
 import { financementPublicCitable } from "@/server/qualiopi/config/financing";
 import { readContentGenConfig } from "@/server/actions/content-gen/_settings";
 // Fix 2026-08-15 (audit e2e, C8) — lecture du kill switch en fail-SAFE : une
@@ -285,7 +293,7 @@ async function resolveTemplateById(
 }
 
 /**
- * Chemin Claude (interrupteur allumé + type blog) : une erreur du fournisseur Anthropic
+ * Chemin Claude (interrupteur allumé + type autorisé par CONTENT_GEN_CLAUDE_TYPES) : une erreur du fournisseur Anthropic
  * devient `UnrecoverableError` (BullMQ ne la rejoue pas : chaque essai serait facturé).
  * Rend `null` pour tout le reste (OpenAI, interrupteur éteint, autre type) : l'erreur
  * d'origine est alors relancée telle quelle. Exporté pour les tests.
@@ -296,7 +304,7 @@ export function erreurNonRelancableCheminClaude(
 ): UnrecoverableError | null {
   if (
     interrupteurBlogClaude() &&
-    BLOG_TYPES.has(contentType) &&
+    typeClaudeAutorise(contentType) &&
     !(err instanceof UnrecoverableError) &&
     err instanceof ProviderError &&
     err.provider === "anthropic"
@@ -334,6 +342,14 @@ async function processJob(job: Job<ContentGenJobPayload>): Promise<void> {
     // Pas de retry sur job introuvable — UnrecoverableError marque le job fail
     // sans backoff inutile.
     throw new UnrecoverableError(`ContentGenJob ${contentGenJobId} not found`);
+  }
+  // Brouillon d'essai : jamais régénéré ni publié par le worker (même si un rejeu l'a enfilé).
+  if (
+    estJobEssaiClaude({ idempotencyKey: dbJob.idempotencyKey, inputPayload: dbJob.inputPayload })
+  ) {
+    throw new UnrecoverableError(
+      `ContentGenJob ${contentGenJobId} : brouillon d'essai, jamais généré par le worker`,
+    );
   }
   // Sprint A-suite P6 — Item 3. Log correlationId pour traçabilité end-to-end.
   if (dbJob.correlationId) {
@@ -733,6 +749,7 @@ async function processJob(job: Job<ContentGenJobPayload>): Promise<void> {
             jobId: contentGenJobId,
             contentType,
             role: "text",
+            blogClaudeRole: "court",
             systemPrompt: req.systemPrompt,
             userPrompt: req.userPrompt,
             maxTokens: req.maxTokens,
@@ -1000,6 +1017,60 @@ async function processJob(job: Job<ContentGenJobPayload>): Promise<void> {
       }
     }
 
+    // PR 5 — fact-check par Claude avec recherche web (`CONTENT_GEN_FACTCHECK_CLAUDE`, ÉTEINT
+    // par défaut : le bloc ne s'exécute pas et rien ne change). Allumé : une affirmation non
+    // vérifiée, une erreur, un plafond atteint ou une recherche indisponible ajoutent une
+    // barrière de relecture (article NON publié) ; jamais de repli sur OpenAI/Perplexity.
+    // Les sources trouvées (URL) sont gardées dans `sourcesFactCheck` du résultat persisté.
+    let sourcesFactCheck: ReadonlyArray<{ url: string; title: string }> | null = null;
+    let factCheckClaudeAboutiSansReserve = false;
+    let coutFactCheckUsd = 0;
+    if (factCheckClaudeActif(contentType)) {
+      const decisionFc = await decisionFactCheckClaude({
+        jobId: contentGenJobId,
+        contentType,
+        texte: [
+          output.title,
+          output.directAnswer,
+          output.bodyHtml,
+          ...output.faq.map((f) => f.answer),
+        ].join(". "),
+      });
+      sourcesFactCheck = decisionFc.sources;
+      coutFactCheckUsd = decisionFc.coutUsd;
+      factCheckClaudeAboutiSansReserve = decisionFc.barriere === null;
+      await logStep(
+        contentGenJobId,
+        "validation",
+        decisionFc.barriere
+          ? `Fact-check par Claude : ${decisionFc.barriere.libelle}`
+          : `Fact-check par Claude : ${decisionFc.affirmations} affirmation(s) vérifiée(s), ${decisionFc.sources.length} source(s)`,
+        {
+          affirmations: decisionFc.affirmations,
+          recherches: decisionFc.recherches,
+          cout_usd: decisionFc.coutUsd,
+          ...(decisionFc.barriere?.detail ?? {}),
+        },
+      );
+      if (decisionFc.barriere) barrieresRelecture.push(decisionFc.barriere);
+    }
+
+    // Offre « Journée IA » : jamais de publication automatique, quelle que soit la note.
+    // Le job part en relecture humaine (`blockingFail`), l'approbation manuelle reste possible.
+    const nomCampagneJourneeIA = dbJob.campaignId
+      ? ((
+          await prisma.coverageCampaign
+            .findUnique({ where: { id: dbJob.campaignId }, select: { name: true } })
+            .catch(() => null)
+        )?.name ?? null)
+      : null;
+    const barriereJourneeIa = barriereJourneeIA({
+      output,
+      inputPayload: dbJob.inputPayload,
+      campaignName: nomCampagneJourneeIA,
+    });
+    if (barriereJourneeIa) barrieresRelecture.push(barriereJourneeIa);
+
     const barrieresFail = barrieresRelecture.length > 0;
     if (barrieresFail) {
       await logStep(
@@ -1243,6 +1314,11 @@ async function processJob(job: Job<ContentGenJobPayload>): Promise<void> {
       // #2 2026-06-14 — Fingerprint sémantique (persisté sur Article au publish
       // pour alimenter la dedup cross-entry des prochaines générations).
       topicFingerprint,
+      // PR 5 — sources du fact-check par Claude (clé ABSENTE tant que le drapeau est éteint).
+      ...(sourcesFactCheck ? { sourcesFactCheck, coutFactCheckUsd } : {}),
+      // Preuve de vérification : seule sa présence permet de sauter le fact-check d'avant
+      // et de publier (cf. content-publish-worker, content-fact-check-worker).
+      ...(factCheckClaudeAboutiSansReserve ? { [MARQUEUR_FACT_CHECK_CLAUDE]: true } : {}),
       // Lot L2 — barrières de relecture franchies (traçabilité console).
       ...(barrieresFail
         ? {
@@ -1360,7 +1436,7 @@ async function processJob(job: Job<ContentGenJobPayload>): Promise<void> {
         doctrineCheckPassed: !blockingFail,
         tokensInput: 0, // détaillé via CostLedger
         tokensOutput: output.totalTokens,
-        costUsd: output.totalCostUsd,
+        costUsd: output.totalCostUsd + coutFactCheckUsd,
         outputJsonRaw: persistedOutput as never,
       },
     });
@@ -1380,7 +1456,7 @@ async function processJob(job: Job<ContentGenJobPayload>): Promise<void> {
     // AUCUN code n'incrémentait cette clé — le cap était une garde morte.
     // Fail-open dans le helper : un échec d'écriture ne casse jamais le job.
     if (improvementFeedback !== undefined) {
-      await addQualityLoopSpend(output.totalCostUsd, contentGenJobId);
+      await addQualityLoopSpend(output.totalCostUsd + coutFactCheckUsd, contentGenJobId);
     }
 
     if (nextStatus === "quality_improving") {

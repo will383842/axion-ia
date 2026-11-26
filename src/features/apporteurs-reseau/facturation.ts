@@ -62,7 +62,7 @@ import { lireEntrepriseParSiren, type ResultatRegistre } from "./annuaire";
 import { envoyer, envoyerConfirmationVirement, type ResultatEnvoi } from "./envois";
 import { etatVigilance, euros } from "./regles";
 import { horsLitige, litigeDisponible } from "./litige";
-import { MESSAGE_EN_ATTENTE_DE_REALISATION, realisationDisponible } from "./realisation";
+import { paiementIntegralLe } from "./paiement-integral";
 import { signalerErreurReseau } from "./signaler";
 
 export function jobIdEmailAutofacture(numero: string): string {
@@ -151,6 +151,7 @@ function lireAFacturer(db: Db, apporteurId: string, hors: Record<string, unknown
     },
     select: {
       id: true,
+      factureId: true,
       statut: true,
       montantCents: true,
       palier: true,
@@ -221,15 +222,13 @@ export async function facturerApporteur(
   if (!apporteur) return { ok: false, message: "Apporteur introuvable." };
   const annee = Number(moisParis(maintenant).slice(0, 4));
 
-  // Règle ferme (contrat 2.3, art. 4.2) : rien n'est facturé avant que la prestation soit
-  // réalisée. Sans la colonne (worker avant la migration), on ne sait pas : rien n'est facturé.
-  if (!(await realisationDisponible())) {
-    return { ok: false, message: MESSAGE_EN_ATTENTE_DE_REALISATION };
-  }
-  const hors = { ...(await horsLitige()), prestationRealiseeAt: { not: null } };
+  // Règle du 25/11 : la commission est due dès le paiement intégral du client, même si la
+  // prestation n'est pas livrée. Aucune condition « réalisée » (la colonne n'est plus lue).
+  const hors = await horsLitige();
   let avant = await lireAFacturer(prisma, apporteurId, hors);
   let dues = avant.filter((c) => c.statut === "due");
   if (dues.length === 0) return { ok: false, message: "Aucune commission due à facturer." };
+  const paiementIntegral = await paiementIntegralLe(dues.map((c) => c.factureId));
   const total = avant.reduce((s, c) => s + (c.montantCents ?? 0), 0);
   // Art. 12.4 : les reprises dépassent les dues → COMPENSATION avec pièces. Les dues sont
   // facturées, les reprises imputées à hauteur exacte (la dernière scindée), le reste attend.
@@ -489,7 +488,7 @@ export async function facturerApporteur(
         contactName: nom,
         montant: euros(brut),
         numeroAutofacture: numero,
-        ...(compense ? {} : { echeance: dateFr(echeancePaiement(maintenant)) }),
+        ...(compense ? {} : { echeance: dateFr(echeancePaiement(maintenant, paiementIntegral)) }),
         ...(avoirs.length > 0 ? { avoirs } : {}),
         ...(montrerSomme ? { sommeVirement: euros(aVirer) } : {}),
         ...(compense ? { compense: true } : {}),
@@ -514,7 +513,14 @@ export async function facturerApporteur(
   }
   try {
     if (!compense)
-      await alerterAVirer({ apporteurId, nom, numero, totalCents: aVirer, emission: maintenant });
+      await alerterAVirer({
+        apporteurId,
+        nom,
+        numero,
+        totalCents: aVirer,
+        emission: maintenant,
+        paiementIntegral,
+      });
   } catch (err) {
     signalerErreurReseau("autofacture : alerte interne", err);
   }
@@ -702,11 +708,13 @@ export async function alerterAVirer(e: {
   numero: string;
   totalCents: number;
   emission: Date;
+  /** Date du paiement intégral du client (le délai de 30 jours court de là). */
+  paiementIntegral?: Date | null;
 }): Promise<boolean> {
   const jobId = jobIdAlerteAutofacture(e.numero);
   if (await dejaEnvoye(jobId)) return false;
   const objectif = dateFr(objectifVirement(e.emission));
-  const echeance = dateFr(echeancePaiement(e.emission));
+  const echeance = dateFr(echeancePaiement(e.emission, e.paiementIntegral));
   const nom = e.nom || "un apporteur";
   const r = await enqueueEmail(
     "qualiopi-alerte-interne",
@@ -743,12 +751,9 @@ export async function facturerCommissionsDues(
   maintenant: Date = new Date(),
 ): Promise<BilanFacturation> {
   const bilan: BilanFacturation = { autofactures: 0, commissions: 0, ecartees: 0, erreurs: 0 };
-  // Sans la colonne « prestation réalisée », on ne facture rien (contrat 2.3, art. 4.2).
-  if (!(await realisationDisponible())) return bilan;
   const g = await prisma.commissionApporteur.groupBy({
     by: ["apporteurId"],
     where: {
-      prestationRealiseeAt: { not: null },
       statut: "due",
       autofactureNumero: null,
       montantCents: { not: null },
@@ -803,7 +808,6 @@ export async function marquerVerse(
         autofactureNumero: null,
         montantCents: { not: null },
         ...(await horsLitige()),
-        prestationRealiseeAt: { not: null },
       },
     });
     if (sansPiece > 0) {
@@ -835,21 +839,6 @@ export async function marquerVerse(
       },
       orderBy: { creeAt: "asc" },
     });
-
-  // Prestation pas encore réalisée sur une commission de ce virement : rien n'est versé (4.2).
-  if (!(await realisationDisponible())) {
-    return { ok: false, message: MESSAGE_EN_ATTENTE_DE_REALISATION };
-  }
-  const nonRealisees = await prisma.commissionApporteur.count({
-    where: {
-      apporteurId,
-      statut: "due",
-      autofactureNumero: numero ? numero : { not: null },
-      prestationRealiseeAt: null,
-      ...hors,
-    },
-  });
-  if (nonRealisees > 0) return { ok: false, message: MESSAGE_EN_ATTENTE_DE_REALISATION };
 
   const avant = await lireAVerser(prisma);
   const dues = avant.filter((c) => c.statut === "due");
@@ -958,6 +947,8 @@ export interface VirementAFaire {
   lignes: number;
   /** Date d'émission de l'autofacture (`autofactureEmiseAt`, repli `majAt`). */
   emissionAt: Date;
+  /** Paiement intégral du client (le délai de 30 jours court de là), s'il est connu. */
+  paiementIntegralAt: Date | null;
 }
 
 /**
@@ -1005,6 +996,7 @@ export async function lireVirementsAFaire(): Promise<VirementAFaire[]> {
     },
     select: {
       apporteurId: true,
+      factureId: true,
       autofactureNumero: true,
       avoirNumero: true,
       montantCents: true,
@@ -1032,6 +1024,7 @@ export async function lireVirementsAFaire(): Promise<VirementAFaire[]> {
         totalCents: 0,
         lignes: 1,
         emissionAt: emission,
+        paiementIntegralAt: null,
       });
     } else {
       cur.lignes += 1;
@@ -1040,6 +1033,8 @@ export async function lireVirementsAFaire(): Promise<VirementAFaire[]> {
   }
   const suspendues = await suspenduesParNumero();
   for (const [numero, ls] of parNumero) {
+    const v = m.get(numero);
+    if (v) v.paiementIntegralAt = await paiementIntegralLe(ls.map((x) => x.factureId));
     const p = aVirerPartielCents(ls[0]!.apporteur.regimeTva, ls, suspendues.get(numero) ?? []);
     // Rien à virer tant que la suspension dure (partiel refusé), ou total nul : pas affiché.
     if (!p.partielPossible || p.totalCents <= 0) m.delete(numero);

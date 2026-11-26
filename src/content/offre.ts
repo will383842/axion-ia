@@ -8,13 +8,21 @@
 // 🔑 Rien n'est réinventé ici :
 //   · le prix est LU dans `pricing.ts` (`JOURNEE_IA_TIER`) — aucun montant écrit, ce fichier
 //     est balayé par `no-hardcoded-prices.spec.ts` ;
-//   · la garantie et sa condition sont celles de `journee-ia-commun.ts`, mot pour mot. Elles
-//     restent un BROUILLON tant que les CGV ne sont pas signées (PR #1861) : ne rien affirmer
-//     de neuf à partir de ce fichier.
+//   · la garantie, sa condition et ses délais sont ceux de `journee-ia-commun.ts` et de l'art.
+//     47.10 des CGV : rien n'est écrit ici, tout est lu.
 //
 // ⚠️ `journee-ia-commun.ts` ne doit jamais importer ce fichier (sens unique, pas de cycle).
 
-import { CONDITION_GARANTIE, GARANTIE_PHRASE, RAPPORT_COMPLET } from "@/content/journee-ia-commun";
+import {
+  CONDITION_GARANTIE,
+  DELAI_DEMANDE_REMBOURSEMENT_JOURS,
+  DELAI_RAPPORT_JOURS_OUVRES,
+  DELAI_REPONSE_REMBOURSEMENT_JOURS,
+  DELAI_VIREMENT_REMBOURSEMENT_JOURS,
+  GARANTIE_PHRASE,
+  MULTIPLE_GARANTIE,
+  RAPPORT_COMPLET,
+} from "@/content/journee-ia-commun";
 import { JOURNEE_IA_TIER, formatTierPrice } from "@/content/pricing";
 
 /** Le rendez-vous gratuit, UNIQUE, qui ouvre toute relation (décision de Williams, 08/11/2026). */
@@ -39,7 +47,7 @@ export interface DerouleJournee {
   readonly matin: "audit";
   readonly apresMidi: "formation";
   readonly heuresFormationApresMidi: 4;
-  readonly rapportJoursOuvres: 3;
+  readonly rapportJoursOuvres: typeof DELAI_RAPPORT_JOURS_OUVRES;
   readonly planActionJours: 90;
 }
 
@@ -56,11 +64,23 @@ export interface OffreJourneeIa {
    * « obligation de former ».
    */
   readonly mentionArticle4: string;
-  /** La garantie, mot pour mot depuis `journee-ia-commun.ts` (brouillon, cf. en-tête). */
+  /** La garantie, mot pour mot depuis `journee-ia-commun.ts` et l'art. 47.10 des CGV. */
   readonly garantie: {
     readonly phrase: string;
     readonly condition: string;
-    readonly brouillon: true;
+    /** Multiple du prix HT sous lequel le remboursement peut être demandé. */
+    readonly multiplePrixHt: number;
+    /** Délai, après la remise du rapport, pour demander par écrit (jours). */
+    readonly delaiDemandeJours: number;
+    /** Délai de réponse écrite d'Axion-IA (jours). */
+    readonly delaiReponseJours: number;
+    /** Délai du virement après acceptation (jours). */
+    readonly delaiVirementJours: number;
+    readonly uneFoisParEntreprise: true;
+    readonly dirigeantPresentExige: true;
+    readonly declarationClient: false;
+    /** La déduction sur un devis de projet ne se cumule pas avec le remboursement. */
+    readonly cumulAvecDeduction: false;
   };
   readonly rapport: string;
 }
@@ -73,7 +93,7 @@ export const OFFRE_JOURNEE_IA: OffreJourneeIa = {
     matin: "audit",
     apresMidi: "formation",
     heuresFormationApresMidi: 4,
-    rapportJoursOuvres: 3,
+    rapportJoursOuvres: DELAI_RAPPORT_JOURS_OUVRES,
     planActionJours: 90,
   },
   cible: { libelle: "PME et TPE", effectifMin: 2, effectifMax: 250 },
@@ -86,7 +106,18 @@ export const OFFRE_JOURNEE_IA: OffreJourneeIa = {
   },
   mentionArticle4:
     "L’article 4 du règlement européen sur l’IA prévoit que les entreprises qui utilisent des systèmes d’IA prennent des mesures pour favoriser la maîtrise de l’IA de leur personnel.",
-  garantie: { phrase: GARANTIE_PHRASE, condition: CONDITION_GARANTIE, brouillon: true },
+  garantie: {
+    phrase: GARANTIE_PHRASE,
+    condition: CONDITION_GARANTIE,
+    multiplePrixHt: MULTIPLE_GARANTIE,
+    delaiDemandeJours: DELAI_DEMANDE_REMBOURSEMENT_JOURS,
+    delaiReponseJours: DELAI_REPONSE_REMBOURSEMENT_JOURS,
+    delaiVirementJours: DELAI_VIREMENT_REMBOURSEMENT_JOURS,
+    uneFoisParEntreprise: true,
+    dirigeantPresentExige: true,
+    declarationClient: false,
+    cumulAvecDeduction: false,
+  },
   rapport: RAPPORT_COMPLET,
 } as const;
 
@@ -104,5 +135,5 @@ export const DUREE_RDV_COURTE = `${OFFRE_JOURNEE_IA.rendezVous.dureeMinutes} min
 /** « de 2 à 250 salariés » */
 export const EFFECTIF_CIBLE = `de ${OFFRE_JOURNEE_IA.cible.effectifMin} à ${OFFRE_JOURNEE_IA.cible.effectifMax} salariés`;
 
-/** « Diagnostic IA · 45 minutes · en visio ou par téléphone · sans engagement » */
-export const MICRO_TEXTE_RDV = `${OFFRE_JOURNEE_IA.rendezVous.nom} · ${DUREE_RDV} · en visio ou par téléphone · sans engagement`;
+/** « Diagnostic IA · 45 minutes · gratuit et facultatif · en visio ou par téléphone · sans engagement » */
+export const MICRO_TEXTE_RDV = `${OFFRE_JOURNEE_IA.rendezVous.nom} · ${DUREE_RDV} · gratuit et facultatif · en visio ou par téléphone · sans engagement`;

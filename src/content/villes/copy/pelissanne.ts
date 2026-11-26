@@ -49,7 +49,7 @@ export const PELISSANNE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Pélissanne et agglomération Salon ?",
-      a: "Oui, Axion-IA intervient à Pélissanne et dans toute l'agglomération de Salon-de-Provence (Salon à 10 min, Lambesc à 10 min, Lançon-Provence). Couverture complète du pays salonais.",
+      a: "Axion IA intervient partout en France, sur site ou à distance. Couverture complète du pays salonais.",
     },
     {
       q: "Quels sont les tarifs pour un audit IA à Pélissanne ?",

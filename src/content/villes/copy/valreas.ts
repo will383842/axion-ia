@@ -65,7 +65,7 @@ export const VALREAS_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une intervention à Valréas ?",
-      a: "Nous intervenons partout en France, sur place ou à distance, dans vos locaux malgré l'enclavement géographique. Valréas est à 45 min d'Orange et 1h d'Avignon via D941 et A7.",
+      a: "Nous intervenons partout en France, sur place ou à distance, dans vos locaux malgré l'enclavement géographique.",
     },
   ],
 };

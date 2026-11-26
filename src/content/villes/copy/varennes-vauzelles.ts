@@ -65,7 +65,7 @@ export const VARENNES_VAUZELLES_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Varennes-Vauzelles ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Gare SNCF Nevers à 10 min, ligne Intercités Paris-Clermont. Intervention sur site.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Intervention sur site.",
     },
   ],
 };

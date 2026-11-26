@@ -65,7 +65,7 @@ export const SANTES_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Santes ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Intervention sur site dans votre cabinet, bureau, commerce, entrepôt ou en visio. Proximité immédiate de Lille pour toute logistique mission multi-jours.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Intervention sur site dans votre cabinet, bureau, commerce, entrepôt ou en visio.",
     },
   ],
 };

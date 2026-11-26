@@ -26,10 +26,10 @@
 // (hardcodé, sans fallback) → poste majeur de consommation Anthropic invisible.
 import { openaiProvider } from "@/server/content-gen/providers/openai";
 import {
-  BLOG_TYPES,
   genererTexteBlogClaude,
   interrupteurBlogClaude,
 } from "@/server/content-gen/providers/blog-claude";
+import { typeClaudeAutorise } from "@/server/content-gen/providers/types-claude";
 import {
   analyzeDiversity,
   type DiversityScore,
@@ -408,12 +408,15 @@ export async function reviewArticle(
    * `typeBlog` ne sert QU'AU calcul de `viaClaude` : il n'entre jamais dans la
    * requête OpenAI (qui garde `contentType` de l'article, ou « editorial_review »).
    */
-  options: { readonly typeBlog?: string } = {},
+  options: { readonly typeBlog?: string; readonly sansClaude?: boolean } = {},
 ): Promise<JudgeResult> {
   const userPrompt = buildUserPrompt(article);
-  // Relecture par Claude (Opus) : interrupteur allumé ET contenu de blog seulement.
+  // Relecture par Claude (Opus, `claude-opus-5-5`) : interrupteur allumé ET type autorisé
+  // par CONTENT_GEN_CLAUDE_TYPES (blog par défaut, tous les types contenu si listés).
+  // Sinon le juge reste sur OpenAI, comme avant.
+  const typeJuge = options.typeBlog ?? article.contentType ?? "";
   const viaClaude =
-    interrupteurBlogClaude() && BLOG_TYPES.has(options.typeBlog ?? article.contentType ?? "");
+    options.sansClaude !== true && interrupteurBlogClaude() && typeClaudeAutorise(typeJuge);
   const response = viaClaude
     ? await genererTexteBlogClaude(
         {

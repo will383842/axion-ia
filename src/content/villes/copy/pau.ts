@@ -10,9 +10,9 @@ export const PAU_COPY: VilleCopy = {
   pitchEn:
     "Pau (64000), préfecture des Pyrénées-Atlantiques en Nouvelle-Aquitaine, 80 441 habitants (2023), siège de la Communauté d'agglomération Pau Béarn Pyrénées (227 communes dans la zone d'attraction). Située à 25 km des contreforts pyrénéens et 110 km de la côte atlantique, la ville est structurée par trois piliers économiques : aéronautique (Safran Helicopter Engines, plus grand site mondial de moteurs d'hélicoptères), énergie (TotalEnergies, héritage du gaz de Lacq 1951) et tertiaire (Technopole Hélioparc, UPPA Université de Pau et des Pays de l'Adour). Patrimoine majeur : château de Pau (naissance d'Henri IV en 1553) et boulevard des Pyrénées (1893-1899). Axion-IA accompagne TPE/PME locales et ETI du bassin béarnais.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Pau (64000) et dans toute la Communauté d'agglomération Pau Béarn Pyrénées. Nous accompagnons en priorité les TPE (cabinets libéraux, artisans, commerces béarnais) et PME de services, ainsi que les ETI des filières aéronautique et énergie (sous-traitants Safran, TotalEnergies, écosystème Hélioparc) quand le besoin se présente. Code custom (Python, TypeScript, FastAPI), pas de no-code rigide. Audit sur place {{price:audit-flash|flat}}, Formation 4 h {{price:intervention-4h|flat}}, Implémentation et Coaching 1-to-1 dès {{price:intervention-dirigeants|flat}}. Déplacement consultant sous 5 jours ouvrés. Conformité RGPD et AI Act documentée.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Pau (64000) et dans toute la Communauté d'agglomération Pau Béarn Pyrénées. Nous accompagnons en priorité les TPE (cabinets libéraux, artisans, commerces béarnais) et PME de services, ainsi que les ETI des filières aéronautique et énergie (sous-traitants Safran, TotalEnergies, écosystème Hélioparc) quand le besoin se présente. Code custom (Python, TypeScript, FastAPI), pas de no-code rigide. Audit sur place {{price:audit-flash|flat}}, Formation 4 h {{price:intervention-4h|flat}}, Implémentation et Coaching 1-to-1 dès {{price:intervention-dirigeants|flat}}. Conformité RGPD et AI Act documentée.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Pau (64000) et dans toute la Communauté d'agglomération Pau Béarn Pyrénées. Nous accompagnons en priorité les TPE (cabinets libéraux, artisans, commerces béarnais) et PME de services, ainsi que les ETI des filières aéronautique et énergie (sous-traitants Safran, TotalEnergies, écosystème Hélioparc) quand le besoin se présente. Code custom (Python, TypeScript, FastAPI), pas de no-code rigide. Audit sur place {{price:audit-flash|flat}}, Formation 4 h {{price:intervention-4h|flat}}, Implémentation et Coaching 1-to-1 dès {{price:intervention-dirigeants|flat}}. Déplacement consultant sous 5 jours ouvrés. Conformité RGPD et AI Act documentée.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Pau (64000) et dans toute la Communauté d'agglomération Pau Béarn Pyrénées. Nous accompagnons en priorité les TPE (cabinets libéraux, artisans, commerces béarnais) et PME de services, ainsi que les ETI des filières aéronautique et énergie (sous-traitants Safran, TotalEnergies, écosystème Hélioparc) quand le besoin se présente. Code custom (Python, TypeScript, FastAPI), pas de no-code rigide. Audit sur place {{price:audit-flash|flat}}, Formation 4 h {{price:intervention-4h|flat}}, Implémentation et Coaching 1-to-1 dès {{price:intervention-dirigeants|flat}}. Conformité RGPD et AI Act documentée.",
   seoHook: "énergie, hélicoptères Safran & Hélioparc",
   ecosystemFr:
     "Pau structure une aire urbaine de plus de 200 000 habitants et une zone d'attraction de 227 communes. L'économie locale s'appuie sur l'aéronautique (Safran Helicopter Engines, ex-Turbomeca), l'énergie et la pétrochimie (héritage du gisement de gaz de Lacq découvert en 1951, TotalEnergies), la recherche-développement (Technopole Hélioparc, UPPA), l'administration publique (préfecture, services départementaux) et le tertiaire (banque, assurance, conseil). Le tissu TPE/PME compte de nombreux sous-traitants industriels, cabinets libéraux, commerces de centre-ville (rues Joffre, Serviez, Maréchal-Foch) et artisans. Communes limitrophes principales : Jurançon, Bizanos et Gelos.",
@@ -130,7 +130,7 @@ export const PAU_COPY: VilleCopy = {
           },
           {
             q: "Où sont hébergées les données et le code de ma plateforme ?",
-            a: "Hébergement en Union européenne par défaut, conformité RGPD documentée. Le code source, les modèles IA et les accès restent intégralement chez vous : pas de lock-in éditeur, reprise possible par vos équipes ou par tout intégrateur palois.",
+            a: "Hébergement en Union européenne par défaut, conformité RGPD documentée. Le code source, les modèles IA et les accès restent intégralement chez vous : pas de lock-in éditeur, remise possible à vos équipes ou à tout intégrateur palois.",
           },
         ],
         guarantees:
@@ -235,8 +235,8 @@ export const PAU_COPY: VilleCopy = {
       a: "Audit sur place {{price:audit-flash|flat}} (diagnostic et plan d'action sous 7 jours), Formation 4 h {{price:intervention-4h|flat}} (atelier sur site), Implémentation et Coaching 1-to-1 dès {{price:intervention-dirigeants|flat}}. Tarifs publics affichés, pas de devis opaque.",
     },
     {
-      q: "Quels délais de déplacement pour une mission à Pau ?",
-      a: "Nous intervenons sous 5 jours ouvrés. Pau est desservie par le TGV, la gare Bordeaux Saint-Jean (2 h via A65 ou rail) et l'aéroport Pau Pyrénées. Possibilité d'audit visio sous 48 h.",
+      q: "Quels délais d'intervention pour une mission à Pau ?",
+      a: "Nous intervenons sous 5 jours ouvrés. Possibilité d'audit visio sous 48 h.",
     },
     {
       q: "Quelles garanties RGPD et AI Act pour les missions à Pau ?",

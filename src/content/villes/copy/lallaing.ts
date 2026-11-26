@@ -14,9 +14,9 @@ export const LALLAING_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Lallaing (59). Nous accompagnons TPE artisans BTP du bassin minier, PME logistique et sous-traitance industrielle, commerçants et services aux entreprises de l'agglomération de Douai. Audit sur place sur mesure, interventions sur site et coaching dirigeants.",
   seoHook: "artisanat rénovation & logistique transport",
   ecosystemFr:
-    "Lallaing est située dans l'agglomération de Douai, au coeur du bassin minier du Nord-Pas-de-Calais (UNESCO). Tissu TPE artisans BTP et rénovation, PME logistique et sous-traitance industrielle, commerces de proximité, services aux entreprises. Proximité immédiate de Douai et accès rapide vers Lille via A21. Reconversion économique active du bassin minier avec dynamique d'innovation.",
+    "Lallaing est située dans l'agglomération de Douai, au coeur du bassin minier du Nord-Pas-de-Calais (UNESCO). Tissu TPE artisans BTP et rénovation, PME logistique et sous-traitance industrielle, commerces de proximité, services aux entreprises. Reconversion économique active du bassin minier avec dynamique d'innovation.",
   ecosystemEn:
-    "Lallaing est située dans l'agglomération de Douai, au coeur du bassin minier du Nord-Pas-de-Calais (UNESCO). Tissu TPE artisans BTP et rénovation, PME logistique et sous-traitance industrielle, commerces de proximité, services aux entreprises. Proximité immédiate de Douai et accès rapide vers Lille via A21. Reconversion économique active du bassin minier avec dynamique d'innovation.",
+    "Lallaing est située dans l'agglomération de Douai, au coeur du bassin minier du Nord-Pas-de-Calais (UNESCO). Tissu TPE artisans BTP et rénovation, PME logistique et sous-traitance industrielle, commerces de proximité, services aux entreprises. Reconversion économique active du bassin minier avec dynamique d'innovation.",
   distancesFr:
     "Douai centre à 8 min. Gare TGV Douai à 10 min (Paris en 1h05, Lille en 20 min). Lille à 35 min via A21. Valenciennes à 30 min. Aéroport Lille-Lesquin à 40 min. Lens à 25 min.",
   distancesEn:
@@ -49,7 +49,7 @@ export const LALLAING_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Lallaing et dans l'agglomération de Douai ?",
-      a: "Oui, Axion-IA intervient à Lallaing et dans toute la Communauté d'Agglomération du Douaisis (Douai, Sin-le-Noble, Roost-Warendin, Pecquencourt). Nos consultants se déplacent depuis Lille en 35 min ou Douai en 8 min.",
+      a: "Oui, Axion-IA intervient à Lallaing et dans toute la Communauté d'Agglomération du Douaisis (Douai, Sin-le-Noble, Roost-Warendin, Pecquencourt). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Combien coûte un audit IA à Lallaing  ?",
@@ -65,7 +65,7 @@ export const LALLAING_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission Axion-IA à Lallaing ?",
-      a: "Nos consultants interviennent depuis Douai (8 min) ou Lille (35 min via A21). Lallaing étant intégrée à l'agglomération douaisienne, déplacements sans surcoût hébergement. Sessions sur site ou en visio selon vos préférences.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Lallaing fait partie de l'agglomération douaisienne. Sessions sur site ou en visio selon vos préférences.",
     },
   ],
 };

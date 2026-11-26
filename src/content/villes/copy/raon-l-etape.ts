@@ -49,7 +49,7 @@ export const RAON_L_ETAPE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Raon-l''Étape ?",
-      a: "Oui, Axion-IA intervient à Raon-l''Étape et dans toute la vallée de la Meurthe (Saint-Dié-des-Vosges, Baccarat, Étival-Clairefontaine, Senones). Consultants via gare SNCF Raon-l''Étape ou RN59.",
+      a: "Oui, Axion-IA intervient à Raon-l''Étape et dans toute la vallée de la Meurthe (Saint-Dié-des-Vosges, Baccarat, Étival-Clairefontaine, Senones).",
     },
     {
       q: "Travaillez-vous avec les PME papetières et la filière bois ?",
@@ -65,7 +65,7 @@ export const RAON_L_ETAPE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Raon-l''Étape ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Raon-l'Étape est desservie par sa gare SNCF (ligne Lunéville–Saint-Dié) et la RN59, à 15 min de Saint-Dié et 12 min de Baccarat.",
+      a: "Nous intervenons partout en France, sur place ou à distance.",
     },
   ],
 };

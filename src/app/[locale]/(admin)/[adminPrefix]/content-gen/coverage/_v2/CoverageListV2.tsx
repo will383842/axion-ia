@@ -38,15 +38,7 @@ import type {
   CoverageStatus,
   ServiceSector,
 } from "../../../../../../../../prisma/generated/client";
-
-// La colonne « Scope » affichait la valeur brute : national / region /
-// ville / multi.
-const PERIMETRE_LABELS: Record<string, string> = {
-  national: "National",
-  region: "Une région",
-  ville: "Une ville",
-  multi: "Plusieurs zones",
-};
+import { perimetreCampagneLabelFr } from "@/server/content-gen/shared/campaign-labels";
 
 const STATUS_LABELS_FR: Record<string, string> = {
   draft: "Brouillon",
@@ -184,7 +176,7 @@ export async function CoverageListV2({
           <span className="admin-meta">—</span>
         ),
     },
-    { key: "scope", header: "Périmètre", cell: (r) => PERIMETRE_LABELS[r.scope] ?? r.scope },
+    { key: "scope", header: "Périmètre", cell: (r) => perimetreCampagneLabelFr(r.scope) },
     { key: "target", header: "Cible", cell: (r) => r.totalTargetCount },
     { key: "status", header: "Statut", cell: (r) => STATUS_LABELS_FR[r.status] ?? r.status },
     {

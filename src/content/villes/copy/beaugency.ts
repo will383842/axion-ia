@@ -49,7 +49,7 @@ export const BEAUGENCY_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Beaugency et dans le Val de Loire ?",
-      a: "Oui, Axion-IA intervient à Beaugency et dans tout le Val de Loire entre Orléans et Blois (Meung-sur-Loire, Mer, Cléry-Saint-André, Tavers). Couverture nationale, déplacement sur site inclus dans le forfait mission.",
+      a: "Oui, Axion-IA intervient à Beaugency et dans tout le Val de Loire entre Orléans et Blois (Meung-sur-Loire, Mer, Cléry-Saint-André, Tavers). Couverture nationale.",
     },
     {
       q: "Travaillez-vous avec les TPE commerçants et artisans de Beaugency ?",

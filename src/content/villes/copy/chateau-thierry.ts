@@ -49,7 +49,7 @@ export const CHATEAU_THIERRY_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Château-Thierry ?",
-      a: "Oui, Axion-IA intervient à Château-Thierry et dans tout l''Omois et le sud-Aisne (Charly-sur-Marne, Condé-en-Brie, Fère-en-Tardenois). Consultants via gare SNCF Château-Thierry ou A4.",
+      a: "Oui, Axion-IA intervient à Château-Thierry et dans tout l''Omois et le sud-Aisne (Charly-sur-Marne, Condé-en-Brie, Fère-en-Tardenois).",
     },
     {
       q: "Travaillez-vous avec les vignerons champenois et caves ?",
@@ -65,7 +65,7 @@ export const CHATEAU_THIERRY_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Château-Thierry ?",
-      a: "Nos consultants se déplacent via gare SNCF Château-Thierry (ligne Paris-Est–Reims, 45 min Paris) ou A4 sortie 20. Reims à 45 min, Soissons à 40 min, Meaux à 35 min.",
+      a: "Une mission à Château-Thierry démarre par un échange de cadrage, puis se déroule sur site ou à distance, avec des livrables remis et documentés.",
     },
   ],
 };

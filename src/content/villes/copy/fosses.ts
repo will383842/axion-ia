@@ -49,7 +49,7 @@ export const FOSSES_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Fosses et dans le nord Val-d'Oise ?",
-      a: "Oui, Axion-IA intervient à Fosses et dans tout le nord du Val-d'Oise (Survilliers, Louvres, Goussainville, Luzarches). Paris Gare du Nord à 35 min en RER D via Survilliers-Fosses.",
+      a: "Oui, Axion-IA intervient à Fosses et dans tout le nord du Val-d'Oise (Survilliers, Louvres, Goussainville, Luzarches).",
     },
     {
       q: "Accompagnez-vous les TPE artisans BTP de Fosses ?",

@@ -49,7 +49,7 @@ export const LE_MEE_SUR_SEINE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il au Mée-sur-Seine et agglomération Melun ?",
-      a: "Oui, Axion-IA intervient au Mée-sur-Seine et toute l'agglomération melunaise (Melun à 5 min, Corbeil-Essonnes à 20 min, Paris Gare de Lyon à 45 min en RER D). Gare RER D Le Mée.",
+      a: "Oui, Axion-IA intervient au Mée-sur-Seine et dans toute l'agglomération melunaise (Melun, Corbeil-Essonnes), sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les commerçants et artisans du Mée-sur-Seine ?",
@@ -64,8 +64,8 @@ export const LE_MEE_SUR_SEINE_COPY: VilleCopy = {
       a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Outils IA réservation, gestion salle, fidélisation clientèle.",
     },
     {
-      q: "Comment se passe une mission depuis Melun ou Paris ?",
-      a: "Melun (5 min). Corbeil-Essonnes (20 min). Fontainebleau (25 min). Paris Gare de Lyon (45 min RER D). Orly (35 min).",
+      q: "Comment se déroule une mission Axion-IA au Mée-sur-Seine ?",
+      a: "Nous intervenons partout en France, sur place dans vos locaux ou à distance en visio. Après le cadrage de votre besoin, nous planifions l'intervention et livrons un résultat actionnable.",
     },
   ],
 };

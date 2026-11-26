@@ -49,7 +49,7 @@ export const ERSTEIN_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Erstein et dans le sud Bas-Rhin ?",
-      a: "Oui, Axion-IA intervient à Erstein et sur tout le sud Bas-Rhin (Sélestat, Obernai, Benfeld, Geispolsheim). Strasbourg à 30 min via A35, gare SNCF Erstein connectée à la ligne Strasbourg-Sélestat.",
+      a: "Oui, Axion-IA intervient à Erstein et sur tout le sud Bas-Rhin (Sélestat, Obernai, Benfeld, Geispolsheim).",
     },
     {
       q: "Quel est le tarif d'un audit IA à Erstein  ?",

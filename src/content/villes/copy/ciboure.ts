@@ -49,7 +49,7 @@ export const CIBOURE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Ciboure et à Saint-Jean-de-Luz ?",
-      a: "Oui, Axion-IA intervient à Ciboure et Saint-Jean-de-Luz (baie commune). Nos consultants accèdent via la gare de Saint-Jean-de-Luz (5 min) ou l'aéroport Biarritz Pays Basque (20 min).",
+      a: "Oui, Axion-IA intervient à Ciboure et Saint-Jean-de-Luz (baie commune).",
     },
     {
       q: "Quels services IA pour les professionnels de la pêche à Ciboure ?",
@@ -65,7 +65,7 @@ export const CIBOURE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA sur site à Ciboure ?",
-      a: "Nos consultants accèdent à Ciboure via la gare de Saint-Jean-de-Luz (5 min) ou l'aéroport Biarritz Pays Basque (20 min). Mission sur site dans vos restaurants, hébergements ou locaux du port de Socoa.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Mission sur site dans vos restaurants, hébergements ou locaux du port de Socoa.",
     },
   ],
 };

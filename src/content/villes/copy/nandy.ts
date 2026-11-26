@@ -14,9 +14,9 @@ export const NANDY_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Nandy (77). Nous accompagnons TPE et PME : artisans, commerçants, PME tertiaires de l'agglomération Grand Paris Sud — Sénart, professions libérales et prestataires de services du sud Seine-et-Marne.",
   seoHook: "artisanat bâtiment & commerce proximité",
   ecosystemFr:
-    "Nandy est une commune résidentielle de l'agglomération Grand Paris Sud, au sein du pôle urbain de Sénart en Seine-et-Marne. Tissu économique : TPE artisanat bâtiment et services, commerces de centre-ville, PME tertiaires implantées dans les zones d'activités de Sénart, professions libérales (santé, juridique). Proximité de Melun et de l'A5/Francilienne pour les échanges logistiques.",
+    "Nandy est une commune résidentielle de l'agglomération Grand Paris Sud, au sein du pôle urbain de Sénart en Seine-et-Marne. Tissu économique : TPE artisanat bâtiment et services, commerces de centre-ville, PME tertiaires implantées dans les zones d'activités de Sénart, professions libérales (santé, juridique). Proximité de Melun pour les échanges logistiques.",
   ecosystemEn:
-    "Nandy est une commune résidentielle de l'agglomération Grand Paris Sud, au sein du pôle urbain de Sénart en Seine-et-Marne. Tissu économique : TPE artisanat bâtiment et services, commerces de centre-ville, PME tertiaires implantées dans les zones d'activités de Sénart, professions libérales (santé, juridique). Proximité de Melun et de l'A5/Francilienne pour les échanges logistiques.",
+    "Nandy est une commune résidentielle de l'agglomération Grand Paris Sud, au sein du pôle urbain de Sénart en Seine-et-Marne. Tissu économique : TPE artisanat bâtiment et services, commerces de centre-ville, PME tertiaires implantées dans les zones d'activités de Sénart, professions libérales (santé, juridique). Proximité de Melun pour les échanges logistiques.",
   distancesFr:
     "Melun à 15 min, Paris centre à 45 min via RER D (gare de Cesson). Évry-Courcouronnes à 20 min, Corbeil-Essonnes à 15 min. A5 et Francilienne accessibles en 10 min. Aéroport Paris-Orly à 30 min, Roissy-CDG à 55 min.",
   distancesEn:
@@ -49,7 +49,7 @@ export const NANDY_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Nandy et dans le sud Seine-et-Marne ?",
-      a: "Oui, Axion-IA intervient à Nandy et dans toute l'agglomération Grand Paris Sud (Sénart, Cesson, Savigny-le-Temple, Melun à 15 min). Nos consultants couvrent le sud Seine-et-Marne et l'Essonne depuis Paris (45 min via RER D).",
+      a: "Oui, Axion-IA intervient à Nandy et dans toute l'agglomération Grand Paris Sud (Sénart, Cesson, Savigny-le-Temple, Melun). Nous couvrons le sud Seine-et-Marne et l'Essonne.",
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Nandy  ?",
@@ -65,7 +65,7 @@ export const NANDY_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Nandy ?",
-      a: "Nos consultants interviennent à Nandy depuis Paris (45 min via RER D, gare de Cesson) ou en voiture via A5/Francilienne.",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Nandy, comme partout en France, ou à distance.",
     },
   ],
 };

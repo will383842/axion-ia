@@ -65,7 +65,7 @@ export const BEAUREPAIRE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Beaurepaire ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Pour les multi-jours, hébergement local possible.",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Beaurepaire, comme partout en France, ou à distance.",
     },
   ],
 };

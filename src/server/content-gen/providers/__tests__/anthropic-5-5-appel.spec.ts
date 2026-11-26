@@ -76,6 +76,18 @@ describe("anthropicProvider.generate : température", () => {
     expect(create.mock.calls[0]![0]).not.toHaveProperty("temperature");
   });
 
+  it("chemin blog (écriture) : effort bas demandé pour que la réflexion ne mange pas max_tokens", async () => {
+    configModel = "claude-sonnet-5-5";
+    await anthropicProvider.generate({ ...(req as object), blogClaudeRole: "ecriture" } as never);
+    expect(create.mock.calls[0]![0]).toHaveProperty("output_config", { effort: "low" });
+  });
+
+  it("hors chemin blog : aucun output_config ajouté", async () => {
+    configModel = "claude-sonnet-5-5";
+    await anthropicProvider.generate(req);
+    expect(create.mock.calls[0]![0]).not.toHaveProperty("output_config");
+  });
+
   it("claude-sonnet-4-6 : temperature toujours envoyée", async () => {
     configModel = "claude-sonnet-4-6";
     await anthropicProvider.generate(req);

@@ -1,26 +1,33 @@
 import { describe, expect, it } from "vitest";
 
 import { CONTRAT_V2_MARKDOWN, CONTRAT_VERSION } from "../contrat-v2";
-import { ACCEPTATIONS } from "../regles-dossier";
+import {
+  ACCEPTATIONS,
+  LIBELLE_ART_4_5_AVANT_2_8,
+  estDepuis2_8,
+  texteAcceptation,
+} from "../regles-dossier";
 
 // Contrat 2.3 (décision de Will, 07/10/2026) : la commission n'est due que sur une prestation
 // RÉALISÉE et intégralement encaissée ; reprise quelle qu'en soit la cause, sous garde-fou ;
 // suspension pendant une contestation écrite ; reprise sur 24 mois ; fraude ; CPF constaté après.
 const texte = CONTRAT_V2_MARKDOWN.replace(/\s+/g, " ");
 
-describe("contrat 2.3 : commission sur prestation réalisée, reprise et litige", () => {
+describe("contrat 2.3 (état en 2.8) : commission due à l'encaissement intégral, reprise et litige", () => {
   it("version 2.3", () => {
     expect(Number(CONTRAT_VERSION)).toBeGreaterThanOrEqual(2.3);
   });
 
-  it("4.2 : réalisée ET encaissée ; non réalisée, même du fait de la Société : pas due, réduite ou reprise", () => {
+  it("4.2 (2.8) : due dès l'encaissement intégral, même si le travail n'est pas terminé ; aucune condition de réalisation", () => {
+    expect(texte).toContain("Elle est acquise et due dès que la Société a encaissé l'intégralité");
+    expect(texte).toContain("même si le travail n'est pas terminé");
+    expect(texte).toContain("au plus tard 30 jours après cet encaissement");
     expect(texte).toContain(
-      "lorsque la prestation commandée a été réalisée et que la Société a encaissé l'intégralité",
+      "Le retard, l'inexécution ou l'exécution partielle de la prestation par la Société ne diffère pas la commission",
     );
-    expect(texte).toContain(
-      "Lorsque la prestation n'est pas réalisée, en tout ou partie, quelle qu'en soit la cause, y compris du fait de la Société, la commission n'est pas due",
-    );
-    expect(texte).toContain("si elle a déjà été versée, la différence fait l'objet d'une reprise");
+    expect(texte).not.toContain("lorsque la prestation commandée a été réalisée");
+    expect(texte).not.toContain("Lorsque la prestation n'est pas réalisée");
+    expect(texte).not.toMatch(/réputée réalisée/);
   });
 
   it("4.5 : plus d'exclusion ; geste commercial compris ; garde-fou de l'article 1304-3", () => {
@@ -59,7 +66,7 @@ describe("contrat 2.3 : commission sur prestation réalisée, reprise et litige"
       "Lorsque ce financement est constaté après le versement de la commission, celle-ci fait l'objet d'une reprise",
     );
     expect(texte).toContain(
-      "Un financement par le compte personnel de formation constaté après le versement de la commission donne lieu à sa reprise",
+      "Un tel financement constaté après le versement de la commission donne lieu à sa reprise",
     );
   });
 
@@ -82,8 +89,24 @@ describe("contrat 2.3 : commission sur prestation réalisée, reprise et litige"
   });
 
   it("la case d'acceptation de l'article 4.5 dit ce qu'elle accepte", () => {
-    const a45 = ACCEPTATIONS.find((a) => a.cle === "art_4_5")!.texte;
-    expect(a45).toContain("prestation non réalisée");
+    // Contrat 2.8 : plus de condition de réalisation ; l'article 3.2 est cité.
+    const a45 = texteAcceptation("art_4_5", CONTRAT_VERSION)!;
+    expect(a45).not.toContain("prestation non réalisée");
     expect(a45).toContain("vingt-quatre mois");
+    expect(a45).toContain("article 3.2");
+    expect(ACCEPTATIONS.find((a) => a.cle === "art_4_5")!.texte).toBe(a45);
+  });
+
+  it("une preuve signée en 2.6 garde mot pour mot son libellé d'origine", () => {
+    for (const v of ["2.5", "2.6"]) {
+      expect(texteAcceptation("art_4_5", v)).toBe(LIBELLE_ART_4_5_AVANT_2_8);
+    }
+    expect(LIBELLE_ART_4_5_AVANT_2_8).toBe(
+      "J'accepte l'article 4.5 (recalcul et reprise d'une commission : avoir, remboursement, geste commercial ou prestation non réalisée, pendant vingt-quatre mois).",
+    );
+    // Les autres cases ne changent pas avec la version.
+    expect(texteAcceptation("art_7", "2.6")).toBe(texteAcceptation("art_7", "2.8"));
+    expect(estDepuis2_8("2.10")).toBe(true);
+    expect(estDepuis2_8("2.7")).toBe(false);
   });
 });

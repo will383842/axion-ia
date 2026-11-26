@@ -39,6 +39,11 @@ describe("migration contacts_guide_reseau_origine_optionnelle", () => {
       "20261125090000_apporteurs_validation_rendez_vous",
       "20261125120000_apporteurs_classement_motif",
       "20261125130000_apporteurs_rdv_motifs",
+      "20261125150000_apporteur_resiliation",
+      "20261126090000_devis_journee_ia",
+      "20261126120000_garanties_journee_ia",
+      "20261126130000_add_article_embedding_voyage",
+      "20261126130000_coverage_scope_national",
     ]);
     expect(dossiers.indexOf(NOM)).toBeGreaterThan(
       dossiers.indexOf("20261108140000_contacts_guide_reseau"),

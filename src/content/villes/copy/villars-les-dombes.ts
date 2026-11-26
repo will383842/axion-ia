@@ -49,7 +49,7 @@ export const VILLARS_LES_DOMBES_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Villars-les-Dombes et Dombes ?",
-      a: "Oui, Axion-IA intervient à Villars-les-Dombes et toute la Dombes (Châtillon-sur-Chalaronne à 15 min, Marlieux, Saint-André-de-Corcy). Nous intervenons partout en France, sur place ou à distance.",
+      a: "Oui. Axion-IA intervient à Villars-les-Dombes et dans toute la Dombes : Châtillon-sur-Chalaronne, Marlieux, Saint-André-de-Corcy. Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les acteurs du Parc des Oiseaux ?",
@@ -65,7 +65,7 @@ export const VILLARS_LES_DOMBES_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Villars-les-Dombes ?",
-      a: "Nous intervenons partout en France, sur place ou à distance.",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Villars-les-Dombes, comme partout en France, ou à distance.",
     },
   ],
 };

@@ -99,8 +99,15 @@ describe("page /journee-ia", () => {
     expect(page).not.toContain("rdv=journee");
     // Chaque lien a sa propre origine : le « Déjà décidé » du bloc prix n'est pas le bouton du bloc prix.
     const origines = [...page.matchAll(/lien\("(journee-ia-[a-z-]+)"\)/g)].map((m) => m[1]);
-    expect(origines).toContain("journee-ia-prix-decide");
+    expect(origines).not.toContain("journee-ia-prix-decide");
     expect(origines.filter((o) => o === "journee-ia-prix")).toHaveLength(1);
+  });
+
+  it("« Déjà décidé ? » mène à /contact (un message), sans diagnostic ni réservation en ligne", () => {
+    const directs = [...page.matchAll(/lienDirect\("(journee-ia-[a-z-]+)"\)/g)].map((m) => m[1]);
+    expect(directs.sort()).toEqual(["journee-ia-decide", "journee-ia-prix-decide"]);
+    expect(page).toContain("/contact?depuis=");
+    expect(page).not.toMatch(/lien\("journee-ia-decide"\)/);
   });
 
   it("annonce le plafond de 15 personnes, et rien d'autre de chiffré", () => {
@@ -149,7 +156,7 @@ describe("jsonLdJourneeIa()", () => {
     expect(faq.isPartOf).toEqual({ "@id": webPage["@id"] });
   });
 
-  it("la FAQPage reprend les 13 questions et réponses visibles, mot pour mot", () => {
+  it("la FAQPage reprend les 14 questions et réponses visibles, mot pour mot", () => {
     expect(faq.mainEntity.map((q) => q.name)).toEqual(CONTENU.faq.map((f) => f.question));
     expect(faq.mainEntity.map((q) => q.acceptedAnswer.text)).toEqual(
       CONTENU.faq.map((f) => remplacerJetons(f.reponse)),

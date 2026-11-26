@@ -49,7 +49,7 @@ export const BOULAZAC_ISLE_MANOIRE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Boulazac Isle Manoire ?",
-      a: "Oui, Axion-IA intervient à Boulazac Isle Manoire et dans toute l'agglomération de Périgueux (Trélissac, Coulounieix-Chamiers, Marsac). Gare SNCF Périgueux à 10 min.",
+      a: "Oui, Axion-IA intervient à Boulazac Isle Manoire et dans toute l'agglomération de Périgueux (Trélissac, Coulounieix-Chamiers, Marsac).",
     },
     {
       q: "Quel est le tarif d'un audit IA à Boulazac Isle Manoire  ?",
@@ -61,7 +61,7 @@ export const BOULAZAC_ISLE_MANOIRE_COPY: VilleCopy = {
     },
     {
       q: "Quel délai pour démarrer une mission IA à Boulazac Isle Manoire ?",
-      a: "Intervention sous 5 jours ouvrés. Périgueux à 5 min, Bordeaux à 1h30 A89. Déplacements sur site ou sessions en visio selon vos préférences.",
+      a: "Intervention sous 5 jours ouvrés. Déplacements sur site ou sessions en visio selon vos préférences.",
     },
     {
       q: "Proposez-vous du coaching IA individuel dans l'agglo Périgueux ?",

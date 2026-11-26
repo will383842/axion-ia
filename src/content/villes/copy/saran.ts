@@ -49,7 +49,7 @@ export const SARAN_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Saran près d'Orléans ?",
-      a: "Oui, Axion-IA intervient à Saran et dans toute l'agglomération orléanaise. Consultants sur site, Orléans centre à 10 min.",
+      a: "Oui, Axion-IA intervient à Saran et dans toute l'agglomération orléanaise.",
     },
     {
       q: "Combien coûte un audit IA à Saran  ?",

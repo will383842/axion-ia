@@ -49,7 +49,7 @@ export const RAMONVILLE_SAINT_AGNE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Ramonville-Saint-Agne ?",
-      a: "Oui, Axion-IA intervient à Ramonville-Saint-Agne et dans tout le sud de Toulouse (Castanet-Tolosan, Auzeville, Labège). Nous intervenons partout en France, sur place ou à distance. Ramonville est desservie par le métro B.",
+      a: "Oui, Axion-IA intervient à Ramonville-Saint-Agne et dans tout le sud de Toulouse (Castanet-Tolosan, Auzeville, Labège). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quels secteurs accompagnez-vous à Ramonville ?",

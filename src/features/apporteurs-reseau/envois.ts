@@ -22,7 +22,7 @@ import type { EmailJobName } from "@/server/queue/types";
 import { signalerErreurReseau } from "./signaler";
 import { prisma } from "@/lib/prisma";
 import { urlDossier } from "./jeton";
-import { GABARITS_ARGENT, retraitDe } from "./retrait";
+import { GABARITS_ARGENT, argentEnJeu, retraitDe } from "./retrait";
 
 export type GabaritApporteur =
   | "apporteur-dossier-lien"
@@ -32,11 +32,15 @@ export type GabaritApporteur =
   | "apporteur-dossier-recu"
   | "apporteur-commission-suspension"
   | "apporteur-manquement"
+  | "apporteur-resiliation-notifiee"
+  | "apporteur-resiliation-effective"
   | "apporteur-commission-avoir-client"
   | "apporteur-non-commissionne"
   | "apporteur-contrat-signe"
   | "apporteur-presentation-recue"
+  | "apporteur-presentation-recue-rendez-vous"
   | "apporteur-presentation-refusee"
+  | "apporteur-presentation-non-retenue"
   | "entreprise-prise-de-contact-apporteur"
   | "apporteur-vigilance"
   | "apporteur-commande-signee"
@@ -55,11 +59,15 @@ export const GABARITS_APPORTEUR: readonly GabaritApporteur[] = [
   "apporteur-dossier-recu",
   "apporteur-commission-suspension",
   "apporteur-manquement",
+  "apporteur-resiliation-notifiee",
+  "apporteur-resiliation-effective",
   "apporteur-commission-avoir-client",
   "apporteur-non-commissionne",
   "apporteur-contrat-signe",
   "apporteur-presentation-recue",
+  "apporteur-presentation-recue-rendez-vous",
   "apporteur-presentation-refusee",
+  "apporteur-presentation-non-retenue",
   "entreprise-prise-de-contact-apporteur",
   "apporteur-vigilance",
   "apporteur-commande-signee",
@@ -104,11 +112,15 @@ const GABARITS_VERS_L_APPORTEUR: ReadonlySet<string> = new Set([
   "apporteur-dossier-recu",
   "apporteur-commission-suspension",
   "apporteur-manquement",
+  "apporteur-resiliation-notifiee",
+  "apporteur-resiliation-effective",
   "apporteur-commission-avoir-client",
   "apporteur-non-commissionne",
   "apporteur-contrat-signe",
   "apporteur-presentation-recue",
+  "apporteur-presentation-recue-rendez-vous",
   "apporteur-presentation-refusee",
+  "apporteur-presentation-non-retenue",
   "apporteur-vigilance",
   "apporteur-commande-signee",
   "apporteur-commande-non-attribuee",
@@ -151,7 +163,12 @@ export async function avecLienEspace(e: EnvoiApporteur): Promise<Record<string, 
       where: { id: apporteurId },
       select: { versionLien: true, statut: true, refuseAt: true, resilieAt: true },
     });
-    if (!a || a.statut === "refuse" || a.statut === "resilie" || a.refuseAt || a.resilieAt) {
+    if (!a || a.statut === "refuse") return null;
+    // Résilié (lot L1b, B1 bis) : le lien n'existe que pour les e-mails liés à l'argent, tant que de
+    // l'argent est en jeu (mode restreint de la page) ; sinon page neutre, donc pas de lien.
+    if (a.statut === "resilie" || a.resilieAt) {
+      if (!GABARITS_ARGENT.has(e.gabarit) || !(await argentEnJeu(apporteurId))) return null;
+    } else if (a.refuseAt) {
       return null;
     }
     return urlDossier(apporteurId, a.versionLien);

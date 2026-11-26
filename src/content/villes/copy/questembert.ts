@@ -49,7 +49,7 @@ export const QUESTEMBERT_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Questembert et dans le pays vannetais ?",
-      a: "Oui, Axion-IA intervient à Questembert et dans tout le pays vannetais (Vannes à 25 min, Elven, Muzillac, La Vraie-Croix, Rochefort-en-Terre). Nous intervenons partout en France, sur place ou à distance.",
+      a: "Oui, Axion-IA intervient à Questembert et dans tout le pays vannetais (Vannes, Elven, Muzillac, La Vraie-Croix, Rochefort-en-Terre). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les exploitations agricoles autour de Questembert ?",

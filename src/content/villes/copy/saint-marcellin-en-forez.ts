@@ -49,7 +49,7 @@ export const SAINT_MARCELLIN_EN_FOREZ_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Saint-Marcellin-en-Forez et Loire Forez Agglo ?",
-      a: "Oui, Axion-IA intervient à Saint-Marcellin-en-Forez et toute Loire Forez Agglo (Saint-Just-Saint-Rambert à 5 min, Andrézieux-Bouthéon, Montbrison à 15 min). Nous intervenons partout en France, sur place ou à distance.",
+      a: "Oui. Nous intervenons à Saint-Marcellin-en-Forez et dans toute Loire Forez Agglo (Saint-Just-Saint-Rambert, Andrézieux-Bouthéon, Montbrison), sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les PME tertiaires foréziennes ?",
@@ -65,7 +65,7 @@ export const SAINT_MARCELLIN_EN_FOREZ_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Saint-Marcellin-en-Forez ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Pour les multi-jours, hébergement local possible.",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Saint-Marcellin-en-Forez, comme partout en France, ou à distance.",
     },
   ],
 };

@@ -13,7 +13,7 @@ export const LE_CREUSOT_COPY: VilleCopy = {
   ecosystemFr:
     "Le Creusot constitue le cœur industriel de la CUCM, structuré autour de cinq donneurs d'ordre majeurs : ArcelorMittal Industeel (aciers spéciaux), Framatome (composants nucléaires), Alstom (bogies TGV et métros), Safran/Snecma (disques moteurs aéronautiques) et General Electric (compresseurs, turbines). Le Technoparc accueille TPE et PME sous-traitantes en mécanique de précision, métallurgie, automatisme et maintenance industrielle. L'héritage Schneider (jusqu'à 20 000 ouvriers durant la Première Guerre mondiale) imprègne encore le tissu local : forges, fonderies, ateliers mécaniques. Communes voisines : Marmagne, Saint-Sernin-du-Bois, Saint-Firmin, Le Breuil, Montcenis, Torcy.",
   distancesFr:
-    "Gare TGV Le Creusot-Montceau-Montchanin à 10 km (Paris 1h20, Lyon 40 min). Gare du Creusot (TER) en centre-ville. A6 accessible via la RN 80 en 25 min. Lyon Part-Dieu à 1h30 en voiture, Dijon à 1h. Le Breuil à 5 min, Montcenis à 5 min, Torcy à 8 min, Montceau-les-Mines à 20 min.",
+    "Axion IA intervient partout en France, sur site ou à distance, y compris au Creusot et dans les communes voisines (Le Breuil, Montcenis, Torcy, Montceau-les-Mines).",
   topSectorsNaf: [
     "Fabrication de machines & équipements",
     "Métallurgie & produits métalliques (ArcelorMittal Industeel)",
@@ -28,8 +28,8 @@ export const LE_CREUSOT_COPY: VilleCopy = {
       en: "Audit IA au Creusot : diagnostic pour TPE et PME sous-traitantes d'ArcelorMittal Industeel, Framatome, Alstom, Safran et General Electric. Cas d'usage typiques : maintenance prédictive, contrôle qualité visuel, optimisation OF, traçabilité documentaire ISO 9001/EN 9100. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
-      fr: "Interventions IA sur site au Creusot : ateliers pour PME mécaniques, métallurgistes et bureaux d'études du Technoparc. Équipes autonomes sur outils IA métier. Déplacement depuis la gare TGV Le Creusot-Montceau-Montchanin (10 km) ou via A6.",
-      en: "Interventions IA sur site au Creusot : ateliers pour PME mécaniques, métallurgistes et bureaux d'études du Technoparc. Équipes autonomes sur outils IA métier. Déplacement depuis la gare TGV Le Creusot-Montceau-Montchanin (10 km) ou via A6.",
+      fr: "Interventions IA sur site au Creusot : ateliers pour PME mécaniques, métallurgistes et bureaux d'études du Technoparc. Équipes autonomes sur outils IA métier. Nous nous déplaçons chez vous, partout en France.",
+      en: "Interventions IA sur site au Creusot : ateliers pour PME mécaniques, métallurgistes et bureaux d'études du Technoparc. Équipes autonomes sur outils IA métier. Nous nous déplaçons chez vous, partout en France.",
     },
     implementation: {
       fr: "Implémentation IA au Creusot : maintenance prédictive sur lignes Framatome/Alstom, contrôle qualité visuel par vision, classification documents techniques aéronautiques Safran, agents IA réponse appels d'offres. Code custom industriel, compatible exigences nucléaires/ferroviaires.",
@@ -220,7 +220,7 @@ export const LE_CREUSOT_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il au Creusot ?",
-      a: "Oui, Axion-IA intervient au Creusot (71200) et dans toute la Communauté urbaine Le Creusot Montceau-lès-Mines : Montceau-les-Mines, Le Breuil, Torcy, Montcenis, Marmagne, Saint-Sernin-du-Bois. Accès direct via la gare TGV Le Creusot-Montceau-Montchanin (Paris 1h20, Lyon 40 min).",
+      a: "Oui, Axion-IA intervient au Creusot (71200) et dans toute la Communauté urbaine Le Creusot Montceau-lès-Mines : Montceau-les-Mines, Le Breuil, Torcy, Montcenis, Marmagne, Saint-Sernin-du-Bois.",
     },
     {
       q: "Quels sont les tarifs Axion-IA au Creusot ?",
@@ -239,8 +239,8 @@ export const LE_CREUSOT_COPY: VilleCopy = {
       a: "Nous accompagnons en priorité les TPE et PME sous-traitantes d'ArcelorMittal Industeel, Framatome, Alstom, Safran et General Electric : mécanique de précision, métallurgie, contrôle qualité, maintenance industrielle. Cas typiques : maintenance prédictive, vision contrôle qualité, automatisation devis et réponse appels d'offres.",
     },
     {
-      q: "Vous déplacez-vous sur site au Creusot ?",
-      a: "Oui, nos consultants se déplacent depuis Paris (1h20 en TGV) ou Lyon (40 min en TGV) jusqu'à la gare Le Creusot-Montceau-Montchanin (10 km du centre). Pour les missions récurrentes, planification mensuelle sur site et visio entre deux. Pas de surcoût dans la CUCM.",
+      q: "Intervenez-vous sur site au Creusot ?",
+      a: "Oui. Pour les missions récurrentes, planification mensuelle sur site et visio entre deux.",
     },
   ],
   // EN mirror FR (Will rule 2026-05-22 : NE JAMAIS traduire EN pour villes).
@@ -251,5 +251,5 @@ export const LE_CREUSOT_COPY: VilleCopy = {
   ecosystemEn:
     "Le Creusot constitue le cœur industriel de la CUCM, structuré autour de cinq donneurs d'ordre majeurs : ArcelorMittal Industeel (aciers spéciaux), Framatome (composants nucléaires), Alstom (bogies TGV et métros), Safran/Snecma (disques moteurs aéronautiques) et General Electric (compresseurs, turbines). Le Technoparc accueille TPE et PME sous-traitantes en mécanique de précision, métallurgie, automatisme et maintenance industrielle. L'héritage Schneider (jusqu'à 20 000 ouvriers durant la Première Guerre mondiale) imprègne encore le tissu local : forges, fonderies, ateliers mécaniques. Communes voisines : Marmagne, Saint-Sernin-du-Bois, Saint-Firmin, Le Breuil, Montcenis, Torcy.",
   distancesEn:
-    "Gare TGV Le Creusot-Montceau-Montchanin à 10 km (Paris 1h20, Lyon 40 min). Gare du Creusot (TER) en centre-ville. A6 accessible via la RN 80 en 25 min. Lyon Part-Dieu à 1h30 en voiture, Dijon à 1h. Le Breuil à 5 min, Montcenis à 5 min, Torcy à 8 min, Montceau-les-Mines à 20 min.",
+    "Axion IA intervient partout en France, sur site ou à distance, y compris au Creusot et dans les communes voisines (Le Breuil, Montcenis, Torcy, Montceau-les-Mines).",
 };

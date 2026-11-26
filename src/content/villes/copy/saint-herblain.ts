@@ -232,7 +232,7 @@ export const SAINT_HERBLAIN_COPY: VilleCopy = {
     },
     {
       q: "Quels délais pour intervenir à Saint-Herblain ?",
-      a: "Déplacement sur site sous cinq jours ouvrés, Audit sur place livré en 4 heures, implémentations courantes (devis, factures, reporting) déployées en deux à trois semaines.",
+      a: "Nous intervenons sur site sous cinq jours ouvrés ; l'audit sur place est livré en 4 heures et les implémentations courantes (devis, factures, reporting) sont déployées en deux à trois semaines.",
     },
     {
       q: "Couvrez-vous les communes voisines de Saint-Herblain ?",

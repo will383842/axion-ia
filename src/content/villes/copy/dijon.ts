@@ -272,7 +272,7 @@ export const DIJON_COPY: VilleCopy = {
       fr: {
         hero: "Les interventions IA Axion-IA à Dijon se déclinent en formats sur site d'une à plusieurs journées selon vos équipes. Vos collaborateurs ne repartent pas avec des slides : ils repartent avec des outils IA installés sur leur poste, configurés pour leur travail réel dans votre secteur dijonnais.",
         whyHere: [
-          "Dijon est une étape stratégique de nos déploiements régionaux : métropole bien desservie (LGV ~1h34 Paris), tissu B2B dense (14 946 établissements actifs) et secteurs IA-matures (agroalimentaire, pharma, viticulture).",
+          "Dijon est une étape stratégique de nos déploiements régionaux : métropole dynamique, tissu B2B dense (14 946 établissements actifs) et secteurs IA-matures (agroalimentaire, pharma, viticulture).",
           "Tous les secteurs de la métropole couverts en présentiel : Dijon intra-muros, Chenôve (URGO), Talant, Quetigny, Longvic, Fontaine-lès-Dijon, Saint-Apollinaire.",
           "Le format collectif (1 journée) est calibré pour les PME dijonnaises de quelques personnes à une centaine de collaborateurs, idéal pour les équipes agroalimentaires, santé, commerce et services.",
           "Le format Conférence convient aux plénières des ETI et grands comptes dijonnais (salles Parc des Expositions, espaces Village by CA, Cité Internationale de la Gastronomie et du Vin).",
@@ -355,7 +355,7 @@ export const DIJON_COPY: VilleCopy = {
           },
           {
             q: "Que se passe-t-il en cas d'annulation ?",
-            a: "Plus l'annulation est anticipée, plus elle est neutre. Très anticipée : remboursement intégral. Quelques jours avant : participation partielle aux frais consultant déjà bloqué. Très tardive : la session est reportable une fois sans frais sur les mois suivants.",
+            a: "L'acompte prévu au devis, dès qu'il est versé, reste acquis en cas d'annulation, quel que soit le délai (hors rétractation légale et annulation de notre fait). Au-delà de l'acompte, rien n'est dû à plus de 15 jours ouvrés avant la date ; entre 8 et 15 jours ouvrés, 50 % du prix HT restent dus, et 100 % à moins de 8 jours ouvrés (jamais moins que l'acompte). La session est reportable une fois sans frais, dans les 3 mois.",
           },
         ],
         guarantees:
@@ -364,7 +364,7 @@ export const DIJON_COPY: VilleCopy = {
       en: {
         hero: "Axion-IA's AI sessions in Dijon come in on-site formats from one to several days depending on your teams. Your staff don't leave with slides: they leave with AI tools installed on their workstations, configured for their real work in your Dijon sector.",
         whyHere: [
-          "Dijon is a strategic stop in our regional deployments: well-connected metropolitan area (LGV ~1h34 from Paris), dense B2B fabric (14,946 active establishments) and AI-mature sectors (agri-food, pharma, viticulture).",
+          "Dijon is a strategic stop in our regional deployments: dynamic metropolitan area, dense B2B fabric (14,946 active establishments) and AI-mature sectors (agri-food, pharma, viticulture).",
           "All metropolitan sectors covered in person: Dijon city, Chenôve (URGO), Talant, Quetigny, Longvic, Fontaine-lès-Dijon, Saint-Apollinaire.",
           "The one-day format is calibrated for Dijon SMEs from a few to about a hundred staff, ideal for agri-food, healthcare, commerce and services teams.",
           "The Talk format suits large corporate plenaries at Dijon mid-caps and large accounts (Parc des Expositions, Village by CA spaces, International City of Gastronomy and Wine).",
@@ -447,7 +447,7 @@ export const DIJON_COPY: VilleCopy = {
           },
           {
             q: "What happens with a cancellation?",
-            a: "The earlier the cancellation, the more neutral it is. Very early: full refund. A few days before: partial participation to consultant slot already blocked. Very late: the session is rebookable once free of charge in the following months.",
+            a: "The deposit set in the quote, once paid, is kept in the event of cancellation, whatever the notice (except statutory withdrawal and cancellation on our side). Beyond the deposit, nothing more is due more than 15 working days before the date; between 8 and 15 working days, 50% of the price excl. VAT is due, and 100% under 8 working days (never less than the deposit). The session can be rescheduled once free of charge, within 3 months.",
           },
         ],
         guarantees:
@@ -805,10 +805,6 @@ export const DIJON_COPY: VilleCopy = {
             a: "No. Coaching adapts to your level — beginner or advanced practitioner. The initial framing brief allows adjusting the programme before the session.",
           },
           {
-            q: "Are travel costs included in the {{price:intervention-dirigeants|compact}} excl. VAT price?",
-            a: "No. These costs are detailed on a prior quote before confirmation.",
-          },
-          {
             q: "Can I organise several individual coachings for different managers?",
             a: "Yes. Some Dijon mid-caps organise several individual sessions for their key directors or managers rather than a group session. Volume discount possible — to be specified at framing.",
           },
@@ -996,11 +992,11 @@ export const DIJON_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Combien coûte un audit IA opérationnel à Dijon ?",
-      a: "Le tarif dépend du niveau retenu — Audit sur place, Ciblé, Stratégique PME ou Stratégique ETI. Tarifs publics affichés sur la page Audit, calibrés selon votre taille (TPE, PME, ETI, grande entreprise) et votre périmètre. Aucun supplément géographique : le tarif est identique à Dijon et partout en France.",
+      a: "Le tarif dépend du niveau retenu — Audit sur place, Ciblé, Stratégique PME ou Stratégique ETI. Tarifs publics affichés sur la page Audit, calibrés selon votre taille (TPE, PME, ETI, grande entreprise) et votre périmètre.",
     },
     {
       q: "Axion-IA intervient-il dans toute la métropole dijonnaise ?",
-      a: "Oui. Nos interventions couvrent Dijon intra-muros et les communes de la métropole : Chenôve, Talant, Quetigny, Longvic, Fontaine-lès-Dijon, Saint-Apollinaire, Marsannay-la-Côte. Au-delà, l'ensemble du bassin bourguignon est accessible via la LGV Dijon-Ville.",
+      a: "Oui. Nos interventions couvrent Dijon intra-muros et les communes de la métropole : Chenôve, Talant, Quetigny, Longvic, Fontaine-lès-Dijon, Saint-Apollinaire, Marsannay-la-Côte.",
     },
     {
       q: "Quels secteurs dijonnais sont prioritaires pour l'IA ?",

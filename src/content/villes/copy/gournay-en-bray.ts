@@ -49,7 +49,7 @@ export const GOURNAY_EN_BRAY_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il a Gournay-en-Bray et dans le pays de Bray ?",
-      a: "Oui, Axion-IA intervient a Gournay-en-Bray et dans tout le pays de Bray (Forges-les-Eaux, Neufchatel-en-Bray). Consultants depuis Rouen (50 min) ou Beauvais (30 min).",
+      a: "Oui, Axion-IA intervient a Gournay-en-Bray et dans tout le pays de Bray (Forges-les-Eaux, Neufchatel-en-Bray). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quels services IA pour les PME agroalimentaires de Gournay-en-Bray ?",

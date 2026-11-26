@@ -49,7 +49,7 @@ export const LIGNE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Ligné et nord-est Nantes ?",
-      a: "Oui, Axion-IA intervient à Ligné et tout le nord-est nantais (Nort-sur-Erdre, Héric, Ancenis, Petit-Mars). Consultants depuis Nantes centre (30 min). Couverture complète nord-est Loire-Atlantique.",
+      a: "Oui, Axion-IA intervient à Ligné et tout le nord-est nantais (Nort-sur-Erdre, Héric, Ancenis, Petit-Mars). Nous intervenons partout en France, sur place ou à distance. Couverture complète nord-est Loire-Atlantique.",
     },
     {
       q: "Accompagnez-vous les exploitations agricoles ?",
@@ -61,11 +61,11 @@ export const LIGNE_COPY: VilleCopy = {
     },
     {
       q: "Combien coûte un audit IA à Ligné  ?",
-      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} (4 heures, diagnostic complet avec ROI chiffré). Tarifs publics et transparents adaptés aux TPE et PME du nord-est nantais.",
+      a: "L'Audit sur place, d'une durée de 4 heures avec diagnostic complet et ROI chiffré, est proposé dès {{price:audit-flash|flat}}. Tarifs publics et transparents adaptés aux TPE et PME du nord-est nantais.",
     },
     {
-      q: "Comment se déroule une intervention depuis Nantes ?",
-      a: "Nos consultants se déplacent depuis Nantes centre (30 min). Formats demi-journée ou journée complète, sur site ou en visio.",
+      q: "Comment se déroule une mission à Ligné ?",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Ligné, comme partout en France, ou à distance.",
     },
   ],
 };

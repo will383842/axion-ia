@@ -14,9 +14,9 @@ export const SAINT_SEBASTIEN_SUR_LOIRE_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Sébastien-sur-Loire (44). Nous accompagnons les TPE artisanales, indépendants, PME tertiaires sébastiennaises (cabinets, commerces, services aux entreprises) et structures du bassin sud Nantes sur leurs cas IA opérationnels.",
   seoHook: "artisanat & commerce détail",
   ecosystemFr:
-    "Saint-Sébastien-sur-Loire s'intègre au sud de Nantes Métropole (650 000 habitants), un des écosystèmes économiques les plus dynamiques de l'ouest. Tissu TPE artisanales, PME tertiaires familiales, commerces de proximité, professions libérales. Proximité Nantes centre (10 min), aéroport Nantes-Atlantique (15 min).",
+    "Saint-Sébastien-sur-Loire s'intègre au sud de Nantes Métropole (650 000 habitants), un des écosystèmes économiques les plus dynamiques de l'ouest. Tissu TPE artisanales, PME tertiaires familiales, commerces de proximité, professions libérales. Axion-IA y intervient dans vos locaux, comme partout en France.",
   ecosystemEn:
-    "Saint-Sébastien-sur-Loire s'intègre au sud de Nantes Métropole (650 000 habitants), un des écosystèmes économiques les plus dynamiques de l'ouest. Tissu TPE artisanales, PME tertiaires familiales, commerces de proximité, professions libérales. Proximité Nantes centre (10 min), aéroport Nantes-Atlantique (15 min).",
+    "Saint-Sébastien-sur-Loire s'intègre au sud de Nantes Métropole (650 000 habitants), un des écosystèmes économiques les plus dynamiques de l'ouest. Tissu TPE artisanales, PME tertiaires familiales, commerces de proximité, professions libérales. Axion-IA y intervient dans vos locaux, comme partout en France.",
   distancesFr:
     "Tramway ligne 3 vers Nantes centre (15 min). Aéroport Nantes-Atlantique 15 min. Gare Nantes (TGV Paris 2h) à 10 min. Axe N249 vers Cholet et A83 vers Vendée.",
   distancesEn:
@@ -226,7 +226,7 @@ export const SAINT_SEBASTIEN_SUR_LOIRE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Saint-Sébastien-sur-Loire ?",
-      a: "Oui, Axion-IA intervient à Saint-Sébastien-sur-Loire et toute Nantes Métropole (Nantes, Rezé, Vertou, Basse-Goulaine, Orvault, Saint-Herblain). Couverture complète Loire-Atlantique et accès TGV Paris (2h).",
+      a: "Oui, Axion-IA intervient à Saint-Sébastien-sur-Loire et toute Nantes Métropole (Nantes, Rezé, Vertou, Basse-Goulaine, Orvault, Saint-Herblain).",
     },
     {
       q: "Accompagnez-vous les TPE et artisans sébastiennaises ?",

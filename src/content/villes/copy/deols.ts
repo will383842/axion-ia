@@ -49,7 +49,7 @@ export const DEOLS_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Déols et dans l'agglomération de Châteauroux ?",
-      a: "Oui, Axion-IA intervient à Déols et dans toute l'agglomération de Châteauroux (Châteauroux, Le Poinçonnet, Saint-Maur, Ardentes). Couverture également Issoudun à 30 min, Bourges à 1h et Paris à 2h40.",
+      a: "Oui, Axion-IA intervient à Déols et dans toute l'agglomération de Châteauroux (Châteauroux, Le Poinçonnet, Saint-Maur, Ardentes).",
     },
     {
       q: "Travaillez-vous avec les entreprises logistiques et aéronautiques de la zone aéroportuaire ?",
@@ -65,7 +65,7 @@ export const DEOLS_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Déols ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Déols est à 5 minutes de Châteauroux centre.",
+      a: "Nous intervenons partout en France, sur place ou à distance.",
     },
   ],
 };

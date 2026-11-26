@@ -49,7 +49,7 @@ export const ORGERES_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Orgères et sud rennais ?",
-      a: "Oui, Axion-IA intervient à Orgères et dans tout le sud de Rennes Métropole (Chartres-de-Bretagne, Bruz, Vern-sur-Seiche, Janzé). Nos consultants rejoignent Rennes en 1h25 depuis Paris (TGV) puis Orgères en 15 min.",
+      a: "Oui, Axion-IA intervient à Orgères et dans tout le sud de Rennes Métropole (Chartres-de-Bretagne, Bruz, Vern-sur-Seiche, Janzé). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quel est le tarif d'un audit IA pour une TPE à Orgères ?",
@@ -64,8 +64,8 @@ export const ORGERES_COPY: VilleCopy = {
       a: "Gestion agenda augmentée, CRM patients ou clients, automatisation administrative et comptable, dictée IA, reporting intelligent et agents conversationnels pour les professions libérales orgéroises.",
     },
     {
-      q: "Comment Orgères est-elle desservie depuis Paris ?",
-      a: "Paris-Rennes en 1h25 (TGV direct). Orgères est à 15 min du centre de Rennes (D163) et à 15 min de l'aéroport Rennes-Saint-Jacques. Mission sur site ou visio selon vos préférences.",
+      q: "Comment se déroule une mission à Orgères ?",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Orgères, comme partout en France, ou à distance.",
     },
   ],
 };

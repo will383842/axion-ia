@@ -65,7 +65,7 @@ export const SAINT_CYR_AU_MONT_D_OR_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Saint-Cyr-au-Mont-d'Or ?",
-      a: "Nous intervenons partout en France, sur place ou à distance.",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Saint-Cyr-au-Mont-d'Or, comme partout en France, ou à distance.",
     },
   ],
 };

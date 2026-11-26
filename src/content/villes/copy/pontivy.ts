@@ -49,7 +49,7 @@ export const PONTIVY_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Pontivy et dans le Centre Bretagne ?",
-      a: "Oui, Axion-IA intervient à Pontivy, capitale du Centre Bretagne, et alentours. Carrefour RN 24 (Rennes-Lorient) et RN 164. Vannes et Lorient à 50 min. Rennes à 1 h 30.",
+      a: "Oui, Axion-IA intervient à Pontivy, capitale du Centre Bretagne, et alentours. Carrefour RN 24 (Rennes-Lorient) et RN 164.",
     },
     {
       q: "Tarifs audit IA à Pontivy  : quel budget prévoir ?",
@@ -64,8 +64,8 @@ export const PONTIVY_COPY: VilleCopy = {
       a: "Oui, CRM clients, fidélisation, gestion rendez-vous, dossier patient, télémédecine, optimisation administrative pour commerces de centre-ville et professionnels de santé.",
     },
     {
-      q: "Comment accéder à Pontivy depuis Rennes ou Vannes ?",
-      a: "Gare SNCF de Pontivy (TER). Rennes à 1 h 30 via RN 24, Vannes à 50 min via RN 24, Lorient à 50 min. Aéroport Lorient à 1 h.",
+      q: "Comment se déroule une mission à Pontivy ?",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Pontivy, comme partout en France, ou à distance.",
     },
   ],
 };

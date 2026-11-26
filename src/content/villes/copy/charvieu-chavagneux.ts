@@ -65,7 +65,7 @@ export const CHARVIEU_CHAVAGNEUX_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une intervention ?",
-      a: "Sur place ou à distance, selon votre besoin. Pour les missions multi-jours, hébergement local possible (hôtels Bourgoin-Jallieu ou Lyon-Saint-Exupéry).",
+      a: "Sur place ou à distance, selon votre besoin.",
     },
   ],
 };

@@ -216,7 +216,7 @@ export const SAINTE_GENEVIEVE_DES_BOIS_COPY: VilleCopy = {
           },
           {
             q: "Do you cover the communes around Sainte-Geneviève-des-Bois?",
-            a: "Yes, across the whole Cœur d'Essonne Agglomération and neighboring communes: Villiers-sur-Orge, Épinay-sur-Orge, Morsang-sur-Orge, Fleury-Mérogis, Brétigny-sur-Orge, Saint-Michel-sur-Orge and Longpont-sur-Orge. The area is served by RER C (Le Perray station) and the RN104.",
+            a: "Yes, across the whole Cœur d'Essonne Agglomération and neighboring communes: Villiers-sur-Orge, Épinay-sur-Orge, Morsang-sur-Orge, Fleury-Mérogis, Brétigny-sur-Orge, Saint-Michel-sur-Orge and Longpont-sur-Orge. Axion-IA works anywhere in France, on site or remotely, including in Sainte-Geneviève-des-Bois.",
           },
         ],
         guarantees:
@@ -228,11 +228,11 @@ export const SAINTE_GENEVIEVE_DES_BOIS_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Quels sont les tarifs pour un audit IA à Sainte-Geneviève-des-Bois ?",
-      a: "Les audits IA à Sainte-Geneviève-des-Bois débutent à {{price:audit-flash|flat}} pour un Audit sur place de 4 heures sur site, déplacement de Williams inclus. Tarifs publics consultables sur axion-ia.com.",
+      a: "Les audits IA à Sainte-Geneviève-des-Bois débutent à {{price:audit-flash|flat}} pour un Audit sur place de 4 heures sur site. Tarifs publics consultables sur axion-ia.com.",
     },
     {
       q: "Combien de temps faut-il pour une intervention IA à Sainte-Geneviève-des-Bois ?",
-      a: "Williams se déplace habituellement sous 5 à 10 jours ouvrés à Sainte-Geneviève-des-Bois (Essonne). Une intervention ciblée dure généralement 1 à 3 jours sur site, selon la complexité du projet.",
+      a: "Williams intervient habituellement sous 5 à 10 jours ouvrés à Sainte-Geneviève-des-Bois (Essonne). Une intervention ciblée dure généralement 1 à 3 jours sur site, selon la complexité du projet.",
     },
     {
       q: "Axion-IA propose-t-il des solutions conformes au RGPD à Sainte-Geneviève-des-Bois ?",

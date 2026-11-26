@@ -13,6 +13,7 @@
 
 // ⚠️ Atteint par le WORKER (passage quotidien, tsx hors Next) : aucun `server-only` ici.
 
+import { paiementIntegralLe } from "./paiement-integral";
 import { prisma } from "@/lib/prisma";
 import { decryptPii } from "@/lib/pii-crypto";
 import type { StatutCommissionApporteur } from "../../../prisma/generated/client";
@@ -29,6 +30,12 @@ import { urlDossier } from "./jeton";
 import { signalerErreurReseau } from "./signaler";
 import {
   calculerCommission,
+  DEVELOPPEMENT_WEB_COMMISSIONNE_DEPUIS,
+  commissionJourneeIaCents,
+  PALIER_JOURNEE_IA,
+  PRIX_REFERENCE_JOURNEE_IA_CENTS,
+  quantiteSessions,
+  type CalculCommission,
   etatVigilance,
   euros,
   PALIER_CONFERENCE,
@@ -273,7 +280,11 @@ export async function qualifierCommission(
   quantite: number = 1,
   maintenant: Date = new Date(),
 ): Promise<{ ok: true; montantCents: number } | { ok: false; message: string }> {
-  if (palier !== PALIER_CONFERENCE && !PALIERS_FORMATION.some((p) => p.id === palier))
+  if (
+    palier !== PALIER_CONFERENCE &&
+    palier !== PALIER_JOURNEE_IA &&
+    !PALIERS_FORMATION.some((p) => p.id === palier)
+  )
     return { ok: false, message: "Palier inconnu." };
   const c = await prisma.commissionApporteur.findUnique({
     where: { id },
@@ -290,16 +301,44 @@ export async function qualifierCommission(
   if (!c) return { ok: false, message: "Commission introuvable." };
   if (c.statut !== "a_qualifier" || c.parrainage)
     return { ok: false, message: "Cette commission n'est pas à qualifier." };
-  if (c.activite !== "formation" && c.activite !== "conference")
+  const journeeIa = palier === PALIER_JOURNEE_IA;
+  // Journée IA (A1.1) : Williams tranche une commande que le passage n'a pas su lire seul ; elle
+  // peut porter l'activité formation, audit, intégration ou aucune (« inconnue »).
+  // Journée IA : décision humaine, quelle que soit l'activité de la facture.
+  if (!journeeIa && c.activite !== "formation" && c.activite !== "conference")
     return { ok: false, message: "Seule une formation se qualifie par palier." };
-  const calc = calculerCommission({
-    activite: palier === PALIER_CONFERENCE ? "conference" : "formation",
-    factureHtCents: c.factureHtCents,
-    palier,
-    quantite,
-  });
+  const q = quantiteSessions(quantite);
+  // Conférence : la date de signature de la commande décide du forfait (avant le 26/11/2026) ou de 0 €.
+  let signeeAt: Date | null = null;
+  if (palier === PALIER_CONFERENCE) {
+    const fac = await prisma.factureFormation.findUnique({
+      where: { id: c.factureId },
+      select: { emiseAt: true, devis: { select: { acceptedAt: true } } },
+    });
+    signeeAt = fac?.devis?.acceptedAt ?? fac?.emiseAt ?? null;
+  }
+  const calc: CalculCommission = journeeIa
+    ? {
+        statut: "calculee",
+        montantCents: commissionJourneeIaCents(c.factureHtCents, q),
+        palier: PALIER_JOURNEE_IA,
+        prixPublicCents: PRIX_REFERENCE_JOURNEE_IA_CENTS * q,
+      }
+    : calculerCommission({
+        activite: palier === PALIER_CONFERENCE ? "conference" : "formation",
+        factureHtCents: c.factureHtCents,
+        palier,
+        quantite,
+        signeeAt,
+      });
   if (calc.statut !== "calculee")
-    return { ok: false, message: "Calcul impossible pour ce palier." };
+    return {
+      ok: false,
+      message:
+        palier === PALIER_CONFERENCE
+          ? "Conférence signée à partir du 26/11/2026 : aucune commission (contrat 2.8)."
+          : "Calcul impossible pour ce palier.",
+    };
   const v = await statutApresVigilance(c.apporteurId, calc.montantCents, maintenant, c.id);
   const r = await prisma.commissionApporteur.updateMany({
     where: { id, statut: "a_qualifier" },
@@ -332,7 +371,7 @@ export type ActiviteClassable = (typeof ACTIVITES_CLASSABLES)[number];
 /**
  * Une ligne « à qualifier » qui n'est pas une formation (activité de la facture inconnue) :
  * Williams la classe. 1-to-1, audit, intégration : la commission se calcule tout de suite sur le
- * HT facturé. Site web : aucune commission (annexe 1, A1.5), la ligne est close à 0 €. Formation :
+ * HT facturé. Site web : 15 % du HT facturé (annexe 1, A1.5 du contrat 2.8). Coaching : aucune commission, ligne close à 0 €. Formation :
  * l'activité est posée, le palier se choisit ensuite comme d'habitude.
  */
 export async function classerActiviteCommission(
@@ -367,8 +406,29 @@ export async function classerActiviteCommission(
       ? { ok: true, message: "Classée en formation : choisissez maintenant son palier." }
       : { ok: false, message: "Cette commission vient d'être modifiée." };
   }
-  const calc = calculerCommission({ activite: choisie, factureHtCents: c.factureHtCents });
+  // Développement web : jamais de commission rétroactive (4.1) — une commande signée avant la date
+  // d'effet est close à 0 €, comme au passage quotidien. Date illisible : close aussi (prudence).
+  let venteAnterieure = false;
+  // Conférence : une commande signée avant la date d'effet garde le forfait de l'ancien contrat.
+  let signeeAt: Date | null = null;
+  if (choisie === "site_web" || choisie === "conference") {
+    const fac = await prisma.factureFormation.findUnique({
+      where: { id: c.factureId },
+      select: { emiseAt: true, devis: { select: { acceptedAt: true } } },
+    });
+    signeeAt = fac?.devis?.acceptedAt ?? fac?.emiseAt ?? null;
+    if (choisie === "site_web")
+      venteAnterieure = !signeeAt || signeeAt < DEVELOPPEMENT_WEB_COMMISSIONNE_DEPUIS;
+  }
+  const calc: CalculCommission = venteAnterieure
+    ? { statut: "aucune" }
+    : calculerCommission({ activite: choisie, factureHtCents: c.factureHtCents, signeeAt });
   if (calc.statut === "aucune") {
+    // La vraie raison, jamais un message générique : une commande de développement web signée avant
+    // la date d'effet n'est pas « sans commission », elle est antérieure au contrat 2.8.
+    const raison = venteAnterieure
+      ? "Commande antérieure au contrat 2.8 (développement web) : aucune commission, ligne close à 0 €."
+      : "Aucune commission pour ce type de prestation : ligne close à 0 €.";
     const r = await prisma.commissionApporteur.updateMany({
       where: { id, statut: "a_qualifier" },
       data: {
@@ -384,7 +444,7 @@ export async function classerActiviteCommission(
     await clorePartParrainage(c.factureId, c.apporteurId, maintenant);
     return {
       ok: true,
-      message: "Aucune commission pour ce type de prestation : ligne close à 0 €.",
+      message: raison,
     };
   }
   if (calc.statut !== "calculee") return { ok: false, message: "Calcul impossible." };
@@ -445,7 +505,7 @@ async function qualifierPartParrainage(
   });
   if (!part || part.statut !== "a_qualifier") return;
   // La fenêtre de 6 mois a déjà été vérifiée à la création de la ligne.
-  const montant = Math.floor((montantFilleulCents * PARRAINAGE_BPS) / 10_000);
+  const montant = Math.round((montantFilleulCents * PARRAINAGE_BPS) / 10_000);
   const v = await statutApresVigilance(part.apporteurId, montant, maintenant, part.id);
   await prisma.commissionApporteur.updateMany({
     where: { id: part.id, statut: "a_qualifier" },
@@ -485,6 +545,11 @@ export interface CommissionVue {
   creeAt: Date;
   /** Encaissement (paiement soldant la facture), repli : création de la ligne. */
   encaisseeAt: Date;
+  /**
+   * Paiement INTÉGRAL de la commande (`paiementIntegralLe`, même source que l'autofacture, son PDF
+   * et l'alerte « à virer ») : le délai de 30 jours en part. Lu pour les lignes facturées.
+   */
+  paiementIntegralAt: Date | null;
   /** Date d'émission de l'autofacture (`autofactureEmiseAt`, repli sur la dernière écriture). */
   emissionAt: Date;
 }
@@ -513,6 +578,12 @@ export async function lireCommissions(
   });
   const numero = new Map(factures.map((f) => [f.id, f.numero]));
   const paye = new Map(factures.map((f) => [f.id, f.paidAt]));
+  // Une seule source pour l'échéance de 30 jours : le paiement intégral de la commande.
+  const integral = new Map<string, Date | null>();
+  for (const l of lignes) {
+    if (l.statut !== "due" || !l.autofactureNumero || integral.has(l.factureId)) continue;
+    integral.set(l.factureId, await paiementIntegralLe([l.factureId]));
+  }
   return lignes.map((l) => ({
     id: l.id,
     apporteurId: l.apporteurId,
@@ -539,6 +610,7 @@ export async function lireCommissions(
     verseeAt: l.verseeAt,
     creeAt: l.creeAt,
     encaisseeAt: paye.get(l.factureId) ?? l.creeAt,
+    paiementIntegralAt: integral.get(l.factureId) ?? null,
     emissionAt: l.autofactureEmiseAt ?? l.majAt,
   }));
 }
@@ -723,6 +795,7 @@ export async function genererPdfAutofacture(e: {
         where: { id: { in: [...e.commissionIds] } },
         select: {
           id: true,
+          factureId: true,
           activite: true,
           palier: true,
           parrainage: true,
@@ -751,6 +824,7 @@ export async function genererPdfAutofacture(e: {
       numero: e.numero,
       periodeLibelle: e.periodeLibelle,
       dateEmission: e.maintenant ?? new Date(),
+      paiementIntegral: await paiementIntegralLe(commissions.map((l) => l.factureId)),
       apporteur: {
         nom: [decryptPii(apporteur.prenom), decryptPii(apporteur.nom)].filter(Boolean).join(" "),
         denomination: apporteur.denomination,

@@ -49,7 +49,7 @@ export const GERZAT_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Gerzat et nord Clermont ?",
-      a: "Oui, Axion-IA intervient à Gerzat et tout le nord de l'agglomération clermontoise (Clermont à 10 min, Cébazat, Riom à 15 min). Aéroport Clermont à 15 min.",
+      a: "Oui, Axion-IA intervient à Gerzat et dans tout le nord de l'agglomération clermontoise (Clermont-Ferrand, Cébazat, Riom).",
     },
     {
       q: "Travaillez-vous avec les entreprises de logistique zone nord ?",
@@ -64,8 +64,8 @@ export const GERZAT_COPY: VilleCopy = {
       a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1.",
     },
     {
-      q: "Comment se passe une mission depuis Clermont-Ferrand ?",
-      a: "Clermont-Ferrand (10 min). Aéroport Clermont à 15 min.",
+      q: "Comment se déroule une mission Axion-IA à Gerzat ?",
+      a: "Nous intervenons partout en France, sur place dans vos locaux ou à distance en visio. Après le cadrage de votre besoin, nous planifions l'intervention et livrons un résultat actionnable.",
     },
   ],
 };

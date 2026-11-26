@@ -154,8 +154,8 @@ export const NICE_COPY: VilleCopy = {
             a: "Oui. Confidentialité stricte dès le démarrage, données traitées exclusivement sur vos infrastructures, aucune extraction vers nos serveurs. Conformité RGPD, modèles testés en local ou sur infra dédiée chez vous si la souveraineté est requise.",
           },
           {
-            q: "Couvrez-vous le bassin Sophia Antipolis depuis Nice ?",
-            a: "Oui. Nos consultants se déplacent sur site dans toute la métropole Nice Côte d'Azur, ainsi qu'à Sophia Antipolis, Antibes, Cannes, Grasse et Menton. Sophia est à 20 min de Nice-Ville, une distance de travail courante pour nos missions.",
+            q: "Intervenez-vous à Nice ?",
+            a: "Oui. Nous intervenons sur site dans toute la métropole Nice Côte d'Azur, ainsi qu'à Sophia Antipolis, Antibes, Cannes, Grasse et Menton.",
           },
           {
             q: "Différence avec un audit Big Four ou un cabinet de conseil traditionnel ?",
@@ -174,7 +174,7 @@ export const NICE_COPY: VilleCopy = {
         whyHere: [
           "Nice and its metro area hold a dense B2B fabric: 16,327 active businesses, from Old Town shops to the worldwide R&D centres of Amadeus IT and IBM.",
           "The Sophia Antipolis basin — 20 km from Nice — hosts Europe's leading tech park with Amadeus, IBM, SAP, Accenture, EURECOM: AI leadership we engage with regularly.",
-          "Our consultants travel on site across Nice and the full metro area (Grand Arénas, Nice Méridia, Sophia Antipolis, Cannes, Antibes, Grasse, Menton).",
+          "Axion-IA works anywhere in France, on site or remotely, including across Nice and the full metro area (Grand Arénas, Nice Méridia, Sophia Antipolis, Cannes, Antibes, Grasse, Menton).",
           "Read-outs always in person: ideation workshops, deliverable walk-through with your leadership, action plan handed face to face.",
           "Public pricing, no opaque six-figure quotes: you know exactly what you pay before signing.",
           "Your action plan is executable with any vendor or in-house after our audit — zero lock-in.",
@@ -245,8 +245,8 @@ export const NICE_COPY: VilleCopy = {
             a: "Yes. Confidentiality ensured from kick-off, data processed exclusively on your infrastructure, no extraction to our servers. GDPR compliance, models tested locally or on dedicated infra at your premises if sovereignty is required.",
           },
           {
-            q: "Do you cover the Sophia Antipolis basin from Nice?",
-            a: "Yes. Our consultants travel on site across the Nice Côte d'Azur metro and to Sophia Antipolis, Antibes, Cannes, Grasse and Menton. Sophia is 20 minutes from Nice-Ville, a routine working distance for our missions.",
+            q: "Do you work in Nice?",
+            a: "Yes. Axion-IA works anywhere in France, on site or remotely, including in Nice.",
           },
           {
             q: "Difference with a Big Four audit or traditional consulting?",
@@ -348,7 +348,7 @@ export const NICE_COPY: VilleCopy = {
           },
           {
             q: "Que se passe-t-il en cas d'annulation ?",
-            a: "Plus l'annulation est anticipée, plus elle est neutre. Très anticipée : remboursement intégral. Quelques jours avant : participation partielle aux frais consultant déjà bloqué. Très tardive : la session est reportable une fois sans frais sur les mois suivants.",
+            a: "L'acompte prévu au devis, dès qu'il est versé, reste acquis en cas d'annulation, quel que soit le délai (hors rétractation légale et annulation de notre fait). Au-delà de l'acompte, rien n'est dû à plus de 15 jours ouvrés avant la date ; entre 8 et 15 jours ouvrés, 50 % du prix HT restent dus, et 100 % à moins de 8 jours ouvrés (jamais moins que l'acompte). La session est reportable une fois sans frais, dans les 3 mois.",
           },
         ],
         guarantees:
@@ -440,7 +440,7 @@ export const NICE_COPY: VilleCopy = {
           },
           {
             q: "What happens with a cancellation?",
-            a: "The earlier the cancellation, the more neutral it is. Very early: full refund. A few days before: partial participation to consultant slot already blocked. Very late: the session is rebookable once free of charge in the following months.",
+            a: "The deposit set in the quote, once paid, is kept in the event of cancellation, whatever the notice (except statutory withdrawal and cancellation on our side). Beyond the deposit, nothing more is due more than 15 working days before the date; between 8 and 15 working days, 50% of the price excl. VAT is due, and 100% under 8 working days (never less than the deposit). The session can be rescheduled once free of charge, within 3 months.",
           },
         ],
         guarantees:
@@ -710,7 +710,7 @@ export const NICE_COPY: VilleCopy = {
           },
           {
             q: "Que se passe-t-il si mon agenda de dirigeant impose un report de séance ?",
-            a: "Aucun problème. Les séances se calent sur votre agenda, pas l'inverse. Un report anticipé est sans frais. Très tardif (moins de 24h) : participation partielle aux frais de blocage consultant. Le programme s'adapte à la réalité d'un agenda dirigeant.",
+            a: "Aucun problème. Les séances se calent sur votre agenda, pas l'inverse. Un report anticipé est sans frais. Très tardif : participation partielle aux frais de blocage consultant. Le programme s'adapte à la réalité d'un agenda dirigeant.",
           },
         ],
         guarantees:
@@ -806,7 +806,7 @@ export const NICE_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Fixed entry rate for the discovery session, quoted on request: you know exactly what you pay before booking. Usable deliverable handed over at the end of each session — no session without a concrete output. Strict confidentiality ensured from kick-off. On-site travel expenses presented separately, never bundled in the rate. No lock-in: at programme end, you are autonomous and free to use your AI skills with any tool or provider.",
+          "Fixed entry rate for the discovery session, quoted on request: you know exactly what you pay before booking. Usable deliverable handed over at the end of each session — no session without a concrete output. Strict confidentiality ensured from kick-off. No lock-in: at programme end, you are autonomous and free to use your AI skills with any tool or provider.",
       },
     },
     sitesWeb: {
@@ -991,8 +991,8 @@ export const NICE_COPY: VilleCopy = {
       a: "Quatre paliers tarifaires publics couvrent toutes les configurations niçoises et azuréennes — Sur place pour les TPE indépendantes du Vieux-Nice ou de la Promenade, Ciblé pour les PME hôtellerie premium et services Côte d'Azur, Stratégique PME pour les scale-ups Sophia Antipolis et acteurs French Tech, Stratégique ETI pour les groupes hôteliers, opérateurs tourisme d'affaires et grandes tech de Sophia. La grille appliquée à Nice est strictement identique à celle de Paris ou Lyon — aucune pondération PACA.",
     },
     {
-      q: "Intervenez-vous à Sophia Antipolis depuis Nice ?",
-      a: "Oui. Sophia Antipolis est à 20 km de Nice-Ville, une distance de travail courante pour nos consultants. Nous couvrons l'ensemble du bassin métropolitain : Grand Arénas, Nice Méridia, Sophia Antipolis, Antibes, Cannes, Grasse et Menton. Tous les formats (audit, intervention, implémentation) sont disponibles en présentiel sur ce périmètre.",
+      q: "Intervenez-vous aussi à Sophia Antipolis, Antibes et Cannes ?",
+      a: "Oui. Nous couvrons l'ensemble du bassin métropolitain : Grand Arénas, Nice Méridia, Sophia Antipolis, Antibes, Cannes, Grasse et Menton. Tous les formats (audit, intervention, implémentation) sont disponibles en présentiel sur ce périmètre.",
     },
     {
       q: "Quels secteurs sont prioritaires à Nice et sur la Côte d'Azur ?",

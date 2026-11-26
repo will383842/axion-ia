@@ -65,7 +65,7 @@ export const VOREPPE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une intervention ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Pour les missions de plusieurs jours, un hébergement local est possible.",
+      a: "Nous intervenons partout en France, sur place ou à distance.",
     },
   ],
 };

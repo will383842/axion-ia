@@ -49,7 +49,7 @@ export const ETRECHY_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Étréchy et dans la Vallée de la Juine ?",
-      a: "Oui, Axion-IA intervient à Étréchy et dans la Vallée de la Juine : Étampes à 10 min, Dourdan à 15 min, Massy TGV à 25 min, Paris centre à 50 min en RER C.",
+      a: "Oui, Axion-IA intervient à Étréchy et dans la Vallée de la Juine (Étampes, Dourdan, Massy).",
     },
     {
       q: "Accompagnez-vous les artisans BTP du sud Essonne ?",
@@ -65,7 +65,7 @@ export const ETRECHY_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Étréchy ?",
-      a: "Paris centre (50 min RER C). Massy TGV (25 min). Étampes (10 min).",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Étréchy, comme partout en France, ou à distance.",
     },
   ],
 };

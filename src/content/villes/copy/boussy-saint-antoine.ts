@@ -49,7 +49,7 @@ export const BOUSSY_SAINT_ANTOINE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Boussy-Saint-Antoine ?",
-      a: "Oui, Axion-IA intervient à Boussy-Saint-Antoine et tout le sud-est essonnien (Brunoy à 5 min, Évry à 15 min, Paris à 35 min). Gare RER D Boussy à 2 min.",
+      a: "Oui, Axion IA intervient partout en France, sur site ou à distance, y compris à Boussy-Saint-Antoine et dans le sud-est essonnien.",
     },
     {
       q: "Accompagnez-vous les artisans et petits commerces ?",

@@ -49,7 +49,7 @@ export const LA_TALAUDIERE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à La Talaudière et nord Saint-Étienne ?",
-      a: "Oui, Axion-IA intervient à La Talaudière et toute la banlieue nord stéphanoise (Saint-Étienne à 10 min, Sorbiers limitrophe, Villars). Consultants depuis Lyon (50 min) ou Saint-Étienne (10 min).",
+      a: "Oui, Axion-IA intervient à La Talaudière et dans toute la banlieue nord stéphanoise (Saint-Étienne, Sorbiers, Villars).",
     },
     {
       q: "Travaillez-vous avec les PME zones d'activités ?",
@@ -64,8 +64,8 @@ export const LA_TALAUDIERE_COPY: VilleCopy = {
       a: "Pour les professions libérales à La Talaudière, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : agents IA RDV, classification dossiers, CRM augmentés.",
     },
     {
-      q: "Comment se passe une mission depuis Lyon ou Saint-Étienne ?",
-      a: "Nos consultants viennent de Lyon (50 min) ou Saint-Étienne (10 min). Pour les multi-jours, hébergement local possible.",
+      q: "Comment se déroule une mission Axion-IA à La Talaudière ?",
+      a: "Nous intervenons partout en France, sur place dans vos locaux ou à distance en visio. Après le cadrage de votre besoin, nous planifions l'intervention et livrons un résultat actionnable.",
     },
   ],
 };

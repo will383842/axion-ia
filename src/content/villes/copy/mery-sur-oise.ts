@@ -49,7 +49,7 @@ export const MERY_SUR_OISE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Méry-sur-Oise et ses environs ?",
-      a: "Oui, Axion-IA intervient à Méry-sur-Oise et dans tout le secteur Pontoise-Auvers-sur-Oise (Pontoise, Auvers-sur-Oise, Butry-sur-Oise, L'Isle-Adam). Paris Gare du Nord à 40 min en Transilien H.",
+      a: "Oui, Axion-IA intervient à Méry-sur-Oise et dans tout le secteur Pontoise-Auvers-sur-Oise (Pontoise, Auvers-sur-Oise, Butry-sur-Oise, L'Isle-Adam).",
     },
     {
       q: "Accompagnez-vous les TPE artisans de Méry-sur-Oise ?",

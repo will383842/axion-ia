@@ -49,7 +49,7 @@ export const TOURNUS_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Tournus et en bord de Saône ?",
-      a: "Oui, Axion-IA intervient à Tournus et sur tout le couloir de la Saône en Saône-et-Loire (Chalon-sur-Saône, Mâcon, Sennecey-le-Grand). Gare TGV Mâcon-Loché à 30 min, Paris à 1h40 en TGV.",
+      a: "Oui, Axion-IA intervient à Tournus et sur tout le couloir de la Saône en Saône-et-Loire (Chalon-sur-Saône, Mâcon, Sennecey-le-Grand).",
     },
     {
       q: "Combien coûte un audit IA à Tournus  ?",

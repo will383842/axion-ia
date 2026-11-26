@@ -49,7 +49,7 @@ export const THAON_LES_VOSGES_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Thaon-les-Vosges et dans les Vosges ?",
-      a: "Oui, Axion-IA intervient à Thaon-les-Vosges et sur toute l'agglomération d'Épinal (Épinal, Golbey, Chantraine, Dogneville). Accès direct par TER Nancy-Épinal et N57.",
+      a: "Oui, Axion-IA intervient à Thaon-les-Vosges et sur toute l'agglomération d'Épinal (Épinal, Golbey, Chantraine, Dogneville).",
     },
     {
       q: "Combien coûte un audit IA à Thaon-les-Vosges  ?",

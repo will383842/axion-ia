@@ -49,7 +49,7 @@ export const MOUROUX_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Mouroux et dans l'agglomération Coulommiers ?",
-      a: "Oui, Axion-IA intervient à Mouroux et dans toute l'agglomération de Coulommiers (Coulommiers à 5 min, La Ferté-sous-Jouarre à 20 min, Meaux à 25 min). Nos consultants rejoignent Mouroux depuis Paris Est en 55 min via Transilien P.",
+      a: "Oui. Nous intervenons à Mouroux et dans toute l'agglomération de Coulommiers (Coulommiers, La Ferté-sous-Jouarre, Meaux).",
     },
     {
       q: "Quel est le tarif d'un audit IA à Mouroux  ?",
@@ -65,7 +65,7 @@ export const MOUROUX_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Mouroux ?",
-      a: "Nos consultants interviennent à Mouroux depuis Paris Est (55 min via Transilien P, gare de Mouroux) ou en voiture via A4/N34.",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Mouroux, comme partout en France, ou à distance.",
     },
   ],
 };

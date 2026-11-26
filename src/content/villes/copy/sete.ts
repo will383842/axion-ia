@@ -129,7 +129,7 @@ export const SETE_COPY: VilleCopy = {
           },
           {
             q: "Intervenez-vous dans les communes de Sète Agglopôle Méditerranée ?",
-            a: "Oui : Frontignan (Saipol, dépôt GDH/BP), Marseillan, Bouzigues, Loupian, Mèze (Le Corsaire de Thau) et Balaruc-les-Bains, soit l'unité urbaine d'environ 95 662 habitants, ainsi que l'aire montpelliéraine à 37 km. Accès par la gare TGV/Intercités/TER Occitanie et l'A9 ; kick-off et recette systématiquement en présentiel.",
+            a: "Oui. Nous intervenons à Sète et dans Sète Agglopôle Méditerranée : Frontignan (Saipol, dépôt GDH/BP), Marseillan, Bouzigues, Loupian, Mèze (Le Corsaire de Thau) et Balaruc-les-Bains, soit l'unité urbaine d'environ 95 662 habitants, ainsi que l'aire montpelliéraine. Le kick-off et la recette se font systématiquement en présentiel.",
           },
         ],
         guarantees:
@@ -231,11 +231,11 @@ export const SETE_COPY: VilleCopy = {
     },
     {
       q: "Quels délais pour une mission à Sète ?",
-      a: "Williams se déplace à Sète sous 5 à 7 jours ouvrés après brief. Audit sur place livré en 4 heures sur site, implémentations entre 2 et 6 semaines selon le périmètre.",
+      a: "Williams intervient à Sète sous 5 à 7 jours ouvrés après brief. Audit sur place livré en 4 heures sur site, implémentations entre 2 et 6 semaines selon le périmètre.",
     },
     {
       q: "Axion-IA intervient-elle dans les communes autour de Sète ?",
-      a: "Oui, nous couvrons Sète Agglopôle Méditerranée (unité urbaine de 95 662 habitants) : Frontignan, Marseillan, Bouzigues, Loupian, Mèze et Balaruc-les-Bains, ainsi que l'aire montpelliéraine (37 km).",
+      a: "Oui, nous couvrons Sète Agglopôle Méditerranée (unité urbaine de 95 662 habitants) : Frontignan, Marseillan, Bouzigues, Loupian, Mèze et Balaruc-les-Bains, ainsi que l'aire montpelliéraine. Axion IA intervient partout en France, sur site ou à distance.",
     },
     {
       q: "Comment Axion-IA garantit la conformité RGPD à Sète ?",
@@ -246,8 +246,8 @@ export const SETE_COPY: VilleCopy = {
       a: "Les TPE et PME du port (pêche, transitaires, plaisance), les conchyliculteurs de l'étang de Thau (huîtres et moules de Bouzigues), les hôteliers-restaurateurs du lido et les viticulteurs environnants tirent un bénéfice direct des automatisations IA codées sur mesure.",
     },
     {
-      q: "Williams se déplace-t-il vraiment sur site à Sète ?",
-      a: "Oui, déplacement systématique sur site à Sète via la gare ferroviaire (TGV, Intercités, TER Occitanie) ou l'A9. Aucune mission initiale en distanciel : observation des processus réels dans vos locaux, du quai au comptoir.",
+      q: "Les missions à Sète se font-elles vraiment sur site ?",
+      a: "Oui, les missions se déroulent systématiquement sur site à Sète. Aucune mission initiale en distanciel : observation des processus réels dans vos locaux, du quai au comptoir.",
     },
   ],
 };

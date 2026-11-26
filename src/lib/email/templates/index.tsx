@@ -209,13 +209,29 @@ import {
   ApporteurManquementEmail,
   ApporteurVirementFaitEmail,
 } from "./apporteur-demarrage";
+import {
+  apporteurPresentationRecueRendezVousSubject,
+  ApporteurPresentationRecueRendezVousEmail,
+} from "./apporteur-presentation-recue-rendez-vous";
 import { ApporteurLienEspaceEmail, apporteurLienEspaceSubject } from "./apporteur-lien-espace";
+import {
+  ApporteurResiliationEffectiveEmail,
+  apporteurResiliationEffectiveSubject,
+} from "./apporteur-resiliation-effective";
+import {
+  ApporteurResiliationNotifieeEmail,
+  apporteurResiliationNotifieeSubject,
+} from "./apporteur-resiliation-notifiee";
 import { ENTREES_FORMATEUR_INDEPENDANT } from "./_formateur-independant";
 import { estGabaritFormateurIndependant } from "./formateur-independant-textes";
 import {
   apporteurAttributionConfirmeeSubject,
   ApporteurAttributionConfirmeeEmail,
 } from "./apporteur-attribution-confirmee";
+import {
+  apporteurPresentationNonRetenueSubject,
+  ApporteurPresentationNonRetenueEmail,
+} from "./apporteur-presentation-non-retenue";
 import { VivierInformationEmail, vivierInformationSubject } from "./vivier-information";
 import { ConventionEnvoiEmail, conventionEnvoiSubject } from "./convention-envoi";
 import { PieceExemplaireSigneEmail, pieceExemplaireSigneSubject } from "./piece-exemplaire-signe";
@@ -644,6 +660,15 @@ const TEMPLATES: TemplateMap = {
     subject: apporteurManquementSubject,
     component: ApporteurManquementEmail,
   },
+  // Lot L1a (2026-11-25) : gabarits de résiliation, SANS émetteur avant L1b.
+  "apporteur-resiliation-notifiee": {
+    subject: apporteurResiliationNotifieeSubject,
+    component: ApporteurResiliationNotifieeEmail,
+  },
+  "apporteur-resiliation-effective": {
+    subject: apporteurResiliationEffectiveSubject,
+    component: ApporteurResiliationEffectiveEmail,
+  },
   "apporteur-contrat-signe": {
     subject: apporteurContratSigneSubject,
     component: ApporteurContratSigneEmail,
@@ -655,6 +680,14 @@ const TEMPLATES: TemplateMap = {
   "apporteur-presentation-refusee": {
     subject: apporteurPresentationRefuseeSubject,
     component: ApporteurPresentationRefuseeEmail,
+  },
+  "apporteur-presentation-non-retenue": {
+    subject: apporteurPresentationNonRetenueSubject,
+    component: ApporteurPresentationNonRetenueEmail,
+  },
+  "apporteur-presentation-recue-rendez-vous": {
+    subject: apporteurPresentationRecueRendezVousSubject,
+    component: ApporteurPresentationRecueRendezVousEmail,
   },
   "entreprise-prise-de-contact-apporteur": {
     subject: entrepriseConfirmationApporteurSubject,

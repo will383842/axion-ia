@@ -65,7 +65,7 @@ export const CHANGE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Changé ?",
-      a: "Nos consultants interviennent directement dans vos locaux à Changé. Gare TGV Le Mans à 7 km (55 min Paris). Accès A11 et A28.",
+      a: "Nos consultants interviennent directement dans vos locaux à Changé.",
     },
   ],
 };

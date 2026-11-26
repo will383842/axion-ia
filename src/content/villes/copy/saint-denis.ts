@@ -205,7 +205,7 @@ const INTERVENTIONS_FR: VilleServiceCopyLocale = {
     },
     {
       q: "Que se passe-t-il en cas d'annulation ?",
-      a: "Plus l'annulation est anticipée, plus elle est neutre. Très anticipée : remboursement intégral. Quelques jours avant : participation partielle aux frais consultant déjà bloqué. Très tardive : la session est reportable une fois sans frais sur les mois suivants.",
+      a: "L'acompte prévu au devis, dès qu'il est versé, reste acquis en cas d'annulation, quel que soit le délai (hors rétractation légale et annulation de notre fait). Au-delà de l'acompte, rien n'est dû à plus de 15 jours ouvrés avant la date ; entre 8 et 15 jours ouvrés, 50 % du prix HT restent dus, et 100 % à moins de 8 jours ouvrés (jamais moins que l'acompte). La session est reportable une fois sans frais, dans les 3 mois.",
     },
   ],
   guarantees:
@@ -531,7 +531,7 @@ export const SAINT_DENIS_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Combien coûte un audit IA opérationnel à Saint-Denis ?",
-      a: "Le tarif dépend du niveau retenu — Audit sur place, Ciblé, Stratégique PME ou Stratégique ETI. Tarifs publics affichés sur la page Audit, calibrés selon votre taille (TPE, PME, ETI, grande entreprise). Aucun supplément géographique : le tarif est identique à Saint-Denis et partout en France.",
+      a: "Le tarif dépend du niveau retenu — Audit sur place, Ciblé, Stratégique PME ou Stratégique ETI. Tarifs publics affichés sur la page Audit, calibrés selon votre taille (TPE, PME, ETI, grande entreprise).",
     },
     {
       q: "Pouvez-vous intervenir dans des entrepôts logistiques ou sur des chantiers Grand Paris ?",
@@ -543,11 +543,11 @@ export const SAINT_DENIS_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une intervention à Saint-Denis ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Saint-Denis est directement desservi par le RER D, le RER B (La Plaine–Stade de France) et le métro ligne 13.",
+      a: "Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Intervenez-vous aussi dans les communes Plaine Commune voisines ?",
-      a: "Oui. Nous intervenons dans toute l'intercommunalité Plaine Commune : Saint-Ouen (3 km de Saint-Denis), Aubervilliers (3 km), Épinay-sur-Seine (4 km), Pierrefitte-sur-Seine (4 km), Stains (5 km), Villetaneuse (5 km), L'Île-Saint-Denis. Plus largement, nous intervenons partout en France, sur place ou à distance.",
+      a: "Oui. Nous intervenons dans toute l'intercommunalité Plaine Commune : Saint-Ouen, Aubervilliers, Épinay-sur-Seine, Pierrefitte-sur-Seine, Stains, Villetaneuse, L'Île-Saint-Denis. Plus largement, nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "En combien de temps pouvez-vous démarrer une mission à Saint-Denis ?",

@@ -149,7 +149,7 @@ export async function runMultiJudge(
 
   let llmJudge: JudgeResult;
   try {
-    const review = await reviewArticle(article);
+    const review = await reviewArticle(article, undefined, { sansClaude: true });
     llmJudge = {
       judgeName: `llm-${JUDGE_MODEL_LABEL}`,
       score: Math.max(0, Math.min(100, Math.round(review.globalScore * 10))), // 0-10 → 0-100

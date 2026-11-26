@@ -49,7 +49,7 @@ export const BEAUMONT_SUR_OISE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Beaumont-sur-Oise et Persan ?",
-      a: "Oui, Axion-IA intervient à Beaumont-sur-Oise, Persan et dans tout le nord du Val-d'Oise (L'Isle-Adam, Chambly, Méru). Paris Gare du Nord à 45 min en Transilien H depuis la gare de Beaumont-sur-Oise.",
+      a: "Oui, Axion-IA intervient à Beaumont-sur-Oise, Persan et dans tout le nord du Val-d'Oise (L'Isle-Adam, Chambly, Méru).",
     },
     {
       q: "Accompagnez-vous les professionnels de santé de Beaumont-sur-Oise ?",

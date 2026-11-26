@@ -11,9 +11,9 @@ export const CACHAN_COPY: VilleCopy = {
   pitchEn:
     "Axion-IA accompagne les TPE et PME de Cachan (94230, Val-de-Marne, 31 103 habitants), commune de la proche banlieue sud de Paris située à 7,4 km au sud de Notre-Dame, dans le déploiement d'automatisations IA sur mesure en code custom. Desservie par la gare Arcueil-Cachan du RER B et bientôt par la ligne 15 du Grand Paris Express, la ville accueille un tissu de services lié à la présence de l'École normale supérieure Paris-Saclay et de l'ESTP, avec un mix de commerces de proximité, sociétés d'ingénierie et professions libérales.",
   directAnswerFr:
-    "À Cachan (Val-de-Marne, 94230), Axion-IA conçoit et déploie des automatisations IA en code custom pour les TPE et PME locales — cabinets d'ingénierie, professions libérales, commerces et structures liées à l'ENS Paris-Saclay et l'ESTP. Williams se déplace sur site (RER B Arcueil-Cachan) pour un Audit sur place à {{price:audit-flash|flat}}, une Formation 4 h à {{price:intervention-4h|flat}} ou un accompagnement un-à-un à {{price:intervention-dirigeants|flat}}. Nous ne faisons pas de no-code : chaque solution est développée sur mesure, RGPD by design.",
+    "À Cachan (Val-de-Marne, 94230), Axion-IA conçoit et déploie des automatisations IA en code custom pour les TPE et PME locales — cabinets d'ingénierie, professions libérales, commerces et structures liées à l'ENS Paris-Saclay et l'ESTP. Williams intervient sur site à Cachan pour un Audit sur place à {{price:audit-flash|flat}}, une Formation 4 h à {{price:intervention-4h|flat}} ou un accompagnement un-à-un à {{price:intervention-dirigeants|flat}}. Nous ne faisons pas de no-code : chaque solution est développée sur mesure, RGPD by design.",
   directAnswerEn:
-    "À Cachan (Val-de-Marne, 94230), Axion-IA conçoit et déploie des automatisations IA en code custom pour les TPE et PME locales — cabinets d'ingénierie, professions libérales, commerces et structures liées à l'ENS Paris-Saclay et l'ESTP. Williams se déplace sur site (RER B Arcueil-Cachan) pour un Audit sur place à {{price:audit-flash|flat}}, une Formation 4 h à {{price:intervention-4h|flat}} ou un accompagnement un-à-un à {{price:intervention-dirigeants|flat}}. Nous ne faisons pas de no-code : chaque solution est développée sur mesure, RGPD by design.",
+    "À Cachan (Val-de-Marne, 94230), Axion-IA conçoit et déploie des automatisations IA en code custom pour les TPE et PME locales — cabinets d'ingénierie, professions libérales, commerces et structures liées à l'ENS Paris-Saclay et l'ESTP. Williams intervient sur site à Cachan pour un Audit sur place à {{price:audit-flash|flat}}, une Formation 4 h à {{price:intervention-4h|flat}} ou un accompagnement un-à-un à {{price:intervention-dirigeants|flat}}. Nous ne faisons pas de no-code : chaque solution est développée sur mesure, RGPD by design.",
   seoHook: "ingénierie & services universitaires",
   ecosystemFr:
     "Cachan, 31 103 habitants en 2023 dans l'arrondissement de L'Haÿ-les-Roses, s'appuie sur un tissu économique tertiaire structuré autour de l'École normale supérieure Paris-Saclay, de l'ESTP et de plusieurs instituts d'ingénierie. Le maillage de TPE et PME locales (services, ingénierie, professions libérales, commerces de proximité, restauration) bénéficie de la proximité immédiate d'Arcueil, Bagneux, Villejuif, Bourg-la-Reine et L'Haÿ-les-Roses, et de l'accès direct au cœur de Paris via le RER B.",
@@ -37,8 +37,8 @@ export const CACHAN_COPY: VilleCopy = {
       en: "Audit sur place IA à Cachan dès {{price:audit-flash|flat}} — 4 heures pour cartographier vos processus TPE/PME et identifier 3 à 5 automatisations prioritaires.",
     },
     interventions: {
-      fr: "Formation collective à Cachan dès {{price:intervention-4h|flat}} — Williams se déplace sur site (RER B Arcueil-Cachan) pour automatiser un workflow concret (devis, relances, reporting).",
-      en: "Formation collective à Cachan dès {{price:intervention-4h|flat}} — Williams se déplace sur site (RER B Arcueil-Cachan) pour automatiser un workflow concret (devis, relances, reporting).",
+      fr: "Formation collective à Cachan dès {{price:intervention-4h|flat}} — Williams intervient sur site pour automatiser un workflow concret (devis, relances, reporting).",
+      en: "Formation collective à Cachan dès {{price:intervention-4h|flat}} — Williams intervient sur site pour automatiser un workflow concret (devis, relances, reporting).",
     },
     implementation: {
       fr: "Implémentation IA en code custom à Cachan dès {{price:impl-poc|entry}} — développement sur mesure, hébergement Europe et conformité RGPD pour les TPE/PME du Val-de-Marne.",
@@ -57,7 +57,7 @@ export const CACHAN_COPY: VilleCopy = {
           "Profil d'entreprises cachanais à forte teneur technique : en 2024, les activités scientifiques, techniques et de soutien administratif dominent les créations (214), devant le commerce-restauration (154) et l'information-communication (76) — exactement les structures qui ont besoin de sites web rapides et d'outils SaaS métier sur mesure plutôt que de templates génériques.",
           "Écosystème d'ingénierie ancré autour de l'ESTP (construction, BTP, génie civil) et de l'héritage ENS Paris-Saclay : nous construisons pour les bureaux d'études et cabinets techniques des plateformes IA-native (recherche sémantique sur normes et CCTP, chatbot RAG sur documentation projet, génération de pièces marché).",
           "Tissu d'indépendants et de jeunes structures incubées à La Fabrique (avenue de la Division-Leclerc) et au coworking Start Way : sites vitrines performants, boutiques e-commerce multi-CMS (WooCommerce, Shopify, PrestaShop, Sylius) et MVP SaaS livrés vite, sans dépendance à une plateforme propriétaire.",
-          "Commerce et services des pôles Gare Arcueil-Cachan / RD920, centre-ville et La Plaine, à 15 min de Paris en RER B et bientôt sur la ligne 15 Sud : nous outillons leur visibilité locale (sites mobiles, réservation, fiches produits, automatisations e-commerce) avant la densification annoncée du quartier de gare.",
+          "Commerce et services des pôles Gare Arcueil-Cachan / RD920, centre-ville et La Plaine : nous outillons leur visibilité locale (sites mobiles, réservation, fiches produits, automatisations e-commerce) avant la densification annoncée du quartier de gare.",
         ],
         methodology: [
           {
@@ -131,7 +131,7 @@ export const CACHAN_COPY: VilleCopy = {
           },
           {
             q: "Intervenez-vous aussi autour de Cachan et dans quel délai recevez-vous un devis ?",
-            a: "Nous intervenons à Cachan et dans les communes limitrophes — Arcueil, Bagneux, Villejuif, Bourg-la-Reine, L'Haÿ-les-Roses — ainsi que sur tout le Val-de-Marne et l'Île-de-France, à 15 min de Paris en RER B (et bientôt ligne 15 Sud). Le devis est remis à partir de 24-48 h selon la complexité du projet.",
+            a: "Nous intervenons à Cachan et dans les communes limitrophes — Arcueil, Bagneux, Villejuif, Bourg-la-Reine, L'Haÿ-les-Roses — ainsi que sur tout le Val-de-Marne et l'Île-de-France. Le devis est remis à partir de 24-48 h selon la complexité du projet.",
           },
         ],
         guarantees:
@@ -143,7 +143,7 @@ export const CACHAN_COPY: VilleCopy = {
           "Cachan's business profile is heavily technical: in 2024, scientific, technical and administrative-support activities led new registrations (214), ahead of retail and hospitality (154) and information and communication (76) — exactly the firms that need fast websites and tailored business SaaS tools rather than generic templates.",
           "Engineering ecosystem anchored around ESTP (construction, public works, civil engineering) and the ENS Paris-Saclay legacy: for design and technical offices we build AI-native platforms (semantic search across standards and technical specifications, RAG chatbot over project documentation, tender-document generation).",
           "A fabric of freelancers and young ventures incubated at La Fabrique (avenue de la Division-Leclerc) and Start Way coworking: high-performance showcase sites, multi-CMS e-commerce stores (WooCommerce, Shopify, PrestaShop, Sylius) and SaaS MVPs delivered fast, with no dependency on a proprietary platform.",
-          "Retail and services across the Gare Arcueil-Cachan / RD920, town-centre and La Plaine hubs, 15 minutes from Paris by RER B and soon on Line 15 South: we equip their local visibility (mobile sites, booking, product pages, e-commerce automations) ahead of the announced densification of the station district.",
+          "Retail and services across the Gare Arcueil-Cachan / RD920, town-centre and La Plaine hubs: we equip their local visibility (mobile sites, booking, product pages, e-commerce automations). Axion-IA works anywhere in France, on site or remotely, including in Cachan.",
         ],
         methodology: [
           {
@@ -217,7 +217,7 @@ export const CACHAN_COPY: VilleCopy = {
           },
           {
             q: "Do you also work around Cachan, and how fast do you send a quote?",
-            a: "We work in Cachan and neighbouring towns — Arcueil, Bagneux, Villejuif, Bourg-la-Reine, L'Haÿ-les-Roses — as well as across Val-de-Marne and Île-de-France, 15 minutes from Paris by RER B (and soon Line 15 South). The quote is delivered from 24-48 h depending on project complexity.",
+            a: "Axion-IA works anywhere in France, on site or remotely, including in Cachan and neighbouring towns — Arcueil, Bagneux, Villejuif, Bourg-la-Reine, L'Haÿ-les-Roses — as well as across Val-de-Marne and Île-de-France. The quote is delivered from 24-48 h depending on project complexity.",
           },
         ],
         guarantees:
@@ -233,7 +233,7 @@ export const CACHAN_COPY: VilleCopy = {
     },
     {
       q: "Combien de temps faut-il pour intervenir à Cachan ?",
-      a: "Williams se déplace à Cachan dans un délai de 5 jours ouvrés après confirmation. La gare Arcueil-Cachan est à 15 minutes en RER B de Paris, ce qui permet une intervention demi-journée ou journée.",
+      a: "Williams intervient à Cachan dans un délai de 5 jours ouvrés après confirmation.",
     },
     {
       q: "Axion-IA intervient-elle dans les communes proches de Cachan ?",

@@ -49,7 +49,7 @@ export const CHAMPIGNEULLES_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Champigneulles et autour de Nancy ?",
-      a: "Oui, Axion-IA intervient à Champigneulles et sur toute la Métropole du Grand Nancy (Nancy, Maxéville, Pompey, Frouard, Laxou). Accès direct via A31 et TER, Paris à 1h30 en TGV depuis la gare Lorraine.",
+      a: "Oui, Axion-IA intervient à Champigneulles et sur toute la Métropole du Grand Nancy (Nancy, Maxéville, Pompey, Frouard, Laxou).",
     },
     {
       q: "Combien coûte un audit IA à Champigneulles  ?",

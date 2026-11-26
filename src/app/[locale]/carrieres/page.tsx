@@ -29,7 +29,7 @@ import { ServiceHero } from "@/components/sections/ServiceHero";
 import { HUB_VILLES } from "@/content/recrutement/satellites";
 
 // 40 villes affichées en badges (info, pas de pages thin) : les 40 hubs T1+T2
-// (population ≥ 100 000), Grenoble (siège) inclus.
+// (population ≥ 100 000).
 const CAREER_CITIES: ReadonlyArray<string> = [...HUB_VILLES.map((v) => v.nameFr)];
 import {
   buildProductMetadata,
@@ -267,7 +267,7 @@ export default async function CarrieresHubPage({
         </Container>
       </Section>
 
-      {/* Ancrage — siège et bureaux à Grenoble */}
+      {/* Ancrage — équipe en remote/hybride, partout en France */}
       <Section tone="sand">
         <Container>
           <p className="text-terracotta text-sm font-semibold tracking-wide uppercase">
