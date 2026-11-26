@@ -32,7 +32,7 @@ export const TITRE = "Axion-IA · Audit et formation IA pour PME et TPE";
 
 /** Meta description (le prix est un jeton ; ≤ `META_DESCRIPTION_MAX` une fois résolue). */
 export const DESCRIPTION_META =
-  "Par où commencer avec l’IA ? En une journée chez vous, partout en France : vos plus gros gains repérés (chiffrés dans le rapport), vos équipes formées. {{PRIX}}.";
+  "Par où commencer avec l’IA ? En une journée chez vous, partout en France : vos gros gains repérés, chiffrés dans le rapport, vos équipes formées. {{PRIX}}.";
 
 /** Sous-ligne de la carte d'aperçu `/api/og`. */
 export const OG_EYEBROW = "Partenaire IA des PME et TPE";
