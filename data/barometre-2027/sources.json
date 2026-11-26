@@ -205,7 +205,7 @@
     "perimetre": "TPE-PME, base : échantillon total",
     "annee": 2026,
     "source": "Baromètre France Num 2026 (Crédoc pour la DGE), enquête du 23 mars au 18 avril 2026, 9 655 entreprises dont 6 786 TPE ; valeurs inversées entre la page de synthèse et le graphique du rapport p. 54 (vérifié sur l'image de la page)",
-    "url": "https://www.francenum.gouv.fr/guides-et-conseils/strategie-numerique/comprendre-le-numerique/barometre-france-num-2026-le"
+    "url": "https://www.francenum.gouv.fr/guides-et-conseils/strategie-numerique/comprendre-le-numerique/barometre-france-num-2026-le ; rapport : https://www.francenum.gouv.fr/files/2026-09/Barom%C3%A8tre%20France%20Num%202026%20-%20Rapport%20final.pdf"
   },
   {
     "chiffre": "Usage de l'IA : Analyse de données, prévision, optimisation",
@@ -213,7 +213,7 @@
     "perimetre": "TPE-PME, base : échantillon total",
     "annee": 2026,
     "source": "Baromètre France Num 2026 (Crédoc pour la DGE), enquête du 23 mars au 18 avril 2026, 9 655 entreprises dont 6 786 TPE ; valeurs inversées entre la page de synthèse et le graphique du rapport p. 54 (vérifié sur l'image de la page)",
-    "url": "https://www.francenum.gouv.fr/guides-et-conseils/strategie-numerique/comprendre-le-numerique/barometre-france-num-2026-le"
+    "url": "https://www.francenum.gouv.fr/guides-et-conseils/strategie-numerique/comprendre-le-numerique/barometre-france-num-2026-le ; rapport : https://www.francenum.gouv.fr/files/2026-09/Barom%C3%A8tre%20France%20Num%202026%20-%20Rapport%20final.pdf"
   },
   {
     "chiffre": "Usage de l'IA : contrôle qualité, détection",
@@ -264,7 +264,7 @@
     "url": "https://www.francenum.gouv.fr/guides-et-conseils/strategie-numerique/comprendre-le-numerique/barometre-france-num-2026-le"
   },
   {
-    "chiffre": "Utilisateurs d'IA recourant à des solutions payantes (payantes seules 20 % + les deux 28 %)",
+    "chiffre": "Utilisateurs d'IA employant principalement des solutions payantes (principalement payantes 20 % + les deux 28 %)",
     "valeur": "48 %",
     "perimetre": "TPE-PME utilisatrices d'IA",
     "annee": 2026,
@@ -392,129 +392,129 @@
     "url": "https://www.francenum.gouv.fr/guides-et-conseils/strategie-numerique/comprendre-le-numerique/barometre-france-num-2026-le"
   },
   {
-    "chiffre": "Entreprises utilisant au moins une technologie d'IA, France, 10 salariés ou plus",
+    "chiffre": "Entreprises utilisant au moins une technologie d'IA, France, 10 personnes occupées ou plus",
     "valeur": "9,91 %",
-    "perimetre": "France, 10 salariés ou plus, entreprises de 10 salariés ou plus, hors agriculture, mines, secteur financier",
+    "perimetre": "France, 10 personnes occupées ou plus, entreprises de 10 personnes occupées ou plus, hors agriculture, mines, secteur financier",
     "annee": 2024,
     "source": "Eurostat, jeu de données isoc_eb_ai (Artificial intelligence by size class of enterprise), mis à jour le 2026-06-15 ; consulté via l'API le 2026-11-26",
     "url": "https://ec.europa.eu/eurostat/databrowser/view/isoc_eb_ai/default/table"
   },
   {
-    "chiffre": "Entreprises utilisant au moins une technologie d'IA, France, 10 salariés ou plus",
+    "chiffre": "Entreprises utilisant au moins une technologie d'IA, France, 10 personnes occupées ou plus",
     "valeur": "18,16 %",
-    "perimetre": "France, 10 salariés ou plus, entreprises de 10 salariés ou plus, hors agriculture, mines, secteur financier",
+    "perimetre": "France, 10 personnes occupées ou plus, entreprises de 10 personnes occupées ou plus, hors agriculture, mines, secteur financier",
     "annee": 2025,
     "source": "Eurostat, jeu de données isoc_eb_ai (Artificial intelligence by size class of enterprise), mis à jour le 2026-06-15 ; consulté via l'API le 2026-11-26",
     "url": "https://ec.europa.eu/eurostat/databrowser/view/isoc_eb_ai/default/table"
   },
   {
-    "chiffre": "Entreprises utilisant au moins une technologie d'IA, France, 10 à 49 salariés",
+    "chiffre": "Entreprises utilisant au moins une technologie d'IA, France, 10 à 49 personnes occupées",
     "valeur": "8,51 %",
-    "perimetre": "France, 10 à 49 salariés, entreprises de 10 salariés ou plus, hors agriculture, mines, secteur financier",
+    "perimetre": "France, 10 à 49 personnes occupées, entreprises de 10 personnes occupées ou plus, hors agriculture, mines, secteur financier",
     "annee": 2024,
     "source": "Eurostat, jeu de données isoc_eb_ai (Artificial intelligence by size class of enterprise), mis à jour le 2026-06-15 ; consulté via l'API le 2026-11-26",
     "url": "https://ec.europa.eu/eurostat/databrowser/view/isoc_eb_ai/default/table"
   },
   {
-    "chiffre": "Entreprises utilisant au moins une technologie d'IA, France, 10 à 49 salariés",
+    "chiffre": "Entreprises utilisant au moins une technologie d'IA, France, 10 à 49 personnes occupées",
     "valeur": "15,04 %",
-    "perimetre": "France, 10 à 49 salariés, entreprises de 10 salariés ou plus, hors agriculture, mines, secteur financier",
+    "perimetre": "France, 10 à 49 personnes occupées, entreprises de 10 personnes occupées ou plus, hors agriculture, mines, secteur financier",
     "annee": 2025,
     "source": "Eurostat, jeu de données isoc_eb_ai (Artificial intelligence by size class of enterprise), mis à jour le 2026-06-15 ; consulté via l'API le 2026-11-26",
     "url": "https://ec.europa.eu/eurostat/databrowser/view/isoc_eb_ai/default/table"
   },
   {
-    "chiffre": "Entreprises utilisant au moins une technologie d'IA, France, 50 à 249 salariés",
+    "chiffre": "Entreprises utilisant au moins une technologie d'IA, France, 50 à 249 personnes occupées",
     "valeur": "14,52 %",
-    "perimetre": "France, 50 à 249 salariés, entreprises de 10 salariés ou plus, hors agriculture, mines, secteur financier",
+    "perimetre": "France, 50 à 249 personnes occupées, entreprises de 10 personnes occupées ou plus, hors agriculture, mines, secteur financier",
     "annee": 2024,
     "source": "Eurostat, jeu de données isoc_eb_ai (Artificial intelligence by size class of enterprise), mis à jour le 2026-06-15 ; consulté via l'API le 2026-11-26",
     "url": "https://ec.europa.eu/eurostat/databrowser/view/isoc_eb_ai/default/table"
   },
   {
-    "chiffre": "Entreprises utilisant au moins une technologie d'IA, France, 50 à 249 salariés",
+    "chiffre": "Entreprises utilisant au moins une technologie d'IA, France, 50 à 249 personnes occupées",
     "valeur": "30,81 %",
-    "perimetre": "France, 50 à 249 salariés, entreprises de 10 salariés ou plus, hors agriculture, mines, secteur financier",
+    "perimetre": "France, 50 à 249 personnes occupées, entreprises de 10 personnes occupées ou plus, hors agriculture, mines, secteur financier",
     "annee": 2025,
     "source": "Eurostat, jeu de données isoc_eb_ai (Artificial intelligence by size class of enterprise), mis à jour le 2026-06-15 ; consulté via l'API le 2026-11-26",
     "url": "https://ec.europa.eu/eurostat/databrowser/view/isoc_eb_ai/default/table"
   },
   {
-    "chiffre": "Entreprises utilisant au moins une technologie d'IA, France, 250 salariés ou plus",
+    "chiffre": "Entreprises utilisant au moins une technologie d'IA, France, 250 personnes occupées ou plus",
     "valeur": "32,74 %",
-    "perimetre": "France, 250 salariés ou plus, entreprises de 10 salariés ou plus, hors agriculture, mines, secteur financier",
+    "perimetre": "France, 250 personnes occupées ou plus, entreprises de 10 personnes occupées ou plus, hors agriculture, mines, secteur financier",
     "annee": 2024,
     "source": "Eurostat, jeu de données isoc_eb_ai (Artificial intelligence by size class of enterprise), mis à jour le 2026-06-15 ; consulté via l'API le 2026-11-26",
     "url": "https://ec.europa.eu/eurostat/databrowser/view/isoc_eb_ai/default/table"
   },
   {
-    "chiffre": "Entreprises utilisant au moins une technologie d'IA, France, 250 salariés ou plus",
+    "chiffre": "Entreprises utilisant au moins une technologie d'IA, France, 250 personnes occupées ou plus",
     "valeur": "58,01 %",
-    "perimetre": "France, 250 salariés ou plus, entreprises de 10 salariés ou plus, hors agriculture, mines, secteur financier",
+    "perimetre": "France, 250 personnes occupées ou plus, entreprises de 10 personnes occupées ou plus, hors agriculture, mines, secteur financier",
     "annee": 2025,
     "source": "Eurostat, jeu de données isoc_eb_ai (Artificial intelligence by size class of enterprise), mis à jour le 2026-06-15 ; consulté via l'API le 2026-11-26",
     "url": "https://ec.europa.eu/eurostat/databrowser/view/isoc_eb_ai/default/table"
   },
   {
-    "chiffre": "Entreprises utilisant au moins une technologie d'IA, UE27, 10 salariés ou plus",
+    "chiffre": "Entreprises utilisant au moins une technologie d'IA, UE27, 10 personnes occupées ou plus",
     "valeur": "13,48 %",
-    "perimetre": "UE27, 10 salariés ou plus, entreprises de 10 salariés ou plus, hors agriculture, mines, secteur financier",
+    "perimetre": "UE27, 10 personnes occupées ou plus, entreprises de 10 personnes occupées ou plus, hors agriculture, mines, secteur financier",
     "annee": 2024,
     "source": "Eurostat, jeu de données isoc_eb_ai (Artificial intelligence by size class of enterprise), mis à jour le 2026-06-15 ; consulté via l'API le 2026-11-26",
     "url": "https://ec.europa.eu/eurostat/databrowser/view/isoc_eb_ai/default/table"
   },
   {
-    "chiffre": "Entreprises utilisant au moins une technologie d'IA, UE27, 10 salariés ou plus",
+    "chiffre": "Entreprises utilisant au moins une technologie d'IA, UE27, 10 personnes occupées ou plus",
     "valeur": "19,95 %",
-    "perimetre": "UE27, 10 salariés ou plus, entreprises de 10 salariés ou plus, hors agriculture, mines, secteur financier",
+    "perimetre": "UE27, 10 personnes occupées ou plus, entreprises de 10 personnes occupées ou plus, hors agriculture, mines, secteur financier",
     "annee": 2025,
     "source": "Eurostat, jeu de données isoc_eb_ai (Artificial intelligence by size class of enterprise), mis à jour le 2026-06-15 ; consulté via l'API le 2026-11-26",
     "url": "https://ec.europa.eu/eurostat/databrowser/view/isoc_eb_ai/default/table"
   },
   {
-    "chiffre": "Entreprises utilisant au moins une technologie d'IA, UE27, 10 à 49 salariés",
+    "chiffre": "Entreprises utilisant au moins une technologie d'IA, UE27, 10 à 49 personnes occupées",
     "valeur": "11,21 %",
-    "perimetre": "UE27, 10 à 49 salariés, entreprises de 10 salariés ou plus, hors agriculture, mines, secteur financier",
+    "perimetre": "UE27, 10 à 49 personnes occupées, entreprises de 10 personnes occupées ou plus, hors agriculture, mines, secteur financier",
     "annee": 2024,
     "source": "Eurostat, jeu de données isoc_eb_ai (Artificial intelligence by size class of enterprise), mis à jour le 2026-06-15 ; consulté via l'API le 2026-11-26",
     "url": "https://ec.europa.eu/eurostat/databrowser/view/isoc_eb_ai/default/table"
   },
   {
-    "chiffre": "Entreprises utilisant au moins une technologie d'IA, UE27, 10 à 49 salariés",
+    "chiffre": "Entreprises utilisant au moins une technologie d'IA, UE27, 10 à 49 personnes occupées",
     "valeur": "17,00 %",
-    "perimetre": "UE27, 10 à 49 salariés, entreprises de 10 salariés ou plus, hors agriculture, mines, secteur financier",
+    "perimetre": "UE27, 10 à 49 personnes occupées, entreprises de 10 personnes occupées ou plus, hors agriculture, mines, secteur financier",
     "annee": 2025,
     "source": "Eurostat, jeu de données isoc_eb_ai (Artificial intelligence by size class of enterprise), mis à jour le 2026-06-15 ; consulté via l'API le 2026-11-26",
     "url": "https://ec.europa.eu/eurostat/databrowser/view/isoc_eb_ai/default/table"
   },
   {
-    "chiffre": "Entreprises utilisant au moins une technologie d'IA, UE27, 50 à 249 salariés",
+    "chiffre": "Entreprises utilisant au moins une technologie d'IA, UE27, 50 à 249 personnes occupées",
     "valeur": "20,97 %",
-    "perimetre": "UE27, 50 à 249 salariés, entreprises de 10 salariés ou plus, hors agriculture, mines, secteur financier",
+    "perimetre": "UE27, 50 à 249 personnes occupées, entreprises de 10 personnes occupées ou plus, hors agriculture, mines, secteur financier",
     "annee": 2024,
     "source": "Eurostat, jeu de données isoc_eb_ai (Artificial intelligence by size class of enterprise), mis à jour le 2026-06-15 ; consulté via l'API le 2026-11-26",
     "url": "https://ec.europa.eu/eurostat/databrowser/view/isoc_eb_ai/default/table"
   },
   {
-    "chiffre": "Entreprises utilisant au moins une technologie d'IA, UE27, 50 à 249 salariés",
+    "chiffre": "Entreprises utilisant au moins une technologie d'IA, UE27, 50 à 249 personnes occupées",
     "valeur": "30,36 %",
-    "perimetre": "UE27, 50 à 249 salariés, entreprises de 10 salariés ou plus, hors agriculture, mines, secteur financier",
+    "perimetre": "UE27, 50 à 249 personnes occupées, entreprises de 10 personnes occupées ou plus, hors agriculture, mines, secteur financier",
     "annee": 2025,
     "source": "Eurostat, jeu de données isoc_eb_ai (Artificial intelligence by size class of enterprise), mis à jour le 2026-06-15 ; consulté via l'API le 2026-11-26",
     "url": "https://ec.europa.eu/eurostat/databrowser/view/isoc_eb_ai/default/table"
   },
   {
-    "chiffre": "Entreprises utilisant au moins une technologie d'IA, UE27, 250 salariés ou plus",
+    "chiffre": "Entreprises utilisant au moins une technologie d'IA, UE27, 250 personnes occupées ou plus",
     "valeur": "41,17 %",
-    "perimetre": "UE27, 250 salariés ou plus, entreprises de 10 salariés ou plus, hors agriculture, mines, secteur financier",
+    "perimetre": "UE27, 250 personnes occupées ou plus, entreprises de 10 personnes occupées ou plus, hors agriculture, mines, secteur financier",
     "annee": 2024,
     "source": "Eurostat, jeu de données isoc_eb_ai (Artificial intelligence by size class of enterprise), mis à jour le 2026-06-15 ; consulté via l'API le 2026-11-26",
     "url": "https://ec.europa.eu/eurostat/databrowser/view/isoc_eb_ai/default/table"
   },
   {
-    "chiffre": "Entreprises utilisant au moins une technologie d'IA, UE27, 250 salariés ou plus",
+    "chiffre": "Entreprises utilisant au moins une technologie d'IA, UE27, 250 personnes occupées ou plus",
     "valeur": "55,03 %",
-    "perimetre": "UE27, 250 salariés ou plus, entreprises de 10 salariés ou plus, hors agriculture, mines, secteur financier",
+    "perimetre": "UE27, 250 personnes occupées ou plus, entreprises de 10 personnes occupées ou plus, hors agriculture, mines, secteur financier",
     "annee": 2025,
     "source": "Eurostat, jeu de données isoc_eb_ai (Artificial intelligence by size class of enterprise), mis à jour le 2026-06-15 ; consulté via l'API le 2026-11-26",
     "url": "https://ec.europa.eu/eurostat/databrowser/view/isoc_eb_ai/default/table"
@@ -522,7 +522,7 @@
   {
     "chiffre": "France, technologie d'IA : analyse de texte (text mining)",
     "valeur": "10,23 %",
-    "perimetre": "France, 10 salariés ou plus, entreprises de 10 salariés ou plus, hors agriculture, mines, secteur financier",
+    "perimetre": "France, 10 personnes occupées ou plus, entreprises de 10 personnes occupées ou plus, hors agriculture, mines, secteur financier",
     "annee": 2025,
     "source": "Eurostat, jeu de données isoc_eb_ai (Artificial intelligence by size class of enterprise), mis à jour le 2026-06-15 ; consulté via l'API le 2026-11-26",
     "url": "https://ec.europa.eu/eurostat/databrowser/view/isoc_eb_ai/default/table"
@@ -530,7 +530,7 @@
   {
     "chiffre": "France, technologie d'IA : génération de langage écrit/parlé ou de code",
     "valeur": "7,82 %",
-    "perimetre": "France, 10 salariés ou plus, entreprises de 10 salariés ou plus, hors agriculture, mines, secteur financier",
+    "perimetre": "France, 10 personnes occupées ou plus, entreprises de 10 personnes occupées ou plus, hors agriculture, mines, secteur financier",
     "annee": 2025,
     "source": "Eurostat, jeu de données isoc_eb_ai (Artificial intelligence by size class of enterprise), mis à jour le 2026-06-15 ; consulté via l'API le 2026-11-26",
     "url": "https://ec.europa.eu/eurostat/databrowser/view/isoc_eb_ai/default/table"
@@ -538,7 +538,7 @@
   {
     "chiffre": "France, technologie d'IA : génération d'images, vidéo, son",
     "valeur": "7,50 %",
-    "perimetre": "France, 10 salariés ou plus, entreprises de 10 salariés ou plus, hors agriculture, mines, secteur financier",
+    "perimetre": "France, 10 personnes occupées ou plus, entreprises de 10 personnes occupées ou plus, hors agriculture, mines, secteur financier",
     "annee": 2025,
     "source": "Eurostat, jeu de données isoc_eb_ai (Artificial intelligence by size class of enterprise), mis à jour le 2026-06-15 ; consulté via l'API le 2026-11-26",
     "url": "https://ec.europa.eu/eurostat/databrowser/view/isoc_eb_ai/default/table"
@@ -546,7 +546,7 @@
   {
     "chiffre": "France, technologie d'IA : reconnaissance vocale",
     "valeur": "6,14 %",
-    "perimetre": "France, 10 salariés ou plus, entreprises de 10 salariés ou plus, hors agriculture, mines, secteur financier",
+    "perimetre": "France, 10 personnes occupées ou plus, entreprises de 10 personnes occupées ou plus, hors agriculture, mines, secteur financier",
     "annee": 2025,
     "source": "Eurostat, jeu de données isoc_eb_ai (Artificial intelligence by size class of enterprise), mis à jour le 2026-06-15 ; consulté via l'API le 2026-11-26",
     "url": "https://ec.europa.eu/eurostat/databrowser/view/isoc_eb_ai/default/table"
@@ -554,7 +554,7 @@
   {
     "chiffre": "France, technologie d'IA : automatisation de processus assistée par IA",
     "valeur": "4,48 %",
-    "perimetre": "France, 10 salariés ou plus, entreprises de 10 salariés ou plus, hors agriculture, mines, secteur financier",
+    "perimetre": "France, 10 personnes occupées ou plus, entreprises de 10 personnes occupées ou plus, hors agriculture, mines, secteur financier",
     "annee": 2025,
     "source": "Eurostat, jeu de données isoc_eb_ai (Artificial intelligence by size class of enterprise), mis à jour le 2026-06-15 ; consulté via l'API le 2026-11-26",
     "url": "https://ec.europa.eu/eurostat/databrowser/view/isoc_eb_ai/default/table"
@@ -562,7 +562,7 @@
   {
     "chiffre": "France, technologie d'IA : apprentissage automatique pour l'analyse de données",
     "valeur": "4,23 %",
-    "perimetre": "France, 10 salariés ou plus, entreprises de 10 salariés ou plus, hors agriculture, mines, secteur financier",
+    "perimetre": "France, 10 personnes occupées ou plus, entreprises de 10 personnes occupées ou plus, hors agriculture, mines, secteur financier",
     "annee": 2025,
     "source": "Eurostat, jeu de données isoc_eb_ai (Artificial intelligence by size class of enterprise), mis à jour le 2026-06-15 ; consulté via l'API le 2026-11-26",
     "url": "https://ec.europa.eu/eurostat/databrowser/view/isoc_eb_ai/default/table"
@@ -570,7 +570,7 @@
   {
     "chiffre": "France, technologie d'IA : reconnaissance d'images",
     "valeur": "3,69 %",
-    "perimetre": "France, 10 salariés ou plus, entreprises de 10 salariés ou plus, hors agriculture, mines, secteur financier",
+    "perimetre": "France, 10 personnes occupées ou plus, entreprises de 10 personnes occupées ou plus, hors agriculture, mines, secteur financier",
     "annee": 2025,
     "source": "Eurostat, jeu de données isoc_eb_ai (Artificial intelligence by size class of enterprise), mis à jour le 2026-06-15 ; consulté via l'API le 2026-11-26",
     "url": "https://ec.europa.eu/eurostat/databrowser/view/isoc_eb_ai/default/table"
@@ -578,7 +578,7 @@
   {
     "chiffre": "France, technologie d'IA : robots autonomes",
     "valeur": "1,73 %",
-    "perimetre": "France, 10 salariés ou plus, entreprises de 10 salariés ou plus, hors agriculture, mines, secteur financier",
+    "perimetre": "France, 10 personnes occupées ou plus, entreprises de 10 personnes occupées ou plus, hors agriculture, mines, secteur financier",
     "annee": 2025,
     "source": "Eurostat, jeu de données isoc_eb_ai (Artificial intelligence by size class of enterprise), mis à jour le 2026-06-15 ; consulté via l'API le 2026-11-26",
     "url": "https://ec.europa.eu/eurostat/databrowser/view/isoc_eb_ai/default/table"
@@ -586,7 +586,7 @@
   {
     "chiffre": "France, usage de l'IA pour : production",
     "valeur": "3,79 %",
-    "perimetre": "France, 10 salariés ou plus, entreprises de 10 salariés ou plus, hors agriculture, mines, secteur financier",
+    "perimetre": "France, 10 personnes occupées ou plus, entreprises de 10 personnes occupées ou plus, hors agriculture, mines, secteur financier",
     "annee": 2025,
     "source": "Eurostat, jeu de données isoc_eb_ai (Artificial intelligence by size class of enterprise), mis à jour le 2026-06-15 ; consulté via l'API le 2026-11-26",
     "url": "https://ec.europa.eu/eurostat/databrowser/view/isoc_eb_ai/default/table"
@@ -594,7 +594,7 @@
   {
     "chiffre": "France, usage de l'IA pour : sécurité informatique",
     "valeur": "3,16 %",
-    "perimetre": "France, 10 salariés ou plus, entreprises de 10 salariés ou plus, hors agriculture, mines, secteur financier",
+    "perimetre": "France, 10 personnes occupées ou plus, entreprises de 10 personnes occupées ou plus, hors agriculture, mines, secteur financier",
     "annee": 2025,
     "source": "Eurostat, jeu de données isoc_eb_ai (Artificial intelligence by size class of enterprise), mis à jour le 2026-06-15 ; consulté via l'API le 2026-11-26",
     "url": "https://ec.europa.eu/eurostat/databrowser/view/isoc_eb_ai/default/table"
@@ -602,7 +602,7 @@
   {
     "chiffre": "France, usage de l'IA pour : logistique",
     "valeur": "1,15 %",
-    "perimetre": "France, 10 salariés ou plus, entreprises de 10 salariés ou plus, hors agriculture, mines, secteur financier",
+    "perimetre": "France, 10 personnes occupées ou plus, entreprises de 10 personnes occupées ou plus, hors agriculture, mines, secteur financier",
     "annee": 2025,
     "source": "Eurostat, jeu de données isoc_eb_ai (Artificial intelligence by size class of enterprise), mis à jour le 2026-06-15 ; consulté via l'API le 2026-11-26",
     "url": "https://ec.europa.eu/eurostat/databrowser/view/isoc_eb_ai/default/table"
@@ -610,7 +610,7 @@
   {
     "chiffre": "UE27, usage de l'IA pour : marketing ou ventes",
     "valeur": "6,92 %",
-    "perimetre": "UE27, 10 salariés ou plus, entreprises de 10 salariés ou plus, hors agriculture, mines, secteur financier",
+    "perimetre": "UE27, 10 personnes occupées ou plus, entreprises de 10 personnes occupées ou plus, hors agriculture, mines, secteur financier",
     "annee": 2025,
     "source": "Eurostat, jeu de données isoc_eb_ai (Artificial intelligence by size class of enterprise), mis à jour le 2026-06-15 ; consulté via l'API le 2026-11-26",
     "url": "https://ec.europa.eu/eurostat/databrowser/view/isoc_eb_ai/default/table"
@@ -618,7 +618,7 @@
   {
     "chiffre": "UE27, usage de l'IA pour : administration et gestion",
     "valeur": "6,19 %",
-    "perimetre": "UE27, 10 salariés ou plus, entreprises de 10 salariés ou plus, hors agriculture, mines, secteur financier",
+    "perimetre": "UE27, 10 personnes occupées ou plus, entreprises de 10 personnes occupées ou plus, hors agriculture, mines, secteur financier",
     "annee": 2025,
     "source": "Eurostat, jeu de données isoc_eb_ai (Artificial intelligence by size class of enterprise), mis à jour le 2026-06-15 ; consulté via l'API le 2026-11-26",
     "url": "https://ec.europa.eu/eurostat/databrowser/view/isoc_eb_ai/default/table"
@@ -626,7 +626,7 @@
   {
     "chiffre": "UE27, usage de l'IA pour : comptabilité, finance",
     "valeur": "4,61 %",
-    "perimetre": "UE27, 10 salariés ou plus, entreprises de 10 salariés ou plus, hors agriculture, mines, secteur financier",
+    "perimetre": "UE27, 10 personnes occupées ou plus, entreprises de 10 personnes occupées ou plus, hors agriculture, mines, secteur financier",
     "annee": 2025,
     "source": "Eurostat, jeu de données isoc_eb_ai (Artificial intelligence by size class of enterprise), mis à jour le 2026-06-15 ; consulté via l'API le 2026-11-26",
     "url": "https://ec.europa.eu/eurostat/databrowser/view/isoc_eb_ai/default/table"
@@ -634,7 +634,7 @@
   {
     "chiffre": "UE27, usage de l'IA pour : production",
     "valeur": "4,14 %",
-    "perimetre": "UE27, 10 salariés ou plus, entreprises de 10 salariés ou plus, hors agriculture, mines, secteur financier",
+    "perimetre": "UE27, 10 personnes occupées ou plus, entreprises de 10 personnes occupées ou plus, hors agriculture, mines, secteur financier",
     "annee": 2025,
     "source": "Eurostat, jeu de données isoc_eb_ai (Artificial intelligence by size class of enterprise), mis à jour le 2026-06-15 ; consulté via l'API le 2026-11-26",
     "url": "https://ec.europa.eu/eurostat/databrowser/view/isoc_eb_ai/default/table"
@@ -642,7 +642,7 @@
   {
     "chiffre": "UE27, usage de l'IA pour : sécurité informatique",
     "valeur": "3,94 %",
-    "perimetre": "UE27, 10 salariés ou plus, entreprises de 10 salariés ou plus, hors agriculture, mines, secteur financier",
+    "perimetre": "UE27, 10 personnes occupées ou plus, entreprises de 10 personnes occupées ou plus, hors agriculture, mines, secteur financier",
     "annee": 2025,
     "source": "Eurostat, jeu de données isoc_eb_ai (Artificial intelligence by size class of enterprise), mis à jour le 2026-06-15 ; consulté via l'API le 2026-11-26",
     "url": "https://ec.europa.eu/eurostat/databrowser/view/isoc_eb_ai/default/table"
@@ -650,7 +650,7 @@
   {
     "chiffre": "UE27, usage de l'IA pour : R&D, innovation",
     "valeur": "3,80 %",
-    "perimetre": "UE27, 10 salariés ou plus, entreprises de 10 salariés ou plus, hors agriculture, mines, secteur financier",
+    "perimetre": "UE27, 10 personnes occupées ou plus, entreprises de 10 personnes occupées ou plus, hors agriculture, mines, secteur financier",
     "annee": 2025,
     "source": "Eurostat, jeu de données isoc_eb_ai (Artificial intelligence by size class of enterprise), mis à jour le 2026-06-15 ; consulté via l'API le 2026-11-26",
     "url": "https://ec.europa.eu/eurostat/databrowser/view/isoc_eb_ai/default/table"
@@ -658,7 +658,7 @@
   {
     "chiffre": "UE27, usage de l'IA pour : logistique",
     "valeur": "1,21 %",
-    "perimetre": "UE27, 10 salariés ou plus, entreprises de 10 salariés ou plus, hors agriculture, mines, secteur financier",
+    "perimetre": "UE27, 10 personnes occupées ou plus, entreprises de 10 personnes occupées ou plus, hors agriculture, mines, secteur financier",
     "annee": 2025,
     "source": "Eurostat, jeu de données isoc_eb_ai (Artificial intelligence by size class of enterprise), mis à jour le 2026-06-15 ; consulté via l'API le 2026-11-26",
     "url": "https://ec.europa.eu/eurostat/databrowser/view/isoc_eb_ai/default/table"
@@ -666,7 +666,7 @@
   {
     "chiffre": "UE27, entreprises n'utilisant pas l'IA à cause de : manque de compétences",
     "valeur": "7,76 % (de l'ensemble des entreprises, lecture de l'unité PC_ENT) ; 70,31 % des entreprises ayant envisagé l'IA sans l'adopter (unité PC_ENT_AI_EC)",
-    "perimetre": "UE27, 10 salariés ou plus, entreprises de 10 salariés ou plus, hors agriculture, mines, secteur financier",
+    "perimetre": "UE27, 10 personnes occupées ou plus, entreprises de 10 personnes occupées ou plus, hors agriculture, mines, secteur financier",
     "annee": 2025,
     "source": "Eurostat, jeu de données isoc_eb_ai (Artificial intelligence by size class of enterprise), mis à jour le 2026-06-15 ; consulté via l'API le 2026-11-26",
     "url": "https://ec.europa.eu/eurostat/databrowser/view/isoc_eb_ai/default/table"
@@ -674,7 +674,7 @@
   {
     "chiffre": "UE27, entreprises n'utilisant pas l'IA à cause de : incertitude sur les conséquences juridiques",
     "valeur": "5,92 % (de l'ensemble des entreprises, lecture de l'unité PC_ENT) ; 53,61 % des entreprises ayant envisagé l'IA sans l'adopter (unité PC_ENT_AI_EC)",
-    "perimetre": "UE27, 10 salariés ou plus, entreprises de 10 salariés ou plus, hors agriculture, mines, secteur financier",
+    "perimetre": "UE27, 10 personnes occupées ou plus, entreprises de 10 personnes occupées ou plus, hors agriculture, mines, secteur financier",
     "annee": 2025,
     "source": "Eurostat, jeu de données isoc_eb_ai (Artificial intelligence by size class of enterprise), mis à jour le 2026-06-15 ; consulté via l'API le 2026-11-26",
     "url": "https://ec.europa.eu/eurostat/databrowser/view/isoc_eb_ai/default/table"
@@ -682,7 +682,7 @@
   {
     "chiffre": "UE27, entreprises n'utilisant pas l'IA à cause de : protection des données et vie privée",
     "valeur": "5,82 % (de l'ensemble des entreprises, lecture de l'unité PC_ENT) ; 52,72 % des entreprises ayant envisagé l'IA sans l'adopter (unité PC_ENT_AI_EC)",
-    "perimetre": "UE27, 10 salariés ou plus, entreprises de 10 salariés ou plus, hors agriculture, mines, secteur financier",
+    "perimetre": "UE27, 10 personnes occupées ou plus, entreprises de 10 personnes occupées ou plus, hors agriculture, mines, secteur financier",
     "annee": 2025,
     "source": "Eurostat, jeu de données isoc_eb_ai (Artificial intelligence by size class of enterprise), mis à jour le 2026-06-15 ; consulté via l'API le 2026-11-26",
     "url": "https://ec.europa.eu/eurostat/databrowser/view/isoc_eb_ai/default/table"
@@ -690,7 +690,7 @@
   {
     "chiffre": "UE27, entreprises n'utilisant pas l'IA à cause de : disponibilité ou qualité des données",
     "valeur": "4,80 % (de l'ensemble des entreprises, lecture de l'unité PC_ENT) ; 43,51 % des entreprises ayant envisagé l'IA sans l'adopter (unité PC_ENT_AI_EC)",
-    "perimetre": "UE27, 10 salariés ou plus, entreprises de 10 salariés ou plus, hors agriculture, mines, secteur financier",
+    "perimetre": "UE27, 10 personnes occupées ou plus, entreprises de 10 personnes occupées ou plus, hors agriculture, mines, secteur financier",
     "annee": 2025,
     "source": "Eurostat, jeu de données isoc_eb_ai (Artificial intelligence by size class of enterprise), mis à jour le 2026-06-15 ; consulté via l'API le 2026-11-26",
     "url": "https://ec.europa.eu/eurostat/databrowser/view/isoc_eb_ai/default/table"
@@ -698,7 +698,7 @@
   {
     "chiffre": "UE27, entreprises n'utilisant pas l'IA à cause de : incompatibilité avec les systèmes existants",
     "valeur": "4,59 % (de l'ensemble des entreprises, lecture de l'unité PC_ENT) ; 41,60 % des entreprises ayant envisagé l'IA sans l'adopter (unité PC_ENT_AI_EC)",
-    "perimetre": "UE27, 10 salariés ou plus, entreprises de 10 salariés ou plus, hors agriculture, mines, secteur financier",
+    "perimetre": "UE27, 10 personnes occupées ou plus, entreprises de 10 personnes occupées ou plus, hors agriculture, mines, secteur financier",
     "annee": 2025,
     "source": "Eurostat, jeu de données isoc_eb_ai (Artificial intelligence by size class of enterprise), mis à jour le 2026-06-15 ; consulté via l'API le 2026-11-26",
     "url": "https://ec.europa.eu/eurostat/databrowser/view/isoc_eb_ai/default/table"
@@ -706,7 +706,7 @@
   {
     "chiffre": "UE27, entreprises n'utilisant pas l'IA à cause de : coûts jugés trop élevés",
     "valeur": "4,24 % (de l'ensemble des entreprises, lecture de l'unité PC_ENT) ; 38,37 % des entreprises ayant envisagé l'IA sans l'adopter (unité PC_ENT_AI_EC)",
-    "perimetre": "UE27, 10 salariés ou plus, entreprises de 10 salariés ou plus, hors agriculture, mines, secteur financier",
+    "perimetre": "UE27, 10 personnes occupées ou plus, entreprises de 10 personnes occupées ou plus, hors agriculture, mines, secteur financier",
     "annee": 2025,
     "source": "Eurostat, jeu de données isoc_eb_ai (Artificial intelligence by size class of enterprise), mis à jour le 2026-06-15 ; consulté via l'API le 2026-11-26",
     "url": "https://ec.europa.eu/eurostat/databrowser/view/isoc_eb_ai/default/table"
@@ -714,7 +714,7 @@
   {
     "chiffre": "UE27, entreprises n'utilisant pas l'IA à cause de : considérations éthiques",
     "valeur": "2,72 % (de l'ensemble des entreprises, lecture de l'unité PC_ENT) ; 24,64 % des entreprises ayant envisagé l'IA sans l'adopter (unité PC_ENT_AI_EC)",
-    "perimetre": "UE27, 10 salariés ou plus, entreprises de 10 salariés ou plus, hors agriculture, mines, secteur financier",
+    "perimetre": "UE27, 10 personnes occupées ou plus, entreprises de 10 personnes occupées ou plus, hors agriculture, mines, secteur financier",
     "annee": 2025,
     "source": "Eurostat, jeu de données isoc_eb_ai (Artificial intelligence by size class of enterprise), mis à jour le 2026-06-15 ; consulté via l'API le 2026-11-26",
     "url": "https://ec.europa.eu/eurostat/databrowser/view/isoc_eb_ai/default/table"
@@ -722,7 +722,7 @@
   {
     "chiffre": "UE27, entreprises n'utilisant pas l'IA à cause de : IA jugée inutile pour l'entreprise",
     "valeur": "1,96 % (de l'ensemble des entreprises, lecture de l'unité PC_ENT) ; 17,79 % des entreprises ayant envisagé l'IA sans l'adopter (unité PC_ENT_AI_EC)",
-    "perimetre": "UE27, 10 salariés ou plus, entreprises de 10 salariés ou plus, hors agriculture, mines, secteur financier",
+    "perimetre": "UE27, 10 personnes occupées ou plus, entreprises de 10 personnes occupées ou plus, hors agriculture, mines, secteur financier",
     "annee": 2025,
     "source": "Eurostat, jeu de données isoc_eb_ai (Artificial intelligence by size class of enterprise), mis à jour le 2026-06-15 ; consulté via l'API le 2026-11-26",
     "url": "https://ec.europa.eu/eurostat/databrowser/view/isoc_eb_ai/default/table"
