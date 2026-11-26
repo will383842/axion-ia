@@ -172,8 +172,8 @@ export const CONTENU = {
         icone: "audit",
         jalons: [
           {
-            moment: "De 2 à 4\u00a0h selon la structuration de l’entreprise",
-            texte: "La cartographie, service par service",
+            moment: "De 2 à 4\u00a0h",
+            texte: "La cartographie, service par service, selon la structuration de l’entreprise",
           },
         ],
       },
