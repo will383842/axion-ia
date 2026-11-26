@@ -423,7 +423,7 @@ export function ConventionTripartitePdf({
             le délai d&apos;annulation. Il est conservé à titre de dédit et d&apos;indemnité
             (article 1231-5 du Code civil, qui laisse au juge la faculté de modérer une pénalité
             manifestement excessive). Cette règle vise le client professionnel ; elle ne
-            s&apos;applique pas à la personne morale non professionnelle (article 53.3 des
+            s&apos;applique pas à la personne morale non professionnelle (articles 6.5 et 53.3 des
             conditions générales de vente), pour laquelle l&apos;acompte est restitué en cas
             d&apos;annulation avant le début, sous réserve de la part réalisée. Les sommes suivantes
             sont dues ; l&apos;acompte versé s&apos;impute sur elles et, sauf pour la personne
