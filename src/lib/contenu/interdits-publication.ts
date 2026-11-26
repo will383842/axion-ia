@@ -92,7 +92,7 @@ export function normaliserPourControle(t: string): string {
   // Les balises de texte barré deviennent « ~~ » AVANT le retrait du HTML : sinon
   // « <del>1 990 €</del> » se réduit à « 1 990 € » et le prix barré passe inaperçu.
   let s = (t ?? "").replace(
-    /<(del|s|strike)(?:\s[^>]*)?>([\s\S]*?)<\/\1\s*>/gi,
+    /<(del|s|strike)(?:\s[^>]{0,200})?>([\s\S]{0,200}?)<\/\1\s*>/gi,
     (_m, _tag: string, dedans: string) => ` ~~${dedans}~~ `,
   );
   s = s.replace(/<[^>]*>/g, " ");
@@ -122,7 +122,7 @@ const MONTANT_EUROS = String.raw`${B}[0-9][0-9 .,]{0,12}(?:€|euros?|eur${E})`;
  * « 3 fois », « trois fois », « x3 », « 3x » sont écartés par la tête négative. Le « N fois » exige
  * un complément de prix pour ne pas prendre « payable en 2 fois » ni « 2 fois par an ».
  */
-const MULTIPLE_AUTRE = String.raw`(?!(?:3|trois)(?![0-9.,]*[0-9]) ?(?:fois|x|×)|[x×]3(?![.,]?[0-9]))(?:(?:[0-9]+(?:[.,][0-9]+)?|un|deux|quatre|cinq|six|sept|huit|neuf|dix|douze|quinze|vingt|cent) fois (?:le |la |l'|son |sa |votre |vos |notre |leur |du |ce |cet |cette )?(?:prix|tarif|montant|investissement|mise|somme investie|somme|cout|budget)|(?:double|quadruple|quintuple|decuple) (?:du |de |des |de l')?(?:prix|tarif|montant|investissement|mise|somme investie|somme|cout|budget)|(?!300 ?%)[0-9]{3,4} ?% (?:du |de |des |de l')?(?:prix|tarif|montant|investissement|mise|somme investie|somme|cout|budget)|[x×][0-9]+(?:[.,][0-9]+)?(?![0-9x×])|[0-9]+ ?[x×] (?:le |la |l'|son |sa |votre |vos |notre |leur |du |ce |cet |cette )?(?:prix|tarif|montant|investissement|mise|somme investie|somme|cout|budget))`;
+const MULTIPLE_AUTRE = String.raw`(?!(?:3|trois)(?![0-9.,]*[0-9]) ?(?:fois|x|×)|[x×]3(?![.,]?[0-9]))(?:(?:[0-9]+(?:[.,][0-9]+)?|un|deux|quatre|cinq|six|sept|huit|neuf|dix|douze|quinze|vingt|cent) fois (?:le |la |l'|son |sa |votre |vos |notre |leur |du |ce |cet |cette )?(?:prix|tarif|montant|investissement|mise|somme investie|somme|cout|budget)|(?:double|quadruple|quintuple|decuple) (?:du |de |des |de l')?(?:prix|tarif|montant|investissement|mise|somme investie|somme|cout|budget)|(?!300 ?%)(?:[2-9][0-9]{2}|[1-9][0-9]{3}) ?% (?:du |de |des |de l')?(?:prix|tarif|montant|investissement|mise|somme investie|somme|cout|budget)|[x×][0-9]+(?:[.,][0-9]+)?(?![0-9x×])|[0-9]+ ?[x×] (?:le |la |l'|son |sa |votre |vos |notre |leur |du |ce |cet |cette )?(?:prix|tarif|montant|investissement|mise|somme investie|somme|cout|budget))`;
 
 // Motif NDA / certificat suivi d'un numéro (repris de doctrine-check.ts, porté
 // sur le texte normalisé).

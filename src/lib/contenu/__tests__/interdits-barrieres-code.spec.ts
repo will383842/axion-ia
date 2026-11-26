@@ -86,6 +86,8 @@ const SAINS: ReadonlyArray<string> = [
   "Un écran 2560 x 1440, garantie 3 ans.",
   "Paiement en 4x, garantie 3 fois le prix HT.",
   "Le remboursement d'un prêt coûte parfois deux fois le montant emprunté.",
+  "Garantie : 3 fois le prix HT en gains identifiés, ou remboursement de 100 % du montant payé.",
+  "La caution bancaire garantit 100 % du montant de l'acompte.",
   "Un tarif normal pour ce type de prestation en France.",
 ];
 
