@@ -106,13 +106,12 @@ jobs:
             fi
             rm -f "$err"
           }
-          # Résumé lisible de la réponse de Claude (dépôt PRIVÉ ; la clé API est retirée de l'environnement
-          # des commandes de Claude et GitHub masque les secrets dans le journal).
+          # Résumé de l'exécution : NOMBRES et noms d'outils seulement. Le dépôt est PUBLIC (journaux publics) :
+          # le texte de la réponse de Claude n'est JAMAIS affiché.
           resume_claude() {
             jq -r '.[] | select(.type=="result") |
-              "Résumé de Claude : \(.subtype // "?"), erreur=\(.is_error), tours=\(.num_turns // 0), coût=\(.total_cost_usd // 0) $, durée=\((.duration_ms // 0) / 1000 | floor) s",
-              "Outils refusés : \([.permission_denials[]? | .tool_name] | unique | join(", ") | if . == "" then "aucun" else . end)",
-              "Fin de la réponse : \((.result // "") | tostring | .[-600:] | gsub("\n"; " ⏎ "))"' "$1" 2>/dev/null || true
+              "Résumé de Claude : \(.subtype // "?" | tostring | .[0:40]), erreur=\(.is_error), tours=\(.num_turns // 0), coût=\(.total_cost_usd // 0) $, durée=\((.duration_ms // 0) / 1000 | floor) s, longueur de la réponse=\((.result // "") | tostring | length) caractères",
+              "Outils refusés : \([.permission_denials[]? | .tool_name | tostring | .[0:40]] | unique | join(", ") | if . == "" then "aucun" else . end)"' "$1" 2>/dev/null || true
           }
           EOF
           git ls-remote --heads origin | sort > "$RUNNER_TEMP/branches-avant.txt"
@@ -232,5 +231,5 @@ jobs:
               if [ -n "$x" ] && [ -f "$x" ] && jq -e 'any(.[]; .type == "result" and ((.result // "") | tostring | test("VERDICT")))' "$x" >/dev/null 2>&1; then
                 echo "Claude a terminé (relecture sans branche : verdict présent dans la réponse)."; exit 0; fi
             done
-            echo "::error::Claude a fini sans pousser aucune branche ni rendre de VERDICT : voir « Résumé de Claude » et « Fin de la réponse » plus haut."; exit 1; fi
+            echo "::error::Claude a fini sans pousser aucune branche ni rendre de VERDICT : voir « Résumé de Claude » et « Outils refusés » plus haut."; exit 1; fi
           echo "Claude a terminé. Branches poussées (créées ou mises à jour) :"; printf '  %s\n' $nouvelles
