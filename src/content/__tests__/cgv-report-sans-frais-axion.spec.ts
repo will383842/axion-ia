@@ -64,8 +64,9 @@ describe("CGV : report à l'initiative d'Axion-IA, sans frais", () => {
       expect(a53).toContain("Axion-IA n'annule pas la prestation");
       expect(a53).toContain("au moins 2 nouvelles dates dans les 3 mois");
       // Aucune autre clause n'ouvre une indemnité égale à l'acompte.
-      expect(tout.match(/indemnité d'un montant égal à (cet |l')acompte/g)?.length ?? 0).toBe(1);
-      expect(tout).not.toContain("renonce à l'exécuter");
+      expect(tout.match(/indemnité d'un montant égal à (cet |l')acompte/g)?.length ?? 0).toBe(2);
+      expect(alinea(53, "53.3")).toContain("notamment celles de l'article 42, si Axion-IA renonce à l'exécuter");
+      expect(tout.match(/renonce à l'exécuter/g)?.length ?? 0).toBe(1);
       expect(tout).not.toContain("sauf report accepté par lui");
     });
 

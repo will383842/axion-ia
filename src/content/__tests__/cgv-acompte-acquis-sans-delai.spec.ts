@@ -88,7 +88,7 @@ describe("CGV : l'acompte versé reste acquis, sans condition de délai", () => 
       expect(art(6)).not.toContain("sous réserve de la part réalisée");
       expect(art(53)).toContain("s'applique à elle comme au Client professionnel");
       expect(art(53)).toContain(
-        "Si aucune des dates proposées ne convient à la personne morale non professionnelle, si elle refuse un nouveau report après un second empêchement, ou si Axion-IA ne les propose pas dans le délai de l'article 46.4, hors cas de force majeure (article 39) et hors faute du Client, elle lui rembourse les sommes versées et lui verse une indemnité d'un montant égal à l'acompte",
+        "Si aucune des dates proposées ne convient à la personne morale non professionnelle, si elle refuse un nouveau report après un second empêchement, ou si Axion-IA ne les propose pas dans le délai de l'article 46.4, elle lui rembourse les sommes versées et, hors cas de force majeure (article 39) et hors faute du Client, lui verse en outre une indemnité d'un montant égal à l'acompte",
       );
       expect(art(53)).not.toContain("lui est restitué en totalité");
       expect(art(46)).toContain("Pour la seule personne morale non professionnelle (article 53.3)");
