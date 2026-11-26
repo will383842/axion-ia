@@ -601,7 +601,11 @@ export function ConventionPdf({
               d&apos;exécution prévues aux conditions générales de vente, et sauf lorsque la
               réduction, la caducité ou le non-paiement résulte d&apos;un manquement de
               l&apos;organisme à ses propres obligations (inexécution de tout ou partie de
-              l&apos;action, défaut des justificatifs de réalisation qui lui incombent).
+              l&apos;action, défaut des justificatifs de réalisation qui lui incombent) ou d&apos;un
+              report à l&apos;initiative de l&apos;organisme (article 46.4 des conditions générales
+              de vente). En cas de report, si le financeur ne maintient pas sa prise en charge
+              pour la date retenue, le client peut refuser cette date et le remboursement prévu
+              à l&apos;article 4 s&apos;applique.
             </Text>
           ) : null}
         </SectionCarte>

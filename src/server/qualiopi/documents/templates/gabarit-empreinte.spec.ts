@@ -131,7 +131,7 @@ const EMPREINTES: Readonly<
     // v10 archivée.
     // v12 — 26/11/2026 : l'organisme REPORTE au lieu d'annuler (2 dates sous 3 mois, sans frais,
     // acompte reporté ; CGV 46.4) ; v11 archivée.
-    sha: "b5b28b7277443b6b6115f2ce971ebf7fbc06aaa0524726a8c27eedecc99cdbd6",
+    sha: "19d854c1f5f2c296c1d03513e340538a15036a76ddf2dd9068aa9b8da585d012",
     version: 12,
   },
   convention_tripartite: {
