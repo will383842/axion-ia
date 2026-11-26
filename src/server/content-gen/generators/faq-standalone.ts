@@ -169,6 +169,7 @@ ${sectionChiffresVerifies()}
         jobId: input.jobId,
         contentType: "faq_standalone",
         role: "text",
+        blogClaudeRole: "court",
         systemPrompt: SYSTEM_PROMPT + getIntentPromptAddendum(input.targetSearchIntent),
         userPrompt,
         maxTokens: 5000,

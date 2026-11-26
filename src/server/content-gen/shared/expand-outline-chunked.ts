@@ -45,7 +45,7 @@ export interface ExpandOutlineChunkedOpts {
   readonly maxTokens?: number;
   readonly temperature?: number;
   /** Contenu via Claude (porte inerte tant que l'interrupteur est éteint). */
-  readonly blogClaudeRole?: "ecriture";
+  readonly blogClaudeRole?: "ecriture" | "relecture" | "court";
 }
 
 export interface ExpandOutlineChunkedResult {
