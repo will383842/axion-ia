@@ -67,7 +67,7 @@ const FRAGMENTS = [
   "sans prolonger le délai de 6 mois",
   "par écrit et jamais par son silence",
   "la part non utilisée à l'expiration lui est remboursée dans les 30 jours",
-  "ne donnent jamais lieu à bon d'achat",
+  "les sommes réglées par un tiers pour son compte en sont exclues",
   "bon d'achat (avoir) du montant des sommes qu'il a lui-même versées, valable 12 mois",
   "Ce report n'est pas une annulation par le client",
   "Le remboursement n'intervient qu'en dernier recours",

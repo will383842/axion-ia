@@ -55,7 +55,7 @@ describe("CGV : report à l'initiative d'Axion-IA, sans frais", () => {
       expect(a).toContain(
         "la part non utilisée à l'expiration du bon lui est remboursée dans les 30 jours",
       );
-      expect(a).toContain("Les sommes réglées par un tiers pour le compte du Client");
+      expect(a).toContain("les sommes réglées par un tiers pour son compte en sont exclues");
       expect(a).not.toContain("son silence valant refus");
       expect(a).not.toContain("dans les 3 mois");
       expect(a).toContain("n'est pas une annulation par lui");

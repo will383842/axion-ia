@@ -487,8 +487,9 @@ export function ConventionPdf({
             a lui-même versées, valable 12 mois et utilisable sur toute prestation de
             l&apos;organisme ; la part non utilisée à l&apos;expiration lui est remboursée dans les
             30 jours, et la personne morale non professionnelle qui le choisit renonce à
-            l&apos;indemnité ci-dessous. Les sommes réglées par un tiers pour le compte du client ne
-            donnent jamais lieu à bon d&apos;achat : elles sont remboursées à ce tiers. Ce report
+            l&apos;indemnité ci-dessous. Lorsque le client choisit le bon d&apos;achat, les sommes
+            réglées par un tiers pour son compte en sont exclues et sont remboursées à ce tiers ; à
+            défaut, elles sont reportées sur la date retenue comme les autres sommes. Ce report
             n&apos;est pas une annulation par le client. Le remboursement n&apos;intervient
             qu&apos;en dernier recours : si aucune date n&apos;a pu être convenue dans les 6 mois et
             que le client n&apos;a pas choisi le bon d&apos;achat, ou si l&apos;organisme ne lui
