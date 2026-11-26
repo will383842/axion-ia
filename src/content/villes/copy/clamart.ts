@@ -246,7 +246,7 @@ export const CLAMART_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Clamart ?",
-      a: "Clamart est nsilien. Nous nous déplaçons sur site.",
+      a: "Axion IA intervient sur site à Clamart, après un échange de cadrage.",
     },
     {
       q: "Proposez-vous un accompagnement individuel pour les dirigeants ?",

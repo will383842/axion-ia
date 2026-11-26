@@ -242,7 +242,7 @@ export const VANNES_COPY: VilleCopy = {
     },
     {
       q: "Intervenez-vous auprès des entreprises vannetaises ?",
-      a: "Oui. Nous intervenons dans vos locaux à Vannes, comme partout en France, sur place ou à distance.",
+      a: "Oui. Axion IA intervient à Vannes comme partout en France, sur place ou à distance.",
     },
     {
       q: "L'Université Bretagne Sud joue-t-elle un rôle dans l'écosystème IA local ?",

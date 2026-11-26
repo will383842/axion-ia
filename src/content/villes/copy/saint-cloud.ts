@@ -249,7 +249,7 @@ export const SAINT_CLOUD_COPY: VilleCopy = {
     },
     {
       q: "Intervenez-vous à Saint-Cloud, y compris au siège d'un client ?",
-      a: "Oui. Nous intervenons dans vos locaux à Saint-Cloud, y compris au siège d'un client, partout en France, sur place ou à distance.",
+      a: "Oui. Axion IA intervient physiquement à Saint-Cloud, y compris au siège d'un client, pour l'audit, les interventions et les sessions 1-to-1. L'implémentation et le suivi peuvent ensuite se faire à distance.",
     },
   ],
 };

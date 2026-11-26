@@ -49,7 +49,7 @@ export const PREVESSIN_MOENS_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Prévessin-Moëns et pays de Gex ?",
-      a: "Oui, Axion-IA intervient à Prévessin-Moëns et dans tout le pays de Gex (Saint-Genis-Pouilly, Ferney-Voltaire, Gex, Divonne, Genève).",
+      a: "Oui, Axion-IA intervient à Prévessin-Moëns et dans tout le pays de Gex (Saint-Genis-Pouilly, Ferney-Voltaire, Gex, Divonne) et sur la zone frontalière autour de Genève.",
     },
     {
       q: "Travaillez-vous avec les PME technologiques CERN ?",

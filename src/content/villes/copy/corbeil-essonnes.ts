@@ -246,7 +246,7 @@ export const CORBEIL_ESSONNES_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Corbeil-Essonnes ?",
-      a: "Corbeil-Essonnes est D. Nous nous déplaçons sur site.",
+      a: "Axion IA intervient sur site à Corbeil-Essonnes, après un échange de cadrage.",
     },
     {
       q: "Proposez-vous un accompagnement individuel pour les dirigeants ?",

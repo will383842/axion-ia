@@ -132,7 +132,7 @@ export const BRON_COPY: VilleCopy = {
           },
           {
             q: "Quel est le délai pour recevoir un devis et où vous déplacez-vous ?",
-            a: "Devis à partir de 24-48 h selon la complexité du projet. Nos consultants interviennent sur site à Bron et dans tout l'est de la Métropole — Villeurbanne, Vénissieux, Chassieu, Saint-Priest, Décines — ys T2/T5.",
+            a: "Devis à partir de 24-48 h selon la complexité du projet. Nos consultants interviennent sur site à Bron et dans tout l'est de la Métropole — Villeurbanne, Vénissieux, Chassieu, Saint-Priest et Décines.",
           },
         ],
         guarantees:

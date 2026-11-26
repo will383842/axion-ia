@@ -238,7 +238,7 @@ export const JOUE_LES_TOURS_COPY: VilleCopy = {
     },
     {
       q: "Intervenez-vous sur site à Joué-lès-Tours ?",
-      a: "Oui. Un expert senior se déplace dans vos locaux pour les ateliers de cadrage et les étapes clés, le reste pouvant être mené à distance.",
+      a: "Oui. Le kick-off et les étapes clés se font dans vos locaux — Parc de la Liodière, Deux Lions, ZI Gutenberg ou Cugnot. Le reste peut être mené à distance.",
     },
     {
       q: "Par où commencer un projet IA à Joué-lès-Tours ?",

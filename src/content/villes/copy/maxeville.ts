@@ -65,7 +65,7 @@ export const MAXEVILLE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Maxéville ?",
-      a: "Une mission couvre les zones commerciales, le pôle Zénith et la commune.",
+      a: "Une mission à Maxéville démarre par un échange de cadrage et couvre les zones commerciales, le pôle Zénith et la commune.",
     },
   ],
 };
