@@ -35,6 +35,7 @@ import {
   resolveJudgeOutcome,
   type AutoPublishPolicies,
 } from "@/server/content-gen/quality/judge-outcome";
+import { exigeRelectureHumaine } from "@/server/content-gen/quality/relecture-journee-ia";
 import type { ContentType, SearchIntent } from "../../../../prisma/generated/client";
 // P1-3 — Sentry capture pour observabilité prod (audit S+4-C).
 import { captureWorkerError } from "@/server/queue/lib/sentry-worker";
@@ -448,7 +449,7 @@ async function processJob(job: Job<QualityImproveJobPayload>): Promise<void> {
   // P0-7 — REJECT P0 → quarantined_critical (violations AI Act, SIREN hardcodé…).
   // Fix 2026-07-17 — verdict `publish` → `approved` (cf. resolveJudgeOutcome).
   // Cap atteint sans P0 → needs_review (revue éditoriale standard).
-  const nextStatus = resolveJudgeOutcome({
+  const issueJuge = resolveJudgeOutcome({
     verdict,
     judgeRan: judge !== null,
     reachedCap,
@@ -456,6 +457,27 @@ async function processJob(job: Job<QualityImproveJobPayload>): Promise<void> {
     isRss,
     policies,
   });
+  // Offre « Journée IA » : jamais d'auto-publication sur verdict du juge, quelle que soit la
+  // note. Le contenu reste en relecture humaine (et ne squatte pas la clé `publish-<id>`).
+  let nextStatus = issueJuge;
+  if (issueJuge === "approved") {
+    const nomCampagne = dbJob.campaignId
+      ? ((
+          await prisma.coverageCampaign
+            .findUnique({ where: { id: dbJob.campaignId }, select: { name: true } })
+            .catch(() => null)
+        )?.name ?? null)
+      : null;
+    if (
+      exigeRelectureHumaine({
+        output: dbJob.outputJsonRaw,
+        inputPayload: dbJob.inputPayload,
+        campaignName: nomCampagne,
+      })
+    ) {
+      nextStatus = "needs_review";
+    }
+  }
   const shouldRegenerate = nextStatus === "quality_improving";
   const shouldAutoPublish = nextStatus === "approved";
 
