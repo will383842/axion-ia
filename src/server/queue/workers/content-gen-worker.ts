@@ -19,6 +19,7 @@
  * Rate-limit 10/min (alignée OpenAI tier 5).
  */
 
+import { barriereJourneeIA } from "@/server/content-gen/quality/relecture-journee-ia";
 import { Queue, Worker, type Job, UnrecoverableError } from "bullmq";
 import { prisma } from "@/lib/prisma";
 import { getGenerator } from "@/server/content-gen/generators";
@@ -1044,6 +1045,22 @@ async function processJob(job: Job<ContentGenJobPayload>): Promise<void> {
       );
       if (decisionFc.barriere) barrieresRelecture.push(decisionFc.barriere);
     }
+
+    // Offre « Journée IA » : jamais de publication automatique, quelle que soit la note.
+    // Le job part en relecture humaine (`blockingFail`), l'approbation manuelle reste possible.
+    const nomCampagneJourneeIA = dbJob.campaignId
+      ? ((
+          await prisma.coverageCampaign
+            .findUnique({ where: { id: dbJob.campaignId }, select: { name: true } })
+            .catch(() => null)
+        )?.name ?? null)
+      : null;
+    const barriereJourneeIa = barriereJourneeIA({
+      output,
+      inputPayload: dbJob.inputPayload,
+      campaignName: nomCampagneJourneeIA,
+    });
+    if (barriereJourneeIa) barrieresRelecture.push(barriereJourneeIa);
 
     const barrieresFail = barrieresRelecture.length > 0;
     if (barrieresFail) {

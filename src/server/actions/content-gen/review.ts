@@ -9,6 +9,7 @@
 
 "use server";
 
+import { exigeRelectureHumaine } from "@/server/content-gen/quality/relecture-journee-ia";
 import { publicationSansPreuveFactCheck } from "@/server/content-gen/fact-check/fact-check-claude-drapeau";
 import * as Sentry from "@sentry/nextjs";
 
@@ -276,7 +277,17 @@ export async function bulkApproveReviews(
         status: "pending",
         job: { qualityScore: { gte: minScore } },
       },
-      include: { job: { select: { id: true, contentType: true, outputJsonRaw: true } } },
+      include: {
+        job: {
+          select: {
+            id: true,
+            contentType: true,
+            outputJsonRaw: true,
+            inputPayload: true,
+            campaign: { select: { name: true } },
+          },
+        },
+      },
       take: limit,
     });
     // Fix 2026-08-15 (audit e2e, E9) — isolation par item (motif déjà appliqué à
@@ -297,6 +308,18 @@ export async function bulkApproveReviews(
           output: r.job.outputJsonRaw,
           existingArticle: false,
           reviewedBy: null,
+        })
+      ) {
+        continue;
+      }
+      // Offre « Journée IA » : l'approbation groupée ne la publie jamais, quelle que soit la
+      // note. Elle reste en attente, à approuver une par une par un admin.
+      if (
+        r.job &&
+        exigeRelectureHumaine({
+          output: r.job.outputJsonRaw,
+          inputPayload: r.job.inputPayload,
+          campaignName: r.job.campaign?.name ?? null,
         })
       ) {
         continue;
