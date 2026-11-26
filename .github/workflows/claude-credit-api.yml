@@ -68,6 +68,18 @@ jobs:
       - uses: actions/setup-node@v7
         with:
           node-version: ${{ env.NODE_VERSION }}
+          cache: pnpm
+
+      # Dépendances installées AVANT Claude, hors du bac à sable : dedans, le magasin pnpm (hors du dépôt)
+      # est en lecture seule et `pnpm install` échoue (ENOENT/EROFS, mesuré le 26/11). Sans cette étape,
+      # le robot ne peut lancer ni typecheck, ni lint, ni vitest, ni build.
+      - name: Installer les dépendances du projet (hors bac à sable)
+        env:
+          SKIP_ENV_VALIDATION: "true"
+        run: |
+          pnpm install --frozen-lockfile
+          pnpm prisma:generate
+          test -x node_modules/.bin/next && test -x node_modules/.bin/vitest && test -x node_modules/.bin/tsc
 
       # ⚠️ DÉPÔT PUBLIC : la consigne ne passe JAMAIS par `env:` ni par `${{ inputs.consigne }}` dans un
       #    script — les deux s'affichent en clair dans le journal public. On la lit dans le fichier
@@ -133,7 +145,7 @@ jobs:
           f="$RUNNER_TEMP/execution-run1.json"
           source "$RUNNER_TEMP/diagnostic.sh"
           diagnostic_cle
-          env -u GITHUB_ENV -u GITHUB_STEP_SUMMARY -u GITHUB_PATH -u GITHUB_OUTPUT timeout 4200 claude -p "Ta consigne est dans le fichier .consigne-claude.md à la racine du dépôt. Lis-le et exécute-le. Ne le committe jamais. Tu ne peux pas ouvrir de PR : pousse la branche demandée et écris le corps de PR dans le fichier versionné demandé." \
+          env -u GITHUB_ENV -u GITHUB_STEP_SUMMARY -u GITHUB_PATH -u GITHUB_OUTPUT timeout 4200 claude -p "Ta consigne est dans le fichier .consigne-claude.md à la racine du dépôt. Lis-le et exécute-le. Ne le committe jamais. Tu ne peux pas ouvrir de PR : pousse la branche demandée et écris le corps de PR dans le fichier versionné demandé. Les dépendances sont DÉJÀ installées et le client Prisma généré : ne relance pas pnpm install (le magasin pnpm est en lecture seule) ; lance directement pnpm typecheck, pnpm lint, pnpm vitest run <fichiers>. Si tu changes de branche et que pnpm-lock.yaml diffère, signale-le dans le corps de PR au lieu de réinstaller." \
             --model "$MODELE" --max-turns "$TOURS" \
             --allowedTools Bash,Read,Edit,Write,Glob,Grep,Agent,TodoWrite \
             --output-format json > "$RUNNER_TEMP/brut-run1.json" 2> "$RUNNER_TEMP/err-run1.txt" || true
@@ -179,7 +191,7 @@ jobs:
           f="$RUNNER_TEMP/execution-run2.json"
           source "$RUNNER_TEMP/diagnostic.sh"
           diagnostic_cle
-          env -u GITHUB_ENV -u GITHUB_STEP_SUMMARY -u GITHUB_PATH -u GITHUB_OUTPUT timeout 4200 claude -p "Ta consigne est dans le fichier .consigne-claude.md à la racine du dépôt. Lis-le et exécute-le. Ne le committe jamais. Tu ne peux pas ouvrir de PR : pousse la branche demandée et écris le corps de PR dans le fichier versionné demandé." \
+          env -u GITHUB_ENV -u GITHUB_STEP_SUMMARY -u GITHUB_PATH -u GITHUB_OUTPUT timeout 4200 claude -p "Ta consigne est dans le fichier .consigne-claude.md à la racine du dépôt. Lis-le et exécute-le. Ne le committe jamais. Tu ne peux pas ouvrir de PR : pousse la branche demandée et écris le corps de PR dans le fichier versionné demandé. Les dépendances sont DÉJÀ installées et le client Prisma généré : ne relance pas pnpm install (le magasin pnpm est en lecture seule) ; lance directement pnpm typecheck, pnpm lint, pnpm vitest run <fichiers>. Si tu changes de branche et que pnpm-lock.yaml diffère, signale-le dans le corps de PR au lieu de réinstaller." \
             --model "$MODELE" --max-turns "$TOURS" \
             --allowedTools Bash,Read,Edit,Write,Glob,Grep,Agent,TodoWrite \
             --output-format json > "$RUNNER_TEMP/brut-run2.json" 2> "$RUNNER_TEMP/err-run2.txt" || true
