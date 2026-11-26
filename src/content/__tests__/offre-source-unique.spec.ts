@@ -51,7 +51,7 @@ describe("offre.ts — les faits de la source", () => {
     expect(DUREE_RDV).toBe("45 minutes");
     expect(DUREE_RDV_COURTE).toBe("45 min");
     expect(MICRO_TEXTE_RDV).toBe(
-      "Diagnostic IA · 45 minutes · en visio ou par téléphone · sans engagement",
+      "Diagnostic IA · 45 minutes · gratuit et facultatif · en visio ou par téléphone · sans engagement",
     );
   });
 

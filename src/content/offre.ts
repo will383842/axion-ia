@@ -110,4 +110,4 @@ export const DUREE_RDV_COURTE = `${OFFRE_JOURNEE_IA.rendezVous.dureeMinutes} min
 export const EFFECTIF_CIBLE = `de ${OFFRE_JOURNEE_IA.cible.effectifMin} à ${OFFRE_JOURNEE_IA.cible.effectifMax} salariés`;
 
 /** « Diagnostic IA · 45 minutes · en visio ou par téléphone · sans engagement » */
-export const MICRO_TEXTE_RDV = `${OFFRE_JOURNEE_IA.rendezVous.nom} · ${DUREE_RDV} · en visio ou par téléphone · sans engagement`;
+export const MICRO_TEXTE_RDV = `${OFFRE_JOURNEE_IA.rendezVous.nom} · ${DUREE_RDV} · gratuit et facultatif · en visio ou par téléphone · sans engagement`;

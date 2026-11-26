@@ -11,7 +11,7 @@
  *  - une page qui pose une de ces questions l'IMPORTE (`faqItems`) au lieu de la recopier.
  *
  * Décisions de Williams du 18/11/2026 reprises ici : l'audit convient aux entreprises de 2 à 250 salariés, la formation de l'après-midi va jusqu'à 15 personnes
- * (correction du 20/11/2026) ; audit le matin (2 à 4 h selon l'entreprise), formation de 4 h l'après-midi ;
+ * (correction du 20/11/2026) ; audit le matin (2 à 4 h selon la structuration de l’entreprise), formation de 4 h l'après-midi ;
  * garantie gardée (« Si la Journée IA n'identifie pas des gains d'au moins 3 fois son prix, elle
  * est remboursée », distincte d'une « garantie de résultat », qu'on ne donne pas) ; les {{PRIX}}
  * sont déduits d'un devis d'automatisation ou de mise en place signé dans les 60 jours suivant
@@ -58,7 +58,7 @@ export const QUESTIONS_REFERENCE: Readonly<Record<string, QuestionReference>> = 
   "ref-journee-prix": {
     id: "ref-journee-prix",
     question: "Combien coûte la Journée IA ?",
-    reponse: `La Journée IA d’Axion-IA coûte {{PRIX}}, prix unique. L’audit du matin convient aux entreprises de 2 à 250 salariés (2 à 4 h selon l’entreprise) ; la formation de 4 h l’après-midi accueille jusqu’à 15 personnes. La journée comprend aussi 3 à 5 priorités écrites le soir, puis le rapport chiffré et le plan d’action sous ${DELAI_RAPPORT_JOURS_OUVRES} jours ouvrés. Si les gains identifiés dans ce rapport, sur 12 mois, n'atteignent pas ${MULTIPLE_GARANTIE} fois son prix HT, soit ${SEUIL}, elle est remboursée sur demande écrite.`,
+    reponse: `La Journée IA d’Axion-IA coûte {{PRIX}}, prix unique. L’audit du matin convient aux entreprises de 2 à 250 salariés (2 à 4 h selon la structuration de l’entreprise) ; la formation de 4 h l’après-midi accueille jusqu’à 15 personnes. La journée comprend aussi 3 à 5 priorités écrites le soir, puis le rapport chiffré et le plan d’action sous ${DELAI_RAPPORT_JOURS_OUVRES} jours ouvrés. Si les gains identifiés dans ce rapport, sur 12 mois, n'atteignent pas ${MULTIPLE_GARANTIE} fois son prix HT, soit ${SEUIL}, elle est remboursée sur demande écrite.`,
     sujet: "Journée IA",
     source: "src/content/pricing.ts, src/content/journee-ia-commun.ts",
   },
