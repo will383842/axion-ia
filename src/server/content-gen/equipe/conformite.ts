@@ -77,14 +77,12 @@ const inchange: ResultatConformite = {
   coutUsd: 0,
 };
 
-/** Les montants s'écrivent aussi « 3&nbsp;500&nbsp;&euro; » : on décode avant la garde de prix. */
+/** Les balises sont retirées (un prix peut être balisé : `<strong>3 500</strong> €`) et les montants s'écrivent aussi « 3&nbsp;500&nbsp;&euro; » : on décode avant la garde de prix. */
 function decoderEntites(t: string): string {
   return t
-    .replace(
-      /&(?:nbsp|thinsp|ensp|emsp);|&#(?:160|8239|8201|8194|8195);|&#x(?:a0|202f|2009);/gi,
-      " ",
-    )
-    .replace(/&euro;|&#8364;|&#x20ac;/gi, "€")
+    .replace(/&(?:nbsp|nonbreakingspace|thinsp|ensp|emsp);/gi, " ")
+    .replace(/&#(?:0*(?:160|8239|8201|8194|8195)|x0*(?:a0|202f|2009));/gi, " ")
+    .replace(/&(?:euro|#0*8364|#x0*20ac);/gi, "€")
     .replace(/[\u00a0\u202f\u2009]/g, " ");
 }
 
@@ -121,7 +119,7 @@ function barrieresDeCode(
       libelle: `Interdit de publication « ${d.code} » dans le texte public : ${d.extrait}`,
     });
   }
-  for (const p of findNonSsotPrices(decoderEntites(texte))) {
+  for (const p of findNonSsotPrices(decoderEntites(texte.replace(/<[^>]*>/g, " ")))) {
     constats.push({
       code: "prix-hors-ssot",
       libelle: `Montant hors source unique des tarifs : ${p.amount}`,

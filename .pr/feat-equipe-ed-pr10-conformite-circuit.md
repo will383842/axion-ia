@@ -8,7 +8,7 @@ Ajouter l'étape de conformité finale du circuit, derrière `CONTENT_EQUIPE_EDI
 ## Fichiers
 
 - `src/server/content-gen/equipe/conformite.ts` (nouveau) : `controlerConformite`, `conformiteApresReecriture`.
-- `src/server/content-gen/equipe/conformite.test.ts` (nouveau, 31 tests).
+- `src/server/content-gen/equipe/conformite.test.ts` (nouveau, 34 tests).
 - Aucun motif dupliqué : réutilise `interdits-publication`, `price-gate`, `vouvoiement`, `fidelite-llm`, `equipe-editoriale-drapeau`.
 
 ## Tests
@@ -25,3 +25,11 @@ Chaque barrière refuse (interdit, prix, tutoiement, fidélité) ; erreur / plaf
 - Le HTML publié prime sur un `bodyText` périmé ; l'ancien `bodyText` est contrôlé en plus. Sortie vide ou non objet → relecture humaine.
 - L'appelant devra transmettre `financementPublicAutorise` (faux par défaut ici, strict).
 - Pas de changement de charge BullMQ, pas de migration.
+
+## Relecture Opus (3 tours)
+
+- Tour 1 : HTML ignoré quand `bodyText` existe, sortie vide → publier, tests manquants : corrigé.
+- Tour 2 : entités HTML dans les montants, HTML brut pour le tutoiement, juge appelé inutilement : corrigé.
+- Tour 3 : prix séparé du « € » par une balise, entités numériques à zéros, commentaire de test : corrigé (tests ajoutés). Pas de 4e tour (limite de 3) ; les points restants signalés sont mineurs (la garde de prix et le tutoiement ne lisent pas `tags`, `slug`, `alt`/`title`).
+
+VERDICT OPUS : BON

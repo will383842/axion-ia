@@ -149,7 +149,7 @@ describe("échec fermé", () => {
   });
   it("une barrière de code qui lève → relecture humaine", async () => {
     const { d } = deps();
-    // `tags` n'est lu que par le contrôle de surface : seule la barrière de code lève.
+    // Un accesseur qui lève pendant la préparation du texte : erreur rattrapée, juge non appelé.
     const bizarre = {
       ...PROPRE,
       get tags(): string[] {
@@ -271,6 +271,9 @@ describe("HTML brut et entités", () => {
     "<p>Comptez 3&nbsp;500&nbsp;€.</p>",
     "<p>Comptez 3 500 &euro;.</p>",
     "<p>Comptez 3&#8239;500&#8239;€.</p>",
+    "<p>Comptez 3&#x00A0;500&#0160;&#8364;.</p>",
+    "<p>Comptez <strong>3 500</strong> €.</p>",
+    "<p>Comptez <strong>3 500</strong>&nbsp;€.</p>",
   ])("montant écrit avec entités (%s) → refusé", async (bodyHtml) => {
     const { codes: c } = await codes({ ...PROPRE, bodyHtml });
     expect(c).toContain("prix-hors-ssot");
