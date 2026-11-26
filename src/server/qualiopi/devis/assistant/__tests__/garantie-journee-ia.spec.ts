@@ -30,7 +30,7 @@ import { TEXTE_GARANTIE_JOURNEE_IA } from "../textes-rubriques";
 describe("TEXTE_GARANTIE_JOURNEE_IA", () => {
   it("est assemblé depuis le socle commun, sans le réécrire", () => {
     expect(TEXTE_GARANTIE_JOURNEE_IA).toBe(
-      `Garantie de remboursement de la Journée IA (article 47.10 des conditions générales). ${GARANTIE_PHRASE} ${CONDITION_GARANTIE} Cette garantie s'applique dans les conditions et limites de l'article 47.10 des conditions générales de vente.`,
+      `Garantie de remboursement de la Journée IA (article 47.10 des conditions générales). Le rapport vous est remis sous 10 jours ouvrés après la journée. ${GARANTIE_PHRASE} ${CONDITION_GARANTIE} La demande se fait par écrit dans les 30 jours suivant la remise du rapport. La garantie s’applique une seule fois par entreprise et ne se cumule pas avec la déduction du prix de la journée prévue à l’article 47.7. Elle s’applique dans les conditions et limites de l’article 47.10 des conditions générales de vente.`,
     );
     expect(TEXTE_GARANTIE_JOURNEE_IA).toContain(GARANTIE_PHRASE);
     expect(TEXTE_GARANTIE_JOURNEE_IA).toContain(CONDITION_GARANTIE);
@@ -39,7 +39,12 @@ describe("TEXTE_GARANTIE_JOURNEE_IA", () => {
   it("ne porte aucun montant, aucun mot interdit", () => {
     expect(TEXTE_GARANTIE_JOURNEE_IA).not.toMatch(/€|euro|\d\s?%/i);
     // Le seul chiffre est le renvoi à l'article 47.10 et le multiple de la garantie (« 3 fois »).
-    expect(TEXTE_GARANTIE_JOURNEE_IA.replaceAll("47.10", "")).not.toMatch(/\d{2,}/);
+    expect(
+      TEXTE_GARANTIE_JOURNEE_IA.replaceAll("47.10", "")
+        .replaceAll("47.7", "")
+        .replaceAll(" 10 jours", "")
+        .replaceAll(" 30 jours", ""),
+    ).not.toMatch(/\d{2,}/);
     for (const mot of [
       "grenoble",
       "aucun gain garanti",
