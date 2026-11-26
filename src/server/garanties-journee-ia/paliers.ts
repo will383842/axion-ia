@@ -67,13 +67,18 @@ export function texteAlerte(
   palier: PalierAlerte,
   dateEcheance: string,
   clientNom: string,
+  aTrancher = false,
 ): TexteAlerte {
   const objet = OBJET[type] ?? type;
   const titre = `Garantie Journée IA — ${objet} (${clientNom}) : ${
     palier === "depassee" ? "dépassée" : palier === "J0" ? "aujourd'hui" : palier
   }`;
   let message = `${objet} pour ${clientNom} : ${QUAND[palier](dateEcheance)}.`;
-  if (type === "reponse") {
+  if (type === "reponse" && aTrancher) {
+    // Demande hors délai : jamais d'acceptation tacite, Will choisit (rembourser, refuser ou avoir).
+    message +=
+      " Demande reçue hors délai : aucune acceptation tacite, à trancher (rembourser, refuser ou offrir un avoir).";
+  } else if (type === "reponse") {
     message +=
       palier === "depassee"
         ? " Sans réponse écrite, la demande est réputée acceptée : le virement est dû."
@@ -98,7 +103,7 @@ export interface AlerteVoulue extends TexteAlerte {
 export function alerteVoulue(
   dossierId: string,
   clientNom: string,
-  e: Pick<Echeance, "type" | "date" | "faite">,
+  e: Pick<Echeance, "type" | "date" | "faite" | "aTrancher">,
   aujourdhui: string,
 ): AlerteVoulue | null {
   const code = CODE_PAR_ECHEANCE[e.type];
@@ -111,6 +116,6 @@ export function alerteVoulue(
     palier,
     niveau: NIVEAU_PAR_PALIER[palier],
     echeance: e.type,
-    ...texteAlerte(e.type, palier, e.date, clientNom),
+    ...texteAlerte(e.type, palier, e.date, clientNom, Boolean(e.aTrancher)),
   };
 }

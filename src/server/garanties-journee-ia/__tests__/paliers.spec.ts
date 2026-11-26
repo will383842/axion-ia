@@ -63,6 +63,24 @@ describe("texteAlerte", () => {
       "réputée acceptée : le virement est dû",
     );
   });
+  it("demande hors délai : aucune acceptation tacite, Will tranche (rembourser, refuser ou avoir)", () => {
+    for (const palier of ["J0", "depassee"] as const) {
+      const m = texteAlerte("reponse", palier, "2026-12-12", "ACME", true).message;
+      expect(m).toContain("aucune acceptation tacite");
+      expect(m).toContain("rembourser, refuser ou offrir un avoir");
+      expect(m).not.toContain("réputée acceptée");
+      expect(m).not.toContain("virement est dû");
+    }
+  });
+  it("alerteVoulue propage « à trancher » de l'échéance", () => {
+    const v = alerteVoulue(
+      "d",
+      "A",
+      { type: "reponse", date: "2026-12-12", faite: false, aTrancher: true },
+      "2026-12-12",
+    );
+    expect(v?.message).toContain("aucune acceptation tacite");
+  });
   it("stable : même palier, mêmes textes (aucun compteur de jours qui changerait chaque matin)", () => {
     expect(texteAlerte("rapport", "depassee", "2026-12-01", "ACME")).toEqual(
       texteAlerte("rapport", "depassee", "2026-12-01", "ACME"),

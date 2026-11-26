@@ -87,7 +87,7 @@ export async function passerGarantiesJourneeIa(
       dateJournee: jourIso(d.dateJournee) as string,
       rapportRemisLe: jourIso(d.rapportRemisLe),
       demandeRecueLe: jourIso(d.demandeRecueLe),
-      decision: (d.decision as "remboursement" | "refus" | "non_applicable" | null) ?? null,
+      decision: (d.decision as "remboursement" | "refus" | "avoir" | null) ?? null,
       decisionLe: jourIso(d.decisionLe),
       virementLe: jourIso(d.virementLe),
     };
