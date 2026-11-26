@@ -78,3 +78,35 @@ export function eurosEnCentimes(brut: string | number): number | null {
   const c = Math.round(Number(t) * 100);
   return c <= 2_147_483_647 ? c : null;
 }
+
+/**
+ * Un remboursement décidé a ÉMIS un avoir (pièce comptable, jamais supprimée) : la décision ne peut
+ * plus changer. `null` = pas d'obstacle ; "idempotent" = même décision, même montant (double clic).
+ */
+export function etatApresAvoirRembourse(
+  d: { decision?: Decision | null; avoirId: string | null; montantRembourseCents: number | null },
+  saisie: { decision: Decision; montantCents: number | null },
+): { type: "libre" } | { type: "idempotent" } | { type: "refus"; message: string } {
+  if (d.decision !== "remboursement" || !d.avoirId) return { type: "libre" };
+  if (saisie.decision === "remboursement" && saisie.montantCents === d.montantRembourseCents)
+    return { type: "idempotent" };
+  return {
+    type: "refus",
+    message:
+      "Un avoir de remboursement est déjà émis : la décision ne peut plus changer. Une pièce émise ne se supprime pas ; voir le Hub factures avec le comptable.",
+  };
+}
+
+/** Le virement exige l'avoir émis par la décision, et un montant viré égal à son TTC. */
+export function refusVirementSansAvoir(
+  d: { avoirId: string | null; decision?: Decision | null; montantRembourseCents: number | null },
+  montantViréCents: number | null,
+): string | null {
+  if (!d.avoirId || d.decision !== "remboursement") {
+    return "Émettre d'abord l'avoir : enregistrer la décision « Rembourser » (elle émet l'avoir), puis le virement.";
+  }
+  if (montantViréCents !== d.montantRembourseCents) {
+    return `Le montant viré doit être égal au montant TTC de l'avoir (${((d.montantRembourseCents ?? 0) / 100).toFixed(2).replace(".", ",")} €).`;
+  }
+  return null;
+}

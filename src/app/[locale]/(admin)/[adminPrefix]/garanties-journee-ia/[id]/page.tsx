@@ -16,7 +16,12 @@ import {
 } from "@/components/admin/garanties-journee-ia/BadgeEcheance";
 import { gardePage } from "@/server/auth/garde-page";
 import { peutEngager } from "@/server/auth/habilitations";
-import { dossiersDejaRembourses, lireGarantie } from "@/server/garanties-journee-ia/lecture";
+import {
+  dossiersDejaRembourses,
+  facturesCandidates,
+  lireGarantie,
+  numerosPiecesGarantie,
+} from "@/server/garanties-journee-ia/lecture";
 import {
   calculerEcheances,
   demandeHorsDelai,
@@ -64,6 +69,8 @@ export default async function GarantieFichePage({ params, searchParams }: PagePr
   const reputee = estReputeeAcceptee(d, aujourdhui);
   const horsDelai = demandeHorsDelai(d);
   const autres = await dossiersDejaRembourses(d.sirenSnapshot, d.id);
+  const pieces = await numerosPiecesGarantie(d);
+  const candidates = d.factureId ? [] : await facturesCandidates(d);
   const ecriture = acces.peutEcrire;
   const argent = peutEngager(acces.role, "facturer");
 
@@ -204,8 +211,27 @@ export default async function GarantieFichePage({ params, searchParams }: PagePr
                     className="admin-input"
                   />
                 </label>
+                {pieces.avoirNumero ? (
+                  <p className="text-sm">
+                    Avoir {pieces.avoirNumero} émis
+                    {pieces.factureNumero ? ` sur la facture ${pieces.factureNumero}` : ""} : la
+                    décision ne peut plus changer (pièce comptable).
+                  </p>
+                ) : candidates.length > 1 ? (
+                  <label className="flex flex-col gap-1 text-sm">
+                    Facture à rectifier (si « Rembourser »)
+                    <select name="factureId" defaultValue="" className="admin-input">
+                      <option value="">— choisir —</option>
+                      {candidates.map((f) => (
+                        <option key={f.id} value={f.id}>
+                          {f.numero} — reste {euros(f.restantTtcCents)} TTC
+                        </option>
+                      ))}
+                    </select>
+                  </label>
+                ) : null}
                 <label className="flex flex-col gap-1 text-sm">
-                  Montant remboursé (€, si remboursement)
+                  Montant remboursé TTC (€, si remboursement) — la décision ÉMET l&apos;avoir
                   <input name="montantRembourseEuros" inputMode="decimal" className="admin-input" />
                 </label>
                 <label className="flex flex-col gap-1 text-sm">
@@ -233,7 +259,8 @@ export default async function GarantieFichePage({ params, searchParams }: PagePr
                   />
                 </label>
                 <label className="flex flex-col gap-1 text-sm">
-                  Identifiant de l&apos;avoir (Hub factures, facultatif)
+                  Identifiant de l&apos;avoir (uniquement pour « Offrir un avoir », facultatif ;
+                  ignoré pour un remboursement : l&apos;avoir est alors émis par la décision)
                   <input name="avoirId" defaultValue={d.avoirId ?? ""} className="admin-input" />
                 </label>
                 <label className="flex flex-col gap-1 text-sm">
@@ -265,7 +292,7 @@ export default async function GarantieFichePage({ params, searchParams }: PagePr
                   />
                 </label>
                 <label className="flex flex-col gap-1 text-sm">
-                  Montant viré (€) — {euros(d.montantRembourseCents)} enregistré
+                  Montant viré TTC (€) — doit égaler l&apos;avoir : {euros(d.montantRembourseCents)}
                   <input name="montantRembourseEuros" inputMode="decimal" className="admin-input" />
                 </label>
                 <AdminSubmitButton>Enregistrer le virement</AdminSubmitButton>

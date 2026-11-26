@@ -26,6 +26,7 @@ import { prisma } from "@/lib/prisma";
 import type {
   ActiviteFacturation,
   FactureFormationDestinataire,
+  Prisma,
 } from "../../../../prisma/generated/client";
 import { getOrganismeIdentite } from "@/server/qualiopi/documents/organisme";
 import { generateDocument } from "@/server/qualiopi/documents/documents-service";
@@ -56,6 +57,7 @@ import {
   normaliserLignesPourActivite,
   construireLignesAvoir,
   calculerStatutEncaissement,
+  htPourTtcAvoir,
 } from "@/server/qualiopi/financements/facture-libre-pur";
 
 // Ré-export de la logique pure (SSOT : facture-libre-pur.ts, testée isolément).
@@ -312,6 +314,12 @@ export interface GenererAvoirInput {
   factureId: string;
   /** Absent = avoir TOTAL (négation de toutes les lignes). Sinon montant HT partiel. */
   montantPartielHtCents?: number;
+  /**
+   * TTC à rendre (exclusif de `montantPartielHtCents`). Égal au reste TTC rectifiable → avoir du
+   * reste (négation intégrale des lignes s'il n'y a aucun avoir antérieur). Sinon le HT est déduit
+   * par `htPourTtcAvoir` (jamais un TTC arrondi en silence : refus si inatteignable).
+   */
+  montantTtcCents?: number;
   motif: string;
 }
 
@@ -319,6 +327,26 @@ export interface GenererAvoirResult {
   avoirId: string;
   numero: string;
   documentId: string | null;
+  montantHtCents: number;
+  /** TTC de l'avoir, valeur ABSOLUE (positive). */
+  montantTtcCents: number;
+}
+
+export interface AvoirCree {
+  id: string;
+  numero: string;
+  montantHtCents: number;
+  montantTtcCents: number;
+}
+
+/**
+ * Crochets exécutés DANS la même transaction que la création de l'avoir (verrou consultatif par
+ * facture d'origine posé avant). Une exception dans l'un ou l'autre annule TOUT : ni avoir, ni
+ * numéro consommé. Fournir un crochet force une vraie transaction (même canal partners fermé).
+ */
+export interface OptionsAvoir {
+  avant?: (tx: Prisma.TransactionClient) => Promise<void>;
+  apres?: (tx: Prisma.TransactionClient, avoir: AvoirCree) => Promise<void>;
 }
 
 /**
@@ -327,9 +355,21 @@ export interface GenererAvoirResult {
  * légal de correction. Le régime de TVA de l'ORIGINE est conservé (on rectifie
  * la TVA facturée à l'époque, pas celle d'aujourd'hui).
  */
-export async function genererAvoirFacture(input: GenererAvoirInput): Promise<GenererAvoirResult> {
+export async function genererAvoirFacture(
+  input: GenererAvoirInput,
+  options: OptionsAvoir = {},
+): Promise<GenererAvoirResult> {
   if (process.env["DATABASE_URL"]?.includes("stub.invalid")) {
-    return { avoirId: "stub", numero: "AXI-AVO-0000-000", documentId: null };
+    return {
+      avoirId: "stub",
+      numero: "AXI-AVO-0000-000",
+      documentId: null,
+      montantHtCents: 0,
+      montantTtcCents: 0,
+    };
+  }
+  if (input.montantTtcCents !== undefined && input.montantPartielHtCents !== undefined) {
+    throw new Error("Montant d'avoir ambigu : HT et TTC ensemble.");
   }
 
   const origine = await prisma.factureFormation.findUniqueOrThrow({
@@ -350,10 +390,25 @@ export async function genererAvoirFacture(input: GenererAvoirInput): Promise<Gen
   // Plafond : Σ avoirs (valeur absolue) ≤ montant HT d'origine.
   const avoirsExistants = await prisma.factureFormation.aggregate({
     where: { avoirDeId: origine.id, statut: { not: "annulee" } },
-    _sum: { montantHtCents: true },
+    _sum: { montantHtCents: true, montantTvaCents: true, montantTtcCents: true },
   });
   const dejaAvoirHtCents = Math.abs(avoirsExistants._sum.montantHtCents ?? 0);
   const restantHtCents = origine.montantHtCents - dejaAvoirHtCents;
+  const origineTtcCents =
+    origine.montantTtcCents ?? origine.montantHtCents + origine.montantTvaCents;
+  const dejaAvoirTtcCents = Math.abs(
+    avoirsExistants._sum.montantTtcCents ??
+      (avoirsExistants._sum.montantHtCents ?? 0) + (avoirsExistants._sum.montantTvaCents ?? 0),
+  );
+  const restantTtcCents = origineTtcCents - dejaAvoirTtcCents;
+  if (
+    input.montantTtcCents !== undefined &&
+    (input.montantTtcCents <= 0 || input.montantTtcCents > restantTtcCents)
+  ) {
+    throw new Error(
+      `Montant d'avoir invalide : ${input.montantTtcCents} centimes TTC (restant rectifiable : ${restantTtcCents}).`,
+    );
+  }
   const demandeHtCents = input.montantPartielHtCents ?? restantHtCents;
   if (demandeHtCents <= 0 || demandeHtCents > restantHtCents) {
     throw new Error(
@@ -382,7 +437,12 @@ export async function genererAvoirFacture(input: GenererAvoirInput): Promise<Gen
   // refusé — le taux de la rectification serait ambigu (TVA due au Trésor
   // sans contrepartie). L'admin passe par un avoir total, ou par des lignes
   // explicites après avis comptable.
-  const negationIntegrale = input.montantPartielHtCents === undefined && dejaAvoirHtCents === 0;
+  const avoirDuRestantTtc =
+    input.montantTtcCents !== undefined && input.montantTtcCents === restantTtcCents;
+  const negationIntegrale =
+    dejaAvoirHtCents === 0 &&
+    ((input.montantPartielHtCents === undefined && input.montantTtcCents === undefined) ||
+      avoirDuRestantTtc);
   const tauxEffectifs = new Set(
     lignesOrigine.map((l) => l.tauxTvaPercent ?? (regimeTva === "assujetti" ? tauxStandard : 0)),
   );
@@ -392,9 +452,20 @@ export async function genererAvoirFacture(input: GenererAvoirInput): Promise<Gen
     );
   }
   const tauxUniforme = [...tauxEffectifs][0] ?? 0;
+  let montantHtPartiel = demandeHtCents;
+  if (input.montantTtcCents !== undefined && !avoirDuRestantTtc) {
+    const conv = htPourTtcAvoir(input.montantTtcCents, regimeTva, tauxUniforme, tauxStandard);
+    if (!conv.ok) throw new Error(conv.message);
+    if (conv.htCents > restantHtCents) {
+      throw new Error(
+        `Montant d'avoir invalide : ${conv.htCents} centimes HT (restant rectifiable : ${restantHtCents}).`,
+      );
+    }
+    montantHtPartiel = conv.htCents;
+  }
   const lignesAvoir = construireLignesAvoir(
     lignesOrigine,
-    negationIntegrale ? undefined : demandeHtCents,
+    negationIntegrale ? undefined : montantHtPartiel,
     input.motif,
     tauxUniforme,
   );
@@ -407,7 +478,8 @@ export async function genererAvoirFacture(input: GenererAvoirInput): Promise<Gen
   const annee = now.getFullYear();
   const formatDate = (d: Date) => d.toLocaleDateString("fr-FR");
 
-  let avoirCree: { id: string; numero: string } | null = null;
+  let avoirCree: AvoirCree | null = null;
+  const avecCrochets = Boolean(options.avant || options.apres);
 
   for (let attempt = 1; attempt <= MAX_ATTEMPTS; attempt++) {
     // 🔴 V20. `facture` et `avoir` partagent la TABLE `factures_formation` mais
@@ -426,7 +498,21 @@ export async function genererAvoirFacture(input: GenererAvoirInput): Promise<Gen
 
     try {
       // INT-T05 : l'avoir et `avoir.emis` vivent et meurent ensemble (même patron que la facture).
-      const avoir = await transactionFaitFacturation(prisma, async (tx) => {
+      const travail = async (tx: Prisma.TransactionClient): Promise<AvoirCree> => {
+        if (avecCrochets) {
+          // Verrou par facture d'origine : deux avoirs simultanés se sérialisent, le second relit.
+          await tx.$executeRaw`SELECT pg_advisory_xact_lock(hashtext(${`avoir-origine:${origine.id}`}))`;
+          const relu = await tx.factureFormation.aggregate({
+            where: { avoirDeId: origine.id, statut: { not: "annulee" } },
+            _sum: { montantHtCents: true },
+          });
+          if (Math.abs(relu._sum.montantHtCents ?? 0) !== dejaAvoirHtCents) {
+            throw new Error(
+              "Un autre avoir vient d'être émis sur cette facture : recharger la page et recommencer.",
+            );
+          }
+          await options.avant?.(tx);
+        }
         const cree = await tx.factureFormation.create({
           data: {
             numero,
@@ -457,8 +543,20 @@ export async function genererAvoirFacture(input: GenererAvoirInput): Promise<Gen
           select: { id: true, numero: true },
         });
         await emettreFaitFacture(tx, cree.id);
-        return cree;
-      });
+        const complet: AvoirCree = {
+          id: cree.id,
+          numero: cree.numero,
+          montantHtCents: Math.abs(totaux.totalHtCents),
+          montantTtcCents: Math.abs(totaux.totalTtcCents),
+        };
+        await options.apres?.(tx, complet);
+        return complet;
+      };
+      // Crochets fournis → vraie transaction, même canal partners fermé (là, `transactionFaitFacturation`
+      // n'en ouvre pas) : l'avoir et l'écriture de la garantie vivent et meurent ensemble.
+      const avoir = avecCrochets
+        ? await prisma.$transaction((tx) => travail(tx))
+        : await transactionFaitFacturation(prisma, travail);
       avoirCree = avoir;
       break;
     } catch (err: unknown) {
@@ -524,7 +622,13 @@ export async function genererAvoirFacture(input: GenererAvoirInput): Promise<Gen
     // Fail-soft : l'avoir reste émis sans PDF si le renderer échoue.
   }
 
-  return { avoirId: avoirCree.id, numero: avoirCree.numero, documentId };
+  return {
+    avoirId: avoirCree.id,
+    numero: avoirCree.numero,
+    documentId,
+    montantHtCents: avoirCree.montantHtCents,
+    montantTtcCents: avoirCree.montantTtcCents,
+  };
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
