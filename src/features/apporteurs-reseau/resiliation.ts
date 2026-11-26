@@ -30,6 +30,7 @@ import { prisma } from "@/lib/prisma";
 import { jourParis } from "./autofacture-donnees";
 import { envoyer } from "./envois";
 import { urlDossier } from "./jeton";
+import { euros, ajouterMois } from "./regles";
 import { lireReservations, tableAbsente } from "./reservation-presentation";
 import { argentEnJeu } from "./retrait";
 import { signalerErreurReseau } from "./signaler";

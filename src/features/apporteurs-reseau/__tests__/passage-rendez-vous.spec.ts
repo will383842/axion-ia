@@ -164,6 +164,7 @@ vi.mock("@/lib/prisma", () => {
         return snap;
       }),
       groupBy: vi.fn(async () => []),
+      count: vi.fn(async () => 0),
       create: vi.fn(async (a: { data: Ligne }) => {
         const d = a.data;
         if (
@@ -191,6 +192,8 @@ vi.mock("@/lib/prisma", () => {
         return { count: l.length };
       }),
     },
+    apporteurResiliation: { updateMany: vi.fn(async () => ({ count: 0 })) },
+    activityLog: { create: vi.fn(async () => ({})) },
     pieceApporteur: { findMany: vi.fn(async () => []) },
     devis: { findMany: vi.fn(async () => db.devis) },
     client: { findMany: vi.fn(async () => []) },
@@ -212,7 +215,7 @@ vi.mock("@/lib/prisma", () => {
 });
 
 import { passerFacturationApporteurs, passerReseauApporteurs } from "../passage-quotidien";
-import { planResiliation, resilierApporteur } from "../resiliation";
+import { planResiliation, executerResiliation } from "../resiliation";
 import { alerterDeclarationsSansReponse } from "../attribution-annonce";
 import { regleDe } from "../regle-attribution";
 import { envoyer } from "../envois";
@@ -632,12 +635,12 @@ describe("résiliation", () => {
     expect(plan.find((p) => p.id === "C")!.reserveeJusquAt ?? null).toBeNull();
   });
 
-  it("resilierApporteur écrit la fin de réservation ramenée, et la présentation passe `terminee`", async () => {
+  it("executerResiliation écrit la fin de réservation ramenée, et la présentation passe `terminee`", async () => {
     db.apporteurs.push({ id: "APP1", statut: "signe" });
     db.pres.push(pres());
     db.res.push(reservation());
     const maintenant = j(RECUE, 20);
-    const r = await resilierApporteur("APP1", maintenant);
+    const r = await executerResiliation("APP1", maintenant, maintenant);
     expect(r.ok).toBe(true);
     expect(db.res[0]!.reserveeJusquAt).toEqual(maintenant);
     expect(db.pres[0]!.statut).toBe("terminee");
