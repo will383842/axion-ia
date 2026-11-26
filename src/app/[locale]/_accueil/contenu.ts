@@ -78,9 +78,9 @@ export const CONTENU = {
         "En une journée, vous savez par où commencer, chiffres à l’appui, et vos équipes sont formées.",
       tuiles: [
         {
-          repere: "Le matin · 2 à 4 h d’audit",
+          repere: "Le matin · l’audit",
           texte:
-            "Votre entreprise cartographiée service par service, le point fait ensemble sur vos priorités : les 3 à 5 tâches au meilleur retour sur investissement et les plus rapides à mettre en place, découvertes le jour même et chiffrées en heures et en euros.",
+            "De 2 à 4 h selon la structuration de l’entreprise. Votre entreprise est cartographiée service par service et nous faisons le point ensemble sur vos priorités : les 3 à 5 tâches au meilleur retour sur investissement et les plus rapides à mettre en place, découvertes le jour même et chiffrées en heures et en euros.",
         },
         {
           repere: "L’après-midi · 4 h de formation",
@@ -88,8 +88,8 @@ export const CONTENU = {
             "Vos équipes, sur leurs vrais dossiers. Une attestation de formation nominative par personne.",
         },
         {
-          repere: "Le soir même · vos priorités",
-          texte: `Vos priorités écrites avant notre départ ; rapport complet et plan d’action sur 90 jours sous ${DELAI_RAPPORT_JOURS_OUVRES} jours ouvrés.`,
+          repere: "Le rapport détaillé · vos priorités",
+          texte: `Vos priorités sont écrites dans le rapport détaillé, remis sous ${DELAI_RAPPORT_JOURS_OUVRES} jours ouvrés, avec le plan d’action sur 90 jours.`,
         },
       ],
       lignes: [
@@ -112,8 +112,8 @@ export const CONTENU = {
     },
     blocAppel: {
       surtitre: "Pas encore sûr ? Une question ?",
-      titre: "Diagnostic IA gratuit de 45 minutes",
-      accroche: "Diagnostic IA gratuit : 45 minutes, en visio ou par téléphone.",
+      titre: "Diagnostic IA gratuit et facultatif de 45 minutes",
+      accroche: "Diagnostic IA gratuit et facultatif : 45 minutes, en visio ou par téléphone.",
       repartezAvec: "Vous repartez avec",
       repartez: [
         { fort: "une première tâche chiffrée", fin: " ;" },
@@ -131,7 +131,7 @@ export const CONTENU = {
     titre: "Axion-IA en bref",
     texte: EN_BREF_ACCUEIL,
     lienJournee: "Audit et formation IA en une journée : la Journée IA",
-    lienDiagnostic: "Réserver le diagnostic gratuit",
+    lienDiagnostic: "Réserver le diagnostic gratuit et facultatif",
   },
 
   miseEnPlace: {

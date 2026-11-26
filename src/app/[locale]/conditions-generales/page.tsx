@@ -56,6 +56,11 @@ export const revalidate = 3600;
 // 2026-11-27 : articles 47.5 (déplacement compris en Auvergne-Rhône-Alpes), 47.6 (acompte acquis en cas
 // d'annulation par le Client) et 47.10 (e) (vérification par Axion-IA, plus de déclaration du Client).
 // Le texte du 26/11 est archivé (@/content/cgv-archives).
+//
+// 2026-11-28 : décision du dirigeant — l'acompte versé reste acquis en cas d'annulation par le Client,
+// SANS condition de délai, pour tout ce qui est vendu (articles 6.5, 42.1, 46.2, 47.6, 49.5, 49.6) ; la
+// règle « annulée à plus de 15 jours ouvrés, acomptes remboursés » est supprimée. Rétractation légale
+// réservée (49.2, 53.2). Le texte du 27/11 est archivé (@/content/cgv-archives).
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;
