@@ -89,7 +89,7 @@ export const QUESTIONS_REFERENCE: Readonly<Record<string, QuestionReference>> = 
   "ref-audit-contenu": {
     id: "ref-audit-contenu",
     question: "Que contient un audit IA pour une PME ?",
-    reponse: `Un audit IA en PME cartographie l’entreprise service par service, repère les tâches répétitives, les classe par rentabilité et par rapidité de mise en place et retient 3 à 5 priorités. Le rapport chiffre ensuite chacune en heures et en euros, avec un plan d’action sur 90 jours, remis sous ${DELAI_RAPPORT_JOURS_OUVRES} jours ouvrés dans le cadre de la Journée IA.`,
+    reponse: `Un audit IA en PME cartographie l’entreprise service par service, repère les tâches répétitives, les classe par rentabilité et retient 3 à 5 priorités. Le rapport chiffre ensuite chacune en heures et en euros, avec un plan d’action sur 90 jours, remis sous ${DELAI_RAPPORT_JOURS_OUVRES} jours ouvrés dans le cadre de la Journée IA.`,
     sujet: "audit IA",
     source: "src/content/journee-ia-commun.ts (DESCRIPTION_SERVICE_JOURNEE_IA, RAPPORT_COMPLET)",
   },
@@ -112,7 +112,7 @@ export const QUESTIONS_REFERENCE: Readonly<Record<string, QuestionReference>> = 
     id: "ref-audit-vs-formation",
     question: "Audit IA ou formation IA : par quoi commencer ?",
     reponse:
-      "Audit IA et formation IA se complètent, et le mieux est de les enchaîner. L’audit décrit votre situation et fixe les priorités ; la formation change les pratiques des équipes sur leurs propres dossiers. La Journée IA d’Axion-IA fait les deux le même jour, dans vos locaux : l’audit du matin oriente la formation de l’après-midi, avec 3 à 5 priorités classées pendant la journée.",
+      "Audit IA et formation IA se complètent, et le mieux est de les enchaîner. L’audit décrit votre situation et fixe les priorités ; la formation change les pratiques des équipes sur leurs propres dossiers. La Journée IA d’Axion-IA fait les deux le même jour, dans vos locaux : l’audit du matin oriente la formation de l’après-midi, avec 3 à 5 priorités.",
     sujet: "audit IA",
     source: "src/content/journee-ia-commun.ts (DESCRIPTION_SERVICE_JOURNEE_IA)",
   },
