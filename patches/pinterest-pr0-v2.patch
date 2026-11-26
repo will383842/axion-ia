@@ -1,0 +1,533 @@
+From 2a068df62532c63060a59a0775dfd38bcb5db2b6 Mon Sep 17 00:00:00 2001
+From: "github-actions[bot]" <github-actions[bot]@users.noreply.github.com>
+Date: Thu, 26 Nov 2026 16:55:04 +0000
+Subject: [PATCH 1/2] =?UTF-8?q?Pinterest,=20PR=200=20:=20ADR-0015=20et=20s?=
+ =?UTF-8?q?ection=20Pinterest=20du=20relev=C3=A9=20des=20r=C3=A8gles=20off?=
+ =?UTF-8?q?icielles?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+Documents seulement : ADR-0015 (amende ADR-0004 D6, D8, D9, D10, ADR-0010 et ADR-0012),
+section pinterest de regles-officielles.json et .md, test du relevé étendu.
+
+Co-Authored-By: Claude Sonnet 5.5 <noreply@anthropic.com>
+---
+ docs/adr/0015-pinterest-epingles.md      |  62 ++++++++
+ docs/reseaux/REGLES-OFFICIELLES.md       |  42 +++++-
+ docs/reseaux/regles-officielles.json     | 174 +++++++++++++++++++++++
+ tests/reseaux/regles-officielles.test.ts |   8 +-
+ 4 files changed, 280 insertions(+), 6 deletions(-)
+ create mode 100644 docs/adr/0015-pinterest-epingles.md
+
+diff --git a/docs/adr/0015-pinterest-epingles.md b/docs/adr/0015-pinterest-epingles.md
+new file mode 100644
+index 00000000..b8895508
+--- /dev/null
++++ b/docs/adr/0015-pinterest-epingles.md
+@@ -0,0 +1,62 @@
++# ADR-0015 · Pinterest : épingles du calendrier envoyées par Zernio
++
++- Statut : brouillon (à valider par le fondateur)
++- Date : 2026-11-26
++- Chantier : Pinterest dans le Studio, PR 0 (décisions écrites, aucun code)
++- Liens : ADR-0004 (amendée), ADR-0010, ADR-0012
++
++## Contexte
++
++Le Studio envoie aujourd'hui LinkedIn, Instagram, Facebook et TikTok par Zernio. Pinterest est ajouté : une **épingle** = une image, un titre, une description, un lien vers le site, un tableau. Plusieurs décisions de l'ADR-0004 (acceptée) la contredisent ou ne la prévoient pas. Une ADR acceptée ne se contourne pas dans le code : cette ADR l'amende par écrit, avant la première ligne de code (PR 1 à 7).
++
++Cette PR ne contient que des documents. Aucun interrupteur n'est allumé, aucun appel réel n'est fait, aucune route n'est ouverte dans le client.
++
++## Décision
++
++**Amendement D6 (liste fermée de chemins).** Ajout de `GET /v1/accounts/{id}/pinterest-boards` (lecture des tableaux). Restent refusés : `PUT` et `POST` sur cette même route, `POST /v1/posts/{id}/edit`, `GET` et `POST /v1/connect/pinterest/*`. Le test de la liste fermée est étendu dans la PR 3, pas avant.
++
++**Amendement D8 (étiquette IA).** Pinterest : `platformSpecificData.isAiGenerated: true` si et seulement si `epingle.contenuIA === true` ; rien n'est transmis sinon (Pinterest n'offre pas de valeur « non IA »). Le champ vit dans l'épingle (le visuel n'a pas de `contenuIA`), il est obligatoire au format du lot importé.
++
++**Amendement D9 (cibles).** Cible Pinterest : `"<accountId>:pin:<boardId>"`. Jamais le premier tableau : un envoi sans tableau est refusé avant le réseau. Seuls les tableaux publics (`privacy === "PUBLIC"`) sont proposés. Les identifiants vivent en base, jamais dans le dépôt.
++
++**Amendement D10 (médias et formats).** Pinterest : exactement une image (JPEG, PNG ou WebP), 20 Mo au plus (marge sous les 32 Mo de Zernio), rapport 2:3 à ± 1 %, largeur d'au moins 1 000 px ; ni vidéo, ni document, ni deux images. Texte alternatif de **1 à 500 signes pour Pinterest seulement** (les autres réseaux restent à 125). Titre de 1 à 100 signes, description de 800 signes au plus. Lien obligatoire, en https, sans identifiants ni port, dont l'hôte est **égal** au domaine du site (réglage `site.domaine`) : ni sous-domaine, ni autre domaine.
++
++**ADR-0010 (validation).** Un lot importé naît « à valider ». Le geste « Valider ce lot » vaut validation datée du fondateur, créneau par créneau ; rien ne part avant le tour d'envoi.
++
++**ADR-0012 (anti-répétition).** L'import d'épingles refuse un doublon : même empreinte d'image, ou même couple lien + tableau.
++
++**Créneaux.** 08:30, 12:30, 17:30 et 21:00, heure de Paris, soit 4 épingles par jour au plus, avec 210 minutes d'écart minimum entre deux créneaux décidés. Un seul compte Pinterest est prévu (le code en tolère plusieurs).
++
++**Limites écrites.**
++
++- Aucune modification d'une épingle déjà envoyée : seule la description serait modifiable chez Zernio, par une route en bêta fermée chez Pinterest. Avant l'envoi, la règle CAL-23 existante s'applique (une modification renvoie l'entrée « à valider »).
++- Une épingle publiée hors du Studio n'est pas rapatriée, comme pour les autres réseaux.
++- Pinterest n'a pas de premier commentaire, ni de boîte de réception côté Zernio.
++
++## Conséquences
++
++- Positives
++  - Les deux plafonds de texte alternatif (125 et 500) sont écrits et justifiés avant le code ; le relevé `docs/reseaux/regles-officielles.json` porte la section Pinterest et les constantes `IMAGES_MAX.pinterest` et `ALT_MAX_PINTEREST`.
++  - Pas de publication sur un tableau par défaut ni sur un tableau secret.
++  - Le lien ne peut pointer que vers le site : pas d'épingle qui détourne vers un tiers.
++- Négatives
++  - Le plafond d'alt par plateforme complique `texteAlt` (PR 3).
++  - Un seul domaine de lien : un second site demanderait un amendement.
++  - Le Studio ne pourra pas corriger une épingle partie.
++
++## Alternatives écartées
++
++- **Premier tableau par défaut** : épingle sur le mauvais tableau possible ; écartée.
++- **Sous-domaines du site acceptés** : élargit la surface de lien sans besoin ; écartée.
++- **Mention IA déduite du visuel** : le visuel n'a pas ce champ ; écartée.
++- **Texte alternatif à 125 pour tous** : Pinterest accepte 500 ; écartée.
++- **Éditer une épingle envoyée** : route en bêta fermée ; écartée.
++
++## Tests qui la prouvent
++
++Dans cette PR : `tests/reseaux/regles-officielles.test.ts` (section `pinterest` du relevé, constantes confrontées). Dans les PR suivantes (3 à 7), chaque décision ci-dessus a son test : route des tableaux acceptée et `PUT`/`POST`/`edit` refusés sans appel réseau ; `isAiGenerated` présent seulement si `contenuIA` ; cible sans tableau refusée ; lien hors domaine refusé ; alt 500 accepté sur Pinterest et 126 refusé sur Instagram.
++
++## Points laissés ouverts
++
++- L'extrait `docs/zernio/openapi-extrait-1.418.1.json` ne contient pas encore la route des tableaux : il doit être régénéré par une session qui joint zernio.com (il ne se modifie pas à la main). Cette PR ne le touche pas.
++- Confirmation hors dépôt, avant les PR 1 à 7 : qu'aucun fichier qu'elles visent n'est patché sur le serveur.
+diff --git a/docs/reseaux/REGLES-OFFICIELLES.md b/docs/reseaux/REGLES-OFFICIELLES.md
+index 0cce7189..7b1f6c27 100644
+--- a/docs/reseaux/REGLES-OFFICIELLES.md
++++ b/docs/reseaux/REGLES-OFFICIELLES.md
+@@ -8,6 +8,8 @@ Niveaux de preuve : **officiel** (page du réseau ou de Zernio lue), **secondair
+ 
+ YouTube : éteint (non relevé).
+ 
++Pinterest (ajouté le 2026-11-26, PR 0 du chantier épingles) : les deux couches sont relevées ; ce que l'extrait Zernio du dépôt ne couvre pas (route des tableaux, description de 800 signes, médias, 32 Mo, absence de boîte de réception) vaut « inconnu » tant que l'extrait n'est pas régénéré par une session qui joint zernio.com. Rien de cela n'a été écrit à la main dans l'extrait.
++
+ ## LinkedIn
+ 
+ ### Couche 1 : règles du réseau (LinkedIn)
+@@ -144,6 +146,40 @@ YouTube : éteint (non relevé).
+ | Carrousel / document PDF | Carrousel photo jusqu'à 35 images | officiel | [source](https://zernio.com/openapi.json) | `docs/zernio/openapi-extrait-1.418.1.json#/components/schemas/TikTokPlatformData` | 2026-11-12 |
+ | Texte alternatif | Ignoré : TikTok n'a pas de texte alternatif | officiel | [source](https://zernio.com/openapi.json) | `docs/zernio/openapi-extrait-1.418.1.json#/components/schemas/MediaItem/properties/altText/description` | 2026-11-12 |
+ 
++## Pinterest
++
++### Couche 1 : règles du réseau (Pinterest)
++
++| Règle | Valeur | Preuve | URL | Lu dans | Lu le |
++|---|---|---|---|---|---|
++| Premier commentaire | inconnu | inconnu | — | — | — |
++| Réponses aux commentaires | inconnu | inconnu | — | — | — |
++| Messages privés | inconnu | inconnu | — | — | — |
++| Duplication de contenu | inconnu | inconnu | — | — | — |
++| Statistiques | inconnu | inconnu | — | — | — |
++| Plafond de posts | inconnu | inconnu | — | — | — |
++| Longueur de texte | inconnu | inconnu | — | — | — |
++| Mots-dièse | inconnu | inconnu | — | — | — |
++| Vidéo (durée, taille) | inconnu | inconnu | — | — | — |
++| Carrousel / document PDF | inconnu | inconnu | — | — | — |
++| Texte alternatif | inconnu | inconnu | — | — | — |
++
++### Couche 2 : règles de Zernio (Pinterest)
++
++| Règle | Valeur | Preuve | URL | Lu dans | Lu le |
++|---|---|---|---|---|---|
++| Premier commentaire | Aucun champ « premier commentaire » dans les champs propres à Pinterest : rien n'est transmis | officiel | [source](https://zernio.com/openapi.json) | `docs/zernio/openapi-extrait-1.418.1.json#/components/schemas/PinterestPlatformData/properties` | 2026-11-26 |
++| Réponses aux commentaires | inconnu | inconnu | — | — | — |
++| Messages privés | inconnu | inconnu | — | — | — |
++| Duplication de contenu | Refus (409) d'un contenu identique pour la même plateforme et le même compte dans les 24 h ; clé d'idempotence valable 24 h | officiel | [source](https://zernio.com/openapi.json) | `docs/zernio/openapi-extrait-1.418.1.json#/paths/~1v1~1posts/post/responses/409` | 2026-11-26 |
++| Statistiques | Même route de statistiques de posts ; le nombre d'enregistrements (saves) couvre Instagram, Pinterest et X | officiel | [source](https://zernio.com/openapi.json) | `docs/zernio/openapi-extrait-1.418.1.json#/paths/~1v1~1analytics/get` | 2026-11-26 |
++| Plafond de posts | Plafond de rythme : 25 posts par heure et par compte, plus des plafonds quotidiens par plateforme (valeurs non données) | officiel | [source](https://zernio.com/openapi.json) | `docs/zernio/openapi-extrait-1.418.1.json#/paths/~1v1~1posts/post/responses/429` | 2026-11-26 |
++| Longueur de texte | Titre de l'épingle : 100 signes au plus ; longueur de la description non donnée par l'extrait du dépôt | officiel | [source](https://zernio.com/openapi.json) | `docs/zernio/openapi-extrait-1.418.1.json#/components/schemas/PinterestPlatformData/properties/title/maxLength` | 2026-11-26 |
++| Mots-dièse | Les mots-dièse ne sont pas ajoutés tout seuls : ils doivent figurer dans le texte du post | officiel | [source](https://zernio.com/openapi.json) | `docs/zernio/openapi-extrait-1.418.1.json#/paths/~1v1~1posts/post/requestBody/content/application~1json/schema/properties/hashtags/description` | 2026-11-26 |
++| Vidéo (durée, taille) | inconnu | inconnu | — | — | — |
++| Carrousel / document PDF | inconnu | inconnu | — | — | — |
++| Texte alternatif | 500 signes au plus sur Pinterest (125 sur les autres réseaux du Studio) | officiel | [source](https://zernio.com/openapi.json) | `docs/zernio/openapi-extrait-1.418.1.json#/components/schemas/MediaItem/properties/altText/description` | 2026-11-26 |
++
+ ## Constantes de `zernio-corps.ts` confrontées à leur source
+ 
+ (Fichier lu seulement, non modifié.)
+@@ -158,6 +194,8 @@ YouTube : éteint (non relevé).
+ | `IMAGES_MAX.facebook` | 10 | **conforme** | `facebook.zernio.format_carrousel_document` | La spec Zernio dit : jusqu'à 10 images. |
+ | `IMAGES_MAX.tiktok` | 35 | **conforme** | `tiktok.zernio.format_carrousel_document` | La spec Zernio dit : carrousel photo jusqu'à 35 images. |
+ | `IMAGES_MAX.instagram` | 10 | **écart** | `instagram.zernio.format_carrousel_document` | Le code limite le carrousel à 10 images ; la spec Zernio (schéma InstagramPlatformData) permet jusqu'à 20 éléments. Écart prudent (le code refuse plus que nécessaire), sans risque d'envoi refusé. |
++| `IMAGES_MAX.pinterest` | 1 | **inconnu** | `pinterest.zernio.format_carrousel_document` | Constante à poser en PR 3 (pas encore dans le code). La documentation Zernio des médias Pinterest (docs.zernio.com, lue le 2026-11-26) donne une seule image ou une seule vidéo, ni carrousel ni texte seul ; cette page n'est pas dans l'extrait du dépôt, d'où « inconnu » tant que l'extrait n'est pas régénéré. |
++| `ALT_MAX_PINTEREST` | 500 signes | **conforme** | `pinterest.zernio.texte_alternatif` | Constante à poser en PR 3 (pas encore dans le code). La spec Zernio dit : Pinterest, 500 signes au plus. Les autres réseaux restent à 125 (ALT_MAX). |
+ 
+ ## À valider par le fondateur
+ 
+@@ -166,8 +204,8 @@ YouTube : éteint (non relevé).
+ - Texte alternatif 125 signes : aucune source trouvée, à prouver ou à retirer.
+ - Titre de document LinkedIn 60 signes : aucune source trouvée, à prouver ou à retirer.
+ - Instagram : le code limite le carrousel à 10, Zernio en accepte 20. Garder 10 ?
+-- Zernio limite à 25 posts par heure et par compte : à garder en tête pour les grosses séries.
+-- Zernio refuse un texte identique sur le même compte dans les 24 h.
++- Zernio limite à 25 posts par heure et par compte, et refuse un texte identique sur le même compte dans les 24 h : à garder en tête pour les grosses séries.
+ - Premier commentaire : Zernio le gère pour Facebook, Instagram et LinkedIn, pas pour TikTok.
+ - Réponses aux commentaires et messages privés : rien dans la spec Zernio lue, à chercher ailleurs.
+ - Statistiques d'un profil LinkedIn personnel : seulement pour les posts passés par Zernio.
++- Pinterest : régénérer l'extrait Zernio (ajout de `GET /v1/accounts/{accountId}/pinterest-boards`) par une session qui joint zernio.com, puis compléter les cellules « inconnu » de Pinterest (description 800, médias, 32 Mo, débit) et `IMAGES_MAX.pinterest`.
+diff --git a/docs/reseaux/regles-officielles.json b/docs/reseaux/regles-officielles.json
+index 1be8e7db..1e0a1920 100644
+--- a/docs/reseaux/regles-officielles.json
++++ b/docs/reseaux/regles-officielles.json
+@@ -645,6 +645,166 @@
+     },
+     "youtube": {
+       "statut": "éteint"
++    },
++    "pinterest": {
++      "reseau": {
++        "premier_commentaire": {
++          "valeur": "inconnu",
++          "preuve": "inconnu",
++          "url": null,
++          "date": null,
++          "copie_depot": null
++        },
++        "reponses_commentaires": {
++          "valeur": "inconnu",
++          "preuve": "inconnu",
++          "url": null,
++          "date": null,
++          "copie_depot": null
++        },
++        "messages_prives": {
++          "valeur": "inconnu",
++          "preuve": "inconnu",
++          "url": null,
++          "date": null,
++          "copie_depot": null
++        },
++        "duplication": {
++          "valeur": "inconnu",
++          "preuve": "inconnu",
++          "url": null,
++          "date": null,
++          "copie_depot": null
++        },
++        "statistiques": {
++          "valeur": "inconnu",
++          "preuve": "inconnu",
++          "url": null,
++          "date": null,
++          "copie_depot": null
++        },
++        "plafond_posts": {
++          "valeur": "inconnu",
++          "preuve": "inconnu",
++          "url": null,
++          "date": null,
++          "copie_depot": null
++        },
++        "plafond_texte": {
++          "valeur": "inconnu",
++          "preuve": "inconnu",
++          "url": null,
++          "date": null,
++          "copie_depot": null
++        },
++        "plafond_mots_dieses": {
++          "valeur": "inconnu",
++          "preuve": "inconnu",
++          "url": null,
++          "date": null,
++          "copie_depot": null
++        },
++        "format_video": {
++          "valeur": "inconnu",
++          "preuve": "inconnu",
++          "url": null,
++          "date": null,
++          "copie_depot": null
++        },
++        "format_carrousel_document": {
++          "valeur": "inconnu",
++          "preuve": "inconnu",
++          "url": null,
++          "date": null,
++          "copie_depot": null
++        },
++        "texte_alternatif": {
++          "valeur": "inconnu",
++          "preuve": "inconnu",
++          "url": null,
++          "date": null,
++          "copie_depot": null
++        }
++      },
++      "zernio": {
++        "premier_commentaire": {
++          "valeur": "Aucun champ « premier commentaire » dans les champs propres à Pinterest : rien n'est transmis",
++          "preuve": "officiel",
++          "url": "https://zernio.com/openapi.json",
++          "date": "2026-11-26",
++          "copie_depot": "docs/zernio/openapi-extrait-1.418.1.json#/components/schemas/PinterestPlatformData/properties"
++        },
++        "reponses_commentaires": {
++          "valeur": "inconnu",
++          "preuve": "inconnu",
++          "url": null,
++          "date": null,
++          "copie_depot": null
++        },
++        "messages_prives": {
++          "valeur": "inconnu",
++          "preuve": "inconnu",
++          "url": null,
++          "date": null,
++          "copie_depot": null
++        },
++        "duplication": {
++          "valeur": "Refus (409) d'un contenu identique pour la même plateforme et le même compte dans les 24 h ; clé d'idempotence valable 24 h",
++          "preuve": "officiel",
++          "url": "https://zernio.com/openapi.json",
++          "date": "2026-11-26",
++          "copie_depot": "docs/zernio/openapi-extrait-1.418.1.json#/paths/~1v1~1posts/post/responses/409"
++        },
++        "statistiques": {
++          "valeur": "Même route de statistiques de posts ; le nombre d'enregistrements (saves) couvre Instagram, Pinterest et X",
++          "preuve": "officiel",
++          "url": "https://zernio.com/openapi.json",
++          "date": "2026-11-26",
++          "copie_depot": "docs/zernio/openapi-extrait-1.418.1.json#/paths/~1v1~1analytics/get"
++        },
++        "plafond_posts": {
++          "valeur": "Plafond de rythme : 25 posts par heure et par compte, plus des plafonds quotidiens par plateforme (valeurs non données)",
++          "preuve": "officiel",
++          "url": "https://zernio.com/openapi.json",
++          "date": "2026-11-26",
++          "copie_depot": "docs/zernio/openapi-extrait-1.418.1.json#/paths/~1v1~1posts/post/responses/429"
++        },
++        "plafond_texte": {
++          "valeur": "Titre de l'épingle : 100 signes au plus ; longueur de la description non donnée par l'extrait du dépôt",
++          "preuve": "officiel",
++          "url": "https://zernio.com/openapi.json",
++          "date": "2026-11-26",
++          "copie_depot": "docs/zernio/openapi-extrait-1.418.1.json#/components/schemas/PinterestPlatformData/properties/title/maxLength"
++        },
++        "plafond_mots_dieses": {
++          "valeur": "Les mots-dièse ne sont pas ajoutés tout seuls : ils doivent figurer dans le texte du post",
++          "preuve": "officiel",
++          "url": "https://zernio.com/openapi.json",
++          "date": "2026-11-26",
++          "copie_depot": "docs/zernio/openapi-extrait-1.418.1.json#/paths/~1v1~1posts/post/requestBody/content/application~1json/schema/properties/hashtags/description"
++        },
++        "format_video": {
++          "valeur": "inconnu",
++          "preuve": "inconnu",
++          "url": null,
++          "date": null,
++          "copie_depot": null
++        },
++        "format_carrousel_document": {
++          "valeur": "inconnu",
++          "preuve": "inconnu",
++          "url": null,
++          "date": null,
++          "copie_depot": null
++        },
++        "texte_alternatif": {
++          "valeur": "500 signes au plus sur Pinterest (125 sur les autres réseaux du Studio)",
++          "preuve": "officiel",
++          "url": "https://zernio.com/openapi.json",
++          "date": "2026-11-26",
++          "copie_depot": "docs/zernio/openapi-extrait-1.418.1.json#/components/schemas/MediaItem/properties/altText/description"
++        }
++      }
+     }
+   },
+   "constantes": [
+@@ -703,6 +863,20 @@
+       "statut": "écart",
+       "cellule": "instagram.zernio.format_carrousel_document",
+       "note": "Le code limite le carrousel à 10 images ; la spec Zernio (schéma InstagramPlatformData) permet jusqu'à 20 éléments. Écart prudent (le code refuse plus que nécessaire), sans risque d'envoi refusé."
++    },
++    {
++      "nom": "IMAGES_MAX.pinterest",
++      "valeur_code": "1",
++      "statut": "inconnu",
++      "cellule": "pinterest.zernio.format_carrousel_document",
++      "note": "Constante à poser en PR 3 (pas encore dans le code). La documentation Zernio des médias Pinterest (docs.zernio.com, lue le 2026-11-26) donne une seule image ou une seule vidéo, ni carrousel ni texte seul ; cette page n'est pas dans l'extrait du dépôt, d'où « inconnu » tant que l'extrait n'est pas régénéré."
++    },
++    {
++      "nom": "ALT_MAX_PINTEREST",
++      "valeur_code": "500 signes",
++      "statut": "conforme",
++      "cellule": "pinterest.zernio.texte_alternatif",
++      "note": "Constante à poser en PR 3 (pas encore dans le code). La spec Zernio dit : Pinterest, 500 signes au plus. Les autres réseaux restent à 125 (ALT_MAX)."
+     }
+   ]
+ }
+diff --git a/tests/reseaux/regles-officielles.test.ts b/tests/reseaux/regles-officielles.test.ts
+index 47334cf5..439aee26 100644
+--- a/tests/reseaux/regles-officielles.test.ts
++++ b/tests/reseaux/regles-officielles.test.ts
+@@ -33,7 +33,7 @@ const RUBRIQUES = [
+   "premier_commentaire", "reponses_commentaires", "messages_prives", "duplication", "statistiques",
+   "plafond_posts", "plafond_texte", "plafond_mots_dieses", "format_video", "format_carrousel_document", "texte_alternatif",
+ ];
+-const ACTIFS = ["linkedin", "instagram", "facebook", "tiktok"];
++const ACTIFS = ["linkedin", "instagram", "facebook", "tiktok", "pinterest"];
+ 
+ function cellules(): { chemin: string; c: Cellule }[] {
+   const out: { chemin: string; c: Cellule }[] = [];
+@@ -46,7 +46,7 @@ function cellules(): { chemin: string; c: Cellule }[] {
+ }
+ 
+ describe("relevé des règles officielles (L8-01)", () => {
+-  it("a la bonne forme : 4 réseaux actifs, deux couches séparées, YouTube éteint", () => {
++  it("a la bonne forme : 5 réseaux actifs, deux couches séparées, YouTube éteint", () => {
+     expect(releve.version).toBe(1);
+     expect(releve.consulte_le).toMatch(/^\d{4}-\d{2}-\d{2}$/);
+     for (const r of ACTIFS) {
+@@ -97,7 +97,7 @@ describe("relevé des règles officielles (L8-01)", () => {
+ 
+   it("confronte les constantes de zernio-corps.ts à leur source", () => {
+     const noms = releve.constantes.map((k) => k.nom);
+-    for (const n of ["REEL_FACEBOOK_DUREE_SEC", "ALT_MAX", "TITRE_DOCUMENT_MAX"]) expect(noms).toContain(n);
++    for (const n of ["REEL_FACEBOOK_DUREE_SEC", "ALT_MAX", "TITRE_DOCUMENT_MAX", "IMAGES_MAX.pinterest", "ALT_MAX_PINTEREST"]) expect(noms).toContain(n);
+     const toutes = new Set(cellules().map((x) => x.chemin));
+     for (const k of releve.constantes) {
+       expect(["conforme", "écart", "inconnu"], k.nom).toContain(k.statut);
+@@ -133,7 +133,7 @@ describe("relevé des règles officielles (L8-01)", () => {
+ 
+   it("le document reprend exactement le relevé : chaque ligne de chaque couche et des constantes", () => {
+     const md = readFileSync("docs/reseaux/REGLES-OFFICIELLES.md", "utf8");
+-    const NOMS: Record<string, string> = { linkedin: "LinkedIn", instagram: "Instagram", facebook: "Facebook", tiktok: "TikTok" };
++    const NOMS: Record<string, string> = { linkedin: "LinkedIn", instagram: "Instagram", facebook: "Facebook", tiktok: "TikTok", pinterest: "Pinterest" };
+     const LIBELLES = [
+       "Premier commentaire", "Réponses aux commentaires", "Messages privés", "Duplication de contenu", "Statistiques",
+       "Plafond de posts", "Longueur de texte", "Mots-dièse", "Vidéo (durée, taille)", "Carrousel / document PDF", "Texte alternatif",
+-- 
+2.56.1
+
+
+From 31bb6dfbcea79106bd85cb84b241ff47f0b45f13 Mon Sep 17 00:00:00 2001
+From: Claude <noreply@anthropic.com>
+Date: Thu, 26 Nov 2026 17:43:56 +0000
+Subject: [PATCH 2/2] =?UTF-8?q?Pinterest=20PR=200=20:=20corrections=20de?=
+ =?UTF-8?q?=20la=20relecture=20(C-1=20=C3=A0=20C-7)?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+Texte alternatif sans le 125 dans la cellule officielle, site.domaine créé en PR 3, anti-doublon aligné sur ADR-0012 (signale, le fondateur tranche), écart de 210 min conseillé et lieu des heures, constantes « à poser en PR 3 », régénération de l'extrait avant la PR 3, précisions mineures.
+
+Co-Authored-By: Claude Sonnet 5.5 <noreply@anthropic.com>
+---
+ docs/adr/0015-pinterest-epingles.md  | 10 +++++-----
+ docs/reseaux/REGLES-OFFICIELLES.md   | 10 +++++-----
+ docs/reseaux/regles-officielles.json |  8 ++++----
+ 3 files changed, 14 insertions(+), 14 deletions(-)
+
+diff --git a/docs/adr/0015-pinterest-epingles.md b/docs/adr/0015-pinterest-epingles.md
+index b8895508..42776ee8 100644
+--- a/docs/adr/0015-pinterest-epingles.md
++++ b/docs/adr/0015-pinterest-epingles.md
+@@ -19,19 +19,19 @@ Cette PR ne contient que des documents. Aucun interrupteur n'est allumé, aucun
+ 
+ **Amendement D9 (cibles).** Cible Pinterest : `"<accountId>:pin:<boardId>"`. Jamais le premier tableau : un envoi sans tableau est refusé avant le réseau. Seuls les tableaux publics (`privacy === "PUBLIC"`) sont proposés. Les identifiants vivent en base, jamais dans le dépôt.
+ 
+-**Amendement D10 (médias et formats).** Pinterest : exactement une image (JPEG, PNG ou WebP), 20 Mo au plus (marge sous les 32 Mo de Zernio), rapport 2:3 à ± 1 %, largeur d'au moins 1 000 px ; ni vidéo, ni document, ni deux images. Texte alternatif de **1 à 500 signes pour Pinterest seulement** (les autres réseaux restent à 125). Titre de 1 à 100 signes, description de 800 signes au plus. Lien obligatoire, en https, sans identifiants ni port, dont l'hôte est **égal** au domaine du site (réglage `site.domaine`) : ni sous-domaine, ni autre domaine.
++**Amendement D10 (médias et formats).** Pinterest : exactement une image (JPEG, PNG ou WebP), 20 Mo au plus (marge sous les 32 Mo de Zernio), rapport 2:3 à ± 1 %, largeur d'au moins 1 000 px ; ni vidéo, ni document, ni deux images. Texte alternatif de **1 à 500 signes pour Pinterest seulement** (les autres réseaux restent à 125). Titre de 1 à 100 signes, description de 800 signes au plus. Lien obligatoire, en https, sans identifiants ni port, dont l'hôte est **égal** au domaine du site (réglage `site.domaine`, créé en PR 3, défaut = hôte de `BASE_PUBLIQUE`) : ni sous-domaine, ni autre domaine. La garde réutilise `lienDeChezNous` (`fournisseurs/publication/zernio-inbox-corps.ts`) avec égalité stricte d'hôte, plutôt qu'une garde neuve.
+ 
+ **ADR-0010 (validation).** Un lot importé naît « à valider ». Le geste « Valider ce lot » vaut validation datée du fondateur, créneau par créneau ; rien ne part avant le tour d'envoi.
+ 
+-**ADR-0012 (anti-répétition).** L'import d'épingles refuse un doublon : même empreinte d'image, ou même couple lien + tableau.
++**ADR-0012 (anti-répétition).** L'import d'épingles signale un doublon et le fondateur tranche, comme le pose l'ADR-0012 : même empreinte d'image, ou même couple lien + tableau. La comparaison porte sur les contenus déjà publiés ou programmés, pas seulement sur le lot importé. Aucun amendement de l'ADR-0012.
+ 
+-**Créneaux.** 08:30, 12:30, 17:30 et 21:00, heure de Paris, soit 4 épingles par jour au plus, avec 210 minutes d'écart minimum entre deux créneaux décidés. Un seul compte Pinterest est prévu (le code en tolère plusieurs).
++**Créneaux.** 08:30, 12:30, 17:30 et 21:00, heure de Paris, soit 4 épingles par jour au plus, avec 210 minutes d'écart : c'est le plus petit écart entre deux créneaux décidés (17:30 → 21:00), appliqué comme écart conseillé de la cadence (message, pas refus). Les quatre heures vivent dans `REGLAGES_CADENCE_DEFAUT.reseaux.pinterest`, lues par l'import, jamais codées dans la page. Un seul compte Pinterest est prévu (le code en tolère plusieurs).
+ 
+ **Limites écrites.**
+ 
+ - Aucune modification d'une épingle déjà envoyée : seule la description serait modifiable chez Zernio, par une route en bêta fermée chez Pinterest. Avant l'envoi, la règle CAL-23 existante s'applique (une modification renvoie l'entrée « à valider »).
+ - Une épingle publiée hors du Studio n'est pas rapatriée, comme pour les autres réseaux.
+-- Pinterest n'a pas de premier commentaire, ni de boîte de réception côté Zernio.
++- Pinterest n'a pas de premier commentaire, ni de boîte de réception côté Zernio (doc `reference.mdx`, hors extrait).
+ 
+ ## Conséquences
+ 
+@@ -58,5 +58,5 @@ Dans cette PR : `tests/reseaux/regles-officielles.test.ts` (section `pinterest`
+ 
+ ## Points laissés ouverts
+ 
+-- L'extrait `docs/zernio/openapi-extrait-1.418.1.json` ne contient pas encore la route des tableaux : il doit être régénéré par une session qui joint zernio.com (il ne se modifie pas à la main). Cette PR ne le touche pas.
++- L'extrait `docs/zernio/openapi-extrait-1.418.1.json` ne contient pas encore la route des tableaux : il doit être régénéré par une session qui joint zernio.com (il ne se modifie pas à la main). Cette PR ne le touche pas. Cette régénération est un préalable de la PR 3 (avant la PR 3), car la route des tableaux de D6 en dépend ; d'ici là, 1 média, description de 800 et 32 Mo restent « inconnu ».
+ - Confirmation hors dépôt, avant les PR 1 à 7 : qu'aucun fichier qu'elles visent n'est patché sur le serveur.
+diff --git a/docs/reseaux/REGLES-OFFICIELLES.md b/docs/reseaux/REGLES-OFFICIELLES.md
+index 7b1f6c27..8946a8cb 100644
+--- a/docs/reseaux/REGLES-OFFICIELLES.md
++++ b/docs/reseaux/REGLES-OFFICIELLES.md
+@@ -171,14 +171,14 @@ Pinterest (ajouté le 2026-11-26, PR 0 du chantier épingles) : les deux couches
+ | Premier commentaire | Aucun champ « premier commentaire » dans les champs propres à Pinterest : rien n'est transmis | officiel | [source](https://zernio.com/openapi.json) | `docs/zernio/openapi-extrait-1.418.1.json#/components/schemas/PinterestPlatformData/properties` | 2026-11-26 |
+ | Réponses aux commentaires | inconnu | inconnu | — | — | — |
+ | Messages privés | inconnu | inconnu | — | — | — |
+-| Duplication de contenu | Refus (409) d'un contenu identique pour la même plateforme et le même compte dans les 24 h ; clé d'idempotence valable 24 h | officiel | [source](https://zernio.com/openapi.json) | `docs/zernio/openapi-extrait-1.418.1.json#/paths/~1v1~1posts/post/responses/409` | 2026-11-26 |
++| Duplication de contenu | Refus (409) d'un contenu identique pour la même plateforme et le même compte dans les 24 h ; clé d'idempotence valable 24 h ; Zernio recommande aussi des variantes de contenu pour X et Pinterest afin d'éviter les signalements de doublon (`RecyclingConfig`) | officiel | [source](https://zernio.com/openapi.json) | `docs/zernio/openapi-extrait-1.418.1.json#/paths/~1v1~1posts/post/responses/409` | 2026-11-26 |
+ | Statistiques | Même route de statistiques de posts ; le nombre d'enregistrements (saves) couvre Instagram, Pinterest et X | officiel | [source](https://zernio.com/openapi.json) | `docs/zernio/openapi-extrait-1.418.1.json#/paths/~1v1~1analytics/get` | 2026-11-26 |
+ | Plafond de posts | Plafond de rythme : 25 posts par heure et par compte, plus des plafonds quotidiens par plateforme (valeurs non données) | officiel | [source](https://zernio.com/openapi.json) | `docs/zernio/openapi-extrait-1.418.1.json#/paths/~1v1~1posts/post/responses/429` | 2026-11-26 |
+ | Longueur de texte | Titre de l'épingle : 100 signes au plus ; longueur de la description non donnée par l'extrait du dépôt | officiel | [source](https://zernio.com/openapi.json) | `docs/zernio/openapi-extrait-1.418.1.json#/components/schemas/PinterestPlatformData/properties/title/maxLength` | 2026-11-26 |
+ | Mots-dièse | Les mots-dièse ne sont pas ajoutés tout seuls : ils doivent figurer dans le texte du post | officiel | [source](https://zernio.com/openapi.json) | `docs/zernio/openapi-extrait-1.418.1.json#/paths/~1v1~1posts/post/requestBody/content/application~1json/schema/properties/hashtags/description` | 2026-11-26 |
+ | Vidéo (durée, taille) | inconnu | inconnu | — | — | — |
+ | Carrousel / document PDF | inconnu | inconnu | — | — | — |
+-| Texte alternatif | 500 signes au plus sur Pinterest (125 sur les autres réseaux du Studio) | officiel | [source](https://zernio.com/openapi.json) | `docs/zernio/openapi-extrait-1.418.1.json#/components/schemas/MediaItem/properties/altText/description` | 2026-11-26 |
++| Texte alternatif | 500 signes au plus sur Pinterest | officiel | [source](https://zernio.com/openapi.json) | `docs/zernio/openapi-extrait-1.418.1.json#/components/schemas/MediaItem/properties/altText/description` | 2026-11-26 |
+ 
+ ## Constantes de `zernio-corps.ts` confrontées à leur source
+ 
+@@ -194,8 +194,8 @@ Pinterest (ajouté le 2026-11-26, PR 0 du chantier épingles) : les deux couches
+ | `IMAGES_MAX.facebook` | 10 | **conforme** | `facebook.zernio.format_carrousel_document` | La spec Zernio dit : jusqu'à 10 images. |
+ | `IMAGES_MAX.tiktok` | 35 | **conforme** | `tiktok.zernio.format_carrousel_document` | La spec Zernio dit : carrousel photo jusqu'à 35 images. |
+ | `IMAGES_MAX.instagram` | 10 | **écart** | `instagram.zernio.format_carrousel_document` | Le code limite le carrousel à 10 images ; la spec Zernio (schéma InstagramPlatformData) permet jusqu'à 20 éléments. Écart prudent (le code refuse plus que nécessaire), sans risque d'envoi refusé. |
+-| `IMAGES_MAX.pinterest` | 1 | **inconnu** | `pinterest.zernio.format_carrousel_document` | Constante à poser en PR 3 (pas encore dans le code). La documentation Zernio des médias Pinterest (docs.zernio.com, lue le 2026-11-26) donne une seule image ou une seule vidéo, ni carrousel ni texte seul ; cette page n'est pas dans l'extrait du dépôt, d'où « inconnu » tant que l'extrait n'est pas régénéré. |
+-| `ALT_MAX_PINTEREST` | 500 signes | **conforme** | `pinterest.zernio.texte_alternatif` | Constante à poser en PR 3 (pas encore dans le code). La spec Zernio dit : Pinterest, 500 signes au plus. Les autres réseaux restent à 125 (ALT_MAX). |
++| `IMAGES_MAX.pinterest` | 1 (à poser en PR 3) | **inconnu** | `pinterest.zernio.format_carrousel_document` | Constante à poser en PR 3 (pas encore dans le code). La documentation Zernio des médias Pinterest (docs.zernio.com, lue le 2026-11-26) donne une seule image ou une seule vidéo, ni carrousel ni texte seul ; cette page n'est pas dans l'extrait du dépôt, d'où « inconnu » tant que l'extrait n'est pas régénéré. |
++| `ALT_MAX_PINTEREST` | 500 signes (à poser en PR 3) | **conforme** | `pinterest.zernio.texte_alternatif` | Constante à poser en PR 3 (pas encore dans le code). La spec Zernio dit : Pinterest, 500 signes au plus. Les autres réseaux restent à 125 (ALT_MAX). |
+ 
+ ## À valider par le fondateur
+ 
+@@ -208,4 +208,4 @@ Pinterest (ajouté le 2026-11-26, PR 0 du chantier épingles) : les deux couches
+ - Premier commentaire : Zernio le gère pour Facebook, Instagram et LinkedIn, pas pour TikTok.
+ - Réponses aux commentaires et messages privés : rien dans la spec Zernio lue, à chercher ailleurs.
+ - Statistiques d'un profil LinkedIn personnel : seulement pour les posts passés par Zernio.
+-- Pinterest : régénérer l'extrait Zernio (ajout de `GET /v1/accounts/{accountId}/pinterest-boards`) par une session qui joint zernio.com, puis compléter les cellules « inconnu » de Pinterest (description 800, médias, 32 Mo, débit) et `IMAGES_MAX.pinterest`.
++- Pinterest : régénérer l'extrait Zernio (ajout de `GET /v1/accounts/{accountId}/pinterest-boards`) par une session qui joint zernio.com, puis compléter les cellules « inconnu » de Pinterest (description 800, médias, 32 Mo, débit en rafale (≥ 10)) et `IMAGES_MAX.pinterest`.
+diff --git a/docs/reseaux/regles-officielles.json b/docs/reseaux/regles-officielles.json
+index 1e0a1920..629612d6 100644
+--- a/docs/reseaux/regles-officielles.json
++++ b/docs/reseaux/regles-officielles.json
+@@ -749,7 +749,7 @@
+           "copie_depot": null
+         },
+         "duplication": {
+-          "valeur": "Refus (409) d'un contenu identique pour la même plateforme et le même compte dans les 24 h ; clé d'idempotence valable 24 h",
++          "valeur": "Refus (409) d'un contenu identique pour la même plateforme et le même compte dans les 24 h ; clé d'idempotence valable 24 h ; Zernio recommande aussi des variantes de contenu pour X et Pinterest afin d'éviter les signalements de doublon (`RecyclingConfig`)",
+           "preuve": "officiel",
+           "url": "https://zernio.com/openapi.json",
+           "date": "2026-11-26",
+@@ -798,7 +798,7 @@
+           "copie_depot": null
+         },
+         "texte_alternatif": {
+-          "valeur": "500 signes au plus sur Pinterest (125 sur les autres réseaux du Studio)",
++          "valeur": "500 signes au plus sur Pinterest",
+           "preuve": "officiel",
+           "url": "https://zernio.com/openapi.json",
+           "date": "2026-11-26",
+@@ -866,14 +866,14 @@
+     },
+     {
+       "nom": "IMAGES_MAX.pinterest",
+-      "valeur_code": "1",
++      "valeur_code": "1 (à poser en PR 3)",
+       "statut": "inconnu",
+       "cellule": "pinterest.zernio.format_carrousel_document",
+       "note": "Constante à poser en PR 3 (pas encore dans le code). La documentation Zernio des médias Pinterest (docs.zernio.com, lue le 2026-11-26) donne une seule image ou une seule vidéo, ni carrousel ni texte seul ; cette page n'est pas dans l'extrait du dépôt, d'où « inconnu » tant que l'extrait n'est pas régénéré."
+     },
+     {
+       "nom": "ALT_MAX_PINTEREST",
+-      "valeur_code": "500 signes",
++      "valeur_code": "500 signes (à poser en PR 3)",
+       "statut": "conforme",
+       "cellule": "pinterest.zernio.texte_alternatif",
+       "note": "Constante à poser en PR 3 (pas encore dans le code). La spec Zernio dit : Pinterest, 500 signes au plus. Les autres réseaux restent à 125 (ALT_MAX)."
+-- 
+2.56.1
+
