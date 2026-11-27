@@ -76,3 +76,57 @@ describe("importerPlanEditorial", () => {
     expect(new Set(briefs.map((b) => b.urlCible)).size).toBe(40);
   });
 });
+
+// ── C3 : extension du brief (champs nullables de la chaîne éditoriale) ──────
+import {
+  planTitresSchema,
+  STATUTS_BESOIN,
+  STATUTS_BRIEF,
+  STATUTS_PROPOSITION,
+  FOURCHETTE_LONGUEUR_MAX_MOTS,
+} from "./brief";
+
+describe("briefSchema étendu (C3)", () => {
+  it("reste valide sans aucun des nouveaux champs (compatibilité)", () => {
+    expect(briefSchema.safeParse(valide).success).toBe(true);
+  });
+  it("accepte intention de recherche, plan de titres et fourchette de longueur", () => {
+    const r = briefSchema.safeParse({
+      ...valide,
+
+      planTitres: [
+        { niveau: 1, titre: "Pilote IA en PME" },
+        { niveau: 2, titre: "Par où commencer ?" },
+        { niveau: 3, titre: "Choisir un cas d'usage" },
+      ],
+      longueurMinMots: 900,
+      longueurMaxMots: 1800,
+    });
+    expect(r.success).toBe(true);
+  });
+  it("accepte des champs explicitement nuls", () => {
+    const r = briefSchema.safeParse({
+      ...valide,
+      planTitres: null,
+      longueurMinMots: null,
+      longueurMaxMots: null,
+    });
+    expect(r.success).toBe(true);
+  });
+  it("refuse un niveau de titre hors H1-H3, une intention inconnue, une fourchette inversée", () => {
+    expect(planTitresSchema.safeParse([{ niveau: 4, titre: "x" }]).success).toBe(false);
+    expect(briefSchema.safeParse({ ...valide, intention: "achat" }).success).toBe(false);
+    expect(
+      briefSchema.safeParse({ ...valide, longueurMinMots: 2000, longueurMaxMots: 1000 }).success,
+    ).toBe(false);
+    expect(
+      briefSchema.safeParse({ ...valide, longueurMaxMots: FOURCHETTE_LONGUEUR_MAX_MOTS + 1 })
+        .success,
+    ).toBe(false);
+  });
+  it("expose les statuts de la chaîne (texte en base, aucune énumération Postgres)", () => {
+    expect(STATUTS_BESOIN).toEqual(["nouveau", "en_brief", "couvert", "ecarte"]);
+    expect(STATUTS_BRIEF).toContain("abandonne");
+    expect(STATUTS_PROPOSITION).toEqual(["a_relire", "appliquee", "refusee", "reportee"]);
+  });
+});
