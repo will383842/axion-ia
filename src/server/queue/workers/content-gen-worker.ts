@@ -75,6 +75,7 @@ import { chargerCarteRequetes } from "@/server/content-gen/strategie/carte-reque
 import type { Brief } from "@/server/content-gen/equipe/brief";
 import type { GeneratorOutput } from "@/server/content-gen/generators/types";
 import {
+  ErreurEquipeTransitoire,
   SuiviEquipe,
   apresEcriture,
   avantEcriture,
@@ -754,11 +755,56 @@ async function processJob(job: Job<ContentGenJobPayload>): Promise<void> {
     // Mot-clé verrouillé plus haut : relâché sur tout arrêt avant écriture (sinon il resterait
     // bloqué 30 min pour rien).
     const libererVerrouMotCle = async (): Promise<void> => {
-      if (resolvedKeyword) await releaseKeywordLock(resolvedKeyword).catch(() => undefined);
+      // Jeton = ce job : le verrou d'un autre job (ou repris après expiration) n'est jamais touché.
+      if (resolvedKeyword) {
+        await releaseKeywordLock(resolvedKeyword, contentGenJobId).catch(() => undefined);
+      }
+    };
+    // Reprise de la boucle qualité : brief et angle du gardien déjà arbitrés, relus dans le journal.
+    const equipePrecedente = prevOutput?.["equipe"] as
+      { brief?: Brief; angle?: unknown } | undefined;
+    const angleRepli =
+      reprise && typeof equipePrecedente?.angle === "string" && equipePrecedente.angle
+        ? equipePrecedente.angle
+        : undefined;
+    // `outputJsonRaw` d'un arrêt : en reprise, l'article est gardé et le journal conserve le brief
+    // et l'angle (sinon la reprise suivante les perdrait).
+    const sortieArret = (journal: JournalEquipe) =>
+      ({
+        ...(reprise ? (prevOutput ?? {}) : {}),
+        equipe: {
+          ...journal,
+          ...(reprise && equipePrecedente?.brief ? { brief: equipePrecedente.brief } : {}),
+          ...(angleRepli ? { angle: angleRepli } : {}),
+        },
+      }) as never;
+    // Reprise arrêtée avant ou pendant la réécriture : ce qui a été dépensé compte pour le plafond
+    // mensuel de la boucle qualité (comme à la fin normale de l'exécution).
+    const compterDepenseReprise = async (): Promise<void> => {
+      if (!reprise || !suiviEquipe) return;
+      await addQualityLoopSpend(
+        await suiviEquipe.depenseExecutionUsd(debutRegistreEquipe),
+        contentGenJobId,
+      );
+    };
+    // Erreur avant la fin d'une étape de l'équipe : le journal est écrit AVANT l'échec du job
+    // (le catch commun ne touche pas à `outputJsonRaw`), puis l'erreur repart telle quelle.
+    const journaliserPuisRelancer = async (err: unknown): Promise<never> => {
+      if (suiviEquipe) {
+        const raison = err instanceof Error ? err.message : String(err);
+        const journal = await suiviEquipe.journal("arret", 0, raison);
+        await prisma.contentGenJob
+          .update({
+            where: { id: contentGenJobId },
+            data: { outputJsonRaw: sortieArret(journal) },
+          })
+          .catch(() => undefined);
+      }
+      throw err;
     };
     if (suiviEquipe) {
       const titreBrief = title || resolvedKeyword || contentType;
-      const briefRepli = (prevOutput?.["equipe"] as { brief?: Brief } | undefined)?.brief;
+      const briefRepli = equipePrecedente?.brief;
       if (reprise) debutRegistreEquipe = await coutCumuleJobUsd(contentGenJobId).catch(() => 0);
       const avant = await avantEcriture(suiviEquipe, {
         // Reprise de la boucle qualité : même article, déjà arbitré (pas de second brief payé).
@@ -797,7 +843,7 @@ async function processJob(job: Job<ContentGenJobPayload>): Promise<void> {
           factCheckClaudeActif(contentType)
             ? constituerPhaseA()
             : { coutUsd: 0, detail: "sans fact-check" },
-      });
+      }).catch(journaliserPuisRelancer);
       if (avant.statut === "arret") {
         const journal = await suiviEquipe.journal(avant.issue, 0, avant.raison);
         await logStep(
@@ -818,9 +864,10 @@ async function processJob(job: Job<ContentGenJobPayload>): Promise<void> {
                 : "cancelled",
             errorMessage: `Équipe éditoriale (${avant.issue}) : ${avant.raison}`.slice(0, 1000),
             completedAt: new Date(),
-            outputJsonRaw: { ...(reprise ? (prevOutput ?? {}) : {}), equipe: journal } as never,
+            outputJsonRaw: sortieArret(journal),
           },
         });
+        await compterDepenseReprise();
         if (reprise && (avant.issue === "relecture_humaine" || avant.issue === "plafond")) {
           await prisma.reviewQueue
             .create({ data: { jobId: contentGenJobId, status: "pending" } })
@@ -831,9 +878,10 @@ async function processJob(job: Job<ContentGenJobPayload>): Promise<void> {
         return;
       }
       briefEquipe = avant.brief;
-      angleGardien = avant.angle;
-      decisionGardienEquipe = avant.angle
-        ? { decision: "reorienter", angle: avant.angle, raison: "gardien : angle proposé" }
+      // Reprise : le gardien n'est pas rejoué, l'angle persisté à la première passe est réutilisé.
+      angleGardien = avant.angle ?? angleRepli;
+      decisionGardienEquipe = angleGardien
+        ? { decision: "reorienter", angle: angleGardien, raison: "gardien : angle proposé" }
         : { decision: "feu_vert", raison: "gardien passé" };
     } else if (equipeEditorialeActive() && factCheckClaudeActif(contentType)) {
       await constituerPhaseA();
@@ -888,7 +936,7 @@ async function processJob(job: Job<ContentGenJobPayload>): Promise<void> {
       const premiere = await premiereEcriture(suiviEquipe, async () => {
         const o = await genererArticle();
         return { output: o, decision: "écrit", coutUsd: o.totalCostUsd };
-      });
+      }).catch(journaliserPuisRelancer);
       if ("arret" in premiere) {
         const journal = await suiviEquipe.journal("plafond", 0, premiere.arret);
         await logStep(contentGenJobId, "validation", `Équipe éditoriale : ${premiere.arret}`, {
@@ -901,9 +949,10 @@ async function processJob(job: Job<ContentGenJobPayload>): Promise<void> {
             status: reprise ? "needs_review" : "cancelled",
             errorMessage: `Équipe éditoriale (plafond) : ${premiere.arret}`.slice(0, 1000),
             completedAt: new Date(),
-            outputJsonRaw: { ...(reprise ? (prevOutput ?? {}) : {}), equipe: journal } as never,
+            outputJsonRaw: sortieArret(journal),
           },
         });
+        await compterDepenseReprise();
         if (reprise) {
           await prisma.reviewQueue
             .create({ data: { jobId: contentGenJobId, status: "pending" } })
@@ -1186,8 +1235,8 @@ async function processJob(job: Job<ContentGenJobPayload>): Promise<void> {
         },
       });
       output = fin.output;
-      // Abandon par le rédacteur en chef : le mot-clé n'a plus lieu d'être gardé.
-      if (fin.statut === "stop" && fin.issue === "ecarte") await libererVerrouMotCle();
+      // Abandon par le rédacteur en chef APRÈS écriture : l'article reste en relecture, donc le
+      // verrou du mot-clé est GARDÉ (il expire seul, ou est relâché à la publication).
       if (fin.statut === "stop") {
         barrieresEquipe.push({
           code: "equipe-editoriale",
@@ -1763,7 +1812,16 @@ async function processJob(job: Job<ContentGenJobPayload>): Promise<void> {
       // PR 5 — sources du fact-check par Claude (clé ABSENTE tant que le drapeau est éteint).
       ...(sourcesFactCheck ? { sourcesFactCheck, coutFactCheckUsd } : {}),
       // PR 12 — journal de l'équipe éditoriale (clé ABSENTE tant que le drapeau est éteint).
-      ...(journalEquipe ? { equipe: { ...journalEquipe, brief: briefEquipe } } : {}),
+      // `angle` (facultatif) : l'angle du gardien, relu par la reprise de la boucle qualité.
+      ...(journalEquipe
+        ? {
+            equipe: {
+              ...journalEquipe,
+              brief: briefEquipe,
+              ...(angleGardien ? { angle: angleGardien } : {}),
+            },
+          }
+        : {}),
       ...(statutFideliteLlm
         ? { fideliteLlm: { statut: statutFideliteLlm, coutUsd: coutFideliteLlmUsd } }
         : {}),
@@ -1874,6 +1932,15 @@ async function processJob(job: Job<ContentGenJobPayload>): Promise<void> {
     else if (eligibleQualityLoop) nextStatus = "quality_improving";
     else if (fullAutoPublishRequested) nextStatus = "approved";
 
+    // Dépense de CETTE exécution (coût du job + boucle qualité). Équipe allumée, le registre est
+    // cumulatif sur toutes les passes du job : on prend max(somme déclarée par cette exécution,
+    // registre − registre au début de l'exécution), jamais les deux additionnés, ni les passes
+    // précédentes recomptées. Éteinte : somme d'avant, inchangée.
+    const depenseDeclareeUsd = output.totalCostUsd + coutFactCheckUsd + coutFideliteLlmUsd;
+    const depenseExecutionUsd =
+      suiviEquipe && journalEquipe
+        ? Math.max(depenseDeclareeUsd, await suiviEquipe.depenseExecutionUsd(debutRegistreEquipe))
+        : depenseDeclareeUsd;
     await prisma.contentGenJob.update({
       where: { id: contentGenJobId },
       data: {
@@ -1887,12 +1954,7 @@ async function processJob(job: Job<ContentGenJobPayload>): Promise<void> {
         doctrineCheckPassed: !blockingFail,
         tokensInput: 0, // détaillé via CostLedger
         tokensOutput: output.totalTokens,
-        costUsd: journalEquipe
-          ? Math.max(
-              output.totalCostUsd + coutFactCheckUsd + coutFideliteLlmUsd,
-              journalEquipe.coutTotalUsd,
-            )
-          : output.totalCostUsd + coutFactCheckUsd + coutFideliteLlmUsd,
+        costUsd: depenseExecutionUsd,
         outputJsonRaw: persistedOutput as never,
       },
     });
@@ -1912,15 +1974,7 @@ async function processJob(job: Job<ContentGenJobPayload>): Promise<void> {
     // AUCUN code n'incrémentait cette clé — le cap était une garde morte.
     // Fail-open dans le helper : un échec d'écriture ne casse jamais le job.
     if (improvementFeedback !== undefined) {
-      // Équipe allumée : tous les coûts payants de cette exécution (registre depuis le début de
-      // l'exécution, ou somme du journal), une seule fois chacun — jamais registre + somme.
-      const depenseAvant = output.totalCostUsd + coutFactCheckUsd + coutFideliteLlmUsd;
-      await addQualityLoopSpend(
-        suiviEquipe && journalEquipe
-          ? Math.max(depenseAvant, await suiviEquipe.depenseExecutionUsd(debutRegistreEquipe))
-          : depenseAvant,
-        contentGenJobId,
-      );
+      await addQualityLoopSpend(depenseExecutionUsd, contentGenJobId);
     }
 
     if (nextStatus === "quality_improving") {
@@ -2076,6 +2130,8 @@ async function processJob(job: Job<ContentGenJobPayload>): Promise<void> {
     // Chemin Claude (interrupteur allumé + type blog) : un refus de la porte ou une
     // erreur Anthropic n'est jamais rejoué par BullMQ (attempts > 1) : échec définitif.
     // Le comportement OpenAI (autres fournisseurs, interrupteur éteint) ne change pas.
+    // Erreur transitoire de l'équipe avant écriture : BullMQ réessaie (rien d'écrit, rien de payé deux fois).
+    if (err instanceof ErreurEquipeTransitoire) throw err;
     const convertie = erreurNonRelancableCheminClaude(err, contentType);
     if (convertie) throw convertie;
     throw err;

@@ -38,9 +38,12 @@ describe("worker content-gen : interrupteur de l'équipe éditoriale", () => {
   });
 
   it("le journal n'est écrit que s'il existe (clé absente éteint)", () => {
+    expect(SOURCE).toContain("...(journalEquipe");
     expect(SOURCE).toContain(
-      "...(journalEquipe ? { equipe: { ...journalEquipe, brief: briefEquipe } } : {}),",
+      "equipe: {\n              ...journalEquipe,\n              brief: briefEquipe,",
     );
+    // Éteint : le coût du job reste la somme d'avant.
+    expect(SOURCE).toContain(": depenseDeclareeUsd;");
   });
 
   it("le worker de rafraîchissement n'est pas touché par cette PR", () => {

@@ -66,6 +66,18 @@ export class PlafondJobAtteint extends Error {
   }
 }
 
+/**
+ * Erreur d'un rôle AVANT toute écriture payée (stratège, gardien, lecture du registre) : elle est
+ * relancée telle quelle pour que BullMQ réessaie le job (rien n'a été écrit, donc aucune écriture
+ * payée en double). Le worker ne la convertit pas en échec définitif.
+ */
+export class ErreurEquipeTransitoire extends Error {
+  constructor(readonly origine: unknown) {
+    super(origine instanceof Error ? origine.message : String(origine));
+    this.name = "ErreurEquipeTransitoire";
+  }
+}
+
 /** Tient le journal et applique le plafond. Une instance par job. */
 export class SuiviEquipe {
   private readonly entrees: EntreeJournal[] = [];
@@ -255,11 +267,8 @@ export async function avantEcriture(suivi: SuiviEquipe, deps: DepsAvant): Promis
     if (err instanceof PlafondJobAtteint) {
       return { statut: "arret", issue: "plafond", raison: err.message };
     }
-    return {
-      statut: "arret",
-      issue: "relecture_humaine",
-      raison: `Erreur de l'équipe avant écriture : ${err instanceof Error ? err.message : String(err)}`,
-    };
+    // Avant l'écriture, une erreur ne coûte rien à rejouer : on la relance (pas d'annulation).
+    throw new ErreurEquipeTransitoire(err);
   }
 }
 

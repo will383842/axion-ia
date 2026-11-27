@@ -1,6 +1,7 @@
 import { describe, expect, it, vi } from "vitest";
 import {
   PLAFOND_JOB_USD,
+  ErreurEquipeTransitoire,
   PlafondJobAtteint,
   SuiviEquipe,
   apresEcriture,
@@ -108,14 +109,36 @@ describe("avantEcriture", () => {
     expect(deps.brief).not.toHaveBeenCalled();
   });
 
-  it("une erreur de rôle = relecture humaine", async () => {
+  it("erreur du stratège : relancée (nouvel essai BullMQ), rien n'est annulé, journal rempli", async () => {
     const deps = depsAvant({ brief: vi.fn(async () => Promise.reject(new Error("boom"))) });
     const suivi = suiviAvec(() => 0);
-    const r = await avantEcriture(suivi, deps);
-    expect(r).toMatchObject({ statut: "arret", issue: "relecture_humaine" });
-    expect((await suivi.journal("relecture_humaine", 0)).entrees[0]).toMatchObject({
-      decision: "erreur",
+    const err = await avantEcriture(suivi, deps).then(
+      () => null,
+      (e: unknown) => e,
+    );
+    expect(err).toBeInstanceOf(ErreurEquipeTransitoire);
+    expect((err as Error).message).toContain("boom");
+    expect(deps.gardien).not.toHaveBeenCalled();
+    expect(deps.dossier).not.toHaveBeenCalled();
+    expect((await suivi.journal("arret", 0)).entrees[0]).toMatchObject({ decision: "erreur" });
+  });
+
+  it("erreur du gardien : relancée, aucune phase A payée", async () => {
+    const deps = depsAvant({ gardien: vi.fn(async () => Promise.reject(new Error("réseau"))) });
+    await expect(
+      avantEcriture(
+        suiviAvec(() => 0),
+        deps,
+      ),
+    ).rejects.toBeInstanceOf(ErreurEquipeTransitoire);
+    expect(deps.dossier).not.toHaveBeenCalled();
+  });
+
+  it("lecture du registre en échec avant le stratège : relancée aussi (rien d'écrit)", async () => {
+    const suivi = new SuiviEquipe(async () => {
+      throw new Error("base muette");
     });
+    await expect(avantEcriture(suivi, depsAvant())).rejects.toBeInstanceOf(ErreurEquipeTransitoire);
   });
 });
 
