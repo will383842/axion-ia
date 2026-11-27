@@ -33,4 +33,8 @@ Chaque jour à 7 h (heure de Paris), le robot demande à Google l'état d'indexa
 
 `pnpm prisma generate`, `pnpm typecheck`, vitest (pilotage SEO, queue, content-gen/seo, équipe, `tests/unit/ci`) : OK ; `content-gen:isolation-check`, `image-bank:isolation-check`, lint, prettier : OK.
 
-VERDICT OPUS : À CORRIGER (tour 1 corrigé, tour 2 en cours)
+- Le calage des fenêtres d'impressions sur le dernier jour présent dans `gscPageJour` (aujourd'hui : sur la date du jour, 2 à 3 jours de retard d'ingestion) est à affiner.
+- Une coupure réseau passagère marque la page vue (reprise au rang de rappel).
+- La liste des 15 pages stratégiques contient 4 chemins qui ne sont pas des routes (`/fr/interventions`, `/fr/interventions/essentielle`, `/fr/audit/flash`, `/fr/reserver` → `/fr/appel/reserver`) : à corriger avec Will.
+
+VERDICT OPUS : BON
