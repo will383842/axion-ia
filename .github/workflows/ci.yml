@@ -779,14 +779,24 @@ jobs:
       # consomme du disque (Playwright, `.next`, build, semis) ne démarre avant
       # que le nettoyage soit fini.
       #
-      # `apt-get clean` reste APRÈS la suppression, comme avant — et surtout
-      # avant l'installation de Playwright, qui prend le verrou apt : aucun
-      # `apt` n'a tourné entre-temps, donc aucune course sur ce verrou.
+      # Ordre réel des étapes (depuis la PR 1 du 2026-11-27) : miroir apt de secours,
+      # installation de Playwright, PUIS cette attente (qui porte `apt-get clean`).
+      # Playwright a donc fini et libéré le verrou apt avant `apt-get clean` : aucune
+      # course sur ce verrou.
       # Panne du 2026-11-11 : les machines ne résolvaient plus l'archive Ubuntu,
       # `--with-deps` (9 paquets de polices) échouait après 12 min sur toutes les PR.
       # Le script bascule sur un miroir de secours, ou échoue en moins d'une minute.
       - name: Paquets Ubuntu — miroir de secours si l'archive est injoignable
         run: bash scripts/ci/apt-resistant.sh
+      # 🔵 2026-11-27 (CI rapide, PR 2) — cache des navigateurs Playwright. Clé = lockfile
+      # (la version de Playwright en dépend). L'installation ci-dessous reste lancée :
+      # avec cache chaud elle ne retélécharge pas le navigateur mais garde les
+      # dépendances système (`--with-deps`).
+      - name: Cache navigateurs Playwright
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/ms-playwright
+          key: pw-${{ hashFiles('pnpm-lock.yaml') }}
       - name: Install Playwright browsers (avant build pour chrome dep)
         run: pnpm exec playwright install --with-deps chromium
       # 🔵 2026-11-27 (CI rapide, PR 1) — l'ATTENTE du nettoyage est ICI, APRÈS
@@ -840,6 +850,17 @@ jobs:
       # sauvegarde : ce fichier n'était produit que par la vérification des types de
       # `next build`, qui ne tourne plus ici (`SKIP_NEXT_TYPECHECK`, cf. l'étape Build).
       # Il n'y a plus rien à mettre en cache.
+      # 🔵 2026-11-27 (CI rapide, PR 2) — cache webpack de `next build`. Restauré APRÈS la
+      # relocalisation (`.next` est alors le bind mount sur /mnt ; le chemin repo
+      # `.next/cache/webpack` y est écrit), jamais `.next` entier. Une seule
+      # écriture : le passage quotidien, tranche 1 (étape de sauvegarde après Build).
+      - name: Cache webpack — restauration
+        uses: actions/cache/restore@v4
+        with:
+          path: .next/cache/webpack
+          key: gate-b-webpack-v1-${{ hashFiles('pnpm-lock.yaml', 'next.config.*', 'tsconfig.json') }}-${{ github.sha }}
+          restore-keys: |
+            gate-b-webpack-v1-${{ hashFiles('pnpm-lock.yaml', 'next.config.*', 'tsconfig.json') }}-
       - name: Build
         # `next build` DIRECT (pas `pnpm build`) pour SKIPPER le `postbuild` :
         # `scripts/precompress-static.ts` (Brotli-11 sur ~18k fichiers SSG) fait
@@ -898,6 +919,12 @@ jobs:
           # (webpack, SSG, bundle) reste intégralement vérifiée par ce build.
           SKIP_NEXT_TYPECHECK: "true"
         run: pnpm exec next build --webpack
+      - name: Cache webpack — sauvegarde (passage quotidien, tranche 1 seulement)
+        if: github.event_name == 'schedule' && matrix.tranche == 1
+        uses: actions/cache/save@v4
+        with:
+          path: .next/cache/webpack
+          key: gate-b-webpack-v1-${{ hashFiles('pnpm-lock.yaml', 'next.config.*', 'tsconfig.json') }}-${{ github.sha }}
       # ⚠️ Le paragraphe qui suit décrit une intention de 2026-05-22 (« Bundle delta
       # + LHCI passés en STRICT ») que le fichier CONTREDIT depuis : les deux portent
       # `continue-on-error: true`. AGENTS.md a d'ailleurs été corrigé le 2026-08-17
