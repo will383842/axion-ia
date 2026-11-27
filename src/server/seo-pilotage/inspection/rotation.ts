@@ -88,7 +88,7 @@ export async function executerRotation(deps: DepsRotation): Promise<BilanRotatio
     }
     if (!premier) await deps.attendre(INTERVALLE_MIN_MS);
     premier = false;
-    const r = await deps.inspecter(`${URL_SITE}${page.chemin}`);
+    const r = await deps.inspecter(`${URL_SITE}${page.cheminRendu ?? page.chemin}`);
     if (r.etat !== "ok") {
       if (r.etat === "quota") {
         bilan.arret = "quota_google";
@@ -99,6 +99,10 @@ export async function executerRotation(deps: DepsRotation): Promise<BilanRotatio
         return bilan;
       }
       bilan.echecs++;
+      // Une page en erreur est marquée vue : sans cela elle reviendrait en tête chaque jour et
+      // pourrait bloquer la rotation (5 erreurs de suite) pour toujours. Elle est retentée au
+      // rappel de son rang, sans ligne écrite.
+      await deps.marquerVue(page.chemin, deps.maintenant());
       if (++deSuite >= ERREURS_DE_SUITE_MAX) {
         bilan.arret = "erreurs_de_suite";
         return bilan;

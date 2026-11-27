@@ -18,6 +18,12 @@ export interface RedisPassages {
   hset(cle: string, champ: string, valeur: string): Promise<unknown>;
 }
 
+function maxDate(a: Date | null, b: Date | null): Date | null {
+  if (!a) return b;
+  if (!b) return a;
+  return a.getTime() >= b.getTime() ? a : b;
+}
+
 const jourUtc = (d: Date): Date =>
   new Date(Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), d.getUTCDate()));
 
@@ -32,8 +38,21 @@ export async function chargerCandidats(
 
   const [routes, recentes, precedentes, lignes, vus] = await Promise.all([
     prisma.siteRoute.findMany({
-      where: { visibility: "public", status: "live", pathRendered: { not: null } },
-      select: { pathRendered: true, lastModifiedAt: true, isIndexable: true },
+      where: {
+        visibility: "public",
+        status: "live",
+        removedAt: null,
+        pathRendered: { not: null },
+        NOT: { pathRendered: { contains: "[" } },
+      },
+      // Ordre fixe : le dédoublonnage FR/EN garde toujours la même ligne.
+      orderBy: { pathRendered: "asc" },
+      select: {
+        pathRendered: true,
+        lastModifiedAt: true,
+        createdAt: true,
+        isIndexable: true,
+      },
     }),
     prisma.gscPageJour.groupBy({
       by: ["chemin"],
@@ -71,7 +90,11 @@ export async function chargerCandidats(
     const dernier = derniere.get(chemin);
     sortie.push({
       chemin,
-      modifieLe: r.lastModifiedAt,
+      ...(r.pathRendered ? { cheminRendu: r.pathRendered } : {}),
+      // `lastModifiedAt` n'est écrit par aucun code aujourd'hui : la création de la route (page
+      // nouvelle) tient lieu de date de publication. Une page seulement modifiée est couverte par
+      // le suivi après publication (articles) ; limite connue.
+      modifieLe: maxDate(r.lastModifiedAt, r.createdAt),
       derniereInspection: dernier === undefined ? null : new Date(dernier),
       impressions14: imp14.get(chemin) ?? 0,
       impressionsPrecedentes14: impPrec.get(chemin) ?? 0,

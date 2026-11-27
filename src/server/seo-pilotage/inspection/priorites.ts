@@ -12,6 +12,8 @@
 export interface CandidatInspection {
   /** Chemin FR normalisé (`normaliserChemin`). */
   readonly chemin: string;
+  /** Chemin tel que rendu par le site (casse et encodage d'origine) : c'est lui qu'on envoie à Google. */
+  readonly cheminRendu?: string;
   readonly modifieLe: Date | null;
   readonly derniereInspection: Date | null;
   readonly impressions14: number;
@@ -69,8 +71,9 @@ export function prioriteDe(c: CandidatInspection, maintenant: Date): Priorite | 
   ) {
     return 1;
   }
+  // « Nulles depuis 14 jours » suppose un passé : une page jamais affichée relève du rang 4.
   const chute =
-    c.impressions14 === 0 ||
+    (c.impressions14 === 0 && c.impressionsPrecedentes14 > 0) ||
     (c.impressionsPrecedentes14 >= PLANCHER_CHUTE &&
       c.impressions14 < c.impressionsPrecedentes14 * SEUIL_CHUTE);
   if (chute && age >= RAPPEL_CHUTE_JOURS) return 2;

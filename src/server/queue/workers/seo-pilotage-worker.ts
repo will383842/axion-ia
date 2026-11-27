@@ -16,6 +16,10 @@
  * `purge` (dimanche), `inspection` (07 h, rotation d'inspection d'URL sous quota partagé). Des NOMBRES seulement dans les journaux : jamais une requête de recherche,
  * jamais un nom.
  *
+ * ⚠️ `inspection` est longue (jusqu'à 1 400 appels espacés d'au moins 200 ms, soit 30 à 40 min) ; avec
+ * `concurrency: 1`, les rattrapages de :07, :27 et :47 attendent derrière elle. Sans conséquence :
+ * le rattrapage reprend au passage suivant.
+ *
  * Marqueur de déploiement (`grep` dans le conteneur du worker) : `seo-pilotage-worker`.
  */
 import { Worker, type Job } from "bullmq";

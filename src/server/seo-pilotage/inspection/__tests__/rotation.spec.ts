@@ -1,7 +1,12 @@
 import { describe, expect, it, vi } from "vitest";
 
 import type { CandidatInspection } from "../priorites";
-import { champsDifferents, executerRotation, type DepsRotation, type LigneInspection } from "../rotation";
+import {
+  champsDifferents,
+  executerRotation,
+  type DepsRotation,
+  type LigneInspection,
+} from "../rotation";
 import type { MagasinQuota } from "../quota";
 
 const MAINTENANT = new Date("2026-11-27T05:00:00Z");
@@ -108,7 +113,9 @@ describe("rotation d'inspection", () => {
       canoniqueDeclaree: null,
       dernierPassageRobot: new Date("2026-11-25T00:00:00Z"),
     };
-    expect(champsDifferents(base, { ...base, dernierPassageRobot: new Date("2026-11-25T00:00:00Z") })).toBe(false);
+    expect(
+      champsDifferents(base, { ...base, dernierPassageRobot: new Date("2026-11-25T00:00:00Z") }),
+    ).toBe(false);
     expect(champsDifferents(base, { ...base, verdict: "FAIL" })).toBe(true);
     expect(champsDifferents(null, base)).toBe(true);
   });
@@ -151,7 +158,7 @@ describe("rotation d'inspection", () => {
     expect(r).toMatchObject({ inspectees: 1, arret: "quota_google" });
   });
 
-  it("identifiants absents : aucun appel de plus, aucune réservation perdue", async () => {
+  it("identifiants absents : un seul appel, arrêt du passage", async () => {
     const inspecter = vi.fn().mockResolvedValue({ etat: "identifiants_absents" });
     const d = deps([jamais("/fr/a"), jamais("/fr/b")], { inspecter: inspecter as never });
     const r = await executerRotation(d);
@@ -167,7 +174,33 @@ describe("rotation d'inspection", () => {
     const d = deps([jamais("/fr/a"), jamais("/fr/b")], { inspecter: inspecter as never });
     const r = await executerRotation(d);
     expect(r).toMatchObject({ inspectees: 1, echecs: 1, arret: "fini" });
-    expect(d.vus).toEqual(["/fr/b"]);
+    // la page en erreur est aussi marquée vue : elle ne reviendra pas en tête demain
+    expect(d.vus).toEqual(["/fr/a", "/fr/b"]);
+    expect(d.ecrites.map((l) => l.chemin)).toEqual(["/fr/b"]);
+  });
+
+  it("deux jours de suite avec les mêmes pages en erreur : la rotation ne reste pas bloquée", async () => {
+    const memoire = new Map<string, Date>();
+    const base = Array.from({ length: 12 }, (_, i) => jamais(`/fr/p${String(i).padStart(2, "0")}`));
+    const mauvaises = new Set(["/fr/p00", "/fr/p01", "/fr/p02", "/fr/p03", "/fr/p04"]);
+    const jour = async () => {
+      const ok: string[] = [];
+      const d = deps([], {
+        chargerCandidats: async () =>
+          base.map((c) => ({ ...c, derniereInspection: memoire.get(c.chemin) ?? null })),
+        marquerVue: async (chemin, quand) => void memoire.set(chemin, quand),
+        inspecter: (async (url: string) => {
+          const chemin = url.replace("https://axion-ia.com", "");
+          if (mauvaises.has(chemin)) return { etat: "erreur" };
+          ok.push(chemin);
+          return { etat: "ok", resultat: { verdict: "PASS" } };
+        }) as never,
+      });
+      await executerRotation(d);
+      return ok;
+    };
+    expect(await jour()).toEqual([]); // 5 erreurs de suite : arrêt
+    expect((await jour()).length).toBe(7); // le lendemain elles sont écartées : le reste passe
   });
 
   it("5 erreurs de suite : arrêt (Google en panne)", async () => {
@@ -179,6 +212,16 @@ describe("rotation d'inspection", () => {
     const r = await executerRotation(d);
     expect(inspecter).toHaveBeenCalledTimes(5);
     expect(r.arret).toBe("erreurs_de_suite");
+  });
+
+  it("envoie à Google le chemin rendu par le site, pas sa forme normalisée", async () => {
+    const inspecter = vi.fn().mockResolvedValue({ etat: "ok", resultat: { verdict: "PASS" } });
+    await executerRotation(
+      deps([{ ...jamais("/fr/ville-é"), cheminRendu: "/fr/Ville-%C3%A9" }], {
+        inspecter: inspecter as never,
+      }),
+    );
+    expect(inspecter).toHaveBeenCalledWith("https://axion-ia.com/fr/Ville-%C3%A9");
   });
 
   it("construit l'URL complète pour Google, sur le domaine du site", async () => {

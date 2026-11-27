@@ -13,8 +13,18 @@ describe("chargement des candidats", () => {
     const prisma = {
       siteRoute: {
         findMany: vi.fn().mockResolvedValue([
-          { pathRendered: "/fr/a/", lastModifiedAt: null, isIndexable: true },
-          { pathRendered: "/fr/a", lastModifiedAt: null, isIndexable: true }, // doublon
+          {
+            pathRendered: "/fr/a/",
+            lastModifiedAt: null,
+            createdAt: new Date("2026-01-01T00:00:00Z"),
+            isIndexable: true,
+          },
+          {
+            pathRendered: "/fr/a",
+            lastModifiedAt: null,
+            createdAt: new Date("2026-01-01T00:00:00Z"),
+            isIndexable: true,
+          }, // doublon
           {
             pathRendered: "/fr/b",
             lastModifiedAt: new Date("2026-11-27T01:00:00Z"),
@@ -47,7 +57,17 @@ describe("chargement des candidats", () => {
       noindex: false,
       derniereInspection: new Date("2026-11-20T00:00:00Z"),
     });
-    expect(r[1]).toMatchObject({ chemin: "/fr/b", noindex: true, derniereInspection: null });
+    expect(r[1]).toMatchObject({
+      chemin: "/fr/b",
+      cheminRendu: "/fr/b",
+      noindex: true,
+      derniereInspection: null,
+      modifieLe: new Date("2026-11-27T01:00:00Z"),
+    });
+    // routes retirées et chemins à paramètre exclus dès la requête
+    const filtre = prisma.siteRoute.findMany.mock.calls[0]![0].where;
+    expect(filtre.removedAt).toBeNull();
+    expect(filtre.NOT).toEqual({ pathRendered: { contains: "[" } });
   });
 
   it("lecture seule : seule la table des inspections et la mémoire de passage sont écrites", async () => {

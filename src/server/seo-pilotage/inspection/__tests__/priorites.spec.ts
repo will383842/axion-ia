@@ -44,17 +44,24 @@ describe("ordre de priorité de la rotation", () => {
     ).toBe(2);
     expect(
       prioriteDe(
-        page({ chemin: "/fr/a", impressions14: 0, impressionsPrecedentes14: 0 }),
+        page({ chemin: "/fr/a", impressions14: 0, impressionsPrecedentes14: 30 }),
         MAINTENANT,
       ),
     ).toBe(2);
+    // jamais affichée : pas une « chute », rang 4
+    expect(
+      prioriteDe(
+        page({ chemin: "/fr/a", impressions14: 0, impressionsPrecedentes14: 0 }),
+        MAINTENANT,
+      ),
+    ).toBe(4);
     // inspectée il y a 2 jours : pas de repassage quotidien
     expect(
       prioriteDe(
         page({
           chemin: "/fr/a",
           impressions14: 0,
-          impressionsPrecedentes14: 0,
+          impressionsPrecedentes14: 30,
           derniereInspection: jours(2),
         }),
         MAINTENANT,
