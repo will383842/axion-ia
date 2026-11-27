@@ -1,0 +1,4 @@
+Rouge : aucun test rouge sur la tête fd974f22 (12/12 verts selon R1/R2) ; verdicts R1/R2 : nom de test et en-tête de `apparition.test.ts` faux (« HTML d'avant le lot ») et renvoi à `journal/FIX-ROUGES-APPARITION-v21t.md` inexistant.
+Changé : `tests/image-video/variete/apparition.test.ts` seulement, commentaires et titre — test renommé « …celui de master au 27/11 (ff1dbf99…) », en-tête et l. 60 corrigés, renvoi au journal retiré (liste des commits déjà dans le commentaire), valeur « 2332d320… » non reproduite retirée ; l'empreinte est inchangée.
+Tests : NON relancés — `pnpm install --frozen-lockfile` du Studio échoue (EROFS, magasin pnpm en lecture seule) ; modification limitée à des commentaires et au titre d'un test.
+Non réparé : mutations M5 (`Toile.tsx:39`) et M6 (`Toile.tsx:70`) toujours survivantes (antérieures à la branche, point facultatif de R2) ; 43 erreurs tsc héritées identiques à master.
