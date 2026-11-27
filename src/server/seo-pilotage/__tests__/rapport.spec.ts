@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import {
   PLANCHER_IMPRESSIONS_28J,
+  ajouterSectionAuCourriel,
   construireSectionPilotage,
   type DonneesRapport,
 } from "../rapport";
@@ -94,5 +95,23 @@ describe("construireSectionPilotage", () => {
     });
     expect(s?.text).toContain("Search Console <b>");
     expect(s?.html).toContain("Search Console &lt;b&gt;");
+  });
+});
+
+describe("ajouterSectionAuCourriel", () => {
+  const courriel = {
+    subject: "S",
+    html: '<body><table></table><p style="margin-top:30px;font-size:12px;color:#999">pied</p></body>',
+    text: "texte",
+  };
+  it("section absente : courriel identique", () => {
+    expect(ajouterSectionAuCourriel(courriel, null)).toEqual(courriel);
+  });
+  it("section présente : insérée avant le pied, texte à la suite", () => {
+    const section = construireSectionPilotage({ etat: "indisponible" });
+    const r = ajouterSectionAuCourriel(courriel, section);
+    expect(r.html.indexOf("Pilotage SEO")).toBeLessThan(r.html.indexOf("pied"));
+    expect(r.text.startsWith("texte\n\n")).toBe(true);
+    expect(r.subject).toBe("S");
   });
 });

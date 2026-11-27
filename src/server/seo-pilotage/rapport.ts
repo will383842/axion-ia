@@ -135,3 +135,19 @@ export function construireSectionPilotage(entree: EntreeSection): SectionRapport
   }
   return rendre(titre, blocs);
 }
+
+const REPERE_PIED = '<p style="margin-top:30px;font-size:12px;color:#999">';
+
+/** Ajoute la section au courriel du lundi. Section absente : le courriel reste IDENTIQUE. */
+export function ajouterSectionAuCourriel(
+  courriel: { readonly subject: string; readonly html: string; readonly text: string },
+  section: SectionRapport | null,
+): { subject: string; html: string; text: string } {
+  if (section === null) return { ...courriel };
+  const i = courriel.html.lastIndexOf(REPERE_PIED);
+  const html =
+    i === -1
+      ? courriel.html + section.html
+      : courriel.html.slice(0, i) + section.html + courriel.html.slice(i);
+  return { subject: courriel.subject, html, text: `${courriel.text}\n\n${section.text}` };
+}
