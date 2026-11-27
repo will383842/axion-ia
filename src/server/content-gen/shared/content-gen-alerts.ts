@@ -387,10 +387,10 @@ export async function alertSoft404Detected(
 }
 
 /**
- * 14. Indexation tier-1 stagnante (CTR < 1 % après 90 j). Info, pas d'action immédiate.
+ * 14. Indexation tier-1 stagnante (peu d'impressions, ou CTR < 1 %, sur 28 j). Info.
  *
- * Trigger : cron Search Console stats (à câbler V1.5 — `content-keyword-sync-worker`
- * existe mais ne fait pas encore l'analyse stagnation). Notification info pour Will
+ * Trigger : passage hebdomadaire de `content-monitoring-worker` (P18), chiffres réels de
+ * `GscPageJour` (voir `monitoring/indexation-stagnante.ts`). Notification info pour Will
  * pour décider promo/depublish manuel.
  */
 export async function alertIndexationStagnant(
@@ -405,7 +405,7 @@ export async function alertIndexationStagnant(
       silent: true,
       body:
         `*[ℹ️ INDEXATION STAGNANTE]* tier-1 \`${slug}\` : ` +
-        `CTR ${ctrPct.toFixed(2)} % sur ${impressions} impressions (${ageDays} j).\n` +
+        `CTR ${ctrPct.toFixed(2)} % sur ${impressions} impressions (28 derniers jours ; publié depuis ${ageDays} j).\n` +
         `Considérer rewrite ou rétrograder tier-2.\n` +
         `→ ${adminUrl(`/jobs?slug=${encodeURIComponent(slug)}`)}\n` +
         `Runbook : \`R30\` (Lighthouse weekly) + analyse Search Console`,
