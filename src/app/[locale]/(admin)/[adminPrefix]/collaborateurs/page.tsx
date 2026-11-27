@@ -67,9 +67,13 @@ export default async function CollaborateursPage({ params, searchParams }: PageP
   try {
     membres = await lire(categorie, statut);
     aValider = await prisma.teamMember.count({ where: { status: "a_valider" } });
-    invitations = await lireInvitations();
   } catch {
     membres = null; // table absente (migration en attente) : dit plus bas.
+  }
+  try {
+    invitations = await lireInvitations();
+  } catch {
+    invitations = []; // colonnes d'invitation pas encore migrées : la liste des fiches reste lisible.
   }
 
   return (

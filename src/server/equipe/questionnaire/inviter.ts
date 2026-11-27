@@ -11,8 +11,9 @@ import "server-only";
  * Règles :
  *  - le jeton (32 octets, base64url) n'est jamais stocké : seul son sha256 l'est ;
  *  - expiration à 14 jours, version du questionnaire figée à l'envoi ;
- *  - idempotent : une invitation active (ni utilisée, ni révoquée, ni expirée) pour la même adresse
- *    et la même catégorie est révoquée puis remplacée ;
+ *  - idempotent : une fois le message parti, les invitations actives plus anciennes (ni utilisées, ni
+ *    révoquées) pour la même adresse et la même catégorie sont révoquées ; si l'envoi échoue, le lien
+ *    précédent reste valable ;
  *  - l'e-mail part en envoi DIRECT (aucun job BullMQ), une seule fois par invitation ;
  *  - l'adresse est chiffrée (`encryptPii`) pour pouvoir « Renvoyer » ; l'empreinte sert aux recherches ;
  *  - si l'adresse correspond déjà à une fiche, l'envoi est journalisé dans `TeamMemberEvent`
@@ -20,7 +21,7 @@ import "server-only";
  */
 import { prisma } from "@/lib/prisma";
 import { sendEmail } from "@/lib/email/client";
-import { encryptPii, decryptPii } from "@/lib/pii-crypto";
+import { encryptPii, decryptPii, isDecryptedEmailUsable } from "@/lib/pii-crypto";
 import { hashEmailForLookup } from "@/lib/security/email-hash";
 import {
   QUESTIONNAIRE_VERSION_COURANTE,
@@ -110,17 +111,7 @@ export async function inviterCollaborateur(
   const maintenant = new Date();
   const expireLe = new Date(maintenant.getTime() + VALIDITE_INVITATION_JOURS * JOUR_MS);
 
-  const { inviteId, remplacees, membreId } = await prisma.$transaction(async (tx) => {
-    const actives = await tx.teamQuestionnaireInvite.updateMany({
-      where: {
-        emailHash: empreinte,
-        category: demande.categorie,
-        usedAt: null,
-        revokedAt: null,
-        expiresAt: { gt: maintenant },
-      },
-      data: { revokedAt: maintenant },
-    });
+  const { inviteId, creeLe, membreId } = await prisma.$transaction(async (tx) => {
     const membre = await tx.teamMember.findFirst({
       where: { contactEmailHash: empreinte, category: demande.categorie },
       select: { id: true },
@@ -138,36 +129,55 @@ export async function inviterCollaborateur(
         expiresAt: expireLe,
         createdByAdminId: acteur,
       },
-      select: { id: true },
+      select: { id: true, createdAt: true },
     });
-    return { inviteId: invite.id, remplacees: actives.count, membreId: membre?.id ?? null };
+    return { inviteId: invite.id, creeLe: invite.createdAt, membreId: membre?.id ?? null };
   });
 
   const mail = composerEmailInvitation({ prenom, lien: lienQuestionnaire(jeton), expireLe });
   try {
     await sendEmail({ to: email, subject: mail.subject, html: mail.html, text: mail.text });
   } catch {
-    // Rien n'est parti : l'invitation est révoquée, pour ne laisser aucun lien actif que personne n'a reçu.
-    await prisma.teamQuestionnaireInvite.update({
-      where: { id: inviteId },
-      data: { revokedAt: new Date() },
-    });
+    // Rien n'est parti : on retire la nouvelle ligne, et le lien précédent (s'il existe) reste valable.
+    await prisma.teamQuestionnaireInvite
+      .update({ where: { id: inviteId }, data: { revokedAt: new Date() } })
+      .catch(() => undefined);
     return { ok: false, raison: "envoi" };
   }
-  await prisma.teamQuestionnaireInvite.update({
-    where: { id: inviteId },
-    data: { sentAt: new Date() },
-  });
 
-  if (membreId) {
-    await prisma.teamMemberEvent.create({
-      data: {
-        memberId: membreId,
-        action: "invitation_envoyee",
-        actor: acteur,
-        details: { categorie: demande.categorie, source: demande.source, remplacees },
-      },
+  // Le message est parti : tout ce qui suit ne doit plus faire échouer l'appel (sinon un nouvel essai
+  // enverrait un second e-mail). On remplace les invitations actives PLUS ANCIENNES ; avec deux envois
+  // simultanés, seule la plus récente reste active.
+  let remplacees = 0;
+  try {
+    await prisma.teamQuestionnaireInvite.update({
+      where: { id: inviteId },
+      data: { sentAt: new Date() },
     });
+    const anciennes = await prisma.teamQuestionnaireInvite.updateMany({
+      where: {
+        emailHash: empreinte,
+        category: demande.categorie,
+        id: { not: inviteId },
+        createdAt: { lt: creeLe },
+        usedAt: null,
+        revokedAt: null,
+      },
+      data: { revokedAt: new Date() },
+    });
+    remplacees = anciennes.count;
+    if (membreId) {
+      await prisma.teamMemberEvent.create({
+        data: {
+          memberId: membreId,
+          action: "invitation_envoyee",
+          actor: acteur,
+          details: { categorie: demande.categorie, source: demande.source, remplacees },
+        },
+      });
+    }
+  } catch {
+    console.error("[equipe] invitation envoyée, écritures de suivi en échec");
   }
   return { ok: true, inviteId, remplacees };
 }
@@ -192,8 +202,14 @@ export async function renvoyerInvitation(
   });
   if (!ancienne || ancienne.usedAt || !ancienne.contactEmailEnc)
     return { ok: false, raison: "email" };
-  const email = decryptPii(ancienne.contactEmailEnc);
-  if (!email || !estCategorieEquipe(ancienne.category)) return { ok: false, raison: "email" };
+  let email: string | null;
+  try {
+    email = decryptPii(ancienne.contactEmailEnc);
+  } catch {
+    return { ok: false, raison: "email" };
+  }
+  if (!email || !isDecryptedEmailUsable(email) || !estCategorieEquipe(ancienne.category))
+    return { ok: false, raison: "email" };
   return inviterCollaborateur({
     categorie: ancienne.category,
     email,

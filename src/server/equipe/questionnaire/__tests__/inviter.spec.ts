@@ -29,7 +29,7 @@ beforeEach(() => {
   vi.clearAllMocks();
   process.env.NEXT_PUBLIC_SITE_URL = "https://axion-ia.com";
   m.inv.updateMany.mockResolvedValue({ count: 0 });
-  m.inv.create.mockResolvedValue({ id: "inv-1" });
+  m.inv.create.mockResolvedValue({ id: "inv-1", createdAt: new Date() });
   m.inv.update.mockResolvedValue({});
   m.tm.findFirst.mockResolvedValue(null);
   m.send.mockResolvedValue({ messageId: "x" });
@@ -76,7 +76,13 @@ describe("inviterCollaborateur", () => {
     });
     expect(r).toMatchObject({ ok: true, remplacees: 1 });
     const w = m.inv.updateMany.mock.calls[0]![0].where;
-    expect(w).toMatchObject({ category: "partenaire", usedAt: null, revokedAt: null });
+    expect(w).toMatchObject({
+      category: "partenaire",
+      usedAt: null,
+      revokedAt: null,
+      id: { not: "inv-1" },
+    });
+    expect(w.createdAt.lt).toBeInstanceOf(Date);
     expect(w.emailHash).toMatch(/^[0-9a-f]{64}$/);
     expect(m.inv.updateMany.mock.calls[0]![0].data.revokedAt).toBeInstanceOf(Date);
   });
@@ -100,7 +106,7 @@ describe("inviterCollaborateur", () => {
     expect(m.send).not.toHaveBeenCalled();
   });
 
-  it("si l'envoi échoue, l'invitation est révoquée", async () => {
+  it("si l'envoi échoue, seule la nouvelle ligne est révoquée : le lien précédent reste valable", async () => {
     m.send.mockRejectedValue(new Error("smtp"));
     const r = await inviterCollaborateur({
       categorie: "direction",
@@ -108,7 +114,20 @@ describe("inviterCollaborateur", () => {
       source: "console",
     });
     expect(r).toEqual({ ok: false, raison: "envoi" });
+    expect(m.inv.update.mock.calls[0]![0].where).toEqual({ id: "inv-1" });
     expect(m.inv.update.mock.calls[0]![0].data.revokedAt).toBeInstanceOf(Date);
+    expect(m.inv.updateMany).not.toHaveBeenCalled();
+  });
+
+  it("une écriture de suivi en échec après l'envoi ne fait pas échouer l'appel", async () => {
+    m.inv.update.mockRejectedValue(new Error("db"));
+    const r = await inviterCollaborateur({
+      categorie: "direction",
+      email: "d@e.fr",
+      source: "console",
+    });
+    expect(r).toMatchObject({ ok: true });
+    expect(m.send).toHaveBeenCalledTimes(1);
   });
 
   it("journalise un événement quand l'adresse correspond à une fiche", async () => {
