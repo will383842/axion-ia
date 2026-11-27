@@ -43,12 +43,16 @@ Aucun fichier existant modifié par cette PR (hors fusion des deux branches dont
 
 Corrigé après la relecture : panne d'un contrôle (rapport de conformité absent ou en erreur, gardien absent ou en relecture humaine) → relecture humaine au lieu d'un renvoi inutile ; Q3 (arrêt) passe avant le plafond de coût ; le modèle n'est plus appelé quand Q7 ou Q13 échoue ; tests ajoutés pour tous ces cas.
 
-Restant, non corrigé (à trancher) :
+## Corrigé au 2e passage (4 points restants de la relecture)
 
-- le coût de l'appel du juge n'est pas rendu à l'appelant, donc le plafond de 3,00 $ ne voit pas la dépense du rédacteur en chef lui-même (à traiter au branchement dans le worker) ;
-- un renvoi pour bloquant n'embarque pas encore les écarts Q8 à Q11 relevés en même temps ;
-- Q1 et Q2 ensemble produisent deux renvois au rédacteur non fusionnés ;
-- aucune exigence de note globale quand toute la grille est verte (seul Q12 compte) : moins strict que le juge actuel ;
-- le deuxième tour de relecture n'a pas été relancé après ces corrections.
+- Coût du juge : `JudgeResult.coutUsd` (ajout optionnel dans `llm-judge.ts`, comportement inchangé sinon) ; `redacteurEnChef` rend `coutJugeUsd` et `coutTotalUsd`. Plafond de 3,00 $ vérifié avant l'appel, coût ajouté après (y compris le coût d'une erreur « sortie tronquée »). Un franchissement du plafond par le juge → relecture humaine.
+- Un renvoi pour bloquant embarque aussi les écarts Q8 à Q11 (jamais Q12) : un seul renvoi groupé par rôle.
+- Q1 + Q2 en échec ensemble : UN seul renvoi au rédacteur (`passages` = passages exacts, `chiffresASourcer` = chiffres à sourcer). Q2 + écarts du rédacteur : un seul renvoi vérificateur puis rédacteur.
+- Tout vert : exige la note globale du juge (`thresholds.PUBLISH_MIN`, 8,5 par défaut, lu dans `llm-judge.ts`) et aucune issue P1 du juge (son verdict serait « improve »). Sinon relecture humaine.
+- Tests : 269 verts dans `equipe` + `reviewer`, typecheck et eslint propres, prettier passé.
 
-VERDICT OPUS : À CORRIGER
+Restant (mineur, signalé par la relecture, non corrigé) : le coût d'une réponse facturée mais au JSON illisible n'est pas retrouvé (erreur simple) ; les causes P1 ne citent pas le texte des issues ; les passages Q2/Q9 sont mélangés quand le vérificateur absorbe le rédacteur.
+
+Dépend de #2366 et #2367.
+
+VERDICT OPUS : BON

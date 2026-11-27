@@ -147,7 +147,7 @@ async function getQualityLoopMonthSpent(): Promise<number> {
  * remettait à zéro au changement de mois, mais AUCUN code ne l'incrémentait —
  * la boucle pouvait dépenser sans limite, le garde-fou budgétaire était mort.
  * Sont désormais comptés : le coût du juge LLM (mesuré via CostLedger, car
- * `reviewArticle` ne retourne pas son coût) et le coût de chaque re-génération
+ * le coût est tracké par le provider) et le coût de chaque re-génération
  * (appelé depuis content-gen-worker quand un feedback juge est injecté).
  *
  * Fail-open assumé : un échec de lecture/écriture ne casse jamais le job (le

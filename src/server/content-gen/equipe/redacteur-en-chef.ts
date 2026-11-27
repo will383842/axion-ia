@@ -46,7 +46,7 @@ import type { ResultatConformite } from "./conformite";
 
 export const PLAFOND_COUT_ARTICLE_USD = 3;
 export const RENVOIS_MAX = 2;
-/** Même seuil que le juge actuel (`JUDGE_THRESHOLDS.PUBLISH_MIN`) : jamais moins strict. */
+/** Seuil par défaut du juge actuel (`JUDGE_THRESHOLDS.PUBLISH_MIN`) ; le seuil du juge (`thresholds`) fait foi. */
 export const NOTE_PUBLICATION_MIN = JUDGE_THRESHOLDS.PUBLISH_MIN;
 export const NOTE_UTILITE_DIRIGEANT_MIN = 8.5;
 export const MOTS_REPONSE_FENETRE = 100;
