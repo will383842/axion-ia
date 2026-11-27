@@ -54,6 +54,9 @@ export const PAYLOAD_EXEMPLE: Readonly<Record<string, unknown>> = {
     "Se présenter à l'accueil du bâtiment B, badge visiteur à retirer. Parking visiteurs au sous-sol -1.",
   consoleUrl: "https://exemple.invalid/lien-de-demonstration",
   contactName: "Camille Dupont",
+  // `apporteur-attribution-confirmee` (variante « confirmée ») : champ facultatif, donné pour que
+  // l'aperçu montre la ligne « Date de la validation ». Date fictive.
+  dateValidation: "8 octobre 2026",
   contactNom: "Camille Dupont",
   contactSurPlace: "Camille Dupont — 06 00 00 00 00",
   contestationAvantLabel: "18 septembre 2026",

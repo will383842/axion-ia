@@ -268,9 +268,9 @@
       "running": false
     },
     {
-      "name": "Routes /apporteur/dossier (lien secret, noindex, hors budget des 15 pages stratégiques — page Mes commissions 100 % serveur, mesuré 26,41 kB le 26/11) — 27 KB cumulé",
+      "name": "Routes /apporteur/dossier (lien secret, noindex, hors budget des 15 pages stratégiques — page Mes commissions 100 % serveur, mesuré 26,41 kB le 26/11 ; + 2 routes serveur challenges (règlement, règlements passés), mesuré 29,03 kB le 27/11/2026) — 30 KB cumulé",
       "path": ".next/static/chunks/app/apporteur/**/page-*.js",
-      "limit": "27 KB",
+      "limit": "30 KB",
       "running": false
     },
     {
@@ -292,9 +292,9 @@
       "running": false
     },
     {
-      "name": "SOMME des page chunks de la CONSOLE ADMIN — cliquet anti-croissance, hors budget Web Vitals (écrans authentifiés)",
+      "name": "SOMME des page chunks de la CONSOLE ADMIN — cliquet anti-croissance, hors budget Web Vitals (écrans authentifiés) — relevé de 600 à 604 KB le 27/11/2026 puis à 608 KB (main a grossi de 200 B) : nouveaux écrans challenges, mesuré 602,9 kB",
       "path": ".next/static/chunks/app/**/[(]admin[)]/**/page-*.js",
-      "limit": "602 KB",
+      "limit": "608 KB",
       "running": false
     },
     {
