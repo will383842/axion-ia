@@ -10,6 +10,7 @@
 
 export const PLANCHER_IMPRESSIONS_28J = 30;
 export const NB_OPPORTUNITES_MAX = 5;
+export const FENETRE_JOURS = 7;
 
 export interface Totaux {
   readonly clics: number;
@@ -17,6 +18,8 @@ export interface Totaux {
   /** position × impressions : la moyenne reste exacte une fois cumulée. */
   readonly positionSum: number;
   readonly pages: number;
+  /** Jours de la fenêtre dont la collecte a réussi (sur FENETRE_JOURS). */
+  readonly joursMesures: number;
 }
 
 export interface OpportuniteRapport {
@@ -47,13 +50,14 @@ export interface SectionRapport {
   readonly text: string;
 }
 
+/** Codes de `CodeDetecteur` (P7, `opportunites/types.ts`), libellés du PLAN § 4.1. */
 const LIBELLES_DETECTEUR: Readonly<Record<string, string>> = {
-  quasi_gagnante: "page proche de la première page",
-  ctr_anormal: "peu de clics pour ses affichages",
-  requete_sans_page: "requête sans page adaptée",
-  cannibalisation: "deux pages se font concurrence",
-  declin: "page en baisse",
-  jamais_affichee: "page jamais affichée",
+  a: "page proche de la première page",
+  b: "peu de clics pour ses affichages",
+  c: "requête sans page adaptée",
+  d: "deux pages se font concurrence",
+  e: "page en baisse",
+  f: "page jamais affichée",
 };
 
 function echapper(s: string): string {
@@ -74,11 +78,26 @@ function position(t: Totaux): string {
   return t.impressions > 0 ? (t.positionSum / t.impressions).toFixed(1).replace(".", ",") : "—";
 }
 
+function ctr(t: Totaux): string {
+  return t.impressions > 0
+    ? `${((t.clics / t.impressions) * 100).toFixed(1).replace(".", ",")} %`
+    : "—";
+}
+
+export function dateFr(jour: string): string {
+  const [a, m, j] = jour.split("-");
+  return `${j}/${m}/${a}`;
+}
+
 function lignesChiffres(c: Totaux, p: Totaux | null): string[] {
+  // Une semaine précédente incomplète ne sert pas de base : pas d'évolution inventée.
+  const base = p && p.joursMesures >= FENETRE_JOURS ? p : null;
+  const note = p && !base ? " — semaine précédente incomplète" : "";
   return [
-    `Clics : ${c.clics} (${evolution(c.clics, p?.clics)})`,
-    `Affichages : ${c.impressions} (${evolution(c.impressions, p?.impressions)})`,
-    `Pages affichées dans Google : ${c.pages} (${evolution(c.pages, p?.pages)})`,
+    `Clics : ${c.clics} (${evolution(c.clics, base?.clics)})${note}`,
+    `Affichages : ${c.impressions} (${evolution(c.impressions, base?.impressions)})`,
+    `Taux de clics : ${ctr(c)}`,
+    `Pages affichées dans Google : ${c.pages} (${evolution(c.pages, base?.pages)})`,
     `Position moyenne dans Google : ${position(c)}`,
   ];
 }
@@ -117,10 +136,17 @@ export function construireSectionPilotage(entree: EntreeSection): SectionRapport
   }
   const d = entree.donnees;
   const blocs: Array<{ t: string; lignes: string[] }> = [];
-  if (d.courante && d.fin) {
+  if (d.courante && d.fin && d.courante.joursMesures >= FENETRE_JOURS) {
     blocs.push({
-      t: `Chiffres clés (7 jours jusqu'au ${d.fin}, évolution face aux 7 jours d'avant)`,
+      t: `Chiffres clés (7 jours jusqu'au ${dateFr(d.fin)}, évolution face aux 7 jours d'avant)`,
       lignes: lignesChiffres(d.courante, d.precedente),
+    });
+  } else if (d.courante && d.fin) {
+    blocs.push({
+      t: "Chiffres clés",
+      lignes: [
+        `Chiffres incomplets : ${d.courante.joursMesures} jour(s) mesuré(s) sur ${FENETRE_JOURS} jusqu'au ${dateFr(d.fin)}.`,
+      ],
     });
   } else {
     blocs.push({ t: "Chiffres clés", lignes: ["Pas encore de données collectées."] });
@@ -130,9 +156,13 @@ export function construireSectionPilotage(entree: EntreeSection): SectionRapport
   if (d.sourcesIndisponibles.length > 0) {
     blocs.push({
       t: "Sources indisponibles",
-      lignes: d.sourcesIndisponibles.map((s) => String(s)),
+      lignes: [...d.sourcesIndisponibles],
     });
   }
+  blocs.push({
+    t: "Pas encore mesuré",
+    lignes: ["Modifications appliquées et leurs verdicts", "Visites venues des moteurs IA"],
+  });
   return rendre(titre, blocs);
 }
 

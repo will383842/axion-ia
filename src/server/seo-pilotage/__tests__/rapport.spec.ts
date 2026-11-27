@@ -8,8 +8,8 @@ import {
 
 const base: DonneesRapport = {
   fin: "2026-11-23",
-  courante: { clics: 120, impressions: 4000, positionSum: 40000, pages: 80 },
-  precedente: { clics: 100, impressions: 5000, positionSum: 55000, pages: 70 },
+  courante: { clics: 120, impressions: 4000, positionSum: 40000, pages: 80, joursMesures: 7 },
+  precedente: { clics: 100, impressions: 5000, positionSum: 55000, pages: 70, joursMesures: 7 },
   opportunites: [],
   sourcesIndisponibles: [],
 };
@@ -41,6 +41,35 @@ describe("construireSectionPilotage", () => {
     expect(s?.text).toContain("Clics : 120 (—)");
   });
 
+  it("5 chiffres clés, taux de clics compris, et date en français", () => {
+    const s = construireSectionPilotage({ etat: "ok", donnees: base });
+    expect(s?.text).toContain("Taux de clics : 3,0 %");
+    expect(s?.text).toContain("23/11/2026");
+  });
+
+  it("fenêtre courante incomplète : aucun chiffre, le nombre de jours est annoncé", () => {
+    const s = construireSectionPilotage({
+      etat: "ok",
+      donnees: { ...base, courante: { ...base.courante!, joursMesures: 3 } },
+    });
+    expect(s?.text).toContain("3 jour(s) mesuré(s) sur 7");
+    expect(s?.text).not.toContain("Clics :");
+  });
+
+  it("semaine précédente incomplète : pas de pourcentage inventé", () => {
+    const s = construireSectionPilotage({
+      etat: "ok",
+      donnees: { ...base, precedente: { ...base.precedente!, joursMesures: 2 } },
+    });
+    expect(s?.text).toContain("Clics : 120 (—) — semaine précédente incomplète");
+  });
+
+  it("dit ce qui n'est pas encore mesuré", () => {
+    expect(construireSectionPilotage({ etat: "ok", donnees: base })?.text).toContain(
+      "Pas encore mesuré",
+    );
+  });
+
   it("sans aucune donnée : dit qu'il n'y en a pas encore", () => {
     const s = construireSectionPilotage({
       etat: "ok",
@@ -51,7 +80,7 @@ describe("construireSectionPilotage", () => {
 
   it("ne cite aucune requête sous le plancher de 30 affichages sur 28 jours", () => {
     const opp = (requete: string, impressions28j: number | null) => ({
-      detecteur: "quasi_gagnante",
+      detecteur: "a",
       cible: "/fr/guide",
       priorite: 5,
       requete,
@@ -76,7 +105,7 @@ describe("construireSectionPilotage", () => {
 
   it("garde 5 opportunités au plus, par priorité décroissante", () => {
     const opportunites = Array.from({ length: 8 }, (_, i) => ({
-      detecteur: "declin",
+      detecteur: "e",
       cible: `/fr/p${i}`,
       priorite: i,
       requete: null,

@@ -9,7 +9,14 @@
 import type { PrismaClient } from "../../../prisma/generated/client";
 import { ajouterJours, enDate, enJour } from "./ingestion/dates";
 import { buildStub, pilotageSeoActif } from "./interrupteur";
-import type { DonneesRapport, EntreeSection, OpportuniteRapport, Totaux } from "./rapport";
+import {
+  dateFr,
+  FENETRE_JOURS,
+  type DonneesRapport,
+  type EntreeSection,
+  type OpportuniteRapport,
+  type Totaux,
+} from "./rapport";
 
 type Deps = Pick<
   PrismaClient,
@@ -19,10 +26,14 @@ type Deps = Pick<
 const TYPE_RECHERCHE = "web";
 /** Retard au-delà duquel la collecte est déclarée en panne (Google publie avec ~2-3 jours). */
 const RETARD_MAX_JOURS = 4;
-const FENETRE_JOURS = 7;
 const FENETRE_REQUETE_JOURS = 28;
 
-async function totaux(deps: Deps, debut: string, fin: string): Promise<Totaux | null> {
+async function totaux(
+  deps: Deps,
+  debut: string,
+  fin: string,
+  joursMesures: number,
+): Promise<Totaux> {
   const lignes = await deps.gscPageJour.groupBy({
     by: ["chemin"],
     where: {
@@ -31,16 +42,23 @@ async function totaux(deps: Deps, debut: string, fin: string): Promise<Totaux | 
     },
     _sum: { clics: true, impressions: true, positionSum: true },
   });
-  if (lignes.length === 0) return null;
   return lignes.reduce<Totaux>(
     (t, l) => ({
+      ...t,
       clics: t.clics + (l._sum.clics ?? 0),
       impressions: t.impressions + (l._sum.impressions ?? 0),
       positionSum: t.positionSum + (l._sum.positionSum ?? 0),
       pages: t.pages + ((l._sum.impressions ?? 0) > 0 ? 1 : 0),
     }),
-    { clics: 0, impressions: 0, positionSum: 0, pages: 0 },
+    { clics: 0, impressions: 0, positionSum: 0, pages: 0, joursMesures },
   );
+}
+
+/** Jours de `[debut, fin]` dont la collecte a réussi. */
+function compterJours(reussis: ReadonlySet<string>, debut: string, fin: string): number {
+  let n = 0;
+  for (let j = debut; j <= fin; j = ajouterJours(j, 1)) if (reussis.has(j)) n++;
+  return n;
 }
 
 function requeteIdDe(details: unknown): number | null {
@@ -68,7 +86,7 @@ async function opportunites(deps: Deps, fin: string | null): Promise<Opportunite
     const [reqs, sommes] = await Promise.all([
       deps.gscRequete.findMany({ where: { id: { in: ids } }, select: { id: true, texte: true } }),
       deps.gscPageRequeteJour.groupBy({
-        by: ["requeteId"],
+        by: ["requeteId", "chemin"],
         where: {
           typeRecherche: TYPE_RECHERCHE,
           requeteId: { in: ids },
@@ -81,7 +99,14 @@ async function opportunites(deps: Deps, fin: string | null): Promise<Opportunite
       }),
     ]);
     for (const r of reqs) textes.set(r.id, r.texte);
-    for (const s of sommes) affichages.set(s.requeteId, s._sum.impressions ?? 0);
+    // MAXIMUM par page, jamais la somme : une requête vue sur deux pages compterait deux fois le
+    // même affichage. C'est un minorant du vrai total, aligné sur le plancher par requête × page de P7.
+    for (const s of sommes) {
+      affichages.set(
+        s.requeteId,
+        Math.max(affichages.get(s.requeteId) ?? 0, s._sum.impressions ?? 0),
+      );
+    }
   }
   return retenues.map((l) => {
     const id = requeteIdDe(l.details);
@@ -103,22 +128,27 @@ async function sourcesIndisponibles(
 ): Promise<string[]> {
   const sortie: string[] = [];
   const aujourdhui = enJour(maintenant);
-  const echecs = await deps.gscImportRun.findMany({
+  // Couvre les deux fenêtres chiffrées (14 jours jusqu'à `fin`), et au moins les 14 derniers jours.
+  const depuis =
+    fin && fin < aujourdhui
+      ? ajouterJours(fin, -(2 * FENETRE_JOURS - 1))
+      : ajouterJours(aujourdhui, -2 * FENETRE_JOURS);
+  const pasReussis = await deps.gscImportRun.findMany({
     where: {
       typeRecherche: TYPE_RECHERCHE,
-      statut: { in: ["echec", "partiel"] },
-      jour: { gte: enDate(ajouterJours(aujourdhui, -FENETRE_JOURS)) },
+      statut: { not: "reussi" },
+      jour: { gte: enDate(depuis) },
     },
     select: { jour: true, statut: true },
     orderBy: { jour: "desc" },
   });
-  for (const e of echecs) {
-    sortie.push(
-      `Search Console : collecte du ${enJour(e.jour)} ${e.statut === "echec" ? "en échec" : "incomplète"}`,
-    );
+  for (const e of pasReussis) {
+    const etat =
+      e.statut === "echec" ? "en échec" : e.statut === "en_cours" ? "non terminée" : "incomplète";
+    sortie.push(`Search Console : collecte du ${dateFr(enJour(e.jour))} ${etat}`);
   }
-  if (fin !== null && fin < ajouterJours(aujourdhui, -RETARD_MAX_JOURS - 1)) {
-    sortie.push(`Search Console : dernière collecte réussie le ${fin} (en retard)`);
+  if (fin !== null && fin < ajouterJours(aujourdhui, -RETARD_MAX_JOURS)) {
+    sortie.push(`Search Console : dernière collecte réussie le ${dateFr(fin)} (en retard)`);
   }
   return sortie;
 }
@@ -136,10 +166,28 @@ export async function collecterSectionPilotage(
       select: { jour: true },
     });
     const fin = dernier ? enJour(dernier.jour) : null;
+    const debutCour = fin ? ajouterJours(fin, -(FENETRE_JOURS - 1)) : null;
     const finPrec = fin ? ajouterJours(fin, -FENETRE_JOURS) : null;
+    const debutPrec = finPrec ? ajouterJours(finPrec, -(FENETRE_JOURS - 1)) : null;
+    let reussis = new Set<string>();
+    if (debutPrec && fin) {
+      const runs = await prisma.gscImportRun.findMany({
+        where: {
+          typeRecherche: TYPE_RECHERCHE,
+          statut: "reussi",
+          jour: { gte: enDate(debutPrec), lte: enDate(fin) },
+        },
+        select: { jour: true },
+      });
+      reussis = new Set(runs.map((r) => enJour(r.jour)));
+    }
     const [courante, precedente, opps, sources] = await Promise.all([
-      fin ? totaux(prisma, ajouterJours(fin, -(FENETRE_JOURS - 1)), fin) : null,
-      fin && finPrec ? totaux(prisma, ajouterJours(finPrec, -(FENETRE_JOURS - 1)), finPrec) : null,
+      fin && debutCour
+        ? totaux(prisma, debutCour, fin, compterJours(reussis, debutCour, fin))
+        : null,
+      finPrec && debutPrec
+        ? totaux(prisma, debutPrec, finPrec, compterJours(reussis, debutPrec, finPrec))
+        : null,
       opportunites(prisma, fin),
       sourcesIndisponibles(prisma, fin, maintenant()),
     ]);
@@ -153,6 +201,7 @@ export async function collecterSectionPilotage(
     return { etat: "ok", donnees };
   } catch {
     // Table absente (fenêtre app/worker) ou panne : on l'annonce, on ne chiffre rien.
+    console.error("[seo-pilotage] rapport : lecture impossible");
     return { etat: "indisponible" };
   }
 }

@@ -8,7 +8,28 @@ function faux(over: Record<string, unknown> = {}) {
   return {
     gscImportRun: {
       findFirst: vi.fn().mockResolvedValue({ jour: jour("2026-11-23") }),
-      findMany: vi.fn().mockResolvedValue([]),
+      findMany: vi
+        .fn()
+        .mockImplementation(async ({ where }: { where: { statut: unknown } }) =>
+          where.statut === "reussi"
+            ? [
+                "17",
+                "18",
+                "19",
+                "20",
+                "21",
+                "22",
+                "23",
+                "10",
+                "11",
+                "12",
+                "13",
+                "14",
+                "15",
+                "16",
+              ].map((d) => ({ jour: jour(`2026-11-${d}`) }))
+            : [],
+        ),
     },
     gscPageJour: {
       groupBy: vi
@@ -53,8 +74,20 @@ describe("collecterSectionPilotage", () => {
       impressions: 400,
       positionSum: 4000,
       pages: 1,
+      joursMesures: 7,
     });
     expect(r.donnees.precedente?.clics).toBe(10);
+  });
+
+  it("un jour non collecté fait baisser joursMesures de sa fenêtre", async () => {
+    const p = faux();
+    p.gscImportRun.findMany.mockImplementation(async ({ where }: { where: { statut: unknown } }) =>
+      where.statut === "reussi" ? [{ jour: jour("2026-11-23") }, { jour: jour("2026-11-10") }] : [],
+    );
+    const r = await collecterSectionPilotage(p as never, ALLUME);
+    expect(
+      r.etat === "ok" && [r.donnees.courante?.joursMesures, r.donnees.precedente?.joursMesures],
+    ).toEqual([1, 1]);
   });
 
   it("aucune collecte réussie : pas de chiffres, sans erreur", async () => {
@@ -78,6 +111,26 @@ describe("collecterSectionPilotage", () => {
     }
   });
 
+  it("deux pages à 20 affichages : le plancher n'est pas franchi par la somme", async () => {
+    const p = faux();
+    p.seoOpportunite.findMany.mockResolvedValue([
+      {
+        semaine: jour("2026-11-16"),
+        detecteur: "d",
+        cible: "/fr/a",
+        priorite: 9,
+        details: { requeteId: 7 },
+      },
+    ]);
+    p.gscRequete.findMany.mockResolvedValue([{ id: 7, texte: "formation ia" }]);
+    p.gscPageRequeteJour.groupBy.mockResolvedValue([
+      { requeteId: 7, chemin: "/fr/a", _sum: { impressions: 20 } },
+      { requeteId: 7, chemin: "/fr/b", _sum: { impressions: 20 } },
+    ]);
+    const r = await collecterSectionPilotage(p as never, ALLUME);
+    expect(r.etat === "ok" && r.donnees.opportunites[0]?.impressions28j).toBe(20);
+  });
+
   it("signale une collecte en retard de plus de 4 jours", async () => {
     const r = await collecterSectionPilotage(
       faux() as never,
@@ -91,9 +144,11 @@ describe("collecterSectionPilotage", () => {
 
   it("signale les jours en échec récents comme source indisponible", async () => {
     const p = faux();
-    p.gscImportRun.findMany.mockResolvedValue([{ jour: jour("2026-11-22"), statut: "echec" }]);
+    p.gscImportRun.findMany.mockImplementation(async ({ where }: { where: { statut: unknown } }) =>
+      where.statut === "reussi" ? [] : [{ jour: jour("2026-11-14"), statut: "echec" }],
+    );
     const r = await collecterSectionPilotage(p as never, ALLUME);
-    expect(r.etat === "ok" && r.donnees.sourcesIndisponibles.join(" ")).toMatch(/2026-11-22/);
+    expect(r.etat === "ok" && r.donnees.sourcesIndisponibles.join(" ")).toMatch(/14\/11\/2026/);
   });
 
   it("n'expose le texte d'une requête qu'avec ses affichages sur 28 jours", async () => {
@@ -108,7 +163,9 @@ describe("collecterSectionPilotage", () => {
       },
     ]);
     p.gscRequete.findMany.mockResolvedValue([{ id: 7, texte: "formation ia" }]);
-    p.gscPageRequeteJour.groupBy.mockResolvedValue([{ requeteId: 7, _sum: { impressions: 35 } }]);
+    p.gscPageRequeteJour.groupBy.mockResolvedValue([
+      { requeteId: 7, chemin: "/fr/a", _sum: { impressions: 35 } },
+    ]);
     const r = await collecterSectionPilotage(
       p as never,
       ALLUME,
