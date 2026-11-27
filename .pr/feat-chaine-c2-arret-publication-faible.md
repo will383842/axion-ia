@@ -28,4 +28,6 @@ Rien n'est supprimé ni désindexé : les contenus déjà publiés ne bougent pa
 - Décision restante de la fiche C2 : le gel de la rotation des 747 mots-clés (non traité ici).
 - Tests : `relecture-obligatoire.spec.ts` (écrit avant le module, rouge à l'import, puis vert), `judge-outcome.spec.ts` et l'orchestrateur adaptés. tsc propre, 102 fichiers / 1194 tests verts sur les dossiers touchés.
 
-VERDICT OPUS : BON
+Relectures Opus : 1re passe « à corriger » (8 points, corrigés) ; 2e passe « à corriger » (3 points : pause RSS à 0, `reviewedBy` vidé, reprise villes), corrigés dans le dernier commit mais NON relus par Opus.
+
+VERDICT OPUS : À CORRIGER
