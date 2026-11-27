@@ -2178,6 +2178,21 @@ export const EXCEPTIONS_EFFACEMENT_DOSSIER: ReadonlyArray<{
   readonly motif: string;
 }> = [
   {
+    modele: "TeamMember",
+    motif:
+      "fiche collaborateur publiée sur le site : table créée vide, aucun écran ne l'alimente encore. L'effacement réel (suppression de la ligne, en cascade de ses invitations et réponses, du fichier photo, ainsi que des invitations sans fiche retrouvées par leur empreinte d'e-mail et de toute fiche liée à un apporteur effacé ; la preuve de consentement du registre ConsentEvent reste à trancher) est livré avec le lot retrait et effacement, avant toute première fiche.",
+  },
+  {
+    modele: "TeamQuestionnaireInvite",
+    motif:
+      "fiche collaborateur publiée sur le site : table créée vide, aucun écran ne l'alimente encore. L'effacement réel (suppression de la ligne, en cascade de ses invitations et réponses, du fichier photo, ainsi que des invitations sans fiche retrouvées par leur empreinte d'e-mail et de toute fiche liée à un apporteur effacé ; la preuve de consentement du registre ConsentEvent reste à trancher) est livré avec le lot retrait et effacement, avant toute première fiche.",
+  },
+  {
+    modele: "TeamQuestionnaireSubmission",
+    motif:
+      "fiche collaborateur publiée sur le site : table créée vide, aucun écran ne l'alimente encore. L'effacement réel (suppression de la ligne, en cascade de ses invitations et réponses, du fichier photo, ainsi que des invitations sans fiche retrouvées par leur empreinte d'e-mail et de toute fiche liée à un apporteur effacé ; la preuve de consentement du registre ConsentEvent reste à trancher) est livré avec le lot retrait et effacement, avant toute première fiche.",
+  },
+  {
     // Assistant de devis, fiche S17 — requalifié `dossier-client` AVANT l'allumage de S06.
     modele: "DevisAssistantBrouillon",
     motif:
