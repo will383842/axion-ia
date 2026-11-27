@@ -121,7 +121,12 @@ function selectVilles(args: RunArgs): Ville[] {
 interface VilleResult {
   villeSlug: string;
   status:
-    "skipped_already_approved" | "skipped_dry_run" | "success" | "failed_quality" | "failed_error";
+    | "skipped_already_approved"
+    | "skipped_dry_run"
+    | "success"
+    | "success_a_relire"
+    | "failed_quality"
+    | "failed_error";
   ecoGenerated: boolean;
   qualityScore?: number;
   totalCostUsd: number;
@@ -144,7 +149,12 @@ async function processOneVille(
     where: { villeSlug: slug },
     select: { status: true, qualityScore: true },
   });
-  if (existing?.status === "approved") {
+  // C2c : les copies restent « generated » ; on ne repaie pas une copie déjà bonne et en attente
+  // de relecture (reprise), sauf retour arrière (auto-approbation active).
+  if (
+    existing?.status === "approved" ||
+    (existing?.status === "generated" && (existing.qualityScore ?? 0) >= args.autoApproveThreshold)
+  ) {
     return {
       villeSlug: slug,
       status: "skipped_already_approved",
@@ -199,7 +209,7 @@ async function processOneVille(
   if (statutFinal === "generated" && copyResult.qualityScore >= args.autoApproveThreshold) {
     return {
       villeSlug: slug,
-      status: "success",
+      status: "success_a_relire",
       ecoGenerated,
       qualityScore: copyResult.qualityScore,
       totalCostUsd,
@@ -256,11 +266,13 @@ async function main(): Promise<void> {
       const tag =
         r.status === "success"
           ? `✅ score ${r.qualityScore}`
-          : r.status === "skipped_already_approved"
-            ? `⏭️  already approved (score ${r.qualityScore ?? "?"})`
-            : r.status === "skipped_dry_run"
-              ? "🔍 dry-run"
-              : `❌ ${r.status} — ${r.errorMessage ?? ""}`;
+          : r.status === "success_a_relire"
+            ? `📝 score ${r.qualityScore} — à relire (generated)`
+            : r.status === "skipped_already_approved"
+              ? `⏭️  already approved (score ${r.qualityScore ?? "?"})`
+              : r.status === "skipped_dry_run"
+                ? "🔍 dry-run"
+                : `❌ ${r.status} — ${r.errorMessage ?? ""}`;
       console.log(`           → ${tag} ($${r.totalCostUsd.toFixed(4)})`);
     } catch (err) {
       const msg = err instanceof Error ? err.message : String(err);
@@ -284,6 +296,9 @@ async function main(): Promise<void> {
   console.log(`\n[regen-complete] ==================== SUMMARY ====================`);
   console.log(`  Total villes processed : ${results.length}`);
   console.log(`  Success (approved)     : ${success}`);
+  console.log(
+    `  À relire (generated)   : ${results.filter((r) => r.status === "success_a_relire").length}`,
+  );
   console.log(`  Skipped                : ${skipped}`);
   console.log(`  Failed                 : ${failed}`);
   console.log(`  Total cost (USD)       : $${totalCost.toFixed(4)}`);

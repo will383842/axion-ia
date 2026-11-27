@@ -82,7 +82,7 @@ export function plafondGenerationEffectif(
 
 /**
  * C2c — pages villes gabaritées (`ville-hub-copy`). Une copie générée reste « generated »
- * (page non rendue en base, file de validation humaine) ; l'auto-approbation sur la note
+ * (page non rendue ; la validation passe par une mise à jour manuelle du statut en base, aucune action console n'existe encore) ; l'auto-approbation sur la note
  * n'a lieu que si `VILLES_AUTO_APPROBATION_ACTIVE=true` (retour arrière, sans déploiement).
  */
 export function statutPageVilleApresGeneration(input: {

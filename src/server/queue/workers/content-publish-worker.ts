@@ -1368,7 +1368,8 @@ async function executePublishPipeline(
   // était censé porter (soft-404, score < 50, doctrine) n'existe plus depuis
   // juin — ni au tier, ni désormais au ping. Rétablir un vrai tier-2 reste une
   // décision ouverte, à prendre côté doctrine d'indexation, pas ici.
-  {
+  // C2 : pas de ping moteurs pour une page `noindex` (contenu non relu, retour arrière).
+  if (indexationTier === "tier_1_indexable") {
     try {
       // Fix 2026-08-15 (D6 audit e2e) — le helper retourne des booléens
       // (indexnowEnqueued/googleEnqueued) qui étaient IGNORÉS : on logguait
