@@ -91,7 +91,15 @@ const protegee = {
   recueAt: new Date("2026-08-01T00:00:00Z"),
   confirmeeAt: new Date("2026-08-05T00:00:00Z"),
   protegeeJusquAt: new Date("2027-02-05T00:00:00Z"),
-  apporteur: { prenom: "A", nom: "B", email: "a@b.fr", parrainId: null, signeParSocieteAt: null },
+  apporteur: {
+    prenom: "A",
+    nom: "B",
+    email: "a@b.fr",
+    parrainId: null,
+    signeParSocieteAt: null,
+    // Contrat 2.8 : grille v3 (décision du 27/11, la version signée choisit la grille).
+    signatureApporteur: { version: "2.8" } as unknown,
+  },
 };
 const fac = (o: Record<string, unknown>) => ({
   id: "F",
@@ -691,4 +699,55 @@ describe("passage quotidien : commission par commande soldée", () => {
     expect(etat.crees).toHaveLength(1);
     expect(bilan.partsParrainage).toBe(0);
   });
+});
+
+describe("décision du 27/11 : grille du contrat SIGNÉ au passage quotidien", () => {
+  const signataire = (version: unknown) => {
+    etat.presentations = [
+      { ...protegee, apporteur: { ...protegee.apporteur, signatureApporteur: { version } } },
+    ];
+  };
+  const unePayee = (o: Record<string, unknown> = {}) => {
+    etat.payees = [{ id: "A", devisId: "D1" }];
+    etat.lignes = [fac({ id: "A", devis: { acceptedAt: new Date("2026-12-10T00:00:00Z") }, ...o })];
+  };
+
+  it("signataire 2.6, coaching 1 390 € HT signé après le 26/11 : 417 €", async () => {
+    signataire("2.6");
+    unePayee({ activite: "un_a_un", montantHtCents: 139_000 });
+    await passerReseauApporteurs(MAINTENANT);
+    expect(etat.crees[0]).toMatchObject({ montantCents: 41_700, statut: "due" });
+  });
+  it("signataire 2.6, conférence 2 400 € HT signée après le 26/11 : 500 €", async () => {
+    signataire("2.6");
+    unePayee({ activite: "conference", montantHtCents: 240_000 });
+    await passerReseauApporteurs(MAINTENANT);
+    expect(etat.crees[0]).toMatchObject({ montantCents: 50_000, palier: "conference" });
+  });
+  it("signataire 2.6, développement web : aucune commission", async () => {
+    signataire("2.6");
+    unePayee({ activite: "site_web", montantHtCents: 600_000 });
+    await passerReseauApporteurs(MAINTENANT);
+    expect(etat.crees).toEqual([]);
+  });
+  it("signataire 2.8 : coaching et conférence sans commission, site web 15 %", async () => {
+    signataire("2.8");
+    unePayee({ activite: "un_a_un", montantHtCents: 139_000 });
+    await passerReseauApporteurs(MAINTENANT);
+    expect(etat.crees).toEqual([]);
+    unePayee({ activite: "site_web", montantHtCents: 600_000 });
+    await passerReseauApporteurs(MAINTENANT);
+    expect(etat.crees[0]).toMatchObject({ montantCents: 90_000 });
+  });
+  it.each([["2.7"], ["2.2"], [undefined]])(
+    "version %j inconnue : ligne « à qualifier » (escalade), même pour un coaching",
+    async (v) => {
+      signataire(v);
+      unePayee({ activite: "un_a_un", montantHtCents: 139_000 });
+      await passerReseauApporteurs(MAINTENANT);
+      expect(etat.crees).toHaveLength(1);
+      expect(etat.crees[0]).toMatchObject({ statut: "a_qualifier" });
+      expect(etat.crees[0]).not.toHaveProperty("montantCents");
+    },
+  );
 });

@@ -99,8 +99,10 @@ import {
   ajouterMois,
   htLignesRecurrentesRestantesCents,
   plafondBaseCommissionnableCents,
-  calculerCommissionAvecRegle,
+  calculerCommissionSelonGrilleAvecRegle,
   regleApresPlafond,
+  grilleDeLaCommande,
+  MESSAGE_GRILLE_INCONNUE,
   DEVELOPPEMENT_WEB_COMMISSIONNE_DEPUIS,
   calculerCommissionJourneeIa,
   versionContratSignee,
@@ -958,6 +960,7 @@ const SELECT_PRESENTATION_PROTEGEE = {
       email: true,
       parrainId: true,
       signeParSocieteAt: true,
+      // La version signée décide de la grille (décision du 27/11).
       signatureApporteur: true,
     },
   },
@@ -1201,8 +1204,6 @@ async function etapeCommissions(maintenant: Date, bilan: BilanPassageReseau): Pr
     const signeeAt = dateDeCommande(f);
     const siren = f.client?.siren;
     if (!signeeAt || !siren) continue;
-    // Développement web : jamais de commission rétroactive sur une commande signée avant la date d'effet.
-    if (f.activite === "site_web" && signeeAt < DEVELOPPEMENT_WEB_COMMISSIONNE_DEPUIS) continue;
     const siret = siretDeLaCommande({
       devisSiret: f.devisId ? siretsDevis.get(f.devisId) : null,
       clientSiret: f.client?.siret,
@@ -1271,13 +1272,43 @@ async function etapeCommissions(maintenant: Date, bilan: BilanPassageReseau): Pr
       Math.max(0, commande.baseApresAvoirsCents - recurrentCents),
       plafondBase,
     );
+    // Grille de la version signée par l'apporteur (décision du 27/11) ; date d'effet de l'avenant
+    // 2.8 : lot S1 (table de l'avenant), `null` tant qu'il n'existe pas.
+    const grille = grilleDeLaCommande({
+      signature: p.apporteur.signatureApporteur,
+      declareeAt: p.recueAt,
+      commandeSigneeAt: signeeAt,
+      avenant28EffetAt: null,
+    });
+    // Développement web (grille v3) : jamais de commission rétroactive avant la date d'effet.
+    if (
+      grille === "v3" &&
+      f.activite === "site_web" &&
+      signeeAt < DEVELOPPEMENT_WEB_COMMISSIONNE_DEPUIS
+    )
+      continue;
+    if (grille === null)
+      // ESCALADE, jamais un 0 € silencieux : la ligne naît « à qualifier » (ci-dessous) et Williams
+      // est prévenu une fois.
+      await alerteInterne({
+        jobId: `apporteur-grille-inconnue-${commande.factureCleId}-${p.apporteurId}`,
+        code: "apporteur_grille_inconnue",
+        titre: "Commission à calculer à la main : version du contrat signé inconnue",
+        message: `Une commande payée de l'entreprise SIREN ${siren} revient à un apporteur dont la version de contrat signée n'a pas de grille connue. La commission est « à qualifier » : ${MESSAGE_GRILLE_INCONNUE} (Apporteurs › Commissions).`,
+        cibleType: "FactureFormation",
+        cibleId: commande.factureCleId,
+        niveau: "critique",
+        maintenant,
+      });
     // Journée IA : repérée par `devis.journee_ia` (aucune valeur d'énumération nouvelle).
     // La règle appliquée est posée à la création (relevé mensuel, lot R) : le calcul est celui
-    // d'avant, seul un code est ajouté. Jamais rétroactif : les lignes existantes ne sont pas touchées.
+    // d'avant, seul un code est ajouté. Jamais rétroactif.
     const baseAvantPlafond = Math.max(0, commande.baseApresAvoirsCents - recurrentCents);
     let regle: RegleAppliquee | null = null;
     let calc: CalculCommission;
-    if (f.devis?.journeeIa === true) {
+    if (grille === null) {
+      calc = { statut: "a_qualifier" };
+    } else if (f.devis?.journeeIa === true) {
       calc = calculerCommissionJourneeIa({
         activite: (f.activite ?? null) as ActiviteCommission | null,
         lignes: f.devis.lignes,
@@ -1285,11 +1316,12 @@ async function etapeCommissions(maintenant: Date, bilan: BilanPassageReseau): Pr
       });
       regle = "journee_ia";
     } else {
-      const r = calculerCommissionAvecRegle({
+      const r = calculerCommissionSelonGrilleAvecRegle({
         activite: (f.activite ?? null) as ActiviteCommission | null,
         factureHtCents: baseCommissionnable,
         palier: null,
         signeeAt,
+        grille,
       });
       calc = r.calcul;
       regle = regleApresPlafond(r.regle, baseAvantPlafond, plafondBase);

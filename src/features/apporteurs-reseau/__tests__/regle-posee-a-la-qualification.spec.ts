@@ -30,6 +30,12 @@ vi.mock("@/lib/prisma", () => ({
     factureFormation: {
       findUnique: vi.fn(async () => ({ emiseAt: etat.signeeAt, devis: null })),
     },
+    presentationEntreprise: {
+      findUnique: vi.fn(async () => ({
+        recueAt: new Date("2026-11-01T00:00:00Z"),
+        apporteur: { signatureApporteur: etat.signature },
+      })),
+    },
     pieceApporteur: { findMany: vi.fn(async () => []) },
     apporteurReseau: {
       findUnique: vi.fn(async (a: { where: { id: string } }) => ({
@@ -47,6 +53,7 @@ const ligne = {
   id: "C1",
   apporteurId: "APP1",
   factureId: "F1",
+  presentationId: "P1",
   parrainage: false,
   activite: "formation",
   factureHtCents: 200_000,
@@ -86,10 +93,11 @@ describe("règle et version posées à la qualification (jamais rétroactif)", (
     await qualifierCommission("C1", "conference");
     expect(etat.maj[0]!.data).toMatchObject({ regleAppliquee: "tarif_avant_date_effet" });
   });
-  it("signature illisible : version null, rien d'inventé", async () => {
+  it("signature illisible : grille inconnue, ESCALADE (rien n'est écrit, rien d'inventé)", async () => {
     etat.signature = null;
-    await qualifierCommission("C1", "formation-generale-1j");
-    expect(etat.maj[0]!.data).toMatchObject({ versionContrat: null });
+    const r = await qualifierCommission("C1", "formation-generale-1j");
+    expect(r.ok).toBe(false);
+    expect(etat.maj).toHaveLength(0);
   });
   it("classement d'une activité (audit) : taux_ht + version", async () => {
     etat.commission = { ...ligne, activite: "inconnue" };

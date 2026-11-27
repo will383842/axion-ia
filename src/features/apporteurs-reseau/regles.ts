@@ -367,6 +367,139 @@ export const PALIERS_FORMATION = [
 export type PalierFormation = (typeof PALIERS_FORMATION)[number]["id"];
 
 /**
+ * Formation de 3 jours ou plus (décision du dirigeant du 27/11/2026, Q1) : la règle dépend de la
+ * grille du contrat SIGNÉ.
+ * - Grille v3 (contrat 2.8, ou avenant 2.8 signé) : **1 000 € HT au plus**, réduit au prorata en
+ *   cas de remise (art. 4.1 bis).
+ * - Grille v2 (contrats 2.3 à 2.6 sans avenant) : le plafond de 1 000 € NE S'APPLIQUE PAS. Annexe 1
+ *   du contrat 2.6, A1.1 : « Forfait de 500 € HT par journée de formation vendue, au prix public,
+ *   réduit au prorata en cas de remise » et « cinq journées de formation générale vendues 9 500 € HT
+ *   (au prix public) donnent 5 × 500 € = 2 500 € ; vendues 8 550 € HT (remise de 10 %), elles donnent
+ *   2 500 € × 8 550 ÷ 9 500 = 2 250 €. Aucune limite n'est fixée au nombre de journées. » Donc 3 jours
+ *   au prix de base = 1 500 €.
+ * Ces formations sont « sur devis » : le prix de référence est le nombre de journées × le prix public
+ * d'une journée de la même famille (méthode de l'exemple ci-dessus). Hors de `PALIERS_FORMATION` : la
+ * grille publique ne change pas. Sur ces paliers, la quantité est le NOMBRE DE JOURNÉES (3 au moins).
+ */
+export const FORFAIT_JOURNEE_FORMATION_V2_CENTS = 50_000;
+export const PLAFOND_FORMATION_LONGUE_CENTS = 100_000;
+export const JOURNEES_MIN_FORMATION_LONGUE = 3;
+export const PALIERS_FORMATION_LONGUE = [
+  {
+    id: "formation-generale-3j-plus",
+    libelle: "Formation générale, 3 jours ou plus",
+    prixJourCents: 190_000,
+  },
+  {
+    id: "formation-metier-3j-plus",
+    libelle: "Formation par métier, 3 jours ou plus",
+    prixJourCents: 190_000,
+  },
+  {
+    id: "formation-secteur-3j-plus",
+    libelle: "Formation par secteur, 3 jours ou plus",
+    prixJourCents: 220_000,
+  },
+] as const;
+
+/** Libellé d'un palier de formation (y compris 3 jours ou plus) ; `null` s'il est inconnu. */
+export function libellePalierFormation(id: string | null | undefined): string | null {
+  return (
+    PALIERS_FORMATION.find((p) => p.id === id)?.libelle ??
+    PALIERS_FORMATION_LONGUE.find((p) => p.id === id)?.libelle ??
+    null
+  );
+}
+
+/** Palier de formation connu (grille publique ou 3 jours ou plus) ? */
+export function estPalierFormation(id: string | null | undefined): boolean {
+  return libellePalierFormation(id) !== null;
+}
+
+/**
+ * Commission d'une formation de 3 jours ou plus : v3 = 1 000 € × min(1, HT ÷ référence) ;
+ * v2 = 500 € × journées × min(1, HT ÷ référence), sans plafond (annexe 1 du contrat 2.6, A1.1).
+ */
+function commissionFormationLongue(
+  p: (typeof PALIERS_FORMATION_LONGUE)[number],
+  htCents: number,
+  journees: number | undefined,
+  grille: GrilleCommission,
+): CalculCommission {
+  if (
+    typeof journees !== "number" ||
+    !Number.isInteger(journees) ||
+    journees < JOURNEES_MIN_FORMATION_LONGUE ||
+    journees > 99
+  )
+    return { statut: "a_qualifier" };
+  const reference = p.prixJourCents * journees;
+  const ht = Math.max(0, htCents);
+  const pleinCents =
+    grille === "v2"
+      ? FORFAIT_JOURNEE_FORMATION_V2_CENTS * journees
+      : PLAFOND_FORMATION_LONGUE_CENTS;
+  return {
+    statut: "calculee",
+    montantCents: ht >= reference ? pleinCents : Math.round((pleinCents * ht) / reference),
+    palier: p.id,
+    prixPublicCents: reference,
+  };
+}
+
+// ── Grille selon la version du contrat signé (décision du dirigeant du 27/11/2026) ─────────
+
+/**
+ * Les deux grilles de l'annexe 1 : « v2 » = contrats 2.3, 2.4, 2.5 et 2.6 (annexes identiques,
+ * lues dans l'historique de `contrat-v2.ts`) ; « v3 » = contrat 2.8. La 2.7 n'a jamais existé.
+ */
+export type GrilleCommission = "v2" | "v3";
+
+/** Versions signées dont la grille est connue. Toute autre version : inconnue → escalade. */
+export const GRILLE_DE_LA_VERSION: Readonly<Record<string, GrilleCommission>> = Object.freeze({
+  "2.3": "v2",
+  "2.4": "v2",
+  "2.5": "v2",
+  "2.6": "v2",
+  "2.8": "v3",
+});
+
+/** Message d'escalade : jamais un 0 € silencieux quand la version signée est inconnue. */
+export const MESSAGE_GRILLE_INCONNUE =
+  "Version du contrat signé inconnue : aucune grille ne s'applique d'office. Calcul à faire à la main, selon le contrat signé par l'apporteur.";
+
+/**
+ * La grille d'une commande (pur).
+ * 1. Avenant 2.8 en vigueur (`avenant28EffetAt`), entreprise déclarée ET commande signée à partir de
+ *    sa date d'effet → v3 (art. 13.5 : les déclarations antérieures gardent leur grille ; art. 4.1 :
+ *    grille acceptée à la signature de la commande).
+ * 2. Sinon, la version inscrite dans la signature de l'apporteur (`signatureApporteur.version`).
+ * 3. `null` = inconnue (version absente, illisible, antérieure à la 2.3, 2.7, future) : ESCALADE.
+ *
+ * `avenant28EffetAt` : la date d'effet viendra de la table de l'avenant (lot S1) ; d'ici là, `null`.
+ */
+export function grilleDeLaCommande(e: {
+  signature: unknown;
+  declareeAt: Date;
+  commandeSigneeAt: Date;
+  avenant28EffetAt: Date | null;
+}): GrilleCommission | null {
+  const effet = e.avenant28EffetAt?.getTime();
+  if (
+    effet !== undefined &&
+    Number.isFinite(effet) &&
+    e.declareeAt.getTime() >= effet &&
+    e.commandeSigneeAt.getTime() >= effet
+  )
+    return "v3";
+  if (!e.signature || typeof e.signature !== "object" || Array.isArray(e.signature)) return null;
+  if (!Object.hasOwn(e.signature, "version")) return null;
+  const v = (e.signature as { version?: unknown }).version;
+  if (typeof v !== "string" || !Object.hasOwn(GRILLE_DE_LA_VERSION, v)) return null;
+  return GRILLE_DE_LA_VERSION[v] ?? null;
+}
+
+/**
  * Développement web (A1.5 du contrat 2.8) : commissionné seulement pour une commande signée à partir
  * de cette date (4.1 : une nouvelle grille ne vaut que pour les ventes signées après son entrée en
  * vigueur ; jamais de commission rétroactive sur les ventes passées). Recalée le 26/11/2026, date de
@@ -506,6 +639,9 @@ export type CalculCommission =
  * - conférence : aucune commission (contrat 2.8) pour une commande signée à partir du 26/11/2026 ;
  *   avant, forfait de l'ancien contrat ;
  * - développement web : 15 % du HT facturé (annexe 1, A1.5 du contrat 2.8).
+ *
+ * ⚠️ C'est la grille v3 (contrat 2.8) SEULE. Pour une commande d'apporteur, appeler
+ * `calculerCommissionSelonGrille` : un signataire 2.6 sans avenant garde sa grille (27/11).
  */
 export function calculerCommission(e: {
   activite: ActiviteCommission | null;
@@ -537,6 +673,8 @@ export function calculerCommission(e: {
     return { statut: "aucune" };
   }
   if (e.activite === "formation") {
+    const longue = PALIERS_FORMATION_LONGUE.find((x) => x.id === e.palier);
+    if (longue) return commissionFormationLongue(longue, e.factureHtCents, e.quantite, "v3");
     const p = PALIERS_FORMATION.find((x) => x.id === e.palier);
     if (!p) return { statut: "a_qualifier" };
     const ht = Math.max(0, e.factureHtCents);
@@ -560,6 +698,45 @@ export function calculerCommission(e: {
     palier: null,
     prixPublicCents: null,
   };
+}
+
+/**
+ * La commission d'une facture soldée selon la GRILLE de la commande (`grilleDeLaCommande`) — c'est
+ * la fonction à appeler pour toute commande d'un apporteur (passage quotidien, console).
+ * - v3 (contrat 2.8) : `calculerCommission`, inchangé ;
+ * - v2 (contrats 2.3 à 2.6, annexe 1 « version 2 ») : coaching 30 % du HT (A1.2), conférence 500 € par
+ *   conférence sans prorata et jamais plus que le HT (A1.4 bis), développement web aucune (A1.5) ;
+ *   formations de 3 jours ou plus : 500 € par journée au prorata, SANS plafond (A1.1 du 2.6) ;
+ *   autres formations, audit et intégration identiques à la v3. Le plafond de 1 000 € est v3 seul.
+ */
+export function calculerCommissionSelonGrille(
+  e: Parameters<typeof calculerCommission>[0] & { grille: GrilleCommission },
+): CalculCommission {
+  if (e.grille === "v3") return calculerCommission(e);
+  if (e.activite === "un_a_un")
+    return {
+      statut: "calculee",
+      montantCents: Math.round((Math.max(0, e.factureHtCents) * TAUX_BPS.un_a_un) / 10_000),
+      palier: null,
+      prixPublicCents: null,
+    };
+  if (e.activite === "conference" || (e.activite === "formation" && e.palier === PALIER_CONFERENCE))
+    return {
+      statut: "calculee",
+      montantCents: Math.min(
+        FORFAIT_CONFERENCE_CENTS * quantiteSessions(e.quantite),
+        Math.max(0, e.factureHtCents),
+      ),
+      palier: PALIER_CONFERENCE,
+      prixPublicCents: null,
+    };
+  if (e.activite === "site_web") return { statut: "aucune" };
+  if (e.activite === "formation") {
+    const longue = PALIERS_FORMATION_LONGUE.find((x) => x.id === e.palier);
+    if (longue) return commissionFormationLongue(longue, e.factureHtCents, e.quantite, "v2");
+  }
+  // Autres formations, audit, intégration : même calcul ; `signeeAt` ne joue que pour la v3.
+  return calculerCommission({ ...e, signeeAt: null });
 }
 
 /**
@@ -622,6 +799,30 @@ export function versionContratSignee(signature: unknown): string | null {
   if (!signature || typeof signature !== "object" || Array.isArray(signature)) return null;
   const v = (signature as { version?: unknown }).version;
   return typeof v === "string" && /^\d{1,3}\.\d{1,3}$/.test(v) ? v : null;
+}
+
+/**
+ * `calculerCommissionSelonGrille` + le code de la règle (relevé mensuel, lot R). Le calcul rendu est
+ * EXACTEMENT celui de `calculerCommissionSelonGrille` (aucun montant ne change). v3 : codes de
+ * `calculerCommissionAvecRegle` ; v2 : coaching au taux, conférence au forfait, formation longue au
+ * forfait ou au prorata, le reste comme la v3.
+ */
+export function calculerCommissionSelonGrilleAvecRegle(
+  e: Parameters<typeof calculerCommission>[0] & { grille: GrilleCommission },
+): { calcul: CalculCommission; regle: RegleAppliquee | null } {
+  if (e.grille === "v3") return calculerCommissionAvecRegle(e);
+  const calcul = calculerCommissionSelonGrille(e);
+  if (calcul.statut !== "calculee") return { calcul, regle: null };
+  if (e.activite === "un_a_un") return { calcul, regle: "taux_ht" };
+  if (e.activite === "conference" || (e.activite === "formation" && e.palier === PALIER_CONFERENCE))
+    return { calcul, regle: "tarif_avant_date_effet" };
+  const longue = PALIERS_FORMATION_LONGUE.find((x) => x.id === e.palier);
+  if (e.activite === "formation" && longue) {
+    const journees = typeof e.quantite === "number" ? e.quantite : 0;
+    const complet = Math.max(0, e.factureHtCents) >= longue.prixJourCents * journees;
+    return { calcul, regle: complet ? "forfait_palier" : "prorata_remise" };
+  }
+  return calculerCommissionAvecRegle({ ...e, signeeAt: null });
 }
 
 /**

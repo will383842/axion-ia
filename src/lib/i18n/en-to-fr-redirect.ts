@@ -15,6 +15,8 @@
 // Au moment de réactiver EN, les EN URLs seront à nouveau servies normalement
 // (et hreflang à nouveau respecté).
 
+import { routing } from "../../i18n/routing";
+
 // Mapping prefixes — ordre = MATCH LE PLUS LONG D'ABORD (sinon `/en/case-studies/foo`
 // matcherait `/en/case-studies` mais perdrait le slug). On déclare donc le
 // suffixe `/` avant la version sans slash pour chaque entrée parameterized.
@@ -25,7 +27,7 @@
 // qui n'existe pas, la canonique est `strategique-pme`). Conséquence : chaîne
 // 301 → 307/404 → catchall soft 404. Le mapping exhaustif émet un seul 301 vers
 // la canonique FR, économisant 1 hop + transmettant 100% du link juice.
-const EN_TO_FR_PREFIXES: ReadonlyArray<readonly [string, string]> = [
+export const EN_TO_FR_PREFIXES: ReadonlyArray<readonly [string, string]> = [
   // Équipe : hub et fiches (`/team/[slug]`) — « team » n'existe pas côté FR.
   ["/en/team", "/fr/equipe"],
 
@@ -128,6 +130,61 @@ const EN_TO_FR_PREFIXES: ReadonlyArray<readonly [string, string]> = [
   ["/en/one-to-one", "/fr/un-a-un"],
 ];
 
+// Paires dont la traduction dérivée est volontairement écartée : la page des prix ne se
+// touche pas sans décision de Will (`/en/pricing` reste traité comme avant).
+const PAIRES_ECARTEES = new Set(["/tarifs"]);
+
+type RegleDerivee = { re: RegExp; fr: string[] };
+
+function compilerRouting(): { statiques: Map<string, string>; dynamiques: RegleDerivee[] } {
+  const statiques = new Map<string, string>();
+  const dynamiques: RegleDerivee[] = [];
+  const echapper = (t: string) => t.replace(/[.*+?^${}()|\\]/g, "\\$&");
+  for (const [cle, val] of Object.entries(routing.pathnames as Record<string, unknown>)) {
+    if (typeof val !== "object" || val === null || PAIRES_ECARTEES.has(cle)) continue;
+    const { fr, en } = val as { fr?: string; en?: string };
+    if (!fr || !en || fr === en) continue; // identiques : le repli /en → /fr suffit
+    if (!en.includes("[")) {
+      statiques.set(`/en${en}`, `/fr${fr}`);
+      continue;
+    }
+    // `[x]` = un segment ; `[...x]` / `[[...x]]` = le reste du chemin.
+    const motif = en
+      .split(/(\[\[?\.\.\.[^\]]+\]\]?|\[[^\]]+\])/)
+      .map((morceau) => {
+        if (/^\[\[?\.\.\./.test(morceau)) {
+          return "(.*)";
+        }
+        if (/^\[/.test(morceau)) {
+          return "([^/]+)";
+        }
+        return echapper(morceau);
+      })
+      .join("");
+    dynamiques.push({ re: new RegExp(`^/en${motif}/?$`), fr: fr.split(/(\[[^\]]+\])/) });
+  }
+  return { statiques, dynamiques };
+}
+
+let tableRouting: ReturnType<typeof compilerRouting> | undefined;
+
+function mapDepuisRouting(pathname: string): string | null {
+  tableRouting ??= compilerRouting();
+  const chemin = pathname.length > 1 && pathname.endsWith("/") ? pathname.slice(0, -1) : pathname;
+  const direct = tableRouting.statiques.get(chemin);
+  if (direct) return direct;
+  for (const regle of tableRouting.dynamiques) {
+    const m = regle.re.exec(chemin);
+    if (!m) continue;
+    let i = 1;
+    return (
+      "/fr" +
+      regle.fr.map((morceau) => (morceau.startsWith("[") ? (m[i++] ?? "") : morceau)).join("")
+    );
+  }
+  return null;
+}
+
 /**
  * Mappe un pathname `/en/*` vers son équivalent FR.
  * Cas d'usage : `/en/about` → `/fr/a-propos`, `/en/blog` → `/fr/blog`.
@@ -144,6 +201,10 @@ export function mapEnToFr(pathname: string): string {
   if (pathname === "/en/case-studies" || pathname.startsWith("/en/case-studies/")) {
     return "/fr/methodologie";
   }
+  // S1 (404) : d'abord la table DÉRIVÉE de `routing.pathnames` (source de vérité), puis
+  // la table écrite à la main pour les slugs EN retirés. Aucun accès base, aucun réseau.
+  const derive = mapDepuisRouting(pathname);
+  if (derive) return derive;
   for (const [enPrefix, frPrefix] of EN_TO_FR_PREFIXES) {
     // Frontière de SEGMENT (GEO-060) : un préfixe sans `/` final ne doit matcher
     // que le chemin exact ou un sous-chemin `<préfixe>/…`. Sans cette borne,

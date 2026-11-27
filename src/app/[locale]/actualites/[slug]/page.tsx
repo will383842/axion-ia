@@ -245,8 +245,8 @@ export default async function NewsArticlePage({ params }: Props) {
     // Fix 2026-07-31 — `redirect()` émettait un 307 Temporary (Google ne
     // consolide pas) ; `permanentRedirect()` émet le 308 attendu.
     const redirectInfo = await findArticleSlugRedirect(slug, "fr");
-    if (redirectInfo && redirectInfo.isNews) {
-      permanentRedirect(`/fr/actualites/${redirectInfo.newSlug}`);
+    if (redirectInfo && !(redirectInfo.section === "actualites" && redirectInfo.newSlug === slug)) {
+      permanentRedirect(`/fr/${redirectInfo.section}/${redirectInfo.newSlug}`);
     }
 
     // Audit indexation 2026-05-15 P0-7 — soft-410 si l'article est archived ou

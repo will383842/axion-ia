@@ -190,6 +190,7 @@ vi.mock("../facturation", () => ({
 vi.mock("../litige", () => ({ litigeDisponible: async () => true }));
 vi.mock("../signaler", () => ({ signalerErreurReseau: vi.fn() }));
 vi.mock("../commissions", () => ({
+  grilleDeLaLigne: vi.fn(async () => ({ grille: "v3", signeeAt: null })), // cas calibrés sur la grille v3
   libererSiPiecesValides: vi.fn(async () => 0),
   relancerVigilance: vi.fn(async () => false),
   demanderVigilance: vi.fn(async () => "deja"),
@@ -226,6 +227,8 @@ const presentation = (id: string, apporteurId: string, parrainId: string | null 
     email: "a@b.fr",
     parrainId,
     signeParSocieteAt: parrainId ? new Date("2026-06-01T00:00:00Z") : null,
+    // Contrat 2.8 : grille v3 (décision du 27/11, la version signée choisit la grille).
+    signatureApporteur: { version: "2.8" },
   },
 });
 

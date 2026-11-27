@@ -134,7 +134,7 @@ describe("lot R — chaque création de commission pose la règle (source)", () 
   const lire = (f: string) => readFileSync(join(__dirname, "..", f), "utf8");
   it("passage-quotidien : les créations calculées portent regleAppliquee et versionContrat", () => {
     const s = lire("passage-quotidien.ts");
-    expect(s).toMatch(/calculerCommissionAvecRegle/);
+    expect(s).toMatch(/calculerCommissionSelonGrilleAvecRegle/);
     expect(s).toMatch(/regleAppliquee:/);
     expect(s).toMatch(/versionContrat[:,]/);
     expect(s).toMatch(/parrainage_10/);
