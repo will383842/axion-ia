@@ -1,47 +1,57 @@
-VERDICT A CORRIGER sha=fd974f22 (R2) : tests/image-video/variete/apparition.test.ts:67, le commentaire renvoie à « journal/FIX-ROUGES-APPARITION-v21t.md », qui n'existe ni dans la branche, ni dans master, ni dans aucun commit du dépôt : versionner ce tableau ou retirer le renvoi (la liste des commits est déjà dans le commentaire). Secondaire : deux mutations survivent (M5, M6 ci-dessous), des trous antérieurs à la branche.
+VERDICT OK sha=576aa769 (R2) — diff = 1 fichier test (tests/image-video/variete/apparition.test.ts, +12/-5, empreinte recalée) ; vitest 12/12 vert sur la branche ET sur master seul (91dc1521) ; tsc 43 erreurs identiques branche/master (0 neuve) ; 8 mutations : 5 tuées, 3 équivalentes prouvées
 
-# Relecture R2 (indépendante) — video/FIX-ROUGES-APPARITION-v21t
+# Relecture R2 indépendante, FIX-ROUGES-APPARITION-v21t (studio-axion-ia-public)
 
-- Tête vérifiée : `fd974f22cd370b857a38a1265f147d54a26e162f` (pas de « TÊTE CHANGÉE »).
-- Aucune fiche fournie : diff jugé seul.
+- Tête vérifiée : `576aa769ef10f4b4a36ed75fd7a8516bbf709347` (attendue 576aa769 : conforme, tête inchangée).
+- Base comparée : `origin/master` = `91dc152160b5fdb479c1fe832e7cd6074302a1a2`.
+- Lecture seule : aucune modification du code du Studio n'a été poussée ; chaque mutation a été remise (`git status` propre à la fin).
 
-## Diff
+## 1. Le diff
 
-`git diff --stat origin/master...origin/video/FIX-ROUGES-APPARITION-v21t` : 1 fichier, `tests/image-video/variete/apparition.test.ts`, +8 / −1.
+`git diff --stat origin/master...origin/video/FIX-ROUGES-APPARITION-v21t` :
 
-- La constante `EMPREINTE_TOILE_REFERENCE` passe de `09542bc8…` à `ff1dbf99264cf312a1d6791daac5bad74dc120ef61c398492e30726c78fe719f`, avec un commentaire qui explique pourquoi.
-- Le diff est petit et cohérent avec le nom de la branche.
-- Aucun chemin interdit n'est touché : `.github/**`, `deploiement/**`, `outils/gardes/**`, `scripts/echecs-connus.json`. Aucun secret.
-- Aucun code de production n'est modifié : seule l'empreinte attendue change. Les deux tests qui la lisent gardent des noms qui disent leur promesse (« sans variété : le HTML de la toile est identique… », « recette de référence (APP-A, MAT-A)… même HTML que sans variété »).
+```
+tests/image-video/variete/apparition.test.ts | 17 ++++++++++++-----
+1 file changed, 12 insertions(+), 5 deletions(-)
+```
 
-## Preuves
+- Petit et cohérent avec le nom de la branche : seule la constante `EMPREINTE_TOILE_REFERENCE` (09542bc8… → ff1dbf99…),
+  son commentaire (historique justifiant le recalage) et le nom du test (« celui de master au 27/11 (ff1dbf99…) ») changent.
+- Aucun fichier sous `.github/**`, `deploiement/**`, `outils/gardes/**`, `scripts/echecs-connus.json` ; aucun secret.
+- Aucun code de production touché : le diff ne peut pas introduire de régression fonctionnelle.
+- Le nouveau nom de test dit honnêtement sa promesse (référence = HTML de master au 27/11), plus « identique à avant
+  le lot », qui n'était plus vérifiable. L'invariant de fond reste porté par le second test : APP-A + MAT-A rend le
+  MÊME HTML que sans variété.
 
-- Dépendances installées : `pnpm install --frozen-lockfile` (magasin local), plus `npm ci` dans `studio-rendu/`.
-- Sur la branche, `npx vitest run tests/image-video/variete/apparition.test.ts` → **12/12 verts**.
-- Sur `origin/master` (commit `aa83d0d1`), avec seulement le fichier de test de la branche → **12/12 verts**. L'affirmation « master seul donne la même » est donc vérifiée : l'empreinte est reproductible.
-- `npx tsc --noEmit -p .` donne **43 erreurs sur la branche et 43 sur master**. Le seul écart est l'ordre d'affichage des unions dans 2 messages. **Aucune erreur neuve.** Ces erreurs existaient déjà : `remotion` manque dans `docs/`, et `RouteContext`/`LayoutProps` viennent de typegen.
+## 2. Tests et types
 
-## Mutations (toutes remises, `git status` propre, rien poussé)
+- Dépendances : `pnpm install --frozen-lockfile` (magasin local, le magasin partagé est en lecture seule) + `npm ci` dans `studio-rendu/`.
+- `npx vitest run tests/image-video/variete/apparition.test.ts` sur la branche : **12 passed (12)**.
+- Même fichier de test copié sur un arbre de travail `origin/master` seul : **12 passed (12)**, donc ff1dbf99… est bien
+  l'empreinte de master (ce que dit le commentaire), et elle est reproductible (deux arbres, deux exécutions).
+- `npx tsc --noEmit -p .` (avec `--max-old-space-size=8192`, sinon le processus manque de mémoire) : 43 erreurs sur la branche et 43 sur master, **liste
+  identique** (`diff` vide), donc aucune erreur neuve. Les 43 sont préexistantes et liées à l'environnement (`remotion` absent des
+  prototypes `docs/`, types `RouteContext`/`LayoutProps` générés par `next typegen`, quelques tests).
+- Non vérifié : l'affirmation du commentaire selon laquelle 09542bc8… n'est pas retrouvée sur 55d99567 (il faudrait
+  réinstaller les dépendances de cette version). Sans incidence sur le verdict : l'ancienne valeur échoue sur master.
 
-| #   | Mutation                                                                                        | Résultat                                                                                                 |
-| --- | ----------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------- |
-| M1  | `axes/apparition.ts` : `code === "APP-A"` → `!==` (garde inversée)                              | 6 rouges ✅                                                                                              |
-| M2  | `axes/apparition.ts` : `NOEUDS_MIN = 3` → `2` (borne)                                           | 1 rouge (« possibles ») ✅                                                                               |
-| M3  | `Toile.tsx:73` : `app.code !== "APP-C"` → `===`                                                 | 2 rouges (APP-B, APP-D) ✅                                                                               |
-| M4  | `Toile.tsx:136` : `o > 0` → `o >= 0`                                                            | survit, **hors périmètre** (`SchemaMuet` n'est pas rendu par `Toile`)                                    |
-| M5  | `Toile.tsx:39` : `precedent = d[k-1][1] + surgir` → `- surgir` (heure d'apparition de la place) | **survit : trou**                                                                                        |
-| M6  | `Toile.tsx:70` : `Math.min(filetDe…)` → `Math.max` (opacité d'étiquette)                        | **survit : trou ou mutant équivalent sur ces 6 cartes**                                                  |
-| M7  | `Toile.tsx:97` : `t0 - avanceNoeud` → `t0 + avanceNoeud`                                        | 1 rouge (APP-D) ✅                                                                                       |
-| M8  | `Toile.tsx:96` : `vu ? ETAT_VU` → `!vu ? ETAT_VU` (chemin de référence)                         | 5 rouges, **dont les 2 tests d'empreinte** ✅ : la nouvelle empreinte est bien vivante, pas tautologique |
+## 3. Mutations (chacune lancée sur le fichier de test, puis remise)
 
-M5 et M6 existaient avant cette branche : le diff ne les crée pas.
+| #   | Mutation                                                             | Fichier                                                      | Résultat                                                                                                         |
+| --- | -------------------------------------------------------------------- | ------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------- |
+| M1  | borne `NOEUDS_MIN = 3` → `2`                                         | `src/moteurs/montage-image-video/variete/axes/apparition.ts` | **tuée** (1 rouge : « possibles … (≥ 3 nœuds) »)                                                                 |
+| M2  | condition inversée `!vus.includes(n)` → `vus.includes(n)` (fantômes) | idem                                                         | **tuée** (2 rouges, APP-C)                                                                                       |
+| M6  | rayon de la carte de référence `main ? 10 : 34` → `35`               | `studio-rendu/compositions/image-video/Noeud.tsx:114`        | **tuée** (les 2 tests d'empreinte rougissent : l'empreinte recalée détecte bien une dérive du HTML de référence) |
+| M7  | garde inversée `absent && !eteinte` → `absent && eteinte`            | `Noeud.tsx:26`                                               | **tuée** (4 rouges : 2 empreintes, APP-C, APP-B)                                                                 |
+| M8  | repli inversé `if (!toiles)` → `if (toiles)`                         | `apparition.ts` (axe)                                        | **tuée** (6 rouges : invariants APP-B/C/D, APP-C)                                                                |
+| M3  | `borderRadius: 40` → `41` (ombre APP-D)                              | `Noeud.tsx:80`                                               | survit : cosmétique de l'ombre APP-D, hors référence ; aucun test n'en fait la promesse (pas un trou de ce diff) |
+| M4  | garde `app?.code === "APP-C"` supprimée dans `eteinte`               | `Noeud.tsx:25`                                               | survit : **équivalente**, `fantome` n'est vrai que pour APP-C (`Toile.tsx:98`)                                   |
+| M5  | garde `if (code === "APP-A") return etape;` supprimée                | `apparition.ts` (axe)                                        | survit : **équivalente**, `apparitionDe` rend `null` pour APP-A (`variete/apparition/apparition.ts:50`)          |
 
-- M5 : les tests APP-B et APP-D ne vérifient que la présence de `data-place`, jamais son opacité dans le temps.
-- M6 : l'empreinte ne distingue pas `min` de `max`, sans doute parce que les deux filets valent toujours la même chose sur les fixtures.
+Les 5 mutations non équivalentes qui touchent le comportement promis sont toutes tuées, y compris sur le chemin de
+référence que ce diff recale (M6, M7). Les 3 survivantes sont équivalentes ou hors promesse.
 
-À traiter dans ce fichier de test ou dans un lot dédié.
+## Conclusion
 
-## Ce qu'il faut corriger pour passer OK
-
-1. Ligne 67 : retirer « (tableau : journal/FIX-ROUGES-APPARITION-v21t.md) » ou versionner ce journal. Aujourd'hui, la justification annoncée est invérifiable.
-2. Facultatif, mais demandé par la règle des mutations : ajouter une assertion sur l'opacité de la place (APP-B/APP-D) à deux instants, pour tuer M5.
+OK. Le recalage est voulu et documenté. La valeur est reproductible et identique sur master. Le test reste
+discriminant : toute dérive du HTML de référence le fait rougir (M6, M7).
