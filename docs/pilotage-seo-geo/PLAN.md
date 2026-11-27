@@ -68,7 +68,7 @@ Le rapport hebdomadaire (lundi 07:00 UTC) **lit** les tables : il n'appelle aucu
 - **Type de page** : `typePageDepuisChemin` part de `site-explorer/categories.ts`, mais cette source n'a **ni `faq`, ni `guide`, ni `actualite`** (seulement commercial, villes, contenu, aide, legal, conversion, transversal, galerie, autre). Il faut donc une **table de correspondance par préfixe de chemin**, écrite une fois dans `src/server/seo-pilotage/donnees/types-page.ts` et testée contre `categories.ts` : `/blog/` pour article, l'actualité, `/guide…` pour guide, `/faq` et l'aide pour faq, `implantations` pour ville, la catégorie `commercial` pour offre, `transversal` et `legal` pour institutionnel. Valeurs : article, actualité, guide, ville, offre, faq, institutionnel, conversion, galerie, autre.
 - **Filtre de données personnelles à l'ingestion, avant tout stockage** :
   - requêtes contenant un e-mail, un numéro de téléphone ou un nom de personne connu en base (formateurs, salariés, clients, candidats, via jointure) : **non stockées**, seulement comptées dans l'agrégat de la page ;
-  - requêtes à moins de 10 impressions sur la journée : regroupées sous « autres », jamais stockées en texte.
+  - **pas de seuil journalier** : avec ~428 impressions par semaine sur tout le site, presque aucune requête n'atteint 10 impressions par jour, et un tel seuil viderait les détecteurs. Les requêtes sont stockées par jour une fois passé le filtre des données personnelles. Le plancher de bruit des détecteurs (≥ 30 impressions **cumulées sur 28 jours**, § 4.2) s'applique à la **lecture**, pas au stockage. Les requêtes de moins de 3 impressions cumulées sur 90 jours sont purgées en texte (seul l'agrégat de la page reste).
 - **Filtre « Grenoble »** : la requête est stockée telle quelle, car c'est une mesure, mais elle est **exclue de toute proposition**.
 - **Après l'ingestion, on recalcule sans appel réseau :**
   - `SiteRoute.gsc*` sur une fenêtre de 28 j **identique pour toutes les URL** ;
@@ -235,7 +235,7 @@ Les signalements sont listés à part. Un coefficient de valeur métier par cat�
 
 - **Fenêtres comparées** : [J−31, J−3] contre [J+3, J+31]. Le client GSC reçoit une variante avec dates explicites.
 - **Groupe témoin** : 20 % des pages éligibles, tirées de façon déterministe par hachage de l'identifiant, **jamais modifiées**. La différence de différences neutralise la saisonnalité et les mises à jour de Google.
-- **GEO** : l'effet sur les citations **n'est pas attribuable** page par page avec un panel de 40 questions. On l'affiche comme une tendance globale, sans attribution.
+- **GEO** : l'effet sur les citations **n'est pas attribuable** page par page avec un panel de 30 questions. On l'affiche comme une tendance globale, sans attribution.
 
 ### 5.5 File de validation dans la console
 
@@ -260,7 +260,7 @@ Règles de la file :
 - **`pilotage_cout_max_jour_usd`**, défaut 2 $ ;
 - **`pilotage_cout_max_mois_usd`**, défaut 30 $.
 
-Le pilotage ne peut donc **jamais prendre plus de 15 % du budget mensuel** de la production. ⚠️ La réservation se fait au **coût maximal possible** (jetons de recherche × `max_uses` × marge) : ~0,25 $ par question du panel avec `max_uses: 2`, contre ~0,6 $ avec la valeur actuelle de 5. C'est pourquoi le panel est étalé sur plusieurs jours et borné à 2 recherches.
+Le pilotage ne peut donc **jamais prendre plus de 15 % du budget mensuel** de la production. ⚠️ La réservation se fait au **coût maximal possible** (`fraisFixesMaxUsd`, `content-gen/clients/claude-search.ts:150-166` : 30 000 jetons d'entrée par recherche, sortie maximale, marge de la porte). Avec `max_uses: 2` et la sortie actuelle de 4 000 jetons, elle vaut **~0,36 $ par question** (~1,2 $ avec 5 recherches). La P11 abaisse la sortie maximale du panel à **~1 000 jetons**, ce qui ramène la réservation à **~0,25 $**. Dans les deux cas, 3 questions par jour tiennent sous le sous-plafond de 2 $/jour (≤ 1,1 $).
 
 | Poste                                                                                                 | Estimation                                       |
 | ----------------------------------------------------------------------------------------------------- | ------------------------------------------------ |
@@ -268,7 +268,7 @@ Le pilotage ne peut donc **jamais prendre plus de 15 % du budget mensuel** de la
 | Propositions titre/méta/FAQ (Sonnet 5.5, ≤ 3 par jour, remplacements ciblés)                          | ≈ 3-6 $/mois                                     |
 | Classement des intentions inconnues (Sonnet 5.5, par lots de 100, mis en cache)                       | < 1 $/mois                                       |
 | Mises à jour d'articles                                                                               | Déjà comptées par l'équipe éditoriale            |
-| **Total**                                                                                             | **≈ 12-17 $/mois**, sous le sous-plafond de 30 $ |
+| **Total**                                                                                             | **≈ 10-17 $/mois**, sous le sous-plafond de 30 $ |
 
 Mesure, opportunités et score de citabilité : **0 $** (aucun modèle).
 

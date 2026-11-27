@@ -98,7 +98,7 @@ Facultatif           P17 Bing Webmaster (après P4)
 ### P3 · Module pur des données (`src/server/seo-pilotage/donnees/`)
 
 - **Fonctions** : `normaliserChemin`, `typePageDepuisChemin` (table de correspondance par préfixe de chemin dans `types-page.ts`, car `categories.ts` n'a ni faq, ni guide, ni actualité ; testée contre `categories.ts` pour ne jamais diverger), `positionSum` et moyennes, `partAnonymisee`, cumul en semaine ISO, `filtrerDonneesPersonnelles`, `filtrerInterdits`.
-  - `filtrerDonneesPersonnelles` filtre les e-mails, les téléphones, une liste de noms injectée et les requêtes à moins de 10 impressions.
+  - `filtrerDonneesPersonnelles` filtre les e-mails, les téléphones, une liste de noms injectée. **Aucun seuil journalier d'impressions** (il viderait les détecteurs sur un site à ~428 impressions par semaine) : purge en texte des requêtes à moins de 3 impressions cumulées sur 90 jours.
 - **Tests** :
   - variantes d'hôte, de slash, de query et de fragment ;
   - `/en/` ramené à FR ;
@@ -185,7 +185,7 @@ Facultatif           P17 Bing Webmaster (après P4)
 - **Tests** :
   - pilotage éteint : la section est absente ;
   - source indisponible : la phrase l'annonce ;
-  - aucune donnée personnelle (pas de requête brute sous le plancher).
+  - aucune donnée personnelle (aucune requête sous le plancher de 30 impressions sur 28 jours n'est citée).
 
 ### P10 · GEO, mesure gratuite
 
@@ -206,7 +206,7 @@ Facultatif           P17 Bing Webmaster (après P4)
 
 - **Fichiers** :
   - `src/server/seo-pilotage/geo/panel-questions.ts` : 30 questions **versionnées**, **à valider par Will** ;
-  - `geo/panel.ts` : **nouvelle fonction d'appel** (Sonnet 5.5 + `web_search`, `max_uses: 2`, `user_location` France). Elle reprend de `content-gen/clients/claude-search.ts` le motif HTTP et la réservation, pas le prompt de vérification de faits, et utilise le job porteur de P0. Le panel est étalé à 3 questions par jour ouvré ;
+  - `geo/panel.ts` : **nouvelle fonction d'appel** (Sonnet 5.5 + `web_search`, `max_uses: 2`, sortie maximale ~1 000 jetons, `user_location` France). Elle reprend de `content-gen/clients/claude-search.ts` le motif HTTP et la réservation, pas le prompt de vérification de faits, et utilise le job porteur de P0. Le panel est étalé à 3 questions par jour ouvré ;
   - **migration additive** `GeoPanelReponse` : question, version, moteur, date, URL citées, présence et rang, domaines cités, **sans texte intégral** ;
   - tâche `panel-geo`.
 - **Tests** :
