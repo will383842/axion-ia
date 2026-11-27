@@ -144,3 +144,108 @@ describe("sub-sitemaps — pas de doublon à une URL (GEO-147)", () => {
     expect(exclusions).not.toContain('"/guides"');
   });
 });
+
+/**
+ * S2-4 — verrou général « noindex ⇒ hors plan du site ».
+ *
+ * Pour chaque famille qui a un prédicat d'indexabilité, le constructeur du plan
+ * du site ET `generateMetadata` de la page doivent appeler la MÊME fonction :
+ * sinon l'un dérive et le plan du site annonce des pages noindex
+ * (« URL noindex dans le plan du site » en Search Console).
+ *
+ * Les familles galerie et presse reçoivent leur prédicat partagé avec les PR
+ * S2-1 et S2-2 : tant que le module n'existe pas dans l'arbre, la ligne est
+ * ignorée ; dès qu'il existe, la ligne devient exigeante (aucun retour arrière).
+ */
+import { existsSync } from "node:fs";
+
+interface Famille {
+  nom: string;
+  /** Fonction (ou jeton) que la page ET le plan du site doivent tous deux appeler. */
+  jeton: string;
+  page: string;
+  plans: string[];
+  /** Si renseigné, la ligne n'est exigée que si ce fichier existe (PR S2-1 / S2-2). */
+  exigeSiExiste?: string;
+}
+
+const FAMILLES: Famille[] = [
+  {
+    nom: "villes",
+    jeton: "isVilleIndexable(",
+    page: "src/app/[locale]/implantations/[region]/[ville]/page.tsx",
+    plans: ["src/app/sitemap.ts"],
+  },
+  {
+    nom: "glossaire",
+    jeton: "isGlossaryTermIndexable(",
+    page: "src/app/[locale]/glossaire/[slug]/page.tsx",
+    plans: ["src/app/sitemap.ts"],
+  },
+  {
+    nom: "FAQ",
+    jeton: "isFaqItemIndexable",
+    page: "src/app/[locale]/faq/[slug]/page.tsx",
+    plans: ["src/app/sitemap.ts"],
+  },
+  {
+    nom: "livres",
+    jeton: "estPublie",
+    page: "src/app/[locale]/livres/[slug]/page.tsx",
+    // `livresPublies()` est défini comme `LIVRES.filter(estPublie)` (src/content/livres.ts).
+    plans: ["src/content/livres.ts"],
+  },
+  {
+    nom: "galerie",
+    jeton: "isGalleryPageIndexable(",
+    page: "src/app/[locale]/galerie/[slug]/page.tsx",
+    plans: ["src/app/sitemaps/images-fr.xml/route.ts", "src/app/sitemaps/images-en.xml/route.ts"],
+    exigeSiExiste: "src/server/image-bank/indexabilite.ts",
+  },
+  {
+    nom: "presse",
+    jeton: "communiqueIndexable(",
+    page: "src/app/[locale]/presse/[slug]/page.tsx",
+    plans: ["src/app/sitemap.ts"],
+    exigeSiExiste: "src/server/press/indexabilite.ts",
+  },
+];
+
+describe("S2-4 · la page et le plan du site appellent le même prédicat d'indexabilité", () => {
+  for (const f of FAMILLES) {
+    const actif = !f.exigeSiExiste || existsSync(path.join(process.cwd(), f.exigeSiExiste));
+    (actif ? it : it.skip)(`${f.nom} : ${f.jeton}`, () => {
+      const page = sansCommentaires(source(f.page));
+      expect(page.length, `${f.page} lu vide`).toBeGreaterThan(200);
+      expect(page.includes(f.jeton), `${f.page} n'appelle plus ${f.jeton}`).toBe(true);
+      for (const plan of f.plans) {
+        const src = sansCommentaires(source(plan));
+        expect(src.length, `${plan} lu vide`).toBeGreaterThan(200);
+        expect(
+          src.includes(f.jeton),
+          `${plan} n'appelle plus ${f.jeton} : le plan du site peut annoncer des pages noindex ` +
+            `(famille ${f.nom}).`,
+        ).toBe(true);
+      }
+    });
+  }
+
+  it("blog : le plan du site ne retient que tier-1 + note ≥ 70, la page déduit son robots du tier", () => {
+    const sitemap = sansCommentaires(source("src/app/sitemap.ts"));
+    const page = sansCommentaires(source("src/app/[locale]/blog/[slug]/page.tsx"));
+    expect(sitemap).toContain('indexationTier: "tier_1_indexable"');
+    expect(sitemap).toContain("BLOG_SITEMAP_MIN_QUALITY_SCORE");
+    expect(page).toContain('view.tier === "tier-2-noindex-follow"');
+    expect(page).toContain('view.tier === "tier-3-noindex-nofollow"');
+  });
+
+  it("commentaires périmés corrigés (S2-4)", () => {
+    const brut = (p: string) => source(p);
+    expect(brut("src/app/sitemap.ts")).not.toContain("(définition ≥ 80 mots");
+    expect(brut("src/app/sitemap.ts")).not.toContain("Les pages restent LIVE + indexables");
+    expect(brut("src/app/sitemap-news-evergreen.xml/route.ts")).not.toContain(
+      "l'actu reste LIVE + indexable",
+    );
+    expect(brut("src/app/[locale]/presse/[slug]/page.tsx")).not.toContain("body < 250 mots");
+  });
+});

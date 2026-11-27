@@ -18,7 +18,7 @@
  *     publisher Axion-IA, image OG dynamique, mainEntityOfPage)
  *   - JSON-LD `BreadcrumbList` via `<Breadcrumbs>` (Home → Espace presse → Titre)
  *   - JSON-LD `WebPage` + `Speakable` cssSelector `[data-aeo="press-release-tldr"]`
- *   - Anti-doorway HCU 2024 : `robots: noindex` si body < 250 mots
+ *   - Anti-doorway HCU 2024 : `robots: noindex` si body < 60 mots et pas de PDF
  *   - Réutilisation `<Container>`, `<Breadcrumbs>`, `<JsonLd>`, `<AnswerCard>`,
  *     `<PressImageBank>`
  *   - Pas d'AiContentDisclaimer (les communiqués sont éditoriaux humains, pas IA)

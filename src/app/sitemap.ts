@@ -447,8 +447,8 @@ export async function generateSitemaps(): Promise<Array<{ id: string }>> {
     // etc.) sont RETIRÉES du sitemap. Elles sont orphelines (0 lien interne,
     // sitemap-only) et diluaient le crawl-budget d'un domaine jeune. On concentre
     // le crawl sur les ~1776 villes-hub (sub-sitemaps villes, inchangés).
-    // Les pages restent LIVE + indexables (pas de noindex) — simplement plus
-    // annoncées. Réintroduire ces ids une fois l'autorité installée (+ backlinks).
+    // Depuis la décision du 18/11/2026 ces pages sont en `noindex, follow` (page + en-tête
+    // Edge) : elles restent LIVE, mais hors plan du site ET hors index. Réintroduire ces ids une fois l'autorité installée (+ backlinks).
     //   "services-villes-audit", "services-villes-interventions",
     //   "services-villes-implementation", "services-villes-un-a-un",
     //   "services-villes-sites-web-augmentes",
@@ -1256,7 +1256,7 @@ function buildGlossarySitemap(_now: Date): MetadataRoute.Sitemap {
   // Slugs identiques en FR et EN (les termes IA sont des sigles anglo-saxons
   // ou des concepts internationaux — pas de translation des slugs).
   // Audit indexation 2026-06-17 : n'inclure QUE les termes réellement indexables
-  // (définition ≥ 80 mots cumulés). Les termes thin rendent `noindex` côté page
+  // (définition ≥ 120 mots cumulés). Les termes thin rendent `noindex` côté page
   // (`glossaire/[slug]/page.tsx`) → les sitemapper créait une incohérence
   // sitemap↔page (Google perd confiance dans le sitemap). SSOT = isGlossaryTermIndexable.
   const slugs = listGlossaryTermSlugs().filter((slug) => isGlossaryTermIndexable(slug));

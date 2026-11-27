@@ -12,8 +12,9 @@
 // long-tail) couvrant les actus `tier_1_indexable` publiées dans les ~90 derniers
 // jours. Il prolonge la fenêtre de découverte bien au-delà des 48h de Google News
 // sans jamais dupliquer/contredire le sitemap-news (namespaces + finalités
-// distincts). Passé 90 jours, l'actu reste LIVE + indexable (pas de noindex) ;
-// elle n'est simplement plus annoncée ici (crawl-budget concentré sur le récent).
+// distincts). Passé 90 jours, le worker archive l'actu (tier-3) et la page rend
+// une « pierre tombale » en 200 + `noindex, nofollow` : elle n'est plus annoncée ici non
+// plus (crawl-budget concentré sur le récent).
 //
 // Route Handler XML brut (la convention Next 16 `MetadataRoute.Sitemap` reste
 // utilisable ici, mais on reste homogène avec les autres sub-sitemaps custom DB-
