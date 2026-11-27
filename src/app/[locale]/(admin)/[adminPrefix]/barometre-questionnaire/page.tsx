@@ -69,8 +69,11 @@ export default async function BarometreQuestionnaireAdminPage({ params }: PagePr
         <div>
           <dt className="font-medium">Effacement automatique</dt>
           <dd>
-            {CONSERVATION_MOIS} mois après le jour d&apos;envoi de chaque réponse (réponses envoyées
-            jusqu&apos;au {jourLimite} déjà échues)
+            {CONSERVATION_MOIS} mois après le jour d&apos;envoi de chaque réponse (
+            {jourLimite < DATE_DEBUT_COLLECTE
+              ? "aucune réponse n'a encore atteint 24 mois"
+              : `réponses envoyées jusqu'au ${jourLimite} déjà échues`}
+            )
           </dd>
         </div>
       </dl>

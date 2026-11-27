@@ -26,7 +26,7 @@ const RETRAIT_FERME =
   "Si vous avez déjà répondu, vous pouvez retirer vos réponses avec votre code de retrait, ci-dessous.";
 
 export const FERME = {
-  titre: "Le questionnaire est fermé.",
+  titre: "Le questionnaire n'est pas encore ouvert.",
   texte: `La collecte n'est pas encore ouverte : elle ouvre le 1er décembre 2026, puis reste ouverte en continu. ${RETRAIT_FERME}`,
   /** Une fois le 1er décembre 2026 passé, aucune date n'est affichée (l'interrupteur peut rester éteint). */
   texteSansDate: `La collecte n'est pas ouverte pour le moment. ${RETRAIT_FERME}`,

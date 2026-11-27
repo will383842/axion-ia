@@ -23,7 +23,7 @@ export const SEUIL_PUBLICATION_REPONSES = 100;
 export const CONSERVATION_MOIS = 24;
 
 /** Version du texte de consentement. Toute retouche, même d'une virgule, crée `barometre-q-v2`. */
-export const CONSENT_VERSION = "barometre-q-v1";
+export const CONSENT_VERSION = "barometre-q-v2";
 
 /** Version des libellés du questionnaire, écrite avec chaque réponse. */
 export const QUESTIONNAIRE_VERSION = "q-v5";
