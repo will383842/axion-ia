@@ -1,3 +1,4 @@
+// @vitest-environment jsdom
 /**
  * Chantier QNC, L04 — la déclaration STRUCTURÉE du besoin au positionnement.
  *

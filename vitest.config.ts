@@ -33,6 +33,14 @@ export default defineConfig({
     // les runners CI (2-4 cœurs) sont en dessous du plafond : inchangé pour eux.
     poolOptions: { forks: { maxForks: 3 } },
     environment: "jsdom",
+    // CI plus rapide (PR 3) : le code serveur et les gardes de CI n'ont pas besoin du DOM. Démarrer
+    // jsdom pour chaque fichier coûte du temps de couverture pour rien. Le défaut jsdom reste pour le
+    // reste (composants, hooks). L'en-tête `// @vitest-environment <env>` d'un fichier GARDE LA PRIORITÉ
+    // sur ces globs : un test serveur qui a besoin du DOM porte `// @vitest-environment jsdom`.
+    environmentMatchGlobs: [
+      ["src/server/**", "node"],
+      ["tests/unit/ci/**", "node"],
+    ],
     globals: true,
     setupFiles: ["./vitest.setup.ts"],
     include: [

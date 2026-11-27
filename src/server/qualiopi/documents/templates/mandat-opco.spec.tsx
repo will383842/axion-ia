@@ -1,3 +1,4 @@
+// @vitest-environment jsdom
 /**
  * Tests — template PDF du mandat OPCO (INT-T66-A, REQ-JUR-061).
  *
