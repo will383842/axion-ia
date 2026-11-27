@@ -84,7 +84,10 @@ export interface ReponseMessages {
     readonly output_tokens?: number;
     readonly cache_read_input_tokens?: number | null;
     readonly cache_creation_input_tokens?: number | null;
-    readonly server_tool_use?: { readonly web_search_requests?: number } | null;
+    readonly server_tool_use?: {
+      readonly web_search_requests?: number;
+      readonly web_fetch_requests?: number;
+    } | null;
   };
 }
 
@@ -144,21 +147,26 @@ function promptUtilisateur(affirmations: ReadonlyArray<string>): string {
  * successives, l'entrée cumulée vaut au plus R × n(n+1)/2 (borne quadratique, pas linéaire).
  * La sortie est comptée à `max_tokens` pour chacun des n+1 tours.
  */
-export function fraisFixesMaxUsd(): number {
-  const n = MAX_RECHERCHES;
+export function fraisFixesMaxUsd(
+  n: number = MAX_RECHERCHES,
+  /** Lectures de page (`web_fetch`) : gratuites, mais leur texte compte en entrée. */
+  lecturesPages = 0,
+  jetonsParLecture = 0,
+): number {
   return (
     n * PRIX_RECHERCHE_USD +
     computeCost(
       MODELES.court,
-      JETONS_ENTREE_PAR_RECHERCHE * ((n * (n + 1)) / 2),
-      MAX_TOKENS_SORTIE * n,
+      JETONS_ENTREE_PAR_RECHERCHE * ((n * (n + 1)) / 2 + n * lecturesPages) +
+        lecturesPages * jetonsParLecture * (n + lecturesPages + 1),
+      MAX_TOKENS_SORTIE * Math.max(1, n + lecturesPages),
       0,
       0,
     )
   );
 }
 
-function urlValide(u: unknown): u is string {
+export function urlValide(u: unknown): u is string {
   if (typeof u !== "string") return false;
   try {
     const p = new URL(u);
@@ -169,7 +177,7 @@ function urlValide(u: unknown): u is string {
 }
 
 /** Sources RÉELLEMENT renvoyées par l'outil (jamais celles que le modèle écrit seul). */
-function sourcesDeLaRecherche(reponse: ReponseMessages): {
+export function sourcesDeLaRecherche(reponse: ReponseMessages): {
   sources: Map<string, string>;
   erreurs: number;
 } {

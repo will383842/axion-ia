@@ -71,9 +71,10 @@ describe("fiche Journée IA", () => {
       "nos amis grenoblois",
       "le déplacement est inclus",
       "journée annulée",
+      "Frais kilométriques.",
     ];
     for (const t of fautifs) expect(trouveInterdits(t).length, t).toBeGreaterThan(0);
-    expect(INTERDITS_JOURNEE_IA).toHaveLength(11);
+    expect(INTERDITS_JOURNEE_IA).toHaveLength(10);
   });
 
   it("la consigne ne s'active que si le sujet touche la Journée IA", () => {

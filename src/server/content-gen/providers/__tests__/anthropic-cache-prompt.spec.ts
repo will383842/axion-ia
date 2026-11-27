@@ -99,12 +99,13 @@ describe("cache de prompt : bloc système", () => {
 });
 
 describe("cache de prompt : coût", () => {
-  it("création = 1,25 × l'entrée ; lecture au tarif du dépôt (Sonnet 0,2 $/M, Opus 0,2 $/M)", () => {
+  it("création = 1,25 × l'entrée ; lecture au tarif du modèle (Sonnet 0,1 $/M, Opus 0,2 $/M)", () => {
+    const lecture: Record<string, number> = { "claude-sonnet-5-5": 0.1, "claude-opus-5-5": 0.2 };
     for (const modele of ["claude-sonnet-5-5", "claude-opus-5-5"]) {
       const entree = computeCost(modele, M, 0, 0, 0);
       expect(computeCost(modele, 0, 0, 0, M)).toBeCloseTo(1.25 * entree, 10);
-      // Lecture : jamais sous le tarif officiel (marge côté Sonnet), jamais au-dessus de l'entrée.
-      expect(computeCost(modele, 0, 0, M, 0)).toBeCloseTo(0.2, 10);
+      // Lecture : tarif propre au modèle, jamais au-dessus de l'entrée.
+      expect(computeCost(modele, 0, 0, M, 0)).toBeCloseTo(lecture[modele] as number, 10);
     }
   });
 
@@ -141,7 +142,7 @@ describe("cache de prompt : coût", () => {
       )(),
     );
     const r = await anthropicProvider.generate(req);
-    const attendu = (500 * 2 + 4000 * 0.2 + 1000 * 10) / M;
+    const attendu = (500 * 2 + 4000 * 0.1 + 1000 * 10) / M;
     expect(r.costUsd).toBeCloseTo(attendu, 10);
     expect(r.cacheReadInputTokens).toBe(4000);
     // Le suivi (hors réservation) reçoit le même coût et tous les jetons d'entrée.

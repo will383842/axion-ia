@@ -3,6 +3,10 @@ import {
   computeAntiBurstSchedule,
   computeCampaignTickBudget,
   msSinceStartOfDay,
+  CLE_ARTICLES_MAX_JOUR,
+  CLE_MAJ_MAX_JOUR,
+  decisionRythmeEquipe,
+  resoudreRythmeEquipe,
 } from "../anti-burst";
 
 const HOUR = 3_600_000;
@@ -289,5 +293,72 @@ describe("msSinceStartOfDay", () => {
     const result = msSinceStartOfDay(late);
     expect(result).toBeGreaterThan(HOUR * 23);
     expect(result).toBeLessThan(DAY);
+  });
+});
+
+describe("rythme de l'équipe éditoriale (plafonds par jour)", () => {
+  const actif = { CONTENT_EQUIPE_EDITORIALE: "true" };
+  it("lecture tolérante : absent ou aberrant = 3 articles et 1 mise à jour", () => {
+    expect(CLE_ARTICLES_MAX_JOUR).toBe("equipe_articles_max_jour");
+    expect(CLE_MAJ_MAX_JOUR).toBe("equipe_maj_max_jour");
+    expect(resoudreRythmeEquipe(null)).toEqual({ articlesMaxJour: 3, majMaxJour: 1 });
+    expect(
+      resoudreRythmeEquipe({ equipe_articles_max_jour: "x", equipe_maj_max_jour: -2 }),
+    ).toEqual({
+      articlesMaxJour: 3,
+      majMaxJour: 1,
+    });
+    expect(resoudreRythmeEquipe({ equipe_articles_max_jour: 2, equipe_maj_max_jour: 0 })).toEqual({
+      articlesMaxJour: 2,
+      majMaxJour: 0,
+    });
+  });
+  it("refuse le 4e nouvel article du jour", () => {
+    const r = (n: number) =>
+      decisionRythmeEquipe({ nature: "article", creesAujourdhui: n, rythme: null, env: actif });
+    expect(r(2).autorise).toBe(true);
+    expect(r(3).autorise).toBe(false);
+    expect(r(5).autorise).toBe(false);
+  });
+  it("limite la mise à jour à 1 par jour", () => {
+    const r = (n: number) =>
+      decisionRythmeEquipe({ nature: "maj", creesAujourdhui: n, rythme: null, env: actif });
+    expect(r(0).autorise).toBe(true);
+    expect(r(1).autorise).toBe(false);
+  });
+  it("cohérence jour ≤ mois", () => {
+    const d = decisionRythmeEquipe({
+      nature: "article",
+      creesAujourdhui: 0,
+      rythme: null,
+      env: actif,
+      plafondJourUsd: 20,
+      plafondMoisUsd: 10,
+    });
+    expect(d.autorise).toBe(false);
+    expect(d.raison).toMatch(/jour/);
+  });
+  it("garde-fous : compteur invalide refusé, clé aberrante ou rythme fourni invalide = défaut, 0 respecté", () => {
+    const d = (n: number, rythme: Parameters<typeof decisionRythmeEquipe>[0]["rythme"]) =>
+      decisionRythmeEquipe({ nature: "article", creesAujourdhui: n, rythme, env: actif }).autorise;
+    expect(d(Number.NaN, null)).toBe(false);
+    expect(d(-1, null)).toBe(false);
+    expect(d(0, { articlesMaxJour: 0, majMaxJour: 1 })).toBe(false);
+    expect(d(3, { articlesMaxJour: Number.NaN, majMaxJour: 1 })).toBe(false);
+    expect(d(3, { articlesMaxJour: -5, majMaxJour: 1 })).toBe(false);
+    expect(resoudreRythmeEquipe({ equipe_articles_max_jour: 1e9 }).articlesMaxJour).toBe(3);
+    expect(resoudreRythmeEquipe({ equipe_articles_max_jour: 2.5 }).articlesMaxJour).toBe(3);
+    expect(resoudreRythmeEquipe([1, 2]).majMaxJour).toBe(1);
+  });
+  it("interrupteur éteint : toujours autorisé (comportement d'avant)", () => {
+    for (const env of [{}, { CONTENT_EQUIPE_EDITORIALE: "1" }]) {
+      expect(
+        decisionRythmeEquipe({ nature: "article", creesAujourdhui: 99, rythme: null, env })
+          .autorise,
+      ).toBe(true);
+      expect(
+        decisionRythmeEquipe({ nature: "maj", creesAujourdhui: 99, rythme: null, env }).autorise,
+      ).toBe(true);
+    }
   });
 });
