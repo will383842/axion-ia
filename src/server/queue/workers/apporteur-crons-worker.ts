@@ -38,16 +38,31 @@ export const APPORTEUR_CRONS_QUEUE_NAME = "apporteur-crons";
 
 export type { ApporteurCronJobData, ApporteurCronJobType };
 
+const NOMS_CONNUS = [
+  "relance-invitation",
+  "reponses-entrantes",
+  "invitation-auto",
+  "reseau-quotidien",
+  "reseau-facturation",
+] as const;
+
 async function processJob(job: Job<ApporteurCronJobData>): Promise<void> {
   // 🔑 Aiguillage par le NOM du job (celui que `bootRepeatableJobs` pose),
   // repli sur `data.type`. Un job sans nom connu reste un passage des rappels :
   // c'est ce que faisait ce processeur avant qu'il ait deux passages.
-  const type =
-    job.name === "invitation-auto" || job.data?.type === "invitation-auto"
-      ? "invitation-auto"
-      : job.name === "reponses-entrantes" || job.data?.type === "reponses-entrantes"
-        ? "reponses-entrantes"
-        : "relance-invitation";
+  const est = (nom: string): boolean => job.name === nom || job.data?.type === nom;
+  // Un nom inconnu est journalisé et IGNORÉ : il retombait sur les rappels d'invitation,
+  // arrêtés le 26/10 (lot 0 du relevé mensuel : un ancien worker ne doit rien lancer
+  // d'un nom qu'il ne connaît pas).
+  if (!NOMS_CONNUS.some(est)) {
+    console.warn(`[apporteur-crons] job au nom inconnu ignoré : « ${String(job.name)} »`);
+    return;
+  }
+  const type = est("invitation-auto")
+    ? "invitation-auto"
+    : est("reponses-entrantes")
+      ? "reponses-entrantes"
+      : "relance-invitation";
   if (job.name === "reseau-facturation" || job.data?.type === "reseau-facturation") {
     await passerFacturation();
     return;
