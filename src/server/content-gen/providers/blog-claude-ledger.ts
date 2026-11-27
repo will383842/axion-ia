@@ -339,3 +339,21 @@ export async function solderReservation(
     );
   }
 }
+
+/**
+ * Coût cumulé d'UN job (toutes les lignes du registre portant son `jobId`, réservations
+ * comprises : on compte large). Lecture seule, sans verrou : sert au plafond par article de
+ * l'équipe éditoriale. Lève si la base répond mal ou si le total est illisible : l'appelant
+ * traite l'erreur comme « plafond non vérifiable » (relecture humaine), jamais comme zéro.
+ */
+export async function coutCumuleJobUsd(jobId: string): Promise<number> {
+  const agg = await prisma.costLedger.aggregate({
+    where: { jobId },
+    _sum: { costUsd: true },
+  });
+  const total = enNombre(agg._sum.costUsd ?? 0);
+  if (!Number.isFinite(total) || total < 0) {
+    throw new BlogClaudeRefusError("Coût cumulé du job illisible", "base_indisponible");
+  }
+  return total;
+}

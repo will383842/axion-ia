@@ -84,7 +84,7 @@ export function rendreLiensInertes(html: string): string {
 // Remplissage de react-email : espace insécable, joncteurs et marques invisibles, BOM.
 const INVISIBLES = /[\u00a0\u200b-\u200f\u2028-\u202f\u2060\u034f\ufeff]/g;
 
-function decoderEntites(s: string): string {
+export function decoderEntites(s: string): string {
   return s
     .replaceAll("&nbsp;", " ")
     .replaceAll("&zwnj;", "")

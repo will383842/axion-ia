@@ -213,8 +213,9 @@ describe("buildAdminNav SSOT", () => {
     // +1 Audit de l'existant du blog (lot L10, 2026-10-24, pôle content_gen/qualite) : 177 + 1 = 178.
     // +1 lien externe Usine à contenu (Studio) (2026-11-20, groupe content) : 178 + 1 = 179.
     // +1 Garantie Journée IA (suivi des remboursements, 2026-11-25, groupe finances) : 179 + 1 = 180.
-    // +1 Challenges apporteurs (2026-11-27, groupe apporteurs) : 180 + 1 = 181.
-    expect(items.length).toBe(181);
+    // +1 Questionnaire Baromètre 2027 (état de la collecte, groupe content_gen) : 180 + 1 = 181.
+    // +1 Challenges apporteurs (2026-11-27, groupe apporteurs) : 181 + 1 = 182.
+    expect(items.length).toBe(182);
   });
 
   it("prefixes all INTERNAL hrefs with /fr/<adminPrefix>", () => {
@@ -864,6 +865,7 @@ const HREFS_AVANT_REFONTE: ReadonlyArray<string> = [
   "/content-gen/coverage",
   "/content-gen/jobs",
   "/content-gen/observatoire",
+  "/barometre-questionnaire",
   "/content-gen/review-queue",
   "/content-gen/publications",
   "/content-gen/publications-status",

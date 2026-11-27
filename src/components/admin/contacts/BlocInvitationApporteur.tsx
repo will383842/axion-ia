@@ -69,15 +69,19 @@ export async function BlocInvitationApporteur({
     typeof details?.["accordContactAt"] !== "string";
 
   return (
-    <div className="admin-card admin-card-wide" id="invitation">
-      <h2 className="admin-h2">Inviter à un échange de 15 minutes</h2>
+    // Replié dès qu'une invitation existe (le bandeau de la fiche dit où l'on en est) ; ouvert
+    // tant qu'aucune n'est partie, et quand un résultat vient de s'afficher.
+    <details
+      className="admin-card admin-card-wide"
+      id="invitation"
+      open={invitations.length === 0 || retour !== undefined}
+    >
+      <summary className="cursor-pointer text-[length:var(--text-admin-sm)] font-semibold select-none">
+        Inviter à un échange de 15 minutes
+      </summary>
       <p className="admin-help">
-        Un e-mail avec le lien de réservation Calendly et le catalogue — et le lien du dossier si la
-        personne ne l&apos;a pas encore envoyé. Un dossier complet, ou une candidature à une offre
-        commerciale (même si la personne avait déjà laissé un premier contact), reçoit cette
-        invitation automatiquement 15 minutes après son arrivée. Pour un premier contact seul, un
-        dossier commencé, une saisie manuelle ou une fiche importée (CV Indeed), rien ne part tout
-        seul : c&apos;est toi qui choisis qui inviter.
+        Un e-mail avec le lien de réservation et le catalogue ; rien ne part tout seul pour un
+        contact ou un dossier commencé.
       </p>
 
       {retour ? (
@@ -109,10 +113,6 @@ export async function BlocInvitationApporteur({
             <label htmlFor="calendlyUrl" className="admin-label">
               Lien Calendly de l&apos;échange (15 min)
             </label>
-            <p className="admin-help">
-              L&apos;e-mail envoie le même rendez-vous sur la page de réservation du site (
-              <code>/fr/appel/apporteur</code>) ; une autre adresse est envoyée telle quelle.
-            </p>
             <input
               id="calendlyUrl"
               name="calendlyUrl"
@@ -140,11 +140,14 @@ export async function BlocInvitationApporteur({
               quand même — à cocher pour confirmer un second envoi
             </label>
           ) : null}
-          <button type="submit" className="admin-button">
+          <button
+            type="submit"
+            className={invitations.length > 0 ? "admin-button-secondary" : "admin-button"}
+          >
             {invitations.length > 0 ? "Renvoyer l'invitation" : "Envoyer l'invitation"}
           </button>
         </form>
       )}
-    </div>
+    </details>
   );
 }

@@ -15,7 +15,11 @@
 import { readFile } from "node:fs/promises";
 import path from "node:path";
 
-import type { EtatPage } from "./signature-regles";
+// ⚠️ Pas d'import de `./signature-regles` (même `import type`) : il importe `contrat-pdf`
+// (`server-only`), et ce module est désormais atteint par le CRON des apporteurs (relances du
+// dossier, via la liste des annexes) qui tourne hors de Next. Le type est donc redéclaré ici ; s'il
+// divergeait de celui de `signature-regles`, l'appelant ne compilerait plus.
+type EtatPage = "modifiable" | "a_verifier" | "signe" | "neutre";
 
 export const FICHIER_PRIVE_FICHE_COMMISSIONS = "private/apporteurs/fiche-des-commissions.pdf";
 export const NOM_FICHIER_FICHE_COMMISSIONS = "Fiche-des-commissions-Axion-IA.pdf";

@@ -51,6 +51,10 @@ function normalize(s: string): string {
   return s.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "").trim();
 }
 
+/** Compare-et-supprime atomique : ne supprime la clé que si elle porte le jeton du propriétaire. */
+const SCRIPT_RELACHER_SI_PROPRIETAIRE =
+  'if redis.call("get", KEYS[1]) == ARGV[1] then return redis.call("del", KEYS[1]) else return 0 end';
+
 /** Détection runtime du Redis stub (build SSG). */
 function isStubRedis(): boolean {
   return Boolean(process.env.REDIS_URL?.includes("stub.invalid"));
@@ -140,18 +144,27 @@ export async function acquireKeywordLock(
  * auto-release après 30 min.
  *
  * @param keyword - Keyword brut (sera normalisé). Doit matcher acquireKeywordLock.
+ * @param owner   - Jeton de propriété (le `contentGenJobId`). Fourni : ne relâche que si le
+ *                  lock porte ce jeton ; sans jeton, comportement historique (DEL).
  *
  * Cas particuliers :
  *  - keyword vide / null-ish → no-op
  *  - Redis stub (build SSG) → no-op
  *  - Erreur Redis → log silencieux (lock auto-release via TTL de toute façon)
  */
-export async function releaseKeywordLock(keyword: string): Promise<void> {
+export async function releaseKeywordLock(keyword: string, owner?: string): Promise<void> {
   if (!keyword || typeof keyword !== "string") return;
   if (isStubRedis()) return;
 
   const key = `${KEYWORD_LOCK_PREFIX}${normalize(keyword)}`;
   try {
+    if (owner) {
+      // Avec jeton : on ne supprime que si la clé porte encore NOTRE jeton (script atomique).
+      // Lock expiré puis repris par un autre job, ou panne Redis (le catch ne relâche rien) :
+      // le lock d'autrui n'est jamais supprimé.
+      await redis.eval(SCRIPT_RELACHER_SI_PROPRIETAIRE, 1, key, owner);
+      return;
+    }
     await redis.del(key);
   } catch (err) {
     if (process.env.NODE_ENV !== "production") {

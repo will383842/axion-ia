@@ -351,6 +351,20 @@ export function DossierEnLigne({
             {TEXTES.merciTitre}
           </h1>
           <p className="text-fg-soft mt-3 text-[18px] leading-relaxed">{TEXTES.merciLigne}</p>
+          <div className="mt-6 text-left">
+            <h2 className="font-serif text-[22px] font-medium">{TEXTES.ensuiteTitre}</h2>
+            <ol className="text-fg mt-2 list-decimal space-y-1 pl-6 text-[17px] leading-relaxed">
+              {TEXTES.ensuite.map((ligne) => (
+                <li key={ligne}>{ligne}</li>
+              ))}
+            </ol>
+          </div>
+          <a
+            href={`/apporteur/dossier/${dossier.id}/${dossier.jeton}/documents`}
+            className={`${boutonPrincipal} mt-6 inline-flex items-center justify-center`}
+          >
+            {TEXTES.mesDocuments}
+          </a>
           <p className="text-fg-soft mt-5 text-[16px]">{TEXTES.fermer}</p>
         </section>
       </div>
@@ -681,8 +695,12 @@ export function DossierEnLigne({
                   placeholder={dossier.ibanSaisi ? TEXTES.ibanRemplacer : "FR76 …"}
                   value={iban}
                   onChange={(e) => setIban(e.target.value)}
+                  aria-describedby={`${uid}-iban-aide`}
                   className={champ}
                 />
+                <p id={`${uid}-iban-aide`} className="text-fg-soft mt-1 text-[15px]">
+                  {TEXTES.ibanAide}
+                </p>
                 {ibanNet.length >= 15 && !ibanValide(ibanNet) ? (
                   <p className="text-error mt-1 text-[15px] font-semibold">{TEXTES.ibanInvalide}</p>
                 ) : null}
