@@ -302,32 +302,88 @@ export async function executerResiliation(
   if (termine === null) return { ok: false, message: "Ce contrat vient déjà d'être résilié." };
 
   // E-mail de prise d'effet : après la transaction, jamais bloquant pour elle.
-  try {
-    const destinataire = decryptPii(a.email) ?? "";
-    const lien = argent ? urlDossier(apporteurId, a.versionLien) : null;
-    if (destinataire) {
-      const r = await envoyer({
-        gabarit: "apporteur-resiliation-effective",
-        destinataire,
-        payload: {
-          prenom: decryptPii(a.prenom) ?? "",
-          effetLe: jourLong(effetLe),
-          argentEnJeu: argent,
-          ...(lien ? { lien } : {}),
-        },
-        entityType: "ApporteurReseau",
-        entityId: apporteurId,
-        jobId: `resiliation-effet-${apporteurId}`,
-      });
-      if (r === "envoye") await poserHorodatage(apporteurId, { emailEffetEnvoyeAt: maintenant });
-    }
-  } catch (err) {
-    signalerErreurReseau("résiliation : e-mail de prise d'effet", err);
-  }
+  await envoyerEmailPriseEffet(apporteurId, effetLe, maintenant);
   return {
     ok: true,
     message: `Contrat résilié : ${termine} attribution(s) terminée(s), rappels coupés. Les commissions acquises restent à verser : elles sont facturées comme les autres.`,
   };
+}
+
+/**
+ * E-mail de prise d'effet. Idempotent : même clé de journal (`resiliation-effet-<id>`), et
+ * `emailEffetEnvoyeAt` n'est posé que si l'envoi est parti. Appelé à la prise d'effet, puis chaque
+ * jour par `renvoyerEmailsEffetManques` pour celui qui n'est pas parti. Ne lève jamais.
+ */
+export async function envoyerEmailPriseEffet(
+  apporteurId: string,
+  effetLe: Date,
+  maintenant: Date,
+): Promise<"envoye" | "non-envoye"> {
+  try {
+    const a = await prisma.apporteurReseau.findUnique({
+      where: { id: apporteurId },
+      select: { prenom: true, email: true, versionLien: true },
+    });
+    if (!a) return "non-envoye";
+    const argent = await argentEnJeu(apporteurId);
+    const destinataire = decryptPii(a.email) ?? "";
+    const lien = argent ? urlDossier(apporteurId, a.versionLien) : null;
+    if (!destinataire) return "non-envoye";
+    const r = await envoyer({
+      gabarit: "apporteur-resiliation-effective",
+      destinataire,
+      payload: {
+        prenom: decryptPii(a.prenom) ?? "",
+        effetLe: jourLong(effetLe),
+        argentEnJeu: argent,
+        ...(lien ? { lien } : {}),
+      },
+      entityType: "ApporteurReseau",
+      entityId: apporteurId,
+      jobId: `resiliation-effet-${apporteurId}`,
+    });
+    if (r === "envoye") {
+      await poserHorodatage(apporteurId, { emailEffetEnvoyeAt: maintenant });
+      return "envoye";
+    }
+  } catch (err) {
+    signalerErreurReseau("résiliation : e-mail de prise d'effet", err);
+  }
+  return "non-envoye";
+}
+
+/** Fenêtre de reprise : au-delà, l'e-mail n'a plus de sens et reste à la main. */
+export const REPRISE_EMAIL_EFFET_JOURS = 30;
+
+/**
+ * Passage quotidien : renvoie l'e-mail de prise d'effet d'une résiliation déjà exécutée dont
+ * l'envoi n'est pas parti (`emailEffetEnvoyeAt` vide). Se tait s'il n'y a rien. Rend le nombre
+ * d'e-mails partis. Table absente : rien.
+ */
+export async function renvoyerEmailsEffetManques(maintenant: Date): Promise<number> {
+  let lignes: Array<{ apporteurId: string; effetLe: Date }> = [];
+  try {
+    lignes = await prisma.apporteurResiliation.findMany({
+      where: {
+        executeeAt: {
+          not: null,
+          gte: new Date(maintenant.getTime() - REPRISE_EMAIL_EFFET_JOURS * 86_400_000),
+        },
+        emailEffetEnvoyeAt: null,
+      },
+      select: { apporteurId: true, effetLe: true },
+      take: 100,
+    });
+  } catch (err) {
+    if (tableAbsente(err)) return 0;
+    throw err;
+  }
+  let partis = 0;
+  for (const l of lignes) {
+    if ((await envoyerEmailPriseEffet(l.apporteurId, l.effetLe, maintenant)) === "envoye")
+      partis += 1;
+  }
+  return partis;
 }
 
 async function poserHorodatage(
