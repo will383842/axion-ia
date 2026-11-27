@@ -250,7 +250,7 @@ export function IssueEchangeApporteurForm({
             </button>
           </div>
           {choix === "retenu" ? (
-            <p role="note" className="text-[color:var(--color-admin-warning,#b45309)]">
+            <p role="note" className="text-[color:var(--color-admin-warning-fg)]">
               Le contrat ne partira pas. Vous pourrez l&apos;envoyer plus tard depuis le bandeau en
               haut.
             </p>

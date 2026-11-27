@@ -98,13 +98,13 @@ export async function BandeauProchaineEtape({
       className="admin-card admin-card-wide"
       id="prochaine-etape"
       style={
-        alerteEtape ? { borderLeft: "4px solid var(--color-admin-warning, #b45309)" } : undefined
+        alerteEtape ? { borderLeft: "4px solid var(--color-admin-warning)" } : undefined
       }
     >
       <h2 className="admin-h2">Prochaine étape</h2>
       <p>{suite.phrase}</p>
       {suite.alerte ? (
-        <p className="text-[color:var(--color-admin-warning,#b45309)]" role="status">
+        <p className="text-[color:var(--color-admin-warning-fg)]" role="status">
           ⚠️ {suite.alerte}
         </p>
       ) : null}
