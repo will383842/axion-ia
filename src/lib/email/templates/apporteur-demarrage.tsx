@@ -25,6 +25,7 @@
 // Qui occupe une entreprise « pas disponible » (contrat, art. 3.5). Le motif dit
 // la catégorie, jamais l'occupant.
 
+import { phrasePiecesJointes } from "./_annexes-jointes";
 import { Text } from "@react-email/components";
 import type { ReactElement } from "react";
 
@@ -64,6 +65,8 @@ interface Payload {
   avoirSeul?: boolean;
   /** Suspension d'une commission (art. 4.2 bis) : « suspendue » puis « levee ». */
   etat?: string;
+  /** Lien du dossier et rappels : annexes réellement jointes (facultatif, ignoré s'il est absent). */
+  annexesJointes?: string[];
   /** Nom de l'apporteur (ou de la personne présentée) : seul le premier mot est dit, sauf `civilite`. */
   contactName?: string;
   /** Entreprise présentée, telle que saisie. */
@@ -739,6 +742,7 @@ export function ApporteurDossierLienEmail({ locale, payload }: Props) {
   const rappel = p.rappel === 1 || p.rappel === 2 ? p.rappel : null;
   const r = COPY_DEMARRAGE.dossierRappel;
   const libres = paragraphesLibres(p.texteLibre);
+  const piecesJointes = phrasePiecesJointes(p.annexesJointes);
   return (
     <EmailLayout
       famille="B"
@@ -766,6 +770,7 @@ export function ApporteurDossierLienEmail({ locale, payload }: Props) {
           <Text style={emailStyles.paragraphStyle}>{t.ensuite}</Text>
         </>
       )}
+      {piecesJointes ? <Text style={emailStyles.paragraphStyle}>{piecesJointes}</Text> : null}
       <Text style={puce}>{ligneAPreparer()}</Text>
     </EmailLayout>
   );
