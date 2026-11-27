@@ -8,7 +8,7 @@
 import { prisma } from "@/lib/prisma";
 import { gscSearchAnalytics } from "@/server/content-gen/seo/gsc-client";
 import { buildArticleUrl } from "@/server/content-gen/indexing/url-builder";
-import { isVilleIndexable } from "@/content/villes/core";
+import { getIndexableVillesCore, isVilleIndexable } from "@/content/villes/core";
 import { compterMots } from "@/server/content-gen/audit-blog-existant";
 import {
   auditerCorpus,
@@ -73,18 +73,15 @@ export async function chargerPagesCorpus(): Promise<PageCorpus[]> {
   // `GeneratedVilleCopy` ne sert plus qu'à l'indexabilité. On n'invente donc ni nombre de mots
   // ni plan pour ces pages : seul le signal « sans impressions » est calculé, sur les villes
   // que le site déclare indexables (même règle que robots et sitemap).
-  const villes = await prisma.city.findMany({
-    select: { slug: true, name: true, regionSlug: true },
-    orderBy: { slug: "asc" },
-    take: LIMITE_PAGES,
-  });
-  for (const v of villes) {
+  // Source = données du site (comme le sitemap), pas la table `City` : mêmes slugs de région,
+  // même couverture. Une ville absente de la base ne disparaît donc pas de l'audit.
+  for (const v of getIndexableVillesCore()) {
     if (!isVilleIndexable(v.slug)) continue;
     pages.push({
       id: v.slug,
       type: "page-ville",
-      url: `${site}/fr/implantations/${v.regionSlug}/${v.slug}`,
-      titre: v.name,
+      url: `${site}/fr/implantations/${v.region}/${v.slug}`,
+      titre: v.nameFr,
       mots: null,
       qualityScore: null,
       // Date de mise en ligne inconnue : l'ancienneté minimale n'est pas démontrable.
@@ -93,7 +90,7 @@ export async function chargerPagesCorpus(): Promise<PageCorpus[]> {
       impressions: null,
     });
   }
-  if (traductions.length >= LIMITE_PAGES || villes.length >= LIMITE_PAGES) {
+  if (traductions.length >= LIMITE_PAGES) {
     console.warn(`⚠️ Plafond de ${LIMITE_PAGES} pages atteint : audit PARTIEL.`);
   }
   return pages;

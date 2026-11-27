@@ -24,6 +24,7 @@ Deux outils de mesure, sans migration, sans écriture en base, éteints par déf
 ## Vérifications
 - `pnpm typecheck` : propre. 25 tests unitaires des modules purs : verts.
 - Aucun fichier interdit touché, aucune migration.
-- Relecture Opus : premier passage « à corriger » (tier 3 compté à tort, texte de page ville non affiché, plafonds muets, coûts absents). Tout corrigé ensuite ; le correctif lui-même n'a pas été relu une seconde fois.
+- Relecture Opus n°1 : « à corriger » (tier 3 compté à tort, texte de page ville non affiché, plafonds muets, coûts absents) : corrigé.
+- Relecture Opus n°2 : « à corriger » (les villes venaient de la table `City`, mauvais identifiant de région et couverture incomplète) : corrigé en lisant les données du site, comme le sitemap. Ce dernier correctif n'a PAS été relu par Opus ; typecheck et 25 tests verts.
 
-VERDICT OPUS : BON
+VERDICT OPUS : À CORRIGER
