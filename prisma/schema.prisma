@@ -19072,7 +19072,7 @@ model GscRequete {
 }
 
 /// Détail page × requête × jour. Conservation visée : 90 jours (purge en P4). `requeteId` sans clé étrangère : la
-/// purge du texte supprime d'abord ces lignes, sans cascade.
+/// purge du texte (P4) supprimera d'abord ces lignes, sans cascade.
 /// rgpd: technique — mesure agrégée par page et requête anonyme ; purge à 90 jours prévue en P4
 model GscPageRequeteJour {
   id            Int      @id @default(autoincrement())
