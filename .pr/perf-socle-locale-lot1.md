@@ -16,9 +16,9 @@ Méthode de l'analyse (§1) : fichiers de `page_client-reference-manifest.js` + 
 
 ### Changements
 
-1. **Manifeste de routes Sentry** (`next.config.ts`) : `routeManifestInjection: false` (option présente dans `@sentry/nextjs` 10.70.0). Contrepartie : les transactions navigateur Sentry portent l'URL réelle et non le motif de route (`/fr/a-propos` au lieu de `/:locale/a-propos`).
+1. **Manifeste de routes Sentry** (`next.config.ts`) : `routeManifestInjection: false` (option présente dans `@sentry/nextjs` 10.70.0). Aucune contrepartie visible : le client Sentry tourne sans traces (`tracesSampleRate: 0`), le manifeste ne servait pas.
 2. **zod hors du socle client** : `Plausible`, `MetaPixel`, `Clarity`, `LinkedInInsight` lisent `process.env.NEXT_PUBLIC_*` en littéral. Même comportement : `|| undefined` reproduit `emptyStringAsUndefined: true` de `src/env.ts` (chaîne vide = absent), même valeur par défaut Plausible, mêmes conditions et consentement. Autre importeur client trouvé : `MobileNav` → `@/lib/brand` → `@/env` (pour `BRAND.name` seul) ; il lit désormais `NOM_MARQUE`, ajouté au module pur `identite-legale-ssot.ts` dont `BRAND.name` dérive (une seule source). `src/env.ts`, `SKIP_ENV_VALIDATION` et `stub.invalid` ne sont pas touchés.
-3. **tailwind-merge** : `NavLink.tsx` et `HeaderPrestationsMenu.tsx` passent de `cn()` à `clsx`. Chaque appel a été vérifié en comparant `twMerge` à la concaténation : un seul conflit réel (lien mobile : `text-fg` vs `text-terracotta` quand actif), remplacé par un ternaire explicite qui produit exactement la même chaîne de classes que `twMerge`.
+3. **tailwind-merge** : `NavLink.tsx` et `HeaderPrestationsMenu.tsx` passent de `cn()` à `clsx`. **Gain nul à ce stade** : `components/ui/sheet.tsx` (importé statiquement par `MobileNav`) utilise encore `cn()`, donc tailwind-merge reste dans le socle ; il ne partira qu'avec le point 3 (Sheet dynamique, hors périmètre) ou un passage de `sheet.tsx` à clsx. Les deux composants sont prêts. Chaque appel a été vérifié en comparant `twMerge` à la concaténation : un seul conflit réel (lien mobile : `text-fg` vs `text-terracotta` quand actif), remplacé par un ternaire explicite qui produit exactement la même chaîne de classes que `twMerge`.
 4. **web-vitals/attribution** : `WebVitals.tsx` charge `onINP` par `import()` dynamique dans l'effet. Mêmes rapports, même envoi. L'observateur INP s'enregistre un instant plus tard ; comme avant, il n'est pas désinscrit au changement de page.
 
 ### Non fait (hors périmètre, demandé)
@@ -34,6 +34,6 @@ Points 3 (Sheet/Radix Dialog dynamique), 6 (différer les composants analytics) 
 
 ### Relecture
 
-VERDICT_RELECTEUR
+Relecteur (Opus) : **aucun point bloquant**. Équivalence des quatre balises, gardes de consentement/secret, absence d'`@/env` dans le graphe client du layout et classes Tailwind confirmées. Corrigé suite à la relecture : `.catch` ajouté sur l'import dynamique de `web-vitals/attribution` ; commentaire Sentry corrigé ; constat que tailwind-merge reste via `sheet.tsx` (consigné ci-dessus). Nit accepté : une interaction INP de 40 à 104 ms avant la résolution de l'import n'est plus vue (sans effet sur les INP « poor »).
 
 🤖 Generated with [Claude Code](https://claude.com/claude-code)

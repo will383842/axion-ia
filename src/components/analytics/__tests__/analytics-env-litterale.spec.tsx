@@ -83,7 +83,7 @@ describe.each(CAS)("$nom", ({ Composant, cle, valeur }) => {
 });
 
 describe("Plausible", () => {
-  it("ne rend rien sans domaine (absent ou vide)", () => {
+  it("ne rend rien sans domaine (chaîne vide)", () => {
     vi.stubEnv("NEXT_PUBLIC_PLAUSIBLE_DOMAIN", "");
     expect(render(<Plausible />).container.querySelector("script")).toBeNull();
   });

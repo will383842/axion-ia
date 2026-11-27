@@ -1242,8 +1242,9 @@ const sentryBuildOptions = {
   widenClientFileUpload: true,
   reactComponentAnnotation: { enabled: false },
   // Pas de manifeste de routes injecté côté client : il était dupliqué (runtime Next +
-  // main-app, ~13,7 KB gz, 569 routes dont la console admin) dans le socle. Effet :
-  // les transactions navigateur Sentry portent l'URL réelle et non le motif de route.
+  // main-app, ~13,7 KB gz, 569 routes dont la console admin) dans le socle. Le client
+  // Sentry tourne sans traces (tracesSampleRate: 0, cf. sentry-client-lazy.ts) : le
+  // manifeste ne servait à rien côté navigateur.
   routeManifestInjection: false as const,
 };
 
