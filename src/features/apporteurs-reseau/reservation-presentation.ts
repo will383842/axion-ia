@@ -32,6 +32,15 @@ export interface Reservation {
   valideeAt: Date | null;
 }
 
+/**
+ * La présentation suit-elle la règle par rendez-vous ? Oui si une ligne de réservation « rendez_vous »
+ * existe : elle ne se confirme alors que par un rendez-vous tenu ou une commande signée, jamais par
+ * le bouton « Confirmer maintenant » (sans ligne : d'avant la règle, confirmation habituelle).
+ */
+export function suitLaRegleRendezVous(r: Pick<Reservation, "regle"> | null | undefined): boolean {
+  return r?.regle === REGLE_RENDEZ_VOUS;
+}
+
 /** L'erreur Prisma « la table n'existe pas » (P2021) : migration pas encore passée. */
 export function tableAbsente(err: unknown): boolean {
   return !!err && typeof err === "object" && (err as { code?: unknown }).code === "P2021";
