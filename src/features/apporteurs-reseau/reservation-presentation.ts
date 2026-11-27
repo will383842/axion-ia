@@ -81,7 +81,7 @@ export async function lireIdsEnGrace(
       where: {
         regle: "rendez_vous",
         valideeAt: null,
-        echueAt: { gt: ajouterJours(maintenant, -JOURS_SANS_DECLARATION_APRES_FIN) },
+        echueAt: { gt: ajouterJours(maintenant, -(JOURS_SANS_DECLARATION_APRES_FIN + 1)) },
       },
       select: { presentationId: true },
       take: 2000,

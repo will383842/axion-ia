@@ -129,6 +129,16 @@ describe("declarerEntreprise", () => {
     expect(creerPresentation).not.toHaveBeenCalled();
   });
 
+  it("🔑 point 1 : la fenêtre de 30 jours d'une réservation échue ne bloque pas l'apporteur lui-même (art. 3.2, 3.4 bis)", async () => {
+    // La requête « siennes » ne lit que reservee/confirmee : une `terminee` en grâce n'y figure pas.
+    await declarerEntreprise(ID, BONNE, MAINTENANT);
+    const where = findMany.mock.calls[0]![0].where;
+    expect(where.apporteurId).toBe(ID);
+    expect(where.statut).toEqual({ in: ["reservee", "confirmee"] });
+    expect(where.OR).toBeUndefined();
+    expect(creerPresentation).toHaveBeenCalled();
+  });
+
   it("une entreprise attribuée à un autre apporteur est reçue sans rien révéler", async () => {
     // La recherche de doublon ne porte QUE sur l'apporteur : aucun autre n'est lu.
     await declarerEntreprise(ID, BONNE, MAINTENANT);

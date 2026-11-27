@@ -220,7 +220,7 @@ export type ReservationProvisoire = {
 export function reservationOccupe(r: ReservationProvisoire, maintenant: Date): boolean {
   // Réservation terminée sans validation : 30 jours sans nouvelle déclaration. Date illisible : occupée.
   if (r.echueAt) {
-    const fin = ajouterJours(r.echueAt, JOURS_SANS_DECLARATION_APRES_FIN).getTime();
+    const fin = finDuNiemeJourParis(r.echueAt, JOURS_SANS_DECLARATION_APRES_FIN).getTime();
     return !(fin <= maintenant.getTime());
   }
   if (!(r.reserveeJusquAt.getTime() < maintenant.getTime())) return true;

@@ -292,11 +292,9 @@ export async function creerPresentation(
     where: {
       apporteurId: s.apporteurId,
       siren,
-      // E1 : une réservation terminée sans validation occupe encore 30 jours.
-      OR: [
-        { statut: { in: ["reservee", "confirmee"] } },
-        { statut: "terminee", id: { in: await lireIdsEnGrace(maintenant) } },
-      ],
+      // Contrat 2.8, art. 3.2 et 3.4 bis : les 30 jours après la fin d'une réservation ne bloquent
+      // que les AUTRES ; l'apporteur peut redéclarer, sans délai d'attente.
+      statut: { in: ["reservee", "confirmee"] },
     },
     select: { id: true, statut: true, protegeeJusquAt: true, recueAt: true },
   });

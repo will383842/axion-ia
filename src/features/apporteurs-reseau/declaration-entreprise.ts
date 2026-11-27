@@ -32,7 +32,7 @@ import { etatPourApporteur, validerDeclaration, type EtatDeclaration } from "./d
 import { lireEtablissements, memePerimetre } from "./etablissement-presentation";
 import { creerPresentation, nomComplet, presentationOccupe } from "./presentations";
 import { versReservationProvisoire } from "./regle-attribution";
-import { lireIdsEnGrace, lireReservations } from "./reservation-presentation";
+import { lireReservations } from "./reservation-presentation";
 import {
   etatPrestation,
   horsGrilleEnCours,
@@ -119,11 +119,9 @@ export async function declarerEntreprise(
     where: {
       apporteurId,
       siren: d.siret.slice(0, 9),
-      // E1 : une réservation terminée sans validation occupe encore 30 jours.
-      OR: [
-        { statut: { in: ["reservee", "confirmee"] } },
-        { statut: "terminee", id: { in: await lireIdsEnGrace(maintenant) } },
-      ],
+      // Contrat 2.8, art. 3.2 et 3.4 bis : les 30 jours après la fin d'une réservation ne bloquent
+      // que les AUTRES ; l'apporteur peut redéclarer, sans délai d'attente.
+      statut: { in: ["reservee", "confirmee"] },
     },
     select: { id: true, statut: true, protegeeJusquAt: true, recueAt: true },
   });
