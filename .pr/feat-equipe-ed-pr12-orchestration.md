@@ -46,13 +46,17 @@ La branche part de la PR 11 (#2372). Avant le push final : `git fetch`, rebase s
 
 Corrigé après relecture : titre vide (`||` au lieu de `??`), reprise de la boucle qualité (article conservé, passage en relecture avec ligne de file), coût du juge compté une seule fois (déjà au registre), renvoi au seul mailleur / éditeur SEO = relecture humaine (pas de tour payé pour le même texte).
 
-Restes connus, non corrigés dans cette PR (derrière l'interrupteur, à traiter en PR suivante) :
+## Corrigé (2e passe)
 
-- l'appel court de réparation de la réponse directe (`ensureDirectAnswer`) et les appels internes du générateur ne repassent pas par la vérification du plafond ;
-- la décision « réorienter » du gardien n'est pas transmise au rédacteur (gardien presque inopérant tant que `voisins` est vide) ;
-- le verrou de mot-clé n'est pas relâché sur arrêt avant écriture (expire à 30 min) ;
-- `addQualityLoopSpend` ne compte pas encore tous les coûts de l'équipe ;
-- `chargerCarteRequetes()` est hors du try de l'équipe ;
-- pas de test d'intégration du worker (verrou de source seulement).
+1. **Plafond de 3,00 $ sur tous les appels** : nouveau `providers/plafond-job.ts` ; le worker y inscrit une garde par `jobId` (retirée dans un `finally`), et `provider-router.generate` l'attend avant chaque appel. Couvre les appels internes du générateur et la réparation de la réponse directe. Un dépassement en cours d'écriture = arrêt « plafond » (relecture humaine). Sans garde (équipe éteinte), aucun effet.
+2. **« Réorienter »** : l'angle proposé par le gardien est ajouté à la consigne du rédacteur (et à chaque renvoi).
+3. **Verrou de mot-clé** relâché sur arrêt avant écriture (gardien, plafond) et sur abandon du rédacteur en chef.
+4. **`addQualityLoopSpend`** : équipe allumée, dépense de l'exécution = registre depuis le début de l'exécution ou somme du journal (le plus grand, jamais les deux additionnés).
+5. **`chargerCarteRequetes()`** dans un try : une erreur = repli sur le chemin d'avant, journalisé, aucun job planté.
+6. **Test d'intégration du worker** (`equipe-editoriale-worker.integration.spec.ts`) : ordre des rôles, journal, arrêts, angle, garde de plafond ; équipe éteinte et carte illisible = chemin d'avant.
 
-VERDICT OPUS : À CORRIGER
+Rebase fait sur `origin/main` (PR 11 déjà fusionnée) ; tests, typecheck et lint passent.
+
+## Restes
+
+Voir la relecture ci-dessous.
