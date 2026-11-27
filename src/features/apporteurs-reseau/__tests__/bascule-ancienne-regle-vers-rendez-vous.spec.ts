@@ -175,6 +175,8 @@ vi.mock("@/lib/prisma", () => {
         db.props.filter((r) => ok(r, a.where)).map((r) => ({ ...r })),
       ),
     },
+    // Annulations de rendez-vous (art. 3.2) : aucune dans ces scénarios.
+    annulationRendezVousPresentation: { findMany: vi.fn(async () => []) },
     factureFormation: {
       findMany: vi.fn(async (a: { where: { statut?: string; avoirDeId?: unknown } }) => {
         if (a.where.statut === "payee") return db.payees;

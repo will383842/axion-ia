@@ -52,6 +52,12 @@ import {
   dateEnClair,
 } from "./attribution-annonce";
 import { alerteInterne } from "./alerte-interne";
+import {
+  alerterAnnulationsNonQualifiees,
+  clesQuiNeRetiennentPlus,
+  constaterAnnulations,
+  validerAnnulationsAxion,
+} from "./annulations-rendez-vous";
 import { alerterConflitRattrapage, rattrapageEnConflit } from "./conflit-rattrapage";
 import { envoyer } from "./envois";
 import { annexesDeLEnvoiDuLien } from "./documents-joints";
@@ -320,6 +326,7 @@ type NomEtape =
   | "vigilance"
   | "alerte-pieces-vigilance"
   | "commande-signee"
+  | "annulations-rendez-vous"
   | "reservations-sans-rendez-vous"
   | "reservations-echues"
   | "rappels-dossier"
@@ -393,6 +400,9 @@ async function passer(
     ["commande-signee", () => etapeCommandeSignee(maintenant, bilan)],
     // Règle par rendez-vous : APRÈS « commande-signee » (une commande signée pendant la réservation
     // la valide avant que l'échéance ne puisse la clore).
+    // Contrat 2.8, art. 3.2 : constate les rendez-vous annulés (AVANT les échéances, qui les lisent),
+    // alerte en interne, et valide « annulé par Axion IA = tenu ». Aucun e-mail à l'apporteur.
+    ["annulations-rendez-vous", () => etapeAnnulationsRendezVous(maintenant)],
     ["reservations-sans-rendez-vous", () => etapeReservationsSansRendezVous(maintenant, bilan)],
     ["reservations-echues", () => etapeReservationsEchues(maintenant, bilan)],
     ["rappels-dossier", () => etapeRappelsDossier(maintenant, bilan)],
@@ -1742,13 +1752,15 @@ async function valideeParCommandeLe(presentationId: string): Promise<Date | null
 }
 
 /** Les propositions de rendez-vous non écartées d'une présentation (table absente : aucune). */
-async function lirePropositionsOuvertes(presentationId: string): Promise<Date[]> {
+async function lirePropositionsOuvertes(presentationId: string, maintenant: Date): Promise<Date[]> {
   try {
     const ls = await prisma.propositionRendezVousPresentation.findMany({
       where: { presentationId, ecarteeAt: null },
-      select: { prisAt: true },
+      select: { prisAt: true, rendezVousCle: true },
     });
-    return ls.map((l) => l.prisAt);
+    // Annulée par l'entreprise, sans report, 15 jours passés : ne retient plus (art. 3.2).
+    const nePlusRetenir = await clesQuiNeRetiennentPlus(presentationId, maintenant);
+    return ls.filter((l) => !nePlusRetenir.has(l.rendezVousCle)).map((l) => l.prisAt);
   } catch (err) {
     if (!tableAbsente(err)) throw err;
     return [];
@@ -1776,6 +1788,7 @@ type ReservationEchue = {
   reserveeJusquAt: Date;
   rendezVousPrisAt: Date | null;
   rendezVousAt: Date | null;
+  rendezVousCle: string | null;
 };
 
 /**
@@ -1825,7 +1838,7 @@ async function etapeReservationsSansRendezVous(
       for (const l of lignes) {
         const p = parId.get(l.presentationId);
         if (!p) continue;
-        if ((await lirePropositionsOuvertes(p.id)).length > 0) continue;
+        if ((await lirePropositionsOuvertes(p.id, maintenant)).length > 0) continue;
         const parti = await alerteInterne({
           jobId: `apporteur-reservation-sans-rdv-${p.id}-${l.reserveeJusquAt.toISOString()}`,
           code: "apporteur_reservation_sans_rdv",
@@ -1902,6 +1915,13 @@ async function alerterPropositionsEnAttente(
   }
 }
 
+/** Étape « annulations-rendez-vous » (contrat 2.8, art. 3.2) : voir `annulations-rendez-vous.ts`. */
+async function etapeAnnulationsRendezVous(maintenant: Date): Promise<void> {
+  await constaterAnnulations(maintenant);
+  await alerterAnnulationsNonQualifiees(maintenant);
+  await validerAnnulationsAxion(maintenant);
+}
+
 async function etapeReservationsEchues(maintenant: Date, bilan: BilanPassageReseau): Promise<void> {
   try {
     await echeancesDesReservations(maintenant, bilan);
@@ -1944,6 +1964,7 @@ async function echeancesDesReservations(
           reserveeJusquAt: true,
           rendezVousPrisAt: true,
           rendezVousAt: true,
+          rendezVousCle: true,
         },
         orderBy: [{ reserveeJusquAt: "asc" }, { presentationId: "asc" }],
         take: PAGE_ECHEANCES,
@@ -1975,8 +1996,14 @@ async function traiterReservationsEchues(
     if (!p) continue;
     // Rendez-vous pris et pas encore tenu (ligne), puis propositions non écartées : chacun garde
     // l'entreprise s'il a été PRIS pendant la réservation.
-    const propositions = await lirePropositionsOuvertes(p.id);
-    const enAttente = l.rendezVousPrisAt && !l.rendezVousAt ? [l.rendezVousPrisAt] : [];
+    const propositions = await lirePropositionsOuvertes(p.id, maintenant);
+    const nePlusRetenir = await clesQuiNeRetiennentPlus(p.id, maintenant);
+    const enAttente =
+      l.rendezVousPrisAt &&
+      !l.rendezVousAt &&
+      !(l.rendezVousCle && nePlusRetenir.has(l.rendezVousCle))
+        ? [l.rendezVousPrisAt]
+        : [];
     const retient = (prisAt: Date) =>
       reservationOccupe(
         {

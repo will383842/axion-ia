@@ -19689,3 +19689,35 @@ model ContenuProposition {
   @@index([statut])
   @@map("contenu_propositions")
 }
+
+/// Un rendez-vous rattaché à une présentation réservée (proposition ou ligne de réservation) constaté NON TENU
+/// à la source (Calendly canceled/no_show, Rencontre annule/absent/reporte). Qualifié par un administrateur.
+/// Sans clé étrangère (fenêtre app/worker).
+/// rgpd: technique — identifiants de présentation et de rendez-vous, dates, auteur qualifié et motif d'administrateur ; aucun nom, e-mail ni téléphone
+model AnnulationRendezVousPresentation {
+  id                String    @id @default(uuid()) @db.Uuid
+  presentationId    String    @map("presentation_id") @db.Uuid
+  rendezVousCle     String    @map("rendez_vous_cle") @db.VarChar(80)
+  prisAt            DateTime  @map("pris_at") @db.Timestamptz(3)
+  /// Date à laquelle il était FIXÉ (sert de date de tenue réputée quand Axion a annulé).
+  prevuAt           DateTime? @map("prevu_at") @db.Timestamptz(3)
+  /// Premier constat par le passage (Calendly ne donne pas la date d'annulation).
+  constateeAt       DateTime  @map("constatee_at") @db.Timestamptz(3)
+  /// canceled | no_show | annule | absent | reporte (CHECK)
+  etatSource        String    @map("etat_source") @db.VarChar(20)
+  /// axion | entreprise (CHECK) ; NULL = à qualifier
+  auteur            String?   @db.VarChar(12)
+  qualifieeAt       DateTime? @map("qualifiee_at") @db.Timestamptz(3)
+  qualifieePar      String?   @map("qualifiee_par") @db.VarChar(64)
+  motif             String?   @db.Text
+  /// Report convenu : clé du NOUVEAU rendez-vous (« calendly:<id> » | « rencontre:<id> »).
+  reportCle         String?   @map("report_cle") @db.VarChar(80)
+  reportLieAt       DateTime? @map("report_lie_at") @db.Timestamptz(3)
+  /// Axion : validation faite par le passage (évite de la rejouer).
+  validationFaiteAt DateTime? @map("validation_faite_at") @db.Timestamptz(3)
+  creeAt            DateTime  @default(now()) @map("cree_at") @db.Timestamptz(3)
+
+  @@unique([presentationId, rendezVousCle], map: "annulations_rdv_presentation_cle_key")
+  @@index([auteur, constateeAt], map: "annulations_rdv_auteur_constatee_idx")
+  @@map("annulations_rendez_vous_presentation")
+}
