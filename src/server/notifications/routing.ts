@@ -529,8 +529,9 @@ const CHAT_ID_FALLBACKS: Record<TelegramGroup, readonly string[]> = {
   ],
   // Tour France IA (2026-10-29) : même repli que le questionnaire (Clients, Système, général).
   tour: ["TELEGRAM_CHAT_ID_CLIENTS", "TELEGRAM_CHAT_ID_SYSTEM", "TELEGRAM_CHAT_ID"],
-  // Apporteurs (2026-11-27) : même repli que la presse (Messages, puis le salon général).
-  apporteurs: ["TELEGRAM_CHAT_ID_MESSAGES", "TELEGRAM_CHAT_ID"],
+  // Apporteurs (2026-11-27) : AUCUN repli. Variable absente = rien n'est envoyé (ces salons
+  // de repli ont d'autres membres).
+  apporteurs: [],
   // Le salon général (`TELEGRAM_CHAT_ID`) se nomme « 🔧 Axion-IA — Technique » dans Telegram.
   system: ["TELEGRAM_CHAT_ID"],
 };

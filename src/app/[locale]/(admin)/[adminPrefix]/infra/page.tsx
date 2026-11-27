@@ -277,10 +277,10 @@ async function checkTelegram(): Promise<{ status: Status; detail: string | null 
     ? " · Questionnaire audit dédié"
     : " · Questionnaire audit → Clients, puis Système";
 
-  // Salon ✍️ Apporteurs (2026-11-27) : sans lui, repli sur Messages, puis le canal par défaut.
+  // Salon ✍️ Apporteurs (2026-11-27) : sans lui, aucune alerte (pas de repli).
   routing += process.env["TELEGRAM_CHAT_ID_APPORTEURS"]
     ? " · Apporteurs dédié"
-    : " · Apporteurs → Messages (ou canal par défaut)";
+    : " · Apporteurs : non configuré, aucune alerte";
 
   try {
     const res = await fetch(`https://api.telegram.org/bot${token}/getMe`, {

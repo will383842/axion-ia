@@ -59,10 +59,11 @@ describe("alerte Telegram — signature", () => {
     expect(sendTelegramRaw).toHaveBeenCalledTimes(1);
   });
 
-  it("variable absente : repli sur Messages", async () => {
+  it("variable absente : rien n'est envoyé, pas de Sentry", async () => {
     delete process.env["TELEGRAM_CHAT_ID_APPORTEURS"];
-    await alerterSignatureApporteur(SIGNATURE);
-    expect((sendTelegramRaw.mock.calls[0]![0] as { chatId: string }).chatId).toBe("-100000000002");
+    expect(await alerterSignatureApporteur(SIGNATURE)).toBe("non_configure");
+    expect(sendTelegramRaw).not.toHaveBeenCalled();
+    expect(captureMessage).not.toHaveBeenCalled();
   });
 
   it("Telegram refuse : ne lève pas, libère la clé, Sentry sans donnée personnelle", async () => {
@@ -95,6 +96,18 @@ describe("alerte Telegram — contresignature", () => {
     const arg = sendTelegramRaw.mock.calls[0]![0] as { text: string; chatId: string };
     expect(arg.chatId).toBe(SALON);
     expect(arg.text).toBe("✅ Contrat contresigné : Éloïse L., e-mail et pièces jointes envoyés.");
+  });
+
+  it("e-mail en validation : message dédié, pas de « PAS parti »", async () => {
+    await alerterContresignature({
+      apporteurId: "abe",
+      prenom: "Éloïse",
+      nom: "Lefèvre",
+      envoi: "en-validation",
+    });
+    const arg = sendTelegramRaw.mock.calls[0]![0] as { text: string };
+    expect(arg.text).toContain("en attente de validation dans la console");
+    expect(arg.text).not.toContain("PAS parti");
   });
 
   it("e-mail non parti : le message ne dit pas « envoyés » et demande la relance", async () => {

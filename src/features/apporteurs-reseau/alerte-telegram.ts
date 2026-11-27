@@ -1,5 +1,5 @@
 // Réseau d'apporteurs : alertes Telegram dans le salon DÉDIÉ « Apporteurs »
-// (`TELEGRAM_CHAT_ID_APPORTEURS`, repli Messages puis salon général).
+// (`TELEGRAM_CHAT_ID_APPORTEURS`). Variable absente = rien n'est envoyé, sans erreur.
 //
 // 🔑 FAIL-SOFT : ces fonctions ne lèvent JAMAIS. Une signature ou une contresignature déjà
 // actée ne doit pas échouer parce que Telegram est muet.
@@ -8,7 +8,7 @@
 // verrouillée par `telegram-sans-donnees-personnelles.spec.ts`), jamais d'e-mail ni de téléphone.
 //
 // Idempotence : une clé Redis par fait (même horodatage que l'alerte e-mail pour la signature,
-// une seule fois par apporteur pour la contresignature), libérée si l'envoi échoue.
+// une fois par apporteur pendant 7 jours pour la contresignature), libérée si l'envoi échoue.
 
 import "server-only";
 
@@ -85,7 +85,7 @@ export function alerterSignatureApporteur(e: {
   );
 }
 
-/** Contresignature par Axion réussie. Une seule alerte par apporteur. */
+/** Contresignature par Axion réussie. Une alerte par apporteur pendant 7 jours (durée de la clé). */
 export function alerterContresignature(e: {
   apporteurId: string;
   prenom: string;
@@ -98,7 +98,9 @@ export function alerterContresignature(e: {
     `contresignature-${e.apporteurId}`,
     e.envoi === "envoye"
       ? `✅ Contrat contresigné : ${qui}, e-mail et pièces jointes envoyés.`
-      : `⚠️ Contrat contresigné : ${qui}, mais l'e-mail n'est PAS parti (${e.envoi}). À relancer depuis la console.`,
+      : e.envoi === "en-validation"
+        ? `✅ Contrat contresigné : ${qui}. L'e-mail est en attente de validation dans la console.`
+        : `⚠️ Contrat contresigné : ${qui}, mais l'e-mail n'est PAS parti (${e.envoi}). À relancer depuis la console.`,
     "contresignature",
   );
 }
