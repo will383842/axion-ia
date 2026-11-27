@@ -22,10 +22,10 @@ describe("textes alignés sur le contrat 2.3", () => {
     }
   });
 
-  it("« Retenu » en anglais : plus de « by simple email », et le versement suit la réalisation", async () => {
+  it("« Retenu » en anglais : plus de « by simple email », et le versement suit le paiement intégral", async () => {
     const t = await texte("apporteur-issue-retenu", { contactName: "Claire Martin" }, "en");
     expect(t).not.toContain("by simple email");
-    expect(t).toContain("once the service has been delivered");
+    expect(t).toContain("once the company has paid its order in full");
   });
 
   it("parrainage : six mois après la signature du contrat par Axion-IA", async () => {
