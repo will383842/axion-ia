@@ -498,6 +498,7 @@ export async function appliquerDecision(
         apporteurId,
         prenom: qui?.prenom ?? "",
         nom: qui?.nom ?? "",
+        envoi: r,
       });
     } catch (err) {
       signalerErreurReseau("contresignature : alerte Telegram", err);

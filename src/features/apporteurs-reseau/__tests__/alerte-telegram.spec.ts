@@ -86,9 +86,27 @@ describe("alerte Telegram — signature", () => {
 
 describe("alerte Telegram — contresignature", () => {
   it("part dans le salon Apporteurs", async () => {
-    await alerterContresignature({ apporteurId: "abc", prenom: "Éloïse", nom: "Lefèvre" });
+    await alerterContresignature({
+      apporteurId: "abc",
+      prenom: "Éloïse",
+      nom: "Lefèvre",
+      envoi: "envoye",
+    });
     const arg = sendTelegramRaw.mock.calls[0]![0] as { text: string; chatId: string };
     expect(arg.chatId).toBe(SALON);
     expect(arg.text).toBe("✅ Contrat contresigné : Éloïse L., e-mail et pièces jointes envoyés.");
+  });
+
+  it("e-mail non parti : le message ne dit pas « envoyés » et demande la relance", async () => {
+    await alerterContresignature({
+      apporteurId: "abd",
+      prenom: "Éloïse",
+      nom: "Lefèvre",
+      envoi: "echec",
+    });
+    const arg = sendTelegramRaw.mock.calls[0]![0] as { text: string };
+    expect(arg.text).not.toContain("envoyés");
+    expect(arg.text).toContain("PAS parti");
+    expect(arg.text).toContain("echec");
   });
 });

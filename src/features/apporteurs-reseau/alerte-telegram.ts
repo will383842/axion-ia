@@ -90,11 +90,15 @@ export function alerterContresignature(e: {
   apporteurId: string;
   prenom: string;
   nom: string;
+  /** Résultat de l'envoi de l'e-mail au contrat (« envoye » si parti). */
+  envoi: string;
 }): Promise<Statut> {
   const qui = prenomEtInitiale(e.prenom, e.nom);
   return alerter(
     `contresignature-${e.apporteurId}`,
-    `✅ Contrat contresigné : ${qui}, e-mail et pièces jointes envoyés.`,
+    e.envoi === "envoye"
+      ? `✅ Contrat contresigné : ${qui}, e-mail et pièces jointes envoyés.`
+      : `⚠️ Contrat contresigné : ${qui}, mais l'e-mail n'est PAS parti (${e.envoi}). À relancer depuis la console.`,
     "contresignature",
   );
 }
