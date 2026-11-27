@@ -81,3 +81,13 @@ Le script `scripts/apporteurs/reprise-historique-iban.ts` (essai à blanc par d�
 
 **Lots 7 (virements, gel) et 8 (RGPD, purge, alerte 10 jours) : NON livrés** : ils attendent des décisions du dirigeant (D-4, D-6, D-7).
 **Ne jamais allumer l'interrupteur avant le lot 7** (plan §9, point 5).
+
+## Lot 7 : `IBAN_EMPREINTE_SECRET` absent au moment d'un virement
+
+« Virement fait » reste possible sans ce secret : le virement est gardé, mais la preuve du compte payé
+(empreinte + 4 derniers caractères) n'est pas écrite. Ce cas est signalé : message Sentry de niveau
+`warning` (« IBAN_EMPREINTE_SECRET absent ») et ligne de journal `[apporteurs]`. Poser le secret sur
+l'application ; les virements déjà faits sans preuve ne se rattrapent pas automatiquement.
+
+La seconde lecture du gel se fait DANS la transaction du versement : une demande ouverte entre le
+premier contrôle et l'écriture refuse le virement et n'écrit rien.

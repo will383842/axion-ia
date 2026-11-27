@@ -1,7 +1,7 @@
 "use client";
 // use-client: formulaire de saisie à état local (aperçu et pastille d'indexation en direct, recherche de lieu, appels aux actions serveur).
 
-import { useState, useTransition } from "react";
+import { useRef, useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 
 import { AdminButton } from "@/components/admin/ui/AdminButton";
@@ -16,6 +16,7 @@ import {
   rechercherLieux,
   type LieuTrouve,
 } from "@/server/actions/equipe/collaborateurs";
+import { deposerPhotoAction, retirerPhotoAction } from "@/server/actions/equipe/photo";
 
 export interface FicheInitiale {
   id?: string;
@@ -161,6 +162,25 @@ export function CollaborateurForm({ initial }: { initial: FicheInitiale }) {
       if (r.ok) maj("slug", r.slug);
       else setErreur(r.erreur);
     });
+
+  const fichierPhoto = useRef<HTMLInputElement>(null);
+  const [altPhoto, setAltPhoto] = useState("");
+  const [notePhoto, setNotePhoto] = useState("");
+  const aPhoto = f.photoKind === "reelle" && f.photoUrl256 !== null;
+
+  const deposerPhoto = () => {
+    const fichier = fichierPhoto.current?.files?.[0];
+    if (!f.id) return;
+    if (!fichier) {
+      setErreur("Choisissez une photo.");
+      return;
+    }
+    const donnees = new FormData();
+    donnees.set("photo", fichier);
+    donnees.set("alt", altPhoto);
+    donnees.set("note", notePhoto);
+    executer(() => deposerPhotoAction(f.id, donnees), "Photo enregistrée.");
+  };
 
   const slugFige = f.publishedAt;
   const peutPublier = f.id !== undefined && f.status !== "publie" && f.consentPublication;
@@ -470,10 +490,76 @@ export function CollaborateurForm({ initial }: { initial: FicheInitiale }) {
               ))}
             </ul>
           ) : null}
-          <p className="mt-2 text-sm">
-            La photo réelle se gère dans une étape suivante : sans elle, la fiche reste en noindex.
-          </p>
+          {!f.photoConsent || !aPhoto ? (
+            <p className="mt-2 text-sm">
+              Sans photo réelle avec l&apos;accord de la personne, la fiche reste en noindex.
+            </p>
+          ) : null}
         </section>
+        {f.id ? (
+          <section aria-label="Photo" className="space-y-2 rounded border p-4">
+            <h2 className="text-lg font-semibold">Photo</h2>
+            <p>
+              {aPhoto
+                ? "Photo réelle enregistrée. Le public ne la voit que si la fiche est publiée avec l'accord photo ; sinon, c'est l'avatar à initiales."
+                : "Aucune photo : le public voit l'avatar à initiales."}
+            </p>
+            <label className="flex flex-col gap-1">
+              {aPhoto ? "Remplacer la photo" : "Déposer une photo"} (JPEG, PNG ou WebP, 8 Mo au
+              plus, 400 px au moins de côté)
+              <input ref={fichierPhoto} type="file" accept="image/jpeg,image/png,image/webp" />
+            </label>
+            <label className="flex flex-col gap-1">
+              Texte alternatif (par défaut : « Photo de {f.firstName || "…"} »)
+              <input
+                value={altPhoto}
+                maxLength={200}
+                onChange={(e) => setAltPhoto(e.target.value)}
+              />
+            </label>
+            {!f.photoConsent ? (
+              <label className="flex flex-col gap-1">
+                Accord photo non enregistré. Note de preuve (quand, comment, par quel message) :
+                <textarea
+                  rows={3}
+                  value={notePhoto}
+                  maxLength={2000}
+                  onChange={(e) => setNotePhoto(e.target.value)}
+                />
+              </label>
+            ) : null}
+            <p className="text-sm">
+              L&apos;image est ré-encodée et ses données cachées (lieu, appareil) sont supprimées.
+            </p>
+            <div className="flex flex-wrap gap-2">
+              <AdminButton
+                type="button"
+                variant="secondary"
+                disabled={enCours}
+                onClick={deposerPhoto}
+              >
+                {aPhoto ? "Remplacer" : "Déposer"}
+              </AdminButton>
+              {aPhoto || f.photoConsent ? (
+                <AdminButton
+                  type="button"
+                  variant="danger"
+                  disabled={enCours}
+                  onClick={() => {
+                    if (window.confirm("Retirer la photo et l'accord photo ? Retour à l'avatar.")) {
+                      executer(
+                        () => retirerPhotoAction(f.id),
+                        "Photo retirée : avatar à initiales.",
+                      );
+                    }
+                  }}
+                >
+                  Retirer la photo
+                </AdminButton>
+              ) : null}
+            </div>
+          </section>
+        ) : null}
       </aside>
     </div>
   );
