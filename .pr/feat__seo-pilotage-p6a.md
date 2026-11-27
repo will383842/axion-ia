@@ -22,6 +22,6 @@ Pilotage SEO : recalculer les positions depuis l'historique au lieu d'appeler Go
 
 ## Tests
 
-Tests ciblés : `recalcul.spec.ts` (26), `analytics-clients.spec.ts`, deux specs P6a des anciens workers, worker `seo-pilotage`, cadences. Typecheck, `content-gen:isolation-check`, `image-bank:isolation-check`, lint et prettier verts.
+Tests ciblés : `recalcul.spec.ts` (25), `analytics-clients.spec.ts`, deux specs P6a des anciens workers, worker `seo-pilotage`, cadences. Typecheck, `content-gen:isolation-check`, `image-bank:isolation-check`, lint et prettier verts.
 
-VERDICT OPUS : À CORRIGER (tour 1 : points 1 et 3 corrigés, 2 et 4 documentés ci-dessus ; tour 2 en cours)
+VERDICT OPUS : BON
