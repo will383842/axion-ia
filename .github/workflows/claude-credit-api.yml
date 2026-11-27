@@ -165,7 +165,7 @@ jobs:
           fi
           rm -f "$RUNNER_TEMP/err-run1.txt"
 
-      - name: Crédit épuisé ? choisir le compte suivant
+      - name: Crédit épuisé ou plafond de dépenses atteint ? choisir le compte suivant
         id: bascule
         if: always()
         env:
@@ -175,9 +175,9 @@ jobs:
           suivant=""
           if [ -n "$FICHIER" ] && [ -f "$FICHIER" ] && jq -e '
                any(.[]; .type == "result" and .is_error == true
-                        and ((.result // "") | test("credit balance"; "i")))' "$FICHIER" >/dev/null 2>&1; then
+                        and ((.result // "") | test("credit balance|usage limit|spend limit"; "i")))' "$FICHIER" >/dev/null 2>&1; then
             case "$COMPTE" in A) suivant=B ;; B) suivant=A ;; esac
-            echo "Crédit épuisé sur le compte $COMPTE : bascule vers $suivant."
+            echo "Crédit épuisé ou plafond atteint sur le compte $COMPTE : bascule vers $suivant."
           fi
           echo "suivant=$suivant" >> "$GITHUB_OUTPUT"
 
