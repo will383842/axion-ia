@@ -3,7 +3,7 @@
  *
  * Il ajoutait 4 h2 et 1 h3 à chaque page du site : la hiérarchie des titres
  * de chaque page était faussée. Les intertitres de colonnes sont des
- * paragraphes, et chaque liste porte son intitulé en `aria-label`.
+ * paragraphes, et chaque liste est nommée par `aria-labelledby`.
  */
 
 import { readFileSync } from "node:fs";
@@ -25,7 +25,7 @@ describe("pied de page : aucun titre", () => {
     expect(code).not.toMatch(/\bas=["']h[1-6]["']/);
   });
 
-  it("étiquette chaque liste de liens", () => {
-    expect(code).toMatch(/<ul aria-label=\{label\}>/);
+  it("nomme chaque liste de liens par son intitulé visible", () => {
+    expect(code).toMatch(/<ul[^>]*aria-labelledby=\{labelledBy\}/);
   });
 });

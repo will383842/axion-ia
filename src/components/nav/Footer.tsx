@@ -1,5 +1,6 @@
 import { CAS_CONCRETS_AFFICHES } from "@/content/preuves-sociales";
 import { getLocale, getTranslations } from "next-intl/server";
+import { useId } from "react";
 import NextLink from "next/link";
 import { LogIn } from "lucide-react";
 import { Link } from "@/i18n/navigation";
@@ -285,21 +286,29 @@ interface FooterColumnProps {
   subgroup?: { title: string; items: ReadonlyArray<{ href: string; label: string }> };
 }
 function FooterColumn({ title, items, subgroup }: FooterColumnProps) {
+  const titreId = useId();
+  const sousTitreId = useId();
   return (
     <div>
       {/* F0 (2026-11) — des `<p>`, et non des titres : le pied de page ne doit
           injecter aucun h1-h6 dans la hiérarchie des titres de chaque page.
-          Chaque liste porte son intitulé en `aria-label` (lecteurs d'écran). */}
-      <p className="text-fg-soft mb-2 text-[13px] font-semibold tracking-[0.06em] uppercase">
+          Chaque liste est nommée par son intitulé visible (`aria-labelledby`). */}
+      <p
+        id={titreId}
+        className="text-fg-soft mb-2 text-[13px] font-semibold tracking-[0.06em] uppercase"
+      >
         {title}
       </p>
-      <FooterLinkList items={items} label={title} />
+      <FooterLinkList items={items} labelledBy={titreId} />
       {subgroup ? (
         <>
-          <p className="text-fg-soft mt-4 mb-1 text-xs font-semibold tracking-[0.06em] uppercase">
+          <p
+            id={sousTitreId}
+            className="text-fg-soft mt-4 mb-1 text-xs font-semibold tracking-[0.06em] uppercase"
+          >
             {subgroup.title}
           </p>
-          <FooterLinkList items={subgroup.items} label={subgroup.title} />
+          <FooterLinkList items={subgroup.items} labelledBy={sousTitreId} />
         </>
       ) : null}
     </div>
@@ -308,9 +317,9 @@ function FooterColumn({ title, items, subgroup }: FooterColumnProps) {
 
 // Cibles tactiles de 44 px (`min-h-11`), WCAG 2.5.5.
 type LienPied = ReadonlyArray<{ href: string; label: string }>;
-function FooterLinkList({ items, label }: { items: LienPied; label: string }) {
+function FooterLinkList({ items, labelledBy }: { items: LienPied; labelledBy: string }) {
   return (
-    <ul aria-label={label}>
+    <ul aria-labelledby={labelledBy}>
       {items.map((item) => (
         <li key={item.href}>
           {/*
