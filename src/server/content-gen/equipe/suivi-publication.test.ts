@@ -1,5 +1,6 @@
 import { describe, expect, it, vi } from "vitest";
 import {
+  PLANCHER_IMPRESSIONS_BAISSE,
   QUOTA_INSPECTIONS_JOUR,
   choisirCandidatsMiseAJour,
   declencheursMiseAJour,
@@ -120,10 +121,30 @@ describe("declencheursMiseAJour (règles pures)", () => {
     expect(declencheursMiseAJour(base, NOW)).toEqual([]);
   });
   it("baisse de position d'au moins 3 places", () => {
-    expect(declencheursMiseAJour({ ...base, positionActuelle: 8 }, NOW)).toEqual([
+    expect(
+      declencheursMiseAJour({ ...base, positionActuelle: 8, impressions28j: 500 }, NOW),
+    ).toEqual(["baisse-position"]);
+    expect(
+      declencheursMiseAJour({ ...base, positionActuelle: 7, impressions28j: 500 }, NOW),
+    ).toEqual([]);
+  });
+  it("plancher d'impressions : 99 ne déclenche pas, 100 déclenche", () => {
+    const baisse = { ...base, positionActuelle: 8 };
+    expect(declencheursMiseAJour({ ...baisse, impressions28j: 99 }, NOW)).toEqual([]);
+    expect(declencheursMiseAJour({ ...baisse, impressions28j: 100 }, NOW)).toEqual([
       "baisse-position",
     ]);
-    expect(declencheursMiseAJour({ ...base, positionActuelle: 7 }, NOW)).toEqual([]);
+    expect(PLANCHER_IMPRESSIONS_BAISSE).toBe(100);
+  });
+  it("impressions absentes (null ou non fournies) : aucun déclenchement", () => {
+    const baisse = { ...base, positionActuelle: 8 };
+    expect(declencheursMiseAJour({ ...baisse, impressions28j: null }, NOW)).toEqual([]);
+    expect(declencheursMiseAJour(baisse, NOW)).toEqual([]);
+  });
+  it("le plancher ne touche pas les autres raisons", () => {
+    expect(
+      declencheursMiseAJour({ ...base, impressions28j: null, ageJours: 180, liensCasses: 1 }, NOW),
+    ).toEqual(["age-maximum", "lien-casse"]);
   });
   it("preuve expirée, lien cassé, cannibalisation", () => {
     expect(
