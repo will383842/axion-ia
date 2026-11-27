@@ -35,7 +35,13 @@ export interface PiecesResolues {
  * Une pièce facultative ne part pas : journal et Sentry, SANS la clé R2 (celle d'un contrat
  * porte l'identifiant du dossier) — le nom du fichier montré au destinataire suffit.
  */
-function signalerPieceOmise(filename: string, motif: PieceOmise["motif"]): void {
+function signalerPieceOmise(
+  filename: string,
+  motif: PieceOmise["motif"],
+  silencieux = false,
+): void {
+  // Aperçu console : rien n'est envoyé, donc ni journal ni alerte « worker ».
+  if (silencieux) return;
   const message = `[email-worker] pièce facultative non jointe (${motif}) : ${filename} — l'e-mail part sans elle`;
   console.warn(message);
   captureWorkerError("email", "emails", undefined, new Error(message));
@@ -55,7 +61,9 @@ function signalerPieceOmise(filename: string, motif: PieceOmise["motif"]): void 
  */
 export async function resoudrePiecesJointes(
   attachments: EmailJobData["attachments"],
+  options: { silencieux?: boolean } = {},
 ): Promise<PiecesResolues> {
+  const silencieux = options.silencieux === true;
   const omises: PieceOmise[] = [];
   const empreintes: PiecesResolues["empreintes"] = [];
   if (!attachments || attachments.length === 0) return { pieces: [], omises, empreintes };
@@ -79,7 +87,7 @@ export async function resoudrePiecesJointes(
     if (buffer === null) {
       if (facultative) {
         nonJointes.push({ rang, omise: { filename: att.filename, motif: "introuvable" } });
-        signalerPieceOmise(att.filename, "introuvable");
+        signalerPieceOmise(att.filename, "introuvable", silencieux);
         continue;
       }
       throw new Error(
@@ -88,7 +96,7 @@ export async function resoudrePiecesJointes(
     }
     if (facultative && octetsTotal + buffer.byteLength > TAILLE_MAX_PJ_OCTETS) {
       nonJointes.push({ rang, omise: { filename: att.filename, motif: "trop lourde" } });
-      signalerPieceOmise(att.filename, "trop lourde");
+      signalerPieceOmise(att.filename, "trop lourde", silencieux);
       continue;
     }
     octetsTotal += buffer.byteLength;

@@ -24,6 +24,8 @@ export const dynamic = "force-dynamic";
 /** Ce que le navigateur peut afficher sans risque dans l'onglet : PDF et images raster. */
 const AFFICHABLE = /^(application\/pdf|image\/(png|jpeg|gif|webp))$/i;
 
+const EST_PDF = /^application\/pdf$/i;
+
 function enTetes(contentType: string, nom: string): Record<string, string> {
   const affichable = AFFICHABLE.test(contentType);
   return {
@@ -33,7 +35,11 @@ function enTetes(contentType: string, nom: string): Record<string, string> {
       affichable ? CONSULTATION : ENREGISTREMENT,
       nom,
     ),
-    "Content-Security-Policy": "default-src 'none'; sandbox",
+    // `sandbox` empêche la visionneuse PDF de Chromium de se charger : on le garde pour les
+    // images et les téléchargements, et on le retire pour le PDF (`nosniff`, `object-src 'none'`).
+    "Content-Security-Policy": EST_PDF.test(contentType)
+      ? "default-src 'none'; object-src 'none'"
+      : "default-src 'none'; sandbox",
     "Cache-Control": "private, no-store",
     "X-Content-Type-Options": "nosniff",
     "Referrer-Policy": "no-referrer",
@@ -67,8 +73,11 @@ export async function GET(
 
   let fichier;
   try {
-    [fichier] = (await resoudrePiecesJointes([piece])).pieces;
-  } catch {
+    [fichier] = (await resoudrePiecesJointes([piece], { silencieux: true })).pieces;
+  } catch (e) {
+    if (e instanceof Error && /trop lourdes/.test(e.message)) {
+      return texte("Ce fichier est trop lourd pour être joint à l'envoi.", 413);
+    }
     return texte("Ce fichier est introuvable.", 404);
   }
   if (!fichier) return texte("Ce fichier n'est pas joint à l'envoi : il est introuvable.", 404);

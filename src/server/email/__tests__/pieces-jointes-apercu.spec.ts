@@ -11,7 +11,10 @@ vi.mock("@/lib/r2-storage", () => ({
     return n === undefined || n === null ? null : Buffer.alloc(n, 1);
   }),
 }));
-vi.mock("@/server/queue/lib/sentry-worker", () => ({ captureWorkerError: vi.fn() }));
+const captureWorkerError = vi.fn();
+vi.mock("@/server/queue/lib/sentry-worker", () => ({
+  captureWorkerError: (...a: unknown[]) => captureWorkerError(...a),
+}));
 vi.spyOn(console, "warn").mockImplementation(() => undefined);
 
 import { resoudrePiecesJointes, TAILLE_MAX_PJ_OCTETS } from "@/server/email/pieces-jointes";
@@ -36,6 +39,7 @@ const LIVRET = {
 
 beforeEach(() => {
   h.objets = {};
+  captureWorkerError.mockClear();
 });
 
 describe("piecesJointesPourApercu : la même liste que l'envoi", () => {
@@ -89,6 +93,22 @@ describe("piecesJointesPourApercu : la même liste que l'envoi", () => {
     expect(p?.href).not.toContain("abc-secret");
     expect(decodeURIComponent(p?.href ?? "")).not.toContain("abc-secret");
   });
+
+  it("préfixe admin vide : pas de lien (jamais /fr//emails/…)", async () => {
+    h.objets = { [CONTRAT.r2Key]: 10 };
+    const [p] = await piecesJointesPourApercu([CONTRAT], "");
+    expect(p?.href).toBeNull();
+    expect(p?.taille).toBe(10);
+  });
+
+  it("une pièce facultative écartée à l'aperçu ne déclenche aucune alerte « worker »", async () => {
+    h.objets = { [CONTRAT.r2Key]: 10, [FICHE.r2Key]: null };
+    await piecesJointesPourApercu([CONTRAT, FICHE], "adm");
+    expect(captureWorkerError).not.toHaveBeenCalled();
+    // Le worker, lui, continue d'alerter (comportement inchangé).
+    await resoudrePiecesJointes([CONTRAT, FICHE]);
+    expect(captureWorkerError).toHaveBeenCalledTimes(1);
+  });
 });
 
 describe("référence signée", () => {
@@ -96,12 +116,24 @@ describe("référence signée", () => {
     const ref = referencePieceJointe(FICHE)!;
     expect(pieceDeLaReference(ref)).toEqual(FICHE);
     expect(hrefPieceJointe(ref, "adm")).toContain(encodeURIComponent(ref));
+    expect(hrefPieceJointe(ref, "")).toBeNull();
+  });
+
+  it("la clé R2 et le nom de fichier ne sont lisibles ni en base64 ni en clair (charge chiffrée)", () => {
+    const ref = referencePieceJointe(CONTRAT)!;
+    const corps = ref.split(".")[0]!;
+    const lu = Buffer.from(corps, "base64url").toString("latin1");
+    expect(lu).not.toContain("abc-secret");
+    expect(lu).not.toContain("contrats/");
+    expect(lu).not.toContain("Contrat.pdf");
+    // Deux références de la même pièce diffèrent (IV aléatoire).
+    expect(referencePieceJointe(CONTRAT)).not.toBe(ref);
   });
 
   it("refuse une référence falsifiée, tronquée ou expirée", () => {
     const ref = referencePieceJointe(CONTRAT)!;
     const [corps, jeton] = ref.split(".") as [string, string];
-    const autre = Buffer.from(JSON.stringify(["x.pdf", "autre/cle.pdf", null, false])).toString(
+    const autre = Buffer.from("charge-forgee-sans-signature-valide-0123456789").toString(
       "base64url",
     );
     expect(pieceDeLaReference(`${autre}.${jeton}`)).toBeNull();
