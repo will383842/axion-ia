@@ -11,6 +11,7 @@
  */
 import type { ComponentType } from "react";
 import "@/styles/article-v2/socle.css";
+import "@/styles/article-v2/complements.css";
 import type { GabaritArticle } from "@/server/content-gen/blog/gabarits";
 import type { ArticleGabaritProps } from "./types";
 import { GabaritAnalyse } from "./gabarits/GabaritAnalyse";

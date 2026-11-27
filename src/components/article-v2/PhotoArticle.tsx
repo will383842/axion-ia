@@ -32,7 +32,7 @@ export function PhotoArticle({
   const repli = src ? null : PHOTOS_REPLI[gabarit];
   const source = src ?? repli!.src;
   // L'alt n'est jamais le titre (doublon du h1) quand il manque : texte descriptif du repli.
-  const texte = src ? (alt ?? titre) : repli!.alt;
+  const texte = src ? (alt ?? titre) : repli!.alt; // repli : alt vide (décor, voir photos-repli)
   return (
     <figure className="visuel">
       <div className="visuel__cadre">
@@ -42,7 +42,7 @@ export function PhotoArticle({
           fill
           loading="eager"
           fetchPriority="high"
-          sizes="(min-width: 1024px) 41.5em, calc(100vw - 32px)"
+          sizes="(min-width: 1024px) 800px, calc(100vw - 32px)"
           className="object-cover"
         />
         {etiquette ? (

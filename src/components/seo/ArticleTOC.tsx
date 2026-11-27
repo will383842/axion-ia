@@ -74,6 +74,9 @@ export function extractTocItems(bodyHtml: string): TocItem[] {
   return items;
 }
 
+// Espace de tête portée par la constante : prettier-plugin-tailwindcss la retirerait d'un littéral.
+const MIN_H = " min-h-11";
+
 export function ArticleTOC({
   items: tousLesItems,
   pageUrl,
@@ -167,7 +170,7 @@ export function ArticleTOC({
             href={`#${item.anchor}`}
             className={`group/toc hover:bg-paper flex items-baseline gap-2.5 rounded-lg px-2 py-1.5 transition-colors ${
               item.level === 3 ? "pl-5" : ""
-            }${cibleTactile ? "min-h-11" : ""}`}
+            }${cibleTactile ? MIN_H : ""}`}
           >
             <span className="bg-terracotta-soft text-terracotta-deep inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-md text-[10px] font-bold tabular-nums">
               {String(i + 1).padStart(2, "0")}

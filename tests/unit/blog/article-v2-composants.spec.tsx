@@ -168,7 +168,7 @@ describe("composants communs (S2)", () => {
     expect(html).toContain('loading="eager"');
     expect(html).toContain('data-fetchpriority="high"');
     expect(html).toContain('data-priority="undefined"');
-    expect(html).toContain('sizes="(min-width: 1024px) 41.5em, calc(100vw - 32px)"');
+    expect(html).toContain('sizes="(min-width: 1024px) 800px, calc(100vw - 32px)"');
     expect(html).toContain('alt="Alt"');
     expect(html).not.toContain("<svg");
     expect(html).toContain("<figcaption>");

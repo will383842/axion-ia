@@ -43,8 +43,8 @@ describe("composants article-v2 : serveur seulement", () => {
       ).toBe(true);
       expect(fs.existsSync(path.join(RACINE, `src/styles/article-v2/${code}.css`))).toBe(true);
     }
-    // socle + une feuille par gabarit (8) + actualité + guide pilier (créées vides)
-    expect(FEUILLES).toHaveLength(11);
+    // socle + compléments + une feuille par gabarit (8) + actualité + guide pilier (vides)
+    expect(FEUILLES).toHaveLength(12);
   });
 
   it("aucun hexadécimal (sources et feuilles)", () => {
@@ -196,7 +196,8 @@ describe("messages des gabarits", () => {
 });
 
 describe("textes des gabarits : mots interdits et typographie", () => {
-  const INTERDITS = /grenoble|frais de déplacement|témoignage|avocat|réserv|€|\d\s?(euros?|eur)\b/i;
+  const INTERDITS =
+    /grenoble|prix|frais de déplacement|témoignage|avocat|réserv|€|\d\s?(euros?|eur)\b/i;
   const textes = (o: unknown): string[] =>
     typeof o === "string"
       ? [o]
@@ -233,7 +234,7 @@ describe("photos de repli", () => {
         true,
       );
       expect(src).not.toMatch(/infographie|pourcent|-\d+-/);
-      expect(alt.length).toBeGreaterThan(10);
+      expect(alt).toBe(""); // décor : jamais une description inventée
     }
   });
 });

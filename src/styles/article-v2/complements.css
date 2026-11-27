@@ -1,0 +1,59 @@
+/* Compléments au socle (S2) : classes rendues par les composants communs et absentes du
+   socle porté. Toutes bornées à [data-gabarit]. */
+[data-gabarit] .visuel__cadre img {
+  object-fit: cover;
+}
+[data-gabarit] .visuel__etiquette {
+  position: absolute;
+  inset: auto auto 0.75rem 0.75rem;
+  padding: 0.25rem 0.75rem;
+  border-radius: var(--radius-full);
+  background: var(--color-mocha);
+  color: var(--color-mocha-fg);
+  font-size: 0.875rem;
+}
+[data-gabarit] .signe__grand {
+  display: block;
+  font: 500 clamp(1.5rem, 1rem + 2vw, 2.5rem) / 1 var(--font-serif);
+  color: var(--color-paper);
+}
+[data-gabarit] .signe__legende {
+  display: block;
+  font-size: 0.75rem;
+  color: var(--color-mocha-fg);
+}
+[data-gabarit] .en-bref__source {
+  font-size: 0.875rem;
+  color: var(--color-fg-muted);
+}
+[data-gabarit] .fiche {
+  display: grid;
+  gap: 0.5rem;
+  margin: 0;
+}
+[data-gabarit] .fiche dt {
+  font-weight: 600;
+}
+[data-gabarit] .fiche dd {
+  margin: 0;
+}
+[data-gabarit] .encart-video__cadre {
+  position: relative;
+  overflow: hidden;
+  text-decoration: none;
+}
+[data-gabarit] .encart-video__cadre img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+[data-gabarit] .encart-video__lire {
+  position: relative;
+  padding: 0.5rem 1rem;
+  border-radius: var(--radius-full);
+  background: var(--color-terracotta);
+  color: var(--color-paper);
+  font-weight: 600;
+}

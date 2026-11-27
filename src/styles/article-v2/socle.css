@@ -4,7 +4,7 @@
    (jamais par globals.css : PLAN §15.7). Toutes les règles sont bornées à [data-gabarit] ;
    html/body ne sont touchés que si la page contient un gabarit (:has). Les couleurs, rayons
    et polices sont les jetons de globals.css ; seuls les jetons de mise en page ci-dessous
-   sont locaux. Ne pas modifier à la main : régénérer depuis le socle. */
+   sont locaux. Ajustements locaux après portage : z-index de la barre sous celui du Header (z-40), cible du Diagnostic par data-cta (la marque est terracotta, pas le bleu). */
 [data-gabarit] {
   --ombre-douce:
     0 1px 2px color-mix(in srgb, var(--color-mocha) 8%, transparent),
@@ -283,7 +283,7 @@ body:has([data-gabarit]) {
     position: fixed;
     inset: calc(var(--header-h) + 1px) 0 auto 0;
     height: 4px;
-    z-index: 55;
+    z-index: 35;
     background: var(--color-mocha-fg);
     box-shadow: 0 1px 0 var(--color-terracotta-deep);
     transform-origin: 0 50%;
@@ -1104,7 +1104,7 @@ body:has([data-gabarit]) {
     background: var(--color-mocha-fg);
     color: var(--color-ink);
   }
-  [data-gabarit] .act.btn--bleu {
+  [data-gabarit] .act[data-cta="diagnostic"] {
     min-height: 64px;
     box-shadow: 0 0 0 2px var(--color-primary-soft);
   }
@@ -1141,14 +1141,14 @@ body:has([data-gabarit]) {
   [data-gabarit] .carte-action__sous-titre {
     margin-bottom: 0.75rem;
   }
-  [data-gabarit] .act:not(.btn--bleu) .btn__sous {
+  [data-gabarit] .act:not([data-cta="diagnostic"]) .btn__sous {
     display: none;
   }
   [data-gabarit] .act {
     min-height: 48px;
     padding-block: 0.5rem;
   }
-  [data-gabarit] .act.btn--bleu {
+  [data-gabarit] .act[data-cta="diagnostic"] {
     min-height: 56px;
   }
   [data-gabarit] .carte-action__rassurance {

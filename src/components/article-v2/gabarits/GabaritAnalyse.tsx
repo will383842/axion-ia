@@ -9,6 +9,7 @@
  * méthode, carte auteur, badge Qualiopi, mention IA, partage, questions
  * associées, articles liés, précédent/suivant, vidéo, newsletter, CTA.
  */
+import "@/styles/article-v2/analyse.css";
 import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import { AnswerCard } from "@/components/marketing/AnswerCard";
