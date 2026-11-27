@@ -85,6 +85,8 @@
   --ombre-douce: 0 1px 2px color-mix(in srgb, var(--color-mocha) 8%, transparent),
     0 14px 34px -14px color-mix(in srgb, var(--color-mocha) 28%, transparent);
   --ombre-bloc: 6px 6px 0 var(--color-terracotta);
+  --ombre-legere: 0 1px 2px color-mix(in srgb, var(--color-mocha) 4%, transparent),
+    0 4px 8px color-mix(in srgb, var(--color-mocha) 6%, transparent);
   --gouttiere: 16px;
   /* Largeurs en em, jamais en ch : ch dépend de la police (Manrope 0,610 em, repli Arial 0,577 em ;
      Fraunces 600 0,675 em, repli Times 0,561 em) et ferait refluer le texte au swap = CLS. */
@@ -184,6 +186,8 @@ section:hover .ancre, .ancre:focus-visible { opacity: 1; }
 .sur-terracotta :focus-visible { outline-color: var(--color-mocha-fg); }
 .sur-sombre a:not(.btn) { color: var(--color-mocha-fg); }
 .sur-sombre a:not(.btn):hover { color: var(--color-terracotta-on-mocha); }
+.sur-terracotta a:not(.btn) { color: var(--color-mocha-fg); }
+.sur-terracotta a:not(.btn):hover { color: var(--color-paper); text-decoration-thickness: 2px; }
 
 /* 05 — BARRE DE PROGRESSION DE LECTURE (CSS pur, invisible sans support) --- */
 .progression { display: none; }
@@ -201,52 +205,121 @@ section:hover .ancre, .ancre:focus-visible { opacity: 1; }
 /* 06 — BANDEAU MAQUETTE, EN-TÊTE DU SITE, FIL D'ARIANE --------------------- */
 .bandeau-maquette { background: var(--color-ochre-soft); color: var(--color-ochre-deep); text-align: center;
   font: 600 0.8125rem/1.4 var(--font-sans); padding: 0.4rem 1rem; }
-/* Simule l'en-tête collant du site (hauteur = --header-h, comme en production) */
+/* EN-TÊTE DU SITE — copie fidèle de src/components/nav/Header.tsx + NavLink.tsx (refonte 2026-11-11) :
+   barre TERRACOTTA (bg-terracotta, 95 % + flou si supporté), filet bas mocha/30, logo dans un badge blanc
+   arrondi, onglets ivoire, « La Journée IA » en pastille mocha cerclée ivoire, loupe et « Nous écrire » en
+   pastilles blanches, « Réserver un appel » en bleu plein. Hauteur 5 rem à toutes les tailles (--header-h).
+   Contrastes mesurés : ivoire sur terracotta 5,24:1 ; blanc 5,81:1 ; terracotta sur blanc 5,81:1 ;
+   ivoire sur mocha 13,70:1 ; blanc sur bleu 6,76:1. */
 .site-entete { position: sticky; top: 0; z-index: 40; height: var(--header-h);
-  background: var(--color-mocha); color: var(--color-mocha-fg); border-bottom: 1px solid var(--color-border-on-mocha); }
-.site-entete .conteneur { height: 100%; display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
-.site-logo { display: inline-flex; align-items: center; min-height: 44px; text-decoration: none;
-  font: 600 1.375rem/1 var(--font-serif); letter-spacing: -0.01em; }
-.site-logo em { color: var(--color-terracotta-on-mocha); font-weight: 500; }
-.site-nav { display: flex; gap: 1.5rem; font-size: 0.9375rem; }
-.site-nav a { display: inline-flex; align-items: center; justify-content: center; min-width: 44px; min-height: 44px; text-decoration: none; }
-@media (max-width: 767px) { .site-nav a:not(:last-child) { display: none; } }
-/* Bouton du bandeau : ordinateur seulement (sur téléphone, la barre basse porte déjà le Diagnostic) */
-.site-entete .site-entete__cta { display: none; }
-@media (min-width: 1024px) {
-  .site-entete .conteneur { justify-content: flex-start; }
-  .site-nav { margin-left: auto; }
-  .site-entete .site-entete__cta { display: inline-flex; min-height: 44px; padding: 0.55rem 1.1rem; gap: 0.5rem; font-size: 0.9375rem; }
-  .site-entete__cta .icone { width: 1.1rem; height: 1.1rem; }
+  background: var(--color-terracotta); color: var(--color-mocha-fg);
+  border-bottom: 1px solid var(--color-terracotta-deep); }
+@supports (backdrop-filter: blur(1px)) {
+  .site-entete { background: color-mix(in srgb, var(--color-terracotta) 95%, transparent); backdrop-filter: blur(12px); }
 }
-/* Téléphone : en-tête collant de 56 px (au lieu de 80) ; avec la barre basse, le texte garde ~86 % de l'écran */
-@media (max-width: 1023px) { :root { --header-h: 3.5rem; } .site-logo { font-size: 1.25rem; } }
+.site-entete::after { content: ""; position: absolute; inset: auto 0 0; height: 1px; pointer-events: none;
+  background: color-mix(in srgb, var(--color-mocha) 30%, transparent); }
+.site-entete__rangee { position: relative; display: flex; align-items: center; gap: 0.75rem; height: 100%;
+  width: 100%; max-width: 120rem; margin-inline: auto; padding-inline: 1rem; }
+@media (min-width: 640px) { .site-entete__rangee { padding-inline: 1.5rem; } }
+@media (min-width: 992px) { .site-entete__rangee { padding-inline: 2.5rem; } }
+.site-entete :focus-visible { outline: 2px solid var(--color-mocha-fg); outline-offset: 2px; border-radius: var(--radius-lg); }
+.site-logo { display: inline-flex; flex-direction: column; justify-content: center; flex: none; min-height: 44px;
+  padding: 0.375rem 0.75rem; border-radius: var(--radius-lg); background: var(--color-paper); color: var(--color-fg);
+  text-decoration: none; box-shadow: var(--ombre-legere); transition: box-shadow 0.15s; }
+.site-logo:hover { color: var(--color-fg); box-shadow: var(--ombre-douce); }
+.site-logo__nom { font: 500 1.5rem/1 var(--font-serif); letter-spacing: -0.025em; }
+.site-logo__tiret { margin-inline: 0.125rem; color: color-mix(in srgb, var(--color-fg) 70%, transparent); }
+.site-logo em { font-style: italic; color: var(--color-terracotta); }
+.site-logo__devise { display: none; margin-top: 0.25rem; font: 600 0.75rem/1 var(--font-sans); color: var(--color-fg-muted); }
+@media (min-width: 1366px) { .site-logo__devise { display: block; } }
+.site-nav { display: none; align-items: center; gap: 0.25rem; margin-left: 0.5rem; }
+.site-nav__lien { position: relative; display: inline-flex; align-items: center; gap: 0.35rem; min-height: 44px;
+  padding-inline: 0.75rem; border-radius: var(--radius-md); white-space: nowrap;
+  font: 600 1rem/1 var(--font-sans); letter-spacing: -0.01em; color: var(--color-mocha-fg); text-decoration: none; }
+.site-nav__lien::after { content: ""; position: absolute; inset: auto 0.75rem 0.375rem; height: 2px; background: var(--color-mocha-fg);
+  transform: scaleX(0); transform-origin: left; transition: transform 0.15s; }
+.site-nav__lien:hover { color: var(--color-mocha-fg); }
+.site-nav__lien:hover::after { transform: scaleX(1); }
+.site-nav__lien .icone { width: 1rem; height: 1rem; }
+.site-nav__phare { display: inline-flex; align-items: center; gap: 0.5rem; min-height: 44px; padding-inline: 1rem;
+  border: 1px solid var(--color-mocha-fg); border-radius: var(--radius-full); background: var(--color-mocha);
+  white-space: nowrap; font: 600 1rem/1 var(--font-sans); letter-spacing: -0.01em; color: var(--color-mocha-fg); text-decoration: none; }
+.site-nav__phare:hover { background: var(--color-mocha-soft); color: var(--color-mocha-fg); }
+.site-nav__phare::before { content: ""; width: 0.5rem; height: 0.5rem; border-radius: 50%; background: var(--color-terracotta-on-mocha); }
+.site-actions { display: flex; align-items: center; gap: 0.5rem; margin-left: auto; }
+.site-pastille { display: none; align-items: center; justify-content: center; gap: 0.5rem; min-height: 44px; border-radius: var(--radius-full);
+  background: var(--color-paper); color: var(--color-terracotta); box-shadow: var(--ombre-legere); white-space: nowrap;
+  font: 600 1rem/1 var(--font-sans); text-decoration: none; transition: box-shadow 0.15s; }
+.site-pastille:hover { color: var(--color-terracotta); box-shadow: var(--ombre-douce); }
+.site-pastille--loupe { width: 44px; padding: 0; }
+.site-pastille--texte { padding-inline: 1rem; }
+.site-pastille .icone, .site-reserver .icone { width: 1.1rem; height: 1.1rem; }
+.site-reserver { display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem; min-height: 44px; padding-inline: 1rem;
+  border-radius: var(--radius-full); background: var(--color-primary); color: var(--color-primary-fg); white-space: nowrap;
+  font: 600 0.9375rem/1 var(--font-sans); text-decoration: none; box-shadow: var(--ombre-legere); transition: background-color 0.15s; }
+.site-reserver:hover { background: var(--color-primary-hover); color: var(--color-primary-fg); }
+.site-reserver__long { display: none; }
+@media (max-width: 379px) { .site-reserver .icone { display: none; } }
+@media (min-width: 992px) { .site-reserver { padding-inline: 1.25rem; font-size: 1rem; } .site-reserver__court { display: none; } .site-reserver__long { display: inline; } }
+/* Tiroir de téléphone : <details> natif, zéro JavaScript */
+.site-menu { position: relative; }
+.site-menu summary { display: inline-grid; place-items: center; width: 44px; height: 44px; border: 1px solid var(--color-mocha-fg);
+  border-radius: var(--radius-full); color: var(--color-mocha-fg); cursor: pointer; list-style: none; }
+.site-menu summary::-webkit-details-marker { display: none; }
+.site-menu summary:hover, .site-menu[open] summary { background: var(--color-terracotta-deep); }
+.site-menu__panneau { position: absolute; right: 0; top: calc(100% + 0.75rem); z-index: 50; width: min(20rem, calc(100vw - 2rem));
+  padding: 0.5rem; border-radius: var(--radius-xl); background: var(--color-bg); color: var(--color-fg);
+  border: 1px solid var(--color-border); box-shadow: var(--ombre-douce); }
+.site-menu__panneau a { display: flex; align-items: center; min-height: 48px; padding: 0.5rem 0.75rem; border-radius: var(--radius-md);
+  font: 600 1.0625rem/1.2 var(--font-sans); letter-spacing: -0.01em; color: var(--color-fg); text-decoration: none; }
+.site-menu__panneau a:hover { background: var(--color-sand); color: var(--color-fg); }
+.site-menu__panneau :focus-visible { outline-color: var(--color-primary); }
+@media (min-width: 1280px) {
+  .site-nav { display: flex; }
+  .site-pastille { display: inline-flex; }
+  .site-pastille--texte { height: 44px; }
+  .site-menu { display: none; }
+  .site-entete__rangee { gap: 1.5rem; }
+  .site-actions { gap: 0.75rem; }
+}
+@media (min-width: 1366px) { .site-entete__rangee { gap: 2rem; } }
 
-.bande-ariane { background: var(--color-mocha); color: var(--color-mocha-fg-muted); }
+.bande-ariane { background: var(--color-bg); color: var(--color-fg-muted); border-bottom: 1px solid var(--color-border); }
 .fil-ariane ol { list-style: none; display: flex; flex-wrap: nowrap; align-items: center; gap: 0 0.5rem;
-  margin: 0; padding: 0.75rem 0 0; font-size: 0.875rem; }
+  margin: 0; padding: 0; font-size: 0.875rem; }
 .fil-ariane li { display: inline-flex; flex: none; align-items: center; gap: 0.5rem; min-width: 0; }
-.fil-ariane li + li::before { content: "/"; color: var(--color-terracotta-on-mocha); }
-.fil-ariane a { display: inline-flex; align-items: center; justify-content: center; min-width: 44px; min-height: 44px; }
+.fil-ariane li + li::before { content: "/"; color: var(--color-border-strong); }
+.fil-ariane a { color: var(--color-fg-muted); text-decoration: none; display: inline-flex; align-items: center; justify-content: center; min-width: 44px; min-height: 44px; }
 /* Toujours sur une ligne : la page courante se tronque (…) au lieu de passer à la ligne,
    sinon la hauteur du fil dépend de la police et le swap décale tout l'article. */
 .fil-ariane [aria-current] { display: block; flex: 0 1 auto; max-width: 16em; overflow: hidden;
   text-overflow: ellipsis; white-space: nowrap; }
+.fil-ariane a:hover { color: var(--color-fg); text-decoration: underline; }
+.fil-ariane [aria-current] { color: var(--color-fg); font-weight: 600; }
 .fil-ariane [aria-current]::before { margin-right: 0.5rem; }
 
-/* 07 — HÉROS D'ARTICLE : bandeau mocha plein + aplat terracotta ------------ */
+/* 07 — HÉROS D'ARTICLE : aplat TERRACOTTA de la charte (retour demandé par Will) ----
+   Contrastes MESURÉS (formule WCAG, scripts de la session) sur le terracotta #b23f16, le point le plus
+   clair du fond : ivoire #f7f3ea 5,24:1 · blanc 5,81:1 · terracotta-soft 4,66:1 · sable 4,81:1.
+   Sur le bas du fond (mélange terracotta → terracotta-deep) tout est PLUS contrasté. Règle de décor :
+   tout ce qui passe sous du texte est plus FONCÉ que le terracotta, jamais plus clair.
+   Le mocha-fg-muted (#b5aa9c) donnerait 2,6:1 ici : il n'est pas utilisé dans le héros. */
 .heros {
   position: relative; isolation: isolate; color: var(--color-mocha-fg);
-  /* fond plein écran sans débordement : border-image peint hors de la boîte */
-  border-image: conic-gradient(var(--color-mocha) 0 0) fill 0 / / 0 100vmax;
-  clip-path: inset(0 -100vmax);
-  padding-block: clamp(1.25rem, 1rem + 1.5vw, 2.25rem) clamp(5.5rem, 4rem + 7vw, 9rem);
+  padding-block: clamp(1.75rem, 1.25rem + 2vw, 3rem) clamp(5.5rem, 4rem + 7vw, 9rem);
 }
-/* Rayures mocha-soft en haut à droite (décor). Le disque terracotta générique a cédé la place
-   au SIGNE propre à chaque modèle (.heros__signe, plus bas). */
+/* Fond plein écran sans débordement : un pseudo-élément qui déborde, rogné par clip-path.
+   Dégradé vertical (donc indépendant de la largeur) : terracotta franc sur les 60 % du haut,
+   puis un fondu vers le terracotta-deep qui accueille le visuel qui chevauche. */
+.heros { clip-path: inset(0 -100vmax); }
+.heros::before { content: ""; position: absolute; z-index: -2; inset: 0 -100vmax;
+  background: linear-gradient(180deg, var(--color-terracotta) 0%, var(--color-terracotta) 58%,
+    color-mix(in srgb, var(--color-terracotta) 55%, var(--color-terracotta-deep)) 100%); }
+/* Rayures terracotta-deep en haut à droite (décor plus sombre que le fond). */
 .heros::after { content: ""; position: absolute; z-index: -1; right: 0; top: 0;
   width: clamp(8rem, 22vw, 18rem); height: 1.5rem;
-  background: repeating-linear-gradient(-45deg, var(--color-mocha-soft) 0 6px, transparent 6px 14px); }
+  background: repeating-linear-gradient(-45deg, var(--color-terracotta-deep) 0 6px, transparent 6px 14px); }
 .heros > * { max-width: 56rem; }
 .surtitre { display: flex; flex-wrap: wrap; gap: 0.5rem; margin: 0 0 1.25rem; padding: 0; list-style: none; }
 .pastille { display: inline-flex; align-items: center; gap: 0.4rem; min-height: 2rem; padding: 0.3rem 0.85rem;
@@ -256,49 +329,53 @@ section:hover .ancre, .ancre:focus-visible { opacity: 1; }
    à 18 px près en Manrope, et le repli (MAJUSCULES ~7 % plus larges) en faisait trois ; au swap,
    tout le héros remontait (CLS 0,097). Cette marge rend le nombre de rangées identique. */
 @media (max-width: 479px) { .pastille { padding: 0.3rem 0.7rem; font-size: 0.75rem; letter-spacing: 0.04em; } }
-.pastille--pleine { background: var(--color-terracotta); color: var(--color-paper); }
-.pastille--contour { background: var(--color-mocha-soft); color: var(--color-mocha-fg); border: 1.5px solid var(--color-border-on-mocha); }
+/* Pastille de type : blanc, texte terracotta-deep (8,25:1 mesuré) ; pastille de catégorie : terracotta-deep + texte ivoire (7,45:1) */
+.pastille--pleine { background: var(--color-paper); color: var(--color-terracotta-deep); }
+.pastille--contour { background: var(--color-terracotta-deep); color: var(--color-mocha-fg); border: 1.5px solid color-mix(in srgb, var(--color-mocha-fg) 45%, transparent); }
 .pastille--claire { background: var(--color-terracotta-soft); color: var(--color-terracotta-deep); }
 .heros h1 { font: 600 clamp(2.25rem, 1.3rem + 4vw, 4.5rem) / 1.03 var(--font-serif);
-  letter-spacing: -0.03em; color: var(--color-mocha-fg); max-width: 13.2em; /* ≈ 19,5ch Fraunces ; en em : stable au swap (19ch = 12.8em laissait le H1 de « définition » à 5 px du bord) */ }
+  letter-spacing: -0.03em; color: var(--color-paper); max-width: 13.2em; /* ≈ 19,5ch Fraunces ; en em : stable au swap (19ch = 12.8em laissait le H1 de « définition » à 5 px du bord) */ }
 /* Ordinateur : le titre partage la largeur avec la carte d'action → corps un peu plus serré */
 /* Taille choisie pour que le titre garde le même nombre de lignes avec la police et son repli
    métrique (vérifié de 1024 à 1920 px sur les 10 modèles) : pas de saut au chargement des polices */
 @media (min-width: 1024px) { .heros h1 { font-size: clamp(2.75rem, 1rem + 3vw, 3.75rem); } }
-.heros h1 em { font-style: italic; font-weight: 500; color: var(--color-terracotta-on-mocha); }
+/* Mots en italique : sable très clair (sable #f0e9da : 4,81:1 sur terracotta, 6,83:1 sur terracotta-deep) ;
+   le soulignement dessiné en dégradé (décor) les fait ressortir sans dépendre de la couleur seule. */
+.heros h1 em { font-style: italic; font-weight: 500; color: var(--color-terracotta-soft);
+  background: linear-gradient(var(--color-terracotta-deep), var(--color-terracotta-deep)) 0 92% / 100% 0.09em no-repeat; }
 .chapo { margin: clamp(1rem, 0.8rem + 1vw, 1.75rem) 0 0; max-width: 44rem; padding-left: 1rem;
-  border-left: 4px solid var(--color-terracotta-on-mocha);
-  font: 400 clamp(1.1875rem, 1.05rem + 0.6vw, 1.5rem) / 1.5 var(--font-sans); color: var(--color-mocha-fg); }
+  border-left: 4px solid var(--color-terracotta-soft);
+  font: 400 clamp(1.1875rem, 1.05rem + 0.6vw, 1.5rem) / 1.5 var(--font-sans); color: var(--color-paper); }
 .meta { display: flex; flex-wrap: wrap; align-items: center; gap: 0.75rem 1.25rem; margin: 1.5rem 0 0; padding: 0;
-  list-style: none; font-size: 0.9375rem; color: var(--color-mocha-fg-muted); }
+  list-style: none; font-size: 0.9375rem; color: var(--color-mocha-fg); }
 .meta li { display: inline-flex; align-items: center; gap: 0.45rem; }
-.meta .icone { color: var(--color-terracotta-on-mocha); }
+.meta .icone { color: var(--color-terracotta-soft); }
 .meta a { font-weight: 600; }
 .avatar { display: inline-grid; place-items: center; flex: none; width: 2.75rem; height: 2.75rem; border-radius: 50%;
-  background: var(--color-terracotta-on-mocha); color: var(--color-mocha); font: 600 1.0625rem/1 var(--font-serif); }
+  background: var(--color-paper); color: var(--color-terracotta-deep); font: 600 1.0625rem/1 var(--font-serif); }
 .meta__lecture { padding: 0.4rem 0.95rem; border-radius: var(--radius-full); font-weight: 600;
-  background: var(--color-terracotta-on-mocha); color: var(--color-mocha); }
-.meta .meta__lecture .icone { color: var(--color-mocha); }
+  background: var(--color-paper); color: var(--color-terracotta-deep); }
+.meta .meta__lecture .icone { color: var(--color-terracotta-deep); }
 /* Pied du héros : partage compact à gauche, signe du modèle à droite */
 .heros__pied { display: flex; align-items: center; justify-content: space-between; gap: 0.75rem 1rem; margin: 1.25rem 0 0; }
 .heros__pied .partage-icones { margin: 0; flex: none; }
 /* Signe du modèle : décor typographique aria-hidden (ex. « RAG. », « ≈ 10 % », « A ou B »).
    Boîte de taille fixe : la police qui arrive en retard ne change ni sa largeur ni sa hauteur. */
 .heros__signe { position: relative; display: flex; align-items: center; justify-content: flex-end; gap: 0.75rem; flex: 0 1 auto;
-  min-width: 0; height: 44px; overflow: hidden; color: var(--color-terracotta-on-mocha);
+  min-width: 0; height: 44px; overflow: hidden; color: var(--color-terracotta-soft);
   font: 600 1.75rem/1 var(--font-serif); letter-spacing: -0.02em; white-space: nowrap; }
 .signe__legende { display: none; font: 600 0.75rem/1.3 var(--font-sans); letter-spacing: 0.06em; text-transform: uppercase;
   color: var(--color-mocha-fg); white-space: normal; text-align: left; }
 @media (min-width: 640px) {
-  .heros__signe { height: 5.5rem; padding: 0 1.25rem; border: 1.5px solid var(--color-border-on-mocha); border-radius: var(--radius-xl);
-    background: var(--color-mocha-soft); font-size: 2.75rem; }
+  .heros__signe { height: 5.5rem; padding: 0 1.25rem; border: 1.5px solid color-mix(in srgb, var(--color-mocha-fg) 40%, transparent); border-radius: var(--radius-xl);
+    background: var(--color-terracotta-deep); font-size: 2.75rem; }
   .signe__legende { display: block; width: 8.5rem; }
 }
 /* Partage compact (icônes) sous la méta */
 .partage-icones { display: flex; gap: 0.5rem; margin: 1.25rem 0 0; padding: 0; list-style: none; }
 .partage-icones a { display: inline-grid; place-items: center; width: 44px; height: 44px; border-radius: 50%;
-  border: 1.5px solid var(--color-border-on-mocha); color: var(--color-mocha-fg); }
-.partage-icones a:hover { background: var(--color-mocha-fg); color: var(--color-mocha); }
+  border: 1.5px solid color-mix(in srgb, var(--color-mocha-fg) 60%, transparent); color: var(--color-mocha-fg); }
+.partage-icones a:hover { background: var(--color-mocha-fg); color: var(--color-terracotta-deep); }
 
 /* 08 — VISUEL PRINCIPAL (ratio 16/10 réservé : CLS = 0) -------------------- */
 .visuel { margin: calc(-1 * clamp(4.5rem, 3rem + 6vw, 7.5rem)) 0 2rem; position: relative; }
@@ -440,7 +517,7 @@ section:hover .ancre, .ancre:focus-visible { opacity: 1; }
     padding: 1.5rem 1.25rem 1.25rem; color: var(--color-mocha-fg);
     /* mocha-soft + filet : la carte se détache aussi quand elle est posée dans le bandeau mocha du héros
        (mocha-fg 10,7:1 · mocha-fg-muted 5,2:1 · terracotta-on-mocha 4,56:1, titre en grand texte) */
-    background: var(--color-mocha-soft); box-shadow: 0 0 0 1px var(--color-border-on-mocha), var(--ombre-bloc); }
+    background: var(--color-mocha-soft); box-shadow: 0 0 0 1px var(--color-border-on-mocha), 6px 6px 0 var(--color-terracotta-deep); }
   .carte-action::before { content: ""; position: absolute; inset: 0 1.25rem auto; height: 5px;
     border-radius: 0 0 var(--radius-sm) var(--radius-sm); background: var(--color-terracotta-on-mocha); }
   .carte-action__titre { display: block; margin: 0.25rem 0 0.3rem; font: 600 1.375rem/1.18 var(--font-serif); letter-spacing: -0.01em; }
