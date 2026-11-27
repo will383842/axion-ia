@@ -1,0 +1,4 @@
+Aucun correctif produit : la CI de 2a3db66b est introuvable (API GitHub : 0 check-run, 0 statut ; pulls/0 = 404), donc la demande ne se déduit pas.
+Rejoué en local (deps via --store-dir /tmp, sans scripts) : tests/charte, polices, briques, segments-rendu, facecam-animee. Rouges : garde-charte (3 tests, identiques sur master, ex. tests/charte/garde-charte.test.ts:47 et :68), sequence-appel.test.ts:117, mesure-v3.test.ts:220, et ~14 fichiers « Cannot find package 'remotion' » (studio-rendu non installé ici).
+Tous ces rouges existent à l'identique sur origin/master ; tsc --noEmit : 143 erreurs, identiques à master (aucune neuve) ; version-compositions.json (dernier commit de la branche) passe.
+Aucun fichier de la fiche n'est en cause : rien à changer sans deviner. Fournir le nom du check rouge (ou le log) pour reprendre.
