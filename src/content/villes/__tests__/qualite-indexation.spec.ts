@@ -1,11 +1,15 @@
 // S6-3 — porte de qualité des villes indexées : aucune ville n'entre dans l'index sans une fiche
 // locale sourcée, complète et distincte des autres. Test seul, sans effet sur le site.
+import { existsSync, readFileSync } from "node:fs";
+
 import { describe, expect, it } from "vitest";
 
 import { FICHES_LOCALES } from "@/content/villes/fiches-locales";
 import type { FicheLocale } from "@/content/villes/fiches-locales/types";
 import {
+  CRITERES_DELEGUES,
   FICHES_SOUS_LE_SEUIL,
+  motsPropres,
   SEUILS_QUALITE,
   VILLES_INDEXEES_SANS_FICHE,
   estDispenseeDeFiche,
@@ -37,15 +41,18 @@ describe("porte de qualité · critères", () => {
     expect(villePasseLaPorte("ville-fictive-sans-fiche")).toBe(false);
   });
 
-  it("chaque fiche locale actuelle passe la porte, critère par critère (hors cliquet transitoire)", () => {
+  it("chaque fiche actuelle ne rate QUE les critères listés au cliquet (ni plus, ni moins)", () => {
     for (const f of FICHES) {
-      if (FICHES_SOUS_LE_SEUIL.includes(f.slug)) continue;
-      const rate = evaluerQualiteVille(f.slug).filter((c) => !c.ok);
-      expect(
-        rate.map((c) => `${c.critere} (${c.motif})`),
-        f.slug,
-      ).toEqual([]);
+      const attendu = [...(FICHES_SOUS_LE_SEUIL[f.slug] ?? [])].sort();
+      expect(echecs(f.slug, FICHES_LOCALES).sort(), f.slug).toEqual(attendu);
     }
+  });
+
+  it("l'unicité mesurée par la porte est sous 30 % entre toutes les fiches actuelles", () => {
+    for (const a of FICHES)
+      for (const b of FICHES)
+        if (a.slug !== b.slug)
+          expect(partSuitesCommunes(a, b, FICHES), `${a.slug}/${b.slug}`).toBeLessThan(0.3);
   });
 
   it("une fiche copiée à l'identique échoue sur l'unicité", () => {
@@ -60,18 +67,43 @@ describe("porte de qualité · critères", () => {
     );
   });
 
-  it("une fiche qui reprend ~un tiers d'une autre échoue (seuil 30 %)", () => {
-    const m = FICHES_LOCALES.marseille!;
-    // texte propre de Marseille, sauf la prose « tissu » et « zone » reprises de Lyon.
-    const mixte = clone("ville-mixte", "Villemixte", {
-      prose: { tissu: base.prose.tissu, ecosysteme: m.prose.ecosysteme, zone: base.prose.zone },
-      faqLocale: m.faqLocale,
+  it("seuil de 30 % : un cas à 31 % échoue, un cas à 29 % passe", () => {
+    const mot = (i: number) =>
+      `m${String.fromCharCode(97 + (i % 26))}${String.fromCharCode(97 + (Math.floor(i / 26) % 26))}${String.fromCharCode(97 + Math.floor(i / 676))}`.replace(
+        /\d/g,
+        "z",
+      );
+    const N = 400;
+    const texte = (debut: number, n: number) =>
+      Array.from({ length: n }, (_, i) => mot(debut + i)).join(" ");
+    const synth = (slug: string, nom: string, prose: string): FicheLocale => ({
+      ...base,
+      slug,
+      nomVille: nom,
+      prose: { tissu: prose, ecosysteme: "", zone: "" },
+      faqLocale: [],
     });
-    const part = partSuitesCommunes(mixte, base);
-    expect(part).toBeGreaterThan(SEUILS_QUALITE.partCommuneMax);
-    expect(echecs("ville-mixte", avec(mixte))).toContain(
-      "moins de 30 % de suites de 6 mots communes avec chaque autre fiche",
-    );
+    const A = synth("ville-a", "Villea", texte(0, N));
+    // B reprend les m premiers mots de A, puis du texte inédit : part ≈ (m − 5) / (N − 5).
+    const partiel = (m: number) =>
+      synth("ville-b", "Villeb", `${texte(0, m)} ${texte(5000, N - m)}`);
+    const B31 = partiel(Math.round(0.31 * (N - 5) + 5));
+    const B29 = partiel(Math.round(0.29 * (N - 5) + 5));
+    const p31 = partSuitesCommunes(B31, A);
+    const p29 = partSuitesCommunes(B29, A);
+    expect(p31).toBeGreaterThan(0.3);
+    expect(p31).toBeLessThan(0.33);
+    expect(p29).toBeLessThan(0.3);
+    expect(p29).toBeGreaterThan(0.27);
+    const CRIT = "moins de 30 % de suites de 6 mots communes avec chaque autre fiche";
+    expect(echecs("ville-b", { "ville-a": A, "ville-b": B31 })).toContain(CRIT);
+    expect(echecs("ville-b", { "ville-a": A, "ville-b": B29 })).not.toContain(CRIT);
+  });
+
+  it("« mots propres » : lecture littérale, un mot inédit n'en fait pas onze", () => {
+    const copie = clone("ville-copie2", "Villecopie2");
+    const un = { ...copie, prose: { ...copie.prose, zone: `${copie.prose.zone} inedit` } };
+    expect(motsPropres(un, FICHES)).toBeLessThan(3);
   });
 
   it("moins de 3 secteurs, 3 institutions ou 3 questions échoue", () => {
@@ -129,21 +161,35 @@ describe("porte de qualité · villes indexées et cliquet", () => {
     expect(new Set(VILLES_INDEXEES_SANS_FICHE).size).toBe(VILLES_INDEXEES_SANS_FICHE.length);
   });
 
-  it("les fiches sous le seuil n'échouent QUE sur le nombre d'institutions (cliquet à jour)", () => {
-    expect(FICHES_SOUS_LE_SEUIL.length).toBeLessThanOrEqual(4);
-    for (const s of FICHES_SOUS_LE_SEUIL) {
-      expect(FICHES_LOCALES[s], s).toBeDefined();
-      expect(
-        echecs(s, FICHES_LOCALES),
-        `${s} passe désormais la porte : le retirer de la liste`,
-      ).toEqual(["au moins 3 institutions publiques"]);
+  it("cliquet par contenu : fiches sous le seuil = sous-ensemble de la liste initiale (slugs et critères)", () => {
+    const INITIALE: Record<string, string[]> = {
+      marseille: ["M"],
+      lyon: ["M"],
+      toulouse: ["M"],
+      nice: ["I", "M"],
+      nantes: ["M"],
+      montpellier: ["I", "M"],
+      strasbourg: ["I", "M"],
+      bordeaux: ["M"],
+      lille: ["M"],
+      rennes: ["I", "M"],
+    };
+    const LIB: Record<string, string> = {
+      M: "au moins 250 mots propres à la ville",
+      I: "au moins 3 institutions publiques",
+    };
+    for (const [slug, criteres] of Object.entries(FICHES_SOUS_LE_SEUIL)) {
+      expect(INITIALE[slug], `${slug} : ajout interdit`).toBeDefined();
+      const permis = INITIALE[slug]!.map((c) => LIB[c]);
+      for (const c of criteres) expect(permis, `${slug} : ${c}`).toContain(c);
+      expect(criteres.length, `${slug} : liste vide, retirer l'entrée`).toBeGreaterThan(0);
     }
   });
 
-  it("cliquet par nombre : jamais plus de 29 (+ la ville du siège suivie à part)", () => {
+  it("cliquet par nombre : jamais plus de 29 sans fiche, plus la seule ville du siège", () => {
+    expect(VILLES_HORS_MAILLAGE.size).toBe(1);
     expect(VILLES_INDEXEES_SANS_FICHE.length).toBeLessThanOrEqual(29);
     const sansFiche = VILLES_INDEXEES_SLUGS.filter((s) => !FICHES_LOCALES[s]);
-    expect(sansFiche.length).toBeLessThanOrEqual(30);
     expect(sansFiche.sort()).toEqual(
       [...VILLES_INDEXEES_SANS_FICHE, ...VILLES_HORS_MAILLAGE].sort(),
     );
@@ -163,10 +209,20 @@ describe("porte de qualité · villes indexées et cliquet", () => {
     for (const s of VILLES_INDEXEES_SANS_FICHE) expect(INITIALE.has(s), s).toBe(true);
   });
 
-  it("le module est pur : aucun import du barrel de contenu des villes", async () => {
-    const { readFileSync } = await import("node:fs");
+  it("critères délégués : les tests qui les portent existent", () => {
+    for (const f of Object.values(CRITERES_DELEGUES)) expect(existsSync(f), f).toBe(true);
+  });
+
+  it("le module est pur : liste blanche exacte de ses imports (aucun barrel de 29 Mo)", () => {
     const src = readFileSync("src/content/villes/qualite-indexation.ts", "utf8");
-    const imports = [...src.matchAll(/^import .* from "([^"]+)"/gmu)].map((m) => m[1]);
-    for (const i of imports) expect(["@/content/villes", "@/content/villes/core"]).not.toContain(i);
+    const imports = [...src.matchAll(/from\s+"([^"]+)"/gu)].map((m) => m[1]).sort();
+    expect(imports).toEqual(
+      [
+        "@/content/villes/core",
+        "@/content/villes/fiches-locales",
+        "@/content/villes/fiches-locales/types",
+        "@/content/villes/villes-indexees",
+      ].sort(),
+    );
   });
 });

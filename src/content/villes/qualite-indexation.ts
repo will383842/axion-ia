@@ -12,7 +12,38 @@
 
 import { FICHES_LOCALES } from "@/content/villes/fiches-locales";
 import type { FicheLocale } from "@/content/villes/fiches-locales/types";
+import { getVilleCore } from "@/content/villes/core";
 import { VILLES_HORS_MAILLAGE } from "@/content/villes/villes-indexees";
+
+const sansAccent = (t: string) => t.normalize("NFD").replace(/\p{M}/gu, "").toLowerCase();
+
+/** Tous les textes visibles d'une fiche (prose, FAQ, institutions, secteurs, communes). */
+function tousLesTextes(f: FicheLocale): string[] {
+  return [
+    ...textesEcrits(f),
+    f.nomVille,
+    f.epci.nom,
+    ...f.epci.communes,
+    ...f.entreprises.secteurs.map((x) => x.libelle),
+    ...f.institutions.flatMap((i) => [i.nom, i.role]),
+  ];
+}
+
+/**
+ * True si un texte visible de la fiche cite la ville du siège (nom sans accent, mot entier,
+ * ou radical du nom pour le gentilé). Le nom vient de `core.ts`, jamais écrit ici.
+ */
+function mentionneVilleDuSiege(slug: string, f: FicheLocale): boolean {
+  if (VILLES_HORS_MAILLAGE.has(slug)) return false;
+  const textes = tousLesTextes(f).map(sansAccent).join(" | ");
+  for (const s of VILLES_HORS_MAILLAGE) {
+    const nom = sansAccent(getVilleCore(s)?.nameFr ?? s);
+    const radical = nom.replace(/[^a-z]/g, "").slice(0, Math.max(5, nom.length - 2));
+    if (new RegExp(`\\b${nom.replace(/[^a-z]+/g, "[^a-z]?")}\\b|\\b${radical}`, "u").test(textes))
+      return true;
+  }
+  return false;
+}
 
 /** Seuils de la porte (fiche S6, § 5). */
 export const SEUILS_QUALITE = {
@@ -64,22 +95,41 @@ export const VILLES_INDEXEES_SANS_FICHE: ReadonlyArray<string> = [
 ];
 
 /**
- * Villes indexées dont la fiche existe mais n'a que 2 institutions publiques (seuil : 3), au
- * 27/11/2026. Même cliquet : la liste ne peut que diminuer, un slug en sort quand la fiche est
- * complétée par une troisième institution (source publique, consultée et datée).
+ * Villes indexées dont la fiche existe mais ne passe pas tous les critères au 27/11/2026,
+ * avec les critères en défaut. CLIQUET PAR CONTENU : le test exige que les critères en défaut
+ * soient EXACTEMENT ceux listés (ni un de plus, ni un de moins) et que la liste ne contienne
+ * que les villes et critères de la liste initiale figée dans le test. Quand une fiche est
+ * complétée, retirer l'entrée. Dispense transitoire ; le seuil de 250 mots propres est à confirmer
+ * par Will (mesure littérale : les 10 fiches actuelles sont dessous, de 125 à 237).
  */
-export const FICHES_SOUS_LE_SEUIL: ReadonlyArray<string> = [
-  "nice",
-  "montpellier",
-  "strasbourg",
-  "rennes",
-];
+export const FICHES_SOUS_LE_SEUIL: Readonly<Record<string, ReadonlyArray<string>>> = {
+  marseille: ["au moins 250 mots propres à la ville"],
+  lyon: ["au moins 250 mots propres à la ville"],
+  toulouse: ["au moins 250 mots propres à la ville"],
+  nice: ["au moins 3 institutions publiques", "au moins 250 mots propres à la ville"],
+  nantes: ["au moins 250 mots propres à la ville"],
+  montpellier: ["au moins 3 institutions publiques", "au moins 250 mots propres à la ville"],
+  strasbourg: ["au moins 3 institutions publiques", "au moins 250 mots propres à la ville"],
+  bordeaux: ["au moins 250 mots propres à la ville"],
+  lille: ["au moins 250 mots propres à la ville"],
+  rennes: ["au moins 3 institutions publiques", "au moins 250 mots propres à la ville"],
+};
+
+/** Critères du § 5 vérifiés ailleurs, sur TOUTES les fiches de `FICHES_LOCALES`. */
+export const CRITERES_DELEGUES: Readonly<Record<string, string>> = {
+  "sources sur liste blanche, dates de consultation, catégories fermées, longueurs, chiffres":
+    "src/content/villes/__tests__/fiches-locales.spec.ts",
+  "aucun frais de déplacement ni fausse présence":
+    "src/content/villes/__tests__/villes-sans-frais-ni-fausse-presence.spec.ts",
+  "title ≤ 60, description ≤ 155, uniques":
+    "src/content/villes/__tests__/journee-ia-locale.spec.ts",
+};
 
 /** Dispensée de la porte, à titre transitoire : listes du cliquet ou ville du siège. */
 export function estDispenseeDeFiche(slug: string): boolean {
   return (
     VILLES_INDEXEES_SANS_FICHE.includes(slug) ||
-    FICHES_SOUS_LE_SEUIL.includes(slug) ||
+    Object.hasOwn(FICHES_SOUS_LE_SEUIL, slug) ||
     VILLES_HORS_MAILLAGE.has(slug)
   );
 }
@@ -136,18 +186,19 @@ export function partSuitesCommunes(
 }
 
 /**
- * Mots de la fiche couverts par au moins une suite de 6 mots absente de toutes les autres
- * fiches : mesure de la part de texte qui n'existe nulle part ailleurs.
+ * Mots « propres » de la fiche : mots qui n'appartiennent à AUCUNE suite de 6 mots présente
+ * sur une autre fiche (lecture littérale de la fiche S6 § 5). Les jetons masqués (nom de ville
+ * `x`, nombre `n`) ne comptent pas : ils ne portent pas de texte propre.
  */
 export function motsPropres(f: FicheLocale, autres: ReadonlyArray<FicheLocale>): number {
   const mots = motsMasques(f, autres);
   const ailleurs = new Set<string>();
   for (const g of autres) for (const s of suitesDe(motsMasques(g, [f, ...autres]))) ailleurs.add(s);
-  const couverts = new Array<boolean>(mots.length).fill(false);
+  const partages = new Array<boolean>(mots.length).fill(false);
   suitesDe(mots).forEach((s, i) => {
-    if (!ailleurs.has(s)) for (let k = i; k < i + TAILLE_SUITE; k++) couverts[k] = true;
+    if (ailleurs.has(s)) for (let k = i; k < i + TAILLE_SUITE; k++) partages[k] = true;
   });
-  return couverts.filter(Boolean).length;
+  return mots.filter((m, i) => !partages[i] && m !== "x" && m !== "n").length;
 }
 
 /**
@@ -203,15 +254,10 @@ export function evaluerQualiteVille(
     propres >= SEUILS_QUALITE.motsPropresMin,
     `${propres} mot(s) propre(s)`,
   );
-  const nomSiege = VILLES_HORS_MAILLAGE.has(slug)
-    ? false
-    : textesEcrits(f).some((t) =>
-        [...VILLES_HORS_MAILLAGE].some((s) => t.toLowerCase().includes(s)),
-      );
   regle(
     "nom de la ville du siège absent",
-    !nomSiege,
-    "le nom de la ville du siège figure dans le texte",
+    !mentionneVilleDuSiege(slug, f),
+    "le nom de la ville du siège figure dans un texte visible",
   );
   return res;
 }
