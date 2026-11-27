@@ -29,7 +29,7 @@ export function faqPrincipale(p: Chiffres): QuestionReponse[] {
     },
     {
       question: `Comment suis-je payé ?`,
-      reponse: `Quand l’entreprise a réglé sa facture, la commission vous est due ; vous nous la facturez et nous la réglons. En cas de remise accordée à l’entreprise, elle est réduite au prorata ; en cas d’avoir, elle est reprise.`,
+      reponse: `Quand l’entreprise a réglé la totalité de sa facture, la commission vous est due ; vous nous la facturez et nous la réglons. En cas de remise accordée à l’entreprise, elle est réduite au prorata ; en cas d’avoir total, elle est annulée, et en cas d’avoir partiel, réduite au prorata.`,
     },
     {
       question: `Puis-je en parler sur mes réseaux ?`,

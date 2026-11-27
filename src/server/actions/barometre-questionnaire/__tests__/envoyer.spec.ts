@@ -109,6 +109,24 @@ describe("envoyerReponsesBarometre", () => {
     expect(cle).not.toContain(IP);
   });
 
+  it("startedAt absent : refusé, aucun create (le délai minimal n'est plus contournable)", async () => {
+    const { startedAt: _omis, ...sansDebut } = UTILISATEUR as Record<string, unknown>;
+    const r = await envoyerReponsesBarometre(sansDebut);
+    expect(r).toEqual({ ok: false, error: "Réponses invalides." });
+    expect(createMock).not.toHaveBeenCalled();
+  });
+
+  it("sans IP : seau « inconnu » à limite plus large (60), avec IP : 5", async () => {
+    ipMock.mockResolvedValue(null);
+    await envoyerReponsesBarometre({ ...UTILISATEUR, ...lent });
+    expect(rlMock.mock.calls[0]![0]).toBe("barometre-q:inconnu");
+    expect(rlMock.mock.calls[0]![1]).toMatchObject({ limit: 60 });
+    rlMock.mockClear();
+    ipMock.mockResolvedValue(IP);
+    await envoyerReponsesBarometre({ ...UTILISATEUR, ...lent });
+    expect(rlMock.mock.calls[0]![1]).toMatchObject({ limit: 5 });
+  });
+
   it("filtre rejoué côté serveur : q5 envoyé avec q4 « non » refusé", async () => {
     const r = await envoyerReponsesBarometre({ ...NON_UTILISATEUR, ...lent, q5: ["autre"] });
     expect(r).toEqual({ ok: false, error: "Réponses invalides." });

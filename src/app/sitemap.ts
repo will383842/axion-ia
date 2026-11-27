@@ -72,7 +72,7 @@ import { FORMATIONS_V2 } from "@/content/formations/catalog-v2";
 // Contenu unique par combo (pain-matrix 50/50) → indexable, anti-doorway.
 import { CLIENT_SECTORS } from "@/content/sectors";
 import { SERVICE_DEFS } from "@/content/knowledge/services";
-import { BAROMETRE_PUBLIC } from "@/content/barometre-2027/donnees";
+import { barometreEstPublic } from "@/content/barometre-2027/donnees";
 import { hubGuidesEstIndexable } from "@/server/content-gen/guides/hub-indexable";
 
 // Next.js 16 sitemap-index pattern via `generateSitemaps()`.
@@ -755,8 +755,8 @@ function buildPagesSitemap(now: Date, hubGuidesIndexable = true): MetadataRoute.
     if (isSlugTemplate(key)) continue;
     // V1-17 : hub /guides vide = noindex, donc hors pages.xml (revient seul avec le 1er guide).
     if (key === "/guides" && !hubGuidesIndexable) continue;
-    // Baromètre 2027 : noindex donc hors pages.xml tant que BAROMETRE_PUBLIC vaut false.
-    if (key === "/ressources/barometre-ia-tpe-pme-2027" && !BAROMETRE_PUBLIC) continue;
+    // Baromètre 2027 (horloge réelle, `now` ici est une date éditoriale) : noindex donc hors pages.xml avant BAROMETRE_DATE_OUVERTURE (1er décembre 2026).
+    if (key === "/ressources/barometre-ia-tpe-pme-2027" && !barometreEstPublic()) continue;
     // Cas concrets éteints (2026-11-08) : la page répond 404, donc hors pages.xml.
     if (key === "/cas-concrets" && !CAS_CONCRETS_AFFICHES) continue;
     // Page de réassurance Qualiopi : Phase-B uniquement (la page `notFound()` en
