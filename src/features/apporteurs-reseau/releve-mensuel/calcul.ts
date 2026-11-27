@@ -18,6 +18,7 @@ import {
   jourParis,
 } from "../autofacture-donnees";
 import { PALIERS_FORMATION } from "../regles";
+import { jsonCanonique } from "./empreinte";
 import { bornesPeriode, debutAnnee, exigerPeriodeClose } from "./periode";
 import {
   CODES_REGLE_AFFICHABLES,
@@ -192,7 +193,9 @@ function triLignes(a: LigneReleve, b: LigneReleve): number {
     comparer(a.pieceNumero, b.pieceNumero) ||
     comparer(a.entreprise ?? "", b.entreprise ?? "") ||
     comparer(a.prestation ?? "", b.prestation ?? "") ||
-    a.montantHtCents - b.montantHtCents
+    a.montantHtCents - b.montantHtCents ||
+    // Départage complet : deux lignes égales ici sont identiques, leur ordre ne change rien.
+    comparer(jsonCanonique(a), jsonCanonique(b))
   );
 }
 
@@ -238,6 +241,14 @@ function facturees(ctx: Contexte, debut: Date, fin: Date) {
       c.statut !== "annulee" &&
       dans(emission(c), debut, fin),
   );
+  for (const c of lignesLues) {
+    if (c.autofactureEmiseAt === null) {
+      ctx.anomalies.push({
+        code: "emission_incoherente",
+        detail: `autofacture ${c.autofactureNumero} sans date d'émission : repli sur la dernière mise à jour`,
+      });
+    }
+  }
   const lignes = lignesLues.map((c) => {
     const verse = c.verseeAt !== null && c.verseeAt < ctx.coupure;
     return ligneDe(
@@ -311,7 +322,7 @@ function avoirs(ctx: Contexte, debut: Date, fin: Date) {
         montantHtCents: -Math.abs(c.montantCents ?? 0),
         statut: null,
       },
-      null,
+      ctx.anomalies,
     ),
   );
   const parNumero = new Map<string, { p: PieceLue; ht: number }>();
@@ -470,7 +481,8 @@ function report(ctx: Contexte, preparationAt: Date) {
       comparer(a.depuisLe, b.depuisLe) ||
       comparer(a.entreprise ?? "", b.entreprise ?? "") ||
       comparer(a.prestation ?? "", b.prestation ?? "") ||
-      a.montantHtCents - b.montantHtCents,
+      a.montantHtCents - b.montantHtCents ||
+      comparer(jsonCanonique(a), jsonCanonique(b)),
   );
 
   const indicatif: ReportIndicatif = { auJour: jour(preparationAt), lignes: [] };
@@ -496,7 +508,8 @@ function report(ctx: Contexte, preparationAt: Date) {
       comparer(a.statut, b.statut) ||
       comparer(a.entreprise ?? "", b.entreprise ?? "") ||
       comparer(a.prestation ?? "", b.prestation ?? "") ||
-      (a.montantHtCents ?? 0) - (b.montantHtCents ?? 0),
+      (a.montantHtCents ?? 0) - (b.montantHtCents ?? 0) ||
+      comparer(jsonCanonique(a), jsonCanonique(b)),
   );
   return { facturesNonVirees, enAttenteAutofacture: enAttente, indicatif };
 }
