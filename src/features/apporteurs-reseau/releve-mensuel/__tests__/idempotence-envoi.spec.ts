@@ -183,7 +183,8 @@ describe("un seul lot vivant par période", () => {
     s.lots[0]!.finAt = new Date();
     s.lignes = [ligne(1, { statut: "prepare" })];
     s.dejaEnvoye.mockRejectedValueOnce(new Error("journal en panne"));
-    await expect(lancer()).rejects.toThrow("journal en panne");
+    // Une ligne en erreur n'arrête pas le lot : comptée en échec, lot fermé.
+    expect(await lancer()).toMatchObject({ ok: true, nbEchecs: 1 });
     expect(s.lots[1]!.finAt).not.toBeNull();
   });
 

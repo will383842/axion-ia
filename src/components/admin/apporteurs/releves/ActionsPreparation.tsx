@@ -3,6 +3,7 @@
 
 import { useActionState } from "react";
 
+import { envoyerRectificatifAction } from "@/features/apporteurs-reseau/releve-mensuel/actions-envoi";
 import {
   ecarterReleveAction,
   preparerRelevesAction,
@@ -52,16 +53,21 @@ export function ActionsLigneReleve({
   periode,
   statut,
   rang,
+  jamaisPris = false,
 }: {
   id: string;
   periode: string;
   statut: "prepare" | "envoi_en_cours" | "envoye" | "echec" | "ecarte";
   rang: number;
+  /** `pris_at` vide : seules ces lignes s'écartent et se rétablissent (le trigger refuse le reste). */
+  jamaisPris?: boolean;
 }) {
+  const [etatX, envoyerRect, enCoursX] = useActionState(envoyerRectificatifAction, INITIAL);
   const [etatR, recalculer, enCoursR] = useActionState(recalculerReleveAction, INITIAL);
   const [etatE, ecarter, enCoursE] = useActionState(ecarterReleveAction, INITIAL);
   const [etatT, retablir, enCoursT] = useActionState(retablirReleveAction, INITIAL);
   if (statut === "ecarte") {
+    if (!jamaisPris) return <span>—</span>;
     return (
       <form action={retablir} className="flex flex-col gap-1">
         <input type="hidden" name="id" value={id} />
@@ -86,7 +92,27 @@ export function ActionsLigneReleve({
           <Retour etat={etatR} />
         </form>
       ) : null}
-      {rang === 0 ? (
+      {rang > 0 ? (
+        <form action={envoyerRect} className="flex flex-wrap items-center gap-1">
+          <input type="hidden" name="id" value={id} />
+          <input type="hidden" name="periode" value={periode} />
+          <input
+            type="text"
+            name="confirmation"
+            required
+            autoComplete="off"
+            placeholder={periode}
+            aria-label={`Saisir ${periode} pour confirmer l'envoi du rectificatif`}
+            className="admin-input"
+            style={{ width: "8rem" }}
+          />
+          <button type="submit" className="admin-button" disabled={enCoursX}>
+            Envoyer ce rectificatif
+          </button>
+          <Retour etat={etatX} />
+        </form>
+      ) : null}
+      {rang === 0 && statut === "prepare" && jamaisPris ? (
         <form action={ecarter} className="flex flex-wrap items-center gap-1">
           <input type="hidden" name="id" value={id} />
           <input type="hidden" name="periode" value={periode} />

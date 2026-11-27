@@ -20,6 +20,7 @@ vi.mock("next/navigation", () => ({
 vi.mock("@/features/apporteurs-reseau/releve-mensuel/actions-envoi", () => ({
   envoyerATousAction: async () => ({ etat: "initial" }),
   renvoyerEchecsAction: async () => ({ etat: "initial" }),
+  envoyerRectificatifAction: async () => ({ etat: "initial" }),
 }));
 vi.mock("next/link", () => ({
   default: ({ href, children }: { href: string; children: React.ReactNode }) => (

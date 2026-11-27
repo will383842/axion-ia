@@ -230,12 +230,12 @@ describe("le PDF est rendu et stocké à la préparation", () => {
 });
 
 describe("écart, rétablissement et recalcul : gardés", () => {
-  it("écarter exige un motif et ne touche que prepare / echec d'ORIGINE", async () => {
+  it("écarter exige un motif et ne touche que les prepare d'ORIGINE jamais pris", async () => {
     expect(await ecarterReleve("id", "  ")).toBe("motif_requis");
     expect(m.updateMany).not.toHaveBeenCalled();
     expect(await ecarterReleve("id", "Mois sans activité")).toBe("ecarte");
     expect(m.updateMany).toHaveBeenCalledWith({
-      where: { id: "id", rang: 0, statut: { in: ["prepare", "echec"] } },
+      where: { id: "id", rang: 0, statut: "prepare", prisAt: null },
       data: { statut: "ecarte", motifEcart: "Mois sans activité" },
     });
   });
@@ -245,10 +245,10 @@ describe("écart, rétablissement et recalcul : gardés", () => {
     expect(await ecarterReleve("id", "Motif valable")).toBe("refuse");
   });
 
-  it("rétablir ne vise que les lignes écartées", async () => {
+  it("rétablir ne vise que les lignes écartées jamais prises", async () => {
     expect(await retablirReleve("id")).toBe(true);
     expect(m.updateMany).toHaveBeenCalledWith({
-      where: { id: "id", statut: "ecarte" },
+      where: { id: "id", statut: "ecarte", prisAt: null },
       data: { statut: "prepare", motifEcart: null },
     });
   });

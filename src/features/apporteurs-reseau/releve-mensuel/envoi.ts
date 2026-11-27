@@ -27,8 +27,10 @@ import { abandonnerLotsMorts, jobIdReleveMensuel, reprendreEnvoisEnCours } from 
 import { PREFIXE_ERREUR_DONNEES_MODIFIEES } from "./statistiques";
 import type { ContenuReleveV1 } from "./types";
 
+import type { Prisma } from "../../../../prisma/generated/client";
+
 export const TAILLE_TRANCHE_ENVOI = 50;
-export type ModeLot = "tous" | "echecs";
+export type ModeLot = "tous" | "echecs" | "rectificatif";
 
 export interface ResultatLot {
   ok: boolean;
@@ -82,7 +84,25 @@ async function bloquer(ligne: LigneAEnvoyer, erreur: string): Promise<Issue> {
   return "bloque";
 }
 
+/**
+ * Une ligne en erreur n'arrête JAMAIS le lot : toute exception (dont un refus du trigger SQL ou d'une
+ * contrainte CHECK) est signalée et comptée en échec ; les autres lignes continuent.
+ */
 async function envoyerUn(
+  ligne: LigneAEnvoyer,
+  lotId: string,
+  declenchePar: string,
+  maintenant: Date,
+): Promise<Issue> {
+  try {
+    return await envoyerUnSansGarde(ligne, lotId, declenchePar, maintenant);
+  } catch (err) {
+    signalerErreurReseau("relevé mensuel : ligne en erreur", err);
+    return "echec";
+  }
+}
+
+async function envoyerUnSansGarde(
   ligne: LigneAEnvoyer,
   lotId: string,
   declenchePar: string,
@@ -100,6 +120,9 @@ async function envoyerUn(
       where: gardes,
       data: {
         statut: "envoye",
+        // CHECK `prise_tracee` : `envoye` exige `pris_at`. Une ligne `echec` en a déjà un (le trigger
+        // interdit de le réécrire) ; une ligne `prepare` n'en a pas encore : on le pose ici.
+        ...(ligne.statut === "prepare" ? { prisAt: maintenant } : {}),
         envoyeAt: maintenant,
         envoyePar: declenchePar,
         emailJobId: jobId,
@@ -127,10 +150,16 @@ async function envoyerUn(
     return bloquer(ligne, "contrôle avant envoi impossible");
   }
 
-  // Prise conditionnelle : un seul preneur par ligne.
+  // Prise conditionnelle : un seul preneur par ligne. Le trigger interdit de modifier `pris_at` une
+  // fois rempli : seule une ligne `prepare` le pose ; une ligne `echec` le garde tel quel.
   const prise = await prisma.releveMensuelApporteur.updateMany({
-    where: gardes,
-    data: { statut: "envoi_en_cours", prisAt: maintenant, lotId, erreur: null },
+    where: { id: ligne.id, statut: ligne.statut === "echec" ? "echec" : "prepare" },
+    data: {
+      statut: "envoi_en_cours",
+      ...(ligne.statut === "echec" ? {} : { prisAt: maintenant }),
+      lotId,
+      erreur: null,
+    },
   });
   if (prise.count !== 1) return "pris_ailleurs";
 
@@ -142,7 +171,7 @@ async function envoyerUn(
       entityId: ligne.apporteurId,
       jobId,
       payload: payloadEmailReleve(ligne.contenu as ContenuReleveV1, {
-        contactName: ligne.apporteur.prenom,
+        contactName: decryptPii(ligne.apporteur.prenom) ?? "",
         pdfR2Key: ligne.pdfR2Key,
       }),
       attachments: [
@@ -174,6 +203,27 @@ async function envoyerUn(
   }
 }
 
+/** Critère de la tranche : le lot global ne vise que les relevés d'origine ; un rectificatif part seul. */
+function critere(
+  o: { periode: string; mode: ModeLot; releveId?: string },
+  traitees: Set<string>,
+): Prisma.ReleveMensuelApporteurWhereInput {
+  if (o.mode === "rectificatif") {
+    return {
+      periode: o.periode,
+      id: o.releveId ?? "",
+      rang: { gt: 0 },
+      statut: { in: ["prepare", "echec"] },
+    };
+  }
+  return {
+    periode: o.periode,
+    rang: 0,
+    statut: o.mode === "tous" ? "prepare" : "echec",
+    ...(traitees.size ? { id: { notIn: [...traitees] } } : {}),
+  };
+}
+
 function lotDejaVivant(err: unknown): boolean {
   return (err as { code?: string } | null)?.code === "P2002";
 }
@@ -186,6 +236,8 @@ export async function envoyerLot(o: {
   periode: string;
   declenchePar: string;
   mode: ModeLot;
+  /** Mode `rectificatif` : la ligne `-Rk` (rang > 0) à envoyer, et elle seule. */
+  releveId?: string;
   maintenant?: Date;
 }): Promise<ResultatLot> {
   const maintenant = o.maintenant ?? new Date();
@@ -195,6 +247,9 @@ export async function envoyerLot(o: {
   await reprendreEnvoisEnCours(maintenant);
   await abandonnerLotsMorts(maintenant);
 
+  if (o.mode === "rectificatif" && !o.releveId) {
+    return { ok: false, message: "Relevé rectificatif inconnu.", ...VIDE };
+  }
   if (o.mode === "tous") {
     const manquants = await anomaliesDeCompletude(o.periode);
     if (manquants.length > 0) {
@@ -224,13 +279,9 @@ export async function envoyerLot(o: {
   try {
     const traitees = new Set<string>();
     for (;;) {
+      if (o.mode === "rectificatif" && traitees.size > 0) break;
       const tranche = (await prisma.releveMensuelApporteur.findMany({
-        where: {
-          periode: o.periode,
-          rang: 0,
-          statut: o.mode === "tous" ? "prepare" : "echec",
-          ...(traitees.size ? { id: { notIn: [...traitees] } } : {}),
-        },
+        where: critere(o, traitees),
         orderBy: { numero: "asc" },
         take: TAILLE_TRANCHE_ENVOI,
         select: {

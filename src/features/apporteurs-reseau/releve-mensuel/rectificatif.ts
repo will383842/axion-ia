@@ -51,8 +51,10 @@ export async function etablirRectificatif(
     },
   });
   if (!cible) return refus("Relevé inconnu.");
-  if (cible.statut !== "envoye") {
-    return refus("Seul un relevé déjà envoyé se rectifie : un relevé préparé se recalcule.");
+  // Un relevé `echec` (pris pour envoi, jamais parti) ne revient pas à `prepare` (trigger) : si ses
+  // données ont changé, il se traite lui aussi par un rectificatif.
+  if (cible.statut !== "envoye" && cible.statut !== "echec") {
+    return refus("Seul un relevé envoyé ou en échec se rectifie : un relevé préparé se recalcule.");
   }
   const versions = await prisma.releveMensuelApporteur.findMany({
     where: { apporteurId: cible.apporteurId, periode: cible.periode },
@@ -62,7 +64,7 @@ export async function etablirRectificatif(
   const derniere = versions[0];
   if (!derniere || derniere.id !== cible.id) {
     return refus(
-      derniere && derniere.statut !== "envoye"
+      derniere && derniere.statut !== "envoye" && derniere.statut !== "echec"
         ? "Un rectificatif est déjà en préparation pour cette période."
         : "Rectifiez la version la plus récente de la période.",
     );

@@ -19,6 +19,7 @@ vi.mock("@/features/apporteurs-reseau/releve-mensuel/actions-preparation", () =>
 vi.mock("@/features/apporteurs-reseau/releve-mensuel/actions-envoi", () => ({
   envoyerATousAction: async () => ({ etat: "initial" }),
   renvoyerEchecsAction: async () => ({ etat: "initial" }),
+  envoyerRectificatifAction: async () => ({ etat: "initial" }),
 }));
 
 import { BandeauAnomalies } from "../BandeauAnomalies";

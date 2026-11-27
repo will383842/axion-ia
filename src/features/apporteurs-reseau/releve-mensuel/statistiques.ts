@@ -5,6 +5,7 @@
  * sont des centimes entiers. Les fonctions pures (série de 12 mois, hauteurs, anomalies) sont
  * séparées des lectures Prisma pour se tester sans base.
  */
+import { decryptPii } from "@/lib/pii-crypto";
 import { prisma } from "@/lib/prisma";
 import { bornesPeriode, moisPrecedent, periodePrecedente } from "./periode";
 import type { Prisma, StatutReleveMensuel } from "../../../../prisma/generated/client";
@@ -63,6 +64,8 @@ export interface ReleveEcran {
   apporteurId: string;
   apporteurNom: string;
   rang: number;
+  /** `pris_at` vide : la ligne n'a jamais été prise pour envoi (seule à pouvoir s'écarter / se rétablir). */
+  jamaisPris?: boolean;
   statut: StatutReleveEcran;
   nbLignes: number;
   facturesHtCents: number;
@@ -448,7 +451,9 @@ export async function lireCiblesPeriode(
     vus.set(a.id, {
       apporteurId: a.id,
       nom: voitIdentite
-        ? a.denomination || `${a.prenom} ${a.nom}`.trim() || "Apporteur"
+        ? a.denomination ||
+          `${decryptPii(a.prenom) ?? ""} ${decryptPii(a.nom) ?? ""}`.trim() ||
+          "Apporteur"
         : "Apporteur (identité masquée)",
     });
   }
@@ -480,6 +485,7 @@ export async function lireVuePeriode(periode: string, voitIdentite: boolean): Pr
         motifEcart: true,
         envoyeAt: true,
         emailJobId: true,
+        prisAt: true,
         apporteur: { select: { prenom: true, nom: true, denomination: true, email: true } },
       },
     }),
@@ -504,7 +510,7 @@ export async function lireVuePeriode(periode: string, voitIdentite: boolean): Pr
       apporteurId: l.apporteurId,
       apporteurNom: voitIdentite
         ? l.apporteur.denomination ||
-          `${l.apporteur.prenom} ${l.apporteur.nom}`.trim() ||
+          `${decryptPii(l.apporteur.prenom) ?? ""} ${decryptPii(l.apporteur.nom) ?? ""}`.trim() ||
           "Apporteur"
         : "Apporteur (identité masquée)",
       rang: l.rang,
@@ -521,6 +527,7 @@ export async function lireVuePeriode(periode: string, voitIdentite: boolean): Pr
       emailPresent: !!l.apporteur.email,
       erreur: l.erreur,
       motifEcart: l.motifEcart,
+      jamaisPris: l.prisAt === null,
       envoyeAt: l.envoyeAt,
       statutEmail: l.emailJobId ? (statutParJob.get(l.emailJobId) ?? null) : null,
     })),

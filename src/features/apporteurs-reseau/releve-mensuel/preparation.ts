@@ -10,6 +10,7 @@
  *    silencieux).
  * Sans `server-only` (le worker l'atteint par `tsx`).
  */
+import { decryptPii } from "@/lib/pii-crypto";
 import { prisma } from "@/lib/prisma";
 
 import { signalerErreurReseau } from "../signaler";
@@ -48,7 +49,11 @@ export const cleR2Releve = (apporteurId: string, numero: string, empreinte: stri
   `apporteurs/releves/${apporteurId}/${numero}-${empreinte.slice(0, 8)}.pdf`;
 
 type Nom = { prenom: string; nom: string; denomination: string | null };
-const nomDe = (a: Nom): string => a.denomination || `${a.prenom} ${a.nom}`.trim() || "Apporteur";
+// `prenom` et `nom` sont chiffrés en base : sans `decryptPii`, le PDF figé porterait « enc:v1:… ».
+const nomDe = (a: Nom): string =>
+  a.denomination ||
+  `${decryptPii(a.prenom) ?? ""} ${decryptPii(a.nom) ?? ""}`.trim() ||
+  "Apporteur";
 
 /** Contenu → colonnes de la ligne (centimes entiers lus sur `contenu`, via `totauxDenormalises`). */
 export function colonnesDeContenu(contenu: ContenuReleveV1) {
@@ -230,21 +235,24 @@ export async function enteteRectifie(
 
 export type ResultatEcart = "ecarte" | "refuse" | "motif_requis";
 
-/** Écarte une ligne d'ORIGINE non partie (`prepare` ou `echec`), motif obligatoire. */
+/**
+ * Écarte une ligne d'ORIGINE JAMAIS PRISE (`prepare`, `pris_at` vide), motif obligatoire. Une ligne
+ * `echec` a été prise : la rétablir serait refusé par le trigger (jamais de retour à `prepare`).
+ */
 export async function ecarterReleve(releveId: string, motif: string): Promise<ResultatEcart> {
   const m = motif.trim().slice(0, 300);
   if (m.length < 3) return "motif_requis";
   const { count } = await prisma.releveMensuelApporteur.updateMany({
-    where: { id: releveId, rang: 0, statut: { in: ["prepare", "echec"] } },
+    where: { id: releveId, rang: 0, statut: "prepare", prisAt: null },
     data: { statut: "ecarte", motifEcart: m },
   });
   return count === 1 ? "ecarte" : "refuse";
 }
 
-/** Rétablit une ligne écartée (jamais partie : le trigger l'autorise). */
+/** Rétablit une ligne écartée JAMAIS PRISE (`pris_at` vide) : seul cas où le trigger l'autorise. */
 export async function retablirReleve(releveId: string): Promise<boolean> {
   const { count } = await prisma.releveMensuelApporteur.updateMany({
-    where: { id: releveId, statut: "ecarte" },
+    where: { id: releveId, statut: "ecarte", prisAt: null },
     data: { statut: "prepare", motifEcart: null },
   });
   return count === 1;

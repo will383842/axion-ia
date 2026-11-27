@@ -19,6 +19,8 @@ import { periodeValide } from "./periode";
 export type EtatActionEnvoi =
   { etat: "initial" } | { etat: "ok"; message: string } | { etat: "erreur"; message: string };
 
+const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+
 async function agir(fd: FormData, mode: ModeLot): Promise<EtatActionEnvoi> {
   const session = await auth();
   if (!session?.user?.id) return { etat: "erreur", message: "Session expirée : reconnectez-vous." };
@@ -28,11 +30,20 @@ async function agir(fd: FormData, mode: ModeLot): Promise<EtatActionEnvoi> {
   }
   const periode = String(fd.get("periode") ?? "").trim();
   if (!periodeValide(periode)) return { etat: "erreur", message: "Période inconnue." };
-  if (mode === "tous" && String(fd.get("confirmation") ?? "").trim() !== periode) {
+  if (mode !== "echecs" && String(fd.get("confirmation") ?? "").trim() !== periode) {
     return { etat: "erreur", message: `Saisissez ${periode} pour confirmer l'envoi.` };
   }
   try {
-    const r = await envoyerLot({ periode, declenchePar: `console:${session.user.id}`, mode });
+    const releveId = String(fd.get("id") ?? "").trim();
+    if (mode === "rectificatif" && !UUID.test(releveId)) {
+      return { etat: "erreur", message: "Relevé inconnu." };
+    }
+    const r = await envoyerLot({
+      periode,
+      declenchePar: `console:${session.user.id}`,
+      mode,
+      ...(mode === "rectificatif" ? { releveId } : {}),
+    });
     revalidatePath(adminPath("fr", `apporteurs/releves/${periode}`));
     revalidatePath(adminPath("fr", "apporteurs/releves"));
     return r.ok
@@ -62,4 +73,15 @@ export async function renvoyerEchecsAction(
   fd: FormData,
 ): Promise<EtatActionEnvoi> {
   return agir(fd, "echecs");
+}
+
+/**
+ * Envoi d'UN relevé rectificatif (`-Rk`), par le bouton de sa ligne : même confirmation (saisie de
+ * `AAAA-MM`) et même droit de facturer que le lot. Jamais automatique.
+ */
+export async function envoyerRectificatifAction(
+  _prev: EtatActionEnvoi,
+  fd: FormData,
+): Promise<EtatActionEnvoi> {
+  return agir(fd, "rectificatif");
 }

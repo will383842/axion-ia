@@ -123,7 +123,8 @@ export function RelevesMensuels({
                     </td>
                     {peutRectifier ? (
                       <td>
-                        {r.statut === "envoye" && etat.code !== "echoue" ? (
+                        {(r.statut === "envoye" || r.statut === "echec") &&
+                        etat.code !== "echoue" ? (
                           <BoutonRectificatif id={r.id} />
                         ) : (
                           "—"

@@ -135,7 +135,13 @@ export function TableauReleves({
               </td>
               {peutAgir ? (
                 <td>
-                  <ActionsLigneReleve id={r.id} periode={periode} statut={r.statut} rang={r.rang} />
+                  <ActionsLigneReleve
+                    id={r.id}
+                    periode={periode}
+                    statut={r.statut}
+                    rang={r.rang}
+                    jamaisPris={r.jamaisPris === true}
+                  />
                 </td>
               ) : null}
             </tr>
