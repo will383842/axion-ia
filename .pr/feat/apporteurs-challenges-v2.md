@@ -43,8 +43,8 @@ Remplace #2315 (en conflit) : branche neuve `feat/apporteurs-challenges-v2` part
   - `src/env.ts` : `APPORTEUR_MES_COMMISSIONS_ENABLED` (main) + les deux interrupteurs challenges, déclaration et lecture.
   - `src/app/apporteur/dossier/[id]/[jeton]/page.tsx` : `EncartChallenge` ajouté avant `DeclarationEntreprise`, dont la version de main (`lignesComment`, `RESERVATION_PROVISOIRE_JOURS`, `contratDepuis2_8`) est gardée.
   - `src/lib/admin-nav.test.ts` : compte 180 (main) + 1 Challenges = **181**.
-  - `tests/unit/ci/contacts-guide-reseau-origine-optionnelle.spec.ts` : liste des migrations de main + `20261127090000_apporteurs_challenges`.
-- **Migration** : `20261127090000_apporteurs_challenges` est postérieure à la dernière de main (`20261126140000_apporteurs_tva_figee`) : **pas de renommage**.
+  - `tests/unit/ci/contacts-guide-reseau-origine-optionnelle.spec.ts` : liste des migrations de main + `20261127120000_apporteurs_challenges`.
+- **Migration** : `20261127120000_apporteurs_challenges` est postérieure à la dernière de main (`20261126140000_apporteurs_tva_figee`) (renommée de 20261127090000 le 27/11 car main a ajouté 20261127100000 : postérieure à toutes).
 - **Interdits respectés** : `legal.ts`, `cgv-*`, `journee-ia-commun.ts`, `CONTRAT_VERSION` non touchés.
 - `.github/workflows/coolify-drapeau.yml` **modifié** : les deux interrupteurs `APPORTEUR_CHALLENGES_*` sont dans la liste fermée et validés « site seulement ».
 - **Lockfile** : `pnpm-lock.yaml` inchangé.

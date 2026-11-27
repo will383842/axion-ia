@@ -68,6 +68,11 @@ vi.mock("@/components/admin/contacts/ReponsesRecuesApporteur", () => ({
 vi.mock("@/components/admin/contacts/PiecesJointesMessage", () => ({
   PiecesJointesMessage: () => null,
 }));
+// Cinquième voisin (2026-11-27) : le bandeau « Prochaine étape », composant SERVEUR asynchrone
+// (même cause). Ses règles ont leur test : `prochaine-etape-apporteur.spec.ts`.
+vi.mock("@/components/admin/contacts/BandeauProchaineEtape", () => ({
+  BandeauProchaineEtape: () => null,
+}));
 // Les gestes de la fiche, eux, sont un composant CLIENT : ils appellent
 // `useRouter`, que ce fichier ne fournit pas (son mock de `next/navigation` ne
 // porte que `notFound` et `redirect`). Leurs tests vivent a cote d'eux.
