@@ -16,6 +16,17 @@ describe("registre des catégories", () => {
       expect(c.jetonCouleur).toMatch(/^[a-z-]+$/);
     }
   });
+  it("jetons de couleur fixés, sans aucun bleu", () => {
+    expect(
+      Object.fromEntries(Object.values(CATEGORIES).map((c) => [c.id, c.jetonCouleur])),
+    ).toEqual({
+      direction: "terracotta",
+      apporteur: "ochre",
+      developpeur: "sage",
+      "specialiste-ia": "plum",
+      partenaire: "mocha",
+    });
+  });
   it("une forme distincte par catégorie (daltoniens)", () => {
     const formes = Object.values(CATEGORIES).map((c) => c.forme);
     expect(new Set(formes).size).toBe(formes.length);

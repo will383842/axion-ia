@@ -8,6 +8,7 @@ import {
   nomAffiche,
   slugCollaborateur,
   slugifier,
+  validerPrenom,
   type FicheCollaborateur,
 } from "..";
 
@@ -366,5 +367,136 @@ describe("confidentialité du nom de famille", () => {
 
   it("le drapeau dirigeant d'un autre slug est neutralisé dans la sortie publique", () => {
     expect(fichePublique(fiche({ estDirigeantPrincipal: true })).estDirigeantPrincipal).toBe(false);
+  });
+});
+
+describe("validerPrenom", () => {
+  it("accepte prénoms simples, composés, accentués, avec apostrophe", () => {
+    for (const p of ["Camille", "Jean-Pierre", "Anne Sophie", "Zoé", "N'Golo", "Éloïse"]) {
+      expect(validerPrenom(p, "Camille Durand")).toBeNull();
+    }
+  });
+  it("refuse vide, nul, espaces", () => {
+    expect(validerPrenom("")).toBe("vide");
+    expect(validerPrenom("   ")).toBe("vide");
+    expect(validerPrenom(null)).toBe("vide");
+    expect(validerPrenom(undefined)).toBe("vide");
+  });
+  it("refuse chiffres, signes, adresse", () => {
+    expect(validerPrenom("Cam1lle")).toBe("caracteres");
+    expect(validerPrenom("a@b.fr")).toBe("caracteres");
+    expect(validerPrenom("-Camille")).toBe("caracteres");
+  });
+  it("refuse plus de 40 caractères", () => {
+    expect(validerPrenom("a".repeat(41))).toBe("trop-long");
+  });
+  it("refuse un nom de famille saisi dans le prénom", () => {
+    expect(validerPrenom("Camille Durand", "Camille Durand")).toBe("contient-nom-de-famille");
+    expect(validerPrenom("Durand", "Camille Durand")).toBe("contient-nom-de-famille");
+  });
+});
+
+describe("repli chef-lieu", () => {
+  it("ville écartée : ni ville ni département (le chef-lieu la redonnerait)", () => {
+    const p = fichePubliqueBrute(fiche({ ville: "Grenoble", departement: "38" }));
+    expect(p?.ville).toBeUndefined();
+    expect(p?.departement).toBeUndefined();
+  });
+  it("sans ville : le département reste", () => {
+    const { ville: _v, ...sansVille } = fiche({ departement: "38" });
+    expect(fichePubliqueBrute(sansVille)?.departement).toBe("38");
+  });
+});
+
+describe("3e relecture : cas limites", () => {
+  it("validerPrenom : prénom composé légitime, ordre NOM Prénom", () => {
+    expect(validerPrenom("Marie Claire", "Marie Claire Martin")).toBeNull();
+    expect(validerPrenom("Jean", "DUPONT Jean")).toBeNull();
+    expect(validerPrenom("Dupont", "DUPONT Jean")).toBe("contient-nom-de-famille");
+  });
+  it("ordre NOM Prénom : le nom ne fuit pas", () => {
+    const p = fichePubliqueBrute(
+      fiche({
+        prenom: "Jean",
+        nomComplet: "DUPONT Jean",
+        slug: "jean",
+        fonction: "Fils de Dupont",
+      }),
+    );
+    expect(p?.fonction).toBe("");
+  });
+  it("nom collé : slug et texte écartés", () => {
+    const p = fichePubliqueBrute(
+      fiche({
+        prenom: "Jean",
+        nomComplet: "Jean Dupont",
+        slug: "jeandupont",
+        fonction: "#JeanDupont",
+      }),
+    );
+    expect(p?.slug).toBe("jean");
+    expect(p?.fonction).toBe("");
+  });
+  it("slug vide ou non conforme régénéré", () => {
+    expect(fichePubliqueBrute(fiche({ slug: "" }))?.slug).toMatch(/^[a-z0-9]+(-[a-z0-9]+)*$/);
+    expect(fichePubliqueBrute(fiche({ slug: "A B" }))?.slug).toMatch(/^[a-z0-9-]+$/);
+  });
+  it("consentement : date non ISO ou future refusée", () => {
+    const photo = (d: string) => ({
+      src: "/a.jpg",
+      largeur: 1,
+      hauteur: 1,
+      alt: "x",
+      consentementLe: d,
+    });
+    expect(fichePubliqueBrute(fiche({ photo: photo("pas une date 2026") }))?.photo).toBeUndefined();
+    expect(fichePubliqueBrute(fiche({ photo: photo("2999-01-01") }))?.photo).toBeUndefined();
+    expect(fichePubliqueBrute(fiche({ photo: photo("2025-03-01") }))?.photo).toBeDefined();
+  });
+  it("écriture non latine : le nom de famille est détecté", () => {
+    const p = fichePubliqueBrute(
+      fiche({ prenom: "Иван", nomComplet: "Иван Петров", slug: "ivan", fonction: "Петров dev" }),
+    );
+    expect(p?.fonction).toBe("");
+  });
+  it("nom complet d'un seul mot, différent du prénom : traité comme nom de famille", () => {
+    const p = fichePubliqueBrute(
+      fiche({ prenom: "Jean", nomComplet: "Dupont", fonction: "Dupont" }),
+    );
+    expect(p?.fonction).toBe("");
+  });
+  it("fragment de deux lettres", () => {
+    const p = fichePubliqueBrute(
+      fiche({ prenom: "Lan", nomComplet: "Lan Le Ba", slug: "lan", fonction: "Equipe Ba" }),
+    );
+    expect(p?.fonction).toBe("");
+  });
+  it("slugCollaborateur : ville égale au nom de famille ignorée", () => {
+    expect(slugCollaborateur("Jean", "Nancy", ["jean"], "Jean Nancy")).toBe("jean-2");
+  });
+  it("estIndexable juge la fiche publiée : réponse contenant le nom → non indexable", () => {
+    const f = fiche({
+      reponseQui: `Dupont ${"x".repeat(300)}`,
+      nomComplet: "Jean Dupont",
+      prenom: "Jean",
+    });
+    expect(estIndexable(f)).toBe(false);
+  });
+  it("prix : TJM, HT, dollar, tarif, grenoblois", () => {
+    for (const t of ["TJM 600", "100 HT", "50 $", "tarif réduit", "Grenobloise"]) {
+      expect(estTextePropre(t)).toBe(false);
+    }
+  });
+  it("dirigeant : aucun département publié", () => {
+    const p = fichePubliqueBrute(
+      fiche({
+        estDirigeantPrincipal: true,
+        slug: "williams",
+        nomComplet: "Williams Jullin",
+        prenom: "Williams",
+        departement: "69",
+      }),
+    );
+    expect(p?.departement).toBeUndefined();
   });
 });

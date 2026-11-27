@@ -19,7 +19,11 @@ export const FORMULATIONS_INTERDITES: ReadonlyArray<RegExp> = [
   /top\s*1\s*%/i,
   /grandes?\s+[ée]coles?/i,
   /CAC\s*40/i,
-  /grenoble/i,
+  /grenobl/i,
+  /\$/,
+  /\bTJM\b/i,
+  /\b(HT|TTC)\b/,
+  /\btarifs?\b/i,
 ];
 
 function nettoyer(valeur: string | null | undefined): string {
@@ -53,27 +57,56 @@ const PARTICULES = new Set([
  */
 function famille(f: Pick<FicheCollaborateur, "prenom" | "nomComplet">): string[] {
   const nom = nettoyer(f.nomComplet).split(" ").filter(Boolean);
-  if (nom.length < 2) return [];
-  const prenom = nettoyer(f.prenom).split(" ").filter(Boolean);
-  let i = 0;
-  while (i < prenom.length && i < nom.length && slugifier(prenom[i]) === slugifier(nom[i])) i++;
-  let reste = nom.slice(i);
-  if (reste.length === 0) reste = nom.slice(-1);
-  if (i === 0) reste = nom.slice(1);
+  if (nom.length === 0) return [];
+  const prenomMots = nettoyer(f.prenom)
+    .split(" ")
+    .filter(Boolean)
+    .map((m) => cle(m));
+  // Les mots du nom complet qui ne répondent à aucun mot du prénom, où qu'ils soient
+  // (« Prénom NOM » comme « NOM Prénom »).
+  let reste = nom.filter((m) => !prenomMots.includes(cle(m)));
+  // Le prénom couvre tout : repli sur le dernier mot s'il y a au moins deux mots.
+  if (reste.length === 0) reste = nom.length >= 2 ? nom.slice(-1) : [];
   const parts = new Set<string>();
   const complet = slugifier(reste.join(" "));
   if (complet) parts.add(complet);
-  for (const mot of reste.flatMap((m) => slugifier(m).split("-"))) {
-    if (mot.length >= 3 && !PARTICULES.has(mot)) parts.add(mot);
+  for (const mot of reste) {
+    const brut = mot.toLocaleLowerCase("fr");
+    const sl = slugifier(mot);
+    if (!sl) {
+      // Écriture non latine : comparaison sur le mot lui-même.
+      if (Array.from(brut).length >= 2) parts.add(brut);
+      continue;
+    }
+    for (const frag of sl.split("-")) {
+      if (frag.length >= 2 && !PARTICULES.has(frag)) parts.add(frag);
+    }
   }
   return [...parts];
+}
+
+/** Clé de comparaison d'un mot : slug, ou le mot en minuscules s'il n'est pas latin. */
+function cle(mot: string): string {
+  return slugifier(mot) || nettoyer(mot).toLocaleLowerCase("fr");
 }
 
 /** Vrai si le texte contient un fragment du nom de famille (mots entiers, slugifiés). */
 function contientFamille(texte: string | undefined, parts: ReadonlyArray<string>): boolean {
   if (!texte || parts.length === 0) return false;
-  const norm = `-${slugifier(texte)}-`;
-  return parts.some((p) => norm.includes(`-${p}-`));
+  const slug = slugifier(texte);
+  const norm = `-${slug}-`;
+  const compact = slug.replace(/-/g, "");
+  const jetons = new Set(
+    nettoyer(texte)
+      .toLocaleLowerCase("fr")
+      .split(/[^\p{L}\p{M}\p{N}]+/u),
+  );
+  return parts.some((p) => {
+    if (norm.includes(`-${p}-`) || jetons.has(p)) return true;
+    // Nom collé (« JeanDupont », « #dupont2 ») : forme sans tirets, fragments de 4 lettres et plus.
+    const c = p.replace(/-/g, "");
+    return c.length >= 4 && compact.includes(c);
+  });
 }
 
 /**
@@ -86,6 +119,45 @@ function prenomSeul(f: Pick<FicheCollaborateur, "prenom" | "nomComplet">): strin
   const parts = famille(f);
   const gardes = mots.filter((m) => !contientFamille(m, parts));
   return (gardes.length > 0 ? gardes : mots.slice(0, 1)).join(" ");
+}
+
+/** Motifs de refus d'un prénom saisi dans la console. */
+export type MotifPrenomRefuse = "vide" | "caracteres" | "trop-long" | "contient-nom-de-famille";
+
+const PRENOM_LONGUEUR_MAX = 40;
+
+/**
+ * Validation du champ prénom (à appeler par la console avant d'enregistrer).
+ * Refuse : vide, chiffres ou signes autres que lettres, espace, apostrophe et
+ * tiret, plus de 40 caractères, ou un mot qui répond au nom de famille connu
+ * (`nomComplet`). Rend `null` si le prénom est acceptable.
+ */
+export function validerPrenom(
+  prenom: string | null | undefined,
+  nomComplet?: string | null,
+): MotifPrenomRefuse | null {
+  const p = nettoyer(prenom);
+  if (!p) return "vide";
+  if (!/^[\p{L}\p{M}][\p{L}\p{M}' ’-]*$/u.test(p)) return "caracteres";
+  if (p.length > PRENOM_LONGUEUR_MAX) return "trop-long";
+  const parts = famille({ prenom: p, nomComplet: nomComplet ?? "" });
+  if (p.split(" ").some((m) => contientFamille(m, parts))) return "contient-nom-de-famille";
+  // Ordre présumé : « Prénom Nom », ou « NOM Prénom » quand seul le premier mot est en capitales.
+  const mots = nettoyer(nomComplet).split(" ").filter(Boolean);
+  const majuscules = (m: string) => m.length > 1 && m === m.toLocaleUpperCase("fr");
+  const presume =
+    mots.length >= 2 && majuscules(mots[0] ?? "") && !majuscules(mots[mots.length - 1] ?? "")
+      ? mots[0]
+      : mots.length >= 2
+        ? mots[mots.length - 1]
+        : undefined;
+  if (presume && p.split(" ").some((m) => cle(m) === cle(presume))) {
+    return "contient-nom-de-famille";
+  }
+  // Le prénom saisi est le nom complet : refusé même si le repli ne trouve rien.
+  const complet = nettoyer(nomComplet);
+  if (complet && p.includes(" ") && cle(p) === cle(complet)) return "contient-nom-de-famille";
+  return null;
 }
 
 /**
@@ -151,7 +223,9 @@ export function slugCollaborateur(
   if (!base) return null;
   const pris = new Set<string>([...SLUGS_RESERVES, ...existants]);
   if (!pris.has(base)) return base;
-  const villeSlug = estTextePropre(ville) ? slugifier(ville) : "";
+  const parts = famille({ prenom, nomComplet: nomComplet ?? "" });
+  const villeSlug =
+    estTextePropre(ville) && !contientFamille(ville ?? "", parts) ? slugifier(ville) : "";
   const avecVille = villeSlug ? `${base}-${villeSlug}` : base;
   if (!pris.has(avecVille)) return avecVille;
   for (let n = 2; ; n++) {
@@ -166,13 +240,25 @@ export function estTextePropre(texte: string | null | undefined): boolean {
   return t.length > 0 && !FORMULATIONS_INTERDITES.some((re) => re.test(t));
 }
 
-function aVraiePhoto(f: FicheCollaborateur): boolean {
+const DATE_ISO = /^\d{4}-\d{2}-\d{2}(T\d{2}:\d{2}(:\d{2}(\.\d+)?)?(Z|[+-]\d{2}:\d{2})?)?$/;
+
+/** Date de consentement valide : ISO strict, jamais dans le futur. */
+function consentementValide(brut: string | null | undefined): boolean {
+  const d = nettoyer(brut);
+  if (!DATE_ISO.test(d)) return false;
+  const t = Date.parse(d);
+  return Number.isFinite(t) && t <= Date.now() + 24 * 3600 * 1000;
+}
+
+function aVraiePhoto(f: Pick<FicheCollaborateur, "photo">): boolean {
   const p = f.photo;
-  return Boolean(p && nettoyer(p.src) && Number.isFinite(Date.parse(nettoyer(p.consentementLe))));
+  return Boolean(p && nettoyer(p.src) && consentementValide(p.consentementLe));
 }
 
 /** Nombre d'éléments distinctifs (chaque famille compte une fois). */
-export function elementsDistinctifs(f: FicheCollaborateur): number {
+export function elementsDistinctifs(
+  f: Pick<FicheCollaborateur, "categorie" | "parcours" | "citations" | "metiers" | "publications">,
+): number {
   const communs = CATEGORIES[f.categorie]?.metiersCommuns ?? [];
   const parcoursDate =
     (f.parcours?.avant?.some((a) => Number.isInteger(a?.annee) && estTextePropre(a?.libelle)) ??
@@ -193,14 +279,16 @@ export function elementsDistinctifs(f: FicheCollaborateur): number {
  * toujours.
  */
 export function estIndexable(f: FicheCollaborateur): boolean {
-  const reponse = nettoyer(f.reponseQui);
-  if (estDirigeantNomme(f)) return estTextePropre(reponse);
+  // Jugée sur ce qui serait réellement publié, jamais sur la fiche brute.
+  const p = fichePublique(f);
+  if (!p) return false;
+  const reponse = nettoyer(p.reponseQui);
+  if (p.estDirigeantPrincipal) return estTextePropre(reponse);
   return (
-    aVraiePhoto(f) &&
+    aVraiePhoto(p) &&
     reponse.length >= LONGUEUR_REPONSE_MIN &&
     reponse.length <= LONGUEUR_REPONSE_MAX &&
-    estTextePropre(reponse) &&
-    elementsDistinctifs(f) >= ELEMENTS_DISTINCTIFS_MIN
+    elementsDistinctifs(p) >= ELEMENTS_DISTINCTIFS_MIN
   );
 }
 
@@ -225,7 +313,11 @@ export function fichePublique(
     estTextePropre(t) && !contientFamille(t ?? "", parts) ? (t as string) : undefined;
 
   let slug = f.slug;
-  if (!dirigeant && (contientFamille(f.slug, parts) || SLUGS_RESERVES.includes(f.slug))) {
+  const slugConforme = /^[a-z0-9]+(-[a-z0-9]+)*$/.test(f.slug ?? "");
+  if (
+    !dirigeant &&
+    (!slugConforme || contientFamille(f.slug, parts) || SLUGS_RESERVES.includes(f.slug))
+  ) {
     const neuf = slugCollaborateur(f.prenom, propre(f.ville), existants, f.nomComplet);
     if (!neuf) return null;
     slug = neuf;
@@ -244,7 +336,9 @@ export function fichePublique(
   };
   const ville = propre(f.ville);
   if (ville) publique.ville = ville;
-  if (f.departement != null) publique.departement = f.departement;
+  // Ville écartée : pas de département non plus (le chef-lieu la redonnerait). Dirigeant : aucun lieu.
+  const villeEcartee = nettoyer(f.ville) !== "" && !ville;
+  if (f.departement != null && !dirigeant && !villeEcartee) publique.departement = f.departement;
   if (f.photo && aVraiePhoto(f) && propre(f.photo.src)) {
     publique.photo = {
       src: f.photo.src,
