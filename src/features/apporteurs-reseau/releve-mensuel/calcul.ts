@@ -508,7 +508,8 @@ function report(ctx: Contexte, preparationAt: Date) {
       comparer(a.statut, b.statut) ||
       comparer(a.entreprise ?? "", b.entreprise ?? "") ||
       comparer(a.prestation ?? "", b.prestation ?? "") ||
-      (a.montantHtCents ?? 0) - (b.montantHtCents ?? 0),
+      (a.montantHtCents ?? 0) - (b.montantHtCents ?? 0) ||
+      comparer(jsonCanonique(a), jsonCanonique(b)),
   );
   return { facturesNonVirees, enAttenteAutofacture: enAttente, indicatif };
 }

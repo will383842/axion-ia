@@ -825,6 +825,70 @@ describe("audit argent #2427 : ordre d'entrée, ex æquo, signes, année", () =>
     );
   });
 
+  it("D2 : trié par date d'attente, pas par entreprise (Z le 10/10 après A le 05/10... et inversement)", () => {
+    const attente = (id: string, entreprise: string, jour: string) =>
+      commission({
+        id,
+        entreprise,
+        autofactureNumero: null,
+        autofactureEmiseAt: null,
+        autofactureAttenteDepuis: new Date(`${jour}T10:00:00Z`),
+        autofactureAttenteMotif: "motif",
+      });
+    const { contenu } = calcul(
+      [attente("1", "Z", "2026-10-05"), attente("2", "A", "2026-10-10")],
+      [],
+    );
+    expect(contenu.report.enAttenteAutofacture.map((e) => e.depuisLe)).toEqual([
+      "2026-10-05",
+      "2026-10-10",
+    ]);
+    const inverse = calcul(
+      [attente("1", "Z", "2026-10-10"), attente("2", "A", "2026-10-05")],
+      [],
+    ).contenu;
+    expect(inverse.report.enAttenteAutofacture.map((e) => e.depuisLe)).toEqual([
+      "2026-10-05",
+      "2026-10-10",
+    ]);
+  });
+
+  it("A : lignes triées par date d'émission avant la pièce", () => {
+    const { contenu } = calcul(
+      [
+        commission({
+          id: "1",
+          autofactureNumero: "AXI-APP-2026-0009",
+          autofactureEmiseAt: new Date("2026-10-20T10:00:00Z"),
+        }),
+        commission({
+          id: "2",
+          autofactureNumero: "AXI-APP-2026-0010",
+          autofactureEmiseAt: new Date("2026-10-05T10:00:00Z"),
+        }),
+      ],
+      [],
+    );
+    const dates = contenu.facturees.lignes.map((l) => l.dateEmission);
+    expect(dates).toEqual([...dates].sort());
+    expect(new Set(dates).size).toBe(2);
+  });
+
+  it("D3 : deux lignes indicatives ex æquo, empreinteContenu stable selon l'ordre d'entrée", () => {
+    const indic = (id: string, facture: string) =>
+      commission({
+        id,
+        autofactureNumero: null,
+        autofactureEmiseAt: null,
+        statut: "en_attente_vigilance",
+        factureClientNumero: facture,
+      });
+    const cs = [indic("1", "F-1"), indic("2", "F-2")];
+    const a = calcul(cs, []).contenu;
+    const b = calcul([...cs].reverse(), []).contenu;
+    expect(empreinteContenu(a)).toBe(empreinteContenu(b));
+  });
+
   it("reprise stockée en POSITIF : la ligne d'avoir sort quand même en négatif", () => {
     const { contenu } = calcul(
       [
