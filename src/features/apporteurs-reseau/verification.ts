@@ -700,6 +700,8 @@ export async function envoyerLien(
   mot: string | null,
   texte?: string,
   confirmerRenvoi = false,
+  /** Identifiant de job FIXE (anti-doublon) ; par défaut horodaté, comportement historique. */
+  jobId?: string,
 ) {
   const prep = await preparerLien(apporteurId, mot, texte);
   if (!prep.ok) return prep;
@@ -711,7 +713,7 @@ export async function envoyerLien(
   }
   const r = await envoyer({
     ...prep.envoi,
-    jobId: `${prep.envoi.gabarit}-${apporteurId}-${Date.now()}`,
+    jobId: jobId ?? `${prep.envoi.gabarit}-${apporteurId}-${Date.now()}`,
   });
   return {
     ok: true as const,

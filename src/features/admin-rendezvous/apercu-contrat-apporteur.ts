@@ -7,7 +7,8 @@
 // BIENVENUE, qui n'est pas celui que ce geste envoie.
 //
 // Mêmes refus que l'action d'envoi, dans le même ordre : réservé à
-// l'administrateur, dossier déjà ouvert, dossier fermé ou refusé.
+// l'administrateur, dossier déjà ouvert, dossier fermé ou refusé, fiche déjà
+// reliée au dossier d'une autre adresse.
 
 "use server";
 
@@ -62,9 +63,22 @@ export async function apercuContratApporteurAction(input: {
         message: "Ce dossier a été refusé : il n'est pas rouvert depuis ce bouton.",
       };
     }
+    const dejaRelie = await prisma.apporteurReseau.findUnique({
+      where: { submissionId: evt.linkedSubmissionId },
+      select: { prenom: true, nom: true },
+    });
+    if (dejaRelie) {
+      const nomRelie = [decryptPii(dejaRelie.prenom), decryptPii(dejaRelie.nom)]
+        .filter(Boolean)
+        .join(" ");
+      return {
+        etat: "erreur",
+        message: `Cette fiche est déjà reliée au dossier de ${nomRelie || "un autre apporteur"} : ouvrez-le depuis Apporteurs.`,
+      };
+    }
     const fiche = await prisma.submission.findUnique({
       where: { id: evt.linkedSubmissionId },
-      select: { contactName: true, contactEmail: true, locale: true },
+      select: { contactName: true, contactEmail: true },
     });
     const email = fiche ? decryptPii(fiche.contactEmail)?.trim() : null;
     if (!fiche || !email) {
@@ -76,7 +90,7 @@ export async function apercuContratApporteurAction(input: {
     const nom = decryptPii(fiche.contactName) ?? "";
     const rendu = await apercuMasque(
       "apporteur-dossier-lien",
-      fiche.locale === "en" ? "en" : "fr",
+      "fr", // l'envoi réel part toujours en fr (apporteurs-reseau/envois.ts)
       { contactName: nom.split(" ")[0] ?? nom, dossierUrl: urlDossierExemple() },
       email,
     );

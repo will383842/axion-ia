@@ -218,7 +218,7 @@ export function libelleEtapeSuivi(e: EtapeSuivi): string {
     case "absent":
       return "Absent";
     case "retenu":
-      return "Contrat envoyé";
+      return "Dossier ouvert · contrat pas envoyé";
     case "retenu-sans-contrat":
       return "Retenu · contrat pas envoyé";
     case "contrat-envoye":
@@ -245,11 +245,11 @@ export type TonEtape = "neutral" | "info" | "success" | "warning";
 /** Le ton du badge : vert quand ça avance, orange quand il faut agir, gris quand c'est clos. */
 export function tonEtapeSuivi(e: EtapeSuivi): TonEtape {
   switch (e.type) {
-    case "retenu":
     case "contrat-envoye":
     case "contrat-contresigne":
     case "echange-reserve":
       return "success";
+    case "retenu":
     case "retenu-sans-contrat":
     case "dossier-signe":
     case "dossier-a-completer":

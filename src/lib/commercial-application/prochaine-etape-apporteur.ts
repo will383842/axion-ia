@@ -122,8 +122,9 @@ export function prochaineEtape(
       }
       break;
     case "retenu":
-      phrase = "Dossier ouvert, contrat envoyé.";
-      bouton = { type: "dossier", libelle: "Voir le dossier apporteur" };
+      phrase =
+        "Dossier ouvert, mais le lien du contrat n'est pas parti : envoyez-le depuis le dossier.";
+      bouton = { type: "dossier", libelle: "Envoyer le lien depuis le dossier" };
       break;
     case "contrat-envoye":
       phrase = `Contrat envoyé le ${jourMois(etape.le)} : en attente de la signature.`;

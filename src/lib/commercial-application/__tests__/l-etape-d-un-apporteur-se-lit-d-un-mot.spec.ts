@@ -118,9 +118,11 @@ describe("l'étape, du début à la fin du parcours", () => {
     expect(libelle({ suivi: s, dossier: d })).toBe("Contrat envoyé le 05/10");
   });
 
-  it("dossier ouvert, aucun envoi journalisé : « Contrat envoyé » (on n'invente pas de date)", () => {
-    expect(libelle({ dossier: dossier() })).toBe("Contrat envoyé");
-    expect(etapeDuSuivi({ dossier: dossier() }, MAINTENANT).type).toBe("retenu");
+  it("dossier ouvert, aucun envoi journalisé : « Dossier ouvert · contrat pas envoyé » (orange)", () => {
+    expect(libelle({ dossier: dossier() })).toBe("Dossier ouvert · contrat pas envoyé");
+    const e = etapeDuSuivi({ dossier: dossier() }, MAINTENANT);
+    expect(e.type).toBe("retenu");
+    expect(tonEtapeSuivi(e)).toBe("warning");
   });
 
   it("l'apporteur a signé : « Dossier signé (à vérifier) »", () => {

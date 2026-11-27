@@ -78,6 +78,14 @@ describe("la prochaine étape d'un candidat apporteur", () => {
     expect(r.phrase).toContain("rattachez");
   });
 
+  it("dossier ouvert SANS envoi : on dit que le lien n'est pas parti, bouton vers le dossier", () => {
+    const r = lire(suivi(), dossier());
+    expect(r.phrase).toBe(
+      "Dossier ouvert, mais le lien du contrat n'est pas parti : envoyez-le depuis le dossier.",
+    );
+    expect(r.bouton).toEqual({ type: "dossier", libelle: "Envoyer le lien depuis le dossier" });
+  });
+
   it("contrat envoyé : lien vers le dossier", () => {
     const r = lire(suivi(), dossier({ contratEnvoyeLe: jours(2) }));
     expect(r.bouton).toEqual({ type: "dossier", libelle: "Voir le dossier apporteur" });
