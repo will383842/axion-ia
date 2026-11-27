@@ -1,0 +1,4 @@
+Rouge : `tests/image-video/variete/apparition.test.ts` (2 tests « référence inchangée », CI « tests des fichiers touchés » et « nouveaux fichiers de test ») : l'empreinte de la toile 3ffc05c6… ne correspondait plus au HTML après la fusion de master (fond, rail, téléphone vidéo).
+Changé : seule la constante `EMPREINTE_TOILE_REFERENCE` (→ ff1dbf99…, la valeur que donne master seul) + un commentaire MAJ 27/11 ; même invariant (sans variété et APP-A + MAT-A = même empreinte), aucun autre fichier.
+Tests : `vitest run tests/image-video/variete` → 393 passés, apparition.test.ts vert ; `tsc --noEmit` signale des erreurs de types déjà présentes (aucune dans le fichier touché). Installation : pnpm avec --store-dir /tmp/pstore + npm ci dans studio-rendu.
+Hérités non réparés : `socle.test.ts` (2 tests : empreinte de la ligne de temps, invariants F 4:5) rouge aussi sur master, hors périmètre de la fiche.
