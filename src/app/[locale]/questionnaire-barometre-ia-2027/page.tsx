@@ -1,8 +1,8 @@
 // Questionnaire du Baromètre 2027 (`/[locale]/questionnaire-barometre-ia-2027`).
 //
 // Page diffusée par lien : `noindex`, hors du sitemap. Composant serveur, aucune lecture de la
-// base. Texte d'information, puis le formulaire si la collecte est ouverte, sinon « fermé ».
-// Le bloc `#retrait` est TOUJOURS présent : le retrait reste possible après la fermeture.
+// base. Texte d'information, puis le formulaire si la collecte est ouverte, sinon « pas encore ouvert ».
+// Le bloc `#retrait` est TOUJOURS présent : le retrait reste possible à tout moment.
 
 import type { Metadata } from "next";
 import { setRequestLocale } from "next-intl/server";
@@ -16,6 +16,7 @@ import {
   DESCRIPTION_PAGE,
   DUREE,
   FERME,
+  texteFerme,
   FORMULAIRE,
   H1,
   LIBELLES_QUESTIONS,
@@ -127,7 +128,7 @@ export default async function QuestionnaireBarometrePage({ params }: Props) {
             <h2 id="bq-ferme" className="text-lg font-semibold">
               {FERME.titre}
             </h2>
-            <p className="mt-2 text-sm">{FERME.texte}</p>
+            <p className="mt-2 text-sm">{texteFerme(new Date())}</p>
           </section>
         )}
 

@@ -392,7 +392,10 @@ describe("contacts — le recrutement se partage entre Apporteurs et Autres", ()
   it("la liste Apporteurs porte son nom, un bouton « Ajouter », et aucun bouton sur Messages", async () => {
     // Assertions booléennes : un échec n'imprime pas les 20 Ko de la page.
     const apporteurs = await servirVue(ApporteursPage as unknown as Page);
-    expect(/<h1[^>]*>Apporteurs<\/h1>/.test(apporteurs.html), "titre « Apporteurs »").toBe(true);
+    expect(
+      /<h1[^>]*>Candidats apporteurs<\/h1>/.test(apporteurs.html),
+      "titre « Candidats apporteurs »",
+    ).toBe(true);
     expect(
       apporteurs.html.includes('href="/fr/p/contacts/commercial/nouveau"'),
       "bouton « Ajouter » vers la saisie d'un apporteur",

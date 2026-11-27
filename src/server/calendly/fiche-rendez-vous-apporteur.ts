@@ -176,8 +176,7 @@ export async function creerFicheDepuisRendezVous(e: {
           consentement:
             "réservation de l'échange apporteur (aucun formulaire rempli) — fiche créée automatiquement",
           saisiPar: e.manuel ? "console" : "automatique",
-          message:
-            "Échange réservé — fiche créée automatiquement à la réservation (aucun formulaire rempli).",
+          message: "Fiche créée à la réservation de l'échange",
         } as object,
       },
       select: { id: true },
