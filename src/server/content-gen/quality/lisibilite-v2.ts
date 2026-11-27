@@ -66,7 +66,7 @@ export interface ProblemeLisibiliteV2 {
   readonly message: string;
 }
 
-const NBSP = /[   ]/g;
+const NBSP = /[\u00a0\u202f\u2007]/g;
 
 const enTexte = (html: string): string =>
   html
