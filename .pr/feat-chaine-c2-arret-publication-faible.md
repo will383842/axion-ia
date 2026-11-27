@@ -28,6 +28,16 @@ Rien n'est supprimé ni désindexé : les contenus déjà publiés ne bougent pa
 - Décision restante de la fiche C2 : le gel de la rotation des 747 mots-clés (non traité ici).
 - Tests : `relecture-obligatoire.spec.ts` (écrit avant le module, rouge à l'import, puis vert), `judge-outcome.spec.ts` et l'orchestrateur adaptés. tsc propre, 102 fichiers / 1194 tests verts sur les dossiers touchés.
 
-Relectures Opus : 1re passe « à corriger » (8 points, corrigés) ; 2e passe « à corriger » (3 points : pause RSS à 0, `reviewedBy` vidé, reprise villes), corrigés dans le dernier commit mais NON relus par Opus.
+## Dernière passe (3e relecture)
 
-VERDICT OPUS : À CORRIGER
+- Fusion de `origin/main` (sans conflit). `tsc` propre ; vitest sur `content-gen`, `queue` et `actions/content-gen` : tout vert sauf 4 tests de `url-extractor.spec.ts` (fichier non touché, échec réseau du bac à sable).
+- **`needs_edits`** : le worker de génération remet aussi la fiche en `pending` (`reviewedBy` vidé) quand le contenu régénéré sort en `needs_review`, comme le fait déjà la boucle qualité. Avant, la fiche restait bloquée.
+- **Actualités RSS plafonnées à 2/jour** sous relecture obligatoire (`plafondActualitesEffectif`) : elles comptent dans le budget global de 3, il reste donc une place pour les articles de campagne. 0 = pause conservé ; retour arrière = plafond d'avant.
+- **Pages villes, retour arrière** : une copie déjà `generated` et bonne est approuvée à la reprise sans être régénérée (ni repayée).
+- Tests ajoutés : plafond RSS, remise `needs_edits` → `pending` (boucle qualité et worker de génération). Le mock du test d'intégration de l'équipe éditoriale gagne `updateMany`.
+- Une régénération en place lancée depuis la console passe désormais par la relecture (comportement voulu, non mentionné avant).
+- Limite connue : le branchement du plafond RSS dans le worker n'est couvert que par le test de la fonction pure.
+
+Relectures Opus : 1re « à corriger » (8 points, corrigés) ; 2e « à corriger » (3 points, corrigés) ; 3e « à corriger » (points ci-dessus, corrigés) ; 4e relecture, sur le code final (commit 270fd8df8) : rien à corriger.
+
+VERDICT OPUS : BON
