@@ -110,15 +110,17 @@ const MOTIF_INTERDIT = /€|\beuros?\b|\bprix\b|\btarifs?\b|grenoble|garanti|pro
 /** Un message est utilisable s'il vouvoie, cite l'article, et n'annonce ni prix ni résultat ni ville interdite. */
 export function messageValide(message: string, articleUrl: string): boolean {
   const m = message.trim();
+  // L'adresse de l'article (slug) ne doit pas déclencher les motifs interdits : on la retire avant.
+  const sansLien = m.split(articleUrl).join(" ");
   return (
     m.length > 0 &&
     m.length <= LONGUEUR_MESSAGE_MAX &&
     m.includes(articleUrl) &&
-    !MOTIF_INTERDIT.test(m) &&
-    !MOTIF_ECHANGE.test(m) &&
+    !MOTIF_INTERDIT.test(sansLien) &&
+    !MOTIF_ECHANGE.test(sansLien) &&
     (m.match(/https?:\/\/\S+/gi) ?? []).every((u) => u.replace(/[.,;:)»]+$/, "") === articleUrl) &&
-    !TUTOIEMENT.test(m) &&
-    !detecterTutoiement(m).tutoie
+    !TUTOIEMENT.test(sansLien) &&
+    !detecterTutoiement(sansLien).tutoie
   );
 }
 

@@ -5,6 +5,7 @@ import {
   MAX_OCCASIONS_PAR_ARTICLE,
   PLAFOND_COUT_ARTICLE_USD,
   changerEtatOccasion,
+  messageValide,
   proposerOccasions,
   type CandidatLien,
   type DependancesChargeLiens,
@@ -200,6 +201,12 @@ describe("charge de liens", () => {
     if (r.statut !== "occasions") throw new Error("attendu : occasions");
     expect(r.occasions[0]!.message).not.toMatch(/grenoble|€/i);
     expect(r.occasions[0]!.message).toContain(ARTICLE.articleUrl);
+  });
+
+  it("un slug contenant « prix » n'invalide pas un message correct", () => {
+    const url = "https://axion-ia.com/fr/blog/prix-de-lia";
+    expect(messageValide(`Bonjour, voici notre article : ${url}. Cordialement.`, url)).toBe(true);
+    expect(messageValide(`Bonjour, notre prix : ${url}.`, url)).toBe(false);
   });
 
   it("modèle en échec ou JSON illisible : textes sobres, pas de second appel, coût 0", async () => {

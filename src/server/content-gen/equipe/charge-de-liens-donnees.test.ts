@@ -2,6 +2,7 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 
 const m = vi.hoisted(() => ({
   brut: null as unknown,
+  sql: [] as string[],
   update: vi.fn(async (_a: unknown) => ({})),
   oppo: vi.fn(async (_a: unknown) => null as unknown),
   supp: vi.fn(async (_a: unknown) => null as unknown),
@@ -10,7 +11,10 @@ const m = vi.hoisted(() => ({
 
 vi.mock("@/lib/prisma", () => {
   const tx = {
-    $queryRaw: async () => [{ output_json_raw: m.brut }],
+    $queryRaw: async (...a: unknown[]) => {
+      m.sql.push((a[0] as string[]).join("?"));
+      return [{ raw: m.brut }];
+    },
     contentGenJob: { update: (a: unknown) => m.update(a) },
   };
   return {
@@ -44,6 +48,12 @@ describe("données du chargé de liens", () => {
     await modifierOccasions("j", () => ({ version: 1, occasions: [], coutUsd: 0 }));
     const data = (m.update.mock.calls[0]![0] as { data: { outputJsonRaw: object } }).data;
     expect(Object.keys(data.outputJsonRaw)).toEqual(["chargeLiens"]);
+  });
+
+  it("le SQL brut lit la vraie colonne et verrouille la ligne", async () => {
+    await modifierOccasions("j", () => ({ version: 1, occasions: [], coutUsd: 0 }));
+    expect(m.sql[0]).toContain('"outputJsonRaw"');
+    expect(m.sql[0]).toContain("FOR UPDATE");
   });
 
   it("si la modification lève, rien n'est écrit", async () => {

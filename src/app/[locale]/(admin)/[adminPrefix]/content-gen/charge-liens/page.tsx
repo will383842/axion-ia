@@ -37,7 +37,10 @@ export default async function ChargeLiensPage({ params }: PageProps) {
         title="Chargé de liens"
         description="Occasions de liens proposées pour les articles publiés. Rien n'est envoyé : « Valider » marque l'occasion et copie le message ; vous l'envoyez vous-même si vous le souhaitez."
       />
-      <ChargeLiens articles={articles} />
+      <ChargeLiens
+        key={articles.map((a) => a.jobId + a.occasions.map((o) => o.etat[0]).join("")).join("|")}
+        articles={articles}
+      />
     </AdminPageShell>
   );
 }

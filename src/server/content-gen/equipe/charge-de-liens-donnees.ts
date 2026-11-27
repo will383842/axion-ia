@@ -3,6 +3,13 @@
  * lecture et écriture des occasions dans `ContentGenJob.outputJsonRaw.chargeLiens` (champ JSON
  * existant : aucune table, aucune migration). L'écriture FUSIONNE : les autres clés du JSON sont
  * conservées. Aucun envoi ici.
+ *
+ * ⚠️ Risque accepté : `content-gen-worker` (régénération) et `quality-improver` réécrivent
+ * `outputJsonRaw` en entier, sans verrou. Une écriture concurrente peut effacer `chargeLiens` ;
+ * le marqueur Redis (90 j) empêche alors de le régénérer. Le verrou `FOR UPDATE` ne protège que
+ * les décisions entre elles.
+ * Aucun candidat ne porte encore de `contactEmail` (aucune base de contacts presse n'existe dans
+ * le dépôt) : le contrôle d'opposition est prêt, mais exercé seulement par les tests.
  */
 
 import { prisma } from "@/lib/prisma";
@@ -109,9 +116,9 @@ export async function modifierOccasions(
   modifier: (courant: EntreeChargeLiens | null) => EntreeChargeLiens,
 ): Promise<void> {
   await prisma.$transaction(async (tx) => {
-    const lignes = await tx.$queryRaw<Array<{ output_json_raw: unknown }>>`
-      SELECT output_json_raw FROM "content_gen_jobs" WHERE id = ${jobId} FOR UPDATE`;
-    const brut = lignes[0]?.output_json_raw;
+    const lignes = await tx.$queryRaw<Array<{ raw: unknown }>>`
+      SELECT "outputJsonRaw" AS raw FROM "content_gen_jobs" WHERE id = ${jobId} FOR UPDATE`;
+    const brut = lignes[0]?.raw;
     const base =
       brut && typeof brut === "object" && !Array.isArray(brut)
         ? (brut as Record<string, unknown>)
@@ -131,7 +138,6 @@ export async function ecrireOccasions(jobId: string, entree: EntreeChargeLiens):
 export interface ArticleAvecOccasions {
   readonly jobId: string;
   readonly titre: string;
-  readonly url: string;
   readonly occasions: OccasionLien[];
 }
 
@@ -158,7 +164,6 @@ export async function listerArticlesAvecOccasions(take = 50): Promise<ArticleAve
     res.push({
       jobId: j.id,
       titre: titres.get(j.id) ?? j.id,
-      url: "",
       occasions: entree.occasions,
     });
   }
