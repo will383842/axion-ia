@@ -16,7 +16,6 @@ import {
   type LigneInvitation,
 } from "@/components/admin/collaborateurs/InvitationsQuestionnaire";
 import { gardeLectureEchanges } from "@/features/dossier-client/acces";
-import { gardeLectureEchanges } from "@/features/dossier-client/acces";
 import { prisma } from "@/lib/prisma";
 import {
   TEAM_CATEGORIES,

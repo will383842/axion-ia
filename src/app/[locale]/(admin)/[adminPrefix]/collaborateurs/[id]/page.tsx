@@ -10,7 +10,6 @@ import {
   type FicheInitiale,
 } from "@/components/admin/collaborateurs/CollaborateurForm";
 import { gardeLectureEchanges } from "@/features/dossier-client/acces";
-import { gardeLectureEchanges } from "@/features/dossier-client/acces";
 import { prisma } from "@/lib/prisma";
 import { idSchema } from "@/lib/equipe/console/schemas";
 
