@@ -31,8 +31,10 @@ export async function retirerReponsesQuestionnaire(input: unknown): Promise<Retr
     if (!parsed.success) return { ok: false, error: "Demande invalide." };
 
     const ip = await getClientIp();
-    const rl = await checkRateLimit(`${RATE_LIMIT_PREFIX}-retrait:${hashIp(ip) ?? "inconnu"}`, {
-      limit: 5,
+    // Sans IP lisible : seau « inconnu » à limite plus large (voir envoyer.ts).
+    const empreinte = hashIp(ip);
+    const rl = await checkRateLimit(`${RATE_LIMIT_PREFIX}-retrait:${empreinte ?? "inconnu"}`, {
+      limit: empreinte ? 5 : 60,
       windowSec: 600,
     });
     if (!rl.allowed) {

@@ -203,7 +203,9 @@ export function FormulaireBarometre({ q }: { q: QuestionsProp }) {
           codeRetraitHash,
           turnstileToken: jeton,
           website: honeypot.current?.value ?? "",
-          startedAt: debut.current ?? Date.now(),
+          // Repli 0 (et non Date.now()) : si le montage n'a pas posé `debut`, l'envoi ne doit pas
+          // être jugé « trop rapide » (succès silencieux, code de retrait sans ligne).
+          startedAt: debut.current ?? 0,
         });
         if (resultat.ok) {
           poserMarqueur();
