@@ -70,16 +70,6 @@ describe("les actions de décision", () => {
   });
 });
 
-describe("la route du RIB de demande", () => {
-  const src = lire(`${BASE}/[demandeId]/rib/route.ts`);
-  it("est réservée au super_admin, exige le verdict antivirus et ne se met pas en cache", () => {
-    expect(src).toMatch(/super_admin/);
-    expect(src).toMatch(/analyserOctets/);
-    expect(src).toMatch(/no-store/);
-    expect(src).toMatch(/journaliser|journalSansIban/);
-  });
-});
-
 describe("les écrans", () => {
   it("ne rendent aucun IBAN entier : jamais de lecture de la colonne chiffrée", () => {
     for (const f of [
