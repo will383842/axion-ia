@@ -767,7 +767,9 @@ const SELECT_PRESENTATION_PROTEGEE = {
  * entreprise déjà connue ne rapporte rien. Une présentation validée (ligne `valideeAt`) est
  * `confirmee` : elle passe par la première requête, jugée sur sa seule protection.
  */
-async function lirePresentationsProtegees(): Promise<Array<PresentationProtegee & ProtegeeLue>> {
+export async function lirePresentationsProtegees(): Promise<
+  Array<PresentationProtegee & ProtegeeLue>
+> {
   const protegees = await prisma.presentationEntreprise.findMany({
     where: {
       statut: { in: ["confirmee", "terminee"] },
