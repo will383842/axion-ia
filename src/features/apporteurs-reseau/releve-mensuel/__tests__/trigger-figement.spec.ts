@@ -24,6 +24,9 @@ const corps = (fonction: string): string => {
 };
 
 const COLONNES_FIGEES = [
+  "id",
+  "rectifie_id",
+  "format_version",
   "numero",
   "apporteur_id",
   "periode",
@@ -67,12 +70,18 @@ describe("trigger de figement du relevé mensuel", () => {
     );
     // 2. désécarter est refusé dès que la ligne a été prise ou porte un job
     expect(garde).toMatch(
-      /NEW\."statut"\s*=\s*'prepare'[\s\S]*?OLD\."pris_at" IS NOT NULL OR OLD\."email_job_id" IS NOT NULL[\s\S]*?RAISE EXCEPTION/,
+      /NEW\."statut"\s*=\s*'prepare'\s+AND\s+OLD\."statut"\s*<>\s*'prepare'\s+AND\s+\(OLD\."pris_at" IS NOT NULL OR OLD\."email_job_id" IS NOT NULL\)\s+THEN\s+RAISE EXCEPTION/,
     );
     // 3. une ligne prise est figée même si son statut est `prepare`, et ses traces ne s'effacent pas
-    expect(garde).toMatch(/OLD\."pris_at" IS NOT NULL OR OLD\."email_job_id" IS NOT NULL\)\s+AND \(NEW\."numero"/);
-    expect(garde).toMatch(/OLD\."pris_at" IS NOT NULL AND NEW\."pris_at" IS DISTINCT FROM OLD\."pris_at"/);
-    expect(garde).toMatch(/OLD\."email_job_id" IS NOT NULL AND NEW\."email_job_id" IS DISTINCT FROM OLD\."email_job_id"/);
+    expect(garde).toMatch(
+      /OLD\."pris_at" IS NOT NULL OR OLD\."email_job_id" IS NOT NULL\)\s+AND \(NEW\."id"/,
+    );
+    expect(garde).toMatch(
+      /OLD\."pris_at" IS NOT NULL AND NEW\."pris_at" IS DISTINCT FROM OLD\."pris_at"/,
+    );
+    expect(garde).toMatch(
+      /OLD\."email_job_id" IS NOT NULL AND NEW\."email_job_id" IS DISTINCT FROM OLD\."email_job_id"/,
+    );
     // 4. la suppression est refusée pour une ligne prise
     expect(corps("releves_mensuels_apporteur_refuse_delete")).toMatch(
       /OLD\."pris_at" IS NOT NULL OR OLD\."email_job_id" IS NOT NULL/,
@@ -83,8 +92,53 @@ describe("trigger de figement du relevé mensuel", () => {
     );
   });
 
+  it("fige les totaux, envoye_at et envoye_par dès `envoye`", () => {
+    for (const c of [
+      "nb_lignes",
+      "factures_ht_cents",
+      "avoirs_ht_cents",
+      "vires_ttc_cents",
+      "en_attente_ht_cents",
+      "cumul_annee_ht_cents",
+      "envoye_at",
+      "envoye_par",
+    ]) {
+      expect(garde, c).toMatch(
+        new RegExp(
+          `OLD\\."statut"\\s*=\\s*'envoye'\\s+AND\\s+\\([\\s\\S]*?NEW\\."${c}" IS DISTINCT FROM OLD\\."${c}"[\\s\\S]*?RAISE EXCEPTION`,
+        ),
+      );
+    }
+  });
+
+  it("ferme ecarte → envoi_en_cours (prise depuis prepare | echec seulement)", () => {
+    expect(garde).toMatch(
+      /OLD\."statut"\s*=\s*'ecarte'\s+AND\s+NEW\."statut"\s*=\s*'envoi_en_cours'\s+THEN\s+RAISE EXCEPTION/,
+    );
+  });
+
+  it("refuse TRUNCATE par un trigger BEFORE TRUNCATE qui lève", () => {
+    expect(corps("releves_mensuels_apporteur_refuse_truncate")).toMatch(/RAISE EXCEPTION/);
+    expect(sql).toMatch(
+      /CREATE TRIGGER "releves_mensuels_apporteur_refuse_truncate"\s+BEFORE TRUNCATE ON "releves_mensuels_apporteur"\s+FOR EACH STATEMENT EXECUTE FUNCTION "releves_mensuels_apporteur_refuse_truncate"\(\)/,
+    );
+  });
+
+  it("pose la clé étrangère rectifie_id en RESTRICT / RESTRICT", () => {
+    expect(sql).toMatch(
+      /FOREIGN KEY \("rectifie_id"\) REFERENCES "releves_mensuels_apporteur"\("id"\) ON DELETE RESTRICT ON UPDATE RESTRICT/,
+    );
+  });
+
   it("pose les contraintes CHECK et n'a pas d'index redondant sur apporteur_id", () => {
-    for (const c of ["periode_format", "rang_coherent", "ecart_motive", "envoye_complet", "prise_tracee", "empreinte_format"]) {
+    for (const c of [
+      "periode_format",
+      "rang_coherent",
+      "ecart_motive",
+      "envoye_complet",
+      "prise_tracee",
+      "empreinte_format",
+    ]) {
       expect(sql).toContain(`"releves_mensuels_apporteur_${c}"`);
     }
     expect(sql).not.toContain("releves_mensuels_apporteur_apporteur_id_idx");

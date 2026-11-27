@@ -94,7 +94,10 @@ CREATE UNIQUE INDEX "lots_releve_mensuel_un_en_cours"
 CREATE FUNCTION "releves_mensuels_apporteur_garde_update"() RETURNS trigger AS $$
 BEGIN
   IF (OLD."statut" <> 'prepare' OR OLD."pris_at" IS NOT NULL OR OLD."email_job_id" IS NOT NULL)
-     AND (NEW."numero" IS DISTINCT FROM OLD."numero"
+     AND (NEW."id" IS DISTINCT FROM OLD."id"
+          OR NEW."rectifie_id" IS DISTINCT FROM OLD."rectifie_id"
+          OR NEW."format_version" IS DISTINCT FROM OLD."format_version"
+          OR NEW."numero" IS DISTINCT FROM OLD."numero"
           OR NEW."apporteur_id" IS DISTINCT FROM OLD."apporteur_id"
           OR NEW."periode" IS DISTINCT FROM OLD."periode"
           OR NEW."rang" IS DISTINCT FROM OLD."rang"
@@ -109,6 +112,22 @@ BEGIN
   END IF;
   IF OLD."statut" = 'envoye' AND NEW."statut" <> 'envoye' THEN
     RAISE EXCEPTION 'releves_mensuels_apporteur : un relevé envoyé ne change plus de statut';
+  END IF;
+  -- Un relevé envoyé garde aussi les chiffres que la console montre et la trace de son envoi.
+  IF OLD."statut" = 'envoye'
+     AND (NEW."nb_lignes" IS DISTINCT FROM OLD."nb_lignes"
+          OR NEW."factures_ht_cents" IS DISTINCT FROM OLD."factures_ht_cents"
+          OR NEW."avoirs_ht_cents" IS DISTINCT FROM OLD."avoirs_ht_cents"
+          OR NEW."vires_ttc_cents" IS DISTINCT FROM OLD."vires_ttc_cents"
+          OR NEW."en_attente_ht_cents" IS DISTINCT FROM OLD."en_attente_ht_cents"
+          OR NEW."cumul_annee_ht_cents" IS DISTINCT FROM OLD."cumul_annee_ht_cents"
+          OR NEW."envoye_at" IS DISTINCT FROM OLD."envoye_at"
+          OR NEW."envoye_par" IS DISTINCT FROM OLD."envoye_par") THEN
+    RAISE EXCEPTION 'releves_mensuels_apporteur : les totaux et la trace d''envoi d''un relevé envoyé sont figés';
+  END IF;
+  -- La prise (§ 6.4) se fait depuis `prepare` ou `echec` seulement, jamais depuis `ecarte`.
+  IF OLD."statut" = 'ecarte' AND NEW."statut" = 'envoi_en_cours' THEN
+    RAISE EXCEPTION 'releves_mensuels_apporteur : un relevé écarté n''est pas pris pour envoi (prepare ou echec seulement)';
   END IF;
   -- Un relevé pris pour envoi ne revient jamais à « prepare » (sinon le contenu serait réécrit après coup).
   IF OLD."statut" IN ('envoi_en_cours', 'echec', 'envoye') AND NEW."statut" = 'prepare' THEN
@@ -145,6 +164,22 @@ $$ LANGUAGE plpgsql;
 CREATE TRIGGER "releves_mensuels_apporteur_refuse_delete"
   BEFORE DELETE ON "releves_mensuels_apporteur"
   FOR EACH ROW EXECUTE FUNCTION "releves_mensuels_apporteur_refuse_delete"();
+
+-- Un TRUNCATE ne déclenche pas les triggers de ligne : il vidait la table, relevés envoyés compris.
+CREATE FUNCTION "releves_mensuels_apporteur_refuse_truncate"() RETURNS trigger AS $$
+BEGIN
+  RAISE EXCEPTION 'releves_mensuels_apporteur : TRUNCATE interdit (relevés envoyés à conserver)';
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER "releves_mensuels_apporteur_refuse_truncate"
+  BEFORE TRUNCATE ON "releves_mensuels_apporteur"
+  FOR EACH STATEMENT EXECUTE FUNCTION "releves_mensuels_apporteur_refuse_truncate"();
+
+-- La chaîne des rectificatifs ne pointe jamais dans le vide (table neuve et vide : pose gratuite).
+ALTER TABLE "releves_mensuels_apporteur"
+  ADD CONSTRAINT "releves_mensuels_apporteur_rectifie_id_fkey"
+  FOREIGN KEY ("rectifie_id") REFERENCES "releves_mensuels_apporteur"("id") ON DELETE RESTRICT ON UPDATE RESTRICT;
 
 -- ── Contraintes CHECK (tables neuves et vides : pose gratuite) ──────────────────────────────────────────────────
 ALTER TABLE "releves_mensuels_apporteur"

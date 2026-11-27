@@ -23,7 +23,7 @@ function fautes(sqlBrut: string): string[] {
   const instructions = sql.replace(/\$\$[\s\S]*?\$\$/g, " "); // corps de fonctions retirés
   const out: string[] = [];
   if (/\bDROP\b/i.test(instructions)) out.push("DROP");
-  if (/\bRENAME\b|\bTRUNCATE\b/i.test(instructions)) out.push("renommage ou TRUNCATE");
+  if (/\bRENAME\b|(?<!BEFORE\s)\bTRUNCATE\b/i.test(instructions)) out.push("renommage ou TRUNCATE");
   if (/\bALTER\s+TYPE\b|\bADD\s+VALUE\b/i.test(instructions)) out.push("énumération existante");
   if (/\bALTER\s+COLUMN\b|\bSET\s+NOT\s+NULL\b/i.test(instructions)) out.push("colonne modifiée");
   if (/\b(UPDATE\s+"|DELETE\s+FROM|INSERT\s+INTO)\b/i.test(instructions)) out.push("écriture");
