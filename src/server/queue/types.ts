@@ -201,6 +201,8 @@ export type EmailJobName =
   | "apporteur-commande-non-attribuee"
   | "apporteur-attribution-confirmee"
   | "apporteur-releve"
+  // Relevé mensuel (lot 2, 2026-11-27) : gabarit DORMANT, sans émetteur avant le lot 4a.
+  | "apporteur-releve-mensuel"
   | "apporteur-virement-fait"
   | "apporteur-lien-espace"
   // Lot L4 2026-08-14 — information RGPD au stock de candidatures avant

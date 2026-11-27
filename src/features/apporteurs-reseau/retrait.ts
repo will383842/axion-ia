@@ -351,6 +351,7 @@ export const GABARITS_ARGENT: ReadonlySet<string> = new Set([
   // Contrat 2.6 : une commande non attribuée touche une commission attendue.
   "apporteur-commande-non-attribuee",
   "apporteur-releve",
+  "apporteur-releve-mensuel",
   "apporteur-virement-fait",
   // Une commission suspendue puis libérée reste de l'argent dû : l'apporteur retiré est prévenu.
   "apporteur-commission-suspension",

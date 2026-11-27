@@ -48,6 +48,7 @@ export type GabaritApporteur =
   | "apporteur-commande-non-attribuee"
   | "apporteur-attribution-confirmee"
   | "apporteur-releve"
+  | "apporteur-releve-mensuel"
   | "apporteur-virement-fait"
   | "apporteur-lien-espace";
 
@@ -76,6 +77,7 @@ export const GABARITS_APPORTEUR: readonly GabaritApporteur[] = [
   "apporteur-commande-non-attribuee",
   "apporteur-attribution-confirmee",
   "apporteur-releve",
+  "apporteur-releve-mensuel",
   "apporteur-virement-fait",
   "apporteur-lien-espace",
 ];
@@ -129,6 +131,7 @@ const GABARITS_VERS_L_APPORTEUR: ReadonlySet<string> = new Set([
   "apporteur-commande-non-attribuee",
   "apporteur-attribution-confirmee",
   "apporteur-releve",
+  "apporteur-releve-mensuel",
   "apporteur-virement-fait",
   // « apporteur-lien-espace » n'y est PAS (2026-10-09) : envoyé à SA demande depuis
   // « Retrouver mon espace », qui décide lui-même qui le reçoit (fiche retirée comprise,
