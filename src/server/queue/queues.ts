@@ -1997,6 +1997,21 @@ export async function bootRepeatableJobs(): Promise<void> {
       { trigger: "cron-hourly-xx15", tick: new Date().toISOString() },
       { repeat: { pattern: "15 * * * *" }, jobId: "content-monitoring-cron" },
     );
+    // P18 — veille « indexation stagnante » : une fois par semaine (lundi 08:40 UTC), plus
+    // dans le tick horaire. Même file, déclencheur distinct.
+    await contentMonitoringQueue.removeRepeatable(
+      "tick",
+      { pattern: "40 8 * * 1" },
+      "content-monitoring-indexation-hebdo-cron",
+    );
+    await contentMonitoringQueue.add(
+      "tick",
+      { trigger: "cron-weekly-indexation", tick: new Date().toISOString() },
+      {
+        repeat: { pattern: "40 8 * * 1" },
+        jobId: "content-monitoring-indexation-hebdo-cron",
+      },
+    );
   }
 
   // Sprint A 2026-05-21 D-P5-3 — rapport qualité hebdomadaire lundi 7h00 UTC (≈ 8h CET).
