@@ -73,6 +73,7 @@ vi.mock("@/lib/prisma", () => {
 });
 vi.mock("@/features/apporteurs-reseau/litige", () => ({ litigeDisponible: async () => true }));
 vi.mock("@/features/apporteurs-reseau/commissions", () => ({
+  grilleDeLaLigne: vi.fn(async () => ({ grille: "v3", signeeAt: null })), // cas calibrés sur la grille v3
   statutApresVigilance: vi.fn(async () => ({ statut: "due", demander: false })),
   dejaEnvoye: vi.fn(async () => false),
 }));
