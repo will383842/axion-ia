@@ -62,6 +62,9 @@ export interface LigneAffaire {
   autofactureNumero: string | null;
   autofactureEmiseAt: Date | null;
   parrainage: boolean;
+  /** Relevé mensuel : repris tels quels sur la ligne de neutralisation (jamais recalculés). */
+  regleAppliquee?: string | null;
+  versionContrat?: string | null;
 }
 
 export type Piece = { r2Key: string; filename: string };
@@ -140,6 +143,8 @@ export async function retenir(
         autofactureNumero: l.autofactureNumero,
         autofactureEmiseAt: maintenant,
         avoirNumero: numeroAvoir!,
+        regleAppliquee: l.regleAppliquee ?? null,
+        versionContrat: l.versionContrat ?? null,
         // Soldée d'office : elle neutralise la ligne retenue, elle n'est déduite de rien d'autre.
         verseeAt: maintenant,
       },
@@ -339,6 +344,8 @@ export async function constaterManquement(e: {
             autofactureNumero: true,
             autofactureEmiseAt: true,
             parrainage: true,
+            regleAppliquee: true,
+            versionContrat: true,
           },
         })
       ).map((l) => ({ ...l }))
