@@ -62,7 +62,7 @@ export async function lireModelePilotage(o: OptionsLecture): Promise<ModelePilot
         prisma.gscImportRun.findMany({
           where: { typeRecherche: "web" },
           orderBy: { jour: "desc" },
-          take: 30,
+          take: 120,
         }),
       );
   const source = etatSourceSearchConsole(

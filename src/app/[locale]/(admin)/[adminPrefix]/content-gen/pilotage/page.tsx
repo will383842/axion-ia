@@ -27,6 +27,16 @@ export default async function PilotageSeoPage({ params, searchParams }: PageProp
   if (!acces.autorise) {
     return <AccesRefuse motif={acces.motif} retourHref={`/fr/${adminPrefix}/content-gen`} />;
   }
+  // La garde d'écran ouvre aussi à d'autres rôles d'écriture : l'action, elle, est réservée à
+  // super_admin, admin et editor. On refuse proprement au lieu de laisser planter la page.
+  if (!["super_admin", "admin", "editor"].includes(acces.role)) {
+    return (
+      <AccesRefuse
+        motif="Cet écran est réservé aux administrateurs et aux éditeurs."
+        retourHref={`/fr/${adminPrefix}/content-gen`}
+      />
+    );
+  }
   const modele = await chargerPilotageSeo({ type: sp.onglet === "pages" ? sp.type : undefined });
   return <PilotageV2 modele={modele} adminPrefix={adminPrefix} onglet={sp.onglet} />;
 }

@@ -158,4 +158,33 @@ describe("lireModelePilotage", () => {
     expect(m.comparaisonPossible).toBe(false);
     expect(m.vue?.[0]?.variationClics).toBeNull();
   });
+
+  it("56 jours reçus : comparaison possible, évolution calculée ; lecture d'au moins 56 imports", async () => {
+    const jours = Array.from({ length: 56 }, (_, i) => ({
+      jour: new Date(Date.UTC(2026, 10, 25 - i)),
+      statut: "reussi",
+    }));
+    const findMany = vi.fn().mockResolvedValue(jours);
+    const groupBy = vi
+      .fn()
+      .mockResolvedValueOnce([
+        { typePage: "article", _sum: { clics: 12, impressions: 400, positionSum: 3200 } },
+      ])
+      .mockResolvedValueOnce([
+        { typePage: "article", _sum: { clics: 10, impressions: 500, positionSum: 5000 } },
+      ])
+      .mockResolvedValue([]);
+    const m = await lireModelePilotage({
+      prisma: fauxPrisma({
+        gscImportRun: { findMany },
+        gscPageJour: { groupBy },
+      }),
+      env: { CONTENT_PILOTAGE_SEO: "true" },
+      aujourdhui: "2026-11-27",
+    });
+    if (m.etat !== "actif") throw new Error("attendu actif");
+    expect(findMany.mock.calls[0]?.[0].take).toBeGreaterThanOrEqual(56);
+    expect(m.comparaisonPossible).toBe(true);
+    expect(m.vue?.[0]?.variationClics).toBeCloseTo(20);
+  });
 });

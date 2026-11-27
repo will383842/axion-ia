@@ -39,4 +39,10 @@ describe("page Pilotage SEO & IA : accès", () => {
     await PilotageSeoPage(props);
     expect(chargerPilotageSeo).toHaveBeenCalledOnce();
   });
+
+  it("rôle d'écriture non éditeur (secrétaire) : refus nommé, aucune lecture", async () => {
+    gardePage.mockResolvedValue({ autorise: true, role: "secretaire", peutEcrire: true });
+    await PilotageSeoPage(props);
+    expect(chargerPilotageSeo).not.toHaveBeenCalled();
+  });
 });
