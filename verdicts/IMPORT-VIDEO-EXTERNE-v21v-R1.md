@@ -1,90 +1,92 @@
-VERDICT A CORRIGER sha=e112fded (R1) : src/services/import-video-externe.ts:77 — `moteurId: "import-externe"` n'est pas un moteur inscrit, `idMoteurDeCommande` retombe sur « simulation » : la vidéo importée est classée ESSAI et `a-publier-zernio.ts:132` / `publications.ts:776` refusent de la publier (« C'est une vidéo d'essai ») ; faire reconnaître `origineVideo: "importee"` comme non-essai (ou inscrire un moteur dédié) + test nommé « la vidéo importée n'est pas un essai et peut partir » ; et ajouter les tests manquants TITRE, RESEAUX, TAILLE vide, `importerVideoExterne` (4 mutants survivent).
+VERDICT A CORRIGER sha=417eb1a7 (R1) : src/services/import-video-externe.ts:69 — retirer `reseau: controle.reseaux[0]` (les réseaux de la Sortie doivent faire foi) et ajouter un test NOMMÉ sur `vueAPublier` qui exige une ligne par réseau coché ; aujourd'hui, cocher Instagram + LinkedIn + TikTok ne donne qu'UNE ligne (Instagram) dans « À publier ».
 
-# Relecture R1 : IMPORT-VIDEO-EXTERNE-v21v
+# Relecture R1 — IMPORT-VIDEO-EXTERNE-v21v (Studio, branche `video/IMPORT-VIDEO-EXTERNE-v21v`)
 
-- Dépôt relu : `will383842/studio-axion-ia-public`, branche `video/IMPORT-VIDEO-EXTERNE-v21v`.
-- Tête vérifiée : `e112fdedf35ce1bbe438a633ccd6a86b498d84d1` (pas de « TÊTE CHANGÉE »). Base de fusion = `origin/master` `85d71124`.
-- Aucune fiche fournie (dépôt des plans privé) : le diff est jugé seul.
+- Tête vérifiée : `417eb1a7a82cb41502d24e41dd6e5006635d4d00` (pas de « TÊTE CHANGÉE »).
+- Aucune fiche fournie (dépôt des plans privé) : diff jugé seul.
+- Lecture seule sur le Studio : aucun commit, aucun push ; les mutations et les tests jetables ont été retirés.
 
-## 1. Périmètre du diff : conforme
+## Périmètre du diff (`git diff --stat origin/master...`)
 
-7 fichiers, +376 lignes, aucune suppression :
+10 fichiers, +511 / −4 : `actions-import.ts`, `a-publier/page.tsx`, `ImporterVideo.tsx`, `domaine/import-video-externe.ts`,
+`domaine/types.ts`, `moteurs/ids.ts`, `moteurs/index.ts`, `services/import-video-externe.ts`, `services/publications.ts`,
+`tests/import-video-externe.test.ts`. Le diff est petit et correspond au nom de la branche. Il ne touche ni `.github/**`, ni `deploiement/**`,
+ni `outils/gardes/**`, ni `scripts/echecs-connus.json`, et ne contient aucun secret.
 
-| Fichier                                        | Rôle                                                                       |
-| ---------------------------------------------- | -------------------------------------------------------------------------- |
-| `src/domaine/import-video-externe.ts`          | règles pures (format, taille, durée, titre, réseaux, case cochée)          |
-| `src/services/import-video-externe.ts`         | création vidéo + version + sortie ; action avec session et `fichierEnvoye` |
-| `src/app/(studio)/a-publier/actions-import.ts` | action serveur (`exigerSession`, `essayer`, `revalidatePath`)              |
-| `src/components/publication/ImporterVideo.tsx` | bouton et formulaire client                                                |
-| `src/app/(studio)/a-publier/page.tsx`          | +2 lignes : branchement du bouton                                          |
-| `src/domaine/types.ts`                         | +2 lignes : `origineVideo?: "importee"` (facultatif, additif)              |
-| `tests/import-video-externe.test.ts`           | 7 tests                                                                    |
+## Ce qui a été lancé
 
-Rien dans `.github/**`, `deploiement/**`, `outils/gardes/**`, `scripts/echecs-connus.json`. Aucun secret. Pas de changement de `pnpm-lock.yaml`. Le diff est petit et correspond au nom de la branche.
+- `npx vitest run tests/import-video-externe.test.ts` : **20/20 verts**.
+- Suites voisines (13 fichiers qui lisent `commandeEnEssai`, `videoEnEssai`, `vueAPublier` ou `listerAPublier`) : **172/172 verts**.
+- `npx tsc --noEmit -p .` (avec `--max-old-space-size=10240` : sans ce réglage, tsc meurt par manque de mémoire) : **154 erreurs sur la branche,
+  154 sur `origin/master`, aux mêmes emplacements**. Aucune erreur neuve. Les seules différences de texte sont l'ordre d'affichage des unions dans
+  deux tests `image-video`. Les erreurs préexistantes viennent de l'environnement : `remotion` absent, `RouteContext`/`LayoutProps` sans `next typegen`.
+- Dépendances : `pnpm install --frozen-lockfile` (magasin temporaire, `--ignore-scripts`).
 
-## 2. Ce qui a été lancé
+## Mutations (sur `tests/import-video-externe.test.ts`)
 
-- `pnpm install --frozen-lockfile` (magasin local) : OK.
-- `npx vitest run tests/import-video-externe.test.ts` : **7/7 réussis**.
-- `npx tsc --noEmit -p .` (avec `--max-old-space-size=8192`, sinon OOM) : **188 lignes d'erreurs sur la branche, 188 sur `origin/master`**. Le seul écart est l'ordre d'affichage des membres d'unions dans 5 messages (`"neutre" | "vert"` ↔ `"vert" | "neutre"`) : **aucune erreur neuve**. Les erreurs préexistantes viennent de `remotion` absent et de `RouteContext`/`LayoutProps` (types générés par Next).
-- Tests existants qui touchent « À publier » / `listerAPublier` (30 fichiers, 371 tests) : 370 réussis, 1 échec `tests/usine/inventaire/publication-et-mesures.test.ts` (recensement `lireParametre`), **qui échoue aussi sur `origin/master`** : préexistant, pas imputable à la branche.
+| # | Mutation | Résultat |
+|---|----------|----------|
+| M1 | `commandeEnEssai` : on retire l'exception `MOTEUR_IMPORT_EXTERNE` | tuée (1 échec) |
+| M2 | `videoEnEssai` : on retire `origineVideo === "importee"` | tuée (1 échec) |
+| M3 | `importerVideoExterne` : on retire le refus `NON_VALIDEE` placé avant la lecture du fichier | tuée (1 échec) |
+| M5 | `importerVideoExterne` : on retire `exigerSession()` | **survit**. Sans gravité : `fichierEnvoye` exige déjà la session (services/fichiers.ts:30) et l'action aussi. La promesse tient, le test ne prouve pas quelle couche la tient. |
+| M6 | on retire la tolérance `video/x-m4v` | tuée |
+| M7 | on neutralise la borne `DUREE_MIN_IMPORT_SEC` | tuée |
+| M8 | on n'enregistre plus la Sortie | tuée (3 échecs) |
+| M9 | on n'écrit plus de ligne de journal | tuée |
 
-## 3. 🔴 Bloquant : la vidéo importée est classée « essai » et ne peut pas être publiée
+## Défaut bloquant : seul le premier réseau coché arrive dans « À publier »
 
-`creerVideoImportee` fige dans la version une commande avec `moteurId: "import-externe"` et `formatId: "video-importee"` (`src/services/import-video-externe.ts:77`). Aucun des deux n'existe :
+`creerVideoImportee` pose `video.reseau = controle.reseaux[0]` (src/services/import-video-externe.ts:69). Or `vueAPublier`, qui est la source
+réelle de la page `/a-publier`, lit les réseaux par `reseauxDeVideoStockee` → `reseauxDeLaVideo` (src/domaine/reseaux-video.ts:43). Cette fonction
+donne la **priorité à `video.reseau`** sur `Sortie.reseaux`. Le champ `Video.reseau` sert d'ailleurs à marquer une « version par réseau »
+(variante) : il n'a pas à être posé sur une vidéo importée.
 
-- `idMoteurDeCommande` (`src/moteurs/ids.ts:16-19`) : moteur inconnu, puis format inconnu, donc **`"simulation"`** ;
-- `commandeEnEssai` renvoie donc `true`, et `videoEnEssai` (`src/services/publications.ts:250`) aussi.
+Reproduction (test jetable, dépôts en mémoire, session ouverte) : on importe avec `reseaux: ["instagram", "linkedin", "tiktok"]`.
 
-Sonde jetable lancée dans le clone (non poussée) sur une vidéo créée par `creerVideoImportee` :
+- Tête `417eb1a7` : `vueAPublier().lignes` → **1 seule ligne** (`instagram`, `reseauxVideo: ["instagram"]`). LinkedIn et TikTok disparaissent
+  sans aucun message, alors que la Sortie porte bien les trois.
+- Même code **sans** la ligne `reseau: controle.reseaux[0]` : une ligne par réseau (`linkedin`, `instagram`, …, `reseauxVideo` à trois réseaux).
 
-```
-moteur effectif = simulation essai = true videoEnEssai = true
-kit = ok publiable=false
-```
+Pourquoi les tests ne l'ont pas vu : « la vidéo importée apparaît dans listerAPublier » teste `listerAPublier` (une carte par vidéo), pas
+`vueAPublier` (une ligne par réseau), alors que la page appelle `vueAPublier` (src/app/(studio)/a-publier/page.tsx:25). Le test
+« crée une vidéo prête… » vérifie `Sortie.reseaux`, que l'écran ne lit pas dans ce cas.
 
-Conséquences dans le code de master :
+**À faire** :
+1. retirer `reseau: controle.reseaux[0]` dans `creerVideoImportee` ;
+2. ajouter un test nommé du genre « chaque réseau coché a sa ligne dans À publier ». Il appelle `vueAPublier()` après une session ouverte et exige
+   `lignes.filter(l => l.videoId === id).map(l => l.reseau)` égal, à l'ordre près, aux réseaux cochés ;
+3. renommer ou compléter « la vidéo importée apparaît dans listerAPublier » pour qu'il porte sur ce que la page affiche réellement.
 
-- `src/services/a-publier-zernio.ts:132` : `throw new ErreurStudio("VIDEO_ESSAI", "C'est une vidéo d'essai : elle ne part pas sur vos réseaux.")` ;
-- `src/services/publications.ts:776` : même refus pour un envoi réel ;
-- `src/services/publications.ts:517` : la fiche affiche `videoEssai: true` ;
-- `src/services/publications.ts:294` : l'écriture automatique des textes est coupée.
+## Promesse dont le test ne prouve pas ce que son nom dit
 
-La fonctionnalité promet « ajouter à À publier » une vidéo **prête à partir**. Elle apparaît bien dans la liste (test `la vidéo importée apparaît dans listerAPublier`), mais elle ne peut pas partir. Aucun test ne va jusqu'à l'envoi, donc rien ne le voit.
+« la vidéo importée n'est pas un essai **et peut partir** » ne vérifie que `commandeEnEssai` et `videoEnEssai`. Rien ne passe par le chemin
+d'envoi ni par la ligne « À publier ». Ma sonde montre que la ligne n'a pas de `blocage` et pas d'`origineUsine` (la commande porte
+`origine: "studio"`). Il faut que le test le prouve : soit en vérifiant sur `vueAPublier` l'absence de `blocage` et de `blocageVideo`, soit en
+retirant « et peut partir » de son nom.
 
-**À faire** : qu'une version d'origine importée ne soit pas un essai. Par exemple, `videoEnEssai` / `commandeEnEssai` rendent `false` quand `origineVideo === "importee"`, ou un moteur `import-externe` est inscrit (sans fabrication, `recalquer` absent). Ajouter un test nommé, par exemple « la vidéo importée n'est pas un essai et l'envoi ne la refuse pas pour VIDEO_ESSAI », qui appelle `videoEnEssai` et le chemin d'envoi en simulation.
+## Points non bloquants, à trancher (observés en sondant les chemins aval, hors diff)
 
-À vérifier dans la même correction : la fiche `/videos/[id]` d'une vidéo importée. `trouverFormat("video-importee")` est `undefined` (la page le tolère) ; `estimerReexport` est appelé pour chaque ratio « manquant » (ici aucun, car `ratiosFormat` = `v.ratios`) ; `exemplesModification` propose des retouches qui supposent un moteur. Le plus sûr est un test qui rend les services de la page pour une vidéo importée.
+- **Retouche acceptée sur une vidéo importée.** Comme `idMoteurDeCommande({ moteurId: "import-externe" })` retombe sur `"simulation"`,
+  `lancerRetouche(videoId, [], …)` est **acceptée**. La vidéo passe `en_fabrication` (elle sort donc d'« À publier » pendant ce temps), puis le
+  travail finit en `echec` et la vidéo revient à `prete`. `proposerModification` interroge `fournisseur("script").interpreterDemande`, qui est un
+  appel Claude payant en production, pour une vidéo qui n'a aucun plan. Un refus net (« vidéo importée : pas de retouche ») serait plus juste.
+  On peut le poser dans `retouchable` et `retoucheSousVerrou` sur `origineVideo === "importee"`, ou par un `moteurDeCommande` qui ne retombe pas
+  sur la simulation.
+- `lancerFabrication` sur cette vidéo jette `Error("Format inconnu : video-importee")`, une erreur brute et non une `ErreurStudio` en français.
+  C'est inoffensif si aucun bouton « Refaire » ne s'affiche, mais je ne l'ai pas vérifié dans l'interface.
+- Les cases « avant de publier » restent `["image","son","sousTitres","mentionIA","droits"]` : on demande de cocher « sous-titres » et
+  « mention IA » sur une vidéo à laquelle on n'en a délibérément pas ajouté.
+- Le fichier est envoyé (jusqu'à 1 Go) **avant** que le serveur contrôle taille, durée et format. Un refus laisse un fichier orphelin dans le
+  stockage, et le navigateur ne fait aucun contrôle préalable de taille ni de durée.
+- `ImporterVideo.tsx` : le `catch` attribue toute erreur à « Le fichier n'a pas pu être envoyé », y compris une erreur jetée par l'action
+  (au-delà d'`essayer`).
 
-## 4. 🟠 Promesses sans test nommé (mutations survivantes)
+## Ce qui est prouvé et juste
 
-Mutations appliquées une à une dans le clone, puis `tests/import-video-externe.test.ts` relancé :
-
-| Mutation                                       | Résultat           |
-| ---------------------------------------------- | ------------------ |
-| M1 : retirer le refus `NON_VALIDEE` (domaine)  | **tuée** (1 échec) |
-| M2 : retirer le refus `TITRE` (titre vide)     | **SURVIT** (7/7)   |
-| M3 : retirer le filtre des réseaux inconnus    | **SURVIT** (7/7)   |
-| M4 : retirer le refus `RESEAUX` (aucun réseau) | **SURVIT** (7/7)   |
-| M5 : ignorer le type MIME                      | tuée               |
-| M6 : ratio toujours 16:9                       | tuée               |
-| M7 : retirer le refus `TAILLE` (fichier vide)  | **SURVIT** (7/7)   |
-
-Non couverts non plus :
-
-- `importerVideoExterne` (le chemin réellement appelé par l'action) : session exigée, refus `NON_VALIDEE` **avant** de lire le fichier, refus `FICHIER_INCONNU` si le fichier a été envoyé sous un autre `entiteId` ou une autre destination que `video`, journal écrit. Seul le cœur `creerVideoImportee` est testé.
-- `ratioDeLaTaille` : seul 1080×1920 donc 9:16 est exercé (pas de 16:9, 1:1, 4:5, ni de taille illisible donc 9:16).
-- Titre tronqué à 120 caractères, dédoublonnage des réseaux.
-
-**À faire** : un test nommé par promesse : « refuse un titre vide », « ignore un réseau inconnu et refuse s'il n'en reste aucun », « refuse un fichier vide », « importerVideoExterne refuse un fichier envoyé pour une autre vidéo », « sans case cochée, le fichier n'est même pas lu », « ratio déduit de la taille ».
-
-## 5. 🟡 Remarques non bloquantes
-
-- `ImporterVideo.tsx:53-56` : le fichier est **entièrement envoyé** (jusqu'à 4 Go acceptés par `/api/depots`) **avant** tout contrôle de format, de taille (1 Go) ou de durée. Un `.avi`, une vidéo de 2 Go ou une durée illisible (`dureeSec: 0` quand la lecture des métadonnées échoue) partent dans le stockage puis sont refusés, et le fichier reste orphelin. `controlerImportVideo` est pur : l'appeler côté client avant `envoyerFichier` coûte une ligne (le serveur reste décisif).
-- La durée vient du navigateur, sans vérification côté serveur. Acceptable si c'est assumé, mais le commentaire « le serveur borne ensuite la durée annoncée » ne doit pas laisser croire à une vérification.
-- `marqueId: "marque-axion"` est écrit en dur dans `creerVideoImportee`.
-- `exigerSession` est appelée deux fois (action, puis service) : sans effet.
-
-## Conclusion
-
-Le diff est propre et bien délimité, sans régression de types ni de tests existants. Mais la promesse centrale (une vidéo importée « prête à partir » depuis « À publier ») est cassée par le repli du moteur sur la simulation, et quatre règles du domaine n'ont aucun test qui les prouve. **À CORRIGER.**
+- Refus avec un message simple et rien d'écrit : format, vide, trop lourd, trop long, trop court, durée illisible, titre vide, aucun réseau
+  connu, case non cochée (compteurs avant/après).
+- La case non cochée est refusée **avant** la lecture du fichier (M3 tuée).
+- Une vidéo importée n'est pas un essai, et le garde-fou reste en place pour `simulation` et pour un moteur inconnu (M1 et M2 tuées).
+- Fichier d'une autre vidéo, d'une autre destination, de démonstration ou incomplet : refusé.
+- Ratio déduit de la taille, résolution posée, ligne de journal écrite (M9 tuée), aucun fournisseur appelé hors stockage.
