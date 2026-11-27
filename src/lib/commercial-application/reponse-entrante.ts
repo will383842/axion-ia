@@ -16,6 +16,8 @@
 // dit ainsi pourquoi un rappel est parti alors que « quelque chose » est
 // arrivé, et Will voit la date de retour annoncée.
 
+import { decoderEntites } from "@/lib/email/apercu-lecteur";
+
 /** Longueur maximale de l'objet enregistré (colonne `VARCHAR(500)`). */
 export const LONGUEUR_OBJET_MAX = 500;
 /** Longueur maximale de l'extrait affiché — jamais le corps complet. */
@@ -102,7 +104,9 @@ function tailler(texte: string, max: number): string {
 
 /** L'objet enregistré : espaces repliés, ≤ 500 caractères, « (sans objet) » si vide. */
 export function objetEnregistre(brut: string | null | undefined): string {
-  const t = (brut ?? "").replace(/\s+/g, " ").trim();
+  const t = decoderEntites(brut ?? "")
+    .replace(/\s+/g, " ")
+    .trim();
   return t ? tailler(t, LONGUEUR_OBJET_MAX) : "(sans objet)";
 }
 
@@ -120,7 +124,9 @@ const DEBUT_CITATION =
  * l'invitation, espaces repliés, ≤ 300 caractères. `null` s'il ne reste rien.
  */
 export function extraitCourt(resume: string | null | undefined): string | null {
-  const plat = ` ${(resume ?? "").replace(/\s+/g, " ").trim()}`;
+  const plat = ` ${decoderEntites(resume ?? "")
+    .replace(/\s+/g, " ")
+    .trim()}`;
   const m = DEBUT_CITATION.exec(plat);
   const utile = (m ? plat.slice(0, m.index) : plat).trim();
   return utile ? tailler(utile, LONGUEUR_EXTRAIT_MAX) : null;
