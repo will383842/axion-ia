@@ -25,6 +25,7 @@ export const MOTS_CLES_PAR_PAGE = 10;
 const TYPE_RECHERCHE = "web";
 const LOT_ECRITURE = 50;
 const ARTICLES_MAX = 500;
+const MOT_CLE_LONGUEUR_MAX = 255;
 const REQUETE_ARTICLES_PAR_LOT = 200;
 
 export type BaseRecalcul = Pick<
@@ -169,6 +170,9 @@ export async function recalculerSiteRoutes(
   for (const r of routes) {
     const brut = r.pathRendered;
     if (!brut || brut.includes("[")) continue;
+    // Route EN : le site la redirige vers le FR, l'historique la rabat sur le chemin FR.
+    // Lui donner les chiffres de la page FR doublerait les totaux : on la laisse.
+    if (/^\/en(?:\/|$)/i.test(brut)) continue;
     const chemin = normaliserChemin(brut);
     if (!chemin) continue;
     const c = cumuls.get(chemin) ?? { clics: 0, impressions: 0, positionSum: 0 };
@@ -183,14 +187,20 @@ export async function recalculerSiteRoutes(
       },
     });
   }
+  let misesAJour = 0;
   for (let i = 0; i < aEcrire.length; i += LOT_ECRITURE) {
-    await Promise.all(
-      aEcrire
-        .slice(i, i + LOT_ECRITURE)
-        .map((e) => prisma.siteRoute.update({ where: { id: e.id }, data: e.data })),
+    const issues = await Promise.all(
+      aEcrire.slice(i, i + LOT_ECRITURE).map((e) =>
+        prisma.siteRoute.update({ where: { id: e.id }, data: e.data }).then(
+          () => true,
+          // Route supprimée entre la lecture et l'écriture : on passe, comme l'ancien worker.
+          () => false,
+        ),
+      ),
     );
+    misesAJour += issues.filter(Boolean).length;
   }
-  return { issue: "fait", routesMisesAJour: aEcrire.length };
+  return { issue: "fait", routesMisesAJour: misesAJour };
 }
 
 export async function recalculerKeywordTracking(
@@ -290,34 +300,39 @@ export async function recalculerKeywordTracking(
       const keyword = textes.get(k.requeteId);
       // Texte purgé (requête rare) : on ne reconstruit jamais un mot-clé sans son texte.
       const position = positionMoyenne(k.positionSum, k.impressions);
-      if (!keyword || position === null) continue;
-      const existant = await prisma.keywordTracking.findUnique({
-        where: { keyword_targetUrl: { keyword, targetUrl: cible.url } },
-      });
-      const positionDelta = existant ? position - Number(existant.position) : null;
-      const ctr = k.clics / k.impressions;
-      await prisma.keywordTracking.upsert({
-        where: { keyword_targetUrl: { keyword, targetUrl: cible.url } },
-        create: {
-          keyword,
-          targetUrl: cible.url,
-          articleId: cible.articleId,
-          position,
-          ctr,
-          impressions: k.impressions,
-          clicks: k.clics,
-          source: "gsc",
-        },
-        update: {
-          position,
-          positionDelta,
-          ctr,
-          impressions: k.impressions,
-          clicks: k.clics,
-          syncedAt: horodatage,
-        },
-      });
-      motsCles++;
+      // `KeywordTracking.keyword` est limité à 255 caractères (le texte stocké, à 512).
+      if (!keyword || keyword.length > MOT_CLE_LONGUEUR_MAX || position === null) continue;
+      try {
+        const existant = await prisma.keywordTracking.findUnique({
+          where: { keyword_targetUrl: { keyword, targetUrl: cible.url } },
+        });
+        const positionDelta = existant ? position - Number(existant.position) : null;
+        const ctr = k.clics / k.impressions;
+        await prisma.keywordTracking.upsert({
+          where: { keyword_targetUrl: { keyword, targetUrl: cible.url } },
+          create: {
+            keyword,
+            targetUrl: cible.url,
+            articleId: cible.articleId,
+            position,
+            ctr,
+            impressions: k.impressions,
+            clicks: k.clics,
+            source: "gsc",
+          },
+          update: {
+            position,
+            positionDelta,
+            ctr,
+            impressions: k.impressions,
+            clicks: k.clics,
+            syncedAt: horodatage,
+          },
+        });
+        motsCles++;
+      } catch {
+        // Une ligne en échec ne fait pas tomber les autres (nombres seulement dans les journaux).
+      }
     }
   }
   return { issue: "fait", motsCles };

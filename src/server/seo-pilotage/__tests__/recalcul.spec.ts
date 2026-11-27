@@ -246,6 +246,36 @@ describe("recalculerSiteRoutes", () => {
     expect(b.siteRoute.update).not.toHaveBeenCalled();
   });
 
+  it("une écriture en échec (route supprimée) ne fait pas tomber les autres", async () => {
+    const b = base();
+    for (const id of ["r1", "r2"])
+      b.siteRoute.lignes.push({
+        id,
+        pathRendered: `/fr/blog/${id}`,
+        visibility: "public",
+        removedAt: null,
+        isIndexable: true,
+      });
+    b.siteRoute.update.mockRejectedValueOnce(Object.assign(new Error("x"), { code: "P2025" }));
+    const r = await recalculerSiteRoutes(prismaDe(b), { maintenant: MAINTENANT });
+    expect(r).toMatchObject({ issue: "fait", routesMisesAJour: 1 });
+  });
+
+  it("route EN : ignorée (pas de double comptage avec la page FR)", async () => {
+    const b = base();
+    pageJour(b, "2026-11-05", "/fr/a-propos", 1, 10, 3);
+    b.siteRoute.lignes.push({
+      id: "en",
+      pathRendered: "/en/about",
+      visibility: "public",
+      removedAt: null,
+      isIndexable: true,
+    });
+    const r = await recalculerSiteRoutes(prismaDe(b), { maintenant: MAINTENANT });
+    expect(r).toMatchObject({ routesMisesAJour: 0 });
+    expect(b.siteRoute.lignes[0]).not.toHaveProperty("gscClicks");
+  });
+
   it("historique insuffisant : repli, AUCUNE écriture", async () => {
     const b = base({ joursReussis: 12 });
     b.siteRoute.lignes.push({
@@ -341,6 +371,17 @@ describe("recalculerKeywordTracking", () => {
     const kws = b.keywordTracking.lignes.filter((l) => l["keyword"] === "formation ia entreprise");
     expect(kws).toHaveLength(1);
     expect(kws[0]!["positionDelta"]).toBeCloseTo(4.2 - 6, 10);
+  });
+
+  it("mot-clé de plus de 255 caractères ou upsert en échec : ignoré, les autres passent", async () => {
+    const b = base();
+    avecArticle(b);
+    b.gscRequete.lignes[1]!["texte"] = "x".repeat(300);
+    b.keywordTracking.upsert.mockRejectedValueOnce(new Error("base"));
+    const r = await recalculerKeywordTracking(prismaDe(b), { maintenant: MAINTENANT });
+    expect(r).toMatchObject({ issue: "fait", motsCles: 0 });
+    const r2 = await recalculerKeywordTracking(prismaDe(b), { maintenant: MAINTENANT });
+    expect(r2).toMatchObject({ motsCles: 1 });
   });
 
   it("requête dont le texte a été purgé : ignorée", async () => {
