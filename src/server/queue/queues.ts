@@ -263,7 +263,8 @@ export const PATTERN_RESEAU_QUOTIDIEN = "0 7 * * *";
 /**
  * 2026-10-06 — FACTURATION des commissions : TOUTES LES HEURES, à la minute 10 (UTC), hors de
  * l'heure ronde déjà chargée. Une commission est due dès que le client a payé à 100 % ; l'apporteur
- * reçoit son autofacture dans l'heure (objectif de virement : deux jours ouvrés). N'exécute que les
+ * reçoit son autofacture dans l'heure (contrat 5.1 ; objectif de virement : deux jours ouvrés). Récapitulatif
+ * mensuel d'information : voir `releve-mensuel/` (il ne remplace pas l'autofacture). N'exécute que les
  * étapes « commissions » et « autofacturation » (`passerFacturationApporteurs`), idempotentes ;
  * le quotidien garde tout le reste.
  */
