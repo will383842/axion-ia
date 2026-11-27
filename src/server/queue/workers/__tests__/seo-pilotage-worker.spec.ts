@@ -36,7 +36,12 @@ describe("worker seo-pilotage", () => {
     process.env.DATABASE_URL = "postgresql://u:p@db:5432/x";
     tacheIngestion.mockResolvedValue({ tache: "ingestion-gsc", issue: "termine", motif: "ok" });
     tacheRattrapage.mockResolvedValue({ tache: "rattrapage-gsc", issue: "termine", motif: "ok" });
-    tacheRobotsIa.mockResolvedValue({ tache: "robots-ia", issue: "fait", lignes: 3 });
+    tacheRobotsIa.mockResolvedValue({
+      tache: "robots-ia",
+      issue: "fait",
+      lignes: 3,
+      incomplets: 0,
+    });
     tachePurge.mockResolvedValue({
       semainesCumulees: 0,
       semainesEnAttente: 0,
@@ -118,17 +123,20 @@ describe("worker seo-pilotage", () => {
     tacheRobotsIa.mockResolvedValueOnce({
       tache: "robots-ia",
       issue: "saute",
-      motif: "indisponible",
+      motif: "Cloudflare ne répond pas.",
+      anormal: true,
     });
     expect(await runSeoPilotageJob(job("robots-ia"))).toEqual({
       issue: "saute",
-      motif: "indisponible",
+      motif: "Cloudflare ne répond pas.",
     });
-    tacheRobotsIa.mockRejectedValueOnce(Object.assign(new Error("table"), { code: "P2021" }));
-    expect(await runSeoPilotageJob(job("robots-ia"))).toEqual({
-      issue: "saute",
-      motif: "tables_absentes",
-    });
+    for (const code of ["P2021", "P2022"]) {
+      tacheRobotsIa.mockRejectedValueOnce(Object.assign(new Error("table"), { code }));
+      expect(await runSeoPilotageJob(job("robots-ia"))).toEqual({
+        issue: "saute",
+        motif: "tables_absentes",
+      });
+    }
   });
 
   it("une tâche inconnue est journalisée et IGNORÉE, même allumé, sans rien lancer", async () => {

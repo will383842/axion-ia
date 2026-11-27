@@ -199,7 +199,9 @@ function regrouperParIA(rows: unknown): Map<string, PeriodeIA & { cle: string }>
     if (!ia) continue;
     // Le sous-agrégat lit `[source, référent]` : on le lui présente tel quel.
     const vue: LigneBrute = { dimensions: [dim(l, 1), dim(l, 2)], metrics: l.metrics };
-    parCle.set(cle, [...(parCle.get(cle) ?? []), vue]);
+    const liste = parCle.get(cle);
+    if (liste) liste.push(vue);
+    else parCle.set(cle, [vue]);
   }
   return new Map([...parCle.entries()].map(([cle, ls]) => [cle, { cle, ...agregerParIA(ls) }]));
 }

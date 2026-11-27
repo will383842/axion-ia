@@ -86,11 +86,17 @@ export async function runSeoPilotageJob(
     }
     if (tache === "robots-ia") {
       const b = await geo.tacheRobotsIa({ prisma });
-      console.log(
-        b.issue === "saute"
-          ? `[seo-pilotage-worker] robots-ia sauté : ${b.motif}`
-          : `[seo-pilotage-worker] robots-ia (${mode}) : ${b.lignes} ligne(s) d'agrégat`,
-      );
+      // Les motifs sont des phrases fixes, sans secret. Un saut anormal (jeton sans droit, erreur
+      // Cloudflare) est un avertissement ; « pas de jeton » est l'état normal, en simple journal.
+      if (b.issue === "saute") {
+        (b.anormal ? console.warn : console.log)(
+          `[seo-pilotage-worker] robots-ia sauté : ${b.motif}`,
+        );
+      } else {
+        console.log(
+          `[seo-pilotage-worker] robots-ia (${mode}) : ${b.lignes} ligne(s) d'agrégat, ${b.incomplets} jour(s) tronqué(s) laissé(s) tel(s)`,
+        );
+      }
       return b.issue === "saute" ? { issue: "saute", motif: b.motif } : { issue: "fait", tache };
     }
     const r =
@@ -119,7 +125,7 @@ export async function runSeoPilotageJob(
   } catch (err) {
     if (estTableAbsente(err)) {
       console.warn(
-        `[seo-pilotage-worker] ${tache} sauté : tables du pilotage absentes (migration P2 pas encore passée).`,
+        `[seo-pilotage-worker] ${tache} sauté : table du pilotage absente (migration pas encore passée).`,
       );
       return { issue: "saute", motif: "tables_absentes" };
     }
