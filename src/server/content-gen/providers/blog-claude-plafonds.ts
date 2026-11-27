@@ -122,3 +122,26 @@ export function lirePlafondsBlogExistants(extra: unknown): {
     jugeMax: nb(CLES_PLAFONDS_BLOG.juge),
   };
 }
+
+/** Valeurs par défaut (équipe éditoriale) quand les clés sont absentes de extraConfig. */
+export const PLAFOND_JOUR_DEFAUT_USD = 10;
+export const PLAFOND_MOIS_DEFAUT_USD = 200;
+
+/** Cohérence : le plafond du jour ne peut pas dépasser le plafond du mois. */
+export function plafondsCoherents(jour: number, mois: number): boolean {
+  return Number.isFinite(jour) && Number.isFinite(mois) && jour > 0 && mois > 0 && jour <= mois;
+}
+
+/**
+ * Plafonds jour/mois effectifs : lecture tolérante, et l'erreur va toujours vers le plus
+ * STRICT. Clé absente = défaut ; valeur hors bornes de garde = défaut plafonné à la borne
+ * la plus basse ; jour > mois = le jour est ramené au mois (jamais l'inverse).
+ */
+export function lirePlafondsBlogEffectifs(extra: unknown): { jour: number; mois: number } {
+  const lus = lirePlafondsBlogExistants(extra);
+  const valide = (v: number | null, defaut: number, borne: number): number =>
+    v !== null && v > 0 && v <= borne ? v : Math.min(defaut, borne);
+  const mois = valide(lus.mois, PLAFOND_MOIS_DEFAUT_USD, BORNE_MOIS_USD);
+  const jour = Math.min(valide(lus.jour, PLAFOND_JOUR_DEFAUT_USD, BORNE_JOUR_USD), mois);
+  return { jour, mois };
+}
