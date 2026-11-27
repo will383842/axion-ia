@@ -215,7 +215,8 @@ describe("buildAdminNav SSOT", () => {
     // +1 Garantie Journée IA (suivi des remboursements, 2026-11-25, groupe finances) : 179 + 1 = 180.
     // +1 Challenges apporteurs (2026-11-27, groupe apporteurs) et +1 Questionnaire Baromètre 2027 (groupe content_gen) : 180 + 2 = 182.
     // +1 Relevés mensuels apporteurs (2026-11-27, groupe apporteurs, lot 3e).
-    expect(items.length).toBe(183);
+    // +1 Pilotage SEO & IA (P8, 2026-11-27, groupe content_gen) : 183 + 1 = 184.
+    expect(items.length).toBe(184);
   });
 
   it("prefixes all INTERNAL hrefs with /fr/<adminPrefix>", () => {
@@ -887,6 +888,7 @@ const HREFS_AVANT_REFONTE: ReadonlyArray<string> = [
   "/content-gen/settings",
   "/content-gen/rss",
   "/content-gen/templates",
+  "/content-gen/pilotage",
   "/content-gen/keyword-tracking",
   "/content-gen/landing-variants",
   "/content-gen/author/manon",
