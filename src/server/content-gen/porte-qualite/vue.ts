@@ -43,13 +43,23 @@ function lireCriteres(brut: unknown): { titre: string | null; criteres: Resultat
   }
   const o = brut as Record<string, unknown>;
   const liste = Array.isArray(o.criteres) ? o.criteres : [];
-  const criteres = liste.filter(
-    (c): c is ResultatCritere =>
-      typeof c === "object" &&
-      c !== null &&
-      typeof (c as { id?: unknown }).id === "string" &&
-      STATUTS.has((c as { statut?: string }).statut ?? ""),
-  );
+  const criteres = liste
+    .filter(
+      (c): c is Record<string, unknown> =>
+        typeof c === "object" &&
+        c !== null &&
+        typeof (c as { id?: unknown }).id === "string" &&
+        STATUTS.has((c as { statut?: string }).statut ?? ""),
+    )
+    .map((c): ResultatCritere => ({
+      id: c.id as string,
+      classe: (c.classe as ResultatCritere["classe"]) ?? "dur",
+      statut: c.statut as ResultatCritere["statut"],
+      raison: typeof c.raison === "string" ? c.raison : null,
+      preuves: Array.isArray(c.preuves)
+        ? c.preuves.filter((p): p is string => typeof p === "string")
+        : [],
+    }));
   return { titre: typeof o.titre === "string" ? o.titre : null, criteres };
 }
 
@@ -83,7 +93,9 @@ export interface VueVerdicts {
 }
 
 export interface VuePorte {
+  /** Drapeau lu côté application ; le worker a le sien. */
   readonly interrupteurActif: boolean;
+  readonly dernierVerdictLe: Date | null;
   readonly versionPorte: string;
   readonly phase: string | null;
   readonly mode: string | null;
@@ -106,6 +118,7 @@ const chaine = (v: unknown): string | null => (typeof v === "string" && v ? v : 
 export function construireVue(entree: {
   config: unknown;
   interrupteurActif: boolean;
+  dernierVerdictLe?: Date | null;
   lignes: Source<ReadonlyArray<LigneVerdictLue>>;
 }): VuePorte {
   const cfg =
@@ -136,6 +149,7 @@ export function construireVue(entree: {
 
   return {
     interrupteurActif: entree.interrupteurActif,
+    dernierVerdictLe: entree.dernierVerdictLe ?? null,
     versionPorte: VERSION_PORTE,
     phase: chaine(cfg.phase),
     mode: chaine(cfg.mode),

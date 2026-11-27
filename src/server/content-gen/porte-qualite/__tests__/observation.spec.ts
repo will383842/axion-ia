@@ -135,3 +135,34 @@ describe("observerSortie (allumé)", () => {
     expect(d.creer).not.toHaveBeenCalled();
   });
 });
+
+describe("surface et données transmises à la porte", () => {
+  const env = { [DRAPEAU_OBSERVATION]: "true" };
+  async function criteresDe(s: Record<string, unknown>) {
+    const d = deps();
+    await observerSortie({ jobId: "j", contentType: "blog_article", sortie: s }, d, env);
+    const ligne = (
+      d.creer.mock.calls[0] as unknown as [
+        { criteres: { criteres: { id: string; statut: string }[] } },
+      ]
+    )[0];
+    return ligne.criteres.criteres;
+  }
+  it("B14 n'échoue pas à tort : auteur et date sont rejoués comme à la publication", async () => {
+    const b14 = (await criteresDe(sortie)).find((c) => c.id === "B14");
+    expect(b14?.statut).toBe("ok");
+  });
+  it("B01 voit la FAQ, le texte d'image et la citation (pas seulement le corps)", async () => {
+    const motif = "installé à Grenoble";
+    for (const champ of [
+      { faq: [{ question: "Où ?", answer: motif }] },
+      { heroImageAlt: motif },
+      { expertQuote: { name: "n", title: "t", text: motif } },
+      { tags: [motif] },
+      { metaTitle: motif },
+    ]) {
+      const b01 = (await criteresDe({ ...sortie, ...champ })).find((c) => c.id === "B01");
+      expect(b01?.statut, JSON.stringify(champ)).toBe("echec");
+    }
+  });
+});

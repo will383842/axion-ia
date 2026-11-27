@@ -77,6 +77,8 @@ export async function lireVuePorte(): Promise<VuePorte> {
   return construireVue({
     config,
     interrupteurActif: observationActive(process.env),
+    // Dernier verdict écrit : seule preuve que le WORKER observe (le drapeau se lit ici côté application).
+    dernierVerdictLe: lignes.etat === "ok" ? (lignes.valeur[0]?.createdAt ?? null) : null,
     lignes,
   });
 }

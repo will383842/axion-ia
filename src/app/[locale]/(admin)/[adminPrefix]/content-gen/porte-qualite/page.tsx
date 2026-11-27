@@ -54,8 +54,12 @@ function VueEnsemble({ vue }: { vue: VuePorte }): React.ReactElement {
         <h2 className="admin-h2">État de la porte</h2>
         <ul className="admin-meta-block">
           <li>
-            Observation : <strong>{vue.interrupteurActif ? "allumée" : "éteinte"}</strong>
-            {vue.interrupteurActif ? "" : " (interrupteur éteint : aucun verdict n’est écrit)"}
+            Dernier verdict écrit :{" "}
+            <strong>
+              {vue.dernierVerdictLe ? dateLisible(vue.dernierVerdictLe) : "aucun (indisponible)"}
+            </strong>
+            . Interrupteur lu côté application : {vue.interrupteurActif ? "allumé" : "éteint"} (le
+            worker a le sien ; seule la date ci-dessus prouve qu’il écrit).
           </li>
           <li>
             Phase : <strong>{vue.phase ?? "indisponible"}</strong> · mode :{" "}
@@ -65,6 +69,11 @@ function VueEnsemble({ vue }: { vue: VuePorte }): React.ReactElement {
           <li>
             Plafond de sécurité : <strong>{nombre(vue.plafondSecuriteParJour)}</strong> par jour
             (une limite, pas un objectif).
+          </li>
+          <li>
+            Tant que les critères de faits, de doublons et d’intention ne sont pas branchés (PR
+            suivantes), tout critère prévu mais absent est « non évalué » et les verdicts sortent «
+            Bloqué » par construction : lisez le détail des critères, pas le compteur.
           </li>
           <li>
             En observation, la porte note chaque contenu et ne bloque rien : le fonctionnement

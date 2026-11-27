@@ -102,3 +102,21 @@ describe("concordance écran / back-end (§ 12.1)", () => {
     expect(vue.verdicts.valeur.total).toBe(2);
   });
 });
+
+describe("robustesse de la lecture", () => {
+  it("une ligne d'une autre version (sans preuves ni raison) ne fait pas planter l'écran", () => {
+    const lu = lireLigneVerdict({
+      id: "x",
+      jobId: null,
+      contentKind: "k",
+      versionPorte: "v0",
+      mode: "ombre",
+      verdict: "bloque",
+      note: 10,
+      criteres: { criteres: [{ id: "B01", statut: "echec" }] },
+      createdAt: new Date(),
+    } as LigneVerdictLue);
+    expect(lu.criteres[0]?.preuves).toEqual([]);
+    expect(lu.criteres[0]?.raison).toBeNull();
+  });
+});

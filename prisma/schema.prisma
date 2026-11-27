@@ -2770,6 +2770,7 @@ model ContentGenConfig {
 /// et aucune table existante n'est touchée (fenêtre app/worker). `verdict` : publiable |
 /// a_corriger | bloque | reporte ; `mode` : ombre | reel | maj. Colonnes en texte libre,
 /// pas d'énumération (règle 6 du § 3).
+/// rgpd: technique — note et critères d'un contenu éditorial généré ; aucune donnée sur une personne
 model ContentQualityVerdict {
   id                String   @id @default(cuid())
   jobId             String?  @map("job_id")
@@ -2797,6 +2798,7 @@ model ContentQualityVerdict {
 /// Porte qualité (§ 13, PR Q1) — instantané hebdomadaire d'une cohorte (contenus publiés la
 /// même semaine). Écrit plus tard par le worker, lu par l'écran. Un nombre absent est NULL
 /// (« indisponible »), jamais 0.
+/// rgpd: technique — compteurs hebdomadaires agrégés de contenus ; aucune donnée sur une personne
 model PorteCohorte {
   id           String   @id @default(cuid())
   semaine      DateTime @unique @db.Date

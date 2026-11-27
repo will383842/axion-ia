@@ -28,7 +28,11 @@ export function observationActive(env: Readonly<Record<string, string | undefine
 const texte = (v: unknown): string | null => (typeof v === "string" && v.trim() ? v : null);
 
 /** Sortie du générateur (`ContentGenJob.outputJsonRaw`) → contenu à noter. `null` = inexploitable. */
-export function contenuDepuisSortie(contentType: string, sortie: unknown): ContenuPorte | null {
+export function contenuDepuisSortie(
+  contentType: string,
+  sortie: unknown,
+  maintenant: Date = new Date(0),
+): ContenuPorte | null {
   if (typeof sortie !== "object" || sortie === null || Array.isArray(sortie)) return null;
   const s = sortie as Record<string, unknown>;
   const corpsHtml = texte(s.bodyHtml);
@@ -40,11 +44,40 @@ export function contenuDepuisSortie(contentType: string, sortie: unknown): Conte
     corpsHtml,
     directAnswer: texte(s.directAnswer),
     keyTakeaway: texte(s.keyTakeaway),
-    champsSupplementaires: {},
-    auteur: null,
-    datePublished: null,
+    champsSupplementaires: champsSupplementaires(s),
+    // Auteur et date sont fixés à la publication (organisation du site, jour de publication) :
+    // l'observation les rejoue tels que la publication les posera, sans quoi B14 échouerait
+    // à tort sur 100 % des contenus.
+    auteur: { nom: "Axion-IA", type: "Organization", reel: true },
+    datePublished: maintenant.toISOString().slice(0, 10),
     dateModified: null,
   };
+}
+
+/** Toute la surface de texte du générateur, pour la doctrine (B01) : FAQ, citation, balises, image. */
+function champsSupplementaires(s: Record<string, unknown>): Record<string, string | undefined> {
+  const out: Record<string, string | undefined> = {};
+  const poser = (k: string, v: unknown) => {
+    const t = texte(v);
+    if (t) out[k] = t;
+  };
+  poser("metaTitle", s.metaTitle);
+  poser("slug", s.slug);
+  poser("heroImageAlt", s.heroImageAlt);
+  if (Array.isArray(s.faq)) {
+    const f = s.faq
+      .map((q) => {
+        const o = (q ?? {}) as Record<string, unknown>;
+        return [texte(o.question), texte(o.answer)].filter(Boolean).join(" ");
+      })
+      .filter(Boolean)
+      .join("\n");
+    poser("faq", f);
+  }
+  const eq = s.expertQuote as Record<string, unknown> | undefined;
+  poser("expertQuote", eq?.text);
+  if (Array.isArray(s.tags)) poser("tags", s.tags.filter((t) => typeof t === "string").join(" "));
+  return out;
 }
 
 /** Config stockée → réglages du schéma : clés connues seulement (le reste est de l'affichage), défauts pour le reste. */
@@ -125,7 +158,7 @@ export async function observerSortie(
 ): Promise<IssueObservation> {
   if (!observationActive(env)) return "eteint";
   try {
-    const contenu = contenuDepuisSortie(entree.contentType, entree.sortie);
+    const contenu = contenuDepuisSortie(entree.contentType, entree.sortie, deps.maintenant());
     if (!contenu) {
       deps.journal("porte_observation_saut", {
         jobId: entree.jobId,
