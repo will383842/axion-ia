@@ -33,6 +33,7 @@ const h = vi.hoisted(() => {
     contentGenJob: { findUnique: vi.fn(), update: vi.fn(async () => ({})) },
     reviewQueue: {
       create: vi.fn(async () => ({})),
+      updateMany: vi.fn(async () => ({ count: 0 })),
       count: vi.fn(async () => 0),
       findUnique: vi.fn(async () => null),
     },
