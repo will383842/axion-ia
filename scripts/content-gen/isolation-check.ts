@@ -534,8 +534,9 @@ const ALLOWED_PATTERNS: ReadonlyArray<RegExp> = [
   /^src\/server\/site-explorer\/route-enumerator\.ts$/,
   // Exceptions 2026-11-27 (pilotage SEO, P7 « opportunités »). CONSOMMATEURS LÉGITIMES
   // en lecture seule de deux fonctions pures de content-gen, pas du code content-gen :
-  // - analyser.ts, detecteurs.ts : `construireCarte` / `normaliserUrl`
+  // - analyser.ts : `construireCarte` / `normaliserUrl`
   //   (content-gen/strategie/carte-requetes) ;
+  // - detecteurs.ts : `normaliserUrl` seul (même module) ;
   // - garde-fous.ts : `evaluerSujetCible` (content-gen/sujet-cible) + `normaliserUrl`.
   // Trois fichiers NOMMÉS, volontairement : aucun autre fichier de seo-pilotage/ n'est
   // exempté, un nouvel import de content-gen y reste donc signalé.
