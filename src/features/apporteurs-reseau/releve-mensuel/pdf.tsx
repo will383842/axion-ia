@@ -88,8 +88,8 @@ const LIBELLE_INDICATIF: Record<string, string> = {
 function Rangee({ libelle, valeur, fort }: { libelle: string; valeur: string; fort?: boolean }) {
   return (
     <View style={styles.rangee} wrap={false}>
-      <Text style={fort ? styles.gras : undefined}>{txt(libelle)}</Text>
-      <Text style={fort ? styles.gras : undefined}>{txt(valeur)}</Text>
+      <Text style={fort ? styles.gras : {}}>{txt(libelle)}</Text>
+      <Text style={fort ? styles.gras : {}}>{txt(valeur)}</Text>
     </View>
   );
 }

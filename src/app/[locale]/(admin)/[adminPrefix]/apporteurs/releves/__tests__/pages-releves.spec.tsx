@@ -23,7 +23,8 @@ vi.mock("next/link", () => ({
   ),
 }));
 vi.mock("@/features/apporteurs-reseau/releve-mensuel/statistiques", async (orig) => {
-  const reel = await orig<typeof import("@/features/apporteurs-reseau/releve-mensuel/statistiques")>();
+  const reel =
+    await orig<typeof import("@/features/apporteurs-reseau/releve-mensuel/statistiques")>();
   return {
     ...reel,
     lireVueStatistiques: async () => ({

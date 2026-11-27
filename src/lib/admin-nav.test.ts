@@ -214,7 +214,8 @@ describe("buildAdminNav SSOT", () => {
     // +1 lien externe Usine à contenu (Studio) (2026-11-20, groupe content) : 178 + 1 = 179.
     // +1 Garantie Journée IA (suivi des remboursements, 2026-11-25, groupe finances) : 179 + 1 = 180.
     // +1 Challenges apporteurs (2026-11-27, groupe apporteurs) et +1 Questionnaire Baromètre 2027 (groupe content_gen) : 180 + 2 = 182.
-    expect(items.length).toBe(182);
+    // +1 Relevés mensuels apporteurs (2026-11-27, groupe apporteurs, lot 3e).
+    expect(items.length).toBe(183);
   });
 
   it("prefixes all INTERNAL hrefs with /fr/<adminPrefix>", () => {

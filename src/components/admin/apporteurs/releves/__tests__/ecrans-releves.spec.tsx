@@ -22,7 +22,7 @@ describe("BandeauAnomalies", () => {
     const html = renderToStaticMarkup(
       <BandeauAnomalies anomalies={[{ code: "completude", detail: "2 apporteurs sans relevé" }]} />,
     );
-    expect(html).toContain("role=\"alert\"");
+    expect(html).toContain('role="alert"');
     expect(html).toContain("2 apporteurs sans relevé");
   });
 });

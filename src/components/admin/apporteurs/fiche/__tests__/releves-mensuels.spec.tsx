@@ -59,8 +59,18 @@ describe("RelevesMensuels", () => {
       <RelevesMensuels
         base="/fr/x"
         releves={[
-          releve({ id: "2", numero: "REL-2026-09-0001", periode: "2026-09", statutEmail: "pending" }),
-          releve({ id: "3", numero: "REL-2026-08-0001", periode: "2026-08", statutEmail: "failed" }),
+          releve({
+            id: "2",
+            numero: "REL-2026-09-0001",
+            periode: "2026-09",
+            statutEmail: "pending",
+          }),
+          releve({
+            id: "3",
+            numero: "REL-2026-08-0001",
+            periode: "2026-08",
+            statutEmail: "failed",
+          }),
         ]}
         peutVoirPdf
       />,
@@ -70,7 +80,11 @@ describe("RelevesMensuels", () => {
   });
   it("marque un rectificatif", () => {
     const html = renderToStaticMarkup(
-      <RelevesMensuels base="/fr/x" releves={[releve({ rang: 1, numero: "REL-2026-10-0001-R1" })]} peutVoirPdf />,
+      <RelevesMensuels
+        base="/fr/x"
+        releves={[releve({ rang: 1, numero: "REL-2026-10-0001-R1" })]}
+        peutVoirPdf
+      />,
     );
     expect(html).toContain("Rectificatif");
   });

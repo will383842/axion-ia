@@ -32,7 +32,10 @@ const ctx = (periode = "2026-10") => ({
 
 beforeEach(() => {
   d.session = { user: { id: "u1", role: "admin" } };
-  d.releve = { pdfR2Key: "apporteurs/releves/a1/REL-2026-10-0001-abcd1234.pdf", numero: "REL-2026-10-0001" };
+  d.releve = {
+    pdfR2Key: "apporteurs/releves/a1/REL-2026-10-0001-abcd1234.pdf",
+    numero: "REL-2026-10-0001",
+  };
   d.octets = Buffer.from("%PDF-1.7 test");
 });
 

@@ -11,6 +11,8 @@ import { AccesRefuse } from "@/components/admin/ui/AccesRefuse";
 import { EnvoiLienDossier, ParrainEtNote } from "@/components/admin/apporteurs/fiche/BlocsFiche";
 import { ChangerRegimeTva } from "@/components/admin/apporteurs/fiche/ChangerRegimeTva";
 import { HistoriqueEmails } from "@/components/admin/apporteurs/fiche/HistoriqueEmails";
+import { RelevesMensuels } from "@/components/admin/apporteurs/fiche/RelevesMensuels";
+import { lireRelevesDeLApporteur } from "@/features/apporteurs-reseau/releve-mensuel/statistiques";
 import { CorrigerNom } from "@/components/admin/apporteurs/fiche/CorrigerNom";
 import { BlocDecision } from "@/components/admin/apporteurs/fiche/BlocDecision";
 import { DecisionDossier } from "@/components/admin/apporteurs/fiche/DecisionDossier";
@@ -42,7 +44,7 @@ import {
 import { STATUTS_JURIDIQUES, euros } from "@/features/apporteurs-reseau/regles";
 import { CLE_REGISTRE_INDISPONIBLE } from "@/features/apporteurs-reseau/signature-regles";
 import { gardePage } from "@/server/auth/garde-page";
-import { peutOuvrirDossierApporteur } from "@/server/auth/habilitations";
+import { peutEngager, peutOuvrirDossierApporteur } from "@/server/auth/habilitations";
 
 export const dynamic = "force-dynamic";
 
@@ -121,6 +123,8 @@ export default async function FicheApporteurPage({ params, searchParams }: PageP
   // Historique des e-mails : administrateurs seulement (les objets citent des montants, des noms).
   const voitEmails = acces.role === "admin" || acces.role === "super_admin";
   const emails = voitEmails ? await lireHistoriqueEmailsApporteur(d.id, d.email) : [];
+  // Relevés mensuels (lot 4b', lecture seule) : mêmes rôles que le dossier (montants par apporteur).
+  const releves = voitPii ? await lireRelevesDeLApporteur(d.id) : [];
   const MASQUE = "Réservé aux rôles autorisés";
   const purgees = new Set(fiche.piecesPurgeesIds);
   const pieces: PieceAffichee[] = d.pieces.map((p) => ({
@@ -414,6 +418,13 @@ export default async function FicheApporteurPage({ params, searchParams }: PageP
         )}
       </AdminCard>
 
+      {voitPii ? (
+        <RelevesMensuels
+          base={`/fr/${adminPrefix}`}
+          releves={releves}
+          peutVoirPdf={peutEngager(acces.role, "facturer")}
+        />
+      ) : null}
       {voitEmails ? <HistoriqueEmails emails={emails} base={`/fr/${adminPrefix}`} /> : null}
 
       <div className="grid gap-[var(--space-admin-4)] lg:grid-cols-2">

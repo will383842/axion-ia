@@ -61,7 +61,13 @@ describe("trigger de figement du relevé mensuel", () => {
   });
 
   it("pose les contraintes CHECK et n'a pas d'index redondant sur apporteur_id", () => {
-    for (const c of ["periode_format", "rang_coherent", "ecart_motive", "envoye_complet", "empreinte_format"]) {
+    for (const c of [
+      "periode_format",
+      "rang_coherent",
+      "ecart_motive",
+      "envoye_complet",
+      "empreinte_format",
+    ]) {
       expect(sql).toContain(`"releves_mensuels_apporteur_${c}"`);
     }
     expect(sql).not.toContain("releves_mensuels_apporteur_apporteur_id_idx");

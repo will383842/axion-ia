@@ -63,7 +63,11 @@ describe("construireSerie", () => {
       new Map([["2026-10", totaux]]),
       new Map([["2026-09", { facturesHtCents: 7_000, avoirsHtCents: 0 }]]),
     );
-    expect(s[2]).toMatchObject({ source: "releves", facturesHtCents: 50_000, viresTtcCents: 20_000 });
+    expect(s[2]).toMatchObject({
+      source: "releves",
+      facturesHtCents: 50_000,
+      viresTtcCents: 20_000,
+    });
     expect(s[1]).toMatchObject({ source: "direct", facturesHtCents: 7_000, viresTtcCents: null });
     expect(s[0]).toMatchObject({ source: "aucune", facturesHtCents: 0 });
   });

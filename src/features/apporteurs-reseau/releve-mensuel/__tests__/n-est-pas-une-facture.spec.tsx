@@ -40,8 +40,9 @@ describe("PDF du relevé : n'est pas une facture", () => {
     const c = contenuExemple() as unknown as {
       facturees: { lignes: Array<Record<string, unknown>> };
     };
-    c.facturees.lignes[0].regle = null;
-    c.facturees.lignes[0].renvoiDecompte = "AXI-APP-2026-0001";
+    const l = c.facturees.lignes[0]!;
+    l.regle = null;
+    l.renvoiDecompte = "AXI-APP-2026-0001";
     const tout = textesDuReleve(c as never).join("\n");
     expect(tout).toContain("voir le décompte de l'autofacture n° AXI-APP-2026-0001");
   });
