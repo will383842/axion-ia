@@ -29,10 +29,13 @@
 // ⚠️ Tourne dans le WORKER (tsx, hors Next) : aucun `server-only` ici ni dans ce que ce
 // module importe (verrouillé par `le-worker-n-importe-pas-server-only.spec.ts`).
 
+import { ajouterJoursOuvres } from "@/lib/jours-ouvres";
 import { FACTURE_HORS_ESSAI } from "@/server/qualiopi/essai/perimetre";
-import { destinataireAlertesInternes } from "@/lib/destinataires-internes";
 import { prisma } from "@/lib/prisma";
+import { createHash } from "node:crypto";
+
 import { decryptPii } from "@/lib/pii-crypto";
+import { destinataireAlertesInternes } from "@/lib/destinataires-internes";
 import { enqueueEmail } from "@/server/queue/queues";
 
 import {
@@ -48,9 +51,17 @@ import {
   annoncerAttribution,
   dateEnClair,
 } from "./attribution-annonce";
+import { alerteInterne } from "./alerte-interne";
+import { alerterConflitRattrapage, rattrapageEnConflit } from "./conflit-rattrapage";
 import { envoyer } from "./envois";
-import { lireReservations, tableAbsente } from "./reservation-presentation";
-import { finDeProtectionRendezVous, reservationOccupe } from "./regle-attribution";
+import { annexesDeLEnvoiDuLien } from "./documents-joints";
+import { enregistrerReservation, lireReservations, tableAbsente } from "./reservation-presentation";
+import {
+  basculeVersRendezVous,
+  finDeProtectionRendezVous,
+  reservationOccupe,
+} from "./regle-attribution";
+import { validationParRendezVousActive } from "./interrupteur-rendez-vous";
 import { facturerCommissionsDues } from "./facturation";
 import { basculerRegimesDuJour } from "./regime-tva";
 import { figerPiecesManquantes } from "./tva-pieces";
@@ -107,6 +118,17 @@ import {
 
 /** Renouvellement de l'attestation de vigilance : tant de jours avant son échéance. */
 export const RENOUVELLEMENT_VIGILANCE_JOURS = 15;
+/** Alerte interne : une réservation sans rendez-vous ni proposition, à ce nombre de jours (ou moins) du terme. */
+export const ALERTE_SANS_RDV_JOURS_AVANT_TERME = 10;
+/** E5 : une proposition de rendez-vous qui attend depuis plus de ce nombre de jours ouvrés alerte Williams. */
+export const ALERTE_PROPOSITION_JOURS_OUVRES = 5;
+/** L3b : une réservation échue depuis moins de ce nombre de jours voit son alerte rattrapée si elle a échoué. */
+const RATTRAPAGE_ALERTE_ECHUE_JOURS = 7;
+/** L5 : une annonce de validation n'est relancée que si la validation date de moins de ce nombre de jours ouvrés. */
+const RELANCE_ANNONCE_JOURS_OUVRES = 5;
+/** L7 : au plus ce nombre de maillons suivis dans la chaîne des devis remplacés. */
+const MAILLONS_DEVIS_MAX = 10;
+
 /** « Commande signée » : on ne regarde que les devis acceptés dans cette fenêtre. */
 export const FENETRE_COMMANDE_SIGNEE_JOURS = 30;
 
@@ -175,8 +197,16 @@ export interface BilanPassageReseau {
   rappelsDossier: number;
   /** Règle par rendez-vous : réservations arrivées à échéance sans rendez-vous (lot 4). */
   reservationsEchues: number;
+  /** Alertes internes « réservation sans rendez-vous, terme proche » parties à ce passage. */
+  reservationsBientotEchues: number;
+  /** E5 : alertes internes « proposition en attente depuis plus de 5 jours ouvrés » parties. */
+  propositionsEnAttente: number;
   /** Échéances suspendues : un rendez-vous pris pendant la réservation reste à trancher. */
   echeancesSuspendues: number;
+  /** Présentations en attente passées de l'ancienne règle à la règle du rendez-vous. */
+  basculees: number;
+  /** Présentations en attente NON basculées (terme dépassé ou prise de contact en erreur), signalées : total « à ce jour » (une même présentation est recomptée à chaque passage tant qu'elle reste en attente). */
+  basculeesEcartees: number;
   /** Entreprises validées par une commande signée pendant la réservation. */
   validationsParCommande: number;
   erreurs: number;
@@ -200,13 +230,15 @@ export interface PresentationProtegee {
    * 12.3 : la résiliation ramène ce terme à sa date). `null`/absent : présentation d'avant la règle,
    * ou déjà validée (elle est alors jugée sur sa seule protection).
    */
-  reservation?: { reserveeJusquAt: Date; statut: string } | null;
+  reservation?: { reserveeJusquAt: Date; statut: string; echueAt?: Date | null } | null;
 }
 
 /** La présentation qui couvre une commande : la plus ancienne reçue, s'il y en a plusieurs. */
 export function presentationQuiCouvre<T extends PresentationProtegee>(
   candidates: readonly T[],
   signeeAt: Date,
+  /** L7 : date d'émission du devis, pour la SEULE validation d'une réservation (jamais la commission). */
+  devisEmisAt?: Date | null,
 ): T | null {
   const couvrantes = candidates.filter((p) =>
     commandeCouverte({
@@ -215,6 +247,7 @@ export function presentationQuiCouvre<T extends PresentationProtegee>(
       confirmee: p.confirmeeAt !== null,
       protegeeJusquAt: p.protegeeJusquAt,
       reservation: p.reservation ?? null,
+      devisEmisAt: devisEmisAt ?? null,
     }),
   );
   couvrantes.sort((a, b) => a.recueAt.getTime() - b.recueAt.getTime());
@@ -231,6 +264,8 @@ export function presentationPourEtablissement<T extends PresentationProtegee>(
   etablissements: ReadonlyMap<string, Etablissement>,
   signeeAt: Date,
   siret: string | null,
+  /** L7 : date d'émission du devis, pour la SEULE validation d'une réservation (jamais la commission). */
+  devisEmisAt?: Date | null,
 ): { presentation: T } | { aAttribuer: true; candidats: T[] } | null {
   const couvrantes = candidates
     .filter((p) =>
@@ -240,6 +275,7 @@ export function presentationPourEtablissement<T extends PresentationProtegee>(
         confirmee: p.confirmeeAt !== null,
         protegeeJusquAt: p.protegeeJusquAt,
         reservation: p.reservation ?? null,
+        devisEmisAt: devisEmisAt ?? null,
       }),
     )
     .map((p) => ({ p, recueAt: p.recueAt, etablissement: etablissements.get(p.id) ?? AVANT_2_6 }));
@@ -269,6 +305,7 @@ export function dateDeCommande(f: {
 
 /** Étapes du passage, dans l'ordre. `facturation` = celles du job HORAIRE. */
 type NomEtape =
+  | "bascule-regle-rendez-vous"
   | "confirmation-tacite"
   | "terme"
   | "commissions"
@@ -277,6 +314,7 @@ type NomEtape =
   | "vigilance"
   | "alerte-pieces-vigilance"
   | "commande-signee"
+  | "reservations-sans-rendez-vous"
   | "reservations-echues"
   | "rappels-dossier"
   | "chiffrement-pieces"
@@ -310,7 +348,11 @@ function bilanVide(): BilanPassageReseau {
     commandesSigneesAnnoncees: 0,
     rappelsDossier: 0,
     reservationsEchues: 0,
+    reservationsBientotEchues: 0,
+    propositionsEnAttente: 0,
     echeancesSuspendues: 0,
+    basculees: 0,
+    basculeesEcartees: 0,
     validationsParCommande: 0,
     erreurs: 0,
   };
@@ -324,6 +366,9 @@ async function passer(
   const etapes: Array<[NomEtape, () => Promise<void>]> = [
     // Lot L1b (en PREMIER : les étapes suivantes ne traitent plus l'apporteur comme « signe » le jour de l'effet) : la résiliation notifiée prend effet à sa date (préavis de 30 jours en 11.1).
     ["resiliations-echues", async () => void (await executerResiliationsEchues(maintenant))],
+    // AVANT la confirmation par le silence : une présentation qui bascule aujourd'hui ne doit pas
+    // être confirmée par le silence dans le même passage.
+    ["bascule-regle-rendez-vous", () => etapeBasculeRegleRendezVous(maintenant, bilan)],
     ["confirmation-tacite", () => etapeConfirmationTacite(maintenant, bilan)],
     ["terme", () => etapeTerme(maintenant, bilan)],
     ["commissions", () => etapeCommissions(maintenant, bilan)],
@@ -342,6 +387,7 @@ async function passer(
     ["commande-signee", () => etapeCommandeSignee(maintenant, bilan)],
     // Règle par rendez-vous : APRÈS « commande-signee » (une commande signée pendant la réservation
     // la valide avant que l'échéance ne puisse la clore).
+    ["reservations-sans-rendez-vous", () => etapeReservationsSansRendezVous(maintenant, bilan)],
     ["reservations-echues", () => etapeReservationsEchues(maintenant, bilan)],
     ["rappels-dossier", () => etapeRappelsDossier(maintenant, bilan)],
     // Rattrapage (07/10) : les pièces déposées avant le chiffrement au repos sont chiffrées.
@@ -513,6 +559,194 @@ async function etapeConfirmationTacite(maintenant: Date, bilan: BilanPassageRese
     });
     bilan.confirmeesTacites += r.count;
     if (r.count === 1) await annoncerAttribution(p.id, "confirmee");
+  }
+}
+
+// (g bis) ─────────────────────────────────────────────────────────────
+
+/**
+ * Décision de Will (26/11/2026) : les présentations EN ATTENTE faites sous l'ancienne règle (silence)
+ * passent à la règle du 1er rendez-vous tenu ou du devis signé. Une ligne de réservation est ajoutée
+ * (terme = `termeApresBascule` : au moins 30 jours après la bascule) ; rien n'est modifié ni supprimé sur la présentation, et
+ * une attribution déjà définitive (`confirmee`) n'est jamais lue. Interrupteur éteint : rien.
+ */
+async function etapeBasculeRegleRendezVous(
+  maintenant: Date,
+  bilan: BilanPassageReseau,
+): Promise<void> {
+  if (!validationParRendezVousActive()) return;
+  const basculees: Array<{ id: string; denomination: string; terme: Date }> = [];
+  try {
+    await basculerParPages(maintenant, bilan, basculees);
+  } finally {
+    await signalerBascules(basculees, maintenant);
+  }
+}
+
+/**
+ * Une seule alerte interne par passage qui a basculé quelque chose : le rapprochement des rendez-vous
+ * ne se déclenche qu'à l'apparition d'un rendez-vous, donc un rendez-vous DÉJÀ pris ou tenu avant la
+ * bascule n'est jamais proposé tout seul : à vérifier à la main. Signale aussi les termes courts.
+ */
+async function signalerBascules(
+  basculees: ReadonlyArray<{ id: string; denomination: string; terme: Date }>,
+  maintenant: Date,
+): Promise<void> {
+  if (basculees.length === 0) return;
+  // Jour à l'heure de Paris ; la clé dépend AUSSI du contenu (hachage des ids basculés) : un second
+  // passage le même jour, qui bascule d'autres présentations, n'est pas avalé par la dédup.
+  const jour = maintenant.toLocaleDateString("sv-SE", { timeZone: "Europe/Paris" });
+  const empreinte = createHash("sha256")
+    .update(
+      basculees
+        .map((b) => b.id)
+        .sort()
+        .join(","),
+    )
+    .digest("hex")
+    .slice(0, 12);
+  const liste = basculees
+    .slice(0, 50)
+    .map((b) => {
+      const reste = Math.max(0, Math.ceil((b.terme.getTime() - maintenant.getTime()) / 86_400_000));
+      return `${b.denomination} (jusqu'au ${dateEnClair(b.terme)}${reste <= 15 ? `, ${reste} j restants` : ""})`;
+    })
+    .join(" ; ");
+  const reste =
+    basculees.length > 50
+      ? ` ; … et ${basculees.length - 50} autres (voir le journal apporteur.presentation_basculee_rendez_vous)`
+      : "";
+  await alerteInterne({
+    jobId: `apporteur-bascule-lot-${jour}-${empreinte}`,
+    code: "apporteur_bascule_rendez_vous",
+    titre: `${basculees.length} présentation(s) passée(s) à la règle du rendez-vous`,
+    message: `Ces présentations en attente ne sont plus confirmées par le silence : ${liste}${reste}. Vérifiez les rendez-vous déjà pris ou tenus avec ces entreprises depuis la saisie : ils ne sont pas proposés automatiquement. À valider dans la console (Apporteurs › Entreprises présentées).`,
+    cibleType: "PresentationEntreprise",
+    cibleId: "bascule",
+    maintenant,
+  });
+}
+
+async function basculerParPages(
+  maintenant: Date,
+  bilan: BilanPassageReseau,
+  basculees: Array<{ id: string; denomination: string; terme: Date }>,
+): Promise<void> {
+  let curseur: { at: Date; id: string } | null = null;
+  for (let page = 0; page < PAGES_ECHEANCES_MAX; page++) {
+    const lignes: Array<{
+      id: string;
+      denomination: string;
+      recueAt: Date;
+      contactEnvoyeAt: Date | null;
+      apporteur: { statut: string; signatureApporteur: unknown };
+    }> = await prisma.presentationEntreprise.findMany({
+      where: {
+        statut: "reservee",
+        ...(curseur
+          ? {
+              OR: [
+                { recueAt: { gt: curseur.at } },
+                { recueAt: curseur.at, id: { gt: curseur.id } },
+              ],
+            }
+          : {}),
+      },
+      select: {
+        id: true,
+        denomination: true,
+        recueAt: true,
+        contactEnvoyeAt: true,
+        apporteur: { select: { statut: true, signatureApporteur: true } },
+      },
+      orderBy: [{ recueAt: "asc" }, { id: "asc" }],
+      take: PAGE_ECHEANCES,
+    });
+    if (lignes.length === 0) return;
+    let reservees: Awaited<ReturnType<typeof lireReservations>>;
+    try {
+      reservees = await lireReservations(lignes.map((l) => l.id));
+    } catch (err) {
+      if (tableAbsente(err)) return;
+      throw err;
+    }
+    const sansLigne = lignes.filter((l) => !reservees.has(l.id));
+    const rebonds =
+      sansLigne.length > 0
+        ? await idsPriseDeContactRebondie(sansLigne.map((l) => l.id))
+        : new Set<string>();
+    for (const p of sansLigne) {
+      const d = basculeVersRendezVous({
+        statut: "reservee",
+        recueAt: p.recueAt,
+        apporteur: {
+          statut: p.apporteur.statut,
+          signature: p.apporteur.signatureApporteur,
+        },
+        // Même date que l'étape (a) : atteinte, la présentation est déjà acquise.
+        silenceAtteint:
+          (p.contactEnvoyeAt
+            ? dateConfirmationTaciteAvecContact(p.contactEnvoyeAt, p.recueAt)
+            : dateConfirmationTaciteSansContact(p.recueAt)
+          ).getTime() <= maintenant.getTime(),
+        aUneLigne: false,
+        rebond: rebonds.has(p.id),
+        actif: validationParRendezVousActive(),
+        maintenant,
+      });
+      if (d.bascule) {
+        try {
+          const ok = await prisma.$transaction(async (tx) => {
+            // Garde RELUE dans la transaction : une confirmation ou une ligne née depuis la lecture l'emporte.
+            const cur = await tx.presentationEntreprise.findUnique({
+              where: { id: p.id },
+              select: { statut: true },
+            });
+            if (cur?.statut !== "reservee") return false;
+            if (await tx.presentationReservation.findUnique({ where: { presentationId: p.id } }))
+              return false;
+            await enregistrerReservation(p.id, d.reserveeJusquAt, tx);
+            await tx.activityLog.create({
+              data: {
+                action: "apporteur.presentation_basculee_rendez_vous",
+                targetType: "presentation_entreprise",
+                targetId: p.id,
+                changes: { reserveeJusquAt: d.reserveeJusquAt.toISOString() } as object,
+              },
+            });
+            return true;
+          });
+          if (ok) {
+            bilan.basculees += 1;
+            basculees.push({ id: p.id, denomination: p.denomination, terme: d.reserveeJusquAt });
+          }
+        } catch (err) {
+          // Table absente (migration pas encore passée) : on s'arrête, sans erreur.
+          if (tableAbsente(err)) return;
+          // Clé primaire déjà prise : une autre ligne est née entre-temps, rien à faire.
+          if ((err as { code?: unknown })?.code === "P2002") continue;
+          // Toute autre erreur : comptée au bilan, la boucle continue (une ligne en échec ne bloque pas les suivantes).
+          bilan.erreurs += 1;
+          signalerErreurReseau("bascule vers la règle du rendez-vous", err);
+        }
+      } else if (d.motif === "rebond" || d.motif === "terme_depasse") {
+        // Terme dépassé sans rebond : le silence confirme au plus tard le lendemain, rien à signaler.
+        bilan.basculeesEcartees += 1;
+        if (d.motif === "rebond")
+          await alerteInterne({
+            jobId: `apporteur-bascule-ecartee-rebond-${p.id}`,
+            code: "apporteur_bascule_ecartee",
+            titre: `Présentation non basculée vers la règle du rendez-vous : ${p.denomination}`,
+            message: `La prise de contact de ${p.denomination} est revenue en erreur : l'ancienne règle est suspendue et la présentation n'a pas été basculée vers la règle du rendez-vous. À trancher dans la console (Apporteurs › Entreprises présentées).`,
+            cibleType: "PresentationEntreprise",
+            cibleId: p.id,
+            maintenant,
+          });
+      }
+    }
+    if (lignes.length < PAGE_ECHEANCES) return;
+    const der = lignes[lignes.length - 1]!;
+    curseur = { at: der.recueAt, id: der.id };
   }
 }
 
@@ -691,46 +925,6 @@ async function alerterAAttribuer(factureId: string, siren: string, maintenant: D
   }
 }
 
-/**
- * Alerte INTERNE (Williams, console), une seule fois par `jobId`. Jamais l'apporteur. Ne lève pas.
- * Rend vrai si l'alerte part maintenant.
- */
-async function alerteInterne(a: {
-  jobId: string;
-  code: string;
-  titre: string;
-  message: string;
-  cibleType: string;
-  cibleId: string;
-  niveau?: "important" | "critique";
-  maintenant: Date;
-}): Promise<boolean> {
-  try {
-    if (await dejaEnvoye(a.jobId)) return false;
-    const r = await enqueueEmail(
-      "qualiopi-alerte-interne",
-      destinataireAlertesInternes(),
-      "fr",
-      {
-        niveau: a.niveau ?? "important",
-        code: a.code,
-        titre: a.titre,
-        message: a.message,
-        cibleType: a.cibleType,
-        cibleId: a.cibleId,
-        rubrique: "apporteurs",
-        chemin: "apporteurs/entreprises",
-        createdAt: a.maintenant.toLocaleDateString("fr-FR"),
-      },
-      { jobId: a.jobId, entityType: a.cibleType, entityId: a.cibleId },
-    );
-    return r.enqueued === true;
-  } catch (err) {
-    signalerErreurReseau(`alerte interne ${a.code}`, err);
-    return false;
-  }
-}
-
 async function alerterDeuxApporteurs(factureId: string, siren: string, maintenant: Date) {
   await alerteInterne({
     jobId: `apporteur-commande-deux-apporteurs-${factureId}`,
@@ -767,7 +961,9 @@ const SELECT_PRESENTATION_PROTEGEE = {
  * entreprise déjà connue ne rapporte rien. Une présentation validée (ligne `valideeAt`) est
  * `confirmee` : elle passe par la première requête, jugée sur sa seule protection.
  */
-async function lirePresentationsProtegees(): Promise<Array<PresentationProtegee & ProtegeeLue>> {
+export async function lirePresentationsProtegees(): Promise<
+  Array<PresentationProtegee & ProtegeeLue>
+> {
   const protegees = await prisma.presentationEntreprise.findMany({
     where: {
       statut: { in: ["confirmee", "terminee"] },
@@ -794,7 +990,11 @@ async function lirePresentationsProtegees(): Promise<Array<PresentationProtegee 
       ...p,
       // `statut: "reservee"` pour `commandeCouverte`, que la présentation soit encore réservée,
       // échue ou résiliée : c'est la FIN de la réservation (ramenée par la résiliation) qui borne.
-      reservation: { reserveeJusquAt: reservations.get(p.id)!, statut: "reservee" },
+      reservation: {
+        reserveeJusquAt: reservations.get(p.id)!.reserveeJusquAt,
+        echueAt: reservations.get(p.id)!.echueAt,
+        statut: "reservee",
+      },
     })),
   ];
 }
@@ -810,14 +1010,17 @@ type ProtegeeLue = {
 };
 
 /** Les fins de réservation des lignes NON validées (table absente : aucune). */
-async function lireReservationsNonValidees(): Promise<Map<string, Date>> {
-  const m = new Map<string, Date>();
+async function lireReservationsNonValidees(): Promise<
+  Map<string, { reserveeJusquAt: Date; echueAt: Date | null }>
+> {
+  const m = new Map<string, { reserveeJusquAt: Date; echueAt: Date | null }>();
   try {
     const ls = await prisma.presentationReservation.findMany({
       where: { valideeAt: null },
-      select: { presentationId: true, reserveeJusquAt: true },
+      select: { presentationId: true, reserveeJusquAt: true, echueAt: true },
     });
-    for (const l of ls) m.set(l.presentationId, l.reserveeJusquAt);
+    for (const l of ls)
+      m.set(l.presentationId, { reserveeJusquAt: l.reserveeJusquAt, echueAt: l.echueAt ?? null });
   } catch (err) {
     if (!tableAbsente(err)) throw err;
   }
@@ -1232,47 +1435,82 @@ async function etapeCommandeSignee(maintenant: Date, bilan: BilanPassageReseau):
   const presentations = await lirePresentationsProtegees();
   if (presentations.length === 0) return;
   const index = parSiren(presentations);
+  // Borne basse des devis (L8) : 30 jours, ou plus loin si une réservation non validée remonte
+  // plus haut (un devis signé pendant la réservation peut être saisi tard). Une présentation SANS
+  // réservation garde la limite de 30 jours (filtrée plus bas, par présentation).
+  const limite30 = ajouterJours(maintenant, -FENETRE_COMMANDE_SIGNEE_JOURS);
+  const recuesReservations = presentations
+    .filter((p) => p.reservation)
+    .map((p) => p.recueAt.getTime());
+  const borneBasse = new Date(Math.min(limite30.getTime(), ...recuesReservations));
   const devis = await prisma.devis.findMany({
     where: {
-      acceptedAt: {
-        not: null,
-        gte: ajouterJours(maintenant, -FENETRE_COMMANDE_SIGNEE_JOURS),
-        lte: maintenant,
-      },
+      acceptedAt: { not: null, gte: borneBasse, lte: maintenant },
       client: { siren: { in: [...index.keys()] } },
     },
-    select: { id: true, acceptedAt: true, client: { select: { siren: true, siret: true } } },
+    select: {
+      id: true,
+      acceptedAt: true,
+      sentAt: true,
+      createdAt: true,
+      replacesDevisId: true,
+      client: { select: { siren: true, siret: true } },
+    },
   });
   const etablissements = await lireEtablissements(presentations.map((p) => p.id));
   const siretsDevis = await lireSiretsDevis(devis.map((d) => d.id));
   for (const d of devis) {
     // MÊME source que la facture (relecture de a1) : `siretDeLaCommande`.
+    const hors30Jours = d.acceptedAt!.getTime() < limite30.getTime();
+    // Sans réservation à valider, la fenêtre reste de 30 jours : on ne cherche pas la présentation
+    // d'un devis plus ancien que cela parmi les seules présentations protégées.
+    const candidates = (index.get(d.client.siren ?? "") ?? []).filter(
+      (c) => !hors30Jours || c.reservation,
+    );
     const qui = presentationPourEtablissement(
-      index.get(d.client.siren ?? "") ?? [],
+      candidates,
       etablissements,
       d.acceptedAt!,
       siretDeLaCommande({ devisSiret: siretsDevis.get(d.id), clientSiret: d.client.siret }),
+      // L7 : la date d'émission ne sert qu'à la validation d'une réservation (jamais la commission).
+      await dateEmissionDevis(d),
     );
     // À attribuer : l'annonce attend le choix de Williams (aucune donnée ne part à l'aveugle).
     if (!qui || "aAttribuer" in qui) continue;
     const p = qui.presentation;
     // Règle par rendez-vous : une commande signée PENDANT la réservation (sans rendez-vous tenu).
-    // La commission est due ; si la réservation court encore, l'entreprise est validée à la date de
-    // signature (six mois). Williams en est averti en console, UNE fois par devis. Jamais d'e-mail à
-    // l'apporteur : ce n'est pas l'annonce d'une commande d'une entreprise protégée.
+    // La commission est due ; si la réservation court encore (ou vient de s'achever, signature avant
+    // le terme), l'entreprise est validée à la date de signature (six mois). Williams en est averti
+    // en console, UNE fois par devis. L'apporteur reçoit l'ANNONCE DE VALIDATION (idempotente, une
+    // seule par présentation) ; jamais l'e-mail « commande signée » pour cette commande.
     // Validée par CETTE commande à un passage précédent (l'alerte avait pu échouer) : la
     // présentation est désormais `confirmee`, mais l'e-mail « commande signée » ne part jamais
     // pour elle ; l'alerte interne est retentée (idempotente) jusqu'à ce qu'elle parte.
     const valideeLe = p.reservation ? null : await valideeParCommandeLe(p.id);
     const dejaValidee = valideeLe !== null && d.acceptedAt!.getTime() <= valideeLe.getTime();
     if (p.reservation || dejaValidee) {
+      // Réservation en cours, OU échue sans validation (jamais confirmée) avec une signature
+      // entre la saisie et le terme (la couverture de `presentationPourEtablissement` l'a déjà vérifié).
+      const rattrapable =
+        p.statut === "terminee" && p.confirmeeAt === null && !!p.reservation?.echueAt;
       const validee =
         dejaValidee ||
-        (p.statut === "reservee" && (await validerParCommande(p.id, d.acceptedAt!, maintenant)));
+        ((p.statut === "reservee" || rattrapable) &&
+          (await validerParCommande(p.id, d.acceptedAt!, maintenant)));
       if (validee && !dejaValidee) {
         bilan.validationsParCommande += 1;
         p.statut = "confirmee";
         p.reservation = null;
+        // Le contrat 2.8 (art. 3.2) veut que l'apporteur soit prévenu : UNE annonce, idempotente.
+        await annoncerValidation(p.id, p.apporteurId);
+      } else if (dejaValidee && valideeLe) {
+        // Annonce échouée à un passage précédent : retentée, mais seulement si la validation est
+        // récente (pas d'annonce en retard pour les anciennes).
+        if (
+          ajouterJoursOuvres(valideeLe, RELANCE_ANNONCE_JOURS_OUVRES).getTime() >
+          maintenant.getTime()
+        )
+          await annoncerValidation(p.id, p.apporteurId);
       }
       await alerteInterne({
         jobId: `apporteur-commande-en-reservation-${d.id}`,
@@ -1281,7 +1519,7 @@ async function etapeCommandeSignee(maintenant: Date, bilan: BilanPassageReseau):
         message: `${p.denomination} a signé une commande le ${dateEnClair(d.acceptedAt!)}, pendant la réservation de l'apporteur et sans rendez-vous tenu. La commission est due à la facture soldée. ${
           validee
             ? `L'entreprise est validée à la date de signature : la protection de six mois part de ce jour.`
-            : `La réservation était déjà close : la commission reste due pour cette commande, sans nouvelle protection.`
+            : `La validation n'a pas pu être enregistrée (déjà traitée, contrat de l'apporteur terminé, ou autre déclaration sur la même entreprise) : la commission reste due pour cette commande ; vérifiez la fiche en console.`
         }`,
         cibleType: "PresentationEntreprise",
         cibleId: p.id,
@@ -1316,24 +1554,54 @@ async function etapeCommandeSignee(maintenant: Date, bilan: BilanPassageReseau):
 class Annule extends Error {}
 
 /**
- * Valide la réservation par une commande signée : écriture CONDITIONNELLE sur la ligne (ni échue, ni
- * déjà validée) puis sur la présentation (encore `reservee`), dans une transaction qui s'annule si
- * l'une des deux perd. Les six mois partent de la date de signature. Rend vrai si CE passage gagne.
+ * Valide la réservation par une commande signée : écriture CONDITIONNELLE sur la ligne (pas déjà
+ * validée) puis sur la présentation (`reservee`, ou `terminee` jamais confirmée pour le rattrapage),
+ * dans une transaction qui s'annule si l'une des deux perd. Les six mois partent de la date de
+ * signature. Rend vrai si CE passage gagne.
+ *
+ * Réservation ÉCHUE (rattrapage) : la ligne garde son `echueAt` ; la signature doit être au plus
+ * tard au terme. Refus si l'apporteur est résilié, ou si une AUTRE déclaration occupe l'entreprise
+ * (alerte critique : Williams tranche).
  */
 async function validerParCommande(
   presentationId: string,
   signeeAt: Date,
   maintenant: Date,
 ): Promise<boolean> {
+  let conflit = false;
   try {
-    return await prisma.$transaction(async (tx) => {
+    const validee = await prisma.$transaction(async (tx) => {
+      const ligne = await tx.presentationReservation.findUnique({
+        where: { presentationId },
+        select: { reserveeJusquAt: true, echueAt: true, valideeAt: true },
+      });
+      if (!ligne || ligne.valideeAt) return false;
+      // Une ligne échue ne se valide que si la signature tombe au plus tard au terme.
+      if (ligne.echueAt && !(signeeAt.getTime() <= ligne.reserveeJusquAt.getTime())) return false;
+      const p = await tx.presentationEntreprise.findUnique({
+        where: { id: presentationId },
+        select: { id: true, siren: true, apporteurId: true, statut: true, confirmeeAt: true },
+      });
+      if (!p || p.confirmeeAt) return false;
+      const rattrapage = p.statut === "terminee";
+      if (rattrapage && !ligne.echueAt) return false; // terminée par résiliation : rien à rattraper
+      if (p.statut !== "reservee" && !rattrapage) return false;
+      const apporteur = await tx.apporteurReseau.findUnique({
+        where: { id: p.apporteurId },
+        select: { statut: true },
+      });
+      if (apporteur?.statut === "resilie") return false;
+      if (rattrapage && (await rattrapageEnConflit(tx, p, maintenant))) {
+        conflit = true;
+        return false;
+      }
       const r = await tx.presentationReservation.updateMany({
-        where: { presentationId, echueAt: null, valideeAt: null },
+        where: { presentationId, valideeAt: null },
         data: { valideeAt: maintenant, validationSource: "commande", valideeParId: "systeme" },
       });
       if (r.count !== 1) return false;
       const q = await tx.presentationEntreprise.updateMany({
-        where: { id: presentationId, statut: "reservee" },
+        where: { id: presentationId, statut: { in: ["reservee", "terminee"] }, confirmeeAt: null },
         data: {
           statut: "confirmee",
           confirmeeAt: signeeAt,
@@ -1343,10 +1611,56 @@ async function validerParCommande(
       if (q.count !== 1) throw new Annule();
       return true;
     });
+    if (conflit) await alerterConflitRattrapage(presentationId, maintenant);
+    return validee;
   } catch (err) {
     if (err instanceof Annule) return false;
     throw err;
   }
+}
+
+/**
+ * Annonce la validation à l'apporteur (contrat 2.8, art. 3.2) : UNE fois (`jobId` de
+ * `annoncerAttribution`). Un apporteur RETIRÉ du réseau ne reçoit rien (seuls les e-mails liés à
+ * l'argent lui parviennent). Ne lève pas.
+ */
+async function annoncerValidation(presentationId: string, apporteurId: string): Promise<void> {
+  try {
+    const retrait = await prisma.apporteurReseauRetrait.findUnique({
+      where: { apporteurId },
+      select: { apporteurId: true },
+    });
+    if (retrait) return;
+  } catch (err) {
+    if (!tableAbsente(err)) throw err;
+  }
+  await annoncerAttribution(presentationId, "confirmee");
+}
+
+/**
+ * L7 : date d'émission d'un devis = `sentAt ?? createdAt`, la PLUS ANCIENNE de la chaîne des devis
+ * qu'il remplace (`replacesDevisId`, 10 maillons au plus). `null` si rien n'est lisible.
+ */
+async function dateEmissionDevis(d: {
+  sentAt?: Date | null;
+  createdAt?: Date | null;
+  replacesDevisId?: string | null;
+}): Promise<Date | null> {
+  let plusAncienne: Date | null = null;
+  let courant: typeof d | null = d;
+  const vus = new Set<string>();
+  for (let i = 0; courant && i < MAILLONS_DEVIS_MAX; i++) {
+    const emis = courant.sentAt ?? courant.createdAt ?? null;
+    if (emis && (!plusAncienne || emis.getTime() < plusAncienne.getTime())) plusAncienne = emis;
+    const suivant: string | null | undefined = courant.replacesDevisId;
+    if (!suivant || vus.has(suivant)) break;
+    vus.add(suivant);
+    courant = await prisma.devis.findUnique({
+      where: { id: suivant },
+      select: { sentAt: true, createdAt: true, replacesDevisId: true },
+    });
+  }
+  return plusAncienne;
 }
 
 /** Date de validation d'une réservation par une COMMANDE signée (sinon `null`, table absente comprise). */
@@ -1400,7 +1714,147 @@ type ReservationEchue = {
   rendezVousAt: Date | null;
 };
 
+/**
+ * Alerte INTERNE (jamais l'apporteur) à l'approche du terme : une réservation sans rendez-vous ni
+ * proposition, à `ALERTE_SANS_RDV_JOURS_AVANT_TERME` jours (ou moins) de son terme. « Saisir un
+ * rendez-vous ou créer la rencontre avant le terme, sinon la réservation prend fin. » Une alerte
+ * par réservation ET par terme (le `jobId` porte `reserveeJusquAt`). Un envoi qui échoue est
+ * retenté au passage suivant (rien n'est mémorisé tant qu'il n'est pas parti).
+ *
+ * E5, dans la même étape : une proposition de rendez-vous en attente depuis plus de
+ * `ALERTE_PROPOSITION_JOURS_OUVRES` jours ouvrés alerte Williams, une fois par proposition.
+ */
+async function etapeReservationsSansRendezVous(
+  maintenant: Date,
+  bilan: BilanPassageReseau,
+): Promise<void> {
+  const horizon = ajouterJours(maintenant, ALERTE_SANS_RDV_JOURS_AVANT_TERME);
+  let curseur: { at: Date; id: string } | null = null;
+  try {
+    for (let page = 0; page < PAGES_ECHEANCES_MAX; page++) {
+      const lignes: Array<{ presentationId: string; reserveeJusquAt: Date }> =
+        await prisma.presentationReservation.findMany({
+          where: {
+            regle: "rendez_vous",
+            echueAt: null,
+            valideeAt: null,
+            reserveeJusquAt: { gte: maintenant, lte: horizon },
+            ...(curseur
+              ? {
+                  OR: [
+                    { reserveeJusquAt: { gt: curseur.at } },
+                    { reserveeJusquAt: curseur.at, presentationId: { gt: curseur.id } },
+                  ],
+                }
+              : {}),
+          },
+          select: { presentationId: true, reserveeJusquAt: true },
+          orderBy: [{ reserveeJusquAt: "asc" }, { presentationId: "asc" }],
+          take: PAGE_ECHEANCES,
+        });
+      if (lignes.length === 0) break;
+      const presentations = await prisma.presentationEntreprise.findMany({
+        where: { id: { in: lignes.map((l) => l.presentationId) }, statut: "reservee" },
+        select: { id: true, denomination: true },
+      });
+      const parId = new Map(presentations.map((p) => [p.id, p]));
+      for (const l of lignes) {
+        const p = parId.get(l.presentationId);
+        if (!p) continue;
+        if ((await lirePropositionsOuvertes(p.id)).length > 0) continue;
+        const parti = await alerteInterne({
+          jobId: `apporteur-reservation-sans-rdv-${p.id}-${l.reserveeJusquAt.toISOString()}`,
+          code: "apporteur_reservation_sans_rdv",
+          titre: `Réservation sans rendez-vous, terme proche : ${p.denomination}`,
+          message: `La réservation de ${p.denomination} prend fin le ${dateEnClair(l.reserveeJusquAt)} et aucun rendez-vous n'est enregistré ni proposé. Saisir un rendez-vous ou créer la rencontre avant le terme, sinon la réservation prend fin. À traiter dans la console (Apporteurs › Entreprises présentées).`,
+          cibleType: "PresentationEntreprise",
+          cibleId: p.id,
+          maintenant,
+        });
+        if (parti) bilan.reservationsBientotEchues += 1;
+      }
+      if (lignes.length < PAGE_ECHEANCES) break;
+      const der = lignes[lignes.length - 1]!;
+      curseur = { at: der.reserveeJusquAt, id: der.presentationId };
+    }
+  } catch (err) {
+    if (!tableAbsente(err)) throw err;
+    return;
+  }
+  await alerterPropositionsEnAttente(maintenant, bilan);
+}
+
+/** E5 : propositions de rendez-vous ni retenues ni écartées, en attente depuis plus de 5 jours ouvrés. */
+async function alerterPropositionsEnAttente(
+  maintenant: Date,
+  bilan: BilanPassageReseau,
+): Promise<void> {
+  let propositions;
+  try {
+    propositions = await prisma.propositionRendezVousPresentation.findMany({
+      // Au moins cinq jours civils : filtre large, le calcul en jours ouvrés est fait ensuite.
+      where: {
+        ecarteeAt: null,
+        retenueAt: null,
+        creeAt: { lte: ajouterJours(maintenant, -ALERTE_PROPOSITION_JOURS_OUVRES) },
+      },
+      select: { id: true, presentationId: true, creeAt: true },
+      orderBy: [{ creeAt: "asc" }],
+      take: PAGE_ECHEANCES,
+    });
+  } catch (err) {
+    if (tableAbsente(err)) return;
+    throw err;
+  }
+  const dues = propositions.filter(
+    (pr) =>
+      ajouterJoursOuvres(pr.creeAt, ALERTE_PROPOSITION_JOURS_OUVRES).getTime() <=
+      maintenant.getTime(),
+  );
+  if (dues.length === 0) return;
+  const presentations = await prisma.presentationEntreprise.findMany({
+    // En cours, ou échue sans validation (rattrapage possible), jamais confirmée.
+    where: {
+      id: { in: [...new Set(dues.map((d) => d.presentationId))] },
+      statut: { in: ["reservee", "terminee"] },
+      confirmeeAt: null,
+    },
+    select: { id: true, denomination: true },
+  });
+  const parId = new Map(presentations.map((p) => [p.id, p]));
+  for (const pr of dues) {
+    const p = parId.get(pr.presentationId);
+    if (!p) continue;
+    const parti = await alerteInterne({
+      jobId: `apporteur-proposition-en-attente-${pr.id}`,
+      code: "apporteur_proposition_en_attente",
+      titre: `Proposition de rendez-vous sans réponse : ${p.denomination}`,
+      message: `Une proposition de rendez-vous pour ${p.denomination} attend depuis plus de ${ALERTE_PROPOSITION_JOURS_OUVRES} jours ouvrés (proposée le ${dateEnClair(pr.creeAt)}). Retenez-la ou écartez-la dans la console (Apporteurs › Entreprises présentées) : tant qu'elle reste ouverte, l'entreprise reste réservée.`,
+      cibleType: "PresentationEntreprise",
+      cibleId: p.id,
+      maintenant,
+    });
+    if (parti) bilan.propositionsEnAttente += 1;
+  }
+}
+
 async function etapeReservationsEchues(maintenant: Date, bilan: BilanPassageReseau): Promise<void> {
+  try {
+    await echeancesDesReservations(maintenant, bilan);
+  } finally {
+    // Même si une page a échoué : les alertes d'échéance manquées sont rattrapées.
+    try {
+      await rattraperAlertesEchues(maintenant);
+    } catch (err) {
+      if (!tableAbsente(err)) signalerErreurReseau("alertes d'échéance des réservations", err);
+    }
+  }
+}
+
+async function echeancesDesReservations(
+  maintenant: Date,
+  bilan: BilanPassageReseau,
+): Promise<void> {
   // Ordre STABLE (les plus anciennes échéances d'abord) et lecture par CURSEUR : une réservation
   // suspendue (rendez-vous à trancher) reste dans le filtre, mais ne masque jamais les suivantes.
   let curseur: { at: Date; id: string } | null = null;
@@ -1498,10 +1952,59 @@ async function traiterReservationsEchues(
         if (q.count !== 1) throw new Annule();
         return true;
       });
-      if (echue) bilan.reservationsEchues += 1;
+      if (echue) {
+        bilan.reservationsEchues += 1;
+        await alerterReservationEchue(p.id, p.denomination, l.reserveeJusquAt, maintenant);
+      }
     } catch (err) {
       if (!(err instanceof Annule)) throw err;
     }
+  }
+}
+
+/** L3b : « la réservation a pris fin » — alerte INTERNE, une fois par présentation (jobId stable). */
+async function alerterReservationEchue(
+  presentationId: string,
+  denomination: string,
+  reserveeJusquAt: Date,
+  maintenant: Date,
+): Promise<boolean> {
+  return alerteInterne({
+    jobId: `apporteur-reservation-echue-${presentationId}`,
+    code: "apporteur_reservation_echue",
+    titre: `Réservation terminée : ${denomination}`,
+    message: `La réservation de ${denomination} a pris fin le ${dateEnClair(reserveeJusquAt)} sans validation : la réservation a pris fin ; un rendez-vous pris avant le terme peut encore être validé (console › Apporteurs › Entreprises présentées).`,
+    cibleType: "PresentationEntreprise",
+    cibleId: presentationId,
+    maintenant,
+  });
+}
+
+/** L3b : rattrape les alertes d'échéance qui n'ont pas pu partir (lignes échues depuis moins de 7 jours). Idempotent. */
+async function rattraperAlertesEchues(maintenant: Date): Promise<void> {
+  const lignes = await prisma.presentationReservation.findMany({
+    where: {
+      regle: "rendez_vous",
+      valideeAt: null,
+      echueAt: { gte: ajouterJours(maintenant, -RATTRAPAGE_ALERTE_ECHUE_JOURS), lte: maintenant },
+    },
+    select: { presentationId: true, reserveeJusquAt: true },
+    orderBy: [{ echueAt: "asc" }],
+    take: PAGE_ECHEANCES,
+  });
+  if (lignes.length === 0) return;
+  const presentations = await prisma.presentationEntreprise.findMany({
+    where: {
+      id: { in: lignes.map((l) => l.presentationId) },
+      statut: "terminee",
+      confirmeeAt: null,
+    },
+    select: { id: true, denomination: true },
+  });
+  const parId = new Map(presentations.map((p) => [p.id, p]));
+  for (const l of lignes) {
+    const p = parId.get(l.presentationId);
+    if (p) await alerterReservationEchue(p.id, p.denomination, l.reserveeJusquAt, maintenant);
   }
 }
 
@@ -1518,6 +2021,7 @@ async function etapeRappelsDossier(maintenant: Date, bilan: BilanPassageReseau):
     where: { statut: "dossier_en_cours", signeParApporteurAt: null },
     select: { id: true, prenom: true, email: true, versionLien: true, submissionId: true },
   });
+  let annexesDuPassage: ReturnType<typeof annexesDeLEnvoiDuLien> | undefined;
   for (const a of candidats) {
     const envoisLien = await prisma.emailLog.findMany({
       where: {
@@ -1556,13 +2060,23 @@ async function etapeRappelsDossier(maintenant: Date, bilan: BilanPassageReseau):
     const url = urlDossier(a.id, a.versionLien);
     const destinataire = decryptPii(a.email);
     if (!url || !destinataire) continue;
+    // Les relances portent aussi la fiche, le livret et le guide (facultatifs, jamais d'erreur).
+    // Lus une seule fois par passage, et seulement s'il y a au moins une relance à envoyer.
+    annexesDuPassage ??= annexesDeLEnvoiDuLien();
+    const annexes = await annexesDuPassage;
     const r = await envoyer({
       gabarit: "apporteur-dossier-lien",
       destinataire,
-      payload: { contactName: decryptPii(a.prenom) ?? "", dossierUrl: url, rappel },
+      payload: {
+        contactName: decryptPii(a.prenom) ?? "",
+        dossierUrl: url,
+        rappel,
+        ...annexes.payload,
+      },
       entityType: "ApporteurReseau",
       entityId: a.id,
       jobId,
+      ...(annexes.attachments.length > 0 ? { attachments: annexes.attachments } : {}),
     });
     if (r === "envoye") bilan.rappelsDossier += 1;
   }

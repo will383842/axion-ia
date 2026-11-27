@@ -145,3 +145,32 @@ export function lirePlafondsBlogEffectifs(extra: unknown): { jour: number; mois:
   const jour = Math.min(valide(lus.jour, PLAFOND_JOUR_DEFAUT_USD, BORNE_JOUR_USD), mois);
   return { jour, mois };
 }
+
+// ── Sous-plafonds du pilotage SEO (P0) ────────────────────────────────────────
+
+/**
+ * Clés `ContentGenConfig` (valeur : un nombre) des sous-plafonds des appels du pilotage SEO. Ils
+ * s'ajoutent aux plafonds communs (10 $/jour, 200 $/mois) : ils ne les remplacent jamais.
+ */
+export const CLES_PILOTAGE = {
+  jour: "pilotage_cout_max_jour_usd",
+  mois: "pilotage_cout_max_mois_usd",
+} as const;
+export const PILOTAGE_JOUR_DEFAUT_USD = 2;
+export const PILOTAGE_MOIS_DEFAUT_USD = 30;
+
+/**
+ * Sous-plafonds effectifs, lecture tolérante et orientée vers le plus STRICT : absent ou illisible =
+ * défaut ; 0 explicite = tout refusé ; au-delà de la borne de garde = défaut ; jour > mois = le
+ * jour est ramené au mois.
+ */
+export function lireSousPlafondsPilotage(
+  jourBrut: unknown,
+  moisBrut: unknown,
+): { jour: number; mois: number } {
+  const valide = (v: unknown, defaut: number, borne: number): number =>
+    typeof v === "number" && Number.isFinite(v) && v >= 0 && v <= borne ? v : defaut;
+  const mois = valide(moisBrut, PILOTAGE_MOIS_DEFAUT_USD, BORNE_MOIS_USD);
+  const jour = Math.min(valide(jourBrut, PILOTAGE_JOUR_DEFAUT_USD, BORNE_JOUR_USD), mois);
+  return { jour, mois };
+}

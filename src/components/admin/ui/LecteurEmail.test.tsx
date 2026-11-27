@@ -88,7 +88,8 @@ describe("LecteurEmail", () => {
     for (const l of ["De", "À", "Répondre à", "Objet", "Pré-en-tête", "Pièces jointes"]) {
       expect(screen.getByText(l)).toBeDefined();
     }
-    expect(screen.getByText("devis.pdf, annexe.pdf")).toBeDefined();
+    expect(screen.getByText("devis.pdf")).toBeDefined();
+    expect(screen.getByText("annexe.pdf")).toBeDefined();
   });
 
   it("propose ordinateur / téléphone et clair / sombre, sans HTML / texte si pas de texte", () => {
@@ -177,5 +178,65 @@ describe("LecteurEmail", () => {
     render(<LecteurEmail apercu={{ html: HTML, objet: "Objet X", de: "d@example.com" }} />);
     expect(screen.getByText("Objet X")).toBeDefined();
     expect(screen.getByText("d@example.com")).toBeDefined();
+  });
+
+  describe("pièces jointes et liens de l'aperçu avant envoi", () => {
+    const LIENS =
+      '<a href="https://axion-ia.com/fr/tarifs" target="_blank">Voir les tarifs</a>' +
+      '<a title="https://axion-ia.com/opposition?t=[masqué]">Me désinscrire</a>';
+
+    it("pièces décrites : nom, poids et bouton « Ouvrir » vers un nouvel onglet", () => {
+      render(
+        <LecteurEmail
+          html={HTML}
+          piecesJointes={[
+            { nom: "Contrat.pdf", taille: 348_160, href: "/fr/adm/emails/piece-jointe/x" },
+          ]}
+        />,
+      );
+      expect(screen.getByText("Pièces jointes")).toBeDefined();
+      expect(screen.getByText("Contrat.pdf")).toBeDefined();
+      expect(screen.getByText(/340 Ko/)).toBeDefined();
+      const ouvrir = screen.getByRole("link", { name: "Ouvrir Contrat.pdf dans un nouvel onglet" });
+      expect(ouvrir.getAttribute("href")).toBe("/fr/adm/emails/piece-jointe/x");
+      expect(ouvrir.getAttribute("target")).toBe("_blank");
+      expect(ouvrir.getAttribute("rel")).toBe("noopener noreferrer");
+    });
+
+    it("liste vide : « Aucune pièce jointe » ; liste absente : pas de ligne", () => {
+      const { rerender } = render(<LecteurEmail html={HTML} piecesJointes={[]} />);
+      expect(screen.getByText("Aucune pièce jointe")).toBeDefined();
+      rerender(<LecteurEmail html={HTML} />);
+      expect(screen.queryByText("Pièces jointes")).toBeNull();
+    });
+
+    it("liensOuvrables : base _blank, popups autorisés, jamais de script ni same-origin", () => {
+      const { container } = render(<LecteurEmail html={LIENS} liensOuvrables />);
+      const cadre = container.querySelector("iframe");
+      expect(cadre?.getAttribute("sandbox")).toBe("allow-popups allow-popups-to-escape-sandbox");
+      expect(cadre?.getAttribute("sandbox")).not.toMatch(/allow-scripts|allow-same-origin/);
+      const doc = new DOMParser().parseFromString(cadre?.getAttribute("srcdoc") ?? "", "text/html");
+      expect(doc.querySelector("base")?.getAttribute("target")).toBe("_blank");
+      expect(doc.querySelector("style")).toBeNull();
+    });
+
+    it("liste « Liens de cet e-mail » : public cliquable, personnel non cliquable et signalé", () => {
+      render(<LecteurEmail html={LIENS} liensOuvrables />);
+      const liste = screen.getByRole("region", { name: "Liens de cet e-mail" });
+      const public_ = screen.getByRole("link", { name: /Voir les tarifs/ });
+      expect(liste.contains(public_)).toBe(true);
+      expect(public_.getAttribute("href")).toBe("https://axion-ia.com/fr/tarifs");
+      expect(public_.getAttribute("target")).toBe("_blank");
+      expect(public_.getAttribute("rel")).toBe("noopener noreferrer");
+      expect(screen.getByText("Me désinscrire")).toBeDefined();
+      expect(screen.getByText(/lien personnel du destinataire/)).toBeDefined();
+      expect(screen.getAllByRole("link")).toHaveLength(1);
+    });
+
+    it("sans liensOuvrables : cadre isolé comme avant, pas de liste", () => {
+      const { container } = render(<LecteurEmail html={LIENS} liensInertes />);
+      expect(container.querySelector("iframe")?.getAttribute("sandbox")).toBe("");
+      expect(screen.queryByText("Liens de cet e-mail")).toBeNull();
+    });
   });
 });

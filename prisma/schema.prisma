@@ -16611,6 +16611,107 @@ model ApporteurResiliation {
   @@map("apporteur_resiliation")
 }
 
+/// Changement d'IBAN d'un apporteur APRÈS la signature (plan `docs/plans/apporteurs-changement-iban-2026-11-25.md`, lot 1).
+/// Une ligne par demande, jamais supprimée (déclencheur SQL). Table SÉPARÉE, sans clé étrangère ni énumération
+/// Postgres, à dessein : `apporteurs_reseau` ne change pas pendant la fenêtre app/worker, et tout lecteur tolère
+/// la table absente (P2021). `statut` est un texte contraint par CHECK (pas d'énumération : aucune valeur à
+/// propager entre les deux conteneurs). L'IBAN demandé n'est JAMAIS en clair (CHECK sur le format complet `enc:v2:`).
+/// rgpd: dossier-client
+model ApporteurChangementIban {
+  id                     String    @id @default(uuid()) @db.Uuid
+  apporteurId            String    @map("apporteur_id") @db.Uuid
+  /// a_confirmer | confirmee | validee | refusee | opposee | annulee | expiree (CHECK `apporteur_changements_iban_statut`).
+  statut                 String    @default("a_confirmer") @db.VarChar(16)
+  /// IBAN demandé, chiffré `enc:v2:` (donnée liée `changement-iban:<id>`). Jamais en clair (CHECK).
+  iban                   String    @db.Text
+  ibanEmpreinte          String    @map("iban_empreinte") @db.Char(64)
+  ibanFin4               String    @map("iban_fin4") @db.Char(4)
+  ancienIbanEmpreinte    String?   @map("ancien_iban_empreinte") @db.Char(64)
+  ancienIbanFin4         String?   @map("ancien_iban_fin4") @db.Char(4)
+  /// espace | console
+  origine                String    @db.VarChar(8)
+  demandeeAt             DateTime  @default(now()) @map("demandee_at") @db.Timestamptz(3)
+  demandeIpHash          String?   @map("demande_ip_hash") @db.VarChar(64)
+  /// Sortie de `resumerNavigateur` (« Chrome · Windows »), jamais le `User-Agent` entier.
+  demandeNavigateur      String?   @map("demande_navigateur") @db.VarChar(80)
+  avisEnvoyeAt           DateTime? @map("avis_envoye_at") @db.Timestamptz(3)
+  confirmeeAt            DateTime? @map("confirmee_at") @db.Timestamptz(3)
+  confirmationIpHash     String?   @map("confirmation_ip_hash") @db.VarChar(64)
+  confirmationNavigateur String?   @map("confirmation_navigateur") @db.VarChar(80)
+  opposeeAt              DateTime? @map("opposee_at") @db.Timestamptz(3)
+  annuleeAt              DateTime? @map("annulee_at") @db.Timestamptz(3)
+  expireeAt              DateTime? @map("expiree_at") @db.Timestamptz(3)
+  traiteeAt              DateTime? @map("traitee_at") @db.Timestamptz(3)
+  traiteePar             String?   @map("traitee_par") @db.Uuid
+  motifRefus             String?   @map("motif_refus") @db.Text
+  /// Les trois cases cochées et les alertes affichées. Jamais d'IBAN.
+  controles              Json?
+
+  @@index([apporteurId, demandeeAt], map: "apporteur_changements_iban_apporteur_idx")
+  @@index([statut, confirmeeAt], map: "apporteur_changements_iban_statut_idx")
+  @@map("apporteur_changements_iban")
+}
+
+/// RIB (pièce jointe) d'une demande de changement d'IBAN. Octets CHIFFRÉS (enveloppe de `pieces-chiffrement.ts`) ;
+/// `octets` passe à NULL à la purge (`purge_at` posé, CHECK de cohérence). Sans clé étrangère, comme la demande.
+/// rgpd: dossier-client
+model ApporteurChangementIbanRib {
+  demandeId  String    @id @map("demande_id") @db.Uuid
+  octets     Bytes?
+  sha256     String    @db.Char(64)
+  typeMime   String    @map("type_mime") @db.VarChar(80)
+  taille     Int
+  /// Même gabarit que `PieceApporteur`. NEUTRE : toujours « rib.pdf », jamais le nom d'origine (il peut contenir l'IBAN).
+  nomFichier String    @map("nom_fichier") @db.VarChar(200)
+  deposeAt   DateTime  @default(now()) @map("depose_at") @db.Timestamptz(3)
+  purgeAt    DateTime? @map("purge_at") @db.Timestamptz(3)
+
+  @@map("apporteur_changements_iban_rib")
+}
+
+/// Historique des comptes d'un apporteur : un compte par ligne, AJOUT SEUL (déclencheurs : ni DELETE ni TRUNCATE ;
+/// seule `en_vigueur_jusqua` passe de NULL à une date). L'ancien IBAN y est copié à la validation, jamais perdu.
+/// ⚠️ L'IBAN de la fiche est en `enc:v1` : on le DÉCHIFFRE puis on le rechiffre en v2 (donnée liée `iban-historique:<id>`) ; le CHECK refuse un v1 copié tel quel.
+/// rgpd: dossier-client
+model ApporteurIbanHistorique {
+  id              String    @id @default(uuid()) @db.Uuid
+  apporteurId     String    @map("apporteur_id") @db.Uuid
+  /// Chiffré `enc:v2:` (donnée liée `iban-historique:<id>`). Jamais en clair (CHECK).
+  iban            String    @db.Text
+  ibanEmpreinte   String    @map("iban_empreinte") @db.Char(64)
+  ibanFin4        String    @map("iban_fin4") @db.Char(4)
+  enVigueurDe     DateTime? @map("en_vigueur_de") @db.Timestamptz(3)
+  enVigueurJusqua DateTime? @map("en_vigueur_jusqua") @db.Timestamptz(3)
+  /// dossier_initial | changement
+  origine         String    @db.VarChar(16)
+  demandeId       String?   @map("demande_id") @db.Uuid
+  pieceRibId      String?   @map("piece_rib_id") @db.Uuid
+  creeAt          DateTime  @default(now()) @map("cree_at") @db.Timestamptz(3)
+
+  @@index([apporteurId, creeAt], map: "apporteur_iban_historique_apporteur_idx")
+  @@index([ibanEmpreinte], map: "apporteur_iban_historique_empreinte_idx")
+  @@map("apporteur_iban_historique")
+}
+
+/// Sur quel compte un virement est parti (déclaré par « Virement fait »). Ajout seul (déclencheurs).
+/// rgpd: dossier-client
+model ApporteurVirementCompte {
+  id                 String   @id @default(uuid()) @db.Uuid
+  autofactureNumero  String   @map("autofacture_numero") @db.VarChar(40)
+  apporteurId        String   @map("apporteur_id") @db.Uuid
+  ibanEmpreinte      String   @map("iban_empreinte") @db.Char(64)
+  ibanFin4           String   @map("iban_fin4") @db.Char(4)
+  /// Instant du « Virement fait » (celui de `commissions_apporteur.versee_at`) : une autofacture peut être versée en plusieurs fois.
+  verseAt            DateTime @map("verse_at") @db.Timestamptz(3)
+  declareAt          DateTime @default(now()) @map("declare_at") @db.Timestamptz(3)
+  declarePar         String   @map("declare_par") @db.VarChar(64)
+  premierSurCeCompte Boolean  @default(false) @map("premier_sur_ce_compte")
+
+  @@unique([autofactureNumero, verseAt], map: "apporteur_virements_compte_numero_verse_key")
+  @@index([apporteurId, declareAt], map: "apporteur_virements_compte_apporteur_idx")
+  @@map("apporteur_virements_compte")
+}
+
 enum TypePieceApporteur {
   identite
   rib
@@ -18832,4 +18933,63 @@ model GarantieJourneeIa {
   @@index([clientId], map: "garanties_journee_ia_client_id_idx")
   @@index([sirenSnapshot], map: "garanties_journee_ia_siren_snapshot_idx")
   @@map("garanties_journee_ia")
+}
+
+/// Un challenge d'apporteurs (« Prime exceptionnelle de … » côté apporteur) : la règle, la
+/// période, le seuil et le montant, figés à la publication. INVITATION LIBRE : aucun objectif
+/// imposé à un apporteur, aucun classement, aucun compteur. Table autonome, sans clé étrangère
+/// (fenêtre app/worker) ; le brouillon n'est visible que dans la console.
+/// rgpd: technique — règle, période, seuil et montant d'un challenge ; identifiant de l'administrateur auteur ; aucune donnée d'apporteur
+model ChallengeApporteur {
+  id              String    @id @default(uuid()) @db.Uuid
+  titre           String    @db.VarChar(120)
+  /// Jours civils DE PARIS, bornes incluses (CHECK fin >= début en base).
+  debutLe         DateTime  @map("debut_le") @db.Date
+  finLe           DateTime  @map("fin_le") @db.Date
+  /// Dernier jour de paiement client retenu (règlement seulement) ; nul ou >= fin.
+  paiementJusquAu DateTime? @map("paiement_jusqu_au") @db.Date
+  /// Liste fermée : `journee-ia` (CHECK en base).
+  produit         String    @db.VarChar(40)
+  /// Liste fermée : `facturees_dans_la_periode` (CHECK en base).
+  critere         String    @db.VarChar(40)
+  /// 1 à 999 (CHECK en base).
+  seuil           Int
+  /// Montant HT de la prime, en centimes, > 0 (CHECK en base).
+  primeHtCents    Int       @map("prime_ht_cents")
+  /// Texte du règlement publié, figé à la publication.
+  reglement       String    @db.Text
+  /// Empreinte SHA-256 du règlement, posée à la publication.
+  reglementSha256 String?   @map("reglement_sha256") @db.Char(64)
+  /// `brouillon` (défaut) | `publie` | `archive` (CHECK en base).
+  statut          String    @default("brouillon") @db.VarChar(20)
+  publieAt        DateTime? @map("publie_at") @db.Timestamptz(3)
+  /// Instant de l'archivage ; un archivé arrêté avant son début n'est jamais lisible.
+  archiveAt       DateTime? @map("archive_at") @db.Timestamptz(3)
+  /// Identifiants texte d'administrateur, sans clé étrangère.
+  publiePar       String?   @map("publie_par") @db.VarChar(64)
+  creePar         String?   @map("cree_par") @db.VarChar(64)
+  creeAt          DateTime  @default(now()) @map("cree_at") @db.Timestamptz(3)
+  majAt           DateTime  @default(now()) @updatedAt @map("maj_at") @db.Timestamptz(3)
+
+  @@index([statut, debutLe], map: "challenges_apporteur_statut_debut_idx")
+  @@map("challenges_apporteur")
+}
+
+/// Questionnaire du Baromètre 2027 : une ligne par réponse, non nominative. Ni IP, ni e-mail, ni
+/// agent navigateur, ni horodatage précis (`jour` est tronqué au jour UTC). Effacement automatique
+/// 24 mois après le jour d'envoi de chaque réponse (exception déclarée dans le worker de purge).
+/// rgpd: technique — réponses non nominatives, sans identifiant de personne : l'export et l'effacement par personne n'existent pas (art. 11) ; retrait par code, effacement automatique à 24 mois
+model BarometreQuestionnaireReponse {
+  id                   String   @id @default(uuid()) @db.Uuid
+  campagne             String   @default("barometre-2027") @db.VarChar(40)
+  questionnaireVersion String   @map("questionnaire_version") @db.VarChar(20)
+  consentVersion       String   @map("consent_version") @db.VarChar(64)
+  codeRetraitHash      String   @unique @map("code_retrait_hash") @db.VarChar(64)
+  jour                 DateTime @db.Date
+  reponses             Json
+  texteUsage           String?  @map("texte_usage") @db.VarChar(1000)
+  texteQuestion        String?  @map("texte_question") @db.VarChar(1000)
+
+  @@index([campagne, jour], map: "barometre_questionnaire_reponses_campagne_jour_idx")
+  @@map("barometre_questionnaire_reponses")
 }

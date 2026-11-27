@@ -14,6 +14,7 @@ import type {
   SearchIntent,
 } from "../../../../prisma/generated/client";
 import type { UnsplashSelectedPhoto } from "../providers/unsplash";
+import type { DossierPreuves } from "../fact-check/verificateur-deux-phases";
 import type { QualityProfile } from "../profiles/quality-profile-table";
 
 export interface GeneratorBaseInput {
@@ -41,6 +42,11 @@ export interface GeneratorBaseInput {
    * re-génération. Absent = première génération (pas de boucle improve).
    */
   readonly improvementFeedback?: string;
+  /**
+   * Dossier de preuves de la phase A du vérificateur (équipe éditoriale, PR 6). Facultatif :
+   * absent = pas de dossier. Lu seulement quand `CONTENT_EQUIPE_EDITORIALE` vaut « true ».
+   */
+  readonly dossierPreuves?: DossierPreuves;
   /**
    * Métadonnées de l'item RSS source (blog_from_rss uniquement).
    * Injectées dans le prompt pour forcer la citation + le ton actualité.

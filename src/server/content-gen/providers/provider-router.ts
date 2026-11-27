@@ -12,6 +12,7 @@
  * Cf. _AUDIT/PROMPT-CONTENT-GENERATOR-MASTER-2026.md § 7.3 + § 0.4.
  */
 
+import { verifierPlafondJob } from "./plafond-job";
 import {
   ProviderError,
   type GenerationRequest,
@@ -135,6 +136,8 @@ const ROLE_TO_PROVIDERS = {
  * - Telegram alert si fallback déclenché 5+ fois en 30s.
  */
 export async function generate(requete: GenerationRequest): Promise<GenerationResponse> {
+  // Plafond de coût par job (équipe éditoriale) : sans garde inscrite pour ce job, aucun effet.
+  await verifierPlafondJob(requete.jobId);
   // Porte « contenu via Claude » : inerte tant que CONTENT_GEN_BLOG_CLAUDE ≠ "true".
   // Il faut TROIS conditions : demande explicitement marquée (`blogClaudeRole`), interrupteur
   // allumé, et type de contenu dans la liste `CONTENT_GEN_CLAUDE_TYPES` (défaut : les 4 types

@@ -169,7 +169,11 @@ describe.each(CAS)("$nom", ({ lire }) => {
     const { email } = await lire();
     const lecteur = (email as unknown as { apercu: EmailLu }).apercu;
     expect(lecteur.html).toContain("[masqué]");
-    expect(lecteur.html).not.toMatch(/href=/i);
+    // Liens personnels (dossier, opposition) : sans `href`. Les liens publics, eux, s'ouvrent.
+    expect(lecteur.html).not.toMatch(
+      /href="[^"]*(opposition|unsubscribe|apporteur\/dossier|\[masqué\])/i,
+    );
+    expect(lecteur.html).not.toMatch(/href="mailto:/i);
     expect(typeof lecteur.texte).toBe("string");
     expect((lecteur.texte ?? "").length).toBeGreaterThan(10);
     expect(lecteur.texte).not.toContain(MARQUEUR);
