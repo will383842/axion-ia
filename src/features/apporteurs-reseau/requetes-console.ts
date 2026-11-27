@@ -380,27 +380,51 @@ export interface ReservationOuverteVue {
   apporteur: string;
   recueAt: Date;
   reserveeJusquAt: Date;
+  /** Fin de la réservation SANS validation (rattrapage possible), sinon `null`. */
+  echueAt: Date | null;
 }
+
+/** Mention de la console pour une réservation échue : la validation reste possible. */
+export const LIBELLE_RESERVATION_ECHUE = (dateEnClair: string): string =>
+  `Réservation terminée le ${dateEnClair} ; validation encore possible si le rendez-vous a été pris avant cette date`;
 
 export async function lireReservationsOuvertes(): Promise<ReservationOuverteVue[]> {
   if (process.env.DATABASE_URL?.includes("stub.invalid")) return [];
   let lignes;
   try {
-    lignes = await prisma.presentationReservation.findMany({
-      where: { regle: "rendez_vous", valideeAt: null, echueAt: null },
-      orderBy: [{ reserveeJusquAt: "asc" }],
-      take: 300,
-      select: { presentationId: true, reserveeJusquAt: true },
-    });
+    // Deux lectures bornées : les réservations en cours (les plus proches du terme d'abord), puis les
+    // échues non validées (les plus récentes d'abord) : une longue file d'anciennes échues ne
+    // masque jamais les réservations en cours.
+    const select = { presentationId: true, reserveeJusquAt: true, echueAt: true } as const;
+    const [enCours, echues] = await Promise.all([
+      prisma.presentationReservation.findMany({
+        where: { regle: "rendez_vous", valideeAt: null, echueAt: null },
+        orderBy: [{ reserveeJusquAt: "asc" }],
+        take: 300,
+        select,
+      }),
+      prisma.presentationReservation.findMany({
+        where: { regle: "rendez_vous", valideeAt: null, echueAt: { not: null } },
+        orderBy: [{ echueAt: "desc" }],
+        take: 100,
+        select,
+      }),
+    ]);
+    lignes = [...enCours, ...echues];
   } catch (err) {
     if ((err as { code?: unknown } | null)?.code === "P2021") return [];
     throw err;
   }
   if (lignes.length === 0) return [];
   const presentations = await prisma.presentationEntreprise.findMany({
-    where: { id: { in: lignes.map((l) => l.presentationId) }, statut: "reservee" },
+    where: {
+      id: { in: lignes.map((l) => l.presentationId) },
+      // En cours, ou échue sans validation et jamais confirmée (rattrapage).
+      OR: [{ statut: "reservee" }, { statut: "terminee", confirmeeAt: null }],
+    },
     select: {
       id: true,
+      statut: true,
       denomination: true,
       siren: true,
       recueAt: true,
@@ -412,6 +436,8 @@ export async function lireReservationsOuvertes(): Promise<ReservationOuverteVue[
   for (const l of lignes) {
     const p = parId.get(l.presentationId);
     if (!p) continue;
+    // `terminee` sans échéance (résiliation) : rien à rattraper.
+    if (p.statut === "terminee" && !l.echueAt) continue;
     sorties.push({
       presentationId: p.id,
       denomination: p.denomination,
@@ -420,6 +446,7 @@ export async function lireReservationsOuvertes(): Promise<ReservationOuverteVue[
         `${decryptPii(p.apporteur.prenom) ?? ""} ${decryptPii(p.apporteur.nom) ?? ""}`.trim(),
       recueAt: p.recueAt,
       reserveeJusquAt: l.reserveeJusquAt,
+      echueAt: l.echueAt ?? null,
     });
   }
   return sorties;

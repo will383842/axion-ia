@@ -38,6 +38,7 @@ import { pieceContratDeLAccuse } from "./documents-joints";
 import { enregistrerDeclarations, lireDossierParLien } from "./donnees";
 import { jugerAdmission, LIBELLE_REFUS_ADMISSION } from "./regles";
 import { CONTRAT_VERSION } from "./contrat-v2";
+import { alerterSignatureApporteur } from "./alerte-telegram";
 import { envoyer } from "./envois";
 import { urlDossier } from "./jeton";
 import { signalerErreurReseau } from "./signaler";
@@ -222,13 +223,14 @@ export async function signerContrat(e: {
   const lienConsole = `${SITE_URL.replace(/\/+$/, "")}${adminPath("fr", `apporteurs/${dossier.id}`)}`;
   // Clé d'idempotence PAR SIGNATURE (horodatage inclus) : une re-signature après
   // « à compléter » alerte de nouveau, même si le texte du contrat n'a pas changé.
+  const jobIdAlerte = `apporteur-dossier-a-verifier-${dossier.id}-${maintenant.getTime()}`;
   const alerte = await envoyer({
     gabarit: "apporteur-dossier-a-verifier",
     destinataire: destinataireAlertesInternes(),
     payload: { contactName: `${dossier.prenom} ${dossier.nom}`.trim(), lienConsole },
     entityType: "ApporteurReseau",
     entityId: dossier.id,
-    jobId: `apporteur-dossier-a-verifier-${dossier.id}-${maintenant.getTime()}`,
+    jobId: jobIdAlerte,
   });
   if (alerte !== "envoye") {
     // La signature est actée : on ne la défait pas. Mais on ne perd pas l'alerte en silence
@@ -239,6 +241,13 @@ export async function signerContrat(e: {
       tags: { service: "apporteur-dossier", etape: "alerte-a-verifier", resultat: alerte },
     });
   }
+  // Même fait, salon Telegram « Apporteurs » : mêmes clé et jamais bloquant (le module ne lève pas).
+  await alerterSignatureApporteur({
+    cleSignature: jobIdAlerte,
+    prenom: dossier.prenom,
+    nom: dossier.nom,
+    lienConsole,
+  });
   // « Dossier bien reçu » à l'apporteur, une fois par signature (même horodatage que l'alerte) :
   // jamais bloquant, la signature est actée. Il porte le contrat qu'il vient de signer (déposé
   // sur R2 plus haut) ; si R2 ne répond plus, l'accusé part sans pièce, comme avant.

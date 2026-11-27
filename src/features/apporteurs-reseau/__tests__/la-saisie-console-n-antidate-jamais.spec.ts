@@ -90,6 +90,14 @@ describe("saisie console — doublon (même contrôle que le formulaire)", () =>
     });
   });
 
+  it("🔑 point 1 : la fenêtre de 30 jours d'une réservation échue ne bloque pas le même apporteur (art. 3.2, 3.4 bis)", async () => {
+    await creerPresentation({ ...SAISIE } as never, MAINTENANT);
+    const where = h.siennes.mock.calls[0]![0].where;
+    expect(where.statut).toEqual({ in: ["reservee", "confirmee"] });
+    expect(where.OR).toBeUndefined();
+    expect(h.create).toHaveBeenCalled();
+  });
+
   it("protégée et NON échue : refusée", async () => {
     h.siennes.mockResolvedValue([
       { statut: "confirmee", protegeeJusquAt: new Date("2027-01-01T00:00:00Z") },
