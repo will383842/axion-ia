@@ -38,33 +38,33 @@ const FAQS_BY_SERVICE: Record<
       id: "audit-paris",
       fr: {
         q: "Réalisez-vous des audits IA à Paris et en Île-de-France ?",
-        a: "Oui. Paris et toute l'Île-de-France font partie de nos premiers pôles d'intervention. Quatre niveaux d'audit sont disponibles selon votre taille (TPE, PME, ETI, grande entreprise) et votre périmètre, sur devis.",
+        a: "Oui. Nous intervenons à Paris et dans toute l'Île-de-France, dans vos locaux. Quatre niveaux d'audit sont disponibles selon votre taille (TPE, PME, ETI, grande entreprise) et votre périmètre, sur devis.",
       },
       en: {
         q: "Do you run AI audits in Paris and Greater Paris?",
-        a: "Yes. Paris and all of Greater Paris are among our top engagement hubs. Four audit tiers are available based on your size (micro-business, SME, mid-cap, large enterprise) and scope, on quote and with no geographic surcharge.",
+        a: "Yes. We work in Paris and across Greater Paris, at your premises. Four audit tiers are available based on your size (micro-business, SME, mid-cap, large enterprise) and scope, on quote.",
       },
     },
     {
       id: "audit-metropoles",
       fr: {
         q: "Et dans les autres métropoles ? Lyon, Marseille, Toulouse, Bordeaux ?",
-        a: "Toutes les métropoles régionales sont couvertes aux mêmes conditions que Paris. Sélectionnez votre région sur la page Implantations pour voir le tissu B2B local et les éventuels cas clients à proximité.",
+        a: "Nous intervenons dans toutes les métropoles régionales, dans vos locaux. Sélectionnez votre région sur la page Implantations pour voir le tissu B2B local et les éventuels cas clients à proximité.",
       },
       en: {
         q: "What about other metropolitan areas? Lyon, Marseille, Toulouse, Bordeaux?",
-        a: "All regional metropolitan areas are covered on the same terms as Paris. Pick your region on the Locations page to see the local B2B fabric and any nearby case studies.",
+        a: "We work in all the large regional cities, at your premises. Pick your region on the Locations page to see the local B2B fabric and any nearby case studies.",
       },
     },
     {
       id: "audit-province",
       fr: {
         q: "Intervenez-vous en province et dans les zones rurales ?",
-        a: "Oui. Toute commune française métropolitaine de plus de 5 000 habitants est éligible. Pour les communes plus petites ou les cas particuliers, un devis sur mesure est possible.",
+        a: "Oui, partout en France. Pour un cas particulier, un devis sur mesure est possible.",
       },
       en: {
         q: "Do you cover provincial and rural areas?",
-        a: "Yes. Any French metropolitan commune with more than 5,000 inhabitants is eligible. For smaller communes or special cases, a custom quote is possible.",
+        a: "Yes, anywhere in France. For a special case, a custom quote is possible.",
       },
     },
     {
@@ -84,22 +84,22 @@ const FAQS_BY_SERVICE: Record<
       id: "interventions-paris",
       fr: {
         q: "Vos interventions IA sont-elles disponibles à Paris ?",
-        a: "Oui. Paris est notre premier terrain d'intervention. Cinq formats sont disponibles, d'une journée à plusieurs semaines selon vos équipes : formation collective, Équipes, Managers, Conférence, Dirigeants. Tous accessibles dans les arrondissements parisiens et la première couronne.",
+        a: "Oui, nous intervenons à Paris. Cinq formats sont disponibles, d'une journée à plusieurs semaines selon vos équipes : formation collective, Équipes, Managers, Conférence, Dirigeants. Tous réalisables dans vos locaux, à Paris comme en première couronne.",
       },
       en: {
         q: "Are your AI sessions available in Paris?",
-        a: "Yes. Paris is our top engagement ground. Five formats are available, from one day to several weeks depending on your teams: group training, Teams, Managers, Talk, Executives. All accessible in Paris arrondissements and inner suburbs.",
+        a: "Yes, we work in Paris. Five formats are available, from one day to several weeks depending on your teams: group training, Teams, Managers, Talk, Executives. All can be run at your premises, in Paris and the inner suburbs.",
       },
     },
     {
       id: "interventions-region",
       fr: {
         q: "Intervenez-vous dans toute la France métropolitaine ?",
-        a: "Oui. Douze régions métropolitaines couvertes, plus de 2 100 communes éligibles. Nos consultants sont mobiles : Lyon, Marseille, Toulouse, Bordeaux, Lille, Nantes, Strasbourg, etc.",
+        a: "Oui, partout en France, dans vos locaux : Lyon, Marseille, Toulouse, Bordeaux, Lille, Nantes, Strasbourg, etc.",
       },
       en: {
         q: "Do you cover all metropolitan France?",
-        a: "Yes. Twelve metropolitan regions covered, 2,100+ eligible communes. Our consultants are mobile: Lyon, Marseille, Toulouse, Bordeaux, Lille, Nantes, Strasbourg, etc.",
+        a: "Yes, anywhere in France, at your premises: Lyon, Marseille, Toulouse, Bordeaux, Lille, Nantes, Strasbourg, etc.",
       },
     },
     {
@@ -130,11 +130,11 @@ const FAQS_BY_SERVICE: Record<
       id: "implementation-paris",
       fr: {
         q: "Implémentez-vous des solutions IA à Paris ?",
-        a: "Oui. Paris concentre une part importante de nos missions d'implémentation IA opérationnelle : lecture de factures, automatisation back-office, agents conversationnels, intégration CRM/ERP. Nos consultants sont mobiles dans toute l'Île-de-France, La Défense, Issy, Boulogne, Levallois, Neuilly.",
+        a: "Oui. Nous menons des missions d'implémentation IA opérationnelle à Paris : lecture de factures, automatisation back-office, agents conversationnels, intégration CRM/ERP. Nous intervenons dans toute l'Île-de-France : La Défense, Issy, Boulogne, Levallois, Neuilly.",
       },
       en: {
         q: "Do you deploy AI solutions in Paris?",
-        a: "Yes. Paris hosts a significant share of our operational AI implementation missions: invoice reading, back-office automation, conversational agents, CRM/ERP integration. Our consultants are mobile across all of Greater Paris, La Défense, Issy, Boulogne, Levallois, Neuilly.",
+        a: "Yes. We run operational AI implementation missions in Paris: invoice reading, back-office automation, conversational agents, CRM/ERP integration. We work across Greater Paris: La Défense, Issy, Boulogne, Levallois, Neuilly.",
       },
     },
     {
@@ -176,11 +176,11 @@ const FAQS_BY_SERVICE: Record<
       id: "codage-paris",
       fr: {
         q: "Développez-vous des plateformes IA à Paris et en Île-de-France ?",
-        a: "Oui. Paris et toute l'Île-de-France sont au cœur de notre activité de développement. Nous intervenons aussi bien pour des startups que pour des TPE, PME et ETI. Les projets se déroulent en mode hybride : kickoff et démos sur site, développement en sprint à distance.",
+        a: "Oui, nous développons pour des entreprises de Paris et de toute l'Île-de-France. Nous intervenons aussi bien pour des startups que pour des TPE, PME et ETI. Les projets se déroulent en mode hybride : kickoff et démos sur site, développement en sprint à distance.",
       },
       en: {
         q: "Do you build AI platforms in Paris and Greater Paris?",
-        a: "Yes. Paris and all of Greater Paris are at the heart of our development activity. We work with startups as well as SMEs and mid-caps. Projects run in hybrid mode: on-site kick-off and demos, remote sprint development.",
+        a: "Yes, we build for companies in Paris and across Greater Paris. We work with startups as well as SMEs and mid-caps. Projects run in hybrid mode: on-site kick-off and demos, remote sprint development.",
       },
     },
     {
@@ -191,18 +191,18 @@ const FAQS_BY_SERVICE: Record<
       },
       en: {
         q: "Do you work with companies outside Greater Paris?",
-        a: "Yes, anywhere in mainland France. Development is primarily remote (code, reviews, video demos), with on-site travel for kick-off and delivery. No geographic surcharge.",
+        a: "Yes, anywhere in mainland France. Development is primarily remote (code, reviews, video demos), with on-site travel for kick-off and delivery.",
       },
     },
     {
       id: "codage-remote",
       fr: {
         q: "Le développement peut-il se faire entièrement à distance ?",
-        a: "Oui. La majorité de nos projets sont conduits en mode full-remote avec des sprints de 1 à 2 semaines et des démos hebdomadaires en visio. Un kick-off sur site est recommandé mais non obligatoire.",
+        a: "Oui. Le développement peut être conduit en mode full-remote avec des sprints de 1 à 2 semaines et des démos hebdomadaires en visio. Un kick-off sur site est recommandé mais non obligatoire.",
       },
       en: {
         q: "Can the development be done entirely remotely?",
-        a: "Yes. Most of our projects run full-remote with 1 to 2-week sprints and weekly video demos. An on-site kick-off is recommended but not mandatory.",
+        a: "Yes. Development can run full-remote with 1 to 2-week sprints and weekly video demos. An on-site kick-off is recommended but not mandatory.",
       },
     },
     {
@@ -222,11 +222,11 @@ const FAQS_BY_SERVICE: Record<
       id: "unauun-paris",
       fr: {
         q: "L'accompagnement 1-to-1 est-il disponible à Paris ?",
-        a: "Oui. Paris est notre premier terrain pour l'accompagnement dirigeants 1-to-1. Les séances peuvent se dérouler sur site chez vous ou à distance selon votre préférence.",
+        a: "Oui, à Paris comme ailleurs. Les séances peuvent se dérouler sur site chez vous ou à distance selon votre préférence.",
       },
       en: {
         q: "Is the 1-to-1 coaching available in Paris?",
-        a: "Yes. Paris is our top ground for executive 1-to-1 coaching. Sessions can take place on site (your offices or ours) or remotely according to your preference. Same rate regardless of location.",
+        a: "Yes, in Paris as elsewhere. Sessions can take place at your offices or remotely, according to your preference.",
       },
     },
     {
@@ -244,11 +244,11 @@ const FAQS_BY_SERVICE: Record<
       id: "unauun-remote",
       fr: {
         q: "Les séances peuvent-elles se faire entièrement à distance ?",
-        a: "Oui. La majorité de nos accompagnements 1-to-1 sont conduits en visio. Cela permet une flexibilité maximale pour les dirigeants avec un agenda chargé, sans aucune perte de qualité ni d'intensité.",
+        a: "Oui. Les accompagnements 1-to-1 peuvent se faire en visio. Cela permet une flexibilité maximale pour les dirigeants avec un agenda chargé, sans aucune perte de qualité ni d'intensité.",
       },
       en: {
         q: "Can sessions be conducted entirely remotely?",
-        a: "Yes. Most of our 1-to-1 coaching is conducted by video. This allows maximum flexibility for busy executives, with no loss of quality or intensity.",
+        a: "Yes. 1-to-1 coaching can be conducted by video. This allows maximum flexibility for busy executives, with no loss of quality or intensity.",
       },
     },
     {
