@@ -15,7 +15,7 @@ import {
   type EtatPrincipal,
   type StatutLigne,
 } from "./etat-commission";
-import { PALIERS_FORMATION } from "./regles";
+import { libellePalierFormation } from "./regles";
 
 export type RegimeTva = "assujetti" | "franchise_293b" | null;
 
@@ -106,8 +106,8 @@ export const BORNE_PRESENTATIONS = 100;
 export const BORNE_COMMISSIONS = 300;
 
 function nature(l: Pick<CommissionLue, "activite" | "palier">): string | null {
-  const palier = PALIERS_FORMATION.find((p) => p.id === l.palier);
-  if (palier) return palier.libelle;
+  const palier = libellePalierFormation(l.palier);
+  if (palier) return palier;
   if (l.activite === "audit") return "Audit";
   if (l.activite === "implementation") return "Mise en service";
   return null;
