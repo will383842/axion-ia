@@ -11,6 +11,7 @@
 import { NextResponse } from "next/server";
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
+import { CONSULTATION, ENREGISTREMENT, enTeteContentDisposition } from "@/lib/content-disposition";
 import { getClientIp } from "@/lib/client-ip";
 import { refuserSiHorsConsole } from "@/server/auth/garde-route-console";
 import { peutConsulter } from "@/server/auth/habilitations";
@@ -25,10 +26,13 @@ const AFFICHABLE = /^(application\/pdf|image\/(png|jpeg|gif|webp))$/i;
 
 function enTetes(contentType: string, nom: string): Record<string, string> {
   const affichable = AFFICHABLE.test(contentType);
-  const nomSur = nom.replace(/[\r\n"\\]/g, "_");
   return {
     "Content-Type": affichable ? contentType : "application/octet-stream",
-    "Content-Disposition": `${affichable ? "inline" : "attachment"}; filename="${nomSur.replace(/[^\x20-\x7e]/g, "_")}"; filename*=UTF-8''${encodeURIComponent(nom)}`,
+    // SSOT `lib/content-disposition` : consultation pour PDF/images, enregistrement sinon.
+    "Content-Disposition": enTeteContentDisposition(
+      affichable ? CONSULTATION : ENREGISTREMENT,
+      nom,
+    ),
     "Content-Security-Policy": "default-src 'none'; sandbox",
     "Cache-Control": "private, no-store",
     "X-Content-Type-Options": "nosniff",
