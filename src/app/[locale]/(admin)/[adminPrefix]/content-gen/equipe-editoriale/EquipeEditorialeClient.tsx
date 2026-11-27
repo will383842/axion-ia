@@ -166,7 +166,7 @@ export function EquipeEditorialeClient({ adminPrefix, etat, quotas, aRelire }: P
             <div className="flex gap-2">
               <button
                 type="button"
-                disabled={enCours}
+                disabled={enCours || a.statut !== "pending"}
                 className="rounded border px-3 py-1"
                 onClick={() =>
                   agir(() => publierArticleEquipe(a.reviewId), "Article envoyé en publication.")
