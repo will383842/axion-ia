@@ -26,7 +26,13 @@
  */
 
 import { prisma } from "@/lib/prisma";
+import type { Prisma } from "../../../prisma/generated/client";
 
+import {
+  MESSAGE_CONFLIT_RATTRAPAGE,
+  alerterConflitRattrapage,
+  rattrapageEnConflit,
+} from "./conflit-rattrapage";
 import { annoncerAttribution } from "./attribution-annonce";
 import { finDuNiemeJourParis } from "./regles";
 import { lireEtablissements, memePerimetre } from "./etablissement-presentation";
@@ -39,7 +45,7 @@ import {
   regleDe,
   rendezVousRecevable,
 } from "./regle-attribution";
-import { tableAbsente } from "./reservation-presentation";
+import { lireIdsEnGrace, tableAbsente } from "./reservation-presentation";
 import { heureConsole, lireSourceRendezVous, rendezVousNonTenu } from "./statut-rendez-vous";
 
 export type SourceValidation = "calendly" | "rencontre" | "saisie" | "commande";
@@ -141,7 +147,11 @@ const MESSAGE_DEJA_VALIDEE = "Cette entreprise est déjà validée : rien de plu
 
 /** Sortie anticipée de la transaction : le refus voyage comme valeur, la transaction s'annule. */
 class Refus extends Error {
-  constructor(readonly refus: string) {
+  constructor(
+    readonly refus: string,
+    /** Rattrapage refusé parce qu'une AUTRE déclaration occupe l'entreprise : Williams tranche. */
+    readonly conflit: boolean = false,
+  ) {
     super(refus);
   }
 }
@@ -171,6 +181,7 @@ export async function validerParRendezVous(
 
   const avertissements: string[] = [];
   let retire = false;
+  let rattrapage = false;
   try {
     await prisma.$transaction(
       async (tx) => {
@@ -182,13 +193,15 @@ export async function validerParRendezVous(
             siren: true,
             statut: true,
             recueAt: true,
+            confirmeeAt: true,
             apporteur: { select: { statut: true, signatureApporteur: true } },
           },
         });
         if (!p) throw new Refus("Présentation introuvable.");
         if (p.statut === "confirmee") throw new Refus(MESSAGE_DEJA_VALIDEE);
-        if (p.statut !== "reservee")
-          throw new Refus("Seule une présentation « en attente » peut être validée.");
+        const MESSAGE_SEULE_EN_ATTENTE = "Seule une présentation « en attente » peut être validée.";
+        if (p.statut !== "reservee" && p.statut !== "terminee")
+          throw new Refus(MESSAGE_SEULE_EN_ATTENTE);
 
         const reservation = await tx.presentationReservation.findUnique({
           where: { presentationId: p.id },
@@ -199,7 +212,13 @@ export async function validerParRendezVous(
             "Cette présentation est d'avant la règle par rendez-vous : elle suit la confirmation habituelle.",
           );
         if (reservation.valideeAt) throw new Refus(MESSAGE_DEJA_VALIDEE);
-        if (reservation.echueAt)
+        // Rattrapage : une réservation ÉCHUE sans validation (présentation `terminee`, jamais
+        // confirmée) se valide encore si le rendez-vous a été PRIS avant le terme. Une `terminee`
+        // sans échéance (résiliation) ou déjà confirmée une fois ne se rattrape jamais.
+        rattrapage = p.statut === "terminee";
+        if (rattrapage && (!reservation.echueAt || p.confirmeeAt))
+          throw new Refus(MESSAGE_SEULE_EN_ATTENTE);
+        if (!rattrapage && reservation.echueAt)
           throw new Refus("La réservation de cette entreprise est terminée : rien à valider.");
 
         // Apporteur : contrat « signé » (le préavis en fait toujours partie) ET à la version 2.8.
@@ -294,6 +313,18 @@ export async function validerParRendezVous(
             throw new Refus(MESSAGE_PREMIER_RDV);
         }
 
+        // E1 : une réservation terminée sans validation occupe encore l'entreprise 30 jours.
+        const enGrace = await lireIdsEnGrace(maintenant, tx);
+        const occupantes: Prisma.PresentationEntrepriseWhereInput[] = [
+          { statut: { in: ["reservee", "confirmee"] } },
+          { statut: "terminee", id: { in: enGrace } },
+        ];
+
+        // Rattrapage : AUCUNE autre déclaration de la même entreprise ne doit l'occuper aujourd'hui.
+        // Sinon on ne tranche pas ici : Williams est alerté (hors transaction, ci-dessous).
+        if (rattrapage && (await rattrapageEnConflit(tx, p, maintenant)))
+          throw new Refus(MESSAGE_CONFLIT_RATTRAPAGE, true);
+
         // Jamais deux apporteurs : aucune autre déclaration du même périmètre ne doit occuper
         // l'entreprise (une plus ancienne qui court encore, ou une déjà validée).
         const autres = await tx.presentationEntreprise.findMany({
@@ -301,7 +332,7 @@ export async function validerParRendezVous(
             siren: p.siren,
             id: { not: p.id },
             apporteurId: { not: p.apporteurId },
-            statut: { in: ["reservee", "confirmee"] },
+            OR: occupantes,
           },
           select: { id: true, statut: true, recueAt: true, protegeeJusquAt: true },
         });
@@ -314,6 +345,7 @@ export async function validerParRendezVous(
               select: {
                 presentationId: true,
                 reserveeJusquAt: true,
+                echueAt: true,
                 rendezVousPrisAt: true,
                 valideeAt: true,
               },
@@ -445,7 +477,7 @@ export async function validerParRendezVous(
         });
         if (prise.count !== 1) throw new Refus(MESSAGE_DEJA_VALIDEE);
         const confirmee = await tx.presentationEntreprise.updateMany({
-          where: { id: p.id, statut: "reservee" },
+          where: { id: p.id, statut: { in: ["reservee", "terminee"] }, confirmeeAt: null },
           data: {
             statut: "confirmee",
             confirmeeAt: tenuAt,
@@ -468,6 +500,7 @@ export async function validerParRendezVous(
               prisAt: prisAt.toISOString(),
               tenuAt: tenuAt.toISOString(),
               apporteurRetire: retire,
+              rattrapage,
             },
           },
         });
@@ -475,7 +508,10 @@ export async function validerParRendezVous(
       { isolationLevel: "Serializable", timeout: 15_000 },
     );
   } catch (err) {
-    if (err instanceof Refus) return { ok: false, message: err.refus };
+    if (err instanceof Refus) {
+      if (err.conflit) await alerterConflitRattrapage(e.presentationId, maintenant);
+      return { ok: false, message: err.refus };
+    }
     if ((err as { code?: unknown } | null)?.code === "P2034")
       return { ok: false, message: MESSAGE_CONCURRENCE };
     throw err;

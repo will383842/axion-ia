@@ -25,8 +25,9 @@ import { decryptPii } from "@/lib/pii-crypto";
 import { deleteFromR2, getObjectBufferR2, isR2Configured, uploadToR2 } from "@/lib/r2-storage";
 
 import { empreinte, rendreContratPdf, texteDuContrat, type ValeursContrat } from "./contrat-pdf";
-import { bilanDesPieces, piecesDuContratSigne } from "./documents-joints";
+import { annexesDeLEnvoiDuLien, bilanDesPieces, piecesDuContratSigne } from "./documents-joints";
 import { lireDossier, purgerContenuPieces } from "./donnees";
+import { alerterContresignature } from "./alerte-telegram";
 import { apercu } from "./apercu-envoi";
 import { avecTexteLibre, envoyer, type EnvoiApporteur, type GabaritApporteur } from "./envois";
 import { urlDossier } from "./jeton";
@@ -502,6 +503,18 @@ export async function appliquerDecision(
       jobId: `apporteur-contrat-signe-${apporteurId}`,
       attachments: pieces,
     });
+    // Salon Telegram « Apporteurs » : jamais bloquant, la contresignature est actée.
+    try {
+      const qui = await lireDossier(apporteurId);
+      await alerterContresignature({
+        apporteurId,
+        prenom: qui?.prenom ?? "",
+        nom: qui?.nom ?? "",
+        envoi: r,
+      });
+    } catch (err) {
+      signalerErreurReseau("contresignature : alerte Telegram", err);
+    }
     return {
       ok: true,
       message:
@@ -629,6 +642,9 @@ export async function preparerLien(apporteurId: string, mot: string | null, text
     const dejaEnvoyeLe = await dernierLienEnvoyeLe(d.id, "apporteur-lien-espace");
     return { ok: true as const, envoi, url, dejaEnvoyeLe };
   }
+  // Fiche des commissions, livret, guide : joints dès ce premier e-mail (pas de contrat signé
+  // ici, il n'existe pas encore). Facultatifs : une panne de R2 ne retient pas le lien.
+  const annexes = await annexesDeLEnvoiDuLien();
   const envoi: EnvoiApporteur = {
     gabarit: "apporteur-dossier-lien",
     destinataire: d.email,
@@ -637,11 +653,13 @@ export async function preparerLien(apporteurId: string, mot: string | null, text
         contactName: d.prenom,
         dossierUrl: url,
         ...(mot?.trim() ? { motPersonnel: mot.trim() } : {}),
+        ...annexes.payload,
       },
       texte,
     ),
     entityType: "ApporteurReseau",
     entityId: d.id,
+    ...(annexes.attachments.length > 0 ? { attachments: annexes.attachments } : {}),
   };
   const dejaEnvoyeLe = await dernierLienEnvoyeLe(d.id);
   return { ok: true as const, envoi, url, dejaEnvoyeLe };
