@@ -435,7 +435,8 @@ export async function trackCost(args: CostTrackingArgs): Promise<void> {
         costUsd: args.costUsd,
         ...(args.jobId ? { jobId: args.jobId } : {}),
       };
-      await tx.costLedger.create({ data });
+      // `select` : ne relit pas toutes les colonnes (une colonne neuve pas encore migrée ferait P2022).
+      await tx.costLedger.create({ data, select: { id: true } });
       await tx.providerConfig.update({
         where: { provider: args.provider },
         data: { currentMonthSpentUsd: { increment: args.costUsd } },

@@ -27,6 +27,7 @@
  * console ouvrirait une page reelle au nom de quelqu'un.
  */
 
+import { euros } from "@/features/apporteurs-reseau/regles";
 import { SEUIL_VIGILANCE_LIBELLE } from "@/lib/vigilance";
 import { SITE_URL } from "@/lib/site-url";
 
@@ -145,6 +146,15 @@ export const PAYLOAD_EXEMPLE: Readonly<Record<string, unknown>> = {
   montantHtLabel: "1 450,00 €",
   montantTvaLabel: "290,00 €",
   montantTtcLabel: "1 740,00 €",
+  // `apporteur-releve-mensuel` (gabarit dormant) : exemple FICTIF, tout est facultatif.
+  mois: "octobre 2026",
+  totalMois: "1 450,00 €",
+  nombreCommissions: 3,
+  report: "290,00 €",
+  delaiForme: "30 jours",
+  delaiCalcul: "12 mois",
+  delaiReponse: "30 jours",
+  pdfR2Key: "exemple/releve-de-demonstration.pdf",
   cgvVersionLabel: "4 octobre 2026",
   newsletter: 120,
   nom: "Dupont",
@@ -276,6 +286,18 @@ export const VARIANTES_EXEMPLE: Readonly<
   "formateur-formation-annulee": {
     "lettre-non-signee": { etape: 2 },
     "sans-lettre": { etape: 3 },
+  },
+  // Annonces de l'avoir client (art. 4.5) : sans pièce jointe, montants en chaînes formatées.
+  // Exemples en centimes passés par euros() : aucun montant écrit en dur.
+  "apporteur-commission-avoir-client": {
+    reduite: {
+      variante: "reduite",
+      avant: euros(60_000),
+      apres: euros(30_000),
+      annulationLe: "12 novembre 2026",
+    },
+    annulee: { variante: "annulee", avant: euros(60_000), annulationLe: "12 novembre 2026" },
+    reprise: { variante: "reprise", repris: euros(30_000), annulationLe: "12 novembre 2026" },
   },
   // Lot G1 — F40 à l'approche du seuil de vigilance (étape 4), validée à part.
   "formateur-vigilance": {

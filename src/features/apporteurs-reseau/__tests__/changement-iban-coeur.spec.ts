@@ -47,6 +47,7 @@ const m = vi.hoisted(() => {
   };
 });
 
+vi.mock("../gel-virements", () => ({ GEL_VIREMENTS_DISPONIBLE: true }));
 vi.mock("@/lib/prisma", () => ({ prisma: m.prisma }));
 vi.mock("@/lib/rate-limit", () => ({ checkRateLimit: m.checkRateLimit }));
 vi.mock("@/server/journal/journaliser", () => ({ journaliser: m.journaliser }));

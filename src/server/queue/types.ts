@@ -206,6 +206,8 @@ export type EmailJobName =
   | "apporteur-commande-non-attribuee"
   | "apporteur-attribution-confirmee"
   | "apporteur-releve"
+  // Relevé mensuel (lot 2, 2026-11-27) : gabarit DORMANT, sans émetteur avant le lot 4a.
+  | "apporteur-releve-mensuel"
   | "apporteur-virement-fait"
   | "apporteur-lien-espace"
   // Lot L4 2026-08-14 — information RGPD au stock de candidatures avant
@@ -327,6 +329,16 @@ export interface AlertesClientsCronJobData {
  * les 5 minutes. La charge ne porte RIEN du dossier (PA-12) : un horodatage.
  */
 export interface VisioBalayageJobData {
+  readonly tick?: string;
+}
+
+/**
+ * Pilotage SEO (P4) — file `seo-pilotage`. La charge ne porte que le nom de la tâche et un
+ * horodatage. `tache` est une CHAÎNE LIBRE à dessein : le worker ignore (journalise) toute
+ * valeur qu'il ne connaît pas, pour tolérer une app plus récente que lui.
+ */
+export interface SeoPilotageJobData {
+  readonly tache: string;
   readonly tick?: string;
 }
 
