@@ -150,8 +150,10 @@ export function SectionsPrincipale({ p, faq }: { p: Chiffres; faq?: ReactNode })
               <div>
                 <h3>Vous présentez</h3>
                 <p>
-                  Vous en parlez à un dirigeant que vous connaissez. Il vous est réservé 60 jours,
-                  puis validé à votre nom.
+                  Vous en parlez à un dirigeant que vous connaissez. L&rsquo;entreprise vous est
+                  réservée 60 jours. Elle est validée à votre nom dès qu&rsquo;un premier
+                  rendez-vous avec nous est tenu, ou qu&rsquo;une commande est signée, pendant ces
+                  60 jours.
                 </p>
                 <span className="qui">Vous · 5 minutes</span>
               </div>
