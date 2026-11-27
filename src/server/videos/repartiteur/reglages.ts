@@ -1,5 +1,5 @@
 /**
- * SCHÉMA DES RÉGLAGES DES ENCARTS VIDÉO (clé `ContentGenConfig` « videos_encarts »).
+ * SCHÉMA DES RÉGLAGES DES ENCARTS VIDÉO (clé « videos_encarts » de la table de configuration clé/valeur).
  *
  * Forme DÉCLARÉE UNE SEULE FOIS ici : le répartiteur, le worker, l'action serveur et l'écran de
  * la console l'importent. Module PUR : aucune entrée/sortie (ni base, ni Redis, ni environnement).
@@ -12,7 +12,7 @@
  */
 import { z } from "zod";
 
-/** Clé de la configuration (table `ContentGenConfig`). */
+/** Clé de la configuration (table de configuration clé/valeur). */
 export const CLE_REGLAGES_ENCARTS = "videos_encarts";
 
 /** Types de contenus pouvant accueillir un encart (liste fermée). */
