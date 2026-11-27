@@ -66,6 +66,11 @@ vi.mock("../guide-demarrage", async (importOriginal) => ({
   ...(await importOriginal<typeof import("../guide-demarrage")>()),
   lireGuideDemarrage: async () => null,
 }));
+vi.mock("../documents-prives", async (importOriginal) => ({
+  ...(await importOriginal<typeof import("../documents-prives")>()),
+  lireFicheCommissions: async () => null,
+  lireLivret: async () => null,
+}));
 vi.mock("@/lib/pii-crypto", () => ({ decryptPii: (v: string | null) => v }));
 vi.mock("@/lib/prisma", () => {
   const tx = { apporteurReseau: { update: (...a: unknown[]) => h.appUpdate(...a) } };

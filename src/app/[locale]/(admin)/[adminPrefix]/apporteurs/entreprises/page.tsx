@@ -34,6 +34,7 @@ import { LIBELLE_PROLONGATION, type MotifProlongation } from "@/features/apporte
 import { validationParRendezVousActive } from "@/features/apporteurs-reseau/interrupteur-rendez-vous";
 import { heureConsole } from "@/features/apporteurs-reseau/statut-rendez-vous";
 import {
+  LIBELLE_RESERVATION_ECHUE,
   LIMITE_PROPOSITIONS,
   lirePropositionsATraiter,
   lireReservationsOuvertes,
@@ -419,7 +420,9 @@ function SectionRendezVous({
                 aujourdhuiLocal={aujourdhuiLocal}
                 entreprises={reservations.map((e) => ({
                   id: e.presentationId,
-                  libelle: `${e.denomination} (${e.apporteur}, saisie du ${dateCourte(e.recueAt)})`,
+                  libelle: `${e.denomination} (${e.apporteur}, saisie du ${dateCourte(e.recueAt)})${
+                    e.echueAt ? ` — ${LIBELLE_RESERVATION_ECHUE(dateCourte(e.echueAt))}` : ""
+                  }`,
                 }))}
               />
             </div>

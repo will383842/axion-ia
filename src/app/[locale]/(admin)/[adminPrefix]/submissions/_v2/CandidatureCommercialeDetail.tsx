@@ -99,6 +99,7 @@ export function CandidatureCommercialeDetail({
   consentVersion,
   score,
   scorePriorite,
+  etape,
 }: {
   candidature: Record<string, unknown>;
   /**
@@ -121,6 +122,12 @@ export function CandidatureCommercialeDetail({
   score?: number | null;
   /** `haute` | `moyenne` | `vivier` — voir `PRIORITES`. */
   scorePriorite?: string | null;
+  /**
+   * Étape de la personne (`EtapeSuivi["type"]`). L'action conseillée du score
+   * (« Appel personnel sous 24 h ») n'a de sens qu'à « Candidat » ou « Lien
+   * envoyé » ; plus loin, seul le score reste. Absente : comportement d'avant.
+   */
+  etape?: string | null;
 }) {
   const c = candidature;
   const b2b = asObject(c.b2b);
@@ -170,9 +177,13 @@ export function CandidatureCommercialeDetail({
           {typeof score === "number" ? (
             <Row
               label="Score de tri"
-              value={`${score}/100 — ${
-                PRIORITES[scorePriorite as ScorePriorite]?.action ?? "à qualifier"
-              }`}
+              value={
+                etape === undefined || etape === "candidat" || etape === "lien-envoye"
+                  ? `${score}/100 — ${
+                      PRIORITES[scorePriorite as ScorePriorite]?.action ?? "à qualifier"
+                    }`
+                  : `${score}/100`
+              }
             />
           ) : null}
           {asString(c.ville) ? (

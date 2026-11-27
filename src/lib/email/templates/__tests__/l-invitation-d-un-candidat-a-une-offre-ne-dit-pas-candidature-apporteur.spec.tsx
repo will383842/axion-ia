@@ -150,7 +150,7 @@ describe("invitation — variante « offre »", () => {
     });
     // Le kit : le catalogue seul depuis JUR-T44 (`kit-apporteur-sans-pdf.spec.ts`).
     expect(r.html).not.toMatch(/document de présentation/);
-    expect(r.html).toMatch(/catalogue complet/);
+    expect(r.html).toMatch(/Nos formations et prestations/);
     expect(r.html).toContain("Williams Jullin");
     expect(r.html).not.toContain("/devenir-commercial-ia/candidature");
   });

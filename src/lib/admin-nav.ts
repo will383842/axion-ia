@@ -806,6 +806,14 @@ function buildAdminNavSocle(adminPrefix: string): ReadonlyArray<AdminNavItem> {
       group: "apporteurs",
       navLevel: 0,
     },
+    // Challenges (invitation libre : jamais un objectif imposé). Écran éteint par interrupteur.
+    {
+      href: `${base}/apporteurs/challenges`,
+      label: "Challenges apporteurs",
+      icon: "Trophy",
+      group: "apporteurs",
+      navLevel: 0,
+    },
     // Candidatures aux offres publiées (JobApplication : CV/photo, workflow RH).
     {
       href: `${base}/contacts/candidatures`,
@@ -987,6 +995,15 @@ function buildAdminNavSocle(adminPrefix: string): ReadonlyArray<AdminNavItem> {
       href: `${base}/content-gen/observatoire`,
       label: "Observatoire IA 2026",
       icon: "Telescope",
+      group: "content_gen",
+      subGroup: "suivre",
+      tier: "advanced",
+    },
+    // Questionnaire du Baromètre 2027 : état de la collecte et export réservé à l'administrateur.
+    {
+      href: `${base}/barometre-questionnaire`,
+      label: "Questionnaire Baromètre 2027",
+      icon: "ClipboardCheck",
       group: "content_gen",
       subGroup: "suivre",
       tier: "advanced",

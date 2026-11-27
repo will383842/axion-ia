@@ -65,7 +65,7 @@ Référence master prompt : `_AUDIT/PROMPT-CONTENT-GENERATOR-MASTER-2026.md` § 
 ## E. Hiérarchie headings (6 items)
 
 - [ ] **E1 [BLOQUANT]** Exactement **1× H1** par page
-- [ ] **E2 [BLOQUANT]** 3-8 H2 logiquement structurés
+- [ ] **E2 [BLOQUANT]** 3-8 H2 logiquement structurés (le score exige ≥ 3 H2, sans plafond)
 - [ ] **E3** H3 enfants de H2 uniquement (jamais H3 sans H2 parent)
 - [ ] **E4** **0× H5+** (H4 max, doctrine 2026 anti-fragmentation)
 - [ ] **E5 [BLOQUANT]** H1 inclut keyword principal
@@ -102,7 +102,7 @@ Référence master prompt : `_AUDIT/PROMPT-CONTENT-GENERATOR-MASTER-2026.md` § 
 
 ## I. Direct answer + AEO formatting (5 items)
 
-- [ ] **I1 [BLOQUANT tier-1]** Direct answer 40-80 mots dans les 200 premiers mots (réponse directe à la query)
+- [ ] **I1 [BLOQUANT tier-1]** Direct answer 40-90 mots (borne du score de citabilité, PLAN § 3.5) dans les 200 premiers mots (réponse directe à la query)
 - [ ] **I2** TL;DR encadré visible en haut de page
 - [ ] **I3** Key Facts bloc (3-5 bullets) extrait par Featured Snippets
 - [ ] **I4** TOC (Table of Contents) automatique si > 5 H2
@@ -126,11 +126,12 @@ Référence master prompt : `_AUDIT/PROMPT-CONTENT-GENERATOR-MASTER-2026.md` § 
 2. **Review humaine** (review-queue admin) : reviewer coche cette checklist
    via composant `<Seo60Checklist>` (à brancher Sprint S6.3) sur l'item
    éditeur. Tous bloquants verts = bouton "Publier" actif.
-3. **CI gate** : `pnpm seo:audit` (script existant) scanne les 60+ items sur
-   les 5 URLs pilotes (Lighthouse + custom Cheerio rules). PR refusée si
-   régression sur un bloquant.
-4. **Pré-prod** : `pnpm seo:audit --tier=tier_1_indexable` exécute la
-   checklist complète avant `pnpm build`.
+3. **CI gate : n'existe pas (corrigé le 2026-11-27).** `pnpm seo:audit` est un stub
+   (`scripts/seo-audit.ts` ne fait qu'un `console.warn`) : aucune PR n'est refusée sur ce
+   critère. Le score de citabilité (`src/server/seo-pilotage/citabilite/`, module pur,
+   non branché à ce jour) servira à prioriser le travail éditorial, sans bloquer de PR.
+4. **Pré-prod** : non automatisé (le stub `pnpm seo:audit` ne vérifie rien) ; la
+   checklist se coche à la main en revue.
 
 ## Maintenance
 

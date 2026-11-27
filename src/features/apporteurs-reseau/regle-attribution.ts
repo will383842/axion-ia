@@ -6,8 +6,9 @@
  * se tenir après) ; la protection de six mois part du jour du rendez-vous tenu ; un rendez-vous
  * pris AVANT la saisie ne compte pas.
  *
- * Lot 2 (2026-11-25) : ces fonctions ne sont lues par AUCUN appelant. Les contrats 2.6 et
- * antérieurs restent sous la confirmation par le silence (`regles.ts`, art. 3.2).
+ * Les contrats 2.6 et antérieurs restent sous la confirmation par le silence (`regles.ts`, art. 3.2).
+ * `basculeVersRendezVous` (26/11/2026, décision de Will) : une présentation EN ATTENTE, faite sous
+ * l'ancienne règle par un apporteur déjà en 2.8, passe à la règle du rendez-vous.
  *
  * ⚠️ Module PUR : ni base, ni environnement, ni `server-only`. L'interrupteur vit à part
  * (`interrupteur-rendez-vous.ts`) et se passe en argument (`regleDe(signature, actif)`).
@@ -19,6 +20,8 @@ import { PROTECTION_MOIS, ajouterMois, finDuNiemeJourParis } from "./regles";
 export const RESERVATION_PROVISOIRE_JOURS = 60;
 /** Première version du contrat qui porte la validation par rendez-vous. */
 export const VERSION_REGLE_RENDEZ_VOUS = "2.8";
+/** Contrat 2.8 : après la fin d'une réservation NON validée, personne ne déclare l'entreprise pendant 30 jours. */
+export const JOURS_SANS_DECLARATION_APRES_FIN = 30;
 
 /** `null` : la règle en vigueur aujourd'hui (confirmation par le silence). */
 export type RegleAttribution = "rendez_vous" | null;
@@ -75,6 +78,81 @@ export function finDeProtectionRendezVous(rendezVousAt: Date): Date {
   return ajouterMois(rendezVousAt, PROTECTION_MOIS);
 }
 
+/** Délai minimal laissé à l'apporteur, à compter de la bascule, pour obtenir le rendez-vous (contrat 2.8, art. 13.5). */
+export const DELAI_MINIMAL_BASCULE_JOURS = 30;
+
+/**
+ * Marqueur de la clause transitoire de l'article 13.5 dans le TEXTE SIGNÉ archivé. La bascule ne
+ * vaut que pour un apporteur dont le texte signé contient cette clause : une 2.8 signée avant
+ * son ajout (même numéro de version, autre texte) n'a pas accepté cette exception.
+ */
+export const MARQUEUR_CLAUSE_BASCULE =
+  "Par exception, les présentations encore en attente d'attribution";
+
+/** Le texte signé archivé porte-t-il la clause transitoire ? Sans texte archivé : non. */
+export function texteSigneContientClauseBascule(signature: unknown): boolean {
+  if (typeof signature !== "object" || signature === null || Array.isArray(signature)) return false;
+  if (!Object.hasOwn(signature, "texte")) return false;
+  const texte = (signature as { texte?: unknown }).texte;
+  return typeof texte === "string" && texte.includes(MARQUEUR_CLAUSE_BASCULE);
+}
+
+/**
+ * Terme de la réservation d'une présentation BASCULÉE : le plus tardif du terme normal (fin du
+ * 60e jour depuis la saisie) et de la date de bascule + 30 jours (art. 13.5, clause transitoire).
+ */
+export function termeApresBascule(recueAt: Date, maintenant: Date): Date {
+  const normal = finReservation(recueAt);
+  // Fin du jour annoncé (minuit, heure de Paris) : le jour de la bascule est le jour 1.
+  const minimal = finDuNiemeJourParis(maintenant, DELAI_MINIMAL_BASCULE_JOURS + 1);
+  return normal.getTime() >= minimal.getTime() ? normal : minimal;
+}
+
+export type MotifBasculeRefusee =
+  | "interrupteur"
+  | "version"
+  | "statut_apporteur"
+  | "silence_acquis"
+  | "deja_reglee"
+  | "rebond"
+  | "terme_depasse";
+
+/**
+ * Cette présentation EN ATTENTE (`reservee`, sans ligne de réservation) passe-t-elle de l'ancienne
+ * règle (silence) à la règle du rendez-vous ? Oui si l'interrupteur est allumé, l'apporteur est
+ * `signe` à la version 2.8 ou plus, la date du silence n'est pas déjà atteinte (la présentation est alors
+ * acquise, la confirmation tacite la traite) et le terme (`finReservation`) n'est pas déjà dépassé. Une prise de contact revenue en
+ * erreur suspend l'ancienne règle sans limite : la présentation peut avoir plus de 60 jours, elle
+ * n'est pas basculée (l'appelant la signale). Ne modifie rien, rend le terme à enregistrer
+ * (`termeApresBascule` : au moins 30 jours à compter de la bascule). Le texte signé archivé doit
+ * contenir la clause transitoire (`MARQUEUR_CLAUSE_BASCULE`), sinon motif « version ».
+ */
+export function basculeVersRendezVous(e: {
+  statut: string;
+  recueAt: Date;
+  apporteur: { statut: string; signature: unknown };
+  /** La date de confirmation par le silence est atteinte : la présentation est déjà acquise (art. 3.2). */
+  silenceAtteint: boolean;
+  aUneLigne: boolean;
+  rebond: boolean;
+  actif: boolean;
+  maintenant: Date;
+}): { bascule: true; reserveeJusquAt: Date } | { bascule: false; motif: MotifBasculeRefusee } {
+  if (e.actif !== true) return { bascule: false, motif: "interrupteur" };
+  if (e.statut !== "reservee" || e.aUneLigne) return { bascule: false, motif: "deja_reglee" };
+  if (e.apporteur.statut !== "signe") return { bascule: false, motif: "statut_apporteur" };
+  if (!versionAuMoins(e.apporteur.signature, VERSION_REGLE_RENDEZ_VOUS))
+    return { bascule: false, motif: "version" };
+  if (!texteSigneContientClauseBascule(e.apporteur.signature))
+    return { bascule: false, motif: "version" };
+  if (e.rebond) return { bascule: false, motif: "rebond" };
+  if (e.silenceAtteint) return { bascule: false, motif: "silence_acquis" };
+  const terme = finReservation(e.recueAt);
+  if (!(terme.getTime() >= e.maintenant.getTime()))
+    return { bascule: false, motif: "terme_depasse" };
+  return { bascule: true, reserveeJusquAt: termeApresBascule(e.recueAt, e.maintenant) };
+}
+
 export type MotifRendezVousRefuse =
   "pris_avant_saisie" | "pris_apres_reservation" | "pas_encore_tenu" | "tenu_avant_prise";
 
@@ -123,6 +201,12 @@ export type ReservationProvisoire = {
    * `null` : aucun rendez-vous en attente.
    */
   rendezVousEnAttentePrisAt?: Date | null | undefined;
+  /**
+   * Date à laquelle la réservation a pris fin SANS validation (`echueAt`, ligne non validée).
+   * Renseignée : l'entreprise reste occupée `JOURS_SANS_DECLARATION_APRES_FIN` jours à compter de
+   * cette date (contrat 2.8, art. 3.2 / 3.5).
+   */
+  echueAt?: Date | null | undefined;
 };
 
 /**
@@ -134,6 +218,11 @@ export type ReservationProvisoire = {
  * Seul un terme clairement dépassé libère, et seul un rendez-vous clairement hors fenêtre est écarté.
  */
 export function reservationOccupe(r: ReservationProvisoire, maintenant: Date): boolean {
+  // Réservation terminée sans validation : 30 jours sans nouvelle déclaration. Date illisible : occupée.
+  if (r.echueAt) {
+    const fin = finDuNiemeJourParis(r.echueAt, JOURS_SANS_DECLARATION_APRES_FIN).getTime();
+    return !(fin <= maintenant.getTime());
+  }
   if (!(r.reserveeJusquAt.getTime() < maintenant.getTime())) return true;
   const pris = r.rendezVousEnAttentePrisAt?.getTime();
   if (pris === undefined) return false;
@@ -147,7 +236,12 @@ export function reservationOccupe(r: ReservationProvisoire, maintenant: Date): b
 export function versReservationProvisoire(
   recueAt: Date,
   r:
-    | { reserveeJusquAt: Date; rendezVousPrisAt?: Date | null; valideeAt?: Date | null }
+    | {
+        reserveeJusquAt: Date;
+        rendezVousPrisAt?: Date | null;
+        valideeAt?: Date | null;
+        echueAt?: Date | null;
+      }
     | null
     | undefined,
 ): ReservationProvisoire | null {
@@ -157,5 +251,29 @@ export function versReservationProvisoire(
     reserveeJusquAt: r.reserveeJusquAt,
     // Un rendez-vous déjà validé n'est plus « à tenir ».
     rendezVousEnAttentePrisAt: r.valideeAt ? null : (r.rendezVousPrisAt ?? null),
+    // Une ligne validée n'ouvre aucune fenêtre de 30 jours.
+    echueAt: r.valideeAt ? null : (r.echueAt ?? null),
   };
+}
+
+/** Statuts d'une présentation (miroir de l'énumération Prisma, sans l'importer : module pur). */
+export type StatutOccupation = string;
+
+/**
+ * Une présentation occupe-t-elle encore le SIREN à cette date ? `reservation` (facultatif, règle
+ * par rendez-vous) : une présentation `reservee` occupe tant que sa réservation court, ou qu'un
+ * rendez-vous pris pendant la réservation reste à tenir (`reservationOccupe`).
+ */
+export function presentationOccupe(
+  p: { statut: StatutOccupation; protegeeJusquAt: Date | null },
+  maintenant: Date,
+  reservation?: ReservationProvisoire | null,
+): boolean {
+  if (p.statut === "reservee") return !reservation || reservationOccupe(reservation, maintenant);
+  // Contrat 2.8 : une réservation terminée sans validation occupe encore 30 jours (E1).
+  if (p.statut === "terminee")
+    return !!reservation?.echueAt && reservationOccupe(reservation, maintenant);
+  if (p.statut === "confirmee")
+    return !p.protegeeJusquAt || p.protegeeJusquAt.getTime() >= maintenant.getTime();
+  return false;
 }

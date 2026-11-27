@@ -12,6 +12,8 @@ const h = vi.hoisted(() => ({
   signaler: vi.fn(),
   televerser: vi.fn(),
   copie: vi.fn(),
+  copieFiche: vi.fn(),
+  copieLivret: vi.fn(),
 }));
 
 vi.mock("@/lib/r2-storage", () => ({
@@ -22,6 +24,12 @@ vi.mock("@/lib/r2-storage", () => ({
 vi.mock("../guide-demarrage", async (importOriginal) => ({
   ...(await importOriginal<typeof import("../guide-demarrage")>()),
   lireGuideDemarrage: () => h.copie(),
+}));
+// Fiche et livret : par défaut, aucune copie embarquée lisible (comportement « absent de R2 » inchangé).
+vi.mock("../documents-prives", async (importOriginal) => ({
+  ...(await importOriginal<typeof import("../documents-prives")>()),
+  lireFicheCommissions: () => h.copieFiche(),
+  lireLivret: () => h.copieLivret(),
 }));
 vi.mock("../signaler", () => ({ signalerErreurReseau: (...a: unknown[]) => h.signaler(...a) }));
 
@@ -57,6 +65,8 @@ beforeEach(() => {
   h.configure = true;
   h.televerser.mockResolvedValue({});
   h.copie.mockResolvedValue(Buffer.from("%PDF-guide"));
+  h.copieFiche.mockResolvedValue(null);
+  h.copieLivret.mockResolvedValue(null);
   avertissements = vi.spyOn(console, "warn").mockImplementation(() => undefined);
 });
 
@@ -76,10 +86,7 @@ describe("déclaration des documents annexes", () => {
   });
 
   it("le plafond ne dépasse pas celui que le worker d'e-mails accepte", () => {
-    const worker = readFileSync(
-      join(process.cwd(), "src/server/queue/workers/email-worker.ts"),
-      "utf-8",
-    );
+    const worker = readFileSync(join(process.cwd(), "src/server/email/pieces-jointes.ts"), "utf-8");
     const lu = /export const TAILLE_MAX_PJ_OCTETS = (\d+) \* ([\d_]+);/.exec(worker);
     expect(lu).not.toBeNull();
     const plafondWorker = Number(lu![1]) * Number(lu![2]!.replace(/_/g, ""));
@@ -223,6 +230,41 @@ describe("🔴 le guide de démarrage : dépôt automatique sur R2", () => {
   });
 });
 
+describe("fiche et livret : copie embarquée, la même que celle du lien de l'espace", () => {
+  it("absents de R2 : déposés depuis private/apporteurs/ puis joints", async () => {
+    h.copieFiche.mockResolvedValue(Buffer.from("%PDF-fiche"));
+    h.copieLivret.mockResolvedValue(Buffer.from("%PDF-livret"));
+    r2({});
+    expect((await documentsAnnexesAJoindre()).map((p) => p.r2Key)).toEqual([
+      FICHE.cleR2,
+      LIVRET.cleR2,
+      GUIDE.cleR2,
+    ]);
+    expect(h.televerser).toHaveBeenCalledWith(
+      FICHE.cleR2,
+      Buffer.from("%PDF-fiche"),
+      "application/pdf",
+      expect.anything(),
+    );
+    expect(h.televerser).toHaveBeenCalledWith(
+      LIVRET.cleR2,
+      Buffer.from("%PDF-livret"),
+      "application/pdf",
+      expect.anything(),
+    );
+  });
+
+  it("un objet déjà sur R2 n'est jamais écrasé", async () => {
+    h.copieFiche.mockResolvedValue(Buffer.from("%PDF-fiche"));
+    h.copieLivret.mockResolvedValue(Buffer.from("%PDF-livret"));
+    r2({ [FICHE.cleR2]: 1000, [LIVRET.cleR2]: 2000, [GUIDE.cleR2]: 3000 });
+    await documentsAnnexesAJoindre();
+    expect(h.televerser).not.toHaveBeenCalled();
+    expect(h.copieFiche).not.toHaveBeenCalled();
+    expect(h.copieLivret).not.toHaveBeenCalled();
+  });
+});
+
 describe("pièces de l'e-mail « contrat signé »", () => {
   it("contrat + fiche + livret + guide quand tout existe, le contrat en premier", async () => {
     r2({ [CLE_CONTRAT]: 50_000, [FICHE.cleR2]: 1000, [LIVRET.cleR2]: 2000, [GUIDE.cleR2]: 3000 });
@@ -351,8 +393,11 @@ describe("🔴 les clés des annexes ne sont servies par aucune route", () => {
         readFileSync(join(racine, f), "utf-8"),
       ),
     );
+    // + l'envoi du lien (« Retenu », relances) : il JOINT les annexes à l'e-mail, il ne les sert pas.
     expect(lecteurs.sort()).toEqual([
+      "src/features/admin-rendezvous/issue-apporteur-envoi.ts",
       "src/features/apporteurs-reseau/documents-joints.ts",
+      "src/features/apporteurs-reseau/passage-quotidien.ts",
       "src/features/apporteurs-reseau/signature.ts",
       "src/features/apporteurs-reseau/verification.ts",
     ]);

@@ -8,6 +8,10 @@
 // D'EMPLOI (`jobApplication`, avec CV, photo et vidéos), effacées 24 mois
 // après le dernier échange. Voir le bloc 6 du handler.
 //
+// Deuxième exception, décision de l'éditeur (conservation de 24 mois validée le 2026-11-27) :
+// les RÉPONSES AU QUESTIONNAIRE DU BAROMÈTRE 2027 (`barometreQuestionnaireReponse`, non
+// nominatives), effacées 24 mois après LEUR date d'envoi (collecte sans date de fin). Voir le bloc 7 du handler.
+//
 // Pour le reste, il ne garde que des purges purement TECHNIQUES, où ne figure
 // ni personne ni échange :
 //
@@ -58,6 +62,7 @@ import { purgerOutboxCrm } from "@/server/newsletter/retention";
 import { deleteCv } from "@/server/careers/cv-storage";
 import { supprimerVideosCandidature } from "@/server/careers/videos-candidat";
 import { decryptPii } from "@/lib/pii-crypto";
+import { CAMPAGNE, limiteEffacement } from "@/lib/barometre-questionnaire/constantes";
 import { candidaturesAConserverPour } from "@/lib/rgpd-formateur-independant";
 import { nettoyerPiecesJointesContact } from "@/server/contact/pieces-jointes";
 import type { RetentionPurgeJobData } from "../types";
@@ -150,6 +155,7 @@ export async function executerPurgeRetention(): Promise<void> {
     candidatures: 0,
     candidaturesRecruteesEpargnees: 0,
     candidaturesFormateursEpargnees: 0,
+    questionnaireBarometre: 0,
   };
 
   // ── 🛑 AUCUN EFFACEMENT AUTOMATIQUE DE DONNÉES DE PERSONNES. DÉCISION DE WILL. ──
@@ -308,6 +314,23 @@ export async function executerPurgeRetention(): Promise<void> {
     captureWorkerError("retention-purge", "retention-purge", undefined, err);
   }
 
+  // ── 7. Réponses au questionnaire du Baromètre 2027 ─────────────────────────────
+  // 🛑 Seconde exception à « aucun effacement automatique de données de personnes » : décision
+  // de l'éditeur, conservation de 24 mois validée le 2026-11-27. La collecte n'a pas
+  // de date de fin : chaque réponse s'efface 24 mois après SON jour d'envoi (aucune ligne n'est
+  // concernée avant fin 2028 ; seules les lignes échues sont visées).
+  // Ce bloc est borné à la campagne `barometre-2027` et ne touche aucune autre table. Les
+  // réponses étant non nominatives, seules des statistiques agrégées restent ensuite.
+  try {
+    const limite = limiteEffacement(new Date());
+    const res = await prisma.barometreQuestionnaireReponse.deleteMany({
+      where: { campagne: CAMPAGNE, jour: { lte: limite } },
+    });
+    counts.questionnaireBarometre = res.count;
+  } catch (err) {
+    captureWorkerError("retention-purge", "retention-purge", undefined, err);
+  }
+
   console.log(
     `[retention-purge] generationLogs=${counts.generationLogs} ` +
       `webVitals=${counts.webVitals} funnelEvents=${counts.funnelEvents} ` +
@@ -316,6 +339,7 @@ export async function executerPurgeRetention(): Promise<void> {
       `candidatures=${counts.candidatures} ` +
       `candidaturesRecruteesEpargnees=${counts.candidaturesRecruteesEpargnees} ` +
       `candidaturesFormateursEpargnees=${counts.candidaturesFormateursEpargnees} ` +
+      `questionnaireBarometre=${counts.questionnaireBarometre} ` +
       `autresDonneesDePersonnes=CONSERVÉES (décision Will 2026-10-07)`,
   );
 }

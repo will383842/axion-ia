@@ -148,13 +148,13 @@ describe("construireEnvoisReponse : la règle choisit l'accusé", () => {
     expect(e[1]!.payload).not.toHaveProperty("gabaritRepli");
   });
 
-  it("la page et l'e-mail disent la même règle : « un devis signé pendant ces 60 jours compte aussi »", async () => {
+  it("la page et l'e-mail disent la même règle : « une commande signée pendant ces 60 jours compte aussi »", async () => {
     const { commentRendezVous } =
       await import("../../../app/apporteur/dossier/[id]/[jeton]/textes-comment");
     const { COPY_PRESENTATION_RECUE_RENDEZ_VOUS } =
       await import("@/lib/email/templates/apporteur-presentation-recue-rendez-vous");
     const phrase = COPY_PRESENTATION_RECUE_RENDEZ_VOUS.devis(60);
-    expect(phrase).toBe("Un devis signé pendant ces 60 jours compte aussi.");
+    expect(phrase).toBe("Une commande signée pendant ces 60 jours compte aussi.");
     expect(commentRendezVous(60, 6)).toContain(phrase);
   });
 

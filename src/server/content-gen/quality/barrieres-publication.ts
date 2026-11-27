@@ -68,7 +68,8 @@ export type CodeBarriere =
   | "fidelite-kb"
   | "fidelite-llm"
   | "fact-check-claude"
-  | "journee-ia";
+  | "journee-ia"
+  | "equipe-editoriale";
 
 export interface BarriereRelecture {
   readonly code: CodeBarriere;
