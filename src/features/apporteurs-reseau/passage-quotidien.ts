@@ -1519,6 +1519,7 @@ async function etapeRappelsDossier(maintenant: Date, bilan: BilanPassageReseau):
     where: { statut: "dossier_en_cours", signeParApporteurAt: null },
     select: { id: true, prenom: true, email: true, versionLien: true, submissionId: true },
   });
+  let annexesDuPassage: ReturnType<typeof annexesDeLEnvoiDuLien> | undefined;
   for (const a of candidats) {
     const envoisLien = await prisma.emailLog.findMany({
       where: {
@@ -1558,7 +1559,9 @@ async function etapeRappelsDossier(maintenant: Date, bilan: BilanPassageReseau):
     const destinataire = decryptPii(a.email);
     if (!url || !destinataire) continue;
     // Les relances portent aussi la fiche, le livret et le guide (facultatifs, jamais d'erreur).
-    const annexes = await annexesDeLEnvoiDuLien();
+    // Lus une seule fois par passage, et seulement s'il y a au moins une relance à envoyer.
+    annexesDuPassage ??= annexesDeLEnvoiDuLien();
+    const annexes = await annexesDuPassage;
     const r = await envoyer({
       gabarit: "apporteur-dossier-lien",
       destinataire,

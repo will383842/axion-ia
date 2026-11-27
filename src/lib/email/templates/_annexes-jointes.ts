@@ -24,7 +24,7 @@ export function phrasePiecesJointes(annexesJointes: unknown): string | null {
   return `Vous trouverez en ${noms.length > 1 ? "pièces jointes" : "pièce jointe"} ${enListe(noms)}, pour en prendre connaissance avant de signer.`;
 }
 
-/** Nom du fichier joint → identifiant de l'annexe (gardé identique à `DOCUMENTS_ANNEXES` par test). */
+/** Nom du fichier joint → identifiant de l'annexe (même liste, test annexes-envoi-du-lien). */
 export const ID_ANNEXE_PAR_NOM_FICHIER: Readonly<Record<string, string>> = {
   "Fiche-des-commissions-Axion-IA.pdf": "fiche-commissions",
   "Livret-apporteur-Axion-IA.pdf": "livret",
