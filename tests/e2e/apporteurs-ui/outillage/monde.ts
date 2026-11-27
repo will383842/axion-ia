@@ -10,6 +10,10 @@ import { prisma } from "@/lib/prisma";
 import { encryptPii } from "@/lib/pii-crypto";
 import { hashEmailForLookup } from "@/lib/security/email-hash";
 import { jetonDossier } from "@/features/apporteurs-reseau/jeton";
+import { calculerReleve } from "@/features/apporteurs-reseau/releve-mensuel/calcul";
+import { empreinteContenu } from "@/features/apporteurs-reseau/releve-mensuel/empreinte";
+import { rendreEtStockerPdfReleve } from "@/features/apporteurs-reseau/releve-mensuel/pdf";
+import { bornesPeriode } from "@/features/apporteurs-reseau/releve-mensuel/periode";
 import { setQualiopiConfig } from "@/server/qualiopi/config/site-settings";
 import {
   passerFacturationApporteurs,
@@ -239,6 +243,91 @@ async function main(): Promise<void> {
     case "purger-challenges": {
       // Base de test LOCALE : les challenges des exécutions précédentes bloqueraient la période.
       sortie = await prisma.challengeApporteur.deleteMany({});
+      break;
+    }
+    case "releve": {
+      // Relevé mensuel FICTIF d'un apporteur (état « préparé », jamais envoyé) : contenu calculé par le code
+      // de production sur une commission fictive, PDF rendu et déposé dans le faux R2.
+      const periode = String(a["periode"] ?? "2026-10");
+      const apporteurId = String(a["apporteurId"]);
+      const { debut } = bornesPeriode(periode);
+      const emise = new Date(debut.getTime() + 10 * JOUR);
+      const u = uniq();
+      const numeroAuto = `AXI-APP-2026-9${u.slice(-3)}`;
+      const entree = {
+        periode,
+        preparationAt: new Date(),
+        commissions: [
+          {
+            id: randomUUID(),
+            activite: "formation",
+            palier: "journee-ia",
+            parrainage: false,
+            statut: "due",
+            montantCents: Number(a["montantCents"] ?? 50_000),
+            factureHtCents: 149_000,
+            prixPublicHtCents: 149_000,
+            entreprise: `Société fictive ${u}`,
+            factureClientNumero: `F-E2E-${u}`,
+            factureClientDate: new Date(emise.getTime() - 20 * JOUR),
+            encaissementIntegralAt: new Date(emise.getTime() - 1 * JOUR),
+            autofactureNumero: numeroAuto,
+            autofactureEmiseAt: emise,
+            avoirNumero: null,
+            autofactureAttenteMotif: null,
+            autofactureAttenteDepuis: null,
+            litigeDepuis: null,
+            verseeAt: null,
+            creeAt: new Date(emise.getTime() - 2 * JOUR),
+            majAt: emise,
+            regleAppliquee: "journee_ia",
+            versionContrat: "2.8",
+          },
+        ],
+        pieces: [
+          {
+            numero: numeroAuto,
+            genre: "facture",
+            regimeTva: "franchise_293b",
+            totalHtCents: Number(a["montantCents"] ?? 50_000),
+            totalTvaCents: 0,
+            totalTtcCents: Number(a["montantCents"] ?? 50_000),
+            factureRectifiee: null,
+            emiseAt: emise,
+          },
+        ],
+      } as never;
+      const { contenu } = calculerReleve(entree);
+      const numero = `REL-${periode}-${u.slice(-4)}`;
+      const pdf = await rendreEtStockerPdfReleve(contenu, `e2e/releves/${numero}.pdf`, {
+        numero,
+        destinataire: "Apporteur Fictif",
+      });
+      const r = await prisma.releveMensuelApporteur.create({
+        data: {
+          numero,
+          apporteurId,
+          periode,
+          statut: "prepare",
+          coupureAt: new Date(contenu.coupureAt),
+          contenu: contenu as never,
+          empreinteSha256: empreinteContenu(contenu),
+          pdfR2Key: pdf.r2Key,
+          pdfSha256: pdf.sha256,
+          nbLignes: 1,
+          facturesHtCents: contenu.totaux.factureHtCents,
+          viresTtcCents: contenu.totaux.vireTtcCents,
+        },
+        select: { id: true, numero: true },
+      });
+      sortie = { id: r.id, numero: r.numero, periode };
+      break;
+    }
+    case "releves-de": {
+      sortie = await prisma.releveMensuelApporteur.findMany({
+        where: { apporteurId: String(a["apporteurId"]) },
+        select: { numero: true, statut: true, envoyeAt: true },
+      });
       break;
     }
     case "avoir":
