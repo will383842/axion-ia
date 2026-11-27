@@ -106,18 +106,15 @@ CREATE INDEX IF NOT EXISTS "gsc_import_runs_statut_jour_idx" ON "gsc_import_runs
 
 CREATE UNIQUE INDEX IF NOT EXISTS "gsc_page_jours_date_type_recherche_chemin_key" ON "gsc_page_jours"("date", "type_recherche", "chemin");
 CREATE INDEX IF NOT EXISTS "gsc_page_jours_chemin_date_idx" ON "gsc_page_jours"("chemin", "date");
-CREATE INDEX IF NOT EXISTS "gsc_page_jours_date_idx" ON "gsc_page_jours"("date");
 
 CREATE UNIQUE INDEX IF NOT EXISTS "gsc_requetes_texte_key" ON "gsc_requetes"("texte");
 CREATE INDEX IF NOT EXISTS "gsc_requetes_derniere_le_idx" ON "gsc_requetes"("derniere_le");
 
 CREATE UNIQUE INDEX IF NOT EXISTS "gsc_page_requete_jours_cle_key" ON "gsc_page_requete_jours"("date", "type_recherche", "chemin", "requete_id");
-CREATE INDEX IF NOT EXISTS "gsc_page_requete_jours_date_idx" ON "gsc_page_requete_jours"("date");
 CREATE INDEX IF NOT EXISTS "gsc_page_requete_jours_requete_id_date_idx" ON "gsc_page_requete_jours"("requete_id", "date");
 CREATE INDEX IF NOT EXISTS "gsc_page_requete_jours_chemin_date_idx" ON "gsc_page_requete_jours"("chemin", "date");
 
 CREATE UNIQUE INDEX IF NOT EXISTS "gsc_page_requete_semaines_cle_key" ON "gsc_page_requete_semaines"("semaine", "type_recherche", "chemin", "requete_id");
-CREATE INDEX IF NOT EXISTS "gsc_page_requete_semaines_semaine_idx" ON "gsc_page_requete_semaines"("semaine");
 CREATE INDEX IF NOT EXISTS "gsc_page_requete_semaines_requete_id_semaine_idx" ON "gsc_page_requete_semaines"("requete_id", "semaine");
 
 CREATE INDEX IF NOT EXISTS "gsc_inspections_chemin_inspecte_le_idx" ON "gsc_inspections"("chemin", "inspecte_le");
@@ -125,4 +122,3 @@ CREATE INDEX IF NOT EXISTS "gsc_inspections_inspecte_le_idx" ON "gsc_inspections
 
 CREATE UNIQUE INDEX IF NOT EXISTS "seo_opportunites_semaine_detecteur_cible_key" ON "seo_opportunites"("semaine", "detecteur", "cible");
 CREATE INDEX IF NOT EXISTS "seo_opportunites_etat_priorite_idx" ON "seo_opportunites"("etat", "priorite");
-CREATE INDEX IF NOT EXISTS "seo_opportunites_semaine_idx" ON "seo_opportunites"("semaine");

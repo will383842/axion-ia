@@ -137,21 +137,13 @@ describe("pilotage SEO P2 — schéma Prisma", () => {
   it("les clés d'idempotence et les index sont présents", () => {
     const attendu: Record<string, string[]> = {
       GscImportRun: ["@@unique([jour, typeRecherche]"],
-      GscPageJour: [
-        "@@unique([date, typeRecherche, chemin]",
-        "@@index([chemin, date]",
-        "@@index([date]",
-      ],
-      GscRequete: ["texte      String   @unique", "@@index([derniereLe]"],
+      GscPageJour: ["@@unique([date, typeRecherche, chemin]", "@@index([chemin, date]"],
+      GscRequete: ["@unique", "@@index([derniereLe]"],
       GscPageRequeteJour: [
         "@@unique([date, typeRecherche, chemin, requeteId]",
-        "@@index([date]",
         "@@index([requeteId, date]",
       ],
-      GscPageRequeteSemaine: [
-        "@@unique([semaine, typeRecherche, chemin, requeteId]",
-        "@@index([semaine]",
-      ],
+      GscPageRequeteSemaine: ["@@unique([semaine, typeRecherche, chemin, requeteId]"],
       GscInspection: ["@@index([chemin, inspecteLe]"],
       SeoOpportunite: ["@@unique([semaine, detecteur, cible]", "@@index([etat, priorite]"],
     };
