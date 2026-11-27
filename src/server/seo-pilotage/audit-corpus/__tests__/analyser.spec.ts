@@ -83,6 +83,17 @@ describe("doublon de plan", () => {
     expect(d.map((s) => s.url).sort()).toEqual(["/fr/blog/a", "/fr/blog/b"]);
     expect(d.find((s) => s.url === "/fr/blog/a")?.liees).toEqual(["/fr/blog/b"]);
   });
+  it("intertitres génériques (Conclusion, FAQ…) ne comptent pas : 2 titres propres + 3 génériques ≠ doublon", () => {
+    const gen = ["Introduction", "Conclusion", "FAQ"];
+    const r = analyserCorpus(
+      [
+        page({ url: "/fr/blog/a", plan: ["Alpha un", "Beta deux", ...gen] }),
+        page({ url: "/fr/blog/b", plan: ["Alpha un", "Gamma trois", ...gen] }),
+      ],
+      MAINTENANT,
+    );
+    expect(r.signalements.some((s) => s.code === "doublon_plan")).toBe(false);
+  });
   it("plan trop court pour juger : ignoré", () => {
     const r = analyserCorpus(
       [

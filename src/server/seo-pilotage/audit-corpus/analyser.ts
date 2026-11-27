@@ -131,11 +131,24 @@ function pairesSimilaires(
   return paires;
 }
 
+/** Intertitres communs à presque tous les gabarits : ils ne prouvent aucun doublon. */
+const TITRES_GENERIQUES: ReadonlySet<string> = new Set([
+  "conclusion",
+  "faq",
+  "questions frequentes",
+  "foire aux questions",
+  "sources",
+  "introduction",
+  "en resume",
+  "a retenir",
+  "pour aller plus loin",
+]);
+
 function ensemblePlan(plan: readonly string[]): Set<string> {
   const s = new Set<string>();
   for (const t of plan) {
     const n = normaliser(t);
-    if (n) s.add(n);
+    if (n && !TITRES_GENERIQUES.has(n)) s.add(n);
   }
   return s;
 }
@@ -144,7 +157,7 @@ function ensembleTexteVille(texte: string, villeNom: string | null): Set<string>
   let n = normaliser(texte);
   if (villeNom) {
     const v = normaliser(villeNom);
-    if (v) n = n.split(v).join(" ");
+    if (v) n = ` ${n} `.split(` ${v} `).join("  ").trim();
   }
   const mots = n.split(" ").filter(Boolean);
   const s = new Set<string>();

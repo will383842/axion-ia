@@ -71,10 +71,22 @@ async function main(): Promise<void> {
     });
     // Impressions : lues sur le Site Explorer (null si la ligne ou la mesure manque).
     const routes = await prisma.siteRoute.findMany({
-      where: { sourceDbTable: "articles" },
-      select: { sourceDbId: true, gscImpressions: true },
+      where: { sourceDbTable: "articles", removedAt: null },
+      select: {
+        sourceDbId: true,
+        pathRendered: true,
+        gscImpressions: true,
+        gscDataAt: true,
+        isIndexable: true,
+      },
     });
-    const impParArticle = new Map(routes.map((r) => [r.sourceDbId, r.gscImpressions]));
+    // Une mesure ne vaut que pour une route vivante, indexable et réellement mesurée ; sinon
+    // « indisponible » (null), jamais 0 (le worker GSC ne remet pas à null une page repassée noindex).
+    const impParArticleUrl = new Map(
+      routes
+        .filter((r) => r.isIndexable === true && r.gscDataAt !== null && r.pathRendered)
+        .map((r) => [`${r.sourceDbId}|${r.pathRendered}`, r.gscImpressions]),
+    );
 
     for (const a of articles) {
       const t = a.translations[0];
@@ -82,12 +94,13 @@ async function main(): Promise<void> {
       const guide = a.templateVariant?.startsWith("guide") || t.slug.startsWith("guide-");
       const segment = a.isNews ? "actualites" : guide ? "guides" : "blog";
       const texte = enTexte(t.body);
+      const url = `/fr/${segment}/${t.slug}`;
       pages.push({
-        url: `/fr/${segment}/${t.slug}`,
+        url,
         type: a.isNews ? "actualite" : "article",
         titre: t.title,
         mots: compterMots(texte),
-        impressions: impParArticle.get(a.id) ?? null,
+        impressions: impParArticleUrl.get(`${a.id}|${url}`) ?? null,
         publieLe: a.publishedAt,
         plan: titres(t.body),
         texte: null,
@@ -103,30 +116,35 @@ async function main(): Promise<void> {
         directAnswerFr: true,
         ecosystemFr: true,
         distancesFr: true,
-        generatedAt: true,
       },
     });
+    // Hub ville du Site Explorer : section « implantations », jointure sur le slug (cityIds = codes INSEE).
     const routesVilles = await prisma.siteRoute.findMany({
-      where: { cityIds: { isEmpty: false }, pathRendered: { not: null } },
-      select: { pathRendered: true, cityIds: true, gscImpressions: true },
+      where: { section: "implantations", removedAt: null, pathSlug: { not: null } },
+      select: {
+        pathRendered: true,
+        pathSlug: true,
+        gscImpressions: true,
+        gscDataAt: true,
+        isIndexable: true,
+        createdAt: true,
+      },
     });
+    const routeParVille = new Map(routesVilles.map((r) => [r.pathSlug, r]));
     for (const c of copies) {
-      const route = routesVilles
-        .filter(
-          (r) =>
-            r.cityIds.includes(c.villeSlug) &&
-            r.pathRendered?.endsWith(`/${c.villeSlug}`) &&
-            !r.pathRendered.includes("/avis/"),
-        )
-        .sort((a, b) => (a.pathRendered ?? "").length - (b.pathRendered ?? "").length)[0];
+      const route = routeParVille.get(c.villeSlug);
+      const mesure = route?.isIndexable === true && route.gscDataAt !== null;
       const texte = [c.pitchFr, c.directAnswerFr, c.ecosystemFr, c.distancesFr].join(" ");
       pages.push({
         url: route?.pathRendered ?? `ville:${c.villeSlug}`,
         type: "ville",
         titre: c.villeSlug,
-        mots: compterMots(texte),
-        impressions: route?.gscImpressions ?? null,
-        publieLe: c.generatedAt,
+        // Les 4 champs générés ne sont qu'une partie de la page rendue : mots inconnus (jamais
+        // « faible valeur » sur ce seul critère). Date = première découverte de la route
+        // (le drip d'indexation fait foi pour la date réelle, absente ici).
+        mots: null,
+        impressions: mesure ? (route?.gscImpressions ?? null) : null,
+        publieLe: route?.createdAt ?? null,
         plan: [],
         texte,
         villeNom: c.villeSlug.replace(/-/g, " "),
