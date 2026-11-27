@@ -67,6 +67,26 @@ describe("EncartEnVideo — serveur, zéro JS (W4.1)", () => {
     expect(html).not.toContain('/fr/videos/a"');
   });
 
+  it("identifiant unique par instance : deux encarts sur une page n'en partagent pas", async () => {
+    h.videos = [uneVideo({ theme: "audit-ia" })];
+    const html = await rendre({ theme: "audit-ia" });
+    const autre = renderToStaticMarkup(
+      (
+        <>
+          {(await EncartEnVideo({ theme: "audit-ia" })) as ReactNode}
+          {(await EncartEnVideo({ theme: "audit-ia" })) as ReactNode}
+        </>
+      ) as ReactNode,
+    );
+    const ids = [...autre.matchAll(/<h2 id="([^"]+)"/g)].map((m) => m[1]);
+    expect(ids).toHaveLength(2);
+    expect(new Set(ids).size).toBe(2);
+    // L'aria-labelledby pointe bien sur le titre de SA carte.
+    const lies = [...autre.matchAll(/aria-labelledby="([^"]+)"/g)].map((m) => m[1]);
+    expect(lies).toEqual(ids);
+    expect(html).not.toContain('id="encart-en-video"');
+  });
+
   it("aucun « use client » ni lecteur dans le composant", () => {
     const src = readFileSync("src/components/videos/EncartEnVideo.tsx", "utf8")
       .replace(/\/\*[\s\S]*?\*\//g, "")

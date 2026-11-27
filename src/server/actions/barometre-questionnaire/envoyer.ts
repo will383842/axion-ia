@@ -40,14 +40,15 @@ export async function envoyerReponsesBarometre(input: unknown): Promise<EnvoiSta
 
     // Pot de miel / délai trop court : succès silencieux, aucune écriture.
     if (d.website && d.website.trim().length > 0) return { ok: true };
-    if (typeof d.startedAt === "number" && Date.now() - d.startedAt < MIN_FILL_MS) {
-      return { ok: true };
-    }
+    if (Date.now() - d.startedAt < MIN_FILL_MS) return { ok: true };
 
     // Limite de débit par EMPREINTE d'IP (jamais l'IP en clair dans la clé Redis).
     const ip = await getClientIp();
-    const rl = await checkRateLimit(`${RATE_LIMIT_PREFIX}:${hashIp(ip) ?? "inconnu"}`, {
-      limit: 5,
+    // Sans IP lisible (getClientIp rend null), tout le monde partagerait un seau de 5 essais :
+    // le seau « inconnu » a donc une limite plus large (filet global, pas une limite par personne).
+    const empreinte = hashIp(ip);
+    const rl = await checkRateLimit(`${RATE_LIMIT_PREFIX}:${empreinte ?? "inconnu"}`, {
+      limit: empreinte ? 5 : 60,
       windowSec: 600,
     });
     if (!rl.allowed) {

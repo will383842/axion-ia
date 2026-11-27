@@ -2,7 +2,7 @@
 //
 // Server component statique, zéro JS client, aucune image. Tous les chiffres
 // viennent de `src/content/barometre-2027/donnees.ts` (fichier unique).
-// Tant que BAROMETRE_PUBLIC (constante du code) vaut false : noindex, et hors sitemap
+// Avant BAROMETRE_DATE_OUVERTURE (constante du code, 1er décembre 2026) : noindex, et hors sitemap
 // (cf. `src/app/sitemap.ts`).
 
 import type { Metadata } from "next";
@@ -38,7 +38,7 @@ import {
   SOURCES,
   USAGES,
   VOCABULAIRE,
-  BAROMETRE_PUBLIC,
+  barometreEstPublic,
   type Tableau,
 } from "@/content/barometre-2027/donnees";
 
@@ -46,7 +46,7 @@ interface Props {
   params: Promise<{ locale: string }>;
 }
 
-export const revalidate = 86400;
+export const revalidate = 3600;
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;
@@ -67,7 +67,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       languages: { fr: frUrl, "x-default": frUrl },
     },
   };
-  if (BAROMETRE_PUBLIC) return base;
+  if (barometreEstPublic()) return base;
   return {
     ...base,
     robots: { index: false, follow: false, googleBot: { index: false, follow: false } },

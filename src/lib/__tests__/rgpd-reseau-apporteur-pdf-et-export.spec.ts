@@ -16,12 +16,17 @@ const h = vi.hoisted(() => ({
   commissionFindMany: vi.fn(),
   deleteFromR2: vi.fn(),
   captureException: vi.fn(),
+  messagesFindMany: vi.fn(),
 }));
 
 vi.mock("@/lib/prisma", () => ({
   prisma: {
     // SIRET de l'établissement (2026-10-08) : aucun dans ces scénarios.
     apporteurReseauSiret: { findUnique: async () => null },
+    apporteurMessageRecu: {
+      findMany: (...a: unknown[]) => h.messagesFindMany(...a),
+      deleteMany: async () => ({ count: 0 }),
+    },
     apporteurReseau: {
       findUnique: (...a: unknown[]) => h.appFindUnique(...a),
       update: (...a: unknown[]) => h.appUpdate(...a),
@@ -149,6 +154,8 @@ describe("export art. 15 : l'apporteur retrouve tout ce qui le concerne", () => 
   };
 
   beforeEach(() => {
+    h.messagesFindMany.mockReset();
+    h.messagesFindMany.mockResolvedValue([]);
     h.appFindUnique.mockResolvedValue({
       id: ID,
       prenom: "enc:Claire",
@@ -205,6 +212,19 @@ describe("export art. 15 : l'apporteur retrouve tout ce qui le concerne", () => 
       acceptations: ["a1", "a2"],
       declarations: ["d1"],
     });
+  });
+
+  it("messages reçus : table absente (P2021) → liste vide, l'export aboutit", async () => {
+    h.messagesFindMany.mockRejectedValue(Object.assign(new Error("absente"), { code: "P2021" }));
+    const r = await exporterReseauApporteurPour("claire@exemple.fr");
+    expect(r.apporteur!).toBeTruthy();
+  });
+
+  it("messages reçus : toute autre panne fait échouer l'export (pas de réponse légale incomplète)", async () => {
+    h.messagesFindMany.mockRejectedValue(new Error("connexion perdue"));
+    await expect(exporterReseauApporteurPour("claire@exemple.fr")).rejects.toThrow(
+      "connexion perdue",
+    );
   });
 
   it("la preuve de signature ne contient NI le texte du contrat NI l'empreinte d'IP", async () => {

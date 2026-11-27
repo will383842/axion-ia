@@ -30,9 +30,14 @@
  * IProvider wrapper), pas un cron périodique. Sprint dédié.
  */
 
+import {
+  plafondGenerationEffectif,
+  type PolitiquesRelecture,
+} from "@/server/content-gen/quality/relecture-obligatoire";
 import { Worker, type Job } from "bullmq";
 import { captureWorkerError } from "@/server/queue/lib/sentry-worker";
 import { prisma } from "@/lib/prisma";
+import { whereHorsPorteurs } from "@/server/content-gen/providers/job-porteur";
 import { readContentGenConfig } from "@/server/actions/content-gen/_settings";
 import {
   CLOSED_WITHOUT_RUNNING_EXCLUSION,
@@ -440,7 +445,12 @@ async function checkAnomalies(): Promise<void> {
     readContentGenConfig<DailyGenerationCap>("daily_generation_cap", DEFAULT_DAILY_GENERATION_CAP),
     countConsumedToday(startOfDayUtc).catch(() => null),
   ]);
-  const capPerDay = resolveCapPerDay(dailyCap);
+  // C2 (2026-11) : même plafond que l'orchestrateur (3/jour tant que la relecture est obligatoire).
+  const politiquesRelecture = await readContentGenConfig<PolitiquesRelecture>("policies", {});
+  const capPerDay = plafondGenerationEffectif(
+    { maxPerDay: resolveCapPerDay(dailyCap) },
+    politiquesRelecture,
+  );
   const roomAt = (msSince: number) =>
     computeCampaignTickBudget({
       dailyTarget: capPerDay,
@@ -456,9 +466,11 @@ async function checkAnomalies(): Promise<void> {
   const fourHoursAgo = new Date(Date.now() - 4 * 60 * 60 * 1000);
   const [runningCampaigns, recentJobs, createdDay, productiveDay] = await Promise.all([
     prisma.coverageCampaign.count({ where: { status: "running" } }).catch(() => 0),
-    prisma.contentGenJob.count({ where: { createdAt: { gte: fourHoursAgo } } }).catch(() => 0),
     prisma.contentGenJob
-      .count({ where: { createdAt: { gte: twentyFourHoursAgo } } })
+      .count({ where: { createdAt: { gte: fourHoursAgo }, ...whereHorsPorteurs } })
+      .catch(() => 0),
+    prisma.contentGenJob
+      .count({ where: { createdAt: { gte: twentyFourHoursAgo }, ...whereHorsPorteurs } })
       .catch(() => 0),
     prisma.contentGenJob
       .count({

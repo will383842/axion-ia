@@ -27,7 +27,7 @@ import { dateFr } from "./autofacture-donnees";
 import { dejaEnvoye } from "./commissions";
 import { envoyer } from "./envois";
 import { litigeDisponible } from "./litige";
-import { ajouterJours, PALIERS_FORMATION } from "./regles";
+import { ajouterJours, estPalierFormation } from "./regles";
 
 export const DELAI_HORS_GRILLE_JOURS = 60;
 export const ALERTE_AVANT_ECHEANCE_JOURS = 10;
@@ -43,8 +43,7 @@ export const LIBELLE_ACTIVITE_A_CLASSER = "Activité à classer";
 /** Le repère de la ligne « à qualifier ». */
 export function libelleAQualifier(l: { activite: string | null; palier: string | null }): string {
   if (l.palier === PALIER_HORS_GRILLE) return LIBELLE_HORS_GRILLE;
-  if (l.activite === "formation" && !PALIERS_FORMATION.some((p) => p.id === l.palier))
-    return LIBELLE_PALIER_A_CHOISIR;
+  if (l.activite === "formation" && !estPalierFormation(l.palier)) return LIBELLE_PALIER_A_CHOISIR;
   return LIBELLE_ACTIVITE_A_CLASSER;
 }
 

@@ -20,6 +20,8 @@ import { PROTECTION_MOIS, ajouterMois, finDuNiemeJourParis } from "./regles";
 export const RESERVATION_PROVISOIRE_JOURS = 60;
 /** Première version du contrat qui porte la validation par rendez-vous. */
 export const VERSION_REGLE_RENDEZ_VOUS = "2.8";
+/** Contrat 2.8 : après la fin d'une réservation NON validée, personne ne déclare l'entreprise pendant 30 jours. */
+export const JOURS_SANS_DECLARATION_APRES_FIN = 30;
 
 /** `null` : la règle en vigueur aujourd'hui (confirmation par le silence). */
 export type RegleAttribution = "rendez_vous" | null;
@@ -32,6 +34,19 @@ function composantes(version: unknown): number[] | null {
   if (typeof version !== "string" || version.length > 19 || !VERSION_CANONIQUE.test(version))
     return null;
   return version.split(".").map(Number);
+}
+
+/**
+ * Version canonique d'une valeur lue en base, sous forme normalisée (« 2.6.0 » → « 2.6 »,
+ * « 3 » → « 3.0 » : au moins deux composantes, zéros finals en trop retirés) ; `null` si elle
+ * n'est pas canonique. Même lecture que `versionAuMoins`.
+ */
+export function versionNormalisee(version: unknown): string | null {
+  const c = composantes(version);
+  if (!c) return null;
+  while (c.length < 2) c.push(0);
+  while (c.length > 2 && c[c.length - 1] === 0) c.pop();
+  return c.join(".");
 }
 
 /**
@@ -199,6 +214,12 @@ export type ReservationProvisoire = {
    * `null` : aucun rendez-vous en attente.
    */
   rendezVousEnAttentePrisAt?: Date | null | undefined;
+  /**
+   * Date à laquelle la réservation a pris fin SANS validation (`echueAt`, ligne non validée).
+   * Renseignée : l'entreprise reste occupée `JOURS_SANS_DECLARATION_APRES_FIN` jours à compter de
+   * cette date (contrat 2.8, art. 3.2 / 3.5).
+   */
+  echueAt?: Date | null | undefined;
 };
 
 /**
@@ -210,6 +231,11 @@ export type ReservationProvisoire = {
  * Seul un terme clairement dépassé libère, et seul un rendez-vous clairement hors fenêtre est écarté.
  */
 export function reservationOccupe(r: ReservationProvisoire, maintenant: Date): boolean {
+  // Réservation terminée sans validation : 30 jours sans nouvelle déclaration. Date illisible : occupée.
+  if (r.echueAt) {
+    const fin = finDuNiemeJourParis(r.echueAt, JOURS_SANS_DECLARATION_APRES_FIN).getTime();
+    return !(fin <= maintenant.getTime());
+  }
   if (!(r.reserveeJusquAt.getTime() < maintenant.getTime())) return true;
   const pris = r.rendezVousEnAttentePrisAt?.getTime();
   if (pris === undefined) return false;
@@ -223,7 +249,12 @@ export function reservationOccupe(r: ReservationProvisoire, maintenant: Date): b
 export function versReservationProvisoire(
   recueAt: Date,
   r:
-    | { reserveeJusquAt: Date; rendezVousPrisAt?: Date | null; valideeAt?: Date | null }
+    | {
+        reserveeJusquAt: Date;
+        rendezVousPrisAt?: Date | null;
+        valideeAt?: Date | null;
+        echueAt?: Date | null;
+      }
     | null
     | undefined,
 ): ReservationProvisoire | null {
@@ -233,5 +264,29 @@ export function versReservationProvisoire(
     reserveeJusquAt: r.reserveeJusquAt,
     // Un rendez-vous déjà validé n'est plus « à tenir ».
     rendezVousEnAttentePrisAt: r.valideeAt ? null : (r.rendezVousPrisAt ?? null),
+    // Une ligne validée n'ouvre aucune fenêtre de 30 jours.
+    echueAt: r.valideeAt ? null : (r.echueAt ?? null),
   };
+}
+
+/** Statuts d'une présentation (miroir de l'énumération Prisma, sans l'importer : module pur). */
+export type StatutOccupation = string;
+
+/**
+ * Une présentation occupe-t-elle encore le SIREN à cette date ? `reservation` (facultatif, règle
+ * par rendez-vous) : une présentation `reservee` occupe tant que sa réservation court, ou qu'un
+ * rendez-vous pris pendant la réservation reste à tenir (`reservationOccupe`).
+ */
+export function presentationOccupe(
+  p: { statut: StatutOccupation; protegeeJusquAt: Date | null },
+  maintenant: Date,
+  reservation?: ReservationProvisoire | null,
+): boolean {
+  if (p.statut === "reservee") return !reservation || reservationOccupe(reservation, maintenant);
+  // Contrat 2.8 : une réservation terminée sans validation occupe encore 30 jours (E1).
+  if (p.statut === "terminee")
+    return !!reservation?.echueAt && reservationOccupe(reservation, maintenant);
+  if (p.statut === "confirmee")
+    return !p.protegeeJusquAt || p.protegeeJusquAt.getTime() >= maintenant.getTime();
+  return false;
 }

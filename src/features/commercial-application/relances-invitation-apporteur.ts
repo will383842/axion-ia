@@ -37,7 +37,10 @@
 //     puis de nouveau au départ, par le filet du worker.
 
 import { prisma } from "@/lib/prisma";
-import { offreDeLaFiche } from "@/lib/commercial-application/demarche-invitation";
+import {
+  offreDeLaFiche,
+  provenanceDeLaFiche,
+} from "@/lib/commercial-application/demarche-invitation";
 import { estLienCalendlyValide } from "@/lib/calendly/lien-valide";
 import { enqueueEmail } from "@/server/queue/queues";
 import { verdictAvantEnvoi } from "@/server/email/verdict-envoi";
@@ -204,6 +207,11 @@ export async function passerRelancesInvitation(
         // 2026-09-28 — fiche née d'une candidature à une offre d'emploi : les
         // rappels ne disent pas « ta candidature apporteur est retenue ».
         ...offreDeLaFiche(p.ligneInvitee.details),
+        // Fiche saisie à la main par Axion : jamais « candidature retenue ».
+        ...provenanceDeLaFiche(
+          p.ligneInvitee.details,
+          p.ligneInvitee.locale === "en" ? "en" : "fr",
+        ),
       },
       {
         entityType: "Submission",

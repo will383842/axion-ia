@@ -16,6 +16,7 @@ import {
   SITEMAP_CHUNK_SIZE,
 } from "@/server/image-bank/constants";
 import { escapeXml } from "@/lib/xml";
+import { isGalleryPageIndexable } from "@/server/image-bank/indexabilite";
 import { absoluteUrl, pageUrlFor } from "@/server/image-bank/utils/paths";
 
 const LANG = "en" as const;
@@ -62,6 +63,8 @@ interface ImageRow {
     title: string;
     alt: string;
     caption: string | null;
+    description: string | null;
+    aiSummary: string | null;
   }>;
 }
 
@@ -89,6 +92,8 @@ async function fetchPublishedImages(): Promise<ImageRow[]> {
             title: true,
             alt: true,
             caption: true,
+            description: true,
+            aiSummary: true,
           },
         },
       },
@@ -124,6 +129,8 @@ export async function GET(): Promise<Response> {
   for (const image of rows) {
     const langTr = image.translations.find((t) => t.languageCode === LANG);
     if (!langTr) continue;
+    // S2-1 : même règle que la page `/galerie/[slug]` (noindex ⇒ hors plan du site).
+    if (!isGalleryPageIndexable(LANG, langTr)) continue;
 
     const pageUrl = pageUrlFor(SITE_URL, LANG, langTr.slug);
     const imageUrl = absoluteUrl(SITE_URL, image.filePath);

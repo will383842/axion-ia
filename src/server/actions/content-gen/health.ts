@@ -22,6 +22,7 @@
  * module serveur lu par un Server Component (lecture only, fail-soft).
  */
 
+import { whereHorsPorteurs } from "@/server/content-gen/providers/job-porteur";
 import { prisma } from "@/lib/prisma";
 import { readContentGenConfig } from "./_settings";
 
@@ -154,6 +155,7 @@ async function readLastJobByType(): Promise<{
   try {
     const grouped = await prisma.contentGenJob.groupBy({
       by: ["contentType"],
+      where: whereHorsPorteurs,
       _max: { createdAt: true },
     });
     if (grouped.length === 0) {

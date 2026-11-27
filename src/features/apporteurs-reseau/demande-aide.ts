@@ -7,8 +7,8 @@
  *
  * L'équipe est prévenue par le gabarit d'alerte interne EXISTANT (`qualiopi-alerte-interne`,
  * modèle : `alerte-vigilance.ts`), avec le lien vers la fiche console. AUCUN e-mail ne part à
- * l'apporteur, aucune table n'est écrite : la trace est celle du journal des e-mails
- * (`entityType` / `entityId`).
+ * l'apporteur, la demande est aussi enregistrée sur la fiche
+ * (`messages-recus.ts`, texte assaini et chiffré) en plus de la trace du journal des e-mails.
  *
  * 🔴 Le texte libre est une donnée NON FIABLE : il n'est jamais interprété (le gabarit le rend
  * comme du texte, échappé), jamais écrit dans un journal ni dans Sentry, jamais placé dans le
@@ -40,6 +40,7 @@ import {
   type SujetAide,
 } from "./demande-aide-textes";
 import { lireDossierParLien } from "./donnees";
+import { enregistrerDemandeAide } from "./messages-recus";
 import { etatDeLaPage } from "./signature-regles";
 
 const CLES_SUJET = SUJETS_AIDE.map((s) => s.cle) as [SujetAide, ...SujetAide[]];
@@ -196,5 +197,12 @@ export async function envoyerDemandeAide(
     });
     return { ok: false, message: TEXTES_AIDE.echec, saisie };
   }
+  // 6. La trace sur la fiche (bloc « Messages reçus ») : en plus de l'alerte, qui reste inchangée.
+  //    Best-effort : la demande est déjà transmise, un échec ici ne la fait pas refuser.
+  await enregistrerDemandeAide({
+    apporteurId: dossier.id,
+    sujet,
+    message: assainir(lu.data.message),
+  });
   return { ok: true };
 }

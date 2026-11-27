@@ -8,7 +8,8 @@
  *   2. Skip si row `GeneratedVilleCopy` déjà `approved` (resume support)
  *   3. Generator A `landing-ville-economic-data` si pas de TS eco-data
  *   4. Generator B `ville-hub-copy` (consomme eco-data via ecoOverride)
- *   5. UPSERT DB + auto-approve si quality >= threshold
+ *   5. UPSERT DB ; C2c : reste « generated » (relecture humaine). Auto-approve seulement si
+ *      VILLES_AUTO_APPROBATION_ACTIVE=true (retour arrière)
  *
  * Coût : ~$0.05/ville (Claude Sonnet × 2 LLM calls). Total 2100 villes ≈ $105.
  *
@@ -25,6 +26,7 @@ import { VILLES } from "../src/content/villes";
 import type { Ville } from "../src/content/villes";
 import { generateVilleEconomicData } from "../src/server/content-gen/generators/landing-ville-economic-data";
 import { generateVilleHubCopy } from "../src/server/content-gen/generators/ville-hub-copy";
+import { statutPageVilleApresGeneration } from "../src/server/content-gen/quality/relecture-obligatoire";
 
 type Tier = 1 | 2 | 3 | 4;
 
@@ -119,7 +121,12 @@ function selectVilles(args: RunArgs): Ville[] {
 interface VilleResult {
   villeSlug: string;
   status:
-    "skipped_already_approved" | "skipped_dry_run" | "success" | "failed_quality" | "failed_error";
+    | "skipped_already_approved"
+    | "skipped_dry_run"
+    | "success"
+    | "success_a_relire"
+    | "failed_quality"
+    | "failed_error";
   ecoGenerated: boolean;
   qualityScore?: number;
   totalCostUsd: number;
@@ -142,7 +149,37 @@ async function processOneVille(
     where: { villeSlug: slug },
     select: { status: true, qualityScore: true },
   });
-  if (existing?.status === "approved") {
+  // C2c : les copies restent « generated » ; on ne repaie pas une copie déjà bonne et en attente
+  // de relecture (reprise), sauf retour arrière (auto-approbation active).
+  // Retour arrière : une copie « generated » déjà bonne est approuvée telle quelle, sans repayer.
+  if (
+    existing?.status === "generated" &&
+    process.env.VILLES_AUTO_APPROBATION_ACTIVE === "true" &&
+    (existing.qualityScore ?? 0) >= args.autoApproveThreshold
+  ) {
+    await prisma.generatedVilleCopy.update({
+      where: { villeSlug: slug },
+      data: {
+        status: "approved",
+        reviewedBy: `auto:regen-complete:>=${args.autoApproveThreshold}`,
+        reviewedAt: new Date(),
+        reviewNotes: `Auto-approved à la reprise (score ${existing.qualityScore} >= ${args.autoApproveThreshold}) — regen-villes-complete.ts`,
+      },
+    });
+    return {
+      villeSlug: slug,
+      status: "skipped_already_approved",
+      ecoGenerated: false,
+      totalCostUsd: 0,
+      qualityScore: existing.qualityScore ?? undefined,
+    };
+  }
+  if (
+    existing?.status === "approved" ||
+    (existing?.status === "generated" &&
+      process.env.VILLES_AUTO_APPROBATION_ACTIVE !== "true" &&
+      (existing.qualityScore ?? 0) >= args.autoApproveThreshold)
+  ) {
     return {
       villeSlug: slug,
       status: "skipped_already_approved",
@@ -187,8 +224,24 @@ async function processOneVille(
   });
   totalCostUsd += copyResult.totalCostUsd;
 
-  // Step 3 : auto-approve si quality OK
-  if (copyResult.qualityScore >= args.autoApproveThreshold) {
+  // Step 3 : C2c (2026-11) — la copie reste « generated » (file de validation humaine) ;
+  // l'auto-approbation n'a lieu que si VILLES_AUTO_APPROBATION_ACTIVE=true (retour arrière).
+  const statutFinal = statutPageVilleApresGeneration({
+    qualityScore: copyResult.qualityScore,
+    seuil: args.autoApproveThreshold,
+    env: process.env,
+  });
+  if (statutFinal === "generated" && copyResult.qualityScore >= args.autoApproveThreshold) {
+    return {
+      villeSlug: slug,
+      status: "success_a_relire",
+      ecoGenerated,
+      qualityScore: copyResult.qualityScore,
+      totalCostUsd,
+      errorMessage: `score ${copyResult.qualityScore} >= ${args.autoApproveThreshold} mais auto-approbation arrêtée (C2c) : status=generated, relecture humaine requise`,
+    };
+  }
+  if (statutFinal === "approved") {
     await prisma.generatedVilleCopy.update({
       where: { villeSlug: slug },
       data: {
@@ -238,11 +291,13 @@ async function main(): Promise<void> {
       const tag =
         r.status === "success"
           ? `✅ score ${r.qualityScore}`
-          : r.status === "skipped_already_approved"
-            ? `⏭️  already approved (score ${r.qualityScore ?? "?"})`
-            : r.status === "skipped_dry_run"
-              ? "🔍 dry-run"
-              : `❌ ${r.status} — ${r.errorMessage ?? ""}`;
+          : r.status === "success_a_relire"
+            ? `📝 score ${r.qualityScore} — à relire (generated)`
+            : r.status === "skipped_already_approved"
+              ? `⏭️  déjà traitée, rien refait (score ${r.qualityScore ?? "?"})`
+              : r.status === "skipped_dry_run"
+                ? "🔍 dry-run"
+                : `❌ ${r.status} — ${r.errorMessage ?? ""}`;
       console.log(`           → ${tag} ($${r.totalCostUsd.toFixed(4)})`);
     } catch (err) {
       const msg = err instanceof Error ? err.message : String(err);
@@ -266,6 +321,9 @@ async function main(): Promise<void> {
   console.log(`\n[regen-complete] ==================== SUMMARY ====================`);
   console.log(`  Total villes processed : ${results.length}`);
   console.log(`  Success (approved)     : ${success}`);
+  console.log(
+    `  À relire (generated)   : ${results.filter((r) => r.status === "success_a_relire").length}`,
+  );
   console.log(`  Skipped                : ${skipped}`);
   console.log(`  Failed                 : ${failed}`);
   console.log(`  Total cost (USD)       : $${totalCost.toFixed(4)}`);

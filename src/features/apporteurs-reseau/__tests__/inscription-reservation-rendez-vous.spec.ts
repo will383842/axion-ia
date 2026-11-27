@@ -34,9 +34,12 @@ const db = vi.hoisted(() => ({
 const { reservationApi, presentationApi } = vi.hoisted(() => {
   const absente = () => Object.assign(new Error("absente"), { code: "P2021" });
   const reservationApi = {
-    findMany: async (a: { where: { presentationId: { in: string[] } } }) => {
+    findMany: async (a: { where: { presentationId?: { in: string[] } } }) => {
       if (db.tableReservationAbsente) throw absente();
-      return db.reservations.filter((r) => a.where.presentationId.in.includes(r.presentationId));
+      // Lecture E1 (réservations échues dans les 30 jours) : aucune ligne échue dans ces essais.
+      const ids = a.where.presentationId?.in;
+      if (!ids) return [];
+      return db.reservations.filter((r) => ids.includes(r.presentationId));
     },
     create: async (a: {
       data: { presentationId: string; regle: string; reserveeJusquAt: Date };

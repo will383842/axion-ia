@@ -43,10 +43,9 @@ const HORS_PROSPECTS: ReadonlySet<string> = new Set([
   "autofacture-transmission",
   "opco-suivi-entreprise",
   "recueil-besoin",
-  // Apporteur retenu ou sous contrat : barème du contrat, privé.
-  "apporteur-issue-retenu",
+  // Apporteur sous contrat : barème du contrat, privé. (« retenu » et « contrat signé »
+  // n'ont plus de montant : ils sont soumis à la règle commune, retirés de la liste.)
   "apporteur-demarrage",
-  "apporteur-contrat-signe",
   "apporteur-releve",
   "apporteur-virement-fait",
   "apporteur-vigilance",
@@ -117,7 +116,11 @@ describe("e-mails aux prospects et au public : aucun montant hors Journée IA", 
     it(nom, async () => {
       const r = await renderEmailTemplate(nom, "fr", { ...PAYLOAD_EXEMPLE });
       const t = `${r.subject} ${texte(r.html)} ${r.text}`;
-      expect(montants(t).filter((m) => !ECHOS.has(m))).toEqual([]);
+      // Exception étroite (décision de Will du 27/11/2026) : l'e-mail « retenu » cite UNIQUEMENT
+      // la commission Journée IA (500 €, à titre indicatif). Aucun autre gabarit, aucun autre montant.
+      const tolere = (m: string): boolean =>
+        nom === "apporteur-issue-retenu" && /^(?:500\s?€|€\s?500)$/.test(m);
+      expect(montants(t).filter((m) => !ECHOS.has(m) && !tolere(m))).toEqual([]);
     });
   }
 });

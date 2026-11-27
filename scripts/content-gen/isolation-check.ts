@@ -532,6 +532,17 @@ const ALLOWED_PATTERNS: ReadonlyArray<RegExp> = [
   /^src\/lib\/seo\/job-posting\.ts$/,
   /^src\/server\/queue\/workers\/site-route-gsc-worker\.ts$/,
   /^src\/server\/site-explorer\/route-enumerator\.ts$/,
+  // Exceptions 2026-11-27 (pilotage SEO, P7 « opportunités »). CONSOMMATEURS LÉGITIMES
+  // en lecture seule de deux fonctions pures de content-gen, pas du code content-gen :
+  // - analyser.ts : `construireCarte` / `normaliserUrl`
+  //   (content-gen/strategie/carte-requetes) ;
+  // - detecteurs.ts : `normaliserUrl` seul (même module) ;
+  // - garde-fous.ts : `evaluerSujetCible` (content-gen/sujet-cible) + `normaliserUrl`.
+  // Trois fichiers NOMMÉS, volontairement : aucun autre fichier de seo-pilotage/ n'est
+  // exempté, un nouvel import de content-gen y reste donc signalé.
+  /^src\/server\/seo-pilotage\/opportunites\/analyser\.ts$/,
+  /^src\/server\/seo-pilotage\/opportunites\/detecteurs\.ts$/,
+  /^src\/server\/seo-pilotage\/opportunites\/garde-fous\.ts$/,
   // Exceptions 2026-06-21 (campagnes multi-axes + recherche cross-content + Phase 3
   // secteurs). CONSOMMATEURS LÉGITIMES de la pain-matrix / KB content-gen (lecture
   // seule data) ou refs en commentaires — PAS du code content-gen core :
@@ -599,6 +610,13 @@ const ALLOWED_PATTERNS: ReadonlyArray<RegExp> = [
   /^src\/scripts\/backfill-hero-images\.ts$/,
   /^src\/content\/__tests__\/services-ssot\.spec\.ts$/,
   /^src\/server\/queue\/workers\/keyword-opportunity-detector\.ts$/,
+  // - src/server/videos/__tests__/encarts.spec.ts (2026-11-27, #2457) : le test des
+  //   encarts vidéo vérifie les catégories de blog RÉELLES en important
+  //   `BLOG_CATEGORY_SLUGS` depuis `@/server/content-gen/lib/category-mapper`
+  //   (catalogue en lecture seule, source de vérité des slugs). Consommateur
+  //   légitime d'une constante, aucun code de pipeline : le test échouerait si le
+  //   catalogue des catégories dérivait de la liste des encarts.
+  /^src\/server\/videos\/__tests__\/encarts\.spec\.ts$/,
   // a11y-admin.spec.ts (2026-09-13) — la gate d'accessibilité de la console.
   // Elle est passée de 18 écrans à 216 après que les 223 routes admin ont été
   // MESURÉES une par une (198 sans violation serious/critical ; les 25 en faute
