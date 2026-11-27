@@ -6,7 +6,7 @@ Module pur (aucune entrée-sortie, aucune migration, rien de branché) dans `src
 
 - `codes-refus.ts` : la liste FERMÉE des codes de raison de refus (les 22 du § 7.1 de la conception de la chaîne, plus quatre nouveaux : `intention_non_respectee`, `structure_titres`, `longueur_hors_fourchette`, `reponse_directe_absente`), les libellés en français simple, la correspondance B01 à B17 → code (avec précisions permises), et `codePourCritere`, `criteresPourCode`, `estReport`.
 - `contrat-porte.ts` : le contrat TypeScript entre la chaîne et la porte (entrée, sortie, résultat d'un critère, classes dur / corrigeable / dérogeable / report), `publicationAutorisee` (échec fermé), `refusDepuisVerdict` (lignes prêtes pour `ContenuRefus`) et `actionApresVerdict` (réécriture ciblée, abandon, report, mise en attente, relecture humaine, dérogation ou fusion).
-- Tests exhaustifs (71) dont un test de pureté du module.
+- Tests exhaustifs (76) dont un test de pureté du module.
 
 ## Choix à connaître
 
@@ -29,4 +29,6 @@ Module pur (aucune entrée-sortie, aucune migration, rien de branché) dans `src
 - Le seuil de publication (85) est fixe dans ce module ; la porte peut le relever à 90 : à paramétrer au branchement.
 - Quatre tours de relecture Opus faits (3 sur les correctifs de la porte réelle) ; le dernier a relevé cinq points mineurs (un « non évalué » masqué dans une famille B11, doublons de corrections, doc), tous corrigés ensuite avec leurs tests mais sans nouvelle relecture (limite de 3 tours).
 
-VERDICT OPUS : À CORRIGER (points du dernier tour corrigés, non relus)
+Relecture Opus (cinquième tour, sur le diff complet contre main après fusion de C3 et Q1) : aucun point bloquant ; mineurs corrigés (filtre des avertissements, test B11, nombre de tests). Restent notés, non bloquants : tests des dédoublonnages B11 de précisions étrangères, perte du sous-critère fusionné dans la correction, commentaires à rafraîchir.
+
+VERDICT OPUS : BON
