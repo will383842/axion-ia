@@ -45,7 +45,6 @@ const REPONSE_CONTESTATION_JOURS = 30;
 
 // Le filet anti-localhost de `site-url.ts` : jamais un lien localhost dans un e-mail de prod.
 const SITE_URL = SITE_URL_BRUT.replace(/\/+$/, "");
-const LIEN_FICHE = `${SITE_URL}/documents/apporteurs/comment-ca-marche.pdf`;
 const LIEN_RENDEZ_VOUS = `${SITE_URL}/fr/appel?depuis=email-apporteur`;
 // Analyse du 09/10 (point 19) : l'e-mail au prospect renvoie à SA section, pas à celle des candidats.
 const LIEN_POLITIQUE = `${SITE_URL}/fr/politique-confidentialite#personnes-presentees-par-un-apporteur`;
@@ -180,7 +179,7 @@ export const COPY_DEMARRAGE = {
     paiement:
       "Elle vous est due dès que le client a payé l'intégralité de sa commande, même si la prestation n'est pas encore livrée : nous établissons votre facture pour vous, puis nous faisons le virement au plus tard 30 jours après ce paiement.",
     fiche:
-      "Votre contrat signé des deux parties est en pièce jointe. La fiche « Comment ça marche » est à garder sous la main : ",
+      "Votre contrat signé des deux parties est en pièce jointe. La fiche des commissions est à garder sous la main",
     ficheLien: "la fiche en PDF",
   },
   presentationRecue: {
@@ -560,9 +559,16 @@ export function ApporteurContratSigneEmail({ locale, payload }: Props) {
       {/* Hors du texte réécrivable : la fiche reste jointe même quand Will réécrit le message. */}
       <Text style={emailStyles.paragraphStyle}>
         {t.fiche}
-        <a href={LIEN_FICHE} style={{ color: emailStyles.COLORS.terracotta }}>
-          {t.ficheLien}
-        </a>
+        {url ? (
+          <>
+            {" : "}
+            <a href={`${url}/fiche-commissions`} style={{ color: emailStyles.COLORS.terracotta }}>
+              {t.ficheLien}
+            </a>
+          </>
+        ) : (
+          " (disponible sur votre lien personnel)"
+        )}
         .
       </Text>
     </EmailLayout>
