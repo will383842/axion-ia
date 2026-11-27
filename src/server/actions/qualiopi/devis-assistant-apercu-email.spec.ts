@@ -152,7 +152,7 @@ describe("apercuEmailDevisAction", () => {
 
   it("le lien de signature montré est fictif et inerte (aucun jeton réel dans la page)", async () => {
     const d = ok(await apercuEmailDevisAction({ devisId: ID }));
-    expect(d.html).not.toMatch(/href="https?:/);
+    // Les liens publics (logo, LinkedIn) s'ouvrent désormais ; le lien de signature, jamais.
     expect(d.html).not.toMatch(/href="[^"]*signer/);
     // Le bouton est présent ; l'adresse de signature n'est jamais imprimée en clair.
     expect(d.html).toContain("Signer le devis en ligne");
@@ -166,7 +166,7 @@ describe("apercuEmailDevisAction", () => {
       const d = ok(await apercuEmailDevisAction({ devisId: ID }));
       expect(d.html).not.toContain("Signer le devis en ligne");
       expect(d.html).not.toContain("signer/");
-      expect(d.html).not.toMatch(/href="https?:/);
+      expect(d.html).not.toMatch(/href="[^"]*signer/);
     } finally {
       warn.mockRestore();
     }

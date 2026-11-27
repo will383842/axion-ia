@@ -18964,9 +18964,49 @@ model GarantieJourneeIa {
   @@map("garanties_journee_ia")
 }
 
+/// Un challenge d'apporteurs (« Prime exceptionnelle de … » côté apporteur) : la règle, la
+/// période, le seuil et le montant, figés à la publication. INVITATION LIBRE : aucun objectif
+/// imposé à un apporteur, aucun classement, aucun compteur. Table autonome, sans clé étrangère
+/// (fenêtre app/worker) ; le brouillon n'est visible que dans la console.
+/// rgpd: technique — règle, période, seuil et montant d'un challenge ; identifiant de l'administrateur auteur ; aucune donnée d'apporteur
+model ChallengeApporteur {
+  id              String    @id @default(uuid()) @db.Uuid
+  titre           String    @db.VarChar(120)
+  /// Jours civils DE PARIS, bornes incluses (CHECK fin >= début en base).
+  debutLe         DateTime  @map("debut_le") @db.Date
+  finLe           DateTime  @map("fin_le") @db.Date
+  /// Dernier jour de paiement client retenu (règlement seulement) ; nul ou >= fin.
+  paiementJusquAu DateTime? @map("paiement_jusqu_au") @db.Date
+  /// Liste fermée : `journee-ia` (CHECK en base).
+  produit         String    @db.VarChar(40)
+  /// Liste fermée : `facturees_dans_la_periode` (CHECK en base).
+  critere         String    @db.VarChar(40)
+  /// 1 à 999 (CHECK en base).
+  seuil           Int
+  /// Montant HT de la prime, en centimes, > 0 (CHECK en base).
+  primeHtCents    Int       @map("prime_ht_cents")
+  /// Texte du règlement publié, figé à la publication.
+  reglement       String    @db.Text
+  /// Empreinte SHA-256 du règlement, posée à la publication.
+  reglementSha256 String?   @map("reglement_sha256") @db.Char(64)
+  /// `brouillon` (défaut) | `publie` | `archive` (CHECK en base).
+  statut          String    @default("brouillon") @db.VarChar(20)
+  publieAt        DateTime? @map("publie_at") @db.Timestamptz(3)
+  /// Instant de l'archivage ; un archivé arrêté avant son début n'est jamais lisible.
+  archiveAt       DateTime? @map("archive_at") @db.Timestamptz(3)
+  /// Identifiants texte d'administrateur, sans clé étrangère.
+  publiePar       String?   @map("publie_par") @db.VarChar(64)
+  creePar         String?   @map("cree_par") @db.VarChar(64)
+  creeAt          DateTime  @default(now()) @map("cree_at") @db.Timestamptz(3)
+  majAt           DateTime  @default(now()) @updatedAt @map("maj_at") @db.Timestamptz(3)
+
+  @@index([statut, debutLe], map: "challenges_apporteur_statut_debut_idx")
+  @@map("challenges_apporteur")
+}
+
 /// Questionnaire du Baromètre 2027 : une ligne par réponse, non nominative. Ni IP, ni e-mail, ni
 /// agent navigateur, ni horodatage précis (`jour` est tronqué au jour UTC). Effacement automatique
-/// 24 mois après la fin de l'enquête (exception déclarée dans le worker de purge).
+/// 24 mois après le jour d'envoi de chaque réponse (exception déclarée dans le worker de purge).
 /// rgpd: technique — réponses non nominatives, sans identifiant de personne : l'export et l'effacement par personne n'existent pas (art. 11) ; retrait par code, effacement automatique à 24 mois
 model BarometreQuestionnaireReponse {
   id                   String   @id @default(uuid()) @db.Uuid

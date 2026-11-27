@@ -33,6 +33,7 @@
 import { Worker, type Job } from "bullmq";
 import { captureWorkerError } from "@/server/queue/lib/sentry-worker";
 import { prisma } from "@/lib/prisma";
+import { whereHorsPorteurs } from "@/server/content-gen/providers/job-porteur";
 import { readContentGenConfig } from "@/server/actions/content-gen/_settings";
 import {
   CLOSED_WITHOUT_RUNNING_EXCLUSION,
@@ -456,9 +457,11 @@ async function checkAnomalies(): Promise<void> {
   const fourHoursAgo = new Date(Date.now() - 4 * 60 * 60 * 1000);
   const [runningCampaigns, recentJobs, createdDay, productiveDay] = await Promise.all([
     prisma.coverageCampaign.count({ where: { status: "running" } }).catch(() => 0),
-    prisma.contentGenJob.count({ where: { createdAt: { gte: fourHoursAgo } } }).catch(() => 0),
     prisma.contentGenJob
-      .count({ where: { createdAt: { gte: twentyFourHoursAgo } } })
+      .count({ where: { createdAt: { gte: fourHoursAgo }, ...whereHorsPorteurs } })
+      .catch(() => 0),
+    prisma.contentGenJob
+      .count({ where: { createdAt: { gte: twentyFourHoursAgo }, ...whereHorsPorteurs } })
       .catch(() => 0),
     prisma.contentGenJob
       .count({

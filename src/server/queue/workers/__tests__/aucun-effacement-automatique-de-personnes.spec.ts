@@ -109,8 +109,8 @@ const EXCEPTION_CANDIDATURES = ["jobApplication"] as const;
 
 /**
  * Seconde exception, décision de l'éditeur (conservation de 24 mois validée le 2026-11-27) :
- * les réponses non nominatives au questionnaire du Baromètre 2027, effacées 24 mois après la
- * fin de l'enquête. Listée À PART, nommée, et non comme purge technique : elle ne s'allonge pas.
+ * les réponses non nominatives au questionnaire du Baromètre 2027, effacées 24 mois après leur
+ * date d'envoi (collecte sans fin). Listée À PART, nommée, et non comme purge technique : elle ne s'allonge pas.
  */
 const EXCEPTION_QUESTIONNAIRE_BAROMETRE = ["barometreQuestionnaireReponse"] as const;
 

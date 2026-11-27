@@ -58,6 +58,7 @@ const THEME: Record<TelegramGroup, { emoji: string; label: string }> = {
   incidents: { emoji: "🚨", label: "INCIDENT DE DONNÉES" },
   "questionnaire-audit": { emoji: "📝", label: "QUESTIONNAIRE AUDIT" },
   tour: { emoji: "🚌", label: "TOUR FRANCE IA" },
+  apporteurs: { emoji: "✍️", label: "APPORTEUR" },
   // Le salon général se nomme « 🔧 Axion-IA — Technique » dans Telegram (14/11/2026).
   system: { emoji: "🔔", label: "SYSTÈME" },
 };
