@@ -36,16 +36,16 @@ Sept principes, non négociables :
 
 **Une seule file nouvelle : `seo-pilotage`.** Elle a un seul worker et une charge minimale `{ tache, tick }`. Le worker **ignore** toute `tache` qu'il ne connaît pas, en le journalisant, ce qui est l'inverse du défaut actuel de `content-refresh` (AUDIT § 5 bis-4).
 
-| Tâche | Fréquence (heure de Paris) | Rôle |
-| --- | --- | --- |
-| `ingestion-gsc` | tous les jours, 06:30 | Import Search Analytics du dernier jour final |
-| `rattrapage-gsc` | 1 jour d'historique par passage, jusqu'à 16 mois | Remplir l'historique, une seule fois |
-| `inspection` | tous les jours, 07:00 | Rotation de l'inspection d'URL, sous quota partagé |
-| `opportunites` | le lundi, 05:00 | Calcul des opportunités, après la fin de l'ingestion |
-| `robots-ia` | tous les jours | Collecte Cloudflare (si le jeton est disponible) |
-| `panel-geo` | le mardi | Panel de questions GEO |
-| `mesure-effets` | tous les jours | Mesure de l'effet des modifications |
-| `purge` | le dimanche | Purge par lots |
+| Tâche            | Fréquence (heure de Paris)                       | Rôle                                                 |
+| ---------------- | ------------------------------------------------ | ---------------------------------------------------- |
+| `ingestion-gsc`  | tous les jours, 06:30                            | Import Search Analytics du dernier jour final        |
+| `rattrapage-gsc` | 1 jour d'historique par passage, jusqu'à 16 mois | Remplir l'historique, une seule fois                 |
+| `inspection`     | tous les jours, 07:00                            | Rotation de l'inspection d'URL, sous quota partagé   |
+| `opportunites`   | le lundi, 05:00                                  | Calcul des opportunités, après la fin de l'ingestion |
+| `robots-ia`      | tous les jours                                   | Collecte Cloudflare (si le jeton est disponible)     |
+| `panel-geo`      | le mardi                                         | Panel de questions GEO                               |
+| `mesure-effets`  | tous les jours                                   | Mesure de l'effet des modifications                  |
+| `purge`          | le dimanche                                      | Purge par lots                                       |
 
 Le rapport hebdomadaire (lundi 07:00 UTC) **lit** les tables : il n'appelle aucune API.
 
@@ -76,6 +76,7 @@ Le rapport hebdomadaire (lundi 07:00 UTC) **lit** les tables : il n'appelle aucu
   - les entrées du `tier-lifecycle`.
 
   `site-route-gsc` et `content-keyword-sync` sont ensuite **retirés de la planification**, en deux PR distinctes, une fois l'historique rempli.
+
 - **Les quotas** sont à confirmer dans la page « Usage limits » de Google au moment de coder. De mémoire : ~1 200 requêtes/min par site, un quota de « charge » qui pèse surtout sur `page+query` multi-jours, et un plafond d'environ 50 000 lignes par jour et par type de recherche. Des requêtes d'un jour à la fois coûtent peu.
 
 ### 3.2 URL Inspection : rotation sous quota partagé
@@ -83,11 +84,11 @@ Le rapport hebdomadaire (lundi 07:00 UTC) **lit** les tables : il n'appelle aucu
 - **Compteur Redis unique** `gsc:inspection:quota:<jour Pacifique>`. Google donne 2 000 inspections par jour et par propriété, 600 par minute.
 - **Découpage du quota** :
 
-  | Usage | Inspections par jour |
-  | --- | --- |
-  | Suivi après publication existant (il passe à ce compteur) | 200 |
-  | Rotation | 1 400 |
-  | Inspections manuelles depuis la console | 400 |
+  | Usage                                                     | Inspections par jour |
+  | --------------------------------------------------------- | -------------------- |
+  | Suivi après publication existant (il passe à ce compteur) | 200                  |
+  | Rotation                                                  | 1 400                |
+  | Inspections manuelles depuis la console                   | 400                  |
 
 - **Priorités de la rotation**, dans l'ordre :
   1. pages publiées ou modifiées depuis moins de 48 h ;
@@ -106,11 +107,11 @@ Le rapport hebdomadaire (lundi 07:00 UTC) **lit** les tables : il n'appelle aucu
 
 ### 3.4 GEO : trois indicateurs, présentés pour ce qu'ils sont
 
-| Indicateur | Source | Coût | Limite affichée à l'écran |
-| --- | --- | --- | --- |
-| **Visites venues des IA** | Plausible, `visites-ia.ts` (existe). Ajout : page d'arrivée × IA, tendance sur 12 semaines | 0 | Sous-comptage : applications sans référent ; AI Overviews et AI Mode comptés comme « Google » |
-| **Passages des robots d'IA** | API GraphQL Analytics de Cloudflare, agrégats `{jour, robot, famille de chemins, nombre}`. Ni IP ni user-agent brut | 0 (droit `Analytics:Read` à ajouter au jeton : **décision de Will**) | Rétention et champs selon l'offre Cloudflare : **à vérifier**. Le passage d'un robot ≠ une citation |
-| **Présence dans les réponses (panel)** | 40 questions **figées** (versionnées dans le code), posées à **Claude + `web_search`** (`content-gen/clients/claude-search.ts`), 2 fois chacune, toutes les deux semaines, localisation France | ~0,03 $ par question en Haiku : **≈ 5 $/mois** | « Échantillon de N questions, réponses d'API ≠ ce que voit l'utilisateur, tendance sur 4 passages minimum » |
+| Indicateur                             | Source                                                                                                                                                                                         | Coût                                                                 | Limite affichée à l'écran                                                                                   |
+| -------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------- |
+| **Visites venues des IA**              | Plausible, `visites-ia.ts` (existe). Ajout : page d'arrivée × IA, tendance sur 12 semaines                                                                                                     | 0                                                                    | Sous-comptage : applications sans référent ; AI Overviews et AI Mode comptés comme « Google »               |
+| **Passages des robots d'IA**           | API GraphQL Analytics de Cloudflare, agrégats `{jour, robot, famille de chemins, nombre}`. Ni IP ni user-agent brut                                                                            | 0 (droit `Analytics:Read` à ajouter au jeton : **décision de Will**) | Rétention et champs selon l'offre Cloudflare : **à vérifier**. Le passage d'un robot ≠ une citation         |
+| **Présence dans les réponses (panel)** | 40 questions **figées** (versionnées dans le code), posées à **Claude + `web_search`** (`content-gen/clients/claude-search.ts`), 2 fois chacune, toutes les deux semaines, localisation France | ~0,03 $ par question en Haiku : **≈ 5 $/mois**                       | « Échantillon de N questions, réponses d'API ≠ ce que voit l'utilisateur, tendance sur 4 passages minimum » |
 
 - **Moteurs du panel.** En V1, Claude seul : c'est le seul déjà branché, avec une porte de coût. Perplexity (Sonar) et OpenAI (outil de recherche web) sont techniquement possibles, mais **payants hors plafond Claude** : décision de Will (§ 10).
 - **Gemini avec ancrage Google.** Ses conditions limitent le stockage des résultats : exclu tant qu'elles ne sont pas validées.
@@ -121,19 +122,19 @@ Le rapport hebdomadaire (lundi 07:00 UTC) **lit** les tables : il n'appelle aucu
 
 Fonction pure, sur 100 points, calculée sur le **HTML rendu** : le worker fait un fetch de la page publique, ce qui revient à un simple visiteur, sans JS ajouté.
 
-| Critère | Points |
-| --- | --- |
-| H1 unique, au moins 3 H2, dont au moins 30 % formulés en question | 10 |
-| Réponse directe de 40 à 90 mots dans les 200 premiers mots | 15 |
-| Au moins 3 passages autonomes de 40 à 120 mots, sans renvoi du type « comme vu plus haut » | 15 |
-| Chiffres sourcés (nombre et lien externe dans le même paragraphe) | 10 |
-| Date visible et `dateModified` de moins de 365 jours | 10 |
-| JSON-LD relié à `/#organization`, sans second nœud `Organization` | 10 |
-| FAQ visible concordant avec `FAQPage` | 5 |
-| Tableau ou liste structurée | 5 |
-| Page indexable, canonique sur elle-même, dans le sitemap | 10 |
-| Au moins 2 liens internes vers des pages fortes | 5 |
-| Variante Markdown présente | 5 |
+| Critère                                                                                    | Points |
+| ------------------------------------------------------------------------------------------ | ------ |
+| H1 unique, au moins 3 H2, dont au moins 30 % formulés en question                          | 10     |
+| Réponse directe de 40 à 90 mots dans les 200 premiers mots                                 | 15     |
+| Au moins 3 passages autonomes de 40 à 120 mots, sans renvoi du type « comme vu plus haut » | 15     |
+| Chiffres sourcés (nombre et lien externe dans le même paragraphe)                          | 10     |
+| Date visible et `dateModified` de moins de 365 jours                                       | 10     |
+| JSON-LD relié à `/#organization`, sans second nœud `Organization`                          | 10     |
+| FAQ visible concordant avec `FAQPage`                                                      | 5      |
+| Tableau ou liste structurée                                                                | 5      |
+| Page indexable, canonique sur elle-même, dans le sitemap                                   | 10     |
+| Au moins 2 liens internes vers des pages fortes                                            | 5      |
+| Variante Markdown présente                                                                 | 5      |
 
 Pénalités :
 
@@ -148,14 +149,14 @@ Module pur `src/server/seo-pilotage/opportunites/*`. Les règles sont détaillé
 
 ### 4.1 Détecteurs
 
-| Détecteur | Règle | Action proposée |
-| --- | --- | --- |
-| **a. Quasi-gagnante** | Position pondérée entre 5 et 20, ≥ 100 impressions sur 28 j, page propriétaire de la requête | Positions 5 à 10 : titre/méta, FAQ. Positions 11 à 20 : mise à jour, liens internes |
-| **b. CTR anormal** | Borne haute de Wilson (90 %) < 0,6 × CTR attendu, ≥ 200 impressions. La courbe CTR est **celle du site** : marque exclue, régression isotone, détecteur en veille s'il y a moins de 3 tranches valides | Titre/méta |
-| **c. Requête sans page dédiée** | L'intention de la requête ne correspond pas au type de la page qui sort, ≥ 50 impressions, position ≤ 30 | Lien interne vers la bonne page si elle existe. Sinon, **brief** de nouvelle page (jamais publié automatiquement) |
-| **d. Cannibalisation** | Au moins 2 URL ≥ 20 % des impressions **et** au moins 3 bascules en 28 j, ≥ 100 impressions. Le propriétaire est choisi par `construireCarte` | Liens internes vers le propriétaire. Fusion : **signalement** |
-| **e. Déclin** | −30 % de clics **et** ≥ 20 clics perdus, comparé à la période précédente, normalisé par la tendance du site entier, et à N−1 quand 13 mois d'historique existent | Position stable : demande en baisse, aucune action. Position dégradée : mise à jour |
-| **f. Jamais affichée** | Page publique de plus de 45 j, 0 impression **au niveau de la page** sur 90 j. Catégories `legal` et `conversion` exclues | Inspection, puis liens internes. Noindex ou fusion : **signalement** |
+| Détecteur                       | Règle                                                                                                                                                                                                  | Action proposée                                                                                                   |
+| ------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ----------------------------------------------------------------------------------------------------------------- |
+| **a. Quasi-gagnante**           | Position pondérée entre 5 et 20, ≥ 100 impressions sur 28 j, page propriétaire de la requête                                                                                                           | Positions 5 à 10 : titre/méta, FAQ. Positions 11 à 20 : mise à jour, liens internes                               |
+| **b. CTR anormal**              | Borne haute de Wilson (90 %) < 0,6 × CTR attendu, ≥ 200 impressions. La courbe CTR est **celle du site** : marque exclue, régression isotone, détecteur en veille s'il y a moins de 3 tranches valides | Titre/méta                                                                                                        |
+| **c. Requête sans page dédiée** | L'intention de la requête ne correspond pas au type de la page qui sort, ≥ 50 impressions, position ≤ 30                                                                                               | Lien interne vers la bonne page si elle existe. Sinon, **brief** de nouvelle page (jamais publié automatiquement) |
+| **d. Cannibalisation**          | Au moins 2 URL ≥ 20 % des impressions **et** au moins 3 bascules en 28 j, ≥ 100 impressions. Le propriétaire est choisi par `construireCarte`                                                          | Liens internes vers le propriétaire. Fusion : **signalement**                                                     |
+| **e. Déclin**                   | −30 % de clics **et** ≥ 20 clics perdus, comparé à la période précédente, normalisé par la tendance du site entier, et à N−1 quand 13 mois d'historique existent                                       | Position stable : demande en baisse, aucune action. Position dégradée : mise à jour                               |
+| **f. Jamais affichée**          | Page publique de plus de 45 j, 0 impression **au niveau de la page** sur 90 j. Catégories `legal` et `conversion` exclues                                                                              | Inspection, puis liens internes. Noindex ou fusion : **signalement**                                              |
 
 ### 4.2 Planchers et durcissement de l'existant
 
@@ -175,12 +176,12 @@ Module pur `src/server/seo-pilotage/opportunites/*`. Les règles sont détaillé
 
 `priorité = gain de clics estimé × confiance / effort`
 
-| Action | Effort |
-| --- | --- |
-| Titre/méta, lien | 1 |
-| FAQ | 2 |
-| Mise à jour | 3 |
-| Nouvelle page | 5 |
+| Action           | Effort |
+| ---------------- | ------ |
+| Titre/méta, lien | 1      |
+| FAQ              | 2      |
+| Mise à jour      | 3      |
+| Nouvelle page    | 5      |
 
 Les signalements sont listés à part. Un coefficient de valeur métier par catégorie est **à arbitrer par Will**.
 
@@ -194,13 +195,13 @@ Les signalements sont listés à part. Un coefficient de valeur métier par cat�
 
 ### 5.1 Ce que le système peut faire, par type de page
 
-| Type de page | Titre / méta | FAQ | Liens internes | Mise à jour (mode existant) | Nouvelle page |
-| --- | --- | --- | --- | --- | --- |
-| Article, actualité, guide (en base) | **Validation**, puis **auto borné** après 20 validations sans retour arrière | Validation | Validation (insertion de lien contrôlée par `verifierLienInterne`) | Validation, puis auto borné (1 par jour) | Brief en validation |
-| FAQ (table `FAQ`) | Validation | Validation, jetons de prix intacts à l'octet près | — | — | Validation |
-| Page ville | **Recommandation** : titre calculé dans le code | Validation si `GeneratedVilleCopy` | Recommandation | Interdit | Recommandation |
-| Page offre | **Interdit** : prix, positionnement, Qualiopi | Interdit | Interdit | Interdit | Interdit |
-| Institutionnelle, légale | Recommandation (code), légal **interdit** | Recommandation | Recommandation | Interdit | Recommandation |
+| Type de page                        | Titre / méta                                                                 | FAQ                                               | Liens internes                                                     | Mise à jour (mode existant)              | Nouvelle page       |
+| ----------------------------------- | ---------------------------------------------------------------------------- | ------------------------------------------------- | ------------------------------------------------------------------ | ---------------------------------------- | ------------------- |
+| Article, actualité, guide (en base) | **Validation**, puis **auto borné** après 20 validations sans retour arrière | Validation                                        | Validation (insertion de lien contrôlée par `verifierLienInterne`) | Validation, puis auto borné (1 par jour) | Brief en validation |
+| FAQ (table `FAQ`)                   | Validation                                                                   | Validation, jetons de prix intacts à l'octet près | —                                                                  | —                                        | Validation          |
+| Page ville                          | **Recommandation** : titre calculé dans le code                              | Validation si `GeneratedVilleCopy`                | Recommandation                                                     | Interdit                                 | Recommandation      |
+| Page offre                          | **Interdit** : prix, positionnement, Qualiopi                                | Interdit                                          | Interdit                                                           | Interdit                                 | Interdit            |
+| Institutionnelle, légale            | Recommandation (code), légal **interdit**                                    | Recommandation                                    | Recommandation                                                     | Interdit                                 | Recommandation      |
 
 - **« Recommandation »** : la carte apparaît dans la console avec le texte proposé, et un humain l'applique par une PR. Le système **n'écrit jamais de fichier**, ce qui rend `pricing.ts`, `legal.ts`, `positionnement.ts` et `journee-ia-commun.ts` intouchables par construction.
 - **JSON-LD** : les gabarits sont dans le code. Seules les données qui les nourrissent (`faqJson`, `keyTakeaway`) passent par la validation.
@@ -261,13 +262,13 @@ Règles de la file :
 
 Le pilotage ne peut donc **jamais prendre plus de 10 % du budget mensuel** de la production.
 
-| Poste | Estimation |
-| --- | --- |
-| Panel GEO (40 questions × 2 passages, toutes les deux semaines, Haiku 5.5 + `web_search`) | ≈ 5 $/mois |
-| Propositions titre/méta/FAQ (Sonnet 5.5, ≤ 3 par jour, remplacements ciblés) | ≈ 3-6 $/mois |
-| Classement des intentions inconnues (Haiku, par lots, mis en cache) | < 1 $/mois |
-| Mises à jour d'articles | Déjà comptées par l'équipe éditoriale |
-| **Total** | **≈ 10-12 $/mois** |
+| Poste                                                                                     | Estimation                            |
+| ----------------------------------------------------------------------------------------- | ------------------------------------- |
+| Panel GEO (40 questions × 2 passages, toutes les deux semaines, Haiku 5.5 + `web_search`) | ≈ 5 $/mois                            |
+| Propositions titre/méta/FAQ (Sonnet 5.5, ≤ 3 par jour, remplacements ciblés)              | ≈ 3-6 $/mois                          |
+| Classement des intentions inconnues (Haiku, par lots, mis en cache)                       | < 1 $/mois                            |
+| Mises à jour d'articles                                                                   | Déjà comptées par l'équipe éditoriale |
+| **Total**                                                                                 | **≈ 10-12 $/mois**                    |
 
 Mesure, opportunités et score de citabilité : **0 $** (aucun modèle).
 
@@ -284,16 +285,16 @@ Option (a) recommandée : pas de nouvelle valeur d'énumération, donc pas de ri
 
 Chemin : `content-gen/pilotage`, `force-dynamic`, composants serveur. Le nom **« geo » est exclu** : il est déjà pris par les villes.
 
-| Onglet | Contenu |
-| --- | --- |
-| **Vue d'ensemble** | Clics, impressions, position et CTR sur 28 jours contre les 28 jours précédents, **par type de page**. « Données jusqu'au JJ/MM ». État de chaque source (disponible / indisponible / en retard) |
-| **Pages** | Tableau filtrable par type de page, avec le score de citabilité |
-| **Requêtes** | Intention, page propriétaire, cannibalisation |
-| **Opportunités** | Triées par priorité, signalements à part |
-| **Propositions** | La file de validation |
-| **En mesure** | Verdicts en mots simples : « +18 % de clics, conservé » |
-| **Moteurs IA** | Visites venues des IA, robots, panel, chacun avec sa limite écrite |
-| **Santé des données** | Derniers imports, quotas consommés, erreurs |
+| Onglet                | Contenu                                                                                                                                                                                          |
+| --------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| **Vue d'ensemble**    | Clics, impressions, position et CTR sur 28 jours contre les 28 jours précédents, **par type de page**. « Données jusqu'au JJ/MM ». État de chaque source (disponible / indisponible / en retard) |
+| **Pages**             | Tableau filtrable par type de page, avec le score de citabilité                                                                                                                                  |
+| **Requêtes**          | Intention, page propriétaire, cannibalisation                                                                                                                                                    |
+| **Opportunités**      | Triées par priorité, signalements à part                                                                                                                                                         |
+| **Propositions**      | La file de validation                                                                                                                                                                            |
+| **En mesure**         | Verdicts en mots simples : « +18 % de clics, conservé »                                                                                                                                          |
+| **Moteurs IA**        | Visites venues des IA, robots, panel, chacun avec sa limite écrite                                                                                                                               |
+| **Santé des données** | Derniers imports, quotas consommés, erreurs                                                                                                                                                      |
 
 `content-gen/keyword-tracking` renvoie vers l'onglet Requêtes une fois celui-ci livré. Aucun écran n'est supprimé dans ce chantier.
 
@@ -313,16 +314,16 @@ Une **section** ajoutée à `content-weekly-report-worker.ts`. Pas de second e-m
 
 ## 8. Interrupteurs
 
-| Interrupteur | Où | Défaut | Effet |
-| --- | --- | --- | --- |
-| `CONTENT_PILOTAGE_SEO` | variable d'environnement, **worker et app** | absent (éteint) | Seul `"true"` exact allume la file `seo-pilotage` et l'écran (sinon : « Pilotage éteint ») |
-| `pilotage_seo.mode` | `ContentGenConfig` | `observation` | `observation` : mesure et analyse seulement. `proposition` : en plus, la file de validation. `auto_borne` : en plus, l'application automatique des champs listés |
-| `pilotage_seo.auto_champs` | idem | `[]` | Ex. `["metaDescription"]` |
-| `pilotage_seo.retour_auto` | idem | `false` | Active le retour arrière automatique |
-| `pilotage_seo.panel_geo` | idem | `false` | Active le panel GEO |
-| `pilotage_seo.part_temoin` | idem | `0.2` | Part des pages tirées dans le groupe témoin |
-| `pilotage_cout_max_jour_usd` / `_mois_usd` | idem | 1 / 20 | Sous-plafonds de coût du pilotage |
-| `pilotage_modifs_max_jour` | idem | 3 | Quota de modifications par jour |
+| Interrupteur                               | Où                                          | Défaut          | Effet                                                                                                                                                            |
+| ------------------------------------------ | ------------------------------------------- | --------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `CONTENT_PILOTAGE_SEO`                     | variable d'environnement, **worker et app** | absent (éteint) | Seul `"true"` exact allume la file `seo-pilotage` et l'écran (sinon : « Pilotage éteint »)                                                                       |
+| `pilotage_seo.mode`                        | `ContentGenConfig`                          | `observation`   | `observation` : mesure et analyse seulement. `proposition` : en plus, la file de validation. `auto_borne` : en plus, l'application automatique des champs listés |
+| `pilotage_seo.auto_champs`                 | idem                                        | `[]`            | Ex. `["metaDescription"]`                                                                                                                                        |
+| `pilotage_seo.retour_auto`                 | idem                                        | `false`         | Active le retour arrière automatique                                                                                                                             |
+| `pilotage_seo.panel_geo`                   | idem                                        | `false`         | Active le panel GEO                                                                                                                                              |
+| `pilotage_seo.part_temoin`                 | idem                                        | `0.2`           | Part des pages tirées dans le groupe témoin                                                                                                                      |
+| `pilotage_cout_max_jour_usd` / `_mois_usd` | idem                                        | 1 / 20          | Sous-plafonds de coût du pilotage                                                                                                                                |
+| `pilotage_modifs_max_jour`                 | idem                                        | 3               | Quota de modifications par jour                                                                                                                                  |
 
 Dépendances entre interrupteurs :
 
@@ -331,14 +332,14 @@ Dépendances entre interrupteurs :
 
 ## 9. Arbitrages entre experts
 
-| Sujet | Avis | Décision |
-| --- | --- | --- |
-| Nouveau worker ? | Critique : « zéro worker ». Expert boucle : « file séparée obligatoire » (AUDIT § 5 bis-4) | **Une** file et **un** worker nouveaux, qui **en retirent deux** (`site-route-gsc`, `content-keyword-sync`). Bilan : −1 |
-| Branches `feat/equipe-ed-*` à attendre ? | Critique : « attendre leur fusion » | **Faux** : les PR 2, 14, 16 et 18 sont fusionnées (#2351, #2359, #2389, #2379). Il reste des branches distantes périmées (voir DECOUPAGE) |
-| Type de contenu dédié au panel (`geo_panel`) ? | Expert GEO : oui. Expert boucle : non (énumération = migration et risque app/worker) | **Non** : job porteur (§ 6) |
-| Coût du panel | Critique : 10-40 $/semaine. Expert GEO : 5-20 $/mois | Le critique s'appuyait sur `src/server/clients/claude-search.ts`, qui **n'a pas** de recherche web, et sur un Sonnet à 30 k jetons. Retenu : Haiku, 40 questions, toutes les deux semaines, ≈ 5 $/mois, **plafonné à 20 $/mois** par le sous-plafond |
-| Historique sans migration ? | Expert données : impossible proprement | **Migration additive** (tables nouvelles seulement), justifiée § 3 de DECOUPAGE |
-| Noindex automatique du `tier-lifecycle` | Critique : risque sur bruit | Il a déjà un plancher de 100 impressions (`tier-decisions.ts:68`). On le **laisse**, mais il lit désormais la table d'historique (28 j homogènes) |
+| Sujet                                          | Avis                                                                                       | Décision                                                                                                                                                                                                                                             |
+| ---------------------------------------------- | ------------------------------------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Nouveau worker ?                               | Critique : « zéro worker ». Expert boucle : « file séparée obligatoire » (AUDIT § 5 bis-4) | **Une** file et **un** worker nouveaux, qui **en retirent deux** (`site-route-gsc`, `content-keyword-sync`). Bilan : −1                                                                                                                              |
+| Branches `feat/equipe-ed-*` à attendre ?       | Critique : « attendre leur fusion »                                                        | **Faux** : les PR 2, 14, 16 et 18 sont fusionnées (#2351, #2359, #2389, #2379). Il reste des branches distantes périmées (voir DECOUPAGE)                                                                                                            |
+| Type de contenu dédié au panel (`geo_panel`) ? | Expert GEO : oui. Expert boucle : non (énumération = migration et risque app/worker)       | **Non** : job porteur (§ 6)                                                                                                                                                                                                                          |
+| Coût du panel                                  | Critique : 10-40 $/semaine. Expert GEO : 5-20 $/mois                                       | Le critique s'appuyait sur `src/server/clients/claude-search.ts`, qui **n'a pas** de recherche web, et sur un Sonnet à 30 k jetons. Retenu : Haiku, 40 questions, toutes les deux semaines, ≈ 5 $/mois, **plafonné à 20 $/mois** par le sous-plafond |
+| Historique sans migration ?                    | Expert données : impossible proprement                                                     | **Migration additive** (tables nouvelles seulement), justifiée § 3 de DECOUPAGE                                                                                                                                                                      |
+| Noindex automatique du `tier-lifecycle`        | Critique : risque sur bruit                                                                | Il a déjà un plancher de 100 impressions (`tier-decisions.ts:68`). On le **laisse**, mais il lit désormais la table d'historique (28 j homogènes)                                                                                                    |
 
 ## 10. Questions ouvertes pour Will
 
@@ -353,8 +354,8 @@ Dépendances entre interrupteurs :
 
 ## 11. Conditions de démarrage (avant d'allumer quoi que ce soit)
 
-| Mode | Conditions |
-| --- | --- |
-| **Observation** | Sonde GSC verte. Migration vérifiée par `prisma migrate status` après l'atterrissage (l'entrypoint migre en best-effort). Écran « Santé des données » vert depuis 7 jours |
-| **Propositions** | 8 semaines d'observation. Planchers calibrés sur les données réelles. Journal et retour arrière livrés **et testés**. Défauts AUDIT § 5 bis 1 à 3 corrigés |
-| **Automatique borné** | 20 propositions validées sans retour arrière. Groupe témoin actif. Champ par champ, en commençant par `metaDescription` des articles |
+| Mode                  | Conditions                                                                                                                                                                |
+| --------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Observation**       | Sonde GSC verte. Migration vérifiée par `prisma migrate status` après l'atterrissage (l'entrypoint migre en best-effort). Écran « Santé des données » vert depuis 7 jours |
+| **Propositions**      | 8 semaines d'observation. Planchers calibrés sur les données réelles. Journal et retour arrière livrés **et testés**. Défauts AUDIT § 5 bis 1 à 3 corrigés                |
+| **Automatique borné** | 20 propositions validées sans retour arrière. Groupe témoin actif. Champ par champ, en commençant par `metaDescription` des articles                                      |

@@ -213,7 +213,7 @@ Facultatif           P17 Bing Webmaster (après P4)
   - liste figée (instantané) ;
   - aucune question avec « Grenoble » ni un nom de personne ;
   - réservation avant l'appel ;
-  - plafond atteint : passage sauté (*fail-closed*) ;
+  - plafond atteint : passage sauté (_fail-closed_) ;
   - reconnaissance d'`axion-ia.com` et de ses sous-domaines ;
   - aucun appel réseau en test.
 
@@ -292,23 +292,23 @@ Facultatif           P17 Bing Webmaster (après P4)
 
 ## 3. Recouvrements avec les branches en cours
 
-| Branche | État le 27/11 | Recouvrement | Conduite |
-| --- | --- | --- | --- |
-| `feat/equipe-ed-pr12-orchestration` | **Ouverte** (18 fichiers) | `providers/blog-claude-ledger.ts`, `equipe/circuit-article.ts` (branche `editerSeo`), `content-gen-worker.ts` | **P0 attend sa fusion** et traite avec elle le type `blog_edition_seo`. P14 réutilise `circuit-article`. |
-| `feat/equipe-ed-pr2`, `pr14`, `pr16`, `pr18` | **Fusionnées** (#2351, #2359, #2389, #2379) ; branches distantes périmées | `content-keyword-sync-worker.ts`, `suivi-publication.ts`, `mise-a-jour*.ts`, `content-refresh-worker.ts`, `charge-de-liens*` | Partir de `main`, ignorer les branches distantes. Diffs minimaux dans P0b, P5 et P13. |
-| `chore/equipe-ed-pr0` et `feat/equipe-ed-pr1`, `pr3`, `pr4`, `pr5`, `pr7`, `pr8` | Fusionnées (#2356, #2354, #2357, #2362, #2363, #2352, #2353) ; branches distantes résiduelles | Aucun fichier commun direct | — |
-| `feat/images-blog-qualite` | Ouverte | `content-gen/images/*`, `content-publish-worker.ts` | Aucun fichier commun. P14 ne republie rien par `content-publish`. |
-| `feat/gabarits-articles-conception` | Conception (docs) | Gabarits d'articles, dont FAQ et définition. `templateVariant` intervient dans la construction des URL d'article | P12 aligne ses critères sur ces gabarits. P14 produit les FAQ au format du gabarit FAQ. Les URL sont construites par `buildArticlePath`, jamais à la main. |
-| `geo/*` (llms.txt, pages offres, villes, glossaire…) et `fix/seo-*` | Nombreuses, diverses | `src/app/_llms/*`, pages offres et villes | Le chantier **lit** ces pages et ne les modifie pas. P12 peut signaler des écarts de faits, que ces branches corrigent. |
+| Branche                                                                          | État le 27/11                                                                                 | Recouvrement                                                                                                                 | Conduite                                                                                                                                                   |
+| -------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `feat/equipe-ed-pr12-orchestration`                                              | **Ouverte** (18 fichiers)                                                                     | `providers/blog-claude-ledger.ts`, `equipe/circuit-article.ts` (branche `editerSeo`), `content-gen-worker.ts`                | **P0 attend sa fusion** et traite avec elle le type `blog_edition_seo`. P14 réutilise `circuit-article`.                                                   |
+| `feat/equipe-ed-pr2`, `pr14`, `pr16`, `pr18`                                     | **Fusionnées** (#2351, #2359, #2389, #2379) ; branches distantes périmées                     | `content-keyword-sync-worker.ts`, `suivi-publication.ts`, `mise-a-jour*.ts`, `content-refresh-worker.ts`, `charge-de-liens*` | Partir de `main`, ignorer les branches distantes. Diffs minimaux dans P0b, P5 et P13.                                                                      |
+| `chore/equipe-ed-pr0` et `feat/equipe-ed-pr1`, `pr3`, `pr4`, `pr5`, `pr7`, `pr8` | Fusionnées (#2356, #2354, #2357, #2362, #2363, #2352, #2353) ; branches distantes résiduelles | Aucun fichier commun direct                                                                                                  | —                                                                                                                                                          |
+| `feat/images-blog-qualite`                                                       | Ouverte                                                                                       | `content-gen/images/*`, `content-publish-worker.ts`                                                                          | Aucun fichier commun. P14 ne republie rien par `content-publish`.                                                                                          |
+| `feat/gabarits-articles-conception`                                              | Conception (docs)                                                                             | Gabarits d'articles, dont FAQ et définition. `templateVariant` intervient dans la construction des URL d'article             | P12 aligne ses critères sur ces gabarits. P14 produit les FAQ au format du gabarit FAQ. Les URL sont construites par `buildArticlePath`, jamais à la main. |
+| `geo/*` (llms.txt, pages offres, villes, glossaire…) et `fix/seo-*`              | Nombreuses, diverses                                                                          | `src/app/_llms/*`, pages offres et villes                                                                                    | Le chantier **lit** ces pages et ne les modifie pas. P12 peut signaler des écarts de faits, que ces branches corrigent.                                    |
 
 ## 4. Estimation
 
-| Vague | PR | Taille | Remarque |
-| --- | --- | --- | --- |
-| 0 | P0, P0b, P1, P3, P7, P12 | S à M chacune | Indépendantes |
-| 1 | P2, P4 | M | La seule migration « lourde » |
-| 2 | P5, P6a, P8, P9, P10, P18 | S à M | Parallèles |
-| 3 | P6b, P11 | S | — |
-| 4 | P13 → P14 → P15 → P16 | M, M, S, S | Séquentielles, après 8 semaines d'observation |
+| Vague | PR                        | Taille        | Remarque                                      |
+| ----- | ------------------------- | ------------- | --------------------------------------------- |
+| 0     | P0, P0b, P1, P3, P7, P12  | S à M chacune | Indépendantes                                 |
+| 1     | P2, P4                    | M             | La seule migration « lourde »                 |
+| 2     | P5, P6a, P8, P9, P10, P18 | S à M         | Parallèles                                    |
+| 3     | P6b, P11                  | S             | —                                             |
+| 4     | P13 → P14 → P15 → P16     | M, M, S, S    | Séquentielles, après 8 semaines d'observation |
 
 Le mode observation est livrable en **vagues 0 à 2**. Aucune action sur le site n'est possible avant la vague 4.
