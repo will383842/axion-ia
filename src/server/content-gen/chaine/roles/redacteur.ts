@@ -319,18 +319,18 @@ export function analyserArticle(e: EntreeRedaction, a: ArticleRedige): Correctio
   sections.forEach((s, i) => {
     const t = titreH2(s);
     const k = normaliserTitre(t);
-    const pbT = verifierTitres({
+    const pbT: string[] = verifierTitres({
       h1: e.structure.h1,
       motCle: e.brief.motCle,
       plan: [{ type: "informatif", intitule: t, question: null, blocAttendu: null }],
       gabarit: "analyse",
     }).filter((x) => x === "h2_longueur" || x === "h2_generique" || x === "h2_egal_h1");
-    if (vusH2.has(k)) pbT.push("h2_egal_h1");
+    if (vusH2.has(k)) pbT.push("h2_doublon");
     vusH2.add(k);
     for (const x of new Set(pbT)) {
       pb.push({
         section: i,
-        probleme: x === "h2_egal_h1" ? "h2_doublon" : x,
+        probleme: x,
         attendu: "Titre H2 de 3 à 14 mots, informatif, unique, différent du H1",
       });
     }

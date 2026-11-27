@@ -158,7 +158,7 @@ const correspond = (phrase: string, affirmation: string) => {
 
 /** Seuls des hôtes publics sont testés (jamais localhost, adresse IP ou nom interne : SSRF). */
 export function hotePublic(url: string): boolean {
-  const h = hote(url);
+  const h = hote(url).replace(/\.$/, "");
   if (!h || !h.includes(".")) return false;
   // Services de résolution d'IP (127.0.0.1.nip.io…) et noms contenant une adresse : refusés.
   if (

@@ -50,5 +50,11 @@ export function nombresDe(texte: string): NombreTrouve[] {
   return sortie;
 }
 
-const RE_LETTRES =
-  /(?<![\p{L}])(?:(?:un|une|deux|trois|quatre|cinq|six|sept|huit|neuf|dix|onze|douze|quinze|vingt|trente|quarante|cinquante|soixante|cent)\s+[^.!?\d]{0,40}?\bsur\s+(?:dix|cent|vingt|deux|trois|quatre|cinq|six|sept|huit|neuf|\d+)|la moitié|un tiers|deux tiers|un quart|trois quarts|\d+\s*pour cent)(?![\p{L}])/giu;
+const MOTS_NOMBRE =
+  "deux|trois|quatre|cinq|six|sept|huit|neuf|dix|onze|douze|quinze|vingt|trente|quarante|cinquante|soixante|cent|mille";
+const UNITES_STAT =
+  "fois|heures?|jours?|semaines?|mois|ans|salari\\p{L}*|pme|tpe|entreprises?|clients?|collaborateurs?|millions?|milliards?|pour cent";
+const RE_LETTRES = new RegExp(
+  `(?<![\\p{L}])(?:(?:un|une|${MOTS_NOMBRE})\\s+[^.!?\\d]{0,40}?\\bsur\\s+(?:${MOTS_NOMBRE}|\\d+)|(?:${MOTS_NOMBRE})\\s+(?:${UNITES_STAT})|la moitié|un tiers|deux tiers|un quart|trois quarts|\\d+\\s*pour cent)(?![\\p{L}])`,
+  "giu",
+);
